@@ -77,6 +77,11 @@ a:hover { text-decoration: underline; }
   font-size: 13px; color: var(--text-2); white-space: nowrap; padding: 4px 0;
 }
 .nav-links a:hover { color: var(--text); text-decoration: none; }
+.nav-links a.active { color: var(--text); }
+.nav-links a.active::after {
+  content: ""; display: block; height: 2px; margin-top: 3px;
+  background: var(--accent); border-radius: 2px;
+}
 .lang-switch {
   flex-shrink: 0; font-size: 12px; font-weight: 600; letter-spacing: .05em;
   border: 1px solid var(--border-strong); border-radius: 999px;
@@ -286,39 +291,95 @@ h3 { font-size: 18px; margin: 0 0 6px; letter-spacing: -.01em; }
 }
 #repo-status { font-size: 13.5px; color: var(--text-3); margin-top: 20px; }
 
-/* ---------- OpenRouter model grid ---------- */
-.model-grid {
+/* ---------- Subpage header (back link) ---------- */
+.page-head { padding: 34px 0 0; }
+.back-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 13px; color: var(--text-3); font-family: var(--mono);
+}
+.back-link:hover { color: var(--accent); text-decoration: none; }
+
+/* ---------- Home teaser grid (#explore) ---------- */
+.section-grid {
   display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px;
   margin-top: 30px;
 }
-.model-card {
+.section-card {
   background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 20px 22px;
+  border-radius: var(--radius); padding: 24px 26px;
   display: flex; flex-direction: column; gap: 8px;
   transition: border-color .15s, transform .12s, box-shadow .2s;
 }
-.model-card:hover {
+.section-card:hover {
   border-color: var(--accent-strong); transform: translateY(-2px);
   box-shadow: 0 12px 32px rgba(0, 0, 0, .4), 0 0 0 1px rgba(129,140,248,.15);
   text-decoration: none;
 }
-.model-provider {
-  font-size: 10.5px; font-weight: 700; letter-spacing: .12em;
-  color: var(--accent); background: var(--accent-soft);
-  border-radius: 999px; padding: 2px 10px; text-transform: uppercase;
-  align-self: flex-start; font-family: var(--mono);
+.section-card .num {
+  font-family: var(--mono); font-size: 11px; color: var(--text-3);
+  letter-spacing: .2em;
 }
-.model-name {
-  font-family: var(--mono); font-size: 14px; font-weight: 600;
-  color: var(--text); word-break: break-word;
+.section-card h3 { margin: 0; font-size: 17px; }
+.section-card:hover h3 { color: var(--accent); }
+.section-card p { margin: 0; font-size: 13.5px; color: var(--text-2); flex: 1; }
+.section-card .go {
+  font-family: var(--mono); font-size: 12px; color: var(--text-3);
+  align-self: flex-start;
 }
-.model-card:hover .model-name { color: var(--accent); }
-.model-desc { font-size: 13.5px; color: var(--text-2); margin: 0; flex: 1; }
-.model-meta {
-  display: flex; flex-wrap: wrap; align-items: center; gap: 14px;
-  font-size: 12px; color: var(--text-3); font-family: var(--mono);
+.section-card:hover .go { color: var(--accent); }
+
+/* ---------- OpenRouter usage leaderboard ---------- */
+.rank-list { display: grid; gap: 8px; margin-top: 30px; }
+.rank-row {
+  display: grid; grid-template-columns: 32px 40px 1fr minmax(180px, 260px);
+  align-items: center; gap: 16px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 14px 20px;
+  transition: border-color .15s, transform .12s, box-shadow .2s;
 }
-#model-status { font-size: 13.5px; color: var(--text-3); margin-top: 20px; }
+.rank-row:hover {
+  border-color: var(--accent-strong); transform: translateY(-1px);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, .35), 0 0 0 1px rgba(129,140,248,.12);
+  text-decoration: none;
+}
+.rank-num {
+  font-family: var(--mono); font-size: 15px; font-weight: 700;
+  color: var(--text-3); text-align: center;
+}
+.rank-num.r1 { color: #ffd76a; }
+.rank-num.r2 { color: #d7dae2; }
+.rank-num.r3 { color: #e0a06b; }
+.rank-avatar {
+  width: 40px; height: 40px; border-radius: 10px;
+  background: var(--accent-soft); color: var(--accent);
+  font-family: var(--mono); font-weight: 700; font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+}
+.rank-info { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.rank-name {
+  font-size: 14.5px; font-weight: 600; color: var(--text);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.rank-row:hover .rank-name { color: var(--accent); }
+.rank-provider {
+  font-family: var(--mono); font-size: 11px; color: var(--text-3);
+  text-transform: uppercase; letter-spacing: .1em;
+}
+.rank-stats { display: flex; flex-direction: column; gap: 6px; }
+.rank-bar {
+  display: block; height: 6px; border-radius: 999px;
+  background: var(--surface-2); overflow: hidden;
+}
+.rank-bar span {
+  display: block; height: 100%; border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent-strong), var(--accent));
+}
+.rank-tokens {
+  font-family: var(--mono); font-size: 12px; color: var(--text-3);
+  text-align: right;
+}
+#model-status, #repo-status { font-size: 13.5px; color: var(--text-3); margin-top: 20px; }
+
 
 /* ---------- Writing / books ---------- */
 .pub-list { margin-top: 30px; display: grid; gap: 14px; }
@@ -424,7 +485,10 @@ footer {
   .stat + .stat { border-left: 0; padding-left: 0; }
   .stat:nth-child(even) { border-left: 1px solid var(--border); padding-left: 20px; }
   .repo-grid { grid-template-columns: 1fr; }
-  .model-grid { grid-template-columns: 1fr; }
+  .section-grid { grid-template-columns: 1fr; }
+  .rank-row { grid-template-columns: 24px 34px 1fr; }
+  .rank-stats { grid-column: 1 / -1; flex-direction: row; align-items: center; gap: 10px; }
+  .rank-tokens { text-align: left; }
   .two-col { grid-template-columns: 1fr; }
   .tl-item { grid-template-columns: 1fr; }
   .tl-date { grid-column: 1; grid-row: 1; padding-top: 0; margin-bottom: 4px; }

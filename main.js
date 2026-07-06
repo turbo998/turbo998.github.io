@@ -122,32 +122,9 @@
     if (status) status.textContent = isFallback ? T[LANG].fallbackNote : "";
   }
 
-  /* Scroll-reveal: cards fade/slide in as they enter the viewport. */
-  const revealObserver = "IntersectionObserver" in window
-    ? new IntersectionObserver((entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            e.target.classList.add("in");
-            revealObserver.unobserve(e.target);
-          }
-        });
-      }, { rootMargin: "0px 0px -8% 0px", threshold: 0.05 })
-    : null;
-
-  function initReveal(root) {
-    /* Degenerate viewports (height 0 in some embedded webviews) would keep
-       content invisible forever — skip the animation and stay visible. */
-    if (!revealObserver || !window.innerHeight) return;
-    (root || document)
-      .querySelectorAll(".proj, .tl-item, .repo-card, .model-card, .pub, .bio-card, .profile-card, .panel, .callout")
-      .forEach((el) => {
-        if (el.classList.contains("reveal")) return;
-        el.classList.add("reveal");
-        revealObserver.observe(el);
-      });
-  }
-  window.__initReveal = initReveal;
-  initReveal();
+  /* Scroll-reveal for the repo grid is provided by the shared reveal.js,
+     loaded before this script on every page. */
+  const initReveal = window.__initReveal || function () {};
 
   fetch(`https://api.github.com/users/${USER}/repos?sort=updated&per_page=100`)
     .then((res) => (res.ok ? res.json() : Promise.reject(res.status)))
