@@ -139,13 +139,14 @@
        content invisible forever — skip the animation and stay visible. */
     if (!revealObserver || !window.innerHeight) return;
     (root || document)
-      .querySelectorAll(".proj, .tl-item, .repo-card, .pub, .bio-card, .profile-card, .panel, .callout")
+      .querySelectorAll(".proj, .tl-item, .repo-card, .model-card, .pub, .bio-card, .profile-card, .panel, .callout")
       .forEach((el) => {
         if (el.classList.contains("reveal")) return;
         el.classList.add("reveal");
         revealObserver.observe(el);
       });
   }
+  window.__initReveal = initReveal;
   initReveal();
 
   fetch(`https://api.github.com/users/${USER}/repos?sort=updated&per_page=100`)
