@@ -8,7 +8,7 @@
   if (!list) return;
 
   const LANG = document.documentElement.lang === "zh" ? "zh" : "en";
-  const RANKINGS_API = "https://openrouter.ai/api/frontend/v1/rankings/models?view=week";
+  const RANKINGS_BASE = "https://openrouter.ai/api/frontend/v1/rankings/models?view=";
   const MODELS_API = "https://openrouter.ai/api/v1/models";
   const MAX_ROWS = 12;
 
@@ -17,11 +17,13 @@
       tokens: "tokens/week",
       fallback: "Live API unavailable — showing a cached snapshot of last week's leaderboard.",
       view: "View on OpenRouter →",
+      trendHint: "Daily-average token volume: month → week → day",
     },
     zh: {
       tokens: "周处理 Token",
       fallback: "实时接口暂不可用——以下为上周排行榜的缓存快照。",
       view: "在 OpenRouter 查看 →",
+      trendHint: "日均 Token 处理量趋势：月均 → 周均 → 日均",
     },
   }[LANG];
 
@@ -55,6 +57,56 @@
     return String(n);
   }
 
+  // Builds a trend descriptor from real per-period totals (day/week/month
+  // views of OpenRouter's public rankings API — no synthetic data). Each
+  // period is normalized to an average-daily-volume so the three points are
+  // comparable, then the day-vs-month rate gives an honest direction/size.
+  function buildTrend(dayTokens, weekTokens, monthTokens) {
+    const dayAvg = dayTokens || 0;
+    const weekAvg = weekTokens ? weekTokens / 7 : 0;
+    const monthAvg = monthTokens ? monthTokens / 30 : 0;
+    const points = [monthAvg, weekAvg, dayAvg];
+    const base = monthAvg || weekAvg || dayAvg;
+    if (!base) return null;
+    const pct = ((dayAvg - base) / base) * 100;
+    const dir = pct > 3 ? "up" : pct < -3 ? "down" : "flat";
+    return { points, pct, dir };
+  }
+
+  function sparklineSvg(points, dir) {
+    const w = 56, h = 20, pad = 3;
+    const max = Math.max.apply(null, points.concat([1e-9]));
+    const min = Math.min.apply(null, points.concat([0]));
+    const range = max - min || 1;
+    const stepX = (w - pad * 2) / (points.length - 1);
+    const color = dir === "up" ? "#34d399" : dir === "down" ? "#f87171" : "#8892a6";
+    const coords = points
+      .map((p, i) => {
+        const x = pad + i * stepX;
+        const y = h - pad - ((p - min) / range) * (h - pad * 2);
+        return x.toFixed(1) + "," + y.toFixed(1);
+      })
+      .join(" ");
+    return (
+      `<svg class="trend-svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" aria-hidden="true">` +
+      `<polyline points="${coords}" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>` +
+      `</svg>`
+    );
+  }
+
+  function trendBlock(trend) {
+    if (!trend) return "";
+    const arrow = trend.dir === "up" ? "\u25B2" : trend.dir === "down" ? "\u25BC" : "\u2192";
+    const sign = trend.pct > 0 ? "+" : "";
+    const pctStr = sign + trend.pct.toFixed(1) + "%";
+    return (
+      `<span class="rank-trend" title="${T.trendHint}">` +
+        sparklineSvg(trend.points, trend.dir) +
+        `<span class="rank-trend-badge ${trend.dir}">${arrow} ${pctStr}</span>` +
+      `</span>`
+    );
+  }
+
   function rankRow(m, i, maxTokens) {
     const a = document.createElement("a");
     a.className = "rank-row";
@@ -74,6 +126,7 @@
         `<span class="rank-provider">${providerOf(m.id) || m.provider || ""}</span>` +
       `</span>` +
       `<span class="rank-stats">` +
+        trendBlock(m.trend) +
         `<span class="rank-bar"><span style="width:${pct}%"></span></span>` +
         `<span class="rank-tokens">${fmtTokens(m.tokens)} ${T.tokens}</span>` +
       `</span>`;
@@ -89,24 +142,42 @@
     if (window.__initReveal) window.__initReveal(list);
   }
 
+  function toRows(res) {
+    return Array.isArray(res) ? res : res.data || [];
+  }
+
+  // Sums tokens per model slug within one API view (a view can contain
+  // several dated snapshots/variants for the same model).
+  function tokensBySlug(rows) {
+    const map = new Map();
+    rows.forEach((r) => {
+      const slug = stripDate(r.model_permaslug);
+      const tokens =
+        (Number(r.total_prompt_tokens) || 0) + (Number(r.total_completion_tokens) || 0);
+      map.set(slug, (map.get(slug) || 0) + tokens);
+    });
+    return map;
+  }
+
   Promise.all([
-    fetch(RANKINGS_API).then((res) => (res.ok ? res.json() : Promise.reject(res.status))),
+    fetch(RANKINGS_BASE + "week").then((res) => (res.ok ? res.json() : Promise.reject(res.status))),
+    fetch(RANKINGS_BASE + "day").then((res) => (res.ok ? res.json() : Promise.reject(res.status))),
+    fetch(RANKINGS_BASE + "month").then((res) => (res.ok ? res.json() : Promise.reject(res.status))),
     fetch(MODELS_API).then((res) => (res.ok ? res.json() : Promise.reject(res.status))),
   ])
-    .then(([rankingsRes, modelsRes]) => {
-      const rankings = Array.isArray(rankingsRes) ? rankingsRes : rankingsRes.data || [];
+    .then(([weekRes, dayRes, monthRes, modelsRes]) => {
+      const weekMap = tokensBySlug(toRows(weekRes));
+      const dayMap = tokensBySlug(toRows(dayRes));
+      const monthMap = tokensBySlug(toRows(monthRes));
       const catalog = (modelsRes && modelsRes.data) || [];
       const byId = new Map(catalog.map((m) => [m.id, m]));
 
       const merged = [];
-      rankings.forEach((r) => {
-        const slug = stripDate(r.model_permaslug);
+      weekMap.forEach((tokens, slug) => {
         const meta = byId.get(slug);
         if (!meta) return; // skip non-text / unmatched models
-        const tokens =
-          (Number(r.total_prompt_tokens) || 0) +
-          (Number(r.total_completion_tokens) || 0);
-        merged.push({ id: meta.id, name: meta.name, tokens });
+        const trend = buildTrend(dayMap.get(slug) || 0, tokens, monthMap.get(slug) || 0);
+        merged.push({ id: meta.id, name: meta.name, tokens, trend });
       });
 
       merged.sort((a, b) => b.tokens - a.tokens);
