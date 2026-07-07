@@ -10,6 +10,7 @@
   const LANG = document.documentElement.lang === "zh" ? "zh" : "en";
   const RANKINGS_BASE = "https://openrouter.ai/api/frontend/v1/rankings/models?view=";
   const MODELS_API = "https://openrouter.ai/api/v1/models";
+  const CHART_API = "https://openrouter.ai/api/frontend/v1/rankings/model-rankings-chart";
   const MAX_ROWS = 12;
 
   const T = {
@@ -18,12 +19,24 @@
       fallback: "Live API unavailable — showing a cached snapshot of last week's leaderboard.",
       view: "View on OpenRouter →",
       trendHint: "Daily-average token volume: month → week → day",
+      chartTitle: "Top models — weekly token usage",
+      linear: "Linear",
+      log: "Log",
+      total: "Total",
+      others: "Others",
+      chartUnavailable: "Weekly usage chart unavailable right now.",
     },
     zh: {
       tokens: "周处理 Token",
       fallback: "实时接口暂不可用——以下为上周排行榜的缓存快照。",
       view: "在 OpenRouter 查看 →",
       trendHint: "日均 Token 处理量趋势：月均 → 周均 → 日均",
+      chartTitle: "热门模型 — 每周 Token 用量",
+      linear: "线性",
+      log: "对数",
+      total: "合计",
+      others: "其他",
+      chartUnavailable: "每周用量图表暂不可用。",
     },
   }[LANG];
 
@@ -159,13 +172,202 @@
     return map;
   }
 
+  // ------------------------------------------------------------------
+  // Weekly stacked bar chart ("Top Models" style, per openrouter.ai/rankings)
+  // Sourced from OpenRouter's own (public, undocumented) frontend endpoint
+  // that powers that exact chart — 52 weekly buckets of per-model token
+  // totals, discovered via network inspection of openrouter.ai/rankings.
+  // ------------------------------------------------------------------
+  const PALETTE = ["#818cf8", "#22d3ee", "#f472b6", "#fbbf24", "#34d399", "#f87171", "#a78bfa", "#38bdf8", "#fb923c"];
+  const OTHERS_COLOR = "#4b5563";
+  const TOP_N = 9;
+
+  function shortName(slug) {
+    const last = (slug || "").split("/").pop() || slug;
+    return stripDate(last).replace(/:free$/, " (free)");
+  }
+
+  function fmtWeekLabel(dateStr) {
+    const d = new Date(dateStr + "T00:00:00Z");
+    if (isNaN(d.getTime())) return dateStr;
+    return d.toLocaleDateString(LANG === "zh" ? "zh-CN" : "en-US", {
+      month: "short",
+      year: "2-digit",
+      timeZone: "UTC",
+    });
+  }
+
+  function initChart(weeks) {
+    const chartEl = document.getElementById("rank-chart");
+    const card = document.getElementById("rank-chart-card");
+    const tooltip = document.getElementById("rank-chart-tooltip");
+    const legendEl = document.getElementById("rank-chart-legend");
+    const scaleBtns = document.querySelectorAll(".chart-scale-btn");
+    if (!chartEl || !weeks || !weeks.length) return;
+
+    const totals = new Map();
+    weeks.forEach((w) => {
+      Object.entries(w.ys || {}).forEach(([slug, val]) => {
+        if (slug === "Others") return;
+        totals.set(slug, (totals.get(slug) || 0) + (Number(val) || 0));
+      });
+    });
+    const topSlugs = Array.from(totals.entries())
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, TOP_N)
+      .map((r) => r[0]);
+    const topSet = new Set(topSlugs);
+    const orderedSlugs = topSlugs.concat(["Others"]);
+    const colorOf = (slug) =>
+      slug === "Others" ? OTHERS_COLOR : PALETTE[topSlugs.indexOf(slug) % PALETTE.length];
+    const nameOf = (slug) => (slug === "Others" ? T.others : shortName(slug));
+
+    const stacks = weeks.map((w) => {
+      const ys = w.ys || {};
+      let othersVal = Number(ys.Others) || 0;
+      Object.entries(ys).forEach(([slug, val]) => {
+        if (slug !== "Others" && !topSet.has(slug)) othersVal += Number(val) || 0;
+      });
+      const rows = orderedSlugs
+        .map((slug) => ({ slug, value: slug === "Others" ? othersVal : Number(ys[slug]) || 0 }))
+        .filter((r) => r.value > 0);
+      const total = rows.reduce((s, r) => s + r.value, 0);
+      return { x: w.x, rows, total };
+    });
+
+    const maxTotal = Math.max.apply(null, stacks.map((s) => s.total).concat([1]));
+    let scaleMode = "linear";
+
+    // Total bar height is scaled (linear or log10) by the bar's total value.
+    // Within a bar, each segment keeps its proportional share of that total
+    // height, so the stacking order/shape stays readable in both modes.
+    function barHeightFor(total, innerH) {
+      if (scaleMode === "log") {
+        const l = Math.log10(total + 1);
+        const lMax = Math.log10(maxTotal + 1) || 1;
+        return (l / lMax) * innerH;
+      }
+      return (total / maxTotal) * innerH;
+    }
+
+    function draw() {
+      const W = 1000, H = 280, padT = 8, padB = 24, padL = 2, padR = 2;
+      const innerH = H - padT - padB;
+      const n = stacks.length;
+      const gap = 1.5;
+      const barW = (W - padL - padR) / n - gap;
+
+      let svg = `<svg viewBox="0 0 ${W} ${H}" class="rank-chart-svg" preserveAspectRatio="none">`;
+      stacks.forEach((s, i) => {
+        const x = padL + i * (barW + gap);
+        const barH = barHeightFor(s.total, innerH);
+        const barBottom = H - padB;
+        let cumFrac = 0;
+        s.rows.forEach((r) => {
+          const frac = s.total > 0 ? r.value / s.total : 0;
+          const y0 = barBottom - cumFrac * barH;
+          cumFrac += frac;
+          const y1 = barBottom - cumFrac * barH;
+          const h = Math.max(0, y0 - y1);
+          if (h > 0.1) {
+            svg += `<rect x="${x.toFixed(2)}" y="${y1.toFixed(2)}" width="${barW.toFixed(2)}" height="${h.toFixed(2)}" fill="${colorOf(r.slug)}"/>`;
+          }
+        });
+      });
+      const tickCount = Math.min(7, n);
+      const tickIdx = new Set();
+      for (let t = 0; t < tickCount; t++) {
+        tickIdx.add(Math.round((t / (tickCount - 1)) * (n - 1)));
+      }
+      tickIdx.forEach((i) => {
+        const cx = padL + i * (barW + gap) + barW / 2;
+        svg += `<text x="${cx.toFixed(1)}" y="${H - 6}" text-anchor="middle" style="font-size:11px;fill:var(--text-3)">${fmtWeekLabel(stacks[i].x)}</text>`;
+      });
+      svg += `<line x1="0" y1="${H - padB}" x2="${W}" y2="${H - padB}" style="stroke:var(--border)" stroke-width="1"/>`;
+      svg += `</svg>`;
+      chartEl.innerHTML = svg;
+
+      const svgEl = chartEl.querySelector("svg");
+      svgEl.addEventListener("mousemove", (e) => {
+        const rect = svgEl.getBoundingClientRect();
+        const relX = ((e.clientX - rect.left) / rect.width) * W;
+        let idx = Math.floor((relX - padL) / (barW + gap));
+        idx = Math.max(0, Math.min(n - 1, idx));
+        showTooltip(stacks[idx], e.clientX, e.clientY);
+      });
+      svgEl.addEventListener("mouseleave", hideTooltip);
+    }
+
+    function showTooltip(stack, clientX, clientY) {
+      if (!tooltip || !card) return;
+      const rowsHtml = stack.rows
+        .slice()
+        .sort((a, b) => {
+          const aOthers = a.slug === "Others" ? 1 : 0;
+          const bOthers = b.slug === "Others" ? 1 : 0;
+          if (aOthers !== bOthers) return aOthers - bOthers;
+          return b.value - a.value;
+        })
+        .slice(0, 10)
+        .map(
+          (r) =>
+            `<div class="chart-tip-row"><span class="chart-tip-swatch" style="background:${colorOf(r.slug)}"></span>` +
+            `<span class="chart-tip-name">${nameOf(r.slug)}</span>` +
+            `<span class="chart-tip-val">${fmtTokens(r.value)}</span></div>`
+        )
+        .join("");
+      tooltip.innerHTML =
+        `<div class="chart-tip-date">${fmtWeekLabel(stack.x)}</div>${rowsHtml}` +
+        `<div class="chart-tip-total"><span>${T.total}</span><span>${fmtTokens(stack.total)}</span></div>`;
+      const cardRect = card.getBoundingClientRect();
+      tooltip.style.display = "block";
+      const tipW = tooltip.offsetWidth || 180;
+      let left = clientX - cardRect.left + 14;
+      if (left + tipW > cardRect.width) left = clientX - cardRect.left - tipW - 14;
+      tooltip.style.left = Math.max(0, left) + "px";
+      tooltip.style.top = Math.max(0, clientY - cardRect.top - 10) + "px";
+    }
+
+    function hideTooltip() {
+      if (tooltip) tooltip.style.display = "none";
+    }
+
+    scaleBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        scaleMode = btn.getAttribute("data-scale");
+        scaleBtns.forEach((b) => b.classList.toggle("active", b === btn));
+        draw();
+      });
+    });
+
+    draw();
+
+    if (legendEl) {
+      legendEl.innerHTML =
+        orderedSlugs
+          .map(
+            (slug) =>
+              `<span class="chart-legend-item"><span class="chart-legend-swatch" style="background:${colorOf(slug)}"></span>${nameOf(slug)}</span>`
+          )
+          .join("");
+    }
+    if (card) card.classList.remove("chart-hidden");
+  }
+
   Promise.all([
     fetch(RANKINGS_BASE + "week").then((res) => (res.ok ? res.json() : Promise.reject(res.status))),
     fetch(RANKINGS_BASE + "day").then((res) => (res.ok ? res.json() : Promise.reject(res.status))),
     fetch(RANKINGS_BASE + "month").then((res) => (res.ok ? res.json() : Promise.reject(res.status))),
     fetch(MODELS_API).then((res) => (res.ok ? res.json() : Promise.reject(res.status))),
+    fetch(CHART_API)
+      .then((res) => (res.ok ? res.json() : Promise.reject(res.status)))
+      .then((res) => (res && res.data && res.data.data) || null)
+      .catch(() => null),
   ])
-    .then(([weekRes, dayRes, monthRes, modelsRes]) => {
+    .then(([weekRes, dayRes, monthRes, modelsRes, chartWeeks]) => {
+      if (chartWeeks && chartWeeks.length) {
+        initChart(chartWeeks);
+      }
       const weekMap = tokensBySlug(toRows(weekRes));
       const dayMap = tokensBySlug(toRows(dayRes));
       const monthMap = tokensBySlug(toRows(monthRes));
