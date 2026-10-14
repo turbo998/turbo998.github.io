@@ -6,6 +6,7 @@
   const LANG = document.documentElement.lang && document.documentElement.lang.startsWith("zh") ? "zh" : "en";
 
   const FEATURED = [
+    "ai-gaming-lab",
     "Agent-Harness-Engineering-on-Azure-and-GitHub-Copilot",
     "FDE-on-GitHub-Copilot-Practice-Book",
     "gpt-realtime-2-vision-companion",
@@ -17,6 +18,8 @@
   /* Curated Chinese descriptions shown on the zh page (the GitHub API
      only returns the original description). */
   const ZH_DESC = {
+    "ai-gaming-lab": "AI 游戏与程序化动画实验室：对标 Opus 5.5 动画能力，展示 Gemini 4 实时 3D/2D 程序化骨骼与曲面动画拆解舞台及《湾岸 Midnight》《Scrap Swarm》双可玩 Demo（https://turbo998.github.io/ai-gaming-lab/）。",
+    "scrap-swarm": "《废土斗机祭 · Scrap Swarm》：纯 Canvas 2D 多关节机甲动作生存游戏，含番剧切入演出、黑白冲击帧、三幕废土电台剧场与自动策略 Bot 验证（https://turbo998.github.io/scrap-swarm/）。",
     "Agent-Harness-Engineering-on-Azure-and-GitHub-Copilot": "基于 Azure + GitHub Copilot 构建 AI 智能体系统的实战工作坊：四层模型、10 个智能体与企业级部署。",
     "brightdata-webiq-demos": "四个可运行 Demo，对比 Bright Data 网络数据工具与 Microsoft Web IQ 方案。",
     "world-cup-sweepstake": "世界杯竞猜管理应用。",
@@ -38,6 +41,8 @@
 
   /* Fallback snapshot (2026-07) in case the GitHub API is unreachable. */
   const FALLBACK = [
+    { name: "ai-gaming-lab", description: "AI Gaming & Procedural Animation Lab: Real-time 3D/2D procedural articulation stage & playable demos (Wanan Midnight & Scrap Swarm) powered by Gemini 4.", language: "TypeScript", stargazers_count: 0, html_url: "https://github.com/turbo998/ai-gaming-lab", homepage: "https://turbo998.github.io/ai-gaming-lab/", updated_at: "2026-10-15" },
+    { name: "scrap-swarm", description: "Scrap Swarm (废土斗机祭): Procedural 2D Mecha Articulation, Anime Cut-in & Impact Frames, 3-Act Story & Deterministic Combat", language: "TypeScript", stargazers_count: 0, html_url: "https://github.com/turbo998/scrap-swarm", homepage: "https://turbo998.github.io/scrap-swarm/", updated_at: "2026-10-15" },
     { name: "Agent-Harness-Engineering-on-Azure-and-GitHub-Copilot", description: "A hands-on workshop for building AI agent systems with Azure + GitHub Copilot: 4-layer model, 10 agents, enterprise deployment.", language: "Shell", stargazers_count: 1, html_url: "https://github.com/turbo998/Agent-Harness-Engineering-on-Azure-and-GitHub-Copilot", updated_at: "2026-07-01" },
     { name: "FDE-on-GitHub-Copilot-Practice-Book", description: "微软生态下的前置部署工程实践 — FDE methodology integrated with Copilot Harness engineering.", language: "SCSS", stargazers_count: 0, html_url: "https://github.com/turbo998/FDE-on-GitHub-Copilot-Practice-Book", homepage: "https://turbo998.github.io/FDE-on-GitHub-Copilot-Practice-Book/", updated_at: "2026-06-03" },
     { name: "gpt-realtime-2-vision-companion", description: "Real-time voice + vision AI companion for blind & low-vision users, powered by Azure OpenAI.", language: "Python", stargazers_count: 0, html_url: "https://github.com/turbo998/gpt-realtime-2-vision-companion", updated_at: "2026-05-25" },
