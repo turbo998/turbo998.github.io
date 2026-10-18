@@ -2,6 +2,12 @@
 
 从技术分享走到动手实践：这里收录双语个人网站、技术作品、职业履历、AI 趋势文章与伙伴培训入口。个人网站使用纯 HTML/CSS/JS，无构建步骤；完整 Azure VM Workshop 已迁移至公开的 [Azure Infra Lab](https://github.com/turbo998/Azure-Infra-Lab)，本仓库只保留介绍与旧入口兼容跳转。
 
+## 精选 Playbook：Azure AI Agent Infrastructure Playbook（四层架构 · 六大运行时 · AKSClaw × E2B 10万并发沙箱）
+
+面向 AI Infra 与 Agent 平台架构师的端到端选型、定容与生产落地指南：涵盖 L1–L4 四层架构、六大运行时光谱（Foundry Hosted Agents · Durable Functions · ACA Dynamic Sessions · ACA Sandboxes Preview · AKS + Kata `AKSClaw` · E2B on Azure VMSS `Standard_D96as_v7` `108ms` Base / `132ms` Code-Interpreter 恢复）、Azure HorizonDB + PgBouncer 状态持久化、跨区域双活容灾（`3.67s` 热备 RTO）以及 6 套生产级 IaC/APIM 蓝图。
+
+**[打开全景 Playbook H5](https://turbo998.github.io/Azure-Infra-Lab/workshops/azure-agent-infra/index.html)** · **[AKSClaw × E2B 实时仿真台](https://turbo998.github.io/Azure-Infra-Lab/workshops/azure-agent-infra/demo.html)** · **[选型决策、10万沙箱定容与 DR 计算器](https://turbo998.github.io/Azure-Infra-Lab/workshops/azure-agent-infra/selector.html)** · **[7-Card 4:5 基准报告](https://turbo998.github.io/Azure-Infra-Lab/workshops/azure-agent-infra/cards.html)** · **[Step 04 客户 Workshop 执行手册](https://github.com/turbo998/Azure-Infra-Lab/blob/main/workshops/azure-agent-infra/workshop-runbook.md)**
+
 ## 精选 Workshop：Azure VM 现代化，从客户目标到可验证的行动
 
 **不只是讲解 VM 更新，而是把适用范围、用量依据、购买承诺与迁移前提串成一次可动手的评估。** 从六个虚构案例出发，学习如何比较候选配置、识别缺失依据，并把结论和不确定性一起交付。

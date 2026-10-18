@@ -6,6 +6,8 @@
   const LANG = document.documentElement.lang && document.documentElement.lang.startsWith("zh") ? "zh" : "en";
 
   const FEATURED = [
+    "Azure-Infra-Lab",
+    "ai-infra-lab",
     "ai-gaming-lab",
     "Agent-Harness-Engineering-on-Azure-and-GitHub-Copilot",
     "FDE-on-GitHub-Copilot-Practice-Book",
@@ -18,6 +20,8 @@
   /* Curated Chinese descriptions shown on the zh page (the GitHub API
      only returns the original description). */
   const ZH_DESC = {
+    "Azure-Infra-Lab": "Azure 基础设施工程化与 AI Agent Infra 实战实验室：收录《Azure AI Agent Infrastructure Playbook》（AKSClaw × E2B 10万沙箱 H5 仿真套件）与《Azure VM 现代化合作伙伴 Workshop》。",
+    "ai-infra-lab": "AI 基础设施架构、运行时光谱评测、E2B Firecracker / AKSClaw Kata 密度模型与跨区容灾蓝图库。",
     "ai-gaming-lab": "AI 游戏与程序化动画实验室：对标 Opus 5.5 动画能力，展示 Gemini 4 实时 3D/2D 程序化骨骼与曲面动画拆解舞台及《湾岸 Midnight》《Scrap Swarm》双可玩 Demo（https://turbo998.github.io/ai-gaming-lab/）。",
     "scrap-swarm": "《废土斗机祭 · Scrap Swarm》：纯 Canvas 2D 多关节机甲动作生存游戏，含番剧切入演出、黑白冲击帧、三幕废土电台剧场与自动策略 Bot 验证（https://turbo998.github.io/scrap-swarm/）。",
     "Agent-Harness-Engineering-on-Azure-and-GitHub-Copilot": "基于 Azure + GitHub Copilot 构建 AI 智能体系统的实战工作坊：四层模型、10 个智能体与企业级部署。",
@@ -41,6 +45,8 @@
 
   /* Fallback snapshot (2026-07) in case the GitHub API is unreachable. */
   const FALLBACK = [
+    { name: "Azure-Infra-Lab", description: "Azure Infrastructure & AI Agent Infra Playbook Lab: Interactive H5 simulators (AKSClaw × E2B 100K Sandboxes & Azure VM Modernization Workshop).", language: "HTML", stargazers_count: 0, html_url: "https://github.com/turbo998/Azure-Infra-Lab", homepage: "https://turbo998.github.io/Azure-Infra-Lab/workshops/azure-agent-infra/index.html", updated_at: "2026-10-19" },
+    { name: "ai-infra-lab", description: "AI Infrastructure architecture playbooks, E2B Firecracker & AKSClaw Kata benchmarks, and multi-region DR blueprints on Azure.", language: "Python", stargazers_count: 0, html_url: "https://github.com/turbo998/ai-infra-lab", updated_at: "2026-10-19" },
     { name: "ai-gaming-lab", description: "AI Gaming & Procedural Animation Lab: Real-time 3D/2D procedural articulation stage & playable demos (Wanan Midnight & Scrap Swarm) powered by Gemini 4.", language: "TypeScript", stargazers_count: 0, html_url: "https://github.com/turbo998/ai-gaming-lab", homepage: "https://turbo998.github.io/ai-gaming-lab/", updated_at: "2026-10-15" },
     { name: "scrap-swarm", description: "Scrap Swarm (废土斗机祭): Procedural 2D Mecha Articulation, Anime Cut-in & Impact Frames, 3-Act Story & Deterministic Combat", language: "TypeScript", stargazers_count: 0, html_url: "https://github.com/turbo998/scrap-swarm", homepage: "https://turbo998.github.io/scrap-swarm/", updated_at: "2026-10-15" },
     { name: "Agent-Harness-Engineering-on-Azure-and-GitHub-Copilot", description: "A hands-on workshop for building AI agent systems with Azure + GitHub Copilot: 4-layer model, 10 agents, enterprise deployment.", language: "Shell", stargazers_count: 1, html_url: "https://github.com/turbo998/Agent-Harness-Engineering-on-Azure-and-GitHub-Copilot", updated_at: "2026-07-01" },
