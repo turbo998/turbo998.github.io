@@ -24,6 +24,7 @@ from agent_infra_sizer import (
     simulate_agentic_payment_confidential_ledger_guardrail,
     simulate_automotive_sdv_v2x_ota_sandbox,
     simulate_autonomous_cicd_buildkit_bazel_sandbox,
+    simulate_biopharma_alphafold_wetlab_sila2_sandbox,
     simulate_carbon_aware_greenops_fleet_scheduler,
     simulate_chaos_byzantine_fault_injection_gameday,
     simulate_confidential_sandbox_attestation,
@@ -49,6 +50,7 @@ from agent_infra_sizer import (
     simulate_pqc_hybrid_mtls_agent_crypto_agility,
     simulate_quantum_classical_hybrid_qir_sandbox,
     simulate_scientific_hpc_lustre_mpi_sandbox,
+    simulate_semiconductor_eda_rtl_gdsii_sandbox,
     simulate_sovereign_data_residency_crypto_shredding,
     simulate_smart_grid_iec61850_pmu_sandbox,
     simulate_space_orbital_satellite_edge_sandbox,
@@ -525,6 +527,20 @@ def generate_deep_benchmark_summary() -> Dict[str, object]:
         simulate_automotive_sdv_v2x_ota_sandbox(50_000, "raw_rosbag_tcp_unverified_ota"),
     ]
 
+    semiconductor_eda_rtl_profiles: List[Dict[str, object]] = [
+        simulate_semiconductor_eda_rtl_gdsii_sandbox(250, "verilator_ast_cache_symbiyosys_lec_flexnet_lease"),
+        simulate_semiconductor_eda_rtl_gdsii_sandbox(1_000, "verilator_ast_cache_symbiyosys_lec_flexnet_lease"),
+        simulate_semiconductor_eda_rtl_gdsii_sandbox(4_000, "verilator_ast_cache_symbiyosys_lec_flexnet_lease"),
+        simulate_semiconductor_eda_rtl_gdsii_sandbox(1_000, "cold_compile_testbench_only_unmanaged_lmgrd"),
+    ]
+
+    biopharma_alphafold_wetlab_profiles: List[Dict[str, object]] = [
+        simulate_biopharma_alphafold_wetlab_sila2_sandbox(500, "mmseqs2_gpu_msa_fep_sila2_securedna_guard"),
+        simulate_biopharma_alphafold_wetlab_sila2_sandbox(2_000, "mmseqs2_gpu_msa_fep_sila2_securedna_guard"),
+        simulate_biopharma_alphafold_wetlab_sila2_sandbox(8_000, "mmseqs2_gpu_msa_fep_sila2_securedna_guard"),
+        simulate_biopharma_alphafold_wetlab_sila2_sandbox(2_000, "cpu_jackhmmer_unchecked_pipette_unscreened_seq"),
+    ]
+
     return {
         "e2b_firecracker_resume_decomposition": e2b_matrix,
         "aksclaw_node_density_comparison": aksclaw_matrix,
@@ -566,6 +582,8 @@ def generate_deep_benchmark_summary() -> Dict[str, object]:
         "supplychain_amr_mapf_profiles": supplychain_amr_mapf_profiles,
         "media_openusd_c2pa_profiles": media_openusd_c2pa_profiles,
         "automotive_sdv_v2x_profiles": automotive_sdv_v2x_profiles,
+        "semiconductor_eda_rtl_profiles": semiconductor_eda_rtl_profiles,
+        "biopharma_alphafold_wetlab_profiles": biopharma_alphafold_wetlab_profiles,
     }
 
 

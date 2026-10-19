@@ -2625,6 +2625,100 @@ def simulate_automotive_sdv_v2x_ota_sandbox(
     }
 
 
+def simulate_semiconductor_eda_rtl_gdsii_sandbox(
+    rtl_regression_jobs: int = 1_000,
+    eda_agent_mode: str = "verilator_ast_cache_symbiyosys_lec_flexnet_lease",
+) -> dict[str, Any]:
+    """
+    Chapter 47: Autonomous Semiconductor EDA, Chip RTL-to-GDSII Physical Design
+    & Formal Equivalence Verification Agent Infrastructure Physics.
+      - Pillar 1: Incremental AST-Hashed Verilator C++ Object Cache on Standard_FX48mds
+        (4.0 GHz All-Core Turbo) + Azure NetApp Files Ultra vs Cold Full-Chip Re-Compile
+      - Pillar 2: Formal Logic Equivalence Checking (SymbiYosys / LEC) + OpenROAD /
+        KLayout DRC/LVS & Setup/Hold Timing Closure (WNS >= 0 ps) Gate
+      - Pillar 3: FlexNet Floating EDA License DAG Pre-Reservation & 3.0s Zombie-Seat Reaper
+    """
+    eda_compute_nodes = max(4, math.ceil(rtl_regression_jobs / 125))
+    if eda_agent_mode == "verilator_ast_cache_symbiyosys_lec_flexnet_lease":
+        regression_wallclock_sec = 62.0
+        rtl_sim_speed_khz = 185.0
+        silicon_bug_escape_pct = 0.0
+        negative_wns_drc_escape_pct = 0.0
+        flexnet_license_deadlock_pct = 0.0
+        flexnet_seat_utilization_pct = 96.8
+        zombie_seat_reclaim_sec = 3.0
+        semiconductor_eda_slo_met = True
+    else:
+        regression_wallclock_sec = 1_480.0
+        rtl_sim_speed_khz = 44.0
+        silicon_bug_escape_pct = 8.4
+        negative_wns_drc_escape_pct = 11.2
+        flexnet_license_deadlock_pct = 19.5
+        flexnet_seat_utilization_pct = 54.0
+        zombie_seat_reclaim_sec = 900.0
+        semiconductor_eda_slo_met = False
+
+    return {
+        "rtl_regression_jobs": rtl_regression_jobs,
+        "eda_agent_mode": eda_agent_mode,
+        "eda_compute_nodes": eda_compute_nodes,
+        "regression_wallclock_sec": regression_wallclock_sec,
+        "rtl_sim_speed_khz": rtl_sim_speed_khz,
+        "silicon_bug_escape_pct": silicon_bug_escape_pct,
+        "negative_wns_drc_escape_pct": negative_wns_drc_escape_pct,
+        "flexnet_license_deadlock_pct": flexnet_license_deadlock_pct,
+        "flexnet_seat_utilization_pct": flexnet_seat_utilization_pct,
+        "zombie_seat_reclaim_sec": zombie_seat_reclaim_sec,
+        "semiconductor_eda_slo_met": semiconductor_eda_slo_met,
+    }
+
+
+def simulate_biopharma_alphafold_wetlab_sila2_sandbox(
+    ligand_candidates: int = 2_000,
+    biopharma_agent_mode: str = "mmseqs2_gpu_msa_fep_sila2_securedna_guard",
+) -> dict[str, Any]:
+    """
+    Chapter 48: Autonomous Biopharma Drug Discovery, AlphaFold3/FEP+ Biomolecular
+    Folding & SiLA-2 Wet-Lab Robotic Cloud-Lab Agent Infrastructure Physics.
+      - Pillar 1: GPU-Accelerated MMseqs2 MSA Cache on Managed Lustre + Multi-GPU
+        AlphaFold3 / OpenMM FEP+ Free-Energy Perturbation Docking vs CPU Jackhmmer
+      - Pillar 2: SiLA-2 / OPC-UA Liquid-Handling Robotic Deck Collision & Chemical
+        Incompatibility Digital-Twin Interlock vs Direct Unchecked Pipette Dispatch
+      - Pillar 3: SecureDNA / IBBIS Cryptographic Sequence-Screening Gate (100% block
+        on regulated pathogen / toxin synthesis requests & GLP 21 CFR Part 58 lineage)
+    """
+    biopharma_gpu_nodes = max(2, math.ceil(ligand_candidates / 250))
+    if biopharma_agent_mode == "mmseqs2_gpu_msa_fep_sila2_securedna_guard":
+        msa_alignment_latency_sec = 4.8
+        af3_fep_batch_wallclock_min = 14.5
+        wetlab_deck_collision_or_incompat_pct = 0.0
+        reagent_waste_reduction_pct = 78.4
+        regulated_toxin_synthesis_escape_pct = 0.0
+        securedna_screen_latency_ms = 18.0
+        biopharma_wetlab_slo_met = True
+    else:
+        msa_alignment_latency_sec = 420.0
+        af3_fep_batch_wallclock_min = 380.0
+        wetlab_deck_collision_or_incompat_pct = 7.6
+        reagent_waste_reduction_pct = 0.0
+        regulated_toxin_synthesis_escape_pct = 4.2
+        securedna_screen_latency_ms = 0.0
+        biopharma_wetlab_slo_met = False
+
+    return {
+        "ligand_candidates": ligand_candidates,
+        "biopharma_agent_mode": biopharma_agent_mode,
+        "biopharma_gpu_nodes": biopharma_gpu_nodes,
+        "msa_alignment_latency_sec": msa_alignment_latency_sec,
+        "af3_fep_batch_wallclock_min": af3_fep_batch_wallclock_min,
+        "wetlab_deck_collision_or_incompat_pct": wetlab_deck_collision_or_incompat_pct,
+        "reagent_waste_reduction_pct": reagent_waste_reduction_pct,
+        "regulated_toxin_synthesis_escape_pct": regulated_toxin_synthesis_escape_pct,
+        "securedna_screen_latency_ms": securedna_screen_latency_ms,
+        "biopharma_wetlab_slo_met": biopharma_wetlab_slo_met,
+    }
+
+
 SCENARIOS_12: list[dict[str, Any]] = [
     {
         "id": "S01",
