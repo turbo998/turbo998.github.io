@@ -1,3 +1,5 @@
+> 🌐 **Language / 语言版本切换**: **[🇨🇳 中文主页 (README.zh-CN.md)](README.zh-CN.md)** | **[🇬🇧 English Homepage (README.en.md)](README.en.md)** | **[📘 Azure Agent Infra Playbook (中文)](workshops/azure-agent-infra/README.zh-CN.md)** | **[📘 Azure Agent Infra Playbook (English)](workshops/azure-agent-infra/README.en.md)**
+
 # Qi Chen — Personal Site & Technical Assets / 个人网站与技术作品
 
 从技术分享走到动手实践：这里收录双语个人网站、技术作品、职业履历、AI 趋势文章与伙伴培训入口。个人网站使用纯 HTML/CSS/JS，无构建步骤；完整 Azure VM Workshop 已迁移至公开的 [Azure Infra Lab](https://github.com/turbo998/Azure-Infra-Lab)，本仓库只保留介绍与旧入口兼容跳转。
