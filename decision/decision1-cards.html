@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'">
+  <title>Benchmark Report · Microsoft-Decision-1 Four-Engine Routing Evaluation</title>
+  <style>
+    *{box-sizing:border-box}
+    body{margin:0;padding:2rem 1rem;background:#e2e8f0;color:#0f172a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'PingFang SC','Microsoft YaHei',sans-serif}
+    .deck-wrap{max-width:860px;margin:0 auto;display:flex;flex-direction:column;gap:2.2rem}
+    .report-card{background:#f8fafc;border-radius:18px;overflow:hidden;box-shadow:0 16px 40px rgba(15,23,42,.12);border:1px solid #cbd5e1;min-height:1025px;display:flex;flex-direction:column}
+    .card-accent-bar{height:10px;background:linear-gradient(90deg,#2563eb 0%,#4f46e5 55%,#0ea5e9 100%)}
+    .card-inner{padding:2.3rem 2.7rem 1.7rem;flex:1;display:flex;flex-direction:column;justify-content:space-between}
+    .card-eyebrow{font-size:.82rem;font-weight:700;letter-spacing:.12em;color:#2563eb;text-transform:uppercase;margin-bottom:.5rem}
+    .card-headline{font-size:2.2rem;line-height:1.15;font-weight:800;margin:0 0 .6rem;letter-spacing:-.02em;color:#0f172a}
+    .grad-text{background:linear-gradient(90deg,#2563eb,#4f46e5);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .card-subtitle{font-size:1.03rem;line-height:1.48;color:#475569;margin:0 0 1.1rem}
+    .card-canvas{flex:1;display:flex;flex-direction:column;justify-content:center;gap:.95rem}
+    .quote-box,.callout-box{background:#eef2f6;border-radius:12px;padding:.95rem 1.2rem;font-size:.94rem;line-height:1.5;color:#1e293b}
+    .stack-list{display:flex;flex-direction:column;gap:.8rem}
+    .decision-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:.9rem 1.15rem}
+    .decision-head{display:flex;justify-content:space-between;align-items:flex-start;gap:.75rem}
+    .field-name{font-weight:700;font-size:.98rem}
+    .type-pill{background:#e2e8f0;color:#475569;font-size:.74rem;padding:.12rem .45rem;border-radius:6px;font-weight:600}
+    .question-sub{font-size:.83rem;color:#64748b;margin-top:.15rem}
+    .action-pill{font-size:.75rem;font-weight:700;padding:.22rem .6rem;border-radius:999px;white-space:nowrap}
+    .pill-auto{background:#dcfce7;color:#15803d}
+    .pill-confirm{background:#fef3c7;color:#b45309}
+    .pill-human{background:#fee2e2;color:#b91c1c}
+    .decision-main{font-size:1.12rem;margin:.4rem 0 .5rem}
+    .conf-muted{font-size:.86rem;color:#64748b;font-weight:600}
+    .dist-row{display:grid;grid-template-columns:185px 1fr 68px;align-items:center;gap:.6rem;font-size:.83rem;margin:.24rem 0}
+    .dist-track{background:#e2e8f0;height:9px;border-radius:999px;overflow:hidden}
+    .dist-fill{background:linear-gradient(90deg,#2563eb,#4f46e5);height:100%;border-radius:999px}
+    .dist-pct{text-align:right;font-variant-numeric:tabular-nums;color:#334155;font-weight:600}
+    .clean-table{width:100%;border-collapse:collapse;font-size:.9rem;background:transparent}
+    .clean-table th{font-size:.73rem;letter-spacing:.07em;color:#64748b;text-align:left;padding:.52rem .4rem;border-bottom:1px solid #cbd5e1}
+    .clean-table td{padding:.6rem .4rem;border-bottom:1px solid #e2e8f0;vertical-align:top}
+    .sc-col{font-weight:700;color:#0f172a}
+    .act-col,.num-col{text-align:right;font-variant-numeric:tabular-nums}
+    .act-auto{color:#15803d;font-weight:700}
+    .act-confirm{color:#b45309;font-weight:700}
+    .act-human{color:#b91c1c;font-weight:700}
+    .miss-mark{color:#dc2626;font-weight:800}
+    .code-dark{background:#0f172a;color:#e2e8f0;padding:1rem 1.25rem;border-radius:12px;font-size:.82rem;line-height:1.45;overflow-x:auto;margin:0}
+    .code-transition{color:#2563eb;font-weight:700;font-size:.92rem;padding:.15rem 0}
+    .hl-answer{color:#fbbf24;font-weight:700}
+    .lat-list{display:flex;flex-direction:column;gap:.95rem}
+    .lat-title{font-weight:700;font-size:.98rem;margin-bottom:.3rem}
+    .lat-row{display:flex;align-items:center;gap:.65rem;margin:.25rem 0}
+    .lat-tag{width:140px;font-size:.82rem;color:#475569;font-weight:600}
+    .lat-bar{height:20px;border-radius:6px}
+    .lat-blue{background:#2563eb}
+    .lat-gray{background:#cbd5e1}
+    .lat-val{font-size:.88rem;font-variant-numeric:tabular-nums;color:#0f172a}
+    .fit-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem}
+    .fit-card{border-radius:14px;padding:1.2rem 1.35rem;font-size:.95rem;line-height:1.58}
+    .fit-good{background:#ecfdf5;border:1px solid #a7f3d0}
+    .fit-bad{background:#fff1f2;border:1px solid #fecdd3}
+    .fit-head{font-weight:800;font-size:1.08rem;margin-bottom:.45rem}
+    .dark-footer-box{background:#0f172a;color:#f8fafc;border-radius:14px;padding:1.2rem 1.45rem;font-size:.94rem;line-height:1.5}
+    .dark-repo{color:#38bdf8;font-family:ui-monospace,Consolas,monospace;margin-bottom:0;margin-top:.4rem}
+    .workbench-shell{background:#fff;border:1px solid #cbd5e1;border-radius:14px;overflow:hidden}
+    .wb-topbar{background:linear-gradient(90deg,#1d4ed8,#4f46e5);color:#fff;padding:.75rem 1rem;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+    .wb-sub{font-size:.75rem;opacity:.92}
+    .wb-status{background:rgba(15,23,42,.3);font-size:.73rem;padding:.24rem .6rem;border-radius:999px;white-space:nowrap}
+    .wb-grid{display:grid;grid-template-columns:230px 1fr;gap:.85rem;padding:.9rem}
+    .wb-col-title{font-size:.76rem;font-weight:700;color:#475569;text-transform:uppercase;margin-bottom:.4rem}
+    .wb-item{font-size:.79rem;padding:.38rem .5rem;border-radius:6px;background:#f8fafc;border:1px solid #e2e8f0;margin-bottom:.32rem}
+    .wb-note{font-size:.73rem;color:#64748b;margin-top:.5rem;line-height:1.38}
+    .wb-metrics{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.55rem}
+    .wb-metric{font-size:.74rem;background:#f1f5f9;padding:.2rem .5rem;border-radius:6px;color:#334155;font-weight:600}
+    .card-footer{border-top:1px solid #cbd5e1;padding-top:.85rem;margin-top:1.1rem;display:flex;justify-content:space-between;font-size:.84rem;color:#64748b}
+    @media print{body{background:#fff;padding:0}.deck-wrap{gap:0}.report-card{box-shadow:none;page-break-after:always;border:none}}
+  </style>
+</head>
+<body>
+<main class="deck-wrap">
+
+  <!-- CARD 1 -->
+  <article class="report-card" id="card-1">
+    <div class="card-accent-bar"></div>
+    <div class="card-inner">
+      <header class="card-header">
+        <div class="card-eyebrow">HANDS-ON · ROUTING &amp; DECISION MODELS</div>
+        <h2 class="card-headline"><span class="grad-text">Microsoft-Decision-1</span> 达 94.2% 路由一致率，成本较 LLM 降低 94%</h2>
+        <p class="card-subtitle">40 个中英双语请求 × 3 轮重复 × 4 引擎（共 480 次主实验决策 + 120 次 OpenJev 增补）：对比专用小参数路由模型与通用大模型在 Agent 入口层的准确率、延迟与百万次成本。</p>
+      </header>
+      <div class="card-canvas">
+        <div class="workbench-shell">
+          <div class="wb-topbar">
+            <div>
+              <strong>Multi-Engine Routing &amp; Gating Workbench</strong>
+              <div class="wb-sub">Sealed benchmark archive (routing-decision + routing-openjev): zero fabricated coordinates</div>
+            </div>
+            <span class="wb-status">Model Router 2.3.0 · 2026-10-11 · anonymized_reported</span>
+          </div>
+          <div class="wb-grid">
+            <div class="wb-col-left">
+              <div class="wb-col-title">Evaluated Engines</div>
+              <div class="wb-item"><strong>Microsoft-Decision-1</strong> (East US 2 Foundry)</div>
+              <div class="wb-item"><strong>TypeSafe Jev</strong> (jev-latest remote)</div>
+              <div class="wb-item"><strong>OpenJev MLX 4-bit</strong> (27B local M4 Pro)</div>
+              <div class="wb-item"><strong>Laya 0.3.20</strong> (Local M4 Pro GPU)</div>
+              <div class="wb-item"><strong>LLM gpt-4.1-mini</strong> (East US 2 Foundry)</div>
+              <div class="wb-note">实验设计：A/B 两组各 20 题（50% 中文），5 个固定候选模型描述。Decision-1 观察到 0.60 置信度阈值可拦截全部 7 次路由偏差。</div>
+            </div>
+            <div class="wb-col-right">
+              <div class="wb-metrics">
+                <span class="wb-metric">Cohort: 480 + 120 Decisions</span>
+                <span class="wb-metric">Decision-1 P50: 541 ms</span>
+                <span class="wb-metric">Decision-1 Output: 1 token</span>
+                <span class="wb-metric">Cost: $8.6 / 1M decisions</span>
+              </div>
+              <div class="decision-card">
+                <div class="decision-head">
+                  <div>
+                    <span class="field-name">Microsoft-Decision-1</span> <span class="type-pill">choice · 1 output token</span>
+                    <div class="question-sub">113 / 120 匹配 · 39 / 40 跨轮一致 · 平均所选概率 0.91</div>
+                  </div>
+                  <span class="action-pill pill-auto">$8.6 / 1M · Auto &gt; 0.60</span>
+                </div>
+                <div class="dist-row"><span class="dist-label">Microsoft-Decision-1</span><div class="dist-track"><div class="dist-fill" style="width:94.2%"></div></div><span class="dist-pct">94.2%</span></div>
+                <div class="dist-row"><span class="dist-label">TypeSafe Jev</span><div class="dist-track"><div class="dist-fill" style="width:98.3%"></div></div><span class="dist-pct">98.3%</span></div>
+                <div class="dist-row"><span class="dist-label">OpenJev MLX 4-bit</span><div class="dist-track"><div class="dist-fill" style="width:92.5%"></div></div><span class="dist-pct">92.5%</span></div>
+                <div class="dist-row"><span class="dist-label">LLM gpt-4.1-mini</span><div class="dist-track"><div class="dist-fill" style="width:90.0%"></div></div><span class="dist-pct">90.0%</span></div>
+                <div class="dist-row"><span class="dist-label">Laya 0.3.20 (local)</span><div class="dist-track"><div class="dist-fill" style="width:50.0%"></div></div><span class="dist-pct">50.0%</span></div>
+              </div>
+              <div class="decision-card">
+                <div class="decision-head">
+                  <div>
+                    <span class="field-name">Cost Efficiency vs General LLM</span> <span class="type-pill">FinOps</span>
+                    <div class="question-sub">基于源报告 token 均量（Decision-1 平均输入 205 / 输出 1 vs LLM 输入 214 / 输出 35）</div>
+                  </div>
+                  <span class="action-pill pill-auto">16.5x Cheaper</span>
+                </div>
+                <div class="decision-main"><strong>$8.6</strong> vs <strong>$141.8</strong> <span class="conf-muted">· USD per 1,000,000 routing decisions</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="callout-box"><strong>来源状态：anonymized_reported (independently_reproduced=false)。</strong> 路由器位于亚洲 Apple M4 Pro，Foundry 部署于 East US 2（含跨洋 RTT）。所有数值严格取自封存档案 <code>data/reported/routing-decision/report.json</code>。</div>
+      </div>
+      <footer class="card-footer">
+        <span><strong>Benchmark Harness Engineering · Routing &amp; Decision Cohort</strong> · anonymized_reported</span>
+        <span>1 / 7</span>
+      </footer>
+    </div>
+  </article>
+
+  <!-- CARD 2 -->
+  <article class="report-card" id="card-2">
+    <div class="card-accent-bar"></div>
+    <div class="card-inner">
+      <header class="card-header">
+        <div class="card-eyebrow">SCENARIO: CONFIDENCE ABSTENTION GATE</div>
+        <h2 class="card-headline">Decision-1 的 7 次失误概率均 &le; 0.56，0.6 门控实现 100% 样本内拦截</h2>
+      </header>
+      <div class="card-canvas">
+        <div class="quote-box">“在 120 次路由决策（40 题 × 3 轮）中，Microsoft-Decision-1 命中 113 次（94.2%），偏离预期标签 7 次。所有 7 次偏离的所选模型概率均不超过 0.56，而 113 次命中里有 108 次概率超过 0.60。”</div>
+        <div class="stack-list">
+          <div class="decision-card">
+            <div class="decision-head">
+              <div>
+                <span class="field-name">High-Confidence Route Band (&gt; 0.60)</span> <span class="type-pill">choice</span>
+                <div class="question-sub">108 / 108 决策与预期标签一致（样本内准确率 100%）</div>
+              </div>
+              <span class="action-pill pill-auto">Act automatically</span>
+            </div>
+            <div class="decision-main"><strong>108 / 113 Correct Hits</strong> <span class="conf-muted">· Mean Selected Probability = 0.91</span></div>
+            <div class="dist-row"><span class="dist-label">Correct &gt; 0.60 (108/113)</span><div class="dist-track"><div class="dist-fill" style="width:95.6%"></div></div><span class="dist-pct">95.6%</span></div>
+            <div class="dist-row"><span class="dist-label">Correct &le; 0.60 (5/113)</span><div class="dist-track"><div class="dist-fill" style="width:4.4%"></div></div><span class="dist-pct">4.4%</span></div>
+          </div>
+          <div class="decision-card">
+            <div class="decision-head">
+              <div>
+                <span class="field-name">Low-Confidence Fallback Band (&le; 0.56)</span> <span class="type-pill">noul · gate</span>
+                <div class="question-sub">全部 7 次错误均落入 &le; 0.56 区间，触发安全回退或上送高阶模型</div>
+              </div>
+              <span class="action-pill pill-confirm">Fallback / Confirm</span>
+            </div>
+            <div class="decision-main"><strong>7 / 7 Misses Caught</strong> <span class="conf-muted">· Max Incorrect Probability = 0.56</span></div>
+            <div class="dist-row"><span class="dist-label">Misses &le; 0.56 (7/7)</span><div class="dist-track"><div class="dist-fill" style="width:100%"></div></div><span class="dist-pct">100.0%</span></div>
+            <div class="dist-row"><span class="dist-label">Misses &gt; 0.60 (0/7)</span><div class="dist-track"><div class="dist-fill" style="width:0%"></div></div><span class="dist-pct">0.0%</span></div>
+          </div>
+          <div class="decision-card">
+            <div class="decision-head">
+              <div>
+                <span class="field-name">Cross-Engine Calibration Contrast (OpenJev MLX 4-bit)</span> <span class="type-pill">score · drift</span>
+                <div class="question-sub">OpenJev 9 次失误中仅 3 次低于 0.60，其余 6 次概率在 0.70–0.72</div>
+              </div>
+              <span class="action-pill pill-human">Recalibrate per model</span>
+            </div>
+            <div class="decision-main"><strong>3 / 9 Caught at 0.60</strong> <span class="conf-muted">· 6 misses at 0.70–0.72</span></div>
+            <div class="dist-row"><span class="dist-label">Caught &lt; 0.60 (3/9)</span><div class="dist-track"><div class="dist-fill" style="width:33.3%"></div></div><span class="dist-pct">33.3%</span></div>
+            <div class="dist-row"><span class="dist-label">Uncaught 0.70–0.72 (6/9)</span><div class="dist-track"><div class="dist-fill" style="width:66.7%"></div></div><span class="dist-pct">66.7%</span></div>
+          </div>
+        </div>
+        <div class="callout-box"><strong>架构启示：置信度门控有效，但阈值不可跨引擎盲目移植。</strong> Microsoft-Decision-1 在本题集上呈现极佳的概率分离度（&le;0.56 vs &gt;0.60），而 4-bit 量化版 OpenJev 需独立校准回退阈值。</div>
+      </div>
+      <footer class="card-footer">
+        <span><strong>Benchmark Harness Engineering · Routing &amp; Decision Cohort</strong> · anonymized_reported</span>
+        <span>2 / 7</span>
+      </footer>
+    </div>
+  </article>
+
+  <!-- CARD 3 -->
+  <article class="report-card" id="card-3">
+    <div class="card-accent-bar"></div>
+    <div class="card-inner">
+      <header class="card-header">
+        <div class="card-eyebrow">WHAT I TESTED</div>
+        <h2 class="card-headline">5 组路由引擎 × 600 次累计评测全矩阵</h2>
+      </header>
+      <div class="card-canvas">
+        <table class="clean-table">
+          <thead>
+            <tr>
+              <th>SCENARIO / ENGINE</th>
+              <th>QUESTION / COHORT</th>
+              <th>MODEL ANSWER (MATCH &amp; TOKENS)</th>
+              <th class="act-col">ACTION / COST</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="sc-col">Microsoft-Decision-1</td>
+              <td>40 tasks × 3 repeats (East US 2)</td>
+              <td><strong>113 / 120 (94.2%)</strong> · 205 in / 1 out · P50 541ms</td>
+              <td class="act-col act-auto">$8.6 / 1M</td>
+            </tr>
+            <tr>
+              <td class="sc-col">TypeSafe Jev</td>
+              <td>40 tasks × 3 repeats (jev-latest)</td>
+              <td><strong>118 / 120 (98.3%)</strong> · 518 in / 82 out · P50 350ms</td>
+              <td class="act-col act-auto">$21.7 / 1M</td>
+            </tr>
+            <tr>
+              <td class="sc-col">OpenJev MLX 4-bit</td>
+              <td>40 tasks × 3 repeats (Local M4 Pro)</td>
+              <td><strong>111 / 120 (92.5%)</strong> · 237 in · P50 2570ms <span class="miss-mark">✕</span></td>
+              <td class="act-col act-confirm">Local GPU (CC BY-NC)</td>
+            </tr>
+            <tr>
+              <td class="sc-col">LLM gpt-4.1-mini</td>
+              <td>40 tasks × 3 repeats (East US 2)</td>
+              <td><strong>108 / 120 (90.0%)</strong> · 214 in / 35 out · P50 1430ms</td>
+              <td class="act-col act-confirm">$141.8 / 1M</td>
+            </tr>
+            <tr>
+              <td class="sc-col">Laya 0.3.20</td>
+              <td>40 tasks × 3 repeats (Local M4 Pro)</td>
+              <td><strong>60 / 120 (50.0%)</strong> · 213 in · P50 127ms <span class="miss-mark">✕</span></td>
+              <td class="act-col act-human">Human / Reject</td>
+            </tr>
+            <tr>
+              <td class="sc-col">Strands Decider 2B</td>
+              <td>7 agent scenarios, 12 decisions (MPS)</td>
+              <td><strong>11 / 12 Right Way (91.7%)</strong> · 335 in / 0 out · ~170ms</td>
+              <td class="act-col act-auto">Apache-2.0 Local</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="callout-box"><strong>核心发现 1：专用路由模型在准确率（94.2%–98.3%）与成本（$8.6–$21.7/M）上双向击败通用 LLM（90.0%, $141.8/M）。</strong> 通用 LLM 因需生成 35 个输出 token 且计算图更大，P50 延迟达 1430ms。</div>
+        <div class="callout-box"><strong>核心发现 2：异常标记（✕）揭示低延迟与量化陷阱。</strong> Laya 虽仅 127ms 但中文 Set B 仅对 8/20（总匹配 50.0%）；OpenJev 27B 4-bit 本地耗时达 2570ms 且权重为 CC BY-NC 4.0 非商用许可。</div>
+      </div>
+      <footer class="card-footer">
+        <span><strong>Benchmark Harness Engineering · Routing &amp; Decision Cohort</strong> · anonymized_reported</span>
+        <span>3 / 7</span>
+      </footer>
+    </div>
+  </article>
+
+  <!-- CARD 4 -->
+  <article class="report-card" id="card-4">
+    <div class="card-accent-bar"></div>
+    <div class="card-inner">
+      <header class="card-header">
+        <div class="card-eyebrow">UNDER THE HOOD</div>
+        <h2 class="card-headline">为什么 System One 决策模型能把输出 Token 压到 0–1 个？</h2>
+      </header>
+      <div class="card-canvas">
+        <pre class="code-dark">{
+  "request_id": "route-zh-019",
+  "user_query": "客户连续三次被多扣30美元且威胁投诉监管并销户，需立即分诊并判断是否升级主管",
+  "candidates": [
+    { "id": "1", "name": "gpt-5.4-mini", "desc": "Fast classification &amp; policy routing" },
+    { "id": "2", "name": "gpt-4.1-mini", "desc": "Strict JSON tool schema execution" },
+    { "id": "3", "name": "frontier-reasoning", "desc": "Multi-step complex dispute synthesis" }
+  ],
+  "abstention_gate": { "min_probability": 0.60, "fallback": "frontier-reasoning" }
+}</pre>
+        <div class="code-transition">↓ Dedicated Router / System One Forward Pass (Zero Free-Text Generation)</div>
+        <pre class="code-dark">&lt;state&gt;
+客户连续三次被多扣30美元且威胁投诉监管并销户，需立即分诊并判断是否升级主管
+&lt;/state&gt;
+&lt;options&gt;
+1. gpt-5.4-mini - Fast classification &amp; policy routing
+2. gpt-4.1-mini - Strict JSON tool schema execution
+3. frontier-reasoning - Multi-step complex dispute synthesis
+&lt;/options&gt;
+<span class="hl-answer">&lt;answer&gt;</span>  --&gt; Logit projection on option tokens:
+  P("3") = 0.919  |  P("2") = 0.052  |  P("1") = 0.029
+  Selected: "3" (1 output token in Decision-1; 0 generated tokens in Strands Decider)</pre>
+        <div class="callout-box"><strong>消除了自回归解码瓶颈（Autoregressive Decoding Overhead）。</strong> 通用 LLM 每次路由平均输出 35 tokens（耗时 1430ms），而 Decision-1 仅输出 1 token（541ms 含跨洋 RTT），Strands Decider 则直接在 <code>&lt;answer&gt;</code> 处读取最后一层隐状态匹配度（0 output tokens）。</div>
+      </div>
+      <footer class="card-footer">
+        <span><strong>Benchmark Harness Engineering · Routing &amp; Decision Cohort</strong> · anonymized_reported</span>
+        <span>4 / 7</span>
+      </footer>
+    </div>
+  </article>
+
+  <!-- CARD 5 -->
+  <article class="report-card" id="card-5">
+    <div class="card-accent-bar"></div>
+    <div class="card-inner">
+      <header class="card-header">
+        <div class="card-eyebrow">ROBUSTNESS CHECK</div>
+        <h2 class="card-headline">跨轮次重复一致性达 39/40–40/40，中英双语子集表现分化显著</h2>
+      </header>
+      <div class="card-canvas">
+        <table class="clean-table">
+          <thead>
+            <tr>
+              <th>ENGINE / SUBSET</th>
+              <th class="num-col">ROUND 1</th>
+              <th class="num-col">ROUND 2 / REVERSED</th>
+              <th class="num-col">CHANGE / CONSISTENCY</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div class="sc-col">Microsoft-Decision-1 (Set A · 20 tasks)</div><div class="question-sub">Half Chinese overall across A/B</div></td>
+              <td class="num-col">19 / 20 (95.0%)</td>
+              <td class="num-col">18 / 20 &rarr; 19 / 20</td>
+              <td class="num-col act-auto">39 / 40 Consistent</td>
+            </tr>
+            <tr>
+              <td><div class="sc-col">Microsoft-Decision-1 (Set B · 20 tasks)</div><div class="question-sub">Zero drift across all 3 repeats</div></td>
+              <td class="num-col">19 / 20 (95.0%)</td>
+              <td class="num-col">19 / 20 &rarr; 19 / 20</td>
+              <td class="num-col act-auto">0.0 pts Drift</td>
+            </tr>
+            <tr>
+              <td><div class="sc-col">TypeSafe Jev (Set A + Set B)</div><div class="question-sub">Set A 20/20×3; Set B 19, 19, 20</div></td>
+              <td class="num-col">39 / 40 (97.5%)</td>
+              <td class="num-col">39 / 40 &rarr; 40 / 40</td>
+              <td class="num-col act-auto">39 / 40 Consistent</td>
+            </tr>
+            <tr>
+              <td><div class="sc-col">OpenJev MLX 4-bit (Set A + Set B)</div><div class="question-sub">Set A 19/20×3; Set B 18/20×3</div></td>
+              <td class="num-col">37 / 40 (92.5%)</td>
+              <td class="num-col">37 / 40 &rarr; 37 / 40</td>
+              <td class="num-col act-auto">40 / 40 Consistent</td>
+            </tr>
+            <tr>
+              <td><div class="sc-col">Laya 0.3.20 (Set A vs Set B Drop)</div><div class="question-sub">Set A 12/20 (60%) vs Set B 8/20 (40%)</div></td>
+              <td class="num-col">12 / 20 (60.0%)</td>
+              <td class="num-col">8 / 20 (40.0%)</td>
+              <td class="num-col miss-mark">-20.0 pts on Set B</td>
+            </tr>
+            <tr>
+              <td><div class="sc-col">Strands Decider 2B (Option Order Reversal)</div><div class="question-sub">All 6 choice questions tested reversed</div></td>
+              <td class="num-col">6 / 6 Top Match</td>
+              <td class="num-col">6 / 6 Top Match</td>
+              <td class="num-col act-auto">0 Flips (0.0 to +5.5 pts)</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="callout-box"><strong>确定性温度与候选顺序鲁棒性：</strong> 在三轮重复测试中，五大引擎的单题跨轮一致性均在 39/40 至 40/40 之间；Strands Decider 2B 在选项顺序完全反转时 6/6 保持原首选答案不变。</div>
+      </div>
+      <footer class="card-footer">
+        <span><strong>Benchmark Harness Engineering · Routing &amp; Decision Cohort</strong> · anonymized_reported</span>
+        <span>5 / 7</span>
+      </footer>
+    </div>
+  </article>
+
+  <!-- CARD 6 -->
+  <article class="report-card" id="card-6">
+    <div class="card-accent-bar"></div>
+    <div class="card-inner">
+      <header class="card-header">
+        <div class="card-eyebrow">LATENCY &amp; ECONOMICS</div>
+        <h2 class="card-headline">P50 延迟缩短 62%（541ms vs 1430ms），批量共享前缀再省 49% 耗时</h2>
+      </header>
+      <div class="card-canvas">
+        <div class="lat-list">
+          <div>
+            <div class="lat-title">1. Microsoft-Decision-1 (Foundry East US 2, Remote RTT)</div>
+            <div class="lat-row"><span class="lat-tag">P50 Median</span><div class="lat-bar lat-blue" style="width:25.9%"></div><strong class="lat-val">541 ms ($8.6 / 1M)</strong></div>
+            <div class="lat-row"><span class="lat-tag">P95 Tail</span><div class="lat-bar lat-gray" style="width:59.8%"></div><span class="lat-val">1250 ms</span></div>
+          </div>
+          <div>
+            <div class="lat-title">2. TypeSafe Jev (Remote Vendor API)</div>
+            <div class="lat-row"><span class="lat-tag">P50 Median</span><div class="lat-bar lat-blue" style="width:16.7%"></div><strong class="lat-val">350 ms ($21.7 / 1M)</strong></div>
+            <div class="lat-row"><span class="lat-tag">P95 Tail</span><div class="lat-bar lat-gray" style="width:34.4%"></div><span class="lat-val">720 ms</span></div>
+          </div>
+          <div>
+            <div class="lat-title">3. LLM gpt-4.1-mini Baseline (Foundry East US 2)</div>
+            <div class="lat-row"><span class="lat-tag">P50 Median</span><div class="lat-bar lat-blue" style="width:68.4%"></div><strong class="lat-val">1430 ms ($141.8 / 1M)</strong></div>
+            <div class="lat-row"><span class="lat-tag">P95 Tail</span><div class="lat-bar lat-gray" style="width:100%"></div><span class="lat-val">2090 ms</span></div>
+          </div>
+          <div>
+            <div class="lat-title">4. Strands Decider 2B Batching (10 Questions Sharing 1 State Prefix, Local MPS)</div>
+            <div class="lat-row"><span class="lat-tag">Batched (10 Qs)</span><div class="lat-bar lat-blue" style="width:51.4%"></div><strong class="lat-val">365 ms (0.51x)</strong></div>
+            <div class="lat-row"><span class="lat-tag">One-by-one* (10×71ms)</span><div class="lat-bar lat-gray" style="width:100%"></div><span class="lat-val">710 ms</span></div>
+          </div>
+        </div>
+        <div class="callout-box"><strong>计量说明：</strong> 远程引擎（Decision-1、Jev、gpt-4.1-mini）包含亚洲至美东跨区网络往返；本地 Strands Decider 2B 运行于 Apple M5 Pro (MPS)，单次请求合并 10 个决策问题可将总耗时从 710ms 降至 365ms。</div>
+      </div>
+      <footer class="card-footer">
+        <span><strong>Benchmark Harness Engineering · Routing &amp; Decision Cohort</strong> · anonymized_reported</span>
+        <span>6 / 7</span>
+      </footer>
+    </div>
+  </article>
+
+  <!-- CARD 7 -->
+  <article class="report-card" id="card-7">
+    <div class="card-accent-bar"></div>
+    <div class="card-inner">
+      <header class="card-header">
+        <div class="card-eyebrow">MY TAKE</div>
+        <h2 class="card-headline">用 System One 小模型做高速门控，把确定性红线留在代码契约层</h2>
+      </header>
+      <div class="card-canvas">
+        <div class="fit-grid">
+          <div class="fit-card fit-good">
+            <div class="fit-head">✅ Good fit (强烈推荐)</div>
+            <ul>
+              <li><strong>多模型分级路由 (Model Tiering)</strong>：用 $8.6/M 的 Decision-1 在前端分流 70%+ 常规查询，仅将低置信度 (&le;0.60) 请求上送 Frontier 模型。</li>
+              <li><strong>单状态多维并行分诊</strong>：一次前向传播同时产出意图 (`choice`)、升级判定 (`noul`) 与紧急度 (`score`)。</li>
+              <li><strong>工具调用前预检 (Pre-Tool Gate)</strong>：低置信度自动转入 <code>Confirm</code> 人工确认态。</li>
+            </ul>
+          </div>
+          <div class="fit-card fit-bad">
+            <div class="fit-head">⛔ Not for (严禁误用)</div>
+            <ul>
+              <li><strong>最终安全 Allow/Deny 裁决</strong>：概率模型（如参数 grounding 53% 误判）不能替代确定性 Policy / Zod Schema 校验。</li>
+              <li><strong>未经校准的跨模型阈值移植</strong>：Decision-1 的 0.60 阈值不能直接套用于 4-bit 量化模型（OpenJev 失误集中在 0.70–0.72）。</li>
+              <li><strong>长链多步推理与自由文本生成</strong>。</li>
+            </ul>
+          </div>
+        </div>
+        <div class="dark-footer-box">
+          <strong>Engineering Readiness &amp; Harness Governance</strong><br>
+          本报告由 <code>benchmark-harness-engineering</code> 封存档案生成（<code>provenance: anonymized_reported</code>, <code>independently_reproduced: false</code>）。所有实验遵循「冻结契约 → 独立验收 → 保留全量 Attempt 证据 → 缺失成本绝不填零」原则。
+          <p class="dark-repo">github.com/turbo998/benchmark-harness-engineering · data/reported/routing-decision &amp; routing-strands-decider</p>
+        </div>
+      </div>
+      <footer class="card-footer">
+        <span><strong>Benchmark Harness Engineering · Routing &amp; Decision Cohort</strong> · anonymized_reported</span>
+        <span>7 / 7</span>
+      </footer>
+    </div>
+  </article>
+
+</main>
+</body>
+</html>

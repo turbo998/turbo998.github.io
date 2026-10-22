@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Astra Planet Lab：基于 NASA MOLA 高程的交互式火星几何与写实渲染实验。" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='%23b11f4b'/%3E%3C/svg%3E" />
+    <title>Astra Planet Lab · 火星造景实验室</title>
+    <script>
+      (() => {
+        const param = new URLSearchParams(window.location.search).get("scoutTheme");
+        const theme =
+          param || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
+    <script>
+      if (!new URLSearchParams(window.location.search).has("scoutTheme")) {
+        document.documentElement.setAttribute("data-theme", "dark");
+      }
+    </script>
+    <script type="module" crossorigin src="./assets/index-BlSNLsmy.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-BDicG6yA.css">
+  </head>
+  <body>
+    <main id="app">
+      <section id="viewport" aria-label="火星三维视图">
+        <canvas id="planet-canvas" tabindex="0" aria-label="可旋转缩放的火星三维模型"></canvas>
+        <div class="brand">
+          <span class="eyebrow">GPT-6 ASTRA · GEOMETRY STUDY</span>
+          <h1>Astra Planet Lab</h1>
+          <p>NASA MOLA 实测地形 · 假想海洋与天气</p>
+        </div>
+        <div id="loading" class="loading" role="status" aria-live="polite">
+          <span class="spinner" aria-hidden="true"></span>
+          <strong id="loading-title">正在装载火星高程</strong>
+          <span id="loading-detail">初始化 WebGL2</span>
+        </div>
+        <div id="fatal" class="fatal" role="alert" hidden>
+          <strong>无法启动三维建模</strong>
+          <span id="fatal-message"></span>
+          <button id="retry">重试</button>
+        </div>
+        <div class="readout top-right">
+          <span>帧率 <b id="fps">--</b> FPS</span>
+          <span>网格 <b id="mesh-stats">--</b></span>
+          <span>数据 <b id="data-version">--</b></span>
+        </div>
+        <div class="readout bottom-left">
+          <span>海洋覆盖 <b id="coverage">--</b></span>
+          <span>近似水量 <b id="volume">--</b></span>
+          <span id="science-note">面积加权盆地填充，非水动力模拟</span>
+        </div>
+        <button id="panel-toggle" class="panel-toggle" aria-expanded="true" aria-controls="controls">隐藏控制</button>
+      </section>
+
+      <aside id="controls" aria-label="行星参数控制">
+        <header>
+          <div>
+            <span class="eyebrow">OBSERVATORY CONTROL</span>
+            <h2>造景参数</h2>
+          </div>
+          <button id="pause" aria-pressed="false">暂停</button>
+        </header>
+
+        <div class="notice">
+          <strong>科学边界</strong>
+          <p>地形来自 NASA MGS MOLA MEG016。海洋、云与大气为原创假想渲染；运行时不调用模型 API。</p>
+        </div>
+
+        <section>
+          <h3>场景预设</h3>
+          <div class="segmented" id="presets">
+            <button data-preset="dry">干燥火星</button>
+            <button data-preset="shallow">浅海火星</button>
+            <button data-preset="ocean" class="active">海洋火星</button>
+          </div>
+        </section>
+
+        <section>
+          <label for="sea-level"><span>海平面</span><output id="sea-level-value">+0.00 km</output></label>
+          <input id="sea-level" type="range" min="-9000" max="10000" step="50" value="0" />
+          <label for="exaggeration"><span>地形增强</span><output id="exaggeration-value">1×</output></label>
+          <input id="exaggeration" type="range" min="1" max="10" step="1" value="1" />
+          <label for="clouds"><span>云量</span><output id="clouds-value">42%</output></label>
+          <input id="clouds" type="range" min="0" max="1" step="0.01" value="0.42" />
+          <label for="atmosphere"><span>大气强度</span><output id="atmosphere-value">70%</output></label>
+          <input id="atmosphere" type="range" min="0" max="1.4" step="0.05" value="0.7" />
+          <label for="sun"><span>太阳方位</span><output id="sun-value">32°</output></label>
+          <input id="sun" type="range" min="-180" max="180" step="1" value="32" />
+        </section>
+
+        <section>
+          <h3>检查模式</h3>
+          <div class="segmented two" id="modes">
+            <button data-mode="realistic" class="active">写实</button>
+            <button data-mode="gray">灰模</button>
+            <button data-mode="wire">线框</button>
+            <button data-mode="height">高程</button>
+          </div>
+        </section>
+
+        <section>
+          <h3>几何质量</h3>
+          <div class="segmented" id="quality">
+            <button data-quality="auto" class="active">自动</button>
+            <button data-quality="64">低</button>
+            <button data-quality="128">高</button>
+            <button data-quality="192">极高</button>
+            <button data-quality="384">精细近景</button>
+          </div>
+          <p class="quality-note" id="quality-note">自动档按帧率调整。精细近景：384格/纬，采样既有高程；不代表新增测量。尘土色彩为艺术材质。</p>
+          <h3 class="subheading">高程数据</h3>
+          <div class="segmented two" id="data-quality">
+            <button data-data="base" class="active">基础 1K</button>
+            <button data-data="hd">高清 4K</button>
+          </div>
+          <h3 class="subheading">地貌近景</h3>
+          <div class="segmented" id="locations">
+            <button data-location="valles">水手峡谷</button>
+            <button data-location="olympus">奥林帕斯山</button>
+            <button data-location="hellas">希腊盆地</button>
+          </div>
+          <p class="quality-note" id="location-note" aria-live="polite">定位并调整侧光，停止自转。建议干燥预设；高程、海平面和网格档位保持你的选择。</p>
+        </section>
+
+        <section class="actions">
+          <button id="reset-camera">复位视角</button>
+          <button id="auto-rotate" aria-pressed="true">停止自转</button>
+          <button id="screenshot">保存截图</button>
+          <button id="export-json">导出参数</button>
+          <label class="file-button">导入参数<input id="import-json" type="file" accept="application/json" /></label>
+          <button id="export-glb" class="primary">导出真实几何 GLB</button>
+        </section>
+
+        <details>
+          <summary>模型与数据说明</summary>
+          <p>显示半径采用 3,389.5 km 球体。顶点由米制高程真实位移；增强倍率仅用于展示。微表面颜色与云层不是测量数据。</p>
+          <p id="export-status">GLB 导出将烘焙当前地形，标准格式不包含动态大气和体积云。</p>
+        </details>
+      </aside>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>对标 Opus 5.5 动画能力：Gemini 4 程序化 3D/2D 动画与可验证游戏工程白皮书 · AI Gaming Lab</title>
+  <script>
+    (() => {
+      const param = new URLSearchParams(window.location.search).get("scoutTheme");
+      const theme =
+        param || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", theme);
+    })();
+  </script>
+  <link rel="stylesheet" href="../assets/theme.css">
+</head>
+<body>
+<main class="shell">
+  <nav class="topline">
+    <a class="button" href="../">← 返回 AI Gaming Lab 门户</a>
+    <div class="topline-actions">
+      <a class="button" href="../demos/wanan-midnight/">湾岸 Midnight →</a>
+      <a class="button" href="../demos/scrap-swarm/">Scrap Swarm →</a>
+    </div>
+  </nav>
+  <article style="margin-top:28px">
+    <h1>对标 Opus 5.5 动画能力：Gemini 4 程序化 3D/2D 动画与可验证游戏工程白皮书</h1>
+<h2 style="margin-top:32px;border-bottom:1px solid var(--cp-border);padding-bottom:8px">1. 核心命题：为什么从“单段视觉动画”走向“可验证实时游戏工程”？</h2>
+<p style="line-height:1.8;color:var(--cp-text-muted)">在向技术合作伙伴与企业架构师演示前沿大模型的代码与视觉创作能力时，业界常以 Opus 5.5 制作 SVG/Canvas 视觉动画作为参照基准。然而，单段演示动画通常只解决<strong>固定时间轴上的补间绘制（Tweening）</strong>，一旦面对真实交互、复杂机械结构、长时间物理步进或多分支剧情，往往暴露出四大工程断层：</p>
+<ul style="line-height:1.8;color:var(--cp-text);padding-left:22px">
+<li style="margin-bottom:6px"><strong>几何拓扑断层</strong>：仅用基础几何体（盒子、球体）堆砌外观，缺乏参数化曲面控制点、开放式轮拱开孔（Open Wheel-Arch Cutouts）或可动机械铰链（如跳灯四连杆、液压后坐力滑轨）。</li>
+<li style="margin-bottom:6px"><strong>物理与动画解耦断层</strong>：动画帧与受力状态脱节——车辆急刹不点头、过弯不侧倾、降挡不回火；机甲开火无后坐力位移、冲刺无动量残影。</li>
+<li style="margin-bottom:6px"><strong>叙事与声学资产依赖断层</strong>：一旦脱离外部 MP3 音效与预渲染立绘，纯代码工程往往陷入“无声、无剧情、无角色弧光”的枯燥沙盒。</li>
+<li style="margin-bottom:6px"><strong>不可验证性断层</strong>：动画效果只能依赖人工“肉眼看一眼”，缺乏 60Hz 确定性步进探针、内存分配守卫与自动化通关回归。</li>
+</ul>
+<p style="line-height:1.8;color:var(--cp-text-muted)"><strong>AI Gaming &amp; Procedural Animation Lab</strong> 通过《湾岸 Midnight · 零点以东》（3D WebGL2）与《废土斗机祭 · Scrap Swarm》（2D Phaser 3）两部零外部资产的旗舰作品，系统性展示了 <strong>Gemini 4</strong> 在上述四个维度的代际跨越。</p>
+<hr style="border:none;border-top:1px solid var(--cp-border);margin:28px 0">
+<h2 style="margin-top:32px;border-bottom:1px solid var(--cp-border);padding-bottom:8px">2. 四层技术能力对比矩阵</h2>
+<div class="matrix-table-wrap"><table class="matrix-table"><thead><tr>
+<th>架构层级</th>
+<th>单次视觉动画演示 (Baseline)</th>
+<th>Gemini 4 可验证游戏与程序化动画工程</th>
+<th>关键代码与验证锚点</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>L1 参数化几何与骨骼层</strong></td>
+<td>静态盒子/圆球拼接，同质化网格复用</td>
+<td>8 车系 44 代独立参数化样条曲面、轮拱开孔；5 类多关节机甲层级骨骼树</td>
+<td><code class="mono" style="background:var(--cp-surface-soft);padding:2px 6px;border-radius:4px;border:1px solid var(--cp-border)">wanan-midnight/src/render/profiles.ts</code>, <code class="mono" style="background:var(--cp-surface-soft);padding:2px 6px;border-radius:4px;border:1px solid var(--cp-border)">scrap-swarm/src/game/hangar.ts</code></td>
+</tr>
+<tr>
+<td><strong>L2 物理耦合与番剧演出层</strong></td>
+<td>固定关键帧线性插值，无受迫响应</td>
+<td>60Hz 俯仰/侧倾悬挂、可动跳灯、双出蓝紫回火、680°C 刹车盘灼热；液压抛壳、金青残影、番剧横向切入与黑白冲击帧</td>
+<td><code class="mono" style="background:var(--cp-surface-soft);padding:2px 6px;border-radius:4px;border:1px solid var(--cp-border)">wanan-midnight/src/render/cars.ts</code>, <code class="mono" style="background:var(--cp-surface-soft);padding:2px 6px;border-radius:4px;border:1px solid var(--cp-border)">scrap-swarm/src/scenes/GameScene.ts</code></td>
+</tr>
+<tr>
+<td><strong>L3 叙事状态机与程序化声学层</strong></td>
+<td>无叙事或静态说明文本；静音或外链音频</td>
+<td>上海篇 6 章《零点以东》回声车间磁带声档 + 废土 3 幕铁冠救援日志反转 + Web Audio 多振荡器实时合成</td>
+<td><code class="mono" style="background:var(--cp-surface-soft);padding:2px 6px;border-radius:4px;border:1px solid var(--cp-border)">wanan-midnight/src/story/catalog.ts</code>, <code class="mono" style="background:var(--cp-surface-soft);padding:2px 6px;border-radius:4px;border:1px solid var(--cp-border)">scrap-swarm/src/game/story.ts</code></td>
+</tr>
+<tr>
+<td><strong>L4 确定性验证 Harness 层</strong></td>
+<td>仅支持人工目视检查，跨帧率漂移</td>
+<td><code class="mono" style="background:var(--cp-surface-soft);padding:2px 6px;border-radius:4px;border:1px solid var(--cp-border)">__wananTest</code> / <code class="mono" style="background:var(--cp-surface-soft);padding:2px 6px;border-radius:4px;border:1px solid var(--cp-border)">__gameTest</code> / <code class="mono" style="background:var(--cp-surface-soft);padding:2px 6px;border-radius:4px;border:1px solid var(--cp-border)">__labStage</code> 探针、30/60/120Hz 确定性收敛、竞速期 0 动态建网守卫、Bot 自动通关</td>
+<td><code class="mono" style="background:var(--cp-surface-soft);padding:2px 6px;border-radius:4px;border:1px solid var(--cp-border)">tests/simulation.test.ts</code>, <code class="mono" style="background:var(--cp-surface-soft);padding:2px 6px;border-radius:4px;border:1px solid var(--cp-border)">tests/e2e/game.spec.ts</code></td>
+</tr>
+</tbody></table></div>
+<hr style="border:none;border-top:1px solid var(--cp-border);margin:28px 0">
+<h2 style="margin-top:32px;border-bottom:1px solid var(--cp-border);padding-bottom:8px">3. Gemini 4 程序化动画的三大工程范式</h2>
+<h3 style="margin-top:22px">3.1 范式一：参数驱动的解剖级机械结构（Anatomical Mechanical Rigging）</h3>
+<p style="line-height:1.8;color:var(--cp-text-muted)">在《湾岸 Midnight》中，Gemini 4 拒绝将 44 辆经典 JDM 简化为改色方块，而是为每一代车型建立显式参数包（车长、车宽、轴距、前鼻倾角、车顶拱度、尾翼高度、跳灯/固定灯类别）：</p>
+<ul style="line-height:1.8;color:var(--cp-text);padding-left:22px">
+<li style="margin-bottom:6px"><strong>轮拱开孔与独立悬挂</strong>：车身侧面蒙皮围绕前后轮心切出真实开放轮拱，车轮与五辐轮毂、通风刹车盘、卡钳独立挂载于悬挂节点。</li>
+<li style="margin-bottom:6px"><strong>可动跳灯铰链（Pop-up Headlights）</strong>：针对 RX-7 (<code class="mono" style="background:var(--cp-surface-soft);padding:2px 6px;border-radius:4px;border:1px solid var(--cp-border)">sa22c</code>/<code class="mono" style="background:var(--cp-surface-soft);padding:2px 6px;border-radius:4px;border:1px solid var(--cp-border)">fc3s</code>/<code class="mono" style="background:var(--cp-surface-soft);padding:2px 6px;border-radius:4px;border:1px solid var(--cp-border)">fd3s</code>)、NSX (<code class="mono" style="background:var(--cp-surface-soft);padding:2px 6px;border-radius:4px;border:1px solid var(--cp-border)">na1</code>)、Supra (<code class="mono" style="background:var(--cp-surface-soft);padding:2px 6px;border-radius:4px;border:1px solid var(--cp-border)">a60</code>/<code class="mono" style="background:var(--cp-surface-soft);padding:2px 6px;border-radius:4px;border:1px solid var(--cp-border)">a70</code>)、Fairlady Z (<code class="mono" style="background:var(--cp-surface-soft);padding:2px 6px;border-radius:4px;border:1px solid var(--cp-border)">z31</code>)、Silvia (<code class="mono" style="background:var(--cp-surface-soft);padding:2px 6px;border-radius:4px;border:1px solid var(--cp-border)">s12</code>)，构建独立跳灯舱盖旋转枢轴，支持在车间与夜间高架实时开合，并联动前照灯光锥与湿滑沥青反射。</li>
+</ul>
+<h3 style="margin-top:22px">3.2 范式二：速度、受力与番剧张力的实时合成（Physics-Coupled &amp; Anime Impact Direction）</h3>
+<p style="line-height:1.8;color:var(--cp-text-muted)">优秀的动画不仅在于“形准”，更在于“力感”与“节奏对比”：</p>
+<ul style="line-height:1.8;color:var(--cp-text);padding-left:22px">
+<li style="margin-bottom:6px"><strong>连续物理微姿态</strong>：车辆纵向加减速实时驱动车身俯仰角（Pitch/Dive），横向离心加速度驱动车身侧倾角（Roll）与前轮转向角；机甲移动速度驱动躯干前倾角与履带滚轮角速度。</li>
+<li style="margin-bottom:6px"><strong>瞬态爆发与番剧冲击帧（Impact Frames）</strong>：在《废土斗机祭》中，当 R-17「锻火拳」开启炉心觉醒（Overdrive）或击破 Boss「铁冠·赫克托」胸口限位锁具时，系统触发 120ms 斜向速度线切入特写（Anime Cut-in）与高反差黑白放射冲击帧，复现硬核机甲番剧的作画张力。</li>
+</ul>
+<h3 style="margin-top:22px">3.3 范式三：确定性仿真与自动化可验证闭环（Deterministic Verification Harness）</h3>
+<p style="line-height:1.8;color:var(--cp-text-muted)">为了让每一处动画与玩法改动都可被自动化流水线验证，两部作品与本实验室门户均遵循统一的 Harness 规范：</p>
+<ul style="line-height:1.8;color:var(--cp-text);padding-left:22px">
+<li style="margin-bottom:6px"><strong>固定步长物理（Fixed 60Hz Step）</strong>：物理与状态机严格按 <code class="mono" style="background:var(--cp-surface-soft);padding:2px 6px;border-radius:4px;border:1px solid var(--cp-border)">dt = 1/60s</code> 推进，渲染层仅做插值投影，确保 30Hz、60Hz、120Hz 下比赛结果与轨迹 100% 一致。</li>
+<li style="margin-bottom:6px"><strong>竞速期零动态网格分配（Zero Runtime Mesh Allocation）</strong>：在《湾岸 Midnight》资产预热阶段一次性构建全部赛车与上海天际线批次，竞速过程中 <code class="mono" style="background:var(--cp-surface-soft);padding:2px 6px;border-radius:4px;border:1px solid var(--cp-border)">modelsBuiltDuringRace === 0</code>。</li>
+<li style="margin-bottom:6px"><strong>内建自主通关控制器（Autonomous Bot Controller）</strong>：无需人工手打即可在 CI 中跑通《湾岸 Midnight》全部 6 章高架夜战与《废土斗机祭》全部 3 波敌潮 + Boss 三阶段破甲。</li>
+</ul>
+  </article>
+  <footer>
+    <span>AI Gaming &amp; Procedural Animation Lab · 技术资产白皮书</span>
+    <a href="../">返回门户首页</a>
+  </footer>
+</main>
+</body>
+</html>

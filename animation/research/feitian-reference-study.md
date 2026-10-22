@@ -1,0 +1,74 @@
+# 飞天动画：从观察到原创实现
+
+## 研究对象与证据
+
+参考页面：https://ds470b74heox1.cloudfront.net/opus55-feitian/index.html
+
+研究基于完整分页读取的公开 HTML / 内联脚本及浏览器加载、静默入窟和单幅播放操作。
+参考页面确实启动了画布，公开就绪标记为 true。首次导航超时后页面仍加载完成；
+浏览器报告一条未定位的控制台错误。没有试听全部音频，也没有穷举所有设备和交互。
+页面标题的模型名称属于作者署名，不是经过独立验证的模型身份或能力基准。
+
+## 关键发现：不是 3D，也不是生成视频
+
+主画面来自 Canvas 2D。人物、壁面、纹样、花瓣和音效在浏览器中由代码产生。
+离壁的立体感依赖阴影、尺度变化、前后遮挡和图层混合，不依赖三维骨骼角色。
+未观察到运行时模型推理请求；不能凭 CloudFront 域名推断作者完整后端架构。
+
+人物：轮廓曲线与参数化比例，双段手臂逆运动学，躯干/头部/裙摆随时间改变姿态。
+这比每帧重画完全不同的人物更连贯，也比抽象流线更容易产生人物识别。
+
+飘带：每个节点保存当前与上一位置；Verlet 步进叠加阻尼与风；
+端点锚定、相邻节点长度和弯曲约束通过有限迭代修正。
+中心线法向扩宽形成带面，周期性变宽和正反面颜色产生扭转错觉。
+它是实时视觉物理，不是测得的布料参数或完整织物求解。
+
+揭色：旧色人物预绘成离屏缓存，鲜色人物经局部圆形裁剪出现；
+两个图层交叉淡化，起飞阶段增加投影与缩放，返航后恢复静态图层。
+
+巡游：曲线路径配合累计弧长查表；路径切线驱动姿态，
+相机过渡与人物运动独立控制，避免只按参数匀速造成速度忽快忽慢。
+
+洞窟：静态背景纹样、裂纹、污渍和颗粒预绘缓存。指针控制径向暖光，
+合成模式 multiply / lighter 暗化远处、抬亮灯下。不是物理三维光照。
+
+声音：Web Audio 的程序噪声、混响、振荡器及拨弦环形缓冲合成声音。
+用户手势开启音频是浏览器策略要求。技术上“像拨弦”不等于古代乐器或曲目复原。
+
+性能：限制 DPR、粒子总量、补帧子步与物理迭代；低帧率可降低阴影和像素负载。
+复杂画布合成仍可能受低端设备限制，不能仅凭“纯 2D”保证性能。
+
+## 扩展 web search 与一手资料核对
+
+搜索用于发现方法，不直接采用搜索摘要的代码或文化断言。
+早期宽泛查询有失败，缩小为 Canvas / Verlet / 音频限制 / 敦煌背景后取得结果。
+
+- [MDN Canvas 动画](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Basic_animations)：绘制循环与画布状态。
+- [MDN requestAnimationFrame](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestAnimationFrame)：以回调时间计算动画，不能按每帧固定量假设刷新率。
+- [MDN 合成模式](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/globalCompositeOperation)：图层遮罩与合成的标准能力。
+- [Thomas Jakobsen 原文（CMU 保存）](https://graphics.cs.cmu.edu/nsp/course/15-869/2006/papers/jakobsen.htm)：已核对位置式 Verlet、固定步长、约束松弛与可信度/速度的权衡。
+- [MDN Web Audio](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Best_practices)、
+  [resume](https://developer.mozilla.org/en-US/docs/Web/API/AudioContext/resume)：主动手势、音频状态与恢复。
+- [减少动态效果](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion)：静态探索与主动播放需要区分。
+- [UNESCO 莫高窟](https://whc.unesco.org/en/list/440/)：已核对遗产背景、艺术历史与跨文化融合；
+  该条目不能证明参考页每个洞窟的人物、年代或颜料氧化细节。
+- [华盛顿大学敦煌展览](https://dunhuang.ds.lib.uw.edu/Dunhuang-Exhibitions/collections/show/1)：
+  搜索发现的延伸阅读，不作为本项目具体人物归属的考证依据。
+
+## 原创实现与参考差异
+
+本仓库“风起壁间”采用自己的四身人物、弧形壁龛、服饰轮廓、姿势、
+物理实现、飞行路径、壁面纹理和短音序。没有复制参考页任何程序、美术、音乐或截图。
+通用数学方法重新实现，独立模块有测试。
+
+旧色/新彩是艺术表现；不声称知道原始颜料或科学复原结果。
+角色命名为青羽、流霞、听风、拾光，不贴未经核对的具体窟号。
+声音是简单原创五声音序与衰减音色，不冒充复杂乐器建模。
+减少动态时保持原位揭色，取消巡游与花瓣；仍可用按钮探索。
+
+## 如何进一步提升
+
+若需真正立体飞天，应新增原创模型、骨骼、权重和裙带网格；
+并处理材质、轮廓风格、透明排序和动态阴影。这是另一条路线，不是将 2D
+画布换成 WebGL 就完成。若需文物复原，应引入专家核对与获得授权的影像，
+不能依赖视觉合理性替代史实和数据。
