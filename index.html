@@ -742,66 +742,181 @@
 
                   <div class="sim-card">
                     <div class="guide-label">
-                      <span>3. Microsoft-Decision-1 四引擎 480 次路由基准同屏对照 (routing-decision)</span>
-                      <span style="color:#94a3b8;font-weight:500;">40 中英请求 × 3 轮 = 120 次/引擎</span>
+                      <span>3. 费用 vs 准确率散点图：越靠左上角越好 (6 种按 API 计费方式 · 同样 40 个请求 × 3 轮平均)</span>
+                      <span style="color:#34d399;font-weight:700;">↖ 更便宜、更准</span>
                     </div>
+
+                    <!-- Cream Pareto Scatter Plot Card embedded directly in Command Center -->
+                    <div style="background:#f9f8f3;border:1px solid #e2dfd5;border-radius:12px;padding:14px 16px 12px;color:#1c1917;margin:8px 0 12px;">
+                      <div style="font-size:1.05rem;font-weight:800;color:#1c1917;margin-bottom:2px;">费用 vs 准确率：越靠左上角越好</div>
+                      <div style="font-size:0.78rem;color:#57534e;margin-bottom:8px;">6 种按 API 计费的方式、同样 40 个请求 · 准确率为 3 轮平均（自部署的 OpenJev 与 Laya 不参与 API 成本评估）</div>
+                      <div style="display:flex;flex-wrap:wrap;gap:6px 16px;font-size:0.78rem;font-weight:600;color:#292524;margin-bottom:8px;">
+                        <span style="display:inline-flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:50%;background:#eb5e28;display:inline-block"></span>TypeSafe Jev</span>
+                        <span style="display:inline-flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:50%;background:#1d63dc;display:inline-block"></span>Microsoft Decision-1</span>
+                        <span style="display:inline-flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:50%;background:#ea9c00;display:inline-block"></span>LLM: gpt-4.1-mini</span>
+                        <span style="display:inline-flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:50%;background:#d82363;display:inline-block"></span>LLM: gpt-6-luna (推理 none)</span>
+                        <span style="display:inline-flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:50%;background:#0a996f;display:inline-block"></span>OpenAI Decisions (gpt-6-luna)</span>
+                        <span style="display:inline-flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:50%;background:#e390b8;display:inline-block"></span>LLM: gpt-6-luna (默认推理)</span>
+                      </div>
+                      <svg viewBox="0 0 760 320" style="width:100%;height:auto;display:block" role="img" aria-label="费用 vs 准确率散点图">
+                        <defs>
+                          <radialGradient id="simParetoGlow" cx="0%" cy="0%" r="62%">
+                            <stop offset="0%" stop-color="#16a34a" stop-opacity="0.16"/>
+                            <stop offset="55%" stop-color="#16a34a" stop-opacity="0.05"/>
+                            <stop offset="100%" stop-color="#16a34a" stop-opacity="0"/>
+                          </radialGradient>
+                        </defs>
+                        <rect x="58" y="14" width="680" height="264" fill="#f9f8f3"/>
+                        <rect x="58" y="14" width="680" height="264" fill="url(#simParetoGlow)"/>
+                        <g stroke="#e6e3da" stroke-width="1">
+                          <line x1="58" y1="34.3" x2="738" y2="34.3"/>
+                          <line x1="58" y1="74.9" x2="738" y2="74.9"/>
+                          <line x1="58" y1="115.5" x2="738" y2="115.5"/>
+                          <line x1="58" y1="156.2" x2="738" y2="156.2"/>
+                          <line x1="58" y1="196.8" x2="738" y2="196.8"/>
+                          <line x1="58" y1="237.4" x2="738" y2="237.4"/>
+                          <line x1="143" y1="14" x2="143" y2="278"/>
+                          <line x1="228" y1="14" x2="228" y2="278"/>
+                          <line x1="313" y1="14" x2="313" y2="278"/>
+                          <line x1="398" y1="14" x2="398" y2="278"/>
+                          <line x1="483" y1="14" x2="483" y2="278"/>
+                          <line x1="568" y1="14" x2="568" y2="278"/>
+                          <line x1="653" y1="14" x2="653" y2="278"/>
+                          <line x1="738" y1="14" x2="738" y2="278"/>
+                        </g>
+                        <line x1="58" y1="14" x2="58" y2="278" stroke="#d5d1c6" stroke-width="1.2"/>
+                        <line x1="58" y1="278" x2="738" y2="278" stroke="#d5d1c6" stroke-width="1.2"/>
+                        <g fill="#57534e" font-size="11" text-anchor="end">
+                          <text x="50" y="38">100%</text>
+                          <text x="50" y="78.5">90%</text>
+                          <text x="50" y="119">80%</text>
+                          <text x="50" y="160">70%</text>
+                          <text x="50" y="200.5">60%</text>
+                          <text x="50" y="241">50%</text>
+                          <text x="50" y="281.5">40%</text>
+                        </g>
+                        <text x="14" y="148" fill="#44403c" font-size="11.5" font-weight="600" text-anchor="middle" transform="rotate(-90 14 148)">选对比例</text>
+                        <g fill="#57534e" font-size="11" text-anchor="middle">
+                          <text x="58" y="295">$0</text>
+                          <text x="143" y="295">$20</text>
+                          <text x="228" y="295">$40</text>
+                          <text x="313" y="295">$60</text>
+                          <text x="398" y="295">$80</text>
+                          <text x="483" y="295">$100</text>
+                          <text x="568" y="295">$120</text>
+                          <text x="653" y="295">$140</text>
+                          <text x="738" y="295">$160</text>
+                        </g>
+                        <text x="398" y="313" fill="#44403c" font-size="12" font-weight="600" text-anchor="middle">每百万次决策的费用（美元）</text>
+                        <text x="72" y="186" fill="#15803d" font-size="12.5" font-weight="800">↖ 更便宜、更准</text>
+
+                        <!-- Jev ($21.7, 98.3%) -->
+                        <circle cx="150.2" cy="41.2" r="7.5" fill="#eb5e28"/>
+                        <text x="162" y="36" fill="#1c1917" font-size="12" font-weight="800">Jev</text>
+                        <text x="162" y="50" fill="#57534e" font-size="11">98.3% · $21.7</text>
+
+                        <!-- Decision-1 ($8.6, 94.2%) -->
+                        <circle cx="94.6" cy="57.9" r="7.5" fill="#1d63dc"/>
+                        <text x="107" y="55" fill="#1c1917" font-size="12" font-weight="800">Decision-1</text>
+                        <text x="107" y="69" fill="#57534e" font-size="11">94.2% · $8.6</text>
+
+                        <!-- gpt-6-luna (none) ($39.9, 88.3%) -->
+                        <circle cx="227.6" cy="81.8" r="7.5" fill="#d82363"/>
+                        <text x="240" y="79" fill="#1c1917" font-size="12" font-weight="800">gpt-6-luna (none)</text>
+                        <text x="240" y="93" fill="#57534e" font-size="11">88.3% · $39.9</text>
+
+                        <!-- OpenAI Decisions ($28.4, 80.0%) -->
+                        <circle cx="178.7" cy="115.5" r="7.5" fill="#0a996f"/>
+                        <text x="189" y="131" fill="#1c1917" font-size="12" font-weight="800">OpenAI Decisions</text>
+                        <text x="189" y="145" fill="#57534e" font-size="11">80.0% · $28.4</text>
+
+                        <!-- gpt-6-luna (默认) ($62.4, 75.8%) -->
+                        <circle cx="323.2" cy="132.6" r="7.5" fill="#e390b8"/>
+                        <text x="335" y="130" fill="#1c1917" font-size="12" font-weight="800">gpt-6-luna (默认)</text>
+                        <text x="335" y="144" fill="#57534e" font-size="11">75.8% · $62.4</text>
+
+                        <!-- gpt-4.1-mini ($141.8, 90.0%) -->
+                        <circle cx="660.7" cy="74.9" r="7.5" fill="#ea9c00"/>
+                        <text x="648" y="65" fill="#1c1917" font-size="12" font-weight="800" text-anchor="end">gpt-4.1-mini</text>
+                        <text x="648" y="79" fill="#57534e" font-size="11" text-anchor="end">90.0% · $141.8</text>
+                      </svg>
+                    </div>
+
                     <table class="endpoint-table" style="margin-top:4px;">
                       <thead>
                         <tr>
-                          <th>路由引擎</th>
-                          <th>标签匹配 / 120</th>
-                          <th>匹配率</th>
+                          <th>路由方式 (6 API + 2 自部署)</th>
+                          <th>3 轮命中 / 120</th>
+                          <th>选对比例</th>
                           <th>P50 / P95 延迟</th>
-                          <th>平均 Token (In / Out)</th>
-                          <th>百万次决策成本</th>
-                          <th>置信度门控特性</th>
+                          <th>每百万次决策费用</th>
+                          <th>核心架构与门控特性</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr style="background:rgba(37,99,235,0.12);">
-                          <td><strong style="color:#60a5fa">Microsoft-Decision-1</strong></td>
+                        <tr style="background:rgba(235,94,40,0.10);">
+                          <td><strong style="color:#fb923c">● TypeSafe Jev (jev-latest)</strong></td>
+                          <td><strong>118 / 120</strong></td>
+                          <td><strong style="color:#34d399">98.3%</strong></td>
+                          <td>350 ms / 720 ms</td>
+                          <td><strong style="color:#34d399">$21.7 / 1M</strong></td>
+                          <td>准确率最高 (98.3%)，平均所选概率 0.92，39/40 跨轮一致</td>
+                        </tr>
+                        <tr style="background:rgba(37,99,235,0.14);">
+                          <td><strong style="color:#60a5fa">● Microsoft Decision-1</strong></td>
                           <td><strong>113 / 120</strong></td>
                           <td><strong style="color:#34d399">94.2%</strong></td>
                           <td>541 ms / 1250 ms</td>
-                          <td>205 / <strong>1</strong></td>
-                          <td><strong style="color:#34d399">$8.6 / 1M</strong></td>
-                          <td>全部 7 次失误概率 &le;0.56，0.60 阈值 100% 样本内拦截</td>
+                          <td><strong style="color:#34d399">$8.6 / 1M (最低)</strong></td>
+                          <td>仅输出 1 token；全部 7 次失误概率 &le;0.56，0.60 阈值 100% 拦截</td>
                         </tr>
                         <tr>
-                          <td><strong>TypeSafe Jev (jev-latest)</strong></td>
-                          <td>118 / 120</td>
-                          <td>98.3%</td>
-                          <td>350 ms / 720 ms</td>
-                          <td>518 / 82</td>
-                          <td>$21.7 / 1M</td>
-                          <td>平均所选概率 0.92，39/40 跨轮一致</td>
-                        </tr>
-                        <tr>
-                          <td><strong>OpenJev MLX 4-bit (本地增补)</strong></td>
-                          <td>111 / 120</td>
-                          <td>92.5%</td>
-                          <td>2570 ms / 3030 ms</td>
-                          <td>237 / -</td>
-                          <td>本地 M4 Pro (CC BY-NC)</td>
-                          <td>6/9 失误概率在 0.70–0.72，不可直接套用 0.60 阈值</td>
-                        </tr>
-                        <tr>
-                          <td><strong>LLM gpt-4.1-mini (通用基线)</strong></td>
+                          <td><strong style="color:#fbbf24">● LLM: gpt-4.1-mini</strong></td>
                           <td>108 / 120</td>
                           <td>90.0%</td>
                           <td>1430 ms / 2090 ms</td>
-                          <td>214 / 35</td>
                           <td style="color:#fb7185">$141.8 / 1M (贵 16.5 倍)</td>
                           <td>需自回归生成 35 tokens，成本与延迟显著偏高</td>
                         </tr>
                         <tr>
-                          <td><strong>Laya 0.3.20 (本地 GPU)</strong></td>
+                          <td><strong style="color:#f43f5e">● LLM: gpt-6-luna (推理 none)</strong></td>
+                          <td>106 / 120</td>
+                          <td>88.3%</td>
+                          <td>Model Router 线上路径</td>
+                          <td>$39.9 / 1M</td>
+                          <td>2026-10-13 实测：关闭推理比默认推理既更准 (+12.5 pts) 又更便宜</td>
+                        </tr>
+                        <tr>
+                          <td><strong style="color:#34d399">● OpenAI Decisions (gpt-6-luna)</strong></td>
+                          <td>96 / 120</td>
+                          <td>80.0%</td>
+                          <td>Model Router 线上路径</td>
+                          <td>$28.4 / 1M</td>
+                          <td>2026-10-13 经 Model Router 线上决策路径实测</td>
+                        </tr>
+                        <tr>
+                          <td><strong style="color:#f472b6">● LLM: gpt-6-luna (默认推理)</strong></td>
+                          <td>91 / 120</td>
+                          <td style="color:#fb7185">75.8%</td>
+                          <td>Model Router 线上路径</td>
+                          <td style="color:#fb7185">$62.4 / 1M</td>
+                          <td>默认推理带来额外思考开销，路由匹配率反而降至 75.8%</td>
+                        </tr>
+                        <tr>
+                          <td><strong>OpenJev MLX 4-bit (自部署)</strong></td>
+                          <td>111 / 120</td>
+                          <td>92.5%</td>
+                          <td>2570 ms / 3030 ms</td>
+                          <td>本地 Mac (CC BY-NC)</td>
+                          <td>权重仅限非商业使用；6/9 失误概率在 0.70–0.72</td>
+                        </tr>
+                        <tr>
+                          <td><strong>Laya 0.3.20 (自部署)</strong></td>
                           <td>60 / 120</td>
                           <td style="color:#fb7185">50.0%</td>
                           <td>127 ms / 143 ms</td>
-                          <td>213 / -</td>
-                          <td>本地按次免费 (TCO 未知)</td>
-                          <td>速度极快但中文 Set B 仅对 8/20 (40%)</td>
+                          <td>成本取决于自备硬件</td>
+                          <td>速度最快但中文 Set B 仅对 8/20 (40%)</td>
                         </tr>
                       </tbody>
                     </table>

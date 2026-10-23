@@ -85,30 +85,32 @@
       <header class="card-header">
         <div class="card-eyebrow">HANDS-ON · ROUTING &amp; DECISION MODELS</div>
         <h2 class="card-headline"><span class="grad-text">Microsoft-Decision-1</span> 达 94.2% 路由一致率，成本较 LLM 降低 94%</h2>
-        <p class="card-subtitle">40 个中英双语请求 × 3 轮重复 × 4 引擎（共 480 次主实验决策 + 120 次 OpenJev 增补）：对比专用小参数路由模型与通用大模型在 Agent 入口层的准确率、延迟与百万次成本。</p>
+        <p class="card-subtitle">40 个中英双语请求 × 3 轮重复 × 8 种路由方式（6 种按 API 计费 + 2 种本地自部署，累计 960 次路由决策）：对比专用小参数路由模型与通用大模型在 Agent 入口层的准确率、延迟与每百万次决策成本。</p>
       </header>
       <div class="card-canvas">
         <div class="workbench-shell">
           <div class="wb-topbar">
             <div>
-              <strong>Multi-Engine Routing &amp; Gating Workbench</strong>
-              <div class="wb-sub">Sealed benchmark archive (routing-decision + routing-openjev): zero fabricated coordinates</div>
+              <strong>Multi-Engine Routing &amp; Gating Workbench (6 API-Billed + 2 Self-Hosted)</strong>
+              <div class="wb-sub">Sealed benchmark archive (2026-10-11 ~ 2026-10-13): zero fabricated coordinates</div>
             </div>
-            <span class="wb-status">Model Router 2.3.0 · 2026-10-11 · anonymized_reported</span>
+            <span class="wb-status">Model Router 2.3.0 · 2026-10-13 · anonymized_reported</span>
           </div>
           <div class="wb-grid">
             <div class="wb-col-left">
-              <div class="wb-col-title">Evaluated Engines</div>
-              <div class="wb-item"><strong>Microsoft-Decision-1</strong> (East US 2 Foundry)</div>
-              <div class="wb-item"><strong>TypeSafe Jev</strong> (jev-latest remote)</div>
-              <div class="wb-item"><strong>OpenJev MLX 4-bit</strong> (27B local M4 Pro)</div>
-              <div class="wb-item"><strong>Laya 0.3.20</strong> (Local M4 Pro GPU)</div>
-              <div class="wb-item"><strong>LLM gpt-4.1-mini</strong> (East US 2 Foundry)</div>
-              <div class="wb-note">实验设计：A/B 两组各 20 题（50% 中文），5 个固定候选模型描述。Decision-1 观察到 0.60 置信度阈值可拦截全部 7 次路由偏差。</div>
+              <div class="wb-col-title">Evaluated Ways (8 Total)</div>
+              <div class="wb-item"><strong>TypeSafe Jev</strong> (98.3% · $21.7/M)</div>
+              <div class="wb-item"><strong>Microsoft Decision-1</strong> (94.2% · $8.6/M)</div>
+              <div class="wb-item"><strong>LLM: gpt-4.1-mini</strong> (90.0% · $141.8/M)</div>
+              <div class="wb-item"><strong>LLM: gpt-6-luna (推理 none)</strong> (88.3% · $39.9/M)</div>
+              <div class="wb-item"><strong>OpenAI Decisions (gpt-6-luna)</strong> (80.0% · $28.4/M)</div>
+              <div class="wb-item"><strong>LLM: gpt-6-luna (默认推理)</strong> (75.8% · $62.4/M)</div>
+              <div class="wb-item"><strong>OpenJev MLX 4-bit / Laya</strong> (本地自部署)</div>
+              <div class="wb-note">期望模型在运行前人工定好。Decision-1 观察到 0.60 置信度阈值可拦截全部 7 次路由偏差。</div>
             </div>
             <div class="wb-col-right">
               <div class="wb-metrics">
-                <span class="wb-metric">Cohort: 480 + 120 Decisions</span>
+                <span class="wb-metric">Cohort: 6 API + 2 Local Ways</span>
                 <span class="wb-metric">Decision-1 P50: 541 ms</span>
                 <span class="wb-metric">Decision-1 Output: 1 token</span>
                 <span class="wb-metric">Cost: $8.6 / 1M decisions</span>
@@ -116,31 +118,32 @@
               <div class="decision-card">
                 <div class="decision-head">
                   <div>
-                    <span class="field-name">Microsoft-Decision-1</span> <span class="type-pill">choice · 1 output token</span>
-                    <div class="question-sub">113 / 120 匹配 · 39 / 40 跨轮一致 · 平均所选概率 0.91</div>
+                    <span class="field-name">6 API-Billed Ways · Accuracy &amp; Cost Leaderboard</span> <span class="type-pill">40 requests × 3 repeats</span>
+                    <div class="question-sub">越靠左上角（高准确率 + 低百万次费用）越好 · 专用路由模型显著领先通用 LLM</div>
                   </div>
-                  <span class="action-pill pill-auto">$8.6 / 1M · Auto &gt; 0.60</span>
+                  <span class="action-pill pill-auto">↖ 更便宜、更准</span>
                 </div>
-                <div class="dist-row"><span class="dist-label">Microsoft-Decision-1</span><div class="dist-track"><div class="dist-fill" style="width:94.2%"></div></div><span class="dist-pct">94.2%</span></div>
-                <div class="dist-row"><span class="dist-label">TypeSafe Jev</span><div class="dist-track"><div class="dist-fill" style="width:98.3%"></div></div><span class="dist-pct">98.3%</span></div>
-                <div class="dist-row"><span class="dist-label">OpenJev MLX 4-bit</span><div class="dist-track"><div class="dist-fill" style="width:92.5%"></div></div><span class="dist-pct">92.5%</span></div>
-                <div class="dist-row"><span class="dist-label">LLM gpt-4.1-mini</span><div class="dist-track"><div class="dist-fill" style="width:90.0%"></div></div><span class="dist-pct">90.0%</span></div>
-                <div class="dist-row"><span class="dist-label">Laya 0.3.20 (local)</span><div class="dist-track"><div class="dist-fill" style="width:50.0%"></div></div><span class="dist-pct">50.0%</span></div>
+                <div class="dist-row"><span class="dist-label">TypeSafe Jev ($21.7/M)</span><div class="dist-track"><div class="dist-fill" style="width:98.3%;background:#eb5e28"></div></div><span class="dist-pct">98.3%</span></div>
+                <div class="dist-row"><span class="dist-label">Microsoft Decision-1 ($8.6/M)</span><div class="dist-track"><div class="dist-fill" style="width:94.2%;background:#1d63dc"></div></div><span class="dist-pct">94.2%</span></div>
+                <div class="dist-row"><span class="dist-label">LLM: gpt-4.1-mini ($141.8/M)</span><div class="dist-track"><div class="dist-fill" style="width:90.0%;background:#ea9c00"></div></div><span class="dist-pct">90.0%</span></div>
+                <div class="dist-row"><span class="dist-label">gpt-6-luna 推理 none ($39.9/M)</span><div class="dist-track"><div class="dist-fill" style="width:88.3%;background:#d82363"></div></div><span class="dist-pct">88.3%</span></div>
+                <div class="dist-row"><span class="dist-label">OpenAI Decisions ($28.4/M)</span><div class="dist-track"><div class="dist-fill" style="width:80.0%;background:#0a996f"></div></div><span class="dist-pct">80.0%</span></div>
+                <div class="dist-row"><span class="dist-label">gpt-6-luna 默认推理 ($62.4/M)</span><div class="dist-track"><div class="dist-fill" style="width:75.8%;background:#e390b8"></div></div><span class="dist-pct">75.8%</span></div>
               </div>
               <div class="decision-card">
                 <div class="decision-head">
                   <div>
                     <span class="field-name">Cost Efficiency vs General LLM</span> <span class="type-pill">FinOps</span>
-                    <div class="question-sub">基于源报告 token 均量（Decision-1 平均输入 205 / 输出 1 vs LLM 输入 214 / 输出 35）</div>
+                    <div class="question-sub">Decision-1 ($8.6) 较 gpt-6-luna 推理 none ($39.9) 省 78%，较 gpt-4.1-mini ($141.8) 省 94%</div>
                   </div>
-                  <span class="action-pill pill-auto">16.5x Cheaper</span>
+                  <span class="action-pill pill-auto">4.6x – 16.5x Cheaper</span>
                 </div>
-                <div class="decision-main"><strong>$8.6</strong> vs <strong>$141.8</strong> <span class="conf-muted">· USD per 1,000,000 routing decisions</span></div>
+                <div class="decision-main"><strong>$8.6</strong> (Decision-1) vs <strong>$21.7</strong> (Jev) vs <strong>$39.9–$141.8</strong> (LLMs) <span class="conf-muted">· USD / 1M decisions</span></div>
               </div>
             </div>
           </div>
         </div>
-        <div class="callout-box"><strong>来源状态：anonymized_reported (independently_reproduced=false)。</strong> 路由器位于亚洲 Apple M4 Pro，Foundry 部署于 East US 2（含跨洋 RTT）。所有数值严格取自封存档案 <code>data/reported/routing-decision/report.json</code>。</div>
+        <div class="callout-box"><strong>来源状态：anonymized_reported (independently_reproduced=false)。</strong> 新配置于 2026-10-13 经 Model Router 的线上决策路径测试；其余引自前两篇实测（2026-10-11/12）。OpenJev (MLX 4-bit, 92.5%) 与 Laya (50.0%) 跑在测试用 Mac 上，不参与 API 成本评估。</div>
       </div>
       <footer class="card-footer">
         <span><strong>Benchmark Harness Engineering · Routing &amp; Decision Cohort</strong> · anonymized_reported</span>
@@ -212,59 +215,71 @@
     <div class="card-inner">
       <header class="card-header">
         <div class="card-eyebrow">WHAT I TESTED</div>
-        <h2 class="card-headline">5 组路由引擎 × 600 次累计评测全矩阵</h2>
+        <h2 class="card-headline">6 种按 API 计费方式 + 2 种自部署引擎 × 同样 40 个请求（3 轮平均）全矩阵</h2>
       </header>
       <div class="card-canvas">
         <table class="clean-table">
           <thead>
             <tr>
               <th>SCENARIO / ENGINE</th>
-              <th>QUESTION / COHORT</th>
-              <th>MODEL ANSWER (MATCH &amp; TOKENS)</th>
-              <th class="act-col">ACTION / COST</th>
+              <th>COHORT / CONFIG</th>
+              <th>MODEL ANSWER (3-ROUND AVG ACCURACY)</th>
+              <th class="act-col">COST / 1M DECISIONS</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td class="sc-col">Microsoft-Decision-1</td>
-              <td>40 tasks × 3 repeats (East US 2)</td>
-              <td><strong>113 / 120 (94.2%)</strong> · 205 in / 1 out · P50 541ms</td>
-              <td class="act-col act-auto">$8.6 / 1M</td>
-            </tr>
-            <tr>
-              <td class="sc-col">TypeSafe Jev</td>
-              <td>40 tasks × 3 repeats (jev-latest)</td>
+              <td class="sc-col"><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#eb5e28;margin-right:6px"></span>TypeSafe Jev</td>
+              <td>40 requests × 3 repeats (API, jev-latest)</td>
               <td><strong>118 / 120 (98.3%)</strong> · 518 in / 82 out · P50 350ms</td>
               <td class="act-col act-auto">$21.7 / 1M</td>
             </tr>
             <tr>
-              <td class="sc-col">OpenJev MLX 4-bit</td>
-              <td>40 tasks × 3 repeats (Local M4 Pro)</td>
-              <td><strong>111 / 120 (92.5%)</strong> · 237 in · P50 2570ms <span class="miss-mark">✕</span></td>
-              <td class="act-col act-confirm">Local GPU (CC BY-NC)</td>
+              <td class="sc-col"><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#1d63dc;margin-right:6px"></span>Microsoft Decision-1</td>
+              <td>40 requests × 3 repeats (API, East US 2)</td>
+              <td><strong>113 / 120 (94.2%)</strong> · 205 in / 1 out · P50 541ms</td>
+              <td class="act-col act-auto">$8.6 / 1M</td>
             </tr>
             <tr>
-              <td class="sc-col">LLM gpt-4.1-mini</td>
-              <td>40 tasks × 3 repeats (East US 2)</td>
+              <td class="sc-col"><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#ea9c00;margin-right:6px"></span>LLM: gpt-4.1-mini</td>
+              <td>40 requests × 3 repeats (API, East US 2)</td>
               <td><strong>108 / 120 (90.0%)</strong> · 214 in / 35 out · P50 1430ms</td>
               <td class="act-col act-confirm">$141.8 / 1M</td>
             </tr>
             <tr>
-              <td class="sc-col">Laya 0.3.20</td>
-              <td>40 tasks × 3 repeats (Local M4 Pro)</td>
-              <td><strong>60 / 120 (50.0%)</strong> · 213 in · P50 127ms <span class="miss-mark">✕</span></td>
-              <td class="act-col act-human">Human / Reject</td>
+              <td class="sc-col"><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#d82363;margin-right:6px"></span>LLM: gpt-6-luna (推理 none)</td>
+              <td>40 requests × 3 repeats (2026-10-13 Model Router)</td>
+              <td><strong>106 / 120 (88.3%)</strong> · Reasoning disabled (none)</td>
+              <td class="act-col act-confirm">$39.9 / 1M</td>
             </tr>
             <tr>
-              <td class="sc-col">Strands Decider 2B</td>
-              <td>7 agent scenarios, 12 decisions (MPS)</td>
-              <td><strong>11 / 12 Right Way (91.7%)</strong> · 335 in / 0 out · ~170ms</td>
-              <td class="act-col act-auto">Apache-2.0 Local</td>
+              <td class="sc-col"><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#0a996f;margin-right:6px"></span>OpenAI Decisions (gpt-6-luna)</td>
+              <td>40 requests × 3 repeats (2026-10-13 Model Router)</td>
+              <td><strong>96 / 120 (80.0%)</strong> · OpenAI Decisions path</td>
+              <td class="act-col act-confirm">$28.4 / 1M</td>
+            </tr>
+            <tr>
+              <td class="sc-col"><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#e390b8;margin-right:6px"></span>LLM: gpt-6-luna (默认推理)</td>
+              <td>40 requests × 3 repeats (2026-10-13 Model Router)</td>
+              <td><strong>91 / 120 (75.8%)</strong> · Default reasoning enabled <span class="miss-mark">✕</span></td>
+              <td class="act-col act-human">$62.4 / 1M</td>
+            </tr>
+            <tr>
+              <td class="sc-col">OpenJev MLX 4-bit (自部署)</td>
+              <td>40 requests × 3 repeats (Local Mac M4 Pro)</td>
+              <td><strong>111 / 120 (92.5%)</strong> · 237 in · P50 2570ms <span class="miss-mark">✕</span></td>
+              <td class="act-col act-confirm">Non-Commercial (CC BY-NC)</td>
+            </tr>
+            <tr>
+              <td class="sc-col">Laya 0.3.20 (自部署)</td>
+              <td>40 requests × 3 repeats (Local Mac M4 Pro)</td>
+              <td><strong>60 / 120 (50.0%)</strong> · 213 in · P50 127ms <span class="miss-mark">✕</span></td>
+              <td class="act-col act-human">Local Hardware TCO</td>
             </tr>
           </tbody>
         </table>
-        <div class="callout-box"><strong>核心发现 1：专用路由模型在准确率（94.2%–98.3%）与成本（$8.6–$21.7/M）上双向击败通用 LLM（90.0%, $141.8/M）。</strong> 通用 LLM 因需生成 35 个输出 token 且计算图更大，P50 延迟达 1430ms。</div>
-        <div class="callout-box"><strong>核心发现 2：异常标记（✕）揭示低延迟与量化陷阱。</strong> Laya 虽仅 127ms 但中文 Set B 仅对 8/20（总匹配 50.0%）；OpenJev 27B 4-bit 本地耗时达 2570ms 且权重为 CC BY-NC 4.0 非商用许可。</div>
+        <div class="callout-box"><strong>核心发现 1：专用路由模型位于左上角帕累托最优区。</strong> TypeSafe Jev (98.3%, $21.7) 与 Microsoft Decision-1 (94.2%, $8.6) 相比全部 4 种 LLM 路由方式（75.8%–90.0%，$28.4–$141.8）既更准又更省。</div>
+        <div class="callout-box"><strong>核心发现 2：开启默认推理反而拉低路由准确率并推高成本。</strong> <code>gpt-6-luna</code> 在关闭推理（<code>none</code>）时达 88.3% ($39.9/M)，而默认推理下降至 75.8% 且费用升至 $62.4/M。</div>
       </div>
       <footer class="card-footer">
         <span><strong>Benchmark Harness Engineering · Routing &amp; Decision Cohort</strong> · anonymized_reported</span>
@@ -384,33 +399,136 @@
     <div class="card-accent-bar"></div>
     <div class="card-inner">
       <header class="card-header">
-        <div class="card-eyebrow">LATENCY &amp; ECONOMICS</div>
-        <h2 class="card-headline">P50 延迟缩短 62%（541ms vs 1430ms），批量共享前缀再省 49% 耗时</h2>
+        <div class="card-eyebrow">COST VS ACCURACY &amp; LATENCY PARETO</div>
+        <h2 class="card-headline">费用 vs 准确率：越靠左上角越好 — Decision-1 ($8.6) 与 Jev ($21.7) 领跑帕累托前沿</h2>
+        <p class="card-subtitle" style="margin-bottom:.55rem">6 种按 API 计费的方式、同样 40 个请求 · 准确率为 3 轮平均（120 次决策/方式）。只比较按 API 计费、开箱即用的 6 种方式；自部署的 OpenJev（CC BY-NC 非商用权重，真实成本未知）和 Laya（成本取决于自备硬件）不参与成本散点评估。</p>
       </header>
-      <div class="card-canvas">
-        <div class="lat-list">
-          <div>
-            <div class="lat-title">1. Microsoft-Decision-1 (Foundry East US 2, Remote RTT)</div>
-            <div class="lat-row"><span class="lat-tag">P50 Median</span><div class="lat-bar lat-blue" style="width:25.9%"></div><strong class="lat-val">541 ms ($8.6 / 1M)</strong></div>
-            <div class="lat-row"><span class="lat-tag">P95 Tail</span><div class="lat-bar lat-gray" style="width:59.8%"></div><span class="lat-val">1250 ms</span></div>
+      <div class="card-canvas" style="gap:.75rem">
+        <!-- Warm Cream Pareto Scatter Card matching reference image -->
+        <div style="background:#f9f8f3;border:1px solid #e2dfd5;border-radius:14px;padding:1.05rem 1.25rem .85rem;color:#1c1917;box-shadow:inset 0 1px 0 #fff">
+          <!-- Legend Row -->
+          <div style="display:flex;flex-wrap:wrap;gap:.45rem 1.15rem;font-size:.82rem;font-weight:600;color:#292524;margin-bottom:.65rem">
+            <span style="display:inline-flex;align-items:center;gap:.38rem"><span style="width:12px;height:12px;border-radius:50%;background:#eb5e28;display:inline-block"></span>TypeSafe Jev</span>
+            <span style="display:inline-flex;align-items:center;gap:.38rem"><span style="width:12px;height:12px;border-radius:50%;background:#1d63dc;display:inline-block"></span>Microsoft Decision-1</span>
+            <span style="display:inline-flex;align-items:center;gap:.38rem"><span style="width:12px;height:12px;border-radius:50%;background:#ea9c00;display:inline-block"></span>LLM: gpt-4.1-mini</span>
+            <span style="display:inline-flex;align-items:center;gap:.38rem"><span style="width:12px;height:12px;border-radius:50%;background:#d82363;display:inline-block"></span>LLM: gpt-6-luna (推理 none)</span>
+            <span style="display:inline-flex;align-items:center;gap:.38rem"><span style="width:12px;height:12px;border-radius:50%;background:#0a996f;display:inline-block"></span>OpenAI Decisions (gpt-6-luna)</span>
+            <span style="display:inline-flex;align-items:center;gap:.38rem"><span style="width:12px;height:12px;border-radius:50%;background:#e390b8;display:inline-block"></span>LLM: gpt-6-luna (默认推理)</span>
           </div>
+
+          <!-- Inline SVG Scatter Plot (X: $0 to $160 -> x=58 to 738 (width=680), Y: 40% to 105% -> y=312 to 18) -->
+          <svg viewBox="0 0 760 356" style="width:100%;height:auto;display:block;overflow:visible" role="img" aria-label="费用 vs 准确率散点图">
+            <defs>
+              <radialGradient id="paretoGlow" cx="0%" cy="0%" r="62%">
+                <stop offset="0%" stop-color="#16a34a" stop-opacity="0.16"/>
+                <stop offset="55%" stop-color="#16a34a" stop-opacity="0.05"/>
+                <stop offset="100%" stop-color="#16a34a" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+
+            <!-- Plot Area Background & Top-Left Pareto Green Glow -->
+            <rect x="58" y="18" width="680" height="294" fill="#f9f8f3"/>
+            <rect x="58" y="18" width="680" height="294" fill="url(#paretoGlow)"/>
+
+            <!-- Horizontal Grid Lines (100% y=40.6, 90% y=85.8, 80% y=131.1, 70% y=176.3, 60% y=221.5, 50% y=266.8, 40% y=312) -->
+            <g stroke="#e6e3da" stroke-width="1">
+              <line x1="58" y1="40.6" x2="738" y2="40.6"/>
+              <line x1="58" y1="85.8" x2="738" y2="85.8"/>
+              <line x1="58" y1="131.1" x2="738" y2="131.1"/>
+              <line x1="58" y1="176.3" x2="738" y2="176.3"/>
+              <line x1="58" y1="221.5" x2="738" y2="221.5"/>
+              <line x1="58" y1="266.8" x2="738" y2="266.8"/>
+            </g>
+
+            <!-- Vertical Grid Lines ($20 step = 85px: 58, 143, 228, 313, 398, 483, 568, 653, 738) -->
+            <g stroke="#e6e3da" stroke-width="1">
+              <line x1="143" y1="18" x2="143" y2="312"/>
+              <line x1="228" y1="18" x2="228" y2="312"/>
+              <line x1="313" y1="18" x2="313" y2="312"/>
+              <line x1="398" y1="18" x2="398" y2="312"/>
+              <line x1="483" y1="18" x2="483" y2="312"/>
+              <line x1="568" y1="18" x2="568" y2="312"/>
+              <line x1="653" y1="18" x2="653" y2="312"/>
+              <line x1="738" y1="18" x2="738" y2="312"/>
+            </g>
+
+            <!-- Axes Lines -->
+            <line x1="58" y1="18" x2="58" y2="312" stroke="#d5d1c6" stroke-width="1.2"/>
+            <line x1="58" y1="312" x2="738" y2="312" stroke="#d5d1c6" stroke-width="1.2"/>
+
+            <!-- Y-Axis Labels -->
+            <g fill="#57534e" font-size="11.5" text-anchor="end">
+              <text x="50" y="44.5">100%</text>
+              <text x="50" y="89.8">90%</text>
+              <text x="50" y="135.1">80%</text>
+              <text x="50" y="180.3">70%</text>
+              <text x="50" y="225.5">60%</text>
+              <text x="50" y="270.8">50%</text>
+              <text x="50" y="315.5">40%</text>
+            </g>
+            <text x="14" y="168" fill="#44403c" font-size="12" font-weight="600" text-anchor="middle" transform="rotate(-90 14 168)">选对比例</text>
+
+            <!-- X-Axis Labels -->
+            <g fill="#57534e" font-size="11.5" text-anchor="middle">
+              <text x="58" y="330">$0</text>
+              <text x="143" y="330">$20</text>
+              <text x="228" y="330">$40</text>
+              <text x="313" y="330">$60</text>
+              <text x="398" y="330">$80</text>
+              <text x="483" y="330">$100</text>
+              <text x="568" y="330">$120</text>
+              <text x="653" y="330">$140</text>
+              <text x="738" y="330">$160</text>
+            </g>
+            <text x="398" y="350" fill="#44403c" font-size="12.5" font-weight="600" text-anchor="middle">每百万次决策的费用（美元）</text>
+
+            <!-- Pareto Direction Callout -->
+            <text x="72" y="210" fill="#15803d" font-size="13" font-weight="800">↖ 更便宜、更准</text>
+
+            <!-- Point 1: TypeSafe Jev ($21.7 -> x=150.2, 98.3% -> y=48.3) -->
+            <circle cx="150.2" cy="48.3" r="8" fill="#eb5e28"/>
+            <text x="163" y="42" fill="#1c1917" font-size="12.5" font-weight="800">Jev</text>
+            <text x="163" y="57.5" fill="#57534e" font-size="11.5">98.3% · $21.7</text>
+
+            <!-- Point 2: Microsoft Decision-1 ($8.6 -> x=94.6, 94.2% -> y=66.8) -->
+            <circle cx="94.6" cy="66.8" r="8" fill="#1d63dc"/>
+            <text x="108" y="64" fill="#1c1917" font-size="12.5" font-weight="800">Decision-1</text>
+            <text x="108" y="79.5" fill="#57534e" font-size="11.5">94.2% · $8.6</text>
+
+            <!-- Point 3: LLM: gpt-6-luna (none) ($39.9 -> x=227.6, 88.3% -> y=93.5) -->
+            <circle cx="227.6" cy="93.5" r="8" fill="#d82363"/>
+            <text x="241" y="91" fill="#1c1917" font-size="12.5" font-weight="800">gpt-6-luna (none)</text>
+            <text x="241" y="106.5" fill="#57534e" font-size="11.5">88.3% · $39.9</text>
+
+            <!-- Point 4: OpenAI Decisions (gpt-6-luna) ($28.4 -> x=178.7, 80.0% -> y=131.1) -->
+            <circle cx="178.7" cy="131.1" r="8" fill="#0a996f"/>
+            <text x="189" y="148" fill="#1c1917" font-size="12.5" font-weight="800">OpenAI Decisions</text>
+            <text x="189" y="163.5" fill="#57534e" font-size="11.5">80.0% · $28.4</text>
+
+            <!-- Point 5: LLM: gpt-6-luna (默认推理) ($62.4 -> x=323.2, 75.8% -> y=150.1) -->
+            <circle cx="323.2" cy="150.1" r="8" fill="#e390b8"/>
+            <text x="336" y="147.5" fill="#1c1917" font-size="12.5" font-weight="800">gpt-6-luna (默认)</text>
+            <text x="336" y="163" fill="#57534e" font-size="11.5">75.8% · $62.4</text>
+
+            <!-- Point 6: LLM: gpt-4.1-mini ($141.8 -> x=660.7, 90.0% -> y=85.8) -->
+            <circle cx="660.7" cy="85.8" r="8" fill="#ea9c00"/>
+            <text x="647" y="75" fill="#1c1917" font-size="12.5" font-weight="800" text-anchor="end">gpt-4.1-mini</text>
+            <text x="647" y="90.5" fill="#57534e" font-size="11.5" text-anchor="end">90.0% · $141.8</text>
+          </svg>
+        </div>
+
+        <!-- Compact Paired Latency Bars Below Scatter -->
+        <div class="lat-list" style="gap:.55rem">
           <div>
-            <div class="lat-title">2. TypeSafe Jev (Remote Vendor API)</div>
-            <div class="lat-row"><span class="lat-tag">P50 Median</span><div class="lat-bar lat-blue" style="width:16.7%"></div><strong class="lat-val">350 ms ($21.7 / 1M)</strong></div>
-            <div class="lat-row"><span class="lat-tag">P95 Tail</span><div class="lat-bar lat-gray" style="width:34.4%"></div><span class="lat-val">720 ms</span></div>
-          </div>
-          <div>
-            <div class="lat-title">3. LLM gpt-4.1-mini Baseline (Foundry East US 2)</div>
-            <div class="lat-row"><span class="lat-tag">P50 Median</span><div class="lat-bar lat-blue" style="width:68.4%"></div><strong class="lat-val">1430 ms ($141.8 / 1M)</strong></div>
-            <div class="lat-row"><span class="lat-tag">P95 Tail</span><div class="lat-bar lat-gray" style="width:100%"></div><span class="lat-val">2090 ms</span></div>
-          </div>
-          <div>
-            <div class="lat-title">4. Strands Decider 2B Batching (10 Questions Sharing 1 State Prefix, Local MPS)</div>
-            <div class="lat-row"><span class="lat-tag">Batched (10 Qs)</span><div class="lat-bar lat-blue" style="width:51.4%"></div><strong class="lat-val">365 ms (0.51x)</strong></div>
-            <div class="lat-row"><span class="lat-tag">One-by-one* (10×71ms)</span><div class="lat-bar lat-gray" style="width:100%"></div><span class="lat-val">710 ms</span></div>
+            <div class="lat-title" style="font-size:.9rem">P50 / P95 端到端路由延迟 &amp; Strands Decider 2B 批量加速对照</div>
+            <div class="lat-row"><span class="lat-tag">Decision-1 (P50)</span><div class="lat-bar lat-blue" style="width:25.9%;height:15px"></div><strong class="lat-val" style="font-size:.82rem">541 ms (P95: 1250 ms · $8.6/1M)</strong></div>
+            <div class="lat-row"><span class="lat-tag">TypeSafe Jev (P50)</span><div class="lat-bar lat-blue" style="width:16.7%;height:15px"></div><strong class="lat-val" style="font-size:.82rem">350 ms (P95: 720 ms · $21.7/1M)</strong></div>
+            <div class="lat-row"><span class="lat-tag">gpt-4.1-mini (P50)</span><div class="lat-bar lat-gray" style="width:68.4%;height:15px"></div><span class="lat-val" style="font-size:.82rem">1430 ms (P95: 2090 ms · $141.8/1M)</span></div>
+            <div class="lat-row"><span class="lat-tag">Strands 10-Q Batch</span><div class="lat-bar lat-blue" style="width:51.4%;height:15px"></div><strong class="lat-val" style="font-size:.82rem">365 ms vs 710 ms 逐题 (0.51x 耗时)</strong></div>
           </div>
         </div>
-        <div class="callout-box"><strong>计量说明：</strong> 远程引擎（Decision-1、Jev、gpt-4.1-mini）包含亚洲至美东跨区网络往返；本地 Strands Decider 2B 运行于 Apple M5 Pro (MPS)，单次请求合并 10 个决策问题可将总耗时从 710ms 降至 365ms。</div>
+
+        <div class="callout-box" style="font-size:.86rem;padding:.75rem 1rem"><strong>计量说明：</strong> 期望模型在运行前人工定好。<code>gpt-6-luna</code>（推理 none / 默认推理）与 <code>OpenAI Decisions</code> 新配置于 2026-10-13 经 Model Router 的线上决策路径测试；其余引自前两篇封存实测（2026-10-11/12）。OpenJev 为 MLX 4-bit 版本，与 Laya 跑在测试用 Mac 上。</div>
       </div>
       <footer class="card-footer">
         <span><strong>Benchmark Harness Engineering · Routing &amp; Decision Cohort</strong> · anonymized_reported</span>
