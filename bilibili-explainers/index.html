@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>硬核AI夜班局 · 5大自动化科研流 B站知识短视频展映中心 (Bilingual Video Center)</title>
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card: #111827;
+      --border: #1e293b;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --cyan: #38bdf8;
+      --pink: #fb7299;
+      --emerald: #10b981;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Microsoft YaHei", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: radial-gradient(circle at top right, #172554 0%, var(--bg) 45%);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 32px 20px 80px;
+    }
+    .container { max-width: 1360px; margin: 0 auto; }
+    .hero {
+      background: linear-gradient(135deg, rgba(30,41,59,0.92), rgba(15,23,42,0.96));
+      border: 1px solid rgba(56,189,248,0.35);
+      border-radius: 20px;
+      padding: 36px;
+      margin-bottom: 36px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.45);
+    }
+    .hero-tag {
+      display: inline-block;
+      background: var(--pink);
+      color: #fff;
+      font-weight: 700;
+      font-size: 14px;
+      padding: 4px 14px;
+      border-radius: 999px;
+      margin-bottom: 14px;
+    }
+    .hero h1 { font-size: 32px; margin-bottom: 10px; letter-spacing: -0.5px; }
+    .hero p { color: var(--muted); font-size: 16px; max-width: 980px; }
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .stat-pill {
+      background: rgba(15,23,42,0.8);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 18px;
+    }
+    .stat-pill .num { font-size: 24px; font-weight: 800; color: var(--cyan); }
+    .stat-pill .lbl { font-size: 13px; color: var(--muted); }
+    .ep-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 28px;
+      margin-bottom: 32px;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.35);
+    }
+    .ep-badges { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; align-items: center; }
+    .badge-ep { font-weight: 800; font-size: 13px; padding: 4px 12px; border-radius: 6px; }
+    .badge-repo { background: #1e293b; color: #bae6fd; font-family: Consolas, monospace; font-size: 13px; padding: 4px 12px; border-radius: 6px; }
+    .badge-dur { color: #34d399; font-family: Consolas, monospace; font-size: 13px; margin-left: auto; }
+    .ep-title-zh { font-size: 23px; margin-bottom: 4px; color: #fff; }
+    .ep-title-en { font-size: 14px; color: var(--muted); margin-bottom: 14px; }
+    .ch-bar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+    .ch-pill { background: #1e293b; color: #cbd5e1; font-size: 12px; padding: 4px 12px; border-radius: 999px; border: 1px solid #334155; }
+    .players-grid {
+      display: grid;
+      grid-template-columns: 1.65fr 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+    @media (max-width: 960px) { .players-grid { grid-template-columns: 1fr; } }
+    .player-box {
+      background: #090d16;
+      border: 1px solid #1e293b;
+      border-radius: 14px;
+      padding: 14px;
+    }
+    .player-label { font-size: 13px; font-weight: 700; color: #e2e8f0; margin-bottom: 10px; }
+    .landscape-box video { width: 100%; aspect-ratio: 16 / 9; border-radius: 8px; background: #000; }
+    .portrait-box video { width: 100%; max-height: 440px; aspect-ratio: 9 / 16; border-radius: 8px; background: #000; margin: 0 auto; display: block; }
+    .dl-links { display: flex; gap: 14px; margin-top: 10px; font-size: 13px; flex-wrap: wrap; }
+    .dl-links a { color: var(--cyan); text-decoration: none; font-weight: 600; }
+    .dl-links a:hover { text-decoration: underline; }
+    .kpi-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 20px;
+    }
+    .kpi-mini { background: #162032; border: 1px solid #26354d; border-radius: 10px; padding: 12px 16px; }
+    .kpi-val { font-size: 20px; font-weight: 800; }
+    .kpi-lbl { font-size: 12px; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="hero">
+      <span class="hero-tag">📺 BILIBILI KNOWLEDGE CREATOR EDITION · 夜间科研总控出品</span>
+      <h1>硬核AI夜班局：5大自动化研究流 × B站知识区短视频展映中心</h1>
+      <p>融合回形针 PaperClip、硬件茶谈、何同学与差评君叙事风格，将 22:00—08:00 持续运行的 5 条自动化科研工作流（视觉生成、实时语音护栏、AI算力底座、智能体商业协议、企业级云沙箱）凝练为 6 期中英双语硬核科普节目（共 12 部 1080p MP4 视频）。</p>
+      <div class="stats-bar">
+        <div class="stat-pill"><div class="num">6 期 / 12 部</div><div class="lbl">16:9 横屏深度版 + 9:16 竖屏 Story 版</div></div>
+        <div class="stat-pill"><div class="num">5 大科研主线</div><div class="lbl">100% 真实评测数据与 GitHub main 归档</div></div>
+        <div class="stat-pill"><div class="num">1080p · 30fps</div><div class="lbl">H.264 视频 + 中文配音 + 环境混音 + 双语 SRT</div></div>
+        <div class="stat-pill"><div class="num">22:00 → 08:00</div><div class="lbl">每 30 分钟夜班总控自动化巡检闭环</div></div>
+      </div>
+    </header>
+    
+        <article class="ep-card" id="ep00-overnight-anthology">
+          <div class="ep-header">
+            <div class="ep-badges">
+              <span class="badge-ep" style="background:#f43f5e;color:#090d16">EP00 · 夜班总控全景纪录片</span>
+              <span class="badge-repo">📦 turbo998/Kee-Tech-Assets (All 5 Research Streams)</span>
+              <span class="badge-dur">🖥 16:9 (144s) &nbsp;|&nbsp; 📱 9:16 (136s)</span>
+            </div>
+            <h2 class="ep-title-zh">当人类睡着后，5个AI研究智能体整晚干了什么？22点到早8点全自动科研实录</h2>
+            <p class="ep-title-en">While You Slept: Inside Our 5 Autonomous AI Research Streams (22:00 to 08:00)</p>
+            <div class="ch-bar"><span class="ch-pill">01 · 01 夜班总控台</span><span class="ch-pill">02 · 02 视觉与语音防线</span><span class="ch-pill">03 · 03 算力与商业协议</span><span class="ch-pill">04 · 04 自动造视频闭环</span></div>
+          </div>
+
+          <div class="players-grid">
+            <div class="player-box landscape-box">
+              <div class="player-label">🖥 16:9 B站横屏深度解析版 (1920×1080 · 143.8s)</div>
+              <video controls preload="metadata" poster="./ep00-overnight-anthology/ep00-overnight-anthology_landscape_16x9_cover.png">
+                <source src="./ep00-overnight-anthology/ep00-overnight-anthology_landscape_16x9.mp4" type="video/mp4">
+              </video>
+              <div class="dl-links">
+                <a href="./ep00-overnight-anthology/ep00-overnight-anthology_landscape_16x9.mp4" download>⬇ 下载 16:9 MP4</a>
+                <a href="./ep00-overnight-anthology/ep00-overnight-anthology_landscape_16x9.srt" download>📝 双语字幕 (.srt)</a>
+                <a href="./ep00-overnight-anthology/ep00-overnight-anthology_landscape_16x9_cover.png" target="_blank">🖼 高清封面</a>
+              </div>
+            </div>
+
+            <div class="player-box portrait-box">
+              <div class="player-label">📱 9:16 竖屏 Story 速览版 (1080×1920 · 136.5s)</div>
+              <video controls preload="metadata" poster="./ep00-overnight-anthology/ep00-overnight-anthology_portrait_9x16_cover.png">
+                <source src="./ep00-overnight-anthology/ep00-overnight-anthology_portrait_9x16.mp4" type="video/mp4">
+              </video>
+              <div class="dl-links">
+                <a href="./ep00-overnight-anthology/ep00-overnight-anthology_portrait_9x16.mp4" download>⬇ 下载 9:16 MP4</a>
+                <a href="./ep00-overnight-anthology/ep00-overnight-anthology_portrait_9x16.srt" download>📝 竖屏字幕 (.srt)</a>
+                <a href="./ep00-overnight-anthology/ep00-overnight-anthology_portrait_9x16_cover.png" target="_blank">🖼 竖屏封面</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="kpi-strip"><div class="kpi-mini"><div class="kpi-val" style="color:#f43f5e">5 Streams</div><div class="kpi-lbl">并发科研工作流</div></div><div class="kpi-mini"><div class="kpi-val" style="color:#f43f5e">22:00→08:00</div><div class="kpi-lbl">巡检守护时长</div></div><div class="kpi-mini"><div class="kpi-val" style="color:#f43f5e">12 部 MP4</div><div class="kpi-lbl">自动合成视频</div></div></div>
+        </article>
+        
+        <article class="ep-card" id="ep01-generative-visual-lab">
+          <div class="ep-header">
+            <div class="ep-badges">
+              <span class="badge-ep" style="background:#38bdf8;color:#090d16">EP01 · 程序造景实验室</span>
+              <span class="badge-repo">📦 turbo998/generative-visual-lab</span>
+              <span class="badge-dur">🖥 16:9 (169s) &nbsp;|&nbsp; 📱 9:16 (65s)</span>
+            </div>
+            <h2 class="ep-title-zh">不用一兆外部CDN贴图，如何在浏览器里用纯数学与Blender烘焙造出敦煌飞天、NASA火星与火箭发射？</h2>
+            <p class="ep-title-en">Zero External CDN Assets: Building Dunhuang Feitian, NASA Mars & Rocket Launch with Pure Math & Blender 4.5 MCP</p>
+            <div class="ch-bar"><span class="ch-pill">01 · 反直觉开场</span><span class="ch-pill">02 · 飞天壁画与PBD飘带</span><span class="ch-pill">03 · NASA火星与白色火箭</span><span class="ch-pill">04 · 夜间进化与架构总结</span></div>
+          </div>
+
+          <div class="players-grid">
+            <div class="player-box landscape-box">
+              <div class="player-label">🖥 16:9 B站横屏深度解析版 (1920×1080 · 168.6s)</div>
+              <video controls preload="metadata" poster="./ep01-generative-visual-lab/ep01-generative-visual-lab_landscape_16x9_cover.png">
+                <source src="./ep01-generative-visual-lab/ep01-generative-visual-lab_landscape_16x9.mp4" type="video/mp4">
+              </video>
+              <div class="dl-links">
+                <a href="./ep01-generative-visual-lab/ep01-generative-visual-lab_landscape_16x9.mp4" download>⬇ 下载 16:9 MP4</a>
+                <a href="./ep01-generative-visual-lab/ep01-generative-visual-lab_landscape_16x9.srt" download>📝 双语字幕 (.srt)</a>
+                <a href="./ep01-generative-visual-lab/ep01-generative-visual-lab_landscape_16x9_cover.png" target="_blank">🖼 高清封面</a>
+              </div>
+            </div>
+
+            <div class="player-box portrait-box">
+              <div class="player-label">📱 9:16 竖屏 Story 速览版 (1080×1920 · 65.3s)</div>
+              <video controls preload="metadata" poster="./ep01-generative-visual-lab/ep01-generative-visual-lab_portrait_9x16_cover.png">
+                <source src="./ep01-generative-visual-lab/ep01-generative-visual-lab_portrait_9x16.mp4" type="video/mp4">
+              </video>
+              <div class="dl-links">
+                <a href="./ep01-generative-visual-lab/ep01-generative-visual-lab_portrait_9x16.mp4" download>⬇ 下载 9:16 MP4</a>
+                <a href="./ep01-generative-visual-lab/ep01-generative-visual-lab_portrait_9x16.srt" download>📝 竖屏字幕 (.srt)</a>
+                <a href="./ep01-generative-visual-lab/ep01-generative-visual-lab_portrait_9x16_cover.png" target="_blank">🖼 竖屏封面</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="kpi-strip"><div class="kpi-mini"><div class="kpi-val" style="color:#38bdf8">16.7 ms</div><div class="kpi-lbl">敦煌飞天群飞 P95 帧耗时 (预算 ≤33.3ms)</div></div><div class="kpi-mini"><div class="kpi-val" style="color:#38bdf8">27 Calls</div><div class="kpi-lbl">白色火箭静态发射台按材质合批 (原 142)</div></div><div class="kpi-mini"><div class="kpi-val" style="color:#38bdf8">151+ Stages</div><div class="kpi-lbl">夜间 Automation 持续演进验证阶段数</div></div></div>
+        </article>
+        
+        <article class="ep-card" id="ep02-voice-agent-lab">
+          <div class="ep-header">
+            <div class="ep-badges">
+              <span class="badge-ep" style="background:#10b981;color:#090d16">EP02 · 实时语音智能体实验室</span>
+              <span class="badge-repo">📦 turbo998/voice-agent-lab</span>
+              <span class="badge-dur">🖥 16:9 (178s) &nbsp;|&nbsp; 📱 9:16 (71s)</span>
+            </div>
+            <h2 class="ep-title-zh">延迟压进300毫秒！拆解工业级 Voice Agent 实时语音智能体的打断机制与167道安全护栏</h2>
+            <p class="ep-title-en">Sub-300ms Latency! Dissecting Industrial Voice Agent Barge-in (turnEpoch) & 167 Safety Guardrails</p>
+            <div class="ch-bar"><span class="ch-pill">01 · 为什么语音AI像对讲机</span><span class="ch-pill">02 · turnEpoch投机取消</span><span class="ch-pill">03 · 167道高危行业护栏</span><span class="ch-pill">04 · 选型打单与开源门户</span></div>
+          </div>
+
+          <div class="players-grid">
+            <div class="player-box landscape-box">
+              <div class="player-label">🖥 16:9 B站横屏深度解析版 (1920×1080 · 178.1s)</div>
+              <video controls preload="metadata" poster="./ep02-voice-agent-lab/ep02-voice-agent-lab_landscape_16x9_cover.png">
+                <source src="./ep02-voice-agent-lab/ep02-voice-agent-lab_landscape_16x9.mp4" type="video/mp4">
+              </video>
+              <div class="dl-links">
+                <a href="./ep02-voice-agent-lab/ep02-voice-agent-lab_landscape_16x9.mp4" download>⬇ 下载 16:9 MP4</a>
+                <a href="./ep02-voice-agent-lab/ep02-voice-agent-lab_landscape_16x9.srt" download>📝 双语字幕 (.srt)</a>
+                <a href="./ep02-voice-agent-lab/ep02-voice-agent-lab_landscape_16x9_cover.png" target="_blank">🖼 高清封面</a>
+              </div>
+            </div>
+
+            <div class="player-box portrait-box">
+              <div class="player-label">📱 9:16 竖屏 Story 速览版 (1080×1920 · 71.2s)</div>
+              <video controls preload="metadata" poster="./ep02-voice-agent-lab/ep02-voice-agent-lab_portrait_9x16_cover.png">
+                <source src="./ep02-voice-agent-lab/ep02-voice-agent-lab_portrait_9x16.mp4" type="video/mp4">
+              </video>
+              <div class="dl-links">
+                <a href="./ep02-voice-agent-lab/ep02-voice-agent-lab_portrait_9x16.mp4" download>⬇ 下载 9:16 MP4</a>
+                <a href="./ep02-voice-agent-lab/ep02-voice-agent-lab_portrait_9x16.srt" download>📝 竖屏字幕 (.srt)</a>
+                <a href="./ep02-voice-agent-lab/ep02-voice-agent-lab_portrait_9x16_cover.png" target="_blank">🖼 竖屏封面</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="kpi-strip"><div class="kpi-mini"><div class="kpi-val" style="color:#10b981">< 300 ms</div><div class="kpi-lbl">全双工语音打断与热备切换端到端响应延迟</div></div><div class="kpi-mini"><div class="kpi-val" style="color:#10b981">167 道</div><div class="kpi-lbl">确定性生产级安全与协议护栏 (P08–P158)</div></div><div class="kpi-mini"><div class="kpi-val" style="color:#10b981">176 项</div><div class="kpi-lbl">现场 POC 照妖镜探针 (A01–P158) 实测覆盖</div></div></div>
+        </article>
+        
+        <article class="ep-card" id="ep03-ai-infra-research">
+          <div class="ep-header">
+            <div class="ep-badges">
+              <span class="badge-ep" style="background:#3b82f6;color:#090d16">EP03 · 算力与推理系统硬核拆解</span>
+              <span class="badge-repo">📦 turbo998/ai-infra-research</span>
+              <span class="badge-dur">🖥 16:9 (152s) &nbsp;|&nbsp; 📱 9:16 (65s)</span>
+            </div>
+            <h2 class="ep-title-zh">GPU显存与注意力瓶颈怎么破？FlashInfer 0.6 与月之暗面 Mooncake 架构拆解</h2>
+            <p class="ep-title-en">Breaking LLM Memory & Attention Bottlenecks: FlashInfer 0.6 & Mooncake Disaggregation</p>
+            <div class="ch-bar"><span class="ch-pill">01 · 01 注意力墙</span><span class="ch-pill">02 · 02 FlashInfer 0.6</span><span class="ch-pill">03 · 03 PD分离与KVCache</span><span class="ch-pill">04 · 04 训推底座全景</span></div>
+          </div>
+
+          <div class="players-grid">
+            <div class="player-box landscape-box">
+              <div class="player-label">🖥 16:9 B站横屏深度解析版 (1920×1080 · 151.6s)</div>
+              <video controls preload="metadata" poster="./ep03-ai-infra-research/ep03-ai-infra-research_landscape_16x9_cover.png">
+                <source src="./ep03-ai-infra-research/ep03-ai-infra-research_landscape_16x9.mp4" type="video/mp4">
+              </video>
+              <div class="dl-links">
+                <a href="./ep03-ai-infra-research/ep03-ai-infra-research_landscape_16x9.mp4" download>⬇ 下载 16:9 MP4</a>
+                <a href="./ep03-ai-infra-research/ep03-ai-infra-research_landscape_16x9.srt" download>📝 双语字幕 (.srt)</a>
+                <a href="./ep03-ai-infra-research/ep03-ai-infra-research_landscape_16x9_cover.png" target="_blank">🖼 高清封面</a>
+              </div>
+            </div>
+
+            <div class="player-box portrait-box">
+              <div class="player-label">📱 9:16 竖屏 Story 速览版 (1080×1920 · 65.0s)</div>
+              <video controls preload="metadata" poster="./ep03-ai-infra-research/ep03-ai-infra-research_portrait_9x16_cover.png">
+                <source src="./ep03-ai-infra-research/ep03-ai-infra-research_portrait_9x16.mp4" type="video/mp4">
+              </video>
+              <div class="dl-links">
+                <a href="./ep03-ai-infra-research/ep03-ai-infra-research_portrait_9x16.mp4" download>⬇ 下载 9:16 MP4</a>
+                <a href="./ep03-ai-infra-research/ep03-ai-infra-research_portrait_9x16.srt" download>📝 竖屏字幕 (.srt)</a>
+                <a href="./ep03-ai-infra-research/ep03-ai-infra-research_portrait_9x16_cover.png" target="_blank">🖼 竖屏封面</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="kpi-strip"><div class="kpi-mini"><div class="kpi-val" style="color:#3b82f6">Phase 56</div><div class="kpi-lbl">研究演进阶段</div></div><div class="kpi-mini"><div class="kpi-val" style="color:#3b82f6">12 大框架</div><div class="kpi-lbl">覆盖核心引擎</div></div><div class="kpi-mini"><div class="kpi-val" style="color:#3b82f6">100% Pass</div><div class="kpi-lbl">测试验证状态</div></div></div>
+        </article>
+        
+        <article class="ep-card" id="ep04-agentic-commerce-lab">
+          <div class="ep-header">
+            <div class="ep-badges">
+              <span class="badge-ep" style="background:#10b981;color:#090d16">EP04 · 智能体支付安全工程</span>
+              <span class="badge-repo">📦 turbo998/agentic-commerce-lab</span>
+              <span class="badge-dur">🖥 16:9 (146s) &nbsp;|&nbsp; 📱 9:16 (73s)</span>
+            </div>
+            <h2 class="ep-title-zh">当 AI 替你刷卡买单，怎么防重放与越权？UCP 与 AP2 商业协议安全拆解</h2>
+            <p class="ep-title-en">Securing Autonomous AI Shopping: UCP & AP2 Protocol Guardrails Explained</p>
+            <div class="ch-bar"><span class="ch-pill">01 · 01 AI代购风险</span><span class="ch-pill">02 · 02 UCP协议防线</span><span class="ch-pill">03 · 03 AP2授权凭据</span><span class="ch-pill">04 · 04 7卡基准验证</span></div>
+          </div>
+
+          <div class="players-grid">
+            <div class="player-box landscape-box">
+              <div class="player-label">🖥 16:9 B站横屏深度解析版 (1920×1080 · 146.2s)</div>
+              <video controls preload="metadata" poster="./ep04-agentic-commerce-lab/ep04-agentic-commerce-lab_landscape_16x9_cover.png">
+                <source src="./ep04-agentic-commerce-lab/ep04-agentic-commerce-lab_landscape_16x9.mp4" type="video/mp4">
+              </video>
+              <div class="dl-links">
+                <a href="./ep04-agentic-commerce-lab/ep04-agentic-commerce-lab_landscape_16x9.mp4" download>⬇ 下载 16:9 MP4</a>
+                <a href="./ep04-agentic-commerce-lab/ep04-agentic-commerce-lab_landscape_16x9.srt" download>📝 双语字幕 (.srt)</a>
+                <a href="./ep04-agentic-commerce-lab/ep04-agentic-commerce-lab_landscape_16x9_cover.png" target="_blank">🖼 高清封面</a>
+              </div>
+            </div>
+
+            <div class="player-box portrait-box">
+              <div class="player-label">📱 9:16 竖屏 Story 速览版 (1080×1920 · 72.6s)</div>
+              <video controls preload="metadata" poster="./ep04-agentic-commerce-lab/ep04-agentic-commerce-lab_portrait_9x16_cover.png">
+                <source src="./ep04-agentic-commerce-lab/ep04-agentic-commerce-lab_portrait_9x16.mp4" type="video/mp4">
+              </video>
+              <div class="dl-links">
+                <a href="./ep04-agentic-commerce-lab/ep04-agentic-commerce-lab_portrait_9x16.mp4" download>⬇ 下载 9:16 MP4</a>
+                <a href="./ep04-agentic-commerce-lab/ep04-agentic-commerce-lab_portrait_9x16.srt" download>📝 竖屏字幕 (.srt)</a>
+                <a href="./ep04-agentic-commerce-lab/ep04-agentic-commerce-lab_portrait_9x16_cover.png" target="_blank">🖼 竖屏封面</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="kpi-strip"><div class="kpi-mini"><div class="kpi-val" style="color:#10b981">Stage 177</div><div class="kpi-lbl">协议演进阶段</div></div><div class="kpi-mini"><div class="kpi-val" style="color:#10b981">UCP #974/#897</div><div class="kpi-lbl">覆盖上游议题</div></div><div class="kpi-mini"><div class="kpi-val" style="color:#10b981">100% 拦截</div><div class="kpi-lbl">基准评测通过</div></div></div>
+        </article>
+        
+        <article class="ep-card" id="ep05-azure-agent-infra-playbook">
+          <div class="ep-header">
+            <div class="ep-badges">
+              <span class="badge-ep" style="background:#8b5cf6;color:#090d16">EP05 · 云原生智能体架构工程</span>
+              <span class="badge-repo">📦 turbo998/ai-infra-lab & Azure-Infra-Lab</span>
+              <span class="badge-dur">🖥 16:9 (148s) &nbsp;|&nbsp; 📱 9:16 (97s)</span>
+            </div>
+            <h2 class="ep-title-zh">如何把 AI Agent 关进零信任沙箱？Azure 企业级智能体基建 145 章实战浓缩</h2>
+            <p class="ep-title-en">Zero-Trust Sandboxes for Enterprise AI Agents: 145 Chapters of Azure Infra Distilled</p>
+            <div class="ch-bar"><span class="ch-pill">01 · 01 裸奔的Agent</span><span class="ch-pill">02 · 02 Hyper-V微虚机沙箱</span><span class="ch-pill">03 · 03 AI网关与令牌治理</span><span class="ch-pill">04 · 04 5库联动矩阵</span></div>
+          </div>
+
+          <div class="players-grid">
+            <div class="player-box landscape-box">
+              <div class="player-label">🖥 16:9 B站横屏深度解析版 (1920×1080 · 148.1s)</div>
+              <video controls preload="metadata" poster="./ep05-azure-agent-infra-playbook/ep05-azure-agent-infra-playbook_landscape_16x9_cover.png">
+                <source src="./ep05-azure-agent-infra-playbook/ep05-azure-agent-infra-playbook_landscape_16x9.mp4" type="video/mp4">
+              </video>
+              <div class="dl-links">
+                <a href="./ep05-azure-agent-infra-playbook/ep05-azure-agent-infra-playbook_landscape_16x9.mp4" download>⬇ 下载 16:9 MP4</a>
+                <a href="./ep05-azure-agent-infra-playbook/ep05-azure-agent-infra-playbook_landscape_16x9.srt" download>📝 双语字幕 (.srt)</a>
+                <a href="./ep05-azure-agent-infra-playbook/ep05-azure-agent-infra-playbook_landscape_16x9_cover.png" target="_blank">🖼 高清封面</a>
+              </div>
+            </div>
+
+            <div class="player-box portrait-box">
+              <div class="player-label">📱 9:16 竖屏 Story 速览版 (1080×1920 · 96.8s)</div>
+              <video controls preload="metadata" poster="./ep05-azure-agent-infra-playbook/ep05-azure-agent-infra-playbook_portrait_9x16_cover.png">
+                <source src="./ep05-azure-agent-infra-playbook/ep05-azure-agent-infra-playbook_portrait_9x16.mp4" type="video/mp4">
+              </video>
+              <div class="dl-links">
+                <a href="./ep05-azure-agent-infra-playbook/ep05-azure-agent-infra-playbook_portrait_9x16.mp4" download>⬇ 下载 9:16 MP4</a>
+                <a href="./ep05-azure-agent-infra-playbook/ep05-azure-agent-infra-playbook_portrait_9x16.srt" download>📝 竖屏字幕 (.srt)</a>
+                <a href="./ep05-azure-agent-infra-playbook/ep05-azure-agent-infra-playbook_portrait_9x16_cover.png" target="_blank">🖼 竖屏封面</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="kpi-strip"><div class="kpi-mini"><div class="kpi-val" style="color:#8b5cf6">Cycle #139</div><div class="kpi-lbl">持续演进周期</div></div><div class="kpi-mini"><div class="kpi-val" style="color:#8b5cf6">147 / 147</div><div class="kpi-lbl">自动化验证套件</div></div><div class="kpi-mini"><div class="kpi-val" style="color:#8b5cf6">5 大主线库</div><div class="kpi-lbl">跨仓库同步规模</div></div></div>
+        </article>
+        
+  </div>
+</body>
+</html>

@@ -1,0 +1,65 @@
+1
+00:00:00,000 --> 00:00:03,129
+买最贵的 GPU，跑最低的利用率
+Million-token LLM inference is bottlenecked by HBM bandwidth & KV Cache movement, not raw FLOPs.
+
+2
+00:00:03,129 --> 00:00:06,442
+这是今天大模型推理工程最真实的痛点
+Million-token LLM inference is bottlenecked by HBM bandwidth & KV Cache movement, not raw FLOPs.
+
+3
+00:00:06,442 --> 00:00:11,412
+当上下文长度拉到十二万八千甚至一百万 Token 时
+Million-token LLM inference is bottlenecked by HBM bandwidth & KV Cache movement, not raw FLOPs.
+
+4
+00:00:11,412 --> 00:00:16,749
+Decode 阶段超过百分之八十的时间根本不在做矩阵乘法
+Million-token LLM inference is bottlenecked by HBM bandwidth & KV Cache movement, not raw FLOPs.
+
+5
+00:00:16,749 --> 00:00:23,007
+而是在 HBM 显存和 SRAM 之间搬运庞大的 KV Cache
+Million-token LLM inference is bottlenecked by HBM bandwidth & KV Cache movement, not raw FLOPs.
+
+6
+00:00:23,007 --> 00:00:26,547
+先看算子层。过去每出一种新的注意力变体
+FlashInfer 0.6 unifies VSA, KDA, and DSA via BSR block-sparse layout and JIT compilation.
+
+7
+00:00:26,547 --> 00:00:33,271
+比如视频生成里的 VSA 变长块稀疏、Kimi 的 KDA 线性混合注意力
+FlashInfer 0.6 unifies VSA, KDA, and DSA via BSR block-sparse layout and JIT compilation.
+
+8
+00:00:33,271 --> 00:00:37,872
+或者 DeepSeek 的 DSA 动态稀疏注意力
+FlashInfer 0.6 unifies VSA, KDA, and DSA via BSR block-sparse layout and JIT compilation.
+
+9
+00:00:37,872 --> 00:00:41,234
+工程师都得手写几千行 CUDA 汇编
+FlashInfer 0.6 unifies VSA, KDA, and DSA via BSR block-sparse layout and JIT compilation.
+
+10
+00:00:41,234 --> 00:00:44,809
+算子快了还不够，集群调度怎么破？
+SGLang RadixAttention + Mooncake/NIXL enable zero-copy RDMA Prefill-Decode disaggregation.
+
+11
+00:00:44,809 --> 00:00:50,393
+第二块核心突破是 PD 分离与全局 KV 缓存池
+SGLang RadixAttention + Mooncake/NIXL enable zero-copy RDMA Prefill-Decode disaggregation.
+
+12
+00:00:50,393 --> 00:00:54,247
+最后看训推一体全景。我们的研究库不仅拆解了推理侧
+Full-stack mapping from Megatron/TorchTitan FP8 training to FlashInfer/SGLang inference.
+
+13
+00:00:54,247 --> 00:01:05,037
+还把训练侧的 Megatron-LM、TransformerEngine 和 PyTorch 原生的 TorchTitan 串成了完整闭环
+Full-stack mapping from Megatron/TorchTitan FP8 training to FlashInfer/SGLang inference.
+

@@ -1,0 +1,145 @@
+1
+00:00:00,000 --> 00:00:11,003
+如果我告诉你，眼前这个衣带当风的敦煌莫高窟飞天、精确到水手峡谷断崖的火星三维地形、还有喷射马赫环尾焰的白色火箭
+What if I told you these Dunhuang flying apsaras, NASA Mars canyons, and a 3D rocket launch with Mach diamonds load zero external CDN textures, running at 60fps in your browser via offline Blender baking and pure math shaders?
+
+2
+00:00:11,003 --> 00:00:14,539
+全都没有加载哪怕一张外部CDN图片
+What if I told you these Dunhuang flying apsaras, NASA Mars canyons, and a 3D rocket launch with Mach diamonds load zero external CDN textures, running at 60fps in your browser via offline Blender baking and pure math shaders?
+
+3
+00:00:14,539 --> 00:00:21,023
+而是靠几百KB的离线烘焙数据加纯数学着色器在浏览器里实时算出来的
+Welcome to Episode 1 of our overnight research series.
+
+4
+00:00:21,023 --> 00:00:31,240
+你敢信吗？欢迎来到夜间自动化研究第一期：揭秘程序造景实验室 Generative Visual Lab
+Welcome to Episode 1 of our overnight research series.
+
+5
+00:00:31,240 --> 00:00:34,664
+先看第一幕：风起壁间·敦煌飞天
+In Act 1, Dunhuang Feitian, per-frame gradients and stroke shadows tank Canvas 2D framerates.
+
+6
+00:00:34,664 --> 00:00:38,730
+在Canvas 2D里画精细国风人物
+In Act 1, Dunhuang Feitian, per-frame gradients and stroke shadows tank Canvas 2D framerates.
+
+7
+00:00:38,730 --> 00:00:43,439
+最容易踩的坑就是每帧重画径向渐变和笔触阴影
+In Act 1, Dunhuang Feitian, per-frame gradients and stroke shadows tank Canvas 2D framerates.
+
+8
+00:00:43,439 --> 00:00:53,711
+导致帧率直接腰斩。我们的解法是分层解耦：先用Blender 4.5构建莫高窟四龛拱券与莲瓣藻井
+We decoupled the layers: Blender 4.5 bakes a 430KB orthographic grotto relief into a static buffer, while character faces and gold jewelry live in a 2x offscreen cache.
+
+9
+00:00:53,711 --> 00:00:57,136
+烘焙成430KB的正交浮雕底壁
+We decoupled the layers: Blender 4.5 bakes a 430KB orthographic grotto relief into a static buffer, while character faces and gold jewelry live in a 2x offscreen cache.
+
+10
+00:00:57,136 --> 00:01:06,124
+一次画进静态墙面；再把飞天的杏眼高光、发簪金饰、衣襟刺绣画在二倍分辨率的离屏缓存里
+We decoupled the layers: Blender 4.5 bakes a 430KB orthographic grotto relief into a static buffer, while character faces and gold jewelry live in a 2x offscreen cache.
+
+11
+00:01:06,124 --> 00:01:10,405
+动画循环只用位置动力学求解双面金边飘带
+The animation loop only solves continuous PBD ribbons with zero per-frame allocations, hitting 16.7ms p95!
+
+12
+00:01:10,405 --> 00:01:16,825
+并且复用预分配数组，把群飞P95帧耗时死死压在16.7毫秒！
+The animation loop only solves continuous PBD ribbons with zero per-frame allocations, hitting 16.7ms p95!
+
+13
+00:01:16,825 --> 00:01:20,466
+第二幕来看Astra火星和白色火箭
+In Act 2, Astra Mars strictly preserves NASA MOLA elevation measurements, quadrupling displacement vertices at 384 cells per latitude while layering a 165KB Blender basalt micro-normal map only in realistic mode.
+
+14
+00:01:20,466 --> 00:01:24,915
+很多三维地球Demo喜欢用随机噪声伪造地形
+In Act 2, Astra Mars strictly preserves NASA MOLA elevation measurements, quadrupling displacement vertices at 384 cells per latitude while layering a 165KB Blender basalt micro-normal map only in realistic mode.
+
+15
+00:01:24,915 --> 00:01:31,994
+但我们在Astra火星里立下铁律：绝不篡改NASA MOLA实测高程！
+In Act 2, Astra Mars strictly preserves NASA MOLA elevation measurements, quadrupling displacement vertices at 384 cells per latitude while layering a 165KB Blender basalt micro-normal map only in realistic mode.
+
+16
+00:01:31,994 --> 00:01:36,849
+384格每纬度的精细近景把真实位移顶点提升四倍
+In Act 2, Astra Mars strictly preserves NASA MOLA elevation measurements, quadrupling displacement vertices at 384 cells per latitude while layering a 165KB Blender basalt micro-normal map only in realistic mode.
+
+17
+00:01:36,849 --> 00:01:43,118
+只用165KB的Blender无缝玄武岩法线贴图增强写实光影
+In Act 2, Astra Mars strictly preserves NASA MOLA elevation measurements, quadrupling displacement vertices at 384 cells per latitude while layering a 165KB Blender basalt micro-normal map only in realistic mode.
+
+18
+00:01:43,118 --> 00:01:47,568
+切换到灰度或线框检验模式立刻还原纯科学几何
+For Rocket Launch, a 188KB GLB batches 142 pad parts into 27 draw calls and renders seamless Mach shock diamonds using dual-cone periodic phase shaders.
+
+19
+00:01:47,568 --> 00:01:49,995
+而在白色火箭Demo里
+For Rocket Launch, a 188KB GLB batches 142 pad parts into 27 draw calls and renders seamless Mach shock diamonds using dual-cone periodic phase shaders.
+
+20
+00:01:49,995 --> 00:01:57,479
+我们把箭体、钛合金栅格翼、五台拉瓦尔喷管和发射台浓缩进188KB的GLB
+For Rocket Launch, a 188KB GLB batches 142 pad parts into 27 draw calls and renders seamless Mach shock diamonds using dual-cone periodic phase shaders.
+
+21
+00:01:57,479 --> 00:02:02,737
+按材质合批把Draw Call从142次降到27次
+For Rocket Launch, a 188KB GLB batches 142 pad parts into 27 draw calls and renders seamless Mach shock diamonds using dual-cone periodic phase shaders.
+
+22
+00:02:02,737 --> 00:02:07,591
+再用双层圆锥相位函数算出无UV接缝的尾焰马赫环！
+For Rocket Launch, a 188KB GLB batches 142 pad parts into 27 draw calls and renders seamless Mach shock diamonds using dual-cone periodic phase shaders.
+
+23
+00:02:07,591 --> 00:02:14,049
+为什么这套实验室能每晚零点自动迭代到第151个Stage还不崩？
+How does this lab evolve autonomously past Stage 151 every night without breaking?
+
+24
+00:02:14,049 --> 00:02:19,497
+因为我们配了最严苛的Playwright真浏览器门禁
+How does this lab evolve autonomously past Stage 151 every night without breaking?
+
+25
+00:02:19,497 --> 00:02:24,542
+曾经有一次夜间优化让火箭帧耗时飙到116.7毫秒
+Strict Playwright browser gates!
+
+26
+00:02:24,542 --> 00:02:27,568
+自动化门禁当场拦截、拒绝部署
+Strict Playwright browser gates!
+
+27
+00:02:27,568 --> 00:02:34,429
+直到加上二级DPR动态降级、重回33.4毫秒才放行合入main分支
+When one commit pushed rocket p95 to 116.7ms, the gate blocked deployment until two-tier DPR scaling brought it back to 33.4ms.
+
+28
+00:02:34,429 --> 00:02:41,694
+所有源码、Blender脚本和中英双语文档都已同步在GitHub主分支
+When one commit pushed rocket p95 to 116.7ms, the gate blocked deployment until two-tier DPR scaling brought it back to 33.4ms.
+
+29
+00:02:41,694 --> 00:02:48,554
+快去长按点赞一键三连，我们在评论区聊聊你最想看哪个着色器的源码拆解！
+Everything is live on GitHub main in Chinese and English—hit like, coin, and subscribe!
+

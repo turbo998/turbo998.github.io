@@ -1,0 +1,140 @@
+1
+00:00:00,000 --> 00:00:02,929
+买最贵的 GPU，跑最低的利用率
+Million-token LLM inference is bottlenecked by HBM bandwidth & KV Cache movement, not raw FLOPs.
+
+2
+00:00:02,929 --> 00:00:06,029
+这是今天大模型推理工程最真实的痛点
+Million-token LLM inference is bottlenecked by HBM bandwidth & KV Cache movement, not raw FLOPs.
+
+3
+00:00:06,029 --> 00:00:10,680
+当上下文长度拉到十二万八千甚至一百万 Token 时
+Million-token LLM inference is bottlenecked by HBM bandwidth & KV Cache movement, not raw FLOPs.
+
+4
+00:00:10,680 --> 00:00:15,676
+Decode 阶段超过百分之八十的时间根本不在做矩阵乘法
+Million-token LLM inference is bottlenecked by HBM bandwidth & KV Cache movement, not raw FLOPs.
+
+5
+00:00:15,676 --> 00:00:21,533
+而是在 HBM 显存和 SRAM 之间搬运庞大的 KV Cache
+Million-token LLM inference is bottlenecked by HBM bandwidth & KV Cache movement, not raw FLOPs.
+
+6
+00:00:21,533 --> 00:00:27,046
+今晚我们的 AI Infra 自动化研究线推进到了第五十六阶段
+Million-token LLM inference is bottlenecked by HBM bandwidth & KV Cache movement, not raw FLOPs.
+
+7
+00:00:27,046 --> 00:00:38,588
+一次性把 FlashInfer、SGLang、vLLM、TensorRT-LLM 以及 Mooncake 的最新底层突破扒了个底朝天
+Million-token LLM inference is bottlenecked by HBM bandwidth & KV Cache movement, not raw FLOPs.
+
+8
+00:00:38,588 --> 00:00:41,897
+先看算子层。过去每出一种新的注意力变体
+FlashInfer 0.6 unifies VSA, KDA, and DSA via BSR block-sparse layout and JIT compilation.
+
+9
+00:00:41,897 --> 00:00:48,184
+比如视频生成里的 VSA 变长块稀疏、Kimi 的 KDA 线性混合注意力
+FlashInfer 0.6 unifies VSA, KDA, and DSA via BSR block-sparse layout and JIT compilation.
+
+10
+00:00:48,184 --> 00:00:52,486
+或者 DeepSeek 的 DSA 动态稀疏注意力
+FlashInfer 0.6 unifies VSA, KDA, and DSA via BSR block-sparse layout and JIT compilation.
+
+11
+00:00:52,486 --> 00:00:55,629
+工程师都得手写几千行 CUDA 汇编
+FlashInfer 0.6 unifies VSA, KDA, and DSA via BSR block-sparse layout and JIT compilation.
+
+12
+00:00:55,629 --> 00:01:03,736
+FlashInfer 零点六版本彻底改变了游戏规则：它用块稀疏压缩行格式 BSR 统一了内存布局
+FlashInfer 0.6 unifies VSA, KDA, and DSA via BSR block-sparse layout and JIT compilation.
+
+13
+00:01:03,736 --> 00:01:07,045
+配合 TVM 绑定和 JIT 即时编译
+FlashInfer 0.6 unifies VSA, KDA, and DSA via BSR block-sparse layout and JIT compilation.
+
+14
+00:01:07,045 --> 00:01:11,844
+把稀疏块调度变成了十几行 Python 就能定制的流水线
+FlashInfer 0.6 unifies VSA, KDA, and DSA via BSR block-sparse layout and JIT compilation.
+
+15
+00:01:11,844 --> 00:01:16,311
+直接打通 Hopper 与 Blackwell 架构
+FlashInfer 0.6 unifies VSA, KDA, and DSA via BSR block-sparse layout and JIT compilation.
+
+16
+00:01:16,311 --> 00:01:18,904
+算子快了还不够，集群调度怎么破？
+SGLang RadixAttention + Mooncake/NIXL enable zero-copy RDMA Prefill-Decode disaggregation.
+
+17
+00:01:18,904 --> 00:01:22,955
+第二块核心突破是 PD 分离与全局 KV 缓存池
+SGLang RadixAttention + Mooncake/NIXL enable zero-copy RDMA Prefill-Decode disaggregation.
+
+18
+00:01:22,955 --> 00:01:30,086
+SGLang 的 RadixAttention 把系统提示词和多轮对话前缀组织成基数树
+SGLang RadixAttention + Mooncake/NIXL enable zero-copy RDMA Prefill-Decode disaggregation.
+
+19
+00:01:30,086 --> 00:01:38,189
+而月之暗面开源的 Mooncake、LMCache 以及英伟达 Dynamo 和 NIXL 通信层
+SGLang RadixAttention + Mooncake/NIXL enable zero-copy RDMA Prefill-Decode disaggregation.
+
+20
+00:01:38,189 --> 00:01:42,726
+则利用 GPUDirect RDMA 和 NVLink
+SGLang RadixAttention + Mooncake/NIXL enable zero-copy RDMA Prefill-Decode disaggregation.
+
+21
+00:01:42,726 --> 00:01:50,019
+把 Prefill 节点算好的 KV Cache 毫秒级零拷贝推送到 Decode 节点
+SGLang RadixAttention + Mooncake/NIXL enable zero-copy RDMA Prefill-Decode disaggregation.
+
+22
+00:01:50,019 --> 00:01:55,529
+哪怕面对突发流量，也能通过全局前缀复用省掉百分之六十以上的重复计算
+SGLang RadixAttention + Mooncake/NIXL enable zero-copy RDMA Prefill-Decode disaggregation.
+
+23
+00:01:55,529 --> 00:01:59,221
+最后看训推一体全景。我们的研究库不仅拆解了推理侧
+Full-stack mapping from Megatron/TorchTitan FP8 training to FlashInfer/SGLang inference.
+
+24
+00:01:59,221 --> 00:02:09,558
+还把训练侧的 Megatron-LM、TransformerEngine 和 PyTorch 原生的 TorchTitan 串成了完整闭环
+Full-stack mapping from Megatron/TorchTitan FP8 training to FlashInfer/SGLang inference.
+
+25
+00:02:09,558 --> 00:02:18,567
+通过 TransformerEngine 的 Delayed Scaling 与 Block-wise FP8 量化配方
+Full-stack mapping from Megatron/TorchTitan FP8 training to FlashInfer/SGLang inference.
+
+26
+00:02:18,567 --> 00:02:25,803
+训练阶段的低精度权重可以直接对齐推理侧 TensorRT-LLM 和 vLLM 的 FP8 内核
+Full-stack mapping from Megatron/TorchTitan FP8 training to FlashInfer/SGLang inference.
+
+27
+00:02:25,803 --> 00:02:28,904
+所有五十六个阶段的双语架构文档与对比矩阵
+Full-stack mapping from Megatron/TorchTitan FP8 training to FlashInfer/SGLang inference.
+
+28
+00:02:28,904 --> 00:02:31,562
+已全部同步到 GitHub 主分支
+Full-stack mapping from Megatron/TorchTitan FP8 training to FlashInfer/SGLang inference.
+
