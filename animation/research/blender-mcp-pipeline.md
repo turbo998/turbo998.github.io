@@ -1,6 +1,6 @@
-# Gemini 4 Argon + Blender 4.5 LTS MCP 混合渲染架构研究
+# HVE Agent Argon + Blender 4.5 LTS MCP 混合渲染架构研究
 
-本文记录 `generative-visual-lab` 在切换至 **Gemini 4 Argon (`gemini-4-argon`)** 后，如何接入本地 **Blender 4.5.10 LTS** 与 **`blender-mcp` (v2.0.0)**，构建“离线高精度三维建模/Cycles 光线追踪烘焙 + 浏览器实时 WebGL2/Canvas 2D 交互渲染”的混合管线。
+本文记录 `generative-visual-lab` 在切换至 **HVE Agent Argon (`Frontier Model-4-argon`)** 后，如何接入本地 **Blender 4.5.10 LTS** 与 **`blender-mcp` (v2.0.0)**，构建“离线高精度三维建模/Cycles 光线追踪烘焙 + 浏览器实时 WebGL2/Canvas 2D 交互渲染”的混合管线。
 
 ---
 

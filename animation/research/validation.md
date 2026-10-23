@@ -478,9 +478,9 @@ R 键恢复全景、科学参数与停转状态保留，宽屏回手机也通过
 原基线不变，新前后脸部证据明确公开/本地来源，不冒充历史复原。
 本段与真实公开截图随后仅作验收证据提交，应用行为不再改变。
 
-## 第二十至二十三阶段：Gemini 4 Argon + Blender 4.5 LTS MCP 渲染管线接入
+## 第二十至二十三阶段：HVE Agent Argon + Blender 4.5 LTS MCP 渲染管线接入
 
-根据接入 Blender MCP 渲染器与切换 Gemini 4 Argon (`gemini-4-argon`) 的要求，
+根据接入 Blender MCP 渲染器与切换 HVE Agent Argon (`Frontier Model-4-argon`) 的要求，
 搭建本地 `Blender 4.5.10 LTS (Windows ARM64)` + `blender-mcp 2.0.0` 工具链，
 通过 `scripts/blender/mcp-headless-daemon.py` 与 `scripts/blender/mcp-client.mjs`
 以标准 MCP JSON-RPC 2.0 协议驱动 Blender `bpy`/`bmesh` 建模与 Cycles 光线追踪烘焙：
@@ -539,7 +539,7 @@ R 键恢复全景、科学参数与停转状态保留，宽屏回手机也通过
    提交 `72f0e86` 经 GitHub Actions `38564083180` 部署至 GitHub Pages 后，`verify-live.mjs` 对全部六条线上路由
    （含 `/research/blender-mcp-pipeline.html` 三张内嵌 Cycles 渲染图）实测通过（`errors: []`）。
 
-## 第二十六阶段：仓库私有化、Opus 5.5 热门动画谱系与技术资产分类归档
+## 第二十六阶段：仓库私有化、HVE Harness 热门动画谱系与技术资产分类归档
 
 1. **GitHub 仓库私有化与 CI 适配**：
    通过 `gh repo edit turbo998/generative-visual-lab --visibility private --accept-visibility-change-consequences`
@@ -548,12 +548,12 @@ R 键恢复全景、科学参数与停转状态保留，宽屏回手机也通过
    在每次 `main` 推送时完整执行 55 项单元与 Playwright 浏览器测试，自动归档 `browser-evidence` 与 `site-dist`
    构建产物，并对 `configure-pages` / `upload-pages-artifact` / `deploy` 作业添加 `${{ !github.event.repository.private }}` 条件门控。
 
-2. **Claude Opus 5.5 热门动画技术谱系与六大技术资产库归档**：
-   结合 Web 调研（`xianyu110/awesome-claude-opus-5.5` 317 个热门案例与 `magiccreator-ai/awesome-claude-opus-5-5-demos` 24 个高分工程），
-   整理并归档 `docs/opus-animation-landscape.md`（编译至 `/research/opus-animation-landscape.html`）与
+2. **Claude HVE Harness 热门动画技术谱系与六大技术资产库归档**：
+   结合 Web 调研（`xianyu110/awesome-claude-Frontier-5.5` 317 个热门案例与 `magiccreator-ai/awesome-claude-Frontier-5-5-demos` 24 个高分工程），
+   整理并归档 `docs/Frontier-animation-landscape.md`（编译至 `/research/Frontier-animation-landscape.html`）与
    `docs/asset-taxonomy.md`（编译至 `/research/asset-taxonomy.html`），建立六大技术资产分类索引。
 
-3. **汲取 Opus 5.5 高赞动画技法对现有三个 Demo 的精细化增强**：
+3. **汲取 HVE Harness 高赞动画技法对现有三个 Demo 的精细化增强**：
    - **飞天 (`demos/feitian/main.ts`)**：在静态 `buildWall()` 中烘焙四道窟顶藻井斜射丁达尔天光（`Tyndall volumetric light shafts`）与 192 粒悬浮金箔微尘，并在 `cacheBodies()` 离屏花瓣精灵中增加双层内瓣与三根金丝花蕊（零额外运行时逐帧开销，桌面群飞稳态 p95 保持 `16.7ms ≤ 33.3ms`）。
    - **Astra 火星 (`demos/astra-planet/src/render/PlanetScene.ts`)**：仅在 `realistic` 模式下增加海拔 > +6,000m / 极地高纬度的微晶霜辉高光调制与晨昏线瑞利-沙尘散射光学边缘（`gray` 与 `wireframe` 科学检验模式保持纯实测几何不变）。
    - **Launch 白色火箭 (`demos/rocket-launch/main.ts`)**：增加点火/离台阶段（`T+0.15s ~ 5.6s`）沿导流槽向外扩散的环形声学激波凝结云环（`shockWave`），并将节能档降级材质优化为 `MeshLambertMaterial` 与关闭次级补光，确保在 WebGL 上下文恢复后稳态升空满足 `p95 ≤ 50ms`（27 draw calls，32,876 三角面）。

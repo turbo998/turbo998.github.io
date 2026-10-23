@@ -2,7 +2,7 @@
 
 ## 研究对象与证据
 
-参考页面：https://ds470b74heox1.cloudfront.net/opus55-feitian/index.html
+参考页面：https://ds470b74heox1.cloudfront.net/Frontier55-feitian/index.html
 
 研究基于完整分页读取的公开 HTML / 内联脚本及浏览器加载、静默入窟和单幅播放操作。
 参考页面确实启动了画布，公开就绪标记为 true。首次导航超时后页面仍加载完成；

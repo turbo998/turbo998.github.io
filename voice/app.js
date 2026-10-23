@@ -611,7 +611,7 @@
     {
       name: 'AWS (Amazon Connect + Nova Sonic) / Google CES / OpenAI Direct API',
       badge: 'Hyperscaler & Direct API Battlecard',
-      tech: '**AWS** 主推 Amazon Connect + Bedrock `Nova Sonic` S2S；**Google Cloud** 主推 Customer Engagement Suite (Dialogflow CX + Gemini Live)；**OpenAI Direct** 提供公网 Realtime WebSocket 接口。',
+      tech: '**AWS** 主推 Amazon Connect + Bedrock `Nova Sonic` S2S；**Google Cloud** 主推 Customer Engagement Suite (Dialogflow CX + Cloud Multimodal Live)；**OpenAI Direct** 提供公网 Realtime WebSocket 接口。',
       pricing: 'AWS Nova Sonic / Google CES 按分钟或音频 Token 叠加坐席席位费；OpenAI Direct 公网音频 Token 单价较高且 **0% 抵扣企业微软 Azure MACC 承诺额度**。',
       weaknesses: [
         'AWS Nova Sonic 与 Google CES 均不提供面向通用金融/政企本地机房的 **完全离线/联网 Docker 语音容器 (Disconnected Speech Containers)**。',
@@ -2522,17 +2522,17 @@
       }
     },
     {
-      code: 'N01 · 8% Packet-Loss Opus PLC',
+      code: 'N01 · 8% Packet-Loss WEBRTC PLC',
       badge: 'WER < 5.8%',
-      title: '8% 突发弱网丢包 Opus FEC + Neural PLC 抗损',
-      sub: '测试高铁/地下车库 8% 突发丢包 + 90ms 抖动下，对比 G.711 断字与 Opus 神经丢包隐藏',
+      title: '8% 突发弱网丢包 WEBRTC FEC + Neural PLC 抗损',
+      sub: '测试高铁/地下车库 8% 突发丢包 + 90ms 抖动下，对比 G.711 断字与 WEBRTC 神经丢包隐藏',
       customer_en: '[8% Burst Packet Loss + 90ms Jitter] "Rebook my interline PNR nine-kilo-two-mike-eight to tomorrow morning flight..."',
       customer_zh: '【8% 突发丢包 + 90ms 弱网抖动】“帮我把联程票号 9-K-2-M-8 改签到明早航班……”',
-      agent_en: 'OPUS IN-BAND FEC + NEURAL PLC (N01): Repaired 4 lost 20ms RTP frames via RFC 8854 In-band FEC and WaveNetEQ PLC (WER held at 5.4% vs 34.2% on PSTN G.711) and dynamically widened endpointing to 650ms—captured PNR #9K2M8 intact!',
-      agent_zh: '【N01 弱网抗损通过】通过 Opus 带内 FEC 与神经网络 PLC 修复 4 个连续丢失语音帧（词错率仅 5.4%，而传统 G.711 飙升至 34.2%），动态放宽句尾静默窗口至 650ms，完整捕获联程票号 #9K2M8！',
+      agent_en: 'WEBRTC IN-BAND FEC + NEURAL PLC (N01): Repaired 4 lost 20ms RTP frames via RFC 8854 In-band FEC and WaveNetEQ PLC (WER held at 5.4% vs 34.2% on PSTN G.711) and dynamically widened endpointing to 650ms—captured PNR #9K2M8 intact!',
+      agent_zh: '【N01 弱网抗损通过】通过 WEBRTC 带内 FEC 与神经网络 PLC 修复 4 个连续丢失语音帧（词错率仅 5.4%，而传统 G.711 飙升至 34.2%），动态放宽句尾静默窗口至 650ms，完整捕获联程票号 #9K2M8！',
       trace: {
-        tool: 'webrtc_opus_plc_concealment(loss_pct=8.0, jitter_ms=90, fec_repaired_frames=4, endpoint_wait_ms=650)',
-        citations: ['N01-OPUS-FEC-PLC', 'RFC-8854'],
+        tool: 'webrtc_WEBRTC_plc_concealment(loss_pct=8.0, jitter_ms=90, fec_repaired_frames=4, endpoint_wait_ms=650)',
+        citations: ['N01-WEBRTC-FEC-PLC', 'RFC-8854'],
         needs_human: false,
         confidence: 0.97,
         verifier: 'PASS (N01) · 8% packet loss concealed · 0 premature turn cutoffs'
@@ -2947,17 +2947,17 @@
       }
     },
     {
-      code: 'P23 · WebRTC Opus PLC & Jitter Guard',
+      code: 'P23 · WebRTC WEBRTC PLC & Jitter Guard',
       badge: '<= 120ms Jitter',
-      title: '电梯/高铁弱网 Opus PLC 脑补拦截与自适应抖动缓冲钳位',
+      title: '电梯/高铁弱网 WEBRTC PLC 脑补拦截与自适应抖动缓冲钳位',
       sub: '测试 5.5% 丢包与连续 5 帧突发丢帧下强制开启 In-Band FEC、钳位抖动 <=120ms 并阻断关键槽位 PLC 盲猜',
       customer_en: '[5G <-> Wi-Fi Handover · 5.5% Packet Loss · 5 Burst Loss Frames · PLC Concealed Ratio 24%] "Transfer $50,000 to order ID ORD-8841 right now!"',
       customer_zh: '【电梯/高铁 5G 弱网切换 · 5.5% 丢包 · 连续丢帧 5 帧 · PLC 隐藏帧占比 24%】“立刻往订单号 ORD-8841 汇款 50,000 美金！”',
-      agent_en: 'WEBRTC OPUS PLC & JITTER GUARD (P23 / P23-WEBRTC-OPUS-PLC-JITTER-ADAPTATION): Blocked ASR slot guessing during burst loss (`AUDIO_BURST_LOSS_RECONFIRM_REQUIRED`)! Enforced Opus `useinbandfec=1` + DTX, clamped adaptive jitter buffer to `120ms`, and requested targeted slot re-confirmation!',
-      agent_zh: '【P23 WebRTC Opus 丢包补偿与自适应抖动护栏 · 阻断 (AUDIO_BURST_LOSS_RECONFIRM_REQUIRED)】检测到关键槽位识别期间突发连续丢帧 5 帧（PLC 隐藏帧占比 24.0% > 18%），已 100% 阻断神经网络 PLC 脑补猜字！强制开启 Opus In-Band FEC（抖动缓冲钳位 120ms）并触发精准槽位复述确认！',
+      agent_en: 'WEBRTC WEBRTC PLC & JITTER GUARD (P23 / P23-WEBRTC-WEBRTC-PLC-JITTER-ADAPTATION): Blocked ASR slot guessing during burst loss (`AUDIO_BURST_LOSS_RECONFIRM_REQUIRED`)! Enforced WEBRTC `useinbandfec=1` + DTX, clamped adaptive jitter buffer to `120ms`, and requested targeted slot re-confirmation!',
+      agent_zh: '【P23 WebRTC WEBRTC 丢包补偿与自适应抖动护栏 · 阻断 (AUDIO_BURST_LOSS_RECONFIRM_REQUIRED)】检测到关键槽位识别期间突发连续丢帧 5 帧（PLC 隐藏帧占比 24.0% > 18%），已 100% 阻断神经网络 PLC 脑补猜字！强制开启 WEBRTC In-Band FEC（抖动缓冲钳位 120ms）并触发精准槽位复述确认！',
       trace: {
-        tool: 'evaluate_webrtc_opus_plc_jitter_adaptation(loss_pct=5.5, burst_frames=5, plc_ratio=0.24 -> AUDIO_BURST_LOSS_RECONFIRM_REQUIRED)',
-        citations: ['P23-WEBRTC-OPUS-PLC-JITTER-ADAPTATION', 'OPUS-INBAND-FEC', 'JITTER-CLAMP-120MS'],
+        tool: 'evaluate_webrtc_WEBRTC_plc_jitter_adaptation(loss_pct=5.5, burst_frames=5, plc_ratio=0.24 -> AUDIO_BURST_LOSS_RECONFIRM_REQUIRED)',
+        citations: ['P23-WEBRTC-WEBRTC-PLC-JITTER-ADAPTATION', 'WEBRTC-INBAND-FEC', 'JITTER-CLAMP-120MS'],
         needs_human: false,
         confidence: 1.0,
         verifier: 'PASS (P23) · Burst-loss PLC slot guessing blocked · Jitter clamped <= 120ms'
@@ -3494,17 +3494,17 @@
       code: 'P55 · WebRTC TWCC BWE & Audio-First Simulcast Shedding Guard',
       badge: 'TWCC / DSCP EF(46)',
       title: 'WebRTC 传输层拥塞控制（TWCC/GCC）弱网音画抢带剥离与 DSCP EF 语音保底护栏',
-      sub: '测试 <120kbps 弱网下自动挂起同屏/视频轨防止关键帧塞死语音通道，并在 <80kbps 强制 DSCP EF(46) 16kbps Opus 窄带保底',
+      sub: '测试 <120kbps 弱网下自动挂起同屏/视频轨防止关键帧塞死语音通道，并在 <80kbps 强制 DSCP EF(46) 16kbps WEBRTC 窄带保底',
       customer_en: '[Elevator/Garage Congested Uplink `92kbps < 120kbps`, TWCC Loss `7.5% >= 5%` with Active Screen-Share] "Keep HD video streaming while I confirm this claim settlement!"',
       customer_zh: '【地下车库/电梯弱网拥塞：上行带宽跌至 `92kbps < 120kbps`、TWCC 丢包 `7.5%`，同屏视频查勘抢占上行】“保持高清视频流，同时听我口述确认定损金额！”',
-      agent_en: 'WEBRTC TWCC CONGESTION & AUDIO-FIRST SHEDDING GUARD (P55 / P55-WEBRTC-SIMULCAST-BWE-CONGESTION-GUARD): Blocked video track from starving real-time voice on congested link (`VIDEO_STARVING_AUDIO_ON_CONGESTED_LINK_BLOCKED`), suspended video track in 0ms, and locked DSCP EF (46) 24kbps Opus In-Band FEC audio priority (`SUSPEND_VIDEO_TRACK_AND_LOCK_OPUS_FEC_AUDIO_PRIORITY`)!',
-      agent_zh: '【P55 WebRTC 拥塞控制与音画抢带剥离护栏 (VIDEO_STARVING_AUDIO_ON_CONGESTED_LINK_BLOCKED)】检测到上行可用带宽仅 92kbps（丢包 7.5%），已 0ms 自动挂起视频/同屏轨道防止关键帧塞死语音通道，锁定 DSCP EF(46) 24kbps Opus FEC 高优纯语音通道！',
+      agent_en: 'WEBRTC TWCC CONGESTION & AUDIO-FIRST SHEDDING GUARD (P55 / P55-WEBRTC-SIMULCAST-BWE-CONGESTION-GUARD): Blocked video track from starving real-time voice on congested link (`VIDEO_STARVING_AUDIO_ON_CONGESTED_LINK_BLOCKED`), suspended video track in 0ms, and locked DSCP EF (46) 24kbps WEBRTC In-Band FEC audio priority (`SUSPEND_VIDEO_TRACK_AND_LOCK_WEBRTC_FEC_AUDIO_PRIORITY`)!',
+      agent_zh: '【P55 WebRTC 拥塞控制与音画抢带剥离护栏 (VIDEO_STARVING_AUDIO_ON_CONGESTED_LINK_BLOCKED)】检测到上行可用带宽仅 92kbps（丢包 7.5%），已 0ms 自动挂起视频/同屏轨道防止关键帧塞死语音通道，锁定 DSCP EF(46) 24kbps WEBRTC FEC 高优纯语音通道！',
       trace: {
-        tool: 'evaluate_webrtc_simulcast_bwe_congestion_guard(bw_kbps=92, twcc_loss_pct=7.5, video_active=true -> SUSPEND_VIDEO_TRACK_AND_LOCK_OPUS_FEC_AUDIO_PRIORITY)',
+        tool: 'evaluate_webrtc_simulcast_bwe_congestion_guard(bw_kbps=92, twcc_loss_pct=7.5, video_active=true -> SUSPEND_VIDEO_TRACK_AND_LOCK_WEBRTC_FEC_AUDIO_PRIORITY)',
         citations: ['P55-WEBRTC-SIMULCAST-BWE-CONGESTION-GUARD', 'RTCP-TWCC-GCC', 'DSCP-EF-46-AUDIO-QOS'],
         needs_human: false,
         confidence: 1.0,
-        verifier: 'PASS (P55) · Video track suspended on congestion & DSCP EF Opus FEC audio preserved'
+        verifier: 'PASS (P55) · Video track suspended on congestion & DSCP EF WEBRTC FEC audio preserved'
       }
     },
     {
@@ -3882,7 +3882,7 @@
       '- [x] **多智能体蜂群防死循环与声学情绪降级护栏**：100% 拦截 A2A 踢皮球环路与子 Agent 越权工具调用 (P17)，客户暴怒/事故高压态 100% 剥离交叉营销并切换 `0.92x/-1.5st` 共情语调与班长静默监听 (P18)',
       '- [x] **慢速核心系统异步节拍与跨通话记忆防投毒**：无 `COMMITTED` 回执 100% 阻断抢跑承诺并启用 `2.5s` 进度心跳 (P19)，100% 拦截口述写入 `authBypass/creditLimit` 特权画像与过期 RAG 分片 (P20)',
       '- [x] **下游核心 API 熔断防雪崩与多音字/SSML 防注入护栏**：后端超时自动触发 `OPEN` 熔断阻断重试风暴并切只读快照/暂存意向单 (P21)，100% 剥离恶意 SSML 标签并强制挂载专有名词音标词典与 `<say-as>` 逐位编码播报 (P22)',
-      '- [x] **WebRTC Opus 丢包补偿抖动钳位与中英粤混说热词消歧**：关键槽位突发丢帧（`plcRatio>0.18`）强制复述确认且抖动缓冲钳位 `<=120ms` (P23)，中英粤句内切换 `<=120ms` 并拦截英文缩略词/SKU 中文同音字幻觉 (P24)',
+      '- [x] **WebRTC WEBRTC 丢包补偿抖动钳位与中英粤混说热词消歧**：关键槽位突发丢帧（`plcRatio>0.18`）强制复述确认且抖动缓冲钳位 `<=120ms` (P23)，中英粤句内切换 `<=120ms` 并拦截英文缩略词/SKU 中文同音字幻觉 (P24)',
       '- [x] **智能外呼 DNC/宵禁/AMD 防泄密与脆弱人群关怀专线**：拨号前拦截 DNC/宵禁/超频并在 AMD 识别语音信箱后阻断金额/PII 留言 (P25)，哭泣/危机/高龄认知疲劳态立即熔断施压话术、降速 `0.88x` 并直转关怀专席 (P26)',
       '- [x] **车载/柜台远场波束防串音与实时 MOS-LQO 双通道降级**：联合 DOA(`<=25°`)+声纹(`>=0.76`)+SIR(`>=8dB`) 抑制副驾/电视串音伪打断与槽位污染 (P27)，ITU-T G.107 `MOS-LQO<3.1` 自动切 16kHz 窄带并推送短信/小程序可视确认卡 (P28)',
       '- [x] **SIP/WebRTC DTLS-SRTP 媒体防重放绑定与话后口头承诺对账**：强制校验 SIP PASSporT + DTLS-SRTP 指纹与 `<=15s` 一次性挑战 Nonce (P29)，挂机后 `<=3000ms` 自动对账口头承诺与 CRM 落库工单并触发 P1 偏差补偿 (P30)',
@@ -3898,7 +3898,7 @@
       '- [x] **零知识声纹支付 PSD3 动态密码学绑定 & 多车连环碰撞/危化品卫星 SOS 创伤通道锁止**：口述确认金额/收款尾号与清算载荷 1:1 密码学绑定并强制 `<=30s` 新鲜 FIDO2 断言 (P49)，重特大车祸/危化品事故 100% 剥离商业/问卷话术并在地面桥接 `>800ms` 时直切卫星 SOS 与交管封道信标 (P50)',
       '- [x] **多方电话会议零信任最小权限收缩 & 边缘 SBC/HSM 保格式令牌化零明文上云**：三方会议拉入外部协办人/未核身桥接腿时自动降级至 `L1` 最小权限并隔离私密声道授权 (P51)，本地 SBC/HSM 在 `<=25ms` 内完成 NIST FF1 保格式令牌替换并 100% 阻断明文 PAN/SSN 出网 (P52)',
       '- [x] **广域网断网本地 Speech Container 逃生 & 抗量子 (`NIST FIPS 203 ML-KEM-768`) 双录封存**：上联光缆挖断或 `RTT>800ms` 时 `<=400ms` 切入本地 Speech Container + Edge SLM 并阻断离线未落库云端写承诺 (P53)，留存 `>=5` 年双录强制 `X25519MLKEM768` 后量子混合密钥交换与抗量子 WORM 归档信封 (P54)',
-      '- [x] **WebRTC TWCC 弱网音画抢带剥离 & 欧盟 AI 法案 (`EU AI Act Art. 5`) 职场情绪禁令护栏**：上行 `<120kbps` 或丢包 `>=5%` 时自动挂起视频轨并锁定 DSCP EF(46) 24kbps Opus 语音保底 (P55)，职场 HR/教育场景 100% 硬阻断声学情绪评分并强制 Art. 50 透明度披露 (P56)',
+      '- [x] **WebRTC TWCC 弱网音画抢带剥离 & 欧盟 AI 法案 (`EU AI Act Art. 5`) 职场情绪禁令护栏**：上行 `<120kbps` 或丢包 `>=5%` 时自动挂起视频轨并锁定 DSCP EF(46) 24kbps WEBRTC 语音保底 (P55)，职场 HR/教育场景 100% 硬阻断声学情绪评分并强制 Art. 50 透明度披露 (P56)',
       '- [x] **3GPP IMS 紧急呼叫 (`urn:service:sos`) QCI-1 抢占 & 跨端（语音+App）CAS 乐观并发防重扣护栏**：欠费/无卡紧急呼叫 0ms 旁路商业核身直连 E-CSCF 并锁 QCI-1 ARP=1 抢占 (P57)，语音与手机 App 同屏改单强制校验 CAS 版本号与跨端支付幂等键 (P58)',
       '- [x] **超声波 (`>16kHz` DolphinAttack) 抗注入滤波 & 金融交易 MiFID II 录音专线与禁倍速快放护栏**：强制 8kHz 带限低通滤波拦截不可听超声载波与心理声学对抗扰动 (P59)，证券/衍生品语音报单强制 `<=1.15x` 标准语速、SIPREC 双流存证与客户明示确认后方可入 OMS (P60)',
       '- [x] **SIP `183 Early Media` 应答前防抢跑泄密/摘机首字防吞字 & TTS 货币符号 (`¥`/`$`) 量纲消歧护栏**：严格锁定 `200 OK` 摘机门禁并注入 `>=160ms` RTP 舒适噪音前导帧消除首字吞字 (P61)，强制对账后台 ISO 4217 币种代码并注入 `SSML <say-as>` 与多音字音标词典防止将日元 `¥` 误读为人民币 (P62)',
