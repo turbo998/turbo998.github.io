@@ -2,24 +2,151 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Generative Visual Lab · 程序造景实验室</title>
+  <title>Generative Visual Lab · GHCP Harness 直接编码生成实时动画</title>
   <script>(()=>{const param=new URLSearchParams(window.location.search).get("scoutTheme");const theme=param||(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.setAttribute("data-theme",theme);})();</script>
   <link rel="stylesheet" crossorigin href="./assets/theme-Cyegnf8w.css">
+  <style>
+    .lang-bar { display:inline-flex; background:rgba(128,128,128,0.12); border-radius:999px; padding:3px; gap:4px; margin-left:12px; }
+    .lang-btn { border:none; background:transparent; color:inherit; padding:4px 10px; border-radius:999px; font-size:12px; font-weight:700; cursor:pointer; opacity:0.7; }
+    .lang-btn.active { background:#2563eb; color:#fff; opacity:1; }
+    .harness-banner { margin:28px 0 32px; padding:20px 24px; border-radius:16px; border:1px solid rgba(37,99,235,0.28); background:rgba(37,99,235,0.06); }
+    .harness-steps { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:14px; }
+    .harness-step { padding:14px; border-radius:12px; background:rgba(255,255,255,0.06); border:1px solid rgba(128,128,128,0.2); }
+    .harness-step strong { display:block; font-size:14px; margin-bottom:4px; color:#2563eb; }
+    .harness-step span { font-size:13px; opacity:0.88; line-height:1.45; display:block; }
+    @media (max-width:900px) { .harness-steps { grid-template-columns:1fr 1fr; } }
+  </style>
 </head>
 <body>
 <main class="shell">
-  <nav class="topline"><strong>GVL / 程序造景实验室</strong><a href="https://github.com/turbo998/generative-visual-lab">Source ↗</a></nav>
-  <p class="eyebrow" style="margin-top:48px">Code becomes a world</p>
-  <h1>用代码造景。<br>让原理可见。</h1>
-  <p class="lead">从一盏灯下的飞天，到真实高程塑造的火星，再到圆框中的白色火箭。原创实时画面，不是预录视频；艺术模拟与科学测量，清楚分开。</p>
-  <div class="lab-facts" aria-label="实验室特点"><span><strong>3</strong>实时演示</span><span><strong>Blender 4.5 MCP</strong>Cycles 烘焙 + 实时渲染</span><span><strong>0</strong>运行时模型 API</span><span><strong>MIT</strong>原创代码</span></div>
-  <section class="grid" aria-label="可运行演示">
-    <article class="card"><img src="./assets/feitian-DU2sJr5j.png" alt="原创飞天人物与流动飘带"><div class="card-body"><span class="eyebrow">01 / Canvas 2D + Blender Cycles relief</span><h2>风起壁间 · 飞天</h2><p>四身原创飞天，执灯照壁、揭色离壁、巡游归位。结合 Blender 4.5 Cycles 烘焙的莫高窟四龛藻井浮雕底壁与约束飘带，构成实时壁画叙事。</p><a class="button primary" href="./demos/feitian/">入窟探索 →</a></div></article>
-    <article class="card"><img src="./assets/astra-BVRDlPZl.png" alt="NASA 高程构成的三维火星"><div class="card-body"><span class="eyebrow">02 / Three.js + NASA MOLA &amp; Blender bake</span><h2>Astra · 火星造景</h2><p>NASA MOLA 实测高程驱动真实几何，叠加 Blender Cycles 烘焙的无缝微地貌法线/凹腔贴图与假想海洋天气。可检查灰模、线框并导出 GLB。</p><a class="button primary" href="./demos/astra-planet/">进入观测台 →</a></div></article>
-    <article class="card"><img src="./assets/rocket-DUNpgrp0.png" alt="圆形观景框中的白色立体火箭与发射塔"><div class="card-body"><span class="eyebrow">03 / Three.js + Blender MCP GLB kit</span><h2>Launch · 向上而生</h2><p>由 Blender 4.5 MCP 生成的高精度白色火箭、钛合金栅格翼、五机拉瓦尔喷管与发射塔 GLB 套件。外部视角观看点火、离台与升空。</p><a class="button primary" href="./demos/rocket-launch/">进入发射场 →</a></div></article>
+  <nav class="topline">
+    <strong id="navBrand">GVL / GHCP Harness 快速动画原型实验室</strong>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div class="lang-bar">
+        <button class="lang-btn active" data-lang="zh-CN" onclick="setAnimLang('zh-CN')">简体</button>
+        <button class="lang-btn" data-lang="zh-TW" onclick="setAnimLang('zh-TW')">繁體</button>
+        <button class="lang-btn" data-lang="en" onclick="setAnimLang('en')">EN</button>
+      </div>
+      <a href="https://github.com/turbo998/generative-visual-lab" target="_blank" rel="noopener">Source ↗</a>
+    </div>
+  </nav>
+  <p class="eyebrow" style="margin-top:40px" id="heroEyebrow">CODING DIRECT TO ANIMATION · GHCP HARNESS RAPID PROTOTYPING</p>
+  <h1 id="heroTitle">使用 Coding 直接输出实时动画。<br>展示 GHCP Harness 极速原型能力。</h1>
+  <p class="lead" id="heroLead">无需传统 DCC 手工逐帧关键帧：通过 GitHub Copilot (GHCP) Harness 工程化闭环，直接用代码驱动物理飘带、NASA 真实行星高程与 Blender 4.5 MCP 3D 资产，快速搭建 60fps 零运行时 API 的高保真交互动画原型。</p>
+  <div class="lab-facts" aria-label="实验室特点">
+    <span><strong>3</strong> <span id="fact1">纯代码实时动画原型</span></span>
+    <span><strong>GHCP Harness</strong> <span id="fact2">Prompt → 物理着色器 → 视觉回归验证</span></span>
+    <span><strong>Blender 4.5 MCP</strong> <span id="fact3">脚本化建模 + Cycles 烘焙</span></span>
+    <span><strong>0</strong> <span id="fact4">运行时大模型 API 依赖</span></span>
+  </div>
+
+  <section class="harness-banner" aria-label="GHCP Harness Rapid Prototyping Pipeline">
+    <h2 style="margin:0 0 6px;font-size:20px;" id="hbTitle">⚡ GHCP Harness 快速搭建动画原型四步工程流</h2>
+    <p style="margin:0;font-size:14px;opacity:0.85;" id="hbSub">从自然语言意图到可交互 60fps WebGL2 / Canvas2D 场景的确定性交付管线：</p>
+    <div class="harness-steps">
+      <div class="harness-step">
+        <strong id="hs1Title">01 · 意图与物理契约拆解</strong>
+        <span id="hs1Desc">将视觉叙事拆解为显式数学约束（Verlet 飘带动力学、球面谐波高程、刚体发射轨迹与多光源色温）。</span>
+      </div>
+      <div class="harness-step">
+        <strong id="hs2Title">02 · Blender 4.5 MCP 脚本化造景</strong>
+        <span id="hs2Desc">GHCP 直接生成 Python `bpy` 脚本驱动 Blender 生成高精度火箭 GLB 与莫高窟四龛 Cycles 浮雕光照烘焙贴图。</span>
+      </div>
+      <div class="harness-step">
+        <strong id="hs3Title">03 · 纯代码着色器与程序化合成</strong>
+        <span id="hs3Desc">零商业美术黑盒，使用 TypeScript + Three.js / Canvas 2D 直接编码实时粒子、大气散射与交互相机。</span>
+      </div>
+      <div class="harness-step">
+        <strong id="hs4Title">04 · Harness 帧探针与视觉验收</strong>
+        <span id="hs4Desc">内置确定性时间步进与自动化快照验收，确保合作伙伴在任何现代浏览器中一键满帧运行。</span>
+      </div>
+    </div>
   </section>
-  <section><h2>研究与复现</h2><p class="lead" style="font-size:16px">每个效果都能解释：什么改变了几何，什么只是光影，什么来自测量，什么来自想象。</p><div class="controls"><a class="button" href="./research/feitian-reference-study.html">飞天技术研究</a><a class="button" href="./research/technique-comparison.html">技术路线对照</a><a class="button" href="./research/blender-mcp-pipeline.html">Blender MCP 架构</a><a class="button" href="./research/opus-animation-landscape.html">Opus 热门动画谱系</a><a class="button" href="./research/asset-taxonomy.html">技术资产分类索引</a><a class="button" href="./research/validation.html">验证记录</a><a class="button" href="https://github.com/turbo998/generative-visual-lab#readme">运行与数据说明 ↗</a></div></section>
-  <footer style="margin-top:48px">原创代码 MIT · 无运行时模型 API · 不复制参考作品 · 独立技术实验</footer>
+
+  <section class="grid" aria-label="可运行演示">
+    <article class="card"><img src="./assets/feitian-DU2sJr5j.png" alt="原创飞天人物与流动飘带"><div class="card-body"><span class="eyebrow">01 / Canvas 2D + Blender Cycles relief</span><h2 id="c1Title">风起壁间 · 敦煌飞天</h2><p id="c1Desc">GHCP Harness 驱动四身原创飞天，执灯照壁、揭色离壁、巡游归位。结合 Blender 4.5 Cycles 烘焙的莫高窟四龛藻井浮雕底壁与约束飘带物理，构成实时壁画叙事。</p><a class="button primary" href="./demos/feitian/" id="c1Btn">进入飞天实时演示 →</a></div></article>
+    <article class="card"><img src="./assets/astra-BVRDlPZl.png" alt="NASA 高程构成的三维火星"><div class="card-body"><span class="eyebrow">02 / Three.js + NASA MOLA &amp; Blender bake</span><h2 id="c2Title">Astra · 火星实测高程造景</h2><p id="c2Desc">NASA MOLA 实测高程驱动真实球面几何，叠加 Blender Cycles 烘焙的无缝微地貌法线/凹腔贴图与古海洋气候推演。支持灰模、线框检视并直接导出 GLB。</p><a class="button primary" href="./demos/astra-planet/" id="c2Btn">进入火星观测台 →</a></div></article>
+    <article class="card"><img src="./assets/rocket-DUNpgrp0.png" alt="圆形观景框中的白色立体火箭与发射塔"><div class="card-body"><span class="eyebrow">03 / Three.js + Blender MCP GLB kit</span><h2 id="c3Title">Launch · 火箭发射与尾焰动力学</h2><p id="c3Desc">由 GHCP 调用 Blender 4.5 MCP 直接编码生成的白色火箭、钛合金栅格翼、五机拉瓦尔喷管与发射塔 GLB 套件，实时演绎点火、导流槽浓烟与离台升空。</p><a class="button primary" href="./demos/rocket-launch/" id="c3Btn">进入发射场演示 →</a></div></article>
+  </section>
+  <section><h2 id="resTitle">GHCP Harness 工程文档与复现指南</h2><p class="lead" style="font-size:16px" id="resSub">每个视觉效果均可追溯至代码契约：什么改变了几何，什么来自实测数据，什么来自程序化着色。</p><div class="controls"><a class="button" href="./research/feitian-reference-study.html" id="rBtn1">飞天程序化动画拆解</a><a class="button" href="./research/technique-comparison.html" id="rBtn2">Coding 动画技术路线对照</a><a class="button" href="./research/blender-mcp-pipeline.html" id="rBtn3">GHCP + Blender MCP 管线</a><a class="button" href="./research/asset-taxonomy.html" id="rBtn4">技术资产分类索引</a><a class="button" href="./research/validation.html" id="rBtn5">Harness 验证记录</a><a class="button" href="https://github.com/turbo998/generative-visual-lab#readme" target="_blank" rel="noopener" id="rBtn6">GitHub 源码与说明 ↗</a></div></section>
+  <footer style="margin-top:48px" id="footerTxt">Frontier AI Studio · GHCP Harness Rapid Animation Prototyping · 原创 MIT 代码 · 零运行时模型 API</footer>
 </main>
+<script>
+  const animDict = {
+    'zh-CN': {
+      navBrand: 'GVL / GHCP Harness 快速动画原型实验室',
+      heroEyebrow: 'CODING DIRECT TO ANIMATION · GHCP HARNESS RAPID PROTOTYPING',
+      heroTitle: '使用 Coding 直接输出实时动画。<br>展示 GHCP Harness 极速原型能力。',
+      heroLead: '无需传统 DCC 手工逐帧关键帧：通过 GitHub Copilot (GHCP) Harness 工程化闭环，直接用代码驱动物理飘带、NASA 真实行星高程与 Blender 4.5 MCP 3D 资产，快速搭建 60fps 零运行时 API 的高保真交互动画原型。',
+      fact1: '纯代码实时动画原型', fact2: 'Prompt → 物理着色器 → 视觉回归验证', fact3: '脚本化建模 + Cycles 烘焙', fact4: '运行时大模型 API 依赖',
+      hbTitle: '⚡ GHCP Harness 快速搭建动画原型四步工程流',
+      hbSub: '从自然语言意图到可交互 60fps WebGL2 / Canvas2D 场景的确定性交付管线：',
+      hs1Title: '01 · 意图与物理契约拆解', hs1Desc: '将视觉叙事拆解为显式数学约束（Verlet 飘带动力学、球面谐波高程、刚体发射轨迹与多光源色温）。',
+      hs2Title: '02 · Blender 4.5 MCP 脚本化造景', hs2Desc: 'GHCP 直接生成 Python bpy 脚本驱动 Blender 生成高精度火箭 GLB 与莫高窟四龛 Cycles 浮雕光照烘焙贴图。',
+      hs3Title: '03 · 纯代码着色器与程序化合成', hs3Desc: '零商业美术黑盒，使用 TypeScript + Three.js / Canvas 2D 直接编码实时粒子、大气散射与交互相机。',
+      hs4Title: '04 · Harness 帧探针与视觉验收', hs4Desc: '内置确定性时间步进与自动化快照验收，确保合作伙伴在任何现代浏览器中一键满帧运行。',
+      c1Title: '风起壁间 · 敦煌飞天', c1Desc: 'GHCP Harness 驱动四身原创飞天，执灯照壁、揭色离壁、巡游归位。结合 Blender 4.5 Cycles 烘焙的莫高窟四龛藻井浮雕底壁与约束飘带物理，构成实时壁画叙事。', c1Btn: '进入飞天实时演示 →',
+      c2Title: 'Astra · 火星实测高程造景', c2Desc: 'NASA MOLA 实测高程驱动真实球面几何，叠加 Blender Cycles 烘焙的无缝微地貌法线/凹腔贴图与古海洋气候推演。支持灰模、线框检视并直接导出 GLB。', c2Btn: '进入火星观测台 →',
+      c3Title: 'Launch · 火箭发射与尾焰动力学', c3Desc: '由 GHCP 调用 Blender 4.5 MCP 直接编码生成的白色火箭、钛合金栅格翼、五机拉瓦尔喷管与发射塔 GLB 套件，实时演绎点火、导流槽浓烟与离台升空。', c3Btn: '进入发射场演示 →',
+      resTitle: 'GHCP Harness 工程文档与复现指南', resSub: '每个视觉效果均可追溯至代码契约：什么改变了几何，什么来自实测数据，什么来自程序化着色。',
+      rBtn1: '飞天程序化动画拆解', rBtn2: 'Coding 动画技术路线对照', rBtn3: 'GHCP + Blender MCP 管线', rBtn4: '技术资产分类索引', rBtn5: 'Harness 验证记录', rBtn6: 'GitHub 源码与说明 ↗',
+      footerTxt: 'Frontier AI Studio · GHCP Harness Rapid Animation Prototyping · 原创 MIT 代码 · 零运行时模型 API'
+    },
+    'zh-TW': {
+      navBrand: 'GVL / GHCP Harness 快速動畫原型實驗室',
+      heroEyebrow: 'CODING DIRECT TO ANIMATION · GHCP HARNESS RAPID PROTOTYPING',
+      heroTitle: '使用 Coding 直接輸出即時動畫。<br>展示 GHCP Harness 極速原型能力。',
+      heroLead: '無需傳統 DCC 手工逐幀關鍵幀：透過 GitHub Copilot (GHCP) Harness 工程化閉環，直接用程式碼驅動物理飄帶、NASA 真實行星高程與 Blender 4.5 MCP 3D 資產，快速搭建 60fps 零執行期 API 的高保真互動動畫原型。',
+      fact1: '純程式碼即時動畫原型', fact2: 'Prompt → 物理著色器 → 視覺回歸驗證', fact3: '腳本化建模 + Cycles 烘焙', fact4: '執行期大模型 API 依賴',
+      hbTitle: '⚡ GHCP Harness 快速搭建動畫原型四步工程流',
+      hbSub: '從自然語言意圖到可互動 60fps WebGL2 / Canvas2D 場景的確定性交付管線：',
+      hs1Title: '01 · 意圖與物理契約拆解', hs1Desc: '將視覺敘事拆解為顯式數學約束（Verlet 飄帶動力學、球面諧波高程、剛體發射軌跡與多光源色溫）。',
+      hs2Title: '02 · Blender 4.5 MCP 腳本化造景', hs2Desc: 'GHCP 直接生成 Python bpy 腳本驅動 Blender 生成高精度火箭 GLB 與莫高窟四龕 Cycles 浮雕光照烘焙貼圖。',
+      hs3Title: '03 · 純程式碼著色器與程序化合成', hs3Desc: '零商業美術黑盒，使用 TypeScript + Three.js / Canvas 2D 直接編碼即時粒子、大氣散射與互動相機。',
+      hs4Title: '04 · Harness 幀探針與視覺驗收', hs4Desc: '內建確定性時間步進與自動化快照驗收，確保合作夥伴在任何現代瀏覽器中一鍵滿幀運行。',
+      c1Title: '風起壁間 · 敦煌飛天', c1Desc: 'GHCP Harness 驅動四身原創飛天，執燈照壁、揭色離壁、巡遊歸位。結合 Blender 4.5 Cycles 烘焙的莫高窟四龕藻井浮雕底壁與約束飄帶物理，構成即時壁畫敘事。', c1Btn: '進入飛天即時演示 →',
+      c2Title: 'Astra · 火星實測高程造景', c2Desc: 'NASA MOLA 實測高程驅動真實球面幾何，疊加 Blender Cycles 烘焙的無縫微地貌法線/凹腔貼圖與古海洋氣候推演。支援灰模、線框檢視並直接匯出 GLB。', c2Btn: '進入火星觀測台 →',
+      c3Title: 'Launch · 火箭發射與尾焰動力學', c3Desc: '由 GHCP 調用 Blender 4.5 MCP 直接編碼生成的白色火箭、鈦合金柵格翼、五機拉瓦爾噴管與發射塔 GLB 套件，即時演繹點火、導流槽濃煙與離台升空。', c3Btn: '進入發射場演示 →',
+      resTitle: 'GHCP Harness 工程文件與復現指南', resSub: '每個視覺效果均可追溯至程式碼契約：什麼改變了幾何，什麼來自實測數據，什麼來自程序化著色。',
+      rBtn1: '飛天程序化動畫拆解', rBtn2: 'Coding 動畫技術路線對照', rBtn3: 'GHCP + Blender MCP 管線', rBtn4: '技術資產分類索引', rBtn5: 'Harness 驗證記錄', rBtn6: 'GitHub 原始碼與說明 ↗',
+      footerTxt: 'Frontier AI Studio · GHCP Harness Rapid Animation Prototyping · 原創 MIT 程式碼 · 零執行期模型 API'
+    },
+    'en': {
+      navBrand: 'GVL / GHCP Harness Rapid Animation Prototyping Lab',
+      heroEyebrow: 'CODING DIRECT TO ANIMATION · GHCP HARNESS RAPID PROTOTYPING',
+      heroTitle: 'Code Direct to Real-Time Animation.<br>Rapid Prototyping via GHCP Harness.',
+      heroLead: 'No manual DCC keyframing required: using the GitHub Copilot (GHCP) Harness engineering loop, we write code that directly drives ribbon physics, NASA planetary elevation meshes, and Blender 4.5 MCP 3D kits into 60fps interactive prototypes with zero runtime LLM APIs.',
+      fact1: 'Code-Driven Live Demos', fact2: 'Prompt → Physics Shader → Visual Harness', fact3: 'Scripted Bpy + Cycles Bake', fact4: 'Runtime LLM API Calls',
+      hbTitle: '⚡ GHCP Harness 4-Step Rapid Animation Prototyping Workflow',
+      hbSub: 'Deterministic delivery pipeline from natural-language intent to interactive 60fps WebGL2 / Canvas2D scenes:',
+      hs1Title: '01 · Intent & Physics Contract', hs1Desc: 'Decompose visual storytelling into explicit math constraints (Verlet ribbon dynamics, spherical elevation, rigid-body trajectory & lighting).',
+      hs2Title: '02 · Blender 4.5 MCP Scripted Kits', hs2Desc: 'GHCP generates Python bpy scripts to build multi-part rocket GLB kits and bake Cycles grotto relief normal/cavity maps.',
+      hs3Title: '03 · Code-Direct Shaders & Synthesis', hs3Desc: 'Zero proprietary art black-boxes: TypeScript + Three.js / Canvas 2D directly render real-time particles, atmosphere, and interactive cameras.',
+      hs4Title: '04 · Harness Probes & Visual Gate', hs4Desc: 'Built-in deterministic time-stepping and automated visual regression snapshots guarantee 60fps playback in any modern browser.',
+      c1Title: 'Feitian · Dunhuang Mural Come Alive', c1Desc: 'Four original Feitian figures illuminate the grotto, lift pigments from the wall, and soar with Verlet-constrained silk ribbons over a Blender 4.5 Cycles baked relief.', c1Btn: 'Launch Feitian Live Demo →',
+      c2Title: 'Astra · NASA MOLA Mars Terraforming', c2Desc: 'Real NASA MOLA laser altimetry drives spherical planetary geometry, layered with Blender Cycles micro-normal bakes and interactive sea-level / atmosphere simulation with GLB export.', c2Btn: 'Launch Mars Observatory →',
+      c3Title: 'Launch · Multi-Stage Rocket & Plume', c3Desc: 'Precision white rocket, titanium grid fins, 5-engine Laval nozzles, and launch tower generated via Blender 4.5 MCP, featuring real-time ignition trench plumes and liftoff.', c3Btn: 'Launch Rocket Pad Demo →',
+      resTitle: 'GHCP Harness Engineering Docs & Reproducibility', resSub: 'Every visual effect is traceable to code contracts: geometry displacement, measured scientific data, and procedural shading.',
+      rBtn1: 'Feitian Animation Breakdown', rBtn2: 'Coding Animation Comparison', rBtn3: 'GHCP + Blender MCP Pipeline', rBtn4: 'Technical Asset Taxonomy', rBtn5: 'Harness Validation Log', rBtn6: 'GitHub Repository & README ↗',
+      footerTxt: 'Frontier AI Studio · GHCP Harness Rapid Animation Prototyping · MIT License · Zero Runtime LLM API'
+    }
+  };
+  function setAnimLang(lang) {
+    const d = animDict[lang] || animDict['zh-CN'];
+    document.documentElement.lang = lang;
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.getAttribute('data-lang') === lang));
+    Object.keys(d).forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (id === 'heroTitle') el.innerHTML = d[id];
+      else el.textContent = d[id];
+    });
+  }
+  window.addEventListener('message', (ev) => {
+    if (ev.data && ev.data.type === 'SET_LANG' && ev.data.lang) setAnimLang(ev.data.lang);
+  });
+  const initLang = new URLSearchParams(window.location.search).get('lang');
+  if (initLang) setAnimLang(initLang);
+</script>
 </body>
 </html>

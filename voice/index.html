@@ -19,13 +19,11 @@
       </a>
       <div class="nav-links">
         <a class="nav-link" href="#scenarios" data-i18n-nav="nav_scenarios">01 · 业务场景与ROI</a>
-        <a class="nav-link" href="#architecture" data-i18n-nav="nav_arch">02 · 方案架构与选型</a>
+        <a class="nav-link" href="#architecture" data-i18n-nav="nav_arch">02 · Voice Live 三层架构与选型</a>
         <a class="nav-link" href="#competitors" data-i18n-nav="nav_comp">03 · 竞对深度拆解</a>
         <a class="nav-link" href="#sandbox" data-i18n-nav="nav_sandbox">04 · 实时语音沙盒</a>
         <a class="nav-link" href="#tco" data-i18n-nav="nav_tco">05 · 成本测算器</a>
-        <a class="nav-link" href="#assets" data-i18n-nav="nav_assets">06 · 评测与资产库</a>
         <a class="nav-link" href="./deck.html" style="color:#60A5FA;border:1px solid rgba(96,165,250,0.4);">📽️ 12页高管Deck</a>
-        <a class="nav-link" href="./benchmark-cards.html" style="color:#38BDF8;border:1px solid rgba(56,189,248,0.4);">📊 7-Card 评测报告</a>
       </div>
       <div class="lang-switch">
         <button class="lang-btn active" data-lang="zh-CN" type="button">简体</button>
@@ -50,9 +48,9 @@
         面向合作伙伴与政企/出海客户的端到端售前技术门户：深度拆解 <strong>Sierra AI、Retell AI、ElevenLabs、Vapi/LiveKit</strong> 与 <strong>Azure Voice Live (`gpt-live-1`) / AI Foundry (`gpt-4.1-mini`)</strong> 的技术优劣与联合销售策略，内置可交互双语语音沙盒、确定性安全状态机与实时 FinOps 成本计算器。
       </p>
       <div class="hero-actions">
-        <a class="btn-primary" href="#sandbox" id="heroBtnSandbox">🎙️ 立即体验多引擎实时语音沙盒</a>
+        <a class="btn-primary" href="#architecture">🏗️ 查看 Azure Voice Live API 三层架构</a>
+        <a class="btn-secondary" href="#sandbox" id="heroBtnSandbox">🎙️ 立即体验多引擎实时语音沙盒</a>
         <a class="btn-secondary" href="./deck.html" id="heroBtnDeck">📽️ 打开 12 页 Azure 高管演示幻灯片 (Slide Deck)</a>
-        <a class="btn-secondary" href="./benchmark-cards.html" id="heroBtnCards">📊 查看 7-Card (4:5) 模型基准评测报告</a>
         <a class="btn-outline" href="https://gpt-live-demo-0922-qc.azurewebsites.net/" target="_blank" rel="noopener noreferrer">🌐 访问 Azure 线上 `gpt-live-1` S2S 实测环境 ↗</a>
         <a class="btn-outline" href="https://github.com/turbo998/voice-agent-lab" target="_blank" rel="noopener noreferrer">📦 GitHub 代码与白皮书仓库 ↗</a>
       </div>
@@ -124,16 +122,107 @@
       <div id="scenarioDetailPanel"></div>
     </section>
 
-    <!-- SECTION 2: 3-PARADIGM ARCHITECTURE & DECISION WIZARD -->
+    <!-- SECTION 2: AZURE VOICE LIVE API 3-LAYER ARCHITECTURE & DECISION WIZARD -->
     <section class="section-block" id="architecture">
       <div class="section-header">
         <div>
-          <div class="section-tag">SECTION 02 · REFERENCE ARCHITECTURES &amp; SELECTION WIZARD</div>
-          <h2 class="section-title">四大核心方案架构蓝图与交互式选型向导</h2>
+          <div class="section-tag">SECTION 02 · AZURE VOICE LIVE API 3-LAYER ARCHITECTURE &amp; SELECTION WIZARD</div>
+          <h2 class="section-title" id="secTitleArch">Azure Voice Live API 三层架构与四大语音模式选型</h2>
         </div>
-        <p class="section-subtitle">
-          企业级语音智能体并非只有单一路径：根据客户对**延迟敏感度、文本可审计性、内网主权合规、上线周期**的不同要求，我们提供 4 套经过实测验证的参考架构。
+        <p class="section-subtitle" id="secSubArch">
+          统一接入用户场景（SDK / WebSocket / WebRTC / SIP 与虚拟形象输出），内置降噪、回声消除、打断、函数调用与企业治理，底层支持全双工、语音到语音、混合式与级联式 4 条路径并可将任务委派给任意模型系列。
         </p>
+      </div>
+
+      <!-- Azure Voice Live API 3-Layer Visual Architecture Card -->
+      <div style="background:linear-gradient(145deg,#eef6ff 0%,#f5f9f6 52%,#fef9ec 100%);color:#0f172a;border-radius:18px;padding:22px 24px;border:1px solid #cbd5e1;margin-bottom:22px;box-shadow:0 12px 30px rgba(2,6,23,0.35);">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+          <div>
+            <h3 style="margin:0;font-size:1.45rem;font-weight:900;color:#0f172a;" id="vlArchTitle">Azure Voice Live API — 架构</h3>
+            <p style="margin:3px 0 0;font-size:0.88rem;color:#475569;font-weight:500;" id="vlArchSub">语音到语音、混合式和级联式语音智能体，可将任务委派给任意模型系列</p>
+          </div>
+          <span style="font-size:0.75rem;font-weight:700;color:#475569;background:rgba(255,255,255,0.85);padding:4px 10px;border-radius:999px;border:1px solid #cbd5e1;">Azure Voice Live API · Microsoft Foundry</span>
+        </div>
+
+        <!-- Layer 1: User Scenarios -->
+        <div style="background:rgba(255,255,255,0.88);border:1px solid #e2e8f0;border-radius:14px;padding:11px 16px;text-align:center;">
+          <div style="font-size:0.78rem;font-weight:800;color:#1e293b;margin-bottom:8px;" id="vlLayer1Title">用户场景</div>
+          <div style="display:flex;justify-content:center;flex-wrap:wrap;gap:9px;">
+            <span style="background:#fff;border:1px solid #e2e8f0;border-radius:999px;padding:5px 14px;font-size:0.82rem;font-weight:700;color:#0f172a;" id="vlSc1">🎧 联络中心</span>
+            <span style="background:#fff;border:1px solid #e2e8f0;border-radius:999px;padding:5px 14px;font-size:0.82rem;font-weight:700;color:#0f172a;" id="vlSc2">🚗 车载助手</span>
+            <span style="background:#fff;border:1px solid #e2e8f0;border-radius:999px;padding:5px 14px;font-size:0.82rem;font-weight:700;color:#0f172a;" id="vlSc3">🎓 教育与学习</span>
+            <span style="background:#fff;border:1px solid #e2e8f0;border-radius:999px;padding:5px 14px;font-size:0.82rem;font-weight:700;color:#0f172a;" id="vlSc4">🏛️ 公共服务</span>
+            <span style="background:#fff;border:1px solid #e2e8f0;border-radius:999px;padding:5px 14px;font-size:0.82rem;font-weight:700;color:#0f172a;" id="vlSc5">🧑‍💼 人力资源与员工效率</span>
+            <span style="background:#fff;border:1px solid #e2e8f0;border-radius:999px;padding:5px 14px;font-size:0.82rem;font-weight:700;color:#0f172a;" id="vlSc6">🤖 个人助手</span>
+          </div>
+        </div>
+
+        <!-- Connector Bar -->
+        <div style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:9px 10px;gap:10px;">
+          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+            <span style="font-size:0.74rem;font-weight:700;color:#64748b;" id="vlInLbl">接口</span>
+            <span style="background:#fff;border:1px solid #cbd5e1;border-radius:999px;padding:3px 10px;font-size:0.74rem;font-weight:700;color:#0f172a;">SDK (Python · C# · JS · Java)</span>
+            <span style="background:#fff;border:1px solid #cbd5e1;border-radius:999px;padding:3px 10px;font-size:0.74rem;font-weight:700;color:#0f172a;">WebSocket</span>
+            <span style="background:#fff;border:1px solid #cbd5e1;border-radius:999px;padding:3px 10px;font-size:0.74rem;font-weight:700;color:#0f172a;">WebRTC</span>
+            <span style="background:#fff;border:1px solid #cbd5e1;border-radius:999px;padding:3px 10px;font-size:0.74rem;font-weight:700;color:#0f172a;">SIP</span>
+          </div>
+          <div style="font-size:1.3rem;font-weight:900;color:#2563eb;">⇅</div>
+          <div style="display:flex;align-items:center;justify-content:flex-end;gap:6px;flex-wrap:wrap;">
+            <span style="font-size:0.74rem;font-weight:700;color:#64748b;" id="vlOutLbl">输出</span>
+            <span style="background:#fff;border:1px solid #cbd5e1;border-radius:999px;padding:3px 10px;font-size:0.74rem;font-weight:700;color:#0f172a;" id="vlOutAvatar">🎭 照片/视频虚拟形象</span>
+          </div>
+        </div>
+
+        <!-- Layer 2 & 3 Platform Box -->
+        <div style="background:rgba(255,255,255,0.95);border:1px solid #e2e8f0;border-radius:16px;padding:16px 18px;">
+          <div style="text-align:center;margin-bottom:12px;">
+            <div style="font-size:1.3rem;font-weight:900;color:#0f172a;">Azure Voice Live API / Agent Platform</div>
+            <div style="width:44px;height:3px;background:#2563eb;margin:4px auto 7px;border-radius:2px;"></div>
+            <div style="font-size:0.85rem;color:#334155;font-weight:600;margin-bottom:6px;" id="vlPrimitives">降噪 · 回声消除 · 打断 · 函数调用 · 中间响应</div>
+            <div style="display:flex;justify-content:center;align-items:center;gap:6px;flex-wrap:wrap;font-size:0.76rem;">
+              <strong style="color:#0f172a;" id="vlGovLbl">企业治理</strong>
+              <span style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:999px;padding:2px 10px;color:#475569;font-weight:600;" id="vlGov1">托管</span>
+              <span style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:999px;padding:2px 10px;color:#475569;font-weight:600;" id="vlGov2">可扩展性</span>
+              <span style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:999px;padding:2px 10px;color:#475569;font-weight:600;" id="vlGov3">安全性</span>
+              <span style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:999px;padding:2px 10px;color:#475569;font-weight:600;" id="vlGov4">可观测性</span>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 205px;gap:10px;align-items:stretch;">
+            <div style="display:flex;flex-direction:column;gap:7px;">
+              <div style="display:grid;grid-template-columns:110px 1fr;gap:7px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:9px;padding:6px;">
+                <div style="background:#fff;border-radius:6px;padding:7px 9px;font-weight:800;font-size:0.8rem;display:flex;align-items:center;gap:5px;"><span style="background:#2563eb;color:#fff;border-radius:50%;width:17px;height:17px;display:inline-flex;align-items:center;justify-content:center;font-size:0.68rem;">1</span><span id="vlL1">全双工</span></div>
+                <div style="background:#fff;border-radius:6px;padding:6px 10px;text-align:center;"><div style="font-size:0.62rem;font-weight:800;color:#64748b;text-align:left;">FOUNDRY MODEL</div><div style="font-size:0.82rem;font-weight:800;color:#0f172a;" id="vlL1Model">GPT-Live-1 (Full-duplex Speech-to-Speech · 边说边听)</div></div>
+              </div>
+              <div style="display:grid;grid-template-columns:110px 140px 1fr;gap:7px;background:#f5f3ff;border:1px solid #ddd6fe;border-radius:9px;padding:6px;">
+                <div style="background:#fff;border-radius:6px;padding:7px 9px;font-weight:800;font-size:0.8rem;display:flex;align-items:center;gap:5px;"><span style="background:#2563eb;color:#fff;border-radius:50%;width:17px;height:17px;display:inline-flex;align-items:center;justify-content:center;font-size:0.68rem;">2</span><span id="vlL2">语音到语音</span></div>
+                <div style="background:#fff;border-radius:6px;padding:6px 10px;text-align:center;"><div style="font-size:0.62rem;font-weight:800;color:#64748b;text-align:left;">AZURE SPEECH</div><div style="font-size:0.74rem;color:#475569;font-weight:700;" id="vlL2Sub">语音接入与韵律</div></div>
+                <div style="background:#fff;border-radius:6px;padding:6px 10px;text-align:center;"><div style="font-size:0.62rem;font-weight:800;color:#64748b;text-align:left;">FOUNDRY MODEL</div><div style="font-size:0.82rem;font-weight:800;color:#0f172a;">GPT Realtime · Azure Realtime (Speech-to-Speech)</div></div>
+              </div>
+              <div style="display:grid;grid-template-columns:110px 140px 1fr 210px;gap:7px;background:#ecfdf5;border:1px solid #a7f3d0;border-radius:9px;padding:6px;">
+                <div style="background:#fff;border-radius:6px;padding:7px 9px;font-weight:800;font-size:0.8rem;display:flex;align-items:center;gap:5px;"><span style="background:#2563eb;color:#fff;border-radius:50%;width:17px;height:17px;display:inline-flex;align-items:center;justify-content:center;font-size:0.68rem;">3</span><span id="vlL3">混合式</span></div>
+                <div style="background:#fff;border-radius:6px;padding:6px 8px;text-align:center;"><div style="font-size:0.76rem;font-weight:800;color:#0f172a;" id="vlVad1">智能轮次检测</div><div style="font-size:0.68rem;color:#64748b;">Semantic VAD · EoU</div></div>
+                <div style="background:#fff;border-radius:6px;padding:6px 10px;text-align:center;"><div style="font-size:0.62rem;font-weight:800;color:#64748b;text-align:left;">FOUNDRY MODEL</div><div style="font-size:0.82rem;font-weight:800;color:#0f172a;">GPT Realtime 2.1/1.5 (Speech-LLM)</div></div>
+                <div style="background:#fff;border-radius:6px;padding:6px 8px;text-align:center;"><div style="font-size:0.62rem;font-weight:800;color:#64748b;text-align:left;">AZURE SPEECH</div><div style="font-size:0.8rem;font-weight:800;color:#0f172a;">Azure Speech TTS</div><div style="font-size:0.66rem;color:#64748b;">HD · Custom · Personal</div></div>
+              </div>
+              <div style="display:grid;grid-template-columns:110px 140px 105px 1fr 210px;gap:7px;background:#fffbeb;border:1px solid #fde68a;border-radius:9px;padding:6px;">
+                <div style="background:#fff;border-radius:6px;padding:7px 9px;font-weight:800;font-size:0.8rem;display:flex;align-items:center;gap:5px;"><span style="background:#2563eb;color:#fff;border-radius:50%;width:17px;height:17px;display:inline-flex;align-items:center;justify-content:center;font-size:0.68rem;">4</span><span id="vlL4">级联式</span></div>
+                <div style="background:#fff;border-radius:6px;padding:6px 8px;text-align:center;"><div style="font-size:0.76rem;font-weight:800;color:#0f172a;" id="vlVad2">智能轮次检测</div><div style="font-size:0.68rem;color:#64748b;">Semantic VAD · EoU</div></div>
+                <div style="background:#fff;border-radius:6px;padding:6px 8px;text-align:center;"><div style="font-size:0.62rem;font-weight:800;color:#64748b;text-align:left;">AZURE SPEECH</div><div style="font-size:0.78rem;font-weight:800;color:#0f172a;">Azure STT</div></div>
+                <div style="background:#fff;border-radius:6px;padding:6px 10px;text-align:center;"><div style="font-size:0.62rem;font-weight:800;color:#64748b;text-align:left;">FOUNDRY MODEL</div><div style="font-size:0.8rem;font-weight:800;color:#0f172a;">GPT · Claude · Gemini · OSS · BYO</div></div>
+                <div style="background:#fff;border-radius:6px;padding:6px 8px;text-align:center;"><div style="font-size:0.62rem;font-weight:800;color:#64748b;text-align:left;">AZURE SPEECH</div><div style="font-size:0.8rem;font-weight:800;color:#0f172a;">Azure Speech TTS</div><div style="font-size:0.66rem;color:#64748b;">HD · Custom · Personal</div></div>
+              </div>
+            </div>
+            <div style="background:#fff;border:1px solid #cbd5e1;border-radius:11px;padding:12px 10px;display:flex;flex-direction:column;justify-content:center;text-align:center;">
+              <div style="font-size:0.9rem;font-weight:900;color:#0f172a;" id="vlDelTitle">▶ 任务委派</div>
+              <div style="font-size:0.7rem;color:#64748b;font-style:italic;margin:2px 0 8px;" id="vlDelSub">所有路径均可委派推理与工具</div>
+              <div style="font-size:0.76rem;font-weight:700;color:#334155;padding:4px 0;border-top:1px dashed #e2e8f0;" id="vlDel1">Foundry 智能体</div>
+              <div style="font-size:0.76rem;font-weight:700;color:#334155;padding:4px 0;border-top:1px dashed #e2e8f0;">GPT · Claude · Gemini</div>
+              <div style="font-size:0.76rem;font-weight:700;color:#334155;padding:4px 0;border-top:1px dashed #e2e8f0;">OSS (Phi, Llama ...)</div>
+              <div style="font-size:0.76rem;font-weight:700;color:#334155;padding:4px 0;border-top:1px dashed #e2e8f0;" id="vlDel4">自带后端 / 工具</div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="tab-bar">
@@ -492,65 +581,6 @@
       </div>
     </section>
 
-    <!-- SECTION 6: 7-CARD BENCHMARK & ASSET CATALOG -->
-    <section class="section-block" id="assets">
-      <div class="section-header">
-        <div>
-          <div class="section-tag">SECTION 06 · 7-CARD BENCHMARK DECK &amp; TECHNICAL ASSET ARCHIVE</div>
-          <h2 class="section-title">7-Card (4:5) 基准评测报告与售前技术资产归档</h2>
-        </div>
-        <p class="section-subtitle">
-          本仓库已将全套售前方案白皮书、竞对打单卡、Azure Speech 本地容器排障指南、跨仓库演示工程与实测数据统一归档，方便向合作伙伴与客户一键分享。
-        </p>
-      </div>
-
-      <div class="panel-grid-3">
-        <div class="glass-panel">
-          <div class="panel-title">
-            <span>📊 7-Card 评测报告 &amp; 12页高管 PPT</span>
-            <span class="badge badge-blue">Measured on Azure</span>
-          </div>
-          <p style="font-size:13px;color:#CBD5E1;margin-bottom:12px;">
-            同时提供 **7-Card 4:5 竖版模型基准评测卡片** 与 **12-Slide Azure 高管架构与竞对演示幻灯片**（支持键盘翻页与一键导出 PDF）：
-          </p>
-          <div style="display:flex;flex-direction:column;gap:8px;">
-            <a class="btn-primary" href="./benchmark-cards.html" style="width:100%;justify-content:center;">📊 打开 7-Card 4:5 交互式评测卡片 ↗</a>
-            <a class="btn-secondary" href="./deck.html" style="width:100%;justify-content:center;">📽️ 打开 12-Slide 高管演示幻灯片 (Deck) ↗</a>
-          </div>
-        </div>
-
-        <div class="glass-panel">
-          <div class="panel-title">
-            <span>📚 核心售前白皮书与打单手册 (`docs/`)</span>
-            <span class="badge badge-green">8 Markdown Guides</span>
-          </div>
-          <ul class="feature-list" style="margin-bottom:12px;">
-            <li><a href="https://github.com/turbo998/voice-agent-lab/blob/main/docs/business-scenarios.md" target="_blank" rel="noopener noreferrer" style="color:#60A5FA;text-decoration:none;font-weight:700;">1. `docs/business-scenarios.md`</a> — 八大高价值业务场景（含车载 eCall、航旅 PCI、政务12345与跨境物流AMD）与 ROI 模型</li>
-            <li><a href="https://github.com/turbo998/voice-agent-lab/blob/main/docs/solution-architecture.md" target="_blank" rel="noopener noreferrer" style="color:#60A5FA;text-decoration:none;font-weight:700;">2. `docs/solution-architecture.md`</a> — 四大架构、SIP/编解码损耗表、AMD外呼状态机与多智能体交接规范</li>
-            <li><a href="https://github.com/turbo998/voice-agent-lab/blob/main/docs/competitive-analysis.md" target="_blank" rel="noopener noreferrer" style="color:#60A5FA;text-decoration:none;font-weight:700;">3. `docs/competitive-analysis.md`</a> — Sierra / Retell / ElevenLabs / Vapi / Cartesia 拆解与平滑迁移映射表</li>
-            <li><a href="https://github.com/turbo998/voice-agent-lab/blob/main/docs/presales-playbook.md" target="_blank" rel="noopener noreferrer" style="color:#60A5FA;text-decoration:none;font-weight:700;">4. `docs/presales-playbook.md`</a> — 客户破冰 5 问、竞对挖坑话术、10大 POC 照妖镜探针与两阶段迁移剧本</li>
-            <li><a href="https://github.com/turbo998/voice-agent-lab/blob/main/docs/voice-agent-evaluation-rubric.md" target="_blank" rel="noopener noreferrer" style="color:#60A5FA;text-decoration:none;font-weight:700;">5. `docs/voice-agent-evaluation-rubric.md`</a> — 24 项声学、同音词、事务幂等与红队越狱评测规范</li>
-            <li><a href="https://github.com/turbo998/voice-agent-lab/blob/main/docs/speech-container-guide.md" target="_blank" rel="noopener noreferrer" style="color:#60A5FA;text-decoration:none;font-weight:700;">6. `docs/speech-container-guide.md`</a> — Azure Speech 本地 Docker 容器部署与防火墙白名单指南</li>
-            <li><a href="https://github.com/turbo998/voice-agent-lab/blob/main/docs/asset-catalog.md" target="_blank" rel="noopener noreferrer" style="color:#60A5FA;text-decoration:none;font-weight:700;">7. `docs/asset-catalog.md`</a> — 跨仓库语音技术资产归档与 GitHub Pages 交付清单</li>
-            <li><a href="https://github.com/turbo998/voice-agent-lab/blob/main/docs/daily/2026-10-18.md" target="_blank" rel="noopener noreferrer" style="color:#34D399;text-decoration:none;font-weight:700;">8. `docs/daily/2026-10-18.md`</a> — 最新持续深度研究与竞品/架构演进日报</li>
-          </ul>
-        </div>
-
-        <div class="glass-panel">
-          <div class="panel-title">
-            <span>🔗 跨仓库关联语音技术资产矩阵</span>
-            <span class="badge badge-purple">Multi-Repo Ecosystem</span>
-          </div>
-          <ul class="feature-list">
-            <li><strong><a href="https://github.com/turbo998/voice-agent-lab" target="_blank" rel="noopener noreferrer" style="color:#38BDF8;text-decoration:none;">turbo998/voice-agent-lab</a></strong>：Retell + Azure AI Foundry 双语客服全栈工程 + 66 项单测 + 售前总门户</li>
-            <li><strong><a href="https://github.com/turbo998/gpt-live-1-demo" target="_blank" rel="noopener noreferrer" style="color:#38BDF8;text-decoration:none;">turbo998/gpt-live-1-demo</a></strong>：Azure Voice Live (`gpt-live-1`) 金融/政务/汽车三场景原生 S2S 演示 (<a href="https://gpt-live-demo-0922-qc.azurewebsites.net/" target="_blank" rel="noopener noreferrer" style="color:#34D399;">线上环境 ↗</a>)</li>
-            <li><strong><a href="https://github.com/turbo998/ai-gaming-lab" target="_blank" rel="noopener noreferrer" style="color:#38BDF8;text-decoration:none;">turbo998/ai-gaming-lab</a></strong>：游戏语音智能体与 Voice Live SDK 架构指南</li>
-            <li><strong><a href="https://github.com/turbo998/benchmark-harness-engineering" target="_blank" rel="noopener noreferrer" style="color:#38BDF8;text-decoration:none;">turbo998/benchmark-harness-engineering</a></strong>：Constellation 路由评测与 7-Card 生成器</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
     <footer class="footer">
       <div>Enterprise Voice Agent Presales &amp; Architecture Lab · Built with Azure Voice Live (`gpt-live-1`), Azure AI Foundry (`gpt-4.1-mini`), and Deterministic Guardrails</div>
       <div style="margin-top:4px;">Public Repository Hygiene Verified (`npm run check:public` Passed · Zero Tenant/Subscription Leaks)</div>
@@ -558,5 +588,87 @@
   </main>
 
   <script src="./app.js"></script>
+  <script>
+    // Synchronize language from URL query param (?lang=...) or parent postMessage, and translate the Voice Live 3-Layer Diagram
+    (function() {
+      const vlDict = {
+        'zh-CN': {
+          secTitleArch: 'Azure Voice Live API 三层架构与四大语音模式选型',
+          secSubArch: '统一接入用户场景（SDK / WebSocket / WebRTC / SIP 与虚拟形象输出），内置降噪、回声消除、打断、函数调用与企业治理，底层支持全双工、语音到语音、混合式与级联式 4 条路径并可将任务委派给任意模型系列。',
+          vlArchTitle: 'Azure Voice Live API — 架构',
+          vlArchSub: '语音到语音、混合式和级联式语音智能体，可将任务委派给任意模型系列',
+          vlLayer1Title: '用户场景',
+          vlSc1: '🎧 联络中心', vlSc2: '🚗 车载助手', vlSc3: '🎓 教育与学习', vlSc4: '🏛️ 公共服务', vlSc5: '🧑‍💼 人力资源与员工效率', vlSc6: '🤖 个人助手',
+          vlInLbl: '接口', vlOutLbl: '输出', vlOutAvatar: '🎭 照片/视频虚拟形象',
+          vlPrimitives: '降噪 · 回声消除 · 打断 · 函数调用 · 中间响应',
+          vlGovLbl: '企业治理', vlGov1: '托管', vlGov2: '可扩展性', vlGov3: '安全性', vlGov4: '可观测性',
+          vlL1: '全双工', vlL1Model: 'GPT-Live-1 (Full-duplex Speech-to-Speech · 边说边听)',
+          vlL2: '语音到语音', vlL2Sub: '语音接入与韵律',
+          vlL3: '混合式', vlVad1: '智能轮次检测',
+          vlL4: '级联式', vlVad2: '智能轮次检测',
+          vlDelTitle: '▶ 任务委派', vlDelSub: '所有路径均可委派推理与工具', vlDel1: 'Foundry 智能体', vlDel4: '自带后端 / 工具'
+        },
+        'zh-TW': {
+          secTitleArch: 'Azure Voice Live API 三層架構與四大語音模式選型',
+          secSubArch: '統一接入用戶場景（SDK / WebSocket / WebRTC / SIP 與虛擬形象輸出），內建降噪、回聲消除、打斷、函數調用與企業治理，底層支援全雙工、語音到語音、混合式與級聯式 4 條路徑並可將任務委派給任意模型系列。',
+          vlArchTitle: 'Azure Voice Live API — 架構',
+          vlArchSub: '語音到語音、混合式和級聯式語音智慧體，可將任務委派給任意模型系列',
+          vlLayer1Title: '用戶場景',
+          vlSc1: '🎧 聯絡中心', vlSc2: '🚗 車載助手', vlSc3: '🎓 教育與學習', vlSc4: '🏛️ 公共服務', vlSc5: '🧑‍💼 人力資源與員工效率', vlSc6: '🤖 個人助手',
+          vlInLbl: '介面', vlOutLbl: '輸出', vlOutAvatar: '🎭 照片/視訊虛擬形象',
+          vlPrimitives: '降噪 · 回聲消除 · 打斷 · 函數調用 · 中間響應',
+          vlGovLbl: '企業治理', vlGov1: '託管', vlGov2: '可擴展性', vlGov3: '安全性', vlGov4: '可觀測性',
+          vlL1: '全雙工', vlL1Model: 'GPT-Live-1 (Full-duplex Speech-to-Speech · 邊說邊聽)',
+          vlL2: '語音到語音', vlL2Sub: '語音接入與韻律',
+          vlL3: '混合式', vlVad1: '智慧輪次檢測',
+          vlL4: '級聯式', vlVad2: '智慧輪次檢測',
+          vlDelTitle: '▶ 任務委派', vlDelSub: '所有路徑均可委派推理與工具', vlDel1: 'Foundry 智慧體', vlDel4: '自帶後端 / 工具'
+        },
+        'en': {
+          secTitleArch: 'Azure Voice Live API 3-Layer Architecture & Selection Wizard',
+          secSubArch: 'Unified user scenario access (SDK / WebSocket / WebRTC / SIP & Avatar output), built-in noise suppression, echo cancellation, barge-in, function calling & enterprise governance, across Full-Duplex, S2S, Hybrid, and Cascaded pipelines with task delegation to any model family.',
+          vlArchTitle: 'Azure Voice Live API — Architecture',
+          vlArchSub: 'Speech-to-speech, hybrid, and cascaded voice agents that delegate tasks to any model family',
+          vlLayer1Title: 'User Scenarios',
+          vlSc1: '🎧 Contact Center', vlSc2: '🚗 In-Vehicle Assistant', vlSc3: '🎓 Education & Learning', vlSc4: '🏛️ Public Services', vlSc5: '🧑‍💼 HR & Employee Productivity', vlSc6: '🤖 Personal Assistant',
+          vlInLbl: 'Interfaces', vlOutLbl: 'Output', vlOutAvatar: '🎭 Photo / Video Avatar',
+          vlPrimitives: 'Noise Suppression · Echo Cancellation · Barge-in · Function Calling · Interim Response',
+          vlGovLbl: 'Enterprise Governance', vlGov1: 'Managed', vlGov2: 'Scalability', vlGov3: 'Security', vlGov4: 'Observability',
+          vlL1: 'Full-Duplex', vlL1Model: 'GPT-Live-1 (Full-duplex Speech-to-Speech · Listen while speaking)',
+          vlL2: 'Speech-to-Speech', vlL2Sub: 'Audio I/O & Prosody',
+          vlL3: 'Hybrid', vlVad1: 'Smart Turn Detection',
+          vlL4: 'Cascaded', vlVad2: 'Smart Turn Detection',
+          vlDelTitle: '▶ Task Delegation', vlDelSub: 'All paths delegate reasoning & tools', vlDel1: 'Foundry Agents', vlDel4: 'BYO Backend / Tools'
+        }
+      };
+
+      function applyVlArchLang(lang) {
+        const d = vlDict[lang] || vlDict['zh-CN'];
+        Object.keys(d).forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.textContent = d[id];
+        });
+      }
+
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.addEventListener('click', () => applyVlArchLang(btn.getAttribute('data-lang')));
+      });
+
+      window.addEventListener('message', (ev) => {
+        if (ev.data && ev.data.type === 'SET_LANG' && ev.data.lang) {
+          const btn = document.querySelector('.lang-btn[data-lang="' + ev.data.lang + '"]');
+          if (btn) btn.click();
+          applyVlArchLang(ev.data.lang);
+        }
+      });
+
+      const urlLang = new URLSearchParams(window.location.search).get('lang');
+      if (urlLang) {
+        const btn = document.querySelector('.lang-btn[data-lang="' + urlLang + '"]');
+        if (btn) btn.click();
+        applyVlArchLang(urlLang);
+      }
+    })();
+  </script>
 </body>
 </html>
