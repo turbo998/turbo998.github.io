@@ -3,7 +3,7 @@
    window.__initReveal(root) again once their async content renders. */
 (function () {
   const SELECTOR =
-    ".proj, .tl-item, .repo-card, .rank-row, .section-card, .pub, .bio-card, .profile-card, .panel, .callout";
+    ".proj, .tl-item, .repo-card, .rank-row, .section-card, .pub, .bio-card, .profile-card, .panel, .callout, .wb-card, .asset-card, .style-preview-card";
 
   const revealObserver = "IntersectionObserver" in window
     ? new IntersectionObserver((entries) => {
