@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agentic AI 的下一站：Harness 工程化 — 陈琪 Qi Chen</title>
+<meta name="description" content="为什么大多数 AI Agent 停在 Demo 阶段？从模型、Harness 到场景的三层视角，谈谈把 Agent 带到生产的工程化路径。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a0a0e'/%3E%3Ctext x='32' y='42' font-family='Segoe UI,sans-serif' font-size='26' font-weight='700' fill='%23a5b4fc' text-anchor='middle'%3EQC%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../zh.html"><img src="../assets/photo.jpg" alt="">陈琪 · QI CHEN</a>
+    <div class="nav-links">
+      <a href="#s1">01 现状</a>
+      <a href="#s2">02 三层视角</a>
+      <a href="#s3">03 工程化四件事</a>
+      <a href="#s4">04 落地路径</a>
+    </div>
+    <a class="lang-switch" href="harness-engineering.en.html">EN</a>
+  </div>
+</nav>
+
+<article class="article">
+  <div class="sec-label">AI 趋势 · AGENTIC AI</div>
+  <h1>Agentic AI 的下一站：从 Demo 惊艳到生产可用的 Harness 工程化</h1>
+  <p class="meta">陈琪 · 2026 年 7 月 · 约 8 分钟阅读</p>
+
+  <p>过去一年里，我在大中华区跟数十家企业和合作伙伴一起做 Agent 项目、办了 45+ 支队伍参加的
+  Agentic AI 黑客松、交付了 10+ 场覆盖 1,000+ 工程师的工程化工作坊。一个反复出现的模式是：
+  <b>Demo 越来越容易，生产越来越难。</b>用一个下午就能搭出让老板眼前一亮的 Agent 演示，
+  但要把它变成业务敢依赖的生产系统，中间隔着的不是模型能力，而是工程能力——我把这一层叫做
+  <b>Harness（智能体承载层）工程化</b>。</p>
+
+  <h2 id="s1">01 · 为什么 Agent 大多停在 Demo</h2>
+  <p>企业 Agent 项目死在半路上，常见原因不是"模型不够聪明"，而是：</p>
+  <p>· <b>没有可验证的 ROI 口径</b>——立项时讲愿景，验收时没有 baseline，业务方无法回答"到底省了多少"；<br>
+  · <b>上下文工程缺失</b>——知识库、工具、权限一锅粥，Agent 拿到的上下文既不完整也不干净；<br>
+  · <b>没有评估护栏</b>——上线前靠人肉试几个 case，上线后靠用户投诉发现回归；<br>
+  · <b>可观测性为零</b>——出了错没人说得清 Agent 中间做了什么决策、调了哪些工具。</p>
+
+  <h2 id="s2">02 · 三层视角：模型、Harness、场景</h2>
+  <p>我习惯把一个生产级 Agent 系统拆成三层来讨论：</p>
+  <table>
+    <tr><th>层</th><th>回答的问题</th><th>典型选择</th></tr>
+    <tr><td>模型层</td><td>"够不够聪明"</td><td>前沿闭源模型 / 私有化蒸馏模型（如 vLLM on AKS）</td></tr>
+    <tr><td class="hi">Harness 层</td><td class="hi">"跑不跑得稳"</td><td class="hi">上下文管理 · 工具接入（MCP）· 评估 · 可观测性</td></tr>
+    <tr><td>场景层</td><td>"值不值得做"</td><td>价值 × 可行性打分后的高 ROI 试点</td></tr>
+  </table>
+  <p>行业的注意力长期集中在模型层（哪家新模型又刷榜了）和场景层（又一个惊艳 Demo），
+  而决定项目生死的恰恰是中间那层。模型每半年换一代，场景每个客户都不同，
+  <b>只有 Harness 层的工程资产是可复用、可复利的</b>——这也是 GitHub Copilot、OpenClaw、
+  Hermes 这类编码智能体真正的护城河所在。</p>
+
+  <div class="callout">
+    💡 <b>口径提示</b>：本文中"Harness"指承载模型运行的工程外壳——上下文组装、工具调用、
+    权限边界、评估与追踪的总和，而非某个具体产品。
+  </div>
+
+  <h2 id="s3">03 · Harness 工程化的四件事</h2>
+  <p><b>① 上下文工程（Context Engineering）。</b>比提示词工程更重要的是决定"模型每一步看到什么"：
+  知识库优先 + Web 兜底的检索策略、严格的引用护栏（doc_id / 页码 / 原文片段）、
+  按需注入的工具说明。在医药客户的多智能体平台上，正是引用护栏让"逐条法规检查"
+  的输出可以被稽查员直接采信。</p>
+  <p><b>② 工具与协议（MCP）。</b>MCP 正在成为 Agent 接入企业系统的事实标准。
+  我们在采购智控塔项目里用 MCP 接入行情、资金流、工单系统，配合 OpenTelemetry
+  做全链路追踪——处理周期从 5 天压缩到 1 天，而且每一步都可回放。</p>
+  <p><b>③ 评估与护栏（Evals & Guardrails）。</b>生产级 Agent 必须有自动化评估集：
+  上线前跑基准，每次改动跑回归。医疗文档场景我们用双模型"生成 / 评估"闭环，
+  生成模型写、评估模型按规则打分拦截，才敢让输出进入合规流程。</p>
+  <p><b>④ 可观测性与运营（Observability & Ops）。</b>Token 用量、会话轨迹、工具调用成功率
+  都要进看板。这也是我做 <a href="https://github.com/turbo998/copilot-usage-portal" target="_blank" rel="noopener">copilot-usage-portal</a>
+  和 <a href="https://github.com/turbo998/copilot-multi-agent-dashboard" target="_blank" rel="noopener">multi-agent dashboard</a>
+  这两个开源项目的原因：没有用量与轨迹数据，Agent 运营就是盲飞。</p>
+
+  <h2 id="s4">04 · 一条可复制的落地路径</h2>
+  <p>把上面的工程化要求前置到立项阶段，就是我们和伙伴共建的四步方法论：</p>
+  <p><b>第一步</b>，用 AI-Ready 矩阵对齐痛点——数据、流程、权限是否就绪；<br>
+  <b>第二步</b>，价值 × 可行性打分，砍掉"惊艳但不可行"的场景；<br>
+  <b>第三步</b>，多智能体角色拆解（主控 / 子任务 / 工具 / 逻辑），明确每个 Agent 的边界与交接；<br>
+  <b>第四步</b>，2–4 周试点路线图，带负责人、里程碑和<b>可验收的量化标准</b>。</p>
+  <p>这套打法在制造、医药、汽车客户上反复验证过：不追求一步到位的"超级 Agent"，
+  而是先让一个小场景真正跑到生产、拿到可核算的 ROI，再横向复制。</p>
+  <p><b>结论：</b>2026 年拉开 Agent 项目差距的，不是谁用了更新的模型，
+  而是谁先把 Harness 层沉淀成了可复用的工程资产。模型会过时，场景会更替，
+  工程能力会复利。</p>
+
+  <hr style="border:0;border-top:1px solid var(--border);margin:40px 0">
+  <p style="font-size:14px;color:var(--text-3)">
+    相关开源项目：<a href="https://github.com/turbo998/Agent-Harness-Engineering-on-Azure-and-GitHub-Copilot" target="_blank" rel="noopener">Agent Harness Engineering 工作坊</a> ·
+    <a href="https://github.com/turbo998/FDE-on-GitHub-Copilot-Practice-Book" target="_blank" rel="noopener">FDE 实践手册</a><br>
+    ← <a href="../zh.html#writing">返回全部文章</a> ·
+    有想法？<a href="https://github.com/turbo998">邮件交流</a> 或在
+    <a href="https://github.com/turbo998" target="_blank" rel="noopener">GitHub</a> 找到我。
+  </p>
+</article>
+
+</body>
+</html>

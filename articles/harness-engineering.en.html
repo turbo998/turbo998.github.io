@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Next Stop for Agentic AI: Harness Engineering — Qi Chen</title>
+<meta name="description" content="Why do most AI agents die at the demo stage? A three-layer view — model, harness, scenario — on the engineering path from impressive demos to production systems.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a0a0e'/%3E%3Ctext x='32' y='42' font-family='Segoe UI,sans-serif' font-size='26' font-weight='700' fill='%23a5b4fc' text-anchor='middle'%3EQC%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html"><img src="../assets/photo.jpg" alt="">QI CHEN</a>
+    <div class="nav-links">
+      <a href="#s1">01 Status Quo</a>
+      <a href="#s2">02 Three Layers</a>
+      <a href="#s3">03 Four Disciplines</a>
+      <a href="#s4">04 The Path</a>
+    </div>
+    <a class="lang-switch" href="harness-engineering.html">中文</a>
+  </div>
+</nav>
+
+<article class="article">
+  <div class="sec-label">AI TRENDS · AGENTIC AI</div>
+  <h1>The Next Stop for Agentic AI: From Impressive Demos to Production-Grade Harness Engineering</h1>
+  <p class="meta">Qi Chen · July 2026 · ~8 min read</p>
+
+  <p>Over the past year I've worked on agent projects with dozens of enterprises and partners
+  across Greater China, coached a hackathon with 45+ partner-built agent solutions, and delivered
+  10+ engineering workshops to more than 1,000 engineers. One pattern keeps repeating:
+  <b>demos keep getting easier, production keeps getting harder.</b> You can build a
+  boss-impressing agent demo in an afternoon; turning it into a system the business dares
+  to depend on is separated not by model capability, but by engineering capability — a layer
+  I call <b>harness engineering</b>.</p>
+
+  <h2 id="s1">01 · Why agents die at the demo stage</h2>
+  <p>Enterprise agent projects rarely fail because "the model isn't smart enough." They fail because:</p>
+  <p>· <b>No verifiable ROI baseline</b> — projects launch on vision, but at acceptance nobody can answer "how much did we actually save";<br>
+  · <b>No context engineering</b> — knowledge bases, tools and permissions thrown together, so the agent's context is neither complete nor clean;<br>
+  · <b>No evaluation guardrails</b> — a few manual test cases before launch, user complaints as the regression suite after;<br>
+  · <b>Zero observability</b> — when something breaks, nobody can explain what the agent decided or which tools it called.</p>
+
+  <h2 id="s2">02 · Three layers: model, harness, scenario</h2>
+  <p>I find it useful to decompose any production agent system into three layers:</p>
+  <table>
+    <tr><th>Layer</th><th>Question it answers</th><th>Typical choices</th></tr>
+    <tr><td>Model</td><td>"Is it smart enough?"</td><td>Frontier hosted models / private distilled LLMs (e.g. vLLM on AKS)</td></tr>
+    <tr><td class="hi">Harness</td><td class="hi">"Does it run reliably?"</td><td class="hi">Context management · tool access (MCP) · evals · observability</td></tr>
+    <tr><td>Scenario</td><td>"Is it worth doing?"</td><td>High-ROI pilots ranked by value × feasibility</td></tr>
+  </table>
+  <p>The industry's attention stays glued to the model layer (another benchmark topped) and the
+  scenario layer (another dazzling demo), yet the layer that decides whether a project lives or
+  dies sits in the middle. Models turn over every six months and scenarios differ per customer —
+  <b>only harness-layer engineering assets are reusable and compounding</b>. That is also the real
+  moat behind coding agents like GitHub Copilot, OpenClaw and Hermes.</p>
+
+  <div class="callout">
+    💡 <b>Definition note</b>: in this article, "harness" means the engineering shell the model
+    runs inside — context assembly, tool invocation, permission boundaries, evaluation and
+    tracing combined — not any specific product.
+  </div>
+
+  <h2 id="s3">03 · The four disciplines of harness engineering</h2>
+  <p><b>① Context engineering.</b> More important than prompt-crafting is deciding what the model
+  sees at every step: knowledge-base-first retrieval with web fallback, strict citation guardrails
+  (doc_id / page / snippet), tool descriptions injected on demand. On a pharma multi-agent
+  platform, citation guardrails are what made "case-by-case regulation check" outputs directly
+  trustable by inspectors.</p>
+  <p><b>② Tools and protocols (MCP).</b> MCP is becoming the de-facto standard for connecting
+  agents to enterprise systems. In a procurement control-tower project we wired market data,
+  fund flows and ticketing through MCP with OpenTelemetry end-to-end tracing — cycle time went
+  from 5 days to 1, and every step is replayable.</p>
+  <p><b>③ Evals and guardrails.</b> A production agent needs an automated evaluation set: run the
+  benchmark before launch, run regressions on every change. For medical documentation we used a
+  dual-LLM generate/evaluate loop — one model writes, another scores and blocks against rules —
+  before any output enters a compliance workflow.</p>
+  <p><b>④ Observability and operations.</b> Token consumption, session traces and tool-call
+  success rates all belong on a dashboard. That's why I open-sourced
+  <a href="https://github.com/turbo998/copilot-usage-portal" target="_blank" rel="noopener">copilot-usage-portal</a>
+  and the <a href="https://github.com/turbo998/copilot-multi-agent-dashboard" target="_blank" rel="noopener">multi-agent dashboard</a>:
+  without usage and trace data, operating agents is flying blind.</p>
+
+  <h2 id="s4">04 · A repeatable path to production</h2>
+  <p>Pull these engineering requirements forward into project inception and you get the four-step
+  methodology we co-built with partners:</p>
+  <p><b>Step 1</b>: align pain points on an AI-Ready matrix — is the data, process and permission model actually ready;<br>
+  <b>Step 2</b>: score scenarios on value × feasibility, and cut the "dazzling but unworkable" ones;<br>
+  <b>Step 3</b>: decompose into multi-agent roles (master / sub / tool / logic) with explicit boundaries and hand-offs;<br>
+  <b>Step 4</b>: a 2–4 week pilot roadmap with owners, milestones and <b>quantified acceptance criteria</b>.</p>
+  <p>This playbook has been validated repeatedly across manufacturing, pharma and automotive
+  customers: don't chase a one-shot "super agent" — get one small scenario genuinely into
+  production with accountable ROI, then replicate sideways.</p>
+  <p><b>Bottom line:</b> what separates agent programs in 2026 is not who uses the newest model,
+  but who first turns the harness layer into reusable engineering assets. Models age, scenarios
+  rotate, engineering capability compounds.</p>
+
+  <hr style="border:0;border-top:1px solid var(--border);margin:40px 0">
+  <p style="font-size:14px;color:var(--text-3)">
+    Related open source: <a href="https://github.com/turbo998/Agent-Harness-Engineering-on-Azure-and-GitHub-Copilot" target="_blank" rel="noopener">Agent Harness Engineering workshop</a> ·
+    <a href="https://github.com/turbo998/FDE-on-GitHub-Copilot-Practice-Book" target="_blank" rel="noopener">FDE Practice Book</a><br>
+    ← <a href="../index.html#writing">Back to all writing</a> ·
+    Thoughts? <a href="https://github.com/turbo998">Email me</a> or find me on
+    <a href="https://github.com/turbo998" target="_blank" rel="noopener">GitHub</a>.
+  </p>
+</article>
+
+</body>
+</html>

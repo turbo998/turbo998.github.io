@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clawd 水彩手绘卡通知识短片剧场 · Opus 5.5 Painted Animation Studio</title>
+  <style>
+    :root {
+      --bg: #f6efe2;
+      --paper: #fffaf0;
+      --ink: #2c221e;
+      --muted: #6e5a4f;
+      --accent: #d87a56;
+      --accent-dark: #b35330;
+      --teal: #45a8a0;
+      --gold: #eab84b;
+      --border: #3a2d27;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "STKaiti", "KaiTi", "PingFang SC", "Microsoft YaHei", sans-serif;
+      padding: 24px;
+      line-height: 1.5;
+    }
+    .header {
+      max-width: 1360px;
+      margin: 0 auto 22px;
+      background: var(--paper);
+      border: 3px solid var(--border);
+      border-radius: 16px;
+      padding: 20px 26px;
+      box-shadow: 6px 6px 0 var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .header h1 {
+      font-size: 26px;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .badge {
+      background: var(--accent);
+      color: #fff;
+      font-size: 13px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      border: 2px solid var(--border);
+      font-weight: bold;
+    }
+    .sub {
+      color: var(--muted);
+      font-size: 15px;
+      margin-top: 4px;
+    }
+    .layout {
+      max-width: 1360px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.65fr 1fr;
+      gap: 22px;
+    }
+    @media (max-width: 1024px) {
+      .layout { grid-template-columns: 1fr; }
+    }
+    .stage-card, .playlist-card {
+      background: var(--paper);
+      border: 3px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 6px 6px 0 var(--border);
+    }
+    .video-wrap {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #1d192b;
+      border: 3px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+    video {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: contain;
+    }
+    .ep-title {
+      font-size: 22px;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+    .ep-meta {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+    .pill {
+      background: #efe4ce;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      padding: 3px 10px;
+      font-size: 13px;
+      font-weight: bold;
+    }
+    .shots-box {
+      background: #fbf3e4;
+      border: 2px dashed var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+    }
+    .shots-box h3 {
+      font-size: 16px;
+      margin-bottom: 8px;
+      color: var(--accent-dark);
+    }
+    .shots-list {
+      list-style: none;
+      display: grid;
+      gap: 6px;
+      font-size: 14.5px;
+    }
+    .sheet-box h3 {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+    .sheet-box img {
+      width: 100%;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      display: block;
+    }
+    .ep-list {
+      display: grid;
+      gap: 12px;
+    }
+    .ep-btn {
+      text-align: left;
+      background: #fbf3e4;
+      border: 2.5px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      cursor: pointer;
+      display: grid;
+      grid-template-columns: 132px 1fr;
+      gap: 12px;
+      align-items: center;
+      transition: transform 0.12s ease, background 0.12s ease;
+      font-family: inherit;
+    }
+    .ep-btn:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 4px 4px 0 var(--border);
+    }
+    .ep-btn.active {
+      background: #ffe3ce;
+      border-color: var(--accent-dark);
+      box-shadow: 4px 4px 0 var(--border);
+    }
+    .ep-btn img {
+      width: 132px;
+      height: 74px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 2px solid var(--border);
+    }
+    .ep-btn-title {
+      font-size: 15px;
+      font-weight: bold;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .ep-btn-sub {
+      font-size: 12.5px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div>
+      <h1>🎨 Clawd 水彩手绘卡通知识短片剧场 <span class="badge">Opus 5.5 Painted-Animation · 16:9 横屏纯享</span></h1>
+      <div class="sub">告别 PPT 录屏与竖屏模板 · 全程 p5.brush 水彩晕染 + 8Hz 手绘抖动墨线 + 角色表演分镜 + 欢快木琴配音</div>
+    </div>
+    <div class="ep-meta" style="margin:0">
+      <span class="pill">1920×1080 · 24fps</span>
+      <span class="pill">6 部横屏卡通短片</span>
+      <span class="pill">Kubelka-Munk 水彩颜料混合</span>
+    </div>
+  </div>
+
+  <div class="layout">
+    <div class="stage-card">
+      <div class="video-wrap">
+        <video id="player" controls autoplay playsinline poster="ep00-poster.jpg" src="ep00-cartoon-16x9.mp4"></video>
+      </div>
+      <div class="ep-title" id="cur-title">EP00 · 凌晨零点的AI小人国：五路通宵大闯关（总览篇）</div>
+      <div class="ep-meta" id="cur-meta"></div>
+      <div class="shots-box">
+        <h3>🎬 手绘分镜脚本（4-Shot Cartoon Storyboard）</h3>
+        <ul class="shots-list" id="cur-shots"></ul>
+      </div>
+      <div class="sheet-box">
+        <h3>🖼️ 8 帧水彩手绘分镜预览表（Contact Sheet）</h3>
+        <img id="cur-sheet" src="ep00-sheet.jpg" alt="Storyboard Contact Sheet" />
+      </div>
+    </div>
+
+    <div class="playlist-card">
+      <h2 style="font-size:19px;margin-bottom:12px;">📺 选择剧集（6 部 16:9 卡通动画短片）</h2>
+      <div class="ep-list" id="playlist"></div>
+    </div>
+  </div>
+
+  <script>
+    const EPISODES = [
+      {
+        id: "ep00",
+        title: "EP00 · 凌晨零点的AI小人国：五路通宵大闯关（总览篇）",
+        video: "ep00-cartoon-16x9.mp4",
+        poster: "ep00-poster.jpg",
+        sheet: "ep00-sheet.jpg",
+        duration: "27.8s · 667帧",
+        repo: "turbo998/Kee-Tech-Assets",
+        milestone: "5大仓库收官总览 · 6部卡通短片",
+        shots: [
+          "Shot A：午夜00:00挂钟敲响，原本戴睡帽打呼噜的橘色小方块Clawd换上魔法帽，召唤出五颜六色的AI小分队！",
+          "Shot B：分屏奇观——左屏黄小人拿激光刻刀雕刻MOLA火星大峡谷（Stage 196），右屏青小人举双层光盾弹飞超声波暗箭（Stage 100）！",
+          "Shot C：三联工坊——紫小人调度256条算力高铁、绿小人锁死9个9安全金库、粉小人用0.2ms氮气护盾驯服1650℃高炉！",
+          "Shot D：清晨08:00太阳升起，六个小人在绿茵山坡排排站戴上皇冠欢呼跳跃，通宵科研大满贯！"
+        ]
+      },
+      {
+        id: "ep01",
+        title: "EP01 · 扔掉500MB贴图包！小画师用纯数学画敦煌飞天与火星",
+        video: "ep01-cartoon-16x9.mp4",
+        poster: "ep01-poster.jpg",
+        sheet: "ep01-sheet.jpg",
+        duration: "31.0s · 745帧",
+        repo: "turbo998/generative-visual-lab",
+        milestone: "Stage 196 · 0外部CDN · 55/55单测",
+        shots: [
+          "Shot A：小画师Clawd背着500MB贴图木箱累得冒汗，一脚把木箱踢进垃圾桶，抽出闪光SDF数学画笔！",
+          "Shot B：敦煌石窟舞台，小画师挥动画笔，红绿双面金边飘带在60帧（16.7ms）丝滑舞动！",
+          "Shot C：飞向星空，激光笔在火星圆球上精准雕刻奥林帕斯山与水手号大峡谷真实MOLA高程！",
+          "Shot D：按下火箭发射钮，白色小火箭喷出璀璨马赫环冲上云霄，196关通关！"
+        ]
+      },
+      {
+        id: "ep02",
+        title: "EP02 · 给语音AI装上顺风耳与防弹盾！100关大满贯",
+        video: "ep02-cartoon-16x9.mp4",
+        poster: "ep02-poster.jpg",
+        sheet: "ep02-sheet.jpg",
+        duration: "31.6s · 758帧",
+        repo: "turbo998/voice-agent-lab",
+        milestone: "Stage 100 百关大满贯 · 203道防线",
+        shots: [
+          "Shot A：呆滞铁皮机器人慢吞吞吐出STT纸条，Clawd急得直冒汗，一把推开旧机器！",
+          "Shot B：黄小人与青小人戴上原生全双工耳机，彩色气泡双向秒级打断、对答如流！",
+          "Shot C：黑客发射红色尖刺欺骗声波，小卫士举起双层青色护盾（203道防线）把坏声波统统弹飞！",
+          "Shot D：面对化工厂反应釜报警，小人零延迟一把拉下红色安全闸门，欢呼拿下Stage 100百关里程碑！"
+        ]
+      },
+      {
+        id: "ep03",
+        title: "EP03 · 算力高铁与月饼冷库：万亿大模型提速秘籍",
+        video: "ep03-cartoon-16x9.mp4",
+        poster: "ep03-poster.jpg",
+        sheet: "ep03-sheet.jpg",
+        duration: "31.8s · 765帧",
+        repo: "turbo998/ai-infra-research",
+        milestone: "Phase 70 里程碑 · Rubin MegaMoE + Mooncake",
+        shots: [
+          "Shot A：红色老火车头被成堆KV木箱堵在独木桥上直冒黑烟，调度员Clawd急得跳脚！",
+          "Shot B：拉下Rubin MegaMoE道岔，金光闪闪的256通道算力高架桥点亮，蓝色动车组飞驰而过！",
+          "Shot C：小厨师把算好的KV记忆做成发光黄金月饼（Mooncake），从算力火车头精准抛进远端冷库！",
+          "Shot D：太阳升起，全栈70座灯塔点亮，算力列车高速平稳飞驰，Phase 70大功告成！"
+        ]
+      },
+      {
+        id: "ep04",
+        title: "EP04 · AI管家逛街买单，怎样做到一分钱都不算错？",
+        video: "ep04-cartoon-16x9.mp4",
+        poster: "ep04-poster.jpg",
+        sheet: "ep04-sheet.jpg",
+        duration: "33.5s · 805帧",
+        repo: "turbo998/agentic-commerce-lab",
+        milestone: "Stages 226–227 · 868/868 单测全绿",
+        shots: [
+          "Shot A：买家与卖家小人隔着木桌互相拉扯大金币争吵不休，头顶冒出怒气云！",
+          "Shot B：警长Clawd端来黄金纳什博弈天平，魔法棒一点，左右秤盘稳稳对齐双赢平衡！",
+          "Shot C：带电火花伪造账单袭来，警长转动99.9999999%金库手轮，三把安全铜锁咔嚓锁死！",
+          "Shot D：金库旁868颗金色星星闪耀，三个小人开心庆祝智能体商务实验室通关！"
+        ]
+      },
+      {
+        id: "ep05",
+        title: "EP05 · 1650度矿热高炉旁的AI守门人：0.2毫秒生死线",
+        video: "ep05-cartoon-16x9.mp4",
+        poster: "ep05-poster.jpg",
+        sheet: "ep05-sheet.jpg",
+        duration: "32.6s · 784帧",
+        repo: "turbo998/ai-infra-lab",
+        milestone: "Cycle #179 · 185章 · 180套蓝图 · 188/188单测",
+        shots: [
+          "Shot A：1650℃密闭矿热高炉剧烈震动、炉顶火星四溅，工程师Clawd惊出一身冷汗！",
+          "Shot B：戴上10kHz激光透视镜，发射青色TDLAS激光束配合PINN-MPC物理大脑看穿炉内暗流！",
+          "Shot C：千钧一发之际，0.2毫秒拉下SIL-3安全闸门，高压氮气冰蓝护盾瞬间抚平高炉！",
+          "Shot D：185章工业圣经与180套云边蓝图全部落地，小人小队与高炉在晨光中欢呼庆祝！"
+        ]
+      }
+    ];
+
+    const player = document.getElementById('player');
+    const curTitle = document.getElementById('cur-title');
+    const curMeta = document.getElementById('cur-meta');
+    const curShots = document.getElementById('cur-shots');
+    const curSheet = document.getElementById('cur-sheet');
+    const playlist = document.getElementById('playlist');
+
+    function selectEp(idx) {
+      const ep = EPISODES[idx];
+      player.src = ep.video;
+      player.poster = ep.poster;
+      player.play().catch(() => {});
+      curTitle.textContent = ep.title;
+      curMeta.innerHTML = `
+        <span class="pill">⏱️ ${ep.duration}</span>
+        <span class="pill">📦 ${ep.repo}</span>
+        <span class="pill">🏆 ${ep.milestone}</span>
+      `;
+      curShots.innerHTML = ep.shots.map(s => `<li>• ${s}</li>`).join('');
+      curSheet.src = ep.sheet;
+      document.querySelectorAll('.ep-btn').forEach((b, i) => {
+        b.classList.toggle('active', i === idx);
+      });
+    }
+
+    EPISODES.forEach((ep, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'ep-btn' + (i === 0 ? ' active' : '');
+      btn.innerHTML = `
+        <img src="${ep.poster}" alt="${ep.id}" />
+        <div>
+          <div class="ep-btn-title">${ep.title}</div>
+          <div class="ep-btn-sub">${ep.milestone} · ${ep.duration}</div>
+        </div>
+      `;
+      btn.onclick = () => selectEp(i);
+      playlist.appendChild(btn);
+    });
+
+    selectEp(0);
+  </script>
+</body>
+</html>
