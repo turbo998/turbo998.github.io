@@ -7,7 +7,7 @@
   const status = document.getElementById("model-status");
   if (!list) return;
 
-  const LANG = document.documentElement.lang === "zh" ? "zh" : "en";
+  const LANG = (document.documentElement.lang || "").toLowerCase().startsWith("zh") ? "zh" : "en";
   const RANKINGS_BASE = "https://openrouter.ai/api/frontend/v1/rankings/models?view=";
   const MODELS_API = "https://openrouter.ai/api/v1/models";
   const CHART_API = "https://openrouter.ai/api/frontend/v1/rankings/model-rankings-chart";
