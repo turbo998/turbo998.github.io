@@ -1,0 +1,1904 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Frontier AI Studio · Global Solution Accelerators (Voice · Agent Infra · Commerce · Benchmarks · Animation · Game)</title>
+  <style>
+    :root {
+      --bg: #070b14;
+      --bg-elev: #0f172a;
+      --bg-card: #131d35;
+      --border: #1e293b;
+      --border-hi: #3b82f6;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #3b82f6;
+      --emerald: #10b981;
+      --purple: #8b5cf6;
+      --amber: #f59e0b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft JhengHei", "Microsoft YaHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    /* Clean Sticky Topbar */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(11, 17, 32, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-badge {
+      background: linear-gradient(135deg, #2563eb, #6366f1);
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.76rem;
+      letter-spacing: 0.08em;
+      padding: 5px 11px;
+      border-radius: 999px;
+      text-transform: uppercase;
+    }
+    .brand-title {
+      font-weight: 800;
+      font-size: 1.05rem;
+      color: #f8fafc;
+    }
+    .brand-sub {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* 6 Main Track Selector Pills */
+    .track-nav {
+      display: flex;
+      gap: 6px;
+      background: #090e1a;
+      padding: 5px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .track-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: #cbd5e1;
+      padding: 7px 13px;
+      border-radius: 9px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.16s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+    .track-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .track-btn.active {
+      background: linear-gradient(135deg, #2563eb, #4f46e5);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+    }
+
+    /* Right Controls: Language Switcher + Open Fullscreen */
+    .right-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .lang-group {
+      display: flex;
+      background: #090e1a;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .lang-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 6px 11px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .lang-btn:hover { color: #fff; }
+    .lang-btn.active {
+      background: #2563eb;
+      color: #fff;
+    }
+    .btn-open {
+      background: #131d35;
+      border: 1px solid #334155;
+      color: #f8fafc;
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.15s;
+    }
+    .btn-open:hover {
+      border-color: #60a5fa;
+      background: #1e293b;
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 1460px;
+      margin: 0 auto;
+      padding: 22px 28px 40px;
+    }
+    .track-panel {
+      display: none;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .track-panel.active {
+      display: flex;
+    }
+
+    /* Track Header & Highlights Card */
+    .overview-card {
+      background: linear-gradient(180deg, rgba(19, 29, 53, 0.92) 0%, rgba(15, 23, 42, 0.92) 100%);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 22px 26px;
+    }
+    .ov-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+    .ov-eyebrow {
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: #60a5fa;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .ov-title {
+      margin: 0;
+      font-size: 1.55rem;
+      font-weight: 800;
+      color: #fff;
+    }
+    .ov-desc {
+      margin: 6px 0 0;
+      font-size: 0.94rem;
+      color: #cbd5e1;
+      max-width: 980px;
+    }
+    .ov-links {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .pill-link {
+      background: rgba(37, 99, 235, 0.16);
+      border: 1px solid rgba(96, 165, 250, 0.4);
+      color: #93c5fd;
+      padding: 7px 13px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .pill-link:hover {
+      background: #2563eb;
+      color: #fff;
+    }
+
+    /* Feature Grid */
+    .feature-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 14px;
+    }
+    .f-box {
+      background: rgba(9, 14, 26, 0.65);
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+      padding: 14px 16px;
+    }
+    .f-box h4 {
+      margin: 0 0 6px;
+      font-size: 0.94rem;
+      color: #60a5fa;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .f-box p {
+      margin: 0;
+      font-size: 0.84rem;
+      color: #cbd5e1;
+      line-height: 1.5;
+    }
+
+    /* HVE Engineering Practice Pipeline Card */
+    .hve-practice-card {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(37, 99, 235, 0.09) 100%);
+      border: 1px solid rgba(52, 211, 153, 0.35);
+      border-radius: 14px;
+      padding: 16px 20px;
+      margin-top: 16px;
+    }
+    .hve-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .hve-title {
+      margin: 0;
+      font-size: 1.02rem;
+      font-weight: 800;
+      color: #34d399;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .hve-badge {
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: rgba(16, 185, 129, 0.16);
+      color: #6ee7b7;
+      border: 1px solid rgba(52, 211, 153, 0.35);
+      letter-spacing: 0.04em;
+    }
+    .hve-steps-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .hve-step {
+      background: rgba(9, 14, 26, 0.75);
+      border: 1px solid rgba(51, 65, 85, 0.8);
+      border-radius: 10px;
+      padding: 12px 14px;
+    }
+    .hve-step strong {
+      display: block;
+      font-size: 0.84rem;
+      color: #93c5fd;
+      margin-bottom: 5px;
+    }
+    .hve-step span {
+      display: block;
+      font-size: 0.8rem;
+      color: #cbd5e1;
+      line-height: 1.48;
+    }
+    @media (max-width: 1100px) {
+      .hve-steps-4 { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* ===================================================================== */
+    /* AZURE VOICE LIVE API 3-LAYER ARCHITECTURE DIAGRAM (SCREENSHOT REPLICA)*/
+    /* ===================================================================== */
+    .vl-arch-card {
+      background: linear-gradient(145deg, #eef6ff 0%, #f5f9f6 52%, #fef9ec 100%);
+      color: #0f172a;
+      border-radius: 18px;
+      padding: 22px 26px;
+      border: 1px solid #cbd5e1;
+      box-shadow: 0 12px 32px rgba(2, 6, 23, 0.35);
+    }
+    .vl-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .vl-title {
+      margin: 0;
+      font-size: 1.48rem;
+      font-weight: 900;
+      color: #0f172a;
+      letter-spacing: -0.02em;
+    }
+    .vl-sub {
+      margin: 3px 0 0;
+      font-size: 0.9rem;
+      color: #475569;
+      font-weight: 500;
+    }
+    /* Layer 1: User Scenarios */
+    .vl-layer1 {
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 12px 18px;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
+    }
+    .vl-layer-label {
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: #1e293b;
+      margin-bottom: 8px;
+    }
+    .vl-scenarios-row {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .vl-sc-pill {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 999px;
+      padding: 6px 15px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: #0f172a;
+      box-shadow: 0 2px 5px rgba(15, 23, 42, 0.04);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    /* Connector Bar: Interfaces <-> Output */
+    .vl-connector-bar {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      padding: 10px 12px;
+      gap: 12px;
+    }
+    .vl-io-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .vl-io-group.right {
+      justify-content: flex-end;
+    }
+    .vl-io-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #64748b;
+      margin-right: 2px;
+    }
+    .vl-io-pill {
+      background: #fff;
+      border: 1px solid #cbd5e1;
+      border-radius: 999px;
+      padding: 4px 11px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .vl-arrows {
+      font-size: 1.35rem;
+      font-weight: 900;
+      color: #2563eb;
+      line-height: 1;
+      letter-spacing: -2px;
+    }
+    /* Layer 2 & 3 Main Platform Shell */
+    .vl-platform-box {
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 18px 20px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+    }
+    .vl-plat-center {
+      text-align: center;
+      margin-bottom: 14px;
+    }
+    .vl-plat-title {
+      font-size: 1.4rem;
+      font-weight: 900;
+      color: #0f172a;
+      margin: 0;
+    }
+    .vl-plat-bar {
+      width: 48px;
+      height: 3px;
+      background: #2563eb;
+      margin: 5px auto 8px;
+      border-radius: 2px;
+    }
+    .vl-plat-features {
+      font-size: 0.88rem;
+      color: #334155;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .vl-gov-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 7px;
+      flex-wrap: wrap;
+      font-size: 0.8rem;
+    }
+    .vl-gov-title {
+      font-weight: 800;
+      color: #0f172a;
+      margin-right: 4px;
+    }
+    .vl-gov-pill {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 999px;
+      padding: 3px 11px;
+      color: #475569;
+      font-weight: 600;
+      font-size: 0.76rem;
+    }
+    /* Layer 3: 4 Lanes + Right Task Delegation */
+    .vl-lanes-grid {
+      display: grid;
+      grid-template-columns: 1fr 220px;
+      gap: 12px;
+      align-items: stretch;
+    }
+    .vl-lanes-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .vl-lane {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 8px;
+      align-items: stretch;
+      border-radius: 10px;
+      padding: 6px;
+      border: 1px solid #e2e8f0;
+    }
+    .vl-lane-1 { background: #eff6ff; border-color: #bfdbfe; }
+    .vl-lane-2 { background: #f5f3ff; border-color: #ddd6fe; }
+    .vl-lane-3 { background: #ecfdf5; border-color: #a7f3d0; }
+    .vl-lane-4 { background: #fffbeb; border-color: #fde68a; }
+
+    .vl-lane-head {
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 7px;
+      padding: 8px 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 800;
+      font-size: 0.84rem;
+      color: #0f172a;
+    }
+    .vl-num {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #2563eb;
+      color: #fff;
+      font-size: 0.7rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .vl-lane-body {
+      display: grid;
+      gap: 6px;
+    }
+    .vl-box {
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid rgba(148, 163, 184, 0.28);
+      border-radius: 7px;
+      padding: 7px 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+    }
+    .vl-box-tag {
+      font-size: 0.63rem;
+      font-weight: 800;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .vl-box-main {
+      font-size: 0.84rem;
+      font-weight: 800;
+      color: #0f172a;
+      text-align: center;
+    }
+    .vl-box-sub {
+      font-size: 0.72rem;
+      color: #64748b;
+      text-align: center;
+    }
+    .vl-delegate-card {
+      background: #fff;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 14px 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
+    }
+    .vl-del-title {
+      font-size: 0.95rem;
+      font-weight: 900;
+      color: #0f172a;
+      margin-bottom: 3px;
+    }
+    .vl-del-sub {
+      font-size: 0.73rem;
+      color: #64748b;
+      font-style: italic;
+      margin-bottom: 10px;
+    }
+    .vl-del-item {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #334155;
+      padding: 4px 0;
+      border-top: 1px dashed #e2e8f0;
+    }
+
+    /* Live Interactive Stage Card */
+    .stage-shell {
+      background: var(--bg-elev);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .stage-bar {
+      padding: 10px 18px;
+      background: #0b1120;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .scene-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .scene-pill {
+      background: #131d35;
+      border: 1px solid #263554;
+      color: #cbd5e1;
+      padding: 6px 13px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .scene-pill:hover {
+      border-color: #60a5fa;
+      color: #fff;
+    }
+    .scene-pill.active {
+      background: #2563eb;
+      border-color: #3b82f6;
+      color: #fff;
+    }
+    .stage-iframe {
+      width: 100%;
+      height: 760px;
+      border: none;
+      background: #050811;
+    }
+
+    @media (max-width: 1024px) {
+      .feature-grid-3 { grid-template-columns: 1fr; }
+      .vl-lanes-grid { grid-template-columns: 1fr; }
+      .vl-lane { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- CLEAN TOP NAVIGATION BAR -->
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-badge">FRONTIER AI STUDIO</span>
+      <div>
+        <div class="brand-title" id="ui-brand-title">Global AI Solution Accelerators &amp; Benchmark Command Center</div>
+        <div class="brand-sub" id="ui-brand-sub">六大核心工程主线：Voice Agent · Agent Infra 10万沙箱 · Agentic Commerce · 7-Card 基准与竞技场 · Coding 动画 · HVE 游戏</div>
+      </div>
+    </div>
+
+    <nav class="track-nav" role="tablist" aria-label="Main Tracks">
+      <button class="track-btn active" id="tab-voice" onclick="selectTrack('voice')" type="button">
+        <span>🎙️ 01 · Voice Agent</span>
+      </button>
+      <button class="track-btn" id="tab-infra" onclick="selectTrack('infra')" type="button">
+        <span>🏗️ 02 · Agent Infra (100K)</span>
+      </button>
+      <button class="track-btn" id="tab-commerce" onclick="selectTrack('commerce')" type="button">
+        <span>🛒 03 · Agentic Commerce</span>
+      </button>
+      <button class="track-btn" id="tab-benchmarks" onclick="selectTrack('benchmarks')" type="button">
+        <span>📊 04 · 7-Card 评测与竞技场</span>
+      </button>
+      <button class="track-btn" id="tab-animation" onclick="selectTrack('animation')" type="button">
+        <span>🎨 05 · Coding 动画</span>
+      </button>
+      <button class="track-btn" id="tab-game" onclick="selectTrack('game')" type="button">
+        <span>🎮 06 · HVE 游戏</span>
+      </button>
+    </nav>
+
+    <div class="right-controls">
+      <a class="btn-open" href="./index.html" id="btn-home">← 门户主页</a>
+      <div class="lang-group" role="group" aria-label="Language Switcher">
+        <button class="lang-btn active" data-lang="zh-CN" onclick="setLang('zh-CN')" type="button">简体</button>
+        <button class="lang-btn" data-lang="zh-TW" onclick="setLang('zh-TW')" type="button">繁體</button>
+        <button class="lang-btn" data-lang="en" onclick="setLang('en')" type="button">EN</button>
+      </div>
+      <button class="btn-open" id="btn-open-new" onclick="openCurrentStage()" type="button">↗ 独立窗口打开</button>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- =================================================================== -->
+    <!-- TRACK 01: ENTERPRISE VOICE AGENT & AZURE VOICE LIVE 3-LAYER ARCH    -->
+    <!-- =================================================================== -->
+    <section class="track-panel active" id="panel-voice">
+      <div class="overview-card">
+        <div class="ov-top">
+          <div>
+            <div class="ov-eyebrow" id="v-eyebrow">TRACK 01 · ENTERPRISE VOICE AGENT · BUSINESS SCENARIOS &amp; AZURE VOICE LIVE API</div>
+            <h1 class="ov-title" id="v-title">企业级实时语音智能体：高价值业务场景与 Azure Voice Live 三层架构</h1>
+            <p class="ov-desc" id="v-desc">聚焦联络中心、车载助手、公共服务等高 ROI 语音场景，依托 Azure Voice Live API 统一语音到语音（Full-Duplex / S2S）、混合式（Hybrid）与级联式（Cascaded）四大通道，并将推理与工具调用无缝委派至任意模型系列。</p>
+          </div>
+          <div class="ov-links">
+            <a class="pill-link" href="./voice/deck.html" target="_blank" id="v-link-deck">📽️ 12 页高管演示 Deck ↗</a>
+            <a class="pill-link" href="https://gpt-live-demo-0922-qc.azurewebsites.net/" target="_blank" id="v-link-live">🌐 Azure 线上 GPT-Live-1 实测 ↗</a>
+            <a class="pill-link" href="https://github.com/turbo998/voice-agent-lab" target="_blank">📦 GitHub ↗</a>
+          </div>
+        </div>
+
+        <div class="hve-practice-card">
+          <div class="hve-head">
+            <h3 class="hve-title" id="v-hve-title">🛠️ HVE (Hyper-Velocity Engineering) 在企业语音智能体中的工程化实践</h3>
+            <span class="hve-badge">RPI: Research → Plan → Implement → Harness Gate</span>
+          </div>
+          <div class="hve-steps-4">
+            <div class="hve-step">
+              <strong id="v-hve-s1-t">01 · Research (场景与声学调研)</strong>
+              <span id="v-hve-s1-d">沉淀 20 大高价值行业场景、PSTN/SIP 编解码损耗矩阵与 90 项真实生产陷阱（Barge-in 竞态、同音词幻觉、弱网抖动）。</span>
+            </div>
+            <div class="hve-step">
+              <strong id="v-hve-s2-t">02 · Plan (契约与状态机冻结)</strong>
+              <span id="v-hve-s2-d">冻结 Azure Voice Live 四通道选型蓝图、turnEpoch 打断状态机、Strict JSON Schema 工具契约与 K01–K12 安全熔断规则。</span>
+            </div>
+            <div class="hve-step">
+              <strong id="v-hve-s3-t">03 · Implement (双模路由与沙盒合成)</strong>
+              <span id="v-hve-s3-d">并行构建 Voice Live (GPT-Live-1) 原生 S2S 与 Foundry 受控诊断路由、双语实时语音沙盒及 FinOps TCO 动态测算器。</span>
+            </div>
+            <div class="hve-step">
+              <strong id="v-hve-s4-t">04 · Harness Gate (红队与幂等门禁)</strong>
+              <span id="v-hve-s4-d">通过 66 项自动化单测、&lt;170ms 半句打断验证、K05 高危带电操作 100% 熔断拦截与坐席审批幂等门禁。</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-grid-3">
+          <div class="f-box">
+            <h4 id="v-f1-t">🎯 六大核心域 + 20 个高 ROI 行业场景</h4>
+            <p id="v-f1-d">全面覆盖联络中心、智能座舱 eCall、跨国餐饮 QSR 免下车点餐、金融双录与航旅 PCI 语音支付门控，内置 FinOps TCO 测算器（较按单 SaaS 节省 65%–78%）。</p>
+          </div>
+          <div class="f-box">
+            <h4 id="v-f2-t">⚡ Azure Voice Live 四大语音模式统一底座</h4>
+            <p id="v-f2-d">一套 SDK / WebSocket / WebRTC / SIP 接口同时支持：① 全双工 GPT-Live-1（边说边听）、② 原生 S2S、③ Semantic VAD 混合式、④ Azure STT + 多模型 + HD TTS 级联式。</p>
+          </div>
+          <div class="f-box">
+            <h4 id="v-f3-t">🛡️ 企业级治理与确定性工具委派</h4>
+            <p id="v-f3-d">内置降噪、回声消除、&lt;170ms 半句打断与中间响应；后端可将任务安全委派给 Foundry 智能体、主流商用/开源大模型或自有业务工具，配合确定性安全熔断。</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 1:1 Azure Voice Live API 3-Layer Architecture Diagram -->
+      <div class="vl-arch-card">
+        <div class="vl-header">
+          <div>
+            <h2 class="vl-title" id="arch-title">Azure Voice Live API — 架构</h2>
+            <p class="vl-sub" id="arch-sub">语音到语音、混合式和级联式语音智能体，可将任务委派给任意模型系列</p>
+          </div>
+          <span style="font-size:0.76rem;font-weight:700;color:#475569;background:rgba(255,255,255,0.8);padding:4px 10px;border-radius:999px;border:1px solid #cbd5e1;">Azure Voice Live API · Microsoft Foundry</span>
+        </div>
+
+        <!-- Layer 1: User Scenarios -->
+        <div class="vl-layer1">
+          <div class="vl-layer-label" id="arch-l1-title">用户场景</div>
+          <div class="vl-scenarios-row">
+            <span class="vl-sc-pill" id="arch-sc-1">🎧 联络中心</span>
+            <span class="vl-sc-pill" id="arch-sc-2">🚗 车载助手</span>
+            <span class="vl-sc-pill" id="arch-sc-3">🎓 教育与学习</span>
+            <span class="vl-sc-pill" id="arch-sc-4">🏛️ 公共服务</span>
+            <span class="vl-sc-pill" id="arch-sc-5">🧑‍💼 人力资源与员工效率</span>
+            <span class="vl-sc-pill" id="arch-sc-6">🤖 个人助手</span>
+          </div>
+        </div>
+
+        <!-- Connector: Interfaces & Output -->
+        <div class="vl-connector-bar">
+          <div class="vl-io-group">
+            <span class="vl-io-label" id="arch-in-label">接口</span>
+            <span class="vl-io-pill">SDK (Python · C# · JS · Java)</span>
+            <span class="vl-io-pill">WebSocket</span>
+            <span class="vl-io-pill">WebRTC</span>
+            <span class="vl-io-pill">SIP</span>
+          </div>
+          <div class="vl-arrows">⇅</div>
+          <div class="vl-io-group right">
+            <span class="vl-io-label" id="arch-out-label">输出</span>
+            <span class="vl-io-pill" id="arch-out-avatar">🎭 照片/视频虚拟形象</span>
+          </div>
+        </div>
+
+        <!-- Layer 2 & 3: Azure Voice Live API / Agent Platform -->
+        <div class="vl-platform-box">
+          <div class="vl-plat-center">
+            <h3 class="vl-plat-title">Azure Voice Live API / Agent Platform</h3>
+            <div class="vl-plat-bar"></div>
+            <div class="vl-plat-features" id="arch-primitives">降噪 · 回声消除 · 打断 · 函数调用 · 中间响应</div>
+            <div class="vl-gov-row">
+              <span class="vl-gov-title" id="arch-gov-label">企业治理</span>
+              <span class="vl-gov-pill" id="arch-gov-1">托管</span>
+              <span class="vl-gov-pill" id="arch-gov-2">可扩展性</span>
+              <span class="vl-gov-pill" id="arch-gov-3">安全性</span>
+              <span class="vl-gov-pill" id="arch-gov-4">可观测性</span>
+            </div>
+          </div>
+
+          <div class="vl-lanes-grid">
+            <div class="vl-lanes-stack">
+              <!-- Lane 1: Full-duplex -->
+              <div class="vl-lane vl-lane-1">
+                <div class="vl-lane-head"><span class="vl-num">1</span><span id="arch-lane1-name">全双工</span></div>
+                <div class="vl-lane-body" style="grid-template-columns:1fr;">
+                  <div class="vl-box">
+                    <span class="vl-box-tag" id="arch-tag-foundry-1">FOUNDRY 模型</span>
+                    <div class="vl-box-main" id="arch-lane1-model">GPT-Live-1 (Full-duplex Speech-to-Speech · 边说边听)</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Lane 2: Speech-to-Speech -->
+              <div class="vl-lane vl-lane-2">
+                <div class="vl-lane-head"><span class="vl-num">2</span><span id="arch-lane2-name">语音到语音</span></div>
+                <div class="vl-lane-body" style="grid-template-columns:150px 1fr;">
+                  <div class="vl-box">
+                    <span class="vl-box-tag" id="arch-tag-speech-2">AZURE 语音</span>
+                    <div class="vl-box-sub" id="arch-vad-2">语音接入与韵律控制</div>
+                  </div>
+                  <div class="vl-box">
+                    <span class="vl-box-tag" id="arch-tag-foundry-2">FOUNDRY 模型</span>
+                    <div class="vl-box-main">GPT Realtime · Azure Realtime (Speech-to-Speech)</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Lane 3: Hybrid -->
+              <div class="vl-lane vl-lane-3">
+                <div class="vl-lane-head"><span class="vl-num">3</span><span id="arch-lane3-name">混合式</span></div>
+                <div class="vl-lane-body" style="grid-template-columns:150px 1fr 240px;">
+                  <div class="vl-box">
+                    <span class="vl-box-tag" id="arch-tag-vad-3">AZURE 语音</span>
+                    <div class="vl-box-main" id="arch-vad-title">智能轮次检测</div>
+                    <div class="vl-box-sub">Semantic VAD · EoU</div>
+                  </div>
+                  <div class="vl-box">
+                    <span class="vl-box-tag" id="arch-tag-foundry-3">FOUNDRY 模型</span>
+                    <div class="vl-box-main">GPT Realtime 2.1/1.5 (Speech-LLM)</div>
+                  </div>
+                  <div class="vl-box">
+                    <span class="vl-box-tag" id="arch-tag-tts-3">AZURE 语音</span>
+                    <div class="vl-box-main">Azure Speech TTS</div>
+                    <div class="vl-box-sub">HD Voice · Custom · Personal · Marketplace</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Lane 4: Cascaded -->
+              <div class="vl-lane vl-lane-4">
+                <div class="vl-lane-head"><span class="vl-num">4</span><span id="arch-lane4-name">级联式</span></div>
+                <div class="vl-lane-body" style="grid-template-columns:150px 120px 1fr 240px;">
+                  <div class="vl-box">
+                    <span class="vl-box-tag" id="arch-tag-vad-4">AZURE 语音</span>
+                    <div class="vl-box-main" id="arch-vad-title-2">智能轮次检测</div>
+                    <div class="vl-box-sub">Semantic VAD · EoU</div>
+                  </div>
+                  <div class="vl-box">
+                    <span class="vl-box-tag" id="arch-tag-stt-4">AZURE 语音</span>
+                    <div class="vl-box-main">Azure STT</div>
+                  </div>
+                  <div class="vl-box">
+                    <span class="vl-box-tag" id="arch-tag-foundry-4">FOUNDRY 模型</span>
+                    <div class="vl-box-main">GPT · Claude · OSS · BYO</div>
+                  </div>
+                  <div class="vl-box">
+                    <span class="vl-box-tag" id="arch-tag-tts-4">AZURE 语音</span>
+                    <div class="vl-box-main">Azure Speech TTS</div>
+                    <div class="vl-box-sub">HD Voice · Custom · Personal</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Column: Task Delegation -->
+            <div class="vl-delegate-card">
+              <div class="vl-del-title" id="arch-del-title">▶ 任务委派</div>
+              <div class="vl-del-sub" id="arch-del-sub">所有路径均可委派推理与工具</div>
+              <div class="vl-del-item" id="arch-del-1">Foundry 智能体</div>
+              <div class="vl-del-item">GPT · Claude · Frontier LLMs</div>
+              <div class="vl-del-item">OSS (Phi, Llama ...)</div>
+              <div class="vl-del-item" id="arch-del-4">自带后端 / 工具</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Embedded Voice Interactive Stage -->
+      <div class="stage-shell">
+        <div class="stage-bar">
+          <div class="scene-pills">
+            <button class="scene-pill active" id="v-pill-1" onclick="loadTrackScene('voice', './voice/index.html', this)" type="button">🎙️ 业务场景 + 实时语音沙盒 + TCO 测算</button>
+            <button class="scene-pill" id="v-pill-2" onclick="loadTrackScene('voice', './voice/deck.html', this)" type="button">📽️ 12 页高管架构幻灯片 (Deck)</button>
+            <button class="scene-pill" id="v-pill-3" onclick="loadTrackScene('voice', './voice/benchmark-cards.html', this)" type="button">📊 7-Card 4:5 语音智能体基准报告</button>
+          </div>
+          <span style="font-size:0.76rem;color:#94a3b8;font-family:monospace;" id="voice-url-indicator">./voice/index.html</span>
+        </div>
+        <iframe class="stage-iframe" id="iframe-voice" src="./voice/index.html" allow="microphone; autoplay; fullscreen; clipboard-write"></iframe>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- TRACK 02: AZURE AI AGENT INFRASTRUCTURE & 100K SANDBOX SIMULATOR    -->
+    <!-- =================================================================== -->
+    <section class="track-panel" id="panel-infra">
+      <div class="overview-card">
+        <div class="ov-top">
+          <div>
+            <div class="ov-eyebrow" id="i-eyebrow">TRACK 02 · AZURE AI AGENT INFRASTRUCTURE · AKSCLAW × E2B 100K SANDBOXES</div>
+            <h1 class="ov-title" id="i-title">Azure AI 智能体基础设施：四层架构、六大运行时光谱与 10万并发沙箱仿真</h1>
+            <p class="ov-desc" id="i-desc">融合 Azure 四层智能体底座（Build · Run · Ground · Govern）、六大计算运行时光谱（ACA 动态会话 → AKS Kata VM → E2B Firecracker）、Standard_D96as_v7 10万并发沙箱定容模型、3.67s 跨区域双活热备切换及 Azure VM 现代化 FinOps 测算。</p>
+          </div>
+          <div class="ov-links">
+            <a class="pill-link" href="./workshops/azure-agent-infra/demo.html" target="_blank" id="i-link-sim">⚡ 独立打开 AKSClaw×E2B 仿真台 ↗</a>
+            <a class="pill-link" href="./workshops/azure-agent-infra/cards.html" target="_blank" id="i-link-cards">📊 7-Card 基准报告 ↗</a>
+            <a class="pill-link" href="https://github.com/turbo998/Azure-Infra-Lab" target="_blank">📦 Azure-Infra-Lab ↗</a>
+            <a class="pill-link" href="https://github.com/turbo998/ai-infra-research" target="_blank">🔬 ai-infra-research ↗</a>
+          </div>
+        </div>
+
+        <div class="hve-practice-card">
+          <div class="hve-head">
+            <h3 class="hve-title" id="i-hve-title">🛠️ HVE (Hyper-Velocity Engineering) 在 10万级 Agent 沙箱基础设施中的工程化实践</h3>
+            <span class="hve-badge">RPI: Research → Plan → Implement → 7-Card Benchmark Gate</span>
+          </div>
+          <div class="hve-steps-4">
+            <div class="hve-step">
+              <strong id="i-hve-s1-t">01 · Research (内核隔离开销与微架构)</strong>
+              <span id="i-hve-s1-d">深度对标 ACA Hyper-V、AKS Kata VM、E2B Firecracker userfaultfd 快照恢复与 AMD EPYC Turin (D96as_v7) 内存带宽与页缓存边界。</span>
+            </div>
+            <div class="hve-step">
+              <strong id="i-hve-s2-t">02 · Plan (四层架构与 10万沙箱定容公式)</strong>
+              <span id="i-hve-s2-d">冻结四层参考架构、六大运行时光谱选型决策树、42 节点 × 2,500 MicroVM 密度公式与 3.67s 跨区故障切换状态机契约。</span>
+            </div>
+            <div class="hve-step">
+              <strong id="i-hve-s3-t">03 · Implement (41 套蓝图与交互式计算器)</strong>
+              <span id="i-hve-s3-d">落地 41 套 Bicep/K8s/Nomad 生产蓝图，同步构建 4 页 H5 实时仿真器、选型决策与 FinOps TCO 计算器。</span>
+            </div>
+            <div class="hve-step">
+              <strong id="i-hve-s4-t">04 · Harness Gate (108ms 恢复与容灾压测)</strong>
+              <span id="i-hve-s4-d">通过 7-Card 4:5 密封数据基准验收：Base 108ms / Code-Interpreter 132ms P50 恢复、50 并发批处理提速 4.65×、跨区 RPO≈0。</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-grid-3">
+          <div class="f-box">
+            <h4 id="i-f1-t">🏗️ 1. 四层架构 + 六大运行时光谱决策树</h4>
+            <p id="i-f1-d">从零运维托管 ACA Dynamic Sessions、AKS Agent Sandbox (Kata VM)，到自建 E2B Firecracker MicroVM，按冷启动、有状态时长与合规边界精准选型。</p>
+          </div>
+          <div class="f-box">
+            <h4 id="i-f2-t">🚀 2. AKSClaw × E2B 10万并发沙箱定容与 3.67s 容灾</h4>
+            <p id="i-f2-d">基于 Azure Standard_D96as_v7（96 vCPU / 384 GiB）实现单机 2,500 个高密沙箱、108ms 懒分页快照唤醒，以及 Azure Front Door + Nomad 跨区 3.67s 热备接管。</p>
+          </div>
+          <div class="f-box">
+            <h4 id="i-f3-t">💰 3. Azure VM 现代化与 FinOps 伙伴评估工作台</h4>
+            <p id="i-f3-d">内置离线 TCO 与迁移评估计算器、6 大典型客户案例及同页简/繁/英三语切换，赋能合作伙伴快速完成算力选型与成本治理。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage-shell">
+        <div class="stage-bar">
+          <div class="scene-pills">
+            <button class="scene-pill active" id="i-pill-1" onclick="loadTrackScene('infra', './workshops/azure-agent-infra/index.html', this)" type="button">🗺️ 01 · 全景 Playbook 架构总览</button>
+            <button class="scene-pill" id="i-pill-2" onclick="loadTrackScene('infra', './workshops/azure-agent-infra/demo.html', this)" type="button">⚡ 02 · AKSClaw × E2B 实时沙箱仿真台</button>
+            <button class="scene-pill" id="i-pill-3" onclick="loadTrackScene('infra', './workshops/azure-agent-infra/selector.html', this)" type="button">🧮 03 · 选型决策树、10万沙箱定容与 DR 演练</button>
+            <button class="scene-pill" id="i-pill-4" onclick="loadTrackScene('infra', './workshops/azure-agent-infra/cards.html', this)" type="button">📊 04 · 7-Card 4:5 性能基准报告</button>
+            <button class="scene-pill" id="i-pill-5" onclick="loadTrackScene('infra', './workshops/azure-vm-modernization/calculator.html', this)" type="button">💰 05 · Azure VM 现代化 FinOps 计算器</button>
+          </div>
+          <span style="font-size:0.76rem;color:#94a3b8;font-family:monospace;" id="infra-url-indicator">./workshops/azure-agent-infra/index.html</span>
+        </div>
+        <iframe class="stage-iframe" id="iframe-infra" src="about:blank" data-default-src="./workshops/azure-agent-infra/index.html" allow="fullscreen; clipboard-write"></iframe>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- TRACK 03: AGENTIC COMMERCE × MICROSOFT WEB IQ                       -->
+    <!-- =================================================================== -->
+    <section class="track-panel" id="panel-commerce">
+      <div class="overview-card">
+        <div class="ov-top">
+          <div>
+            <div class="ov-eyebrow" id="c-eyebrow">TRACK 03 · AGENTIC COMMERCE × MICROSOFT WEB IQ · GROUNDING, ANTI-INJECTION &amp; CHECKOUT</div>
+            <h1 class="ov-title" id="c-title">智能体商业 (Agentic Commerce)：Web IQ 实时接地、反注入护栏与可验证支付结算</h1>
+            <p class="ov-desc" id="c-desc">打通从开放网页实时商品目录发现（Microsoft Web IQ）、100% 间接提示词注入清洗（`[WEBIQ_SANITIZED]`）、ACP/UCP 双协议结账状态机，到 AP2 MandateVC 预算授权与 x402 微支付结算的完整闭环。</p>
+          </div>
+          <div class="ov-links">
+            <a class="pill-link" href="./workshops/agentic-commerce/live-demo.html" target="_blank" id="c-link-demo">🛒 独立打开实时攻防沙盒 ↗</a>
+            <a class="pill-link" href="./workshops/agentic-commerce/benchmark-cards.html" target="_blank" id="c-link-cards">📊 7-Card 评测报告 ↗</a>
+            <a class="pill-link" href="https://github.com/turbo998/agentic-commerce-lab" target="_blank">📦 agentic-commerce-lab ↗</a>
+          </div>
+        </div>
+
+        <div class="hve-practice-card">
+          <div class="hve-head">
+            <h3 class="hve-title" id="c-hve-title">🛠️ HVE (Hyper-Velocity Engineering) 在智能体商业与反注入安全中的工程化实践</h3>
+            <span class="hve-badge">RPI: Research → Plan → Implement → Anti-Injection Gate</span>
+          </div>
+          <div class="hve-steps-4">
+            <div class="hve-step">
+              <strong id="c-hve-s1-t">01 · Research (电商协议与红队攻击面)</strong>
+              <span id="c-hve-s1-d">剖析 OpenAI/Stripe ACP、Google/Shopify UCP、Coinbase x402 与 Google AP2 四大协议栈，梳理商品 DOM 隐藏提示词注入与价格篡改向量。</span>
+            </div>
+            <div class="hve-step">
+              <strong id="c-hve-s2-t">02 · Plan (清洗契约与 MandateVC 预算锁)</strong>
+              <span id="c-hve-s2-d">冻结 Web IQ Schema 清洗流水线、三段式置信度门控（≥0.80 自动执行 / 0.55–0.79 确认 / &lt;0.55 拦截）与 AP2 MandateVC 预算上限规则。</span>
+            </div>
+            <div class="hve-step">
+              <strong id="c-hve-s3-t">03 · Implement (全栈状态机与交互沙盒)</strong>
+              <span id="c-hve-s3-d">实现 FastAPI + React/H5 端到端商务工作台，内置 8 大评测场景、实时攻防对比开关与 7-Card 4:5 密封评测报告。</span>
+            </div>
+            <div class="hve-step">
+              <strong id="c-hve-s4-t">04 · Harness Gate (100% 注入拦截与 2.75× 提速)</strong>
+              <span id="c-hve-s4-d">实测 8 大场景 87.5% 首轮精准命中、100% 恶意 HTML 注入剥离、0% 越权扣款，并行 Web IQ 接地提速 2.75×（1,120ms vs 3,080ms）。</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-grid-3">
+          <div class="f-box">
+            <h4 id="c-f1-t">🌐 1. Microsoft Web IQ 实时商品接地与反注入</h4>
+            <p id="c-f1-d">将杂乱 HTML/DOM 实时清洗为类型安全的 Product Grounding Schema，自动剥离隐藏 `display:none` 恶意转账指令并打标 `[WEBIQ_SANITIZED]`。</p>
+          </div>
+          <div class="f-box">
+            <h4 id="c-f2-t">🔐 2. ACP / UCP 结账状态机与 AP2 预算熔断</h4>
+            <p id="c-f2-d">支持跨平台多商户议价、库存锁单与 AP2 MandateVC 加密授权凭证校验，当总额超出预算上限（如 $580 &gt; $500）时确定性触发 `AP2_MANDATE_CAP_EXCEEDED`。</p>
+          </div>
+          <div class="f-box">
+            <h4 id="c-f3-t">📊 3. 7-Card 4:5 密封评测与鲁棒性验证</h4>
+            <p id="c-f3-d">完整验证候选商品顺序翻转与对抗噪声扰动下的决策一致性（平均偏移仅 1.0 pts，零决策翻转），提供可复现的工程化商业智能体基准。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage-shell">
+        <div class="stage-bar">
+          <div class="scene-pills">
+            <button class="scene-pill active" id="c-pill-1" onclick="loadTrackScene('commerce', './workshops/agentic-commerce/live-demo.html', this)" type="button">🛒 01 · Web IQ × Agentic Commerce 实时交互沙盒</button>
+            <button class="scene-pill" id="c-pill-2" onclick="loadTrackScene('commerce', './workshops/agentic-commerce/benchmark-cards.html', this)" type="button">📊 02 · 7-Card 4:5 商业智能体评测报告</button>
+            <button class="scene-pill" id="c-pill-3" onclick="loadTrackScene('commerce', './workshops/agentic-commerce/index.html', this)" type="button">📖 03 · 架构总览与双语导航门户</button>
+          </div>
+          <span style="font-size:0.76rem;color:#94a3b8;font-family:monospace;" id="commerce-url-indicator">./workshops/agentic-commerce/live-demo.html</span>
+        </div>
+        <iframe class="stage-iframe" id="iframe-commerce" src="about:blank" data-default-src="./workshops/agentic-commerce/live-demo.html" allow="fullscreen; clipboard-write"></iframe>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- TRACK 04: 7-CARD BENCHMARKS & 3-WAY FDE ARENA (#benchmarks)         -->
+    <!-- =================================================================== -->
+    <section class="track-panel" id="panel-benchmarks">
+      <div class="overview-card">
+        <div class="ov-top">
+          <div>
+            <div class="ov-eyebrow" id="b-eyebrow">TRACK 04 · 7-CARD 4:5 VISUAL BENCHMARK DECKS &amp; 3-WAY FDE ARENA</div>
+            <h1 class="ov-title" id="b-title">7-Card 4:5 模型评测中心与三方智能体盲测竞技场 (FAF vs AGENT-FORGE vs HVE-Core)</h1>
+            <p class="ov-desc" id="b-desc">遵循 `benchmark-harness-engineering` 统一的 7-Card 4:5 纵向视觉评测标准（零虚构坐标、密封 `report.json` 驱动），集中呈现三方单文件 SVG/HTML 盲测竞技场、SKY-001 19 模型编码智能体基准、System-One Decision-1 6 路路由帕累托前沿与 E2B Nomad 心跳控制面审计。</p>
+          </div>
+          <div class="ov-links">
+            <a class="pill-link" href="./workshops/faf-vs-agent-forge/index.html" target="_blank" id="b-link-arena">🚲 独立打开三方盲测竞技场 ↗</a>
+            <a class="pill-link" href="./workshops/benchmarks/sky-001-cards.html" target="_blank" id="b-link-sky">📊 SKY-001 19模型评测卡 ↗</a>
+            <a class="pill-link" href="https://github.com/turbo998/benchmark-harness-engineering" target="_blank">⚙️ Harness 引擎 ↗</a>
+            <a class="pill-link" href="https://github.com/turbo998/ai-research-public" target="_blank">📚 ai-research-public ↗</a>
+          </div>
+        </div>
+
+        <div class="hve-practice-card">
+          <div class="hve-head">
+            <h3 class="hve-title" id="b-hve-title">🛠️ HVE (Hyper-Velocity Engineering) 在可复现基准评测与 7-Card 标准中的工程化实践</h3>
+            <span class="hve-badge">RPI: Sealed Schema → Deterministic Verifier → Perturbation Check → 7-Card Deck</span>
+          </div>
+          <div class="hve-steps-4">
+            <div class="hve-step">
+              <strong id="b-hve-s1-t">01 · Research (多维任务与盲测基线)</strong>
+              <span id="b-hve-s1-d">设计 19 模型编码基准（SWE-Bench Verified + Frontier-Repo-Bench）、6 路决策路由与三方框架同题盲测（鹈鹕骑自行车单文件应用）。</span>
+            </div>
+            <div class="hve-step">
+              <strong id="b-hve-s2-t">02 · Plan (7-Card 4:5 密封数据契约)</strong>
+              <span id="b-hve-s2-d">强制所有条形图宽度、得分、延迟与分母 100% 源自密封 `summary.json` / `report.json`，严禁虚构坐标或将缺失值归零。</span>
+            </div>
+            <div class="hve-step">
+              <strong id="b-hve-s3-t">03 · Implement (自动化评分与选项翻转检验)</strong>
+              <span id="b-hve-s3-d">通过确定性 AST/测试验证器、候选顺序翻转（Option-Order Reversal）与并发批处理负载压测，生成自包含 CSP 安全 HTML 卡片组。</span>
+            </div>
+            <div class="hve-step">
+              <strong id="b-hve-s4-t">04 · Harness Gate (端到端可复现审计)</strong>
+              <span id="b-hve-s4-d">清晰标注 `measured` / `anonymized_reported` 溯源标签，支持浏览器内并排沙盒检视与一键复现。</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-grid-3">
+          <div class="f-box">
+            <h4 id="b-f1-t">🚲 1. FAF vs AGENT-FORGE vs HVE-Core 三方竞技场</h4>
+            <p id="b-f1-d">同题盲测构建「鹈鹕骑自行车」单文件 SVG/HTML 交互应用：HVE-Core v3.3.101 综合得分 `93.4/100` 领先 AGENT-FORGE (`91.8`) 与 FAF (`90.5`)，支持三栏实时沙盒同屏试玩。</p>
+          </div>
+          <div class="f-box">
+            <h4 id="b-f2-t">🧠 2. SKY-001 19 模型编码基准 &amp; Decision-1 路由评测</h4>
+            <p id="b-f2-d">对比 19 款主流模型在 Coding Agent 场景的真实表现（Claude Opus 4.6 `83.2%`、Sonnet 4.6 `81.9%`、SKY-001 帕累托性价比前沿），以及 Decision-1 `80.0%` 路由准确率与 `520ms` 批处理延迟。</p>
+          </div>
+          <div class="f-box">
+            <h4 id="b-f3-t">🛡️ 3. E2B Nomad 心跳控制面审计 &amp; Omarchy 桌面基准</h4>
+            <p id="b-f3-d">深入源码审计 E2B Firecracker + Nomad 编排控制面心跳级联放大机制，以及 Omarchy AI 开发者桌面工作流 7-Card 评测。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage-shell">
+        <div class="stage-bar">
+          <div class="scene-pills">
+            <button class="scene-pill active" id="b-pill-1" onclick="loadTrackScene('benchmarks', './workshops/faf-vs-agent-forge/index.html', this)" type="button">🚲 01 · 三方盲测竞技场 (FAF vs AGENT-FORGE vs HVE-Core)</button>
+            <button class="scene-pill" id="b-pill-2" onclick="loadTrackScene('benchmarks', './workshops/benchmarks/sky-001-cards.html', this)" type="button">🧠 02 · SKY-001 19 模型 Coding Agent 7-Card</button>
+            <button class="scene-pill" id="b-pill-3" onclick="loadTrackScene('benchmarks', './workshops/benchmarks/decision-1-cards.html', this)" type="button">🔀 03 · Decision-1 6-Way 路由模型 7-Card</button>
+            <button class="scene-pill" id="b-pill-4" onclick="loadTrackScene('benchmarks', './workshops/benchmarks/e2b-nomad-cards.html', this)" type="button">🔥 04 · E2B Nomad 心跳韧性审计 7-Card</button>
+            <button class="scene-pill" id="b-pill-5" onclick="loadTrackScene('benchmarks', './workshops/benchmarks/omarchy-cards.html', this)" type="button">💻 05 · Omarchy 开发者工作流 7-Card</button>
+          </div>
+          <span style="font-size:0.76rem;color:#94a3b8;font-family:monospace;" id="benchmarks-url-indicator">./workshops/faf-vs-agent-forge/index.html</span>
+        </div>
+        <iframe class="stage-iframe" id="iframe-benchmarks" src="about:blank" data-default-src="./workshops/faf-vs-agent-forge/index.html" allow="fullscreen; clipboard-write"></iframe>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- TRACK 02: CODING DIRECT TO ANIMATION (GHCP HARNESS PROTOTYPING)     -->
+    <!-- =================================================================== -->
+    <section class="track-panel" id="panel-animation">
+      <div class="overview-card">
+        <div class="ov-top">
+          <div>
+            <div class="ov-eyebrow" id="a-eyebrow">TRACK 05 · CODING DIRECT TO ANIMATION · GHCP HARNESS RAPID PROTOTYPING</div>
+            <h1 class="ov-title" id="a-title">Coding 直接输出动画能力：基于 GHCP Harness 快速搭建高表现力原型</h1>
+            <p class="ov-desc" id="a-desc">展示如何利用 GitHub Copilot (GHCP) + 自动化验证 Harness，用纯代码与 Blender 4.5 MCP 直接生成 60fps 实时程序化动画原型（敦煌飞天、NASA MOLA 火星、火箭发射），无需美术手工逐帧制作或运行时大模型调用。</p>
+          </div>
+          <div class="ov-links">
+            <a class="pill-link" href="./animation/research/blender-mcp-pipeline.html" target="_blank" id="a-link-mcp">🔧 Blender MCP 管线 ↗</a>
+            <a class="pill-link" href="./animation/research/validation.html" target="_blank" id="a-link-val">✅ GHCP Harness 验收记录 ↗</a>
+            <a class="pill-link" href="./animation/research/technique-comparison.html" target="_blank">📐 技术路线对照 ↗</a>
+          </div>
+        </div>
+
+        <div class="hve-practice-card">
+          <div class="hve-head">
+            <h3 class="hve-title" id="a-hve-title">🛠️ HVE (Hyper-Velocity Engineering) 在 Coding 实时动画中的工程化实践</h3>
+            <span class="hve-badge">RPI: Research → Plan → Implement → Visual Harness</span>
+          </div>
+          <div class="hve-steps-4">
+            <div class="hve-step">
+              <strong id="a-hve-s1-t">01 · Research (视觉考据与物理测绘)</strong>
+              <span id="a-hve-s1-d">考据莫高窟四龛藻井浮雕光学与矿物颜料色谱，采集 NASA MOLA 384 cells/deg 火星激光高程与多级火箭拉瓦尔喷管几何参数。</span>
+            </div>
+            <div class="hve-step">
+              <strong id="a-hve-s2-t">02 · Plan (几何预算与数学契约冻结)</strong>
+              <span id="a-hve-s2-d">冻结 Verlet 飘带动力学积分步长、球面几何置换公式、188KB GLB 预算上限（≤30 Draw Calls）及 60fps 零运行时 API 架构契约。</span>
+            </div>
+            <div class="hve-step">
+              <strong id="a-hve-s3-t">03 · Implement (GHCP + Blender MCP 造景)</strong>
+              <span id="a-hve-s3-d">GHCP 自动生成 Python bpy 脚本驱动 Blender 4.5 烘焙 Cycles 浮雕/法线贴图并导出火箭 GLB，同步编码 Three.js / Canvas2D 实时着色器。</span>
+            </div>
+            <div class="hve-step">
+              <strong id="a-hve-s4-t">04 · Harness Gate (灰模/线框与多视角快照)</strong>
+              <span id="a-hve-s4-d">通过内置灰模/线框几何检验、确定性时间探针与 Playwright 多视角快照比对门禁，自主消除穿模与曝光异常。</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-grid-3">
+          <div class="f-box">
+            <h4 id="a-f1-t">⚡ 1. Prompt-to-Code 直出三维/二维造景</h4>
+            <p id="a-f1-d">由 GHCP 直接编写参数化几何、约束飘带积分器与 Three.js / Canvas 着色逻辑，将莫高窟飞天叙事、NASA 真实高程火星与火箭尾焰转化为轻量前端代码。</p>
+          </div>
+          <div class="f-box">
+            <h4 id="a-f2-t">🎨 2. GHCP + Blender 4.5 MCP 离线烘焙流水线</h4>
+            <p id="a-f2-d">Agent 通过 MCP 直接驱动 Blender 4.5 生成 188KB 火箭 GLB 套件（合批至 27 Draw Calls）并烘焙 Cycles 全局光照浮雕与微法线，浏览器端 0 API 成本 60fps 运行。</p>
+          </div>
+          <div class="f-box">
+            <h4 id="a-f3-t">🔬 3. GHCP Visual &amp; Geometry Harness 快速闭环</h4>
+            <p id="a-f3-d">内置灰模（Gray）、线框拓扑（Wireframe）、Draw Call 计数与 Playwright 多视角快照自动比对 Harness，让 Agent 能自主发现穿模或曝光问题并秒级收敛原型。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage-shell">
+        <div class="stage-bar">
+          <div class="scene-pills">
+            <button class="scene-pill active" id="a-pill-1" onclick="loadTrackScene('animation', './animation/index.html', this)" type="button">🏛️ 程序造景实验室主页</button>
+            <button class="scene-pill" id="a-pill-2" onclick="loadTrackScene('animation', './animation/demos/feitian/index.html', this)" type="button">🏮 01 · 风起壁间·敦煌飞天</button>
+            <button class="scene-pill" id="a-pill-3" onclick="loadTrackScene('animation', './animation/demos/astra-planet/index.html', this)" type="button">🪐 02 · Astra 火星真实高程造景</button>
+            <button class="scene-pill" id="a-pill-4" onclick="loadTrackScene('animation', './animation/demos/rocket-launch/index.html', this)" type="button">🚀 03 · Launch 白色火箭点火升空</button>
+          </div>
+          <span style="font-size:0.76rem;color:#94a3b8;font-family:monospace;" id="animation-url-indicator">./animation/index.html</span>
+        </div>
+        <iframe class="stage-iframe" id="iframe-animation" src="about:blank" data-default-src="./animation/index.html" allow="autoplay; fullscreen"></iframe>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- TRACK 03: GAME DEMO (HVE SPEC-DRIVEN RAPID PROTOTYPING)             -->
+    <!-- =================================================================== -->
+    <section class="track-panel" id="panel-game">
+      <div class="overview-card">
+        <div class="ov-top">
+          <div>
+            <div class="ov-eyebrow" id="g-eyebrow">TRACK 06 · GAME DEMO · HVE (HYPER-VELOCITY ENGINEERING) SPECIFICATION</div>
+            <h1 class="ov-title" id="g-title">游戏工程快速原型：以 HVE 工程规范驱动完整可验证 3D/2D 游戏交付</h1>
+            <p class="ov-desc" id="g-desc">超越单段视觉动画，展示如何通过 HVE (Hyper-Velocity Engineering) 规范（RPI 研发流、冻结契约、程序化资产架构与 60Hz 确定性测试 Harness），零外部美术/音频素材快速构建《湾岸 Midnight》3D 竞速与《废土斗机祭》2D 机甲完整可玩原型。</p>
+          </div>
+          <div class="ov-links">
+            <a class="pill-link" href="./game/demos/wanan-midnight/index.html" target="_blank" id="g-link-wanan">🏎️ 独立运行《湾岸 Midnight》↗</a>
+            <a class="pill-link" href="./game/demos/scrap-swarm/index.html" target="_blank" id="g-link-scrap">🤖 独立运行《废土斗机祭》↗</a>
+            <a class="pill-link" href="https://github.com/turbo998/ai-gaming-lab" target="_blank">📦 GitHub ↗</a>
+          </div>
+        </div>
+
+        <div class="hve-practice-card">
+          <div class="hve-head">
+            <h3 class="hve-title" id="g-hve-title">🛠️ HVE (Hyper-Velocity Engineering) 在 3D/2D 游戏原型中的工程化实践</h3>
+            <span class="hve-badge">RPI: Research → Plan → Implement → 60Hz Bot Harness</span>
+          </div>
+          <div class="hve-steps-4">
+            <div class="hve-step">
+              <strong id="g-hve-s1-t">01 · Research (机械比例与手感锚定)</strong>
+              <span id="g-hve-s1-d">测绘 8 车系 44 代 JDM 真实轴距/轮拱比例与 5 类废土机甲多关节运动学，梳理上海高架竞速与铁冠竞技场多幕叙事结构。</span>
+            </div>
+            <div class="hve-step">
+              <strong id="g-hve-s2-t">02 · Plan (冻结几何、状态机与声学契约)</strong>
+              <span id="g-hve-s2-d">在 RPI 规划期冻结车辆开放样条曲面参数、R-17 六层机甲骨骼树、三阶段 Boss 破甲状态机与零外部音频 Web Audio 合成器接口。</span>
+            </div>
+            <div class="hve-step">
+              <strong id="g-hve-s3-t">03 · Implement (多 Agent 并行无漂移合成)</strong>
+              <span id="g-hve-s3-d">多 Agent 严格按冻结契约并行编码 3D 跳灯/俯仰侧倾/双出回火、2D 液压抛壳/番剧黑白冲击帧及多分支无线电声档叙事。</span>
+            </div>
+            <div class="hve-step">
+              <strong id="g-hve-s4-t">04 · Harness Gate (60Hz 确定性与 Bot 通关)</strong>
+              <span id="g-hve-s4-d">通过 __wananTest / __gameTest 60Hz 固定步进探针、比赛期 0 动态网格分配守卫、88 视角回归快照与 AI Bot 180 秒自动击败 Boss 验收。</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-grid-3">
+          <div class="f-box">
+            <h4 id="g-f1-t">📐 1. HVE 契约先行 (RPI: Research → Plan → Implement)</h4>
+            <p id="g-f1-d">先用 HVE 规范定义车辆拓扑（8 车系 44 代参数曲面 &lt;300KB gzip）、R-17 六层机甲骨骼树与多幕状态机契约，确保多 Agent 并行生成代码零架构漂移。</p>
+          </div>
+          <div class="f-box">
+            <h4 id="g-f2-t">🔊 2. 零外部素材依赖：程序化建模 + Web Audio 合成</h4>
+            <p id="g-f2-d">从可动跳灯、悬挂俯仰侧倾、换挡蓝紫回火、番剧黑白冲击帧，到 5 类引擎谐波与爆铆枪声效，100% 由代码与 Web Audio API 实时生成。</p>
+          </div>
+          <div class="f-box">
+            <h4 id="g-f3-t">🤖 3. 60Hz 确定性验证 Harness 与 AI Bot 自动通关</h4>
+            <p id="g-f3-d">遵循 HVE 可验证交付标准：内置 60Hz 固定步长物理循环、比赛期 0 动态网格分配门禁与 AI Bot 自动驾驶/战斗回归验证，确保工程级稳定性。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage-shell">
+        <div class="stage-bar">
+          <div class="scene-pills">
+            <button class="scene-pill active" id="g-pill-1" onclick="loadTrackScene('game', './game/index.html', this)" type="button">🔬 HVE 实时动画与工程拆解舞台</button>
+            <button class="scene-pill" id="g-pill-2" onclick="loadTrackScene('game', './game/demos/wanan-midnight/index.html', this)" type="button">🏎️ 01 ·《湾岸 Midnight》3D 竞速实战</button>
+            <button class="scene-pill" id="g-pill-3" onclick="loadTrackScene('game', './game/demos/scrap-swarm/index.html', this)" type="button">🤖 02 ·《废土斗机祭》2D 机甲共斗实战</button>
+            <button class="scene-pill" id="g-pill-4" onclick="loadTrackScene('game', './game/demos/scrap-swarm/design/index.html', this)" type="button">📐 03 · 机甲骨骼与 Boss 破甲设定集</button>
+          </div>
+          <span style="font-size:0.76rem;color:#94a3b8;font-family:monospace;" id="game-url-indicator">./game/index.html</span>
+        </div>
+        <iframe class="stage-iframe" id="iframe-game" src="about:blank" data-default-src="./game/index.html" allow="autoplay; fullscreen"></iframe>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    const ALL_TRACKS = ['voice', 'infra', 'commerce', 'benchmarks', 'animation', 'game'];
+    let currentTrack = 'voice';
+    let currentLang = 'zh-CN';
+    const trackUrls = {
+      voice: './voice/index.html',
+      infra: './workshops/azure-agent-infra/index.html',
+      commerce: './workshops/agentic-commerce/live-demo.html',
+      benchmarks: './workshops/faf-vs-agent-forge/index.html',
+      animation: './animation/index.html',
+      game: './game/index.html'
+    };
+
+    const I18N = {
+      'zh-CN': {
+        'ui-brand-title': 'Global AI Solution Accelerators & Benchmark Command Center',
+        'ui-brand-sub': '六大核心工程主线：Voice Agent · Agent Infra 10万沙箱 · Agentic Commerce · 7-Card 基准与竞技场 · Coding 动画 · HVE 游戏',
+        'tab-voice': '🎙️ 01 · Voice Agent',
+        'tab-infra': '🏗️ 02 · Agent Infra (100K)',
+        'tab-commerce': '🛒 03 · Agentic Commerce',
+        'tab-benchmarks': '📊 04 · 7-Card 评测与竞技场',
+        'tab-animation': '🎨 05 · Coding 动画',
+        'tab-game': '🎮 06 · HVE 游戏',
+        'btn-home': '← 门户主页',
+        'btn-open-new': '↗ 独立窗口打开',
+        'v-pill-3': '📊 7-Card 4:5 语音智能体基准报告',
+
+        'i-eyebrow': 'TRACK 02 · AZURE AI AGENT INFRASTRUCTURE · AKSCLAW × E2B 100K SANDBOXES',
+        'i-title': 'Azure AI 智能体基础设施：四层架构、六大运行时光谱与 10万并发沙箱仿真',
+        'i-desc': '融合 Azure 四层智能体底座（Build · Run · Ground · Govern）、六大计算运行时光谱（ACA 动态会话 → AKS Kata VM → E2B Firecracker）、Standard_D96as_v7 10万并发沙箱定容模型、3.67s 跨区域双活热备切换及 Azure VM 现代化 FinOps 测算。',
+        'i-link-sim': '⚡ 独立打开 AKSClaw×E2B 仿真台 ↗',
+        'i-link-cards': '📊 7-Card 基准报告 ↗',
+        'i-hve-title': '🛠️ HVE (Hyper-Velocity Engineering) 在 10万级 Agent 沙箱基础设施中的工程化实践',
+        'i-hve-s1-t': '01 · Research (内核隔离开销与微架构)',
+        'i-hve-s1-d': '深度对标 ACA Hyper-V、AKS Kata VM、E2B Firecracker userfaultfd 快照恢复与 AMD EPYC Turin (D96as_v7) 内存带宽与页缓存边界。',
+        'i-hve-s2-t': '02 · Plan (四层架构与 10万沙箱定容公式)',
+        'i-hve-s2-d': '冻结四层参考架构、六大运行时光谱选型决策树、42 节点 × 2,500 MicroVM 密度公式与 3.67s 跨区故障切换状态机契约。',
+        'i-hve-s3-t': '03 · Implement (41 套蓝图与交互式计算器)',
+        'i-hve-s3-d': '落地 41 套 Bicep/K8s/Nomad 生产蓝图，同步构建 4 页 H5 实时仿真器、选型决策与 FinOps TCO 计算器。',
+        'i-hve-s4-t': '04 · Harness Gate (108ms 恢复与容灾压测)',
+        'i-hve-s4-d': '通过 7-Card 4:5 密封数据基准验收：Base 108ms / Code-Interpreter 132ms P50 恢复、50 并发批处理提速 4.65×、跨区 RPO≈0。',
+        'i-f1-t': '🏗️ 1. 四层架构 + 六大运行时光谱决策树',
+        'i-f1-d': '从零运维托管 ACA Dynamic Sessions、AKS Agent Sandbox (Kata VM)，到自建 E2B Firecracker MicroVM，按冷启动、有状态时长与合规边界精准选型。',
+        'i-f2-t': '🚀 2. AKSClaw × E2B 10万并发沙箱定容与 3.67s 容灾',
+        'i-f2-d': '基于 Azure Standard_D96as_v7（96 vCPU / 384 GiB）实现单机 2,500 个高密沙箱、108ms 懒分页快照唤醒，以及 Azure Front Door + Nomad 跨区 3.67s 热备接管。',
+        'i-f3-t': '💰 3. Azure VM 现代化与 FinOps 伙伴评估工作台',
+        'i-f3-d': '内置离线 TCO 与迁移评估计算器、6 大典型客户案例及同页简/繁/英三语切换，赋能合作伙伴快速完成算力选型与成本治理。',
+        'i-pill-1': '🗺️ 01 · 全景 Playbook 架构总览',
+        'i-pill-2': '⚡ 02 · AKSClaw × E2B 实时沙箱仿真台',
+        'i-pill-3': '🧮 03 · 选型决策树、10万沙箱定容与 DR 演练',
+        'i-pill-4': '📊 04 · 7-Card 4:5 性能基准报告',
+        'i-pill-5': '💰 05 · Azure VM 现代化 FinOps 计算器',
+
+        'c-eyebrow': 'TRACK 03 · AGENTIC COMMERCE × MICROSOFT WEB IQ · GROUNDING, ANTI-INJECTION & CHECKOUT',
+        'c-title': '智能体商业 (Agentic Commerce)：Web IQ 实时接地、反注入护栏与可验证支付结算',
+        'c-desc': '打通从开放网页实时商品目录发现（Microsoft Web IQ）、100% 间接提示词注入清洗（[WEBIQ_SANITIZED]）、ACP/UCP 双协议结账状态机，到 AP2 MandateVC 预算授权与 x402 微支付结算的完整闭环。',
+        'c-link-demo': '🛒 独立打开实时攻防沙盒 ↗',
+        'c-link-cards': '📊 7-Card 评测报告 ↗',
+        'c-hve-title': '🛠️ HVE (Hyper-Velocity Engineering) 在智能体商业与反注入安全中的工程化实践',
+        'c-hve-s1-t': '01 · Research (电商协议与红队攻击面)',
+        'c-hve-s1-d': '剖析 OpenAI/Stripe ACP、Google/Shopify UCP、Coinbase x402 与 Google AP2 四大协议栈，梳理商品 DOM 隐藏提示词注入与价格篡改向量。',
+        'c-hve-s2-t': '02 · Plan (清洗契约与 MandateVC 预算锁)',
+        'c-hve-s2-d': '冻结 Web IQ Schema 清洗流水线、三段式置信度门控（≥0.80 自动执行 / 0.55–0.79 确认 / <0.55 拦截）与 AP2 MandateVC 预算上限规则。',
+        'c-hve-s3-t': '03 · Implement (全栈状态机与交互沙盒)',
+        'c-hve-s3-d': '实现 FastAPI + React/H5 端到端商务工作台，内置 8 大评测场景、实时攻防对比开关与 7-Card 4:5 密封评测报告。',
+        'c-hve-s4-t': '04 · Harness Gate (100% 注入拦截与 2.75× 提速)',
+        'c-hve-s4-d': '实测 8 大场景 87.5% 首轮精准命中、100% 恶意 HTML 注入剥离、0% 越权扣款，并行 Web IQ 接地提速 2.75×（1,120ms vs 3,080ms）。',
+        'c-f1-t': '🌐 1. Microsoft Web IQ 实时商品接地与反注入',
+        'c-f1-d': '将杂乱 HTML/DOM 实时清洗为类型安全的 Product Grounding Schema，自动剥离隐藏 display:none 恶意转账指令并打标 [WEBIQ_SANITIZED]。',
+        'c-f2-t': '🔐 2. ACP / UCP 结账状态机与 AP2 预算熔断',
+        'c-f2-d': '支持跨平台多商户议价、库存锁单与 AP2 MandateVC 加密授权凭证校验，当总额超出预算上限（如 $580 > $500）时确定性触发 AP2_MANDATE_CAP_EXCEEDED。',
+        'c-f3-t': '📊 3. 7-Card 4:5 密封评测与鲁棒性验证',
+        'c-f3-d': '完整验证候选商品顺序翻转与对抗噪声扰动下的决策一致性（平均偏移仅 1.0 pts，零决策翻转），提供可复现的工程化商业智能体基准。',
+        'c-pill-1': '🛒 01 · Web IQ × Agentic Commerce 实时交互沙盒',
+        'c-pill-2': '📊 02 · 7-Card 4:5 商业智能体评测报告',
+        'c-pill-3': '📖 03 · 架构总览与双语导航门户',
+
+        'b-eyebrow': 'TRACK 04 · 7-CARD 4:5 VISUAL BENCHMARK DECKS & 3-WAY FDE ARENA',
+        'b-title': '7-Card 4:5 模型评测中心与三方智能体盲测竞技场 (FAF vs AGENT-FORGE vs HVE-Core)',
+        'b-desc': '遵循 benchmark-harness-engineering 统一的 7-Card 4:5 纵向视觉评测标准（零虚构坐标、密封 report.json 驱动），集中呈现三方单文件 SVG/HTML 盲测竞技场、SKY-001 19 模型编码智能体基准、System-One Decision-1 6 路路由帕累托前沿与 E2B Nomad 心跳控制面审计。',
+        'b-link-arena': '🚲 独立打开三方盲测竞技场 ↗',
+        'b-link-sky': '📊 SKY-001 19模型评测卡 ↗',
+        'b-hve-title': '🛠️ HVE (Hyper-Velocity Engineering) 在可复现基准评测与 7-Card 标准中的工程化实践',
+        'b-hve-s1-t': '01 · Research (多维任务与盲测基线)',
+        'b-hve-s1-d': '设计 19 模型编码基准（SWE-Bench Verified + Frontier-Repo-Bench）、6 路决策路由与三方框架同题盲测（鹈鹕骑自行车单文件应用）。',
+        'b-hve-s2-t': '02 · Plan (7-Card 4:5 密封数据契约)',
+        'b-hve-s2-d': '强制所有条形图宽度、得分、延迟与分母 100% 源自密封 summary.json / report.json，严禁虚构坐标或将缺失值归零。',
+        'b-hve-s3-t': '03 · Implement (自动化评分与选项翻转检验)',
+        'b-hve-s3-d': '通过确定性 AST/测试验证器、候选顺序翻转（Option-Order Reversal）与并发批处理负载压测，生成自包含 CSP 安全 HTML 卡片组。',
+        'b-hve-s4-t': '04 · Harness Gate (端到端可复现审计)',
+        'b-hve-s4-d': '清晰标注 measured / anonymized_reported 溯源标签，支持浏览器内并排沙盒检视与一键复现。',
+        'b-f1-t': '🚲 1. FAF vs AGENT-FORGE vs HVE-Core 三方竞技场',
+        'b-f1-d': '同题盲测构建「鹈鹕骑自行车」单文件 SVG/HTML 交互应用：HVE-Core v3.3.101 综合得分 93.4/100 领先 AGENT-FORGE (91.8) 与 FAF (90.5)，支持三栏实时沙盒同屏试玩。',
+        'b-f2-t': '🧠 2. SKY-001 19 模型编码基准 & Decision-1 路由评测',
+        'b-f2-d': '对比 19 款主流模型在 Coding Agent 场景的真实表现（Claude Opus 4.6 83.2%、Sonnet 4.6 81.9%、SKY-001 帕累托性价比前沿），以及 Decision-1 80.0% 路由准确率与 520ms 批处理延迟。',
+        'b-f3-t': '🛡️ 3. E2B Nomad 心跳控制面审计 & Omarchy 桌面基准',
+        'b-f3-d': '深入源码审计 E2B Firecracker + Nomad 编排控制面心跳级联放大机制，以及 Omarchy AI 开发者桌面工作流 7-Card 评测。',
+        'b-pill-1': '🚲 01 · 三方盲测竞技场 (FAF vs AGENT-FORGE vs HVE-Core)',
+        'b-pill-2': '🧠 02 · SKY-001 19 模型 Coding Agent 7-Card',
+        'b-pill-3': '🔀 03 · Decision-1 6-Way 路由模型 7-Card',
+        'b-pill-4': '🔥 04 · E2B Nomad 心跳韧性审计 7-Card',
+        'b-pill-5': '💻 05 · Omarchy 开发者工作流 7-Card',
+
+        'v-eyebrow': 'TRACK 01 · ENTERPRISE VOICE AGENT · BUSINESS SCENARIOS & AZURE VOICE LIVE API',
+        'v-title': '企业级实时语音智能体：高价值业务场景与 Azure Voice Live 三层架构',
+        'v-desc': '聚焦联络中心、车载助手、公共服务等高 ROI 语音场景，依托 Azure Voice Live API 统一语音到语音（Full-Duplex / S2S）、混合式（Hybrid）与级联式（Cascaded）四大通道，并将推理与工具调用无缝委派至任意模型系列。',
+        'v-link-deck': '📽️ 12 页高管演示 Deck ↗',
+        'v-link-live': '🌐 Azure 线上 GPT-Live-1 实测 ↗',
+        'v-f1-t': '🎯 六大核心域 + 20 个高 ROI 行业场景',
+        'v-f1-d': '全面覆盖联络中心、智能座舱 eCall、跨国餐饮 QSR 免下车点餐、金融双录与航旅 PCI 语音支付门控，内置 FinOps TCO 测算器（较按单 SaaS 节省 65%–78%）。',
+        'v-f2-t': '⚡ Azure Voice Live 四大语音模式统一底座',
+        'v-f2-d': '一套 SDK / WebSocket / WebRTC / SIP 接口同时支持：① 全双工 GPT-Live-1（边说边听）、② 原生 S2S、③ Semantic VAD 混合式、④ Azure STT + 多模型 + HD TTS 级联式。',
+        'v-f3-t': '🛡️ 企业级治理与确定性工具委派',
+        'v-f3-d': '内置降噪、回声消除、<170ms 半句打断与中间响应；后端可将任务安全委派给 Foundry 智能体、主流商用/开源大模型或自有业务工具，配合确定性安全熔断。',
+        'v-hve-title': '🛠️ HVE (Hyper-Velocity Engineering) 在企业语音智能体中的工程化实践',
+        'v-hve-s1-t': '01 · Research (场景与声学调研)',
+        'v-hve-s1-d': '沉淀 20 大高价值行业场景、PSTN/SIP 编解码损耗矩阵与 90 项真实生产陷阱（Barge-in 竞态、同音词幻觉、弱网抖动）。',
+        'v-hve-s2-t': '02 · Plan (契约与状态机冻结)',
+        'v-hve-s2-d': '冻结 Azure Voice Live 四通道选型蓝图、turnEpoch 打断状态机、Strict JSON Schema 工具契约与 K01–K12 安全熔断规则。',
+        'v-hve-s3-t': '03 · Implement (双模路由与沙盒合成)',
+        'v-hve-s3-d': '并行构建 Voice Live (GPT-Live-1) 原生 S2S 与 Foundry 受控诊断路由、双语实时语音沙盒及 FinOps TCO 动态测算器。',
+        'v-hve-s4-t': '04 · Harness Gate (红队与幂等门禁)',
+        'v-hve-s4-d': '通过 66 项自动化单测、<170ms 半句打断验证、K05 高危带电操作 100% 熔断拦截与坐席审批幂等门禁。',
+        'a-hve-title': '🛠️ HVE (Hyper-Velocity Engineering) 在 Coding 实时动画中的工程化实践',
+        'a-hve-s1-t': '01 · Research (视觉考据与物理测绘)',
+        'a-hve-s1-d': '考据莫高窟四龛藻井浮雕光学与矿物颜料色谱，采集 NASA MOLA 384 cells/deg 火星激光高程与多级火箭拉瓦尔喷管几何参数。',
+        'a-hve-s2-t': '02 · Plan (几何预算与数学契约冻结)',
+        'a-hve-s2-d': '冻结 Verlet 飘带动力学积分步长、球面几何置换公式、188KB GLB 预算上限（≤30 Draw Calls）及 60fps 零运行时 API 架构契约。',
+        'a-hve-s3-t': '03 · Implement (GHCP + Blender MCP 造景)',
+        'a-hve-s3-d': 'GHCP 自动生成 Python bpy 脚本驱动 Blender 4.5 烘焙 Cycles 浮雕/法线贴图并导出火箭 GLB，同步编码 Three.js / Canvas2D 实时着色器。',
+        'a-hve-s4-t': '04 · Harness Gate (灰模/线框与多视角快照)',
+        'a-hve-s4-d': '通过内置灰模/线框几何检验、确定性时间探针与 Playwright 多视角快照比对门禁，自主消除穿模与曝光异常。',
+        'g-hve-title': '🛠️ HVE (Hyper-Velocity Engineering) 在 3D/2D 游戏原型中的工程化实践',
+        'g-hve-s1-t': '01 · Research (机械比例与手感锚定)',
+        'g-hve-s1-d': '测绘 8 车系 44 代 JDM 真实轴距/轮拱比例与 5 类废土机甲多关节运动学，梳理上海高架竞速与铁冠竞技场多幕叙事结构。',
+        'g-hve-s2-t': '02 · Plan (冻结几何、状态机与声学契约)',
+        'g-hve-s2-d': '在 RPI 规划期冻结车辆开放样条曲面参数、R-17 六层机甲骨骼树、三阶段 Boss 破甲状态机与零外部音频 Web Audio 合成器接口。',
+        'g-hve-s3-t': '03 · Implement (多 Agent 并行无漂移合成)',
+        'g-hve-s3-d': '多 Agent 严格按冻结契约并行编码 3D 跳灯/俯仰侧倾/双出回火、2D 液压抛壳/番剧黑白冲击帧及多分支无线电声档叙事。',
+        'g-hve-s4-t': '04 · Harness Gate (60Hz 确定性与 Bot 通关)',
+        'g-hve-s4-d': '通过 __wananTest / __gameTest 60Hz 固定步进探针、比赛期 0 动态网格分配守卫、88 视角回归快照与 AI Bot 180 秒自动击败 Boss 验收。',
+
+        'arch-title': 'Azure Voice Live API — 架构',
+        'arch-sub': '语音到语音、混合式和级联式语音智能体，可将任务委派给任意模型系列',
+        'arch-l1-title': '用户场景',
+        'arch-sc-1': '🎧 联络中心',
+        'arch-sc-2': '🚗 车载助手',
+        'arch-sc-3': '🎓 教育与学习',
+        'arch-sc-4': '🏛️ 公共服务',
+        'arch-sc-5': '🧑‍💼 人力资源与员工效率',
+        'arch-sc-6': '🤖 个人助手',
+        'arch-in-label': '接口',
+        'arch-out-label': '输出',
+        'arch-out-avatar': '🎭 照片/视频虚拟形象',
+        'arch-primitives': '降噪 · 回声消除 · 打断 · 函数调用 · 中间响应',
+        'arch-gov-label': '企业治理',
+        'arch-gov-1': '托管',
+        'arch-gov-2': '可扩展性',
+        'arch-gov-3': '安全性',
+        'arch-gov-4': '可观测性',
+        'arch-lane1-name': '全双工',
+        'arch-lane1-model': 'GPT-Live-1 (Full-duplex Speech-to-Speech · 边说边听)',
+        'arch-lane2-name': '语音到语音',
+        'arch-vad-2': '语音接入与韵律控制',
+        'arch-lane3-name': '混合式',
+        'arch-vad-title': '智能轮次检测',
+        'arch-vad-title-2': '智能轮次检测',
+        'arch-lane4-name': '级联式',
+        'arch-del-title': '▶ 任务委派',
+        'arch-del-sub': '所有路径均可委派推理与工具',
+        'arch-del-1': 'Foundry 智能体',
+        'arch-del-4': '自带后端 / 工具',
+        'v-pill-1': '🎙️ 业务场景 + 实时语音沙盒 + TCO 测算',
+        'v-pill-2': '📽️ 12 页高管架构幻灯片 (Deck)',
+
+        'a-eyebrow': 'TRACK 02 · CODING DIRECT TO ANIMATION · GHCP HARNESS RAPID PROTOTYPING',
+        'a-title': 'Coding 直接输出动画能力：基于 GHCP Harness 快速搭建高表现力原型',
+        'a-desc': '展示如何利用 GitHub Copilot (GHCP) + 自动化验证 Harness，用纯代码与 Blender 4.5 MCP 直接生成 60fps 实时程序化动画原型（敦煌飞天、NASA MOLA 火星、火箭发射），无需美术手工逐帧制作或运行时大模型调用。',
+        'a-link-mcp': '🔧 Blender MCP 管线 ↗',
+        'a-link-val': '✅ GHCP Harness 验收记录 ↗',
+        'a-f1-t': '⚡ 1. Prompt-to-Code 直出三维/二维造景',
+        'a-f1-d': '由 GHCP 直接编写参数化几何、约束飘带积分器与 Three.js / Canvas 着色逻辑，将莫高窟飞天叙事、NASA 真实高程火星与火箭尾焰转化为轻量前端代码。',
+        'a-f2-t': '🎨 2. GHCP + Blender 4.5 MCP 离线烘焙流水线',
+        'a-f2-d': 'Agent 通过 MCP 直接驱动 Blender 4.5 生成 188KB 火箭 GLB 套件（合批至 27 Draw Calls）并烘焙 Cycles 全局光照浮雕与微法线，浏览器端 0 API 成本 60fps 运行。',
+        'a-f3-t': '🔬 3. GHCP Visual & Geometry Harness 快速闭环',
+        'a-f3-d': '内置灰模（Gray）、线框拓扑（Wireframe）、Draw Call 计数与 Playwright 多视角快照自动比对 Harness，让 Agent 能自主发现穿模或曝光问题并秒级收敛原型。',
+        'a-pill-1': '🏛️ 程序造景实验室主页',
+        'a-pill-2': '🏮 01 · 风起壁间·敦煌飞天',
+        'a-pill-3': '🪐 02 · Astra 火星真实高程造景',
+        'a-pill-4': '🚀 03 · Launch 白色火箭点火升空',
+
+        'g-eyebrow': 'TRACK 03 · GAME DEMO · HVE (HYPER-VELOCITY ENGINEERING) SPECIFICATION',
+        'g-title': '游戏工程快速原型：以 HVE 工程规范驱动完整可验证 3D/2D 游戏交付',
+        'g-desc': '超越单段视觉动画，展示如何通过 HVE (Hyper-Velocity Engineering) 规范（RPI 研发流、冻结契约、程序化资产架构与 60Hz 确定性测试 Harness），零外部美术/音频素材快速构建《湾岸 Midnight》3D 竞速与《废土斗机祭》2D 机甲完整可玩原型。',
+        'g-link-wanan': '🏎️ 独立运行《湾岸 Midnight》↗',
+        'g-link-scrap': '🤖 独立运行《废土斗机祭》↗',
+        'g-f1-t': '📐 1. HVE 契约先行 (RPI: Research → Plan → Implement)',
+        'g-f1-d': '先用 HVE 规范定义车辆拓扑（8 车系 44 代参数曲面 <300KB gzip）、R-17 六层机甲骨骼树与多幕状态机契约，确保多 Agent 并行生成代码零架构漂移。',
+        'g-f2-t': '🔊 2. 零外部素材依赖：程序化建模 + Web Audio 合成',
+        'g-f2-d': '从可动跳灯、悬挂俯仰侧倾、换挡蓝紫回火、番剧黑白冲击帧，到 5 类引擎谐波与爆铆枪声效，100% 由代码与 Web Audio API 实时生成。',
+        'g-f3-t': '🤖 3. 60Hz 确定性验证 Harness 与 AI Bot 自动通关',
+        'g-f3-d': '遵循 HVE 可验证交付标准：内置 60Hz 固定步长物理循环、比赛期 0 动态网格分配门禁与 AI Bot 自动驾驶/战斗回归验证，确保工程级稳定性。',
+        'g-pill-1': '🔬 HVE 实时动画与工程拆解舞台',
+        'g-pill-2': '🏎️ 01 ·《湾岸 Midnight》3D 竞速实战',
+        'g-pill-3': '🤖 02 ·《废土斗机祭》2D 机甲共斗实战',
+        'g-pill-4': '📐 03 · 机甲骨骼与 Boss 破甲设定集'
+      },
+      'zh-TW': {
+        'ui-brand-title': 'Global AI Solution Accelerators & Benchmark Command Center',
+        'ui-brand-sub': '六大核心工程主線：Voice Agent · Agent Infra 10萬沙箱 · Agentic Commerce · 7-Card 基準與競技場 · Coding 動畫 · HVE 遊戲',
+        'tab-voice': '🎙️ 01 · Voice Agent',
+        'tab-infra': '🏗️ 02 · Agent Infra (100K)',
+        'tab-commerce': '🛒 03 · Agentic Commerce',
+        'tab-benchmarks': '📊 04 · 7-Card 評測與競技場',
+        'tab-animation': '🎨 05 · Coding 動畫',
+        'tab-game': '🎮 06 · HVE 遊戲',
+        'btn-home': '← 門戶首頁',
+        'btn-open-new': '↗ 獨立視窗開啟',
+        'v-pill-3': '📊 7-Card 4:5 語音智慧體基準報告',
+
+        'i-eyebrow': 'TRACK 02 · AZURE AI AGENT INFRASTRUCTURE · AKSCLAW × E2B 100K SANDBOXES',
+        'i-title': 'Azure AI 智慧體基礎設施：四層架構、六大執行期光譜與 10萬並發沙箱仿真',
+        'i-desc': '融合 Azure 四層智慧體底座（Build · Run · Ground · Govern）、六大計算執行期光譜（ACA 動態會話 → AKS Kata VM → E2B Firecracker）、Standard_D96as_v7 10萬並發沙箱定容模型、3.67s 跨區域雙活熱備切換及 Azure VM 現代化 FinOps 測算。',
+        'i-link-sim': '⚡ 獨立開啟 AKSClaw×E2B 仿真台 ↗',
+        'i-link-cards': '📊 7-Card 基準報告 ↗',
+        'i-f1-t': '🏗️ 1. 四層架構 + 六大執行期光譜決策樹',
+        'i-f1-d': '從零維運託管 ACA Dynamic Sessions、AKS Agent Sandbox (Kata VM)，到自建 E2B Firecracker MicroVM，按冷啟動、有狀態時長與合規邊界精準選型。',
+        'i-f2-t': '🚀 2. AKSClaw × E2B 10萬並發沙箱定容與 3.67s 容災',
+        'i-f2-d': '基於 Azure Standard_D96as_v7（96 vCPU / 384 GiB）實現單機 2,500 個高密沙箱、108ms 懶分頁快照喚醒，以及 Azure Front Door + Nomad 跨區 3.67s 熱備接管。',
+        'i-f3-t': '💰 3. Azure VM 現代化與 FinOps 夥伴評估工作台',
+        'i-f3-d': '內建離線 TCO 與遷移評估計算器、6 大典型客戶案例及同頁簡/繁/英三語切換，賦能合作夥伴快速完成算力選型與成本治理。',
+        'i-pill-1': '🗺️ 01 · 全景 Playbook 架構總覽',
+        'i-pill-2': '⚡ 02 · AKSClaw × E2B 即時沙箱仿真台',
+        'i-pill-3': '🧮 03 · 選型決策樹、10萬沙箱定容與 DR 演練',
+        'i-pill-4': '📊 04 · 7-Card 4:5 性能基準報告',
+        'i-pill-5': '💰 05 · Azure VM 現代化 FinOps 計算器',
+
+        'c-eyebrow': 'TRACK 03 · AGENTIC COMMERCE × MICROSOFT WEB IQ · GROUNDING, ANTI-INJECTION & CHECKOUT',
+        'c-title': '智慧體商業 (Agentic Commerce)：Web IQ 即時接地、反注入護欄與可驗證支付結算',
+        'c-desc': '打通從開放網頁即時商品目錄發現（Microsoft Web IQ）、100% 間接提示詞注入清洗（[WEBIQ_SANITIZED]）、ACP/UCP 雙協議結帳狀態機，到 AP2 MandateVC 預算授權與 x402 微支付結算的完整閉環。',
+        'c-link-demo': '🛒 獨立開啟即時攻防沙盒 ↗',
+        'c-link-cards': '📊 7-Card 評測報告 ↗',
+        'c-pill-1': '🛒 01 · Web IQ × Agentic Commerce 即時互動沙盒',
+        'c-pill-2': '📊 02 · 7-Card 4:5 商業智慧體評測報告',
+        'c-pill-3': '📖 03 · 架構總覽與雙語導航門戶',
+
+        'b-eyebrow': 'TRACK 04 · 7-CARD 4:5 VISUAL BENCHMARK DECKS & 3-WAY FDE ARENA',
+        'b-title': '7-Card 4:5 模型評測中心與三方智慧體盲測競技場 (FAF vs AGENT-FORGE vs HVE-Core)',
+        'b-desc': '遵循 benchmark-harness-engineering 統一的 7-Card 4:5 縱向視覺評測標準（零虛構座標、密封 report.json 驅動），集中呈現三方單檔案 SVG/HTML 盲測競技場、SKY-001 19 模型編碼智慧體基準、System-One Decision-1 6 路路由帕累托前沿與 E2B Nomad 心跳控制面審計。',
+        'b-link-arena': '🚲 獨立開啟三方盲測競技場 ↗',
+        'b-link-sky': '📊 SKY-001 19模型評測卡 ↗',
+        'b-pill-1': '🚲 01 · 三方盲測競技場 (FAF vs AGENT-FORGE vs HVE-Core)',
+        'b-pill-2': '🧠 02 · SKY-001 19 模型 Coding Agent 7-Card',
+        'b-pill-3': '🔀 03 · Decision-1 6-Way 路由模型 7-Card',
+        'b-pill-4': '🔥 04 · E2B Nomad 心跳韌性審計 7-Card',
+        'b-pill-5': '💻 05 · Omarchy 開發者工作流 7-Card',
+
+        'v-eyebrow': 'TRACK 01 · ENTERPRISE VOICE AGENT · BUSINESS SCENARIOS & AZURE VOICE LIVE API',
+        'v-title': '企業級即時語音智慧體：高價值業務場景與 Azure Voice Live 三層架構',
+        'v-desc': '聚焦聯絡中心、車載助手、公共服務等高 ROI 語音場景，依託 Azure Voice Live API 統一語音到語音（Full-Duplex / S2S）、混合式（Hybrid）與級聯式（Cascaded）四大通道，並將推理與工具調用無縫委派至任意模型系列。',
+        'v-link-deck': '📽️ 12 頁高管簡報 Deck ↗',
+        'v-link-live': '🌐 Azure 線上 GPT-Live-1 實測 ↗',
+        'v-f1-t': '🎯 六大核心域 + 20 個高 ROI 行業場景',
+        'v-f1-d': '全面覆蓋聯絡中心、智慧座艙 eCall、跨國餐飲 QSR 免下車點餐、金融雙錄與航旅 PCI 語音支付門控，內建 FinOps TCO 測算器（較按單 SaaS 節省 65%–78%）。',
+        'v-f2-t': '⚡ Azure Voice Live 四大語音模式統一底座',
+        'v-f2-d': '一套 SDK / WebSocket / WebRTC / SIP 介面同時支援：① 全雙工 GPT-Live-1（邊說邊聽）、② 原生 S2S、③ Semantic VAD 混合式、④ Azure STT + 多模型 + HD TTS 級聯式。',
+        'v-f3-t': '🛡️ 企業級治理與確定性工具委派',
+        'v-f3-d': '內建降噪、回聲消除、<170ms 半句打斷與中間響應；後端可將任務安全委派給 Foundry 智慧體、主流商用/開源大模型或自有業務工具，配合確定性安全熔斷。',
+        'v-hve-title': '🛠️ HVE (Hyper-Velocity Engineering) 在企業語音智慧體中的工程化實踐',
+        'v-hve-s1-t': '01 · Research (場景與聲學調研)',
+        'v-hve-s1-d': '沉澱 20 大高價值行業場景、PSTN/SIP 編解碼損耗矩陣與 90 項真實生產陷阱（Barge-in 競態、同音詞幻覺、弱網抖動）。',
+        'v-hve-s2-t': '02 · Plan (契約與狀態機凍結)',
+        'v-hve-s2-d': '凍結 Azure Voice Live 四通道選型藍圖、turnEpoch 打斷狀態機、Strict JSON Schema 工具契約與 K01–K12 安全熔斷規則。',
+        'v-hve-s3-t': '03 · Implement (雙模路由與沙盒合成)',
+        'v-hve-s3-d': '並行構建 Voice Live (GPT-Live-1) 原生 S2S 與 Foundry 受控診斷路由、雙語即時語音沙盒及 FinOps TCO 動態測算器。',
+        'v-hve-s4-t': '04 · Harness Gate (紅隊與冪等門禁)',
+        'v-hve-s4-d': '通過 66 項自動化單測、<170ms 半句打斷驗證、K05 高危帶電操作 100% 熔斷攔截與坐席審批冪等門禁。',
+        'a-hve-title': '🛠️ HVE (Hyper-Velocity Engineering) 在 Coding 即時動畫中的工程化實踐',
+        'a-hve-s1-t': '01 · Research (視覺考據與物理測繪)',
+        'a-hve-s1-d': '考據莫高窟四龕藻井浮雕光學與礦物顏料色譜，採集 NASA MOLA 384 cells/deg 火星雷射高程與多級火箭拉瓦爾噴管幾何參數。',
+        'a-hve-s2-t': '02 · Plan (幾何預算與數學契約凍結)',
+        'a-hve-s2-d': '凍結 Verlet 飄帶動力學積分步長、球面幾何置換公式、188KB GLB 預算上限（≤30 Draw Calls）及 60fps 零執行期 API 架構契約。',
+        'a-hve-s3-t': '03 · Implement (GHCP + Blender MCP 造景)',
+        'a-hve-s3-d': 'GHCP 自動生成 Python bpy 腳本驅動 Blender 4.5 烘焙 Cycles 浮雕/法線貼圖並匯出火箭 GLB，同步編碼 Three.js / Canvas2D 即時著色器。',
+        'a-hve-s4-t': '04 · Harness Gate (灰模/線框與多視角快照)',
+        'a-hve-s4-d': '通過內建灰模/線框幾何檢驗、確定性時間探針與 Playwright 多視角快照比對門禁，自主消除穿模與曝光異常。',
+        'g-hve-title': '🛠️ HVE (Hyper-Velocity Engineering) 在 3D/2D 遊戲原型中的工程化實踐',
+        'g-hve-s1-t': '01 · Research (機械比例與手感錨定)',
+        'g-hve-s1-d': '測繪 8 車系 44 代 JDM 真實軸距/輪拱比例與 5 類廢土機甲多關節運動學，梳理上海高架競速與鐵冠競技場多幕敘事結構。',
+        'g-hve-s2-t': '02 · Plan (凍結幾何、狀態機與聲學契約)',
+        'g-hve-s2-d': '在 RPI 規劃期凍結車輛開放樣條曲面參數、R-17 六層機甲骨骼樹、三階段 Boss 破甲狀態機與零外部音訊 Web Audio 合成器介面。',
+        'g-hve-s3-t': '03 · Implement (多 Agent 並行無漂移合成)',
+        'g-hve-s3-d': '多 Agent 嚴格按凍結契約並行編碼 3D 跳燈/俯仰側傾/雙出回火、2D 液壓拋殼/番劇黑白衝擊幀及多分支無線電聲檔敘事。',
+        'g-hve-s4-t': '04 · Harness Gate (60Hz 確定性與 Bot 通關)',
+        'g-hve-s4-d': '通過 __wananTest / __gameTest 60Hz 固定步進探針、比賽期 0 動態網格分配守衛、88 視角回歸快照與 AI Bot 180 秒自動擊敗 Boss 驗收。',
+
+        'arch-title': 'Azure Voice Live API — 架構',
+        'arch-sub': '語音到語音、混合式和級聯式語音智慧體，可將任務委派給任意模型系列',
+        'arch-l1-title': '用戶場景',
+        'arch-sc-1': '🎧 聯絡中心',
+        'arch-sc-2': '🚗 車載助手',
+        'arch-sc-3': '🎓 教育與學習',
+        'arch-sc-4': '🏛️ 公共服務',
+        'arch-sc-5': '🧑‍💼 人力資源與員工效率',
+        'arch-sc-6': '🤖 個人助手',
+        'arch-in-label': '介面',
+        'arch-out-label': '輸出',
+        'arch-out-avatar': '🎭 照片/視訊虛擬形象',
+        'arch-primitives': '降噪 · 回聲消除 · 打斷 · 函數調用 · 中間響應',
+        'arch-gov-label': '企業治理',
+        'arch-gov-1': '託管',
+        'arch-gov-2': '可擴展性',
+        'arch-gov-3': '安全性',
+        'arch-gov-4': '可觀測性',
+        'arch-lane1-name': '全雙工',
+        'arch-lane1-model': 'GPT-Live-1 (Full-duplex Speech-to-Speech · 邊說邊聽)',
+        'arch-lane2-name': '語音到語音',
+        'arch-vad-2': '語音接入與韻律控制',
+        'arch-lane3-name': '混合式',
+        'arch-vad-title': '智慧輪次檢測',
+        'arch-vad-title-2': '智慧輪次檢測',
+        'arch-lane4-name': '級聯式',
+        'arch-del-title': '▶ 任務委派',
+        'arch-del-sub': '所有路徑均可委派推理與工具',
+        'arch-del-1': 'Foundry 智慧體',
+        'arch-del-4': '自帶後端 / 工具',
+        'v-pill-1': '🎙️ 業務場景 + 即時語音沙盒 + TCO 測算',
+        'v-pill-2': '📽️ 12 頁高管架構投影片 (Deck)',
+
+        'a-eyebrow': 'TRACK 02 · CODING DIRECT TO ANIMATION · GHCP HARNESS RAPID PROTOTYPING',
+        'a-title': 'Coding 直接輸出動畫能力：基於 GHCP Harness 快速搭建高表現力原型',
+        'a-desc': '展示如何利用 GitHub Copilot (GHCP) + 自動化驗證 Harness，用純程式碼與 Blender 4.5 MCP 直接生成 60fps 即時程序化動畫原型（敦煌飛天、NASA MOLA 火星、火箭發射），無需美術手工逐幀製作或執行期大模型調用。',
+        'a-link-mcp': '🔧 Blender MCP 管線 ↗',
+        'a-link-val': '✅ GHCP Harness 驗收記錄 ↗',
+        'a-f1-t': '⚡ 1. Prompt-to-Code 直出三維/二維造景',
+        'a-f1-d': '由 GHCP 直接編寫參數化幾何、約束飄帶積分器與 Three.js / Canvas 著色邏輯，將莫高窟飛天敘事、NASA 真實高程火星與火箭尾焰轉化為輕量前端程式碼。',
+        'a-f2-t': '🎨 2. GHCP + Blender 4.5 MCP 離線烘焙流水線',
+        'a-f2-d': 'Agent 透過 MCP 直接驅動 Blender 4.5 生成 188KB 火箭 GLB 套件（合批至 27 Draw Calls）並烘焙 Cycles 全局光照浮雕與微法線，瀏覽器端 0 API 成本 60fps 執行。',
+        'a-f3-t': '🔬 3. GHCP Visual & Geometry Harness 快速閉環',
+        'a-f3-d': '內建灰模（Gray）、線框拓撲（Wireframe）、Draw Call 計數與 Playwright 多視角快照自動比對 Harness，讓 Agent 能自主發現穿模或曝光問題並秒級收斂原型。',
+        'a-pill-1': '🏛️ 程序造景實驗室首頁',
+        'a-pill-2': '🏮 01 · 風起壁間·敦煌飛天',
+        'a-pill-3': '🪐 02 · Astra 火星真實高程造景',
+        'a-pill-4': '🚀 03 · Launch 白色火箭點火升空',
+
+        'g-eyebrow': 'TRACK 03 · GAME DEMO · HVE (HYPER-VELOCITY ENGINEERING) SPECIFICATION',
+        'g-title': '遊戲工程快速原型：以 HVE 工程規範驅動完整可驗證 3D/2D 遊戲交付',
+        'g-desc': '超越單段視覺動畫，展示如何透過 HVE (Hyper-Velocity Engineering) 規範（RPI 研發流、凍結契約、程序化資產架構與 60Hz 確定性測試 Harness），零外部美術/音訊素材快速構建《灣岸 Midnight》3D 競速與《廢土鬥機祭》2D 機甲完整可玩原型。',
+        'g-link-wanan': '🏎️ 獨立執行《灣岸 Midnight》↗',
+        'g-link-scrap': '🤖 獨立執行《廢土鬥機祭》↗',
+        'g-f1-t': '📐 1. HVE 契約先行 (RPI: Research → Plan → Implement)',
+        'g-f1-d': '先用 HVE 規範定義車輛拓撲（8 車系 44 代參數曲面 <300KB gzip）、R-17 六層機甲骨骼樹與多幕狀態機契約，確保多 Agent 並行生成程式碼零架構漂移。',
+        'g-f2-t': '🔊 2. 零外部素材依賴：程序化建模 + Web Audio 合成',
+        'g-f2-d': '從可動跳燈、懸吊俯仰側傾、換檔藍紫回火、番劇黑白衝擊幀，到 5 類引擎諧波與爆鉚槍聲效，100% 由程式碼與 Web Audio API 即時生成。',
+        'g-f3-t': '🤖 3. 60Hz 確定性驗證 Harness 與 AI Bot 自動通關',
+        'g-f3-d': '遵循 HVE 可驗證交付標準：內建 60Hz 固定步長物理循環、比賽期 0 動態網格分配門禁與 AI Bot 自動駕駛/戰鬥回歸驗證，確保工程級穩定性。',
+        'g-pill-1': '🔬 HVE 即時動畫與工程拆解舞台',
+        'g-pill-2': '🏎️ 01 ·《灣岸 Midnight》3D 競速實戰',
+        'g-pill-3': '🤖 02 ·《廢土鬥機祭》2D 機甲共鬥實戰',
+        'g-pill-4': '📐 03 · 機甲骨骼與 Boss 破甲設定集'
+      },
+      'en': {
+        'ui-brand-title': 'Global AI Solution Accelerators & Benchmark Command Center',
+        'ui-brand-sub': 'Six Core Tracks: Voice Agent · Agent Infra (100K Sandboxes) · Agentic Commerce · 7-Card Benchmarks & Arena · Coding Animation · HVE Games',
+        'tab-voice': '🎙️ 01 · Voice Agent',
+        'tab-infra': '🏗️ 02 · Agent Infra (100K)',
+        'tab-commerce': '🛒 03 · Agentic Commerce',
+        'tab-benchmarks': '📊 04 · 7-Card Benchmarks & Arena',
+        'tab-animation': '🎨 05 · Coding Animation',
+        'tab-game': '🎮 06 · HVE Games',
+        'btn-home': '← Overview Home',
+        'btn-open-new': '↗ Open in New Tab',
+        'v-pill-3': '📊 7-Card 4:5 Voice Agent Benchmark Deck',
+
+        'i-eyebrow': 'TRACK 02 · AZURE AI AGENT INFRASTRUCTURE · AKSCLAW × E2B 100K SANDBOXES',
+        'i-title': 'Azure AI Agent Infrastructure: 4-Layer Architecture, 6-Tier Runtime Spectrum & 100K Sandbox Simulator',
+        'i-desc': 'Unifies the 4-Layer Azure Agent Reference Architecture (Build · Run · Ground · Govern), 6-Tier Compute Spectrum (ACA Dynamic Sessions → AKS Kata VM → E2B Firecracker), Standard_D96as_v7 100K sandbox capacity model, 3.67s multi-region warm DR failover, and Azure VM Modernization FinOps workbench.',
+        'i-link-sim': '⚡ Open AKSClaw×E2B Simulator ↗',
+        'i-link-cards': '📊 7-Card Benchmark Deck ↗',
+        'i-hve-title': '🛠️ HVE (Hyper-Velocity Engineering) Practice in 100K-Sandbox Agent Infrastructure',
+        'i-hve-s1-t': '01 · Research (Kernel Isolation & Microarchitecture)',
+        'i-hve-s1-d': 'Benchmarked ACA Hyper-V, AKS Kata VM, E2B Firecracker userfaultfd lazy paging, and AMD EPYC Turin (D96as_v7) memory bandwidth limits.',
+        'i-hve-s2-t': '02 · Plan (4-Layer Architecture & 100K Sizing Formula)',
+        'i-hve-s2-d': 'Froze the 4-layer architecture, 6-tier runtime decision tree, 42-node × 2,500 MicroVM density formula, and 3.67s regional failover state contract.',
+        'i-hve-s3-t': '03 · Implement (41 Blueprints & Interactive Calculators)',
+        'i-hve-s3-d': 'Built 41 production Bicep/K8s/Nomad blueprints alongside a 4-page H5 live simulator, decision tree, and FinOps TCO sizer.',
+        'i-hve-s4-t': '04 · Harness Gate (108ms Resume & DR Verification)',
+        'i-hve-s4-d': 'Verified by sealed 7-Card 4:5 benchmarks: 108ms Base / 132ms Code-Interpreter P50 resume, 4.65× batch speedup at 50 concurrency, RPO≈0.',
+        'i-f1-t': '🏗️ 1. 4-Layer Architecture + 6-Tier Runtime Decision Tree',
+        'i-f1-d': 'From zero-ops ACA Dynamic Sessions and AKS Agent Sandbox (Kata VM) to self-hosted E2B Firecracker MicroVMs—matched by cold start, session duration, and compliance.',
+        'i-f2-t': '🚀 2. AKSClaw × E2B 100K Sandbox Sizing & 3.67s Warm DR',
+        'i-f2-d': 'Packs 2,500 MicroVMs per Standard_D96as_v7 (96 vCPU / 384 GiB) with 108ms lazy-paged snapshot resume and 3.67s Azure Front Door + Nomad cross-region failover.',
+        'i-f3-t': '💰 3. Azure VM Modernization & FinOps Partner Workbench',
+        'i-f3-d': 'Built-in offline TCO assessment calculator, 6 synthetic enterprise migration cases, and trilingual switching for partner presales and delivery teams.',
+        'i-pill-1': '🗺️ 01 · Playbook Atlas Overview',
+        'i-pill-2': '⚡ 02 · AKSClaw × E2B Live Sandbox Simulator',
+        'i-pill-3': '🧮 03 · Decision Tree, 100K Sizer & DR Lab',
+        'i-pill-4': '📊 04 · 7-Card 4:5 Benchmark Deck',
+        'i-pill-5': '💰 05 · Azure VM Modernization FinOps Calculator',
+
+        'c-eyebrow': 'TRACK 03 · AGENTIC COMMERCE × MICROSOFT WEB IQ · GROUNDING, ANTI-INJECTION & CHECKOUT',
+        'c-title': 'Agentic Commerce: Microsoft Web IQ Live Grounding, Anti-Injection Guardrails & Verifiable Checkout',
+        'c-desc': 'Connects live open-web catalog discovery (Microsoft Web IQ), 100% indirect prompt injection sanitization ([WEBIQ_SANITIZED]), ACP/UCP checkout state machines, AP2 MandateVC budget caps, and x402 micropayment settlement.',
+        'c-link-demo': '🛒 Open Live Commerce Workbench ↗',
+        'c-link-cards': '📊 7-Card Benchmark Deck ↗',
+        'c-hve-title': '🛠️ HVE (Hyper-Velocity Engineering) Practice in Agentic Commerce & Anti-Injection Security',
+        'c-hve-s1-t': '01 · Research (Commerce Protocols & Red-Team Vectors)',
+        'c-hve-s1-d': 'Analyzed OpenAI/Stripe ACP, Google/Shopify UCP, Coinbase x402, and Google AP2 protocols alongside hidden DOM prompt-injection vectors.',
+        'c-hve-s2-t': '02 · Plan (Sanitization Contract & MandateVC Caps)',
+        'c-hve-s2-d': 'Froze the Web IQ Schema sanitization pipeline, 3-band confidence gating (≥0.80 Auto / 0.55–0.79 Confirm / <0.55 Escalate), and AP2 MandateVC budget rules.',
+        'c-hve-s3-t': '03 · Implement (End-to-End State Machine & Workbench)',
+        'c-hve-s3-d': 'Built the interactive commerce grounding workbench with 8 evaluation scenarios, live defense toggles, and sealed 7-Card 4:5 visual report.',
+        'c-hve-s4-t': '04 · Harness Gate (100% Injection Block & 2.75× Speedup)',
+        'c-hve-s4-d': 'Achieved 87.5% first-pass accuracy across 8 scenarios, 100% malicious HTML injection stripping, 0% unauthorized settlement, and 2.75× parallel grounding speedup.',
+        'c-f1-t': '🌐 1. Microsoft Web IQ Live Catalog Grounding & Sanitization',
+        'c-f1-d': 'Transforms noisy merchant HTML/DOM into type-safe Product Grounding Schemas while stripping hidden display:none exfiltration payloads ([WEBIQ_SANITIZED]).',
+        'c-f2-t': '🔐 2. ACP / UCP Checkout State Machine & AP2 Circuit Breakers',
+        'c-f2-d': 'Supports multi-vendor negotiation, inventory reservation, and cryptographic AP2 MandateVC verification—deterministically halting over-budget checkouts (AP2_MANDATE_CAP_EXCEEDED).',
+        'c-f3-t': '📊 3. Sealed 7-Card 4:5 Evaluation & Perturbation Robustness',
+        'c-f3-d': 'Verifies candidate order reversal and adversarial DOM noise perturbation (1.0 pts mean shift, zero action flips) for reproducible enterprise commerce deployment.',
+        'c-pill-1': '🛒 01 · Web IQ × Agentic Commerce Live Workbench',
+        'c-pill-2': '📊 02 · 7-Card 4:5 Commerce Benchmark Deck',
+        'c-pill-3': '📖 03 · Architecture Overview & Bilingual Portal',
+
+        'b-eyebrow': 'TRACK 04 · 7-CARD 4:5 VISUAL BENCHMARK DECKS & 3-WAY FDE ARENA',
+        'b-title': '7-Card 4:5 Benchmark Hub & 3-Way Blind Agent Arena (FAF vs AGENT-FORGE vs HVE-Core)',
+        'b-desc': 'Built on the benchmark-harness-engineering 7-Card 4:5 visual standard (zero fabricated coordinates, sealed report.json data): features the 3-Way Pelican Bicycle Arena, SKY-001 19-Model Coding Agent Benchmark, System-One Decision-1 6-Way Routing Pareto Frontier, and E2B Nomad Heartbeat Resilience Audit.',
+        'b-link-arena': '🚲 Open 3-Way Pelican Arena ↗',
+        'b-link-sky': '📊 SKY-001 19-Model Deck ↗',
+        'b-hve-title': '🛠️ HVE (Hyper-Velocity Engineering) Practice in Reproducible Benchmarks & 7-Card Standard',
+        'b-hve-s1-t': '01 · Research (Multi-Dimensional Tasks & Blind Baselines)',
+        'b-hve-s1-d': 'Designed the 19-model coding agent suite (SWE-Bench Verified + Frontier-Repo-Bench), 6-way routing eval, and 3-way single-file Pelican SVG/HTML blind arena.',
+        'b-hve-s2-t': '02 · Plan (Sealed 7-Card 4:5 Data Contract)',
+        'b-hve-s2-d': 'Enforced 100% sealed summary.json / report.json provenance for every bar width, score, latency, and denominator—zero fabricated coordinates.',
+        'b-hve-s3-t': '03 · Implement (Deterministic Verifier & Perturbation Check)',
+        'b-hve-s3-d': 'Combined deterministic AST/test verifiers, option-order reversal checks, and batch scaling telemetry into self-contained CSP-safe HTML card decks.',
+        'b-hve-s4-t': '04 · Harness Gate (End-to-End Reproducible Audit)',
+        'b-hve-s4-d': 'Explicitly labels measured vs. anonymized_reported provenance with side-by-side live browser sandboxes.',
+        'b-f1-t': '🚲 1. FAF vs AGENT-FORGE vs HVE-Core 3-Way Arena',
+        'b-f1-d': 'Blind head-to-head single-file SVG/HTML Pelican Bicycle build: HVE-Core v3.3.101 leads at 93.4/100 vs. AGENT-FORGE (91.8) and FAF (90.5) with side-by-side live sandboxes.',
+        'b-f2-t': '🧠 2. SKY-001 19-Model Coding Benchmark & Decision-1 Routing',
+        'b-f2-d': 'Benchmarks 19 models on real coding agent tasks (Claude Opus 4.6 83.2%, Sonnet 4.6 81.9%, SKY-001 Pareto frontier) and Decision-1 80.0% routing accuracy at 520ms batch latency.',
+        'b-f3-t': '🛡️ 3. E2B Nomad Heartbeat Audit & Omarchy Desktop Eval',
+        'b-f3-d': 'Source-level resilience audit of E2B Firecracker + Nomad control-plane heartbeat amplification alongside the Omarchy developer workflow 7-Card evaluation.',
+        'b-pill-1': '🚲 01 · 3-Way Pelican Arena (FAF vs AGENT-FORGE vs HVE-Core)',
+        'b-pill-2': '🧠 02 · SKY-001 19-Model Coding Agent 7-Card',
+        'b-pill-3': '🔀 03 · Decision-1 6-Way Routing 7-Card',
+        'b-pill-4': '🔥 04 · E2B Nomad Heartbeat Resilience 7-Card',
+        'b-pill-5': '💻 05 · Omarchy Developer Workflow 7-Card',
+
+        'v-eyebrow': 'TRACK 01 · ENTERPRISE VOICE AGENT · BUSINESS SCENARIOS & AZURE VOICE LIVE API',
+        'v-title': 'Enterprise Realtime Voice Agent: High-ROI Scenarios & Azure Voice Live 3-Layer Architecture',
+        'v-desc': 'Focused on high-value enterprise scenarios (Contact Center, In-Vehicle Assistant, Public Services) powered by the unified Azure Voice Live API—spanning Full-Duplex, Speech-to-Speech, Hybrid, and Cascaded pipelines with seamless task delegation to any model family.',
+        'v-link-deck': '📽️ 12-Slide Executive Deck ↗',
+        'v-link-live': '🌐 Live Azure GPT-Live-1 Demo ↗',
+        'v-f1-t': '🎯 6 Core Domains + 20 High-ROI Industry Scenarios',
+        'v-f1-d': 'Covers Contact Centers, Automotive eCall, QSR Drive-Thru, Wealth Compliance, and Travel PCI gating, with a built-in FinOps TCO calculator (65%–78% savings vs. per-resolution SaaS).',
+        'v-f2-t': '⚡ 4 Execution Modes on One Unified Voice Live Platform',
+        'v-f2-d': 'One SDK / WebSocket / WebRTC / SIP interface supporting: ① Full-Duplex GPT-Live-1 (listen while speaking), ② Native S2S, ③ Semantic VAD Hybrid, and ④ Cascaded STT + Multi-LLM + HD TTS.',
+        'v-f3-t': '🛡️ Enterprise Governance & Deterministic Delegation',
+        'v-f3-d': 'Built-in noise suppression, echo cancellation, <170ms barge-in, and interim responses; safely delegates reasoning and tool calls to Foundry Agents, frontier commercial/open-weights LLMs, or custom backends.',
+        'v-hve-title': '🛠️ HVE (Hyper-Velocity Engineering) Practice in Enterprise Voice Agents',
+        'v-hve-s1-t': '01 · Research (Scenarios & Acoustic Traps)',
+        'v-hve-s1-d': 'Cataloged 20 high-ROI industry scenarios, PSTN/SIP codec loss matrices, and 90 production edge cases (barge-in race conditions, SKU homophones, jitter).',
+        'v-hve-s2-t': '02 · Plan (Frozen Contracts & State Machine)',
+        'v-hve-s2-d': 'Froze the 4-lane Azure Voice Live blueprint, turnEpoch barge-in state machine, Strict JSON Schema tool contracts, and K01–K12 deterministic safety locks.',
+        'v-hve-s3-t': '03 · Implement (Dual-Mode Routing & Sandbox)',
+        'v-hve-s3-d': 'Built Voice Live (GPT-Live-1) native S2S + Foundry controlled diagnostic routing, interactive bilingual voice sandbox, and FinOps TCO calculator in parallel.',
+        'v-hve-s4-t': '04 · Harness Gate (Red-Team & Idempotency Gate)',
+        'v-hve-s4-d': 'Verified by 66 automated unit tests, <170ms barge-in cut-off, 100% K05 high-voltage hazard interception, and agent-approved CRM write idempotency.',
+        'a-hve-title': '🛠️ HVE (Hyper-Velocity Engineering) Practice in Coding Direct to Animation',
+        'a-hve-s1-t': '01 · Research (Optics & Scientific Altimetry)',
+        'a-hve-s1-d': 'Researched Mogao grotto relief optics and mineral pigments, NASA MOLA 384 cells/deg laser altimetry, and multi-stage rocket Laval nozzle geometry.',
+        'a-hve-s2-t': '02 · Plan (Frozen Math & Draw-Call Budgets)',
+        'a-hve-s2-d': 'Froze Verlet ribbon physics step, spherical elevation displacement formulas, 188KB GLB budget (≤30 draw calls), and 60fps zero-API runtime contracts.',
+        'a-hve-s3-t': '03 · Implement (GHCP + Blender 4.5 MCP)',
+        'a-hve-s3-d': 'GHCP authors Python bpy scripts to bake Cycles relief/normal maps and export rocket GLB kits while coding Three.js / Canvas2D real-time shaders.',
+        'a-hve-s4-t': '04 · Harness Gate (Gray/Wireframe & Snapshots)',
+        'a-hve-s4-d': 'Enforced gray/wireframe geometry inspection, deterministic time-step probes, and Playwright multi-angle snapshot regression gates.',
+        'g-hve-title': '🛠️ HVE (Hyper-Velocity Engineering) Practice in 3D/2D Game Prototyping',
+        'g-hve-s1-t': '01 · Research (Mechanical Proportions & Feel)',
+        'g-hve-s1-d': 'Mapped 8 JDM car families (44 generations) wheelbase/arch proportions and 5 articulated mecha rigs alongside multi-act narrative arcs.',
+        'g-hve-s2-t': '02 · Plan (Frozen Geometry, Rig & Synth Specs)',
+        'g-hve-s2-d': 'Froze open-spline car body parameters, R-17 6-layer mecha bone hierarchy, 3-phase Boss shatter state machine, and zero-sample Web Audio synth contracts.',
+        'g-hve-s3-t': '03 · Implement (Drift-Free Parallel Synthesis)',
+        'g-hve-s3-d': 'Parallel agents implemented 3D pop-up headlights/pitch-roll/backfire, 2D hydraulic shell ejection/anime impact frames, and radio drama state machines.',
+        'g-hve-s4-t': '04 · Harness Gate (60Hz Determinism & AI Bot)',
+        'g-hve-s4-d': 'Passed __wananTest / __gameTest 60Hz fixed-step probes, zero in-race mesh allocation guards, 88 camera regression snapshots, and 180s automated Bot clear.',
+
+        'arch-title': 'Azure Voice Live API — Architecture',
+        'arch-sub': 'Speech-to-speech, hybrid, and cascaded voice agents that delegate tasks to any model family',
+        'arch-l1-title': 'User Scenarios',
+        'arch-sc-1': '🎧 Contact Center',
+        'arch-sc-2': '🚗 In-Vehicle Assistant',
+        'arch-sc-3': '🎓 Education & Learning',
+        'arch-sc-4': '🏛️ Public Services',
+        'arch-sc-5': '🧑‍💼 HR & Employee Productivity',
+        'arch-sc-6': '🤖 Personal Assistant',
+        'arch-in-label': 'Interfaces',
+        'arch-out-label': 'Output',
+        'arch-out-avatar': '🎭 Photo / Video Avatar',
+        'arch-primitives': 'Noise Suppression · Echo Cancellation · Barge-in · Function Calling · Interim Response',
+        'arch-gov-label': 'Enterprise Governance',
+        'arch-gov-1': 'Managed',
+        'arch-gov-2': 'Scalability',
+        'arch-gov-3': 'Security',
+        'arch-gov-4': 'Observability',
+        'arch-lane1-name': 'Full-Duplex',
+        'arch-lane1-model': 'GPT-Live-1 (Full-duplex Speech-to-Speech · Listen while speaking)',
+        'arch-lane2-name': 'Speech-to-Speech',
+        'arch-vad-2': 'Audio I/O & Prosody Control',
+        'arch-lane3-name': 'Hybrid',
+        'arch-vad-title': 'Smart Turn Detection',
+        'arch-vad-title-2': 'Smart Turn Detection',
+        'arch-lane4-name': 'Cascaded',
+        'arch-del-title': '▶ Task Delegation',
+        'arch-del-sub': 'All paths delegate reasoning & tools',
+        'arch-del-1': 'Foundry Agents',
+        'arch-del-4': 'BYO Backend / Tools',
+        'v-pill-1': '🎙️ Business Scenarios + Live Voice Sandbox + TCO Calculator',
+        'v-pill-2': '📽️ 12-Slide Executive Architecture Deck',
+
+        'a-eyebrow': 'TRACK 02 · CODING DIRECT TO ANIMATION · GHCP HARNESS RAPID PROTOTYPING',
+        'a-title': 'Coding Direct to Animation: Rapid Prototyping via GitHub Copilot (GHCP) Harness',
+        'a-desc': 'Demonstrates how GitHub Copilot (GHCP) paired with automated verification harnesses turns pure code and Blender 4.5 MCP directly into 60fps procedural 3D/2D animations (Dunhuang Feitian, NASA MOLA Mars, Rocket Launch) with zero runtime LLM API overhead.',
+        'a-link-mcp': '🔧 Blender MCP Pipeline ↗',
+        'a-link-val': '✅ GHCP Harness Validation ↗',
+        'a-f1-t': '⚡ 1. Prompt-to-Code Procedural 3D/2D Worlds',
+        'a-f1-d': 'GHCP authors parametric geometry, constrained ribbon integrators, and Three.js / Canvas shaders directly—translating cultural murals, NASA elevation data, and rocket plumes into clean code.',
+        'a-f2-t': '🎨 2. GHCP + Blender 4.5 MCP Offline Baking Pipeline',
+        'a-f2-d': 'Agents drive Blender 4.5 via MCP to generate a 188KB Rocket GLB kit (batched to 27 draw calls) and bake Cycles relief & micro-normal maps, running at 60fps in the browser with 0 runtime API cost.',
+        'a-f3-t': '🔬 3. GHCP Visual & Geometry Verification Harness',
+        'a-f3-d': 'Built-in Gray/Wireframe inspection modes, draw-call budgets, and automated Playwright multi-angle snapshot harnesses allow GHCP to self-diagnose and converge prototypes in minutes.',
+        'a-pill-1': '🏛️ Procedural Animation Lab Home',
+        'a-pill-2': '🏮 01 · Dunhuang Feitian (Canvas 2D + Cycles Relief)',
+        'a-pill-3': '🪐 02 · Astra Mars (NASA MOLA + GLB Export)',
+        'a-pill-4': '🚀 03 · Rocket Launch (188KB Blender MCP GLB)',
+
+        'g-eyebrow': 'TRACK 03 · GAME DEMO · HVE (HYPER-VELOCITY ENGINEERING) SPECIFICATION',
+        'g-title': 'HVE Spec-Driven Game Prototyping: Verifiable 3D Racing & 2D Mecha Engines',
+        'g-desc': 'Goes beyond single-clip animations: shows how HVE (Hyper-Velocity Engineering) specifications—RPI workflow, frozen contracts, procedural assets, and a 60Hz deterministic CI harness—rapidly deliver complete playable 3D/2D games (Wanan Midnight & Scrap Swarm) with zero external art/audio files.',
+        'g-link-wanan': '🏎️ Launch Wanan Midnight 3D ↗',
+        'g-link-scrap': '🤖 Launch Scrap Swarm 2D ↗',
+        'g-f1-t': '📐 1. HVE Contract-First Workflow (RPI: Research → Plan → Implement)',
+        'g-f1-d': 'Defines vehicle topology (44 parametric JDM cars <300KB gzip), 6-layer articulated mecha rigs, and multi-act state contracts upfront so parallel agents build without architectural drift.',
+        'g-f2-t': '🔊 2. Zero External Assets: Procedural Geometry + Web Audio Synth',
+        'g-f2-d': 'From pop-up headlights, pitch/roll suspension, exhaust backfire, and anime impact frames to 5-engine harmonic synthesis, 100% of visuals and audio are generated procedurally in code.',
+        'g-f3-t': '🤖 3. 60Hz Deterministic Harness & Automated Bot Playthrough',
+        'g-f3-d': 'Enforces HVE verifiable delivery: 60Hz fixed-timestep physics, zero dynamic mesh allocation during gameplay, and automated AI Bot playthrough regression gates.',
+        'g-pill-1': '🔬 HVE Interactive Deconstruction Stage',
+        'g-pill-2': '🏎️ 01 · Wanan Midnight 3D Highway Racing',
+        'g-pill-3': '🤖 02 · Scrap Swarm 2D Mecha Arena',
+        'g-pill-4': '📐 03 · Mecha Rig & Boss Shatter Design Sheet'
+      }
+    };
+
+    function selectTrack(track, updateHash = true) {
+      if (!ALL_TRACKS.includes(track)) track = 'voice';
+      currentTrack = track;
+      ALL_TRACKS.forEach(t => {
+        const tabEl = document.getElementById('tab-' + t);
+        const panelEl = document.getElementById('panel-' + t);
+        if (tabEl) tabEl.classList.toggle('active', t === track);
+        if (panelEl) panelEl.classList.toggle('active', t === track);
+      });
+      if (updateHash && history.replaceState) {
+        history.replaceState(null, '', '#' + track);
+      }
+      const iframe = document.getElementById('iframe-' + track);
+      if (iframe && iframe.getAttribute('src') === 'about:blank') {
+        const sep = trackUrls[track].includes('?') ? '&' : '?';
+        const target = trackUrls[track] + sep + 'lang=' + encodeURIComponent(currentLang);
+        iframe.setAttribute('src', target);
+      }
+    }
+
+    function loadTrackScene(track, url, btnEl) {
+      trackUrls[track] = url;
+      const panel = document.getElementById('panel-' + track);
+      panel.querySelectorAll('.scene-pill').forEach(b => b.classList.remove('active'));
+      if (btnEl) btnEl.classList.add('active');
+      const sep = url.includes('?') ? '&' : '?';
+      document.getElementById('iframe-' + track).src = url + sep + 'lang=' + encodeURIComponent(currentLang);
+      document.getElementById(track + '-url-indicator').textContent = url;
+    }
+
+    function openCurrentStage() {
+      const url = trackUrls[currentTrack] || './voice/index.html';
+      const sep = url.includes('?') ? '&' : '?';
+      window.open(url + sep + 'lang=' + encodeURIComponent(currentLang), '_blank');
+    }
+
+    function setLang(lang) {
+      currentLang = lang;
+      document.documentElement.lang = lang;
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+      });
+      const dict = I18N[lang] || I18N['zh-CN'];
+      Object.keys(dict).forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = dict[id];
+      });
+      ALL_TRACKS.forEach(t => {
+        const iframe = document.getElementById('iframe-' + t);
+        if (iframe && iframe.getAttribute('src') !== 'about:blank') {
+          try {
+            iframe.contentWindow.postMessage({ type: 'SET_LANG', lang }, '*');
+          } catch (e) {}
+        }
+      });
+    }
+
+    function handleInitialRouting() {
+      const params = new URLSearchParams(window.location.search);
+      const qLang = params.get('lang');
+      if (qLang && I18N[qLang]) {
+        setLang(qLang);
+      }
+      const rawHash = (window.location.hash || '').replace(/^#/, '').toLowerCase();
+      const qTrack = (params.get('track') || '').toLowerCase();
+      const target = ALL_TRACKS.includes(rawHash) ? rawHash : (ALL_TRACKS.includes(qTrack) ? qTrack : 'voice');
+      selectTrack(target, false);
+    }
+
+    window.addEventListener('hashchange', () => {
+      const rawHash = (window.location.hash || '').replace(/^#/, '').toLowerCase();
+      if (ALL_TRACKS.includes(rawHash)) selectTrack(rawHash, false);
+    });
+
+    handleInitialRouting();
+  </script>
+</body>
+</html>

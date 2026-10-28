@@ -1,8 +1,21 @@
 > 🌐 **Language / 语言版本切换**: **[🇨🇳 中文主页 (README.zh-CN.md)](README.zh-CN.md)** | **[🇬🇧 English Homepage (README.en.md)](README.en.md)** | **[📘 Azure Agent Infra Playbook (中文)](workshops/azure-agent-infra/README.zh-CN.md)** | **[📘 Azure Agent Infra Playbook (English)](workshops/azure-agent-infra/README.en.md)**
 
-# Qi Chen — Personal Site & Technical Assets / 个人网站与技术作品
+# Qi Chen — Personal Site, Frontier AI Studio & Technical Assets / 个人网站、六大工作台与技术作品
 
-从技术分享走到动手实践：这里收录双语个人网站、技术作品、职业履历、AI 趋势文章与伙伴培训入口。个人网站使用纯 HTML/CSS/JS，无构建步骤；完整 Azure VM Workshop 已迁移至公开的 [Azure Infra Lab](https://github.com/turbo998/Azure-Infra-Lab)，本仓库只保留介绍与旧入口兼容跳转。
+从技术分享走到动手实践：这里收录双语个人网站（[https://turbo998.github.io/](https://turbo998.github.io/)）、**Frontier AI Studio 六大交互工程主线**（[https://turbo998.github.io/frontier-ai-studio.html](https://turbo998.github.io/frontier-ai-studio.html)）、**7-Card 4:5 纵向视觉基准报告集**、职业履历与伙伴培训入口。个人网站使用纯 HTML/CSS/JS，无构建步骤。
+
+![Frontier AI Studio & Command Center Architecture](assets/command-center-architecture.svg)
+
+## 📌 执行摘要 (Executive Summary — 6-Track Frontier AI Studio)
+
+| 主线编号 | 核心工程主线 (Track) | 代表性交互工作台 (Live H5 Workbench) | 密封 7-Card 4:5 基准报告 / 核心指标 |
+| :--- | :--- | :--- | :--- |
+| **Track 01** | **🎙️ Enterprise Voice Agent Lab** | [语音双模对比沙盒](https://turbo998.github.io/voice/index.html) · [48页架构 Deck](https://turbo998.github.io/voice/deck.html) | [Voice Agent 7-Card 报告](https://turbo998.github.io/voice/benchmark-cards.html)（级联 vs 原生 S2S、VAD 打断） |
+| **Track 02** | **🏗️ Azure Agent Infra (100K Sandboxes)** | [全景 Playbook](https://turbo998.github.io/workshops/azure-agent-infra/index.html) · [AKSClaw×E2B 仿真台](https://turbo998.github.io/workshops/azure-agent-infra/demo.html) · [选型定容计算器](https://turbo998.github.io/workshops/azure-agent-infra/selector.html) | [Agent Infra 7-Card 报告](https://turbo998.github.io/workshops/azure-agent-infra/cards.html)（`108ms` P50 恢复 · `2,500` VM/节点 · `3.67s` DR） |
+| **Track 03** | **🛒 Agentic Commerce × Web IQ** | [Web IQ 实时接地与攻防沙盒](https://turbo998.github.io/workshops/agentic-commerce/live-demo.html) | [Agentic Commerce 7-Card 报告](https://turbo998.github.io/workshops/agentic-commerce/benchmark-cards.html)（`87.5%` 命中 · `100%` 注入拦截） |
+| **Track 04** | **📊 7-Card Benchmarks & 3-Way Arena** | [FAF vs AGENT-FORGE vs HVE-Core 三方竞技场](https://turbo998.github.io/workshops/faf-vs-agent-forge/index.html) | [SKY-001 19模型评测](https://turbo998.github.io/workshops/benchmarks/sky-001-cards.html) · [Decision-1 路由](https://turbo998.github.io/workshops/benchmarks/decision-1-cards.html) · [E2B 心跳审计](https://turbo998.github.io/workshops/benchmarks/e2b-nomad-cards.html) |
+| **Track 05** | **🎨 Coding Animation (GHCP Harness)** | [飞天 2.5D · Astra 程序化行星 · SpaceX 点火](https://turbo998.github.io/animation/index.html) | 四阶段 Research → Plan → Implement → Harness Gate 零外部依赖 |
+| **Track 06** | **🎮 HVE Rapid Game Prototyping** | [晚安·1999 深夜食堂 & 废土机甲狂潮](https://turbo998.github.io/game/index.html) | 60 FPS 空间哈希碰撞 + WebAudio 程序化合成器单文件闭环 |
 
 ## 精选 Playbook：Azure AI Agent Infrastructure Playbook（四层架构 · 六大运行时 · AKSClaw × E2B 10万并发沙箱）
 
