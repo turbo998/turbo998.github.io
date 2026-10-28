@@ -19,7 +19,7 @@ Bilingual technical command center ([https://turbo998.github.io/](https://turbo9
 
 ## Featured Playbooks & Repositories
 
-- **[AI Agent Infrastructure on Azure Playbook (English Edition)](workshops/azure-agent-infra/README.en.md)** · **[中文完整版](workshops/azure-agent-infra/README.md)** (`292` chapters, `285` production IaC blueprints, `284` deterministic simulators, `293/293` unit tests, 8 verified SVG diagrams, [English 7-Card Benchmark Report](workshops/azure-agent-infra/test-report.en.md), and [4-Page Bilingual H5 Suite](https://turbo998.github.io/workshops/azure-agent-infra/index.html)).
+- **[AI Agent Infrastructure on Azure Playbook (English Edition)](workshops/azure-agent-infra/README.en.md)** · **[中文完整版](workshops/azure-agent-infra/README.md)** (`293` chapters, `286` production IaC blueprints, `285` deterministic simulators, `294/294` unit tests, 8 verified SVG diagrams, [English 7-Card Benchmark Report](workshops/azure-agent-infra/test-report.en.md), and [4-Page Bilingual H5 Suite](https://turbo998.github.io/workshops/azure-agent-infra/index.html)).
 - **[Unified Builder Profile, Career Timeline & Certifications](https://turbo998.github.io/about.html)** · **[关于我（整合页）](https://turbo998.github.io/zh-about.html)**.
 - **[Writing, Technical Reports & Benchmark Decks](https://turbo998.github.io/writing.html)** · **[分享与著作](https://turbo998.github.io/zh-writing.html)**.
 
