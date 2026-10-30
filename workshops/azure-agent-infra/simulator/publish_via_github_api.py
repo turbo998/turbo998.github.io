@@ -306,7 +306,7 @@ def publish_to_repo(
 
 
 def build_ai_research_lab_files() -> Dict[str, bytes]:
-    lab_root = Path(r"C:\Users\qichen2\ai-research-lab")
+    lab_root = Path.home() / "ai-research-lab"
     readme_text = (lab_root / "README.md").read_text(encoding="utf-8")
     index_text = (lab_root / "docs" / "research" / "index.md").read_text(encoding="utf-8")
 
@@ -354,7 +354,7 @@ def build_ai_research_lab_files() -> Dict[str, bytes]:
 
 
 def build_kee_tech_assets_files() -> Dict[str, bytes]:
-    site_root = Path(r"C:\Users\qichen2\turbo998.github.io")
+    site_root = Path.home() / "turbo998.github.io"
     writing_en = (site_root / "writing.html").read_text(encoding="utf-8")
     writing_zh = (site_root / "zh-writing.html").read_text(encoding="utf-8")
     readme_text = (site_root / "README.md").read_text(encoding="utf-8")
@@ -505,13 +505,13 @@ def sync_local_working_trees() -> None:
             dst.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(src, dst)
 
-    infra_lab = Path(r"C:\Users\qichen2\ai-infra-lab")
+    infra_lab = Path.home() / "ai-infra-lab"
     if infra_lab.exists():
         copy_bundle_to(infra_lab / "docs" / "azure-agent-infra")
         copy_bundle_to(infra_lab / "workshops" / "azure-agent-infra")
         (infra_lab / "README.md").write_text(build_ai_infra_lab_readme(), encoding="utf-8")
 
-    az_lab = Path(r"C:\Users\qichen2\Azure-Infra-Lab")
+    az_lab = Path.home() / "Azure-Infra-Lab"
     if az_lab.exists():
         for stale_root_html in ("index.html", "demo.html", "selector.html", "cards.html", "benchmark-cards.html"):
             stale_path = az_lab / stale_root_html
@@ -521,19 +521,19 @@ def sync_local_working_trees() -> None:
         for html_file in (BUNDLE_DIR / "h5").glob("*.html"):
             shutil.copy2(html_file, az_lab / "workshops" / "azure-agent-infra" / html_file.name)
 
-    res_pub = Path(r"C:\Users\qichen2\ai-research-public")
+    res_pub = Path.home() / "ai-research-public"
     if res_pub.exists():
         copy_bundle_to(res_pub / "docs" / "research" / "azure-agent-infra")
         (res_pub / "README.md").write_text(build_ai_research_public_readme(), encoding="utf-8")
         (res_pub / "docs" / "research" / "index.md").write_text(build_ai_research_public_index(), encoding="utf-8")
 
-    res_lab = Path(r"C:\Users\qichen2\ai-research-lab")
+    res_lab = Path.home() / "ai-research-lab"
     if res_lab.exists():
         copy_bundle_to(res_lab / "docs" / "research" / "azure-agent-infra")
         for rel_p, raw_b in build_ai_research_lab_files().items():
             (res_lab / rel_p).write_bytes(raw_b)
 
-    kee = Path(r"C:\Users\qichen2\turbo998.github.io")
+    kee = Path.home() / "turbo998.github.io"
     if kee.exists():
         for rel_p, raw_b in build_kee_tech_assets_files().items():
             (kee / rel_p).write_bytes(raw_b)
@@ -636,11 +636,11 @@ def main() -> int:
     print(f"Published turbo998/Kee-Tech-Assets main @ {sha_kee_assets}")
 
     for local_repo in (
-        Path(r"C:\Users\qichen2\ai-infra-lab"),
-        Path(r"C:\Users\qichen2\Azure-Infra-Lab"),
-        Path(r"C:\Users\qichen2\ai-research-public"),
-        Path(r"C:\Users\qichen2\ai-research-lab"),
-        Path(r"C:\Users\qichen2\turbo998.github.io"),
+        Path.home() / "ai-infra-lab",
+        Path.home() / "Azure-Infra-Lab",
+        Path.home() / "ai-research-public",
+        Path.home() / "ai-research-lab",
+        Path.home() / "turbo998.github.io",
     ):
         if local_repo.exists():
             for pyc_dir in local_repo.rglob("__pycache__"):
