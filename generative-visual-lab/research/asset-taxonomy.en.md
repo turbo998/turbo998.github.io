@@ -1,0 +1,79 @@
+# Generative Visual Lab · Technical Asset Taxonomy & Architecture Index
+
+> 🌐 **Language / 语言**: [中文 (`asset-taxonomy.md`)](asset-taxonomy.md) | **English**
+
+This index catalogs and standardizes all technical assets inside `turbo998/generative-visual-lab`. All interactive demonstrations, Blender 4.5 LTS MCP procedural generation scripts, Cycles ray-traced baked assets, NASA scientific datasets, research documents, and automated verification evidence are organized across six top-level categories and kept synchronized at every nightly evolution stage.
+
+---
+
+## 1. Top-Level Asset Taxonomy Overview
+
+| Asset Category | Repository Paths | Core Responsibilities & Scope | License / Provenance |
+| --- | --- | --- | --- |
+| **1. Real-Time Interactive Demos (`Demos`)** | `demos/feitian/`<br>`demos/astra-planet/`<br>`demos/rocket-launch/` | Three core real-time WebGL2 / Three.js / Canvas 2D interactive applications with self-contained physics, custom shaders, and state machines | MIT Original Code |
+| **2. Blender MCP Modeling & Baking Pipeline (`Blender Pipeline`)** | `scripts/blender/` | Headless Blender 4.5 LTS MCP daemon, JSON-RPC client, and deterministic 3D/bake asset builders for all three demos | MIT Original Scripts |
+| **3. 3D Models, Baked Textures & Scientific Datasets (`3D & Data Assets`)** | `demos/*/assets/`<br>`demos/astra-planet/public/data/` | Blender-exported `.glb` hard-surface kits, Cycles ray-traced relief/normal textures, and NASA MOLA laser altimetry binary elevation packages | MIT Original Bakes + NASA PDS Public Domain Data |
+| **4. Deep Technical Research & Architecture Blueprints (`Research & Docs`)** | `docs/*.md`, `docs/*.en.md`<br>(compiled to `dist/research/*.html`) | Bilingual (CN/EN) Opus 5.5 animation landscape survey, Feitian reference study, Blender MCP architecture, rocket methodology, and validation logs | MIT Original Docs |
+| **5. Shared Design System & Build/Verification Tooling (`Theme & Tooling`)** | `assets/`<br>`scripts/` | Clawpilot dual-theme design system, multi-app static assembler, detail capture scripts, and live verification runners | MIT Original Tooling |
+| **6. Offline Ray-Traced Gallery & Automated Test Evidence (`Evidence & Tests`)** | `docs/evidence/`<br>`tests/`<br>`demos/astra-planet/tests/` | Blender Cycles offline renders, MCP execution JSON transcripts, frame-budget benchmarks, and 55 Vitest unit + Playwright E2E tests | Measured Verification Artifacts |
+
+---
+
+## 2. Detailed Asset Inventory by Category
+
+### 2.1 Real-Time Interactive Demos (`demos/`)
+
+#### `demos/feitian/` — Winds Among the Murals · Dunhuang Feitian Narrative
+- `demos/feitian/index.html`: Responsive grotto frame, close-up portrait inspection cards for the four Feitian figures (*Qingyu*, *Danxia*, *Liujin*, *Biluo*), and interactive controls.
+- `demos/feitian/main.ts`: Complete state machine and Canvas 2D rendering pipeline:
+  - **Grotto Base, Coffered Lotus Caisson & Tyndall Light Shafts (`buildWall`)**: Weathered sandstone grain + Blender Cycles orthogonal relief bake (`grotto-relief-bake.png`) of four arched niches, Dharma-wheel & crossed-vajra caisson ceiling, flaming pearl lintels, Sasanian linked-pearl medallions, Kalavinka & honeysuckle intrados bosses, and Sumeru lotus pedestals + volumetric Tyndall light beams and floating gold-leaf dust motes.
+  - **2× Supersampled Fine-Line Figures & Tang Gilded Ornaments (`drawBody` / `renderPortrait`)**: 2× supersampled offscreen figure cache, mineral cheek blush, Tang three-petal floral huadian forehead marks, sixteen-ray inner nimbus, crescent gilded torque, Bodhi-leaf earrings, four-cloud ruyi shoulder cape, phoenix hairpin step-shake pendants, linked-pearl armlets/anklets, turquoise/coral wristlet tassels, twin-phoenix mother-of-pearl scarf brooch, lotus-pod comb back, and gilded brocade robes.
+  - **PBD Silk Ribbons & Falling Lotus Petals (`motion.ts`)**: Verlet / PBD distance and Laplacian bending constraints with continuous quadratic Bezier outlines and `setTransform`-batched dual-layer lotus petals.
+  - **Procedural Pentatonic WebAudio**: Real-time synthesized guqin/xiao harmonics and chime resonance.
+
+#### `demos/astra-planet/` — Astra · Mars Measured Topography & Paleoclimate Lab
+- `demos/astra-planet/src/render/PlanetScene.ts`: Custom Three.js spherical terrain mesh and multi-mode shaders (`realistic`, `gray`, `wireframe`, `height`):
+  - **Scientific Elevation Geometry**: True vertex displacement driven by NASA MOLA `1440×720` base and `4096×2048` HD binary packages (`588,288` triangles in fine mode).
+  - **Blender Micro-Surface Normal Bake, Oren-Nayar Regolith & CRISM/HiRISE Spectral Stratigraphy**: Seamless 256×256 `uMicroNormalMap` perturbation, Oren-Nayar rough regolith diffuse reflectance, Hapke-Seeliger opposition surge, polar/alpine frost micro-facet glint, bounded Rayleigh/Mie atmospheric scattering, and multi-basin CRISM/HiRISE mineral spectral bands strictly gated inside `realistic` mode (`uMode == 0`).
+- `demos/astra-planet/src/terrain/`: Hypsometric ocean statistics Worker, landmark close-up bookmarks (Valles Marineris, Olympus Mons, Hellas Planitia), and self-contained metric `.glb` exporter.
+
+#### `demos/rocket-launch/` — Launch · Circular Porthole White Rocket Complex
+- `demos/rocket-launch/main.ts`: Three.js external launch complex scene:
+  - **Blender MCP Hard-Surface Kit & Per-Material Static Batching**: Loads `rocket-kit.glb` (`RocketVehicle`, `UmbilicalArm`, `LaunchPadStatic`) and merges static meshes by material bucket (`28` draw calls).
+  - **Supersonic Exhaust Plume, Smoke Pool & Transonic Optics**: Dual-cone analytical plume shader (`flameMaterial` with Planck blackbody core, Mach disk, shock diamonds, barrel shock, and shear/recirculation vortex harmonics), bounded 640-particle depth-sorted smoke pool, ground acoustic shockwave ring (`shockWave`), transonic Prandtl-Glauert condensation cone (`vaporCone`), and circular porthole anamorphic lens glow.
+
+---
+
+### 2.2 Blender 4.5 LTS MCP Modeling & Baking Scripts (`scripts/blender/`)
+
+| Script Path | Inputs / Parameters | Generated Artifacts | Description |
+| --- | --- | --- | --- |
+| `scripts/blender/mcp-headless-daemon.py` | Listens on `127.0.0.1:9876` | TCP Socket Server (Protocol v13) | Starts `blender-mcp` server inside `blender.exe --background` |
+| `scripts/blender/mcp-client.mjs` | MCP Stdio JSON-RPC 2.0 | Wraps `get_scene_info` / `execute_blender_code` | Node.js MCP client managing daemon lifecycle and JSON evidence transcripts |
+| `scripts/blender/build-rocket-assets.mjs` | Parametric vehicle/tower dimensions & 4-color materials | `demos/rocket-launch/assets/rocket-kit.glb`<br>`docs/evidence/blender-rocket-cycles-render.png` | Builds `RocketVehicle`, `UmbilicalArm`, and `LaunchPadStatic` and renders Cycles reference image |
+| `scripts/blender/build-astra-assets.mjs` | `mola-meg016-base-v1.bin` + Cycles nodes | `demos/astra-planet/public/data/mars-micro-normal.png`<br>`docs/evidence/blender-astra-cycles-render.png` | Bakes seamless 256×256 Martian micro-normal/cavity map and renders Cycles orbital view |
+| `scripts/blender/build-feitian-assets.mjs` | 16:9 grotto 4-niche coordinates & caisson parameters | `demos/feitian/assets/grotto-relief-bake.png`<br>`docs/evidence/blender-feitian-cycles-render.png` | Models Mogao four-niche grotto, Sumeru pedestals, and lotus caisson; bakes orthogonal Cycles relief |
+
+---
+
+### 2.3 3D Models, Baked Textures & Scientific Data Packages
+
+| Asset Path | Format & Dimensions | Byte Size | Purpose & Provenance |
+| --- | --- | --- | --- |
+| `demos/rocket-launch/assets/rocket-kit.glb` | glTF 2.0 Binary (`GLB`) | `4,480,664 B` | White four-color launch vehicle, separating umbilical swing arm, and launch pad/trench/tower complex (generated via Blender 4.5 MCP, updated through Stage 441) |
+| `demos/feitian/assets/grotto-relief-bake.png` | PNG RGBA (`640×360`) | `470,439 B` | Orthogonal Cycles relief bake of the four Mogao niches, Sumeru pedestals, archivolts, and coffered lotus caisson ceiling (updated through Stage 441) |
+| `demos/astra-planet/public/data/mars-micro-normal.png` | PNG RGBA (`256×256` Seamless) | `192,613 B` | Seamless Martian micro-surface tangent-space normal (RGB) and cavity occlusion (Alpha) texture baked in Blender Cycles (updated through Stage 441) |
+| `demos/astra-planet/public/data/mola-meg016-base-v1.bin` | Int16LE Binary (`1440×720`) | `2,073,600 B` | NASA MGS MOLA MEGDR measured global elevation base package |
+| `demos/astra-planet/public/data/mola-meg064-hd-v1.bin` | Int16LE Binary (`4096×2048`) | `16,777,216 B` | NASA MGS MOLA high-definition elevation package (loaded on demand) |
+
+---
+
+### 2.4 Bilingual Research Documentation (`docs/*.md` & `docs/*.en.md`)
+
+1. `docs/opus-animation-landscape.md` / [`docs/opus-animation-landscape.en.md`](opus-animation-landscape.en.md): **Claude Opus 5.5 Animation & Interactive Visual Landscape Survey** (488 curated works taxonomy, mathematical primitives, and Stages 1–432 evolution archive).
+2. `docs/blender-mcp-pipeline.md` / [`docs/blender-mcp-pipeline.en.md`](blender-mcp-pipeline.en.md): **Gemini 4 Argon + Blender 4.5 LTS MCP Hybrid Rendering Pipeline Architecture**.
+3. `docs/feitian-reference-study.md` / [`docs/feitian-reference-study.en.md`](feitian-reference-study.en.md): **Dunhuang Feitian Reference Study & Original Mural Implementation**.
+4. `docs/technique-comparison.md` / [`docs/technique-comparison.en.md`](technique-comparison.en.md): **Canvas 2D / Three.js / Blender Offline Baking Technical Comparison**.
+5. `docs/rocket-method.md` / [`docs/rocket-method.en.md`](rocket-method.en.md): **External-Porthole White Rocket Launch Complex Modeling & Plume Methodology**.
+6. `docs/asset-taxonomy.md` / [`docs/asset-taxonomy.en.md`](asset-taxonomy.en.md): **Repository Technical Asset Taxonomy & Architecture Index**.
+7. `docs/publication-and-provenance.md` / [`docs/publication-and-provenance.en.md`](publication-and-provenance.en.md) & `docs/validation.md` / [`docs/validation.en.md`](validation.en.md): **Provenance Boundaries & Stage-by-Stage Validation Logs**.

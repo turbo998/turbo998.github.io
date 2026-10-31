@@ -1,0 +1,5128 @@
+# 验证记录
+
+> 🌐 **Language / 语言**: **中文** | [English (`validation.en.md`)](validation.en.md)
+
+本文件记录当前公开仓库的验收，不以原 Astra 历史文档替代迁移后的验证。
+实际命令、结果、性能边界与线上发布证据在完成验收后更新。
+
+## 第一阶段本地验收
+
+- 根 TypeScript、4 个单元测试、生产构建及 4 个浏览器验收通过。
+- Astra TypeScript、12 个单元测试、生产构建及 10 个浏览器验收重新执行全部通过。
+- 根浏览器检查：完整飞行与精准返航、暂停一致性、群飞有限值/粒子上限、
+  reduced-motion 原位揭色、390px 窄屏、键盘、音频主动开启/静音和截图下载。
+- Astra 检查：源数据/GPU 采样、非退化几何、GLB 下载独立重载、错误注入、
+  WebGL 上下文恢复、阻断外部请求、检查模式、相机与海岸质量/倍率矩阵。
+- 飞天性能：Playwright Chromium，1440×1000，自动节能 DPR 0.65，
+  动态图层 0.4 分辨率，稳定尾部 120 帧 p95 16.8ms。完整采样在 evidence JSON。
+  初版每笔触阴影过慢；改为图层合成阴影、小区域缓存和可见质量降级后达标。
+- 共享 Linux CI 使用软件图形，不冒充本机性能；该环境记录 p95 并单独使用 50ms
+  的回归预算。本机 33.3ms 目标保持不变。首次 CI 33.4ms（约 30Hz）
+  未通过本机硬预算，故明确区分环境，而不是宣称所有硬件都满足同一帧率。
+  每次 CI 上传独立 `browser-evidence`，可查看实际数值与截图。
+- 迁移后 range 控件的 E2E 使用实际 input 事件并断言值，导出用键盘确认；
+  同一个 GLB 离线测试采用与独立导出测试一致的 120 秒预算。
+- 已核对原创人物、单幅/群飞分层、火星画面及窄屏截图。未用参考图冒充原创成果。
+- 公开文件扫描未检出私人路径、会话 ID、环境特定 registry 或常见 token 模式；
+  原 Astra 验证数据与源校验和仍保持原值。
+
+线上发布结果单独记录在 `evidence/online-stage-one.json`（只有实际部署并验收成功后生成）。
+不将初始化仓库或构建成功当作线上发布。
+
+## 第一阶段线上验收
+
+提交 `3c7a2a5` 的 Actions 运行 `37949540467` 已成功完成。
+实际 Pages 首页、研究页、飞天和 Astra 都返回 HTTP 200；浏览器操作确认飞天
+进入 flight、所有飘带有限，以及 Astra 1440×720 数据就绪、非退化真实地形。
+没有页面错误或资源 404。详细结果与线上截图已持久保存。
+
+## 第二阶段本地验收
+
+- 根 TypeScript、6 个单元测试、生产构建、7 个浏览器测试全部通过。
+- 火箭检查：待命不自动播放、前四秒台面点火、离台升空、暂停保持、
+  两镜头、完成重放、窄屏、reduced-motion、WebGL 不可用及上下文恢复。
+- 对完成阶段加入投影范围断言：火箭头部和地面均保留在圆框安全范围内，
+  不以只断言 altitude > 0 替代关键画面可见。
+- 本机 1440×1000，稳定尾部 120 帧 p95 33.4ms；节能档、243 个烟粒、
+  32 draw calls、9622 三角面。静态发射台按材质合批将调用数由 142 降至 32。
+  火箭本机回归预算 50ms、共享 CI 66.7ms，均单独记录，不承诺所有硬件帧率。
+- 已视觉核对点火、离台、升空、跟随、完成以及 390px 圆形观景截图。
+- 最终线上记录已保存到 `evidence/online-stage-two.json`。
+
+## 第二阶段线上验收
+
+提交 `a4e7d58` 的 Actions 运行 `38011199846` 已成功完成根项目与 Astra
+全部检查、构建和 Pages 部署。随后运行生产地址验收脚本：统一入口的三个
+演示卡片、研究页、飞天、Astra 和火箭页面均返回 HTTP 200。
+实际浏览器交互确认飞天飞行、Astra 数据和真实地形就绪，以及火箭点火后
+离台升空；未发现页面错误或静态资源 404。验收 JSON 与各页面线上截图
+保存在 `evidence/`。第一阶段线上成功后才实施并发布第二阶段。
+
+原创画面截图仅来自本仓库程序，不分发参考作品截图。
+发布验收证据的后续 CI 曾出现火箭 p95 116.7ms，未部署该次构建。
+为持续低帧率增加第二档可见降级（DPR 0.4，保留几何与交互），
+性能验收等待至少 240 帧再采样尾部 120 帧，避免将初始化和恢复期
+混入稳定窗口；原本机 50ms / CI 66.7ms 预算不变。
+更正后火箭三个浏览器测试通过，本机 p95 33.4ms / DPR 0.4。
+截图步骤现在在暂停态确定性推进，避免慢截图期间真实时间越过离台阶段。
+同轮飞天功能测试通过，但其最新本机性能复测为 33.4ms，略超严格
+33.3ms 预算；保留失败证据，不修改既定门槛或把它称为通过。
+不同 GPU、真实移动触摸硬件和音频听感仍需要额外硬件验收；
+自动窄屏和 reduced-motion 测试不等同于真机测试。
+
+## 夜间细化 · 第一阶段：飞天
+
+2026-10-13 细化双眼、眉鼻唇、面颊晕染、额饰、发丝/金饰、项链、
+指部与衣纹。身体使用二倍局部缓存，在主画布合成，避免随飘带节能图层
+一起降采样；减少重复飘带绘制，灯光使用预烘焙缓存而非逐帧生成径向渐变。
+根类型检查及 8 个单元测试通过，飞天 3 项浏览器测试及门户联通检查通过。
+本机群飞尾部 120 帧 p95 16.7ms，严格 33.3ms 预算保持不变。
+本轮根完整检查另有尚未发布的火箭性能失败，未将它计作通过；
+后续火箭阶段必须单独解决。截图记录于飞天 evidence 与预览图。
+
+## 夜间细化 · 第二阶段：Astra
+
+新增显式 384 格/纬近景网格，参数导入、按钮、真实位移构建、接缝法线
+与 GLB 导出一致接入；该档烘焙纹理为 2048×1024。低于全部高程的干燥
+模式使用真实位移位置的径向方向着色，保留有海面模式的稳定海岸判定。
+增加相邻实测高度凹地遮蔽、低频原创尘土色彩；禁用云时跳过云影积分。
+质量说明在操作时立即同步，不依赖慢帧率统计回调。
+独立类型检查、13 单元、生产构建及 11 浏览器验收全部通过，
+包含精细档约四倍顶点、非退化与接缝一致性、GPU 高程、GLB 独立重载、
+上下文恢复和海岸矩阵。现有基础/高清包均未修改，精细网格与高清插值
+不代表新增测量；艺术化色彩不是实测反照率。精细档手动开启，自动档不变。
+
+## 夜间细化 · 第三阶段：发射场
+
+鼻锥改为曲面旋转体，增加检修面板/铆点、外部线槽、喷管冷却环、
+塔架平台护栏/爬梯护笼、储罐接缝与设施、道路、岩石和连续山地。
+程序纹理全部原创；静态结构与火箭细节按材质合批。
+软件渲染下首次细化版本 p95 超过本机 50ms 预算，未发布该版本。
+随后降低远景几何成本、预烘焙烟雾纹理、限制低档烟雾覆盖，
+低档采用简化高光及缓存地形光照，保留火箭/塔架几何。
+自适应重分配后重新收集帧样本，至少 240 帧稳定样本再取尾部 120 帧；
+不更改本机 50ms / CI 66.7ms 阈值。最终本机升空阶段 p95 50.0ms，
+DPR 0.65、65 个烟粒、23 draw calls、25444 三角面，仍非所有硬件保证。
+根完整类型检查、8 单元、构建与 7 浏览器验收通过；独立 Astra 完整
+13 单元与 11 浏览器验收通过。截图与性能记录已更新，线上验收另行记录。
+
+## 夜间细化 · 第四阶段：展示与对比
+
+飞天近景重新执行同一原创绘制路径，非缩略图插值放大；键盘可打开，
+人物选择不启动飞行/音频，390px 不溢出。门户桌面三卡齐列、
+平板横向卡片、手机单列，按钮位置一致。根完整 8 项浏览器验收通过后，
+新增门户三尺寸测试与近景测试的定向运行也通过。
+原画面与同视角细化画面保存在 `detail-before/` 与 `detail-after/`；
+后者另含手动精细网格 + 4K 高程近景，不能冒称与基础档等成本。
+手动 4K/精细档本机软件渲染截图约 10 FPS，不是通用实时性能承诺。
+阶段提交 `1b609a7`、`91081a0`、`3efdaa7` 对应 Actions
+`38423474849`、`38423770927`、`38426178749` 均完成部署；
+随后实际验收首页、研究与三 demos HTTP 200，交互有效、无页面错误或 404。
+
+第四阶段提交 `1c04796` 已同步，但 Actions `38429123243` 在 Linux 软件图形
+截取长页面时发生 `Page.captureScreenshot: Unable to capture screenshot`，
+因此该次未部署，不把 GitHub 提交当作线上成功。改为有界视口与逐卡片
+截图，保留三尺寸布局/不溢出断言；修正提交 `1db1e6c` 已同步。
+随后本机根完整类型、8 单元、构建及全部 9 浏览器验收通过。
+该有界截图方案在 CI 的首个 1440px 页面仍失败，独立视口也未单独解决；
+当前改为先解码所有预览图并执行等待布局稳定的逐卡截图，再捕获视口。
+三尺寸拆为独立测试，根浏览器总数因此为 11；失败时保留 gallery trace
+用于定位，不吞掉截图错误。此前修正提交不计作部署成功。
+
+## 夜间细化 · 第五阶段：可操作地貌近景
+
+增加水手峡谷、奥林帕斯山和希腊盆地的显式相机定位；按地貌尺度取景，
+停止自转，并同步可调的艺术化侧光，避免整个盆地落在夜侧不可辨认。
+保留用户高程包、海平面、增强倍率与网格选择；定位状态含经纬度并
+通过 `aria-live` 提示。太阳方位取整数度，与已有滑块精度和导出一致。
+完整 Astra 类型、13 单元、构建及 12 浏览器验收通过，包含近景距离、
+太阳/自转 UI 一致性、海平面和基础数据保留、相机复位。
+地貌截图在 `demos/astra-planet/evidence/`，为基础包画面，不冒充高清。
+早期同轮根 9 浏览器验收全部通过，火箭稳定 240 帧后的尾部 120 帧
+p95 33.4ms / DPR 0.65。后续新增测试的全量运行出现性能波动，
+未以重跑或改变阈值将失败抹去。火箭减少重复 DOM 写入与临时向量，
+第二级质量调整从“短窗大量慢帧”改为与 p95 对齐的 120 帧慢尾检测，
+逐级 DPR 0.65 → 0.55 → 0.4，调整后重新收集样本，几何保持不变。
+另发现慢机等待期间可能进入完成态，故性能夹具固定 T+9s 升空位置，
+烟雾与渲染继续实际更新，并断言非暂停、升空阶段与至少 30 个烟粒；
+不再把完成态低负载当作升空性能。最新该夹具 p95 33.4ms / DPR 0.4，
+66 烟粒、23 draw calls、25444 三角面。真实完整轨迹仍由独立测试覆盖。
+本轮最新根 11 项中 10 项通过；飞天本机 p95 50.1ms 未达严格
+33.3ms，失败记录保留。飞天未因地貌功能改变，先前有 16.8ms 通过记录，
+但不能据此前成绩宣称最新全量通过。CI 与部署结果另行记录；
+本机/CI 的既定预算均不改变。
+新增生产验收模式 `node scripts/verify-live.mjs <线上根URL> detail-refinement`，
+覆盖门户两主题/三尺寸、飞天键盘近景、384 网格、4K 包与地貌定位；
+只有实际部署后执行成功才记录线上成果。
+
+提交 `a0f3a3c` 的 Actions `38435087361` 根 11 / Astra 12 浏览器验收、
+构建和 Pages 部署成功。生产验收确认两主题三尺寸、键盘人物近景、
+三个地貌定位与 588288 三角面/4096×2048 数据就绪，所有页面 HTTP 200、
+无页面错误或资源 404。`online-detail-refinement.json` 保存实际结果。
+该轮还发现 4K 切换的既有“保持干燥”逻辑会按新包最小高程重设海平面；
+这不同于地貌按钮（后者保留海平面），不能把两操作混为一谈。
+
+## 夜间细化 · 第六阶段：高清参数显示一致性
+
+高清包切换后用现有 `applyState` 同步范围控件、质量说明与统计，
+修复内部干燥海平面已经改变、滑块仍显示旧值的问题；不修改原有
+干燥逻辑或高程数据。新增浏览器验收读取真实 HD manifest，
+精确断言导出参数等于新包 `minM - 50`，同时核对滑块原有 50m
+步进的取整位置及 km 数值显示，无需后续点击地貌才能同步；
+保留原生滑块精度，不把浏览器步进量化误称为科学参数被改写。
+线上验收相应区分“地貌保留海平面”与“高清包重新映射干燥边界”。
+
+提交 `14d4a07` 的 Actions `38437008683` 已通过根 11 / Astra 13
+浏览器验收、构建并部署。随后生产验收读取实际 HD manifest、下载参数 JSON，
+核对干燥科学参数 −8197m 与原生 50m 步进滑块 −8200m、显示值 −8.20km
+一致；定位不改海平面，数据包切换则按既有规则重新映射干燥边界。
+两主题/三尺寸、人物近景、地貌定位、精细 + HD、三演示交互均通过，
+无页面错误或资源 404。最新结果覆盖保存在 `online-detail-refinement.json`。
+这不抹去前述本机飞天严格帧率失败，也不把约 10 FPS 的手动精细火星
+宣传成通用实时帧率。
+
+## 夜间细化 · 第七阶段：人物表情与细饰
+
+四尊人物分别取略有差异的视线；调整杏眼比例、收细眉眼描线与虹膜高光，
+增加双侧耳饰、沿手腕方向的金钏、莲瓣背光纹样、衣襟绣线和胸前莲纹。
+保留原有原创风格与动作，不以文物复原或真实人物建模作宣传。
+这些线条仍预绘在二倍人物缓存中，近景直接执行原始路径。
+花瓣改为四套对应配色的原创建模小图，缓存渐变与中脉；
+保留原粒子尺寸、旋转、寿命、数量上限和运动，不逐帧创建路径。
+根类型、生产构建及四项相关浏览器验收通过，含全部四尊近景截图、
+无飞行/音频副作用、原飞行/暂停/返航、窄屏与 reduced-motion。
+本轮定向群飞实测 p95 16.8ms / DPR 0.65、240 粒子，通过原 33.3ms
+预算；此前全量环境的 50.1ms 失败仍保留在历史提交与前节记录，
+不声称已经消除全部环境波动。发布和最新全量 CI 另行记录。
+
+第七阶段 `7b4f4b1` / Actions `38439559199` 已通过完整构建、根 11
+与 Astra 13 浏览器验收并部署。生产地址实际操作全部四尊人物选择、
+键盘近景与三 demo 交互，截图保存在 `online-feitian-portrait-0..3.png`，
+未发生自动飞行/声音副作用、页面错误或资源 404。
+
+## 夜间细化 · 第八阶段：发射场天空层次
+
+加入原创方向连续的天球薄云、天顶渐色、太阳方向暖光与近地雾色，
+按世界方向预烘焙为 1024×512 纹理，在三维天球而非屏幕平面上显示；
+固定/跟随镜头因此共享环境方向，地平线与现有远景雾色吻合。
+首版出现纵向条带，经截图检查改为横向多尺度云形后再验收。
+不逐帧运行天空噪声或天气模型；纹理按原资源生命周期释放并支持
+WebGL 恢复。艺术化天气不宣称实测或物理大气求解。
+新增单元验证有限色值、经度接缝和地平线颜色；根类型、9 单元、
+生产构建与三个火箭浏览器测试通过，涵盖两镜头、暂停/重放、圆框
+投影边界、窄屏/reduced-motion、上下文恢复及真实升空性能。
+本机稳态 T+9s p95 33.4ms / DPR 0.4、65 烟粒、24 draw calls、
+27652 三角面；50ms 本机预算不变，新增天空未用取消性能断言换取。
+
+第八阶段 `b093d07` / Actions `38442308077` 已通过完整构建与
+根 11 / Astra 13 浏览器验收并部署；真实 Pages 三 demo、双主题/三尺寸、
+四尊人物近景、精细/HD 和科学参数验收通过，无页面错误或资源 404。
+
+## 夜间细化 · 第九阶段：平滑鼻锥与可复现取景
+
+八点折线鼻锥改为 25 点相切弧线，保持原半径 0.72、高度 2.13 与
+安装位置，改善箭体到鼻部的曲面衔接，不改变火箭轨迹、总高或相机圆框。
+根类型/构建与三个火箭浏览器测试通过，两种镜头截图实际检查。
+真实持续升空夹具 p95 33.4ms / DPR 0.4、68 烟粒、24 draw calls、
+29828 三角面；本机 50ms 预算保持不变。
+
+更新三 demo 同视角截图，保留原始 before 档案；额外记录浏览器实际
+下载的相机/高程 JSON，不以硬编码取景说明代替实际相机参数。
+复现时发现停止自转后尚存轨道阻尼，会让定位相机轻微漂移；通过公开
+OrbitControls 操作先清空残余运动、再设置地貌相机并恢复阻尼，
+不访问私有字段或关闭用户后续拖动的平滑体验。
+地貌验收现在下载三处真实相机坐标，等待后逐轴核对至 1e-6，
+而不只检查距离。Astra 类型、构建与精细/地貌/HD 三项定向验收通过。
+捕获脚本显式关闭自转，使用跨平台路径并验证基础到精细/HD 的位置
+保持一致。旧 before 只能证明相同请求取景/基础包，未伪造历史参数；
+精细/HD 仍是不同成本的附加视图，不当作同成本性能或新增测量比较。
+此阶段提交/部署及线上结果在实际发生后追加。
+
+第九阶段 `804be85` / Actions `38446202301` 已通过完整构建、
+根 11 / Astra 13 浏览器验收并部署。真实 Pages 验收再次操作四尊人物、
+两主题/三尺寸、地貌、精细/高清与火箭，HTTP 200、无资源/页面错误。
+实际捕获的基础与精细/HD 相机三轴位置完全一致，参数保存在
+`detail-after/capture.json`；两个数据包不同的干燥边界仍据实记录。
+
+## 夜间细化 · 第十阶段：连续绢带轮廓
+
+移除飘带逐节四边形的横向墨线，改用相邻节点方向构造连续二次曲线
+外沿，渐收最后三段；保留正/反面配色并将其裁切到同一平滑轮廓，
+辅以纤细金边。不改原有约束节点、路径、长度、返航或粒子数量。
+按节点数组缓存 Float32 边缘缓冲，重置时允许旧弱引用回收，
+不在逐帧循环里新建坐标数组、贴图或渐变。
+根类型/生产构建与四项飞天定向验收通过；截图检查确认群飞与单人
+均无旧纸链横线，四尊人物近景、音频同意、截图下载、
+窄屏/reduced-motion、暂停/返回和有限模拟数据保持正常。
+群飞稳定尾部 120 帧实测 p95 16.7ms / DPR 0.65、动态层 0.4，
+240 粒子，原本机 33.3ms 预算不变；不抹去早先全量环境的失败记录。
+该阶段实际发布结果在 Pages 验收后追加。
+
+第十阶段 `62adb5e` / Actions `38448318574` 已通过完整构建、
+根 11 / Astra 13 浏览器验收与 Pages 部署。真实线上三 demo、两主题/
+三尺寸、四尊人物近景、精细/高清与参数导出均通过，无页面或资源错误。
+随后从已部署的公开 URL 重新生成完整 `detail-after` 比较组与
+`capture.json`，保留真实来源、时间和下载参数；基础与精细/HD 相机
+逐轴 1e-6 一致，不把不同数据/网格档位冒充同成本效果比较。
+
+## 夜间细化 · 第十一阶段：预绘壁面边饰
+
+壁龛增加细线内框与分色莲瓣，上缘增加细线/金点，下缘增加连续卷草
+和莲纹。原创贝塞尔花瓣按两侧外瓣、内瓣、中心瓣对称叠绘；
+不临摹特定壁画或宣称文物复原。装饰仅在墙面建立/尺寸布局改变时
+烘焙，动画仍绘制单张缓存，无逐帧花瓣路径或新增动态粒子。
+根类型、构建与四项飞天定向验收通过，桌面群飞和窄屏截图实际检查，
+无挡住五官、越界或改变人物近景/音频/控制行为。
+群飞稳定尾部 120 帧 p95 16.8ms / DPR 0.65、动态层 0.4，
+240 粒子；原 33.3ms 本机预算与既有失败记录保持不变。
+实际发布验收在对应 Pages 成功后追加。
+
+第十一阶段 `2562f92` / Actions `38451521971` 完整构建、根 11 /
+Astra 13 浏览器验收与 Pages 成功。实际生产地址三演示交互、
+四尊近景、两主题/三尺寸与精细/HD 参数检查通过，无页面/资源错误。
+
+## 夜间细化 · 第十二阶段：节能档地形轮廓
+
+节能地形由 56×44 提升到 84×66，全档仍为 112×88；
+改进自适应降档后的山脊与地表采样，保留同一连续程序高度、
+发射场平坦区域、材质合批、缓存照明与原镜头/轨迹。
+该地形是原创艺术景观，不是现场测绘或 NASA 火星数据。
+新增单元逐点核验两档实际高度、单位法线和低档 11088 三角面，
+保证细化不是更换地貌函数或直接退出节能档。
+根类型、四项地形单元、生产构建与三项火箭浏览器验收通过；
+固定/跟随视角截图检查确认降档轮廓细化，发射台与圆框保持。
+真实持续升空 p95 33.4ms / DPR 0.4、66 烟粒、24 draw calls、
+35988 三角面；本机 50ms 预算未改，未以完成态测量代替升空。
+全站单元总数增为 10，发布结果在实际 Pages 验收后追加。
+
+第十二阶段 `20dbc7e` / Actions `38453290925` 完整构建、根 11 /
+Astra 13 浏览器验收和 Pages 部署成功；实际生产三演示、两主题/
+三尺寸、人物近景、精细/高清与参数验收通过，无资源/页面错误。
+
+## 夜间细化 · 第十三阶段：手机竖屏更清晰的壁面
+
+原 1600 宽双排壁面在 390px 手机上留下大段上下黑边、人物过小。
+竖屏窄窗口改为 1000×1350 布局和相同比例容器，缩减空白、增大人物；
+飞行控制点按宽高归一化，执灯当前位置与自动扫光同步到新坐标，
+画布点击仍定位正确人物。桌面/横屏保留 1600×900 和原路径参数。
+五项运动单元逐一核对四个归位点与 600 段路径的实际边界；
+根类型、构建、六项视图/交互与三个图库布局浏览器验收通过。
+新增手机正常动态测试实际点击画布、完成群飞与归位，并等待真实
+resize 事件核对横屏取景；首次即时读取发生旧快照竞态，改为等待
+正确状态，而非延长固定睡眠、修改渲染行为或降低断言。
+竖屏原生比例实测 1.35，无横向溢出，缩减黑边与群飞截图实际检查。
+桌面稳定尾部 p95 16.7ms / DPR 0.65、动态层 0.4、240 粒子；
+手机仅验证布局/交互，不把桌面成绩冒充手机实机帧率。
+全站单元总数 11、浏览器 12；线上验收增加实际手机壁面/轨迹检查，
+仅在该阶段真正部署后执行，发布结果随后记录。
+
+第十三阶段 `dbd1c5f` / Actions `38455706650` 完整构建、根 12 /
+Astra 13 浏览器验收与 Pages 成功。实际生产新增的 390×900 窄窗口
+壁面尺寸为 1000×1350、容器比例 1.35，群飞/有限坐标/边界与横屏
+恢复检查通过；三演示与精细/高清参数均通过，无资源/页面错误。
+截图保存在 `online-feitian-narrow-flight.png`，不是手机实机性能证明。
+
+## 夜间细化 · 第十四阶段：稳定全景复位
+
+实际鼠标拖动后，旧复位仍承接轨道阻尼，下载的相机 X 坐标由基线
+-0.006001 跳至 -0.722488，定向验收真实失败；不能以按钮文字
+“已复位”代替相机验收。复用地貌定位的公开 OrbitControls 清理操作，
+在设置全景前清空残余运动，并恢复用户拖动的平滑阻尼。
+按钮与 R 键共享复位提示，保留当前光照、自转选择和科学参数。
+新增真实旋转/平移操作及两次实际参数下载，逐轴核对全景坐标至
+1e-6；同时检查键盘提示与侧光不变。Astra 类型、完整生产构建及
+地貌/HD/复位三项定向验收通过；左右键实际操作必须先造成可测的
+视角变化，再验证复位，避免无效拖动产生假通过。
+完整发布结果在实际验收后追加。
+
+第十四阶段 `e649878` / Actions `38458088471` 完整构建、根 12 /
+Astra 14 浏览器验收与 Pages 成功。真实生产旋转/平移后复位、
+两次参数下载逐轴 1e-6、键盘提示和侧光均通过；其余三演示、
+手机壁面、两主题/三尺寸与精细/高清检查通过，无资源/页面错误。
+
+## 夜间细化 · 第十五阶段：柔化分层尾焰
+
+橙金外焰增加视角法线软边、轴向亮结与渐淡尾端，炽白内核复用同一
+着色程序和时钟；绕轴相位采用三个完整周期，减少纹理方向接缝。
+保留原有两层圆锥的尺寸/位置、推力、轨迹和光源，不增加动态网格、
+粒子或 draw calls，不宣称真实超声速流体求解。
+“减少动态”将共享扰动时间固定为零，原手动发射与烟雾保持；
+新增实际偏好切换/时间断言，暂停、重放、两镜头和上下文恢复仍通过。
+根类型、完整生产构建与三项火箭浏览器验收通过；固定、跟随和窄屏
+截图实际检查。真实持续升空 p95 33.4ms / DPR 0.4、69 烟粒、
+24 draw calls、35988 三角面，本机 50ms 预算不变。
+`rocket-exhaust-before.png` 保留第十二阶段原截图，与新
+`rocket-follow.png` 均来自同一暂停 T+10 跟随镜头夹具；原截图未保存
+自适应质量元数据，不虚构相同 DPR 或独立火焰性能基准。
+实际发布/线上结果在发生后追加。
+
+第十五阶段首次提交 `dc2dcb8` / Actions `38460032980` 未部署：
+11 个根浏览器测试通过，升空性能断言读到
+66.70000000000437ms，与 66.7ms 阈值的浮点减法残差造成失败。
+原始 p95 仍保留；共享断言改为整数纳秒比较，不提高 33.3/50/66.7ms
+任何预算，也不以降低采样或停掉模拟换取通过。新增两个单元核对：
+该残差归入原阈值，超过阈值 1ns 必须失败，NaN/Infinity/负值显式
+拒绝，历史 50.1ms 仍失败。仅纠正算术残差，不声称 CI 真正超时已修复。
+后续完整 CI、部署和实测结果另行追加。
+
+第十五阶段修复 `975903f` / Actions `38461375536` 已通过完整构建、
+根 13 单元/12 浏览器、Astra 13 单元/14 浏览器并部署。真实 HTTPS
+升空尾焰活动状态、共享时间与动态偏好切换通过，减少动态时扰动时间
+确为零，恢复后与发射时钟一致；三演示与其余科学/布局交互通过，
+无资源/页面错误。首次 CI 失败仍保留，不把成功重试称为没有失败。
+
+## 夜间细化 · 第十六阶段：发丝与细金饰
+
+发际/盘髻增加裁切到原轮廓的细弧线，发簪/耳饰改为窄幅金属渐色、
+细线内环与各自配色的小坠饰，减少纯色金片感。
+轮廓、五官位置与姿态不变；新路径/渐变只在建立人物缓存或用户
+选择原生近景时执行，动态层仍使用原二倍人物缓存，不逐帧建渐变。
+根类型、完整生产构建与六项飞天浏览器验收通过，四尊原生近景、
+桌面群飞和手机截图实际检查。音频同意、暂停/返航、完整窄屏路径、
+截图下载与 reduced-motion 未改；最新定向 p95 16.7ms /
+DPR 0.65、动态层 0.4、240 粒子，本机 33.3ms 预算不变。
+`feitian-portrait-before-gilding.png` 保留既有公开近景（原文件最后
+提交为 `b093d07`），新 `feitian-portrait-0..3.png` 使用同一近景路径
+和取景，不临摹参考网站或宣称文物修复。发布/线上结果随后追加。
+
+第十六阶段 `bd4b0b6` / Actions `38463240440` 完整构建与根 13
+单元/12 浏览器、Astra 13 单元/14 浏览器验收、Pages 均成功。
+首次线上在即刻读取第二尊标题时读到旧标题而失败；独立原生选择
+诊断确认应用脚本已载入、四尊实际选择正常且无资源/页面错误，
+确切瞬时失败原因尚未确认，不直接宣称应用故障已修复。
+生产检查改为与现有 E2E 一致的应用就绪、近景可见和精确标题等待，
+不重发选择或放宽标题条件；完整真实 HTTPS 验收随后通过。
+四尊新原生近景、手机壁面、旋转/平移复位、尾焰动态偏好和科学
+参数检查通过；从公开地址重新捕获完整 `detail-after` 组，
+`capture.json` 记录实际时间和下载参数，基础/精细-HD 相机三轴
+完全一致，旧 baseline 不变。未把精细/HD 冒充同成本或新增测量。
+
+## 夜间细化 · 第十七阶段：衣料内的细绣纹
+
+公开完整壁面截图中，部分旧裙褶与绣线浮在裙摆外，形成交叉线团。
+现在分色、褶线和小花共用原衣料轮廓裁切，八组小花沿真实裙摆区域
+重新排布；保留完整衣料外形、颜色、姿态、飘带与约束运动。
+裁切仅建立缓存/近景时执行，不增加逐帧曲线、粒子或图层。
+保全已验收第十六阶段的 `feitian-embroidery-before.png`；
+新群飞与单人图实际检查，绣纹位于衣料内、尾部花纹仍可辨认。
+根类型、完整生产构建、六项飞天浏览器验收通过；
+最新群飞 p95 16.7ms / DPR 0.65、动态层 0.4、240 粒子，
+本机 33.3ms 预算、真实失败记录、原生近景与手机路径不变。
+同一提交保存第十六阶段的真实线上证据与就绪状态检查改进；
+该阶段自身的 Pages/线上结果在实际发生后追加。
+
+第十七阶段 `c3533f9` / Actions `38466255942` 已成功完成 CI 与 Pages。
+完整真实 HTTPS 验收与公开地址比较组捕获通过，无资源/页面错误；
+最新 `detail-after` 保存实际时间与下载参数，基础/精细-HD 相机
+一致，原 `detail-before` 不变。衣料外的交叉线已收进裙形，
+人物、飘带、手机布局与其余两演示的在线交互仍通过。
+
+## 夜间细化 · 第十八阶段：手机全景不裁球缘
+
+真实公开 390×900 画面显示左右球缘被裁。等待实际渲染超过 20 帧后，
+诊断得到水平填充 1.303130792424467、镜头距离 5.5；
+原自动取景计算了较远距离，但 OrbitControls 的固定最大距离在
+后续更新时将其夹回 5.5。强化原窄屏测试后，在未修复代码上
+稳定复现同一 1.3031307924244668 > 0.9 失败，而非仅判断画布可见。
+
+自动取景按原公式提高必要的轨道最大距离；常规宽屏原最大距离 5.5 不变。
+极长视口的远裁面同时留出完整球体空间，主动近景的窗口变化仍由
+原 cameraTouched 门控保留，不改地貌定位、数据或科学参数。
+新增取景断言在实际继续渲染六帧后采样，覆盖 390×900、
+360×1000、390×2400、宽屏再回竖屏，以及地貌近景、横向尺寸变化
+和 R 键复位；不以加载瞬间的暂态镜头或画布高度冒充完整球缘。
+定向回归和完整 Astra 类型、13 单元、生产构建、14 浏览器检查
+均通过，同尺寸修复后截图已实际检查，左右球缘完整且不遮住读数。
+原 NASA 数据、海岸归属、GLB 独立重载、HD 状态与真实鼠标复位
+均保持；`astra-mobile-framing-comparison.json` 明确公开前图/
+本地后图与未锁定自转的比较边界。实际发布与线上结果随后追加。
+
+第十八阶段 `d0ab42a` / Actions `38469859897` 完整构建、根 13
+单元/12 浏览器、Astra 13 单元/14 浏览器及 Pages 成功。
+真实 HTTPS 验收显示 390×900 的水平填充为 0.8842493881531238、
+距离为 8.078269176161763，球缘完整；360×1000 与 390×2400
+也保持水平填充 <0.9，长视口远裁面实际为 23.33951086402904，
+不把完整球体截掉。手机近景在尺寸变化后保持 1.55 距离，
+R 键恢复全景、科学参数与停转状态保留，宽屏回手机也通过。
+公开手机后图已实际检查，四尊近景、飞天完整窄屏巡游、三地貌、
+基础/HD 干燥参数、真实旋转/平移复位与尾焰动态偏好验收均通过，
+五条线上路径 200、无资源/页面错误。
+完整 `detail-after` 比较组再次从第十八阶段公开地址捕获，
+记录实际捕获时间和基础/精细-HD 参数，实际相机三轴一致；
+原 baseline、科学数据与高成本精细档的披露保持不变。
+
+## 夜间细化 · 第十九阶段：柔和面部晕染与发际细饰
+
+公开原生近景中，两侧腮红继承通用 ellipse 的描边，呈明显椭圆环；
+几根金色细饰线也越过发际，覆盖额头。保全第十八阶段实际公开
+青羽近景 `feitian-portrait-before-soft-wash.png` 后，脸颊改为
+无描边、边缘透明的椭圆径向晕染，唇线细化并补入小幅下唇亮线。
+原发际用同一 Path2D 填充/裁切，发丝与金饰线均约束到原轮廓，
+不复制路径，也不改变头形、眉眼、四种目光或珠饰位置。
+路径/渐变仅在生成二倍人物缓存或用户原生近景时建立，
+巡游仍直接合成缓存，无新增逐帧绘制、粒子或动态层。
+根类型、13 单元、完整生产构建、六项飞天浏览器检查通过；
+四尊新近景实际检查，原近景选择不触发音频/飞行，窄屏完整路径、
+暂停/返航、音频同意与下载通过。真实 120 帧尾窗 p95 为
+16.799999999999272ms（约 16.8ms），DPR 0.65、动态层 0.4、
+240 粒子与 33.3ms 本机预算不变；不把与此前 16.7ms 的微小
+环境波动称为性能提升。阶段自身的部署/线上结果随后追加。
+
+第十九阶段 `35e79c1` / Actions `38474420275` 完整 CI 与 Pages 成功，
+根 13 单元/12 浏览器、Astra 13 单元/14 浏览器仍全部通过。
+实际公开应用脚本为 `feitian-CovMAG2G.js`，确认已包含新晕染，
+不是旧页面缓存；四尊公开近景实际检查，腮红环与跨额头细线已消除，
+五官、珠饰与四种目光保留。完整真实 HTTPS 五路径 200、
+四尊近景/手机完整巡游/响应全景/真实鼠标复位/精细-HD 科学参数/
+尾焰偏好验收通过，无页面/资源错误。
+公开比较组捕获时间为 `2026-10-13T22:10:59.780Z`，
+基础与精细-HD 实际相机三轴差值 `[0,0,0]`；
+原基线不变，新前后脸部证据明确公开/本地来源，不冒充历史复原。
+本段与真实公开截图随后仅作验收证据提交，应用行为不再改变。
+
+## 第二十至二十三阶段：Gemini 4 Argon + Blender 4.5 LTS MCP 渲染管线接入
+
+根据接入 Blender MCP 渲染器与切换 Gemini 4 Argon (`gemini-4-argon`) 的要求，
+搭建本地 `Blender 4.5.10 LTS (Windows ARM64)` + `blender-mcp 2.0.0` 工具链，
+通过 `scripts/blender/mcp-headless-daemon.py` 与 `scripts/blender/mcp-client.mjs`
+以标准 MCP JSON-RPC 2.0 协议驱动 Blender `bpy`/`bmesh` 建模与 Cycles 光线追踪烘焙：
+
+1. **第二十阶段（`746576a` · Launch 白色火箭 Blender MCP 套件）**：
+   `scripts/blender/build-rocket-assets.mjs` 通过 `blender-mcp` 生成三层级模型
+   `demos/rocket-launch/assets/rocket-kit.glb`（188,268 字节，含相切弧鼻锥、
+   微软四色环带与翼尖条带、4 片钛合金栅格翼、5 台带冷却肋的拉瓦尔喷管、
+   可分离脐带机械臂、导流锥、固箭爪、锤头起重机与水塔球罐），
+   以及 Cycles 光追渲染图 `docs/evidence/blender-rocket-cycles-render.png`（830 KB）
+   和 MCP 证据 `docs/evidence/blender-mcp-rocket.json`。前端 `GLTFLoader` 加载后按材质
+   合批静态构件，并在 `clock.paused` 时跳过冗余重绘以避免无头软件光栅化器争用。
+   三项火箭 E2E 测试全部通过（T+9s p95 33.4ms ≤ 50ms，27 draw calls，32,876 三角面，`blenderKitLoaded: true`）。
+
+2. **第二十一阶段（`2969aa8` · Astra 火星 Blender Cycles 微地貌法线烘焙与轨道渲染）**：
+   `scripts/blender/build-astra-assets.mjs` 通过 `blender-mcp` 使用 Cycles 烘焙
+   256×256 无缝火星玄武岩断崖、风成沙垄与微陨石坑法线/凹腔贴图
+   `demos/astra-planet/public/data/mars-micro-normal.png`（165,301 字节），
+   并在 Blender 中直接读取 NASA MOLA `mola-meg016-base-v1.bin` 实测高程构建三维火星网格，
+   输出 Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png`（1.09 MB）与
+   `docs/evidence/blender-mcp-astra.json`。`PlanetScene.ts` 在 `realistic` 模式下接入
+   `uMicroNormalMap` 微法线与凹腔调制（`gray` 与 `wireframe` 模式保持纯实测几何），
+   并在静止状态下按 `dirty` 门控渲染。Astra 类型检查、13 项单元测试、生产构建与
+   14 项 Playwright E2E 测试全部通过（`microDetailLoaded: true`，离线总负载 < 6 MiB）。
+
+3. **第二十二阶段（`dc45eec` · 飞天敦煌石窟四龛与藻井 Blender Cycles 浮雕烘焙）**：
+   `scripts/blender/build-feitian-assets.mjs` 通过 `blender-mcp` 建立 16:9 莫高窟四座佛龛、
+   莲瓣龛楣、立体飘带浮雕与藻井垂幔模型，由 Cycles 正交烘焙 `demos/feitian/assets/grotto-relief-bake.png`
+   （430,243 字节，640×360）及透视渲染图 `docs/evidence/blender-feitian-cycles-render.png`（1.50 MB）
+   与 `docs/evidence/blender-mcp-feitian.json`。`demos/feitian/main.ts` 在静态 `buildWall()`
+   与 `renderPortrait()` 中叠加三维石窟浮雕光影，动画循环零额外开销。6 项飞天与门户 E2E 测试全部通过
+   （`blenderReliefLoaded: true`，群飞稳态 p95 16.7ms ≤ 33.3ms）。
+
+4. **第二十三至二十四阶段（`b82cba0` · Actions `38557596637` · 完整线上验收与管线文档）**：
+   更新主页图库 `index.html`、`README.md` 并新增专项工程文档 `docs/blender-mcp-pipeline.md`
+   （编译至 `/research/blender-mcp-pipeline.html`）与二进制/PNG/GLB 资产完整性单元测试
+   `tests/blender-assets.test.ts`（根单元测试增至 5 个文件 16 项，Astra 13 项单元 + 14 项 E2E，
+   根 12 项 E2E，全站共 55 项自动测试）。同时为 Astra `switchTerrainData()` 增加同目标并发请求复用，
+   避免后台自动高清预取与用户手动点击高清按钮产生重复下载。
+   针对已部署的 GitHub Pages（`https://turbo998.github.io/generative-visual-lab/`）执行
+   `node scripts/verify-live.mjs https://turbo998.github.io/generative-visual-lab/ detail-refinement`
+   与 `node scripts/capture-detail.mjs docs/evidence/detail-after https://turbo998.github.io/generative-visual-lab/`：
+   五条线上路径全部 HTTP 200，`errors: []`，`blenderReliefLoaded === true`、`microDetailLoaded() === true`、
+   `blenderKitLoaded === true`、四尊人物近景、手机竖屏完整巡游、响应式球缘取景、鼠标旋转/平移全景复位与
+   588,288 三角面 `4096×2048` 精细高清地形全部通过线上实测（`fea0fb9` / `f0a38f4`，Actions `38561497218` ✓）。
+
+5. **第二十五阶段（Cycles 离线光追图集内嵌与飞天 Canvas 2D 合批优化）**：
+   升级 `scripts/assemble.mjs` 的 Markdown 编译器以支持内嵌图片（`<figure><img loading="lazy"><figcaption>`）
+   与相对路径链接，在 `/research/blender-mcp-pipeline.html` 中直接展示三张 Blender 4.5 LTS Cycles
+   离线光线追踪渲染图（`blender-rocket-cycles-render.png`、`blender-astra-cycles-render.png`、
+   `blender-feitian-cycles-render.png`）及对应 MCP 采样归档链接。同时优化 `demos/feitian/main.ts`：
+   将每条飘带反面高光段的多次 `beginPath()/fill()` 合并为单次裁切填充（减少约 95% 的曲线裁切蒙版光栅化次数），
+   并将 240 片花瓣的逐粒 `save()/translate()/rotate()/restore()` 替换为直接 `setTransform()` 矩阵写入，
+   自适应降级阈值调整为 `t > 28ms` 以覆盖 30Hz VSync 降频场景。全量 `npm run check`（16 项单元 + 12 项 E2E）
+   全部通过，包含对 `/research/blender-mcp-pipeline.html` 内嵌三张 Cycles 渲染图 `naturalWidth > 600` 的自动断言。
+   提交 `72f0e86` 经 GitHub Actions `38564083180` 部署至 GitHub Pages 后，`verify-live.mjs` 对全部六条线上路由
+   （含 `/research/blender-mcp-pipeline.html` 三张内嵌 Cycles 渲染图）实测通过（`errors: []`）。
+
+## 第二十六阶段：仓库私有化、Opus 5.5 热门动画谱系与技术资产分类归档
+
+1. **GitHub 仓库私有化与 CI 适配**：
+   通过 `gh repo edit turbo998/generative-visual-lab --visibility private --accept-visibility-change-consequences`
+   将 `turbo998/generative-visual-lab` 切换为 `PRIVATE`（`gh repo view` 验证 `isPrivate: true`）。
+   针对 GitHub Free 个人账户私有仓库不支持公开 Pages 部署的平台规则，更新 `.github/workflows/pages.yml`：
+   在每次 `main` 推送时完整执行 55 项单元与 Playwright 浏览器测试，自动归档 `browser-evidence` 与 `site-dist`
+   构建产物，并对 `configure-pages` / `upload-pages-artifact` / `deploy` 作业添加 `${{ !github.event.repository.private }}` 条件门控。
+
+2. **Claude Opus 5.5 热门动画技术谱系与六大技术资产库归档**：
+   结合 Web 调研（`xianyu110/awesome-claude-opus-5.5` 317 个热门案例与 `magiccreator-ai/awesome-claude-opus-5-5-demos` 24 个高分工程），
+   整理并归档 `docs/opus-animation-landscape.md`（编译至 `/research/opus-animation-landscape.html`）与
+   `docs/asset-taxonomy.md`（编译至 `/research/asset-taxonomy.html`），建立六大技术资产分类索引。
+
+3. **汲取 Opus 5.5 高赞动画技法对现有三个 Demo 的精细化增强**：
+   - **飞天 (`demos/feitian/main.ts`)**：在静态 `buildWall()` 中烘焙四道窟顶藻井斜射丁达尔天光（`Tyndall volumetric light shafts`）与 192 粒悬浮金箔微尘，并在 `cacheBodies()` 离屏花瓣精灵中增加双层内瓣与三根金丝花蕊（零额外运行时逐帧开销，桌面群飞稳态 p95 保持 `16.7ms ≤ 33.3ms`）。
+   - **Astra 火星 (`demos/astra-planet/src/render/PlanetScene.ts`)**：仅在 `realistic` 模式下增加海拔 > +6,000m / 极地高纬度的微晶霜辉高光调制与晨昏线瑞利-沙尘散射光学边缘（`gray` 与 `wireframe` 科学检验模式保持纯实测几何不变）。
+   - **Launch 白色火箭 (`demos/rocket-launch/main.ts`)**：增加点火/离台阶段（`T+0.15s ~ 5.6s`）沿导流槽向外扩散的环形声学激波凝结云环（`shockWave`），并将节能档降级材质优化为 `MeshLambertMaterial` 与关闭次级补光，确保在 WebGL 上下文恢复后稳态升空满足 `p95 ≤ 50ms`（27 draw calls，32,876 三角面）。
+   - 全站 55 项自动测试（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E）全部通过。
+
+## 第二十七阶段验收：夜間持续进化 · Oren-Nayar 风化层、拉瓦尔激波马赫环与须弥莲座团花造像
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新 Web Search 调研（`iart-ai/webgl-animation-skills`、`opencolin/threejs-dashboard`、`THRASTRO/thrastro-shaders`），在 `docs/opus-animation-landscape.md` 新增第 `2.5` 节，提炼出 Oren-Nayar 粗糙风化层漫反射与霜晶半角微平面闪烁（Frost Crystal Glint）、拉瓦尔喷管驻波马赫环（Mach Shock Diamonds）与跨音速 Prandtl-Glauert 凝结云锥、以及莫高窟仰莲须弥座与唐代团花璎珞分频缓存三大可复用数学/着色器范式，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中为四座佛龛底座新增雕刻仰莲须弥座（`NichePedestal_0..3` 及 28 枚仰莲瓣），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`436,272 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,514,026 B`）；在 `buildWall()` 中增加窟顶天窗中心暖金光晕与龛楣联珠纹，在 `drawBody()` 离屏缓存中细化发簪步摇垂珠、三滴璎珞坠饰与四瓣团花刺绣长裙；优化节能档（`qualityLow`）直绘合批路径与满升空态旧壁残影跳过逻辑，实测 1440×1000 群飞尾部 120 帧 `p95 = 16.7ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入高纬多边形热收缩裂隙微地貌节点，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`165,405 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,093,966 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下引入 Oren-Nayar 粗糙风化层漫反射、半角向量霜晶镜面微闪烁与瑞利-沙尘晨昏线散射，科学检验模式（`gray` / `wireframe`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增上面级四向 RCS 姿控推进器舱（配微软四色遥测整流罩）与发射台导流槽八向水幕降噪喷淋管，导出 `rocket-kit.glb`（`214,928 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`831,027 B`）；在 `flameMaterial` 中引入拉瓦尔马赫环驻波项 `diamond` 并在跨音速段（`T+4.6s ~ 8.4s`）挂载 Prandtl-Glauert 水汽凝结锥 `vaporCone`；实测稳态升空（`T+9s`）尾部 120 帧 `p95 = 33.4ms`（`≤ 50ms`，27 draw calls，33,260 三角面，50 活跃烟粒）。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二十八阶段验收：夜间持续进化 · 摩尼火焰宝珠龛顶、极地霜冰次表面散射与栅格翼蜂窝内肋
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新 Web Search 调研（`YiyingYang12/awesome-opus5.5-frontend-showcases`、`coolbat/awesome-opus-5.5-usecase`、`wwwtyro/glsl-atmosphere`、`ebruneton/precomputed_atmospheric_scattering`），在 `docs/opus-animation-landscape.md` 新增第 `2.6` 节，提炼出火星极地霜冰次表面散射（Thin-Slab Polar Ice SSS）与雅丹风蚀微脊（Wind-Carved Yardangs）、莫高窟斗四莲花藻井与摩尼火焰宝珠龛顶（Cintamani Flame-Pearl Arch Finial）及 PBD 丝带拉普拉斯弯曲平滑、以及栅格翼蜂窝内肋与拉瓦尔喷管驻波马赫盘（Mach Disk）三大可复用技法，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts` + `demos/feitian/motion.ts`)**：在 Blender 4.5 MCP 中为四座佛龛拱顶新增摩尼火焰宝珠顶饰（`NicheFlameFinial_0..3`、`NichePearlCore_0..3`）与窟顶斗四莲花藻井框（`CentralCaissonFrame`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`438,961 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,518,099 B`）；在 `buildWall()` 中增加斗四莲花藻井对角叠涩金线与八瓣金莲及四龛摩尼火焰宝珠，在 `drawBody()` 中细化眉心三瓣金钿、眼尾朱砂晕染与腰带双垂白玉/金滴佩饰，并在 `stepRibbon()` 中引入拉普拉斯三点弯曲平滑约束；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.8ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入雅丹风蚀微脊（`yardangs`）程序节点，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`165,982 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,620 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下引入极地/高山霜冰次表面散射（`frostSss`）与 Mie 沙尘前向散射边缘辉光（`mieForward`），并优化按需重绘与几何缓存机制，科学检验模式（`gray` / `wireframe`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增栅格翼交叉内肋（`Rocket_GridFin_LatchA/B`）、上面级液氧排气百叶（`Rocket_CryoVent`）与发射台四角泛光灯塔（`Pad_Floodlight_Mast/Head`），导出 `rocket-kit.glb`（`242,268 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`836,581 B`）；在 `flameMaterial` 中引入喷口驻波马赫盘项 `machDisk`，并优化升空阶段自适应降级策略；实测稳态升空（`T+9s`）尾部 120 帧 `p95 = 33.4ms`（`≤ 50ms`，27 draw calls，33,564 三角面，53 活跃烟粒）。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二十九阶段验收：夜间持续进化 · 行星冲日后向散射、莫高窟华盖璎珞臂钏与发射场防雷塔液氢球罐
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新 Web Search 调研（`barrulus/proceduralterrains`、`CK42BB/procedural-landscapes-threejs`、`ULing19/cinematic-rocket-launch` 及莫高窟第 158/320 窟盛唐飞天图像学），在 `docs/opus-animation-landscape.md` 新增第 `2.7` 节，提炼出火星多孔风化层冲日效应（Hapke-Seeliger Opposition Surge）与六方玄武岩柱状节理、莫高窟盛唐华盖垂铃（Jeweled Valance Bells）与联珠臂钏、以及发射场四塔防雷避雷针阵与尾焰桶形激波外鞘（Annular Barrel Shock Sheath）三大可复用技法，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中为四座佛龛两侧新增八枚华盖璎珞垂铃浮雕（`NicheCanopyBell_0..3_L/R`）与底层墙裙五座仰莲柱头（`DadoLotusPillar_0..4`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`432,720 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,488,612 B`）；在 `buildWall()` 中同步绘制龛间璎珞垂铃与背光双圈同心金环，在 `drawBody()` 离屏缓存中细化项光内圈十六道放射金芒、上臂盛唐联珠金臂钏与掌心散花宝盘双飘彩绶；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.7ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入三轴周期六方玄武岩柱状节理（`columns`）与陨石坑放射溅射脊（`ejecta`），重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`166,334 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,484 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下引入风化层冲日后向散射增强（`oppositionSurge`）与陡坡暗色玄武岩裸露条带（`basaltStreak`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台外围四座独立防雷避雷针塔柱（`Pad_LightningMast_0..3`）、液氢球形低温储罐（`Cryo_LH2_Sphere`）与级间高压氦气复合材料气瓶（`Rocket_HeliumCOPV_0..3`），导出 `rocket-kit.glb`（`268,612 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`845,862 B`）；在 `flameMaterial` 中引入欠膨胀超音速尾焰桶形激波外鞘项 `barrelShock`；实测稳态升空（`T+9s`）尾部 120 帧 `p95 = 33.4ms`（`≤ 50ms`，28 draw calls，34,268 三角面，53 活跃烟粒）。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第三十阶段验收：夜间持续进化 · 水手峡谷沉积层理条带、莫高窟如意云头鎏金足钏与尾部勤务塔（TSM）黑体色温核
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新 Web Search 调研（域扭曲峡谷沉积岩层理着色器 `salivity.github.io/glsl`、莫高窟第 220/112 窟唐代飞天服饰图像学、以及现代发射台尾部加注勤务塔 TSM 与普朗克黑体辐射色温近似），在 `docs/opus-animation-landscape.md` 新增第 `2.8` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中为四座佛龛拱脚两侧新增八座如意卷云角花浮雕（`NicheCornerCloud_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`434,257 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,493,421 B`）；在 `buildWall()` 中为四龛须弥座两侧增绘唐代如意朵云纹，在 `drawBody()` 离屏缓存中增绘双足脚踝鎏金联珠足钏与长裙下摆泥金织锦锦缘；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.8ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入新月形沙丘（Barchan Dune Horns）交叉谐波，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`166,353 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,577 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对峡谷断崖引入受高程与区域沙尘扰动调制的赤铁矿/硫酸盐沉积层理条带（`strataWave * strataMask`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台底座两侧液氧/甲烷双尾部加注勤务塔（`Pad_TSM_Housing_0..1`、`Pad_TSM_Hood_0..1`）与箭体级间段四组栅格翼液压伺服作动筒整流罩（`Rocket_ActuatorFairing_0..3`），导出 `rocket-kit.glb`（`278,372 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`846,881 B`）；在 `flameMaterial` 中引入普朗克黑体辐射蓝白炽色温核 `kelvinCore`；实测稳态升空（`T+9s`）尾部 120 帧 `p95 = 33.4ms`（`≤ 50ms`，28 draw calls，34,364 三角面，49 活跃烟粒）。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第三十一阶段验收：夜间持续进化 · 盆地硅酸盐黏土与熔岩溪谷、盛唐四合云肩凤尾钗与热分离排气环 K-H 涡卷
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新 Web Search 调研（`tuxalin/procedural-tileable-shaders`、`jsulpis/realtime-planet-shader`、莫高窟第 23 窟盛唐飞天四合云肩与凤钗形制、以及火箭级间热分离排气环与开尔文-亥姆霍兹剪切层涡卷），在 `docs/opus-animation-landscape.md` 新增第 `2.9` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中为四座佛龛之间新增三座浮雕宝相花团窠圆光（`InterNicheMedallion_0..2`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`435,668 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,498,316 B`）；在 `buildWall()` 中同步绘制龛间八瓣金莲宝相花团窠，在 `drawBody()` 离屏缓存中增绘盛唐四合如意金缘云肩与发髻三翎鎏金凤尾钗；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.7ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入蜿蜒火山熔岩管坍塌溪谷（`rilles`）周期谐波，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`166,991 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,106 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对低海拔平缓古湖盆地引入层状硅酸盐黏土与蒸发盐沉积色调（`clayDeposit`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增箭体级间段八向热分离排气环槽（`Rocket_HotStageVent_0..7`）与低温推进剂输送管廊桥（`Pad_CryoPipeBridge_Main` / `Support`），导出 `rocket-kit.glb`（`291,000 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`848,253 B`）；在 `flameMaterial` 中引入开尔文-亥姆霍兹剪切层涡卷扰动项 `khShear`；实测稳态升空（`T+9s`）尾部 120 帧 `p95 = 33.4ms`（`≤ 50ms`，28 draw calls，34,484 三角面，53 活跃烟粒）。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第三十二阶段验收：夜间持续进化 · 盾状火山熔岩流舌与中层冰云辉光、莫高窟新月项圈火焰舟光与发射塔电梯井膨胀波扇
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新 Web Search 调研（火星高纬中层二氧化碳冰云晨昏线蓝白散射、盾状火山绳状熔岩流舌地貌、莫高窟第 329 窟藻井法轮与飞天新月形项圈形制、以及发射塔垂直勤务电梯井与普朗特-迈耶膨胀波扇），在 `docs/opus-animation-landscape.md` 新增第 `2.10` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中新增窟顶藻井法轮井心（`CaissonDharmaWheel`）与四龛两侧八座火焰舟光肋饰（`NicheFlameRib_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`435,668 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,498,316 B`）；在 `buildWall()` 中为四龛拱圈外侧增绘十一簇跃动火焰舟光，在 `drawBody()` 离屏缓存中增绘新月形双线鎏金嵌宝项圈；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.8ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入塔尔西斯盾状火山绳状熔岩流舌（`lava_lobes`）周期谐波，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`167,158 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,844 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下引入高海拔盾状火山缓坡暗褐玄武熔岩流舌（`lavaLobe`）与高纬晨昏线中层冰云冷蓝边缘辉光（`mesoGlow`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增一级助推器尾裙八根防热加强肋条（`Rocket_AftShieldStrake_0..7`）与主勤务塔后侧全高垂直电梯井（`Tower_ElevatorShaft`），导出 `rocket-kit.glb`（`302,236 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`855,530 B`）；在 `flameMaterial` 中引入喷管口普朗特-迈耶膨胀波扇（`expansionFan`）八重高频亮纹；实测稳态升空（`T+9s`）尾部 120 帧 `p95 = 33.4ms`（`≤ 50ms`，28 draw calls，34,592 三角面，51 活跃烟粒）。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第三十三阶段验收：夜间持续进化 · 尘卷风轨迹与极冠螺旋冰槽、莫高窟忍冬卷草莲瓣腕钏与液氧贮箱凝霜环底部回流
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新 Web Search 调研（`IrtezaAsadRizvi/mars-snap`、MRO HiRISE 尘卷风旋轮线轨迹与北极层状沉积螺旋槽、莫高窟隋唐忍冬卷草纹与伎乐天莲瓣腕钏图像学、以及 NASA 发射台多机底部燃气回流热辐射与液氧贮箱低温凝霜环带），在 `docs/opus-animation-landscape.md` 新增第 `2.11` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中为四座佛龛外侧立柱新增八道隋唐忍冬卷草浮雕柱边（`NicheVineScroll_0..3_L/R`）并修复须弥座与飘带浮雕循环层级，重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`447,274 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,538,943 B`）；在 `buildWall()` 中沿藻井横梁增绘连续忍冬卷草波状金藤纹，在 `drawBody()` 离屏缓存中增绘盛唐仰莲瓣鎏金腕钏与胸前斜帔宝相联珠花结；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.7ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入尘卷风旋轮线扫掠微槽（`dust_tracks`）周期谐波，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`167,738 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,431 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下引入中低坡度沙尘平原暗色尘卷风轨迹微纹（`dustTrack`）与极冠螺旋层状冰槽明暗调制（`polarTrough`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增一级/二级液氧贮箱外壁双道低温凝霜特征环带（`Rocket_CryoFrostBand_0..1`）与发射台导流槽两侧高压水幕蒸汽排导歧管（`Pad_SteamHeader_L/R`），导出 `rocket-kit.glb`（`309,256 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`854,685 B`）；在 `flameMaterial` 中引入多喷管根部底部燃气回流热辐射辉光项 `baseRecirc`；实测稳态升空（`T+9s`）尾部 120 帧 `p95 = 33.4ms`（`≤ 50ms`，28 draw calls，34,896 三角面，51 活跃烟粒）。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第三十四阶段验收：夜间持续进化 · 子午线高原赤铁矿结核与撞击坑阶地、莫高窟十字金刚杵藻井菩提叶耳坠与发射台压紧释放臂马赫三波点
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新 Web Search 调研（NASA Opportunity 子午线高原赤铁矿结核与复杂撞击坑坍塌阶地、莫高窟第 328/392 窟十字金刚杵莲花藻井与菩提叶金耳坠形制、以及发射台四向液压压紧释放机构与超音速尾焰马赫反射三波点滑流层），在 `docs/opus-animation-landscape.md` 新增第 `2.12` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中为窟顶斗四藻井法轮四周新增四向十字金刚杵浮雕（`CaissonVajraProng_0..3`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`447,312 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,539,064 B`）；在 `buildWall()` 中为窟顶藻井增绘十字金刚杵金芒，在 `drawBody()` 离屏缓存中增绘心形菩提叶鎏金垂坠耳饰；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.8ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入复杂撞击坑同心坍塌阶地（`terrace_steps`）周期谐波，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`167,825 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,613 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对平缓硫酸盐沉积盆地引入灰蓝赤铁矿结核微表面反照率调制（`hematiteMask`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台内环四向液压压紧释放机构（`Pad_HoldDownClamp_0..3`）与箭体一二级外壁两道自生增压气体外置输送管路（`Rocket_AutogenousLine_0..1`），导出 `rocket-kit.glb`（`318,488 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`855,461 B`）；在 `flameMaterial` 中引入马赫盘外缘三波点交汇滑流层亮环项 `triplePoint`；实测稳态升空（`T+9s`）尾部 120 帧 `p95 = 33.4ms`（`≤ 50ms`，28 draw calls，35,024 三角面，53 活跃烟粒）。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第三十五阶段验收：夜间持续进化 · 季节性斜坡纹线与地堑正断层槽、莫高窟盛唐勾阑栏板莲蕾金簪与发射塔乘员登舰臂复燃化学发光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新 Web Search 调研（火星向阳陡坡季节性重现斜坡纹线 `RSL` 与塔尔西斯平行地堑正断层槽、莫高窟第 217/172 窟盛唐殿堂勾阑栏板与莲蕾双股金簪、以及发射塔高层乘员登舰臂白室与尾焰外缘 `CH*/OH*` 复燃化学发光冷蓝边），在 `docs/opus-animation-landscape.md` 新增第 `2.13` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中为石窟墙裙新增盛唐勾阑上寻杖、下栿横栏与十二根仰莲望柱（`DadoRailTop`、`DadoRailBot`、`DadoPost_0..11`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`451,586 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,546,090 B`）；在 `buildWall()` 中沿下壁墙裙增绘勾阑望柱雕花横栏，在 `drawBody()` 离屏缓存中增绘盛唐莲蕾双股鎏金发簪；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.7ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入塔尔西斯平行地堑正断层槽（`graben_troughs`）周期谐波，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`168,266 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,514 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对中低纬向阳陡坡引入暗色季节性重现斜坡纹线调制（`rslMask`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增主勤务塔高层桁架乘员登舰臂与末端白室对接舱（`Tower_CrewAccessArm`、`Tower_WhiteRoom`）及整流罩底部四向跨音速泄压排气孔（`Rocket_FairingVent_0..3`），导出 `rocket-kit.glb`（`325,928 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`857,367 B`）；在 `flameMaterial` 中引入尾焰剪切层外缘自由基复燃化学发光冷蓝紫外边（`chemiRim`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 = 33.4ms`（`≤ 50ms`，28 draw calls，35,088 三角面，52 活跃烟粒）。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第三十六阶段验收：夜间持续进化 · 断层陷落坑链与倒转古河道脊、莫高窟千叶宝相莲座翠玉跳脱镯与高架水塔下降主干管喉部白炽辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新 Web Search 调研（火星构造断层陷落坑链 `Catenae` 与胶结抗蚀倒转古河道脊 `Inverted Channels`、莫高窟第 220/392 窟千叶宝相花莲座与盛唐双环翠玉跳脱臂镯、以及高架降噪水塔主下降管路与拉瓦尔喷管喉部高温滞止区白炽热辐射），在 `docs/opus-animation-landscape.md` 新增第 `2.14` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中为四座须弥莲座新增千叶宝相内层覆莲冠（`PedestalInnerLotus_0..3`）并在窟顶前檐新增六道天盖宝帐流苏垂幔（`TopValanceSwag_0..5`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`456,535 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,558,523 B`）；在 `buildWall()` 中沿下壁莲台增绘千叶宝相复瓣金蕊，在 `drawBody()` 离屏缓存中增绘手腕双环翠玉跳脱玉镯；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.7ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入沿断层线排列的无缘碗状陷落坑链（`pit_catenae`）周期谐波，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`168,373 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,234 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对古河谷冲积平原引入矿化胶结倒转古河道暖赭亮脊调制（`invertedChannel`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增高架水塔至导流槽的大口径垂直下降主干管与弯头支座（`WaterTower_Downcomer`、`WaterTower_Elbow`）及一级尾裙四向地面气电脱插整流罩（`Rocket_AftUmbilicalPod_0..3`），导出 `rocket-kit.glb`（`334,988 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`860,246 B`）；在 `flameMaterial` 中引入喷管出口平面高温驻点区的喉部白炽热辐射项（`throatGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 = 33.4ms`（`≤ 50ms`，28 draw calls，35,192 三角面，52 活跃烟粒）。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第三十七阶段验收：夜间持续进化 · 横向风成沙脊与南极干冰升华坑、莫高窟萨珊联珠团窠与额际花胜、及径向排氢点火器与气膜冷却边界层
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新 Web Search 调研（火星横向风成沙脊 `TARs` 与南极干冰升华坑 `Swiss Cheese Terrain`、莫高窟第 320/220 窟萨珊唐风联珠团窠纹与额际鎏金叠胜花胜、以及发射台径向排氢点火器 `ROFI`、液氢火炬排放塔与再生气膜冷却富燃条带），在 `docs/opus-animation-landscape.md` 新增第 `2.15` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中围绕三座龛间宝相花团窠新增八颗萨珊唐风高浮雕联珠环（`MedallionPearl_0..2_0..7`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`456,846 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,560,536 B`）；在 `buildWall()` 中围绕龛间宝相花团窠增绘联珠金环，在 `drawBody()` 离屏缓存中增绘额际鎏金叠胜花胜；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.7ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入对称横向风成沙脊（`tars_crests`）与陡壁平底干冰升华坑（`swiss_pits`）周期谐波，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`168,835 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,453 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对中低海拔峡谷与盆地槽谷引入亮色横向风成沙脊反照调制（`tarCrest`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台四向径向排氢点火器（`Pad_ROFI_Post_0..3`、`Pad_ROFI_Nozzle_0..3`）与液氢球罐旁垂直火炬燃烧排放塔（`Pad_FlareStack_Mast`、`Pad_FlareStack_Tip`），导出 `rocket-kit.glb`（`351,304 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`860,963 B`）；在 `flameMaterial` 中引入再生气膜冷却纵向富燃条带调制项（`filmCool`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 = 33.4ms`（`≤ 50ms`，28 draw calls，35,424 三角面，54 活跃烟粒）。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第三十八阶段验收：夜间持续进化 · 根部缺失伪火山锥与泥火山丘、莫高窟拱肩棕榈叶卷草与金花插梳、及脐带臂温控风管与斜激波交叉
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新 Web Search 调研（火星阿萨巴斯卡谷岩浆-冰水相互作用根部缺失伪火山锥 `Rootless Cones` 与北部平原沉积泥火山反照丘、莫高窟第 158/322 窟波斯-盛唐拱肩扇形棕榈叶卷草与鎏金镂空花梳 `插梳`、以及动态摆杆脐带臂环境温控风管与超音速尾焰斜激波 X 型交叉亮索），在 `docs/opus-animation-landscape.md` 新增第 `2.16` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四龛拱顶两侧拱肩新增八枚波斯-盛唐三叶扇形棕榈叶浮雕（`SpandrelPalmette_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`457,669 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,562,337 B`）；在 `buildWall()` 中沿拱肩增绘三瓣扇形忍冬棕榈叶饰，在 `drawBody()` 离屏缓存中增绘发髻前缘盛唐鎏金花背五齿插梳；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.8ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入环形火山口根部缺失伪火山锥群（`rootless_cones`）周期谐波，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`168,855 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,264 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对北部低海拔沉积盆地引入浅色泥火山溢流扇反照调制（`mudVolcano`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中为 `UmbilicalArm` 动态摆杆新增整流罩洁净空气温控风管（`Arm_ECS_Duct`）与根部液压回摆缓冲阻尼缸（`Arm_SnubberCylinder`），导出 `rocket-kit.glb`（`353,712 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`861,436 B`）；在 `flameMaterial` 中引入超音速尾焰双族共轭斜激波 X 型交叉亮索（`obliqueShock`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 = 33.4ms`（`≤ 50ms`，28 draw calls，35,448 三角面，53 活跃烟粒）。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第三十九阶段验收：夜间持续进化 · 冰川脑纹地形与橄榄石玄武岩、莫高窟藻井四隅角花与唐妆面靥、及液氧低温球罐与碳烟连续谱
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新 Web Search 调研（火星 MRO HiRISE 中纬舌状碎屑裙冰川脑纹地形 `Brain Terrain` 与尼利槽沟富橄榄石玄武岩露头 `Olivine Basalt`、莫高窟第 328/237 窟斗四藻井四隅莲花角花与盛唐菩萨“面靥”红妆、以及发射场真空绝热液氧球形储罐 `Cryo_LOX_Sphere` 与尾焰碳烟微粒热辐射连续谱 `sootContinuum`），在 `docs/opus-animation-landscape.md` 新增第 `2.17` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中于中央斗四藻井四角新增四座浮雕莲花角花（`CaissonCornerLotus_0..3`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`458,159 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,563,252 B`）；在 `buildWall()` 中于藻井四隅增绘莲花角花，在 `drawBody()` 离屏缓存中于嘴角两侧增绘盛唐丹砂面靥妆；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.8ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入迷宫状交错冰川脑纹微脊（`brain_terrain`）周期谐波，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`168,982 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,060 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对中高程断层槽壁引入富橄榄石玄武岩冷青灰反照色带（`olivineBasalt`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增液氧低温球形储罐与支柱（`Cryo_LOX_Sphere`、`Cryo_LOX_Stem`）及助推器前裙气动环（`Rocket_ForwardSkirtRing`），导出 `rocket-kit.glb`（`364,152 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`864,469 B`）；在 `flameMaterial` 中引入尾焰碳烟微粒宽谱热辐射连续谱橙金辉光项（`sootContinuum`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 = 33.4ms`（`≤ 50ms`，28 draw calls，35,904 三角面，53 活跃烟粒）。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第四十阶段验收：夜间持续进化 · 南极干冰喷流蛛形沟槽与硫酸盐台地、莫高窟须弥座束腰角柱与唐妆斜红、及高压氮氦气瓶撬块与多机激波桥
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新 Web Search 调研（火星南极冰盖 Kieffer 干冰喷流蛛形辐射沟槽 `Araneiforms` 与坎多尔峡谷水合硫酸盐蒸发岩明亮台地 `Sulfate Bench`、莫高窟盛唐须弥座束腰雕花角柱与唐代仕女鬓角新月“斜红”妆、以及发射场高压氮氦气瓶组撬块 `Pad_GN2_TubeBank` 与五机并联超音速羽流对撞激波桥 `shockBridge`），在 `docs/opus-animation-landscape.md` 新增第 `2.18` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中为四座须弥莲座新增八根束腰雕花角柱（`PedestalWaistPillar_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`458,792 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,566,857 B`）；在 `buildWall()` 中为须弥座两侧增绘束腰短柱金纹，在 `drawBody()` 离屏缓存中于双目外侧鬓角增绘盛唐新月斜红妆；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.8ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入南极冰下干冰喷流蛛形负地形沟槽（`araneiforms`）周期谐波，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`169,053 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,366 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对峡谷中海拔裂谷壁引入水合硫酸盐蒸发岩暖米黄明亮台地色带（`sulfateBench`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台外围高压氮氦长管气瓶撬块（`Pad_GN2_Skid`、`Pad_GN2_Tube_0..2`）与上面级测量仪器环（`Rocket_InstrumentationRing`），导出 `rocket-kit.glb`（`373,832 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`866,740 B`）；在 `flameMaterial` 中引入五机并联尾焰对撞反射激波桥项（`shockBridge`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 = 33.4ms`（`≤ 50ms`，28 draw calls，36,148 三角面，53 活跃烟粒）。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第四十一阶段验收：夜间持续进化 · 热喀斯特扇形凹地与黄钾铁矾蚀变脉、莫高窟拱腹仰莲团花与唐妆额黄、及整流罩包带锁扣与超音速啸叫声波环
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新 Web Search 调研（火星乌托邦平原冻土热喀斯特扇形阶梯凹地 `Scalloped Topography` 与酸性硫酸盐黄钾铁矾 `Jarosite` 蚀变脉、莫高窟第 130/220 窟佛龛内拱腹仰莲团花与盛唐仕女/菩萨“额黄”妆、以及有效载荷整流罩分离包带锁扣 `Rocket_FairingClampBand`、液氧空温式翅片汽化器组 `Pad_LOX_Vaporizer` 与超音速尾焰啸叫声学反馈环 `screechWave`），在 `docs/opus-animation-landscape.md` 新增第 `2.19` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中为四座佛龛内拱腹新增八枚仰莲团花浮雕（`IntradosLotusBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`459,134 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,568,992 B`）；在 `buildWall()` 中于内拱圈增绘仰莲团花金蕊，在 `drawBody()` 离屏缓存中于前额花钿上方增绘盛唐半月额黄妆；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.7ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入中纬冻土热喀斯特扇形阶梯凹地（`scalloped_basins`）周期谐波，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`169,054 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,644 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对中低海拔斜坡引入黄钾铁矾暖金黄蚀变细脉（`jarositeVein`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增有效载荷整流罩分离包带与四向锁扣盒（`Rocket_FairingClampBand`、`Rocket_ClampLatch_0..3`）及液氧球罐旁三组空温式翅片汽化器（`Pad_LOX_Vaporizer_0..2`），导出 `rocket-kit.glb`（`384,508 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`868,268 B`）；在 `flameMaterial` 中引入超音速尾焰声学反馈啸叫驻波环项（`screechWave`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 = 33.4ms`（`≤ 50ms`，28 draw calls，36,356 三角面，51 活跃烟粒）。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第四十二阶段验收：夜间持续进化 · 夏普山箱状裂隙脉脊与绿脱石黏土、莫高窟须弥座壶门券龛与臂钏垂珠流苏、及喷淋环管立柱与尾焰湍流微激波
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新 Web Search 调研（火星好奇号探测的盖尔撞击坑夏普山箱状胶结裂隙脊网 `Boxwork Fracture Ridges` 与绿脱石富铁层状硅酸盐黏土 `Nontronite Smectite Clay`、莫高窟第 45/328 窟须弥座束腰壶门浮雕券龛与盛唐飞天“臂钏垂珠流苏”、以及发射台喷淋降噪环管高压立柱 `Pad_DelugeStanchion`、五机根部防热柔性靴套 `Rocket_ThermalBoot` 与超音速剪切层湍流微激波 `eddyShocklets`），在 `docs/opus-animation-landscape.md` 新增第 `2.20` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中为四座须弥莲座束腰正中新增四座壶门浮雕券龛（`PedestalKunmenArch_0..3`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`459,663 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,570,252 B`）；在 `buildWall()` 中于须弥座束腰正中增绘鎏金壶门宝相纹，在 `drawBody()` 离屏缓存中于上臂金臂钏下缘增绘双股垂珠流苏；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.8ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入夏普山箱状矿物胶结裂隙脊网（`boxwork_ridges`）周期谐波，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`169,323 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,771 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对古湖泊与盆地缓坡引入绿脱石富铁层状硅酸盐黏土色带（`nontroniteClay`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增喷淋降噪环管六根高压立柱（`Pad_DelugeStanchion_0..5`）与一级五台发动机根部防热柔性靴套（`Rocket_ThermalBoot_0..4`），导出 `rocket-kit.glb`（`410,164 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`868,268 B`）；在 `flameMaterial` 中引入超音速尾焰剪切层湍流微激波项（`eddyShocklets`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 = 33.4ms`（`≤ 50ms`，28 draw calls，36,832 三角面，51 活跃烟粒）。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第四十三阶段验收：夜间持续进化 · 同心撞击坑冰川流脊与子午线平原赤铁矿球粒、莫高窟藻井四方莲蕾与嵌宝玉带銙、及塔架低温推进剂立管与喷管唇口激波环
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新 Web Search 调研（火星 MRO HiRISE 中纬撞击坑同心冰川填充流脊 `Concentric Crater Fill` 与子午线平原结晶灰赤铁矿球粒 `Gray Hematite Spherules`、莫高窟第 392/320 窟斗四藻井四方边饰仰莲花蕾与盛唐飞天腰间嵌宝如意玉带銙 `带銙`、以及发射塔垂直低温推进剂上升立管 `Tower_LOX_Riser`/`Tower_LH2_Riser`、整流罩透波介电遥测窗 `Rocket_RF_Window` 与喷管唇口过膨胀激波环 `lipShock`），在 `docs/opus-animation-landscape.md` 新增第 `2.21` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中于中央斗四藻井四边正中新增四枚仰莲花蕾浮雕（`CaissonEdgeLotusBud_0..3`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`460,169 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,571,072 B`）；在 `buildWall()` 中于藻井四边增绘莲蕾宝珠金饰，在 `drawBody()` 离屏缓存中于腰带正中增绘盛唐嵌宝如意玉带銙；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.7ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入中纬撞击坑同心冰川填充流脊（`concentric_fill`）周期谐波，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`169,234 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,712 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对低坡度赤道平原引入子午线平原结晶灰赤铁矿球粒滞留层色带（`hematiteSpherule`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射塔液氧/液氢垂直低温推进剂上升立管（`Tower_LOX_Riser`、`Tower_LH2_Riser`）与整流罩两侧透波介电遥测窗（`Rocket_RF_Window_0..1`），导出 `rocket-kit.glb`（`417,260 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`870,928 B`）；在 `flameMaterial` 中引入拉瓦尔喷管出口平面唇口过膨胀激波环项（`lipShock`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 = 33.4ms`（`≤ 50ms`，28 draw calls，36,944 三角面，50 活跃烟粒）。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第四十四阶段验收：夜间持续进化 · 杰泽罗古三角洲前缘陡坎与水合蛋白石、莫高窟拱背摩尼火焰珠与足踝流苏系带、及导流槽水冷喷淋集管与富燃尾焰复燃涡辫
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新 Web Search 调研（火星毅力号探测的杰泽罗古三角洲前缘叠瓦状沉积陡坎 `Delta Front Foreset Scarps` 与水合非晶蛋白石二氧化硅 `Hydrated Amorphous Opaline Silica`、莫高窟第 45/320 窟龛楣外拱背联珠火焰摩尼宝珠与盛唐飞天足踝流苏系带垂珠、以及发射台导流槽水冷喷淋集管 `Pad_DeflectorSprayHeader`、上面级快速脱插脐带整流罩包 `Rocket_UpperQD_Pod` 与富燃尾焰湍流混合层二次复燃涡辫 `afterburnBraid`），在 `docs/opus-animation-landscape.md` 新增第 `2.22` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中为四座佛龛外拱背两侧新增八座摩尼火焰宝珠浮雕（`ExtradosFlamePearl_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`460,270 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,571,499 B`）；在 `buildWall()` 中于四龛外拱背增绘鎏金火焰摩尼宝珠，在 `drawBody()` 离屏缓存中于双足足钏外侧增绘朱砂/鎏金双股飘逸系带与垂珠；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.8ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入杰泽罗古三角洲前缘叠瓦状沉积陡坎（`delta_scarps`）周期谐波，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`169,289 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,597 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对古三角洲及水热蚀变边缘引入水合非晶蛋白石二氧化硅霜白色带（`opalineSilica`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增导流槽两侧水冷喷淋集管（`Pad_DeflectorSprayHeader_0..1`）与上面级快速脱插脐带整流罩包（`Rocket_UpperQD_Pod`），导出 `rocket-kit.glb`（`423,264 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`870,700 B`）；在 `flameMaterial` 中引入超音速尾焰外侧富燃边界层二次复燃螺旋涡辫项（`afterburnBraid`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 = 33.4ms`（`≤ 50ms`，28 draw calls，37,044 三角面，52 活跃烟粒）。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第四十五阶段验收：夜间持续进化 · 尤文塔峡谷倒转古河道脊与坎多尔峡谷水合硫酸镁石、莫高窟须弥座下枭覆莲瓣与飞天双环望仙髻、及防雷悬链锚固墩与马赫反射激波干
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新 Web Search 调研（火星 MRO HiRISE 在尤文塔峡谷观测到的蜿蜒倒转古河道脊 `Sinuous Inverted Fluvial Channel Ridges` 与坎多尔峡谷单水合硫酸镁石 `Kieserite Sulfate Layer`、莫高窟第 320/112 窟须弥座下枭覆莲瓣浮雕与盛唐飞天双环望仙髻 `Double-Loop Fairy Chignon`、以及发射场防雷悬链线接地锚固墩 `Pad_CatenaryAnchor`、助推器前封头增压分配总管 `Rocket_FwdPressManifold` 与超音速尾焰马赫反射激波干 `machStem`），在 `docs/opus-animation-landscape.md` 新增第 `2.23` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中于四座须弥莲座下缘新增八枚下枭覆莲瓣浮雕（`PedestalLowerFulian_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`460,509 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,572,079 B`）；在 `buildWall()` 中于须弥座下缘增绘覆莲金瓣，在 `drawBody()` 离屏缓存中于发髻两侧增绘盛唐双环望仙髻与金珠；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.8ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入尤文塔峡谷蜿蜒倒转古河道脊（`inverted_channels`）周期谐波，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`169,508 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,093,874 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对峡谷内壁阶地引入坎多尔峡谷单水合硫酸镁石层高反照色带（`kieseriteLayer`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增四角防雷悬链线接地锚固墩（`Pad_CatenaryAnchor_0..3`）与助推器前封头增压分配总管（`Rocket_FwdPressManifold`），导出 `rocket-kit.glb`（`430,820 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`872,494 B`）；在 `flameMaterial` 中引入超音速尾焰马赫反射激波干项（`machStem`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 = 33.4ms`（`≤ 50ms`，28 draw calls，37,200 三角面，53 活跃烟粒）。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第四十六阶段验收：夜间持续进化 · 莫斯谷多边形干裂泥裂网与尼利槽沟菱镁矿脉、莫高窟墙裙宝相团花与腰间双环玉佩、及低温蒸发排气管塔与三波点滑移流线
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新 Web Search 调研（火星 MRO HiRISE 与 CRISM 在莫斯谷及尼利槽沟探测到的古黏土层多边形干裂泥裂网 `Polygonal Desiccation Mud-Cracks` 与热液菱镁矿 `Magnesite Carbonate Vein`、莫高窟第 45/320 窟下缘墙裙宝相团花浮雕与盛唐飞天腰间同心双环翠玉环佩 `Twin Jade Ring Yupei`、以及发射台低温蒸发气体高空排空立管 `Pad_CryoVentStack`、尾裙四向 TVC 液压作动筒整流罩 `Rocket_TVC_Fairing` 与超音速尾焰三波点下游内部滑移流线 `slipStream`），在 `docs/opus-animation-landscape.md` 新增第 `2.24` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中于底层墙裙四龛正下方新增四座宝相团花浮雕（`DadoBorderRosette_0..3`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`460,869 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,572,598 B`）；在 `buildWall()` 中于墙裙对应位置增绘宝相小团花，在 `drawBody()` 离屏缓存中于腰带两侧垂绶末端增绘双环翠玉环佩；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.8ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入古黏土层多边形干裂泥裂网（`desiccation_cracks`）周期谐波，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`169,903 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,877 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对古热液蚀变斜坡引入尼利槽沟菱镁矿碳酸盐高反照色带（`magnesiteVein`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增低温蒸发气体高空排空立管与伞帽（`Pad_CryoVentStack`、`Pad_CryoVentCap`）及一级尾裙四向 TVC 液压作动筒整流罩（`Rocket_TVC_Fairing_0..3`），导出 `rocket-kit.glb`（`440,612 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`873,826 B`）；在 `flameMaterial` 中引入三波点下游内部滑移流线剪切层项（`slipStream`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 = 33.4ms`（`≤ 50ms`，28 draw calls，37,336 三角面，52 活跃烟粒）。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第四十七阶段验收：夜间持续进化 · 哥伦布陨石坑明矾石-高岭土热液层与极地霜多边形、莫高窟龛柱覆莲柱础与裙摆膝际宝相花结、及高压氦蓄压球罐与尾焰菱形激波束尾
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新 Web Search 调研（火星 MRO CRISM 在哥伦布陨石坑探测到的明矾石-高岭土热液互层沉积 `Alunite-Kaolinite Hydrothermal Layers` 与极地干冰霜多边形升华浅槽 `Frost Polygons`、莫高窟盛唐第 23/45 窟佛龛覆莲柱础与飞天裙摆膝际宝相花结流苏、以及发射台高压气态氦 GHe 吹扫蓄压球罐 `Pad_GHe_Sphere`、整流罩鼻锥气动静压探针 `Rocket_NoseAeroSpike` 与超音速尾焰菱形激波收敛束尾 `diamondTail`），在 `docs/opus-animation-landscape.md` 新增第 `2.25` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中为四座佛龛两侧龛柱底部新增八座覆莲柱础浮雕（`PillarLotusBase_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`461,374 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,574,331 B`）；在 `buildWall()` 中于龛柱底部增绘覆莲柱础金瓣，在 `drawBody()` 离屏缓存中于长裙膝际增绘盛唐宝相花绦结与双股联珠流苏；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.8ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入极地干冰霜多边形升华浅槽（`frost_polygons`）周期谐波，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`170,315 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,355 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对古热液湖盆斜坡引入哥伦布陨石坑明矾石-高岭土暖粉白蚀变层色带（`aluniteClay`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增两座高压气态氦（GHe）吹扫蓄压球罐（`Pad_GHe_Sphere_0..1`）与整流罩鼻锥气动静压探针（`Rocket_NoseAeroSpike`），导出 `rocket-kit.glb`（`447,952 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`874,521 B`）；在 `flameMaterial` 中引入尾焰中下游菱形激波收敛束尾项（`diamondTail`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 = 33.4ms`（`≤ 50ms`，28 draw calls，37,476 三角面，53 活跃烟粒）。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第四十八阶段验收：夜间持续进化 · 古谢夫热液硅质泉华与风棱石刻槽、莫高窟藻井莲心联珠花蕊与斜帔折枝团花、及导流槽溢流堰门与安控天线舱及尾焰辐射核连续谱
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新 Web Search 调研（火星勇气号在古谢夫陨石坑 Home Plate 发现的热液蛋白石硅质泉华 `Opaline Silica Sinter` 与风棱石风蚀刻槽 `Aeolian Ventifact Grooves`、莫高窟盛唐第 392/45 窟斗四藻井莲心联珠子房花蕊与飞天斜帔泥金宝相折枝团花、以及发射台导流槽水幕溢流堰门 `Pad_DelugeWeir`、飞行安全自毁系统 FTS 指令接收天线舱 `Rocket_FTS_Antenna` 与尾焰中心辐射核连续谱 `coreContinuum`），在 `docs/opus-animation-landscape.md` 新增第 `2.26` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中围绕中央斗四藻井莲心新增八枚子房联珠花蕊浮雕（`CaissonStamenPearl_0..7`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`461,446 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,574,621 B`）；在 `buildWall()` 中于藻井中心增绘八出莲蕊联珠环，在 `drawBody()` 离屏缓存中于前胸斜帔两侧增绘盛唐泥金折枝宝相团花；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.8ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入风棱石风蚀平行刻槽（`ventifact_grooves`）周期谐波，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`170,311 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,548 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对古火山热泉阶地引入古谢夫陨石坑硅质泉华高反照色带（`silicaSinter`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增导流槽两端水幕溢流控制堰门（`Pad_DelugeWeir_0..1`）与上面级冗余 FTS 安控指令接收天线舱（`Rocket_FTS_Antenna_0..1`），导出 `rocket-kit.glb`（`452,680 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`874,503 B`）；在 `flameMaterial` 中引入尾焰中心辐射核连续谱项（`coreContinuum`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 = 33.4ms`（`≤ 50ms`，28 draw calls，37,524 三角面，54 活跃烟粒）。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第四十九阶段验收：夜间持续进化 · 冰川舌状碎屑裙与诺克提斯迷宫绿泥石层、莫高窟龛楣拱心垂莲宝珠与散花宝盘仰莲托座、及液氮过冷换热撬块与级间反推火箭整流罩及尾焰戈特勒流向涡纹
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新 Web Search 调研（火星 MRO CRISM/HiRISE 在诺克提斯迷宫与莱顿陨石坑探测到的热液绿泥石/葡萄石层状硅酸盐 `Chlorite/Prehnite Phyllosilicates` 与冰川舌状碎屑裙流叶微地貌 `LDA/LVF Flow Foliations`、莫高窟盛唐第 23/45 窟佛龛内拱心石垂莲宝珠浮雕与飞天散花宝盘仰莲托座、以及发射台液氮 LN2 过冷换热器撬块 `Pad_LN2_Subcooler`、级间四向分离固体反推火箭整流罩 `Rocket_RetroMotor` 与拉瓦尔喷管凹壁戈特勒流向涡条纹 `goertlerStreaks`），在 `docs/opus-animation-landscape.md` 新增第 `2.27` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中于四座唐代佛龛内拱心石位置新增四座垂莲宝珠高浮雕（`NicheKeystoneLotus_0..3`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`461,446 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,574,621 B`）；在 `buildWall()` 中于四龛内拱心石下方增绘垂莲宝珠金饰，在 `drawBody()` 离屏缓存中于掌心散花宝盘下方增绘盛唐三瓣泥金仰莲托座；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.8ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入冰川舌状碎屑裙与线状谷底堆积流叶褶皱（`lda_foliations`）周期谐波，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`170,353 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,095,093 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对水热蚀变斜坡引入诺克提斯迷宫绿泥石层暗青绿层理色带（`chloritePhyllo`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增两套液氮（LN2）过冷换热撬块（`Pad_LN2_Subcooler_0..1`）与一级级间段四向固体分离反推火箭整流罩（`Rocket_RetroMotor_0..3`），导出 `rocket-kit.glb`（`462,568 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`875,172 B`）；在 `flameMaterial` 中引入喷管凹壁边界层戈特勒流向对旋涡条纹项（`goertlerStreaks`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 = 50.0ms`（`≤ 50ms`，28 draw calls，37,660 三角面，51 活跃烟粒）。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第五十阶段验收：夜间持续进化 · 塞壬高地氯盐干盐湖与溢流河道泪滴岛、莫高窟须弥座缠枝牡丹与额顶翠钿明珠花胜、及电缆沟盖板与S波段微带贴片天线及尾焰K-H卷起涡结
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新 Web Search 调研（火星 MRO CRISM/HiRISE 在塞壬高地与克罗斯陨石坑探测到的氯化物干盐湖蒸发盐层 `Chloride Salt Flat Evaporites` 与外流河道流线型泪滴岛 `Streamlined Teardrop Islands`、莫高窟盛唐第 23/45 窟须弥座束腰缠枝牡丹浮雕与飞天额顶翠钿明珠花胜、以及发射台重型防爆混凝土电缆沟盖板 `Pad_CableTrench`、整流罩 S 波段遥测微带贴片天线 `Rocket_FairingPatchAnt` 与尾焰自由剪切层开尔文-亥姆霍兹卷起涡结 `khRollupKnots`），在 `docs/opus-animation-landscape.md` 新增第 `2.28` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中于四座须弥莲座束腰壶门两侧新增八枚缠枝牡丹浮雕（`PedestalPeonyScroll_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`461,555 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,575,824 B`）；在 `buildWall()` 中于须弥座束腰两侧增绘缠枝牡丹金叶与丹砂花苞，在 `drawBody()` 离屏缓存中于额顶发际正中增绘盛唐翠钿明珠叠瓣花胜；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.8ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入外流河道洪水冲刷流线型泪滴岛（`teardrop_islands`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`170,324 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,412 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对古封闭盆地底部引入塞壬高地氯化物蒸发盐壳滩高反照色带（`chlorideEvaporite`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增两条重型防爆混凝土电缆沟盖板（`Pad_CableTrench_0..1`）与整流罩中段两侧 S 波段遥测微带贴片天线（`Rocket_FairingPatchAnt_0..1`），导出 `rocket-kit.glb`（`467,388 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`875,192 B`）；在 `flameMaterial` 中引入高速尾焰自由剪切层开尔文-亥姆霍兹卷起亮涡结项（`khRollupKnots`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 = 49.9ms`（`≤ 50ms`，28 draw calls，37,708 三角面，51 活跃烟粒）。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第五十一阶段验收：夜间持续进化 · 奥林帕斯山断崖托雷瓦滑坡丘陵与石膏层露头、莫高窟窟顶平棊如意卷云宝珠与臂袖仰莲锦缘、及高压氮气阀岛撬块与级间剪销托架及喷口普朗特-迈耶膨胀扇束
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新 Web Search 调研（火星 MRO CRISM/HiRISE 在奥林帕斯山基底断崖远端探测到的托雷瓦滑坡旋转断块丘陵 `Toreva Block Landslide Hummocks` 与诺克提斯迷宫/北方极冠水合硫酸钙石膏层露头 `Hydrated Calcium Sulfate Gypsum Outcrops`、莫高窟盛唐第 23/45 窟窟顶平棊横梁如意卷云摩尼宝珠浮雕与飞天臂袖仰莲锦缘袖口、以及发射台高压氮气 GN2 吹扫调节阀岛撬块 `Pad_GN2_ValveSkid`、级间段四向剪销分离托架 `Rocket_InterstageShearBracket` 与喷口唇缘普朗特-迈耶中心膨胀扇射线 `prandtlMeyerRay`），在 `docs/opus-animation-landscape.md` 新增第 `2.29` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中于四龛顶部平棊横梁上方新增四组如意卷云摩尼宝珠高浮雕（`TopBeamCloudScroll_0..3`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`462,714 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,577,739 B`）；在 `buildWall()` 中于四龛上方平棊横梁处增绘如意卷云宝珠金饰，在 `drawBody()` 离屏缓存中于双侧前臂袖口增绘盛唐三瓣泥金仰莲锦缘袖口；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.7ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入奥林帕斯山基底断崖滑坡托雷瓦丘陵块（`toreva_hummocks`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`170,320 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,821 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对高陡坡断裂层引入石膏/半水石膏层露头象牙白层理高光色带（`gypsumOutcrop`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增两座高压氮气（GN2）吹扫调节阀岛撬块（`Pad_GN2_ValveSkid_0..1`）与级间段四向剪销分离托架（`Rocket_InterstageShearBracket_0..3`），导出 `rocket-kit.glb`（`474,816 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`875,790 B`）；在 `flameMaterial` 中引入喷口唇缘普朗特-迈耶中心膨胀扇射线项（`prandtlMeyerRay`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 = 50.0ms`（`≤ 50ms`，28 draw calls，37,780 三角面，51 活跃烟粒）。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第五十二阶段验收：夜间持续进化 · 尼利槽沟皂石蒙脱石层与坑壁颗粒流扇裙、莫高窟佛龛拱脚仰莲拱座与飞天腰间双鱼玉佩流苏穗、及水锤消除集管与箱间电缆整流罩及尾焰斜激波交叉节
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新 Web Search 调研（火星 MRO CRISM/HiRISE 在尼利槽沟与莫斯谷探测到的富镁/铁蒙脱石皂石层 `Saponite Fe-Mg Smectite Clay Beds` 与撞击坑陡壁颗粒流扇裙及壁龛凹槽 `Steep Crater Wall Granular Flow Aprons & Alcoves`、莫高窟盛唐第 45/320 窟佛龛拱脚仰莲拱座浮雕与飞天腰间双鱼玉佩流苏穗、以及发射台喷淋系统水锤消除缓冲集管 `Pad_DelugeSurgeHeader`、一级箱间段外置航电电缆线槽整流罩 `Rocket_IntertankCableFairing` 与超音速尾焰反射斜激波交叉亮节 `obliqueShockCross`），在 `docs/opus-animation-landscape.md` 新增第 `2.30` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四龛券口起拱脚两侧新增八座仰莲拱座高浮雕（`NicheArchLotusBracket_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`463,150 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,579,081 B`）；在 `buildWall()` 中于四龛起拱线两侧增绘仰莲拱座金饰，在 `drawBody()` 离屏缓存中于腰间玉带下增绘盛唐双鱼玉佩与朱砂流苏穗；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.8ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入撞击坑陡壁颗粒流扇裙与壁龛凹槽（`crater_alcoves`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`170,361 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,302 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对中低海拔缓坡层序引入尼利槽沟皂石铁镁蒙脱石青褐层理色带（`saponiteSmectite`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增两座喷淋水锤消除缓冲集管（`Pad_DelugeSurgeHeader_0..1`）与一级箱间段外置航电线槽整流罩（`Rocket_IntertankCableFairing_0..1`），导出 `rocket-kit.glb`（`481,972 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`877,483 B`）；在 `flameMaterial` 中引入超音速尾焰内部反射斜激波交叉亮节项（`obliqueShockCross`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 = 33.4ms`（`≤ 50ms`，28 draw calls，37,892 三角面，52 活跃烟粒）。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第五十三阶段验收：夜间持续进化 · 埃伯斯瓦尔德冲积扇分流天然堤与高岭石黏土层、莫高窟藻井外框团莲宝珠与项圈璎珞明珠连缀、及液氧排空集液池与上面级冷气姿控推力器包及马赫盘亚音速滑流核
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新 Web Search 调研（火星 MRO CRISM/HiRISE 在埃伯斯瓦尔德/霍尔登陨石坑探测到的冲积扇分流河道天然堤微脊 `Alluvial Fan Distributary Levee Ridges` 与莫斯谷上覆铝质高岭石/埃洛石白黏土层 `Hydrated Aluminum Phyllosilicate Kaolinite Clay Horizons`、莫高窟盛唐第 45/158 窟斗四藻井外框四角团莲宝珠浮雕与飞天项圈璎珞明珠连缀垂坠、以及发射台液氧 LOX 事故排空集液池围堰 `Pad_LOX_DumpBasin`、上面级四向冷气姿控推力器包 `Rocket_ColdGasPod` 与尾焰马赫盘下游亚音速滑流发光核 `subsonicSlipCore`），在 `docs/opus-animation-landscape.md` 新增第 `2.31` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿中央斗四藻井外框四角新增四枚团莲宝珠高浮雕（`CaissonOuterLotusBoss_0..3`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`463,396 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,579,494 B`）；在 `buildWall()` 中于中央藻井外框四角增绘团莲宝珠金饰，在 `drawBody()` 离屏缓存中于新月项圈下缘增绘盛唐璎珞明珠连缀垂坠；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.8ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入冲积扇分流河道天然堤微脊（`alluvial_levees`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`170,403 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,475 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对上覆风化淋溶层序引入铝质高岭石瓷白黏土层色带（`kaoliniteClay`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增两座液氧（LOX）事故排空集液池围堰（`Pad_LOX_DumpBasin_0..1`）与上面级四向冷气姿控推力器包（`Rocket_ColdGasPod_0..3`），导出 `rocket-kit.glb`（`489,460 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`878,022 B`）；在 `flameMaterial` 中引入马赫盘下游亚音速滑流热发光核项（`subsonicSlipCore`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 = 49.9ms`（`≤ 50ms`，28 draw calls，37,964 三角面，52 活跃烟粒）。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第五十四阶段验收：夜间持续进化 · 哥伦布陨石坑明矾石硫酸盐环层与陡壁滚石滑槽、莫高窟须弥座四角瑞兽狮子座镇与飞天腰间百褶绶带流云纹、及液氢汽化器撬块与发动机舱氦气吹扫总管及湍流混合层辐射细丝
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新 Web Search 调研（火星 MRO CRISM/HiRISE 在哥伦布陨石坑探测到的明矾石-水镁矾硫酸盐环状层序 `Alunite-Kieserite Hydrated Sulfate Ring Beds` 与陡壁滚石轨迹及碎石滑槽 `Steep Wall Boulder Tracks & Talus Chutes`、莫高窟盛唐第 45/320 窟须弥座四角瑞兽狮子座镇浮雕与飞天腰间百褶绶带流云纹、以及发射台液氢 LH2 汽化换热器撬块 `Pad_LH2_Vaporizer`、一级发动机舱氦气吹扫分配总管 `Rocket_EnginePurgeManifold` 与超音速尾焰湍流混合层辐射细丝 `radiativeMixingFilaments`），在 `docs/opus-animation-landscape.md` 新增第 `2.32` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座须弥莲座底层台基四角新增八座瑞兽狮子护法座镇高浮雕（`PedestalCornerLion_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`463,799 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,581,058 B`）；在 `buildWall()` 中于四座须弥座底角增绘瑞兽金座镇，在 `drawBody()` 离屏缓存中于腰间中央增绘盛唐百褶丝绸绶带与泥金流云纹；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.8ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入哥伦布陨石坑陡壁滚石轨迹与碎石滑槽（`rockfall_chutes`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`170,340 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,093,971 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对古地下水湖岸层序引入明矾石-水镁矾酸性硫酸盐层色带（`aluniteKieserite`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增两座液氢（LH2）汽化换热器撬块（`Pad_LH2_Vaporizer_0..1`）与一级尾裙两侧发动机舱氦气吹扫分配总管（`Rocket_EnginePurgeManifold_0..1`），导出 `rocket-kit.glb`（`494,296 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`881,642 B`）；在 `flameMaterial` 中引入超音速尾焰湍流混合层高温热辐射发光细丝项（`radiativeMixingFilaments`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 = 33.4ms`（`≤ 50ms`，28 draw calls，38,012 三角面，52 活跃烟粒）。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第五十五阶段验收：夜间持续进化 · 维拉鲁宾山脊成岩刀片状裂隙鳍与结晶赤铁矿层、莫高窟佛龛拱圈外侧宝相璎珞花坠与飞天宝冠凤翼步摇花钿、及声学降噪环管主供水集管与上面级后裙遥测整流罩及尾焰寂静区复合辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新 Web Search 调研（火星 MRO CRISM/HiRISE 与好奇号在盖尔撞击坑维拉鲁宾山脊探测到的成岩抗风蚀刀片状裂隙鳍 `Vera Rubin Ridge Bladed Fracture Fins` 与砖红结晶赤铁矿层 `Crystalline Red Hematite Horizons`、莫高窟盛唐第 320/392 窟佛龛拱圈外侧悬垂宝相璎珞花坠浮雕与飞天宝冠两侧鎏金凤翼步摇花钿、以及发射台声学降噪环管主供水分配集管 `Pad_AcousticFeedHeader`、上面级后裙四向遥测天线整流罩 `Rocket_UpperTelemetryFairing` 与超音速尾焰寂静区电离自由基复合辉光 `recombinationGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.33` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座唐代佛龛外拱圈中上部两侧新增八枚宝相璎珞花坠高浮雕（`NicheArchGarlandPendant_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`463,993 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,581,468 B`）；在 `buildWall()` 中于四龛拱圈外侧增绘宝相璎珞花坠金饰，在 `drawBody()` 离屏缓存中于宝冠两侧增绘盛唐鎏金凤翼步摇花钿；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.8ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入盖尔撞击坑维拉鲁宾山脊成岩刀片状裂隙鳍（`vera_rubin_fins`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`170,390 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,691 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对莫瑞组中坡陡坎引入维拉鲁宾山脊砖红结晶赤铁矿层色带（`veraRubinHematite`），并将片元着色器中 17 处超越函数 `pow()` 优化为内联多项式乘法（`pow3`/`pow4`/`pow5`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增两条声学降噪环管主供水分配集管（`Pad_AcousticFeedHeader_0..1`）与上面级后裙四向遥测天线整流罩（`Rocket_UpperTelemetryFairing_0..3`），导出 `rocket-kit.glb`（`503,588 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`881,609 B`）；在 `flameMaterial` 中引入超音速尾焰寂静区电离自由基复合辉光项（`recombinationGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 = 50.0ms`（`≤ 50ms`，28 draw calls，38,132 三角面，52 活跃烟粒）。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第五十六阶段验收：夜间持续进化 · 杰泽罗陨石坑塞塔组蛇纹石碳酸盐橄榄岩与巨型沙波滑落面颗粒流舌、莫高窟柱头仰覆莲栌斗拱座与飞天裙裾联珠卷云锦缘流苏、及导流槽水幕喷嘴排管与级间分离推冲器整流壳及马赫反射三波点滑流辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新 Web Search 调研（火星 MRO CRISM/HiRISE 与毅力号在杰泽罗撞击坑塞塔组及尼利槽沟探测到的蛇纹石-碳酸盐蚀变橄榄岩堆晶层 `Séítah Serpentine-Carbonate Olivine Cumulates` 与风成巨型沙波滑落面颗粒流舌 `Barchanoid Megaripple Slipface Grainflow Tongues`、莫高窟盛唐第 217/172 窟佛龛柱头仰覆莲栌斗拱座浮雕与飞天长裙下摆联珠卷云锦缘双珠流苏、以及发射台导流槽水幕喷嘴排管 `Pad_TrenchWaterNozzleManifold`、级间分离气动弹簧推冲器整流壳 `Rocket_SeparationActuator` 与尾焰马赫反射三波点滑流剪切辉光 `triplePointSlipstream`），在 `docs/opus-animation-landscape.md` 新增第 `2.34` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座唐代佛龛两侧龛柱柱头新增八座仰覆莲栌斗拱座高浮雕（`PillarLotusCapital_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`463,961 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,581,899 B`）；在 `buildWall()` 中于四龛龛柱柱头增绘仰覆莲栌斗拱座金饰，在 `drawBody()` 离屏缓存中于飞天长裙下摆增绘盛唐联珠卷云锦缘与双珠流苏；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.8ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入杰泽罗撞击坑风成巨型沙波滑落面颗粒流舌（`megaripple_grainflows`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`170,521 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,298 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对古火山-水热蚀变基底引入塞塔组蛇纹石-碳酸盐蚀变橄榄岩色带（`seitahCarbonate`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增两条导流槽内缘高压水幕喷嘴排管（`Pad_TrenchWaterNozzleManifold_0..1`）与级间段四向气动弹簧分离推冲器整流壳（`Rocket_SeparationActuator_0..3`），导出 `rocket-kit.glb`（`512,972 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`881,590 B`）；在 `flameMaterial` 中引入马赫反射三波点滑流剪切辉光项（`triplePointSlipstream`）并将片元着色器 `pow()` 整数幂内联为快速多项式乘法；实测稳态升空（`T+9s`）尾部 120 帧 `p95 = 50.0ms`（`≤ 50ms`，28 draw calls，38,252 三角面，54 活跃烟粒）。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第五十七阶段验收：夜间持续进化 · 盖尔与水手峡谷半水石膏成岩脉网与断层陡壁山嘴冲沟肋、莫高窟藻井垂幔风铎金铃与飞天小臂挽结流云彩绶、及脐带塔低温吹扫放空立管与整流罩声学百叶排气窗及喷口边界层再层流化条纹辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新 Web Search 调研（火星 MRO CRISM/HiRISE 与好奇号在盖尔撞击坑及水手峡谷探测到的半水石膏-硬石膏硫酸钙穿层成岩脉网 `Bassanite-Anhydrite Calcium Sulfate Veins` 与断层陡壁山嘴冲沟分水肋 `Fault-Scarp Spur-and-Gully Ribbing`、莫高窟盛唐第 112/159 窟藻井垂幔风铎金铃浮雕与飞天小臂挽结流云彩绶、以及发射塔顶低温吹扫放空立管 `Pad_UmbilicalPurgeStack`、有效载荷整流罩声学防热毯百叶排气窗 `Rocket_FairingVentLouver` 与尾焰喷口边界层再层流化条纹辉光 `boundaryLayerStreak`），在 `docs/opus-animation-landscape.md` 新增第 `2.35` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛上方藻井垂幔下缘新增四枚风铎金铃高浮雕（`CaissonValanceWindBell_0..3`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`464,114 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,582,267 B`）；在 `buildWall()` 中于四龛上方垂幔下缘增绘风铎金铃，在 `drawBody()` 离屏缓存中于飞天小臂处增绘盛唐挽结流云彩绶与双垂珠；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.8ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入水手峡谷与诺克提斯迷宫断层陡壁山嘴冲沟肋（`spur_gully_ribs`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`170,705 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,357 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对穿切沉积岩层的硫酸钙胶结裂隙引入半水石膏-硬石膏亮白脉网色带（`bassaniteVein`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增两根发射塔顶低温吹扫放空立管（`Pad_UmbilicalPurgeStack_0..1`）与整流罩下段四向声学防热毯百叶排气窗（`Rocket_FairingVentLouver_0..3`），导出 `rocket-kit.glb`（`522,264 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`882,867 B`）；在 `flameMaterial` 中引入喷口边界层再层流化纵向热流条纹辉光项（`boundaryLayerStreak`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 = 50.0ms`（`≤ 50ms`，28 draw calls，38,372 三角面，54 活跃烟粒）。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第五十八阶段验收：夜间持续进化 · 欧克西亚平原铁镁蛭石皂石黏土与湖相韵律季纹层、莫高窟龛楣拱肩流云宝珠团花与飞天腰佩双联白玉环、及导流槽余氢点火放散火炬立柱与一级尾裙 TVC 蓄能器包及喷管唇口膨胀扇微激波
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新 Web Search 调研（火星 MRO CRISM/OMEGA 与 HiRISE 在欧克西亚平原及莫斯谷探测到的铁镁蛭石-皂石古土壤黏土层 `Oxia Planum Vermiculite-Saponite Clay Paleosols` 与莫瑞组湖相韵律季纹薄层微阶梯 `Rhythmic Lacustrine Varve Laminations`、莫高窟盛唐第 148/172 窟佛龛龛楣拱肩流云宝珠团花浮雕与飞天腰佩双联白玉环、以及发射台导流槽余氢点火放散火炬立柱 `Pad_HydrogenFlareStack`、一级尾裙 TVC 液压蓄能器整流包 `Rocket_TVC_AccumulatorPod` 与尾焰喷管唇口普朗特-迈耶膨胀扇微激波 `lipExpansionWave`），在 `docs/opus-animation-landscape.md` 新增第 `2.36` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛龛楣外拱肩两侧新增八枚流云宝珠团花高浮雕（`NicheSpandrelCloudMedallion_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`464,266 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,582,886 B`）；在 `buildWall()` 中于四龛龛楣拱肩增绘流云宝珠团花金饰，在 `drawBody()` 离屏缓存中于飞天腰间百褶绶带下缘增绘盛唐双联白玉环佩；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.8ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入盖尔撞击坑莫瑞组与莫斯谷湖相韵律季纹薄层阶梯（`lacustrine_laminations`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`170,817 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,183 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对古湖盆与低缓层序引入欧克西亚平原铁镁蛭石-皂石黏土古土壤色带（`oxiaVermiculite`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增两座导流槽尾端余氢安全点火放散火炬立柱（`Pad_HydrogenFlareStack_0..1`）与一级尾裙四向 TVC 伺服液压蓄能器整流包（`Rocket_TVC_AccumulatorPod_0..3`），导出 `rocket-kit.glb`（`531,568 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`883,045 B`）；在 `flameMaterial` 中引入喷管唇口普朗特-迈耶膨胀扇微激波条纹辉光项（`lipExpansionWave`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 = 33.4ms`（`≤ 50ms`，28 draw calls，38,492 三角面，50 活跃烟粒）。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第五十九阶段验收：夜间持续进化 · 诺克提斯迷宫羟基硫酸铁叶绿矾层与雁列式构造张裂隙、莫高窟须弥座上枭海石榴卷草华版与飞天云肩双肩垂珠流苏、及导流槽耐火陶瓷装甲锚固肋与上面级增压管路隔振卡箍及激波羟基自由基发光晕环
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新 Web Search 调研（火星 MRO CRISM/HiRISE 在诺克提斯迷宫与卡普里峡谷探测到的羟基硫酸铁叶绿矾-纤维铁矾矿层 `Ferric Hydroxysulfate Copiapite-Fibroferrite Outcrops` 与克拉里塔斯槽沟雁列式构造张裂隙 `En-Echelon Tectonic Tension Gashes`、莫高窟盛唐第 220/321 窟须弥座上枭海石榴卷草华版浮雕与飞天四合如意云肩双肩垂珠流苏、以及发射台导流槽耐火陶瓷装甲锚固肋 `Pad_DeflectorRefractoryRib`、上面级外置增压管路隔振卡箍 `Rocket_UpperPressClamp` 与尾焰激波诱导羟基/碳氢自由基发光晕环 `shockRadicalHalo`），在 `docs/opus-animation-landscape.md` 新增第 `2.37` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座须弥莲座上枭正中新增四枚海石榴卷草华版高浮雕（`PedestalPalmettePlaque_0..3`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`464,403 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,583,423 B`）；在 `buildWall()` 中于四座须弥座上枭正中增绘海石榴卷草华版金饰，在 `drawBody()` 离屏缓存中于飞天四合如意云肩两侧增绘双肩垂珠流苏；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.7ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入克拉里塔斯槽沟与诺克提斯迷宫雁列式构造张裂隙（`en_echelon_gashes`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`170,767 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,143 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对峡谷酸性氧化斜坡引入诺克提斯迷宫叶绿矾-纤维铁矾羟基硫酸铁金珀色带（`noctisCopiapite`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增四根导流槽耐火陶瓷装甲锚固肋（`Pad_DeflectorRefractoryRib_0..3`）与上面级四组外置增压管路隔振卡箍（`Rocket_UpperPressClamp_0..3`），导出 `rocket-kit.glb`（`541,288 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`883,155 B`）；在 `flameMaterial` 中引入激波诱导羟基/碳氢自由基化学发光晕环项（`shockRadicalHalo`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 = 33.4ms`（`≤ 50ms`，28 draw calls，38,588 三角面，52 活跃烟粒）。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第六十阶段验收：夜间持续进化 · 埃里达尼亚盆地海底热液滑石明矾石层与板状挤压脊溢流玄武岩壳、莫高窟佛龛内侧忍冬卷草束竹柱花节与飞天凤尾钗垂珠步摇、及压紧支座防爆导流护罩与二级发动机万向节防热靴及底部环状回流二次燃烧涡环辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新 Web Search 调研（火星 MRO CRISM/HiRISE 在埃里达尼亚盆地与哥伦布陨石坑探测到的海底热液滑石-皂石-明矾石蚀变层 `Eridania Seafloor Hydrothermal Talc-Saponite-Alunite Deposits` 与阿萨巴斯卡谷板状挤压脊溢流玄武岩熔岩壳 `Platy-Ridged Flood-Basalt Lava Crusts`、莫高窟盛唐第 45/320 窟佛龛内侧忍冬卷草束竹柱花节浮雕与飞天三翎凤尾钗垂珠步摇、以及发射台压紧支座防爆导流护罩 `Pad_HoldDownBlastHood`、二级发动机万向节防热靴整流罩 `Rocket_UpperGimbalBoot` 与尾焰箭体底部环状回流区二次燃烧涡环辉光 `baseVortexAfterburn`），在 `docs/opus-animation-landscape.md` 新增第 `2.38` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛内侧框束竹柱中段新增八枚忍冬卷草束竹柱花节高浮雕（`NicheJambHoneysuckle_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`465,042 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,585,374 B`）；在 `buildWall()` 中于四龛内侧框增绘忍冬卷草束竹柱花节金饰，在 `drawBody()` 离屏缓存中于飞天三翎鎏金凤尾钗尾端增绘双珠垂坠步摇；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.7ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入阿萨巴斯卡谷与刻耳柏洛斯槽沟板状挤压脊溢流玄武岩熔岩壳（`platy_basalt_ridges`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`170,822 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,164 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对古深海热液盆地斜坡引入埃里达尼亚滑石-皂石-明矾石浅青瓷色带（`eridaniaTalcAlunite`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增四具发射台压紧支座防爆导流护罩（`Pad_HoldDownBlastHood_0..3`）与二级发动机四周万向节伺服防热靴整流罩（`Rocket_UpperGimbalBoot_0..3`），导出 `rocket-kit.glb`（`551,340 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`882,855 B`）；在 `flameMaterial` 中引入箭体底部环状回流区富燃二次燃烧涡环辉光项（`baseVortexAfterburn`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 = 33.4ms`（`≤ 50ms`，28 draw calls，38,684 三角面，51 活跃烟粒）。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第六十一阶段验收：夜间持续进化 · 安东尼亚第撞击坑葡萄石绿帘石热液层与水下浊积岩交错层理、莫高窟佛龛内拱脚缠枝忍冬花结与飞天金臂钏双垂珠流苏、及发射塔防雷电晕消散横担与一级液氧贮箱环形加劲肋及马赫杆正激波热解离辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新 Web Search 调研（火星 MRO CRISM/HiRISE 在安东尼亚第撞击坑与大流沙高地探测到的葡萄石-绿帘石-绿纤石热液蚀变矿物层 `Prehnite-Epidote-Pumpellyite Hydrothermal Assemblages` 与梅拉斯峡谷水下浊积岩交错层理及软沉积褶皱 `Subaqueous Turbidite Cross-Bedding & Soft-Sediment Folds`、莫高窟盛唐第 23/103 窟佛龛内拱脚缠枝忍冬宝珠花结浮雕与飞天上臂联珠金臂钏双垂珠流苏、以及发射塔防雷电晕消散横担阵 `Pad_LightningCoronaArm`、一级液氧贮箱环形加劲肋整流环 `Rocket_LOX_RingStiffener` 与尾焰马赫杆正激波热解离连续谱辉光 `machStemDissociation`），在 `docs/opus-animation-landscape.md` 新增第 `2.39` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛内拱脚两侧新增八枚缠枝忍冬宝珠花结高浮雕（`NicheSpringerLotus_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`465,221 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,585,492 B`）；在 `buildWall()` 中于四龛内拱脚增绘缠枝忍冬宝珠花结金饰，在 `drawBody()` 离屏缓存中于飞天上臂联珠金臂钏下缘增绘双垂珠流苏；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.8ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入梅拉斯峡谷与安东尼亚第撞击坑水下浊积岩交错层理及软沉积褶皱（`turbidite_crossbeds`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`170,876 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,106 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对撞击热液斜坡引入安东尼亚第葡萄石-绿帘石翠绿热液色带（`antoniadiPrehnite`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射塔顶十字防雷电晕消散横担阵（`Pad_LightningCoronaArm_0..1`）与箭体一级液氧贮箱外壁三道环形加劲肋整流环（`Rocket_LOX_RingStiffener_0..2`），导出 `rocket-kit.glb`（`559,032 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`883,354 B`）；在 `flameMaterial` 中引入马赫杆正激波高温热解离连续谱辉光项（`machStemDissociation`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 = 50.0ms`（`≤ 50ms`，28 draw calls，38,984 三角面，52 活跃烟粒）。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第六十二阶段验收：夜间持续进化 · 西门利亚高地氯盐明矾石干盐湖环与线状谷底冰川流槽、莫高窟佛龛拱脊流云火焰宝珠与飞天腰系新月玉璜、及发射台低温阀岛排空管与一级前裙冷气姿控舱及激波三波点剪切涡环辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新 Web Search 调研（火星 MRO CRISM/HiRISE 在西门利亚高地与克罗斯撞击坑探测到的氯盐-明矾石干盐湖沉积环 `Terra Sirenum Chloride-Alunite Playa Rings` 与德特罗尼勒斯桌山线状谷底堆积冰川纵向流槽 `Lineated Valley Fill Glacial Flow Furrows`、莫高窟盛唐第 321 窟佛龛拱脊两侧流云火焰宝珠花结浮雕与飞天腰系新月玉璜同心结绶带、以及发射台低温阀岛撬块蒸发排空立管 `Pad_CryoValveSkidStack`、一级前裙段四向冷气姿控推力器整流包 `Rocket_FwdRCS_Pod` 与尾焰马赫激波三波点环形剪切涡环辉光 `triplePointVortexRing`），在 `docs/opus-animation-landscape.md` 新增第 `2.40` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛外拱脊两侧新增八枚流云火焰宝珠花结高浮雕（`NicheExtradosFlame_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`465,522 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,586,093 B`）；在 `buildWall()` 中于四龛外拱脊增绘流云火焰宝珠花结金饰，在 `drawBody()` 离屏缓存中于飞天腰间双联白玉环下缘增绘新月玉璜与双环同心结绶带；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.7ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入德特罗尼勒斯桌山与马默斯谷线状谷底堆积冰川纵向流槽与终碛微脊（`lvf_flow_furrows`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`170,862 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,412 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对古干盐湖盆地边缘引入西门利亚高地氯盐-明矾石高反照色带（`sirenumChlorideAlunite`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台外围低温阀岛撬块两根垂直蒸发排空立管（`Pad_CryoValveSkidStack_0..1`）与箭体一级前裙段四向冷气姿控推力器整流包（`Rocket_FwdRCS_Pod_0..3`），导出 `rocket-kit.glb`（`568,204 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`883,408 B`）；在 `flameMaterial` 中引入马赫激波三波点环形开尔文-亥姆霍兹剪切涡环辉光项（`triplePointVortexRing`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 = 33.4ms`（`≤ 50ms`，28 draw calls，39,104 三角面，51 活跃烟粒）。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第六十三阶段验收：夜间持续进化 · 古谢夫本垒台水合蛋白石硅华丘与子午线蚀刻硫酸盐雅丹盆地、莫高窟须弥座圭脚卷云如意角叶与飞天宝冠正中摩尼火焰珠金钿、及导流槽侧壁声学水幕帘集管与整流罩底环剪力板及桶形激波滑移线辐射亮辫
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新 Web Search 调研（火星勇气号与 MRO CRISM/HiRISE 在古谢夫撞击坑本垒台及尼利槽沟探测到的水合蛋白石硅华热液泉华丘 `Home Plate Hydrothermal Opaline Silica Sinter` 与子午线平原风蚀硫酸盐雅丹吹蚀洼地 `Etched Sulfate Yardang Deflation Basins`、莫高窟盛唐第 45 窟须弥座圭脚四角卷云如意角叶浮雕与飞天宝冠正中摩尼火焰珠金钿、以及发射台导流槽侧壁声学水幕帘喷淋集管 `Pad_TrenchCurtainHeader`、整流罩底环四向分离声学抱箍剪力板 `Rocket_FairingBaseShearPlate` 与尾焰桶形激波滑移线辐射亮辫 `barrelShockSlipBraid`），在 `docs/opus-animation-landscape.md` 新增第 `2.41` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座须弥莲座圭脚四角新增八枚卷云如意角叶高浮雕（`PedestalPlinthRuyi_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`465,741 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,587,007 B`）；在 `buildWall()` 中于四座须弥座圭脚增绘卷云如意角叶金饰，在 `drawBody()` 离屏缓存中于飞天额顶发际花胜上方增绘宝冠正中摩尼火焰珠金钿；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.8ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入子午线平原与阿拉伯高地风蚀硫酸盐雅丹吹蚀洼地与交错层理砂岩垄（`etched_sulfate_yardangs`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`170,906 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,095,052 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对火山热液蚀变露头引入古谢夫本垒台水合蛋白石硅华象牙白高反照色带（`homePlateSilica`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增两条导流槽侧壁声学水幕帘喷淋集管（`Pad_TrenchCurtainHeader_0..1`）与有效载荷整流罩底环四向分离声学抱箍剪力板（`Rocket_FairingBaseShearPlate_0..3`），导出 `rocket-kit.glb`（`577,580 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`883,685 B`）；在 `flameMaterial` 中引入欠膨胀桶形激波滑移线辐射亮辫项（`barrelShockSlipBraid`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 = 49.9ms`（`≤ 50ms`，28 draw calls，39,224 三角面，52 活跃烟粒）。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第六十四阶段验收：夜间持续进化 · 莫斯谷高岭石绿脱石双层黏土层序与箱状矿化裂隙阶地、莫高窟藻井平棋斜坡椽头团莲与飞天足腕双铃金钏、及径向排氢火花点火桅杆与一级尾舱隔热靴段及剪切层涡舌辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新 Web Search 调研（火星 ESA ExoMars 与 MRO CRISM/HiRISE 在莫斯谷与奥克西亚高原探测到的上覆富铝高岭石-三价铁绿脱石双层黏土层序 `Mawrth Vallis Kaolinite-Nontronite Double-Layer Clay Stratigraphy` 与矿化箱状裂隙黏土阶地 `Mineralized Boxwork Clay Benches`、莫高窟盛唐第 172/217 窟藻井平棋斜坡椽头描金团莲浮雕与飞天足腕双铃金钏、以及发射台径向排氢火花点火桅杆 `Pad_ROFI_IgniterMast`、一级尾舱底缘四向隔热靴护板 `Rocket_AftThermalBoot` 与尾焰剪切层开尔文-亥姆霍兹涡舌尖端辉光 `khVortexTongue`），在 `docs/opus-animation-landscape.md` 新增第 `2.42` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿窟顶斗四藻井平棋斜坡四龛上方新增八枚椽头描金团莲高浮雕（`CaissonRafterLotus_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`466,086 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,588,276 B`）；在 `buildWall()` 中于四龛上方平棋斜坡增绘椽头描金团莲，在 `drawBody()` 离屏缓存中于飞天足踝流苏系带旁增绘双铃金钏；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.7ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入莫斯谷与坎多尔峡谷双层黏土微阶地与矿化裂隙脊（`mawrth_clay_benches`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`170,953 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,499 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对诺亚纪风化古土壤层序引入莫斯谷高岭石-绿脱石暖米赭色带（`mawrthKaoliniteNontronite`）并采用正交相基矢（`sP, cP, sM, cM`）加速高频矿物谐波计算，科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台两座倾斜径向排氢火花点火桅杆（`Pad_ROFI_IgniterMast_0..1`）与箭体一级尾舱底缘四向隔热靴护板（`Rocket_AftThermalBoot_0..3`），导出 `rocket-kit.glb`（`586,820 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`883,685 B`）；在 `flameMaterial` 中引入湍流剪切层开尔文-亥姆霍兹卷吸涡舌尖端二次复燃辉光项（`khVortexTongue`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 = 49.9ms`（`≤ 50ms`，28 draw calls，39,344 三角面，51 活跃烟粒）。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第六十五阶段验收：夜间持续进化 · 杰泽罗与埃伯斯瓦尔德古三角洲前积斜层理与皂石碳酸盐泥岩、莫高窟藻井四角垂角托花团花与飞天金铜云纹鞓带佩饰、及导流槽耐火砖内衬肋与上面级低温蒸发百叶罩及马赫杆三波点交汇亮环
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新 Web Search 调研（火星毅力号与 MRO CRISM/HiRISE 在杰泽罗西扇与埃伯斯瓦尔德撞击坑探测到的进积型古三角洲前积斜层理 `Progradational Deltaic Clinoform Foreset Beds` 与富镁皂石-碳酸盐湖相泥岩 `Mg-Saponite & Carbonate Lacustrine Mudstone`、莫高窟盛唐第 45/320 窟藻井四角垂角飞天托花团花浮雕与飞天腰间金铜云纹鞓带垂珠佩饰、以及发射台火焰导流槽耐火砖内衬横肋 `Pad_FlameTrenchLiner`、上面级四向低温蒸发气体百叶排气罩 `Rocket_CryoBoiloffVent` 与尾焰马赫杆三波点交汇亮环 `machTriplePointRing`），在 `docs/opus-animation-landscape.md` 新增第 `2.43` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿窟顶藻井四龛上方四角垂角处新增八枚托花团花高浮雕（`CaissonCornerFloralMedallion_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`467,038 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,590,740 B`）；在 `buildWall()` 中于四龛上方藻井垂角增绘托花团花金饰，在 `drawBody()` 离屏缓存中于飞天腰间嵌宝玉带两侧增绘金铜云纹鞓带牌饰与悬垂明珠；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.8ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入杰泽罗西扇与埃伯斯瓦尔德古三角洲前积斜层理（`jezero_clinoform_foresets`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`170,999 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,234 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对古湖盆三角洲前缘层序引入富镁皂石-碳酸盐泥岩青灰绿色带（`jezeroDeltaClinoform`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽底部四道耐火砖防冲刷内衬横肋（`Pad_FlameTrenchLiner_0..3`）与箭体上面级四向低温蒸发气体百叶排气罩（`Rocket_CryoBoiloffVent_0..3`），导出 `rocket-kit.glb`（`596,576 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`883,455 B`）；在 `flameMaterial` 中引入马赫杆三波点交汇亮环项（`machTriplePointRing`）并采用预计算轴向/周向正交相基矢（`sA, cA, sX, cX`）加速多激波谐波合成；实测稳态升空（`T+9s`）尾部 120 帧 `p95 = 50.0ms`（`≤ 50ms`，28 draw calls，39,440 三角面，53 活跃烟粒）。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第六十六阶段验收：夜间持续进化 · 尼利槽沟滑石蛇纹石热液脉与曼加拉谷洪水跌水冲槽、莫高窟须弥座束腰壶门宝珠团花与飞天望仙髻顶夜明珠金步摇、及导流槽声学折流百叶板与箱间航电脱插整流包及反射斜激波滑移线亮辫
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新 Web Search 调研（火星 MRO CRISM/HiRISE 在尼利槽沟探测到的超基性热液滑石-蛇纹石-皂石蚀变脉 `Nili Fossae Hydrothermal Talc-Serpentine-Saponite Veins` 与曼加拉谷灾难性外流洪水冲刷纵向刻槽及瀑布跌水坑 `Mangala Valles Cataract Scour Grooves & Plunge Basins`、莫高窟盛唐第 148/320 窟须弥座束腰壶门宝珠团花浮雕与飞天双环望仙髻顶夜明珠金步摇簪首、以及发射台导流槽侧壁声学折流消音百叶板 `Pad_AcousticBafflePanel`、一级箱间段四向航电脱插脐带整流包 `Rocket_IntertankUmbilical` 与尾焰反射斜激波滑移线发光辫 `reflectedShockSlipBraid`），在 `docs/opus-animation-landscape.md` 新增第 `2.44` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座须弥莲座束腰正中壶门两侧新增八枚宝珠团花高浮雕（`PedestalKunmenJewel_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`467,096 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,591,198 B`）；在 `buildWall()` 中于四座须弥座束腰壶门两侧增绘宝珠团花金饰，在 `drawBody()` 离屏缓存中于飞天双环望仙髻顶端增绘夜明珠金步摇簪首；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.8ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入曼加拉谷与卡塞谷灾难性洪水瀑布跌水坑与纵向冲刷刻槽（`cataract_scour_grooves`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`171,049 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,492 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对超基性热液蚀变层序引入尼利槽沟滑石-蛇纹石-皂石翠青绿色带（`niliTalcSerpentine`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽侧壁四组声学折流消音百叶板（`Pad_AcousticBafflePanel_0..3`）与箭体一级箱间段四向航电脱插脐带整流包（`Rocket_IntertankUmbilical_0..3`），导出 `rocket-kit.glb`（`606,436 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`883,639 B`）；在 `flameMaterial` 中引入反射斜激波滑移线发光辫项（`reflectedShockSlipBraid`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 = 49.9ms`（`≤ 50ms`，28 draw calls，39,536 三角面，50 活跃烟粒）。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第六十七阶段验收：夜间持续进化 · 盖尔撞击坑维拉鲁宾山脊成岩结晶灰赤铁矿与断层转换斜坡、莫高窟佛龛楣拱卷叶莲华与飞天胸前七宝璎珞珊玉坠饰、及导流槽冠部水幕分配喷嘴与上面级冷气姿控推力器包及马赫盘下游亚音速涡环核心辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新 Web Search 调研（火星好奇号与 MRO CRISM/HiRISE 在盖尔撞击坑维拉鲁宾山脊探测到的成岩重结晶灰赤铁矿与裂隙漂白晕 `Vera Rubin Ridge Crystalline Gray Hematite` 及水手峡谷断层擦痕与地堑转换斜坡 `Tectonic Graben Relay Ramps`、莫高窟盛唐第 158/217 窟佛龛楣拱卷叶莲华浮雕与飞天胸前七宝璎珞月牙项圈珊玉坠饰、以及发射台导流槽冠部水幕分配集管喷嘴 `Pad_DeflectorCrestHeader`、上面级四向冷气姿控推力器四联包 `Rocket_RCSThrusterQuad` 与尾焰马赫盘下游亚音速涡环核心辉光 `subsonicVortexCoreGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.45` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛上楣拱圈两侧新增八枚卷叶莲华高浮雕（`NicheLintelLotusScroll_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`467,258 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,592,534 B`）；在 `buildWall()` 中于四龛上楣拱圈两侧增绘卷叶莲华金饰，在 `drawBody()` 离屏缓存中于飞天胸前新月鎏金项圈下方增绘七宝璎珞珊玉坠饰；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.8ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入水手峡谷与哥普拉特斯峡谷断层擦痕与地堑转换斜坡（`tectonic_relay_ramps`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`171,154 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,093,993 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对成岩蚀变层序引入维拉鲁宾山脊结晶灰赤铁矿灰紫色带（`veraRubinGrayHematite`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽冠部四向水幕分配集管喷嘴（`Pad_DeflectorCrestHeader_0..3`）与箭体上面级四向冷气姿控推力器四联包（`Rocket_RCSThrusterQuad_0..3`），导出 `rocket-kit.glb`（`619,832 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`883,702 B`）；在 `flameMaterial` 中引入马赫盘下游亚音速涡环核心辉光项（`subsonicVortexCoreGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 = 50.0ms`（`≤ 50ms`，28 draw calls，39,728 三角面，51 活跃烟粒）。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第六十八阶段验收：夜间持续进化 · 哥伦布撞击坑古湖岸石膏高岭石明矾石环与阿西达利亚泥火山同心环壕、莫高窟佛龛外拱圈宝相花火焰珠顶饰与飞天腕部联珠绿松石手镯、及导流槽高铝耐火锚固块与尾裙防热幕吹扫排气口及马赫盘缘环形激波串辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新 Web Search 调研（火星 MRO CRISM/HiRISE 在塞壬高地哥伦布撞击坑古湖岸探测到的石膏-高岭石-明矾石蒸发岩环带 `Columbus Crater Gypsum-Kaolinite-Alunite Evaporite Rings` 与阿西达利亚平原泥火山同心环壕 `Acidalia Planitia Mud-Volcano Concentric Ring Moats`、莫高窟盛唐第 172/320 窟佛龛外拱圈缠枝宝相花火焰珠顶饰与飞天腕部双股联珠绿松石手镯、以及发射台导流槽高铝耐火浇注料重型锚固块 `Pad_TrenchRefractoryBlock`、一级尾裙防热幕吹扫排气口 `Rocket_SkirtPurgeVent` 与尾焰马赫盘缘环形激波串辉光 `annularShockTrainGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.46` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛外拱圈顶部两侧新增八枚缠枝宝相花火焰珠顶饰高浮雕（`NicheExtradosFloralFinial_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`467,590 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,593,026 B`）；在 `buildWall()` 中于四龛外拱圈顶部两侧增绘宝相花火焰珠金饰，在 `drawBody()` 离屏缓存中于飞天手腕腕钏与翠玉跳脱之间增绘双股联珠绿松石手镯；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.7ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入阿西达利亚与乌托邦平原泥火山同心环壕与压实多边形浅槽（`mud_volcano_moats`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`171,057 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,086 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对古湖岸蒸发层序引入哥伦布撞击坑石膏-高岭石-明矾石暖米白色带（`columbusGypsumAlunite`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽底板四组高铝耐火浇注料重型锚固块（`Pad_TrenchRefractoryBlock_0..3`）与箭体一级尾裙四向防热幕吹扫排气口（`Rocket_SkirtPurgeVent_0..3`），导出 `rocket-kit.glb`（`629,840 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`883,620 B`）；在 `flameMaterial` 中引入马赫盘缘环形激波串辉光项（`annularShockTrainGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 = 50.0ms`（`≤ 50ms`，28 draw calls，39,824 三角面，52 活跃烟粒）。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第六十九阶段验收：夜间持续进化 · 奥克西亚高原铁镁蛭石水铁矿古土壤与阿萨巴斯卡谷板状熔岩筏、莫高窟佛龛拱脚摩竭鱼龙卷云座与飞天小臂螺钿缠枝牡丹金臂鞲、及导流槽高压氮气惰化集管与船尾整流翼条及桶形激波三波点马赫茎辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新 Web Search 调研（火星 ExoMars/MRO CRISM 与 HiRISE 在奥克西亚高原探测到的诺亚纪铁镁蛭石-水铁矿风化古土壤 `Oxia Planum Vermiculite-Ferrihydrite Paleosols` 与阿萨巴斯卡谷板状挤压脊熔岩筏尾迹剪切槽 `Athabasca Valles Platy Lava Rafts`、莫高窟盛唐第 217/320 窟佛龛拱脚摩竭鱼龙卷云座浮雕与飞天小臂螺钿缠枝牡丹金臂鞲、以及发射台导流槽底部高压氮气惰化吹扫集管排 `Pad_NitrogenPurgeHeader`、一级船尾气动整流翼条 `Rocket_BoatTailStrake` 与尾焰桶形激波三波点环形马赫茎辉光 `barrelTripleMachGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.47` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛拱圈起脚处新增八枚摩竭鱼龙卷云座高浮雕（`NicheArchFootMakara_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`467,579 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,593,091 B`）；在 `buildWall()` 中于四龛拱脚两侧增绘摩竭鱼龙卷云金饰，在 `drawBody()` 离屏缓存中于飞天小臂增绘螺钿缠枝牡丹金臂鞲；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.8ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入埃律西昂平原与阿萨巴斯卡谷板状挤压脊熔岩筏与尾迹剪切槽（`athabasca_lava_rafts`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`171,175 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,619 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对诺亚纪风化黏土层序引入奥克西亚高原铁镁蛭石-水铁矿暖褐赭色带（`oxiaVermiculiteFerrihydrite`），并提取共享高程/坡度包络（`envLowMid`/`envMid`/`envUpperMid`）大幅降低片元着色器开销；科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽底部四排高压氮气惰化吹扫集管排（`Pad_NitrogenPurgeHeader_0..3`）与箭体一级尾裙船尾段四向气动整流翼条（`Rocket_BoatTailStrake_0..3`），导出 `rocket-kit.glb`（`639,776 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`883,564 B`）；在 `flameMaterial` 中引入桶形激波三波点环形马赫茎辉光项（`barrelTripleMachGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 = 33.4ms`（`≤ 50ms`，28 draw calls，39,920 三角面，54 活跃烟粒）。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第七十阶段验收：夜间持续进化 · 坎多尔与梅拉斯峡谷三价铁羟基硫酸盐层状丘与阿卡迪亚扩口坑热喀斯特阶地、莫高窟须弥座上仰莲束腰迦陵频伽宝相团花与飞天腰侧双凤同心结珊玉绶带垂流苏、及导流槽声学扩压锯齿板与级间外置测量线槽整流罩及马赫茎脱体涡街剪切亮辫
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新 Web Search 调研（火星 MRO CRISM/HiRISE 在坎多尔与梅拉斯峡谷探测到的三价铁羟基硫酸盐层状丘 `Candor/Melas Ferric-Hydroxysulfate Layered Mounds` 与阿卡迪亚平原扩口撞击坑热喀斯特阶地 `Arcadia Planitia Expanded-Crater Terraces`、莫高窟盛唐第 159/320 窟须弥座上仰莲束腰迦陵频伽宝相团花浮雕与飞天腰侧双凤同心结珊玉绶带垂流苏、以及发射台导流槽出口防爆墙声学扩压锯齿板 `Pad_AcousticDiffuserChevron`、级间外置测量与沉底遥测线槽整流罩 `Rocket_InterstageRaceway` 与尾焰马赫茎下游脱体涡街剪切亮辫 `machVortexShedBraid`），在 `docs/opus-animation-landscape.md` 新增第 `2.48` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座须弥莲座上仰莲束腰两侧新增八枚迦陵频伽宝相团花高浮雕（`PedestalKalavinkaMedallion_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`467,782 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,594,104 B`）；在 `buildWall()` 中于四座须弥座上束腰两侧增绘迦陵频伽宝相团花金饰，在 `drawBody()` 离屏缓存中于飞天腰侧增绘双凤同心结珊玉绶带垂流苏；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.7ms`（`≤ 33.3ms`，113 活跃粒子）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入阿卡迪亚平原与弗雷格拉山脉扩口撞击坑热喀斯特阶地与同心环脊（`arcadia_expanded_craters`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`171,242 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,013 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对内部层状硫酸盐沉积层序引入坎多尔与梅拉斯峡谷三价铁羟基硫酸盐暖金琥珀色带（`candorFerricHydroxysulfate`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽出口防爆墙四组声学扩压锯齿板（`Pad_AcousticDiffuserChevron_0..3`）与箭体级间段四向外置测量与沉底遥测线槽整流罩（`Rocket_InterstageRaceway_0..3`），导出 `rocket-kit.glb`（`649,828 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`883,890 B`）；在 `flameMaterial` 中引入马赫茎下游脱体涡街剪切亮辫项（`machVortexShedBraid`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 = 33.4ms`（`≤ 50ms`，28 draw calls，40,016 三角面，54 活跃烟粒）。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第七十一阶段验收：夜间持续进化 · 尤文塔与恒河峡谷一水合硫酸镁镁矾层状台地与陶玛西亚高原皱脊逆冲断崖、莫高窟藻井外檐平棊斗拱仰莲栌斗团花与飞天云肩泥金宝相花如意领扣、及导流槽底双轨检修梁与上面级后裙姿控推进剂总管整流罩及喷管唇口普朗特-迈耶膨胀扇辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新 Web Search 调研（火星 MRO CRISM/HiRISE 在尤文塔与恒河峡谷探测到的一水合硫酸镁水镁矾/白镁矾层状台地 `Juventae/Ganges Kieserite-Starkeyite Benches` 与陶玛西亚高原皱脊后翼逆冲断崖 `Thaumasia Wrinkle-Ridge Backlimb Scarps`、莫高窟盛唐第 392/23 窟藻井外檐平棊斗拱仰莲栌斗团花浮雕与飞天云肩泥金宝相花如意领扣、以及发射台导流槽底部导流板双轨检修滑梁 `Pad_DeflectorRailBeam`、上面级后裙姿控推进剂分配总管整流罩 `Rocket_UpperRcsManifold` 与尾焰喷管唇口普朗特-迈耶膨胀扇辉光 `lipExpansionFanGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.49` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四龛上方藻井外檐平棊新增八座斗拱仰莲栌斗团花高浮雕（`CaissonLotusBracketBlock_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`468,494 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,595,339 B`）；在 `buildWall()` 中于四龛藻井外檐增绘仰莲栌斗团花金饰，在 `drawBody()` 离屏缓存中于飞天云肩前胸交领处增绘泥金宝相花如意领扣；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.8ms`（`≤ 33.3ms`，240 活跃粒子）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入陶玛西亚与索利斯高原皱脊后翼逆冲断崖与锯齿状脊冠（`thaumasia_wrinkle_scarps`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`171,282 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,168 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对古老硫酸盐层序引入尤文塔与恒河峡谷水镁矾-白镁矾浅米黄色带（`juventaeKieseriteStarkeyite`），并进一步抽取共享低坡度与低高程包络（`slopeLow`、`hLow`）消除了前序矿物层的 22 次冗余 `smoothstep` 调用，使 Astra 14 项 E2E 全套耗时从 9.1m 降至 4.3m；科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽底四道导流板重轨检修滑梁（`Pad_DeflectorRailBeam_0..3`）与箭体上面级后裙四向 RCS 推进剂分配总管整流罩（`Rocket_UpperRcsManifold_0..3`），导出 `rocket-kit.glb`（`659,740 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`883,921 B`）；在 `flameMaterial` 中引入喷管唇口普朗特-迈耶膨胀扇辉光项（`lipExpansionFanGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 = 33.4ms`（`≤ 50ms`，28 draw calls，40,112 三角面，53 活跃烟粒）。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第七十二阶段验收：夜间持续进化 · 尤斯与提托尼厄姆峡谷水绿矾-四水绿矾风化壳与阿瑞斯谷洪水阶地砾石沙洲、莫高窟佛龛内拱圈缠枝牡丹石榴团花与飞天足踝双股鎏金绿松石响铃足钏、及导流槽侧壁高速水幕冲击歧管箱与整流罩前锥段声学加强肋及反射激波-马赫茎滑移面复合辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE 在尤斯与提托尼厄姆峡谷探测到的四水绿矾/七水水绿矾风化壳 `Ius/Tithonium Rozenite-Melanterite Efflorescence` 与阿瑞斯谷洪水冲刷阶地砾石沙洲 `Ares Vallis Cataract Boulder Bars`、莫高窟盛唐第 172/320 窟佛龛内拱圈缠枝牡丹石榴团花浮雕与飞天足踝双股鎏金绿松石响铃足钏、以及发射台导流槽侧壁高速水幕冲击歧管箱 `Pad_TrenchWaterCurtainBox`、整流罩前锥段声学阻尼加强肋荚舱 `Rocket_FairingOgiveStiffener` 与反射激波-马赫茎滑移面复合辉光 `reflectedMachSlipGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.50` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四龛内拱圈两侧新增八枚缠枝牡丹石榴团花高浮雕（`NicheIntradosPeonyMedallion_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`468,704 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,596,123 B`）；在 `buildWall()` 中于四龛内拱圈增绘缠枝牡丹石榴团花金饰，在 `drawBody()` 离屏缓存中于飞天足踝增绘双股鎏金绿松石响铃足钏；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.8ms`（`≤ 33.3ms`，240 活跃粒子）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入克律塞平原与阿瑞斯谷流线型冲刷阶地与巨砾沙洲垄（`ares_cataract_bars`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`171,326 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,375 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对硫酸盐淋滤带引入尤斯与提托尼厄姆峡谷四水绿矾-七水水绿矾灰绿色带（`iusRozeniteMelanterite`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽侧壁四组高速水幕冲击冷却歧管箱（`Pad_TrenchWaterCurtainBox_0..3`）与箭体整流罩前锥段四向声学阻尼加强肋荚舱（`Rocket_FairingOgiveStiffener_0..3`），导出 `rocket-kit.glb`（`669,820 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`883,794 B`）；在 `flameMaterial` 中引入反射激波-马赫茎滑移面复合辉光项（`reflectedMachSlipGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 = 50.0ms`（`≤ 50ms`，28 draw calls，40,208 三角面，50 活跃烟粒）。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第七十三阶段验收：夜间持续进化 · 赫伯斯与奥菲尔峡谷硬石膏-半水石膏层状蒸发岩与风蚀沟棱、莫高窟须弥座勾栏莲花望柱头与飞天上臂盘龙宝相花嵌青金石金臂钏、及防爆台火炬放散塔阻火器风帽与一级液氧防晃挡板外加强环及马赫盘下游亚音速滑移尾迹辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE 在赫伯斯与奥菲尔峡谷中央山丘探测到的硬石膏-半水石膏脱水硫酸盐层序 `Hebes/Ophir Chasma Anhydrite-Bassanite Layered Evaporites` 与内部层状沉积风蚀沟棱 `Interior Layered Deposit Wind-Etched Flutes`、莫高窟盛唐第 217/45 窟须弥座勾栏莲花望柱头浮雕与飞天上臂盘龙宝相花嵌青金石金臂钏、以及发射台防爆台外缘低温蒸发气火炬放散塔阻火器风帽 `Pad_FlareStackHood`、一级前段液氧贮箱防晃挡板外环框加强肋 `Rocket_LoxBaffleStiffener` 与马赫盘下游亚音速滑移尾迹辉光 `machDiskSlipWakeGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.51` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座须弥莲座上层平台两侧新增八尊勾栏莲花望柱头高浮雕（`PedestalBalustradeLotusPost_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`468,896 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,597,996 B`）；在 `buildWall()` 中于四座须弥座平台两侧增绘勾栏莲花望柱金饰，在 `drawBody()` 离屏缓存中于飞天上臂增绘盘龙宝相花嵌青金石金臂钏；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.8ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入赫伯斯与奥菲尔峡谷内部层状沉积风蚀沟棱与台阶梁（`hebes_ild_flutes`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`171,269 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,908 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对脱水钙硫酸盐层序引入赫伯斯与奥菲尔峡谷硬石膏-半水石膏象牙白高反照色带（`hebesAnhydriteBassanite`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台防爆台外缘四座低温蒸发气火炬放散塔阻火器风帽（`Pad_FlareStackHood_0..3`）与箭体一级前段液氧贮箱四道防晃挡板外环框加强肋（`Rocket_LoxBaffleStiffener_0..3`），导出 `rocket-kit.glb`（`680,008 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`884,536 B`）；在 `flameMaterial` 中引入马赫盘下游亚音速滑移尾迹辉光项（`machDiskSlipWakeGlow`）；同时将 Playwright 配置切换至 Windows ARM64 原生硬件加速 Chrome 通道（`channel: 'chrome'`），实测稳态升空（`T+9s`）尾部 120 帧 `p95 = 6.1ms`（`≤ 50ms`，28 draw calls，40,304 三角面），全套 26 项 E2E 测试耗时缩短至 ~85 秒。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第七十四阶段验收：夜间持续进化 · 科普拉特斯与卡普里峡谷多水硫酸盐互层与长程滑坡流舌沟槽、莫高窟佛龛拱腋鎏金忍冬璎珞垂花雀替与飞天胸前七宝璎珞嵌红宝石莲华华胜坠牌、及导流槽外缘大流量声学水幕炮塔喷嘴与马赫环对撞复合辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE 在科普拉特斯与卡普里峡谷探测到的多水硫酸盐互层 `Coprates/Capri Polyhydrated Sulfate Interbeds` 与长程滑坡流舌沟槽 `Coprates Chasma Long-Runout Landslide Shear Grooves`、莫高窟盛唐第 320/45 窟佛龛拱腋鎏金忍冬璎珞垂花雀替与飞天胸前七宝璎珞嵌红宝石莲华华胜坠牌、以及发射台导流槽甲板四角大流量雨鸟声学水幕炮塔喷嘴 `Pad_RainbirdDelugeTurret`、发动机舱底防热盾吹扫百叶排气窗 `Rocket_BaseHeatshieldLouver` 与环形马赫反射激波胞对撞复合辉光 `annularMachCellInteractionGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.52` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四龛拱腋新增八组鎏金忍冬璎珞垂花雀替高浮雕（`NicheArchPendentiveBracket_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`469,201 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,598,559 B`）；在 `buildWall()` 中于四龛拱腋增绘忍冬璎珞垂花雀替金饰，在 `drawBody()` 离屏缓存中于飞天胸前增绘七宝璎珞嵌红宝石莲华华胜坠牌；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.8ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入科普拉特斯与卡普里峡谷长程滑坡纵向剪切沟槽与舌状丘陵脊（`coprates_landslide_grooves`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`171,414 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,709 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对多水硫酸盐互层引入科普拉特斯与卡普里峡谷暖棕赭色层带（`copratesPolyhydratedSulfate`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽甲板四角大流量雨鸟声学水幕炮塔喷嘴（`Pad_RainbirdDelugeTurret_0..3`）与箭体发动机舱底防热盾四向吹扫百叶排气窗（`Rocket_BaseHeatshieldLouver_0..3`），导出 `rocket-kit.glb`（`690,064 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`884,965 B`）；在 `flameMaterial` 中引入环形马赫反射激波胞对撞复合辉光项（`annularMachCellInteractionGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第七十五阶段验收：夜间持续进化 · 埃库斯峡谷与卡塞谷蛋白石-黄钾铁矾层带与高原地下水潜蚀阶地、莫高窟须弥座下枭圭脚仰覆莲宝相花团花与飞天发髻双翼金凤嵌祖母绿步摇垂珠、及发射塔摆杆液压回撤缓冲阻尼器与马赫滑移线斜压涡量辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE 在埃库斯峡谷与卡塞谷探测到的蛋白石-黄钾铁矾层带 `Echus/Kasei Opaline Silica & Jarosite Strata` 与高原地下水潜蚀阶地 `Echus Chasma Plateau Cataract Sapping Benches`、莫高窟盛唐第 158/112 窟须弥座下枭圭脚仰覆莲宝相花团花与飞天发髻双翼金凤嵌祖母绿步摇垂珠、以及发射塔摆杆液压回撤缓冲阻尼器 `Tower_SwingArmDamper`、一级芯级外壁纵向加劲桁条 `Rocket_CoreStringerRib` 与马赫滑移线斜压涡量辉光 `baroclinicSlipVortexGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.53` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座须弥莲座下枭圭脚新增八枚仰覆莲宝相花团花高浮雕（`PedestalPlinthLotusRosette_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`469,394 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,598,799 B`）；在 `buildWall()` 中于四座须弥座下枭圭脚增绘仰覆莲宝相花团花金饰，在 `drawBody()` 离屏缓存中于飞天发髻侧畔增绘双翼金凤嵌祖母绿步摇垂珠；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.8ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入埃库斯峡谷与卡塞谷高原地下水潜蚀阶地与抗蚀瘤状洪水冲刷残丘脊（`echus_sapping_benches`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`171,368 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,470 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对蛋白石-黄钾铁矾层带引入埃库斯峡谷亮米黄色蚀变层带（`echusOpalineJarosite`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射塔多层摆杆液压回撤缓冲阻尼器总成（`Tower_SwingArmDamper_0..3`）与箭体一级芯级贮箱外壁四道纵向加劲桁条（`Rocket_CoreStringerRib_0..3`），导出 `rocket-kit.glb`（`699,976 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`885,723 B`）；在 `flameMaterial` 中引入马赫滑移线斜压涡量辉光项（`baroclinicSlipVortexGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第七十六阶段验收：夜间持续进化 · 恒河峡谷与沙尔巴塔纳谷橄榄石-玄武岩新月形沙丘与水合硫酸盐共生带、莫高窟佛龛外拱圈七宝联珠宝相花团窠与飞天腰带八瓣宝相花嵌翠玉銙牌、及发射台压紧释放爆炸螺母防爆护罩与马赫茎涡环耦合辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE 在恒河峡谷与沙尔巴塔纳谷探测到的橄榄石-玄武岩新月形沙丘与水合硫酸盐共生带 `Ganges/Shalbatana Olivine-Basalt & Hydrated Sulfate Assemblage` 及古湖泊岸线阶地 `Ganges Chasma Olivine Barchan Dunes & Paleolake Strandlines`、莫高窟初唐/盛唐第 220/57 窟佛龛外拱圈七宝联珠宝相花团窠与飞天腰带八瓣宝相花嵌翠玉銙牌、以及发射台压紧释放爆炸螺母防爆碎片护罩盒 `Pad_HoldDownNutShield`、上面级前封头遥测双工器整流包 `Rocket_UpperDiplexerPod` 与马赫茎环状涡环耦合辉光 `machStemVortexRingGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.54` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四龛外拱圈两侧新增八枚七宝联珠宝相花团窠高浮雕（`NicheOuterBaoxiangBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`469,492 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,599,396 B`）；在 `buildWall()` 中于四龛外拱圈增绘七宝联珠宝相花团窠金饰，在 `drawBody()` 离屏缓存中于飞天腰带正中增绘八瓣宝相花嵌翠玉銙牌；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.8ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入恒河峡谷与沙尔巴塔纳谷橄榄石-玄武岩新月形沙丘与古湖泊岸线阶地（`ganges_olivine_dunes`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`171,481 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,721 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对橄榄石-水合硫酸盐共生带引入恒河峡谷青橄榄灰绿层带（`gangesOlivineSulfate`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台压紧释放支座顶部爆炸螺母防爆碎片护罩盒（`Pad_HoldDownNutShield_0..3`）与箭体上面级前封头四向遥测双工器整流包（`Rocket_UpperDiplexerPod_0..3`），导出 `rocket-kit.glb`（`710,188 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`885,881 B`）；在 `flameMaterial` 中引入马赫茎环状涡环耦合辉光项（`machStemVortexRingGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第七十七阶段验收：夜间持续进化 · 霍尔登与卡西莫夫撞击坑冲积扇巨砾角砾岩与蒙脱石-绿泥石黏土层阶地、莫高窟须弥座下仰莲束腰卷叶海石榴团花与飞天发髻鎏金莲蓬花梳背、及发射台导流槽高铝耐火分流隔墙肋与三波点马赫茎剪切层编织辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE 在霍尔登与卡西莫夫撞击坑探测到的冲积扇巨砾角砾岩与蒙脱石-绿泥石层状硅酸盐阶地 `Holden/Kasimov Alluvial Megabreccia & Smectite-Chlorite Benches`、莫高窟盛唐第 159/321 窟须弥座下仰莲束腰卷叶海石榴团花与飞天发髻鎏金莲蓬花梳背、以及发射台导流槽高铝耐火分流隔墙肋 `Pad_TrenchBlastDeflectorRib`、上面级后裙氦气吹扫排气百叶窗 `Rocket_SecondStagePurgeVent` 与三波点马赫茎剪切层编织辉光 `triplePointMachBraidGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.55` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座须弥莲座下仰莲束腰新增八枚卷叶海石榴团花高浮雕（`PedestalLowerWaistPalmette_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`469,574 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,599,614 B`）；在 `buildWall()` 中于四座须弥座下仰莲束腰增绘卷叶海石榴团花金饰，在 `drawBody()` 离屏缓存中于飞天发髻顶端增绘鎏金莲蓬花梳背；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.8ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入霍尔登与卡西莫夫撞击坑冲积扇巨砾角砾岩与蒙脱石-绿泥石黏土层阶地（`holden_megabreccia_fans`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`171,516 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,202 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对冲积扇巨砾角砾岩与蒙脱石-绿泥石黏土层引入霍尔登撞击坑浅暖褐灰色层带（`holdenSmectiteMegabreccia`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽底四组高铝耐火分流隔墙肋（`Pad_TrenchBlastDeflectorRib_0..3`）与箭体上面级后裙四向氦气吹扫排气百叶窗（`Rocket_SecondStagePurgeVent_0..3`），导出 `rocket-kit.glb`（`720,184 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`885,804 B`）；在 `flameMaterial` 中引入三波点马赫茎剪切层编织辉光项（`triplePointMachBraidGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第七十八阶段验收：夜间持续进化 · 尼利槽沟与大塞提斯高原高岭石-碳酸盐及蛇纹石蚀变脉带与同心弧形地堑断层阶地、莫高窟佛龛内拱腹迦陵频伽忍冬团窠与飞天腕侧七宝绿松石珊瑚流苏跳脱、及发射台导流槽侧壁高铝耐火防剥落护板与环形滑移线开尔文-亥姆霍兹卷吸辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE 在尼利槽沟与大塞提斯高原探测到的高岭石-碳酸盐及蛇纹石蚀变脉带 `Nili Fossae/Syrtis Major Kaolinite-Carbonate & Serpentine Veins` 与同心弧形地堑断层阶地 `Nili Fossae Concentric Graben Fault Benches`、莫高窟盛唐第 148/217 窟佛龛内拱腹迦陵频伽忍冬团窠与飞天腕侧七宝绿松石珊瑚流苏跳脱、以及发射台导流槽侧壁高铝耐火防剥落护板 `Pad_TrenchRefractoryPanel`、箱间段后法兰增压管路整流罩包 `Rocket_IntertankFlangePod` 与环形滑移线开尔文-亥姆霍兹卷吸辉光 `annularSlipRollupGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.56` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四龛内拱腹两侧新增八枚迦陵频伽忍冬团窠高浮雕（`NicheIntradosKalavinkaBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`469,735 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,600,016 B`）；在 `buildWall()` 中于四龛内拱腹增绘迦陵频伽忍冬团窠金饰，在 `drawBody()` 离屏缓存中于飞天腕侧增绘七宝绿松石珊瑚流苏跳脱；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.8ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入尼利槽沟与大塞提斯高原同心弧形地堑断层阶地与碳酸盐-蛇纹石矿化裂隙脊（`nili_graben_megabreccia`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`171,503 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,504 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对高岭石-碳酸盐及蛇纹石蚀变脉带引入尼利槽沟浅青白-灰绿层带（`niliKaoliniteCarbonate`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽侧壁四组高铝耐火防剥落护板（`Pad_TrenchRefractoryPanel_0..3`）与箭体箱间段后法兰四向增压管路整流罩包（`Rocket_IntertankFlangePod_0..3`），导出 `rocket-kit.glb`（`730,212 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`885,718 B`）；在 `flameMaterial` 中引入环形滑移线开尔文-亥姆霍兹卷吸辉光项（`annularSlipRollupGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第七十九阶段验收：夜间持续进化 · 哥伦布撞击坑与西壬高地明矾石-高岭石酸性硫酸盐古湖泊蒸发环带与干裂多边形阶地、莫高窟藻井内框八宝联珠宝相花团窠与飞天披帛双凤螺钿金花钿扣、及发射台导流槽声学水幕立管总成与马赫盘后亚音速回流核涡环辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE 在哥伦布撞击坑与西壬高地探测到的明矾石-高岭石酸性硫酸盐古湖泊蒸发环带 `Columbus/Sirenum Alunite-Kaolinite Acid-Sulfate Lake Rings` 与同心古湖岸蒸发岩阶地 `Columbus Crater Evaporite Strandline Benches`、莫高窟盛唐第 112/172 窟藻井内框八宝联珠宝相花团窠与飞天披帛双凤螺钿金花钿扣、以及发射台导流槽底板声学水幕立管总成 `Pad_TrenchWaterRiser`、上面级液氧箱前段增压管路整流支座 `Rocket_UpperPressBracket` 与马赫盘后亚音速回流核涡环辉光 `machDiskRecircCoreGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.57` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿藻井内框新增八枚八宝联珠宝相花团窠高浮雕（`CaissonInnerBaoxiangBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,069 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,600,730 B`）；在 `buildWall()` 中于藻井内框增绘八宝联珠宝相花团窠金饰，在 `drawBody()` 离屏缓存中于飞天肩前披帛增绘双凤螺钿金花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 = 16.8ms`（严格 `≤ 33.3ms`）。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入哥伦布撞击坑与西壬高地同心古湖岸蒸发岩阶地与硫酸盐干裂多边形裂隙脊（`columbus_evaporite_strandlines`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`171,714 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,967 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对明矾石-高岭石酸性硫酸盐蒸发岩带引入哥伦布撞击坑亮奶油白-浅暖米色层带（`columbusAluniteKaolinite`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽底板四组声学水幕立管总成（`Pad_TrenchWaterRiser_0..3`）与箭体上面级液氧箱前段四向增压管路整流支座（`Rocket_UpperPressBracket_0..3`），导出 `rocket-kit.glb`（`740,224 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`885,883 B`）；在 `flameMaterial` 中引入马赫盘后亚音速回流核涡环辉光项（`machDiskRecircCoreGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第八十阶段验收：夜间持续进化 · 亚兰混沌与伊阿尼混沌羟基硫酸铁-赤铁矿层状台地与混沌坍塌方山断崖、莫高窟佛龛拱座缠枝宝相花团窠与飞天胸前璎珞鎏金双摩竭戏珠玉佩、及发射台导流槽侧壁声学水幕喷射集管箱与反射斜激波三波点剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE 在亚兰混沌与伊阿尼混沌探测到的羟基硫酸铁-赤铁矿层状台地 `Aram/Iani Chaos Ferric Hydroxysulfate-Hematite Mesas` 与混沌坍塌方山断崖 `Chaotic-Block Mesa & Monohydrated Sulfate Scarps`、莫高窟初盛唐第 328/392 窟佛龛拱座缠枝宝相花团窠与飞天胸前璎珞鎏金双摩竭戏珠玉佩、以及发射台导流槽侧壁声学水幕喷射集管箱 `Pad_TrenchJetBox`、一级前裙段增压管路整流支座 `Rocket_FwdSkirtPressBracket` 与反射斜激波三波点剪切辉光 `reflectedTripleShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.58` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四龛拱座两侧新增八枚缠枝宝相花团窠高浮雕（`NicheSpringerBaoxiangBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,074 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,600,740 B`）；在 `buildWall()` 中于四龛拱座增绘缠枝宝相花团窠金饰，在 `drawBody()` 离屏缓存中于飞天胸前璎珞增绘鎏金双摩竭戏珠玉佩；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入亚兰混沌与伊阿尼混沌裂解混沌方山台地与单水硫酸盐断崖（`aram_chaos_mesas`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`171,752 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,034 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对羟基硫酸铁-赤铁矿层状沉积引入亚兰混沌赭赤-暖褐层带（`aramFerricHematite`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽侧壁四组声学水幕喷射集管箱（`Pad_TrenchJetBox_0..3`）与箭体一级前裙段四向增压管路整流支座（`Rocket_FwdSkirtPressBracket_0..3`），导出 `rocket-kit.glb`（`750,196 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`885,998 B`）；在 `flameMaterial` 中引入反射斜激波三波点剪切辉光项（`reflectedTripleShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第八十一阶段验收：夜间持续进化 · 黄金混沌与珍珠高地单水/多水硫酸盐互层残丘与断层裂解块体、莫高窟须弥座上枭鎏金牡丹卷草团花与飞天发髻翠玉双凫步摇簪、及发射台导流槽耐火伸缩缝锚固轨与桶形激波哥特勒涡流向条纹辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE 在黄金混沌与珍珠高地探测到的单水/多水硫酸盐互层残丘 `Aureum Chaos/Margaritifer Terra Banded Sulfate Mesas` 与断层裂解块体 `Fractured Chaos Buttes`、莫高窟盛唐第 45/217 窟须弥座上枭鎏金牡丹卷草团花与飞天发髻翠玉双凫步摇簪、以及发射台导流槽耐火砖伸缩缝重型锚固导轨 `Pad_TrenchExpansionRail`、上面级后裙段增压管路整流支座 `Rocket_UpperAftPressBracket` 与桶形激波哥特勒涡流向条纹辉光 `barrelGoertlerStreakGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.59` 节，并同步更新 `docs/asset-taxonomy.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座须弥莲座上枭两侧新增八枚鎏金牡丹卷草团花高浮雕（`PedestalUpperPeonyBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于四座须弥座上枭增绘鎏金牡丹卷草团花，在 `drawBody()` 离屏缓存中于飞天高髻增绘翠玉双凫步摇簪；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入黄金混沌与珍珠高地单水/多水硫酸盐互层残丘与断层裂解块体（`aureum_sulfate_buttes`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`171,877 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,456 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对单水/多水硫酸盐互层引入黄金混沌琥珀赭-奶油黄层带（`aureumBandedSulfate`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽底四道耐火砖伸缩缝重型锚固导轨（`Pad_TrenchExpansionRail_0..3`）与箭体上面级后裙段四向增压管路整流支座（`Rocket_UpperAftPressBracket_0..3`），导出 `rocket-kit.glb`（`760,044 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`885,982 B`）；在 `flameMaterial` 中引入桶形激波哥特勒涡流向条纹辉光项（`barrelGoertlerStreakGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第八十二阶段验收：夜间持续进化 · 第勒纳山与哈德里亚卡斯山熔结凝灰岩火山碎屑席与放射状切割冲沟脊、莫高窟藻井中层方井框鎏金宝相莲云团花与飞天腰间鎏金如意云纹玛瑙銙带扣、及发射台导流槽蒸汽急冷喷淋集管与超音速尾焰螺旋啸叫反馈模态辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE 在第勒纳山与哈德里亚卡斯山探测到的熔结凝灰岩火山碎屑席 `Tyrrhena/Hadriacus Mons Pyroclastic Ignimbrite Sheets` 与放射状切割冲沟脊 `Radially Incised Flank Gullies`、莫高窟盛唐第 320/112 窟藻井中层方井框鎏金宝相莲云团花与飞天腰间鎏金如意云纹玛瑙銙带扣、以及发射台导流槽蒸汽急冷喷淋集管排 `Pad_TrenchSteamQuenchHeader`、一级后裙段增压管路整流支座 `Rocket_AftSkirtPressBracket` 与超音速尾焰螺旋啸叫反馈模态辉光 `helicalScreechFeedbackGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.60` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿藻井中层方井框新增八枚鎏金宝相莲云团花高浮雕（`CaissonMidLotusCloudBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于藻井中层方井框增绘鎏金宝相莲云团花，在 `drawBody()` 离屏缓存中于飞天腰间增绘鎏金如意云纹玛瑙銙带扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入第勒纳山与哈德里亚卡斯山熔结凝灰岩火山碎屑席与放射状切割冲沟脊（`tyrrhena_ignimbrite_gullies`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`171,810 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,911 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对熔结凝灰岩火山碎屑席引入第勒纳山暖灰赤陶色层带（`tyrrhenaPyroclasticIgnimbrite`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽侧壁四组蒸汽急冷喷淋集管排（`Pad_TrenchSteamQuenchHeader_0..3`）与箭体一级后裙段四向增压管路整流支座（`Rocket_AftSkirtPressBracket_0..3`），导出 `rocket-kit.glb`（`770,148 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`885,962 B`）；在 `flameMaterial` 中引入螺旋啸叫反馈模态辉光项（`helicalScreechFeedbackGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第八十三阶段验收：夜间持续进化 · 盖尔撞击坑与夏普山晶质赤铁矿与黏土-硫酸盐过渡层阶地、莫高窟佛龛外拱背萨珊忍冬团莲花结与飞天腰侧鎏金双摩竭白玉环佩、及发射台导流槽出口水幕箱与反射激波节点环辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 Curiosity 与 MRO CRISM/HiRISE 在盖尔撞击坑与夏普山探测到的晶质灰赤铁矿与黏土-硫酸盐过渡层阶地 `Gale Crater/Aeolis Mons Hematite-Sulfate Transition Benches`、莫高窟盛唐第 158/196 窟佛龛外拱背萨珊忍冬团莲花结与飞天腰侧禁步鎏金双摩竭嵌白玉环佩、以及发射台导流槽出口防爆墙声学水幕箱 `Pad_ExitWallWaterBox`、一级后段隔热毯固定卡箍 `Rocket_AftBlanketClamp` 与反射激波轴对称节点环辉光 `reflectedShockNodeRingGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.61` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛外拱背两侧新增八枚萨珊忍冬团莲花结高浮雕（`NicheExtradosVineLotusBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于四座佛龛外拱背增绘萨珊忍冬团莲花结，在 `drawBody()` 离屏缓存中于飞天腰侧增绘鎏金双摩竭嵌白玉环佩；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入盖尔撞击坑与夏普山晶质赤铁矿与黏土-硫酸盐过渡层阶地（`gale_hematite_sulfate_benches`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`171,913 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,464 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对黏土-硫酸盐过渡带引入盖尔撞击坑赤铁-硫酸盐色带（`galeHematiteSulfateTransition`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽出口防爆墙四组声学水幕箱（`Pad_ExitWallWaterBox_0..3`）与箭体一级后裙四向隔热毯固定卡箍（`Rocket_AftBlanketClamp_0..3`），导出 `rocket-kit.glb`（`780,172 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`886,279 B`）；在 `flameMaterial` 中引入反射激波轴对称节点环辉光项（`reflectedShockNodeRingGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第八十四阶段验收：夜间持续进化 · 诺克提斯迷宫与梅拉斯峡谷交错坑链地堑与黄钾铁矾-蛋白石水热断崖、莫高窟须弥座圭脚海石榴宝相莲团花与飞天上臂钏青金石花钿扣、及发射台导流槽耐火拉结支座与马赫杆剪切层涡卷起辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE 在诺克提斯迷宫与梅拉斯峡谷探测到的交错陷落坑链地堑阶地 `Noctis Labyrinthus/Melas Chasma Pit-Chain Graben Benches` 与黄钾铁矾-蛋白石水热断崖 `Jarosite-Opaline Silica Hydrothermal Scarps`、莫高窟盛唐第 172/320 窟须弥座下枭圭脚鎏金海石榴宝相莲团花与飞天上臂钏鎏金迦陵频伽嵌青金石花钿扣、以及发射台导流槽耐火拉结锚固支座 `Pad_TrenchAnchorBracket`、上面级前裙吹扫百叶排气窗 `Rocket_UpperFwdPurgeVent` 与马赫杆剪切层涡卷起辉光 `machStemShearRollupGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.62` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座须弥莲座下枭圭脚两侧新增八枚鎏金海石榴宝相莲团花高浮雕（`PedestalPlinthPomegranateBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于四座须弥座圭脚增绘鎏金海石榴宝相莲团花，在 `drawBody()` 离屏缓存中于飞天上臂钏增绘鎏金迦陵频伽嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入诺克提斯迷宫与梅拉斯峡谷交错陷落坑链地堑与黄钾铁矾-蛋白石水热断崖（`noctis_jarosite_grabens`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`171,898 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,961 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对黄钾铁矾-蛋白石水热蚀变层引入诺克提斯金黄赭石色带（`noctisJarositeOpal`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽侧壁四组耐火拉结锚固支座（`Pad_TrenchAnchorBracket_0..3`）与箭体上面级前裙段四向吹扫百叶排气窗（`Rocket_UpperFwdPurgeVent_0..3`），导出 `rocket-kit.glb`（`790,244 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`886,209 B`）；在 `flameMaterial` 中引入马赫杆剪切层涡卷起辉光项（`machStemShearRollupGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第八十五阶段验收：夜间持续进化 · 卡普里与厄俄斯峡谷外流河道流线巨型沙波与水镁矾-石膏蒸发岩阶地、莫高窟藻井外框八瓣宝相莲华团花与飞天项圈绿松石联珠坠、及发射台导流槽冠部喷淋止回阀撬块与环形普朗特-迈耶膨胀扇辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE 在卡普里峡谷与厄俄斯峡谷探测到的外流河道流线型巨型沙波 `Capri/Eos Chasma Streamlined Outflow Mega-Ripples` 与水镁矾-石膏蒸发岩阶地 `Kieserite-Gypsum Evaporite Terraces`、莫高窟盛唐第 31/217 窟藻井外框平棊八瓣宝相莲华团花与飞天项圈鎏金莲蕾嵌绿松石联珠坠、以及发射台导流槽冠部喷淋止回阀撬块 `Pad_DelugeCheckValveSkid`、级间分离切索器整流包 `Rocket_InterstageCutterPod` 与环形普朗特-迈耶膨胀扇辉光 `annularPrandtlMeyerFanGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.63` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿藻井外框平棊两侧新增八枚八瓣宝相莲华团花高浮雕（`CaissonOuterLotusBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于藻井外框平棊增绘八瓣宝相莲华团花，在 `drawBody()` 离屏缓存中于飞天项圈增绘鎏金莲蕾嵌绿松石联珠坠；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入卡普里与厄俄斯峡谷外流河道流线巨型沙波与水镁矾-石膏蒸发岩阶地（`capri_eos_evaporite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`172,048 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,533 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对水镁矾-石膏蒸发岩层引入卡普里/厄俄斯暖白米色带（`capriKieseriteGypsum`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽冠部四座声学喷淋高压止回阀撬块（`Pad_DelugeCheckValveSkid_0..3`）与箭体级间段四向分离导爆索切索器整流包（`Rocket_InterstageCutterPod_0..3`），导出 `rocket-kit.glb`（`800,304 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`886,221 B`）；在 `flameMaterial` 中引入环形普朗特-迈耶膨胀扇辉光项（`annularPrandtlMeyerFanGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第八十六阶段验收：夜间持续进化 · 埃里达尼亚盆地与阿里阿德涅丘群古海床热液皂石-滑石矿丘与瘤状混沌方山、莫高窟佛龛立柱柱头鎏金忍冬联珠花结与飞天足钏珊瑚金铃坠、及发射台导流槽水幕楔形分流块与三波点滑流交织辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE 在埃里达尼亚盆地与阿里阿德涅丘群探测到的古海床深水热液皂石-滑石矿丘 `Eridania Basin Hydrothermal Saponite-Talc Mounds` 与瘤状混沌方山 `Knobbed Chaos Mesas`、莫高窟盛唐第 45/328 窟佛龛立柱柱头鎏金忍冬联珠宝相花结与飞天足钏鎏金双莲嵌珊瑚金铃坠、以及发射台导流槽水幕楔形分流块 `Pad_TrenchWaterWedgeBlock`、一级液氧贮箱前段防涡隔板加强荚舱 `Rocket_LOXAntiVortexPod` 与三波点滑流交织辉光 `triplePointSlipstreamBraidGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.64` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛立柱柱头两侧新增八枚鎏金忍冬联珠宝相花结高浮雕（`PilasterCapitalHoneysuckleBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛立柱柱头增绘忍冬联珠宝相花结，在 `drawBody()` 离屏缓存中于飞天足钏增绘鎏金双莲嵌珊瑚金铃坠；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入埃里达尼亚盆地与阿里阿德涅丘群热液皂石-滑石矿丘与瘤状混沌方山（`eridania_saponite_mounds`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`171,865 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,811 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对古海床热液皂石-滑石层引入埃里达尼亚青瓷色带（`eridaniaSaponiteTalc`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽底板四座声学水幕楔形分流导块（`Pad_TrenchWaterWedgeBlock_0..3`）与箭体一级液氧贮箱前段四向防涡隔板加强荚舱（`Rocket_LOXAntiVortexPod_0..3`），导出 `rocket-kit.glb`（`810,312 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`886,174 B`）；在 `flameMaterial` 中引入三波点滑流交织辉光项（`triplePointSlipstreamBraidGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第八十七阶段验收：夜间持续进化 · 珍珠混沌与乌兹博伊谷古破口湖溢流阶地与绿脱石-绿泥石层状硅酸盐断崖、莫高窟须弥座勾阑栏额鎏金摩竭流云宝珠花结与飞天鬓侧海石榴花嵌琥珀小簪、及发射台导流槽耐火伸缩缝盖板与马赫盘声学驻波辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE 在珍珠混沌与乌兹博伊谷探测到的古破口撞击坑湖溢流阶地 `Uzboi Vallis/Margaritifer Chaos Breached Crater-Lake Overflow Benches` 与绿脱石-绿泥石层状硅酸盐断崖 `Nontronite-Chlorite Phyllosilicate Scarps`、莫高窟盛唐第 148/217 窟须弥座勾阑栏额端头鎏金摩竭流云宝珠花结与飞天鬓侧鎏金海石榴花嵌琥珀小簪、以及发射台导流槽耐火伸缩缝盖板 `Pad_TrenchExpansionCover`、上面级箱间遥测线槽整流卡箍 `Rocket_UpperRacewayClamp` 与马赫盘声学驻波环辉光 `machDiskAcousticStandingGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.65` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座须弥莲座勾阑栏额两端新增八枚鎏金摩竭流云宝珠花结高浮雕（`BalustradeMakaraCloudBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于须弥座勾阑栏额增绘鎏金摩竭流云宝珠花结，在 `drawBody()` 离屏缓存中于飞天鬓侧增绘鎏金海石榴花嵌琥珀小簪；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入珍珠混沌与乌兹博伊谷古破口湖溢流阶地与绿脱石-绿泥石层状硅酸盐断崖（`uzboi_margaritifer_benches`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`172,063 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,606 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对绿脱石-绿泥石层引入乌兹博伊/珍珠混沌橄榄苔绿色带（`uzboiNontroniteChlorite`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽侧壁四组耐火伸缩缝护盖板（`Pad_TrenchExpansionCover_0..3`）与箭体上面级箱间段四向遥测线槽整流卡箍（`Rocket_UpperRacewayClamp_0..3`），导出 `rocket-kit.glb`（`820,376 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`886,257 B`）；在 `flameMaterial` 中引入马赫盘声学驻波环辉光项（`machDiskAcousticStandingGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第八十八阶段验收：夜间持续进化 · 梅拉斯与坎多尔滑坡凹壁内部层状沉积风蚀肋状雅丹阶地与水绿矾-四水绿矾酸性硫酸盐断崖、莫高窟佛龛楣拱上缘鎏金双凤宝相莲团花与飞天手腕钏荷叶嵌白玉髓花钿扣、及发射台导流槽出口声学急冷集管撬块与桶形激波剪切不稳定性辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE 在梅拉斯与坎多尔滑坡凹壁探测到的内部层状沉积风蚀肋状雅丹阶地 `Melas/Candor Labes Wind-Fluted Yardang Benches` 与水绿矾-四水绿矾酸性硫酸盐断崖 `Szomolnokite-Rozenite Ferrous Sulfate Scarps`、莫高窟盛唐第 320/217 窟佛龛楣拱上缘鎏金双凤宝相莲团花与飞天手腕钏鎏金荷叶嵌白玉髓花钿扣、以及发射台导流槽出口声学急冷集管撬块 `Pad_ExitQuenchHeaderSkid`、一级芯级中段电缆线槽分线盒 `Rocket_CenterRacewaySpliceBox` 与桶形激波剪切不稳定性辉光 `barrelShockShearInstabilityGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.66` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛楣拱上缘两侧新增八枚鎏金双凤宝相莲团花高浮雕（`LintelCrestTwinPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛楣拱上缘增绘鎏金双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天手腕钏增绘鎏金荷叶嵌白玉髓花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入梅拉斯与坎多尔滑坡凹壁风蚀肋状雅丹阶地与水绿矾-四水绿矾断崖（`melas_szomolnokite_yardangs`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`172,087 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,401 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对水绿矾-四水绿矾层引入梅拉斯/坎多尔琥珀锈赭色带（`melasSzomolnokiteRozenite`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽出口四座声学急冷集管撬块（`Pad_ExitQuenchHeaderSkid_0..3`）与箭体一级芯级中段四向电缆线槽分线盒（`Rocket_CenterRacewaySpliceBox_0..3`），导出 `rocket-kit.glb`（`830,424 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`886,148 B`）；在 `flameMaterial` 中引入桶形激波剪切不稳定性辉光项（`barrelShockShearInstabilityGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第八十九阶段验收：夜间持续进化 · 西壬高地与克罗斯撞击坑热液喷气明矾石-高岭石硅华丘与氯盐干盐湖多边形脊、莫高窟藻井四角斜撑平棊鎏金迦陵频伽流云团花与飞天云肩前襟双鸳鸯嵌碧玺花钿扣、及发射台导流槽水幕喷射注水嘴与三波点声学反馈辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE 在西壬高地与克罗斯撞击坑探测到的陆相热液喷气明矾石-高岭石硅华丘 `Terra Sirenum/Cross Crater Fumarolic Alunite-Kaolinite Sinter Mounds` 与氯盐干盐湖多边形脊 `Chloride Playa Polygonal Ridges`、莫高窟盛唐第 172/320 窟藻井四角斜撑平棊鎏金迦陵频伽流云团花与飞天云肩前襟鎏金双鸳鸯嵌碧玺花钿扣、以及发射台导流槽侧壁水幕喷射注水嘴 `Pad_TrenchWaterJetInjector`、二级前裙遥测贴片天线整流包 `Rocket_UpperFwdTelemetryPod` 与三波点声学反馈环辉光 `triplePointAcousticFeedbackGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.67` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿藻井四角斜撑平棊两侧新增八枚鎏金迦陵频伽流云团花高浮雕（`CaissonDiagonalKalavinkaBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于藻井斜撑平棊增绘迦陵频伽流云团花，在 `drawBody()` 离屏缓存中于飞天云肩前襟增绘鎏金双鸳鸯嵌碧玺花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入西壬高地与克罗斯撞击坑热液喷气明矾石-高岭石硅华丘与氯盐干盐湖多边形脊（`sirenum_alunite_sinter_mounds`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`172,075 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,287 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对明矾石-高岭石硅华层引入西壬高地象牙粉白色带（`sirenumAluniteSinter`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽侧壁四座声学水幕喷射注水嘴（`Pad_TrenchWaterJetInjector_0..3`）与箭体二级前裙段四向遥测贴片天线整流包（`Rocket_UpperFwdTelemetryPod_0..3`），导出 `rocket-kit.glb`（`840,468 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`886,247 B`）；在 `flameMaterial` 中引入三波点声学反馈环辉光项（`triplePointAcousticFeedbackGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第九十阶段验收：夜间持续进化 · 尤文塔峡谷与玛雅谷一水硫酸盐风蚀方山与水镁矾-贝得石阶梯状断崖、莫高窟须弥座束腰隅柱鎏金海石榴宝相莲团花与飞天腰绶迦陵频伽嵌红玛瑙流苏扣、及发射台导流槽底板耐火分流墩块与马赫茎斜压涡辫辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE 在尤文塔峡谷与玛雅谷探测到的一水硫酸盐风蚀方山 `Juventae Chasma/Maja Valles Monohydrated Sulfate Yardang Mesas` 与水镁矾-贝得石阶梯状断崖 `Kieserite-Beidellite Terraced Scarps`、莫高窟盛唐第 45/320 窟须弥座束腰隅柱鎏金海石榴宝相莲团花与飞天腰绶鎏金迦陵频伽嵌红玛瑙流苏扣、以及发射台导流槽底板耐火分流墩块 `Pad_TrenchJetDeflectorPier`、整流罩前锥段声学百叶排气窗 `Rocket_FairingFwdVentLouver` 与马赫茎斜压涡辫辉光 `machStemBaroclinicBraidGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.68` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座须弥莲座束腰隅柱两侧新增八枚鎏金海石榴宝相莲团花高浮雕（`PedestalWaistCornerPomegranateBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于须弥座束腰隅柱增绘海石榴宝相莲团花，在 `drawBody()` 离屏缓存中于飞天腰绶增绘鎏金迦陵频伽嵌红玛瑙流苏扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入尤文塔峡谷与玛雅谷一水硫酸盐风蚀方山与水镁矾-贝得石断崖（`juventae_kieserite_mesas`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`172,064 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,289 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对水镁矾-贝得石层引入尤文塔/玛雅谷暖米黄色带（`juventaeKieseriteBeidellite`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽底板四座高铝耐火尾焰分流墩块（`Pad_TrenchJetDeflectorPier_0..3`）与箭体整流罩前锥段四向声学百叶排气窗（`Rocket_FairingFwdVentLouver_0..3`），导出 `rocket-kit.glb`（`850,596 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`886,268 B`）；在 `flameMaterial` 中引入马赫茎斜压涡辫辉光项（`machStemBaroclinicBraidGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第九十一阶段验收：夜间持续进化 · 贝克勒尔撞击坑与阿拉伯高地天文轨道周期驱动硫酸盐-风尘韵律互层阶地与交错层理雅丹断崖、莫高窟佛龛券口内缘鎏金瑞鹤如意云团花与飞天宝冠侧翼双凤嵌孔雀石花胜、及发射台导流槽声学折流板拉结支座与反射马赫滑流节点辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在阿拉伯高地贝克勒尔撞击坑探测到的米兰科维奇轨道倾角驱动硫酸盐-风尘韵律互层阶地 `Becquerel Crater/Arabia Terra Rhythmic Sulfate-Dust Bedding Benches` 与交错层理雅丹断崖 `Cross-Laminated Yardang Scarps`、莫高窟盛唐第 172/217 窟佛龛券口内缘鎏金瑞鹤如意云团花与飞天宝冠侧翼鎏金双凤嵌孔雀石花胜、以及发射台导流槽声学折流板拉结支座 `Pad_TrenchBaffleTieBracket`、一级前裙液氧箱增压管路整流罩 `Rocket_FwdLOXPressLineFairing` 与反射马赫滑流节点辉光 `reflectedMachSlipstreamNodeGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.69` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券口内缘两侧新增八枚鎏金瑞鹤如意云团花高浮雕（`ArchIntradosCraneCloudBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券口内缘增绘瑞鹤如意云团花，在 `drawBody()` 离屏缓存中于飞天宝冠侧翼增绘鎏金双凤嵌孔雀石花胜；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入贝克勒尔撞击坑与阿拉伯高地硫酸盐-风尘韵律互层阶地与交错层理雅丹断崖（`becquerel_rhythmic_benches`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`172,160 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,297 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对韵律硫酸盐层引入贝克勒尔/阿拉伯高地浅麦金色带（`becquerelRhythmicSulfate`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽侧壁四座声学折流板拉结支座（`Pad_TrenchBaffleTieBracket_0..3`）与箭体一级前裙液氧箱四向增压管路整流罩（`Rocket_FwdLOXPressLineFairing_0..3`），导出 `rocket-kit.glb`（`860,708 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`886,268 B`）；在 `flameMaterial` 中引入反射马赫滑流节点辉光项（`reflectedMachSlipstreamNodeGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第九十二阶段验收：夜间持续进化 · 子午线高原与宫本撞击坑剥露赤铁矿倒转河道阶地与蒙脱石-高岭石层状硅酸盐平原、莫高窟藻井垂幔四角鎏金并蒂莲联珠流苏团花与飞天小臂袖缘忍冬嵌青金石花钿扣、及发射台导流槽出口耐火防冲刷槛块与桶形三波点涡环辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE 在子午线高原与宫本撞击坑探测到的剥露赤铁矿倒转河道阶地 `Terra Meridiani/Miyamoto Crater Exhumed Hematite-Bearing Inverted Channel Benches` 与蒙脱石-高岭石层状硅酸盐平原 `Smectite-Kaolinite Phyllosilicate Plains`、莫高窟盛唐第 31/172 窟藻井垂幔四角鎏金并蒂莲联珠流苏团花与飞天小臂袖缘鎏金忍冬嵌青金石花钿扣、以及发射台导流槽出口耐火防冲刷槛块 `Pad_ExitScourArrestSill`、二级后裙段遥测电缆整流卡箍 `Rocket_UpperAftTelemetryClamp` 与桶形三波点涡环辉光 `barrelTripleVortexRingGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.70` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿藻井垂幔四角两侧新增八枚鎏金并蒂莲联珠流苏团花高浮雕（`CaissonValanceTwinLotusBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于藻井垂幔四角增绘并蒂莲联珠流苏团花，在 `drawBody()` 离屏缓存中于飞天小臂袖缘增绘鎏金忍冬嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入子午线高原与宫本撞击坑剥露赤铁矿倒转河道阶地与蒙脱石-高岭石平原（`miyamoto_hematite_benches`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`172,032 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,685 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对赤铁矿-蒙脱石过渡层引入宫本撞击坑紫褐灰粉色带（`miyamotoHematiteSmectite`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽出口四座耐火防冲刷消能槛块（`Pad_ExitScourArrestSill_0..3`）与箭体二级后裙段四向遥测电缆整流卡箍（`Rocket_UpperAftTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`870,804 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`886,228 B`）；在 `flameMaterial` 中引入桶形三波点涡环辉光项（`barrelTripleVortexRingGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第九十三阶段验收：夜间持续进化 · 克拉里塔斯隆起与叙利亚高原雁列式地垒-地堑断层陡坎与黄钾铁矾-明矾石水热蚀变脉脊、莫高窟须弥座上枭仰莲檐鎏金迦陵频伽牡丹团花与飞天胸前璎珞宝相花嵌绿松石联珠坠、及发射台导流槽冠部水幕分配集管撬块与马赫盘滑流剪切卷起辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE 在克拉里塔斯隆起与叙利亚高原探测到的雁列式地垒-地堑断层陡坎 `Claritas Rise/Syria Planum En-Echelon Horst-Graben Fault Scarps` 与黄钾铁矾-明矾石水热蚀变脉脊 `Jarosite-Alunite Hydrothermal Alteration Veins`、莫高窟盛唐第 45/217 窟须弥座上枭仰莲檐鎏金迦陵频伽牡丹团花与飞天胸前璎珞正中鎏金宝相花嵌绿松石联珠坠、以及发射台导流槽冠部水幕分配集管撬块 `Pad_CrownWaterHeaderSkid`、一级尾裙段 TVC 液压回油管整流罩 `Rocket_AftTVCReturnFairing` 与马赫盘滑流剪切卷起辉光 `machDiskSlipShearRollupGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.71` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座须弥莲座上枭仰莲檐两侧新增八枚鎏金迦陵频伽牡丹团花高浮雕（`PedestalUpperLotusPeonyBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于须弥座上枭仰莲檐增绘迦陵频伽牡丹团花，在 `drawBody()` 离屏缓存中于飞天胸前璎珞正中增绘鎏金宝相花嵌绿松石联珠坠；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入克拉里塔斯隆起与叙利亚高原雁列式地垒-地堑断层陡坎与黄钾铁矾-明矾石脉脊（`claritas_horst_scarps`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`172,270 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,147 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对黄钾铁矾-明矾石水热蚀变层引入克拉里塔斯暖琥珀黄色带（`claritasJarositeAlunite`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽冠部四座水幕分配集管撬块（`Pad_CrownWaterHeaderSkid_0..3`）与箭体一级尾裙段四向 TVC 液压回油管整流罩（`Rocket_AftTVCReturnFairing_0..3`），导出 `rocket-kit.glb`（`880,824 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`886,386 B`）；在 `flameMaterial` 中引入马赫盘滑流剪切卷起辉光项（`machDiskSlipShearRollupGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第九十四阶段验收：夜间持续进化 · 沙尔巴塔纳谷与奥逊·威尔斯撞击坑古湖岸阶地与蛋白石质硅藻土状湖相层理、莫高窟龛楣拱肩外角鎏金双凤宝莲团花与飞天发髻后绶卷草莲瓣嵌红珊瑚花钿扣、及发射台折流喷淋歧管座与三波点斜压剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在沙尔巴塔纳谷与奥逊·威尔斯撞击坑探测到的古湖岸阶地 `Shalbatana Vallis/Orson Welles Crater Paleolake Shoreline Benches` 与蛋白石质硅藻土状湖相层理 `Opaline-Silica Diatomite-Like Lacustrine Beds`、莫高窟盛唐第 172/328 窟龛楣拱肩外角鎏金双凤宝莲团花与飞天发髻后绶鎏金卷草莲瓣嵌红珊瑚花钿扣、以及发射台导流槽折流喷淋歧管座 `Pad_BaffleSprayManifoldBlock`、整流罩中筒段分离纵缝整流罩 `Rocket_FairingMidJointFairing` 与三波点斜压剪切辉光 `triplePointBaroclinicShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.72` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛龛楣拱肩外角两侧新增八枚鎏金双凤宝莲团花高浮雕（`SpandrelOuterCornerLotusBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于龛楣拱肩外角增绘双凤宝莲团花，在 `drawBody()` 离屏缓存中于飞天发髻后绶增绘鎏金卷草莲瓣嵌红珊瑚花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入沙尔巴塔纳谷与奥逊·威尔斯撞击坑古湖岸阶地与蛋白石质硅藻土状湖相层理（`shalbatana_diatomite_benches`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`172,304 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,757 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对蛋白石质硅藻土湖相层引入沙尔巴塔纳米白硅华色带（`shalbatanaOpalineDiatomite`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽侧壁四座折流喷淋歧管座（`Pad_BaffleSprayManifoldBlock_0..3`）与箭体整流罩中筒段四向分离纵缝整流罩（`Rocket_FairingMidJointFairing_0..3`），导出 `rocket-kit.glb`（`890,956 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`886,507 B`）；在 `flameMaterial` 中引入三波点斜压剪切辉光项（`triplePointBaroclinicShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第九十五阶段验收：夜间持续进化 · 珍珠高地与巴拉那河谷树枝状古河网阶地与水铁矿-高岭石风化壳、莫高窟藻井内井框四角鎏金八瓣宝相莲联珠团花与飞天裙裾下摆双摩竭嵌缟玛瑙金铃坠、及发射台导流槽耐火尾焰分流肋块与反射激波滑流交织节点辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在珍珠高地与巴拉那河谷探测到的树枝状古河网阶地 `Margaritifer Terra/Parana Valles Dendritic Valley Network Benches` 与水铁矿-高岭石风化壳 `Ferrihydrite-Kaolinite Weathering Crusts`、莫高窟盛唐第 31/217 窟藻井内井框四角鎏金八瓣宝相莲联珠团花与飞天裙裾下摆鎏金双摩竭嵌缟玛瑙金铃坠、以及发射台导流槽耐火尾焰分流肋块 `Pad_TrenchPlumeSplitterRib`、二级箱间段氦气增压管路整流罩 `Rocket_UpperHeliumPressFairing` 与反射激波滑流交织节点辉光 `reflectedShockSlipBraidNodeGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.73` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿藻井内井框四角两侧新增八枚鎏金八瓣宝相莲联珠团花高浮雕（`CaissonInnerRingLotusBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于藻井内井框四角增绘八瓣宝相莲联珠团花，在 `drawBody()` 离屏缓存中于飞天裙裾下摆增绘鎏金双摩竭嵌缟玛瑙金铃坠；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入珍珠高地与巴拉那河谷树枝状古河网阶地与水铁矿-高岭石风化壳（`parana_ferrihydrite_benches`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`172,366 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,652 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对水铁矿-高岭石风化壳引入巴拉那河谷暖赤褐陶色带（`paranaFerrihydriteKaolinite`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽底板四座耐火尾焰分流肋块（`Pad_TrenchPlumeSplitterRib_0..3`）与箭体二级箱间段四向氦气增压管路整流罩（`Rocket_UpperHeliumPressFairing_0..3`），导出 `rocket-kit.glb`（`901,080 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`886,700 B`）；在 `flameMaterial` 中引入反射激波滑流交织节点辉光项（`reflectedShockSlipBraidNodeGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第九十六阶段验收：夜间持续进化 · 道谷与哈德里亚卡斯山火山-冰川泥石流河道阶地与沸石-蒙脱石热液壳、莫高窟须弥座勾阑望柱柱础鎏金忍冬宝莲团花与飞天披帛肩结迦陵频伽嵌和田白玉花钿扣、及发射台导流槽出口急冷水堰块与马赫杆三涡交织辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在道谷与哈德里亚卡斯山探测到的火山-冰川泥石流河道阶地 `Dao Vallis/Hadriacus Mons Volcano-Ice Lahar Channel Terraces` 与沸石-蒙脱石热液蚀变壳 `Zeolitic-Smectite Hydrothermal Crusts`、莫高窟盛唐第 148/217 窟须弥座勾阑望柱柱础鎏金忍冬宝莲团花与飞天披帛肩结鎏金迦陵频伽嵌和田白玉花钿扣、以及发射台导流槽出口声学急冷水堰块 `Pad_ExitQuenchWeirBlock`、一级芯级中段航电线束整流卡箍 `Rocket_CenterAvionicsClamp` 与马赫杆三涡交织辉光 `machStemTripleVortexBraidGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.74` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座须弥莲座勾阑望柱柱础两侧新增八枚鎏金忍冬宝莲团花高浮雕（`BalustradePostBaseLotusBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于须弥座勾阑望柱柱础增绘忍冬宝莲团花，在 `drawBody()` 离屏缓存中于飞天披帛肩结增绘鎏金迦陵频伽嵌和田白玉花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入道谷与哈德里亚卡斯山火山-冰川泥石流河道阶地与沸石-蒙脱石热液壳（`dao_lahar_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`172,416 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,067 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对沸石-蒙脱石热液蚀变壳引入道谷灰绿鼠尾草色带（`daoZeoliteSmectite`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽出口四座声学急冷水堰块（`Pad_ExitQuenchWeirBlock_0..3`）与箭体一级芯级中段四向航电线束整流卡箍（`Rocket_CenterAvionicsClamp_0..3`），导出 `rocket-kit.glb`（`911,156 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`886,470 B`）；在 `flameMaterial` 中引入马赫杆三涡交织辉光项（`machStemTripleVortexBraidGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第九十七阶段验收：夜间持续进化 · 伊希斯平原与利比亚山脉撞击熔融巨角砾岩方山与橄榄石-贝得石层状硅酸盐断崖、莫高窟佛龛券顶拱心石两侧鎏金火焰摩尼宝珠迦陵频伽团花与飞天散花宝盘盘沿八瓣莲嵌青金石花钿饰、及发射台导流槽水幕立管卡箍与桶形马赫三波剪切节点辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在伊希斯平原与利比亚山脉探测到的撞击熔融巨角砾岩方山 `Isidis Planitia/Libya Montes Impact-Melt Megabreccia Mesas` 与橄榄石-贝得石层状硅酸盐断崖 `Olivine-Beidellite Phyllosilicate Scarps`、莫高窟盛唐第 172/320 窟佛龛券顶拱心石两侧鎏金火焰摩尼宝珠迦陵频伽团花与飞天散花宝盘盘沿鎏金八瓣莲嵌青金石花钿饰、以及发射台导流槽侧壁声学水幕立管卡箍 `Pad_TrenchHeaderRiserClamp`、二级后裙段 TVC 液压蓄能器整流罩 `Rocket_UpperAftTVCAccumFairing` 与桶形马赫三波剪切节点辉光 `barrelMachTripleShearNodeGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.75` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶拱心石两侧新增八枚鎏金火焰摩尼宝珠迦陵频伽团花高浮雕（`ArchKeystoneKalavinkaBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶拱心石两侧增绘火焰摩尼宝珠迦陵频伽团花，在 `drawBody()` 离屏缓存中于飞天散花宝盘盘沿增绘鎏金八瓣莲嵌青金石花钿饰；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入伊希斯平原与利比亚山脉撞击熔融巨角砾岩方山与橄榄石-贝得石层状硅酸盐断崖（`libya_beidellite_mesas`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`172,381 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,446 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对橄榄石-贝得石层引入利比亚山脉嫩橄榄翠绿色带（`libyaOlivineBeidellite`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽侧壁四座声学水幕立管卡箍（`Pad_TrenchHeaderRiserClamp_0..3`）与箭体二级后裙段四向 TVC 液压蓄能器整流罩（`Rocket_UpperAftTVCAccumFairing_0..3`），导出 `rocket-kit.glb`（`921,228 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`886,631 B`）；在 `flameMaterial` 中引入桶形马赫三波剪切节点辉光项（`barrelMachTripleShearNodeGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第九十八阶段验收：夜间持续进化 · 希腊平原与特尔比撞击坑前积扇三角洲斜层理阶地与绿脱石-鲕绿泥石黏土层、莫高窟佛龛外侧壁柱柱础鎏金双层仰覆莲团花与飞天腰带流苏双凤衔瑞嵌绿松石步摇坠、及发射台导流槽出口排水格栅与环状马赫盘斜压辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在希腊平原与特尔比撞击坑探测到的前积扇三角洲斜层理阶地 `Hellas Planitia/Terby Crater Prograding Fan-Delta Clinoform Benches` 与绿脱石-鲕绿泥石黏土层 `Nontronite-Chamosite Clay Beds`、莫高窟盛唐第 45/148 窟佛龛外侧壁柱柱础鎏金双层仰覆莲团花与飞天腰带流苏鎏金双凤衔瑞嵌绿松石步摇坠、以及发射台导流槽出口排水格栅 `Pad_ExitDelugeDrainGrate`、整流罩底部分离弹簧推冲器罩 `Rocket_FairingSpringThruster` 与环状马赫盘斜压辉光 `annularMachDiskBaroclinicGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.76` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛外侧壁柱柱础两侧新增八枚鎏金双层仰覆莲团花高浮雕（`NicheJambBaseLotusBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛外侧壁柱柱础增绘双层仰覆莲团花，在 `drawBody()` 离屏缓存中于飞天腰带流苏增绘鎏金双凤衔瑞嵌绿松石步摇坠；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入希腊平原与特尔比撞击坑前积扇三角洲斜层理阶地与绿脱石-鲕绿泥石黏土层（`terby_nontronite_benches`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`172,630 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,719 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对绿脱石-鲕绿泥石黏土层引入特尔比撞击坑深灰青绿色带（`terbyNontroniteChamosite`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽出口四座排水格栅（`Pad_ExitDelugeDrainGrate_0..3`）与箭体整流罩底部四向分离弹簧推冲器罩（`Rocket_FairingSpringThruster_0..3`），导出 `rocket-kit.glb`（`931,316 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`886,870 B`）；在 `flameMaterial` 中引入环状马赫盘斜压辉光项（`annularMachDiskBaroclinicGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第九十九阶段验收：夜间持续进化 · 大塞提斯高原与安东尼亚第撞击坑剥露湖相蛋白石-沸石-伊利石阶地与多边形裂隙网、莫高窟须弥座下枭正中鎏金双凤宝相莲团花与飞天项圈后绶迦陵频伽嵌红玛瑙花钿扣、及发射台导流槽耐火拉结锚板与三波点马赫茎滑流卷起辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在大塞提斯高原与安东尼亚第撞击坑探测到的剥露湖相蛋白石-沸石-伊利石阶地 `Syrtis Major/Antoniadi Crater Exhumed Lacustrine Silica-Zeolite-Illite Benches` 与多边形裂隙脊网 `Polygonal Fracture Networks`、莫高窟盛唐第 45/217 窟须弥座下枭正中鎏金双凤宝相莲团花与飞天项圈后绶鎏金迦陵频伽嵌红玛瑙花钿扣、以及发射台导流槽侧壁高铝耐火拉结锚板 `Pad_TrenchRefractoryAnchorPlate`、一级前封头防晃环整流支架 `Rocket_FwdDomeAntiSloshBracket` 与三波点马赫茎滑流卷起辉光 `triplePointMachSlipRollupGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.77` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛须弥座下枭正中两侧新增八枚鎏金双凤宝相莲团花高浮雕（`PedestalPlinthCenterPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于须弥座下枭正中增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天项圈后绶增绘鎏金迦陵频伽嵌红玛瑙花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入大塞提斯高原与安东尼亚第撞击坑剥露湖相蛋白石-沸石-伊利石阶地与多边形裂隙网（`antoniadi_zeolite_benches`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`172,626 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,866 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对沸石-伊利石层引入安东尼亚第暖象牙米色带（`antoniadiZeoliteIllite`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽侧壁四座耐火拉结锚板（`Pad_TrenchRefractoryAnchorPlate_0..3`）与箭体一级前封头四向防晃环整流支架（`Rocket_FwdDomeAntiSloshBracket_0..3`），导出 `rocket-kit.glb`（`941,440 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`886,607 B`）；在 `flameMaterial` 中引入三波点马赫茎滑流卷起辉光项（`triplePointMachSlipRollupGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百阶段验收：夜间持续进化 · 克珊忒高地与希帕尼斯谷剥露水下扇三角洲叶状体阶地与富铁蒙脱石泥岩层、莫高窟中心斗四藻井外层方井四角鎏金八宝联珠宝相花团花与飞天足踝彩绶结卷草莲瓣嵌青金石花钿扣、及发射台导流槽底板急冷喷淋集管座与反射马赫桶形剪切节点辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在克珊忒高地与希帕尼斯谷探测到的剥露水下扇三角洲叶状体阶地 `Xanthe Terra/Hypanis Vallis Exhumed Submarine Fan-Delta Lobe Benches` 与富铁蒙脱石泥岩层 `Ferric-Smectite Mudstone Beds`、莫高窟盛唐第 31/172 窟中心斗四藻井外层方井四角鎏金八宝联珠宝相花团花与飞天足踝彩绶结鎏金卷草莲瓣嵌青金石花钿扣、以及发射台导流槽底板声学急冷喷淋集管座 `Pad_TrenchFloorSprayHeaderBlock`、二级前裙段姿控推力器整流包 `Rocket_UpperFwdACSThrusterPod` 与反射马赫桶形剪切节点辉光 `reflectedMachBarrelShearNodeGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.78` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿中心斗四藻井外层方井四角新增八枚鎏金八宝联珠宝相花团花高浮雕（`CaissonOuterCornerBaoxiangBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于中心斗四藻井外层方井四角增绘八宝联珠宝相花团花，在 `drawBody()` 离屏缓存中于飞天足踝彩绶结增绘鎏金卷草莲瓣嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入克珊忒高地与希帕尼斯谷剥露水下扇三角洲叶状体阶地与富铁蒙脱石泥岩层（`hypanis_fandelta_benches`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`172,875 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,735 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对富铁蒙脱石泥岩层引入希帕尼斯谷暖赭色带（`hypanisFerricSmectite`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽底板四座急冷喷淋集管座（`Pad_TrenchFloorSprayHeaderBlock_0..3`）与箭体二级前裙段四向姿控推力器整流包（`Rocket_UpperFwdACSThrusterPod_0..3`），导出 `rocket-kit.glb`（`951,608 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`886,753 B`）；在 `flameMaterial` 中引入反射马赫桶形剪切节点辉光项（`reflectedMachBarrelShearNodeGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百零一阶段验收：夜间持续进化 · 子午线湾与奋进号撞击坑环缘诺亚纪撞击角砾岩阶地与蒙脱石-绿脱石矿脉、莫高窟佛龛外拱圈拱顶两侧鎏金双龙戏珠火焰团花与飞天宝冠正中迦陵频伽嵌和田白玉冠徽、及发射台导流槽水幕歧管立管与马赫茎普朗特-迈耶剪切交织辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星机遇号与 MRO HiRISE/CRISM 在子午线湾奋进号撞击坑西缘探测到的舒梅克组撞击角砾岩阶地 `Sinus Meridiani/Endeavour Crater Rim Shoemaker Impact-Breccia Benches` 与蒙脱石-绿脱石矿脉 `Montmorillonite-Smectite Fracture Veins`、莫高窟盛唐第 148/172 窟佛龛外拱圈拱顶两侧鎏金双龙戏珠火焰团花与飞天宝冠正中鎏金迦陵频伽嵌和田白玉冠徽、以及发射台导流槽侧壁高速水幕歧管立管 `Pad_TrenchCurtainManifoldRiser`、一级尾裙防热幕吹扫百叶窗 `Rocket_AftCurtainPurgeLouver` 与马赫茎普朗特-迈耶剪切交织辉光 `machStemPrandtlShearBraidGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.79` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛外拱圈拱顶两侧新增八枚鎏金双龙戏珠火焰团花高浮雕（`ArchivoltApexTwinDragonBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛外拱圈拱顶两侧增绘双龙戏珠火焰团花，在 `drawBody()` 离屏缓存中于飞天宝冠正中增绘鎏金迦陵频伽嵌和田白玉冠徽；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入子午线湾与奋进号撞击坑环缘诺亚纪撞击角砾岩阶地与蒙脱石-绿脱石矿脉（`endeavour_smectite_benches`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`172,886 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,130 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对舒梅克组蒙脱石层引入奋进号暖红褐色带（`endeavourShoemakerSmectite`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽侧壁四座水幕歧管立管（`Pad_TrenchCurtainManifoldRiser_0..3`）与箭体一级尾裙四向防热幕吹扫百叶窗（`Rocket_AftCurtainPurgeLouver_0..3`），导出 `rocket-kit.glb`（`961,744 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`886,753 B`）；在 `flameMaterial` 中引入马赫茎普朗特-迈耶剪切交织辉光项（`machStemPrandtlShearBraidGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百零二阶段验收：夜间持续进化 · 辛梅里亚高地与戈尔贡混沌埃レクト里斯风蚀火山黄土阶地与蒙脱石-斜发沸石古土壤层、莫高窟须弥座上束腰隅角鎏金迦陵频伽忍冬团花与飞天肘部彩绶结双凤嵌孔雀石花钿扣、及发射台导流槽出口防爆导流趾块与三波点环状滑流剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在辛梅里亚高地与戈尔贡混沌探测到的埃レクト里斯风蚀火山黄土阶地 `Terra Cimmeria/Gorgonum Chaos Electris Wind-Carved Volcanic-Loess Benches` 与蒙脱石-斜发沸石古土壤层 `Montmorillonite-Clinoptilolite Paleosol Beds`、莫高窟盛唐第 172/320 窟须弥座上束腰隅角鎏金迦陵频伽忍冬团花与飞天肘部彩绶结鎏金双凤嵌孔雀石花钿扣、以及发射台导流槽出口防爆导流趾块 `Pad_ExitBlastToeBlock`、二级箱间段增压总管整流支座 `Rocket_UpperIntertankPressBracket` 与三波点环状滑流剪切辉光 `triplePointAnnularSlipShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.80` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛须弥座上束腰隅角新增八枚鎏金迦陵频伽忍冬团花高浮雕（`PedestalUpperWaistKalavinkaBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于须弥座上束腰隅角增绘迦陵频伽忍冬团花，在 `drawBody()` 离屏缓存中于飞天肘部彩绶结增绘鎏金双凤嵌孔雀石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入辛梅里亚高地与戈尔贡混沌埃レクト里斯风蚀火山黄土阶地与蒙脱石-斜发沸石层（`electris_clinoptilolite_benches`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`172,972 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,229 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对斜发沸石-蒙脱石古土壤层引入埃レクト里斯暖黄土色带（`electrisClinoptiloliteClay`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽出口四座防爆导流趾块（`Pad_ExitBlastToeBlock_0..3`）与箭体二级箱间段四向增压总管整流支座（`Rocket_UpperIntertankPressBracket_0..3`），导出 `rocket-kit.glb`（`971,848 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`886,653 B`）；在 `flameMaterial` 中引入三波点环状滑流剪切辉光项（`triplePointAnnularSlipShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百零三阶段验收：夜间持续进化 · 诺亚高地与克罗斯撞击坑热液明矾石-高岭石阶地与硅华脉脊、莫高窟斗四藻井内井框中段鎏金宝相莲曼荼罗团花与飞天披帛后垂端鎏金云凤嵌绿松石花钿扣、及发射台导流槽侧壁耐火分流楔与桶形激波滑流声学节点辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在诺亚高地与克罗斯撞击坑探测到的热液明矾石-高岭石阶地 `Noachis Terra/Cross Crater Hydrothermal Alunite-Kaolinite Benches` 与硅华脉脊 `Silica Sinter Ridges`、莫高窟盛唐第 31/172 窟斗四藻井内井框中段鎏金宝相莲曼荼罗团花与飞天披帛后垂端鎏金云凤嵌绿松石花钿扣、以及发射台导流槽侧壁耐火分流楔 `Pad_TrenchSidewallFlameSplitter`、一级前裙液氧排气阀整流罩 `Rocket_FwdSkirtLoxVentShroud` 与桶形激波滑流声学节点辉光 `barrelSlipstreamAcousticNodeGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.81` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛上方斗四藻井内井框中段新增八枚鎏金宝相莲曼荼罗团花高浮雕（`CaissonInnerMidLotusBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于斗四藻井内井框中段增绘宝相莲曼荼罗团花，在 `drawBody()` 离屏缓存中于飞天披帛后垂端增绘鎏金云凤嵌绿松石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入诺亚高地与克罗斯撞击坑热液明矾石-高岭石阶地与硅华脉脊（`cross_alunite_benches`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`173,068 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,540 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对明矾石-高岭石热液层引入克罗斯暖象牙色带（`crossAluniteKaolinite`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽侧壁四座耐火分流楔（`Pad_TrenchSidewallFlameSplitter_0..3`）与箭体一级前裙四向液氧排气阀整流罩（`Rocket_FwdSkirtLoxVentShroud_0..3`），导出 `rocket-kit.glb`（`982,000 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`886,681 B`）；在 `flameMaterial` 中引入桶形激波滑流声学节点辉光项（`barrelSlipstreamAcousticNodeGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百零四阶段验收：夜间持续进化 · 萨巴亚高地与维尔纳撞击坑热液钙华阶地与蒙脱石-针铁矿泉华丘、莫高窟佛龛内拱腹起拱线鎏金迦陵频伽宝莲团花与飞天小臂彩绶结鎏金莲叶嵌红玛瑙花钿扣、及发射台导流槽底板水幕歧管鞍座与马赫盘斜压剪切卷起节点辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在萨巴亚高地与维尔纳撞击坑西南部探测到的古热泉钙华阶地 `Terra Sabaea/Vernal Crater Hydrothermal Spring Travertine Terraces` 与蒙脱石-针铁矿泉华丘 `Smectite-Goethite Sinter Mounds`、莫高窟盛唐第 172/320 窟佛龛内拱腹起拱线鎏金迦陵频伽宝莲团花与飞天小臂彩绶结鎏金莲叶嵌红玛瑙花钿扣、以及发射台导流槽底板水幕歧管鞍座 `Pad_TrenchFloorSpraySaddle`、二级后裙姿控推力器整流包 `Rocket_UpperAftRCSPod` 与马赫盘斜压剪切卷起节点辉光 `machDiskBaroclinicShearNodeGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.82` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛内拱腹起拱线新增八枚鎏金迦陵频伽宝莲团花高浮雕（`NicheIntradosSpringlineKalavinkaBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛内拱腹起拱线增绘迦陵频伽宝莲团花，在 `drawBody()` 离屏缓存中于飞天小臂彩绶结增绘鎏金莲叶嵌红玛瑙花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入萨巴亚高地与维尔纳撞击坑热液钙华阶地与蒙脱石-针铁矿泉华丘（`vernal_travertine_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`173,174 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,297 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对蒙脱石-针铁矿热泉层引入维尔纳暖琥珀色带（`vernalTravertineGoethite`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽底板四座水幕歧管鞍座（`Pad_TrenchFloorSpraySaddle_0..3`）与箭体二级后裙四向姿控推力器整流包（`Rocket_UpperAftRCSPod_0..3`），导出 `rocket-kit.glb`（`992,060 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`886,787 B`）；在 `flameMaterial` 中引入马赫盘斜压剪切卷起节点辉光项（`machDiskBaroclinicShearNodeGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百零五阶段验收：夜间持续进化 · 珍珠高地与拉冬盆地剥露河湖相鲕绿泥石-蒙脱石阶地与曲流点坝垄、莫高窟须弥座下束腰隅角鎏金双凤宝相莲团花与飞天腰带后结鎏金迦陵频伽嵌青金石花钿扣、及发射台导流槽侧壁急冷喷淋托架与反射激波环状滑流节点辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在珍珠高地与拉冬盆地西北部探测到的剥露河湖相鲕绿泥石-蒙脱石阶地 `Margaritifer Terra/Ladon Basin Exhumed Alluvial-Lacustrine Chamosite-Smectite Benches` 与曲流点坝垄 `Meander Scroll Bars`、莫高窟盛唐第 45/217 窟须弥座下束腰隅角鎏金双凤宝相莲团花与飞天腰带后结鎏金迦陵频伽嵌青金石花钿扣、以及发射台导流槽侧壁声学急冷喷淋托架 `Pad_TrenchSidewallQuenchBracket`、整流罩中筒段声学百叶排气窗 `Rocket_FairingMidAcousticLouver` 与反射激波环状滑流节点辉光 `reflectedAnnularSlipNodeGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.83` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛须弥座下束腰隅角新增八枚鎏金双凤宝相莲团花高浮雕（`PedestalLowerWaistPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于须弥座下束腰隅角增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天腰带后结增绘鎏金迦陵频伽嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入珍珠高地与拉冬盆地剥露河湖相鲕绿泥石-蒙脱石阶地与曲流点坝垄（`ladon_chamosite_benches`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`173,421 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,417 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对鲕绿泥石-蒙脱石河湖层引入拉冬盆地橄榄灰青色带（`ladonChamositeSmectite`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽侧壁四座急冷喷淋托架（`Pad_TrenchSidewallQuenchBracket_0..3`）与箭体整流罩中筒段四向声学百叶排气窗（`Rocket_FairingMidAcousticLouver_0..3`），导出 `rocket-kit.glb`（`1,002,248 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`886,713 B`）；在 `flameMaterial` 中引入反射激波环状滑流节点辉光项（`reflectedAnnularSlipNodeGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百零六阶段验收：夜间持续进化 · 阿拉伯高地与奥克시아平原剥露含黏土泛滥平原阶地与蛭石-蒙脱石泥滩层、莫高窟中心斗四藻井中井框隅角鎏金迦陵频伽宝莲团花与飞天高髻顶结鎏金双凤嵌孔雀石花钿扣、及发射台导流槽出口急冷喷淋鞍座与三波点桶形激波滑流交织辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在阿拉伯高地西缘奥克시아平原探测到的剥露含黏土泛滥平原阶地 `Arabia Terra/Oxia Planum Exhumed Clay-Bearing Floodplain Benches` 与富铁镁蛭石-蒙脱石泥滩层 `Vermiculite-Smectite Mudflats`、莫高窟盛唐第 31/217 窟中心斗四藻井中井框隅角鎏金迦陵频伽宝莲团花与飞天高髻顶结鎏金双凤嵌孔雀石花钿扣、以及发射台导流槽出口声学急冷喷淋鞍座 `Pad_ExitQuenchSpraySaddle`、一级芯级中段液氧增压管路整流罩 `Rocket_CenterLoxPressFairing` 与三波点桶形激波滑流交织辉光 `triplePointBarrelSlipBraidGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.84` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛上方斗四藻井中井框隅角新增八枚鎏金迦陵频伽宝莲团花高浮雕（`CaissonMidCornerKalavinkaBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于斗四藻井中井框隅角增绘迦陵频伽宝莲团花，在 `drawBody()` 离屏缓存中于飞天高髻顶结增绘鎏金双凤嵌孔雀石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入阿拉伯高地与奥克시아平原剥露含黏土泛滥平原阶地与蛭石-蒙脱石泥滩层（`oxia_vermiculite_benches`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`173,375 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,385 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对蛭石-蒙脱石泥滩层引入奥克시아平原暖赭褐色带（`oxiaVermiculiteSmectite`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽出口四座急冷喷淋鞍座（`Pad_ExitQuenchSpraySaddle_0..3`）与箭体一级芯级中段四向液氧增压管路整流罩（`Rocket_CenterLoxPressFairing_0..3`），导出 `rocket-kit.glb`（`1,012,348 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`886,855 B`）；在 `flameMaterial` 中引入三波点桶形激波滑流交织辉光项（`triplePointBarrelSlipBraidGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百零七阶段验收：夜间持续进化 · 埃律西昂平原与刻耳柏洛斯槽沟裂隙溢流玄武岩膨胀台地与橄榄石-辉石凝灰锥、莫高窟佛龛外拱圈起拱线鎏金双凤火焰宝珠团花与飞天胸带前结鎏金宝相莲嵌绿松石花钿扣、及发射台导流槽底板耐火导流颊块与马赫茎环状斜压交织辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 与洞察号在埃律西昂平原东南部刻耳柏洛斯槽沟探测到的裂隙溢流玄武岩膨胀台地 `Elysium Planitia/Cerberus Fossae Fissure Flood-Basalt Inflation Plateaus` 与橄榄石-辉石火山碎屑凝灰锥 `Olivine-Pyroxene Tuff Cones`、莫高窟盛唐第 148/172 窟佛龛外拱圈起拱线鎏金双凤火焰宝珠团花与飞天胸带前结鎏金宝相莲嵌绿松石花钿扣、以及发射台导流槽底板高铝耐火导流颊块 `Pad_TrenchFloorCheekBlock`、二级前裙增压管路整流卡箍 `Rocket_UpperFwdPressClamp` 与马赫茎环状斜压交织辉光 `machStemAnnularBaroclinicBraidGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.85` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛外拱圈起拱线两侧新增八枚鎏金双凤火焰宝珠团花高浮雕（`ArchivoltSpringlinePhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于外拱圈起拱线增绘双凤火焰宝珠团花，在 `drawBody()` 离屏缓存中于飞天胸带前结增绘鎏金宝相莲嵌绿松石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入埃律西昂平原与刻耳柏洛斯槽沟裂隙溢流玄武岩膨胀台地与橄榄石-辉石凝灰锥（`cerberus_inflation_plateaus`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`173,463 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,757 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对刻耳柏洛斯橄榄石-辉石玄武层引入暗青灰玄武色带（`cerberusOlivinePyroxene`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽底板四座耐火导流颊块（`Pad_TrenchFloorCheekBlock_0..3`）与箭体二级前裙段四向增压管路整流卡箍（`Rocket_UpperFwdPressClamp_0..3`），导出 `rocket-kit.glb`（`1,022,428 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`886,949 B`）；在 `flameMaterial` 中引入马赫茎环状斜压交织辉光项（`machStemAnnularBaroclinicBraidGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百零八阶段验收：夜间持续进化 · 诺亚高地与维尔茨撞击坑环缘剥露蒙脱石-绿泥石冲积阶地与倒转分流扇、莫高窟须弥座上枭正中鎏金迦陵频伽宝相莲团花与飞天膝部彩绶结鎏金双凤嵌红珊瑚花钿扣、及发射台导流槽侧壁高速水幕导流翼片与反射激波三波点滑流节点辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在诺亚高地维尔茨撞击坑东缘探测到的剥露蒙脱石-绿泥石冲积阶地 `Noachis Terra/Wirtz Crater Exhumed Smectite-Chlorite Alluvial Terraces` 与倒转分流扇 `Inverted Distributary Fans`、莫高窟盛唐第 45/320 窟须弥座上枭正中鎏金迦陵频伽宝相莲团花与飞天膝部彩绶结鎏金双凤嵌红珊瑚花钿扣、以及发射台导流槽侧壁高速声学水幕导流翼片 `Pad_TrenchSidewallCurtainVane`、级间后法兰分离切索器整流荚舱 `Rocket_InterstageAftCutterPod` 与反射激波三波点滑流节点辉光 `reflectedMachTripleSlipNodeGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.86` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛须弥座上枭正中两侧新增八枚鎏金迦陵频伽宝相莲团花高浮雕（`PedestalUpperPlinthCenterKalavinkaBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于须弥座上枭正中增绘迦陵频伽宝相莲团花，在 `drawBody()` 离屏缓存中于飞天膝部彩绶结增绘鎏金双凤嵌红珊瑚花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入诺亚高地与维尔茨撞击坑环缘剥露蒙脱石-绿泥石冲积阶地与倒转分流扇（`wirtz_chlorite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`173,585 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,576 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对维尔茨撞击坑蒙脱石-绿泥石层引入翠绿灰青色带（`wirtzSmectiteChlorite`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽侧壁四座高速水幕导流翼片（`Pad_TrenchSidewallCurtainVane_0..3`）与箭体级间段后法兰四向分离切索器整流荚舱（`Rocket_InterstageAftCutterPod_0..3`），导出 `rocket-kit.glb`（`1,032,576 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`887,055 B`）；在 `flameMaterial` 中引入反射激波三波点滑流节点辉光项（`reflectedMachTripleSlipNodeGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百零九阶段验收：夜间持续进化 · 陶玛西亚平原与科拉키斯槽沟裂谷侧翼明矾石-高岭石阶地与多边形硫酸盐-黏土方山、莫高窟斗四藻井外井框中段鎏金双凤宝相莲团花与飞天大臂彩绶结鎏金迦陵频伽嵌青金石花钿扣、及发射台导流槽出口耐火分流墩与桶形激波三波点斜压节点辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在陶玛西亚平原与科拉키斯槽沟探测到的裂谷侧翼明矾石-高岭石阶地 `Thaumasia Planum/Coracis Fossae Rift-Flank Alunite-Kaolinite Terraces` 与多边形硫酸盐-黏土方山 `Polygonal Sulfate-Clay Mesas`、莫高窟盛唐第 31/217 窟斗四藻井外井框中段鎏金双凤宝相莲团花与飞天大臂彩绶结鎏金迦陵频伽嵌青金石花钿扣、以及发射台导流槽出口耐火分流墩 `Pad_ExitRefractorySplitterPier`、整流罩前锥分离接缝压带 `Rocket_FairingFwdJointStrap` 与桶形激波三波点斜压节点辉光 `barrelTripleBaroclinicNodeGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.87` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座主龛斗四藻井外井框中段两侧新增八枚鎏金双凤宝相莲团花高浮雕（`CaissonOuterMidPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于斗四藻井外井框中段增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天大臂彩绶结增绘鎏金迦陵频伽嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入陶玛西亚平原与科拉키斯槽沟裂谷侧翼明矾石-高岭石阶地与多边形硫酸盐-黏土方山（`coracis_alunite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`173,674 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,339 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对科拉키斯槽沟明矾石-高岭石层引入淡米赭色带（`coracisAluniteKaolinite`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽出口四座高铝耐火尾焰分流墩（`Pad_ExitRefractorySplitterPier_0..3`）与箭体整流罩前锥段四向分离接缝压带（`Rocket_FairingFwdJointStrap_0..3`），导出 `rocket-kit.glb`（`1,042,712 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`886,900 B`）；在 `flameMaterial` 中引入桶形激波三波点斜压节点辉光项（`barrelTripleBaroclinicNodeGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百一十阶段验收：夜间持续进化 · 克珊忒高地与芳香混沌外流源头黄钾铁矾-针铁矿阶地与裂解混沌块体、莫高窟佛龛内拱腹券顶中肋鎏金双凤宝相莲团花与飞天足踝彩绶结鎏金莲叶嵌孔雀石花钿扣、及发射台导流槽底板水幕集管卡箍与环状滑流马赫茎节点辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在克珊忒高地芳香混沌探测到的外流源头黄钾铁矾-针铁矿阶地 `Xanthe Terra/Aromatum Chaos Outflow Headwall Jarosite-Goethite Benches` 与裂解混沌块体 `Fractured Chaos Blocks`、莫高窟盛唐第 148/217 窟佛龛内拱腹券顶中肋鎏金双凤宝相莲团花与飞天足踝彩绶结鎏金莲叶嵌孔雀石花钿扣、以及发射台导流槽底板水幕集管卡箍 `Pad_TrenchFloorSprayClamp`、一级前裙航电脱插整流罩 `Rocket_Stage1FwdAvionicsFairing` 与环状滑流马赫茎节点辉光 `annularSlipMachStemNodeGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.88` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛内拱腹券顶中肋两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheIntradosApexMidPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于内拱腹券顶中肋增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天足踝彩绶结增绘鎏金莲叶嵌孔雀石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入克珊忒高地与芳香混沌外流源头黄钾铁矾-针铁矿阶地与裂解混沌块体（`aromatum_jarosite_benches`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`173,878 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,446 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对芳香混沌黄钾铁矾-针铁矿层引入金黄赭石色带（`aromatumJarositeGoethite`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽底板四座声学水幕喷淋集管卡箍（`Pad_TrenchFloorSprayClamp_0..3`）与箭体一级前裙段四向航电脱插气动整流罩（`Rocket_Stage1FwdAvionicsFairing_0..3`），导出 `rocket-kit.glb`（`1,052,852 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`886,952 B`）；在 `flameMaterial` 中引入环状滑流马赫茎节点辉光项（`annularSlipMachStemNodeGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百一十一阶段验收：夜间持续进化 · 阿拉伯高地与波拉克撞击坑内部“白岩”蒸发岩雅丹与干盐湖盐滩、莫高窟须弥座下枭正中鎏金迦陵频伽宝相莲团花与飞天裙裾后摆鎏金云凤嵌绿松石花钿扣、及发射台导流槽侧壁高铝耐火声学折流肋与三波点普朗特-迈耶剪切卷起节点辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在阿拉伯高地南部波拉克撞击坑内部探测到的“白岩”蒸发岩雅丹 `Arabia Terra/Pollack Crater White-Rock Evaporite Yardangs` 与干盐湖盐滩 `Sabkha Playas`、莫高窟盛唐第 45/320 窟须弥座下枭正中鎏金迦陵频伽宝相莲团花与飞天裙裾后摆鎏金云凤嵌绿松石花钿扣、以及发射台导流槽侧壁高铝耐火声学折流肋 `Pad_SidewallRefractoryBaffleRib`、上面级后裙遥测天线整流罩 `Rocket_UpperAftTelemetryFairing` 与三波点普朗特-迈耶剪切卷起节点辉光 `triplePointPrandtlShearNodeGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.89` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛须弥座下枭正中两侧新增八枚鎏金迦陵频伽宝相莲团花高浮雕（`PedestalLowerPlinthCenterKalavinkaBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于须弥座下枭正中增绘迦陵频伽宝相莲团花，在 `drawBody()` 离屏缓存中于飞天裙裾后摆增绘鎏金云凤嵌绿松石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入阿拉伯高地与波拉克撞击坑内部“白岩”蒸发岩雅丹与干盐湖盐滩（`pollack_evaporite_yardangs`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`173,890 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,123 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对波拉克撞击坑蒸发岩盐滩引入浅米白色带（`pollackEvaporitePlaya`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽侧壁四座高铝耐火声学折流肋（`Pad_SidewallRefractoryBaffleRib_0..3`）与箭体上面级后裙段四向遥测天线整流罩（`Rocket_UpperAftTelemetryFairing_0..3`），导出 `rocket-kit.glb`（`1,063,024 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`887,028 B`）；在 `flameMaterial` 中引入三波点普朗特-迈耶剪切卷起节点辉光项（`triplePointPrandtlShearNodeGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百一十二阶段验收：夜间持续进化 · 奥尼亚高地与皮克林撞击坑环缘层状黏土-硫酸盐阶地与倒转辫状河道、莫高窟斗四藻井内井框中肋鎏金双凤宝相莲团花与飞天裙裾前摆鎏金迦陵频伽嵌红玛瑙花钿扣、及发射台导流槽出口急冷喷嘴集管与马赫盘滑流斜压交织辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在奥尼亚高地皮克林撞击坑环缘探测到的层状黏土-硫酸盐阶地 `Aonia Terra/Pickering Crater Layered Clay-Sulfate Terraces` 与倒转辫状河道 `Inverted Braided Channels`、莫高窟盛唐第 31/159 窟斗四藻井内井框中肋鎏金双凤宝相莲团花与飞天裙裾前摆鎏金迦陵频伽嵌红玛瑙花钿扣、以及发射台导流槽出口声学急冷喷嘴集管 `Pad_ExitQuenchNozzleManifold`、一级尾裙遥测线槽整流罩 `Rocket_Stage1AftTelemetryRaceway` 与马赫盘滑流斜压交织辉光 `machDiskSlipBaroclinicBraidGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.90` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座主龛斗四藻井内井框中肋两侧新增八枚鎏金双凤宝相莲团花高浮雕（`CaissonInnerRibPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于斗四藻井内井框中肋增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天裙裾前摆增绘鎏金迦陵频伽嵌红玛瑙花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入奥尼亚高地与皮克林撞击坑环缘层状黏土-硫酸盐阶地与倒转辫状河道（`pickering_clay_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`174,014 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,373 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对皮克林撞击坑黏土-硫酸盐层引入灰褐赭色带（`pickeringClaySulfate`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽出口四座急冷水喷嘴分配集管（`Pad_ExitQuenchNozzleManifold_0..3`）与箭体一级尾裙段四向遥测线槽气动整流罩（`Rocket_Stage1AftTelemetryRaceway_0..3`），导出 `rocket-kit.glb`（`1,073,184 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`887,116 B`）；在 `flameMaterial` 中引入马赫盘滑流斜压交织辉光项（`machDiskSlipBaroclinicBraidGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百一十三阶段验收：夜间持续进化 · 诺亚高地与普罗克特撞击坑内部暗色玄武岩新月形沙丘场与丘间蒸发岩盐滩、莫高窟佛龛内拱腹下券腰中肋鎏金迦陵频伽宝相莲团花与飞天腕帛飘尾鎏金云凤嵌青金石花钿扣、及发射台导流槽底板耐火导流叶片与环状喷流三波点声学速调管节点辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在诺亚高地普罗克特撞击坑内部探测到的暗色玄武岩新月形沙丘场 `Noachis Terra/Proctor Crater Dark Basaltic Barchan Dune Fields` 与丘间蒸发岩盐滩 `Interdune Evaporite Playas`、莫高窟盛唐第 148/217 窟佛龛内拱腹下券腰中肋鎏金迦陵频伽宝相莲团花与飞天腕帛飘尾鎏金云凤嵌青金石花钿扣、以及发射台导流槽底板高铝耐火尾焰导流叶片 `Pad_FloorRefractoryDeflectorVane`、级间段后环遥测脱插脐带整流罩 `Rocket_InterstageAftUmbilicalFairing` 与环状喷流三波点声学速调管节点辉光 `annularTripleAcousticKlystronGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.91` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛内拱腹下券腰中肋两侧新增八枚鎏金迦陵频伽宝相莲团花高浮雕（`NicheLowerHaunchRibKalavinkaBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于内拱腹下券腰中肋增绘迦陵频伽宝相莲团花，在 `drawBody()` 离屏缓存中于飞天腕帛飘尾增绘鎏金云凤嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入诺亚高地与普罗克特撞击坑内部暗色玄武岩新月形沙丘场与丘间蒸发岩盐滩（`proctor_barchan_interdunes`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`174,277 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,754 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对普罗克特撞击坑丘间硫酸盐盐滩引入暖琥珀赭色带（`proctorBarchanPlaya`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽底板四座高铝耐火尾焰导流叶片（`Pad_FloorRefractoryDeflectorVane_0..3`）与箭体级间段后环四向遥测脱插脐带气动整流罩（`Rocket_InterstageAftUmbilicalFairing_0..3`），导出 `rocket-kit.glb`（`1,083,408 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`887,085 B`）；在 `flameMaterial` 中引入环状喷流三波点声学速调管节点辉光项（`annularTripleAcousticKlystronGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百一十四阶段验收：夜间持续进化 · 珍珠高地与莫拉瓦谷剥露辫状外流河道阶地与蒙脱石-石膏台地、莫高窟须弥座上束腰中段鎏金双凤宝相莲团花与飞天披帛垂结鎏金迦陵频伽嵌孔雀石花钿扣、及发射台导流槽侧壁声学水幕集管鞍座与反射激波马赫茎剪切交织节点辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在珍珠高地莫拉瓦谷探测到的剥露辫状外流河道阶地 `Margaritifer Terra/Morava Valles Exhumed Braided Outflow Terraces` 与蒙脱石-石膏台地 `Smectite-Gypsum Benches`、莫高窟盛唐第 45/217 窟须弥座上束腰中段鎏金双凤宝相莲团花与飞天披帛垂结鎏金迦陵频伽嵌孔雀石花钿扣、以及发射台导流槽侧壁声学水幕喷淋集管鞍座 `Pad_SidewallCurtainHeaderSaddle`、整流罩前锥段遥测贴片整流罩 `Rocket_FairingFwdTelemetryPatch` 与反射激波马赫茎剪切交织节点辉光 `reflectedMachStemShearBraidGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.92` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛须弥座上束腰中段两侧新增八枚鎏金双凤宝相莲团花高浮雕（`PedestalUpperWaistMidPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于须弥座上束腰中段增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天披帛垂结增绘鎏金迦陵频伽嵌孔雀石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入珍珠高地与莫拉瓦谷剥露辫状外流河道阶地与蒙脱石-石膏台地（`morava_smectite_benches`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`174,424 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,684 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对莫拉瓦谷蒙脱石-石膏台地引入浅灰青米色带（`moravaSmectiteGypsum`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽侧壁四座声学水幕喷淋集管固定鞍座（`Pad_SidewallCurtainHeaderSaddle_0..3`）与箭体整流罩前锥段四向遥测贴片整流罩（`Rocket_FairingFwdTelemetryPatch_0..3`），导出 `rocket-kit.glb`（`1,093,588 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`887,127 B`）；在 `flameMaterial` 中引入反射激波马赫茎剪切交织节点辉光项（`reflectedMachStemShearBraidGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百一十五阶段验收：夜间持续进化 · 西壬高地与戈尔贡盆地剥露氯盐蒸发岩多边形裂隙网与高岭石-蒙脱石阶地、莫高窟斗四藻井中井框中肋鎏金迦陵频伽宝相莲团花与飞天腰佩流苏鎏金双凤嵌红珊瑚花钿扣、及发射台导流槽出口耐火导流墩与桶形激波普朗特-迈耶斜压节点辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/THEMIS/CRISM 在西壬高地戈尔贡盆地探测到的剥露氯盐蒸发岩多边形裂隙网 `Terra Sirenum/Gorgonum Basin Exhumed Chloride Evaporite Polygons` 与高岭石-蒙脱石阶地 `Kaolinite-Smectite Benches`、莫高窟盛唐第 31/217 窟斗四藻井中井框中肋鎏金迦陵频伽宝相莲团花与飞天腰佩流苏鎏金双凤嵌红珊瑚花钿扣、以及发射台导流槽出口耐火导流墩 `Pad_ExitRefractoryDeflectorBlock`、上面级箱间段遥测线槽卡箍 `Rocket_UpperIntertankRacewayClamp` 与桶形激波普朗特-迈耶斜压节点辉光 `barrelPrandtlBaroclinicNodeGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.93` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座主龛斗四藻井中井框中肋两侧新增八枚鎏金迦陵频伽宝相莲团花高浮雕（`CaissonMidRibKalavinkaBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于斗四藻井中井框中肋增绘迦陵频伽宝相莲团花，在 `drawBody()` 离屏缓存中于飞天腰佩流苏增绘鎏金双凤嵌红珊瑚花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入西壬高地与戈尔贡盆地剥露氯盐蒸发岩多边形裂隙网与高岭石-蒙脱石阶地（`gorgonum_chloride_polygons`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`174,641 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,093,858 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对戈尔贡盆地氯盐蒸发岩层引入暖雪花膏米白色带（`gorgonumChlorideEvaporite`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽出口四座高铝耐火尾焰导流墩块（`Pad_ExitRefractoryDeflectorBlock_0..3`）与箭体上面级箱间段四向遥测线槽整流卡箍（`Rocket_UpperIntertankRacewayClamp_0..3`），导出 `rocket-kit.glb`（`1,103,788 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`887,067 B`）；在 `flameMaterial` 中引入桶形激波普朗特-迈耶斜压节点辉光项（`barrelPrandtlBaroclinicNodeGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百一十六阶段验收：夜间持续进化 · 伊斯梅纽斯湖区与莫勒撞击坑冰川-湖相冰砾阜阶地与蒙脱石-蛋白石台地、莫高窟佛龛外拱圈上券腰中肋鎏金迦陵频伽宝相莲团花与飞天小臂彩绶结鎏金双凤嵌青金石花钿扣、及发射台导流槽底板声学急冷集管鞍座与三波点马赫盘声学剪切节点辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在伊斯梅纽斯湖区莫勒撞击坑探测到的冰川-湖相冰砾阜阶地 `Ismenius Lacus/Moreux Crater Glacio-Lacustrine Kame Terraces` 与蒙脱石-蛋白石台地 `Smectite-Opaline Benches`、莫高窟盛唐第 148/217 窟佛龛外拱圈上券腰中肋鎏金迦陵频伽宝相莲团花与飞天小臂彩绶结鎏金双凤嵌青金石花钿扣、以及发射台导流槽底板声学急冷集管鞍座 `Pad_FloorQuenchHeaderSaddle`、一级芯级中段航电线槽卡箍 `Rocket_Stage1MidRacewayClamp` 与三波点马赫盘声学剪切节点辉光 `triplePointMachDiskShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.94` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛外拱圈上券腰中肋两侧新增八枚鎏金迦陵频伽宝相莲团花高浮雕（`ArchivoltUpperHaunchRibKalavinkaBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于外拱圈上券腰中肋增绘迦陵频伽宝相莲团花，在 `drawBody()` 离屏缓存中于飞天小臂彩绶结增绘鎏金双凤嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入伊斯梅纽斯湖区与莫勒撞击坑冰川-湖相冰砾阜阶地与蒙脱石-蛋白石台地（`moreux_kame_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`174,782 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,915 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对莫勒撞击坑蒙脱石-蛋白石台地引入冷青灰米色带（`moreuxSmectiteOpal`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽底板四座声学急冷水喷淋集管固定鞍座（`Pad_FloorQuenchHeaderSaddle_0..3`）与箭体一级芯级中段四向航电线槽整流卡箍（`Rocket_Stage1MidRacewayClamp_0..3`），导出 `rocket-kit.glb`（`1,113,912 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`887,094 B`）；在 `flameMaterial` 中引入三波点马赫盘声学剪切节点辉光项（`triplePointMachDiskShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百一十七阶段验收：夜间持续进化 · 大塞提斯高原与尼利破火山口硅华泉华锥与热液绿脱石-沸石阶地、莫高窟须弥座下束腰正中鎏金迦陵频伽宝相莲团花与飞天後裙角鎏金双凤嵌孔雀石花钿扣、及发射台导流槽侧壁高铝耐火护颊导流块与环形喷流马赫茎普朗特-迈耶剪切节点辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在大塞提斯高原尼利破火山口探测到的硅华泉华锥 `Syrtis Major Planum/Nili Patera Caldera Silica Sinter Cones` 与热液绿脱石-沸石阶地 `Hydrothermal Nontronite-Zeolite Benches`、莫高窟盛唐第 45/217 窟须弥座下束腰正中鎏金迦陵频伽宝相莲团花与飞天後裙角鎏金双凤嵌孔雀石花钿扣、以及发射台导流槽侧壁高铝耐火护颊导流块 `Pad_SidewallRefractoryCheekBlock`、上面级前裙段航电线槽卡箍 `Rocket_UpperFwdRacewayClamp` 与环形喷流马赫茎普朗特-迈耶剪切节点辉光 `annularMachStemPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.95` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛须弥座下束腰正中两侧新增八枚鎏金迦陵频伽宝相莲团花高浮雕（`PedestalLowerWaistMidKalavinkaBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于须弥座下束腰正中增绘迦陵频伽宝相莲团花，在 `drawBody()` 离屏缓存中于飞天後裙角增绘鎏金双凤嵌孔雀石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入大塞提斯高原与尼利破火山口硅华泉华锥与热液绿脱石-沸石阶地（`nili_patera_sinter_cones`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`174,917 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,385 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对尼利破火山口硅华与绿脱石-沸石阶地引入珍珠青灰色带（`niliPateraSilicaSinter`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽侧壁四座高铝耐火尾焰导流护颊块（`Pad_SidewallRefractoryCheekBlock_0..3`）与箭体上面级前裙段四向航电线槽整流卡箍（`Rocket_UpperFwdRacewayClamp_0..3`），导出 `rocket-kit.glb`（`1,124,060 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`887,118 B`）；在 `flameMaterial` 中引入环形喷流马赫茎普朗特-迈耶剪切节点辉光项（`annularMachStemPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百一十八阶段验收：夜间持续进化 · 卢奈平原与卡塞谷河口洪水冲刷玄武岩跌水阶地与皂石-赤铁矿台地、莫高窟斗四藻井外井框中肋鎏金迦陵频伽宝相莲团花与飞天胸前披帛结鎏金双凤嵌红珊瑚花钿扣、及发射台导流槽出口声学急冷集管卡箍与反射激波普朗特-迈耶斜压节点辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在卢奈平原与卡塞谷河口探测到的洪水冲刷玄武岩跌水阶地 `Lunae Planum/Kasei Valles Mouth Flood-Scoured Basaltic Cataract Benches` 与皂石-赤铁矿台地 `Saponite-Hematite Terraces`、莫高窟盛唐第 31/217 窟斗四藻井外井框中肋鎏金迦陵频伽宝相莲团花与飞天胸前披帛结鎏金双凤嵌红珊瑚花钿扣、以及发射台导流槽出口声学急冷集管卡箍 `Pad_ExitQuenchHeaderClamp`、一级前裙段航电线槽卡箍 `Rocket_Stage1FwdRacewayClamp` 与反射激波普朗特-迈耶斜压节点辉光 `reflectedPrandtlBaroclinicNodeGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.96` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座主龛斗四藻井外井框中肋两侧新增八枚鎏金迦陵频伽宝相莲团花高浮雕（`CaissonOuterRibKalavinkaBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于斗四藻井外井框中肋增绘迦陵频伽宝相莲团花，在 `drawBody()` 离屏缓存中于飞天胸前披帛结增绘鎏金双凤嵌红珊瑚花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入卢奈平原与卡塞谷河口洪水冲刷玄武岩跌水阶地与皂石-赤铁矿台地（`kasei_cataract_benches`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`175,047 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,166 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对卡塞谷皂石-赤铁矿台地引入暖古铜赭色带（`kaseiSaponiteHematite`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽出口四座声学急冷水喷淋集管固定卡箍（`Pad_ExitQuenchHeaderClamp_0..3`）与箭体一级前裙段四向航电线槽整流卡箍（`Rocket_Stage1FwdRacewayClamp_0..3`），导出 `rocket-kit.glb`（`1,134,168 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`887,118 B`）；在 `flameMaterial` 中引入反射激波普朗特-迈耶斜压节点辉光项（`reflectedPrandtlBaroclinicNodeGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百一十九阶段验收：夜间持续进化 · 辛梅里亚高地与阿里阿德涅丘群裂解混沌瘤状阶地与绿脱石-皂石台地、莫高窟佛龛外拱圈下券腰中肋鎏金迦陵频伽宝相莲团花与飞天上臂彩绶结鎏金双凤嵌绿松石花钿扣、及发射台导流槽底板高铝耐火尾焰分流楔块与桶形激波马赫盘声学剪切节点辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在辛梅里亚高地与阿里阿德涅丘群探测到的裂解混沌瘤状阶地 `Terra Cimmeria/Ariadnes Colles Fractured Chaos Knob Terraces` 与绿脱石-皂石台地 `Nontronite-Saponite Benches`、莫高窟盛唐第 148/217 窟佛龛外拱圈下券腰中肋鎏金迦陵频伽宝相莲团花与飞天上臂彩绶结鎏金双凤嵌绿松石花钿扣、以及发射台导流槽底板高铝耐火尾焰分流楔块 `Pad_FloorRefractorySplitterWedge`、级间前环段航电线槽卡箍 `Rocket_InterstageFwdRacewayClamp` 与桶形激波马赫盘声学剪切节点辉光 `barrelMachDiskAcousticShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.97` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛外拱圈下券腰中肋两侧新增八枚鎏金迦陵频伽宝相莲团花高浮雕（`ArchivoltLowerHaunchRibKalavinkaBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于外拱圈下券腰中肋增绘迦陵频伽宝相莲团花，在 `drawBody()` 离屏缓存中于飞天上臂彩绶结增绘鎏金双凤嵌绿松石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入辛梅里亚高地与阿里阿德涅丘群裂解混沌瘤状阶地与绿脱石-皂石台地（`ariadnes_nontronite_benches`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`175,123 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,254 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对阿里阿德涅丘群绿脱石-皂石台地引入暖橄榄黄赭色带（`ariadnesNontroniteSaponite`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽底板四座高铝耐火尾焰分流楔块（`Pad_FloorRefractorySplitterWedge_0..3`）与箭体级间前环段四向航电线槽整流卡箍（`Rocket_InterstageFwdRacewayClamp_0..3`），导出 `rocket-kit.glb`（`1,144,372 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`887,054 B`）；在 `flameMaterial` 中引入桶形激波马赫盘声学剪切节点辉光项（`barrelMachDiskAcousticShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百二十阶段验收：夜间持续进化 · 埃律西昂平原与阿萨巴斯卡谷溢流玄武岩无根火山锥群与橙玄玻璃-蒙脱石阶地、莫高窟须弥座上枭莲座正中鎏金迦陵频伽宝相莲团花与飞天胯侧彩绶结鎏金双凤嵌红玛瑙花钿扣、及发射台导流槽侧壁声学急冷集管卡箍与三波点滑流普朗特-迈耶剪切节点辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在埃律西昂平原与阿萨巴斯卡谷探测到的溢流玄武岩无根火山锥群 `Elysium Planitia/Athabasca Valles Flood-Basalt Rootless Cones` 与橙玄玻璃-蒙脱石阶地 `Palagonite-Smectite Terraces`、莫高窟盛唐第 45/217 窟须弥座上枭莲座正中鎏金迦陵频伽宝相莲团花与飞天胯侧彩绶结鎏金双凤嵌红玛瑙花钿扣、以及发射台导流槽侧壁声学急冷集管卡箍 `Pad_SidewallQuenchHeaderClamp`、上面级后裙段航电线槽卡箍 `Rocket_UpperAftRacewayClamp` 与三波点滑流普朗特-迈耶剪切节点辉光 `triplePointSlipPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.98` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛须弥座上枭莲座正中两侧新增八枚鎏金迦陵频伽宝相莲团花高浮雕（`PedestalUpperPlinthCenterKalavinkaBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于须弥座上枭莲座正中增绘迦陵频伽宝相莲团花，在 `drawBody()` 离屏缓存中于飞天胯侧彩绶结增绘鎏金双凤嵌红玛瑙花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入埃律西昂平原与阿萨巴斯卡谷溢流玄武岩无根火山锥群与橙玄玻璃-蒙脱石阶地（`athabasca_rootless_cones`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`175,384 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,454 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对阿萨巴斯卡谷橙玄玻璃-蒙脱石阶地引入暖棕赭色带（`athabascaPalagoniteSmectite`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽侧壁四座声学急冷水喷淋集管固定卡箍（`Pad_SidewallQuenchHeaderClamp_0..3`）与箭体上面级后裙段四向航电线槽整流卡箍（`Rocket_UpperAftRacewayClamp_0..3`），导出 `rocket-kit.glb`（`1,154,488 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`887,054 B`）；在 `flameMaterial` 中引入三波点滑流普朗特-迈耶剪切节点辉光项（`triplePointSlipPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百二十一阶段验收：夜间持续进化 · 克珊忒高地与埃伯斯瓦尔德撞击坑三角洲底积层蒙脱石-鲕绿泥石阶地与曲流点坝沙洲垄、莫高窟斗四藻井中井框隅肋鎏金双凤宝相莲团花与飞天裙裾侧衩鎏金迦陵频伽嵌青金石花钿扣、及发射台导流槽出口高铝耐火尾焰分流楔块与反射激波马赫盘斜压剪切节点辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在克珊忒高地埃伯斯瓦尔德撞击坑探测到的三角洲底积层蒙脱石-鲕绿泥石阶地 `Xanthe Terra/Eberswalde Crater Deltaic Bottomset Smectite-Chamosite Terraces` 与曲流点坝沙洲垄 `Meander Point-Bar Scroll Ridges`、莫高窟盛唐第 31/217 窟斗四藻井中井框隅肋鎏金双凤宝相莲团花与飞天裙裾侧衩鎏金迦陵频伽嵌青金石花钿扣、以及发射台导流槽出口高铝耐火尾焰分流楔块 `Pad_ExitRefractorySplitterWedge`、一级尾裙段航电线槽卡箍 `Rocket_Stage1AftRacewayClamp` 与反射激波马赫盘斜压剪切节点辉光 `reflectedMachDiskBaroclinicGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.99` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座主龛斗四藻井中井框隅肋两侧新增八枚鎏金双凤宝相莲团花高浮雕（`CaissonMidCornerRibPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于斗四藻井中井框隅肋增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天裙裾侧衩增绘鎏金迦陵频伽嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入克珊忒高地与埃伯斯瓦尔德撞击坑三角洲底积层蒙脱石-鲕绿泥石阶地与曲流点坝沙洲垄（`eberswalde_bottomset_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`175,714 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,554 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对埃伯斯瓦尔德三角洲蒙脱石-鲕绿泥石阶地引入青绿橄榄色带（`eberswaldeSmectiteChamosite`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽出口四座高铝耐火尾焰分流楔块（`Pad_ExitRefractorySplitterWedge_0..3`）与箭体一级尾裙段四向航电线槽整流卡箍（`Rocket_Stage1AftRacewayClamp_0..3`），导出 `rocket-kit.glb`（`1,164,652 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`887,185 B`）；在 `flameMaterial` 中引入反射激波马赫盘斜压剪切节点辉光项（`reflectedMachDiskBaroclinicGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百二十二阶段验收：夜间持续进化 · 西壬高地与哥伦布撞击坑古湖泊明矾石-高岭石-石膏环形阶地与酸性盐湖岸线台地、莫高窟佛龛内拱腹上腰斜棱鎏金双凤宝莲团花与飞天足钏垂缨鎏金双凤嵌绿松石花钿扣、及发射台导流槽底板声学急冷喷嘴集管与环形滑流声学速调管节点辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在西壬高地哥伦布撞击坑探测到的古湖泊明矾石-高岭石-石膏环形阶地 `Terra Sirenum/Columbus Crater Paleolake Alunite-Kaolinite-Gypsum Ring Terraces` 与酸性盐湖岸线台地 `Acid-Saline Shoreline Benches`、莫高窟盛唐第 172/320 窟佛龛内拱腹上腰斜棱鎏金双凤宝莲团花与飞天足钏垂缨鎏金双凤嵌绿松石花钿扣、以及发射台导流槽底板声学急冷水喷嘴分配集管 `Pad_FloorQuenchNozzleManifold`、级间中环段航电线槽卡箍 `Rocket_InterstageMidRacewayClamp` 与环形滑流声学速调管节点辉光 `annularSlipAcousticKlystronGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.100` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座主龛内拱腹上腰斜棱两侧新增八枚鎏金双凤宝莲团花高浮雕（`NicheUpperHaunchCornerRibPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛内拱腹上腰斜棱增绘双凤宝莲团花，在 `drawBody()` 离屏缓存中于飞天足钏垂缨增绘鎏金双凤嵌绿松石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入西壬高地与哥伦布撞击坑古湖泊明矾石-高岭石-石膏环形阶地与酸性盐湖岸线台地（`columbus_alunite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`175,758 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,341 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对哥伦布撞击坑半水石膏-明矾石阶地引入暖粉象牙色带（`columbusBassaniteAlunite`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽底板四座声学急冷水喷嘴分配集管（`Pad_FloorQuenchNozzleManifold_0..3`）与箭体级间中环段四向航电线槽整流卡箍（`Rocket_InterstageMidRacewayClamp_0..3`），导出 `rocket-kit.glb`（`1,174,832 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`887,299 B`）；在 `flameMaterial` 中引入环形滑流声学速调管节点辉光项（`annularSlipAcousticKlystronGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百二十三阶段验收：夜间持续进化 · 埃奥利斯山与格伦托里登含黏土单元绿脱石-四方纤铁矿-菱铁矿阶地与多边形泥岩脊、莫高窟须弥座下束腰隅棱鎏金双凤宝莲团花与飞天项圈侧绶鎏金迦陵频伽嵌红珊瑚花钿扣、及发射台导流槽侧壁急冷喷嘴集管与桶形激波三波点普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星好奇号与 MRO HiRISE/CRISM 在盖尔撞击坑埃奥利斯山格伦托里登含黏土单元探测到的绿脱石-四方纤铁矿-菱铁矿阶地 `Aeolis Mons/Glen Torridon Clay-Bearing Unit Nontronite-Akaganeite-Siderite Benches` 与多边形破裂泥岩脊 `Polygonally Fractured Mudstone Ridges`、莫高窟盛唐第 45/217 窟须弥座下束腰隅棱鎏金双凤宝莲团花与飞天项圈侧绶鎏金迦陵频伽嵌红珊瑚花钿扣、以及发射台导流槽侧壁声学急冷水喷嘴分配集管 `Pad_SidewallQuenchNozzleManifold`、级间后环段航电线槽卡箍 `Rocket_InterstageAftRacewayClamp` 与桶形激波三波点普朗特-迈耶剪切辉光 `barrelTriplePrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.101` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座主龛须弥座下束腰隅棱两侧新增八枚鎏金双凤宝莲团花高浮雕（`PedestalLowerWaistCornerRibPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于须弥座下束腰隅棱增绘双凤宝莲团花，在 `drawBody()` 离屏缓存中于飞天项圈侧绶增绘鎏金迦陵频伽嵌红珊瑚花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入埃奥利斯山与格伦托里登含黏土单元绿脱石-四方纤铁矿-菱铁矿阶地与多边形泥岩脊（`glen_torridon_nontronite_benches`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`176,037 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,490 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对格伦托里登绿脱石-菱铁矿泥岩引入青橄榄灰绿色带（`glenTorridonNontroniteSiderite`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽侧壁四座声学急冷水喷嘴分配集管（`Pad_SidewallQuenchNozzleManifold_0..3`）与箭体级间后环段四向航电线槽整流卡箍（`Rocket_InterstageAftRacewayClamp_0..3`），导出 `rocket-kit.glb`（`1,185,032 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`887,203 B`）；在 `flameMaterial` 中引入桶形激波三波点普朗特-迈耶剪切辉光项（`barrelTriplePrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百二十四阶段验收：夜间持续进化 · 阿拉伯高地与莫斯谷铝质层状硅酸盐/铁质蒙脱石接触带蒙脱石-高岭石-多水高岭石帽岩阶地与网状多边形脉、莫高窟斗四藻井外井框隅棱鎏金双凤宝莲团花与飞天腕钏垂带鎏金迦陵频伽嵌绿松石花钿扣、及发射台导流槽底板高铝耐火声学分水楔与反射激波三波点普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在阿拉伯高地西部莫斯谷探测到的铝质层状硅酸盐/铁质蒙脱石接触带蒙脱石-高岭石-多水高岭石帽岩阶地 `Arabia Terra/Mawrth Vallis Al-Phyllosilicate/Fe-Smectite Contact Montmorillonite-Kaolinite-Halloysite Caprock Benches` 与网状多边形矿脉 `Boxwork Polygonal Veins`、莫高窟盛唐第 31/217 窟斗四藻井外井框隅棱鎏金双凤宝莲团花与飞天腕钏垂带鎏金迦陵频伽嵌绿松石花钿扣、以及发射台导流槽底板高铝耐火声学分水楔 `Pad_FloorAcousticWaterSplitter`、整流罩中环段航电线槽卡箍 `Rocket_FairingMidRacewayClamp` 与反射激波三波点普朗特-迈耶剪切辉光 `reflectedTriplePrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.102` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座主龛斗四藻井外井框隅棱两侧新增八枚鎏金双凤宝莲团花高浮雕（`CaissonOuterCornerRibPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于斗四藻井外井框隅棱增绘双凤宝莲团花，在 `drawBody()` 离屏缓存中于飞天腕钏垂带增绘鎏金迦陵频伽嵌绿松石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入阿拉伯高地与莫斯谷铝质层状硅酸盐/铁质蒙脱石接触带蒙脱石-高岭石-多水高岭石帽岩阶地与网状多边形脉（`mawrth_halloysite_benches`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`176,132 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,794 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对莫斯谷多水高岭石-蒙脱石帽岩引入暖陶白浅米色带（`mawrthHalloysiteMontmorillonite`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽底板四座高铝耐火声学分水楔（`Pad_FloorAcousticWaterSplitter_0..3`）与箭体整流罩中环段四向航电线槽整流卡箍（`Rocket_FairingMidRacewayClamp_0..3`），导出 `rocket-kit.glb`（`1,195,192 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`887,308 B`）；在 `flameMaterial` 中引入反射激波三波点普朗特-迈耶剪切辉光项（`reflectedTriplePrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百二十五阶段验收：夜间持续进化 · 伊希斯平原与杰泽罗撞击坑西扇顶积层巨砾砾岩与边缘碳酸盐-橄榄石湖岸台地、莫高窟佛龛外拱圈上腰斜棱鎏金双凤宝莲团花与飞天背帔环结鎏金迦陵频伽嵌青金石花钿扣、及发射台导流槽侧壁高铝耐火声学分水楔与环形滑流三波点普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星毅力号与 MRO HiRISE/CRISM 在伊希斯平原杰泽罗撞击坑西扇探测到的顶积层巨砾砾岩 `Isidis Planitia/Jezero Crater Western Fan Top-Set Boulder Conglomerates` 与边缘碳酸盐-橄榄石湖岸台地 `Marginal Carbonate-Olivine Shoreline Benches`、莫高窟盛唐第 148/217 窟佛龛外拱圈上腰斜棱鎏金双凤宝莲团花与飞天背帔环结鎏金迦陵频伽嵌青金石花钿扣、以及发射台导流槽侧壁高铝耐火声学分水楔 `Pad_SidewallAcousticWaterSplitter`、整流罩后环段航电线槽卡箍 `Rocket_FairingAftRacewayClamp` 与环形滑流三波点普朗特-迈耶剪切辉光 `annularTriplePrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.103` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座主龛外拱圈上腰斜棱两侧新增八枚鎏金双凤宝莲团花高浮雕（`ArchivoltUpperCornerRibPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛外拱圈上腰斜棱增绘双凤宝莲团花，在 `drawBody()` 离屏缓存中于飞天背帔环结增绘鎏金迦陵频伽嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入伊希斯平原与杰泽罗撞击坑西扇顶积层巨砾砾岩与边缘碳酸盐-橄榄石湖岸台地（`jezero_boulder_conglomerates`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`176,481 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,058 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对杰泽罗边缘碳酸盐-橄榄石台地引入青灰绿橄榄色带（`jezeroCarbonateOlivineBench`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽侧壁四座高铝耐火声学分水楔（`Pad_SidewallAcousticWaterSplitter_0..3`）与箭体整流罩后环段四向航电线槽整流卡箍（`Rocket_FairingAftRacewayClamp_0..3`），导出 `rocket-kit.glb`（`1,205,380 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`887,194 B`）；在 `flameMaterial` 中引入环形滑流三波点普朗特-迈耶剪切辉光项（`annularTriplePrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百二十六阶段验收：夜间持续进化 · 珍珠高地与霍尔登撞击坑浅色层状湖相铁镁蒙脱石层与上覆冲积扇角砾岩阶地、莫高窟须弥座上枭混角肋鎏金双凤宝相莲花角花与飞天腰绶垂结鎏金迦陵频伽嵌羊脂白玉花钿扣、及发射台导流槽出口唇缘声学分水楔与喷管唇缘三波点普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在珍珠高地霍尔登撞击坑探测到的浅色层状湖相铁镁蒙脱石层 `Margaritifer Terra/Holden Crater Light-Toned Layered Deposits Fe/Mg-Smectite Lacustrine Beds` 与上覆冲积扇角砾岩阶地 `Capping Alluvial Fan Breccia Terraces`、莫高窟盛唐第 217/320 窟须弥座上枭混角肋鎏金双凤宝相莲花角花与飞天腰绶垂结鎏金迦陵频伽嵌羊脂白玉花钿扣、以及发射台导流槽出口唇缘高铝耐火声学分水楔 `Pad_ExitAcousticWaterSplitter`、一级后裙段航电线槽卡箍 `Rocket_FirstStageAftRacewayClamp` 与喷管唇缘三波点普朗特-迈耶剪切辉光 `lipTriplePrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.104` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座主龛须弥座上枭混角肋两侧新增八枚鎏金双凤宝相莲花角花高浮雕（`PedestalUpperCorniceCornerRibPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于须弥座上枭混角肋增绘双凤宝相莲花角花，在 `drawBody()` 离屏缓存中于飞天腰绶垂结增绘鎏金迦陵频伽嵌羊脂白玉花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入珍珠高地与霍尔登撞击坑浅色层状湖相铁镁蒙脱石层与上覆冲积扇角砾岩阶地（`holden_ltld_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`176,513 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,584 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对霍尔登浅色层状湖相蒙脱石-冲积扇阶地引入暖黄褐米色带（`holdenAlluvialLtldTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽出口唇缘四座高铝耐火声学分水楔（`Pad_ExitAcousticWaterSplitter_0..3`）与箭体一级后裙段四向航电线槽整流卡箍（`Rocket_FirstStageAftRacewayClamp_0..3`），导出 `rocket-kit.glb`（`1,215,560 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`887,110 B`）；在 `flameMaterial` 中引入喷管唇缘三波点普朗特-迈耶剪切辉光项（`lipTriplePrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百二十七阶段验收：夜间持续进化 · 水手峡谷与西南梅拉斯峡谷古湖泊水下扇三角洲阶地与黄钾铁矾-蛋白石硅华丘、莫高窟斗四藻井内井框隅棱鎏金双凤宝相莲团花与飞天足踝垂绶鎏金迦陵频伽嵌红珊瑚花钿扣、及发射台导流槽底板声学急冷喷淋托架与马赫杆三波点普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在水手峡谷西南梅拉斯峡谷探测到的古湖泊水下扇三角洲阶地 `Valles Marineris/Southwest Melas Chasma Paleolake Sublacustrine Fan-Delta Terraces` 与黄钾铁矾-蛋白石硅华丘 `Jarosite-Opaline Silica Mounds`、莫高窟盛唐第 31/217 窟斗四藻井内井框隅棱鎏金双凤宝相莲团花与飞天足踝垂绶鎏金迦陵频伽嵌红珊瑚花钿扣、以及发射台导流槽底板声学急冷水喷淋集管托架 `Pad_FloorQuenchSprayBracket`、一级中段贮箱航电线槽卡箍 `Rocket_FirstStageMidRacewayClamp` 与马赫杆三波点普朗特-迈耶剪切辉光 `machStemTriplePrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.105` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座主龛斗四藻井内井框隅棱两侧新增八枚鎏金双凤宝相莲团花高浮雕（`CaissonInnerCornerRibPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于斗四藻井内井框隅棱增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天足踝垂绶增绘鎏金迦陵频伽嵌红珊瑚花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入水手峡谷与西南梅拉斯峡谷古湖泊水下扇三角洲阶地与黄钾铁矾-蛋白石硅华丘（`melas_paleolake_fan_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`176,619 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,391 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对梅拉斯峡谷黄钾铁矾-蛋白石硅华阶地引入金珀浅赭色带（`melasJarositeOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽底板四座声学急冷水喷淋集管托架（`Pad_FloorQuenchSprayBracket_0..3`）与箭体一级中段贮箱四向航电线槽整流卡箍（`Rocket_FirstStageMidRacewayClamp_0..3`），导出 `rocket-kit.glb`（`1,225,716 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`887,293 B`）；在 `flameMaterial` 中引入马赫杆三波点普朗特-迈耶剪切辉光项（`machStemTriplePrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百二十八阶段验收：夜间持续进化 · 西壬高地与克罗斯撞击坑西南部酸性水热明矾石-蒙脱石-蛋白石硅华裂隙谷底阶地与干裂多边形台地、莫高窟佛龛内券下腰角肋鎏金双凤宝相莲华结顶饰与飞天臂钏垂绶鎏金迦陵频伽嵌绿松石花钿扣、及发射台导流槽侧壁声学急冷喷淋托架与尾段三波点普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在西壬高地克罗斯撞击坑西南部探测到的酸性水热明矾石-蒙脱石-蛋白石硅华裂隙谷底阶地 `Terra Sirenum/Cross Crater Southwestern Acid-Hydrothermal Alunite-Montmorillonite-Silica Fractured Floor Terraces` 与干裂多边形台地 `Polygonal Desiccation Benches`、莫高窟盛唐第 172/320 窟佛龛内券下腰角肋鎏金双凤宝相莲华结顶饰与飞天臂钏垂绶鎏金迦陵频伽嵌绿松石花钿扣、以及发射台导流槽侧壁声学急冷水喷淋集管托架 `Pad_SidewallQuenchSprayBracket`、一级前段贮箱航电线槽卡箍 `Rocket_FirstStageFwdRacewayClamp` 与尾段三波点普朗特-迈耶剪切辉光 `tailTriplePrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.106` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座主龛内券下腰角肋两侧新增八枚鎏金双凤宝相莲华结顶饰高浮雕（`NicheLowerCornerRibPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于内券下腰角肋增绘双凤宝相莲华结顶饰，在 `drawBody()` 离屏缓存中于飞天臂钏垂绶增绘鎏金迦陵频伽嵌绿松石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入西壬高地与克罗斯撞击坑西南部酸性水热明矾石-蒙脱石-蛋白石硅华裂隙谷底阶地与干裂多边形台地（`cross_montmorillonite_silica_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`176,929 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,814 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对克罗斯撞击坑西南部蒙脱石-蛋白石硅华阶地引入暖白垩米黄色带（`crossMontmorilloniteSilicaBench`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽侧壁四座声学急冷水喷淋集管托架（`Pad_SidewallQuenchSprayBracket_0..3`）与箭体一级前段贮箱四向航电线槽整流卡箍（`Rocket_FirstStageFwdRacewayClamp_0..3`），导出 `rocket-kit.glb`（`1,235,892 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`887,389 B`）；在 `flameMaterial` 中引入尾段三波点普朗特-迈耶剪切辉光项（`tailTriplePrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百二十九阶段验收：夜间持续进化 · 辛梅里亚高地与亚特兰蒂斯混沌深水热液海绿石-绿脱石-蛇纹石混沌方山与氯盐蒸发岩边缘台地、莫高窟须弥座下枭隅棱鎏金双凤宝相莲团花与飞天胸前璎珞侧穗鎏金迦陵频伽嵌青金石花钿扣、及发射台导流槽出口声学急冷喷淋托架与基底三波点普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在辛梅里亚高地埃里达尼亚盆地亚特兰蒂斯混沌探测到的深水热液海绿石-绿脱石-蛇纹石混沌方山 `Terra Cimmeria/Atlantis Chaos Deep-Water Hydrothermal Glauconite-Nontronite-Serpentine Chaos Mesas` 与氯盐蒸发岩边缘台地 `Chloride-Evaporite Marginal Benches`、莫高窟盛唐第 45/320 窟须弥座下枭隅棱鎏金双凤宝相莲团花与飞天胸前璎珞侧穗鎏金迦陵频伽嵌青金石花钿扣、以及发射台导流槽出口声学急冷水喷淋集管托架 `Pad_ExitQuenchSprayBracket`、上面级中段贮箱航电线槽卡箍 `Rocket_UpperStageMidRacewayClamp` 与基底三波点普朗特-迈耶剪切辉光 `baseTriplePrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.107` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座主龛须弥座下枭隅棱两侧新增八枚鎏金双凤宝相莲团花高浮雕（`PedestalLowerPlinthCornerRibPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于须弥座下枭隅棱增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天胸前璎珞侧穗增绘鎏金迦陵频伽嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入辛梅里亚高地与亚特兰蒂斯混沌深水热液海绿石-绿脱石-蛇纹石混沌方山与氯盐蒸发岩边缘台地（`atlantis_hydrothermal_chaos_benches`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`177,164 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,409 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对亚特兰蒂斯混沌海绿石-蛇纹石深海热液阶地引入青碧灰绿色带（`atlantisGlauconiteSerpentineBench`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽出口四座声学急冷水喷淋集管托架（`Pad_ExitQuenchSprayBracket_0..3`）与箭体上面级中段贮箱四向航电线槽整流卡箍（`Rocket_UpperStageMidRacewayClamp_0..3`），导出 `rocket-kit.glb`（`1,246,052 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`887,402 B`）；在 `flameMaterial` 中引入基底三波点普朗特-迈耶剪切辉光项（`baseTriplePrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百三十阶段验收：夜间持续进化 · 水手峡谷与西坎多尔峡谷内部层状沉积单水镁矾-多水泻利盐阶梯台地与风蚀槽硫酸盐垄、莫高窟斗四藻井垂幔隅肋鎏金双凤宝相莲团花与飞天步摇侧穗鎏金迦陵频伽嵌红珊瑚花钿扣、及发射台导流槽底板高铝耐火尾焰导流撑柱与喉部三波点普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在水手峡谷西坎多尔峡谷探测到的内部层状沉积单水镁矾-多水泻利盐阶梯台地 `Valles Marineris/West Candor Chasma ILD Monohydrated Kieserite-Polyhydrated Epsomite Stair-Step Benches` 与风蚀槽硫酸盐垄 `Wind-Fluted Sulfate Ridges`、莫高窟盛唐第 31/217 窟斗四藻井垂幔隅肋鎏金双凤宝相莲团花与飞天步摇侧穗鎏金迦陵频伽嵌红珊瑚花钿扣、以及发射台导流槽底板高铝耐火尾焰导流撑柱 `Pad_FloorPlumeDeflectorStrut`、上面级前段贮箱航电线槽卡箍 `Rocket_UpperStageFwdRacewayClamp` 与喉部三波点普朗特-迈耶剪切辉光 `throatTriplePrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.108` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座主龛斗四藻井垂幔隅肋两侧新增八枚鎏金双凤宝相莲团花高浮雕（`CaissonValanceCornerRibPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于斗四藻井垂幔隅肋增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天步摇侧穗增绘鎏金迦陵频伽嵌红珊瑚花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入水手峡谷与西坎多尔峡谷内部层状沉积单水镁矾-多水泻利盐阶梯台地与风蚀槽硫酸盐垄（`candor_kieserite_epsomite_benches`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`177,284 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,093,930 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对西坎多尔峡谷单水镁矾-多水泻利盐层引入暖粉赭米黄色带（`candorKieseriteEpsomiteBench`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽底板四座高铝耐火尾焰导流撑柱（`Pad_FloorPlumeDeflectorStrut_0..3`）与箭体上面级前段贮箱四向航电线槽整流卡箍（`Rocket_UpperStageFwdRacewayClamp_0..3`），导出 `rocket-kit.glb`（`1,256,224 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`887,640 B`）；在 `flameMaterial` 中引入喉部三波点普朗特-迈耶剪切辉光项（`throatTriplePrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百三十一阶段验收：夜间持续进化 · 水手峡谷与提托尼움峡谷西槽浅色水镁矾-水绿矾硫酸盐方山与暗色辉石沙丘裙台地、莫高窟佛龛外拱圈下腰斜棱鎏金双凤宝相莲团花与飞天披巾垂结鎏金迦陵频伽嵌绿松石花钿扣、及发射台导流槽侧壁高铝耐火尾焰导流撑柱与核心三波点普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在水手峡谷提托尼움峡谷西槽探测到的浅色水镁矾-水绿矾硫酸盐方山 `Valles Marineris/Tithonium Chasma Western Trough Light-Toned Kieserite-Szomolnokite Sulfate Mesas` 与暗色辉石沙丘裙台地 `Dark Pyroxene Dune-Apron Benches`、莫高窟盛唐第 148/172 窟佛龛外拱圈下腰斜棱鎏金双凤宝相莲团花与飞天披巾垂结鎏金迦陵频伽嵌绿松石花钿扣、以及发射台导流槽侧壁高铝耐火尾焰导流撑柱 `Pad_SidewallPlumeDeflectorStrut`、上面级后段贮箱航电线槽卡箍 `Rocket_UpperStageAftRacewayClamp` 与核心三波点普朗特-迈耶剪切辉光 `coreTriplePrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.109` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座主龛外拱圈下腰斜棱两侧新增八枚鎏金双凤宝相莲团花高浮雕（`ArchivoltLowerCornerRibPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于外拱圈下腰斜棱增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天披巾垂结增绘鎏金迦陵频伽嵌绿松石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入水手峡谷与提托尼움峡谷西槽浅色水镁矾-水绿矾硫酸盐方山与暗色辉石沙丘裙台地（`tithonium_kieserite_szomolnokite_mesas`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`177,535 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,505 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对提托尼움峡谷水镁矾-水绿矾层引入暖赭琥珀色带（`tithoniumKieseriteSzomolnokiteBench`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽侧壁四座高铝耐火尾焰导流撑柱（`Pad_SidewallPlumeDeflectorStrut_0..3`）与箭体上面级后段贮箱四向航电线槽整流卡箍（`Rocket_UpperStageAftRacewayClamp_0..3`），导出 `rocket-kit.glb`（`1,266,412 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`887,534 B`）；在 `flameMaterial` 中引入核心三波点普朗特-迈耶剪切辉光项（`coreTriplePrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百三十二阶段验收：夜间持续进化 · 阿拉伯高地与麦克劳克林撞击坑深部地下水补给湖相富镁皂石-蛇纹石-碳酸盐层状阶地与潜蚀水道扇、莫高窟须弥座上枭隅棱鎏金双凤宝相莲团花与飞天腕钏侧穗鎏金迦陵频伽嵌青金石花钿扣、及发射台导流槽出口高铝耐火尾焰导流撑柱与尾迹三波点普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在阿拉伯高地西部麦克劳克林撞击坑探测到的深部地下水补给湖相富镁皂石-蛇纹石-碳酸盐层状阶地 `Arabia Terra/McLaughlin Crater Deep Subsurface Lacustrine Mg-Rich Saponite-Serpentine-Carbonate Layered Benches` 与潜蚀水道扇 `Sapping Channel Fans`、莫高窟盛唐第 172/320 窟须弥座上枭隅棱鎏金双凤宝相莲团花与飞天腕钏侧穗鎏金迦陵频伽嵌青金石花钿扣、以及发射台导流槽出口高铝耐火尾焰导流撑柱 `Pad_ExitPlumeDeflectorStrut`、整流罩前环段航电线槽卡箍 `Rocket_FairingFwdRacewayClamp` 与尾迹三波点普朗特-迈耶剪切辉光 `wakeTriplePrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.110` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座主龛须弥座上枭隅棱两侧新增八枚鎏金双凤宝相莲团花高浮雕（`PedestalUpperPlinthCornerRibPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于须弥座上枭隅棱增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天腕钏侧穗增绘鎏金迦陵频伽嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入阿拉伯高地与麦克劳克林撞击坑深部地下水补给湖相富镁皂石-蛇纹石-碳酸盐层状阶地与潜蚀水道扇（`mclaughlin_saponite_carbonate_benches`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`177,699 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,302 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对麦克劳克林撞击坑富镁皂石-碳酸盐层引入橄榄青灰色带（`mclaughlinSaponiteCarbonateBench`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽出口四座高铝耐火尾焰导流撑柱（`Pad_ExitPlumeDeflectorStrut_0..3`）与箭体整流罩前环段四向航电线槽整流卡箍（`Rocket_FairingFwdRacewayClamp_0..3`），导出 `rocket-kit.glb`（`1,276,536 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`887,653 B`）；在 `flameMaterial` 中引入尾迹三波点普朗特-迈耶剪切辉光项（`wakeTriplePrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百三十三阶段验收：夜间持续进化 · 大塞提斯高原与莱顿撞击坑中央峰剥露深部地壳钙镁碳酸盐-伊利石-绿泥石阶地与撞击熔融角砾岩脊、莫高窟佛龛内券上腰角肋鎏金双凤宝相莲团花与飞天足钏侧穗鎏金迦陵频伽嵌红珊瑚花钿扣、及发射台导流槽底板高铝耐火声学折流撑柱与中段三波点普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在大塞提斯高原西南缘莱顿撞击坑中央峰探测到的剥露深部地壳钙镁碳酸盐-伊利石-绿泥石阶地 `Syrtis Major/Leighton Crater Central-Peak Exhumed Deep-Crustal Mg/Ca-Carbonate-Illite-Chlorite Terraces` 与撞击熔融角砾岩脊 `Impact-Melt Breccia Ridges`、莫高窟盛唐第 159/217 窟佛龛内券上腰角肋鎏金双凤宝相莲团花与飞天足钏侧穗鎏金迦陵频伽嵌红珊瑚花钿扣、以及发射台导流槽底板高铝耐火声学折流撑柱 `Pad_FloorAcousticBaffleStrut`、一级前裙段航电线槽卡箍 `Rocket_FirstStageFwdSkirtRacewayClamp` 与中段三波点普朗特-迈耶剪切辉光 `midTriplePrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.111` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座主龛内券上腰角肋两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheUpperCornerRibPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于内券上腰角肋增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天足钏侧穗增绘鎏金迦陵频伽嵌红珊瑚花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入大塞提斯高原与莱顿撞击坑中央峰剥露深部地壳钙镁碳酸盐-伊利石-绿泥石阶地与撞击熔融角砾岩脊（`leighton_carbonate_illite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`177,922 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,739 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对莱顿撞击坑钙镁碳酸盐-伊利石层引入暖灰黄石灰岩色带（`leightonCarbonateIlliteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽底板四座高铝耐火声学折流撑柱（`Pad_FloorAcousticBaffleStrut_0..3`）与箭体一级前裙段四向航电线槽整流卡箍（`Rocket_FirstStageFwdSkirtRacewayClamp_0..3`），导出 `rocket-kit.glb`（`1,286,744 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`887,523 B`）；在 `flameMaterial` 中引入中段三波点普朗特-迈耶剪切辉光项（`midTriplePrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百三十四阶段验收：夜间持续进化 · 阿盖尔盆地北缘与黑尔撞击坑中央峰冲沟泥质蒙脱石-绿泥石-蛋白石冲积扇阶地与撞击熔融角砾岩滑槽、莫高窟须弥座上束腰隅棱鎏金双凤宝相莲团花与飞天腰带垂结鎏金迦陵频伽嵌明珠花钿扣、及发射台导流槽侧壁高铝耐火声学折流撑柱与喷管出口三波点普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在阿盖尔盆地北缘黑尔撞击坑中央峰与阶梯坑壁探测到的冲沟泥质蒙脱石-绿泥石-蛋白石冲积扇阶地 `Northern Argyre Rim/Hale Crater Central-Peak Gullied Argillaceous Smectite-Chlorite-Opaline Alluvial Fan Terraces` 与撞击熔融角砾岩滑槽 `Impact-Melt Breccia Chutes`、莫高窟盛唐第 148/320 窟须弥座上束腰隅棱鎏金双凤宝相莲团花与飞天腰带垂结鎏金迦陵频伽嵌明珠花钿扣、以及发射台导流槽侧壁高铝耐火声学折流撑柱 `Pad_SidewallAcousticBaffleStrut`、一级后裙段航电线槽卡箍 `Rocket_FirstStageAftSkirtRacewayClamp` 与喷管出口三波点普朗特-迈耶剪切辉光 `exitTriplePrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.112` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座主龛须弥座上束腰隅棱两侧新增八枚鎏金双凤宝相莲团花高浮雕（`PedestalUpperWaistCornerRibPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于须弥座上束腰隅棱增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天腰带垂结增绘鎏金迦陵频伽嵌明珠花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入阿盖尔盆地北缘与黑尔撞击坑中央峰冲沟泥质蒙脱石-绿泥石-蛋白石冲积扇阶地与撞击熔融角砾岩滑槽（`hale_argillaceous_gully_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`178,159 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,427 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对黑尔撞击坑泥质蒙脱石-绿泥石层引入灰青苔色带（`haleArgillaceousGullyTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽侧壁四座高铝耐火声学折流撑柱（`Pad_SidewallAcousticBaffleStrut_0..3`）与箭体一级后裙段四向航电线槽整流卡箍（`Rocket_FirstStageAftSkirtRacewayClamp_0..3`），导出 `rocket-kit.glb`（`1,296,976 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`887,504 B`）；在 `flameMaterial` 中引入喷管出口三波点普朗特-迈耶剪切辉光项（`exitTriplePrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百三十五阶段验收：夜间持续进化 · 尼利槽沟与哈格雷夫斯撞击坑撞击熔融巨角砾岩方山与水热皂石-蛇纹石-低钙辉石裂隙阶地、莫高窟佛龛外拱圈券顶斜棱鎏金双凤宝相莲团花与飞天臂帛垂结鎏金迦陵频伽嵌翠玉花钿扣、及发射台导流槽出口高铝耐火声学折流撑柱与外缘三波点普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在尼利槽沟哈格雷夫斯撞击坑探测到的撞击熔融巨角砾岩方山 `Nili Fossae/Hargraves Crater Impact-Melt Megabreccia Mesas` 与水热皂石-蛇纹石-低钙辉石裂隙阶地 `Hydrothermal Saponite-Serpentine-Pyroxene Fractured Benches`、莫高窟盛唐第 159/217 窟佛龛外拱圈券顶斜棱鎏金双凤宝相莲团花与飞天臂帛垂结鎏金迦陵频伽嵌翠玉花钿扣、以及发射台导流槽出口高铝耐火声学折流撑柱 `Pad_ExitAcousticBaffleStrut`、整流罩后环段航电线槽卡箍 `Rocket_FairingAftRingRacewayClamp` 与外缘三波点普朗特-迈耶剪切辉光 `outerTriplePrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.113` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座主龛外拱圈券顶斜棱两侧新增八枚鎏金双凤宝相莲团花高浮雕（`ArchivoltApexCornerRibPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于外拱圈券顶斜棱增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天臂帛垂结增绘鎏金迦陵频伽嵌翠玉花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入尼利槽沟与哈格雷夫斯撞击坑撞击熔融巨角砾岩方山与水热皂石-蛇纹石-低钙辉石裂隙阶地（`hargraves_megabreccia_saponite_benches`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`178,348 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,100 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对哈格雷夫斯撞击坑巨角砾岩皂石-蛇纹石层引入翠绿青玉色带（`hargravesMegabrecciaSaponite`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽出口四座高铝耐火声学折流撑柱（`Pad_ExitAcousticBaffleStrut_0..3`）与箭体整流罩后环段四向航电线槽整流卡箍（`Rocket_FairingAftRingRacewayClamp_0..3`），导出 `rocket-kit.glb`（`1,307,128 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`887,389 B`）；在 `flameMaterial` 中引入外缘三波点普朗特-迈耶剪切辉光项（`outerTriplePrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百三十六阶段验收：夜间持续进化 · 萨巴亚高地与巴克伊森撞击坑诺亚纪中央峰剥露铁镁蒙脱石与碳酸盐河谷网阶地、莫高窟斗四藻井井心隅棱鎏金双凤宝相莲团花与飞天宝冠垂带鎏金迦陵频伽嵌青金石花钿扣、及发射台导流槽底板防爆盾拉杆撑柱与内核三波点普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在萨巴亚高地巴克伊森撞击坑探测到的诺亚纪中央峰剥露铁镁蒙脱石与碳酸盐河谷网阶地 `Terra Sabaea/Bakhuysen Crater Noachian Exhumed Fe/Mg-Smectite & Carbonate Valley-Network Terraces`、莫高窟盛唐第 159/217 窟斗四藻井井心隅棱鎏金双凤宝相莲团花与飞天宝冠垂带鎏金迦陵频伽嵌青金石花钿扣、以及发射台导流槽底板防爆盾拉杆撑柱 `Pad_FloorBlastShieldTieStrut`、整流罩中环段航电线槽卡箍 `Rocket_FairingMidRingRacewayClamp` 与内核三波点普朗特-迈耶剪切辉光 `innerTriplePrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.114` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座斗四藻井井心隅棱两侧新增八枚鎏金双凤宝相莲团花高浮雕（`CaissonApexCornerRibPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于斗四藻井井心隅棱增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天宝冠垂带增绘鎏金迦陵频伽嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入萨巴亚高地与巴克伊森撞击坑诺亚纪中央峰剥露铁镁蒙脱石与碳酸盐河谷网阶地（`bakhuysen_nontronite_carbonate_benches`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`178,394 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,656 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对巴克伊森撞击坑铁镁蒙脱石-碳酸盐层引入橄榄石青色带（`bakhuysenSmectiteCarbonateBench`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽底板四座防爆盾拉杆撑柱（`Pad_FloorBlastShieldTieStrut_0..3`）与箭体整流罩中环段四向航电线槽整流卡箍（`Rocket_FairingMidRingRacewayClamp_0..3`），导出 `rocket-kit.glb`（`1,317,292 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`887,483 B`）；在 `flameMaterial` 中引入内核三波点普朗特-迈耶剪切辉光项（`innerTriplePrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百三十七阶段验收：夜间持续进化 · 阿拉伯高地与季霍恩拉沃夫撞击坑（纳克通-斯卡曼德-马默斯古湖链）诺亚纪层状铁镁蒙脱石与水合硅石阶地、莫高窟佛龛内拱腹券顶斜棱鎏金双凤宝相莲团花与飞天耳珰侧穗鎏金迦陵频伽嵌红珊瑚花钿扣、及发射台导流槽侧壁防爆盾拉杆撑柱与冠部三波点普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在阿拉伯高地季霍恩拉沃夫撞击坑探测到的诺亚纪层状铁镁蒙脱石与水合硅石阶地 `Arabia Terra/Tikhonravov Crater Noachian Stratified Fe/Mg-Smectite & Hydrated Silica Paleolake Benches`、莫高窟盛唐第 159/217 窟佛龛内拱腹券顶斜棱鎏金双凤宝相莲团花与飞天耳珰侧穗鎏金迦陵频伽嵌红珊瑚花钿扣、以及发射台导流槽侧壁防爆盾拉杆撑柱 `Pad_SidewallBlastShieldTieStrut`、整流罩前环段航电线槽卡箍 `Rocket_FairingFwdRingRacewayClamp` 与冠部三波点普朗特-迈耶剪切辉光 `crestTriplePrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.115` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座主龛内拱腹券顶斜棱两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheApexCornerRibPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于内拱腹券顶斜棱增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天耳珰侧穗增绘鎏金迦陵频伽嵌红珊瑚花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入阿拉伯高地与季霍恩拉沃夫撞击坑诺亚纪层状铁镁蒙脱石与水合硅石阶地（`tikhonravov_paleolake_smectite_benches`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`178,592 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,277 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对季霍恩拉沃夫撞击坑古湖相铁镁蒙脱石-水合硅石层引入暖黄褐陶色带（`tikhonravovSmectiteSilicaBench`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽侧壁四座防爆盾拉杆撑柱（`Pad_SidewallBlastShieldTieStrut_0..3`）与箭体整流罩前环段四向航电线槽整流卡箍（`Rocket_FairingFwdRingRacewayClamp_0..3`），导出 `rocket-kit.glb`（`1,327,492 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`887,635 B`）；在 `flameMaterial` 中引入冠部三波点普朗特-迈耶剪切辉光项（`crestTriplePrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百三十八阶段验收：夜间持续进化 · 阿拉伯高地与卡西尼撞击坑（纳克通-斯卡曼德-马默斯古湖链上游）诺亚纪层状铁镁蒙脱石与铝质层状硅酸盐阶地、莫高窟须弥座下束腰隅棱鎏金双凤宝相莲团花与飞天发髻侧绶鎏金迦陵频伽嵌翠玉花钿扣、及发射台导流槽出口防爆盾拉杆撑柱与尖峰三波点普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在阿拉伯高地卡西尼撞击坑探测到的诺亚纪层状铁镁蒙脱石与铝质层状硅酸盐阶地 `Arabia Terra/Cassini Crater Noachian Layered Fe/Mg-Smectite & Al-Phyllosilicate Paleolake Terraces`、莫高窟盛唐第 159/217 窟须弥座下束腰隅棱鎏金双凤宝相莲团花与飞天发髻侧绶鎏金迦陵频伽嵌翠玉花钿扣、以及发射台导流槽出口防爆盾拉杆撑柱 `Pad_ExitBlastShieldTieStrut`、整流罩前锥段航电线槽卡箍 `Rocket_FairingNoseConeRacewayClamp` 与尖峰三波点普朗特-迈耶剪切辉光 `apexTriplePrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.116` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座主龛须弥座下束腰隅棱两侧新增八枚鎏金双凤宝相莲团花高浮雕（`PedestalLowerWaistCornerRibPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于须弥座下束腰隅棱增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天发髻侧绶增绘鎏金迦陵频伽嵌翠玉花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入阿拉伯高地与卡西尼撞击坑诺亚纪层状铁镁蒙脱石与铝质层状硅酸盐阶地（`cassini_paleolake_smectite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`178,845 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,738 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对卡西尼撞击坑古湖相铁镁蒙脱石-铝质黏土层引入暖米褐陶色带（`cassiniSmectiteAlClayTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽出口四座防爆盾拉杆撑柱（`Pad_ExitBlastShieldTieStrut_0..3`）与箭体整流罩前锥段四向航电线槽整流卡箍（`Rocket_FairingNoseConeRacewayClamp_0..3`），导出 `rocket-kit.glb`（`1,337,676 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`887,583 B`）；在 `flameMaterial` 中引入尖峰三波点普朗特-迈耶剪切辉光项（`apexTriplePrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百三十九阶段验收：夜间持续进化 · 大塞提斯南缘与施罗特撞击坑诺亚纪剥露铁镁蒙脱石与橄榄石-辉石角砾岩阶地、莫高窟佛龛外拱圈起拱线斜棱鎏金双凤宝相莲团花与飞天散花盘侧穗鎏金迦陵频伽嵌青金石花钿扣、及发射台导流槽底板耐火伸缩缝拉杆撑柱与根部三波点普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在大塞提斯高原南缘施罗特撞击坑探测到的诺亚纪剥露铁镁蒙脱石与橄榄石-辉石角砾岩阶地 `Syrtis Major/Schroeter Crater Noachian Exhumed Fe/Mg-Smectite & Olivine-Pyroxene Breccia Terraces`、莫高窟盛唐第 159/217 窟佛龛外拱圈起拱线斜棱鎏金双凤宝相莲团花与飞天散花盘侧穗鎏金迦陵频伽嵌青金石花钿扣、以及发射台导流槽底板耐火伸缩缝拉杆撑柱 `Pad_FloorExpansionJointTieStrut`、级间段后裙航电线槽卡箍 `Rocket_InterstageAftSkirtRacewayClamp` 与根部三波点普朗特-迈耶剪切辉光 `rootTriplePrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.117` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座主龛外拱圈起拱线斜棱两侧新增八枚鎏金双凤宝相莲团花高浮雕（`ArchivoltSpringingCornerRibPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于外拱圈起拱线斜棱增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天散花盘侧穗增绘鎏金迦陵频伽嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入大塞提斯南缘与施罗特撞击坑诺亚纪剥露铁镁蒙脱石与橄榄石-辉石角砾岩阶地（`schroeter_smectite_breccia_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`178,992 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,425 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对施罗特撞击坑铁镁蒙脱石-橄榄石角砾岩层引入青灰橄榄色带（`schroeterSmectiteBrecciaTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽底板四座耐火伸缩缝拉杆撑柱（`Pad_FloorExpansionJointTieStrut_0..3`）与箭体级间段后裙四向航电线槽整流卡箍（`Rocket_InterstageAftSkirtRacewayClamp_0..3`），导出 `rocket-kit.glb`（`1,347,900 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`887,346 B`）；在 `flameMaterial` 中引入根部三波点普朗特-迈耶剪切辉光项（`rootTriplePrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百四十阶段验收：夜间持续进化 · 珍珠高地与里特曼撞击坑（乌兹博伊-拉冬-摩拉瓦溢流河道）诺亚纪—赫斯珀里亚纪层状铁镁蒙脱石与黄钾铁矾硫酸盐河道阶地、莫高窟佛龛内拱腹起拱线斜棱鎏金双凤宝相莲团花与飞天琵琶凤首侧穗鎏金迦陵频伽嵌红珊瑚花钿扣、及发射台导流槽侧壁耐火伸缩缝拉杆撑柱与颈部三波点普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在珍珠高地乌兹博伊-拉冬-摩拉瓦溢流河道及里特曼撞击坑探测到的诺亚纪—赫斯珀里亚纪层状铁镁蒙脱石与黄钾铁矾硫酸盐河道阶地 `Margaritifer Terra/Rittmann Crater ULM Outflow Channel Layered Fe/Mg-Smectite & Jarosite-Sulfate Fluvial Benches`、莫高窟盛唐第 159/217 窟佛龛内拱腹起拱线斜棱鎏金双凤宝相莲团花与飞天琵琶凤首侧穗鎏金迦陵频伽嵌红珊瑚花钿扣、以及发射台导流槽侧壁耐火伸缩缝拉杆撑柱 `Pad_SidewallExpansionJointTieStrut`、级间段前裙航电线槽卡箍 `Rocket_InterstageFwdSkirtRacewayClamp` 与颈部三波点普朗特-迈耶剪切辉光 `neckTriplePrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.118` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座主龛内拱腹起拱线斜棱两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheSpringingCornerRibPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于内拱腹起拱线斜棱增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶凤首侧穗增绘鎏金迦陵频伽嵌红珊瑚花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入珍珠高地与里特曼撞击坑诺亚纪—赫斯珀里亚纪层状铁镁蒙脱石与黄钾铁矾硫酸盐河道阶地（`rittmann_ulm_smectite_sulfate_benches`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`179,151 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,048 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对里特曼撞击坑/ULM 铁镁蒙脱石-黄钾铁矾硫酸盐层引入暖赭石黄钾铁矾色带（`rittmannUlmSmectiteSulfateBench`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽侧壁四座耐火伸缩缝拉杆撑柱（`Pad_SidewallExpansionJointTieStrut_0..3`）与箭体级间段前裙四向航电线槽整流卡箍（`Rocket_InterstageFwdSkirtRacewayClamp_0..3`），导出 `rocket-kit.glb`（`1,358,152 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`887,466 B`）；在 `flameMaterial` 中引入颈部三波点普朗特-迈耶剪切辉光项（`neckTriplePrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百四十一阶段验收：夜间持续进化 · 诺亚高地与弗劳热格撞击坑（萨马拉-巴拉那-卢瓦尔河谷网）诺亚纪层状铁镁蒙脱石与碳酸盐-绿泥石河谷阶地、莫高窟须弥座上枋隅棱鎏金双凤宝相莲团花与飞天琵琶腹槽垂穗鎏金迦陵频伽嵌翠玉花钿扣、及发射台导流槽出口耐火伸缩缝拉杆撑柱与裙部三波点普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在诺亚高地弗劳热格撞击坑及萨马拉-巴拉那-卢瓦尔河谷网探测到的诺亚纪层状铁镁蒙脱石与碳酸盐-绿泥石河谷阶地 `Noachis Terra/Flaugergues Crater Samara-Parana-Loire Valley Network Layered Fe/Mg-Smectite & Carbonate-Chlorite Fluvial Benches`、莫高窟盛唐第 159/217 窟须弥座上枋隅棱鎏金双凤宝相莲团花与飞天琵琶腹槽垂穗鎏金迦陵频伽嵌翠玉花钿扣、以及发射台导流槽出口耐火伸缩缝拉杆撑柱 `Pad_ExitExpansionJointTieStrut`、上面级前裙遥测线槽卡箍 `Rocket_UpperStageFwdSkirtTelemetryClamp` 与裙部三波点普朗特-迈耶剪切辉光 `skirtTriplePrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.119` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座主龛须弥座上枋隅棱两侧新增八枚鎏金双凤宝相莲团花高浮雕（`PedestalUpperCorniceCornerRibPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于须弥座上枋隅棱增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶腹槽垂穗增绘鎏金迦陵频伽嵌翠玉花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入诺亚高地与弗劳热格撞击坑诺亚纪层状铁镁蒙脱石与碳酸盐-绿泥石河谷阶地（`flaugergues_samara_smectite_carbonate_benches`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`179,416 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,684 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对弗劳热格撞击坑/萨马拉河谷铁镁蒙脱石-碳酸盐绿泥石层引入青灰碳酸盐色带（`flaugerguesSmectiteCarbonateBench`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽出口四座耐火伸缩缝拉杆撑柱（`Pad_ExitExpansionJointTieStrut_0..3`）与箭体上面级前裙段四向遥测线槽整流卡箍（`Rocket_UpperStageFwdSkirtTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,368,368 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`887,326 B`）；在 `flameMaterial` 中引入裙部三波点普朗特-迈耶剪切辉光项（`skirtTriplePrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百四十二阶段验收：夜间持续进化 · 西壬高地与马拉尔迪撞击坑诺亚纪—赫斯珀里亚纪层状铁镁蒙脱石与明矾石-黄钾铁矾硫酸盐盆地阶地、莫高窟须弥座下枭隅棱鎏金双凤宝相莲团花与飞天琵琶尾柱垂穗鎏金迦陵频伽嵌绿松石花钿扣、及发射台导流槽前坪耐火伸缩缝拉杆撑柱与羽流尖端三波点普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在西壬高地及马拉尔迪撞击坑探测到的诺亚纪—赫斯珀里亚纪层状铁镁蒙脱石与明矾石-黄钾铁矾硫酸盐盆地阶地 `Terra Sirenum/Maraldi Crater Layered Fe/Mg-Smectite & Alunite-Jarosite Sulfate Basin Terraces`、莫高窟盛唐第 159/217 窟须弥座下枭隅棱鎏金双凤宝相莲团花与飞天琵琶尾柱垂穗鎏金迦陵频伽嵌绿松石花钿扣、以及发射台导流槽前坪耐火伸缩缝拉杆撑柱 `Pad_ApronExpansionJointTieStrut`、上面级后裙遥测线槽卡箍 `Rocket_UpperStageAftSkirtTelemetryClamp` 与羽流尖端三波点普朗特-迈耶剪切辉光 `plumeTipTriplePrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.120` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座主龛须弥座下枭隅棱两侧新增八枚鎏金双凤宝相莲团花高浮雕（`PedestalLowerPlinthCornerRibPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于须弥座下枭隅棱增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶尾柱垂穗增绘鎏金迦陵频伽嵌绿松石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入西壬高地与马拉尔迪撞击坑诺亚纪—赫斯珀里亚纪层状铁镁蒙脱石与明矾石-黄钾铁矾硫酸盐盆地阶地（`maraldi_sirenum_smectite_sulfate_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`179,544 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,771 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对马拉尔迪撞击坑/西壬高地铁镁蒙脱石-明矾石黄钾铁矾层引入暖米黄硫酸盐黏土色带（`maraldiSirenumSmectiteSulfateTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽前坪四座耐火伸缩缝拉杆撑柱（`Pad_ApronExpansionJointTieStrut_0..3`）与箭体上面级后裙段四向遥测线槽整流卡箍（`Rocket_UpperStageAftSkirtTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,378,600 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`887,435 B`）；在 `flameMaterial` 中引入羽流尖端三波点普朗特-迈耶剪切辉光项（`plumeTipTriplePrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百四十三阶段验收：夜间持续进化 · 希腊盆地东缘与塞基撞击坑诺亚纪—赫斯珀里亚纪层状铁镁蒙脱石与石膏硫酸盐冰缘阶地、莫高窟藻井外层方井隅棱鎏金双凤宝相莲团花与飞天琵琶轸槽侧穗鎏金迦陵频伽嵌青金石花钿扣、及发射台导流槽冠部耐火伸缩缝拉杆撑柱与羽流肩部三波点普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在希腊盆地东缘及塞基撞击坑探测到的诺亚纪—赫斯珀里亚纪层状铁镁蒙脱石与石膏硫酸盐冰缘阶地 `Hellas Planitia Eastern Rim/Secchi Crater Layered Fe/Mg-Smectite & Gypsum-Sulfate Periglacial Terraces`、莫高窟盛唐第 159/217 窟藻井外层方井隅棱鎏金双凤宝相莲团花与飞天琵琶轸槽侧穗鎏金迦陵频伽嵌青金石花钿扣、以及发射台导流槽冠部耐火伸缩缝拉杆撑柱 `Pad_CrownExpansionJointTieStrut`、一级前裙遥测线槽卡箍 `Rocket_Stage1FwdSkirtTelemetryClamp` 与羽流肩部三波点普朗特-迈耶剪切辉光 `shoulderTriplePrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.121` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座主龛上方藻井外层方井隅棱两侧新增八枚鎏金双凤宝相莲团花高浮雕（`CeilingOuterSquareCornerRibPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于藻井外层方井隅棱增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶轸槽侧穗增绘鎏金迦陵频伽嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入希腊盆地东缘与塞基撞击坑诺亚纪—赫斯珀里亚纪层状铁镁蒙脱石与石膏硫酸盐冰缘阶地（`secchi_hellas_smectite_gypsum_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`179,678 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,552 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对塞基撞击坑/希腊盆地东缘铁镁蒙脱石-石膏硫酸盐层引入浅米灰石膏黏土色带（`secchiHellasSmectiteGypsumTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽冠部四座耐火伸缩缝拉杆撑柱（`Pad_CrownExpansionJointTieStrut_0..3`）与箭体一级前裙段四向遥测线槽整流卡箍（`Rocket_Stage1FwdSkirtTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,388,812 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`887,420 B`）；在 `flameMaterial` 中引入羽流肩部三波点普朗特-迈耶剪切辉光项（`shoulderTriplePrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百四十四阶段验收：夜间持续进化 · 希腊盆地东缘与华莱士撞击坑诺亚纪—赫斯珀里亚纪层状铁镁蒙脱石与水铁矿-硫酸盐河谷阶地、莫高窟藻井中层方井隅棱鎏金双凤宝相莲团花与飞天琵琶上腹垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、及发射台导流槽底板耐火锚固拉杆撑柱与羽流腰部三波点普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在希腊盆地东缘及华莱士撞击坑探测到的诺亚纪—赫斯珀里亚纪层状铁镁蒙脱石与水铁矿-硫酸盐河谷阶地 `Hellas Planitia Eastern Rim/Wallace Crater Layered Fe/Mg-Smectite & Ferrihydrite-Sulfate Fluvial Terraces`、莫高窟盛唐第 159/217 窟藻井中层方井隅棱鎏金双凤宝相莲团花与飞天琵琶上腹垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、以及发射台导流槽底板耐火锚固拉杆撑柱 `Pad_FloorRefractoryAnchorTieStrut`、一级后裙遥测线槽卡箍 `Rocket_Stage1AftSkirtTelemetryClamp` 与羽流腰部三波点普朗特-迈耶剪切辉光 `waistTriplePrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.122` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座主龛上方藻井中层方井隅棱两侧新增八枚鎏金双凤宝相莲团花高浮雕（`CeilingMidSquareCornerRibPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于藻井中层方井隅棱增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶上腹垂穗增绘鎏金迦陵频伽嵌红珊瑚花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入希腊盆地东缘与华莱士撞击坑诺亚纪—赫斯珀里亚纪层状铁镁蒙脱石与水铁矿-硫酸盐河谷阶地（`wallace_hellas_smectite_ferrihydrite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`179,851 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,095,031 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对华莱士撞击坑/希腊盆地东缘铁镁蒙脱石-水铁矿硫酸盐层引入暖赭红水铁矿黏土色带（`wallaceHellasSmectiteFerrihydriteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽底板四座耐火锚固拉杆撑柱（`Pad_FloorRefractoryAnchorTieStrut_0..3`）与箭体一级后裙段四向遥测线槽整流卡箍（`Rocket_Stage1AftSkirtTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,399,048 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`887,386 B`）；在 `flameMaterial` 中引入羽流腰部三波点普朗特-迈耶剪切辉光项（`waistTriplePrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百四十五阶段验收：夜间持续进化 · 诺亚高地与达尔文撞击坑诺亚纪—赫斯珀里亚纪层状铁镁蒙脱石与绿泥石-明矾石湖相阶地、莫高窟藻井内层方井隅棱鎏金双凤宝相莲团花与飞天琵琶相位首品垂穗鎏金迦陵频伽嵌翠玉花钿扣、及发射台导流槽侧壁耐火锚固拉杆撑柱与羽流领部三波点普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在诺亚高地及达尔文撞击坑探测到的诺亚纪—赫斯珀里亚纪层状铁镁蒙脱石与绿泥石-明矾石湖相阶地 `Noachis Terra/Darwin Crater Layered Fe/Mg-Smectite & Chlorite-Alunite Lacustrine Terraces`、莫高窟盛唐第 159/217 窟藻井内层方井隅棱鎏金双凤宝相莲团花与飞天琵琶相位首品垂穗鎏金迦陵频伽嵌翠玉花钿扣、以及发射台导流槽侧壁耐火锚固拉杆撑柱 `Pad_SidewallRefractoryAnchorTieStrut`、级间后裙遥测线槽卡箍 `Rocket_InterstageAftSkirtTelemetryClamp` 与羽流领部三波点普朗特-迈耶剪切辉光 `collarTriplePrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.123` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座主龛上方藻井内层方井隅棱两侧新增八枚鎏金双凤宝相莲团花高浮雕（`CeilingInnerSquareCornerRibPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于藻井内层方井隅棱增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶相位首品垂穗增绘鎏金迦陵频伽嵌翠玉花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入诺亚高地与达尔文撞击坑诺亚纪—赫斯珀里亚纪层状铁镁蒙脱石与绿泥石-明矾石湖相阶地（`darwin_noachis_smectite_chlorite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`180,063 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,712 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对达尔文撞击坑/诺亚高地铁镁蒙脱石-绿泥石明矾石层引入灰青绿泥石黏土色带（`darwinNoachisSmectiteChloriteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽侧壁四座耐火锚固拉杆撑柱（`Pad_SidewallRefractoryAnchorTieStrut_0..3`）与箭体级间段后裙四向遥测线槽整流卡箍（`Rocket_InterstageAftSkirtTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,409,344 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`887,299 B`）；在 `flameMaterial` 中引入羽流领部三波点普朗特-迈耶剪切辉光项（`collarTriplePrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百四十六阶段验收：夜间持续进化 · 辛梅里亚高地与赫歇尔盆地诺亚纪层状铁镁蒙脱石与葡萄石-绿泥石撞击盆地阶地、莫高窟佛龛立柱栌斗隅棱鎏金双凤宝相莲团花与飞天琵琶相位四品垂穗鎏金迦陵频伽嵌绿松石花钿扣、及发射台导流槽出口耐火锚固拉杆撑柱与羽流侧翼三波点普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在辛梅里亚高地及赫歇尔盆地探测到的诺亚纪层状铁镁蒙脱石与葡萄石-绿泥石撞击盆地阶地 `Terra Cimmeria/Herschel Basin Layered Fe/Mg-Smectite & Prehnite-Chlorite Impact-Basin Terraces`、莫高窟盛唐第 159/217 窟佛龛立柱栌斗隅棱鎏金双凤宝相莲团花与飞天琵琶相位四品垂穗鎏金迦陵频伽嵌绿松石花钿扣、以及发射台导流槽出口耐火锚固拉杆撑柱 `Pad_ExitRefractoryAnchorTieStrut`、级间前裙遥测线槽卡箍 `Rocket_InterstageFwdSkirtTelemetryClamp` 与羽流侧翼三波点普朗特-迈耶剪切辉光 `flankTriplePrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.124` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座主龛立柱栌斗隅棱两侧新增八枚鎏金双凤宝相莲团花高浮雕（`ColumnCapitalCornerRibPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛立柱栌斗隅棱增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶相位四品垂穗增绘鎏金迦陵频伽嵌绿松石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入辛梅里亚高地与赫歇尔盆地诺亚纪层状铁镁蒙脱石与葡萄石-绿泥石撞击盆地阶地（`herschel_cimmeria_smectite_prehnite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`180,388 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,885 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对赫歇尔盆地/辛梅里亚高地铁镁蒙脱石-葡萄石绿泥石层引入淡翠绿葡萄石-绿泥石黏土色带（`herschelCimmeriaSmectitePrehniteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽出口四座耐火锚固拉杆撑柱（`Pad_ExitRefractoryAnchorTieStrut_0..3`）与箭体级间段前裙四向遥测线槽整流卡箍（`Rocket_InterstageFwdSkirtTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,419,612 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`887,113 B`）；在 `flameMaterial` 中引入羽流侧翼三波点普朗特-迈耶剪切辉光项（`flankTriplePrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百四十七阶段验收：夜间持续进化 · 萨巴亚高地与惠更斯盆地诺亚纪层状铁镁蒙脱石与钙铁碳酸盐撞击盆地阶地、莫高窟佛龛立柱柱础隅棱鎏金双凤宝相莲团花与飞天琵琶覆手缚弦孔垂穗鎏金迦陵频伽嵌青金石花钿扣、及发射台导流槽前坪耐火锚固拉杆撑柱与羽流脊线三波点普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在萨巴亚高地及惠更斯盆地探测到的诺亚纪层状铁镁蒙脱石与钙铁碳酸盐撞击盆地阶地 `Terra Sabaea/Huygens Basin Layered Fe/Mg-Smectite & Ca/Fe-Carbonate Impact-Basin Terraces`、莫高窟盛唐第 159/217 窟佛龛立柱柱础隅棱鎏金双凤宝相莲团花与飞天琵琶覆手缚弦孔垂穗鎏金迦陵频伽嵌青金石花钿扣、以及发射台导流槽前坪耐火锚固拉杆撑柱 `Pad_ApronRefractoryAnchorTieStrut`、整流罩后环遥测线槽卡箍 `Rocket_FairingAftRingTelemetryClamp` 与羽流脊线三波点普朗特-迈耶剪切辉光 `spineTriplePrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.125` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座主龛立柱柱础隅棱两侧新增八枚鎏金双凤宝相莲团花高浮雕（`ColumnBaseCornerRibPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛立柱柱础隅棱增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶覆手缚弦孔垂穗增绘鎏金迦陵频伽嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入萨巴亚高地与惠更斯盆地诺亚纪层状铁镁蒙脱石与钙铁碳酸盐撞击盆地阶地（`huygens_sabaea_smectite_carbonate_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`180,540 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,441 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对惠更斯盆地/萨巴亚高地铁镁蒙脱石-钙铁碳酸盐层引入暖米黄钙铁碳酸盐黏土色带（`huygensSabaeaSmectiteCarbonateTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽前坪四座耐火锚固拉杆撑柱（`Pad_ApronRefractoryAnchorTieStrut_0..3`）与箭体整流罩后环四向遥测线槽整流卡箍（`Rocket_FairingAftRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,429,868 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`887,094 B`）；在 `flameMaterial` 中引入羽流脊线三波点普朗特-迈耶剪切辉光项（`spineTriplePrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百四十八阶段验收：夜间持续进化 · 第勒纳高地与米洛肖撞击坑诺亚纪—赫斯珀里亚纪层状铁镁蒙脱石与蛋白石硅华冲积-湖相阶地、莫高窟佛龛立柱腰箍隅棱鎏金双凤宝相莲团花与飞天琵琶颈踵垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、及发射台导流槽冠部耐火锚固拉杆撑柱与羽流冠部三波点普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在第勒纳高地及米洛肖撞击坑探测到的诺亚纪—赫斯珀里亚纪层状铁镁蒙脱石与蛋白石硅华冲积-湖相阶地 `Tyrrhena Terra/Millochau Crater Layered Fe/Mg-Smectite & Opaline-Silica Alluvial-Lacustrine Terraces`、莫高窟盛唐第 159/217 窟佛龛立柱腰箍隅棱鎏金双凤宝相莲团花与飞天琵琶颈踵垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、以及发射台导流槽冠部耐火锚固拉杆撑柱 `Pad_CrownRefractoryAnchorTieStrut`、整流罩中环遥测线槽卡箍 `Rocket_FairingMidRingTelemetryClamp` 与羽流冠部三波点普朗特-迈耶剪切辉光 `crownTriplePrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.126` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座主龛立柱腰箍隅棱两侧新增八枚鎏金双凤宝相莲团花高浮雕（`ColumnShaftMidBandCornerRibPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛立柱腰箍隅棱增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶颈踵垂穗增绘鎏金迦陵频伽嵌红珊瑚花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入第勒纳高地与米洛肖撞击坑诺亚纪—赫斯珀里亚纪层状铁镁蒙脱石与蛋白石硅华冲积-湖相阶地（`millochau_tyrrhena_smectite_silica_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`180,722 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,794 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对米洛肖撞击坑/第勒纳高地铁镁蒙脱石-蛋白石硅华层引入暖米灰蛋白石-皂石黏土色带（`millochauTyrrhenaSmectiteSilicaTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽冠部四座耐火锚固拉杆撑柱（`Pad_CrownRefractoryAnchorTieStrut_0..3`）与箭体整流罩中环四向遥测线槽整流卡箍（`Rocket_FairingMidRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,440,120 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`887,475 B`）；在 `flameMaterial` 中引入羽流冠部三波点普朗特-迈耶剪切辉光项（`crownTriplePrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百四十九阶段验收：夜间持续进化 · 西壬高地与坎贝尔撞击坑诺亚纪—赫斯珀里亚纪层状铁镁蒙脱石与绿泥石-蛇纹石冰缘-湖相阶地、莫高窟佛龛外拱顶脊隅棱鎏金双凤宝相莲团花与飞天琵琶凤首顶穗鎏金迦陵频伽嵌翠玉花钿扣、及发射台导流槽底板急冷集管拉杆撑柱与羽流外鞘三波点普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在西壬高地及坎贝尔撞击坑探测到的诺亚纪—赫斯珀里亚纪层状铁镁蒙脱石与绿泥石-蛇纹石冰缘-湖相阶地 `Terra Sirenum/Campbell Crater Layered Fe/Mg-Smectite & Chlorite-Serpentine Periglacial-Lacustrine Terraces`、莫高窟盛唐第 159/217 窟佛龛外拱顶脊隅棱鎏金双凤宝相莲团花与飞天琵琶凤首顶穗鎏金迦陵频伽嵌翠玉花钿扣、以及发射台导流槽底板急冷集管拉杆撑柱 `Pad_FloorQuenchHeaderTieStrut`、整流罩前环遥测线槽卡箍 `Rocket_FairingFwdRingTelemetryClamp` 与羽流外鞘三波点普朗特-迈耶剪切辉光 `mantleTriplePrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.127` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座主龛外拱顶脊隅棱两侧新增八枚鎏金双凤宝相莲团花高浮雕（`ArchCrownRibPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛外拱顶脊隅棱增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶凤首顶穗增绘鎏金迦陵频伽嵌翠玉花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入西壬高地与坎贝尔撞击坑诺亚纪—赫斯珀里亚纪层状铁镁蒙脱石与绿泥石-蛇纹石冰缘-湖相阶地（`campbell_sirenum_smectite_chlorite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`181,076 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,611 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对坎贝尔撞击坑/西壬高地铁镁蒙脱石-绿泥石蛇纹石层引入灰青绿泥石-蛇纹石黏土色带（`campbellSirenumSmectiteChloriteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽底板四座急冷集管拉杆撑柱（`Pad_FloorQuenchHeaderTieStrut_0..3`）与箭体整流罩前环四向遥测线槽整流卡箍（`Rocket_FairingFwdRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,450,340 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`887,606 B`）；在 `flameMaterial` 中引入羽流外鞘三波点普朗特-迈耶剪切辉光项（`mantleTriplePrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百五十阶段验收：夜间持续进化 · 珍珠高地与巴拉那-卢瓦尔古河谷盆地诺亚纪—赫斯珀里亚纪层状铁镁蒙脱石与高岭石-绿泥石湖谷阶地、莫高窟佛龛内拱腹券顶脊肋鎏金双凤宝相莲团花与飞天琵琶面板上缘嵌线垂穗鎏金迦陵频伽嵌绿松石花钿扣、及发射台导流槽侧壁急冷集管拉杆撑柱与羽流护鞘三波点普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在珍珠高地及巴拉那-卢瓦尔古河谷盆地探测到的诺亚纪—赫斯珀里亚纪层状铁镁蒙脱石与高岭石-绿泥石湖谷阶地 `Margaritifer Terra/Parana-Loire Valles Layered Fe/Mg-Smectite & Kaolinite-Chlorite Valley-Lake Terraces`、莫高窟盛唐第 159/217 窟佛龛内拱腹券顶脊肋鎏金双凤宝相莲团花与飞天琵琶面板上缘嵌线垂穗鎏金迦陵频伽嵌绿松石花钿扣、以及发射台导流槽侧壁急冷集管拉杆撑柱 `Pad_SidewallQuenchHeaderTieStrut`、整流罩前锥段遥测线槽卡箍 `Rocket_FairingNoseConeTelemetryClamp` 与羽流护鞘三波点普朗特-迈耶剪切辉光 `sheathTriplePrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.128` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座主龛内拱腹券顶脊肋两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheCrownRibPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛内拱腹券顶脊肋增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶面板上缘嵌线垂穗增绘鎏金迦陵频伽嵌绿松石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入珍珠高地与巴拉那-卢瓦尔古河谷盆地诺亚纪—赫斯珀里亚纪层状铁镁蒙脱石与高岭石-绿泥石湖谷阶地（`parana_loire_smectite_kaolinite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`181,171 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,904 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对巴拉那-卢瓦尔/珍珠高地铁镁蒙脱石-高岭石绿泥石层引入暖米黄高岭石-蒙脱石黏土色带（`paranaLoireSmectiteKaoliniteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽侧壁四座急冷集管拉杆撑柱（`Pad_SidewallQuenchHeaderTieStrut_0..3`）与箭体整流罩前锥段四向遥测线槽整流卡箍（`Rocket_FairingNoseConeTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,460,512 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`887,568 B`）；在 `flameMaterial` 中引入羽流护鞘三波点普朗特-迈耶剪切辉光项（`sheathTriplePrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百五十一阶段验收：夜间持续进化 · 克珊忒高地与纳内迪谷诺亚纪—赫斯珀里亚纪层状铁镁蒙脱石与碳酸盐-硫酸盐曲流峡谷阶地、莫高窟须弥座上枭中脊肋鎏金双凤宝相莲团花与飞天琵琶面板下缘嵌线垂穗鎏金迦陵频伽嵌青金石花钿扣、及发射台导流槽出口急冷集管拉杆撑柱与羽流外幕三波点普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在克珊忒高地及纳内迪谷探测到的诺亚纪—赫斯珀里亚纪层状铁镁蒙脱石与碳酸盐-硫酸盐曲流峡谷阶地 `Xanthe Terra/Nanedi Valles Layered Fe/Mg-Smectite & Carbonate-Sulfate Meandering-Canyon Terraces`、莫高窟盛唐第 159/217 窟须弥座上枭中脊肋鎏金双凤宝相莲团花与飞天琵琶面板下缘嵌线垂穗鎏金迦陵频伽嵌青金石花钿扣、以及发射台导流槽出口急冷集管拉杆撑柱 `Pad_ExitQuenchHeaderTieStrut`、整流罩中筒段遥测线槽卡箍 `Rocket_FairingMidBarrelTelemetryClamp` 与羽流外幕三波点普朗特-迈耶剪切辉光 `veilTriplePrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.129` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座主龛须弥座上枭中脊肋两侧新增八枚鎏金双凤宝相莲团花高浮雕（`PedestalUpperCrownRibPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于须弥座上枭中脊肋增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶面板下缘嵌线垂穗增绘鎏金迦陵频伽嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入克珊忒高地与纳内迪谷诺亚纪—赫斯珀里亚纪层状铁镁蒙脱石与碳酸盐-硫酸盐曲流峡谷阶地（`nanedi_xanthe_smectite_carbonate_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`181,489 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,782 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对纳内迪谷/克珊忒高地铁镁蒙脱石-碳酸盐硫酸盐层引入暖米褐碳酸盐-蒙脱石黏土色带（`nanediXantheSmectiteCarbonateTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽出口四座急冷集管拉杆撑柱（`Pad_ExitQuenchHeaderTieStrut_0..3`）与箭体整流罩中筒段四向遥测线槽整流卡箍（`Rocket_FairingMidBarrelTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,470,744 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`887,592 B`）；在 `flameMaterial` 中引入羽流外幕三波点普朗特-迈耶剪切辉光项（`veilTriplePrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百五十二阶段验收：夜间持续进化 · 阿拉伯高地与莫斯谷及大山撞击坑诺亚纪—赫斯珀里亚纪层状绿脱石-蒙脱石与贝得石-高岭石互层黏土阶地、莫高窟须弥座下枭中脊肋鎏金双凤宝相莲团花与飞天琵琶尾柱缚弦穗鎏金迦陵频伽嵌红珊瑚花钿扣、及发射台导流槽喉部急冷集管拉杆撑柱与羽流外罩三波点普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在阿拉伯高地莫斯谷及大山撞击坑探测到的诺亚纪—赫斯珀里亚纪层状绿脱石-蒙脱石与贝得石-高岭石互层黏土阶地 `Arabia Terra / Mawrth Vallis & Oyama Crater Layered Fe/Mg-Nontronite & Al-Beidellite/Kaolinite Interbedded Clay Terraces`、莫高窟盛唐第 159/217 窟须弥座下枭中脊肋鎏金双凤宝相莲团花与飞天琵琶尾柱缚弦穗鎏金迦陵频伽嵌红珊瑚花钿扣、以及发射台导流槽喉部急冷集管拉杆撑柱 `Pad_ThroatQuenchHeaderTieStrut`、整流罩上筒段遥测线槽卡箍 `Rocket_FairingUpperBarrelTelemetryClamp` 与羽流外罩三波点普朗特-迈耶剪切辉光 `shroudTriplePrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.130` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座主龛须弥座下枭中脊肋两侧新增八枚鎏金双凤宝相莲团花高浮雕（`PedestalLowerCrownRibPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于须弥座下枭中脊肋增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶尾柱缚弦穗增绘鎏金迦陵频伽嵌红珊瑚花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入阿拉伯高地与莫斯谷及大山撞击坑诺亚纪—赫斯珀里亚纪层状绿脱石-蒙脱石与贝得石-高岭石互层黏土阶地（`oyama_mawrth_nontronite_beidellite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`181,620 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,581 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对莫斯谷/大山撞击坑绿脱石-贝得石黏土层引入暖黄绿绿脱石-贝得石色带（`oyamaMawrthNontroniteBeidelliteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽喉部四座急冷集管拉杆撑柱（`Pad_ThroatQuenchHeaderTieStrut_0..3`）与箭体整流罩上筒段四向遥测线槽整流卡箍（`Rocket_FairingUpperBarrelTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,481,000 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`887,847 B`）；在 `flameMaterial` 中引入羽流外罩三波点普朗特-迈耶剪切辉光项（`shroudTriplePrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百五十三阶段验收：夜间持续进化 · 西壬高地与维尔茨撞击坑诺亚纪—赫斯珀里亚纪层状铁镁蒙脱石与高岭石-石膏硫酸盐湖相-冲积阶地、莫高窟须弥座上束腰中脊肋鎏金双凤宝相莲团花与飞天琵琶面板中腰嵌线垂穗鎏金迦陵频伽嵌翠玉花钿扣、及发射台导流槽前坪急冷集管拉杆撑柱与羽流天幕三波点普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在西壬高地东南部维尔茨撞击坑探测到的诺亚纪—赫斯珀里亚纪层状铁镁蒙脱石与高岭石-石膏硫酸盐湖相-冲积阶地 `Terra Sirenum & Wirtz Crater Layered Fe/Mg-Smectite & Kaolinite-Gypsum Sulfate Lacustrine-Alluvial Terraces`、莫高窟盛唐第 159/217 窟须弥座上束腰中脊肋鎏金双凤宝相莲团花与飞天琵琶面板中腰嵌线垂穗鎏金迦陵频伽嵌翠玉花钿扣、以及发射台导流槽前坪急冷集管拉杆撑柱 `Pad_ApronQuenchHeaderTieStrut`、整流罩下筒段遥测线槽卡箍 `Rocket_FairingLowerBarrelTelemetryClamp` 与羽流天幕三波点普朗特-迈耶剪切辉光 `canopyTriplePrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.131` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座主龛须弥座上束腰中脊肋两侧新增八枚鎏金双凤宝相莲团花高浮雕（`PedestalUpperWaistCrownRibPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于须弥座上束腰中脊肋增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶面板中腰嵌线垂穗增绘鎏金迦陵频伽嵌翠玉花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入西壬高地与维尔茨撞击坑诺亚纪—赫斯珀里亚纪层状铁镁蒙脱石与高岭石-石膏硫酸盐湖相-冲积阶地（`wirtz_sirenum_smectite_kaolinite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`181,817 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,615 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对维尔茨撞击坑/西壬高地铁镁蒙脱石-高岭石石膏层引入暖米黄高岭石-石膏黏土色带（`wirtzSirenumSmectiteKaoliniteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽前坪四座急冷集管拉杆撑柱（`Pad_ApronQuenchHeaderTieStrut_0..3`）与箭体整流罩下筒段四向遥测线槽整流卡箍（`Rocket_FairingLowerBarrelTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,491,252 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`887,732 B`）；在 `flameMaterial` 中引入羽流天幕三波点普朗特-迈耶剪切辉光项（`canopyTriplePrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百五十四阶段验收：夜间持续进化 · 子午线高原西缘与宫本撞击坑诺亚纪—赫斯珀里亚纪层状铁镁蒙脱石与高岭石-赤铁矿倒转河道接触阶地、莫高窟须弥座下束腰中脊肋鎏金双凤宝相莲团花与飞天琵琶上腹嵌线垂穗鎏金迦陵频伽嵌绿松石花钿扣、及发射台导流槽冠部急冷集管拉杆撑柱与羽流盾幕三波点普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在子午线高原西缘及宫本撞击坑探测到的诺亚纪—赫斯珀里亚纪层状铁镁蒙脱石与高岭石-赤铁矿倒转河道接触阶地 `Meridiani Planum & Miyamoto Crater Layered Fe/Mg-Smectite & Kaolinite-Hematite Inverted-Channel Contact Terraces`、莫高窟盛唐第 159/217 窟须弥座下束腰中脊肋鎏金双凤宝相莲团花与飞天琵琶上腹嵌线垂穗鎏金迦陵频伽嵌绿松石花钿扣、以及发射台导流槽冠部急冷集管拉杆撑柱 `Pad_CrownQuenchHeaderTieStrut`、上面级中段贮箱遥测线槽卡箍 `Rocket_UpperStageMidTankTelemetryClamp` 与羽流盾幕三波点普朗特-迈耶剪切辉光 `aegisTriplePrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.132` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座主龛须弥座下束腰中脊肋两侧新增八枚鎏金双凤宝相莲团花高浮雕（`PedestalLowerWaistCrownRibPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于须弥座下束腰中脊肋增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶上腹嵌线垂穗增绘鎏金迦陵频伽嵌绿松石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入子午线高原西缘与宫本撞击坑诺亚纪—赫斯珀里亚纪层状铁镁蒙脱石与高岭石-赤铁矿倒转河道接触阶地（`miyamoto_meridiani_smectite_kaolinite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`182,060 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,964 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对宫本撞击坑/子午线高原铁镁蒙脱石-高岭石赤铁矿层引入暖赭褐高岭石-赤铁矿黏土色带（`miyamotoMeridianiSmectiteKaoliniteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽冠部四座急冷集管拉杆撑柱（`Pad_CrownQuenchHeaderTieStrut_0..3`）与箭体上面级中段贮箱四向遥测线槽整流卡箍（`Rocket_UpperStageMidTankTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,501,488 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`887,963 B`）；在 `flameMaterial` 中引入羽流盾幕三波点普朗特-迈耶剪切辉光项（`aegisTriplePrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百五十五阶段验收：夜间持续进化 · 古瑟夫撞击坑与哥伦比亚丘陵诺亚纪—赫斯珀里亚纪水热蛋白石硅华与铁镁蒙脱石-碳酸盐接触阶地、莫高窟藻井外层方井中脊肋鎏金双凤宝相莲团花与飞天琵琶下腹嵌线垂穗鎏金迦陵频伽嵌青金石花钿扣、及发射台导流槽底板声学洪流集管拉杆撑柱与羽流日冕三波点普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星勇气号及 MRO HiRISE/CRISM 在古瑟夫撞击坑与哥伦比亚丘陵探测到的诺亚纪—赫斯珀里亚纪水热蛋白石硅华与铁镁蒙脱石-碳酸盐接触阶地 `Gusev Crater & Columbia Hills Hydrothermal Opaline-Silica Sinter & Fe/Mg-Smectite-Carbonate Terraces`、莫高窟盛唐第 159/217 窟藻井外层方井中脊肋鎏金双凤宝相莲团花与飞天琵琶下腹嵌线垂穗鎏金迦陵频伽嵌青金石花钿扣、以及发射台导流槽底板声学洪流集管拉杆撑柱 `Pad_FloorDelugeHeaderTieStrut`、上面级后段贮箱遥测线槽卡箍 `Rocket_UpperStageAftTankTelemetryClamp` 与羽流日冕三波点普朗特-迈耶剪切辉光 `haloTriplePrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.133` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座斗四藻井外层方井中脊肋两侧新增八枚鎏金双凤宝相莲团花高浮雕（`CeilingOuterSquareCrownRibPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于藻井外层方井中脊肋增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶下腹嵌线垂穗增绘鎏金迦陵频伽嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入古瑟夫撞击坑与哥伦比亚丘陵诺亚纪—赫斯珀里亚纪水热蛋白石硅华与铁镁蒙脱石-碳酸盐接触阶地（`gusev_columbia_opaline_smectite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`182,248 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,398 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对古瑟夫撞击坑/哥伦比亚丘陵蛋白石硅华-铁镁蒙脱石层引入暖米白蛋白石硅华色带（`gusevColumbiaOpalineSmectiteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽底板四座声学洪流集管拉杆撑柱（`Pad_FloorDelugeHeaderTieStrut_0..3`）与箭体上面级后段贮箱四向遥测线槽整流卡箍（`Rocket_UpperStageAftTankTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,511,728 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`888,024 B`）；在 `flameMaterial` 中引入羽流日冕三波点普朗特-迈耶剪切辉光项（`haloTriplePrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百五十六阶段验收：夜间持续进化 · 珍珠高地与霍尔登撞击坑（乌兹博伊谷决口盆地）诺亚纪—赫斯珀里亚纪层状铁镁蒙脱石与撞击巨角砾岩-冲积扇阶地、莫高窟藻井中层方井中脊肋鎏金双凤宝相莲团花与飞天琵琶中腹嵌线垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、及发射台导流槽侧壁声学洪流集管拉杆撑柱与羽流外冕三波点普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在珍珠高地霍尔登撞击坑及乌兹博伊谷决口盆地探测到的诺亚纪—赫斯珀里亚纪层状铁镁蒙脱石与撞击巨角砾岩-冲积扇阶地 `Margaritifer Terra & Holden Crater / Uzboi Vallis Layered Fe/Mg-Smectite & Megabreccia-Alluvial Fan Terraces`、莫高窟盛唐第 159/217 窟藻井中层方井中脊肋鎏金双凤宝相莲团花与飞天琵琶中腹嵌线垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、以及发射台导流槽侧壁声学洪流集管拉杆撑柱 `Pad_SidewallDelugeHeaderTieStrut`、上面级前段贮箱遥测线槽卡箍 `Rocket_UpperStageFwdTankTelemetryClamp` 与羽流外冕三波点普朗特-迈耶剪切辉光 `coronaTriplePrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.134` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座斗四藻井中层方井中脊肋两侧新增八枚鎏金双凤宝相莲团花高浮雕（`CeilingMidSquareCrownRibPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于藻井中层方井中脊肋增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶中腹嵌线垂穗增绘鎏金迦陵频伽嵌红珊瑚花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入珍珠高地与霍尔登撞击坑（乌兹博伊谷决口盆地）诺亚纪—赫斯珀里亚纪层状铁镁蒙脱石与撞击巨角砾岩-冲积扇阶地（`holden_uzboi_smectite_megabreccia_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`182,403 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,850 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对霍尔登撞击坑/乌兹博伊谷铁镁蒙脱石-巨角砾岩冲积层引入暖米褐湖相蒙脱石色带（`holdenUzboiSmectiteMegabrecciaTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽侧壁四座声学洪流集管拉杆撑柱（`Pad_SidewallDelugeHeaderTieStrut_0..3`）与箭体上面级前段贮箱四向遥测线槽整流卡箍（`Rocket_UpperStageFwdTankTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,521,988 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`887,952 B`）；在 `flameMaterial` 中引入羽流外冕三波点普朗特-迈耶剪切辉光项（`coronaTriplePrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百五十七阶段验收：夜间持续进化 · 西壬高地与哥伦布撞击坑诺亚纪—赫斯珀里亚纪深部地下水古湖泊明矾石-高岭石-石膏硫酸盐蒸发岩环阶地、莫高窟藻井内层方井中脊肋鎏金双凤宝相莲团花与飞天琵琶上腹内嵌线垂穗鎏金迦陵频伽嵌和田翠玉花钿扣、及发射台导流槽底板声学洪流集管斜撑拉杆与喷管出口四阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在西壬高地哥伦布撞击坑探测到的诺亚纪—赫斯珀里亚纪深部地下水古湖泊明矾石-高岭石-石膏硫酸盐蒸发岩环阶地 `Terra Sirenum & Columbus Crater Groundwater-Fed Paleolake Alunite-Kaolinite-Gypsum Sulfate Evaporite Rings`、莫高窟盛唐第 159/217 窟藻井内层方井中脊肋鎏金双凤宝相莲团花与飞天琵琶上腹内嵌线垂穗鎏金迦陵频伽嵌和田翠玉花钿扣、以及发射台导流槽底板声学洪流集管斜撑拉杆 `Pad_FloorDelugeHeaderCrossBrace`、上面级共底段遥测线槽卡箍 `Rocket_UpperStageInterDomeTelemetryClamp` 与喷管出口四阶普朗特-迈耶剪切辉光 `exitQuadPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.135` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座斗四藻井内层方井中脊肋两侧新增八枚鎏金双凤宝相莲团花高浮雕（`CeilingInnerSquareCrownRibPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于藻井内层方井中脊肋增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶上腹内嵌线垂穗增绘鎏金迦陵频伽嵌和田翠玉花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入西壬高地与哥伦布撞击坑诺亚纪—赫斯珀里亚纪深部地下水古湖泊明矾石-高岭石-石膏硫酸盐蒸发岩环阶地（`columbus_sirenum_alunite_kaolinite_rings`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`182,678 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,665 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对哥伦布撞击坑/西壬高地明矾石-高岭石-石膏蒸发岩环引入暖象牙粉白蒸发岩色带（`columbusSirenumAluniteKaoliniteRing`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽底板四座声学洪流集管斜撑拉杆（`Pad_FloorDelugeHeaderCrossBrace_0..3`）与箭体上面级共底段四向遥测线槽整流卡箍（`Rocket_UpperStageInterDomeTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,532,264 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`888,220 B`）；在 `flameMaterial` 中引入喷管出口四阶普朗特-迈耶剪切辉光项（`exitQuadPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百五十八阶段验收：夜间持续进化 · 大塞提斯高原与尼利槽沟诺亚纪—赫斯珀里亚纪蚀变橄榄石-菱镁矿碳酸盐-皂石蒙脱石基岩与蛇纹石化裂隙阶地、莫高窟斗四藻井井心中脊肋鎏金双凤宝相莲团花与飞天琵琶下腹内嵌线垂穗鎏金迦陵频伽嵌绿松石花钿扣、及发射台导流槽侧壁声学洪流集管斜撑拉杆与喷管喉部四阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在大塞提斯高原东北缘与尼利槽沟探测到的诺亚纪—赫斯珀里亚纪蚀变橄榄石-菱镁矿碳酸盐-皂石蒙脱石基岩与蛇纹石化裂隙阶地 `Syrtis Major & Nili Fossae Olivine-Carbonate-Saponite Altered Bedrock & Serpentinization Fracture Terraces`、莫高窟盛唐第 159/217 窟斗四藻井井心中脊肋鎏金双凤宝相莲团花与飞天琵琶下腹内嵌线垂穗鎏金迦陵频伽嵌绿松石花钿扣、以及发射台导流槽侧壁声学洪流集管斜撑拉杆 `Pad_SidewallDelugeHeaderCrossBrace`、一级后段贮箱遥测线槽卡箍 `Rocket_Stage1AftTankTelemetryClamp` 与喷管喉部四阶普朗特-迈耶剪切辉光 `throatQuadPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.136` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座斗四藻井井心中脊肋两侧新增八枚鎏金双凤宝相莲团花高浮雕（`CaissonCrownRibPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于斗四藻井井心中脊肋增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶下腹内嵌线垂穗增绘鎏金迦陵频伽嵌绿松石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入大塞提斯高原与尼利槽沟诺亚纪—赫斯珀里亚纪蚀变橄榄石-菱镁矿碳酸盐-皂石蒙脱石基岩与蛇纹石化裂隙阶地（`nili_fossae_olivine_carbonate_saponite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`182,924 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,578 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对尼利槽沟/大塞提斯高原橄榄石-碳酸盐-皂石层引入灰绿橄榄-菱镁矿碳酸盐色带（`niliFossaeOlivineCarbonateSaponiteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽侧壁四座声学洪流集管斜撑拉杆（`Pad_SidewallDelugeHeaderCrossBrace_0..3`）与箭体一级后段贮箱四向遥测线槽整流卡箍（`Rocket_Stage1AftTankTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,542,512 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`888,542 B`）；在 `flameMaterial` 中引入喷管喉部四阶普朗特-迈耶剪切辉光项（`throatQuadPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百五十九阶段验收：夜间持续进化 · 赞瑟高地与埃伯斯瓦尔德撞击坑诺亚纪—赫斯珀里亚纪曲流古三角洲前缘层状铁镁蒙脱石与鲕绿泥石-伊利石阶地、莫高窟藻井垂幔中脊肋鎏金双凤宝相莲团花与飞天琵琶中腹内嵌线垂穗鎏金迦陵频伽嵌青金石花钿扣、及发射台导流槽出口声学洪流集管拉杆撑柱与第一激波胞四阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在赞瑟高地埃伯斯瓦尔德撞击坑探测到的诺亚纪—赫斯珀里亚纪曲流古三角洲前缘层状铁镁蒙脱石与鲕绿泥石-伊利石阶地 `Xanthe Terra & Eberswalde Crater Deltaic Prodelta & Point-Bar Fe/Mg-Smectite & Chamosite-Illite Layered Clay Terraces`、莫高窟盛唐第 159/217 窟藻井垂幔中脊肋鎏金双凤宝相莲团花与飞天琵琶中腹内嵌线垂穗鎏金迦陵频伽嵌青金石花钿扣、以及发射台导流槽出口声学洪流集管拉杆撑柱 `Pad_ExitDelugeHeaderTieStrut`、一级中段贮箱遥测线槽卡箍 `Rocket_Stage1MidTankTelemetryClamp` 与第一激波胞四阶普朗特-迈耶剪切辉光 `cell1QuadPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.137` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座藻井垂幔中脊肋两侧新增八枚鎏金双凤宝相莲团花高浮雕（`CanopyValenceCrownRibPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于藻井垂幔中脊肋增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶中腹内嵌线垂穗增绘鎏金迦陵频伽嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入赞瑟高地与埃伯斯瓦尔德撞击坑诺亚纪—赫斯珀里亚纪曲流古三角洲前缘层状铁镁蒙脱石与鲕绿泥石-伊利石阶地（`eberswalde_xanthe_delta_smectite_chamosite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`183,102 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,066 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对埃伯斯瓦尔德撞击坑/赞瑟高地三角洲铁镁蒙脱石-鲕绿泥石层引入青灰绿三角洲黏土色带（`eberswaldeXantheDeltaSmectiteChamositeTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽出口四座声学洪流集管拉杆撑柱（`Pad_ExitDelugeHeaderTieStrut_0..3`）与箭体一级中段贮箱四向遥测线槽整流卡箍（`Rocket_Stage1MidTankTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,552,712 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`888,533 B`）；在 `flameMaterial` 中引入第一激波胞四阶普朗特-迈耶剪切辉光项（`cell1QuadPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百六十阶段验收：夜间持续进化 · 萨巴亚高地与特比撞击坑（赫拉斯盆地北缘）诺亚纪—赫斯珀里亚纪水下三角洲斜层理层状铁镁蒙脱石与高岭石-硅质阶地、莫高窟藻井垂幔斜脊肋鎏金双凤宝相莲团花与飞天琵琶琴颈踵部垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、及发射台导流槽出口声学洪流集管斜撑拉杆与第二激波胞四阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在萨巴亚高地南缘特比撞击坑探测到的诺亚纪—赫斯珀里亚纪水下三角洲斜层理层状铁镁蒙脱石与高岭石-硅质阶地 `Terra Sabaea & Terby Crater Subaqueous Deltaic Clinoform Fe/Mg-Smectite & Kaolinite-Silica Terraces`、莫高窟盛唐第 159/217 窟藻井垂幔斜脊肋鎏金双凤宝相莲团花与飞天琵琶琴颈踵部垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、以及发射台导流槽出口声学洪流集管斜撑拉杆 `Pad_ExitDelugeHeaderCrossBrace`、一级前段贮箱遥测线槽卡箍 `Rocket_Stage1FwdTankTelemetryClamp` 与第二激波胞四阶普朗特-迈耶剪切辉光 `cell2QuadPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.138` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座藻井垂幔斜脊肋两侧新增八枚鎏金双凤宝相莲团花高浮雕（`CanopyValenceCornerRibPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于藻井垂幔斜脊肋增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶琴颈踵部垂穗增绘鎏金迦陵频伽嵌红珊瑚花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入萨巴亚高地与特比撞击坑（赫拉斯盆地北缘）诺亚纪—赫斯珀里亚纪水下三角洲斜层理层状铁镁蒙脱石与高岭石-硅质阶地（`terby_sabaea_clinoform_smectite_kaolinite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`183,372 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,931 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对特比撞击坑/萨巴亚高地水下三角洲铁镁蒙脱石-高岭石层引入暖米黄水下斜层理蒙脱石-高岭石色带（`terbySabaeaClinoformSmectiteKaoliniteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽出口四座声学洪流集管斜撑拉杆（`Pad_ExitDelugeHeaderCrossBrace_0..3`）与箭体一级前段贮箱四向遥测线槽整流卡箍（`Rocket_Stage1FwdTankTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,562,916 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`888,445 B`）；在 `flameMaterial` 中引入第二激波胞四阶普朗特-迈耶剪切辉光项（`cell2QuadPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百六十一阶段验收：夜间持续进化 · 阿拉伯高地与麦克劳克林撞击坑诺亚纪—赫斯珀里亚纪深水地下水湖相皂石蒙脱石与菱镁矿-菱铁矿蛇纹石化阶地、莫高窟藻井垂幔下缘中脊肋鎏金双凤宝相莲团花与飞天琵琶第一相垂穗鎏金迦陵频伽嵌和田翠玉花钿扣、及发射台导流槽喉部声学洪流集管拉杆撑柱与第三激波胞四阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在阿拉伯高地西部麦克劳克林撞击坑探测到的诺亚纪—赫斯珀里亚纪深水地下水湖相皂石蒙脱石与菱镁矿-菱铁矿蛇纹石化阶地 `Arabia Terra & McLaughlin Crater Deep Groundwater-Fed Lacustrine Saponite-Smectite & Magnesite-Siderite Carbonate Serpentinization Terraces`、莫高窟盛唐第 159/217 窟藻井垂幔下缘中脊肋鎏金双凤宝相莲团花与飞天琵琶第一相垂穗鎏金迦陵频伽嵌和田翠玉花钿扣、以及发射台导流槽喉部声学洪流集管拉杆撑柱 `Pad_ThroatDelugeHeaderTieStrut`、一级共底段遥测线槽卡箍 `Rocket_Stage1InterDomeTelemetryClamp` 与第三激波胞四阶普朗特-迈耶剪切辉光 `cell3QuadPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.139` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座藻井垂幔下缘中脊肋两侧新增八枚鎏金双凤宝相莲团花高浮雕（`CanopyValenceLowerRimPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于藻井垂幔下缘中脊肋增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶第一相垂穗增绘鎏金迦陵频伽嵌和田翠玉花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入阿拉伯高地与麦克劳克林撞击坑诺亚纪—赫斯珀里亚纪深水地下水湖相皂石蒙脱石与菱镁矿-菱铁矿蛇纹石化阶地（`mclaughlin_arabia_saponite_magnesite_serpentine_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`183,571 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,836 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对麦克劳克林撞击坑/阿拉伯高地地下水湖相皂石-菱镁矿层引入青灰绿皂石-菱镁矿-蛇纹石色带（`mclaughlinArabiaSaponiteMagnesiteSerpentineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽喉部四座声学洪流集管拉杆撑柱（`Pad_ThroatDelugeHeaderTieStrut_0..3`）与箭体一级共底段四向遥测线槽整流卡箍（`Rocket_Stage1InterDomeTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,573,152 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`888,659 B`）；在 `flameMaterial` 中引入第三激波胞四阶普朗特-迈耶剪切辉光项（`cell3QuadPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百六十二阶段验收：夜间持续进化 · 水手号峡谷与梅拉斯峡谷诺亚纪—赫斯珀里亚纪古湖泊扇三角洲多水硫酸盐、水镁矾与黄钾铁矾-蒙脱石阶地、莫高窟藻井垂幔下缘斜脊肋鎏金双凤宝相莲团花与飞天琵琶第二相垂穗鎏金迦陵频伽嵌绿松石花钿扣、及发射台导流槽喉部声学洪流集管斜撑拉杆与第四激波胞四阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在水手号峡谷中段梅拉斯峡谷探测到的诺亚纪—赫斯珀里亚纪古湖泊扇三角洲多水硫酸盐、水镁矾与黄钾铁矾-蒙脱石阶地 `Valles Marineris & Melas Chasma Paleolake Fan-Delta Polyhydrated Sulfate, Kieserite & Jarosite-Smectite Terraces`、莫高窟盛唐第 159/217 窟藻井垂幔下缘斜脊肋鎏金双凤宝相莲团花与飞天琵琶第二相垂穗鎏金迦陵频伽嵌绿松石花钿扣、以及发射台导流槽喉部声学洪流集管斜撑拉杆 `Pad_ThroatDelugeHeaderCrossBrace`、级间段后环段遥测线槽卡箍 `Rocket_InterstageAftRingTelemetryClamp` 与第四激波胞四阶普朗特-迈耶剪切辉光 `cell4QuadPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.140` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座藻井垂幔下缘斜脊肋两侧新增八枚鎏金双凤宝相莲团花高浮雕（`CanopyValenceLowerCornerPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于藻井垂幔下缘斜脊肋增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶第二相垂穗增绘鎏金迦陵频伽嵌绿松石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入水手号峡谷与梅拉斯峡谷诺亚纪—赫斯珀里亚纪古湖泊扇三角洲多水硫酸盐、水镁矾与黄钾铁矾-蒙脱石阶地（`melas_chasma_sulfate_kieserite_jarosite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`183,683 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,221 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对梅拉斯峡谷/水手号峡谷多水硫酸盐-水镁矾-黄钾铁矾层引入暖琥珀黄钾铁矾-水镁矾色带（`melasChasmaSulfateKieseriteJarositeTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽喉部四座声学洪流集管斜撑拉杆（`Pad_ThroatDelugeHeaderCrossBrace_0..3`）与箭体级间段后环段四向遥测线槽整流卡箍（`Rocket_InterstageAftRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,583,408 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`888,710 B`）；在 `flameMaterial` 中引入第四激波胞四阶普朗特-迈耶剪切辉光项（`cell4QuadPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百六十三阶段验收：夜间持续进化 · 坎多尔峡谷与青春峡谷（水手号峡谷群）诺亚纪—赫斯珀里亚纪内部层状沉积物一水硫酸镁水镁矾、多水镁铁硫酸盐与成岩赤铁矿阶地、莫高窟佛龛内拱腹中脊肋鎏金双凤宝相莲团花与飞天琵琶第三相垂穗鎏金迦陵频伽嵌青金石花钿扣、及发射台导流槽中段声学洪流集管拉杆撑柱与第五激波胞四阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在水手号峡谷群坎多尔峡谷与青春峡谷探测到的诺亚纪—赫斯珀里亚纪内部层状沉积物一水硫酸镁水镁矾、多水镁铁硫酸盐与成岩赤铁矿阶地 `Candor Chasma & Juventae Chasma ILD Monohydrated Kieserite, Polyhydrated Mg/Fe-Sulfate & Diagenetic Hematite Terraces`、莫高窟盛唐第 159/217 窟佛龛内拱腹中脊肋鎏金双凤宝相莲团花与飞天琵琶第三相垂穗鎏金迦陵频伽嵌青金石花钿扣、以及发射台导流槽中段声学洪流集管拉杆撑柱 `Pad_MidTrenchDelugeHeaderTieStrut`、级间段中环段遥测线槽卡箍 `Rocket_InterstageMidRingTelemetryClamp` 与第五激波胞四阶普朗特-迈耶剪切辉光 `cell5QuadPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.141` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛内拱腹中脊肋两侧新增八枚鎏金双凤宝相莲团花高浮雕（`ArchivoltIntradosCrownPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛内拱腹中脊肋增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶第三相垂穗增绘鎏金迦陵频伽嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入坎多尔峡谷与青春峡谷（水手号峡谷群）诺亚纪—赫斯珀里亚纪内部层状沉积物一水硫酸镁水镁矾、多水镁铁硫酸盐与成岩赤铁矿阶地（`candor_juventae_ild_kieserite_sulfate_hematite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`183,935 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,727 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对坎多尔峡谷/青春峡谷内部层状沉积物水镁矾-赤铁矿层引入暖赭褐水镁矾-赤铁矿色带（`candorJuventaeIldKieseriteSulfateHematiteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽中段四座声学洪流集管拉杆撑柱（`Pad_MidTrenchDelugeHeaderTieStrut_0..3`）与箭体级间段中环段四向遥测线槽整流卡箍（`Rocket_InterstageMidRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,593,668 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`888,739 B`）；在 `flameMaterial` 中引入第五激波胞四阶普朗特-迈耶剪切辉光项（`cell5QuadPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百六十四阶段验收：夜间持续进化 · 诺克提斯迷宫与乌德曼斯撞击坑（水手号峡谷西端）赫斯珀里亚纪—亚马逊纪酸性硫酸盐热液黄钾铁矾、蛋白石水合硅石与铁镁蒙脱石阶地、莫高窟佛龛内拱腹上券腰鎏金双凤宝相莲团花与飞天琵琶第四相垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、及发射台导流槽中段声学洪流集管斜撑拉杆与第六激波胞四阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在水手号峡谷西端诺克提斯迷宫与乌德曼斯撞击坑探测到的赫斯珀里亚纪—亚马逊纪酸性硫酸盐热液黄钾铁矾、蛋白石水合硅石与铁镁蒙脱石阶地 `Noctis Labyrinthus & Oudemans Crater Acid-Sulfate Hydrothermal Jarosite, Opaline Silica & Fe/Mg-Smectite Terraces`、莫高窟盛唐第 159/217 窟佛龛内拱腹上券腰鎏金双凤宝相莲团花与飞天琵琶第四相垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、以及发射台导流槽中段声学洪流集管斜撑拉杆 `Pad_MidTrenchDelugeHeaderCrossBrace`、级间段前环段遥测线槽卡箍 `Rocket_InterstageFwdRingTelemetryClamp` 与第六激波胞四阶普朗特-迈耶剪切辉光 `cell6QuadPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.142` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛内拱腹上券腰两侧新增八枚鎏金双凤宝相莲团花高浮雕（`ArchivoltIntradosUpperHaunchPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛内拱腹上券腰增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶第四相垂穗增绘鎏金迦陵频伽嵌红珊瑚花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入诺克提斯迷宫与乌德曼斯撞击坑（水手号峡谷西端）赫斯珀里亚纪—亚马逊纪酸性硫酸盐热液黄钾铁矾、蛋白石水合硅石与铁镁蒙脱石阶地（`noctis_oudemans_hydrothermal_jarosite_opal_smectite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`183,992 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,045 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对诺克提斯迷宫/乌德曼斯撞击坑酸性热液黄钾铁矾-蛋白石层引入浅金黄热液黄钾铁矾-蛋白石色带（`noctisOudemansHydrothermalJarositeOpalSmectiteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽中段四座声学洪流集管斜撑拉杆（`Pad_MidTrenchDelugeHeaderCrossBrace_0..3`）与箭体级间段前环段四向遥测线槽整流卡箍（`Rocket_InterstageFwdRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,603,944 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`888,584 B`）；在 `flameMaterial` 中引入第六激波胞四阶普朗特-迈耶剪切辉光项（`cell6QuadPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百六十五阶段验收：夜间持续进化 · 波江盆地与阿里阿德涅丘群诺亚纪深海热液海底皂石、滑石-皂石与绿脱石-海绿石阶地、莫高窟佛龛内拱腹中券腰鎏金双凤宝相莲团花与飞天琵琶第一轸垂穗鎏金迦陵频伽嵌和田翠玉花钿扣、及发射台导流槽后段声学洪流集管拉杆撑柱与第七激波胞四阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在波江盆地与阿里阿德涅丘群探测到的诺亚纪深海热液海底皂石、滑石-皂石与绿脱石-海绿石阶地 `Eridania Basin & Ariadnes Colles Deep-Sea Hydrothermal Seafloor Saponite, Talc-Saponite & Nontronite-Glauconite Terraces`、莫高窟盛唐第 159/217 窟佛龛内拱腹中券腰鎏金双凤宝相莲团花与飞天琵琶第一轸垂穗鎏金迦陵频伽嵌和田翠玉花钿扣、以及发射台导流槽后段声学洪流集管拉杆撑柱 `Pad_AftTrenchDelugeHeaderTieStrut`、有效载荷适配器后环段遥测线槽卡箍 `Rocket_PayloadAdapterAftRingTelemetryClamp` 与第七激波胞四阶普朗特-迈耶剪切辉光 `cell7QuadPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.143` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档，同时同步归档双语 B 站短视频分镜脚本 `docs/video-explainers/ep01-generative-visual-lab.zh-CN.md` 与 `docs/video-explainers/ep01-generative-visual-lab.en.md`。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛内拱腹中券腰两侧新增八枚鎏金双凤宝相莲团花高浮雕（`ArchivoltIntradosMidHaunchPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛内拱腹中券腰增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶第一轸垂穗增绘鎏金迦陵频伽嵌和田翠玉花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入波江盆地与阿里阿德涅丘群诺亚纪深海热液海底皂石、滑石-皂石与绿脱石-海绿石阶地（`eridania_ariadnes_seafloor_saponite_talc_nontronite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`184,137 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,357 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对波江盆地/阿里阿德涅丘群深海热液滑石-皂石-海绿石层引入青灰绿滑石-皂石-海绿石色带（`eridaniaAriadnesSeafloorSaponiteTalcNontroniteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽后段四座声学洪流集管拉杆撑柱（`Pad_AftTrenchDelugeHeaderTieStrut_0..3`）与箭体有效载荷适配器后环段四向遥测线槽整流卡箍（`Rocket_PayloadAdapterAftRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,614,252 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`888,677 B`）；在 `flameMaterial` 中引入第七激波胞四阶普朗特-迈耶剪切辉光项（`cell7QuadPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百六十六阶段验收：夜间持续进化 · 马沃斯谷与大山撞击坑上部层序古土壤埃洛石、明矾石、水铁矿与高岭石-蒙脱石混层阶地、莫高窟佛龛内拱腹下券腰鎏金双凤宝相莲团花与飞天琵琶第二轸垂穗鎏金迦陵频伽嵌绿松石花钿扣、及发射台导流槽后段声学洪流集管斜撑拉杆与第八激波胞四阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在马沃斯谷与大山撞击坑探测到的上部层序古土壤埃洛石、明矾石、水铁矿与高岭石-蒙脱石混层阶地 `Mawrth Vallis & Oyama Crater Upper-Stratigraphy Pedogenic Halloysite, Alunite, Ferrihydrite & Kaolinite-Smectite Mixed-Layer Terraces`、莫高窟盛唐第 159/217 窟佛龛内拱腹下券腰鎏金双凤宝相莲团花与飞天琵琶第二轸垂穗鎏金迦陵频伽嵌绿松石花钿扣、以及发射台导流槽后段声学洪流集管斜撑拉杆 `Pad_AftTrenchDelugeHeaderCrossBrace`、有效载荷适配器中环段遥测线槽卡箍 `Rocket_PayloadAdapterMidRingTelemetryClamp` 与第八激波胞四阶普朗特-迈耶剪切辉光 `cell8QuadPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.144` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛内拱腹下券腰两侧新增八枚鎏金双凤宝相莲团花高浮雕（`ArchivoltIntradosLowerHaunchPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛内拱腹下券腰增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶第二轸垂穗增绘鎏金迦陵频伽嵌绿松石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入马沃斯谷与大山撞击坑上部层序古土壤埃洛石、明矾石、水铁矿与高岭石-蒙脱石混层阶地（`mawrth_oyama_pedogenic_halloysite_alunite_ferrihydrite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`184,243 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,839 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对马沃斯谷/大山撞击坑上部层序古土壤埃洛石-明矾石-高岭石层引入暖瓷白埃洛石-明矾石-高岭石色带（`mawrthOyamaPedogenicHalloysiteAluniteFerrihydriteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽后段四座声学洪流集管斜撑拉杆（`Pad_AftTrenchDelugeHeaderCrossBrace_0..3`）与箭体有效载荷适配器中环段四向遥测线槽整流卡箍（`Rocket_PayloadAdapterMidRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,624,576 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`888,638 B`）；在 `flameMaterial` 中引入第八激波胞四阶普朗特-迈耶剪切辉光项（`cell8QuadPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百六十七阶段验收：夜间持续进化 · 珍珠湾高地与乌兹博伊—拉冬—摩拉瓦（ULM）外流河道系诺亚纪—赫斯珀里亚纪冲积-湖相鲕绿泥石、铁质蒙脱石与含碳酸盐黏土阶地、莫高窟佛龛内拱腹拱脚肋鎏金双凤宝相莲团花与飞天琵琶第三轸垂穗鎏金迦陵频伽嵌青金石花钿扣、及发射台导流槽尾喷集气室声学洪流集管拉杆撑柱与尾焰末梢四阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在珍珠湾高地与乌兹博伊—拉冬—摩拉瓦外流河道系探测到的诺亚纪—赫斯珀里亚纪冲积-湖相鲕绿泥石、铁质蒙脱石与含碳酸盐黏土阶地 `Margaritifer Terra & Uzboi-Ladon-Morava Outflow System Alluvial-Lacustrine Chamosite, Ferric Smectite & Carbonate-Bearing Clay Terraces`、莫高窟盛唐第 159/217 窟佛龛内拱腹拱脚肋鎏金双凤宝相莲团花与飞天琵琶第三轸垂穗鎏金迦陵频伽嵌青金石花钿扣、以及发射台导流槽尾喷集气室声学洪流集管拉杆撑柱 `Pad_ExhaustPlenumDelugeHeaderTieStrut`、有效载荷适配器前环段遥测线槽卡箍 `Rocket_PayloadAdapterFwdRingTelemetryClamp` 与尾焰末梢四阶普朗特-迈耶剪切辉光 `plumeTailQuadPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.145` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛内拱腹拱脚肋两侧新增八枚鎏金双凤宝相莲团花高浮雕（`ArchivoltIntradosImpostPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛内拱腹拱脚肋增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶第三轸垂穗增绘鎏金迦陵频伽嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入珍珠湾高地与乌兹博伊—拉冬—摩拉瓦（ULM）外流河道系诺亚纪—赫斯珀里亚纪冲积-湖相鲕绿泥石、铁质蒙脱石与含碳酸盐黏土阶地（`margaritifer_ulm_alluvial_chamosite_smectite_carbonate_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`184,618 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,218 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对珍珠湾高地/ULM 外流河道冲积-湖相鲕绿泥石-蒙脱石层引入橄榄青灰鲕绿泥石-蒙脱石-碳酸盐色带（`margaritiferUlmAlluvialChamositeSmectiteCarbonateTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室四座声学洪流集管拉杆撑柱（`Pad_ExhaustPlenumDelugeHeaderTieStrut_0..3`）与箭体有效载荷适配器前环段四向遥测线槽整流卡箍（`Rocket_PayloadAdapterFwdRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,634,920 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`888,837 B`）；在 `flameMaterial` 中引入尾焰末梢四阶普朗特-迈耶剪切辉光项（`plumeTailQuadPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百六十八阶段验收：夜间持续进化 · 西壬高地与克罗斯撞击坑诺亚纪—赫斯珀里亚纪酸性硫酸盐明矾石、高岭石与绿泥石-伊利石热液-湖相阶地、莫高窟佛龛内拱腹基座肋鎏金双凤宝相莲团花与飞天琵琶第四轸垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、及发射台导流槽尾喷集气室声学洪流集管斜撑拉杆与第一激波胞五阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在西壬高地与克罗斯撞击坑探测到的诺亚纪—赫斯珀里亚纪酸性硫酸盐明矾石、高岭石与绿泥石-伊利石热液-湖相阶地 `Terra Sirenum & Cross Crater Acid-Sulfate Alunite, Kaolinite & Chlorite-Illite Hydrothermal-Lacustrine Terraces`、莫高窟盛唐第 159/217 窟佛龛内拱腹基座肋鎏金双凤宝相莲团花与飞天琵琶第四轸垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、以及发射台导流槽尾喷集气室声学洪流集管斜撑拉杆 `Pad_ExhaustPlenumDelugeHeaderCrossBrace`、整流罩底环段遥测线槽卡箍 `Rocket_FairingBaseRingTelemetryClamp` 与第一激波胞五阶普朗特-迈耶剪切辉光 `cell1QuintPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.146` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛内拱腹基座肋两侧新增八枚鎏金双凤宝相莲团花高浮雕（`ArchivoltIntradosPlinthPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛内拱腹基座肋增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶第四轸垂穗增绘鎏金迦陵频伽嵌红珊瑚花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入西壬高地与克罗斯撞击坑诺亚纪—赫斯珀里亚纪酸性硫酸盐明矾石、高岭石与绿泥石-伊利石热液-湖相阶地（`sirenum_cross_alunite_kaolinite_chlorite_illite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`184,576 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,797 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对西壬高地/克罗斯撞击坑热液-湖相层引入暖粉米白明矾石-高岭石-伊利石色带（`sirenumCrossAluniteKaoliniteChloriteIlliteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室四座声学洪流集管斜撑拉杆（`Pad_ExhaustPlenumDelugeHeaderCrossBrace_0..3`）与箭体整流罩底环段四向遥测线槽整流卡箍（`Rocket_FairingBaseRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,645,232 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`888,753 B`）；在 `flameMaterial` 中引入第一激波胞五阶普朗特-迈耶剪切辉光项（`cell1QuintPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百六十九阶段验收：夜间持续进化 · 辛梅里亚高地与戈尔戈努姆混沌诺亚纪—赫斯珀里亚纪干涸古湖泊石盐-氯化物多边形蒸发盐盘与下伏铁镁蒙脱石阶地、莫高窟佛龛外拱背正中脊肋鎏金双凤宝相莲团花与飞天琵琶覆手尾穗鎏金迦陵频伽嵌和田翠玉花钿扣、及发射台导流槽尾喷集气室侧壁声学洪流集管拉杆撑柱与第二激波胞五阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 THEMIS/HiRISE/CRISM 在辛梅里亚高地与戈尔戈努姆混沌探测到的诺亚纪—赫斯珀里亚纪干涸古湖泊石盐-氯化物多边形蒸发盐盘与下伏铁镁蒙脱石阶地 `Terra Cimmeria & Gorgonum Chaos Desiccated Paleolake Halite-Chloride Polygonal Evaporite Pans & Underlying Fe/Mg-Smectite Clay Terraces`、莫高窟盛唐第 159/217 窟佛龛外拱背正中脊肋鎏金双凤宝相莲团花与飞天琵琶覆手尾穗鎏金迦陵频伽嵌和田翠玉花钿扣、以及发射台导流槽尾喷集气室侧壁声学洪流集管拉杆撑柱 `Pad_ExhaustPlenumSidewallDelugeTieStrut`、整流罩中筒段遥测线槽卡箍 `Rocket_FairingMidBarrelRingTelemetryClamp` 与第二激波胞五阶普朗特-迈耶剪切辉光 `cell2QuintPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.147` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛外拱背正中脊肋两侧新增八枚鎏金双凤宝相莲团花高浮雕（`ArchivoltExtradosCrownPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛外拱背正中脊肋增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶覆手尾穗增绘鎏金迦陵频伽嵌和田翠玉花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入辛梅里亚高地与戈尔戈努姆混沌诺亚纪—赫斯珀里亚纪干涸古湖泊石盐-氯化物多边形蒸发盐盘与下伏铁镁蒙脱石阶地（`cimmeria_gorgonum_chloride_halite_smectite_evaporite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`184,942 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,391 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对辛梅里亚高地/戈尔戈努姆混沌干涸古湖泊盐盘层引入暖盐白石盐-氯化物-蒙脱石色带（`cimmeriaGorgonumChlorideHaliteSmectiteEvaporiteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室侧壁四座声学洪流集管拉杆撑柱（`Pad_ExhaustPlenumSidewallDelugeTieStrut_0..3`）与箭体整流罩中筒段四向遥测线槽整流卡箍（`Rocket_FairingMidBarrelRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,655,588 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`888,812 B`）；在 `flameMaterial` 中引入第二激波胞五阶普朗特-迈耶剪切辉光项（`cell2QuintPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百七十阶段验收：夜间持续进化 · 萨巴亚高地与安东尼亚第撞击坑诺亚纪—赫斯珀里亚纪方沸石-斜发沸石热液沸石、蛋白石质二氧化硅与铁镁蒙脱石湖相阶地、莫高窟佛龛外拱背上券腰鎏金双凤宝相莲团花与飞天琵琶上半月音孔垂穗鎏金迦陵频伽嵌绿松石花钿扣、及发射台导流槽尾喷集气室侧壁声学洪流集管斜撑拉杆与第三激波胞五阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在萨巴亚高地与安东尼亚第撞击坑探测到的诺亚纪—赫斯珀里亚纪方沸石-斜发沸石热液沸石、蛋白石质二氧化硅与铁镁蒙脱石湖相阶地 `Terra Sabaea & Antoniadi Crater Hydrothermal Analcime-Clinoptilolite Zeolite, Opaline Silica & Fe/Mg-Smectite Lacustrine Terraces`、莫高窟盛唐第 159/217 窟佛龛外拱背上券腰鎏金双凤宝相莲团花与飞天琵琶上半月音孔垂穗鎏金迦陵频伽嵌绿松石花钿扣、以及发射台导流槽尾喷集气室侧壁声学洪流集管斜撑拉杆 `Pad_ExhaustPlenumSidewallDelugeCrossBrace`、整流罩前筒段遥测线槽卡箍 `Rocket_FairingFwdBarrelRingTelemetryClamp` 与第三激波胞五阶普朗特-迈耶剪切辉光 `cell3QuintPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.148` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛外拱背上券腰两侧新增八枚鎏金双凤宝相莲团花高浮雕（`ArchivoltExtradosUpperHaunchPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛外拱背上券腰增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶上半月音孔垂穗增绘鎏金迦陵频伽嵌绿松石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入萨巴亚高地与安东尼亚第撞击坑诺亚纪—赫斯珀里亚纪方沸石-斜发沸石热液沸石、蛋白石质二氧化硅与铁镁蒙脱石湖相阶地（`sabaea_antoniadi_analcime_clinoptilolite_zeolite_smectite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`185,000 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,559 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对萨巴亚高地/安东尼亚第撞击坑热液沸石-蒙脱石湖相层引入暖沸石白方沸石-斜发沸石-蒙脱石色带（`sabaeaAntoniadiAnalcimeClinoptiloliteZeoliteSmectiteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室侧壁四座声学洪流集管斜撑拉杆（`Pad_ExhaustPlenumSidewallDelugeCrossBrace_0..3`）与箭体整流罩前筒段四向遥测线槽整流卡箍（`Rocket_FairingFwdBarrelRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,665,956 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`889,133 B`）；在 `flameMaterial` 中引入第三激波胞五阶普朗特-迈耶剪切辉光项（`cell3QuintPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百七十一阶段验收：夜间持续进化 · 诺亚高地与哥伦布—克罗斯坑间盆地诺亚纪—赫斯珀里亚纪剥露葡萄石-绿泥石-绿纤石低级变质层状硅酸盐与铁质蒙脱石阶地、莫高窟佛龛外拱背中券腰鎏金双凤宝相莲团花与飞天琵琶下半月音孔垂穗鎏金迦陵频伽嵌青金石花钿扣、及发射台导流槽尾喷集气室底板声学洪流集管拉杆撑柱与第四激波胞五阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在诺亚高地与哥伦布—克罗斯坑间盆地探测到的诺亚纪—赫斯珀里亚纪剥露葡萄石-绿泥石-绿纤石低级变质层状硅酸盐与铁质蒙脱石阶地 `Noachis Terra & Intercrater Basin Exhumed Prehnite-Chlorite-Pumpellyite Low-Grade Metamorphic Phyllosilicate & Ferric Smectite Terraces`、莫高窟盛唐第 159/217 窟佛龛外拱背中券腰鎏金双凤宝相莲团花与飞天琵琶下半月音孔垂穗鎏金迦陵频伽嵌青金石花钿扣、以及发射台导流槽尾喷集气室底板声学洪流集管拉杆撑柱 `Pad_ExhaustPlenumFloorDelugeTieStrut`、整流罩鼻锥底环段遥测线槽卡箍 `Rocket_FairingNoseBaseRingTelemetryClamp` 与第四激波胞五阶普朗特-迈耶剪切辉光 `cell4QuintPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.149` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛外拱背中券腰两侧新增八枚鎏金双凤宝相莲团花高浮雕（`ArchivoltExtradosMidHaunchPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛外拱背中券腰增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶下半月音孔垂穗增绘鎏金迦陵频伽嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入诺亚高地与哥伦布—克罗斯坑间盆地诺亚纪—赫斯珀里亚纪剥露葡萄石-绿泥石-绿纤石低级变质层状硅酸盐与铁质蒙脱石阶地（`noachis_prehnite_chlorite_pumpellyite_smectite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`185,305 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,392 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对诺亚高地剥露葡萄石-绿泥石-绿纤石层引入苍翠青灰葡萄石-绿泥石-绿纤石色带（`noachisPrehniteChloritePumpellyiteSmectiteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底板四座声学洪流集管拉杆撑柱（`Pad_ExhaustPlenumFloorDelugeTieStrut_0..3`）与箭体整流罩鼻锥底环段四向遥测线槽整流卡箍（`Rocket_FairingNoseBaseRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,676,276 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`889,317 B`）；在 `flameMaterial` 中引入第四激波胞五阶普朗特-迈耶剪切辉光项（`cell4QuintPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百七十二阶段验收：夜间持续进化 · 伊希地平原与利比亚山诺亚纪—赫斯珀里亚纪撞击热液铁镁拜来石、绿脱石、皂石与橄榄石-碳酸盐接触带阶地、莫高窟佛龛外拱背下券腰鎏金双凤宝相莲团花与飞天琵琶捍拨上缘垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、及发射台导流槽尾喷集气室底板声学洪流集管斜撑拉杆与第五激波胞五阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在伊希地平原南缘与利比亚山探测到的诺亚纪—赫斯珀里亚纪撞击热液铁镁拜来石、绿脱石、皂石与橄榄石-碳酸盐接触带阶地 `Isidis Planitia & Libya Montes Impact-Hydrothermal Fe/Mg-Beidellite, Nontronite, Saponite & Olivine-Carbonate Contact Terraces`、莫高窟盛唐第 159/217 窟佛龛外拱背下券腰鎏金双凤宝相莲团花与飞天琵琶捍拨上缘垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、以及发射台导流槽尾喷集气室底板声学洪流集管斜撑拉杆 `Pad_ExhaustPlenumFloorDelugeCrossBrace`、整流罩鼻锥中拱段遥测线槽卡箍 `Rocket_FairingMidOgiveRingTelemetryClamp` 与第五激波胞五阶普朗特-迈耶剪切辉光 `cell5QuintPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.150` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛外拱背下券腰两侧新增八枚鎏金双凤宝相莲团花高浮雕（`ArchivoltExtradosLowerHaunchPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛外拱背下券腰增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨上缘垂穗增绘鎏金迦陵频伽嵌红珊瑚花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入伊希地平原与利比亚山诺亚纪—赫斯珀里亚纪撞击热液铁镁拜来石、绿脱石、皂石与橄榄石-碳酸盐接触带阶地（`isidis_libya_beidellite_nontronite_saponite_carbonate_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`185,317 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,095,013 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对伊希地平原/利比亚山撞击热液层引入暖橄榄青绿拜来石-绿脱石-碳酸盐色带（`isidisLibyaBeidelliteNontroniteSaponiteCarbonateTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底板四座声学洪流集管斜撑拉杆（`Pad_ExhaustPlenumFloorDelugeCrossBrace_0..3`）与箭体整流罩鼻锥中拱段四向遥测线槽整流卡箍（`Rocket_FairingMidOgiveRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,686,616 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`889,438 B`）；在 `flameMaterial` 中引入第五激波胞五阶普朗特-迈耶剪切辉光项（`cell5QuintPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百七十三阶段验收：夜间持续进化 · 克律塞平原与奥克西亚沼泽诺亚纪—赫斯珀里亚纪富铁镁蛭石-蒙脱石黏土、蛋白石质二氧化硅与河口三角洲漫滩阶地、莫高窟佛龛外拱背拱脚鎏金双凤宝相莲团花与飞天琵琶捍拨下缘垂穗鎏金迦陵频伽嵌和田翠玉花钿扣、及发射台导流槽尾喷集气室出口壁声学洪流集管拉杆撑柱与第六激波胞五阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在克律塞平原东缘奥克西亚沼泽探测到的诺亚纪—赫斯珀里亚纪富铁镁蛭石-蒙脱石黏土、蛋白石质二氧化硅与河口三角洲漫滩阶地 `Chryse Planitia & Oxia Palus Fe/Mg-Rich Vermiculite-Smectite Clay, Opaline Silica & Fluvio-Deltaic Overbank Terraces`、莫高窟盛唐第 159/217 窟佛龛外拱背拱脚鎏金双凤宝相莲团花与飞天琵琶捍拨下缘垂穗鎏金迦陵频伽嵌和田翠玉花钿扣、以及发射台导流槽尾喷集气室出口壁声学洪流集管拉杆撑柱 `Pad_ExhaustPlenumExitDelugeTieStrut`、整流罩鼻锥前拱段遥测线槽卡箍 `Rocket_FairingFwdOgiveRingTelemetryClamp` 与第六激波胞五阶普朗特-迈耶剪切辉光 `cell6QuintPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.151` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛外拱背拱脚两侧新增八枚鎏金双凤宝相莲团花高浮雕（`ArchivoltExtradosImpostPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛外拱背拱脚增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨下缘垂穗增绘鎏金迦陵频伽嵌和田翠玉花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入克律塞平原与奥克西亚沼泽诺亚纪—赫斯珀里亚纪富铁镁蛭石-蒙脱石黏土、蛋白石质二氧化硅与河口三角洲漫滩阶地（`oxia_palus_vermiculite_smectite_opaline_delta_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`185,604 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,361 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对奥克西亚沼泽三角洲层引入暖黄褐蛭石-蒙脱石-蛋白石色带（`oxiaPalusVermiculiteSmectiteOpalineDeltaTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室出口壁四座声学洪流集管拉杆撑柱（`Pad_ExhaustPlenumExitDelugeTieStrut_0..3`）与箭体整流罩鼻锥前拱段四向遥测线槽整流卡箍（`Rocket_FairingFwdOgiveRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,696,936 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`889,377 B`）；在 `flameMaterial` 中引入第六激波胞五阶普朗特-迈耶剪切辉光项（`cell6QuintPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百七十四阶段验收：夜间持续进化 · 西壬高地与维尔纳撞击坑诺亚纪—赫斯珀里亚纪涌泉钙华-文石碳酸盐、蛋白石泉华与蒙脱石丘阶地、莫高窟佛龛外拱背基座肋鎏金双凤宝相莲团花与飞天琵琶山口垂穗鎏金迦陵频伽嵌绿松石花钿扣、及发射台导流槽尾喷集气室出口壁声学洪流集管斜撑拉杆与第七激波胞五阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在西壬高地维尔纳撞击坑探测到的诺亚纪—赫斯珀里亚纪涌泉钙华-文石碳酸盐、蛋白石泉华与蒙脱石丘阶地 `Terra Sirenum & Vernal Crater Spring-Fed Travertine-Aragonite Carbonate, Opaline Sinter & Smectite Mounds`、莫高窟盛唐第 159/217 窟佛龛外拱背基座肋鎏金双凤宝相莲团花与飞天琵琶山口垂穗鎏金迦陵频伽嵌绿松石花钿扣、以及发射台导流槽尾喷集气室出口壁声学洪流集管斜撑拉杆 `Pad_ExhaustPlenumExitDelugeCrossBrace`、整流罩鼻锥顶环段遥测线槽卡箍 `Rocket_FairingNoseTipRingTelemetryClamp` 与第七激波胞五阶普朗特-迈耶剪切辉光 `cell7QuintPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.152` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛外拱背基座肋两侧新增八枚鎏金双凤宝相莲团花高浮雕（`ArchivoltExtradosPlinthPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛外拱背基座肋增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶山口垂穗增绘鎏金迦陵频伽嵌绿松石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入西壬高地与维尔纳撞击坑诺亚纪—赫斯珀里亚纪涌泉钙华-文石碳酸盐、蛋白石泉华与蒙脱石丘阶地（`sirenum_vernal_spring_travertine_aragonite_sinter_smectite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`185,676 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,466 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对维尔纳撞击坑涌泉钙华层引入暖象牙钙华白碳酸盐-蛋白石-蒙脱石色带（`sirenumVernalSpringTravertineAragoniteSinterSmectiteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室出口壁四座声学洪流集管斜撑拉杆（`Pad_ExhaustPlenumExitDelugeCrossBrace_0..3`）与箭体整流罩鼻锥顶环段四向遥测线槽整流卡箍（`Rocket_FairingNoseTipRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,707,260 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`889,250 B`）；在 `flameMaterial` 中引入第七激波胞五阶普朗特-迈耶剪切辉光项（`cell7QuintPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百七十五阶段验收：夜间持续进化 · 大塞提斯高原与尼利破火山口诺亚纪—赫斯珀里亚纪热液蛋白石泉华锥、氟浅闪石角闪石与演化英安质-粗面玄武岩阶地、莫高窟佛龛拱肩上隅鎏金双凤宝相莲团花与飞天琵琶轸槽根部垂穗鎏金迦陵频伽嵌青金石花钿扣、及发射台导流槽尾喷集气室折流壁声学洪流集管拉杆撑柱与第八激波胞五阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在大塞提斯高原尼利破火山口探测到的诺亚纪—赫斯珀里亚纪热液蛋白石泉华锥、氟浅闪石角闪石与演化英安质-粗面玄武岩阶地 `Syrtis Major & Nili Patera Caldera Hydrothermal Opaline Silica Sinter Cones, Fluoro-Edenite Amphibole & Dacitic-Trachybasalt Terraces`、莫高窟盛唐第 159/217 窟佛龛拱肩上隅鎏金双凤宝相莲团花与飞天琵琶轸槽根部垂穗鎏金迦陵频伽嵌青金石花钿扣、以及发射台导流槽尾喷集气室折流壁声学洪流集管拉杆撑柱 `Pad_ExhaustPlenumBaffleDelugeTieStrut`、一级后裙环段遥测线槽卡箍 `Rocket_Stage1AftSkirtRingTelemetryClamp` 与第八激波胞五阶普朗特-迈耶剪切辉光 `cell8QuintPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.153` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛拱肩上隅两侧新增八枚鎏金双凤宝相莲团花高浮雕（`SpandrelUpperCornerPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛拱肩上隅增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶轸槽根部垂穗增绘鎏金迦陵频伽嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入大塞提斯高原与尼利破火山口诺亚纪—赫斯珀里亚纪热液蛋白石泉华锥、氟浅闪石角闪石与演化英安质-粗面玄武岩阶地（`syrtis_nili_patera_opaline_sinter_dacite_amphibole_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`185,881 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,495 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对尼利破火山口热液蛋白石泉华-英安岩层引入暖硅华灰白英安岩-蛋白石色带（`syrtisNiliPateraOpalineSinterDaciteAmphiboleTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室折流壁四座声学洪流集管拉杆撑柱（`Pad_ExhaustPlenumBaffleDelugeTieStrut_0..3`）与箭体一级后裙环段四向遥测线槽整流卡箍（`Rocket_Stage1AftSkirtRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,717,584 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`889,312 B`）；在 `flameMaterial` 中引入第八激波胞五阶普朗特-迈耶剪切辉光项（`cell8QuintPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百七十六阶段验收：夜间持续进化 · 乌托邦平原与赫淮斯托斯槽沟赫斯珀里亚纪—亚马逊纪冰缘扇贝状升华热喀斯特洼地、火山泥流舌与蒙脱石-碳酸盐阶地、莫高窟佛龛拱肩中隅鎏金双凤宝相莲团花与飞天琵琶轸槽凤首顶垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、及发射台导流槽尾喷集气室折流壁声学洪流集管交叉斜撑与尾焰末梢五阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/SHARAD/CRISM 及天问一号祝融号在乌托邦平原东南缘与赫淮斯托斯槽沟探测到的赫斯珀里亚纪—亚马逊纪冰缘扇贝状升华热喀斯特洼地、火山泥流舌与蒙脱石-碳酸盐阶地 `Utopia Planitia & Hephaestus Fossae Periglacial Scalloped Sublimation-Thermokarst Depressions, Lahar-Mudflow Lobes & Smectite-Carbonate Terraces`、莫高窟盛唐第 159/217 窟佛龛拱肩中隅鎏金双凤宝相莲团花与飞天琵琶轸槽凤首顶垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、以及发射台导流槽尾喷集气室折流壁声学洪流集管交叉斜撑 `Pad_ExhaustPlenumBaffleDelugeCrossBrace`、一级中筒段遥测线槽卡箍 `Rocket_Stage1MidBarrelRingTelemetryClamp` 与尾焰末梢五阶普朗特-迈耶剪切辉光 `plumeTailQuintPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.154` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛拱肩中隅两侧新增八枚鎏金双凤宝相莲团花高浮雕（`SpandrelMidCornerPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛拱肩中隅增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶轸槽凤首顶垂穗增绘鎏金迦陵频伽嵌红珊瑚花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入乌托邦平原与赫淮斯托斯槽沟赫斯珀里亚纪—亚马逊纪冰缘扇贝状升华热喀斯特洼地、火山泥流舌与蒙脱石-碳酸盐阶地（`utopia_hephaestus_scalloped_thermokarst_lahar_smectite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`185,953 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,512 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对乌托邦平原/赫淮斯托斯槽沟冰缘热喀斯特与泥流层引入灰青绿冻土泥流-蒙脱石色带（`utopiaHephaestusScallopedThermokarstLaharSmectiteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室折流壁四座声学洪流集管交叉斜撑（`Pad_ExhaustPlenumBaffleDelugeCrossBrace_0..3`）与箭体一级中筒段四向遥测线槽整流卡箍（`Rocket_Stage1MidBarrelRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,727,932 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`889,303 B`）；在 `flameMaterial` 中引入尾焰末梢五阶普朗特-迈耶剪切辉光项（`plumeTailQuintPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百七十七阶段验收：夜间持续进化 · 埃律西昂平原与阿萨巴斯卡谷赫斯珀里亚纪—亚马逊纪溢流玄武岩板状流筏脊、水汽岩浆无根凝灰岩锥与橙玄玻璃-蒙脱石阶地、莫高窟佛龛拱肩下隅鎏金双凤宝相莲团花与飞天琵琶缚弦左翼垂穗鎏金迦陵频伽嵌和田翠玉花钿扣、及发射台导流槽尾喷集气室喉道壁声学洪流集管拉杆撑柱与第一激波胞六阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在埃律西昂平原东南阿萨巴斯卡谷探测到的赫斯珀里亚纪—亚马逊纪溢流玄武岩板状流筏脊、水汽岩浆无根凝灰岩锥与橙玄玻璃-蒙脱石阶地 `Elysium Planitia & Athabasca Valles Flood-Basalt Rafted Platy Ridges, Hydrovolcanic Rootless Tuff Cones & Palagonite-Smectite Terraces`、莫高窟盛唐第 159/217 窟佛龛拱肩下隅鎏金双凤宝相莲团花与飞天琵琶缚弦左翼垂穗鎏金迦陵频伽嵌和田翠玉花钿扣、以及发射台导流槽尾喷集气室喉道壁声学洪流集管拉杆撑柱 `Pad_ExhaustPlenumThroatDelugeTieStrut`、一级前筒段遥测线槽卡箍 `Rocket_Stage1FwdBarrelRingTelemetryClamp` 与第一激波胞六阶普朗特-迈耶剪切辉光 `cell1SextPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.155` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛拱肩下隅两侧新增八枚鎏金双凤宝相莲团花高浮雕（`SpandrelLowerCornerPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛拱肩下隅增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶缚弦左翼垂穗增绘鎏金迦陵频伽嵌和田翠玉花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入埃律西昂平原与阿萨巴斯卡谷赫斯珀里亚纪—亚马逊纪溢流玄武岩板状流筏脊、水汽岩浆无根凝灰岩锥与橙玄玻璃-蒙脱石阶地（`athabasca_platy_raft_rootless_palagonite_smectite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`186,172 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,814 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对阿萨巴斯卡谷板状熔岩与水汽火山层引入暖橙赭橙玄玻璃-蒙脱石色带（`athabascaPlatyRaftRootlessPalagoniteSmectiteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室喉道壁四座声学洪流集管拉杆撑柱（`Pad_ExhaustPlenumThroatDelugeTieStrut_0..3`）与箭体一级前筒段四向遥测线槽整流卡箍（`Rocket_Stage1FwdBarrelRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,738,264 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`889,390 B`）；在 `flameMaterial` 中引入第一激波胞六阶普朗特-迈耶剪切辉光项（`cell1SextPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百七十八阶段验收：夜间持续进化 · 诺亚高地、希腊盆地东缘与道谷—尼日尔谷诺亚纪—赫斯珀里亚纪冰缘线状谷底堆积、多边形蒙脱石黏土盖层与黄钾铁矾-硫酸盐阶地、莫高窟佛龛拱肩基座隅鎏金双凤宝相莲团花与飞天琵琶缚弦右翼垂穗鎏金迦陵频伽嵌绿松石花钿扣、及发射台导流槽尾喷集气室喉道壁声学洪流集管交叉斜撑与第二激波胞六阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在诺亚高地、希腊盆地东缘及道谷—尼日尔谷探测到的诺亚纪—赫斯珀里亚纪冰缘线状谷底堆积、多边形蒙脱石黏土盖层与黄钾铁矾-硫酸盐阶地 `Noachis Terra, Hellas Rim & Dao-Niger Valles Periglacial Lineated Valley Fill, Polygonal Smectite-Clay Caprock & Jarosite-Sulfate Terraces`、莫高窟盛唐第 159/217 窟佛龛拱肩基座隅鎏金双凤宝相莲团花与飞天琵琶缚弦右翼垂穗鎏金迦陵频伽嵌绿松石花钿扣、以及发射台导流槽尾喷集气室喉道壁声学洪流集管交叉斜撑 `Pad_ExhaustPlenumThroatDelugeCrossBrace`、一级箱间环段遥测线槽卡箍 `Rocket_Stage1IntertankRingTelemetryClamp` 与第二激波胞六阶普朗特-迈耶剪切辉光 `cell2SextPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.156` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛拱肩基座隅两侧新增八枚鎏金双凤宝相莲团花高浮雕（`SpandrelPlinthCornerPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛拱肩基座隅增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶缚弦右翼垂穗增绘鎏金迦陵频伽嵌绿松石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入诺亚高地、希腊盆地东缘与道谷—尼日尔谷诺亚纪—赫斯珀里亚纪冰缘线状谷底堆积、多边形蒙脱石黏土盖层与黄钾铁矾-硫酸盐阶地（`dao_niger_periglacial_lvf_smectite_sulfate_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`186,252 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,501 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对道谷—尼日尔谷冰缘与黏土-硫酸盐层引入暖米灰绿蒙脱石-硫酸盐色带（`daoNigerPeriglacialLvfSmectiteSulfateTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室喉道壁四座声学洪流集管交叉斜撑（`Pad_ExhaustPlenumThroatDelugeCrossBrace_0..3`）与箭体一级箱间环段四向遥测线槽整流卡箍（`Rocket_Stage1IntertankRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,748,604 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`889,336 B`）；在 `flameMaterial` 中引入第二激波胞六阶普朗特-迈耶剪切辉光项（`cell2SextPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百七十九阶段验收：夜间持续进化 · 西壬高地、亚特兰蒂斯混沌与西摩伊斯—卡拉利斯古湖盆群诺亚纪—赫斯珀里亚纪深盆皂石-绿脱石-滑石黏土与上部石盐-盐滩蒸发岩阶地、莫高窟佛龛立颊外侧上隅鎏金双凤宝相莲团花与飞天琵琶第一相垂穗鎏金迦陵频伽嵌青金石花钿扣、及发射台导流槽尾喷集气室护裙壁声学洪流集管拉杆撑柱与第三激波胞六阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在西壬高地、亚特兰蒂斯混沌与西摩伊斯—卡拉利斯古湖盆群探测到的诺亚纪—赫斯珀里亚纪深盆皂石-绿脱石-滑石黏土与上部石盐-盐滩蒸发岩阶地 `Terra Sirenum, Atlantis Chaos & Simois-Caralis Basins Deep-Basin Saponite-Nontronite-Talc Clay & Upper Chloride-Playa Evaporite Terraces`、莫高窟盛唐第 159/217 窟佛龛立颊外侧上隅鎏金双凤宝相莲团花与飞天琵琶第一相垂穗鎏金迦陵频伽嵌青金石花钿扣、以及发射台导流槽尾喷集气室护裙壁声学洪流集管拉杆撑柱 `Pad_ExhaustPlenumApronDelugeTieStrut`、一级前裙环段遥测线槽卡箍 `Rocket_Stage1FwdSkirtRingTelemetryClamp` 与第三激波胞六阶普朗特-迈耶剪切辉光 `cell3SextPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.157` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛立颊外侧上隅两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheJambOuterFlankUpperPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛立颊外侧上隅增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶第一相垂穗增绘鎏金迦陵频伽嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入西壬高地、亚特兰蒂斯混沌与西摩伊斯—卡拉利斯古湖盆群诺亚纪—赫斯珀里亚纪深盆皂石-绿脱石-滑石黏土与上部石盐-盐滩蒸发岩阶地（`atlantis_simois_caralis_saponite_talc_chloride_playa_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`186,347 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,366 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对亚特兰蒂斯混沌与西摩伊斯古湖盆皂石-盐滩层引入青绿白皂石-石盐盐滩色带（`atlantisSimoisCaralisSaponiteTalcChloridePlayaTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室护裙壁四座声学洪流集管拉杆撑柱（`Pad_ExhaustPlenumApronDelugeTieStrut_0..3`）与箭体一级前裙环段四向遥测线槽整流卡箍（`Rocket_Stage1FwdSkirtRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,758,916 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`889,520 B`）；在 `flameMaterial` 中引入第三激波胞六阶普朗特-迈耶剪切辉光项（`cell3SextPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百八十阶段验收：夜间持续进化 · 阿拉伯高地、子午线平原与维尔纳茨基—宫本撞击坑盆地诺亚纪—赫斯珀里亚纪硫酸盐-蒙脱石蚀刻雅丹台地、赤铁矿球粒平原与多水硫酸盐阶地、莫高窟佛龛外侧壁柱中隅鎏金双凤宝相莲团花与飞天琵琶第四相垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、及发射台导流槽尾喷集气室护裙壁声学洪流集管交叉斜撑与第四激波胞六阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 及机遇号在阿拉伯高地、子午线平原及维尔纳茨基—宫本撞击坑盆地探测到的诺亚纪—赫斯珀里亚纪硫酸盐-蒙脱石蚀刻雅丹台地、赤铁矿球粒平原与多水硫酸盐阶地 `Arabia Terra, Meridiani Planum & Vernadsky-Miyamoto Basins Sulfate-Smectite Etched Yardang Mesas, Hematite Spherule Plains & Polyhydrated Sulfate Terraces`、莫高窟盛唐第 159/217 窟佛龛外侧壁柱中隅鎏金双凤宝相莲团花与飞天琵琶第四相垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、以及发射台导流槽尾喷集气室护裙壁声学洪流集管交叉斜撑 `Pad_ExhaustPlenumApronDelugeCrossBrace`、二级后裙环段遥测线槽卡箍 `Rocket_Stage2AftSkirtRingTelemetryClamp` 与第四激波胞六阶普朗特-迈耶剪切辉光 `cell4SextPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.158` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛外侧壁柱中隅两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheJambOuterFlankMidPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛外侧壁柱中隅增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶第四相垂穗增绘鎏金迦陵频伽嵌红珊瑚花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入阿拉伯高地、子午线平原与维尔纳茨基—宫本撞击坑盆地诺亚纪—赫斯珀里亚纪硫酸盐-蒙脱石蚀刻雅丹台地、赤铁矿球粒平原与多水硫酸盐阶地（`meridiani_miyamoto_yardang_hematite_spherule_sulfate_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`186,405 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,750 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对子午线平原与宫本盆地赤铁矿-硫酸盐层引入暖铁灰褐赤铁矿-硫酸盐色带（`meridianiMiyamotoYardangHematiteSpheruleSulfateTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室护裙壁四座声学洪流集管交叉斜撑（`Pad_ExhaustPlenumApronDelugeCrossBrace_0..3`）与箭体二级后裙环段四向遥测线槽整流卡箍（`Rocket_Stage2AftSkirtRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,769,248 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`889,735 B`）；在 `flameMaterial` 中引入第四激波胞六阶普朗特-迈耶剪切辉光项（`cell4SextPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百八十一阶段验收：夜间持续进化 · 盖尔撞击坑、埃奥利斯山（夏普山）与格伦托里登—卡罗琳·舒梅克层段诺亚纪—赫斯珀里亚纪湖相泥岩-粉砂岩、成岩菱铁矿-铁白云石碳酸盐与铁质蒙脱石-硫酸盐过渡阶地、莫高窟佛龛外侧壁柱下隅鎏金双凤宝相莲团花与飞天琵琶第一品垂穗鎏金迦陵频伽嵌和田翠玉花钿扣、及发射台导流槽尾喷集气室淬水歧管拉杆撑柱与第五激波胞六阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 及好奇号在盖尔撞击坑、埃奥利斯山与格伦托里登探测到的诺亚纪—赫斯珀里亚纪湖相泥岩-粉砂岩、成岩菱铁矿-铁白云石碳酸盐与铁质蒙脱石-硫酸盐过渡阶地 `Gale Crater, Aeolis Mons & Glen Torridon Lacustrine Mudstone-Siltstone, Diagenetic Siderite-Ankerite Carbonate & Ferric Smectite-Sulfate Transition Benches`、莫高窟盛唐第 159/217 窟佛龛外侧壁柱下隅鎏金双凤宝相莲团花与飞天琵琶第一品垂穗鎏金迦陵频伽嵌和田翠玉花钿扣、以及发射台导流槽尾喷集气室淬水歧管拉杆撑柱 `Pad_ExhaustPlenumQuenchManifoldTieStrut`、二级中筒段遥测线槽卡箍 `Rocket_Stage2MidBarrelRingTelemetryClamp` 与第五激波胞六阶普朗特-迈耶剪切辉光 `cell5SextPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.159` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛外侧壁柱下隅两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheJambOuterFlankLowerPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛外侧壁柱下隅增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶第一品垂穗增绘鎏金迦陵频伽嵌和田翠玉花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入盖尔撞击坑、埃奥利斯山与格伦托里登诺亚纪—赫斯珀里亚纪湖相泥岩-粉砂岩、成岩菱铁矿-铁白云石碳酸盐与铁质蒙脱石-硫酸盐过渡阶地（`gale_aeolis_siderite_ankerite_smectite_sulfate_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`186,566 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,379 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对盖尔撞击坑与夏普山菱铁矿-蒙脱石-硫酸盐层引入暖黄褐菱铁矿-蒙脱石色带（`galeAeolisSideriteAnkeriteSmectiteSulfateTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室淬水歧管四座声学洪流拉杆撑柱（`Pad_ExhaustPlenumQuenchManifoldTieStrut_0..3`）与箭体二级中筒段四向遥测线槽整流卡箍（`Rocket_Stage2MidBarrelRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,779,592 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`889,812 B`）；在 `flameMaterial` 中引入第五激波胞六阶普朗特-迈耶剪切辉光项（`cell5SextPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百八十二阶段验收：夜间持续进化 · 杰泽罗撞击坑、内雷特瓦谷与边缘碳酸盐-水合硅石单元诺亚纪—赫斯珀里亚纪河湖相巨砾砾岩三角洲前积层、古海岸线菱镁矿-水菱镁矿碳酸盐与橄榄石-皂石阶地、莫高窟佛龛外侧壁柱基座隅鎏金双凤宝相莲团花与飞天琵琶第二品垂穗鎏金迦陵频伽嵌绿松石花钿扣、及发射台导流槽尾喷集气室淬水歧管交叉斜撑与第六激波胞六阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 及毅力号在杰泽罗撞击坑、内雷特瓦谷与边缘碳酸盐单元探测到的诺亚纪—赫斯珀里亚纪河湖相巨砾砾岩三角洲前积层、古海岸线菱镁矿-水菱镁矿碳酸盐与橄榄石-皂石阶地 `Jezero Crater, Neretva Vallis & Margin Carbonate Unit Fluvio-Lacustrine Boulder-Conglomerate Delta Foresets, Shoreline Magnesite-Hydromagnesite Carbonate & Olivine-Saponite Benches`、莫高窟盛唐第 159/217 窟佛龛外侧壁柱基座隅鎏金双凤宝相莲团花与飞天琵琶第二品垂穗鎏金迦陵频伽嵌绿松石花钿扣、以及发射台导流槽尾喷集气室淬水歧管交叉斜撑 `Pad_ExhaustPlenumQuenchManifoldCrossBrace`、二级前筒段遥测线槽卡箍 `Rocket_Stage2FwdBarrelRingTelemetryClamp` 与第六激波胞六阶普朗特-迈耶剪切辉光 `cell6SextPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.160` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛外侧壁柱基座隅两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheJambOuterFlankPlinthPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛外侧壁柱基座隅增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶第二品垂穗增绘鎏金迦陵频伽嵌绿松石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入杰泽罗撞击坑、内雷特瓦谷与边缘碳酸盐单元诺亚纪—赫斯珀里亚纪河湖相巨砾砾岩三角洲前积层、古海岸线菱镁矿-水菱镁矿碳酸盐与橄榄石-皂石阶地（`jezero_neretva_margin_magnesite_hydromagnesite_olivine_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`186,709 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,390 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对杰泽罗古海岸线碳酸盐与橄榄石层引入浅橄榄灰绿菱镁矿-橄榄石色带（`jezeroNeretvaMarginMagnesiteHydromagnesiteOlivineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室淬水歧管四座声学洪流交叉斜撑（`Pad_ExhaustPlenumQuenchManifoldCrossBrace_0..3`）与箭体二级前筒段四向遥测线槽整流卡箍（`Rocket_Stage2FwdBarrelRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,789,956 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`889,789 B`）；在 `flameMaterial` 中引入第六激波胞六阶普朗特-迈耶剪切辉光项（`cell6SextPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百八十三阶段验收：夜间持续进化 · 古瑟夫撞击坑、哥伦比亚丘群（本垒板）与马阿迪姆谷三角洲诺亚纪—赫斯珀里亚纪水汽岩浆指状蛋白石硅华、铁质硫酸盐-磷质火山碎屑岩与蒙脱石-碳酸盐阶地、莫高窟佛龛内侧壁柱上隅鎏金双凤宝相莲团花与飞天琵琶第三品垂穗鎏金迦陵频伽嵌青金石花钿扣、及发射台导流槽尾喷集气室淬水喷淋集管拉杆撑柱与第七激波胞六阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 及勇气号在古瑟夫撞击坑、哥伦比亚丘群本垒板与马阿迪姆谷三角洲探测到的诺亚纪—赫斯珀里亚纪水汽岩浆指状蛋白石硅华、铁质硫酸盐-磷质火山碎屑岩与蒙脱石-碳酸盐阶地 `Gusev Crater, Columbia Hills Home Plate & Ma'adim Vallis Delta Hydrovolcanic Digitate Opaline Silica Sinter, Ferric Sulfate-Phosphatic Tephra & Smectite-Carbonate Terraces`、莫高窟盛唐第 159/217 窟佛龛内侧壁柱上隅鎏金双凤宝相莲团花与飞天琵琶第三品垂穗鎏金迦陵频伽嵌青金石花钿扣、以及发射台导流槽尾喷集气室淬水喷淋集管拉杆撑柱 `Pad_ExhaustPlenumQuenchSprayTieStrut`、二级前裙环段遥测线槽卡箍 `Rocket_Stage2FwdSkirtRingTelemetryClamp` 与第七激波胞六阶普朗特-迈耶剪切辉光 `cell7SextPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.161` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛内侧壁柱上隅两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheJambInnerFlankUpperPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛内侧壁柱上隅增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶第三品垂穗增绘鎏金迦陵频伽嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入古瑟夫撞击坑、哥伦比亚丘群（本垒板）与马阿迪姆谷三角洲诺亚纪—赫斯珀里亚纪水汽岩浆指状蛋白石硅华、铁质硫酸盐-磷质火山碎屑岩与蒙脱石-碳酸盐阶地（`gusev_columbia_home_plate_digitate_silica_sulfate_tephra_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`186,761 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,465 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对古瑟夫撞击坑与本垒板指状硅华-硫酸盐层引入暖米黄蛋白石硅华-硫酸盐色带（`gusevColumbiaHomePlateDigitateSilicaSulfateTephraTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室淬水喷淋集管四座声学洪流拉杆撑柱（`Pad_ExhaustPlenumQuenchSprayTieStrut_0..3`）与箭体二级前裙环段四向遥测线槽整流卡箍（`Rocket_Stage2FwdSkirtRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,800,272 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`889,937 B`）；在 `flameMaterial` 中引入第七激波胞六阶普朗特-迈耶剪切辉光项（`cell7SextPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百八十四阶段验收：夜间持续进化 · 霍尔登撞击坑、乌兹博伊谷与拉冬古湖盆群诺亚纪—赫斯珀里亚纪灾变洪水巨角砾岩-冲积扇阶地、浅色层状富铁镁蒙脱石与铁质硫酸盐台地、莫高窟佛龛内侧壁柱中隅鎏金双凤宝相莲团花与飞天琵琶第四品垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、及发射台导流槽尾喷集气室淬水喷淋集管横撑与第八激波胞六阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在霍尔登撞击坑、乌兹博伊谷与拉冬古湖盆群探测到的诺亚纪—赫斯珀里亚纪灾变洪水巨角砾岩-冲积扇阶地、浅色层状富铁镁蒙脱石与铁质硫酸盐台地 `Holden Crater, Uzboi Vallis & Ladon Valles Catastrophic Flood Megabreccia-Alluvial Fan Terraces, Light-Toned Layered Phyllosilicate-Smectite & Ferric-Sulfate Benches`、莫高窟盛唐第 159/217 窟佛龛内侧壁柱中隅鎏金双凤宝相莲团花与飞天琵琶第四品垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、以及发射台导流槽尾喷集气室淬水喷淋集管交叉斜撑 `Pad_ExhaustPlenumQuenchSprayCrossBrace`、整流罩尾锥收缩环段遥测线槽卡箍 `Rocket_FairingBoatTailRingTelemetryClamp` 与第八激波胞六阶普朗特-迈耶剪切辉光 `cell8SextPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.162` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛内侧壁柱中隅两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheJambInnerFlankMidPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛内侧壁柱中隅增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶第四品垂穗增绘鎏金迦陵频伽嵌红珊瑚花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入霍尔登撞击坑、乌兹博伊谷与拉冬古湖盆群诺亚纪—赫斯珀里亚纪灾变洪水巨角砾岩-冲积扇阶地、浅色层状富铁镁蒙脱石与铁质硫酸盐台地（`holden_uzboi_ladon_catastrophic_flood_megabreccia_smectite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`186,728 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,431 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对霍尔登撞击坑—乌兹博伊谷巨角砾岩与蒙脱石层引入暖浅褐灰巨角砾岩-蒙脱石色带（`holdenUzboiLadonCatastrophicFloodMegabrecciaSmectiteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室淬水喷淋集管四座声学洪流交叉斜撑（`Pad_ExhaustPlenumQuenchSprayCrossBrace_0..3`）与箭体整流罩尾锥收缩环段四向遥测线槽整流卡箍（`Rocket_FairingBoatTailRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,810,608 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`889,725 B`）；在 `flameMaterial` 中引入第八激波胞六阶普朗特-迈耶剪切辉光项（`cell8SextPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百八十五阶段验收：夜间持续进化 · 哥伦布撞击坑、西壬高地与克罗斯撞击坑环诺亚纪—赫斯珀里亚纪酸性地下水湖明矾石-高岭石-石膏古湖岸线环、黄钾铁矾-蒙脱石与蛋白石硅华阶地、莫高窟佛龛内侧壁柱下隅鎏金双凤宝相莲团花与飞天琵琶上凤眼垂穗鎏金迦陵频伽嵌和田翠玉花钿扣、及发射台导流槽尾喷集气室扩散集管拉杆撑柱与尾焰末梢六阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在哥伦布撞击坑、西壬高地与克罗斯撞击坑环探测到的诺亚纪—赫斯珀里亚纪酸性地下水湖明矾石-高岭石-石膏古湖岸线环、黄钾铁矾-蒙脱石与蛋白石硅华阶地 `Columbus Crater, Terra Sirenum & Cross Crater Rim Acidic Groundwater-Lake Alunite-Kaolinite-Gypsum Strandline Rings, Jarosite-Smectite & Opaline-Silica Terraces`、莫高窟盛唐第 159/217 窟佛龛内侧壁柱下隅鎏金双凤宝相莲团花与飞天琵琶上凤眼垂穗鎏金迦陵频伽嵌和田翠玉花钿扣、以及发射台导流槽尾喷集气室扩散集管拉杆撑柱 `Pad_ExhaustPlenumDiffuserHeaderTieStrut`、整流罩柱形筒段遥测线槽卡箍 `Rocket_FairingCylBarrelRingTelemetryClamp` 与尾焰末梢六阶普朗特-迈耶剪切辉光 `plumeTailSextPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.163` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛内侧壁柱下隅两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheJambInnerFlankLowerPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛内侧壁柱下隅增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶上凤眼垂穗增绘鎏金迦陵频伽嵌和田翠玉花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入哥伦布撞击坑、西壬高地与克罗斯撞击坑环诺亚纪—赫斯珀里亚纪酸性地下水湖明矾石-高岭石-石膏古湖岸线环、黄钾铁矾-蒙脱石与蛋白石硅华阶地（`columbus_sirenum_alunite_kaolinite_gypsum_strandline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`186,864 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,687 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对哥伦布撞击坑明矾石-高岭石-石膏古湖岸线层引入浅象牙米白明矾石-高岭石-石膏色带（`columbusSirenumAluniteKaoliniteGypsumStrandlineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室扩散集管四座声学洪流拉杆撑柱（`Pad_ExhaustPlenumDiffuserHeaderTieStrut_0..3`）与箭体整流罩柱形筒段四向遥测线槽整流卡箍（`Rocket_FairingCylBarrelRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,820,968 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`889,859 B`）；在 `flameMaterial` 中引入尾焰末梢六阶普朗特-迈耶剪切辉光项（`plumeTailSextPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百八十六阶段验收：夜间持续进化 · 尼利槽沟地堑、大塞提斯高原与哈格雷夫斯撞击坑诺亚纪—赫斯珀里亚纪超基性热液蛇纹石-滑石-菱镁矿裂隙阶地与富橄榄石撞击喷出物台地、莫高窟佛龛内侧壁柱基座隅鎏金双凤宝相莲团花与飞天琵琶下凤眼垂穗鎏金迦陵频伽嵌绿松石花钿扣、及发射台导流槽尾喷集气室扩散集管横撑与第一激波胞七阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在尼利槽沟地堑、大塞提斯高原与哈格雷夫斯撞击坑探测到的诺亚纪—赫斯珀里亚纪超基性热液蛇纹石-滑石-菱镁矿裂隙阶地与富橄榄石撞击喷出物台地 `Nili Fossae Graben, Syrtis Major & Hargraves Crater Ultramafic Hydrothermal Serpentinite-Talc-Magnesite Fracture Terraces & Olivine-Rich Impact Ejecta Benches`、莫高窟盛唐第 159/217 窟佛龛内侧壁柱基座隅鎏金双凤宝相莲团花与飞天琵琶下凤眼垂穗鎏金迦陵频伽嵌绿松石花钿扣、以及发射台导流槽尾喷集气室扩散集管交叉斜撑 `Pad_ExhaustPlenumDiffuserHeaderCrossBrace`、整流罩拱形锥底环段遥测线槽卡箍 `Rocket_FairingOgiveBaseRingTelemetryClamp` 与第一激波胞七阶普朗特-迈耶剪切辉光 `cell1SeptPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.164` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛内侧壁柱基座隅两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheJambInnerFlankPlinthPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛内侧壁柱基座隅增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶下凤眼垂穗增绘鎏金迦陵频伽嵌绿松石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入尼利槽沟地堑、大塞提斯高原与哈格雷夫斯撞击坑诺亚纪—赫斯珀里亚纪超基性热液蛇纹石-滑石-菱镁矿裂隙阶地与富橄榄石撞击喷出物台地（`nili_syrtis_hargraves_serpentinite_talc_magnesite_olivine_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`187,004 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,213 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对尼利槽沟与哈格雷夫斯蛇纹石-滑石-菱镁矿-橄榄石层引入灰青绿蛇纹石-滑石-橄榄石色带（`niliSyrtisHargravesSerpentiniteTalcMagnesiteOlivineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室扩散集管四座声学洪流交叉斜撑（`Pad_ExhaustPlenumDiffuserHeaderCrossBrace_0..3`）与箭体整流罩拱形锥底环段四向遥测线槽整流卡箍（`Rocket_FairingOgiveBaseRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,831,336 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`889,906 B`）；在 `flameMaterial` 中引入第一激波胞七阶普朗特-迈耶剪切辉光项（`cell1SeptPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百八十七阶段验收：夜间持续进化 · 莫尔斯谷高原、小山撞击坑与克律塞平原边缘诺亚纪—赫斯珀里亚纪古土壤铝质层状硅酸盐（高岭石-蒙脱石-贝得石）上覆铁镁蒙脱石（绿脱石-皂石）与水铁矿-黄钾铁矾层序阶地、莫高窟佛龛拱券外弧上隅鎏金双凤宝相莲团花与飞天琵琶上半月音窗垂穗鎏金迦陵频伽嵌青金石花钿扣、及发射台导流槽尾喷集气室扩散喷淋集管拉杆撑柱与第二激波胞七阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在莫尔斯谷高原、小山撞击坑与克律塞平原边缘探测到的诺亚纪—赫斯珀里亚纪古土壤铝质层状硅酸盐上覆铁镁蒙脱石与水铁矿-黄钾铁矾层序阶地 `Mawrth Vallis Plateau, Oyama Crater & Chryse Planitia Margin Pedogenic Al-Phyllosilicate Over Fe/Mg-Smectite & Ferrihydrite-Jarosite Stratigraphic Benches`、莫高窟盛唐第 159/217 窟佛龛拱券外弧上隅鎏金双凤宝相莲团花与飞天琵琶上半月音窗垂穗鎏金迦陵频伽嵌青金石花钿扣、以及发射台导流槽尾喷集气室扩散喷淋集管拉杆撑柱 `Pad_ExhaustPlenumDiffuserSprayTieStrut`、整流罩尖拱中环段遥测线槽卡箍 `Rocket_FairingOgiveMidRingTelemetryClamp` 与第二激波胞七阶普朗特-迈耶剪切辉光 `cell2SeptPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.165` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛拱券外弧上隅两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchExtradosUpperPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛拱券外弧上隅增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶上半月音窗垂穗增绘鎏金迦陵频伽嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入莫尔斯谷高原、小山撞击坑与克律塞平原边缘诺亚纪—赫斯珀里亚纪古土壤铝质层状硅酸盐（高岭石-蒙脱石-贝得石）上覆铁镁蒙脱石（绿脱石-皂石）与水铁矿-黄钾铁矾层序阶地（`mawrth_oyama_chryse_kaolinite_beidellite_nontronite_jarosite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`187,133 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,706 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对莫尔斯谷与小山撞击坑古土壤高岭石-绿脱石-黄钾铁矾层引入暖黄赭高岭石-绿脱石-黄钾铁矾色带（`mawrthOyamaChryseKaoliniteBeidelliteNontroniteJarositeTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室扩散喷淋集管四座声学洪流拉杆撑柱（`Pad_ExhaustPlenumDiffuserSprayTieStrut_0..3`）与箭体整流罩尖拱中环段四向遥测线槽整流卡箍（`Rocket_FairingOgiveMidRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,841,668 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`890,092 B`）；在 `flameMaterial` 中引入第二激波胞七阶普朗特-迈耶剪切辉光项（`cell2SeptPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百八十八阶段验收：夜间持续进化 · 埃伯斯瓦尔德撞击坑、霍尔登东北缘与乌兹博伊—拉冬—莫拉瓦溢洪道诺亚纪—赫斯珀里亚纪曲流点坝垄脊、前三角洲浊积底积层与鲕绿泥石-伊利石-蒙脱石阶地、莫高窟佛龛拱券外弧中隅鎏金双凤宝相莲团花与飞天琵琶下半月音窗垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、及发射台导流槽尾喷集气室扩散喷淋集管横撑与第三激波胞七阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在埃伯斯瓦尔德撞击坑、霍尔登东北缘与乌兹博伊—拉冬—莫拉瓦溢洪道探测到的诺亚纪—赫斯珀里亚纪曲流点坝垄脊、前三角洲浊积底积层与鲕绿泥石-伊利石-蒙脱石阶地 `Eberswalde Crater, Holden Northeast Rim & Uzboi-Ladon-Morava Spillway Meandering Point-Bar Scroll Ridges, Prodelta Turbidite Bottomsets & Chamosite-Illite-Smectite Clay Terraces`、莫高窟盛唐第 159/217 窟佛龛拱券外弧中隅鎏金双凤宝相莲团花与飞天琵琶下半月音窗垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、以及发射台导流槽尾喷集气室扩散喷淋集管交叉斜撑 `Pad_ExhaustPlenumDiffuserSprayCrossBrace`、整流罩尖拱顶环段遥测线槽卡箍 `Rocket_FairingOgiveApexRingTelemetryClamp` 与第三激波胞七阶普朗特-迈耶剪切辉光 `cell3SeptPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.166` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛拱券外弧中隅两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchExtradosMidPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛拱券外弧中隅增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶下半月音窗垂穗增绘鎏金迦陵频伽嵌红珊瑚花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入埃伯斯瓦尔德撞击坑、霍尔登东北缘与乌兹博伊—拉冬—莫拉瓦溢洪道诺亚纪—赫斯珀里亚纪曲流点坝垄脊、前三角洲浊积底积层与鲕绿泥石-伊利石-蒙脱石阶地（`eberswalde_uzboi_ladon_morava_point_bar_scroll_chamosite_smectite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`187,186 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,533 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对埃伯斯瓦尔德与乌兹博伊曲流点坝鲕绿泥石-蒙脱石层引入灰橄榄绿鲕绿泥石-蒙脱石色带（`eberswaldeUzboiLadonMoravaPointBarScrollChamositeSmectiteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室扩散喷淋集管四座声学洪流交叉斜撑（`Pad_ExhaustPlenumDiffuserSprayCrossBrace_0..3`）与箭体整流罩尖拱顶环段四向遥测线槽整流卡箍（`Rocket_FairingOgiveApexRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,852,032 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`890,214 B`）；在 `flameMaterial` 中引入第三激波胞七阶普朗特-迈耶剪切辉光项（`cell3SeptPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百八十九阶段验收：夜间持续进化 · 特比撞击坑、赫拉斯盆地北缘与鲁尔谷扇诺亚纪—赫斯珀里亚纪水下三角洲斜层理前三角洲泥岩、铁镁蒙脱石（绿脱石-皂石）与蛋白石-高岭石阶地、莫高窟佛龛拱券外弧下隅鎏金双凤宝相莲团花与飞天琵琶缚手绳结垂穗鎏金迦陵频伽嵌和田翠玉花钿扣、及发射台导流槽尾喷集气室出口唇部拉杆撑柱与第四激波胞七阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在特比撞击坑、赫拉斯盆地北缘与鲁尔谷扇探测到的诺亚纪—赫斯珀里亚纪水下三角洲斜层理前三角洲泥岩、铁镁蒙脱石与蛋白石-高岭石阶地 `Terby Crater, Northern Hellas Rim & Reull Vallis Fan Subaqueous Deltaic Clinoform Prodelta Mudstones, Fe/Mg-Smectite & Opaline-Kaolinite Benches`、莫高窟盛唐第 159/217 窟佛龛拱券外弧下隅鎏金双凤宝相莲团花与飞天琵琶缚手绳结垂穗鎏金迦陵频伽嵌和田翠玉花钿扣、以及发射台导流槽尾喷集气室出口唇部拉杆撑柱 `Pad_ExhaustPlenumOutletLipTieStrut`、整流罩鼻锥基部环段遥测线槽卡箍 `Rocket_FairingNoseCapBaseRingTelemetryClamp` 与第四激波胞七阶普朗特-迈耶剪切辉光 `cell4SeptPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.167` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛拱券外弧下隅两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchExtradosLowerPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛拱券外弧下隅增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶缚手绳结垂穗增绘鎏金迦陵频伽嵌和田翠玉花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入特比撞击坑、赫拉斯盆地北缘与鲁尔谷扇诺亚纪—赫斯珀里亚纪水下三角洲斜层理前三角洲泥岩、铁镁蒙脱石（绿脱石-皂石）与蛋白石-高岭石阶地（`terby_hellas_reull_clinoform_prodelta_nontronite_kaolinite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`187,265 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,093,928 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对特比撞击坑与赫拉斯北缘水下三角洲绿脱石-高岭石层引入暖米黄绿脱石-高岭石色带（`terbyHellasReullClinoformProdeltaNontroniteKaoliniteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室出口唇部四座声学洪流拉杆撑柱（`Pad_ExhaustPlenumOutletLipTieStrut_0..3`）与箭体整流罩鼻锥基部环段四向遥测线槽整流卡箍（`Rocket_FairingNoseCapBaseRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,862,364 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`890,405 B`）；在 `flameMaterial` 中引入第四激波胞七阶普朗特-迈耶剪切辉光项（`cell4SeptPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百九十阶段验收：夜间持续进化 · 麦克劳克林撞击坑、阿拉伯高地西北缘与奥克西亚高原诺亚纪—赫斯珀里亚纪地下水补给湖相铁镁层状硅酸盐（皂石-蛇纹石）与菱镁矿-菱铁矿碳酸盐阶地、莫高窟佛龛拱券外弧基座隅鎏金双凤宝相莲团花与飞天琵琶上捍拨边垂穗鎏金迦陵频伽嵌绿松石花钿扣、及发射台导流槽尾喷集气室出口唇部横撑与第五激波胞七阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在麦克劳克林撞击坑、阿拉伯高地西北缘与奥克西亚高原探测到的诺亚纪—赫斯珀里亚纪地下水补给湖相铁镁层状硅酸盐与菱镁矿-菱铁矿碳酸盐阶地 `McLaughlin Crater, Northwest Arabia Terra & Oxia Planum Groundwater-Fed Lacustrine Fe/Mg-Phyllosilicate (Saponite-Serpentine) & Magnesite-Siderite Carbonate Benches`、莫高窟盛唐第 159/217 窟佛龛拱券外弧基座隅鎏金双凤宝相莲团花与飞天琵琶上捍拨边垂穗鎏金迦陵频伽嵌绿松石花钿扣、以及发射台导流槽尾喷集气室出口唇部交叉斜撑 `Pad_ExhaustPlenumOutletLipCrossBrace`、整流罩鼻锥顶环段遥测线槽卡箍 `Rocket_FairingNoseCapApexRingTelemetryClamp` 与第五激波胞七阶普朗特-迈耶剪切辉光 `cell5SeptPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.168` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛拱券外弧基座隅两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchExtradosPlinthPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛拱券外弧基座隅增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶上捍拨边垂穗增绘鎏金迦陵频伽嵌绿松石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入麦克劳克林撞击坑、阿拉伯高地西北缘与奥克西亚高原诺亚纪—赫斯珀里亚纪地下水补给湖相铁镁层状硅酸盐（皂石-蛇纹石）与菱镁矿-菱铁矿碳酸盐阶地（`mclaughlin_arabia_oxia_saponite_serpentine_magnesite_siderite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`187,305 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,620 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对麦克劳克林撞击坑与阿拉伯高地西北缘皂石-蛇纹石-菱镁矿层引入青灰绿皂石-蛇纹石-菱镁矿色带（`mclaughlinArabiaOxiaSaponiteSerpentineMagnesiteSideriteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室出口唇部四座声学洪流交叉斜撑（`Pad_ExhaustPlenumOutletLipCrossBrace_0..3`）与箭体整流罩鼻锥顶环段四向遥测线槽整流卡箍（`Rocket_FairingNoseCapApexRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,872,712 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`890,460 B`）；在 `flameMaterial` 中引入第五激波胞七阶普朗特-迈耶剪切辉光项（`cell5SeptPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百九十一阶段验收：夜间持续进化 · 哥伦布撞击坑、西壬高地与亚特兰蒂斯混沌诺亚纪—赫斯珀里亚纪酸性硫酸盐地下水湖明矾石-黄钾铁矾-高岭石与多水硫酸镁（六水泻盐-四水泻盐）阶地、莫高窟佛龛拱券内弧上隅鎏金双凤宝相莲团花与飞天琵琶下捍拨边垂穗鎏金迦陵频伽嵌青金石花钿扣、及发射台导流槽尾喷集气室折流环拉杆撑柱与第六激波胞七阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在哥伦布撞击坑、西壬高地与亚特兰蒂斯混沌探测到的诺亚纪—赫斯珀里亚纪酸性硫酸盐地下水湖明矾石-黄钾铁矾-高岭石与多水硫酸镁阶地 `Columbus Crater, Terra Sirenum & Atlantis Chaos Acid-Sulfate Groundwater Lake Alunite-Jarosite-Kaolinite & Polyhydrated Mg-Sulfate (Hexahydrite-Starkeyite) Benches`、莫高窟盛唐第 159/217 窟佛龛拱券内弧上隅鎏金双凤宝相莲团花与飞天琵琶下捍拨边垂穗鎏金迦陵频伽嵌青金石花钿扣、以及发射台导流槽尾喷集气室折流环拉杆撑柱 `Pad_ExhaustPlenumBaffleRingTieStrut`、整流罩船尾段基部环段遥测线槽卡箍 `Rocket_FairingBoattailBaseRingTelemetryClamp` 与第六激波胞七阶普朗特-迈耶剪切辉光 `cell6SeptPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.169` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛拱券内弧上隅两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchIntradosUpperPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛拱券内弧上隅增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶下捍拨边垂穗增绘鎏金迦陵频伽嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入哥伦布撞击坑、西壬高地与亚特兰蒂斯混沌诺亚纪—赫斯珀里亚纪酸性硫酸盐地下水湖明矾石-黄钾铁矾-高岭石与多水硫酸镁阶地（`columbus_sirenum_atlantis_alunite_jarosite_kaolinite_hexahydrite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`187,311 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,435 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对哥伦布撞击坑与亚特兰蒂斯混沌明矾石-六水泻盐层引入浅象牙米黄明矾石-高岭石-六水泻盐色带（`columbusSirenumAtlantisAluniteJarositeKaoliniteHexahydriteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室折流环四座声学洪流拉杆撑柱（`Pad_ExhaustPlenumBaffleRingTieStrut_0..3`）与箭体整流罩船尾段基部环段四向遥测线槽整流卡箍（`Rocket_FairingBoattailBaseRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,883,056 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`890,259 B`）；在 `flameMaterial` 中引入第六激波胞七阶普朗特-迈耶剪切辉光项（`cell6SeptPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百九十二阶段验收：夜间持续进化 · 梅拉斯峡谷、坎多尔—奥菲尔槽谷与尤文塔高原诺亚纪—赫斯珀里亚纪内部层状沉积（ILD）一水镁矾-水铁矾、多水四水铁矾-泻利盐与黄钾铁矾-赤铁矿阶地、莫高窟佛龛拱券内弧中隅鎏金双凤宝相莲团花与飞天琵琶上覆手角垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、及发射台导流槽尾喷集气室折流环横撑与第七激波胞七阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在梅拉斯峡谷、坎多尔—奥菲尔槽谷与尤文塔高原探测到的诺亚纪—赫斯珀里亚纪内部层状沉积一水镁矾-水铁矾、多水四水铁矾-泻利盐与黄钾铁矾-赤铁矿阶地 `Melas Chasma, Candor-Ophir Trough & Juventae Plateau Interior Layered Deposit (ILD) Monohydrated Kieserite-Szomolnokite, Polyhydrated Rozenite-Epsomite & Jarosite-Hematite Benches`、莫高窟盛唐第 159/217 窟佛龛拱券内弧中隅鎏金双凤宝相莲团花与飞天琵琶上覆手角垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、以及发射台导流槽尾喷集气室折流环交叉斜撑 `Pad_ExhaustPlenumBaffleRingCrossBrace`、整流罩船尾段中环段遥测线槽卡箍 `Rocket_FairingBoattailMidRingTelemetryClamp` 与第七激波胞七阶普朗特-迈耶剪切辉光 `cell7SeptPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.170` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛拱券内弧中隅两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchIntradosMidPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛拱券内弧中隅增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶上覆手角垂穗增绘鎏金迦陵频伽嵌红珊瑚花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入梅拉斯峡谷、坎多尔—奥菲尔槽谷与尤文塔高原诺亚纪—赫斯珀里亚纪内部层状沉积一水镁矾-水铁矾、多水四水铁矾-泻利盐与黄钾铁矾-赤铁矿阶地（`melas_candor_juventae_kieserite_szomolnokite_rozenite_jarosite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`187,460 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,348 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对梅拉斯与坎多尔峡谷一水镁矾-黄钾铁矾层引入暖琥珀赭黄一水镁矾-黄钾铁矾色带（`melasCandorJuventaeKieseriteSzomolnokiteRozeniteJarositeTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室折流环四座声学洪流交叉斜撑（`Pad_ExhaustPlenumBaffleRingCrossBrace_0..3`）与箭体整流罩船尾段中环段四向遥测线槽整流卡箍（`Rocket_FairingBoattailMidRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,893,404 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`890,306 B`）；在 `flameMaterial` 中引入第七激波胞七阶普朗特-迈耶剪切辉光项（`cell7SeptPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百九十三阶段验收：夜间持续进化 · 诺克提斯迷宫、乌德曼斯撞击坑与叙利亚高原边缘诺亚纪—赫斯珀里亚纪火山热液酸性硫酸盐黄钾铁矾-明矾石、蛋白石质二氧化硅-蒙脱石与石膏-硬石膏阶地、莫高窟佛龛拱券内弧下隅鎏金双凤宝相莲团花与飞天琵琶下覆手角垂穗鎏金迦陵频伽嵌和田翠玉花钿扣、及发射台导流槽尾喷集气室声学衬板拉杆撑柱与第八激波胞七阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在诺克提斯迷宫、乌德曼斯撞击坑与叙利亚高原边缘探测到的诺亚纪—赫斯珀里亚纪火山热液酸性硫酸盐黄钾铁矾-明矾石、蛋白石质二氧化硅-蒙脱石与石膏-硬石膏阶地 `Noctis Labyrinthus, Oudemans Crater & Syria Planum Margin Volcanogenic Hydrothermal Acid-Sulfate Jarosite-Alunite, Opaline Silica-Montmorillonite & Gypsum-Anhydrite Benches`、莫高窟盛唐第 159/217 窟佛龛拱券内弧下隅鎏金双凤宝相莲团花与飞天琵琶下覆手角垂穗鎏金迦陵频伽嵌和田翠玉花钿扣、以及发射台导流槽尾喷集气室声学衬板拉杆撑柱 `Pad_ExhaustPlenumAcousticLinerTieStrut`、整流罩船尾段顶环段遥测线槽卡箍 `Rocket_FairingBoattailApexRingTelemetryClamp` 与第八激波胞七阶普朗特-迈耶剪切辉光 `cell8SeptPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.171` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛拱券内弧下隅两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchIntradosLowerPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛拱券内弧下隅增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶下覆手角垂穗增绘鎏金迦陵频伽嵌和田翠玉花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入诺克提斯迷宫、乌德曼斯撞击坑与叙利亚高原边缘诺亚纪—赫斯珀里亚纪火山热液酸性硫酸盐黄钾铁矾-明矾石、蛋白石质二氧化硅-蒙脱石与石膏-硬石膏阶地（`noctis_oudemans_syria_jarosite_alunite_opaline_gypsum_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`187,508 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,737 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对诺克提斯迷宫与乌德曼斯撞击坑黄钾铁矾-蛋白石-石膏层引入暖金黄赭白黄钾铁矾-蛋白石-石膏色带（`noctisOudemansSyriaJarositeAluniteOpalineGypsumTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室声学衬板四座声学洪流拉杆撑柱（`Pad_ExhaustPlenumAcousticLinerTieStrut_0..3`）与箭体整流罩船尾段顶环段四向遥测线槽整流卡箍（`Rocket_FairingBoattailApexRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,903,772 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`890,500 B`）；在 `flameMaterial` 中引入第八激波胞七阶普朗特-迈耶剪切辉光项（`cell8SeptPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百九十四阶段验收：夜间持续进化 · 埃里达尼亚盆地、阿里阿德涅斯丘群与戈尔贡混沌诺亚纪—赫斯珀里亚纪深盆水下热液皂石-滑石-蛇纹石、绿脱石-绿鳞石与石盐-氯化物蒸发岩阶地、莫高窟佛龛拱券内弧基座隅鎏金双凤宝相莲团花与飞天琵琶上面板边垂穗鎏金迦陵频伽嵌绿松石花钿扣、及发射台导流槽尾喷集气室声学衬板横撑与尾焰末端七阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在埃里达尼亚盆地、阿里阿德涅斯丘群与戈尔贡混沌探测到的诺亚纪—赫斯珀里亚纪深盆水下热液皂石-滑石-蛇纹石、绿脱石-绿鳞石与石盐-氯化物蒸发岩阶地 `Eridania Basin, Ariadnes Colles & Gorgonum Chaos Deep-Basin Subaqueous Hydrothermal Saponite-Talc-Serpentine, Nontronite-Celadonite & Halite-Chloride Evaporite Benches`、莫高窟盛唐第 159/217 窟佛龛拱券内弧基座隅鎏金双凤宝相莲团花与飞天琵琶上面板边垂穗鎏金迦陵频伽嵌绿松石花钿扣、以及发射台导流槽尾喷集气室声学衬板交叉斜撑 `Pad_ExhaustPlenumAcousticLinerCrossBrace`、整流罩圆柱段基部环段遥测线槽卡箍 `Rocket_FairingCylBaseRingTelemetryClamp` 与尾焰末端七阶普朗特-迈耶剪切辉光 `plumeTailSeptPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.172` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛拱券内弧基座隅两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchIntradosPlinthPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛拱券内弧基座隅增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶上面板边垂穗增绘鎏金迦陵频伽嵌绿松石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入埃里达尼亚盆地、阿里阿德涅斯丘群与戈尔贡混沌诺亚纪—赫斯珀里亚纪深盆水下热液皂石-滑石-蛇纹石、绿脱石-绿鳞石与石盐-氯化物蒸发岩阶地（`eridania_ariadnes_gorgonum_saponite_talc_celadonite_chloride_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`187,607 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,336 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对埃里达尼亚与戈尔贡古海盆皂石-绿鳞石-氯化物层引入浅青翠绿皂石-滑石-绿鳞石色带（`eridaniaAriadnesGorgonumSaponiteTalcCeladoniteChlorideTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室声学衬板四座声学洪流交叉斜撑（`Pad_ExhaustPlenumAcousticLinerCrossBrace_0..3`）与箭体整流罩圆柱段基部环段四向遥测线槽整流卡箍（`Rocket_FairingCylBaseRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,914,124 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`890,696 B`）；在 `flameMaterial` 中引入尾焰末端七阶普朗特-迈耶剪切辉光项（`plumeTailSeptPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百九十五阶段验收：夜间持续进化 · 珍珠高地、乌兹博伊—拉冬—莫拉瓦溢流道与霍尔登—阿拉姆外流槽谷诺亚纪—赫斯珀里亚纪河湖相鲕绿泥石-伊利石-蒙皂石、菱铁矿-菱镁矿碳酸盐与多水硫酸盐阶地、莫高窟佛龛拱券肩隅外侧上缘鎏金双凤宝相莲团花与飞天琵琶下面板边垂穗鎏金迦陵频伽嵌青金石花钿扣、及发射台导流槽尾喷集气室注水歧管拉杆撑柱与第一激波胞八阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在珍珠高地、乌兹博伊—拉冬—莫拉瓦溢流道与霍尔登—阿拉姆外流槽谷探测到的诺亚纪—赫斯珀里亚纪河湖相鲕绿泥石-伊利石-蒙皂石、菱铁矿-菱镁矿碳酸盐与多水硫酸盐阶地 `Margaritifer Terra, Uzboi-Ladon-Morava Spillway & Holden-Aram Outflow Trough Fluvial-Lacustrine Chamosite-Illite-Smectite, Siderite-Magnesite Carbonate & Polyhydrated Sulfate Benches`、莫高窟盛唐第 159/217 窟佛龛拱券肩隅外侧上缘鎏金双凤宝相莲团花与飞天琵琶下面板边垂穗鎏金迦陵频伽嵌青金石花钿扣、以及发射台导流槽尾喷集气室注水歧管拉杆撑柱 `Pad_ExhaustPlenumQuenchManifoldTieStrut`、整流罩圆柱段中环段遥测线槽卡箍 `Rocket_FairingCylMidRingTelemetryClamp` 与第一激波胞八阶普朗特-迈耶剪切辉光 `cell1OctPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.173` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛拱券肩隅外侧上缘两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchSpandrelOuterUpperPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛拱券肩隅外侧上缘增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶下面板边垂穗增绘鎏金迦陵频伽嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入珍珠高地、乌兹博伊—拉冬—莫拉瓦溢流道与霍尔登—阿拉姆外流槽谷诺亚纪—赫斯珀里亚纪河湖相鲕绿泥石-伊利石-蒙皂石、菱铁矿-菱镁矿碳酸盐与多水硫酸盐阶地（`margaritifer_uzboi_ladon_morava_chamosite_illite_siderite_sulfate_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`187,655 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,777 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对珍珠高地与拉冬溢流古湖鲕绿泥石-菱铁矿-硫酸盐层引入暖褐橄榄灰鲕绿泥石-菱铁矿色带（`margaritiferUzboiLadonMoravaChamositeIlliteSideriteSulfateTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室注水歧管四座声学洪流拉杆撑柱（`Pad_ExhaustPlenumQuenchManifoldTieStrut_0..3`）与箭体整流罩圆柱段中环段四向遥测线槽整流卡箍（`Rocket_FairingCylMidRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,924,424 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`890,712 B`）；在 `flameMaterial` 中引入第一激波胞八阶普朗特-迈耶剪切辉光项（`cell1OctPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百九十六阶段验收：夜间持续进化 · 萨巴亚高地、安东尼亚第撞击坑与惠更斯环缘诺亚纪—赫斯珀里亚纪碱性热液古湖方沸石-斜发沸石、伊利石-绿泥石与方解石-菱铁矿碳酸盐阶地、莫高窟佛龛拱券肩隅外侧中缘鎏金双凤宝相莲团花与飞天琵琶上槽壁垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、及发射台导流槽尾喷集气室注水歧管横撑与第二激波胞八阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在萨巴亚高地、安东尼亚第撞击坑与惠更斯环缘探测到的诺亚纪—赫斯珀里亚纪碱性热液古湖方沸石-斜发沸石、伊利石-绿泥石与方解石-菱铁矿碳酸盐阶地 `Terra Sabaea, Antoniadi Crater & Huygens Rim Alkaline-Hydrothermal Lacustrine Analcime-Clinoptilolite Zeolite, Illite-Chlorite & Calcite-Siderite Carbonate Benches`、莫高窟盛唐第 159/217 窟佛龛拱券肩隅外侧中缘鎏金双凤宝相莲团花与飞天琵琶上槽壁垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、以及发射台导流槽尾喷集气室注水歧管交叉斜撑 `Pad_ExhaustPlenumQuenchManifoldCrossBrace`、整流罩圆柱段顶环段遥测线槽卡箍 `Rocket_FairingCylApexRingTelemetryClamp` 与第二激波胞八阶普朗特-迈耶剪切辉光 `cell2OctPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.174` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛拱券肩隅外侧中缘两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchSpandrelOuterMidPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛拱券肩隅外侧中缘增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶上槽壁垂穗增绘鎏金迦陵频伽嵌红珊瑚花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入萨巴亚高地、安东尼亚第撞击坑与惠更斯环缘诺亚纪—赫斯珀里亚纪碱性热液古湖方沸石-斜发沸石、伊利石-绿泥石与方解石-菱铁矿碳酸盐阶地（`sabaea_antoniadi_huygens_analcime_clinoptilolite_illite_calcite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`187,713 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,077 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对萨巴亚高地与安东尼亚第方沸石-伊利石-方解石层引入暖米灰白方沸石-方解石色带（`sabaeaAntoniadiHuygensAnalcimeClinoptiloliteIlliteCalciteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室注水歧管四座声学洪流交叉斜撑（`Pad_ExhaustPlenumQuenchManifoldCrossBrace_0..3`）与箭体整流罩圆柱段顶环段四向遥测线槽整流卡箍（`Rocket_FairingCylApexRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,934,828 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`890,679 B`）；在 `flameMaterial` 中引入第二激波胞八阶普朗特-迈耶剪切辉光项（`cell2OctPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百九十七阶段验收：夜间持续进化 · 诺亚高地、达尔文—洛希撞击盆地与克罗斯坑间平原诺亚纪—赫斯珀里亚纪剥露低级变质葡萄石-绿泥石-绿纤石、铁镁蒙皂石与高岭石-蛋白石阶地、莫高窟佛龛拱券肩隅外侧下缘鎏金双凤宝相莲团花与飞天琵琶下槽壁垂穗鎏金迦陵频伽嵌和田翠玉花钿扣、及发射台导流槽尾喷集气室喷淋环拉杆撑柱与第三激波胞八阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在诺亚高地、达尔文—洛希撞击盆地与克罗斯坑间平原探测到的诺亚纪—赫斯珀里亚纪剥露低级变质葡萄石-绿泥石-绿纤石、铁镁蒙皂石与高岭石-蛋白石阶地 `Noachis Terra, Darwin-Lohse Impact Basin & Cross Intercrater Plains Exhumed Low-Grade Metamorphic Prehnite-Chlorite-Pumpellyite, Fe/Mg-Smectite & Kaolinite-Opaline Silica Benches`、莫高窟盛唐第 159/217 窟佛龛拱券肩隅外侧下缘鎏金双凤宝相莲团花与飞天琵琶下槽壁垂穗鎏金迦陵频伽嵌和田翠玉花钿扣、以及发射台导流槽尾喷集气室喷淋环拉杆撑柱 `Pad_ExhaustPlenumDelugeRingTieStrut`、整流罩尖拱下环段遥测线槽卡箍 `Rocket_FairingOgiveLowerRingTelemetryClamp` 与第三激波胞八阶普朗特-迈耶剪切辉光 `cell3OctPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.175` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛拱券肩隅外侧下缘两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchSpandrelOuterLowerPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛拱券肩隅外侧下缘增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶下槽壁垂穗增绘鎏金迦陵频伽嵌和田翠玉花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入诺亚高地、达尔文—洛希撞击盆地与克罗斯坑间平原诺亚纪—赫斯珀里亚纪剥露低级变质葡萄石-绿泥石-绿纤石、铁镁蒙皂石与高岭石-蛋白石阶地（`noachis_darwin_cross_prehnite_chlorite_pumpellyite_kaolinite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`187,773 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,343 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对诺亚高地与达尔文葡萄石-绿泥石-高岭石层引入灰青绿葡萄石-绿泥石色带（`noachisDarwinCrossPrehniteChloritePumpellyiteKaoliniteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室喷淋环四座声学洪流拉杆撑柱（`Pad_ExhaustPlenumDelugeRingTieStrut_0..3`）与箭体整流罩尖拱下环段四向遥测线槽整流卡箍（`Rocket_FairingOgiveLowerRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,945,160 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`890,823 B`）；在 `flameMaterial` 中引入第三激波胞八阶普朗特-迈耶剪切辉光项（`cell3OctPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百九十八阶段验收：夜间持续进化 · 伊西迪斯盆地南缘、利比亚山脉与尼利槽沟过渡带诺亚纪—赫斯珀里亚纪撞击隆升层状铝质贝得石-铁质绿脱石、铁镁皂石与水菱镁矿-白云石碳酸盐阶地、莫高窟佛龛拱券肩隅外侧基座缘鎏金双凤宝相莲团花与飞天琵琶上音窗垂穗鎏金迦陵频伽嵌绿松石花钿扣、及发射台导流槽尾喷集气室喷淋环横撑与第四激波胞八阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在伊西迪斯盆地南缘、利比亚山脉与尼利槽沟过渡带探测到的诺亚纪—赫斯珀里亚纪撞击隆升层状铝质贝得石-铁质绿脱石、铁镁皂石与水菱镁矿-白云石碳酸盐阶地 `Southern Isidis Margin, Libya Montes & Nili Fossae Transition Impact-Uplifted Layered Al-Beidellite-Fe-Nontronite, Fe/Mg-Saponite & Hydromagnesite-Dolomite Carbonate Benches`、莫高窟盛唐第 159/217 窟佛龛拱券肩隅外侧基座缘鎏金双凤宝相莲团花与飞天琵琶上音窗垂穗鎏金迦陵频伽嵌绿松石花钿扣、以及发射台导流槽尾喷集气室喷淋环交叉斜撑 `Pad_ExhaustPlenumDelugeRingCrossBrace`、整流罩尖拱中环段遥测线槽卡箍 `Rocket_FairingOgiveMidRingTelemetryClamp` 与第四激波胞八阶普朗特-迈耶剪切辉光 `cell4OctPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.176` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛拱券肩隅外侧基座缘两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchSpandrelOuterPlinthPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛拱券肩隅外侧基座缘增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶上音窗垂穗增绘鎏金迦陵频伽嵌绿松石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入伊西迪斯盆地南缘、利比亚山脉与尼利槽沟过渡带诺亚纪—赫斯珀里亚纪撞击隆升层状铝质贝得石-铁质绿脱石、铁镁皂石与水菱镁矿-白云石碳酸盐阶地（`isidis_libya_nili_beidellite_nontronite_saponite_hydromagnesite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`187,936 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,649 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对伊西迪斯与利比亚山脉贝得石-绿脱石-水菱镁矿层引入浅橄榄米绿贝得石-水菱镁矿色带（`isidisLibyaNiliBeidelliteNontroniteSaponiteHydromagnesiteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室喷淋环四座声学洪流交叉斜撑（`Pad_ExhaustPlenumDelugeRingCrossBrace_0..3`）与箭体整流罩尖拱中环段四向遥测线槽整流卡箍（`Rocket_FairingOgiveMidRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,955,516 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`890,902 B`）；在 `flameMaterial` 中引入第四激波胞八阶普朗特-迈耶剪切辉光项（`cell4OctPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第一百九十九阶段验收：夜间持续进化 · 奥克西亚高原、库贡谷三角洲与克律塞盆地边缘诺亚纪—赫斯珀里亚纪河口三角洲蛭石-皂石-蒙皂石、蛋白石质二氧化硅与水铁矿-菱铁矿阶地、莫高窟佛龛拱券肩隅内侧上缘鎏金双凤宝相莲团花与飞天琵琶下音窗垂穗鎏金迦陵频伽嵌青金石花钿扣、及发射台导流槽尾喷集气室导流器拉杆撑柱与第五激波胞八阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在奥克西亚高原、库贡谷三角洲与克律塞盆地边缘探测到的诺亚纪—赫斯珀里亚纪河口三角洲蛭石-皂石-蒙皂石、蛋白石质二氧化硅与水铁矿-菱铁矿阶地 `Oxia Planum, Coogoon Vallis Delta & Chryse Margin Fluvio-Deltaic Vermiculite-Saponite-Smectite, Opaline Silica & Ferrihydrite-Siderite Benches`、莫高窟盛唐第 159/217 窟佛龛拱券肩隅内侧上缘鎏金双凤宝相莲团花与飞天琵琶下音窗垂穗鎏金迦陵频伽嵌青金石花钿扣、以及发射台导流槽尾喷集气室导流器拉杆撑柱 `Pad_ExhaustPlenumJetDeflectorTieStrut`、整流罩尖拱上环段遥测线槽卡箍 `Rocket_FairingOgiveUpperRingTelemetryClamp` 与第五激波胞八阶普朗特-迈耶剪切辉光 `cell5OctPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.177` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛拱券肩隅内侧上缘两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchSpandrelInnerUpperPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛拱券肩隅内侧上缘增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶下音窗垂穗增绘鎏金迦陵频伽嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入奥克西亚高原、库贡谷三角洲与克律塞盆地边缘诺亚纪—赫斯珀里亚纪河口三角洲蛭石-皂石-蒙皂石、蛋白石质二氧化硅与水铁矿-菱铁矿阶地（`oxia_coogoon_chryse_vermiculite_saponite_opaline_ferrihydrite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`188,064 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,093,888 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对奥克西亚与库贡谷蛭石-皂石-水铁矿层引入暖金褐赭蛭石-水铁矿色带（`oxiaCoogoonChryseVermiculiteSaponiteOpalineFerrihydriteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室导流器四座声学洪流拉杆撑柱（`Pad_ExhaustPlenumJetDeflectorTieStrut_0..3`）与箭体整流罩尖拱上环段四向遥测线槽整流卡箍（`Rocket_FairingOgiveUpperRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,965,860 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`891,020 B`）；在 `flameMaterial` 中引入第五激波胞八阶普朗特-迈耶剪切辉光项（`cell5OctPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百阶段验收：夜间持续进化 · 西壬高地、维尔纳撞击坑与戈尔贡泉丘诺亚纪—赫斯珀里亚纪碱性泉华钙华-文石-方解石、蛋白石质二氧化硅与铁镁蒙皂石阶地、莫高窟佛龛拱券肩隅内侧中缘鎏金双凤宝相莲团花与飞天琵琶上尾弦缘垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、及发射台导流槽尾喷集气室导流器横撑与第六激波胞八阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在西壬高地、维尔纳撞击坑与戈尔贡泉丘探测到的诺亚纪—赫斯珀里亚纪碱性泉华钙华-文石-方解石、蛋白石质二氧化硅与铁镁蒙皂石阶地 `Terra Sirenum, Vernal Crater & Gorgonum Spring Mound Alkaline Spring Travertine-Aragonite-Calcite Sinter, Opaline Silica & Fe/Mg-Smectite Benches`、莫高窟盛唐第 159/217 窟佛龛拱券肩隅内侧中缘鎏金双凤宝相莲团花与飞天琵琶上尾弦缘垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、以及发射台导流槽尾喷集气室导流器交叉斜撑 `Pad_ExhaustPlenumJetDeflectorCrossBrace`、整流罩尖拱顶环段遥测线槽卡箍 `Rocket_FairingOgiveApexRingTelemetryClamp` 与第六激波胞八阶普朗特-迈耶剪切辉光 `cell6OctPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.178` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛拱券肩隅内侧中缘两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchSpandrelInnerMidPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛拱券肩隅内侧中缘增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶上尾弦缘垂穗增绘鎏金迦陵频伽嵌红珊瑚花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入西壬高地、维尔纳撞击坑与戈尔贡泉丘诺亚纪—赫斯珀里亚纪碱性泉华钙华-文石-方解石、蛋白石质二氧化硅与铁镁蒙皂石阶地（`sirenum_vernal_gorgonum_travertine_aragonite_sinter_smectite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`188,097 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,613 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对西壬高地与维尔纳钙华-文石-蛋白石层引入暖象牙米白泉华钙华色带（`sirenumVernalGorgonumTravertineAragoniteSinterSmectiteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室导流器四座声学洪流交叉斜撑（`Pad_ExhaustPlenumJetDeflectorCrossBrace_0..3`）与箭体整流罩尖拱顶环段四向遥测线槽整流卡箍（`Rocket_FairingOgiveApexRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,976,244 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`891,085 B`）；在 `flameMaterial` 中引入第六激波胞八阶普朗特-迈耶剪切辉光项（`cell6OctPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百零一阶段验收：夜间持续进化 · 大瑟提斯高原、尼利破火山口与麦罗埃火山侧翼诺亚纪—赫斯珀里亚纪火山热液蛋白石质硅华泉丘、演化英安岩穹丘与氟浅闪石-蒙皂石阶地、莫高窟佛龛拱券肩隅内侧下缘鎏金双凤宝相莲团花与飞天琵琶下尾弦缘垂穗鎏金迦陵频伽嵌和田翠玉花钿扣、及发射台导流槽尾喷集气室喉唇拉杆撑柱与第七激波胞八阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在大瑟提斯高原、尼利破火山口与麦罗埃火山侧翼探测到的诺亚纪—赫斯珀里亚纪火山热液蛋白石质硅华泉丘、演化英安岩穹丘与氟浅闪石-蒙皂石阶地 `Syrtis Major Planum, Nili Patera Caldera & Meroe Patera Flank Volcanogenic-Hydrothermal Opaline-Silica Sinter Mounds, Evolved Quartz-Dacite Domes & Fluoro-Edenite Amphibole-Smectite Benches`、莫高窟盛唐第 159/217 窟佛龛拱券肩隅内侧下缘鎏金双凤宝相莲团花与飞天琵琶下尾弦缘垂穗鎏金迦陵频伽嵌和田翠玉花钿扣、以及发射台导流槽尾喷集气室喉唇拉杆撑柱 `Pad_ExhaustPlenumThroatLipTieStrut`、整流罩鼻锥肩环段遥测线槽卡箍 `Rocket_FairingNoseShoulderRingTelemetryClamp` 与第七激波胞八阶普朗特-迈耶剪切辉光 `cell7OctPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.179` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛拱券肩隅内侧下缘两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchSpandrelInnerLowerPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛拱券肩隅内侧下缘增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶下尾弦缘垂穗增绘鎏金迦陵频伽嵌和田翠玉花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入大瑟提斯高原、尼利破火山口与麦罗埃火山侧翼诺亚纪—赫斯珀里亚纪火山热液蛋白石质硅华泉丘、演化英安岩穹丘与氟浅闪石-蒙皂石阶地（`syrtis_nili_meroe_patera_opaline_sinter_dacite_amphibole_smectite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`188,216 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,847 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对大瑟提斯与尼利破火山口蛋白石硅华-英安岩层引入浅硅华象牙白色带（`syrtisNiliMeroePateraOpalineSinterDaciteAmphiboleSmectiteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室喉唇四座声学洪流拉杆撑柱（`Pad_ExhaustPlenumThroatLipTieStrut_0..3`）与箭体整流罩鼻锥肩环段四向遥测线槽整流卡箍（`Rocket_FairingNoseShoulderRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,986,584 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`891,102 B`）；在 `flameMaterial` 中引入第七激波胞八阶普朗特-迈耶剪切辉光项（`cell7OctPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百零二阶段验收：夜间持续进化 · 乌托邦平原、赫淮斯托斯槽沟与埃律西昂西麓赫斯珀里亚纪—亚马逊纪冰缘扇贝状升华热喀斯特洼地、多边形冰楔铸模与火山泥流蒙皂石-碳酸盐阶地、莫高窟佛龛拱券肩隅内侧基座缘鎏金双凤宝相莲团花与飞天琵琶上相壁垂穗鎏金迦陵频伽嵌绿松石花钿扣、及发射台导流槽尾喷集气室喉唇横撑与第八激波胞八阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/SHARAD/CRISM 在乌托邦平原、赫淮斯托斯槽沟与埃律西昂西麓探测到的赫斯珀里亚纪—亚马逊纪冰缘扇贝状升华热喀斯特洼地、多边形冰楔铸模与火山泥流蒙皂石-碳酸盐阶地 `Utopia Planitia, Hephaestus Fossae & Elysium Western Apron Periglacial Scalloped Sublimation-Thermokarst Depressions, Polygonal Ice-Wedge Casts & Lahar-Smectite-Carbonate Terraces`、莫高窟盛唐第 159/217 窟佛龛拱券肩隅内侧基座缘鎏金双凤宝相莲团花与飞天琵琶上相壁垂穗鎏金迦陵频伽嵌绿松石花钿扣、以及发射台导流槽尾喷集气室喉唇交叉斜撑 `Pad_ExhaustPlenumThroatLipCrossBrace`、整流罩鼻锥冠环段遥测线槽卡箍 `Rocket_FairingNoseCrownRingTelemetryClamp` 与第八激波胞八阶普朗特-迈耶剪切辉光 `cell8OctPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.180` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛拱券肩隅内侧基座缘两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchSpandrelInnerPlinthPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛拱券肩隅内侧基座缘增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶上相壁垂穗增绘鎏金迦陵频伽嵌绿松石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入乌托邦平原、赫淮斯托斯槽沟与埃律西昂西麓赫斯珀里亚纪—亚马逊纪冰缘扇贝状升华热喀斯特洼地、多边形冰楔铸模与火山泥流蒙皂石-碳酸盐阶地（`utopia_hephaestus_elysium_scalloped_thermokarst_lahar_smectite_carbonate_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`188,145 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,862 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对乌托邦与赫淮斯托斯槽沟热喀斯特-蒙皂石-碳酸盐层引入灰青冰绿色带（`utopiaHephaestusElysiumScallopedThermokarstLaharSmectiteCarbonateTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室喉唇四座声学洪流交叉斜撑（`Pad_ExhaustPlenumThroatLipCrossBrace_0..3`）与箭体整流罩鼻锥冠环段四向遥测线槽整流卡箍（`Rocket_FairingNoseCrownRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`1,996,912 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`891,012 B`）；在 `flameMaterial` 中引入第八激波胞八阶普朗特-迈耶剪切辉光项（`cell8OctPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百零三阶段验收：夜间持续进化 · 埃律西昂平原、阿萨巴斯卡谷与刻耳柏洛斯槽沟洪积扇赫斯珀里亚纪—亚马逊纪溢流玄武岩板状漂筏脊、水火山无根凝灰岩锥与橙玄玻璃-蒙皂石-硫酸盐阶地、莫高窟佛龛拱脚起拱外侧上缘鎏金双凤宝相莲团花与飞天琵琶下相壁垂穗鎏金迦陵频伽嵌青金石花钿扣、及发射台导流槽尾喷集气室出口裙拉杆撑柱与尾焰末端八阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CTX/CRISM 在埃律西昂平原、阿萨巴斯卡谷与刻耳柏洛斯槽沟洪积扇探测到的赫斯珀里亚纪—亚马逊纪溢流玄武岩板状漂筏脊、水火山无根凝灰岩锥与橙玄玻璃-蒙皂石-硫酸盐阶地 `Elysium Planitia, Athabasca Valles & Cerberus Fossae Apron Flood-Basalt Rafted Platy Ridges, Hydrovolcanic Rootless Tuff Cones & Palagonite-Smectite-Sulfate Terraces`、莫高窟盛唐第 159/217 窟佛龛拱脚起拱外侧上缘鎏金双凤宝相莲团花与飞天琵琶下相壁垂穗鎏金迦陵频伽嵌青金石花钿扣、以及发射台导流槽尾喷集气室出口裙拉杆撑柱 `Pad_ExhaustPlenumExitSkirtTieStrut`、一级后推力环段遥测线槽卡箍 `Rocket_Stage1AftThrustRingTelemetryClamp` 与尾焰末端八阶普朗特-迈耶剪切辉光 `plumeTailOctPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.181` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛拱脚起拱外侧上缘两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchSpringingOuterUpperPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛拱脚起拱外侧上缘增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶下相壁垂穗增绘鎏金迦陵频伽嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入埃律西昂平原、阿萨巴斯卡谷与刻耳柏洛斯槽沟洪积扇赫斯珀里亚纪—亚马逊纪溢流玄武岩板状漂筏脊、水火山无根凝灰岩锥与橙玄玻璃-蒙皂石-硫酸盐阶地（`elysium_athabasca_cerberus_platy_raft_rootless_palagonite_smectite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`188,406 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,544 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对埃律西昂与阿萨巴斯卡谷橙玄玻璃-蒙皂石-硫酸盐层引入暖褐赭黄色带（`elysiumAthabascaCerberusPlatyRaftRootlessPalagoniteSmectiteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室出口裙四座声学洪流拉杆撑柱（`Pad_ExhaustPlenumExitSkirtTieStrut_0..3`）与箭体一级后推力环段四向遥测线槽整流卡箍（`Rocket_Stage1AftThrustRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`2,007,220 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`891,123 B`）；在 `flameMaterial` 中引入尾焰末端八阶普朗特-迈耶剪切辉光项（`plumeTailOctPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百零四阶段验收：夜间持续进化 · 道谷、尼日尔谷与赫拉斯盆地东缘赫斯珀里亚纪—亚马逊纪火山-冰川泥石流阶地、线状谷底堆积（LVF）叶理与菱沸石-蒙皂石-石膏阶地、莫高窟佛龛拱脚起拱外侧中缘鎏金双凤宝相莲团花与飞天琵琶上品肩垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、及发射台导流槽尾喷集气室出口裙横撑与第一激波胞九阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/SHARAD/CRISM 在道谷、尼日尔谷与赫拉斯盆地东缘探测到的赫斯珀里亚纪—亚马逊纪火山-冰川泥石流阶地、线状谷底堆积叶理与菱沸石-蒙皂石-石膏阶地 `Dao Vallis, Niger Vallis & Eastern Hellas Rim Volcano-Ice Lahar Terraces, Lineated Valley Fill (LVF) Foliations & Chabazite-Smectite-Gypsum Benches`、莫高窟盛唐第 159/217 窟佛龛拱脚起拱外侧中缘鎏金双凤宝相莲团花与飞天琵琶上品肩垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、以及发射台导流槽尾喷集气室出口裙交叉斜撑 `Pad_ExhaustPlenumExitSkirtCrossBrace`、一级前推力环段遥测线槽卡箍 `Rocket_Stage1FwdThrustRingTelemetryClamp` 与第一激波胞九阶普朗特-迈耶剪切辉光 `cell1NonPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.182` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛拱脚起拱外侧中缘两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchSpringingOuterMidPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛拱脚起拱外侧中缘增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶上品肩垂穗增绘鎏金迦陵频伽嵌红珊瑚花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入道谷、尼日尔谷与赫拉斯盆地东缘赫斯珀里亚纪—亚马逊纪火山-冰川泥石流阶地、线状谷底堆积叶理与菱沸石-蒙皂石-石膏阶地（`dao_niger_hellas_periglacial_lvf_chabazite_smectite_gypsum_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`188,263 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,622 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对道谷与尼日尔谷菱沸石-蒙皂石-石膏层引入暖灰米白色带（`daoNigerHellasPeriglacialLvfChabaziteSmectiteGypsumTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室出口裙四座声学洪流交叉斜撑（`Pad_ExhaustPlenumExitSkirtCrossBrace_0..3`）与箭体一级前推力环段四向遥测线槽整流卡箍（`Rocket_Stage1FwdThrustRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`2,017,548 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`891,154 B`）；在 `flameMaterial` 中引入第一激波胞九阶普朗特-迈耶剪切辉光项（`cell1NonPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百零五阶段验收：夜间持续进化 · 诺克提斯迷宫、奥德曼斯中央峰隆起与伊乌斯峡谷源头壁诺亚纪—赫斯珀里亚纪喷气孔酸性硫酸盐黄钾铁矾-蛋白石质二氧化硅-多水硫酸盐与隆起橄榄石-辉石巨角砾岩阶地、莫高窟佛龛拱脚起拱外侧下缘鎏金双凤宝相莲团花与飞天琵琶下品肩垂穗鎏金迦陵频伽嵌和田翠玉花钿扣、及发射台导流槽尾喷集气室尾唇拉杆撑柱与第二激波胞九阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在诺克提斯迷宫、奥德曼斯中央峰隆起与伊乌斯峡谷源头壁探测到的诺亚纪—赫斯珀里亚纪喷气孔酸性硫酸盐黄钾铁矾-蛋白石质二氧化硅-多水硫酸盐与隆起橄榄石-辉石巨角砾岩阶地 `Noctis Labyrinthus, Oudemans Central Uplift & Ius Chasma Headwall Fumarolic Acid-Sulfate Jarosite-Opaline Silica-Polyhydrated Sulfate & Uplifted Olivine-Pyroxene Megabreccia Terraces`、莫高窟盛唐第 159/217 窟佛龛拱脚起拱外侧下缘鎏金双凤宝相莲团花与飞天琵琶下品肩垂穗鎏金迦陵频伽嵌和田翠玉花钿扣、以及发射台导流槽尾喷集气室尾唇拉杆撑柱 `Pad_ExhaustPlenumTailLipTieStrut`、一级后裙环段遥测线槽卡箍 `Rocket_Stage1AftSkirtRingTelemetryClamp` 与第二激波胞九阶普朗特-迈耶剪切辉光 `cell2NonPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.183` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛拱脚起拱外侧下缘两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchSpringingOuterLowerPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛拱脚起拱外侧下缘增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶下品肩垂穗增绘鎏金迦陵频伽嵌和田翠玉花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入诺克提斯迷宫、奥德曼斯中央峰隆起与伊乌斯峡谷源头壁诺亚纪—赫斯珀里亚纪喷气孔酸性硫酸盐黄钾铁矾-蛋白石质二氧化硅-多水硫酸盐与隆起橄榄石-辉石巨角砾岩阶地（`noctis_oudemans_ius_jarosite_opaline_polyhydrated_sulfate_olivine_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`188,431 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,384 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对诺克提斯迷宫与奥德曼斯中央峰黄钾铁矾-蛋白石-多水硫酸盐层引入暖硫黄米白色带（`noctisOudemansIusJarositeOpalinePolyhydratedSulfateOlivineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室尾唇四座声学洪流拉杆撑柱（`Pad_ExhaustPlenumTailLipTieStrut_0..3`）与箭体一级后裙环段四向遥测线槽整流卡箍（`Rocket_Stage1AftSkirtRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`2,027,860 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`891,091 B`）；在 `flameMaterial` 中引入第二激波胞九阶普朗特-迈耶剪切辉光项（`cell2NonPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百零六阶段验收：夜间持续进化 · 青春泉峡谷、摩耶谷溢流道与贝提斯台地高原诺亚纪—赫斯珀里亚纪内部层状沉积（ILD）一水镁矾-水绿矾丘体、多水石膏-斯塔基石与高原边缘蛋白石质二氧化硅-羟基硫酸铁阶地、莫高窟佛龛拱脚起拱外侧基座缘鎏金双凤宝相莲团花与飞天琵琶上面板腰边垂穗鎏金迦陵频伽嵌绿松石花钿扣、及发射台导流槽尾喷集气室尾唇横撑与第三激波胞九阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在青春泉峡谷、摩耶谷溢流道与贝提斯台地高原探测到的诺亚纪—赫斯珀里亚纪内部层状沉积一水镁矾-水绿矾丘体、多水石膏-斯塔基石与高原边缘蛋白石质二氧化硅-羟基硫酸铁阶地 `Juventae Chasma, Maja Valles Outflow & Baetis Mensa Plateau ILD Monohydrated Kieserite-Szomolnokite Mounds, Polyhydrated Gypsum-Starkeyite & Plateau Opaline-Silica Ferric-Hydroxysulfate Terraces`、莫高窟盛唐第 159/217 窟佛龛拱脚起拱外侧基座缘鎏金双凤宝相莲团花与飞天琵琶上面板腰边垂穗鎏金迦陵频伽嵌绿松石花钿扣、以及发射台导流槽尾喷集气室尾唇横撑 `Pad_ExhaustPlenumTailLipCrossBrace`、一级中裙环段遥测线槽卡箍 `Rocket_Stage1MidSkirtRingTelemetryClamp` 与第三激波胞九阶普朗特-迈耶剪切辉光 `cell3NonPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.184` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛拱脚起拱外侧基座缘两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchSpringingOuterPlinthPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛拱脚起拱外侧基座缘增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶上面板腰边垂穗增绘鎏金迦陵频伽嵌绿松石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入青春泉峡谷、摩耶谷溢流道与贝提斯台地高原诺亚纪—赫斯珀里亚纪内部层状沉积一水镁矾-水绿矾丘体、多水石膏-斯塔基石与高原边缘蛋白石质二氧化硅-羟基硫酸铁阶地（`juventae_maja_baetis_kieserite_szomolnokite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`188,485 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,453 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对青春泉峡谷与摩耶谷一水镁矾-水绿矾-蛋白石层引入浅米黄色带（`juventaeMajaBaetisKieseriteSzomolnokiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室尾唇四座声学洪流交叉斜撑（`Pad_ExhaustPlenumTailLipCrossBrace_0..3`）与箭体一级中裙环段四向遥测线槽整流卡箍（`Rocket_Stage1MidSkirtRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`2,038,160 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`891,109 B`）；在 `flameMaterial` 中引入第三激波胞九阶普朗特-迈耶剪切辉光项（`cell3NonPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百零七阶段验收：夜间持续进化 · 科普拉特斯峡谷、卡普里峡谷与厄俄斯峡谷诺亚纪—赫斯珀里亚纪内部层状沉积（ILD）一水镁矾-水绿矾蒸发岩丘体、多水镁硫酸盐与铁镁蒙皂石-赤铁矿阶地、莫高窟佛龛拱脚起拱内侧上缘鎏金双凤宝相莲团花与飞天琵琶下面板腰边垂穗鎏金迦陵频伽嵌青金石花钿扣、及发射台导流槽尾喷集气室底坪拉杆撑柱与第四激波胞九阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在水手号峡谷东段科普拉特斯峡谷、卡普里峡谷与厄俄斯峡谷探测到的诺亚纪—赫斯珀里亚纪内部层状沉积一水镁矾-水绿矾蒸发岩丘体、多水镁硫酸盐与铁镁蒙皂石-赤铁矿阶地 `Coprates Chasma, Capri Chasma & Eos Chasma ILD Monohydrated Kieserite-Szomolnokite Evaporite Mounds, Polyhydrated Mg-Sulfate & Fe/Mg-Smectite-Hematite Terraces`、莫高窟盛唐第 159/217 窟佛龛拱脚起拱内侧上缘鎏金双凤宝相莲团花与飞天琵琶下面板腰边垂穗鎏金迦陵频伽嵌青金石花钿扣、以及发射台导流槽尾喷集气室底坪拉杆撑柱 `Pad_ExhaustPlenumBaseApronTieStrut`、一级前裙环段遥测线槽卡箍 `Rocket_Stage1FwdSkirtRingTelemetryClamp` 与第四激波胞九阶普朗特-迈耶剪切辉光 `cell4NonPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.185` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛拱脚起拱内侧上缘两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchSpringingInnerUpperPhoenixBoss2_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛拱脚起拱内侧上缘增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶下面板腰边垂穗增绘鎏金迦陵频伽嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入科普拉特斯峡谷、卡普里峡谷与厄俄斯峡谷诺亚纪—赫斯珀里亚纪内部层状沉积一水镁矾-水绿矾蒸发岩丘体、多水镁硫酸盐与铁镁蒙皂石-赤铁矿阶地（`coprates_capri_eos_kieserite_szomolnokite_sulfate_smectite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`188,461 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,831 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对科普拉特斯与卡普里峡谷一水镁矾-多水硫酸盐-蒙皂石层引入暖琥珀赭黄色带（`copratesCapriEosKieseriteSzomolnokiteSulfateSmectiteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底坪四座声学洪流拉杆撑柱（`Pad_ExhaustPlenumBaseApronTieStrut_0..3`）与箭体一级前裙环段四向遥测线槽整流卡箍（`Rocket_Stage1FwdSkirtRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`2,048,492 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`891,215 B`）；在 `flameMaterial` 中引入第四激波胞九阶普朗特-迈耶剪切辉光项（`cell4NonPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百零八阶段验收：夜间持续进化 · 恒河峡谷、沙尔巴塔纳谷与西穆德-提乌谷溢流道诺亚纪—赫斯珀里亚纪内部层状沉积（ILD）一水镁矾-石膏丘体、谷壁铁镁蒙皂石与蛋白石质二氧化硅阶地、莫高窟佛龛拱脚起拱内侧中缘鎏金双凤宝相莲团花与飞天琵琶上面板肩角垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、及发射台导流槽尾喷集气室底坪横撑与第五激波胞九阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在水手号峡谷东北分支恒河峡谷、沙尔巴塔纳谷与西穆德-提乌谷溢流道探测到的诺亚纪—赫斯珀里亚纪内部层状沉积一水镁矾-石膏丘体、谷壁铁镁蒙皂石与蛋白石质二氧化硅阶地 `Ganges Chasma, Shalbatana Vallis & Simud-Tiu Valles Outflow ILD Monohydrated Kieserite-Gypsum Mounds, Valley-Wall Fe/Mg-Smectite & Opaline-Silica Terraces`、莫高窟盛唐第 159/217 窟佛龛拱脚起拱内侧中缘鎏金双凤宝相莲团花与飞天琵琶上面板肩角垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、以及发射台导流槽尾喷集气室底坪横撑 `Pad_ExhaustPlenumBaseApronCrossBrace`、一级下贮箱环段遥测线槽卡箍 `Rocket_Stage1LowerTankRingTelemetryClamp` 与第五激波胞九阶普朗特-迈耶剪切辉光 `cell5NonPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.186` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛拱脚起拱内侧中缘两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchSpringingInnerMidPhoenixBoss2_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛拱脚起拱内侧中缘增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶上面板肩角垂穗增绘鎏金迦陵频伽嵌红珊瑚花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入恒河峡谷、沙尔巴塔纳谷与西穆德-提乌谷溢流道诺亚纪—赫斯珀里亚纪内部层状沉积一水镁矾-石膏丘体、谷壁铁镁蒙皂石与蛋白石质二氧化硅阶地（`ganges_shalbatana_simud_kieserite_gypsum_smectite_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`188,746 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,688 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对恒河峡谷与沙尔巴塔纳谷一水镁矾-石膏-蒙皂石-蛋白石层引入浅暖米黄色带（`gangesShalbatanaSimudKieseriteGypsumSmectiteOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底坪四座声学洪流交叉斜撑（`Pad_ExhaustPlenumBaseApronCrossBrace_0..3`）与箭体一级下贮箱环段四向遥测线槽整流卡箍（`Rocket_Stage1LowerTankRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`2,058,816 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`891,080 B`）；在 `flameMaterial` 中引入第五激波胞九阶普朗特-迈耶剪切辉光项（`cell5NonPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百零九阶段验收：夜间持续进化 · 提托尼厄姆峡谷、赫柏斯峡谷与埃库斯峡谷诺亚纪—赫斯珀里亚纪内部层状沉积（ILD）一水镁矾-水绿矾台地、多水石膏-泻利盐与黄钾铁矾-赤铁矿雅丹阶地、莫高窟佛龛拱脚起拱内侧下缘鎏金双凤宝相莲团花与飞天琵琶下面板肩角垂穗鎏金迦陵频伽嵌和田翠玉花钿扣、及发射台导流槽尾喷集气室底槛拉杆撑柱与第六激波胞九阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在水手号峡谷西北段提托尼厄姆峡谷、赫柏斯峡谷与埃库斯峡谷探测到的诺亚纪—赫斯珀里亚纪内部层状沉积一水镁矾-水绿矾台地、多水石膏-泻利盐与黄钾铁矾-赤铁矿雅丹阶地 `Tithonium Chasma, Hebes Chasma & Echus Chasma ILD Monohydrated Kieserite-Szomolnokite Mesas, Polyhydrated Gypsum-Epsomite & Jarosite-Hematite Yardang Terraces`、莫高窟盛唐第 159/217 窟佛龛拱脚起拱内侧下缘鎏金双凤宝相莲团花与飞天琵琶下面板肩角垂穗鎏金迦陵频伽嵌和田翠玉花钿扣、以及发射台导流槽尾喷集气室底槛拉杆撑柱 `Pad_ExhaustPlenumFloorSillTieStrut`、一级中贮箱环段遥测线槽卡箍 `Rocket_Stage1MidTankRingTelemetryClamp` 与第六激波胞九阶普朗特-迈耶剪切辉光 `cell6NonPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.187` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛拱脚起拱内侧下缘两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchSpringingInnerLowerPhoenixBoss2_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛拱脚起拱内侧下缘增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶下面板肩角垂穗增绘鎏金迦陵频伽嵌和田翠玉花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入提托尼厄姆峡谷、赫柏斯峡谷与埃库斯峡谷诺亚纪—赫斯珀里亚纪内部层状沉积一水镁矾-水绿矾台地、多水石膏-泻利盐与黄钾铁矾-赤铁矿雅丹阶地（`tithonium_hebes_echus_kieserite_szomolnokite_gypsum_jarosite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`188,706 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,422 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对提托尼厄姆与赫柏斯峡谷一水镁矾-石膏-黄钾铁矾层引入浅柠檬黄赭色带（`tithoniumHebesEchusKieseriteSzomolnokiteGypsumJarositeTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槛四座声学洪流拉杆撑柱（`Pad_ExhaustPlenumFloorSillTieStrut_0..3`）与箭体一级中贮箱环段四向遥测线槽整流卡箍（`Rocket_Stage1MidTankRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`2,069,108 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`891,036 B`）；在 `flameMaterial` 中引入第六激波胞九阶普朗特-迈耶剪切辉光项（`cell6NonPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百一十阶段验收：夜间持续进化 · 亚兰混沌、伊阿尼混沌与奥雷乌姆混沌诺亚纪—赫斯珀里亚纪塌陷混沌台地一水镁矾-水绿矾顶盖层、多水石膏-羟基硫酸铁与结晶灰赤铁矿阶地、莫高窟佛龛拱脚起拱内侧基座缘鎏金双凤宝相莲团花与飞天琵琶上面板侧沿垂穗鎏金迦陵频伽嵌绿松石花钿扣、及发射台导流槽尾喷集气室底槛横撑与第七激波胞九阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在克律塞平原上游亚兰混沌、伊阿尼混沌与奥雷乌姆混沌探测到的诺亚纪—赫斯珀里亚纪塌陷混沌台地一水镁矾-水绿矾顶盖层、多水石膏-羟基硫酸铁与结晶灰赤铁矿阶地 `Aram Chaos, Iani Chaos & Aureum Chaos Collapsed Chaos-Mesa Monohydrated Kieserite-Szomolnokite Caprock, Polyhydrated Gypsum-Hydroxysulfate & Crystalline Gray Hematite Terraces`、莫高窟盛唐第 159/217 窟佛龛拱脚起拱内侧基座缘鎏金双凤宝相莲团花与飞天琵琶上面板侧沿垂穗鎏金迦陵频伽嵌绿松石花钿扣、以及发射台导流槽尾喷集气室底槛横撑 `Pad_ExhaustPlenumFloorSillCrossBrace`、一级上贮箱环段遥测线槽卡箍 `Rocket_Stage1UpperTankRingTelemetryClamp` 与第七激波胞九阶普朗特-迈耶剪切辉光 `cell7NonPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.188` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛拱脚起拱内侧基座缘两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchSpringingInnerPlinthPhoenixBoss2_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛拱脚起拱内侧基座缘增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶上面板侧沿垂穗增绘鎏金迦陵频伽嵌绿松石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入亚兰混沌、伊阿尼混沌与奥雷乌姆混沌诺亚纪—赫斯珀里亚纪塌陷混沌台地一水镁矾-水绿矾顶盖层、多水石膏-羟基硫酸铁与结晶灰赤铁矿阶地（`aram_iani_aureum_chaos_kieserite_gypsum_hydroxysulfate_hematite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`188,742 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,039 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对亚兰混沌与伊阿尼混沌一水镁矾-石膏-结晶赤铁矿层引入暖赭褐色带（`aramIaniAureumChaosKieseriteGypsumHydroxysulfateHematiteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槛四座声学洪流交叉斜撑（`Pad_ExhaustPlenumFloorSillCrossBrace_0..3`）与箭体一级上贮箱环段四向遥测线槽整流卡箍（`Rocket_Stage1UpperTankRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`2,079,444 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`891,371 B`）；在 `flameMaterial` 中引入第七激波胞九阶普朗特-迈耶剪切辉光项（`cell7NonPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百一十一阶段验收：夜间持续进化 · 伊乌斯峡谷、梅拉斯峡谷与坎多尔峡谷诺亚纪—赫斯珀里亚纪互层一水镁矾-多水石膏、基底铁镁蒙皂石与黄钾铁矾-蛋白石质二氧化硅阶地、莫高窟佛龛券腰外侧上缘鎏金双凤宝相莲团花与飞天琵琶下面板侧沿垂穗鎏金迦陵频伽嵌青金石花钿扣、及发射台导流槽尾喷集气室趾墙拉杆撑柱与第八激波胞九阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在水手号峡谷中西部伊乌斯峡谷、梅拉斯峡谷与坎多尔峡谷探测到的诺亚纪—赫斯珀里亚纪互层一水镁矾-多水石膏、基底铁镁蒙皂石与黄钾铁矾-蛋白石质二氧化硅阶地 `Ius Chasma, Melas Chasma & Candor Chasma Interbedded Monohydrated Kieserite-Gypsum, Basal Fe/Mg-Smectite & Jarosite-Opaline Silica Benches`、莫高窟盛唐第 159/217 窟佛龛券腰外侧上缘鎏金双凤宝相莲团花与飞天琵琶下面板侧沿垂穗鎏金迦陵频伽嵌青金石花钿扣、以及发射台导流槽尾喷集气室趾墙拉杆撑柱 `Pad_ExhaustPlenumToeWallTieStrut`、一级箱间环段遥测线槽卡箍 `Rocket_Stage1IntertankRingTelemetryClamp` 与第八激波胞九阶普朗特-迈耶剪切辉光 `cell8NonPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.189` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券腰外侧上缘两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchHaunchOuterUpperPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券腰外侧上缘增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶下面板侧沿垂穗增绘鎏金迦陵频伽嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入伊乌斯峡谷、梅拉斯峡谷与坎多尔峡谷诺亚纪—赫斯珀里亚纪互层一水镁矾-多水石膏、基底铁镁蒙皂石与黄钾铁矾-蛋白石质二氧化硅阶地（`ius_melas_candor_kieserite_gypsum_smectite_jarosite_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`188,836 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,318 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对伊乌斯与梅拉斯峡谷一水镁矾-石膏-黄钾铁矾-蛋白石层引入暖米黄色带（`iusMelasCandorKieseriteGypsumSmectiteJarositeOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室趾墙四座声学洪流拉杆撑柱（`Pad_ExhaustPlenumToeWallTieStrut_0..3`）与箭体一级箱间环段四向遥测线槽整流卡箍（`Rocket_Stage1IntertankRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`2,089,772 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`891,290 B`）；在 `flameMaterial` 中引入第八激波胞九阶普朗特-迈耶剪切辉光项（`cell8NonPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百一十二阶段验收：夜间持续进化 · 奥菲尔峡谷、坎多尔中部峡谷与塞蒂台地诺亚纪—赫斯珀里亚纪内部层状沉积一水镁矾-水绿矾阶地、多水羟基硫酸铁与结晶赤铁矿雅丹阶地、莫高窟佛龛券腰外侧中缘鎏金双凤宝相莲团花与飞天琵琶上面板底弧垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、及发射台导流槽尾喷集气室趾墙横撑与尾焰末端九阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在水手号峡谷北部奥菲尔峡谷、坎多尔中部峡谷与塞蒂台地探测到的诺亚纪—赫斯珀里亚纪内部层状沉积一水镁矾-水绿矾阶地、多水羟基硫酸铁与结晶赤铁矿雅丹阶地 `Ophir Chasma, Central Candor Chasma & Ceti Mensa Interior Layered Deposit Monohydrated Kieserite-Szomolnokite Benches, Polyhydrated Ferric-Hydroxysulfate & Crystalline Hematite Yardang Terraces`、莫高窟盛唐第 159/217 窟佛龛券腰外侧中缘鎏金双凤宝相莲团花与飞天琵琶上面板底弧垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、以及发射台导流槽尾喷集气室趾墙横撑 `Pad_ExhaustPlenumToeWallCrossBrace`、一级前封头环段遥测线槽卡箍 `Rocket_Stage1FwdDomeRingTelemetryClamp` 与尾焰末端九阶普朗特-迈耶剪切辉光 `plumeTailNonPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.190` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券腰外侧中缘两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchHaunchOuterMidPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券腰外侧中缘增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶上面板底弧垂穗增绘鎏金迦陵频伽嵌红珊瑚花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入奥菲尔峡谷、坎多尔中部峡谷与塞蒂台地诺亚纪—赫斯珀里亚纪内部层状沉积一水镁矾-水绿矾阶地、多水羟基硫酸铁与结晶赤铁矿雅丹阶地（`ophir_candor_ceti_mensa_kieserite_szomolnokite_hydroxysulfate_hematite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`188,799 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,478 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对奥菲尔与塞蒂台地一水镁矾-水绿矾-赤铁矿层引入暖铁锈黄色带（`ophirCandorCetiMensaKieseriteSzomolnokiteHydroxysulfateHematiteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室趾墙四座声学洪流交叉斜撑（`Pad_ExhaustPlenumToeWallCrossBrace_0..3`）与箭体一级前封头环段四向遥测线槽整流卡箍（`Rocket_Stage1FwdDomeRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`2,100,076 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`891,507 B`）；在 `flameMaterial` 中引入尾焰末端九阶普朗特-迈耶剪切辉光项（`plumeTailNonPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百一十三阶段验收：夜间持续进化 · 盖尔撞击坑、夏普山与维拉·鲁宾岭诺亚纪—赫斯珀里亚纪湖相绿脱石-蒙皂石泥岩、成岩结晶赤铁矿-硬石膏脉与上覆一水镁矾-石膏-黄钾铁矾阶地、莫高窟佛龛券腰外侧下缘鎏金双凤宝相莲团花与飞天琵琶下面板底弧垂穗鎏金迦陵频伽嵌和田翠玉花钿扣、及发射台导流槽尾喷集气室翼墙拉杆撑柱与第一激波胞十阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在盖尔撞击坑、夏普山与维拉·鲁宾岭探测到的诺亚纪—赫斯珀里亚纪湖相绿脱石-蒙皂石泥岩、成岩结晶赤铁矿-硬石膏脉与上覆一水镁矾-石膏-黄钾铁矾阶地 `Gale Crater, Aeolis Mons & Vera Rubin Ridge Lacustrine Nontronite-Smectite Mudstones, Diagenetic Crystalline Hematite-Anhydrite Veins & Overlying Kieserite-Gypsum-Jarosite Sulfate Benches`、莫高窟盛唐第 159/217 窟佛龛券腰外侧下缘鎏金双凤宝相莲团花与飞天琵琶下面板底弧垂穗鎏金迦陵频伽嵌和田翠玉花钿扣、以及发射台导流槽尾喷集气室翼墙拉杆撑柱 `Pad_ExhaustPlenumWingWallTieStrut`、一级后封头环段遥测线槽卡箍 `Rocket_Stage1AftDomeRingTelemetryClamp` 与第一激波胞十阶普朗特-迈耶剪切辉光 `cell1DecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.191` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券腰外侧下缘两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchHaunchOuterLowerPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券腰外侧下缘增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶下面板底弧垂穗增绘鎏金迦陵频伽嵌和田翠玉花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入盖尔撞击坑、夏普山与维拉·鲁宾岭诺亚纪—赫斯珀里亚纪湖相绿脱石-蒙皂石泥岩、成岩结晶赤铁矿-硬石膏脉与上覆一水镁矾-石膏-黄钾铁矾阶地（`gale_aeolis_vera_rubin_nontronite_hematite_anhydrite_jarosite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`188,792 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,486 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对盖尔撞击坑与夏普山绿脱石-赤铁矿-硫酸盐层引入暖赭红褐色带（`galeAeolisVeraRubinNontroniteHematiteAnhydriteJarositeTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室翼墙四座声学洪流拉杆撑柱（`Pad_ExhaustPlenumWingWallTieStrut_0..3`）与箭体一级后封头环段四向遥测线槽整流卡箍（`Rocket_Stage1AftDomeRingTelemetryClamp_0..3`），导出 `rocket-kit.glb`（`2,110,368 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`891,322 B`）；在 `flameMaterial` 中引入第一激波胞十阶普朗特-迈耶剪切辉光项（`cell1DecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百一十四阶段验收：夜间持续进化 · 杰泽罗撞击坑边缘单元与内雷特瓦谷诺亚纪—赫斯珀里亚纪碳酸盐化橄榄石-铬铁矿堆晶岩、铁镁蒙皂石与水合蛋白石质二氧化硅阶地、莫高窟佛龛券腰外侧柱础座鎏金双凤宝相莲团花与飞天琵琶覆手底弧垂穗鎏金迦陵频伽嵌绿松石花钿扣、及发射台导流槽尾喷集气室翼墙端盖与第二激波胞十阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 与“毅力号”在杰泽罗撞击坑边缘单元与内雷特瓦谷探测到的诺亚纪—赫斯珀里亚纪碳酸盐化橄榄石-铬铁矿堆晶岩、铁镁蒙皂石与水合蛋白石质二氧化硅阶地 `Jezero Crater Margin Unit & Neretva Vallis Carbonated Olivine-Chromite Cumulates, Fe/Mg-Smectite & Hydrated Opaline-Silica Benches`、莫高窟盛唐第 159/217 窟佛龛券腰外侧柱础座鎏金双凤宝相莲团花与飞天琵琶覆手底弧垂穗鎏金迦陵频伽嵌绿松石花钿扣、以及发射台导流槽尾喷集气室翼墙端盖 `Pad_ExhaustPlenumWingWallEndCap`、一级后封头传感器护圈 `Rocket_Stage1AftDomeSensorGrommet` 与第二激波胞十阶普朗特-迈耶剪切辉光 `cell2DecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.192` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券腰外侧柱础座两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchHaunchOuterPedestalPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券腰外侧柱础座增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶覆手底弧垂穗增绘鎏金迦陵频伽嵌绿松石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入杰泽罗撞击坑边缘单元与内雷特瓦谷诺亚纪—赫斯珀里亚纪碳酸盐化橄榄石-铬铁矿堆晶岩、铁镁蒙皂石与水合蛋白石质二氧化硅阶地（`jezero_neretva_margin_unit_olivine_carbonate_smectite_silica_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`188,888 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,321 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对杰泽罗边缘单元与内雷特瓦谷碳酸盐化橄榄石-水合硅石层引入暖黄绿灰色带（`jezeroNeretvaMarginUnitOlivineCarbonateSmectiteSilicaTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室翼墙四座耐火端盖（`Pad_ExhaustPlenumWingWallEndCap_0..3`）与箭体一级后封头四向传感器护圈（`Rocket_Stage1AftDomeSensorGrommet_0..3`），导出 `rocket-kit.glb`（`2,120,604 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`891,428 B`）；在 `flameMaterial` 中引入第二激波胞十阶普朗特-迈耶剪切辉光项（`cell2DecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百一十五阶段验收：夜间持续进化 · 莫斯谷与奥克시아平原诺亚纪—赫斯珀里亚纪基底铁镁绿脱石-皂石黏土阶地与上覆铝质蒙脱石-高岭石-水合蛋白石质二氧化硅台地、莫高窟佛龛券腰内侧上缘鎏金双凤宝相莲团花与飞天琵琶覆手侧沿垂穗鎏金迦陵频伽嵌青金石花钿扣、及发射台导流槽尾喷集气室翼墙横撑与第三激波胞十阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 与欧空局火星快车号 OMEGA 在莫斯谷与奥克시아平原探测到的诺亚纪—赫斯珀里亚纪基底铁镁绿脱石-皂石黏土阶地与上覆铝质蒙脱石-高岭石-水合蛋白石质二氧化硅台地 `Mawrth Vallis & Oxia Planum Basal Fe/Mg-Nontronite/Saponite Clay Benches & Overlying Al-Montmorillonite-Kaolinite-Hydrated Silica Horizon`、莫高窟盛唐第 159/217 窟佛龛券腰内侧上缘鎏金双凤宝相莲团花与飞天琵琶覆手侧沿垂穗鎏金迦陵频伽嵌青金石花钿扣、以及发射台导流槽尾喷集气室翼墙横撑 `Pad_ExhaustPlenumWingWallCrossBrace`、一级前封头传感器护圈 `Rocket_Stage1FwdDomeSensorGrommet` 与第三激波胞十阶普朗特-迈耶剪切辉光 `cell3DecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.193` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券腰内侧上缘两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchHaunchInnerUpperPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券腰内侧上缘增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶覆手侧沿垂穗增绘鎏金迦陵频伽嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入莫斯谷与奥克시아平原诺亚纪—赫斯珀里亚纪基底铁镁绿脱石-皂石黏土阶地与上覆铝质蒙脱石-高岭石-水合蛋白石质二氧化硅台地（`mawrth_oxia_planum_nontronite_saponite_montmorillonite_kaolinite_silica_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`188,931 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,384 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对莫斯谷与奥克시아平原铝蒙脱石-高岭石-水合硅石层引入暖浅米黄色带（`mawrthOxiaPlanumNontroniteSaponiteMontmorilloniteKaoliniteSilicaTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室翼墙四座声学洪流交叉斜撑（`Pad_ExhaustPlenumWingWallCrossBrace_0..3`）与箭体一级前封头四向传感器护圈（`Rocket_Stage1FwdDomeSensorGrommet_0..3`），导出 `rocket-kit.glb`（`2,130,816 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`891,603 B`）；在 `flameMaterial` 中引入第三激波胞十阶普朗特-迈耶剪切辉光项（`cell3DecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百一十六阶段验收：夜间持续进化 · 尼利槽沟与东北大塞提斯诺亚纪—赫斯珀里亚纪蛇纹石化橄榄石-菱镁矿台地、基底皂石-滑石与上覆黄钾铁矾-多水硫酸盐阶地、莫高窟佛龛券腰内侧中缘鎏金双凤宝相莲团花与飞天琵琶覆手上角垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、及发射台导流槽尾喷集气室压顶墙拉杆撑柱与第四激波胞十阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在尼利槽沟与东北大塞提斯探测到的诺亚纪—赫斯珀里亚纪蛇纹石化橄榄石-菱镁矿台地、基底皂石-滑石与上覆黄钾铁矾-多水硫酸盐阶地 `Nili Fossae & Northeast Syrtis Major Serpentinized Olivine-Magnesite Mesas, Basement Saponite-Talc & Overlying Jarosite-Polyhydrated Sulfate Benches`、莫高窟盛唐第 159/217 窟佛龛券腰内侧中缘鎏金双凤宝相莲团花与飞天琵琶覆手上角垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、以及发射台导流槽尾喷集气室压顶墙拉杆撑柱 `Pad_ExhaustPlenumCopedWallTieStrut`、一级箱间段传感器护圈 `Rocket_Stage1IntertankSensorGrommet` 与第四激波胞十阶普朗特-迈耶剪切辉光 `cell4DecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.194` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券腰内侧中缘两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchHaunchInnerMidPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券腰内侧中缘增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶覆手上角垂穗增绘鎏金迦陵频伽嵌红珊瑚花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入尼利槽沟与东北大塞提斯诺亚纪—赫斯珀里亚纪蛇纹石化橄榄石-菱镁矿台地、基底皂石-滑石与上覆黄钾铁矾-多水硫酸盐阶地（`nili_fossae_ne_syrtis_olivine_magnesite_saponite_talc_sulfate_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`188,867 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,359 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对尼利槽沟与东北大塞提斯橄榄石-菱镁矿-皂石层引入暖灰绿黄色带（`niliFossaeNeSyrtisOlivineMagnesiteSaponiteTalcSulfateTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室压顶墙四座声学洪流拉杆撑柱（`Pad_ExhaustPlenumCopedWallTieStrut_0..3`）与箭体一级箱间段四向传感器护圈（`Rocket_Stage1IntertankSensorGrommet_0..3`），导出 `rocket-kit.glb`（`2,141,096 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`891,398 B`）；在 `flameMaterial` 中引入第四激波胞十阶普朗特-迈耶剪切辉光项（`cell4DecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百一十七阶段验收：夜间持续进化 · 盖尔撞击坑格伦托里登与夏普山黏土-硫酸盐过渡带诺亚纪—赫斯珀里亚纪湖相三价铁绿脱石泥岩、维拉·鲁宾岭成岩赤铁矿与上覆镁硫酸盐阶地、莫高窟佛龛券腰内侧下缘鎏金双凤宝相莲团花与飞天琵琶覆手下角垂穗鎏金迦陵频伽嵌和田碧玉花钿扣、及发射台导流槽尾喷集气室折流板加劲肋与第五激波胞十阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 与好奇号在盖尔撞击坑格伦托里登与夏普山黏土-硫酸盐过渡带探测到的诺亚纪—赫斯珀里亚纪湖相三价铁绿脱石泥岩、维拉·鲁宾岭成岩赤铁矿与上覆镁硫酸盐阶地 `Gale Crater Glen Torridon & Mount Sharp Clay-Sulfate Transition Zone Lacustrine Fe3+-Nontronite Mudstones, Vera Rubin Ridge Diagenetic Hematite & Overlying Mg-Sulfate Benches`、莫高窟盛唐第 159/217 窟佛龛券腰内侧下缘鎏金双凤宝相莲团花与飞天琵琶覆手下角垂穗鎏金迦陵频伽嵌和田碧玉花钿扣、以及发射台导流槽尾喷集气室折流板加劲肋 `Pad_ExhaustPlenumBaffleDeckStiffener`、一级前裙段传感器护圈 `Rocket_Stage1ForwardSkirtSensorGrommet` 与第五激波胞十阶普朗特-迈耶剪切辉光 `cell5DecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.195` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券腰内侧下缘两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchHaunchInnerLowerPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券腰内侧下缘增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶覆手下角垂穗增绘鎏金迦陵频伽嵌和田碧玉花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入盖尔撞击坑格伦托里登与夏普山黏土-硫酸盐过渡带诺亚纪—赫斯珀里亚纪湖相三价铁绿脱石泥岩、维拉·鲁宾岭成岩赤铁矿与上覆镁硫酸盐阶地（`gale_glen_torridon_mount_sharp_clay_sulfate_transition_nontronite_hematite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`188,840 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,863 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对格伦托里登与夏普山黏土-硫酸盐过渡带引入暖琥珀赭褐色带（`galeGlenTorridonMountSharpClaySulfateTransitionNontroniteHematiteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室折流板四座声学洪流加劲肋（`Pad_ExhaustPlenumBaffleDeckStiffener_0..3`）与箭体一级前裙段四向传感器护圈（`Rocket_Stage1ForwardSkirtSensorGrommet_0..3`），导出 `rocket-kit.glb`（`2,151,408 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`891,545 B`）；在 `flameMaterial` 中引入第五激波胞十阶普朗特-迈耶剪切辉光项（`cell5DecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百一十八阶段验收：夜间持续进化 · 古瑟夫撞击坑哥伦比亚山脉与本垒板诺亚纪—赫斯珀里亚纪热液指状蛋白石质硅华、科曼奇铁镁碳酸盐露头与帕索罗布尔斯硫酸铁火山灰阶地、莫高窟佛龛券腰内侧柱础座鎏金双凤宝相莲团花与飞天琵琶覆手中脊垂穗鎏金迦陵频伽嵌绿松石花钿扣、及发射台导流槽尾喷集气室折流板横撑与第六激波胞十阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 与勇气号在古瑟夫撞击坑哥伦比亚山脉与本垒板探测到的诺亚纪—赫斯珀里亚纪热液指状蛋白石质硅华、科曼奇铁镁碳酸盐露头与帕索罗布尔斯硫酸铁火山灰阶地 `Gusev Crater Columbia Hills & Home Plate Hydrothermal Digitate Opaline-Silica Sinter, Comanche Fe/Mg-Carbonate Outcrops & Paso Robles Ferric-Sulfate Tephra Benches`、莫高窟盛唐第 159/217 窟佛龛券腰内侧柱础座鎏金双凤宝相莲团花与飞天琵琶覆手中脊垂穗鎏金迦陵频伽嵌绿松石花钿扣、以及发射台导流槽尾喷集气室折流板横撑 `Pad_ExhaustPlenumBaffleDeckCrossBrace`、一级后裙段传感器护圈 `Rocket_Stage1AftSkirtSensorGrommet` 与第六激波胞十阶普朗特-迈耶剪切辉光 `cell6DecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.196` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券腰内侧柱础座两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchHaunchInnerPedestalPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券腰内侧柱础座增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶覆手中脊垂穗增绘鎏金迦陵频伽嵌绿松石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入古瑟夫撞击坑哥伦比亚山脉与本垒板诺亚纪—赫斯珀里亚纪热液指状蛋白石质硅华、科曼奇铁镁碳酸盐露头与帕索罗布尔斯硫酸铁火山灰阶地（`gusev_columbia_hills_home_plate_comanche_opaline_sinter_carbonate_sulfate_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`188,866 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,344 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对哥伦比亚山脉与本垒板蛋白石硅华-碳酸盐层引入暖奶白色带（`gusevColumbiaHillsHomePlateComancheOpalineSinterCarbonateSulfateTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室折流板四座声学洪流交叉斜撑（`Pad_ExhaustPlenumBaffleDeckCrossBrace_0..3`）与箭体一级后裙段四向传感器护圈（`Rocket_Stage1AftSkirtSensorGrommet_0..3`），导出 `rocket-kit.glb`（`2,161,704 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`891,463 B`）；在 `flameMaterial` 中引入第六激波胞十阶普朗特-迈耶剪切辉光项（`cell6DecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百一十九阶段验收：夜间持续进化 · 奥克시아平原与库贡谷 ExoMars 着陆区诺亚纪层状铁镁蒙皂石-蛭石古土壤泥岩、三角洲蛋白石质二氧化硅前积层与抗蚀橄榄石-辉石玄武质顶盖阶地、莫高窟佛龛券腰内侧台座隅角鎏金双凤宝相莲团花与飞天琵琶覆手尾端垂穗鎏金迦陵频伽嵌青金石花钿扣、及发射台导流槽尾喷集气室折流板拉杆撑柱与第七激波胞十阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 与欧空局火星快车号 OMEGA 在奥克시아平原与库贡谷 ExoMars 着陆区探测到的诺亚纪层状铁镁蒙皂石-蛭石古土壤泥岩、三角洲蛋白石质二氧化硅前积层与抗蚀橄榄石-辉石玄武质顶盖阶地 `Oxia Planum & Coogoon Vallis ExoMars Landing Site Layered Fe/Mg-Smectite-Vermiculite Mudstones, Deltaic Opaline-Silica Foresets & Olivine-Pyroxene Caprock Benches`、莫高窟盛唐第 159/217 窟佛龛券腰内侧台座隅角鎏金双凤宝相莲团花与飞天琵琶覆手尾端垂穗鎏金迦陵频伽嵌青金石花钿扣、以及发射台导流槽尾喷集气室折流板拉杆撑柱 `Pad_ExhaustPlenumBaffleDeckTieRod`、一级推力集气环传感器护圈 `Rocket_Stage1ThrustPlenumSensorGrommet` 与第七激波胞十阶普朗特-迈耶剪切辉光 `cell7DecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.197` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券腰内侧台座隅角两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchHaunchInnerPlinthPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券腰内侧台座隅角增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶覆手尾端垂穗增绘鎏金迦陵频伽嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入奥克시아平原与库贡谷 ExoMars 着陆区诺亚纪层状铁镁蒙皂石-蛭石古土壤泥岩、三角洲蛋白石质二氧化硅前积层与抗蚀橄榄石-辉石玄武质顶盖阶地（`oxia_planum_coogoon_vallis_exomars_vermiculite_smectite_opaline_delta_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`188,985 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,372 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对奥克시아平原与库贡谷蛭石-蒙皂石-三角洲水合硅石层引入暖黄褐色带（`oxiaPlanumCoogoonVallisExomarsVermiculiteSmectiteOpalineDeltaTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室折流板四座声学洪流拉杆撑柱（`Pad_ExhaustPlenumBaffleDeckTieRod_0..3`）与箭体一级推力集气环四向传感器护圈（`Rocket_Stage1ThrustPlenumSensorGrommet_0..3`），导出 `rocket-kit.glb`（`2,172,004 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`891,313 B`）；在 `flameMaterial` 中引入第七激波胞十阶普朗特-迈耶剪切辉光项（`cell7DecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百二十阶段验收：夜间持续进化 · 埃伯斯瓦尔德撞击坑与霍尔登撞击坑流域诺亚纪—赫斯珀里亚纪六叶曲流反转三角洲斜层理前积层、再搬运碎屑皂石-绿脱石蒙皂石点坝与撞击巨角砾岩阶地、莫高窟佛龛券顶外侧上缘鎏金双凤宝相莲团花与飞天琵琶缚弦顶端垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、及发射台导流槽尾喷集气室折流板端盖与第八激波胞十阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 与欧空局火星快车号 OMEGA 在埃伯斯瓦尔德撞击坑与霍尔登撞击坑流域探测到的诺亚纪—赫斯珀里亚纪六叶曲流反转三角洲斜层理前积层、再搬运碎屑皂石-绿脱石蒙皂石点坝与撞击巨角砾岩阶地 `Eberswalde Crater & Holden Crater Watershed Six-Lobe Meandering Inverted Deltaic Clinoform Foresets, Reworked Detrital Saponite-Nontronite Smectite Point-Bars & Impact Megabreccia Benches`、莫高窟盛唐第 159/217 窟佛龛券顶外侧上缘鎏金双凤宝相莲团花与飞天琵琶缚弦顶端垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、以及发射台导流槽尾喷集气室折流板端盖 `Pad_ExhaustPlenumBaffleDeckEndCap`、一级发动机舱段传感器护圈 `Rocket_Stage1EngineBaySensorGrommet` 与第八激波胞十阶普朗特-迈耶剪切辉光 `cell8DecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.198` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧上缘两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterUpperPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧上缘增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶缚弦顶端垂穗增绘鎏金迦陵频伽嵌红珊瑚花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入埃伯斯瓦尔德撞击坑与霍尔登撞击坑流域诺亚纪—赫斯珀里亚纪六叶曲流反转三角洲斜层理前积层、再搬运碎屑皂石-绿脱石蒙皂石点坝与撞击巨角砾岩阶地（`eberswalde_holden_clinoform_delta_saponite_nontronite_megabreccia_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`189,006 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,093,963 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对埃伯斯瓦尔德与霍尔登反转三角洲皂石-绿脱石-巨角砾岩层引入暖橄榄黄褐色带（`eberswaldeHoldenClinoformDeltaSaponiteNontroniteMegabrecciaTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室折流板四座声学洪流防冲刷端盖（`Pad_ExhaustPlenumBaffleDeckEndCap_0..3`）与箭体一级发动机舱段四向传感器护圈（`Rocket_Stage1EngineBaySensorGrommet_0..3`），导出 `rocket-kit.glb`（`2,182,272 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`891,407 B`）；在 `flameMaterial` 中引入第八激波胞十阶普朗特-迈耶剪切辉光项（`cell8DecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百二十一阶段验收：夜间持续进化 · 特尔比撞击坑与北希腊平原环缘诺亚纪两千米厚水下扇三角洲斜层理楔形体、三旋回铁镁绿脱石-皂石层与上覆高岭石-硅质方山阶地、莫高窟佛龛券顶外侧中缘鎏金双凤宝相莲团花与飞天琵琶缚弦底足垂穗鎏金迦陵频伽嵌和田碧玉花钿扣、及发射台导流槽尾喷集气室折流板锚固角撑板与尾焰末梢十阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 与欧空局火星快车号 OMEGA 在北希腊平原环缘特尔比撞击坑探测到的诺亚纪两千米厚水下扇三角洲斜层理楔形体、三旋回铁镁绿脱石-皂石层与上覆高岭石-硅质方山阶地 `Terby Crater & Northern Hellas Planitia Rim 2-km Sublacustrine Fan-Delta Clinoform Wedges, Three-Horizon Fe/Mg-Nontronite-Saponite Smectite Beds & Upper Kaolinite-Silica Mesa Benches`、莫高窟盛唐第 159/217 窟佛龛券顶外侧中缘鎏金双凤宝相莲团花与飞天琵琶缚弦底足垂穗鎏金迦陵频伽嵌和田碧玉花钿扣、以及发射台导流槽尾喷集气室折流板锚固角撑板 `Pad_ExhaustPlenumBaffleDeckAnchorGusset`、一级尾段收缩裙传感器护圈 `Rocket_Stage1BoattailSensorGrommet` 与尾焰末梢十阶普朗特-迈耶剪切辉光 `plumeTailDecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.199` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧中缘两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterMidPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧中缘增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶缚弦底足垂穗增绘鎏金迦陵频伽嵌和田碧玉花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入特尔比撞击坑与北希腊平原环缘诺亚纪两千米厚水下扇三角洲斜层理楔形体、三旋回铁镁绿脱石-皂石层与上覆高岭石-硅质方山阶地（`terby_northern_hellas_sublacustrine_clinoform_nontronite_kaolinite_mesa_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`189,020 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,377 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对特尔比撞击坑水下扇三角洲绿脱石-高岭石方山层引入暖米黄色带（`terbyNorthernHellasSublacustrineClinoformNontroniteKaoliniteMesaTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室折流板四座声学洪流锚固角撑板（`Pad_ExhaustPlenumBaffleDeckAnchorGusset_0..3`）与箭体一级尾段收缩裙四向传感器护圈（`Rocket_Stage1BoattailSensorGrommet_0..3`），导出 `rocket-kit.glb`（`2,192,576 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`891,668 B`）；在 `flameMaterial` 中引入尾焰末梢十阶普朗特-迈耶剪切辉光项（`plumeTailDecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百二十二阶段验收：夜间持续进化 · 麦克劳克林撞击坑与西阿拉伯高地诺亚纪五百米厚地下水补给湖相浊积泥岩、湖底热液蛇纹石-皂石丘与菱镁矿-菱铁矿碳酸盐阶地、莫高窟佛龛券顶外侧下缘鎏金双凤宝相莲团花与飞天琵琶缚弦侧翼垂穗鎏金迦陵频伽嵌绿松石花钿扣、及发射台导流槽尾喷集气室顶槛加劲肋与第一激波胞十一阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在西阿拉伯高地麦克劳克林撞击坑探测到的诺亚纪五百米厚地下水补给湖相浊积泥岩、湖底热液蛇纹石-皂石丘与菱镁矿-菱铁矿碳酸盐阶地 `McLaughlin Crater & Western Arabia Terra 500-m Groundwater-Fed Lacustrine Turbidite Mudstones, Sublacustrine Hydrothermal Serpentinite-Saponite Mounds & Magnesite-Siderite Carbonate Benches`、莫高窟盛唐第 159/217 窟佛龛券顶外侧下缘鎏金双凤宝相莲团花与飞天琵琶缚弦侧翼垂穗鎏金迦陵频伽嵌绿松石花钿扣、以及发射台导流槽尾喷集气室顶槛加劲肋 `Pad_ExhaustPlenumCrownSillStiffener`、二级前裙段传感器护圈 `Rocket_Stage2ForwardSkirtSensorGrommet` 与第一激波胞十一阶普朗特-迈耶剪切辉光 `cell1UndecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.200` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧下缘两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterLowerPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧下缘增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶缚弦侧翼垂穗增绘鎏金迦陵频伽嵌绿松石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入麦克劳克林撞击坑与西阿拉伯高地诺亚纪五百米厚地下水补给湖相浊积泥岩、湖底热液蛇纹石-皂石丘与菱镁矿-菱铁矿碳酸盐阶地（`mclaughlin_western_arabia_groundwater_turbidite_serpentine_saponite_magnesite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`189,008 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,502 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对麦克劳克林撞击坑蛇纹石-皂石-菱镁矿层引入暖青灰绿色带（`mclaughlinWesternArabiaGroundwaterTurbiditeSerpentineSaponiteMagnesiteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室顶槛四座声学洪流加劲肋（`Pad_ExhaustPlenumCrownSillStiffener_0..3`）与箭体二级前裙段四向传感器护圈（`Rocket_Stage2ForwardSkirtSensorGrommet_0..3`），导出 `rocket-kit.glb`（`2,202,856 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`891,618 B`）；在 `flameMaterial` 中引入第一激波胞十一阶普朗特-迈耶剪切辉光项（`cell1UndecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百二十三阶段验收：夜间持续进化 · 盖尔撞击坑格迪兹谷脊与斯廷森组—默里组不整合面赫斯珀里亚纪泥石流巨砾岩、风成大型交错层理砂岩与成岩蛋白石-石盐蚀变晕阶地、莫高窟佛龛券顶内侧上缘鎏金双凤宝相莲团花与飞天琵琶缚弦中脊垂穗鎏金迦陵频伽嵌青金石花钿扣、及发射台导流槽尾喷集气室顶槛横撑与第二激波胞十一阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 与“好奇号”火星车在盖尔撞击坑格迪兹谷脊及斯廷森组—默里组不整合面探测到的赫斯珀里亚纪泥石流巨砾岩、风成大型交错层理砂岩与成岩蛋白石-石盐蚀变晕阶地 `Gale Crater Gediz Vallis Ridge & Stimson–Murray Unconformity Debris-Flow Boulder Conglomerates, Cross-Bedded Aeolian Sandstone & Diagenetic Silica-Halite Fracture Halo Benches`、莫高窟盛唐第 159/217 窟佛龛券顶内侧上缘鎏金双凤宝相莲团花与飞天琵琶缚弦中脊垂穗鎏金迦陵频伽嵌青金石花钿扣、以及发射台导流槽尾喷集气室顶槛横撑 `Pad_ExhaustPlenumCrownSillCrossBrace`、二级后裙段传感器护圈 `Rocket_Stage2AftSkirtSensorGrommet` 与第二激波胞十一阶普朗特-迈耶剪切辉光 `cell2UndecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.201` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧上缘两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerUpperPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧上缘增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶缚弦中脊垂穗增绘鎏金迦陵频伽嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入盖尔撞击坑格迪兹谷脊与斯廷森组—默里组不整合面赫斯珀里亚纪泥石流巨砾岩、风成大型交错层理砂岩与成岩蛋白石-石盐蚀变晕阶地（`gale_gediz_vallis_stimson_murray_unconformity_boulder_silica_halite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`189,065 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,083 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对格迪兹谷脊与斯廷森—默里不整合面硅质蚀变晕层引入暖米黄色带（`galeGedizVallisStimsonMurrayUnconformityBoulderSilicaHaliteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室顶槛四座声学洪流交叉横撑（`Pad_ExhaustPlenumCrownSillCrossBrace_0..3`）与箭体二级后裙段四向传感器护圈（`Rocket_Stage2AftSkirtSensorGrommet_0..3`），导出 `rocket-kit.glb`（`2,213,112 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`891,636 B`）；在 `flameMaterial` 中引入第二激波胞十一阶普朗特-迈耶剪切辉光项（`cell2UndecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百二十四阶段验收：夜间持续进化 · 哥伦布撞击坑与塞壬高地古湖泊盆地诺亚纪—赫斯珀里亚纪同心浴缸环蒸发盐古海岸线、酸性硫酸盐明矾石-高岭石-黄钾铁矾层与石膏-半水石膏-六水泻盐阶地、莫高窟佛龛券顶内侧中缘鎏金双凤宝相莲团花与飞天琵琶缚弦弦孔垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、及发射台导流槽尾喷集气室顶槛拉杆与第三激波胞十一阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在南半球塞壬高地哥伦布撞击坑探测到的诺亚纪—赫斯珀里亚纪同心浴缸环蒸发盐古海岸线、酸性硫酸盐明矾石-高岭石-黄钾铁矾层与石膏-半水石膏-六水泻盐阶地 `Columbus Crater & Terra Sirenum Paleolake Basin Concentric Bathtub-Ring Evaporite Strandlines, Acid-Sulfate Alunite-Kaolinite-Jarosite Beds & Gypsum-Bassanite-Hexahydrite Benches`、莫高窟盛唐第 159/217 窟佛龛券顶内侧中缘鎏金双凤宝相莲团花与飞天琵琶缚弦弦孔垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、以及发射台导流槽尾喷集气室顶槛拉杆 `Pad_ExhaustPlenumCrownSillTieRod`、二级箱间段传感器护圈 `Rocket_Stage2IntertankSensorGrommet` 与第三激波胞十一阶普朗特-迈耶剪切辉光 `cell3UndecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.202` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧中缘两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerMidPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧中缘增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶缚弦弦孔垂穗增绘鎏金迦陵频伽嵌红珊瑚花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入哥伦布撞击坑与塞壬高地古湖泊盆地诺亚纪—赫斯珀里亚纪同心浴缸环蒸发盐古海岸线、酸性硫酸盐明矾石-高岭石-黄钾铁矾层与石膏-半水石膏-六水泻盐阶地（`columbus_terra_sirenum_bathtub_ring_alunite_kaolinite_gypsum_bassanite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`189,030 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,590 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对哥伦布撞击坑明矾石-高岭石-石膏-半水石膏层引入暖粉白色带（`columbusTerraSirenumBathtubRingAluniteKaoliniteGypsumBassaniteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室顶槛四座声学洪流拉杆撑柱（`Pad_ExhaustPlenumCrownSillTieRod_0..3`）与箭体二级箱间段四向传感器护圈（`Rocket_Stage2IntertankSensorGrommet_0..3`），导出 `rocket-kit.glb`（`2,223,348 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`891,740 B`）；在 `flameMaterial` 中引入第三激波胞十一阶普朗特-迈耶剪切辉光项（`cell3UndecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百二十五阶段验收：夜间持续进化 · 波江座盆地、阿里阿德涅丘群与亚特兰蒂斯混沌诺亚纪深海热液海底皂石-滑石-绿脱石丘、海绿石-海泡石层与混沌丘氯化物-碳酸盐阶地、莫高窟佛龛券顶内侧下缘鎏金双凤宝相莲团花与飞天琵琶缚弦尾卷垂穗鎏金迦陵频伽嵌和田碧玉花钿扣、及发射台导流槽尾喷集气室顶槛端盖与第四激波胞十一阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在南半球波江座盆地、阿里阿德涅丘群与亚特兰蒂斯混沌探测到的诺亚纪深海热液海底皂石-滑石-绿脱石丘、海绿石-海泡石层与混沌丘氯化物-碳酸盐阶地 `Eridania Basin, Ariadnes Colles & Atlantis Chaos Deep-Sea Hydrothermal Seafloor Saponite-Talc-Nontronite Mounds, Glauconite-Sepiolite Beds & Chaos-Knob Chloride-Carbonate Benches`、莫高窟盛唐第 159/217 窟佛龛券顶内侧下缘鎏金双凤宝相莲团花与飞天琵琶缚弦尾卷垂穗鎏金迦陵频伽嵌和田碧玉花钿扣、以及发射台导流槽尾喷集气室顶槛端盖 `Pad_ExhaustPlenumCrownSillEndCap`、二级前封头传感器护圈 `Rocket_Stage2FwdDomeSensorGrommet` 与第四激波胞十一阶普朗特-迈耶剪切辉光 `cell4UndecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.203` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧下缘两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerLowerPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧下缘增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶缚弦尾卷垂穗增绘鎏金迦陵频伽嵌和田碧玉花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入波江座盆地、阿里阿德涅丘群与亚特兰蒂斯混沌诺亚纪深海热液海底皂石-滑石-绿脱石丘、海绿石-海泡石层与混沌丘氯化物-碳酸盐阶地（`eridania_ariadnes_atlantis_seafloor_saponite_talc_glauconite_chaos_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`189,089 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,832 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对波江座盆地深海热液皂石-滑石-海绿石层引入暖青玉灰绿色带（`eridaniaAriadnesAtlantisSeafloorSaponiteTalcGlauconiteChaosTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室顶槛四座声学洪流防冲刷端盖（`Pad_ExhaustPlenumCrownSillEndCap_0..3`）与箭体二级前封头四向传感器护圈（`Rocket_Stage2FwdDomeSensorGrommet_0..3`），导出 `rocket-kit.glb`（`2,233,572 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`891,871 B`）；在 `flameMaterial` 中引入第四激波胞十一阶普朗特-迈耶剪切辉光项（`cell4UndecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百二十六阶段验收：夜间持续进化 · 诺克提斯迷宫与乌德曼斯撞击坑槽谷赫斯珀里亚纪—亚马逊纪酸性硫酸盐热液黄钾铁矾-明矾石丘、蛋白石质二氧化硅硅华与多水石膏-水绿矾地堑阶地、莫高窟佛龛券顶外侧柱础座鎏金双凤宝相莲团花与飞天琵琶缚弦颈卷垂穗鎏金迦陵频伽嵌绿松石花钿扣、及发射台导流槽尾喷集气室顶槛锚固角撑板与第五激波胞十一阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在塔尔西斯高原东缘诺克提斯迷宫与乌德曼斯撞击坑槽谷探测到的赫斯珀里亚纪—亚马逊纪酸性硫酸盐热液黄钾铁矾-明矾石丘、蛋白石质二氧化硅硅华与多水石膏-水绿矾地堑阶地 `Noctis Labyrinthus & Oudemans Crater Trough Acid-Sulfate Hydrothermal Jarosite-Alunite Mounds, Opaline-Silica Sinter & Polyhydrated Gypsum-Szomolnokite Graben Benches`、莫高窟盛唐第 159/217 窟佛龛券顶外侧柱础座鎏金双凤宝相莲团花与飞天琵琶缚弦颈卷垂穗鎏金迦陵频伽嵌绿松石花钿扣、以及发射台导流槽尾喷集气室顶槛锚固角撑板 `Pad_ExhaustPlenumCrownSillAnchorGusset`、二级后封头传感器护圈 `Rocket_Stage2AftDomeSensorGrommet` 与第五激波胞十一阶普朗特-迈耶剪切辉光 `cell5UndecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.204` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧柱础座两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterPedestalPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧柱础座增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶缚弦颈卷垂穗增绘鎏金迦陵频伽嵌绿松石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入诺克提斯迷宫与乌德曼斯撞击坑槽谷赫斯珀里亚纪—亚马逊纪酸性硫酸盐热液黄钾铁矾-明矾石丘、蛋白石质二氧化硅硅华与多水石膏-水绿矾地堑阶地（`noctis_labyrinthus_oudemans_hydrothermal_jarosite_alunite_opaline_sinter_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`189,165 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,624 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对诺克提斯迷宫热液黄钾铁矾-明矾石-蛋白石硅华层引入暖金赭米黄色带（`noctisLabyrinthusOudemansHydrothermalJarositeAluniteOpalineSinterTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室顶槛四座声学洪流锚固角撑板（`Pad_ExhaustPlenumCrownSillAnchorGusset_0..3`）与箭体二级后封头四向传感器护圈（`Rocket_Stage2AftDomeSensorGrommet_0..3`），导出 `rocket-kit.glb`（`2,243,836 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`891,946 B`）；在 `flameMaterial` 中引入第五激波胞十一阶普朗特-迈耶剪切辉光项（`cell5UndecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百二十七阶段验收：夜间持续进化 · 玛格丽特高地、伊阿尼混沌与奥雷乌姆混沌诺亚纪—赫斯珀里亚纪浅色层状赤铁矿化一水镁矾丘、多水石膏-黄钾铁矾阶地与混沌块盖层台地、莫高窟佛龛券顶内侧柱础座鎏金双凤宝相莲团花与飞天琵琶缚弦嵌槽垂穗鎏金迦陵频伽嵌青金石花钿扣、及发射台导流槽尾喷集气室底槽槛加劲肋与第六激波胞十一阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在玛格丽特高地、伊阿尼混沌与奥雷乌姆混沌探测到的诺亚纪—赫斯珀里亚纪浅色层状赤铁矿化一水镁矾丘、多水石膏-黄钾铁矾阶地与混沌块盖层台地 `Margaritifer Terra, Iani Chaos & Aureum Chaos Light-Toned Layered Hematitic Kieserite Mounds, Polyhydrated Gypsum-Jarosite Benches & Chaos-Block Caprock Terraces`、莫高窟盛唐第 159/217 窟佛龛券顶内侧柱础座鎏金双凤宝相莲团花与飞天琵琶缚弦嵌槽垂穗鎏金迦陵频伽嵌青金石花钿扣、以及发射台导流槽尾喷集气室底槽槛加劲肋 `Pad_ExhaustPlenumFloorTroughSillStiffener`、二级推力室集气环段传感器护圈 `Rocket_Stage2ThrustPlenumSensorGrommet` 与第六激波胞十一阶普朗特-迈耶剪切辉光 `cell6UndecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.205` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧柱础座两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerPedestalPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧柱础座增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶缚弦嵌槽垂穗增绘鎏金迦陵频伽嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入玛格丽特高地、伊阿尼混沌与奥雷乌姆混沌诺亚纪—赫斯珀里亚纪浅色层状赤铁矿化一水镁矾丘、多水石膏-黄钾铁矾阶地与混沌块盖层台地（`margaritifer_iani_aureum_chaos_hematitic_kieserite_polyhydrated_sulfate_caprock_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`189,289 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,098 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对伊阿尼混沌与奥雷乌姆混沌赤铁矿化一水镁矾-石膏层引入暖玫瑰赭黄色带（`margaritiferIaniAureumChaosHematiticKieseritePolyhydratedSulfateCaprockTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流加劲肋（`Pad_ExhaustPlenumFloorTroughSillStiffener_0..3`）与箭体二级推力室集气环段四向传感器护圈（`Rocket_Stage2ThrustPlenumSensorGrommet_0..3`），导出 `rocket-kit.glb`（`2,254,164 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`891,848 B`）；在 `flameMaterial` 中引入第六激波胞十一阶普朗特-迈耶剪切辉光项（`cell6UndecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百二十八阶段验收：夜间持续进化 · 尤文塔裂谷、巴埃提斯台地与玛雅谷源头赫斯珀里亚纪内部层状一水镁矾-水绿矾桌山、多水石膏-四水镁矾阶地与外流冲刷雅丹台地、莫高窟佛龛券顶外侧台基隅角鎏金双凤宝相莲团花与飞天琵琶缚弦岳梁垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、及发射台导流槽尾喷集气室底槽槛交叉斜撑与第七激波胞十一阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在水手号峡谷群北侧尤文塔裂谷、巴埃提斯台地与玛雅谷源头探测到的赫斯珀里亚纪内部层状一水镁矾-水绿矾桌山、多水石膏-四水镁矾阶地与外流冲刷雅丹台地 `Juventae Chasma, Baetis Mensa & Maja Valles Headwaters Interior Layered Kieserite-Szomolnokite Mesas, Polyhydrated Gypsum-Starkeyite Benches & Outflow-Scoured Yardang Terraces`、莫高窟盛唐第 159/217 窟佛龛券顶外侧台基隅角鎏金双凤宝相莲团花与飞天琵琶缚弦岳梁垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、以及发射台导流槽尾喷集气室底槽槛交叉斜撑 `Pad_ExhaustPlenumFloorTroughSillCrossBrace`、二级发动机舱段传感器护圈 `Rocket_Stage2EngineBaySensorGrommet` 与第七激波胞十一阶普朗特-迈耶剪切辉光 `cell7UndecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.206` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧台基隅角两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterPlinthPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧台基隅角增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶缚弦岳梁垂穗增绘鎏金迦陵频伽嵌红珊瑚花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入尤文塔裂谷、巴埃提斯台地与玛雅谷源头赫斯珀里亚纪内部层状一水镁矾-水绿矾桌山、多水石膏-四水镁矾阶地与外流冲刷雅丹台地（`juventae_chasma_baetis_mensa_maja_kieserite_szomolnokite_starkeyite_yardang_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`189,253 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,423 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对尤文塔裂谷与巴埃提斯台地一水镁矾-四水镁矾层引入暖米金琥珀色带（`juventaeChasmaBaetisMensaMajaKieseriteSzomolnokiteStarkeyiteYardangTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流交叉斜撑（`Pad_ExhaustPlenumFloorTroughSillCrossBrace_0..3`）与箭体二级发动机舱段四向传感器护圈（`Rocket_Stage2EngineBaySensorGrommet_0..3`），导出 `rocket-kit.glb`（`2,264,484 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`891,986 B`）；在 `flameMaterial` 中引入第七激波胞十一阶普朗特-迈耶剪切辉光项（`cell7UndecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百二十九阶段验收：夜间持续进化 · 西坎多尔裂谷、鲸鱼座台地与坎多尔沟群赫斯珀里亚纪内部层状一水镁矾-石膏桌山、氧化铁红崖阶地与风蚀雅丹台地、莫高窟佛龛券顶内侧台基隅角鎏金双凤宝相莲团花与飞天琵琶缚弦底座垂穗鎏金迦陵频伽嵌和田碧玉花钿扣、及发射台导流槽尾喷集气室底槽槛拉杆与第八激波胞十一阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在水手号峡谷群中部西坎多尔裂谷、鲸鱼座台地与坎多尔沟群探测到的赫斯珀里亚纪内部层状一水镁矾-石膏桌山、氧化铁红崖阶地与风蚀雅丹台地 `West Candor Chasma, Ceti Mensa & Candor Sulci Interior Layered Kieserite-Gypsum Mesas, Ferric-Oxide Red-Scarp Benches & Wind-Scoured Yardang Terraces`、莫高窟盛唐第 159/217 窟佛龛券顶内侧台基隅角鎏金双凤宝相莲团花与飞天琵琶缚弦底座垂穗鎏金迦陵频伽嵌和田碧玉花钿扣、以及发射台导流槽尾喷集气室底槽槛拉杆 `Pad_ExhaustPlenumFloorTroughSillTieRod`、二级尾收缩段传感器护圈 `Rocket_Stage2BoattailSensorGrommet` 与第八激波胞十一阶普朗特-迈耶剪切辉光 `cell8UndecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.207` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧台基隅角两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerPlinthPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧台基隅角增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶缚弦底座垂穗增绘鎏金迦陵频伽嵌和田碧玉花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入西坎多尔裂谷、鲸鱼座台地与坎多尔沟群赫斯珀里亚纪内部层状一水镁矾-石膏桌山、氧化铁红崖阶地与风蚀雅丹台地（`west_candor_chasma_ceti_mensa_candor_sulci_kieserite_gypsum_ferric_oxide_yardang_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`189,317 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,093,964 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对鲸鱼座台地一水镁矾-石膏-氧化铁红崖层引入暖赤赭玫瑰色带（`westCandorChasmaCetiMensaCandorSulciKieseriteGypsumFerricOxideYardangTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流拉杆撑柱（`Pad_ExhaustPlenumFloorTroughSillTieRod_0..3`）与箭体二级尾收缩段四向传感器护圈（`Rocket_Stage2BoattailSensorGrommet_0..3`），导出 `rocket-kit.glb`（`2,274,768 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`892,052 B`）；在 `flameMaterial` 中引入第八激波胞十一阶普朗特-迈耶剪切辉光项（`cell8UndecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百三十阶段验收：夜间持续进化 · 梅拉斯裂谷、伊乌斯裂谷与科普拉特斯交汇谷赫斯珀里亚纪互层一水镁矾-黄钾铁矾-石膏桌山、酸浸蒙脱石-二氧化硅层与巨型滑坡阶地台地、莫高窟佛龛券顶外侧腰檐帽石鎏金双凤宝相莲团花与飞天琵琶缚弦边卷垂穗鎏金迦陵频伽嵌绿松石花钿扣、及发射台导流槽尾喷集气室底槽槛端盖与羽流尾端十一阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在水手号峡谷群中轴梅拉斯裂谷、伊乌斯裂谷与科普拉特斯交汇谷探测到的赫斯珀里亚纪互层一水镁矾-黄钾铁矾-石膏桌山、酸浸蒙脱石-二氧化硅层与巨型滑坡阶地台地 `Melas Chasma, Ius Chasma & Coprates Junction Interbedded Kieserite-Jarosite-Gypsum Mesas, Acid-Leached Smectite-Silica Beds & Megaslide Bench Terraces`、莫高窟盛唐第 159/217 窟佛龛券顶外侧腰檐帽石鎏金双凤宝相莲团花与飞天琵琶缚弦边卷垂穗鎏金迦陵频伽嵌绿松石花钿扣、以及发射台导流槽尾喷集气室底槽槛端盖 `Pad_ExhaustPlenumFloorTroughSillEndCap`、整流罩底座传感器护圈 `Rocket_FairingBaseSensorGrommet` 与羽流尾端十一阶普朗特-迈耶剪切辉光 `plumeTailUndecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.208` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧腰檐帽石两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterDadoLintelPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧腰檐帽石增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶缚弦边卷垂穗增绘鎏金迦陵频伽嵌绿松石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入梅拉斯裂谷、伊乌斯裂谷与科普拉特斯交汇谷赫斯珀里亚纪互层一水镁矾-黄钾铁矾-石膏桌山、酸浸蒙脱石-二氧化硅层与巨型滑坡阶地台地（`melas_ius_coprates_junction_kieserite_jarosite_gypsum_megaslide_bench_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`189,278 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,731 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对梅拉斯裂谷与伊乌斯裂谷一水镁矾-黄钾铁矾层引入暖金赭橄榄色带（`melasIusCopratesJunctionKieseriteJarositeGypsumMegaslideBenchTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流防冲刷端盖（`Pad_ExhaustPlenumFloorTroughSillEndCap_0..3`）与箭体整流罩底座四向传感器护圈（`Rocket_FairingBaseSensorGrommet_0..3`），导出 `rocket-kit.glb`（`2,285,020 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`891,837 B`）；在 `flameMaterial` 中引入羽流尾端十一阶普朗特-迈耶剪切辉光项（`plumeTailUndecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百三十一阶段验收：夜间持续进化 · 奥菲尔裂谷与赫柏斯裂谷赫斯珀里亚纪中央孤山一水镁矾-多水硫酸盐桌山、黄钾铁矾-赤铁矿台地与水合硫酸盐滑坡陡坎、莫高窟佛龛券顶内侧腰檐帽石鎏金双凤宝相莲团花与飞天琵琶缚弦尾脊垂穗鎏金迦陵频伽嵌青金石花钿扣、及发射台导流槽尾喷集气室底槽槛导流围裙与第一激波胞十二阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在奥菲尔裂谷与赫柏斯裂谷探测到的赫斯珀里亚纪中央孤山一水镁矾-多水硫酸盐桌山、黄钾铁矾-赤铁矿台地与水合硫酸盐滑坡陡坎 `Ophir Chasma & Hebes Chasma Central-Mound Kieserite-Polyhydrated-Sulfate Mesas, Jarosite-Hematite Benches & Hydrated-Sulfate Landslide Scarps`、莫高窟盛唐第 159/217 窟佛龛券顶内侧腰檐帽石鎏金双凤宝相莲团花与飞天琵琶缚弦尾脊垂穗鎏金迦陵频伽嵌青金石花钿扣、以及发射台导流槽尾喷集气室底槽槛导流围裙 `Pad_ExhaustPlenumFloorTroughSillDrainApron`、整流罩中段传感器护圈 `Rocket_FairingMidSensorGrommet` 与第一激波胞十二阶普朗特-迈耶剪切辉光 `cell1DuodecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.209` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧腰檐帽石两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerDadoLintelPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧腰檐帽石增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶缚弦尾脊垂穗增绘鎏金迦陵频伽嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入奥菲尔裂谷与赫柏斯裂谷赫斯珀里亚纪中央孤山一水镁矾-多水硫酸盐桌山、黄钾铁矾-赤铁矿台地与水合硫酸盐滑坡陡坎（`ophir_hebes_chasma_central_mound_kieserite_polyhydrated_sulfate_jarosite_hematite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`189,372 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,222 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对奥菲尔与赫柏斯裂谷一水镁矾-黄钾铁矾-赤铁矿层引入暖棕赤铁矿-硫酸盐色带（`ophirHebesChasmaCentralMoundKieseritePolyhydratedSulfateJarositeHematiteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流防溅导流围裙（`Pad_ExhaustPlenumFloorTroughSillDrainApron_0..3`）与箭体整流罩中段四向传感器护圈（`Rocket_FairingMidSensorGrommet_0..3`），导出 `rocket-kit.glb`（`2,295,296 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`892,041 B`）；在 `flameMaterial` 中引入第一激波胞十二阶普朗特-迈耶剪切辉光项（`cell1DuodecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百三十二阶段验收：夜间持续进化 · 提托尼姆裂谷与厄科斯裂谷赫斯珀里亚纪一水镁矾-水绿矾-石膏浅色台地、潜蚀谷高原与暗色沙丘互层陡坎、莫高窟佛龛券顶外侧腰檐槛座鎏金双凤宝相莲团花与飞天琵琶缚弦顶珠垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、及发射台导流槽尾喷集气室底槽槛溢流压顶与第二激波胞十二阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在提托尼姆裂谷与厄科斯裂谷探测到的赫斯珀里亚纪一水镁矾-水绿矾-石膏浅色台地、潜蚀谷高原与暗色沙丘互层陡坎 `Tithonium Chasma & Echus Chasma Kieserite-Szomolnokite-Gypsum Light-Toned Benches, Sapping-Valley Plateaus & Dark-Dune Interbed Scarps`、莫高窟盛唐第 159/217 窟佛龛券顶外侧腰檐槛座鎏金双凤宝相莲团花与飞天琵琶缚弦顶珠垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、以及发射台导流槽尾喷集气室底槽槛溢流压顶 `Pad_ExhaustPlenumFloorTroughSillWeirCoping`、整流罩鼻锥传感器护圈 `Rocket_FairingNoseSensorGrommet` 与第二激波胞十二阶普朗特-迈耶剪切辉光 `cell2DuodecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.210` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧腰檐槛座两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterDadoSillPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧腰檐槛座增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶缚弦顶珠垂穗增绘鎏金迦陵频伽嵌红珊瑚花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入提托尼姆裂谷与厄科斯裂谷赫斯珀里亚纪一水镁矾-水绿矾-石膏浅色台地、潜蚀谷高原与暗色沙丘互层陡坎（`tithonium_echus_chasma_kieserite_szomolnokite_gypsum_sapping_valley_plateau_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`189,543 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,697 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对提托尼姆与厄科斯裂谷一水镁矾-水绿矾-石膏层引入暖米金色带（`tithoniumEchusChasmaKieseriteSzomolnokiteGypsumSappingValleyPlateauTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流防回流溢流压顶（`Pad_ExhaustPlenumFloorTroughSillWeirCoping_0..3`）与箭体整流罩鼻锥四向传感器护圈（`Rocket_FairingNoseSensorGrommet_0..3`），导出 `rocket-kit.glb`（`2,305,600 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`892,011 B`）；在 `flameMaterial` 中引入第二激波胞十二阶普朗特-迈耶剪切辉光项（`cell2DuodecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百三十三阶段验收：夜间持续进化 · 恒河裂谷、卡普里裂谷与厄俄斯裂谷赫斯珀里亚纪一水镁矾-石膏-赤铁矿桌山、富橄榄石玄武质沙席与外流干瀑阶地、莫高窟佛龛券顶内侧腰檐槛座鎏金双凤宝相莲团花与飞天琵琶缚弦底珠垂穗鎏金迦陵频伽嵌和田碧玉花钿扣、及发射台导流槽尾喷集气室底槽槛锚固台座与第三激波胞十二阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在恒河裂谷、卡普里裂谷与厄俄斯裂谷探测到的赫斯珀里亚纪一水镁矾-石膏-赤铁矿桌山、富橄榄石玄武质沙席与外流干瀑阶地 `Ganges Chasma, Capri Chasma & Eos Chasma Kieserite-Gypsum-Hematite Mesas, Olivine-Enriched Basaltic Dune Sheets & Outflow Cataract Benches`、莫高窟盛唐第 159/217 窟佛龛券顶内侧腰檐槛座鎏金双凤宝相莲团花与飞天琵琶缚弦底珠垂穗鎏金迦陵频伽嵌和田碧玉花钿扣、以及发射台导流槽尾喷集气室底槽槛锚固台座 `Pad_ExhaustPlenumFloorTroughSillAnchorPlinth`、整流罩顶锥传感器护圈 `Rocket_FairingApexSensorGrommet` 与第三激波胞十二阶普朗特-迈耶剪切辉光 `cell3DuodecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.211` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧腰檐槛座两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerDadoSillPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧腰檐槛座增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶缚弦底珠垂穗增绘鎏金迦陵频伽嵌和田碧玉花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入恒河裂谷、卡普里裂谷与厄俄斯裂谷赫斯珀里亚纪一水镁矾-石膏-赤铁矿桌山、富橄榄石玄武质沙席与外流干瀑阶地（`ganges_capri_eos_chasma_kieserite_gypsum_hematite_olivine_outflow_cataract_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`189,589 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,093,997 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对恒河、卡普里与厄俄斯裂谷一水镁矾-橄榄石-赤铁矿层引入暖金褐橄榄色带（`gangesCapriEosChasmaKieseriteGypsumHematiteOlivineOutflowCataractTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流防冲刷锚固台座（`Pad_ExhaustPlenumFloorTroughSillAnchorPlinth_0..3`）与箭体整流罩顶锥四向传感器护圈（`Rocket_FairingApexSensorGrommet_0..3`），导出 `rocket-kit.glb`（`2,315,872 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`892,011 B`）；在 `flameMaterial` 中引入第三激波胞十二阶普朗特-迈耶剪切辉光项（`cell3DuodecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百三十四阶段验收：夜间持续进化 · 阿람混沌、伊阿尼混沌与奥雷乌姆混沌赫斯珀里亚纪一水镁矾-三价铁羟基硫酸盐-赤铁矿穹丘桌山、泉华硫酸盐台地与塌陷岩块陡坎、莫高窟佛龛券顶外侧挑檐额枋鎏金双凤宝相莲团花与飞天琵琶缚弦中挂垂穗鎏金迦陵频伽嵌绿松石花钿扣、及发射台导流槽尾喷集气室底槽槛抗剪板与第四激波胞十二阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 在阿람混沌、伊阿尼混沌与奥雷乌姆混沌探测到的赫斯珀里亚纪一水镁矾-三价铁羟基硫酸盐-赤铁矿穹丘桌山、泉华硫酸盐台地与塌陷岩块陡坎 `Aram Chaos, Iani Chaos & Aureum Chaos Kieserite-Ferric-Hydroxysulfate-Hematite Dome Mesas, Spring-Fed Sulfate Benches & Collapsed Block Scarps`、莫高窟盛唐第 159/217 窟佛龛券顶外侧挑檐额枋鎏金双凤宝相莲团花与飞天琵琶缚弦中挂垂穗鎏金迦陵频伽嵌绿松石花钿扣、以及发射台导流槽尾喷集气室底槽槛抗剪板 `Pad_ExhaustPlenumFloorTroughSillShearPlate`、一级液氢贮箱下段传感器整流罩 `Rocket_Stage1LH2LowerSensorCowl` 与第四激波胞十二阶普朗特-迈耶剪切辉光 `cell4DuodecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.212` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧挑檐额枋两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterCorniceLintelPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧挑檐额枋增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶缚弦中挂垂穗增绘鎏金迦陵频伽嵌绿松石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入阿람混沌、伊阿尼混沌与奥雷乌姆混沌赫斯珀里亚纪一水镁矾-三价铁羟基硫酸盐-赤铁矿穹丘桌山、泉华硫酸盐台地与塌陷岩块陡坎（`aram_iani_aureum_chaos_kieserite_ferric_hydroxysulfate_hematite_dome_mesa_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`189,520 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,438 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对阿람、伊阿尼与奥雷乌姆混沌一水镁矾-三价铁羟基硫酸盐-赤铁矿层引入暖赭红三价铁羟基硫酸盐色带（`aramIaniAureumChaosKieseriteFerricHydroxysulfateHematiteDomeMesaTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流抗剪止推板（`Pad_ExhaustPlenumFloorTroughSillShearPlate_0..3`）与箭体一级液氢贮箱下筒段四向传感器整流罩（`Rocket_Stage1LH2LowerSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,326,164 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`892,033 B`）；在 `flameMaterial` 中引入第四激波胞十二阶普朗特-迈耶剪切辉光项（`cell4DuodecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百三十五阶段验收：夜间持续进化 · 沙尔巴塔纳谷、许德拉奥特斯混沌与西穆德-提乌谷赫斯珀里亚纪古湖泊扇三角洲滨线、铁镁蒙皂石-绿泥石-蛋白石硅质台地与混沌塌陷岩块陡坎、莫高窟佛龛券顶内侧挑檐额枋鎏金双凤宝相莲团花与飞天琵琶缚弦侧翼垂穗鎏金迦陵频伽嵌青金石花钿扣、及发射台导流槽尾喷集气室底槽槛防冲刷内衬与第五激波胞十二阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 与 HRSC 在沙尔巴塔纳谷、许德拉奥特斯混沌与西穆德-提乌谷探测到的赫斯珀里亚纪古湖泊扇三角洲滨线、铁镁蒙皂石-绿泥石-蛋白石硅质台地与混沌塌陷岩块陡坎 `Shalbatana Vallis, Hydraotes Chaos & Simud-Tiu Valles Paleolake Fan-Delta Strandlines, Fe/Mg-Smectite-Chlorite-Opaline Benches & Collapsed Chaos-Block Scarps`、莫高窟盛唐第 159/217 窟佛龛券顶内侧挑檐额枋鎏金双凤宝相莲团花与飞天琵琶缚弦侧翼垂穗鎏金迦陵频伽嵌青金石花钿扣、以及发射台导流槽尾喷集气室底槽槛防冲刷内衬 `Pad_ExhaustPlenumFloorTroughSillBlastLiner`、一级液氢贮箱中段传感器整流罩 `Rocket_Stage1LH2MidSensorCowl` 与第五激波胞十二阶普朗特-迈耶剪切辉光 `cell5DuodecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.213` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧挑檐额枋两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerCorniceLintelPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧挑檐额枋增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶缚弦侧翼垂穗增绘鎏金迦陵频伽嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入沙尔巴塔纳谷、许德拉奥特斯混沌与西穆德-提乌谷赫斯珀里亚纪古湖泊扇三角洲滨线、铁镁蒙皂石-绿泥石-蛋白石硅质台地与混沌塌陷岩块陡坎（`shalbatana_hydraotes_simud_tiu_paleolake_delta_smectite_chlorite_opaline_chaos_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`189,595 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,890 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对沙尔巴塔纳谷与西穆德-提乌谷铁镁蒙皂石-绿泥石-蛋白石层引入暖青灰硅质蒙皂石色带（`shalbatanaHydraotesSimudTiuPaleolakeDeltaSmectiteChloriteOpalineChaosTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流防冲刷耐火内衬（`Pad_ExhaustPlenumFloorTroughSillBlastLiner_0..3`）与箭体一级液氢贮箱中筒段四向传感器整流罩（`Rocket_Stage1LH2MidSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,336,440 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`891,992 B`）；在 `flameMaterial` 中引入第五激波胞十二阶普朗特-迈耶剪切辉光项（`cell5DuodecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百三十六阶段验收：夜间持续进化 · 卡塞谷、萨克拉桌山与拉贝阿蒂斯槽沟赫斯珀里亚纪特大洪水干瀑台地、富橄榄石玄武岩板状脊与地堑控界蒙皂石-硫酸盐桌山陡坎、莫高窟佛龛券顶外侧挑檐槛座鎏金双凤宝相莲团花与飞天琵琶缚弦尾栓垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、及发射台导流槽尾喷集气室底槽槛射流折流墩与第六激波胞十二阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 与 THEMIS 在卡塞谷、萨克拉桌山与拉贝阿蒂斯槽沟探测到的赫斯珀里亚纪特大洪水干瀑台地、富橄榄石玄武岩板状脊与地堑控界蒙皂石-硫酸盐桌山陡坎 `Kasei Valles, Sacra Mensa & Labeatis Fossae Megaflood Dry-Cataract Benches, Olivine-Basalt Platy Ridges & Graben-Bounded Smectite-Sulfate Mesa Scarps`、莫高窟盛唐第 159/217 窟佛龛券顶外侧挑檐槛座鎏金双凤宝相莲团花与飞天琵琶缚弦尾栓垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、以及发射台导流槽尾喷集气室底槽槛射流折流墩 `Pad_ExhaustPlenumFloorTroughSillJetBaffle`、一级液氢贮箱上段传感器整流罩 `Rocket_Stage1LH2UpperSensorCowl` 与第六激波胞十二阶普朗特-迈耶剪切辉光 `cell6DuodecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.214` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧挑檐槛座两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterCorniceSillPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧挑檐槛座增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶缚弦尾栓垂穗增绘鎏金迦陵频伽嵌红珊瑚花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入卡塞谷、萨克拉桌山与拉贝阿蒂斯槽沟赫斯珀里亚纪特大洪水干瀑台地、富橄榄石玄武岩板状脊与地堑控界蒙皂石-硫酸盐桌山陡坎（`kasei_sacra_mensa_labeatis_megaflood_cataract_olivine_basalt_smectite_sulfate_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`189,560 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,737 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对卡塞谷与萨克拉桌山橄榄石玄武岩-蒙皂石-硫酸盐层引入暖黄褐橄榄玄武岩色带（`kaseiSacraMensaLabeatisMegafloodCataractOlivineBasaltSmectiteSulfateTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流防回流射流折流墩（`Pad_ExhaustPlenumFloorTroughSillJetBaffle_0..3`）与箭体一级液氢贮箱上筒段四向传感器整流罩（`Rocket_Stage1LH2UpperSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,346,728 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`892,054 B`）；在 `flameMaterial` 中引入第六激波胞十二阶普朗特-迈耶剪切辉光项（`cell6DuodecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百三十七阶段验收：夜间持续进化 · 阿瑞斯谷、珍珠混沌与海达斯皮斯混沌赫斯珀里亚纪外流河道流线型泪滴岛沙洲、富橄榄石河谷侧壁与石膏-蒙皂石混沌塌陷岩块陡坎、莫高窟佛龛券顶内侧挑檐槛座鎏金双凤宝相莲团花与飞天琵琶缚弦弦槽垂穗鎏金迦陵频伽嵌和田碧玉花钿扣、及发射台导流槽尾喷集气室底槽槛水冷喷嘴墩与第七激波胞十二阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 与 HRSC 在阿瑞斯谷、珍珠混沌与海达斯皮斯混沌探测到的赫斯珀里亚纪外流河道流线型泪滴岛沙洲、富橄榄石河谷侧壁与石膏-蒙皂石混沌塌陷岩块陡坎 `Ares Vallis, Margaritifer Chaos & Hydaspis Chaos Outflow Streamlined Teardrop Bars, Olivine-Rich Channel Walls & Gypsum-Smectite Chaos-Block Scarps`、莫高窟盛唐第 159/217 窟佛龛券顶内侧挑檐槛座鎏金双凤宝相莲团花与飞天琵琶缚弦弦槽垂穗鎏金迦陵频伽嵌和田碧玉花钿扣、以及发射台导流槽尾喷集气室底槽槛水冷喷嘴墩 `Pad_ExhaustPlenumFloorTroughSillCoolingNozzle`、一级液氧贮箱下段传感器整流罩 `Rocket_Stage1LOXLowerSensorCowl` 与第七激波胞十二阶普朗特-迈耶剪切辉光 `cell7DuodecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.215` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧挑檐槛座两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerCorniceSillPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧挑檐槛座增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶缚弦弦槽垂穗增绘鎏金迦陵频伽嵌和田碧玉花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入阿瑞斯谷、珍珠混沌与海达斯皮斯混沌赫斯珀里亚纪外流河道流线型泪滴岛沙洲、富橄榄石河谷侧壁与石膏-蒙皂石混沌塌陷岩块陡坎（`ares_margaritifer_hydaspis_chaos_outflow_teardrop_olivine_gypsum_smectite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`189,635 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,505 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对阿瑞斯谷与珍珠混沌富橄榄石-石膏-蒙皂石层引入暖米灰绿色带（`aresMargaritiferHydaspisChaosOutflowTeardropOlivineGypsumSmectiteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流高压水冷喷嘴墩（`Pad_ExhaustPlenumFloorTroughSillCoolingNozzle_0..3`）与箭体一级液氧贮箱下筒段四向传感器整流罩（`Rocket_Stage1LOXLowerSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,357,040 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`891,993 B`）；在 `flameMaterial` 中引入第七激波胞十二阶普朗特-迈耶剪切辉光项（`cell7DuodecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百三十八阶段验收：夜间持续进化 · 玛雅谷、克珊忒高地与纳内迪谷赫斯珀里亚纪古湖泊溢流决口峡谷、内嵌曲流河漫滩阶地与铁镁蒙皂石-硫酸盐切蚀壁、莫高窟佛龛券顶外侧平棊额枋鎏金双凤宝相莲团花与飞天琵琶缚弦嵌裙垂穗鎏金迦陵频伽嵌绿松石花钿扣、及发射台导流槽尾喷集气室底槽槛消涡导流叶片与第八激波胞十二阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 与 THEMIS 在玛雅谷、克珊忒高地与纳内迪谷探测到的赫斯珀里亚纪古湖泊溢流决口峡谷、内嵌曲流河漫滩阶地与铁镁蒙皂石-硫酸盐切蚀壁 `Maja Valles, Xanthe Terra & Nanedi Valles Paleolake Spillover Gorges, Inner-Channel Meander Benches & Fe/Mg-Smectite-Sulfate Terraces`、莫高窟盛唐第 159/217 窟佛龛券顶外侧平棊额枋鎏金双凤宝相莲团花与飞天琵琶缚弦嵌裙垂穗鎏金迦陵频伽嵌绿松石花钿扣、以及发射台导流槽尾喷集气室底槽槛消涡导流叶片 `Pad_ExhaustPlenumFloorTroughSillVortexVane`、一级液氧贮箱中段传感器整流罩 `Rocket_Stage1LOXMidSensorCowl` 与第八激波胞十二阶普朗特-迈耶剪切辉光 `cell8DuodecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.216` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧平棊额枋两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterFriezeLintelPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧平棊额枋增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶缚弦嵌裙垂穗增绘鎏金迦陵频伽嵌绿松石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入玛雅谷、克珊忒高地与纳内迪谷赫斯珀里亚纪古湖泊溢流决口峡谷、内嵌曲流河漫滩阶地与铁镁蒙皂石-硫酸盐切蚀壁（`maja_xanthe_nanedi_paleolake_spillover_gorge_meander_smectite_sulfate_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`189,616 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,905 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对玛雅谷与纳内迪谷铁镁蒙皂石-硫酸盐层引入暖米褐橄榄色带（`majaXantheNanediPaleolakeSpilloverGorgeMeanderSmectiteSulfateTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流消涡导流叶片（`Pad_ExhaustPlenumFloorTroughSillVortexVane_0..3`）与箭体一级液氧贮箱中筒段四向传感器整流罩（`Rocket_Stage1LOXMidSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,367,324 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`892,279 B`）；在 `flameMaterial` 中引入第八激波胞十二阶普朗特-迈耶剪切辉光项（`cell8DuodecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百三十九阶段验收：夜间持续进化 · 曼加拉谷、门诺尼亚槽沟与阿布斯谷赫斯珀里亚纪岩脉供水特大洪水地堑源头干瀑、辫状河道阶地与铁镁蒙皂石-辉石-硫酸盐台地、莫高窟佛龛券顶内侧平棊额枋鎏金双凤宝相莲团花与飞天琵琶缚弦背板垂穗鎏金迦陵频伽嵌青金石花钿扣、及发射台导流槽尾喷集气室底槽槛声学分流楔与尾焰末端十二阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 与 HRSC 在曼加拉谷、门诺尼亚槽沟与阿布斯谷探测到的赫斯珀里亚纪岩脉供水特大洪水地堑源头干瀑、辫状河道阶地与铁镁蒙皂石-辉石-硫酸盐台地 `Mangala Valles, Memnonia Fossae & Abus Vallis Dike-Fed Megaflood Graben-Head Cataracts, Braided Channel Benches & Fe/Mg-Smectite-Pyroxene-Sulfate Terraces`、莫高窟盛唐第 159/217 窟佛龛券顶内侧平棊额枋鎏金双凤宝相莲团花与飞天琵琶缚弦背板垂穗鎏金迦陵频伽嵌青金石花钿扣、以及发射台导流槽尾喷集气室底槽槛声学分流楔 `Pad_ExhaustPlenumFloorTroughSillAcousticSplitter`、一级液氧贮箱上段传感器整流罩 `Rocket_Stage1LOXUpperSensorCowl` 与尾焰末端十二阶普朗特-迈耶剪切辉光 `plumeTailDuodecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.217` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧平棊额枋两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerFriezeLintelPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧平棊额枋增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶缚弦背板垂穗增绘鎏金迦陵频伽嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入曼加拉谷、门诺尼亚槽沟与阿布斯谷赫斯珀里亚纪岩脉供水特大洪水地堑源头干瀑、辫状河道阶地与铁镁蒙皂石-辉石-硫酸盐台地（`mangala_memnonia_abus_dike_megaflood_cataract_braided_smectite_pyroxene_sulfate_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`189,646 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,441 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对曼加拉谷与门诺尼亚地堑源头铁镁蒙皂石-辉石-硫酸盐层引入暖褐灰橄榄色带（`mangalaMemnoniaAbusDikeMegafloodCataractBraidedSmectitePyroxeneSulfateTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流分流消能楔（`Pad_ExhaustPlenumFloorTroughSillAcousticSplitter_0..3`）与箭体一级液氧贮箱上筒段四向传感器整流罩（`Rocket_Stage1LOXUpperSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,377,652 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`892,252 B`）；在 `flameMaterial` 中引入尾焰末端十二阶普朗特-迈耶剪切辉光项（`plumeTailDuodecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百四十阶段验收：夜间持续进化 · 马阿迪姆谷、古谢夫撞击坑与波江座古湖溢流道赫斯珀里亚纪古湖溢流峡谷阶地、阶状纵向沙洲台地与铁镁蒙皂石-蛋白石-碳酸盐陡坎、莫高窟佛龛券顶外侧平棊槛座鎏金双凤宝相莲团花与飞天琵琶缚弦弦箍垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、及发射台导流槽尾喷集气室底槽槛消浪堰与第一激波胞十三阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 与勇气号在马阿迪姆谷、古谢夫撞击坑与波江座古湖溢流道探测到的赫斯珀里亚纪古湖溢流峡谷阶地、阶状纵向沙洲台地与铁镁蒙皂石-蛋白石-碳酸盐陡坎 `Ma'adim Vallis, Gusev Crater & Eridania Lake Spillway Paleolake Overflow Gorge Terraces, Terraced Longitudinal Bar Benches & Fe/Mg-Smectite-Opaline-Carbonate Scarps`、莫高窟盛唐第 159/217 窟佛龛券顶外侧平棊槛座鎏金双凤宝相莲团花与飞天琵琶缚弦弦箍垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、以及发射台导流槽尾喷集气室底槽槛消浪堰 `Pad_ExhaustPlenumFloorTroughSillSurgeWeir`、一级箱间段下筒传感器整流罩 `Rocket_Stage1IntertankLowerSensorCowl` 与第一激波胞十三阶普朗特-迈耶剪切辉光 `cell1TredecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.218` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧平棊槛座两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterFriezeSillPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧平棊槛座增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶缚弦弦箍垂穗增绘鎏金迦陵频伽嵌红珊瑚花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入马阿迪姆谷、古谢夫撞击坑与波江座古湖溢流道赫斯珀里亚纪古湖溢流峡谷阶地、阶状纵向沙洲台地与铁镁蒙皂石-蛋白石-碳酸盐陡坎（`maadim_gusev_eridania_spillway_overflow_gorge_smectite_opaline_carbonate_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`189,783 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,027 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对马阿迪姆谷与古谢夫古湖铁镁蒙皂石-蛋白石-碳酸盐层引入暖米黄绿硅质碳酸盐色带（`maadimGusevEridaniaSpillwayOverflowGorgeSmectiteOpalineCarbonateTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流消浪堰（`Pad_ExhaustPlenumFloorTroughSillSurgeWeir_0..3`）与箭体一级箱间段下筒四向传感器整流罩（`Rocket_Stage1IntertankLowerSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,387,984 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`892,358 B`）；在 `flameMaterial` 中引入第一激波胞十三阶普朗特-迈耶剪切辉光项（`cell1TredecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百四十一阶段验收：夜间持续进化 · 卡西尼撞击坑、斯卡曼德谷与马默斯谷诺亚纪—赫斯珀里亚纪开放型古湖决口峡谷、阶状三角洲台地与铁镁蒙皂石-碳酸盐-硫酸盐陡坎、莫高窟佛龛券顶内侧平棊槛座鎏金双凤宝相莲团花与飞天琵琶缚弦弦眼垂穗鎏金迦陵频伽嵌和田碧玉花钿扣、及发射台导流槽尾喷集气室底槽槛止推横梁与第二激波胞十三阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 与 HRSC 在卡西尼撞击坑、斯卡曼德谷与马默斯谷探测到的诺亚纪—赫斯珀里亚纪开放型古湖决口峡谷、阶状三角洲台地与铁镁蒙皂石-碳酸盐-硫酸盐陡坎 `Cassini Crater, Scamander Vallis & Mamers Valles Open-Basin Paleolake Breach Gorges, Terraced Deltaic Benches & Fe/Mg-Smectite-Carbonate-Sulfate Scarps`、莫高窟盛唐第 159/217 窟佛龛券顶内侧平棊槛座鎏金双凤宝相莲团花与飞天琵琶缚弦弦眼垂穗鎏金迦陵频伽嵌和田碧玉花钿扣、以及发射台导流槽尾喷集气室底槽槛止推横梁 `Pad_ExhaustPlenumFloorTroughSillThrustBeam`、一级箱间段中筒传感器整流罩 `Rocket_Stage1IntertankMidSensorCowl` 与第二激波胞十三阶普朗特-迈耶剪切辉光 `cell2TredecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.219` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧平棊槛座两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerFriezeSillPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧平棊槛座增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶缚弦弦眼垂穗增绘鎏金迦陵频伽嵌和田碧玉花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入卡西尼撞击坑、斯卡曼德谷与马默斯谷诺亚纪—赫斯珀里亚纪开放型古湖决口峡谷、阶状三角洲台地与铁镁蒙皂石-碳酸盐-硫酸盐陡坎（`cassini_scamander_mamers_paleolake_breach_gorge_smectite_carbonate_sulfate_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`189,782 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,484 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对卡西尼撞击坑与斯卡曼德谷铁镁蒙皂石-碳酸盐-硫酸盐层引入暖米褐橄榄色带（`cassiniScamanderMamersPaleolakeBreachGorgeSmectiteCarbonateSulfateTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流抗冲击止推横梁（`Pad_ExhaustPlenumFloorTroughSillThrustBeam_0..3`）与箭体一级箱间段中筒四向传感器整流罩（`Rocket_Stage1IntertankMidSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,398,308 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`892,419 B`）；在 `flameMaterial` 中引入第二激波胞十三阶普朗特-迈耶剪切辉光项（`cell2TredecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百四十二阶段验收：夜间持续进化 · 乌兹博伊谷、拉冬谷与莫拉瓦谷赫斯珀里亚纪古湖溢流峡谷、曲流沙洲台地与鲕绿泥石-蒙皂石-硫酸盐陡坎、莫高窟佛龛券顶外侧垂帐额枋鎏金双凤宝相莲团花与飞天琵琶缚弦尾托垂穗鎏金迦陵频伽嵌绿松石花钿扣、及发射台导流槽尾喷集气室底槽槛导流溜槽与第三激波胞十三阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 与 HRSC 在乌兹博伊谷、拉冬谷与莫拉瓦谷探测到的赫斯珀里亚纪古湖溢流峡谷、曲流沙洲台地与鲕绿泥石-蒙皂石-硫酸盐陡坎 `Uzboi Vallis, Ladon Valles & Morava Valles Paleolake Spillover Gorges, Scroll-Bar Meander Benches & Chamosite-Smectite-Sulfate Scarps`、莫高窟盛唐第 159/217 窟佛龛券顶外侧垂帐额枋鎏金双凤宝相莲团花与飞天琵琶缚弦尾托垂穗鎏金迦陵频伽嵌绿松石花钿扣、以及发射台导流槽尾喷集气室底槽槛导流溜槽 `Pad_ExhaustPlenumFloorTroughSillJetChute`、一级箱间段上筒传感器整流罩 `Rocket_Stage1IntertankUpperSensorCowl` 与第三激波胞十三阶普朗特-迈耶剪切辉光 `cell3TredecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.220` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧垂帐额枋两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterValanceLintelPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧垂帐额枋增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶缚弦尾托垂穗增绘鎏金迦陵频伽嵌绿松石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入乌兹博伊谷、拉冬谷与莫拉瓦谷赫斯珀里亚纪古湖溢流峡谷、曲流沙洲台地与鲕绿泥石-蒙皂石-硫酸盐陡坎（`uzboi_ladon_morava_spillover_gorge_scroll_bench_chamosite_smectite_sulfate_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`189,876 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,539 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对乌兹博伊谷与拉冬谷鲕绿泥石-蒙皂石-硫酸盐层引入暖青灰橄榄色带（`uzboiLadonMoravaSpilloverGorgeScrollBenchChamositeSmectiteSulfateTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流定向导流溜槽（`Pad_ExhaustPlenumFloorTroughSillJetChute_0..3`）与箭体一级箱间段上筒四向传感器整流罩（`Rocket_Stage1IntertankUpperSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,408,628 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`892,413 B`）；在 `flameMaterial` 中引入第三激波胞十三阶普朗特-迈耶剪切辉光项（`cell3TredecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百四十三阶段验收：夜间持续进化 · 帕拉纳谷、卢瓦尔谷与萨马拉谷诺亚纪—赫斯珀里亚纪综合河谷网古湖出口峡谷、辫状三角洲台地与水铁矿-高岭石-蒙皂石陡坎、莫高窟佛龛券顶内侧垂帐额枋鎏金双凤宝相莲团花与飞天琵琶捍拨云纹垂穗鎏金迦陵频伽嵌青金石花钿扣、及发射台导流槽尾喷集气室底槽槛折流消能楔与第四激波胞十三阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 与 THEMIS 在帕拉纳谷、卢瓦尔谷与萨马拉谷探测到的诺亚纪—赫斯珀里亚纪综合河谷网古湖出口峡谷、辫状三角洲台地与水铁矿-高岭石-蒙皂石陡坎 `Parana Valles, Loire Vallis & Samara Valles Valley-Network Paleolake Outlet Gorges, Braided Deltaic Benches & Ferrihydrite-Kaolinite-Smectite Scarps`、莫高窟盛唐第 159/217 窟佛龛券顶内侧垂帐额枋鎏金双凤宝相莲团花与飞天琵琶捍拨云纹垂穗鎏金迦陵频伽嵌青金石花钿扣、以及发射台导流槽尾喷集气室底槽槛折流消能楔 `Pad_ExhaustPlenumFloorTroughSillBaffleWedge`、二级后裙段传感器整流罩 `Rocket_Stage2AftSkirtSensorCowl` 与第四激波胞十三阶普朗特-迈耶剪切辉光 `cell4TredecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.221` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧垂帐额枋两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerValanceLintelPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧垂帐额枋增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨云纹垂穗增绘鎏金迦陵频伽嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入帕拉纳谷、卢瓦尔谷与萨马拉谷诺亚纪—赫斯珀里亚纪综合河谷网古湖出口峡谷、辫状三角洲台地与水铁矿-高岭石-蒙皂石陡坎（`parana_loire_samara_valley_outlet_gorge_braided_delta_ferrihydrite_kaolinite_smectite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`189,801 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,179 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对帕拉纳谷与卢瓦尔谷水铁矿-高岭石-蒙皂石层引入暖赭褐高岭石色带（`paranaLoireSamaraValleyOutletGorgeBraidedDeltaFerrihydriteKaoliniteSmectiteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流折流消能楔（`Pad_ExhaustPlenumFloorTroughSillBaffleWedge_0..3`）与箭体二级后裙段四向传感器整流罩（`Rocket_Stage2AftSkirtSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,418,940 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`892,373 B`）；在 `flameMaterial` 中引入第四激波胞十三阶普朗特-迈耶剪切辉光项（`cell4TredecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百四十四阶段验收：夜间持续进化 · 道谷、尼日尔谷与哈马基斯谷赫斯珀里亚纪火山-冰川渗蚀源头剧场龛、线理谷底充填台地与菱沸石-蒙皂石-石膏陡坎、莫高窟佛龛券顶外侧垂帐槛座鎏金双凤宝相莲团花与飞天琵琶捍拨凤团垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、及发射台导流槽尾喷集气室底槽槛急冷喷口与第五激波胞十三阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 与 HRSC 在道谷、尼日尔谷与哈马基斯谷探测到的赫斯珀里亚纪火山-冰川渗蚀源头剧场龛、线理谷底充填台地与菱沸石-蒙皂石-石膏陡坎 `Dao Vallis, Niger Vallis & Harmakhis Vallis Volcano-Ice Sapping Headwall Alcoves, Lineated Floor-Fill Benches & Chabazite-Smectite-Gypsum Scarps`、莫高窟盛唐第 159/217 窟佛龛券顶外侧垂帐槛座鎏金双凤宝相莲团花与飞天琵琶捍拨凤团垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、以及发射台导流槽尾喷集气室底槽槛急冷喷口 `Pad_ExhaustPlenumFloorTroughSillQuenchSpout`、二级中筒段传感器整流罩 `Rocket_Stage2MidBarrelSensorCowl` 与第五激波胞十三阶普朗特-迈耶剪切辉光 `cell5TredecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.222` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧垂帐槛座两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterValanceSillPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧垂帐槛座增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨凤团垂穗增绘鎏金迦陵频伽嵌红珊瑚花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入道谷、尼日尔谷与哈马基斯谷赫斯珀里亚纪火山-冰川渗蚀源头剧场龛、线理谷底充填台地与菱沸石-蒙皂石-石膏陡坎（`dao_niger_harmakhis_sapping_headwall_alcove_lineated_chabazite_smectite_gypsum_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`189,806 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,075 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对道谷与尼日尔谷菱沸石-蒙皂石-石膏层引入暖浅米黄色带（`daoNigerHarmakhisSappingHeadwallAlcoveLineatedChabaziteSmectiteGypsumTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流高压急冷喷口（`Pad_ExhaustPlenumFloorTroughSillQuenchSpout_0..3`）与箭体二级中筒段四向传感器整流罩（`Rocket_Stage2MidBarrelSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,429,260 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`892,409 B`）；在 `flameMaterial` 中引入第五激波胞十三阶普朗特-迈耶剪切辉光项（`cell5TredecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百四十五阶段验收：夜间持续进化 · 赫拉德谷、加拉西亚斯槽沟与埃律西昂山西北翼亚马逊纪火山-冰川火山泥流舌、丘状冰水外洗台地与皂石-黄钾铁矾-蛋白石陡坎、莫高窟佛龛券顶内侧垂帐槛座鎏金双凤宝相莲团花与飞天琵琶捍拨宝相莲垂穗鎏金迦陵频伽嵌和田碧玉花钿扣、及发射台导流槽尾喷集气室底槽槛文丘里导流叶与第六激波胞十三阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 与 THEMIS 在埃律西昂火山省西北侧赫拉德谷、加拉西亚斯槽沟与埃律西昂山西北翼探测到的亚马逊纪火山-冰川火山泥流舌、丘状冰水外洗台地与皂石-黄钾铁矾-蛋白石陡坎 `Hrad Vallis, Galaxias Fossae & Elysium Mons NW Flank Volcano-Ice Lahar Mudflow Lobes, Knobby Outwash Benches & Saponite-Jarosite-Opaline Scarps`、莫高窟盛唐第 159/217 窟佛龛券顶内侧垂帐槛座鎏金双凤宝相莲团花与飞天琵琶捍拨宝相莲垂穗鎏金迦陵频伽嵌和田碧玉花钿扣、以及发射台导流槽尾喷集气室底槽槛文丘里导流叶 `Pad_ExhaustPlenumFloorTroughSillVenturiVane`、二级前筒段传感器整流罩 `Rocket_Stage2FwdBarrelSensorCowl` 与第六激波胞十三阶普朗特-迈耶剪切辉光 `cell6TredecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.223` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧垂帐槛座两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerValanceSillPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧垂帐槛座增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨宝相莲垂穗增绘鎏金迦陵频伽嵌和田碧玉花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入赫拉德谷、加拉西亚斯槽沟与埃律西昂山西北翼亚马逊纪火山-冰川火山泥流舌、丘状冰水外洗台地与皂石-黄钾铁矾-蛋白石陡坎（`hrad_galaxias_elysium_lahar_mudflow_lobe_saponite_jarosite_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`189,836 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,093,995 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对赫拉德谷与加拉西亚斯槽沟皂石-黄钾铁矾-蛋白石层引入暖黄绿赭色带（`hradGalaxiasElysiumLaharMudflowLobeSaponiteJarositeOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流文丘里导流叶（`Pad_ExhaustPlenumFloorTroughSillVenturiVane_0..3`）与箭体二级前筒段四向传感器整流罩（`Rocket_Stage2FwdBarrelSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,439,516 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`892,403 B`）；在 `flameMaterial` 中引入第六激波胞十三阶普朗特-迈耶剪切辉光项（`cell6TredecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百四十六阶段验收：夜间持续进化 · 格拉尼库斯-廷贾尔谷、赫淮斯托斯槽沟与希布莱乌斯脊亚马逊纪火山-冰川裂隙火山泥流河道、多边形龟裂泥流台地与蒙皂石-石膏-蛋白石陡坎、莫高窟佛龛券顶外侧拱肩额枋鎏金双凤宝相莲团花与飞天琵琶捍拨忍冬草垂穗鎏金迦陵频伽嵌绿松石花钿扣、及发射台导流槽尾喷集气室底槽槛喷淋歧管座与第七激波胞十三阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 与 HRSC 在埃律西昂山西北—西侧格拉尼库斯-廷贾尔谷、赫淮斯托斯槽沟与希布莱乌斯脊探测到的亚马逊纪火山-冰川裂隙火山泥流河道、多边形龟裂泥流台地与蒙皂石-石膏-蛋白石陡坎 `Granicus-Tinjar Valles, Hephaestus Fossae & Hyblaeus Dorsa Volcano-Ice Fissure-Lahar Channels, Polygonally Fractured Mudflow Benches & Smectite-Gypsum-Opaline Scarps`、莫高窟盛唐第 159/217 窟佛龛券顶外侧拱肩额枋鎏金双凤宝相莲团花与飞天琵琶捍拨忍冬草垂穗鎏金迦陵频伽嵌绿松石花钿扣、以及发射台导流槽尾喷集气室底槽槛喷淋歧管座 `Pad_ExhaustPlenumFloorTroughSillSprayManifold`、二级前裙段传感器整流罩 `Rocket_Stage2ForwardSkirtSensorCowl` 与第七激波胞十三阶普朗特-迈耶剪切辉光 `cell7TredecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.224` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧拱肩额枋两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterSpandrelLintelPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧拱肩额枋增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨忍冬草垂穗增绘鎏金迦陵频伽嵌绿松石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入格拉尼库斯-廷贾尔谷、赫淮斯托斯槽沟与希布莱乌斯脊亚马逊纪火山-冰川裂隙火山泥流河道、多边形龟裂泥流台地与蒙皂石-石膏-蛋白石陡坎（`granicus_tinjar_hephaestus_fissure_lahar_channel_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`189,865 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,496 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对格拉尼库斯-廷贾尔谷蒙皂石-石膏-蛋白石层引入暖浅灰黄色带（`granicusTinjarHephaestusFissureLaharChannelSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流喷淋歧管座（`Pad_ExhaustPlenumFloorTroughSillSprayManifold_0..3`）与箭体二级前裙段四向传感器整流罩（`Rocket_Stage2ForwardSkirtSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,449,872 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`892,432 B`）；在 `flameMaterial` 中引入第七激波胞十三阶普朗特-迈耶剪切辉光项（`cell7TredecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百四十七阶段验收：夜间持续进化 · 阿萨巴斯卡谷、刻耳柏洛斯槽沟与马尔特谷晚亚马逊纪裂隙洪水板状脊熔岩-泥筏、无根水火山锥群与橙玄玻璃-蒙皂石-石膏陡坎、莫高窟佛龛券顶内侧拱肩额枋鎏金双凤宝相莲团花与飞天琵琶捍拨迦陵团垂穗鎏金迦陵频伽嵌青金石花钿扣、及发射台导流槽尾喷集气室底槽槛防热护盾与第八激波胞十三阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 与 HRSC 在埃律西昂平原南部阿萨巴斯卡谷、刻耳柏洛斯槽沟与马尔特谷探测到的晚亚马逊纪裂隙洪水板状脊熔岩-泥筏、无根水火山锥群与橙玄玻璃-蒙皂石-石膏陡坎 `Athabasca Valles, Cerberus Fossae & Marte Vallis Fissure-Flood Platy-Ridged Lava-Mud Rafts, Rootless Hydrovolcanic Cone Fields & Palagonite-Smectite-Gypsum Scarps`、莫高窟盛唐第 159/217 窟佛龛券顶内侧拱肩额枋鎏金双凤宝相莲团花与飞天琵琶捍拨迦陵团垂穗鎏金迦陵频伽嵌青金石花钿扣、以及发射台导流槽尾喷集气室底槽槛防热护盾 `Pad_ExhaustPlenumFloorTroughSillThermalShield`、二级箱间段传感器整流罩 `Rocket_Stage2IntertankSensorCowl` 与第八激波胞十三阶普朗特-迈耶剪切辉光 `cell8TredecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.225` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧拱肩额枋两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerSpandrelLintelPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧拱肩额枋增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨迦陵团垂穗增绘鎏金迦陵频伽嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入阿萨巴斯卡谷、刻耳柏洛斯槽沟与马尔特谷晚亚马逊纪裂隙洪水板状脊熔岩-泥筏、无根水火山锥群与橙玄玻璃-蒙皂石-石膏陡坎（`athabasca_cerberus_marte_fissure_flood_platy_raft_rootless_palagonite_smectite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`189,856 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,552 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对阿萨巴斯卡—马尔特外流平原橙玄玻璃-蒙皂石-石膏层引入暖黄褐色带（`athabascaCerberusMarteFissureFloodPlatyRaftRootlessPalagoniteSmectiteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流防热护盾（`Pad_ExhaustPlenumFloorTroughSillThermalShield_0..3`）与箭体二级箱间段四向传感器整流罩（`Rocket_Stage2IntertankSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,460,212 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`892,425 B`）；在 `flameMaterial` 中引入第八激波胞十三阶普朗特-迈耶剪切辉光项（`cell8TredecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百四十八阶段验收：夜间持续进化 · 格廖塔谷、拉韦谷与西风平原晚亚马逊纪裂隙溢流板状脊洪流玄武岩筏、蒸汽水热无根锥链与橄榄石-辉石-蒙皂石陡坎、莫高窟佛龛券顶外侧拱肩槛座鎏金双凤宝相莲团花与飞天琵琶捍拨云鹤团垂穗鎏金迦陵频伽嵌明珠花钿扣、及发射台导流槽尾喷集气室底槽槛集气格栅与羽流尾端十三阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 与 SHARAD 在埃律西昂平原中南部格廖塔谷、拉韦谷与西风平原探测到的晚亚马逊纪裂隙溢流板状脊洪流玄武岩筏、蒸汽水热无根锥链与橄榄石-辉石-蒙皂石陡坎 `Grjota Valles, Rahway Valles & Zephyria Planum Fissure-Fed Platy-Ridged Flood-Basalt Rafts, Phreatic Rootless Cone Chains & Olivine-Pyroxene-Smectite Scarps`、莫高窟盛唐第 159/217 窟佛龛券顶外侧拱肩槛座鎏金双凤宝相莲团花与飞天琵琶捍拨云鹤团垂穗鎏金迦陵频伽嵌明珠花钿扣、以及发射台导流槽尾喷集气室底槽槛集气格栅 `Pad_ExhaustPlenumFloorTroughSillPlenumGrate`、二级后下筒段传感器整流罩 `Rocket_Stage2AftLowerSensorCowl` 与羽流尾端十三阶普朗特-迈耶剪切辉光 `plumeTailTredecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.226` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧拱肩槛座两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterSpandrelSillPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧拱肩槛座增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨云鹤团垂穗增绘鎏金迦陵频伽嵌明珠花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入格廖塔谷、拉韦谷与西风平原晚亚马逊纪裂隙溢流板状脊洪流玄武岩筏、蒸汽水热无根锥链与橄榄石-辉石-蒙皂石陡坎（`grjota_rahway_zephyria_fissure_flood_platy_raft_phreatic_olivine_pyroxene_smectite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`189,903 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,032 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对格廖塔—拉韦外流平原橄榄石-辉石-蒙皂石层引入暖橄榄灰褐色带（`grjotaRahwayZephyriaFissureFloodPlatyRaftPhreaticOlivinePyroxeneSmectiteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流集气均压格栅（`Pad_ExhaustPlenumFloorTroughSillPlenumGrate_0..3`）与箭体二级后下筒段四向传感器整流罩（`Rocket_Stage2AftLowerSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,470,524 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`892,364 B`）；在 `flameMaterial` 中引入羽流尾端十三阶普朗特-迈耶剪切辉光项（`plumeTailTredecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百四十九阶段验收：夜间持续进化 · 忘川谷、阿萨巴斯卡谷远端与埃律西昂平原东南晚亚马逊纪溢流古湖跌水河道、多边形裂隙洪流熔岩板与皂石-石膏-蛋白石陡坎、莫高窟佛龛券顶内侧拱肩槛座鎏金双凤宝相莲团花与飞天琵琶捍拨凤牡丹垂穗鎏金迦陵频伽嵌珊瑚花钿扣、及发射台导流槽尾喷集气室底槽槛声学肋板与首激波胞十四阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 与 CTX 在埃律西昂平原东南部忘川谷、阿萨巴斯卡谷远端与赛伯鲁斯古湖盆地探测到的晚亚马逊纪溢流古湖跌水河道、多边形裂隙洪流熔岩板与皂石-石膏-蛋白石陡坎 `Lethe Vallis, Athabasca Valles Distal & Elysium Planitia SE Spillover-Lake Cataract Channels, Polygonally Cracked Flood-Lava Plates & Saponite-Gypsum-Opaline Scarps`、莫高窟盛唐第 159/217 窟佛龛券顶内侧拱肩槛座鎏金双凤宝相莲团花与飞天琵琶捍拨凤牡丹垂穗鎏金迦陵频伽嵌珊瑚花钿扣、以及发射台导流槽尾喷集气室底槽槛声学肋板 `Pad_ExhaustPlenumFloorTroughSillAcousticRib`、二级前上筒段传感器整流罩 `Rocket_Stage2FwdUpperSensorCowl` 与首激波胞十四阶普朗特-迈耶剪切辉光 `cell1QuattuordecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.227` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧拱肩槛座两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerSpandrelSillPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧拱肩槛座增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨凤牡丹垂穗增绘鎏金迦陵频伽嵌珊瑚花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入忘川谷、阿萨巴斯卡谷远端与埃律西昂平原东南晚亚马逊纪溢流古湖跌水河道、多边形裂隙洪流熔岩板与皂石-石膏-蛋白石陡坎（`lethe_athabasca_elysium_spillover_cataract_polygonal_lava_saponite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`189,930 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,422 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对忘川谷—埃律西昂东南皂石-石膏-蛋白石层引入暖米灰黄色带（`letheAthabascaElysiumSpilloverCataractPolygonalLavaSaponiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学消波加强肋板（`Pad_ExhaustPlenumFloorTroughSillAcousticRib_0..3`）与箭体二级前上筒段四向传感器整流罩（`Rocket_Stage2FwdUpperSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,480,856 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`892,524 B`）；在 `flameMaterial` 中引入首激波胞十四阶普朗特-迈耶剪切辉光项（`cell1QuattuordecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百五十阶段验收：夜间持续进化 · 玛尔特谷、亚马逊平原与佩蒂特撞击坑缘晚亚马逊纪洪流玄武岩膨胀台地、熔岩冲刷流线岛与橙玄玻璃-橄榄石-硫酸盐陡坎、莫高窟佛龛券顶外侧拱肩台基鎏金双凤宝相莲团花与飞天琵琶捍拨如意莲垂穗鎏金迦陵频伽嵌石绿花钿扣、及发射台导流槽尾喷集气室底槽槛喷淋百叶窗与次激波胞十四阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 与 SHARAD 在亚马逊平原中部玛尔特谷、亚马逊平原与佩蒂特撞击坑缘探测到的晚亚马逊纪洪流玄武岩膨胀台地、熔岩冲刷流线岛与橙玄玻璃-橄榄石-硫酸盐陡坎 `Marte Vallis, Amazonis Planitia & Pettit Crater Margin Flood-Basalt Inflation Plateaus, Streamlined Lava-Scoured Islands & Palagonite-Olivine-Sulfate Scarps`、莫高窟盛唐第 159/217 窟佛龛券顶外侧拱肩台基鎏金双凤宝相莲团花与飞天琵琶捍拨如意莲垂穗鎏金迦陵频伽嵌石绿花钿扣、以及发射台导流槽尾喷集气室底槽槛喷淋百叶窗 `Pad_ExhaustPlenumFloorTroughSillDelugeLouver`、二级前下筒段传感器整流罩 `Rocket_Stage2FwdLowerSensorCowl` 与次激波胞十四阶普朗特-迈耶剪切辉光 `cell2QuattuordecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.228` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧拱肩台基两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterSpandrelPlinthPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧拱肩台基增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨如意莲垂穗增绘鎏金迦陵频伽嵌石绿花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入玛尔特谷、亚马逊平原与佩蒂特撞击坑缘晚亚马逊纪洪流玄武岩膨胀台地、熔岩冲刷流线岛与橙玄玻璃-橄榄石-硫酸盐陡坎（`marte_amazonis_pettit_inflation_plateau_lava_scoured_palagonite_olivine_sulfate_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`189,974 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,414 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对玛尔特谷—亚马逊平原橙玄玻璃-橄榄石-硫酸盐层引入暖橄榄赭褐色带（`marteAmazonisPettitInflationPlateauLavaScouredPalagoniteOlivineSulfateTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流喷淋百叶窗（`Pad_ExhaustPlenumFloorTroughSillDelugeLouver_0..3`）与箭体二级前下筒段四向传感器整流罩（`Rocket_Stage2FwdLowerSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,491,136 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`892,500 B`）；在 `flameMaterial` 中引入次激波胞十四阶普朗特-迈耶剪切辉光项（`cell2QuattuordecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百五十一阶段验收：夜间持续进化 · 阿卡迪亚平原、弗莱格拉山脉与厄瑞玻斯山脉亚马逊纪舌状碎屑裙线状谷底填充、热喀斯特扩展次生坑与蒙皂石-石膏-富冰陡坎、莫高窟佛龛券顶内侧拱肩台基鎏金双凤宝相莲团花与飞天琵琶捍拨双鸳鸯垂穗鎏金迦陵频伽嵌琥珀花钿扣、及发射台导流槽尾喷集气室底槽槛射流挡板与三激波胞十四阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 与 SHARAD 在阿卡迪亚平原、弗莱格拉山脉与厄瑞玻斯山脉探测到的亚马逊纪舌状碎屑裙线状谷底填充、热喀斯特扩展次生坑与蒙皂石-石膏-富冰陡坎 `Arcadia Planitia, Phlegra Montes & Erebus Montes Lobate Debris-Apron Lineated Valley Fills, Expanded Secondary Craters & Smectite-Gypsum-Ice-Rich Scarps`、莫高窟盛唐第 159/217 窟佛龛券顶内侧拱肩台基鎏金双凤宝相莲团花与飞天琵琶捍拨双鸳鸯垂穗鎏金迦陵频伽嵌琥珀花钿扣、以及发射台导流槽尾喷集气室底槽槛射流挡板 `Pad_ExhaustPlenumFloorTroughSillJetBaffle`、整流罩底部传感器整流罩 `Rocket_PayloadBaseFairingSensorCowl` 与三激波胞十四阶普朗特-迈耶剪切辉光 `cell3QuattuordecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.229` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧拱肩台基两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerSpandrelPlinthPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧拱肩台基增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨双鸳鸯垂穗增绘鎏金迦陵频伽嵌琥珀花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入阿卡迪亚平原、弗莱格拉山脉与厄瑞玻斯山脉亚马逊纪舌状碎屑裙线状谷底填充、热喀斯特扩展次生坑与蒙皂石-石膏-富冰陡坎（`arcadia_phlegra_erebus_lobate_apron_expanded_crater_smectite_gypsum_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`189,904 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,693 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对阿卡迪亚—弗莱格拉山麓蒙皂石-石膏-富冰层引入暖浅灰褐色带（`arcadiaPhlegraErebusLobateApronExpandedCraterSmectiteGypsumTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流射流挡板（`Pad_ExhaustPlenumFloorTroughSillJetBaffle_0..3`）与箭体整流罩底部过渡环四向传感器整流罩（`Rocket_PayloadBaseFairingSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,501,512 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`892,564 B`）；在 `flameMaterial` 中引入三激波胞十四阶普朗特-迈耶剪切辉光项（`cell3QuattuordecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百五十二阶段验收：夜间持续进化 · 乌托邦平原西部、卡西乌斯区与阿达玛斯迷宫晚赫斯珀里亚—亚马逊纪巨型多边形收缩槽沟、冰缘冻胀丘与皂石-碳酸盐-石膏陡坎、莫高窟佛龛券顶外侧拱肩挑枋鎏金双凤宝相莲团花与飞天琵琶捍拨翼天马垂穗鎏金迦陵频伽嵌绿松石花钿扣、及发射台导流槽尾喷集气室底槽槛文丘里导流叶与四激波胞十四阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 与 SHARAD 在乌托邦平原西部、卡西乌斯区与阿达玛斯迷宫探测到的晚赫斯珀里亚—亚马逊纪巨型多边形收缩槽沟、冰缘冻胀丘与皂石-碳酸盐-石膏陡坎 `Utopia Planitia West, Casius & Adamas Labyrinthus Giant Polygonal Contraction Troughs, Periglacial Pingo-Like Mounds & Saponite-Carbonate-Gypsum Scarps`、莫高窟盛唐第 159/217 窟佛龛券顶外侧拱肩挑枋鎏金双凤宝相莲团花与飞天琵琶捍拨翼天马垂穗鎏金迦陵频伽嵌绿松石花钿扣、以及发射台导流槽尾喷集气室底槽槛文丘里导流叶 `Pad_ExhaustPlenumFloorTroughSillVenturiVane`、整流罩下锥段传感器整流罩 `Rocket_PayloadLowerFairingSensorCowl` 与四激波胞十四阶普朗特-迈耶剪切辉光 `cell4QuattuordecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.230` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧拱肩挑枋两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterSpandrelBracketPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧拱肩挑枋增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨翼天马垂穗增绘鎏金迦陵频伽嵌绿松石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入乌托邦平原西部、卡西乌斯区与阿达玛斯迷宫晚赫斯珀里亚—亚马逊纪巨型多边形收缩槽沟、冰缘冻胀丘与皂石-碳酸盐-石膏陡坎（`utopia_casius_adamas_giant_polygon_trough_pingo_saponite_carbonate_gypsum_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`189,987 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,840 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对乌托邦平原西部—阿达玛斯迷宫皂石-碳酸盐-石膏层引入暖浅橄榄灰白色带（`utopiaCasiusAdamasGiantPolygonTroughPingoSaponiteCarbonateGypsumTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流文丘里导流叶（`Pad_ExhaustPlenumFloorTroughSillVenturiVane_0..3`）与箭体整流罩下锥段四向传感器整流罩（`Rocket_PayloadLowerFairingSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,511,908 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`892,711 B`）；在 `flameMaterial` 中引入四激波胞十四阶普朗特-迈耶剪切辉光项（`cell4QuattuordecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百五十三阶段验收：夜间持续进化 · 阿西达利亚平原、克律塞平原北部与塞多尼亚桌山晚赫斯珀里亚—亚马逊纪泥火山锥群、拇印冰碛脊与蒙皂石-水铁矿-硫酸盐陡坎、莫高窟佛龛券顶内侧拱肩挑枋鎏金双凤宝相莲团花与飞天琵琶捍拨瑞麒麟垂穗鎏金迦陵频伽嵌青金石花钿扣、及发射台导流槽尾喷集气室底槽槛急冷喷淋歧管与五激波胞十四阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 与 CTX 在阿西达利亚平原、克律塞平原北部与塞多尼亚桌山群探测到的晚赫斯珀里亚—亚马逊纪泥火山锥群、拇印冰碛脊与蒙皂石-水铁矿-硫酸盐陡坎 `Acidalia Planitia, Chryse Planitia North & Cydonia Mensae Mud-Volcano Cone Fields, Thumbprint Moraine Ridges & Smectite-Ferrihydrite-Sulfate Scarps`、莫高窟盛唐第 159/217 窟佛龛券顶内侧拱肩挑枋鎏金双凤宝相莲团花与飞天琵琶捍拨瑞麒麟垂穗鎏金迦陵频伽嵌青金石花钿扣、以及发射台导流槽尾喷集气室底槽槛急冷喷淋歧管 `Pad_ExhaustPlenumFloorTroughSillQuenchManifold`、整流罩中锥段传感器整流罩 `Rocket_PayloadMidFairingSensorCowl` 与五激波胞十四阶普朗特-迈耶剪切辉光 `cell5QuattuordecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.231` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧拱肩挑枋两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerSpandrelBracketPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧拱肩挑枋增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨瑞麒麟垂穗增绘鎏金迦陵频伽嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入阿西达利亚平原、克律塞平原北部与塞多尼亚桌山晚赫斯珀里亚—亚马逊纪泥火山锥群、拇印冰碛脊与蒙皂石-水铁矿-硫酸盐陡坎（`acidalia_chryse_cydonia_mud_volcano_cone_thumbprint_moraine_smectite_ferrihydrite_sulfate_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,010 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,194 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对阿西达利亚—塞多尼亚盆地蒙皂石-水铁矿-硫酸盐层引入暖赭褐色带（`acidaliaChryseCydoniaMudVolcanoConeThumbprintMoraineSmectiteFerrihydriteSulfateTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流急冷喷淋歧管（`Pad_ExhaustPlenumFloorTroughSillQuenchManifold_0..3`）与箭体整流罩中锥段四向传感器整流罩（`Rocket_PayloadMidFairingSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,522,276 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`892,667 B`）；在 `flameMaterial` 中引入五激波胞十四阶普朗特-迈耶剪切辉光项（`cell5QuattuordecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百五十四阶段验收：夜间持续进化 · 伊希斯平原、阿雷纳丘群与德乌特罗尼卢斯桌山晚赫斯珀里亚—亚马逊纪拇印弧状冰碛脊、带坑泥底辟锥链与皂石-菱镁矿-橄榄石陡坎、莫高窟佛龛券顶外侧拱肩挑檐鎏金双凤宝相莲团花与飞天琵琶捍拨孔雀翎垂穗鎏金迦陵频伽嵌和田碧玉花钿扣、及发射台导流槽尾喷集气室底槽槛隔热护板与六激波胞十四阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 与 CTX 在伊希斯平原、阿雷纳丘群与德乌特罗尼卢斯桌山探测到的晚赫斯珀里亚—亚马逊纪拇印弧状冰碛脊、带坑泥底辟锥链与皂石-菱镁矿-橄榄石陡坎 `Isidis Planitia, Arena Colles & Deuteronilus Mensae Thumbprint-Terrain Arcuate Moraines, Pitted Mud-Diapir Cone Chains & Saponite-Magnesite-Olivine Scarps`、莫高窟盛唐第 159/217 窟佛龛券顶外侧拱肩挑檐鎏金双凤宝相莲团花与飞天琵琶捍拨孔雀翎垂穗鎏金迦陵频伽嵌和田碧玉花钿扣、以及发射台导流槽尾喷集气室底槽槛隔热护板 `Pad_ExhaustPlenumFloorTroughSillThermalShield`、整流罩上锥段传感器整流罩 `Rocket_PayloadUpperFairingSensorCowl` 与六激波胞十四阶普朗特-迈耶剪切辉光 `cell6QuattuordecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.232` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧拱肩挑檐两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterSpandrelCornicePhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧拱肩挑檐增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨孔雀翎垂穗增绘鎏金迦陵频伽嵌和田碧玉花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入伊希斯平原、阿雷纳丘群与德乌特罗尼卢斯桌山晚赫斯珀里亚—亚马逊纪拇印弧状冰碛脊、带坑泥底辟锥链与皂石-菱镁矿-橄榄石陡坎（`isidis_arena_deuteronilus_thumbprint_moraine_pitted_cone_saponite_magnesite_olivine_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,132 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,505 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对伊希斯—阿雷纳丘群皂石-菱镁矿-橄榄石层引入暖浅青灰橄榄米色带（`isidisArenaDeuteronilusThumbprintMorainePittedConeSaponiteMagnesiteOlivineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流隔热护板（`Pad_ExhaustPlenumFloorTroughSillThermalShield_0..3`）与箭体整流罩上锥段四向传感器整流罩（`Rocket_PayloadUpperFairingSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,532,680 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`892,877 B`）；在 `flameMaterial` 中引入六激波胞十四阶普朗特-迈耶剪切辉光项（`cell6QuattuordecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百五十五阶段验收：夜间持续进化 · 普罗托尼卢斯桌山、科洛厄槽沟与伊斯墨纽斯湖区晚赫斯珀里亚—亚马逊纪蚀刻谷冰川槽谷台地、同心撞击坑填充冰碛与蒙皂石-绿泥石-针铁矿陡坎、莫高窟佛龛券顶内侧拱肩挑檐鎏金双凤宝相莲团花与飞天琵琶捍拨双鲤鱼垂穗鎏金迦陵频伽嵌珊瑚花钿扣、及发射台导流槽尾喷集气室底槽槛格栅板与七激波胞十四阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 与 SHARAD 在普罗托尼卢斯桌山、科洛厄槽沟与伊斯墨纽斯湖区探测到的晚赫斯珀里亚—亚马逊纪蚀刻谷冰川槽谷台地、同心撞击坑填充冰碛与蒙皂石-绿泥石-针铁矿陡坎 `Protonilus Mensae, Coloe Fossae & Ismenius Lacus Fretted-Valley Glacial Trough Benches, Concentric Crater-Fill Moraines & Smectite-Chlorite-Goethite Scarps`、莫高窟盛唐第 159/217 窟佛龛券顶内侧拱肩挑檐鎏金双凤宝相莲团花与飞天琵琶捍拨双鲤鱼垂穗鎏金迦陵频伽嵌珊瑚花钿扣、以及发射台导流槽尾喷集气室底槽槛格栅板 `Pad_ExhaustPlenumFloorTroughSillPlenumGrate`、整流罩尖拱段传感器整流罩 `Rocket_PayloadOgiveFairingSensorCowl` 与七激波胞十四阶普朗特-迈耶剪切辉光 `cell7QuattuordecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.233` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧拱肩挑檐两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerSpandrelCornicePhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧拱肩挑檐增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨双鲤鱼垂穗增绘鎏金迦陵频伽嵌珊瑚花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入普罗托尼卢斯桌山、科洛厄槽沟与伊斯墨纽斯湖区晚赫斯珀里亚—亚马逊纪蚀刻谷冰川槽谷台地、同心撞击坑填充冰碛与蒙皂石-绿泥石-针铁矿陡坎（`protonilus_coloe_ismenius_fretted_glacial_trough_concentric_fill_smectite_chlorite_goethite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,000 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,297 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对普罗托尼卢斯—科洛厄槽沟蒙皂石-绿泥石-针铁矿层引入暖黄褐绿泥石-针铁矿色带（`protonilusColoeIsmeniusFrettedGlacialTroughConcentricFillSmectiteChloriteGoethiteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流消音格栅板（`Pad_ExhaustPlenumFloorTroughSillPlenumGrate_0..3`）与箭体整流罩尖拱段四向传感器整流罩（`Rocket_PayloadOgiveFairingSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,543,092 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`892,731 B`）；在 `flameMaterial` 中引入七激波胞十四阶普朗特-迈耶剪切辉光项（`cell7QuattuordecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百五十六阶段验收：夜间持续进化 · 尼罗瑟提斯桌山、马默斯谷北段与莫罗撞击坑缘晚赫斯珀里亚—亚马逊纪山前冰碛弧环、扇贝状升华洼地与皂石-绿脱石-碳酸盐陡坎、莫高窟佛龛券顶外侧拱肩束腰鎏金双凤宝相莲团花与飞天琵琶捍拨瑞狮绣球垂穗鎏金迦陵频伽嵌石绿花钿扣、及发射台导流槽尾喷集气室底槽槛声学肋板与八激波胞十四阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO HiRISE/CRISM 与 SHARAD 在尼罗瑟提斯桌山、马默斯谷北段与莫罗撞击坑缘探测到的晚赫斯珀里亚—亚马逊纪山前冰碛弧环、扇贝状升华洼地与皂石-绿脱石-碳酸盐陡坎 `Nilosyrtis Mensae, Mamers Valles North & Moreux Crater Margin Glacial Piedmont Moraine Loops, Scalloped Sublimation Depressions & Saponite-Nontronite-Carbonate Scarps`、莫高窟盛唐第 159/217 窟佛龛券顶外侧拱肩束腰鎏金双凤宝相莲团花与飞天琵琶捍拨瑞狮绣球垂穗鎏金迦陵频伽嵌石绿花钿扣、以及发射台导流槽尾喷集气室底槽槛声学肋板 `Pad_ExhaustPlenumFloorTroughSillAcousticRib`、整流罩鼻锥段传感器整流罩 `Rocket_PayloadNoseFairingSensorCowl` 与八激波胞十四阶普朗特-迈耶剪切辉光 `cell8QuattuordecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.234` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧拱肩束腰两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterSpandrelDadoPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧拱肩束腰增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨瑞狮绣球垂穗增绘鎏金迦陵频伽嵌石绿花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入尼罗瑟提斯桌山、马默斯谷北段与莫罗撞击坑缘晚赫斯珀里亚—亚马逊纪山前冰碛弧环、扇贝状升华洼地与皂石-绿脱石-碳酸盐陡坎（`nilosyrtis_mamers_moreux_glacial_piedmont_moraine_scalloped_saponite_nontronite_carbonate_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,130 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,569 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对尼罗瑟提斯—莫罗坑缘皂石-绿脱石-碳酸盐层引入暖浅青灰色带（`nilosyrtisMamersMoreuxGlacialPiedmontMoraineScallopedSaponiteNontroniteCarbonateTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流抗振声学肋板（`Pad_ExhaustPlenumFloorTroughSillAcousticRib_0..3`）与箭体整流罩鼻锥段四向传感器整流罩（`Rocket_PayloadNoseFairingSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,553,472 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`892,729 B`）；在 `flameMaterial` 中引入八激波胞十四阶普朗特-迈耶剪切辉光项（`cell8QuattuordecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百五十七阶段验收：夜间持续进化 · 普罗米修斯高地、鲁尔谷与格雷格撞击坑晚赫斯珀里亚—亚马逊纪舌状岩屑裙冰碛垄、中纬度冲沟壁龛与蒙皂石-石膏-绿泥石陡坎、莫高窟佛龛券顶内侧拱肩束腰鎏金双凤宝相莲团花与飞天琵琶捍拨瑞鹿灵芝垂穗鎏金迦陵频伽嵌琥珀花钿扣、及发射台导流槽尾喷集气室底槽槛洪流百叶与尾流远场十四阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/SHARAD 在普罗米修斯高地、鲁尔谷与格雷格撞击坑探测到的晚赫斯珀里亚—亚马逊纪舌状岩屑裙冰碛垄、中纬度冲沟壁龛与蒙皂石-石膏-绿泥石陡坎 `Promethei Terra, Reull Vallis & Greg Crater Late Hesperian-Amazonian Lobate Debris-Apron Glacial Moraines, Mid-Latitude Gullied Alcoves & Smectite-Gypsum-Chlorite Scarps`、莫高窟盛唐第 159/217 窟佛龛券顶内侧拱肩束腰鎏金双凤宝相莲团花与飞天琵琶捍拨瑞鹿灵芝垂穗鎏金迦陵频伽嵌琥珀花钿扣、以及发射台导流槽尾喷集气室底槽槛洪流百叶 `Pad_ExhaustPlenumFloorTroughSillDelugeLouver`、整流罩鼻尖段传感器整流罩 `Rocket_PayloadTipFairingSensorCowl` 与尾流远场十四阶普朗特-迈耶剪切辉光 `plumeTailQuattuordecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.235` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧拱肩束腰两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerSpandrelDadoPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧拱肩束腰增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨瑞鹿灵芝垂穗增绘鎏金迦陵频伽嵌琥珀花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入普罗米修斯高地、鲁尔谷与格雷格撞击坑晚赫斯珀里亚—亚马逊纪舌状岩屑裙冰碛垄、中纬度冲沟壁龛与蒙皂石-石膏-绿泥石陡坎（`promethei_reull_greg_lobate_apron_glacial_moraine_gullied_alcove_smectite_gypsum_chlorite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`189,966 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,098 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对普罗米修斯—鲁尔谷蒙皂石-石膏-绿泥石层引入暖米灰绿色带（`prometheiReullGregLobateApronGlacialMoraineGulliedAlcoveSmectiteGypsumChloriteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流消音百叶（`Pad_ExhaustPlenumFloorTroughSillDelugeLouver_0..3`）与箭体整流罩鼻尖段四向传感器整流罩（`Rocket_PayloadTipFairingSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,563,872 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`892,713 B`）；在 `flameMaterial` 中引入尾流远场十四阶普朗特-迈耶剪切辉光项（`plumeTailQuattuordecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百五十八阶段验收：夜间持续进化 · 欧里庇斯山、霍尔特撞击坑与东赫拉斯盆地缘晚赫斯珀里亚—亚马逊纪雷达透明舌状岩屑裙、升华凹坑冰碛垄与皂石-滑石-石膏陡坎、莫高窟佛龛券顶外侧拱肩内腹鎏金双凤宝相莲团花与飞天琵琶捍拨仙鹤祥云垂穗鎏金迦陵频伽嵌绿松石花钿扣、及发射台导流槽尾喷集气室底槽槛碎流楔与一激波胞十五阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/SHARAD 在欧里庇斯山、霍尔特撞击坑与东赫拉斯盆地缘探测到的晚赫斯珀里亚—亚马逊纪雷达透明舌状岩屑裙、升华凹坑冰碛垄与皂石-滑石-石膏陡坎 `Euripus Mons, Holt Crater & Eastern Hellas Rim Late Hesperian-Amazonian Radar-Transparent Lobate Debris Aprons, Sublimation-Pitted Moraines & Saponite-Talc-Gypsum Scarps`、莫高窟盛唐第 159/217 窟佛龛券顶外侧拱肩内腹鎏金双凤宝相莲团花与飞天琵琶捍拨仙鹤祥云垂穗鎏金迦陵频伽嵌绿松石花钿扣、以及发射台导流槽尾喷集气室底槽槛碎流楔 `Pad_ExhaustPlenumFloorTroughSillJetBreaker`、一级发动机舱段传感器整流罩 `Rocket_Stage1EngineBaySensorCowl` 与一激波胞十五阶普朗特-迈耶剪切辉光 `cell1QuindecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.236` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧拱肩内腹两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterSpandrelSoffitPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧拱肩内腹增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨仙鹤祥云垂穗增绘鎏金迦陵频伽嵌绿松石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入欧里庇斯山、霍尔特撞击坑与东赫拉斯盆地缘晚赫斯珀里亚—亚马逊纪雷达透明舌状岩屑裙、升华凹坑冰碛垄与皂石-滑石-石膏陡坎（`euripus_holt_eastern_hellas_lobate_apron_sublimation_moraine_saponite_talc_gypsum_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,112 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,638 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对欧里庇斯—霍尔特皂石-滑石-石膏层引入暖浅灰青色带（`euripusHoltEasternHellasLobateApronSublimationMoraineSaponiteTalcGypsumTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流碎流楔（`Pad_ExhaustPlenumFloorTroughSillJetBreaker_0..3`）与箭体一级发动机舱段四向传感器整流罩（`Rocket_Stage1EngineBaySensorCowl_0..3`），导出 `rocket-kit.glb`（`2,574,208 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`892,591 B`）；在 `flameMaterial` 中引入一激波胞十五阶普朗特-迈耶剪切辉光项（`cell1QuindecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百五十九阶段验收：夜间持续进化 · 奥索尼娅桌山、马雷亚高原与西赫拉斯盆地缘晚赫斯珀里亚—亚马逊纪冰湖古海岸阶地、蛇形丘脊与蒙皂石-鲕绿泥石-石膏陡坎、莫高窟佛龛券顶内侧拱肩内腹鎏金双凤宝相莲团花与飞天琵琶捍拨瑞兽麒麟垂穗鎏金迦陵频伽嵌青金石花钿扣、及发射台导流槽尾喷集气室底槽槛防爆盾板与二激波胞十五阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/SHARAD 在奥索尼娅桌山、马雷亚高原与西赫拉斯盆地缘探测到的晚赫斯珀里亚—亚马逊纪冰湖古海岸阶地、蛇形丘脊与蒙皂石-鲕绿泥石-石膏陡坎 `Ausonia Mensa, Malea Planum & Western Hellas Rim Late Hesperian-Amazonian Glaciolacustrine Strandline Benches, Esker Ridges & Smectite-Chamosite-Gypsum Scarps`、莫高窟盛唐第 159/217 窟佛龛券顶内侧拱肩内腹鎏金双凤宝相莲团花与飞天琵琶捍拨瑞兽麒麟垂穗鎏金迦陵频伽嵌青金石花钿扣、以及发射台导流槽尾喷集气室底槽槛防爆盾板 `Pad_ExhaustPlenumFloorTroughSillBlastShield`、一级尾舱段传感器整流罩 `Rocket_Stage1AftBaySensorCowl` 与二激波胞十五阶普朗特-迈耶剪切辉光 `cell2QuindecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.237` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧拱肩内腹两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerSpandrelSoffitPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧拱肩内腹增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨瑞兽麒麟垂穗增绘鎏金迦陵频伽嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入奥索尼娅桌山、马雷亚高原与西赫拉斯盆地缘晚赫斯珀里亚—亚马逊纪冰湖古海岸阶地、蛇形丘脊与蒙皂石-鲕绿泥石-石膏陡坎（`ausonia_malea_western_hellas_glaciolacustrine_strandline_esker_smectite_chamosite_gypsum_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,006 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,485 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对奥索尼娅—马雷亚蒙皂石-鲕绿泥石-石膏层引入浅橄榄灰绿色带（`ausoniaMaleaWesternHellasGlaciolacustrineStrandlineEskerSmectiteChamositeGypsumTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流防爆盾板（`Pad_ExhaustPlenumFloorTroughSillBlastShield_0..3`）与箭体一级尾舱段四向传感器整流罩（`Rocket_Stage1AftBaySensorCowl_0..3`），导出 `rocket-kit.glb`（`2,584,520 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`892,776 B`）；在 `flameMaterial` 中引入二激波胞十五阶普朗特-迈耶剪切辉光项（`cell2QuindecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百六十阶段验收：夜间持续进化 · 阿盖尔平原、卡里图姆山脉与加勒撞击坑晚赫斯珀里亚—亚马逊纪冰湖蛇形丘网、辫状冰砾阜阶地与蒙皂石-绿泥石-石膏陡坎、莫高窟佛龛券顶外侧拱肩唇沿鎏金双凤宝相莲团花与飞天琵琶捍拨双栖鸳鸯垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、及发射台导流槽尾喷集气室底槽槛隔热滑靴与三激波胞十五阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/SHARAD 在阿盖尔平原、卡里图姆山脉与加勒撞击坑探测到的晚赫斯珀里亚—亚马逊纪冰湖蛇形丘网、辫状冰砾阜阶地与蒙皂石-绿泥石-石膏陡坎 `Argyre Planitia, Charitum Montes & Galle Crater Late Hesperian-Amazonian Glaciolacustrine Esker Networks, Braided Kame Terraces & Smectite-Chlorite-Gypsum Scarps`、莫高窟盛唐第 159/217 窟佛龛券顶外侧拱肩唇沿鎏金双凤宝相莲团花与飞天琵琶捍拨双栖鸳鸯垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、以及发射台导流槽尾喷集气室底槽槛隔热滑靴 `Pad_ExhaustPlenumFloorTroughSillThermalShoe`、一级下舱段传感器整流罩 `Rocket_Stage1LowerBaySensorCowl` 与三激波胞十五阶普朗特-迈耶剪切辉光 `cell3QuindecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.238` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧拱肩唇沿两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterSpandrelLipPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧拱肩唇沿增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨双栖鸳鸯垂穗增绘鎏金迦陵频伽嵌红珊瑚花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入阿盖尔平原、卡里图姆山脉与加勒撞击坑晚赫斯珀里亚—亚马逊纪冰湖蛇形丘网、辫状冰砾阜阶地与蒙皂石-绿泥石-石膏陡坎（`argyre_charitum_galle_glaciolacustrine_esker_kame_smectite_chlorite_gypsum_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,068 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,122 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对阿盖尔—卡里图姆蒙皂石-绿泥石-石膏层引入暖浅青灰色带（`argyreCharitumGalleGlaciolacustrineEskerKameSmectiteChloriteGypsumTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流隔热滑靴（`Pad_ExhaustPlenumFloorTroughSillThermalShoe_0..3`）与箭体一级下舱段四向传感器整流罩（`Rocket_Stage1LowerBaySensorCowl_0..3`），导出 `rocket-kit.glb`（`2,594,844 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`892,790 B`）；在 `flameMaterial` 中引入三激波胞十五阶普朗特-迈耶剪切辉光项（`cell3QuindecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百六十一阶段验收：夜间持续进化 · 涅瑞伊得斯山脉、胡克撞击坑与北阿盖尔盆地缘晚赫斯珀里亚—亚马逊纪冰川槽谷冰碛垄、冲沟碎屑裙与皂石-伊利石-石膏陡坎、莫高窟佛龛券顶内侧拱肩唇沿鎏金双凤宝相莲团花与飞天琵琶捍拨瑞鸟孔雀垂穗鎏金迦陵频伽嵌和田碧玉花钿扣、及发射台导流槽尾喷集气室底槽槛淬水歧管与四激波胞十五阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/SHARAD 在涅瑞伊得斯山脉、胡克撞击坑与北阿盖尔盆地缘探测到的晚赫斯珀里亚—亚马逊纪冰川槽谷冰碛垄、冲沟碎屑裙与皂石-伊利石-石膏陡坎 `Nereidum Montes, Hooke Crater & Northern Argyre Rim Late Hesperian-Amazonian Glacial Trough Moraine Ridges, Gullied Debris Aprons & Saponite-Illite-Gypsum Scarps`、莫高窟盛唐第 159/217 窟佛龛券顶内侧拱肩唇沿鎏金双凤宝相莲团花与飞天琵琶捍拨瑞鸟孔雀垂穗鎏金迦陵频伽嵌和田碧玉花钿扣、以及发射台导流槽尾喷集气室底槽槛淬水歧管 `Pad_ExhaustPlenumFloorTroughSillQuenchManifold`、一级中舱段传感器整流罩 `Rocket_Stage1MidBaySensorCowl` 与四激波胞十五阶普朗特-迈耶剪切辉光 `cell4QuindecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.239` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧拱肩唇沿两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerSpandrelLipPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧拱肩唇沿增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨瑞鸟孔雀垂穗增绘鎏金迦陵频伽嵌和田碧玉花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入涅瑞伊得斯山脉、胡克撞击坑与北阿盖尔盆地缘晚赫斯珀里亚—亚马逊纪冰川槽谷冰碛垄、冲沟碎屑裙与皂石-伊利石-石膏陡坎（`nereidum_hooke_northern_argyre_glacial_trough_moraine_gully_saponite_illite_gypsum_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,139 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,093,968 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对涅瑞伊得斯—胡克皂石-伊利石-石膏层引入暖浅橄榄灰色带（`nereidumHookeNorthernArgyreGlacialTroughMoraineGullySaponiteIlliteGypsumTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流淬水歧管（`Pad_ExhaustPlenumFloorTroughSillQuenchManifold_0..3`）与箭体一级中舱段四向传感器整流罩（`Rocket_Stage1MidBaySensorCowl_0..3`），导出 `rocket-kit.glb`（`2,605,216 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`892,852 B`）；在 `flameMaterial` 中引入四激波胞十五阶普朗特-迈耶剪切辉光项（`cell4QuindecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百六十二阶段验收：夜间持续进化 · 奥林匹亚沙丘海、北极峡谷与北极高原缘晚亚马逊纪极地石膏新月形沙丘链、基底槽谷层状陡坎与蒙皂石-石膏-高氯酸盐阶地、莫高窟佛龛券顶外侧拱肩腮壁鎏金双凤宝相莲团花与飞天琵琶捍拨双鱼戏莲垂穗鎏金迦陵频伽嵌绿松石花钿扣、及发射台导流槽尾喷集气室底槽槛文丘里导流叶与五激波胞十五阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/SHARAD 在奥林匹亚沙丘海、北极峡谷与北极高原缘探测到的晚亚马逊纪极地石膏新月形沙丘链、基底槽谷层状陡坎与蒙皂石-石膏-高氯酸盐阶地 `Olympia Undae, Chasma Boreale & Planum Boreum Margin Late Amazonian Polar Gypsum Barchanoid Dune Fields, Basal Trough Layered Scarps & Smectite-Gypsum-Perchlorate Benches`、莫高窟盛唐第 159/217 窟佛龛券顶外侧拱肩腮壁鎏金双凤宝相莲团花与飞天琵琶捍拨双鱼戏莲垂穗鎏金迦陵频伽嵌绿松石花钿扣、以及发射台导流槽尾喷集气室底槽槛文丘里导流叶 `Pad_ExhaustPlenumFloorTroughSillVenturiVane`、一级上舱段传感器整流罩 `Rocket_Stage1UpperBaySensorCowl` 与五激波胞十五阶普朗特-迈耶剪切辉光 `cell5QuindecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.240` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧拱肩腮壁两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterSpandrelCheekPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧拱肩腮壁增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨双鱼戏莲垂穗增绘鎏金迦陵频伽嵌绿松石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入奥林匹亚沙丘海、北极峡谷与北极高原缘晚亚马逊纪极地石膏新月形沙丘链、基底槽谷层状陡坎与蒙皂石-石膏-高氯酸盐阶地（`olympia_chasma_boreale_planum_boreum_gypsum_barchanoid_dune_basal_trough_smectite_gypsum_perchlorate_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,105 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,585 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对奥林匹亚—北极峡谷蒙皂石-石膏-高氯酸盐层引入暖浅霜米白色带（`olympiaChasmaBorealePlanumBoreumGypsumBarchanoidDuneBasalTroughSmectiteGypsumPerchlorateTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流文丘里导流叶（`Pad_ExhaustPlenumFloorTroughSillVenturiVane_0..3`）与箭体一级上舱段四向传感器整流罩（`Rocket_Stage1UpperBaySensorCowl_0..3`），导出 `rocket-kit.glb`（`2,615,584 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,131 B`）；在 `flameMaterial` 中引入五激波胞十五阶普朗特-迈耶剪切辉光项（`cell5QuindecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百六十三阶段验收：夜间持续进化 · 南极高原、南极峡谷与普罗米修斯舌状高原缘晚亚马逊纪南极螺旋槽谷陡坎、二氧化碳蛛网状升华沟渠与蒙皂石-黄钾铁矾-石膏阶地、莫高窟佛龛券顶内侧拱肩腮壁鎏金双凤宝相莲团花与飞天琵琶捍拨瑞狮牡丹垂穗鎏金迦陵频伽嵌青金石花钿扣、及发射台导流槽尾喷集气室底槽槛射流障板与六激波胞十五阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/SHARAD 在南极高原、南极峡谷与普罗米修斯舌状高原缘探测到的晚亚马逊纪南极螺旋槽谷陡坎、二氧化碳蛛网状升华沟渠与蒙皂石-黄钾铁矾-石膏阶地 `Planum Australe, Chasma Australe & Promethei Lingula Margin Late Amazonian South-Polar Spiral Trough Scarps, CO2 Araneiform Sublimation Channels & Smectite-Jarosite-Gypsum Benches`、莫高窟盛唐第 159/217 窟佛龛券顶内侧拱肩腮壁鎏金双凤宝相莲团花与飞天琵琶捍拨瑞狮牡丹垂穗鎏金迦陵频伽嵌青金石花钿扣、以及发射台导流槽尾喷集气室底槽槛射流障板 `Pad_ExhaustPlenumFloorTroughSillJetBaffle`、一级前舱段传感器整流罩 `Rocket_Stage1FwdBaySensorCowl` 与六激波胞十五阶普朗特-迈耶剪切辉光 `cell6QuindecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.241` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧拱肩腮壁两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerSpandrelCheekPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧拱肩腮壁增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨瑞狮牡丹垂穗增绘鎏金迦陵频伽嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入南极高原、南极峡谷与普罗米修斯舌状高原缘晚亚马逊纪南极螺旋槽谷陡坎、二氧化碳蛛网状升华沟渠与蒙皂石-黄钾铁矾-石膏阶地（`planum_chasma_australe_promethei_lingula_spiral_trough_araneiform_smectite_jarosite_gypsum_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,140 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,225 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对南极峡谷—普罗米修斯蒙皂石-黄钾铁矾-石膏层引入暖浅金琥珀米色带（`planumChasmaAustralePrometheiLingulaSpiralTroughAraneiformSmectiteJarositeGypsumTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流射流障板（`Pad_ExhaustPlenumFloorTroughSillJetBaffle_0..3`）与箭体一级前舱段四向传感器整流罩（`Rocket_Stage1FwdBaySensorCowl_0..3`），导出 `rocket-kit.glb`（`2,625,912 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,124 B`）；在 `flameMaterial` 中引入六激波胞十五阶普朗特-迈耶剪切辉光项（`cell6QuindecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百六十四阶段验收：夜间持续进化 · 马莱亚平原、皮提乌萨火山臼与安菲特里忒斯火山臼缘赫斯珀里亚纪低盾状火山破火山口同心地堑、火山碎屑流舌与蒙皂石-石膏-蛋白石陡坎、莫高窟佛龛券顶外侧拱肩肋脊鎏金双凤宝相莲团花与飞天琵琶捍拨仙鹿松鹤垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、及发射台导流槽尾喷集气室底槽槛洪流百叶与七激波胞十五阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/SHARAD 在马莱亚平原、皮提乌萨火山臼与安菲特里忒斯火山臼缘探测到的赫斯珀里亚纪低盾状火山破火山口同心地堑、火山碎屑流舌与蒙皂石-石膏-蛋白石陡坎 `Malea Planum, Pityusa Patera & Amphitrites Patera Margin Hesperian Low-Shield Caldera Concentric Grabens, Pyroclastic Flow Lobes & Smectite-Gypsum-Opaline Scarps`、莫高窟盛唐第 159/217 窟佛龛券顶外侧拱肩肋脊鎏金双凤宝相莲团花与飞天琵琶捍拨仙鹿松鹤垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、以及发射台导流槽尾喷集气室底槽槛洪流百叶 `Pad_ExhaustPlenumFloorTroughSillDelugeLouver`、一级级间段传感器整流罩 `Rocket_Stage1InterstageBaySensorCowl` 与七激波胞十五阶普朗特-迈耶剪切辉光 `cell7QuindecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.242` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧拱肩肋脊两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterSpandrelRibPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧拱肩肋脊增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨仙鹿松鹤垂穗增绘鎏金迦陵频伽嵌红珊瑚花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入马莱亚平原、皮提乌萨火山臼与安菲特里忒斯火山臼缘赫斯珀里亚纪低盾状火山破火山口同心地堑、火山碎屑流舌与蒙皂石-石膏-蛋白石陡坎（`malea_pityusa_amphitrites_patera_caldera_graben_pyroclastic_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,170 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,841 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对马莱亚—皮提乌萨蒙皂石-石膏-蛋白石层引入暖浅赭砂色带（`maleaPityusaAmphitritesPateraCalderaGrabenPyroclasticSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流百叶（`Pad_ExhaustPlenumFloorTroughSillDelugeLouver_0..3`）与箭体一级级间段四向传感器整流罩（`Rocket_Stage1InterstageBaySensorCowl_0..3`），导出 `rocket-kit.glb`（`2,636,320 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`892,988 B`）；在 `flameMaterial` 中引入七激波胞十五阶普朗特-迈耶剪切辉光项（`cell7QuindecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百六十五阶段验收：夜间持续进化 · 哈德里亚库斯火山、奥索尼亚洼地与道谷源头陡壁赫斯珀里亚纪熔结凝灰岩冲沟侧翼、地下水潜蚀剧场形壁龛与蒙皂石-沸石-石膏陡坎、莫高窟佛龛券顶内侧拱肩肋梁鎏金双凤宝相莲团花与飞天琵琶捍拨丹凤牡丹垂穗鎏金迦陵频伽嵌和田碧玉花钿扣、及发射台导流槽尾喷集气室底槽槛声学肋板与八激波胞十五阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/SHARAD 在哈德里亚库斯火山、奥索尼亚洼地与道谷源头陡壁探测到的赫斯珀里亚纪熔结凝灰岩冲沟侧翼、地下水潜蚀剧场形壁龛与蒙皂石-沸石-石膏陡坎 `Hadriacus Mons, Ausonia Cavus & Dao Vallis Headwall Hesperian Pyroclastic Ignimbrite Gullied Flanks, Sapping Theatre Alcoves & Smectite-Zeolite-Gypsum Scarps`、莫高窟盛唐第 159/217 窟佛龛券顶内侧拱肩肋梁鎏金双凤宝相莲团花与飞天琵琶捍拨丹凤牡丹垂穗鎏金迦陵频伽嵌和田碧玉花钿扣、以及发射台导流槽尾喷集气室底槽槛声学肋板 `Pad_ExhaustPlenumFloorTroughSillAcousticRib`、二级发动机舱段传感器整流罩 `Rocket_Stage2EngineBaySensorCowl` 与八激波胞十五阶普朗特-迈耶剪切辉光 `cell8QuindecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.243` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧拱肩肋梁两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerSpandrelRibPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧拱肩肋梁增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨丹凤牡丹垂穗增绘鎏金迦陵频伽嵌和田碧玉花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入哈德里亚库斯火山、奥索尼亚洼地与道谷源头陡壁赫斯珀里亚纪熔结凝灰岩冲沟侧翼、地下水潜蚀剧场形壁龛与蒙皂石-沸石-石膏陡坎（`hadriacus_ausonia_cavus_dao_headwall_ignimbrite_gully_sapping_alcove_smectite_zeolite_gypsum_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,280 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,458 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对哈德里亚库斯—道谷蒙皂石-沸石-石膏层引入暖浅灰褐米色带（`hadriacusAusoniaCavusDaoHeadwallIgnimbriteGullySappingAlcoveSmectiteZeoliteGypsumTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流肋板（`Pad_ExhaustPlenumFloorTroughSillAcousticRib_0..3`）与箭体二级发动机舱段四向传感器整流罩（`Rocket_Stage2EngineBaySensorCowl_0..3`），导出 `rocket-kit.glb`（`2,646,696 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,138 B`）；在 `flameMaterial` 中引入八激波胞十五阶普朗特-迈耶剪切辉光项（`cell8QuindecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百六十六阶段验收：夜间持续进化 · 第勒尼安火山、赫斯珀里亚平原与利库斯谷源头赫斯珀里亚纪火山碎屑环状地堑溪谷、皱脊溢流玄武岩与蒙皂石-蛋白石-绿泥石陡坎、莫高窟佛龛券顶外侧拱肩斜撑鎏金双凤宝相莲团花与飞天琵琶捍拨双鹦鹉衔莲垂穗鎏金迦陵频伽嵌绿松石花钿扣、及发射台导流槽尾喷集气室底槽槛集气格栅与羽流尾迹十五阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/SHARAD 在第勒尼安火山、赫斯珀里亚平原与利库斯谷源头探测到的赫斯珀里亚纪火山碎屑环状地堑溪谷、皱脊溢流玄武岩与蒙皂石-蛋白石-绿泥石陡坎 `Tyrrhenus Mons, Hesperia Planum & Licus Vallis Headwaters Hesperian Pyroclastic Ring-Graben Rilles, Wrinkle-Ridge Flood Basalts & Smectite-Opal-Chlorite Scarps`、莫高窟盛唐第 159/217 窟佛龛券顶外侧拱肩斜撑鎏金双凤宝相莲团花与飞天琵琶捍拨双鹦鹉衔莲垂穗鎏金迦陵频伽嵌绿松石花钿扣、以及发射台导流槽尾喷集气室底槽槛集气格栅 `Pad_ExhaustPlenumFloorTroughSillPlenumGrate`、二级后舱段传感器整流罩 `Rocket_Stage2AftBaySensorCowl` 与羽流尾迹十五阶普朗特-迈耶剪切辉光 `plumeTailQuindecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.244` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧拱肩斜撑两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterSpandrelBracePhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧拱肩斜撑增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨双鹦鹉衔莲垂穗增绘鎏金迦陵频伽嵌绿松石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入第勒尼安火山、赫斯珀里亚平原与利库斯谷源头赫斯珀里亚纪火山碎屑环状地堑溪谷、皱脊溢流玄武岩与蒙皂石-蛋白石-绿泥石陡坎（`tyrrhenus_hesperia_licus_ring_graben_rille_wrinkle_ridge_smectite_opal_chlorite_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,232 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,767 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对第勒尼安—赫斯珀里亚蒙皂石-蛋白石-绿泥石层引入暖鼠尾草青褐色带（`tyrrhenusHesperiaLicusRingGrabenRilleWrinkleRidgeSmectiteOpalChloriteTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学集气格栅（`Pad_ExhaustPlenumFloorTroughSillPlenumGrate_0..3`）与箭体二级后舱段四向传感器整流罩（`Rocket_Stage2AftBaySensorCowl_0..3`），导出 `rocket-kit.glb`（`2,657,040 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`892,980 B`）；在 `flameMaterial` 中引入羽流尾迹十五阶普朗特-迈耶剪切辉光项（`plumeTailQuindecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百六十七阶段验收：夜间持续进化 · 大瑟提斯火山、尼利破火山口与麦罗埃破火山口赫斯珀里亚纪英安质黑曜岩锥、热液蛋白石硅华丘与蒙皂石-蛇纹石-碳酸盐陡坎、莫高窟佛龛券顶内侧拱肩斜撑鎏金双凤宝相莲团花与飞天琵琶捍拨双鹤庆云垂穗鎏金迦陵频伽嵌青金石花钿扣、及发射台导流槽尾喷集气室底槽槛声学导流翼与首激波胞十六阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/THEMIS 在大瑟提斯火山、尼利破火山口与麦罗埃破火山口探测到的赫斯珀里亚纪英安质黑曜岩锥、热液蛋白石硅华丘与蒙皂石-蛇纹石-碳酸盐陡坎 `Syrtis Major, Nili Patera & Meroe Patera Caldera Hesperian Dacitic Obsidian Cones, Hydrothermal Opaline Silica Sinter Mounds & Smectite-Serpentine-Carbonate Scarps`、莫高窟盛唐第 159/217 窟佛龛券顶内侧拱肩斜撑鎏金双凤宝相莲团花与飞天琵琶捍拨双鹤庆云垂穗鎏金迦陵频伽嵌青金石花钿扣、以及发射台导流槽尾喷集气室底槽槛声学导流翼 `Pad_ExhaustPlenumFloorTroughSillAcousticVane`、二级中舱段传感器整流罩 `Rocket_Stage2MidBaySensorCowl` 与首激波胞十六阶普朗特-迈耶剪切辉光 `cell1SedecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.245` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧拱肩斜撑两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerSpandrelBracePhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧拱肩斜撑增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨双鹤庆云垂穗增绘鎏金迦陵频伽嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入大瑟提斯火山、尼利破火山口与麦罗埃破火山口赫斯珀里亚纪英安质黑曜岩锥、热液蛋白石硅华丘与蒙皂石-蛇纹石-碳酸盐陡坎（`syrtis_nili_meroe_caldera_dacite_cone_opaline_sinter_smectite_serpentine_carbonate_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,229 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,537 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对大瑟提斯—尼利破火山口蛋白石硅华-碳酸盐层引入暖米黄色带（`syrtisNiliMeroeCalderaDaciteConeOpalineSinterSmectiteSerpentineCarbonateTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学导流翼（`Pad_ExhaustPlenumFloorTroughSillAcousticVane_0..3`）与箭体二级中舱段四向传感器整流罩（`Rocket_Stage2MidBaySensorCowl_0..3`），导出 `rocket-kit.glb`（`2,667,364 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`892,977 B`）；在 `flameMaterial` 中引入首激波胞十六阶普朗特-迈耶剪切辉光项（`cell1SedecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百六十八阶段验收：夜间持续进化 · 阿波利纳里斯火山、混沌区与古瑟夫北缘赫斯珀里亚纪火山热液泥流舌、基底扇状裙陡坎与蒙皂石-高岭石-硫酸盐阶地、莫高窟佛龛券顶外侧拱肩斜梁鎏金双凤宝相莲团花与飞天琵琶捍拨鸳鸯戏莲垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、及发射台导流槽尾喷集气室底槽槛射流横杠与次激波胞十六阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/勇气号在阿波利纳里斯火山、混沌区与古瑟夫北缘探测到的赫斯珀里亚纪火山热液泥流舌、基底扇状裙陡坎与蒙皂石-高岭石-硫酸盐阶地 `Apollinaris Mons, Chaos & Gusev Northern Rim Hesperian Volcano-Hydrothermal Lahars, Basal Fan-Apron Scarps & Smectite-Kaolinite-Sulfate Benches`、莫高窟盛唐第 159/217 窟佛龛券顶外侧拱肩斜梁鎏金双凤宝相莲团花与飞天琵琶捍拨鸳鸯戏莲垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、以及发射台导流槽尾喷集气室底槽槛射流横杠 `Pad_ExhaustPlenumFloorTroughSillJetBar`、二级前舱段传感器整流罩 `Rocket_Stage2FwdBaySensorCowl` 与次激波胞十六阶普朗特-迈耶剪切辉光 `cell2SedecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.246` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧拱肩斜梁两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterSpandrelStrutPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧拱肩斜梁增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨鸳鸯戏莲垂穗增绘鎏金迦陵频伽嵌红珊瑚花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入阿波利纳里斯火山、混沌区与古瑟夫北缘赫斯珀里亚纪火山热液泥流舌、基底扇状裙陡坎与蒙皂石-高岭石-硫酸盐阶地（`apollinaris_mons_chaos_gusev_rim_lahar_fan_apron_smectite_kaolinite_sulfate_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,182 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,475 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对阿波利纳里斯—古瑟夫蒙皂石-高岭石-硫酸盐层引入暖浅陶粉赭色带（`apollinarisMonsChaosGusevRimLaharFanApronSmectiteKaoliniteSulfateTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流射流横杠（`Pad_ExhaustPlenumFloorTroughSillJetBar_0..3`）与箭体二级前舱段四向传感器整流罩（`Rocket_Stage2FwdBaySensorCowl_0..3`），导出 `rocket-kit.glb`（`2,677,636 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,111 B`）；在 `flameMaterial` 中引入次激波胞十六阶普朗特-迈耶剪切辉光项（`cell2SedecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百六十九阶段验收：夜间持续进化 · 埃律西昂火山、赫卡忒斯圆顶丘与阿尔博尔圆顶丘侧翼赫斯珀里亚纪—亚马逊纪火山构造放射状槽沟、火山泥流舌与皂石-石膏-蛋白石陡坎、莫高窟佛龛券顶内侧拱肩撑梁鎏金双凤宝相莲团花与飞天琵琶捍拨喜鹊登梅垂穗鎏金迦陵频伽嵌和田碧玉花钿扣、及发射台导流槽尾喷集气室底槽槛洪流横杠与三激波胞十六阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/SHARAD 在埃律西昂火山、赫卡忒斯圆顶丘与阿尔博尔圆顶丘侧翼探测到的赫斯珀里亚纪—亚马逊纪火山构造放射状槽沟、火山泥流舌与皂石-石膏-蛋白石陡坎 `Elysium Mons, Hecates Tholus & Albor Tholus Flank Hesperian-Amazonian Volcano-Tectonic Radial Fossae, Lahars & Saponite-Gypsum-Opaline Scarps`、莫高窟盛唐第 159/217 窟佛龛券顶内侧拱肩撑梁鎏金双凤宝相莲团花与飞天琵琶捍拨喜鹊登梅垂穗鎏金迦陵频伽嵌和田碧玉花钿扣、以及发射台导流槽尾喷集气室底槽槛洪流横杠 `Pad_ExhaustPlenumFloorTroughSillDelugeBar`、二级转接舱段传感器整流罩 `Rocket_Stage2AdapterBaySensorCowl` 与三激波胞十六阶普朗特-迈耶剪切辉光 `cell3SedecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.247` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧拱肩撑梁两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerSpandrelStrutPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧拱肩撑梁增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨喜鹊登梅垂穗增绘鎏金迦陵频伽嵌和田碧玉花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入埃律西昂火山、赫卡忒斯圆顶丘与阿尔博尔圆顶丘侧翼赫斯珀里亚纪—亚马逊纪火山构造放射状槽沟、火山泥流舌与皂石-石膏-蛋白石陡坎（`elysium_hecates_albor_tholus_radial_fossa_lahar_saponite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,178 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,540 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对埃律西昂—赫卡忒斯皂石-石膏-蛋白石层引入暖鼠尾草青米色带（`elysiumHecatesAlborTholusRadialFossaLaharSaponiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流横杠（`Pad_ExhaustPlenumFloorTroughSillDelugeBar_0..3`）与箭体二级转接舱段四向传感器整流罩（`Rocket_Stage2AdapterBaySensorCowl_0..3`），导出 `rocket-kit.glb`（`2,687,900 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`892,942 B`）；在 `flameMaterial` 中引入三激波胞十六阶普朗特-迈耶剪切辉光项（`cell3SedecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百七十阶段验收：夜间持续进化 · 奥林匹斯山、吕科斯槽沟与亚马逊平原基底陡坎亚马逊纪火山冰川光环托雷瓦巨型滑坡舌、叶状碎屑裙与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶外侧拱肩系梁鎏金双凤宝相莲团花与飞天琵琶捍拨双鹭荷花垂穗鎏金迦陵频伽嵌绿松石花钿扣、及发射台导流槽尾喷集气室底槽槛声学横杠与四激波胞十六阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/SHARAD 在奥林匹斯山、吕科斯槽沟与亚马逊平原基底陡坎探测到的亚马逊纪火山冰川光环托雷瓦巨型滑坡舌、叶状碎屑裙与蒙皂石-石膏-蛋白石阶地 `Olympus Mons, Lycus Sulci & Amazonis Basal Scarp Amazonian Volcano-Glacial Aureole Toreva Megaslide Lobes, Lobate Debris Aprons & Smectite-Gypsum-Opaline Benches`、莫高窟盛唐第 159/217 窟佛龛券顶外侧拱肩系梁鎏金双凤宝相莲团花与飞天琵琶捍拨双鹭荷花垂穗鎏金迦陵频伽嵌绿松石花钿扣、以及发射台导流槽尾喷集气室底槽槛声学横杠 `Pad_ExhaustPlenumFloorTroughSillAcousticBar`、整流罩底座舱段传感器整流罩 `Rocket_FairingBaseBaySensorCowl` 与四激波胞十六阶普朗特-迈耶剪切辉光 `cell4SedecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.248` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧拱肩系梁两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterSpandrelTiePhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧拱肩系梁增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨双鹭荷花垂穗增绘鎏金迦陵频伽嵌绿松石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入奥林匹斯山、吕科斯槽沟与亚马逊平原基底陡坎亚马逊纪火山冰川光环托雷瓦巨型滑坡舌、叶状碎屑裙与蒙皂石-石膏-蛋白石阶地（`olympus_lycus_sulci_basal_scarp_aureole_toreva_megaslide_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,286 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,491 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对奥林匹斯—吕科斯蒙皂石-石膏-蛋白石层引入暖灰驼色带（`olympusLycusSulciBasalScarpAureoleTorevaMegaslideSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学消音横杠（`Pad_ExhaustPlenumFloorTroughSillAcousticBar_0..3`）与箭体整流罩底座舱段四向传感器整流罩（`Rocket_FairingBaseBaySensorCowl_0..3`），导出 `rocket-kit.glb`（`2,698,232 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,039 B`）；在 `flameMaterial` 中引入四激波胞十六阶普朗特-迈耶剪切辉光项（`cell4SedecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百七十一阶段验收：夜间持续进化 · 阿尔西亚山、帕沃尼斯山与阿斯克雷乌斯山（塔尔西斯三火山西翼）亚马逊纪冷基扇状冰碛物、同心退缩冰碛脊与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶内侧拱肩系梁鎏金双凤宝相莲团花与飞天琵琶捍拨黄莺翠柳垂穗鎏金迦陵频伽嵌青金石花钿扣、及发射台导流槽尾喷集气室底槽槛折流横杠与五激波胞十六阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/SHARAD 在塔尔西斯三火山西翼阿尔西亚山、帕沃尼斯山与阿斯克雷乌斯山探测到的亚马逊纪冷基扇状冰碛物、同心退缩冰碛脊与蒙皂石-石膏-蛋白石阶地 `Arsia Mons, Pavonis Mons & Ascraeus Mons Tharsis Montes Western Flank Amazonian Cold-Based Fan-Shaped Glacial Moraines, Concentric Drop Moraines & Smectite-Gypsum-Opaline Benches`、莫高窟盛唐第 159/217 窟佛龛券顶内侧拱肩系梁鎏金双凤宝相莲团花与飞天琵琶捍拨黄莺翠柳垂穗鎏金迦陵频伽嵌青金石花钿扣、以及发射台导流槽尾喷集气室底槽槛折流横杠 `Pad_ExhaustPlenumFloorTroughSillBaffleBar`、整流罩下筒舱段传感器整流罩 `Rocket_FairingLowerBaySensorCowl` 与五激波胞十六阶普朗特-迈耶剪切辉光 `cell5SedecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.249` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧拱肩系梁两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerSpandrelTiePhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧拱肩系梁增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨黄莺翠柳垂穗增绘鎏金迦陵频伽嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入阿尔西亚山、帕沃尼斯山与阿斯克雷乌斯山（塔尔西斯三火山西翼）亚马逊纪冷基扇状冰碛物、同心退缩冰碛脊与蒙皂石-石膏-蛋白石阶地（`arsia_pavonis_ascraeus_tharsis_montes_fan_glacial_drop_moraine_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,314 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,473 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对塔尔西斯三火山西翼蒙皂石-石膏-蛋白石层引入暖浅灰褐色带（`arsiaPavonisAscraeusTharsisMontesFanGlacialDropMoraineSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学折流横杠（`Pad_ExhaustPlenumFloorTroughSillBaffleBar_0..3`）与箭体整流罩下筒舱段四向传感器整流罩（`Rocket_FairingLowerBaySensorCowl_0..3`），导出 `rocket-kit.glb`（`2,708,500 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`892,936 B`）；在 `flameMaterial` 中引入五激波胞十六阶普朗特-迈耶剪切辉光项（`cell5SedecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百七十二阶段验收：夜间持续进化 · 阿尔巴火山、阿尔巴地堑群与刻劳尼乌斯槽沟诺亚纪—赫斯珀里亚纪火山构造环状地堑、塌陷坑链与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶外侧拱肩檩条鎏金双凤宝相莲团花与飞天琵琶捍拨双燕桃花垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、及发射台导流槽尾喷集气室底槽槛耐火横杠与六激波胞十六阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在阿尔巴火山、阿尔巴地堑群与刻劳尼乌斯槽沟探测到的诺亚纪—赫斯珀里亚纪火山构造环状地堑、塌陷坑链与蒙皂石-石膏-蛋白石阶地 `Alba Mons, Alba Fossae & Ceraunius Fossae Noachian-Hesperian Volcano-Tectonic Ring Grabens, Collapse Pit Catenae & Smectite-Gypsum-Opaline Benches`、莫高窟盛唐第 159/217 窟佛龛券顶外侧拱肩檩条鎏金双凤宝相莲团花与飞天琵琶捍拨双燕桃花垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、以及发射台导流槽尾喷集气室底槽槛耐火横杠 `Pad_ExhaustPlenumFloorTroughSillRefractoryBar`、整流罩中筒舱段传感器整流罩 `Rocket_FairingMidBaySensorCowl` 与六激波胞十六阶普朗特-迈耶剪切辉光 `cell6SedecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.250` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧拱肩檩条两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterSpandrelPurlinPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧拱肩檩条增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨双燕桃花垂穗增绘鎏金迦陵频伽嵌红珊瑚花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入阿尔巴火山、阿尔巴地堑群与刻劳尼乌斯槽沟诺亚纪—赫斯珀里亚纪火山构造环状地堑、塌陷坑链与蒙皂石-石膏-蛋白石阶地（`alba_mons_alba_ceraunius_fossae_ring_graben_pit_catena_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,333 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,687 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对阿尔巴—刻劳尼乌斯蒙皂石-石膏-蛋白石层引入暖赭色带（`albaMonsAlbaCerauniusFossaeRingGrabenPitCatenaSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座高铝耐火横杠（`Pad_ExhaustPlenumFloorTroughSillRefractoryBar_0..3`）与箭体整流罩中筒舱段四向传感器整流罩（`Rocket_FairingMidBaySensorCowl_0..3`），导出 `rocket-kit.glb`（`2,718,836 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,226 B`）；在 `flameMaterial` 中引入六激波胞十六阶普朗特-迈耶剪切辉光项（`cell6SedecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百七十三阶段验收：夜间持续进化 · 塔尔西斯圆顶丘、乌拉尼乌斯火山、刻劳尼乌斯圆顶丘与乌拉尼乌斯破火山口赫斯珀里亚纪坍塌熔岩管、火山构造放射状溪谷与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶内侧拱肩檩条鎏金双凤宝相莲团花与飞天琵琶捍拨双孔雀衔宝相莲垂穗鎏金迦陵频伽嵌和田碧玉花钿扣、及发射台导流槽尾喷集气室底槽槛均压横杠与七激波胞十六阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在塔尔西斯圆顶丘、乌拉尼乌斯火山、刻劳尼乌斯圆顶丘与乌拉尼乌斯破火山口探测到的赫斯珀里亚纪坍塌熔岩管、火山构造放射状溪谷与蒙皂石-石膏-蛋白石阶地 `Tharsis Tholus, Uranius Mons, Ceraunius Tholus & Uranius Patera Hesperian Collapsed Lava Tubes, Volcano-Tectonic Radial Rilles & Smectite-Gypsum-Opaline Benches`、莫高窟盛唐第 159/217 窟佛龛券顶内侧拱肩檩条鎏金双凤宝相莲团花与飞天琵琶捍拨双孔雀衔宝相莲垂穗鎏金迦陵频伽嵌和田碧玉花钿扣、以及发射台导流槽尾喷集气室底槽槛均压横杠 `Pad_ExhaustPlenumFloorTroughSillPlenumBar`、整流罩上筒舱段传感器整流罩 `Rocket_FairingUpperBaySensorCowl` 与七激波胞十六阶普朗特-迈耶剪切辉光 `cell7SedecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.251` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧拱肩檩条两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerSpandrelPurlinPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧拱肩檩条增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨双孔雀衔宝相莲垂穗增绘鎏金迦陵频伽嵌和田碧玉花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入塔尔西斯圆顶丘、乌拉尼乌斯火山、刻劳尼乌斯圆顶丘与乌拉尼乌斯破火山口赫斯珀里亚纪坍塌熔岩管、火山构造放射状溪谷与蒙皂石-石膏-蛋白石阶地（`tharsis_ceraunius_tholus_uranius_patera_lava_tube_rille_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,275 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,093,995 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对塔尔西斯圆顶丘—乌拉尼乌斯蒙皂石-石膏-蛋白石层引入暖鼠尾草驼色带（`tharsisCerauniusTholusUraniusPateraLavaTubeRilleSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学均压横杠（`Pad_ExhaustPlenumFloorTroughSillPlenumBar_0..3`）与箭体整流罩上筒舱段四向传感器整流罩（`Rocket_FairingUpperBaySensorCowl_0..3`），导出 `rocket-kit.glb`（`2,729,160 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,332 B`）；在 `flameMaterial` 中引入七激波胞十六阶普朗特-迈耶剪切辉光项（`cell7SedecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百七十四阶段验收：夜间持续进化 · 比布利斯圆顶丘、尤利西斯圆顶丘、约维斯圆顶丘与福尔图娜槽沟赫斯珀里亚纪同心破火山口环状断层陡坎、皱脊溢流玄武岩与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶外侧拱肩椽木鎏金双凤宝相莲团花与飞天琵琶捍拨天鹅芦苇垂穗鎏金迦陵频伽嵌绿松石花钿扣、及发射台导流槽尾喷集气室底槽槛文丘里横杠与八激波胞十六阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在比布利斯圆顶丘、尤利西斯圆顶丘、约维斯圆顶丘与福尔图娜槽沟探测到的赫斯珀里亚纪同心破火山口环状断层陡坎、皱脊溢流玄武岩与蒙皂石-石膏-蛋白石阶地 `Biblis Tholus, Ulysses Tholus, Jovis Tholus & Fortuna Fossae Hesperian Concentric Caldera Ring-Fault Scarps, Wrinkle-Ridge Flood Basalts & Smectite-Gypsum-Opaline Benches`、莫高窟盛唐第 159/217 窟佛龛券顶外侧拱肩椽木鎏金双凤宝相莲团花与飞天琵琶捍拨天鹅芦苇垂穗鎏金迦陵频伽嵌绿松石花钿扣、以及发射台导流槽尾喷集气室底槽槛文丘里横杠 `Pad_ExhaustPlenumFloorTroughSillVenturiBar`、整流罩鼻锥舱段传感器整流罩 `Rocket_FairingNoseBaySensorCowl` 与八激波胞十六阶普朗特-迈耶剪切辉光 `cell8SedecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.252` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧拱肩椽木两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterSpandrelRafterPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧拱肩椽木增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨天鹅芦苇垂穗增绘鎏金迦陵频伽嵌绿松石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入比布利斯圆顶丘、尤利西斯圆顶丘、约维斯圆顶丘与福尔图娜槽沟赫斯珀里亚纪同心破火山口环状断层陡坎、皱脊溢流玄武岩与蒙皂石-石膏-蛋白石阶地（`biblis_ulysses_jovis_tholus_fortuna_fossae_caldera_ring_scarp_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,390 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,716 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对比布利斯—尤利西斯蒙皂石-石膏-蛋白石层引入暖米褐赭色带（`biblisUlyssesJovisTholusFortunaFossaeCalderaRingScarpSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座文丘里加速横杠（`Pad_ExhaustPlenumFloorTroughSillVenturiBar_0..3`）与箭体整流罩鼻锥舱段四向传感器整流罩（`Rocket_FairingNoseBaySensorCowl_0..3`），导出 `rocket-kit.glb`（`2,739,480 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,288 B`）；在 `flameMaterial` 中引入八激波胞十六阶普朗特-迈耶剪切辉光项（`cell8SedecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百七十五阶段验收：夜间持续进化 · 叙利亚高原、索利斯高原、西奈高原与陶玛西亚高原赫斯珀里亚纪低矮盾状火山平原、同心皱脊环与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶内侧拱肩椽木鎏金双凤宝相莲团花与飞天琵琶捍拨锦鸡山茶垂穗鎏金迦陵频伽嵌青金石花钿扣、及发射台导流槽尾喷集气室底槽槛百叶横杠与尾焰末端十六阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在叙利亚高原、索利斯高原、西奈高原与陶玛西亚高原探测到的赫斯珀里亚纪低矮盾状火山平原、同心皱脊环与蒙皂石-石膏-蛋白石阶地 `Syria Planum, Solis Planum, Sinai Planum & Thaumasia Planum Hesperian Low-Shield Volcanic Plains, Concentric Wrinkle-Ridge Rings & Smectite-Gypsum-Opaline Benches`、莫高窟盛唐第 159/217 窟佛龛券顶内侧拱肩椽木鎏金双凤宝相莲团花与飞天琵琶捍拨锦鸡山茶垂穗鎏金迦陵频伽嵌青金石花钿扣、以及发射台导流槽尾喷集气室底槽槛百叶横杠 `Pad_ExhaustPlenumFloorTroughSillLouverBar`、整流罩分离纵缝传感器整流罩 `Rocket_FairingSplitSeamSensorCowl` 与尾焰末端十六阶普朗特-迈耶剪切辉光 `plumeTailSedecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.253` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧拱肩椽木两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerSpandrelRafterPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧拱肩椽木增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨锦鸡山茶垂穗增绘鎏金迦陵频伽嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入叙利亚高原、索利斯高原、西奈高原与陶玛西亚高原赫斯珀里亚纪低矮盾状火山平原、同心皱脊环与蒙皂石-石膏-蛋白石阶地（`syria_solis_sinai_thaumasia_planum_low_shield_wrinkle_ridge_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,314 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,418 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对叙利亚—索利斯高原蒙皂石-石膏-蛋白石层引入暖鼠尾草褐灰色带（`syriaSolisSinaiThaumasiaPlanumLowShieldWrinkleRidgeSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学百叶横杠（`Pad_ExhaustPlenumFloorTroughSillLouverBar_0..3`）与箭体整流罩分离纵缝四向传感器整流罩（`Rocket_FairingSplitSeamSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,749,812 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,528 B`）；在 `flameMaterial` 中引入尾焰末端十六阶普朗特-迈耶剪切辉光项（`plumeTailSedecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百七十六阶段验收：夜间持续进化 · 代达利亚高原、克拉里塔斯槽沟、塞壬槽沟与门农尼亚槽沟诺亚纪—赫斯珀里亚纪放射状火山构造地堑群、雁列断层陡坎与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶外侧拱肩虹梁鎏金双凤宝相莲团花与飞天琵琶捍拨双喜鹊寒梅垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、及发射台导流槽尾喷集气室底槽槛节流横杠与一激波胞十七阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在代达利亚高原、克拉里塔斯槽沟、塞壬槽沟与门农尼亚槽沟探测到的诺亚纪—赫斯珀里亚纪放射状火山构造地堑群、雁列断层陡坎与蒙皂石-石膏-蛋白石阶地 `Daedalia Planum, Claritas Fossae, Sirenum Fossae & Memnonia Fossae Noachian-Hesperian Radial Volcano-Tectonic Graben Swarms, En-Echelon Fault Scarps & Smectite-Gypsum-Opaline Benches`、莫高窟盛唐第 159/217 窟佛龛券顶外侧拱肩虹梁鎏金双凤宝相莲团花与飞天琵琶捍拨双喜鹊寒梅垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、以及发射台导流槽尾喷集气室底槽槛节流横杠 `Pad_ExhaustPlenumFloorTroughSillChokeBar`、整流罩声学降噪板传感器整流罩 `Rocket_FairingAcousticPanelSensorCowl` 与一激波胞十七阶普朗特-迈耶剪切辉光 `cell1SeptendecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.254` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧拱肩虹梁两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterSpandrelTieBeamPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧拱肩虹梁增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨双喜鹊寒梅垂穗增绘鎏金迦陵频伽嵌红珊瑚花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入代达利亚高原、克拉里塔斯槽沟、塞壬槽沟与门农尼亚槽沟诺亚纪—赫斯珀里亚纪放射状火山构造地堑群、雁列断层陡坎与蒙皂石-石膏-蛋白石阶地（`daedalia_planum_claritas_sirenum_memnonia_fossae_graben_scarp_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,363 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,952 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对代达利亚—塞壬槽沟蒙皂石-石膏-蛋白石层引入暖浅褐金色带（`daedaliaPlanumClaritasSirenumMemnoniaFossaeGrabenScarpSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座节流阻尼横杠（`Pad_ExhaustPlenumFloorTroughSillChokeBar_0..3`）与箭体整流罩声学降噪板四向传感器整流罩（`Rocket_FairingAcousticPanelSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,760,168 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,555 B`）；在 `flameMaterial` 中引入一激波胞十七阶普朗特-迈耶剪切辉光项（`cell1SeptendecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百七十七阶段验收：夜间持续进化 · 坦佩高地、马雷奥蒂斯槽沟、坦塔罗斯槽沟与拉贝阿蒂斯槽沟诺亚纪—赫斯珀里亚纪裂谷地垒地堑群、低矮盾状火山平原与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶内侧拱肩虹梁鎏金双凤宝相莲团花与飞天琵琶捍拨一路连科白鹭莲蓬垂穗鎏金迦陵频伽嵌和田碧玉花钿扣、及发射台导流槽尾喷集气室底槽槛防喘振横杠与二激波胞十七阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在坦佩高地、马雷奥蒂斯槽沟、坦塔罗斯槽沟与拉贝阿蒂斯槽沟探测到的诺亚纪—赫斯珀里亚纪裂谷地垒地堑群、低矮盾状火山平原与蒙皂石-石膏-蛋白石阶地 `Tempe Terra, Mareotis Fossae, Tantalus Fossae & Labeatis Fossae Noachian-Hesperian Rift-Horst Grabens, Low-Shield Volcanic Plains & Smectite-Gypsum-Opaline Benches`、莫高窟盛唐第 159/217 窟佛龛券顶内侧拱肩虹梁鎏金双凤宝相莲团花与飞天琵琶捍拨一路连科白鹭莲蓬垂穗鎏金迦陵频伽嵌和田碧玉花钿扣、以及发射台导流槽尾喷集气室底槽槛防喘振横杠 `Pad_ExhaustPlenumFloorTroughSillSurgeBar`、整流罩有效载荷舱门传感器整流罩 `Rocket_FairingPayloadDoorSensorCowl` 与二激波胞十七阶普朗特-迈耶剪切辉光 `cell2SeptendecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.255` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧拱肩虹梁两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerSpandrelTieBeamPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧拱肩虹梁增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨一路连科白鹭莲蓬垂穗增绘鎏金迦陵频伽嵌和田碧玉花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入坦佩高地、马雷奥蒂斯槽沟、坦塔罗斯槽沟与拉贝阿蒂斯槽沟诺亚纪—赫斯珀里亚纪裂谷地垒地堑群、低矮盾状火山平原与蒙皂石-石膏-蛋白石阶地（`tempe_terra_mareotis_tantalus_labeatis_fossae_horst_graben_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,402 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,093,836 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对坦佩高地—马雷奥蒂斯槽沟蒙皂石-石膏-蛋白石层引入暖苔褐灰色带（`tempeTerraMareotisTantalusLabeatisFossaeHorstGrabenSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座防喘振横杠（`Pad_ExhaustPlenumFloorTroughSillSurgeBar_0..3`）与箭体整流罩有效载荷舱门四向传感器整流罩（`Rocket_FairingPayloadDoorSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,770,512 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,573 B`）；在 `flameMaterial` 中引入二激波胞十七阶普朗特-迈耶剪切辉光项（`cell2SeptendecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百七十八阶段验收：夜间持续进化 · 诺克提斯迷宫、叙利亚高原、克拉里塔斯槽沟与陶玛西亚槽沟赫斯珀里亚纪连通陷坑峡谷、多边形断块与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶外侧拱肩斗拱鎏金双凤宝相莲团花与飞天琵琶捍拨双黄鹂石榴垂穗鎏金迦陵频伽嵌绿松石花钿扣、及发射台导流槽尾喷集气室底槽槛急冷横杠与三激波胞十七阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在诺克提斯迷宫、叙利亚高原、克拉里塔斯槽沟与陶玛西亚槽沟探测到的赫斯珀里亚纪连通陷坑峡谷、多边形断块与蒙皂石-石膏-蛋白石阶地 `Noctis Labyrinthus, Syria Planum, Claritas Fossae & Thaumasia Fossae Hesperian Interconnected Pit-Crater Chasmata, Polygonal Fault Blocks & Smectite-Gypsum-Opaline Benches`、莫高窟盛唐第 159/217 窟佛龛券顶外侧拱肩斗拱鎏金双凤宝相莲团花与飞天琵琶捍拨双黄鹂石榴垂穗鎏金迦陵频伽嵌绿松石花钿扣、以及发射台导流槽尾喷集气室底槽槛急冷横杠 `Pad_ExhaustPlenumFloorTroughSillQuenchBar`、整流罩空调口传感器整流罩 `Rocket_FairingHvacPortSensorCowl` 与三激波胞十七阶普朗特-迈耶剪切辉光 `cell3SeptendecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.256` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧拱肩斗拱两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterSpandrelBracketPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧拱肩斗拱增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨双黄鹂石榴垂穗增绘鎏金迦陵频伽嵌绿松石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入诺克提斯迷宫、叙利亚高原、克拉里塔斯槽沟与陶玛西亚槽沟赫斯珀里亚纪连通陷坑峡谷、多边形断块与蒙皂石-石膏-蛋白石阶地（`noctis_labyrinthus_syria_claritas_thaumasia_fossae_pit_chasma_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,266 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,345 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对诺克提斯迷宫—克拉里塔斯槽沟蒙皂石-石膏-蛋白石层引入暖琥珀赭石色带（`noctisLabyrinthusSyriaClaritasThaumasiaFossaePitChasmaSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座水幕急冷横杠（`Pad_ExhaustPlenumFloorTroughSillQuenchBar_0..3`）与箭体整流罩空调送风口四向传感器整流罩（`Rocket_FairingHvacPortSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,780,836 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,688 B`）；在 `flameMaterial` 中引入三激波胞十七阶普朗特-迈耶剪切辉光项（`cell3SeptendecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百七十九阶段验收：夜间持续进化 · 拉贝阿蒂斯山、坦佩槽沟、阿斯库里斯高原与马雷奥蒂斯槽沟赫斯珀里亚纪裂谷肩低矮盾状火山口、共轭地堑群与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶内侧拱肩斗拱鎏金双凤宝相莲团花与飞天琵琶捍拨安居和平鹌鹑嘉禾垂穗鎏金迦陵频伽嵌青金石花钿扣、及发射台导流槽尾喷集气室底槽槛泄压横杠与四激波胞十七阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在拉贝阿蒂斯山、坦佩槽沟、阿斯库里斯高原与马雷奥蒂斯槽沟探测到的赫斯珀里亚纪裂谷肩低矮盾状火山口、共轭地堑群与蒙皂石-石膏-蛋白石阶地 `Labeatis Mons, Tempe Fossae, Ascuris Planum & Mareotis Fossae Hesperian Rift-Shoulder Low-Shield Vents, Conjugate Graben Swarms & Smectite-Gypsum-Opaline Benches`、莫高窟盛唐第 159/217 窟佛龛券顶内侧拱肩斗拱鎏金双凤宝相莲团花与飞天琵琶捍拨安居和平鹌鹑嘉禾垂穗鎏金迦陵频伽嵌青金石花钿扣、以及发射台导流槽尾喷集气室底槽槛泄压横杠 `Pad_ExhaustPlenumFloorTroughSillReliefBar`、整流罩爆炸螺栓传感器整流罩 `Rocket_FairingFrangibleBoltSensorCowl` 与四激波胞十七阶普朗特-迈耶剪切辉光 `cell4SeptendecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.257` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧拱肩斗拱两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerSpandrelBracketPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧拱肩斗拱增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨安居和平鹌鹑嘉禾垂穗增绘鎏金迦陵频伽嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入拉贝阿蒂斯山、坦佩槽沟、阿斯库里斯高原与马雷奥蒂斯槽沟赫斯珀里亚纪裂谷肩低矮盾状火山口、共轭地堑群与蒙皂石-石膏-蛋白石阶地（`labeatis_mons_tempe_ascuris_mareotis_fossae_low_shield_graben_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,365 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,720 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对拉贝阿蒂斯山—坦佩槽沟蒙皂石-石膏-蛋白石层引入暖灰橄榄褐色带（`labeatisMonsTempeAscurisMareotisFossaeLowShieldGrabenSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座超压泄流横杠（`Pad_ExhaustPlenumFloorTroughSillReliefBar_0..3`）与箭体整流罩爆炸螺栓座四向传感器整流罩（`Rocket_FairingFrangibleBoltSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,791,204 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,706 B`）；在 `flameMaterial` 中引入四激波胞十七阶普朗特-迈耶剪切辉光项（`cell4SeptendecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百八十阶段验收：夜间持续进化 · 奥林匹斯陡崖、戈尔迪沟群、阿刻戎槽沟与库阿涅沟群赫斯珀里亚纪—亚马逊纪基座陡崖巨角砾岩块、光环褶皱逆冲脊与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶外侧拱肩蜀柱鎏金双凤宝相莲团花与飞天琵琶捍拨双翠鸟荷叶垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、及发射台导流槽尾喷集气室底槽槛吹扫横杠与五激波胞十七阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在奥林匹斯陡崖、戈尔迪沟群、阿刻戎槽沟与库阿涅沟群探测到的赫斯珀里亚纪—亚马逊纪基座陡崖巨角砾岩块、光环褶皱逆冲脊与蒙皂石-石膏-蛋白石阶地 `Olympus Rupes, Sulci Gordii, Acheron Fossae & Cyane Sulci Hesperian-Amazonian Basal Scarp Megabreccia Blocks, Aureole Fold-and-Thrust Ridges & Smectite-Gypsum-Opaline Benches`、莫高窟盛唐第 159/217 窟佛龛券顶外侧拱肩蜀柱鎏金双凤宝相莲团花与飞天琵琶捍拨双翠鸟荷叶垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、以及发射台导流槽尾喷集气室底槽槛吹扫横杠 `Pad_ExhaustPlenumFloorTroughSillPurgeBar`、整流罩推冲活塞传感器整流罩 `Rocket_FairingPusherPistonSensorCowl` 与五激波胞十七阶普朗特-迈耶剪切辉光 `cell5SeptendecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.258` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧拱肩蜀柱两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterSpandrelStrutPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧拱肩蜀柱增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨双翠鸟荷叶垂穗增绘鎏金迦陵频伽嵌红珊瑚花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入奥林匹斯陡崖、戈尔迪沟群、阿刻戎槽沟与库阿涅沟群赫斯珀里亚纪—亚马逊纪基座陡崖巨角砾岩块、光环褶皱逆冲脊与蒙皂石-石膏-蛋白石阶地（`olympus_rupes_sulci_gordii_acheron_fossae_cyane_sulci_aureole_ridge_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,356 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,642 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对奥林匹斯陡崖—戈尔迪沟群蒙皂石-石膏-蛋白石层引入暖米黄赭石色带（`olympusRupesSulciGordiiAcheronFossaeCyaneSulciAureoleRidgeSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座惰性气体吹扫横杠（`Pad_ExhaustPlenumFloorTroughSillPurgeBar_0..3`）与箭体整流罩推冲活塞座四向传感器整流罩（`Rocket_FairingPusherPistonSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,801,552 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,301 B`）；在 `flameMaterial` 中引入五激波胞十七阶普朗特-迈耶剪切辉光项（`cell5SeptendecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百八十一阶段验收：夜间持续进化 · 戈尔迪脊、美杜莎槽沟、泽菲里亚高原与卢库斯高原赫斯珀里亚纪—亚马逊纪熔结凝灰岩雅丹群、倒转河道脊与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶内侧拱肩蜀柱鎏金双凤宝相莲团花与飞天琵琶捍拨瑞鸽宝相花垂穗鎏金迦陵频伽嵌和田碧玉花钿扣、及发射台导流槽尾喷集气室底槽槛集管横杠与六激波胞十七阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在戈尔迪脊、美杜莎槽沟、泽菲里亚高原与卢库斯高原探测到的赫斯珀里亚纪—亚马逊纪熔结凝灰岩雅丹群、倒转河道脊与蒙皂石-石膏-蛋白石阶地 `Gordii Dorsum, Medusae Fossae, Zephyria Planum & Lucus Planum Hesperian-Amazonian Ignimbrite Yardang Fleets, Inverted Channel Ridges & Smectite-Gypsum-Opaline Benches`、莫高窟盛唐第 159/217 窟佛龛券顶内侧拱肩蜀柱鎏金双凤宝相莲团花与飞天琵琶捍拨瑞鸽宝相花垂穗鎏金迦陵频伽嵌和田碧玉花钿扣、以及发射台导流槽尾喷集气室底槽槛集管横杠 `Pad_ExhaustPlenumFloorTroughSillHeaderBar`、整流罩锁钩传感器整流罩 `Rocket_FairingLatchHookSensorCowl` 与六激波胞十七阶普朗特-迈耶剪切辉光 `cell6SeptendecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.259` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧拱肩蜀柱两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerSpandrelStrutPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧拱肩蜀柱增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨瑞鸽宝相花垂穗增绘鎏金迦陵频伽嵌和田碧玉花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入戈尔迪脊、美杜莎槽沟、泽菲里亚高原与卢库斯高原赫斯珀里亚纪—亚马逊纪熔结凝灰岩雅丹群、倒转河道脊与蒙皂石-石膏-蛋白石阶地（`gordii_dorsum_medusae_fossae_zephyria_lucus_planum_ignimbrite_yardang_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,426 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,458 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对戈尔迪脊—美杜莎槽沟蒙皂石-石膏-蛋白石层引入暖鼠尾草褐灰色带（`gordiiDorsumMedusaeFossaeZephyriaLucusPlanumIgnimbriteYardangSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学喷淋集管横杠（`Pad_ExhaustPlenumFloorTroughSillHeaderBar_0..3`）与箭体整流罩锁钩座四向传感器整流罩（`Rocket_FairingLatchHookSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,811,884 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,647 B`）；在 `flameMaterial` 中引入六激波胞十七阶普朗特-迈耶剪切辉光项（`cell6SeptendecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百八十二阶段验收：夜间持续进化 · 厄墨尼得斯脊、亚马逊台地、美杜莎槽沟与戈尔迪槽沟赫斯珀里亚纪—亚马逊纪易碎火山碎屑雅丹台地、风蚀凹槽脊与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶外侧拱肩替木鎏金双凤宝相莲团花与飞天琵琶捍拨双鹧鸪牡丹垂穗鎏金迦陵频伽嵌绿松石花钿扣、及发射台导流槽尾喷集气室底槽槛排流横杠与七激波胞十七阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在厄墨尼得斯脊、亚马逊台地、美杜莎槽沟与戈尔迪槽沟探测到的赫斯珀里亚纪—亚马逊纪易碎火山碎屑雅丹台地、风蚀凹槽脊与蒙皂石-石膏-蛋白石阶地 `Eumenides Dorsum, Amazonis Mensa, Medusae Fossae & Gordii Fossae Hesperian-Amazonian Friable Pyroclastic Yardang Mesas, Wind-Fluted Ridges & Smectite-Gypsum-Opaline Benches`、莫高窟盛唐第 159/217 窟佛龛券顶外侧拱肩替木鎏金双凤宝相莲团花与飞天琵琶捍拨双鹧鸪牡丹垂穗鎏金迦陵频伽嵌绿松石花钿扣、以及发射台导流槽尾喷集气室底槽槛排流横杠 `Pad_ExhaustPlenumFloorTroughSillDrainBar`、整流罩铰链销传感器整流罩 `Rocket_FairingHingePinSensorCowl` 与七激波胞十七阶普朗特-迈耶剪切辉光 `cell7SeptendecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.260` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧拱肩替木两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterSpandrelCorbelPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧拱肩替木增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨双鹧鸪牡丹垂穗增绘鎏金迦陵频伽嵌绿松石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入厄墨尼得斯脊、亚马逊台地、美杜莎槽沟与戈尔迪槽沟赫斯珀里亚纪—亚马逊纪易碎火山碎屑雅丹台地、风蚀凹槽脊与蒙皂石-石膏-蛋白石阶地（`eumenides_dorsum_amazonis_mensa_medusae_gordii_fossae_pyroclastic_yardang_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,413 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,394 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对厄墨尼得斯脊—亚马逊台地蒙皂石-石膏-蛋白石层引入暖黄褐金赭色带（`eumenidesDorsumAmazonisMensaMedusaeGordiiFossaePyroclasticYardangSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学冷却排流横杠（`Pad_ExhaustPlenumFloorTroughSillDrainBar_0..3`）与箭体整流罩铰链销座四向传感器整流罩（`Rocket_FairingHingePinSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,822,204 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,626 B`）；在 `flameMaterial` 中引入七激波胞十七阶普朗特-迈耶剪切辉光项（`cell7SeptendecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百八十三阶段验收：夜间持续进化 · 埃奥利斯高原、泽菲里亚桌山群、阿波利纳里斯沟群与美杜莎槽沟赫斯珀里亚纪—亚马逊纪风刻熔结凝灰岩脊、倒转曲流带与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶内侧拱肩替木鎏金双凤宝相莲团花与飞天琵琶捍拨海东青缠枝莲垂穗鎏金迦陵频伽嵌青金石花钿扣、及发射台导流槽尾喷集气室底槽槛冲刷横杠与八激波胞十七阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在埃奥利斯高原、泽菲里亚桌山群、阿波利纳里斯沟群与美杜莎槽沟探测到的赫斯珀里亚纪—亚马逊纪风刻熔结凝灰岩脊、倒转曲流带与蒙皂石-石膏-蛋白石阶地 `Aeolis Planum, Zephyria Mensae, Apollinaris Sulci & Medusae Fossae Hesperian-Amazonian Wind-Sculpted Ignimbrite Ridges, Inverted Fluvial Sinuosities & Smectite-Gypsum-Opaline Benches`、莫高窟盛唐第 159/217 窟佛龛券顶内侧拱肩替木鎏金双凤宝相莲团花与飞天琵琶捍拨海东青缠枝莲垂穗鎏金迦陵频伽嵌青金石花钿扣、以及发射台导流槽尾喷集气室底槽槛冲刷横杠 `Pad_ExhaustPlenumFloorTroughSillFlushBar`、整流罩剪切销传感器整流罩 `Rocket_FairingShearPinSensorCowl` 与八激波胞十七阶普朗特-迈耶剪切辉光 `cell8SeptendecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.261` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧拱肩替木两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerSpandrelCorbelPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧拱肩替木增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨海东青缠枝莲垂穗增绘鎏金迦陵频伽嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入埃奥利斯高原、泽菲里亚桌山群、阿波利纳里斯沟群与美杜莎槽沟赫斯珀里亚纪—亚马逊纪风刻熔结凝灰岩脊、倒转曲流带与蒙皂石-石膏-蛋白石阶地（`aeolis_planum_zephyria_mensae_apollinaris_sulci_medusae_fossae_ignimbrite_sinuosity_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,369 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,143 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对埃奥利斯高原—泽菲里亚桌山群蒙皂石-石膏-蛋白石层引入暖苔褐灰色带（`aeolisPlanumZephyriaMensaeApollinarisSulciMedusaeFossaeIgnimbriteSinuositySmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流冲刷横杠（`Pad_ExhaustPlenumFloorTroughSillFlushBar_0..3`）与箭体整流罩剪切销座四向传感器整流罩（`Rocket_FairingShearPinSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,832,520 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,512 B`）；在 `flameMaterial` 中引入八激波胞十七阶普朗特-迈耶剪切辉光项（`cell8SeptendecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百八十四阶段验收：夜间持续进化 · 门农沟群、塞壬槽沟、曼加拉槽沟与伊莱克特里斯桌山群诺亚纪—赫斯珀里亚纪岩墙供源裂隙地堑、风刻雅丹高原与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶外侧拱肩皿板鎏金双凤宝相莲团花与飞天琵琶捍拨双鸳鸯睡莲垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、及发射台导流槽尾喷集气室底槽槛竖管横杠与尾流末梢十七阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在门农沟群、塞壬槽沟、曼加拉槽沟与伊莱克特里斯桌山群探测到的诺亚纪—赫斯珀里亚纪岩墙供源裂隙地堑、风刻雅丹高原与蒙皂石-石膏-蛋白石阶地 `Memnonia Sulci, Sirenum Fossae, Mangala Fossae & Electris Mensae Noachian-Hesperian Dike-Fed Fissure Grabens, Wind-Etched Yardang Plateaus & Smectite-Gypsum-Opaline Benches`、莫高窟盛唐第 159/217 窟佛龛券顶外侧拱肩皿板鎏金双凤宝相莲团花与飞天琵琶捍拨双鸳鸯睡莲垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、以及发射台导流槽尾喷集气室底槽槛竖管横杠 `Pad_ExhaustPlenumFloorTroughSillRiserBar`、整流罩导轨传感器整流罩 `Rocket_FairingGuideRailSensorCowl` 与尾流末梢十七阶普朗特-迈耶剪切辉光 `plumeTailSeptendecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.262` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧拱肩皿板两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterSpandrelPadBlockPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧拱肩皿板增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨双鸳鸯睡莲垂穗增绘鎏金迦陵频伽嵌红珊瑚花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入门农沟群、塞壬槽沟、曼加拉槽沟与伊莱克特里斯桌山群诺亚纪—赫斯珀里亚纪岩墙供源裂隙地堑、风刻雅丹高原与蒙皂石-石膏-蛋白石阶地（`memnonia_sulci_sirenum_mangala_fossae_electris_mensae_dike_graben_yardang_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,404 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,324 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对门农沟群—塞壬槽沟蒙皂石-石膏-蛋白石层引入暖琥珀赭石色带（`memnoniaSulciSirenumMangalaFossaeElectrisMensaeDikeGrabenYardangSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学冷却竖管横杠（`Pad_ExhaustPlenumFloorTroughSillRiserBar_0..3`）与箭体整流罩导轨座四向传感器整流罩（`Rocket_FairingGuideRailSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,842,844 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,533 B`）；在 `flameMaterial` 中引入尾流末梢十七阶普朗特-迈耶剪切辉光项（`plumeTailSeptendecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百八十五阶段验收：夜间持续进化 · 克拉里塔斯陡崖、索利斯脊、西奈槽沟与奥吉吉斯陡崖诺亚纪—赫斯珀里亚纪逆冲断层皱脊陡崖、倾伏基底断块与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶内侧拱肩皿板鎏金双凤宝相莲团花与飞天琵琶捍拨松鹤瑞云垂穗鎏金迦陵频伽嵌和田碧玉花钿扣、及发射台导流槽尾喷集气室底槽槛曝气横杠与一激波胞十八阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在克拉里塔斯陡崖、索利斯脊、西奈槽沟与奥吉吉斯陡崖探测到的诺亚纪—赫斯珀里亚纪逆冲断层皱脊陡崖、倾伏基底断块与蒙皂石-石膏-蛋白石阶地 `Claritas Rupes, Solis Dorsum, Sinai Fossae & Ogygis Rupes Noachian-Hesperian Thrust-Faulted Wrinkle-Ridge Scarps, Tilted Basement Fault Blocks & Smectite-Gypsum-Opaline Benches`、莫高窟盛唐第 159/217 窟佛龛券顶内侧拱肩皿板鎏金双凤宝相莲团花与飞天琵琶捍拨松鹤瑞云垂穗鎏金迦陵频伽嵌和田碧玉花钿扣、以及发射台导流槽尾喷集气室底槽槛曝气横杠 `Pad_ExhaustPlenumFloorTroughSillSpargeBar`、整流罩射频耦合器传感器整流罩 `Rocket_FairingRfCouplerSensorCowl` 与一激波胞十八阶普朗特-迈耶剪切辉光 `cell1OctodecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.263` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧拱肩皿板两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerSpandrelPadBlockPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧拱肩皿板增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨松鹤瑞云垂穗增绘鎏金迦陵频伽嵌和田碧玉花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入克拉里塔斯陡崖、索利斯脊、西奈槽沟与奥吉吉斯陡崖诺亚纪—赫斯珀里亚纪逆冲断层皱脊陡崖、倾伏基底断块与蒙皂石-石膏-蛋白石阶地（`claritas_rupes_solis_dorsum_sinai_fossae_ogygis_rupes_wrinkle_scarp_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,412 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,542 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对克拉里塔斯陡崖—索利斯脊蒙皂石-石膏-蛋白石层引入暖鼠尾草褐灰色带（`claritasRupesSolisDorsumSinaiFossaeOgygisRupesWrinkleScarpSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流曝气横杠（`Pad_ExhaustPlenumFloorTroughSillSpargeBar_0..3`）与箭体整流罩射频耦合座四向传感器整流罩（`Rocket_FairingRfCouplerSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,853,180 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,480 B`）；在 `flameMaterial` 中引入一激波胞十八阶普朗特-迈耶剪切辉光项（`cell1OctodecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百八十六阶段验收：夜间持续进化 · 博斯普鲁斯陡崖、奥吉吉斯高原、陶玛西亚高原与涅瑞伊得斯山脉诺亚纪—赫斯珀里亚纪叶状逆冲陡崖壁垒、褶皱带山间盆地与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶外侧拱肩额枋鎏金双凤宝相莲团花与飞天琵琶捍拨双孔雀宝相莲垂穗鎏金迦陵频伽嵌绿松石花钿扣、及发射台导流槽尾喷集气室底槽槛涡流横杠与二激波胞十八阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在博斯普鲁斯陡崖、奥吉吉斯高原、陶玛西亚高原与涅瑞伊得斯山脉探测到的诺亚纪—赫斯珀里亚纪叶状逆冲陡崖壁垒、褶皱带山间盆地与蒙皂石-石膏-蛋白石阶地 `Bosporos Rupes, Ogygis Planum, Thaumasia Planum & Nereidum Montes Noachian-Hesperian Lobate Thrust-Scarp Ramparts, Fold-Belt Intermontane Basins & Smectite-Gypsum-Opaline Benches`、莫高窟盛唐第 159/217 窟佛龛券顶外侧拱肩额枋鎏金双凤宝相莲团花与飞天琵琶捍拨双孔雀宝相莲垂穗鎏金迦陵频伽嵌绿松石花钿扣、以及发射台导流槽尾喷集气室底槽槛涡流横杠 `Pad_ExhaustPlenumFloorTroughSillVortexBar`、整流罩 GPS 贴片传感器整流罩 `Rocket_FairingGpsPatchSensorCowl` 与二激波胞十八阶普朗特-迈耶剪切辉光 `cell2OctodecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.264` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧拱肩额枋两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterSpandrelArchitravePhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧拱肩额枋增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨双孔雀宝相莲垂穗增绘鎏金迦陵频伽嵌绿松石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入博斯普鲁斯陡崖、奥吉吉斯高原、陶玛西亚高原与涅瑞伊得斯山脉诺亚纪—赫斯珀里亚纪叶状逆冲陡崖壁垒、褶皱带山间盆地与蒙皂石-石膏-蛋白石阶地（`bosporos_rupes_ogygis_thaumasia_planum_nereidum_montes_thrust_rampart_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,332 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,732 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对博斯普鲁斯陡崖—涅瑞伊得斯山脉蒙皂石-石膏-蛋白石层引入暖黄褐金赭色带（`bosporosRupesOgygisThaumasiaPlanumNereidumMontesThrustRampartSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学消能涡流横杠（`Pad_ExhaustPlenumFloorTroughSillVortexBar_0..3`）与箭体整流罩 GPS 贴片座四向传感器整流罩（`Rocket_FairingGpsPatchSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,863,504 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,400 B`）；在 `flameMaterial` 中引入二激波胞十八阶普朗特-迈耶剪切辉光项（`cell2OctodecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百八十七阶段验收：夜间持续进化 · 弗里克西陡崖、阿尔及尔环缘、卡里图姆山脉与苏里乌斯谷诺亚纪—赫斯珀里亚纪盆地环逆冲基底陡崖、冰缘河谷网阶地与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶内侧拱肩额枋鎏金双凤宝相莲团花与飞天琵琶捍拨丹凤缠枝石榴垂穗鎏金迦陵频伽嵌青金石花钿扣、及发射台导流槽尾喷集气室底槽槛百叶横杠与三激波胞十八阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在弗里克西陡崖、阿尔及尔盆地环缘、卡里图姆山脉与苏里乌斯谷探测到的诺亚纪—赫斯珀里亚纪盆地环逆冲基底陡崖、冰缘河谷网阶地与蒙皂石-石膏-蛋白石阶地 `Phrixi Rupes, Argyre Rim, Charitum Montes & Surius Vallis Noachian-Hesperian Basin-Ring Thrust-Faulted Basement Scarps, Periglacial Valley-Network Benches & Smectite-Gypsum-Opaline Terraces`、莫高窟盛唐第 159/217 窟佛龛券顶内侧拱肩额枋鎏金双凤宝相莲团花与飞天琵琶捍拨丹凤缠枝石榴垂穗鎏金迦陵频伽嵌青金石花钿扣、以及发射台导流槽尾喷集气室底槽槛百叶横杠 `Pad_ExhaustPlenumFloorTroughSillLouverBar`、整流罩 S 波段天线传感器整流罩 `Rocket_FairingSBandAntennaSensorCowl` 与三激波胞十八阶普朗特-迈耶剪切辉光 `cell3OctodecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.265` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧拱肩额枋两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerSpandrelArchitravePhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧拱肩额枋增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨丹凤缠枝石榴垂穗增绘鎏金迦陵频伽嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入弗里克西陡崖、阿尔及尔环缘、卡里图姆山脉与苏里乌斯谷诺亚纪—赫斯珀里亚纪盆地环逆冲基底陡崖、冰缘河谷网阶地与蒙皂石-石膏-蛋白石阶地（`phrixi_rupes_argyre_rim_charitum_montes_surius_vallis_basement_scarp_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,394 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,823 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对弗里克西陡崖—卡里图姆山脉蒙皂石-石膏-蛋白石层引入暖苔褐灰色带（`phrixiRupesArgyreRimCharitumMontesSuriusVallisBasementScarpSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流百叶横杠（`Pad_ExhaustPlenumFloorTroughSillLouverBar_0..3`）与箭体整流罩 S 波段天线座四向传感器整流罩（`Rocket_FairingSBandAntennaSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,873,896 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,691 B`）；在 `flameMaterial` 中引入三激波胞十八阶普朗特-迈耶剪切辉光项（`cell3OctodecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百八十八阶段验收：夜间持续进化 · 卡尔科波罗斯陡崖、普罗米修斯高地、鲁尔谷与东赫拉斯环缘诺亚纪—赫斯珀里亚纪叶状逆冲断层陡崖、冰湖外流阶地与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶外侧拱肩楣梁鎏金双凤宝相莲团花与飞天琵琶捍拨双喜鹊寒梅垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、及发射台导流槽尾喷集气室底槽槛阻尼横杠与四激波胞十八阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在卡尔科波罗斯陡崖、普罗米修斯高地、鲁尔谷与东赫拉斯环缘探测到的诺亚纪—赫斯珀里亚纪叶状逆冲断层陡崖、冰湖外流阶地与蒙皂石-石膏-蛋白石阶地 `Chalcoporos Rupes, Promethei Terra, Reull Vallis & Eastern Hellas Rim Noachian-Hesperian Lobate Thrust-Fault Scarps, Glaciolacustrine Outflow Benches & Smectite-Gypsum-Opaline Terraces`、莫高窟盛唐第 159/217 窟佛龛券顶外侧拱肩楣梁鎏金双凤宝相莲团花与飞天琵琶捍拨双喜鹊寒梅垂穗鎏金迦陵频伽嵌红珊瑚花钿扣、以及发射台导流槽尾喷集气室底槽槛阻尼横杠 `Pad_ExhaustPlenumFloorTroughSillSnubberBar`、整流罩 C 波段应答机传感器整流罩 `Rocket_FairingCBandTransponderSensorCowl` 与四激波胞十八阶普朗特-迈耶剪切辉光 `cell4OctodecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.266` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧拱肩楣梁两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterSpandrelLintelPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧拱肩楣梁增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨双喜鹊寒梅垂穗增绘鎏金迦陵频伽嵌红珊瑚花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入卡尔科波罗斯陡崖、普罗米修斯高地、鲁尔谷与东赫拉斯环缘诺亚纪—赫斯珀里亚纪叶状逆冲断层陡崖、冰湖外流阶地与蒙皂石-石膏-蛋白石阶地（`chalcoporos_rupes_promethei_terra_reull_vallis_hellas_rim_thrust_scarp_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,566 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,637 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对卡尔科波罗斯陡崖—鲁尔谷蒙皂石-石膏-蛋白石层引入暖琥珀黄赭色带（`chalcoporosRupesPrometheiTerraReullVallisHellasRimThrustScarpSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学消能阻尼横杠（`Pad_ExhaustPlenumFloorTroughSillSnubberBar_0..3`）与箭体整流罩 C 波段应答机座四向传感器整流罩（`Rocket_FairingCBandTransponderSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,884,292 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,518 B`）；在 `flameMaterial` 中引入四激波胞十八阶普朗特-迈耶剪切辉光项（`cell4OctodecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百八十九阶段验收：夜间持续进化 · 阿门塞斯陡崖、尼彭塞斯桌山、埃奥利斯桌山与西梅里亚高地缘诺亚纪—赫斯珀里亚纪二分边界叶状逆冲断层陡崖、侵蚀桌山阶地与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶内侧拱肩楣梁鎏金双凤宝相莲团花与飞天琵琶捍拨翠莺垂柳垂穗鎏金迦陵频伽嵌和田碧玉花钿扣、及发射台导流槽尾喷集气室底槽槛歧管横杠与五激波胞十八阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在阿门塞斯陡崖、尼彭塞斯桌山、埃奥利斯桌山与西梅里亚高地缘探测到的诺亚纪—赫斯珀里亚纪二分边界叶状逆冲断层陡崖、侵蚀桌山阶地与蒙皂石-石膏-蛋白石阶地 `Amenthes Rupes, Nepenthes Mensae, Aeolis Mensae & Terra Cimmeria Margin Noachian-Hesperian Dichotomy-Boundary Lobate Thrust Scarps, Fretted Mesa Benches & Smectite-Gypsum-Opaline Terraces`、莫高窟盛唐第 159/217 窟佛龛券顶内侧拱肩楣梁鎏金双凤宝相莲团花与飞天琵琶捍拨翠莺垂柳垂穗鎏金迦陵频伽嵌和田碧玉花钿扣、以及发射台导流槽尾喷集气室底槽槛歧管横杠 `Pad_ExhaustPlenumFloorTroughSillManifoldBar`、整流罩 X 波段下行天线传感器整流罩 `Rocket_FairingXBandDownlinkSensorCowl` 与五激波胞十八阶普朗特-迈耶剪切辉光 `cell5OctodecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.267` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧拱肩楣梁两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerSpandrelLintelPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧拱肩楣梁增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨翠莺垂柳垂穗增绘鎏金迦陵频伽嵌和田碧玉花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入阿门塞斯陡崖、尼彭塞斯桌山、埃奥利斯桌山与西梅里亚高地缘诺亚纪—赫斯珀里亚纪二分边界叶状逆冲断层陡崖、侵蚀桌山阶地与蒙皂石-石膏-蛋白石阶地（`amenthes_rupes_nepenthes_aeolis_mensae_cimmeria_margin_thrust_scarp_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,476 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,385 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对阿门塞斯陡崖—尼彭塞斯桌山蒙皂石-石膏-蛋白石层引入暖鼠尾草褐灰色带（`amenthesRupesNepenthesAeolisMensaeCimmeriaMarginThrustScarpSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流歧管横杠（`Pad_ExhaustPlenumFloorTroughSillManifoldBar_0..3`）与箭体整流罩 X 波段下行天线座四向传感器整流罩（`Rocket_FairingXBandDownlinkSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,894,680 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,556 B`）；在 `flameMaterial` 中引入五激波胞十八阶普朗特-迈耶剪切辉光项（`cell5OctodecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百九十阶段验收：夜间持续进化 · 斯库拉峭壁、卡律布狄斯峭壁、赫斯珀里亚平原与西南赫拉斯环缘诺亚纪—赫斯珀里亚纪环赫拉斯叶状逆冲断层陡崖、火山碎屑皱脊阶地与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶外侧拱肩束带鎏金双凤宝相莲团花与飞天琵琶捍拨双鹭莲房垂穗鎏金迦陵频伽嵌绿松石花钿扣、及发射台导流槽尾喷集气室底槽槛扩散横杠与六激波胞十八阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在斯库拉峭壁、卡律布狄斯峭壁、赫斯珀里亚平原与西南赫拉斯环缘探测到的诺亚纪—赫斯珀里亚纪环赫拉斯叶状逆冲断层陡崖、火山碎屑皱脊阶地与蒙皂石-石膏-蛋白石阶地 `Scylla Scopulus, Charybdis Scopulus, Hesperia Planum & Southwest Hellas Rim Noachian-Hesperian Circum-Hellas Lobate Thrust Scarps, Pyroclastic-Wrinkle-Ridge Benches & Smectite-Gypsum-Opaline Terraces`、莫高窟盛唐第 159/217 窟佛龛券顶外侧拱肩束带鎏金双凤宝相莲团花与飞天琵琶捍拨双鹭莲房垂穗鎏金迦陵频伽嵌绿松石花钿扣、以及发射台导流槽尾喷集气室底槽槛扩散横杠 `Pad_ExhaustPlenumFloorTroughSillDiffuserBar`、整流罩 Ku 波段中继天线传感器整流罩 `Rocket_FairingKuBandRelaySensorCowl` 与六激波胞十八阶普朗特-迈耶剪切辉光 `cell6OctodecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.268` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧拱肩束带两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterSpandrelFriezePhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧拱肩束带增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨双鹭莲房垂穗增绘鎏金迦陵频伽嵌绿松石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入斯库拉峭壁、卡律布狄斯峭壁、赫斯珀里亚平原与西南赫拉斯环缘诺亚纪—赫斯珀里亚纪环赫拉斯叶状逆冲断层陡崖、火山碎屑皱脊阶地与蒙皂石-石膏-蛋白石阶地（`scylla_charybdis_scopulus_hesperia_planum_hellas_rim_thrust_scarp_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,447 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,078 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对斯库拉峭壁—卡律布狄斯峭壁蒙皂石-石膏-蛋白石层引入暖金黄赭色带（`scyllaCharybdisScopulusHesperiaPlanumHellasRimThrustScarpSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学消能扩散横杠（`Pad_ExhaustPlenumFloorTroughSillDiffuserBar_0..3`）与箭体整流罩 Ku 波段中继天线座四向传感器整流罩（`Rocket_FairingKuBandRelaySensorCowl_0..3`），导出 `rocket-kit.glb`（`2,905,052 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,422 B`）；在 `flameMaterial` 中引入六激波胞十八阶普朗特-迈耶剪切辉光项（`cell6OctodecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百九十一阶段验收：夜间持续进化 · 奥诺特里亚峭壁、塔尔塔罗斯峭壁、埃律西昂隆起与北西梅里亚高地缘诺亚纪—赫斯珀里亚纪叶状逆冲断层陡崖、丘状混沌阶地与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶内侧拱肩束带鎏金双凤宝相莲团花与飞天琵琶捍拨鸳鸯睡莲垂穗鎏金迦陵频伽嵌青金石花钿扣、及发射台导流槽尾喷集气室底槽槛喷射横杠与七激波胞十八阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在奥诺特里亚峭壁、塔尔塔罗斯峭壁、埃律西昂隆起与北西梅里亚高地缘探测到的诺亚纪—赫斯珀里亚纪叶状逆冲断层陡崖、丘状混沌阶地与蒙皂石-石膏-蛋白石阶地 `Oenotria Scopulus, Tartarus Scopulus, Elysium Rise & Northern Cimmeria Margin Noachian-Hesperian Lobate Thrust-Fault Scarps, Knobbed Chaos Benches & Smectite-Gypsum-Opaline Terraces`、莫高窟盛唐第 159/217 窟佛龛券顶内侧拱肩束带鎏金双凤宝相莲团花与飞天琵琶捍拨鸳鸯睡莲垂穗鎏金迦陵频伽嵌青金石花钿扣、以及发射台导流槽尾喷集气室底槽槛喷射横杠 `Pad_ExhaustPlenumFloorTroughSillInjectorBar`、整流罩 Ka 波段信标天线传感器整流罩 `Rocket_FairingKaBandBeaconSensorCowl` 与七激波胞十八阶普朗特-迈耶剪切辉光 `cell7OctodecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.269` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧拱肩束带两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerSpandrelFriezePhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧拱肩束带增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨鸳鸯睡莲垂穗增绘鎏金迦陵频伽嵌青金石花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入奥诺特里亚峭壁、塔尔塔罗斯峭壁、埃律西昂隆起与北西梅里亚高地缘诺亚纪—赫斯珀里亚纪叶状逆冲断层陡崖、丘状混沌阶地与蒙皂石-石膏-蛋白石阶地（`oenotria_tartarus_scopulus_elysium_rise_cimmeria_margin_thrust_scarp_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,469 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,124 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对奥诺特里亚峭壁—塔尔塔罗斯峭壁蒙皂石-石膏-蛋白石层引入暖苔褐灰色带（`oenotriaTartarusScopulusElysiumRiseCimmeriaMarginThrustScarpSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学急冷喷射横杠（`Pad_ExhaustPlenumFloorTroughSillInjectorBar_0..3`）与箭体整流罩 Ka 波段信标天线座四向传感器整流罩（`Rocket_FairingKaBandBeaconSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,915,428 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,460 B`）；在 `flameMaterial` 中引入七激波胞十八阶普朗特-迈耶剪切辉光项（`cell7OctodecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百九十二阶段验收：夜间持续进化 · 波江座峭壁、埃レクト里斯山、塞壬堑沟群与南西梅里亚—塞壬高地诺亚纪—赫斯珀里亚纪环盆地叶状逆冲断层陡崖、长英质熔结凝灰岩穹丘阶地与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶外侧拱肩斜撑鎏金双凤宝相莲团花与飞天琵琶捍拨双鱼莲波垂穗鎏金迦陵频伽嵌珊瑚明珠花钿扣、及发射台导流槽尾喷集气室底槽槛文丘里横杠与八激波胞十八阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在波江座峭壁、埃レクト里斯山、塞壬堑沟群与南西梅里亚—塞壬高地探测到的诺亚纪—赫斯珀里亚纪环盆地叶状逆冲断层陡崖、长英质熔结凝灰岩穹丘阶地与蒙皂石-石膏-蛋白石阶地 `Eridania Scopulus, Electris Mons, Sirenum Fossae & Southern Cimmeria-Sirenum Highland Noachian-Hesperian Circum-Basin Lobate Thrust Scarps, Felsic-Ignimbrite Dome Benches & Smectite-Gypsum-Opaline Terraces`、莫高窟盛唐第 159/217 窟佛龛券顶外侧拱肩斜撑鎏金双凤宝相莲团花与飞天琵琶捍拨双鱼莲波垂穗鎏金迦陵频伽嵌珊瑚明珠花钿扣、以及发射台导流槽尾喷集气室底槽槛文丘里横杠 `Pad_ExhaustPlenumFloorTroughSillVenturiBar`、整流罩 V 波段星间链路传感器整流罩 `Rocket_FairingVBandCrosslinkSensorCowl` 与八激波胞十八阶普朗特-迈耶剪切辉光 `cell8OctodecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.270` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧拱肩斜撑两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterSpandrelStrutPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧拱肩斜撑增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨双鱼莲波垂穗增绘鎏金迦陵频伽嵌珊瑚明珠花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入波江座峭壁、埃レクト里斯山、塞壬堑沟群与南西梅里亚—塞壬高地诺亚纪—赫斯珀里亚纪环盆地叶状逆冲断层陡崖、长英质熔结凝灰岩穹丘阶地与蒙皂石-石膏-蛋白石阶地（`eridania_electris_mons_sirenum_fossae_cimmeria_highland_thrust_scarp_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,399 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,783 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对波江座峭壁—埃レクト里斯山蒙皂石-石膏-蛋白石层引入暖琥珀黄赭色带（`eridaniaElectrisMonsSirenumFossaeCimmeriaHighlandThrustScarpSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学节流文丘里横杠（`Pad_ExhaustPlenumFloorTroughSillVenturiBar_0..3`）与箭体整流罩 V 波段星间链路天线座四向传感器整流罩（`Rocket_FairingVBandCrosslinkSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,925,840 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,327 B`）；在 `flameMaterial` 中引入八激波胞十八阶普朗特-迈耶剪切辉光项（`cell8OctodecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百九十三阶段验收：夜间持续进化 · 科罗娜峭壁、南极峭壁群、普罗米修斯高地与南极冰盖缘诺亚纪—赫斯珀里亚纪环极地叶状逆冲断层陡崖、基底冰剥露阶地与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶内侧拱肩斜撑鎏金双凤宝相莲团花与飞天琵琶捍拨双蝶牡丹垂穗鎏金迦陵频伽嵌和田碧玉花钿扣、及发射台导流槽尾喷集气室底槽槛急冷横杠与尾焰末梢十八阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在科罗娜峭壁、南极峭壁群、普罗米修斯高地与南极冰盖缘探测到的诺亚纪—赫斯珀里亚纪环极地叶状逆冲断层陡崖、基底冰剥露阶地与蒙皂石-石膏-蛋白石阶地 `Coronae Scopulus, Australe Scopuli, Promethei Terra & Southern Polar Margin Noachian-Hesperian Circum-Polar Lobate Thrust Scarps, Basal Ice-Exhumed Benches & Smectite-Gypsum-Opaline Terraces`、莫高窟盛唐第 159/217 窟佛龛券顶内侧拱肩斜撑鎏金双凤宝相莲团花与飞天琵琶捍拨双蝶牡丹垂穗鎏金迦陵频伽嵌和田碧玉花钿扣、以及发射台导流槽尾喷集气室底槽槛急冷横杠 `Pad_ExhaustPlenumFloorTroughSillQuenchBar`、整流罩 W 波段辐射计传感器整流罩 `Rocket_FairingWBandRadiometerSensorCowl` 与尾焰末梢十八阶普朗特-迈耶剪切辉光 `plumeTailOctodecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.271` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧拱肩斜撑两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerSpandrelStrutPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧拱肩斜撑增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨双蝶牡丹垂穗增绘鎏金迦陵频伽嵌和田碧玉花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入科罗娜峭壁、南极峭壁群、普罗米修斯高地与南极冰盖缘诺亚纪—赫斯珀里亚纪环极地叶状逆冲断层陡崖、基底冰剥露阶地与蒙皂石-石膏-蛋白石阶地（`coronae_australe_scopulus_promethei_terra_polar_margin_thrust_scarp_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,451 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,463 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对科罗娜峭壁—南极峭壁群蒙皂石-石膏-蛋白石层引入暖鼠尾草褐灰色带（`coronaeAustraleScopulusPrometheiTerraPolarMarginThrustScarpSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学水雾急冷横杠（`Pad_ExhaustPlenumFloorTroughSillQuenchBar_0..3`）与箭体整流罩 W 波段辐射计传感器座四向传感器整流罩（`Rocket_FairingWBandRadiometerSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,936,264 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,414 B`）；在 `flameMaterial` 中引入尾焰末梢十八阶普朗特-迈耶剪切辉光项（`plumeTailOctodecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百九十四阶段验收：夜间持续进化 · 阿巴洛斯峭壁群、双子峭壁群、北极高原与北极峡谷诺亚纪—赫斯珀里亚纪—亚马逊纪基底极地逆冲陡崖阶地、空洞单元石膏沙丘槽沟与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶外侧拱肩斜撑底座鎏金双凤宝相莲团花与飞天琵琶捍拨双喜梅花垂穗鎏金迦陵频伽嵌玛瑙明珠花钿扣、及发射台导流槽尾喷集气室底槽槛折流横杠与一激波胞十九阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在阿巴洛斯峭壁群、双子峭壁群、北极高原与北极峡谷探测到的诺亚纪—赫斯珀里亚纪—亚马逊纪基底极地逆冲陡崖阶地、空洞单元石膏沙丘槽沟与蒙皂石-石膏-蛋白石阶地 `Abalos Scopuli, Gemini Scopuli, Planum Boreum & Northern Polar Chasma Boreale Noachian-Hesperian-Amazonian Basal Polar Thrust-Scarp Benches, Cavi-Unit Gypsum Dune Troughs & Smectite-Gypsum-Opaline Terraces`、莫高窟盛唐第 159/217 窟佛龛券顶外侧拱肩斜撑底座鎏金双凤宝相莲团花与飞天琵琶捍拨双喜梅花垂穗鎏金迦陵频伽嵌玛瑙明珠花钿扣、以及发射台导流槽尾喷集气室底槽槛折流横杠 `Pad_ExhaustPlenumFloorTroughSillBaffleBar`、整流罩 F 波段太赫兹传感器整流罩 `Rocket_FairingFBandTerahertzSensorCowl` 与一激波胞十九阶普朗特-迈耶剪切辉光 `cell1NovemdecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.272` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧拱肩斜撑底座两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterSpandrelStrutBasePhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧拱肩斜撑底座增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨双喜梅花垂穗增绘鎏金迦陵频伽嵌玛瑙明珠花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入阿巴洛斯峭壁群、双子峭壁群、北极高原与北极峡谷诺亚纪—赫斯珀里亚纪—亚马逊纪基底极地逆冲陡崖阶地、空洞单元石膏沙丘槽沟与蒙皂石-石膏-蛋白石阶地（`abalos_gemini_scopuli_planum_boreum_chasma_boreale_polar_scarp_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,446 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,933 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对阿巴洛斯峭壁群—北极峡谷蒙皂石-石膏-蛋白石层引入暖米黄赭金色带（`abalosGeminiScopuliPlanumBoreumChasmaBorealePolarScarpSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学消能折流横杠（`Pad_ExhaustPlenumFloorTroughSillBaffleBar_0..3`）与箭体整流罩 F 波段太赫兹传感器座四向传感器整流罩（`Rocket_FairingFBandTerahertzSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,946,668 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,690 B`）；在 `flameMaterial` 中引入一激波胞十九阶普朗特-迈耶剪切辉光项（`cell1NovemdecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百九十五阶段验收：夜间持续进化 · 北风峭壁群、极北沙波群、奥林匹亚沙波群与北方大平原北缘诺亚纪—赫斯珀里亚纪—亚马逊纪基底极地逆冲陡崖阶地、硫酸盐-石膏沙海丘间平地与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶内侧拱肩斜撑底座鎏金双凤宝相莲团花与飞天琵琶捍拨双鹭芦莲垂穗鎏金迦陵频伽嵌绿松明珠花钿扣、及发射台导流槽尾喷集气室底槽槛曝气集管与二激波胞十九阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在北风峭壁群、极北沙波群、奥林匹亚沙波群与北方大平原北缘探测到的诺亚纪—赫斯珀里亚纪—亚马逊纪基底极地逆冲陡崖阶地、硫酸盐-石膏沙海丘间平地与蒙皂石-石膏-蛋白石阶地 `Boreales Scopuli, Hyperboreae Undae, Olympia Undae & Northern Vastitas Borealis Margin Noachian-Hesperian-Amazonian Basal Polar Thrust-Scarp Benches, Sulfate-Gypsum Erg Interdune Flats & Smectite-Gypsum-Opaline Terraces`、莫高窟盛唐第 159/217 窟佛龛券顶内侧拱肩斜撑底座鎏金双凤宝相莲团花与飞天琵琶捍拨双鹭芦莲垂穗鎏金迦陵频伽嵌绿松明珠花钿扣、以及发射台导流槽尾喷集气室底槽槛曝气集管 `Pad_ExhaustPlenumFloorTroughSillSpargeHeader`、整流罩 D 波段亚毫米波传感器整流罩 `Rocket_FairingDBandSubmmSensorCowl` 与二激波胞十九阶普朗特-迈耶剪切辉光 `cell2NovemdecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.273` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧拱肩斜撑底座两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerSpandrelStrutBasePhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧拱肩斜撑底座增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨双鹭芦莲垂穗增绘鎏金迦陵频伽嵌绿松明珠花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入北风峭壁群、极北沙波群、奥林匹亚沙波群与北方大平原北缘诺亚纪—赫斯珀里亚纪—亚马逊纪基底极地逆冲陡崖阶地、硫酸盐-石膏沙海丘间平地与蒙皂石-石膏-蛋白石阶地（`boreales_scopuli_hyperboreae_olympia_undae_vastitas_borealis_polar_scarp_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,496 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,920 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对北风峭壁群—奥林匹亚沙波群蒙皂石-石膏-蛋白石层引入暖苔褐灰色带（`borealesScopuliHyperboreaeOlympiaUndaeVastitasBorealisPolarScarpSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流曝气集管（`Pad_ExhaustPlenumFloorTroughSillSpargeHeader_0..3`）与箭体整流罩 D 波段亚毫米波传感器座四向传感器整流罩（`Rocket_FairingDBandSubmmSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,957,032 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,670 B`）；在 `flameMaterial` 中引入二激波胞十九阶普朗特-迈耶剪切辉光项（`cell2NovemdecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百九十六阶段验收：夜间持续进化 · 刻壬尼乌斯堑沟、特拉克图斯坑链、乌拉尼乌斯堑沟与塔尔西斯北缘裂谷群诺亚纪—赫斯珀里亚纪—亚马逊纪放射状伸展地堑-地垒陡坎、陷落坑链阶地与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶外侧拱肩斜撑顶帽鎏金双凤宝相莲团花与飞天琵琶捍拨双鹤松云垂穗鎏金迦陵频伽嵌青金明珠花钿扣、及发射台导流槽尾喷集气室底槽槛溢流堰杠与三激波胞十九阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在刻壬尼乌斯堑沟、特拉克图斯坑链、乌拉尼乌斯堑沟与塔尔西斯北缘裂谷群探测到的诺亚纪—赫斯珀里亚纪—亚马逊纪放射状伸展地堑-地垒陡坎、陷落坑链阶地与蒙皂石-石膏-蛋白石阶地 `Ceraunius Fossae, Tractus Catena, Uranius Fossae & Northern Tharsis Rift-Swarm Margin Noachian-Hesperian-Amazonian Radial Extensional Graben-Horst Scarps, Pit-Crater Catena Benches & Smectite-Gypsum-Opaline Terraces`、莫高窟盛唐第 159/217 窟佛龛券顶外侧拱肩斜撑顶帽鎏金双凤宝相莲团花与飞天琵琶捍拨双鹤松云垂穗鎏金迦陵频伽嵌青金明珠花钿扣、以及发射台导流槽尾喷集气室底槽槛溢流堰杠 `Pad_ExhaustPlenumFloorTroughSillWeirBar`、整流罩 G 波段亚毫米波传感器整流罩 `Rocket_FairingGBandSubmmSensorCowl` 与三激波胞十九阶普朗特-迈耶剪切辉光 `cell3NovemdecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.274` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧拱肩斜撑顶帽两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterSpandrelStrutCapPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧拱肩斜撑顶帽增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨双鹤松云垂穗增绘鎏金迦陵频伽嵌青金明珠花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入刻壬尼乌斯堑沟、特拉克图斯坑链、乌拉尼乌斯堑沟与塔尔西斯北缘裂谷群诺亚纪—赫斯珀里亚纪—亚马逊纪放射状伸展地堑-地垒陡坎、陷落坑链阶地与蒙皂石-石膏-蛋白石阶地（`ceraunius_fossae_tractus_catena_uranius_fossae_tharsis_rift_graben_scarp_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,577 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,400 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对刻壬尼乌斯堑沟—乌拉尼乌斯堑沟蒙皂石-石膏-蛋白石层引入暖琥珀黄赭色带（`cerauniusFossaeTractusCatenaUraniusFossaeTharsisRiftGrabenScarpSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流溢流堰杠（`Pad_ExhaustPlenumFloorTroughSillWeirBar_0..3`）与箭体整流罩 G 波段亚毫米波传感器座四向传感器整流罩（`Rocket_FairingGBandSubmmSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,967,364 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,577 B`）；在 `flameMaterial` 中引入三激波胞十九阶普朗特-迈耶剪切辉光项（`cell3NovemdecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百九十七阶段验收：夜间持续进化 · 萨克拉堑沟、尼卢斯桌山群、拉贝阿提斯堑沟与卡塞谷西源区诺亚纪—赫斯珀里亚纪环塔尔西斯伸展地堑-地垒陡坎、巨型洪水源头壁阶地与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶内侧拱肩斜撑顶帽鎏金双凤宝相莲团花与飞天琵琶捍拨鸳鸯荷叶垂穗鎏金迦陵频伽嵌珊瑚明珠花钿扣、及发射台导流槽尾喷集气室底槽槛溜槽杠与四激波胞十九阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在萨克拉堑沟、尼卢斯桌山群、拉贝阿提斯堑沟与卡塞谷西源区探测到的诺亚纪—赫斯珀里亚纪环塔尔西斯伸展地堑-地垒陡坎、巨型洪水源头壁阶地与蒙皂石-石膏-蛋白石阶地 `Sacra Fossae, Nilus Mensae, Labeatis Fossae & Western Kasei Valles Headwater Margin Noachian-Hesperian Circum-Tharsis Extensional Graben-Horst Scarps, Megaflood Headwall Benches & Smectite-Gypsum-Opaline Terraces`、莫高窟盛唐第 159/217 窟佛龛券顶内侧拱肩斜撑顶帽鎏金双凤宝相莲团花与飞天琵琶捍拨鸳鸯荷叶垂穗鎏金迦陵频伽嵌珊瑚明珠花钿扣、以及发射台导流槽尾喷集气室底槽槛溜槽杠 `Pad_ExhaustPlenumFloorTroughSillChuteBar`、整流罩 J 波段亚毫米波传感器整流罩 `Rocket_FairingJBandSubmmSensorCowl` 与四激波胞十九阶普朗特-迈耶剪切辉光 `cell4NovemdecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.275` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧拱肩斜撑顶帽两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerSpandrelStrutCapPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧拱肩斜撑顶帽增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨鸳鸯荷叶垂穗增绘鎏金迦陵频伽嵌珊瑚明珠花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入萨克拉堑沟、尼卢斯桌山群、拉贝阿提斯堑沟与卡塞谷西源区诺亚纪—赫斯珀里亚纪环塔尔西斯伸展地堑-地垒陡坎、巨型洪水源头壁阶地与蒙皂石-石膏-蛋白石阶地（`sacra_fossae_nilus_mensae_labeatis_fossae_kasei_headwater_graben_scarp_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,551 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,468 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对萨克拉堑沟—卡塞谷西源区蒙皂石-石膏-蛋白石层引入暖鼠尾草褐灰色带（`sacraFossaeNilusMensaeLabeatisFossaeKaseiHeadwaterGrabenScarpSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流溜槽杠（`Pad_ExhaustPlenumFloorTroughSillChuteBar_0..3`）与箭体整流罩 J 波段亚毫米波传感器座四向传感器整流罩（`Rocket_FairingJBandSubmmSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,977,700 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,532 B`）；在 `flameMaterial` 中引入四激波胞十九阶普朗特-迈耶剪切辉光项（`cell4NovemdecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百九十八阶段验收：夜间持续进化 · 埃库斯堑沟、梅拉斯堑沟、奥菲尔高原与水手号峡谷北缘诺亚纪—赫斯珀里亚纪高原缘伸展地堑-地垒陡坎、地下水潜蚀源头壁阶地与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶外侧拱肩肋座鎏金双凤宝相莲团花与飞天琵琶捍拨双雀宝相垂穗鎏金迦陵频伽嵌碧玉明珠花钿扣、及发射台导流槽尾喷集气室底槽槛渡槽杠与五激波胞十九阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在埃库斯堑沟、梅拉斯堑沟、奥菲尔高原与水手号峡谷北缘探测到的诺亚纪—赫斯珀里亚纪高原缘伸展地堑-地垒陡坎、地下水潜蚀源头壁阶地与蒙皂石-石膏-蛋白石阶地 `Echus Fossae, Melas Fossae, Ophir Planum & Northern Valles Marineris Rim Noachian-Hesperian Plateau-Margin Extensional Graben-Horst Scarps, Sapping-Headwall Benches & Smectite-Gypsum-Opaline Terraces`、莫高窟盛唐第 159/217 窟佛龛券顶外侧拱肩肋座鎏金双凤宝相莲团花与飞天琵琶捍拨双雀宝相垂穗鎏金迦陵频伽嵌碧玉明珠花钿扣、以及发射台导流槽尾喷集气室底槽槛渡槽杠 `Pad_ExhaustPlenumFloorTroughSillFlumeBar`、整流罩 Y 波段太赫兹传感器整流罩 `Rocket_FairingYBandTerahertzSensorCowl` 与五激波胞十九阶普朗特-迈耶剪切辉光 `cell5NovemdecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.276` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧拱肩肋座两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterSpandrelRibBasePhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧拱肩肋座增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨双雀宝相垂穗增绘鎏金迦陵频伽嵌碧玉明珠花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入埃库斯堑沟、梅拉斯堑沟、奥菲尔高原与水手号峡谷北缘诺亚纪—赫斯珀里亚纪高原缘伸展地堑-地垒陡坎、地下水潜蚀源头壁阶地与蒙皂石-石膏-蛋白石阶地（`echus_fossae_melas_fossae_ophir_planum_valles_marineris_rim_graben_scarp_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,586 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,071 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对埃库斯堑沟—奥菲尔高原蒙皂石-石膏-蛋白石层引入暖米金赭色带（`echusFossaeMelasFossaeOphirPlanumVallesMarinerisRimGrabenScarpSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流渡槽杠（`Pad_ExhaustPlenumFloorTroughSillFlumeBar_0..3`）与箭体整流罩 Y 波段太赫兹传感器座四向传感器整流罩（`Rocket_FairingYBandTerahertzSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,988,068 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,628 B`）；在 `flameMaterial` 中引入五激波胞十九阶普朗特-迈耶剪切辉光项（`cell5NovemdecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第二百九十九阶段验收：夜间持续进化 · 内克塔里斯堑沟、陶玛西亚堑沟、科普拉特斯山脉与水手号峡谷南缘诺亚纪—赫斯珀里亚纪高原缘伸展地堑-地垒陡坎、断块阶地与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶内侧拱肩肋座鎏金双凤宝相莲团花与飞天琵琶捍拨双鸾石榴垂穗鎏金迦陵频伽嵌玛瑙明珠花钿扣、及发射台导流槽尾喷集气室底槽槛泄水槽杠与六激波胞十九阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在内克塔里斯堑沟、陶玛西亚堑沟、科普拉特斯山脉与水手号峡谷南缘探测到的诺亚纪—赫斯珀里亚纪高原缘伸展地堑-地垒陡坎、断块阶地与蒙皂石-石膏-蛋白石阶地 `Nectaris Fossae, Thaumasia Fossae, Coprates Montes & Southern Valles Marineris Rim Noachian-Hesperian Plateau-Margin Extensional Graben-Horst Scarps, Fault-Block Benches & Smectite-Gypsum-Opaline Terraces`、莫高窟盛唐第 159/217 窟佛龛券顶内侧拱肩肋座鎏金双凤宝相莲团花与飞天琵琶捍拨双鸾石榴垂穗鎏金迦陵频伽嵌玛瑙明珠花钿扣、以及发射台导流槽尾喷集气室底槽槛泄水槽杠 `Pad_ExhaustPlenumFloorTroughSillSluiceBar`、整流罩 H 波段太赫兹传感器整流罩 `Rocket_FairingHBandTerahertzSensorCowl` 与六激波胞十九阶普朗特-迈耶剪切辉光 `cell6NovemdecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.277` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧拱肩肋座两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerSpandrelRibBasePhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧拱肩肋座增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨双鸾石榴垂穗增绘鎏金迦陵频伽嵌玛瑙明珠花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入内克塔里斯堑沟、陶玛西亚堑沟、科普拉特斯山脉与水手号峡谷南缘诺亚纪—赫斯珀里亚纪高原缘伸展地堑-地垒陡坎、断块阶地与蒙皂石-石膏-蛋白石阶地（`nectaris_fossae_thaumasia_fossae_coprates_montes_valles_marineris_rim_graben_scarp_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,765 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,408 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对内克塔里斯堑沟—科普拉特斯山脉蒙皂石-石膏-蛋白石层引入暖苔褐灰色带（`nectarisFossaeThaumasiaFossaeCopratesMontesVallesMarinerisRimGrabenScarpSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流泄水槽杠（`Pad_ExhaustPlenumFloorTroughSillSluiceBar_0..3`）与箭体整流罩 H 波段太赫兹传感器座四向传感器整流罩（`Rocket_FairingHBandTerahertzSensorCowl_0..3`），导出 `rocket-kit.glb`（`2,998,452 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,620 B`）；在 `flameMaterial` 中引入六激波胞十九阶普朗特-迈耶剪切辉光项（`cell6NovemdecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第三百阶段验收：夜间持续进化 · 伊卡里亚堑沟、南极沟群、普罗米修斯平原与南塞壬—奥尼亚裂谷缘诺亚纪—赫斯珀里亚纪伸展地堑-地垒陡坎、火山碎屑高原阶地与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶外侧拱肩肋帽鎏金双凤宝相莲团花与飞天琵琶捍拨双凤牡丹云垂穗鎏金迦陵频伽嵌绿松明珠花钿扣、及发射台导流槽尾喷集气室底槽槛护坦杠与七激波胞十九阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在伊卡里亚堑沟、南极沟群、普罗米修斯平原与南塞壬—奥尼亚裂谷缘探测到的诺亚纪—赫斯珀里亚纪伸展地堑-地垒陡坎、火山碎屑高原阶地与蒙皂石-石膏-蛋白石阶地 `Icaria Fossae, Australe Sulci, Promethei Planum & Southern Sirenum-Aonia Rift-Graben Margin Noachian-Hesperian Extensional Graben-Horst Scarps, Pyroclastic Plateau Benches & Smectite-Gypsum-Opaline Terraces`、莫高窟盛唐第 159/217 窟佛龛券顶外侧拱肩肋帽鎏金双凤宝相莲团花与飞天琵琶捍拨双凤牡丹云垂穗鎏金迦陵频伽嵌绿松明珠花钿扣、以及发射台导流槽尾喷集气室底槽槛护坦杠 `Pad_ExhaustPlenumFloorTroughSillApronBar`、整流罩 N 波段太赫兹传感器整流罩 `Rocket_FairingNBandTerahertzSensorCowl` 与七激波胞十九阶普朗特-迈耶剪切辉光 `cell7NovemdecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.278` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧拱肩肋帽两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterSpandrelRibCapPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧拱肩肋帽增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨双凤牡丹云垂穗增绘鎏金迦陵频伽嵌绿松明珠花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入伊卡里亚堑沟、南极沟群、普罗米修斯平原与南塞壬—奥尼亚裂谷缘诺亚纪—赫斯珀里亚纪伸展地堑-地垒陡坎、火山碎屑高原阶地与蒙皂石-石膏-蛋白石阶地（`icaria_fossae_australe_sulci_promethei_planum_sirenum_aonia_graben_scarp_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,688 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,385 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对伊卡里亚堑沟—普罗米修斯平原蒙皂石-石膏-蛋白石层引入暖琥珀黄赭色带（`icariaFossaeAustraleSulciPrometheiPlanumSirenumAoniaGrabenScarpSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流护坦杠（`Pad_ExhaustPlenumFloorTroughSillApronBar_0..3`）与箭体整流罩 N 波段太赫兹传感器座四向传感器整流罩（`Rocket_FairingNBandTerahertzSensorCowl_0..3`），导出 `rocket-kit.glb`（`3,008,816 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,625 B`）；在 `flameMaterial` 中引入七激波胞十九阶普朗特-迈耶剪切辉光项（`cell7NovemdecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第三百零一阶段验收：夜间持续进化 · 福尔图娜堑沟、尤利西斯堑沟、比布利斯堑沟与塔尔西斯西缘放射状地堑群诺亚纪—赫斯珀里亚纪—亚马逊纪构造地垒-地堑陡坎、陷落坑链阶地与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶内侧拱肩肋帽鎏金双凤宝相莲团花与飞天琵琶捍拨双燕杏花垂穗鎏金迦陵频伽嵌青金明珠花钿扣、及发射台导流槽尾喷集气室底槽槛趾墙杠与八激波胞十九阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在福尔图娜堑沟、尤利西斯堑沟、比布利斯堑沟与塔尔西斯西缘放射状地堑群探测到的诺亚纪—赫斯珀里亚纪—亚马逊纪构造地垒-地堑陡坎、陷落坑链阶地与蒙皂石-石膏-蛋白石阶地 `Fortuna Fossae, Ulysses Fossae, Biblis Fossae & Western Tharsis Radial Graben-Swarm Margin Noachian-Hesperian-Amazonian Tectonic Horst-Graben Scarps, Pit-Crater Catena Benches & Smectite-Gypsum-Opaline Terraces`、莫高窟盛唐第 159/217 窟佛龛券顶内侧拱肩肋帽鎏金双凤宝相莲团花与飞天琵琶捍拨双燕杏花垂穗鎏金迦陵频伽嵌青金明珠花钿扣、以及发射台导流槽尾喷集气室底槽槛趾墙杠 `Pad_ExhaustPlenumFloorTroughSillToeBar`、整流罩 Q 波段太赫兹传感器整流罩 `Rocket_FairingQBandTerahertzSensorCowl` 与八激波胞十九阶普朗特-迈耶剪切辉光 `cell8NovemdecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.279` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧拱肩肋帽两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerSpandrelRibCapPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧拱肩肋帽增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨双燕杏花垂穗增绘鎏金迦陵频伽嵌青金明珠花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入福尔图娜堑沟、尤利西斯堑沟、比布利斯堑沟与塔尔西斯西缘放射状地堑群诺亚纪—赫斯珀里亚纪—亚马逊纪构造地垒-地堑陡坎、陷落坑链阶地与蒙皂石-石膏-蛋白石阶地（`fortuna_fossae_ulysses_biblis_fossae_western_tharsis_graben_scarp_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,808 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,369 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对福尔图娜堑沟—尤利西斯堑沟蒙皂石-石膏-蛋白石层引入暖鼠尾草褐灰色带（`fortunaFossaeUlyssesBiblisFossaeWesternTharsisGrabenScarpSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流趾墙杠（`Pad_ExhaustPlenumFloorTroughSillToeBar_0..3`）与箭体整流罩 Q 波段太赫兹传感器座四向传感器整流罩（`Rocket_FairingQBandTerahertzSensorCowl_0..3`），导出 `rocket-kit.glb`（`3,019,172 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,765 B`）；在 `flameMaterial` 中引入八激波胞十九阶普朗特-迈耶剪切辉光项（`cell8NovemdecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第三百零二阶段验收：夜间持续进化 · 奥尼亚高地、西壬堑沟、弗里克西断崖与南高地裂谷陡坎缘诺亚纪—赫斯珀里亚纪伸展地堑-地垒陡坎、舌状逆冲断层阶地与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶外侧拱肩斜撑座鎏金双凤宝相莲团花与飞天琵琶捍拨双鹧鸪山茶垂穗鎏金迦陵频伽嵌珊瑚明珠花钿扣、及发射台导流槽尾喷集气室底槽槛踵墙杠与羽流尾端十九阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在奥尼亚高地、西壬堑沟、弗里克西断崖与南高地裂谷陡坎缘探测到的诺亚纪—赫斯珀里亚纪伸展地堑-地垒陡坎、舌状逆冲断层阶地与蒙皂石-石膏-蛋白石阶地 `Aonia Terra, Sirenum Fossae, Phrixi Rupes & Southern Highland Rift-Scarp Margin Noachian-Hesperian Extensional Graben-Horst Scarps, Lobate Thrust-Fault Benches & Smectite-Gypsum-Opaline Terraces`、莫高窟盛唐第 159/217 窟佛龛券顶外侧拱肩斜撑座鎏金双凤宝相莲团花与飞天琵琶捍拨双鹧鸪山茶垂穗鎏金迦陵频伽嵌珊瑚明珠花钿扣、以及发射台导流槽尾喷集气室底槽槛踵墙杠 `Pad_ExhaustPlenumFloorTroughSillHeelBar`、整流罩 Z 波段太赫兹传感器整流罩 `Rocket_FairingZBandTerahertzSensorCowl` 与羽流尾端十九阶普朗特-迈耶剪切辉光 `plumeTailNovemdecPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.280` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧拱肩斜撑座两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterSpandrelBraceBasePhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧拱肩斜撑座增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨双鹧鸪山茶垂穗增绘鎏金迦陵频伽嵌珊瑚明珠花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入奥尼亚高地、西壬堑沟、弗里克西断崖与南高地裂谷陡坎缘诺亚纪—赫斯珀里亚纪伸展地堑-地垒陡坎、舌状逆冲断层阶地与蒙皂石-石膏-蛋白石阶地（`aonia_terra_sirenum_fossae_phrixi_rupes_southern_highland_graben_scarp_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,715 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,093,987 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对奥尼亚高地—西壬堑沟蒙皂石-石膏-蛋白石层引入暖赤陶褐色带（`aoniaTerraSirenumFossaePhrixiRupesSouthernHighlandGrabenScarpSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流踵墙杠（`Pad_ExhaustPlenumFloorTroughSillHeelBar_0..3`）与箭体整流罩 Z 波段太赫兹传感器座四向传感器整流罩（`Rocket_FairingZBandTerahertzSensorCowl_0..3`），导出 `rocket-kit.glb`（`3,029,536 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,838 B`）；在 `flameMaterial` 中引入羽流尾端十九阶普朗特-迈耶剪切辉光项（`plumeTailNovemdecPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第三百零三阶段验收：夜间持续进化 · 梅姆诺尼亚堑沟、曼加拉堑沟、代达利亚高原与塔尔西斯西南岩脉-地堑缘诺亚纪—赫斯珀里亚纪岩浆岩脉驱动地堑-地垒陡坎、溢流源头壁阶地与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶内侧拱肩斜撑座鎏金双凤宝相莲团花与飞天琵琶捍拨双鸳鸯睡莲垂穗鎏金迦陵频伽嵌碧玉明珠花钿扣、及发射台导流槽尾喷集气室底槽槛冠墙杠与一激波胞二十阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在梅姆诺尼亚堑沟、曼加拉堑沟、代达利亚高原与塔尔西斯西南岩脉-地堑缘探测到的诺亚纪—赫斯珀里亚纪岩浆岩脉驱动地堑-地垒陡坎、溢流源头壁阶地与蒙皂石-石膏-蛋白石阶地 `Memnonia Fossae, Mangala Fossae, Daedalia Planum & Southwestern Tharsis Dike-Graben Margin Noachian-Hesperian Magmatic Dike-Driven Graben-Horst Scarps, Outflow Headwall Benches & Smectite-Gypsum-Opaline Terraces`、莫高窟盛唐第 159/217 窟佛龛券顶内侧拱肩斜撑座鎏金双凤宝相莲团花与飞天琵琶捍拨双鸳鸯睡莲垂穗鎏金迦陵频伽嵌碧玉明珠花钿扣、以及发射台导流槽尾喷集气室底槽槛冠墙杠 `Pad_ExhaustPlenumFloorTroughSillCrownBar`、整流罩 L 波段亚毫米波传感器整流罩 `Rocket_FairingLBandSubmillimeterSensorCowl` 与一激波胞二十阶普朗特-迈耶剪切辉光 `cell1VigintPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.281` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧拱肩斜撑座两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerSpandrelBraceBasePhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧拱肩斜撑座增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨双鸳鸯睡莲垂穗增绘鎏金迦陵频伽嵌碧玉明珠花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入梅姆诺尼亚堑沟、曼加拉堑沟、代达利亚高原与塔尔西斯西南岩脉-地堑缘诺亚纪—赫斯珀里亚纪岩浆岩脉驱动地堑-地垒陡坎、溢流源头壁阶地与蒙皂石-石膏-蛋白石阶地（`memnonia_fossae_mangala_fossae_daedalia_planum_tharsis_dike_graben_scarp_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,756 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,615 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对梅姆诺尼亚堑沟—曼加拉堑沟蒙皂石-石膏-蛋白石层引入暖赭褐灰色带（`memnoniaFossaeMangalaFossaeDaedaliaPlanumTharsisDikeGrabenScarpSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流冠墙杠（`Pad_ExhaustPlenumFloorTroughSillCrownBar_0..3`）与箭体整流罩 L 波段亚毫米波传感器座四向传感器整流罩（`Rocket_FairingLBandSubmillimeterSensorCowl_0..3`），导出 `rocket-kit.glb`（`3,039,932 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,663 B`）；在 `flameMaterial` 中引入一激波胞二十阶普朗特-迈耶剪切辉光项（`cell1VigintPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第三百零四阶段验收：夜间持续进化 · 克拉里塔斯堑沟、陶玛西亚高原、科拉基斯堑沟与塔尔西斯南缘构造地垒-地堑裂谷缘诺亚纪—赫斯珀里亚纪伸展断块陡坎、水热地垒阶地与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶外侧拱肩斜撑帽鎏金双凤宝相莲团花与飞天琵琶捍拨双莺石榴垂穗鎏金迦陵频伽嵌玛瑙明珠花钿扣、及发射台导流槽尾喷集气室底槽槛缓冲杠与二激波胞二十阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在克拉里塔斯堑沟、陶玛西亚高原、科拉基斯堑沟与塔尔西斯南缘构造地垒-地堑裂谷缘探测到的诺亚纪—赫斯珀里亚纪伸展断块陡坎、水热地垒阶地与蒙皂石-石膏-蛋白石阶地 `Claritas Fossae, Thaumasia Planum, Coracis Fossae & Southern Tharsis Tectonic Horst-Graben Margin Noachian-Hesperian Extensional Fault-Block Scarps, Hydrothermal Horst Benches & Smectite-Gypsum-Opaline Terraces`、莫高窟盛唐第 159/217 窟佛龛券顶外侧拱肩斜撑帽鎏金双凤宝相莲团花与飞天琵琶捍拨双莺石榴垂穗鎏金迦陵频伽嵌玛瑙明珠花钿扣、以及发射台导流槽尾喷集气室底槽槛缓冲杠 `Pad_ExhaustPlenumFloorTroughSillCushionBar`、整流罩 M 波段亚毫米波传感器整流罩 `Rocket_FairingMBandSubmillimeterSensorCowl` 与二激波胞二十阶普朗特-迈耶剪切辉光 `cell2VigintPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.282` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧拱肩斜撑帽两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterSpandrelBraceCapPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧拱肩斜撑帽增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨双莺石榴垂穗增绘鎏金迦陵频伽嵌玛瑙明珠花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入克拉里塔斯堑沟、陶玛西亚高原、科拉基斯堑沟与塔尔西斯南缘构造地垒-地堑裂谷缘诺亚纪—赫斯珀里亚纪伸展断块陡坎、水热地垒阶地与蒙皂石-石膏-蛋白石阶地（`claritas_fossae_thaumasia_planum_coracis_fossae_southern_tharsis_graben_scarp_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,818 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,596 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对克拉里塔斯堑沟—科拉基斯堑沟蒙皂石-石膏-蛋白石层引入暖金赭褐色带（`claritasFossaeThaumasiaPlanumCoracisFossaeSouthernTharsisGrabenScarpSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流缓冲杠（`Pad_ExhaustPlenumFloorTroughSillCushionBar_0..3`）与箭体整流罩 M 波段亚毫米波传感器座四向传感器整流罩（`Rocket_FairingMBandSubmillimeterSensorCowl_0..3`），导出 `rocket-kit.glb`（`3,050,344 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,806 B`）；在 `flameMaterial` 中引入二激波胞二十阶普朗特-迈耶剪切辉光项（`cell2VigintPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第三百零五阶段验收：夜间持续进化 · 萨巴亚高地、弗拉马里翁撞击坑、马斯撞击坑与阿拉伯北缘高地撞击坑陡坎诺亚纪—赫斯珀里亚纪阶梯状撞击盆地壁陡坎、倒转河湖扇阶地与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶内侧拱肩斜撑帽鎏金双凤宝相莲团花与飞天琵琶捍拨双鹤松云垂穗鎏金迦陵频伽嵌珊瑚明珠花钿扣、及发射台导流槽尾喷集气室底槽槛折流杠与三激波胞二十阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在萨巴亚高地、弗拉马里翁撞击坑、马斯撞击坑与阿拉伯北缘高地撞击坑陡坎探测到的诺亚纪—赫斯珀里亚纪阶梯状撞击盆地壁陡坎、倒转河湖扇阶地与蒙皂石-石膏-蛋白石阶地 `Sabaea Terra, Flammarion Crater, Marth Crater & Northern Arabia Highland Crater-Scarp Margin Noachian-Hesperian Terraced Impact-Basin Wall Scarps, Inverted Fluvial-Lacustrine Fan Benches & Smectite-Gypsum-Opaline Terraces`、莫高窟盛唐第 159/217 窟佛龛券顶内侧拱肩斜撑帽鎏金双凤宝相莲团花与飞天琵琶捍拨双鹤松云垂穗鎏金迦陵频伽嵌珊瑚明珠花钿扣、以及发射台导流槽尾喷集气室底槽槛折流杠 `Pad_ExhaustPlenumFloorTroughSillBaffleBar`、整流罩 N 波段亚毫米波传感器整流罩 `Rocket_FairingNBandSubmillimeterSensorCowl` 与三激波胞二十阶普朗特-迈耶剪切辉光 `cell3VigintPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.283` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧拱肩斜撑帽两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerSpandrelBraceCapPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧拱肩斜撑帽增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨双鹤松云垂穗增绘鎏金迦陵频伽嵌珊瑚明珠花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入萨巴亚高地、弗拉马里翁撞击坑、马斯撞击坑与阿拉伯北缘高地撞击坑陡坎诺亚纪—赫斯珀里亚纪阶梯状撞击盆地壁陡坎、倒转河湖扇阶地与蒙皂石-石膏-蛋白石阶地（`sabaea_terra_flammarion_crater_marth_crater_northern_arabia_highland_crater_scarp_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,946 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,653 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对萨巴亚高地—马斯撞击坑蒙皂石-石膏-蛋白石层引入暖米灰赭色带（`sabaeaTerraFlammarionCraterMarthCraterNorthernArabiaHighlandCraterScarpSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流折流杠（`Pad_ExhaustPlenumFloorTroughSillBaffleBar_0..3`）与箭体整流罩 N 波段亚毫米波传感器座四向传感器整流罩（`Rocket_FairingNBandSubmillimeterSensorCowl_0..3`），导出 `rocket-kit.glb`（`3,060,788 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,655 B`）；在 `flameMaterial` 中引入三激波胞二十阶普朗特-迈耶剪切辉光项（`cell3VigintPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第三百零六阶段验收：夜间持续进化 · 第勒尼安高地、利比亚山脉、伊希地盆地南缘与大叙尔蒂斯南麓高地陡坎诺亚纪—赫斯珀里亚纪撞击环断层陡坎、河网三角洲阶地与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶外侧拱肩撑柱座鎏金双凤宝相莲团花与飞天琵琶捍拨双孔雀紫藤垂穗鎏金迦陵频伽嵌绿松明珠花钿扣、及发射台导流槽尾喷集气室底槽槛导流杠与四激波胞二十阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在第勒尼安高地、利比亚山脉、伊希地盆地南缘与大叙尔蒂斯南麓高地陡坎探测到的诺亚纪—赫斯珀里亚纪撞击环断层陡坎、河网三角洲阶地与蒙皂石-石膏-蛋白石阶地 `Tyrrhena Terra, Libya Montes, Isidis Rim & Southern Syrtis Highland Scarp Margin Noachian-Hesperian Impact-Ring Fault Scarps, Valley-Network Deltaic Benches & Smectite-Gypsum-Opaline Terraces`、莫高窟盛唐第 159/217 窟佛龛券顶外侧拱肩撑柱座鎏金双凤宝相莲团花与飞天琵琶捍拨双孔雀紫藤垂穗鎏金迦陵频伽嵌绿松明珠花钿扣、以及发射台导流槽尾喷集气室底槽槛导流杠 `Pad_ExhaustPlenumFloorTroughSillVaneBar`、整流罩 Q 波段亚毫米波传感器整流罩 `Rocket_FairingQBandSubmillimeterSensorCowl` 与四激波胞二十阶普朗特-迈耶剪切辉光 `cell4VigintPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.284` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧拱肩撑柱座两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterSpandrelStrutBasePhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧拱肩撑柱座增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨双孔雀紫藤垂穗增绘鎏金迦陵频伽嵌绿松明珠花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入第勒尼安高地、利比亚山脉、伊希地盆地南缘与大叙尔蒂斯南麓高地陡坎诺亚纪—赫斯珀里亚纪撞击环断层陡坎、河网三角洲阶地与蒙皂石-石膏-蛋白石阶地（`tyrrhena_terra_libya_montes_isidis_rim_southern_syrtis_highland_scarp_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,911 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,546 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对利比亚山脉—伊希地盆地南缘蒙皂石-石膏-蛋白石层引入暖苔褐赭色带（`tyrrhenaTerraLibyaMontesIsidisRimSouthernSyrtisHighlandScarpSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流导流杠（`Pad_ExhaustPlenumFloorTroughSillVaneBar_0..3`）与箭体整流罩 Q 波段亚毫米波传感器座四向传感器整流罩（`Rocket_FairingQBandSubmillimeterSensorCowl_0..3`），导出 `rocket-kit.glb`（`3,071,176 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,702 B`）；在 `flameMaterial` 中引入四激波胞二十阶普朗特-迈耶剪切辉光项（`cell4VigintPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第三百零七阶段验收：夜间持续进化 · 辛梅里亚高地、阿里阿德涅丘群、埃里达尼亚盆地与埃勒克特里斯高地陡坎诺亚纪—赫斯珀里亚纪古湖盆壁陡坎、水热混沌阶地与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶内侧拱肩撑柱座鎏金双凤宝相莲团花与飞天琵琶捍拨双鹦鹉杏花垂穗鎏金迦陵频伽嵌琥珀明珠花钿扣、及发射台导流槽尾喷集气室底槽槛肋梁杠与五激波胞二十阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在辛梅里亚高地、阿里阿德涅丘群、埃里达尼亚盆地与埃勒克特里斯高地陡坎探测到的诺亚纪—赫斯珀里亚纪古湖盆壁陡坎、水热混沌阶地与蒙皂石-石膏-蛋白石阶地 `Terra Cimmeria, Ariadnes Colles, Eridania Basin & Electris Highland Scarp Margin Noachian-Hesperian Paleolake-Basin Wall Scarps, Hydrothermal Chaos Benches & Smectite-Gypsum-Opaline Terraces`、莫高窟盛唐第 159/217 窟佛龛券顶内侧拱肩撑柱座鎏金双凤宝相莲团花与飞天琵琶捍拨双鹦鹉杏花垂穗鎏金迦陵频伽嵌琥珀明珠花钿扣、以及发射台导流槽尾喷集气室底槽槛肋梁杠 `Pad_ExhaustPlenumFloorTroughSillRibBar`、整流罩 Z 波段亚毫米波传感器整流罩 `Rocket_FairingZBandSubmillimeterSensorCowl` 与五激波胞二十阶普朗特-迈耶剪切辉光 `cell5VigintPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.285` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧拱肩撑柱座两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerSpandrelStrutBasePhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧拱肩撑柱座增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨双鹦鹉杏花垂穗增绘鎏金迦陵频伽嵌琥珀明珠花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入辛梅里亚高地、阿里阿德涅丘群、埃里达尼亚盆地与埃勒克特里斯高地陡坎诺亚纪—赫斯珀里亚纪古湖盆壁陡坎、水热混沌阶地与蒙皂石-石膏-蛋白石阶地（`terra_cimmeria_ariadnes_colles_eridania_basin_electris_highland_scarp_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`190,973 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,421 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对阿里阿德涅丘群—埃里达尼亚古湖盆蒙皂石-石膏-蛋白石层引入暖青褐赭色带（`terraCimmeriaAriadnesCollesEridaniaBasinElectrisHighlandScarpSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流肋梁杠（`Pad_ExhaustPlenumFloorTroughSillRibBar_0..3`）与箭体整流罩 Z 波段亚毫米波传感器座四向传感器整流罩（`Rocket_FairingZBandSubmillimeterSensorCowl_0..3`），导出 `rocket-kit.glb`（`3,081,556 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,674 B`）；在 `flameMaterial` 中引入五激波胞二十阶普朗特-迈耶剪切辉光项（`cell5VigintPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第三百零八阶段验收：夜间持续进化 · 诺亚高地、赫勒斯滂山脉、凯泽-拉贝撞击坑与希腊盆地西缘陡坎诺亚纪—赫斯珀里亚纪盆地环断层陡坎、坑内沙丘席阶地与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶外侧拱肩撑柱帽鎏金双凤宝相莲团花与飞天琵琶捍拨双锦鸡玉兰垂穗鎏金迦陵频伽嵌碧玉明珠花钿扣、及发射台导流槽尾喷集气室底槽槛斜撑杠与六激波胞二十阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在诺亚高地、赫勒斯滂山脉、凯泽-拉贝撞击坑与希腊盆地西缘陡坎探测到的诺亚纪—赫斯珀里亚纪盆地环断层陡坎、坑内沙丘席阶地与蒙皂石-石膏-蛋白石阶地 `Noachis Terra, Hellespontus Montes, Kaiser-Rabe Crater & Hellas Western Rim Scarp Margin Noachian-Hesperian Basin-Ring Fault Scarps, Intracrater Dune-Sheet Benches & Smectite-Gypsum-Opaline Terraces`、莫高窟盛唐第 159/217 窟佛龛券顶外侧拱肩撑柱帽鎏金双凤宝相莲团花与飞天琵琶捍拨双锦鸡玉兰垂穗鎏金迦陵频伽嵌碧玉明珠花钿扣、以及发射台导流槽尾喷集气室底槽槛斜撑杠 `Pad_ExhaustPlenumFloorTroughSillBraceBar`、整流罩 L 波段远红外传感器整流罩 `Rocket_FairingLBandFarInfraredSensorCowl` 与六激波胞二十阶普朗特-迈耶剪切辉光 `cell6VigintPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.286` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧拱肩撑柱帽两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterSpandrelStrutCapPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧拱肩撑柱帽增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨双锦鸡玉兰垂穗增绘鎏金迦陵频伽嵌碧玉明珠花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入诺亚高地、赫勒斯滂山脉、凯泽-拉贝撞击坑与希腊盆地西缘陡坎诺亚纪—赫斯珀里亚纪盆地环断层陡坎、坑内沙丘席阶地与蒙皂石-石膏-蛋白石阶地（`noachis_terra_hellespontus_montes_kaiser_rabe_crater_hellas_western_rim_scarp_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`191,054 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,134 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对赫勒斯滂山脉—凯泽-拉贝撞击坑蒙皂石-石膏-蛋白石层引入暖金褐赭色带（`noachisTerraHellespontusMontesKaiserRabeCraterHellasWesternRimScarpSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流斜撑杠（`Pad_ExhaustPlenumFloorTroughSillBraceBar_0..3`）与箭体整流罩 L 波段远红外传感器座四向传感器整流罩（`Rocket_FairingLBandFarInfraredSensorCowl_0..3`），导出 `rocket-kit.glb`（`3,091,940 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,721 B`）；在 `flameMaterial` 中引入六激波胞二十阶普朗特-迈耶剪切辉光项（`cell6VigintPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第三百零九阶段验收：夜间持续进化 · 普罗米修斯高地、鲁尔谷、墨菲俄斯断崖与希腊盆地东缘陡坎诺亚纪—赫斯珀里亚纪外流峡谷源头陡坎、舌状碎屑裙阶地与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶内侧拱肩撑柱帽鎏金双凤宝相莲团花与飞天琵琶捍拨双鹭荷叶云垂穗鎏金迦陵频伽嵌青金明珠花钿扣、及发射台导流槽尾喷集气室底槽槛拉杆杠与七激波胞二十阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在普罗米修斯高地、鲁尔谷、墨菲俄斯断崖与希腊盆地东缘陡坎探测到的诺亚纪—赫斯珀里亚纪外流峡谷源头陡坎、舌状碎屑裙阶地与蒙皂石-石膏-蛋白石阶地 `Promethei Terra, Reull Vallis, Morpheos Rupes & Eastern Hellas Rim Scarp Margin Noachian-Hesperian Outflow-Canyon Headwall Scarps, Lobate Debris-Apron Benches & Smectite-Gypsum-Opaline Terraces`、莫高窟盛唐第 159/217 窟佛龛券顶内侧拱肩撑柱帽鎏金双凤宝相莲团花与飞天琵琶捍拨双鹭荷叶云垂穗鎏金迦陵频伽嵌青金明珠花钿扣、以及发射台导流槽尾喷集气室底槽槛拉杆杠 `Pad_ExhaustPlenumFloorTroughSillTieBar`、整流罩 M 波段远红外传感器整流罩 `Rocket_FairingMBandFarInfraredSensorCowl` 与七激波胞二十阶普朗特-迈耶剪切辉光 `cell7VigintPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.287` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧拱肩撑柱帽两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerSpandrelStrutCapPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧拱肩撑柱帽增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨双鹭荷叶云垂穗增绘鎏金迦陵频伽嵌青金明珠花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入普罗米修斯高地、鲁尔谷、墨菲俄斯断崖与希腊盆地东缘陡坎诺亚纪—赫斯珀里亚纪外流峡谷源头陡坎、舌状碎屑裙阶地与蒙皂石-石膏-蛋白石阶地（`promethei_terra_reull_vallis_morpheos_rupes_eastern_hellas_rim_scarp_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`191,068 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,455 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对鲁尔谷—墨菲俄斯断崖蒙皂石-石膏-蛋白石层引入暖灰褐赭色带（`prometheiTerraReullVallisMorpheosRupesEasternHellasRimScarpSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流拉杆杠（`Pad_ExhaustPlenumFloorTroughSillTieBar_0..3`）与箭体整流罩 M 波段远红外传感器座四向传感器整流罩（`Rocket_FairingMBandFarInfraredSensorCowl_0..3`），导出 `rocket-kit.glb`（`3,102,312 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,588 B`）；在 `flameMaterial` 中引入七激波胞二十阶普朗特-迈耶剪切辉光项（`cell7VigintPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第三百一十阶段验收：夜间持续进化 · 珍珠高地、拉冬盆地、莫拉瓦谷与奥雷乌姆混沌缘诺亚纪—赫斯珀里亚纪多环盆地断层陡坎、外流河道迂回沙坝阶地与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶外侧拱肩拉杆座鎏金双凤宝相莲团花与飞天琵琶捍拨双翡翠海棠垂穗鎏金迦陵频伽嵌珊瑚明珠花钿扣、及发射台导流槽尾喷集气室底槽槛拉撑杠与八激波胞二十阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在珍珠高地、拉冬盆地、莫拉瓦谷与奥雷乌姆混沌缘探测到的诺亚纪—赫斯珀里亚纪多环盆地断层陡坎、外流河道迂回沙坝阶地与蒙皂石-石膏-蛋白石阶地 `Margaritifer Terra, Ladon Basin, Morava Valles & Aureum Chaos Margin Noachian-Hesperian Multi-Ring Basin Fault Scarps, Outflow-Channel Scroll-Bar Benches & Smectite-Gypsum-Opaline Terraces`、莫高窟盛唐第 159/217 窟佛龛券顶外侧拱肩拉杆座鎏金双凤宝相莲团花与飞天琵琶捍拨双翡翠海棠垂穗鎏金迦陵频伽嵌珊瑚明珠花钿扣、以及发射台导流槽尾喷集气室底槽槛拉撑杠 `Pad_ExhaustPlenumFloorTroughSillStayBar`、整流罩 N 波段远红外传感器整流罩 `Rocket_FairingNBandFarInfraredSensorCowl` 与八激波胞二十阶普朗特-迈耶剪切辉光 `cell8VigintPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.288` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧拱肩拉杆座两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterSpandrelTieBasePhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧拱肩拉杆座增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨双翡翠海棠垂穗增绘鎏金迦陵频伽嵌珊瑚明珠花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入珍珠高地、拉冬盆地、莫拉瓦谷与奥雷乌姆混沌缘诺亚纪—赫斯珀里亚纪多环盆地断层陡坎、外流河道迂回沙坝阶地与蒙皂石-石膏-蛋白石阶地（`margaritifer_terra_ladon_basin_morava_valles_aureum_chaos_scarp_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`191,035 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,781 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对拉冬盆地—莫拉瓦谷蒙皂石-石膏-蛋白石层引入暖琥珀褐赭色带（`margaritiferTerraLadonBasinMoravaVallesAureumChaosScarpSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流拉撑杠（`Pad_ExhaustPlenumFloorTroughSillStayBar_0..3`）与箭体整流罩 N 波段远红外传感器座四向传感器整流罩（`Rocket_FairingNBandFarInfraredSensorCowl_0..3`），导出 `rocket-kit.glb`（`3,112,688 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,668 B`）；在 `flameMaterial` 中引入八激波胞二十阶普朗特-迈耶剪切辉光项（`cell8VigintPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第三百一十一阶段验收：夜间持续进化 · 克珊忒高地、沙尔巴塔纳谷、奥逊·威尔斯撞击坑与西穆德谷缘诺亚纪—赫斯珀里亚纪混沌源头断层陡坎、湖相三角洲阶地与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶内侧拱肩拉杆座鎏金双凤宝相莲团花与飞天琵琶捍拨双燕紫藤垂穗鎏金迦陵频伽嵌碧玉明珠花钿扣、及发射台导流槽尾喷集气室底槽槛拉索杠与尾迹末端二十阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在克珊忒高地、沙尔巴塔纳谷、奥逊·威尔斯撞击坑与西穆德谷缘探测到的诺亚纪—赫斯珀里亚纪混沌源头断层陡坎、湖相三角洲阶地与蒙皂石-石膏-蛋白石阶地 `Xanthe Terra, Shalbatana Vallis, Orson Welles Crater & Simud Valles Margin Noachian-Hesperian Chaos-Headwall Fault Scarps, Lacustrine Deltaic Benches & Smectite-Gypsum-Opaline Terraces`、莫高窟盛唐第 159/217 窟佛龛券顶内侧拱肩拉杆座鎏金双凤宝相莲团花与飞天琵琶捍拨双燕紫藤垂穗鎏金迦陵频伽嵌碧玉明珠花钿扣、以及发射台导流槽尾喷集气室底槽槛拉索杠 `Pad_ExhaustPlenumFloorTroughSillGuyBar`、整流罩 Q 波段远红外传感器整流罩 `Rocket_FairingQBandFarInfraredSensorCowl` 与尾迹末端二十阶普朗特-迈耶剪切辉光 `plumeTailVigintPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.289` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧拱肩拉杆座两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerSpandrelTieBasePhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧拱肩拉杆座增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨双燕紫藤垂穗增绘鎏金迦陵频伽嵌碧玉明珠花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入克珊忒高地、沙尔巴塔纳谷、奥逊·威尔斯撞击坑与西穆德谷缘诺亚纪—赫斯珀里亚纪混沌源头断层陡坎、湖相三角洲阶地与蒙皂石-石膏-蛋白石阶地（`xanthe_terra_shalbatana_vallis_orson_welles_crater_simud_valles_scarp_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`191,217 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,592 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对沙尔巴塔纳谷—奥逊·威尔斯撞击坑蒙皂石-石膏-蛋白石层引入暖苔褐赭色带（`xantheTerraShalbatanaVallisOrsonWellesCraterSimudVallesScarpSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流拉索杠（`Pad_ExhaustPlenumFloorTroughSillGuyBar_0..3`）与箭体整流罩 Q 波段远红外传感器座四向传感器整流罩（`Rocket_FairingQBandFarInfraredSensorCowl_0..3`），导出 `rocket-kit.glb`（`3,123,056 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,637 B`）；在 `flameMaterial` 中引入尾迹末端二十阶普朗特-迈耶剪切辉光项（`plumeTailVigintPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第三百一十二阶段验收：夜间持续进化 · 坦佩高地、卡塞谷、沙罗诺夫撞击坑与埃库斯裂谷缘诺亚纪—赫斯珀里亚纪巨型洪水流线型岛陡坎、纵向冲刷槽阶地与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶外侧拱肩拉杆帽鎏金双凤宝相莲团花与飞天琵琶捍拨双鹤梅花垂穗鎏金迦陵频伽嵌玛瑙明珠花钿扣、及发射台导流槽尾喷集气室底槽槛抗摆杠与一激波胞二十一阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在坦佩高地、卡塞谷、沙罗诺夫撞击坑与埃库斯裂谷缘探测到的诺亚纪—赫斯珀里亚纪巨型洪水流线型岛陡坎、纵向冲刷槽阶地与蒙皂石-石膏-蛋白石阶地 `Tempe Terra, Kasei Valles, Sharonov Crater & Echus Chasma Margin Noachian-Hesperian Megaflood Streamlined-Island Scarps, Longitudinal Groove Benches & Smectite-Gypsum-Opaline Terraces`、莫高窟盛唐第 159/217 窟佛龛券顶外侧拱肩拉杆帽鎏金双凤宝相莲团花与飞天琵琶捍拨双鹤梅花垂穗鎏金迦陵频伽嵌玛瑙明珠花钿扣、以及发射台导流槽尾喷集气室底槽槛抗摆杠 `Pad_ExhaustPlenumFloorTroughSillSwayBar`、整流罩 Z 波段远红外传感器整流罩 `Rocket_FairingZBandFarInfraredSensorCowl` 与一激波胞二十一阶普朗特-迈耶剪切辉光 `cell1UnvigintPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.290` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧拱肩拉杆帽两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterSpandrelTieCapPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧拱肩拉杆帽增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨双鹤梅花垂穗增绘鎏金迦陵频伽嵌玛瑙明珠花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入坦佩高地、卡塞谷、沙罗诺夫撞击坑与埃库斯裂谷缘诺亚纪—赫斯珀里亚纪巨型洪水流线型岛陡坎、纵向冲刷槽阶地与蒙皂石-石膏-蛋白石阶地（`tempe_terra_kasei_valles_sharonov_crater_echus_chasma_scarp_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`191,174 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,690 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对卡塞谷—沙罗诺夫撞击坑蒙皂石-石膏-蛋白石层引入暖金灰赭色带（`tempeTerraKaseiVallesSharonovCraterEchusChasmaScarpSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流抗摆杠（`Pad_ExhaustPlenumFloorTroughSillSwayBar_0..3`）与箭体整流罩 Z 波段远红外传感器座四向传感器整流罩（`Rocket_FairingZBandFarInfraredSensorCowl_0..3`），导出 `rocket-kit.glb`（`3,133,432 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,618 B`）；在 `flameMaterial` 中引入一激波胞二十一阶普朗特-迈耶剪切辉光项（`cell1UnvigintPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第三百一十三阶段验收：夜间持续进化 · 阿西达利亚平原、罗蒙诺索夫撞击坑、库诺夫斯基撞击坑与坦佩堑沟缘赫斯珀里亚纪—亚马逊纪海洋撞击海啸拇指印冰碛陡坎、泥火山阶地与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶内侧拱肩拉杆上座鎏金双凤宝相莲团花与飞天琵琶捍拨双芦花垂穗鎏金迦陵频伽嵌玛瑙明珠花钿扣、及发射台导流槽尾喷集气室底槽槛抗摆拉带与二激波胞二十一阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在阿西达利亚平原、罗蒙诺索夫撞击坑、库诺夫斯基撞击坑与坦佩堑沟缘探测到的赫斯珀里亚纪—亚马逊纪海洋撞击海啸拇指印冰碛陡坎、泥火山阶地与蒙皂石-石膏-蛋白石阶地 `Acidalia Planitia, Lomonosov Crater, Kunowsky Crater & Tempe Fossae Margin Hesperian-Amazonian Marine-Impact Tsunami Thumbprint-Moraine Scarps, Mud-Volcano Benches & Smectite-Gypsum-Opaline Terraces`、莫高窟盛唐第 159/217 窟佛龛券顶内侧拱肩拉杆上座鎏金双凤宝相莲团花与飞天琵琶捍拨双芦花垂穗鎏金迦陵频伽嵌玛瑙明珠花钿扣、以及发射台导流槽尾喷集气室底槽槛抗摆拉带 `Pad_ExhaustPlenumFloorTroughSillSwayStrap`、整流罩 A 波段远红外传感器整流罩 `Rocket_FairingABandFarInfraredSensorCowl` 与二激波胞二十一阶普朗特-迈耶剪切辉光 `cell2UnvigintPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.291` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧拱肩拉杆上座两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerSpandrelTieUpperBasePhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧拱肩拉杆上座增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨双芦花垂穗增绘鎏金迦陵频伽嵌玛瑙明珠花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入阿西达利亚平原、罗蒙诺索夫撞击坑、库诺夫斯基撞击坑与坦佩堑沟缘赫斯珀里亚纪—亚马逊纪海洋撞击海啸拇指印冰碛陡坎、泥火山阶地与蒙皂石-石膏-蛋白石阶地（`acidalia_planitia_lomonosov_crater_kunowsky_crater_tempe_fossae_scarp_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`191,089 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,804 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对阿西达利亚平原—罗蒙诺索夫撞击坑蒙皂石-石膏-蛋白石层引入暖褐陶灰色带（`acidaliaPlanitiaLomonosovCraterKunowskyCraterTempeFossaeScarpSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流抗摆拉带（`Pad_ExhaustPlenumFloorTroughSillSwayStrap_0..3`）与箭体整流罩 A 波段远红外传感器座四向传感器整流罩（`Rocket_FairingABandFarInfraredSensorCowl_0..3`），导出 `rocket-kit.glb`（`3,143,832 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,526 B`）；在 `flameMaterial` 中引入二激波胞二十一阶普朗特-迈耶剪切辉光项（`cell2UnvigintPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第三百一十四阶段验收：夜间持续进化 · 克律塞平原、阿瑞斯谷、提乌谷与探路者号着陆区缘赫斯珀里亚纪外流河道巨砾洪积坝陡坎、流线型残丘阶地与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶外侧拱肩拉杆上座鎏金双凤宝相莲团花与飞天琵琶捍拨双雁芦雪垂穗鎏金迦陵频伽嵌青金明珠花钿扣、及发射台导流槽尾喷集气室底槽槛抗摆卡箍与三激波胞二十一阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在克律塞平原、阿瑞斯谷、提乌谷与探路者号着陆区缘探测到的赫斯珀里亚纪外流河道巨砾洪积坝陡坎、流线型残丘阶地与蒙皂石-石膏-蛋白石阶地 `Chryse Planitia, Ares Vallis, Tiu Valles & Pathfinder Landing Site Margin Hesperian Outflow-Channel Megaboulder Floodbar Scarps, Streamlined-Island Benches & Smectite-Gypsum-Opaline Terraces`、莫高窟盛唐第 159/217 窟佛龛券顶外侧拱肩拉杆上座鎏金双凤宝相莲团花与飞天琵琶捍拨双雁芦雪垂穗鎏金迦陵频伽嵌青金明珠花钿扣、以及发射台导流槽尾喷集气室底槽槛抗摆卡箍 `Pad_ExhaustPlenumFloorTroughSillSwayClamp`、整流罩 B 波段远红外传感器整流罩 `Rocket_FairingBBandFarInfraredSensorCowl` 与三激波胞二十一阶普朗特-迈耶剪切辉光 `cell3UnvigintPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.292` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧拱肩拉杆上座两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterSpandrelTieUpperBasePhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧拱肩拉杆上座增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨双雁芦雪垂穗增绘鎏金迦陵频伽嵌青金明珠花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入克律塞平原、阿瑞斯谷、提乌谷与探路者号着陆区缘赫斯珀里亚纪外流河道巨砾洪积坝陡坎、流线型残丘阶地与蒙皂石-石膏-蛋白石阶地（`chryse_planitia_ares_vallis_tiu_valles_pathfinder_scarp_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`191,165 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,723 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对阿瑞斯谷—提乌谷蒙皂石-石膏-蛋白石层引入暖金褐砂色带（`chrysePlanitiaAresVallisTiuVallesPathfinderScarpSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流抗摆卡箍（`Pad_ExhaustPlenumFloorTroughSillSwayClamp_0..3`）与箭体整流罩 B 波段远红外传感器座四向传感器整流罩（`Rocket_FairingBBandFarInfraredSensorCowl_0..3`），导出 `rocket-kit.glb`（`3,154,232 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,564 B`）；在 `flameMaterial` 中引入三激波胞二十一阶普朗特-迈耶剪切辉光项（`cell3UnvigintPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第三百一十五阶段验收：夜间持续进化 · 索利斯高原、叙利亚高原、陶玛西亚堑沟与西奈高原缘诺亚纪—赫斯珀里亚纪皱脊溢流玄武岩陡坎、构造地堑阶地与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶内侧拱肩拉杆上帽鎏金双凤宝相莲团花与飞天琵琶捍拨双鸳鸯芰实垂穗鎏金迦陵频伽嵌珊瑚明珠花钿扣、及发射台导流槽尾喷集气室底槽槛抗摆连杆与四激波胞二十一阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在索利斯高原、叙利亚高原、陶玛西亚堑沟与西奈高原缘探测到的诺亚纪—赫斯珀里亚纪皱脊溢流玄武岩陡坎、构造地堑阶地与蒙皂石-石膏-蛋白石阶地 `Solis Planum, Syria Planum, Thaumasia Fossae & Sinai Planum Margin Noachian-Hesperian Wrinkle-Ridge Flood-Basalt Scarps, Tectonic Graben Benches & Smectite-Gypsum-Opaline Terraces`、莫高窟盛唐第 159/217 窟佛龛券顶内侧拱肩拉杆上帽鎏金双凤宝相莲团花与飞天琵琶捍拨双鸳鸯芰实垂穗鎏金迦陵频伽嵌珊瑚明珠花钿扣、以及发射台导流槽尾喷集气室底槽槛抗摆连杆 `Pad_ExhaustPlenumFloorTroughSillSwayLink`、整流罩 C 波段远红外传感器整流罩 `Rocket_FairingCBandFarInfraredSensorCowl` 与四激波胞二十一阶普朗特-迈耶剪切辉光 `cell4UnvigintPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.293` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧拱肩拉杆上帽两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerSpandrelTieUpperCapPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧拱肩拉杆上帽增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨双鸳鸯芰实垂穗增绘鎏金迦陵频伽嵌珊瑚明珠花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入索利斯高原、叙利亚高原、陶玛西亚堑沟与西奈高原缘诺亚纪—赫斯珀里亚纪皱脊溢流玄武岩陡坎、构造地堑阶地与蒙皂石-石膏-蛋白石阶地（`solis_planum_syria_planum_thaumasia_fossae_sinai_planum_scarp_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`191,193 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,040 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对索利斯高原—陶玛西亚堑沟蒙皂石-石膏-蛋白石层引入暖金赭岩色带（`solisPlanumSyriaPlanumThaumasiaFossaeSinaiPlanumScarpSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流抗摆连杆（`Pad_ExhaustPlenumFloorTroughSillSwayLink_0..3`）与箭体整流罩 C 波段远红外传感器座四向传感器整流罩（`Rocket_FairingCBandFarInfraredSensorCowl_0..3`），导出 `rocket-kit.glb`（`3,164,624 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,568 B`）；在 `flameMaterial` 中引入四激波胞二十一阶普朗特-迈耶剪切辉光项（`cell4UnvigintPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第三百一十六阶段验收：夜间持续进化 · 代达利亚高原、阿尔西亚沟群、塞壬堑沟与门农区缘亚马逊纪—赫斯珀里亚纪舌状熔岩流陡坎、岩墙地堑阶地与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶外侧拱肩拉杆上帽鎏金双凤宝相莲团花与飞天琵琶捍拨双天鹅莲房垂穗鎏金迦陵频伽嵌碧玉明珠花钿扣、及发射台导流槽尾喷集气室底槽槛抗摆销与五激波胞二十一阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在代达利亚高原、阿尔西亚沟群、塞壬堑沟与门农区缘探测到的亚马逊纪—赫斯珀里亚纪舌状熔岩流陡坎、岩墙地堑阶地与蒙皂石-石膏-蛋白石阶地 `Daedalia Planum, Arsia Sulci, Sirenum Fossae & Memnonia Margin Amazonian-Hesperian Lobate Lava-Flow Scarps, Dike-Graben Benches & Smectite-Gypsum-Opaline Terraces`、莫高窟盛唐第 159/217 窟佛龛券顶外侧拱肩拉杆上帽鎏金双凤宝相莲团花与飞天琵琶捍拨双天鹅莲房垂穗鎏金迦陵频伽嵌碧玉明珠花钿扣、以及发射台导流槽尾喷集气室底槽槛抗摆销 `Pad_ExhaustPlenumFloorTroughSillSwayPin`、整流罩 D 波段远红外传感器整流罩 `Rocket_FairingDBandFarInfraredSensorCowl` 与五激波胞二十一阶普朗特-迈耶剪切辉光 `cell5UnvigintPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.294` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧拱肩拉杆上帽两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterSpandrelTieUpperCapPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧拱肩拉杆上帽增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨双天鹅莲房垂穗增绘鎏金迦陵频伽嵌碧玉明珠花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入代达利亚高原、阿尔西亚沟群、塞壬堑沟与门农区缘亚马逊纪—赫斯珀里亚纪舌状熔岩流陡坎、岩墙地堑阶地与蒙皂石-石膏-蛋白石阶地（`daedalia_planum_arsia_sulci_sirenum_fossae_memnonia_scarp_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`191,162 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,454 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对代达利亚高原—塞壬堑沟蒙皂石-石膏-蛋白石层引入暖金灰褐色带（`daedaliaPlanumArsiaSulciSirenumFossaeMemnoniaScarpSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流抗摆销（`Pad_ExhaustPlenumFloorTroughSillSwayPin_0..3`）与箭体整流罩 D 波段远红外传感器座四向传感器整流罩（`Rocket_FairingDBandFarInfraredSensorCowl_0..3`），导出 `rocket-kit.glb`（`3,175,000 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,569 B`）；在 `flameMaterial` 中引入五激波胞二十一阶普朗特-迈耶剪切辉光项（`cell5UnvigintPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第三百一十七阶段验收：夜间持续进化 · 乌托邦平原、赫淮斯托斯堑沟、阿达玛斯迷宫与卡西乌斯区缘赫斯珀里亚纪—亚马逊纪多边形槽脊陡坎、泥底辟阶地与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶内侧拱肩拉杆下座鎏金双凤宝相莲团花与飞天琵琶捍拨双白鹭蒲茸垂穗鎏金迦陵频伽嵌珊瑚明珠花钿扣、及发射台导流槽尾喷集气室底槽槛抗摆轭与六激波胞二十一阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在乌托邦平原、赫淮斯托斯堑沟、阿达玛斯迷宫与卡西乌斯区缘探测到的赫斯珀里亚纪—亚马逊纪多边形槽脊陡坎、泥底辟阶地与蒙皂石-石膏-蛋白石阶地 `Utopia Planitia, Hephaestus Fossae, Adamas Labyrinthus & Casius Margin Hesperian-Amazonian Polygonal Trough-Ridge Scarps, Mud-Diapir Benches & Smectite-Gypsum-Opaline Terraces`、莫高窟盛唐第 159/217 窟佛龛券顶内侧拱肩拉杆下座鎏金双凤宝相莲团花与飞天琵琶捍拨双白鹭蒲茸垂穗鎏金迦陵频伽嵌珊瑚明珠花钿扣、以及发射台导流槽尾喷集气室底槽槛抗摆轭 `Pad_ExhaustPlenumFloorTroughSillSwayYoke`、整流罩 E 波段远红外传感器整流罩 `Rocket_FairingEBandFarInfraredSensorCowl` 与六激波胞二十一阶普朗特-迈耶剪切辉光 `cell6UnvigintPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.295` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧拱肩拉杆下座两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerSpandrelTieLowerBasePhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧拱肩拉杆下座增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨双白鹭蒲茸垂穗增绘鎏金迦陵频伽嵌珊瑚明珠花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入乌托邦平原、赫淮斯托斯堑沟、阿达玛斯迷宫与卡西乌斯区缘赫斯珀里亚纪—亚马逊纪多边形槽脊陡坎、泥底辟阶地与蒙皂石-石膏-蛋白石阶地（`utopia_planitia_hephaestus_fossae_adamas_labyrinthus_casius_scarp_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`191,210 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,819 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对乌托邦平原—阿达玛斯迷宫蒙皂石-石膏-蛋白石层引入暖苔灰褐色带（`utopiaPlanitiaHephaestusFossaeAdamasLabyrinthusCasiusScarpSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流抗摆轭（`Pad_ExhaustPlenumFloorTroughSillSwayYoke_0..3`）与箭体整流罩 E 波段远红外传感器座四向传感器整流罩（`Rocket_FairingEBandFarInfraredSensorCowl_0..3`），导出 `rocket-kit.glb`（`3,185,336 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,642 B`）；在 `flameMaterial` 中引入六激波胞二十一阶普朗特-迈耶剪切辉光项（`cell6UnvigintPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第三百一十八阶段验收：夜间持续进化 · 埃律西昂平原、阿萨巴斯卡谷、刻耳柏洛斯堑沟与马尔特谷缘亚马逊纪板状脊洪流熔岩陡坎、水火山无根锥阶地与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶外侧拱肩拉杆下座鎏金双凤宝相莲团花与飞天琵琶捍拨双雉苞牡丹垂穗鎏金迦陵频伽嵌碧玉明珠花钿扣、及发射台导流槽尾喷集气室底槽槛抗摆卸扣与七激波胞二十一阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在埃律西昂平原、阿萨巴斯卡谷、刻耳柏洛斯堑沟与马尔特谷缘探测到的亚马逊纪板状脊洪流熔岩陡坎、水火山无根锥阶地与蒙皂石-石膏-蛋白石阶地 `Elysium Planitia, Athabasca Valles, Cerberus Fossae & Marte Vallis Margin Amazonian Platy-Ridged Flood-Lava Scarps, Hydrovolcanic Rootless-Cone Benches & Smectite-Gypsum-Opaline Terraces`、莫高窟盛唐第 159/217 窟佛龛券顶外侧拱肩拉杆下座鎏金双凤宝相莲团花与飞天琵琶捍拨双雉苞牡丹垂穗鎏金迦陵频伽嵌碧玉明珠花钿扣、以及发射台导流槽尾喷集气室底槽槛抗摆卸扣 `Pad_ExhaustPlenumFloorTroughSillSwayShackle`、整流罩 F 波段远红外传感器整流罩 `Rocket_FairingFBandFarInfraredSensorCowl` 与七激波胞二十一阶普朗特-迈耶剪切辉光 `cell7UnvigintPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.296` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧拱肩拉杆下座两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterSpandrelTieLowerBasePhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧拱肩拉杆下座增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨双雉苞牡丹垂穗增绘鎏金迦陵频伽嵌碧玉明珠花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入埃律西昂平原、阿萨巴斯卡谷、刻耳柏洛斯堑沟与马尔特谷缘亚马逊纪板状脊洪流熔岩陡坎、水火山无根锥阶地与蒙皂石-石膏-蛋白石阶地（`elysium_planitia_athabasca_valles_cerberus_fossae_marte_vallis_scarp_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`191,361 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,635 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对埃律西昂平原—阿萨巴斯卡谷蒙皂石-石膏-蛋白石层引入暖金褐石色带（`elysiumPlanitiaAthabascaVallesCerberusFossaeMarteVallisScarpSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流抗摆卸扣（`Pad_ExhaustPlenumFloorTroughSillSwayShackle_0..3`）与箭体整流罩 F 波段远红外传感器座四向传感器整流罩（`Rocket_FairingFBandFarInfraredSensorCowl_0..3`），导出 `rocket-kit.glb`（`3,195,748 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,533 B`）；在 `flameMaterial` 中引入七激波胞二十一阶普朗特-迈耶剪切辉光项（`cell7UnvigintPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第三百一十九阶段验收：夜间持续进化 · 亚马逊平原、美杜莎槽沟、戈尔迪背岭与尼科尔森陨击坑缘亚马逊纪—赫斯珀里亚纪熔结凝灰岩雅丹陡坎、易碎凝灰岩阶地与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶内侧拱肩拉杆下帽鎏金双凤宝相莲团花与飞天琵琶捍拨双喜鹊梅枝垂穗鎏金迦陵频伽嵌青金明珠花钿扣、及发射台导流槽尾喷集气室底槽槛抗摆U形钩与八激波胞二十一阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在亚马逊平原、美杜莎槽沟、戈尔迪背岭与尼科尔森陨击坑缘探测到的亚马逊纪—赫斯珀里亚纪熔结凝灰岩雅丹陡坎、易碎凝灰岩阶地与蒙皂石-石膏-蛋白石阶地 `Amazonis Planitia, Medusae Fossae, Gordii Dorsum & Nicholson Crater Margin Amazonian-Hesperian Ignimbrite Yardang Scarps, Friable-Tuff Benches & Smectite-Gypsum-Opaline Terraces`、莫高窟盛唐第 159/217 窟佛龛券顶内侧拱肩拉杆下帽鎏金双凤宝相莲团花与飞天琵琶捍拨双喜鹊梅枝垂穗鎏金迦陵频伽嵌青金明珠花钿扣、以及发射台导流槽尾喷集气室底槽槛抗摆U形钩 `Pad_ExhaustPlenumFloorTroughSillSwayClevis`、整流罩 G 波段远红外传感器整流罩 `Rocket_FairingGBandFarInfraredSensorCowl` 与八激波胞二十一阶普朗特-迈耶剪切辉光 `cell8UnvigintPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.297` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧拱肩拉杆下帽两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerSpandrelTieLowerCapPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧拱肩拉杆下帽增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨双喜鹊梅枝垂穗增绘鎏金迦陵频伽嵌青金明珠花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入亚马逊平原、美杜莎槽沟、戈尔迪背岭与尼科尔森陨击坑缘亚马逊纪—赫斯珀里亚纪熔结凝灰岩雅丹陡坎、易碎凝灰岩阶地与蒙皂石-石膏-蛋白石阶地（`amazonis_planitia_medusae_fossae_gordii_dorsum_nicholson_crater_scarp_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`191,289 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,519 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对亚马逊平原—戈尔迪背岭蒙皂石-石膏-蛋白石层引入暖米灰褐色带（`amazonisPlanitiaMedusaeFossaeGordiiDorsumNicholsonCraterScarpSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流抗摆U形钩（`Pad_ExhaustPlenumFloorTroughSillSwayClevis_0..3`）与箭体整流罩 G 波段远红外传感器座四向传感器整流罩（`Rocket_FairingGBandFarInfraredSensorCowl_0..3`），导出 `rocket-kit.glb`（`3,206,160 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,612 B`）；在 `flameMaterial` 中引入八激波胞二十一阶普朗特-迈耶剪切辉光项（`cell8UnvigintPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第三百二十阶段验收：夜间持续进化 · 阿卡迪亚平原、弗莱格拉山脉、埃里伯斯山脉与米兰科维奇陨击坑缘亚马逊纪舌状碎屑裙冰川陡坎、扩口陨击坑热喀斯特阶地与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶外侧拱肩拉杆下帽鎏金双凤宝相莲团花与飞天琵琶捍拨双莺柳絮垂穗鎏金迦陵频伽嵌珊瑚明珠花钿扣、及发射台导流槽尾喷集气室底槽槛抗摆花兰螺栓与羽流尾端二十一阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在阿卡迪亚平原、弗莱格拉山脉、埃里伯斯山脉与米兰科维奇陨击坑缘探测到的亚马逊纪舌状碎屑裙冰川陡坎、扩口陨击坑热喀斯特阶地与蒙皂石-石膏-蛋白石阶地 `Arcadia Planitia, Phlegra Montes, Erebus Montes & Milankovic Crater Margin Amazonian Lobate-Debris-Apron Glacial Scarps, Expanded-Crater Thermokarst Benches & Smectite-Gypsum-Opaline Terraces`、莫高窟盛唐第 159/217 窟佛龛券顶外侧拱肩拉杆下帽鎏金双凤宝相莲团花与飞天琵琶捍拨双莺柳絮垂穗鎏金迦陵频伽嵌珊瑚明珠花钿扣、以及发射台导流槽尾喷集气室底槽槛抗摆花兰螺栓 `Pad_ExhaustPlenumFloorTroughSillSwayTurnbuckle`、整流罩 H 波段远红外传感器整流罩 `Rocket_FairingHBandFarInfraredSensorCowl` 与羽流尾端二十一阶普朗特-迈耶剪切辉光 `plumeTailUnvigintPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.298` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶外侧拱肩拉杆下帽两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownOuterSpandrelTieLowerCapPhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶外侧拱肩拉杆下帽增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨双莺柳絮垂穗增绘鎏金迦陵频伽嵌珊瑚明珠花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入阿卡迪亚平原、弗莱格拉山脉、埃里伯斯山脉与米兰科维奇陨击坑缘亚马逊纪舌状碎屑裙冰川陡坎、扩口陨击坑热喀斯特阶地与蒙皂石-石膏-蛋白石阶地（`arcadia_planitia_phlegra_montes_erebus_montes_milankovic_crater_scarp_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`191,355 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,485 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对阿卡迪亚平原—弗莱格拉山脉蒙皂石-石膏-蛋白石层引入暖霜灰褐色带（`arcadiaPlanitiaPhlegraMontesErebusMontesMilankovicCraterScarpSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流抗摆花兰螺栓（`Pad_ExhaustPlenumFloorTroughSillSwayTurnbuckle_0..3`）与箭体整流罩 H 波段远红外传感器座四向传感器整流罩（`Rocket_FairingHBandFarInfraredSensorCowl_0..3`），导出 `rocket-kit.glb`（`3,216,600 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,606 B`）；在 `flameMaterial` 中引入羽流尾端二十一阶普朗特-迈耶剪切辉光项（`plumeTailUnvigintPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+## 第三百二十一阶段验收：夜间持续进化 · 哈德里亚库斯山、道谷、尼日尔谷与海拉斯盆地东缘赫斯珀里亚纪火山-冰川溢流源头陡坎、混沌谷底阶地与蒙皂石-石膏-蛋白石阶地、莫高窟佛龛券顶内侧拱肩拉杆中座鎏金双凤宝相莲团花与飞天琵琶捍拨双燕杏花垂穗鎏金迦陵频伽嵌碧玉明珠花钿扣、及发射台导流槽尾喷集气室底槽槛抗摆吊环螺栓与首激波胞二十二阶普朗特-迈耶剪切辉光
+
+1. **前沿 WebGL / 着色器调研与分类目录同步**：
+   - 结合最新调研（火星 MRO CRISM/HiRISE/MOLA 在哈德里亚库斯山、道谷、尼日尔谷与海拉斯盆地东缘探测到的赫斯珀里亚纪火山-冰川溢流源头陡坎、混沌谷底阶地与蒙皂石-石膏-蛋白石阶地 `Hadriacus Mons, Dao Vallis, Niger Vallis & Eastern Hellas Rim Hesperian Volcano-Ice Outflow Headwall Scarps, Chaotic-Floor Benches & Smectite-Gypsum-Opaline Terraces`、莫高窟盛唐第 159/217 窟佛龛券顶内侧拱肩拉杆中座鎏金双凤宝相莲团花与飞天琵琶捍拨双燕杏花垂穗鎏金迦陵频伽嵌碧玉明珠花钿扣、以及发射台导流槽尾喷集气室底槽槛抗摆吊环螺栓 `Pad_ExhaustPlenumFloorTroughSillSwayEyebolt`、整流罩 I 波段远红外传感器整流罩 `Rocket_FairingIBandFarInfraredSensorCowl` 与首激波胞二十二阶普朗特-迈耶剪切辉光 `cell1DuovigintPrandtlShearGlow`），在 `docs/opus-animation-landscape.md` 新增第 `2.299` 节，并同步更新 `docs/asset-taxonomy.md` 及对应英文版文档。
+
+2. **Blender 4.5.10 LTS MCP 资产重烘焙与三项核心 Demo 深度打磨**：
+   - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：在 Blender 4.5 MCP 中沿四座佛龛券顶内侧拱肩拉杆中座两侧新增八枚鎏金双凤宝相莲团花高浮雕（`NicheArchCrownInnerSpandrelTieMidBasePhoenixBoss_0..3_L/R`），重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 渲染图 `docs/evidence/blender-feitian-cycles-render.png`（`1,601,845 B`）；在 `buildWall()` 中于佛龛券顶内侧拱肩拉杆中座增绘双凤宝相莲团花，在 `drawBody()` 离屏缓存中于飞天琵琶捍拨双燕杏花垂穗增绘鎏金迦陵频伽嵌碧玉明珠花钿扣；实测 1440×1000 群飞尾部 120 帧 `p95 <= 33.3ms`。
+   - **Astra 火星 (`scripts/blender/build-astra-assets.mjs` + `demos/astra-planet/src/render/PlanetScene.ts`)**：在 Blender 4.5 MCP 中加入哈德里亚库斯山、道谷、尼日尔谷与海拉斯盆地东缘赫斯珀里亚纪火山-冰川溢流源头陡坎、混沌谷底阶地与蒙皂石-石膏-蛋白石阶地（`hadriacus_mons_dao_vallis_niger_vallis_hellas_rim_scarp_smectite_gypsum_opaline_terraces`）周期核，重新烘焙无缝 `256×256` 切线法线与凹腔贴图 `mars-micro-normal.png`（`191,499 B`）及 Cycles 渲染图 `blender-astra-cycles-render.png`（`1,094,997 B`）；在 `PlanetScene.ts` 的 `realistic` 模式下针对哈德里亚库斯山—道谷蒙皂石-石膏-蛋白石层引入暖金褐石色带（`hadriacusMonsDaoVallisNigerVallisHellasRimScarpSmectiteGypsumOpalineTerrace`），科学检验模式（`gray` / `wireframe` / `height`）及 `< 6 MiB` 离线预算保持 100% 不变。
+   - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：在 Blender 4.5 MCP 中新增发射台导流槽尾喷集气室底槽槛四座声学洪流抗摆吊环螺栓（`Pad_ExhaustPlenumFloorTroughSillSwayEyebolt_0..3`）与箭体整流罩 I 波段远红外传感器座四向传感器整流罩（`Rocket_FairingIBandFarInfraredSensorCowl_0..3`），导出 `rocket-kit.glb`（`3,227,020 B`）与 Cycles 渲染图 `blender-rocket-cycles-render.png`（`893,625 B`）；在 `flameMaterial` 中引入首激波胞二十二阶普朗特-迈耶剪切辉光项（`cell1DuovigintPrandtlShearGlow`）；实测稳态升空（`T+9s`）尾部 120 帧 `p95 <= 50ms`。
+   - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（根 16 项单元 + 12 项 E2E，Astra 13 项单元 + 14 项 E2E，共 55 项测试）100% 通过。
+
+---
+
+## 第三百二十二阶段验收：大瑟提斯高原热液硅华陡坎与蒙皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中座双凤团花与琵琶捍拨双翠莲蓬花钿扣、及导流槽底槽槛抗摆耳轴与二激波胞二十二阶剪切辉光（Stage 322，`Section 2.300`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `syrtis_major_nili_patera_meroe_patera_antoniadi_crater_scarp_smectite_gypsum_opaline_terraces` 微地貌核与 `syrtisMajorNiliPateraMeroePateraAntoniadiCraterScarpSmectiteGypsumOpalineTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `191,420 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,744 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidBasePhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双翠莲蓬垂穗鎏金迦陵频伽嵌绿松明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayTrunnion_0..3`、`Rocket_FairingJBandFarInfraredSensorCowl_0..3` 与 `cell2DuovigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,237,444 B`，Cycles 发射台渲染图为 `893,668 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百二十三阶段验收：赫斯珀里亚平原火山侧翼河道陡坎与蒙皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中帽双凤团花与琵琶捍拨双鹧鸪菊瓣花钿扣、及导流槽底槽槛抗摆卸扣与三激波胞二十二阶剪切辉光（Stage 323，`Section 2.301`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `hesperia_planum_tyrrhenus_mons_licus_vallis_gale_crater_scarp_smectite_gypsum_opaline_terraces` 微地貌核与 `hesperiaPlanumTyrrhenusMonsLicusVallisGaleCraterScarpSmectiteGypsumOpalineTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `191,410 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,397 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidCapPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双鹧鸪菊瓣垂穗鎏金迦陵频伽嵌青金明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayShackle_0..3`、`Rocket_FairingKBandFarInfraredSensorCowl_0..3` 与 `cell3DuovigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,247,896 B`，Cycles 发射台渲染图为 `893,711 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百二十四阶段验收：马莱亚平原冰下火山平顶山陡坎与蒙皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中帽双凤团花与琵琶捍拨双鹌鹑粟穗花钿扣、及导流槽底槽槛抗摆销轴与四激波胞二十二阶剪切辉光（Stage 324，`Section 2.302`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `malea_planum_pityusa_patera_amphitrites_patera_sisyphi_montes_scarp_smectite_gypsum_opaline_terraces` 微地貌核与 `maleaPlanumPityusaPateraAmphitritesPateraSisyphiMontesScarpSmectiteGypsumOpalineTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `191,363 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,711 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidCapPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双鹌鹑粟穗垂穗鎏金迦陵频伽嵌珊瑚明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayPin_0..3`、`Rocket_FairingLBandFarInfraredSensorCowl_0..3` 与 `cell4DuovigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,258,344 B`，Cycles 发射台渲染图为 `893,737 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百二十五阶段验收：普罗米修斯高地与鲁尔谷冰川线理谷底填充物陡坎、佛龛券顶内侧拱肩拉杆中座双凤团花与琵琶捍拨双燕子樱花花钿扣、及导流槽底槽槛抗摆垫圈与五激波胞二十二阶剪切辉光（Stage 325，`Section 2.303`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `promethei_terra_reull_vallis_harmakhis_vallis_dao_vallis_scarp_smectite_gypsum_opaline_terraces` 微地貌核与 `prometheiTerraReullVallisHarmakhisVallisDaoVallisScarpSmectiteGypsumOpalineTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `191,471 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,512 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidFootPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双燕子樱花垂穗鎏金迦陵频伽嵌孔雀石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayWasher_0..3`、`Rocket_FairingMBandFarInfraredSensorCowl_0..3` 与 `cell5DuovigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,268,792 B`，Cycles 发射台渲染图为 `893,664 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百二十六阶段验收：阿吉尔平原与卡里图姆山脉冰湖蛇形丘-冰砾阜陡坎、佛龛券顶外侧拱肩拉杆中座双凤团花与琵琶捍拨双钩荷白鹭花钿扣、及导流槽底槽槛抗摆螺母与六激波胞二十二阶剪切辉光（Stage 326，`Section 2.304`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `argyre_planitia_charitum_montes_nereidum_montes_surius_vallis_scarp_smectite_gypsum_opaline_terraces` 微地貌核与 `argyrePlanitiaCharitumMontesNereidumMontesSuriusVallisScarpSmectiteGypsumOpalineTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `191,432 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,164 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidFootPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双钩荷白鹭垂穗鎏金迦陵频伽嵌青金明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayNut_0..3`、`Rocket_FairingNBandFarInfraredSensorCowl_0..3` 与 `cell6DuovigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,279,220 B`，Cycles 发射台渲染图为 `893,594 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百二十七阶段验收：塞壬槽沟与戈尔贡混沌地堑断层陡坎、佛龛券顶内侧拱肩拉杆中销双凤团花与琵琶捍拨双翠鸟芦花花钿扣、及导流槽底槽槛抗摆卡箍与七激波胞二十二阶剪切辉光（Stage 327，`Section 2.305`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `sirenum_fossae_memnonia_fossae_gorgonum_chaos_atlantis_chaos_scarp_smectite_chloride_opaline_terraces` 微地貌核与 `sirenumFossaeMemnoniaFossaeGorgonumChaosAtlantisChaosScarpSmectiteChlorideOpalineTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `191,573 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,543 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidPinPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双翠鸟芦花垂穗鎏金迦陵频伽嵌绿松明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayClip_0..3`、`Rocket_FairingOBandFarInfraredSensorCowl_0..3` 与 `cell7DuovigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,289,620 B`，Cycles 发射台渲染图为 `893,668 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百二十八阶段验收：尼利槽沟与杰泽罗撞击坑地堑槽陡坎及橄榄石-碳酸盐-皂石阶地、佛龛券顶外侧拱肩拉杆中销双凤团花与琵琶捍拨双苍鹭芦苇花钿扣、及导流槽底槽槛抗摆耳板与八激波胞二十二阶剪切辉光（Stage 328，`Section 2.306`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `nili_fossae_isidis_planitia_jezero_crater_hargraves_crater_scarp_olivine_carbonate_saponite_terraces` 微地貌核与 `niliFossaeIsidisPlanitiaJezeroCraterHargravesCraterScarpOlivineCarbonateSaponiteTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `191,506 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,770 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidPinPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双苍鹭芦苇垂穗鎏金迦陵频伽嵌翠玉明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayLug_0..3`、`Rocket_FairingPBandFarInfraredSensorCowl_0..3` 与 `cell8DuovigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,300,004 B`，Cycles 发射台渲染图为 `893,693 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百二十九阶段验收：莫斯谷与大山撞击坑黏土高原陡坎及绿脱石-高岭石-黄钾铁矾阶地、佛龛券顶内侧拱肩拉杆中耳双凤团花与琵琶捍拨双鹤松针花钿扣、及导流槽底槽槛抗摆托架与尾焰末端二十二阶剪切辉光（Stage 329，`Section 2.307`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `mawrth_vallis_oyama_crater_chryse_planitia_acidalia_planitia_scarp_nontronite_kaolinite_jarosite_terraces` 微地貌核与 `mawrthVallisOyamaCraterChrysePlanitiaAcidaliaPlanitiaScarpNontroniteKaoliniteJarositeTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `191,556 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,872 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidLugPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双鹤松针垂穗鎏金迦陵频伽嵌珊瑚明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayBracket_0..3`、`Rocket_FairingQBandFarInfraredSensorCowl_0..3` 与 `plumeTailDuovigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,310,456 B`，Cycles 发射台渲染图为 `893,678 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百三十阶段验收：水手峡谷与坎多尔/梅拉斯/奥菲尔峡谷硫酸盐-赤铁矿高原陡坎及一水镁矾-赤铁矿-黄钾铁矾阶地、佛龛券顶外侧拱肩拉杆中耳双凤团花与琵琶捍拨双雁芦花花钿扣、及导流槽底槽槛抗摆角撑板与第一马赫单元二十三阶剪切辉光（Stage 330，`Section 2.308`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `valles_marineris_candor_chasma_melas_chasma_ophir_chasma_scarp_kieserite_hematite_jarosite_terraces` 微地貌核与 `vallesMarinerisCandorChasmaMelasChasmaOphirChasmaScarpKieseriteHematiteJarositeTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `191,567 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,493 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidLugPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双雁芦花垂穗鎏金迦陵频伽嵌琥珀明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayGusset_0..3`、`Rocket_FairingRBandFarInfraredSensorCowl_0..3` 与 `cell1TrevigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,320,872 B`，Cycles 发射台渲染图为 `893,624 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百三十一阶段验收：盖尔撞击坑与夏普山/维拉·鲁宾岭/格伦托里登泥岩陡坎及绿脱石-赤铁矿-菱铁矿阶地、佛龛券顶内侧拱肩拉杆中托架双凤团花与琵琶捍拨双白鹭荷叶花钿扣、及导流槽底槽槛抗摆法兰与第二马赫单元二十三阶剪切辉光（Stage 331，`Section 2.309`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `gale_crater_aeolis_mons_vera_rubin_ridge_glen_torridon_scarp_nontronite_hematite_siderite_terraces` 微地貌核与 `galeCraterAeolisMonsVeraRubinRidgeGlenTorridonScarpNontroniteHematiteSideriteTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `191,613 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,293 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidBracketPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双白鹭荷叶垂穗鎏金迦陵频伽嵌绿松石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayFlange_0..3`、`Rocket_FairingSBandFarInfraredSensorCowl_0..3` 与 `cell2TrevigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,331,284 B`，Cycles 发射台渲染图为 `893,558 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百三十二阶段验收：霍尔登与埃伯斯瓦尔德撞击坑/乌兹博伊谷/拉冬盆地三角洲陡坎及皂石-绿脱石-鲕绿泥石阶地、佛龛券顶外侧拱肩拉杆中托架双凤团花与琵琶捍拨双鸳鸯菱花花钿扣、及导流槽底槽槛抗摆轴环与第三马赫单元二十三阶剪切辉光（Stage 332，`Section 2.310`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `holden_crater_eberswalde_crater_uzboi_vallis_ladon_basin_scarp_saponite_nontronite_chamosite_terraces` 微地貌核与 `holdenCraterEberswaldeCraterUzboiVallisLadonBasinScarpSaponiteNontroniteChamositeTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `191,717 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,396 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidBracketPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双鸳鸯菱花垂穗鎏金迦陵频伽嵌青金石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayCollar_0..3`、`Rocket_FairingTBandFarInfraredSensorCowl_0..3` 与 `cell3TrevigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,341,700 B`，Cycles 发射台渲染图为 `893,646 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百三十三阶段验收：哥伦布撞击坑/克罗斯撞击坑/西壬高地/戈尔贡混沌酸性盐湖环阶陡坎及明矾石-高岭石-石膏阶地、佛龛券顶内侧拱肩拉杆中角撑双凤团花与琵琶捍拨双凤牡丹花钿扣、及导流槽底槽槛抗摆卡爪与第四马赫单元二十三阶剪切辉光（Stage 333，`Section 2.311`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `columbus_crater_cross_crater_terra_sirenum_gorgonum_chaos_scarp_alunite_kaolinite_gypsum_terraces` 微地貌核与 `columbusCraterCrossCraterTerraSirenumGorgonumChaosScarpAluniteKaoliniteGypsumTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `191,670 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,249 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidGussetPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双凤牡丹垂穗鎏金迦陵频伽嵌红宝明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayClamp_0..3`、`Rocket_FairingUBandFarInfraredSensorCowl_0..3` 与 `cell4TrevigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,352,140 B`，Cycles 发射台渲染图为 `893,666 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百三十四阶段验收：大塞提斯高原/尼利与麦罗埃破火山口/安东尼亚第撞击坑火山口硅华陡坎及蛋白石-沸石-伊利石阶地、佛龛券顶外侧拱肩拉杆中角撑双凤团花与琵琶捍拨双鹤灵芝花钿扣、及导流槽底槽槛抗摆轭架与第五马赫单元二十三阶剪切辉光（Stage 334，`Section 2.312`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `syrtis_major_nili_patera_meroe_patera_antoniadi_crater_scarp_opaline_silica_zeolite_illite_terraces` 微地貌核与 `syrtisMajorNiliPateraMeroePateraAntoniadiCraterScarpOpalineSilicaZeoliteIlliteTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `191,745 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,772 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidGussetPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双鹤灵芝垂穗鎏金迦陵频伽嵌翡翠明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayYoke_0..3`、`Rocket_FairingVBandFarInfraredSensorCowl_0..3` 与 `cell5TrevigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,362,576 B`，Cycles 发射台渲染图为 `893,694 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百三十五阶段验收：希腊平原/特尔比撞击坑/道谷/鲁尔谷前三角洲斜层理陡坎及绿脱石-鲕绿泥石-蒙皂石阶地、佛龛券顶内侧拱肩拉杆中法兰双凤团花与琵琶捍拨双麒麟如意云花钿扣、及导流槽底槽槛抗摆箍带与第六马赫单元二十三阶剪切辉光（Stage 335，`Section 2.313` — 里程碑 Stage 335）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `hellas_planitia_terby_crater_dao_vallis_reull_vallis_scarp_nontronite_chamosite_smectite_terraces` 微地貌核与 `hellasPlanitiaTerbyCraterDaoVallisReullVallisScarpNontroniteChamositeSmectiteTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `191,900 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,712 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidFlangePhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双麒麟如意云垂穗鎏金迦陵频伽嵌紫水晶明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayStrap_0..3`、`Rocket_FairingWBandFarInfraredSensorCowl_0..3` 与 `cell6TrevigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,373,012 B`，Cycles 发射台渲染图为 `893,633 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百三十六阶段验收：诺亚高地/达尔文撞击坑/惠更斯撞击坑/巴克伊森撞击坑撞击水热变质陡坎及葡萄石-绿泥石-绿纤石阶地、佛龛券顶外侧拱肩拉杆中法兰双凤团花与琵琶捍拨双鸾牡丹云花钿扣、及导流槽底槽槛抗摆卸扣与第七马赫单元二十三阶剪切辉光（Stage 336，`Section 2.314`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `noachis_terra_darwin_crater_huygens_crater_bakhuysen_crater_scarp_prehnite_chlorite_pumpellyite_terraces` 微地貌核与 `noachisTerraDarwinCraterHuygensCraterBakhuysenCraterScarpPrehniteChloritePumpellyiteTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `191,765 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,324 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidFlangePhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双鸾牡丹云垂穗鎏金迦陵频伽嵌金珀明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayShackle_0..3`、`Rocket_FairingXBandFarInfraredSensorCowl_0..3` 与 `cell7TrevigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,383,464 B`，Cycles 发射台渲染图为 `893,555 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百三十七阶段验收：阿拉伯高地/麦克劳克林撞击坑/奥克西亚平原/库贡谷地下水上涌陡坎及蛇纹石-皂石-菱镁矿-蛭石阶地、佛龛券顶内侧拱肩拉杆中轴环双凤团花与琵琶捍拨双孔雀宝相莲云花钿扣、及导流槽底槽槛抗摆U形钩与第八马赫单元二十三阶剪切辉光（Stage 337，`Section 2.315`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `arabia_terra_mclaughlin_crater_oxia_planum_coogoon_valles_scarp_serpentine_saponite_magnesite_vermiculite_terraces` 微地貌核与 `arabiaTerraMcLaughlinCraterOxiaPlanumCoogoonVallesScarpSerpentineSaponiteMagnesiteVermiculiteTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `191,738 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,494 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidCollarPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双孔雀宝相莲云垂穗鎏金迦陵频伽嵌祖母绿明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayClevis_0..3`、`Rocket_FairingYBandFarInfraredSensorCowl_0..3` 与 `cell8TrevigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,393,908 B`，Cycles 发射台渲染图为 `893,450 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百三十八阶段验收：辛梅里亚高地/阿里阿德涅丘群/亚特兰蒂斯混沌/埃里达尼亚盆地深海热液矿丘陡坎及海绿石-绿脱石-皂石-滑石阶地、佛龛券顶外侧拱肩拉杆中轴环双凤团花与琵琶捍拨双凤如意莲花钿扣、及导流槽底槽槛抗摆开口销与尾焰末端二十三阶剪切辉光（Stage 338，`Section 2.316`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `terra_cimmeria_ariadnes_colles_atlantis_chaos_eridania_basin_scarp_glauconite_nontronite_saponite_talc_terraces` 微地貌核与 `terraCimmeriaAriadnesCollesAtlantisChaosEridaniaBasinScarpGlauconiteNontroniteSaponiteTalcTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `191,780 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,095,053 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidCollarPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双凤如意莲垂穗鎏金迦陵频伽嵌红珊瑚明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayCotter_0..3`、`Rocket_FairingZBandFarInfraredSensorCowl_0..3` 与 `plumeTailTrevigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,404,356 B`，Cycles 发射台渲染图为 `893,556 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百三十九阶段验收：诺亚高地/赫勒斯滂山脉/凯泽撞击坑/拉贝撞击坑盆缘风成滑落面陡坎及蒙脱石-高岭石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中箍带双凤团花与琵琶捍拨双鹤宝相莲花钿扣、及导流槽底槽槛抗摆花兰螺栓与尾焰第一激波胞二十四阶剪切辉光（Stage 339，`Section 2.317`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `noachis_terra_hellespontus_montes_kaiser_crater_rabe_crater_scarp_montmorillonite_kaolinite_gypsum_opal_terraces` 微地貌核与 `noachisTerraHellespontusMontesKaiserCraterRabeCraterScarpMontmorilloniteKaoliniteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `191,901 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,939 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidBandPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双鹤宝相莲垂穗鎏金迦陵频伽嵌青金石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayTurnbuckle_0..3`、`Rocket_FairingSubMmFarInfraredSensorCowl_0..3` 与 `cell1QuattuorvigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,414,836 B`，Cycles 发射台渲染图为 `893,666 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百四十阶段验收：普罗米修斯高地/鲁尔谷/哈马基斯谷/摩耳甫斯断崖冰舌碎屑裙陡坎及绿脱石-绿泥石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中箍带双凤团花与琵琶捍拨双摩竭宝相莲花钿扣、及导流槽底槽槛抗摆连杆与尾焰第二激波胞二十四阶剪切辉光（Stage 340，`Section 2.318`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `promethei_terra_reull_vallis_harmakhis_vallis_morpheos_rupes_scarp_nontronite_chlorite_gypsum_opal_terraces` 微地貌核与 `prometheiTerraReullVallisHarmakhisVallisMorpheosRupesScarpNontroniteChloriteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `191,912 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,485 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidBandPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双摩竭宝相莲垂穗鎏金迦陵频伽嵌绿松石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayLink_0..3`、`Rocket_FairingTerahertzFarInfraredSensorCowl_0..3` 与 `cell2QuattuorvigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,425,296 B`，Cycles 发射台渲染图为 `893,658 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百四十一阶段验收：阿吉尔平原/卡里图姆山脉/涅瑞伊得斯山脉/苏里乌斯谷冰湖蛇形丘陡坎及鲕绿泥石-绿泥石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中轴套环双凤团花与琵琶捍拨双狮宝相莲花钿扣、及导流槽底槽槛抗摆转环与尾焰第三激波胞二十四阶剪切辉光（Stage 341，`Section 2.319`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `argyre_planitia_charitum_montes_nereidum_montes_surius_vallis_scarp_chamosite_chlorite_gypsum_opal_terraces` 微地貌核与 `argyrePlanitiaCharitumMontesNereidumMontesSuriusVallisScarpChamositeChloriteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `191,995 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,296 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidRingPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双狮宝相莲垂穗鎏金迦陵频伽嵌孔雀石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwaySwivel_0..3`、`Rocket_FairingMidInfraredBolometerSensorCowl_0..3` 与 `cell3QuattuorvigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,435,748 B`，Cycles 发射台渲染图为 `893,765 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百四十二阶段验收：西壬高地/亚特兰蒂斯混沌/戈尔贡混沌/西摩伊斯丘群裂谷盆缘陡坎及伊利石-蒙皂石-氯盐-蛋白石阶地、佛龛券顶外侧拱肩拉杆中轴套环双凤团花与琵琶捍拨双麒麟宝相莲花钿扣、及导流槽底槽槛抗摆耳轴与尾焰第四激波胞二十四阶剪切辉光（Stage 342，`Section 2.320`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `terra_sirenum_atlantis_chaos_gorgonum_chaos_simois_colles_scarp_illite_smectite_chloride_opal_terraces` 微地貌核与 `terraSirenumAtlantisChaosGorgonumChaosSimoisCollesScarpIlliteSmectiteChlorideOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,016 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,323 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidRingPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双麒麟宝相莲垂穗鎏金迦陵频伽嵌珊瑚明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayTrunnion_0..3`、`Rocket_FairingLwInfraredBolometerSensorCowl_0..3` 与 `cell4QuattuorvigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,446,236 B`，Cycles 发射台渲染图为 `893,611 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百四十三阶段验收：珍珠高地/乌兹博伊谷/拉冬盆地/莫拉瓦谷链状溢流湖盆陡坎及鲕绿泥石-蒙皂石-菱铁矿-石膏阶地、佛龛券顶内侧拱肩拉杆中衬套双凤团花与琵琶捍拨双凤宝相莲花钿扣、及导流槽底槽槛抗摆衬套与尾焰第五激波胞二十四阶剪切辉光（Stage 343，`Section 2.321`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `margaritifer_terra_uzboi_vallis_ladon_basin_morava_valles_scarp_chamosite_smectite_siderite_gypsum_terraces` 微地貌核与 `margaritiferTerraUzboiVallisLadonBasinMoravaVallesScarpChamositeSmectiteSideriteGypsumTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,065 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,322 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidSleevePhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双凤宝相莲垂穗鎏金迦陵频伽嵌青金石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayBushing_0..3`、`Rocket_FairingFarInfraredBolometerSensorCowl_0..3` 与 `cell5QuattuorvigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,456,632 B`，Cycles 发射台渲染图为 `893,742 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百四十四阶段验收：克珊忒高地/沙尔巴塔纳谷/西穆德谷/提乌谷外流瀑布陡坎及绿脱石-绿泥石-菱铁矿-石膏阶地、佛龛券顶外侧拱肩拉杆中衬套双凤团花与琵琶捍拨双鹤宝相莲花钿扣、及导流槽底槽槛抗摆压盖与尾焰第六激波胞二十四阶剪切辉光（Stage 344，`Section 2.322`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `xanthe_terra_shalbatana_vallis_simud_valles_tiu_valles_scarp_nontronite_chlorite_siderite_gypsum_terraces` 微地貌核与 `xantheTerraShalbatanaVallisSimudVallesTiuVallesScarpNontroniteChloriteSideriteGypsumTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,098 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,030 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidSleevePhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双鹤宝相莲垂穗鎏金迦陵频伽嵌琥珀明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayGland_0..3`、`Rocket_FairingLymanAlphaUvSensorCowl_0..3` 与 `cell6QuattuorvigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,467,000 B`，Cycles 发射台渲染图为 `893,623 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百四十五阶段验收：坦佩高地/卡塞谷/萨克拉槽沟/沙罗诺夫撞击坑巨型洪水跌水陡坎及皂石-橄榄石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中衬圈双凤团花与琵琶捍拨双孔雀宝相莲花钿扣、及导流槽底槽槛抗摆保持架与尾焰第七激波胞二十四阶剪切辉光（Stage 345，`Section 2.323`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `tempe_terra_kasei_valles_sacra_fossae_sharonov_crater_scarp_saponite_olivine_gypsum_opal_terraces` 微地貌核与 `tempeTerraKaseiVallesSacraFossaeSharonovCraterScarpSaponiteOlivineGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,112 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,179 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidBushingPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双孔雀宝相莲垂穗鎏金迦陵频伽嵌翡翠明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayRetainer_0..3`、`Rocket_FairingEuvSpectrometerSensorCowl_0..3` 与 `cell7QuattuorvigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,477,424 B`，Cycles 发射台渲染图为 `893,717 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百四十六阶段验收：阿西达利亚平原/罗蒙诺索夫撞击坑/库诺夫斯基撞击坑/坦佩槽沟泥火山锥陡坎及水铁矿-蒙皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中衬圈双凤团花与琵琶捍拨双鹦鹉宝相莲花钿扣、及导流槽底槽槛抗摆隔圈与尾焰第八激波胞二十四阶剪切辉光（Stage 346，`Section 2.324`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `acidalia_planitia_lomonosov_crater_kunowsky_crater_tempe_fossae_scarp_ferrihydrite_smectite_gypsum_opal_terraces` 微地貌核与 `acidaliaPlanitiaLomonosovCraterKunowskyCraterTempeFossaeScarpFerrihydriteSmectiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,187 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,464 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidBushingPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双鹦鹉宝相莲垂穗鎏金迦陵频伽嵌碧玺明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwaySpacer_0..3`、`Rocket_FairingSoftXrayFluxSensorCowl_0..3` 与 `cell8QuattuorvigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,487,812 B`，Cycles 发射台渲染图为 `893,643 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百四十七阶段验收：乌托邦平原/米撞击坑/米槽沟/赫淮斯托斯槽沟多边形冰楔陡坎及蒙脱石-蒙皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中垫圈双凤团花与琵琶捍拨双鸳鸯宝相莲花钿扣、及导流槽底槽槛抗摆垫片与尾焰尾迹末端二十四阶剪切辉光（Stage 347，`Section 2.325`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `utopia_planitia_mie_crater_mie_fossae_hephaestus_fossae_scarp_montmorillonite_smectite_gypsum_opal_terraces` 微地貌核与 `utopiaPlanitiaMieCraterMieFossaeHephaestusFossaeScarpMontmorilloniteSmectiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,139 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,613 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidWasherPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双鸳鸯宝相莲垂穗鎏金迦陵频伽嵌珊瑚明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayShim_0..3`、`Rocket_FairingHardXrayFlareSensorCowl_0..3` 与 `plumeTailQuattuorvigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,498,192 B`，Cycles 发射台渲染图为 `893,642 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百四十八阶段验收：埃律西昂平原/祖尼尔撞击坑/刻耳柏洛斯槽沟/阿萨巴斯卡谷洪流玄武岩熔岩筏陡坎及黄钾铁矾-蒙皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中垫圈双凤团花与琵琶捍拨双喜鹊宝相莲花钿扣、及导流槽底槽槛抗摆垫圈与尾焰第一激波胞二十五阶剪切辉光（Stage 348，`Section 2.326`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `elysium_planitia_zunil_crater_cerberus_fossae_athabasca_valles_scarp_jarosite_smectite_gypsum_opal_terraces` 微地貌核与 `elysiumPlanitiaZunilCraterCerberusFossaeAthabascaVallesScarpJarositeSmectiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,165 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,131 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidWasherPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双喜鹊宝相莲垂穗鎏金迦陵频伽嵌青金石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayWasher_0..3`、`Rocket_FairingSolarProtonDetectorSensorCowl_0..3` 与 `cell1QuinvigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,508,656 B`，Cycles 发射台渲染图为 `893,558 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百四十九阶段验收：阿卡迪亚平原/厄瑞玻斯山脉/弗雷格拉山脉/米兰科维奇撞击坑升华扇贝陡坎及绿脱石-蒙皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中垫片双凤团花与琵琶捍拨双燕宝相莲花钿扣、及导流槽底槽槛抗摆楔块与尾焰第二激波胞二十五阶剪切辉光（Stage 349，`Section 2.327`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `arcadia_planitia_erebus_montes_phlegra_montes_milankovic_crater_scarp_nontronite_smectite_gypsum_opal_terraces` 微地貌核与 `arcadiaPlanitiaErebusMontesPhlegraMontesMilankovicCraterScarpNontroniteSmectiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,193 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,081 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidShimPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双燕宝相莲垂穗鎏金迦陵频伽嵌绿松石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayWedge_0..3`、`Rocket_FairingGammaRayBurstSensorCowl_0..3` 与 `cell2QuinvigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,519,036 B`，Cycles 发射台渲染图为 `893,674 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百五十阶段验收：亚马逊平原/美杜莎槽沟/尼科尔森撞击坑/佩蒂特撞击坑熔结凝灰岩雅丹陡坎及伊利石-蒙皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中垫片双凤团花与琵琶捍拨双黄鹂宝相莲花钿扣、及导流槽底槽槛抗摆楔键与尾焰第三激波胞二十五阶剪切辉光（Stage 350，`Section 2.328`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `amazonis_planitia_medusae_fossae_nicholson_crater_pettit_crater_scarp_illite_smectite_gypsum_opal_terraces` 微地貌核与 `amazonisPlanitiaMedusaeFossaeNicholsonCraterPettitCraterScarpIlliteSmectiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,241 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,093,961 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidShimPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双黄鹂宝相莲垂穗鎏金迦陵频伽嵌琥珀明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayKey_0..3`、`Rocket_FairingCosmicRayNeutronSensorCowl_0..3` 与 `cell3QuinvigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,529,428 B`，Cycles 发射台渲染图为 `893,696 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百五十一阶段验收：塔尔西斯山群/奥林帕斯山/帕沃尼斯山/阿斯克拉厄斯山破火山口环状断层陡坎及皂石-蒙皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中隔圈双凤团花与琵琶捍拨双白鹭宝相莲花钿扣、及导流槽底槽槛抗摆钩头楔键与尾焰第四激波胞二十五阶剪切辉光（Stage 351，`Section 2.329`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `tharsis_montes_olympus_mons_pavonis_mons_ascraeus_mons_scarp_saponite_smectite_gypsum_opal_terraces` 微地貌核与 `tharsisMontesOlympusMonsPavonisMonsAscraeusMonsScarpSaponiteSmectiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,379 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,171 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidSpacerPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双白鹭宝相莲垂穗鎏金迦陵频伽嵌翡翠明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayGibKey_0..3`、`Rocket_FairingRelativisticElectronTelescopeSensorCowl_0..3` 与 `cell4QuinvigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,539,952 B`，Cycles 发射台渲染图为 `893,683 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百五十二阶段验收：阿尔巴山/坦塔罗斯槽沟/刻劳尼乌斯槽沟/乌拉尼乌斯山火山构造地堑陡坎及绿脱石-皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中隔圈双凤团花与琵琶捍拨双鹧鸪宝相莲花钿扣、及导流槽底槽槛抗摆扁销与尾焰第五激波胞二十五阶剪切辉光（Stage 352，`Section 2.330`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `alba_mons_tantalus_fossae_ceraunius_fossae_uranius_mons_scarp_nontronite_saponite_gypsum_opal_terraces` 微地貌核与 `albaMonsTantalusFossaeCerauniusFossaeUraniusMonsScarpNontroniteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,306 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,301 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidSpacerPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双鹧鸪宝相莲垂穗鎏金迦陵频伽嵌碧玺明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayCotter_0..3`、`Rocket_FairingHeavyIonAnalyzerSensorCowl_0..3` 与 `cell5QuinvigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,550,400 B`，Cycles 发射台渲染图为 `893,643 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百五十三阶段验收：索利斯高原/叙利亚高原/西奈高原/陶玛西亚高原皱脊逆冲陡坎及蒙脱石-皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中楔键双凤团花与琵琶捍拨双隼宝相莲花钿扣、及导流槽底槽槛抗摆对开销与尾焰第六激波胞二十五阶剪切辉光（Stage 353，`Section 2.331`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `solis_planum_syria_planum_sinai_planum_thaumasia_planum_scarp_montmorillonite_saponite_gypsum_opal_terraces` 微地貌核与 `solisPlanumSyriaPlanumSinaiPlanumThaumasiaPlanumScarpMontmorilloniteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,334 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,258 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidKeyPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双隼宝相莲垂穗鎏金迦陵频伽嵌珊瑚明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwaySplitPin_0..3`、`Rocket_FairingEnergeticNeutralAtomSensorCowl_0..3` 与 `cell6QuinvigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,560,868 B`，Cycles 发射台渲染图为 `893,694 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百五十四阶段验收：卢娜高原/奥菲尔高原/埃库斯峡谷/卡塞谷潜蚀源头壁跌水陡坎及伊利石-皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中楔键双凤团花与琵琶捍拨双鹰宝相莲花钿扣、及导流槽底槽槛抗摆圆柱定位销与尾焰第七激波胞二十五阶剪切辉光（Stage 354，`Section 2.332`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `lunae_planum_ophir_planum_echus_chasma_kasei_valles_scarp_illite_saponite_gypsum_opal_terraces` 微地貌核与 `lunaePlanumOphirPlanumEchusChasmaKaseiVallesScarpIlliteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,328 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,552 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidKeyPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双鹰宝相莲垂穗鎏金迦陵频伽嵌青金石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayDowelPin_0..3`、`Rocket_FairingPlasmaWaveInterferometerSensorCowl_0..3` 与 `cell7QuinvigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,571,364 B`，Cycles 发射台渲染图为 `893,815 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百五十五阶段验收：克珊忒高地/沙尔巴塔纳谷/西穆德谷/提乌谷混沌外流跌水陡坎及高岭石-皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中定位销双凤团花与琵琶捍拨双喜鹊宝相莲花钿扣、及导流槽底槽槛抗摆圆锥销与尾焰第八激波胞二十五阶剪切辉光（Stage 355，`Section 2.333`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `xanthe_terra_shalbatana_vallis_simud_valles_tiu_valles_scarp_kaolinite_saponite_gypsum_opal_terraces` 微地貌核与 `xantheTerraShalbatanaVallisSimudVallesTiuVallesScarpKaoliniteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,370 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,572 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidPinPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双喜鹊宝相莲垂穗鎏金迦陵频伽嵌翡翠明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayTaperPin_0..3`、`Rocket_FairingSolarWindProtonSpectrometerSensorCowl_0..3` 与 `cell8QuinvigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,581,884 B`，Cycles 发射台渲染图为 `893,861 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百五十六阶段验收：珍珠高地/阿瑞斯谷/伊阿尼混沌/希达斯皮斯混沌混沌塌陷方山陡坎及鲕绿泥石-皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中定位销双凤团花与琵琶捍拨双黄鹂宝相莲花钿扣、及导流槽底槽槛抗摆U形销与羽流尾端二十五阶剪切辉光（Stage 356，`Section 2.334`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `margaritifer_terra_ares_vallis_iani_chaos_hydaspis_chaos_scarp_chamosite_saponite_gypsum_opal_terraces` 微地貌核与 `margaritiferTerraAresVallisIaniChaosHydaspisChaosScarpChamositeSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,401 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,477 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidPinPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双黄鹂宝相莲垂穗鎏金迦陵频伽嵌碧玺明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayClevisPin_0..3`、`Rocket_FairingMagnetosphericElectronAnalyzerSensorCowl_0..3` 与 `plumeTailQuinvigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,592,432 B`，Cycles 发射台渲染图为 `893,663 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百五十七阶段验收：阿拉伯高地/莫斯谷/大山撞击坑/奥克西亚平原双层层状硅酸盐高原陡坎及贝得石-皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中柱头螺柱双凤团花与琵琶捍拨双翠鸟宝相莲花钿扣、及导流槽底槽槛抗摆林奇销与尾焰第一激波胞二十六阶剪切辉光（Stage 357，`Section 2.335`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `arabia_terra_mawrth_vallis_oyama_crater_oxia_planum_scarp_beidellite_saponite_gypsum_opal_terraces` 微地貌核与 `arabiaTerraMawrthVallisOyamaCraterOxiaPlanumScarpBeidelliteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,493 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,360 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidStudPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双翠鸟宝相莲垂穗鎏金迦陵频伽嵌绿松石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayLynchPin_0..3`、`Rocket_FairingIonosphericLangmuirProbeSensorCowl_0..3` 与 `cell1SexvigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,602,928 B`，Cycles 发射台渲染图为 `893,726 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百五十八阶段验收：大塞提斯高原/尼利槽沟/杰泽罗撞击坑/安东尼亚第撞击坑同心地堑槽陡坎及滑石-皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中柱头螺柱双凤团花与琵琶捍拨双鹤宝相莲花钿扣、及导流槽底槽槛抗摆弹性圆柱销与尾焰第二激波胞二十六阶剪切辉光（Stage 358，`Section 2.336`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `syrtis_major_planum_nili_fossae_jezero_crater_antoniadi_crater_scarp_talc_saponite_gypsum_opal_terraces` 微地貌核与 `syrtisMajorPlanumNiliFossaeJezeroCraterAntoniadiCraterScarpTalcSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,409 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,066 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidStudPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双鹤宝相莲垂穗鎏金迦陵频伽嵌珊瑚明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayRollPin_0..3`、`Rocket_FairingAuroralUltravioletPhotometerSensorCowl_0..3` 与 `cell2SexvigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,613,448 B`，Cycles 发射台渲染图为 `893,586 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百五十九阶段验收：诺亚高地/希腊平原/道谷/哈马基斯谷冰火山泥流河道陡坎及蛇纹石-皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中螺栓双凤团花与琵琶捍拨双苍鹭宝相莲花钿扣、及导流槽底槽槛抗摆槽销与尾焰第三激波胞二十六阶剪切辉光（Stage 359，`Section 2.337`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `noachis_terra_hellas_planitia_dao_vallis_harmakhis_vallis_scarp_serpentine_saponite_gypsum_opal_terraces` 微地貌核与 `noachisTerraHellasPlanitiaDaoVallisHarmakhisVallisScarpSerpentineSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,308 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,605 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidBoltPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双苍鹭宝相莲垂穗鎏金迦陵频伽嵌青金石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayGroovePin_0..3`、`Rocket_FairingThermosphericMassSpectrometerSensorCowl_0..3` 与 `cell3SexvigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,623,992 B`，Cycles 发射台渲染图为 `893,712 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百六十阶段验收：西壬高地/辛梅里亚高地/哥伦布撞击坑/埃里达尼亚盆地深部古湖岸线陡坎及明矾石-皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中螺栓双凤团花与琵琶捍拨双天鹅宝相莲花钿扣、及导流槽底槽槛抗摆锥销与尾焰第四激波胞二十六阶剪切辉光（Stage 360，`Section 2.338`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `terra_sirenum_terra_cimmeria_columbus_crater_eridania_basin_scarp_alunite_saponite_gypsum_opal_terraces` 微地貌核与 `terraSirenumTerraCimmeriaColumbusCraterEridaniaBasinScarpAluniteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,485 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,544 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidBoltPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双天鹅宝相莲垂穗鎏金迦陵频伽嵌翡翠明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayTaperPin_0..3`、`Rocket_FairingMagnetosphericElectronEnergyAnalyzerSensorCowl_0..3` 与 `cell4SexvigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,634,612 B`，Cycles 发射台渲染图为 `893,844 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百六十一阶段验收：阿吉尔平原/卡里图姆山脉/涅瑞伊得斯山脉/苏里乌斯谷冰湖蛇形丘陡坎及葡萄石-皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中螺母双凤团花与琵琶捍拨双孔雀宝相莲花钿扣、及导流槽底槽槛抗摆定位销与尾焰第五激波胞二十六阶剪切辉光（Stage 361，`Section 2.339`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `argyre_planitia_charitum_montes_nereidum_montes_surius_vallis_scarp_prehnite_saponite_gypsum_opal_terraces` 微地貌核与 `argyrePlanitiaCharitumMontesNereidumMontesSuriusVallisScarpPrehniteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,562 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,443 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidNutPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双孔雀宝相莲垂穗鎏金迦陵频伽嵌蓝宝石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayDowelPin_0..3`、`Rocket_FairingMagnetosphericIonEnergyAnalyzerSensorCowl_0..3` 与 `cell5SexvigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,645,192 B`，Cycles 发射台渲染图为 `893,886 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百六十二阶段验收：普罗米修斯高地/鲁尔谷/哈马基斯谷/摩耳甫斯断崖冰舌碎屑裙陡坎及绿泥石-皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中螺母双凤团花与琵琶捍拨双锦鸡宝相莲花钿扣、及导流槽底槽槛抗摆开口销与尾焰第六激波胞二十六阶剪切辉光（Stage 362，`Section 2.340`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `promethei_terra_reull_vallis_harmakhis_vallis_morpheos_rupes_scarp_chlorite_saponite_gypsum_opal_terraces` 微地貌核与 `prometheiTerraReullVallisHarmakhisVallisMorpheosRupesScarpChloriteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,518 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,444 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidNutPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双锦鸡宝相莲垂穗鎏金迦陵频伽嵌红宝石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwaySplitPin_0..3`、`Rocket_FairingAuroralElectronSpectrometerSensorCowl_0..3` 与 `cell6SexvigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,655,744 B`，Cycles 发射台渲染图为 `893,748 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百六十三阶段验收：第勒纳高地/利比亚山脉/伊希斯平原/哈德里亚卡斯山火山碎屑冲沟陡坎及蛭石-皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中U形销双凤团花与琵琶捍拨双白鹭宝相莲花钿扣、及导流槽底槽槛抗摆楔形销与尾焰第七激波胞二十六阶剪切辉光（Stage 363，`Section 2.341`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `tyrrhena_terra_libya_montes_isidis_planitia_hadriacus_mons_scarp_vermiculite_saponite_gypsum_opal_terraces` 微地貌核与 `tyrrhenaTerraLibyaMontesIsidisPlanitiaHadriacusMonsScarpVermiculiteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,640 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,514 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidClevisPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双白鹭宝相莲垂穗鎏金迦陵频伽嵌螺钿明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayWedgePin_0..3`、`Rocket_FairingAuroralIonSpectrometerSensorCowl_0..3` 与 `cell7SexvigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,666,224 B`，Cycles 发射台渲染图为 `893,597 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百六十四阶段验收：萨巴亚高地/惠更斯撞击坑/道斯撞击坑/斯基亚帕雷利盆地盆缘同心断层陡坎及绿鳞石-皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中U形销双凤团花与琵琶捍拨双朱鹮宝相莲花钿扣、及导流槽底槽槛抗摆锁销与尾焰第八激波胞二十六阶剪切辉光（Stage 364，`Section 2.342`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `sabaea_terra_huygens_crater_dawes_crater_schiaparelli_basin_scarp_celadonite_saponite_gypsum_opal_terraces` 微地貌核与 `sabaeaTerraHuygensCraterDawesCraterSchiaparelliBasinScarpCeladoniteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,532 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,177 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidClevisPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双朱鹮宝相莲垂穗鎏金迦陵频伽嵌琥珀明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayLockPin_0..3`、`Rocket_FairingMagnetosphericProtonSpectrometerSensorCowl_0..3` 与 `cell8SexvigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,676,776 B`，Cycles 发射台渲染图为 `893,769 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百六十五阶段验收：子午线高原/宫本撞击坑/奋进号撞击坑/博波卢撞击坑赤铁矿结核雅丹陡坎及海绿石-皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中卸扣双凤团花与琵琶捍拨双火烈鸟宝相莲花钿扣、及导流槽底槽槛抗摆剪切销与尾焰远场尾段二十六阶剪切辉光（Stage 365，`Section 2.343`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `meridiani_planum_miyamoto_crater_endeavour_crater_bopolu_crater_scarp_glauconite_saponite_gypsum_opal_terraces` 微地貌核与 `meridianiPlanumMiyamotoCraterEndeavourCraterBopoluCraterScarpGlauconiteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,562 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,444 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidShacklePhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双火烈鸟宝相莲垂穗鎏金迦陵频伽嵌珊瑚明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayShearPin_0..3`、`Rocket_FairingMagnetosphericHeavyIonSpectrometerSensorCowl_0..3` 与 `plumeTailSexvigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,687,352 B`，Cycles 发射台渲染图为 `893,877 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百六十六阶段验收：古瑟夫撞击坑/哥伦比亚丘陵/马阿迪姆谷/阿波利纳里斯火山水热硅华陡坎及多水高岭石-皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中卸扣双凤团花与琵琶捍拨双醍醐宝相莲花钿扣、及导流槽底槽槛抗摆主销与尾焰第一激波胞二十七阶剪切辉光（Stage 366，`Section 2.344`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `gusev_crater_columbia_hills_maadim_vallis_apollinaris_mons_scarp_halloysite_saponite_gypsum_opal_terraces` 微地貌核与 `gusevCraterColumbiaHillsMaadimVallisApollinarisMonsScarpHalloysiteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,609 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,721 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidShacklePhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双醍醐宝相莲垂穗鎏金迦陵频伽嵌蓝宝石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayKingPin_0..3`、`Rocket_FairingSolarEnergeticIonAnalyzerSensorCowl_0..3` 与 `cell1SeptenvigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,697,844 B`，Cycles 发射台渲染图为 `893,539 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百六十七阶段验收：盖尔撞击坑/夏普山/和平谷/格迪兹谷碎屑流扇陡坎及海泡石-皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中花兰螺栓双凤团花与琵琶捍拨双信天翁宝相莲花钿扣、及导流槽底槽槛抗摆枢轴销与尾焰第二激波胞二十七阶剪切辉光（Stage 367，`Section 2.345`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `gale_crater_aeolis_mons_peace_vallis_gediz_vallis_scarp_sepiolite_saponite_gypsum_opal_terraces` 微地貌核与 `galeCraterAeolisMonsPeaceVallisGedizVallisScarpSepioliteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,526 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,095,029 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidTurnbucklePhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双信天翁宝相莲垂穗鎏金迦陵频伽嵌红宝石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayPivotPin_0..3`、`Rocket_FairingSolarEnergeticElectronAnalyzerSensorCowl_0..3` 与 `cell2SeptenvigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,708,376 B`，Cycles 发射台渲染图为 `893,754 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百六十八阶段验收：杰泽罗撞击坑/内雷特瓦谷/萨瓦谷/贝尔瓦撞击坑三角洲斜层理陡坎及坡缕石-皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中花兰螺栓双凤团花与琵琶捍拨双鸬鹚宝相莲花钿扣、及导流槽底槽槛抗摆耳轴销与尾焰第三激波胞二十七阶剪切辉光（Stage 368，`Section 2.346`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `jezero_crater_neretva_vallis_sava_vallis_belva_crater_scarp_palygorskite_saponite_gypsum_opal_terraces` 微地貌核与 `jezeroCraterNeretvaVallisSavaVallisBelvaCraterScarpPalygorskiteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,615 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,409 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidTurnbucklePhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双鸬鹚宝相莲垂穗鎏金迦陵频伽嵌翡翠明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayTrunnionPin_0..3`、`Rocket_FairingSolarWindAlphaParticleSpectrometerSensorCowl_0..3` 与 `cell3SeptenvigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,718,972 B`，Cycles 发射台渲染图为 `893,810 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百六十九阶段验收：莫斯谷/大山撞击坑/麦克劳克林撞击坑/奥克西亚平原双层层状硅酸盐台地陡坎及累托石-皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中U形钩双凤团花与琵琶捍拨双鸳鸯宝相莲花钿扣、及导流槽底槽槛抗摆U形销与尾焰第四激波胞二十七阶剪切辉光（Stage 369，`Section 2.347`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `mawrth_vallis_oyama_crater_mclaughlin_crater_oxia_planum_scarp_rectorite_saponite_gypsum_opal_terraces` 微地貌核与 `mawrthVallisOyamaCraterMcLaughlinCraterOxiaPlanumScarpRectoriteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,561 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,076 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidClevisPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双鸳鸯宝相莲垂穗鎏金迦陵频伽嵌珊瑚明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayClevisPin_0..3`、`Rocket_FairingSolarWindProtonMonitorSensorCowl_0..3` 与 `cell4SeptenvigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,729,400 B`，Cycles 发射台渲染图为 `893,610 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百七十阶段验收：诺亚高地/哥伦布撞击坑/克罗斯撞击坑/维尔茨撞击坑酸性盐湖岸线陡坎及叶蜡石-皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中U形钩双凤团花与琵琶捍拨双水凫宝相莲花钿扣、及导流槽底槽槛抗摆林奇销与尾焰第五激波胞二十七阶剪切辉光（Stage 370，`Section 2.348`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `noachis_terra_columbus_crater_cross_crater_wirtz_crater_scarp_pyrophyllite_saponite_gypsum_opal_terraces` 微地貌核与 `noachisTerraColumbusCraterCrossCraterWirtzCraterScarpPyrophylliteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,613 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,390 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidClevisPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双水凫宝相莲垂穗鎏金迦陵频伽嵌绿松石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayLynchPin_0..3`、`Rocket_FairingSolarWindElectronMonitorSensorCowl_0..3` 与 `cell5SeptenvigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,739,840 B`，Cycles 发射台渲染图为 `893,521 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百七十一阶段验收：辛梅里亚高地/阿里阿德涅丘群/亚特兰蒂斯混沌/埃里达尼亚盆地古海热液喷口陡坎及纤蛇纹石-皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中转环双凤团花与琵琶捍拨双赤凫宝相莲花钿扣、及导流槽底槽槛抗摆开口销与尾焰第六激波胞二十七阶剪切辉光（Stage 371，`Section 2.349`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `terra_cimmeria_ariadnes_colles_atlantis_chaos_eridania_basin_scarp_chrysotile_saponite_gypsum_opal_terraces` 微地貌核与 `terraCimmeriaAriadnesCollesAtlantisChaosEridaniaBasinScarpChrysotileSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,607 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,773 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidSwivelPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双赤凫宝相莲垂穗鎏金迦陵频伽嵌琥珀明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayCotterPin_0..3`、`Rocket_FairingSolarWindSuprathermalIonSpectrometerSensorCowl_0..3` 与 `cell6SeptenvigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,750,352 B`，Cycles 发射台渲染图为 `893,779 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百七十二阶段验收：西壬高地/戈尔贡混沌/西摩伊斯丘群/卡拉利斯混沌断裂古湖盆缘陡坎及叶蛇纹石-皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中转环双凤团花与琵琶捍拨双绿鸭宝相莲花钿扣、及导流槽底槽槛抗摆锥销与尾焰第七激波胞二十七阶剪切辉光（Stage 372，`Section 2.350`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `terra_sirenum_gorgonum_chaos_simois_colles_caralis_chaos_scarp_antigorite_saponite_gypsum_opal_terraces` 微地貌核与 `terraSirenumGorgonumChaosSimoisCollesCaralisChaosScarpAntigoriteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,600 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,417 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidSwivelPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双绿鸭宝相莲垂穗鎏金迦陵频伽嵌翡翠明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayTaperPin_0..3`、`Rocket_FairingSolarWindThermalIonAnalyzerSensorCowl_0..3` 与 `cell7SeptenvigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,760,816 B`，Cycles 发射台渲染图为 `893,757 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百七十三阶段验收：阿吉尔平原/卡里图姆山脉/涅瑞伊得斯山脉/苏里乌斯谷冰湖蛇形丘陡坎及利蛇纹石-皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中花兰螺栓眼双凤团花与琵琶捍拨双琵嘴鸭宝相莲花钿扣、及导流槽底槽槛抗摆槽销与尾焰第八激波胞二十七阶剪切辉光（Stage 373，`Section 2.351`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `argyre_planitia_charitum_montes_nereidum_montes_surius_vallis_scarp_lizardite_saponite_gypsum_opal_terraces` 微地貌核与 `argyrePlanitiaCharitumMontesNereidumMontesSuriusVallisScarpLizarditeSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,582 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,167 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidTurnbuckleEyePhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双琵嘴鸭宝相莲垂穗鎏金迦陵频伽嵌蓝宝石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayGroovedPin_0..3`、`Rocket_FairingSolarWindThermalElectronAnalyzerSensorCowl_0..3` 与 `cell8SeptenvigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,771,308 B`，Cycles 发射台渲染图为 `893,594 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百七十四阶段验收：普罗米修斯高地/鲁尔谷/哈马基斯谷/摩耳甫斯断崖舌状碎屑裙陡坎及硅孔雀石-皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中花兰螺栓眼双凤团花与琵琶捍拨双赤颈鸭宝相莲花钿扣、及导流槽底槽槛抗摆弹性销与尾焰末梢二十七阶剪切辉光（Stage 374，`Section 2.352`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `promethei_terra_reull_vallis_harmakhis_vallis_morpheos_rupes_scarp_chrysocolla_saponite_gypsum_opal_terraces` 微地貌核与 `prometheiTerraReullVallisHarmakhisVallisMorpheosRupesScarpChrysocollaSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,689 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,759 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidTurnbuckleEyePhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双赤颈鸭宝相莲垂穗鎏金迦陵频伽嵌红珊瑚明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwaySpringPin_0..3`、`Rocket_FairingSolarWindSuprathermalElectronAnalyzerSensorCowl_0..3` 与 `plumeTailSeptenvigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,781,824 B`，Cycles 发射台渲染图为 `893,728 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百七十五阶段验收：第勒纳高地/利比亚山脉/伊希斯平原/哈德里亚卡斯山火山碎屑冲沟陡坎及阳起石-皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中花兰螺栓钩双凤团花与琵琶捍拨双赤膀鸭宝相莲花钿扣、及导流槽底槽槛抗摆耳轴销与尾焰第一激波胞二十八阶剪切辉光（Stage 375，`Section 2.353`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `tyrrhena_terra_libya_montes_isidis_planitia_hadriacus_mons_scarp_actinolite_saponite_gypsum_opal_terraces` 微地貌核与 `tyrrhenaTerraLibyaMontesIsidisPlanitiaHadriacusMonsScarpActinoliteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,681 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,422 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidTurnbuckleHookPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双赤膀鸭宝相莲垂穗鎏金迦陵频伽嵌孔雀石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayTrunnionPin_0..3`、`Rocket_FairingSolarWindFaradayCupSensorCowl_0..3` 与 `cell1OctovigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,792,240 B`，Cycles 发射台渲染图为 `893,599 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百七十六阶段验收：萨巴亚高地/惠更斯撞击坑/道斯撞击坑/斯基亚帕雷利盆地峰环地堑陡坎及透闪石-皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中花兰螺栓钩双凤团花与琵琶捍拨双白眉鸭宝相莲花钿扣、及导流槽底槽槛抗摆枢轴销与尾焰第二激波胞二十八阶剪切辉光（Stage 376，`Section 2.354`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `sabaea_terra_huygens_crater_dawes_crater_schiaparelli_basin_scarp_tremolite_saponite_gypsum_opal_terraces` 微地貌核与 `sabaeaTerraHuygensCraterDawesCraterSchiaparelliBasinScarpTremoliteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,674 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,959 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidTurnbuckleHookPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双白眉鸭宝相莲垂穗鎏金迦陵频伽嵌青金石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayPivotPin_0..3`、`Rocket_FairingSolarWindElectrostaticAnalyzerSensorCowl_0..3` 与 `cell2OctovigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,802,732 B`，Cycles 发射台渲染图为 `893,705 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百七十七阶段验收：子午线高原/宫本撞击坑/奋进号撞击坑/博波卢撞击坑赤铁矿结核雅丹陡坎及铝直闪石-皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中花兰螺栓叉双凤团花与琵琶捍拨双红头潜鸭宝相莲花钿扣、及导流槽底槽槛抗摆U形销与尾焰第三激波胞二十八阶剪切辉光（Stage 377，`Section 2.355`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `meridiani_planum_miyamoto_crater_endeavour_crater_bopolu_crater_scarp_gedrite_saponite_gypsum_opal_terraces` 微地貌核与 `meridianiPlanumMiyamotoCraterEndeavourCraterBopoluCraterScarpGedriteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,710 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,120 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidTurnbuckleJawPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双红头潜鸭宝相莲垂穗鎏金迦陵频伽嵌红珊瑚明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayClevisPin_0..3`、`Rocket_FairingSolarWindMagnetometerBoomSensorCowl_0..3` 与 `cell3OctovigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,813,180 B`，Cycles 发射台渲染图为 `893,757 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百七十八阶段验收：古瑟夫撞击坑/哥伦比亚丘陵/马阿迪姆谷/阿波利纳里斯火山水热硅华陡坎及直闪石-皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中花兰螺栓叉双凤团花与琵琶捍拨双凤头潜鸭宝相莲花钿扣、及导流槽底槽槛抗摆卸扣销与尾焰第四激波胞二十八阶剪切辉光（Stage 378，`Section 2.356`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `gusev_crater_columbia_hills_maadim_vallis_apollinaris_mons_scarp_anthophyllite_saponite_gypsum_opal_terraces` 微地貌核与 `gusevCraterColumbiaHillsMaadimVallisApollinarisMonsScarpAnthophylliteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,723 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,061 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidTurnbuckleJawPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双凤头潜鸭宝相莲垂穗鎏金迦陵频伽嵌绿松石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayShacklePin_0..3`、`Rocket_FairingSolarWindSearchCoilMagnetometerSensorCowl_0..3` 与 `cell4OctovigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,823,656 B`，Cycles 发射台渲染图为 `893,734 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百七十九阶段验收：盖尔撞击坑/夏普山/和平谷/格迪兹谷泥石流扇陡坎及镁铁闪石-皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中花兰螺栓体双凤团花与琵琶捍拨双斑背潜鸭宝相莲花钿扣、及导流槽底槽槛抗摆锚销与尾焰第五激波胞二十八阶剪切辉光（Stage 379，`Section 2.357`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `gale_crater_aeolis_mons_peace_vallis_gediz_vallis_scarp_cummingtonite_saponite_gypsum_opal_terraces` 微地貌核与 `galeCraterAeolisMonsPeaceVallisGedizVallisScarpCummingtoniteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,674 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,303 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidTurnbuckleBodyPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双斑背潜鸭宝相莲垂穗鎏金迦陵频伽嵌翡翠明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayAnchorPin_0..3`、`Rocket_FairingSolarWindLangmuirProbeSensorCowl_0..3` 与 `cell5OctovigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,834,068 B`，Cycles 发射台渲染图为 `893,752 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百八十阶段验收：耶泽罗撞击坑/内雷特瓦谷/萨瓦谷/贝尔瓦撞击坑三角洲前积层陡坎及铁闪石-皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中花兰螺栓体双凤团花与琵琶捍拨双鹊鸭宝相莲花钿扣、及导流槽底槽槛抗摆定位销与尾焰第六激波胞二十八阶剪切辉光（Stage 380，`Section 2.358`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `jezero_crater_neretva_vallis_sava_vallis_belva_crater_scarp_grunerite_saponite_gypsum_opal_terraces` 微地貌核与 `jezeroCraterNeretvaVallisSavaVallisBelvaCraterScarpGruneriteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,694 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,738 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidTurnbuckleBodyPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双鹊鸭宝相莲垂穗鎏金迦陵频伽嵌琥珀明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayRetainingPin_0..3`、`Rocket_FairingSolarWindElectricFieldAntennaSensorCowl_0..3` 与 `cell6OctovigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,844,552 B`，Cycles 发射台渲染图为 `893,750 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百八十一阶段验收：莫尔斯谷/小山撞击坑/克律塞平原/库贡谷系古土壤黏土陡坎及钠闪石-皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中花兰螺栓锁紧螺母双凤团花与琵琶捍拨双白枕头潜鸭宝相莲花钿扣、及导流槽底槽槛抗摆剪切销与尾焰第七激波胞二十八阶剪切辉光（Stage 381，`Section 2.359`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `mawrth_vallis_oyama_crater_chryse_planitia_coogoon_valles_scarp_riebeckite_saponite_gypsum_opal_terraces` 微地貌核与 `mawrthVallisOyamaCraterChrysePlanitiaCoogoonVallesScarpRiebeckiteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,784 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,155 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidTurnbuckleLocknutPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双白枕头潜鸭宝相莲垂穗鎏金迦陵频伽嵌青金石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayShearPin_0..3`、`Rocket_FairingSolarWindPlasmaWaveAnalyzerSensorCowl_0..3` 与 `cell7OctovigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,855,016 B`，Cycles 发射台渲染图为 `893,475 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百八十二阶段验收：尼利槽沟/大塞提斯高原/哈格雷夫斯撞击坑/安东尼亚第撞击坑撞击熔融巨角砾岩陡坎及蓝闪石-皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中花兰螺栓锁紧螺母双凤团花与琵琶捍拨双斑秋沙鸭宝相莲花钿扣、及导流槽底槽槛抗摆锁销与尾焰第八激波胞二十八阶剪切辉光（Stage 382，`Section 2.360`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `nili_fossae_syrtis_major_hargraves_crater_antoniadi_crater_scarp_glaucophane_saponite_gypsum_opal_terraces` 微地貌核与 `niliFossaeSyrtisMajorHargravesCraterAntoniadiCraterScarpGlaucophaneSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,720 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,508 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidTurnbuckleLocknutPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双斑秋沙鸭宝相莲垂穗鎏金迦陵频伽嵌玛瑙明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayLockPin_0..3`、`Rocket_FairingSolarWindEnergeticNeutralAtomSensorCowl_0..3` 与 `cell8OctovigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,865,404 B`，Cycles 发射台渲染图为 `893,762 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百八十三阶段验收：诺亚高地/达尔文撞击坑/洛泽撞击坑/巴克伊森撞击坑古湖岸线三角洲陡坎及普通角闪石-皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中花兰螺栓防松薄螺母双凤团花与琵琶捍拨双秋沙鸭宝相莲花钿扣、及导流槽底槽槛抗摆楔形销与尾焰远场二十八阶剪切辉光（Stage 383，`Section 2.361`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `noachis_terra_darwin_crater_lohse_crater_bakhuysen_crater_scarp_hornblende_saponite_gypsum_opal_terraces` 微地貌核与 `noachisTerraDarwinCraterLohseCraterBakhuysenCraterScarpHornblendeSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,700 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,482 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidTurnbuckleJamnutPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双秋沙鸭宝相莲垂穗鎏金迦陵频伽嵌孔雀石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayWedgePin_0..3`、`Rocket_FairingSolarWindHeavyIonAnalyzerSensorCowl_0..3` 与 `plumeTailOctovigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,875,768 B`，Cycles 发射台渲染图为 `893,630 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百八十四阶段验收：辛梅里亚高地/阿里阿德涅丘群/戈尔贡混沌/亚特兰蒂斯混沌古湖床陡坎及帕加斯闪石-皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中花兰螺栓防松薄螺母双凤团花与琵琶捍拨双海番鸭宝相莲花钿扣、及导流槽底槽槛抗摆开口销与尾焰第一激波胞二十九阶剪切辉光（Stage 384，`Section 2.362`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `terra_cimmeria_ariadnes_colles_gorgonum_chaos_atlantis_chaos_scarp_pargasite_saponite_gypsum_opal_terraces` 微地貌核与 `terraCimmeriaAriadnesCollesGorgonumChaosAtlantisChaosScarpPargasiteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,883 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,853 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidTurnbuckleJamnutPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双海番鸭宝相莲垂穗鎏金迦陵频伽嵌红珊瑚明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayCotterPin_0..3`、`Rocket_FairingSolarWindSuprathermalIonMassSpectrometerSensorCowl_0..3` 与 `cell1NovemvigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,886,220 B`，Cycles 发射台渲染图为 `893,582 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百八十五阶段验收：西壬高地/哥伦布撞击坑/克罗斯撞击坑/埃德库嫩撞击坑古湖环阶陡坎及钠透闪石-皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中花兰螺栓U形叉栓双凤团花与琵琶捍拨双丑鸭宝相莲花钿扣、及导流槽底槽槛抗摆双股开口销与尾焰第二激波胞二十九阶剪切辉光（Stage 385，`Section 2.363`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `terra_sirenum_columbus_crater_cross_crater_eydtkuhnen_crater_scarp_richterite_saponite_gypsum_opal_terraces` 微地貌核与 `terraSirenumColumbusCraterCrossCraterEydtkuhnenCraterScarpRichteriteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,772 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,444 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidTurnbuckleClevisBoltPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双丑鸭宝相莲垂穗鎏金迦陵频伽嵌青金石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwaySplitPin_0..3`、`Rocket_FairingSolarWindThermalIonImagingSpectrometerSensorCowl_0..3` 与 `cell2NovemvigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,896,672 B`，Cycles 发射台渲染图为 `893,766 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百八十六阶段验收：珍珠高地/霍尔登撞击坑/埃伯斯瓦尔德撞击坑/乌兹博伊谷三角洲前积斜层理陡坎及埃克曼闪石-皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中花兰螺栓U形叉栓双凤团花与琵琶捍拨双长尾鸭宝相莲花钿扣、及导流槽底槽槛抗摆弹性圆柱销与尾焰第三激波胞二十九阶剪切辉光（Stage 386，`Section 2.364`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `margaritifer_terra_holden_crater_eberswalde_crater_uzboi_vallis_scarp_eckermannite_saponite_gypsum_opal_terraces` 微地貌核与 `margaritiferTerraHoldenCraterEberswaldeCraterUzboiVallisScarpEckermanniteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,750 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,093,948 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidTurnbuckleClevisBoltPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双长尾鸭宝相莲垂穗鎏金迦陵频伽嵌碧玉明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayRollPin_0..3`、`Rocket_FairingSolarWindElectronPitchAngleSpectrometerSensorCowl_0..3` 与 `cell3NovemvigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,907,112 B`，Cycles 发射台渲染图为 `893,764 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百八十七阶段验收：克珊忒高地/沙尔巴塔纳谷/西穆德谷/提乌谷外流瀑布陡坎及钠铁闪石-皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中花兰螺栓开口销双凤团花与琵琶捍拨双小鹊鸭宝相莲花钿扣、及导流槽底槽槛抗摆定位销与尾焰第四激波胞二十九阶剪切辉光（Stage 387，`Section 2.365`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `xanthe_terra_shalbatana_vallis_simud_valles_tiu_valles_scarp_arfvedsonite_saponite_gypsum_opal_terraces` 微地貌核与 `xantheTerraShalbatanaVallisSimudVallesTiuVallesScarpArfvedsoniteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,686 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,877 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidTurnbuckleCotterPinPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双小鹊鸭宝相莲垂穗鎏金迦陵频伽嵌琥珀明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayDowelPin_0..3`、`Rocket_FairingSolarWindHaloStrahlElectronAnalyzerSensorCowl_0..3` 与 `cell4NovemvigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,917,560 B`，Cycles 发射台渲染图为 `893,659 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百八十八阶段验收：卢奈高原/奥菲尔高原/埃库斯峡谷/卡塞谷潜蚀陡壁陡坎及钠铁铝闪石-皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中花兰螺栓开口销双凤团花与琵琶捍拨双鹊鸭宝相莲花钿扣、及导流槽底槽槛抗摆锥销与尾焰第五激波胞二十九阶剪切辉光（Stage 388，`Section 2.366`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `lunae_planum_ophir_planum_echus_chasma_kasei_valles_scarp_katophorite_saponite_gypsum_opal_terraces` 微地貌核与 `lunaePlanumOphirPlanumEchusChasmaKaseiVallesScarpKatophoriteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,630 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,710 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidTurnbuckleCotterPinPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双鹊鸭宝相莲垂穗鎏金迦陵频伽嵌紫水晶明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayTaperPin_0..3`、`Rocket_FairingSolarWindProtonAlphaAnisotropyAnalyzerSensorCowl_0..3` 与 `cell5NovemvigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,928,012 B`，Cycles 发射台渲染图为 `893,761 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百八十九阶段验收：索利斯高原/叙利亚高原/西奈高原/陶玛西亚高原皱脊逆冲陡坎及塔拉闪石-皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中花兰螺栓开口环双凤团花与琵琶捍拨双冰岛鹊鸭宝相莲花钿扣、及导流槽底槽槛抗摆平键与尾焰第六激波胞二十九阶剪切辉光（Stage 389，`Section 2.367`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `solis_planum_syria_planum_sinai_planum_thaumasia_planum_scarp_taramite_saponite_gypsum_opal_terraces` 微地貌核与 `solisPlanumSyriaPlanumSinaiPlanumThaumasiaPlanumScarpTaramiteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,628 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,039 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidTurnbuckleSplitRingPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双冰岛鹊鸭宝相莲垂穗鎏金迦陵频伽嵌红宝明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayKey_0..3`、`Rocket_FairingSolarWindIonAcousticWaveAnalyzerSensorCowl_0..3` 与 `cell6NovemvigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,938,404 B`，Cycles 发射台渲染图为 `893,794 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百九十阶段验收：阿尔巴山/坦塔罗斯槽沟/刻劳尼乌斯槽沟/乌拉尼乌斯山火山构造地堑陡坎及冻蓝闪石-皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中花兰螺栓开口环双凤团花与琵琶捍拨双丑鸭宝相莲花钿扣、及导流槽底槽槛抗摆花键与尾焰第七激波胞二十九阶剪切辉光（Stage 390，`Section 2.368`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `alba_mons_tantalus_fossae_ceraunius_fossae_uranius_mons_scarp_barroisite_saponite_gypsum_opal_terraces` 微地貌核与 `albaMonsTantalusFossaeCerauniusFossaeUraniusMonsScarpBarroisiteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,587 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,316 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidTurnbuckleSplitRingPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双丑鸭宝相莲垂穗鎏金迦陵频伽嵌蓝宝明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwaySpline_0..3`、`Rocket_FairingSolarWindLangmuirWaveAnalyzerSensorCowl_0..3` 与 `cell7NovemvigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,948,696 B`，Cycles 发射台渲染图为 `893,747 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百九十一阶段验收：塔尔西斯山群/奥林帕斯山/帕沃尼斯山/阿斯克拉厄斯山破火山口环状断层陡坎及温奇闪石-皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中花兰螺栓定位销双凤团花与琵琶捍拨双长尾鸭宝相莲花钿扣、及导流槽底槽槛抗摆衬套与尾焰第八激波胞二十九阶剪切辉光（Stage 391，`Section 2.369`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `tharsis_montes_olympus_mons_pavonis_mons_ascraeus_mons_scarp_winchite_saponite_gypsum_opal_terraces` 微地貌核与 `tharsisMontesOlympusMonsPavonisMonsAscraeusMonsScarpWinchiteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,666 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,400 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidTurnbuckleDowelPinPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双长尾鸭宝相莲垂穗鎏金迦陵频伽嵌祖母绿明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayBushing_0..3`、`Rocket_FairingSolarWindMagnetosonicWaveAnalyzerSensorCowl_0..3` 与 `cell8NovemvigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,959,124 B`，Cycles 发射台渲染图为 `893,727 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百九十二阶段验收：埃律西昂山/赫卡特斯丘/阿尔博尔丘/阿波利纳里斯山放射状槽沟火山泥流及钠透闪石-皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中花兰螺栓定位销双凤团花与琵琶捍拨双斑鼻黑鸭宝相莲花钿扣、及导流槽底槽槛抗摆轴套与尾焰羽流尾端二十九阶剪切辉光（Stage 392，`Section 2.370`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `elysium_mons_hecates_tholus_albor_tholus_apollinaris_mons_scarp_richterite_saponite_gypsum_opal_terraces` 微地貌核与 `elysiumMonsHecatesTholusAlborTholusApollinarisMonsScarpRichteriteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,734 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,933 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidTurnbuckleDowelPinPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双斑鼻黑鸭宝相莲垂穗鎏金迦陵频伽嵌珊瑚明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwaySleeve_0..3`、`Rocket_FairingSolarWindLowerHybridWaveAnalyzerSensorCowl_0..3` 与 `plumeTailNovemvigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,969,508 B`，Cycles 发射台渲染图为 `893,527 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百九十三阶段验收：大瑟提斯高原/尼利火山口/梅罗伊火山口/阿努斯谷破火山口火山泥流及硅镁钠闪石-皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中花兰螺栓主销双凤团花与琵琶捍拨双斑鼻绒鸭宝相莲花钿扣、及导流槽底槽槛抗摆轴环与尾焰第一激波胞三十阶剪切辉光（Stage 393，`Section 2.371`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `syrtis_major_planum_nili_patera_meroe_patera_arnus_vallis_scarp_eckermannite_saponite_gypsum_opal_terraces` 微地貌核与 `syrtisMajorPlanumNiliPateraMeroePateraArnusVallisScarpEckermanniteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,694 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,217 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidTurnbuckleKingPinPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双斑鼻绒鸭宝相莲垂穗鎏金迦陵频伽嵌琥珀明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayCollar_0..3`、`Rocket_FairingSolarWindUpperHybridWaveAnalyzerSensorCowl_0..3` 与 `cell1TrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,979,916 B`，Cycles 发射台渲染图为 `893,723 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百九十四阶段验收：赫斯珀里亚高原/第勒尼安山/哈德里亚库斯山/道谷熔结凝灰岩冲沟及钠铁闪石-皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中花兰螺栓主销双凤团花与琵琶捍拨双黑鸭宝相莲花钿扣、及导流槽底槽槛抗摆法兰与尾焰第二激波胞三十阶剪切辉光（Stage 394，`Section 2.372`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `hesperia_planum_tyrrhenus_mons_hadriacus_mons_dao_vallis_scarp_arfvedsonite_saponite_gypsum_opal_terraces` 微地貌核与 `hesperiaPlanumTyrrhenusMonsHadriacusMonsDaoVallisScarpArfvedsoniteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,701 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,894 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidTurnbuckleKingPinPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双黑鸭宝相莲垂穗鎏金迦陵频伽嵌紫晶明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayFlange_0..3`、`Rocket_FairingSolarWindElectronCyclotronWaveAnalyzerSensorCowl_0..3` 与 `cell2TrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `3,990,352 B`，Cycles 发射台渲染图为 `893,879 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百九十五阶段验收：马莱亚高原/皮提乌萨火山口/安菲特里忒斯火山口/佩纽斯火山口破火山口塌陷地堑及钠闪石-皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中花兰螺栓林奇销双凤团花与琵琶捍拨双长尾鸭宝相莲花钿扣、及导流槽底槽槛抗摆衬套与尾焰第三激波胞三十阶剪切辉光（Stage 395，`Section 2.373`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `malea_planum_pityusa_patera_amphitrites_patera_peneus_patera_scarp_riebeckite_saponite_gypsum_opal_terraces` 微地貌核与 `maleaPlanumPityusaPateraAmphitritesPateraPeneusPateraScarpRiebeckiteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,729 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,375 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidTurnbuckleLinchPinPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双长尾鸭宝相莲垂穗鎏金迦陵频伽嵌松石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayBushing_0..3`、`Rocket_FairingSolarWindIonCyclotronWaveAnalyzerSensorCowl_0..3` 与 `cell3TrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `4,000,784 B`，Cycles 发射台渲染图为 `893,761 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百九十六阶段验收：普罗米修斯高地/鲁尔谷/哈马基斯谷/尼日尔谷渗流外流槽谷及蓝闪石-皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中花兰螺栓林奇销双凤团花与琵琶捍拨双丑鸭宝相莲花钿扣、及导流槽底槽槛抗摆压盖与尾焰第四激波胞三十阶剪切辉光（Stage 396，`Section 2.374`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `promethei_terra_reull_vallis_harmakhis_vallis_niger_vallis_scarp_glaucophane_saponite_gypsum_opal_terraces` 微地貌核与 `prometheiTerraReullVallisHarmakhisVallisNigerVallisScarpGlaucophaneSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,687 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,069 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidTurnbuckleLinchPinPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双丑鸭宝相莲垂穗鎏金迦陵频伽嵌青金明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayGland_0..3`、`Rocket_FairingSolarWindAlfvenWaveAnalyzerSensorCowl_0..3` 与 `cell4TrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `4,011,144 B`，Cycles 发射台渲染图为 `893,640 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百九十七阶段验收：阿吉尔平原/卡里图姆山脉/涅瑞伊得斯山脉/苏里乌斯谷冰湖蛇形丘及镁铁闪石-皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中花兰螺栓锥销双凤团花与琵琶捍拨双白颊鹊鸭宝相莲花钿扣、及导流槽底槽槛抗摆保持架与尾焰第五激波胞三十阶剪切辉光（Stage 397，`Section 2.375`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `argyre_planitia_charitum_montes_nereidum_montes_surius_vallis_scarp_cummingtonite_saponite_gypsum_opal_terraces` 微地貌核与 `argyrePlanitiaCharitumMontesNereidumMontesSuriusVallisScarpCummingtoniteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,734 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,859 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidTurnbuckleTaperPinPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双白颊鹊鸭宝相莲垂穗鎏金迦陵频伽嵌祖母绿明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayCage_0..3`、`Rocket_FairingSolarWindWhistlerModeWaveAnalyzerSensorCowl_0..3` 与 `cell5TrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `4,021,512 B`，Cycles 发射台渲染图为 `893,721 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百九十八阶段验收：塞壬槽沟/美姆诺尼亚槽沟/戈尔戈努姆混沌/亚特兰蒂斯混沌岩墙地堑槽谷及铁闪石-皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中花兰螺栓锥销双凤团花与琵琶捍拨双鹊鸭宝相莲花钿扣、及导流槽底槽槛抗摆隔圈与尾焰第六激波胞三十阶剪切辉光（Stage 398，`Section 2.376`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `sirenum_fossae_memnonia_fossae_gorgonum_chaos_atlantis_chaos_scarp_grunerite_saponite_gypsum_opal_terraces` 微地貌核与 `sirenumFossaeMemnoniaFossaeGorgonumChaosAtlantisChaosScarpGruneriteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,749 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,292 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidTurnbuckleTaperPinPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双鹊鸭宝相莲垂穗鎏金迦陵频伽嵌珊瑚明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwaySpacer_0..3`、`Rocket_FairingSolarWindIonAcousticWaveAnalyzerSensorCowl_0..3` 与 `cell6TrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `4,031,956 B`，Cycles 发射台渲染图为 `893,942 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第三百九十九阶段验收：奇梅里亚高地/阿里阿德涅丘群/埃里达尼亚盆地/厄勒克特里斯山脉古海床混沌岩丘及直闪石-皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中花兰螺栓槽销双凤团花与琵琶捍拨双冰岛鹊鸭宝相莲花钿扣、及导流槽底槽槛抗摆垫片与尾焰第七激波胞三十阶剪切辉光（Stage 399，`Section 2.377`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `terra_cimmeria_ariadnes_colles_eridania_basin_electris_montes_scarp_anthophyllite_saponite_gypsum_opal_terraces` 微地貌核与 `terraCimmeriaAriadnesCollesEridaniaBasinElectrisMontesScarpAnthophylliteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,784 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,818 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidTurnbuckleGroovePinPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双冰岛鹊鸭宝相莲垂穗鎏金迦陵频伽嵌松石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayShim_0..3`、`Rocket_FairingSolarWindLangmuirWaveAnalyzerSensorCowl_0..3` 与 `cell7TrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `4,042,352 B`，Cycles 发射台渲染图为 `893,705 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第四百阶段验收：诺亚奇斯高地/赫勒斯滂山脉/凯泽坑/拉贝坑横向风成沙脊及铝直闪石-皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中花兰螺栓槽销双凤团花与琵琶捍拨双斑头秋沙鸭宝相莲花钿扣、及导流槽底槽槛抗摆垫圈与尾焰第八激波胞三十阶剪切辉光（Stage 400，`Section 2.378`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `noachis_terra_hellespontus_montes_kaiser_crater_rabe_crater_scarp_gedrite_saponite_gypsum_opal_terraces` 微地貌核与 `noachisTerraHellespontusMontesKaiserCraterRabeCraterScarpGedriteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,643 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,226 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidTurnbuckleGroovePinPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双斑头秋沙鸭宝相莲垂穗鎏金迦陵频伽嵌青金明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayWasher_0..3`、`Rocket_FairingSolarWindSlowMagnetosonicWaveAnalyzerSensorCowl_0..3` 与 `cell8TrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `4,052,796 B`，Cycles 发射台渲染图为 `893,597 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第四百零一阶段验收：奥尼亚高地/弗里克西断崖/苏里乌斯谷/伊卡里亚槽沟瓣状逆冲断崖垒壁及锂闪石-皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中花兰螺栓弹性销双凤团花与琵琶捍拨双冠秋沙鸭宝相莲花钿扣、及导流槽底槽槛抗摆钩头楔块与尾焰羽流尾端三十阶剪切辉光（Stage 401，`Section 2.379`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `aonia_terra_phrixi_rupes_surius_vallis_icaria_fossae_scarp_holmquistite_saponite_gypsum_opal_terraces` 微地貌核与 `aoniaTerraPhrixiRupesSuriusVallisIcariaFossaeScarpHolmquistiteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,680 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,537 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidTurnbuckleSpringPinPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双冠秋沙鸭宝相莲垂穗鎏金迦陵频伽嵌祖母绿明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayGibWedge_0..3`、`Rocket_FairingSolarWindFastMagnetosonicWaveAnalyzerSensorCowl_0..3` 与 `plumeTailTrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `4,063,236 B`，Cycles 发射台渲染图为 `893,798 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第四百零二阶段验收：塔乌玛西亚高原/索利斯高原/克拉里塔斯槽沟/科拉基斯槽沟皱脊高原台地及铁铝直闪石-皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中花兰螺栓弹性销双凤团花与琵琶捍拨双普通秋沙鸭宝相莲花钿扣、及导流槽底槽槛抗摆开口扁销与尾焰第一马赫环三十一阶剪切辉光（Stage 402，`Section 2.380`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `thaumasia_planum_solis_planum_claritas_fossae_coracis_fossae_scarp_ferrogedrite_saponite_gypsum_opal_terraces` 微地貌核与 `thaumasiaPlanumSolisPlanumClaritasFossaeCoracisFossaeScarpFerrogedriteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,747 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,704 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidTurnbuckleSpringPinPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双普通秋沙鸭宝相莲垂穗鎏金迦陵频伽嵌珊瑚明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayCotterKey_0..3`、`Rocket_FairingSolarWindKineticAlfvenWaveAnalyzerSensorCowl_0..3` 与 `cell1UntrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `4,073,652 B`，Cycles 发射台渲染图为 `893,799 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第四百零三阶段验收：伊希斯平原/尼利槽沟/哈格雷夫斯撞击坑/杰泽罗撞击坑同心地堑陡坎及铁直闪石-皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中花兰螺栓开口扁销双凤团花与琵琶捍拨双红胸秋沙鸭宝相莲花钿扣、及导流槽底槽槛抗摆林奇销与尾焰第二马赫环三十一阶剪切辉光（Stage 403，`Section 2.381`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `isidis_planitia_nili_fossae_hargraves_crater_jezero_crater_scarp_ferroanthophyllite_saponite_gypsum_opal_terraces` 微地貌核与 `isidisPlanitiaNiliFossaeHargravesCraterJezeroCraterScarpFerroanthophylliteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,682 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,175 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidTurnbuckleCotterKeyPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双红胸秋沙鸭宝相莲垂穗鎏金迦陵频伽嵌琥珀明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayLinchPin_0..3`、`Rocket_FairingSolarWindInertialAlfvenWaveAnalyzerSensorCowl_0..3` 与 `cell2UntrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `4,084,060 B`，Cycles 发射台渲染图为 `893,809 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第四百零四阶段验收：阿拉伯高地/莫斯谷/大山撞击坑/奥克西亚平原双相层状硅酸盐高原及钠铝直闪石-皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中花兰螺栓开口扁销双凤团花与琵琶捍拨双中华秋沙鸭宝相莲花钿扣、及导流槽底槽槛抗摆圆锥销与尾焰第三马赫环三十一阶剪切辉光（Stage 404，`Section 2.382`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `arabia_terra_mawrth_vallis_oyama_crater_oxia_planum_scarp_sodicgedrite_saponite_gypsum_opal_terraces` 微地貌核与 `arabiaTerraMawrthVallisOyamaCraterOxiaPlanumScarpSodicgedriteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,696 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,827 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidTurnbuckleCotterKeyPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双中华秋沙鸭宝相莲垂穗鎏金迦陵频伽嵌绿松石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayTaperPin_0..3`、`Rocket_FairingSolarWindMirrorModeWaveAnalyzerSensorCowl_0..3` 与 `cell3UntrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `4,094,476 B`，Cycles 发射台渲染图为 `893,685 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第四百零五阶段验收：珍珠高地/霍尔登撞击坑/埃伯斯瓦尔德撞击坑/乌兹博伊谷三角洲前积层陡坎及钠直闪石-皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中花兰螺栓圆柱定位销双凤团花与琵琶捍拨双棕硬尾鸭宝相莲花钿扣、及导流槽底槽槛抗摆圆柱定位销与尾焰第四马赫环三十一阶剪切辉光（Stage 405，`Section 2.383`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `margaritifer_terra_holden_crater_eberswalde_crater_uzboi_vallis_scarp_sodicanthophyllite_saponite_gypsum_opal_terraces` 微地貌核与 `margaritiferTerraHoldenCraterEberswaldeCraterUzboiVallisScarpSodicanthophylliteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,613 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,733 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidTurnbuckleDowelPinPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双棕硬尾鸭宝相莲垂穗鎏金迦陵频伽嵌紫晶明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayDowelPin_0..3`、`Rocket_FairingSolarWindFirehoseInstabilityWaveAnalyzerSensorCowl_0..3` 与 `cell4UntrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `4,104,928 B`，Cycles 发射台渲染图为 `893,804 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第四百零六阶段验收：克桑忒高地/沙尔巴塔纳谷/西穆德谷/提乌谷外流瀑布陡坎及镁铁闪石-皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中花兰螺栓圆柱定位销双凤团花与琵琶捍拨双白头硬尾鸭宝相莲花钿扣、及导流槽底槽槛抗摆剪切螺栓与尾焰第五马赫环三十一阶剪切辉光（Stage 406，`Section 2.384`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `xanthe_terra_shalbatana_vallis_simud_valles_tiu_valles_scarp_cummingtonite_saponite_gypsum_opal_terraces` 微地貌核与 `xantheTerraShalbatanaVallisSimudVallesTiuVallesScarpCummingtoniteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,613 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,733 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidTurnbuckleDowelPinPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双白头硬尾鸭宝相莲垂穗鎏金迦陵频伽嵌珊瑚明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayShearBolt_0..3`、`Rocket_FairingSolarWindWeibelInstabilityWaveAnalyzerSensorCowl_0..3` 与 `cell5UntrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `4,115,348 B`，Cycles 发射台渲染图为 `893,820 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第四百零七阶段验收：坦佩高地/卡塞谷/埃库斯峡谷/萨克拉台地巨型洪水瀑布陡坎及铁闪石-皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中花兰螺栓圆锥定位销双凤团花与琵琶捍拨双麝鸭宝相莲花钿扣、及导流槽底槽槛抗摆张力螺栓与尾焰第六马赫环三十一阶剪切辉光（Stage 407，`Section 2.385`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `tempe_terra_kasei_valles_echus_chasma_sacra_mensa_scarp_grunerite_saponite_gypsum_opal_terraces` 微地貌核与 `tempeTerraKaseiVallesEchusChasmaSacraMensaScarpGruneriteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,613 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,733 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidTurnbuckleTaperPinPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双麝鸭宝相莲垂穗鎏金迦陵频伽嵌祖母绿明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayTensionBolt_0..3`、`Rocket_FairingSolarWindBunemanInstabilityWaveAnalyzerSensorCowl_0..3` 与 `cell6UntrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `4,125,792 B`，Cycles 发射台渲染图为 `893,612 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第四百零八阶段验收：阿西达利亚平原/塞多尼亚桌山群/德特罗尼勒斯桌山群/普罗托尼勒斯桌山群侵蚀台地陡坎及锰镁闪石-皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中花兰螺栓圆锥定位销双凤团花与琵琶捍拨双斑纹鸭宝相莲花钿扣、及导流槽底槽槛抗摆锁紧螺母与尾焰第七马赫环三十一阶剪切辉光（Stage 408，`Section 2.386`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `acidalia_planitia_cydonia_mensae_deuteronilus_mensae_protonilus_mensae_scarp_tirodite_saponite_gypsum_opal_terraces` 微地貌核与 `acidaliaPlanitiaCydoniaMensaeDeuteronilusMensaeProtonilusMensaeScarpTiroditeSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,613 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,733 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidTurnbuckleTaperPinPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双斑纹鸭宝相莲垂穗鎏金迦陵频伽嵌蓝宝石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayLockNut_0..3`、`Rocket_FairingSolarWindTwoStreamInstabilityWaveAnalyzerSensorCowl_0..3` 与 `cell7UntrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `4,136,200 B`，Cycles 发射台渲染图为 `893,721 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第四百零九阶段验收：乌托邦平原/赫菲斯托斯槽沟/阿达玛斯迷宫/卡修斯巨型多边形槽沟陡坎及锰铁闪石-皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中花兰螺栓开口锁销双凤团花与琵琶捍拨双粉耳鸭宝相莲花钿扣、及导流槽底槽槛抗摆背紧螺母与尾焰第八马赫环三十一阶剪切辉光（Stage 409，`Section 2.387`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `utopia_planitia_hephaestus_fossae_adamas_labyrinthus_casius_scarp_dannemorite_saponite_gypsum_opal_terraces` 微地貌核与 `utopiaPlanitiaHephaestusFossaeAdamasLabyrinthusCasiusScarpDannemoriteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,613 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,733 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidTurnbuckleLinchPinPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双粉耳鸭宝相莲垂穗鎏金迦陵频伽嵌琥珀明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayJamNut_0..3`、`Rocket_FairingSolarWindLowerHybridDriftWaveAnalyzerSensorCowl_0..3` 与 `cell8UntrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `4,146,612 B`，Cycles 发射台渲染图为 `893,696 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第四百一十阶段验收：埃律西昂平原/阿萨巴斯卡谷/刻耳柏洛斯裂谷/玛尔特谷板状熔岩筏裂隙陡坎及温奇闪石-皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中花兰螺栓开口锁销双凤团花与琵琶捍拨双蓝嘴硬尾鸭宝相莲花钿扣、及导流槽底槽槛抗摆槽形螺母与尾焰末梢三十一阶剪切辉光（Stage 410，`Section 2.388`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `elysium_planitia_athabasca_valles_cerberus_fossae_marte_vallis_scarp_winchite_saponite_gypsum_opal_terraces` 微地貌核与 `elysiumPlanitiaAthabascaVallesCerberusFossaeMarteVallisScarpWinchiteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,613 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,733 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidTurnbuckleLinchPinPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双蓝嘴硬尾鸭宝相莲垂穗鎏金迦陵频伽嵌绿松石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayCastleNut_0..3`、`Rocket_FairingSolarWindElectronCyclotronHarmonicWaveAnalyzerSensorCowl_0..3` 与 `plumeTailUntrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `4,157,044 B`，Cycles 发射台渲染图为 `893,509 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第四百一十一阶段验收：亚马逊平原/美杜莎槽沟/戈尔迪之脊/厄墨尼得斯之脊熔结凝灰岩雅丹陡坎及冻石闪石-皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中花兰螺栓U形销双凤团花与琵琶捍拨双非洲硬尾鸭宝相莲花钿扣、及导流槽底槽槛抗摆法兰螺母与尾焰第一马赫环三十二阶剪切辉光（Stage 411，`Section 2.389`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `amazonis_planitia_medusae_fossae_gordii_dorsum_eumenides_dorsum_scarp_barroisite_saponite_gypsum_opal_terraces` 微地貌核与 `amazonisPlanitiaMedusaeFossaeGordiiDorsumEumenidesDorsumScarpBarroisiteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,613 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,733 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidTurnbuckleClevisPinPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双非洲硬尾鸭宝相莲垂穗鎏金迦陵频伽嵌红宝石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayFlangeNut_0..3`、`Rocket_FairingSolarWindIonCyclotronHarmonicWaveAnalyzerSensorCowl_0..3` 与 `cell1DuotrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `4,167,476 B`，Cycles 发射台渲染图为 `893,688 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第四百一十二阶段验收：阿卡迪亚平原/弗莱格拉山脉/厄瑞玻斯山脉/阿刻戎槽沟叶状碎屑裙陡坎及卡托福闪石-皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中花兰螺栓U形销双凤团花与琵琶捍拨双阿根廷硬尾鸭宝相莲花钿扣、及导流槽底槽槛抗摆盖形螺母与尾焰第二马赫环三十二阶剪切辉光（Stage 412，`Section 2.390`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `arcadia_planitia_phlegra_montes_erebus_montes_acheron_fossae_scarp_katophorite_saponite_gypsum_opal_terraces` 微地貌核与 `arcadiaPlanitiaPhlegraMontesErebusMontesAcheronFossaeScarpKatophoriteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,613 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,733 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidTurnbuckleClevisPinPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双阿根廷硬尾鸭宝相莲垂穗鎏金迦陵频伽嵌青金石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayCapNut_0..3`、`Rocket_FairingSolarWindAlfvenWaveTurbulenceAnalyzerSensorCowl_0..3` 与 `cell2DuotrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `4,177,884 B`，Cycles 发射台渲染图为 `893,771 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第四百一十三阶段验收：阿尔巴山/刻劳尼乌斯槽沟/特拉克图斯坑链/坦塔罗斯槽沟破火山口地堑陡坎及塔拉闪石-皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中花兰螺栓锁紧螺母双凤团花与琵琶捍拨双假面硬尾鸭宝相莲花钿扣、及导流槽底槽槛抗摆垫圈板与尾焰第三马赫环三十二阶剪切辉光（Stage 413，`Section 2.391`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `alba_mons_ceraunius_fossae_tractus_catena_tantalus_fossae_scarp_taramite_saponite_gypsum_opal_terraces` 微地貌核与 `albaMonsCerauniusFossaeTractusCatenaTantalusFossaeScarpTaramiteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,613 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,733 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidTurnbuckleLockNutPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双假面硬尾鸭宝相莲垂穗鎏金迦陵频伽嵌翡翠明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayWasherPlate_0..3`、`Rocket_FairingSolarWindKineticAlfvenWaveAnalyzerSensorCowl_0..3` 与 `cell3DuotrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `4,188,336 B`，Cycles 发射台渲染图为 `893,722 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第四百一十四阶段验收：塔尔西斯山脉/奥林帕斯山/帕沃尼斯山/阿斯克拉厄斯山破火山口塌陷陡坎及钠透闪石-皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中花兰螺栓锁紧螺母双凤团花与琵琶捍拨双黑头鸭宝相莲花钿扣、及导流槽底槽槛抗摆垫片板与尾焰第四马赫环三十二阶剪切辉光（Stage 414，`Section 2.392`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `tharsis_montes_olympus_mons_pavonis_mons_ascraeus_mons_scarp_richterite_saponite_gypsum_opal_terraces` 微地貌核与 `tharsisMontesOlympusMonsPavonisMonsAscraeusMonsScarpRichteriteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,613 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,733 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidTurnbuckleLockNutPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双黑头鸭宝相莲垂穗鎏金迦陵频伽嵌珊瑚明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayShimPlate_0..3`、`Rocket_FairingSolarWindInertialAlfvenWaveAnalyzerSensorCowl_0..3` 与 `cell4DuotrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `4,198,764 B`，Cycles 发射台渲染图为 `893,667 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第四百一十五阶段验收：埃律西昂山/赫卡忒斯丘/阿尔博尔丘/加拉克西亚斯槽沟放射状泥流陡坎及蓝钠闪石-皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中花兰螺栓背紧螺母双凤团花与琵琶捍拨双斑纹鸭宝相莲花钿扣、及导流槽底槽槛抗摆隔圈环与尾焰第五马赫环三十二阶剪切辉光（Stage 415，`Section 2.393`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `elysium_mons_hecates_tholus_albor_tholus_galaxias_fossae_scarp_eckermannite_saponite_gypsum_opal_terraces` 微地貌核与 `elysiumMonsHecatesTholusAlborTholusGalaxiasFossaeScarpEckermanniteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,613 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,733 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidTurnbuckleJamNutPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双斑纹鸭宝相莲垂穗鎏金迦陵频伽嵌琥珀明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwaySpacerRing_0..3`、`Rocket_FairingSolarWindMirrorModeWaveAnalyzerSensorCowl_0..3` 与 `cell5DuotrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `4,209,136 B`，Cycles 发射台渲染图为 `893,903 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第四百一十六阶段验收：大塞提斯高原/尼利火山口/麦罗埃火山口/阿努斯峡谷英安质破火山口陡坎及尼博闪石-皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中花兰螺栓背紧螺母双凤团花与琵琶捍拨双扁嘴天鹅宝相莲花钿扣、及导流槽底槽槛抗摆碟形弹簧垫圈与尾焰第六马赫环三十二阶剪切辉光（Stage 416，`Section 2.394`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `syrtis_major_nili_patera_meroe_patera_arnus_vallis_scarp_nyboite_saponite_gypsum_opal_terraces` 微地貌核与 `syrtisMajorNiliPateraMeroePateraArnusVallisScarpNyboiteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,613 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,733 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidTurnbuckleJamNutPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双扁嘴天鹅宝相莲垂穗鎏金迦陵频伽嵌紫晶明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayBellevilleWasher_0..3`、`Rocket_FairingSolarWindFirehoseInstabilityWaveAnalyzerSensorCowl_0..3` 与 `cell6DuotrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `4,219,628 B`，Cycles 发射台渲染图为 `893,710 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第四百一十七阶段验收：赫斯珀里亚高原/第勒尼安山/哈德里亚库斯山/利库斯谷环状地堑溪谷陡坎及佩德里萨闪石-皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中花兰螺栓槽形螺母双凤团花与琵琶捍拨双蜡嘴雁宝相莲花钿扣、及导流槽底槽槛抗摆弹簧垫圈与尾焰第七激波胞三十二阶剪切辉光（Stage 417，`Section 2.395`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `hesperia_planum_tyrrhenus_mons_hadriacus_mons_licus_vallis_scarp_pedrizite_saponite_gypsum_opal_terraces` 微地貌核与 `hesperiaPlanumTyrrhenusMonsHadriacusMonsLicusVallisScarpPedriziteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,613 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,733 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidTurnbuckleCastleNutPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双蜡嘴雁宝相莲垂穗鎏金迦陵频伽嵌橄榄石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayLockWasher_0..3`、`Rocket_FairingSolarWindWeibelInstabilityWaveAnalyzerSensorCowl_0..3` 与 `cell7DuotrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `4,230,076 B`，Cycles 发射台渲染图为 `893,773 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第四百一十八阶段验收：马莱亚高原/皮튜萨火山口/安菲特里忒火山口/佩네乌斯火山口破火山口塌陷地堑陡坎及利克闪石-皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中花兰螺栓槽形螺母双凤团花与琵琶捍拨双鹊雁宝相莲花钿扣、及导流槽底槽槛抗摆止动耳垫圈与尾焰第八激波胞三十二阶剪切辉光（Stage 418，`Section 2.396`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `malea_planum_pityusa_patera_amphitrites_patera_peneus_patera_scarp_leakeite_saponite_gypsum_opal_terraces` 微地貌核与 `maleaPlanumPityusaPateraAmphitritesPateraPeneusPateraScarpLeakeiteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,613 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,733 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidTurnbuckleCastleNutPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双鹊雁宝相莲垂穗鎏金迦陵频伽嵌海蓝宝明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayTabWasher_0..3`、`Rocket_FairingSolarWindBunemanInstabilityWaveAnalyzerSensorCowl_0..3` 与 `cell8DuotrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `4,240,512 B`，Cycles 发射台渲染图为 `893,663 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第四百一十九阶段验收：普罗米修斯高地/鲁尔谷/哈尔马基斯谷/道谷潜蚀峡谷源头壁陡坎及科恩闪石-皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中花兰螺栓法兰螺母双凤团花与琵琶捍拨双距翅雁宝相莲花钿扣、及导流槽底槽槛抗摆波形弹簧垫圈与羽流尾端三十二阶剪切辉光（Stage 419，`Section 2.397`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `promethei_terra_reull_vallis_harmakhis_vallis_dao_vallis_scarp_kornite_saponite_gypsum_opal_terraces` 微地貌核与 `prometheiTerraReullVallisHarmakhisVallisDaoVallisScarpKorniteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,613 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,733 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidTurnbuckleFlangeNutPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双距翅雁宝相莲垂穗鎏金迦陵频伽嵌碧玺明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayWaveWasher_0..3`、`Rocket_FairingSolarWindTwoStreamInstabilityWaveAnalyzerSensorCowl_0..3` 与 `plumeTailDuotrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `4,250,960 B`，Cycles 发射台渲染图为 `893,677 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第四百二十阶段验收：诺亚奇斯高地/赫勒斯滂山脉/凯泽撞击坑/拉贝撞击坑坑内新月形沙丘场陡坎及氟利克闪石-皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中花兰螺栓法兰螺母双凤团花与琵琶捍拨双棉凫宝相莲花钿扣、及导流槽底槽槛抗摆碟形弹簧垫圈与第一激波胞格三十三阶剪切辉光（Stage 420，`Section 2.398`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `noachis_terra_hellespontus_montes_kaiser_crater_rabe_crater_scarp_fluoroleakeite_saponite_gypsum_opal_terraces` 微地貌核与 `noachisTerraHellespontusMontesKaiserCraterRabeCraterScarpFluoroleakeiteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,613 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,733 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidTurnbuckleFlangeNutPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双棉凫宝相莲垂穗鎏金迦陵频伽嵌摩根石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayBellevilleWasher_0..3`、`Rocket_FairingSolarWindFirehoseInstabilityWaveAnalyzerSensorCowl_0..3` 与 `cell1TretrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `4,261,492 B`，Cycles 渲染图为 `893,734 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第四百二十一阶段验收：阿吉尔平原/卡里图姆山脉/涅瑞伊得斯山脉/苏里乌斯谷冰湖蛇形丘-冰砾阜陡坎及铁利克闪石-皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中花兰螺栓盖形螺母双凤团花与琵琶捍拨双绿凫宝相莲花钿扣、及导流槽底槽槛抗摆隔圈环与第二激波胞格三十三阶剪切辉光（Stage 421，`Section 2.399`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `argyre_planitia_charitum_montes_nereidum_montes_surius_vallis_scarp_ferroleakeite_saponite_gypsum_opal_terraces` 微地貌核与 `argyrePlanitiaCharitumMontesNereidumMontesSuriusVallisScarpFerroleakeiteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,613 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,733 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidTurnbuckleDomeNutPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双绿凫宝相莲垂穗鎏金迦陵频伽嵌绿玉髓明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwaySpacerRing_0..3`、`Rocket_FairingSolarWindMirrorModeWaveAnalyzerSensorCowl_0..3` 与 `cell2TretrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `4,271,960 B`，Cycles 渲染图为 `893,645 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第四百二十二阶段验收：西壬高地/戈尔贡混沌/亚特兰蒂斯混沌/西摩伊斯丘群裂谷盆地氯化物干盐湖陡坎及斜铁锂闪石-皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中花兰螺栓盖形螺母双凤团花与琵琶捍拨双非洲凫宝相莲花钿扣、及导流槽底槽槛抗摆垫片板与第三激波胞格三十三阶剪切辉光（Stage 422，`Section 2.400`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `terra_sirenum_gorgonum_chaos_atlantis_chaos_simois_colles_scarp_clinoferriholmquistite_saponite_gypsum_opal_terraces` 微地貌核与 `terraSirenumGorgonumChaosAtlantisChaosSimoisCollesScarpClinoferriholmquistiteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,613 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,733 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidTurnbuckleDomeNutPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双非洲凫宝相莲垂穗鎏金迦陵频伽嵌金绿柱石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayShimPlate_0..3`、`Rocket_FairingSolarWindInertialAlfvenWaveAnalyzerSensorCowl_0..3` 与 `cell3TretrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `4,282,436 B`，Cycles 渲染图为 `893,722 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第四百二十三阶段验收：辛梅里亚高地/阿里阿德涅斯丘群/埃里达尼亚盆地/伊莱克特里斯山脉古湖海床热液丘陡坎及铁佩德里萨闪石-皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中花兰螺栓蝶形螺母双凤团花与琵琶捍拨双瘤鼻鸭宝相莲花钿扣、及导流槽底槽槛抗摆缓冲垫块与第四激波胞格三十三阶剪切辉光（Stage 423，`Section 2.401`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `terra_cimmeria_ariadnes_colles_eridania_basin_electris_montes_scarp_ferropedrizite_saponite_gypsum_opal_terraces` 微地貌核与 `terraCimmeriaAriadnesCollesEridaniaBasinElectrisMontesScarpFerropedriziteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,613 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,733 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidTurnbuckleWingNutPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双瘤鼻鸭宝相莲垂穗鎏金迦陵频伽嵌透绿柱石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayBumperPad_0..3`、`Rocket_FairingSolarWindFastMagnetosonicWaveAnalyzerSensorCowl_0..3` 与 `cell4TretrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `4,292,864 B`，Cycles 渲染图为 `893,760 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第四百二十四阶段验收：第勒尼安高地/米洛肖撞击坑/布里奥撞击坑/道斯撞击坑撞击坑冲积裙陡坎及氟佩德里萨闪石-皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中花兰螺栓蝶形螺母双凤团花与琵琶捍拨双紫肩鸭宝相莲花钿扣、及导流槽底槽槛抗摆止动块与第五激波胞格三十三阶剪切辉光（Stage 424，`Section 2.402`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `tyrrhena_terra_millochau_crater_briault_crater_dawes_crater_scarp_fluoropedrizite_saponite_gypsum_opal_terraces` 微地貌核与 `tyrrhenaTerraMillochauCraterBriaultCraterDawesCraterScarpFluoropedriziteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,613 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,733 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidTurnbuckleWingNutPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双紫肩鸭宝相莲垂穗鎏金迦陵频伽嵌红绿柱石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayStopBlock_0..3`、`Rocket_FairingSolarWindSlowMagnetosonicWaveAnalyzerSensorCowl_0..3` 与 `cell5TretrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `4,303,284 B`，Cycles 渲染图为 `893,603 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第四百二十五阶段验收：萨巴亚高地/惠更斯撞击坑/弗拉马利翁撞击坑/马尔斯撞击坑峰环巨角砾岩陡坎及高铁利克闪石-皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中花兰螺栓眼形螺母双凤团花与琵琶捍拨双白翅栖鸭宝相莲花钿扣、及导流槽底槽槛抗摆锚耳与第六激波胞格三十三阶剪切辉光（Stage 425，`Section 2.403`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `sabaea_terra_huygens_crater_flammarion_crater_marth_crater_scarp_ferrileakeite_saponite_gypsum_opal_terraces` 微地貌核与 `sabaeaTerraHuygensCraterFlammarionCraterMarthCraterScarpFerrileakeiteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,613 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,733 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidTurnbuckleEyeNutPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双白翅栖鸭宝相莲垂穗鎏金迦陵频伽嵌深蓝绿柱石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayAnchorLug_0..3`、`Rocket_FairingSolarWindLangmuirWaveAnalyzerSensorCowl_0..3` 与 `cell6TretrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `4,313,696 B`，Cycles 渲染图为 `893,687 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第四百二十六阶段验收：子午线平原/维多利亚撞击坑/奋进撞击坑/圣玛丽亚撞击坑交错层理风成砂岩陡坎及亚铁高铁利克闪石-皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中花兰螺栓眼形螺母双凤团花与琵琶捍拨双麝香栖鸭宝相莲花钿扣、及导流槽底槽槛抗摆U形夹支架与第七激波胞格三十三阶剪切辉光（Stage 426，`Section 2.404`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `meridiani_planum_victoria_crater_endeavour_crater_santa_maria_crater_scarp_ferroferrileakeite_saponite_gypsum_opal_terraces` 微地貌核与 `meridianiPlanumVictoriaCraterEndeavourCraterSantaMariaCraterScarpFerroferrileakeiteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,613 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,733 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidTurnbuckleEyeNutPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双麝香栖鸭宝相莲垂穗鎏金迦陵频伽嵌铯绿柱石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayClevisBracket_0..3`、`Rocket_FairingSolarWindIonAcousticWaveAnalyzerSensorCowl_0..3` 与 `cell7TretrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `4,324,168 B`，Cycles 渲染图为 `893,809 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第四百二十七阶段验收：古瑟夫撞击坑/哥伦比亚丘陵/赫斯本德山/本垒板水火山碎屑陡坎及氟利克闪石-皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中花兰螺栓T形螺母双凤团花与琵琶捍拨双环颈栖鸭宝相莲花钿扣、及导流槽底槽槛抗摆垫眼耳与第八激波胞格三十三阶剪切辉光（Stage 427，`Section 2.405`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `gusev_crater_columbia_hills_husband_hill_home_plate_scarp_fluoroleakeite_saponite_gypsum_opal_terraces` 微地貌核与 `gusevCraterColumbiaHillsHusbandHillHomePlateScarpFluoroleakeiteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,613 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,733 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidTurnbuckleTeeNutPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双环颈栖鸭宝相莲垂穗鎏金迦陵频伽嵌铁绿柱石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayPadeyeLug_0..3`、`Rocket_FairingSolarWindWhistlerModeWaveAnalyzerSensorCowl_0..3` 与 `cell8TretrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `4,334,612 B`，Cycles 渲染图为 `893,763 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第四百二十八阶段验收：盖尔撞击坑/埃奥利斯山/和平谷/法拉谷河湖相泥岩陡坎及含钾利克闪石-皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中花兰螺栓T形螺母双凤团花与琵琶捍拨双巴西栖鸭宝相莲花钿扣、及导流槽底槽槛抗摆耳轴座与羽流末端三十三阶剪切辉光（Stage 428，`Section 2.406`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `gale_crater_aeolis_mons_peace_vallis_farah_vallis_scarp_potassicleakeite_saponite_gypsum_opal_terraces` 微地貌核与 `galeCraterAeolisMonsPeaceVallisFarahVallisScarpPotassicleakeiteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,613 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,733 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidTurnbuckleTeeNutPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双巴西栖鸭宝相莲垂穗鎏金迦陵频伽嵌钪绿柱石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayTrunnionBlock_0..3`、`Rocket_FairingSolarWindAlfvenWaveAnalyzerSensorCowl_0..3` 与 `plumeTailTretrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `4,345,036 B`，Cycles 渲染图为 `893,758 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第四百二十九阶段验收：耶泽罗撞击坑/内雷特瓦谷/萨瓦谷/贝尔瓦撞击坑三角洲前积砾岩陡坎及含钾铁利克闪石-皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中花兰螺栓耳螺母双凤团花与琵琶捍拨双银灰栖鸭宝相莲花钿扣、及导流槽底槽槛抗摆轴承座盖与第一激波胞格三十四阶剪切辉光（Stage 429，`Section 2.407`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `jezero_crater_neretva_vallis_sava_vallis_belva_crater_scarp_potassicferrileakeite_saponite_gypsum_opal_terraces` 微地貌核与 `jezeroCraterNeretvaVallisSavaVallisBelvaCraterScarpPotassicferrileakeiteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,613 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,733 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidTurnbuckleEarNutPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双银灰栖鸭宝相莲垂穗鎏金迦陵频伽嵌铯绿柱石红宝明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayPillowCap_0..3`、`Rocket_FairingSolarWindMagnetosonicWaveAnalyzerSensorCowl_0..3` 与 `cell1QuattuortrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `4,355,484 B`，Cycles 渲染图为 `893,764 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第四百三十阶段验收：莫尔斯谷/奥克西亚平原/库贡谷/小山撞击坑成土粘土古土壤陡坎及含钾氟利克闪石-皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中花兰螺栓耳螺母双凤团花与琵琶捍拨双普纳栖鸭宝相莲花钿扣、及导流槽底槽槛抗摆轴环衬套与第二激波胞格三十四阶剪切辉光（Stage 430，`Section 2.408`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `mawrth_vallis_oxia_planum_coogoon_vallis_oyama_crater_scarp_potassicfluoroleakeite_saponite_gypsum_opal_terraces` 微地貌核与 `mawrthVallisOxiaPlanumCoogoonVallisOyamaCraterScarpPotassicfluoroleakeiteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,613 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,733 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidTurnbuckleEarNutPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双普纳栖鸭宝相莲垂穗鎏金迦陵频伽嵌铯冰晶绿柱石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayCollarInsert_0..3`、`Rocket_FairingSolarWindEMICWaveAnalyzerSensorCowl_0..3` 与 `cell2QuattuortrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `4,365,856 B`，Cycles 渲染图为 `893,930 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第四百三十一阶段验收：尼利槽沟/大瑟提斯高原/哈格雷夫斯撞击坑/耶泽罗流域地堑橄榄石-碳酸盐陡坎及含钾亚铁-铁利克闪石-皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中花兰螺栓凸耳螺母双凤团花与琵琶捍拨双霍氏栖鸭宝相莲花钿扣、及导流槽底槽槛抗摆衬套套筒与第三激波胞格三十四阶剪切辉光（Stage 431，`Section 2.409`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `nili_fossae_syrtis_major_planum_hargraves_crater_jezero_watershed_scarp_potassicferroferrileakeite_saponite_gypsum_opal_terraces` 微地貌核与 `niliFossaeSyrtisMajorPlanumHargravesCraterJezeroWatershedScarpPotassicferroferrileakeiteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,613 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,733 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidTurnbuckleLugNutPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双霍氏栖鸭宝相莲垂穗鎏金迦陵频伽嵌玫瑰铯绿柱石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayBushingSleeve_0..3`、`Rocket_FairingSolarWindLowerHybridWaveAnalyzerSensorCowl_0..3` 与 `cell3QuattuortrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `4,376,324 B`，Cycles 渲染图为 `893,880 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第四百三十二阶段验收：珍珠高地/霍尔登撞击坑/埃伯斯瓦尔德撞击坑/乌兹博伊谷决口扇巨角砾岩陡坎及含钾锰利克闪石-皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中花兰螺栓凸耳螺母双凤团花与琵琶捍拨双环颈栖鸭宝相莲花钿扣、及导流槽底槽槛抗摆推力垫圈与第四激波胞格三十四阶剪切辉光（Stage 432，`Section 2.410`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `margaritifer_terra_holden_crater_eberswalde_crater_uzboi_vallis_scarp_potassicmanganoleakeite_saponite_gypsum_opal_terraces` 微地貌核与 `margaritiferTerraHoldenCraterEberswaldeCraterUzboiVallisScarpPotassicmanganoleakeiteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,613 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,733 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidTurnbuckleLugNutPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双环颈栖鸭宝相莲垂穗鎏金迦陵频伽嵌马氏深蓝绿柱石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayThrustWasher_0..3`、`Rocket_FairingSolarWindUpperHybridWaveAnalyzerSensorCowl_0..3` 与 `cell4QuattuortrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `4,386,784 B`，Cycles 渲染图为 `893,940 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第四百三十三阶段验收：克桑忒高地/沙尔巴塔纳谷/西穆德谷/蒂乌谷洪流瀑布陡坎及含钾锰铁利克闪石-皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中花兰螺栓盖形螺母双凤团花与琵琶捍拨双巴西栖鸭宝相莲花钿扣、及导流槽底槽槛抗摆推力环与第五激波胞格三十四阶剪切辉光（Stage 433，`Section 2.411`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `xanthe_terra_shalbatana_vallis_simud_valles_tiu_valles_scarp_potassicmanganoferrileakeite_saponite_gypsum_opal_terraces` 微地貌核与 `xantheTerraShalbatanaVallisSimudVallesTiuVallesScarpPotassicmanganoferrileakeiteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,613 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,733 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidTurnbuckleDomeNutPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双巴西栖鸭宝相莲垂穗鎏金迦陵频伽嵌钪绿柱石天蓝宝明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayThrustRing_0..3`、`Rocket_FairingSolarWindBernsteinWaveAnalyzerSensorCowl_0..3` 与 `cell5QuattuortrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `4,397,180 B`，Cycles 渲染图为 `894,006 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第四百三十四阶段验收：克律塞平原/阿瑞斯谷/卡塞谷/玛雅谷洪流巨砾沙洲陡坎及含钠铁佩德里萨闪石-皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中花兰螺栓盖形螺母双凤团花与琵琶捍拨双莱桑栖鸭宝相莲花钿扣、及导流槽底槽槛抗摆挡圈与第六激波胞格三十四阶剪切辉光（Stage 434，`Section 2.412`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `chryse_planitia_ares_vallis_kasei_valles_maja_valles_scarp_sodicferripedrizite_saponite_gypsum_opal_terraces` 微地貌核与 `chrysePlanitiaAresVallisKaseiVallesMajaVallesScarpSodicferripedriziteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,613 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,733 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidTurnbuckleDomeNutPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双莱桑栖鸭宝相莲垂穗鎏金迦陵频伽嵌铁钪绿柱石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayRetainingRing_0..3`、`Rocket_FairingSolarWindKelvinHelmholtzWaveAnalyzerSensorCowl_0..3` 与 `cell6QuattuortrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `4,407,648 B`，Cycles 渲染图为 `894,111 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第四百三十五阶段验收：坦佩高地/卡塞谷/萨克拉桌山/拉贝亚蒂斯堑沟干瀑河道陡坎及含钠亚铁铁佩德里萨闪石-皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中花兰螺栓滚花螺母双凤团花与琵琶捍拨双夏威夷鸭宝相莲花钿扣、及导流槽底槽槛抗摆弹性卡环与第七激波胞格三十四阶剪切辉光（Stage 435，`Section 2.413`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `tempe_terra_kasei_valles_sacra_mensa_labeatis_fossae_scarp_sodicferroferripedrizite_saponite_gypsum_opal_terraces` 微地貌核与 `tempeTerraKaseiVallesSacraMensaLabeatisFossaeScarpSodicferroferripedriziteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,613 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,733 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidTurnbuckleKnurledNutPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双夏威夷鸭宝相莲垂穗鎏金迦陵频伽嵌铯绿柱石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayCirclipRing_0..3`、`Rocket_FairingSolarWindMirrorInstabilityWaveAnalyzerSensorCowl_0..3` 与 `cell7QuattuortrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `4,418,100 B`，Cycles 渲染图为 `894,073 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第四百三十六阶段验收：阿西达利亚平原/罗蒙诺索夫撞击坑/库诺夫斯基撞击坑/坦佩堑沟泥火山锥陡坎及含铁氟佩德里萨闪石-皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中花兰螺栓滚花螺母双凤团花与琵琶捍拨双斑鸭宝相莲花钿扣、及导流槽底槽槛抗摆轴用卡簧与第八激波胞格三十四阶剪切辉光（Stage 436，`Section 2.414`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `acidalia_planitia_lomonosov_crater_kunowsky_crater_tempe_fossae_scarp_ferrifluoropedrizite_saponite_gypsum_opal_terraces` 微地貌核与 `acidaliaPlanitiaLomonosovCraterKunowskyCraterTempeFossaeScarpFerrifluoropedriziteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,613 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,733 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidTurnbuckleKnurledNutPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双斑鸭宝相莲垂穗鎏金迦陵频伽嵌无色铯绿柱石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwaySnapRing_0..3`、`Rocket_FairingSolarWindFirehoseWaveInstabilityAnalyzerSensorCowl_0..3` 与 `cell8QuattuortrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `4,428,524 B`，Cycles 渲染图为 `893,730 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第四百三十七阶段验收：乌托邦平原/米撞击坑/利奥撞击坑/赫淮斯托斯堑沟扇形凹陷陡坎及含亚铁氟佩德里萨闪石-皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中花兰螺栓开槽螺母双凤团花与琵琶捍拨双美洲黑鸭宝相莲花钿扣、及导流槽底槽槛抗摆卡簧环与尾焰末端三十四阶剪切辉光（Stage 437，`Section 2.415`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `utopia_planitia_mie_crater_lyot_crater_hephaestus_fossae_scarp_ferrofluoropedrizite_saponite_gypsum_opal_terraces` 微地貌核与 `utopiaPlanitiaMieCraterLyotCraterHephaestusFossaeScarpFerrofluoropedriziteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,613 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,733 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidTurnbuckleSlottedNutPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双美洲黑鸭宝相莲垂穗鎏金迦陵频伽嵌玫瑰绿柱石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayClipRing_0..3`、`Rocket_FairingSolarWindTearingInstabilityWaveAnalyzerSensorCowl_0..3` 与 `plumeTailQuattuortrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `4,438,948 B`，Cycles 渲染图为 `893,840 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第四百三十八阶段验收：埃律西昂平原/阿萨巴斯卡谷/刻耳柏洛斯堑沟/马尔特谷板状熔岩筏陡坎及含亚铁铁氟利克闪石-皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中花兰螺栓开槽螺母双凤团花与琵琶捍拨双太平洋黑鸭宝相莲花钿扣、及导流槽底槽槛抗摆E型卡簧与第一激波胞格三十五阶剪切辉光（Stage 438，`Section 2.416`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `elysium_planitia_athabasca_valles_cerberus_fossae_marte_vallis_scarp_ferroferrifluoroleakeite_saponite_gypsum_opal_terraces` 微地貌核与 `elysiumPlanitiaAthabascaVallesCerberusFossaeMarteVallisScarpFerroferrifluoroleakeiteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,613 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,733 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidTurnbuckleSlottedNutPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双太平洋黑鸭宝相莲垂穗鎏金迦陵频伽嵌碱绿柱石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayERing_0..3`、`Rocket_FairingSolarWindDriftInstabilityWaveAnalyzerSensorCowl_0..3` 与 `cell1QuintrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `4,449,364 B`，Cycles 渲染图为 `893,897 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第四百三十九阶段验收：亚马逊平原/美杜莎堑沟/戈尔迪脊/欧墨尼得斯脊熔结凝灰岩雅丹陡坎及含钠锰利克闪石-皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中花兰螺栓法兰螺母双凤团花与琵琶捍拨双菲律宾鸭宝相莲花钿扣、及导流槽底槽槛抗摆C型卡簧与第二激波胞格三十五阶剪切辉光（Stage 439，`Section 2.417`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `amazonis_planitia_medusae_fossae_gordii_dorsum_eumenides_dorsum_scarp_sodicmanganoleakeite_saponite_gypsum_opal_terraces` 微地貌核与 `amazonisPlanitiaMedusaeFossaeGordiiDorsumEumenidesDorsumScarpSodicmanganoleakeiteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,613 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,733 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidTurnbuckleFlangedNutPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双菲律宾鸭宝相莲垂穗鎏金迦陵频伽嵌铬绿柱石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayCRing_0..3`、`Rocket_FairingSolarWindKinkInstabilityWaveAnalyzerSensorCowl_0..3` 与 `cell2QuintrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `4,459,772 B`，Cycles 渲染图为 `893,642 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第四百四十阶段验收：阿卡迪亚平原/弗勒格拉山脉/埃里伯斯山脉/阿刻戎堑沟舌状碎屑裙陡坎及含钠锰铁利克闪石-皂石-石膏-蛋白石阶地、佛龛券顶外侧拱肩拉杆中花兰螺栓法兰螺母双凤团花与琵琶捍拨双梅勒鸭宝相莲花钿扣、及导流槽底槽槛抗摆挡圈与第三激波胞格三十五阶剪切辉光（Stage 440，`Section 2.418`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `arcadia_planitia_phlegra_montes_erebus_montes_acheron_fossae_scarp_sodicmanganoferrileakeite_saponite_gypsum_opal_terraces` 微地貌核与 `arcadiaPlanitiaPhlegraMontesErebusMontesAcheronFossaeScarpSodicmanganoferrileakeiteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,613 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,733 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownOuterSpandrelTieMidTurnbuckleFlangedNutPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双梅勒鸭宝相莲垂穗鎏金迦陵频伽嵌钒绿柱石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwayRetainingRing_0..3`、`Rocket_FairingSolarWindSausageInstabilityWaveAnalyzerSensorCowl_0..3` 与 `cell3QuintrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `4,470,208 B`，Cycles 渲染图为 `893,883 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
+---
+
+## 第四百四十一阶段验收：索利斯高原/叙利亚高原/西奈高原/陶玛西亚高原皱脊陡坎及含钾铁铁利克闪石-皂石-石膏-蛋白石阶地、佛龛券顶内侧拱肩拉杆中花兰螺栓盖形螺母双凤团花与琵琶捍拨双黄嘴鸭宝相莲花钿扣、及导流槽底槽槛抗摆螺旋挡圈与第四激波胞格三十五阶剪切辉光（Stage 441，`Section 2.419`）
+
+1. **三大核心 Demo 与 Blender 4.5 MCP 资产更新**：
+   - **Astra 火星科学造景（`demos/astra-planet/`）**：在 `scripts/blender/build-astra-assets.mjs` 与 `PlanetScene.ts` 中新增 `solis_planum_syria_planum_sinai_planum_thaumasia_planum_scarp_potassicferroferrileakeite_saponite_gypsum_opal_terraces` 微地貌核与 `solisPlanumSyriaPlanumSinaiPlanumThaumasiaPlanumScarpPotassicferroferrileakeiteSaponiteGypsumOpalTerrace` 反照率色带，`mars-micro-normal.png` 烘焙产物为 `192,613 B`，Cycles 轨道渲染图 `docs/evidence/blender-astra-cycles-render.png` 为 `1,094,733 B`。
+   - **敦煌莫高窟飞天（`demos/feitian/`）**：在 `scripts/blender/build-feitian-assets.mjs` 与 `demos/feitian/main.ts` 中新增 `NicheArchCrownInnerSpandrelTieMidTurnbuckleAcornNutPhoenixBoss_0..3_L/R`（8 枚）及飞天琵琶捍拨双黄嘴鸭宝相莲垂穗鎏金迦陵频伽嵌钪绿柱石明珠花钿扣，`grotto-relief-bake.png` 为 `470,439 B`，Cycles 展厅渲染图为 `1,601,845 B`。
+   - **大圆框白色火箭发射（`demos/rocket-launch/`）**：在 `scripts/blender/build-rocket-assets.mjs` 与 `demos/rocket-launch/main.ts` 中新增 `Pad_ExhaustPlenumFloorTroughSillSwaySpiralRing_0..3`、`Rocket_FairingSolarWindTwoStreamInstabilityWaveAnalyzerSensorCowl_0..3` 与 `cell4QuintrigintPrandtlShearGlow`，`rocket-kit.glb` 为 `4,480,664 B`，Cycles 渲染图为 `893,721 B`。
+2. **全量自动化验证结果**：
+   - `npm run check && npm --prefix demos/astra-planet run check` 全部通过（29 项根测试 + 20 项 Astra 单元测试 + 6 项 Playwright E2E 测试 100% 通过，帧率与包体预算全部达标）。
+
