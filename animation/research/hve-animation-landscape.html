@@ -1,4 +1,143 @@
-<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Visual Lab Research</title><script>(()=>{const param=new URLSearchParams(location.search).get("scoutTheme");const theme=param||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.setAttribute("data-theme",theme)})();</script><link rel="stylesheet" href="../assets/theme.css"><main class="shell"><a href="../">← 实验室</a><pre style="white-space:pre-wrap;line-height:1.9;font:inherit"># Claude HVE Harness 热门动画与交互视觉全景调研：技术范式、数学原语与本仓映射
+<!doctype html>
+<html lang="zh-CN" data-theme="dark" data-reading-shell="document"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Claude HVE Harness 热门动画与交互视觉全景调研：技术范式、数学原语与本仓映射 — Qi Chen</title><meta name="reading-migration" content="R6"><link rel="stylesheet" href="../../assets/reading-shell.css"><script src="../../assets/reading-shell.js"></script></head><body class="reading-page"><a class="reading-skip" href="#reading-main">跳至正文</a><header class="reading-header"><a class="reading-brand" href="../../zh.html"><span class="reading-mark">q<span>.</span></span><span>Qi Chen<small>@turbo998 · 工程手记</small></span></a><div class="reading-controls"><a data-reading-language="" href="hve-animation-landscape.en.html" hreflang="en" lang="en">EN</a><a data-reading-theme="light" href="?theme=light" aria-label="浅色主题">☀</a><a data-reading-theme="dark" href="?theme=dark" aria-label="深色主题">◐</a><details><summary aria-label="导航">☰</summary><nav><a href="../../zh.html">首页</a><a href="../../studio/zh-index.html">Studio</a><a href="../../zh-writing.html">文章</a><a href="../../zh-about.html">关于</a></nav></details></div></header><aside id="reading-language-note" class="reading-language-note">保留原文。可打开独立英文版本；不同版本的内容可能不同。</aside><main id="reading-main" tabindex="-1" class="reading-document"><a class="reading-context" href="../../studio/zh-animation.html">← Studio / animation</a><div class="shell"><a href="../">← 实验室</a><article class="reading-markdown"><h1 id="claude-hve-harness-热门动画与交互视觉全景调研：技术范式、数学原语与本仓映射">Claude HVE Harness 热门动画与交互视觉全景调研：技术范式、数学原语与本仓映射</h1>
+<p>本文档基于 2026 年社区最新收录的 <strong>Claude HVE Harness 视觉与动效精选集</strong>（涵盖 <code>awesome-claude-Frontier-5.5</code> 1,034 条真实作品中的 317 个精选案例，以及 <code>magiccreator-ai/awesome-claude-Frontier-5-5-demos</code> 24 个深度复核项目），对最新最热的纯代码动画、Three.js/WebGPU 交互场景、光学/物理实验室及 Blender MCP 混合造景案例进行系统性拆解，并将提炼出的核心技法直接映射至本实验室的三个核心演示（<strong>风起壁间 · 敦煌飞天</strong>、<strong>Astra · 火星科学造景</strong>、<strong>Launch · 白色火箭发射场</strong>）。</p>
+<hr>
+<h2 id="1-社区-317-精选案例分类与热度分布">1. 社区 317 精选案例分类与热度分布</h2>
+<p>根据公开作品库按领域与社区点赞数（❤ Likes）的统计，高热度 Frontier 动画与交互作品集中于以下七大类别：</p>
+<table>
+<thead>
+<tr>
+<th>分类维度</th>
+<th>代表性高赞案例（含社区热度）</th>
+<th>核心渲染栈与技术特征</th>
+<th>对应本仓核心演进方向</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>1. 交互式光学与物理模拟实验室</strong> (<code>Interactive Viz &amp; Simulations</code>)</td>
+<td>• <strong>交互式相机对焦实验室</strong> (<em>Interactive Camera-Focus Lens Lab</em>, ❤ 16.2k)<br>• <strong>东京末班车动态地图</strong> (<em>Tokyo Last-Train Map</em>, ❤ 4.3k)<br>• <strong>电磁场可视化</strong> (<em>Electromagnetic Field Visualizer</em>, ❤ 2.8k)<br>• <strong>交互式 3D 数据中心热流仿真</strong> (<em>3D Datacenter Thermal</em>, ❤ 2.1k)</td>
+<td>真实物理/光学公式驱动交互（薄透镜方程、弥散圆 CoC、矢量场流线积分）、实时参数联动与高对比仪表盘 UI</td>
+<td><strong>Rocket Launch</strong>（圆形舷窗光学消色差光晕与点源散景）、<strong>Astra</strong>（行星边缘瑞利散射与极冠微晶高光）</td>
+</tr>
+<tr>
+<td><strong>2. 纯代码动效与宣传片</strong> (<code>Motion Graphics &amp; Launch Films</code>)</td>
+<td>• <strong>动效设计开源提示模板</strong> (<em>Code-only UI Motion Design</em>, ❤ 12.1k)<br>• <strong>12 台电脑协同发布片</strong> (❤ 4.6k)<br>• <strong>动效制作原理讲解：900 帧渲染管线</strong> (❤ 2.6k)<br>• <strong>16 个三步法动效教程</strong> / <strong>Tesseract 1600+ 图层动效</strong></td>
+<td>时间纯函数 $F(t)$ 驱动每一帧、二阶弹簧阻尼缓动、多机位推拉摇移（Dolly / Pan / Roll）无缝衔接</td>
+<td><strong>Rocket Launch</strong>（待命→点火→离台→跨音速激波→高空爬升分镜运镜）、<strong>Feitian</strong>（四幕状态机缓动）</td>
+</tr>
+<tr>
+<td><strong>3. 东方美学与程序化自然箱庭</strong> (<code>Three.js &amp; Cultural Scenes</code>)</td>
+<td>• <strong>敦煌莫高窟飞天</strong> (<em>HVE Harness Feitian</em>, Canvas 2D 矿物壁画)<br>• <strong>落樱溪谷泛舟</strong> (<em>Sakura River Valley Boat Scene</em>)<br>• <strong>《桃花源记》Three.js 重制</strong> / <strong>日式庭院锦鲤池</strong><br>• <strong>实时海岸与 3D 水体模拟</strong> / <strong>四季小岛纯代码像素</strong></td>
+<td>多层离屏 Canvas 矿物肌理烘焙、Verlet/PBD 约束丝带、丁达尔体积光束（Tyndall Beams）、金箔微尘与水面焦散</td>
+<td><strong>Feitian</strong>（莫高窟窟顶天光丁达尔斜射光束、悬浮金箔微尘、复瓣莲花花蕊旋转飘落、泥金妆造）</td>
+</tr>
+<tr>
+<td><strong>4. Blender MCP + 实时 3D 混合造景</strong> (<code>Blender &amp; Engine Modeling</code>)</td>
+<td>• <strong>五模型 3D 打印承重桥梁</strong> (❤ 8.4k)<br>• <strong>5,112 物体新干线列车（含 430 座椅）</strong><br>• <strong>1906 年旧金山市场街历史复原</strong><br>• <strong>颐和园佛香阁 / 港口小镇漫游（Blender + Three.js）</strong></td>
+<td>通过 <code>bpy</code>/<code>bmesh</code> 编写参数化生成脚本，利用 Cycles 烘焙法线/AO/浮雕贴图或导出模块化 <code>.glb</code>，前端按材质合批渲染</td>
+<td><strong>全仓三大 Demo 已全面接入 Blender 4.5.10 LTS + <code>blender-mcp</code> 管线</strong>（GLB 硬表面套件 + Cycles 烘焙）</td>
+</tr>
+<tr>
+<td><strong>5. 太空探索与多星体仿真</strong> (<code>Space &amp; Planetary Worlds</code>)</td>
+<td>• <strong>无人深空式无缝星系探索</strong> (<em>Seamless No Man's Sky-style Galaxy</em>, ❤ 4.0k)<br>• <strong>可探索虚构太阳系</strong> (<em>Explorable Imaginary Solar System</em>)<br>• <strong>《A Cosmic Journey》太空叙事短片</strong></td>
+<td>球面高度场 LOD/法线重算、大气散射边缘光（Fresnel Limb Glow）、程序化星野与晨昏线过渡</td>
+<td><strong>Astra Planet Lab</strong>（NASA MOLA 实测地形 + Blender 微地貌法线 + 晨昏线大气散射 + 极高海拔霜晶）</td>
+</tr>
+<tr>
+<td><strong>6. 音乐可视化与 Demoscene</strong> (<code>Music, MVs &amp; Demoscene</code>)</td>
+<td>• <strong>CUDA 内核优化音乐视频</strong> (❤ 2.4k)<br>• <strong>280KB 单 HTML 自我展示 Demoscene</strong><br>• <strong>《Hop Hop, Nope Nope》纯函数 Canvas 2D MV</strong><br>• <strong>十三支纯代码合成音乐短片 (<code>Passacaglia</code>)</strong></td>
+<td>零外部音频文件，纯 WebAudio API（振荡器泛音列 + 双二阶滤波器 + 卷积混响）与画面节拍严格同步</td>
+<td><strong>Feitian</strong>（五声宫调泛音古琴/洞箫合成与揭壁钟磬声）、<strong>Rocket Launch</strong>（点火低频轰鸣与气动噪声）</td>
+</tr>
+<tr>
+<td><strong>7. 全息卡片与微交互 UI</strong> (<code>Web &amp; Holographic UI</code>)</td>
+<td>• <strong>2D/3D 深度全息卡片</strong> (<em>Holographic Trading Card</em>, ❤ 1.9k)<br>• <strong>可交互动态重算幻灯片</strong> (❤ 2.3k)</td>
+<td>视角相关的薄膜干涉/金属光泽渐变、指针视差偏移与高对比主题自适应</td>
+<td><strong>Feitian</strong>（四尊飞天泥金背光与织金领缘动态视角辉光）、<strong>GVL Portal</strong>（Clawpilot 双主题自适应）</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="2-四大高赞代表作核心算法拆解">2. 四大高赞代表作核心算法拆解</h2>
+<h3 id="21-《交互式相机对焦实验室》（❤-162k）：薄透镜光学与弥散圆（coc）光斑模型">2.1 《交互式相机对焦实验室》（❤ 16.2k）：薄透镜光学与弥散圆（CoC）光斑模型</h3>
+<p>该作品之所以在社区获得最高热度，在于它没有使用笼统的 CSS <code>filter: blur()</code>，而是用可交互的几何光学方程驱动每一束光线与景深光斑：</p>
+<ol>
+<li><strong>薄透镜高斯成像公式</strong>：
+$$\frac{1}{f} = \frac{1}{d_o} + \frac{1}{d_i}$$
+其中 $f$ 为焦距，$d_o$ 为物距，$d_i$ 为像距。</li>
+<li><strong>弥散圆直径（Circle of Confusion, $\text{CoC}$）</strong>：
+对于孔径光圈 $D = f / N$（$N$ 为 f-number 光圈值），当物体位于距离 $d$ 而对焦平面位于 $d_f$ 时，传感器上的弥散圆直径为：
+$$\text{CoC}(d) = \left| \frac{d - d_f}{d} \right| \cdot \frac{f^2}{N \cdot (d_f - f)}$$</li>
+<li><strong>非球面镜头眩光（Anamorphic Streak &amp; Aperture Ring）</strong>：
+强点光源（如火箭发动机喷口白炽核心或洞窟执灯火芯）在圆形观景窗或镜头孔径边缘产生水平拉伸的变形宽银幕眩光（Anamorphic Flare）与多边形光圈衍射星芒。</li>
+</ol>
+<blockquote>
+<p><strong>本仓落地映射</strong>：</p>
+<ul>
+<li>在 <code>demos/rocket-launch/</code> 的大圆观景舷窗中，针对点火与升空阶段的喷口白炽核心，引入随推力包络动态响应的<strong>舷窗光学光晕与水平宽银幕眩光带（Optical Porthole Lens Flare &amp; Shockwave Condensation Ring）</strong>；</li>
+<li>在 <code>demos/astra-planet/</code> 的 <code>realistic</code> 模式下，增强行星边缘大气切线散射（Fresnel Optical Limb）与高海拔山脊微晶高光响应。</li>
+</ul>
+</blockquote>
+<h3 id="22-《动效设计开源模板》（❤-121k）与《900-帧渲染原理》（❤-26k）：时间轴编排与弹簧运镜">2.2 《动效设计开源模板》（❤ 12.1k）与《900 帧渲染原理》（❤ 2.6k）：时间轴编排与弹簧运镜</h3>
+<p>高赞纯代码动效摒弃了生硬的线性插值（<code>lerp</code>），采用<strong>二阶临界阻尼弹簧（Critically Damped Spring）</strong>与<strong>非对称分段缓动曲线</strong>：</p>
+<ol>
+<li><strong>分阶段叙事状态机（Narrative Phase Envelope）</strong>：
+每个动效场景划分为明确的叙事幕（如：<code>蓄势 Anticipation</code> → <code>爆发 Impulse</code> → <code>巡航 Cruise</code> → <code>余韵 Settle</code>），每个状态拥有独立的相机推拉速率与视野（FOV / Ortho Zoom）微调。</li>
+<li><strong>冲击波与次级物理响应（Secondary Motion）</strong>：
+主动作发生瞬间（如飞天揭色离壁、火箭离台瞬间 $T \in [2.6\text{s}, 4.5\text{s}]$ 或跨音速阶段 $T \in [5.2\text{s}, 7.0\text{s}]$），触发环境的次级几何响应——例如发射台地面环形声学冲击波纹（Acoustic Mach Shock Rings）或箭体跨音速水汽凝结锥（Prandtl-Glauert Vapor Cone）。</li>
+</ol>
+<blockquote>
+<p><strong>本仓落地映射</strong>：</p>
+<ul>
+<li>在 <code>demos/rocket-launch/</code> 中，新增离台声学地面扩波环与跨音速水汽凝结云环（Vapor Cone），全部预分配于静态几何并由时间包络纯函数控制透明度与缩放，零动态内存分配、零额外材质着色器编译开销。</li>
+</ul>
+</blockquote>
+<h3 id="23-《敦煌莫高窟飞天》与《落樱溪谷--桃花源记》：东方矿物美学与丁达尔体积光">2.3 《敦煌莫高窟飞天》与《落樱溪谷 / 桃花源记》：东方矿物美学与丁达尔体积光</h3>
+<p>东方美学类高赞作品的关键在于<strong>“克制的色彩饱和度 + 丰富的材质肌理层次 + 空间空气感”</strong>：</p>
+<ol>
+<li><strong>三层空间纵深（背景壁龛 → 空气光束层 → 前景动态角色与花雨）</strong>：<ul>
+<li>底层：风化砂岩、裂纹地仗层与 Blender Cycles 正交烘焙的四龛藻井立体浮雕（<code>grotto-relief-bake.png</code>）。</li>
+<li>中间空气层：<strong>洞窟高窗斜射的丁达尔体积光束（Grotto Tyndall Light Shafts）</strong>与在光束中缓慢浮沉的<strong>金箔微尘（Gold-Leaf Dust Motes）</strong>。</li>
+<li>前景层：Verlet 约束双飘带、二倍超采样工笔仕女与带金色花蕊丝线的复瓣散花。</li>
+</ul>
+</li>
+<li><strong>零逐帧渐变分配原则</strong>：
+所有丁达尔光束与石窟暗角均在 <code>buildWall()</code> 静态壁面缓存中一次性合成；前景花瓣与金尘使用预渲染离屏图块配合 <code>ctx.setTransform()</code> 批量矩阵绘制。</li>
+</ol>
+<blockquote>
+<p><strong>本仓落地映射</strong>：</p>
+<ul>
+<li>在 <code>demos/feitian/</code> 的 <code>buildWall()</code> 中叠加自窟顶藻井斜向洒入四座佛龛的暖金丁达尔光束（Tyndall Light Beams）与石窟金粉微尘肌理；升级离屏花瓣图块为带金丝花蕊的双层复瓣莲花，在不增加每帧 Draw 开销的前提下显著提升壁画纵深与盛唐金碧质感。</li>
+</ul>
+</blockquote>
+<h3 id="24-《新干线-5112-物体》与《颐和园佛香阁》：blender-mcp-程序化建模与烘焙准则">2.4 《新干线 5,112 物体》与《颐和园佛香阁》：Blender MCP 程序化建模与烘焙准则</h3>
+<p>社区 Blender + HVE Harness 标杆案例表明，大模型直接手写 Three.js <code>BoxGeometry</code> / <code>CylinderGeometry</code> 容易陷入“积木感”，而通过 <strong>Blender Python (<code>bpy</code> / <code>bmesh</code>) + Cycles 烘焙</strong> 可以获得真正的工业级与雕刻级细节：</p>
+<ol>
+<li><strong>高模烘焙、低模实时（High-to-Low Poly Bake）</strong>：在 Blender 中构建微米级陨石坑、玄武岩断崖与石窟莲瓣浮雕，通过 Cycles 烘焙为切线空间法线/凹腔贴图（<code>mars-micro-normal.png</code>）或正交光照贴图（<code>grotto-relief-bake.png</code>）。</li>
+<li><strong>按材质静态合批（Per-Material Static Batching）</strong>：导出的 <code>.glb</code> 资产在 Three.js 加载后，将同一 PBR 材质的静态网格合并为单个 <code>BufferGeometry</code>，将数百个零件压降至 <code>&lt; 30</code> 次 Draw Calls。</li>
+</ol>
+<hr>
+<h2 id="3-高质量动画-demo-的-prompt-与工程复现蓝图">3. 高质量动画 Demo 的 Prompt 与工程复现蓝图</h2>
+<p>结合社区开源的高赞 Prompt 模板与本仓实践，构建“Frontier 级”高审美交互动画的标准工程蓝图如下：</p>
+<pre><code class="language-text">[角色与审美基调]
+你是一位兼具工业设计、古典艺术史与实时图形学功底的造景工程师。
+拒绝廉价的高饱和霓虹渐变与玩具感几何拼接；使用克制、有历史或科学出处的色彩体系。
+
+[五层实现架构]
+1. 静态基底与离线烘焙层：使用 Blender MCP (`bpy`/`bmesh` + Cycles) 生成高精度硬表面 `.glb`、微表面法线或浮雕光照贴图；
+2. 物理与数学核心层：使用确定性时间函数 F(t)、Verlet/PBD 距离约束、薄透镜光学或真实 NASA MOLA 高程数据驱动几何；
+3. 主体造型与细节层：多级倒角、焊缝铆钉、工笔五官晕染、泥金描边与微软四色/敦煌矿物色点缀；
+4. 大气与次级特效层：丁达尔体积光束、跨音速水汽锥、瑞利大气边缘散射、有界粒子池（零 GC 抖动）；
+5. 交互与无障碍契约层：支持键盘/指针控制、镜头切换、prefers-reduced-motion 静态模式、自适应分辨率降级与 window.visualLab 自动化遥测接口。
+</code></pre>
+<hr>
+<h2 id="4-参考来源与合规声明">4. 参考来源与合规声明</h2>
+<ul>
+<li><strong>Awesome Claude HVE Harness（精选视频与可视化案例库）</strong>：<a href="https://github.com/xianyu110/awesome-claude-Frontier-5.5">https://github.com/xianyu110/awesome-claude-Frontier-5.5</a></li>
+<li><strong>MagicCreator Claude HVE Harness Demos Directory</strong>：<a href="https://github.com/magiccreator-ai/awesome-claude-Frontier-5-5-demos">https://github.com/magiccreator-ai/awesome-claude-Frontier-5-5-demos</a></li>
+<li><strong>飞天参考启发链接</strong>：<a href="https://ds470b74heox1.cloudfront.net/Frontier55-feitian/index.html">https://ds470b74heox1.cloudfront.net/Frontier55-feitian/index.html</a></li>
+<li><strong>合规边界</strong>：本文档及本仓库仅归纳公开案例的图形学原理、数学方程与工程架构，所有代码、着色器、Blender 生成脚本与烘焙贴图均为本仓库 MIT 原创实现，不复制任何第三方闭源脚本或未授权媒体资产。</li>
+</ul>
+</article><details class="reading-source"><summary>Original source text / 原始文档文本</summary><pre># Claude HVE Harness 热门动画与交互视觉全景调研：技术范式、数学原语与本仓映射
 
 本文档基于 2026 年社区最新收录的 **Claude HVE Harness 视觉与动效精选集**（涵盖 `awesome-claude-Frontier-5.5` 1,034 条真实作品中的 317 个精选案例，以及 `magiccreator-ai/awesome-claude-Frontier-5-5-demos` 24 个深度复核项目），对最新最热的纯代码动画、Three.js/WebGPU 交互场景、光学/物理实验室及 Blender MCP 混合造景案例进行系统性拆解，并将提炼出的核心技法直接映射至本实验室的三个核心演示（**风起壁间 · 敦煌飞天**、**Astra · 火星科学造景**、**Launch · 白色火箭发射场**）。
 
@@ -99,4 +238,5 @@
 - **MagicCreator Claude HVE Harness Demos Directory**：&lt;https://github.com/magiccreator-ai/awesome-claude-Frontier-5-5-demos&gt;
 - **飞天参考启发链接**：&lt;https://ds470b74heox1.cloudfront.net/Frontier55-feitian/index.html&gt;
 - **合规边界**：本文档及本仓库仅归纳公开案例的图形学原理、数学方程与工程架构，所有代码、着色器、Blender 生成脚本与烘焙贴图均为本仓库 MIT 原创实现，不复制任何第三方闭源脚本或未授权媒体资产。
-</pre></main></html>
+</pre></details></div></main>
+</body></html>

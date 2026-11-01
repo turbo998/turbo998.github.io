@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en" data-theme="dark" data-reading-shell="document"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Scrap Swarm technical assets: articulated mech state machines, anime impact direction and a deterministic 60Hz arena harness</title>
+  
+  
+<meta name="reading-migration" content="R6"><link rel="stylesheet" href="../../assets/reading-shell.css"><script src="../../assets/reading-shell.js"></script></head>
+<body class="reading-page"><a class="reading-skip" href="#reading-main">Skip to content</a><header class="reading-header"><a class="reading-brand" href="../../index.html"><span class="reading-mark">q<span>.</span></span><span>Qi Chen<small>@turbo998 · Engineering notes</small></span></a><div class="reading-controls"><a data-reading-language="" href="scrap-swarm-technical-assets.html" hreflang="zh-CN" lang="zh-CN">中文</a><a data-reading-theme="light" href="?theme=light" aria-label="Light theme">☀</a><a data-reading-theme="dark" href="?theme=dark" aria-label="Dark theme">◐</a><details><summary aria-label="Navigation">☰</summary><nav><a href="../../index.html">Home</a><a href="../../studio/index.html">Studio</a><a href="../../writing.html">Writing</a><a href="../../about.html">About</a></nav></details></div></header><aside id="reading-language-note" class="reading-language-note">English translation of the preserved source, with original numerical claims retained; not independently re-measured.</aside><main id="reading-main" tabindex="-1" class="reading-document"><a class="reading-context" href="../../studio/game.html">← Studio / game</a>
+<div class="shell"><h1 id="scrap-swarm-technical-assets-articulated-mech-state-machines-anime-impact-direction-and-a-deterministic-60hz-arena-harness">Scrap Swarm technical assets: articulated mech state machines, anime impact direction and a deterministic 60Hz arena harness</h1>
+<h2 id="1-project-overview-and-core-advances">1. Project overview and core advances</h2>
+<ul>
+<li>Repository: <a href="https://github.com/turbo998/scrap-swarm">turbo998/scrap-swarm</a></li>
+<li>Live: <a href="../demos/scrap-swarm/">Play Scrap Swarm</a> · <a href="../demos/scrap-swarm/design/">Character &amp; Mech Design Collection (Hangar)</a></li>
+<li>Stack: TypeScript + Phaser 3 + Web Audio API + 60Hz Deterministic Arena Simulation + Vitest + Playwright.</li>
+</ul>
+<p>Scrap Swarm builds a 2D arena action game with the dramatic impact of mech anime using mathematical geometry and hierarchical joint state machines alone: no external sprite sheets, Spine/DragonBones skeleton plugins or audio files.</p>
+<h2 id="2-five-procedural-mech-skeletons-and-anime-direction">2. Five procedural mech skeletons and anime direction</h2>
+<p>Code: <code>src/game/hangar.ts</code> and <code>src/scenes/GameScene.ts</code>.</p>
+<h3 id="21-r-17-forge-fist--greenbrook-highway-maintainer">2.1 R-17 “Forge Fist” — Greenbrook Highway Maintainer</h3>
+<p>Originally an autonomous highway-maintenance machine from Greenbrook, R-17 is modified by mechanic Maureen to represent the town in the Iron-Crown arena. Its skeleton has <strong>6</strong> layers of procedural geometry:</p>
+<ol>
+<li><strong>Twin-load-wheel differential tracked chassis:</strong> track teeth roll with velocity; steering creates a differential chassis tilt.</li>
+<li><strong>Breathing suspension torso and steam valve:</strong> low-frequency hydraulic breathing at rest; a forward streamlined lean during dashes.</li>
+<li><strong>Three-stage right-arm hydraulic rivet cannon:</strong> each shot retracts the recoil piston, flashes a muzzle arc and ejects rotating brass shells on parabolic trajectories.</li>
+<li><strong>Rotating left-arm magnetic shield coil:</strong> continuous rotation with expanding electromagnetic rings during blocks and magnetic shock attacks.</li>
+<li><strong>Shoulder Overdrive radiator fins:</strong> shoulder armor opens during core awakening, emitting gold/cyan plasma energy.</li>
+<li><strong>Core-dash afterimages:</strong> pressing <strong>Space</strong> creates layered translucent gold/cyan silhouettes along the path, with brief invulnerability and magnetic shock damage while crossing enemy groups.</li>
+</ol>
+<h3 id="22-four-enemy-machine-types-including-champion-iron-crown-hector">2.2 Four enemy machine types, including champion Iron-Crown Hector</h3>
+<ul>
+<li><strong>Scuttler:</strong> alternating six-legged insect gait, an offset front cutting saw and sparks.</li>
+<li><strong>Brute:</strong> heavy compressed four-wheel chassis, extending hydraulic ground-pound arms, charged amber warning rings, and black smoke/cracks at half health.</li>
+<li><strong>Zapper:</strong> three-rotor anti-gravity ring, high-voltage Tesla arc sphere and sniper-laser lock line.</li>
+<li><strong>Iron-Crown Hector:</strong> four-track mobile-fortress chassis, huge rotating saws on both arms and an Iron-Crown restraint on its chest. Armor fractures progressively in <strong>P2/P3</strong>; the final broken restraint exposes a disaster-era industrial rescue core.</li>
+</ul>
+<h3 id="23-anime-cut-ins-and-monochrome-impact-frames">2.3 Anime cut-ins and monochrome impact frames</h3>
+<ul>
+<li><strong>Cut-in banner:</strong> triggering Overdrive (<strong>Q</strong>), completing the repair-shed defense event or changing boss phase sends a diagonal-speed-line banner and pilot/mech nameplate across the screen.</li>
+<li><strong>Impact frames:</strong> heavy critical hits and Hector's chest-lock break trigger high-contrast monochrome radial flashes, with <strong>2–4 frames</strong> of transient inversion to emphasize force.</li>
+</ul>
+<h2 id="3-arena-events-and-the-three-act-radio-narrative">3. Arena events and the three-act radio narrative</h2>
+<p>Code: <code>src/game/story.ts</code>.</p>
+<h3 id="31-mobile-repair-shed-defense">3.1 Mobile Repair Shed Defense</h3>
+<p>Midway through <strong>wave 2</strong>, Greenbrook's mobile repair shed enters the arena center. Defend it from Brutes and Scuttlers for the time limit. Success grants arena-wide armor nano-repair and a core-overload buff, and unlocks a key story clue.</p>
+<h3 id="32-three-act-radio-reversal">3.2 Three-act radio reversal</h3>
+<ol>
+<li><strong>Greenbrook enters the arena:</strong> commentator Rex whips up the crowd while Maureen guides R-17 over an encrypted channel to test the modified rivet cannon and core dash.</li>
+<li><strong>The truth behind welded service hatches:</strong> recovered Scuttler wreckage and repair-shed scans reveal that the supposedly berserk enemy machines have had their service hatches and distress beacons deliberately welded shut by the Iron-Crown alliance.</li>
+<li><strong>Hector's rescue logs decoded:</strong> while facing the champion, R-17 receives intermittent Morse code leaking from Hector's underlying system. Hector was a heavy disaster-rescue machine, fitted with forced-combat restraints for arena revenue. R-17 precisely breaks the chest lock with Forge Fist instead of destroying the core, freeing Hector and broadcasting an open-source calibration protocol across the wasteland.</li>
+</ol>
+<h2 id="4-deterministic-60hz-arena-and-automated-verification">4. Deterministic 60Hz arena and automated verification</h2>
+<p>Code: <code>src/game/simulation.ts</code> and <code>src/dev/api.ts</code>.</p>
+<ul>
+<li><strong>Pure simulation kernel:</strong> kinematics, collision detection, spawn waves, dash cooldowns, repair-shed timers and boss-phase state machines live in a DOM-independent Simulation module driven by a fixed-seed PRNG.</li>
+<li><strong>Test/demo probe, <code>window.__gameTest</code>:</strong> supports autonomous combat via <code>setBot(true)</code>, core dash via <code>triggerDash()</code>, wave jumps and real-time telemetry, allowing Playwright E2E to reproduce complete runs <strong>100% reliably</strong> in a headless browser.</li>
+</ul>
+</div>
+
+</main>
+</body></html>

@@ -1,4 +1,42 @@
-<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Visual Lab Research</title><script>(()=>{const param=new URLSearchParams(location.search).get("scoutTheme");const theme=param||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.setAttribute("data-theme",theme)})();</script><link rel="stylesheet" href="../assets/theme.css"><main class="shell"><a href="../">← 实验室</a><pre style="white-space:pre-wrap;line-height:1.9;font:inherit"># Launch：外部视角的原创火箭
+<!doctype html>
+<html lang="zh-CN" data-theme="dark" data-reading-shell="document"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Launch：外部视角的原创火箭 — Qi Chen</title><meta name="reading-migration" content="R6"><link rel="stylesheet" href="../../assets/reading-shell.css"><script src="../../assets/reading-shell.js"></script></head><body class="reading-page"><a class="reading-skip" href="#reading-main">跳至正文</a><header class="reading-header"><a class="reading-brand" href="../../zh.html"><span class="reading-mark">q<span>.</span></span><span>Qi Chen<small>@turbo998 · 工程手记</small></span></a><div class="reading-controls"><a data-reading-language="" href="rocket-method.en.html" hreflang="en" lang="en">EN</a><a data-reading-theme="light" href="?theme=light" aria-label="浅色主题">☀</a><a data-reading-theme="dark" href="?theme=dark" aria-label="深色主题">◐</a><details><summary aria-label="导航">☰</summary><nav><a href="../../zh.html">首页</a><a href="../../studio/zh-index.html">Studio</a><a href="../../zh-writing.html">文章</a><a href="../../zh-about.html">关于</a></nav></details></div></header><aside id="reading-language-note" class="reading-language-note">保留原文。可打开独立英文版本；不同版本的内容可能不同。</aside><main id="reading-main" tabindex="-1" class="reading-document"><a class="reading-context" href="../../studio/zh-animation.html">← Studio / animation</a><div class="shell"><a href="../">← 实验室</a><article class="reading-markdown"><h1 id="launch：外部视角的原创火箭">Launch：外部视角的原创火箭</h1>
+<blockquote>
+<p>🌐 <strong>Language / 语言</strong>: <strong>中文</strong> | <a href="rocket-method.en.html">English (<code>rocket-method.en.md</code>)</a></p>
+</blockquote>
+<p>本演示在敦煌与 Astra 首轮上线、实际浏览器验证后开始制作。
+白色火箭、发射台、格构塔、支架、罐体、管道、围栏与远山由原创几何生成，
+不加载外部模型或纹理。大型圆框是观景边框，不是舱内相机。</p>
+<h2 id="几何与配色">几何与配色</h2>
+<p>分段圆柱壳体、锥形头部、环带、尾翼与喷口是真实三维几何。
+红 #F25022、绿 #7FBA00、蓝 #00A4EF、黄 #FFB900 用作四条饰带与场地标线，
+借鉴视觉配色但不自称官方品牌规范。没有 Microsoft Logo 或官方背书。</p>
+<h2 id="可复现的发射状态">可复现的发射状态</h2>
+<p>待命 → 点火 → 建立推力 → 离台 → 升空 → 完成定格。
+前四秒保持在台面，其后采用明确的时间高度函数，保证抬升单调。
+这个函数只是艺术运动，不是根据推重比、质量消耗和大气求解的轨道仿真。
+重复启动不生成多重发射，暂停保持场景和时间，重放清空烟雾并重新点火。</p>
+<p>外部固定镜头保持位置不变，起飞时扩大视野并缓慢上仰，使地面与火箭均不被圆框裁掉；
+跟随镜头平滑跟进火箭。
+没有未经请求的随机镜头摇晃。减少动态效果设置关闭喷焰的高速波动，
+不自动播放；主动 Launch 仍能观看完整发射。</p>
+<h2 id="喷焰与烟雾">喷焰与烟雾</h2>
+<p>喷焰是沿喷口向下的渐变透明几何与加色核心，不是流体模拟。
+烟雾使用单次绘制的批量 Points，最多 640 个粒子、寿命回收；
+按相机深度排序，关闭透明层深度写入。径向软遮罩形成近似云团。
+排序和有限点片仍存在实时近似边界，不能称为真实体积烟雾或物理燃烧。</p>
+<p>低帧率自动降低 DPR 和粒子发射率，状态显式披露。
+失去 WebGL 上下文时保留进度并提示，恢复后重建渲染状态。
+后台不推进运动；离开页面销毁 GPU 几何、材质和 renderer。</p>
+<h2 id="资料">资料</h2>
+<ul>
+<li>Three.js InstancedMesh / 批量原则</li>
+<li>Three.js Points</li>
+<li>透明排序</li>
+<li>材质深度与透明属性</li>
+</ul>
+<p>使用批量 Points 而不是为每个烟团创建 Mesh，可降低 draw calls；选择 Points
+是实现决策，不是声称必须用 InstancedMesh 才能批量渲染。</p>
+</article><details class="reading-source"><summary>Original source text / 原始文档文本</summary><pre># Launch：外部视角的原创火箭
 
 &gt; 🌐 **Language / 语言**: **中文** | [English (`rocket-method.en.md`)](rocket-method.en.md)
 
@@ -37,11 +75,12 @@
 
 ## 资料
 
-- <a href="https://threejs.org/docs/pages/InstancedMesh.html">Three.js InstancedMesh / 批量原则</a>
-- <a href="https://threejs.org/docs/pages/Points.html">Three.js Points</a>
-- <a href="https://threejs.org/manual/en/transparency.html">透明排序</a>
-- <a href="https://threejs.org/docs/pages/Material.html">材质深度与透明属性</a>
+- Three.js InstancedMesh / 批量原则
+- Three.js Points
+- 透明排序
+- 材质深度与透明属性
 
 使用批量 Points 而不是为每个烟团创建 Mesh，可降低 draw calls；选择 Points
 是实现决策，不是声称必须用 InstancedMesh 才能批量渲染。
-</pre></main></html>
+</pre></details></div></main>
+</body></html>

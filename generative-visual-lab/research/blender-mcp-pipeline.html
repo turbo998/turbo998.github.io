@@ -1,4 +1,79 @@
-<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Visual Lab Research</title><script>(()=>{const param=new URLSearchParams(location.search).get("scoutTheme");const theme=param||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.setAttribute("data-theme",theme)})();</script><link rel="stylesheet" href="../assets/theme.css"><main class="shell"><a href="../">← 实验室</a><pre style="white-space:pre-wrap;line-height:1.9;font:inherit"># Gemini 4 Argon + Blender 4.5 LTS MCP 混合渲染架构研究
+<!doctype html>
+<html lang="zh-CN" data-theme="dark" data-reading-shell="document"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Gemini 4 Argon + Blender 4.5 LTS MCP 混合渲染架构研究 — Qi Chen</title><meta name="reading-migration" content="R6"><link rel="stylesheet" href="../../assets/reading-shell.css"><script src="../../assets/reading-shell.js"></script></head><body class="reading-page"><a class="reading-skip" href="#reading-main">跳至正文</a><header class="reading-header"><a class="reading-brand" href="../../zh.html"><span class="reading-mark">q<span>.</span></span><span>Qi Chen<small>@turbo998 · 工程手记</small></span></a><div class="reading-controls"><a data-reading-language="" href="blender-mcp-pipeline.en.html" hreflang="en" lang="en">EN</a><a data-reading-theme="light" href="?theme=light" aria-label="浅色主题">☀</a><a data-reading-theme="dark" href="?theme=dark" aria-label="深色主题">◐</a><details><summary aria-label="导航">☰</summary><nav><a href="../../zh.html">首页</a><a href="../../studio/zh-index.html">Studio</a><a href="../../zh-writing.html">文章</a><a href="../../zh-about.html">关于</a></nav></details></div></header><aside id="reading-language-note" class="reading-language-note">保留原文。可打开独立英文版本；不同版本的内容可能不同。</aside><main id="reading-main" tabindex="-1" class="reading-document"><a class="reading-context" href="../../studio/zh-animation.html">← Studio / animation</a><div class="shell"><a href="../">← 实验室</a><article class="reading-markdown"><h1 id="gemini-4-argon--blender-45-lts-mcp-混合渲染架构研究">Gemini 4 Argon + Blender 4.5 LTS MCP 混合渲染架构研究</h1>
+<blockquote>
+<p>🌐 <strong>Language / 语言</strong>: <strong>中文</strong> | <a href="blender-mcp-pipeline.en.html">English (<code>blender-mcp-pipeline.en.md</code>)</a></p>
+</blockquote>
+<p>本文记录 <code>generative-visual-lab</code> 在切换至 <strong>Gemini 4 Argon (<code>gemini-4-argon</code>)</strong> 后，如何接入本地 <strong>Blender 4.5.10 LTS</strong> 与 **<code>blender-mcp</code> (v2.0.0)**，构建“离线高精度三维建模/Cycles 光线追踪烘焙 + 浏览器实时 WebGL2/Canvas 2D 交互渲染”的混合管线。</p>
+<hr>
+<h2 id="1-为什么选择离线-blender-mcp-烘焙--实时前端渲染">1. 为什么选择“离线 Blender MCP 烘焙 + 实时前端渲染”</h2>
+<p>浏览器端科学可视化与艺术叙事面临两个天然张力：</p>
+<ol>
+<li><strong>纯程序化实时生成（Procedural-only）的几何/光影上限</strong>：完全依赖手写 Canvas 2D 路径或简单 Three.js 基础几何体（Cylinder/Cone），难以表现复杂机械倒角、钛合金栅格翼、石窟深浮雕环境光遮蔽（AO）以及无缝微地貌切线法线。</li>
+<li><strong>纯离线视频/预渲染帧（Pre-rendered Video）失去实时交互与可验证性</strong>：预录 Cycles 视频无法支持用户自由拖拽火星轨道、切换科学高程夸张倍率、实时检验网格接缝或随时触发飞天揭色与火箭点火。</li>
+</ol>
+<p>因此，本实验室采用 <strong>Hybrid Offline-Bake + Real-Time Rendering</strong> 路线：</p>
+<ul>
+<li><strong>构建期（Build-time via Blender MCP）</strong>：由 <code>scripts/blender/*.mjs</code> 通过标准 MCP JSON-RPC 2.0 协议调用 <code>blender-mcp.exe</code>，连接无头运行的 <code>Blender 4.5.10 LTS</code> (<code>127.0.0.1:9876</code>)，执行 <code>bpy</code>/<code>bmesh</code> 高精度参数化建模与 Cycles 光线追踪烘焙，落盘为紧凑的 <code>.glb</code> 与 <code>.png</code> 静态资产，同时保存 Cycles 独立渲染图与 MCP 执行记录作为可复现证据。</li>
+<li><strong>运行期（Runtime in Browser）</strong>：纯静态部署于 GitHub Pages，零外部模型 API、零 CDN 依赖，保持 60fps 交互预算与完整的科学/几何可检验性。</li>
+</ul>
+<hr>
+<h2 id="2-blender-mcp-协议链路与无头守护进程">2. Blender MCP 协议链路与无头守护进程</h2>
+<pre><code>Node.js 构建脚本 (scripts/blender/build-*.mjs)
+   │  stdio (JSON-RPC 2.0: initialize -&gt; tools/call)
+   ▼
+blender-mcp.exe (mcp-for-blender v2.0.0)
+   │  TCP Socket (127.0.0.1:9876, protocol v13)
+   ▼
+Blender 4.5.10 LTS (-b --python scripts/blender/mcp-headless-daemon.py)
+   ├─ execute_blender_code (bpy / bmesh / mathutils / Cycles)
+   ├─ get_scene_info / get_object_info
+   └─ 导出 GLB 资产 / Cycles 烘焙贴图 / Cycles 光追样张
+</code></pre>
+<ul>
+<li>**守护进程 (<code>scripts/blender/mcp-headless-daemon.py</code>)**：在 <code>blender -b</code> 后台模式中加载 <code>blender_mcp_addon.BlenderMCPServer</code>，并将主线程调度队列绑定到无头循环，使 <code>execute_blender_code</code>、<code>get_scene_info</code>、<code>get_object_info</code> 在无 GUI 环境下确定性执行。</li>
+<li>**客户端 (<code>scripts/blender/mcp-client.mjs</code>)**：封装标准 MCP <code>initialize</code> 与 <code>tools/call</code> 请求，自动采集工具返回文本并写入 <code>docs/evidence/blender-mcp-*.json</code>。</li>
+</ul>
+<hr>
+<h2 id="3-三个演示的-blender-mcp-资产与实时合成细节">3. 三个演示的 Blender MCP 资产与实时合成细节</h2>
+<h3 id="31-launch-·-白色火箭-demosrocket-launch">3.1 Launch · 白色火箭 (<code>demos/rocket-launch/</code>)</h3>
+<ul>
+<li><strong>生成脚本</strong>：<code>scripts/blender/build-rocket-assets.mjs</code></li>
+<li><strong>导出资产</strong>：<code>demos/rocket-launch/assets/rocket-kit.glb</code>（188,268 字节，glTF 2.0 二进制）</li>
+<li><strong>Cycles 样张</strong>：blender-rocket-cycles-render.png · MCP 记录
+Launch · Blender 4.5 LTS Cycles 光线追踪参考样张（白色火箭、钛合金栅格翼、五机拉瓦尔喷管与发射塔）</li>
+<li><strong>三层级命名节点结构</strong>：<ol>
+<li><code>RocketVehicle</code>：25 段相切卵形（Tangent-Ogive）平滑鼻锥、级间环、纵向电缆槽、4 片钛合金蜂窝栅格翼（Grid Fins）、4 枚气动尾翼及翼尖微软四色条带（<code>#F25022</code> / <code>#7FBA00</code> / <code>#00A4EF</code> / <code>#FFB900</code>）、5 台带再生冷却环的拉瓦尔喷管（De Laval Nozzles）。</li>
+<li><code>UmbilicalArm</code>：可旋转分离的脐带连接臂与夹持头，点火离台时由前端状态机驱动实时后摆分离。</li>
+<li><code>LaunchPadStatic</code>：导流锥、四组固箭液压爪、桁架发射塔、锤头起重机与水幕消音球罐。</li>
+</ol>
+</li>
+<li><strong>前端合批优化</strong>：<code>demos/rocket-launch/main.ts</code> 使用 <code>GLTFLoader</code> 解析后，按材质桶自动调用 <code>mergeGeometries</code> 合批，将整套复杂发射场控制在 <strong>27 draw calls / 32,876 triangles</strong>，T+9s 升空稳态 <code>p95 = 33.4ms</code>（本地预算 ≤ 50ms）。</li>
+</ul>
+<h3 id="32-astra-·-火星造景-demosastra-planet">3.2 Astra · 火星造景 (<code>demos/astra-planet/</code>)</h3>
+<ul>
+<li><strong>生成脚本</strong>：<code>scripts/blender/build-astra-assets.mjs</code></li>
+<li><strong>导出资产</strong>：<code>demos/astra-planet/public/data/mars-micro-normal.png</code>（165,301 字节，256×256 无缝烘焙贴图）</li>
+<li><strong>Cycles 样张</strong>：blender-astra-cycles-render.png · MCP 记录
+Astra · Blender 4.5 LTS Cycles 火星轨道参考样张（NASA MOLA 实测地形 + 微地貌法线烘焙）</li>
+<li><strong>科学边界与微地貌分层</strong>：<ul>
+<li>宏观地形（1440×720 基础包与 4096×2048 高清包）100% 来自 NASA MOLA MEGDR 实测高程，顶点半径、海岸线归属与面积/高度统计完全不变。</li>
+<li>Blender Cycles 烘焙的 <code>mars-micro-normal.png</code> 将火星玄武岩断崖裂隙、风成沙垄与微陨石坑编码于 G/B 通道（切线空间斜率）与 R 通道（环境凹腔遮蔽），仅在 <code>realistic</code> 模式下对片元着色器法线进行微扰动；切换至 <code>gray</code>（灰模）或 <code>wireframe</code>（线框）检验模式时自动旁路，确保科学几何检验纯粹透明。</li>
+</ul>
+</li>
+</ul>
+<h3 id="33-风起壁间-·-飞天-demosfeitian">3.3 风起壁间 · 飞天 (<code>demos/feitian/</code>)</h3>
+<ul>
+<li><strong>生成脚本</strong>：<code>scripts/blender/build-feitian-assets.mjs</code></li>
+<li><strong>导出资产</strong>：<code>demos/feitian/assets/grotto-relief-bake.png</code>（430,243 字节，640×360 Cycles 正交浮雕烘焙）</li>
+<li><strong>Cycles 样张</strong>：blender-feitian-cycles-render.png · MCP 记录
+风起壁间 · Blender 4.5 LTS Cycles 莫高窟四龛藻井浮雕光追样张</li>
+<li><strong>零逐帧开销合成</strong>：<ul>
+<li>在 Blender 中建立 16:9 莫高窟砂岩洞窟壁面、四座与飞天归位坐标对齐的拱券佛龛（<code>NicheArch_0..3</code>）、莲瓣龛楣、立体飘带浮雕与顶部藻井垂幔，以暖色酥油灯侧光通过 Cycles 正交相机烘焙。</li>
+<li>前端 <code>demos/feitian/main.ts</code> 在 <code>buildWall()</code> 与 <code>renderPortrait()</code> 初始化阶段通过 <code>soft-light</code> 与 <code>multiply</code> 混合模式一次性合成至静态缓存画布，动画循环零额外绘制开销，四时同游稳态 <code>p95 = 16.7ms</code>（预算 ≤ 33.3ms）。</li>
+</ul>
+</li>
+</ul>
+</article><details class="reading-source"><summary>Original source text / 原始文档文本</summary><pre># Gemini 4 Argon + Blender 4.5 LTS MCP 混合渲染架构研究
 
 &gt; 🌐 **Language / 语言**: **中文** | [English (`blender-mcp-pipeline.en.md`)](blender-mcp-pipeline.en.md)
 
@@ -45,8 +120,8 @@ Blender 4.5.10 LTS (-b --python scripts/blender/mcp-headless-daemon.py)
 
 - **生成脚本**：`scripts/blender/build-rocket-assets.mjs`
 - **导出资产**：`demos/rocket-launch/assets/rocket-kit.glb`（188,268 字节，glTF 2.0 二进制）
-- **Cycles 样张**：<a href="evidence/blender-rocket-cycles-render.png">blender-rocket-cycles-render.png</a> · <a href="evidence/blender-mcp-rocket.json">MCP 记录</a>
-<figure style="margin:16px 0"><img src="evidence/blender-rocket-cycles-render.png" alt="Launch · Blender 4.5 LTS Cycles 光线追踪参考样张（白色火箭、钛合金栅格翼、五机拉瓦尔喷管与发射塔）" loading="lazy" style="max-width:100%;border-radius:12px;border:1px solid var(--cp-border);display:block"><figcaption style="font-size:13px;color:var(--cp-text-muted);margin-top:6px">Launch · Blender 4.5 LTS Cycles 光线追踪参考样张（白色火箭、钛合金栅格翼、五机拉瓦尔喷管与发射塔）</figcaption></figure>
+- **Cycles 样张**：blender-rocket-cycles-render.png · MCP 记录
+Launch · Blender 4.5 LTS Cycles 光线追踪参考样张（白色火箭、钛合金栅格翼、五机拉瓦尔喷管与发射塔）
 - **三层级命名节点结构**：
   1. `RocketVehicle`：25 段相切卵形（Tangent-Ogive）平滑鼻锥、级间环、纵向电缆槽、4 片钛合金蜂窝栅格翼（Grid Fins）、4 枚气动尾翼及翼尖微软四色条带（`#F25022` / `#7FBA00` / `#00A4EF` / `#FFB900`）、5 台带再生冷却环的拉瓦尔喷管（De Laval Nozzles）。
   2. `UmbilicalArm`：可旋转分离的脐带连接臂与夹持头，点火离台时由前端状态机驱动实时后摆分离。
@@ -57,8 +132,8 @@ Blender 4.5.10 LTS (-b --python scripts/blender/mcp-headless-daemon.py)
 
 - **生成脚本**：`scripts/blender/build-astra-assets.mjs`
 - **导出资产**：`demos/astra-planet/public/data/mars-micro-normal.png`（165,301 字节，256×256 无缝烘焙贴图）
-- **Cycles 样张**：<a href="evidence/blender-astra-cycles-render.png">blender-astra-cycles-render.png</a> · <a href="evidence/blender-mcp-astra.json">MCP 记录</a>
-<figure style="margin:16px 0"><img src="evidence/blender-astra-cycles-render.png" alt="Astra · Blender 4.5 LTS Cycles 火星轨道参考样张（NASA MOLA 实测地形 + 微地貌法线烘焙）" loading="lazy" style="max-width:100%;border-radius:12px;border:1px solid var(--cp-border);display:block"><figcaption style="font-size:13px;color:var(--cp-text-muted);margin-top:6px">Astra · Blender 4.5 LTS Cycles 火星轨道参考样张（NASA MOLA 实测地形 + 微地貌法线烘焙）</figcaption></figure>
+- **Cycles 样张**：blender-astra-cycles-render.png · MCP 记录
+Astra · Blender 4.5 LTS Cycles 火星轨道参考样张（NASA MOLA 实测地形 + 微地貌法线烘焙）
 - **科学边界与微地貌分层**：
   - 宏观地形（1440×720 基础包与 4096×2048 高清包）100% 来自 NASA MOLA MEGDR 实测高程，顶点半径、海岸线归属与面积/高度统计完全不变。
   - Blender Cycles 烘焙的 `mars-micro-normal.png` 将火星玄武岩断崖裂隙、风成沙垄与微陨石坑编码于 G/B 通道（切线空间斜率）与 R 通道（环境凹腔遮蔽），仅在 `realistic` 模式下对片元着色器法线进行微扰动；切换至 `gray`（灰模）或 `wireframe`（线框）检验模式时自动旁路，确保科学几何检验纯粹透明。
@@ -67,9 +142,10 @@ Blender 4.5.10 LTS (-b --python scripts/blender/mcp-headless-daemon.py)
 
 - **生成脚本**：`scripts/blender/build-feitian-assets.mjs`
 - **导出资产**：`demos/feitian/assets/grotto-relief-bake.png`（430,243 字节，640×360 Cycles 正交浮雕烘焙）
-- **Cycles 样张**：<a href="evidence/blender-feitian-cycles-render.png">blender-feitian-cycles-render.png</a> · <a href="evidence/blender-mcp-feitian.json">MCP 记录</a>
-<figure style="margin:16px 0"><img src="evidence/blender-feitian-cycles-render.png" alt="风起壁间 · Blender 4.5 LTS Cycles 莫高窟四龛藻井浮雕光追样张" loading="lazy" style="max-width:100%;border-radius:12px;border:1px solid var(--cp-border);display:block"><figcaption style="font-size:13px;color:var(--cp-text-muted);margin-top:6px">风起壁间 · Blender 4.5 LTS Cycles 莫高窟四龛藻井浮雕光追样张</figcaption></figure>
+- **Cycles 样张**：blender-feitian-cycles-render.png · MCP 记录
+风起壁间 · Blender 4.5 LTS Cycles 莫高窟四龛藻井浮雕光追样张
 - **零逐帧开销合成**：
   - 在 Blender 中建立 16:9 莫高窟砂岩洞窟壁面、四座与飞天归位坐标对齐的拱券佛龛（`NicheArch_0..3`）、莲瓣龛楣、立体飘带浮雕与顶部藻井垂幔，以暖色酥油灯侧光通过 Cycles 正交相机烘焙。
   - 前端 `demos/feitian/main.ts` 在 `buildWall()` 与 `renderPortrait()` 初始化阶段通过 `soft-light` 与 `multiply` 混合模式一次性合成至静态缓存画布，动画循环零额外绘制开销，四时同游稳态 `p95 = 16.7ms`（预算 ≤ 33.3ms）。
-</pre></main></html>
+</pre></details></div></main>
+</body></html>

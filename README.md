@@ -14,7 +14,11 @@ AI Infra → Agentic Commerce → Voice → Benchmarks & Harness → Animation �
 Gaming → AI Security 排列，每条主线提供二级目录、阶段跳转及返回面包屑。
 右上角 `EN / 中文` 保留语言、查询参数及深链，例如
 `frontier-ai-studio.html?lang=en#infra/module/i-pill-2`。
-完整导航说明及回归检查方法见 [English](README.en.md) / [中文](README.zh-CN.md)。
+新版 [Studio 总览](studio/zh-index.html) 使用七个独立双语主题页，不再嵌套完整网页。
+首页仅展示个人精选资源；[完整档案](studio/zh-archive.html) 保留所有原始入口。Dark Aurora 以深蓝为默认底色、局部蓝紫青光场为强调，同时保留显式浅色选择。
+正式门户可通过 `node scripts\build-site.cjs` 重建，部署端仍直接托管静态 HTML，无运行时构建或后端。
+完整导航及回归检查方法见 [English](README.en.md) / [中文](README.zh-CN.md)，
+发布和语言范围见[迁移说明](docs/redesign/production-migration.md)。
 
 | 主线编号 | 核心工程主线 (Track) | 代表性交互工作台 (Live H5 Workbench) | 密封 7-Card 4:5 基准报告 / 核心指标 |
 | :--- | :--- | :--- | :--- |
@@ -93,7 +97,7 @@ website/
 ├── zh.html             # 中文主页
 ├── writing.html        # Writing & Talks（英文）
 ├── zh-writing.html     # 分享与著作（中文）
-├── style.css           # 共享样式（浅色、编号分节、技术报告风格）
+├── style.css           # 历史样式（保留兼容；新门户见 assets/editorial/）
 ├── main.js             # GitHub 仓库实时拉取 + 静态兜底数据
 ├── assets/
 │   └── photo.jpg       # 个人照片（导航头像 / 档案卡 / OG 分享图）
@@ -121,7 +125,7 @@ python -m http.server 8765
 
 ### 部署到 GitHub Pages（可选参考）
 
-以下是为个人网站另行配置 Pages 的参考步骤，不是本私有仓库当前的部署方式。个人网站继续使用 Azure Static Web Apps；公开 Workshop 使用 Azure Infra Lab 的 GitHub Pages。迁移只增加旧 Workshop 路径的兼容规则，不更改此仓库的可见性或个人网站部署设置。
+个人站点发布目标为 `turbo998/turbo998.github.io` 的 GitHub Pages；源码同步到 `turbo998/Kee-Tech-Assets`。以目标 SHA 的 Pages Actions 和线上内容验证为准，不以无关 Azure Static Web Apps 作业判定发布成功。公开 Workshop 仍由 Azure Infra Lab 的 GitHub Pages 独立托管，旧 Workshop 路径保留兼容入口。
 
 1. 在 GitHub 新建仓库（如 `turbo998.github.io`，则网址直接是 https://turbo998.github.io）：
 

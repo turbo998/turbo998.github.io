@@ -1,4 +1,26 @@
-<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Visual Lab Research</title><script>(()=>{const param=new URLSearchParams(location.search).get("scoutTheme");const theme=param||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.setAttribute("data-theme",theme)})();</script><link rel="stylesheet" href="../assets/theme.css"><main class="shell"><a href="../">← 实验室</a><pre style="white-space:pre-wrap;line-height:1.9;font:inherit"># Launch: Original External-View White Rocket Launch Complex
+<!doctype html>
+<html lang="en" data-theme="dark" data-reading-shell="document"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Launch: Original External-View White Rocket Launch Complex — Qi Chen</title><meta name="reading-migration" content="R6"><link rel="stylesheet" href="../../assets/reading-shell.css"><script src="../../assets/reading-shell.js"></script></head><body class="reading-page"><a class="reading-skip" href="#reading-main">Skip to content</a><header class="reading-header"><a class="reading-brand" href="../../index.html"><span class="reading-mark">q<span>.</span></span><span>Qi Chen<small>@turbo998 · Engineering notes</small></span></a><div class="reading-controls"><a data-reading-language="" href="rocket-method.html" hreflang="zh-CN" lang="zh-CN">中文</a><a data-reading-theme="light" href="?theme=light" aria-label="Light theme">☀</a><a data-reading-theme="dark" href="?theme=dark" aria-label="Dark theme">◐</a><details><summary aria-label="Navigation">☰</summary><nav><a href="../../index.html">Home</a><a href="../../studio/index.html">Studio</a><a href="../../writing.html">Writing</a><a href="../../about.html">About</a></nav></details></div></header><aside id="reading-language-note" class="reading-language-note">Source text preserved. A distinct Chinese edition is available; editions may differ.</aside><main id="reading-main" tabindex="-1" class="reading-document"><a class="reading-context" href="../../studio/animation.html">← Studio / animation</a><div class="shell"><a href="../">← 实验室</a><article class="reading-markdown"><h1 id="launch-original-external-view-white-rocket-launch-complex">Launch: Original External-View White Rocket Launch Complex</h1>
+<blockquote>
+<p>🌐 <strong>Language / 语言</strong>: <a href="rocket-method.html">中文 (<code>rocket-method.md</code>)</a> | <strong>English</strong></p>
+</blockquote>
+<p>This demonstration presents an original white launch vehicle, launch pad, lattice tower, umbilical swing arm, cryogenic spheres, flame trench, and coastal mountain range viewed through a large circular observation porthole.</p>
+<h2 id="geometry-blender-mcp-kit--color-palette">Geometry, Blender MCP Kit &amp; Color Palette</h2>
+<p>Segmented cylindrical stages, tangent-ogive nosecone, interstage rings, titanium honeycomb grid fins, aerodynamic tail fins, and five regenerative-cooled De Laval nozzles are true 3D geometries generated deterministically via <code>scripts/blender/build-rocket-assets.mjs</code> into <code>demos/rocket-launch/assets/rocket-kit.glb</code> and merged by material bucket at load time. Red (<code>#F25022</code>), green (<code>#7FBA00</code>), blue (<code>#00A4EF</code>), and yellow (<code>#FFB900</code>) serve as four accent stripes and pad markings without any official Microsoft logo or endorsement.</p>
+<h2 id="deterministic-launch-state-machine">Deterministic Launch State Machine</h2>
+<p><code>Standby → Ignition → Thrust Build → Liftoff → Ascent → Completed Hold</code>.
+The vehicle remains on the pad during the first four seconds of ignition and thrust build-up, followed by a monotonic analytical altitude function $h(t)$. Repeated clicks do not spawn duplicate launches; pausing freezes scene time and particles; replaying clears smoke and restarts ignition.</p>
+<ul>
+<li><strong>Fixed Porthole Camera</strong>: Holds position while widening FOV and pitching upward smoothly during ascent so both the launch pad and vehicle nose remain framed inside the circular porthole safety bounds.</li>
+<li><strong>Follow Camera</strong>: Tracks the ascending vehicle smoothly without unrequested random camera shake.</li>
+<li><strong>Reduced Motion</strong>: Freezes high-frequency exhaust plume pulsation and disables autoplay while preserving manual launch inspection.</li>
+</ul>
+<h2 id="supersonic-exhaust-plume-smoke-pool--transonic-optics">Supersonic Exhaust Plume, Smoke Pool &amp; Transonic Optics</h2>
+<ul>
+<li><strong>Analytical Dual-Cone Plume Shader (<code>flameMaterial</code>)</strong>: Combines a Planck blackbody core (<code>kelvinCore</code>), normal-shock Mach disk (<code>machDisk</code>), periodic De Laval shock diamonds (<code>diamond</code>), under-expanded barrel shock sheath (<code>barrelShock</code>), and multi-mode shear-layer / recirculation vortex harmonics without fluid solver overhead.</li>
+<li><strong>Depth-Sorted Smoke Particle Pool</strong>: Single-draw-call batched <code>THREE.Points</code> (capped at 640 particles with lifetime recycling), sorted by camera depth with <code>depthWrite: false</code>.</li>
+<li><strong>Secondary Acoustic &amp; Transonic Phenomena</strong>: Pre-allocated ground acoustic shockwave ring (<code>shockWave</code>), transonic Prandtl-Glauert condensation cone (<code>vaporCone</code>), and circular porthole anamorphic lens flare driven purely by time envelopes with zero runtime allocations.</li>
+</ul>
+</article><details class="reading-source"><summary>Original source text / 原始文档文本</summary><pre># Launch: Original External-View White Rocket Launch Complex
 
 &gt; 🌐 **Language / 语言**: [中文 (`rocket-method.md`)](rocket-method.md) | **English**
 
@@ -22,4 +44,5 @@ The vehicle remains on the pad during the first four seconds of ignition and thr
 - **Analytical Dual-Cone Plume Shader (`flameMaterial`)**: Combines a Planck blackbody core (`kelvinCore`), normal-shock Mach disk (`machDisk`), periodic De Laval shock diamonds (`diamond`), under-expanded barrel shock sheath (`barrelShock`), and multi-mode shear-layer / recirculation vortex harmonics without fluid solver overhead.
 - **Depth-Sorted Smoke Particle Pool**: Single-draw-call batched `THREE.Points` (capped at 640 particles with lifetime recycling), sorted by camera depth with `depthWrite: false`.
 - **Secondary Acoustic &amp; Transonic Phenomena**: Pre-allocated ground acoustic shockwave ring (`shockWave`), transonic Prandtl-Glauert condensation cone (`vaporCone`), and circular porthole anamorphic lens flare driven purely by time envelopes with zero runtime allocations.
-</pre></main></html>
+</pre></details></div></main>
+</body></html>

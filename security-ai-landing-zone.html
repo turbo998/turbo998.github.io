@@ -1,186 +1,28 @@
 <!doctype html>
-<html lang="en" data-builder-style="precision">
-<head>
-<script>
-  (() => {
-    const param = new URLSearchParams(window.location.search).get("scoutTheme");
-    const theme =
-      param || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-    document.documentElement.setAttribute("data-theme", theme);
-  })();
-</script>
+<html lang="en" data-builder-style="precision" data-theme="dark" data-reading-shell="document"><head>
 
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Security AI Landing Zone &amp; Frontier SOC — AI Security Sub-Column | Qi Chen (陈启)</title>
-<meta name="description" content="Dedicated Sub-Column: Security AI Landing Zone &amp; Frontier SOC (42-Slide Frontier Security Research). Copilot as UI for AI, Microsoft Agent 365 5-Pillar Control Plane, M365 E7 Frontier Suite, FTE Offer Week 3 Gate, and Frontier SOC (ISOC + Project Perception Red/Blue/Green Agents + MDASH 100+ AI Agents)." />
-<link rel="stylesheet" href="style.css" />
-<script src="theme-switcher.js" defer></script>
-<script src="reveal.js" defer></script>
-<style>
-  .subcol-bar {
-    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
-    gap: 10px; padding: 11px 16px; margin: 18px 0 6px;
-    background: var(--surface-2); border: 1px solid var(--border-strong);
-    border-radius: var(--radius);
-  }
-  .subcol-links { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-  .subcol-pill {
-    font-family: var(--mono); font-size: 12px; font-weight: 600;
-    padding: 6px 12px; border-radius: 7px; text-decoration: none;
-    color: var(--text-2); background: var(--surface); border: 1px solid var(--border);
-    transition: all .15s;
-  }
-  .subcol-pill:hover { border-color: var(--accent); color: var(--text); }
-  .subcol-pill.active {
-    background: var(--accent); color: #fff; border-color: var(--accent);
-    box-shadow: 0 3px 10px rgba(37, 99, 235, 0.25);
-  }
-  .sec-grid-2 { display: grid; grid-template-columns: 1.12fr 0.88fr; gap: 18px; }
-  .sec-grid-equal { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-  .sec-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-  .panel-card {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: var(--radius-lg); padding: 20px 22px;
-    box-shadow: var(--card-shadow);
-  }
-  .panel-card h3 { margin: 0 0 8px; font-size: 17px; font-weight: 700; }
-  .tier-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
-  .tier-tab {
-    font-family: var(--mono); font-size: 12px; font-weight: 600;
-    padding: 8px 14px; border-radius: 8px; cursor: pointer;
-    border: 1px solid var(--border-strong); background: var(--surface-2);
-    color: var(--text-2); transition: all .15s;
-  }
-  .tier-tab:hover { border-color: var(--accent); color: var(--text); }
-  .tier-tab.active {
-    background: var(--accent); color: #fff; border-color: var(--accent);
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
-  }
-  .tier-meta-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px;
-  }
-  .tier-stat {
-    background: var(--surface-2); border: 1px solid var(--border);
-    border-radius: 8px; padding: 10px 12px;
-  }
-  .tier-stat-lbl { font-family: var(--mono); font-size: 10.5px; color: var(--text-3); text-transform: uppercase; }
-  .tier-stat-val { font-family: var(--mono); font-size: 13.5px; font-weight: 700; color: var(--text); margin-top: 3px; }
-  .gate-list {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px;
-  }
-  .gate-item {
-    display: flex; align-items: flex-start; gap: 8px;
-    background: var(--surface-2); border: 1px solid var(--border);
-    border-radius: 7px; padding: 9px 11px; font-size: 12.5px; color: var(--text-2);
-    cursor: pointer; user-select: none; transition: border-color .12s, background .12s;
-  }
-  .gate-item:hover { border-color: var(--accent); }
-  .gate-item.checked {
-    border-color: rgba(5, 150, 105, 0.45); background: var(--good-soft); color: var(--text);
-  }
-  .gate-check {
-    font-family: var(--mono); font-weight: 700; color: var(--good);
-    min-width: 16px; line-height: 1.3;
-  }
-  .sprint-timeline {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 14px;
-  }
-  .sprint-step {
-    background: var(--surface-2); border: 1px solid var(--border);
-    border-radius: 10px; padding: 14px; position: relative;
-  }
-  .sprint-step.highlight {
-    border: 2px solid var(--good); background: var(--good-soft);
-  }
-  .sprint-wk {
-    font-family: var(--mono); font-size: 11px; font-weight: 800;
-    color: var(--accent); text-transform: uppercase;
-  }
-  .sprint-step.highlight .sprint-wk { color: var(--good); }
-  .sprint-title { font-size: 14px; font-weight: 800; margin: 5px 0 6px; color: var(--text); }
-  .sprint-desc { font-size: 12.3px; color: var(--text-2); line-height: 1.45; margin: 0; }
-  .soc-kpi-grid {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px;
-  }
-  .soc-kpi-card {
-    background: var(--surface-2); border: 1px solid var(--border);
-    border-radius: 10px; padding: 14px;
-  }
-  .soc-kpi-num {
-    font-family: var(--mono); font-size: 26px; font-weight: 800; color: var(--text);
-  }
-  .soc-kpi-delta {
-    font-family: var(--mono); font-size: 11.5px; font-weight: 700; color: var(--good);
-  }
-  .soc-kpi-lbl { font-size: 12.5px; font-weight: 700; color: var(--text-2); margin-top: 4px; }
-  .matrix-table-wrap { overflow-x: auto; }
-  .sec-table { width: 100%; border-collapse: collapse; font-size: 12.8px; }
-  .sec-table th {
-    font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .06em;
-    color: var(--text-3); text-align: left; padding: 10px 10px;
-    border-bottom: 2px solid var(--border-strong); background: var(--surface-2);
-  }
-  .sec-table td {
-    padding: 10px 10px; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--text-2);
-  }
-  .sec-table tr:hover td { background: var(--surface-hover); }
-  .code-pill {
-    font-family: var(--mono); font-size: 11px; font-weight: 600;
-    padding: 2px 6px; border-radius: 4px; background: var(--surface-2);
-    border: 1px solid var(--border); color: var(--text); white-space: nowrap;
-  }
-  .deck-viewer-bar {
-    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
-    gap: 10px; padding: 12px 16px; background: var(--surface-2);
-    border: 1px solid var(--border); border-radius: var(--radius) var(--radius) 0 0;
-  }
-  .deck-frame {
-    width: 100%; height: 860px; border: 1px solid var(--border); border-top: 0;
-    border-radius: 0 0 var(--radius) var(--radius); background: #e2e8f0;
-  }
-  @media (max-width: 960px) {
-    .sec-grid-2, .sec-grid-equal, .sec-grid-3, .sprint-timeline, .soc-kpi-grid, .gate-list, .tier-meta-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-</style>
-<link rel="stylesheet" href="site-structure.css?v=20261101">
-<script src="site-structure.js?v=20261101" defer></script>
-</head>
-<body>
+<meta name="description" content="Dedicated Sub-Column: Security AI Landing Zone &amp; Frontier SOC (42-Slide Frontier Security Research). Copilot as UI for AI, Microsoft Agent 365 5-Pillar Control Plane, M365 E7 Frontier Suite, FTE Offer Week 3 Gate, and Frontier SOC (ISOC + Project Perception Red/Blue/Green Agents + MDASH 100+ AI Agents).">
 
-<nav class="nav">
-  <div class="nav-inner">
-    <a href="index.html" class="brand">
-      <span class="brand-mark" aria-hidden="true"></span>
-      <span>Qi Chen</span>
-      <span class="brand-meta">security-ai-landing-zone</span>
-    </a>
-    <div class="nav-links">
-      <a href="frontier-ai-studio.html?lang=en">Frontier AI Studio</a>
-      <a href="index.html#pillars">6 Pillars</a>
-      <a href="ai-security.html" style="color:var(--accent);font-weight:700;">🛡️ AI Security</a>
-      <a href="security-ai-landing-zone.html" class="active" style="color:var(--good);font-weight:800;">🏗️ AI Landing Zone</a>
-      <a href="benchmarks.html" style="color:var(--good);font-weight:700;">📊 Benchmarks</a>
-      <a href="frontier-ai-studio.html">Frontier Studio</a>
-      <a href="writing.html">Writing</a>
-      <a href="#five-pillars">5 Pillars</a>
-      <a href="#frontier-soc">Frontier SOC</a>
-      <a href="#partner-service">Partner Playbook</a>
-      <a href="#visual-deck">7-Card Deck</a>
-      <a href="https://github.com/turbo998/ai-research-public/tree/main/docs/research/security-ai-landing-zone" target="_blank" rel="noopener">GitHub ↗</a>
-      <div class="lang-switch-group" role="group" aria-label="Language"><a href="security-ai-landing-zone.html" hreflang="en" lang="en" class="active" aria-current="page">EN</a><a href="zh-security-ai-landing-zone.html" hreflang="zh-CN" lang="zh-CN" class="">中文</a></div>
-    </div>
-  </div>
-</nav>
-<nav class="site-breadcrumb-bar" aria-label="Breadcrumb"><ol><li><a href="index.html">Home (Command Center)</a></li><li><a href="frontier-ai-studio.html?lang=en#security">Frontier AI Studio</a></li><li><a href="ai-security.html">AI Security</a></li><li aria-current="page">Security AI Landing Zone</li></ol><div class="breadcrumb-siblings"><a href="index.html">← Command Center</a><a href="frontier-ai-studio.html?lang=en">Frontier AI Studio</a></div></nav>
 
-<main class="wrap">
+
+
+
+
+<meta name="reading-migration" content="R6"><link rel="stylesheet" href="assets/reading-shell.css"><script src="assets/reading-shell.js"></script></head>
+<body class="reading-page"><a class="reading-skip" href="#reading-main">Skip to content</a><header class="reading-header"><a class="reading-brand" href="index.html"><span class="reading-mark">q<span>.</span></span><span>Qi Chen<small>@turbo998 · Engineering notes</small></span></a><div class="reading-controls"><a data-reading-language="" href="zh-security-ai-landing-zone.html" hreflang="zh-CN" lang="zh-CN">中文</a><a data-reading-theme="light" href="?theme=light" aria-label="Light theme">☀</a><a data-reading-theme="dark" href="?theme=dark" aria-label="Dark theme">◐</a><details><summary aria-label="Navigation">☰</summary><nav><a href="index.html">Home</a><a href="studio/index.html">Studio</a><a href="writing.html">Writing</a><a href="about.html">About</a></nav></details></div></header><aside id="reading-language-note" class="reading-language-note">Source text preserved. A distinct Chinese edition is available; editions may differ.</aside><main id="reading-main" tabindex="-1" class="reading-document">
+
+
+
+
+<div class="wrap">
 
   <!-- ==================== SUB-COLUMN SWITCHER BAR ==================== -->
   <div class="subcol-bar">
-    <div style="font-family:var(--mono);font-size:11.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;">
+    <div>
       🛡️ AI Security Navigation &amp; Sub-Columns
     </div>
     <div class="subcol-links">
@@ -282,8 +124,8 @@
       </div>
       <p class="section-sub">Dual-track vector architecture from the 42-slide Frontier Security Deck: Experience Layer (`Copilot as UI`), Control Plane (`Microsoft Agent 365`), Foundation (`M365 E7`), and Frontier SOC (`ISOC + Perception + MDASH`).</p>
     </div>
-    <div class="panel-card" style="padding:14px;overflow:hidden;">
-      <img src="assets/security-ai-landing-zone-architecture.svg" alt="Security AI Landing Zone and Frontier SOC Architecture Diagram" style="width:100%;height:auto;display:block;border-radius:8px;" />
+    <div class="panel-card">
+      <img src="assets/security-ai-landing-zone-architecture.svg" alt="Security AI Landing Zone and Frontier SOC Architecture Diagram">
     </div>
   </section>
 
@@ -299,33 +141,33 @@
 
     <div class="sec-grid-2">
       <div class="panel-card">
-        <div class="card-meta" style="margin-bottom:6px;">
+        <div class="card-meta">
           <span class="pill">Chapter 01 · Slides 3–4</span>
-          <span class="badge-live" style="background:rgba(220,38,38,0.12);color:#dc2626;border-color:rgba(220,38,38,0.3);">Real-World Incident Analysis</span>
+          <span class="badge-live">Real-World Incident Analysis</span>
         </div>
         <h3>Jan 2026 Monterrey Municipal Water &amp; Drainage Utility ICS Intrusion</h3>
-        <p style="font-size:13px;color:var(--text-2);line-height:1.55;margin:0 0 12px;">
+        <p>
           Disclosed by <strong>Gambit Security</strong> and <strong>Dragos</strong> (part of a Dec 2025–Feb 2026 campaign against Mexican government agencies): a single threat actor used commercial frontier LLMs as an automated operational engine to compromise critical water utility infrastructure.
         </p>
         <div class="tier-meta-grid">
           <div class="tier-stat">
             <div class="tier-stat-lbl">Primary Engine</div>
             <div class="tier-stat-val">Anthropic Claude</div>
-            <div style="font-size:11px;color:var(--text-3);margin-top:2px;">Intrusion planning, exploit/tool dev, real-time troubleshooting</div>
+            <div>Intrusion planning, exploit/tool dev, real-time troubleshooting</div>
           </div>
           <div class="tier-stat">
             <div class="tier-stat-lbl">Data &amp; Reporting</div>
             <div class="tier-stat-val">OpenAI GPT</div>
-            <div style="font-size:11px;color:var(--text-3);margin-top:2px;">Victim data triage, exfiltration structuring &amp; reporting</div>
+            <div>Victim data triage, exfiltration structuring &amp; reporting</div>
           </div>
           <div class="tier-stat">
             <div class="tier-stat-lbl">Payload Velocity</div>
-            <div class="tier-stat-val" style="color:#dc2626;">~17,000 LOC / 49 Mods</div>
-            <div style="font-size:11px;color:var(--text-3);margin-top:2px;">Generated in hours; self-adjusting; 0 static signatures</div>
+            <div class="tier-stat-val">~17,000 LOC / 49 Mods</div>
+            <div>Generated in hours; self-adjusting; 0 static signatures</div>
           </div>
         </div>
-        <div class="purview-step" style="margin-bottom:0;border-left-color:#dc2626;">
-          <div class="purview-step-head" style="color:#dc2626;">
+        <div class="purview-step">
+          <div class="purview-step-head">
             <span>Simultaneous Internal AI Attack Surface Expansion (Slide 4)</span>
             <span>5 New Internal Risks</span>
           </div>
@@ -336,41 +178,41 @@
       </div>
 
       <div class="panel-card">
-        <div class="card-meta" style="margin-bottom:6px;">
+        <div class="card-meta">
           <span class="pill">Chapter 03 · Slide 7</span>
           <span class="badge-live">Interactive Pre-Scale Readiness Audit</span>
         </div>
         <h3>6 Mandatory Questions Before Scaling Agents (`Observe · Govern · Secure`)</h3>
-        <p style="font-size:12.5px;color:var(--text-3);margin:0 0 10px;">
+        <p>
           Click each question below to verify how the Secure AI Landing Zone answers the 6 pre-scale executive blockers:
         </p>
-        <div class="gate-list" style="grid-template-columns:1fr;" id="pre-scale-list">
+        <div class="gate-list" id="pre-scale-list">
           <div class="gate-item checked" onclick="this.classList.toggle('checked');updatePreScaleScore();">
             <span class="gate-check">✓</span>
-            <div><strong>Q1 [Observe] How many Agents exist in the org &amp; where is the risk?</strong><br/><span style="font-size:11.5px;color:var(--text-3);">Solved by Agent 365 Unified Registry + Endpoint/Network Shadow Agent discovery.</span></div>
+            <div><strong>Q1 [Observe] How many Agents exist in the org &amp; where is the risk?</strong><br><span>Solved by Agent 365 Unified Registry + Endpoint/Network Shadow Agent discovery.</span></div>
           </div>
           <div class="gate-item checked" onclick="this.classList.toggle('checked');updatePreScaleScore();">
             <span class="gate-check">✓</span>
-            <div><strong>Q2 [Govern] Who is the Owner of each Agent &amp; when does it retire?</strong><br/><span style="font-size:11.5px;color:var(--text-3);">Solved by Agent 365 Sponsor attribution + mandatory lifecycle expiration policies.</span></div>
+            <div><strong>Q2 [Govern] Who is the Owner of each Agent &amp; when does it retire?</strong><br><span>Solved by Agent 365 Sponsor attribution + mandatory lifecycle expiration policies.</span></div>
           </div>
           <div class="gate-item checked" onclick="this.classList.toggle('checked');updatePreScaleScore();">
             <span class="gate-check">✓</span>
-            <div><strong>Q3 [Observe/Govern] Are all Agent actions auditable and traceable?</strong><br/><span style="font-size:11.5px;color:var(--text-3);">Solved by Purview default interaction audit logs (said, did, accessed) + eDiscovery.</span></div>
+            <div><strong>Q3 [Observe/Govern] Are all Agent actions auditable and traceable?</strong><br><span>Solved by Purview default interaction audit logs (said, did, accessed) + eDiscovery.</span></div>
           </div>
           <div class="gate-item checked" onclick="this.classList.toggle('checked');updatePreScaleScore();">
             <span class="gate-check">✓</span>
-            <div><strong>Q4 [Govern] What can each Agent access &amp; are permissions excessive?</strong><br/><span style="font-size:11.5px;color:var(--text-3);">Solved by Entra Agent ID per Agent + scoped Access Packages + real-time CA.</span></div>
+            <div><strong>Q4 [Govern] What can each Agent access &amp; are permissions excessive?</strong><br><span>Solved by Entra Agent ID per Agent + scoped Access Packages + real-time CA.</span></div>
           </div>
           <div class="gate-item checked" onclick="this.classList.toggle('checked');updatePreScaleScore();">
             <span class="gate-check">✓</span>
-            <div><strong>Q5 [Secure] Will Copilot and Agents leak sensitive data?</strong><br/><span style="font-size:11.5px;color:var(--text-3);">Solved by Purview Sensitivity Labels + DLP auto-masking + DSPM for AI + IRM scoring.</span></div>
+            <div><strong>Q5 [Secure] Will Copilot and Agents leak sensitive data?</strong><br><span>Solved by Purview Sensitivity Labels + DLP auto-masking + DSPM for AI + IRM scoring.</span></div>
           </div>
           <div class="gate-item checked" onclick="this.classList.toggle('checked');updatePreScaleScore();">
             <span class="gate-check">✓</span>
-            <div><strong>Q6 [Secure] When hit by prompt injection, can we detect &amp; block in real time?</strong><br/><span style="font-size:11.5px;color:var(--text-3);">Solved by Defender runtime inspection of prompts, outputs, tool calls &amp; MCP into ISOC.</span></div>
+            <div><strong>Q6 [Secure] When hit by prompt injection, can we detect &amp; block in real time?</strong><br><span>Solved by Defender runtime inspection of prompts, outputs, tool calls &amp; MCP into ISOC.</span></div>
           </div>
         </div>
-        <div style="margin-top:10px;font-family:var(--mono);font-size:12px;display:flex;justify-content:space-between;color:var(--good);font-weight:700;" id="pre-scale-status">
+        <div id="pre-scale-status">
           <span>PRE-SCALE GATE STATUS: 6 / 6 VERIFIED</span>
           <span>READY FOR WEEK 4–5 AGENT LAUNCH</span>
         </div>
@@ -378,13 +220,13 @@
     </div>
 
     <!-- FTE 4-6 WEEK SPRINT TIMELINE -->
-    <div class="panel-card" style="margin-top:18px;">
-      <div class="card-meta" style="margin-bottom:4px;">
+    <div class="panel-card">
+      <div class="card-meta">
         <span class="pill">Chapter 02 · Slide 5 · FTE Offer</span>
         <span class="badge-live">4–6 Week Transformation Sprint</span>
       </div>
       <h3>FTE Offer 4–6 Week Sprint: Why Week 3 (`Secure AI Landing Zone`) Determines Production Go-Live</h3>
-      <p style="font-size:13px;color:var(--text-2);margin:0;">
+      <p>
         Without completing <strong>② Secure AI Landing Zone</strong> and <strong>③ Copilot as the UI for AI</strong> in Week 3, the <strong>3 production Agents built in Weeks 4–5 cannot pass security review to go live</strong>.
       </p>
       <div class="sprint-timeline">
@@ -439,12 +281,12 @@
       </div>
 
       <div class="panel-card">
-        <div class="card-meta" style="margin-bottom:6px;">
+        <div class="card-meta">
           <span class="pill">Slides 6, 8, 22–23</span>
           <span class="badge-live">Experience Layer &amp; M365 E7 Stack</span>
         </div>
         <h3>Copilot as the UI for AI + M365 E7 (`Frontier Suite`)</h3>
-        <p style="font-size:12.8px;color:var(--text-2);margin:0 0 12px;">
+        <p>
           Without a unified entry point, every AI project becomes a separate login and Shadow AI silo. <strong>Copilot as the UI for AI</strong> unifies employee interactions while <strong>M365 E7</strong> provides the full licensing foundation.
         </p>
 
@@ -468,13 +310,13 @@
           </p>
         </div>
 
-        <div class="purview-step" style="margin-bottom:0;">
+        <div class="purview-step">
           <div class="purview-step-head">
             <span>Agent 365 Purchase Prerequisites (Slide 23)</span>
             <span>4 Qualifying Paths</span>
           </div>
           <p>
-            To purchase <strong>Microsoft Agent 365</strong> standalone, the tenant must hold at least one of:<br/>
+            To purchase <strong>Microsoft Agent 365</strong> standalone, the tenant must hold at least one of:<br>
             1. <code>M365 E5 / A5 / Business Premium</code> · 2. <code>Microsoft Defender Suite + Purview Suite</code> · 3. <code>Defender Suite Edu + Purview Suite Edu</code> · 4. <code>Defender and Purview Suite FLW</code>.
           </p>
         </div>
@@ -494,66 +336,66 @@
 
     <div class="soc-kpi-grid">
       <div class="soc-kpi-card">
-        <div style="display:flex;justify-content:space-between;align-items:baseline;">
+        <div>
           <span class="soc-kpi-num">847</span>
           <span class="soc-kpi-delta">↑ 18% (vs 7d ago)</span>
         </div>
         <div class="soc-kpi-lbl">Exposure Management (Reduced Exposures)</div>
-        <div style="font-size:11.5px;color:var(--text-3);margin-top:4px;">Proactive posture &amp; chokepoint elimination across the Exposure Graph (Slide 24)</div>
+        <div>Proactive posture &amp; chokepoint elimination across the Exposure Graph (Slide 24)</div>
       </div>
       <div class="soc-kpi-card">
-        <div style="display:flex;justify-content:space-between;align-items:baseline;">
+        <div>
           <span class="soc-kpi-num">41</span>
           <span class="soc-kpi-delta">↑ 12% (vs 7d ago)</span>
         </div>
         <div class="soc-kpi-lbl">Threat Investigations (Active Triaged)</div>
-        <div style="font-size:11.5px;color:var(--text-3);margin-top:4px;">Automated attack timeline reconstruction &amp; alert noise elimination (Slide 24)</div>
+        <div>Automated attack timeline reconstruction &amp; alert noise elimination (Slide 24)</div>
       </div>
       <div class="soc-kpi-card">
-        <div style="display:flex;justify-content:space-between;align-items:baseline;">
+        <div>
           <span class="soc-kpi-num">124</span>
           <span class="soc-kpi-delta">↑ 18% (vs 7d ago)</span>
         </div>
         <div class="soc-kpi-lbl">Threat Intelligence (Enriched Indicators)</div>
-        <div style="font-size:11.5px;color:var(--text-3);margin-top:4px;">Global TI correlated with organizational assets, exposure &amp; history (Slide 24)</div>
+        <div>Global TI correlated with organizational assets, exposure &amp; history (Slide 24)</div>
       </div>
       <div class="soc-kpi-card">
-        <div style="display:flex;justify-content:space-between;align-items:baseline;">
+        <div>
           <span class="soc-kpi-num">23</span>
           <span class="soc-kpi-delta">↑ 31% (vs 7d ago)</span>
         </div>
         <div class="soc-kpi-lbl">Attack Disruption (Disrupted Attacks)</div>
-        <div style="font-size:11.5px;color:var(--text-3);margin-top:4px;">Autonomous defense stopping multi-stage ransomware in minutes (Slides 24 &amp; 30)</div>
+        <div>Autonomous defense stopping multi-stage ransomware in minutes (Slides 24 &amp; 30)</div>
       </div>
     </div>
 
     <div class="sec-grid-3">
       <div class="panel-card">
-        <div class="card-meta" style="margin-bottom:6px;">
+        <div class="card-meta">
           <span class="pill">Slides 25–26</span>
           <span class="badge-live">GA November 2026</span>
         </div>
         <h3>Project Perception: Red / Blue / Green Agent Triad</h3>
-        <p style="font-size:12.6px;color:var(--text-2);line-height:1.5;">
+        <p>
           Multi-agent, multi-model workflow operating continuously over the <strong>Unified Security &amp; Exposure Graph</strong> (<code>DeviceProcessEvents</code>, <code>SignInLogs</code>, <code>AlertEvidence</code>, <code>ExposureGraphNodes</code>, <code>RedTeamOperations</code>):
         </p>
-        <ul style="font-size:12.4px;color:var(--text-2);padding-left:18px;line-height:1.55;margin:8px 0 0;">
-          <li><strong style="color:#dc2626;">🔴 Red Team Agent (`模拟攻击`)</strong>: Simulates attacks, maps attack paths, discovers critical chokepoints, scans vulnerable code, exposes detection gaps.</li>
-          <li><strong style="color:#2563eb;">🔵 Blue Team Agent (`检测与分类`)</strong>: Operationalizes threat intel, reconstructs attack timelines, triages alerts, eliminates false-positive noise.</li>
-          <li><strong style="color:#059669;">🟢 Green Team Agent (`修复与补救`)</strong>: Closes coverage gaps, analyzes security posture, validates exposures, prioritizes root-cause remediation.</li>
+        <ul>
+          <li><strong>🔴 Red Team Agent (`模拟攻击`)</strong>: Simulates attacks, maps attack paths, discovers critical chokepoints, scans vulnerable code, exposes detection gaps.</li>
+          <li><strong>🔵 Blue Team Agent (`检测与分类`)</strong>: Operationalizes threat intel, reconstructs attack timelines, triages alerts, eliminates false-positive noise.</li>
+          <li><strong>🟢 Green Team Agent (`修复与补救`)</strong>: Closes coverage gaps, analyzes security posture, validates exposures, prioritizes root-cause remediation.</li>
         </ul>
       </div>
 
       <div class="panel-card">
-        <div class="card-meta" style="margin-bottom:6px;">
+        <div class="card-meta">
           <span class="pill">Slide 27</span>
-          <span class="badge-live" style="background:rgba(217,119,6,0.12);color:#d97706;border-color:rgba(217,119,6,0.3);">Private Preview</span>
+          <span class="badge-live">Private Preview</span>
         </div>
         <h3>MDASH: 100+ Specialized AI Agents</h3>
-        <p style="font-size:12.6px;color:var(--text-2);line-height:1.5;">
+        <p>
           Traditional SAST/vulnerability scanners flood engineering teams with unverified findings. <strong>MDASH</strong> orchestrates <strong>100+ specialized AI Agents</strong> combining <strong>Frontier models + Microsoft proprietary models</strong>:
         </p>
-        <ul style="font-size:12.4px;color:var(--text-2);padding-left:18px;line-height:1.55;margin:8px 0 0;">
+        <ul>
           <li><strong>Stage 1 · Deep Vulnerability Discovery</strong>: Multi-agent code &amp; binary analysis beyond static signatures.</li>
           <li><strong>Stage 2 · Automated Sandbox Validation</strong>: Tests reachability and preconditions across dependency graphs.</li>
           <li><strong>Stage 3 · Exploitability Proof</strong>: Generates deterministic proof-of-exploit so Defender &amp; developers fix real, exploitable risks first.</li>
@@ -561,15 +403,15 @@
       </div>
 
       <div class="panel-card">
-        <div class="card-meta" style="margin-bottom:6px;">
+        <div class="card-meta">
           <span class="pill">Slides 28–32</span>
           <span class="badge-live">aka.ms/ISOCDefender</span>
         </div>
         <h3>ISOC in Microsoft Defender Roadmap</h3>
-        <p style="font-size:12.6px;color:var(--text-2);line-height:1.5;">
+        <p>
           Available to eligible <strong>Defender Suite, M365 E5, and M365 E7</strong> customers—bringing built-in SIEM &amp; autonomous SOC directly into the Defender portal:
         </p>
-        <ul style="font-size:12.4px;color:var(--text-2);padding-left:18px;line-height:1.55;margin:8px 0 0;">
+        <ul>
           <li><strong>Available Today (Slide 32)</strong>: Built-in SIEM (1P + 3P logs), <strong>Case Management</strong> (<a href="https://aka.ms/caseindefender" target="_blank" rel="noopener">aka.ms/caseindefender ↗</a>), <strong>SOAR Playbook Generator</strong>, Workbooks, and <strong>UEBA</strong>.</li>
           <li><strong>Launching November 2026 (Slide 32)</strong>: <strong>90-Day Data Retention</strong>, Content Hub + CI/CD pipeline, Threat Intelligence Platform, SOC Optimization, and <strong>Project Perception GA</strong>.</li>
         </ul>
@@ -587,9 +429,9 @@
       <p class="section-sub">How engineering teams verify tenant AI readiness across 5 technical dimensions and execute the 3-stage Secure AI Landing Zone pipeline backed by the 360-page Microsoft Security Workload Specifications.</p>
     </div>
 
-    <div class="panel-card" style="margin-bottom:18px;">
+    <div class="panel-card">
       <h3>5 Architectural Verification Probes for Secure AI Landing Zone Readiness (Slide 34)</h3>
-      <p style="font-size:12.8px;color:var(--text-2);margin:0 0 12px;">
+      <p>
         Engineering gate: <strong>Any unverified probe below indicates a control-plane gap requiring Phase 1 (`Assess`) telemetry discovery before production Agent rollout.</strong>
       </p>
       <div class="matrix-table-wrap">
@@ -646,12 +488,12 @@
 
     <div class="sec-grid-3">
       <div class="panel-card">
-        <div class="card-meta" style="margin-bottom:6px;">
+        <div class="card-meta">
           <span class="pill">Phase 01 · Slide 35</span>
           <span class="badge-live">Telemetry &amp; Gap Audit</span>
         </div>
         <h3>1 · Assess (`评估 · Discovery &amp; Baseline`)</h3>
-        <ul style="font-size:12.6px;color:var(--text-2);padding-left:18px;line-height:1.55;">
+        <ul>
           <li>Enterprise Agent &amp; endpoint Shadow AI inventory discovery</li>
           <li>M365 Copilot SharePoint oversharing &amp; 8-label coverage audit</li>
           <li>Service principal &amp; Agent identity over-privilege inspection</li>
@@ -659,13 +501,13 @@
         </ul>
       </div>
 
-      <div class="panel-card" style="border-color:var(--good);">
-        <div class="card-meta" style="margin-bottom:6px;">
+      <div class="panel-card">
+        <div class="card-meta">
           <span class="pill">Phase 02 · FTE Week 3</span>
           <span class="badge-live">Control Plane Build</span>
         </div>
         <h3>2 · Build (`建设 · Week 3 Gate`)</h3>
-        <ul style="font-size:12.6px;color:var(--text-2);padding-left:18px;line-height:1.55;">
+        <ul>
           <li>Deploy <strong>Entra Agent ID</strong> + Access Packages + 13 CA JSON policies</li>
           <li>Configure <strong>Purview 8-Label Taxonomy + Copilot/Edge DLP + DSPM for AI</strong></li>
           <li>Enable <strong>Agent 365 Registry</strong> + lifecycle &amp; human sponsor attribution</li>
@@ -675,12 +517,12 @@
       </div>
 
       <div class="panel-card">
-        <div class="card-meta" style="margin-bottom:6px;">
+        <div class="card-meta">
           <span class="pill">Phase 03 · Slide 35</span>
           <span class="badge-live">Continuous SecOps</span>
         </div>
         <h3>3 · Operate (`运营 · Continuous Governance`)</h3>
-        <ul style="font-size:12.6px;color:var(--text-2);padding-left:18px;line-height:1.55;">
+        <ul>
           <li>Ongoing Agent onboarding gate &amp; automated Access Package recertification</li>
           <li>24×7 AI runtime prompt/MCP monitoring &amp; attack disruption via <strong>ISOC</strong></li>
           <li>Purview interaction audit, classifier tuning &amp; eDiscovery retention</li>
@@ -701,26 +543,26 @@
     </div>
 
     <div class="deck-viewer-bar">
-      <div class="tier-tabs" style="margin-bottom:0;" id="deck-tabs">
+      <div class="tier-tabs" id="deck-tabs">
         <button class="tier-tab active" onclick="switchLZDeck('workshops/ai-security/landing-zone-cards.html', this)">🏗️ Security AI Landing Zone &amp; Frontier SOC (7 Cards)</button>
         <button class="tier-tab" onclick="switchLZDeck('workshops/ai-security/defend-cards.html', this)">🛡️ DEFEND 5-Tier &amp; SMB Partner Toolkit (7 Cards)</button>
         <button class="tier-tab" onclick="switchLZDeck('workshops/ai-security/cards.html', this)">🌐 6-Track AI Security Panorama (7 Cards)</button>
       </div>
-      <div style="display:flex;gap:8px;align-items:center;">
-        <a id="deck-open-link" class="btn btn-primary" href="workshops/ai-security/landing-zone-cards.html" target="_blank" rel="noopener" style="padding:7px 14px;font-size:12px;">Open Full-Screen Deck ↗</a>
+      <div>
+        <a id="deck-open-link" class="btn btn-primary" href="workshops/ai-security/landing-zone-cards.html" target="_blank" rel="noopener">Open Full-Screen Deck ↗</a>
       </div>
     </div>
-    <iframe id="deck-iframe" class="deck-frame" src="workshops/ai-security/landing-zone-cards.html" title="Security AI Landing Zone 7-Card Visual Report Deck" loading="lazy"></iframe>
+    <a href="workshops/ai-security/landing-zone-cards.html" class="reading-demo-link" id="deck-iframe">Security AI Landing Zone 7-Card Visual Report Deck ↗</a>
   </section>
 
-</main>
+</div>
 
-<footer class=" wrap" style="margin-top:48px;padding:28px 28px 44px;border-top:1px solid var(--border);display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;font-family:var(--mono);font-size:12px;color:var(--text-3);">
+<footer class=" wrap">
   <div>
-    <strong>Qi Chen (陈启) · AI Security Research Center — Sub-Column: Security AI Landing Zone</strong><br/>
+    <strong>Qi Chen (陈启) · AI Security Research Center — Sub-Column: Security AI Landing Zone</strong><br>
     <span>Source: Frontier Security Deck (42 Slides · Anonymized) · Companion Repo: <a href="https://github.com/turbo998/ai-research-public/tree/main/docs/research/security-ai-landing-zone" target="_blank" rel="noopener">turbo998/ai-research-public</a></span>
   </div>
-  <div style="display:flex;gap:14px;">
+  <div>
     <a href="ai-security.html">← Back to AI Security Overview</a>
     <a href="index.html">Home</a>
     <a href="zh-security-ai-landing-zone.html">中文</a>
@@ -866,7 +708,7 @@ function updatePreScaleScore() {
 function switchLZDeck(url, btn) {
   document.querySelectorAll("#deck-tabs .tier-tab").forEach(b => b.classList.remove("active"));
   btn.classList.add("active");
-  document.getElementById("deck-iframe").src = url;
+  document.getElementById("deck-iframe").href = url;
   document.getElementById("deck-open-link").href = url;
 }
 
@@ -874,5 +716,7 @@ document.addEventListener("DOMContentLoaded", () => {
   selectLZPillar(0);
 });
 </script>
-</body>
-</html>
+
+
+</main>
+</body></html>

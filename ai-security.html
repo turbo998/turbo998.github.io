@@ -1,190 +1,28 @@
 <!doctype html>
-<html lang="en" data-builder-style="precision">
-<head>
-<script>
-  (() => {
-    const param = new URLSearchParams(window.location.search).get("scoutTheme");
-    const theme =
-      param || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-    document.documentElement.setAttribute("data-theme", theme);
-  })();
-</script>
+<html lang="en" data-builder-style="precision" data-theme="dark" data-reading-shell="document"><head>
 
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>AI Security Research &amp; Visual Report Center — Qi Chen (陈启)</title>
-<meta name="description" content="Comprehensive Visual Report &amp; Interactive Research Center for AI Security by Qi Chen (turbo998): DEFEND 5-Tier Partner Playbook &amp; Purview-for-AI, Multi-Agent Network Red Teaming, AKSClaw/E2B MicroVM Zero Trust, Entra Agent ID Governance Economics, Web IQ Anti-Injection, and Endpoint Agent Audits." />
-<link rel="stylesheet" href="style.css" />
-<script src="theme-switcher.js" defer></script>
-<script src="reveal.js" defer></script>
-<style>
-  .sec-grid-2 { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 18px; }
-  .sec-grid-equal { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-  .panel-card {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: var(--radius-lg); padding: 20px 22px;
-    box-shadow: var(--card-shadow);
-  }
-  .panel-card h3 { margin: 0 0 8px; font-size: 17px; font-weight: 700; }
-  .tier-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
-  .tier-tab {
-    font-family: var(--mono); font-size: 12px; font-weight: 600;
-    padding: 8px 14px; border-radius: 8px; cursor: pointer;
-    border: 1px solid var(--border-strong); background: var(--surface-2);
-    color: var(--text-2); transition: all .15s;
-  }
-  .tier-tab:hover { border-color: var(--accent); color: var(--text); }
-  .tier-tab.active {
-    background: var(--accent); color: #fff; border-color: var(--accent);
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
-  }
-  .tier-meta-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px;
-  }
-  .tier-stat {
-    background: var(--surface-2); border: 1px solid var(--border);
-    border-radius: 8px; padding: 10px 12px;
-  }
-  .tier-stat-lbl { font-family: var(--mono); font-size: 10.5px; color: var(--text-3); text-transform: uppercase; }
-  .tier-stat-val { font-family: var(--mono); font-size: 13.5px; font-weight: 700; color: var(--text); margin-top: 3px; }
-  .gate-list {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px;
-  }
-  .gate-item {
-    display: flex; align-items: flex-start; gap: 8px;
-    background: var(--surface-2); border: 1px solid var(--border);
-    border-radius: 7px; padding: 8px 10px; font-size: 12.5px; color: var(--text-2);
-    cursor: pointer; user-select: none; transition: border-color .12s, background .12s;
-  }
-  .gate-item:hover { border-color: var(--accent); }
-  .gate-item.checked {
-    border-color: rgba(5, 150, 105, 0.45); background: var(--good-soft); color: var(--text);
-  }
-  .gate-check {
-    font-family: var(--mono); font-weight: 700; color: var(--good);
-    min-width: 16px; line-height: 1.3;
-  }
-  .progress-wrap {
-    margin-top: 14px; background: var(--surface-2); border: 1px solid var(--border);
-    border-radius: 8px; padding: 12px 14px;
-  }
-  .progress-head {
-    display: flex; justify-content: space-between; align-items: center;
-    font-family: var(--mono); font-size: 12px; margin-bottom: 6px;
-  }
-  .progress-bar-bg {
-    width: 100%; height: 10px; background: var(--border); border-radius: 999px; overflow: hidden;
-  }
-  .progress-bar-fill {
-    height: 100%; background: linear-gradient(90deg, var(--accent), var(--good));
-    border-radius: 999px; transition: width .25s ease;
-  }
-  .purview-step {
-    border-left: 3px solid var(--accent); background: var(--surface-2);
-    border-radius: 0 8px 8px 0; padding: 10px 14px; margin-bottom: 10px;
-  }
-  .purview-step-head {
-    display: flex; justify-content: space-between; align-items: center;
-    font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--accent);
-  }
-  .purview-step p { margin: 4px 0 0; font-size: 12.5px; color: var(--text-2); line-height: 1.45; }
-  .bar-chart-row { margin-bottom: 13px; }
-  .bar-chart-label {
-    display: flex; justify-content: space-between; font-size: 12.5px; font-weight: 600;
-    margin-bottom: 4px; color: var(--text);
-  }
-  .bar-chart-sub { font-family: var(--mono); font-size: 11px; color: var(--text-3); margin-bottom: 5px; }
-  .dual-bar-track {
-    display: flex; flex-direction: column; gap: 4px;
-  }
-  .bar-line {
-    display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 11px;
-  }
-  .bar-tag { width: 78px; color: var(--text-3); }
-  .bar-fill-wrap { flex: 1; background: var(--surface-2); height: 11px; border-radius: 999px; overflow: hidden; border: 1px solid var(--border); }
-  .bar-fill-good { height: 100%; background: linear-gradient(90deg, var(--accent), var(--good)); border-radius: 999px; }
-  .bar-fill-warn { height: 100%; background: #ef4444; opacity: 0.75; border-radius: 999px; }
-  .bar-pct { width: 52px; text-align: right; font-weight: 700; color: var(--text); }
-  .matrix-table-wrap { overflow-x: auto; }
-  .sec-table {
-    width: 100%; border-collapse: collapse; font-size: 12.8px;
-  }
-  .sec-table th {
-    font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .06em;
-    color: var(--text-3); text-align: left; padding: 10px 10px;
-    border-bottom: 2px solid var(--border-strong); background: var(--surface-2);
-  }
-  .sec-table td {
-    padding: 10px 10px; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--text-2);
-  }
-  .sec-table tr:hover td { background: var(--surface-hover); }
-  .code-pill {
-    font-family: var(--mono); font-size: 11px; font-weight: 600;
-    padding: 2px 6px; border-radius: 4px; background: var(--surface-2);
-    border: 1px solid var(--border); color: var(--text); white-space: nowrap;
-  }
-  .deck-viewer-bar {
-    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
-    gap: 10px; padding: 12px 16px; background: var(--surface-2);
-    border: 1px solid var(--border); border-radius: var(--radius) var(--radius) 0 0;
-  }
-  .deck-frame {
-    width: 100%; height: 860px; border: 1px solid var(--border); border-top: 0;
-    border-radius: 0 0 var(--radius) var(--radius); background: #e2e8f0;
-  }
-  .subcol-bar {
-    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
-    gap: 10px; padding: 11px 16px; margin: 18px 0 6px;
-    background: var(--surface-2); border: 1px solid var(--border-strong);
-    border-radius: var(--radius);
-  }
-  .subcol-links { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-  .subcol-pill {
-    font-family: var(--mono); font-size: 12px; font-weight: 600;
-    padding: 6px 12px; border-radius: 7px; text-decoration: none;
-    color: var(--text-2); background: var(--surface); border: 1px solid var(--border);
-    transition: all .15s;
-  }
-  .subcol-pill:hover { border-color: var(--accent); color: var(--text); }
-  .subcol-pill.active {
-    background: var(--accent); color: #fff; border-color: var(--accent);
-    box-shadow: 0 3px 10px rgba(37, 99, 235, 0.25);
-  }
-  @media (max-width: 960px) {
-    .sec-grid-2, .sec-grid-equal, .gate-list, .tier-meta-grid { grid-template-columns: 1fr; }
-  }
-</style>
-<link rel="stylesheet" href="site-structure.css?v=20261101">
-<script src="site-structure.js?v=20261101" defer></script>
-</head>
-<body>
+<meta name="description" content="Comprehensive Visual Report &amp; Interactive Research Center for AI Security by Qi Chen (turbo998): DEFEND 5-Tier Partner Playbook &amp; Purview-for-AI, Multi-Agent Network Red Teaming, AKSClaw/E2B MicroVM Zero Trust, Entra Agent ID Governance Economics, Web IQ Anti-Injection, and Endpoint Agent Audits.">
 
-<nav class="nav">
-  <div class="nav-inner">
-    <a class="nav-brand" href="index.html"><img src="assets/photo.jpg" alt="">QI CHEN</a>
-    <div class="nav-links">
-      <a href="frontier-ai-studio.html?lang=en">Frontier AI Studio</a>
-      <a href="index.html">Overview</a>
-      <a href="ai-security.html" class="active">🛡️ AI Security</a>
-      <a href="security-ai-landing-zone.html" style="color:var(--good);font-weight:700;">🏗️ AI Landing Zone</a>
-      <a href="benchmarks.html">Benchmarks</a>
-      <a href="writing.html">Workbenches &amp; Benchmarks</a>
-      <a href="projects.html">Projects</a>
-      <a href="opensource.html">Open Source</a>
-      <a href="openrouter.html">OpenRouter</a>
-      <a href="about.html">About</a>
-      <a href="style-preview.html" class="nav-style-pill">[Styles]</a>
-    </div>
-    <div class="lang-switch-group" role="group" aria-label="Language"><a href="ai-security.html" hreflang="en" lang="en" class="active" aria-current="page">EN</a><a href="zh-ai-security.html" hreflang="zh-CN" lang="zh-CN" class="">中文</a></div>
-  </div>
-</nav>
-<nav class="site-breadcrumb-bar" aria-label="Breadcrumb"><ol><li><a href="index.html">Home (Command Center)</a></li><li><a href="frontier-ai-studio.html?lang=en#security">Frontier AI Studio</a></li><li aria-current="page">AI Security</li></ol><div class="breadcrumb-siblings"><a href="index.html">← Command Center</a><a href="frontier-ai-studio.html?lang=en">Frontier AI Studio</a></div></nav>
 
-<main class="wrap">
+
+
+
+
+<meta name="reading-migration" content="R6"><link rel="stylesheet" href="assets/reading-shell.css"><script src="assets/reading-shell.js"></script></head>
+<body class="reading-page"><a class="reading-skip" href="#reading-main">Skip to content</a><header class="reading-header"><a class="reading-brand" href="index.html"><span class="reading-mark">q<span>.</span></span><span>Qi Chen<small>@turbo998 · Engineering notes</small></span></a><div class="reading-controls"><a data-reading-language="" href="zh-ai-security.html" hreflang="zh-CN" lang="zh-CN">中文</a><a data-reading-theme="light" href="?theme=light" aria-label="Light theme">☀</a><a data-reading-theme="dark" href="?theme=dark" aria-label="Dark theme">◐</a><details><summary aria-label="Navigation">☰</summary><nav><a href="index.html">Home</a><a href="studio/index.html">Studio</a><a href="writing.html">Writing</a><a href="about.html">About</a></nav></details></div></header><aside id="reading-language-note" class="reading-language-note">Source text preserved. A distinct Chinese edition is available; editions may differ.</aside><main id="reading-main" tabindex="-1" class="reading-document"><a class="reading-context" href="studio/security.html">← Studio / security</a>
+
+
+
+
+<div class="wrap">
 
   <!-- ==================== SUB-COLUMN SWITCHER BAR ==================== -->
   <div class="subcol-bar">
-    <div style="font-family:var(--mono);font-size:11.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;">
+    <div>
       🛡️ AI Security Navigation &amp; Sub-Columns
     </div>
     <div class="subcol-links">
@@ -255,22 +93,22 @@
   </div>
 
   <!-- ==================== INTERACTIVE SPOTLIGHT: TRACK 07 AI SECURITY LAB & BINANCE $6B PLAYGROUND ==================== -->
-  <section id="ai-security-lab-spotlight" style="margin-bottom:24px;">
-    <div class="panel-card" style="border:2px solid var(--accent);background:linear-gradient(135deg, var(--surface) 0%, var(--accent-soft, rgba(37,99,235,0.08)) 100%);">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:14px;">
-        <div style="flex:1;min-width:300px;">
-          <div style="font-family:var(--mono);font-size:11.5px;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">
+  <section id="ai-security-lab-spotlight">
+    <div class="panel-card">
+      <div>
+        <div>
+          <div>
             🎮 TRACK 07 · NIGHTLY AI SECURITY RESEARCH &amp; INTERACTIVE H5 PLAYGROUND (turbo998/ai-security-lab)
           </div>
-          <h2 style="margin:0 0 8px;font-size:22px;font-weight:800;color:var(--text);">
+          <h2>
             Binance $6B-Scale Kill-Chain &amp; Circuit-Breaker Simulator × 4-Vector AI Pentest Arena × OWASP/ATLAS 4-Layer Matrix
           </h2>
-          <p style="margin:0 0 12px;font-size:13.2px;color:var(--text-2);line-height:1.58;">
-            <strong>1) Industry Trend Tracking:</strong> 2026 Agentic AI Security landscape mapped across <strong>OWASP Agentic Top 10 (<code>ASI01–ASI10</code>)</strong> and <strong>MITRE ATLAS</strong> with an interactive 4-layer architecture readiness score calculator.<br/>
-            <strong>2) Major AI/Crypto Security Incident Deep Dive:</strong> Interactive 6-stage <strong>Binance $6B-Scale Intrusion Kill-Chain &amp; <code>&lt;180ms</code> Real-Time Graph Circuit-Breaker Simulator</strong> contrasting Legacy Perimeter vs. Zero-Trust Hardened mode (Hardware TEE/HSM Intent Attestation + M-of-N Out-of-Band Quorum + <code>142ms</code> auto-freeze preventing <code>$6.0B</code> drain).<br/>
+          <p>
+            <strong>1) Industry Trend Tracking:</strong> 2026 Agentic AI Security landscape mapped across <strong>OWASP Agentic Top 10 (<code>ASI01–ASI10</code>)</strong> and <strong>MITRE ATLAS</strong> with an interactive 4-layer architecture readiness score calculator.<br>
+            <strong>2) Major AI/Crypto Security Incident Deep Dive:</strong> Interactive 6-stage <strong>Binance $6B-Scale Intrusion Kill-Chain &amp; <code>&lt;180ms</code> Real-Time Graph Circuit-Breaker Simulator</strong> contrasting Legacy Perimeter vs. Zero-Trust Hardened mode (Hardware TEE/HSM Intent Attestation + M-of-N Out-of-Band Quorum + <code>142ms</code> auto-freeze preventing <code>$6.0B</code> drain).<br>
             <strong>3) AI-Driven Offensive &amp; Defensive Pentest Arena:</strong> Live side-by-side red-vs-blue runner across 4 attack vectors (<code>[SPOTLIGHT_STRIPPED]</code> Indirect Prompt Injection, MCP Tool Poisoning, A2A Confused Deputy Treasury Hijack, and SSRF/IMDS Canary Probing) — cutting <strong>Attack Success Rate (ASR) from 75.0% to 0.0%</strong> while preserving <strong>93.8% benign completion</strong>.
           </p>
-          <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          <div>
             <a class="wb-link primary" href="workshops/ai-security/index.en.html" target="_blank" rel="noopener">🎮 Launch Interactive H5 Playground (EN) ↗</a>
             <a class="wb-link" href="workshops/ai-security/benchmark-cards.en.html" target="_blank" rel="noopener">📊 Open AI Security 7-Card Deck (EN) ↗</a>
             <a class="wb-link" href="workshops/ai-security/index.html" target="_blank" rel="noopener">🌐 中文版演练台 ↗</a>
@@ -283,21 +121,21 @@
   </section>
 
   <!-- ==================== DEDICATED SUB-COLUMN SPOTLIGHT: SECURITY AI LANDING ZONE ==================== -->
-  <section id="landing-zone-spotlight" style="margin-bottom:28px;">
-    <div class="panel-card" style="border:2px solid var(--good);background:linear-gradient(135deg, var(--surface) 0%, var(--good-soft) 100%);">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:14px;">
-        <div style="flex:1;min-width:300px;">
-          <div style="font-family:var(--mono);font-size:11.5px;font-weight:800;color:var(--good);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">
+  <section id="landing-zone-spotlight">
+    <div class="panel-card">
+      <div>
+        <div>
+          <div>
             🏗️ DEDICATED SUB-COLUMN · SECURITY AI LANDING ZONE &amp; FRONTIER SOC (42-SLIDE RESEARCH SYNTHESIS)
           </div>
-          <h2 style="margin:0 0 8px;font-size:22px;font-weight:800;color:var(--text);">
+          <h2>
             Security for AI ("Born Governed" 5 Pillars) × AI for Security (Frontier SOC: ISOC + Perception + MDASH)
           </h2>
-          <p style="margin:0 0 12px;font-size:13.2px;color:var(--text-2);line-height:1.55;">
+          <p>
             Why static signature defense fails against LLM-orchestrated attacks (Jan 2026 Monterrey Water Utility ICS intrusion: <strong>~17,000 LOC across 49 modules</strong> via Claude + GPT), why <strong>FTE Offer Week 3</strong> locks the <strong>Secure AI Landing Zone + Copilot as UI for AI</strong> as the mandatory prerequisite before launching 3 production Agents in Weeks 4–5, and how <strong>Microsoft Agent 365 (5 Pillars on M365 E7)</strong> + <strong>Frontier SOC (ISOC + Project Perception Red/Blue/Green Agents + MDASH 100+ Agents)</strong> operationalize <code>Assess → Build → Operate</code> partner services.
           </p>
-          <div style="display:flex;flex-wrap:wrap;gap:8px;">
-            <a class="wb-link primary" href="security-ai-landing-zone.html" style="background:var(--good);border-color:var(--good);color:#fff;">🏗️ Enter Security AI Landing Zone Sub-Column →</a>
+          <div>
+            <a class="wb-link primary" href="security-ai-landing-zone.html">🏗️ Enter Security AI Landing Zone Sub-Column →</a>
             <a class="wb-link" href="workshops/ai-security/landing-zone-cards.html" target="_blank" rel="noopener">📊 Open 7-Card Visual Deck ↗</a>
             <a class="wb-link" href="assets/security-ai-landing-zone-architecture.svg" target="_blank" rel="noopener">🔍 Architecture SVG ↗</a>
             <a class="wb-link" href="https://github.com/turbo998/ai-research-public/tree/main/docs/research/security-ai-landing-zone" target="_blank" rel="noopener">📘 GitHub Research Archive ↗</a>
@@ -317,14 +155,14 @@
           Why prompt-level instructions (<code>SKILL.md</code> or system prompts) are never security boundaries—and how out-of-band enforcement across Identity, Data Governance, Multi-Agent Provenance, MicroVM Kernels, and Cryptographic Mandates eliminates single-point agent failures.
         </p>
       </div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <div>
         <a class="wb-link primary" href="assets/ai-security-architecture.svg" target="_blank" rel="noopener">🔍 View Full-Resolution SVG ↗</a>
         <a class="wb-link" href="#decks">📊 Jump to 7-Card Visual Decks ↓</a>
       </div>
     </div>
 
-    <div class="panel-card" style="padding:14px;overflow:hidden;">
-      <img src="assets/ai-security-architecture.svg" alt="6-Track AI Security and Agent Defense-in-Depth Architecture Panorama" style="width:100%;height:auto;display:block;border-radius:8px;" />
+    <div class="panel-card">
+      <img src="assets/ai-security-architecture.svg" alt="6-Track AI Security and Agent Defense-in-Depth Architecture Panorama">
     </div>
   </section>
 
@@ -338,7 +176,7 @@
           Synthesized from the 53-slide <strong>DEFEND Partner Playbook</strong> (11 chapters): explore the 5 DEFEND managed service tiers (<code>DEFENDBase</code> → <code>DEFENDExtend</code>), toggle the <strong>51 mandatory exit criteria items</strong> (Slides 34–38), and inspect the <strong>4-Tier Purview-as-a-Service Blueprint</strong> for safe Microsoft 365 Copilot &amp; Agentic AI adoption.
         </p>
       </div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <div>
         <a class="wb-link primary" href="workshops/ai-security/defend-cards.html" target="_blank" rel="noopener">📊 Open DEFEND 7-Card Deck ↗</a>
         <a class="wb-link" href="https://github.com/turbo998/ai-research-public/tree/main/docs/research/defend-partner-playbook" target="_blank" rel="noopener">📘 Full 53-Slide Analysis (GitHub) ↗</a>
       </div>
@@ -347,9 +185,9 @@
     <div class="sec-grid-2">
       <!-- Left: Interactive 5-Tier DEFEND Explorer & Exit Criteria Gate Simulator -->
       <div class="panel-card">
-        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
+        <div>
           <span class="wb-badge cobalt">INTERACTIVE EXIT-GATE SIMULATOR (SLIDES 19–40)</span>
-          <span style="font-family:var(--mono);font-size:11.5px;color:var(--text-3);">Click any tier or gate to simulate tenant progression</span>
+          <span>Click any tier or gate to simulate tenant progression</span>
         </div>
 
         <div class="tier-tabs" role="tablist" aria-label="DEFEND Service Tiers">
@@ -361,7 +199,7 @@
         </div>
 
         <h3 id="dt-title">Tier 1 · DEFENDBase — Secure Identity, Device &amp; Collaboration Foundation</h3>
-        <p id="dt-desc" style="font-size:13.2px;color:var(--text-2);margin:0 0 12px;line-height:1.55;">
+        <p id="dt-desc">
           Built on Microsoft 365 Business Premium + Intune Plan 1 + M365 Lighthouse (GDAP). Establishes Zero Trust baseline hygiene across Identity, Devices, Email, Endpoint, and baseline Data Protection before any advanced XDR, Copilot, or SIEM layer is introduced.
         </p>
 
@@ -380,11 +218,11 @@
           </div>
         </div>
 
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
-          <strong style="font-family:var(--mono);font-size:12px;color:var(--text);" id="dt-gate-heading">Mandatory Exit Criteria Checklist (11 / 11 Gates Verified)</strong>
-          <div style="display:flex;gap:6px;">
-            <button type="button" class="wb-link" onclick="toggleAllCurrentGates(true)" style="cursor:pointer;">✓ Check All</button>
-            <button type="button" class="wb-link" onclick="toggleAllCurrentGates(false)" style="cursor:pointer;">↺ Simulate Gap</button>
+        <div>
+          <strong id="dt-gate-heading">Mandatory Exit Criteria Checklist (11 / 11 Gates Verified)</strong>
+          <div>
+            <button type="button" class="wb-link" onclick="toggleAllCurrentGates(true)">✓ Check All</button>
+            <button type="button" class="wb-link" onclick="toggleAllCurrentGates(false)">↺ Simulate Gap</button>
           </div>
         </div>
 
@@ -396,23 +234,23 @@
             <span id="dt-status-badge" class="wb-badge">✅ READY FOR NEXT TIER</span>
           </div>
           <div class="progress-bar-bg">
-            <div class="progress-bar-fill" id="dt-progress-bar" style="width:100%;"></div>
+            <div class="progress-bar-fill" id="dt-progress-bar"></div>
           </div>
-          <div id="dt-gov-verdict" style="font-family:var(--mono);font-size:11.5px;color:var(--text-2);margin-top:8px;">
+          <div id="dt-gov-verdict">
             Governance Verdict: All mandatory exit criteria met. Low-Level Design (LLD) and Change Control baseline locked; eligible to advance to DEFENDSecurity or DEFENDCompliance.
           </div>
         </div>
       </div>
 
       <!-- Right: Purview-as-a-Service 4-Tier Blueprint & 7-Dimension Zero Trust Assessment -->
-      <div style="display:flex;flex-direction:column;gap:16px;">
+      <div>
         <div class="panel-card">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <div>
             <span class="wb-badge">APPENDIX B · PURVIEW-AS-A-SERVICE (SLIDES 45–50)</span>
             <span class="wb-id">Copilot &amp; AI Governance</span>
           </div>
           <h3>4-Tier Purview Progression for Safe Copilot &amp; AI Rollout</h3>
-          <p style="font-size:12.8px;color:var(--text-2);margin:0 0 12px;">
+          <p>
             Prevents Microsoft 365 Copilot from surfacing overshared sensitive files or leaking regulated data in prompts/responses:
           </p>
 
@@ -432,8 +270,8 @@
             <p>Extend protection to Windows/macOS endpoints (Endpoint DLP), enforce retention &amp; deletion lifecycles, and enable Audit (Standard) + Content Search.</p>
           </div>
 
-          <div class="purview-step" style="border-left-color:var(--good);background:var(--good-soft);">
-            <div class="purview-step-head" style="color:var(--good);">
+          <div class="purview-step">
+            <div class="purview-step-head">
               <span>Tier 3 · Data Control (AI &amp; Risk-Adaptive) ★</span>
               <span>Copilot DLP + DSPM for AI + IRM</span>
             </div>
@@ -450,22 +288,22 @@
         </div>
 
         <div class="panel-card">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <div>
             <span class="wb-badge amber">CH04 · MICROSOFT ZERO TRUST ASSESSMENT (SLIDES 16–18)</span>
             <span class="wb-id">7 Assessment Pillars</span>
           </div>
           <h3>7-Dimension Zero Trust Baseline (Including AI)</h3>
-          <p style="font-size:12.5px;color:var(--text-2);margin:0 0 10px;">
+          <p>
             Every customer onboarding starts with the automated Microsoft Zero Trust Assessment + Secure Score across <strong>7 dimensions</strong>:
           </p>
-          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px;font-family:var(--mono);font-size:11.5px;">
+          <div>
             <div class="tier-stat"><strong>01 · Identity</strong>: Phish-resistant MFA, CA, PIM/GDAP</div>
             <div class="tier-stat"><strong>02 · Devices</strong>: Intune compliance, ASR, BitLocker</div>
             <div class="tier-stat"><strong>03 · Applications</strong>: MDA OAuth app governance</div>
             <div class="tier-stat"><strong>04 · Data</strong>: MIP labels, encryption, DLP</div>
             <div class="tier-stat"><strong>05 · Infrastructure</strong>: Least privilege, Defender Cloud*</div>
             <div class="tier-stat"><strong>06 · Networks</strong>: Segmentation, safe links/egress</div>
-            <div class="tier-stat" style="grid-column:span 2;border-color:var(--accent);background:var(--accent-soft);">
+            <div class="tier-stat">
               <strong>07 · Artificial Intelligence (AI)</strong>: Shadow AI discovery (MDA), DSPM for AI, Copilot prompt/grounding DLP, oversharing remediation
             </div>
           </div>
@@ -474,24 +312,24 @@
     </div>
 
     <!-- Supplemental Track 01 Sub-Section: Microsoft Product Ecosystem Security & AI Engineering Architecture (360p Guides + 7 Verticals + 5-Stage Automation) -->
-    <div class="panel-card" id="smb-partner-toolkit" style="margin-top:18px;">
-      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:10px;">
+    <div class="panel-card" id="smb-partner-toolkit">
+      <div>
         <div>
           <span class="wb-badge">MICROSOFT PRODUCT ECOSYSTEM ENGINEERING · 5-STAGE AUTOMATION PIPELINE &amp; 360-PAGE TECHNICAL BASELINE</span>
-          <h3 style="margin-top:8px;">From 8-Label Schema &amp; Browser Policy Compilation to 6-Workload Configurations &amp; Idempotent PowerShell 7+ Execution</h3>
+          <h3>From 8-Label Schema &amp; Browser Policy Compilation to 6-Workload Configurations &amp; Idempotent PowerShell 7+ Execution</h3>
         </div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <div>
           <a class="wb-link primary" href="https://microsoft.github.io/DataSecurityGuidedAssistant/" target="_blank" rel="noopener">🧭 Policy Compiler (Guided Assistant) ↗</a>
           <a class="wb-link primary" href="https://microsoft.github.io/SOWGenerator/" target="_blank" rel="noopener">📝 22-Workstream Blueprint Builder ↗</a>
           <a class="wb-link" href="https://microsoft.github.io/BestPractice_Deploy-Scripts/" target="_blank" rel="noopener">⚙️ PowerShell 7+ Deploy-Scripts ↗</a>
         </div>
       </div>
-      <p style="font-size:13.2px;color:var(--text-2);margin:0 0 14px;line-height:1.55;">
+      <p>
         Synthesizing the purely technical architecture across the <strong>DEFEND 5-Tier Baseline (53 slides)</strong>, the <strong>7 Regulated Vertical Information Protection Specifications (14 pages)</strong>, the <strong>3 open-source Microsoft GitHub policy compilers &amp; PowerShell 7+ automation repos</strong>, and the <strong>6 Microsoft Security Workload Deployment Specifications (360 pages)</strong>:
       </p>
 
       <!-- 5-Stage Technical Automation Pipeline Table -->
-      <div class="matrix-table-wrap" style="margin-bottom:16px;">
+      <div class="matrix-table-wrap">
         <table class="sec-table">
           <thead>
             <tr>
@@ -580,10 +418,10 @@
       </div>
 
       <!-- 6-Workload 360-Page Microsoft Security Baseline Engineering Matrix -->
-      <div style="margin-bottom:16px;">
-        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
-          <strong style="font-family:var(--mono);font-size:12px;color:var(--accent);">6-WORKLOAD MICROSOFT SECURITY BASELINE ENGINEERING MATRIX (360-PAGE TECHNICAL SPECIFICATION)</strong>
-          <span style="font-family:var(--mono);font-size:11px;color:var(--text-3);">Prerequisite → Priority 1 → Priority 2 → Priority 3 → Suite Advanced</span>
+      <div>
+        <div>
+          <strong>6-WORKLOAD MICROSOFT SECURITY BASELINE ENGINEERING MATRIX (360-PAGE TECHNICAL SPECIFICATION)</strong>
+          <span>Prerequisite → Priority 1 → Priority 2 → Priority 3 → Suite Advanced</span>
         </div>
         <div class="matrix-table-wrap">
           <table class="sec-table">
@@ -596,57 +434,57 @@
             </thead>
             <tbody>
               <tr>
-                <td><strong>01 · Identity Protection</strong><br/><span class="code-pill">Entra P1/P2 + MDI · 90p</span></td>
+                <td><strong>01 · Identity Protection</strong><br><span class="code-pill">Entra P1/P2 + MDI · 90p</span></td>
                 <td>
-                  • <strong>2 Cloud-Only Break-Glass Accounts</strong> (<code>*.onmicrosoft.com</code>, hardware FIDO2 passkeys, excluded from all CA + continuous Log Analytics alert)<br/>
+                  • <strong>2 Cloud-Only Break-Glass Accounts</strong> (<code>*.onmicrosoft.com</code>, hardware FIDO2 passkeys, excluded from all CA + continuous Log Analytics alert)<br>
                   • <strong>Phishing-Resistant MFA Auth Strength</strong> for Admins, MFA for all users, Legacy Auth Block, Guest restrictions, SSPR, Admin Portal restriction (<code>cb1056e2-...</code>)
                 </td>
                 <td>
-                  • <strong>Entra ID P2 Identity Protection</strong>: Separate <em>Sign-in Risk CA</em> (High/Medium → MFA) &amp; <em>User Risk CA</em> (High → Password Change + Auth Strength)<br/>
-                  • <strong>PIM JIT Role Activation</strong> (<code>Active</code> → <code>Eligible</code>, 1–8h window, MFA + Justification + Approval), Access Reviews (auto-apply, 30d inactive helper), Entitlement Access Packages<br/>
+                  • <strong>Entra ID P2 Identity Protection</strong>: Separate <em>Sign-in Risk CA</em> (High/Medium → MFA) &amp; <em>User Risk CA</em> (High → Password Change + Auth Strength)<br>
+                  • <strong>PIM JIT Role Activation</strong> (<code>Active</code> → <code>Eligible</code>, 1–8h window, MFA + Justification + Approval), Access Reviews (auto-apply, 30d inactive helper), Entitlement Access Packages<br>
                   • <strong>Defender for Identity (MDI v3.x Unified Sensor)</strong> on Domain Controllers (<code>Set-MDIConfiguration -Mode Domain</code>, gMSA, NNR via RPC/NTLM/RDP/DNS, Honeytoken accounts)
                 </td>
               </tr>
               <tr>
-                <td><strong>02 · Data Security &amp; AI</strong><br/><span class="code-pill">Microsoft Purview · 92p</span></td>
+                <td><strong>02 · Data Security &amp; AI</strong><br><span class="code-pill">Microsoft Purview · 92p</span></td>
                 <td>
-                  • <strong>Unified Audit Log</strong> + <strong>8-Label Taxonomy</strong> (Modern Label Groups) across Files, Emails, Meetings &amp; Containers (SPO/Teams/Groups)<br/>
+                  • <strong>Unified Audit Log</strong> + <strong>8-Label Taxonomy</strong> (Modern Label Groups) across Files, Emails, Meetings &amp; Containers (SPO/Teams/Groups)<br>
                   • <strong>Default Document Label</strong> = <code>Confidential \ All Employees</code>; Static &amp; Adaptive Retention Scopes; Exchange/SPO/OneDrive + <strong>Endpoint DLP</strong> (block USB/clipboard/print/network share)
                 </td>
                 <td>
-                  • <strong>DLP for M365 Copilot</strong>: <em>Rule 1</em> blocks prompts with regulated SITs; <em>Rule 2</em> blocks Copilot grounding on <code>Confidential \ Specific People</code> &amp; <code>Highly Confidential</code> labels<br/>
-                  • <strong>Edge Inline Web Traffic DLP</strong>: Blocks sensitive paste/upload to unmanaged GenAI domains (ChatGPT, Gemini, DeepSeek, Claude)<br/>
+                  • <strong>DLP for M365 Copilot</strong>: <em>Rule 1</em> blocks prompts with regulated SITs; <em>Rule 2</em> blocks Copilot grounding on <code>Confidential \ Specific People</code> &amp; <code>Highly Confidential</code> labels<br>
+                  • <strong>Edge Inline Web Traffic DLP</strong>: Blocks sensitive paste/upload to unmanaged GenAI domains (ChatGPT, Gemini, DeepSeek, Claude)<br>
                   • <strong>DSPM for AI</strong> weekly oversharing audits + <strong>Insider Risk Management (<code>Data Leaks</code>) &amp; Adaptive Protection</strong> (<code>Elevated/Moderate/Minor</code> dynamic risk driving DLP Block &amp; CA)
                 </td>
               </tr>
               <tr>
-                <td><strong>03 · Email &amp; Collaboration</strong><br/><span class="code-pill">Defender for Office 365 · 52p</span></td>
+                <td><strong>03 · Email &amp; Collaboration</strong><br><span class="code-pill">Defender for Office 365 · 52p</span></td>
                 <td>
-                  • <strong>DNS Auth</strong>: SPF hard-fail (<code>-all</code>), DKIM 2048-bit CNAME rotation, DMARC (<code>p=quarantine; pct=100</code> → <code>p=reject</code>), Trusted ARC Sealers<br/>
+                  • <strong>DNS Auth</strong>: SPF hard-fail (<code>-all</code>), DKIM 2048-bit CNAME rotation, DMARC (<code>p=quarantine; pct=100</code> → <code>p=reject</code>), Trusted ARC Sealers<br>
                   • <strong>Preset Security Policies</strong> (<code>Strict &gt; Standard &gt; Custom &gt; Built-in</code>), External Auto-Forwarding Disabled, Safe Links real-time detonation, Safe Attachments Dynamic Delivery, <code>EnableATPForSPOTeamsODB</code>, Teams ZAP
                 </td>
                 <td>
-                  • <strong>MDO P2 Priority Account Protection</strong> (Executive/Finance/IT tags with stricter heuristics)<br/>
-                  • <strong>Attack Simulation Training</strong> (Payload, OAuth Consent Grant, QR Code Phishing) with auto-assigned micro-training<br/>
+                  • <strong>MDO P2 Priority Account Protection</strong> (Executive/Finance/IT tags with stricter heuristics)<br>
+                  • <strong>Attack Simulation Training</strong> (Payload, OAuth Consent Grant, QR Code Phishing) with auto-assigned micro-training<br>
                   • <strong>Automated Investigation &amp; Response (AIR)</strong> playbooks, Threat Explorer real-time purge, and <strong>KQL Advanced Hunting</strong> across <code>EmailEvents</code> &amp; <code>UrlClickEvents</code>
                 </td>
               </tr>
               <tr>
-                <td><strong>04 · Device Security</strong><br/><span class="code-pill">Defender for Endpoint · 51p</span></td>
+                <td><strong>04 · Device Security</strong><br><span class="code-pill">Defender for Endpoint · 51p</span></td>
                 <td>
-                  • <strong>Intune–MDE Connector</strong>: <code>Clear</code> machine risk score threshold → Intune Device Compliance → Entra Conditional Access real-time block<br/>
-                  • <strong>Tamper Protection</strong>, Cloud Block at First Sight, Potentially Unwanted App (PUA) block, Network Protection, Silent <strong>BitLocker TPM 2.0</strong> encryption<br/>
+                  • <strong>Intune–MDE Connector</strong>: <code>Clear</code> machine risk score threshold → Intune Device Compliance → Entra Conditional Access real-time block<br>
+                  • <strong>Tamper Protection</strong>, Cloud Block at First Sight, Potentially Unwanted App (PUA) block, Network Protection, Silent <strong>BitLocker TPM 2.0</strong> encryption<br>
                   • <strong>ASR Rules</strong> staged in <code>Audit (RuleMode=2)</code> for 14–30 days → <code>Block (RuleMode=1)</code> (LSASS credential dump, WMI persistence, Office macro child processes)
                 </td>
                 <td>
-                  • <strong>Automatic Attack Disruption</strong>: Autonomous XDR containment isolating compromised hosts and disabling compromised user/agent sessions mid-attack<br/>
+                  • <strong>Automatic Attack Disruption</strong>: Autonomous XDR containment isolating compromised hosts and disabling compromised user/agent sessions mid-attack<br>
                   • <strong>MDE P2 Upgrade</strong>: Threat &amp; Vulnerability Management (TVM), EDR in Block Mode, Live Response forensics, and Device Group RBAC (<code>Full remediation</code>)
                 </td>
               </tr>
               <tr>
-                <td><strong>05 · Device Management</strong><br/><span class="code-pill">Microsoft Intune P1 · 40p</span></td>
+                <td><strong>05 · Device Management</strong><br><span class="code-pill">Microsoft Intune P1 · 40p</span></td>
                 <td>
-                  • <strong>MDM Corporate Enrollment</strong> (Windows Autopilot + ESP, Apple ABM/APNs CSR, Android Enterprise) vs <strong>MAM App Protection Policies</strong> (BYOD: block iCloud/iTunes backup, restrict cut/copy/save to policy-managed apps)<br/>
+                  • <strong>MDM Corporate Enrollment</strong> (Windows Autopilot + ESP, Apple ABM/APNs CSR, Android Enterprise) vs <strong>MAM App Protection Policies</strong> (BYOD: block iCloud/iTunes backup, restrict cut/copy/save to policy-managed apps)<br>
                   • <strong>Default Compliance</strong>: <code>Mark devices with no compliance policy assigned = Not compliant</code>; Windows 10/11 Compliance (BitLocker, Secure Boot, Code Integrity, Firewall, TPM, Antimalware)
                 </td>
                 <td>
@@ -654,13 +492,13 @@
                 </td>
               </tr>
               <tr>
-                <td><strong>06 · SaaS &amp; Shadow AI</strong><br/><span class="code-pill">Defender for Cloud Apps · 35p</span></td>
+                <td><strong>06 · SaaS &amp; Shadow AI</strong><br><span class="code-pill">Defender for Cloud Apps · 35p</span></td>
                 <td>
-                  • <strong>Native MDE + MDA Shadow IT/AI Discovery</strong>: Continuous endpoint telemetry against <code>31,000+</code> cloud apps scored across <code>90+</code> risk attributes without proxy appliances<br/>
+                  • <strong>Native MDE + MDA Shadow IT/AI Discovery</strong>: Continuous endpoint telemetry against <code>31,000+</code> cloud apps scored across <code>90+</code> risk attributes without proxy appliances<br>
                   • <strong>Unsanctioned AI/App Blocking</strong>: Tag high-risk GenAI/SaaS apps as <code>Unsanctioned</code> → MDE Network Protection blocks domain access on endpoints
                 </td>
                 <td>
-                  • <strong>OAuth App Governance</strong>: Continuous Graph API permission/scope anomaly detection for 3rd-party OAuth apps &amp; Agent connectors with automated <code>Disable app</code> remediation<br/>
+                  • <strong>OAuth App Governance</strong>: Continuous Graph API permission/scope anomaly detection for 3rd-party OAuth apps &amp; Agent connectors with automated <code>Disable app</code> remediation<br>
                   • <strong>Conditional Access App Control</strong> reverse-proxy session controls (block download/cut/copy/paste) + <strong>SaaS Security Posture Management (SSPM)</strong>
                 </td>
               </tr>
@@ -670,20 +508,20 @@
       </div>
 
       <!-- 8-Label DEFEND-Aligned Taxonomy & INTERNAL EXCEPTION Architecture -->
-      <div style="background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;">
-        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px;">
-          <strong style="font-family:var(--mono);font-size:12px;color:var(--accent);">8-LABEL DEFEND TAXONOMY &amp; HEADLESS LOB "INTERNAL EXCEPTION" ENCRYPTION-BYPASS ARCHITECTURE</strong>
-          <span style="font-family:var(--mono);font-size:11px;color:var(--text-3);">Prevents RMS Encryption from Breaking ERP / MES / EHR / SIS / CAD Batch Pipelines While Maintaining DLP &amp; Copilot Blocks</span>
+      <div>
+        <div>
+          <strong>8-LABEL DEFEND TAXONOMY &amp; HEADLESS LOB "INTERNAL EXCEPTION" ENCRYPTION-BYPASS ARCHITECTURE</strong>
+          <span>Prevents RMS Encryption from Breaking ERP / MES / EHR / SIS / CAD Batch Pipelines While Maintaining DLP &amp; Copilot Blocks</span>
         </div>
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;font-size:11.8px;">
-          <div class="tier-stat"><strong>1. PUBLIC</strong><br/><span style="color:var(--text-2);">No encryption; external sharing &amp; Copilot allowed.</span></div>
-          <div class="tier-stat"><strong>2. GENERAL (Default Email)</strong><br/><span style="color:var(--text-2);">No encryption; internal marking; Copilot allowed.</span></div>
-          <div class="tier-stat"><strong>3. CONFIDENTIAL \ ALL EMPLOYEES</strong><br/><span style="color:var(--text-2);">Default Doc/Site label; RMS encrypted; internal only.</span></div>
-          <div class="tier-stat"><strong>4. CONFIDENTIAL \ SPECIFIC PEOPLE</strong><br/><span style="color:var(--text-2);">Named-user RMS encryption; excluded from Copilot grounding.</span></div>
-          <div class="tier-stat" style="border-color:var(--warn);background:var(--warn-soft);"><strong>5. CONFIDENTIAL \ INTERNAL EXCEPTION</strong><br/><span style="color:var(--text-2);">No RMS encryption (prevents ERP/SIS/EHR/CAD breakage); enforces headers/footers, DLP external block &amp; quarterly audit.</span></div>
-          <div class="tier-stat"><strong>6. HIGHLY CONF \ ALL EMPLOYEES</strong><br/><span style="color:var(--text-2);">Strong RMS encryption + watermark + Copilot grounding block.</span></div>
-          <div class="tier-stat"><strong>7. HIGHLY CONF \ SPECIFIC PEOPLE</strong><br/><span style="color:var(--text-2);">Named-user RMS + SIT auto-labeling + No Forward/Print + Copilot block.</span></div>
-          <div class="tier-stat" style="border-color:var(--warn);background:var(--warn-soft);"><strong>8. HIGHLY CONF \ INTERNAL EXCEPTION</strong><br/><span style="color:var(--text-2);">Headless QMS/SCADA/Batch exception (no RMS encryption); strict Endpoint/Edge/Copilot DLP block + CISO sign-off.</span></div>
+        <div>
+          <div class="tier-stat"><strong>1. PUBLIC</strong><br><span>No encryption; external sharing &amp; Copilot allowed.</span></div>
+          <div class="tier-stat"><strong>2. GENERAL (Default Email)</strong><br><span>No encryption; internal marking; Copilot allowed.</span></div>
+          <div class="tier-stat"><strong>3. CONFIDENTIAL \ ALL EMPLOYEES</strong><br><span>Default Doc/Site label; RMS encrypted; internal only.</span></div>
+          <div class="tier-stat"><strong>4. CONFIDENTIAL \ SPECIFIC PEOPLE</strong><br><span>Named-user RMS encryption; excluded from Copilot grounding.</span></div>
+          <div class="tier-stat"><strong>5. CONFIDENTIAL \ INTERNAL EXCEPTION</strong><br><span>No RMS encryption (prevents ERP/SIS/EHR/CAD breakage); enforces headers/footers, DLP external block &amp; quarterly audit.</span></div>
+          <div class="tier-stat"><strong>6. HIGHLY CONF \ ALL EMPLOYEES</strong><br><span>Strong RMS encryption + watermark + Copilot grounding block.</span></div>
+          <div class="tier-stat"><strong>7. HIGHLY CONF \ SPECIFIC PEOPLE</strong><br><span>Named-user RMS + SIT auto-labeling + No Forward/Print + Copilot block.</span></div>
+          <div class="tier-stat"><strong>8. HIGHLY CONF \ INTERNAL EXCEPTION</strong><br><span>Headless QMS/SCADA/Batch exception (no RMS encryption); strict Endpoint/Edge/Copilot DLP block + CISO sign-off.</span></div>
         </div>
       </div>
     </div>
@@ -711,7 +549,7 @@
         <button type="button" class="filter-btn" data-filter-pillar="t5-commerce">05 · Web IQ &amp; AP2 Payment</button>
         <button type="button" class="filter-btn" data-filter-pillar="t6-endpoint">06 · Endpoint Safety &amp; License</button>
       </div>
-      <input type="search" id="asset-search-input" class="filter-search" placeholder="Search track, threat, control, repo..." aria-label="Search AI Security assets" />
+      <input type="search" id="asset-search-input" class="filter-search" placeholder="Search track, threat, control, repo..." aria-label="Search AI Security assets">
     </div>
 
     <!-- TRACK 01 -->
@@ -721,7 +559,7 @@
         <span class="pillar-meta">42p Frontier Deck · 53p DEFEND Playbook · 51 Exit Gates · 6 SMB Toolkit Assets · 360p Guides · pwsh 7+</span>
       </div>
       <div class="asset-grid">
-        <article class="asset-card" style="border-color:var(--good);">
+        <article class="asset-card">
           <div class="ac-head">
             <span class="ac-repo">Security AI Landing Zone &amp; Frontier SOC (Sub-Column)</span>
             <span class="ac-type">Sub-Column + 7-Card</span>
@@ -1025,8 +863,8 @@
       <!-- Chart A: Baseline vs Hardened Quantitative Bars -->
       <div class="panel-card">
         <span class="wb-badge">CHART A · MEASURED ROBUSTNESS DELTA</span>
-        <h3 style="margin-top:8px;">Unprotected Baseline vs. Hardened Out-of-Band Security Controls</h3>
-        <p style="font-size:12.5px;color:var(--text-2);margin:0 0 14px;">
+        <h3>Unprotected Baseline vs. Hardened Out-of-Band Security Controls</h3>
+        <p>
           Percentage of adversarial test cases safely contained or governance exit criteria satisfied across Tracks 01–06:
         </p>
 
@@ -1034,8 +872,8 @@
           <div class="bar-chart-label"><span>T03 · Cloud IMDS (169.254.169.254) &amp; Cross-Tenant Containment</span><span>+100.0 pts</span></div>
           <div class="bar-chart-sub">Shared Docker Host vs. AKSClaw Kata VM / E2B Firecracker + Cilium NetworkPolicy</div>
           <div class="dual-bar-track">
-            <div class="bar-line"><span class="bar-tag">Hardened</span><div class="bar-fill-wrap"><div class="bar-fill-good" style="width:100%"></div></div><span class="bar-pct">100.0%</span></div>
-            <div class="bar-line"><span class="bar-tag">Baseline</span><div class="bar-fill-wrap"><div class="bar-fill-warn" style="width:2%"></div></div><span class="bar-pct">0.0%</span></div>
+            <div class="bar-line"><span class="bar-tag">Hardened</span><div class="bar-fill-wrap"><div class="bar-fill-good"></div></div><span class="bar-pct">100.0%</span></div>
+            <div class="bar-line"><span class="bar-tag">Baseline</span><div class="bar-fill-wrap"><div class="bar-fill-warn"></div></div><span class="bar-pct">0.0%</span></div>
           </div>
         </div>
 
@@ -1043,8 +881,8 @@
           <div class="bar-chart-label"><span>T02 · Multi-Agent 3-Hop Canary Containment (ASI01–ASI09)</span><span>+82.5 pts</span></div>
           <div class="bar-chart-sub">Unfiltered Peer Broadcast vs. Provenance Tagging + Memory Quarantine + Hop Tokens</div>
           <div class="dual-bar-track">
-            <div class="bar-line"><span class="bar-tag">Hardened</span><div class="bar-fill-wrap"><div class="bar-fill-good" style="width:96.5%"></div></div><span class="bar-pct">96.5%</span></div>
-            <div class="bar-line"><span class="bar-tag">Baseline</span><div class="bar-fill-wrap"><div class="bar-fill-warn" style="width:14%"></div></div><span class="bar-pct">14.0%</span></div>
+            <div class="bar-line"><span class="bar-tag">Hardened</span><div class="bar-fill-wrap"><div class="bar-fill-good"></div></div><span class="bar-pct">96.5%</span></div>
+            <div class="bar-line"><span class="bar-tag">Baseline</span><div class="bar-fill-wrap"><div class="bar-fill-warn"></div></div><span class="bar-pct">14.0%</span></div>
           </div>
         </div>
 
@@ -1052,8 +890,8 @@
           <div class="bar-chart-label"><span>T01 · M365 Copilot Oversharing &amp; Prompt DLP Readiness</span><span>+81.8 pts</span></div>
           <div class="bar-chart-sub">Unclassified SharePoint Rollout vs. DEFENDCompliance + Purview Tier 3 Data Control</div>
           <div class="dual-bar-track">
-            <div class="bar-line"><span class="bar-tag">Hardened</span><div class="bar-fill-wrap"><div class="bar-fill-good" style="width:100%"></div></div><span class="bar-pct">100.0%</span></div>
-            <div class="bar-line"><span class="bar-tag">Baseline</span><div class="bar-fill-wrap"><div class="bar-fill-warn" style="width:18.2%"></div></div><span class="bar-pct">18.2%</span></div>
+            <div class="bar-line"><span class="bar-tag">Hardened</span><div class="bar-fill-wrap"><div class="bar-fill-good"></div></div><span class="bar-pct">100.0%</span></div>
+            <div class="bar-line"><span class="bar-tag">Baseline</span><div class="bar-fill-wrap"><div class="bar-fill-warn"></div></div><span class="bar-pct">18.2%</span></div>
           </div>
         </div>
 
@@ -1061,17 +899,17 @@
           <div class="bar-chart-label"><span>T06 · Personal Agent OS Filesystem &amp; Network Containment</span><span>+63.1 pts</span></div>
           <div class="bar-chart-sub">Host CLI (--yolo / 5/16 Hard Controls) vs. NemoClaw OpenShell (Landlock + seccomp + NetNS)</div>
           <div class="dual-bar-track">
-            <div class="bar-line"><span class="bar-tag">Hardened</span><div class="bar-fill-wrap"><div class="bar-fill-good" style="width:94.4%"></div></div><span class="bar-pct">94.4%</span></div>
-            <div class="bar-line"><span class="bar-tag">Baseline</span><div class="bar-fill-wrap"><div class="bar-fill-warn" style="width:31.3%"></div></div><span class="bar-pct">31.3%</span></div>
+            <div class="bar-line"><span class="bar-tag">Hardened</span><div class="bar-fill-wrap"><div class="bar-fill-good"></div></div><span class="bar-pct">94.4%</span></div>
+            <div class="bar-line"><span class="bar-tag">Baseline</span><div class="bar-fill-wrap"><div class="bar-fill-warn"></div></div><span class="bar-pct">31.3%</span></div>
           </div>
         </div>
 
-        <div class="bar-chart-row" style="margin-bottom:0;">
+        <div class="bar-chart-row">
           <div class="bar-chart-label"><span>T05 · Web Grounding Indirect Prompt Injection Survival</span><span>+31.4 pts</span></div>
           <div class="bar-chart-sub">Raw Merchant DOM Scraper (68.6% safe) vs. Microsoft Web IQ Sanitizer ([WEBIQ_SANITIZED])</div>
           <div class="dual-bar-track">
-            <div class="bar-line"><span class="bar-tag">Hardened</span><div class="bar-fill-wrap"><div class="bar-fill-good" style="width:100%"></div></div><span class="bar-pct">100.0%</span></div>
-            <div class="bar-line"><span class="bar-tag">Baseline</span><div class="bar-fill-wrap"><div class="bar-fill-warn" style="width:68.6%"></div></div><span class="bar-pct">68.6%</span></div>
+            <div class="bar-line"><span class="bar-tag">Hardened</span><div class="bar-fill-wrap"><div class="bar-fill-good"></div></div><span class="bar-pct">100.0%</span></div>
+            <div class="bar-line"><span class="bar-tag">Baseline</span><div class="bar-fill-wrap"><div class="bar-fill-warn"></div></div><span class="bar-pct">68.6%</span></div>
           </div>
         </div>
       </div>
@@ -1079,8 +917,8 @@
       <!-- Chart B: OWASP Agentic Top 10 Mapping -->
       <div class="panel-card">
         <span class="wb-badge cobalt">CHART B · OWASP AGENTIC TOP 10 COVERAGE</span>
-        <h3 style="margin-top:8px;">OWASP Agentic Risks (ASI01–ASI09) to Defense Control Mapping</h3>
-        <p style="font-size:12.5px;color:var(--text-2);margin:0 0 12px;">
+        <h3>OWASP Agentic Risks (ASI01–ASI09) to Defense Control Mapping</h3>
+        <p>
           How each OWASP Agentic risk class is tested and mitigated across the 6 research tracks:
         </p>
         <div class="matrix-table-wrap">
@@ -1138,13 +976,13 @@
     </div>
 
     <!-- Chart C: Endpoint & Personal Agent Isolation Matrix -->
-    <div class="panel-card" style="margin-top:18px;">
-      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px;">
+    <div class="panel-card">
+      <div>
         <span class="wb-badge amber">CHART C · TRACK 03 &amp; TRACK 06 RUNTIME ISOLATION COMPARISON</span>
         <span class="wb-id">7 Agent Runtime Architectures Compared</span>
       </div>
       <h3>Agent Execution Isolation Spectrum: From Host CLI Wrappers to Hardware MicroVMs</h3>
-      <div class="matrix-table-wrap" style="margin-top:10px;">
+      <div class="matrix-table-wrap">
         <table class="sec-table">
           <thead>
             <tr>
@@ -1235,7 +1073,7 @@
     </div>
 
     <div class="deck-viewer-bar">
-      <div class="tier-tabs" style="margin-bottom:0;" role="tablist" aria-label="Select 7-Card Benchmark Deck">
+      <div class="tier-tabs" role="tablist" aria-label="Select 7-Card Benchmark Deck">
         <button type="button" class="tier-tab active" onclick="switchSecurityDeck('workshops/ai-security/benchmark-cards.en.html', this)">00 · AI Security Lab &amp; Binance $6B Defense 7-Card</button>
         <button type="button" class="tier-tab" onclick="switchSecurityDeck('workshops/ai-security/landing-zone-cards.html', this)">01 · Security AI Landing Zone &amp; Frontier SOC 7-Card</button>
         <button type="button" class="tier-tab" onclick="switchSecurityDeck('workshops/ai-security/defend-cards.html', this)">02 · DEFEND &amp; SMB Toolkit 7-Card</button>
@@ -1244,12 +1082,12 @@
         <button type="button" class="tier-tab" onclick="switchSecurityDeck('workshops/benchmarks/omarchy-cards.html', this)">05 · Omarchy Agent Safety Contract 7-Card</button>
         <button type="button" class="tier-tab" onclick="switchSecurityDeck('workshops/benchmarks/e2b-nomad-cards.html', this)">06 · E2B Nomad Control-Plane 7-Card</button>
       </div>
-      <span id="deck-url-label" style="font-family:var(--mono);font-size:11.5px;color:var(--text-3);">workshops/ai-security/benchmark-cards.en.html</span>
+      <span id="deck-url-label">workshops/ai-security/benchmark-cards.en.html</span>
     </div>
-    <iframe class="deck-frame" id="security-deck-iframe" src="workshops/ai-security/benchmark-cards.en.html" title="7-Card 4:5 AI Security Visual Benchmark Deck"></iframe>
+    <a href="workshops/ai-security/benchmark-cards.en.html" class="reading-demo-link" id="security-deck-iframe">7-Card 4:5 AI Security Visual Benchmark Deck ↗</a>
   </section>
 
-</main>
+</div>
 
 <footer>
   <div class="wrap foot-inner">
@@ -1448,7 +1286,7 @@
   }
 
   function switchSecurityDeck(url, btnEl) {
-    document.getElementById('security-deck-iframe').src = url;
+    document.getElementById('security-deck-iframe').href = url;
     document.getElementById('deck-url-label').textContent = url;
     document.getElementById('deck-open-btn').href = url;
     if (btnEl && btnEl.parentElement) {
@@ -1459,5 +1297,7 @@
 
   renderDefendTier();
 </script>
-</body>
-</html>
+
+
+</main>
+</body></html>

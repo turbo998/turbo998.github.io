@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en" data-theme="dark" data-reading-shell="document"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Claude HVE Harness animation and interactive-visual survey: techniques, mathematical primitives and repository mapping</title><meta name="reading-migration" content="R6"><link rel="stylesheet" href="../../assets/reading-shell.css"><script src="../../assets/reading-shell.js"></script></head><body class="reading-page"><a class="reading-skip" href="#reading-main">Skip to content</a><header class="reading-header"><a class="reading-brand" href="../../index.html"><span class="reading-mark">q<span>.</span></span><span>Qi Chen<small>@turbo998 · Engineering notes</small></span></a><div class="reading-controls"><a data-reading-language="" href="hve-animation-landscape.html" hreflang="zh-CN" lang="zh-CN">中文</a><a data-reading-theme="light" href="?theme=light" aria-label="Light theme">☀</a><a data-reading-theme="dark" href="?theme=dark" aria-label="Dark theme">◐</a><details><summary aria-label="Navigation">☰</summary><nav><a href="../../index.html">Home</a><a href="../../studio/index.html">Studio</a><a href="../../writing.html">Writing</a><a href="../../about.html">About</a></nav></details></div></header><aside id="reading-language-note" class="reading-language-note">English translation of the preserved source, with original numerical claims retained; not independently re-measured.</aside><main id="reading-main" tabindex="-1" class="reading-document"><a class="reading-context" href="../../studio/animation.html">← Studio / animation</a><div class="shell"><h1 id="claude-hve-harness-animation-and-interactive-visual-survey-techniques-mathematical-primitives-and-repository-mapping">Claude HVE Harness animation and interactive-visual survey: techniques, mathematical primitives and repository mapping</h1>
+<p>This document systematically analyzes code-only animation, Three.js/WebGPU interactive scenes, optics/physics laboratories and Blender MCP hybrid scenes from the <strong>2026 Claude HVE Harness visual and motion collection</strong>: <strong>317 curated cases among 1,034 real works</strong> in awesome-claude-Frontier-5.5, plus <strong>24 deeply reviewed projects</strong> in magiccreator-ai/awesome-claude-Frontier-5-5-demos. It maps the extracted techniques to this lab's three core demonstrations: <strong>Feitian · Wind Between the Murals</strong>, <strong>Astra · Scientific Mars Scenography</strong>, and <strong>Launch · White Rocket Launchpad</strong>.</p>
+<h2 id="1-categories-and-popularity-among-317-curated-community-cases">1. Categories and popularity among 317 curated community cases</h2>
+<p>The public collection's domain classification and community likes concentrate popular Frontier animation and interaction work into seven categories. These are the original survey's reported counts, not new measurements.</p>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Representative works and reported popularity</th>
+<th>Rendering stack and techniques</th>
+<th>Repository direction</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1. Interactive Viz &amp; Simulations</td>
+<td>Interactive Camera-Focus Lens Lab (❤ 16.2k); Tokyo Last-Train Map (❤ 4.3k); Electromagnetic Field Visualizer (❤ 2.8k); Interactive 3D Datacenter Thermal (❤ 2.1k)</td>
+<td>Physical/optical equations—thin lens, circle of confusion (CoC), vector-field streamline integration—drive interaction, linked parameters and high-contrast instrument panels.</td>
+<td>Rocket Launch: optical halos and point-source bokeh at the round porthole. Astra: planetary-limb Rayleigh scattering and polar microcrystal highlights.</td>
+</tr>
+<tr>
+<td>2. Motion Graphics &amp; Launch Films</td>
+<td>Code-only UI Motion Design (❤ 12.1k); coordinated launch film across 12 computers (❤ 4.6k); 900-frame rendering pipeline explainer (❤ 2.6k); 16 three-step motion tutorials; Tesseract 1600+ layer motion</td>
+<td>A pure time function F(t) drives each frame; second-order spring-damped easing; seamless dolly/pan/roll camera movement.</td>
+<td>Rocket Launch: standby → ignition → liftoff → transonic shock → high-altitude climb. Feitian: eased four-act state machine.</td>
+</tr>
+<tr>
+<td>3. Three.js &amp; Cultural Scenes</td>
+<td>HVE Harness Dunhuang Feitian (Canvas 2D mineral mural); Sakura River Valley Boat Scene; Three.js Peach Blossom Spring; Japanese garden koi pond; real-time coast and 3D water; code-only seasonal pixel island</td>
+<td>Layered offscreen Canvas mineral textures, Verlet/PBD ribbons, Tyndall light beams, gold-leaf dust and water caustics.</td>
+<td>Feitian: oblique cave-skylight beams, floating gold dust, rotating/falling double lotus petals with stamens, and gilded makeup.</td>
+</tr>
+<tr>
+<td>4. Blender &amp; Engine Modeling</td>
+<td>Five-model 3D-printed load-bearing bridge (❤ 8.4k); Shinkansen with 5,112 objects including 430 seats; reconstruction of 1906 San Francisco Market Street; Summer Palace Tower of Buddhist Incense and harbor-town walkthrough (Blender + Three.js)</td>
+<td>Parametric bpy/bmesh scripts; Cycles normal/AO/relief baking or modular .glb export; frontend material batching.</td>
+<td>All three demos integrate Blender 4.5.10 LTS + blender-mcp: GLB hard-surface kits and Cycles baking.</td>
+</tr>
+<tr>
+<td>5. Space &amp; Planetary Worlds</td>
+<td>Seamless No Man's Sky-style Galaxy (❤ 4.0k); Explorable Imaginary Solar System; A Cosmic Journey</td>
+<td>Spherical height-field LOD and recomputed normals, Fresnel limb glow, procedural starfields and terminator transitions.</td>
+<td>Astra Planet Lab: measured NASA MOLA terrain, Blender microterrain normals, terminator atmospheric scattering and high-altitude frost crystals.</td>
+</tr>
+<tr>
+<td>6. Music, MVs &amp; Demoscene</td>
+<td>CUDA-kernel optimization music video (❤ 2.4k); 280KB single-HTML self-showcase demoscene; Hop Hop, Nope Nope pure-function Canvas 2D MV; thirteen code-only synthesized music films (Passacaglia)</td>
+<td>No external audio; WebAudio oscillators/harmonics, biquad filters and convolution reverb synchronized precisely to visuals.</td>
+<td>Feitian: pentatonic Gong-mode guqin/dongxiao harmonic synthesis and reveal bells/chimes. Rocket Launch: low-frequency ignition rumble and aerodynamic noise.</td>
+</tr>
+<tr>
+<td>7. Web &amp; Holographic UI</td>
+<td>Holographic Trading Card (❤ 1.9k); interactive dynamically recalculated slides (❤ 2.3k)</td>
+<td>View-dependent thin-film interference/metallic gradients, pointer parallax and high-contrast theme adaptation.</td>
+<td>Feitian: view-dependent gilded backlight and brocade-collar glow on four figures. GVL Portal: Clawpilot dual-theme adaptation.</td>
+</tr>
+</tbody></table>
+<h2 id="2-core-algorithms-in-four-representative-high-popularity-works">2. Core algorithms in four representative high-popularity works</h2>
+<h3 id="21-camera-focus-lens-lab-❤-162k-thin-lens-optics-and-circle-of-confusion">2.1 Camera-Focus Lens Lab (❤ 16.2k): thin-lens optics and circle of confusion</h3>
+<p>The most popular example avoids a generic CSS blur filter. Interactive geometric-optics equations drive individual rays and depth-of-field discs.</p>
+<ol>
+<li><p><strong>Gaussian thin-lens equation:</strong></p>
+<p>$$\frac{1}{f} = \frac{1}{d_o} + \frac{1}{d_i}$$</p>
+<p>Here f is focal length, d_o object distance and d_i image distance.</p>
+</li>
+<li><p><strong>Circle-of-confusion diameter:</strong> for aperture diameter D = f / N, where N is the f-number, an object at d with the focus plane at d_f produces this sensor CoC:</p>
+<p>$$\text{CoC}(d) = \left| \frac{d - d_f}{d} \right| \cdot \frac{f^2}{N \cdot (d_f - f)}$$</p>
+</li>
+<li><p><strong>Anamorphic streak and aperture ring:</strong> strong point sources such as a rocket nozzle's incandescent core or a cave lamp flame create horizontally stretched anamorphic flare and polygonal aperture-diffraction starbursts at a circular viewport or lens edge.</p>
+</li>
+</ol>
+<p><strong>Repository mapping:</strong> in demos/rocket-launch/, add thrust-envelope-responsive porthole optical halos and horizontal anamorphic flare bands around the incandescent nozzle during ignition and ascent (Optical Porthole Lens Flare &amp; Shockwave Condensation Ring). In demos/astra-planet/ realistic mode, strengthen atmospheric tangent scattering at the Fresnel optical limb and microcrystal highlights on high-altitude ridges.</p>
+<h3 id="22-motion-design-template-❤-121k-and-900-frame-pipeline-❤-26k-timeline-orchestration-and-spring-camera-motion">2.2 Motion-design template (❤ 12.1k) and 900-frame pipeline (❤ 2.6k): timeline orchestration and spring camera motion</h3>
+<p>Popular code-only motion replaces rigid linear interpolation (lerp) with <strong>critically damped second-order springs</strong> and <strong>asymmetric piecewise easing</strong>.</p>
+<ol>
+<li><strong>Narrative phase envelope:</strong> divide scenes into Anticipation → Impulse → Cruise → Settle. Each state independently adjusts camera dolly speed and FOV/orthographic zoom.</li>
+<li><strong>Secondary motion:</strong> at the primary action—Feitian leaving the wall, rocket liftoff at <strong>T ∈ [2.6s, 4.5s]</strong>, or transonic travel at **T ∈ [5.2s, 7.0s]**—trigger environmental responses such as ground acoustic Mach shock rings or a Prandtl–Glauert vapor cone.</li>
+</ol>
+<p><strong>Repository mapping:</strong> add liftoff ground acoustic rings and transonic condensation rings in demos/rocket-launch/. Preallocate all static geometry; pure time envelopes control opacity and scale, with zero dynamic allocation and no additional material-shader compilation.</p>
+<h3 id="23-dunhuang-feitian-and-sakura-valley--peach-blossom-spring-mineral-aesthetics-and-tyndall-volume-light">2.3 Dunhuang Feitian and Sakura Valley / Peach Blossom Spring: mineral aesthetics and Tyndall volume light</h3>
+<p>The key is <strong>restrained saturation, rich material layers and atmospheric spatial depth</strong>.</p>
+<ol>
+<li><strong>Three spatial layers: background niche → atmospheric beams → moving foreground figures and petals.</strong><ul>
+<li>Background: weathered sandstone, cracked plaster, and four-niche ceiling relief baked orthographically in Blender Cycles (grotto-relief-bake.png).</li>
+<li>Air: oblique Tyndall shafts from high cave windows and slowly floating gold-leaf dust motes.</li>
+<li>Foreground: paired Verlet-constrained ribbons, finely painted figures at <strong>2× supersampling</strong>, and double petals with golden stamen threads.</li>
+</ul>
+</li>
+<li><strong>Zero per-frame gradient allocation:</strong> composite all Tyndall beams and cave vignettes once in the static buildWall() cache. Foreground petals and gold dust use prerendered offscreen tiles and batched matrix drawing via ctx.setTransform().</li>
+</ol>
+<p><strong>Repository mapping:</strong> in demos/feitian/ buildWall(), layer warm-gold Tyndall beams from the ceiling into four niches and add gold-powder atmosphere. Upgrade petal tiles to double lotus petals with gold-thread stamens, improving mural depth and High Tang gilded richness without extra per-frame draw overhead.</p>
+<h3 id="24-shinkansen-with-5112-objects-and-the-tower-of-buddhist-incense-blender-mcp-modeling-and-baking">2.4 Shinkansen with 5,112 objects and the Tower of Buddhist Incense: Blender MCP modeling and baking</h3>
+<p>Blender + HVE Harness reference cases show that handwritten Three.js BoxGeometry/CylinderGeometry often looks like toy blocks. <strong>Blender Python (bpy/bmesh) + Cycles baking</strong> enables industrial and sculptural detail.</p>
+<ol>
+<li><strong>High-to-low-poly baking:</strong> create microscale craters, basalt cliffs and lotus-relief details in Blender. Bake tangent-space normal/cavity maps (mars-micro-normal.png) or orthographic lighting maps (grotto-relief-bake.png).</li>
+<li><strong>Per-material static batching:</strong> after loading exported .glb assets in Three.js, merge static meshes sharing a PBR material into one BufferGeometry, reducing hundreds of parts to <strong>&lt; 30 draw calls</strong>.</li>
+</ol>
+<h2 id="3-prompt-and-engineering-blueprint-for-high-quality-animation-demos">3. Prompt and engineering blueprint for high-quality animation demos</h2>
+<p>The community's popular open prompt templates and this repository's practice suggest the following blueprint.</p>
+<h3 id="role-and-aesthetic-direction">Role and aesthetic direction</h3>
+<p>You are a scenography engineer with industrial-design, classical-art-history and real-time-graphics expertise. Reject cheap highly saturated neon gradients and toy-like geometry. Use a restrained palette with historical or scientific provenance.</p>
+<h3 id="five-implementation-layers">Five implementation layers</h3>
+<ol>
+<li><strong>Static foundations and offline baking:</strong> Blender MCP (bpy/bmesh + Cycles) generates precise hard-surface .glb assets, microsurface normals and relief lighting maps.</li>
+<li><strong>Physics and mathematics:</strong> deterministic F(t), Verlet/PBD distance constraints, thin-lens optics or real NASA MOLA elevation data drive geometry.</li>
+<li><strong>Primary forms and detail:</strong> multilevel bevels, welds/rivets, softly shaded fine-line facial features, gilded outlines, and Microsoft four-color or Dunhuang mineral-color accents.</li>
+<li><strong>Atmosphere and secondary effects:</strong> Tyndall beams, transonic vapor cones, Rayleigh limb scattering and bounded particle pools with zero GC jitter.</li>
+<li><strong>Interaction and accessibility contract:</strong> keyboard/pointer controls, camera switching, a prefers-reduced-motion static mode, adaptive resolution fallback and a window.visualLab automated telemetry interface.</li>
+</ol>
+<h2 id="4-sources-and-compliance">4. Sources and compliance</h2>
+<ul>
+<li><a href="https://github.com/xianyu110/awesome-claude-Frontier-5.5">Awesome Claude HVE Harness curated video and visualization collection</a></li>
+<li><a href="https://github.com/magiccreator-ai/awesome-claude-Frontier-5-5-demos">MagicCreator Claude HVE Harness Demos Directory</a></li>
+<li><a href="https://ds470b74heox1.cloudfront.net/Frontier55-feitian/index.html">Feitian reference inspiration</a></li>
+<li><strong>Compliance boundary:</strong> this document and repository summarize graphics principles, mathematical equations and engineering architecture from public examples. All code, shaders, Blender generation scripts and baked textures are this repository's original MIT implementation; no third-party closed-source scripts or unauthorized media assets are copied.</li>
+</ul>
+</div></main>
+</body></html>

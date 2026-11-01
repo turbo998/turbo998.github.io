@@ -105,7 +105,7 @@ async function main() {
     report.checks.push('Real touch swipe scrolls the document');
 
     await page.setViewport({ width: 390, height: 844 });
-    await page.goto(`${base}/design-preview/zh-infra.html#demos`, { waitUntil: 'networkidle0' });
+    await page.goto(`${base}/design-preview/zh-infra.html?theme=light#demos`, { waitUntil: 'networkidle0' });
     await page.click('.theme-toggle');
     assert.equal(await page.$eval('html', el => el.dataset.theme), 'dark');
     await page.reload({ waitUntil: 'networkidle0' });
@@ -167,14 +167,14 @@ async function main() {
     const fresh = await isolated.newPage();
     await fresh.emulateMediaFeatures([{ name: 'prefers-color-scheme', value: 'dark' }]);
     await fresh.goto(`${base}/design-preview/index.html`);
-    assert.equal(await fresh.$eval('html', el => el.dataset.theme), 'light', 'First visit must default to light even on dark OS');
+    assert.equal(await fresh.$eval('html', el => el.dataset.theme), 'dark', 'First visit must default to Dark Aurora');
     for (const file of files) {
       await fresh.setViewport({ width: 320, height: 800 });
       await fresh.goto(`${base}/design-preview/${file}.html`);
       assert.ok(await fresh.evaluate(() => document.documentElement.scrollWidth <= innerWidth), `${file}: 320px reflow`);
     }
     await isolated.close();
-    report.checks.push('Fresh dark-OS visit defaults light; all six pages reflow at 320 CSS px');
+    report.checks.push('Fresh visit defaults dark; all six pages reflow at 320 CSS px');
     report.nativeLinkCount = allLinks.size;
     report.result = 'PASS';
     console.log(`PASS: ${report.states.length} screenshot states, ${allLinks.size} unique links, ${report.checks.length} behavioral check groups.`);

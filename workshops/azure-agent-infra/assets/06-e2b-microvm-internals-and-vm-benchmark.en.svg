@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 740" width="1080" height="740">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0B1120"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="headerGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#0078D4"/>
+      <stop offset="50%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#10B981"/>
+    </linearGradient>
+    <linearGradient id="blueGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#1E3A8A" stop-opacity="0.88"/>
+      <stop offset="100%" stop-color="#1D4ED8" stop-opacity="0.68"/>
+    </linearGradient>
+    <linearGradient id="tealGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#065F46" stop-opacity="0.88"/>
+      <stop offset="100%" stop-color="#047857" stop-opacity="0.68"/>
+    </linearGradient>
+    <linearGradient id="purpleGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#4C1D95" stop-opacity="0.88"/>
+      <stop offset="100%" stop-color="#6D28D9" stop-opacity="0.68"/>
+    </linearGradient>
+    <linearGradient id="amberGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#78350F" stop-opacity="0.90"/>
+      <stop offset="100%" stop-color="#B45309" stop-opacity="0.72"/>
+    </linearGradient>
+    <linearGradient id="roseGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#7F1D1D" stop-opacity="0.92"/>
+      <stop offset="100%" stop-color="#B91C1C" stop-opacity="0.72"/>
+    </linearGradient>
+  </defs>
+  <rect width="1080" height="740" rx="16" fill="url(#bgGrad)"/>
+  <rect x="0" y="0" width="1080" height="6" rx="3" fill="url(#headerGrad)"/>
+  <text x="32" y="40" fill="#F8FAFC" font-family="system-ui, -apple-system, 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', sans-serif" font-size="21" font-weight="700">Figure 6 · Firecracker MicroVM Internals (UFFD + NBD) and Azure v6/v7 Measured Startup</text>
+  <text x="32" y="64" fill="#94A3B8" font-family="system-ui, -apple-system, 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', sans-serif" font-size="13">Left: KVM + virtio-net/blk + UFFD page-fault streaming + envd/noVNC · Right: East US 2 / Central US latency and Azure Boost gains</text>
+
+  <!-- Left Panel: MicroVM Internals -->
+  <rect x="32" y="84" width="510" height="624" rx="10" fill="#0F172A" stroke="#38BDF8" stroke-width="1.5"/>
+  <text x="50" y="112" fill="#38BDF8" font-family="'JetBrains Mono', 'Cascadia Code', Consolas, monospace" font-size="13" font-weight="700">INSIDE FIRECRACKER MICROVM &amp; HOST KERNEL DATAPATH</text>
+
+  <rect x="50" y="128" width="474" height="166" rx="8" fill="#1E293B" stroke="#60A5FA"/>
+  <text x="66" y="150" fill="#93C5FD" font-family="system-ui, -apple-system, 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', sans-serif" font-size="12" font-weight="700">Guest MicroVM (Kernel + Rootfs + Desktop/Code Stack)</text>
+  <rect x="66" y="162" width="218" height="54" rx="6" fill="#0F172A" stroke="#3B82F6"/>
+  <text x="175" y="182" text-anchor="middle" fill="#F8FAFC" font-family="system-ui, -apple-system, 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', sans-serif" font-size="11" font-weight="700">envd daemon (:49982)</text>
+  <text x="175" y="200" text-anchor="middle" fill="#94A3B8" font-family="system-ui, -apple-system, 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', sans-serif" font-size="10">Connect RPC · Shell/files/metrics</text>
+
+  <rect x="294" y="162" width="214" height="54" rx="6" fill="#0F172A" stroke="#3B82F6"/>
+  <text x="401" y="182" text-anchor="middle" fill="#F8FAFC" font-family="system-ui, -apple-system, 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', sans-serif" font-size="11" font-weight="700">Jupyter Server (:8888)</text>
+  <text x="401" y="200" text-anchor="middle" fill="#94A3B8" font-family="system-ui, -apple-system, 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', sans-serif" font-size="10">Code-Interpreter V1 stateful kernel</text>
+
+  <rect x="66" y="226" width="442" height="54" rx="6" fill="#0F172A" stroke="#10B981"/>
+  <text x="287" y="246" text-anchor="middle" fill="#6EE7B7" font-family="system-ui, -apple-system, 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', sans-serif" font-size="11" font-weight="700">Computer-Use GUI stack (E2B Desktop Sandbox)</text>
+  <text x="287" y="264" text-anchor="middle" fill="#E2E8F0" font-family="'JetBrains Mono', 'Cascadia Code', Consolas, monospace" font-size="10">Xvfb + XFCE4 → x11vnc (:5900) → websockify/noVNC (:6080) + xdotool + ffmpeg</text>
+
+  <!-- Virtio & Network Namespace -->
+  <rect x="50" y="308" width="474" height="122" rx="8" fill="#1E293B" stroke="#34D399"/>
+  <text x="66" y="330" fill="#6EE7B7" font-family="system-ui, -apple-system, 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', sans-serif" font-size="12" font-weight="700">1. Network isolation: virtio-net + private NetNS (ns-N)</text>
+  <text x="66" y="352" fill="#E2E8F0" font-family="'JetBrains Mono', 'Cascadia Code', Consolas, monospace" font-size="11">Guest eth0 ↔ tap0 ↔ veth-N (ns-N) ↔ Host Bridge ↔ WireGuard/VNet</text>
+  <text x="66" y="374" fill="#94A3B8" font-family="system-ui, -apple-system, 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', sans-serif" font-size="10">• Host iptables SNAT/DNAT maps external session traffic to its sandbox ns-N</text>
+  <text x="66" y="394" fill="#94A3B8" font-family="system-ui, -apple-system, 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', sans-serif" font-size="10">• Default L2/L3 sandbox isolation; host firewall controls outbound traffic</text>
+  <text x="66" y="414" fill="#38BDF8" font-family="system-ui, -apple-system, 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', sans-serif" font-size="10">• Orchestrator checks envd at 169.254.0.21:49982 every 200ms</text>
+
+  <!-- UFFD & NBD Snapshot Engine -->
+  <rect x="50" y="444" width="474" height="246" rx="8" fill="#1E293B" stroke="#F59E0B" stroke-width="1.5"/>
+  <text x="66" y="468" fill="#FDE68A" font-family="system-ui, -apple-system, 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', sans-serif" font-size="12" font-weight="700">2. Key to 108ms restore: UFFD demand paging + NBD block deltas</text>
+  <text x="66" y="492" fill="#FFFFFF" font-family="system-ui, -apple-system, 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', sans-serif" font-size="11" font-weight="700">• UFFD (userfaultfd) lazy memory restore:</text>
+  <text x="78" y="510" fill="#E2E8F0" font-family="system-ui, -apple-system, 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', sans-serif" font-size="10">Firecracker resumes vCPUs without first reading the full multi-GB memory image locally;</text>
+  <text x="78" y="526" fill="#E2E8F0" font-family="system-ui, -apple-system, 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', sans-serif" font-size="10">on Guest page fault, the host UFFD Handler fetches the needed 4KB/2MB page from remote object storage.</text>
+  <text x="66" y="550" fill="#FFFFFF" font-family="system-ui, -apple-system, 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', sans-serif" font-size="11" font-weight="700">• NBD (Network Block Device) + Dirty Bitmap incremental storage:</text>
+  <text x="78" y="568" fill="#E2E8F0" font-family="system-ui, -apple-system, 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', sans-serif" font-size="10">Sandboxes share a cached read-only rootfs.ext4; writes go to local deltas, with dirty blocks tracked in a Bitmap;</text>
+  <text x="78" y="584" fill="#E2E8F0" font-family="system-ui, -apple-system, 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', sans-serif" font-size="10">Pause uploads only Dirty Pages and Dirty Blocks, reducing snapshot size and pause time.</text>
+  <rect x="66" y="600" width="442" height="74" rx="6" fill="#0F172A" stroke="#F59E0B"/>
+  <text x="287" y="622" text-anchor="middle" fill="#FDE68A" font-family="'JetBrains Mono', 'Cascadia Code', Consolas, monospace" font-size="11" font-weight="700">Snapshot Restore Critical Path (108 ms on D96as_v7)</text>
+  <text x="287" y="642" text-anchor="middle" fill="#6EE7B7" font-family="'JetBrains Mono', 'Cascadia Code', Consolas, monospace" font-size="10">Create NetNS (18ms) → Attach NBD/UFFD (32ms) → Firecracker Resume (38ms) → envd Ready (20ms)</text>
+  <text x="287" y="660" text-anchor="middle" fill="#94A3B8" font-family="system-ui, -apple-system, 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', sans-serif" font-size="10">12× ~ 20× faster than traditional container cold starts (1.6s~2.2s)</text>
+
+  <!-- Right Panel: Measured Benchmark Bars -->
+  <rect x="560" y="84" width="488" height="624" rx="10" fill="#0F172A" stroke="#10B981" stroke-width="1.5"/>
+  <text x="578" y="112" fill="#6EE7B7" font-family="'JetBrains Mono', 'Cascadia Code', Consolas, monospace" font-size="13" font-weight="700">MEASURED BENCHMARK · AZURE VM SERIES V6 VS V7 (SLIDE 18–19)</text>
+  <text x="578" y="132" fill="#94A3B8" font-family="system-ui, -apple-system, 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', sans-serif" font-size="11">Regions: East US 2 &amp; Central US · Lower is Faster</text>
+
+  <!-- Chart 1: Base Sandbox Startup -->
+  <rect x="578" y="148" width="452" height="170" rx="8" fill="#1E293B" stroke="#334155"/>
+  <text x="594" y="172" fill="#F8FAFC" font-family="system-ui, -apple-system, 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', sans-serif" font-size="13" font-weight="700">A. Base Sandbox startup (ms)</text>
+
+  <text x="594" y="204" fill="#6EE7B7" font-family="'JetBrains Mono', 'Cascadia Code', Consolas, monospace" font-size="11" font-weight="700">D96as_v7 (AMD Turin)</text>
+  <rect x="760" y="190" width="118" height="20" rx="4" fill="#10B981"/>
+  <text x="886" y="205" fill="#6EE7B7" font-family="'JetBrains Mono', 'Cascadia Code', Consolas, monospace" font-size="12" font-weight="700">108ms★ -54.8%/v6 AMD</text>
+
+  <text x="594" y="242" fill="#93C5FD" font-family="'JetBrains Mono', 'Cascadia Code', Consolas, monospace" font-size="11">D96s_v6 (Intel v6)</text>
+  <rect x="760" y="228" width="127" height="20" rx="4" fill="#3B82F6"/>
+  <text x="895" y="243" fill="#93C5FD" font-family="'JetBrains Mono', 'Cascadia Code', Consolas, monospace" font-size="12">116 ms ($4.838/hr · $3,532/mo)</text>
+
+  <text x="594" y="280" fill="#FCA5A5" font-family="'JetBrains Mono', 'Cascadia Code', Consolas, monospace" font-size="11">D96as_v6 (AMD Genoa)</text>
+  <rect x="760" y="266" width="256" height="20" rx="4" fill="#64748B"/>
+  <text x="770" y="281" fill="#FFFFFF" font-family="'JetBrains Mono', 'Cascadia Code', Consolas, monospace" font-size="11" font-weight="700">239 ms (Baseline)</text>
+
+  <!-- Chart 2: Code-Interpreter V1 Startup -->
+  <rect x="578" y="332" width="452" height="170" rx="8" fill="#1E293B" stroke="#334155"/>
+  <text x="594" y="356" fill="#F8FAFC" font-family="system-ui, -apple-system, 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', sans-serif" font-size="13" font-weight="700">B. Code-Interpreter V1 (with Jupyter kernel) startup (ms)</text>
+
+  <text x="594" y="388" fill="#6EE7B7" font-family="'JetBrains Mono', 'Cascadia Code', Consolas, monospace" font-size="11" font-weight="700">D96as_v7 (AMD Turin)</text>
+  <rect x="760" y="374" width="136" height="20" rx="4" fill="#10B981"/>
+  <text x="904" y="389" fill="#6EE7B7" font-family="'JetBrains Mono', 'Cascadia Code', Consolas, monospace" font-size="12" font-weight="700">132ms★ -17.0%/Intel</text>
+
+  <text x="594" y="426" fill="#93C5FD" font-family="'JetBrains Mono', 'Cascadia Code', Consolas, monospace" font-size="11">D96s_v6 (Intel v6)</text>
+  <rect x="760" y="412" width="164" height="20" rx="4" fill="#3B82F6"/>
+  <text x="932" y="427" fill="#93C5FD" font-family="'JetBrains Mono', 'Cascadia Code', Consolas, monospace" font-size="12">159 ms</text>
+
+  <text x="594" y="464" fill="#FCA5A5" font-family="'JetBrains Mono', 'Cascadia Code', Consolas, monospace" font-size="11">D96as_v6 (AMD Genoa)</text>
+  <rect x="760" y="450" width="256" height="20" rx="4" fill="#64748B"/>
+  <text x="770" y="465" fill="#FFFFFF" font-family="'JetBrains Mono', 'Cascadia Code', Consolas, monospace" font-size="11" font-weight="700">255 ms (Baseline)</text>
+
+  <!-- Chart 3: Dasv7 / Easv7 + Azure Boost Gains -->
+  <rect x="578" y="516" width="452" height="174" rx="8" fill="url(#tealGrad)" stroke="#34D399"/>
+  <text x="594" y="540" fill="#FFFFFF" font-family="system-ui, -apple-system, 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', sans-serif" font-size="13" font-weight="700">C. Azure Dasv7 / Easv7 (5th Gen EPYC + Azure Boost) hardware gains</text>
+  <text x="594" y="564" fill="#D1FAE5" font-family="system-ui, -apple-system, 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', sans-serif" font-size="11">• Up to 160 vCPU / 1,280 GiB DDR5 (Easv7), 4.5GHz all-core; no SMT contention</text>
+  <text x="594" y="584" fill="#D1FAE5" font-family="system-ui, -apple-system, 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', sans-serif" font-size="11">• Up to +35% price/perf · Remote IOPS +20% · Storage throughput +50% · Network +75%</text>
+  <text x="594" y="604" fill="#FDE68A" font-family="'JetBrains Mono', 'Cascadia Code', Consolas, monospace" font-size="11">Measured workloads: Java +25% | Memory cache +65% | Crypto +80% | Web +130%</text>
+  <text x="594" y="628" fill="#FFFFFF" font-family="system-ui, -apple-system, 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', sans-serif" font-size="11" font-weight="700">Why does v7 matter for MicroVM sandboxes?</text>
+  <text x="594" y="648" fill="#E2E8F0" font-family="system-ui, -apple-system, 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', sans-serif" font-size="10">UFFD/NBD restore needs fast single-core IPC, L3 locality and Azure Boost net/storage offload,</text>
+  <text x="594" y="666" fill="#E2E8F0" font-family="system-ui, -apple-system, 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', sans-serif" font-size="10">halving D96as_v7 restore latency versus prior Genoa (239ms → 108ms).</text>
+</svg>

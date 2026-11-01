@@ -1,4 +1,184 @@
-<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Visual Lab Research</title><script>(()=>{const param=new URLSearchParams(location.search).get("scoutTheme");const theme=param||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.setAttribute("data-theme",theme)})();</script><link rel="stylesheet" href="../assets/theme.css"><main class="shell"><a href="../">← 实验室</a><pre style="white-space:pre-wrap;line-height:1.9;font:inherit"># Generative Visual Lab · Technical Asset Taxonomy &amp; Architecture Index
+<!doctype html>
+<html lang="en" data-theme="dark" data-reading-shell="document"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Generative Visual Lab · Technical Asset Taxonomy &amp; Architecture Index — Qi Chen</title><meta name="reading-migration" content="R6"><link rel="stylesheet" href="../../assets/reading-shell.css"><script src="../../assets/reading-shell.js"></script></head><body class="reading-page"><a class="reading-skip" href="#reading-main">Skip to content</a><header class="reading-header"><a class="reading-brand" href="../../index.html"><span class="reading-mark">q<span>.</span></span><span>Qi Chen<small>@turbo998 · Engineering notes</small></span></a><div class="reading-controls"><a data-reading-language="" href="asset-taxonomy.html" hreflang="zh-CN" lang="zh-CN">中文</a><a data-reading-theme="light" href="?theme=light" aria-label="Light theme">☀</a><a data-reading-theme="dark" href="?theme=dark" aria-label="Dark theme">◐</a><details><summary aria-label="Navigation">☰</summary><nav><a href="../../index.html">Home</a><a href="../../studio/index.html">Studio</a><a href="../../writing.html">Writing</a><a href="../../about.html">About</a></nav></details></div></header><aside id="reading-language-note" class="reading-language-note">Source text preserved. A distinct Chinese edition is available; editions may differ.</aside><main id="reading-main" tabindex="-1" class="reading-document"><a class="reading-context" href="../../studio/animation.html">← Studio / animation</a><div class="shell"><a href="../">← 实验室</a><article class="reading-markdown"><h1 id="generative-visual-lab-·-technical-asset-taxonomy--architecture-index">Generative Visual Lab · Technical Asset Taxonomy &amp; Architecture Index</h1>
+<blockquote>
+<p>🌐 <strong>Language / 语言</strong>: <a href="asset-taxonomy.html">中文 (<code>asset-taxonomy.md</code>)</a> | <strong>English</strong></p>
+</blockquote>
+<p>This index catalogs and standardizes all technical assets inside <code>turbo998/generative-visual-lab</code>. All interactive demonstrations, Blender 4.5 LTS MCP procedural generation scripts, Cycles ray-traced baked assets, NASA scientific datasets, research documents, and automated verification evidence are organized across six top-level categories and kept synchronized at every nightly evolution stage.</p>
+<hr>
+<h2 id="1-top-level-asset-taxonomy-overview">1. Top-Level Asset Taxonomy Overview</h2>
+<table>
+<thead>
+<tr>
+<th>Asset Category</th>
+<th>Repository Paths</th>
+<th>Core Responsibilities &amp; Scope</th>
+<th>License / Provenance</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>1. Real-Time Interactive Demos (<code>Demos</code>)</strong></td>
+<td><code>demos/feitian/</code><br><code>demos/astra-planet/</code><br><code>demos/rocket-launch/</code></td>
+<td>Three core real-time WebGL2 / Three.js / Canvas 2D interactive applications with self-contained physics, custom shaders, and state machines</td>
+<td>MIT Original Code</td>
+</tr>
+<tr>
+<td><strong>2. Blender MCP Modeling &amp; Baking Pipeline (<code>Blender Pipeline</code>)</strong></td>
+<td><code>scripts/blender/</code></td>
+<td>Headless Blender 4.5 LTS MCP daemon, JSON-RPC client, and deterministic 3D/bake asset builders for all three demos</td>
+<td>MIT Original Scripts</td>
+</tr>
+<tr>
+<td><strong>3. 3D Models, Baked Textures &amp; Scientific Datasets (<code>3D &amp; Data Assets</code>)</strong></td>
+<td><code>demos/*/assets/</code><br><code>demos/astra-planet/public/data/</code></td>
+<td>Blender-exported <code>.glb</code> hard-surface kits, Cycles ray-traced relief/normal textures, and NASA MOLA laser altimetry binary elevation packages</td>
+<td>MIT Original Bakes + NASA PDS Public Domain Data</td>
+</tr>
+<tr>
+<td><strong>4. Deep Technical Research &amp; Architecture Blueprints (<code>Research &amp; Docs</code>)</strong></td>
+<td><code>docs/*.md</code>, <code>docs/*.en.md</code><br>(compiled to <code>dist/research/*.html</code>)</td>
+<td>Bilingual (CN/EN) Opus 5.5 animation landscape survey, Feitian reference study, Blender MCP architecture, rocket methodology, and validation logs</td>
+<td>MIT Original Docs</td>
+</tr>
+<tr>
+<td><strong>5. Shared Design System &amp; Build/Verification Tooling (<code>Theme &amp; Tooling</code>)</strong></td>
+<td><code>assets/</code><br><code>scripts/</code></td>
+<td>Clawpilot dual-theme design system, multi-app static assembler, detail capture scripts, and live verification runners</td>
+<td>MIT Original Tooling</td>
+</tr>
+<tr>
+<td><strong>6. Offline Ray-Traced Gallery &amp; Automated Test Evidence (<code>Evidence &amp; Tests</code>)</strong></td>
+<td><code>docs/evidence/</code><br><code>tests/</code><br><code>demos/astra-planet/tests/</code></td>
+<td>Blender Cycles offline renders, MCP execution JSON transcripts, frame-budget benchmarks, and 55 Vitest unit + Playwright E2E tests</td>
+<td>Measured Verification Artifacts</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="2-detailed-asset-inventory-by-category">2. Detailed Asset Inventory by Category</h2>
+<h3 id="21-real-time-interactive-demos-demos">2.1 Real-Time Interactive Demos (<code>demos/</code>)</h3>
+<h4 id="demosfeitian--winds-among-the-murals-·-dunhuang-feitian-narrative"><code>demos/feitian/</code> — Winds Among the Murals · Dunhuang Feitian Narrative</h4>
+<ul>
+<li><code>demos/feitian/index.html</code>: Responsive grotto frame, close-up portrait inspection cards for the four Feitian figures (<em>Qingyu</em>, <em>Danxia</em>, <em>Liujin</em>, <em>Biluo</em>), and interactive controls.</li>
+<li><code>demos/feitian/main.ts</code>: Complete state machine and Canvas 2D rendering pipeline:<ul>
+<li><strong>Grotto Base, Coffered Lotus Caisson &amp; Tyndall Light Shafts (<code>buildWall</code>)</strong>: Weathered sandstone grain + Blender Cycles orthogonal relief bake (<code>grotto-relief-bake.png</code>) of four arched niches, Dharma-wheel &amp; crossed-vajra caisson ceiling, flaming pearl lintels, Sasanian linked-pearl medallions, Kalavinka &amp; honeysuckle intrados bosses, and Sumeru lotus pedestals + volumetric Tyndall light beams and floating gold-leaf dust motes.</li>
+<li><strong>2× Supersampled Fine-Line Figures &amp; Tang Gilded Ornaments (<code>drawBody</code> / <code>renderPortrait</code>)</strong>: 2× supersampled offscreen figure cache, mineral cheek blush, Tang three-petal floral huadian forehead marks, sixteen-ray inner nimbus, crescent gilded torque, Bodhi-leaf earrings, four-cloud ruyi shoulder cape, phoenix hairpin step-shake pendants, linked-pearl armlets/anklets, turquoise/coral wristlet tassels, twin-phoenix mother-of-pearl scarf brooch, lotus-pod comb back, and gilded brocade robes.</li>
+<li><strong>PBD Silk Ribbons &amp; Falling Lotus Petals (<code>motion.ts</code>)</strong>: Verlet / PBD distance and Laplacian bending constraints with continuous quadratic Bezier outlines and <code>setTransform</code>-batched dual-layer lotus petals.</li>
+<li><strong>Procedural Pentatonic WebAudio</strong>: Real-time synthesized guqin/xiao harmonics and chime resonance.</li>
+</ul>
+</li>
+</ul>
+<h4 id="demosastra-planet--astra-·-mars-measured-topography--paleoclimate-lab"><code>demos/astra-planet/</code> — Astra · Mars Measured Topography &amp; Paleoclimate Lab</h4>
+<ul>
+<li><code>demos/astra-planet/src/render/PlanetScene.ts</code>: Custom Three.js spherical terrain mesh and multi-mode shaders (<code>realistic</code>, <code>gray</code>, <code>wireframe</code>, <code>height</code>):<ul>
+<li><strong>Scientific Elevation Geometry</strong>: True vertex displacement driven by NASA MOLA <code>1440×720</code> base and <code>4096×2048</code> HD binary packages (<code>588,288</code> triangles in fine mode).</li>
+<li><strong>Blender Micro-Surface Normal Bake, Oren-Nayar Regolith &amp; CRISM/HiRISE Spectral Stratigraphy</strong>: Seamless 256×256 <code>uMicroNormalMap</code> perturbation, Oren-Nayar rough regolith diffuse reflectance, Hapke-Seeliger opposition surge, polar/alpine frost micro-facet glint, bounded Rayleigh/Mie atmospheric scattering, and multi-basin CRISM/HiRISE mineral spectral bands strictly gated inside <code>realistic</code> mode (<code>uMode == 0</code>).</li>
+</ul>
+</li>
+<li><code>demos/astra-planet/src/terrain/</code>: Hypsometric ocean statistics Worker, landmark close-up bookmarks (Valles Marineris, Olympus Mons, Hellas Planitia), and self-contained metric <code>.glb</code> exporter.</li>
+</ul>
+<h4 id="demosrocket-launch--launch-·-circular-porthole-white-rocket-complex"><code>demos/rocket-launch/</code> — Launch · Circular Porthole White Rocket Complex</h4>
+<ul>
+<li><code>demos/rocket-launch/main.ts</code>: Three.js external launch complex scene:<ul>
+<li><strong>Blender MCP Hard-Surface Kit &amp; Per-Material Static Batching</strong>: Loads <code>rocket-kit.glb</code> (<code>RocketVehicle</code>, <code>UmbilicalArm</code>, <code>LaunchPadStatic</code>) and merges static meshes by material bucket (<code>28</code> draw calls).</li>
+<li><strong>Supersonic Exhaust Plume, Smoke Pool &amp; Transonic Optics</strong>: Dual-cone analytical plume shader (<code>flameMaterial</code> with Planck blackbody core, Mach disk, shock diamonds, barrel shock, and shear/recirculation vortex harmonics), bounded 640-particle depth-sorted smoke pool, ground acoustic shockwave ring (<code>shockWave</code>), transonic Prandtl-Glauert condensation cone (<code>vaporCone</code>), and circular porthole anamorphic lens glow.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="22-blender-45-lts-mcp-modeling--baking-scripts-scriptsblender">2.2 Blender 4.5 LTS MCP Modeling &amp; Baking Scripts (<code>scripts/blender/</code>)</h3>
+<table>
+<thead>
+<tr>
+<th>Script Path</th>
+<th>Inputs / Parameters</th>
+<th>Generated Artifacts</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>scripts/blender/mcp-headless-daemon.py</code></td>
+<td>Listens on <code>127.0.0.1:9876</code></td>
+<td>TCP Socket Server (Protocol v13)</td>
+<td>Starts <code>blender-mcp</code> server inside <code>blender.exe --background</code></td>
+</tr>
+<tr>
+<td><code>scripts/blender/mcp-client.mjs</code></td>
+<td>MCP Stdio JSON-RPC 2.0</td>
+<td>Wraps <code>get_scene_info</code> / <code>execute_blender_code</code></td>
+<td>Node.js MCP client managing daemon lifecycle and JSON evidence transcripts</td>
+</tr>
+<tr>
+<td><code>scripts/blender/build-rocket-assets.mjs</code></td>
+<td>Parametric vehicle/tower dimensions &amp; 4-color materials</td>
+<td><code>demos/rocket-launch/assets/rocket-kit.glb</code><br><code>docs/evidence/blender-rocket-cycles-render.png</code></td>
+<td>Builds <code>RocketVehicle</code>, <code>UmbilicalArm</code>, and <code>LaunchPadStatic</code> and renders Cycles reference image</td>
+</tr>
+<tr>
+<td><code>scripts/blender/build-astra-assets.mjs</code></td>
+<td><code>mola-meg016-base-v1.bin</code> + Cycles nodes</td>
+<td><code>demos/astra-planet/public/data/mars-micro-normal.png</code><br><code>docs/evidence/blender-astra-cycles-render.png</code></td>
+<td>Bakes seamless 256×256 Martian micro-normal/cavity map and renders Cycles orbital view</td>
+</tr>
+<tr>
+<td><code>scripts/blender/build-feitian-assets.mjs</code></td>
+<td>16:9 grotto 4-niche coordinates &amp; caisson parameters</td>
+<td><code>demos/feitian/assets/grotto-relief-bake.png</code><br><code>docs/evidence/blender-feitian-cycles-render.png</code></td>
+<td>Models Mogao four-niche grotto, Sumeru pedestals, and lotus caisson; bakes orthogonal Cycles relief</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="23-3d-models-baked-textures--scientific-data-packages">2.3 3D Models, Baked Textures &amp; Scientific Data Packages</h3>
+<table>
+<thead>
+<tr>
+<th>Asset Path</th>
+<th>Format &amp; Dimensions</th>
+<th>Byte Size</th>
+<th>Purpose &amp; Provenance</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>demos/rocket-launch/assets/rocket-kit.glb</code></td>
+<td>glTF 2.0 Binary (<code>GLB</code>)</td>
+<td><code>4,741,920 B</code></td>
+<td>White four-color launch vehicle, separating umbilical swing arm, and launch pad/trench/tower complex (generated via Blender 4.5 MCP, updated through Stage 466)</td>
+</tr>
+<tr>
+<td><code>demos/feitian/assets/grotto-relief-bake.png</code></td>
+<td>PNG RGBA (<code>640×360</code>)</td>
+<td><code>470,439 B</code></td>
+<td>Orthogonal Cycles relief bake of the four Mogao niches, Sumeru pedestals, archivolts, and coffered lotus caisson ceiling (updated through Stage 466)</td>
+</tr>
+<tr>
+<td><code>demos/astra-planet/public/data/mars-micro-normal.png</code></td>
+<td>PNG RGBA (<code>256×256</code> Seamless)</td>
+<td><code>192,613 B</code></td>
+<td>Seamless Martian micro-surface tangent-space normal (RGB) and cavity occlusion (Alpha) texture baked in Blender Cycles (updated through Stage 466)</td>
+</tr>
+<tr>
+<td><code>demos/astra-planet/public/data/mola-meg016-base-v1.bin</code></td>
+<td>Int16LE Binary (<code>1440×720</code>)</td>
+<td><code>2,073,600 B</code></td>
+<td>NASA MGS MOLA MEGDR measured global elevation base package</td>
+</tr>
+<tr>
+<td><code>demos/astra-planet/public/data/mola-meg064-hd-v1.bin</code></td>
+<td>Int16LE Binary (<code>4096×2048</code>)</td>
+<td><code>16,777,216 B</code></td>
+<td>NASA MGS MOLA high-definition elevation package (loaded on demand)</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="24-bilingual-research-documentation-docsmd--docsenmd">2.4 Bilingual Research Documentation (<code>docs/*.md</code> &amp; <code>docs/*.en.md</code>)</h3>
+<ol>
+<li><code>docs/opus-animation-landscape.md</code> / <a href="opus-animation-landscape.en.html"><code>docs/opus-animation-landscape.en.md</code></a>: <strong>Claude Opus 5.5 Animation &amp; Interactive Visual Landscape Survey</strong> (488 curated works taxonomy, mathematical primitives, and Stages 1–432 evolution archive).</li>
+<li><code>docs/blender-mcp-pipeline.md</code> / <a href="blender-mcp-pipeline.en.html"><code>docs/blender-mcp-pipeline.en.md</code></a>: <strong>Gemini 4 Argon + Blender 4.5 LTS MCP Hybrid Rendering Pipeline Architecture</strong>.</li>
+<li><code>docs/feitian-reference-study.md</code> / <a href="feitian-reference-study.en.html"><code>docs/feitian-reference-study.en.md</code></a>: <strong>Dunhuang Feitian Reference Study &amp; Original Mural Implementation</strong>.</li>
+<li><code>docs/technique-comparison.md</code> / <a href="technique-comparison.en.html"><code>docs/technique-comparison.en.md</code></a>: <strong>Canvas 2D / Three.js / Blender Offline Baking Technical Comparison</strong>.</li>
+<li><code>docs/rocket-method.md</code> / <a href="rocket-method.en.html"><code>docs/rocket-method.en.md</code></a>: <strong>External-Porthole White Rocket Launch Complex Modeling &amp; Plume Methodology</strong>.</li>
+<li><code>docs/asset-taxonomy.md</code> / <a href="asset-taxonomy.en.html"><code>docs/asset-taxonomy.en.md</code></a>: <strong>Repository Technical Asset Taxonomy &amp; Architecture Index</strong>.</li>
+<li><code>docs/publication-and-provenance.md</code> / <a href="publication-and-provenance.en.html"><code>docs/publication-and-provenance.en.md</code></a> &amp; <code>docs/validation.md</code> / <a href="validation.en.html"><code>docs/validation.en.md</code></a>: <strong>Provenance Boundaries &amp; Stage-by-Stage Validation Logs</strong>.</li>
+</ol>
+</article><details class="reading-source"><summary>Original source text / 原始文档文本</summary><pre># Generative Visual Lab · Technical Asset Taxonomy &amp; Architecture Index
 
 &gt; 🌐 **Language / 语言**: [中文 (`asset-taxonomy.md`)](asset-taxonomy.md) | **English**
 
@@ -77,4 +257,5 @@ This index catalogs and standardizes all technical assets inside `turbo998/gener
 5. `docs/rocket-method.md` / [`docs/rocket-method.en.md`](rocket-method.en.md): **External-Porthole White Rocket Launch Complex Modeling &amp; Plume Methodology**.
 6. `docs/asset-taxonomy.md` / [`docs/asset-taxonomy.en.md`](asset-taxonomy.en.md): **Repository Technical Asset Taxonomy &amp; Architecture Index**.
 7. `docs/publication-and-provenance.md` / [`docs/publication-and-provenance.en.md`](publication-and-provenance.en.md) &amp; `docs/validation.md` / [`docs/validation.en.md`](validation.en.md): **Provenance Boundaries &amp; Stage-by-Stage Validation Logs**.
-</pre></main></html>
+</pre></details></div></main>
+</body></html>

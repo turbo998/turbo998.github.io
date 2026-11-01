@@ -17,13 +17,20 @@ and four learning-stage jumps in every track. Share a scene with
 with `#infra/stage-4`. Breadcrumbs lead back to the command center, while the
 security landing zone also links back to its parent security column.
 
-Shared navigation and layout live in `site-structure.js` and
-`site-structure.css`; existing report data and demo engines remain unchanged.
-For navigation regression checks, serve the repository with
-`python -m http.server 8796`, then run `node tests\site-structure.cjs` in an
-environment with Puppeteer available. Set `SITE_TEST_URL` for another port.
-The checks isolate external APIs and embedded engines, and verify both languages,
-all scene file targets, browser history and desktop/tablet/mobile layouts.
+The production [Studio directory](studio/index.html) now links to seven independent
+bilingual topic pages. The home page is a curated personal introduction, not the
+complete archive. The [archive](studio/archive.html) preserves every baseline resource.
+Dark Aurora styles (deep navy, localized blue-violet/cyan accents, explicit light option) live in `assets/editorial/`; reading and dedicated surfaces
+have separate, scoped navigation. No portal embeds a complete HTML application.
+Legacy `frontier-ai-studio.html` track, stage and module URLs remain compatibility entries.
+
+Run `node scripts\build-site.cjs` to rebuild the production portal from the approved
+static templates and frozen route inventory. Serve with `python -m http.server 8797`;
+with Puppeteer available, run `node tests\site-structure.cjs` and
+`node tests\production-routes.cjs`. Set `SITE_ARTIFACT_DIR` outside the repository
+for screenshots and JSON evidence. These portal tests do not claim demo acceptance:
+real dedicated smoke and all-page link/layout checks are separate.
+See [migration, language policy, validation and release instructions](docs/redesign/production-migration.md).
 
 | Track | Engineering Domain | Live Interactive Workbench | Sealed 7-Card 4:5 Benchmark Deck & Key Metrics |
 | :--- | :--- | :--- | :--- |

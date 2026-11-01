@@ -1,0 +1,666 @@
+<!doctype html>
+<html lang="en" data-theme="dark" data-reading-runtime="true" data-reading-shell="document"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why Does One DeepSeek GPU Earn $38 / Hour?Per-GPU Token Pareto, E/P/D Disaggregation &amp; 155T/Day Cost Ledger</title>
+<meta name="description" content="Interactive AI Infra visual chart report and unit economics workbench dissecting deepseek-ai/DeepInfer (DeepSeek-V4.1-Flash), per-GPU token Pareto curves, E/P/D disaggregation, 100 PiB 3FS KV cache, and the exact $38/GPU-hour &amp; 155T tokens/day cost/revenue calculation.">
+
+<meta name="reading-migration" content="R6"><link rel="stylesheet" href="../../assets/reading-shell.css"><script src="../../assets/reading-shell.js"></script></head>
+<body class="reading-page"><a class="reading-skip" href="#reading-main">Skip to content</a><header class="reading-header"><a class="reading-brand" href="../../index.html"><span class="reading-mark">q<span>.</span></span><span>Qi Chen<small>@turbo998 · Engineering notes</small></span></a><div class="reading-controls"><a data-reading-language="" href="index.html" hreflang="zh-CN" lang="zh-CN">中文</a><a data-reading-theme="light" href="?theme=light" aria-label="Light theme">☀</a><a data-reading-theme="dark" href="?theme=dark" aria-label="Dark theme">◐</a><details><summary aria-label="Navigation">☰</summary><nav><a href="../../index.html">Home</a><a href="../../studio/index.html">Studio</a><a href="../../writing.html">Writing</a><a href="../../about.html">About</a></nav></details></div></header><aside id="reading-language-note" class="reading-language-note">English translation of the preserved source, with original numerical claims retained; not independently re-measured.</aside><main id="reading-main" tabindex="-1" class="reading-document"><a class="reading-context" href="../../studio/benchmarks.html">← Studio / benchmarks</a>
+
+<nav class="topbar reading-resource-nav">
+  <div class="brand">
+    <span class="badge green">AI INFRA MILESTONE CASE STUDY</span>
+    <span data-lang="zh">DeepSeek DeepInfer 与“单卡时薪 $38 / 日吞吐 155T”可视化研究工作台</span>
+    <span data-lang="en">DeepSeek DeepInfer &amp; "$38/GPU-Hour / 155T/Day" Visual Research Workbench</span>
+  </div>
+  <div class="top-actions">
+    <button class="btn" id="btn-zh" onclick="setLang('zh')" hidden="" aria-hidden="true">🇨🇳 中文</button>
+    <button class="btn active" id="btn-en" onclick="setLang('en')" hidden="" aria-hidden="true">🇬🇧 English</button>
+    <a class="btn" href="cards.html" target="_blank" rel="noopener">📊 7-Card Deck ↗</a>
+    <a class="btn" href="https://github.com/deepseek-ai/DeepInfer" target="_blank" rel="noopener">deepseek-ai/DeepInfer ↗</a>
+    <a class="btn" href="https://github.com/turbo998/ai-infra-research" target="_blank" rel="noopener">GitHub Repo ↗</a>
+    <a class="btn" href="../../zh.html" data-lang="zh">← Back to the lab</a>
+    <a class="btn" href="../../index.html" data-lang="en">← Back to Home</a>
+  </div>
+</nav>
+
+<div class="wrap">
+  <!-- HERO -->
+  <header class="hero">
+    <div>
+      <span class="badge">DEEPSEEK-V4.1-FLASH (552B MoE · 8B/16B ACTIVE)</span>
+      <span class="badge green">SM100 BLACKWELL &amp; HUAWEI ASCEND 950</span>
+      <span class="badge">100 PiB 3FS KV CACHE (96% HIT)</span>
+    </div>
+    <h1 data-lang="zh">为什么 DeepSeek 一张卡每小时能赚 <span class="grad">$38 美元</span>？<br>DeepInfer 每卡 Token 产效、E/P/D 分离与成本账本全拆解</h1>
+    <h1 data-lang="en">Why Does One DeepSeek GPU Earn <span class="grad">$38 / Hour</span>?<br>Per-GPU Token Pareto, E/P/D Disaggregation &amp; 155T/Day Cost Ledger</h1>
+    <p data-lang="zh">
+      Based on  <code>deepseek-ai/DeepInfer</code> 一手开源架构文档、vLLM × SemiAnalysis <code>GB300 NVL72</code> 独立复现报告与【第四种黑猩猩】财务拆解：深度还原单集群 <strong>155 万亿 Tokens/天</strong> 背后的 <strong>25× 缓存杠杆（54 亿输入 Token/卡/小时）</strong>、<strong>DSpark 动态投机验证（-30% 验证量）</strong>、<strong>SWA 140-Token 有界重放</strong> and  <strong>1P:1D $38/GPU-hr 谷电价收入公式</strong>。
+    </p>
+    <p data-lang="en">
+      Grounded in primary documentation from <code>deepseek-ai/DeepInfer</code>, the independent <code>vLLM × SemiAnalysis GB300 NVL72</code> reproduction, and the viral "$38/GPU-hour" financial audit: quantifying how <strong>96% 3FS prefix hits (5.4B input tokens/GPU-hr)</strong>, <strong>DSpark confidence verification (-30% draft verify)</strong>, and <strong>140-token SWA bounded replay</strong> drive <strong>$38.00/GPU-hr off-peak ($76.00/hr peak)</strong> across a 1:1 Prefill/Decode pool.
+    </p>
+
+    <div class="kpi-strip">
+      <div class="kpi">
+        <div class="val green">$38.00 / hr</div>
+        <div class="lbl" data-lang="zh">单卡谷电价每小时毛营收（高峰正价 <strong>$76.00/hr</strong>，1P:1D 均值）</div>
+        <div class="lbl" data-lang="en">Per-GPU Off-Peak Hourly Revenue (<strong>$76.00/hr</strong> Peak, 1P:1D Avg)</div>
+      </div>
+      <div class="kpi">
+        <div class="val">155T / Day</div>
+        <div class="lbl" data-lang="zh">单集群日吞吐量（<strong>17.94 亿 tok/s</strong>，约 19×128 卡单元 = 2,432 卡）</div>
+        <div class="lbl" data-lang="en">Single-Cluster Daily Throughput (<strong>1.794B tok/s</strong>, ~2,371 active GPUs)</div>
+      </div>
+      <div class="kpi">
+        <div class="val">1.50M tok/s</div>
+        <div class="lbl" data-lang="zh">Prefill 单卡等效总输入吞吐（<code>60K</code> 物理计算 × <code>96%</code> 3FS 命中 25× 放大 = <strong>54亿/小时</strong>）</div>
+        <div class="lbl" data-lang="en">Effective Prefill Input Throughput/GPU (<code>60K</code> uncached × 25× @ <code>96%</code> hit = <strong>5.4B/hr</strong>)</div>
+      </div>
+      <div class="kpi">
+        <div class="val amber">25,600 tok/s</div>
+        <div class="lbl" data-lang="zh">Decode 单卡离线峰值输出（线上甜点 <strong>14,466 tok/s/卡 @ 230 tok/s/user</strong>）</div>
+        <div class="lbl" data-lang="en">Decode Offline Peak Output/GPU (Online sweet spot <strong>14,466 tok/s @ 230 tok/s/user</strong>)</div>
+      </div>
+      <div class="kpi">
+        <div class="val green">890 B / tok</div>
+        <div class="lbl" data-lang="zh">全局 Block KV 极致压缩（省 <strong>75%</strong> HBM），配 <strong>100 PiB 3FS</strong>（14.4 TB/卡）</div>
+        <div class="lbl" data-lang="en">Global Block KV Footprint (<strong>-75% HBM</strong>), backed by <strong>100 PiB 3FS</strong> (14.4 TB/GPU)</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- SECTION 1: INTERACTIVE $38/GPU-HR COST & REVENUE CALCULATOR -->
+  <section class="section" id="calculator">
+    <h2>
+      <span>🧮</span>
+      <span data-lang="zh">交互式推演沙盘：一张卡如何每小时赚到 $38 美元？（实时调参计算器）</span>
+      <span data-lang="en">Interactive Economic Simulator: How 1 GPU Earns $38/Hour (Live Parameter Sandbox)</span>
+    </h2>
+    <p class="lead" data-lang="zh">
+      拖动下方滑块，实时验证【第四种黑猩猩】视频与官方披露的精确账本：当Cache hit rate（默认 <code>96%</code>）、Prefill 物理算力（默认 <code>60K tok/s</code>）、Decode 计费速率或计费时段变化时，观察 <strong>96% 缓存白菜价收入（$15.55）</strong>、<strong>4% 未命中高单价收入（$32.40）</strong> and  <strong>1P:1D 集群单卡净毛利</strong> 的动态变化。
+    </p>
+    <p class="lead" data-lang="en">
+      Adjust the sliders below to verify the exact "$38/GPU-Hour" ledger in real time: observe how prefix cache hit rate (default <code>96%</code>), uncached prefill compute (default <code>60K tok/s</code>), decode output rate, and pricing tier shape <strong>96% cached revenue ($15.55)</strong>, <strong>4% uncached revenue ($32.40)</strong>, and <strong>1P:1D blended gross margin</strong>.
+    </p>
+
+    <div class="calc-grid">
+      <div>
+        <div class="control-group">
+          <label>
+            <span data-lang="zh">1. 3FS 前缀Cache hit rate (Prefix Cache Hit Rate)</span>
+            <span data-lang="en">1. 3FS Prefix Cache Hit Rate</span>
+            <span id="lbl-hit">96.0% (25.0× amplification)</span>
+          </label>
+          <input type="range" id="sl-hit" min="0" max="98" step="1" value="96" oninput="updateCalc()">
+          <div data-lang="zh">DeepSeek 线上默认值：96%（Agent 缓存保留 3 天，Chatbot 保留 7 天）</div>
+          <div data-lang="en">DeepSeek production default: 96% (3-day Agent TTL, 7-day Chatbot TTL in 100 PiB 3FS)</div>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <span data-lang="zh">2. Prefill 单卡冷计算吞吐 (Uncached Input tok/s/GPU)</span>
+            <span data-lang="en">2. Prefill Uncached Compute (tok/s/GPU)</span>
+            <span id="lbl-prefill">60,000 tok/s (216M/hr)</span>
+          </label>
+          <input type="range" id="sl-prefill" min="20000" max="90000" step="2000" value="60000" oninput="updateCalc()">
+          <div data-lang="zh">SM100 EP4DP4 实测：4K batch 为 60,000 tok/s（2.16亿/小时），64K batch 峰值 90,000 tok/s</div>
+          <div data-lang="en">SM100 EP4DP4 benchmark: 60,000 tok/s at 4K batch (216M/hr), up to 90,000 tok/s at 64K batch</div>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <span data-lang="zh">3. Decode 单卡每小时有效计费输出 (Output M tokens/hr)</span>
+            <span data-lang="en">3. Decode Billable Output (M tokens/hr/GPU)</span>
+            <span id="lbl-decode">46.75 M/hr (~12,986 tok/s)</span>
+          </label>
+          <input type="range" id="sl-decode" min="10" max="92" step="0.25" value="46.75" oninput="updateCalc()">
+          <div data-lang="zh">线上稳态约 13K–14.5K tok/s/卡（46.75M–52M/小时）；离线极限 25.6K tok/s（92.16M/小时）</div>
+          <div data-lang="en">Online sweet spot ~13K–14.5K tok/s (46.75M–52M/hr); offline peak 25.6K tok/s (92.16M/hr)</div>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <span data-lang="zh">4. 计费时段与单卡硬件成本 (Pricing Tier &amp; GPU Cost)</span>
+            <span data-lang="en">4. Pricing Tier &amp; Hourly GPU Cost</span>
+            <span id="lbl-cost">Off-peak (1.0×) · Cost $7.50/hr</span>
+          </label>
+          <div>
+            <button class="btn active" id="tier-off" onclick="setTier(1.0)">🌙 Off-Peak (1× · $38 baseline)</button>
+            <button class="btn" id="tier-peak" onclick="setTier(2.0)">☀️ Peak (2× · $76 ceiling)</button>
+            <button class="btn" id="btn-reset" onclick="resetCalc()">↺ Reset to the official baseline</button>
+          </div>
+          <input type="range" id="sl-cost" min="4.0" max="15.0" step="0.5" value="7.5" oninput="updateCalc()">
+        </div>
+      </div>
+
+      <div class="waterfall-card">
+        <div>
+          <div class="chart-title">
+            <span data-lang="zh">📊 实时单卡每小时收入瀑布图与 1P:1D 账本拆解</span>
+            <span data-lang="en">📊 Live Per-GPU Hourly Revenue Waterfall &amp; 1P:1D Breakdown</span>
+            <span class="badge green" id="out-margin-badge">Hardware gross margin: 80.3%</span>
+          </div>
+
+          <div class="wf-row">
+            <div class="wf-head">
+              <span data-lang="zh">① Prefill 缓存命中收入 (96% 流量 · $0.003/M 谷电价)</span>
+              <span data-lang="en">① Prefill Cache-Hit Revenue (96% stream · $0.003/M off-peak)</span>
+              <span id="out-hit-rev">$15.55 / hr (5,184M tok)</span>
+            </div>
+            <div class="wf-bar-bg"><div class="wf-bar" id="bar-hit"></div></div>
+          </div>
+
+          <div class="wf-row">
+            <div class="wf-head">
+              <span data-lang="zh">② Prefill 缓存未命中重算收入 (4% 流量 · $0.15/M 谷电价)</span>
+              <span data-lang="en">② Prefill Cache-Miss Revenue (4% stream · $0.15/M off-peak)</span>
+              <span id="out-miss-rev">$32.40 / hr (216M tok)</span>
+            </div>
+            <div class="wf-bar-bg"><div class="wf-bar" id="bar-miss"></div></div>
+          </div>
+
+          <div class="wf-row">
+            <div class="wf-head">
+              <span data-lang="zh">③ 单张 Prefill 卡每小时总创收 (① + ②，处理 54 亿输入 Token)</span>
+              <span data-lang="en">③ Total Prefill GPU Revenue/hr (① + ②, 5.4B input tokens)</span>
+              <span id="out-prefill-total">$47.95 / hr (¥326.1/hr)</span>
+            </div>
+            <div class="wf-bar-bg"><div class="wf-bar" id="bar-prefill"></div></div>
+          </div>
+
+          <div class="wf-row">
+            <div class="wf-head">
+              <span data-lang="zh">④ 单张 Decode 卡每小时输出创收 ($0.60/M 谷电价)</span>
+              <span data-lang="en">④ Total Decode GPU Revenue/hr ($0.60/M off-peak)</span>
+              <span id="out-decode-total">$28.05 / hr (46.75M tok)</span>
+            </div>
+            <div class="wf-bar-bg"><div class="wf-bar" id="bar-decode"></div></div>
+          </div>
+
+          <div class="wf-row">
+            <div class="wf-head">
+              <span data-lang="zh">🎯 1P : 1D 集群综合单卡时薪 = (Prefill + Decode) / 2</span>
+              <span data-lang="en">🎯 1P : 1D Cluster Blended Revenue = (Prefill + Decode) / 2</span>
+              <span id="out-blended">$38.00 / GPU-hr (¥258.4/hr)</span>
+            </div>
+            <div class="wf-bar-bg"><div class="wf-bar" id="bar-blended"></div></div>
+          </div>
+        </div>
+
+        <div class="formula-box" id="out-formula">Prefill_Rev = 5,184M × $0.003 + 216M × $0.15 = $15.55 + $32.40 = <strong>$47.95/hr</strong><br>Decode_Rev  = 46.75M × $0.60 = <strong>$28.05/hr</strong> &nbsp;|&nbsp; <strong>1P:1D Blended = ($47.95 + $28.05) / 2 = $38.00 / GPU-hr</strong></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: VISUAL CHARTS FOR PER-GPU TOKEN PRODUCTION (PREFILL & DECODE PARETO + DSPARK) -->
+  <section class="section" id="pareto-charts">
+    <h2>
+      <span>📈</span>
+      <span data-lang="zh">第一部分可视化：每卡生产 Token 帕累托曲线与 DSpark 动态投机解码收益</span>
+      <span data-lang="en">Pillar 1 Visualizations: Per-GPU Token Pareto Curves &amp; DSpark Speculative Speedup</span>
+    </h2>
+    <p class="lead" data-lang="zh">
+      左侧展示 <code>EP4DP4</code> Prefill 单卡吞吐与 <code>EP64DP64</code> Decode 帕累托边界（128K 上下文，SM100 实测）；右侧展示 <code>DSpark</code> 置信度动态验证相比固定验证 5 个 Token 的吞吐增益（省 30% 验证算力，高负载净提速 +11%）。
+    </p>
+    <p class="lead" data-lang="en">
+      Left: Official SM100 128K-context Pareto curves for <code>EP4DP4</code> Prefill and <code>EP64DP64</code> Decode (`nextn=3, tau=3.25`). Right: <code>DSpark</code> confidence-scheduled verification cutting verified draft tokens by ~30% and lifting throughput up to +11.0%.
+    </p>
+
+    <div class="grid2">
+      <!-- SVG CHART 1: DECODE & PREFILL PARETO -->
+      <div class="chart-box">
+        <div class="chart-title">
+          <span data-lang="zh">图 1：SM100 Decode 帕累托曲线 (EP64DP64, 128K Ctx) &amp; Prefill 阶梯</span>
+          <span data-lang="en">Fig 1: SM100 Decode Pareto Curve (EP64DP64, 128K) &amp; Prefill Scaling</span>
+          <span class="badge">25,600 Out tok/s Peak</span>
+        </div>
+        <svg viewBox="0 0 560 300" style="width:100%;height:auto;background:#060a12;border-radius:8px;">
+          <!-- Grid lines -->
+          <g stroke="#1e293b" stroke-width="1">
+            <line x1="60" y1="30" x2="530" y2="30"></line>
+            <line x1="60" y1="85" x2="530" y2="85"></line>
+            <line x1="60" y1="140" x2="530" y2="140"></line>
+            <line x1="60" y1="195" x2="530" y2="195"></line>
+            <line x1="60" y1="250" x2="530" y2="250"></line>
+          </g>
+          <!-- Y-axis labels (User Speed tok/s/user: 0 to 350) -->
+          <g fill="#94a3b8" font-size="10" text-anchor="end">
+            <text x="52" y="34">350 tok/s</text>
+            <text x="52" y="89">275 tok/s</text>
+            <text x="52" y="144">200 tok/s</text>
+            <text x="52" y="199">125 tok/s</text>
+            <text x="52" y="254">50 tok/s</text>
+          </g>
+          <!-- X-axis labels (Output Throughput tok/s/GPU: 0 to 28,000) -->
+          <g fill="#94a3b8" font-size="10" text-anchor="middle">
+            <text x="60" y="272">0</text>
+            <text x="177" y="272">7,000</text>
+            <text x="295" y="272">14,000</text>
+            <text x="412" y="272">21,000</text>
+            <text x="525" y="272">28,000 tok/s/GPU</text>
+          </g>
+          <!-- SLA 100 tok/s threshold line -->
+          <line x1="60" y1="214" x2="530" y2="214" stroke="#f59e0b" stroke-dasharray="4 4" stroke-width="1.2"></line>
+          <text x="415" y="208" fill="#f59e0b" font-size="10">100 tok/s/user SLA Floor</text>
+
+          <!-- Decode Pareto Curve:
+               (2480, 310) -> x=101, y=59
+               (4480, 280) -> x=135, y=81
+               (8160, 255) -> x=197, y=100
+               (14000, 233) -> x=295, y=116
+               (20480, 160) -> x=403, y=170
+               (25600, 100) -> x=490, y=214
+          -->
+          <polyline fill="none" stroke="#38bdf8" stroke-width="3" points="101,59 135,81 197,100 295,116 403,170 490,214"></polyline>
+          <polygon fill="rgba(56,189,248,0.12)" points="101,250 101,59 135,81 197,100 295,116 403,170 490,214 490,250"></polygon>
+
+          <!-- Points -->
+          <circle cx="101" cy="59" r="5" fill="#38bdf8"></circle>
+          <text x="108" y="54" fill="#e2e8f0" font-size="10" font-weight="700">conc=8 (310 tok/s/user, 2.48K/GPU)</text>
+
+          <circle cx="197" cy="100" r="5" fill="#38bdf8"></circle>
+          <text x="204" y="96" fill="#94a3b8" font-size="10">conc=32 (255 tok/s, 8.16K/GPU)</text>
+
+          <circle cx="295" cy="116" r="6.5" fill="#10b981" stroke="#fff" stroke-width="1.5"></circle>
+          <text x="250" y="135" fill="#10b981" font-size="10.5" font-weight="800">★ Online sweet spot conc=60 (14.5K tok/s/GPU @ 230 tok/s)</text>
+
+          <circle cx="403" cy="170" r="5" fill="#38bdf8"></circle>
+          <text x="345" y="162" fill="#94a3b8" font-size="10">conc=128 (20.5K/GPU)</text>
+
+          <circle cx="490" cy="214" r="6" fill="#f59e0b" stroke="#fff" stroke-width="1.5"></circle>
+          <text x="355" y="232" fill="#f59e0b" font-size="10.5" font-weight="800">★ Offline throughput limit conc=256 (25.6K tok/s/GPU)</text>
+
+          <text x="295" y="292" fill="#cbd5e1" font-size="11" font-weight="700" text-anchor="middle">X: Output tokens/s/GPU · Y: Generation tokens/s/user</text>
+        </svg>
+      </div>
+
+      <!-- SVG CHART 2: DSPARK DYNAMIC VERIFICATION & SWA BOUNDED REPLAY -->
+      <div class="chart-box">
+        <div class="chart-title">
+          <span data-lang="zh">图 2：DSpark 动态投机验证吞吐对比 (Fixed-5 vs Dynamic Varlen)</span>
+          <span data-lang="en">Fig 2: DSpark Confidence-Scheduled Verification vs. Fixed-5 Baseline</span>
+          <span class="badge green">-28% ~ -35% Draft Verify</span>
+        </div>
+        <svg viewBox="0 0 560 300" style="width:100%;height:auto;background:#060a12;border-radius:8px;">
+          <!-- Bars for Concurrency 16, 32, 48, 60, 72, 96 -->
+          <g font-size="10" fill="#94a3b8">
+            <text x="15" y="22" fill="#e2e8f0" font-weight="700">Concurrency (EP64/DP64) · Gray=fixed 5-token verification | Blue=DSpark dynamic truncation | Green=verification-token savings</text>
+
+            <!-- conc=32 -->
+            <text x="15" y="60">conc=32</text>
+            <rect x="85" y="45" width="180" height="10" rx="3" fill="#475569"></rect>
+            <rect x="85" y="57" width="183" height="10" rx="3" fill="#38bdf8"></rect>
+            <text x="275" y="62" fill="#e2e8f0">9,111 vs 8,964 tok/s (<tspan fill="#10b981" font-weight="700">+1.6% · 27.0% verification saved</tspan>)</text>
+
+            <!-- conc=48 -->
+            <text x="15" y="105">conc=48</text>
+            <rect x="85" y="90" width="242" height="10" rx="3" fill="#475569"></rect>
+            <rect x="85" y="102" width="251" height="10" rx="3" fill="#38bdf8"></rect>
+            <text x="344" y="107" fill="#e2e8f0">12,467 vs 12,032 (<tspan fill="#10b981" font-weight="700">+3.6% · 21.2% verification saved</tspan>)</text>
+
+            <!-- conc=60 -->
+            <text x="15" y="150" fill="#10b981" font-weight="700">conc=60 ★</text>
+            <rect x="85" y="135" width="276" height="10" rx="3" fill="#475569"></rect>
+            <rect x="85" y="147" width="291" height="10" rx="3" fill="#10b981"></rect>
+            <text x="383" y="152" fill="#10b981" font-weight="700">14,466 vs 13,730 (+5.4% · 28.4% saved)</text>
+
+            <!-- conc=72 -->
+            <text x="15" y="195">conc=72</text>
+            <rect x="85" y="180" width="301" height="10" rx="3" fill="#475569"></rect>
+            <rect x="85" y="192" width="321" height="10" rx="3" fill="#38bdf8"></rect>
+            <text x="413" y="197" fill="#e2e8f0">15,961 vs 14,962 (<tspan fill="#10b981" font-weight="700">+6.7% · 35.2% saved</tspan>)</text>
+
+            <!-- conc=96 -->
+            <text x="15" y="240" fill="#38bdf8" font-weight="700">conc=96</text>
+            <rect x="85" y="225" width="338" height="10" rx="3" fill="#475569"></rect>
+            <rect x="85" y="237" width="375" height="10" rx="3" fill="#38bdf8"></rect>
+            <text x="466" y="242" fill="#38bdf8" font-weight="700">18,660 (+11.0%)</text>
+          </g>
+
+          <!-- Bottom callout inside SVG for SWA Bounded Replay -->
+          <rect x="15" y="258" width="530" height="32" rx="6" fill="#0f172a" stroke="#334155"></rect>
+          <text x="25" y="278" fill="#cbd5e1" font-size="10.5">
+            <tspan fill="#f59e0b" font-weight="700">SWA Bounded Replay (KEEP_TOKENS=140):</tspan> Decoder suffix recomputation falls from 51,200 to 2,800 layer-tokens (<tspan fill="#10b981" font-weight="700">-94.53%</tspan>, saving ~50% total prefill compute)
+          </text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3: E/P/D DISAGGREGATION & 100 PiB 3FS ARCHITECTURE DIAGRAM -->
+  <section class="section" id="epd-architecture">
+    <h2>
+      <span>🏗️</span>
+      <span data-lang="zh">第二部分可视化：E/P/D 三相物理分离、100 PiB 3FS KV 存储池与四级负载均衡架构图</span>
+      <span data-lang="en">Pillar 2 Architecture: E/P/D Physical Disaggregation, 100 PiB 3FS KV Pool &amp; 4-Tier Load Balancers</span>
+    </h2>
+    <p class="lead" data-lang="zh">
+      DeepSeek 线上将 <strong>Vision Encoder (1卡)</strong>、<strong>Prefill (8卡节点 EP2–8)</strong> and  <strong>Decode (64–128卡超节点 EP64–128)</strong> 按 <code>1P : 1D</code> 比例解耦，并通过独立的 <strong>100 PiB 3FS 全闪集群（890 B/tok Block KV）+ Host-memory SWA StateBlock（1.415 MB/seq）</strong> 实现全局任意节点零冲突命中前缀缓存。
+    </p>
+    <p class="lead" data-lang="en">
+      Production decouples <strong>Vision Encoder (1 GPU)</strong>, <strong>Prefill (8-GPU nodes at EP2–8)</strong>, and <strong>Decode (64–128 GPU supernodes at EP64–128)</strong> at a <code>1P : 1D</code> ratio, backed by a dedicated <strong>100 PiB 3FS cluster (`890 B/tok` Block KV) + Host RAM SWA StateBlock (`1.415 MB/seq`)</strong>.
+    </p>
+
+    <div class="chart-box">
+      <svg viewBox="0 0 1120 340" style="width:100%;height:auto;background:#060a12;border-radius:10px;">
+        <!-- Column 1: Entrypoint & deepseek-recipe -->
+        <rect x="20" y="25" width="230" height="290" rx="12" fill="#0f172a" stroke="#38bdf8" stroke-width="1.5"></rect>
+        <text x="35" y="52" fill="#38bdf8" font-size="13" font-weight="800">1. Traffic entry and protocol layer (MIT open source)</text>
+        <rect x="35" y="68" width="200" height="72" rx="8" fill="#1e293b"></rect>
+        <text x="45" y="90" fill="#f8fafc" font-size="11.5" font-weight="700">deepseek-recipe (Rust + Py)</text>
+        <text x="45" y="108" fill="#94a3b8" font-size="10.5">• Parallel BPE tokenization in 64KB chunks</text>
+        <text x="45" y="124" fill="#94a3b8" font-size="10.5">• Incremental KMP streaming Reasoning/Tool parsing</text>
+
+        <rect x="35" y="152" width="200" height="72" rx="8" fill="#1e293b"></rect>
+        <text x="45" y="174" fill="#f8fafc" font-size="11.5" font-weight="700">Entrypoint global routing layer</text>
+        <text x="45" y="192" fill="#94a3b8" font-size="10.5">• Partitioned memory directory locates SWA hosts</text>
+        <text x="45" y="208" fill="#94a3b8" font-size="10.5">• Average input 77K · Global TTFT 400ms</text>
+
+        <rect x="35" y="236" width="200" height="62" rx="8" fill="#1e293b"></rect>
+        <text x="45" y="258" fill="#a855f7" font-size="11.5" font-weight="700">Vision Encoder LB (VE pool)</text>
+        <text x="45" y="276" fill="#94a3b8" font-size="10.5">• 1 GPU/instance · Route to lowest patch count</text>
+
+        <!-- Arrows Col 1 -> Col 2 -->
+        <line x1="250" y1="120" x2="295" y2="120" stroke="#38bdf8" stroke-width="2"></line>
+        <polygon points="295,115 305,120 295,125" fill="#38bdf8"></polygon>
+
+        <!-- Column 2: Prefill Pool (64 GPUs min) -->
+        <rect x="305" y="25" width="255" height="290" rx="12" fill="#0f172a" stroke="#10b981" stroke-width="1.5"></rect>
+        <text x="320" y="52" fill="#10b981" font-size="13" font-weight="800">2. Prefill engine pool (PE · 8-GPU nodes)</text>
+        <rect x="320" y="68" width="225" height="75" rx="8" fill="#1e293b"></rect>
+        <text x="330" y="88" fill="#f8fafc" font-size="11.5" font-weight="700">Small parallelism EP2–8 / DP2–8 (8B active)</text>
+        <text x="330" y="106" fill="#94a3b8" font-size="10.5">• DEP2: only 5.9% DP waiting loss (64.4K/s)</text>
+        <text x="330" y="122" fill="#10b981" font-size="10.5" font-weight="700">• 60K uncached × 96% hit = 1.5M tok/s/GPU</text>
+
+        <rect x="320" y="153" width="225" height="78" rx="8" fill="#1e293b"></rect>
+        <text x="330" y="173" fill="#f59e0b" font-size="11.5" font-weight="700">Prefill LB (closed source · 4 length buckets)</text>
+        <text x="330" y="191" fill="#94a3b8" font-size="10.5">• &lt;16K / 16-64K / 64-256K / &gt;=256K</text>
+        <text x="330" y="207" fill="#94a3b8" font-size="10.5">• Quadratic quota cost(q,c)&lt;=quota (32K limit)</text>
+        <text x="330" y="222" fill="#94a3b8" font-size="10.5">• DP all-reduce MIN alignment + 140-token replay</text>
+
+        <rect x="320" y="241" width="225" height="58" rx="8" fill="#1e293b"></rect>
+        <text x="330" y="261" fill="#f8fafc" font-size="11.5" font-weight="700">Host-memory SWA StateBlock</text>
+        <text x="330" y="279" fill="#94a3b8" font-size="10.5">• 1.415 MB/seq (20L×134×528B) · &gt;98% hit</text>
+
+        <!-- Arrows Col 2 <-> Col 3 -->
+        <line x1="560" y1="110" x2="605" y2="110" stroke="#10b981" stroke-width="2"></line>
+        <polygon points="605,105 615,110 605,115" fill="#10b981"></polygon>
+        <text x="587" y="98" fill="#10b981" font-size="9.5" text-anchor="middle">1P : 1D</text>
+
+        <!-- Column 3: Decode Supernode Pool (64 GPUs min) -->
+        <rect x="615" y="25" width="245" height="290" rx="12" fill="#0f172a" stroke="#f59e0b" stroke-width="1.5"></rect>
+        <text x="630" y="52" fill="#f59e0b" font-size="13" font-weight="800">3. Decode supernode pool (64–128 GPUs)</text>
+        <rect x="630" y="68" width="215" height="75" rx="8" fill="#1e293b"></rect>
+        <text x="640" y="88" fill="#f8fafc" font-size="11.5" font-weight="700">Wide-EP64–128 / DP64–128 (16B active)</text>
+        <text x="640" y="106" fill="#94a3b8" font-size="10.5">• Only 7 resident experts/GPU (including 1 redundant)</text>
+        <text x="640" y="122" fill="#f59e0b" font-size="10.5" font-weight="700">• Online 14.5K tok/s/GPU @ 230 tok/s/user</text>
+
+        <rect x="630" y="153" width="215" height="78" rx="8" fill="#1e293b"></rect>
+        <text x="640" y="173" fill="#f59e0b" font-size="11.5" font-weight="700">Decode LB &amp; EPLB (closed-source core)</text>
+        <text x="640" y="191" fill="#94a3b8" font-size="10.5">• DualPath 2D balancing (request count × total KV length)</text>
+        <text x="640" y="207" fill="#94a3b8" font-size="10.5">• Online NVLink symm_mem reshuffling (moe_lb=1.09)</text>
+        <text x="640" y="222" fill="#94a3b8" font-size="10.5">• DSpark dynamic verification (-30% verification, +6% throughput)</text>
+
+        <rect x="630" y="241" width="215" height="58" rx="8" fill="#1e293b"></rect>
+        <text x="640" y="261" fill="#ef4444" font-size="11.5" font-weight="700">Elasticity guard (0.8 quota lock + 1min drain)</text>
+        <text x="640" y="279" fill="#94a3b8" font-size="10.5">• No scale-in at utilization &gt;0.8 (mandatory 20%+ redundancy)</text>
+
+        <!-- Arrows to Col 4 (100 PiB 3FS) -->
+        <line x1="860" y1="170" x2="895" y2="170" stroke="#38bdf8" stroke-width="2"></line>
+        <polygon points="895,165 905,170 895,175" fill="#38bdf8"></polygon>
+
+        <!-- Column 4: 100 PiB 3FS Distributed Storage Cluster -->
+        <rect x="905" y="25" width="195" height="290" rx="12" fill="#0f172a" stroke="#a855f7" stroke-width="1.5"></rect>
+        <text x="920" y="52" fill="#a855f7" font-size="13" font-weight="800">4. 100 PiB 3FS storage pool</text>
+        <rect x="920" y="68" width="165" height="230" rx="8" fill="#1e293b"></rect>
+        <text x="930" y="92" fill="#f8fafc" font-size="11" font-weight="700">Global Block KV: 890 B/tok</text>
+        <text x="930" y="112" fill="#10b981" font-size="10.5">• HBM savings 75% / SSD savings 87.5%</text>
+        <text x="930" y="132" fill="#94a3b8" font-size="10.5">• 14.4 TB per online GPU</text>
+        <text x="930" y="152" fill="#94a3b8" font-size="10.5">• 10+2 erasure coding (query 11, return 10)</text>
+        <text x="930" y="172" fill="#38bdf8" font-size="10.5" font-weight="700">• Peak aggregate reads: 10 TiB/s</text>
+        <text x="930" y="192" fill="#94a3b8" font-size="10.5">• Peak aggregate writes: 850 GiB/s</text>
+        <text x="930" y="212" fill="#f59e0b" font-size="10.5" font-weight="700">• Agent retention: 3 days</text>
+        <text x="930" y="232" fill="#f59e0b" font-size="10.5" font-weight="700">• Chatbot retention: 7 days</text>
+        <text x="930" y="254" fill="#10b981" font-size="10.5" font-weight="700">• GDR RDMA swap-in with zero SM usage</text>
+        <text x="930" y="274" fill="#94a3b8" font-size="10">Any node can hit any global prefix!</text>
+      </svg>
+    </div>
+  </section>
+
+  <!-- SECTION 4: CROSS-PLATFORM COMPARISON & CACHE HIT SENSITIVITY TABLE -->
+  <section class="section" id="comparison">
+    <h2>
+      <span>⚖️</span>
+      <span data-lang="zh">第三部分对比矩阵：为什么普通公司买显卡跑 vLLM 赚不到 $38/小时？</span>
+      <span data-lang="en">Pillar 3 Matrix: Why Buying GPUs &amp; Running Naive vLLM Won't Earn $38/Hour</span>
+    </h2>
+    <p class="lead" data-lang="zh">
+      对比单机 H200、单机 B300、DeepSeek 生产集群与 vLLM <code>GB300 NVL72</code>（<code>8P1D + Wide-EP DEP32</code>）的实测单位经济学，以及当Cache hit rate从 <code>96%</code> 跌落时的收入衰减。
+    </p>
+    <p class="lead" data-lang="en">
+      Comparing single-node H200, single-node B300, DeepSeek production DeepInfer + 3FS, and vLLM on <code>GB300 NVL72</code> (`8P1D + Wide-EP DEP32`), alongside the prefix cache hit rate sensitivity table.
+    </p>
+
+    <div class="grid2">
+      <div>
+        <h3 data-lang="zh">表 1：四种硬件与推理栈形态的每卡时薪对比（谷电价基线）</h3>
+        <h3 data-lang="en">Table 1: Per-GPU Hourly Revenue Across 4 Serving Configurations (Off-Peak)</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Deployment / hardware</th>
+              <th>Total throughput (tok/s/GPU)</th>
+              <th>Off-peak revenue ($/hr)</th>
+              <th>Peak revenue ($/hr)</th>
+              <th>Hardware gross margin</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>1. Single-node vLLM (8× H200)</strong><br><span>No PD separation / no Wide-EP</span></td>
+              <td><code>16,600</code></td>
+              <td>$0.79 / hr</td>
+              <td>$1.58 / hr</td>
+              <td><span class="badge">-583.5% major loss</span></td>
+            </tr>
+            <tr>
+              <td><strong>2. Single-node vLLM (8× B300)</strong><br><span>No PD separation / no Wide-EP</span></td>
+              <td><code>317,400</code></td>
+              <td>$14.88 / hr</td>
+              <td>$29.77 / hr</td>
+              <td><span class="badge">+42.9% (only 39% capacity)</span></td>
+            </tr>
+            <tr>
+              <td><strong>3. DeepSeek DeepInfer + 3FS</strong><br><span>128+ SM100/Ascend 950 (1P:1D)</span></td>
+              <td><code>~756,500</code><br><span>(230 tok/s/user)</span></td>
+              <td>$38.00 / hr</td>
+              <td>$76.00 / hr</td>
+              <td><span class="badge green">80.3% – 86.8%</span></td>
+            </tr>
+            <tr>
+              <td><strong>4. vLLM GB300 NVL72</strong><br><span>8P1D + DEP2/DEP32 + MTP5</span></td>
+              <td><code>954,000</code><br><span>(196 tok/s/user)</span></td>
+              <td>$38.96 / hr</td>
+              <td>$77.92 / hr</td>
+              <td><span class="badge green">76.9% (7.9× speedup)</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div>
+        <h3 data-lang="zh">表 2：3FS 前缀Cache hit rate衰减对总吞吐与用户成本的冲击</h3>
+        <h3 data-lang="en">Table 2: Impact of Prefix Cache Hit Rate Degradation (`96% → 0%`)</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Cache hit rate</th>
+              <th>Effective total prefill throughput</th>
+              <th>Blended user input price</th>
+              <th>Prefill hourly revenue</th>
+              <th>Blended 1P:1D hourly revenue</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>96.0% (official baseline)</strong></td>
+              <td><strong>1,500,000 tok/s</strong> (25×)</td>
+              <td>¥0.0592 / 1M</td>
+              <td><strong>$47.95 / hr</strong></td>
+              <td>$38.00 / hr</td>
+            </tr>
+            <tr>
+              <td><strong>90.0%</strong></td>
+              <td>600,000 tok/s (10×)</td>
+              <td>¥0.1180 / 1M</td>
+              <td>$38.23 / hr</td>
+              <td>$33.14 / hr</td>
+            </tr>
+            <tr>
+              <td><strong>80.0%</strong></td>
+              <td>300,000 tok/s (5×)</td>
+              <td>¥0.2160 / 1M (+265%)</td>
+              <td>$34.99 / hr</td>
+              <td>$31.52 / hr</td>
+            </tr>
+            <tr>
+              <td><strong>50.0%</strong></td>
+              <td>120,000 tok/s (2×)</td>
+              <td>¥0.5100 / 1M</td>
+              <td>$33.05 / hr</td>
+              <td>$30.55 / hr</td>
+            </tr>
+            <tr>
+              <td><strong>0.0% (no cache)</strong></td>
+              <td>60,000 tok/s (1×)</td>
+              <td>¥1.0000 / 1M (16.9× increase)</td>
+              <td>$32.40 / hr</td>
+              <td>$30.23 / hr (demand falls to zero)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5: THE 4 HIDDEN MOATS & EMBEDDED 7-CARD LINK -->
+  <section class="section">
+    <h2>
+      <span>🛡️</span>
+      <span data-lang="zh">四大隐性成本与护城河总结（【第四种黑猩猩】核心洞察）</span>
+      <span data-lang="en">The Four Hidden Costs &amp; Engineering Moats ("Why Hardware Alone Fails")</span>
+    </h2>
+    <div class="grid3">
+      <div class="chart-box">
+        <div class="chart-title"><span>01 · The 96% cache-hit rate and traffic advantage</span></div>
+        <p>
+          Processing 5.4 billion input tokens/GPU/hour depends on  <strong>96% of tokens requiring no GPU compute</strong>; they are read directly from the 100 PiB 3FS disks, generating  <code>$15.55/hr</code>. Without sustained daily Agent/Chatbot traffic in the hundreds of trillions of tokens, both cache-hit rate and overnight utilization collapse.
+        </p>
+      </div>
+      <div class="chart-box">
+        <div class="chart-title"><span>02 · Supernodes starting at 128 GPUs and 100 PiB 3FS</span></div>
+        <p>
+          DeepInfer supports only  <strong>NVIDIA SM100</strong> and  <strong>Huawei Ascend 950</strong>; the smallest efficient unit is  <strong>64 prefill GPUs + 64 decode supernode GPUs = 128 GPUs</strong>, plus per GPU  <code>14.4 TB</code> NVMe storage and  <code>400G</code> RDMA networking: hardware requirements beyond small/medium teams.
+        </p>
+      </div>
+      <div class="chart-box">
+        <div class="chart-title"><span>03 · Four closed-source balancing layers and 20%+ redundancy cost</span></div>
+        <p>
+          Only the offline engine (the F1 engine) is open source;  <code>kvcache-store</code> and the four load balancers (Prefill LB, Decode LB, EPLB, Autoscaler) are closed source. Production requires <strong>no scale-in at quota utilization &gt;0.8 (at least 20% redundant warm GPUs)</strong>and liability for SLA outage compensation.
+        </p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+  let currentTier = 1.0;
+  let currentLang = 'zh';
+
+  function setLang(lang) {
+    currentLang = lang;
+    if (lang === 'en') {
+      document.body.classList.add('lang-en');
+      document.getElementById('btn-en').classList.add('active');
+      document.getElementById('btn-zh').classList.remove('active');
+    } else {
+      document.body.classList.remove('lang-en');
+      document.getElementById('btn-zh').classList.add('active');
+      document.getElementById('btn-en').classList.remove('active');
+    }
+    updateCalc();
+  }
+
+  function setTier(mult) {
+    currentTier = mult;
+    document.getElementById('tier-off').classList.toggle('active', mult === 1.0);
+    document.getElementById('tier-peak').classList.toggle('active', mult === 2.0);
+    updateCalc();
+  }
+
+  function resetCalc() {
+    document.getElementById('sl-hit').value = 96;
+    document.getElementById('sl-prefill').value = 60000;
+    document.getElementById('sl-decode').value = 46.75;
+    document.getElementById('sl-cost').value = 7.5;
+    setTier(1.0);
+  }
+
+  function updateCalc() {
+    const hitPct = parseFloat(document.getElementById('sl-hit').value);
+    const uncachedTokS = parseFloat(document.getElementById('sl-prefill').value);
+    const decodeMhr = parseFloat(document.getElementById('sl-decode').value);
+    const gpuCost = parseFloat(document.getElementById('sl-cost').value);
+
+    const hitRate = hitPct / 100.0;
+    const missRate = Math.max(0.02, 1.0 - hitRate);
+    const mult = 1.0 / missRate;
+
+    const uncachedMhr = (uncachedTokS * 3600.0) / 1e6; // 216M at 60K tok/s
+    const totalInputMhr = uncachedMhr / missRate;     // 5400M at 96% hit
+    const cachedMhr = totalInputMhr - uncachedMhr;    // 5184M at 96% hit
+
+    const priceHit = 0.003 * currentTier;
+    const priceMiss = 0.15 * currentTier;
+    const priceOut = 0.60 * currentTier;
+
+    const revHit = cachedMhr * priceHit;
+    const revMiss = uncachedMhr * priceMiss;
+    const revPrefill = revHit + revMiss;
+    const revDecode = decodeMhr * priceOut;
+    const revBlended = (revPrefill + revDecode) / 2.0;
+
+    const marginPct = ((revBlended - gpuCost) / revBlended) * 100.0;
+
+    document.getElementById('lbl-hit').textContent = `${hitPct.toFixed(1)}% (${mult.toFixed(1)}× amplification)`;
+    document.getElementById('lbl-prefill').textContent = `${uncachedTokS.toLocaleString()} tok/s (${uncachedMhr.toFixed(0)}M/hr)`;
+    document.getElementById('lbl-decode').textContent = `${decodeMhr.toFixed(2)} M/hr (~${Math.round(decodeMhr * 1e6 / 3600).toLocaleString()} tok/s)`;
+    document.getElementById('lbl-cost').textContent = `${currentTier === 1.0 ? 'Off-peak (1.0×)' : 'Peak (2.0×)'} · Cost $${gpuCost.toFixed(2)}/hr`;
+
+    document.getElementById('out-hit-rev').textContent = `$${revHit.toFixed(2)} / hr (${Math.round(cachedMhr).toLocaleString()}M tok)`;
+    document.getElementById('out-miss-rev').textContent = `$${revMiss.toFixed(2)} / hr (${Math.round(uncachedMhr).toLocaleString()}M tok)`;
+    document.getElementById('out-prefill-total').textContent = `$${revPrefill.toFixed(2)} / hr (¥${(revPrefill * 6.8).toFixed(1)}/hr)`;
+    document.getElementById('out-decode-total').textContent = `$${revDecode.toFixed(2)} / hr (${decodeMhr.toFixed(2)}M tok)`;
+    document.getElementById('out-blended').textContent = `$${revBlended.toFixed(2)} / GPU-hr (¥${(revBlended * 6.8).toFixed(1)}/hr)`;
+    document.getElementById('out-margin-badge').textContent = `Hardware gross margin: ${marginPct.toFixed(1)}%`;
+
+    const maxRef = Math.max(revPrefill, revDecode, 50.0);
+    document.getElementById('bar-hit').style.width = `${Math.min(100, (revHit / revPrefill) * 100)}%`;
+    document.getElementById('bar-miss').style.width = `${Math.min(100, (revMiss / revPrefill) * 100)}%`;
+    document.getElementById('bar-prefill').style.width = `${Math.min(100, (revPrefill / maxRef) * 100)}%`;
+    document.getElementById('bar-decode').style.width = `${Math.min(100, (revDecode / maxRef) * 100)}%`;
+    document.getElementById('bar-blended').style.width = `${Math.min(100, (revBlended / maxRef) * 100)}%`;
+
+    document.getElementById('out-formula').innerHTML =
+      `Prefill_Rev = ${Math.round(cachedMhr).toLocaleString()}M × $${priceHit.toFixed(3)} + ${Math.round(uncachedMhr).toLocaleString()}M × $${priceMiss.toFixed(2)} = $${revHit.toFixed(2)} + $${revMiss.toFixed(2)} = <strong>$${revPrefill.toFixed(2)}/hr</strong><br>` +
+      `Decode_Rev  = ${decodeMhr.toFixed(2)}M × $${priceOut.toFixed(2)} = <strong>$${revDecode.toFixed(2)}/hr</strong> &nbsp;|&nbsp; <strong>1P:1D Blended = ($${revPrefill.toFixed(2)} + $${revDecode.toFixed(2)}) / 2 = $${revBlended.toFixed(2)} / GPU-hr</strong>`;
+  }
+
+  updateCalc();
+</script>
+
+
+<script type="application/json" id="reading-translations">{"Stage 466 · 522 精选 + 23 风格":"Stage 466 · 522 selections + 23 styles","× 放大)":"× amplification)","27.8s · 667帧":"27.8s · 667 frames","31.0s · 745帧":"31.0s · 745 frames","31.6s · 758帧":"31.6s · 758 frames","31.8s · 765帧":"31.8s · 765 frames","33.5s · 805帧":"33.5s · 805 frames","32.6s · 784帧":"32.6s · 784 frames","5大仓库收官总览 · 6部卡通短片":"Final overview of 5 repositories · 6 cartoon shorts","EP01 · 扔掉500MB贴图包！小画师用纯数学画敦煌飞天与火星":"EP01 · Discard the 500MB texture pack: paint Dunhuang Feitian and Mars with mathematics","Stage 196 · 0外部CDN · 55/55单测":"Stage 196 · 0 external CDNs · 55/55 unit tests","Shot A：小画师Clawd背着500MB贴图木箱累得冒汗，一脚把木箱踢进垃圾桶，抽出闪光SDF数学画笔！":"Shot A: Clawd sweats under a wooden crate of 500MB textures, kicks it into the bin and draws a glowing SDF mathematical paintbrush!","Shot B：敦煌石窟舞台，小画师挥动画笔，红绿双面金边飘带在60帧（16.7ms）丝滑舞动！":"Shot B: On a Dunhuang cave stage, the painter waves a brush; red-and-green, gold-edged ribbons dance smoothly at 60 frames (16.7ms)!","Shot C：飞向星空，激光笔在火星圆球上精准雕刻奥林帕斯山与水手号大峡谷真实MOLA高程！":"Shot C: Into the stars: a laser pen carves the real MOLA elevations of Olympus Mons and Valles Marineris into a Martian sphere!","Shot D：按下火箭发射钮，白色小火箭喷出璀璨马赫环冲上云霄，196关通关！":"Shot D: Press launch: a small white rocket emits brilliant Mach diamonds and soars into the sky. Stage 196 cleared!","EP02 · 给语音AI装上顺风耳与防弹盾！100关大满贯":"EP02 · Give voice AI super-hearing and a protective shield: a 100-stage grand slam","Stage 100 百关大满贯 · 203道防线":"Stage 100 grand slam · 203 defense checks","Shot A：呆滞铁皮机器人慢吞吞吐出STT纸条，Clawd急得直冒汗，一把推开旧机器！":"Shot A: A sluggish tin robot slowly spits out STT slips. An impatient, sweating Clawd pushes the old machine aside!","Shot B：黄小人与青小人戴上原生全双工耳机，彩色气泡双向秒级打断、对答如流！":"Shot B: Yellow and cyan figures wear native full-duplex headsets. Colored bubbles interrupt bidirectionally within seconds and exchange fluent answers!","Shot C：黑客发射红色尖刺欺骗声波，小卫士举起双层青色护盾（203道防线）把坏声波统统弹飞！":"Shot C: A hacker fires deceptive red spiked sound waves. A guard raises a double cyan shield (203 defense checks), deflecting them all!","Shot D：面对化工厂反应釜报警，小人零延迟一把拉下红色安全闸门，欢呼拿下Stage 100百关里程碑！":"Shot D: A chemical reactor alarm sounds. The figure pulls the red safety gate without delay and celebrates the Stage 100 milestone!","EP03 · 算力高铁与月饼冷库：万亿大模型提速秘籍":"EP03 · Compute express trains and Mooncake cold storage: accelerating trillion-parameter models","Phase 70 里程碑 · Rubin MegaMoE + Mooncake":"Phase 70 milestone · Rubin MegaMoE + Mooncake","Shot A：红色老火车头被成堆KV木箱堵在独木桥上直冒黑烟，调度员Clawd急得跳脚！":"Shot A: Piles of KV crates block an old red locomotive on a narrow bridge. Black smoke rises as dispatcher Clawd jumps in frustration!","Shot B：拉下Rubin MegaMoE道岔，金光闪闪的256通道算力高架桥点亮，蓝色动车组飞驰而过！":"Shot B: Pull the Rubin MegaMoE switch: a golden 256-lane compute viaduct lights up and blue express trains race across!","Shot C：小厨师把算好的KV记忆做成发光黄金月饼（Mooncake），从算力火车头精准抛进远端冷库！":"Shot C: A little chef shapes computed KV memories into glowing golden mooncakes (Mooncake), tossing them precisely from the compute locomotive into remote cold storage!","Shot D：太阳升起，全栈70座灯塔点亮，算力列车高速平稳飞驰，Phase 70大功告成！":"Shot D: The sun rises, all 70 full-stack lighthouses light up, and compute trains run fast and smoothly. Phase 70 complete!","EP04 · AI管家逛街买单，怎样做到一分钱都不算错？":"EP04 · An AI assistant goes shopping: how can every cent be accounted for correctly?","Stages 226–227 · 868/868 单测全绿":"Stages 226–227 · 868/868 unit tests passing","Shot A：买家与卖家小人隔着木桌互相拉扯大金币争吵不休，头顶冒出怒气云！":"Shot A: Buyer and seller tug a giant gold coin across a wooden table, arguing under angry clouds!","Shot B：警长Clawd端来黄金纳什博弈天平，魔法棒一点，左右秤盘稳稳对齐双赢平衡！":"Shot B: Sheriff Clawd brings a golden Nash-game balance. One tap of a magic wand aligns both pans at a win-win equilibrium!","Shot C：带电火花伪造账单袭来，警长转动99.9999999%金库手轮，三把安全铜锁咔嚓锁死！":"Shot C: A forged bill crackles with electricity. The sheriff turns the 99.9999999% vault wheel and three brass security locks click shut!","Shot D：金库旁868颗金色星星闪耀，三个小人开心庆祝智能体商务实验室通关！":"Shot D: 868 golden stars shine beside the vault. Three figures celebrate completing the agentic-commerce laboratory!","EP05 · 1650度矿热高炉旁的AI守门人：0.2毫秒生死线":"EP05 · AI guardian beside a 1650-degree submerged-arc furnace: the 0.2-millisecond safety line","Cycle #179 · 185章 · 180套蓝图 · 188/188单测":"Cycle #179 · 185 chapters · 180 blueprints · 188/188 unit tests","Shot A：1650℃密闭矿热高炉剧烈震动、炉顶火星四溅，工程师Clawd惊出一身冷汗！":"Shot A: A sealed 1650℃ submerged-arc furnace shakes violently and sparks fly from its top. Engineer Clawd breaks into a cold sweat!","Shot B：戴上10kHz激光透视镜，发射青色TDLAS激光束配合PINN-MPC物理大脑看穿炉内暗流！":"Shot B: Put on 10kHz laser goggles. Cyan TDLAS beams and a PINN-MPC physics brain reveal hidden flows inside the furnace!","Shot C：千钧一发之际，0.2毫秒拉下SIL-3安全闸门，高压氮气冰蓝护盾瞬间抚平高炉！":"Shot C: At the critical moment, the SIL-3 safety gate closes in 0.2 milliseconds. An icy-blue, high-pressure nitrogen shield instantly calms the furnace!","Shot D：185章工业圣经与180套云边蓝图全部落地，小人小队与高炉在晨光中欢呼庆祝！":"Shot D: All 185 industrial chapters and 180 cloud-edge blueprints are delivered. The team and furnace celebrate in the morning light!","图1 · 四层全景架构":"Figure 1 · Four-layer architecture","图2 · 六大运行时矩阵":"Figure 2 · Six-runtime matrix","图3 · 双阶段选型决策树":"Figure 3 · Two-stage selection tree","图4 · AKSClaw 多租户 K8s":"Figure 4 · AKSClaw multi-tenant K8s","图5 · E2B on VMSS 生产架构":"Figure 5 · E2B on VMSS production architecture","图6 · Firecracker 内部机理 & v7 实测":"Figure 6 · Firecracker internals & v7 measurements","图7 · 多智能体流 & HorizonDB":"Figure 7 · Multi-agent flow & HorizonDB","图8 · Playbook 六大场景与五步法":"Figure 8 · Six scenarios and five-step playbook","Layer 2 · Run (Azure 六级可组合计算与沙箱运行时光谱)":"Layer 2 · Run (Azure six-tier composable compute and sandbox runtime spectrum)","绝不一刀切：从平台全托管 Foundry Hosted Agents，到 Hyper-V 隔离的 ACA Dynamic Sessions (~210ms)，再到支持显式 pause/resume 快照的 ACA Sandboxes (Preview)。":"No one-size-fits-all choice: from fully managed Foundry Hosted Agents to Hyper-V-isolated ACA Dynamic Sessions (~210ms) and ACA Sandboxes (Preview) with explicit pause/resume snapshots.","多租户平台级控制：AKS 原生集成 Kata Containers Pod VM (kata-mshv-vm-isolation)，为每个 Agent Pod 提供独立 Guest Kernel。":"Multi-tenant platform control: AKS natively integrates Kata Containers Pod VMs (kata-mshv-vm-isolation), providing an independent guest kernel for each agent pod.","极致规模与速度：在 Standard_D96as_v7 (5th Gen AMD EPYC Turin + Azure Boost) 上部署 E2B BYOC / VMSS 集群（实测 Base 108ms / CI 132ms），配合 Nomad 双层心跳防抖 (lost_after=50s + heartbeat_grace=50s) 与 ClickUp 68 工具黄金模板 + 10x–20x 上下文卸载。":"Scale and speed: deploy E2B BYOC / VMSS on Standard_D96as_v7 (5th Gen AMD EPYC Turin + Azure Boost), measured at Base 108ms / CI 132ms, with two-layer Nomad heartbeat protection (lost_after=50s + heartbeat_grace=50s), ClickUp golden templates with 68 tools and 10x–20x context offloading.","Layer 3 · Ground (模型、知识检索与三层状态记忆底座)":"Layer 3 · Ground (models, knowledge retrieval and three-layer state/memory foundation)","Azure HorizonDB (Preview)：在单一 PostgreSQL 引擎内融合 ACID 事务、JSONB 半结构化消息树与 DiskANN 向量检索，存算分离并支持最高 15 个只读副本。":"Azure HorizonDB (Preview): combines ACID transactions, JSONB semi-structured message trees and DiskANN vector retrieval in one PostgreSQL engine, with separated storage/compute and up to 15 read replicas.","OpenAI PostgreSQL 生产启示：通过 PgBouncer 将连接建立耗时从 45ms 降至 5ms，结合 Cache Lease Lock 防缓存击穿，单主+50只读副本支撑 8 亿用户 100万+ QPS。":"OpenAI PostgreSQL production lesson: PgBouncer reduces connection setup from 45ms to 5ms; cache lease locks prevent stampedes. One primary plus 50 read replicas supports 800 million users and 1 million+ QPS.","德国商业银行 (Commerzbank) 标杆：基于 Foundry + ACA + AKS + Cosmos DB 打造虚拟助手 Ava，支撑每月 30,000+ 会话，~75% 客户咨询全自动闭环。":"Commerzbank reference: its Ava virtual assistant uses Foundry + ACA + AKS + Cosmos DB, supporting 30,000+ monthly conversations and fully automating ~75% of customer inquiries.","State Golden Rule: 业务检查点与长期记忆写回 HorizonDB/Cosmos DB；进程内存与文件系统现场交由 Sandbox Snapshot (UFFD + NBD) 冻结。":"State Golden Rule: persist business checkpoints and long-term memory in HorizonDB/Cosmos DB; freeze process memory and filesystem state with Sandbox Snapshot (UFFD + NBD).","Layer 4 · Control & Govern (零信任身份、统一 AI 网关与舰队治理)":"Layer 4 · Control & Govern (zero-trust identity, unified AI gateway and fleet governance)","Microsoft Entra Agent ID：每个 Agent 绑定 Blueprint 与人类责任人 (Owner/Sponsor)；严禁 Agent 直接继承用户登录 Token，按单次动作签发短时最小权限凭证。":"Microsoft Entra Agent ID: bind every agent to a blueprint and human Owner/Sponsor; never directly inherit a user sign-in token. Issue short-lived, least-privilege credentials for each action.","Unified AI Gateway：Agent 容器内零 LLM API Key；支持 Prefix-Cache 会话亲和路由、OTel GenAI 零侵入遥测，以及 User/Team/Agent 三级配额与预算硬熔断。":"Unified AI Gateway: no LLM API keys inside agent containers; supports prefix-cache session-affinity routing, non-invasive OTel GenAI telemetry and hard quota/budget cutoffs at User/Team/Agent levels.","AKSClaw 五道不可绕过硬边界：NetworkPolicy 封禁 169.254.169.254 (IMDS)、严格出向白名单、凭据代理注入、平台强制身份绑定、旁路全量审计。":"Five non-bypassable AKSClaw boundaries: NetworkPolicy blocks 169.254.169.254 (IMDS), strict egress allowlists, credential-proxy injection, platform-enforced identity binding and complete out-of-band auditing.","APIM 隔离 100,000+ 并发动态沙箱子域名":"APIM isolates 100,000+ concurrent dynamic sandbox subdomains","图 2 · Azure 六大 Agent Runtime 责任边界、隔离机制与恢复延迟矩阵":"Figure 2 · Responsibility boundaries, isolation and resume latency of six Azure agent runtimes","图 3 · AI Agent Infra on Azure 双阶段架构选型决策树与数据底座配对图":"Figure 3 · Two-stage architecture selection tree and data-foundation pairing for AI Agent Infra on Azure","图 4 · AKSClaw 多租户 Kubernetes Agent 平台参考架构 (6 大核心支柱与 5 道平台硬边界)":"Figure 4 · AKSClaw multi-tenant Kubernetes agent platform (6 pillars and 5 hard platform boundaries)","图 5 · E2B on Azure VMSS 生产级参考架构图 (Manus × E2B 10万+ 并发云端沙箱底座)":"Figure 5 · E2B on Azure VMSS production architecture (Manus × E2B foundation for 100,000+ concurrent cloud sandboxes)","图 6 · Firecracker MicroVM 沙箱内部机理 (UFFD + NBD) 与 Azure v6/v7 实测启动延迟对比":"Figure 6 · Firecracker MicroVM sandbox internals (UFFD + NBD) and measured Azure v6/v7 startup latency","图 7 · 多智能体协同工作流 (MAF × Copilot SDK × Durable) 与状态持久化选型矩阵":"Figure 7 · Multi-agent workflow (MAF × Copilot SDK × Durable) and state-persistence selection matrix","图 8 · Azure Agent Infra Playbook 六大高优场景、四维资质筛查与五步落地工作流":"Figure 8 · Azure Agent Infra Playbook: six priority scenarios, four-dimensional qualification and five-step delivery","P2 · High Potential (通过 Discovery 补齐底座信号)":"P2 · High Potential (complete foundation signals through Discovery)","Nurture · 基础培育阶段":"Nurture · Foundation development phase","四维底座覆盖数：":"Technical foundation coverage: ","潜客门禁通过：":"Prospect gates passed: ","✅ 已命中":"✅ Met","⚪ 未命中":"⚪ Not met","✅ 已达标 (计入强模型信号)":"✅ Met (counts as a strong model signal)","ℹ️ 未达 $10K/月 (不影响真实 ACR 金额，仍可由非模型路径晋级 P1)":"ℹ️ Below $10K/month (does not change actual ACR; the non-model path can still qualify for P1)","进入 Step 02 Discovery：围绕客户现有底座探讨长周期任务状态恢复、不可信代码沙箱隔离与统一 AI 网关治理需求。":"Proceed to Step 02 Discovery: discuss long-running task recovery, isolation for untrusted code and unified AI gateway governance against the existing customer foundation.","🌙 谷电价 Off-Peak (1× · $38 基线)":"🌙 Off-Peak (1× · $38 baseline)","☀️ 高峰价 Peak (2× · $76 上限)":"☀️ Peak (2× · $76 ceiling)","↺ 恢复官方基线":"↺ Reset to the official baseline","× 放大":"× amplification","谷电价 (1.0×)":"Off-peak (1.0×)","高峰正价 (2.0×)":"Peak (2.0×)"," · 成本 $":" · Cost $","🎨 Clawd 水彩手绘卡通知识短片剧场":"🎨 Clawd Watercolor Cartoon Explainer Theater","Opus 5.5 Painted-Animation · 16:9 横屏纯享":"Opus 5.5 Painted-Animation · 16:9 landscape viewing","告别 PPT 录屏与竖屏模板 · 全程 p5.brush 水彩晕染 + 8Hz 手绘抖动墨线 + 角色表演分镜 + 欢快木琴配音":"Beyond slide recordings and portrait templates: p5.brush watercolor washes, 8Hz hand-drawn ink jitter, character-driven storyboards and cheerful xylophone narration","6 部横屏卡通短片":"6 landscape cartoon shorts","Kubelka-Munk 水彩颜料混合":"Kubelka–Munk watercolor pigment mixing","EP00 · 凌晨零点的AI小人国：五路通宵大闯关（总览篇）":"EP00 · Midnight in AI Miniature Land: Five Overnight Adventures (Overview)","⏱️ 27.8s · 667帧":"⏱️ 27.8s · 667 frames","🏆 5大仓库收官总览 · 6部卡通短片":"🏆 Final overview of 5 repositories · 6 cartoon shorts","🎬 手绘分镜脚本（4-Shot Cartoon Storyboard）":"🎬 Hand-drawn screenplay (4-Shot Cartoon Storyboard)","Shot A：午夜00:00挂钟敲响，原本戴睡帽打呼噜的橘色小方块Clawd换上魔法帽，召唤出五颜六色的AI小分队！":"Shot A: At 00:00, the clock strikes midnight. Clawd, the snoring orange block in a nightcap, dons a wizard hat and summons a colorful AI team!","Shot B：分屏奇观——左屏黄小人拿激光刻刀雕刻MOLA火星大峡谷（Stage 196），右屏青小人举双层光盾弹飞超声波暗箭（Stage 100）！":"Shot B: Split screen: a yellow figure laser-carves MOLA Martian canyons (Stage 196); a cyan figure deflects ultrasonic arrows with a double light shield (Stage 100)!","Shot C：三联工坊——紫小人调度256条算力高铁、绿小人锁死9个9安全金库、粉小人用0.2ms氮气护盾驯服1650℃高炉！":"Shot C: Three workshops: a purple figure dispatches 256 compute trains, a green figure locks a nine-nines vault, and a pink figure tames a 1650℃ furnace with a 0.2ms nitrogen shield!","Shot D：清晨08:00太阳升起，六个小人在绿茵山坡排排站戴上皇冠欢呼跳跃，通宵科研大满贯！":"Shot D: At 08:00 sunrise, six crowned figures cheer and jump on a grassy hill: an overnight research grand slam!","🖼️ 8 帧水彩手绘分镜预览表（Contact Sheet）":"🖼️ 8-frame watercolor storyboard contact sheet","📺 选择剧集（6 部 16:9 卡通动画短片）":"📺 Select an episode (6 cartoon shorts in 16:9)","打开 http://localhost:3000 即可麦克风对话":"Open http://localhost:3000 for microphone conversation","RTF 0.057 · 100% 标记率":"RTF 0.057 · 100% attribution rate","单声道混合录音：必须显式开启 diarization.enabled=True":"Mixed mono recording: explicitly enable diarization.enabled=True","联络中心双声道录音 (左=客服 ch0 / 右=客户 ch1)：物理音轨分离最快最准":"Stereo contact-center recording (left=agent ch0 / right=customer ch1): physical channel separation is fastest and most accurate","实测 224.8s 真实通话仅耗时 12.9s (RTF=0.057)，28/28 句 100% 准确归属":"Measured: a 224.8s real call took 12.9s (RTF=0.057), with 28/28 utterances attributed correctly (100%)","STAGE 01 · 接入与打断":"STAGE 01 · Connection and interruption","STAGE 02 · 零幻觉查单":"STAGE 02 · Hallucination-free order lookup","STAGE 03 · 人机无缝转接":"STAGE 03 · Seamless human handoff","STAGE 04 · 录音秒级质检":"STAGE 04 · Recording quality checks in seconds","客服双通道核心模式：turnEpoch 防止用户打断后旧工具结果串话":"Core dual-channel service pattern: turnEpoch prevents stale tool results after an interruption","客户开口打断：递增 turnEpoch 并取消当前语音输出":"Customer interruption: increment turnEpoch and cancel current speech output","模型请求查询订单或核算退费金额":"The model requests an order lookup or refund calculation","若客户已打断并开启新一轮对话，丢弃旧结果":"Discard stale results if the customer interrupted and began a new turn","从全托管 Foundry 到自建 MicroVM 连续光谱":"A continuous spectrum from fully managed Foundry to self-hosted MicroVMs","D96as_v7 (AMD Turin) E2B Base / CI 启动实测":"Measured E2B Base / CI startup on D96as_v7 (AMD Turin)","APIM 按动态 Host 独立限流并发沙箱会话":"APIM independently rate-limits concurrent sandbox sessions by dynamic Host","AKSClaw 平台强制安全硬边界 (零容器密钥)":"AKSClaw platform-enforced security boundaries (zero container secrets)","Foundry Toolboxes 企业连接器 + Entra Agent ID":"Foundry Toolboxes enterprise connectors + Entra Agent ID","一、四层全栈参考架构交互解构（点击任一层级查看深度机制与防坑指南）":"1. Interactive four-layer reference architecture (select a layer for mechanisms and pitfalls)","计算与状态解耦、沙箱硬件虚拟化隔离、平台级零信任身份是生产级 Agent 的三大基石。":"Decoupled compute/state, hardware-virtualized sandbox isolation and platform-level zero-trust identity are the three foundations of production agents.","Layer 1 · Build (Agent Harness 编排与执行循环层)":"Layer 1 · Build (Agent Harness orchestration and execution loop)","Layer 2 · Run (Azure 6-Tier Agent Runtime 计算与沙箱层)":"Layer 2 · Run (Azure 6-Tier Agent Runtime compute and sandbox layer)","Microsoft Agent Framework (MAF)：统一跨单智能体与多智能体工作流的编排标准，运行在 ACA/AKS/Functions 上时自动继承可观测性、Entra Agent ID 与安全合规策略。":"Microsoft Agent Framework (MAF): a unified orchestration standard for single- and multi-agent workflows. Running on ACA/AKS/Functions inherits observability, Entra Agent ID and security/compliance policies.","GitHub Copilot SDK：将经过生产验证的 Coding Agent 推理循环（规划、文件编辑、Shell 执行、MCP 调用）直接作为可编程内核嵌入企业自建管线。":"GitHub Copilot SDK: embed a production-tested coding-agent reasoning loop—planning, file editing, shell execution and MCP calls—as a programmable kernel in enterprise pipelines.","BYO 开源框架自由混部：通过 AKSClaw 通用容器契约，同一集群可同时运行 OpenClaw、Hermes、LangGraph、CrewAI 等异构 Agent 实例。":"Bring your own open-source framework: the AKSClaw generic container contract allows OpenClaw, Hermes, LangGraph, CrewAI and other agent instances to coexist in one cluster.","MAF + GitHub Copilot SDK 协同回路":"MAF + GitHub Copilot SDK collaboration loop","二、高清矢量架构图与工作流图谱（8 张自包含 SVG 图集）":"2. High-resolution architecture and workflow diagrams (8 self-contained SVGs)","点击下方标签切换查看四层全景图、六大运行时矩阵、双阶段决策树、AKSClaw、E2B on VMSS、Firecracker UFFD/NBD 内部机理、多智能体工作流与五步落地法。":"Use the tabs for the four-layer overview, six-runtime matrix, two-stage decision tree, AKSClaw, E2B on VMSS, Firecracker UFFD/NBD internals, multi-agent workflow and five-step adoption method.","图 1 · Azure AI Agent Infra 四层全栈参考架构全景图 (Build · Run · Ground · Govern)":"Figure 1 · Azure AI Agent Infra four-layer reference architecture (Build · Run · Ground · Govern)","三、Azure 六大 Agent Runtime 深度选型对比表":"3. Detailed comparison of six Azure agent runtimes","评估维度":"Evaluation dimension","隔离边界":"Isolation boundary","托管服务级边界":"Managed-service boundary","Hyper-V 硬件虚拟化":"Hyper-V hardware virtualization","隔离容器 + 端口/网络策略":"Isolated containers + port/network policies","Kata Pod VM 独立内核":"Kata Pod VM independent kernel","不可信代码执行":"Untrusted code execution","不支持 (仅受控工具)":"Not supported (controlled tools only)","不支持 (控制流编排)":"Not supported (control-flow orchestration)","原生支持 (Python/容器)":"Native support (Python/containers)","原生支持 (完整 OCI + Shell)":"Native support (full OCI + Shell)","原生支持 (Pod VM CLI/脚本)":"Native support (Pod VM CLI/scripts)","原生支持 (完整 OS + GUI 桌面)":"Native support (full OS + GUI desktop)","状态与快照机制":"State and snapshots","托管线程 / Cosmos DB":"Managed threads / Cosmos DB","Durable 检查点自动重放":"Automatic Durable checkpoint replay","空闲回收即清零 (需外置 DB)":"Reset on idle recycling (external DB required)","内存/磁盘快照 + 持久卷":"Memory/disk snapshots + persistent volumes","共享只读技能 PV + 独占状态 PV":"Shared read-only skill PV + private state PV","UFFD 内存按需缺页 + NBD 差分块":"UFFD on-demand memory paging + NBD differential blocks","实测/典型恢复延迟":"Measured / typical resume latency","~95 ms 热唤醒":"~95 ms warm wake-up","(预热池分配)":"(warm-pool allocation)","(快照恢复)":"(snapshot restore)","典型黄金场景":"Typical best-fit scenario","To-B 标准企业 API 助手":"Standard enterprise API assistant","采购/财务跨天人工审批流":"Multi-day procurement/finance human approvals","短平快代码解释器/文件解析":"Short-lived code interpretation / file parsing","Coding Agent / 浏览器工作台":"Coding agent / browser workbench","多租户研发/SRE 舰队平台":"Multi-tenant engineering/SRE fleet platform","10万+ 并发云端虚拟电脑 (Manus)":"100,000+ concurrent cloud virtual computers (Manus)","四、Playbook 四维技术底座与商机成熟度交互自测器（脱敏方法论）":"4. Four-dimension technical foundation and opportunity-readiness self-assessment (anonymized methodology)","勾选客户当前在 5 个月窗口内已持续活跃（≥3个月且含最近连续 2 个月）的技术信号，实时判定 Strong ACR (P1) / Potential (P2) 梯队及推荐五步推进动作：":"Select technology signals active in a 5-month window (≥3 months including the latest 2 consecutive months) to classify Strong ACR (P1) / Potential (P2) and recommend the five-step next action:","已持续使用 AKS 或 Azure Container Apps (ACA)":"Sustained AKS or Azure Container Apps (ACA) usage","使用 App Service / Functions / Batch / Azure VM":"Uses App Service / Functions / Batch / Azure VM","已持续使用 PostgreSQL (HorizonDB) / Cosmos DB / Redis":"Sustained PostgreSQL (HorizonDB) / Cosmos DB / Redis usage","已持续使用 AI Search / Foundry Tools / APIM":"Sustained AI Search / Foundry Tools / APIM usage","最近连续 3 个月每月 Foundry Models 消费 ≥ $10,000":"Foundry Models spend ≥ $10,000/month for the latest 3 consecutive months","已部署 Azure Monitor / Key Vault / Defender":"Azure Monitor / Key Vault / Defender deployed","非模型相关基础设施近 5 个月前后端均值增长率 ≥ +20%":"Non-model infrastructure average growth between the beginning and end of the latest 5 months ≥ +20%","P1 · Strong ACR (立即推进目标架构与 Workshop)":"P1 · Strong ACR (proceed immediately to target architecture and workshop)","四维底座覆盖数：4 / 4 · 潜客门禁通过：5 / 5":"Technical foundation coverage: 4 / 4 · Prospect gates passed: 5 / 5",": ✅ 已命中":": ✅ Met",": ℹ️ 未达 $10K/月 (不影响真实 ACR 金额，仍可由非模型路径晋级 P1)":": ℹ️ Below $10K/month (does not change actual ACR; the non-model path can still qualify for P1)","推荐下一步现场动作 (5-Step Playbook)":"Recommended field action (5-Step Playbook)","直接进入 Step 03 Define & Step 04 Validate：组织半日/一日 Hands-on Workshop + 目标架构白板推演 (ACA Sandbox / AKSClaw / HorizonDB)。":"Proceed to Step 03 Define & Step 04 Validate: run a half-day/full-day hands-on workshop and target-architecture whiteboard session (ACA Sandbox / AKSClaw / HorizonDB).","五、E2B 深度研究：四阶段演进范式、BYOC 架构与 E2B on Azure 六大生产最佳实践":"5. E2B research: four evolution stages, BYOC architecture and six production practices on Azure","整合 E2B 四份一手核心资料：Nomad 心跳韧性混沌工程 (Robin Su, 2026)、ClickUp Brain² 企业级敏感数据沙箱实践、E2B BYOC (Azure/AWS/GCP) 架构规范，以及《Sandboxes are dead》迈向智能体驱动的动态私有云。":"Combines four primary E2B sources: Nomad heartbeat resilience chaos engineering (Robin Su, 2026), ClickUp Brain² sensitive enterprise-data sandbox practice, E2B BYOC (Azure/AWS/GCP) architecture, and Sandboxes are dead on agent-driven dynamic private clouds.","E2B 生产轨迹分类学 (Wave 1 → Wave 4 动态私有云)":"E2B production-trajectory taxonomy (Wave 1 → Wave 4 dynamic private cloud)","0 误杀 / 100% Ready":"0 false terminations / 100% Ready","Nomad lost_after=50s + heartbeat_grace=50s 消除 35% 误替换":"Nomad lost_after=50s + heartbeat_grace=50s eliminates 35% false replacements","ClickUp Brain² 上下文卸载 (Context Offloading) 等效扩容":"ClickUp Brain² context offloading for equivalent capacity expansion","黄金模板预烘焙工具链 + 9 a.m. 每分钟数千沙箱脉冲":"Prebaked golden-template toolchains + thousands of sandboxes per minute at 9 a.m.","Azure BYOC Terraform 交付 + ILB / Private Link 私网闭环":"Azure BYOC Terraform delivery + ILB / Private Link private networking","演进阶段 / 部署模式":"Evolution stage / deployment mode","核心定位与控制面归属":"Purpose and control-plane ownership","关键架构组件与边界":"Key architecture components and boundaries","生产实测指标与典型场景":"Measured production metrics and typical scenarios","Wave 1 → Wave 4 演进":"Wave 1 → Wave 4 evolution","从 2024 短代码片段 (Wave 1)、2025 全栈应用容器/K8s (Wave 2)、2026 运行整台电脑 (Wave 3) 迈向":"From short code snippets in 2024 (Wave 1), full-stack app containers/K8s in 2025 (Wave 2), and whole-computer execution in 2026 (Wave 3), toward ","专用持久存储 · 出向防火墙 · 跨沙箱内网 · 可观测性 · CPU/RAM 在线热扩缩 · 无头浏览器 · 凭据保险箱":"Dedicated persistent storage · egress firewall · cross-sandbox private networking · observability · live CPU/RAM scaling · headless browser · credential vault","基于":"Based on ","20 亿+ 次运行与数百亿条轨迹":"2 billion+ runs and tens of billions of trajectories","，在任务启动前预测所需工具、时长、CPU/RAM 与网络白名单并实时组装私有云":", predict tools, duration, CPU/RAM and network allowlists before task start and assemble a private cloud in real time","部署在":"Deployed in ","客户自有 Azure Subscription (VNet)":"the customer-owned Azure Subscription (VNet)","、AWS 或 GCP；E2B Cloud 仅接收 TLS 匿名 CPU/内存指标":", AWS or GCP; E2B Cloud receives only anonymized CPU/memory metrics over TLS","模板、内存快照、运行日志与沙箱流量 100% 不出客户 Azure VNet":"Templates, memory snapshots, execution logs and sandbox traffic remain 100% inside the customer Azure VNet","；满足金融与医疗 SOC 2 / HIPAA 强合规":"; meeting strict financial/healthcare SOC 2 / HIPAA compliance","运行于 E2B 官方 GCP 账户；":"Runs in the official E2B GCP account; ","为":"is ","单 Linux 宿主机开源包":"an open-source package for one Linux host","Cloud 提供零运维多租户 SaaS；Embed 适配单台 KVM 裸机、云 VM 或 K8s Node":"Cloud provides operations-free multi-tenant SaaS; Embed targets a single KVM bare-metal machine, cloud VM or K8s node","按合规等级平滑切换：原型期用 E2B Cloud，单机实验用 Embed，大规模生产上":"Switch by compliance level: E2B Cloud for prototypes, Embed for single-host experiments, and large-scale production on ","零凭据 Terraform 交付与 ILB 私网互联":"Credential-free Terraform delivery and private ILB networking","规划":"Plan ","独立 Azure Subscription":"a dedicated Azure Subscription","，本地执行 E2B Terraform 模块（需订阅":", run E2B Terraform modules locally (requires subscription ","全程零密钥交换":"zero secret exchange throughout","）。提前申请目标区域":"). Request the target-region ","(108ms/132ms) vCPU 配额；通过":"(108ms/132ms) vCPU quota in advance; use ","（或 VNet Peering）与 APIM 动态 Host 网关私网直连。":"(or VNet Peering) for a direct private connection to the APIM dynamic-Host gateway.","消除 yamux 静默断连引发的 35% 误杀风暴":"Eliminate the 35% false-termination storm caused by silent yamux disconnects","非 Leader Nomad Server 静默宕机时，":"When a non-leader Nomad server silently fails, ","需":"requires ","探知断连，慢于默认":"to detect disconnection, slower than the default ","心跳超时，导致":"heartbeat timeout, causing ","健康节点被误杀、剩余节点负载激增":"healthy nodes to be falsely terminated and surviving nodes to overload","。必须双层加固：(1) Job Group 配置":". Harden both layers: (1) configure the Job Group with ","0 替换、10/10 沙箱与 23/23 NDJSON 流完好":"0 replacements, 10/10 sandboxes and 23/23 NDJSON streams intact","）；(2) Server 配置":"); (2) configure the server with ","20/20 节点 100% ready":"20/20 nodes 100% ready","10x–20x 上下文卸载与 9 a.m. 潮汐预热":"10x–20x context offloading and scheduled 9 a.m. warming","借鉴 ClickUp（服务 85% 财富 500 强，SOC 2 & HIPAA）：将大表格与录像直接上传沙箱由代码解析，仅回传结果实现":"Following ClickUp (serving 85% of the Fortune 500, SOC 2 & HIPAA): upload large spreadsheets and recordings directly to sandboxes, parse them in code, and return results only, achieving ","10x–20x 等效上下文扩容":"10x–20x equivalent context expansion","；预烘焙含":"; prebake golden templates with ","68 个工具":"68 tools","的黄金模板 + 6 大职能模板；结合":" plus 6 functional templates; combine ","定时预热池 + 60% CPU 扩容 + 15–30 分钟 Pause/Resume (`UFFD+NBD`) + HorizonDB 检查点":"scheduled warm pools + scale-out at 60% CPU + 15–30 minute Pause/Resume (UFFD+NBD) + HorizonDB checkpoints","应对早 9 点每分钟数千沙箱洪峰。":"to absorb the 9 a.m. peak of thousands of sandboxes per minute.","96.0% (25.0× 放大)":"96.0% (25.0× amplification)","谷电价 (1.0×) · 成本 $7.50/hr":"Off-peak (1.0×) · Cost $7.50/hr","硬件毛利率: 80.3%":"Hardware gross margin: 80.3%","★ 线上主力甜点 conc=60 (14.5K tok/s/GPU @ 230 tok/s)":"★ Online sweet spot conc=60 (14.5K tok/s/GPU @ 230 tok/s)","★ 离线吞吐极限 conc=256 (25.6K tok/s/GPU)":"★ Offline throughput limit conc=256 (25.6K tok/s/GPU)","X: 单卡输出吞吐 (Output Tokens/s/GPU) · Y: 单用户生成速度 (Tokens/s/User)":"X: Output tokens/s/GPU · Y: Generation tokens/s/user","并发档位 (EP64/DP64) · 灰=固定验证5个Token | 蓝=DSpark动态截断验证 | 绿字=验证Token节省率":"Concurrency (EP64/DP64) · Gray=fixed 5-token verification | Blue=DSpark dynamic truncation | Green=verification-token savings","+1.6% · 省 27.0% 验证":"+1.6% · 27.0% verification saved","+3.6% · 省 21.2% 验证":"+3.6% · 21.2% verification saved","14,466 vs 13,730 (+5.4% · 省 28.4%)":"14,466 vs 13,730 (+5.4% · 28.4% saved)","+6.7% · 省 35.2%":"+6.7% · 35.2% saved","Decoder 后缀重算从 51,200 降至 2,800 Layer-Tokens (":"Decoder suffix recomputation falls from 51,200 to 2,800 layer-tokens (","，总 Prefill 算力省 ~50%)":", saving ~50% total prefill compute)","1. 流量入口与协议层 (MIT 开源)":"1. Traffic entry and protocol layer (MIT open source)","• 64KB 分段并行 BPE 分词":"• Parallel BPE tokenization in 64KB chunks","• 增量 KMP 流式解析 Reasoning/Tool":"• Incremental KMP streaming Reasoning/Tool parsing","Entrypoint 全局路由层":"Entrypoint global routing layer","• 分区内存目录定位 SWA 宿主机器":"• Partitioned memory directory locates SWA hosts","• 平均输入 77K · 全局 TTFT 400ms":"• Average input 77K · Global TTFT 400ms","Vision Encoder LB (VE 池)":"Vision Encoder LB (VE pool)","• 单实例 1 卡 · 按最少 Patch 数路由":"• 1 GPU/instance · Route to lowest patch count","2. Prefill 引擎池 (PE · 8卡节点)":"2. Prefill engine pool (PE · 8-GPU nodes)","小并行 EP2–8 / DP2–8 (8B 激活)":"Small parallelism EP2–8 / DP2–8 (8B active)","• DEP2 仅 5.9% DP 等待损失 (64.4K/s)":"• DEP2: only 5.9% DP waiting loss (64.4K/s)","• 60K 冷算 × 96% 命中 = 150万 tok/s/卡":"• 60K uncached × 96% hit = 1.5M tok/s/GPU","Prefill LB (闭源 · 4档长度分桶)":"Prefill LB (closed source · 4 length buckets)","• 二次方程配额 cost(q,c)\u003c=quota (32K上限)":"• Quadratic quota cost(q,c)\u003c=quota (32K limit)","• DP 内 all-reduce MIN 对齐 + 140-tok 重放":"• DP all-reduce MIN alignment + 140-token replay","主机内存 SWA StateBlock":"Host-memory SWA StateBlock","• 1.415 MB/seq (20L×134×528B) · >98%命中":"• 1.415 MB/seq (20L×134×528B) · >98% hit","3. Decode 超节点池 (64–128卡)":"3. Decode supernode pool (64–128 GPUs)","Wide-EP64–128 / DP64–128 (16B激活)":"Wide-EP64–128 / DP64–128 (16B active)","• 每卡仅驻留 7 个专家 (含1冗余)":"• Only 7 resident experts/GPU (including 1 redundant)","• 线上 14.5K tok/s/卡 @ 230 tok/s/user":"• Online 14.5K tok/s/GPU @ 230 tok/s/user","Decode LB & EPLB (闭源核心)":"Decode LB & EPLB (closed-source core)","• DualPath 二维均衡 (请求数 × KV 总长)":"• DualPath 2D balancing (request count × total KV length)","• NVLink symm_mem 在线重排 (moe_lb=1.09)":"• Online NVLink symm_mem reshuffling (moe_lb=1.09)","• DSpark 动态验证 (-30% 验证, +6% 吞吐)":"• DSpark dynamic verification (-30% verification, +6% throughput)","弹性护栏 (0.8 配额锁 + 1min 排空)":"Elasticity guard (0.8 quota lock + 1min drain)","• 利用率 >0.8 禁止缩容 (强制 20%+ 冗余)":"• No scale-in at utilization >0.8 (mandatory 20%+ redundancy)","4. 100 PiB 3FS 存储池":"4. 100 PiB 3FS storage pool","• HBM 省 75% / SSD 省 87.5%":"• HBM savings 75% / SSD savings 87.5%","• 每张在线 GPU 配 14.4 TB":"• 14.4 TB per online GPU","• 10+2 纠删码 (查 11 返 10)":"• 10+2 erasure coding (query 11, return 10)","• 聚合读峰值: 10 TiB/s":"• Peak aggregate reads: 10 TiB/s","• 聚合写峰值: 850 GiB/s":"• Peak aggregate writes: 850 GiB/s","• Agent 留存 3 天":"• Agent retention: 3 days","• Chatbot 留存 7 天":"• Chatbot retention: 7 days","• GDR RDMA 零 SM 换入":"• GDR RDMA swap-in with zero SM usage","任意节点可命中全局任意前缀!":"Any node can hit any global prefix!","部署方案 / 硬件":"Deployment / hardware","总吞吐 (tok/s/卡)":"Total throughput (tok/s/GPU)","谷电时薪 ($/hr)":"Off-peak revenue ($/hr)","高峰时薪 ($/hr)":"Peak revenue ($/hr)","硬件毛利率":"Hardware gross margin","1. 单机 vLLM (8× H200)":"1. Single-node vLLM (8× H200)","无 PD 分离 / 无 Wide-EP":"No PD separation / no Wide-EP","-583.5% 巨亏":"-583.5% major loss","2. 单机 vLLM (8× B300)":"2. Single-node vLLM (8× B300)","+42.9% (仅39%产能)":"+42.9% (only 39% capacity)","128+ SM100/昇腾950 (1P:1D)":"128+ SM100/Ascend 950 (1P:1D)","76.9% (7.9× 提速)":"76.9% (7.9× speedup)","缓存命中率":"Cache hit rate","Prefill 等效总吞吐":"Effective total prefill throughput","用户综合输入单价":"Blended user input price","Prefill 时薪":"Prefill hourly revenue","1P:1D 综合时薪":"Blended 1P:1D hourly revenue","96.0% (官方基线)":"96.0% (official baseline)","0.0% (无缓存)":"0.0% (no cache)","¥1.0000 / 1M (暴涨16.9×)":"¥1.0000 / 1M (16.9× increase)","$30.23 / hr (需求归零)":"$30.23 / hr (demand falls to zero)","01 · 96% 缓存命中与流量护城河":"01 · The 96% cache-hit rate and traffic advantage","单卡每小时处理 54 亿输入 Token 的前提是":"Processing 5.4 billion input tokens/GPU/hour depends on ","96% 的 Token 根本不需要 GPU 算":"96% of tokens requiring no GPU compute","，而是直接从 100 PiB 3FS 硬盘读取并白赚":"; they are read directly from the 100 PiB 3FS disks, generating ","。没有日均百T级的连续 Agent/Chatbot 流量，缓存命中率与夜间利用率会双双崩塌。":". Without sustained daily Agent/Chatbot traffic in the hundreds of trillions of tokens, both cache-hit rate and overnight utilization collapse.","02 · 128 卡起步超节点与 100 PiB 3FS":"02 · Supernodes starting at 128 GPUs and 100 PiB 3FS","DeepInfer 仅支持":"DeepInfer supports only ","与":"and ","华为昇腾 950":"Huawei Ascend 950","，且最小高效单元为":"; the smallest efficient unit is ","64张 Prefill 卡 + 64张 Decode 超节点卡 = 128 张卡":"64 prefill GPUs + 64 decode supernode GPUs = 128 GPUs","，外加每卡":", plus per GPU ","NVMe 存储与":"NVMe storage and ","RDMA 网络，中小团队无法跨过硬件门槛。":"RDMA networking: hardware requirements beyond small/medium teams.","03 · 闭源四级负载均衡与 20%+ 冗余成本":"03 · Four closed-source balancing layers and 20%+ redundancy cost","开源仅含离线引擎（F1 发动机），而":"Only the offline engine (the F1 engine) is open source; ","与四大负载均衡器（Prefill LB、Decode LB、EPLB、Autoscaler）并未开源；且线上要求":"and the four load balancers (Prefill LB, Decode LB, EPLB, Autoscaler) are closed source. Production requires ","配额利用率 >0.8 严禁缩容（至少 20% 冗余热备卡）":"no scale-in at quota utilization >0.8 (at least 20% redundant warm GPUs)","并承担 SLA 宕机赔付。":"and liability for SLA outage compensation."}</script></main>
+</body></html>

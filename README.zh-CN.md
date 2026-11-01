@@ -15,10 +15,17 @@
 `frontier-ai-studio.html?lang=zh-CN#infra/module/i-pill-2`；
 阶段深链示例：`#infra/stage-4`。面包屑返回指挥中心，安全着陆区同时返回其 AI 安全父栏目。
 
-共用导航及布局位于 `site-structure.js`、`site-structure.css`；现有报告数据与演示引擎不变。
-导航回归检查：运行 `python -m http.server 8796`，再在已有 Puppeteer 的环境执行
-`node tests\site-structure.cjs`；其他端口通过 `SITE_TEST_URL` 指定。
-检查隔离外部 API 和嵌入演示引擎，覆盖双语、全部场景文件、浏览器历史及桌面/平板/手机布局。
+正式 [Studio 总览](studio/zh-index.html) 连接七个独立双语主题页；首页为个人精选入口，
+[完整档案](studio/zh-archive.html) 保留全部基线资源。Dark Aurora 默认深蓝门户样式位于 `assets/editorial/`，局部使用蓝紫青光场，保留显式浅色选择；
+阅读页和专用演示分别使用作用域隔离的外围导航。门户不再嵌套完整 HTML 应用。
+旧 `frontier-ai-studio.html` 主线、阶段和场景深链作为兼容入口保留。
+
+运行 `node scripts\build-site.cjs` 从已批准静态模板和冻结路由清单重建正式门户。
+使用 `python -m http.server 8797` 预览，再在已有 Puppeteer 的环境执行
+`node tests\site-structure.cjs` 与 `node tests\production-routes.cjs`。
+将 `SITE_ARTIFACT_DIR` 指向仓库外目录保存截图和 JSON。门户测试不等于演示验收：
+真实专用 Demo 冒烟和全页链接/布局审计单独运行。
+详见[迁移、语言策略、验证和发布说明](docs/redesign/production-migration.md)。
 
 | 主线编号 | 核心工程主线 (Track) | 代表性交互工作台 (Live H5 Workbench) | 密封 7-Card 4:5 基准报告 / 核心指标 |
 | :--- | :--- | :--- | :--- |
@@ -97,7 +104,7 @@ website/
 ├── zh.html             # 中文主页
 ├── writing.html        # Writing & Talks（英文）
 ├── zh-writing.html     # 分享与著作（中文）
-├── style.css           # 共享样式（浅色、编号分节、技术报告风格）
+├── style.css           # 历史样式（保留兼容；新门户见 assets/editorial/）
 ├── main.js             # GitHub 仓库实时拉取 + 静态兜底数据
 ├── assets/
 │   └── photo.jpg       # 个人照片（导航头像 / 档案卡 / OG 分享图）
@@ -125,7 +132,7 @@ python -m http.server 8765
 
 ### 部署到 GitHub Pages（可选参考）
 
-以下是为个人网站另行配置 Pages 的参考步骤，不是本私有仓库当前的部署方式。个人网站继续使用 Azure Static Web Apps；公开 Workshop 使用 Azure Infra Lab 的 GitHub Pages。迁移只增加旧 Workshop 路径的兼容规则，不更改此仓库的可见性或个人网站部署设置。
+个人站点发布目标为 `turbo998/turbo998.github.io` 的 GitHub Pages；源码同步到 `turbo998/Kee-Tech-Assets`。以目标 SHA 的 Pages Actions 和线上内容验证为准，不以无关 Azure Static Web Apps 作业判定发布成功。公开 Workshop 仍由 Azure Infra Lab 的 GitHub Pages 独立托管，旧 Workshop 路径保留兼容入口。
 
 1. 在 GitHub 新建仓库（如 `turbo998.github.io`，则网址直接是 https://turbo998.github.io）：
 

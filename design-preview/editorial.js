@@ -15,7 +15,7 @@
   }
   toggle.addEventListener('click', () => {
     root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
-    try { localStorage.setItem('kee-editorial-theme', root.dataset.theme); } catch (_) {}
+    try { localStorage.setItem('kee-aurora-theme-v1', root.dataset.theme); } catch (_) {}
     const url = new URL(location.href);
     if (url.searchParams.has('theme')) {
       url.searchParams.set('theme', root.dataset.theme);

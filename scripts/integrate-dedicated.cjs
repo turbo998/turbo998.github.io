@@ -152,7 +152,7 @@ function main() {
     }
     records.push(record);
   }
-  const manifest = { schemaVersion: 1, baseline: inventory.baseline, scope: 'Owned baseline demo/report/auxiliary surfaces only', coverage: records.length, themePolicy: 'New navigation is independently light. Dedicated app themes remain untouched; no legacy or editorial storage key is read or written.', preservation: 'Removing marked perimeter CSS/navigation, marked document viewport wrappers, added body namespace classes and a real language-control ID reproduces every report source byte. No report regeneration, measurements, scores, coordinates, provenance or conclusions changed.', records };
+  const manifest = { schemaVersion: 1, baseline: inventory.baseline, scope: 'Owned baseline demo/report/auxiliary surfaces only', coverage: records.length, themePolicy: 'New navigation uses the solid Dark Aurora Studio palette (#101A30 navy, #EEF3FF text, #ADBBD1 muted, #9AABFF links, #56DDCD focus, #314361 border). Dedicated app themes remain untouched; no legacy or editorial storage key is read or written.', preservation: 'Removing marked perimeter CSS/navigation, marked document viewport wrappers, added body namespace classes and a real language-control ID reproduces every report source byte. No report regeneration, measurements, scores, coordinates, provenance or conclusions changed.', records };
   if (!check) fs.writeFileSync(path.join(root, 'docs/redesign/dedicated-integration.json'), JSON.stringify(manifest, null, 2) + '\n');
   console.log(`${check ? 'Verified' : 'Integrated'} ${records.length} dedicated surfaces: ${JSON.stringify(records.reduce((a,r)=>(a[r.role]=(a[r.role]||0)+1,a),{}))}`);
 }

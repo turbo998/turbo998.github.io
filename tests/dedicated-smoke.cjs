@@ -5,6 +5,19 @@ const assert = require('node:assert/strict');
 const { root, owned, baseline, transform, sha } = require('../scripts/integrate-dedicated.cjs');
 const output = process.env.DEDICATED_ARTIFACTS || path.join(root, 'tests', 'dedicated-artifacts');
 const base = process.env.DEDICATED_BASE_URL || 'http://127.0.0.1:8797/';
+const perimeterBaseline = process.env.DEDICATED_PERIMETER_BASELINE;
+const gitSource = file => require('node:child_process').execFileSync('git', ['show', `${perimeterBaseline}:${file}`], { cwd: root, maxBuffer: 20 * 1024 * 1024 }).toString('utf8');
+const perimeterCss = fs.readFileSync(path.join(root, 'assets/dedicated-navigation.css'), 'utf8').replace(/\r\n/g, '\n');
+const previousPerimeterCss = perimeterBaseline ? gitSource('assets/dedicated-navigation.css').replace(/\r\n/g, '\n') : null;
+async function assertPerimeter(page) {
+  const palette = await page.evaluate(() => {
+    const nav = document.querySelector('.kee-dedicated-nav'), style = getComputedStyle(nav);
+    const color = selector => getComputedStyle(nav.querySelector(selector)).color;
+    return { background: style.backgroundColor, text: style.color, border: style.borderTopColor, scheme: style.colorScheme, identity: color('.kee-dedicated-identity'), link: color('a:not(.kee-dedicated-identity)'), muted: color('.kee-dedicated-language') };
+  });
+  assert.deepEqual(palette, { background: 'rgb(16, 26, 48)', text: 'rgb(238, 243, 255)', border: 'rgb(49, 67, 97)', scheme: 'dark', identity: 'rgb(238, 243, 255)', link: 'rgb(154, 171, 255)', muted: 'rgb(173, 187, 209)' }, 'Dark Aurora perimeter palette mismatch');
+  return palette;
+}
 const strip = s => s.replace(/<!-- kee-dedicated-style:start -->[\s\S]*?<!-- kee-dedicated-style:end -->\n/g, '').replace(/\n<!-- kee-dedicated-navigation:start -->[\s\S]*?<!-- kee-dedicated-navigation:end -->\n/g, '').replace(/<!-- kee-dedicated-report-(open|close):start -->[\s\S]*?<!-- kee-dedicated-report-\1:end -->/g, '').replace(/<body class="kee-dedicated-report-(root|text)">/, '<body>').replace('<button id="kee-resource-language"', '<button');
 async function main() {
   fs.mkdirSync(output, { recursive: true });
@@ -12,6 +25,9 @@ async function main() {
   for (const r of owned) {
     const source = baseline(r), live = fs.readFileSync(path.join(root, r.path), 'utf8'), expected = transform(r, source);
     assert.equal(live, expected.html, r.path);
+    if (perimeterBaseline) assert.equal(live.replace(perimeterCss, previousPerimeterCss), gitSource(r.path), `Non-perimeter bytes changed since ${perimeterBaseline}: ${r.path}`);
+    const csp = html => html.match(/<meta\b[^>]*http-equiv=["']Content-Security-Policy["'][^>]*>/gi) || [];
+    assert.deepEqual(csp(live), csp(source), `Original CSP changed: ${r.path}`);
     assert.equal((live.match(/class="kee-dedicated-nav"/g) || []).length, 1, r.path);
     assert(!/<iframe\b/i.test(live), `Full-document preview remains: ${r.path}`);
     if (r.role === 'report') assert.equal(strip(live), source, `Protected report content changed: ${r.path}`);
@@ -23,7 +39,7 @@ async function main() {
       assert(!m[1].startsWith('/'), `Nonrelative navigation: ${r.path}`);
       if (m[1][0] !== '#') assert(fs.existsSync(path.resolve(root, path.dirname(r.path), m[1])), `Missing navigation: ${r.path} -> ${m[1]}`);
     }
-    result.static.push({ path: r.path, role: r.role, pass: true, reportBytesPreserved: r.role === 'report', sha256: sha(live) });
+    result.static.push({ path: r.path, role: r.role, pass: true, reportBytesPreserved: r.role === 'report', cspPreserved: true, perimeterOnlyComparedTo: perimeterBaseline || null, sha256: sha(live) });
   }
   if (process.argv.includes('--static')) {
     fs.writeFileSync(path.join(output, 'static.json'), JSON.stringify(result, null, 2));
@@ -87,6 +103,7 @@ async function main() {
       assert.equal(response.status(), 200, route);
       await new Promise(r => setTimeout(r, 1000));
       const info = await page.evaluate(() => ({ title: document.title, buttons: [...document.querySelectorAll('button')].slice(0,24).map(b => ({ id: b.id, text: b.textContent.trim(), onclick: b.getAttribute('onclick') })), canvas: [...document.querySelectorAll('canvas')].map(c=>({width:c.width,height:c.height})), bodyOverflow: getComputedStyle(document.body).overflow, nav: document.querySelector('.kee-dedicated-nav').getBoundingClientRect().toJSON(), frames: document.querySelectorAll('iframe').length }));
+      info.perimeterPalette = await assertPerimeter(page);
       let action;
       if (name === 'infra') {
         await page.click('#tpl_ci'); await new Promise(r=>setTimeout(r,2500));
@@ -157,6 +174,7 @@ async function main() {
       await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 1 });
       await new Promise(r=>setTimeout(r,500));
       const mobile = await page.evaluate(() => { const nav = document.querySelector('.kee-dedicated-nav'); return { navWidth: nav.getBoundingClientRect().width, viewport: innerWidth, documentWidth: document.documentElement.scrollWidth, documentHeight: document.documentElement.scrollHeight, bodyOverflow: getComputedStyle(document.body).overflow, navLinks: [...nav.querySelectorAll('a')].map(a=>({ text:a.textContent, width:a.getBoundingClientRect().width })) }; });
+      mobile.perimeterPalette = await assertPerimeter(page);
       const reportViewport = await page.$('.kee-dedicated-report-viewport');
       if (reportViewport) {
         await page.focus('.kee-dedicated-report-viewport');
@@ -196,6 +214,9 @@ async function main() {
     await page.goto(new URL('workshops/benchmarks/decision-1-cards.html', base).href);
     await page.focus('.kee-dedicated-nav a');
     assert(await page.$eval('.kee-dedicated-nav a', a=>a===document.activeElement), 'Native link not focusable without JS');
+    result.noJavaScriptPerimeterPalette = await assertPerimeter(page);
+    result.noJavaScriptFocus = await page.$eval('.kee-dedicated-nav a', a => ({ visible: a.matches(':focus-visible'), color: getComputedStyle(a).outlineColor, width: getComputedStyle(a).outlineWidth }));
+    assert.deepEqual(result.noJavaScriptFocus, { visible: true, color: 'rgb(86, 221, 205)', width: '3px' }, 'Native Dark Aurora keyboard focus missing');
     await page.click('.kee-dedicated-nav a[href="../../index.html"]');
     assert.equal(new URL(page.url()).pathname, '/index.html');
     result.noJavaScriptNativeNavigation = true;

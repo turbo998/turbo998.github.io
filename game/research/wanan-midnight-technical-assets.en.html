@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en" data-theme="dark" data-reading-shell="document"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Wanan Midnight technical assets: 44 parametric cars, pop-up headlights, dynamic body animation and six Shanghai story chapters</title>
+  
+  
+<meta name="reading-migration" content="R6"><link rel="stylesheet" href="../../assets/reading-shell.css"><script src="../../assets/reading-shell.js"></script></head>
+<body class="reading-page"><a class="reading-skip" href="#reading-main">Skip to content</a><header class="reading-header"><a class="reading-brand" href="../../index.html"><span class="reading-mark">q<span>.</span></span><span>Qi Chen<small>@turbo998 · Engineering notes</small></span></a><div class="reading-controls"><a data-reading-language="" href="wanan-midnight-technical-assets.html" hreflang="zh-CN" lang="zh-CN">中文</a><a data-reading-theme="light" href="?theme=light" aria-label="Light theme">☀</a><a data-reading-theme="dark" href="?theme=dark" aria-label="Dark theme">◐</a><details><summary aria-label="Navigation">☰</summary><nav><a href="../../index.html">Home</a><a href="../../studio/index.html">Studio</a><a href="../../writing.html">Writing</a><a href="../../about.html">About</a></nav></details></div></header><aside id="reading-language-note" class="reading-language-note">English translation of the preserved source, with original numerical claims retained; not independently re-measured.</aside><main id="reading-main" tabindex="-1" class="reading-document"><a class="reading-context" href="../../studio/game.html">← Studio / game</a>
+<div class="shell"><h1 id="wanan-midnight-technical-assets-44-parametric-cars-pop-up-headlights-dynamic-body-animation-and-six-shanghai-story-chapters">Wanan Midnight technical assets: 44 parametric cars, pop-up headlights, dynamic body animation and six Shanghai story chapters</h1>
+<h2 id="1-overview-and-architecture-boundaries">1. Overview and architecture boundaries</h2>
+<ul>
+<li>Repository: <a href="https://github.com/turbo998/ai-gaming-lab">turbo998/ai-gaming-lab</a></li>
+<li>Live: <a href="../demos/wanan-midnight/">Play Wanan Midnight · East of Midnight</a></li>
+<li>Stack: TypeScript + Three.js (WebGL2) + Web Audio API + Vitest + Playwright.</li>
+</ul>
+<p>Wanan Midnight · East of Midnight is a code-only 3D late-night elevated-road racing game: <strong>8 families and 44 generations</strong> of JDM cars, a hand-authored <strong>6-kilometer</strong> route through Shanghai's elevated highway, cross-river bridge, underwater tunnel, outer-harbor S-bends and east-bank lighthouse, three named AI opponents, and the six-chapter original story <strong>East of Midnight</strong>.</p>
+<h2 id="2-parametric-surfaces-and-mechanics-for-8-families--44-generations">2. Parametric surfaces and mechanics for 8 families / 44 generations</h2>
+<p>Code: <code>src/vehicles/catalog.ts</code> and <code>src/render/</code>.</p>
+<h3 id="21-frozen-vehicle-catalog-and-real-world-proportions">2.1 Frozen vehicle catalog and real-world proportions</h3>
+<p>All <strong>44</strong> vehicle IDs bind independent geometry profiles, collision envelopes, drivetrain layouts (<strong>FR / F-AWD / MR / M-AWD</strong>), five synthesized engine timbres and local-record keys.</p>
+<table>
+<thead>
+<tr>
+<th>Family</th>
+<th>Generations</th>
+<th>IDs and reference proportions</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GT-R</td>
+<td>6</td>
+<td>kpgc10, kpgc110, bnr32, bcnr33, bnr34 (official M-Spec Nür reference: 4600×1780×1360mm; wheelbase 2665mm), r35</td>
+</tr>
+<tr>
+<td>Fairlady Z</td>
+<td>7</td>
+<td>s30, s130, z31, z32, z33, z34, rz34</td>
+</tr>
+<tr>
+<td>Supra</td>
+<td>5</td>
+<td>a40, a60, a70, a80, a90</td>
+</tr>
+<tr>
+<td>RX-7</td>
+<td>3</td>
+<td>sa22c, fc3s, fd3s</td>
+</tr>
+<tr>
+<td>NSX</td>
+<td>2</td>
+<td>na1, nc1</td>
+</tr>
+<tr>
+<td>Silvia</td>
+<td>7</td>
+<td>csp311, s10, s110, s12, s13, s14, s15</td>
+</tr>
+<tr>
+<td>Lancer Evolution</td>
+<td>10</td>
+<td>evo1–evo10</td>
+</tr>
+<tr>
+<td>Impreza WRX STI</td>
+<td>4</td>
+<td>gc8, gdb, grb, vab</td>
+</tr>
+</tbody></table>
+<h3 id="22-open-wheel-arches-and-real-time-mechanics">2.2 Open wheel arches and real-time mechanics</h3>
+<ul>
+<li><strong>Open arches and separate surfaces, <code>src/render/profiles.ts</code>:</strong> replace closed six-sided boxes with high-density hoods, roof crowns, fastback/notchback rear bodies, open side wheel-arch cutouts and independent transparent cabin glass.</li>
+<li><strong>Pop-up headlight actuation:</strong> fd3s, fc3s, sa22c, na1, a60, a70, z31 and s12 have independent rotating hinge nodes, operable on the workshop bench and on the track.</li>
+<li><strong>60Hz suspension posture:</strong> longitudinal acceleration differences drive acceleration pitch and braking dive. Lateral curvature and steering input drive body roll and front-wheel angles in real time.</li>
+<li><strong>Twin blue-violet backfire and glowing rotors:</strong> high-RPM throttle lifts/downshifts create gradient flame-cone particles at both exhaust outlets. Hard braking makes all four ventilated rotors glow orange-red according to braking power; after brake release they cool according to the thermal-decay time constant.</li>
+</ul>
+<h2 id="3-six-shanghai-chapters-and-the-echo-workshop-sound-archive">3. Six Shanghai chapters and the Echo Workshop sound archive</h2>
+<p>Code: <code>src/story/</code>.</p>
+<p>The Echo Workshop is about to move away from the Huangpu waterfront. Recording editor and apprentice <strong>Chen Yu</strong> tries to preserve its memory in six elevated-road night recordings, growing through six nights of encounters with three rivals.</p>
+<table>
+<thead>
+<tr>
+<th>Chapter</th>
+<th>Title</th>
+<th>Narrative conflict and recording theme</th>
+<th>Optional challenge</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Last-Service Lights</td>
+<td>As the first moving box is sealed, Chen Yu proposes recording six night-highway master tapes.</td>
+<td>Finish in the top 3</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Between the Bridge Joints</td>
+<td>Precision mechanic Shen Yan (BNR34): not every kind of value can be reduced to one fastest-lap number.</td>
+<td>Collisions ≤ 3</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Don't Film the Finish</td>
+<td>Photographer Tang Cheng (FD3S) refuses to turn the workshop's living people into a nostalgic postcard backdrop.</td>
+<td>Finish ahead of Tang Cheng</td>
+</tr>
+<tr>
+<td>4</td>
+<td>The Echo Does Not Answer</td>
+<td>Proprietor Lin Lan admits that faster records cannot reverse a lease or urban renewal: memory belongs to people, not walls.</td>
+<td>Finish in the top 2</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Leave the Road Open</td>
+<td>Former endurance racer Xu Zhiheng (NA1) admits that apparent distance conceals fear of competing wholeheartedly again.</td>
+<td>Collisions ≤ 2</td>
+</tr>
+<tr>
+<td>6</td>
+<td>East of Midnight</td>
+<td>The finale's ensemble turns winning and losing into shared memory; the new workshop's lights already shine east of midnight.</td>
+<td>Finish 1st</td>
+</tr>
+</tbody></table>
+<p><strong>Three permanent honor tiers:</strong> after Chapter <strong>6</strong>, historical best results earn <strong>Front-Runner</strong> (ever finished the finale <strong>1st</strong>), <strong>Fellow Traveler</strong> (completed at least <strong>3</strong> chapter challenges), or <strong>Arrival</strong>. Replays never deduct or overwrite the highest honor already earned.</p>
+<h2 id="4-verification-and-performance-baseline">4. Verification and performance baseline</h2>
+<p>Code/evidence: <code>tests/</code> and <code>artifacts/</code>.</p>
+<ul>
+<li><strong>Unit tests and determinism:</strong> <strong>78+ Vitest tests</strong> cover all <strong>44</strong> cars' geometry bounds, no-traffic/same-controller lap balance (<strong>deviation ≤ 5%</strong>), high-speed swept collisions and full-run consistency at <strong>30/60/120Hz</strong>.</li>
+<li><strong>Browser E2E and zero mesh allocation:</strong> Playwright covers real keyboard input, workshop mechanical switches, all <strong>6</strong> chapters' dialogue and completion, pause/focus-loss protection, and the <code>modelsBuiltDuringRace === 0</code> guard.</li>
+</ul>
+</div>
+
+</main>
+</body></html>

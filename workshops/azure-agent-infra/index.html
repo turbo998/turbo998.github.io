@@ -1,320 +1,12 @@
 <!doctype html>
-<html lang="zh-CN">
-<head>
+<html lang="zh-CN" data-theme="dark" data-reading-runtime="true" data-reading-shell="document"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Azure AI Agent Infra Playbook · 全景交互技术手册</title>
-<style>
 
-:root {
-  --bg: #0b1120;
-  --bg-card: #111827;
-  --bg-elevated: #1e293b;
-  --border: #334155;
-  --text: #f8fafc;
-  --text-muted: #94a3b8;
-  --azure: #0078d4;
-  --blue: #38bdf8;
-  --teal: #10b981;
-  --purple: #a78bfa;
-  --amber: #f59e0b;
-  --rose: #f43f5e;
-}
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  background: radial-gradient(circle at top right, #0f172a 0%, #0b1120 100%);
-  color: var(--text);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', sans-serif;
-  line-height: 1.55;
-}
-a { color: var(--blue); text-decoration: none; }
-a:hover { text-decoration: underline; }
-.topbar {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  background: rgba(15, 23, 42, 0.92);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--border);
-  padding: 0.75rem 1.5rem;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-}
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-weight: 800;
-  font-size: 1.05rem;
-  color: #fff;
-}
-.brand-badge {
-  background: linear-gradient(135deg, #0078d4, #10b981);
-  color: #fff;
-  font-size: 0.75rem;
-  padding: 0.2rem 0.55rem;
-  border-radius: 6px;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-}
-.nav-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  align-items: center;
-}
-.nav-link {
-  padding: 0.42rem 0.85rem;
-  border-radius: 8px;
-  font-size: 0.88rem;
-  font-weight: 600;
-  color: var(--text-muted);
-  border: 1px solid transparent;
-  transition: all 0.15s ease;
-}
-.nav-link:hover, .nav-link.active {
-  color: #fff;
-  background: var(--bg-elevated);
-  border-color: var(--blue);
-  text-decoration: none;
-}
-.lang-btn {
-  background: #0f172a;
-  color: var(--blue);
-  border: 1px solid var(--blue);
-  padding: 0.38rem 0.75rem;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 700;
-  font-size: 0.82rem;
-}
-.container {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 1.8rem 1.5rem 4rem;
-}
-.hero {
-  background: linear-gradient(135deg, rgba(0,120,212,0.22) 0%, rgba(16,185,129,0.14) 100%);
-  border: 1px solid rgba(56,189,248,0.35);
-  border-radius: 16px;
-  padding: 2rem 2.2rem;
-  margin-bottom: 1.8rem;
-}
-.hero-eyebrow {
-  color: var(--blue);
-  font-size: 0.8rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-bottom: 0.45rem;
-}
-.hero h1 {
-  margin: 0 0 0.65rem;
-  font-size: 2rem;
-  line-height: 1.2;
-}
-.hero p {
-  margin: 0 0 1.2rem;
-  color: #cbd5e1;
-  max-width: 960px;
-  font-size: 1rem;
-}
-.kpi-strip {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
-  gap: 0.9rem;
-  margin-top: 1.2rem;
-}
-.kpi-card {
-  background: rgba(15, 23, 42, 0.82);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 0.9rem 1.1rem;
-}
-.kpi-val {
-  font-size: 1.45rem;
-  font-weight: 800;
-  color: var(--blue);
-}
-.kpi-lbl {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  margin-top: 0.15rem;
-}
-.grid-2 {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-  gap: 1.25rem;
-}
-.grid-3 {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
-  gap: 1.1rem;
-}
-.card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 1.35rem 1.5rem;
-  margin-bottom: 1.25rem;
-}
-.card h2 {
-  margin: 0 0 0.4rem;
-  font-size: 1.3rem;
-  color: #fff;
-}
-.card h3 {
-  margin: 0 0 0.45rem;
-  font-size: 1.05rem;
-  color: var(--blue);
-}
-.sub {
-  color: var(--text-muted);
-  font-size: 0.9rem;
-  margin-bottom: 1rem;
-}
-.pill {
-  display: inline-block;
-  padding: 0.18rem 0.58rem;
-  border-radius: 999px;
-  font-size: 0.74rem;
-  font-weight: 700;
-}
-.pill-blue { background: rgba(56,189,248,0.16); color: #38bdf8; border: 1px solid rgba(56,189,248,0.35); }
-.pill-teal { background: rgba(16,185,129,0.16); color: #34d399; border: 1px solid rgba(16,185,129,0.35); }
-.pill-amber { background: rgba(245,158,11,0.16); color: #fbbf24; border: 1px solid rgba(245,158,11,0.35); }
-.pill-rose { background: rgba(244,63,94,0.16); color: #fb7185; border: 1px solid rgba(244,63,94,0.35); }
-.btn {
-  background: linear-gradient(135deg, #0078d4, #2563eb);
-  color: #fff;
-  border: none;
-  padding: 0.58rem 1.1rem;
-  border-radius: 8px;
-  font-weight: 700;
-  font-size: 0.88rem;
-  cursor: pointer;
-  transition: transform 0.1s ease, opacity 0.15s ease;
-}
-.btn:hover { opacity: 0.93; transform: translateY(-1px); }
-.btn-secondary {
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  color: #e2e8f0;
-}
-.btn-teal {
-  background: linear-gradient(135deg, #059669, #10b981);
-}
-.btn-rose {
-  background: linear-gradient(135deg, #e11d48, #f43f5e);
-}
-table.data-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.86rem;
-}
-table.data-table th, table.data-table td {
-  padding: 0.65rem 0.6rem;
-  border-bottom: 1px solid #1e293b;
-  text-align: left;
-  vertical-align: top;
-}
-table.data-table th {
-  color: var(--blue);
-  font-size: 0.76rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  border-bottom: 1px solid var(--border);
-}
-pre.code-box {
-  background: #070b14;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 1rem;
-  color: #e2e8f0;
-  font-family: 'JetBrains Mono', Consolas, monospace;
-  font-size: 0.8rem;
-  overflow-x: auto;
-  line-height: 1.45;
-}
-.svg-showcase {
-  background: #070b14;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 0.75rem;
-  text-align: center;
-  overflow-x: auto;
-}
-.svg-showcase img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 8px;
-}
-.tab-bar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.45rem;
-  margin-bottom: 1rem;
-}
-.tab-btn {
-  background: #0f172a;
-  color: var(--text-muted);
-  border: 1px solid var(--border);
-  padding: 0.42rem 0.8rem;
-  border-radius: 8px;
-  font-size: 0.82rem;
-  font-weight: 600;
-  cursor: pointer;
-}
-.tab-btn.active {
-  background: rgba(0, 120, 212, 0.25);
-  color: #fff;
-  border-color: var(--blue);
-}
-.footer-note {
-  margin-top: 3rem;
-  padding-top: 1.2rem;
-  border-top: 1px solid var(--border);
-  color: var(--text-muted);
-  font-size: 0.82rem;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
-.layer-stack { display: flex; flex-direction: column; gap: 0.75rem; }
-.layer-row {
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  border-left: 5px solid var(--blue);
-  border-radius: 10px;
-  padding: 0.9rem 1.15rem;
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-.layer-row:hover, .layer-row.active {
-  border-color: var(--teal);
-  background: rgba(16, 185, 129, 0.1);
-}
-.gate-check {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.5rem 0.75rem;
-  background: #0f172a;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  margin-bottom: 0.45rem;
-  font-size: 0.88rem;
-}
-</style>
-</head>
-<body>
-<nav class="topbar">
+<meta name="reading-migration" content="R6"><link rel="stylesheet" href="../../assets/reading-shell.css"><script src="../../assets/reading-shell.js"></script></head>
+<body class="reading-page"><a class="reading-skip" href="#reading-main">跳至正文</a><header class="reading-header"><a class="reading-brand" href="../../zh.html"><span class="reading-mark">q<span>.</span></span><span>Qi Chen<small>@turbo998 · 工程手记</small></span></a><div class="reading-controls"><a data-reading-language="" href="index.en.html" hreflang="en" lang="en">EN</a><a data-reading-theme="light" href="?theme=light" aria-label="浅色主题">☀</a><a data-reading-theme="dark" href="?theme=dark" aria-label="深色主题">◐</a><details><summary aria-label="导航">☰</summary><nav><a href="../../zh.html">首页</a><a href="../../studio/zh-index.html">Studio</a><a href="../../zh-writing.html">文章</a><a href="../../zh-about.html">关于</a></nav></details></div></header><aside id="reading-language-note" class="reading-language-note">保留原文。可打开独立英文版本；不同版本的内容可能不同。</aside><main id="reading-main" tabindex="-1" class="reading-document"><a class="reading-context" href="../../studio/zh-infra.html">← Studio / infra</a>
+<nav class="topbar reading-resource-nav">
   <div class="brand">
     <span class="brand-badge">AZURE AI INFRA</span>
     <span data-i18n="nav_title">AI Agent Infrastructure Playbook · 全栈架构与选型手册</span>
@@ -324,16 +16,16 @@ pre.code-box {
     <a class="nav-link" href="demo.html" data-i18n="nav_demo">2. 实时仿真 Demo (AKSClaw × E2B)</a>
     <a class="nav-link" href="selector.html" data-i18n="nav_selector">3. 选型决策器 &amp; 10万沙箱计算器</a>
     <a class="nav-link" href="cards.html" data-i18n="nav_cards">4. 7-Card 基准报告</a>
-    <button class="lang-btn" id="langToggle" onclick="toggleLang()">EN / 中文</button>
+    <button class="lang-btn" id="langToggle" onclick="toggleLang()" hidden="" aria-hidden="true">EN / 中文</button>
   </div>
 </nav>
 
-<main class="container">
+<div class="container">
   <section class="hero">
     <div class="hero-eyebrow">MICROSOFT AZURE AI AGENT INFRASTRUCTURE PLAYBOOK (2026 EDITION)</div>
     <h1 data-i18n="hero_h1">在 Azure 上构建、运行与扩展生产级 AI Agent 基础设施</h1>
     <p data-i18n="hero_p">融合四层全栈参考架构（Build · Run · Ground · Govern）、六大计算运行时光谱（Foundry Hosted → Durable Functions → ACA Dynamic Sessions → ACA Sandboxes → AKS Kata / AKSClaw → E2B on VMSS D96as_v7）、状态持久化三剑客（HorizonDB · Cosmos DB · UFFD/NBD 快照）与现场五步落地法。</p>
-    <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+    <div>
       <a class="btn" href="demo.html" data-i18n="cta_demo">▶ 启动 3 分钟自动仿真 Demo</a>
       <a class="btn btn-teal" href="selector.html" data-i18n="cta_selector">⚡ 打开架构选型与 10万沙箱容量计算器</a>
       <a class="btn btn-secondary" href="cards.html" data-i18n="cta_cards">📊 查看 7-Card 4:5 评测卡片</a>
@@ -356,23 +48,30 @@ pre.code-box {
       <div class="layer-stack" id="layerList">
         <div class="layer-row active" onclick="selectLayer(0)">
           <strong>Layer 1 · Build (Agent Harness 编排与执行循环层)</strong>
-          <div style="font-size:0.83rem;color:var(--text-muted)">Microsoft Agent Framework (MAF) · GitHub Copilot SDK · LangGraph · OpenClaw · Hermes · MCP/A2A</div>
+          <div>Microsoft Agent Framework (MAF) · GitHub Copilot SDK · LangGraph · OpenClaw · Hermes · MCP/A2A</div>
         </div>
         <div class="layer-row" onclick="selectLayer(1)">
           <strong>Layer 2 · Run (Azure 6-Tier Agent Runtime 计算与沙箱层)</strong>
-          <div style="font-size:0.83rem;color:var(--text-muted)">Foundry Hosted · Durable Functions · ACA Dynamic Sessions · ACA Sandboxes · AKS Kata · E2B on VMSS</div>
+          <div>Foundry Hosted · Durable Functions · ACA Dynamic Sessions · ACA Sandboxes · AKS Kata · E2B on VMSS</div>
         </div>
         <div class="layer-row" onclick="selectLayer(2)">
           <strong>Layer 3 · Ground (Models, Knowledge &amp; State Persistence)</strong>
-          <div style="font-size:0.83rem;color:var(--text-muted)">Foundry Models (11K+) · AI Search / Foundry IQ · Azure HorizonDB (Preview) · Cosmos DB · UFFD/NBD Snapshot</div>
+          <div>Foundry Models (11K+) · AI Search / Foundry IQ · Azure HorizonDB (Preview) · Cosmos DB · UFFD/NBD Snapshot</div>
         </div>
         <div class="layer-row" onclick="selectLayer(3)">
           <strong>Layer 4 · Control &amp; Govern (Identity, AI Gateway &amp; Fleet Security)</strong>
-          <div style="font-size:0.83rem;color:var(--text-muted)">Microsoft Entra Agent ID · Unified AI Gateway (APIM) · 169.254.169.254 IMDS Block · Defender &amp; Purview</div>
+          <div>Microsoft Entra Agent ID · Unified AI Gateway (APIM) · 169.254.169.254 IMDS Block · Defender &amp; Purview</div>
         </div>
       </div>
-      <div class="card" style="margin-bottom:0;background:#0f172a;" id="layerDetailBox">
-      </div>
+      <div class="card" id="layerDetailBox">
+    <span class="pill pill-teal">MAF + GitHub Copilot SDK + BYO Harnesses</span>
+    <h3>Layer 1 · Build (Agent Harness 编排与执行循环层)</h3>
+    <ul>
+      <li>Microsoft Agent Framework (MAF)：统一跨单智能体与多智能体工作流的编排标准，运行在 ACA/AKS/Functions 上时自动继承可观测性、Entra Agent ID 与安全合规策略。</li><li>GitHub Copilot SDK：将经过生产验证的 Coding Agent 推理循环（规划、文件编辑、Shell 执行、MCP 调用）直接作为可编程内核嵌入企业自建管线。</li><li>BYO 开源框架自由混部：通过 AKSClaw 通用容器契约，同一集群可同时运行 OpenClaw、Hermes、LangGraph、CrewAI 等异构 Agent 实例。</li>
+    </ul>
+    <pre class="code-box"># MAF + GitHub Copilot SDK 协同回路
+DiagnosisAgent(LangGraph) -&gt; CodingAgent(CopilotSDK in ACA Sandbox) -&gt; ComplianceAgent(Foundry)</pre>
+  </div>
     </div>
   </section>
 
@@ -393,7 +92,7 @@ pre.code-box {
     </div>
     <div class="svg-showcase">
       <img id="atlasImg" src="assets/01-azure-agent-infra-4layer-panorama.svg" alt="Azure Agent Infra Architecture Diagram">
-      <div id="atlasCaption" style="margin-top:0.65rem;font-size:0.88rem;color:var(--blue);font-weight:700;">
+      <div id="atlasCaption">
         图 1 · Azure AI Agent Infra 四层全栈参考架构全景图 (Build · Run · Ground · Govern)
       </div>
     </div>
@@ -403,7 +102,7 @@ pre.code-box {
   <section class="card">
     <span class="pill pill-purple">6-TIER RUNTIME COMPARISON</span>
     <h2 data-i18n="sec3_title">三、Azure 六大 Agent Runtime 深度选型对比表</h2>
-    <div style="overflow-x:auto;">
+    <div>
       <table class="data-table">
         <thead>
           <tr>
@@ -474,16 +173,27 @@ pre.code-box {
     <div class="sub">勾选客户当前在 5 个月窗口内已持续活跃（≥3个月且含最近连续 2 个月）的技术信号，实时判定 Strong ACR (P1) / Potential (P2) 梯队及推荐五步推进动作：</div>
     <div class="grid-2">
       <div>
-        <label class="gate-check"><input type="checkbox" id="chk_spec_rt" checked onchange="evalPropensity()"> <span><strong>[Foundation 1 · Runtime Specific]</strong> 已持续使用 AKS 或 Azure Container Apps (ACA)</span></label>
+        <label class="gate-check"><input type="checkbox" id="chk_spec_rt" checked="" onchange="evalPropensity()"> <span><strong>[Foundation 1 · Runtime Specific]</strong> 已持续使用 AKS 或 Azure Container Apps (ACA)</span></label>
         <label class="gate-check"><input type="checkbox" id="chk_gen_rt" onchange="evalPropensity()"> <span><strong>[Foundation 1 · Runtime General]</strong> 使用 App Service / Functions / Batch / Azure VM</span></label>
-        <label class="gate-check"><input type="checkbox" id="chk_spec_data" checked onchange="evalPropensity()"> <span><strong>[Foundation 2 · Data Specific]</strong> 已持续使用 PostgreSQL (HorizonDB) / Cosmos DB / Redis</span></label>
-        <label class="gate-check"><input type="checkbox" id="chk_spec_ai" checked onchange="evalPropensity()"> <span><strong>[Foundation 3 · AI &amp; Integration Specific]</strong> 已持续使用 AI Search / Foundry Tools / APIM</span></label>
+        <label class="gate-check"><input type="checkbox" id="chk_spec_data" checked="" onchange="evalPropensity()"> <span><strong>[Foundation 2 · Data Specific]</strong> 已持续使用 PostgreSQL (HorizonDB) / Cosmos DB / Redis</span></label>
+        <label class="gate-check"><input type="checkbox" id="chk_spec_ai" checked="" onchange="evalPropensity()"> <span><strong>[Foundation 3 · AI &amp; Integration Specific]</strong> 已持续使用 AI Search / Foundry Tools / APIM</span></label>
         <label class="gate-check"><input type="checkbox" id="chk_model_10k" onchange="evalPropensity()"> <span><strong>[Model Signal Gate]</strong> 最近连续 3 个月每月 Foundry Models 消费 ≥ $10,000</span></label>
-        <label class="gate-check"><input type="checkbox" id="chk_ops" checked onchange="evalPropensity()"> <span><strong>[Foundation 4 · Ops &amp; Security]</strong> 已部署 Azure Monitor / Key Vault / Defender</span></label>
-        <label class="gate-check"><input type="checkbox" id="chk_growth" checked onchange="evalPropensity()"> <span><strong>[Growth Gate]</strong> 非模型相关基础设施近 5 个月前后端均值增长率 ≥ +20%</span></label>
+        <label class="gate-check"><input type="checkbox" id="chk_ops" checked="" onchange="evalPropensity()"> <span><strong>[Foundation 4 · Ops &amp; Security]</strong> 已部署 Azure Monitor / Key Vault / Defender</span></label>
+        <label class="gate-check"><input type="checkbox" id="chk_growth" checked="" onchange="evalPropensity()"> <span><strong>[Growth Gate]</strong> 非模型相关基础设施近 5 个月前后端均值增长率 ≥ +20%</span></label>
       </div>
-      <div class="card" style="margin-bottom:0;background:#0f172a;" id="propensityResult">
-      </div>
+      <div class="card" id="propensityResult">
+    <span class="pill pill-teal">P1 · Strong ACR (立即推进目标架构与 Workshop)</span>
+    <h3>四维底座覆盖数：4 / 4 · 潜客门禁通过：5 / 5</h3>
+    <p>
+      • <strong>Strong Route A (Specific Anchor)</strong>: ✅ 已命中<br>
+      • <strong>Strong Route B (≥3 Foundations)</strong>: ✅ 已命中<br>
+      • <strong>$10K Foundry Models Gate</strong>: ℹ️ 未达 $10K/月 (不影响真实 ACR 金额，仍可由非模型路径晋级 P1)
+    </p>
+    <div>
+      <strong>推荐下一步现场动作 (5-Step Playbook)</strong>：<br>
+      直接进入 Step 03 Define &amp; Step 04 Validate：组织半日/一日 Hands-on Workshop + 目标架构白板推演 (ACA Sandbox / AKSClaw / HorizonDB)。
+    </div>
+  </div>
     </div>
   </section>
 
@@ -493,7 +203,7 @@ pre.code-box {
     <h2 data-i18n="sec5_title">五、E2B 深度研究：四阶段演进范式、BYOC 架构与 E2B on Azure 六大生产最佳实践</h2>
     <div class="sub" data-i18n="sec5_sub">整合 E2B 四份一手核心资料：Nomad 心跳韧性混沌工程 (Robin Su, 2026)、ClickUp Brain² 企业级敏感数据沙箱实践、E2B BYOC (Azure/AWS/GCP) 架构规范，以及《Sandboxes are dead》迈向智能体驱动的动态私有云。</div>
 
-    <div class="kpi-strip" style="margin-top:0;margin-bottom:1.15rem;">
+    <div class="kpi-strip">
       <div class="kpi-card"><div class="kpi-val">2B+ Runs</div><div class="kpi-lbl">E2B 生产轨迹分类学 (Wave 1 → Wave 4 动态私有云)</div></div>
       <div class="kpi-card"><div class="kpi-val">0 误杀 / 100% Ready</div><div class="kpi-lbl">Nomad lost_after=50s + heartbeat_grace=50s 消除 35% 误替换</div></div>
       <div class="kpi-card"><div class="kpi-val">10x–20x</div><div class="kpi-lbl">ClickUp Brain² 上下文卸载 (Context Offloading) 等效扩容</div></div>
@@ -501,7 +211,7 @@ pre.code-box {
       <div class="kpi-card"><div class="kpi-val">Zero-Credential</div><div class="kpi-lbl">Azure BYOC Terraform 交付 + ILB / Private Link 私网闭环</div></div>
     </div>
 
-    <div style="overflow-x:auto;margin-bottom:1.15rem;">
+    <div>
       <table class="data-table">
         <thead>
           <tr>
@@ -535,24 +245,24 @@ pre.code-box {
     </div>
 
     <div class="grid-3">
-      <div class="card" style="margin-bottom:0;background:#0f172a;">
+      <div class="card">
         <span class="pill pill-blue">PILLAR 1 &amp; 2 · AZURE BYOC &amp; PRIVATE LINK</span>
-        <h3 style="margin-top:0.5rem;">零凭据 Terraform 交付与 ILB 私网互联</h3>
-        <p style="font-size:0.84rem;color:#cbd5e1;margin:0;">
+        <h3>零凭据 Terraform 交付与 ILB 私网互联</h3>
+        <p>
           规划<strong>独立 Azure Subscription</strong>，本地执行 E2B Terraform 模块（需订阅 <code>Owner</code> + Entra ID <code>Cloud Application Administrator</code>，<strong>全程零密钥交换</strong>）。提前申请目标区域 <code>Standard_D96as_v7</code> (108ms/132ms) vCPU 配额；通过 <strong>Azure Internal Load Balancer (ILB) + Private Link Service / Private Endpoint</strong>（或 VNet Peering）与 APIM 动态 Host 网关私网直连。
         </p>
       </div>
-      <div class="card" style="margin-bottom:0;background:#0f172a;">
+      <div class="card">
         <span class="pill pill-teal">PILLAR 3 · NOMAD HEARTBEAT RESILIENCE</span>
-        <h3 style="margin-top:0.5rem;">消除 yamux 静默断连引发的 35% 误杀风暴</h3>
-        <p style="font-size:0.84rem;color:#cbd5e1;margin:0;">
+        <h3>消除 yamux 静默断连引发的 35% 误杀风暴</h3>
+        <p>
           非 Leader Nomad Server 静默宕机时，<code>yamux@v0.1.2</code> 需 <code>10s–40s</code> 探知断连，慢于默认 <code>20–30s</code> 心跳超时，导致 <code>7/20 (35%)</code> 健康节点被误杀、剩余节点负载激增 <code>+53.85%</code>。必须双层加固：(1) Job Group 配置 <code>lost_after="50s", replace=false, reconcile="keep_original"</code>（<strong>0 替换、10/10 沙箱与 23/23 NDJSON 流完好</strong>）；(2) Server 配置 <code>heartbeat_grace="50s"</code>（<strong>20/20 节点 100% ready</strong>）。
         </p>
       </div>
-      <div class="card" style="margin-bottom:0;background:#0f172a;">
+      <div class="card">
         <span class="pill pill-amber">PILLAR 4, 5 &amp; 6 · CLICKUP BRAIN² PATTERN</span>
-        <h3 style="margin-top:0.5rem;">10x–20x 上下文卸载与 9 a.m. 潮汐预热</h3>
-        <p style="font-size:0.84rem;color:#cbd5e1;margin:0;">
+        <h3>10x–20x 上下文卸载与 9 a.m. 潮汐预热</h3>
+        <p>
           借鉴 ClickUp（服务 85% 财富 500 强，SOC 2 &amp; HIPAA）：将大表格与录像直接上传沙箱由代码解析，仅回传结果实现 <strong>10x–20x 等效上下文扩容</strong>；预烘焙含 <strong>68 个工具</strong>的黄金模板 + 6 大职能模板；结合 <strong>定时预热池 + 60% CPU 扩容 + 15–30 分钟 Pause/Resume (`UFFD+NBD`) + HorizonDB 检查点</strong> 应对早 9 点每分钟数千沙箱洪峰。
         </p>
       </div>
@@ -563,7 +273,7 @@ pre.code-box {
     <span>Azure AI Agent Infrastructure Playbook · Synthesized from Primary Field Engineering Assets (Zero Customer PII)</span>
     <span><a href="demo.html">Next: Live Simulator Demo →</a></span>
   </footer>
-</main>
+</div>
 
 <script>
 let lang = 'zh';
@@ -722,5 +432,7 @@ function toggleLang() {
 selectLayer(0);
 evalPropensity();
 </script>
-</body>
-</html>
+
+
+</main>
+</body></html>

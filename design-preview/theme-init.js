@@ -10,8 +10,10 @@
   }
   let theme = query.get('theme');
   if (!['light', 'dark'].includes(theme)) {
-    try { theme = localStorage.getItem('kee-editorial-theme'); } catch (_) {}
+    try { theme = localStorage.getItem('kee-aurora-theme-v1'); } catch (_) {}
+  } else {
+    try { localStorage.setItem('kee-aurora-theme-v1', theme); } catch (_) {}
   }
-  root.dataset.theme = theme === 'dark' ? 'dark' : 'light';
+  root.dataset.theme = theme === 'light' ? 'light' : 'dark';
   root.classList.add('js');
 })();
