@@ -3,7 +3,7 @@ const path = require('node:path');
 const assert = require('node:assert/strict');
 const {execFileSync} = require('node:child_process');
 const root = path.join(__dirname, '..');
-const baseline = '9b894e2d775410e5621a4e144cf12261842d9952';
+const baseline = 'cf5bb77976f8710f35dc20a6c27d2312ed9b3b76';
 const files = ['index.html', 'index.en.html', 'live-demo.html', 'live-demo.en.html'];
 for (const name of files) {
   const file = `workshops/webiq-azure/${name}`;

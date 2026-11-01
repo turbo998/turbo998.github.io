@@ -45,7 +45,7 @@
       url.pathname = url.pathname.replace(/\/(index|benchmark-cards)(\.en)?\.html$/, (_, file) =>
         "/" + file + (language === "en" ? ".en" : "") + ".html");
     }
-    const rootFiles = ["benchmarks", "ai-security", "security-ai-landing-zone"];
+    const rootFiles = ["benchmarks", "ai-security", "security-ai-landing-zone", "github-radar"];
     const file = url.pathname.split("/").pop().replace(/^zh-/, "").replace(/\.html$/, "");
     if (rootFiles.includes(file)) {
       url.pathname = url.pathname.replace(/[^/]+$/, (language === "en" ? "" : "zh-") + file + ".html");

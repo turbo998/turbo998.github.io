@@ -63,6 +63,8 @@ node tests\production-routes.cjs
 node scripts\integrate-dedicated.cjs --check
 node scripts\integrate-webiq.cjs --check
 node tests\webiq-integration.cjs
+node scripts\integrate-radar.cjs --check
+node tests\radar-integration.cjs
 node tests\reading-migration.cjs
 $env:FULL_BROWSER_AUDIT = '1'
 node tests\full-site-audit.cjs
@@ -76,9 +78,11 @@ node tests\full-site-audit.cjs
 
 ## Concurrent publication / 并发发布保留
 
-The migration also incorporates upstream commit `9b894e2` (four Web IQ HTML surfaces plus Bicep) without replacing that work. `scripts/integrate-webiq.cjs` adds only marked native navigation and escapes two malformed JavaScript string labels that otherwise prevent the offline demo from starting. Removing the perimeter and reversing those quote escapes recovers its source byte-for-byte. Its CSP and Bicep are unchanged; no Azure backend was provisioned or claimed connected. The Commerce track and complete archive expose the bilingual guide and sandbox.
+The migration also incorporates upstream commit `9b894e2` (four Web IQ HTML surfaces plus Bicep) and its `cf5bb77` account-created/unmeasured status correction without replacing that work. `scripts/integrate-webiq.cjs` adds only marked native navigation and escapes two malformed JavaScript string labels that otherwise prevent the offline demo from starting. Removing the perimeter and reversing those quote escapes recovers its source byte-for-byte. Its CSP and Bicep are unchanged; no Azure backend was provisioned or claimed connected. The Commerce track and complete archive expose the bilingual guide and sandbox.
 
-专用资源继续保留自己的内容与内部设计，统一的是深蓝外围、上下文返回和语言入口。报告数据不因配色变更而重新生成。完整档案同时保留 146 个基线页面、12 个新增英文阅读版本和 4 个后续 Web IQ 页面；新增门户由主导航访问。
+专用资源继续保留自己的内容与内部设计，统一的是深蓝外围、上下文返回和语言入口。报告数据不因配色变更而重新生成。完整档案同时保留 146 个基线页面、12 个新增英文阅读版本和 8 个后续 Web IQ / GitHub Radar 页面；新增门户由主导航访问。
+
+Upstream `2bd0bd8` adds two bilingual GitHub Radar dashboard pages and two protected report decks. Their source findings, README pair and summary SVG are retained, with native Aurora perimeter navigation. The curated home, Benchmark topic, archive and affected reading-page menus preserve discoverability without restoring the former iframe layout. `scripts/integrate-radar.cjs` and `tests/radar-integration.cjs` verify this separately from the frozen reading inventory. Radar data is preserved reported material, not a benchmark newly measured during the redesign.
 
 ## Release and rollback / 发布与回退
 

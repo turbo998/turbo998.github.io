@@ -20,7 +20,7 @@ async function main() {
   assert.equal(execFileSync('git',['status','--porcelain'],{cwd:root,encoding:'utf8'}).trim(), '', 'Commit the verified tree before comparing deployed bytes to its SHA');
   // Git-tracked HTML includes newly added translation counterparts, not just the baseline inventory.
   const tracked=execFileSync('git',['ls-files','*.html'],{cwd:root,encoding:'utf8'}).trim().split(/\r?\n/).filter(f=>f&&!f.startsWith('design-preview/'));
-  const files=[...new Set([...inventory.content.map(p=>p.path),...production.portalPages,...tracked,...collect('assets/editorial'),...collect('workshops/azure-agent-infra/assets').filter(f=>f.endsWith('.en.svg')),...['assets/reading-shell.css','assets/reading-shell.js','assets/dedicated-navigation.css','assets/dedicated-navigation.js'].filter(f=>fs.existsSync(path.join(root,f)))])];
+  const files=[...new Set([...inventory.content.map(p=>p.path),...production.portalPages,...tracked,...collect('assets/editorial'),'workshops/github-trending-radar/summary-2026-11-01.svg',...collect('workshops/azure-agent-infra/assets').filter(f=>f.endsWith('.en.svg')),...['assets/reading-shell.css','assets/reading-shell.js','assets/dedicated-navigation.css','assets/dedicated-navigation.js'].filter(f=>fs.existsSync(path.join(root,f)))])];
   try {
     for(let i=0;i<files.length;i+=6) {
       await Promise.all(files.slice(i,i+6).map(async file=>{

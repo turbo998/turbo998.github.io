@@ -80,9 +80,14 @@ async function main() {
         if (file.endsWith('archive.html')) {
           const inventory = require('../docs/redesign/route-inventory.json');
           const reading = require('../docs/redesign/reading-migration.json');
-          const expectedPaths = [...inventory.content.map(p=>p.path), ...reading.records.map(r=>r.path), ...['index.html','index.en.html','live-demo.html','live-demo.en.html'].map(f=>'workshops/webiq-azure/'+f)];
+          const expectedPaths = [...inventory.content.map(p=>p.path), ...reading.records.map(r=>r.path), ...['index.html','index.en.html','live-demo.html','live-demo.en.html'].map(f=>'workshops/webiq-azure/'+f), 'github-radar.html','zh-github-radar.html','workshops/github-trending-radar/cards.html','workshops/github-trending-radar/cards.en.html'];
           const linkedPaths = new Set(state.links.map(href=>new URL(href).pathname));
           for (const target of expectedPaths) assert.ok(linkedPaths.has('/'+target), `${file}: archive omits ${target}`);
+        }
+        if (['index.html','zh.html','studio/benchmarks.html','studio/zh-benchmarks.html'].includes(file)) {
+          const zh = file === 'zh.html' || file.includes('/zh-');
+          assert.ok(state.links.includes(`${base}/${zh?'zh-':''}github-radar.html`), `${file}: concurrent Radar workbench must remain discoverable`);
+          assert.ok(state.links.includes(`${base}/workshops/github-trending-radar/cards${zh?'':'.en'}.html`), `${file}: concurrent Radar report must remain discoverable`);
         }
         const track = path.basename(file, '.html').replace(/^zh-/, '');
         if (manifest.scenes[track]) {

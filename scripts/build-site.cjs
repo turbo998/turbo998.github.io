@@ -92,6 +92,10 @@ function transform(source, file) {
 for (const [source, file] of Object.entries(map)) {
   let html = transform(source, file);
   if (source === 'index.html' || source === 'zh-index.html') {
+    const zh = source.startsWith('zh-');
+    const radar = `<section class="section" id="github-radar"><p class="eyebrow">NEW / GITHUB AI RADAR</p><h2>${zh ? '从热门信号，走向工程判断。' : 'Turn trending signals into engineering judgment.'}</h2><p>${zh ? '追踪 GitHub AI 项目的工程信号：Hype / Facts / Signal 工作台、来源审计与架构实践。归档结果不是本次重测，也不代表网页后台运行了每日任务。' : 'Inspect engineering signals across GitHub AI projects: Hype / Facts / Signal workbench, source audit and architecture playbooks. Archived results are not a new evaluation or proof of a scheduled backend on this static site.'}</p><a class="resource-row" href="${zh ? 'zh-' : ''}github-radar.html"><strong>${zh ? '打开 GitHub AI 雷达' : 'Open GitHub AI Radar'}</strong><span>→</span></a><a class="resource-row" href="workshops/github-trending-radar/cards${zh ? '' : '.en'}.html"><strong>${zh ? '原始七卡报告' : 'Original seven-card report'}</strong><span>↗</span></a><a class="text-link" href="workshops/github-trending-radar/summary-2026-11-01.svg">${zh ? '原始可视化摘要' : 'Original visual summary'} ↗</a></section>`;
+    html = html.replace('<section id="research"', radar + '<section id="research"');
+    html = html.replace('</div></div><aside class="hero-index"', `<a class="text-link" href="${zh ? 'zh-' : ''}github-radar.html">${zh ? '新刊 · GitHub AI 雷达' : 'New · GitHub AI Radar'} ↗</a></div></div><aside class="hero-index"`);
     const aliases = { main: ['top'], projects: ['architecture', 'studio-directory', 'workbenches', 'pillars'], research: ['writing', 'stage-2', 'matrix', 'explore'] };
     for (const [id, names] of Object.entries(aliases)) {
       html = html.replace(new RegExp(`(<(?:main|section) id="${id}"[^>]*>)`), '$1' + names.map(name => `<span id="${name}" class="legacy-anchor" aria-hidden="true"></span>`).join(''));
@@ -128,7 +132,11 @@ const webiqPages = ['index.html','index.en.html','live-demo.html','live-demo.en.
   title:name.startsWith('live')?'Web IQ · Azure-ready commerce sandbox':'Web IQ · Azure integration guide',
   tracks:['commerce'], language:{declared:name.includes('.en.')?'en':'zh-CN'}, supplemental:true
 }));
-const archivePages = [...inventory.content, ...translations, ...webiqPages];
+const radarPages = ['github-radar.html','zh-github-radar.html','workshops/github-trending-radar/cards.en.html','workshops/github-trending-radar/cards.html'].map(file => ({
+  path:file, role:file.includes('/cards')?'report':'article', title:file.includes('/cards')?'GitHub AI Radar · Original report':'GitHub AI Radar · Hype / Facts / Signal',
+  tracks:['benchmarks'], language:{declared:file.startsWith('zh-')||file.endsWith('/cards.html')?'zh-CN':'en'}, supplemental:true
+}));
+const archivePages = [...inventory.content, ...translations, ...webiqPages, ...radarPages];
 function archiveNote(page, zh) {
   const t = (en, cn) => zh ? cn : en;
   const record = readingByPath.get(page.path);
@@ -158,13 +166,17 @@ for (const zh of [false, true]) {
         const name = id === 'architecture' ? 'index' : 'live-demo';
         rows += `<a class="resource-row" href="../workshops/webiq-azure/${name}${zh?'':'.en'}.html"><span><strong>${t('Web IQ · Azure-ready commerce', 'Web IQ · Azure 商务集成')}</strong><span class="resource-desc">${t('Bilingual guide and offline sandbox · Azure backend is not connected', '双语指南与离线沙盒 · 尚未连接 Azure 后端')}</span></span><span>↗</span></a>`;
       }
+      if (track === 'benchmarks' && ['evaluation','demos','resources'].includes(id)) {
+        const target = id === 'evaluation' ? `workshops/github-trending-radar/cards${zh?'':'.en'}.html` : `${zh?'zh-':''}github-radar.html`;
+        rows += `<a class="resource-row" href="../${target}"><span><strong>${t('GitHub AI Radar · Hype / Facts / Signal','GitHub AI 雷达 · Hype / Facts / Signal')}</strong><span class="resource-desc">${t('Original workbench, source audit and report','原始工作台、来源审计与报告')}</span></span><span>↗</span></a>`;
+      }
       body += `<section id="${id}" class="section topic-section"><div class="topic-label"><p class="eyebrow">0${i+1} / ${t(en.toUpperCase(),cn)}</p><h2>${t(en,cn)}</h2></div><div class="topic-body">${rows || `<p>${t('See the original collection in Resources.', '请查看资料区的原始资料集。')}</p>`}</div></section>`;
     }
     body += `<div class="back-row"><a class="text-link" href="${zh ? 'zh-' : ''}index.html">← ${t('All Studio tracks','全部 Studio 主题')}</a><a class="text-link" href="#main">${t('Back to top','回到顶部')} ↑</a></div>`;
     write(file,shell(file,zh,copy[zh ? 1 : 0],body));
   }
   const file = `studio/${zh ? 'zh-' : ''}archive.html`;
-  let body = `<div class="breadcrumb"><a href="${zh?'zh-':''}index.html">Studio</a><span>/</span>${t('Archive','完整档案')}</div><section class="page-hero"><p class="eyebrow">SOURCE DIRECTORY</p><h1>${t('Keep the original within reach.','让原始资料，始终可达。')}</h1><p class="lead">${t('All 146 baseline HTML resources remain accessible, alongside 12 new English reading editions and four subsequently published Web IQ pages. Source titles and duplicate exports are preserved; current language notes distinguish translated prose from protected media and demo interfaces.', '146 个基线 HTML 资源全部保留，新增 12 个英文阅读版本及随后发布的 4 个 Web IQ 页面。标题与重复导出保留来源；当前语言说明区分已翻译正文、原语种媒体和受保护的演示界面。')}</p><p class="source-note">${t('The historical inventory found 59 pages without verified translation counterparts and 16 filename/language conflicts. A filename ending in .en does not establish an English translation.', '历史清单发现 59 页缺少核验过的翻译对应页，16 处文件名与语言冲突。.en 文件名不代表确有英文译文。')}</p></section>`;
+  let body = `<div class="breadcrumb"><a href="${zh?'zh-':''}index.html">Studio</a><span>/</span>${t('Archive','完整档案')}</div><section class="page-hero"><p class="eyebrow">SOURCE DIRECTORY</p><h1>${t('Keep the original within reach.','让原始资料，始终可达。')}</h1><p class="lead">${t('All 146 baseline HTML resources remain accessible, alongside 12 new English reading editions and eight subsequently published Web IQ / GitHub Radar pages. Source titles and duplicate exports are preserved; current language notes distinguish translated prose from protected media and demo interfaces.', '146 个基线 HTML 资源全部保留，新增 12 个英文阅读版本及随后发布的 8 个 Web IQ / GitHub Radar 页面。标题与重复导出保留来源；当前语言说明区分已翻译正文、原语种媒体和受保护的演示界面。')}</p><p class="source-note">${t('The historical inventory found 59 pages without verified translation counterparts and 16 filename/language conflicts. A filename ending in .en does not establish an English translation.', '历史清单发现 59 页缺少核验过的翻译对应页，16 处文件名与语言冲突。.en 文件名不代表确有英文译文。')}</p></section>`;
   const groups = [...Object.keys(topics), 'general'];
   for (const group of groups) {
     const pages = archivePages.filter(p => (p.tracks[0] || 'general') === group);
