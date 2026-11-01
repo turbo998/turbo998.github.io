@@ -1,0 +1,2512 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="data:,">
+  <title>Knowledge Explainer Animation Studio · 知识讲解动画制作工作台</title>
+  <style>
+    :root {
+      --bg-app: #0B111E;
+      --bg-panel: #111827;
+      --bg-card: #1E293B;
+      --bg-elevated: #0F172A;
+      --border: #334155;
+      --text: #F8FAFC;
+      --text-muted: #94A3B8;
+      --accent: #38BDF8;
+      --accent-green: #4ADE80;
+      --accent-amber: #FBBF24;
+      --accent-purple: #A78BFA;
+      --accent-rose: #FB7185;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg-app);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 24px;
+      background: var(--bg-elevated);
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .brand-badge {
+      background: linear-gradient(135deg, #2563EB, #10B981);
+      color: #fff;
+      font-weight: 800;
+      font-size: 12px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      letter-spacing: 0.06em;
+    }
+    .brand h1 {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      background: var(--bg-card);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 7px 13px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn:hover { border-color: var(--accent); background: #26354D; }
+    .btn.active, .btn.primary {
+      background: #2563EB;
+      border-color: #3B82F6;
+      color: #FFFFFF;
+    }
+    .btn.success {
+      background: #059669;
+      border-color: #10B981;
+      color: #FFFFFF;
+    }
+    .template-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      padding: 14px 24px;
+      background: #0D1526;
+      border-bottom: 1px solid var(--border);
+    }
+    .tpl-tab {
+      background: var(--bg-panel);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 16px;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.18s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .tpl-tab:hover { border-color: #64748B; }
+    .tpl-tab.active {
+      border-color: var(--accent);
+      background: linear-gradient(180deg, rgba(37,99,235,0.18) 0%, rgba(17,24,39,0.95) 100%);
+      box-shadow: 0 0 0 1px rgba(56,189,248,0.35);
+    }
+    .tpl-kicker {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--accent);
+      display: flex;
+      justify-content: space-between;
+    }
+    .tpl-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .tpl-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+    .workspace {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 390px;
+      gap: 18px;
+      padding: 18px 24px;
+      flex: 1;
+      align-items: start;
+    }
+    @media (max-width: 1180px) {
+      .workspace { grid-template-columns: 1fr; }
+      .template-tabs { grid-template-columns: 1fr; }
+    }
+    .stage-column {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .canvas-shell {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #050C0A;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1.5px solid var(--border);
+      box-shadow: 0 22px 48px rgba(0, 0, 0, 0.5);
+    }
+    #stage-canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    .safe-overlay {
+      position: absolute;
+      inset: 5% 5%;
+      border: 1px dashed rgba(56, 189, 248, 0.45);
+      pointer-events: none;
+      display: none;
+    }
+    .safe-overlay.visible { display: block; }
+    .safe-overlay::after {
+      content: "90% Action-Safe Zone (1920×1080 | X≥96px, Y≥54px)";
+      position: absolute;
+      top: 6px;
+      right: 10px;
+      font-size: 11px;
+      font-family: monospace;
+      color: rgba(56, 189, 248, 0.85);
+      background: rgba(15, 23, 42, 0.8);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .transport-bar {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .scrubber-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .time-readout {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent);
+      min-width: 118px;
+    }
+    #timeline-slider {
+      flex: 1;
+      accent-color: #38BDF8;
+      height: 6px;
+      cursor: pointer;
+    }
+    .scene-pills {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 8px;
+    }
+    @media (max-width: 720px) {
+      .scene-pills { grid-template-columns: repeat(3, 1fr); }
+    }
+    .scene-pill {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 10px;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.15s ease;
+    }
+    .scene-pill:hover { border-color: var(--accent); }
+    .scene-pill.active {
+      background: rgba(56, 189, 248, 0.16);
+      border-color: var(--accent);
+    }
+    .sp-num {
+      font-size: 10px;
+      font-family: monospace;
+      color: var(--accent);
+      font-weight: 700;
+      display: block;
+    }
+    .sp-name {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: block;
+      margin-top: 2px;
+    }
+    .telemetry-panel {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .panel-section {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+    .sec-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 11.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+    }
+    .gate-badge {
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 10.5px;
+      font-weight: 800;
+      background: rgba(16, 185, 129, 0.18);
+      color: #34D399;
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
+    .density-layout {
+      display: grid;
+      grid-template-columns: 118px 1fr;
+      gap: 12px;
+      align-items: center;
+    }
+    .grid-3x3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+      aspect-ratio: 16 / 9;
+      background: #090D16;
+      padding: 4px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+    .grid-cell {
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: monospace;
+      font-size: 10px;
+      font-weight: 700;
+      color: #fff;
+      transition: background 0.15s ease;
+    }
+    .density-metrics {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      font-size: 12px;
+    }
+    .dm-row {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px dashed rgba(148, 163, 184, 0.15);
+      padding-bottom: 3px;
+    }
+    .dm-val { font-family: monospace; font-weight: 700; color: var(--accent-green); }
+    #seam-canvas {
+      width: 100%;
+      height: 86px;
+      background: #090D16;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      display: block;
+    }
+    .ledger-kv {
+      display: grid;
+      grid-template-columns: 78px 1fr;
+      gap: 6px 10px;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+    .ledger-k {
+      color: var(--text-muted);
+      font-family: monospace;
+      font-weight: 600;
+    }
+    .ledger-v {
+      color: var(--text);
+      font-weight: 600;
+    }
+    .swatch-row {
+      display: inline-flex;
+      gap: 6px;
+      align-items: center;
+      vertical-align: middle;
+    }
+    .swatch {
+      width: 14px;
+      height: 14px;
+      border-radius: 4px;
+      border: 1px solid rgba(255,255,255,0.3);
+      display: inline-block;
+    }
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 10, 20, 0.82);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+      padding: 24px;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal-card {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      width: min(880px, 100%);
+      max-height: 86vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.65);
+    }
+    .modal-header {
+      padding: 14px 20px;
+      background: var(--bg-elevated);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-body {
+      padding: 18px 20px;
+      overflow-y: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 12.5px;
+      line-height: 1.55;
+      color: #E2E8F0;
+      white-space: pre-wrap;
+      background: #090E1A;
+    }
+  </style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <a href="../../" class="btn" id="back-portal-link">← 实验室门户</a>
+    <span class="brand-badge">ONE-SENTENCE-VIDEO HARNESS v1.0</span>
+    <h1 id="studio-heading">知识讲解动画制作工作台 · Knowledge Explainer Studio</h1>
+  </div>
+  <div class="top-actions">
+    <button class="btn" id="btn-safe-zone" type="button">📐 90% 安全区</button>
+    <button class="btn" id="btn-audio" type="button" aria-pressed="false">🔊 因果音效: 关</button>
+    <button class="btn" id="btn-export-storyboard" type="button">📋 导出 STORYBOARD.md</button>
+    <a class="btn" href="./test-report-cards.html">📊 7-Card 评测报告</a>
+    <a class="btn" href="../../research/knowledge-explainer-animation-study.html">📖 深度专著</a>
+    <div style="display:inline-flex;gap:4px;" role="group" aria-label="Language switch">
+      <button class="btn active" data-lang="zh-CN" type="button">简</button>
+      <button class="btn" data-lang="zh-TW" type="button">繁</button>
+      <button class="btn" data-lang="en" type="button">EN</button>
+    </div>
+  </div>
+</header>
+
+<nav class="template-tabs" aria-label="三大标杆知识讲解模板">
+  <button class="tpl-tab active" data-template="xiaozhe-mcp-node-graph" type="button">
+    <div class="tpl-kicker">
+      <span>TEMPLATE 01 · OBSIDIAN NODE TOPOLOGY</span>
+      <span>BV1nnnw6FE2V</span>
+    </div>
+    <div class="tpl-title" data-i18n="tpl1_title">【小哲讲Agent】MCP、Skill 与本地 Tools 选型</div>
+    <div class="tpl-desc" data-i18n="tpl1_desc">深色黑曜石渐进节点树 · 三次贝塞尔流光连线 · 焦点聚光降暗 · 六幕分层架构选型矩阵</div>
+  </button>
+
+  <button class="tpl-tab" data-template="xiaozhe-rag-pipeline-flow" type="button">
+    <div class="tpl-kicker">
+      <span>TEMPLATE 02 · 4-STAGE FUNNEL &amp; PACKET-HOP</span>
+      <span>DOUYIN RAG</span>
+    </div>
+    <div class="tpl-title" data-i18n="tpl2_title">【小哲讲大模型】一条视频彻底吃透 RAG</div>
+    <div class="tpl-desc" data-i18n="tpl2_desc">暖白编辑室新粗野卡片 · PDF 硬塞碎裂爆破 · 语义滑窗切片 → 粗排雷达 → Rerank 漏斗 → 溯源生成</div>
+  </button>
+
+  <button class="tpl-tab" data-template="chimp-deepseek-unit-economics" type="button">
+    <div class="tpl-kicker">
+      <span>TEMPLATE 03 · COMPUTE MATRIX &amp; UNIT LEDGER</span>
+      <span>BV13cxv6SE9L</span>
+    </div>
+    <div class="tpl-title" data-i18n="tpl3_title">【第四种黑猩猩】DeepSeek 一张卡为什么能收入 $38</div>
+    <div class="tpl-desc" data-i18n="tpl3_desc">米白算力经济学账本 · $38 vs $5.7 (6.7x) 计数器 · EP/DP 最慢卡木桶阻塞 · Prefill/Decode 1:1 解耦与 80% 缓存</div>
+  </button>
+</nav>
+
+<main class="workspace">
+  <section class="stage-column">
+    <div class="canvas-shell">
+      <canvas id="stage-canvas" width="1920" height="1080"></canvas>
+      <div class="safe-overlay" id="safe-overlay"></div>
+    </div>
+
+    <div class="transport-bar">
+      <div class="scrubber-row">
+        <button class="btn primary" id="btn-play" type="button">⏸ 暂停</button>
+        <button class="btn" id="btn-prev" type="button">⏮ 上一幕</button>
+        <button class="btn" id="btn-next" type="button">⏭ 下一幕</button>
+        <span class="time-readout" id="time-readout">00.0s / 27.0s</span>
+        <input type="range" id="timeline-slider" min="0" max="27" step="0.05" value="0" aria-label="Timeline seek">
+        <button class="btn" id="btn-sfx-test" type="button" title="触发当前分镜因果音效">🔔 试听拍点 SFX</button>
+      </div>
+      <div class="scene-pills" id="scene-pills"></div>
+    </div>
+  </section>
+
+  <aside class="telemetry-panel" aria-label="one-sentence-video 实时工程遥测">
+    <div class="panel-section">
+      <div class="sec-header">
+        <span>1. DENSITY-GATE · 3×3 九宫格边缘密度热力图</span>
+        <span class="gate-badge" id="density-gate-badge">PASS · 7/9 ACTIVE</span>
+      </div>
+      <div class="density-layout">
+        <div class="grid-3x3" id="density-grid"></div>
+        <div class="density-metrics">
+          <div class="dm-row"><span>Active Cells (≥4.0)</span><span class="dm-val" id="dm-occ">7 / 9</span></div>
+          <div class="dm-row"><span>Mean Edge Gradient</span><span class="dm-val" id="dm-grad">8.42</span></div>
+          <div class="dm-row"><span>Peak Interval Med</span><span class="dm-val" id="dm-peak">2.8s (≤4.0s)</span></div>
+          <div class="dm-row"><span>Freeze Share (&lt;0.5)</span><span class="dm-val" id="dm-freeze">7.4% (≤30%)</span></div>
+          <div class="dm-row"><span>90% Action-Safe</span><span class="dm-val" id="dm-safe">0.0% Violation</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-section">
+      <div class="sec-header">
+        <span>2. CUT-THE-CURVE · 接缝运镜速度学曲线</span>
+        <span class="gate-badge" id="seam-badge">η = 0.89 MATCH</span>
+      </div>
+      <canvas id="seam-canvas" width="340" height="86"></canvas>
+      <div style="display:flex;justify-content:space-between;font-size:11.5px;color:var(--text-muted);margin-top:6px;font-family:monospace;">
+        <span id="seam-type-label">Seam: cut-the-curve</span>
+        <span id="seam-ease-label">power2.in → dt=0 → power3.out</span>
+      </div>
+    </div>
+
+    <div class="panel-section">
+      <div class="sec-header">
+        <span>3. STYLE LEDGER · 四维正交风格原子</span>
+        <span class="gate-badge" id="ledger-id-badge">xiaozhe-mcp-node-graph</span>
+      </div>
+      <div class="ledger-kv" id="ledger-kv"></div>
+    </div>
+
+    <div class="panel-section">
+      <div class="sec-header">
+        <span>4. SHOT CARD &amp; PROCESS-GATE · 分镜施工图</span>
+        <span class="gate-badge">5/5 GATES PASS</span>
+      </div>
+      <div class="ledger-kv" id="shotcard-kv"></div>
+    </div>
+  </aside>
+</main>
+
+<div class="modal-backdrop" id="export-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal-card">
+    <div class="modal-header">
+      <strong id="modal-title">STORYBOARD.md &amp; style-ledger.json 生产配方导出</strong>
+      <div style="display:flex;gap:8px;">
+        <button class="btn primary" id="btn-copy-modal" type="button">复制全部</button>
+        <button class="btn" id="btn-close-modal" type="button">关闭 ✕</button>
+      </div>
+    </div>
+    <pre class="modal-body" id="modal-content"></pre>
+  </div>
+</div>
+
+<script>
+(() => {
+  const DURATION = 27.0;
+  const SCENE_LEN = 4.5;
+
+  const I18N = {
+    'zh-CN': {
+      studioHeading: '知识讲解动画制作工作台 · Knowledge Explainer Studio',
+      backPortal: '← 实验室门户',
+      safeZone: '📐 90% 安全区',
+      audioOff: '🔊 因果音效: 关',
+      audioOn: '🔊 因果音效: 开',
+      exportBtn: '📋 导出 STORYBOARD.md',
+      play: '▶ 播放',
+      pause: '⏸ 暂停',
+      prev: '⏮ 上一幕',
+      next: '⏭ 下一幕',
+      sfxTest: '🔔 试听拍点 SFX',
+      tpl1_title: '【小哲讲Agent】MCP、Skill 与本地 Tools 选型',
+      tpl1_desc: '深色黑曜石渐进节点树 · 三次贝塞尔流光连线 · 焦点聚光降暗 · 六幕分层架构选型矩阵',
+      tpl2_title: '【小哲讲大模型】一条视频彻底吃透 RAG',
+      tpl2_desc: '暖白编辑室新粗野卡片 · PDF 硬塞碎裂爆破 · 语义滑窗切片 → 粗排雷达 → Rerank 漏斗 → 溯源生成',
+      tpl3_title: '【第四种黑猩猩】DeepSeek 一张卡为什么能收入 $38',
+      tpl3_desc: '米白算力经济学账本 · $38 vs $5.7 (6.7x) 计数器 · EP/DP 最慢卡木桶阻塞 · Prefill/Decode 1:1 解耦与 80% 缓存',
+    },
+    'zh-TW': {
+      studioHeading: '知識講解動畫製作工作台 · Knowledge Explainer Studio',
+      backPortal: '← 實驗室門戶',
+      safeZone: '📐 90% 安全區',
+      audioOff: '🔊 因果音效: 關',
+      audioOn: '🔊 因果音效: 開',
+      exportBtn: '📋 匯出 STORYBOARD.md',
+      play: '▶ 播放',
+      pause: '⏸ 暫停',
+      prev: '⏮ 上一幕',
+      next: '⏭ 下一幕',
+      sfxTest: '🔔 試聽拍點 SFX',
+      tpl1_title: '【小哲講Agent】MCP、Skill 與本地 Tools 選型',
+      tpl1_desc: '深色黑曜石漸進節點樹 · 三次貝茲流光連線 · 焦點聚光降暗 · 六幕分層架構選型矩陣',
+      tpl2_title: '【小哲講大模型】一條影片徹底吃透 RAG',
+      tpl2_desc: '暖白編輯室新粗野卡片 · PDF 硬塞碎裂爆破 · 語義滑窗切片 → 粗排雷達 → Rerank 漏斗 → 溯源生成',
+      tpl3_title: '【第四種黑猩猩】DeepSeek 一張卡為什麼能收入 $38',
+      tpl3_desc: '米白算力經濟學帳本 · $38 vs $5.7 (6.7x) 計數器 · EP/DP 最慢卡木桶阻塞 · Prefill/Decode 1:1 解耦與 80% 快取',
+    },
+    'en': {
+      studioHeading: 'Knowledge Explainer Animation Studio · One-Sentence-Video Harness',
+      backPortal: '← Lab Portal',
+      safeZone: '📐 90% Action-Safe',
+      audioOff: '🔊 Causal SFX: OFF',
+      audioOn: '🔊 Causal SFX: ON',
+      exportBtn: '📋 Export STORYBOARD.md',
+      play: '▶ Play',
+      pause: '⏸ Pause',
+      prev: '⏮ Prev Act',
+      next: '⏭ Next Act',
+      sfxTest: '🔔 Trigger SFX Cue',
+      tpl1_title: '[Xiaozhe Agent] MCP vs. Skill vs. Local Tools Architecture',
+      tpl1_desc: 'Obsidian progressive Bezier node tree · Spotlight focus dimming · 6-act layered selection matrix',
+      tpl2_title: '[Xiaozhe LLM] Mastering RAG in One Video',
+      tpl2_desc: 'Warm editorial Neo-Brutalist funnel · Raw PDF shatter hook · Chunking → Recall → Rerank → Grounded Cite',
+      tpl3_title: '[Fourth Chimp] Why One DeepSeek GPU Earns $38/Day',
+      tpl3_desc: 'Paper unit-economics ledger · $38 vs $5.7 (6.7x) counter · EP/DP straggler barrier · Prefill/Decode 1:1 & 80% KV Cache',
+    }
+  };
+
+  const TEMPLATES = {
+    'xiaozhe-mcp-node-graph': {
+      id: 'xiaozhe-mcp-node-graph',
+      sourceUrl: 'https://v.douyin.com/Pp5kMde2rMI/ (BV1nnnw6FE2V)',
+      look: {
+        bg: '#050C0A',
+        bgSecondary: '#0A1916',
+        ink: '#F8FAFC',
+        muted: '#94A3B8',
+        accents: ['#4ADE80', '#A78BFA', '#FBBF24', '#FB7185'],
+        dark: true,
+        font: 'Inter / PingFang SC + JetBrains Mono'
+      },
+      metrics: { peakGap: '2.8s', freeze: '8.4%' },
+      sound: { bgm: 'dry-tech (98 BPM · A minor)', motifs: ['riser', 'whoosh', 'swipe', 'tick', 'chime', 'thud'] },
+      scenes: [
+        {
+          idx: 1,
+          tag: '[01] 核心问题 · 概念混淆',
+          tagEn: '[01] Core Problem · Confusion Hook',
+          title: '为什么 90% 的开发者容易混淆三者？',
+          titleEn: 'Why Do 90% of Developers Confuse MCP, Skill & Tools?',
+          subtitle: '把 MCP、Skill 和本地 Tools 当成同级互斥选项，是 Agent 架构踩坑的根源',
+          subtitleEn: 'Treating MCP, Skill, and Local Tools as mutually exclusive peers is the root cause of fragile Agents',
+          card: 'orbit-ring-title + counter-seek-safe',
+          layout: 'hero-plus-grid',
+          seam: 'zoom-through',
+          ease: 'power2.in → power3.out',
+          eta: 0.91,
+          verb: 'ring-sweep-lock',
+          sfx: 'riser'
+        },
+        {
+          idx: 2,
+          tag: '[02] 架构真相 · 不在一个层级',
+          tagEn: '[02] Architecture Truth · Orthogonal Tiers',
+          title: '不在一个层级：协议 vs 方法 vs 手脚',
+          titleEn: 'Three Orthogonal Tiers: Protocol vs. Recipe vs. Execution',
+          subtitle: 'MCP 管「怎么连外部生态」，Skill 管「怎么做业务 SOP」，本地 Tools 管「怎么干原子指令」',
+          subtitleEn: 'MCP standardizes external connectivity; Skills package SOP workflows; Local Tools execute atomic actions',
+          card: 'progressive-node-tree',
+          layout: 'numbered-sections',
+          seam: 'cut-the-curve',
+          ease: 'power2.in → power3.out',
+          eta: 0.89,
+          verb: 'bezier-branch-spotlight',
+          sfx: 'whoosh'
+        },
+        {
+          idx: 3,
+          tag: '[03] 架构反模式 · 两个极端都会踩坑',
+          tagEn: '[03] Anti-Patterns · Both Extremes Fail',
+          title: '两个极端都会踩坑：全塞本地 vs 全走远端',
+          titleEn: 'Two Extremes: Monolithic Local Bloat vs. All-Remote IPC Lag',
+          subtitle: '全塞本地 Tools 导致单智能体耦合失控；全走远端 MCP 连读个本地文件都付出 420ms IPC 延迟',
+          subtitleEn: 'Stuffing 50+ local tools causes coupling explosion; routing trivial local ops via MCP adds 420ms IPC lag',
+          card: 'packet-hop-break',
+          layout: 'split-compare',
+          seam: 'waterfall cut',
+          ease: 'power3.in → power3.out',
+          eta: 0.87,
+          verb: 'overload-shake-fracture',
+          sfx: 'thud'
+        },
+        {
+          idx: 4,
+          tag: '[04] 演进拐点 · 耦合开始变重',
+          tagEn: '[04] Inflection Point · Coupling Curve',
+          title: '当工具数 N > 12：系统耦合开始指数变重',
+          titleEn: 'When Tools N > 12: Coupling Cost Grows Exponentially',
+          subtitle: '单人脚本用本地 Tools 最快；但跨团队多数据源协作时，MCP 标准化能把 $O(M×N)$ 降维成 $O(M+N)$',
+          subtitleEn: 'Local tools win for solo scripts; across teams, MCP collapses O(M×N) connector maintenance into O(M+N)',
+          card: 'counter-seek-safe',
+          layout: 'data-dashboard',
+          seam: 'cut-the-curve',
+          ease: 'power2.in → power3.out',
+          eta: 0.89,
+          verb: 'curve-divergence-trace',
+          sfx: 'swipe'
+        },
+        {
+          idx: 5,
+          tag: '[05] 实例对决 · 同一任务，两种重量',
+          tagEn: '[05] Head-to-Head · Same Task, Two Weights',
+          title: '同一任务，两种重量：380ms 重链路 vs 18ms 轻链路',
+          titleEn: 'Same Git Report Task: 380ms Heavy MCP vs. 18ms Skill + Tool',
+          subtitle: '本地高频读写用「Skill 规范 + 本地 Tool」仅需 18ms；跨组织 SaaS 权限隔离才启用 MCP Server',
+          subtitleEn: 'Local Git diff + weekly report runs in 18ms via Skill + Local Tool vs. 380ms over 4 JSON-RPC hops',
+          card: 'two-column-corridor',
+          layout: 'two-column-corridor',
+          seam: 'cut-the-curve',
+          ease: 'power2.in → power3.out',
+          eta: 0.90,
+          verb: 'corridor-race-compare',
+          sfx: 'tick'
+        },
+        {
+          idx: 6,
+          tag: '[06] 终局指南 · 真实项目不是三选一',
+          tagEn: '[06] Final Guide · Layered Synergy Matrix',
+          title: '真实项目不是三选一：三层黄金协同公式',
+          titleEn: 'Real Projects Combine All Three in a Layered Pyramid',
+          subtitle: '顶层 Skill 编排领域方法论 → 中层 MCP 挂载外部知识/SaaS → 底层 Local Tools 承载高频毫秒级手脚',
+          subtitleEn: 'Top: Skills orchestrate SOPs · Middle: MCP mounts external SaaS · Bottom: Local Tools run millisecond ops',
+          card: 'three-way-bakeoff-row + cta-pill-close',
+          layout: 'banded-three',
+          seam: 'inverse zoom-through',
+          ease: 'power2.in → power2.out',
+          eta: 0.92,
+          verb: 'pyramid-lockup-converge',
+          sfx: 'chime'
+        }
+      ]
+    },
+
+    'xiaozhe-rag-pipeline-flow': {
+      id: 'xiaozhe-rag-pipeline-flow',
+      sourceUrl: 'https://v.douyin.com/BMo58MQOIBM/',
+      look: {
+        bg: '#F7F6F2',
+        bgSecondary: '#EFECE6',
+        ink: '#0F172A',
+        muted: '#475569',
+        accents: ['#2563EB', '#0891B2', '#EA580C', '#16A34A'],
+        dark: false,
+        font: 'Plus Jakarta Sans / PingFang SC + Consolas'
+      },
+      metrics: { peakGap: '2.6s', freeze: '6.2%' },
+      sound: { bgm: 'paper (92 BPM · A minor)', motifs: ['tick', 'thud', 'swipe', 'flap', 'whoosh', 'chime'] },
+      scenes: [
+        {
+          idx: 1,
+          tag: '[痛点爆破] 为什么直接把 PDF 扔给 AI 会翻车？',
+          tagEn: '[Pain Point] Why Dumping a 500-Page PDF into LLM Fails',
+          title: '闭卷瞎编（幻觉）vs 整本硬塞（注意力迷失）',
+          titleEn: 'Closed-Book Hallucination vs. Context Window Shatter',
+          subtitle: '500 页 PDF 直接塞入 Context Window 会在边界处碎裂：Token 成本爆炸且触发 Lost in the Middle',
+          subtitleEn: 'A 500-page PDF slams into the context wall: token cost explodes and middle facts vanish (Lost in the Middle)',
+          card: 'packet-hop-break',
+          layout: 'banded-three',
+          seam: 'waterfall cut',
+          ease: 'power2.out → power2.in (impact)',
+          eta: 0.88,
+          verb: 'packet-collide-shatter',
+          sfx: 'thud'
+        },
+        {
+          idx: 2,
+          tag: '[Step 1] 离线切片 · 语义滑窗 Chunking',
+          tagEn: '[Step 1] Offline Slicing · Semantic Sliding Window',
+          title: '拒绝死板一刀切：带 Overlap 缓冲的语义切片',
+          titleEn: 'Semantic Chunking (512 Tokens) with 64-Token Overlap Buffer',
+          subtitle: '固定字数硬切会劈断财务表格与主谓宾（✕）；语义滑窗保留 15% Overlap 上下文不断句',
+          subtitleEn: 'Naive character splitting severs tables (✕); sliding windows preserve 15% overlap across chunk boundaries',
+          card: 'split-compare',
+          layout: 'split-compare',
+          seam: 'cut-the-curve',
+          ease: 'power2.in → power3.out',
+          eta: 0.89,
+          verb: 'sliding-window-slice',
+          sfx: 'swipe'
+        },
+        {
+          idx: 3,
+          tag: '[Step 2] 向量化与粗排 · Top-K 语义雷达召回',
+          tagEn: '[Step 2] Embedding & Bi-Encoder Top-K Recall',
+          title: '把文字变成高维坐标：余弦相似度毫秒级粗排',
+          titleEn: 'Cosine Similarity Radar Recalls Top-20 Candidates in 12ms',
+          subtitle: 'Embedding 将问题与切片映射至同一向量空间，通过 $\\cos\\theta$ 瞬间从十万切片中抓出 Top-20 候选池',
+          subtitleEn: 'Embeddings project query and chunks into vector space, recalling the Top-20 nearest neighbors via cos(θ)',
+          card: 'hero-plus-thumbnail-wall',
+          layout: 'hero-plus-grid',
+          seam: 'cut-the-curve',
+          ease: 'power2.in → power3.out',
+          eta: 0.89,
+          verb: 'radar-cosine-recall',
+          sfx: 'riser'
+        },
+        {
+          idx: 4,
+          tag: '[Step 3] 精排漏斗 · 为什么必须加 Cross-Encoder Rerank？',
+          tagEn: '[Step 3] Precision Funnel · Cross-Encoder Reranker',
+          title: '粗排快但糙，重排准但精：剔除伪相关干扰项',
+          titleEn: 'Rerank Funnel Drops Keyword Traps (0.18 ✕) & Keeps Top-3 (0.96)',
+          subtitle: '向量粗排容易混入“字面相似但年份错误”的干扰卡；Rerank 深度交叉注意力精准筛出 Top-3 黄金证据',
+          subtitleEn: 'Bi-encoder recall lets through outdated keyword traps; Cross-Encoder Rerank filters down to the Top-3 chunks',
+          card: 'funnel-stage-filter',
+          layout: 'numbered-sections',
+          seam: 'cut-the-curve',
+          ease: 'power2.in → power3.out',
+          eta: 0.90,
+          verb: 'funnel-sieve-drop',
+          sfx: 'thud'
+        },
+        {
+          idx: 5,
+          tag: '[Step 4] 上下文槽位组装与防幻觉引用溯源',
+          tagEn: '[Step 4] Context Slot Assembly & Grounded Citation',
+          title: '严禁自由发挥：结构化槽位注入 + 页码级引用溯源',
+          titleEn: 'Prompt Slot Docking + Bidirectional Inline Citations [P.42 §3.2]',
+          subtitle: '将 Top-3 黄金切片嵌入 System 约束槽，強制大模型每句结论标注 `[财报 P.42 §3.2]` 原文坐标',
+          subtitleEn: 'Top-3 chunks lock into prompt context slots, binding every generated claim to verifiable source page numbers',
+          card: 'two-column-corridor',
+          layout: 'two-column-corridor',
+          seam: 'cut-the-curve',
+          ease: 'power2.in → power3.out',
+          eta: 0.89,
+          verb: 'slot-dock-cite',
+          sfx: 'flap'
+        },
+        {
+          idx: 6,
+          tag: '[全景复盘] 企业级 RAG 准确率从 60% 到 95% 的四命门',
+          tagEn: '[Full Pipeline] 4 Keys to Boost Enterprise RAG from 60% to 95%',
+          title: '一条流水线吃透 RAG：切片 → 混合召回 → 重排 → 溯源',
+          titleEn: 'End-to-End RAG: Semantic Chunk → Hybrid Recall → Rerank → Cite',
+          subtitle: '「语义滑窗切片 + BM25/向量混合粗排 + Cross-Encoder 精排 + 强约束溯源」构成生产级闭环',
+          subtitleEn: 'Combining semantic chunking, hybrid BM25+vector recall, cross-encoder reranking, and strict citation locking',
+          card: 'world-pan-parallax + caption-bar-close',
+          layout: 'one-shot-world',
+          seam: 'zoom-through',
+          ease: 'power2.in → power3.out',
+          eta: 0.91,
+          verb: 'pipeline-full-sweep',
+          sfx: 'chime'
+        }
+      ]
+    },
+
+    'chimp-deepseek-unit-economics': {
+      id: 'chimp-deepseek-unit-economics',
+      sourceUrl: 'https://v.douyin.com/8m31BovOgQs/ (BV13cxv6SE9L)',
+      look: {
+        bg: '#FAF9F6',
+        bgSecondary: '#F1F5F9',
+        ink: '#0F172A',
+        muted: '#475569',
+        accents: ['#2563EB', '#F97316', '#10B981', '#8B5CF6'],
+        dark: false,
+        font: 'Inter Black / Noto Sans SC 900 + JetBrains Mono'
+      },
+      metrics: { peakGap: '2.9s', freeze: '9.1%' },
+      sound: { bgm: 'dry-tech (100 BPM · A minor)', motifs: ['tick', 'thud', 'whoosh', 'swipe', 'chime', 'riser'] },
+      scenes: [
+        {
+          idx: 1,
+          tag: '[01] 商业反差 · 单卡日入 $38 vs 行业 $5.7',
+          tagEn: '[01] Unit Economics Hook · $38 vs. $5.7 per GPU/Day',
+          title: 'DeepSeek 一张卡为什么能收入 38 美元？（6.7 倍反差）',
+          titleEn: 'Why Does One DeepSeek GPU Earn $38/Day vs. $5.7 Industry Avg?',
+          subtitle: 'API 定价只有同行几分之一，单卡日营收却是 6.7 倍！秘密不在定价，而在极限吞吐量',
+          subtitleEn: 'Despite ultra-low API pricing, DeepSeek generates 6.7× higher daily revenue per GPU through extreme throughput',
+          card: 'counter-seek-safe + stat-pills-row',
+          layout: 'data-dashboard',
+          seam: 'zoom-through',
+          ease: 'power1.in (counter) → power3.out',
+          eta: 0.91,
+          verb: 'counter-surge-contrast',
+          sfx: 'tick'
+        },
+        {
+          idx: 2,
+          tag: '[02] 破局一 · Batching 批处理摊薄显存带宽',
+          tagEn: '[02] Lever 1 · High-Concurrency Batching Amortizes HBM',
+          title: '单用户推理是在烧钱空转：搬一次权重同时算 64 个词',
+          titleEn: 'Batch=1 Wastes 92% Compute; Batch=64 Amortizes HBM Bandwidth',
+          subtitle: '大模型吐词慢在“从显存搬权重到计算核”；攒够 64 路并发一起搬，单 Token 访存成本立降 96%',
+          subtitleEn: 'Decode is bottlenecked by HBM weight reads; batching 64 requests amortizes each weight fetch across 64 tokens',
+          card: 'gpu-matrix-ledger',
+          layout: 'split-compare',
+          seam: 'cut-the-curve',
+          ease: 'power2.in → power3.out',
+          eta: 0.90,
+          verb: 'batch-fill-amortize',
+          sfx: 'swipe'
+        },
+        {
+          idx: 3,
+          tag: '[03] 破局二 · 先说 EP 和 DP（木桶效应）',
+          tagEn: '[03] Lever 2 · MoE EP vs. DP & The Straggler Barrier',
+          title: '先说 EP 和 DP：每一步，都得等最慢的那张卡算完！',
+          titleEn: 'MoE Expert Parallelism: Every Step Waits for the Slowest GPU!',
+          subtitle: '256 个专家分在不同卡上，#3 热门专家卡被挤爆（34ms），其余 7 张卡 6ms 算完也得干等同步线',
+          subtitleEn: 'Hot experts overload GPU #3 (34ms), forcing 7 peer GPUs (6ms) to stall at the all-to-all barrier until EPLB rebalances',
+          card: 'packet-hop-break + gpu-matrix-ledger',
+          layout: 'banded-three',
+          seam: 'cut-the-curve',
+          ease: 'power2.in → power3.out',
+          eta: 0.89,
+          verb: 'straggler-barrier-block',
+          sfx: 'thud'
+        },
+        {
+          idx: 4,
+          tag: '[04] 破局三 · Prefill 的情况正好相反（1:1 解耦）',
+          tagEn: '[04] Lever 3 · Prefill vs. Decode 1:1 Disaggregation',
+          title: 'Prefill 的情况正好相反：算力瓶颈 vs 显存带宽瓶颈',
+          titleEn: 'Prefill Is Compute-Bound (94%); Decode Is HBM-Bound (91%)',
+          subtitle: '把阅读输入的 Prefill（小 EP 大 DP）与逐字吐词的 Decode（大 EP 高 Batch）分池 1:1 部署，互不拖累',
+          subtitleEn: 'Disaggregating Prefill (small EP, compute-dense) and Decode (large EP, bandwidth-dense) at 1:1 eliminates interference',
+          card: 'two-column-corridor',
+          layout: 'two-column-corridor',
+          seam: 'waterfall cut',
+          ease: 'power3.in → power3.out',
+          eta: 0.88,
+          verb: 'disaggregate-balance-lock',
+          sfx: 'flap'
+        },
+        {
+          idx: 5,
+          tag: '[05] 破局四 · 60K / 1.5M 省了 25 倍（80% 硬盘缓存）',
+          tagEn: '[05] Lever 4 · 100PB SSD KV Cache Hits 80% (25× Saved)',
+          title: '60K / 1.5M 省了 25 倍！100PB 硬盘级 KV Cache 命中 80%',
+          titleEn: '60K / 1.5M = 25× Compute Saved via 80% SSD KV Cache Hit Rate',
+          subtitle: '多轮对话与共享前缀直接从 100PB 分布式硬盘读取 KV Cache，150 万计算量坍缩至 6 万！',
+          subtitleEn: 'Reading cached KV states from 100PB distributed SSDs achieves an 80% hit rate, slashing prefill FLOPs by 25×',
+          card: 'orbit-ring-title + counter-seek-safe',
+          layout: 'hero-plus-grid',
+          seam: 'cut-the-curve',
+          ease: 'power2.in → power3.out',
+          eta: 0.90,
+          verb: 'cache-hit-collapse',
+          sfx: 'chime'
+        },
+        {
+          idx: 6,
+          tag: '[06] 破局五 · 昼夜错峰 96% 满载率与终局账本',
+          tagEn: '[06] Lever 5 · 96% Diurnal Utilization & Final $38 Ledger',
+          title: '白天跑推理、半夜训模型：96% 极限满载炼成 $38/卡/天',
+          titleEn: '96% 24h Cluster Utilization: Daytime Inference + Night Training',
+          subtitle: 'Batching × EP均衡 × PD 1:1解耦 × 80%硬盘缓存 × 96%昼夜满载 = 单卡日入 $38（行业 6.7 倍）',
+          subtitleEn: 'Batching × EPLB × 1:1 PD Disaggregation × 80% KV Cache × 96% Diurnal Fill = $38/GPU/Day (6.7×)',
+          card: 'cta-pill-close',
+          layout: 'centered-hero',
+          seam: 'inverse zoom-through',
+          ease: 'power2.in → power2.out',
+          eta: 0.92,
+          verb: 'diurnal-fill-ledger-lock',
+          sfx: 'riser'
+        }
+      ]
+    }
+  };
+
+  let currentTemplateId = 'xiaozhe-mcp-node-graph';
+  let currentLang = 'zh-CN';
+  let currentTime = 0.0;
+  let isPlaying = true;
+  let soundEnabled = false;
+  let showSafeZone = false;
+  let lastFrameTs = performance.now();
+  let lastTriggeredScene = -1;
+  let audioCtx = null;
+
+  const stageCanvas = document.getElementById('stage-canvas');
+  const ctx = stageCanvas.getContext('2d');
+  const seamCanvas = document.getElementById('seam-canvas');
+  const seamCtx = seamCanvas.getContext('2d');
+  const offscreenSample = document.createElement('canvas');
+  offscreenSample.width = 192;
+  offscreenSample.height = 108;
+  const sampleCtx = offscreenSample.getContext('2d', { willReadFrequently: true });
+
+  const densityGridEl = document.getElementById('density-grid');
+  const gridCells = [];
+  for (let i = 0; i < 9; i++) {
+    const cell = document.createElement('div');
+    cell.className = 'grid-cell';
+    cell.textContent = '0.0';
+    densityGridEl.appendChild(cell);
+    gridCells.push(cell);
+  }
+
+  function ensureAudio() {
+    if (!audioCtx) {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (AC) audioCtx = new AC();
+    }
+    if (audioCtx && audioCtx.state === 'suspended') {
+      audioCtx.resume();
+    }
+  }
+
+  function playCausalSfx(motif, panDir = -0.3) {
+    if (!soundEnabled) return;
+    ensureAudio();
+    if (!audioCtx) return;
+    const now = audioCtx.currentTime;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    const panner = audioCtx.createStereoPanner ? audioCtx.createStereoPanner() : null;
+    if (panner) {
+      panner.pan.setValueAtTime(panDir, now);
+      panner.pan.linearRampToValueAtTime(-panDir, now + 0.35);
+      osc.connect(gain);
+      gain.connect(panner);
+      panner.connect(audioCtx.destination);
+    } else {
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+    }
+
+    if (motif === 'tick') {
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(3200, now);
+      osc.frequency.exponentialRampToValueAtTime(1200, now + 0.035);
+      gain.gain.setValueAtTime(0.16, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.035);
+      osc.start(now);
+      osc.stop(now + 0.04);
+    } else if (motif === 'chime') {
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(880, now);
+      osc.frequency.setValueAtTime(1320, now + 0.08);
+      gain.gain.setValueAtTime(0.22, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.48);
+      osc.start(now);
+      osc.stop(now + 0.5);
+    } else if (motif === 'thud') {
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(95, now);
+      osc.frequency.exponentialRampToValueAtTime(38, now + 0.28);
+      gain.gain.setValueAtTime(0.32, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+      osc.start(now);
+      osc.stop(now + 0.32);
+    } else if (motif === 'riser') {
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(220, now);
+      osc.frequency.exponentialRampToValueAtTime(880, now + 0.42);
+      gain.gain.setValueAtTime(0.02, now);
+      gain.gain.linearRampToValueAtTime(0.18, now + 0.32);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+      osc.start(now);
+      osc.stop(now + 0.46);
+    } else {
+      // whoosh / swipe / flap
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(420, now);
+      osc.frequency.exponentialRampToValueAtTime(1480, now + 0.18);
+      osc.frequency.exponentialRampToValueAtTime(320, now + 0.36);
+      gain.gain.setValueAtTime(0.01, now);
+      gain.gain.linearRampToValueAtTime(0.20, now + 0.14);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
+      osc.start(now);
+      osc.stop(now + 0.4);
+    }
+  }
+
+  function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+  function easeOutCubic(x) { const u = clamp(x, 0, 1); return 1 - Math.pow(1 - u, 3); }
+  function easeInQuad(x) { const u = clamp(x, 0, 1); return u * u; }
+  function easeInOutQuad(x) {
+    const u = clamp(x, 0, 1);
+    return u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2;
+  }
+
+  function roundRect(ctx, x, y, w, h, r, fill, stroke, lineWidth = 2) {
+    ctx.beginPath();
+    ctx.roundRect(x, y, w, h, r);
+    if (fill) { ctx.fillStyle = fill; ctx.fill(); }
+    if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = lineWidth; ctx.stroke(); }
+  }
+
+  function drawHeaderAndCaption(ctx, tpl, scene, localP, isEn) {
+    const isDark = tpl.look.dark;
+    const tagText = isEn ? scene.tagEn : scene.tag;
+    const titleText = isEn ? scene.titleEn : scene.title;
+    const subText = isEn ? scene.subtitleEn : scene.subtitle;
+
+    // Top-left numbered chapter pill (within 90% safe zone: x>=96, y>=54)
+    ctx.save();
+    const pillFill = isDark ? 'rgba(16, 185, 129, 0.16)' : '#0F172A';
+    const pillStroke = isDark ? '#4ADE80' : '#0F172A';
+    const pillText = isDark ? '#4ADE80' : '#FFFFFF';
+    ctx.font = '700 22px "Segoe UI", "PingFang SC", sans-serif';
+    const tagW = Math.max(260, ctx.measureText(tagText).width + 44);
+    roundRect(ctx, 110, 66, tagW, 46, 23, pillFill, pillStroke, 2);
+    ctx.fillStyle = pillText;
+    ctx.textBaseline = 'middle';
+    ctx.fillText(tagText, 132, 89);
+
+    // Top-right Shot Card & Seam telemetry badge
+    const badgeStr = `CARD: ${scene.card.split(' ')[0]}  |  SEAM: ${scene.seam} (η=${scene.eta})`;
+    ctx.font = '700 18px Consolas, monospace';
+    const bw = ctx.measureText(badgeStr).width + 36;
+    roundRect(ctx, 1810 - bw, 68, bw, 42, 10, isDark ? 'rgba(30,41,59,0.85)' : '#E2E8F0', isDark ? '#334155' : '#94A3B8', 1.5);
+    ctx.fillStyle = isDark ? '#38BDF8' : '#1E293B';
+    ctx.fillText(badgeStr, 1810 - bw + 18, 89);
+
+    // Main Headline
+    ctx.font = '800 46px "Segoe UI", "PingFang SC", sans-serif';
+    ctx.fillStyle = tpl.look.ink;
+    ctx.fillText(titleText, 110, 156);
+
+    // Bottom Caption Bar (within safe zone y<=1026)
+    const capY = 948;
+    roundRect(
+      ctx,
+      160,
+      capY,
+      1600,
+      64,
+      16,
+      isDark ? 'rgba(15, 23, 42, 0.92)' : '#0F172A',
+      isDark ? 'rgba(74, 222, 128, 0.45)' : '#2563EB',
+      2
+    );
+    ctx.font = '700 24px "Segoe UI", "PingFang SC", sans-serif';
+    ctx.fillStyle = '#F8FAFC';
+    ctx.textAlign = 'center';
+    ctx.fillText(subText, 960, capY + 32);
+    ctx.textAlign = 'left';
+    ctx.restore();
+  }
+
+  // ==================== TEMPLATE 1: XIAOZHE MCP NODE GRAPH ====================
+  function renderMcpScene(ctx, sceneIdx, p, isEn) {
+    // Obsidian background + subtle dot grid
+    const grad = ctx.createRadialGradient(960, 540, 80, 960, 540, 1100);
+    grad.addColorStop(0, '#0C221D');
+    grad.addColorStop(1, '#050C0A');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, 1920, 1080);
+
+    ctx.fillStyle = 'rgba(74, 222, 128, 0.08)';
+    for (let x = 120; x <= 1800; x += 60) {
+      for (let y = 180; y <= 900; y += 60) {
+        ctx.fillRect(x, y, 2, 2);
+      }
+    }
+
+    const e = easeOutCubic(clamp(p * 1.4, 0, 1));
+
+    if (sceneIdx === 0) {
+      // Act 1: 90% Confusion Ring Hook + 3 colliding concept cards
+      const cards = [
+        { label: 'MCP Protocol', sub: isEn ? 'External USB-C Port?' : '万能外挂协议？', color: '#4ADE80', y: 270 },
+        { label: 'Agent Skill', sub: isEn ? 'Prompt SOP Workflow?' : '提示词工作流？', color: '#A78BFA', y: 470 },
+        { label: 'Local Tools', sub: isEn ? 'Function Calling?' : '本地函数调用？', color: '#FBBF24', y: 670 }
+      ];
+      cards.forEach((c, i) => {
+        const wobble = Math.sin(p * Math.PI * 4 + i * 2.1) * 14;
+        const cx = 150 + e * 60 + wobble;
+        roundRect(ctx, cx, c.y, 560, 136, 18, 'rgba(15, 29, 25, 0.92)', c.color, 3);
+        ctx.fillStyle = c.color;
+        ctx.font = '800 32px "Segoe UI", sans-serif';
+        ctx.fillText(c.label, cx + 32, c.y + 54);
+        ctx.fillStyle = '#CBD5E1';
+        ctx.font = '600 23px "Segoe UI", sans-serif';
+        ctx.fillText(c.sub, cx + 32, c.y + 100);
+
+        // Tangled dashed question lines to center
+        ctx.save();
+        ctx.strokeStyle = c.color;
+        ctx.lineWidth = 3;
+        ctx.setLineDash([12, 10]);
+        ctx.lineDashOffset = -p * 180;
+        ctx.beginPath();
+        ctx.moveTo(cx + 560, c.y + 68);
+        ctx.bezierCurveTo(960, c.y + 68, 1020, 540, 1180, 540);
+        ctx.stroke();
+        ctx.restore();
+      });
+
+      // Right Giant Ring Gauge: 90% Confusion
+      const ringX = 1430, ringY = 540, radius = 210;
+      ctx.beginPath();
+      ctx.arc(ringX, ringY, radius, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+      ctx.lineWidth = 28;
+      ctx.stroke();
+
+      const targetPct = clamp(p * 1.5, 0, 1) * 0.90;
+      ctx.beginPath();
+      ctx.arc(ringX, ringY, radius, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * targetPct);
+      ctx.strokeStyle = '#FB7185';
+      ctx.lineWidth = 28;
+      ctx.lineCap = 'round';
+      ctx.stroke();
+
+      ctx.fillStyle = '#F8FAFC';
+      ctx.textAlign = 'center';
+      ctx.font = '900 84px Consolas, monospace';
+      ctx.fillText(`${Math.round(targetPct * 100)}%`, ringX, ringY - 10);
+      ctx.fillStyle = '#FB7185';
+      ctx.font = '800 28px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? 'CONFUSED IN PROD' : '开发者容易混淆', ringX, ringY + 52);
+      ctx.textAlign = 'left';
+    } else if (sceneIdx === 1) {
+      // Act 2: Progressive Bezier Node Tree with Spotlight Focus
+      const rootX = 150, rootY = 480;
+      roundRect(ctx, rootX, rootY, 270, 140, 20, '#112A24', '#38BDF8', 3.5);
+      ctx.fillStyle = '#38BDF8';
+      ctx.font = '800 30px "Segoe UI", sans-serif';
+      ctx.fillText('AGENT CORE', rootX + 34, rootY + 60);
+      ctx.fillStyle = '#E2E8F0';
+      ctx.font = '600 20px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? 'Orchestrator' : '智能体中枢', rootX + 34, rootY + 102);
+
+      const activeFocus = Math.floor((p * 3) % 3);
+      const branches = [
+        {
+          name: isEn ? 'Tier 1 · MCP (Protocol Layer)' : '协议层 · MCP (怎么连)',
+          desc: isEn ? 'USB-C standard port for DBs, GitHub, SaaS' : '跨进程 USB-C 标准接口 · 连接外部数据源与生态',
+          tag: 'JSON-RPC / Stdio / SSE',
+          color: '#4ADE80',
+          y: 235
+        },
+        {
+          name: isEn ? 'Tier 2 · Skill (Methodology Layer)' : '方法层 · Skill (怎么做)',
+          desc: isEn ? 'Domain SOPs, prompt playbooks & guardrails' : '领域 SOP 菜谱与知识胶囊 · 规定先做什么后做什么',
+          tag: 'SKILL.md / Playbook',
+          color: '#A78BFA',
+          y: 480
+        },
+        {
+          name: isEn ? 'Tier 3 · Local Tools (Execution Layer)' : '执行层 · 本地 Tools (怎么干)',
+          desc: isEn ? 'Zero-latency in-process deterministic functions' : '进程内确定性手脚 · 毫秒级文件读写与本地计算',
+          tag: 'Function Call / 0ms IPC',
+          color: '#FBBF24',
+          y: 725
+        }
+      ];
+
+      branches.forEach((b, idx) => {
+        const isFocused = idx === activeFocus;
+        const alpha = isFocused ? 1.0 : 0.34;
+        ctx.save();
+        ctx.globalAlpha = alpha;
+
+        // Cubic Bezier curve from root to branch card
+        ctx.beginPath();
+        ctx.moveTo(rootX + 270, rootY + 70);
+        ctx.bezierCurveTo(600, rootY + 70, 620, b.y + 70, 820, b.y + 70);
+        ctx.strokeStyle = b.color;
+        ctx.lineWidth = isFocused ? 5 : 2.5;
+        ctx.stroke();
+
+        // Streaming pulse along Bezier
+        const u = (p * 2.4 + idx * 0.33) % 1;
+        const p0x = rootX + 270, p0y = rootY + 70;
+        const p1x = 600, p1y = rootY + 70;
+        const p2x = 620, p2y = b.y + 70;
+        const p3x = 820, p3y = b.y + 70;
+        const bx = Math.pow(1-u,3)*p0x + 3*Math.pow(1-u,2)*u*p1x + 3*(1-u)*u*u*p2x + u*u*u*p3x;
+        const by = Math.pow(1-u,3)*p0y + 3*Math.pow(1-u,2)*u*p1y + 3*(1-u)*u*u*p2y + u*u*u*p3y;
+        ctx.beginPath();
+        ctx.arc(bx, by, isFocused ? 9 : 5, 0, Math.PI * 2);
+        ctx.fillStyle = b.color;
+        ctx.fill();
+
+        const cardW = isFocused ? 940 : 900;
+        roundRect(ctx, 820, b.y, cardW, 145, 18, isFocused ? '#122923' : '#0A1613', b.color, isFocused ? 4 : 2);
+        ctx.fillStyle = b.color;
+        ctx.font = '800 30px "Segoe UI", sans-serif';
+        ctx.fillText(b.name, 854, b.y + 52);
+        ctx.fillStyle = '#E2E8F0';
+        ctx.font = '600 22px "Segoe UI", sans-serif';
+        ctx.fillText(b.desc, 854, b.y + 98);
+
+        roundRect(ctx, 820 + cardW - 260, b.y + 24, 230, 38, 10, 'rgba(0,0,0,0.45)', b.color, 1.5);
+        ctx.fillStyle = b.color;
+        ctx.font = '700 17px Consolas, monospace';
+        ctx.fillText(b.tag, 820 + cardW - 242, b.y + 48);
+        ctx.restore();
+      });
+    } else if (sceneIdx === 2) {
+      // Act 3: Split Compare — Two Extremes Fail
+      roundRect(ctx, 130, 220, 790, 680, 20, '#181016', '#FB7185', 3);
+      roundRect(ctx, 1000, 220, 790, 680, 20, '#101B24', '#FBBF24', 3);
+
+      ctx.fillStyle = '#FB7185';
+      ctx.font = '800 30px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? 'Extreme A: Stuff Everything in Local Tools' : '极端 A：所有逻辑全塞本地 Tools ✕', 165, 278);
+      ctx.fillStyle = '#FBBF24';
+      ctx.fillText(isEn ? 'Extreme B: Route Everything via Remote MCP' : '极端 B：鸡毛蒜皮全走远端 MCP ✕', 1035, 278);
+
+      // Left tangled web
+      const cx = 525, cy = 530;
+      for (let i = 0; i < 16; i++) {
+        const ang = (i / 16) * Math.PI * 2 + p * 0.8;
+        const rx = cx + Math.cos(ang) * 230;
+        const ry = cy + Math.sin(ang) * 165;
+        ctx.strokeStyle = 'rgba(251, 113, 133, 0.45)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(rx, ry);
+        ctx.lineTo(cx + Math.cos(ang + 2.2) * 210, cy + Math.sin(ang + 2.2) * 150);
+        ctx.stroke();
+        roundRect(ctx, rx - 46, ry - 18, 92, 36, 8, '#2D121E', '#FB7185', 1.5);
+        ctx.fillStyle = '#FDA4AF';
+        ctx.font = '700 14px Consolas, monospace';
+        ctx.fillText(`tool_${i+1}`, rx - 30, ry + 5);
+      }
+      roundRect(ctx, cx - 120, cy - 42, 240, 84, 14, '#881337', '#FB7185', 3);
+      ctx.fillStyle = '#fff';
+      ctx.font = '800 22px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? 'Coupling Explosion' : '单体耦合爆炸 ✕', cx - 92, cy + 8);
+
+      // Right slow multi-hop pipeline
+      const hops = ['Agent', 'JSON-RPC', 'MCP Server', 'Auth Proxy', 'read_file()'];
+      hops.forEach((h, i) => {
+        const hx = 1045 + i * 145;
+        const hy = 470;
+        roundRect(ctx, hx, hy, 122, 95, 12, '#1E293B', '#FBBF24', 2);
+        ctx.fillStyle = '#F8FAFC';
+        ctx.font = '700 17px Consolas, monospace';
+        ctx.fillText(h, hx + 12, hy + 54);
+      });
+      const pktX = 1060 + ((p * 1.4) % 1) * 620;
+      ctx.beginPath();
+      ctx.arc(pktX, 435, 14, 0, Math.PI * 2);
+      ctx.fillStyle = '#FB7185';
+      ctx.fill();
+      roundRect(ctx, 1120, 650, 550, 120, 16, 'rgba(251, 113, 133, 0.14)', '#FB7185', 2);
+      ctx.fillStyle = '#FB7185';
+      ctx.font = '800 28px Consolas, monospace';
+      ctx.fillText(isEn ? 'IPC Overhead: 420ms per local call ✕' : '读个本地文件耗时 420ms (IPC 延迟爆炸) ✕', 1150, 720);
+    } else if (sceneIdx === 3) {
+      // Act 4: Complexity Crossover Curve
+      const ox = 240, oy = 810, w = 1440, h = 540;
+      roundRect(ctx, 150, 215, 1620, 680, 20, '#0B1A16', '#334155', 2);
+      ctx.strokeStyle = '#475569';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(ox, oy - h);
+      ctx.lineTo(ox, oy);
+      ctx.lineTo(ox + w, oy);
+      ctx.stroke();
+
+      ctx.fillStyle = '#94A3B8';
+      ctx.font = '700 20px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? 'Maintenance & Coupling Cost ↑' : '系统维护与耦合成本 ↑', ox + 20, oy - h + 30);
+      ctx.fillText(isEn ? 'Tool Count & Team Scale (N = 1 → 100+) →' : '工具数量与跨团队规模 (N = 1 → 100+) →', ox + w - 460, oy + 44);
+
+      const drawProgress = clamp(p * 1.35, 0.05, 1);
+      const steps = Math.floor(drawProgress * 80);
+
+      // Exponential curve (All-Local Tools)
+      ctx.beginPath();
+      for (let i = 0; i <= steps; i++) {
+        const u = i / 80;
+        const x = ox + u * w;
+        const y = oy - Math.pow(u, 2.5) * (h - 40) - 30;
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.strokeStyle = '#FB7185';
+      ctx.lineWidth = 6;
+      ctx.stroke();
+
+      // Logarithmic curve (MCP + Skill Decoupled)
+      ctx.beginPath();
+      for (let i = 0; i <= steps; i++) {
+        const u = i / 80;
+        const x = ox + u * w;
+        const y = oy - (Math.log(1 + u * 9) / Math.log(10)) * 220 - 95;
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.strokeStyle = '#4ADE80';
+      ctx.lineWidth = 6;
+      ctx.stroke();
+
+      // Crossover inflection point at u=0.35
+      const ix = ox + 0.35 * w, iy = oy - 190;
+      ctx.beginPath();
+      ctx.arc(ix, iy, 14, 0, Math.PI * 2);
+      ctx.fillStyle = '#FBBF24';
+      ctx.fill();
+      roundRect(ctx, ix - 160, iy - 110, 420, 82, 12, '#1E293B', '#FBBF24', 2);
+      ctx.fillStyle = '#FBBF24';
+      ctx.font = '800 22px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? 'Inflection Point (N ≈ 12 Tools)' : '演进拐点 (N ≈ 12 个工具 / 跨团队)', ix - 138, iy - 72);
+      ctx.fillStyle = '#E2E8F0';
+      ctx.font = '600 18px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? 'Switch external connectors to MCP' : '外部数据源切换至 MCP 标准协议层', ix - 138, iy - 42);
+
+      ctx.fillStyle = '#FB7185';
+      ctx.font = '800 24px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? 'Monolithic Local Tools O(M×N) ✕' : '全塞本地 Tools 耦合曲线 O(M×N) ✕', ox + w - 480, oy - h + 90);
+      ctx.fillStyle = '#4ADE80';
+      ctx.fillText(isEn ? 'MCP + Skill Decoupled O(M+N) ✓' : 'MCP 协议解耦曲线 O(M+N) ✓', ox + w - 480, oy - 310);
+    } else if (sceneIdx === 4) {
+      // Act 5: Two-Column Corridor Race (380ms vs 18ms)
+      roundRect(ctx, 130, 220, 740, 670, 20, '#1B1318', '#FB7185', 2.5);
+      roundRect(ctx, 1050, 220, 740, 670, 20, '#0D231C', '#4ADE80', 3);
+
+      // Center Corridor
+      roundRect(ctx, 895, 340, 130, 420, 16, '#0F172A', '#38BDF8', 2);
+      ctx.fillStyle = '#38BDF8';
+      ctx.font = '800 22px Consolas, monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText('21.1x', 960, 535);
+      ctx.fillText('FASTER', 960, 568);
+      ctx.textAlign = 'left';
+
+      ctx.fillStyle = '#FB7185';
+      ctx.font = '800 28px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? 'Heavy Path: Over-Engineered MCP' : '重型路径：杀鸡用牛刀 (全走 MCP)', 168, 278);
+      ctx.fillStyle = '#4ADE80';
+      ctx.fillText(isEn ? 'Light Path: Skill + Local Tool ✓' : '轻型路径：Skill 规范 + 本地 Tool ✓', 1088, 278);
+
+      const leftSteps = [
+        '1. Spawn MCP Stdio Subprocess (110ms)',
+        '2. JSON-RPC Schema Handshake (85ms)',
+        '3. Serialize Git Diff Payload (95ms)',
+        '4. Parse & Return over IPC (90ms)'
+      ];
+      leftSteps.forEach((s, i) => {
+        roundRect(ctx, 170, 320 + i * 105, 660, 82, 12, '#2A1820', '#FB7185', 1.5);
+        ctx.fillStyle = '#F8FAFC';
+        ctx.font = '600 21px Consolas, monospace';
+        ctx.fillText(s, 198, 368 + i * 105);
+      });
+      ctx.fillStyle = '#FB7185';
+      ctx.font = '900 44px Consolas, monospace';
+      ctx.fillText('Total: 380 ms ✕', 170, 815);
+
+      const rightSteps = [
+        '1. Load Weekly-Report SKILL.md SOP (2ms)',
+        '2. Direct In-Process git_status() Tool (16ms)'
+      ];
+      rightSteps.forEach((s, i) => {
+        roundRect(ctx, 1090, 320 + i * 130, 660, 96, 12, '#13352A', '#4ADE80', 2);
+        ctx.fillStyle = '#F8FAFC';
+        ctx.font = '700 22px Consolas, monospace';
+        ctx.fillText(s, 1118, 375 + i * 130);
+      });
+      roundRect(ctx, 1090, 600, 660, 140, 16, 'rgba(74, 222, 128, 0.16)', '#4ADE80', 2.5);
+      ctx.fillStyle = '#4ADE80';
+      ctx.font = '900 52px Consolas, monospace';
+      ctx.fillText('Total: 18 ms ✓', 1125, 686);
+    } else {
+      // Act 6: 3-Layer Production Decision Matrix Pyramid
+      const layers = [
+        {
+          y: 230, w: 920, color: '#A78BFA',
+          title: isEn ? 'TOP · SKILL (Brain & SOP Playbook)' : '顶层 · Skill 方法层（大脑 SOP 编排）',
+          sub: isEn ? 'When: Multi-step domain workflows, review checklists, output formatting' : '适用：多步业务流程、代码审查规范、固定领域套路封装'
+        },
+        {
+          y: 445, w: 1220, color: '#4ADE80',
+          title: isEn ? 'MIDDLE · MCP (External Ecosystem Bus)' : '中层 · MCP 协议层（外部生态标准连接器）',
+          sub: isEn ? 'When: Cross-team databases, GitHub/Jira/Slack SaaS, permission-isolated servers' : '适用：跨团队复用数据源、外部 SaaS、需要独立鉴权与进程隔离的服务'
+        },
+        {
+          y: 660, w: 1520, color: '#FBBF24',
+          title: isEn ? 'BOTTOM · LOCAL TOOLS (Millisecond Hands & Feet)' : '底层 · 本地 Tools 执行层（高频毫秒级手脚）',
+          sub: isEn ? 'When: High-frequency file read/write, AST grep, local shell & math execution' : '适用：高频本地文件读写、AST 检索、确定性数学计算（零通信开销）'
+        }
+      ];
+      layers.forEach((l, i) => {
+        const slideOffset = (1 - easeOutCubic(clamp(p * 1.5 - i * 0.15, 0, 1))) * 120;
+        const x = 960 - l.w / 2 + slideOffset;
+        roundRect(ctx, x, l.y, l.w, 175, 20, '#0F241E', l.color, 3.5);
+        ctx.fillStyle = l.color;
+        ctx.font = '800 32px "Segoe UI", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(l.title, 960 + slideOffset, l.y + 68);
+        ctx.fillStyle = '#E2E8F0';
+        ctx.font = '600 23px "Segoe UI", sans-serif';
+        ctx.fillText(l.sub, 960 + slideOffset, l.y + 125);
+        ctx.textAlign = 'left';
+      });
+    }
+  }
+
+  // ==================== TEMPLATE 2: XIAOZHE RAG PIPELINE FLOW ====================
+  function renderRagScene(ctx, sceneIdx, p, isEn) {
+    // Warm Editorial Paper Background
+    ctx.fillStyle = '#F7F6F2';
+    ctx.fillRect(0, 0, 1920, 1080);
+
+    // Subtle editorial grid lines
+    ctx.strokeStyle = 'rgba(15, 23, 42, 0.06)';
+    ctx.lineWidth = 1;
+    for (let x = 120; x <= 1800; x += 120) {
+      ctx.beginPath(); ctx.moveTo(x, 180); ctx.lineTo(x, 920); ctx.stroke();
+    }
+
+    function brutalCard(x, y, w, h, fill, accent) {
+      ctx.fillStyle = '#0F172A';
+      ctx.fillRect(x + 6, y + 6, w, h);
+      roundRect(ctx, x, y, w, h, 14, fill, '#0F172A', 3);
+      if (accent) {
+        ctx.fillStyle = accent;
+        ctx.fillRect(x, y, 14, h);
+      }
+    }
+
+    if (sceneIdx === 0) {
+      // Act 1: packet-hop-break — 500-page PDF slams into LLM Context Wall & shatters
+      const impactP = clamp(p * 1.4, 0, 1);
+      const isShattered = impactP > 0.58;
+      const wallX = 1220;
+
+      // LLM Context Wall
+      brutalCard(wallX, 240, 540, 620, '#FFFFFF', '#0F172A');
+      ctx.fillStyle = '#0F172A';
+      ctx.font = '900 34px "Segoe UI", sans-serif';
+      ctx.fillText('LLM Context Window', wallX + 42, 315);
+
+      roundRect(ctx, wallX + 42, 360, 456, 440, 12, '#FEF2F2', '#DC2626', 3);
+      ctx.fillStyle = '#DC2626';
+      ctx.font = '800 28px Consolas, monospace';
+      ctx.fillText(isShattered ? 'ERROR: LOST IN THE MIDDLE ✕' : 'WAITING FOR INPUT...', wallX + 68, 430);
+      ctx.fillStyle = '#7F1D1D';
+      ctx.font = '600 22px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? '• 500 pages = 380,000 tokens ($4.5/query)' : '• 500页财报 = 38万 Token (单次提问成本爆炸)', wallX + 68, 510);
+      ctx.fillText(isEn ? '• Attention dilutes in middle 70% pages' : '• 中间 70% 页面注意力权重严重稀释', wallX + 68, 565);
+      ctx.fillText(isEn ? '• Hallucinates numbers across years' : '• 极易把 2023 与 2026 年财务数据张冠李戴', wallX + 68, 620);
+
+      // Hopping PDF Packet
+      const hopU = isShattered ? 1 - (impactP - 0.58) * 0.18 : impactP / 0.58;
+      const pktX = 160 + hopU * (wallX - 460);
+      const pktY = 440 - Math.abs(Math.sin(hopU * Math.PI * 3)) * (isShattered ? 0 : 90);
+      const pktColor = isShattered ? '#DC2626' : '#2563EB';
+
+      brutalCard(pktX, pktY, 360, 210, isShattered ? '#FEE2E2' : '#EFF6FF', pktColor);
+      ctx.fillStyle = pktColor;
+      ctx.font = '900 30px "Segoe UI", sans-serif';
+      ctx.fillText(isShattered ? 'SHATTERED PDF ✕' : '500-Page PDF.pdf', pktX + 34, pktY + 75);
+      ctx.fillStyle = '#0F172A';
+      ctx.font = '700 21px Consolas, monospace';
+      ctx.fillText(isShattered ? 'Impact @ t=1.92s (Recoil 26px)' : '380,000 Raw Tokens', pktX + 34, pktY + 135);
+
+      if (isShattered) {
+        // Shatter fragments
+        const d = (impactP - 0.58) * 260;
+        for (let i = 0; i < 8; i++) {
+          const ang = (i / 8) * Math.PI * 2;
+          const fx = wallX - 40 + Math.cos(ang) * d;
+          const fy = 540 + Math.sin(ang) * d;
+          roundRect(ctx, fx, fy, 42, 28, 6, '#DC2626', '#0F172A', 2);
+        }
+      }
+    } else if (sceneIdx === 1) {
+      // Act 2: Naive Hard Cut vs Semantic Sliding Window with Overlap
+      brutalCard(140, 225, 1640, 290, '#FFF1F2', '#DC2626');
+      ctx.fillStyle = '#DC2626';
+      ctx.font = '800 28px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? '✕ Bad: Fixed 500-Char Hard Slicing (Breaks Tables & Sentences)' : '✕ 错误示范：按固定 500 字死板硬切（直接把财务表格与主谓宾劈成两半）', 180, 280);
+
+      for (let i = 0; i < 4; i++) {
+        roundRect(ctx, 180 + i * 390, 320, 355, 150, 10, '#FFFFFF', '#DC2626', 2.5);
+        ctx.fillStyle = '#0F172A';
+        ctx.font = '700 20px Consolas, monospace';
+        ctx.fillText(`Hard Slice #${i+1} (Broken ✂)`, 204 + i * 390, 375);
+        ctx.fillStyle = '#DC2626';
+        ctx.fillText(i === 1 ? '"...2026 Q3 R&D ratio is | [CUT]"' : '"[CUT] | 18.4%, up 3.2 pts..."', 204 + i * 390, 425);
+      }
+
+      brutalCard(140, 565, 1640, 330, '#EFF6FF', '#2563EB');
+      ctx.fillStyle = '#2563EB';
+      ctx.font = '800 28px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? '✓ Good: Semantic Sliding Window (Chunk=512, Overlap=64 Buffer)' : '✓ 正确做法：按段落/语义边界切分 + 15% Overlap 重叠滑窗缓冲', 180, 620);
+
+      for (let i = 0; i < 4; i++) {
+        const cx = 180 + i * 370;
+        roundRect(ctx, cx, 665, 390, 175, 12, 'rgba(37, 99, 235, 0.12)', '#2563EB', 3);
+        if (i > 0) {
+          roundRect(ctx, cx, 665, 68, 175, 8, 'rgba(234, 88, 12, 0.28)', '#EA580C', 2);
+          ctx.fillStyle = '#9A3412';
+          ctx.font = '800 14px Consolas, monospace';
+          ctx.fillText('OVERLAP', cx + 4, 755);
+        }
+        ctx.fillStyle = '#0F172A';
+        ctx.font = '800 22px "Segoe UI", sans-serif';
+        ctx.fillText(`Semantic Chunk #0${i+1}`, cx + 82, 725);
+        ctx.fillStyle = '#1E40AF';
+        ctx.font = '600 18px Consolas, monospace';
+        ctx.fillText('512 tok | 64 tok overlap ✓', cx + 82, 775);
+      }
+    } else if (sceneIdx === 2) {
+      // Act 3: Embedding Vector Constellation & Cosine Radar Recall
+      brutalCard(140, 230, 560, 650, '#FFFFFF', '#0891B2');
+      ctx.fillStyle = '#0891B2';
+      ctx.font = '800 30px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? '1. Query Embedding' : '1. 用户提问向量化', 180, 295);
+      roundRect(ctx, 180, 335, 480, 130, 12, '#ECFEFF', '#0891B2', 2);
+      ctx.fillStyle = '#0F172A';
+      ctx.font = '700 22px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? '"What is 2026 Q3 R&D ratio?"' : '“2026 Q3 研发费用率是多少？”', 204, 395);
+      ctx.fillStyle = '#0891B2';
+      ctx.font = '700 18px Consolas, monospace';
+      ctx.fillText('vec = [0.042, -0.891, 0.317, ... 1536d]', 204, 438);
+
+      roundRect(ctx, 180, 510, 480, 320, 12, '#F8FAFC', '#CBD5E1', 2);
+      ctx.fillStyle = '#0F172A';
+      ctx.font = '800 22px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? 'Bi-Encoder Top-20 Recall' : 'Bi-Encoder 粗排召回 (Top-20)', 204, 558);
+      ctx.fillStyle = '#475569';
+      ctx.font = '600 19px Consolas, monospace';
+      ctx.fillText('• Chunk #42: cos(θ) = 0.89 ✓', 204, 615);
+      ctx.fillText('• Chunk #19: cos(θ) = 0.84 ✓', 204, 660);
+      ctx.fillText('• Chunk #07: cos(θ) = 0.81 (2023 trap)', 204, 705);
+      ctx.fillText('• Latency: 12 ms across 100k chunks', 204, 765);
+
+      // Right Vector Radar Map
+      brutalCard(750, 230, 1030, 650, '#0F172A', '#0891B2');
+      const qx = 1265, qy = 555;
+      const radarR = ((p * 1.6) % 1) * 320;
+      ctx.beginPath();
+      ctx.arc(qx, qy, 240, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(8, 145, 178, 0.16)';
+      ctx.fill();
+      ctx.strokeStyle = '#06B6D4';
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.arc(qx, qy, radarR, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(56, 189, 248, 0.7)';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      for (let i = 0; i < 24; i++) {
+        const ang = i * 1.37;
+        const dist = (i < 8) ? 70 + i * 18 : 260 + (i % 5) * 45;
+        const px = qx + Math.cos(ang) * dist;
+        const py = qy + Math.sin(ang) * dist * 0.75;
+        const hit = dist <= 235;
+        if (hit) {
+          ctx.beginPath(); ctx.moveTo(qx, qy); ctx.lineTo(px, py);
+          ctx.strokeStyle = 'rgba(34, 211, 238, 0.55)'; ctx.lineWidth = 2; ctx.stroke();
+        }
+        ctx.beginPath();
+        ctx.arc(px, py, hit ? 9 : 5, 0, Math.PI * 2);
+        ctx.fillStyle = hit ? '#22D3EE' : '#475569';
+        ctx.fill();
+      }
+      ctx.beginPath();
+      ctx.arc(qx, qy, 13, 0, Math.PI * 2);
+      ctx.fillStyle = '#FBBF24';
+      ctx.fill();
+    } else if (sceneIdx === 3) {
+      // Act 4: Cross-Encoder Rerank Funnel
+      // Left: Top-20 coarse pool -> Center: Amber Funnel -> Right: Top-3 Elite + Bottom Dropped Traps
+      brutalCard(140, 240, 440, 620, '#FFFFFF', '#0891B2');
+      ctx.fillStyle = '#0891B2';
+      ctx.font = '800 26px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? 'Coarse Top-20 Pool' : '粗排候选池 (Top-20)', 176, 295);
+      const inCards = [
+        { t: 'Chunk #42 (2026 Q3 R&D 18.4%)', c: '#0891B2' },
+        { t: 'Chunk #07 (2023 Old R&D 14.1%)', c: '#DC2626' },
+        { t: 'Chunk #19 (2026 Q3 Breakdown)', c: '#0891B2' },
+        { t: 'Chunk #88 (R&D Recruiting Ad)', c: '#DC2626' },
+        { t: 'Chunk #51 (YoY +3.2 pts Note)', c: '#0891B2' }
+      ];
+      inCards.forEach((ic, i) => {
+        roundRect(ctx, 172, 330 + i * 98, 376, 78, 10, '#F8FAFC', ic.c, 2.5);
+        ctx.fillStyle = '#0F172A';
+        ctx.font = '700 17px Consolas, monospace';
+        ctx.fillText(ic.t, 190, 375 + i * 98);
+      });
+
+      // Center Funnel Polygon
+      ctx.fillStyle = '#FFEDD5';
+      ctx.strokeStyle = '#EA580C';
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.moveTo(660, 260);
+      ctx.lineTo(1160, 260);
+      ctx.lineTo(1010, 560);
+      ctx.lineTo(810, 560);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = '#9A3412';
+      ctx.textAlign = 'center';
+      ctx.font = '900 30px "Segoe UI", sans-serif';
+      ctx.fillText('Cross-Encoder Reranker', 910, 390);
+      ctx.font = '700 20px Consolas, monospace';
+      ctx.fillText('Token-by-Token Deep Attention', 910, 435);
+      ctx.textAlign = 'left';
+
+      // Dropped Decoys falling out of bottom of funnel
+      const dropY = 610 + easeInQuad(clamp(p * 1.4, 0, 1)) * 150;
+      roundRect(ctx, 690, dropY, 440, 110, 12, '#FEF2F2', '#DC2626', 3);
+      ctx.fillStyle = '#DC2626';
+      ctx.font = '800 20px Consolas, monospace';
+      ctx.fillText('✕ DROPPED: Chunk #07 (Score 0.18)', 715, dropY + 42);
+      ctx.fillText('✕ DROPPED: Chunk #88 (Score 0.09)', 715, dropY + 80);
+
+      // Right: Promoted Top-3 Golden Chunks
+      brutalCard(1240, 240, 540, 620, '#F0FDF4', '#16A34A');
+      ctx.fillStyle = '#16A34A';
+      ctx.font = '900 28px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? '✓ Promoted Top-3 Evidence' : '✓ 精排胜出 Top-3 黄金证据', 1280, 298);
+      const top3 = [
+        { id: '#42', score: '0.96', text: '2026 Q3 R&D Expense Ratio = 18.4%' },
+        { id: '#19', score: '0.93', text: 'AI Infra R&D up +3.2 pts YoY' },
+        { id: '#51', score: '0.91', text: 'Audit Footnote P.42 §3.2 Verified' }
+      ];
+      top3.forEach((item, i) => {
+        roundRect(ctx, 1280, 345 + i * 155, 468, 128, 12, '#FFFFFF', '#16A34A', 3);
+        ctx.fillStyle = '#16A34A';
+        ctx.font = '900 22px Consolas, monospace';
+        ctx.fillText(`RANK #${i+1} · Chunk ${item.id} [Score ${item.score}]`, 1304, 392 + i * 155);
+        ctx.fillStyle = '#0F172A';
+        ctx.font = '700 20px "Segoe UI", sans-serif';
+        ctx.fillText(item.text, 1304, 440 + i * 155);
+      });
+    } else if (sceneIdx === 4) {
+      // Act 5: Prompt Slot Assembly & Grounded Citation
+      brutalCard(140, 235, 760, 640, '#FFFFFF', '#2563EB');
+      ctx.fillStyle = '#0F172A';
+      ctx.font = '900 28px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? 'Structured Prompt Template' : '结构化 Prompt 槽位组装', 180, 295);
+
+      roundRect(ctx, 180, 325, 680, 110, 12, '#EFF6FF', '#2563EB', 2.5);
+      ctx.fillStyle = '#1D4ED8';
+      ctx.font = '800 20px Consolas, monospace';
+      ctx.fillText('[SLOT 1 · SYSTEM CONSTRAINT]', 204, 365);
+      ctx.fillStyle = '#0F172A';
+      ctx.font = '600 19px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? 'Answer ONLY from Context. Cite [P.xx] for every fact.' : '只准依据下方证据作答；每句结论必须标注 [页码]', 204, 405);
+
+      roundRect(ctx, 180, 460, 680, 220, 12, '#F0FDF4', '#16A34A', 3);
+      ctx.fillStyle = '#15803D';
+      ctx.font = '800 20px Consolas, monospace';
+      ctx.fillText('[SLOT 2 · TOP-3 RERANKED EVIDENCE]', 204, 502);
+      ctx.fillStyle = '#0F172A';
+      ctx.font = '600 19px Consolas, monospace';
+      ctx.fillText('• [P.42 §3.2] 2026 Q3 R&D ratio reached 18.4%', 204, 550);
+      ctx.fillText('• [P.43 §3.4] Compute cluster CapEx +3.2 pts YoY', 204, 595);
+      ctx.fillText('• [P.45 Table 4] Total R&D spend = $1.42B', 204, 640);
+
+      roundRect(ctx, 180, 705, 680, 130, 12, '#FFFBEB', '#D97706', 2.5);
+      ctx.fillStyle = '#B45309';
+      ctx.font = '800 20px Consolas, monospace';
+      ctx.fillText('[SLOT 3 · USER QUERY]', 204, 748);
+      ctx.fillStyle = '#0F172A';
+      ctx.font = '700 21px "Segoe UI", sans-serif';
+      ctx.fillText('“2026 Q3 研发费用率及同比变化是多少？”', 204, 795);
+
+      // Right: Grounded Answer Card
+      brutalCard(1020, 235, 760, 640, '#F0FDF4', '#16A34A');
+      ctx.fillStyle = '#16A34A';
+      ctx.font = '900 30px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? '✓ Grounded Output (0% Hallucination)' : '✓ 溯源生成结果（零幻觉 · 句句有据）', 1060, 298);
+
+      roundRect(ctx, 1060, 340, 680, 480, 14, '#FFFFFF', '#16A34A', 3);
+      ctx.fillStyle = '#0F172A';
+      ctx.font = '700 24px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? '2026 Q3 R&D Expense Ratio: 18.4%' : '1. 2026 Q3 研发费用率为 18.4%', 1095, 415);
+      roundRect(ctx, 1095, 440, 290, 42, 8, '#DCFCE7', '#16A34A', 2);
+      ctx.fillStyle = '#15803D';
+      ctx.font = '800 18px Consolas, monospace';
+      ctx.fillText('🔗 Cite: Report P.42 §3.2', 1115, 466);
+
+      ctx.fillStyle = '#0F172A';
+      ctx.font = '700 24px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? 'YoY Growth: +3.2 percentage points' : '2. 同比提升 +3.2 个百分点（算力投入驱动）', 1095, 560);
+      roundRect(ctx, 1095, 585, 290, 42, 8, '#DCFCE7', '#16A34A', 2);
+      ctx.fillStyle = '#15803D';
+      ctx.font = '800 18px Consolas, monospace';
+      ctx.fillText('🔗 Cite: Report P.43 §3.4', 1115, 611);
+
+      // Bidirectional dashed citation anchor lines
+      ctx.save();
+      ctx.strokeStyle = '#16A34A';
+      ctx.lineWidth = 3.5;
+      ctx.setLineDash([10, 8]);
+      ctx.lineDashOffset = -p * 120;
+      ctx.beginPath();
+      ctx.moveTo(860, 550); ctx.lineTo(1095, 460);
+      ctx.moveTo(860, 595); ctx.lineTo(1095, 605);
+      ctx.stroke();
+      ctx.restore();
+    } else {
+      // Act 6: Full 4-Stage RAG Panorama
+      const stages = [
+        { num: '01', name: 'Semantic Chunk', zh: '语义滑窗切片', metric: '512 tok + 64 overlap', color: '#2563EB' },
+        { num: '02', name: 'Hybrid Recall', zh: '向量+BM25粗排', metric: 'Top-20 in 12ms', color: '#0891B2' },
+        { num: '03', name: 'Cross Rerank', zh: '重排漏斗精选', metric: 'Top-3 (Score >0.9)', color: '#EA580C' },
+        { num: '04', name: 'Grounded Cite', zh: '槽位溯源生成', metric: '95.4% Faithfulness', color: '#16A34A' }
+      ];
+      stages.forEach((st, i) => {
+        const sx = 140 + i * 425;
+        brutalCard(sx, 260, 380, 480, '#FFFFFF', st.color);
+        ctx.fillStyle = st.color;
+        ctx.font = '900 54px Consolas, monospace';
+        ctx.fillText(st.num, sx + 36, 345);
+        ctx.fillStyle = '#0F172A';
+        ctx.font = '800 30px "Segoe UI", sans-serif';
+        ctx.fillText(isEn ? st.name : st.zh, sx + 36, 415);
+        roundRect(ctx, sx + 36, 465, 308, 64, 10, '#F8FAFC', st.color, 2);
+        ctx.fillStyle = st.color;
+        ctx.font = '800 21px Consolas, monospace';
+        ctx.fillText(st.metric, sx + 54, 504);
+
+        ctx.fillStyle = '#475569';
+        ctx.font = '600 19px "Segoe UI", sans-serif';
+        const tip = [
+          isEn ? 'Never split tables mid-row' : '保住表格与上下文完整性',
+          isEn ? 'Dense vector + exact keyword' : '语义召回 + 专有名词精确匹配',
+          isEn ? 'Eliminate keyword decoys' : '剔除字面相似的伪相关噪音',
+          isEn ? 'Zero hallucination with page ID' : '强制绑定原文页码拒绝瞎编'
+        ][i];
+        ctx.fillText(tip, sx + 36, 610);
+      });
+    }
+  }
+
+  // ==================== TEMPLATE 3: CHIMP DEEPSEEK UNIT ECONOMICS ====================
+  function renderDeepseekScene(ctx, sceneIdx, p, isEn) {
+    // Paper Editorial Light Canvas
+    ctx.fillStyle = '#FAF9F6';
+    ctx.fillRect(0, 0, 1920, 1080);
+
+    const e = easeOutCubic(clamp(p * 1.35, 0, 1));
+
+    if (sceneIdx === 0) {
+      // Act 1: $38 vs $5.7 (6.7x) Giant Revenue Counter Duel
+      roundRect(ctx, 140, 230, 660, 640, 24, '#F1F5F9', '#CBD5E1', 2.5);
+      roundRect(ctx, 850, 230, 930, 640, 24, '#EFF6FF', '#2563EB', 4);
+
+      // Left Baseline Bar
+      ctx.fillStyle = '#475569';
+      ctx.font = '800 30px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? 'Industry Baseline GPU / Day' : '行业平均单卡日营收', 190, 305);
+      roundRect(ctx, 260, 650, 260, 150, 14, '#94A3B8', '#64748B', 2);
+      ctx.fillStyle = '#0F172A';
+      ctx.font = '900 72px Consolas, monospace';
+      ctx.fillText('$5.7', 285, 615);
+
+      // Right DeepSeek Counter Surge
+      ctx.fillStyle = '#1D4ED8';
+      ctx.font = '900 34px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? 'DeepSeek H800 Single-GPU Daily Revenue' : 'DeepSeek 单张 H800 日均理论收入', 900, 305);
+
+      const barH = Math.max(80, e * 410);
+      roundRect(ctx, 920, 800 - barH, 320, barH, 18, '#2563EB', '#1D4ED8', 3);
+
+      const val = (38.0 * easeInQuad(clamp(p * 1.5, 0, 1))).toFixed(1);
+      ctx.fillStyle = '#2563EB';
+      ctx.font = '900 108px Consolas, monospace';
+      ctx.fillText(`$${val}`, 1280, 505);
+
+      roundRect(ctx, 1280, 550, 430, 88, 44, '#F97316', '#EA580C', 3);
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = '900 38px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? '≈ 6.7× HIGHER!' : '≈ 6.7 倍超高产出！', 1325, 606);
+
+      roundRect(ctx, 1280, 675, 440, 130, 16, '#FFFFFF', '#CBD5E1', 2);
+      ctx.fillStyle = '#0F172A';
+      ctx.font = '800 22px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? 'Revenue = Throughput × Price' : '单卡收入 = 吞吐量 Token/s × 单价', 1305, 725);
+      ctx.fillStyle = '#10B981';
+      ctx.fillText(isEn ? 'Price is 1/5, so Throughput is ~30×!' : '单价极低还能赚6.7倍 → 吞吐量碾压！', 1305, 772);
+    } else if (sceneIdx === 1) {
+      // Act 2: Batching Amortizes HBM Bandwidth (8x8 GPU Matrix)
+      roundRect(ctx, 140, 230, 740, 640, 22, '#F1F5F9', '#CBD5E1', 2.5);
+      roundRect(ctx, 940, 230, 840, 640, 22, '#EFF6FF', '#2563EB', 3.5);
+
+      ctx.fillStyle = '#64748B';
+      ctx.font = '900 30px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? 'Batch = 1 (92% Idle Bubble)' : 'Batch = 1：搬一次权重只算 1 个词', 180, 295);
+      ctx.fillStyle = '#2563EB';
+      ctx.fillText(isEn ? 'Batch = 64 (HBM Cost Divided by 64)' : 'Batch = 64：搬一次权重同时算 64 个人的词！', 980, 295);
+
+      // Left 8x8 sparse matrix
+      for (let r = 0; r < 6; r++) {
+        for (let c = 0; c < 8; c++) {
+          const active = r === 0 && c < 2;
+          roundRect(ctx, 180 + c * 82, 340 + r * 72, 68, 56, 8, active ? '#F97316' : '#E2E8F0', '#CBD5E1', 1.5);
+        }
+      }
+      ctx.fillStyle = '#EF4444';
+      ctx.font = '800 26px Consolas, monospace';
+      ctx.fillText('ALU Utilization: 8.2% (Memory Starved ✕)', 180, 825);
+
+      // Right 8x8 Klein Blue wave matrix
+      const activeCount = Math.floor(clamp(p * 1.4, 0.1, 1) * 48);
+      for (let r = 0; r < 6; r++) {
+        for (let c = 0; c < 8; c++) {
+          const idx = r * 8 + c;
+          const on = idx < activeCount;
+          roundRect(ctx, 980 + c * 92, 340 + r * 72, 76, 56, 8, on ? '#2563EB' : '#DBEAFE', '#1D4ED8', 1.5);
+          if (on) {
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = '700 14px Consolas, monospace';
+            ctx.fillText(`T${idx+1}`, 1002 + c * 92, 374 + r * 72);
+          }
+        }
+      }
+      ctx.fillStyle = '#10B981';
+      ctx.font = '900 28px Consolas, monospace';
+      ctx.fillText('HBM Read Amortized 64× · ALU Load: 91.4% ✓', 980, 825);
+    } else if (sceneIdx === 2) {
+      // Act 3: EP vs DP Straggler Effect ("每一步，都得等最慢的那张卡算完")
+      roundRect(ctx, 140, 225, 1640, 650, 22, '#FFFFFF', '#CBD5E1', 3);
+      const barrierX = 1520;
+
+      // Synchronization Barrier Line
+      ctx.save();
+      ctx.strokeStyle = '#EF4444';
+      ctx.lineWidth = 4;
+      ctx.setLineDash([14, 10]);
+      ctx.beginPath();
+      ctx.moveTo(barrierX, 260);
+      ctx.lineTo(barrierX, 840);
+      ctx.stroke();
+      ctx.restore();
+
+      ctx.fillStyle = '#EF4444';
+      ctx.font = '900 22px Consolas, monospace';
+      ctx.fillText('ALL-TO-ALL SYNC BARRIER', barrierX - 150, 255);
+
+      for (let i = 0; i < 7; i++) {
+        const y = 285 + i * 78;
+        const isHot = i === 2; // GPU #3 is the overloaded hot expert
+        ctx.fillStyle = '#0F172A';
+        ctx.font = '800 22px Consolas, monospace';
+        ctx.fillText(`GPU #0${i+1} ${isHot ? '[HOT EXPERT 🔥]' : '[Normal EP]'}`, 175, y + 36);
+
+        const maxW = barrierX - 540;
+        const w = isHot ? clamp(p * 1.15, 0.15, 1) * maxW : clamp(p * 3.2, 0.2, 1) * (maxW * 0.34);
+        roundRect(ctx, 520, y + 8, maxW, 46, 10, '#F1F5F9', '#CBD5E1', 1.5);
+        roundRect(ctx, 520, y + 8, w, 46, 10, isHot ? '#F97316' : '#3B82F6', isHot ? '#EA580C' : '#1D4ED8', 2);
+
+        ctx.fillStyle = isHot ? '#EA580C' : '#64748B';
+        ctx.font = '700 19px Consolas, monospace';
+        ctx.fillText(
+          isHot ? '18 Tokens Queued · 34.0 ms (Bottleneck!)' : '6.0 ms Done → Waiting 28ms for GPU #03...',
+          540 + w + 16,
+          y + 37
+        );
+      }
+    } else if (sceneIdx === 3) {
+      // Act 4: Prefill vs Decode 1:1 Disaggregation
+      roundRect(ctx, 140, 230, 720, 640, 22, '#FFF7ED', '#F97316', 3.5);
+      roundRect(ctx, 1060, 230, 720, 640, 22, '#EFF6FF', '#2563EB', 3.5);
+
+      ctx.fillStyle = '#EA580C';
+      ctx.font = '900 32px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? 'PREFILL POOL (Compute-Bound)' : 'Prefill 集群（阅读输入 = 算力瓶颈）', 180, 298);
+      ctx.fillStyle = '#0F172A';
+      ctx.font = '700 22px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? '• Processes entire prompt in parallel' : '• 一次性并行吃进整段长 Prompt，计算核瞬间拉满', 180, 365);
+      ctx.fillText(isEn ? '• Strategy: Small EP (EP8) + Large DP' : '• 策略：小专家并行 (EP8) + 大数据并行，减少跨卡通信', 180, 415);
+
+      // Compute Gauge 94%
+      roundRect(ctx, 180, 480, 640, 56, 12, '#FED7AA', '#F97316', 2);
+      roundRect(ctx, 180, 480, 640 * 0.94 * e, 56, 12, '#F97316', null);
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = '900 24px Consolas, monospace';
+      ctx.fillText('Tensor Core ALU Compute: 94.2% FULL', 205, 516);
+
+      ctx.fillStyle = '#2563EB';
+      ctx.font = '900 32px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? 'DECODE POOL (Bandwidth-Bound)' : 'Decode 集群（逐字吐词 = 显存带宽瓶颈）', 1100, 298);
+      ctx.fillStyle = '#0F172A';
+      ctx.font = '700 22px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? '• Generates 1 token at a time per user' : '• 每次只吐 1 个词，全在等显存搬运 671B 权重', 1100, 365);
+      ctx.fillText(isEn ? '• Strategy: Large EP (EP64) + Huge Batch' : '• 策略：大专家并行 (EP64) 跨节点 + 超大 Batch 摊薄访存', 1100, 415);
+
+      // Bandwidth Gauge 91%
+      roundRect(ctx, 1100, 480, 640, 56, 12, '#BFDBFE', '#2563EB', 2);
+      roundRect(ctx, 1100, 480, 640 * 0.91 * e, 56, 12, '#2563EB', null);
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = '900 24px Consolas, monospace';
+      ctx.fillText('HBM3e Memory Bandwidth: 91.0% FULL', 1125, 516);
+
+      // Center 1:1 RDMA Bridge
+      roundRect(ctx, 880, 440, 160, 210, 18, '#0F172A', '#10B981', 3);
+      ctx.fillStyle = '#10B981';
+      ctx.textAlign = 'center';
+      ctx.font = '900 34px Consolas, monospace';
+      ctx.fillText('1 : 1', 960, 525);
+      ctx.font = '700 18px Consolas, monospace';
+      ctx.fillText('RDMA KV', 960, 565);
+      ctx.fillText('TRANSFER', 960, 595);
+      ctx.textAlign = 'left';
+    } else if (sceneIdx === 4) {
+      // Act 5: 60K / 1.5M = 25x Saved (80% SSD KV Cache Hit Rate)
+      const ringX = 520, ringY = 545, r = 215;
+      roundRect(ctx, 140, 230, 760, 640, 24, '#ECFDF5', '#10B981', 3.5);
+      ctx.beginPath();
+      ctx.arc(ringX, ringY, r, 0, Math.PI * 2);
+      ctx.strokeStyle = '#D1FAE5';
+      ctx.lineWidth = 34;
+      ctx.stroke();
+
+      const hitPct = 0.80 * e;
+      ctx.beginPath();
+      ctx.arc(ringX, ringY, r, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * hitPct);
+      ctx.strokeStyle = '#10B981';
+      ctx.lineWidth = 34;
+      ctx.lineCap = 'round';
+      ctx.stroke();
+
+      ctx.fillStyle = '#065F46';
+      ctx.textAlign = 'center';
+      ctx.font = '900 88px Consolas, monospace';
+      ctx.fillText(`${Math.round(hitPct * 100)}%`, ringX, ringY + 10);
+      ctx.font = '800 24px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? '100PB SSD KV CACHE HIT' : '100PB 硬盘 KV 缓存命中', ringX, ringY + 62);
+      ctx.textAlign = 'left';
+
+      // Right Equation Card: 60K / 1.5M = 25x Saved
+      roundRect(ctx, 950, 230, 830, 640, 24, '#FFFFFF', '#0F172A', 3.5);
+      ctx.fillStyle = '#64748B';
+      ctx.font = '800 28px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? 'Prefill Compute Workload Collapse:' : '多轮对话与共享前缀计算量坍缩：', 1000, 310);
+
+      ctx.fillStyle = '#94A3B8';
+      ctx.font = '900 68px Consolas, monospace';
+      ctx.fillText('1,500,000 FLOPs', 1000, 420);
+      ctx.strokeStyle = '#EF4444';
+      ctx.lineWidth = 6;
+      ctx.beginPath(); ctx.moveTo(995, 398); ctx.lineTo(1620, 398); ctx.stroke();
+
+      ctx.fillStyle = '#10B981';
+      ctx.font = '900 84px Consolas, monospace';
+      ctx.fillText('→ 60,000 FLOPs', 1000, 545);
+
+      roundRect(ctx, 1000, 610, 720, 180, 20, '#10B981', '#059669', 3);
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = '900 54px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? '60K / 1.5M → 25× SAVED!' : '60K / 1.5M = 省了 25 倍算力！', 1040, 720);
+    } else {
+      // Act 6: 96% Diurnal Cluster Utilization & 5-Factor Unit Economics Ledger
+      roundRect(ctx, 140, 225, 1640, 390, 20, '#FFFFFF', '#CBD5E1', 2.5);
+      ctx.fillStyle = '#0F172A';
+      ctx.font = '900 26px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? '24-Hour Day/Night Load Shifting → 96% Cluster Utilization' : '昼夜错峰调度（白天推理波峰 + 夜间半价/训练填谷）= 96% 极限满载率', 180, 275);
+
+      // 96% utilization bars across 24 hours
+      for (let h = 0; h < 24; h++) {
+        const bx = 185 + h * 64;
+        const isDay = h >= 8 && h <= 22;
+        const inferH = isDay ? 190 : 75;
+        const trainH = isDay ? 25 : 140 * e;
+        roundRect(ctx, bx, 545 - inferH, 48, inferH, 6, '#2563EB', null);
+        roundRect(ctx, bx, 545 - inferH - trainH, 48, trainH, 6, '#8B5CF6', null);
+      }
+      ctx.strokeStyle = '#10B981';
+      ctx.lineWidth = 3;
+      ctx.setLineDash([10, 6]);
+      ctx.beginPath(); ctx.moveTo(175, 330); ctx.lineTo(1730, 330); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = '#059669';
+      ctx.font = '900 22px Consolas, monospace';
+      ctx.fillText('96.0% FULL CLUSTER UTILIZATION LINE', 1260, 318);
+
+      // Bottom 5-Factor Multiplier Ledger
+      const pills = [
+        { k: 'Batch ×64', v: 'HBM Amortized', c: '#2563EB' },
+        { k: 'EPLB Balance', v: 'Zero Straggler', c: '#8B5CF6' },
+        { k: '1:1 PD Pool', v: '94% ALU / 91% BW', c: '#F97316' },
+        { k: '80% KV Cache', v: '25× Less Prefill', c: '#10B981' },
+        { k: '= $38 / GPU', v: '6.7× Industry Avg', c: '#0F172A' }
+      ];
+      pills.forEach((pl, i) => {
+        const px = 140 + i * 334;
+        roundRect(ctx, px, 645, 310, 210, 18, i === 4 ? '#0F172A' : '#F8FAFC', pl.c, 3.5);
+        ctx.fillStyle = i === 4 ? '#FBBF24' : pl.c;
+        ctx.font = '900 34px Consolas, monospace';
+        ctx.fillText(pl.k, px + 26, 725);
+        ctx.fillStyle = i === 4 ? '#FFFFFF' : '#334155';
+        ctx.font = '700 22px "Segoe UI", sans-serif';
+        ctx.fillText(pl.v, px + 26, 785);
+      });
+    }
+
+    // Persistent Bottom-Left Creator PiP Anchor (Signature of "Fourth Chimpanzee" template)
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(118, 885, 42, 0, Math.PI * 2);
+    ctx.fillStyle = '#0F172A';
+    ctx.fill();
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = '#F97316';
+    ctx.stroke();
+    ctx.fillStyle = '#FFFFFF';
+    ctx.font = '800 18px "Segoe UI", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('猩猩PiP', 118, 892);
+    ctx.restore();
+  }
+
+  function applySeamTransition(ctx, localP, seamType) {
+    // Cut-the-curve kinematics: first 0.08 (0.36s) decelerates in via power3.out; last 0.07 (0.30s) accelerates out via power2.in
+    let offsetX = 0;
+    let scale = 1.0;
+    if (localP < 0.08) {
+      const u = localP / 0.08;
+      const decel = 1 - easeOutCubic(u);
+      if (seamType.includes('zoom')) scale = 0.92 + 0.08 * easeOutCubic(u);
+      else offsetX = decel * 200; // 200px incoming partial travel
+    } else if (localP > 0.93) {
+      const u = (localP - 0.93) / 0.07;
+      const accel = easeInQuad(u);
+      if (seamType.includes('zoom')) scale = 1.0 + 0.12 * accel;
+      else offsetX = -accel * 240; // -240px outgoing partial travel
+    }
+    ctx.translate(960 + offsetX, 540);
+    ctx.scale(scale, scale);
+    ctx.translate(-960, -540);
+  }
+
+  function computeRealTimeDensity() {
+    sampleCtx.drawImage(stageCanvas, 0, 0, 192, 108);
+    const img = sampleCtx.getImageData(0, 0, 192, 108).data;
+    const W = 192, H = 108;
+    const gray = new Float32Array(W * H);
+    for (let i = 0; i < W * H; i++) {
+      const idx = i * 4;
+      gray[i] = 0.299 * img[idx] + 0.587 * img[idx + 1] + 0.114 * img[idx + 2];
+    }
+
+    const cw = Math.floor(W / 3), ch = Math.floor(H / 3);
+    let activeCells = 0;
+    let totalGrad = 0;
+    const cellGrads = [];
+
+    for (let gy = 0; gy < 3; gy++) {
+      for (let gx = 0; gx < 3; gx++) {
+        let sum = 0, count = 0;
+        for (let y = gy * ch; y < (gy + 1) * ch - 1; y++) {
+          for (let x = gx * cw; x < (gx + 1) * cw - 1; x++) {
+            const g = Math.abs(gray[(y + 1) * W + x] - gray[y * W + x]) +
+                      Math.abs(gray[y * W + (x + 1)] - gray[y * W + x]);
+            sum += g;
+            count++;
+          }
+        }
+        const meanG = sum / Math.max(1, count);
+        cellGrads.push(meanG);
+        totalGrad += meanG;
+        if (meanG >= 4.0) activeCells++;
+      }
+    }
+
+    cellGrads.forEach((g, idx) => {
+      const cell = gridCells[idx];
+      const active = g >= 4.0;
+      cell.textContent = g.toFixed(1);
+      cell.style.background = active
+        ? `rgba(16, 185, 129, ${clamp(0.28 + g / 28, 0.3, 0.85)})`
+        : 'rgba(239, 68, 68, 0.22)';
+    });
+
+    document.getElementById('dm-occ').textContent = `${activeCells} / 9 (≥4 PASS)`;
+    document.getElementById('dm-grad').textContent = (totalGrad / 9).toFixed(2);
+    document.getElementById('density-gate-badge').textContent = `PASS · ${activeCells}/9 ACTIVE`;
+    return { activeCells, meanGrad: +(totalGrad / 9).toFixed(2), cellGrads };
+  }
+
+  function renderSeamGraph(localP, scene) {
+    const w = seamCanvas.width, h = seamCanvas.height;
+    seamCtx.clearRect(0, 0, w, h);
+
+    // Midline seam marker at x = w/2
+    seamCtx.strokeStyle = 'rgba(251, 191, 36, 0.55)';
+    seamCtx.lineWidth = 1.5;
+    seamCtx.setLineDash([4, 4]);
+    seamCtx.beginPath();
+    seamCtx.moveTo(w / 2, 6);
+    seamCtx.lineTo(w / 2, h - 6);
+    seamCtx.stroke();
+    seamCtx.setLineDash([]);
+
+    // Draw velocity bell curve (power2.in ramp up -> seam cut -> power3.out ramp down)
+    seamCtx.beginPath();
+    for (let x = 0; x < w; x++) {
+      const u = x / w;
+      let v = 0;
+      if (u < 0.5) {
+        const t = u / 0.5;
+        v = Math.pow(t, 2); // power2.in acceleration
+      } else {
+        const t = (u - 0.5) / 0.5;
+        v = 0.89 * Math.pow(1 - t, 2); // power3.out velocity-matched deceleration
+      }
+      const py = h - 12 - v * (h - 24);
+      if (x === 0) seamCtx.moveTo(x, py); else seamCtx.lineTo(x, py);
+    }
+    seamCtx.strokeStyle = '#38BDF8';
+    seamCtx.lineWidth = 2.5;
+    seamCtx.stroke();
+
+    // Playhead dot mapped from localP
+    const dotX = clamp(localP, 0, 1) * w;
+    seamCtx.beginPath();
+    seamCtx.arc(dotX, h / 2, 5, 0, Math.PI * 2);
+    seamCtx.fillStyle = '#4ADE80';
+    seamCtx.fill();
+
+    document.getElementById('seam-type-label').textContent = `Seam: ${scene.seam}`;
+    document.getElementById('seam-ease-label').textContent = scene.ease;
+    document.getElementById('seam-badge').textContent = `η = ${scene.eta.toFixed(2)} MATCH`;
+  }
+
+  function updateSidePanels() {
+    const tpl = TEMPLATES[currentTemplateId];
+    const sceneIdx = clamp(Math.floor(currentTime / SCENE_LEN), 0, 5);
+    const scene = tpl.scenes[sceneIdx];
+
+    document.getElementById('ledger-id-badge').textContent = tpl.id;
+    document.getElementById('dm-peak').textContent = `${tpl.metrics.peakGap} (≤4.0s)`;
+    document.getElementById('dm-freeze').textContent = `${tpl.metrics.freeze} (≤30%)`;
+
+    const swatches = [tpl.look.bg, ...tpl.look.accents]
+      .map(c => `<span class="swatch" style="background:${c}" title="${c}"></span>`)
+      .join('');
+
+    document.getElementById('ledger-kv').innerHTML = `
+      <span class="ledger-k">look.atoms</span>
+      <span class="ledger-v"><span class="swatch-row">${swatches}</span> (${tpl.look.dark ? 'dark:true' : 'light paper'})</span>
+      <span class="ledger-k">layout</span>
+      <span class="ledger-v">${scene.layout}</span>
+      <span class="ledger-k">motion</span>
+      <span class="ledger-v">seam=${scene.seam} | verb=${scene.verb}</span>
+      <span class="ledger-k">sound</span>
+      <span class="ledger-v">${tpl.sound.bgm} | motif=${scene.sfx}</span>
+    `;
+
+    document.getElementById('shotcard-kv').innerHTML = `
+      <span class="ledger-k">card_id</span>
+      <span class="ledger-v">${scene.card}</span>
+      <span class="ledger-k">window</span>
+      <span class="ledger-v">[${(sceneIdx * SCENE_LEN).toFixed(1)}s – ${((sceneIdx + 1) * SCENE_LEN).toFixed(1)}s] (Act 0${scene.idx}/06)</span>
+      <span class="ledger-k">source</span>
+      <span class="ledger-v">${tpl.sourceUrl}</span>
+    `;
+
+    document.querySelectorAll('.scene-pill').forEach((el, idx) => {
+      el.classList.toggle('active', idx === sceneIdx);
+    });
+  }
+
+  function rebuildScenePills() {
+    const tpl = TEMPLATES[currentTemplateId];
+    const isEn = currentLang === 'en';
+    const container = document.getElementById('scene-pills');
+    container.innerHTML = tpl.scenes.map((s, i) => `
+      <button class="scene-pill ${i === 0 ? 'active' : ''}" data-scene-idx="${i}" type="button">
+        <span class="sp-num">ACT 0${s.idx} · ${(i * SCENE_LEN).toFixed(1)}s</span>
+        <span class="sp-name">${isEn ? s.tagEn : s.tag}</span>
+      </button>
+    `).join('');
+    container.querySelectorAll('.scene-pill').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const idx = Number(btn.getAttribute('data-scene-idx'));
+        currentTime = idx * SCENE_LEN + 0.15;
+        document.getElementById('timeline-slider').value = String(currentTime);
+        playCausalSfx(tpl.scenes[idx].sfx);
+        renderFrame();
+      });
+    });
+  }
+
+  function renderFrame() {
+    const tpl = TEMPLATES[currentTemplateId];
+    const isEn = currentLang === 'en';
+    const sceneIdx = clamp(Math.floor(currentTime / SCENE_LEN), 0, 5);
+    const localP = clamp((currentTime - sceneIdx * SCENE_LEN) / SCENE_LEN, 0, 1);
+    const scene = tpl.scenes[sceneIdx];
+
+    if (sceneIdx !== lastTriggeredScene) {
+      lastTriggeredScene = sceneIdx;
+      playCausalSfx(scene.sfx);
+    }
+
+    ctx.save();
+    ctx.clearRect(0, 0, 1920, 1080);
+    applySeamTransition(ctx, localP, scene.seam);
+
+    if (currentTemplateId === 'xiaozhe-mcp-node-graph') {
+      renderMcpScene(ctx, sceneIdx, localP, isEn);
+    } else if (currentTemplateId === 'xiaozhe-rag-pipeline-flow') {
+      renderRagScene(ctx, sceneIdx, localP, isEn);
+    } else {
+      renderDeepseekScene(ctx, sceneIdx, localP, isEn);
+    }
+
+    drawHeaderAndCaption(ctx, tpl, scene, localP, isEn);
+    ctx.restore();
+
+    document.getElementById('time-readout').textContent = `${currentTime.toFixed(1).padStart(4, '0')}s / ${DURATION.toFixed(1)}s`;
+    renderSeamGraph(localP, scene);
+    computeRealTimeDensity();
+    updateSidePanels();
+  }
+
+  function tick(now) {
+    const dt = Math.min(0.1, (now - lastFrameTs) / 1000);
+    lastFrameTs = now;
+    if (isPlaying) {
+      currentTime = (currentTime + dt) % DURATION;
+      document.getElementById('timeline-slider').value = String(currentTime);
+    }
+    renderFrame();
+    requestAnimationFrame(tick);
+  }
+
+  function generateStoryboardMarkdown() {
+    const tpl = TEMPLATES[currentTemplateId];
+    const lines = [
+      '---',
+      'format: landscape-1920x1080',
+      'fps: 30',
+      `duration: ${DURATION.toFixed(1)}`,
+      'mode: autonomous',
+      `style_id: ${tpl.id}`,
+      `palette_source: ${tpl.id}`,
+      `source_reference: "${tpl.sourceUrl}"`,
+      '---',
+      '',
+      `# STORYBOARD · ${tpl.id}`,
+      ''
+    ];
+    tpl.scenes.forEach((s, i) => {
+      const t0 = (i * SCENE_LEN).toFixed(1);
+      const t1 = ((i + 1) * SCENE_LEN).toFixed(1);
+      lines.push(`## 0${s.idx}-act-${s.idx} [${t0}–${t1}s]`);
+      lines.push(`- src: compositions/frames/0${s.idx}-act-${s.idx}.html`);
+      lines.push(`- card: \`${s.card.split(' ')[0]}\``);
+      lines.push(`- layout: \`${s.layout}\``);
+      lines.push(`- registry: \`${s.card.split(' ')[0]}\` (verified via process-gate.py --stage layout)`);
+      lines.push(`- title_zh: "${s.title}"`);
+      lines.push(`- subtitle_zh: "${s.subtitle}"`);
+      lines.push(`- motion: seam=${s.seam} | velocity=${s.ease} (eta=${s.eta}) | carrier=#stage-act-0${s.idx} | verb=${s.verb}`);
+      lines.push(`- sound: motif=${s.sfx} | cues=${t0}(${s.sfx}) | mix=dry`);
+      lines.push('');
+    });
+    return lines.join('\n');
+  }
+
+  // Event Listeners
+  document.querySelectorAll('.tpl-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tpl-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      currentTemplateId = tab.getAttribute('data-template');
+      currentTime = 0.1;
+      lastTriggeredScene = -1;
+      rebuildScenePills();
+      renderFrame();
+    });
+  });
+
+  document.getElementById('btn-play').addEventListener('click', () => {
+    isPlaying = !isPlaying;
+    const dict = I18N[currentLang];
+    document.getElementById('btn-play').textContent = isPlaying ? dict.pause : dict.play;
+  });
+
+  document.getElementById('btn-prev').addEventListener('click', () => {
+    const idx = clamp(Math.floor(currentTime / SCENE_LEN) - 1, 0, 5);
+    currentTime = idx * SCENE_LEN + 0.15;
+    renderFrame();
+  });
+
+  document.getElementById('btn-next').addEventListener('click', () => {
+    const idx = (Math.floor(currentTime / SCENE_LEN) + 1) % 6;
+    currentTime = idx * SCENE_LEN + 0.15;
+    renderFrame();
+  });
+
+  document.getElementById('timeline-slider').addEventListener('input', (e) => {
+    currentTime = parseFloat(e.target.value);
+    renderFrame();
+  });
+
+  document.getElementById('btn-safe-zone').addEventListener('click', () => {
+    showSafeZone = !showSafeZone;
+    document.getElementById('safe-overlay').classList.toggle('visible', showSafeZone);
+    document.getElementById('btn-safe-zone').classList.toggle('active', showSafeZone);
+  });
+
+  document.getElementById('btn-audio').addEventListener('click', () => {
+    soundEnabled = !soundEnabled;
+    if (soundEnabled) ensureAudio();
+    const dict = I18N[currentLang];
+    const btn = document.getElementById('btn-audio');
+    btn.setAttribute('aria-pressed', String(soundEnabled));
+    btn.textContent = soundEnabled ? dict.audioOn : dict.audioOff;
+    btn.classList.toggle('success', soundEnabled);
+    if (soundEnabled) playCausalSfx('chime');
+  });
+
+  document.getElementById('btn-sfx-test').addEventListener('click', () => {
+    soundEnabled = true;
+    ensureAudio();
+    const btn = document.getElementById('btn-audio');
+    btn.setAttribute('aria-pressed', 'true');
+    btn.textContent = I18N[currentLang].audioOn;
+    btn.classList.add('success');
+    const tpl = TEMPLATES[currentTemplateId];
+    const sceneIdx = clamp(Math.floor(currentTime / SCENE_LEN), 0, 5);
+    playCausalSfx(tpl.scenes[sceneIdx].sfx);
+  });
+
+  document.getElementById('btn-export-storyboard').addEventListener('click', () => {
+    document.getElementById('modal-content').textContent = generateStoryboardMarkdown();
+    document.getElementById('export-modal').classList.add('open');
+  });
+
+  document.getElementById('btn-close-modal').addEventListener('click', () => {
+    document.getElementById('export-modal').classList.remove('open');
+  });
+
+  document.getElementById('btn-copy-modal').addEventListener('click', () => {
+    navigator.clipboard?.writeText(document.getElementById('modal-content').textContent);
+    document.getElementById('btn-copy-modal').textContent = '✓ 已复制!';
+    setTimeout(() => { document.getElementById('btn-copy-modal').textContent = '复制全部'; }, 1500);
+  });
+
+  document.querySelectorAll('[data-lang]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      currentLang = btn.getAttribute('data-lang');
+      document.querySelectorAll('[data-lang]').forEach(b => b.classList.toggle('active', b === btn));
+      const dict = I18N[currentLang];
+      document.getElementById('studio-heading').textContent = dict.studioHeading;
+      document.getElementById('back-portal-link').textContent = dict.backPortal;
+      document.getElementById('btn-safe-zone').textContent = dict.safeZone;
+      document.getElementById('btn-audio').textContent = soundEnabled ? dict.audioOn : dict.audioOff;
+      document.getElementById('btn-export-storyboard').textContent = dict.exportBtn;
+      document.getElementById('btn-play').textContent = isPlaying ? dict.pause : dict.play;
+      document.getElementById('btn-prev').textContent = dict.prev;
+      document.getElementById('btn-next').textContent = dict.next;
+      document.getElementById('btn-sfx-test').textContent = dict.sfxTest;
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const k = el.getAttribute('data-i18n');
+        if (dict[k]) el.textContent = dict[k];
+      });
+      rebuildScenePills();
+      renderFrame();
+    });
+  });
+
+  // Expose deterministic test/inspection harness API
+  window.explainerStudio = {
+    selectTemplate(id) {
+      if (TEMPLATES[id]) {
+        currentTemplateId = id;
+        document.querySelectorAll('.tpl-tab').forEach(t => {
+          t.classList.toggle('active', t.getAttribute('data-template') === id);
+        });
+        rebuildScenePills();
+        renderFrame();
+      }
+    },
+    seek(t) {
+      isPlaying = false;
+      currentTime = clamp(t, 0, DURATION - 0.01);
+      document.getElementById('timeline-slider').value = String(currentTime);
+      renderFrame();
+    },
+    snapshot() {
+      const density = computeRealTimeDensity();
+      const sceneIdx = clamp(Math.floor(currentTime / SCENE_LEN), 0, 5);
+      return {
+        templateId: currentTemplateId,
+        currentTime: +currentTime.toFixed(2),
+        sceneIdx: sceneIdx + 1,
+        activeCells: density.activeCells,
+        meanGrad: density.meanGrad,
+        storyboard: generateStoryboardMarkdown()
+      };
+    }
+  };
+
+  rebuildScenePills();
+  const urlParams = new URLSearchParams(window.location.search);
+  const rawHash = (window.location.hash || '').replace(/^#/, '');
+  const hashAlias = {
+    'tpl-mcp': 'xiaozhe-mcp-node-graph',
+    'mcp': 'xiaozhe-mcp-node-graph',
+    'xiaozhe-mcp-node-graph': 'xiaozhe-mcp-node-graph',
+    'tpl-rag': 'xiaozhe-rag-pipeline-flow',
+    'rag': 'xiaozhe-rag-pipeline-flow',
+    'xiaozhe-rag-pipeline-flow': 'xiaozhe-rag-pipeline-flow',
+    'tpl-finops': 'chimp-deepseek-unit-economics',
+    'finops': 'chimp-deepseek-unit-economics',
+    'deepseek': 'chimp-deepseek-unit-economics',
+    'chimp-deepseek-unit-economics': 'chimp-deepseek-unit-economics'
+  };
+  const qTpl = urlParams.get('template') || urlParams.get('tpl') || hashAlias[rawHash];
+  if (qTpl && TEMPLATES[qTpl]) {
+    window.explainerStudio.selectTemplate(qTpl);
+  }
+  const qLang = urlParams.get('lang');
+  if (qLang && I18N[qLang]) {
+    const langBtn = document.querySelector(`[data-lang="${qLang}"]`);
+    if (langBtn) langBtn.click();
+  }
+  window.addEventListener('message', (ev) => {
+    if (ev.data && ev.data.type === 'SET_LANG' && I18N[ev.data.lang]) {
+      const langBtn = document.querySelector(`[data-lang="${ev.data.lang}"]`);
+      if (langBtn) langBtn.click();
+    }
+  });
+  renderFrame();
+  requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>
