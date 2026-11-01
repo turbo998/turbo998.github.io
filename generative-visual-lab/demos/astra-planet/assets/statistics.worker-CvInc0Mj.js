@@ -1,0 +1,2 @@
+(function(){"use strict";let o=new Int16Array,a=0,s=0;self.onmessage=g=>{const e=g.data;if(e.type==="init"){o=new Int16Array(e.values),a=e.width,s=e.height;return}let r=0,l=0,h=0;for(let t=0;t<s;t+=1){const f=Math.PI/2-(t+.5)/s*Math.PI,i=Math.cos(f);for(let n=0;n<a;n+=1){const c=o[t*a+n];l+=i,c<e.seaLevelM&&(r+=i,h+=(e.seaLevelM-c)*i)}}const d=4*Math.PI*3389.5*3389.5;self.postMessage({id:e.id,coverage:r/l,volumeKm3:h/l*d/1e3})}})();
+//# sourceMappingURL=statistics.worker-CvInc0Mj.js.map

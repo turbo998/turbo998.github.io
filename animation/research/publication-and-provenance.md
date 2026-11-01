@@ -1,5 +1,7 @@
 # 发布与来源边界
 
+> 🌐 **Language / 语言**: **中文** | [English (`publication-and-provenance.en.md`)](publication-and-provenance.en.md)
+
 公开仓库仅提取经授权的 Astra 演示，源 revision `a5ec82b`。
 采用 Git 目录白名单导出，不迁移原仓库历史、其他网站或缓存。
 保留原科学数据清单、独立验证结果及原创截图；依赖 URL 标准化到 npm 公共 registry，
