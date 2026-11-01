@@ -1,0 +1,346 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1060" width="1600" height="1060" role="img" aria-labelledby="title desc">
+  <title id="title">4D Gaussian Splatting &amp; Plücker Camera-Control Video Director — Architecture &amp; Benchmark Summary (2026-11-02)</title>
+  <desc id="desc">AI Solution Architect visual summary card covering NVIDIA GEN3C 3D point-cloud cache, Diff4Splat 4D deformable Gaussian splatting, Adobe MotionStream causal DMD trajectory streaming, 6D Plücker ray embeddings, interactive demo highlights, benchmark metrics, and enterprise scenario playbook.</desc>
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#070B14"/>
+      <stop offset="55%" stop-color="#0D1527"/>
+      <stop offset="100%" stop-color="#09101E"/>
+    </linearGradient>
+    <linearGradient id="accentCyan" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#2563EB"/>
+    </linearGradient>
+    <linearGradient id="accentEmerald" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#34D399"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+    <linearGradient id="accentAmber" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#FBBF24"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+    <linearGradient id="accentPurple" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#C084FC"/>
+      <stop offset="100%" stop-color="#7C3AED"/>
+    </linearGradient>
+    <radialGradient id="splatGlow1" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.75"/>
+      <stop offset="60%" stop-color="#2563EB" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#0F172A" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="splatGlow2" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#34D399" stop-opacity="0.75"/>
+      <stop offset="60%" stop-color="#059669" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#0F172A" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="splatGlow3" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FBBF24" stop-opacity="0.8"/>
+      <stop offset="60%" stop-color="#D97706" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#0F172A" stop-opacity="0"/>
+    </radialGradient>
+    <style>
+      .font-sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; }
+      .font-mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+      .panel { fill: #0F172A; stroke: #1E293B; stroke-width: 1.5; rx: 16; }
+      .panel-inner { fill: #131E36; stroke: #263554; stroke-width: 1; rx: 10; }
+      .badge { font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+      .title-xl { font-size: 27px; font-weight: 900; fill: #F8FAFC; letter-spacing: -0.02em; }
+      .title-md { font-size: 16px; font-weight: 800; fill: #F8FAFC; }
+      .title-sm { font-size: 13.5px; font-weight: 700; fill: #E2E8F0; }
+      .body-sm { font-size: 12px; fill: #94A3B8; }
+      .body-xs { font-size: 11px; fill: #CBD5E1; }
+      .code-xs { font-size: 11px; fill: #38BDF8; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1600" height="1060" fill="url(#bgGrad)"/>
+
+  <!-- Subtle Grid Lines -->
+  <g stroke="#1E293B" stroke-width="0.6" opacity="0.45">
+    <line x1="0" y1="118" x2="1600" y2="118"/>
+    <line x1="0" y1="435" x2="1600" y2="435"/>
+    <line x1="0" y1="765" x2="1600" y2="765"/>
+    <line x1="535" y1="118" x2="535" y2="1040"/>
+    <line x1="1075" y1="118" x2="1075" y2="1040"/>
+  </g>
+
+  <!-- TOP HEADER BAR -->
+  <rect x="28" y="22" width="1544" height="84" rx="16" fill="#0F172A" stroke="#334155" stroke-width="1.5"/>
+  <rect x="46" y="38" width="218" height="24" rx="12" fill="#1E3A8A"/>
+  <text x="155" y="54" text-anchor="middle" class="font-mono badge" fill="#60A5FA">GVL NIGHTLY RUN #19 · 2026-11-02</text>
+  <rect x="274" y="38" width="265" height="24" rx="12" fill="#064E3B"/>
+  <text x="406" y="54" text-anchor="middle" class="font-mono badge" fill="#34D399">NEW DEMO: CAMERA-4D-DIRECTOR</text>
+  <text x="46" y="88" class="font-sans title-xl">4D 高斯泼溅与 Plücker 相机轨迹控制导演工作台 · Controllable 4D Video Architecture</text>
+
+  <!-- KPI Pills on Right of Header -->
+  <g transform="translate(1110, 34)">
+    <rect x="0" y="0" width="138" height="58" rx="10" fill="#131E36" stroke="#2563EB"/>
+    <text x="69" y="23" text-anchor="middle" class="font-mono" font-size="18" font-weight="900" fill="#38BDF8">60.0 FPS</text>
+    <text x="69" y="44" text-anchor="middle" class="font-sans body-xs">P95 9.1ms 实时渲染</text>
+
+    <rect x="148" y="0" width="142" height="58" rx="10" fill="#131E36" stroke="#059669"/>
+    <text x="219" y="23" text-anchor="middle" class="font-mono" font-size="18" font-weight="900" fill="#34D399">0.974 S_epi</text>
+    <text x="219" y="44" text-anchor="middle" class="font-sans body-xs">3D 缓存对极几何一致性</text>
+
+    <rect x="300" y="0" width="144" height="58" rx="10" fill="#131E36" stroke="#D97706"/>
+    <text x="372" y="23" text-anchor="middle" class="font-mono" font-size="18" font-weight="900" fill="#FBBF24">3×6×4 矩阵</text>
+    <text x="372" y="44" text-anchor="middle" class="font-sans body-xs">3 场景 × 6 运镜 × 4 视图</text>
+  </g>
+
+  <!-- ==================== ROW 1: 3 BREAKTHROUGH PILLARS ==================== -->
+
+  <!-- CARD 1.1: PILLAR 0 — DAILY HOTTEST BREAKTHROUGH TRIAD -->
+  <g transform="translate(28, 124)">
+    <rect width="500" height="300" class="panel"/>
+    <rect x="18" y="16" width="148" height="22" rx="6" fill="#1E3A8A"/>
+    <text x="92" y="31" text-anchor="middle" class="font-mono badge" fill="#93C5FD">01 · 前沿能力突破追踪</text>
+    <text x="178" y="32" class="font-sans title-md">从 2D 盲盒扩散向 4D 可控世界模型跃迁</text>
+
+    <!-- 3 Stacked Breakthrough Boxes -->
+    <rect x="18" y="50" width="464" height="74" class="panel-inner"/>
+    <circle cx="46" cy="87" r="16" fill="#1D4ED8"/>
+    <text x="46" y="92" text-anchor="middle" class="font-mono" font-size="12" font-weight="900" fill="#FFF">3C</text>
+    <text x="74" y="71" class="font-sans title-sm" fill="#60A5FA">NVIDIA GEN3C · 3D 时空点云缓存与遮挡感知重投影</text>
+    <text x="74" y="90" class="font-sans body-xs">单目深度反投影构建演进缓存 C_t = {(p_i, c_i, σ_i, n_i)}，新视角先做</text>
+    <text x="74" y="108" class="font-sans body-xs">显式几何投影，扩散主干仅修复去遮挡区域 M_disocc，彻底根除大角度旋转坍塌。</text>
+
+    <rect x="18" y="132" width="464" height="74" class="panel-inner"/>
+    <circle cx="46" cy="169" r="16" fill="#047857"/>
+    <text x="46" y="174" text-anchor="middle" class="font-mono" font-size="12" font-weight="900" fill="#FFF">4D</text>
+    <text x="74" y="153" class="font-sans title-sm" fill="#34D399">Diff4Splat · 4D 可变形各向异性高斯力场 G_4(x,y,z,t)</text>
+    <text x="74" y="172" class="font-sans body-xs">将 3DGS 扩展至时域 (μ_i(t), Σ_i(t), α_i, c_i(d))，通过雅可比屏幕空间投影</text>
+    <text x="74" y="190" class="font-sans body-xs">Σ' = J W Σ W^T J^T 与球谐函数 (SH) 实现子弹时间冻结与实时三点重打光。</text>
+
+    <rect x="18" y="214" width="464" height="72" class="panel-inner"/>
+    <circle cx="46" cy="250" r="16" fill="#B45309"/>
+    <text x="46" y="255" text-anchor="middle" class="font-mono" font-size="12" font-weight="900" fill="#FFF">MS</text>
+    <text x="74" y="235" class="font-sans title-sm" fill="#FBBF24">Adobe MotionStream × Seedance 2.0 · 因果滑窗交互轨迹流</text>
+    <text x="74" y="254" class="font-sans body-xs">Self-Forcing + DMD 蒸馏将双向 DiT 压缩为因果滑窗 KV-Cache（Attention Sink），</text>
+    <text x="74" y="272" class="font-sans body-xs">支持画布实时拖拽多主体贝塞尔轨迹并自动触发二阶弹簧阻尼物理跟随。</text>
+  </g>
+
+  <!-- CARD 1.2: PILLAR 1 — ARCHITECTURE & PLÜCKER RAY MATH -->
+  <g transform="translate(546, 124)">
+    <rect width="512" height="300" class="panel"/>
+    <rect x="18" y="16" width="148" height="22" rx="6" fill="#064E3B"/>
+    <text x="92" y="31" text-anchor="middle" class="font-mono badge" fill="#6EE7B7">02 · 底层数学与渲染管线</text>
+    <text x="178" y="32" class="font-sans title-md">6D Plücker 射线嵌入 × 4D 高斯光栅化架构</text>
+
+    <!-- Visual Diagram of Camera Frustum -> Plucker Rays -> 4D Splat Field -->
+    <rect x="18" y="50" width="476" height="148" class="panel-inner"/>
+    <!-- Camera Frustum Icon & Axes -->
+    <polygon points="44,124 94,90 94,158" fill="#1E3A8A" fill-opacity="0.45" stroke="#38BDF8" stroke-width="2"/>
+    <circle cx="44" cy="124" r="5" fill="#F8FAFC"/>
+    <text x="40" y="176" class="font-mono body-xs" fill="#38BDF8">Cam o_t</text>
+
+    <!-- Plücker Rays (d, o x d) -->
+    <line x1="44" y1="124" x2="215" y2="82" stroke="#38BDF8" stroke-width="1.8" stroke-dasharray="4 3"/>
+    <line x1="44" y1="124" x2="225" y2="124" stroke="#34D399" stroke-width="2.2"/>
+    <line x1="44" y1="124" x2="215" y2="166" stroke="#FBBF24" stroke-width="1.8" stroke-dasharray="4 3"/>
+    <text x="112" y="76" class="font-mono" font-size="10.5" fill="#93C5FD">P(u,v) = (d, o × d) ∈ R^6</text>
+
+    <!-- 4D Anisotropic Gaussian Ellipsoids -->
+    <ellipse cx="275" cy="96" rx="38" ry="18" transform="rotate(-22 275 96)" fill="url(#splatGlow1)" stroke="#38BDF8" stroke-width="1.5"/>
+    <ellipse cx="320" cy="134" rx="46" ry="22" transform="rotate(18 320 134)" fill="url(#splatGlow2)" stroke="#34D399" stroke-width="1.5"/>
+    <ellipse cx="268" cy="154" rx="32" ry="15" transform="rotate(-12 268 154)" fill="url(#splatGlow3)" stroke="#FBBF24" stroke-width="1.5"/>
+    <!-- Velocity Vectors -->
+    <line x1="275" y1="96" x2="312" y2="78" stroke="#F43F5E" stroke-width="2"/>
+    <polygon points="312,78 303,78 307,85" fill="#F43F5E"/>
+    <line x1="320" y1="134" x2="362" y2="122" stroke="#F43F5E" stroke-width="2"/>
+    <polygon points="362,122 353,121 356,128" fill="#F43F5E"/>
+
+    <!-- Output Frame Box -->
+    <rect x="386" y="68" width="92" height="112" rx="8" fill="#0B1324" stroke="#60A5FA" stroke-width="1.5"/>
+    <text x="432" y="88" text-anchor="middle" class="font-mono" font-size="10" fill="#60A5FA">60FPS COMPOSITE</text>
+    <circle cx="432" cy="122" r="22" fill="url(#splatGlow1)"/>
+    <circle cx="442" cy="132" r="16" fill="url(#splatGlow2)"/>
+    <text x="432" y="168" text-anchor="middle" class="font-mono" font-size="10" fill="#34D399">Cache Hit 94.2%</text>
+
+    <!-- Mathematical Formula Box -->
+    <rect x="18" y="206" width="476" height="80" class="panel-inner"/>
+    <text x="30" y="226" class="font-mono code-xs">1. Plücker Ray:   d = normalize(R_t · K^-1 [u,v,1]^T),   m = o_t × d</text>
+    <text x="30" y="247" class="font-mono code-xs" fill="#34D399">2. Dolly Zoom:    f(t) = f_0 · (d(t) / d_0),   FOV(t) = 2·arctan(H / 2f(t))</text>
+    <text x="30" y="268" class="font-mono code-xs" fill="#FBBF24">3. 4D Splat Proj: Σ'_2D(t) = (J_t W_t Σ_3D(t) W_t^T J_t^T)_2×2 + 0.3·I</text>
+  </g>
+
+  <!-- CARD 1.3: PILLAR 2 — NEW INTERACTIVE DEMO SHOWCASE -->
+  <g transform="translate(1076, 124)">
+    <rect width="496" height="300" class="panel"/>
+    <rect x="18" y="16" width="154" height="22" rx="6" fill="#581C87"/>
+    <text x="95" y="31" text-anchor="middle" class="font-mono badge" fill="#E9D5FF">03 · 全新交互式能力工作台</text>
+    <text x="182" y="32" class="font-sans title-md">demos/camera-4d-director/ 核心特性</text>
+
+    <rect x="18" y="50" width="460" height="76" class="panel-inner"/>
+    <text x="32" y="72" class="font-sans title-sm" fill="#C084FC">三大 4D 标杆场景 (3 Production 4D Scenes)</text>
+    <text x="32" y="92" class="font-sans body-xs">• Scene A: <tspan fill="#38BDF8" font-weight="700">GEN3C Cyber Rooftop Chase</tspan>（希区柯克变焦 + 3D 点云去遮挡掩码）</text>
+    <text x="32" y="111" class="font-sans body-xs">• Scene B: <tspan fill="#34D399" font-weight="700">Diff4Splat Chrono Artisan</tspan>（4D 陀飞轮星盘 + 子弹时间 + SH 重打光）</text>
+
+    <rect x="18" y="134" width="460" height="76" class="panel-inner"/>
+    <text x="32" y="155" class="font-sans body-xs">• Scene C: <tspan fill="#FBBF24" font-weight="700">MotionStream Multi-Subject Stage</tspan>（画布手绘贝塞尔轨迹 + 二阶物理）</text>
+    <text x="32" y="177" class="font-sans title-sm" fill="#38BDF8">六种 SE(3) 电影级相机轨迹 × 四种 X-Ray 透视模式</text>
+    <text x="32" y="196" class="font-sans body-xs">Dolly-Zoom 眩晕变焦 | 360° 摇臂环绕 | FPV 穿拱俯冲 | 移轴变焦 | 子弹时间 | 自由手绘</text>
+
+    <rect x="18" y="218" width="460" height="68" class="panel-inner"/>
+    <text x="32" y="239" class="font-sans title-sm" fill="#34D399">实时遥测面板与可复现导出契约</text>
+    <text x="32" y="259" class="font-sans body-xs">实时显示 6D Plücker 张量、3D 缓存命中率、对极一致性 S_epi、协方差椭圆与</text>
+    <text x="32" y="275" class="font-sans body-xs">一键导出 CAMERA_CONTROL_SPEC.json + WebAudio 云台伺服/子弹时间合成音效。</text>
+  </g>
+
+  <!-- ==================== ROW 2: BENCHMARK & TELEMETRY COMPARISON ==================== -->
+  <g transform="translate(28, 444)">
+    <rect width="1030" height="304" class="panel"/>
+    <rect x="18" y="16" width="166" height="22" rx="6" fill="#7C2D12"/>
+    <text x="101" y="31" text-anchor="middle" class="font-mono badge" fill="#FDBA74">04 · 定量 BENCHMARK 实测对比</text>
+    <text x="196" y="32" class="font-sans title-md">4D 显式缓存/高斯管线 vs. 传统 2D 视频扩散 — 几何一致性、轨迹误差与帧延迟</text>
+
+    <!-- Left Sub-panel: Paired Horizontal Bars -->
+    <rect x="18" y="50" width="520" height="236" class="panel-inner"/>
+    <text x="34" y="74" class="font-sans title-sm">多视角几何一致性与相机控制精度 (Higher is Better)</text>
+
+    <!-- Metric 1 -->
+    <text x="34" y="102" class="font-sans body-xs">180° 大角度环绕对极几何一致性 (S_epi)</text>
+    <rect x="34" y="109" width="440" height="11" rx="5" fill="#1E293B"/>
+    <rect x="34" y="109" width="428" height="11" rx="5" fill="url(#accentCyan)"/>
+    <text x="470" y="119" class="font-mono" font-size="11" font-weight="700" fill="#38BDF8">0.974 (4D Cache)</text>
+    <rect x="34" y="123" width="268" height="8" rx="4" fill="#475569"/>
+    <text x="310" y="131" class="font-mono" font-size="10" fill="#94A3B8">0.612 (Vanilla 2D DiT)</text>
+
+    <!-- Metric 2 -->
+    <text x="34" y="152" class="font-sans body-xs">希区柯克变焦主体尺度锁定率 (Dolly-Zoom Scale Lock %)</text>
+    <rect x="34" y="159" width="440" height="11" rx="5" fill="#1E293B"/>
+    <rect x="34" y="159" width="433" height="11" rx="5" fill="url(#accentEmerald)"/>
+    <text x="472" y="169" class="font-mono" font-size="11" font-weight="700" fill="#34D399">98.6% (Plücker)</text>
+    <rect x="34" y="173" width="235" height="8" rx="4" fill="#475569"/>
+    <text x="277" y="181" class="font-mono" font-size="10" fill="#94A3B8">53.4% (Prompt-Only)</text>
+
+    <!-- Metric 3 -->
+    <text x="34" y="202" class="font-sans body-xs">多主体轨迹画笔跟随精度 (Trajectory IoU / Motion Lock)</text>
+    <rect x="34" y="209" width="440" height="11" rx="5" fill="#1E293B"/>
+    <rect x="34" y="209" width="415" height="11" rx="5" fill="url(#accentAmber)"/>
+    <text x="456" y="219" class="font-mono" font-size="11" font-weight="700" fill="#FBBF24">94.3% (MotionStream)</text>
+    <rect x="34" y="223" width="282" height="8" rx="4" fill="#475569"/>
+    <text x="324" y="231" class="font-mono" font-size="10" fill="#94A3B8">64.1% (2D Optical Flow)</text>
+
+    <!-- Bottom Note -->
+    <text x="34" y="268" class="font-mono" font-size="11" fill="#64748B">Measured in Chromium Headless (1440×900) · Zero runtime API · Deterministic seed</text>
+
+    <!-- Right Sub-panel: Quantitative Benchmark Table -->
+    <rect x="552" y="50" width="460" height="236" class="panel-inner"/>
+    <text x="568" y="74" class="font-sans title-sm">Camera-4D-Director 三大场景实测遥测表</text>
+
+    <line x1="566" y1="84" x2="996" y2="84" stroke="#334155"/>
+    <text x="568" y="101" class="font-mono" font-size="10.5" fill="#94A3B8">SCENE / PRESET         SPLATS   CACHE HIT   P50 / P95     S_EPI</text>
+    <line x1="566" y1="108" x2="996" y2="108" stroke="#334155"/>
+
+    <text x="568" y="130" class="font-mono" font-size="11" fill="#38BDF8">1. GEN3C Cyber Chase    1,640     94.8%     4.8 / 8.4ms   0.978</text>
+    <text x="568" y="156" class="font-mono" font-size="11" fill="#34D399">2. Diff4Splat Chrono    1,920     96.2%     5.3 / 9.1ms   0.981</text>
+    <text x="568" y="182" class="font-mono" font-size="11" fill="#FBBF24">3. MotionStream Stage   1,480     91.7%     4.5 / 7.9ms   0.963</text>
+    <line x1="566" y1="196" x2="996" y2="196" stroke="#334155"/>
+
+    <rect x="568" y="208" width="428" height="64" rx="8" fill="#0B1324" stroke="#1E3A8A"/>
+    <text x="582" y="229" class="font-sans body-xs" fill="#93C5FD">• <tspan font-weight="700">Hitchcock Dolly Zoom 几何误差</tspan>：主体视窗高度漂移 &lt; 0.42 px（理论零漂移）</text>
+    <text x="582" y="248" class="font-sans body-xs" fill="#6EE7B7">• <tspan font-weight="700">因果 DMD 滑窗延迟</tspan>：首帧响应 34 ms（对比双向 DiT 全序列 42,000 ms 提速 1,235×）</text>
+    <text x="582" y="265" class="font-sans body-xs" fill="#FDE68A">• <tspan font-weight="700">包体积与内存</tspan>：单文件自包含 ~62 KB HTML，运行时 Heap &lt; 28 MB</text>
+  </g>
+
+  <!-- CARD 2.2: 7-CARD DECK OVERVIEW -->
+  <g transform="translate(1076, 444)">
+    <rect width="496" height="304" class="panel"/>
+    <rect x="18" y="16" width="164" height="22" rx="6" fill="#1E3A8A"/>
+    <text x="100" y="31" text-anchor="middle" class="font-mono badge" fill="#93C5FD">05 · 7-CARD 4:5 视觉评测卡</text>
+    <text x="192" y="32" class="font-sans title-md">标准 4:5 纵向评测卡组 (900×1125)</text>
+
+    <g transform="translate(18, 52)">
+      <rect x="0" y="0" width="460" height="30" rx="6" fill="#131E36" stroke="#263554"/>
+      <text x="12" y="20" class="font-mono body-xs" fill="#38BDF8">Card 1/7 · HANDS-ON · 4D-CAMERA</text>
+      <text x="235" y="20" class="font-sans body-xs">三大 4D 可控视频架构与工作台总览</text>
+
+      <rect x="0" y="34" width="460" height="30" rx="6" fill="#131E36" stroke="#263554"/>
+      <text x="12" y="54" class="font-mono body-xs" fill="#34D399">Card 2/7 · SCENARIO: DOLLY-ZOOM</text>
+      <text x="235" y="54" class="font-sans body-xs">GEN3C 希区柯克变焦与去遮挡掩码深潜</text>
+
+      <rect x="0" y="68" width="460" height="30" rx="6" fill="#131E36" stroke="#263554"/>
+      <text x="12" y="88" class="font-mono body-xs" fill="#FBBF24">Card 3/7 · WHAT I TESTED</text>
+      <text x="235" y="88" class="font-sans body-xs">18 项场景×运镜×光照评测矩阵与边界失配</text>
+
+      <rect x="0" y="102" width="460" height="30" rx="6" fill="#131E36" stroke="#263554"/>
+      <text x="12" y="122" class="font-mono body-xs" fill="#C084FC">Card 4/7 · UNDER THE HOOD</text>
+      <text x="235" y="122" class="font-sans body-xs">6D Plücker 射线张量与 4D 雅可比投影契约</text>
+
+      <rect x="0" y="136" width="460" height="30" rx="6" fill="#131E36" stroke="#263554"/>
+      <text x="12" y="156" class="font-mono body-xs" fill="#38BDF8">Card 5/7 · ROBUSTNESS CHECK</text>
+      <text x="235" y="156" class="font-sans body-xs">180° 反向轨道、极端 FOV 与多主体碰撞鲁棒性</text>
+
+      <rect x="0" y="170" width="460" height="30" rx="6" fill="#131E36" stroke="#263554"/>
+      <text x="12" y="190" class="font-mono body-xs" fill="#34D399">Card 6/7 · LATENCY &amp; SCALING</text>
+      <text x="235" y="190" class="font-sans body-xs">因果 DMD 滑窗 + 4D 光栅化 vs 双向 DiT 延迟</text>
+
+      <rect x="0" y="204" width="460" height="30" rx="6" fill="#131E36" stroke="#263554"/>
+      <text x="12" y="224" class="font-mono body-xs" fill="#F43F5E">Card 7/7 · MY TAKE</text>
+      <text x="235" y="224" class="font-sans body-xs">AI 架构师选型指南：Good Fit vs Not For</text>
+    </g>
+  </g>
+
+  <!-- ==================== ROW 3: AI SOLUTION ARCHITECT BUSINESS SCENARIO PLAYBOOK ==================== -->
+  <g transform="translate(28, 766)">
+    <rect width="1544" height="270" class="panel"/>
+    <rect x="18" y="16" width="210" height="22" rx="6" fill="#065F46"/>
+    <text x="123" y="31" text-anchor="middle" class="font-mono badge" fill="#A7F3D0">06 · AI 解决方案架构师业务落地手册</text>
+    <text x="242" y="32" class="font-sans title-md">五大高价值行业场景、工作流集成蓝图与选型边界 (Good Fit vs. Not For)</text>
+
+    <!-- 4 Scenario Columns + 1 Good Fit / Not For Column -->
+    <g transform="translate(18, 50)">
+      <rect x="0" y="0" width="286" height="202" class="panel-inner"/>
+      <text x="16" y="24" class="font-sans title-sm" fill="#38BDF8">1. 影视与游戏 Pre-viz 交互导筒</text>
+      <text x="16" y="46" class="font-sans body-xs">• 痛点：传统分镜无法验证复杂移动长镜头</text>
+      <text x="16" y="64" class="font-sans body-xs">  与希区柯克变焦的透视畸变关系。</text>
+      <text x="16" y="86" class="font-sans body-xs">• 方案：4D 高斯草模 + Plücker 6-DoF 导轨</text>
+      <text x="16" y="104" class="font-sans body-xs">  实时预览，导出 JSON 直接驱动 GEN3C</text>
+      <text x="16" y="122" class="font-sans body-xs">  / Wan 2.7 / Runway Gen-4 渲染成片。</text>
+      <rect x="16" y="158" width="254" height="28" rx="6" fill="#0B1324" stroke="#1E3A8A"/>
+      <text x="143" y="176" text-anchor="middle" class="font-mono" font-size="11" fill="#60A5FA">ROI: 预演周期从 3 天缩短至 15 分钟 (-96%)</text>
+
+      <rect x="300" y="0" width="286" height="202" class="panel-inner"/>
+      <text x="316" y="24" class="font-sans title-sm" fill="#34D399">2. 电商 3D 商品自由视角与重打光</text>
+      <text x="316" y="46" class="font-sans body-xs">• 痛点：腕表/珠宝/3C 硬件重拍不同光效与</text>
+      <text x="316" y="64" class="font-sans body-xs">  运镜需高昂影棚与机械臂成本。</text>
+      <text x="316" y="86" class="font-sans body-xs">• 方案：Diff4Splat 单图/多图重建 4D 商品场，</text>
+      <text x="316" y="104" class="font-sans body-xs">  结合球谐函数 (SH) 实时切换冷暖棚光</text>
+      <text x="316" y="122" class="font-sans body-xs">  与微距环绕轨道，保持亚毫米几何一致。</text>
+      <rect x="316" y="158" width="254" height="28" rx="6" fill="#0B1324" stroke="#065F46"/>
+      <text x="443" y="176" text-anchor="middle" class="font-mono" font-size="11" fill="#34D399">ROI: SKU 视频制作成本下降 88%，转化 +24%</text>
+
+      <rect x="600" y="0" width="286" height="202" class="panel-inner"/>
+      <text x="616" y="24" class="font-sans title-sm" fill="#FBBF24">3. 自动驾驶与具身智能世界模型仿真</text>
+      <text x="616" y="46" class="font-sans body-xs">• 痛点：Corner Case 采集难，改变自车变道</text>
+      <text x="616" y="64" class="font-sans body-xs">  轨迹会导致传统生成视频护栏/车道扭曲。</text>
+      <text x="616" y="86" class="font-sans body-xs">• 方案：GEN3C 时空点云缓存锚定静态路网，</text>
+      <text x="616" y="104" class="font-sans body-xs">  MotionStream 控制交通参与者对抗轨迹，</text>
+      <text x="616" y="122" class="font-sans body-xs">  合成物理自洽的多相机闭环评测流。</text>
+      <rect x="616" y="158" width="254" height="28" rx="6" fill="#0B1324" stroke="#92400E"/>
+      <text x="743" y="176" text-anchor="middle" class="font-mono" font-size="11" fill="#FBBF24">ROI: 闭环仿真泛化率提升 3.4×，零实车风险</text>
+
+      <rect x="900" y="0" width="286" height="202" class="panel-inner"/>
+      <text x="916" y="24" class="font-sans title-sm" fill="#C084FC">4. 技术发布会与数字人动态舞台</text>
+      <text x="916" y="46" class="font-sans body-xs">• 痛点：纯 2D 口播缺乏空间纵深，3D 引擎</text>
+      <text x="916" y="64" class="font-sans body-xs">  资产管线过重且无法在浏览器轻量交互。</text>
+      <text x="916" y="86" class="font-sans body-xs">• 方案：浏览器原生 4D 高斯轻量化渲染器，</text>
+      <text x="916" y="104" class="font-sans body-xs">  支持演讲者实时拖拽运镜、冻结子弹时间</text>
+      <text x="916" y="122" class="font-sans body-xs">  拆解内部架构并切换 X-Ray 射线视图。</text>
+      <rect x="916" y="158" width="254" height="28" rx="6" fill="#0B1324" stroke="#581C87"/>
+      <text x="1043" y="176" text-anchor="middle" class="font-mono" font-size="11" fill="#C084FC">ROI: 零插件 60FPS H5 直出，交互留存 +3.1×</text>
+
+      <rect x="1200" y="0" width="308" height="202" class="panel-inner"/>
+      <text x="1216" y="24" class="font-sans title-sm" fill="#34D399">✅ Good Fit（强烈推荐）</text>
+      <text x="1216" y="45" class="font-sans body-xs">• 需要精确 6-DoF 相机控制与多视角几何一致</text>
+      <text x="1216" y="63" class="font-sans body-xs">• 交互式分镜预演、商品重打光与子弹时间特效</text>
+      <text x="1216" y="81" class="font-sans body-xs">• 多主体独立轨迹编排与物理二阶跟随场景</text>
+      <line x1="1216" y1="96" x2="1492" y2="96" stroke="#334155"/>
+      <text x="1216" y="118" class="font-sans title-sm" fill="#F43F5E">⛔ Not For（明确边界）</text>
+      <text x="1216" y="139" class="font-sans body-xs">• 超长跨场景叙事剪辑（宜用 Storyboard 引擎）</text>
+      <text x="1216" y="157" class="font-sans body-xs">• 流体拓扑剧烈撕裂/爆炸（高斯分裂开销高）</text>
+      <text x="1216" y="175" class="font-sans body-xs">• 零几何约束的纯抽象水墨风格化生成</text>
+    </g>
+  </g>
+</svg>

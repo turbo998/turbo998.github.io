@@ -146,7 +146,13 @@ const infraPages = ['benchmark-cards.en.html','workbench-cycle-377.html'].map(na
 const dataLabPages = ['index.html','live-demo.html','live-demo.en.html','benchmark-cards.html','benchmark-cards.en.html'].map(name=>({path:'workshops/data-lab/'+name,role:name.startsWith('benchmark')?'report':'demo',title:'Data Lab · Fabric IQ / four-cloud workbench · '+name,tracks:['infra'],language:{declared:name.includes('.en.')?'en':'zh-CN'},supplemental:true}));
 const phase179Pages = ['ai-infra-architect-workbench.html','ai-infra-phase179-benchmark-cards.html'].map(name=>({path:'workshops/benchmarks/'+name,role:name.includes('cards')?'report':'demo',title:'AI Infra · Phase 179 · '+name,tracks:['infra'],language:{declared:'und'},supplemental:true}));
 const commerceTrendsPages = ['stripe-collison-7-trends.html','stripe-collison-7-trends.en.html'].map(name=>({path:'workshops/agentic-commerce/'+name,role:'article',title:'Stripe / Collison · Seven Agentic Commerce Trends',tracks:['commerce'],language:{declared:name.includes('.en.')?'en':'zh-CN'},supplemental:true}));
-const archivePages = [...inventory.content, ...translations, ...webiqPages, ...radarPages, ...infraPages, ...dataLabPages, ...phase179Pages, ...commerceTrendsPages];
+const camera4dPages = ['animation','generative-visual-lab'].flatMap(dir=>[
+  {path:`${dir}/demos/camera-4d-director/index.html`,role:'demo',title:'4D Gaussian & Plücker Camera Director Studio',tracks:['animation'],language:{declared:'zh-CN'},supplemental:true},
+  {path:`${dir}/demos/camera-4d-director/test-report-cards.html`,role:'report',title:'4D Gaussian & Plücker Camera Control · 7-Card Report',tracks:['animation'],language:{declared:'zh-CN'},supplemental:true},
+  {path:`${dir}/research/controllable-4d-video-camera-study.html`,role:'article',title:'可控 4D 高斯溅射与 Plücker 相机控制视频导演架构研究',tracks:['animation'],language:{declared:'zh-CN'},supplemental:true},
+  {path:`${dir}/research/controllable-4d-video-camera-study.en.html`,role:'article',title:'Controllable 4D Gaussian Splatting & Plücker Camera-Control Video Architecture Study',tracks:['animation'],language:{declared:'en'},supplemental:true}
+]);
+const archivePages = [...inventory.content, ...translations, ...webiqPages, ...radarPages, ...infraPages, ...dataLabPages, ...phase179Pages, ...commerceTrendsPages, ...camera4dPages];
 function archiveNote(page, zh) {
   const t = (en, cn) => zh ? cn : en;
   const record = readingByPath.get(page.path);
@@ -178,6 +184,9 @@ for (const zh of [false, true]) {
       }
       if (track === 'commerce' && ['evaluation','resources'].includes(id)) rows += `<a class="resource-row" href="../workshops/webiq-azure/compare${zh?'':'.en'}.html"><strong>${t('Web IQ · Scenario comparison / unmeasured vendor claims','Web IQ · 场景比较／未实测厂商声明')}</strong><span>↗</span></a>`;
       if (track === 'commerce' && id === 'resources') rows += `<a class="resource-row" href="../workshops/agentic-commerce/stripe-collison-7-trends${zh?'':'.en'}.html"><strong>${t('Stripe / Collison · Seven Agentic Commerce Trends','Stripe / Collison · 智能体商业七大趋势')}</strong><span>↗</span></a>`;
+      if (track === 'animation' && id === 'architecture') rows += `<a class="resource-row" href="../animation/research/controllable-4d-video-camera-study${zh?'':'.en'}.html"><span><strong>${t('4D Gaussian & Plücker camera control architecture','可控 4D 高斯与 Plücker 相机控制架构专著')}</strong><span class="resource-desc">${t('Bilingual reading edition · GEN3C, Diff4Splat & MotionStream','中英阅读版本 · GEN3C、Diff4Splat 与 MotionStream')}</span></span><span>↗</span></a>`;
+      if (track === 'animation' && id === 'evaluation') rows += `<a class="resource-row" href="../animation/demos/camera-4d-director/test-report-cards.html"><span><strong>${t('4D camera director seven-card report','4D 相机导演工作台七卡评测报告')}</strong><span class="resource-desc">${t('Dedicated source: Chinese · original interface and data retained','原始专用资源：中文 · 保留内部界面与数据')}</span></span><span>↗</span></a>`;
+      if (track === 'animation' && id === 'demos') rows += `<a class="resource-row" href="../animation/demos/camera-4d-director/index.html"><span><strong>${t('4D Gaussian & Plücker camera director workbench','4D 高斯与 Plücker 相机导演工作台')}</strong><span class="resource-desc">${t('Dedicated source: Chinese · interactive 6DoF Plücker ray & motion brush','原始专用资源：中文 · 交互式 6DoF Plücker 射线与运动画笔')}</span></span><span>↗</span></a>`;
       if (track === 'voice' && id === 'demos') rows += `<a class="resource-row" href="../voice/index${zh?'':'.en'}.html#duplexGuardSimulatorCard"><strong>Stage 356 · P705 / P706 · ${t('Source-fixture sandbox','来源夹具沙盒')}</strong><span>↗</span></a>`;
       if (track === 'benchmarks' && ['evaluation','demos','resources'].includes(id)) {
         const target = id === 'evaluation' ? `workshops/github-trending-radar/cards${zh?'':'.en'}.html` : `${zh?'zh-':''}github-radar.html`;
