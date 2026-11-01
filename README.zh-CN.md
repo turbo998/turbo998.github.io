@@ -8,11 +8,23 @@
 
 ## 📌 执行摘要 (Executive Summary — 7-Track Frontier AI Studio)
 
+网站统一遵循 **架构解读 → 技术对比测评 → Demo 展示 → 详细分支资料**。
+右上角 `EN / 中文` 保留查询参数和章节链接。Studio 主线依次为
+**AI Infra、Agentic Commerce、Voice、Benchmarks & Harness、动画、Gaming、AI Security**，
+每条主线均提供二级场景目录与四阶段跳转。场景深链示例：
+`frontier-ai-studio.html?lang=zh-CN#infra/module/i-pill-2`；
+阶段深链示例：`#infra/stage-4`。面包屑返回指挥中心，安全着陆区同时返回其 AI 安全父栏目。
+
+共用导航及布局位于 `site-structure.js`、`site-structure.css`；现有报告数据与演示引擎不变。
+导航回归检查：运行 `python -m http.server 8796`，再在已有 Puppeteer 的环境执行
+`node tests\site-structure.cjs`；其他端口通过 `SITE_TEST_URL` 指定。
+检查隔离外部 API 和嵌入演示引擎，覆盖双语、全部场景文件、浏览器历史及桌面/平板/手机布局。
+
 | 主线编号 | 核心工程主线 (Track) | 代表性交互工作台 (Live H5 Workbench) | 密封 7-Card 4:5 基准报告 / 核心指标 |
 | :--- | :--- | :--- | :--- |
-| **Track 01** | **🎙️ Enterprise Voice Agent Lab (Stage 355)** | [语音双模对比沙盒](https://turbo998.github.io/voice/index.html) · [48页架构 Deck](https://turbo998.github.io/voice/deck.html) | [Voice Agent 7-Card 报告](https://turbo998.github.io/voice/benchmark-cards.html)（Stage 355 · P703/P704 · 358维 · 713护栏） |
-| **Track 02** | **🏗️ Azure Agent Infra (Cycle #376 · 100K Sandboxes)** | [全景 Playbook](https://turbo998.github.io/workshops/azure-agent-infra/index.html) · [AKSClaw×E2B 仿真台](https://turbo998.github.io/workshops/azure-agent-infra/demo.html) · [选型定容计算器](https://turbo998.github.io/workshops/azure-agent-infra/selector.html) | [Agent Infra 7-Card 报告](https://turbo998.github.io/workshops/azure-agent-infra/cards.html)（384 章节 · 377 蓝图 · `108ms` P50 恢复） |
-| **Track 03** | **🛒 Agentic Commerce × Web IQ (Stage 1751)** | [Web IQ 实时接地与攻防沙盒](https://turbo998.github.io/workshops/agentic-commerce/live-demo.html) | [Agentic Commerce 7-Card 报告](https://turbo998.github.io/workshops/agentic-commerce/benchmark-cards.html)（`87.5%` 命中 · `100%` 注入拦截 · 4,267 单测） |
+| **Track 01** | **🏗️ Azure Agent Infra (Cycle #376 · 100K Sandboxes)** | [全景 Playbook](https://turbo998.github.io/workshops/azure-agent-infra/index.html) · [AKSClaw×E2B 仿真台](https://turbo998.github.io/workshops/azure-agent-infra/demo.html) · [选型定容计算器](https://turbo998.github.io/workshops/azure-agent-infra/selector.html) | [Agent Infra 7-Card 报告](https://turbo998.github.io/workshops/azure-agent-infra/cards.html)（384 章节 · 377 蓝图 · `108ms` P50 恢复） |
+| **Track 02** | **🛒 Agentic Commerce × Web IQ (Stage 1751)** | [Web IQ 实时接地与攻防沙盒](https://turbo998.github.io/workshops/agentic-commerce/live-demo.html) | [Agentic Commerce 7-Card 报告](https://turbo998.github.io/workshops/agentic-commerce/benchmark-cards.html)（`87.5%` 命中 · `100%` 注入拦截 · 4,267 单测） |
+| **Track 03** | **🎙️ Enterprise Voice Agent Lab (Stage 355)** | [语音双模对比沙盒](https://turbo998.github.io/voice/index.html) · [48页架构 Deck](https://turbo998.github.io/voice/deck.html) | [Voice Agent 7-Card 报告](https://turbo998.github.io/voice/benchmark-cards.html)（Stage 355 · P703/P704 · 358维 · 713护栏） |
 | **Track 04** | **📊 7-Card Benchmarks & AI Infra (Phase 178)** | [Benchmark 独立报告专栏](https://turbo998.github.io/zh-benchmarks.html) · [FAF vs AGENT-FORGE vs HVE-Core 三方竞技场](https://turbo998.github.io/workshops/faf-vs-agent-forge/index.html) | [增补6 Gemini 4 Carbon](https://turbo998.github.io/workshops/benchmarks/gemini-4-carbon-cards.html) · [增补5 19模型+SKY-001](https://turbo998.github.io/workshops/benchmarks/sky-001-cards.html) · [增补4 Sonnet 5.5+Sol](https://turbo998.github.io/workshops/benchmarks/coding-17-sonnet55-sol-cards.html) · [Decision-1 路由](https://turbo998.github.io/workshops/benchmarks/decision-1-cards.html) · Phase 178（`3,651` 源 · `178` 份 7-Card） |
 | **Track 05** | **🎨 Coding Animation (Stage 466 · 四大实时演示)** | [敦煌飞天 · Astra 火星 · 白色火箭 · 🚲 鹈鹕骑自行车](https://turbo998.github.io/animation/index.html) · [鹈鹕三方竞技场](https://turbo998.github.io/animation/demos/pelican-bicycle-arena/index.html) | Stage 466（`522` 项精选作品 · `55/55` 全绿 · 鹈鹕骑车 `HVE-Core 93.4` vs `AF 91.8` vs `FAF 90.5` + [7-Card 报告](https://turbo998.github.io/animation/demos/pelican-bicycle-arena/test-report-cards.html)） |
 | **Track 06** | **🎮 HVE Rapid Game Prototyping** | [晚安·1999 深夜食堂 & 废土机甲狂潮](https://turbo998.github.io/game/index.html) | 60 FPS 空间哈希碰撞 + WebAudio 程序化合成器单文件闭环 |

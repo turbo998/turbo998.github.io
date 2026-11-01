@@ -8,11 +8,19 @@
 
 ## 📌 执行摘要 (Executive Summary — 7-Track Frontier AI Studio)
 
+**学习路径 / Learning flow:** 架构解读 / Architecture → 技术测评 / Comparisons →
+Demo 展示 / Demos → 分支资料 / Detailed resources。七大主线按
+AI Infra → Agentic Commerce → Voice → Benchmarks & Harness → Animation →
+Gaming → AI Security 排列，每条主线提供二级目录、阶段跳转及返回面包屑。
+右上角 `EN / 中文` 保留语言、查询参数及深链，例如
+`frontier-ai-studio.html?lang=en#infra/module/i-pill-2`。
+完整导航说明及回归检查方法见 [English](README.en.md) / [中文](README.zh-CN.md)。
+
 | 主线编号 | 核心工程主线 (Track) | 代表性交互工作台 (Live H5 Workbench) | 密封 7-Card 4:5 基准报告 / 核心指标 |
 | :--- | :--- | :--- | :--- |
-| **Track 01** | **🎙️ Enterprise Voice Agent Lab (Stage 355)** | [语音双模对比沙盒](https://turbo998.github.io/voice/index.html) · [48页架构 Deck](https://turbo998.github.io/voice/deck.html) | [Voice Agent 7-Card 报告](https://turbo998.github.io/voice/benchmark-cards.html)（Stage 355 · P703/P704 · 358维 · 713护栏） |
-| **Track 02** | **🏗️ Azure Agent Infra (Cycle #376 · 100K Sandboxes)** | [全景 Playbook](https://turbo998.github.io/workshops/azure-agent-infra/index.html) · [AKSClaw×E2B 仿真台](https://turbo998.github.io/workshops/azure-agent-infra/demo.html) · [选型定容计算器](https://turbo998.github.io/workshops/azure-agent-infra/selector.html) | [Agent Infra 7-Card 报告](https://turbo998.github.io/workshops/azure-agent-infra/cards.html)（384 章节 · 377 蓝图 · `108ms` P50 恢复） |
-| **Track 03** | **🛒 Agentic Commerce × Web IQ (Stage 1751)** | [Web IQ 实时接地与攻防沙盒](https://turbo998.github.io/workshops/agentic-commerce/live-demo.html) | [Agentic Commerce 7-Card 报告](https://turbo998.github.io/workshops/agentic-commerce/benchmark-cards.html)（`87.5%` 命中 · `100%` 注入拦截 · 4,267 单测） |
+| **Track 01** | **🏗️ Azure Agent Infra (Cycle #376 · 100K Sandboxes)** | [全景 Playbook](https://turbo998.github.io/workshops/azure-agent-infra/index.html) · [AKSClaw×E2B 仿真台](https://turbo998.github.io/workshops/azure-agent-infra/demo.html) · [选型定容计算器](https://turbo998.github.io/workshops/azure-agent-infra/selector.html) | [Agent Infra 7-Card 报告](https://turbo998.github.io/workshops/azure-agent-infra/cards.html)（384 章节 · 377 蓝图 · `108ms` P50 恢复） |
+| **Track 02** | **🛒 Agentic Commerce × Web IQ (Stage 1751)** | [Web IQ 实时接地与攻防沙盒](https://turbo998.github.io/workshops/agentic-commerce/live-demo.html) | [Agentic Commerce 7-Card 报告](https://turbo998.github.io/workshops/agentic-commerce/benchmark-cards.html)（`87.5%` 命中 · `100%` 注入拦截 · 4,267 单测） |
+| **Track 03** | **🎙️ Enterprise Voice Agent Lab (Stage 355)** | [语音双模对比沙盒](https://turbo998.github.io/voice/index.html) · [48页架构 Deck](https://turbo998.github.io/voice/deck.html) | [Voice Agent 7-Card 报告](https://turbo998.github.io/voice/benchmark-cards.html)（Stage 355 · P703/P704 · 358维 · 713护栏） |
 | **Track 04** | **📊 7-Card Benchmarks & AI Infra (Phase 178)** | [Benchmark 独立报告专栏](https://turbo998.github.io/zh-benchmarks.html) · [FAF vs AGENT-FORGE vs HVE-Core 三方竞技场](https://turbo998.github.io/workshops/faf-vs-agent-forge/index.html) | [增补6 Gemini 4 Carbon](https://turbo998.github.io/workshops/benchmarks/gemini-4-carbon-cards.html) · [增补5 19模型+SKY-001](https://turbo998.github.io/workshops/benchmarks/sky-001-cards.html) · [增补4 Sonnet 5.5+Sol](https://turbo998.github.io/workshops/benchmarks/coding-17-sonnet55-sol-cards.html) · [Decision-1 路由](https://turbo998.github.io/workshops/benchmarks/decision-1-cards.html) · Phase 178（`3,651` 源 · `178` 份 7-Card） |
 | **Track 05** | **🎨 Coding Animation (Stage 466 · 四大实时演示)** | [敦煌飞天 · Astra 火星 · 白色火箭 · 🚲 鹈鹕骑自行车](https://turbo998.github.io/animation/index.html) · [鹈鹕三方竞技场](https://turbo998.github.io/animation/demos/pelican-bicycle-arena/index.html) | Stage 466（`522` 项精选作品 · `55/55` 全绿 · 鹈鹕骑车 `HVE-Core 93.4` vs `AF 91.8` vs `FAF 90.5` + [7-Card 报告](https://turbo998.github.io/animation/demos/pelican-bicycle-arena/test-report-cards.html)） |
 | **Track 06** | **🎮 HVE Rapid Game Prototyping** | [晚安·1999 深夜食堂 & 废土机甲狂潮](https://turbo998.github.io/game/index.html) | 60 FPS 空间哈希碰撞 + WebAudio 程序化合成器单文件闭环 |
