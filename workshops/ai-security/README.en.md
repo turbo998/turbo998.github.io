@@ -1,12 +1,14 @@
-# 🛡️ AI Security Lab — Major Incident Kill-Chain Simulator (Binance $6B Case Study), Agentic Pentesting & Multi-Agent Red-Team Workbench
+# 🛡️ AI Security Lab — 5 AI Solution Architect Pillars, Binance $6B Kill-Chain Simulator, 6-Vector Pentest Arena & ROI Playbook
 
-[中文版本 (`README.md`)](./README.md) | [🎮 Interactive H5 Playground (`index.en.html`)](./index.en.html) | [📊 7-Card 4:5 Benchmark Deck (`benchmark-cards.en.html`)](./benchmark-cards.en.html) | [💻 GitHub Repository (`turbo998/ai-security-lab`)](https://github.com/turbo998/ai-security-lab)
+[中文版本 (`README.md`)](./README.md) | [🎮 4-Tab Interactive H5 Playground (`index.en.html`)](./index.en.html) | [📊 7-Card 4:5 Benchmark Deck (`benchmark-cards.en.html`)](./benchmark-cards.en.html) | [🖼️ Executive Visual Summary SVG (`executive-summary-2026-11-01.en.svg`)](./executive-summary-2026-11-01.en.svg) | [💻 GitHub Repository (`turbo998/ai-security-lab`)](https://github.com/turbo998/ai-security-lab)
+
+![AI Solution Architect · Zero-Trust & Agentic Security Executive Summary](./executive-summary-2026-11-01.en.svg)
 
 ---
 
-## 1. Executive Overview
+## 1. Executive Overview & 5 AI Solution Architect Pillars
 
-**Track 07 · AI Security** delivers an end-to-end offensive and defensive engineering workbench for agentic AI systems, Model Context Protocol (MCP) tool gateways, Agent-to-Agent (A2A) delegation chains, and institutional treasury/bridge settlement pipelines. By combining deterministic policy verifiers, hardware TEE intent-vs-calldata attestation, and sub-180ms graph anomaly circuit breakers, the stack reduces red-team Attack Success Rate (ASR) from **75.0%** to **0.0%** while preserving **93.8% (15/16)** benign task completion.
+**Track 07 · AI Security** delivers an end-to-end offensive and defensive engineering workbench for agentic AI systems, Model Context Protocol (MCP) tool gateways, Agent-to-Agent (A2A) delegation chains, persistent RAG/Memory stores, and institutional treasury/bridge settlement pipelines. By enforcing a **5-Gate Zero-Trust Deterministic Architecture** across **20 red-vs-blue scenarios (105/105 passing Pytest assertions)**, the stack reduces Attack Success Rate (ASR) from **75.0%** to **0.0%** while preserving **100.0%** benign task completion and **0.0%** false positives.
 
 | Evaluation Dimension | Unprotected Baseline (Relaxed) | 4-Layer Zero-Trust Hardened | Engineering Gain |
 | :--- | :---: | :---: | :--- |

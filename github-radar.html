@@ -210,8 +210,21 @@
     background: var(--surface-2); border: 1px solid var(--border);
     border-radius: 7px; padding: 7px 10px; font-family: var(--mono); font-size: 11.2px;
   }
+  .drawer-backdrop {
+    position: fixed; inset: 0; background: rgba(15, 23, 42, 0.62);
+    backdrop-filter: blur(4px); z-index: 999; display: none; justify-content: flex-end;
+  }
+  .drawer-backdrop.open { display: flex; }
+  .drawer-panel {
+    width: min(680px, 94vw); height: 100vh; overflow-y: auto;
+    background: var(--surface); border-left: 1px solid var(--border-strong);
+    padding: 24px 26px; box-shadow: -12px 0 36px rgba(0,0,0,0.35);
+  }
+  .weekly-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 12px;
+  }
   @media (max-width: 960px) {
-    .tuner-grid, .topic-tuner-list, .hfs-bars-grid, .sa-4d-grid, .claims-list { grid-template-columns: 1fr; }
+    .tuner-grid, .topic-tuner-list, .hfs-bars-grid, .sa-4d-grid, .claims-list, .weekly-grid { grid-template-columns: 1fr; }
     .pipeline-rail { grid-template-columns: repeat(2, 1fr); }
   }
 </style>
@@ -220,7 +233,8 @@
 .reading-document .builder-hero{padding:28px 0}.reading-document .builder-hero-grid{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:32px;align-items:center}.reading-document .bh-kicker,.reading-document .stage-number{color:var(--reading-secondary);font:11px/1.7 var(--mono);letter-spacing:.08em}.reading-document .grad{color:var(--reading-accent)}.reading-document .bh-sub,.reading-document .stage-section-header>p{color:var(--reading-muted)}
 .reading-document .bh-tags{display:flex;flex-wrap:wrap;gap:8px}.reading-document .bh-tag{font-size:12px;padding:6px 10px;border:1px solid var(--reading-line);border-radius:20px;text-decoration:none}.reading-document .bh-actions-grid{display:grid;gap:12px}.reading-document .bh-btn{display:inline-block;padding:12px 16px;border:1px solid var(--reading-line);border-radius:10px;background:var(--reading-surface);text-decoration:none;font-size:13px}.reading-document .bh-btn.primary,.reading-document .radar-pill.active,.reading-document .chip-btn.active{background:var(--reading-accent);color:var(--reading-on-accent)}
 .reading-document .telemetry-strip{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:28px}.reading-document .tm-item{padding:16px;background:var(--reading-surface);border:1px solid var(--reading-line);border-radius:10px}.reading-document .tm-val{display:block;color:var(--reading-secondary);font:700 18px/1.4 var(--mono)}.reading-document .tm-lbl{display:block;color:var(--reading-muted);font-size:11px;margin-top:8px}.reading-document .pipeline-rail{grid-template-columns:repeat(4,minmax(0,1fr));overflow:visible}.reading-document .pipe-title{color:var(--reading-text)}.reading-document .panel-box{margin:0;padding:18px 20px}.reading-document .repo-card{border-radius:14px;margin:0}.reading-document .panel-box>div{flex-wrap:wrap;gap:10px}.reading-document .panel-box h3{margin-top:0}.reading-document .repo-name-link{font-size:20px}.reading-document .reading-context{margin:0 16px 12px 0}.reading-document .hfs-slider-row input{padding:0;min-width:60px}.reading-document .search-input{min-width:0;flex-basis:240px}.reading-document .verdict-P1{color:var(--reading-accent)}.reading-document .verdict-P0{color:#ff909a}
-@media(max-width:960px){.reading-document .builder-hero-grid{grid-template-columns:1fr}.reading-document .telemetry-strip{grid-template-columns:repeat(2,minmax(0,1fr))}.reading-document .pipeline-rail{grid-template-columns:repeat(2,minmax(0,1fr))}.reading-document .bh-actions-grid{grid-template-columns:1fr}.reading-document .panel-box{padding:16px}.reading-document .radar-subcol-bar{padding:14px}.reading-document .hfs-slider-row{flex-wrap:wrap}.reading-document .hfs-slider-row input{flex-basis:100%}}
+.reading-document .drawer-backdrop{z-index:1100}.reading-document .drawer-panel{background:var(--reading-surface);color:var(--reading-text);height:100dvh;max-width:100%;overscroll-behavior:contain}.reading-document .drawer-panel>div:first-child{flex-wrap:wrap}.reading-document .weekly-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(max-width:960px){.reading-document .weekly-grid{grid-template-columns:1fr}.reading-document .builder-hero-grid{grid-template-columns:1fr}.reading-document .telemetry-strip{grid-template-columns:repeat(2,minmax(0,1fr))}.reading-document .pipeline-rail{grid-template-columns:repeat(2,minmax(0,1fr))}.reading-document .bh-actions-grid{grid-template-columns:1fr}.reading-document .panel-box{padding:16px}.reading-document .radar-subcol-bar{padding:14px}.reading-document .hfs-slider-row{flex-wrap:wrap}.reading-document .hfs-slider-row input{flex-basis:100%}}
 @media(max-width:600px){.reading-header{height:auto;min-height:72px;flex-wrap:wrap;padding:12px 16px}.reading-controls{margin-left:auto}.reading-document .panel-box>div>div{flex-wrap:wrap}.reading-document .repo-card{padding:16px}.reading-document h1{font-size:34px}.reading-document .radar-pill{font-size:11px}}
 </style><!-- radar-reading-style:end --></head>
 <body>
@@ -487,6 +501,14 @@
     </header>
 
     <div class="filter-toolbar">
+      <div class="filter-row" id="date-archive-filters">
+        <span class="filter-label">📅 Date Archive:</span>
+        <button type="button" class="chip-btn active" data-date="2026-11-01">2026-11-01 · 15 Repos (Latest)</button>
+        <a class="chip-btn" href="https://github.com/turbo998/Kee-Tech-Assets/blob/main/workshops/github-trending-radar/daily/2026-11-01.en.md" target="_blank" rel="noopener" style="text-decoration:none;">📄 Daily Markdown (EN) ↗</a>
+        <a class="chip-btn" href="https://github.com/turbo998/Kee-Tech-Assets/blob/main/workshops/github-trending-radar/daily/2026-11-01.md" target="_blank" rel="noopener" style="text-decoration:none;">📄 每日归档日报 (中文) ↗</a>
+        <a class="chip-btn" href="workshops/github-trending-radar/report.json" target="_blank" rel="noopener" style="text-decoration:none;">📦 Telemetry JSON ↗</a>
+        <a class="chip-btn" href="assets/github-ai-radar-2026-11-01.svg" target="_blank" rel="noopener" style="text-decoration:none;">🖼️ Visual Summary SVG ↗</a>
+      </div>
       <div class="filter-row" id="card-type-filters">
         <span class="filter-label">🃏 8 Card Types:</span>
       </div>
@@ -581,8 +603,11 @@
 
           <!-- Claim-Support Verification Ledger -->
           <div class="claims-drawer">
-            <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
-              🔍 news-researcher Subagent Claim-Support Verification Ledger (4/4 Audited)
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+              <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
+                🔍 news-researcher Subagent Claim-Support Verification Ledger (4/4 Audited)
+              </div>
+              <button type="button" class="taste-btn open-drawer-btn" data-repo-id="claude-mem">🔍 Open SA Detail Drawer ↗</button>
             </div>
             <div class="claims-list">
               <div class="claim-item">✓ [0.96] Native multi-host adapters for Claude Code, Copilot, Codex, Gemini, Hermes & OpenClaw</div><div class="claim-item">✓ [0.94] Hybrid SQLite + ChromaDB local persistence with zero mandatory cloud dependency</div><div class="claim-item">✓ [0.92] Progressive Disclosure index query prevents context-window bloat</div><div class="claim-item">✓ [0.95] Verified 108,644 total GitHub stars with +1,527 stars gained on 2026-11-01</div>
@@ -670,8 +695,11 @@
 
           <!-- Claim-Support Verification Ledger -->
           <div class="claims-drawer">
-            <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
-              🔍 news-researcher Subagent Claim-Support Verification Ledger (4/4 Audited)
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+              <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
+                🔍 news-researcher Subagent Claim-Support Verification Ledger (4/4 Audited)
+              </div>
+              <button type="button" class="taste-btn open-drawer-btn" data-repo-id="pi-durable-news-agent">🔍 Open SA Detail Drawer ↗</button>
             </div>
             <div class="claims-list">
               <div class="claim-item">✓ [0.98] Step-level idempotent SQLite checkpointing powered by pi-durable</div><div class="claim-item">✓ [0.96] Five composable jev evaluators: relevance, worth-attention, same-story, claim-support, hfs</div><div class="claim-item">✓ [0.95] Lead news-desk dispatches parallel news-researcher subagents to verify up to 4 claims per story</div><div class="claim-item">✓ [0.94] Renders 8 Generative UI card types with conversational Show me more/less taste tuning</div>
@@ -759,8 +787,11 @@
 
           <!-- Claim-Support Verification Ledger -->
           <div class="claims-drawer">
-            <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
-              🔍 news-researcher Subagent Claim-Support Verification Ledger (4/4 Audited)
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+              <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
+                🔍 news-researcher Subagent Claim-Support Verification Ledger (4/4 Audited)
+              </div>
+              <button type="button" class="taste-btn open-drawer-btn" data-repo-id="aisoc">🔍 Open SA Detail Drawer ↗</button>
             </div>
             <div class="claims-list">
               <div class="claim-item">✓ [0.92] End-to-end Python/LangGraph pipeline for alert fusion and MITRE ATT&CK investigation</div><div class="claim-item">✓ [0.94] Generates a deterministic Replayable Decision Ledger for every agent step</div><div class="claim-item">✓ [0.90] Ships a native MCP server compatible with Claude, Cursor, and Continue</div><div class="claim-item">✓ [0.89] MIT licensed and runnable locally with zero mandatory commercial API keys</div>
@@ -848,8 +879,11 @@
 
           <!-- Claim-Support Verification Ledger -->
           <div class="claims-drawer">
-            <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
-              🔍 news-researcher Subagent Claim-Support Verification Ledger (4/4 Audited)
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+              <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
+                🔍 news-researcher Subagent Claim-Support Verification Ledger (4/4 Audited)
+              </div>
+              <button type="button" class="taste-btn open-drawer-btn" data-repo-id="lightpanda-browser">🔍 Open SA Detail Drawer ↗</button>
             </div>
             <div class="claims-list">
               <div class="claim-item">✓ [0.95] Written from scratch in Zig (not a Chromium fork) specifically for headless AI workloads</div><div class="claim-item">✓ [0.92] Native Chrome DevTools Protocol (CDP) support for Playwright and Puppeteer</div><div class="claim-item">✓ [0.90] Order-of-magnitude lower memory consumption and faster cold start than Chromium</div><div class="claim-item">✓ [0.91] Reached 39,739 total stars with +827 stars today</div>
@@ -937,8 +971,11 @@
 
           <!-- Claim-Support Verification Ledger -->
           <div class="claims-drawer">
-            <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
-              🔍 news-researcher Subagent Claim-Support Verification Ledger (4/4 Audited)
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+              <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
+                🔍 news-researcher Subagent Claim-Support Verification Ledger (4/4 Audited)
+              </div>
+              <button type="button" class="taste-btn open-drawer-btn" data-repo-id="t3code">🔍 Open SA Detail Drawer ↗</button>
             </div>
             <div class="claims-list">
               <div class="claim-item">✓ [0.96] Gained +3,100 stars on 2026-11-01, ranking #1 in daily star velocity across GitHub</div><div class="claim-item">✓ [0.85] Provides a responsive web GUI for managing parallel coding agent sessions (t3.codes)</div><div class="claim-item">✓ [0.82] Built with TypeScript, reaching 36,842 total stars and 8,861 forks</div><div class="claim-item">✓ [0.78] High creator-community amplification (Hype=28), with strong UX engineering substance</div>
@@ -1026,8 +1063,11 @@
 
           <!-- Claim-Support Verification Ledger -->
           <div class="claims-drawer">
-            <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
-              🔍 news-researcher Subagent Claim-Support Verification Ledger (4/4 Audited)
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+              <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
+                🔍 news-researcher Subagent Claim-Support Verification Ledger (4/4 Audited)
+              </div>
+              <button type="button" class="taste-btn open-drawer-btn" data-repo-id="openbot">🔍 Open SA Detail Drawer ↗</button>
             </div>
             <div class="claims-list">
               <div class="claim-item">✓ [0.91] Provisions an isolated computer environment (browser, filesystem, tools) per AI coworker</div><div class="claim-item">✓ [0.90] Enforces pre-action governance approval and post-action audit recording</div><div class="claim-item">✓ [0.88] Compatible with any AG-UI (Agent-User Interaction Protocol) agent backend</div><div class="claim-item">✓ [0.85] Native MCP tool integration with 9,290 total stars</div>
@@ -1115,8 +1155,11 @@
 
           <!-- Claim-Support Verification Ledger -->
           <div class="claims-drawer">
-            <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
-              🔍 news-researcher Subagent Claim-Support Verification Ledger (4/4 Audited)
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+              <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
+                🔍 news-researcher Subagent Claim-Support Verification Ledger (4/4 Audited)
+              </div>
+              <button type="button" class="taste-btn open-drawer-btn" data-repo-id="dsh-superagent-prototype">🔍 Open SA Detail Drawer ↗</button>
             </div>
             <div class="claims-list">
               <div class="claim-item">✓ [0.92] Official prototype repository under the deepseek-ai organization (TypeScript)</div><div class="claim-item">✓ [0.84] Focuses on long-horizon autonomous planning and tool-feedback self-correction</div><div class="claim-item">✓ [0.80] Created 2026-10-31 and rapidly gained 5,854 stars (+840 today)</div><div class="claim-item">✓ [0.72] Research prototype scope — requires enterprise sandboxing and RBAC before production use</div>
@@ -1204,8 +1247,11 @@
 
           <!-- Claim-Support Verification Ledger -->
           <div class="claims-drawer">
-            <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
-              🔍 news-researcher Subagent Claim-Support Verification Ledger (4/4 Audited)
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+              <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
+                🔍 news-researcher Subagent Claim-Support Verification Ledger (4/4 Audited)
+              </div>
+              <button type="button" class="taste-btn open-drawer-btn" data-repo-id="anomaly-hex">🔍 Open SA Detail Drawer ↗</button>
             </div>
             <div class="claims-list">
               <div class="claim-item">✓ [0.94] Native Rust implementation with 100% on-device speech recognition</div><div class="claim-item">✓ [0.91] Push-to-talk global shortcut pastes directly into any active IDE or terminal</div><div class="claim-item">✓ [0.88] Supports macOS with an active Linux beta release</div><div class="claim-item">✓ [0.95] Surged +1,329 stars on 2026-11-01 to 2,722 total stars</div>
@@ -1293,8 +1339,11 @@
 
           <!-- Claim-Support Verification Ledger -->
           <div class="claims-drawer">
-            <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
-              🔍 news-researcher Subagent Claim-Support Verification Ledger (4/4 Audited)
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+              <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
+                🔍 news-researcher Subagent Claim-Support Verification Ledger (4/4 Audited)
+              </div>
+              <button type="button" class="taste-btn open-drawer-btn" data-repo-id="openmausbot">🔍 Open SA Detail Drawer ↗</button>
             </div>
             <div class="claims-list">
               <div class="claim-item">✓ [0.88] Bundles a controllable virtual machine / container environment for agent execution</div><div class="claim-item">✓ [0.85] Full-stack TypeScript + Electron desktop + Expo mobile client architecture</div><div class="claim-item">✓ [0.82] Pluggable backends supporting Claude Code, Codex, and Grok models</div><div class="claim-item">✓ [0.86] Reached 10,217 total stars with +919 stars today</div>
@@ -1382,8 +1431,11 @@
 
           <!-- Claim-Support Verification Ledger -->
           <div class="claims-drawer">
-            <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
-              🔍 news-researcher Subagent Claim-Support Verification Ledger (4/4 Audited)
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+              <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
+                🔍 news-researcher Subagent Claim-Support Verification Ledger (4/4 Audited)
+              </div>
+              <button type="button" class="taste-btn open-drawer-btn" data-repo-id="freetoken">🔍 Open SA Detail Drawer ↗</button>
             </div>
             <div class="claims-list">
               <div class="claim-item">✓ [0.84] Optimizes sparse Mixture-of-Experts (MoE) inference for desktop and edge hardware</div><div class="claim-item">✓ [0.80] Supports DeepSeek-V4, Qwen, GLM, and MiniMax model architectures</div><div class="claim-item">✓ [0.76] 'Datacenter-scale on desktop' tagline carries moderate marketing hype (Hype=34) due to PCIe limits</div><div class="claim-item">✓ [0.88] Accumulated 15,159 total stars (+232 today)</div>
@@ -1471,8 +1523,11 @@
 
           <!-- Claim-Support Verification Ledger -->
           <div class="claims-drawer">
-            <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
-              🔍 news-researcher Subagent Claim-Support Verification Ledger (4/4 Audited)
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+              <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
+                🔍 news-researcher Subagent Claim-Support Verification Ledger (4/4 Audited)
+              </div>
+              <button type="button" class="taste-btn open-drawer-btn" data-repo-id="handy">🔍 Open SA Detail Drawer ↗</button>
             </div>
             <div class="claims-list">
               <div class="claim-item">✓ [0.94] Built with Rust and Tauri v2 for Windows, macOS, and Linux compatibility</div><div class="claim-item">✓ [0.92] Operates 100% offline with zero external cloud API dependencies</div><div class="claim-item">✓ [0.88] Extensible plugin architecture with strong accessibility focus</div><div class="claim-item">✓ [0.90] 36,158 total GitHub stars (+383 today)</div>
@@ -1560,8 +1615,11 @@
 
           <!-- Claim-Support Verification Ledger -->
           <div class="claims-drawer">
-            <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
-              🔍 news-researcher Subagent Claim-Support Verification Ledger (4/4 Audited)
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+              <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
+                🔍 news-researcher Subagent Claim-Support Verification Ledger (4/4 Audited)
+              </div>
+              <button type="button" class="taste-btn open-drawer-btn" data-repo-id="ai-engineering-hub">🔍 Open SA Detail Drawer ↗</button>
             </div>
             <div class="claims-list">
               <div class="claim-item">✓ [0.90] Large collection of runnable Jupyter Notebooks for LLMs, RAG, MCP, and agents</div><div class="claim-item">✓ [0.85] Actively updated with recent open-weights models and MCP examples (pushed 2026-11-01)</div><div class="claim-item">✓ [0.88] 39,907 total stars and 6,458 forks with strong community adoption</div><div class="claim-item">✓ [0.75] Tutorial-grade code — requires production hardening for enterprise use</div>
@@ -1649,8 +1707,11 @@
 
           <!-- Claim-Support Verification Ledger -->
           <div class="claims-drawer">
-            <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
-              🔍 news-researcher Subagent Claim-Support Verification Ledger (4/4 Audited)
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+              <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
+                🔍 news-researcher Subagent Claim-Support Verification Ledger (4/4 Audited)
+              </div>
+              <button type="button" class="taste-btn open-drawer-btn" data-repo-id="kronos">🔍 Open SA Detail Drawer ↗</button>
             </div>
             <div class="claims-list">
               <div class="claim-item">✓ [0.86] Custom candlestick/OHLCV tokenizer and pretrained time-series Transformer foundation model</div><div class="claim-item">✓ [0.84] 45,028 GitHub stars and 7,439 forks across quant and AI communities</div><div class="claim-item">✓ [0.72] Last code push was 2026-04; resurfaced on today's trending feed via quant curation lists</div><div class="claim-item">✓ [0.70] Financial market non-stationarity requires careful out-of-sample evaluation (Hype=32)</div>
@@ -1738,8 +1799,11 @@
 
           <!-- Claim-Support Verification Ledger -->
           <div class="claims-drawer">
-            <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
-              🔍 news-researcher Subagent Claim-Support Verification Ledger (4/4 Audited)
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+              <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
+                🔍 news-researcher Subagent Claim-Support Verification Ledger (4/4 Audited)
+              </div>
+              <button type="button" class="taste-btn open-drawer-btn" data-repo-id="claude-code-game-studios">🔍 Open SA Detail Drawer ↗</button>
             </div>
             <div class="claims-list">
               <div class="claim-item">✓ [0.85] Contains 49 persona definitions and 72 workflow skill files targeting Godot, Unity, and Unreal</div><div class="claim-item">✓ [0.82] 31,775 total stars (+970 today) with massive indie game dev community reach</div><div class="claim-item">✕ [0.45] 'Full game studio replacement' framing is promotional hype (Hype=54); consists primarily of prompt/shell templates</div><div class="claim-item">✓ [0.75] Lacks automated compilation or frame-rate verification harnesses</div>
@@ -1827,8 +1891,11 @@
 
           <!-- Claim-Support Verification Ledger -->
           <div class="claims-drawer">
-            <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
-              🔍 news-researcher Subagent Claim-Support Verification Ledger (4/4 Audited)
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+              <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
+                🔍 news-researcher Subagent Claim-Support Verification Ledger (4/4 Audited)
+              </div>
+              <button type="button" class="taste-btn open-drawer-btn" data-repo-id="jailbreaks">🔍 Open SA Detail Drawer ↗</button>
             </div>
             <div class="claims-list">
               <div class="claim-item">✓ [0.80] Contains a large collection of historical and recent jailbreak text prompts (12,631 stars, +730 today)</div><div class="claim-item">✕ [0.30] Zero evaluation code, zero reproducible ASR metrics, and no structured taxonomy</div><div class="claim-item">✕ [0.35] Role-play jailbreaks fail against deterministic tool-layer authorization and Spotlighting</div><div class="claim-item">✓ [0.75] Properly downgraded to P3 (Attention=40) by the Jev HFS gate to protect SA focus</div>
@@ -1836,6 +1903,47 @@
           </div>
         </article>
 <!-- radar-prerender-repo-cards-container:end --></div>
+  </section>
+
+  <!-- SECTION 3B: WEEKLY & 7-DAY SURGING AI BREAKTHROUGHS -->
+  <section id="weekly-surging-section" style="margin-top:32px;">
+    <header class="stage-section-header">
+      <span class="stage-number">STAGE 03B · WEEKLY &amp; 7-DAY SURGING AI BREAKTHROUGHS</span>
+      <h2>Weekly Trending &amp; 7-Day Surging AI Capabilities (`since=weekly` &amp; `created:&gt;2026-10-25`)</h2>
+      <p>Mandatory capability-breakthrough radar tracking fast-rising repositories across the 7-day window beyond the daily Top 15.</p>
+    </header>
+    <div class="weekly-grid">
+      <article class="panel-box">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;">
+          <span class="verdict-badge verdict-P0">🔥 P0 Must-Learn</span>
+          <span style="font-family:var(--mono);font-size:12px;font-weight:800;color:var(--accent);">Attention: 91 · signal_alert</span>
+        </div>
+        <h3 style="margin:0 0 6px;"><a href="https://github.com/cloudflare/security-audit-skill" target="_blank" rel="noopener" style="color:var(--text);text-decoration:none;">cloudflare/security-audit-skill ↗</a></h3>
+        <div style="font-family:var(--mono);font-size:11.5px;color:var(--good);margin-bottom:8px;">🔥 +11,908 stars this week · ★ 56,031 · MIT</div>
+        <p style="font-size:12.8px;color:var(--text-2);line-height:1.55;margin:0 0 8px;">Official Cloudflare Agentic Security Audit Skill packaging dependency vulnerability triage, secret scanning, and cloud configuration review into a portable agent skill.</p>
+        <div style="font-family:var(--mono);font-size:11.2px;color:var(--text-3);">HFS: Signal 83 · Facts 84 · Hype 18 | SA Track 07 (AI Security)</div>
+      </article>
+      <article class="panel-box">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;">
+          <span class="verdict-badge verdict-P1">⚡ P1 Deep-Read</span>
+          <span style="font-family:var(--mono);font-size:12px;font-weight:800;color:var(--accent);">Attention: 87 · release</span>
+        </div>
+        <h3 style="margin:0 0 6px;"><a href="https://github.com/JetBrains/thinkrail" target="_blank" rel="noopener" style="color:var(--text);text-decoration:none;">JetBrains/thinkrail ↗</a></h3>
+        <div style="font-family:var(--mono);font-size:11.5px;color:var(--good);margin-bottom:8px;">🔥 +5,738 stars this week · ★ 6,905 · Apache-2.0 · v0.3.0</div>
+        <p style="font-size:12.8px;color:var(--text-2);line-height:1.55;margin:0 0 8px;">JetBrains structured reasoning rail providing explicit verification checkpoints and anti-drift guardrails for long-horizon coding agents.</p>
+        <div style="font-family:var(--mono);font-size:11.2px;color:var(--text-3);">HFS: Signal 79 · Facts 82 · Hype 20 | SA Track 04 (Agent Harness)</div>
+      </article>
+      <article class="panel-box">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;">
+          <span class="verdict-badge verdict-P1">⚡ P1 Deep-Read</span>
+          <span style="font-family:var(--mono);font-size:12px;font-weight:800;color:var(--accent);">Attention: 82 · fact_check</span>
+        </div>
+        <h3 style="margin:0 0 6px;"><a href="https://github.com/qybaihe/bla" target="_blank" rel="noopener" style="color:var(--text);text-decoration:none;">qybaihe/bla (Blind LLM Agents) ↗</a></h3>
+        <div style="font-family:var(--mono);font-size:11.5px;color:var(--good);margin-bottom:8px;">🔥 +1,789 stars in 7d · ★ 1,789 · MIT · v1.6.3</div>
+        <p style="font-size:12.8px;color:var(--text-2);line-height:1.55;margin:0 0 8px;">Adversarial anti-reverse-engineering shield (`Poison -> Exhaust -> Hallucinate`) defending native binaries, Electron apps, and WASM against autonomous RE agents (`morluto/rea`).</p>
+        <div style="font-family:var(--mono);font-size:11.2px;color:var(--text-3);">HFS: Signal 75 · Facts 76 · Hype 28 | SA Track 07 (Blue-Team Defense)</div>
+      </article>
+    </div>
   </section>
 
   <!-- SECTION 4: VISUAL SUMMARY SVG & 7-CARD DECK -->
@@ -1852,16 +1960,27 @@
           <h3 style="margin:0;">📊 2026-11-01 GitHub AI Radar Architecture &amp; HFS Matrix Summary (SVG)</h3>
           <p style="font-size:12.5px;color:var(--text-2);margin:4px 0 0;">Illustrating the 6-Gate durable sweep pipeline, Top 15 Signal/Facts/Hype matrix, and AI Solution Architect P0–P3 action roadmap.</p>
         </div>
-        <div style="display:flex;gap:10px;">
-          <a class="bh-btn" href="workshops/github-trending-radar/summary-2026-11-01.svg" target="_blank" rel="noopener">Open Full-Res SVG ↗</a>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <a class="bh-btn" href="assets/github-ai-radar-2026-11-01.svg" target="_blank" rel="noopener">Open Full-Res SVG (`assets/`) ↗</a>
           <a class="bh-btn primary" href="workshops/github-trending-radar/cards.en.html" target="_blank" rel="noopener">Open 7-Card 4:5 Benchmark Deck ↗</a>
         </div>
       </div>
       <div style="background:#0f172a;border-radius:12px;padding:12px;overflow-x:auto;border:1px solid var(--border-strong);">
-        <img src="workshops/github-trending-radar/summary-2026-11-01.svg" alt="2026-11-01 GitHub AI Trending Radar & Pi Durable News Agent Visual Summary" style="width:100%;height:auto;display:block;border-radius:8px;" />
+        <img src="assets/github-ai-radar-2026-11-01.svg" alt="2026-11-01 GitHub AI Trending Radar & Pi Durable News Agent Visual Summary" style="width:100%;height:auto;display:block;border-radius:8px;" />
       </div>
     </div>
   </section>
+
+  <!-- INTERACTIVE SA DETAIL DRAWER -->
+  <div class="drawer-backdrop" id="repo-detail-drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-repo-title">
+    <div class="drawer-panel">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:1px solid var(--border);padding-bottom:12px;margin-bottom:14px;">
+        <h3 id="drawer-repo-title" style="margin:0;font-size:18px;">Repository SA Playbook</h3>
+        <button type="button" class="taste-btn" id="close-drawer-btn">✕ Close (Esc)</button>
+      </div>
+      <div id="drawer-repo-body"></div>
+    </div>
+  </div>
 
 </main>
 
@@ -2641,8 +2760,11 @@
 
           <!-- Claim-Support Verification Ledger -->
           <div class="claims-drawer">
-            <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
-              🔍 news-researcher Subagent Claim-Support Verification Ledger (4/4 Audited)
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+              <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
+                🔍 news-researcher Subagent Claim-Support Verification Ledger (4/4 Audited)
+              </div>
+              <button type="button" class="taste-btn open-drawer-btn" data-repo-id="${r.id}">🔍 Open SA Detail Drawer ↗</button>
             </div>
             <div class="claims-list">
               ${r.claims.map(c => `<div class="claim-item">${c}</div>`).join("")}
@@ -2651,7 +2773,66 @@
         </article>
       `;
     }).join("");
+
+    container.querySelectorAll(".open-drawer-btn").forEach(btn => {
+      btn.addEventListener("click", () => openRepoDrawer(btn.dataset.repoId));
+    });
   }
+
+  function openRepoDrawer(repoId) {
+    const r = REPOS.find(x => x.id === repoId);
+    if (!r) return;
+    const att = computeAttention(r);
+    const topicObj = TOPICS[r.topic];
+    document.getElementById("drawer-repo-title").textContent = `${r.fullName} · Attention ${att}`;
+    document.getElementById("drawer-repo-body").innerHTML = `
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
+        <span class="card-type-badge">🃏 ${r.cardType}</span>
+        <span class="verdict-badge verdict-${r.verdict}">${r.verdictLabel}</span>
+        <span class="star-pill today">🔥 +${r.starsToday.toLocaleString()} today</span>
+        <span class="star-pill">★ ${r.stars.toLocaleString()} total</span>
+        <span class="star-pill">${r.language}</span>
+        <span class="star-pill">${topicObj.name}</span>
+      </div>
+      <p style="font-size:13.8px;color:var(--text-2);line-height:1.55;">${r.description}</p>
+      <div class="generative-callout">
+        <strong>[${r.cardType.toUpperCase()}] ${r.cardCalloutTitle}</strong>
+        <div style="margin-top:4px;color:var(--text);">${r.cardCalloutBody}</div>
+      </div>
+      <div style="background:var(--surface-2);border:1px solid var(--border-strong);border-radius:9px;padding:12px;margin:12px 0;font-size:13px;line-height:1.55;">
+        <strong>🧭 (1) Worth Learning Verdict:</strong> ${r.worthWhy}
+      </div>
+      <div class="sa-4d-grid" style="grid-template-columns:1fr;">
+        <div class="sa-dim-card"><div class="sa-dim-title">🏗️ Pillar A · Architecture Design</div><div>${r.saArchitecture}</div></div>
+        <div class="sa-dim-card"><div class="sa-dim-title">🎮 Pillar B · Customer Demo &amp; PoC</div><div>${r.saDemo}</div></div>
+        <div class="sa-dim-card"><div class="sa-dim-title">📊 Pillar C · Benchmarking</div><div>${r.saBenchmark}</div></div>
+        <div class="sa-dim-card"><div class="sa-dim-title">💼 Pillar D · Business Scenario Playbook</div><div>${r.saScenario}</div></div>
+      </div>
+      <div class="claims-drawer">
+        <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);margin-bottom:8px;">4/4 Primary Source Claims Verified</div>
+        <div class="claims-list" style="grid-template-columns:1fr;">
+          ${r.claims.map(c => `<div class="claim-item">${c}</div>`).join("")}
+        </div>
+      </div>
+      <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;">
+        <a class="bh-btn primary" href="${r.url}" target="_blank" rel="noopener">Open GitHub Repository ↗</a>
+        <a class="bh-btn" href="https://github.com/turbo998/Kee-Tech-Assets/blob/main/workshops/github-trending-radar/daily/2026-11-01.en.md" target="_blank" rel="noopener">Read Full 2026-11-01 Daily Report ↗</a>
+      </div>
+    `;
+    document.getElementById("repo-detail-drawer").classList.add("open");
+  }
+
+  document.getElementById("close-drawer-btn").addEventListener("click", () => {
+    document.getElementById("repo-detail-drawer").classList.remove("open");
+  });
+  document.getElementById("repo-detail-drawer").addEventListener("click", e => {
+    if (e.target.id === "repo-detail-drawer") {
+      document.getElementById("repo-detail-drawer").classList.remove("open");
+    }
+  });
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape") document.getElementById("repo-detail-drawer").classList.remove("open");
+  });
 
   document.getElementById("reset-weights-btn").addEventListener("click", () => {
     Object.keys(TOPICS).forEach(k => { TOPICS[k].weight = 1.0; });

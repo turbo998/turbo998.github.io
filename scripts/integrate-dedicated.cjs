@@ -12,6 +12,12 @@ const sourceOverrides = Object.fromEntries(['benchmark-cards.html', 'demo.html',
   commit: cycle377Commit,
   reason: 'Published Cycle #377 source; preserve its original content, evidence and native workbench links rather than regenerate the prior inventory snapshot.'
 }]));
+Object.assign(sourceOverrides, Object.fromEntries([
+  'voice/deck.html', 'voice/benchmark-cards.html',
+  'workshops/agentic-commerce/live-demo.html', 'workshops/agentic-commerce/live-demo.en.html',
+  'workshops/agentic-commerce/benchmark-cards.html', 'workshops/agentic-commerce/benchmark-cards.en.html',
+  'workshops/ai-security/benchmark-cards.html', 'workshops/ai-security/benchmark-cards.en.html'
+].map(file => [file, { commit: '3bdac3d4db9a0cec264ee42b59bbef8a7f87364b', reason: 'Preserve the latest published Voice, Commerce and Security source content, controls and protected report data.' }])));
 const supplementalOwned = [
   { contentId: 'cycle377-infra-report-en', path: infraPath('benchmark-cards.en.html'), role: 'report', tracks: ['infra'], language: { declared: 'en' }, bilingualAssociations: [] },
   { contentId: 'cycle377-infra-workbench', path: infraPath('workbench-cycle-377.html'), role: 'demo', tracks: ['infra'], language: { declared: 'en' }, bilingualAssociations: [] }
@@ -25,7 +31,7 @@ const escape = s => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</
 const isStyle = r => /(^|\/)zh-style-preview.html$|^style-preview.html$/.test(r.path);
 const isGame = r => /^game\/demos\/[^/]+\/index.html$/.test(r.path);
 function language(r, source) {
-  if (r.sourceOverride && /benchmark-cards(?:\.en)?\.html$/.test(r.path)) return { mode: 'existing-file-pair', source: r.language.declared, links: [{ path: infraPath('benchmark-cards.html'), label: '中文报告 / Chinese report' }, { path: infraPath('benchmark-cards.en.html'), label: 'English report' }], note: 'Published Cycle #377 Chinese / English report pair; original mixed-language technical excerpts and all findings preserved, not independently reproduced.' };
+  if (r.path.startsWith('workshops/azure-agent-infra/') && r.sourceOverride && /benchmark-cards(?:\.en)?\.html$/.test(r.path)) return { mode: 'existing-file-pair', source: r.language.declared, links: [{ path: infraPath('benchmark-cards.html'), label: '中文报告 / Chinese report' }, { path: infraPath('benchmark-cards.en.html'), label: 'English report' }], note: 'Published Cycle #377 Chinese / English report pair; original mixed-language technical excerpts and all findings preserved, not independently reproduced.' };
   if (r.path === infraPath('workbench-cycle-377.html')) return { mode: 'source-language-only', source: 'en', note: 'Source interface: English · 中文界面未提供。Published Cycle #377 local cost simulation; source labels retained, not independently reproduced. Tables and cost controls require JavaScript; evidence and native links do not.' };
   if (isStyle(r)) return { mode: 'verified-file-pair', source: r.language.declared, links: [{ path: 'style-preview.html', label: 'English' }, { path: 'zh-style-preview.html', label: '中文' }], note: 'English / 中文 compatibility page.' };
   if (r.bilingualAssociations.length) return { mode: 'existing-file-pair', source: r.language.declared, links: r.bilingualAssociations.map(p => ({ path: p.path, label: p.evidence.counterpartDeclaredLanguage.startsWith('zh') ? '中文版本' : 'English version' })), note: 'Existing resource language pair; original prose is preserved.' };
@@ -37,7 +43,7 @@ function navigation(r, lang) {
   const a = (target, label, extra = '') => `<a href="${escape(relative(r.path, target))}"${extra}>${label}</a>`;
   const links = [a('index.html', 'Qi Chen / @turbo998', ' class="kee-dedicated-identity"'), a('index.html', 'Home EN'), a('zh.html', '首页 中文'), a('studio/index.html', 'Studio EN'), a('studio/zh-index.html', '工作室 中文')];
   for (const track of r.tracks) links.push(a(`studio/${track}.html`, `${track} EN`), a(`studio/zh-${track}.html`, `${track} 中文`));
-  if (r.sourceOverride && !/\/(demo|selector)\.html$/.test(r.path)) {
+  if (r.path.startsWith('workshops/azure-agent-infra/') && r.sourceOverride && !/\/(demo|selector)\.html$/.test(r.path)) {
     links.push(a('workshops/azure-agent-infra/index.en.html', 'Infra guide EN'), a('workshops/azure-agent-infra/index.html', 'Infra 指南 中文'));
     if (r.role === 'report') links.push(a(infraPath('workbench-cycle-377.html'), 'Cycle #377 workbench (English)'));
     else links.push(a(infraPath('benchmark-cards.html'), '中文报告'), a(infraPath('benchmark-cards.en.html'), 'English report'), a(infraPath('evidence/cycle-377-benchmark.json'), 'Cycle #377 source evidence'));

@@ -21,6 +21,7 @@ async function main() {
   // Git-tracked HTML includes newly added translation counterparts, not just the baseline inventory.
   const tracked=execFileSync('git',['ls-files','*.html'],{cwd:root,encoding:'utf8'}).trim().split(/\r?\n/).filter(f=>f&&!f.startsWith('design-preview/'));
   const files=[...new Set([...inventory.content.map(p=>p.path),...production.portalPages,...tracked,...collect('assets/editorial'),'workshops/github-trending-radar/summary-2026-11-01.svg',...collect('workshops/azure-agent-infra/assets').filter(f=>f.endsWith('.svg')),...collect('workshops/azure-agent-infra/evidence'),...collect('workshops/data-lab/assets'),...collect('workshops/data-lab/reports'),'voice/app.js','voice/03-daily-breakthrough-2026-11-01.svg','voice/data/voice-agent-benchmark-report.json','workshops/agentic-commerce/03-agentic-commerce-2026-11-01-visual-summary.svg',...['assets/reading-shell.css','assets/reading-shell.js','assets/dedicated-navigation.css','assets/dedicated-navigation.js'].filter(f=>fs.existsSync(path.join(root,f)))])];
+  files.push('assets/ai-infra-phase179-visual-summary.svg','assets/github-ai-radar-2026-11-01.svg','workshops/github-trending-radar/report.json','workshops/ai-security/executive-summary-2026-11-01.svg','workshops/ai-security/executive-summary-2026-11-01.en.svg');
   try {
     for(let i=0;i<files.length;i+=6) {
       await Promise.all(files.slice(i,i+6).map(async file=>{

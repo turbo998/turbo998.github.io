@@ -210,8 +210,21 @@
     background: var(--surface-2); border: 1px solid var(--border);
     border-radius: 7px; padding: 7px 10px; font-family: var(--mono); font-size: 11.2px;
   }
+  .drawer-backdrop {
+    position: fixed; inset: 0; background: rgba(15, 23, 42, 0.62);
+    backdrop-filter: blur(4px); z-index: 999; display: none; justify-content: flex-end;
+  }
+  .drawer-backdrop.open { display: flex; }
+  .drawer-panel {
+    width: min(680px, 94vw); height: 100vh; overflow-y: auto;
+    background: var(--surface); border-left: 1px solid var(--border-strong);
+    padding: 24px 26px; box-shadow: -12px 0 36px rgba(0,0,0,0.35);
+  }
+  .weekly-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 12px;
+  }
   @media (max-width: 960px) {
-    .tuner-grid, .topic-tuner-list, .hfs-bars-grid, .sa-4d-grid, .claims-list { grid-template-columns: 1fr; }
+    .tuner-grid, .topic-tuner-list, .hfs-bars-grid, .sa-4d-grid, .claims-list, .weekly-grid { grid-template-columns: 1fr; }
     .pipeline-rail { grid-template-columns: repeat(2, 1fr); }
   }
 </style>
@@ -220,7 +233,8 @@
 .reading-document .builder-hero{padding:28px 0}.reading-document .builder-hero-grid{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:32px;align-items:center}.reading-document .bh-kicker,.reading-document .stage-number{color:var(--reading-secondary);font:11px/1.7 var(--mono);letter-spacing:.08em}.reading-document .grad{color:var(--reading-accent)}.reading-document .bh-sub,.reading-document .stage-section-header>p{color:var(--reading-muted)}
 .reading-document .bh-tags{display:flex;flex-wrap:wrap;gap:8px}.reading-document .bh-tag{font-size:12px;padding:6px 10px;border:1px solid var(--reading-line);border-radius:20px;text-decoration:none}.reading-document .bh-actions-grid{display:grid;gap:12px}.reading-document .bh-btn{display:inline-block;padding:12px 16px;border:1px solid var(--reading-line);border-radius:10px;background:var(--reading-surface);text-decoration:none;font-size:13px}.reading-document .bh-btn.primary,.reading-document .radar-pill.active,.reading-document .chip-btn.active{background:var(--reading-accent);color:var(--reading-on-accent)}
 .reading-document .telemetry-strip{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:28px}.reading-document .tm-item{padding:16px;background:var(--reading-surface);border:1px solid var(--reading-line);border-radius:10px}.reading-document .tm-val{display:block;color:var(--reading-secondary);font:700 18px/1.4 var(--mono)}.reading-document .tm-lbl{display:block;color:var(--reading-muted);font-size:11px;margin-top:8px}.reading-document .pipeline-rail{grid-template-columns:repeat(4,minmax(0,1fr));overflow:visible}.reading-document .pipe-title{color:var(--reading-text)}.reading-document .panel-box{margin:0;padding:18px 20px}.reading-document .repo-card{border-radius:14px;margin:0}.reading-document .panel-box>div{flex-wrap:wrap;gap:10px}.reading-document .panel-box h3{margin-top:0}.reading-document .repo-name-link{font-size:20px}.reading-document .reading-context{margin:0 16px 12px 0}.reading-document .hfs-slider-row input{padding:0;min-width:60px}.reading-document .search-input{min-width:0;flex-basis:240px}.reading-document .verdict-P1{color:var(--reading-accent)}.reading-document .verdict-P0{color:#ff909a}
-@media(max-width:960px){.reading-document .builder-hero-grid{grid-template-columns:1fr}.reading-document .telemetry-strip{grid-template-columns:repeat(2,minmax(0,1fr))}.reading-document .pipeline-rail{grid-template-columns:repeat(2,minmax(0,1fr))}.reading-document .bh-actions-grid{grid-template-columns:1fr}.reading-document .panel-box{padding:16px}.reading-document .radar-subcol-bar{padding:14px}.reading-document .hfs-slider-row{flex-wrap:wrap}.reading-document .hfs-slider-row input{flex-basis:100%}}
+.reading-document .drawer-backdrop{z-index:1100}.reading-document .drawer-panel{background:var(--reading-surface);color:var(--reading-text);height:100dvh;max-width:100%;overscroll-behavior:contain}.reading-document .drawer-panel>div:first-child{flex-wrap:wrap}.reading-document .weekly-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(max-width:960px){.reading-document .weekly-grid{grid-template-columns:1fr}.reading-document .builder-hero-grid{grid-template-columns:1fr}.reading-document .telemetry-strip{grid-template-columns:repeat(2,minmax(0,1fr))}.reading-document .pipeline-rail{grid-template-columns:repeat(2,minmax(0,1fr))}.reading-document .bh-actions-grid{grid-template-columns:1fr}.reading-document .panel-box{padding:16px}.reading-document .radar-subcol-bar{padding:14px}.reading-document .hfs-slider-row{flex-wrap:wrap}.reading-document .hfs-slider-row input{flex-basis:100%}}
 @media(max-width:600px){.reading-header{height:auto;min-height:72px;flex-wrap:wrap;padding:12px 16px}.reading-controls{margin-left:auto}.reading-document .panel-box>div>div{flex-wrap:wrap}.reading-document .repo-card{padding:16px}.reading-document h1{font-size:34px}.reading-document .radar-pill{font-size:11px}}
 </style><!-- radar-reading-style:end --></head>
 <body>
@@ -487,6 +501,14 @@
     </header>
 
     <div class="filter-toolbar">
+      <div class="filter-row" id="date-archive-filters">
+        <span class="filter-label">📅 日期归档筛选:</span>
+        <button type="button" class="chip-btn active" data-date="2026-11-01">2026-11-01 · 15 个仓库 (最新)</button>
+        <a class="chip-btn" href="https://github.com/turbo998/Kee-Tech-Assets/blob/main/workshops/github-trending-radar/daily/2026-11-01.md" target="_blank" rel="noopener" style="text-decoration:none;">📄 每日归档日报 (中文) ↗</a>
+        <a class="chip-btn" href="https://github.com/turbo998/Kee-Tech-Assets/blob/main/workshops/github-trending-radar/daily/2026-11-01.en.md" target="_blank" rel="noopener" style="text-decoration:none;">📄 Daily Digest (EN) ↗</a>
+        <a class="chip-btn" href="workshops/github-trending-radar/report.json" target="_blank" rel="noopener" style="text-decoration:none;">📦 封存数据 JSON ↗</a>
+        <a class="chip-btn" href="assets/github-ai-radar-2026-11-01.svg" target="_blank" rel="noopener" style="text-decoration:none;">🖼️ 可视化总结 SVG ↗</a>
+      </div>
       <div class="filter-row" id="card-type-filters">
         <span class="filter-label">🃏 8 种生成式卡片:</span>
       </div>
@@ -581,8 +603,11 @@
 
           <!-- Claim-Support Verification Ledger -->
           <div class="claims-drawer">
-            <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
-              🔍 news-researcher 子智能体声明核验账本 (Claim-Support Ledger · 4/4 Audited)
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+              <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
+                🔍 news-researcher 子智能体声明核验账本 (Claim-Support Ledger · 4/4 Audited)
+              </div>
+              <button type="button" class="taste-btn open-drawer-btn" data-repo-id="claude-mem">🔍 打开架构师详情抽屉 ↗</button>
             </div>
             <div class="claims-list">
               <div class="claim-item">✓ [0.96] 原生适配 Claude Code、Copilot、Codex、Gemini、Hermes、OpenClaw 等主流智能体宿主</div><div class="claim-item">✓ [0.94] 基于 SQLite + 向量混合存储实现本地零外部云依赖持久化</div><div class="claim-item">✓ [0.92] 采用 Progressive Disclosure（先返回轻量索引，按需拉取全文）避免撑爆上下文窗口</div><div class="claim-item">✓ [0.95] GitHub 真实总 Star 达 108,644，2026-11-01 单日新增 +1,527 Stars</div>
@@ -670,8 +695,11 @@
 
           <!-- Claim-Support Verification Ledger -->
           <div class="claims-drawer">
-            <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
-              🔍 news-researcher 子智能体声明核验账本 (Claim-Support Ledger · 4/4 Audited)
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+              <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
+                🔍 news-researcher 子智能体声明核验账本 (Claim-Support Ledger · 4/4 Audited)
+              </div>
+              <button type="button" class="taste-btn open-drawer-btn" data-repo-id="pi-durable-news-agent">🔍 打开架构师详情抽屉 ↗</button>
             </div>
             <div class="claims-list">
               <div class="claim-item">✓ [0.98] 采用 pi-durable + SQLite 实现步级（Step-level）幂等检查点恢复</div><div class="claim-item">✓ [0.96] 内置 relevance / worth-attention / same-story / claim-support / hfs 五类 jev 结构化评估器</div><div class="claim-item">✓ [0.95] 主控 news-desk 调度并行 news-researcher 子智能体核查最多 4 条具体声明</div><div class="claim-item">✓ [0.94] 支持 8 种生成式 UI 卡片目录与 Show me more/less 偏好调权闭环</div>
@@ -759,8 +787,11 @@
 
           <!-- Claim-Support Verification Ledger -->
           <div class="claims-drawer">
-            <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
-              🔍 news-researcher 子智能体声明核验账本 (Claim-Support Ledger · 4/4 Audited)
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+              <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
+                🔍 news-researcher 子智能体声明核验账本 (Claim-Support Ledger · 4/4 Audited)
+              </div>
+              <button type="button" class="taste-btn open-drawer-btn" data-repo-id="aisoc">🔍 打开架构师详情抽屉 ↗</button>
             </div>
             <div class="claims-list">
               <div class="claim-item">✓ [0.92] 提供覆盖告警融合、LLM 分诊与 MITRE ATT&CK 调查的端到端 Python/LangGraph 管线</div><div class="claim-item">✓ [0.94] 为每个 Agent 步骤生成可重放决策账本（Replayable Decision Ledger）</div><div class="claim-item">✓ [0.90] 原生随附 MCP Server，支持从 Claude、Cursor 与 Continue 直接交互</div><div class="claim-item">✓ [0.89] MIT 开源协议，支持零外部商业 API Key 本地离线运行测试</div>
@@ -848,8 +879,11 @@
 
           <!-- Claim-Support Verification Ledger -->
           <div class="claims-drawer">
-            <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
-              🔍 news-researcher 子智能体声明核验账本 (Claim-Support Ledger · 4/4 Audited)
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+              <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
+                🔍 news-researcher 子智能体声明核验账本 (Claim-Support Ledger · 4/4 Audited)
+              </div>
+              <button type="button" class="taste-btn open-drawer-btn" data-repo-id="lightpanda-browser">🔍 打开架构师详情抽屉 ↗</button>
             </div>
             <div class="claims-list">
               <div class="claim-item">✓ [0.95] 使用 Zig 编写，非 Chromium 套壳，专为无头 AI 与自动化负载裁剪</div><div class="claim-item">✓ [0.92] 原生支持 CDP（Chrome DevTools Protocol），无缝对接 Playwright 与 Puppeteer</div><div class="claim-item">✓ [0.90] 相比完整 Headless Chrome 具备显著更低的内存占用与毫秒级启动速度</div><div class="claim-item">✓ [0.91] GitHub 总 Star 达 39,739，2026-11-01 单日新增 +827 Stars</div>
@@ -937,8 +971,11 @@
 
           <!-- Claim-Support Verification Ledger -->
           <div class="claims-drawer">
-            <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
-              🔍 news-researcher 子智能体声明核验账本 (Claim-Support Ledger · 4/4 Audited)
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+              <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
+                🔍 news-researcher 子智能体声明核验账本 (Claim-Support Ledger · 4/4 Audited)
+              </div>
+              <button type="button" class="taste-btn open-drawer-btn" data-repo-id="t3code">🔍 打开架构师详情抽屉 ↗</button>
             </div>
             <div class="claims-list">
               <div class="claim-item">✓ [0.96] 2026-11-01 单日新增 +3,100 Stars，位居今日 GitHub Trending 增速榜第一</div><div class="claim-item">✓ [0.85] 提供面向多编码智能体的 Web 图形化交互与并行会话管理（t3.codes）</div><div class="claim-item">✓ [0.82] 基于 TypeScript 全栈构建，累计获得 36,842 Stars 与 8,861 Forks</div><div class="claim-item">✓ [0.78] 社区热度极高（含网红效应加成，Hype=28），核心价值在于极简交互范式</div>
@@ -1026,8 +1063,11 @@
 
           <!-- Claim-Support Verification Ledger -->
           <div class="claims-drawer">
-            <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
-              🔍 news-researcher 子智能体声明核验账本 (Claim-Support Ledger · 4/4 Audited)
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+              <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
+                🔍 news-researcher 子智能体声明核验账本 (Claim-Support Ledger · 4/4 Audited)
+              </div>
+              <button type="button" class="taste-btn open-drawer-btn" data-repo-id="openbot">🔍 打开架构师详情抽屉 ↗</button>
             </div>
             <div class="claims-list">
               <div class="claim-item">✓ [0.91] 为每个 AI 同事分配包含浏览器、文件与工具的独立计算沙盒</div><div class="claim-item">✓ [0.90] 强制实现『Every action decided before it happens and recorded after』治理闭环</div><div class="claim-item">✓ [0.88] 原生兼容任何支持 AG-UI（Agent-User Interaction）协议的智能体后端</div><div class="claim-item">✓ [0.85] 支持 MCP 工具生态扩展，当前累计 9,290 Stars</div>
@@ -1115,8 +1155,11 @@
 
           <!-- Claim-Support Verification Ledger -->
           <div class="claims-drawer">
-            <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
-              🔍 news-researcher 子智能体声明核验账本 (Claim-Support Ledger · 4/4 Audited)
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+              <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
+                🔍 news-researcher 子智能体声明核验账本 (Claim-Support Ledger · 4/4 Audited)
+              </div>
+              <button type="button" class="taste-btn open-drawer-btn" data-repo-id="dsh-superagent-prototype">🔍 打开架构师详情抽屉 ↗</button>
             </div>
             <div class="claims-list">
               <div class="claim-item">✓ [0.92] DeepSeek 组织下开源的高自主性智能体系统原型（TypeScript 实现）</div><div class="claim-item">✓ [0.84] 聚焦长程自主任务拆解、工具执行反馈闭环与动态重规划</div><div class="claim-item">✓ [0.80] 创建于 2026-10-31，48 小时内迅速突破 5,854 Stars（今日 +840）</div><div class="claim-item">✓ [0.72] 属于架构探索原型（Prototype），生产落地需自行补齐企业级沙盒与权限网关</div>
@@ -1204,8 +1247,11 @@
 
           <!-- Claim-Support Verification Ledger -->
           <div class="claims-drawer">
-            <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
-              🔍 news-researcher 子智能体声明核验账本 (Claim-Support Ledger · 4/4 Audited)
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+              <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
+                🔍 news-researcher 子智能体声明核验账本 (Claim-Support Ledger · 4/4 Audited)
+              </div>
+              <button type="button" class="taste-btn open-drawer-btn" data-repo-id="anomaly-hex">🔍 打开架构师详情抽屉 ↗</button>
             </div>
             <div class="claims-list">
               <div class="claim-item">✓ [0.94] 原生 Rust 编写，100% 本地端侧语音识别，音频绝不上传云端</div><div class="claim-item">✓ [0.91] 全局快捷键按住即说、松开即粘贴至任意当前焦点应用</div><div class="claim-item">✓ [0.88] 支持 macOS 并已推出 Linux Beta 版本</div><div class="claim-item">✓ [0.95] 2026-11-01 单日暴涨 +1,329 Stars，总 Star 达 2,722</div>
@@ -1293,8 +1339,11 @@
 
           <!-- Claim-Support Verification Ledger -->
           <div class="claims-drawer">
-            <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
-              🔍 news-researcher 子智能体声明核验账本 (Claim-Support Ledger · 4/4 Audited)
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+              <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
+                🔍 news-researcher 子智能体声明核验账本 (Claim-Support Ledger · 4/4 Audited)
+              </div>
+              <button type="button" class="taste-btn open-drawer-btn" data-repo-id="openmausbot">🔍 打开架构师详情抽屉 ↗</button>
             </div>
             <div class="claims-list">
               <div class="claim-item">✓ [0.88] 内置可供 Bot 操控的虚拟机/容器环境（Computer-Use Sandbox）</div><div class="claim-item">✓ [0.85] 同时覆盖 TypeScript 后端、Electron 桌面端与 Expo 移动端</div><div class="claim-item">✓ [0.82] 支持接入 Claude Code、Codex 与 Grok 等多种模型后端</div><div class="claim-item">✓ [0.86] 总 Star 突破 10,217，今日新增 +919 Stars</div>
@@ -1382,8 +1431,11 @@
 
           <!-- Claim-Support Verification Ledger -->
           <div class="claims-drawer">
-            <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
-              🔍 news-researcher 子智能体声明核验账本 (Claim-Support Ledger · 4/4 Audited)
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+              <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
+                🔍 news-researcher 子智能体声明核验账本 (Claim-Support Ledger · 4/4 Audited)
+              </div>
+              <button type="button" class="taste-btn open-drawer-btn" data-repo-id="freetoken">🔍 打开架构师详情抽屉 ↗</button>
             </div>
             <div class="claims-list">
               <div class="claim-item">✓ [0.84] 针对 MoE（Mixture-of-Experts）稀疏激活模型优化桌面与边缘端推理</div><div class="claim-item">✓ [0.80] 覆盖 DeepSeek、Qwen、GLM、MiniMax 等主流开源大模型家族</div><div class="claim-item">✓ [0.76] 宣称『Datacenter-scale model serving to your desktop』有一定营销修辞（Hype=34），受限于桌面内存带宽</div><div class="claim-item">✓ [0.88] GitHub 累计 15,159 Stars，今日新增 +232 Stars</div>
@@ -1471,8 +1523,11 @@
 
           <!-- Claim-Support Verification Ledger -->
           <div class="claims-drawer">
-            <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
-              🔍 news-researcher 子智能体声明核验账本 (Claim-Support Ledger · 4/4 Audited)
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+              <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
+                🔍 news-researcher 子智能体声明核验账本 (Claim-Support Ledger · 4/4 Audited)
+              </div>
+              <button type="button" class="taste-btn open-drawer-btn" data-repo-id="handy">🔍 打开架构师详情抽屉 ↗</button>
             </div>
             <div class="claims-list">
               <div class="claim-item">✓ [0.94] 基于 Rust 与 Tauri v2 构建，支持 Windows / macOS / Linux 跨平台运行</div><div class="claim-item">✓ [0.92] 100% 离线工作模式，无需任何云端 API 即可完成语音转文字</div><div class="claim-item">✓ [0.88] 提供可扩展插件机制与无障碍（Accessibility）友好设计</div><div class="claim-item">✓ [0.90] GitHub 累计 36,158 Stars，今日稳步新增 +383 Stars</div>
@@ -1560,8 +1615,11 @@
 
           <!-- Claim-Support Verification Ledger -->
           <div class="claims-drawer">
-            <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
-              🔍 news-researcher 子智能体声明核验账本 (Claim-Support Ledger · 4/4 Audited)
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+              <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
+                🔍 news-researcher 子智能体声明核验账本 (Claim-Support Ledger · 4/4 Audited)
+              </div>
+              <button type="button" class="taste-btn open-drawer-btn" data-repo-id="ai-engineering-hub">🔍 打开架构师详情抽屉 ↗</button>
             </div>
             <div class="claims-list">
               <div class="claim-item">✓ [0.90] 收录数十个围绕 LLM、RAG、MCP 与多智能体的可运行 Jupyter Notebooks</div><div class="claim-item">✓ [0.85] 持续紧跟最新开源模型与协议栈迭代（2026-11-01 当日仍有更新推送）</div><div class="claim-item">✓ [0.88] 总 Star 达 39,907，Fork 高达 6,458，社区复现度高</div><div class="claim-item">✓ [0.75] 偏向教学演示代码，生产级工程深度有限</div>
@@ -1649,8 +1707,11 @@
 
           <!-- Claim-Support Verification Ledger -->
           <div class="claims-drawer">
-            <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
-              🔍 news-researcher 子智能体声明核验账本 (Claim-Support Ledger · 4/4 Audited)
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+              <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
+                🔍 news-researcher 子智能体声明核验账本 (Claim-Support Ledger · 4/4 Audited)
+              </div>
+              <button type="button" class="taste-btn open-drawer-btn" data-repo-id="kronos">🔍 打开架构师详情抽屉 ↗</button>
             </div>
             <div class="claims-list">
               <div class="claim-item">✓ [0.86] 针对金融市场 K 线（Candlestick）与时序设计专用离散化 Tokenizer 与预训练基座</div><div class="claim-item">✓ [0.84] GitHub 累计 45,028 Stars 与 7,439 Forks，在量化与 AI 交叉社区极受关注</div><div class="claim-item">✓ [0.72] 仓库近期代码提交频率放缓（pushedAt 2026-04），今日因社区量化专题合集再度登上热榜</div><div class="claim-item">✓ [0.70] 金融市场非平稳性强，任何预测指标均需警惕回测幸存者偏差（Hype=32）</div>
@@ -1738,8 +1799,11 @@
 
           <!-- Claim-Support Verification Ledger -->
           <div class="claims-drawer">
-            <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
-              🔍 news-researcher 子智能体声明核验账本 (Claim-Support Ledger · 4/4 Audited)
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+              <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
+                🔍 news-researcher 子智能体声明核验账本 (Claim-Support Ledger · 4/4 Audited)
+              </div>
+              <button type="button" class="taste-btn open-drawer-btn" data-repo-id="claude-code-game-studios">🔍 打开架构师详情抽屉 ↗</button>
             </div>
             <div class="claims-list">
               <div class="claim-item">✓ [0.85] 仓库内确实包含 49 个 Agent 角色配置与 72 个面向 Godot/Unity/Unreal 的 Skill 脚本</div><div class="claim-item">✓ [0.82] 累计获得 31,775 Stars（今日 +970），在独立游戏与 Claude Code 社区传播极广</div><div class="claim-item">✕ [0.45] 『完整替代游戏工作室层级』存在明显标题党夸大（Hype=54），主要为 Shell/Markdown 提示词集合</div><div class="claim-item">✓ [0.75] 缺乏确定性编译/帧率回归测试闭环，需要人工频繁介入兜底</div>
@@ -1827,8 +1891,11 @@
 
           <!-- Claim-Support Verification Ledger -->
           <div class="claims-drawer">
-            <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
-              🔍 news-researcher 子智能体声明核验账本 (Claim-Support Ledger · 4/4 Audited)
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+              <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
+                🔍 news-researcher 子智能体声明核验账本 (Claim-Support Ledger · 4/4 Audited)
+              </div>
+              <button type="button" class="taste-btn open-drawer-btn" data-repo-id="jailbreaks">🔍 打开架构师详情抽屉 ↗</button>
             </div>
             <div class="claims-list">
               <div class="claim-item">✓ [0.80] 包含大量针对主流商用 LLM 的历史与近期越狱提示词文本（总 Star 12,631，今日 +730）</div><div class="claim-item">✕ [0.30] 无自动化评测代码、无攻击成功率（ASR）量化基准、无结构化分类</div><div class="claim-item">✕ [0.35] 大量长文本角色扮演越狱在开启 Spotlighting 与工具层鉴权的架构下已失效</div><div class="claim-item">✓ [0.75] Jev HFS 门控成功将其标记为 Hype=64 / P3，为架构师节省无效爬楼时间</div>
@@ -1836,6 +1903,47 @@
           </div>
         </article>
 <!-- radar-prerender-repo-cards-container:end --></div>
+  </section>
+
+  <!-- SECTION 3B: WEEKLY & 7-DAY SURGING AI BREAKTHROUGHS -->
+  <section id="weekly-surging-section" style="margin-top:32px;">
+    <header class="stage-section-header">
+      <span class="stage-number">STAGE 03B · WEEKLY &amp; 7-DAY SURGING AI BREAKTHROUGHS</span>
+      <h2>周度热榜与近 7 天飙升能力突破雷达 (`since=weekly` &amp; `created:&gt;2026-10-25`)</h2>
+      <p>遵循每日研究追踪规范，额外扫描近 7 天飙升最快的 AI 安全、推理护栏与反逆向工程突破仓库。</p>
+    </header>
+    <div class="weekly-grid">
+      <article class="panel-box">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;">
+          <span class="verdict-badge verdict-P0">🔥 P0 必学</span>
+          <span style="font-family:var(--mono);font-size:12px;font-weight:800;color:var(--accent);">Attention: 91 · signal_alert</span>
+        </div>
+        <h3 style="margin:0 0 6px;"><a href="https://github.com/cloudflare/security-audit-skill" target="_blank" rel="noopener" style="color:var(--text);text-decoration:none;">cloudflare/security-audit-skill ↗</a></h3>
+        <div style="font-family:var(--mono);font-size:11.5px;color:var(--good);margin-bottom:8px;">🔥 本周 +11,908 stars · ★ 56,031 · MIT</div>
+        <p style="font-size:12.8px;color:var(--text-2);line-height:1.55;margin:0 0 8px;">Cloudflare 官方开源的 Agentic 安全审计 Skill，将依赖链漏洞排查、密钥泄露检测与配置合规审查封装为标准化智能体技能包。</p>
+        <div style="font-family:var(--mono);font-size:11.2px;color:var(--text-3);">HFS: Signal 83 · Facts 84 · Hype 18 | SA Track 07 (AI 安全治理)</div>
+      </article>
+      <article class="panel-box">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;">
+          <span class="verdict-badge verdict-P1">⚡ P1 精读</span>
+          <span style="font-family:var(--mono);font-size:12px;font-weight:800;color:var(--accent);">Attention: 87 · release</span>
+        </div>
+        <h3 style="margin:0 0 6px;"><a href="https://github.com/JetBrains/thinkrail" target="_blank" rel="noopener" style="color:var(--text);text-decoration:none;">JetBrains/thinkrail ↗</a></h3>
+        <div style="font-family:var(--mono);font-size:11.5px;color:var(--good);margin-bottom:8px;">🔥 本周 +5,738 stars · ★ 6,905 · Apache-2.0 · v0.3.0</div>
+        <p style="font-size:12.8px;color:var(--text-2);line-height:1.55;margin:0 0 8px;">JetBrains 官方结构化推理轨迹护栏，为长程编码 Agent 提供显式验证检查点与抗偏移思维链护栏。</p>
+        <div style="font-family:var(--mono);font-size:11.2px;color:var(--text-3);">HFS: Signal 79 · Facts 82 · Hype 20 | SA Track 04 (Agent Harness)</div>
+      </article>
+      <article class="panel-box">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;">
+          <span class="verdict-badge verdict-P1">⚡ P1 精读</span>
+          <span style="font-family:var(--mono);font-size:12px;font-weight:800;color:var(--accent);">Attention: 82 · fact_check</span>
+        </div>
+        <h3 style="margin:0 0 6px;"><a href="https://github.com/qybaihe/bla" target="_blank" rel="noopener" style="color:var(--text);text-decoration:none;">qybaihe/bla (Blind LLM Agents) ↗</a></h3>
+        <div style="font-family:var(--mono);font-size:11.5px;color:var(--good);margin-bottom:8px;">🔥 7天 +1,789 stars · ★ 1,789 · MIT · v1.6.3</div>
+        <p style="font-size:12.8px;color:var(--text-2);line-height:1.55;margin:0 0 8px;">反 AI 逆向工程护盾，通过 `Poison -> Exhaust -> Hallucinate` 对抗性混淆保护二进制、Electron 与 WASM 免遭 `morluto/rea` 等逆向 Agent 拆解。</p>
+        <div style="font-family:var(--mono);font-size:11.2px;color:var(--text-3);">HFS: Signal 75 · Facts 76 · Hype 28 | SA Track 07 (蓝军反逆向防御)</div>
+      </article>
+    </div>
   </section>
 
   <!-- SECTION 4: VISUAL SUMMARY SVG & 7-CARD DECK -->
@@ -1852,16 +1960,27 @@
           <h3 style="margin:0;">📊 2026-11-01 GitHub AI 雷达全景架构与 HFS 矩阵一图流 (SVG)</h3>
           <p style="font-size:12.5px;color:var(--text-2);margin:4px 0 0;">涵盖 6-Gate 持久化门控管线、Top 15 仓库 Signal/Facts/Hype 散点分布及 AI Solution Architect P0–P3 行动路线图。</p>
         </div>
-        <div style="display:flex;gap:10px;">
-          <a class="bh-btn" href="workshops/github-trending-radar/summary-2026-11-01.svg" target="_blank" rel="noopener">在新窗口打开高清 SVG ↗</a>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <a class="bh-btn" href="assets/github-ai-radar-2026-11-01.svg" target="_blank" rel="noopener">在新窗口打开高清 SVG (`assets/`) ↗</a>
           <a class="bh-btn primary" href="workshops/github-trending-radar/cards.html" target="_blank" rel="noopener">打开 7-Card 4:5 视觉报告 ↗</a>
         </div>
       </div>
       <div style="background:#0f172a;border-radius:12px;padding:12px;overflow-x:auto;border:1px solid var(--border-strong);">
-        <img src="workshops/github-trending-radar/summary-2026-11-01.svg" alt="2026-11-01 GitHub AI Trending Radar & Pi Durable News Agent Visual Summary" style="width:100%;height:auto;display:block;border-radius:8px;" />
+        <img src="assets/github-ai-radar-2026-11-01.svg" alt="2026-11-01 GitHub AI Trending Radar & Pi Durable News Agent Visual Summary" style="width:100%;height:auto;display:block;border-radius:8px;" />
       </div>
     </div>
   </section>
+
+  <!-- INTERACTIVE SA DETAIL DRAWER -->
+  <div class="drawer-backdrop" id="repo-detail-drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-repo-title">
+    <div class="drawer-panel">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:1px solid var(--border);padding-bottom:12px;margin-bottom:14px;">
+        <h3 id="drawer-repo-title" style="margin:0;font-size:18px;">架构师深度拆解抽屉</h3>
+        <button type="button" class="taste-btn" id="close-drawer-btn">✕ 关闭 (Esc)</button>
+      </div>
+      <div id="drawer-repo-body"></div>
+    </div>
+  </div>
 
 </main>
 
@@ -2641,8 +2760,11 @@
 
           <!-- Claim-Support Verification Ledger -->
           <div class="claims-drawer">
-            <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
-              🔍 news-researcher 子智能体声明核验账本 (Claim-Support Ledger · 4/4 Audited)
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+              <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
+                🔍 news-researcher 子智能体声明核验账本 (Claim-Support Ledger · 4/4 Audited)
+              </div>
+              <button type="button" class="taste-btn open-drawer-btn" data-repo-id="${r.id}">🔍 打开架构师详情抽屉 ↗</button>
             </div>
             <div class="claims-list">
               ${r.claims.map(c => `<div class="claim-item">${c}</div>`).join("")}
@@ -2651,7 +2773,66 @@
         </article>
       `;
     }).join("");
+
+    container.querySelectorAll(".open-drawer-btn").forEach(btn => {
+      btn.addEventListener("click", () => openRepoDrawer(btn.dataset.repoId));
+    });
   }
+
+  function openRepoDrawer(repoId) {
+    const r = REPOS.find(x => x.id === repoId);
+    if (!r) return;
+    const att = computeAttention(r);
+    const topicObj = TOPICS[r.topic];
+    document.getElementById("drawer-repo-title").textContent = `${r.fullName} · Attention ${att}`;
+    document.getElementById("drawer-repo-body").innerHTML = `
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
+        <span class="card-type-badge">🃏 ${r.cardType}</span>
+        <span class="verdict-badge verdict-${r.verdict}">${r.verdictLabel}</span>
+        <span class="star-pill today">🔥 +${r.starsToday.toLocaleString()} today</span>
+        <span class="star-pill">★ ${r.stars.toLocaleString()} total</span>
+        <span class="star-pill">${r.language}</span>
+        <span class="star-pill">${topicObj.name}</span>
+      </div>
+      <p style="font-size:13.8px;color:var(--text-2);line-height:1.55;">${r.description}</p>
+      <div class="generative-callout">
+        <strong>[${r.cardType.toUpperCase()}] ${r.cardCalloutTitle}</strong>
+        <div style="margin-top:4px;color:var(--text);">${r.cardCalloutBody}</div>
+      </div>
+      <div style="background:var(--surface-2);border:1px solid var(--border-strong);border-radius:9px;padding:12px;margin:12px 0;font-size:13px;line-height:1.55;">
+        <strong>🧭 ① 是否值得学习：</strong> ${r.worthWhy}
+      </div>
+      <div class="sa-4d-grid" style="grid-template-columns:1fr;">
+        <div class="sa-dim-card"><div class="sa-dim-title">🏗️ 维度 A · 架构设计借鉴</div><div>${r.saArchitecture}</div></div>
+        <div class="sa-dim-card"><div class="sa-dim-title">🎮 维度 B · 客户 Demo 与 PoC 开发</div><div>${r.saDemo}</div></div>
+        <div class="sa-dim-card"><div class="sa-dim-title">📊 维度 C · Benchmark 基准测试</div><div>${r.saBenchmark}</div></div>
+        <div class="sa-dim-card"><div class="sa-dim-title">💼 维度 D · 适用业务场景方案</div><div>${r.saScenario}</div></div>
+      </div>
+      <div class="claims-drawer">
+        <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);margin-bottom:8px;">4/4 条一手源码声明已核验</div>
+        <div class="claims-list" style="grid-template-columns:1fr;">
+          ${r.claims.map(c => `<div class="claim-item">${c}</div>`).join("")}
+        </div>
+      </div>
+      <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;">
+        <a class="bh-btn primary" href="${r.url}" target="_blank" rel="noopener">打开 GitHub 源码仓库 ↗</a>
+        <a class="bh-btn" href="https://github.com/turbo998/Kee-Tech-Assets/blob/main/workshops/github-trending-radar/daily/2026-11-01.md" target="_blank" rel="noopener">阅读 2026-11-01 完整中文日报 ↗</a>
+      </div>
+    `;
+    document.getElementById("repo-detail-drawer").classList.add("open");
+  }
+
+  document.getElementById("close-drawer-btn").addEventListener("click", () => {
+    document.getElementById("repo-detail-drawer").classList.remove("open");
+  });
+  document.getElementById("repo-detail-drawer").addEventListener("click", e => {
+    if (e.target.id === "repo-detail-drawer") {
+      document.getElementById("repo-detail-drawer").classList.remove("open");
+    }
+  });
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape") document.getElementById("repo-detail-drawer").classList.remove("open");
+  });
 
   document.getElementById("reset-weights-btn").addEventListener("click", () => {
     Object.keys(TOPICS).forEach(k => { TOPICS[k].weight = 1.0; });

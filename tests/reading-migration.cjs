@@ -123,6 +123,26 @@ if(artifacts)fs.mkdirSync(artifacts,{recursive:true});
   languageResults.push({path:r.path,states});
   for(const s of states)if(s.remaining.length)errors.push({path:r.path,type:'untranslated-controlled-prose',...s});
  }
+ const securityInteractions=[];
+ await page.setViewport({width:390,height:900});
+ for(const file of ['workshops/ai-security/index.html','workshops/ai-security/index.en.html']){
+  await page.goto(base+file+'?theme=dark',{waitUntil:'load'});
+  for(const tab of ['binance','pentest','trends','playbook']){
+   await page.click('#btn-tab-'+tab);
+   assert(await page.$eval('#panel-'+tab,n=>n.classList.contains('active')),file+' active '+tab);
+   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),file+' mobile '+tab);
+  }
+  assert.equal(await page.$$eval('#playbook-scenario-list .stage-item',nodes=>nodes.length),4,file+' four source industry playbooks');
+  const before=await page.$eval('#playbook-scenario-detail',n=>n.innerText);
+  await page.click('#playbook-scenario-list .stage-item:last-child');
+  assert.notEqual(await page.$eval('#playbook-scenario-detail',n=>n.innerText),before,file+' native scenario selection');
+  await page.click('#btn-tab-binance');await page.click('#btn-binance-hardened');
+  assert(await page.$eval('#btn-binance-hardened',n=>n.classList.contains('success')));
+  await page.click('#btn-tab-pentest');await page.click('#btn-pentest-hardened');
+  assert(await page.$eval('#btn-pentest-hardened',n=>n.classList.contains('success')));
+  assert.equal(await page.$$eval('iframe',nodes=>nodes.length),0);
+  securityInteractions.push({file,tabs:4,industryPlaybooks:4,nativeSelection:true,defenseAndPolicyControls:true,sourceFixtureOnly:true});
+ }
  const infra='workshops/azure-agent-infra/';
  await page.goto(base+infra+'index.html?theme=dark#layerList',{waitUntil:'load'});
  assert((await page.$eval('#reading-main',n=>n.innerText)).includes('计算与状态解耦'));
@@ -152,7 +172,7 @@ if(artifacts)fs.mkdirSync(artifacts,{recursive:true});
  for(const file of ['voice/case-study.html','voice/case-study.en.html','voice/index.en.html','workshops/azure-agent-infra/index.en.html']){await page.goto(base+file,{waitUntil:'load'});if((await page.$eval('#reading-main',n=>n.innerText.length))<5000)errors.push({path:file,type:'missing-static-body'});if(file.endsWith('.en.html')){const remaining=await remainingChinese();if(remaining.length)errors.push({path:file,type:'untranslated-static-body',remaining});}}
  assert.equal(await page.$eval('html',n=>n.dataset.theme),'dark','no-JavaScript dark default');
  assert.equal(await page.$eval('body',n=>getComputedStyle(n).backgroundColor),'rgb(8, 13, 27)','no-JavaScript Dark Aurora background');
- if(artifacts)fs.writeFileSync(path.join(artifacts,'language-checks.json'),JSON.stringify({languageResults,svgChecks,infraNavigation:'native EN/CN; body/theme/hash/back/forward/context verified',theme:'Dark Aurora default including no JS; versioned storage, legacy preference ignored, explicit light retained',errors},null,2));
+ if(artifacts)fs.writeFileSync(path.join(artifacts,'language-checks.json'),JSON.stringify({languageResults,securityInteractions,svgChecks,infraNavigation:'native EN/CN; body/theme/hash/back/forward/context verified',theme:'Dark Aurora default including no JS; versioned storage, legacy preference ignored, explicit light retained',errors},null,2));
  const coverage={baseline:owned.length,newTranslations:manifest.records.filter(r=>r.translation).length,total:manifest.records.length,layouts:results.length};
  if(artifacts)fs.writeFileSync(path.join(artifacts,'checks.json'),JSON.stringify({coverage,broken,errors,results},null,2));
  console.log(JSON.stringify({coverage,broken,errors,runtime:results.filter(r=>r.overflow||r.runtimeErrors.length||r.iframes||r.headerHeight>(r.width===390?64:72))},null,2));

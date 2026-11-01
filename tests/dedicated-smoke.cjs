@@ -5,6 +5,14 @@ const assert = require('node:assert/strict');
 const { root, owned, originalOwned, supplementalOwned, sourceOverrides, baseline, transform, sha } = require('../scripts/integrate-dedicated.cjs');
 const cycle377Paths = ['benchmark-cards.html', 'benchmark-cards.en.html', 'demo.html', 'selector.html', 'workbench-cycle-377.html'].map(name => `workshops/azure-agent-infra/${name}`);
 const cycle377Commit = '8c84971c7e952a5fb6f254ee8fcfef5678d9941d';
+const concurrentCommit = '3bdac3d4db9a0cec264ee42b59bbef8a7f87364b';
+const concurrentPaths = ['voice/deck.html','voice/benchmark-cards.html','workshops/agentic-commerce/live-demo.html','workshops/agentic-commerce/live-demo.en.html','workshops/agentic-commerce/benchmark-cards.html','workshops/agentic-commerce/benchmark-cards.en.html','workshops/ai-security/benchmark-cards.html','workshops/ai-security/benchmark-cards.en.html'];
+function restoreConcurrentSource(r, html) {
+  let restored = strip(html);
+  if (r.path === 'voice/deck.html') restored = restored.replace('<body class="kee-dedicated-deck-root"><div class="kee-dedicated-deck-stage">','<body>').replace('</div></body>','</body>');
+  if (/agentic-commerce\/live-demo(?:\.en)?\.html$/.test(r.path)) restored = restored.replaceAll(String.raw`null / \"\" / []`, 'null / "" / []').replaceAll(String.raw`null/\"\"/[]`, 'null/""/[]');
+  return restored;
+}
 const output = process.env.DEDICATED_ARTIFACTS || path.join(root, 'tests', 'dedicated-artifacts');
 const base = process.env.DEDICATED_BASE_URL || 'http://127.0.0.1:8797/';
 const perimeterBaseline = process.env.DEDICATED_PERIMETER_BASELINE;
@@ -122,7 +130,7 @@ async function checkCycle377(browser, result) {
 async function main() {
   fs.mkdirSync(output, { recursive: true });
   const result = { scope: 'Dedicated native-surface integration; not a benchmark rerun or backend E2E. External requests are observed, never blanket-blocked.', static: [], scenarios: [] };
-  assert.deepEqual(Object.keys(sourceOverrides).sort(), [...cycle377Paths].sort(), 'Source override scope widened');
+  assert.deepEqual(Object.keys(sourceOverrides).sort(), [...cycle377Paths, ...concurrentPaths].sort(), 'Source override scope widened');
   assert.equal(originalOwned.length, 63, 'Original inventory ownership changed');
   assert.deepEqual(supplementalOwned.map(r => r.path).sort(), ['workshops/azure-agent-infra/benchmark-cards.en.html', 'workshops/azure-agent-infra/workbench-cycle-377.html']);
   assert.equal(owned.length, 65);
@@ -131,14 +139,14 @@ async function main() {
     const source = baseline(r), live = fs.readFileSync(path.join(root, r.path), 'utf8'), expected = transform(r, source);
     assert.equal(live, expected.html, r.path);
     if (r.sourceOverride) {
-      assert.equal(r.sourceOverride.commit, cycle377Commit, `Unpinned Cycle #377 source: ${r.path}`);
+      assert.equal(r.sourceOverride.commit, cycle377Paths.includes(r.path) ? cycle377Commit : concurrentCommit, `Unpinned concurrent source: ${r.path}`);
       if (/\/(demo|selector)\.html$/.test(r.path)) {
         const sourceLink = source.split('\n').find(line => line.includes('href="workbench-cycle-377.html"')) + '\n';
         assert(sourceLink.startsWith('    <a class="nav-link"'), 'Published workbench link missing');
         assert.equal(source.replace(sourceLink, ''), baseline(originalOwned.find(o => o.path === r.path)), `Source changes beyond native Cycle #377 link: ${r.path}`);
         if (perimeterBaseline) assert.equal(live.replace(perimeterCss, previousPerimeterCss).replace(sourceLink, ''), gitSource(r.path), `Unexpected changes beyond source link and perimeter: ${r.path}`);
       } else {
-        assert.equal(strip(live), source, `New source not reversibly preserved: ${r.path}`);
+        assert.equal(restoreConcurrentSource(r, live), source, `New source not reversibly preserved: ${r.path}`);
       }
     } else if (perimeterBaseline) assert.equal(live.replace(perimeterCss, previousPerimeterCss), gitSource(r.path), `Non-perimeter bytes changed since ${perimeterBaseline}: ${r.path}`);
     const csp = html => html.match(/<meta\b[^>]*http-equiv=["']Content-Security-Policy["'][^>]*>/gi) || [];
@@ -249,6 +257,12 @@ async function main() {
         const after = await page.$eval('.app-shell', e => e.textContent);
         action = { scenario: 'Advance Commerce scenario using native Next Step control', changed: before !== after, scenarioButtons: await page.$$eval('#scenario-tabs button', es => es.length) };
         assert(action.changed, 'Commerce native step control did not advance');
+        await page.select('#s1752-cred-select', 'sk_leak');
+        assert.match(await page.$eval('#s1752-live-readout', e=>e.textContent), /invalid_link_access_token_plane/, 'Stage1752 credential boundary');
+        await page.select('#s1752-cred-select', 'spt_valid');
+        await page.select('#s1752-retry-select', '524_ts');
+        assert.match(await page.$eval('#s1752-live-readout', e=>e.textContent), /120s wait/, 'Stage1752 source retry fixture');
+        action.stage1752 = { credentialBoundary: true, retryTimestamp: true, sourceFixtureOnly: true };
       } else if (name === 'canvas') {
         await page.click('#launch'); await new Promise(r=>setTimeout(r,2500));
         action = await page.evaluate(() => ({ scenario: 'Launch rocket', phase: document.querySelector('#phase').textContent, time: document.querySelector('#time').textContent, status: document.querySelector('#rocket-status').textContent }));

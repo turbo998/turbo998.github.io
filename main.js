@@ -6,6 +6,7 @@
   const LANG = (document.documentElement.lang || "").toLowerCase().startsWith("zh") ? "zh" : "en";
 
   const FEATURED = [
+    "data-lab",
     "Azure-Infra-Lab",
     "ai-infra-research",
     "ai-infra-lab",
@@ -70,6 +71,7 @@
     "hermes-azure-files-plugin": "ecosystem",
     "copilot-usage-portal": "ecosystem",
     "copilot-multi-agent-dashboard": "ecosystem",
+    "data-lab": "ecosystem",
     "fabric-mirroring-directlake-agent-demo": "ecosystem",
     "microsoft-fabric-learning-plan": "ecosystem",
     "brightdata-webiq-demos": "ecosystem",
@@ -109,7 +111,7 @@
     "agent-framework-research": "主流 Coding Agent 与多智能体框架源码级横向对标：深度拆解 pi、oh-my-pi、Claude Code、Codex CLI、OpenClaw、Hermes 与 WorkBuddy。",
     "agent-governance-economics-research": "企业级智能体治理与单位经济学研究：围绕「单次采纳任务成本 (Cost per Accepted Task)」建立模型路由与预算熔断框架。",
     "ai-security-lab": "AI 安全与多智能体红蓝对抗实验室：涵盖币安 $6B 级攻击链推演与零信任熔断模拟、间接提示词注入、MCP 工具投毒、A2A 金库越权与 7-Card 基准报告。",
-    "voice-agent-lab": "企业级实时语音智能体与 Azure Voice Live 四通道参考架构：内置 4分20秒实录视频、6分钟合作伙伴手册与双 7-Card 评测报告。",
+    "voice-agent-lab": "企业级实时语音智能体与 Azure Voice Live 四通道参考架构（Stage 356 · P705/P706 · 359维 · 715护栏）：内置 4分20秒实录视频、6分钟合作伙伴手册与双 7-Card 评测报告。",
     "azure-speech-diarization-poc": "Azure Speech 快速转写说话人分离与双声道归属 PoC：修复 SDK 1.0.0 diarization.enabled 缺陷（0%→100%），RTF=0.0572（17.5倍实时速），双声道 100% 一致。",
     "gpt-live-1-demo": "Azure OpenAI gpt-live-1 与 gpt-4.1-mini 实时语音演示工作台、4-Tab 培训门户、6分钟售前演示手册与 4分20秒高清实录视频。",
     "contact-center-on-gpt-realtime": "全球多语言智能呼叫中心参考设计，串联三个 Microsoft Foundry 实时模型，实现 24×7 接待与实时坐席辅助。",
@@ -124,6 +126,7 @@
     "hermes-azure-files-plugin": "Hermes Agent 的 Azure Blob Storage + BlobFuse2 / Azure Files 高性能云挂载插件。",
     "copilot-usage-portal": "Azure 上的多租户 GitHub Copilot Token 用量治理与 ROI 审计看板。",
     "copilot-multi-agent-dashboard": "聚合 GitHub Copilot CLI、Hermes Agent 与 OpenClaw 会话轨迹的统一 Web 可观测性控制台。",
+    "data-lab": "Data Lab：Microsoft Fabric (Fabric IQ) × 四大云数智竞对（Databricks / Snowflake / GCP / AWS）深度评测、500人 TCO 计算器、智算中心能源本体仿真台与 7-Card 基准报告。",
     "fabric-mirroring-directlake-agent-demo": "Microsoft Fabric 端到端数据智能体：零拷贝 Mirroring + DirectLake + 本体建模 + MCP 自然语言问数。",
     "microsoft-fabric-learning-plan": "Microsoft Fabric 8 周深度学习计划，含动手实验与竞品分析。",
     "azure-openai-faq": "OpenAI → Azure OpenAI / Foundry 生产迁移与排障实战手册，附可运行诊断代码。",
@@ -134,6 +137,7 @@
   };
 
   const FALLBACK = [
+    { name: "data-lab", description: "Data Lab: Microsoft Fabric (Fabric IQ) vs. Databricks, Snowflake, GCP & AWS — 24-Scenario Benchmark, 500-User TCO Calculator, AIDC Ontology Simulator & 7-Card Deck.", language: "Python", stargazers_count: 1, html_url: "https://github.com/turbo998/data-lab", homepage: "https://turbo998.github.io/workshops/data-lab/index.html", updated_at: "2026-11-01" },
     { name: "Azure-Infra-Lab", description: "Azure Infrastructure & AI Agent Infra Playbook Lab: AKSClaw × E2B 100K-Sandbox H5 Simulator, 7-Card Benchmark Deck & Azure VM Modernization Workshop.", language: "HTML", stargazers_count: 1, html_url: "https://github.com/turbo998/Azure-Infra-Lab", homepage: "https://turbo998.github.io/Azure-Infra-Lab/workshops/azure-agent-infra/index.html", updated_at: "2026-10-25" },
     { name: "ai-infra-research", description: "Bilingual daily deep research on AI compute infrastructure: GPU/ASIC microarchitectures, HBM4/CXL memory, NVLink/UEC interconnects, and hyperscaler clusters.", language: "Markdown", stargazers_count: 1, html_url: "https://github.com/turbo998/ai-infra-research", updated_at: "2026-10-25" },
     { name: "benchmark-harness-engineering", description: "7-Card 4:5 Visual Benchmark Report Standard & reproducible evaluation harness for routing/decision models and coding agents.", language: "Python", stargazers_count: 1, html_url: "https://github.com/turbo998/benchmark-harness-engineering", updated_at: "2026-10-24" },
