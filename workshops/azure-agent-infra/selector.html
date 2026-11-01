@@ -320,8 +320,44 @@ pre.code-box {
   font-size: 0.88rem;
 }
 </style>
+<!-- kee-dedicated-style:start -->
+<style>/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #dbe1e8;
+  background: #fff; color: #334155; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: light;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #1858a8; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #2563eb; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #172338; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #526174; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+.kee-dedicated-infra .grid-2{grid-template-columns:repeat(auto-fit,minmax(min(380px,100%),1fr))}.kee-dedicated-infra .grid-3{grid-template-columns:repeat(auto-fit,minmax(min(290px,100%),1fr))}.kee-dedicated-infra .grid-2>*,.kee-dedicated-infra .grid-3>*{min-width:0}.kee-dedicated-infra .card{min-width:0;overflow-wrap:anywhere}.kee-dedicated-infra select{min-width:0;max-width:100%}.kee-dedicated-infra #tourLog{grid-template-columns:repeat(auto-fit,minmax(min(340px,100%),1fr))!important}.kee-dedicated-infra pre{max-width:100%}</style>
+<!-- kee-dedicated-style:end -->
 </head>
-<body>
+<body class="kee-dedicated-infra">
+<!-- kee-dedicated-navigation:start -->
+<nav class="kee-dedicated-nav" aria-label="Site and resource navigation" lang="en"><a href="../../index.html" class="kee-dedicated-identity">Qi Chen / @turbo998</a>
+<a href="../../index.html">Home EN</a>
+<a href="../../zh.html">首页 中文</a>
+<a href="../../studio/index.html">Studio EN</a>
+<a href="../../studio/zh-index.html">工作室 中文</a>
+<a href="../../studio/infra.html">infra EN</a>
+<a href="../../studio/zh-infra.html">infra 中文</a>
+<a href="#langToggle">Resource language / 资源语言</a>
+<span class="kee-dedicated-language">中文 / English: use the original language controls below (JavaScript required; some explanatory text remains in its source language).</span></nav>
+<!-- kee-dedicated-navigation:end -->
+
 <nav class="topbar">
   <div class="brand">
     <span class="brand-badge">DECISION &amp; SIZER</span>
@@ -2076,13 +2112,13 @@ pre.code-box {
         </div>
         <div class="form-row">
           <label>2. 海啸 BPR 物理反演、AUV 对接与深水防喷器 BOP 互锁模式 (Subsea Tsunami &amp; SIL-3 BOP Mode)</label>
-          <select id="sel_sub_mode" onchange="runSubseaObservatoryLab()">
+          <select id="sel_observatory_mode" onchange="runSubseaObservatoryLab()">
             <option value="bpr_tsunami_pinn_auv_acoustic_sil3_bop_edge" selected>海啸 NSWE-PINN + AUV 声光对接 (+44.6% 预警提前量 / -38.2% 能耗) + SIL-3 盲剪互锁 (0% 井喷/电弧) + DAS 边缘 (推荐)</option>
             <option value="static_threshold_unverified_bop_raw_hydrophone">传统反模式：静态水压阈值 (0 增益) + 无盲剪/HVDC 互锁 (1.8% 井喷/电弧故障) + 原始水听器流回传 (4.1% 水声多径失锁)</option>
           </select>
         </div>
       </div>
-      <div class="card" style="background:#070b14;margin-bottom:0;" id="subOut"></div>
+      <div class="card" style="background:#070b14;margin-bottom:0;" id="observatoryOut"></div>
     </div>
   </section>
 
@@ -3399,7 +3435,7 @@ pre.code-box {
         </div>
         <div class="form-row">
           <label>2. 管壁热斑防积碳与 API 530 蠕变寿命 PINN-MPC 及 NFPA 86 / SIL-3 防爆管联锁模式 (SMR-CCS Governance Mode)</label>
-          <select id="sel_smr_mode" onchange="runSmrSteamMethaneReformingCcsLab()">
+          <select id="sel_smr_reforming_mode" onchange="runSmrSteamMethaneReformingCcsLab()">
             <option value="pinn_mpc_xufroment_coking_api530_creep_mwir_sil3_edge" selected>Xu-Froment 重整积碳与 API 530 Larson-Miller 蠕变 PINN + 多燃烧器辐射通量与水碳比/CCS 协同 MPC (+38.4% 蓝氢热效率与炉管寿命 / -52.8% 结焦热斑与再生蒸汽) + API 530 / NFPA 86 SIL-3 0.4ms 爆管蒸汽幕封与燃料跳闸 + 0.3ms 3.9μm 2D-MWIR 边缘 (推荐)</option>
             <option value="fixed_steam_to_carbon_manual_burner_trim_periodic_ir_survey_cloud">传统反模式：固定高水碳比裕量 (S/C > 3.2) 与人工周期调火 (+5.6% 效率增益) + 无 0.4ms 炉管超温/猪尾管破裂 SIL-3 联锁 (1.4% 局部热斑过温 +20°C 致炉管蠕变寿命减半爆裂或炉膛回火爆炸违例) + 手持光学高温计巡检 (3.7% 火焰反射伪影致管壁热斑或 CO2 穿透漏检)</option>
           </select>
@@ -3445,7 +3481,7 @@ pre.code-box {
         </div>
         <div class="form-row">
           <label>2. Bagnold 晃荡冲击与 BOG 再液化 PINN-MPC 及 IMO IGC / SIL-3 绝热层/冷斑联锁模式 (LNG Containment Governance Mode)</label>
-          <select id="sel_lng_mode" onchange="runLngMembraneContainmentLab()">
+          <select id="sel_lng_membrane_mode" onchange="runLngMembraneContainmentLab()">
             <option value="pinn_mpc_bagnold_sloshing_bog_reliquefaction_fbg_igc_sil3_edge" selected>Bagnold 气袋水弹性晃荡与热翻滚 PINN + 航向避浪、过冷喷淋与 ME-GI/GCU 协同 MPC (+38.8% 再液化与 BOG 利用效率 / -54.1% 晃荡冲击峰值与 GCU 燃烧浪费) + IMO IGC SIL-3 0.4ms 绝热层氮气吹扫/空舱伴热与防负压跳闸 + 0.3ms 低温 FBG/NDIR 边缘 (推荐)</option>
             <option value="static_barred_filling_range_manual_gcu_flaring_periodic_n2_sniffing_cloud">传统反模式：静态装载禁区 (10%–70% H 死板限制) 与人工 GCU 放空燃烧 (+5.8% 效率增益) + 无 0.4ms 绝热层氮气快吹与负压反充 SIL-3 联锁 (1.5% 主屏微漏诱发内船壳低温脆断或卸货抽负压薄膜塌陷违例) + 周期性人工氮气巡检 (3.9% 聚氨酯绝热箱被晃荡局部压溃或分层翻滚超压漏检)</option>
           </select>
@@ -4066,7 +4102,7 @@ pre.code-box {
         </div>
         <div class="form-row">
           <label>2. PVT 热场-外延位错抑制 PINN-MPC 及 SEMI S2 / SIL-3 硅烷与高温感应炉防爆联锁模式 (4H-SiC / GaN Governance Mode)</label>
-          <select id="sel_sic_mode" onchange="runSicGanPvtCvdLab()">
+          <select id="sel_sic_gan_mode" onchange="runSicGanPvtCvdLab()">
             <option value="pinn_mpc_pvt_sublimation_4h_polytype_stepflow_cvd_bpd_pyrometry_pl_semis2_sil3_edge" selected>2,350°C PVT 辐射热场、4H-SiC 晶型稳定与热壁 CVD 99.5% BPD→TED 转化 PINN-MPC (+44.2% 8英寸单晶与车规外延良率 / -60.1% 基面位错 BPD、微管与 6H 杂晶) + SEMI S2 / NFPA 86 SIL-3 0.2ms 硅烷 RFO 切断、感应电源撬棒与氩气正压封堵硬联锁 + 0.3ms 双色高温计与 355nm UV-PL/LLS 边缘 (推荐)</option>
             <option value="open_loop_rf_coil_position_fixed_c_si_flow_ratio_post_run_koh_etch_xrt_cloud">传统反模式：靠开环固定感应线圈位置与恒定 SiH4/C3H8 流量比、依赖 7 天长晶后切片 500°C KOH 熔融腐蚀与离线 X 射线形貌术 XRT 抽检滞后 (+6.6% 良率增益) + 无 0.2ms 硅烷 RFO 切断与感应线圈漏水蒸汽防爆联锁 (1.5% 剧毒自燃 SiH4 泄漏爆燃或 2,400°C 炉膛进水引发水煤气蒸汽爆炸风险) + 缺乏在线双色测温与 UV-PL 闭环 (3.7% 8英寸晶锭热应力炸裂或外延硅滴/台阶聚束整批报废漏检)</option>
           </select>
@@ -4296,7 +4332,7 @@ pre.code-box {
         </div>
         <div class="form-row">
           <label>2. 正仲氢催化/两相预冷防喘水击 PINN-MPC 与 NFPA 2 / CGA H-3 SIL-3 破空固氧及氦吹扫联锁模式 (LH2 ZBO Governance Mode)</label>
-          <select id="sel_lh2_mode" onchange="runLh2CryoZboLab()">
+          <select id="sel_lh2_zbo_mode" onchange="runLh2CryoZboLab()">
             <option value="pinn_mpc_ortho_para_catalysis_chilldown_ciwh_brayton_zbo_raman_nfpa2_sil3_edge" selected>o-H2→p-H2 (≥99.8%) 放热催化、两相预冷防 Geysering/CIWH 水击与氦逆布雷顿 ZBO 再液化 PINN-MPC (+42.8% 再液化能效与装船吞吐 / -64.1% 潜热蒸发与水击压力峰值) + NFPA 2 / CGA H-3 SIL-3 0.6ms 破空固氧防爆、4.2K 纯氦吹扫防冰堵与 ERS 脱离硬联锁 + 0.5ms 10kHz 转动拉曼与深冷 FBG 边缘 (推荐)</option>
             <option value="manual_valve_chilldown_unmonitored_ortho_para_slip_flare_vent_boil_off_cloud">传统反模式：固定节流阀经验预冷、离线正仲氢抽检与开环 BOG 火炬放空 (+6.5% 吞吐增益) + 无 0.6ms 破空固氧防护与纯氦吹扫硬联锁 (1.7% 真空夹层破空凝结固态氧与液氢混合爆轰、误用液氮/氮气吹扫在 20K 冻结堵死安全阀或 CIWH 水击震裂管线风险) + 缺乏在线 10kHz 转动拉曼与 Cryo-FBG 闭环 (4.1% 催化剂失活导致残余 o-H2 在罐内释放 703 kJ/kg 转化热诱发分层翻滚超压或预冷间歇泉反喷)</option>
           </select>
@@ -20281,7 +20317,7 @@ function runMczSiliconLab() {
 
 function runLh2CryoZboLab() {
   const trains = parseInt(document.getElementById('rng_lh2_trains').value, 10);
-  const mode = document.getElementById('sel_lh2_mode').value;
+  const mode = document.getElementById('sel_lh2_zbo_mode').value;
   document.getElementById('lbl_lh2_trains').textContent = trains.toLocaleString();
 
   const nodes = Math.max(2, Math.ceil(trains / 4));
@@ -20511,7 +20547,7 @@ function runOpticalFiberDrawLab() {
 
 function runSicGanPvtCvdLab() {
   const reactors = parseInt(document.getElementById('rng_sic_reactors').value, 10);
-  const mode = document.getElementById('sel_sic_mode').value;
+  const mode = document.getElementById('sel_sic_gan_mode').value;
   document.getElementById('lbl_sic_reactors').textContent = reactors.toLocaleString();
 
   const nodes = Math.max(2, Math.ceil(reactors / 4));
@@ -21132,7 +21168,7 @@ function runSubseaPipelayJlaySlayLab() {
 
 function runLngMembraneContainmentLab() {
   const tanks = parseInt(document.getElementById('rng_lng_tanks').value, 10);
-  const mode = document.getElementById('sel_lng_mode').value;
+  const mode = document.getElementById('sel_lng_membrane_mode').value;
   document.getElementById('lbl_lng_tanks').textContent = tanks.toLocaleString();
 
   const nodes = Math.max(2, Math.ceil(tanks / 8));
@@ -21178,7 +21214,7 @@ function runSputterMagnetronGlassCoaterLab() {
 
 function runSmrSteamMethaneReformingCcsLab() {
   const furnaces = parseInt(document.getElementById('rng_smr_furnaces').value, 10);
-  const mode = document.getElementById('sel_smr_mode').value;
+  const mode = document.getElementById('sel_smr_reforming_mode').value;
   document.getElementById('lbl_smr_furnaces').textContent = furnaces.toLocaleString();
 
   const nodes = Math.max(2, Math.ceil(furnaces / 8));
@@ -22512,7 +22548,7 @@ function runGeothermalEgsLab() {
 
 function runSubseaObservatoryLab() {
   const units = parseInt(document.getElementById('rng_sub_nodes').value, 10);
-  const mode = document.getElementById('sel_sub_mode').value;
+  const mode = document.getElementById('sel_observatory_mode').value;
   document.getElementById('lbl_sub_nodes').textContent = units.toLocaleString();
 
   const nodes = Math.max(2, Math.ceil(units / 20));
@@ -22522,7 +22558,7 @@ function runSubseaObservatoryLab() {
   const bopStr = ok ? "1.2 ms API RP 53 / SIL-3 防喷器盲剪闸板与 10kV HVDC 绝缘互锁 · 0.0% 井喷/电弧" : "无 SIL-3 盲剪与 HVDC 接地互锁 · 1.8% 深水井涌失控与海底接驳盒电弧击穿风险";
   const edgeStr = ok ? "6.5 ms 海缆登陆站相干 DAS + 256kHz 水听器边缘分诊 (-97.4% 水声/卫星带宽) · 0.0% 失联" : "1,420.0 ms 原始水听器流经水声猫/海事卫星上云 · 信道拥塞且错过海啸首波反演窗口";
 
-  document.getElementById('subOut').innerHTML = `
+  document.getElementById('observatoryOut').innerHTML = `
     <div style="display:flex;justify-content:space-between;align-items:center;">
       <span class="pill ${ok ? 'pill-teal' : 'pill-rose'}">${ok ? '✅ ' + pinnStr : '❌ 1.8% 深水井喷/10kV 接驳盒电弧风险 · 4.1% 温盐跃层水声多径 AUV 导航失锁'}</span>
       <strong style="color:#34d399;font-size:1.05rem;">${nodes} 台 A100 节点 (${jboxes} 座 HVDC 接驳盒 · ${bopStr})</strong>
