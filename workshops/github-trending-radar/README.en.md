@@ -1,8 +1,8 @@
-> 🌐 **Language / 语言切换**: **[🇨🇳 中文完整报告 (README.md)](README.md)** | **[🇬🇧 English Full Report (README.en.md)](README.en.md)** | **[📡 Live Interactive Radar (EN)](https://turbo998.github.io/github-radar.html)** | **[📡 在线交互式雷达面板 (中文)](https://turbo998.github.io/zh-github-radar.html)** | **[📊 7-Card 4:5 Benchmark Deck](cards.en.html)**
+> 🌐 **Language / 语言切换**: **[🇨🇳 中文完整报告 (README.md)](README.md)** | **[🇬🇧 English Full Report (README.en.md)](README.en.md)** | **[📅 2026-11-01 Daily Digest (EN)](daily/2026-11-01.en.md)** | **[📅 2026-11-01 每日归档日报 (中文)](daily/2026-11-01.md)** | **[📡 Live Interactive Radar (EN)](https://turbo998.github.io/github-radar.html)** | **[📡 在线交互式雷达面板 (中文)](https://turbo998.github.io/zh-github-radar.html)** | **[📊 7-Card 4:5 Benchmark Deck](cards.en.html)** | **[📦 Sealed Telemetry (`report.json`)](report.json)**
 
 # AI Solution Architect Proactive News Desk & GitHub AI Trending Radar (2026-11-01 Deep Research Report)
 
-![2026-11-01 GitHub AI Trending Radar Visual Summary](summary-2026-11-01.svg)
+![2026-11-01 GitHub AI Trending Radar Visual Summary](../../assets/github-ai-radar-2026-11-01.svg)
 
 ## 1. Architectural Philosophy: From Reactive Chatbots to Proactive Durable Intelligence Agents
 
@@ -103,3 +103,22 @@ $$\text{Proactive Agent} = \text{Durable Agent (SQLite Checkpointed)} + \text{Cr
 - **#13 `shiyu-coder/Kronos` (Attention: 63 · 👀 P2)**: 45.0K-star financial candlestick time-series foundation model for FSI quant co-pilots.
 - **#14 `Donchitos/Claude-Code-Game-Studios` (Attention: 53 · 👀 P2 · `hype_watch`)**: 49 persona agents + 72 game skills (`Hype=54`); borrow the engine skill templates, skip the 49-agent bureaucratic chain.
 - **#15 `togg53192-cmd/jailbreaks` (Attention: 40 · 🛡️ P3 · `hype_watch`)**: Static jailbreak text collection (`Hype=64`); skip manual reading and ingest only as automated negative test fixtures for Spotlighting / PyRIT.
+
+---
+
+## 4. Weekly & 7-Day Surging AI Breakthroughs (`since=weekly` & `created:>2026-10-25`)
+
+| Repository (`owner/repo`) | Weekly / 7d Velocity | License / Release | HFS (`S / F / H`) | Attention | SA Tier | Breakthrough & SA Takeaway |
+| :--- | :---: | :---: | :---: | :---: | :---: | :--- |
+| [`cloudflare/security-audit-skill`](https://github.com/cloudflare/security-audit-skill) | **+11,908 / wk** (★56,031) | `MIT` · `HEAD` | `83 / 84 / 18` | **91** (`signal_alert`) | 🔥 **P0 Must-Learn** | Official Cloudflare Agentic Security Audit Skill for automated dependency vulnerability triage and secret scanning. |
+| [`JetBrains/thinkrail`](https://github.com/JetBrains/thinkrail) | **+5,738 / wk** (★6,905) | `Apache-2.0` · `v0.3.0` | `79 / 82 / 20` | **87** (`release`) | ⚡ **P1 Deep-Read** | JetBrains structured reasoning rail providing explicit verification checkpoints for long-horizon coding agents. |
+| [`qybaihe/bla`](https://github.com/qybaihe/bla) | **+1,789 / 7d** (★1,789) | `MIT` · `v1.6.3` | `75 / 76 / 28` | **82** (`fact_check`) | ⚡ **P1 Deep-Read** | Blind LLM Agents (BLA) adversarial shield defending binaries, Electron apps, and WASM against reverse-engineering agents like `morluto/rea`. |
+
+---
+
+## 5. Daily Archive Directory
+
+| Date | Run ID | Passed / Swept | English Daily Digest (Full 15-Repo Breakdown) | 中文完整日报 | Visual Summary SVG | 7-Card Deck |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **2026-11-01** | `sweep_20261101_2300` | `15 / 19` (`4 P0 · 6 P1`) | **[`daily/2026-11-01.en.md`](daily/2026-11-01.en.md)** | **[`daily/2026-11-01.md`](daily/2026-11-01.md)** | **[`github-ai-radar-2026-11-01.svg`](../../assets/github-ai-radar-2026-11-01.svg)** | **[EN](cards.en.html) / [中文](cards.html)** |
+

@@ -221,8 +221,21 @@
     background: var(--surface-2); border: 1px solid var(--border);
     border-radius: 7px; padding: 7px 10px; font-family: var(--mono); font-size: 11.2px;
   }
+  .drawer-backdrop {
+    position: fixed; inset: 0; background: rgba(15, 23, 42, 0.62);
+    backdrop-filter: blur(4px); z-index: 999; display: none; justify-content: flex-end;
+  }
+  .drawer-backdrop.open { display: flex; }
+  .drawer-panel {
+    width: min(680px, 94vw); height: 100vh; overflow-y: auto;
+    background: var(--surface); border-left: 1px solid var(--border-strong);
+    padding: 24px 26px; box-shadow: -12px 0 36px rgba(0,0,0,0.35);
+  }
+  .weekly-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 12px;
+  }
   @media (max-width: 960px) {
-    .tuner-grid, .topic-tuner-list, .hfs-bars-grid, .sa-4d-grid, .claims-list { grid-template-columns: 1fr; }
+    .tuner-grid, .topic-tuner-list, .hfs-bars-grid, .sa-4d-grid, .claims-list, .weekly-grid { grid-template-columns: 1fr; }
     .pipeline-rail { grid-template-columns: repeat(2, 1fr); }
   }
 </style>
@@ -400,6 +413,14 @@
     </header>
 
     <div class="filter-toolbar">
+      <div class="filter-row" id="date-archive-filters">
+        <span class="filter-label">📅 日期归档筛选:</span>
+        <button type="button" class="chip-btn active" data-date="2026-11-01">2026-11-01 · 15 个仓库 (最新)</button>
+        <a class="chip-btn" href="https://github.com/turbo998/Kee-Tech-Assets/blob/main/workshops/github-trending-radar/daily/2026-11-01.md" target="_blank" rel="noopener" style="text-decoration:none;">📄 每日归档日报 (中文) ↗</a>
+        <a class="chip-btn" href="https://github.com/turbo998/Kee-Tech-Assets/blob/main/workshops/github-trending-radar/daily/2026-11-01.en.md" target="_blank" rel="noopener" style="text-decoration:none;">📄 Daily Digest (EN) ↗</a>
+        <a class="chip-btn" href="workshops/github-trending-radar/report.json" target="_blank" rel="noopener" style="text-decoration:none;">📦 封存数据 JSON ↗</a>
+        <a class="chip-btn" href="assets/github-ai-radar-2026-11-01.svg" target="_blank" rel="noopener" style="text-decoration:none;">🖼️ 可视化总结 SVG ↗</a>
+      </div>
       <div class="filter-row" id="card-type-filters">
         <span class="filter-label">🃏 8 种生成式卡片:</span>
       </div>
@@ -416,6 +437,47 @@
     <div class="repo-cards-grid" id="repo-cards-container"></div>
   </section>
 
+  <!-- SECTION 3B: WEEKLY & 7-DAY SURGING AI BREAKTHROUGHS -->
+  <section id="weekly-surging-section" style="margin-top:32px;">
+    <header class="stage-section-header">
+      <span class="stage-number">STAGE 03B · WEEKLY &amp; 7-DAY SURGING AI BREAKTHROUGHS</span>
+      <h2>周度热榜与近 7 天飙升能力突破雷达 (`since=weekly` &amp; `created:&gt;2026-10-25`)</h2>
+      <p>遵循每日研究追踪规范，额外扫描近 7 天飙升最快的 AI 安全、推理护栏与反逆向工程突破仓库。</p>
+    </header>
+    <div class="weekly-grid">
+      <article class="panel-box">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;">
+          <span class="verdict-badge verdict-P0">🔥 P0 必学</span>
+          <span style="font-family:var(--mono);font-size:12px;font-weight:800;color:var(--accent);">Attention: 91 · signal_alert</span>
+        </div>
+        <h3 style="margin:0 0 6px;"><a href="https://github.com/cloudflare/security-audit-skill" target="_blank" rel="noopener" style="color:var(--text);text-decoration:none;">cloudflare/security-audit-skill ↗</a></h3>
+        <div style="font-family:var(--mono);font-size:11.5px;color:var(--good);margin-bottom:8px;">🔥 本周 +11,908 stars · ★ 56,031 · MIT</div>
+        <p style="font-size:12.8px;color:var(--text-2);line-height:1.55;margin:0 0 8px;">Cloudflare 官方开源的 Agentic 安全审计 Skill，将依赖链漏洞排查、密钥泄露检测与配置合规审查封装为标准化智能体技能包。</p>
+        <div style="font-family:var(--mono);font-size:11.2px;color:var(--text-3);">HFS: Signal 83 · Facts 84 · Hype 18 | SA Track 07 (AI 安全治理)</div>
+      </article>
+      <article class="panel-box">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;">
+          <span class="verdict-badge verdict-P1">⚡ P1 精读</span>
+          <span style="font-family:var(--mono);font-size:12px;font-weight:800;color:var(--accent);">Attention: 87 · release</span>
+        </div>
+        <h3 style="margin:0 0 6px;"><a href="https://github.com/JetBrains/thinkrail" target="_blank" rel="noopener" style="color:var(--text);text-decoration:none;">JetBrains/thinkrail ↗</a></h3>
+        <div style="font-family:var(--mono);font-size:11.5px;color:var(--good);margin-bottom:8px;">🔥 本周 +5,738 stars · ★ 6,905 · Apache-2.0 · v0.3.0</div>
+        <p style="font-size:12.8px;color:var(--text-2);line-height:1.55;margin:0 0 8px;">JetBrains 官方结构化推理轨迹护栏，为长程编码 Agent 提供显式验证检查点与抗偏移思维链护栏。</p>
+        <div style="font-family:var(--mono);font-size:11.2px;color:var(--text-3);">HFS: Signal 79 · Facts 82 · Hype 20 | SA Track 04 (Agent Harness)</div>
+      </article>
+      <article class="panel-box">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;">
+          <span class="verdict-badge verdict-P1">⚡ P1 精读</span>
+          <span style="font-family:var(--mono);font-size:12px;font-weight:800;color:var(--accent);">Attention: 82 · fact_check</span>
+        </div>
+        <h3 style="margin:0 0 6px;"><a href="https://github.com/qybaihe/bla" target="_blank" rel="noopener" style="color:var(--text);text-decoration:none;">qybaihe/bla (Blind LLM Agents) ↗</a></h3>
+        <div style="font-family:var(--mono);font-size:11.5px;color:var(--good);margin-bottom:8px;">🔥 7天 +1,789 stars · ★ 1,789 · MIT · v1.6.3</div>
+        <p style="font-size:12.8px;color:var(--text-2);line-height:1.55;margin:0 0 8px;">反 AI 逆向工程护盾，通过 `Poison -> Exhaust -> Hallucinate` 对抗性混淆保护二进制、Electron 与 WASM 免遭 `morluto/rea` 等逆向 Agent 拆解。</p>
+        <div style="font-family:var(--mono);font-size:11.2px;color:var(--text-3);">HFS: Signal 75 · Facts 76 · Hype 28 | SA Track 07 (蓝军反逆向防御)</div>
+      </article>
+    </div>
+  </section>
+
   <!-- SECTION 4: VISUAL SUMMARY SVG & 7-CARD DECK -->
   <section id="visual-summary" style="margin-top:34px;margin-bottom:44px;">
     <header class="stage-section-header">
@@ -430,16 +492,27 @@
           <h3 style="margin:0;">📊 2026-11-01 GitHub AI 雷达全景架构与 HFS 矩阵一图流 (SVG)</h3>
           <p style="font-size:12.5px;color:var(--text-2);margin:4px 0 0;">涵盖 6-Gate 持久化门控管线、Top 15 仓库 Signal/Facts/Hype 散点分布及 AI Solution Architect P0–P3 行动路线图。</p>
         </div>
-        <div style="display:flex;gap:10px;">
-          <a class="bh-btn" href="workshops/github-trending-radar/summary-2026-11-01.svg" target="_blank" rel="noopener">在新窗口打开高清 SVG ↗</a>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <a class="bh-btn" href="assets/github-ai-radar-2026-11-01.svg" target="_blank" rel="noopener">在新窗口打开高清 SVG (`assets/`) ↗</a>
           <a class="bh-btn primary" href="workshops/github-trending-radar/cards.html" target="_blank" rel="noopener">打开 7-Card 4:5 视觉报告 ↗</a>
         </div>
       </div>
       <div style="background:#0f172a;border-radius:12px;padding:12px;overflow-x:auto;border:1px solid var(--border-strong);">
-        <img src="workshops/github-trending-radar/summary-2026-11-01.svg" alt="2026-11-01 GitHub AI Trending Radar & Pi Durable News Agent Visual Summary" style="width:100%;height:auto;display:block;border-radius:8px;" />
+        <img src="assets/github-ai-radar-2026-11-01.svg" alt="2026-11-01 GitHub AI Trending Radar & Pi Durable News Agent Visual Summary" style="width:100%;height:auto;display:block;border-radius:8px;" />
       </div>
     </div>
   </section>
+
+  <!-- INTERACTIVE SA DETAIL DRAWER -->
+  <div class="drawer-backdrop" id="repo-detail-drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-repo-title">
+    <div class="drawer-panel">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:1px solid var(--border);padding-bottom:12px;margin-bottom:14px;">
+        <h3 id="drawer-repo-title" style="margin:0;font-size:18px;">架构师深度拆解抽屉</h3>
+        <button type="button" class="taste-btn" id="close-drawer-btn">✕ 关闭 (Esc)</button>
+      </div>
+      <div id="drawer-repo-body"></div>
+    </div>
+  </div>
 
 </main>
 
@@ -1219,8 +1292,11 @@
 
           <!-- Claim-Support Verification Ledger -->
           <div class="claims-drawer">
-            <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
-              🔍 news-researcher 子智能体声明核验账本 (Claim-Support Ledger · 4/4 Audited)
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+              <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
+                🔍 news-researcher 子智能体声明核验账本 (Claim-Support Ledger · 4/4 Audited)
+              </div>
+              <button type="button" class="taste-btn open-drawer-btn" data-repo-id="${r.id}">🔍 打开架构师详情抽屉 ↗</button>
             </div>
             <div class="claims-list">
               ${r.claims.map(c => `<div class="claim-item">${c}</div>`).join("")}
@@ -1229,7 +1305,66 @@
         </article>
       `;
     }).join("");
+
+    container.querySelectorAll(".open-drawer-btn").forEach(btn => {
+      btn.addEventListener("click", () => openRepoDrawer(btn.dataset.repoId));
+    });
   }
+
+  function openRepoDrawer(repoId) {
+    const r = REPOS.find(x => x.id === repoId);
+    if (!r) return;
+    const att = computeAttention(r);
+    const topicObj = TOPICS[r.topic];
+    document.getElementById("drawer-repo-title").textContent = `${r.fullName} · Attention ${att}`;
+    document.getElementById("drawer-repo-body").innerHTML = `
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
+        <span class="card-type-badge">🃏 ${r.cardType}</span>
+        <span class="verdict-badge verdict-${r.verdict}">${r.verdictLabel}</span>
+        <span class="star-pill today">🔥 +${r.starsToday.toLocaleString()} today</span>
+        <span class="star-pill">★ ${r.stars.toLocaleString()} total</span>
+        <span class="star-pill">${r.language}</span>
+        <span class="star-pill">${topicObj.name}</span>
+      </div>
+      <p style="font-size:13.8px;color:var(--text-2);line-height:1.55;">${r.description}</p>
+      <div class="generative-callout">
+        <strong>[${r.cardType.toUpperCase()}] ${r.cardCalloutTitle}</strong>
+        <div style="margin-top:4px;color:var(--text);">${r.cardCalloutBody}</div>
+      </div>
+      <div style="background:var(--surface-2);border:1px solid var(--border-strong);border-radius:9px;padding:12px;margin:12px 0;font-size:13px;line-height:1.55;">
+        <strong>🧭 ① 是否值得学习：</strong> ${r.worthWhy}
+      </div>
+      <div class="sa-4d-grid" style="grid-template-columns:1fr;">
+        <div class="sa-dim-card"><div class="sa-dim-title">🏗️ 维度 A · 架构设计借鉴</div><div>${r.saArchitecture}</div></div>
+        <div class="sa-dim-card"><div class="sa-dim-title">🎮 维度 B · 客户 Demo 与 PoC 开发</div><div>${r.saDemo}</div></div>
+        <div class="sa-dim-card"><div class="sa-dim-title">📊 维度 C · Benchmark 基准测试</div><div>${r.saBenchmark}</div></div>
+        <div class="sa-dim-card"><div class="sa-dim-title">💼 维度 D · 适用业务场景方案</div><div>${r.saScenario}</div></div>
+      </div>
+      <div class="claims-drawer">
+        <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);margin-bottom:8px;">4/4 条一手源码声明已核验</div>
+        <div class="claims-list" style="grid-template-columns:1fr;">
+          ${r.claims.map(c => `<div class="claim-item">${c}</div>`).join("")}
+        </div>
+      </div>
+      <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;">
+        <a class="bh-btn primary" href="${r.url}" target="_blank" rel="noopener">打开 GitHub 源码仓库 ↗</a>
+        <a class="bh-btn" href="https://github.com/turbo998/Kee-Tech-Assets/blob/main/workshops/github-trending-radar/daily/2026-11-01.md" target="_blank" rel="noopener">阅读 2026-11-01 完整中文日报 ↗</a>
+      </div>
+    `;
+    document.getElementById("repo-detail-drawer").classList.add("open");
+  }
+
+  document.getElementById("close-drawer-btn").addEventListener("click", () => {
+    document.getElementById("repo-detail-drawer").classList.remove("open");
+  });
+  document.getElementById("repo-detail-drawer").addEventListener("click", e => {
+    if (e.target.id === "repo-detail-drawer") {
+      document.getElementById("repo-detail-drawer").classList.remove("open");
+    }
+  });
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape") document.getElementById("repo-detail-drawer").classList.remove("open");
+  });
 
   document.getElementById("reset-weights-btn").addEventListener("click", () => {
     Object.keys(TOPICS).forEach(k => { TOPICS[k].weight = 1.0; });

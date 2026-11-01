@@ -1,8 +1,8 @@
-> 🌐 **Language / 语言切换**: **[🇨🇳 中文完整报告 (README.md)](README.md)** | **[🇬🇧 English Full Report (README.en.md)](README.en.md)** | **[📡 在线交互式雷达面板 (中文)](https://turbo998.github.io/zh-github-radar.html)** | **[📡 Live Interactive Radar (EN)](https://turbo998.github.io/github-radar.html)** | **[📊 7-Card 4:5 视觉评测报告](cards.html)**
+> 🌐 **Language / 语言切换**: **[🇨🇳 中文完整报告 (README.md)](README.md)** | **[🇬🇧 English Full Report (README.en.md)](README.en.md)** | **[📅 2026-11-01 每日归档日报 (中文)](daily/2026-11-01.md)** | **[📅 2026-11-01 Daily Digest (EN)](daily/2026-11-01.en.md)** | **[📡 在线交互式雷达面板 (中文)](https://turbo998.github.io/zh-github-radar.html)** | **[📡 Live Interactive Radar (EN)](https://turbo998.github.io/github-radar.html)** | **[📊 7-Card 4:5 视觉评测报告](cards.html)** | **[📦 Sealed Telemetry (`report.json`)](report.json)**
 
 # AI Solution Architect 主动式情报摘要面板 & GitHub AI 最热榜单雷达（2026-11-01 深度研究报告）
 
-![2026-11-01 GitHub AI Trending Radar Visual Summary](summary-2026-11-01.svg)
+![2026-11-01 GitHub AI Trending Radar Visual Summary](../../assets/github-ai-radar-2026-11-01.svg)
 
 ## 一、背景与设计哲学：从被动聊天框走向主动式持久化情报 Agent
 
@@ -119,3 +119,22 @@ $$\text{Proactive Agent} = \text{Durable Agent (SQLite Checkpointed)} + \text{Cr
 - **#13 `shiyu-coder/Kronos`（Attention: 63 · 👀 P2）**：4.5 万 Star 的金融 K 线时序专用基座模型，适合 FSI 架构师演示「通用 LLM 读新闻 + 垂直时序模型提特征」双擎协同。
 - **#14 `Donchitos/Claude-Code-Game-Studios`（Attention: 53 · 👀 P2 · `hype_watch`）**：用 49 个 Agent 角色与 72 个 Skill 模拟游戏工作室层级（Hype=54）。可借鉴其 Godot/Unity/Unreal 技能分类，但应避免 49 层拟人化传声筒带来的高昂通信税。
 - **#15 `togg53192-cmd/jailbreaks`（Attention: 40 · 🛡️ P3 · `hype_watch`）**：纯静态越狱提示词文本集合（Hype=64）。无任何工程代码价值，仅可作为自动化红队（PyRIT / Spotlighting）的静态负样本语料输入。
+
+---
+
+## 四、周度飙升榜与近 7 天能力突破雷达（Weekly & 7-Day Surging AI Breakthroughs）
+
+| 仓库 (`owner/repo`) | 周度 / 7天增速 | 协议 / 版本 | HFS (`S / F / H`) | Attention | SA 评级 | 核心突破与架构师借鉴 |
+| :--- | :---: | :---: | :---: | :---: | :---: | :--- |
+| [`cloudflare/security-audit-skill`](https://github.com/cloudflare/security-audit-skill) | **+11,908 / wk** (★56,031) | `MIT` · `HEAD` | `83 / 84 / 18` | **91** (`signal_alert`) | 🔥 **P0 必学** | Cloudflare 官方 Agentic 安全审计 Skill，将依赖链漏洞排查、密钥扫描与配置合规封装为可复用技能。 |
+| [`JetBrains/thinkrail`](https://github.com/JetBrains/thinkrail) | **+5,738 / wk** (★6,905) | `Apache-2.0` · `v0.3.0` | `79 / 82 / 20` | **87** (`release`) | ⚡ **P1 精读** | JetBrains 官方结构化推理轨迹护栏，为 Coding Agent 提供显式验证检查点与思维链护栏。 |
+| [`qybaihe/bla`](https://github.com/qybaihe/bla) | **+1,789 / 7d** (★1,789) | `MIT` · `v1.6.3` | `75 / 76 / 28` | **82** (`fact_check`) | ⚡ **P1 精读** | 反 AI 逆向工程护盾（Blind LLM Agents），以 `Poison -> Exhaust -> Hallucinate` 防御 `morluto/rea` 等逆向 Agent。 |
+
+---
+
+## 五、每日归档目录（Daily Archive）
+
+| 日期 | 批次号 (`run_id`) | 入围 / 扫描 | 中文完整日报 (15 仓逐一四维拆解) | English Daily Digest | 视觉总结 SVG | 7-Card 报告 |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **2026-11-01** | `sweep_20261101_2300` | `15 / 19` (`4 P0 · 6 P1`) | **[`daily/2026-11-01.md`](daily/2026-11-01.md)** | **[`daily/2026-11-01.en.md`](daily/2026-11-01.en.md)** | **[`github-ai-radar-2026-11-01.svg`](../../assets/github-ai-radar-2026-11-01.svg)** | **[中文](cards.html) / [EN](cards.en.html)** |
+
