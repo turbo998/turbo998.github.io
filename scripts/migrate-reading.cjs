@@ -9,7 +9,12 @@ const root = path.resolve(__dirname, '..');
 const inventory = require('../docs/redesign/route-inventory.json');
 const excluded = ['index.html', 'zh.html', 'frontier-ai-studio.html'];
 const pages = inventory.content.filter(p => ['portal', 'topic', 'article'].includes(p.role) && !excluded.includes(p.path));
-const baseline = p => cp.execFileSync('git', ['show', `${inventory.baseline}:${p}`], { cwd: root, maxBuffer: 20 * 1024 * 1024 });
+const sourceOverrides = {
+  'workshops/azure-agent-infra/index.html':'8c84971c7e952a5fb6f254ee8fcfef5678d9941d',
+  ...Object.fromEntries(['voice/index.html','voice/app.js','voice/03-daily-breakthrough-2026-11-01.svg','workshops/agentic-commerce/index.html'].map(p=>[p,'04ec523a4f7ba4843de2983b91052e23e7c1ffa6'])),
+  ...Object.fromEntries(['benchmarks.html','zh-benchmarks.html','projects.html','zh-projects.html','writing.html','zh-writing.html','ai-security.html','zh-ai-security.html','workshops/ai-security/index.html','workshops/ai-security/index.en.html'].map(p=>[p,'3bdac3d4db9a0cec264ee42b59bbef8a7f87364b']))
+};
+const baseline = p => cp.execFileSync('git', ['show', `${sourceOverrides[p] || inventory.baseline}:${p}`], { cwd: root, maxBuffer: 20 * 1024 * 1024 });
 const esc = s => String(s).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('"', '&quot;');
 const relative = (from, to) => path.posix.relative(path.posix.dirname(from), to) || path.posix.basename(to);
 const exceptions = {
@@ -323,6 +328,8 @@ Code/evidence: <code>tests/</code> and <code>artifacts/</code>.
 };
 const runtimeEditions = ['animation/index.html','generative-visual-lab/index.html','bilibili-explainers/index.html','voice/index.html','voice/case-study.html','workshops/azure-agent-infra/index.html','workshops/deepinfer-v41-economics/index.html'];
 const englishTerms = {
+  '5. Cycle #377 工作台':'5. Cycle #377 workbench',
+  '🧪 打开 Cycle #377 可复现实验工作台':'🧪 Open the reproducible Cycle #377 workbench',
 'Stage 466 · 522 精选 + 23 风格':'Stage 466 · 522 selections + 23 styles',
 '× 放大)':'× amplification)',
 '27.8s · 667帧':'27.8s · 667 frames','31.0s · 745帧':'31.0s · 745 frames','31.6s · 758帧':'31.6s · 758 frames','31.8s · 765帧':'31.8s · 765 frames','33.5s · 805帧':'33.5s · 805 frames','32.6s · 784帧':'32.6s · 784 frames',
@@ -939,7 +946,7 @@ async function main() {
       },{source,markdown:translations[sourcePath]?marked.parse(translations[sourcePath],{gfm:true}):null,terms:englishTerms,isRuntime});
       sources.set(target,translated);
       original.bilingualAssociations=[...original.bilingualAssociations,{path:target}];
-      pages.push({...original,path:target,contentId:`${original.contentId}-reading-en`,language:{declared:'en',evidence:{filenameDeclarationConflict:false}},bilingualAssociations:[{path:sourcePath}],translation:{sourcePath,method:isRuntime?'existing-runtime-dictionary-and-authored-supplement':'authored-complete-prose-translation',sourceBaseline:inventory.baseline}});
+      pages.push({...original,path:target,contentId:`${original.contentId}-reading-en`,language:{declared:'en',evidence:{filenameDeclarationConflict:false}},bilingualAssociations:[{path:sourcePath}],translation:{sourcePath,method:isRuntime?'existing-runtime-dictionary-and-authored-supplement':'authored-complete-prose-translation',sourceBaseline:sourceOverrides[sourcePath]||inventory.baseline}});
     }
     const facts = new Map();
     for (const p of pages) {
@@ -1050,7 +1057,7 @@ async function main() {
         return { html: '<!doctype html>\n'+d.documentElement.outerHTML+'\n', removed, iframeLinks, staticText: main.textContent.length };
       }, { source: sources.get(p.path), shell, notice, lang: fact.lang, exception: exceptions[p.path] || null, snapshot, css: relative(p.path,'assets/reading-shell.css'), js: relative(p.path,'assets/reading-shell.js'), inlineCSS: inlineCsp ? themeCSS : null, inlineJS: inlineCsp && !reportCsp ? themeJS : null, reportCsp, generatedMarkdown, originalMarkdown: fact.markdown, contextLink, runtimePage:runtimeEditions.includes(p.translation?.sourcePath||p.path) });
       fs.writeFileSync(path.join(root,p.path),result.html);
-      records.push({ path:p.path, translation:p.translation||null, contentId:p.contentId, role:p.role, disposition:exceptions[p.path] ? 'dedicated-design-exception' : 'native-editorial-reading', exception:exceptions[p.path]||null, baseline:inventory.baseline, baselineSha256:p.sha256, language:{ originalDeclaration:p.language.declared, resolved:fact.lang, filenameConflict:fact.conflict, evidence:fact.conflict ? 'Reviewed source heading and introductory prose, not filename. Distinct from Chinese source.' : 'Inventory declaration and source body.', counterpart, mixedArchive:fact.mixedArchive, runtimeControls:runtime.has(p.path), controlledProseTranslationVerified:!!counterpart&&!fact.mixedArchive, fullTranslationVerified:!!counterpart&&!fact.mixedArchive&&!mediaLanguageLimitations.length, mediaLanguageLimitations, sourceEditionDiscrepancies:p.path.includes('deepinfer-v41-economics')?['Original Chinese edition reports approximately 19×128 = 2,432 GPUs; original English edition reports approximately 2,371. Both archived statements are retained, not silently reconciled.']:[], notice }, markdownRendered:!!fact.markdown, originalMarkdownRetained:!!fact.markdown, staticHydration:hydrate.has(p.path), removedShell:result.removed, replacedIframes:result.iframeLinks, retainedMedia: /<video\b/.test(result.html) ? 'Original video element: actual recorded media, not a website frame.' : null, staticTextCharacters:result.staticText, cspException:reportCsp ? 'Original no-script CSP preserved; shell CSS inlined; theme links remain native but script persistence unavailable.' : null });
+      records.push({ path:p.path, translation:p.translation||null, contentId:p.contentId, role:p.role, disposition:exceptions[p.path] ? 'dedicated-design-exception' : 'native-editorial-reading', exception:exceptions[p.path]||null, baseline:inventory.baseline, baselineSha256:p.sha256, sourceBaseline:sourceOverrides[p.translation?.sourcePath||p.path]||inventory.baseline, sourceSha256:crypto.createHash('sha256').update(baseline(p.translation?.sourcePath||p.path)).digest('hex'), language:{ originalDeclaration:p.language.declared, resolved:fact.lang, filenameConflict:fact.conflict, evidence:fact.conflict ? 'Reviewed source heading and introductory prose, not filename. Distinct from Chinese source.' : 'Inventory declaration and source body.', counterpart, mixedArchive:fact.mixedArchive, runtimeControls:runtime.has(p.path), controlledProseTranslationVerified:!!counterpart&&!fact.mixedArchive, fullTranslationVerified:!!counterpart&&!fact.mixedArchive&&!mediaLanguageLimitations.length, mediaLanguageLimitations, sourceEditionDiscrepancies:p.path.includes('deepinfer-v41-economics')?['Original Chinese edition reports approximately 19×128 = 2,432 GPUs; original English edition reports approximately 2,371. Both archived statements are retained, not silently reconciled.']:[], notice }, markdownRendered:!!fact.markdown, originalMarkdownRetained:!!fact.markdown, staticHydration:hydrate.has(p.path), removedShell:result.removed, replacedIframes:result.iframeLinks, retainedMedia: /<video\b/.test(result.html) ? 'Original video element: actual recorded media, not a website frame.' : null, staticTextCharacters:result.staticText, cspException:reportCsp ? 'Original no-script CSP preserved; shell CSS inlined; theme links remain native but script persistence unavailable.' : null });
     }
     // Resolve imported Markdown references only where a real shipped HTML counterpart exists.
     for (const record of records) {

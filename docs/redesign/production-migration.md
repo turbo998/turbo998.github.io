@@ -80,9 +80,15 @@ node tests\full-site-audit.cjs
 
 The migration also incorporates upstream commit `9b894e2` (four Web IQ HTML surfaces plus Bicep) and its `cf5bb77` account-created/unmeasured status correction without replacing that work. `scripts/integrate-webiq.cjs` adds only marked native navigation and escapes two malformed JavaScript string labels that otherwise prevent the offline demo from starting. Removing the perimeter and reversing those quote escapes recovers its source byte-for-byte. Its CSP and Bicep are unchanged; no Azure backend was provisioned or claimed connected. The Commerce track and complete archive expose the bilingual guide and sandbox.
 
-专用资源继续保留自己的内容与内部设计，统一的是深蓝外围、上下文返回和语言入口。报告数据不因配色变更而重新生成。完整档案同时保留 146 个基线页面、12 个新增英文阅读版本和 8 个后续 Web IQ / GitHub Radar 页面；新增门户由主导航访问。
+专用资源继续保留自己的内容与内部设计，统一的是深蓝外围、上下文返回和语言入口。报告数据不因配色变更而重新生成。完整档案同时保留 146 个基线页面、12 个新增英文阅读版本和 17 个后续 Web IQ、GitHub Radar、Infra、Data Lab 页面；新增门户由主导航访问。
 
 Upstream `2bd0bd8` adds two bilingual GitHub Radar dashboard pages and two protected report decks. Their source findings, README pair and summary SVG are retained, with native Aurora perimeter navigation. The curated home, Benchmark topic, archive and affected reading-page menus preserve discoverability without restoring the former iframe layout. `scripts/integrate-radar.cjs` and `tests/radar-integration.cjs` verify this separately from the frozen reading inventory. Radar data is preserved reported material, not a benchmark newly measured during the redesign.
+
+The final concurrent baseline is `04ec523a4f7ba4843de2983b91052e23e7c1ffa6`, including Infra Cycle #377 (`8c84971`), Voice Stage 356/P705/P706 (`50f8dda`), the Web IQ comparison caveats (`b09e506`), Commerce Stage 1752 (`3b46b6c`) and Data Lab (`04ec523`). Reading regeneration uses explicit source overrides for affected pages and Voice runtime, not the moving remote-tracking ref. The Infra workbench CTA is also translated into the English edition; the eight original English SVG derivatives remain text-only translations.
+
+Web IQ now has six surfaces, including the two comparison editions; source prices for Bing grounding and Brave are explicitly unverified, and Google/Bing grounding are distinguished from Web IQ. The native perimeter does not claim live Azure connectivity. New Voice and Commerce controls are preserved as source-fixture demonstrations, not newly measured vendor performance. Data Lab source reports, SVGs and research data retain their upstream provenance. New resources are discoverable through the existing seven-topic hierarchy and complete archive.
+
+最终并发基线包含 Infra Cycle #377、Voice Stage 356、Commerce Stage 1752、Web IQ 对比页和 Data Lab。没有丢弃这些发布内容，也不把来源夹具里的结果称为本次实测。Bing／Brave 标价明确标为未独立复核；Data Lab 纳入 AI Infra，不增设第八主题。
 
 ## Release and rollback / 发布与回退
 

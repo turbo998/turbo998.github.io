@@ -80,7 +80,7 @@ async function main() {
         if (file.endsWith('archive.html')) {
           const inventory = require('../docs/redesign/route-inventory.json');
           const reading = require('../docs/redesign/reading-migration.json');
-          const expectedPaths = [...inventory.content.map(p=>p.path), ...reading.records.map(r=>r.path), ...['index.html','index.en.html','live-demo.html','live-demo.en.html'].map(f=>'workshops/webiq-azure/'+f), 'github-radar.html','zh-github-radar.html','workshops/github-trending-radar/cards.html','workshops/github-trending-radar/cards.en.html'];
+          const expectedPaths = [...inventory.content.map(p=>p.path), ...reading.records.map(r=>r.path), ...['index.html','index.en.html','live-demo.html','live-demo.en.html','compare.html','compare.en.html'].map(f=>'workshops/webiq-azure/'+f),...['workbench-cycle-377.html','benchmark-cards.en.html'].map(f=>'workshops/azure-agent-infra/'+f),...['index.html','live-demo.html','live-demo.en.html','benchmark-cards.html','benchmark-cards.en.html'].map(f=>'workshops/data-lab/'+f), 'github-radar.html','zh-github-radar.html','workshops/github-trending-radar/cards.html','workshops/github-trending-radar/cards.en.html'];
           const linkedPaths = new Set(state.links.map(href=>new URL(href).pathname));
           for (const target of expectedPaths) assert.ok(linkedPaths.has('/'+target), `${file}: archive omits ${target}`);
         }
@@ -90,6 +90,10 @@ async function main() {
           assert.ok(state.links.includes(`${base}/workshops/github-trending-radar/cards${zh?'':'.en'}.html`), `${file}: concurrent Radar report must remain discoverable`);
         }
         const track = path.basename(file, '.html').replace(/^zh-/, '');
+        const zh = file.includes('/zh-');
+        if (track === 'infra') for (const target of [`workshops/azure-agent-infra/workbench-cycle-377.html?lang=${zh?'zh-CN':'en'}`,`workshops/azure-agent-infra/benchmark-cards${zh?'':'.en'}.html`,`workshops/data-lab/index.html?lang=${zh?'zh-CN':'en'}`,`workshops/data-lab/benchmark-cards${zh?'':'.en'}.html`]) assert.ok(state.links.includes(`${base}/${target}`),file+': latest Infra/DataLab discovery '+target);
+        if (track === 'commerce') assert.ok(state.links.includes(`${base}/workshops/webiq-azure/compare${zh?'':'.en'}.html`),file+': comparison discovery');
+        if (track === 'voice') assert.ok(state.links.includes(`${base}/voice/index.html?lang=${zh?'zh-CN':'en'}#duplexGuardSimulatorCard`),file+': Stage 356 discovery');
         if (manifest.scenes[track]) {
           assert.ok(['architecture','evaluation','demos','resources'].every(id => state.sections.includes(id)), file);
           assert.equal(state.scenes.length, Object.keys(manifest.scenes[track]).length, file);

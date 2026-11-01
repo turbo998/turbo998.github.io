@@ -22,6 +22,9 @@ if(artifacts)fs.mkdirSync(artifacts,{recursive:true});
  assert.equal(manifest.translatedAssets.length,8);
  const infraEnglish=fs.readFileSync(path.join(root,'workshops/azure-agent-infra/index.en.html'),'utf8');
  const infraChinese=fs.readFileSync(path.join(root,'workshops/azure-agent-infra/index.html'),'utf8');
+ assert(infraEnglish.includes('Open the reproducible Cycle #377 workbench'),'English Cycle #377 CTA retained and translated');
+ assert(infraChinese.includes('打开 Cycle #377 可复现实验工作台'),'Chinese Cycle #377 CTA retained');
+ for(const edition of [infraEnglish,infraChinese]) assert(edition.includes('workbench-cycle-377.html'),'latest workbench remains reachable');
  for(const asset of manifest.translatedAssets){
   const source=cp.execFileSync('git',['show',`${manifest.baseline}:${asset.source}`],{cwd:root}).toString('utf8');
   const output=fs.readFileSync(path.join(root,asset.path),'utf8');
@@ -53,7 +56,7 @@ if(artifacts)fs.mkdirSync(artifacts,{recursive:true});
   svgChecks.push({path:asset.path,...check,...geometry});
  }
  for(const r of manifest.records){
-  const source=cp.execFileSync('git',['show',`${manifest.baseline}:${r.translation?.sourcePath||r.path}`],{cwd:root,maxBuffer:20*1024*1024}).toString('utf8');
+  const source=cp.execFileSync('git',['show',`${r.sourceBaseline||manifest.baseline}:${r.translation?.sourcePath||r.path}`],{cwd:root,maxBuffer:20*1024*1024}).toString('utf8');
   const output=fs.readFileSync(path.join(root,r.path),'utf8');
   const check=await page.evaluate(({source,output})=>{
    const parse=s=>new DOMParser().parseFromString(s,'text/html');const old=parse(source),next=parse(output);
@@ -104,6 +107,14 @@ if(artifacts)fs.mkdirSync(artifacts,{recursive:true});
     states.push({state:'diagram-'+i,asset:asset.path,loaded:true,remaining:await remainingChinese()});
    }
    for(let i=0;i<128;i++){await page.evaluate(i=>{document.querySelectorAll('input[type="checkbox"]').forEach((n,j)=>n.checked=!!(i&(1<<j)));evalPropensity();},i);await new Promise(resolve=>setTimeout(resolve,5));const remaining=await remainingChinese();if(remaining.length)states.push({state:'assessment-'+i,remaining});}
+  }
+  if(r.path==='voice/index.en.html'){
+   assert.match(await page.$eval('#duplexGuardSimulatorCard',n=>n.innerText),/Stage 356/,'latest Voice sandbox retained');
+   for(const id of ['p705_epoch_abort','p705_backchannel_keep','p706_vadfree_hold','p706_persona_watermark']){
+    await page.click(`[data-duplex-sim="${id}"]`);await new Promise(resolve=>setTimeout(resolve,20));
+    assert.match(await page.$eval('#duplexSimOutput',n=>n.innerText),/remediation/,'Voice source-fixture verdict '+id);
+    states.push({state:'voice-'+id,remaining:await remainingChinese()});
+   }
   }
   if(r.path==='workshops/deepinfer-v41-economics/index.en.html'){
    await page.evaluate(()=>{setTier(2.0);document.querySelectorAll('input[type="range"]').forEach(n=>{n.value=n.max;n.dispatchEvent(new Event('input'));});});await new Promise(resolve=>setTimeout(resolve,30));states.push({state:'peak-slider-max',remaining:await remainingChinese()});

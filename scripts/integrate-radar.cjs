@@ -6,7 +6,7 @@ const {execFileSync} = require('node:child_process');
 const vm = require('node:vm');
 const crypto = require('node:crypto');
 const root = path.resolve(__dirname, '..');
-const baseline = '2bd0bd88b2a62958c4f498608a5f94070a9402a2';
+const baseline = '3bdac3d4db9a0cec264ee42b59bbef8a7f87364b';
 const files = ['github-radar.html', 'zh-github-radar.html', 'workshops/github-trending-radar/cards.en.html', 'workshops/github-trending-radar/cards.html'];
 const hash = text => crypto.createHash('sha256').update(text).digest('hex');
 const sourceFor = file => execFileSync('git', ['show', `${baseline}:${file}`], {cwd:root, encoding:'utf8', maxBuffer:4*1024*1024});
@@ -19,7 +19,8 @@ const readingCSS = `
 .reading-document .builder-hero{padding:28px 0}.reading-document .builder-hero-grid{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:32px;align-items:center}.reading-document .bh-kicker,.reading-document .stage-number{color:var(--reading-secondary);font:11px/1.7 var(--mono);letter-spacing:.08em}.reading-document .grad{color:var(--reading-accent)}.reading-document .bh-sub,.reading-document .stage-section-header>p{color:var(--reading-muted)}
 .reading-document .bh-tags{display:flex;flex-wrap:wrap;gap:8px}.reading-document .bh-tag{font-size:12px;padding:6px 10px;border:1px solid var(--reading-line);border-radius:20px;text-decoration:none}.reading-document .bh-actions-grid{display:grid;gap:12px}.reading-document .bh-btn{display:inline-block;padding:12px 16px;border:1px solid var(--reading-line);border-radius:10px;background:var(--reading-surface);text-decoration:none;font-size:13px}.reading-document .bh-btn.primary,.reading-document .radar-pill.active,.reading-document .chip-btn.active{background:var(--reading-accent);color:var(--reading-on-accent)}
 .reading-document .telemetry-strip{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:28px}.reading-document .tm-item{padding:16px;background:var(--reading-surface);border:1px solid var(--reading-line);border-radius:10px}.reading-document .tm-val{display:block;color:var(--reading-secondary);font:700 18px/1.4 var(--mono)}.reading-document .tm-lbl{display:block;color:var(--reading-muted);font-size:11px;margin-top:8px}.reading-document .pipeline-rail{grid-template-columns:repeat(4,minmax(0,1fr));overflow:visible}.reading-document .pipe-title{color:var(--reading-text)}.reading-document .panel-box{margin:0;padding:18px 20px}.reading-document .repo-card{border-radius:14px;margin:0}.reading-document .panel-box>div{flex-wrap:wrap;gap:10px}.reading-document .panel-box h3{margin-top:0}.reading-document .repo-name-link{font-size:20px}.reading-document .reading-context{margin:0 16px 12px 0}.reading-document .hfs-slider-row input{padding:0;min-width:60px}.reading-document .search-input{min-width:0;flex-basis:240px}.reading-document .verdict-P1{color:var(--reading-accent)}.reading-document .verdict-P0{color:#ff909a}
-@media(max-width:960px){.reading-document .builder-hero-grid{grid-template-columns:1fr}.reading-document .telemetry-strip{grid-template-columns:repeat(2,minmax(0,1fr))}.reading-document .pipeline-rail{grid-template-columns:repeat(2,minmax(0,1fr))}.reading-document .bh-actions-grid{grid-template-columns:1fr}.reading-document .panel-box{padding:16px}.reading-document .radar-subcol-bar{padding:14px}.reading-document .hfs-slider-row{flex-wrap:wrap}.reading-document .hfs-slider-row input{flex-basis:100%}}
+.reading-document .drawer-backdrop{z-index:1100}.reading-document .drawer-panel{background:var(--reading-surface);color:var(--reading-text);height:100dvh;max-width:100%;overscroll-behavior:contain}.reading-document .drawer-panel>div:first-child{flex-wrap:wrap}.reading-document .weekly-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(max-width:960px){.reading-document .weekly-grid{grid-template-columns:1fr}.reading-document .builder-hero-grid{grid-template-columns:1fr}.reading-document .telemetry-strip{grid-template-columns:repeat(2,minmax(0,1fr))}.reading-document .pipeline-rail{grid-template-columns:repeat(2,minmax(0,1fr))}.reading-document .bh-actions-grid{grid-template-columns:1fr}.reading-document .panel-box{padding:16px}.reading-document .radar-subcol-bar{padding:14px}.reading-document .hfs-slider-row{flex-wrap:wrap}.reading-document .hfs-slider-row input{flex-basis:100%}}
 @media(max-width:600px){.reading-header{height:auto;min-height:72px;flex-wrap:wrap;padding:12px 16px}.reading-controls{margin-left:auto}.reading-document .panel-box>div>div{flex-wrap:wrap}.reading-document .repo-card{padding:16px}.reading-document h1{font-size:34px}.reading-document .radar-pill{font-size:11px}}
 `;
 function header(en, file) {
@@ -37,7 +38,7 @@ function generate(file, source = sourceFor(file)) {
     assert.equal(strip(html),source,'Report source byte preservation');
   } else {
     const elements = new Map();
-    const document = {getElementById(id) {if(!elements.has(id)) elements.set(id,{innerHTML:'',querySelectorAll:()=>[],addEventListener(){}});return elements.get(id);}};
+    const document = {addEventListener(){},getElementById(id) {if(!elements.has(id)) elements.set(id,{innerHTML:'',querySelectorAll:()=>[],addEventListener(){}});return elements.get(id);}};
     vm.runInNewContext(runtime(source), {document}, {timeout:1000});
     html = source.replace('data-builder-style="precision"','data-reading-shell="document" data-theme="dark"')
       .replace(/<script>[\s\S]*?<\/script>/,'<script src="assets/reading-shell.js?v=aurora-radar-v1"></script>')

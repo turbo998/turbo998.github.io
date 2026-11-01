@@ -9,12 +9,12 @@ async function main() {
   fs.mkdirSync(output,{recursive:true});
   const browser=await puppeteer.launch({headless:'shell',pipe:true});
   try {
-    for(const name of ['index.html','index.en.html','live-demo.html','live-demo.en.html']) {
+    for(const name of ['index.html','index.en.html','live-demo.html','live-demo.en.html','compare.html','compare.en.html']) {
       const page=await browser.newPage();
       const errors=[];
       page.on('pageerror',e=>errors.push(e.message));
       await page.setCacheEnabled(false);
-      for(const width of [390,1440]) {
+      for(const width of [390,768,1440]) {
         await page.setViewport({width,height:900});
         const response=await page.goto(`${base}/workshops/webiq-azure/${name}`,{waitUntil:'domcontentloaded'});
         assert.equal(response.status(),200);
@@ -27,7 +27,13 @@ async function main() {
           await page.click('#btn-next');
           const after=await page.$eval('.app-shell',e=>e.innerText);
           assert.notEqual(after,before,name+': offline step did not advance');
+          await page.select('#s1752-cred-select','sk_leak');
+          assert.match(await page.$eval('#s1752-live-readout',e=>e.innerText),/invalid_link_access_token_plane/,name+': Stage 1752 token guard');
+          await page.select('#s1752-cred-select','spt_valid');
+          await page.select('#s1752-retry-select','524_ts');
+          assert.match(await page.$eval('#s1752-live-readout',e=>e.innerText),/120s wait/,name+': dual-format retry parser');
         }
+        if(name.startsWith('compare')) assert.match(await page.$eval('[role="note"]',e=>e.innerText),/not been independently verified|未独立复核/,name+': unverified pricing caveat');
         assert.deepEqual(errors,[],name);
         await page.screenshot({path:path.join(output,`webiq-${name.replace('.html','')}-${width}.png`)});
         report.layouts.push({name,width,...state,errors:[...errors]});
@@ -39,7 +45,7 @@ async function main() {
       await page.close();
     }
     report.result='PASS';
-    console.log('PASS: 4 concurrent Web IQ pages, 8 layouts, offline demo interactions and native language links.');
+    console.log('PASS: 6 concurrent Web IQ pages, 18 layouts, offline demo interactions and native language links.');
   } catch(error) {report.result='FAIL';report.errors.push(error.stack);throw error;}
   finally {fs.writeFileSync(path.join(output,'webiq-validation.json'),JSON.stringify(report,null,2));await browser.close();}
 }
