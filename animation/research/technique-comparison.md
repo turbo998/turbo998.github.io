@@ -1,5 +1,7 @@
 # 实时程序造景：技术选择与边界
 
+> 🌐 **Language / 语言**: **中文** | [English (`technique-comparison.en.md`)](technique-comparison.en.md)
+
 ## Canvas 2D：画面由笔触与图层组成
 
 适合壁画、参数插画、揭色、灯光遮罩和小型约束物理。几何只是平面坐标，

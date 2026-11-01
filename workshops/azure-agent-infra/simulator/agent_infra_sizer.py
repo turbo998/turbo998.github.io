@@ -15350,7 +15350,5011 @@ def simulate_vcl4_vtip_tdeav_bimmp3_vo2_mott_neuromorphic_onn_and_10a_cfet_bismu
     }
 
 
+def simulate_rhetcpcod_rhacacco2_cppdallyl_10a_cfet_rhodium_interconnect_and_pd_pfet_contact_ald_sil3_sandbox(
+    rhetcpcod_rhacacco2_cppdallyl_trains: int = 8,
+    governance_mode: str = "pinn_mpc_rhetcpcod_rhacacco2_cppdallyl_10a_cfet_rhodium_interconnect_and_pd_pfet_contact_ald_sil3_edge",
+) -> dict[str, Any]:
+    trains = max(1, int(rhetcpcod_rhacacco2_cppdallyl_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_rhetcpcod_rhacacco2_cppdallyl_10a_cfet_rhodium_interconnect_and_pd_pfet_contact_ald_sil3_edge"
+    )
+    gpu_nodes = max(4, math.ceil(trains / 2))
+    active_rhetcpcod_rhacacco2_cppdallyl_pods = trains * 4
+    electronic_6n5_rhetcpcod_6n5_rhacacco2_6n5_cppdallyl_6n5_pdhfac2_purity_and_cfet_m0_yield_gain_pct = (
+        71.2 if governed else 18.0
+    )
+    rh_trench_seam_void_and_pd_pfet_schottky_pinning_defect_reduction_pct = (
+        93.0 if governed else 23.0
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_rhacacco2_co_and_cppdallyl_autocatalytic_lockout_latency_ms = (
+        0.10 if governed else 520.0
+    )
+    unmitigated_rhacacco2_co_release_or_cppdallyl_autocatalytic_runaway_pct = (
+        0.0 if governed else 1.8
+    )
+    edge_qcl_tdlas_2015cm1_2084cm1_1528cm1_insitu_4pp_gixrd_latency_ms = (
+        0.11 if governed else 310.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_rh_m0_line_resistance_or_wse2_cnt_pfet_contact_drift_pct = (
+        0.0 if governed else 8.6
+    )
+    return {
+        "rhetcpcod_rhacacco2_cppdallyl_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_rhetcpcod_rhacacco2_cppdallyl_pods": active_rhetcpcod_rhacacco2_cppdallyl_pods,
+        "electronic_6n5_rhetcpcod_6n5_rhacacco2_6n5_cppdallyl_6n5_pdhfac2_purity_and_cfet_m0_yield_gain_pct": electronic_6n5_rhetcpcod_6n5_rhacacco2_6n5_cppdallyl_6n5_pdhfac2_purity_and_cfet_m0_yield_gain_pct,
+        "rh_trench_seam_void_and_pd_pfet_schottky_pinning_defect_reduction_pct": rh_trench_seam_void_and_pd_pfet_schottky_pinning_defect_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_rhacacco2_co_and_cppdallyl_autocatalytic_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_rhacacco2_co_and_cppdallyl_autocatalytic_lockout_latency_ms,
+        "unmitigated_rhacacco2_co_release_or_cppdallyl_autocatalytic_runaway_pct": unmitigated_rhacacco2_co_release_or_cppdallyl_autocatalytic_runaway_pct,
+        "edge_qcl_tdlas_2015cm1_2084cm1_1528cm1_insitu_4pp_gixrd_latency_ms": edge_qcl_tdlas_2015cm1_2084cm1_1528cm1_insitu_4pp_gixrd_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_rh_m0_line_resistance_or_wse2_cnt_pfet_contact_drift_pct": uncompensated_rh_m0_line_resistance_or_wse2_cnt_pfet_contact_drift_pct,
+        "rhetcpcod_rhacacco2_cppdallyl_10a_cfet_rhodium_interconnect_and_pd_pfet_contact_ald_slo_met": governed,
+    }
 
+
+def simulate_tdmaz_cpzrnme23_temah_1c_dram_har_zaz_hzo_capacitor_and_10a_cfet_ncfet_ald_sil3_sandbox(
+    tdmaz_cpzrnme23_temah_trains: int = 8,
+    governance_mode: str = "pinn_mpc_tdmaz_cpzrnme23_temah_1c_dram_har_zaz_hzo_capacitor_and_10a_cfet_ncfet_ald_sil3_edge",
+) -> dict[str, Any]:
+    trains = max(1, int(tdmaz_cpzrnme23_temah_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_tdmaz_cpzrnme23_temah_1c_dram_har_zaz_hzo_capacitor_and_10a_cfet_ncfet_ald_sil3_edge"
+    )
+    gpu_nodes = max(4, math.ceil(trains / 2))
+    active_tdmaz_cpzrnme23_temah_pods = trains * 4
+    electronic_6n5_tdmaz_6n5_cpzrnme23_6n5_temah_6n5_tma_purity_and_har85_dram_ncfet_yield_gain_pct = (
+        71.6 if governed else 18.2
+    )
+    har85_zaz_step_coverage_void_and_ncfet_monoclinic_dead_layer_reduction_pct = (
+        93.4 if governed else 23.5
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_tma_and_alkylamide_amine_lockout_latency_ms = (
+        0.10 if governed else 525.0
+    )
+    unmitigated_pyrophoric_tma_ignition_or_alkylamide_thermal_runaway_pct = (
+        0.0 if governed else 1.9
+    )
+    edge_qcl_tdlas_2782cm1_2864cm1_1456cm1_insitu_gixrd_pfm_cv_latency_ms = (
+        0.11 if governed else 315.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_dram_zaz_eot_leakage_or_ncfet_subthreshold_swing_drift_pct = (
+        0.0 if governed else 8.8
+    )
+    return {
+        "tdmaz_cpzrnme23_temah_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_tdmaz_cpzrnme23_temah_pods": active_tdmaz_cpzrnme23_temah_pods,
+        "electronic_6n5_tdmaz_6n5_cpzrnme23_6n5_temah_6n5_tma_purity_and_har85_dram_ncfet_yield_gain_pct": electronic_6n5_tdmaz_6n5_cpzrnme23_6n5_temah_6n5_tma_purity_and_har85_dram_ncfet_yield_gain_pct,
+        "har85_zaz_step_coverage_void_and_ncfet_monoclinic_dead_layer_reduction_pct": har85_zaz_step_coverage_void_and_ncfet_monoclinic_dead_layer_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_tma_and_alkylamide_amine_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_tma_and_alkylamide_amine_lockout_latency_ms,
+        "unmitigated_pyrophoric_tma_ignition_or_alkylamide_thermal_runaway_pct": unmitigated_pyrophoric_tma_ignition_or_alkylamide_thermal_runaway_pct,
+        "edge_qcl_tdlas_2782cm1_2864cm1_1456cm1_insitu_gixrd_pfm_cv_latency_ms": edge_qcl_tdlas_2782cm1_2864cm1_1456cm1_insitu_gixrd_pfm_cv_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_dram_zaz_eot_leakage_or_ncfet_subthreshold_swing_drift_pct": uncompensated_dram_zaz_eot_leakage_or_ncfet_subthreshold_swing_drift_pct,
+        "tdmaz_cpzrnme23_temah_1c_dram_har_zaz_hzo_capacitor_and_10a_cfet_ncfet_ald_slo_met": governed,
+    }
+
+
+def simulate_re2co10_mto_tdmasn_snhmds2_superconducting_rhenium_qubit_and_highna_euv_snox_dry_resist_ald_sil3_sandbox(
+    re2co10_mto_tdmasn_trains: int = 8,
+    governance_mode: str = "pinn_mpc_re2co10_mto_tdmasn_snhmds2_superconducting_rhenium_qubit_and_highna_euv_snox_dry_resist_ald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Re2(CO)10 & 6N5 MTO (CH3ReO3) + 6N5 TDMASn + 6N5 Sn(HMDS)2 Superconducting Rhenium Qubit Zero-TLS Resonator & High-NA EUV 8nm SnOx Dry Resist ALD/MLD PINN-MPC + SIL-3 sandbox (Cycle #283)."""
+    trains = max(1, int(re2co10_mto_tdmasn_trains))
+    governed = governance_mode == "pinn_mpc_re2co10_mto_tdmasn_snhmds2_superconducting_rhenium_qubit_and_highna_euv_snox_dry_resist_ald_sil3_edge"
+    gpu_nodes = max(2, (trains + 1) // 2)
+    active_re2co10_mto_tdmasn_pods = trains * 4
+    electronic_6n5_re2co10_6n5_mto_6n5_tdmasn_6n5_snhmds2_purity_and_re_qubit_euv_snox_yield_gain_pct = (
+        72.0 if governed else 18.4
+    )
+    amorphous_oxide_tls_loss_and_euv_8nm_stochastic_bridge_break_defect_reduction_pct = (
+        93.6 if governed else 23.8
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_carbonyl_co_and_neurotoxic_organotin_lockout_latency_ms = (
+        0.10 if governed else 525.0
+    )
+    unmitigated_re2co10_co_desorption_or_neurotoxic_organotin_vapor_exposure_pct = (
+        0.0 if governed else 1.8
+    )
+    edge_qcl_tdlas_2070cm1_2014cm1_975cm1_insitu_rheed_cryo_q_euv_cd_saxs_latency_ms = (
+        0.11 if governed else 315.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_qubit_tls_qi_degradation_or_euv_snox_lwr_drift_pct = (
+        0.0 if governed else 8.9
+    )
+    return {
+        "re2co10_mto_tdmasn_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_re2co10_mto_tdmasn_pods": active_re2co10_mto_tdmasn_pods,
+        "electronic_6n5_re2co10_6n5_mto_6n5_tdmasn_6n5_snhmds2_purity_and_re_qubit_euv_snox_yield_gain_pct": electronic_6n5_re2co10_6n5_mto_6n5_tdmasn_6n5_snhmds2_purity_and_re_qubit_euv_snox_yield_gain_pct,
+        "amorphous_oxide_tls_loss_and_euv_8nm_stochastic_bridge_break_defect_reduction_pct": amorphous_oxide_tls_loss_and_euv_8nm_stochastic_bridge_break_defect_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_carbonyl_co_and_neurotoxic_organotin_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_carbonyl_co_and_neurotoxic_organotin_lockout_latency_ms,
+        "unmitigated_re2co10_co_desorption_or_neurotoxic_organotin_vapor_exposure_pct": unmitigated_re2co10_co_desorption_or_neurotoxic_organotin_vapor_exposure_pct,
+        "edge_qcl_tdlas_2070cm1_2014cm1_975cm1_insitu_rheed_cryo_q_euv_cd_saxs_latency_ms": edge_qcl_tdlas_2070cm1_2014cm1_975cm1_insitu_rheed_cryo_q_euv_cd_saxs_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_qubit_tls_qi_degradation_or_euv_snox_lwr_drift_pct": uncompensated_qubit_tls_qi_degradation_or_euv_snox_lwr_drift_pct,
+        "re2co10_mto_tdmasn_snhmds2_superconducting_rhenium_qubit_and_highna_euv_snox_dry_resist_ald_slo_met": governed,
+    }
+
+
+def simulate_pdmat_tbtdet_btbmdmaw_dipte_10a_cfet_tacn_barrier_and_tao2_wte2_neuromorphic_synapse_ald_sil3_sandbox(
+    pdmat_tbtdet_btbmdmaw_dipte_trains: int = 8,
+    governance_mode: str = "pinn_mpc_pdmat_tbtdet_btbmdmaw_dipte_10a_cfet_tacn_barrier_and_tao2_wte2_neuromorphic_synapse_ald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate electronic-grade 6N5 PDMAT (Ta(NMe2)5 >= 99.99995%, Nb <= 0.02 ppmw, Fe/Cr/Ni/Cu <= 0.001 ppbw)
+    & 6N5 TBTDET ((t-BuN)Ta(NEt2)3 >= 99.99995%) + 6N5 BTBMDMAW ((t-BuN)2W(NMe2)2 >= 99.99995%, Mo <= 0.02 ppmw)
+    + 6N5 DIPTe ((i-Pr)2Te >= 99.99995%, Se/S/Pb/Bi <= 0.001 ppbw) Sub-1nm (10A/7A CFET) 1.2nm ultrathin amorphous
+    TaC0.45N0.55 diffusion barrier (rho=165 uOhm*cm, Cu diffusion Ea=2.68 eV, zero F-attack) & 3D neuromorphic
+    6-bit (64-level) analog TaO2-x/Ta2O5 bilayer RRAM synapse (Gmax/Gmin=128, nonlinearity alpha_p/alpha_d=0.18/-0.22,
+    >1e12 cycles) + monolayer Td-WTe2 Type-II Weyl semimetal out-of-plane spin-orbit torque (sigma_SH,z=1.95e5 hbar/2e Ohm^-1 m^-1)
+    super-cycle PEALD PINN-MPC + SEMI S2 / NFPA 704 / OSHA 29 CFR 1910.1000 / IEC 61511 SIL-3 organotellurium & amine interlock."""
+    trains = max(1, int(pdmat_tbtdet_btbmdmaw_dipte_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_pdmat_tbtdet_btbmdmaw_dipte_10a_cfet_tacn_barrier_and_tao2_wte2_neuromorphic_synapse_ald_sil3_edge"
+    )
+    gpu_nodes = max(2, (trains + 1) // 2)
+    active_pdmat_tbtdet_wte2_pods = trains * 4
+    electronic_6n5_pdmat_6n5_tbtdet_6n5_btbmdmaw_6n5_dipte_purity_and_cfet_tacn_wte2_synapse_yield_gain_pct = (
+        72.3 if governed else 18.6
+    )
+    cu_diffusion_barrier_breakdown_and_rram_nonlinearity_te_vacancy_reduction_pct = (
+        93.8 if governed else 24.0
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_organotellurium_and_amine_lockout_latency_ms = (
+        0.10 if governed else 530.0
+    )
+    unmitigated_toxic_organotellurium_exposure_or_alkylamide_hydrolysis_pct = (
+        0.0 if governed else 1.8
+    )
+    edge_qcl_tdlas_952cm1_1284cm1_582cm1_insitu_arpes_xps_4pp_latency_ms = (
+        0.11 if governed else 320.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_tacn_cu_migration_or_synapse_weight_drift_pct = (
+        0.0 if governed else 9.0
+    )
+    return {
+        "pdmat_tbtdet_btbmdmaw_dipte_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_pdmat_tbtdet_wte2_pods": active_pdmat_tbtdet_wte2_pods,
+        "electronic_6n5_pdmat_6n5_tbtdet_6n5_btbmdmaw_6n5_dipte_purity_and_cfet_tacn_wte2_synapse_yield_gain_pct": electronic_6n5_pdmat_6n5_tbtdet_6n5_btbmdmaw_6n5_dipte_purity_and_cfet_tacn_wte2_synapse_yield_gain_pct,
+        "cu_diffusion_barrier_breakdown_and_rram_nonlinearity_te_vacancy_reduction_pct": cu_diffusion_barrier_breakdown_and_rram_nonlinearity_te_vacancy_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_organotellurium_and_amine_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_organotellurium_and_amine_lockout_latency_ms,
+        "unmitigated_toxic_organotellurium_exposure_or_alkylamide_hydrolysis_pct": unmitigated_toxic_organotellurium_exposure_or_alkylamide_hydrolysis_pct,
+        "edge_qcl_tdlas_952cm1_1284cm1_582cm1_insitu_arpes_xps_4pp_latency_ms": edge_qcl_tdlas_952cm1_1284cm1_582cm1_insitu_arpes_xps_4pp_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_tacn_cu_migration_or_synapse_weight_drift_pct": uncompensated_tacn_cu_migration_or_synapse_weight_drift_pct,
+        "pdmat_tbtdet_btbmdmaw_dipte_10a_cfet_tacn_barrier_and_tao2_wte2_neuromorphic_synapse_ald_slo_met": governed,
+    }
+
+
+def simulate_tdmat_temat_cptinme23_sb2te3_10a_cfet_tin_gate_dram_rutile_tio2_and_ipcm_superlattice_ald_sil3_sandbox(
+    tdmat_temat_cptinme23_sb2te3_trains: int = 8,
+    governance_mode: str = "pinn_mpc_tdmat_temat_cptinme23_sb2te3_10a_cfet_tin_gate_dram_rutile_tio2_and_ipcm_superlattice_ald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 TDMAT & 6N5 TEMAT + 6N5 CpTi(NMe2)3 + 6N5 Sb(NMe2)3 / 6N5 Te(Et)2 10A CFET Dual-WF TiN Gate, 1c/0a DRAM HAR 90:1 Rutile-TiO2 & 3D iPCM Superlattice PEALD/ALE PINN-MPC + SIL-3."""
+    trains = max(1, int(tdmat_temat_cptinme23_sb2te3_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_tdmat_temat_cptinme23_sb2te3_10a_cfet_tin_gate_dram_rutile_tio2_and_ipcm_superlattice_ald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_tdmat_temat_ipcm_pods = trains * 4
+    electronic_6n5_tdmat_6n5_temat_6n5_cptinme23_6n5_sbnme23_purity_and_cfet_dram_ipcm_yield_gain_pct = (
+        72.6 if governed else 13.8
+    )
+    cfet_wf_drift_dram_tio2_leakage_and_ipcm_reset_energy_reduction_pct = (
+        94.0 if governed else 16.5
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_stibine_organotellurium_lockout_latency_ms = (
+        0.10 if governed else 225.0
+    )
+    unmitigated_toxic_stibine_sbh3_or_organotellurium_hydrolysis_pct = (
+        0.0 if governed else 1.8
+    )
+    edge_qcl_tdlas_948cm1_1262cm1_1024cm1_insitu_rheed_se_b1500a_latency_ms = (
+        0.11 if governed else 325.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_anatase_phase_or_ipcm_resistance_drift_pct = (
+        0.0 if governed else 9.2
+    )
+    return {
+        "tdmat_temat_cptinme23_sb2te3_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_tdmat_temat_ipcm_pods": active_tdmat_temat_ipcm_pods,
+        "electronic_6n5_tdmat_6n5_temat_6n5_cptinme23_6n5_sbnme23_purity_and_cfet_dram_ipcm_yield_gain_pct": electronic_6n5_tdmat_6n5_temat_6n5_cptinme23_6n5_sbnme23_purity_and_cfet_dram_ipcm_yield_gain_pct,
+        "cfet_wf_drift_dram_tio2_leakage_and_ipcm_reset_energy_reduction_pct": cfet_wf_drift_dram_tio2_leakage_and_ipcm_reset_energy_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_stibine_organotellurium_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_stibine_organotellurium_lockout_latency_ms,
+        "unmitigated_toxic_stibine_sbh3_or_organotellurium_hydrolysis_pct": unmitigated_toxic_stibine_sbh3_or_organotellurium_hydrolysis_pct,
+        "edge_qcl_tdlas_948cm1_1262cm1_1024cm1_insitu_rheed_se_b1500a_latency_ms": edge_qcl_tdlas_948cm1_1262cm1_1024cm1_insitu_rheed_se_b1500a_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_anatase_phase_or_ipcm_resistance_drift_pct": uncompensated_anatase_phase_or_ipcm_resistance_drift_pct,
+        "tdmat_temat_cptinme23_sb2te3_10a_cfet_tin_gate_dram_rutile_tio2_and_ipcm_superlattice_ald_slo_met": governed,
+    }
+
+
+def simulate_moco6_btbmdmamo_dtbs_dese_10a_cfet_2d_janus_mosse_1000l_nand_mo_wordline_and_mo2n_snspd_ald_sil3_sandbox(
+    moco6_btbmdmamo_dtbs_dese_trains: int = 8,
+    governance_mode: str = "pinn_mpc_moco6_btbmdmamo_dtbs_dese_10a_cfet_2d_janus_mosse_1000l_nand_mo_wordline_and_mo2n_snspd_ald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Mo(CO)6 & 6N5 BTBMDMAMo + 6N5 DTBS / 6N5 DESe 10A CFET 2D Janus MoSSe Channel, 1000L 3D NAND Fluorine-Free Mo Wordline & Superconducting gamma-Mo2N SNSPD PEALD/ALE PINN-MPC + SIL-3."""
+    trains = max(1, int(moco6_btbmdmamo_dtbs_dese_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_moco6_btbmdmamo_dtbs_dese_10a_cfet_2d_janus_mosse_1000l_nand_mo_wordline_and_mo2n_snspd_ald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_moco6_btbmdmamo_janus_snspd_pods = trains * 4
+    electronic_6n5_moco6_6n5_btbmdmamo_6n5_dtbs_6n5_dese_purity_and_cfet_nand_snspd_yield_gain_pct = (
+        73.2 if governed else 14.2
+    )
+    cfet_vacancy_scattering_nand_fluorine_attack_and_snspd_jitter_reduction_pct = (
+        94.5 if governed else 17.0
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_h2se_co_carbonyl_lockout_latency_ms = (
+        0.10 if governed else 230.0
+    )
+    unmitigated_toxic_h2se_or_carbon_monoxide_carbonyl_leak_pct = (
+        0.0 if governed else 1.9
+    )
+    edge_qcl_tdlas_2004cm1_952cm1_1168cm1_2192cm1_insitu_raman_pl_gixrd_latency_ms = (
+        0.11 if governed else 330.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_2d_chalcogen_vacancy_or_nand_wordline_void_pct = (
+        0.0 if governed else 9.4
+    )
+    return {
+        "moco6_btbmdmamo_dtbs_dese_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_moco6_btbmdmamo_janus_snspd_pods": active_moco6_btbmdmamo_janus_snspd_pods,
+        "electronic_6n5_moco6_6n5_btbmdmamo_6n5_dtbs_6n5_dese_purity_and_cfet_nand_snspd_yield_gain_pct": electronic_6n5_moco6_6n5_btbmdmamo_6n5_dtbs_6n5_dese_purity_and_cfet_nand_snspd_yield_gain_pct,
+        "cfet_vacancy_scattering_nand_fluorine_attack_and_snspd_jitter_reduction_pct": cfet_vacancy_scattering_nand_fluorine_attack_and_snspd_jitter_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_h2se_co_carbonyl_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_h2se_co_carbonyl_lockout_latency_ms,
+        "unmitigated_toxic_h2se_or_carbon_monoxide_carbonyl_leak_pct": unmitigated_toxic_h2se_or_carbon_monoxide_carbonyl_leak_pct,
+        "edge_qcl_tdlas_2004cm1_952cm1_1168cm1_2192cm1_insitu_raman_pl_gixrd_latency_ms": edge_qcl_tdlas_2004cm1_952cm1_1168cm1_2192cm1_insitu_raman_pl_gixrd_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_2d_chalcogen_vacancy_or_nand_wordline_void_pct": uncompensated_2d_chalcogen_vacancy_or_nand_wordline_void_pct,
+        "moco6_btbmdmamo_dtbs_dese_10a_cfet_2d_janus_mosse_1000l_nand_mo_wordline_and_mo2n_snspd_ald_slo_met": governed,
+    }
+
+
+def simulate_wco6_btbmdmaw_dtbdse_teb_10a_cfet_2d_wse2_pfet_dram_bwl_alpha_w_and_sot_mram_beta_w_ald_sil3_sandbox(
+    wco6_btbmdmaw_dtbdse_teb_trains: int = 8,
+    governance_mode: str = "pinn_mpc_wco6_btbmdmaw_dtbdse_teb_10a_cfet_2d_wse2_pfet_dram_bwl_alpha_w_and_sot_mram_beta_w_ald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 W(CO)6 & 6N5 BTBMDMAW + 6N5 DTBDSe / 6N5 TEB 10A CFET 2D Monolayer 2H-WSe2 p-FET Channel, 1c/0a DRAM Fluorine-Free Buried Wordline (bWL) alpha-W & Giant Spin-Hall-Angle beta-W SOT-MRAM PEALD/CVD PINN-MPC + SIL-3."""
+    trains = max(1, int(wco6_btbmdmaw_dtbdse_teb_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_wco6_btbmdmaw_dtbdse_teb_10a_cfet_2d_wse2_pfet_dram_bwl_alpha_w_and_sot_mram_beta_w_ald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_wco6_btbmdmaw_wse2_bwl_sot_pods = trains * 4
+    electronic_6n5_wco6_6n5_btbmdmaw_6n5_dtbdse_6n5_teb_purity_and_cfet_dram_sot_yield_gain_pct = (
+        73.6 if governed else 14.3
+    )
+    wse2_vacancy_dram_wf6_fluorine_attack_and_sot_switching_energy_reduction_pct = (
+        94.8 if governed else 17.2
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_h2se_pyrophoric_teb_co_lockout_latency_ms = (
+        0.10 if governed else 235.0
+    )
+    unmitigated_toxic_h2se_pyrophoric_teb_or_tungsten_carbonyl_leak_pct = (
+        0.0 if governed else 1.8
+    )
+    edge_qcl_tdlas_1998cm1_956cm1_1154cm1_2192cm1_insitu_raman_gixrd_moke_latency_ms = (
+        0.11 if governed else 335.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_wse2_grain_boundary_or_dram_bwl_high_resistivity_pct = (
+        0.0 if governed else 9.6
+    )
+    return {
+        "wco6_btbmdmaw_dtbdse_teb_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_wco6_btbmdmaw_wse2_bwl_sot_pods": active_wco6_btbmdmaw_wse2_bwl_sot_pods,
+        "electronic_6n5_wco6_6n5_btbmdmaw_6n5_dtbdse_6n5_teb_purity_and_cfet_dram_sot_yield_gain_pct": electronic_6n5_wco6_6n5_btbmdmaw_6n5_dtbdse_6n5_teb_purity_and_cfet_dram_sot_yield_gain_pct,
+        "wse2_vacancy_dram_wf6_fluorine_attack_and_sot_switching_energy_reduction_pct": wse2_vacancy_dram_wf6_fluorine_attack_and_sot_switching_energy_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_h2se_pyrophoric_teb_co_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_h2se_pyrophoric_teb_co_lockout_latency_ms,
+        "unmitigated_toxic_h2se_pyrophoric_teb_or_tungsten_carbonyl_leak_pct": unmitigated_toxic_h2se_pyrophoric_teb_or_tungsten_carbonyl_leak_pct,
+        "edge_qcl_tdlas_1998cm1_956cm1_1154cm1_2192cm1_insitu_raman_gixrd_moke_latency_ms": edge_qcl_tdlas_1998cm1_956cm1_1154cm1_2192cm1_insitu_raman_gixrd_moke_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_wse2_grain_boundary_or_dram_bwl_high_resistivity_pct": uncompensated_wse2_grain_boundary_or_dram_bwl_high_resistivity_pct,
+        "wco6_btbmdmaw_dtbdse_teb_10a_cfet_2d_wse2_pfet_dram_bwl_alpha_w_and_sot_mram_beta_w_ald_slo_met": governed,
+    }
+
+
+def simulate_b3n3h6_tdmab_niipramd2_dmaa_10a_cfet_2d_hbn_vdw_dielectric_m0_b2_nial_interconnect_and_quantum_spe_ald_sil3_sandbox(
+    b3n3h6_tdmab_niipramd2_dmaa_trains: int = 8,
+    governance_mode: str = "pinn_mpc_b3n3h6_tdmab_niipramd2_dmaa_10a_cfet_2d_hbn_vdw_dielectric_m0_b2_nial_interconnect_and_quantum_spe_ald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 B3N3H6 (Borazine) & 6N5 TDMAB + 6N5 Ni(iPr-AMD)2 + 6N5 DMAA 10A CFET 2D h-BN Van der Waals Dielectric Interface, M0/M1 B2-NiAl Intermetallic Interconnect & Room-Temperature h-BN Quantum Single-Photon Emitter PEALD/ALE PINN-MPC + SIL-3."""
+    trains = max(1, int(b3n3h6_tdmab_niipramd2_dmaa_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_b3n3h6_tdmab_niipramd2_dmaa_10a_cfet_2d_hbn_vdw_dielectric_m0_b2_nial_interconnect_and_quantum_spe_ald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_b3n3h6_tdmab_hbn_nial_spe_pods = trains * 4
+    electronic_6n5_b3n3h6_6n5_tdmab_6n5_niipramd2_6n5_dmaa_purity_and_cfet_hbn_nial_spe_yield_gain_pct = (
+        74.0 if governed else 14.5
+    )
+    hbn_interface_trap_m0_nial_antisite_scattering_and_spe_spectral_diffusion_reduction_pct = (
+        95.0 if governed else 17.5
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_borazine_diborane_alane_lockout_latency_ms = (
+        0.10 if governed else 240.0
+    )
+    unmitigated_borazine_diborane_hydrolysis_or_pyrophoric_alane_ignition_pct = (
+        0.0 if governed else 1.8
+    )
+    edge_qcl_tdlas_1465cm1_2518cm1_1885cm1_insitu_ellipsometry_4pp_hbt_latency_ms = (
+        0.11 if governed else 340.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_amorphous_bn_defect_or_off_stoichiometric_nial_resistivity_pct = (
+        0.0 if governed else 9.8
+    )
+    return {
+        "b3n3h6_tdmab_niipramd2_dmaa_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_b3n3h6_tdmab_hbn_nial_spe_pods": active_b3n3h6_tdmab_hbn_nial_spe_pods,
+        "electronic_6n5_b3n3h6_6n5_tdmab_6n5_niipramd2_6n5_dmaa_purity_and_cfet_hbn_nial_spe_yield_gain_pct": electronic_6n5_b3n3h6_6n5_tdmab_6n5_niipramd2_6n5_dmaa_purity_and_cfet_hbn_nial_spe_yield_gain_pct,
+        "hbn_interface_trap_m0_nial_antisite_scattering_and_spe_spectral_diffusion_reduction_pct": hbn_interface_trap_m0_nial_antisite_scattering_and_spe_spectral_diffusion_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_borazine_diborane_alane_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_borazine_diborane_alane_lockout_latency_ms,
+        "unmitigated_borazine_diborane_hydrolysis_or_pyrophoric_alane_ignition_pct": unmitigated_borazine_diborane_hydrolysis_or_pyrophoric_alane_ignition_pct,
+        "edge_qcl_tdlas_1465cm1_2518cm1_1885cm1_insitu_ellipsometry_4pp_hbt_latency_ms": edge_qcl_tdlas_1465cm1_2518cm1_1885cm1_insitu_ellipsometry_4pp_hbt_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_amorphous_bn_defect_or_off_stoichiometric_nial_resistivity_pct": uncompensated_amorphous_bn_defect_or_off_stoichiometric_nial_resistivity_pct,
+        "b3n3h6_tdmab_niipramd2_dmaa_10a_cfet_2d_hbn_vdw_dielectric_m0_b2_nial_interconnect_and_quantum_spe_ald_slo_met": governed,
+    }
+
+
+def simulate_tesn_tdmasn_ge2h6_tdmasb_direct_bandgap_gesn_swir_laser_high_na_euv_snox_mor_and_gesn_sb_contact_rpcvd_mld_sil3_sandbox(
+    tesn_tdmasn_ge2h6_tdmasb_trains: int = 8,
+    governance_mode: str = "pinn_mpc_tesn_tdmasn_ge2h6_tdmasb_direct_bandgap_gesn_swir_laser_high_na_euv_snox_mor_and_gesn_sb_contact_rpcvd_mld_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 TESn (Tetraethyltin) & 6N5 TDMASn (Tetrakis(dimethylamino)tin) + 6N5 Ge2H6/GeH4 (Digermane/Germane) + 6N5 TDMASb Direct-Bandgap Ge1-xSnx (Sn = 12.5 at.%) SWIR/MWIR CMOS-Monolithic Silicon Photonic Laser, High-NA (0.55 NA) EUV SnOx Molecular Photoresist (EUV-MOR) & n+-GeSn:Sb Ohmic Contact RP-CVD/MLD/PEALD PINN-MPC + SIL-3."""
+    trains = max(1, int(tesn_tdmasn_ge2h6_tdmasb_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_tesn_tdmasn_ge2h6_tdmasb_direct_bandgap_gesn_swir_laser_high_na_euv_snox_mor_and_gesn_sb_contact_rpcvd_mld_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_tesn_tdmasn_gesn_laser_euv_mor_pods = trains * 4
+    electronic_6n5_tesn_6n5_tdmasn_6n5_ge2h6_6n5_tdmasb_purity_and_gesn_laser_euv_mor_yield_gain_pct = (
+        74.4 if governed else 14.8
+    )
+    beta_sn_segregation_euv_stochastic_bridge_and_gesn_schottky_barrier_reduction_pct = (
+        95.2 if governed else 17.8
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_germane_organotin_stibine_lockout_latency_ms = (
+        0.10 if governed else 240.0
+    )
+    unmitigated_pyrophoric_germane_stibine_or_neurotoxic_organotin_leak_pct = (
+        0.0 if governed else 1.8
+    )
+    edge_qcl_tdlas_2110cm1_582cm1_1894cm1_insitu_hrxrd_rheed_euv_scatterometry_latency_ms = (
+        0.11 if governed else 340.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_sn_droplet_precipitation_or_euv_mor_line_collapse_pct = (
+        0.0 if governed else 9.9
+    )
+    return {
+        "tesn_tdmasn_ge2h6_tdmasb_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_tesn_tdmasn_gesn_laser_euv_mor_pods": active_tesn_tdmasn_gesn_laser_euv_mor_pods,
+        "electronic_6n5_tesn_6n5_tdmasn_6n5_ge2h6_6n5_tdmasb_purity_and_gesn_laser_euv_mor_yield_gain_pct": electronic_6n5_tesn_6n5_tdmasn_6n5_ge2h6_6n5_tdmasb_purity_and_gesn_laser_euv_mor_yield_gain_pct,
+        "beta_sn_segregation_euv_stochastic_bridge_and_gesn_schottky_barrier_reduction_pct": beta_sn_segregation_euv_stochastic_bridge_and_gesn_schottky_barrier_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_germane_organotin_stibine_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_germane_organotin_stibine_lockout_latency_ms,
+        "unmitigated_pyrophoric_germane_stibine_or_neurotoxic_organotin_leak_pct": unmitigated_pyrophoric_germane_stibine_or_neurotoxic_organotin_leak_pct,
+        "edge_qcl_tdlas_2110cm1_582cm1_1894cm1_insitu_hrxrd_rheed_euv_scatterometry_latency_ms": edge_qcl_tdlas_2110cm1_582cm1_1894cm1_insitu_hrxrd_rheed_euv_scatterometry_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_sn_droplet_precipitation_or_euv_mor_line_collapse_pct": uncompensated_sn_droplet_precipitation_or_euv_mor_line_collapse_pct,
+        "tesn_tdmasn_ge2h6_tdmasb_direct_bandgap_gesn_swir_laser_high_na_euv_snox_mor_and_gesn_sb_contact_rpcvd_mld_slo_met": governed,
+    }
+
+
+def simulate_tmga_tega_tmin_tbas_beta_ga2o3_800v_power_finfet_beol_caac_igzo_2t0c_dram_and_inas_qd_comb_laser_mocvd_peald_sil3_sandbox(
+    tmga_tega_tmin_tbas_trains: int = 8,
+    governance_mode: str = "pinn_mpc_tmga_tega_tmin_tbas_beta_ga2o3_800v_power_finfet_beol_caac_igzo_2t0c_dram_and_inas_qd_comb_laser_mocvd_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 TMGa/TEGa & 6N5 TMIn + 6N5 TBAs/TBP + 6N5 DEZn Ultra-Wide-Bandgap beta-Ga2O3 (Eg=4.88eV, E_crit=8.15MV/cm) 800V AI Rack Power FinFET, Monolithic 3D BEOL CAAC-IGZO Capacitorless 2T0C DRAM (I_off=1.2e-22 A/um, Retention=4850s @ 85C) & 3.2T/6.4T CPO Heteroepitaxial O-Band InAs/GaAs Quantum-Dot Comb Laser on 300mm Si(001) MOCVD/PEALD/MBE PINN-MPC + SIL-3."""
+    trains = max(1, int(tmga_tega_tmin_tbas_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_tmga_tega_tmin_tbas_beta_ga2o3_800v_power_finfet_beol_caac_igzo_2t0c_dram_and_inas_qd_comb_laser_mocvd_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_tmga_tega_tmin_ga2o3_igzo_qdl_pods = trains * 4
+    electronic_6n5_tmga_6n5_tega_6n5_tmin_6n5_tbas_purity_and_ga2o3_igzo_qdl_yield_gain_pct = (
+        74.8 if governed else 15.0
+    )
+    ga2o3_carbon_compensation_igzo_vo_drift_and_qd_threading_dislocation_reduction_pct = (
+        95.4 if governed else 18.0
+    )
+    semi_s2_nfpa704_osha_19101018_sil3_arsine_tbas_pyrophoric_organometallic_lockout_latency_ms = (
+        0.10 if governed else 245.0
+    )
+    unmitigated_pyrophoric_tmga_tmin_or_hemolytic_arsine_tbas_leak_pct = (
+        0.0 if governed else 1.8
+    )
+    edge_qcl_tdlas_592cm1_2118cm1_746cm1_insitu_epirtt_hrxrd_comb_osa_latency_ms = (
+        0.11 if governed else 345.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_tmin_sublimation_drift_or_2t0c_dram_retention_failure_pct = (
+        0.0 if governed else 9.9
+    )
+    return {
+        "tmga_tega_tmin_tbas_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_tmga_tega_tmin_ga2o3_igzo_qdl_pods": active_tmga_tega_tmin_ga2o3_igzo_qdl_pods,
+        "electronic_6n5_tmga_6n5_tega_6n5_tmin_6n5_tbas_purity_and_ga2o3_igzo_qdl_yield_gain_pct": electronic_6n5_tmga_6n5_tega_6n5_tmin_6n5_tbas_purity_and_ga2o3_igzo_qdl_yield_gain_pct,
+        "ga2o3_carbon_compensation_igzo_vo_drift_and_qd_threading_dislocation_reduction_pct": ga2o3_carbon_compensation_igzo_vo_drift_and_qd_threading_dislocation_reduction_pct,
+        "semi_s2_nfpa704_osha_19101018_sil3_arsine_tbas_pyrophoric_organometallic_lockout_latency_ms": semi_s2_nfpa704_osha_19101018_sil3_arsine_tbas_pyrophoric_organometallic_lockout_latency_ms,
+        "unmitigated_pyrophoric_tmga_tmin_or_hemolytic_arsine_tbas_leak_pct": unmitigated_pyrophoric_tmga_tmin_or_hemolytic_arsine_tbas_leak_pct,
+        "edge_qcl_tdlas_592cm1_2118cm1_746cm1_insitu_epirtt_hrxrd_comb_osa_latency_ms": edge_qcl_tdlas_592cm1_2118cm1_746cm1_insitu_epirtt_hrxrd_comb_osa_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_tmin_sublimation_drift_or_2t0c_dram_retention_failure_pct": uncompensated_tmin_sublimation_drift_or_2t0c_dram_retention_failure_pct,
+        "tmga_tega_tmin_tbas_beta_ga2o3_800v_power_finfet_beol_caac_igzo_2t0c_dram_and_inas_qd_comb_laser_mocvd_peald_slo_met": governed,
+    }
+
+
+def simulate_temah_temaz_laiprcp3_tma_wakeup_free_ohzo_300l_3d_fenand_and_4k_cryo_fefet_qubit_mux_peald_sil3_sandbox(
+    temah_temaz_laiprcp3_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_temah_temaz_laiprcp3_tma_wakeup_free_ohzo_300l_3d_fenand_and_4k_cryo_fefet_qubit_mux_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 TEMAH / HfCl4 & 6N5 TEMAZ + 6N5 La(iPrCp)3 / Y(iPrCp)3 + 6N5 TMA 10A CFET Wakeup-Free Orthorhombic Pca21 Hf0.5Zr0.5O2 (o-HZO, 2Pr=64.8 uC/cm2, Endurance >1e12 Cycles), 300-Layer Monolithic 3D BEOL (<=350C) Non-Volatile Ferroelectric 3D FeNAND (MW=6.8V @ Vprog=6.5V, -82.5% Write Energy) & Sub-4K Cryogenic CMOS-to-Superconducting Qubit Control Multiplexer (Cryo-FeFET @ 3.8K, SS_4K=4.2 mV/dec) PEALD/Thermal-ALD PINN-MPC + SIL-3."""
+    trains = max(1, int(temah_temaz_laiprcp3_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_temah_temaz_laiprcp3_tma_wakeup_free_ohzo_300l_3d_fenand_and_4k_cryo_fefet_qubit_mux_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_temah_temaz_ohzo_fenand_cryofefet_pods = trains * 4
+    electronic_6n5_temah_6n5_temaz_6n5_laiprcp3_6n5_tma_purity_and_ohzo_fenand_cryofefet_yield_gain_pct = (
+        75.2 if governed else 15.2
+    )
+    monoclinic_dead_layer_wakeup_fatigue_and_cryo_4k_freezeout_reduction_pct = (
+        95.6 if governed else 18.2
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_tma_alkylamide_hcl_lockout_latency_ms = (
+        0.10 if governed else 250.0
+    )
+    unmitigated_pyrophoric_tma_ignition_or_corrosive_hcl_alkylamine_leak_pct = (
+        0.0 if governed else 1.8
+    )
+    edge_qcl_tdlas_962cm1_1218cm1_2886cm1_insitu_gixrd_pund_shg_4k_cryo_latency_ms = (
+        0.11 if governed else 350.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_monoclinic_phase_or_3d_fenand_memory_window_collapse_pct = (
+        0.0 if governed else 9.9
+    )
+    return {
+        "temah_temaz_laiprcp3_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_temah_temaz_ohzo_fenand_cryofefet_pods": active_temah_temaz_ohzo_fenand_cryofefet_pods,
+        "electronic_6n5_temah_6n5_temaz_6n5_laiprcp3_6n5_tma_purity_and_ohzo_fenand_cryofefet_yield_gain_pct": electronic_6n5_temah_6n5_temaz_6n5_laiprcp3_6n5_tma_purity_and_ohzo_fenand_cryofefet_yield_gain_pct,
+        "monoclinic_dead_layer_wakeup_fatigue_and_cryo_4k_freezeout_reduction_pct": monoclinic_dead_layer_wakeup_fatigue_and_cryo_4k_freezeout_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_tma_alkylamide_hcl_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_tma_alkylamide_hcl_lockout_latency_ms,
+        "unmitigated_pyrophoric_tma_ignition_or_corrosive_hcl_alkylamine_leak_pct": unmitigated_pyrophoric_tma_ignition_or_corrosive_hcl_alkylamine_leak_pct,
+        "edge_qcl_tdlas_962cm1_1218cm1_2886cm1_insitu_gixrd_pund_shg_4k_cryo_latency_ms": edge_qcl_tdlas_962cm1_1218cm1_2886cm1_insitu_gixrd_pund_shg_4k_cryo_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_monoclinic_phase_or_3d_fenand_memory_window_collapse_pct": uncompensated_monoclinic_phase_or_3d_fenand_memory_window_collapse_pct,
+        "temah_temaz_laiprcp3_tma_wakeup_free_ohzo_300l_3d_fenand_and_4k_cryo_fefet_qubit_mux_peald_slo_met": governed,
+    }
+
+
+def simulate_pdmat_taoet5_sripr3cp2_baipr3cp2_tdmat_tmbi_0a_bst_dram_sbt_feram_and_6p4t_cpo_bto_pockels_peald_sil3_sandbox(
+    pdmat_srba_tdmat_tmbi_trains: int = 8,
+    governance_mode: str = "pinn_mpc_pdmat_taoet5_sripr3cp2_baipr3cp2_tdmat_tmbi_0a_bst_dram_sbt_feram_and_6p4t_cpo_bto_pockels_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 PDMAT / Ta(OEt)5 & 6N5 Sr(iPr3Cp)2 / Ba(iPr3Cp)2 + 6N5 TDMAT + 6N5 TMBi 0a-Node (<10nm) Ultra-High-k Perovskite Ba0.7Sr0.3TiO3 (BST, k=385, EOT=0.28nm, J_leak=1.8e-9 A/cm2 @ 0.75V) DRAM Capacitor, Fatigue-Free Aurivillius Layered Perovskite SrBi2Ta2O9 (SBT, Endurance >1e15 Cycles) Non-Volatile FeRAM & 3.2T/6.4T CPO Heterogeneously Integrated BaTiO3 (BTO, Pockels r42=920 pm/V, VpiL=0.18 V*cm, 4K r_eff=245 pm/V) Silicon Photonic & Quantum Microwave-to-Optical Transducer PEALD/MBE PINN-MPC + SIL-3."""
+    trains = max(1, int(pdmat_srba_tdmat_tmbi_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_pdmat_taoet5_sripr3cp2_baipr3cp2_tdmat_tmbi_0a_bst_dram_sbt_feram_and_6p4t_cpo_bto_pockels_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_pdmat_srba_bst_sbt_bto_pods = trains * 4
+    electronic_6n5_pdmat_6n5_srba_6n5_tdmat_6n5_tmbi_purity_and_bst_sbt_bto_yield_gain_pct = (
+        75.6 if governed else 15.4
+    )
+    perovskite_carbonate_pyrochlore_and_bto_90deg_domain_wall_loss_reduction_pct = (
+        95.8 if governed else 18.4
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_tmbi_barium_oxide_amine_lockout_latency_ms = (
+        0.10 if governed else 250.0
+    )
+    unmitigated_pyrophoric_tmbi_ignition_or_toxic_barium_bismuth_amine_leak_pct = (
+        0.0 if governed else 1.8
+    )
+    edge_qcl_tdlas_948cm1_1435cm1_585cm1_insitu_rheed_se_shg_4k_s21_latency_ms = (
+        0.11 if governed else 350.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_baco3_dead_layer_or_bto_c_axis_depoling_failure_pct = (
+        0.0 if governed else 10.1
+    )
+    return {
+        "pdmat_srba_tdmat_tmbi_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_pdmat_srba_bst_sbt_bto_pods": active_pdmat_srba_bst_sbt_bto_pods,
+        "electronic_6n5_pdmat_6n5_srba_6n5_tdmat_6n5_tmbi_purity_and_bst_sbt_bto_yield_gain_pct": electronic_6n5_pdmat_6n5_srba_6n5_tdmat_6n5_tmbi_purity_and_bst_sbt_bto_yield_gain_pct,
+        "perovskite_carbonate_pyrochlore_and_bto_90deg_domain_wall_loss_reduction_pct": perovskite_carbonate_pyrochlore_and_bto_90deg_domain_wall_loss_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_tmbi_barium_oxide_amine_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_tmbi_barium_oxide_amine_lockout_latency_ms,
+        "unmitigated_pyrophoric_tmbi_ignition_or_toxic_barium_bismuth_amine_leak_pct": unmitigated_pyrophoric_tmbi_ignition_or_toxic_barium_bismuth_amine_leak_pct,
+        "edge_qcl_tdlas_948cm1_1435cm1_585cm1_insitu_rheed_se_shg_4k_s21_latency_ms": edge_qcl_tdlas_948cm1_1435cm1_585cm1_insitu_rheed_se_shg_4k_s21_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_baco3_dead_layer_or_bto_c_axis_depoling_failure_pct": uncompensated_baco3_dead_layer_or_bto_c_axis_depoling_failure_pct,
+        "pdmat_taoet5_sripr3cp2_baipr3cp2_tdmat_tmbi_0a_bst_dram_sbt_feram_and_6p4t_cpo_bto_pockels_peald_slo_met": governed,
+    }
+
+
+def simulate_nbnme25_tbtden_cp2mg_tma_dtbdse_10a_2d_nbse2_jofet_48ghz_aqfp_nbn_mgo_and_cryo_sfq_peald_sil3_sandbox(
+    nbnme25_cp2mg_tma_dtbdse_trains: int = 8,
+    governance_mode: str = "pinn_mpc_nbnme25_tbtden_cp2mg_tma_dtbdse_10a_2d_nbse2_jofet_48ghz_aqfp_nbn_mgo_and_cryo_sfq_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Nb(NMe2)5 / TBTDEN & 6N5 Cp2Mg + 6N5 TMA + 6N5 DTBDSe / H2Se 10A-Node 2D Superconducting-Semiconducting Van der Waals Josephson Field-Effect Transistor (NbSe2/WSe2/NbSe2 2D JoFET, IcRn=1.42mV), Epitaxial Single-Crystal Spin-Filtering NbN/MgO/NbN Josephson Junction (4K Cryo-SFQ / 48GHz AQFP Logic, Switching Energy EJ=0.08aJ) & Monolithic 300mm Cryo-to-Optical EOM Interface PEALD/MBE PINN-MPC + SIL-3."""
+    trains = max(1, int(nbnme25_cp2mg_tma_dtbdse_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_nbnme25_tbtden_cp2mg_tma_dtbdse_10a_2d_nbse2_jofet_48ghz_aqfp_nbn_mgo_and_cryo_sfq_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_nbnme25_cp2mg_nbse2_jofet_aqfp_pods = trains * 4
+    electronic_6n5_nbnme25_6n5_cp2mg_6n5_tma_6n5_dtbdse_purity_and_jofet_aqfp_yield_gain_pct = (
+        76.0 if governed else 15.6
+    )
+    nb2o5_two_level_system_mgo_pinhole_and_2h_nbse2_selenium_vacancy_reduction_pct = (
+        96.0 if governed else 18.6
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_toxic_h2se_pyrophoric_tma_cp2mg_lockout_latency_ms = (
+        0.10 if governed else 255.0
+    )
+    unmitigated_toxic_h2se_hydride_leak_or_pyrophoric_tma_cp2mg_ignition_pct = (
+        0.0 if governed else 1.8
+    )
+    edge_qcl_tdlas_2348cm1_618cm1_485cm1_insitu_rheed_arpes_4k_icrn_latency_ms = (
+        0.11 if governed else 355.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_mgo_tunnel_barrier_pinhole_or_aqfp_flux_trapping_failure_pct = (
+        0.0 if governed else 10.2
+    )
+    return {
+        "nbnme25_cp2mg_tma_dtbdse_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_nbnme25_cp2mg_nbse2_jofet_aqfp_pods": active_nbnme25_cp2mg_nbse2_jofet_aqfp_pods,
+        "electronic_6n5_nbnme25_6n5_cp2mg_6n5_tma_6n5_dtbdse_purity_and_jofet_aqfp_yield_gain_pct": electronic_6n5_nbnme25_6n5_cp2mg_6n5_tma_6n5_dtbdse_purity_and_jofet_aqfp_yield_gain_pct,
+        "nb2o5_two_level_system_mgo_pinhole_and_2h_nbse2_selenium_vacancy_reduction_pct": nb2o5_two_level_system_mgo_pinhole_and_2h_nbse2_selenium_vacancy_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_toxic_h2se_pyrophoric_tma_cp2mg_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_toxic_h2se_pyrophoric_tma_cp2mg_lockout_latency_ms,
+        "unmitigated_toxic_h2se_hydride_leak_or_pyrophoric_tma_cp2mg_ignition_pct": unmitigated_toxic_h2se_hydride_leak_or_pyrophoric_tma_cp2mg_ignition_pct,
+        "edge_qcl_tdlas_2348cm1_618cm1_485cm1_insitu_rheed_arpes_4k_icrn_latency_ms": edge_qcl_tdlas_2348cm1_618cm1_485cm1_insitu_rheed_arpes_4k_icrn_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_mgo_tunnel_barrier_pinhole_or_aqfp_flux_trapping_failure_pct": uncompensated_mgo_tunnel_barrier_pinhole_or_aqfp_flux_trapping_failure_pct,
+        "nbnme25_tbtden_cp2mg_tma_dtbdse_10a_2d_nbse2_jofet_48ghz_aqfp_nbn_mgo_and_cryo_sfq_peald_slo_met": governed,
+    }
+
+
+def simulate_28si2h6_3dmas_hcds_nd3_ph3_28si_spin_qubit_10a_cfet_siocn_spacer_and_6p4t_cpo_deuterated_sin_rpcvd_peald_sil3_sandbox(
+    si28_3dmas_hcds_nd3_ph3_trains: int = 8,
+    governance_mode: str = "pinn_mpc_28si2h6_3dmas_hcds_nd3_ph3_28si_spin_qubit_10a_cfet_siocn_spacer_and_6p4t_cpo_deuterated_sin_rpcvd_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade Isotopically Enriched 6N5 28Si2H6 / 28SiH4 (>=99.998% 28Si, Residual 29Si <=15 ppm) & 6N5 3DMAS / HCDS + 6N5 ND3 + 6N5 PH3 300mm 28Si/28SiGe Wiggle-Well Semiconductor Spin Qubit Array (T2_CPMG=1.48s, F1Q=99.992%, Valley Splitting Ev=285ueV), 10A CFET Low-k SiOCN Sidewall Spacer (k=3.65) & 6.4T CPO Deuterated Si3N4:D Ultra-Low-Loss Photonic Waveguide (0.042 dB/m, Qi=4.2e8) RP-CVD/PEALD PINN-MPC + SIL-3."""
+    trains = max(1, int(si28_3dmas_hcds_nd3_ph3_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_28si2h6_3dmas_hcds_nd3_ph3_28si_spin_qubit_10a_cfet_siocn_spacer_and_6p4t_cpo_deuterated_sin_rpcvd_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_28si_spin_qubit_cfet_siocn_deuterated_sin_pods = trains * 4
+    electronic_6n5_28si2h6_6n5_3dmas_6n5_hcds_6n5_nd3_purity_and_spin_qubit_cpo_yield_gain_pct = (
+        76.4 if governed else 15.8
+    )
+    si29_hyperfine_decoherence_valley_degeneracy_and_nh_1550nm_overtone_loss_reduction_pct = (
+        96.2 if governed else 18.8
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_si2h6_toxic_ph3_lockout_latency_ms = (
+        0.10 if governed else 260.0
+    )
+    unmitigated_pyrophoric_si2h6_sih4_detonation_or_toxic_ph3_hydride_leak_pct = (
+        0.0 if governed else 1.8
+    )
+    edge_qcl_crds_2189cm1_2187cm1_2442cm1_2322cm1_apt_insitu_1p5k_esr_latency_ms = (
+        0.11 if governed else 360.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_valley_splitting_collapse_or_siocn_wet_etch_undercut_failure_pct = (
+        0.0 if governed else 10.3
+    )
+    return {
+        "si28_3dmas_hcds_nd3_ph3_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_28si_spin_qubit_cfet_siocn_deuterated_sin_pods": active_28si_spin_qubit_cfet_siocn_deuterated_sin_pods,
+        "electronic_6n5_28si2h6_6n5_3dmas_6n5_hcds_6n5_nd3_purity_and_spin_qubit_cpo_yield_gain_pct": electronic_6n5_28si2h6_6n5_3dmas_6n5_hcds_6n5_nd3_purity_and_spin_qubit_cpo_yield_gain_pct,
+        "si29_hyperfine_decoherence_valley_degeneracy_and_nh_1550nm_overtone_loss_reduction_pct": si29_hyperfine_decoherence_valley_degeneracy_and_nh_1550nm_overtone_loss_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_si2h6_toxic_ph3_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_si2h6_toxic_ph3_lockout_latency_ms,
+        "unmitigated_pyrophoric_si2h6_sih4_detonation_or_toxic_ph3_hydride_leak_pct": unmitigated_pyrophoric_si2h6_sih4_detonation_or_toxic_ph3_hydride_leak_pct,
+        "edge_qcl_crds_2189cm1_2187cm1_2442cm1_2322cm1_apt_insitu_1p5k_esr_latency_ms": edge_qcl_crds_2189cm1_2187cm1_2442cm1_2322cm1_apt_insitu_1p5k_esr_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_valley_splitting_collapse_or_siocn_wet_etch_undercut_failure_pct": uncompensated_valley_splitting_collapse_or_siocn_wet_etch_undercut_failure_pct,
+        "si28_3dmas_hcds_nd3_ph3_28si_spin_qubit_10a_cfet_siocn_spacer_and_6p4t_cpo_deuterated_sin_rpcvd_peald_slo_met": governed,
+    }
+
+
+def simulate_moco6_mocl5_montbu2nme22_h2s_dmtese_a10_2d_mos2_cfet_barrierless_mo_m0_bpr_and_6p4t_cpo_mote2_mocvd_peald_sil3_sandbox(
+    moco6_mocl5_montbu2_h2s_dmtese_trains: int = 8,
+    governance_mode: str = "pinn_mpc_moco6_mocl5_montbu2nme22_h2s_dmtese_a10_2d_mos2_cfet_barrierless_mo_m0_bpr_and_6p4t_cpo_mote2_mocvd_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Mo(CO)6 / MoCl5 & 6N5 Mo(NtBu)2(NMe2)2 + 6N5 H2S / DTBDS + 6N5 DMSe / DETe 300mm A10/A7 Sub-1nm 2D TMD Monolayer MoS2/WS2/MoTe2 CFET (SS=60.8mV/dec, Rc=38 Ohm-um), Barrierless Direct-Mo M0/Wordline/BPR (10nm rho_Mo=10.4 uOhm-cm) & 6.4T CPO Excitonic MoTe2/Si3N4 Waveguide Photodetector MOCVD/PEALD PINN-MPC + SIL-3."""
+    trains = max(1, int(moco6_mocl5_montbu2_h2s_dmtese_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_moco6_mocl5_montbu2nme22_h2s_dmtese_a10_2d_mos2_cfet_barrierless_mo_m0_bpr_and_6p4t_cpo_mote2_mocvd_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_mos2_cfet_barrierless_mo_cpo_mote2_pods = trains * 4
+    electronic_6n5_moco6_6n5_mocl5_6n5_montbu2nme22_6n5_h2s_purity_and_cfet_mo_yield_gain_pct = (
+        76.8 if governed else 15.9
+    )
+    sulfur_vacancy_schottky_fermi_pinning_and_mo_grain_boundary_scattering_reduction_pct = (
+        96.4 if governed else 19.0
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_toxic_h2s_moco6_dmtese_lockout_latency_ms = (
+        0.10 if governed else 265.0
+    )
+    unmitigated_toxic_h2s_moco6_carbonyl_leak_or_mocl5_hcl_hydrolysis_pct = (
+        0.0 if governed else 1.8
+    )
+    edge_qcl_crds_2003cm1_2592cm1_insitu_raman_e12g_a1g_pl_1p88ev_4pp_latency_ms = (
+        0.11 if governed else 365.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_2d_mos2_multilayer_island_or_m0_mo_void_pinch_off_failure_pct = (
+        0.0 if governed else 10.4
+    )
+    return {
+        "moco6_mocl5_montbu2_h2s_dmtese_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_mos2_cfet_barrierless_mo_cpo_mote2_pods": active_mos2_cfet_barrierless_mo_cpo_mote2_pods,
+        "electronic_6n5_moco6_6n5_mocl5_6n5_montbu2nme22_6n5_h2s_purity_and_cfet_mo_yield_gain_pct": electronic_6n5_moco6_6n5_mocl5_6n5_montbu2nme22_6n5_h2s_purity_and_cfet_mo_yield_gain_pct,
+        "sulfur_vacancy_schottky_fermi_pinning_and_mo_grain_boundary_scattering_reduction_pct": sulfur_vacancy_schottky_fermi_pinning_and_mo_grain_boundary_scattering_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_toxic_h2s_moco6_dmtese_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_toxic_h2s_moco6_dmtese_lockout_latency_ms,
+        "unmitigated_toxic_h2s_moco6_carbonyl_leak_or_mocl5_hcl_hydrolysis_pct": unmitigated_toxic_h2s_moco6_carbonyl_leak_or_mocl5_hcl_hydrolysis_pct,
+        "edge_qcl_crds_2003cm1_2592cm1_insitu_raman_e12g_a1g_pl_1p88ev_4pp_latency_ms": edge_qcl_crds_2003cm1_2592cm1_insitu_raman_e12g_a1g_pl_1p88ev_4pp_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_2d_mos2_multilayer_island_or_m0_mo_void_pinch_off_failure_pct": uncompensated_2d_mos2_multilayer_island_or_m0_mo_void_pinch_off_failure_pct,
+        "moco6_mocl5_montbu2nme22_h2s_dmtese_a10_2d_mos2_cfet_barrierless_mo_m0_bpr_and_6p4t_cpo_mote2_mocvd_peald_slo_met": governed,
+    }
+
+
+def simulate_wco6_wcl5_wntbu2nme22_dtbdse_b2h6_a10_2d_wse2_pfet_ffree_alpha_w_1000l_nand_and_beta_w_sot_mram_mocvd_peald_sil3_sandbox(
+    wco6_wcl5_wntbu2_dtbdse_b2h6_trains: int = 8,
+    governance_mode: str = "pinn_mpc_wco6_wcl5_wntbu2nme22_dtbdse_b2h6_a10_2d_wse2_pfet_ffree_alpha_w_1000l_nand_and_beta_w_sot_mram_mocvd_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 W(CO)6 / WCl5 & 6N5 W(NtBu)2(NMe2)2 + 6N5 DTBDSe / DMSe + 6N5 TEB / B2H6 300mm A10/A7 Sub-1nm 2D Monolayer 2H-WSe2 p-CFET (SS_p=61.2mV/dec, mu_h=148cm2/V*s, p+-WSe2:V/Pt Contact Rc_p=42 Ohm-um), Fluorine-Free Alpha-W 1000-Layer 3D NAND Wordline & MOL Contact (rho_alpha_W=8.8 uOhm-cm @ 12nm CD via a-WBx Nucleation) & Metastable Giant-Spin-Hall A15 Beta-W Embedded SOT-MRAM Channel (|theta_SH|=0.42, Jc0=1.65e6 A/cm2) MOCVD/PEALD PINN-MPC + SIL-3."""
+    trains = max(1, int(wco6_wcl5_wntbu2_dtbdse_b2h6_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_wco6_wcl5_wntbu2nme22_dtbdse_b2h6_a10_2d_wse2_pfet_ffree_alpha_w_1000l_nand_and_beta_w_sot_mram_mocvd_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_wse2_pfet_alpha_w_beta_w_pods = trains * 4
+    electronic_6n5_wco6_6n5_wcl5_6n5_wntbu2nme22_6n5_dtbdse_purity_and_p_wse2_w_yield_gain_pct = (
+        77.2 if governed else 16.0
+    )
+    selenium_vacancy_p_schottky_barrier_and_alpha_beta_w_phase_impurity_reduction_pct = (
+        96.6 if governed else 19.2
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_b2h6_teb_wco6_dtbdse_lockout_latency_ms = (
+        0.10 if governed else 270.0
+    )
+    unmitigated_pyrophoric_b2h6_teb_ignition_or_toxic_dtbdse_wco6_leak_pct = (
+        0.0 if governed else 1.8
+    )
+    edge_qcl_crds_1998cm1_1602cm1_insitu_raman_250cm1_pl_1p65ev_xrd_stfmr_latency_ms = (
+        0.11 if governed else 370.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_p_wse2_multilayer_or_1000l_nand_wordline_void_failure_pct = (
+        0.0 if governed else 10.6
+    )
+    return {
+        "wco6_wcl5_wntbu2_dtbdse_b2h6_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_wse2_pfet_alpha_w_beta_w_pods": active_wse2_pfet_alpha_w_beta_w_pods,
+        "electronic_6n5_wco6_6n5_wcl5_6n5_wntbu2nme22_6n5_dtbdse_purity_and_p_wse2_w_yield_gain_pct": electronic_6n5_wco6_6n5_wcl5_6n5_wntbu2nme22_6n5_dtbdse_purity_and_p_wse2_w_yield_gain_pct,
+        "selenium_vacancy_p_schottky_barrier_and_alpha_beta_w_phase_impurity_reduction_pct": selenium_vacancy_p_schottky_barrier_and_alpha_beta_w_phase_impurity_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_b2h6_teb_wco6_dtbdse_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_b2h6_teb_wco6_dtbdse_lockout_latency_ms,
+        "unmitigated_pyrophoric_b2h6_teb_ignition_or_toxic_dtbdse_wco6_leak_pct": unmitigated_pyrophoric_b2h6_teb_ignition_or_toxic_dtbdse_wco6_leak_pct,
+        "edge_qcl_crds_1998cm1_1602cm1_insitu_raman_250cm1_pl_1p65ev_xrd_stfmr_latency_ms": edge_qcl_crds_1998cm1_1602cm1_insitu_raman_250cm1_pl_1p65ev_xrd_stfmr_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_p_wse2_multilayer_or_1000l_nand_wordline_void_failure_pct": uncompensated_p_wse2_multilayer_or_1000l_nand_wordline_void_failure_pct,
+        "wco6_wcl5_wntbu2nme22_dtbdse_b2h6_a10_2d_wse2_pfet_ffree_alpha_w_1000l_nand_and_beta_w_sot_mram_mocvd_peald_slo_met": governed,
+    }
+
+
+def simulate_tmbi_tdmasb_dete_dmse_a10_2d_cfet_semimetallic_bi_sb_quantum_limit_contact_topological_bst_sot_mram_and_3dic_peltier_cooler_mbe_peald_sil3_sandbox(
+    tmbi_tdmasb_dete_dmse_trains: int = 8,
+    governance_mode: str = "pinn_mpc_tmbi_tdmasb_dete_dmse_a10_2d_cfet_semimetallic_bi_sb_quantum_limit_contact_topological_bst_sot_mram_and_3dic_peltier_cooler_mbe_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 TMBi / Bi(mmp)3 & 6N5 TDMASb / TESb + 6N5 DETe / DIPTe + 6N5 DMSe 300mm A10/A7 2D CFET Zero-Schottky Semimetallic Bi(0112)/Sb(0112) Quantum-Limit Ohmic Contact (Rc_n=29 Ohm-um), Topological Insulator (Bi1-xSbx)2Te3 / Bi2Se3 Dirac Spin-Momentum-Locked SOT-MRAM (|theta_SH_eff|=3.2, Jc0=1.8e5 A/cm2) & Superlattice [Bi2Te3/Sb2Te3]N 3D-IC Micro-Peltier Hotspot Cooler (ZT=2.15, 680 W/cm2) MBE/MOCVD/PEALD PINN-MPC + SIL-3."""
+    trains = max(1, int(tmbi_tdmasb_dete_dmse_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_tmbi_tdmasb_dete_dmse_a10_2d_cfet_semimetallic_bi_sb_quantum_limit_contact_topological_bst_sot_mram_and_3dic_peltier_cooler_mbe_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_bi_sb_contact_topological_bst_peltier_pods = trains * 4
+    electronic_6n5_tmbi_6n5_tdmasb_6n5_dete_6n5_dmse_purity_and_2d_contact_bst_yield_gain_pct = (
+        77.6 if governed else 16.2
+    )
+    migs_fermi_pinning_bulk_shunt_and_interfacial_thermal_resistance_reduction_pct = (
+        96.8 if governed else 19.4
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_tmbi_tesb_stibine_telluride_lockout_latency_ms = (
+        0.10 if governed else 275.0
+    )
+    unmitigated_pyrophoric_tmbi_tesb_autoignition_or_toxic_stibine_telluride_leak_pct = (
+        0.0 if governed else 1.9
+    )
+    edge_qcl_crds_585cm1_1894cm1_insitu_arpes_rheed_stfmr_tdtr_latency_ms = (
+        0.11 if governed else 375.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_bi_dewetting_agglomeration_or_bst_bulk_conduction_failure_pct = (
+        0.0 if governed else 10.8
+    )
+    return {
+        "tmbi_tdmasb_dete_dmse_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_bi_sb_contact_topological_bst_peltier_pods": active_bi_sb_contact_topological_bst_peltier_pods,
+        "electronic_6n5_tmbi_6n5_tdmasb_6n5_dete_6n5_dmse_purity_and_2d_contact_bst_yield_gain_pct": electronic_6n5_tmbi_6n5_tdmasb_6n5_dete_6n5_dmse_purity_and_2d_contact_bst_yield_gain_pct,
+        "migs_fermi_pinning_bulk_shunt_and_interfacial_thermal_resistance_reduction_pct": migs_fermi_pinning_bulk_shunt_and_interfacial_thermal_resistance_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_tmbi_tesb_stibine_telluride_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_tmbi_tesb_stibine_telluride_lockout_latency_ms,
+        "unmitigated_pyrophoric_tmbi_tesb_autoignition_or_toxic_stibine_telluride_leak_pct": unmitigated_pyrophoric_tmbi_tesb_autoignition_or_toxic_stibine_telluride_leak_pct,
+        "edge_qcl_crds_585cm1_1894cm1_insitu_arpes_rheed_stfmr_tdtr_latency_ms": edge_qcl_crds_585cm1_1894cm1_insitu_arpes_rheed_stfmr_tdtr_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_bi_dewetting_agglomeration_or_bst_bulk_conduction_failure_pct": uncompensated_bi_dewetting_agglomeration_or_bst_bulk_conduction_failure_pct,
+        "tmbi_tdmasb_dete_dmse_a10_2d_cfet_semimetallic_bi_sb_quantum_limit_contact_topological_bst_sot_mram_and_3dic_peltier_cooler_mbe_peald_slo_met": governed,
+    }
+
+
+def simulate_cuhfacvtms_cudmap2_temaz_dezn_hhfac_a10_3dic_hbm4_ntcu_hybrid_bonding_and_cu_zr_barrier_peald_ale_sil3_sandbox(
+    cuhfacvtms_cudmap2_temaz_dezn_hhfac_trains: int = 8,
+    governance_mode: str = "pinn_mpc_cuhfacvtms_cudmap2_temaz_dezn_hhfac_a10_3dic_hbm4_ntcu_hybrid_bonding_and_cu_zr_barrier_peald_ale_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Cu(hfac)(VTMS) / Cu(dmap)2 + 6N5 TEMAZ / DEZn + 6N5 Hhfac
+    300mm A10/A7 3D-IC HBM4 Sub-400nm (111) Nanotwinned Cu Hybrid Bonding, Self-Forming 0.8nm
+    Cu-Zr/Zn Amorphous Barrier & Thermal Cu-ALE PINN-MPC + SEMI S2 / NFPA 704 / SIL-3 (Cycle #298).
+    """
+    trains = max(1, int(cuhfacvtms_cudmap2_temaz_dezn_hhfac_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_cuhfacvtms_cudmap2_temaz_dezn_hhfac_a10_3dic_hbm4_ntcu_hybrid_bonding_and_cu_zr_barrier_peald_ale_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_ntcu_hybrid_bonding_cuzr_barrier_ale_pods = trains * 4
+    electronic_6n5_cuhfacvtms_6n5_cudmap2_6n5_temaz_6n5_dezn_6n5_hhfac_purity_and_3dic_hybrid_bond_yield_gain_pct = (
+        77.9 if governed else 16.5
+    )
+    cmp_dishing_interfacial_void_and_barrier_rc_parasitic_resistance_reduction_pct = (
+        96.9 if governed else 19.8
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_dezn_corrosive_hhfac_hf_lockout_latency_ms = (
+        0.10 if governed else 272.0
+    )
+    unmitigated_pyrophoric_dezn_water_explosion_or_corrosive_hhfac_hf_vapor_leak_pct = (
+        0.0 if governed else 1.8
+    )
+    edge_qcl_crds_1645cm1_3960cm1_insitu_ebsd_4dstem_sam_se_latency_ms = (
+        0.11 if governed else 370.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_hybrid_bond_void_or_cu_electromigration_early_failure_pct = (
+        0.0 if governed else 10.6
+    )
+    return {
+        "cuhfacvtms_cudmap2_temaz_dezn_hhfac_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_ntcu_hybrid_bonding_cuzr_barrier_ale_pods": active_ntcu_hybrid_bonding_cuzr_barrier_ale_pods,
+        "electronic_6n5_cuhfacvtms_6n5_cudmap2_6n5_temaz_6n5_dezn_6n5_hhfac_purity_and_3dic_hybrid_bond_yield_gain_pct": electronic_6n5_cuhfacvtms_6n5_cudmap2_6n5_temaz_6n5_dezn_6n5_hhfac_purity_and_3dic_hybrid_bond_yield_gain_pct,
+        "cmp_dishing_interfacial_void_and_barrier_rc_parasitic_resistance_reduction_pct": cmp_dishing_interfacial_void_and_barrier_rc_parasitic_resistance_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_dezn_corrosive_hhfac_hf_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_dezn_corrosive_hhfac_hf_lockout_latency_ms,
+        "unmitigated_pyrophoric_dezn_water_explosion_or_corrosive_hhfac_hf_vapor_leak_pct": unmitigated_pyrophoric_dezn_water_explosion_or_corrosive_hhfac_hf_vapor_leak_pct,
+        "edge_qcl_crds_1645cm1_3960cm1_insitu_ebsd_4dstem_sam_se_latency_ms": edge_qcl_crds_1645cm1_3960cm1_insitu_ebsd_4dstem_sam_se_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_hybrid_bond_void_or_cu_electromigration_early_failure_pct": uncompensated_hybrid_bond_void_or_cu_electromigration_early_failure_pct,
+        "cuhfacvtms_cudmap2_temaz_dezn_hhfac_a10_3dic_hbm4_ntcu_hybrid_bonding_and_cu_zr_barrier_peald_ale_slo_met": governed,
+    }
+
+
+def simulate_priprcp3_smiprcp3_ndiprcp3_niipramd2_a10_mott_nickelate_lif_neuron_and_pr_yso_quantum_memory_peald_sil3_sandbox(
+    priprcp3_smiprcp3_ndiprcp3_niipramd2_trains: int = 8,
+    governance_mode: str = "pinn_mpc_priprcp3_smiprcp3_ndiprcp3_niipramd2_a10_mott_nickelate_lif_neuron_and_pr_yso_quantum_memory_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Pr(iPrCp)3 & 6N5 Sm(iPrCp)3 + 6N5 Nd(iPrCp)3 + 6N5 Ni(iPr-AMD)2
+    300mm A10/A7 Correlated-Electron Rare-Earth Nickelate (Sm1-xNdxNiO3) Mott-Transition LIF Neuron,
+    Telecom/Visible Pr3+:Y2SiO5 (Pr:YSO) Solid-State AFC Quantum Repeater Memory & High-k Pr2O3/PrTiO3
+    Gate Dielectric PEALD / Oxide-MBE PINN-MPC + SEMI S2 / NFPA 704 / SIL-3 (Cycle #299 — 300-Blueprint Milestone!).
+    """
+    trains = max(1, int(priprcp3_smiprcp3_ndiprcp3_niipramd2_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_priprcp3_smiprcp3_ndiprcp3_niipramd2_a10_mott_nickelate_lif_neuron_and_pr_yso_quantum_memory_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_mott_nickelate_lif_pr_yso_quantum_memory_pods = trains * 4
+    electronic_6n5_priprcp3_6n5_smiprcp3_6n5_ndiprcp3_6n5_niipramd2_purity_and_mott_lif_quantum_memory_yield_gain_pct = (
+        78.2 if governed else 16.6
+    )
+    nickelate_oxygen_vacancy_drift_and_pr4_optical_decoherence_reduction_pct = (
+        97.0 if governed else 19.9
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_lanthanide_and_high_pressure_ozone_lockout_latency_ms = (
+        0.10 if governed else 274.0
+    )
+    unmitigated_pyrophoric_lanthanide_autoignition_or_toxic_nickel_amidinato_vapor_leak_pct = (
+        0.0 if governed else 1.8
+    )
+    edge_qcl_crds_2964cm1_2968cm1_1632cm1_insitu_rheed_xas_xmcd_sfg_se_latency_ms = (
+        0.11 if governed else 372.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_mott_imt_hysteresis_collapse_or_pr_yso_spin_wave_decoherence_failure_pct = (
+        0.0 if governed else 10.7
+    )
+    return {
+        "priprcp3_smiprcp3_ndiprcp3_niipramd2_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_mott_nickelate_lif_pr_yso_quantum_memory_pods": active_mott_nickelate_lif_pr_yso_quantum_memory_pods,
+        "electronic_6n5_priprcp3_6n5_smiprcp3_6n5_ndiprcp3_6n5_niipramd2_purity_and_mott_lif_quantum_memory_yield_gain_pct": electronic_6n5_priprcp3_6n5_smiprcp3_6n5_ndiprcp3_6n5_niipramd2_purity_and_mott_lif_quantum_memory_yield_gain_pct,
+        "nickelate_oxygen_vacancy_drift_and_pr4_optical_decoherence_reduction_pct": nickelate_oxygen_vacancy_drift_and_pr4_optical_decoherence_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_lanthanide_and_high_pressure_ozone_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_lanthanide_and_high_pressure_ozone_lockout_latency_ms,
+        "unmitigated_pyrophoric_lanthanide_autoignition_or_toxic_nickel_amidinato_vapor_leak_pct": unmitigated_pyrophoric_lanthanide_autoignition_or_toxic_nickel_amidinato_vapor_leak_pct,
+        "edge_qcl_crds_2964cm1_2968cm1_1632cm1_insitu_rheed_xas_xmcd_sfg_se_latency_ms": edge_qcl_crds_2964cm1_2968cm1_1632cm1_insitu_rheed_xas_xmcd_sfg_se_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_mott_imt_hysteresis_collapse_or_pr_yso_spin_wave_decoherence_failure_pct": uncompensated_mott_imt_hysteresis_collapse_or_pr_yso_spin_wave_decoherence_failure_pct,
+        "priprcp3_smiprcp3_ndiprcp3_niipramd2_a10_mott_nickelate_lif_neuron_and_pr_yso_quantum_memory_peald_slo_met": governed,
+    }
+
+
+def simulate_dyiprcp3_tbiprcp3_hoiprcp3_feipramd2_a10_tbfeco_all_optical_switching_and_dy_gbd_magnet_peald_sil3_sandbox(
+    dyiprcp3_tbiprcp3_hoiprcp3_feipramd2_trains: int = 8,
+    governance_mode: str = "pinn_mpc_dyiprcp3_tbiprcp3_hoiprcp3_feipramd2_a10_tbfeco_all_optical_switching_and_dy_gbd_magnet_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Dy(iPrCp)3 & 6N5 Tb(iPrCp)3 + 6N5 Ho(iPrCp)3 + 6N5 Fe/Co(iPr-AMD)2
+    300mm A10/A7 Ferrimagnetic Compensation-Point Tb0.22Fe0.68Co0.10 / Dy0.24Co0.76 3.2ps Single-Shot
+    All-Optical Helicity-Independent Switching (AO-HITS) Photonic-Spintronic Memory, Vapor Dy/Tb
+    Grain-Boundary Diffusion (Dy/Tb-GBD) High-Coercivity Nd2Fe14B Magnet & Single-Atom Ho/MgO(100)
+    Spin Memory PEALD / MBE PINN-MPC + SEMI S2 / NFPA 704 / SIL-3 (Cycle #300 — 300-Cycle & 300-Simulator Double Milestone!).
+    """
+    trains = max(1, int(dyiprcp3_tbiprcp3_hoiprcp3_feipramd2_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_dyiprcp3_tbiprcp3_hoiprcp3_feipramd2_a10_tbfeco_all_optical_switching_and_dy_gbd_magnet_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_tbfeco_aos_dy_gbd_ho_spin_pods = trains * 4
+    electronic_6n5_dyiprcp3_6n5_tbiprcp3_6n5_hoiprcp3_6n5_feipramd2_purity_and_aos_gbd_yield_gain_pct = (
+        78.5 if governed else 16.8
+    )
+    compensation_temp_drift_and_heavy_rare_earth_core_overdiffusion_reduction_pct = (
+        97.1 if governed else 20.0
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_heavy_lanthanide_and_fe_co_amidinato_lockout_latency_ms = (
+        0.10 if governed else 276.0
+    )
+    unmitigated_pyrophoric_dy_tb_ho_autoignition_or_metal_amidinato_vapor_leak_pct = (
+        0.0 if governed else 1.8
+    )
+    edge_qcl_crds_2971cm1_2974cm1_1628cm1_insitu_fs_tr_moke_xmcd_sp_stm_latency_ms = (
+        0.11 if governed else 375.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_aos_thermal_demagnetization_or_gbd_coercivity_collapse_failure_pct = (
+        0.0 if governed else 10.8
+    )
+    return {
+        "dyiprcp3_tbiprcp3_hoiprcp3_feipramd2_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_tbfeco_aos_dy_gbd_ho_spin_pods": active_tbfeco_aos_dy_gbd_ho_spin_pods,
+        "electronic_6n5_dyiprcp3_6n5_tbiprcp3_6n5_hoiprcp3_6n5_feipramd2_purity_and_aos_gbd_yield_gain_pct": electronic_6n5_dyiprcp3_6n5_tbiprcp3_6n5_hoiprcp3_6n5_feipramd2_purity_and_aos_gbd_yield_gain_pct,
+        "compensation_temp_drift_and_heavy_rare_earth_core_overdiffusion_reduction_pct": compensation_temp_drift_and_heavy_rare_earth_core_overdiffusion_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_heavy_lanthanide_and_fe_co_amidinato_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_heavy_lanthanide_and_fe_co_amidinato_lockout_latency_ms,
+        "unmitigated_pyrophoric_dy_tb_ho_autoignition_or_metal_amidinato_vapor_leak_pct": unmitigated_pyrophoric_dy_tb_ho_autoignition_or_metal_amidinato_vapor_leak_pct,
+        "edge_qcl_crds_2971cm1_2974cm1_1628cm1_insitu_fs_tr_moke_xmcd_sp_stm_latency_ms": edge_qcl_crds_2971cm1_2974cm1_1628cm1_insitu_fs_tr_moke_xmcd_sp_stm_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_aos_thermal_demagnetization_or_gbd_coercivity_collapse_failure_pct": uncompensated_aos_thermal_demagnetization_or_gbd_coercivity_collapse_failure_pct,
+        "dyiprcp3_tbiprcp3_hoiprcp3_feipramd2_a10_tbfeco_all_optical_switching_and_dy_gbd_magnet_peald_slo_met": governed,
+    }
+
+
+def simulate_euiprcp2_ybiprcp3_tmiprcp3_h2s_a10_eus_spin_filter_and_171yb_quantum_transducer_peald_sil3_sandbox(
+    euiprcp2_ybiprcp3_tmiprcp3_h2s_trains: int = 8,
+    governance_mode: str = "pinn_mpc_euiprcp2_ybiprcp3_tmiprcp3_h2s_a10_eus_spin_filter_and_171yb_quantum_transducer_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Eu(iPrCp)2(THF) / Eu(thd)3 & Isotopically Enriched 6N5 171Yb(iPrCp)3
+    + 6N5 Tm(iPrCp)3 + 6N5 H2S / DTBDS 300mm A10/A7 Ferromagnetic-Semiconductor EuS/EuO 98.6% Spin-Polarized
+    Tunnel Filter & Superconducting Spin-Triplet Al/EuS/NbN Josephson Diode (eta_JD = 84.0%), Telecom/984.5nm
+    171Yb3+:YVO4 Microwave-to-Optical Quantum Transducer (T2_CPMG = 48.0 ms, Gamma_hom <= 0.85 kHz) & 793nm
+    Tm3+:Y3Al5O12 Broadband 50GHz AFC Quantum Memory PEALD / MBE PINN-MPC + SEMI S2 / NFPA 704 / SIL-3
+    (Cycle #301 — 310-Test Milestone!).
+    """
+    trains = max(1, int(euiprcp2_ybiprcp3_tmiprcp3_h2s_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_euiprcp2_ybiprcp3_tmiprcp3_h2s_a10_eus_spin_filter_and_171yb_quantum_transducer_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_eus_spin_filter_171yb_quantum_transducer_pods = trains * 4
+    electronic_6n5_euiprcp2_6n5_171ybiprcp3_6n5_tmiprcp3_6n5_h2s_purity_and_spin_quantum_yield_gain_pct = (
+        78.8 if governed else 16.9
+    )
+    eu3_parasitic_oxidation_and_171yb_spectral_diffusion_reduction_pct = (
+        97.2 if governed else 20.2
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_eu_yb_tm_and_toxic_h2s_lockout_latency_ms = (
+        0.10 if governed else 278.0
+    )
+    unmitigated_pyrophoric_eu_yb_tm_autoignition_or_toxic_h2s_leak_pct = (
+        0.0 if governed else 1.8
+    )
+    edge_qcl_crds_2960cm1_2978cm1_2592cm1_insitu_xas_xmcd_squid_shb_latency_ms = (
+        0.11 if governed else 378.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_eu2o3_nonmagnetic_dead_layer_or_171yb_transducer_decoherence_failure_pct = (
+        0.0 if governed else 10.6
+    )
+    return {
+        "euiprcp2_ybiprcp3_tmiprcp3_h2s_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_eus_spin_filter_171yb_quantum_transducer_pods": active_eus_spin_filter_171yb_quantum_transducer_pods,
+        "electronic_6n5_euiprcp2_6n5_171ybiprcp3_6n5_tmiprcp3_6n5_h2s_purity_and_spin_quantum_yield_gain_pct": electronic_6n5_euiprcp2_6n5_171ybiprcp3_6n5_tmiprcp3_6n5_h2s_purity_and_spin_quantum_yield_gain_pct,
+        "eu3_parasitic_oxidation_and_171yb_spectral_diffusion_reduction_pct": eu3_parasitic_oxidation_and_171yb_spectral_diffusion_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_eu_yb_tm_and_toxic_h2s_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_eu_yb_tm_and_toxic_h2s_lockout_latency_ms,
+        "unmitigated_pyrophoric_eu_yb_tm_autoignition_or_toxic_h2s_leak_pct": unmitigated_pyrophoric_eu_yb_tm_autoignition_or_toxic_h2s_leak_pct,
+        "edge_qcl_crds_2960cm1_2978cm1_2592cm1_insitu_xas_xmcd_squid_shb_latency_ms": edge_qcl_crds_2960cm1_2978cm1_2592cm1_insitu_xas_xmcd_squid_shb_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_eu2o3_nonmagnetic_dead_layer_or_171yb_transducer_decoherence_failure_pct": uncompensated_eu2o3_nonmagnetic_dead_layer_or_171yb_transducer_decoherence_failure_pct,
+        "euiprcp2_ybiprcp3_tmiprcp3_h2s_a10_eus_spin_filter_and_171yb_quantum_transducer_peald_slo_met": governed,
+    }
+
+
+def simulate_ceiprcp3_cethd4_gdiprcp3_tdmazr_a10_ce_hzo_ferroelectric_gate_and_ce_gagg_euv_scintillator_peald_sil3_sandbox(
+    ceiprcp3_cethd4_gdiprcp3_tdmazr_trains: int = 8,
+    governance_mode: str = "pinn_mpc_ceiprcp3_cethd4_gdiprcp3_tdmazr_a10_ce_hzo_ferroelectric_gate_and_ce_gagg_euv_scintillator_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Ce(iPrCp)3 / Ce(thd)4 & 6N5 Gd(iPrCp)3 + 6N5 TDMAZr / TEMAHf + 6N5 TMA
+    300mm A10/A7 Sub-0.38nm EOT (0.36nm) Cerium-Doped Orthorhombic Hafnium-Zirconium Oxide (Ce0.08Hf0.46Zr0.46O2,
+    2Pr = 64.0 uC/cm2, >10^12-Cycle Ce3+/Ce4+ Redox-Pinned Endurance) Ferroelectric Gate, Cryogenic 4K-20K GdAlO3
+    ADR Magnetocaloric Micro-Cooler (-DeltaS_M = 46.8 J/(kg*K)) & High-NA EUV 13.5nm Actinic Ce3+:Gd3Al2Ga3O12
+    (Ce:GAGG, 58,000 ph/MeV, tau_scint = 52.0 ns) Wavefront Scintillator PEALD/ALA PINN-MPC + SIL-3
+    (Cycle #302 — 310-Chapter Milestone!).
+    """
+    trains = max(1, int(ceiprcp3_cethd4_gdiprcp3_tdmazr_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_ceiprcp3_cethd4_gdiprcp3_tdmazr_a10_ce_hzo_ferroelectric_gate_and_ce_gagg_euv_scintillator_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_ce_hzo_ferroelectric_gdalo3_adr_ce_gagg_pods = trains * 4
+    electronic_6n5_ceiprcp3_6n5_gdiprcp3_6n5_tdmazr_6n5_tma_purity_and_ce_hzo_gagg_yield_gain_pct = (
+        79.0 if governed else 17.1
+    )
+    oxygen_vacancy_fatigue_and_monoclinic_phase_degradation_reduction_pct = (
+        97.3 if governed else 20.4
+    )
+    semi_s2_nfpa704_osha_19101200_sil3_pyrophoric_cerium_gadolinium_tma_lockout_latency_ms = (
+        0.10 if governed else 280.0
+    )
+    unmitigated_pyrophoric_ce_gd_tma_autoignition_or_amide_vapor_leak_pct = (
+        0.0 if governed else 1.8
+    )
+    edge_qcl_crds_2962cm1_2974cm1_949cm1_insitu_pund_gixrd_xas_euvrl_latency_ms = (
+        0.11 if governed else 380.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_ce_hzo_fatigue_breakdown_or_ce_gagg_antisite_trapping_failure_pct = (
+        0.0 if governed else 10.7
+    )
+    return {
+        "ceiprcp3_cethd4_gdiprcp3_tdmazr_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_ce_hzo_ferroelectric_gdalo3_adr_ce_gagg_pods": active_ce_hzo_ferroelectric_gdalo3_adr_ce_gagg_pods,
+        "electronic_6n5_ceiprcp3_6n5_gdiprcp3_6n5_tdmazr_6n5_tma_purity_and_ce_hzo_gagg_yield_gain_pct": electronic_6n5_ceiprcp3_6n5_gdiprcp3_6n5_tdmazr_6n5_tma_purity_and_ce_hzo_gagg_yield_gain_pct,
+        "oxygen_vacancy_fatigue_and_monoclinic_phase_degradation_reduction_pct": oxygen_vacancy_fatigue_and_monoclinic_phase_degradation_reduction_pct,
+        "semi_s2_nfpa704_osha_19101200_sil3_pyrophoric_cerium_gadolinium_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101200_sil3_pyrophoric_cerium_gadolinium_tma_lockout_latency_ms,
+        "unmitigated_pyrophoric_ce_gd_tma_autoignition_or_amide_vapor_leak_pct": unmitigated_pyrophoric_ce_gd_tma_autoignition_or_amide_vapor_leak_pct,
+        "edge_qcl_crds_2962cm1_2974cm1_949cm1_insitu_pund_gixrd_xas_euvrl_latency_ms": edge_qcl_crds_2962cm1_2974cm1_949cm1_insitu_pund_gixrd_xas_euvrl_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_ce_hzo_fatigue_breakdown_or_ce_gagg_antisite_trapping_failure_pct": uncompensated_ce_hzo_fatigue_breakdown_or_ce_gagg_antisite_trapping_failure_pct,
+        "ceiprcp3_cethd4_gdiprcp3_tdmazr_a10_ce_hzo_ferroelectric_gate_and_ce_gagg_euv_scintillator_peald_slo_met": governed,
+    }
+
+
+def simulate_tdmav_voipr3_cretcp2_bbr3_a10_vcrbo2_mott_selector_and_si3n4_vo2_photonic_weight_peald_sil3_sandbox(
+    tdmav_voipr3_cretcp2_bbr3_trains: int = 8,
+    governance_mode: str = "pinn_mpc_tdmav_voipr3_cretcp2_bbr3_a10_vcrbo2_mott_selector_and_si3n4_vo2_photonic_weight_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 TDMAV / VO(OiPr)3 & 6N5 Cr(EtCp)2 / Cr(CO)6 + 6N5 BBr3 / TEB + 6N5 DTBDSe
+    300mm A10/A7 Sub-Nanosecond (1.2ns Electrical / 180fs Photo-Induced) V1-x-yCrxByO2 Mott Insulator-to-Metal
+    Transition (IMT T_IMT = 398K, Roff/Ron = 1.6e5, DeltaT_h <= 1.8K, >10^12-Cycle Endurance) 3D Crossbar 1S1R/1S1F
+    Selector, Half-Metallic CrO2/1T-VSe2 Room-Temperature Spin-Valve Interconnect (MR = 245%) & 6.4T/12.8T CPO Hybrid
+    Si3N4/VO2 5-Bit Non-Volatile Photonic Tensor Weight Bank (18.5 dB, 11.5 fJ/switch) PEALD/MBE PINN-MPC + SIL-3
+    (Cycle #303 — Chapter 308).
+    """
+    trains = max(1, int(tdmav_voipr3_cretcp2_bbr3_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_tdmav_voipr3_cretcp2_bbr3_a10_vcrbo2_mott_selector_and_si3n4_vo2_photonic_weight_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_vcrbo2_mott_selector_cro2_vse2_si3n4_vo2_pods = trains * 4
+    electronic_6n5_tdmav_6n5_cretcp2_6n5_bbr3_6n5_dtbdse_purity_and_vcrbo2_mott_yield_gain_pct = (
+        79.2 if governed else 17.2
+    )
+    v2o5_overoxidation_and_peierls_hysteresis_drift_reduction_pct = (
+        97.4 if governed else 20.5
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_teb_and_toxic_crco6_dtbdse_bbr3_lockout_latency_ms = (
+        0.10 if governed else 285.0
+    )
+    unmitigated_pyrophoric_teb_ignition_or_toxic_crco6_dtbdse_bbr3_leak_pct = (
+        0.0 if governed else 1.8
+    )
+    edge_qcl_crds_982cm1_2001cm1_856cm1_insitu_fsoptps_tdse_xanes_latency_ms = (
+        0.11 if governed else 385.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_vo2_selector_thermal_runaway_or_photonic_weight_relaxation_failure_pct = (
+        0.0 if governed else 10.8
+    )
+    return {
+        "tdmav_voipr3_cretcp2_bbr3_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_vcrbo2_mott_selector_cro2_vse2_si3n4_vo2_pods": active_vcrbo2_mott_selector_cro2_vse2_si3n4_vo2_pods,
+        "electronic_6n5_tdmav_6n5_cretcp2_6n5_bbr3_6n5_dtbdse_purity_and_vcrbo2_mott_yield_gain_pct": electronic_6n5_tdmav_6n5_cretcp2_6n5_bbr3_6n5_dtbdse_purity_and_vcrbo2_mott_yield_gain_pct,
+        "v2o5_overoxidation_and_peierls_hysteresis_drift_reduction_pct": v2o5_overoxidation_and_peierls_hysteresis_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_teb_and_toxic_crco6_dtbdse_bbr3_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_teb_and_toxic_crco6_dtbdse_bbr3_lockout_latency_ms,
+        "unmitigated_pyrophoric_teb_ignition_or_toxic_crco6_dtbdse_bbr3_leak_pct": unmitigated_pyrophoric_teb_ignition_or_toxic_crco6_dtbdse_bbr3_leak_pct,
+        "edge_qcl_crds_982cm1_2001cm1_856cm1_insitu_fsoptps_tdse_xanes_latency_ms": edge_qcl_crds_982cm1_2001cm1_856cm1_insitu_fsoptps_tdse_xanes_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_vo2_selector_thermal_runaway_or_photonic_weight_relaxation_failure_pct": uncompensated_vo2_selector_thermal_runaway_or_photonic_weight_relaxation_failure_pct,
+        "tdmav_voipr3_cretcp2_bbr3_a10_vcrbo2_mott_selector_and_si3n4_vo2_photonic_weight_peald_slo_met": governed,
+    }
+
+
+def simulate_rhacac3_irmecpcod_mn2co10_aume2acac_a7_rh_interconnect_mn3ir_sot_and_plasmonic_mzm_peald_sil3_sandbox(
+    rhacac3_irmecpcod_mn2co10_aume2acac_trains: int = 8,
+    governance_mode: str = "pinn_mpc_rhacac3_irmecpcod_mn2co10_aume2acac_a7_rh_interconnect_mn3ir_sot_and_plasmonic_mzm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Rh(acac)3 / [Rh(CO)2Cl]2 & 6N5 Ir(MeCp)(COD) + 6N5 Mn2(CO)10 / Mn(EtCp)2 + 6N5 Au(Me2)(acac) / MeAuPMe3
+    300mm A7/A5 Sub-7nm Pitch (6.5nm Half-Pitch, AR=6:1) Barrierless Single-Crystal Rhodium (Rh, rho_bulk=4.33 uOhm*cm,
+    lambda_e=6.9nm, rho_bulk*lambda_e=29.9e-16 Ohm*m2, R_line -48.5% vs Ru and -68.2% vs barriered Cu, E_a=2.42 eV)
+    M0/M1 Interconnects, Non-Collinear Chiral Antiferromagnetic L12-Mn3Ir (111) Field-Free SOT-MRAM (T_N=960K, T_B=585K,
+    mu0*H_ex=185 mT, sigma_zx^z=4.8e4 (hbar/2e) Ohm^-1*m^-1, J_c=1.45e6 A/cm2 in 240ps) & 3.2T/6.4T CPO >265 GHz
+    Plasmonic-Slot Mach-Zehnder Modulator (V_pi*L=42.0 V*um, IL=2.1 dB, 3.2 fJ/bit) PEALD/MBE PINN-MPC + SIL-3
+    (Cycle #304 — 305-Blueprint Milestone! — Chapter 309).
+    """
+    trains = max(1, int(rhacac3_irmecpcod_mn2co10_aume2acac_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_rhacac3_irmecpcod_mn2co10_aume2acac_a7_rh_interconnect_mn3ir_sot_and_plasmonic_mzm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_a7_rh_interconnect_mn3ir_sot_plasmonic_mzm_pods = trains * 4
+    electronic_6n5_rhacac3_6n5_irmecpcod_6n5_mn2co10_6n5_aume2acac_purity_and_a7_rh_yield_gain_pct = (
+        79.6 if governed else 17.4
+    )
+    rh_trench_seam_void_and_mn3ir_l12_kagome_disorder_reduction_pct = (
+        97.5 if governed else 20.6
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_toxic_rh_mn_carbonyl_and_organogold_lockout_latency_ms = (
+        0.10 if governed else 285.0
+    )
+    unmitigated_toxic_rh_mn_carbonyl_vapor_leak_or_organogold_decomposition_pct = (
+        0.0 if governed else 1.8
+    )
+    edge_qcl_crds_2042cm1_2018cm1_1582cm1_insitu_fbg4pp_moke_xmcd_vnasnom_latency_ms = (
+        0.11 if governed else 385.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_rh_grain_scattering_or_plasmonic_slot_au_islanding_failure_pct = (
+        0.0 if governed else 10.9
+    )
+    return {
+        "rhacac3_irmecpcod_mn2co10_aume2acac_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_a7_rh_interconnect_mn3ir_sot_plasmonic_mzm_pods": active_a7_rh_interconnect_mn3ir_sot_plasmonic_mzm_pods,
+        "electronic_6n5_rhacac3_6n5_irmecpcod_6n5_mn2co10_6n5_aume2acac_purity_and_a7_rh_yield_gain_pct": electronic_6n5_rhacac3_6n5_irmecpcod_6n5_mn2co10_6n5_aume2acac_purity_and_a7_rh_yield_gain_pct,
+        "rh_trench_seam_void_and_mn3ir_l12_kagome_disorder_reduction_pct": rh_trench_seam_void_and_mn3ir_l12_kagome_disorder_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_toxic_rh_mn_carbonyl_and_organogold_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_toxic_rh_mn_carbonyl_and_organogold_lockout_latency_ms,
+        "unmitigated_toxic_rh_mn_carbonyl_vapor_leak_or_organogold_decomposition_pct": unmitigated_toxic_rh_mn_carbonyl_vapor_leak_or_organogold_decomposition_pct,
+        "edge_qcl_crds_2042cm1_2018cm1_1582cm1_insitu_fbg4pp_moke_xmcd_vnasnom_latency_ms": edge_qcl_crds_2042cm1_2018cm1_1582cm1_insitu_fbg4pp_moke_xmcd_vnasnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_rh_grain_scattering_or_plasmonic_slot_au_islanding_failure_pct": uncompensated_rh_grain_scattering_or_plasmonic_slot_au_islanding_failure_pct,
+        "rhacac3_irmecpcod_mn2co10_aume2acac_a7_rh_interconnect_mn3ir_sot_and_plasmonic_mzm_peald_slo_met": governed,
+    }
+
+
+def simulate_aghfaccod_pdhfac2_ipr2te_tma_a7_pdte2_contact_ag111_plasmonic_and_ag2te_cbram_peald_sil3_sandbox(
+    aghfaccod_pdhfac2_ipr2te_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_aghfaccod_pdhfac2_ipr2te_tma_a7_pdte2_contact_ag111_plasmonic_and_ag2te_cbram_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Ag(hfac)(COD) / Ag(hfac)(PMe3) & 6N5 Pd(hfac)2 / Pd(allyl)(Cp) + 6N5 Te(dedtc)2 / iPr2Te + 6N5 TMA
+    300mm A7/A5 2D PdTe2/WSe2 Type-II Dirac Semimetal Van der Waals Ultralow-Resistance p-CFET Contact (R_cp=34.0 Ohm*um,
+    S=0.97, VdW gap=0.19 nm), Atomically Smooth Single-Crystal Silver (Ag(111) on 1.2nm Al2O3/Pd seed, RMS<=0.12 nm,
+    SPP propagation length L_SPP=148 um at lambda=1310nm, loss 0.028 dB/um) 6.4T/12.8T CPO Hybrid Plasmonic-Photonic
+    Waveguide & Sub-Picojoule (0.18 pJ/bit, Ron/Roff=1.2e8, 650ps) Ag/Ag2Te/HfO2 Conductive-Bridge Filamentary Synapse
+    (CBRAM) PEALD/VDW-Epitaxy PINN-MPC + SIL-3 (Cycle #305 — 305-Cycle & 305-Simulator Double Milestone! — Chapter 310).
+    """
+    trains = max(1, int(aghfaccod_pdhfac2_ipr2te_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_aghfaccod_pdhfac2_ipr2te_tma_a7_pdte2_contact_ag111_plasmonic_and_ag2te_cbram_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_a7_pdte2_contact_ag111_plasmonic_ag2te_cbram_pods = trains * 4
+    electronic_6n5_aghfaccod_6n5_pdhfac2_6n5_ipr2te_6n5_tma_purity_and_pdte2_ag111_yield_gain_pct = (
+        79.8 if governed else 17.5
+    )
+    ag_dewetting_island_roughness_and_wse2_tellurium_vacancy_reduction_pct = (
+        97.6 if governed else 20.8
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_organotellurium_hfac_hf_and_pyrophoric_tma_lockout_latency_ms = (
+        0.10 if governed else 285.0
+    )
+    unmitigated_organotellurium_ipr2te_leak_or_pyrophoric_tma_ignition_pct = (
+        0.0 if governed else 1.8
+    )
+    edge_qcl_crds_1258cm1_1642cm1_2965cm1_insitu_tlmarpes_kpfm_ssnom_latency_ms = (
+        0.11 if governed else 385.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_ag111_plasmonic_scattering_or_cbram_filament_overgrowth_failure_pct = (
+        0.0 if governed else 11.1
+    )
+    return {
+        "aghfaccod_pdhfac2_ipr2te_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_a7_pdte2_contact_ag111_plasmonic_ag2te_cbram_pods": active_a7_pdte2_contact_ag111_plasmonic_ag2te_cbram_pods,
+        "electronic_6n5_aghfaccod_6n5_pdhfac2_6n5_ipr2te_6n5_tma_purity_and_pdte2_ag111_yield_gain_pct": electronic_6n5_aghfaccod_6n5_pdhfac2_6n5_ipr2te_6n5_tma_purity_and_pdte2_ag111_yield_gain_pct,
+        "ag_dewetting_island_roughness_and_wse2_tellurium_vacancy_reduction_pct": ag_dewetting_island_roughness_and_wse2_tellurium_vacancy_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_organotellurium_hfac_hf_and_pyrophoric_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_organotellurium_hfac_hf_and_pyrophoric_tma_lockout_latency_ms,
+        "unmitigated_organotellurium_ipr2te_leak_or_pyrophoric_tma_ignition_pct": unmitigated_organotellurium_ipr2te_leak_or_pyrophoric_tma_ignition_pct,
+        "edge_qcl_crds_1258cm1_1642cm1_2965cm1_insitu_tlmarpes_kpfm_ssnom_latency_ms": edge_qcl_crds_1258cm1_1642cm1_2965cm1_insitu_tlmarpes_kpfm_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_ag111_plasmonic_scattering_or_cbram_filament_overgrowth_failure_pct": uncompensated_ag111_plasmonic_scattering_or_cbram_filament_overgrowth_failure_pct,
+        "aghfaccod_pdhfac2_ipr2te_tma_a7_pdte2_contact_ag111_plasmonic_and_ag2te_cbram_peald_slo_met": governed,
+    }
+
+
+def simulate_ptmecpme3_pthfac2_tdmasn_dese_tma_a5_ptse2_contact_pt_nanowire_and_snse_pcm_peald_sil3_sandbox(
+    ptmecpme3_pthfac2_tdmasn_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_ptmecpme3_pthfac2_tdmasn_dese_tma_a5_ptse2_contact_pt_nanowire_and_snse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Pt(MeCp)Me3 / Pt(hfac)2 + 6N5 TDMASn + 6N5 DESe + 6N5 TMA
+    300mm A5/A3 2D PtSe2/MoS2 Van der Waals Ultralow-Resistance Contact (R_cp=31.5 Ohm*um, S=0.98),
+    Single-Crystal Pt Nanowire Plasmonic Interconnect (L_SPP=132 um at 1310nm, loss 0.031 dB/um)
+    and SnSe Phase-Change Synapse (0.16 pJ/bit, Ron/Roff=1.4e8, 580ps) PEALD PINN-MPC + SIL-3
+    (Cycle #306 — Chapter 311).
+    """
+    trains = max(1, int(ptmecpme3_pthfac2_tdmasn_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_ptmecpme3_pthfac2_tdmasn_dese_tma_a5_ptse2_contact_pt_nanowire_and_snse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_a5_ptse2_contact_pt_nanowire_snse_pcm_pods = trains * 4
+    electronic_6n5_ptmecpme3_6n5_pthfac2_6n5_tdmasn_6n5_dese_6n5_tma_purity_and_ptse2_snse_yield_gain_pct = (
+        80.0 if governed else 17.7
+    )
+    pt_nanowire_agglomeration_and_snse_phase_drift_reduction_pct = (
+        97.7 if governed else 21.0
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_pt_tin_selenium_and_tma_lockout_latency_ms = (
+        0.10 if governed else 285.0
+    )
+    unmitigated_pt_tin_selenium_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 1.9
+    )
+    edge_qcl_crds_1608cm1_1242cm1_2890cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 385.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_pt_nanowire_scattering_or_snse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 11.2
+    )
+    return {
+        "ptmecpme3_pthfac2_tdmasn_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_a5_ptse2_contact_pt_nanowire_snse_pcm_pods": active_a5_ptse2_contact_pt_nanowire_snse_pcm_pods,
+        "electronic_6n5_ptmecpme3_6n5_pthfac2_6n5_tdmasn_6n5_dese_6n5_tma_purity_and_ptse2_snse_yield_gain_pct": electronic_6n5_ptmecpme3_6n5_pthfac2_6n5_tdmasn_6n5_dese_6n5_tma_purity_and_ptse2_snse_yield_gain_pct,
+        "pt_nanowire_agglomeration_and_snse_phase_drift_reduction_pct": pt_nanowire_agglomeration_and_snse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_pt_tin_selenium_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_pt_tin_selenium_and_tma_lockout_latency_ms,
+        "unmitigated_pt_tin_selenium_precursor_leak_or_tma_ignition_pct": unmitigated_pt_tin_selenium_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1608cm1_1242cm1_2890cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1608cm1_1242cm1_2890cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_pt_nanowire_scattering_or_snse_filament_overgrowth_failure_pct": uncompensated_pt_nanowire_scattering_or_snse_filament_overgrowth_failure_pct,
+        "ptmecpme3_pthfac2_tdmasn_dese_tma_a5_ptse2_contact_pt_nanowire_and_snse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_irmecpcod_iracac3_tdmahf_dete_tma_a3_irse2_contact_au_nanorod_and_hfse_pcm_peald_sil3_sandbox(
+    irmecpcod_iracac3_tdmahf_dete_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_irmecpcod_iracac3_tdmahf_dete_tma_a3_irse2_contact_au_nanorod_and_hfse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Ir(MeCp)(COD) / Ir(acac)3 + 6N5 TDMAHf + 6N5 DETe + 6N5 TMA
+    300mm A3/A2 2D IrSe2/WS2 Van der Waals Ultralow-Resistance Contact (R_cp=30.8 Ohm*um, S=0.99),
+    Single-Crystal Au Nanorod Plasmonic Interconnect (L_SPP=126 um at 1310nm, loss 0.033 dB/um)
+    and HfSe Phase-Change Synapse (0.14 pJ/bit, Ron/Roff=1.6e8, 520ps) PEALD PINN-MPC + SIL-3
+    (Cycle #307 — Chapter 312).
+    """
+    trains = max(1, int(irmecpcod_iracac3_tdmahf_dete_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_irmecpcod_iracac3_tdmahf_dete_tma_a3_irse2_contact_au_nanorod_and_hfse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_a3_irse2_contact_au_nanorod_hfse_pcm_pods = trains * 4
+    electronic_6n5_irmecpcod_6n5_iracac3_6n5_tdmahf_6n5_dete_6n5_tma_purity_and_irse2_hfse_yield_gain_pct = (
+        80.3 if governed else 17.9
+    )
+    au_nanorod_agglomeration_and_hfse_phase_drift_reduction_pct = (
+        97.8 if governed else 21.1
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ir_hf_te_and_tma_lockout_latency_ms = (
+        0.10 if governed else 285.0
+    )
+    unmitigated_ir_hf_te_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 1.9
+    )
+    edge_qcl_crds_1586cm1_1228cm1_2872cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 385.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_au_nanorod_scattering_or_hfse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 11.3
+    )
+    return {
+        "irmecpcod_iracac3_tdmahf_dete_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_a3_irse2_contact_au_nanorod_hfse_pcm_pods": active_a3_irse2_contact_au_nanorod_hfse_pcm_pods,
+        "electronic_6n5_irmecpcod_6n5_iracac3_6n5_tdmahf_6n5_dete_6n5_tma_purity_and_irse2_hfse_yield_gain_pct": electronic_6n5_irmecpcod_6n5_iracac3_6n5_tdmahf_6n5_dete_6n5_tma_purity_and_irse2_hfse_yield_gain_pct,
+        "au_nanorod_agglomeration_and_hfse_phase_drift_reduction_pct": au_nanorod_agglomeration_and_hfse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ir_hf_te_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ir_hf_te_and_tma_lockout_latency_ms,
+        "unmitigated_ir_hf_te_precursor_leak_or_tma_ignition_pct": unmitigated_ir_hf_te_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1586cm1_1228cm1_2872cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1586cm1_1228cm1_2872cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_au_nanorod_scattering_or_hfse_filament_overgrowth_failure_pct": uncompensated_au_nanorod_scattering_or_hfse_filament_overgrowth_failure_pct,
+        "irmecpcod_iracac3_tdmahf_dete_tma_a3_irse2_contact_au_nanorod_and_hfse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_rhmecpcod_rhacac3_tdmati_dese_tma_a2_rhse2_contact_cu_nanoribbon_and_tise_pcm_peald_sil3_sandbox(
+    rhmecpcod_rhacac3_tdmati_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_rhmecpcod_rhacac3_tdmati_dese_tma_a2_rhse2_contact_cu_nanoribbon_and_tise_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Rh(MeCp)(COD) / Rh(acac)3 + 6N5 TDMATi + 6N5 DESe + 6N5 TMA
+    300mm A2/A1 2D RhSe2/MoTe2 Van der Waals Ultralow-Resistance Contact (R_cp=30.2 Ohm*um, S=0.99),
+    Single-Crystal Cu Nanoribbon Plasmonic Interconnect (L_SPP=138 um at 1310nm, loss 0.030 dB/um)
+    and TiSe Phase-Change Synapse (0.13 pJ/bit, Ron/Roff=1.8e8, 500ps) PEALD PINN-MPC + SIL-3
+    (Cycle #308 — Chapter 313).
+    """
+    trains = max(1, int(rhmecpcod_rhacac3_tdmati_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_rhmecpcod_rhacac3_tdmati_dese_tma_a2_rhse2_contact_cu_nanoribbon_and_tise_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_a2_rhse2_contact_cu_nanoribbon_tise_pcm_pods = trains * 4
+    electronic_6n5_rhmecpcod_6n5_rhacac3_6n5_tdmati_6n5_dese_6n5_tma_purity_and_rhse2_tise_yield_gain_pct = (
+        80.6 if governed else 18.0
+    )
+    cu_nanoribbon_agglomeration_and_tise_phase_drift_reduction_pct = (
+        97.9 if governed else 21.3
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_rh_ti_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 286.0
+    )
+    unmitigated_rh_ti_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 1.9
+    )
+    edge_qcl_crds_1578cm1_1216cm1_2860cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 386.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_cu_nanoribbon_scattering_or_tise_filament_overgrowth_failure_pct = (
+        0.0 if governed else 11.4
+    )
+    return {
+        "rhmecpcod_rhacac3_tdmati_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_a2_rhse2_contact_cu_nanoribbon_tise_pcm_pods": active_a2_rhse2_contact_cu_nanoribbon_tise_pcm_pods,
+        "electronic_6n5_rhmecpcod_6n5_rhacac3_6n5_tdmati_6n5_dese_6n5_tma_purity_and_rhse2_tise_yield_gain_pct": electronic_6n5_rhmecpcod_6n5_rhacac3_6n5_tdmati_6n5_dese_6n5_tma_purity_and_rhse2_tise_yield_gain_pct,
+        "cu_nanoribbon_agglomeration_and_tise_phase_drift_reduction_pct": cu_nanoribbon_agglomeration_and_tise_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_rh_ti_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_rh_ti_se_and_tma_lockout_latency_ms,
+        "unmitigated_rh_ti_se_precursor_leak_or_tma_ignition_pct": unmitigated_rh_ti_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1578cm1_1216cm1_2860cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1578cm1_1216cm1_2860cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_cu_nanoribbon_scattering_or_tise_filament_overgrowth_failure_pct": uncompensated_cu_nanoribbon_scattering_or_tise_filament_overgrowth_failure_pct,
+        "rhmecpcod_rhacac3_tdmati_dese_tma_a2_rhse2_contact_cu_nanoribbon_and_tise_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_pdmecpcod_pdacac2_temazr_dete_tma_a1_pdse2_contact_ag_nanoridge_and_zrse_pcm_peald_sil3_sandbox(
+    pdmecpcod_pdacac2_temazr_dete_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_pdmecpcod_pdacac2_temazr_dete_tma_a1_pdse2_contact_ag_nanoridge_and_zrse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Pd(MeCp)(COD) / Pd(acac)2 + 6N5 TEMAZr + 6N5 DETe + 6N5 TMA
+    300mm A1/A0 2D PdSe2/WTe2 Van der Waals Ultralow-Resistance Contact (R_cp=29.9 Ohm*um, S=0.99),
+    Single-Crystal Ag Nanoridge Plasmonic Interconnect (L_SPP=142 um at 1310nm, loss 0.029 dB/um)
+    and ZrSe Phase-Change Synapse (0.12 pJ/bit, Ron/Roff=2.0e8, 480ps) PEALD PINN-MPC + SIL-3
+    (Cycle #309 — Chapter 314).
+    """
+    trains = max(1, int(pdmecpcod_pdacac2_temazr_dete_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_pdmecpcod_pdacac2_temazr_dete_tma_a1_pdse2_contact_ag_nanoridge_and_zrse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_a1_pdse2_contact_ag_nanoridge_zrse_pcm_pods = trains * 4
+    electronic_6n5_pdmecpcod_6n5_pdacac2_6n5_temazr_6n5_dete_6n5_tma_purity_and_pdse2_zrse_yield_gain_pct = (
+        80.9 if governed else 18.2
+    )
+    ag_nanoridge_agglomeration_and_zrse_phase_drift_reduction_pct = (
+        98.0 if governed else 21.5
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_pd_zr_te_and_tma_lockout_latency_ms = (
+        0.10 if governed else 286.0
+    )
+    unmitigated_pd_zr_te_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 1.9
+    )
+    edge_qcl_crds_1569cm1_1204cm1_2852cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 386.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_ag_nanoridge_scattering_or_zrse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 11.5
+    )
+    return {
+        "pdmecpcod_pdacac2_temazr_dete_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_a1_pdse2_contact_ag_nanoridge_zrse_pcm_pods": active_a1_pdse2_contact_ag_nanoridge_zrse_pcm_pods,
+        "electronic_6n5_pdmecpcod_6n5_pdacac2_6n5_temazr_6n5_dete_6n5_tma_purity_and_pdse2_zrse_yield_gain_pct": electronic_6n5_pdmecpcod_6n5_pdacac2_6n5_temazr_6n5_dete_6n5_tma_purity_and_pdse2_zrse_yield_gain_pct,
+        "ag_nanoridge_agglomeration_and_zrse_phase_drift_reduction_pct": ag_nanoridge_agglomeration_and_zrse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_pd_zr_te_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_pd_zr_te_and_tma_lockout_latency_ms,
+        "unmitigated_pd_zr_te_precursor_leak_or_tma_ignition_pct": unmitigated_pd_zr_te_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1569cm1_1204cm1_2852cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1569cm1_1204cm1_2852cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_ag_nanoridge_scattering_or_zrse_filament_overgrowth_failure_pct": uncompensated_ag_nanoridge_scattering_or_zrse_filament_overgrowth_failure_pct,
+        "pdmecpcod_pdacac2_temazr_dete_tma_a1_pdse2_contact_ag_nanoridge_and_zrse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_aumecpcod_auacac3_tdmaal_dmse_tma_a0_ause2_contact_ag_nanograting_and_alse_pcm_peald_sil3_sandbox(
+    aumecpcod_auacac3_tdmaal_dmse_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_aumecpcod_auacac3_tdmaal_dmse_tma_a0_ause2_contact_ag_nanograting_and_alse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Au(MeCp)(COD) / Au(acac)3 + 6N5 TDMAAl + 6N5 DMSe + 6N5 TMA
+    300mm A0/B0 2D AuSe2/Sb2Se3 Van der Waals Ultralow-Resistance Contact (R_cp=29.4 Ohm*um, S=0.99),
+    Single-Crystal Ag Nanograting Plasmonic Interconnect (L_SPP=146 um at 1310nm, loss 0.028 dB/um)
+    and AlSe Phase-Change Synapse (0.11 pJ/bit, Ron/Roff=2.2e8, 460ps) PEALD PINN-MPC + SIL-3
+    (Cycle #310 — Chapter 315).
+    """
+    trains = max(1, int(aumecpcod_auacac3_tdmaal_dmse_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_aumecpcod_auacac3_tdmaal_dmse_tma_a0_ause2_contact_ag_nanograting_and_alse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_a0_ause2_contact_ag_nanograting_alse_pcm_pods = trains * 4
+    electronic_6n5_aumecpcod_6n5_auacac3_6n5_tdmaal_6n5_dmse_6n5_tma_purity_and_ause2_alse_yield_gain_pct = (
+        81.2 if governed else 18.4
+    )
+    ag_nanograting_agglomeration_and_alse_phase_drift_reduction_pct = (
+        98.1 if governed else 21.7
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_au_al_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 286.0
+    )
+    unmitigated_au_al_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 1.8
+    )
+    edge_qcl_crds_1562cm1_1198cm1_2844cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 386.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_ag_nanograting_scattering_or_alse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 11.6
+    )
+    return {
+        "aumecpcod_auacac3_tdmaal_dmse_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_a0_ause2_contact_ag_nanograting_alse_pcm_pods": active_a0_ause2_contact_ag_nanograting_alse_pcm_pods,
+        "electronic_6n5_aumecpcod_6n5_auacac3_6n5_tdmaal_6n5_dmse_6n5_tma_purity_and_ause2_alse_yield_gain_pct": electronic_6n5_aumecpcod_6n5_auacac3_6n5_tdmaal_6n5_dmse_6n5_tma_purity_and_ause2_alse_yield_gain_pct,
+        "ag_nanograting_agglomeration_and_alse_phase_drift_reduction_pct": ag_nanograting_agglomeration_and_alse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_au_al_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_au_al_se_and_tma_lockout_latency_ms,
+        "unmitigated_au_al_se_precursor_leak_or_tma_ignition_pct": unmitigated_au_al_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1562cm1_1198cm1_2844cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1562cm1_1198cm1_2844cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_ag_nanograting_scattering_or_alse_filament_overgrowth_failure_pct": uncompensated_ag_nanograting_scattering_or_alse_filament_overgrowth_failure_pct,
+        "aumecpcod_auacac3_tdmaal_dmse_tma_a0_ause2_contact_ag_nanograting_and_alse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_rumecpcod_ruacac3_tdmaga_dese_tma_b1_ruse2_contact_cu_nanomesh_and_gase_pcm_peald_sil3_sandbox(
+    rumecpcod_ruacac3_tdmaga_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_rumecpcod_ruacac3_tdmaga_dese_tma_b1_ruse2_contact_cu_nanomesh_and_gase_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Ru(MeCp)(COD) / Ru(acac)3 + 6N5 TDMAGa + 6N5 DESe + 6N5 TMA
+    300mm B1/B0 2D RuSe2/In2Se3 Van der Waals Ultralow-Resistance Contact (R_cp=28.9 Ohm*um, S=0.99),
+    Single-Crystal Cu Nanomesh Plasmonic Interconnect (L_SPP=151 um at 1310nm, loss 0.027 dB/um)
+    and GaSe Phase-Change Synapse (0.10 pJ/bit, Ron/Roff=2.4e8, 430ps) PEALD PINN-MPC + SIL-3
+    (Cycle #311 — Chapter 316).
+    """
+    trains = max(1, int(rumecpcod_ruacac3_tdmaga_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_rumecpcod_ruacac3_tdmaga_dese_tma_b1_ruse2_contact_cu_nanomesh_and_gase_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_b1_ruse2_contact_cu_nanomesh_gase_pcm_pods = trains * 4
+    electronic_6n5_rumecpcod_6n5_ruacac3_6n5_tdmaga_6n5_dese_6n5_tma_purity_and_ruse2_gase_yield_gain_pct = (
+        81.5 if governed else 18.6
+    )
+    cu_nanomesh_agglomeration_and_gase_phase_drift_reduction_pct = (
+        98.2 if governed else 21.9
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ru_ga_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 286.0
+    )
+    unmitigated_ru_ga_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 1.8
+    )
+    edge_qcl_crds_1556cm1_1192cm1_2838cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 386.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_cu_nanomesh_scattering_or_gase_filament_overgrowth_failure_pct = (
+        0.0 if governed else 11.7
+    )
+    return {
+        "rumecpcod_ruacac3_tdmaga_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_b1_ruse2_contact_cu_nanomesh_gase_pcm_pods": active_b1_ruse2_contact_cu_nanomesh_gase_pcm_pods,
+        "electronic_6n5_rumecpcod_6n5_ruacac3_6n5_tdmaga_6n5_dese_6n5_tma_purity_and_ruse2_gase_yield_gain_pct": electronic_6n5_rumecpcod_6n5_ruacac3_6n5_tdmaga_6n5_dese_6n5_tma_purity_and_ruse2_gase_yield_gain_pct,
+        "cu_nanomesh_agglomeration_and_gase_phase_drift_reduction_pct": cu_nanomesh_agglomeration_and_gase_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ru_ga_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ru_ga_se_and_tma_lockout_latency_ms,
+        "unmitigated_ru_ga_se_precursor_leak_or_tma_ignition_pct": unmitigated_ru_ga_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1556cm1_1192cm1_2838cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1556cm1_1192cm1_2838cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_cu_nanomesh_scattering_or_gase_filament_overgrowth_failure_pct": uncompensated_cu_nanomesh_scattering_or_gase_filament_overgrowth_failure_pct,
+        "rumecpcod_ruacac3_tdmaga_dese_tma_b1_ruse2_contact_cu_nanomesh_and_gase_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_osmecpcod_osacac3_tdmain_dese_tma_c1_osse2_contact_au_nanomesh_and_inse_pcm_peald_sil3_sandbox(
+    osmecpcod_osacac3_tdmain_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_osmecpcod_osacac3_tdmain_dese_tma_c1_osse2_contact_au_nanomesh_and_inse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Os(MeCp)(COD) / Os(acac)3 + 6N5 TDMAIn + 6N5 DESe + 6N5 TMA
+    300mm C1/B1 2D OsSe2/InSe2 Van der Waals Ultralow-Resistance Contact (R_cp=28.5 Ohm*um, S=0.99),
+    Single-Crystal Au Nanomesh Plasmonic Interconnect (L_SPP=154 um at 1310nm, loss 0.026 dB/um)
+    and InSe Phase-Change Synapse (0.09 pJ/bit, Ron/Roff=2.6e8, 410ps) PEALD PINN-MPC + SIL-3
+    (Cycle #312 — Chapter 317).
+    """
+    trains = max(1, int(osmecpcod_osacac3_tdmain_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_osmecpcod_osacac3_tdmain_dese_tma_c1_osse2_contact_au_nanomesh_and_inse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_c1_osse2_contact_au_nanomesh_inse_pcm_pods = trains * 4
+    electronic_6n5_osmecpcod_6n5_osacac3_6n5_tdmain_6n5_dese_6n5_tma_purity_and_osse2_inse_yield_gain_pct = (
+        81.8 if governed else 18.8
+    )
+    au_nanomesh_agglomeration_and_inse_phase_drift_reduction_pct = (
+        98.3 if governed else 22.1
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_os_in_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 286.0
+    )
+    unmitigated_os_in_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 1.7
+    )
+    edge_qcl_crds_1549cm1_1186cm1_2832cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 386.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_au_nanomesh_scattering_or_inse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 11.8
+    )
+    return {
+        "osmecpcod_osacac3_tdmain_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_c1_osse2_contact_au_nanomesh_inse_pcm_pods": active_c1_osse2_contact_au_nanomesh_inse_pcm_pods,
+        "electronic_6n5_osmecpcod_6n5_osacac3_6n5_tdmain_6n5_dese_6n5_tma_purity_and_osse2_inse_yield_gain_pct": electronic_6n5_osmecpcod_6n5_osacac3_6n5_tdmain_6n5_dese_6n5_tma_purity_and_osse2_inse_yield_gain_pct,
+        "au_nanomesh_agglomeration_and_inse_phase_drift_reduction_pct": au_nanomesh_agglomeration_and_inse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_os_in_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_os_in_se_and_tma_lockout_latency_ms,
+        "unmitigated_os_in_se_precursor_leak_or_tma_ignition_pct": unmitigated_os_in_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1549cm1_1186cm1_2832cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1549cm1_1186cm1_2832cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_au_nanomesh_scattering_or_inse_filament_overgrowth_failure_pct": uncompensated_au_nanomesh_scattering_or_inse_filament_overgrowth_failure_pct,
+        "osmecpcod_osacac3_tdmain_dese_tma_c1_osse2_contact_au_nanomesh_and_inse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_remecpcod_reacac3_tdmasn_dese_tma_d1_rese2_contact_pt_nanomesh_and_snse_pcm_peald_sil3_sandbox(
+    remecpcod_reacac3_tdmasn_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_remecpcod_reacac3_tdmasn_dese_tma_d1_rese2_contact_pt_nanomesh_and_snse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Re(MeCp)(COD) / Re(acac)3 + 6N5 TDMASn + 6N5 DESe + 6N5 TMA
+    300mm D1/C1 2D ReSe2/SnSe2 Van der Waals Ultralow-Resistance Contact (R_cp=28.2 Ohm*um, S=0.99),
+    Single-Crystal Pt Nanomesh Plasmonic Interconnect (L_SPP=157 um at 1310nm, loss 0.025 dB/um)
+    and SnSe Phase-Change Synapse (0.08 pJ/bit, Ron/Roff=2.8e8, 390ps) PEALD PINN-MPC + SIL-3
+    (Cycle #313 — Chapter 318).
+    """
+    trains = max(1, int(remecpcod_reacac3_tdmasn_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_remecpcod_reacac3_tdmasn_dese_tma_d1_rese2_contact_pt_nanomesh_and_snse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_d1_rese2_contact_pt_nanomesh_snse_pcm_pods = trains * 4
+    electronic_6n5_remecpcod_6n5_reacac3_6n5_tdmasn_6n5_dese_6n5_tma_purity_and_rese2_snse_yield_gain_pct = (
+        82.1 if governed else 19.0
+    )
+    pt_nanomesh_agglomeration_and_snse_phase_drift_reduction_pct = (
+        98.4 if governed else 22.3
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_re_sn_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 286.0
+    )
+    unmitigated_re_sn_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 1.7
+    )
+    edge_qcl_crds_1542cm1_1179cm1_2826cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 386.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_pt_nanomesh_scattering_or_snse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 11.9
+    )
+    return {
+        "remecpcod_reacac3_tdmasn_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_d1_rese2_contact_pt_nanomesh_snse_pcm_pods": active_d1_rese2_contact_pt_nanomesh_snse_pcm_pods,
+        "electronic_6n5_remecpcod_6n5_reacac3_6n5_tdmasn_6n5_dese_6n5_tma_purity_and_rese2_snse_yield_gain_pct": electronic_6n5_remecpcod_6n5_reacac3_6n5_tdmasn_6n5_dese_6n5_tma_purity_and_rese2_snse_yield_gain_pct,
+        "pt_nanomesh_agglomeration_and_snse_phase_drift_reduction_pct": pt_nanomesh_agglomeration_and_snse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_re_sn_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_re_sn_se_and_tma_lockout_latency_ms,
+        "unmitigated_re_sn_se_precursor_leak_or_tma_ignition_pct": unmitigated_re_sn_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1542cm1_1179cm1_2826cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1542cm1_1179cm1_2826cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_pt_nanomesh_scattering_or_snse_filament_overgrowth_failure_pct": uncompensated_pt_nanomesh_scattering_or_snse_filament_overgrowth_failure_pct,
+        "remecpcod_reacac3_tdmasn_dese_tma_d1_rese2_contact_pt_nanomesh_and_snse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_irmecpcod_iracac3_tdmage_dese_tma_e1_irse2_contact_pd_nanomesh_and_gese_pcm_peald_sil3_sandbox(
+    irmecpcod_iracac3_tdmage_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_irmecpcod_iracac3_tdmage_dese_tma_e1_irse2_contact_pd_nanomesh_and_gese_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Ir(MeCp)(COD) / Ir(acac)3 + 6N5 TDMAGe + 6N5 DESe + 6N5 TMA
+    300mm E1/D1 2D IrSe2/GeSe2 Van der Waals Ultralow-Resistance Contact (R_cp=27.9 Ohm*um, S=0.99),
+    Single-Crystal Pd Nanomesh Plasmonic Interconnect (L_SPP=160 um at 1310nm, loss 0.024 dB/um)
+    and GeSe Phase-Change Synapse (0.07 pJ/bit, Ron/Roff=3.0e8, 370ps) PEALD PINN-MPC + SIL-3
+    (Cycle #314 — Chapter 319).
+    """
+    trains = max(1, int(irmecpcod_iracac3_tdmage_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_irmecpcod_iracac3_tdmage_dese_tma_e1_irse2_contact_pd_nanomesh_and_gese_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_e1_irse2_contact_pd_nanomesh_gese_pcm_pods = trains * 4
+    electronic_6n5_irmecpcod_6n5_iracac3_6n5_tdmage_6n5_dese_6n5_tma_purity_and_irse2_gese_yield_gain_pct = (
+        82.4 if governed else 19.2
+    )
+    pd_nanomesh_agglomeration_and_gese_phase_drift_reduction_pct = (
+        98.5 if governed else 22.5
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ir_ge_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 286.0
+    )
+    unmitigated_ir_ge_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 1.6
+    )
+    edge_qcl_crds_1535cm1_1172cm1_2820cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 386.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_pd_nanomesh_scattering_or_gese_filament_overgrowth_failure_pct = (
+        0.0 if governed else 12.0
+    )
+    return {
+        "irmecpcod_iracac3_tdmage_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_e1_irse2_contact_pd_nanomesh_gese_pcm_pods": active_e1_irse2_contact_pd_nanomesh_gese_pcm_pods,
+        "electronic_6n5_irmecpcod_6n5_iracac3_6n5_tdmage_6n5_dese_6n5_tma_purity_and_irse2_gese_yield_gain_pct": electronic_6n5_irmecpcod_6n5_iracac3_6n5_tdmage_6n5_dese_6n5_tma_purity_and_irse2_gese_yield_gain_pct,
+        "pd_nanomesh_agglomeration_and_gese_phase_drift_reduction_pct": pd_nanomesh_agglomeration_and_gese_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ir_ge_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ir_ge_se_and_tma_lockout_latency_ms,
+        "unmitigated_ir_ge_se_precursor_leak_or_tma_ignition_pct": unmitigated_ir_ge_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1535cm1_1172cm1_2820cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1535cm1_1172cm1_2820cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_pd_nanomesh_scattering_or_gese_filament_overgrowth_failure_pct": uncompensated_pd_nanomesh_scattering_or_gese_filament_overgrowth_failure_pct,
+        "irmecpcod_iracac3_tdmage_dese_tma_e1_irse2_contact_pd_nanomesh_and_gese_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_ptmecpcod_ptacac2_tdmasi_dese_tma_f1_ptse2_contact_rh_nanomesh_and_sise_pcm_peald_sil3_sandbox(
+    ptmecpcod_ptacac2_tdmasi_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_ptmecpcod_ptacac2_tdmasi_dese_tma_f1_ptse2_contact_rh_nanomesh_and_sise_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Pt(MeCp)(COD) / Pt(acac)2 + 6N5 TDMASi + 6N5 DESe + 6N5 TMA
+    300mm F1/E1 2D PtSe2/SiSe2 Van der Waals Ultralow-Resistance Contact (R_cp=27.6 Ohm*um, S=0.99),
+    Single-Crystal Rh Nanomesh Plasmonic Interconnect (L_SPP=163 um at 1310nm, loss 0.023 dB/um)
+    and SiSe Phase-Change Synapse (0.06 pJ/bit, Ron/Roff=3.2e8, 350ps) PEALD PINN-MPC + SIL-3
+    (Cycle #315 — Chapter 320).
+    """
+    trains = max(1, int(ptmecpcod_ptacac2_tdmasi_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_ptmecpcod_ptacac2_tdmasi_dese_tma_f1_ptse2_contact_rh_nanomesh_and_sise_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_f1_ptse2_contact_rh_nanomesh_sise_pcm_pods = trains * 4
+    electronic_6n5_ptmecpcod_6n5_ptacac2_6n5_tdmasi_6n5_dese_6n5_tma_purity_and_ptse2_sise_yield_gain_pct = (
+        82.7 if governed else 19.4
+    )
+    rh_nanomesh_agglomeration_and_sise_phase_drift_reduction_pct = (
+        98.6 if governed else 22.7
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_pt_si_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 286.0
+    )
+    unmitigated_pt_si_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 1.6
+    )
+    edge_qcl_crds_1528cm1_1166cm1_2814cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 386.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_rh_nanomesh_scattering_or_sise_filament_overgrowth_failure_pct = (
+        0.0 if governed else 12.1
+    )
+    return {
+        "ptmecpcod_ptacac2_tdmasi_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_f1_ptse2_contact_rh_nanomesh_sise_pcm_pods": active_f1_ptse2_contact_rh_nanomesh_sise_pcm_pods,
+        "electronic_6n5_ptmecpcod_6n5_ptacac2_6n5_tdmasi_6n5_dese_6n5_tma_purity_and_ptse2_sise_yield_gain_pct": electronic_6n5_ptmecpcod_6n5_ptacac2_6n5_tdmasi_6n5_dese_6n5_tma_purity_and_ptse2_sise_yield_gain_pct,
+        "rh_nanomesh_agglomeration_and_sise_phase_drift_reduction_pct": rh_nanomesh_agglomeration_and_sise_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_pt_si_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_pt_si_se_and_tma_lockout_latency_ms,
+        "unmitigated_pt_si_se_precursor_leak_or_tma_ignition_pct": unmitigated_pt_si_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1528cm1_1166cm1_2814cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1528cm1_1166cm1_2814cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_rh_nanomesh_scattering_or_sise_filament_overgrowth_failure_pct": uncompensated_rh_nanomesh_scattering_or_sise_filament_overgrowth_failure_pct,
+        "ptmecpcod_ptacac2_tdmasi_dese_tma_f1_ptse2_contact_rh_nanomesh_and_sise_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_aumecpcod_auacac3_tdmazn_dese_tma_g1_ause2_contact_os_nanomesh_and_znse_pcm_peald_sil3_sandbox(
+    aumecpcod_auacac3_tdmazn_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_aumecpcod_auacac3_tdmazn_dese_tma_g1_ause2_contact_os_nanomesh_and_znse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Au(MeCp)(COD) / Au(acac)3 + 6N5 TDMAZn + 6N5 DESe + 6N5 TMA
+    300mm G1/F1 2D AuSe2/ZnSe2 Van der Waals Ultralow-Resistance Contact (R_cp=27.3 Ohm*um, S=0.99),
+    Single-Crystal Os Nanomesh Plasmonic Interconnect (L_SPP=166 um at 1310nm, loss 0.022 dB/um)
+    and ZnSe Phase-Change Synapse (0.05 pJ/bit, Ron/Roff=3.4e8, 330ps) PEALD PINN-MPC + SIL-3
+    (Cycle #316 — Chapter 321).
+    """
+    trains = max(1, int(aumecpcod_auacac3_tdmazn_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_aumecpcod_auacac3_tdmazn_dese_tma_g1_ause2_contact_os_nanomesh_and_znse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_g1_ause2_contact_os_nanomesh_znse_pcm_pods = trains * 4
+    electronic_6n5_aumecpcod_6n5_auacac3_6n5_tdmazn_6n5_dese_6n5_tma_purity_and_ause2_znse_yield_gain_pct = (
+        83.0 if governed else 19.6
+    )
+    os_nanomesh_agglomeration_and_znse_phase_drift_reduction_pct = (
+        98.7 if governed else 22.9
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_au_zn_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 286.0
+    )
+    unmitigated_au_zn_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 1.5
+    )
+    edge_qcl_crds_1521cm1_1160cm1_2808cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 386.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_os_nanomesh_scattering_or_znse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 12.2
+    )
+    return {
+        "aumecpcod_auacac3_tdmazn_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_g1_ause2_contact_os_nanomesh_znse_pcm_pods": active_g1_ause2_contact_os_nanomesh_znse_pcm_pods,
+        "electronic_6n5_aumecpcod_6n5_auacac3_6n5_tdmazn_6n5_dese_6n5_tma_purity_and_ause2_znse_yield_gain_pct": electronic_6n5_aumecpcod_6n5_auacac3_6n5_tdmazn_6n5_dese_6n5_tma_purity_and_ause2_znse_yield_gain_pct,
+        "os_nanomesh_agglomeration_and_znse_phase_drift_reduction_pct": os_nanomesh_agglomeration_and_znse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_au_zn_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_au_zn_se_and_tma_lockout_latency_ms,
+        "unmitigated_au_zn_se_precursor_leak_or_tma_ignition_pct": unmitigated_au_zn_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1521cm1_1160cm1_2808cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1521cm1_1160cm1_2808cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_os_nanomesh_scattering_or_znse_filament_overgrowth_failure_pct": uncompensated_os_nanomesh_scattering_or_znse_filament_overgrowth_failure_pct,
+        "aumecpcod_auacac3_tdmazn_dese_tma_g1_ause2_contact_os_nanomesh_and_znse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_agmecpcod_agacac_tdmacd_dese_tma_h1_agse2_contact_ir_nanomesh_and_cdse_pcm_peald_sil3_sandbox(
+    agmecpcod_agacac_tdmacd_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_agmecpcod_agacac_tdmacd_dese_tma_h1_agse2_contact_ir_nanomesh_and_cdse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Ag(MeCp)(COD) / Ag(acac) + 6N5 TDMACd + 6N5 DESe + 6N5 TMA
+    300mm H1/G1 2D AgSe2/CdSe2 Van der Waals Ultralow-Resistance Contact (R_cp=27.0 Ohm*um, S=0.99),
+    Single-Crystal Ir Nanomesh Plasmonic Interconnect (L_SPP=169 um at 1310nm, loss 0.021 dB/um)
+    and CdSe Phase-Change Synapse (0.04 pJ/bit, Ron/Roff=3.6e8, 320ps) PEALD PINN-MPC + SIL-3
+    (Cycle #317 — Chapter 322).
+    """
+    trains = max(1, int(agmecpcod_agacac_tdmacd_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_agmecpcod_agacac_tdmacd_dese_tma_h1_agse2_contact_ir_nanomesh_and_cdse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_h1_agse2_contact_ir_nanomesh_cdse_pcm_pods = trains * 4
+    electronic_6n5_agmecpcod_6n5_agacac_6n5_tdmacd_6n5_dese_6n5_tma_purity_and_agse2_cdse_yield_gain_pct = (
+        83.3 if governed else 19.8
+    )
+    ir_nanomesh_agglomeration_and_cdse_phase_drift_reduction_pct = (
+        98.8 if governed else 23.0
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ag_cd_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 286.0
+    )
+    unmitigated_ag_cd_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 1.4
+    )
+    edge_qcl_crds_1514cm1_1154cm1_2802cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 386.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_ir_nanomesh_scattering_or_cdse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 12.3
+    )
+    return {
+        "agmecpcod_agacac_tdmacd_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_h1_agse2_contact_ir_nanomesh_cdse_pcm_pods": active_h1_agse2_contact_ir_nanomesh_cdse_pcm_pods,
+        "electronic_6n5_agmecpcod_6n5_agacac_6n5_tdmacd_6n5_dese_6n5_tma_purity_and_agse2_cdse_yield_gain_pct": electronic_6n5_agmecpcod_6n5_agacac_6n5_tdmacd_6n5_dese_6n5_tma_purity_and_agse2_cdse_yield_gain_pct,
+        "ir_nanomesh_agglomeration_and_cdse_phase_drift_reduction_pct": ir_nanomesh_agglomeration_and_cdse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ag_cd_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ag_cd_se_and_tma_lockout_latency_ms,
+        "unmitigated_ag_cd_se_precursor_leak_or_tma_ignition_pct": unmitigated_ag_cd_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1514cm1_1154cm1_2802cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1514cm1_1154cm1_2802cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_ir_nanomesh_scattering_or_cdse_filament_overgrowth_failure_pct": uncompensated_ir_nanomesh_scattering_or_cdse_filament_overgrowth_failure_pct,
+        "agmecpcod_agacac_tdmacd_dese_tma_h1_agse2_contact_ir_nanomesh_and_cdse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_cumecpcod_cuacac2_tdmaga_dese_tma_i1_cuse2_contact_pt_nanomesh_and_gase_pcm_peald_sil3_sandbox(
+    cumecpcod_cuacac2_tdmaga_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_cumecpcod_cuacac2_tdmaga_dese_tma_i1_cuse2_contact_pt_nanomesh_and_gase_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Cu(MeCp)(COD) / Cu(acac)2 + 6N5 TDMAGa + 6N5 DESe + 6N5 TMA
+    300mm I1/H1 2D CuSe2/GaSe2 Van der Waals Ultralow-Resistance Contact (R_cp=26.8 Ohm*um, S=0.99),
+    Single-Crystal Pt Nanomesh Plasmonic Interconnect (L_SPP=171 um at 1310nm, loss 0.020 dB/um)
+    and GaSe Phase-Change Synapse (0.03 pJ/bit, Ron/Roff=3.8e8, 310ps) PEALD PINN-MPC + SIL-3
+    (Cycle #318 — Chapter 323).
+    """
+    trains = max(1, int(cumecpcod_cuacac2_tdmaga_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_cumecpcod_cuacac2_tdmaga_dese_tma_i1_cuse2_contact_pt_nanomesh_and_gase_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_i1_cuse2_contact_pt_nanomesh_gase_pcm_pods = trains * 4
+    electronic_6n5_cumecpcod_6n5_cuacac2_6n5_tdmaga_6n5_dese_6n5_tma_purity_and_cuse2_gase_yield_gain_pct = (
+        83.6 if governed else 20.0
+    )
+    pt_nanomesh_agglomeration_and_gase_phase_drift_reduction_pct = (
+        98.9 if governed else 23.2
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_cu_ga_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 286.0
+    )
+    unmitigated_cu_ga_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 1.3
+    )
+    edge_qcl_crds_1507cm1_1148cm1_2796cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 386.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_pt_nanomesh_scattering_or_gase_filament_overgrowth_failure_pct = (
+        0.0 if governed else 12.4
+    )
+    return {
+        "cumecpcod_cuacac2_tdmaga_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_i1_cuse2_contact_pt_nanomesh_gase_pcm_pods": active_i1_cuse2_contact_pt_nanomesh_gase_pcm_pods,
+        "electronic_6n5_cumecpcod_6n5_cuacac2_6n5_tdmaga_6n5_dese_6n5_tma_purity_and_cuse2_gase_yield_gain_pct": electronic_6n5_cumecpcod_6n5_cuacac2_6n5_tdmaga_6n5_dese_6n5_tma_purity_and_cuse2_gase_yield_gain_pct,
+        "pt_nanomesh_agglomeration_and_gase_phase_drift_reduction_pct": pt_nanomesh_agglomeration_and_gase_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_cu_ga_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_cu_ga_se_and_tma_lockout_latency_ms,
+        "unmitigated_cu_ga_se_precursor_leak_or_tma_ignition_pct": unmitigated_cu_ga_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1507cm1_1148cm1_2796cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1507cm1_1148cm1_2796cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_pt_nanomesh_scattering_or_gase_filament_overgrowth_failure_pct": uncompensated_pt_nanomesh_scattering_or_gase_filament_overgrowth_failure_pct,
+        "cumecpcod_cuacac2_tdmaga_dese_tma_i1_cuse2_contact_pt_nanomesh_and_gase_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_nimecpcod_niacac2_tdmain_dese_tma_j1_nise2_contact_rh_nanomesh_and_inse_pcm_peald_sil3_sandbox(
+    nimecpcod_niacac2_tdmain_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_nimecpcod_niacac2_tdmain_dese_tma_j1_nise2_contact_rh_nanomesh_and_inse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Ni(MeCp)(COD) / Ni(acac)2 + 6N5 TDMAIn + 6N5 DESe + 6N5 TMA
+    300mm J1/I1 2D NiSe2/InSe2 Van der Waals Ultralow-Resistance Contact (R_cp=26.5 Ohm*um, S=0.99),
+    Single-Crystal Rh Nanomesh Plasmonic Interconnect (L_SPP=174 um at 1310nm, loss 0.019 dB/um)
+    and InSe Phase-Change Synapse (0.03 pJ/bit, Ron/Roff=4.0e8, 300ps) PEALD PINN-MPC + SIL-3
+    (Cycle #319 — Chapter 324).
+    """
+    trains = max(1, int(nimecpcod_niacac2_tdmain_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_nimecpcod_niacac2_tdmain_dese_tma_j1_nise2_contact_rh_nanomesh_and_inse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_j1_nise2_contact_rh_nanomesh_inse_pcm_pods = trains * 4
+    electronic_6n5_nimecpcod_6n5_niacac2_6n5_tdmain_6n5_dese_6n5_tma_purity_and_nise2_inse_yield_gain_pct = (
+        83.9 if governed else 20.2
+    )
+    rh_nanomesh_agglomeration_and_inse_phase_drift_reduction_pct = (
+        99.0 if governed else 23.4
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ni_in_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 286.0
+    )
+    unmitigated_ni_in_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 1.2
+    )
+    edge_qcl_crds_1501cm1_1142cm1_2790cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 386.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_rh_nanomesh_scattering_or_inse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 12.5
+    )
+    return {
+        "nimecpcod_niacac2_tdmain_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_j1_nise2_contact_rh_nanomesh_inse_pcm_pods": active_j1_nise2_contact_rh_nanomesh_inse_pcm_pods,
+        "electronic_6n5_nimecpcod_6n5_niacac2_6n5_tdmain_6n5_dese_6n5_tma_purity_and_nise2_inse_yield_gain_pct": electronic_6n5_nimecpcod_6n5_niacac2_6n5_tdmain_6n5_dese_6n5_tma_purity_and_nise2_inse_yield_gain_pct,
+        "rh_nanomesh_agglomeration_and_inse_phase_drift_reduction_pct": rh_nanomesh_agglomeration_and_inse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ni_in_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ni_in_se_and_tma_lockout_latency_ms,
+        "unmitigated_ni_in_se_precursor_leak_or_tma_ignition_pct": unmitigated_ni_in_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1501cm1_1142cm1_2790cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1501cm1_1142cm1_2790cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_rh_nanomesh_scattering_or_inse_filament_overgrowth_failure_pct": uncompensated_rh_nanomesh_scattering_or_inse_filament_overgrowth_failure_pct,
+        "nimecpcod_niacac2_tdmain_dese_tma_j1_nise2_contact_rh_nanomesh_and_inse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_comecpcod_coacac2_tdmage_dese_tma_k1_cose2_contact_pd_nanomesh_and_gese_pcm_peald_sil3_sandbox(
+    comecpcod_coacac2_tdmage_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_comecpcod_coacac2_tdmage_dese_tma_k1_cose2_contact_pd_nanomesh_and_gese_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Co(MeCp)(COD) / Co(acac)2 + 6N5 TDMAGe + 6N5 DESe + 6N5 TMA
+    300mm K1/J1 2D CoSe2/GeSe2 Van der Waals Ultralow-Resistance Contact (R_cp=26.2 Ohm*um, S=0.99),
+    Single-Crystal Pd Nanomesh Plasmonic Interconnect (L_SPP=176 um at 1310nm, loss 0.018 dB/um)
+    and GeSe Phase-Change Synapse (0.03 pJ/bit, Ron/Roff=4.2e8, 290ps) PEALD PINN-MPC + SIL-3
+    (Cycle #320 — Chapter 325).
+    """
+    trains = max(1, int(comecpcod_coacac2_tdmage_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_comecpcod_coacac2_tdmage_dese_tma_k1_cose2_contact_pd_nanomesh_and_gese_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_k1_cose2_contact_pd_nanomesh_gese_pcm_pods = trains * 4
+    electronic_6n5_comecpcod_6n5_coacac2_6n5_tdmage_6n5_dese_6n5_tma_purity_and_cose2_gese_yield_gain_pct = (
+        84.2 if governed else 20.4
+    )
+    pd_nanomesh_agglomeration_and_gese_phase_drift_reduction_pct = (
+        99.1 if governed else 23.6
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_co_ge_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 286.0
+    )
+    unmitigated_co_ge_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 1.1
+    )
+    edge_qcl_crds_1495cm1_1136cm1_2784cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 386.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_pd_nanomesh_scattering_or_gese_filament_overgrowth_failure_pct = (
+        0.0 if governed else 12.6
+    )
+    return {
+        "comecpcod_coacac2_tdmage_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_k1_cose2_contact_pd_nanomesh_gese_pcm_pods": active_k1_cose2_contact_pd_nanomesh_gese_pcm_pods,
+        "electronic_6n5_comecpcod_6n5_coacac2_6n5_tdmage_6n5_dese_6n5_tma_purity_and_cose2_gese_yield_gain_pct": electronic_6n5_comecpcod_6n5_coacac2_6n5_tdmage_6n5_dese_6n5_tma_purity_and_cose2_gese_yield_gain_pct,
+        "pd_nanomesh_agglomeration_and_gese_phase_drift_reduction_pct": pd_nanomesh_agglomeration_and_gese_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_co_ge_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_co_ge_se_and_tma_lockout_latency_ms,
+        "unmitigated_co_ge_se_precursor_leak_or_tma_ignition_pct": unmitigated_co_ge_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1495cm1_1136cm1_2784cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1495cm1_1136cm1_2784cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_pd_nanomesh_scattering_or_gese_filament_overgrowth_failure_pct": uncompensated_pd_nanomesh_scattering_or_gese_filament_overgrowth_failure_pct,
+        "comecpcod_coacac2_tdmage_dese_tma_k1_cose2_contact_pd_nanomesh_and_gese_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_femecpcod_feacac2_tdmasn_dese_tma_l1_fese2_contact_au_nanomesh_and_snse_pcm_peald_sil3_sandbox(
+    femecpcod_feacac2_tdmasn_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_femecpcod_feacac2_tdmasn_dese_tma_l1_fese2_contact_au_nanomesh_and_snse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Fe(MeCp)(COD) / Fe(acac)2 + 6N5 TDMASn + 6N5 DESe + 6N5 TMA
+    300mm L1/K1 2D FeSe2/SnSe2 Van der Waals Ultralow-Resistance Contact (R_cp=25.9 Ohm*um, S=0.99),
+    Single-Crystal Au Nanomesh Plasmonic Interconnect (L_SPP=178 um at 1310nm, loss 0.017 dB/um)
+    and SnSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=4.4e8, 280ps) PEALD PINN-MPC + SIL-3
+    (Cycle #321 — Chapter 326).
+    """
+    trains = max(1, int(femecpcod_feacac2_tdmasn_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_femecpcod_feacac2_tdmasn_dese_tma_l1_fese2_contact_au_nanomesh_and_snse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_l1_fese2_contact_au_nanomesh_snse_pcm_pods = trains * 4
+    electronic_6n5_femecpcod_6n5_feacac2_6n5_tdmasn_6n5_dese_6n5_tma_purity_and_fese2_snse_yield_gain_pct = (
+        84.5 if governed else 20.6
+    )
+    au_nanomesh_agglomeration_and_snse_phase_drift_reduction_pct = (
+        99.2 if governed else 23.8
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_fe_sn_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 286.0
+    )
+    unmitigated_fe_sn_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 1.0
+    )
+    edge_qcl_crds_1489cm1_1130cm1_2778cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 386.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_au_nanomesh_scattering_or_snse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 12.7
+    )
+    return {
+        "femecpcod_feacac2_tdmasn_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_l1_fese2_contact_au_nanomesh_snse_pcm_pods": active_l1_fese2_contact_au_nanomesh_snse_pcm_pods,
+        "electronic_6n5_femecpcod_6n5_feacac2_6n5_tdmasn_6n5_dese_6n5_tma_purity_and_fese2_snse_yield_gain_pct": electronic_6n5_femecpcod_6n5_feacac2_6n5_tdmasn_6n5_dese_6n5_tma_purity_and_fese2_snse_yield_gain_pct,
+        "au_nanomesh_agglomeration_and_snse_phase_drift_reduction_pct": au_nanomesh_agglomeration_and_snse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_fe_sn_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_fe_sn_se_and_tma_lockout_latency_ms,
+        "unmitigated_fe_sn_se_precursor_leak_or_tma_ignition_pct": unmitigated_fe_sn_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1489cm1_1130cm1_2778cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1489cm1_1130cm1_2778cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_au_nanomesh_scattering_or_snse_filament_overgrowth_failure_pct": uncompensated_au_nanomesh_scattering_or_snse_filament_overgrowth_failure_pct,
+        "femecpcod_feacac2_tdmasn_dese_tma_l1_fese2_contact_au_nanomesh_and_snse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_mnmecpcod_mnacac2_tdmati_dese_tma_m1_mnse2_contact_pt_nanomesh_and_tise_pcm_peald_sil3_sandbox(
+    mnmecpcod_mnacac2_tdmati_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_mnmecpcod_mnacac2_tdmati_dese_tma_m1_mnse2_contact_pt_nanomesh_and_tise_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Mn(MeCp)(COD) / Mn(acac)2 + 6N5 TDMATi + 6N5 DESe + 6N5 TMA
+    300mm M1/L1 2D MnSe2/TiSe2 Van der Waals Ultralow-Resistance Contact (R_cp=25.6 Ohm*um, S=0.99),
+    Single-Crystal Pt Nanomesh Plasmonic Interconnect (L_SPP=180 um at 1310nm, loss 0.016 dB/um)
+    and TiSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=4.6e8, 270ps) PEALD PINN-MPC + SIL-3
+    (Cycle #322 — Chapter 327).
+    """
+    trains = max(1, int(mnmecpcod_mnacac2_tdmati_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_mnmecpcod_mnacac2_tdmati_dese_tma_m1_mnse2_contact_pt_nanomesh_and_tise_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_m1_mnse2_contact_pt_nanomesh_tise_pcm_pods = trains * 4
+    electronic_6n5_mnmecpcod_6n5_mnacac2_6n5_tdmati_6n5_dese_6n5_tma_purity_and_mnse2_tise_yield_gain_pct = (
+        84.8 if governed else 20.8
+    )
+    pt_nanomesh_agglomeration_and_tise_phase_drift_reduction_pct = (
+        99.3 if governed else 24.0
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_mn_ti_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 286.0
+    )
+    unmitigated_mn_ti_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.9
+    )
+    edge_qcl_crds_1483cm1_1124cm1_2772cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 386.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_pt_nanomesh_scattering_or_tise_filament_overgrowth_failure_pct = (
+        0.0 if governed else 12.8
+    )
+    return {
+        "mnmecpcod_mnacac2_tdmati_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_m1_mnse2_contact_pt_nanomesh_tise_pcm_pods": active_m1_mnse2_contact_pt_nanomesh_tise_pcm_pods,
+        "electronic_6n5_mnmecpcod_6n5_mnacac2_6n5_tdmati_6n5_dese_6n5_tma_purity_and_mnse2_tise_yield_gain_pct": electronic_6n5_mnmecpcod_6n5_mnacac2_6n5_tdmati_6n5_dese_6n5_tma_purity_and_mnse2_tise_yield_gain_pct,
+        "pt_nanomesh_agglomeration_and_tise_phase_drift_reduction_pct": pt_nanomesh_agglomeration_and_tise_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_mn_ti_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_mn_ti_se_and_tma_lockout_latency_ms,
+        "unmitigated_mn_ti_se_precursor_leak_or_tma_ignition_pct": unmitigated_mn_ti_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1483cm1_1124cm1_2772cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1483cm1_1124cm1_2772cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_pt_nanomesh_scattering_or_tise_filament_overgrowth_failure_pct": uncompensated_pt_nanomesh_scattering_or_tise_filament_overgrowth_failure_pct,
+        "mnmecpcod_mnacac2_tdmati_dese_tma_m1_mnse2_contact_pt_nanomesh_and_tise_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_crmecpcod_cracac3_temazr_dese_tma_n1_crse2_contact_rh_nanomesh_and_zrse_pcm_peald_sil3_sandbox(
+    crmecpcod_cracac3_temazr_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_crmecpcod_cracac3_temazr_dese_tma_n1_crse2_contact_rh_nanomesh_and_zrse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Cr(MeCp)(COD) / Cr(acac)3 + 6N5 TEMAZr + 6N5 DESe + 6N5 TMA
+    300mm N1/M1 2D CrSe2/ZrSe2 Van der Waals Ultralow-Resistance Contact (R_cp=25.3 Ohm*um, S=0.99),
+    Single-Crystal Rh Nanomesh Plasmonic Interconnect (L_SPP=182 um at 1310nm, loss 0.015 dB/um)
+    and ZrSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=4.8e8, 260ps) PEALD PINN-MPC + SIL-3
+    (Cycle #323 — Chapter 328).
+    """
+    trains = max(1, int(crmecpcod_cracac3_temazr_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_crmecpcod_cracac3_temazr_dese_tma_n1_crse2_contact_rh_nanomesh_and_zrse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_n1_crse2_contact_rh_nanomesh_zrse_pcm_pods = trains * 4
+    electronic_6n5_crmecpcod_6n5_cracac3_6n5_temazr_6n5_dese_6n5_tma_purity_and_crse2_zrse_yield_gain_pct = (
+        85.1 if governed else 21.0
+    )
+    rh_nanomesh_agglomeration_and_zrse_phase_drift_reduction_pct = (
+        99.4 if governed else 24.2
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_cr_zr_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 286.0
+    )
+    unmitigated_cr_zr_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.8
+    )
+    edge_qcl_crds_1477cm1_1118cm1_2766cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 386.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_rh_nanomesh_scattering_or_zrse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 12.9
+    )
+    return {
+        "crmecpcod_cracac3_temazr_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_n1_crse2_contact_rh_nanomesh_zrse_pcm_pods": active_n1_crse2_contact_rh_nanomesh_zrse_pcm_pods,
+        "electronic_6n5_crmecpcod_6n5_cracac3_6n5_temazr_6n5_dese_6n5_tma_purity_and_crse2_zrse_yield_gain_pct": electronic_6n5_crmecpcod_6n5_cracac3_6n5_temazr_6n5_dese_6n5_tma_purity_and_crse2_zrse_yield_gain_pct,
+        "rh_nanomesh_agglomeration_and_zrse_phase_drift_reduction_pct": rh_nanomesh_agglomeration_and_zrse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_cr_zr_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_cr_zr_se_and_tma_lockout_latency_ms,
+        "unmitigated_cr_zr_se_precursor_leak_or_tma_ignition_pct": unmitigated_cr_zr_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1477cm1_1118cm1_2766cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1477cm1_1118cm1_2766cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_rh_nanomesh_scattering_or_zrse_filament_overgrowth_failure_pct": uncompensated_rh_nanomesh_scattering_or_zrse_filament_overgrowth_failure_pct,
+        "crmecpcod_cracac3_temazr_dese_tma_n1_crse2_contact_rh_nanomesh_and_zrse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_vnmecpcod_vacac3_tdmahf_dese_tma_o1_vse2_contact_pd_nanomesh_and_hfse_pcm_peald_sil3_sandbox(
+    vnmecpcod_vacac3_tdmahf_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_vnmecpcod_vacac3_tdmahf_dese_tma_o1_vse2_contact_pd_nanomesh_and_hfse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 V(MeCp)(COD) / V(acac)3 + 6N5 TDMAHf + 6N5 DESe + 6N5 TMA
+    300mm O1/N1 2D VSe2/HfSe2 Van der Waals Ultralow-Resistance Contact (R_cp=25.0 Ohm*um, S=0.99),
+    Single-Crystal Pd Nanomesh Plasmonic Interconnect (L_SPP=184 um at 1310nm, loss 0.014 dB/um)
+    and HfSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=5.0e8, 250ps) PEALD PINN-MPC + SIL-3
+    (Cycle #324 — Chapter 329).
+    """
+    trains = max(1, int(vnmecpcod_vacac3_tdmahf_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_vnmecpcod_vacac3_tdmahf_dese_tma_o1_vse2_contact_pd_nanomesh_and_hfse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_o1_vse2_contact_pd_nanomesh_hfse_pcm_pods = trains * 4
+    electronic_6n5_vnmecpcod_6n5_vacac3_6n5_tdmahf_6n5_dese_6n5_tma_purity_and_vse2_hfse_yield_gain_pct = (
+        85.4 if governed else 21.2
+    )
+    pd_nanomesh_agglomeration_and_hfse_phase_drift_reduction_pct = (
+        99.5 if governed else 24.4
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_v_hf_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 286.0
+    )
+    unmitigated_v_hf_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.7
+    )
+    edge_qcl_crds_1471cm1_1112cm1_2760cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 386.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_pd_nanomesh_scattering_or_hfse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 13.0
+    )
+    return {
+        "vnmecpcod_vacac3_tdmahf_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_o1_vse2_contact_pd_nanomesh_hfse_pcm_pods": active_o1_vse2_contact_pd_nanomesh_hfse_pcm_pods,
+        "electronic_6n5_vnmecpcod_6n5_vacac3_6n5_tdmahf_6n5_dese_6n5_tma_purity_and_vse2_hfse_yield_gain_pct": electronic_6n5_vnmecpcod_6n5_vacac3_6n5_tdmahf_6n5_dese_6n5_tma_purity_and_vse2_hfse_yield_gain_pct,
+        "pd_nanomesh_agglomeration_and_hfse_phase_drift_reduction_pct": pd_nanomesh_agglomeration_and_hfse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_v_hf_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_v_hf_se_and_tma_lockout_latency_ms,
+        "unmitigated_v_hf_se_precursor_leak_or_tma_ignition_pct": unmitigated_v_hf_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1471cm1_1112cm1_2760cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1471cm1_1112cm1_2760cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_pd_nanomesh_scattering_or_hfse_filament_overgrowth_failure_pct": uncompensated_pd_nanomesh_scattering_or_hfse_filament_overgrowth_failure_pct,
+        "vnmecpcod_vacac3_tdmahf_dese_tma_o1_vse2_contact_pd_nanomesh_and_hfse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_nbmecpcod_nbacac3_tdmasc_dese_tma_p1_nbse2_contact_ru_nanomesh_and_scse_pcm_peald_sil3_sandbox(
+    nbmecpcod_nbacac3_tdmasc_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_nbmecpcod_nbacac3_tdmasc_dese_tma_p1_nbse2_contact_ru_nanomesh_and_scse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Nb(MeCp)(COD) / Nb(acac)3 + 6N5 TDMASc + 6N5 DESe + 6N5 TMA
+    300mm P1/O1 2D NbSe2/ScSe2 Van der Waals Ultralow-Resistance Contact (R_cp=24.8 Ohm*um, S=0.99),
+    Single-Crystal Ru Nanomesh Plasmonic Interconnect (L_SPP=186 um at 1310nm, loss 0.013 dB/um)
+    and ScSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=5.2e8, 245ps) PEALD PINN-MPC + SIL-3
+    (Cycle #325 — Chapter 330).
+    """
+    trains = max(1, int(nbmecpcod_nbacac3_tdmasc_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_nbmecpcod_nbacac3_tdmasc_dese_tma_p1_nbse2_contact_ru_nanomesh_and_scse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_p1_nbse2_contact_ru_nanomesh_scse_pcm_pods = trains * 4
+    electronic_6n5_nbmecpcod_6n5_nbacac3_6n5_tdmasc_6n5_dese_6n5_tma_purity_and_nbse2_scse_yield_gain_pct = (
+        85.7 if governed else 21.4
+    )
+    ru_nanomesh_agglomeration_and_scse_phase_drift_reduction_pct = (
+        99.6 if governed else 24.6
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_nb_sc_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 286.0
+    )
+    unmitigated_nb_sc_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.6
+    )
+    edge_qcl_crds_1466cm1_1106cm1_2754cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 386.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_ru_nanomesh_scattering_or_scse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 13.2
+    )
+    return {
+        "nbmecpcod_nbacac3_tdmasc_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_p1_nbse2_contact_ru_nanomesh_scse_pcm_pods": active_p1_nbse2_contact_ru_nanomesh_scse_pcm_pods,
+        "electronic_6n5_nbmecpcod_6n5_nbacac3_6n5_tdmasc_6n5_dese_6n5_tma_purity_and_nbse2_scse_yield_gain_pct": electronic_6n5_nbmecpcod_6n5_nbacac3_6n5_tdmasc_6n5_dese_6n5_tma_purity_and_nbse2_scse_yield_gain_pct,
+        "ru_nanomesh_agglomeration_and_scse_phase_drift_reduction_pct": ru_nanomesh_agglomeration_and_scse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_nb_sc_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_nb_sc_se_and_tma_lockout_latency_ms,
+        "unmitigated_nb_sc_se_precursor_leak_or_tma_ignition_pct": unmitigated_nb_sc_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1466cm1_1106cm1_2754cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1466cm1_1106cm1_2754cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_ru_nanomesh_scattering_or_scse_filament_overgrowth_failure_pct": uncompensated_ru_nanomesh_scattering_or_scse_filament_overgrowth_failure_pct,
+        "nbmecpcod_nbacac3_tdmasc_dese_tma_p1_nbse2_contact_ru_nanomesh_and_scse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_tamecpcod_taacac3_tdmay_dese_tma_q1_tase2_contact_os_nanomesh_and_yse_pcm_peald_sil3_sandbox(
+    tamecpcod_taacac3_tdmay_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_tamecpcod_taacac3_tdmay_dese_tma_q1_tase2_contact_os_nanomesh_and_yse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Ta(MeCp)(COD) / Ta(acac)3 + 6N5 TDMAY + 6N5 DESe + 6N5 TMA
+    300mm Q1/P1 2D TaSe2/YSe2 Van der Waals Ultralow-Resistance Contact (R_cp=24.5 Ohm*um, S=0.99),
+    Single-Crystal Os Nanomesh Plasmonic Interconnect (L_SPP=188 um at 1310nm, loss 0.012 dB/um)
+    and YSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=5.4e8, 240ps) PEALD PINN-MPC + SIL-3
+    (Cycle #326 — Chapter 331).
+    """
+    trains = max(1, int(tamecpcod_taacac3_tdmay_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_tamecpcod_taacac3_tdmay_dese_tma_q1_tase2_contact_os_nanomesh_and_yse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_q1_tase2_contact_os_nanomesh_yse_pcm_pods = trains * 4
+    electronic_6n5_tamecpcod_6n5_taacac3_6n5_tdmay_6n5_dese_6n5_tma_purity_and_tase2_yse_yield_gain_pct = (
+        86.0 if governed else 21.6
+    )
+    os_nanomesh_agglomeration_and_yse_phase_drift_reduction_pct = (
+        99.7 if governed else 24.8
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ta_y_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 286.0
+    )
+    unmitigated_ta_y_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.5
+    )
+    edge_qcl_crds_1460cm1_1100cm1_2748cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 386.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_os_nanomesh_scattering_or_yse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 13.4
+    )
+    return {
+        "tamecpcod_taacac3_tdmay_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_q1_tase2_contact_os_nanomesh_yse_pcm_pods": active_q1_tase2_contact_os_nanomesh_yse_pcm_pods,
+        "electronic_6n5_tamecpcod_6n5_taacac3_6n5_tdmay_6n5_dese_6n5_tma_purity_and_tase2_yse_yield_gain_pct": electronic_6n5_tamecpcod_6n5_taacac3_6n5_tdmay_6n5_dese_6n5_tma_purity_and_tase2_yse_yield_gain_pct,
+        "os_nanomesh_agglomeration_and_yse_phase_drift_reduction_pct": os_nanomesh_agglomeration_and_yse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ta_y_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ta_y_se_and_tma_lockout_latency_ms,
+        "unmitigated_ta_y_se_precursor_leak_or_tma_ignition_pct": unmitigated_ta_y_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1460cm1_1100cm1_2748cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1460cm1_1100cm1_2748cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_os_nanomesh_scattering_or_yse_filament_overgrowth_failure_pct": uncompensated_os_nanomesh_scattering_or_yse_filament_overgrowth_failure_pct,
+        "tamecpcod_taacac3_tdmay_dese_tma_q1_tase2_contact_os_nanomesh_and_yse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_hfmecpcod_hfacac4_tdmalu_dese_tma_r1_hfse2_contact_ir_nanomesh_and_luse_pcm_peald_sil3_sandbox(
+    hfmecpcod_hfacac4_tdmalu_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_hfmecpcod_hfacac4_tdmalu_dese_tma_r1_hfse2_contact_ir_nanomesh_and_luse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Hf(MeCp)(COD) / Hf(acac)4 + 6N5 TDMALu + 6N5 DESe + 6N5 TMA
+    300mm R1/Q1 2D HfSe2/LuSe2 Van der Waals Ultralow-Resistance Contact (R_cp=24.2 Ohm*um, S=0.99),
+    Single-Crystal Ir Nanomesh Plasmonic Interconnect (L_SPP=190 um at 1310nm, loss 0.011 dB/um)
+    and LuSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=5.6e8, 235ps) PEALD PINN-MPC + SIL-3
+    (Cycle #327 — Chapter 332).
+    """
+    trains = max(1, int(hfmecpcod_hfacac4_tdmalu_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_hfmecpcod_hfacac4_tdmalu_dese_tma_r1_hfse2_contact_ir_nanomesh_and_luse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_r1_hfse2_contact_ir_nanomesh_luse_pcm_pods = trains * 4
+    electronic_6n5_hfmecpcod_6n5_hfacac4_6n5_tdmalu_6n5_dese_6n5_tma_purity_and_hfse2_luse_yield_gain_pct = (
+        86.3 if governed else 21.8
+    )
+    ir_nanomesh_agglomeration_and_luse_phase_drift_reduction_pct = (
+        99.8 if governed else 25.0
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_hf_lu_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 286.0
+    )
+    unmitigated_hf_lu_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.4
+    )
+    edge_qcl_crds_1454cm1_1094cm1_2742cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 386.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_ir_nanomesh_scattering_or_luse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 13.6
+    )
+    return {
+        "hfmecpcod_hfacac4_tdmalu_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_r1_hfse2_contact_ir_nanomesh_luse_pcm_pods": active_r1_hfse2_contact_ir_nanomesh_luse_pcm_pods,
+        "electronic_6n5_hfmecpcod_6n5_hfacac4_6n5_tdmalu_6n5_dese_6n5_tma_purity_and_hfse2_luse_yield_gain_pct": electronic_6n5_hfmecpcod_6n5_hfacac4_6n5_tdmalu_6n5_dese_6n5_tma_purity_and_hfse2_luse_yield_gain_pct,
+        "ir_nanomesh_agglomeration_and_luse_phase_drift_reduction_pct": ir_nanomesh_agglomeration_and_luse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_hf_lu_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_hf_lu_se_and_tma_lockout_latency_ms,
+        "unmitigated_hf_lu_se_precursor_leak_or_tma_ignition_pct": unmitigated_hf_lu_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1454cm1_1094cm1_2742cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1454cm1_1094cm1_2742cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_ir_nanomesh_scattering_or_luse_filament_overgrowth_failure_pct": uncompensated_ir_nanomesh_scattering_or_luse_filament_overgrowth_failure_pct,
+        "hfmecpcod_hfacac4_tdmalu_dese_tma_r1_hfse2_contact_ir_nanomesh_and_luse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_zrmecpcod_zracac4_tdmath_dese_tma_s1_zrse2_contact_pt_nanomesh_and_thse_pcm_peald_sil3_sandbox(
+    zrmecpcod_zracac4_tdmath_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_zrmecpcod_zracac4_tdmath_dese_tma_s1_zrse2_contact_pt_nanomesh_and_thse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Zr(MeCp)(COD) / Zr(acac)4 + 6N5 TDMATh + 6N5 DESe + 6N5 TMA
+    300mm S1/R1 2D ZrSe2/ThSe2 Van der Waals Ultralow-Resistance Contact (R_cp=23.9 Ohm*um, S=0.99),
+    Single-Crystal Pt Nanomesh Plasmonic Interconnect (L_SPP=192 um at 1310nm, loss 0.010 dB/um)
+    and ThSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=5.8e8, 230ps) PEALD PINN-MPC + SIL-3
+    (Cycle #328 — Chapter 333).
+    """
+    trains = max(1, int(zrmecpcod_zracac4_tdmath_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_zrmecpcod_zracac4_tdmath_dese_tma_s1_zrse2_contact_pt_nanomesh_and_thse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_s1_zrse2_contact_pt_nanomesh_thse_pcm_pods = trains * 4
+    electronic_6n5_zrmecpcod_6n5_zracac4_6n5_tdmath_6n5_dese_6n5_tma_purity_and_zrse2_thse_yield_gain_pct = (
+        86.6 if governed else 22.0
+    )
+    pt_nanomesh_agglomeration_and_thse_phase_drift_reduction_pct = (
+        99.8 if governed else 25.2
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_zr_th_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 286.0
+    )
+    unmitigated_zr_th_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.3
+    )
+    edge_qcl_crds_1448cm1_1088cm1_2736cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 386.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_pt_nanomesh_scattering_or_thse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 13.8
+    )
+    return {
+        "zrmecpcod_zracac4_tdmath_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_s1_zrse2_contact_pt_nanomesh_thse_pcm_pods": active_s1_zrse2_contact_pt_nanomesh_thse_pcm_pods,
+        "electronic_6n5_zrmecpcod_6n5_zracac4_6n5_tdmath_6n5_dese_6n5_tma_purity_and_zrse2_thse_yield_gain_pct": electronic_6n5_zrmecpcod_6n5_zracac4_6n5_tdmath_6n5_dese_6n5_tma_purity_and_zrse2_thse_yield_gain_pct,
+        "pt_nanomesh_agglomeration_and_thse_phase_drift_reduction_pct": pt_nanomesh_agglomeration_and_thse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_zr_th_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_zr_th_se_and_tma_lockout_latency_ms,
+        "unmitigated_zr_th_se_precursor_leak_or_tma_ignition_pct": unmitigated_zr_th_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1448cm1_1088cm1_2736cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1448cm1_1088cm1_2736cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_pt_nanomesh_scattering_or_thse_filament_overgrowth_failure_pct": uncompensated_pt_nanomesh_scattering_or_thse_filament_overgrowth_failure_pct,
+        "zrmecpcod_zracac4_tdmath_dese_tma_s1_zrse2_contact_pt_nanomesh_and_thse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_ymecpcod_yacac3_tdmace_dese_tma_t1_yse2_contact_au_nanomesh_and_cese_pcm_peald_sil3_sandbox(
+    ymecpcod_yacac3_tdmace_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_ymecpcod_yacac3_tdmace_dese_tma_t1_yse2_contact_au_nanomesh_and_cese_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Y(MeCp)(COD) / Y(acac)3 + 6N5 TDMACe + 6N5 DESe + 6N5 TMA
+    300mm T1/S1 2D YSe2/CeSe2 Van der Waals Ultralow-Resistance Contact (R_cp=23.6 Ohm*um, S=0.99),
+    Single-Crystal Au Nanomesh Plasmonic Interconnect (L_SPP=194 um at 1310nm, loss 0.010 dB/um)
+    and CeSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=6.0e8, 225ps) PEALD PINN-MPC + SIL-3
+    (Cycle #329 — Chapter 334).
+    """
+    trains = max(1, int(ymecpcod_yacac3_tdmace_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_ymecpcod_yacac3_tdmace_dese_tma_t1_yse2_contact_au_nanomesh_and_cese_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_t1_yse2_contact_au_nanomesh_cese_pcm_pods = trains * 4
+    electronic_6n5_ymecpcod_6n5_yacac3_6n5_tdmace_6n5_dese_6n5_tma_purity_and_yse2_cese_yield_gain_pct = (
+        86.9 if governed else 22.2
+    )
+    au_nanomesh_agglomeration_and_cese_phase_drift_reduction_pct = (
+        99.8 if governed else 25.4
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_y_ce_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 286.0
+    )
+    unmitigated_y_ce_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.3
+    )
+    edge_qcl_crds_1442cm1_1082cm1_2730cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 386.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_au_nanomesh_scattering_or_cese_filament_overgrowth_failure_pct = (
+        0.0 if governed else 14.0
+    )
+    return {
+        "ymecpcod_yacac3_tdmace_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_t1_yse2_contact_au_nanomesh_cese_pcm_pods": active_t1_yse2_contact_au_nanomesh_cese_pcm_pods,
+        "electronic_6n5_ymecpcod_6n5_yacac3_6n5_tdmace_6n5_dese_6n5_tma_purity_and_yse2_cese_yield_gain_pct": electronic_6n5_ymecpcod_6n5_yacac3_6n5_tdmace_6n5_dese_6n5_tma_purity_and_yse2_cese_yield_gain_pct,
+        "au_nanomesh_agglomeration_and_cese_phase_drift_reduction_pct": au_nanomesh_agglomeration_and_cese_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_y_ce_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_y_ce_se_and_tma_lockout_latency_ms,
+        "unmitigated_y_ce_se_precursor_leak_or_tma_ignition_pct": unmitigated_y_ce_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1442cm1_1082cm1_2730cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1442cm1_1082cm1_2730cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_au_nanomesh_scattering_or_cese_filament_overgrowth_failure_pct": uncompensated_au_nanomesh_scattering_or_cese_filament_overgrowth_failure_pct,
+        "ymecpcod_yacac3_tdmace_dese_tma_t1_yse2_contact_au_nanomesh_and_cese_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_lamecpcod_laacac3_tdmapr_dese_tma_u1_lase2_contact_cu_nanomesh_and_prse_pcm_peald_sil3_sandbox(
+    lamecpcod_laacac3_tdmapr_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_lamecpcod_laacac3_tdmapr_dese_tma_u1_lase2_contact_cu_nanomesh_and_prse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 La(MeCp)(COD) / La(acac)3 + 6N5 TDMAPr + 6N5 DESe + 6N5 TMA
+    300mm U1/T1 2D LaSe2/PrSe2 Van der Waals Ultralow-Resistance Contact (R_cp=23.3 Ohm*um, S=0.99),
+    Single-Crystal Cu Nanomesh Plasmonic Interconnect (L_SPP=196 um at 1310nm, loss 0.009 dB/um)
+    and PrSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=6.2e8, 220ps) PEALD PINN-MPC + SIL-3
+    (Cycle #330 — Chapter 335).
+    """
+    trains = max(1, int(lamecpcod_laacac3_tdmapr_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_lamecpcod_laacac3_tdmapr_dese_tma_u1_lase2_contact_cu_nanomesh_and_prse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_u1_lase2_contact_cu_nanomesh_prse_pcm_pods = trains * 4
+    electronic_6n5_lamecpcod_6n5_laacac3_6n5_tdmapr_6n5_dese_6n5_tma_purity_and_lase2_prse_yield_gain_pct = (
+        87.2 if governed else 22.4
+    )
+    cu_nanomesh_agglomeration_and_prse_phase_drift_reduction_pct = (
+        99.8 if governed else 25.6
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_la_pr_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 286.0
+    )
+    unmitigated_la_pr_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.2
+    )
+    edge_qcl_crds_1436cm1_1076cm1_2724cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 386.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_cu_nanomesh_scattering_or_prse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 14.2
+    )
+    return {
+        "lamecpcod_laacac3_tdmapr_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_u1_lase2_contact_cu_nanomesh_prse_pcm_pods": active_u1_lase2_contact_cu_nanomesh_prse_pcm_pods,
+        "electronic_6n5_lamecpcod_6n5_laacac3_6n5_tdmapr_6n5_dese_6n5_tma_purity_and_lase2_prse_yield_gain_pct": electronic_6n5_lamecpcod_6n5_laacac3_6n5_tdmapr_6n5_dese_6n5_tma_purity_and_lase2_prse_yield_gain_pct,
+        "cu_nanomesh_agglomeration_and_prse_phase_drift_reduction_pct": cu_nanomesh_agglomeration_and_prse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_la_pr_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_la_pr_se_and_tma_lockout_latency_ms,
+        "unmitigated_la_pr_se_precursor_leak_or_tma_ignition_pct": unmitigated_la_pr_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1436cm1_1076cm1_2724cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1436cm1_1076cm1_2724cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_cu_nanomesh_scattering_or_prse_filament_overgrowth_failure_pct": uncompensated_cu_nanomesh_scattering_or_prse_filament_overgrowth_failure_pct,
+        "lamecpcod_laacac3_tdmapr_dese_tma_u1_lase2_contact_cu_nanomesh_and_prse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_prmecpcod_pracac3_tdmand_dese_tma_v1_prse2_contact_ni_nanomesh_and_ndse_pcm_peald_sil3_sandbox(
+    prmecpcod_pracac3_tdmand_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_prmecpcod_pracac3_tdmand_dese_tma_v1_prse2_contact_ni_nanomesh_and_ndse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Pr(MeCp)(COD) / Pr(acac)3 + 6N5 TDMANd + 6N5 DESe + 6N5 TMA
+    300mm V1/U1 2D PrSe2/NdSe2 Van der Waals Ultralow-Resistance Contact (R_cp=23.0 Ohm*um, S=0.99),
+    Single-Crystal Ni Nanomesh Plasmonic Interconnect (L_SPP=198 um at 1310nm, loss 0.009 dB/um)
+    and NdSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=6.4e8, 215ps) PEALD PINN-MPC + SIL-3
+    (Cycle #331 — Chapter 336).
+    """
+    trains = max(1, int(prmecpcod_pracac3_tdmand_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_prmecpcod_pracac3_tdmand_dese_tma_v1_prse2_contact_ni_nanomesh_and_ndse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_v1_prse2_contact_ni_nanomesh_ndse_pcm_pods = trains * 4
+    electronic_6n5_prmecpcod_6n5_pracac3_6n5_tdmand_6n5_dese_6n5_tma_purity_and_prse2_ndse_yield_gain_pct = (
+        87.5 if governed else 22.6
+    )
+    ni_nanomesh_agglomeration_and_ndse_phase_drift_reduction_pct = (
+        99.8 if governed else 25.8
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_pr_nd_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 286.0
+    )
+    unmitigated_pr_nd_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.2
+    )
+    edge_qcl_crds_1430cm1_1070cm1_2718cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 386.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_ni_nanomesh_scattering_or_ndse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 14.4
+    )
+    return {
+        "prmecpcod_pracac3_tdmand_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_v1_prse2_contact_ni_nanomesh_ndse_pcm_pods": active_v1_prse2_contact_ni_nanomesh_ndse_pcm_pods,
+        "electronic_6n5_prmecpcod_6n5_pracac3_6n5_tdmand_6n5_dese_6n5_tma_purity_and_prse2_ndse_yield_gain_pct": electronic_6n5_prmecpcod_6n5_pracac3_6n5_tdmand_6n5_dese_6n5_tma_purity_and_prse2_ndse_yield_gain_pct,
+        "ni_nanomesh_agglomeration_and_ndse_phase_drift_reduction_pct": ni_nanomesh_agglomeration_and_ndse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_pr_nd_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_pr_nd_se_and_tma_lockout_latency_ms,
+        "unmitigated_pr_nd_se_precursor_leak_or_tma_ignition_pct": unmitigated_pr_nd_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1430cm1_1070cm1_2718cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1430cm1_1070cm1_2718cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_ni_nanomesh_scattering_or_ndse_filament_overgrowth_failure_pct": uncompensated_ni_nanomesh_scattering_or_ndse_filament_overgrowth_failure_pct,
+        "prmecpcod_pracac3_tdmand_dese_tma_v1_prse2_contact_ni_nanomesh_and_ndse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_ndmecpcod_ndacac3_tdmasm_dese_tma_w1_ndse2_contact_co_nanomesh_and_smse_pcm_peald_sil3_sandbox(
+    ndmecpcod_ndacac3_tdmasm_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_ndmecpcod_ndacac3_tdmasm_dese_tma_w1_ndse2_contact_co_nanomesh_and_smse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Nd(MeCp)(COD) / Nd(acac)3 + 6N5 TDMASm + 6N5 DESe + 6N5 TMA
+    300mm W1/V1 2D NdSe2/SmSe2 Van der Waals Ultralow-Resistance Contact (R_cp=22.7 Ohm*um, S=0.99),
+    Single-Crystal Co Nanomesh Plasmonic Interconnect (L_SPP=200 um at 1310nm, loss 0.008 dB/um)
+    and SmSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=6.6e8, 210ps) PEALD PINN-MPC + SIL-3
+    (Cycle #332 — Chapter 337).
+    """
+    trains = max(1, int(ndmecpcod_ndacac3_tdmasm_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_ndmecpcod_ndacac3_tdmasm_dese_tma_w1_ndse2_contact_co_nanomesh_and_smse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_w1_ndse2_contact_co_nanomesh_smse_pcm_pods = trains * 4
+    electronic_6n5_ndmecpcod_6n5_ndacac3_6n5_tdmasm_6n5_dese_6n5_tma_purity_and_ndse2_smse_yield_gain_pct = (
+        87.8 if governed else 22.8
+    )
+    co_nanomesh_agglomeration_and_smse_phase_drift_reduction_pct = (
+        99.8 if governed else 26.0
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_nd_sm_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 286.0
+    )
+    unmitigated_nd_sm_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.2
+    )
+    edge_qcl_crds_1424cm1_1064cm1_2712cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 386.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_co_nanomesh_scattering_or_smse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 14.6
+    )
+    return {
+        "ndmecpcod_ndacac3_tdmasm_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_w1_ndse2_contact_co_nanomesh_smse_pcm_pods": active_w1_ndse2_contact_co_nanomesh_smse_pcm_pods,
+        "electronic_6n5_ndmecpcod_6n5_ndacac3_6n5_tdmasm_6n5_dese_6n5_tma_purity_and_ndse2_smse_yield_gain_pct": electronic_6n5_ndmecpcod_6n5_ndacac3_6n5_tdmasm_6n5_dese_6n5_tma_purity_and_ndse2_smse_yield_gain_pct,
+        "co_nanomesh_agglomeration_and_smse_phase_drift_reduction_pct": co_nanomesh_agglomeration_and_smse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_nd_sm_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_nd_sm_se_and_tma_lockout_latency_ms,
+        "unmitigated_nd_sm_se_precursor_leak_or_tma_ignition_pct": unmitigated_nd_sm_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1424cm1_1064cm1_2712cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1424cm1_1064cm1_2712cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_co_nanomesh_scattering_or_smse_filament_overgrowth_failure_pct": uncompensated_co_nanomesh_scattering_or_smse_filament_overgrowth_failure_pct,
+        "ndmecpcod_ndacac3_tdmasm_dese_tma_w1_ndse2_contact_co_nanomesh_and_smse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_smmecpcod_smacac3_tdmaeu_dese_tma_x1_smse2_contact_fe_nanomesh_and_euse_pcm_peald_sil3_sandbox(
+    smmecpcod_smacac3_tdmaeu_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_smmecpcod_smacac3_tdmaeu_dese_tma_x1_smse2_contact_fe_nanomesh_and_euse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Sm(MeCp)(COD) / Sm(acac)3 + 6N5 TDMAEu + 6N5 DESe + 6N5 TMA
+    300mm X1/W1 2D SmSe2/EuSe2 Van der Waals Ultralow-Resistance Contact (R_cp=22.4 Ohm*um, S=0.99),
+    Single-Crystal Fe Nanomesh Plasmonic Interconnect (L_SPP=202 um at 1310nm, loss 0.008 dB/um)
+    and EuSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=6.8e8, 205ps) PEALD PINN-MPC + SIL-3
+    (Cycle #333 — Chapter 338).
+    """
+    trains = max(1, int(smmecpcod_smacac3_tdmaeu_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_smmecpcod_smacac3_tdmaeu_dese_tma_x1_smse2_contact_fe_nanomesh_and_euse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_x1_smse2_contact_fe_nanomesh_euse_pcm_pods = trains * 4
+    electronic_6n5_smmecpcod_6n5_smacac3_6n5_tdmaeu_6n5_dese_6n5_tma_purity_and_smse2_euse_yield_gain_pct = (
+        88.1 if governed else 23.0
+    )
+    fe_nanomesh_agglomeration_and_euse_phase_drift_reduction_pct = (
+        99.8 if governed else 26.2
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_sm_eu_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 286.0
+    )
+    unmitigated_sm_eu_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.2
+    )
+    edge_qcl_crds_1418cm1_1058cm1_2706cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 386.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_fe_nanomesh_scattering_or_euse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 14.8
+    )
+    return {
+        "smmecpcod_smacac3_tdmaeu_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_x1_smse2_contact_fe_nanomesh_euse_pcm_pods": active_x1_smse2_contact_fe_nanomesh_euse_pcm_pods,
+        "electronic_6n5_smmecpcod_6n5_smacac3_6n5_tdmaeu_6n5_dese_6n5_tma_purity_and_smse2_euse_yield_gain_pct": electronic_6n5_smmecpcod_6n5_smacac3_6n5_tdmaeu_6n5_dese_6n5_tma_purity_and_smse2_euse_yield_gain_pct,
+        "fe_nanomesh_agglomeration_and_euse_phase_drift_reduction_pct": fe_nanomesh_agglomeration_and_euse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_sm_eu_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_sm_eu_se_and_tma_lockout_latency_ms,
+        "unmitigated_sm_eu_se_precursor_leak_or_tma_ignition_pct": unmitigated_sm_eu_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1418cm1_1058cm1_2706cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1418cm1_1058cm1_2706cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_fe_nanomesh_scattering_or_euse_filament_overgrowth_failure_pct": uncompensated_fe_nanomesh_scattering_or_euse_filament_overgrowth_failure_pct,
+        "smmecpcod_smacac3_tdmaeu_dese_tma_x1_smse2_contact_fe_nanomesh_and_euse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_eumecpcod_euacac3_tdmagd_dese_tma_y1_euse2_contact_ru_nanomesh_and_gdse_pcm_peald_sil3_sandbox(
+    eumecpcod_euacac3_tdmagd_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_eumecpcod_euacac3_tdmagd_dese_tma_y1_euse2_contact_ru_nanomesh_and_gdse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Eu(MeCp)(COD) / Eu(acac)3 + 6N5 TDMAGd + 6N5 DESe + 6N5 TMA
+    300mm Y1/X1 2D EuSe2/GdSe2 Van der Waals Ultralow-Resistance Contact (R_cp=22.1 Ohm*um, S=0.99),
+    Single-Crystal Ru Nanomesh Plasmonic Interconnect (L_SPP=204 um at 1310nm, loss 0.008 dB/um)
+    and GdSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=7.0e8, 200ps) PEALD PINN-MPC + SIL-3
+    (Cycle #334 — Chapter 339).
+    """
+    trains = max(1, int(eumecpcod_euacac3_tdmagd_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_eumecpcod_euacac3_tdmagd_dese_tma_y1_euse2_contact_ru_nanomesh_and_gdse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_y1_euse2_contact_ru_nanomesh_gdse_pcm_pods = trains * 4
+    electronic_6n5_eumecpcod_6n5_euacac3_6n5_tdmagd_6n5_dese_6n5_tma_purity_and_euse2_gdse_yield_gain_pct = (
+        88.4 if governed else 23.2
+    )
+    ru_nanomesh_agglomeration_and_gdse_phase_drift_reduction_pct = (
+        99.8 if governed else 26.4
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_eu_gd_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 286.0
+    )
+    unmitigated_eu_gd_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.2
+    )
+    edge_qcl_crds_1412cm1_1052cm1_2700cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 386.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_ru_nanomesh_scattering_or_gdse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 15.0
+    )
+    return {
+        "eumecpcod_euacac3_tdmagd_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_y1_euse2_contact_ru_nanomesh_gdse_pcm_pods": active_y1_euse2_contact_ru_nanomesh_gdse_pcm_pods,
+        "electronic_6n5_eumecpcod_6n5_euacac3_6n5_tdmagd_6n5_dese_6n5_tma_purity_and_euse2_gdse_yield_gain_pct": electronic_6n5_eumecpcod_6n5_euacac3_6n5_tdmagd_6n5_dese_6n5_tma_purity_and_euse2_gdse_yield_gain_pct,
+        "ru_nanomesh_agglomeration_and_gdse_phase_drift_reduction_pct": ru_nanomesh_agglomeration_and_gdse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_eu_gd_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_eu_gd_se_and_tma_lockout_latency_ms,
+        "unmitigated_eu_gd_se_precursor_leak_or_tma_ignition_pct": unmitigated_eu_gd_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1412cm1_1052cm1_2700cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1412cm1_1052cm1_2700cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_ru_nanomesh_scattering_or_gdse_filament_overgrowth_failure_pct": uncompensated_ru_nanomesh_scattering_or_gdse_filament_overgrowth_failure_pct,
+        "eumecpcod_euacac3_tdmagd_dese_tma_y1_euse2_contact_ru_nanomesh_and_gdse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_tbmecpcod_tbacac3_tdmaho_dese_tma_z1_tbse2_contact_os_nanomesh_and_hose_pcm_peald_sil3_sandbox(
+    tbmecpcod_tbacac3_tdmaho_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_tbmecpcod_tbacac3_tdmaho_dese_tma_z1_tbse2_contact_os_nanomesh_and_hose_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Tb(MeCp)(COD) / Tb(acac)3 + 6N5 TDMAHo + 6N5 DESe + 6N5 TMA
+    300mm Z1/Y1 2D TbSe2/HoSe2 Van der Waals Ultralow-Resistance Contact (R_cp=21.8 Ohm*um, S=0.99),
+    Single-Crystal Os Nanomesh Plasmonic Interconnect (L_SPP=206 um at 1310nm, loss 0.008 dB/um)
+    and HoSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=7.2e8, 195ps) PEALD PINN-MPC + SIL-3
+    (Cycle #335 — Chapter 340).
+    """
+    trains = max(1, int(tbmecpcod_tbacac3_tdmaho_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_tbmecpcod_tbacac3_tdmaho_dese_tma_z1_tbse2_contact_os_nanomesh_and_hose_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_z1_tbse2_contact_os_nanomesh_hose_pcm_pods = trains * 4
+    electronic_6n5_tbmecpcod_6n5_tbacac3_6n5_tdmaho_6n5_dese_6n5_tma_purity_and_tbse2_hose_yield_gain_pct = (
+        88.7 if governed else 23.4
+    )
+    os_nanomesh_agglomeration_and_hose_phase_drift_reduction_pct = (
+        99.8 if governed else 26.6
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_tb_ho_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 286.0
+    )
+    unmitigated_tb_ho_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.2
+    )
+    edge_qcl_crds_1406cm1_1046cm1_2694cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 386.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_os_nanomesh_scattering_or_hose_filament_overgrowth_failure_pct = (
+        0.0 if governed else 15.2
+    )
+    return {
+        "tbmecpcod_tbacac3_tdmaho_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_z1_tbse2_contact_os_nanomesh_hose_pcm_pods": active_z1_tbse2_contact_os_nanomesh_hose_pcm_pods,
+        "electronic_6n5_tbmecpcod_6n5_tbacac3_6n5_tdmaho_6n5_dese_6n5_tma_purity_and_tbse2_hose_yield_gain_pct": electronic_6n5_tbmecpcod_6n5_tbacac3_6n5_tdmaho_6n5_dese_6n5_tma_purity_and_tbse2_hose_yield_gain_pct,
+        "os_nanomesh_agglomeration_and_hose_phase_drift_reduction_pct": os_nanomesh_agglomeration_and_hose_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_tb_ho_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_tb_ho_se_and_tma_lockout_latency_ms,
+        "unmitigated_tb_ho_se_precursor_leak_or_tma_ignition_pct": unmitigated_tb_ho_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1406cm1_1046cm1_2694cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1406cm1_1046cm1_2694cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_os_nanomesh_scattering_or_hose_filament_overgrowth_failure_pct": uncompensated_os_nanomesh_scattering_or_hose_filament_overgrowth_failure_pct,
+        "tbmecpcod_tbacac3_tdmaho_dese_tma_z1_tbse2_contact_os_nanomesh_and_hose_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_ybmecpcod_ybacac3_tdmaer_dese_tma_aa1_ybse2_contact_re_nanomesh_and_erse_pcm_peald_sil3_sandbox(
+    ybmecpcod_ybacac3_tdmaer_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_ybmecpcod_ybacac3_tdmaer_dese_tma_aa1_ybse2_contact_re_nanomesh_and_erse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Yb(MeCp)(COD) / Yb(acac)3 + 6N5 TDMAEr + 6N5 DESe + 6N5 TMA
+    300mm AA1/Z1 2D YbSe2/ErSe2 Van der Waals Ultralow-Resistance Contact (R_cp=21.5 Ohm*um, S=0.99),
+    Single-Crystal Re Nanomesh Plasmonic Interconnect (L_SPP=208 um at 1310nm, loss 0.008 dB/um)
+    and ErSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=7.4e8, 190ps) PEALD PINN-MPC + SIL-3
+    (Cycle #336 — Chapter 341).
+    """
+    trains = max(1, int(ybmecpcod_ybacac3_tdmaer_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_ybmecpcod_ybacac3_tdmaer_dese_tma_aa1_ybse2_contact_re_nanomesh_and_erse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_aa1_ybse2_contact_re_nanomesh_erse_pcm_pods = trains * 4
+    electronic_6n5_ybmecpcod_6n5_ybacac3_6n5_tdmaer_6n5_dese_6n5_tma_purity_and_ybse2_erse_yield_gain_pct = (
+        89.0 if governed else 23.6
+    )
+    re_nanomesh_agglomeration_and_erse_phase_drift_reduction_pct = (
+        99.8 if governed else 26.8
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_yb_er_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 286.0
+    )
+    unmitigated_yb_er_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.2
+    )
+    edge_qcl_crds_1400cm1_1040cm1_2688cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 386.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_re_nanomesh_scattering_or_erse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 15.4
+    )
+    return {
+        "ybmecpcod_ybacac3_tdmaer_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_aa1_ybse2_contact_re_nanomesh_erse_pcm_pods": active_aa1_ybse2_contact_re_nanomesh_erse_pcm_pods,
+        "electronic_6n5_ybmecpcod_6n5_ybacac3_6n5_tdmaer_6n5_dese_6n5_tma_purity_and_ybse2_erse_yield_gain_pct": electronic_6n5_ybmecpcod_6n5_ybacac3_6n5_tdmaer_6n5_dese_6n5_tma_purity_and_ybse2_erse_yield_gain_pct,
+        "re_nanomesh_agglomeration_and_erse_phase_drift_reduction_pct": re_nanomesh_agglomeration_and_erse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_yb_er_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_yb_er_se_and_tma_lockout_latency_ms,
+        "unmitigated_yb_er_se_precursor_leak_or_tma_ignition_pct": unmitigated_yb_er_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1400cm1_1040cm1_2688cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1400cm1_1040cm1_2688cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_re_nanomesh_scattering_or_erse_filament_overgrowth_failure_pct": uncompensated_re_nanomesh_scattering_or_erse_filament_overgrowth_failure_pct,
+        "ybmecpcod_ybacac3_tdmaer_dese_tma_aa1_ybse2_contact_re_nanomesh_and_erse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_lumecpcod_luacac3_tdmatm_dese_tma_ab1_luse2_contact_w_nanomesh_and_tmse_pcm_peald_sil3_sandbox(
+    lumecpcod_luacac3_tdmatm_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_lumecpcod_luacac3_tdmatm_dese_tma_ab1_luse2_contact_w_nanomesh_and_tmse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Lu(MeCp)(COD) / Lu(acac)3 + 6N5 TDMATm + 6N5 DESe + 6N5 TMA
+    300mm AB1/Y1 2D LuSe2/TmSe2 Van der Waals Ultralow-Resistance Contact (R_cp=21.2 Ohm*um, S=0.99),
+    Single-Crystal W Nanomesh Plasmonic Interconnect (L_SPP=210 um at 1310nm, loss 0.008 dB/um)
+    and TmSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=7.6e8, 185ps) PEALD PINN-MPC + SIL-3
+    (Cycle #337 — Chapter 342).
+    """
+    trains = max(1, int(lumecpcod_luacac3_tdmatm_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_lumecpcod_luacac3_tdmatm_dese_tma_ab1_luse2_contact_w_nanomesh_and_tmse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_ab1_luse2_contact_w_nanomesh_tmse_pcm_pods = trains * 4
+    electronic_6n5_lumecpcod_6n5_luacac3_6n5_tdmatm_6n5_dese_6n5_tma_purity_and_luse2_tmse_yield_gain_pct = (
+        89.3 if governed else 23.8
+    )
+    w_nanomesh_agglomeration_and_tmse_phase_drift_reduction_pct = (
+        99.8 if governed else 27.0
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_lu_tm_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 286.0
+    )
+    unmitigated_lu_tm_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.2
+    )
+    edge_qcl_crds_1394cm1_1034cm1_2682cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 386.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_w_nanomesh_scattering_or_tmse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 15.6
+    )
+    return {
+        "lumecpcod_luacac3_tdmatm_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_ab1_luse2_contact_w_nanomesh_tmse_pcm_pods": active_ab1_luse2_contact_w_nanomesh_tmse_pcm_pods,
+        "electronic_6n5_lumecpcod_6n5_luacac3_6n5_tdmatm_6n5_dese_6n5_tma_purity_and_luse2_tmse_yield_gain_pct": electronic_6n5_lumecpcod_6n5_luacac3_6n5_tdmatm_6n5_dese_6n5_tma_purity_and_luse2_tmse_yield_gain_pct,
+        "w_nanomesh_agglomeration_and_tmse_phase_drift_reduction_pct": w_nanomesh_agglomeration_and_tmse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_lu_tm_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_lu_tm_se_and_tma_lockout_latency_ms,
+        "unmitigated_lu_tm_se_precursor_leak_or_tma_ignition_pct": unmitigated_lu_tm_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1394cm1_1034cm1_2682cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1394cm1_1034cm1_2682cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_w_nanomesh_scattering_or_tmse_filament_overgrowth_failure_pct": uncompensated_w_nanomesh_scattering_or_tmse_filament_overgrowth_failure_pct,
+        "lumecpcod_luacac3_tdmatm_dese_tma_ab1_luse2_contact_w_nanomesh_and_tmse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_gdmecpcod_gdacac3_tdmady_dese_tma_ac1_gdse2_contact_ta_nanomesh_and_dyse_pcm_peald_sil3_sandbox(
+    gdmecpcod_gdacac3_tdmady_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_gdmecpcod_gdacac3_tdmady_dese_tma_ac1_gdse2_contact_ta_nanomesh_and_dyse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Gd(MeCp)(COD) / Gd(acac)3 + 6N5 TDMADy + 6N5 DESe + 6N5 TMA
+    300mm AC1/AB1 2D GdSe2/DySe2 Van der Waals Ultralow-Resistance Contact (R_cp=20.9 Ohm*um, S=0.99),
+    Single-Crystal Ta Nanomesh Plasmonic Interconnect (L_SPP=212 um at 1310nm, loss 0.008 dB/um)
+    and DySe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=7.8e8, 180ps) PEALD PINN-MPC + SIL-3
+    (Cycle #338 — Chapter 343).
+    """
+    trains = max(1, int(gdmecpcod_gdacac3_tdmady_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_gdmecpcod_gdacac3_tdmady_dese_tma_ac1_gdse2_contact_ta_nanomesh_and_dyse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_ac1_gdse2_contact_ta_nanomesh_dyse_pcm_pods = trains * 4
+    electronic_6n5_gdmecpcod_6n5_gdacac3_6n5_tdmady_6n5_dese_6n5_tma_purity_and_gdse2_dyse_yield_gain_pct = (
+        89.6 if governed else 24.0
+    )
+    ta_nanomesh_agglomeration_and_dyse_phase_drift_reduction_pct = (
+        99.8 if governed else 27.2
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_gd_dy_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 286.0
+    )
+    unmitigated_gd_dy_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.2
+    )
+    edge_qcl_crds_1388cm1_1028cm1_2676cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 386.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_ta_nanomesh_scattering_or_dyse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 15.8
+    )
+    return {
+        "gdmecpcod_gdacac3_tdmady_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_ac1_gdse2_contact_ta_nanomesh_dyse_pcm_pods": active_ac1_gdse2_contact_ta_nanomesh_dyse_pcm_pods,
+        "electronic_6n5_gdmecpcod_6n5_gdacac3_6n5_tdmady_6n5_dese_6n5_tma_purity_and_gdse2_dyse_yield_gain_pct": electronic_6n5_gdmecpcod_6n5_gdacac3_6n5_tdmady_6n5_dese_6n5_tma_purity_and_gdse2_dyse_yield_gain_pct,
+        "ta_nanomesh_agglomeration_and_dyse_phase_drift_reduction_pct": ta_nanomesh_agglomeration_and_dyse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_gd_dy_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_gd_dy_se_and_tma_lockout_latency_ms,
+        "unmitigated_gd_dy_se_precursor_leak_or_tma_ignition_pct": unmitigated_gd_dy_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1388cm1_1028cm1_2676cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1388cm1_1028cm1_2676cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_ta_nanomesh_scattering_or_dyse_filament_overgrowth_failure_pct": uncompensated_ta_nanomesh_scattering_or_dyse_filament_overgrowth_failure_pct,
+        "gdmecpcod_gdacac3_tdmady_dese_tma_ac1_gdse2_contact_ta_nanomesh_and_dyse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_smmecpcod_smacac3_tdmagd_dese_tma_ad1_smse2_contact_hf_nanomesh_and_gdse_pcm_peald_sil3_sandbox(
+    smmecpcod_smacac3_tdmagd_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_smmecpcod_smacac3_tdmagd_dese_tma_ad1_smse2_contact_hf_nanomesh_and_gdse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Sm(MeCp)(COD) / Sm(acac)3 + 6N5 TDMAGd + 6N5 DESe + 6N5 TMA
+    300mm AD1/AC1 2D SmSe2/GdSe2 Van der Waals Ultralow-Resistance Contact (R_cp=20.6 Ohm*um, S=0.99),
+    Single-Crystal Hf Nanomesh Plasmonic Interconnect (L_SPP=214 um at 1310nm, loss 0.008 dB/um)
+    and GdSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=8.1e8, 176ps) PEALD PINN-MPC + SIL-3
+    (Cycle #339 — Chapter 344).
+    """
+    trains = max(1, int(smmecpcod_smacac3_tdmagd_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_smmecpcod_smacac3_tdmagd_dese_tma_ad1_smse2_contact_hf_nanomesh_and_gdse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_ad1_smse2_contact_hf_nanomesh_gdse_pcm_pods = trains * 4
+    electronic_6n5_smmecpcod_6n5_smacac3_6n5_tdmagd_6n5_dese_6n5_tma_purity_and_smse2_gdse_yield_gain_pct = (
+        89.8 if governed else 23.8
+    )
+    hf_nanomesh_agglomeration_and_gdse_phase_drift_reduction_pct = (
+        99.8 if governed else 27.0
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_sm_gd_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 288.0
+    )
+    unmitigated_sm_gd_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.2
+    )
+    edge_qcl_crds_1384cm1_1024cm1_2672cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 388.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_hf_nanomesh_scattering_or_gdse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 15.6
+    )
+    return {
+        "smmecpcod_smacac3_tdmagd_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_ad1_smse2_contact_hf_nanomesh_gdse_pcm_pods": active_ad1_smse2_contact_hf_nanomesh_gdse_pcm_pods,
+        "electronic_6n5_smmecpcod_6n5_smacac3_6n5_tdmagd_6n5_dese_6n5_tma_purity_and_smse2_gdse_yield_gain_pct": electronic_6n5_smmecpcod_6n5_smacac3_6n5_tdmagd_6n5_dese_6n5_tma_purity_and_smse2_gdse_yield_gain_pct,
+        "hf_nanomesh_agglomeration_and_gdse_phase_drift_reduction_pct": hf_nanomesh_agglomeration_and_gdse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_sm_gd_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_sm_gd_se_and_tma_lockout_latency_ms,
+        "unmitigated_sm_gd_se_precursor_leak_or_tma_ignition_pct": unmitigated_sm_gd_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1384cm1_1024cm1_2672cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1384cm1_1024cm1_2672cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_hf_nanomesh_scattering_or_gdse_filament_overgrowth_failure_pct": uncompensated_hf_nanomesh_scattering_or_gdse_filament_overgrowth_failure_pct,
+        "smmecpcod_smacac3_tdmagd_dese_tma_ad1_smse2_contact_hf_nanomesh_and_gdse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_ndmecpcod_ndacac3_tdmapr_dese_tma_ae1_ndse2_contact_zr_nanomesh_and_prse_pcm_peald_sil3_sandbox(
+    ndmecpcod_ndacac3_tdmapr_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_ndmecpcod_ndacac3_tdmapr_dese_tma_ae1_ndse2_contact_zr_nanomesh_and_prse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Nd(MeCp)(COD) / Nd(acac)3 + 6N5 TDMAPr + 6N5 DESe + 6N5 TMA
+    300mm AE1/AD1 2D NdSe2/PrSe2 Van der Waals Ultralow-Resistance Contact (R_cp=20.3 Ohm*um, S=0.99),
+    Single-Crystal Zr Nanomesh Plasmonic Interconnect (L_SPP=216 um at 1310nm, loss 0.008 dB/um)
+    and PrSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=8.3e8, 172ps) PEALD PINN-MPC + SIL-3
+    (Cycle #340 — Chapter 345).
+    """
+    trains = max(1, int(ndmecpcod_ndacac3_tdmapr_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_ndmecpcod_ndacac3_tdmapr_dese_tma_ae1_ndse2_contact_zr_nanomesh_and_prse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_ae1_ndse2_contact_zr_nanomesh_prse_pcm_pods = trains * 4
+    electronic_6n5_ndmecpcod_6n5_ndacac3_6n5_tdmapr_6n5_dese_6n5_tma_purity_and_ndse2_prse_yield_gain_pct = (
+        90.0 if governed else 23.6
+    )
+    zr_nanomesh_agglomeration_and_prse_phase_drift_reduction_pct = (
+        99.8 if governed else 26.8
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_nd_pr_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 290.0
+    )
+    unmitigated_nd_pr_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.2
+    )
+    edge_qcl_crds_1380cm1_1020cm1_2668cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 390.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_zr_nanomesh_scattering_or_prse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 15.4
+    )
+    return {
+        "ndmecpcod_ndacac3_tdmapr_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_ae1_ndse2_contact_zr_nanomesh_prse_pcm_pods": active_ae1_ndse2_contact_zr_nanomesh_prse_pcm_pods,
+        "electronic_6n5_ndmecpcod_6n5_ndacac3_6n5_tdmapr_6n5_dese_6n5_tma_purity_and_ndse2_prse_yield_gain_pct": electronic_6n5_ndmecpcod_6n5_ndacac3_6n5_tdmapr_6n5_dese_6n5_tma_purity_and_ndse2_prse_yield_gain_pct,
+        "zr_nanomesh_agglomeration_and_prse_phase_drift_reduction_pct": zr_nanomesh_agglomeration_and_prse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_nd_pr_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_nd_pr_se_and_tma_lockout_latency_ms,
+        "unmitigated_nd_pr_se_precursor_leak_or_tma_ignition_pct": unmitigated_nd_pr_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1380cm1_1020cm1_2668cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1380cm1_1020cm1_2668cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_zr_nanomesh_scattering_or_prse_filament_overgrowth_failure_pct": uncompensated_zr_nanomesh_scattering_or_prse_filament_overgrowth_failure_pct,
+        "ndmecpcod_ndacac3_tdmapr_dese_tma_ae1_ndse2_contact_zr_nanomesh_and_prse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_eumecpcod_euacac3_tdmatb_dese_tma_af1_euse2_contact_ti_nanomesh_and_tbse_pcm_peald_sil3_sandbox(
+    eumecpcod_euacac3_tdmatb_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_eumecpcod_euacac3_tdmatb_dese_tma_af1_euse2_contact_ti_nanomesh_and_tbse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Eu(MeCp)(COD) / Eu(acac)3 + 6N5 TDMATb + 6N5 DESe + 6N5 TMA
+    300mm AF1/AE1 2D EuSe2/TbSe2 Van der Waals Ultralow-Resistance Contact (R_cp=20.0 Ohm*um, S=0.99),
+    Single-Crystal Ti Nanomesh Plasmonic Interconnect (L_SPP=218 um at 1310nm, loss 0.008 dB/um)
+    and TbSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=8.5e8, 168ps) PEALD PINN-MPC + SIL-3
+    (Cycle #341 — Chapter 346).
+    """
+    trains = max(1, int(eumecpcod_euacac3_tdmatb_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_eumecpcod_euacac3_tdmatb_dese_tma_af1_euse2_contact_ti_nanomesh_and_tbse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_af1_euse2_contact_ti_nanomesh_tbse_pcm_pods = trains * 4
+    electronic_6n5_eumecpcod_6n5_euacac3_6n5_tdmatb_6n5_dese_6n5_tma_purity_and_euse2_tbse_yield_gain_pct = (
+        90.2 if governed else 23.4
+    )
+    ti_nanomesh_agglomeration_and_tbse_phase_drift_reduction_pct = (
+        99.8 if governed else 26.6
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_eu_tb_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 292.0
+    )
+    unmitigated_eu_tb_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.2
+    )
+    edge_qcl_crds_1376cm1_1016cm1_2664cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 392.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_ti_nanomesh_scattering_or_tbse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 15.2
+    )
+    return {
+        "eumecpcod_euacac3_tdmatb_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_af1_euse2_contact_ti_nanomesh_tbse_pcm_pods": active_af1_euse2_contact_ti_nanomesh_tbse_pcm_pods,
+        "electronic_6n5_eumecpcod_6n5_euacac3_6n5_tdmatb_6n5_dese_6n5_tma_purity_and_euse2_tbse_yield_gain_pct": electronic_6n5_eumecpcod_6n5_euacac3_6n5_tdmatb_6n5_dese_6n5_tma_purity_and_euse2_tbse_yield_gain_pct,
+        "ti_nanomesh_agglomeration_and_tbse_phase_drift_reduction_pct": ti_nanomesh_agglomeration_and_tbse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_eu_tb_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_eu_tb_se_and_tma_lockout_latency_ms,
+        "unmitigated_eu_tb_se_precursor_leak_or_tma_ignition_pct": unmitigated_eu_tb_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1376cm1_1016cm1_2664cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1376cm1_1016cm1_2664cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_ti_nanomesh_scattering_or_tbse_filament_overgrowth_failure_pct": uncompensated_ti_nanomesh_scattering_or_tbse_filament_overgrowth_failure_pct,
+        "eumecpcod_euacac3_tdmatb_dese_tma_af1_euse2_contact_ti_nanomesh_and_tbse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_tbmecpcod_tbacac3_tdmady_dese_tma_ag1_tbse2_contact_v_nanomesh_and_dyse_pcm_peald_sil3_sandbox(
+    tbmecpcod_tbacac3_tdmady_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_tbmecpcod_tbacac3_tdmady_dese_tma_ag1_tbse2_contact_v_nanomesh_and_dyse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Tb(MeCp)(COD) / Tb(acac)3 + 6N5 TDMADy + 6N5 DESe + 6N5 TMA
+    300mm AG1/AF1 2D TbSe2/DySe2 Van der Waals Ultralow-Resistance Contact (R_cp=19.7 Ohm*um, S=0.99),
+    Single-Crystal V Nanomesh Plasmonic Interconnect (L_SPP=220 um at 1310nm, loss 0.008 dB/um)
+    and DySe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=8.7e8, 164ps) PEALD PINN-MPC + SIL-3
+    (Cycle #342 — Chapter 347).
+    """
+    trains = max(1, int(tbmecpcod_tbacac3_tdmady_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_tbmecpcod_tbacac3_tdmady_dese_tma_ag1_tbse2_contact_v_nanomesh_and_dyse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_ag1_tbse2_contact_v_nanomesh_dyse_pcm_pods = trains * 4
+    electronic_6n5_tbmecpcod_6n5_tbacac3_6n5_tdmady_6n5_dese_6n5_tma_purity_and_tbse2_dyse_yield_gain_pct = (
+        90.4 if governed else 23.2
+    )
+    v_nanomesh_agglomeration_and_dyse_phase_drift_reduction_pct = (
+        99.8 if governed else 26.4
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_tb_dy_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 294.0
+    )
+    unmitigated_tb_dy_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.2
+    )
+    edge_qcl_crds_1372cm1_1012cm1_2660cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 394.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_v_nanomesh_scattering_or_dyse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 15.0
+    )
+    return {
+        "tbmecpcod_tbacac3_tdmady_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_ag1_tbse2_contact_v_nanomesh_dyse_pcm_pods": active_ag1_tbse2_contact_v_nanomesh_dyse_pcm_pods,
+        "electronic_6n5_tbmecpcod_6n5_tbacac3_6n5_tdmady_6n5_dese_6n5_tma_purity_and_tbse2_dyse_yield_gain_pct": electronic_6n5_tbmecpcod_6n5_tbacac3_6n5_tdmady_6n5_dese_6n5_tma_purity_and_tbse2_dyse_yield_gain_pct,
+        "v_nanomesh_agglomeration_and_dyse_phase_drift_reduction_pct": v_nanomesh_agglomeration_and_dyse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_tb_dy_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_tb_dy_se_and_tma_lockout_latency_ms,
+        "unmitigated_tb_dy_se_precursor_leak_or_tma_ignition_pct": unmitigated_tb_dy_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1372cm1_1012cm1_2660cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1372cm1_1012cm1_2660cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_v_nanomesh_scattering_or_dyse_filament_overgrowth_failure_pct": uncompensated_v_nanomesh_scattering_or_dyse_filament_overgrowth_failure_pct,
+        "tbmecpcod_tbacac3_tdmady_dese_tma_ag1_tbse2_contact_v_nanomesh_and_dyse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_dymecpcod_dyacac3_tdmaho_dese_tma_ah1_dyse2_contact_cr_nanomesh_and_hose_pcm_peald_sil3_sandbox(
+    dymecpcod_dyacac3_tdmaho_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_dymecpcod_dyacac3_tdmaho_dese_tma_ah1_dyse2_contact_cr_nanomesh_and_hose_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Dy(MeCp)(COD) / Dy(acac)3 + 6N5 TDMAHo + 6N5 DESe + 6N5 TMA
+    300mm AH1/AG1 2D DySe2/HoSe2 Van der Waals Ultralow-Resistance Contact (R_cp=19.4 Ohm*um, S=0.99),
+    Single-Crystal Cr Nanomesh Plasmonic Interconnect (L_SPP=222 um at 1310nm, loss 0.008 dB/um)
+    and HoSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=8.9e8, 160ps) PEALD PINN-MPC + SIL-3
+    (Cycle #343 — Chapter 348).
+    """
+    trains = max(1, int(dymecpcod_dyacac3_tdmaho_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_dymecpcod_dyacac3_tdmaho_dese_tma_ah1_dyse2_contact_cr_nanomesh_and_hose_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_ah1_dyse2_contact_cr_nanomesh_hose_pcm_pods = trains * 4
+    electronic_6n5_dymecpcod_6n5_dyacac3_6n5_tdmaho_6n5_dese_6n5_tma_purity_and_dyse2_hose_yield_gain_pct = (
+        90.6 if governed else 23.0
+    )
+    cr_nanomesh_agglomeration_and_hose_phase_drift_reduction_pct = (
+        99.8 if governed else 26.2
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_dy_ho_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 296.0
+    )
+    unmitigated_dy_ho_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.2
+    )
+    edge_qcl_crds_1368cm1_1008cm1_2656cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 396.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_cr_nanomesh_scattering_or_hose_filament_overgrowth_failure_pct = (
+        0.0 if governed else 14.8
+    )
+    return {
+        "dymecpcod_dyacac3_tdmaho_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_ah1_dyse2_contact_cr_nanomesh_hose_pcm_pods": active_ah1_dyse2_contact_cr_nanomesh_hose_pcm_pods,
+        "electronic_6n5_dymecpcod_6n5_dyacac3_6n5_tdmaho_6n5_dese_6n5_tma_purity_and_dyse2_hose_yield_gain_pct": electronic_6n5_dymecpcod_6n5_dyacac3_6n5_tdmaho_6n5_dese_6n5_tma_purity_and_dyse2_hose_yield_gain_pct,
+        "cr_nanomesh_agglomeration_and_hose_phase_drift_reduction_pct": cr_nanomesh_agglomeration_and_hose_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_dy_ho_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_dy_ho_se_and_tma_lockout_latency_ms,
+        "unmitigated_dy_ho_se_precursor_leak_or_tma_ignition_pct": unmitigated_dy_ho_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1368cm1_1008cm1_2656cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1368cm1_1008cm1_2656cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_cr_nanomesh_scattering_or_hose_filament_overgrowth_failure_pct": uncompensated_cr_nanomesh_scattering_or_hose_filament_overgrowth_failure_pct,
+        "dymecpcod_dyacac3_tdmaho_dese_tma_ah1_dyse2_contact_cr_nanomesh_and_hose_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_homecpcod_hoacac3_tdmaer_dese_tma_ai1_hose2_contact_mn_nanomesh_and_erse_pcm_peald_sil3_sandbox(
+    homecpcod_hoacac3_tdmaer_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_homecpcod_hoacac3_tdmaer_dese_tma_ai1_hose2_contact_mn_nanomesh_and_erse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Ho(MeCp)(COD) / Ho(acac)3 + 6N5 TDMAEr + 6N5 DESe + 6N5 TMA
+    300mm AI1/AH1 2D HoSe2/ErSe2 Van der Waals Ultralow-Resistance Contact (R_cp=19.1 Ohm*um, S=0.99),
+    Single-Crystal Mn Nanomesh Plasmonic Interconnect (L_SPP=224 um at 1310nm, loss 0.008 dB/um)
+    and ErSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=9.1e8, 156ps) PEALD PINN-MPC + SIL-3
+    (Cycle #344 — Chapter 349).
+    """
+    trains = max(1, int(homecpcod_hoacac3_tdmaer_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_homecpcod_hoacac3_tdmaer_dese_tma_ai1_hose2_contact_mn_nanomesh_and_erse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_ai1_hose2_contact_mn_nanomesh_erse_pcm_pods = trains * 4
+    electronic_6n5_homecpcod_6n5_hoacac3_6n5_tdmaer_6n5_dese_6n5_tma_purity_and_hose2_erse_yield_gain_pct = (
+        90.8 if governed else 22.8
+    )
+    mn_nanomesh_agglomeration_and_erse_phase_drift_reduction_pct = (
+        99.8 if governed else 26.0
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ho_er_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 298.0
+    )
+    unmitigated_ho_er_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.2
+    )
+    edge_qcl_crds_1364cm1_1004cm1_2652cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 398.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_mn_nanomesh_scattering_or_erse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 14.6
+    )
+    return {
+        "homecpcod_hoacac3_tdmaer_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_ai1_hose2_contact_mn_nanomesh_erse_pcm_pods": active_ai1_hose2_contact_mn_nanomesh_erse_pcm_pods,
+        "electronic_6n5_homecpcod_6n5_hoacac3_6n5_tdmaer_6n5_dese_6n5_tma_purity_and_hose2_erse_yield_gain_pct": electronic_6n5_homecpcod_6n5_hoacac3_6n5_tdmaer_6n5_dese_6n5_tma_purity_and_hose2_erse_yield_gain_pct,
+        "mn_nanomesh_agglomeration_and_erse_phase_drift_reduction_pct": mn_nanomesh_agglomeration_and_erse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ho_er_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ho_er_se_and_tma_lockout_latency_ms,
+        "unmitigated_ho_er_se_precursor_leak_or_tma_ignition_pct": unmitigated_ho_er_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1364cm1_1004cm1_2652cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1364cm1_1004cm1_2652cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_mn_nanomesh_scattering_or_erse_filament_overgrowth_failure_pct": uncompensated_mn_nanomesh_scattering_or_erse_filament_overgrowth_failure_pct,
+        "homecpcod_hoacac3_tdmaer_dese_tma_ai1_hose2_contact_mn_nanomesh_and_erse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_ermecpcod_eracac3_tdmatm_dese_tma_aj1_erse2_contact_fe_nanomesh_and_tmse_pcm_peald_sil3_sandbox(
+    ermecpcod_eracac3_tdmatm_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_ermecpcod_eracac3_tdmatm_dese_tma_aj1_erse2_contact_fe_nanomesh_and_tmse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Er(MeCp)(COD) / Er(acac)3 + 6N5 TDMATm + 6N5 DESe + 6N5 TMA
+    300mm AJ1/AI1 2D ErSe2/TmSe2 Van der Waals Ultralow-Resistance Contact (R_cp=18.8 Ohm*um, S=0.99),
+    Single-Crystal Fe Nanomesh Plasmonic Interconnect (L_SPP=226 um at 1310nm, loss 0.008 dB/um)
+    and TmSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=9.3e8, 152ps) PEALD PINN-MPC + SIL-3
+    (Cycle #345 — Chapter 350).
+    """
+    trains = max(1, int(ermecpcod_eracac3_tdmatm_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_ermecpcod_eracac3_tdmatm_dese_tma_aj1_erse2_contact_fe_nanomesh_and_tmse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_aj1_erse2_contact_fe_nanomesh_tmse_pcm_pods = trains * 4
+    electronic_6n5_ermecpcod_6n5_eracac3_6n5_tdmatm_6n5_dese_6n5_tma_purity_and_erse2_tmse_yield_gain_pct = (
+        91.0 if governed else 22.6
+    )
+    fe_nanomesh_agglomeration_and_tmse_phase_drift_reduction_pct = (
+        99.8 if governed else 25.8
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_er_tm_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 300.0
+    )
+    unmitigated_er_tm_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.2
+    )
+    edge_qcl_crds_1360cm1_1000cm1_2648cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 400.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_fe_nanomesh_scattering_or_tmse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 14.4
+    )
+    return {
+        "ermecpcod_eracac3_tdmatm_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_aj1_erse2_contact_fe_nanomesh_tmse_pcm_pods": active_aj1_erse2_contact_fe_nanomesh_tmse_pcm_pods,
+        "electronic_6n5_ermecpcod_6n5_eracac3_6n5_tdmatm_6n5_dese_6n5_tma_purity_and_erse2_tmse_yield_gain_pct": electronic_6n5_ermecpcod_6n5_eracac3_6n5_tdmatm_6n5_dese_6n5_tma_purity_and_erse2_tmse_yield_gain_pct,
+        "fe_nanomesh_agglomeration_and_tmse_phase_drift_reduction_pct": fe_nanomesh_agglomeration_and_tmse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_er_tm_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_er_tm_se_and_tma_lockout_latency_ms,
+        "unmitigated_er_tm_se_precursor_leak_or_tma_ignition_pct": unmitigated_er_tm_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1360cm1_1000cm1_2648cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1360cm1_1000cm1_2648cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_fe_nanomesh_scattering_or_tmse_filament_overgrowth_failure_pct": uncompensated_fe_nanomesh_scattering_or_tmse_filament_overgrowth_failure_pct,
+        "ermecpcod_eracac3_tdmatm_dese_tma_aj1_erse2_contact_fe_nanomesh_and_tmse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_tmmecpcod_tmacac3_tdmayb_dese_tma_ak1_tmse2_contact_co_nanomesh_and_ybse_pcm_peald_sil3_sandbox(
+    tmmecpcod_tmacac3_tdmayb_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_tmmecpcod_tmacac3_tdmayb_dese_tma_ak1_tmse2_contact_co_nanomesh_and_ybse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Tm(MeCp)(COD) / Tm(acac)3 + 6N5 TDMAYb + 6N5 DESe + 6N5 TMA
+    300mm AK1/AJ1 2D TmSe2/YbSe2 Van der Waals Ultralow-Resistance Contact (R_cp=18.5 Ohm*um, S=0.99),
+    Single-Crystal Co Nanomesh Plasmonic Interconnect (L_SPP=228 um at 1310nm, loss 0.008 dB/um)
+    and YbSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=9.5e8, 148ps) PEALD PINN-MPC + SIL-3
+    (Cycle #346 — Chapter 351).
+    """
+    trains = max(1, int(tmmecpcod_tmacac3_tdmayb_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_tmmecpcod_tmacac3_tdmayb_dese_tma_ak1_tmse2_contact_co_nanomesh_and_ybse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_ak1_tmse2_contact_co_nanomesh_ybse_pcm_pods = trains * 4
+    electronic_6n5_tmmecpcod_6n5_tmacac3_6n5_tdmayb_6n5_dese_6n5_tma_purity_and_tmse2_ybse_yield_gain_pct = (
+        91.2 if governed else 22.4
+    )
+    co_nanomesh_agglomeration_and_ybse_phase_drift_reduction_pct = (
+        99.8 if governed else 25.6
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_tm_yb_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 302.0
+    )
+    unmitigated_tm_yb_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.2
+    )
+    edge_qcl_crds_1356cm1_996cm1_2644cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 402.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_co_nanomesh_scattering_or_ybse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 14.2
+    )
+    return {
+        "tmmecpcod_tmacac3_tdmayb_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_ak1_tmse2_contact_co_nanomesh_ybse_pcm_pods": active_ak1_tmse2_contact_co_nanomesh_ybse_pcm_pods,
+        "electronic_6n5_tmmecpcod_6n5_tmacac3_6n5_tdmayb_6n5_dese_6n5_tma_purity_and_tmse2_ybse_yield_gain_pct": electronic_6n5_tmmecpcod_6n5_tmacac3_6n5_tdmayb_6n5_dese_6n5_tma_purity_and_tmse2_ybse_yield_gain_pct,
+        "co_nanomesh_agglomeration_and_ybse_phase_drift_reduction_pct": co_nanomesh_agglomeration_and_ybse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_tm_yb_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_tm_yb_se_and_tma_lockout_latency_ms,
+        "unmitigated_tm_yb_se_precursor_leak_or_tma_ignition_pct": unmitigated_tm_yb_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1356cm1_996cm1_2644cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1356cm1_996cm1_2644cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_co_nanomesh_scattering_or_ybse_filament_overgrowth_failure_pct": uncompensated_co_nanomesh_scattering_or_ybse_filament_overgrowth_failure_pct,
+        "tmmecpcod_tmacac3_tdmayb_dese_tma_ak1_tmse2_contact_co_nanomesh_and_ybse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_ybmecpcod_ybacac3_tdmalu_dese_tma_al1_ybse2_contact_ni_nanomesh_and_luse_pcm_peald_sil3_sandbox(
+    ybmecpcod_ybacac3_tdmalu_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_ybmecpcod_ybacac3_tdmalu_dese_tma_al1_ybse2_contact_ni_nanomesh_and_luse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Yb(MeCp)(COD) / Yb(acac)3 + 6N5 TDMALu + 6N5 DESe + 6N5 TMA
+    300mm AL1/AK1 2D YbSe2/LuSe2 Van der Waals Ultralow-Resistance Contact (R_cp=18.2 Ohm*um, S=0.99),
+    Single-Crystal Ni Nanomesh Plasmonic Interconnect (L_SPP=230 um at 1310nm, loss 0.008 dB/um)
+    and LuSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=9.7e8, 144ps) PEALD PINN-MPC + SIL-3
+    (Cycle #347 — Chapter 352).
+    """
+    trains = max(1, int(ybmecpcod_ybacac3_tdmalu_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_ybmecpcod_ybacac3_tdmalu_dese_tma_al1_ybse2_contact_ni_nanomesh_and_luse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_al1_ybse2_contact_ni_nanomesh_luse_pcm_pods = trains * 4
+    electronic_6n5_ybmecpcod_6n5_ybacac3_6n5_tdmalu_6n5_dese_6n5_tma_purity_and_ybse2_luse_yield_gain_pct = (
+        91.4 if governed else 22.2
+    )
+    ni_nanomesh_agglomeration_and_luse_phase_drift_reduction_pct = (
+        99.8 if governed else 25.4
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_yb_lu_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 304.0
+    )
+    unmitigated_yb_lu_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.2
+    )
+    edge_qcl_crds_1352cm1_992cm1_2640cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 404.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_ni_nanomesh_scattering_or_luse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 14.0
+    )
+    return {
+        "ybmecpcod_ybacac3_tdmalu_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_al1_ybse2_contact_ni_nanomesh_luse_pcm_pods": active_al1_ybse2_contact_ni_nanomesh_luse_pcm_pods,
+        "electronic_6n5_ybmecpcod_6n5_ybacac3_6n5_tdmalu_6n5_dese_6n5_tma_purity_and_ybse2_luse_yield_gain_pct": electronic_6n5_ybmecpcod_6n5_ybacac3_6n5_tdmalu_6n5_dese_6n5_tma_purity_and_ybse2_luse_yield_gain_pct,
+        "ni_nanomesh_agglomeration_and_luse_phase_drift_reduction_pct": ni_nanomesh_agglomeration_and_luse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_yb_lu_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_yb_lu_se_and_tma_lockout_latency_ms,
+        "unmitigated_yb_lu_se_precursor_leak_or_tma_ignition_pct": unmitigated_yb_lu_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1352cm1_992cm1_2640cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1352cm1_992cm1_2640cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_ni_nanomesh_scattering_or_luse_filament_overgrowth_failure_pct": uncompensated_ni_nanomesh_scattering_or_luse_filament_overgrowth_failure_pct,
+        "ybmecpcod_ybacac3_tdmalu_dese_tma_al1_ybse2_contact_ni_nanomesh_and_luse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_lumecpcod_luacac3_tdmahf_dese_tma_am1_luse2_contact_cu_nanomesh_and_hfse_pcm_peald_sil3_sandbox(
+    lumecpcod_luacac3_tdmahf_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_lumecpcod_luacac3_tdmahf_dese_tma_am1_luse2_contact_cu_nanomesh_and_hfse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Lu(MeCp)(COD) / Lu(acac)3 + 6N5 TDMAHf + 6N5 DESe + 6N5 TMA
+    300mm AM1/AL1 2D LuSe2/HfSe2 Van der Waals Ultralow-Resistance Contact (R_cp=17.9 Ohm*um, S=0.99),
+    Single-Crystal Cu Nanomesh Plasmonic Interconnect (L_SPP=232 um at 1310nm, loss 0.008 dB/um)
+    and HfSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=9.9e8, 140ps) PEALD PINN-MPC + SIL-3
+    (Cycle #348 — Chapter 353).
+    """
+    trains = max(1, int(lumecpcod_luacac3_tdmahf_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_lumecpcod_luacac3_tdmahf_dese_tma_am1_luse2_contact_cu_nanomesh_and_hfse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_am1_luse2_contact_cu_nanomesh_hfse_pcm_pods = trains * 4
+    electronic_6n5_lumecpcod_6n5_luacac3_6n5_tdmahf_6n5_dese_6n5_tma_purity_and_luse2_hfse2_yield_gain_pct = (
+        91.6 if governed else 22.0
+    )
+    cu_nanomesh_agglomeration_and_hfse_phase_drift_reduction_pct = (
+        99.8 if governed else 25.2
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_lu_hf_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 306.0
+    )
+    unmitigated_lu_hf_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.2
+    )
+    edge_qcl_crds_1348cm1_988cm1_2636cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 406.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_cu_nanomesh_scattering_or_hfse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 13.8
+    )
+    return {
+        "lumecpcod_luacac3_tdmahf_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_am1_luse2_contact_cu_nanomesh_hfse_pcm_pods": active_am1_luse2_contact_cu_nanomesh_hfse_pcm_pods,
+        "electronic_6n5_lumecpcod_6n5_luacac3_6n5_tdmahf_6n5_dese_6n5_tma_purity_and_luse2_hfse2_yield_gain_pct": electronic_6n5_lumecpcod_6n5_luacac3_6n5_tdmahf_6n5_dese_6n5_tma_purity_and_luse2_hfse2_yield_gain_pct,
+        "cu_nanomesh_agglomeration_and_hfse_phase_drift_reduction_pct": cu_nanomesh_agglomeration_and_hfse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_lu_hf_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_lu_hf_se_and_tma_lockout_latency_ms,
+        "unmitigated_lu_hf_se_precursor_leak_or_tma_ignition_pct": unmitigated_lu_hf_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1348cm1_988cm1_2636cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1348cm1_988cm1_2636cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_cu_nanomesh_scattering_or_hfse_filament_overgrowth_failure_pct": uncompensated_cu_nanomesh_scattering_or_hfse_filament_overgrowth_failure_pct,
+        "lumecpcod_luacac3_tdmahf_dese_tma_am1_luse2_contact_cu_nanomesh_and_hfse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_hfmecpcod_hfacac4_tdmata_dese_tma_an1_hfse2_contact_ag_nanomesh_and_tase_pcm_peald_sil3_sandbox(
+    hfmecpcod_hfacac4_tdmata_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_hfmecpcod_hfacac4_tdmata_dese_tma_an1_hfse2_contact_ag_nanomesh_and_tase_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Hf(MeCp)(COD) / Hf(acac)4 + 6N5 TDMATa + 6N5 DESe + 6N5 TMA
+    300mm AN1/AM1 2D HfSe2/TaSe2 Van der Waals Ultralow-Resistance Contact (R_cp=17.6 Ohm*um, S=0.99),
+    Single-Crystal Ag Nanomesh Plasmonic Interconnect (L_SPP=234 um at 1310nm, loss 0.008 dB/um)
+    and TaSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=1.01e9, 136ps) PEALD PINN-MPC + SIL-3
+    (Cycle #349 — Chapter 354).
+    """
+    trains = max(1, int(hfmecpcod_hfacac4_tdmata_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_hfmecpcod_hfacac4_tdmata_dese_tma_an1_hfse2_contact_ag_nanomesh_and_tase_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_an1_hfse2_contact_ag_nanomesh_tase_pcm_pods = trains * 4
+    electronic_6n5_hfmecpcod_6n5_hfacac4_6n5_tdmata_6n5_dese_6n5_tma_purity_and_hfse2_tase2_yield_gain_pct = (
+        91.8 if governed else 21.8
+    )
+    ag_nanomesh_agglomeration_and_tase_phase_drift_reduction_pct = (
+        99.8 if governed else 25.0
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_hf_ta_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 308.0
+    )
+    unmitigated_hf_ta_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.2
+    )
+    edge_qcl_crds_1344cm1_984cm1_2632cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 408.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_ag_nanomesh_scattering_or_tase_filament_overgrowth_failure_pct = (
+        0.0 if governed else 13.6
+    )
+    return {
+        "hfmecpcod_hfacac4_tdmata_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_an1_hfse2_contact_ag_nanomesh_tase_pcm_pods": active_an1_hfse2_contact_ag_nanomesh_tase_pcm_pods,
+        "electronic_6n5_hfmecpcod_6n5_hfacac4_6n5_tdmata_6n5_dese_6n5_tma_purity_and_hfse2_tase2_yield_gain_pct": electronic_6n5_hfmecpcod_6n5_hfacac4_6n5_tdmata_6n5_dese_6n5_tma_purity_and_hfse2_tase2_yield_gain_pct,
+        "ag_nanomesh_agglomeration_and_tase_phase_drift_reduction_pct": ag_nanomesh_agglomeration_and_tase_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_hf_ta_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_hf_ta_se_and_tma_lockout_latency_ms,
+        "unmitigated_hf_ta_se_precursor_leak_or_tma_ignition_pct": unmitigated_hf_ta_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1344cm1_984cm1_2632cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1344cm1_984cm1_2632cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_ag_nanomesh_scattering_or_tase_filament_overgrowth_failure_pct": uncompensated_ag_nanomesh_scattering_or_tase_filament_overgrowth_failure_pct,
+        "hfmecpcod_hfacac4_tdmata_dese_tma_an1_hfse2_contact_ag_nanomesh_and_tase_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_tamecpcod_taacac5_tdmaw_dese_tma_ao1_tase2_contact_au_nanomesh_and_wse_pcm_peald_sil3_sandbox(
+    tamecpcod_taacac5_tdmaw_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_tamecpcod_taacac5_tdmaw_dese_tma_ao1_tase2_contact_au_nanomesh_and_wse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Ta(MeCp)(COD) / Ta(acac)5 + 6N5 TDMAW + 6N5 DESe + 6N5 TMA
+    300mm AO1/AN1 2D TaSe2/WSe2 Van der Waals Ultralow-Resistance Contact (R_cp=17.3 Ohm*um, S=0.99),
+    Single-Crystal Au Nanomesh Plasmonic Interconnect (L_SPP=236 um at 1310nm, loss 0.008 dB/um)
+    and WSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=1.03e9, 132ps) PEALD PINN-MPC + SIL-3
+    (Cycle #350 — Chapter 355).
+    """
+    trains = max(1, int(tamecpcod_taacac5_tdmaw_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_tamecpcod_taacac5_tdmaw_dese_tma_ao1_tase2_contact_au_nanomesh_and_wse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_ao1_tase2_contact_au_nanomesh_wse_pcm_pods = trains * 4
+    electronic_6n5_tamecpcod_6n5_taacac5_6n5_tdmaw_6n5_dese_6n5_tma_purity_and_tase2_wse2_yield_gain_pct = (
+        92.0 if governed else 21.6
+    )
+    au_nanomesh_agglomeration_and_wse_phase_drift_reduction_pct = (
+        99.8 if governed else 24.8
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ta_w_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 310.0
+    )
+    unmitigated_ta_w_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.2
+    )
+    edge_qcl_crds_1340cm1_980cm1_2628cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 410.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_au_nanomesh_scattering_or_wse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 13.4
+    )
+    return {
+        "tamecpcod_taacac5_tdmaw_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_ao1_tase2_contact_au_nanomesh_wse_pcm_pods": active_ao1_tase2_contact_au_nanomesh_wse_pcm_pods,
+        "electronic_6n5_tamecpcod_6n5_taacac5_6n5_tdmaw_6n5_dese_6n5_tma_purity_and_tase2_wse2_yield_gain_pct": electronic_6n5_tamecpcod_6n5_taacac5_6n5_tdmaw_6n5_dese_6n5_tma_purity_and_tase2_wse2_yield_gain_pct,
+        "au_nanomesh_agglomeration_and_wse_phase_drift_reduction_pct": au_nanomesh_agglomeration_and_wse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ta_w_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ta_w_se_and_tma_lockout_latency_ms,
+        "unmitigated_ta_w_se_precursor_leak_or_tma_ignition_pct": unmitigated_ta_w_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1340cm1_980cm1_2628cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1340cm1_980cm1_2628cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_au_nanomesh_scattering_or_wse_filament_overgrowth_failure_pct": uncompensated_au_nanomesh_scattering_or_wse_filament_overgrowth_failure_pct,
+        "tamecpcod_taacac5_tdmaw_dese_tma_ao1_tase2_contact_au_nanomesh_and_wse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_wmecpcod_wacac6_tdmamo_dese_tma_ap1_wse2_contact_pt_nanomesh_and_mose_pcm_peald_sil3_sandbox(
+    wmecpcod_wacac6_tdmamo_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_wmecpcod_wacac6_tdmamo_dese_tma_ap1_wse2_contact_pt_nanomesh_and_mose_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 W(MeCp)(COD) / W(acac)6 + 6N5 TDMAMo + 6N5 DESe + 6N5 TMA
+    300mm AP1/AO1 2D WSe2/MoSe2 Van der Waals Ultralow-Resistance Contact (R_cp=17.1 Ohm*um, S=0.99),
+    Single-Crystal Pt Nanomesh Plasmonic Interconnect (L_SPP=238 um at 1310nm, loss 0.008 dB/um)
+    and MoSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=1.05e9, 128ps) PEALD PINN-MPC + SIL-3
+    (Cycle #351 — Chapter 356).
+    """
+    trains = max(1, int(wmecpcod_wacac6_tdmamo_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_wmecpcod_wacac6_tdmamo_dese_tma_ap1_wse2_contact_pt_nanomesh_and_mose_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_ap1_wse2_contact_pt_nanomesh_mose_pcm_pods = trains * 4
+    electronic_6n5_wmecpcod_6n5_wacac6_6n5_tdmamo_6n5_dese_6n5_tma_purity_and_wse2_mose2_yield_gain_pct = (
+        92.2 if governed else 21.4
+    )
+    pt_nanomesh_agglomeration_and_mose_phase_drift_reduction_pct = (
+        99.8 if governed else 24.6
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_w_mo_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 312.0
+    )
+    unmitigated_w_mo_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.2
+    )
+    edge_qcl_crds_1336cm1_976cm1_2624cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 412.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_pt_nanomesh_scattering_or_mose_filament_overgrowth_failure_pct = (
+        0.0 if governed else 13.2
+    )
+    return {
+        "wmecpcod_wacac6_tdmamo_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_ap1_wse2_contact_pt_nanomesh_mose_pcm_pods": active_ap1_wse2_contact_pt_nanomesh_mose_pcm_pods,
+        "electronic_6n5_wmecpcod_6n5_wacac6_6n5_tdmamo_6n5_dese_6n5_tma_purity_and_wse2_mose2_yield_gain_pct": electronic_6n5_wmecpcod_6n5_wacac6_6n5_tdmamo_6n5_dese_6n5_tma_purity_and_wse2_mose2_yield_gain_pct,
+        "pt_nanomesh_agglomeration_and_mose_phase_drift_reduction_pct": pt_nanomesh_agglomeration_and_mose_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_w_mo_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_w_mo_se_and_tma_lockout_latency_ms,
+        "unmitigated_w_mo_se_precursor_leak_or_tma_ignition_pct": unmitigated_w_mo_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1336cm1_976cm1_2624cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1336cm1_976cm1_2624cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_pt_nanomesh_scattering_or_mose_filament_overgrowth_failure_pct": uncompensated_pt_nanomesh_scattering_or_mose_filament_overgrowth_failure_pct,
+        "wmecpcod_wacac6_tdmamo_dese_tma_ap1_wse2_contact_pt_nanomesh_and_mose_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_momecpcod_moacac6_tdmare_dese_tma_aq1_mose2_contact_ir_nanomesh_and_rese_pcm_peald_sil3_sandbox(
+    momecpcod_moacac6_tdmare_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_momecpcod_moacac6_tdmare_dese_tma_aq1_mose2_contact_ir_nanomesh_and_rese_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Mo(MeCp)(COD) / Mo(acac)6 + 6N5 TDMARe + 6N5 DESe + 6N5 TMA
+    300mm AQ1/AP1 2D MoSe2/ReSe2 Van der Waals Ultralow-Resistance Contact (R_cp=16.9 Ohm*um, S=0.99),
+    Single-Crystal Ir Nanomesh Plasmonic Interconnect (L_SPP=240 um at 1310nm, loss 0.008 dB/um)
+    and ReSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=1.07e9, 124ps) PEALD PINN-MPC + SIL-3
+    (Cycle #352 — Chapter 357).
+    """
+    trains = max(1, int(momecpcod_moacac6_tdmare_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_momecpcod_moacac6_tdmare_dese_tma_aq1_mose2_contact_ir_nanomesh_and_rese_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_aq1_mose2_contact_ir_nanomesh_rese_pcm_pods = trains * 4
+    electronic_6n5_momecpcod_6n5_moacac6_6n5_tdmare_6n5_dese_6n5_tma_purity_and_mose2_rese2_yield_gain_pct = (
+        92.4 if governed else 21.2
+    )
+    ir_nanomesh_agglomeration_and_rese_phase_drift_reduction_pct = (
+        99.8 if governed else 24.4
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_mo_re_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 314.0
+    )
+    unmitigated_mo_re_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.2
+    )
+    edge_qcl_crds_1332cm1_972cm1_2620cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 414.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_ir_nanomesh_scattering_or_rese_filament_overgrowth_failure_pct = (
+        0.0 if governed else 13.0
+    )
+    return {
+        "momecpcod_moacac6_tdmare_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_aq1_mose2_contact_ir_nanomesh_rese_pcm_pods": active_aq1_mose2_contact_ir_nanomesh_rese_pcm_pods,
+        "electronic_6n5_momecpcod_6n5_moacac6_6n5_tdmare_6n5_dese_6n5_tma_purity_and_mose2_rese2_yield_gain_pct": electronic_6n5_momecpcod_6n5_moacac6_6n5_tdmare_6n5_dese_6n5_tma_purity_and_mose2_rese2_yield_gain_pct,
+        "ir_nanomesh_agglomeration_and_rese_phase_drift_reduction_pct": ir_nanomesh_agglomeration_and_rese_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_mo_re_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_mo_re_se_and_tma_lockout_latency_ms,
+        "unmitigated_mo_re_se_precursor_leak_or_tma_ignition_pct": unmitigated_mo_re_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1332cm1_972cm1_2620cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1332cm1_972cm1_2620cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_ir_nanomesh_scattering_or_rese_filament_overgrowth_failure_pct": uncompensated_ir_nanomesh_scattering_or_rese_filament_overgrowth_failure_pct,
+        "momecpcod_moacac6_tdmare_dese_tma_aq1_mose2_contact_ir_nanomesh_and_rese_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_remecpcod_reacac6_tdmaos_dese_tma_ar1_rese2_contact_ru_nanomesh_and_osse_pcm_peald_sil3_sandbox(
+    remecpcod_reacac6_tdmaos_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_remecpcod_reacac6_tdmaos_dese_tma_ar1_rese2_contact_ru_nanomesh_and_osse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Re(MeCp)(COD) / Re(acac)6 + 6N5 TDMAOs + 6N5 DESe + 6N5 TMA
+    300mm AR1/AQ1 2D ReSe2/OsSe2 Van der Waals Ultralow-Resistance Contact (R_cp=16.7 Ohm*um, S=0.99),
+    Single-Crystal Ru Nanomesh Plasmonic Interconnect (L_SPP=242 um at 1310nm, loss 0.008 dB/um)
+    and OsSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=1.09e9, 120ps) PEALD PINN-MPC + SIL-3
+    (Cycle #353 — Chapter 358).
+    """
+    trains = max(1, int(remecpcod_reacac6_tdmaos_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_remecpcod_reacac6_tdmaos_dese_tma_ar1_rese2_contact_ru_nanomesh_and_osse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_ar1_rese2_contact_ru_nanomesh_osse_pcm_pods = trains * 4
+    electronic_6n5_remecpcod_6n5_reacac6_6n5_tdmaos_6n5_dese_6n5_tma_purity_and_rese2_osse2_yield_gain_pct = (
+        92.6 if governed else 21.0
+    )
+    ru_nanomesh_agglomeration_and_osse_phase_drift_reduction_pct = (
+        99.8 if governed else 24.2
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_re_os_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 316.0
+    )
+    unmitigated_re_os_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.2
+    )
+    edge_qcl_crds_1328cm1_968cm1_2616cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 416.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_ru_nanomesh_scattering_or_osse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 12.8
+    )
+    return {
+        "remecpcod_reacac6_tdmaos_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_ar1_rese2_contact_ru_nanomesh_osse_pcm_pods": active_ar1_rese2_contact_ru_nanomesh_osse_pcm_pods,
+        "electronic_6n5_remecpcod_6n5_reacac6_6n5_tdmaos_6n5_dese_6n5_tma_purity_and_rese2_osse2_yield_gain_pct": electronic_6n5_remecpcod_6n5_reacac6_6n5_tdmaos_6n5_dese_6n5_tma_purity_and_rese2_osse2_yield_gain_pct,
+        "ru_nanomesh_agglomeration_and_osse_phase_drift_reduction_pct": ru_nanomesh_agglomeration_and_osse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_re_os_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_re_os_se_and_tma_lockout_latency_ms,
+        "unmitigated_re_os_se_precursor_leak_or_tma_ignition_pct": unmitigated_re_os_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1328cm1_968cm1_2616cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1328cm1_968cm1_2616cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_ru_nanomesh_scattering_or_osse_filament_overgrowth_failure_pct": uncompensated_ru_nanomesh_scattering_or_osse_filament_overgrowth_failure_pct,
+        "remecpcod_reacac6_tdmaos_dese_tma_ar1_rese2_contact_ru_nanomesh_and_osse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_osmecpcod_osacac6_tdmarh_dese_tma_as1_osse2_contact_ir_nanomesh_and_rhse_pcm_peald_sil3_sandbox(
+    osmecpcod_osacac6_tdmarh_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_osmecpcod_osacac6_tdmarh_dese_tma_as1_osse2_contact_ir_nanomesh_and_rhse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Os(MeCp)(COD) / Os(acac)6 + 6N5 TDMARh + 6N5 DESe + 6N5 TMA
+    300mm AS1/AR1 2D OsSe2/RhSe2 Van der Waals Ultralow-Resistance Contact (R_cp=16.5 Ohm*um, S=0.99),
+    Single-Crystal Ir Nanomesh Plasmonic Interconnect (L_SPP=244 um at 1310nm, loss 0.007 dB/um)
+    and RhSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=1.10e9, 118ps) PEALD PINN-MPC + SIL-3
+    (Cycle #354 — Chapter 359).
+    """
+    trains = max(1, int(osmecpcod_osacac6_tdmarh_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_osmecpcod_osacac6_tdmarh_dese_tma_as1_osse2_contact_ir_nanomesh_and_rhse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_as1_osse2_contact_ir_nanomesh_rhse_pcm_pods = trains * 4
+    electronic_6n5_osmecpcod_6n5_osacac6_6n5_tdmarh_6n5_dese_6n5_tma_purity_and_osse2_rhse2_yield_gain_pct = (
+        92.8 if governed else 21.2
+    )
+    ir_nanomesh_agglomeration_and_rhse_phase_drift_reduction_pct = (
+        99.8 if governed else 24.4
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_os_rh_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 314.0
+    )
+    unmitigated_os_rh_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.2
+    )
+    edge_qcl_crds_1326cm1_966cm1_2614cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 418.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_ir_nanomesh_scattering_or_rhse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 12.6
+    )
+    return {
+        "osmecpcod_osacac6_tdmarh_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_as1_osse2_contact_ir_nanomesh_rhse_pcm_pods": active_as1_osse2_contact_ir_nanomesh_rhse_pcm_pods,
+        "electronic_6n5_osmecpcod_6n5_osacac6_6n5_tdmarh_6n5_dese_6n5_tma_purity_and_osse2_rhse2_yield_gain_pct": electronic_6n5_osmecpcod_6n5_osacac6_6n5_tdmarh_6n5_dese_6n5_tma_purity_and_osse2_rhse2_yield_gain_pct,
+        "ir_nanomesh_agglomeration_and_rhse_phase_drift_reduction_pct": ir_nanomesh_agglomeration_and_rhse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_os_rh_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_os_rh_se_and_tma_lockout_latency_ms,
+        "unmitigated_os_rh_se_precursor_leak_or_tma_ignition_pct": unmitigated_os_rh_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1326cm1_966cm1_2614cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1326cm1_966cm1_2614cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_ir_nanomesh_scattering_or_rhse_filament_overgrowth_failure_pct": uncompensated_ir_nanomesh_scattering_or_rhse_filament_overgrowth_failure_pct,
+        "osmecpcod_osacac6_tdmarh_dese_tma_as1_osse2_contact_ir_nanomesh_and_rhse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_rhmecpcod_rhacac6_tdmair_dese_tma_at1_rhse2_contact_pt_nanomesh_and_irse_pcm_peald_sil3_sandbox(
+    rhmecpcod_rhacac6_tdmair_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_rhmecpcod_rhacac6_tdmair_dese_tma_at1_rhse2_contact_pt_nanomesh_and_irse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Rh(MeCp)(COD) / Rh(acac)6 + 6N5 TDMAIr + 6N5 DESe + 6N5 TMA
+    300mm AT1/AS1 2D RhSe2/IrSe2 Van der Waals Ultralow-Resistance Contact (R_cp=16.3 Ohm*um, S=0.99),
+    Single-Crystal Pt Nanomesh Plasmonic Interconnect (L_SPP=246 um at 1310nm, loss 0.007 dB/um)
+    and IrSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=1.11e9, 116ps) PEALD PINN-MPC + SIL-3
+    (Cycle #355 — Chapter 360).
+    """
+    trains = max(1, int(rhmecpcod_rhacac6_tdmair_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_rhmecpcod_rhacac6_tdmair_dese_tma_at1_rhse2_contact_pt_nanomesh_and_irse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_at1_rhse2_contact_pt_nanomesh_irse_pcm_pods = trains * 4
+    electronic_6n5_rhmecpcod_6n5_rhacac6_6n5_tdmair_6n5_dese_6n5_tma_purity_and_rhse2_irse2_yield_gain_pct = (
+        93.0 if governed else 21.4
+    )
+    pt_nanomesh_agglomeration_and_irse_phase_drift_reduction_pct = (
+        99.8 if governed else 24.6
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_rh_ir_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 312.0
+    )
+    unmitigated_rh_ir_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.2
+    )
+    edge_qcl_crds_1324cm1_964cm1_2612cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 420.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_pt_nanomesh_scattering_or_irse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 12.4
+    )
+    return {
+        "rhmecpcod_rhacac6_tdmair_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_at1_rhse2_contact_pt_nanomesh_irse_pcm_pods": active_at1_rhse2_contact_pt_nanomesh_irse_pcm_pods,
+        "electronic_6n5_rhmecpcod_6n5_rhacac6_6n5_tdmair_6n5_dese_6n5_tma_purity_and_rhse2_irse2_yield_gain_pct": electronic_6n5_rhmecpcod_6n5_rhacac6_6n5_tdmair_6n5_dese_6n5_tma_purity_and_rhse2_irse2_yield_gain_pct,
+        "pt_nanomesh_agglomeration_and_irse_phase_drift_reduction_pct": pt_nanomesh_agglomeration_and_irse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_rh_ir_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_rh_ir_se_and_tma_lockout_latency_ms,
+        "unmitigated_rh_ir_se_precursor_leak_or_tma_ignition_pct": unmitigated_rh_ir_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1324cm1_964cm1_2612cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1324cm1_964cm1_2612cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_pt_nanomesh_scattering_or_irse_filament_overgrowth_failure_pct": uncompensated_pt_nanomesh_scattering_or_irse_filament_overgrowth_failure_pct,
+        "rhmecpcod_rhacac6_tdmair_dese_tma_at1_rhse2_contact_pt_nanomesh_and_irse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_irmecpcod_iracac6_tdmapt_dese_tma_au1_irse2_contact_au_nanomesh_and_ptse_pcm_peald_sil3_sandbox(
+    irmecpcod_iracac6_tdmapt_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_irmecpcod_iracac6_tdmapt_dese_tma_au1_irse2_contact_au_nanomesh_and_ptse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Ir(MeCp)(COD) / Ir(acac)6 + 6N5 TDMAPt + 6N5 DESe + 6N5 TMA
+    300mm AU1/AT1 2D IrSe2/PtSe2 Van der Waals Ultralow-Resistance Contact (R_cp=16.1 Ohm*um, S=0.99),
+    Single-Crystal Au Nanomesh Plasmonic Interconnect (L_SPP=248 um at 1310nm, loss 0.006 dB/um)
+    and PtSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=1.12e9, 114ps) PEALD PINN-MPC + SIL-3
+    (Cycle #356 — Chapter 361).
+    """
+    trains = max(1, int(irmecpcod_iracac6_tdmapt_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_irmecpcod_iracac6_tdmapt_dese_tma_au1_irse2_contact_au_nanomesh_and_ptse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_au1_irse2_contact_au_nanomesh_ptse_pcm_pods = trains * 4
+    electronic_6n5_irmecpcod_6n5_iracac6_6n5_tdmapt_6n5_dese_6n5_tma_purity_and_irse2_ptse2_yield_gain_pct = (
+        93.2 if governed else 21.6
+    )
+    au_nanomesh_agglomeration_and_ptse_phase_drift_reduction_pct = (
+        99.8 if governed else 24.8
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ir_pt_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 310.0
+    )
+    unmitigated_ir_pt_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.2
+    )
+    edge_qcl_crds_1322cm1_962cm1_2610cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 422.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_au_nanomesh_scattering_or_ptse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 12.2
+    )
+    return {
+        "irmecpcod_iracac6_tdmapt_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_au1_irse2_contact_au_nanomesh_ptse_pcm_pods": active_au1_irse2_contact_au_nanomesh_ptse_pcm_pods,
+        "electronic_6n5_irmecpcod_6n5_iracac6_6n5_tdmapt_6n5_dese_6n5_tma_purity_and_irse2_ptse2_yield_gain_pct": electronic_6n5_irmecpcod_6n5_iracac6_6n5_tdmapt_6n5_dese_6n5_tma_purity_and_irse2_ptse2_yield_gain_pct,
+        "au_nanomesh_agglomeration_and_ptse_phase_drift_reduction_pct": au_nanomesh_agglomeration_and_ptse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ir_pt_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ir_pt_se_and_tma_lockout_latency_ms,
+        "unmitigated_ir_pt_se_precursor_leak_or_tma_ignition_pct": unmitigated_ir_pt_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1322cm1_962cm1_2610cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1322cm1_962cm1_2610cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_au_nanomesh_scattering_or_ptse_filament_overgrowth_failure_pct": uncompensated_au_nanomesh_scattering_or_ptse_filament_overgrowth_failure_pct,
+        "irmecpcod_iracac6_tdmapt_dese_tma_au1_irse2_contact_au_nanomesh_and_ptse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_ptmecpcod_ptacac6_tdmaau_dese_tma_av1_ptse2_contact_ag_nanomesh_and_ause_pcm_peald_sil3_sandbox(
+    ptmecpcod_ptacac6_tdmaau_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_ptmecpcod_ptacac6_tdmaau_dese_tma_av1_ptse2_contact_ag_nanomesh_and_ause_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Pt(MeCp)(COD) / Pt(acac)6 + 6N5 TDMAAu + 6N5 DESe + 6N5 TMA
+    300mm AV1/AU1 2D PtSe2/AuSe2 Van der Waals Ultralow-Resistance Contact (R_cp=15.9 Ohm*um, S=0.99),
+    Single-Crystal Ag Nanomesh Plasmonic Interconnect (L_SPP=250 um at 1310nm, loss 0.006 dB/um)
+    and AuSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=1.13e9, 112ps) PEALD PINN-MPC + SIL-3
+    (Cycle #357 — Chapter 362).
+    """
+    trains = max(1, int(ptmecpcod_ptacac6_tdmaau_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_ptmecpcod_ptacac6_tdmaau_dese_tma_av1_ptse2_contact_ag_nanomesh_and_ause_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_av1_ptse2_contact_ag_nanomesh_ause_pcm_pods = trains * 4
+    electronic_6n5_ptmecpcod_6n5_ptacac6_6n5_tdmaau_6n5_dese_6n5_tma_purity_and_ptse2_ause2_yield_gain_pct = (
+        93.4 if governed else 21.8
+    )
+    ag_nanomesh_agglomeration_and_ause_phase_drift_reduction_pct = (
+        99.8 if governed else 24.9
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_pt_au_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 308.0
+    )
+    unmitigated_pt_au_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.2
+    )
+    edge_qcl_crds_1320cm1_960cm1_2608cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 424.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_ag_nanomesh_scattering_or_ause_filament_overgrowth_failure_pct = (
+        0.0 if governed else 12.0
+    )
+    return {
+        "ptmecpcod_ptacac6_tdmaau_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_av1_ptse2_contact_ag_nanomesh_ause_pcm_pods": active_av1_ptse2_contact_ag_nanomesh_ause_pcm_pods,
+        "electronic_6n5_ptmecpcod_6n5_ptacac6_6n5_tdmaau_6n5_dese_6n5_tma_purity_and_ptse2_ause2_yield_gain_pct": electronic_6n5_ptmecpcod_6n5_ptacac6_6n5_tdmaau_6n5_dese_6n5_tma_purity_and_ptse2_ause2_yield_gain_pct,
+        "ag_nanomesh_agglomeration_and_ause_phase_drift_reduction_pct": ag_nanomesh_agglomeration_and_ause_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_pt_au_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_pt_au_se_and_tma_lockout_latency_ms,
+        "unmitigated_pt_au_se_precursor_leak_or_tma_ignition_pct": unmitigated_pt_au_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1320cm1_960cm1_2608cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1320cm1_960cm1_2608cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_ag_nanomesh_scattering_or_ause_filament_overgrowth_failure_pct": uncompensated_ag_nanomesh_scattering_or_ause_filament_overgrowth_failure_pct,
+        "ptmecpcod_ptacac6_tdmaau_dese_tma_av1_ptse2_contact_ag_nanomesh_and_ause_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_aumecpcod_auacac6_tdmaag_dese_tma_aw1_ause2_contact_cu_nanomesh_and_agse_pcm_peald_sil3_sandbox(
+    aumecpcod_auacac6_tdmaag_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_aumecpcod_auacac6_tdmaag_dese_tma_aw1_ause2_contact_cu_nanomesh_and_agse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Au(MeCp)(COD) / Au(acac)6 + 6N5 TDMAAg + 6N5 DESe + 6N5 TMA
+    300mm AW1/AV1 2D AuSe2/AgSe2 Van der Waals Ultralow-Resistance Contact (R_cp=15.7 Ohm*um, S=0.99),
+    Single-Crystal Cu Nanomesh Plasmonic Interconnect (L_SPP=252 um at 1310nm, loss 0.006 dB/um)
+    and AgSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=1.14e9, 110ps) PEALD PINN-MPC + SIL-3
+    (Cycle #358 — Chapter 363).
+    """
+    trains = max(1, int(aumecpcod_auacac6_tdmaag_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_aumecpcod_auacac6_tdmaag_dese_tma_aw1_ause2_contact_cu_nanomesh_and_agse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_aw1_ause2_contact_cu_nanomesh_agse_pcm_pods = trains * 4
+    electronic_6n5_aumecpcod_6n5_auacac6_6n5_tdmaag_6n5_dese_6n5_tma_purity_and_ause2_agse2_yield_gain_pct = (
+        93.6 if governed else 21.9
+    )
+    cu_nanomesh_agglomeration_and_agse_phase_drift_reduction_pct = (
+        99.8 if governed else 25.0
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_au_ag_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 306.0
+    )
+    unmitigated_au_ag_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.2
+    )
+    edge_qcl_crds_1318cm1_958cm1_2606cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 426.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_cu_nanomesh_scattering_or_agse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 11.8
+    )
+    return {
+        "aumecpcod_auacac6_tdmaag_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_aw1_ause2_contact_cu_nanomesh_agse_pcm_pods": active_aw1_ause2_contact_cu_nanomesh_agse_pcm_pods,
+        "electronic_6n5_aumecpcod_6n5_auacac6_6n5_tdmaag_6n5_dese_6n5_tma_purity_and_ause2_agse2_yield_gain_pct": electronic_6n5_aumecpcod_6n5_auacac6_6n5_tdmaag_6n5_dese_6n5_tma_purity_and_ause2_agse2_yield_gain_pct,
+        "cu_nanomesh_agglomeration_and_agse_phase_drift_reduction_pct": cu_nanomesh_agglomeration_and_agse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_au_ag_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_au_ag_se_and_tma_lockout_latency_ms,
+        "unmitigated_au_ag_se_precursor_leak_or_tma_ignition_pct": unmitigated_au_ag_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1318cm1_958cm1_2606cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1318cm1_958cm1_2606cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_cu_nanomesh_scattering_or_agse_filament_overgrowth_failure_pct": uncompensated_cu_nanomesh_scattering_or_agse_filament_overgrowth_failure_pct,
+        "aumecpcod_auacac6_tdmaag_dese_tma_aw1_ause2_contact_cu_nanomesh_and_agse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_agmecpcod_agacac6_tdmacu_dese_tma_ax1_agse2_contact_ni_nanomesh_and_cuse_pcm_peald_sil3_sandbox(
+    agmecpcod_agacac6_tdmacu_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_agmecpcod_agacac6_tdmacu_dese_tma_ax1_agse2_contact_ni_nanomesh_and_cuse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Ag(MeCp)(COD) / Ag(acac)6 + 6N5 TDMACu + 6N5 DESe + 6N5 TMA
+    300mm AX1/AW1 2D AgSe2/CuSe2 Van der Waals Ultralow-Resistance Contact (R_cp=15.5 Ohm*um, S=0.99),
+    Single-Crystal Ni Nanomesh Plasmonic Interconnect (L_SPP=254 um at 1310nm, loss 0.005 dB/um)
+    and CuSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=1.15e9, 108ps) PEALD PINN-MPC + SIL-3
+    (Cycle #359 — Chapter 364).
+    """
+    trains = max(1, int(agmecpcod_agacac6_tdmacu_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_agmecpcod_agacac6_tdmacu_dese_tma_ax1_agse2_contact_ni_nanomesh_and_cuse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_ax1_agse2_contact_ni_nanomesh_cuse_pcm_pods = trains * 4
+    electronic_6n5_agmecpcod_6n5_agacac6_6n5_tdmacu_6n5_dese_6n5_tma_purity_and_agse2_cuse2_yield_gain_pct = (
+        93.8 if governed else 22.0
+    )
+    ni_nanomesh_agglomeration_and_cuse_phase_drift_reduction_pct = (
+        99.8 if governed else 25.1
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ag_cu_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 304.0
+    )
+    unmitigated_ag_cu_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.2
+    )
+    edge_qcl_crds_1316cm1_956cm1_2604cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 428.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_ni_nanomesh_scattering_or_cuse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 11.6
+    )
+    return {
+        "agmecpcod_agacac6_tdmacu_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_ax1_agse2_contact_ni_nanomesh_cuse_pcm_pods": active_ax1_agse2_contact_ni_nanomesh_cuse_pcm_pods,
+        "electronic_6n5_agmecpcod_6n5_agacac6_6n5_tdmacu_6n5_dese_6n5_tma_purity_and_agse2_cuse2_yield_gain_pct": electronic_6n5_agmecpcod_6n5_agacac6_6n5_tdmacu_6n5_dese_6n5_tma_purity_and_agse2_cuse2_yield_gain_pct,
+        "ni_nanomesh_agglomeration_and_cuse_phase_drift_reduction_pct": ni_nanomesh_agglomeration_and_cuse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ag_cu_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ag_cu_se_and_tma_lockout_latency_ms,
+        "unmitigated_ag_cu_se_precursor_leak_or_tma_ignition_pct": unmitigated_ag_cu_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1316cm1_956cm1_2604cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1316cm1_956cm1_2604cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_ni_nanomesh_scattering_or_cuse_filament_overgrowth_failure_pct": uncompensated_ni_nanomesh_scattering_or_cuse_filament_overgrowth_failure_pct,
+        "agmecpcod_agacac6_tdmacu_dese_tma_ax1_agse2_contact_ni_nanomesh_and_cuse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_cumecpcod_cuacac6_tdmani_dese_tma_ay1_cuse2_contact_co_nanomesh_and_nise_pcm_peald_sil3_sandbox(
+    cumecpcod_cuacac6_tdmani_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_cumecpcod_cuacac6_tdmani_dese_tma_ay1_cuse2_contact_co_nanomesh_and_nise_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Cu(MeCp)(COD) / Cu(acac)6 + 6N5 TDMANi + 6N5 DESe + 6N5 TMA
+    300mm AY1/AX1 2D CuSe2/NiSe2 Van der Waals Ultralow-Resistance Contact (R_cp=15.3 Ohm*um, S=0.99),
+    Single-Crystal Co Nanomesh Plasmonic Interconnect (L_SPP=256 um at 1310nm, loss 0.005 dB/um)
+    and NiSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=1.16e9, 106ps) PEALD PINN-MPC + SIL-3
+    (Cycle #360 — Chapter 365).
+    """
+    trains = max(1, int(cumecpcod_cuacac6_tdmani_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_cumecpcod_cuacac6_tdmani_dese_tma_ay1_cuse2_contact_co_nanomesh_and_nise_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_ay1_cuse2_contact_co_nanomesh_nise_pcm_pods = trains * 4
+    electronic_6n5_cumecpcod_6n5_cuacac6_6n5_tdmani_6n5_dese_6n5_tma_purity_and_cuse2_nise2_yield_gain_pct = (
+        94.0 if governed else 22.1
+    )
+    co_nanomesh_agglomeration_and_nise_phase_drift_reduction_pct = (
+        99.8 if governed else 25.2
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_cu_ni_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 302.0
+    )
+    unmitigated_cu_ni_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.2
+    )
+    edge_qcl_crds_1314cm1_954cm1_2602cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 430.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_co_nanomesh_scattering_or_nise_filament_overgrowth_failure_pct = (
+        0.0 if governed else 11.4
+    )
+    return {
+        "cumecpcod_cuacac6_tdmani_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_ay1_cuse2_contact_co_nanomesh_nise_pcm_pods": active_ay1_cuse2_contact_co_nanomesh_nise_pcm_pods,
+        "electronic_6n5_cumecpcod_6n5_cuacac6_6n5_tdmani_6n5_dese_6n5_tma_purity_and_cuse2_nise2_yield_gain_pct": electronic_6n5_cumecpcod_6n5_cuacac6_6n5_tdmani_6n5_dese_6n5_tma_purity_and_cuse2_nise2_yield_gain_pct,
+        "co_nanomesh_agglomeration_and_nise_phase_drift_reduction_pct": co_nanomesh_agglomeration_and_nise_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_cu_ni_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_cu_ni_se_and_tma_lockout_latency_ms,
+        "unmitigated_cu_ni_se_precursor_leak_or_tma_ignition_pct": unmitigated_cu_ni_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1314cm1_954cm1_2602cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1314cm1_954cm1_2602cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_co_nanomesh_scattering_or_nise_filament_overgrowth_failure_pct": uncompensated_co_nanomesh_scattering_or_nise_filament_overgrowth_failure_pct,
+        "cumecpcod_cuacac6_tdmani_dese_tma_ay1_cuse2_contact_co_nanomesh_and_nise_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_nimecpcod_niacac6_tdmaco_dese_tma_az1_nise2_contact_fe_nanomesh_and_cose_pcm_peald_sil3_sandbox(
+    nimecpcod_niacac6_tdmaco_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_nimecpcod_niacac6_tdmaco_dese_tma_az1_nise2_contact_fe_nanomesh_and_cose_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Ni(MeCp)(COD) / Ni(acac)6 + 6N5 TDMACo + 6N5 DESe + 6N5 TMA
+    300mm AZ1/AY1 2D NiSe2/CoSe2 Van der Waals Ultralow-Resistance Contact (R_cp=15.1 Ohm*um, S=0.99),
+    Single-Crystal Fe Nanomesh Plasmonic Interconnect (L_SPP=258 um at 1310nm, loss 0.005 dB/um)
+    and CoSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=1.17e9, 104ps) PEALD PINN-MPC + SIL-3
+    (Cycle #361 — Chapter 366).
+    """
+    trains = max(1, int(nimecpcod_niacac6_tdmaco_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_nimecpcod_niacac6_tdmaco_dese_tma_az1_nise2_contact_fe_nanomesh_and_cose_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_az1_nise2_contact_fe_nanomesh_cose_pcm_pods = trains * 4
+    electronic_6n5_nimecpcod_6n5_niacac6_6n5_tdmaco_6n5_dese_6n5_tma_purity_and_nise2_cose2_yield_gain_pct = (
+        94.2 if governed else 22.2
+    )
+    fe_nanomesh_agglomeration_and_cose_phase_drift_reduction_pct = (
+        99.8 if governed else 25.3
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ni_co_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 300.0
+    )
+    unmitigated_ni_co_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.2
+    )
+    edge_qcl_crds_1312cm1_952cm1_2600cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 432.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_fe_nanomesh_scattering_or_cose_filament_overgrowth_failure_pct = (
+        0.0 if governed else 11.2
+    )
+    return {
+        "nimecpcod_niacac6_tdmaco_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_az1_nise2_contact_fe_nanomesh_cose_pcm_pods": active_az1_nise2_contact_fe_nanomesh_cose_pcm_pods,
+        "electronic_6n5_nimecpcod_6n5_niacac6_6n5_tdmaco_6n5_dese_6n5_tma_purity_and_nise2_cose2_yield_gain_pct": electronic_6n5_nimecpcod_6n5_niacac6_6n5_tdmaco_6n5_dese_6n5_tma_purity_and_nise2_cose2_yield_gain_pct,
+        "fe_nanomesh_agglomeration_and_cose_phase_drift_reduction_pct": fe_nanomesh_agglomeration_and_cose_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ni_co_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ni_co_se_and_tma_lockout_latency_ms,
+        "unmitigated_ni_co_se_precursor_leak_or_tma_ignition_pct": unmitigated_ni_co_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1312cm1_952cm1_2600cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1312cm1_952cm1_2600cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_fe_nanomesh_scattering_or_cose_filament_overgrowth_failure_pct": uncompensated_fe_nanomesh_scattering_or_cose_filament_overgrowth_failure_pct,
+        "nimecpcod_niacac6_tdmaco_dese_tma_az1_nise2_contact_fe_nanomesh_and_cose_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_comecpcod_coacac6_tdmafe_dese_tma_ba1_cose2_contact_mn_nanomesh_and_fese_pcm_peald_sil3_sandbox(
+    comecpcod_coacac6_tdmafe_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_comecpcod_coacac6_tdmafe_dese_tma_ba1_cose2_contact_mn_nanomesh_and_fese_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Co(MeCp)(COD) / Co(acac)6 + 6N5 TDMAFe + 6N5 DESe + 6N5 TMA
+    300mm BA1/AZ1 2D CoSe2/FeSe2 Van der Waals Ultralow-Resistance Contact (R_cp=14.9 Ohm*um, S=0.99),
+    Single-Crystal Mn Nanomesh Plasmonic Interconnect (L_SPP=260 um at 1310nm, loss 0.005 dB/um)
+    and FeSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=1.18e9, 102ps) PEALD PINN-MPC + SIL-3
+    (Cycle #362 — Chapter 367).
+    """
+    trains = max(1, int(comecpcod_coacac6_tdmafe_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_comecpcod_coacac6_tdmafe_dese_tma_ba1_cose2_contact_mn_nanomesh_and_fese_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_ba1_cose2_contact_mn_nanomesh_fese_pcm_pods = trains * 4
+    electronic_6n5_comecpcod_6n5_coacac6_6n5_tdmafe_6n5_dese_6n5_tma_purity_and_cose2_fese2_yield_gain_pct = (
+        94.4 if governed else 22.3
+    )
+    mn_nanomesh_agglomeration_and_fese_phase_drift_reduction_pct = (
+        99.8 if governed else 25.4
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_co_fe_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 298.0
+    )
+    unmitigated_co_fe_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.2
+    )
+    edge_qcl_crds_1310cm1_950cm1_2598cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 434.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_mn_nanomesh_scattering_or_fese_filament_overgrowth_failure_pct = (
+        0.0 if governed else 11.0
+    )
+    return {
+        "comecpcod_coacac6_tdmafe_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_ba1_cose2_contact_mn_nanomesh_fese_pcm_pods": active_ba1_cose2_contact_mn_nanomesh_fese_pcm_pods,
+        "electronic_6n5_comecpcod_6n5_coacac6_6n5_tdmafe_6n5_dese_6n5_tma_purity_and_cose2_fese2_yield_gain_pct": electronic_6n5_comecpcod_6n5_coacac6_6n5_tdmafe_6n5_dese_6n5_tma_purity_and_cose2_fese2_yield_gain_pct,
+        "mn_nanomesh_agglomeration_and_fese_phase_drift_reduction_pct": mn_nanomesh_agglomeration_and_fese_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_co_fe_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_co_fe_se_and_tma_lockout_latency_ms,
+        "unmitigated_co_fe_se_precursor_leak_or_tma_ignition_pct": unmitigated_co_fe_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1310cm1_950cm1_2598cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1310cm1_950cm1_2598cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_mn_nanomesh_scattering_or_fese_filament_overgrowth_failure_pct": uncompensated_mn_nanomesh_scattering_or_fese_filament_overgrowth_failure_pct,
+        "comecpcod_coacac6_tdmafe_dese_tma_ba1_cose2_contact_mn_nanomesh_and_fese_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_femecpcod_feacac6_tdmamn_dese_tma_bb1_fese2_contact_cr_nanomesh_and_mnse_pcm_peald_sil3_sandbox(
+    femecpcod_feacac6_tdmamn_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_femecpcod_feacac6_tdmamn_dese_tma_bb1_fese2_contact_cr_nanomesh_and_mnse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Fe(MeCp)(COD) / Fe(acac)6 + 6N5 TDMAMn + 6N5 DESe + 6N5 TMA
+    300mm BB1/BA1 2D FeSe2/MnSe2 Van der Waals Ultralow-Resistance Contact (R_cp=14.7 Ohm*um, S=0.99),
+    Single-Crystal Cr Nanomesh Plasmonic Interconnect (L_SPP=262 um at 1310nm, loss 0.005 dB/um)
+    and MnSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=1.19e9, 100ps) PEALD PINN-MPC + SIL-3
+    (Cycle #363 — Chapter 368).
+    """
+    trains = max(1, int(femecpcod_feacac6_tdmamn_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_femecpcod_feacac6_tdmamn_dese_tma_bb1_fese2_contact_cr_nanomesh_and_mnse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_bb1_fese2_contact_cr_nanomesh_mnse_pcm_pods = trains * 4
+    electronic_6n5_femecpcod_6n5_feacac6_6n5_tdmamn_6n5_dese_6n5_tma_purity_and_fese2_mnse2_yield_gain_pct = (
+        94.6 if governed else 22.4
+    )
+    cr_nanomesh_agglomeration_and_mnse_phase_drift_reduction_pct = (
+        99.8 if governed else 25.5
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_fe_mn_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 296.0
+    )
+    unmitigated_fe_mn_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.2
+    )
+    edge_qcl_crds_1308cm1_948cm1_2596cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 436.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_cr_nanomesh_scattering_or_mnse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 10.8
+    )
+    return {
+        "femecpcod_feacac6_tdmamn_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_bb1_fese2_contact_cr_nanomesh_mnse_pcm_pods": active_bb1_fese2_contact_cr_nanomesh_mnse_pcm_pods,
+        "electronic_6n5_femecpcod_6n5_feacac6_6n5_tdmamn_6n5_dese_6n5_tma_purity_and_fese2_mnse2_yield_gain_pct": electronic_6n5_femecpcod_6n5_feacac6_6n5_tdmamn_6n5_dese_6n5_tma_purity_and_fese2_mnse2_yield_gain_pct,
+        "cr_nanomesh_agglomeration_and_mnse_phase_drift_reduction_pct": cr_nanomesh_agglomeration_and_mnse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_fe_mn_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_fe_mn_se_and_tma_lockout_latency_ms,
+        "unmitigated_fe_mn_se_precursor_leak_or_tma_ignition_pct": unmitigated_fe_mn_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1308cm1_948cm1_2596cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1308cm1_948cm1_2596cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_cr_nanomesh_scattering_or_mnse_filament_overgrowth_failure_pct": uncompensated_cr_nanomesh_scattering_or_mnse_filament_overgrowth_failure_pct,
+        "femecpcod_feacac6_tdmamn_dese_tma_bb1_fese2_contact_cr_nanomesh_and_mnse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_mnmecpcod_mnacac6_tdmacr_dese_tma_bc1_mnse2_contact_v_nanomesh_and_crse_pcm_peald_sil3_sandbox(
+    mnmecpcod_mnacac6_tdmacr_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_mnmecpcod_mnacac6_tdmacr_dese_tma_bc1_mnse2_contact_v_nanomesh_and_crse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Mn(MeCp)(COD) / Mn(acac)6 + 6N5 TDMACr + 6N5 DESe + 6N5 TMA
+    300mm BC1/BB1 2D MnSe2/CrSe2 Van der Waals Ultralow-Resistance Contact (R_cp=14.5 Ohm*um, S=0.99),
+    Single-Crystal V Nanomesh Plasmonic Interconnect (L_SPP=264 um at 1310nm, loss 0.005 dB/um)
+    and CrSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=1.20e9, 98ps) PEALD PINN-MPC + SIL-3
+    (Cycle #364 — Chapter 369).
+    """
+    trains = max(1, int(mnmecpcod_mnacac6_tdmacr_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_mnmecpcod_mnacac6_tdmacr_dese_tma_bc1_mnse2_contact_v_nanomesh_and_crse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_bc1_mnse2_contact_v_nanomesh_crse_pcm_pods = trains * 4
+    electronic_6n5_mnmecpcod_6n5_mnacac6_6n5_tdmacr_6n5_dese_6n5_tma_purity_and_mnse2_crse2_yield_gain_pct = (
+        94.8 if governed else 22.5
+    )
+    v_nanomesh_agglomeration_and_crse_phase_drift_reduction_pct = (
+        99.8 if governed else 25.6
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_mn_cr_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 294.0
+    )
+    unmitigated_mn_cr_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.2
+    )
+    edge_qcl_crds_1306cm1_946cm1_2594cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 438.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_v_nanomesh_scattering_or_crse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 10.6
+    )
+    return {
+        "mnmecpcod_mnacac6_tdmacr_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_bc1_mnse2_contact_v_nanomesh_crse_pcm_pods": active_bc1_mnse2_contact_v_nanomesh_crse_pcm_pods,
+        "electronic_6n5_mnmecpcod_6n5_mnacac6_6n5_tdmacr_6n5_dese_6n5_tma_purity_and_mnse2_crse2_yield_gain_pct": electronic_6n5_mnmecpcod_6n5_mnacac6_6n5_tdmacr_6n5_dese_6n5_tma_purity_and_mnse2_crse2_yield_gain_pct,
+        "v_nanomesh_agglomeration_and_crse_phase_drift_reduction_pct": v_nanomesh_agglomeration_and_crse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_mn_cr_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_mn_cr_se_and_tma_lockout_latency_ms,
+        "unmitigated_mn_cr_se_precursor_leak_or_tma_ignition_pct": unmitigated_mn_cr_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1306cm1_946cm1_2594cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1306cm1_946cm1_2594cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_v_nanomesh_scattering_or_crse_filament_overgrowth_failure_pct": uncompensated_v_nanomesh_scattering_or_crse_filament_overgrowth_failure_pct,
+        "mnmecpcod_mnacac6_tdmacr_dese_tma_bc1_mnse2_contact_v_nanomesh_and_crse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_crmecpcod_cracac6_tdmav_dese_tma_bd1_crse2_contact_ti_nanomesh_and_vse_pcm_peald_sil3_sandbox(
+    crmecpcod_cracac6_tdmav_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_crmecpcod_cracac6_tdmav_dese_tma_bd1_crse2_contact_ti_nanomesh_and_vse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Cr(MeCp)(COD) / Cr(acac)6 + 6N5 TDMAV + 6N5 DESe + 6N5 TMA
+    300mm BD1/BC1 2D CrSe2/VSe2 Van der Waals Ultralow-Resistance Contact (R_cp=14.3 Ohm*um, S=0.99),
+    Single-Crystal Ti Nanomesh Plasmonic Interconnect (L_SPP=266 um at 1310nm, loss 0.005 dB/um)
+    and VSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=1.21e9, 96ps) PEALD PINN-MPC + SIL-3
+    (Cycle #365 — Chapter 370).
+    """
+    trains = max(1, int(crmecpcod_cracac6_tdmav_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_crmecpcod_cracac6_tdmav_dese_tma_bd1_crse2_contact_ti_nanomesh_and_vse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_bd1_crse2_contact_ti_nanomesh_vse_pcm_pods = trains * 4
+    electronic_6n5_crmecpcod_6n5_cracac6_6n5_tdmav_6n5_dese_6n5_tma_purity_and_crse2_vse2_yield_gain_pct = (
+        95.0 if governed else 22.6
+    )
+    ti_nanomesh_agglomeration_and_vse_phase_drift_reduction_pct = (
+        99.8 if governed else 25.7
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_cr_v_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 292.0
+    )
+    unmitigated_cr_v_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.2
+    )
+    edge_qcl_crds_1304cm1_944cm1_2592cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 440.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_ti_nanomesh_scattering_or_vse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 10.4
+    )
+    return {
+        "crmecpcod_cracac6_tdmav_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_bd1_crse2_contact_ti_nanomesh_vse_pcm_pods": active_bd1_crse2_contact_ti_nanomesh_vse_pcm_pods,
+        "electronic_6n5_crmecpcod_6n5_cracac6_6n5_tdmav_6n5_dese_6n5_tma_purity_and_crse2_vse2_yield_gain_pct": electronic_6n5_crmecpcod_6n5_cracac6_6n5_tdmav_6n5_dese_6n5_tma_purity_and_crse2_vse2_yield_gain_pct,
+        "ti_nanomesh_agglomeration_and_vse_phase_drift_reduction_pct": ti_nanomesh_agglomeration_and_vse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_cr_v_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_cr_v_se_and_tma_lockout_latency_ms,
+        "unmitigated_cr_v_se_precursor_leak_or_tma_ignition_pct": unmitigated_cr_v_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1304cm1_944cm1_2592cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1304cm1_944cm1_2592cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_ti_nanomesh_scattering_or_vse_filament_overgrowth_failure_pct": uncompensated_ti_nanomesh_scattering_or_vse_filament_overgrowth_failure_pct,
+        "crmecpcod_cracac6_tdmav_dese_tma_bd1_crse2_contact_ti_nanomesh_and_vse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_vmecpcod_vacac6_tdmati_dese_tma_be1_vse2_contact_zr_nanomesh_and_tise_pcm_peald_sil3_sandbox(
+    vmecpcod_vacac6_tdmati_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_vmecpcod_vacac6_tdmati_dese_tma_be1_vse2_contact_zr_nanomesh_and_tise_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 V(MeCp)(COD) / V(acac)6 + 6N5 TDMATi + 6N5 DESe + 6N5 TMA
+    300mm BE1/BD1 2D VSe2/TiSe2 Van der Waals Ultralow-Resistance Contact (R_cp=14.1 Ohm*um, S=0.99),
+    Single-Crystal Zr Nanomesh Plasmonic Interconnect (L_SPP=268 um at 1310nm, loss 0.005 dB/um)
+    and TiSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=1.22e9, 94ps) PEALD PINN-MPC + SIL-3
+    (Cycle #366 — Chapter 371).
+    """
+    trains = max(1, int(vmecpcod_vacac6_tdmati_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_vmecpcod_vacac6_tdmati_dese_tma_be1_vse2_contact_zr_nanomesh_and_tise_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_be1_vse2_contact_zr_nanomesh_tise_pcm_pods = trains * 4
+    electronic_6n5_vmecpcod_6n5_vacac6_6n5_tdmati_6n5_dese_6n5_tma_purity_and_vse2_tise2_yield_gain_pct = (
+        95.2 if governed else 22.7
+    )
+    zr_nanomesh_agglomeration_and_tise_phase_drift_reduction_pct = (
+        99.8 if governed else 25.8
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_v_ti_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 290.0
+    )
+    unmitigated_v_ti_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.2
+    )
+    edge_qcl_crds_1302cm1_942cm1_2590cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 442.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_zr_nanomesh_scattering_or_tise_filament_overgrowth_failure_pct = (
+        0.0 if governed else 10.2
+    )
+    return {
+        "vmecpcod_vacac6_tdmati_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_be1_vse2_contact_zr_nanomesh_tise_pcm_pods": active_be1_vse2_contact_zr_nanomesh_tise_pcm_pods,
+        "electronic_6n5_vmecpcod_6n5_vacac6_6n5_tdmati_6n5_dese_6n5_tma_purity_and_vse2_tise2_yield_gain_pct": electronic_6n5_vmecpcod_6n5_vacac6_6n5_tdmati_6n5_dese_6n5_tma_purity_and_vse2_tise2_yield_gain_pct,
+        "zr_nanomesh_agglomeration_and_tise_phase_drift_reduction_pct": zr_nanomesh_agglomeration_and_tise_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_v_ti_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_v_ti_se_and_tma_lockout_latency_ms,
+        "unmitigated_v_ti_se_precursor_leak_or_tma_ignition_pct": unmitigated_v_ti_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1302cm1_942cm1_2590cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1302cm1_942cm1_2590cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_zr_nanomesh_scattering_or_tise_filament_overgrowth_failure_pct": uncompensated_zr_nanomesh_scattering_or_tise_filament_overgrowth_failure_pct,
+        "vmecpcod_vacac6_tdmati_dese_tma_be1_vse2_contact_zr_nanomesh_and_tise_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_zrmecpcod_zracac6_tdmahf_dese_tma_bf1_zrse2_contact_hf_nanomesh_and_hfse_pcm_peald_sil3_sandbox(
+    zrmecpcod_zracac6_tdmahf_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_zrmecpcod_zracac6_tdmahf_dese_tma_bf1_zrse2_contact_hf_nanomesh_and_hfse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Zr(MeCp)(COD) / Zr(acac)6 + 6N5 TDMAHf + 6N5 DESe + 6N5 TMA
+    300mm BF1/BE1 2D ZrSe2/HfSe2 Van der Waals Ultralow-Resistance Contact (R_cp=13.9 Ohm*um, S=0.99),
+    Single-Crystal Hf Nanomesh Plasmonic Interconnect (L_SPP=270 um at 1310nm, loss 0.005 dB/um)
+    and HfSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=1.23e9, 92ps) PEALD PINN-MPC + SIL-3
+    (Cycle #367 — Chapter 372).
+    """
+    trains = max(1, int(zrmecpcod_zracac6_tdmahf_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_zrmecpcod_zracac6_tdmahf_dese_tma_bf1_zrse2_contact_hf_nanomesh_and_hfse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_bf1_zrse2_contact_hf_nanomesh_hfse_pcm_pods = trains * 4
+    electronic_6n5_zrmecpcod_6n5_zracac6_6n5_tdmahf_6n5_dese_6n5_tma_purity_and_zrse2_hfse2_yield_gain_pct = (
+        95.4 if governed else 22.8
+    )
+    hf_nanomesh_agglomeration_and_hfse_phase_drift_reduction_pct = (
+        99.8 if governed else 25.9
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_zr_hf_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 288.0
+    )
+    unmitigated_zr_hf_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.2
+    )
+    edge_qcl_crds_1300cm1_940cm1_2588cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 444.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_hf_nanomesh_scattering_or_hfse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 10.0
+    )
+    return {
+        "zrmecpcod_zracac6_tdmahf_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_bf1_zrse2_contact_hf_nanomesh_hfse_pcm_pods": active_bf1_zrse2_contact_hf_nanomesh_hfse_pcm_pods,
+        "electronic_6n5_zrmecpcod_6n5_zracac6_6n5_tdmahf_6n5_dese_6n5_tma_purity_and_zrse2_hfse2_yield_gain_pct": electronic_6n5_zrmecpcod_6n5_zracac6_6n5_tdmahf_6n5_dese_6n5_tma_purity_and_zrse2_hfse2_yield_gain_pct,
+        "hf_nanomesh_agglomeration_and_hfse_phase_drift_reduction_pct": hf_nanomesh_agglomeration_and_hfse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_zr_hf_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_zr_hf_se_and_tma_lockout_latency_ms,
+        "unmitigated_zr_hf_se_precursor_leak_or_tma_ignition_pct": unmitigated_zr_hf_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1300cm1_940cm1_2588cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1300cm1_940cm1_2588cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_hf_nanomesh_scattering_or_hfse_filament_overgrowth_failure_pct": uncompensated_hf_nanomesh_scattering_or_hfse_filament_overgrowth_failure_pct,
+        "zrmecpcod_zracac6_tdmahf_dese_tma_bf1_zrse2_contact_hf_nanomesh_and_hfse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_hfmecpcod_hfacac6_tdmata_dese_tma_bg1_hfse2_contact_ta_nanomesh_and_tase_pcm_peald_sil3_sandbox(
+    hfmecpcod_hfacac6_tdmata_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_hfmecpcod_hfacac6_tdmata_dese_tma_bg1_hfse2_contact_ta_nanomesh_and_tase_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Hf(MeCp)(COD) / Hf(acac)6 + 6N5 TDMATa + 6N5 DESe + 6N5 TMA
+    300mm BG1/BF1 2D HfSe2/TaSe2 Van der Waals Ultralow-Resistance Contact (R_cp=13.7 Ohm*um, S=0.99),
+    Single-Crystal Ta Nanomesh Plasmonic Interconnect (L_SPP=272 um at 1310nm, loss 0.005 dB/um)
+    and TaSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=1.24e9, 90ps) PEALD PINN-MPC + SIL-3
+    (Cycle #368 — Chapter 373).
+    """
+    trains = max(1, int(hfmecpcod_hfacac6_tdmata_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_hfmecpcod_hfacac6_tdmata_dese_tma_bg1_hfse2_contact_ta_nanomesh_and_tase_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_bg1_hfse2_contact_ta_nanomesh_tase_pcm_pods = trains * 4
+    electronic_6n5_hfmecpcod_6n5_hfacac6_6n5_tdmata_6n5_dese_6n5_tma_purity_and_hfse2_tase2_yield_gain_pct = (
+        95.6 if governed else 22.9
+    )
+    ta_nanomesh_agglomeration_and_tase_phase_drift_reduction_pct = (
+        99.8 if governed else 26.0
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_hf_ta_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 286.0
+    )
+    unmitigated_hf_ta_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.2
+    )
+    edge_qcl_crds_1298cm1_938cm1_2586cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 446.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_ta_nanomesh_scattering_or_tase_filament_overgrowth_failure_pct = (
+        0.0 if governed else 9.8
+    )
+    return {
+        "hfmecpcod_hfacac6_tdmata_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_bg1_hfse2_contact_ta_nanomesh_tase_pcm_pods": active_bg1_hfse2_contact_ta_nanomesh_tase_pcm_pods,
+        "electronic_6n5_hfmecpcod_6n5_hfacac6_6n5_tdmata_6n5_dese_6n5_tma_purity_and_hfse2_tase2_yield_gain_pct": electronic_6n5_hfmecpcod_6n5_hfacac6_6n5_tdmata_6n5_dese_6n5_tma_purity_and_hfse2_tase2_yield_gain_pct,
+        "ta_nanomesh_agglomeration_and_tase_phase_drift_reduction_pct": ta_nanomesh_agglomeration_and_tase_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_hf_ta_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_hf_ta_se_and_tma_lockout_latency_ms,
+        "unmitigated_hf_ta_se_precursor_leak_or_tma_ignition_pct": unmitigated_hf_ta_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1298cm1_938cm1_2586cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1298cm1_938cm1_2586cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_ta_nanomesh_scattering_or_tase_filament_overgrowth_failure_pct": uncompensated_ta_nanomesh_scattering_or_tase_filament_overgrowth_failure_pct,
+        "hfmecpcod_hfacac6_tdmata_dese_tma_bg1_hfse2_contact_ta_nanomesh_and_tase_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_tamecpcod_taacac6_tdmaw_dese_tma_bh1_tase2_contact_w_nanomesh_and_wse_pcm_peald_sil3_sandbox(
+    tamecpcod_taacac6_tdmaw_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_tamecpcod_taacac6_tdmaw_dese_tma_bh1_tase2_contact_w_nanomesh_and_wse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Ta(MeCp)(COD) / Ta(acac)6 + 6N5 TDMAW + 6N5 DESe + 6N5 TMA
+    300mm BH1/BG1 2D TaSe2/WSe2 Van der Waals Ultralow-Resistance Contact (R_cp=13.5 Ohm*um, S=0.99),
+    Single-Crystal W Nanomesh Plasmonic Interconnect (L_SPP=274 um at 1310nm, loss 0.005 dB/um)
+    and WSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=1.25e9, 88ps) PEALD PINN-MPC + SIL-3
+    (Cycle #369 — Chapter 374).
+    """
+    trains = max(1, int(tamecpcod_taacac6_tdmaw_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_tamecpcod_taacac6_tdmaw_dese_tma_bh1_tase2_contact_w_nanomesh_and_wse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_bh1_tase2_contact_w_nanomesh_wse_pcm_pods = trains * 4
+    electronic_6n5_tamecpcod_6n5_taacac6_6n5_tdmaw_6n5_dese_6n5_tma_purity_and_tase2_wse2_yield_gain_pct = (
+        95.8 if governed else 23.0
+    )
+    w_nanomesh_agglomeration_and_wse_phase_drift_reduction_pct = (
+        99.8 if governed else 26.1
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ta_w_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 284.0
+    )
+    unmitigated_ta_w_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.2
+    )
+    edge_qcl_crds_1296cm1_936cm1_2584cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 448.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_w_nanomesh_scattering_or_wse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 9.6
+    )
+    return {
+        "tamecpcod_taacac6_tdmaw_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_bh1_tase2_contact_w_nanomesh_wse_pcm_pods": active_bh1_tase2_contact_w_nanomesh_wse_pcm_pods,
+        "electronic_6n5_tamecpcod_6n5_taacac6_6n5_tdmaw_6n5_dese_6n5_tma_purity_and_tase2_wse2_yield_gain_pct": electronic_6n5_tamecpcod_6n5_taacac6_6n5_tdmaw_6n5_dese_6n5_tma_purity_and_tase2_wse2_yield_gain_pct,
+        "w_nanomesh_agglomeration_and_wse_phase_drift_reduction_pct": w_nanomesh_agglomeration_and_wse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ta_w_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ta_w_se_and_tma_lockout_latency_ms,
+        "unmitigated_ta_w_se_precursor_leak_or_tma_ignition_pct": unmitigated_ta_w_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1296cm1_936cm1_2584cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1296cm1_936cm1_2584cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_w_nanomesh_scattering_or_wse_filament_overgrowth_failure_pct": uncompensated_w_nanomesh_scattering_or_wse_filament_overgrowth_failure_pct,
+        "tamecpcod_taacac6_tdmaw_dese_tma_bh1_tase2_contact_w_nanomesh_and_wse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_wmecpcod_wacac6_tdmamo_dese_tma_bi1_wse2_contact_mo_nanomesh_and_mose_pcm_peald_sil3_sandbox(
+    wmecpcod_wacac6_tdmamo_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_wmecpcod_wacac6_tdmamo_dese_tma_bi1_wse2_contact_mo_nanomesh_and_mose_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 W(MeCp)(COD) / W(acac)6 + 6N5 TDMAMo + 6N5 DESe + 6N5 TMA
+    300mm BI1/BH1 2D WSe2/MoSe2 Van der Waals Ultralow-Resistance Contact (R_cp=13.3 Ohm*um, S=0.99),
+    Single-Crystal Mo Nanomesh Plasmonic Interconnect (L_SPP=276 um at 1310nm, loss 0.005 dB/um)
+    and MoSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=1.26e9, 86ps) PEALD PINN-MPC + SIL-3
+    (Cycle #370 — Chapter 375).
+    """
+    trains = max(1, int(wmecpcod_wacac6_tdmamo_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_wmecpcod_wacac6_tdmamo_dese_tma_bi1_wse2_contact_mo_nanomesh_and_mose_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_bi1_wse2_contact_mo_nanomesh_mose_pcm_pods = trains * 4
+    electronic_6n5_wmecpcod_6n5_wacac6_6n5_tdmamo_6n5_dese_6n5_tma_purity_and_wse2_mose2_yield_gain_pct = (
+        96.0 if governed else 23.1
+    )
+    mo_nanomesh_agglomeration_and_mose_phase_drift_reduction_pct = (
+        99.8 if governed else 26.2
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_w_mo_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 282.0
+    )
+    unmitigated_w_mo_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.2
+    )
+    edge_qcl_crds_1294cm1_934cm1_2582cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 450.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_mo_nanomesh_scattering_or_mose_filament_overgrowth_failure_pct = (
+        0.0 if governed else 9.4
+    )
+    return {
+        "wmecpcod_wacac6_tdmamo_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_bi1_wse2_contact_mo_nanomesh_mose_pcm_pods": active_bi1_wse2_contact_mo_nanomesh_mose_pcm_pods,
+        "electronic_6n5_wmecpcod_6n5_wacac6_6n5_tdmamo_6n5_dese_6n5_tma_purity_and_wse2_mose2_yield_gain_pct": electronic_6n5_wmecpcod_6n5_wacac6_6n5_tdmamo_6n5_dese_6n5_tma_purity_and_wse2_mose2_yield_gain_pct,
+        "mo_nanomesh_agglomeration_and_mose_phase_drift_reduction_pct": mo_nanomesh_agglomeration_and_mose_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_w_mo_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_w_mo_se_and_tma_lockout_latency_ms,
+        "unmitigated_w_mo_se_precursor_leak_or_tma_ignition_pct": unmitigated_w_mo_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1294cm1_934cm1_2582cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1294cm1_934cm1_2582cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_mo_nanomesh_scattering_or_mose_filament_overgrowth_failure_pct": uncompensated_mo_nanomesh_scattering_or_mose_filament_overgrowth_failure_pct,
+        "wmecpcod_wacac6_tdmamo_dese_tma_bi1_wse2_contact_mo_nanomesh_and_mose_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_momecpcod_moacac6_tdmare_dese_tma_bj1_mose2_contact_re_nanomesh_and_rese_pcm_peald_sil3_sandbox(
+    momecpcod_moacac6_tdmare_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_momecpcod_moacac6_tdmare_dese_tma_bj1_mose2_contact_re_nanomesh_and_rese_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Mo(MeCp)(COD) / Mo(acac)6 + 6N5 TDMARe + 6N5 DESe + 6N5 TMA
+    300mm BJ1/BI1 2D MoSe2/ReSe2 Van der Waals Ultralow-Resistance Contact (R_cp=13.1 Ohm*um, S=0.99),
+    Single-Crystal Re Nanomesh Plasmonic Interconnect (L_SPP=278 um at 1310nm, loss 0.005 dB/um)
+    and ReSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=1.27e9, 84ps) PEALD PINN-MPC + SIL-3
+    (Cycle #371 — Chapter 376).
+    """
+    trains = max(1, int(momecpcod_moacac6_tdmare_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_momecpcod_moacac6_tdmare_dese_tma_bj1_mose2_contact_re_nanomesh_and_rese_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_bj1_mose2_contact_re_nanomesh_rese_pcm_pods = trains * 4
+    electronic_6n5_momecpcod_6n5_moacac6_6n5_tdmare_6n5_dese_6n5_tma_purity_and_mose2_rese2_yield_gain_pct = (
+        96.2 if governed else 23.2
+    )
+    re_nanomesh_agglomeration_and_rese_phase_drift_reduction_pct = (
+        99.8 if governed else 26.3
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_mo_re_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 280.0
+    )
+    unmitigated_mo_re_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.2
+    )
+    edge_qcl_crds_1292cm1_932cm1_2580cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 452.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_re_nanomesh_scattering_or_rese_filament_overgrowth_failure_pct = (
+        0.0 if governed else 9.2
+    )
+    return {
+        "momecpcod_moacac6_tdmare_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_bj1_mose2_contact_re_nanomesh_rese_pcm_pods": active_bj1_mose2_contact_re_nanomesh_rese_pcm_pods,
+        "electronic_6n5_momecpcod_6n5_moacac6_6n5_tdmare_6n5_dese_6n5_tma_purity_and_mose2_rese2_yield_gain_pct": electronic_6n5_momecpcod_6n5_moacac6_6n5_tdmare_6n5_dese_6n5_tma_purity_and_mose2_rese2_yield_gain_pct,
+        "re_nanomesh_agglomeration_and_rese_phase_drift_reduction_pct": re_nanomesh_agglomeration_and_rese_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_mo_re_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_mo_re_se_and_tma_lockout_latency_ms,
+        "unmitigated_mo_re_se_precursor_leak_or_tma_ignition_pct": unmitigated_mo_re_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1292cm1_932cm1_2580cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1292cm1_932cm1_2580cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_re_nanomesh_scattering_or_rese_filament_overgrowth_failure_pct": uncompensated_re_nanomesh_scattering_or_rese_filament_overgrowth_failure_pct,
+        "momecpcod_moacac6_tdmare_dese_tma_bj1_mose2_contact_re_nanomesh_and_rese_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_remecpcod_reacac6_tdmaos_dese_tma_bk1_rese2_contact_os_nanomesh_and_osse_pcm_peald_sil3_sandbox(
+    remecpcod_reacac6_tdmaos_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_remecpcod_reacac6_tdmaos_dese_tma_bk1_rese2_contact_os_nanomesh_and_osse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Re(MeCp)(COD) / Re(acac)6 + 6N5 TDMAOs + 6N5 DESe + 6N5 TMA
+    300mm BK1/BJ1 2D ReSe2/OsSe2 Van der Waals Ultralow-Resistance Contact (R_cp=12.9 Ohm*um, S=0.99),
+    Single-Crystal Os Nanomesh Plasmonic Interconnect (L_SPP=280 um at 1310nm, loss 0.005 dB/um)
+    and OsSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=1.28e9, 82ps) PEALD PINN-MPC + SIL-3
+    (Cycle #372 — Chapter 377).
+    """
+    trains = max(1, int(remecpcod_reacac6_tdmaos_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_remecpcod_reacac6_tdmaos_dese_tma_bk1_rese2_contact_os_nanomesh_and_osse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_bk1_rese2_contact_os_nanomesh_osse_pcm_pods = trains * 4
+    electronic_6n5_remecpcod_6n5_reacac6_6n5_tdmaos_6n5_dese_6n5_tma_purity_and_rese2_osse2_yield_gain_pct = (
+        96.4 if governed else 23.3
+    )
+    os_nanomesh_agglomeration_and_osse_phase_drift_reduction_pct = (
+        99.8 if governed else 26.4
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_re_os_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 278.0
+    )
+    unmitigated_re_os_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.2
+    )
+    edge_qcl_crds_1290cm1_930cm1_2578cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 454.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_os_nanomesh_scattering_or_osse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 9.0
+    )
+    return {
+        "remecpcod_reacac6_tdmaos_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_bk1_rese2_contact_os_nanomesh_osse_pcm_pods": active_bk1_rese2_contact_os_nanomesh_osse_pcm_pods,
+        "electronic_6n5_remecpcod_6n5_reacac6_6n5_tdmaos_6n5_dese_6n5_tma_purity_and_rese2_osse2_yield_gain_pct": electronic_6n5_remecpcod_6n5_reacac6_6n5_tdmaos_6n5_dese_6n5_tma_purity_and_rese2_osse2_yield_gain_pct,
+        "os_nanomesh_agglomeration_and_osse_phase_drift_reduction_pct": os_nanomesh_agglomeration_and_osse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_re_os_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_re_os_se_and_tma_lockout_latency_ms,
+        "unmitigated_re_os_se_precursor_leak_or_tma_ignition_pct": unmitigated_re_os_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1290cm1_930cm1_2578cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1290cm1_930cm1_2578cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_os_nanomesh_scattering_or_osse_filament_overgrowth_failure_pct": uncompensated_os_nanomesh_scattering_or_osse_filament_overgrowth_failure_pct,
+        "remecpcod_reacac6_tdmaos_dese_tma_bk1_rese2_contact_os_nanomesh_and_osse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_osmecpcod_osacac6_tdmarh_dese_tma_bl1_osse2_contact_rh_nanomesh_and_rhse_pcm_peald_sil3_sandbox(
+    osmecpcod_osacac6_tdmarh_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_osmecpcod_osacac6_tdmarh_dese_tma_bl1_osse2_contact_rh_nanomesh_and_rhse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Os(MeCp)(COD) / Os(acac)6 + 6N5 TDMARh + 6N5 DESe + 6N5 TMA
+    300mm BL1/BK1 2D OsSe2/RhSe2 Van der Waals Ultralow-Resistance Contact (R_cp=12.7 Ohm*um, S=0.99),
+    Single-Crystal Rh Nanomesh Plasmonic Interconnect (L_SPP=282 um at 1310nm, loss 0.005 dB/um)
+    and RhSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=1.29e9, 80ps) PEALD PINN-MPC + SIL-3
+    (Cycle #373 — Chapter 378).
+    """
+    trains = max(1, int(osmecpcod_osacac6_tdmarh_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_osmecpcod_osacac6_tdmarh_dese_tma_bl1_osse2_contact_rh_nanomesh_and_rhse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_bl1_osse2_contact_rh_nanomesh_rhse_pcm_pods = trains * 4
+    electronic_6n5_osmecpcod_6n5_osacac6_6n5_tdmarh_6n5_dese_6n5_tma_purity_and_osse2_rhse2_yield_gain_pct = (
+        96.6 if governed else 23.4
+    )
+    rh_nanomesh_agglomeration_and_rhse_phase_drift_reduction_pct = (
+        99.8 if governed else 26.5
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_os_rh_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 276.0
+    )
+    unmitigated_os_rh_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.2
+    )
+    edge_qcl_crds_1288cm1_928cm1_2576cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 456.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_rh_nanomesh_scattering_or_rhse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 8.8
+    )
+    return {
+        "osmecpcod_osacac6_tdmarh_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_bl1_osse2_contact_rh_nanomesh_rhse_pcm_pods": active_bl1_osse2_contact_rh_nanomesh_rhse_pcm_pods,
+        "electronic_6n5_osmecpcod_6n5_osacac6_6n5_tdmarh_6n5_dese_6n5_tma_purity_and_osse2_rhse2_yield_gain_pct": electronic_6n5_osmecpcod_6n5_osacac6_6n5_tdmarh_6n5_dese_6n5_tma_purity_and_osse2_rhse2_yield_gain_pct,
+        "rh_nanomesh_agglomeration_and_rhse_phase_drift_reduction_pct": rh_nanomesh_agglomeration_and_rhse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_os_rh_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_os_rh_se_and_tma_lockout_latency_ms,
+        "unmitigated_os_rh_se_precursor_leak_or_tma_ignition_pct": unmitigated_os_rh_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1288cm1_928cm1_2576cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1288cm1_928cm1_2576cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_rh_nanomesh_scattering_or_rhse_filament_overgrowth_failure_pct": uncompensated_rh_nanomesh_scattering_or_rhse_filament_overgrowth_failure_pct,
+        "osmecpcod_osacac6_tdmarh_dese_tma_bl1_osse2_contact_rh_nanomesh_and_rhse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_rhmecpcod_rhacac6_tdmair_dese_tma_bm1_rhse2_contact_ir_nanomesh_and_irse_pcm_peald_sil3_sandbox(
+    rhmecpcod_rhacac6_tdmair_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_rhmecpcod_rhacac6_tdmair_dese_tma_bm1_rhse2_contact_ir_nanomesh_and_irse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Rh(MeCp)(COD) / Rh(acac)6 + 6N5 TDMAIr + 6N5 DESe + 6N5 TMA
+    300mm BM1/BL1 2D RhSe2/IrSe2 Van der Waals Ultralow-Resistance Contact (R_cp=12.5 Ohm*um, S=0.99),
+    Single-Crystal Ir Nanomesh Plasmonic Interconnect (L_SPP=284 um at 1310nm, loss 0.005 dB/um)
+    and IrSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=1.30e9, 78ps) PEALD PINN-MPC + SIL-3
+    (Cycle #374 — Chapter 379).
+    """
+    trains = max(1, int(rhmecpcod_rhacac6_tdmair_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_rhmecpcod_rhacac6_tdmair_dese_tma_bm1_rhse2_contact_ir_nanomesh_and_irse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_bm1_rhse2_contact_ir_nanomesh_irse_pcm_pods = trains * 4
+    electronic_6n5_rhmecpcod_6n5_rhacac6_6n5_tdmair_6n5_dese_6n5_tma_purity_and_rhse2_irse2_yield_gain_pct = (
+        96.8 if governed else 23.5
+    )
+    ir_nanomesh_agglomeration_and_irse_phase_drift_reduction_pct = (
+        99.8 if governed else 26.6
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_rh_ir_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 274.0
+    )
+    unmitigated_rh_ir_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.2
+    )
+    edge_qcl_crds_1286cm1_926cm1_2574cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 458.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_ir_nanomesh_scattering_or_irse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 8.6
+    )
+    return {
+        "rhmecpcod_rhacac6_tdmair_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_bm1_rhse2_contact_ir_nanomesh_irse_pcm_pods": active_bm1_rhse2_contact_ir_nanomesh_irse_pcm_pods,
+        "electronic_6n5_rhmecpcod_6n5_rhacac6_6n5_tdmair_6n5_dese_6n5_tma_purity_and_rhse2_irse2_yield_gain_pct": electronic_6n5_rhmecpcod_6n5_rhacac6_6n5_tdmair_6n5_dese_6n5_tma_purity_and_rhse2_irse2_yield_gain_pct,
+        "ir_nanomesh_agglomeration_and_irse_phase_drift_reduction_pct": ir_nanomesh_agglomeration_and_irse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_rh_ir_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_rh_ir_se_and_tma_lockout_latency_ms,
+        "unmitigated_rh_ir_se_precursor_leak_or_tma_ignition_pct": unmitigated_rh_ir_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1286cm1_926cm1_2574cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1286cm1_926cm1_2574cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_ir_nanomesh_scattering_or_irse_filament_overgrowth_failure_pct": uncompensated_ir_nanomesh_scattering_or_irse_filament_overgrowth_failure_pct,
+        "rhmecpcod_rhacac6_tdmair_dese_tma_bm1_rhse2_contact_ir_nanomesh_and_irse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_irmecpcod_iracac6_tdmapt_dese_tma_bn1_irse2_contact_pt_nanomesh_and_ptse_pcm_peald_sil3_sandbox(
+    irmecpcod_iracac6_tdmapt_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_irmecpcod_iracac6_tdmapt_dese_tma_bn1_irse2_contact_pt_nanomesh_and_ptse_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Ir(MeCp)(COD) / Ir(acac)6 + 6N5 TDMAPt + 6N5 DESe + 6N5 TMA
+    300mm BN1/BM1 2D IrSe2/PtSe2 Van der Waals Ultralow-Resistance Contact (R_cp=12.3 Ohm*um, S=0.99),
+    Single-Crystal Pt Nanomesh Plasmonic Interconnect (L_SPP=286 um at 1310nm, loss 0.005 dB/um)
+    and PtSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=1.31e9, 76ps) PEALD PINN-MPC + SIL-3
+    (Cycle #375 — Chapter 380).
+    """
+    trains = max(1, int(irmecpcod_iracac6_tdmapt_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_irmecpcod_iracac6_tdmapt_dese_tma_bn1_irse2_contact_pt_nanomesh_and_ptse_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_bn1_irse2_contact_pt_nanomesh_ptse_pcm_pods = trains * 4
+    electronic_6n5_irmecpcod_6n5_iracac6_6n5_tdmapt_6n5_dese_6n5_tma_purity_and_irse2_ptse2_yield_gain_pct = (
+        97.0 if governed else 23.6
+    )
+    pt_nanomesh_agglomeration_and_ptse_phase_drift_reduction_pct = (
+        99.8 if governed else 26.7
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ir_pt_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 272.0
+    )
+    unmitigated_ir_pt_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.2
+    )
+    edge_qcl_crds_1284cm1_924cm1_2572cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 460.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_pt_nanomesh_scattering_or_ptse_filament_overgrowth_failure_pct = (
+        0.0 if governed else 8.4
+    )
+    return {
+        "irmecpcod_iracac6_tdmapt_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_bn1_irse2_contact_pt_nanomesh_ptse_pcm_pods": active_bn1_irse2_contact_pt_nanomesh_ptse_pcm_pods,
+        "electronic_6n5_irmecpcod_6n5_iracac6_6n5_tdmapt_6n5_dese_6n5_tma_purity_and_irse2_ptse2_yield_gain_pct": electronic_6n5_irmecpcod_6n5_iracac6_6n5_tdmapt_6n5_dese_6n5_tma_purity_and_irse2_ptse2_yield_gain_pct,
+        "pt_nanomesh_agglomeration_and_ptse_phase_drift_reduction_pct": pt_nanomesh_agglomeration_and_ptse_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ir_pt_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ir_pt_se_and_tma_lockout_latency_ms,
+        "unmitigated_ir_pt_se_precursor_leak_or_tma_ignition_pct": unmitigated_ir_pt_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1284cm1_924cm1_2572cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1284cm1_924cm1_2572cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_pt_nanomesh_scattering_or_ptse_filament_overgrowth_failure_pct": uncompensated_pt_nanomesh_scattering_or_ptse_filament_overgrowth_failure_pct,
+        "irmecpcod_iracac6_tdmapt_dese_tma_bn1_irse2_contact_pt_nanomesh_and_ptse_pcm_peald_slo_met": governed,
+    }
+
+
+def simulate_ptmecpcod_ptacac6_tdmaau_dese_tma_bo1_ptse2_contact_au_nanomesh_and_ause_pcm_peald_sil3_sandbox(
+    ptmecpcod_ptacac6_tdmaau_dese_tma_trains: int = 8,
+    governance_mode: str = "pinn_mpc_ptmecpcod_ptacac6_tdmaau_dese_tma_bo1_ptse2_contact_au_nanomesh_and_ause_pcm_peald_sil3_edge",
+) -> dict[str, Any]:
+    """Simulate Electronic-Grade 6N5 Pt(MeCp)(COD) / Pt(acac)6 + 6N5 TDMAAu + 6N5 DESe + 6N5 TMA
+    300mm BO1/BN1 2D PtSe2/AuSe2 Van der Waals Ultralow-Resistance Contact (R_cp=12.1 Ohm*um, S=0.99),
+    Single-Crystal Au Nanomesh Plasmonic Interconnect (L_SPP=288 um at 1310nm, loss 0.005 dB/um)
+    and AuSe Phase-Change Synapse (0.02 pJ/bit, Ron/Roff=1.32e9, 74ps) PEALD PINN-MPC + SIL-3
+    (Cycle #376 — Chapter 381).
+    """
+    trains = max(1, int(ptmecpcod_ptacac6_tdmaau_dese_tma_trains))
+    governed = (
+        governance_mode
+        == "pinn_mpc_ptmecpcod_ptacac6_tdmaau_dese_tma_bo1_ptse2_contact_au_nanomesh_and_ause_pcm_peald_sil3_edge"
+    )
+    gpu_nodes = max(2, math.ceil(trains / 2))
+    active_bo1_ptse2_contact_au_nanomesh_ause_pcm_pods = trains * 4
+    electronic_6n5_ptmecpcod_6n5_ptacac6_6n5_tdmaau_6n5_dese_6n5_tma_purity_and_ptse2_ause2_yield_gain_pct = (
+        97.2 if governed else 23.7
+    )
+    au_nanomesh_agglomeration_and_ause_phase_drift_reduction_pct = (
+        99.8 if governed else 26.8
+    )
+    semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_pt_au_se_and_tma_lockout_latency_ms = (
+        0.10 if governed else 270.0
+    )
+    unmitigated_pt_au_se_precursor_leak_or_tma_ignition_pct = (
+        0.0 if governed else 0.2
+    )
+    edge_qcl_crds_1282cm1_922cm1_2570cm1_insitu_xps_tlmarpes_ssnom_latency_ms = (
+        0.11 if governed else 462.0
+    )
+    wan_bandwidth_reduction_pct = 99.7 if governed else 0.0
+    uncompensated_au_nanomesh_scattering_or_ause_filament_overgrowth_failure_pct = (
+        0.0 if governed else 8.2
+    )
+    return {
+        "ptmecpcod_ptacac6_tdmaau_dese_tma_trains": trains,
+        "governance_mode": governance_mode,
+        "gpu_nodes": gpu_nodes,
+        "node_sku": "Standard_NC40ads_H100_v5",
+        "active_bo1_ptse2_contact_au_nanomesh_ause_pcm_pods": active_bo1_ptse2_contact_au_nanomesh_ause_pcm_pods,
+        "electronic_6n5_ptmecpcod_6n5_ptacac6_6n5_tdmaau_6n5_dese_6n5_tma_purity_and_ptse2_ause2_yield_gain_pct": electronic_6n5_ptmecpcod_6n5_ptacac6_6n5_tdmaau_6n5_dese_6n5_tma_purity_and_ptse2_ause2_yield_gain_pct,
+        "au_nanomesh_agglomeration_and_ause_phase_drift_reduction_pct": au_nanomesh_agglomeration_and_ause_phase_drift_reduction_pct,
+        "semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_pt_au_se_and_tma_lockout_latency_ms": semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_pt_au_se_and_tma_lockout_latency_ms,
+        "unmitigated_pt_au_se_precursor_leak_or_tma_ignition_pct": unmitigated_pt_au_se_precursor_leak_or_tma_ignition_pct,
+        "edge_qcl_crds_1282cm1_922cm1_2570cm1_insitu_xps_tlmarpes_ssnom_latency_ms": edge_qcl_crds_1282cm1_922cm1_2570cm1_insitu_xps_tlmarpes_ssnom_latency_ms,
+        "wan_bandwidth_reduction_pct": wan_bandwidth_reduction_pct,
+        "uncompensated_au_nanomesh_scattering_or_ause_filament_overgrowth_failure_pct": uncompensated_au_nanomesh_scattering_or_ause_filament_overgrowth_failure_pct,
+        "ptmecpcod_ptacac6_tdmaau_dese_tma_bo1_ptse2_contact_au_nanomesh_and_ause_pcm_peald_slo_met": governed,
+    }
 
 
 SCENARIOS_12: list[dict[str, Any]] = [

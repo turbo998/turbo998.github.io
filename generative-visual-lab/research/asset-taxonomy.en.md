@@ -60,9 +60,9 @@ This index catalogs and standardizes all technical assets inside `turbo998/gener
 
 | Asset Path | Format & Dimensions | Byte Size | Purpose & Provenance |
 | --- | --- | --- | --- |
-| `demos/rocket-launch/assets/rocket-kit.glb` | glTF 2.0 Binary (`GLB`) | `4,480,664 B` | White four-color launch vehicle, separating umbilical swing arm, and launch pad/trench/tower complex (generated via Blender 4.5 MCP, updated through Stage 441) |
-| `demos/feitian/assets/grotto-relief-bake.png` | PNG RGBA (`640×360`) | `470,439 B` | Orthogonal Cycles relief bake of the four Mogao niches, Sumeru pedestals, archivolts, and coffered lotus caisson ceiling (updated through Stage 441) |
-| `demos/astra-planet/public/data/mars-micro-normal.png` | PNG RGBA (`256×256` Seamless) | `192,613 B` | Seamless Martian micro-surface tangent-space normal (RGB) and cavity occlusion (Alpha) texture baked in Blender Cycles (updated through Stage 441) |
+| `demos/rocket-launch/assets/rocket-kit.glb` | glTF 2.0 Binary (`GLB`) | `4,741,920 B` | White four-color launch vehicle, separating umbilical swing arm, and launch pad/trench/tower complex (generated via Blender 4.5 MCP, updated through Stage 466) |
+| `demos/feitian/assets/grotto-relief-bake.png` | PNG RGBA (`640×360`) | `470,439 B` | Orthogonal Cycles relief bake of the four Mogao niches, Sumeru pedestals, archivolts, and coffered lotus caisson ceiling (updated through Stage 466) |
+| `demos/astra-planet/public/data/mars-micro-normal.png` | PNG RGBA (`256×256` Seamless) | `192,613 B` | Seamless Martian micro-surface tangent-space normal (RGB) and cavity occlusion (Alpha) texture baked in Blender Cycles (updated through Stage 466) |
 | `demos/astra-planet/public/data/mola-meg016-base-v1.bin` | Int16LE Binary (`1440×720`) | `2,073,600 B` | NASA MGS MOLA MEGDR measured global elevation base package |
 | `demos/astra-planet/public/data/mola-meg064-hd-v1.bin` | Int16LE Binary (`4096×2048`) | `16,777,216 B` | NASA MGS MOLA high-definition elevation package (loaded on demand) |
 

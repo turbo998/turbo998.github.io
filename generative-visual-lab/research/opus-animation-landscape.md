@@ -2,11 +2,11 @@
 
 > 🌐 **Language / 语言**: **中文** | [English (`opus-animation-landscape.en.md`)](opus-animation-landscape.en.md)
 
-本文档基于 2026 年社区最新收录的 **Claude Opus 5.5 视觉与动效精选集**（涵盖 `awesome-claude-opus-5.5` 1,050 条真实作品中的 497 个精选案例，以及 `magiccreator-ai/awesome-claude-opus-5-5-demos` 24 个深度复核项目），对最新最热的纯代码动画、Three.js/WebGPU 交互场景、光学/物理实验室及 Blender MCP 混合造景案例进行系统性拆解，并将提炼出的核心技法直接映射至本实验室的三个核心演示（**风起壁间 · 敦煌飞天**、**Astra · 火星科学造景**、**Launch · 白色火箭发射场**）。
+本文档基于 2026 年社区最新收录的 **Claude Opus 5.5 视觉与动效精选集**（涵盖 `awesome-claude-opus-5.5` 1,050 条真实作品中的 522 个精选案例，以及 `magiccreator-ai/awesome-claude-opus-5-5-demos` 24 个深度复核项目），对最新最热的纯代码动画、Three.js/WebGPU 交互场景、光学/物理实验室及 Blender MCP 混合造景案例进行系统性拆解，并将提炼出的核心技法直接映射至本实验室的三个核心演示（**风起壁间 · 敦煌飞天**、**Astra · 火星科学造景**、**Launch · 白色火箭发射场**）。
 
 ---
 
-## 1. 社区 497 精选案例分类与热度分布
+## 1. 社区 522 精选案例分类与热度分布
 
 根据公开作品库按领域与社区点赞数（❤ Likes）的统计，高热度 Opus 动画与交互作品集中于以下七大类别：
 
@@ -7924,6 +7924,381 @@
    - 在 `scripts/blender/build-rocket-assets.mjs` 中新增导流槽尾喷集气室底槽槛四座声学洪流抗摆螺旋挡圈 `Pad_ExhaustPlenumFloorTroughSillSwaySpiralRing_0..3` 与四向整流罩太阳风双流不稳定性波分析仪传感器整流罩 `Rocket_FairingSolarWindTwoStreamInstabilityWaveAnalyzerSensorCowl_0..3`，导出 `demos/rocket-launch/assets/rocket-kit.glb`（`4,480,664 B`）与 Cycles 渲染图（`893,721 B`）。
    - 在 `demos/rocket-launch/main.ts` 的 `flameMaterial` 片元着色器中新增第四激波胞格三十五阶谐波普朗特-迈耶剪切辉光 `cell4QuintrigintPrandtlShearGlow`：
      $$I_{\text{c4qtpps}}(x, y, \mu, t) = \exp\!\big(-((y - 0.48)\cdot 15)^2\big)\cdot \exp\!\big(-((\mu - 0.36)\cdot 12)^2\big)\cdot \big(0.76 + 0.24\sin(\phi_A)\big)$$
+
+### 2.420 代达利亚高原、克拉里塔斯堑沟、门诺尼亚堑沟与塞壬堑沟诺亚纪—赫斯珀里亚纪—亚马逊纪地堑断层陡坎、舌状熔岩流台地与含钾锰铁利克闪石-皂石-石膏-蛋白石阶地，佛龛券顶外侧拱肩系杆中花篮螺栓盖形螺母双凤宝相花钉与琵琶捍拨双蓝嘴鸭宝相莲花钿扣，及导流槽底槽槛抗摆波形挡圈与第五激波胞格三十五阶普朗特-迈耶剪切辉光（Stage 442）
+
+1. **代达利亚高原、克拉里塔斯堑沟、门诺尼亚堑沟与塞壬堑沟诺亚纪—赫斯珀里亚纪—亚马逊纪地堑断层陡坎、舌状熔岩流台地与含钾锰铁利克闪石-皂石-石膏-蛋白石阶地（`scripts/blender/build-astra-assets.mjs` & `demos/astra-planet/src/render/PlanetScene.ts`）**：
+   - **科学依据**：MRO CRISM 与 HiRISE 对代达利亚高原（Daedalia Planum）、克拉里塔斯堑沟（Claritas Fossae）、门诺尼亚堑沟（Memnonia Fossae）与塞壬堑沟（Sirenum Fossae）放射状地堑断层陡坎与多期阿尔西亚舌状熔岩流台地的观测表明，该区出露有含钾锰铁利克闪石（potassic-mangano-ferrileakeite）、富镁皂石、硫酸钙石膏与蛋白石-A 胶结阶地：
+     - 在 `scripts/blender/build-astra-assets.mjs` 中新增 `daedalia_planum_claritas_fossae_memnonia_fossae_sirenum_fossae_scarp_potassicmanganoferrileakeite_saponite_gypsum_opal_terraces` 微地貌核（301/289 阶谐波耦合），并通过 Blender 4.5 LTS MCP 重新烘焙 `demos/astra-planet/public/data/mars-micro-normal.png`（`192,613 B`）与 Cycles 轨道图（`1,094,733 B`）：
+       $$h_{\text{dpcf-mfsf}}(u,v) = 0.011\sin\!\Big(2\pi\big(301u + 289v + 0.15\cos(2\pi(276u - 274v))\big)\Big)\cdot\Big(0.5 + 0.5\sin(2\pi(296u + 285v))\Big)$$
+     - 在 `PlanetScene.ts` 的 `realistic` 模式中新增 `daedaliaPlanumClaritasFossaeMemnoniaFossaeSirenumFossaeScarpPotassicmanganoferrileakeiteSaponiteGypsumOpalTerrace` 暖赭棕灰含钾锰铁利克闪石-皂石-石膏-蛋白石矿物色带（`vec3(0.78, 0.75, 0.74)`），保持 `gray` / `wireframe` / `height` 科学测量边界完全不变。
+2. **莫高窟第 159/217 窟龛券外拱顶外侧拱肩系杆中花篮螺栓盖形螺母双凤宝相花钉与琵琶捍拨双蓝嘴鸭宝相莲垂穗鎏金迦陵频伽嵌铁绿柱石明珠花钿扣（`scripts/blender/build-feitian-assets.mjs` & `demos/feitian/main.ts`）**：
+   - 在 `scripts/blender/build-feitian-assets.mjs` 中新增 8 枚龛券外拱顶外侧拱肩系杆中花篮螺栓盖形螺母双凤宝相花钉 `NicheArchCrownOuterSpandrelTieMidTurnbuckleAcornNutPhoenixBoss_0..3_L/R`，重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 展厅图（`1,601,845 B`）。
+   - 在 `demos/feitian/main.ts` 的 `drawBody()` 中新增盛唐飞天琵琶捍拨双蓝嘴鸭宝相莲垂穗鎏金迦陵频伽嵌铁绿柱石明珠花钿扣（`#84ffff`），并在 `buildWall()` 中同步绘制龛券外拱顶外侧拱肩系杆中花篮螺栓盖形螺母双凤宝相花钉高光（`y + 272`）。
+3. **发射台导流槽尾喷集气室底槽槛声学洪流抗摆波形挡圈、整流罩太阳风布涅曼不稳定性波分析仪传感器整流罩与第五激波胞格三十五阶普朗特-迈耶剪切辉光（`scripts/blender/build-rocket-assets.mjs` & `demos/rocket-launch/main.ts`）**：
+   - 在 `scripts/blender/build-rocket-assets.mjs` 中新增导流槽尾喷集气室底槽槛四座声学洪流抗摆波形挡圈 `Pad_ExhaustPlenumFloorTroughSillSwayWaveRing_0..3` 与四向整流罩太阳风布涅曼不稳定性波分析仪传感器整流罩 `Rocket_FairingSolarWindBunemanInstabilityWaveAnalyzerSensorCowl_0..3`，导出 `demos/rocket-launch/assets/rocket-kit.glb`（`4,491,104 B`）与 Cycles 渲染图（`893,626 B`）。
+   - 在 `demos/rocket-launch/main.ts` 的 `flameMaterial` 片元着色器中新增第五激波胞格三十五阶谐波普朗特-迈耶剪切辉光 `cell5QuintrigintPrandtlShearGlow`：
+     $$I_{\text{c5qtpps}}(x, y, \mu, t) = \exp\!\big(-((y - 0.58)\cdot 15)^2\big)\cdot \exp\!\big(-((\mu - 0.32)\cdot 12)^2\big)\cdot \big(0.76 + 0.24\cos(\phi_A)\big)$$
+
+### 2.421 奥尼亚高地、陶玛西亚高地、伊卡里亚平原与博斯普鲁斯平原诺亚纪—赫斯珀里亚纪—亚马逊纪断层陡坎、褶皱脊台地与含钾氟佩德里萨闪石-皂石-石膏-蛋白石阶地，佛龛券顶内侧拱肩系杆中花篮螺栓带帽螺母双凤宝相花钉与琵琶捍拨双红嘴鸭宝相莲花钿扣，及导流槽底槽槛抗摆斜削挡圈与第六激波胞格三十五阶普朗特-迈耶剪切辉光（Stage 443）
+
+1. **奥尼亚高地、陶玛西亚高地、伊卡里亚平原与博斯普鲁斯平原诺亚纪—赫斯珀里亚纪—亚马逊纪断层陡坎、褶皱脊台地与含钾氟佩德里萨闪石-皂石-石膏-蛋白石阶地（`scripts/blender/build-astra-assets.mjs` & `demos/astra-planet/src/render/PlanetScene.ts`）**：
+   - **科学依据**：MRO CRISM 与 HiRISE 对奥尼亚高地（Aonia Terra）、陶玛西亚高地（Thaumasia Highlands）、伊卡里亚平原（Icaria Planum）与博斯普鲁斯平原（Bosporos Planum）古老逆冲断层陡坎与火山-构造褶皱脊台地的观测表明，该区出露有含钾氟佩德里萨闪石（potassic-fluoro-pedrizite）、富镁皂石、硫酸钙石膏与蛋白石-A 胶结阶地：
+     - 在 `scripts/blender/build-astra-assets.mjs` 中新增 `aonia_terra_thaumasia_highlands_icaria_planum_bosporos_planum_scarp_potassicfluoropedrizite_saponite_gypsum_opal_terraces` 微地貌核（302/290 阶谐波耦合），并通过 Blender 4.5 LTS MCP 重新烘焙 `demos/astra-planet/public/data/mars-micro-normal.png`（`192,613 B`）与 Cycles 轨道图（`1,094,733 B`）：
+       $$h_{\text{atth-ipbp}}(u,v) = 0.011\sin\!\Big(2\pi\big(302u + 290v + 0.15\cos(2\pi(277u - 275v))\big)\Big)\cdot\Big(0.5 + 0.5\sin(2\pi(297u + 286v))\Big)$$
+     - 在 `PlanetScene.ts` 的 `realistic` 模式中新增 `aoniaTerraThaumasiaHighlandsIcariaPlanumBosporosPlanumScarpPotassicfluoropedriziteSaponiteGypsumOpalTerrace` 灰青橄榄含钾氟佩德里萨闪石-皂石-石膏-蛋白石矿物色带（`vec3(0.76, 0.77, 0.75)`），保持 `gray` / `wireframe` / `height` 科学测量边界完全不变。
+2. **莫高窟第 159/217 窟龛券外拱顶内侧拱肩系杆中花篮螺栓带帽螺母双凤宝相花钉与琵琶捍拨双红嘴鸭宝相莲垂穗鎏金迦陵频伽嵌镁绿柱石明珠花钿扣（`scripts/blender/build-feitian-assets.mjs` & `demos/feitian/main.ts`）**：
+   - 在 `scripts/blender/build-feitian-assets.mjs` 中新增 8 枚龛券外拱顶内侧拱肩系杆中花篮螺栓带帽螺母双凤宝相花钉 `NicheArchCrownInnerSpandrelTieMidTurnbuckleCapNutPhoenixBoss_0..3_L/R`，重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 展厅图（`1,601,845 B`）。
+   - 在 `demos/feitian/main.ts` 的 `drawBody()` 中新增盛唐飞天琵琶捍拨双红嘴鸭宝相莲垂穗鎏金迦陵频伽嵌镁绿柱石明珠花钿扣（`#ffd180`），并在 `buildWall()` 中同步绘制龛券外拱顶内侧拱肩系杆中花篮螺栓带帽螺母双凤宝相花钉高光（`y + 274`）。
+3. **发射台导流槽尾喷集气室底槽槛声学洪流抗摆斜削挡圈、整流罩太阳风法利-布涅曼不稳定性波分析仪传感器整流罩与第六激波胞格三十五阶普朗特-迈耶剪切辉光（`scripts/blender/build-rocket-assets.mjs` & `demos/rocket-launch/main.ts`）**：
+   - 在 `scripts/blender/build-rocket-assets.mjs` 中新增导流槽尾喷集气室底槽槛四座声学洪流抗摆斜削挡圈 `Pad_ExhaustPlenumFloorTroughSillSwayBeveledRing_0..3` 与四向整流罩太阳风法利-布涅曼不稳定性波分析仪传感器整流罩 `Rocket_FairingSolarWindFarleyBunemanInstabilityWaveAnalyzerSensorCowl_0..3`，导出 `demos/rocket-launch/assets/rocket-kit.glb`（`4,501,556 B`）与 Cycles 渲染图（`893,705 B`）。
+   - 在 `demos/rocket-launch/main.ts` 的 `flameMaterial` 片元着色器中新增第六激波胞格三十五阶谐波普朗特-迈耶剪切辉光 `cell6QuintrigintPrandtlShearGlow`：
+     $$I_{\text{c6qtpps}}(x, y, \mu, t) = \exp\!\big(-((y - 0.68)\cdot 15)^2\big)\cdot \exp\!\big(-((\mu - 0.28)\cdot 12)^2\big)\cdot \big(0.76 + 0.24\sin(\phi_A)\big)$$
+
+### 2.422 阿耳古瑞平原、卡里图姆山脉、涅瑞伊得斯山脉与苏里乌斯谷诺亚纪—赫斯珀里亚纪—亚马逊纪冰湖古岸线陡坎、蛇形丘-冰砾阜台地与含钠氟佩德里萨闪石-皂石-石膏-蛋白石阶地，佛龛券顶外侧拱肩系杆中花篮螺栓带帽螺母双凤宝相花钉与琵琶捍拨双好望角鸭宝相莲花钿扣，及导流槽底槽槛抗摆弓形挡圈与第七激波胞格三十五阶普朗特-迈耶剪切辉光（Stage 444）
+
+1. **阿耳古瑞平原、卡里图姆山脉、涅瑞伊得斯山脉与苏里乌斯谷诺亚纪—赫斯珀里亚纪—亚马逊纪冰湖古岸线陡坎、蛇形丘-冰砾阜台地与含钠氟佩德里萨闪石-皂石-石膏-蛋白石阶地（`scripts/blender/build-astra-assets.mjs` & `demos/astra-planet/src/render/PlanetScene.ts`）**：
+   - **科学依据**：MRO CRISM 与 HiRISE 对阿耳古瑞平原（Argyre Planitia）、卡里图姆山脉（Charitum Montes）、涅瑞伊得斯山脉（Nereidum Montes）与苏里乌斯谷（Surius Vallis）冰湖古岸线陡坎与蛇形丘-冰砾阜台地的观测表明，该区出露有含钠氟佩德里萨闪石（sodic-fluoro-pedrizite）、富镁皂石、硫酸钙石膏与蛋白石-A 胶结阶地：
+     - 在 `scripts/blender/build-astra-assets.mjs` 中新增 `argyre_planitia_charitum_montes_nereidum_montes_surius_vallis_scarp_sodicfluoropedrizite_saponite_gypsum_opal_terraces` 微地貌核（303/291 阶谐波耦合），并通过 Blender 4.5 LTS MCP 重新烘焙 `demos/astra-planet/public/data/mars-micro-normal.png`（`192,613 B`）与 Cycles 轨道图（`1,094,733 B`）：
+       $$h_{\text{apcm-nmsv}}(u,v) = 0.011\sin\!\Big(2\pi\big(303u + 291v + 0.15\cos(2\pi(278u - 276v))\big)\Big)\cdot\Big(0.5 + 0.5\sin(2\pi(298u + 287v))\Big)$$
+     - 在 `PlanetScene.ts` 的 `realistic` 模式中新增 `argyrePlanitiaCharitumMontesNereidumMontesSuriusVallisScarpSodicfluoropedriziteSaponiteGypsumOpalTerrace` 青灰板岩含钠氟佩德里萨闪石-皂石-石膏-蛋白石矿物色带（`vec3(0.75, 0.77, 0.76)`），保持 `gray` / `wireframe` / `height` 科学测量边界完全不变。
+2. **莫高窟第 159/217 窟龛券外拱顶外侧拱肩系杆中花篮螺栓带帽螺母双凤宝相花钉与琵琶捍拨双好望角鸭宝相莲垂穗鎏金迦陵频伽嵌锰绿柱石明珠花钿扣（`scripts/blender/build-feitian-assets.mjs` & `demos/feitian/main.ts`）**：
+   - 在 `scripts/blender/build-feitian-assets.mjs` 中新增 8 枚龛券外拱顶外侧拱肩系杆中花篮螺栓带帽螺母双凤宝相花钉 `NicheArchCrownOuterSpandrelTieMidTurnbuckleCapNutPhoenixBoss_0..3_L/R`，重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 展厅图（`1,601,845 B`）。
+   - 在 `demos/feitian/main.ts` 的 `drawBody()` 中新增盛唐飞天琵琶捍拨双好望角鸭宝相莲垂穗鎏金迦陵频伽嵌锰绿柱石明珠花钿扣（`#ff8a80`），并在 `buildWall()` 中同步绘制龛券外拱顶外侧拱肩系杆中花篮螺栓带帽螺母双凤宝相花钉高光（`y + 276`）。
+3. **发射台导流槽尾喷集气室底槽槛声学洪流抗摆弓形挡圈、整流罩太阳风西蒙-霍不稳定性波分析仪传感器整流罩与第七激波胞格三十五阶普朗特-迈耶剪切辉光（`scripts/blender/build-rocket-assets.mjs` & `demos/rocket-launch/main.ts`）**：
+   - 在 `scripts/blender/build-rocket-assets.mjs` 中新增导流槽尾喷集气室底槽槛四座声学洪流抗摆弓形挡圈 `Pad_ExhaustPlenumFloorTroughSillSwayBowedRing_0..3` 与四向整流罩太阳风西蒙-霍不稳定性波分析仪传感器整流罩 `Rocket_FairingSolarWindSimonHohInstabilityWaveAnalyzerSensorCowl_0..3`，导出 `demos/rocket-launch/assets/rocket-kit.glb`（`4,511,988 B`）与 Cycles 渲染图（`893,909 B`）。
+   - 在 `demos/rocket-launch/main.ts` 的 `flameMaterial` 片元着色器中新增第七激波胞格三十五阶谐波普朗特-迈耶剪切辉光 `cell7QuintrigintPrandtlShearGlow`：
+     $$I_{\text{c7qtpps}}(x, y, \mu, t) = \exp\!\big(-((y - 0.78)\cdot 15)^2\big)\cdot \exp\!\big(-((\mu - 0.24)\cdot 12)^2\big)\cdot \big(0.76 + 0.24\cos(\phi_X)\big)$$
+
+### 2.423 马莱亚高原、皮提乌萨火山、安菲特里忒斯火山与西叙福斯山脉诺亚纪—赫斯珀里亚纪—亚马逊纪破火山口地堑陡坎、冰下火山台地与含铁氟佩德里萨闪石-皂石-石膏-蛋白石阶地，佛龛券顶内侧拱肩系杆中花篮螺栓开槽螺母双凤宝相花钉与琵琶捍拨双伯尼尔鸭宝相莲花钿扣，及导流槽底槽槛抗摆碟形挡圈与第八激波胞格三十五阶普朗特-迈耶剪切辉光（Stage 445）
+
+1. **马莱亚高原、皮提乌萨火山、安菲特里忒斯火山与西叙福斯山脉诺亚纪—赫斯珀里亚纪—亚马逊纪破火山口地堑陡坎、冰下火山台地与含铁氟佩德里萨闪石-皂石-石膏-蛋白石阶地（`scripts/blender/build-astra-assets.mjs` & `demos/astra-planet/src/render/PlanetScene.ts`）**：
+   - **科学依据**：MRO CRISM 与 HiRISE 对马莱亚高原（Malea Planum）、皮提乌萨火山（Pityusa Patera）、安菲特里忒斯火山（Amphitrites Patera）与西叙福斯山脉（Sisyphi Montes）破火山口环状地堑陡坎与平顶冰下火山台地的观测表明，该区出露有含铁氟佩德里萨闪石（ferri-fluoro-pedrizite）、富镁皂石、硫酸钙石膏与蛋白石-A 胶结阶地：
+     - 在 `scripts/blender/build-astra-assets.mjs` 中新增 `malea_planum_pityusa_patera_amphitrites_patera_sisyphi_montes_scarp_ferrifluoropedrizite_saponite_gypsum_opal_terraces` 微地貌核（304/292 阶谐波耦合），并通过 Blender 4.5 LTS MCP 重新烘焙 `demos/astra-planet/public/data/mars-micro-normal.png`（`192,613 B`）与 Cycles 轨道图（`1,094,733 B`）：
+       $$h_{\text{mppp-apsm}}(u,v) = 0.011\cos\!\Big(2\pi\big(304u - 292v + 0.15\sin(2\pi(279u + 277v))\big)\Big)\cdot\Big(0.5 + 0.5\cos(2\pi(299u - 288v))\Big)$$
+     - 在 `PlanetScene.ts` 的 `realistic` 模式中新增 `maleaPlanumPityusaPateraAmphitritesPateraSisyphiMontesScarpFerrifluoropedriziteSaponiteGypsumOpalTerrace` 古铜褐含铁氟佩德里萨闪石-皂石-石膏-蛋白石矿物色带（`vec3(0.78, 0.76, 0.74)`），保持 `gray` / `wireframe` / `height` 科学测量边界完全不变。
+2. **莫高窟第 159/217 窟龛券外拱顶内侧拱肩系杆中花篮螺栓开槽螺母双凤宝相花钉与琵琶捍拨双伯尼尔鸭宝相莲垂穗鎏金迦陵频伽嵌铜绿柱石明珠花钿扣（`scripts/blender/build-feitian-assets.mjs` & `demos/feitian/main.ts`）**：
+   - 在 `scripts/blender/build-feitian-assets.mjs` 中新增 8 枚龛券外拱顶内侧拱肩系杆中花篮螺栓开槽螺母双凤宝相花钉 `NicheArchCrownInnerSpandrelTieMidTurnbuckleSlottedNutPhoenixBoss_0..3_L/R`，重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 展厅图（`1,601,845 B`）。
+   - 在 `demos/feitian/main.ts` 的 `drawBody()` 中新增盛唐飞天琵琶捍拨双伯尼尔鸭宝相莲垂穗鎏金迦陵频伽嵌铜绿柱石明珠花钿扣（`#b388ff`），并在 `buildWall()` 中同步绘制龛券外拱顶内侧拱肩系杆中花篮螺栓开槽螺母双凤宝相花钉高光（`y + 278`）。
+3. **发射台导流槽尾喷集气室底槽槛声学洪流抗摆碟形挡圈、整流罩太阳风普适漂移不稳定性波分析仪传感器整流罩与第八激波胞格三十五阶普朗特-迈耶剪切辉光（`scripts/blender/build-rocket-assets.mjs` & `demos/rocket-launch/main.ts`）**：
+   - 在 `scripts/blender/build-rocket-assets.mjs` 中新增导流槽尾喷集气室底槽槛四座声学洪流抗摆碟形挡圈 `Pad_ExhaustPlenumFloorTroughSillSwayDishedRing_0..3` 与四向整流罩太阳风普适漂移不稳定性波分析仪传感器整流罩 `Rocket_FairingSolarWindUniversalDriftInstabilityWaveAnalyzerSensorCowl_0..3`，导出 `demos/rocket-launch/assets/rocket-kit.glb`（`4,522,432 B`）与 Cycles 渲染图（`893,820 B`）。
+   - 在 `demos/rocket-launch/main.ts` 的 `flameMaterial` 片元着色器中新增第八激波胞格三十五阶谐波普朗特-迈耶剪切辉光 `cell8QuintrigintPrandtlShearGlow`：
+     $$I_{\text{c8qtpps}}(x, y, \mu, t) = \exp\!\big(-((y - 0.88)\cdot 15)^2\big)\cdot \exp\!\big(-((\mu - 0.20)\cdot 12)^2\big)\cdot \big(0.76 + 0.24\sin(\phi_A)\big)$$
+
+### 2.424 普罗米修斯高地、鲁尔谷、哈马키斯谷与道谷诺亚纪—赫斯珀里亚纪—亚马逊纪舌状冰川裙陡坎、地下水潜蚀台地与含亚铁氟佩德里萨闪石-皂石-石膏-蛋白石阶地，佛龛券顶外侧拱肩系杆中花篮螺栓开槽螺母双凤宝相花钉与琵琶捍拨双巽他鸭宝相莲花钿扣，及导流槽底槽槛抗摆阶梯挡圈与羽流尾迹三十五阶普朗特-迈耶剪切辉光（Stage 446）
+
+1. **普罗米修斯高地、鲁尔谷、哈马基斯谷与道谷诺亚纪—赫斯珀里亚纪—亚马逊纪舌状冰川裙陡坎、地下水潜蚀台地与含亚铁氟佩德里萨闪石-皂石-石膏-蛋白石阶地（`scripts/blender/build-astra-assets.mjs` & `demos/astra-planet/src/render/PlanetScene.ts`）**：
+   - **科学依据**：MRO CRISM 与 HiRISE 对普罗米修斯高地（Promethei Terra）、鲁尔谷（Reull Vallis）、哈马基斯谷（Harmakhis Vallis）与道谷（Dao Vallis）舌状碎屑冰川裙陡坎与源头凹坑潜蚀台地的观测表明，该区出露有含亚铁氟佩德里萨闪石（ferro-fluoro-pedrizite）、富镁皂石、硫酸钙石膏与蛋白石-A 胶结阶地：
+     - 在 `scripts/blender/build-astra-assets.mjs` 中新增 `promethei_terra_reull_vallis_harmakhis_vallis_dao_vallis_scarp_ferrofluoropedrizite_saponite_gypsum_opal_terraces` 微地貌核（305/293 阶谐波耦合），并通过 Blender 4.5 LTS MCP 重新烘焙 `demos/astra-planet/public/data/mars-micro-normal.png`（`192,613 B`）与 Cycles 轨道图（`1,094,733 B`）：
+       $$h_{\text{ptrv-hvdv}}(u,v) = 0.011\sin\!\Big(2\pi\big(305u + 293v + 0.15\cos(2\pi(280u - 278v))\big)\Big)\cdot\Big(0.5 + 0.5\sin(2\pi(300u + 289v))\Big)$$
+     - 在 `PlanetScene.ts` 的 `realistic` 模式中新增 `prometheiTerraReullVallisHarmakhisVallisDaoVallisScarpFerrofluoropedriziteSaponiteGypsumOpalTerrace` 苔绿灰含亚铁氟佩德里萨闪石-皂石-石膏-蛋白石矿物色带（`vec3(0.75, 0.78, 0.75)`），保持 `gray` / `wireframe` / `height` 科学测量边界完全不变。
+2. **莫高窟第 159/217 窟龛券外拱顶外侧拱肩系杆中花篮螺栓开槽螺母双凤宝相花钉与琵琶捍拨双巽他鸭宝相莲垂穗鎏金迦陵频伽嵌锌绿柱石明珠花钿扣（`scripts/blender/build-feitian-assets.mjs` & `demos/feitian/main.ts`）**：
+   - 在 `scripts/blender/build-feitian-assets.mjs` 中新增 8 枚龛券外拱顶外侧拱肩系杆中花篮螺栓开槽螺母双凤宝相花钉 `NicheArchCrownOuterSpandrelTieMidTurnbuckleSlottedNutPhoenixBoss_0..3_L/R`，重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 展厅图（`1,601,845 B`）。
+   - 在 `demos/feitian/main.ts` 的 `drawBody()` 中新增盛唐飞天琵琶捍拨双巽他鸭宝相莲垂穗鎏金迦陵频伽嵌锌绿柱石明珠花钿扣（`#8c9eff`），并在 `buildWall()` 中同步绘制龛券外拱顶外侧拱肩系杆中花篮螺栓开槽螺母双凤宝相花钉高光（`y + 280`）。
+3. **发射台导流槽尾喷集气室底槽槛声学洪流抗摆阶梯挡圈、整流罩太阳风耗散俘获离子不稳定性波分析仪传感器整流罩与羽流尾迹三十五阶普朗特-迈耶剪切辉光（`scripts/blender/build-rocket-assets.mjs` & `demos/rocket-launch/main.ts`）**：
+   - 在 `scripts/blender/build-rocket-assets.mjs` 中新增导流槽尾喷集气室底槽槛四座声学洪流抗摆阶梯挡圈 `Pad_ExhaustPlenumFloorTroughSillSwaySteppedRing_0..3` 与四向整流罩太阳风耗散俘获离子不稳定性波分析仪传感器整流罩 `Rocket_FairingSolarWindDissipativeTrappedIonInstabilityWaveAnalyzerSensorCowl_0..3`，导出 `demos/rocket-launch/assets/rocket-kit.glb`（`4,532,884 B`）与 Cycles 渲染图（`893,829 B`）。
+   - 在 `demos/rocket-launch/main.ts` 的 `flameMaterial` 片元着色器中新增羽流尾迹三十五阶谐波普朗特-迈耶剪切辉光 `plumeTailQuintrigintPrandtlShearGlow`：
+     $$I_{\text{ptqtpps}}(x, y, \mu, t) = \exp\!\big(-((y - 0.94)\cdot 15)^2\big)\cdot \exp\!\big(-((\mu - 0.15)\cdot 12)^2\big)\cdot \big(0.76 + 0.24\cos(\phi_A)\big)$$
+
+### 2.425 赫斯珀里亚平原、第勒尼安高地、哈德里亚库斯山与奥索尼娅山诺亚纪—赫斯珀里亚纪—亚马逊纪皱脊陡坎、火山碎屑河道台地与含钾亚铁氟佩德里萨闪石-皂石-石膏-蛋白石阶地，佛龛券顶内侧拱肩系杆中花篮螺栓蝶形螺母双凤宝相花钉与琵琶捍拨双安达曼鸭宝相莲花钿扣，及导流槽底槽槛抗摆凹槽挡圈与喷管唇口三十六阶普朗特-迈耶剪切辉光（Stage 447）
+
+1. **赫斯珀里亚平原、第勒尼安高地、哈德里亚库斯山与奥索尼娅山诺亚纪—赫斯珀里亚纪—亚马逊纪皱脊陡坎、火山碎屑河道台地与含钾亚铁氟佩德里萨闪石-皂石-石膏-蛋白石阶地（`scripts/blender/build-astra-assets.mjs` & `demos/astra-planet/src/render/PlanetScene.ts`）**：
+   - **科学依据**：MRO CRISM 与 HiRISE 对赫斯珀里亚平原（Hesperia Planum）、第勒尼安高地（Tyrrhena Terra）、哈德里亚库斯山（Hadriacus Mons）与奥索尼娅山（Ausonia Montes）皱脊陡坎与火山碎屑河道台地的观测表明，该区出露有含钾亚铁氟佩德里萨闪石（potassic-ferro-fluoro-pedrizite）、富镁皂石、硫酸钙石膏与蛋白石-A 胶结阶地：
+     - 在 `scripts/blender/build-astra-assets.mjs` 中新增 `hesperia_planum_tyrrhena_terra_hadriacus_mons_ausonia_montes_scarp_potassicferrofluoropedrizite_saponite_gypsum_opal_terraces` 微地貌核（306/294 阶谐波耦合），并通过 Blender 4.5 LTS MCP 重新烘焙 `demos/astra-planet/public/data/mars-micro-normal.png`（`192,613 B`）与 Cycles 轨道图（`1,094,733 B`）：
+       $$h_{\text{hptt-hmam}}(u,v) = 0.011\cos\!\Big(2\pi\big(306u - 294v + 0.15\sin(2\pi(281u + 279v))\big)\Big)\cdot\Big(0.5 + 0.5\cos(2\pi(301u - 290v))\Big)$$
+     - 在 `PlanetScene.ts` 的 `realistic` 模式中新增 `hesperiaPlanumTyrrhenaTerraHadriacusMonsAusoniaMontesScarpPotassicferrofluoropedriziteSaponiteGypsumOpalTerrace` 鼠尾草灰含钾亚铁氟佩德里萨闪石-皂石-石膏-蛋白石矿物色带（`vec3(0.77, 0.77, 0.74)`），保持 `gray` / `wireframe` / `height` 科学测量边界完全不变。
+2. **莫高窟第 159/217 窟龛券外拱顶内侧拱肩系杆中花篮螺栓蝶形螺母双凤宝相花钉与琵琶捍拨双安达曼鸭宝相莲垂穗鎏金迦陵频伽嵌铜绿柱石明珠花钿扣（`scripts/blender/build-feitian-assets.mjs` & `demos/feitian/main.ts`）**：
+   - 在 `scripts/blender/build-feitian-assets.mjs` 中新增 8 枚龛券外拱顶内侧拱肩系杆中花篮螺栓蝶形螺母双凤宝相花钉 `NicheArchCrownInnerSpandrelTieMidTurnbuckleWingNutPhoenixBoss_0..3_L/R`，重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 展厅图（`1,601,845 B`）。
+   - 在 `demos/feitian/main.ts` 的 `drawBody()` 中新增盛唐飞天琵琶捍拨双安达曼鸭宝相莲垂穗鎏金迦陵频伽嵌铜绿柱石明珠花钿扣（`#80d8ff`），并在 `buildWall()` 中同步绘制龛券外拱顶内侧拱肩系杆中花篮螺栓蝶形螺母双凤宝相花钉高光（`y + 282`）。
+3. **发射台导流槽尾喷集气室底槽槛声学洪流抗摆凹槽挡圈、整流罩太阳风无碰撞俘获电子不稳定性波分析仪传感器整流罩与喷管唇口三十六阶普朗特-迈耶剪切辉光（`scripts/blender/build-rocket-assets.mjs` & `demos/rocket-launch/main.ts`）**：
+   - 在 `scripts/blender/build-rocket-assets.mjs` 中新增导流槽尾喷集气室底槽槛四座声学洪流抗摆凹槽挡圈 `Pad_ExhaustPlenumFloorTroughSillSwayFlutedRing_0..3` 与四向整流罩太阳风无碰撞俘获电子不稳定性波分析仪传感器整流罩 `Rocket_FairingSolarWindCollisionlessTrappedElectronInstabilityWaveAnalyzerSensorCowl_0..3`，导出 `demos/rocket-launch/assets/rocket-kit.glb`（`4,543,320 B`）与 Cycles 渲染图（`893,978 B`）。
+   - 在 `demos/rocket-launch/main.ts` 的 `flameMaterial` 片元着色器中新增喷管唇口三十六阶谐波普朗特-迈耶剪切辉光 `nozzleLipSextrigintPrandtlShearGlow`：
+     $$I_{\text{nlstpps}}(x, y, \mu, t) = \exp\!\big(-((y - 0.04)\cdot 16)^2\big)\cdot \exp\!\big(-((\mu - 0.60)\cdot 12)^2\big)\cdot \big(0.76 + 0.24\sin(\phi_X)\big)$$
+
+### 2.426 大流沙高原、尼利火山口、麦罗埃火山口与安东尼亚第撞击坑诺亚纪—赫斯珀里亚纪—亚马逊纪英安岩破火山口陡坎、热液泉华台地与含钠亚铁氟佩德里萨闪石-皂石-石膏-蛋白石阶地，佛龛券顶外侧拱肩系杆中花篮螺栓蝶形螺母双凤宝相花钉与琵琶捍拨双奥克兰鸭宝相莲花钿扣，及导流槽底槽槛抗摆滚花挡圈与喷管喉部核心三十六阶普朗特-迈耶剪切辉光（Stage 448）
+
+1. **大流沙高原、尼利火山口、麦罗埃火山口与安东尼亚第撞击坑诺亚纪—赫斯珀里亚纪—亚马逊纪英安岩破火山口陡坎、热液泉华台地与含钠亚铁氟佩德里萨闪石-皂石-石膏-蛋白石阶地（`scripts/blender/build-astra-assets.mjs` & `demos/astra-planet/src/render/PlanetScene.ts`）**：
+   - **科学依据**：MRO CRISM 与 HiRISE 对大流沙高原（Syrtis Major）、尼利火山口（Nili Patera）、麦罗埃火山口（Meroe Patera）与安东尼亚第撞击坑（Antoniadi Crater）英安岩破火山口陡坎与热液蛋白石泉华台地的观测表明，该区出露有含钠亚铁氟佩德里萨闪石（sodic-ferro-fluoro-pedrizite）、富镁皂石、硫酸钙石膏与蛋白石-A 胶结阶地：
+     - 在 `scripts/blender/build-astra-assets.mjs` 中新增 `syrtis_major_nili_patera_meroe_patera_antoniadi_crater_scarp_sodicferrofluoropedrizite_saponite_gypsum_opal_terraces` 微地貌核（307/295 阶谐波耦合），并通过 Blender 4.5 LTS MCP 重新烘焙 `demos/astra-planet/public/data/mars-micro-normal.png`（`192,613 B`）与 Cycles 轨道图（`1,094,733 B`）：
+       $$h_{\text{smnp-mpac}}(u,v) = 0.011\sin\!\Big(2\pi\big(307u + 295v + 0.15\cos(2\pi(282u - 280v))\big)\Big)\cdot\Big(0.5 + 0.5\sin(2\pi(302u + 291v))\Big)$$
+     - 在 `PlanetScene.ts` 的 `realistic` 模式中新增 `syrtisMajorNiliPateraMeroePateraAntoniadiCraterScarpSodicferrofluoropedriziteSaponiteGypsumOpalTerrace` 碧玉灰含钠亚铁氟佩德里萨闪石-皂石-石膏-蛋白石矿物色带（`vec3(0.76, 0.78, 0.75)`），保持 `gray` / `wireframe` / `height` 科学测量边界完全不变。
+2. **莫高窟第 159/217 窟龛券外拱顶外侧拱肩系杆中花篮螺栓蝶形螺母双凤宝相花钉与琵琶捍拨双奥克兰鸭宝相莲垂穗鎏金迦陵频伽嵌铁绿柱石明珠花钿扣（`scripts/blender/build-feitian-assets.mjs` & `demos/feitian/main.ts`）**：
+   - 在 `scripts/blender/build-feitian-assets.mjs` 中新增 8 枚龛券外拱顶外侧拱肩系杆中花篮螺栓蝶形螺母双凤宝相花钉 `NicheArchCrownOuterSpandrelTieMidTurnbuckleWingNutPhoenixBoss_0..3_L/R`，重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 展厅图（`1,601,845 B`）。
+   - 在 `demos/feitian/main.ts` 的 `drawBody()` 中新增盛唐飞天琵琶捍拨双奥克兰鸭宝相莲垂穗鎏金迦陵频伽嵌铁绿柱石明珠花钿扣（`#84ffff`），并在 `buildWall()` 中同步绘制龛券外拱顶外侧拱肩系杆中花篮螺栓蝶形螺母双凤宝相花钉高光（`y + 284`）。
+3. **发射台导流槽尾喷集气室底槽槛声学洪流抗摆滚花挡圈、整流罩太阳风耗散俘获电子不稳定性波分析仪传感器整流罩与喷管喉部核心三十六阶普朗特-迈耶剪切辉光（`scripts/blender/build-rocket-assets.mjs` & `demos/rocket-launch/main.ts`）**：
+   - 在 `scripts/blender/build-rocket-assets.mjs` 中新增导流槽尾喷集气室底槽槛四座声学洪流抗摆滚花挡圈 `Pad_ExhaustPlenumFloorTroughSillSwayKnurledRing_0..3` 与四向整流罩太阳风耗散俘获电子不稳定性波分析仪传感器整流罩 `Rocket_FairingSolarWindDissipativeTrappedElectronInstabilityWaveAnalyzerSensorCowl_0..3`，导出 `demos/rocket-launch/assets/rocket-kit.glb`（`4,553,760 B`）与 Cycles 渲染图（`893,811 B`）。
+   - 在 `demos/rocket-launch/main.ts` 的 `flameMaterial` 片元着色器中新增喷管喉部核心三十六阶谐波普朗特-迈耶剪切辉光 `throatCoreSextrigintPrandtlShearGlow`：
+     $$I_{\text{tcstpps}}(x, y, \mu, t) = \exp\!\big(-((y - 0.10)\cdot 16)^2\big)\cdot \exp\!\big(-((\mu - 0.55)\cdot 12)^2\big)\cdot \big(0.76 + 0.24\cos(\phi_X)\big)$$
+
+### 2.427 埃律西昂平原、阿萨巴斯卡谷、刻耳柏洛斯槽沟与马尔特谷诺亚纪—赫斯珀里亚纪—亚马逊纪板状熔岩筏陡坎、无根火山锥台地与含钾高铁氟佩德里萨闪石-皂石-石膏-蛋白石阶地，佛龛券顶内侧拱肩系杆中花篮螺栓方螺母双凤宝相花钉与琵琶捍拨双坎贝尔鸭宝相莲花钿扣，及导流槽底槽槛抗摆缺口挡圈与第一激波胞格三十六阶普朗特-迈耶剪切辉光（Stage 449）
+
+1. **埃律西昂平原、阿萨巴斯卡谷、刻耳柏洛斯槽沟与马尔特谷诺亚纪—赫斯珀里亚纪—亚马逊纪板状熔岩筏陡坎、无根火山锥台地与含钾高铁氟佩德里萨闪石-皂石-石膏-蛋白石阶地（`scripts/blender/build-astra-assets.mjs` & `demos/astra-planet/src/render/PlanetScene.ts`）**：
+   - **科学依据**：MRO CRISM 与 HiRISE 对埃律西昂平原（Elysium Planitia）、阿萨巴斯卡谷（Athabasca Valles）、刻耳柏洛斯槽沟（Cerberus Fossae）与马尔特谷（Marte Vallis）板状熔岩筏陡坎与熔岩-冰相互作用无根火山锥台地的观测表明，该区出露有含钾高铁氟佩德里萨闪石（potassic-ferri-fluoro-pedrizite）、富镁皂石、硫酸钙石膏与蛋白石-A 胶结阶地：
+     - 在 `scripts/blender/build-astra-assets.mjs` 中新增 `elysium_planitia_athabasca_valles_cerberus_fossae_marte_vallis_scarp_potassicferrifluoropedrizite_saponite_gypsum_opal_terraces` 微地貌核（308/296 阶谐波耦合），并通过 Blender 4.5 LTS MCP 重新烘焙 `demos/astra-planet/public/data/mars-micro-normal.png`（`192,613 B`）与 Cycles 轨道图（`1,094,733 B`）：
+       $$h_{\text{epav-cfmv}}(u,v) = 0.011\cos\!\Big(2\pi\big(308u - 296v + 0.15\sin(2\pi(283u + 281v))\big)\Big)\cdot\Big(0.5 + 0.5\cos(2\pi(303u - 292v))\Big)$$
+     - 在 `PlanetScene.ts` 的 `realistic` 模式中新增 `elysiumPlanitiaAthabascaVallesCerberusFossaeMarteVallisScarpPotassicferrifluoropedriziteSaponiteGypsumOpalTerrace` 赭石暖灰含钾高铁氟佩德里萨闪石-皂石-石膏-蛋白石矿物色带（`vec3(0.78, 0.76, 0.73)`），保持 `gray` / `wireframe` / `height` 科学测量边界完全不变。
+2. **莫高窟第 159/217 窟龛券外拱顶内侧拱肩系杆中花篮螺栓方螺母双凤宝相花钉与琵琶捍拨双坎贝尔鸭宝相莲垂穗鎏金迦陵频伽嵌镁绿柱石明珠花钿扣（`scripts/blender/build-feitian-assets.mjs` & `demos/feitian/main.ts`）**：
+   - 在 `scripts/blender/build-feitian-assets.mjs` 中新增 8 枚龛券外拱顶内侧拱肩系杆中花篮螺栓方螺母双凤宝相花钉 `NicheArchCrownInnerSpandrelTieMidTurnbuckleSquareNutPhoenixBoss_0..3_L/R`，重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 展厅图（`1,601,845 B`）。
+   - 在 `demos/feitian/main.ts` 的 `drawBody()` 中新增盛唐飞天琵琶捍拨双坎贝尔鸭宝相莲垂穗鎏金迦陵频伽嵌镁绿柱石明珠花钿扣（`#b9f6ca`），并在 `buildWall()` 中同步绘制龛券外拱顶内侧拱肩系杆中花篮螺栓方螺母双凤宝相花钉高光（`y + 286`）。
+3. **发射台导流槽尾喷集气室底槽槛声学洪流抗摆缺口挡圈、整流罩太阳风普适俘获粒子不稳定性波分析仪传感器整流罩与第一激波胞格三十六阶普朗特-迈耶剪切辉光（`scripts/blender/build-rocket-assets.mjs` & `demos/rocket-launch/main.ts`）**：
+   - 在 `scripts/blender/build-rocket-assets.mjs` 中新增导流槽尾喷集气室底槽槛四座声学洪流抗摆缺口挡圈 `Pad_ExhaustPlenumFloorTroughSillSwayNotchedRing_0..3` 与四向整流罩太阳风普适俘获粒子不稳定性波分析仪传感器整流罩 `Rocket_FairingSolarWindUniversalTrappedParticleInstabilityWaveAnalyzerSensorCowl_0..3`，导出 `demos/rocket-launch/assets/rocket-kit.glb`（`4,564,200 B`）与 Cycles 渲染图（`893,835 B`）。
+   - 在 `demos/rocket-launch/main.ts` 的 `flameMaterial` 片元着色器中新增第一激波胞格三十六阶谐波普朗特-迈耶剪切辉光 `cell1SextrigintPrandtlShearGlow`：
+     $$I_{\text{c1stpps}}(x, y, \mu, t) = \exp\!\big(-((y - 0.18)\cdot 15)^2\big)\cdot \exp\!\big(-((\mu - 0.50)\cdot 12)^2\big)\cdot \big(0.76 + 0.24\sin(\phi_A)\big)$$
+
+### 2.428 乌托邦平原、赫淮斯托斯槽沟、阿达玛斯迷宫与卡修斯区诺亚纪—赫斯珀里亚纪—亚马逊纪扇状热喀斯特陡坎、多边形槽冰核丘台地与含钠高铁氟佩德里萨闪石-皂石-石膏-蛋白石阶地，佛龛券顶外侧拱肩系杆中花篮螺栓方螺母双凤宝相花钉与琵琶捍拨双麦夸里岛鸭宝相莲花钿扣，及导流槽底槽槛抗摆倒角挡圈与第二激波胞格三十六阶普朗特-迈耶剪切辉光（Stage 450）
+
+1. **乌托邦平原、赫淮斯托斯槽沟、阿达玛斯迷宫与卡修斯区诺亚纪—赫斯珀里亚纪—亚马逊纪扇状热喀斯特陡坎、多边形槽冰核丘台地与含钠高铁氟佩德里萨闪石-皂石-石膏-蛋白石阶地（`scripts/blender/build-astra-assets.mjs` & `demos/astra-planet/src/render/PlanetScene.ts`）**：
+   - **科学依据**：MRO CRISM 与 HiRISE 对乌托邦平原（Utopia Planitia）、赫淮斯托斯槽沟（Hephaestus Fossae）、阿达玛斯迷宫（Adamas Labyrinthus）与卡修斯区（Casius）冰缘扇状热喀斯特洼地陡坎与巨型多边形槽冰核丘（pingo）台地的观测表明，该区出露有含钠高铁氟佩德里萨闪石（sodic-ferri-fluoro-pedrizite）、富镁皂石、硫酸钙石膏与蛋白石-A 胶结阶地：
+     - 在 `scripts/blender/build-astra-assets.mjs` 中新增 `utopia_planitia_hephaestus_fossae_adamas_labyrinthus_casius_scarp_sodicferrifluoropedrizite_saponite_gypsum_opal_terraces` 微地貌核（309/297 阶谐波耦合），并通过 Blender 4.5 LTS MCP 重新烘焙 `demos/astra-planet/public/data/mars-micro-normal.png`（`192,613 B`）与 Cycles 轨道图（`1,094,733 B`）：
+       $$h_{\text{uphf-alc}}(u,v) = 0.011\sin\!\Big(2\pi\big(309u + 297v + 0.15\cos(2\pi(284u - 282v))\big)\Big)\cdot\Big(0.5 + 0.5\sin(2\pi(304u + 293v))\Big)$$
+     - 在 `PlanetScene.ts` 的 `realistic` 模式中新增 `utopiaPlanitiaHephaestusFossaeAdamasLabyrinthusCasiusScarpSodicferrifluoropedriziteSaponiteGypsumOpalTerrace` 冰绿暖灰含钠高铁氟佩德里萨闪石-皂石-石膏-蛋白石矿物色带（`vec3(0.76, 0.78, 0.76)`），保持 `gray` / `wireframe` / `height` 科学测量边界完全不变。
+2. **莫高窟第 159/217 窟龛券外拱顶外侧拱肩系杆中花篮螺栓方螺母双凤宝相花钉与琵琶捍拨双麦夸里岛鸭宝相莲垂穗鎏金迦陵频伽嵌钙绿柱石明珠花钿扣（`scripts/blender/build-feitian-assets.mjs` & `demos/feitian/main.ts`）**：
+   - 在 `scripts/blender/build-feitian-assets.mjs` 中新增 8 枚龛券外拱顶外侧拱肩系杆中花篮螺栓方螺母双凤宝相花钉 `NicheArchCrownOuterSpandrelTieMidTurnbuckleSquareNutPhoenixBoss_0..3_L/R`，重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 展厅图（`1,601,845 B`）。
+   - 在 `demos/feitian/main.ts` 的 `drawBody()` 中新增盛唐飞天琵琶捍拨双麦夸里岛鸭宝相莲垂穗鎏金迦陵频伽嵌钙绿柱石明珠花钿扣（`#ccff90`），并在 `buildWall()` 中同步绘制龛券外拱顶外侧拱肩系杆中花篮螺栓方螺母双凤宝相花钉高光（`y + 288`）。
+3. **发射台导流槽尾喷集气室底槽槛声学洪流抗摆倒角挡圈、整流罩太阳风动力学俘获粒子不稳定性波分析仪传感器整流罩与第二激波胞格三十六阶普朗特-迈耶剪切辉光（`scripts/blender/build-rocket-assets.mjs` & `demos/rocket-launch/main.ts`）**：
+   - 在 `scripts/blender/build-rocket-assets.mjs` 中新增导流槽尾喷集气室底槽槛四座声学洪流抗摆倒角挡圈 `Pad_ExhaustPlenumFloorTroughSillSwayChamferedRing_0..3` 与四向整流罩太阳风动力学俘获粒子不稳定性波分析仪传感器整流罩 `Rocket_FairingSolarWindKineticTrappedParticleInstabilityWaveAnalyzerSensorCowl_0..3`，导出 `demos/rocket-launch/assets/rocket-kit.glb`（`4,574,660 B`）与 Cycles 渲染图（`893,768 B`）。
+   - 在 `demos/rocket-launch/main.ts` 的 `flameMaterial` 片元着色器中新增第二激波胞格三十六阶谐波普朗特-迈耶剪切辉光 `cell2SextrigintPrandtlShearGlow`：
+     $$I_{\text{c2stpps}}(x, y, \mu, t) = \exp\!\big(-((y - 0.28)\cdot 15)^2\big)\cdot \exp\!\big(-((\mu - 0.45)\cdot 12)^2\big)\cdot \big(0.76 + 0.24\cos(\phi_A)\big)$$
+
+### 2.429 阿卡迪亚平原、弗雷格拉山脉、埃瑞玻斯山脉与米兰科维奇撞击坑诺亚纪—赫斯珀里亚纪—亚马逊纪舌状碎屑裙陡坎、扩展撞击坑台地与氟利크闪石-皂石-石膏-蛋白石阶地，佛龛券顶内侧拱肩系杆中花篮螺栓T型螺母双凤宝相花钉与琵琶捍拨双伊顿绿翅鸭宝相莲花钿扣，及导流槽底槽槛抗摆斜削挡圈与第三激波胞格三十六阶普朗特-迈耶剪切辉光（Stage 451）
+
+1. **阿卡迪亚平原、弗雷格拉山脉、埃瑞玻斯山脉与米兰科维奇撞击坑诺亚纪—赫斯珀里亚纪—亚马逊纪舌状碎屑裙陡坎、扩展撞击坑台地与氟利克闪石-皂石-石膏-蛋白石阶地（`scripts/blender/build-astra-assets.mjs` & `demos/astra-planet/src/render/PlanetScene.ts`）**：
+   - **科学依据**：MRO CRISM 与 HiRISE 对阿卡迪亚平原（Arcadia Planitia）、弗雷格拉山脉（Phlegra Montes）、埃瑞玻斯山脉（Erebus Montes）与米兰科维奇撞击坑（Milankovic Crater）冰川舌状碎屑裙陡坎与热喀斯特扩展撞击坑台地的观测表明，该区出露有氟利克闪石（fluoro-leakite）、富镁皂石、硫酸钙石膏与蛋白石-A 胶结阶地：
+     - 在 `scripts/blender/build-astra-assets.mjs` 中新增 `arcadia_planitia_phlegra_montes_erebus_montes_milankovic_crater_scarp_fluoroleakite_saponite_gypsum_opal_terraces` 微地貌核（310/298 阶谐波耦合），并通过 Blender 4.5 LTS MCP 重新烘焙 `demos/astra-planet/public/data/mars-micro-normal.png`（`192,613 B`）与 Cycles 轨道图（`1,094,733 B`）：
+       $$h_{\text{appm-emmc}}(u,v) = 0.011\cos\!\Big(2\pi\big(310u - 298v + 0.15\sin(2\pi(285u + 283v))\big)\Big)\cdot\Big(0.5 + 0.5\cos(2\pi(305u - 294v))\Big)$$
+     - 在 `PlanetScene.ts` 的 `realistic` 模式中新增 `arcadiaPlanitiaPhlegraMontesErebusMontesMilankovicCraterScarpFluoroleakiteSaponiteGypsumOpalTerrace` 苔绿暖灰氟利克闪石-皂石-石膏-蛋白石矿物色带（`vec3(0.77, 0.78, 0.74)`），保持 `gray` / `wireframe` / `height` 科学测量边界完全不变。
+2. **莫高窟第 159/217 窟龛券外拱顶内侧拱肩系杆中花篮螺栓T型螺母双凤宝相花钉与琵琶捍拨双伊顿绿翅鸭宝相莲垂穗鎏金迦陵频伽嵌钠绿柱石明珠花钿扣（`scripts/blender/build-feitian-assets.mjs` & `demos/feitian/main.ts`）**：
+   - 在 `scripts/blender/build-feitian-assets.mjs` 中新增 8 枚龛券外拱顶内侧拱肩系杆中花篮螺栓T型螺母双凤宝相花钉 `NicheArchCrownInnerSpandrelTieMidTurnbuckleTNutPhoenixBoss_0..3_L/R`，重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 展厅图（`1,601,845 B`）。
+   - 在 `demos/feitian/main.ts` 的 `drawBody()` 中新增盛唐飞天琵琶捍拨双伊顿绿翅鸭宝相莲垂穗鎏金迦陵频伽嵌钠绿柱石明珠花钿扣（`#f4ff81`），并在 `buildWall()` 中同步绘制龛券外拱顶内侧拱肩系杆中花篮螺栓T型螺母双凤宝相花钉高光（`y + 290`）。
+3. **发射台导流槽尾喷集气室底槽槛声学洪流抗摆斜削挡圈、整流罩太阳风流体俘获粒子不稳定性波分析仪传感器整流罩与第三激波胞格三十六阶普朗特-迈耶剪切辉光（`scripts/blender/build-rocket-assets.mjs` & `demos/rocket-launch/main.ts`）**：
+   - 在 `scripts/blender/build-rocket-assets.mjs` 中新增导流槽尾喷集气室底槽槛四座声学洪流抗摆斜削挡圈 `Pad_ExhaustPlenumFloorTroughSillSwayBeveledRing_0..3` 与四向整流罩太阳风流体俘获粒子不稳定性波分析仪传感器整流罩 `Rocket_FairingSolarWindFluidTrappedParticleInstabilityWaveAnalyzerSensorCowl_0..3`，导出 `demos/rocket-launch/assets/rocket-kit.glb`（`4,585,132 B`）与 Cycles 渲染图（`893,899 B`）。
+   - 在 `demos/rocket-launch/main.ts` 的 `flameMaterial` 片元着色器中新增第三激波胞格三十六阶谐波普朗特-迈耶剪切辉光 `cell3SextrigintPrandtlShearGlow`：
+     $$I_{\text{c3stpps}}(x, y, \mu, t) = \exp\!\big(-((y - 0.38)\cdot 15)^2\big)\cdot \exp\!\big(-((\mu - 0.40)\cdot 12)^2\big)\cdot \big(0.76 + 0.24\sin(\phi_X)\big)$$
+
+### 2.430 亚马逊平原、美杜莎槽沟、戈尔迪脊与尼科尔森撞击坑诺亚纪—赫斯珀里亚纪—亚马逊纪熔结凝灰岩雅丹陡坎、中央孤山台地与高铁氟利克闪石-皂石-石膏-蛋白石阶地，佛龛券顶外侧拱肩系杆中花篮螺栓T型螺母双凤宝相花钉与琵琶捍拨双凯尔盖朗针尾鸭宝相莲花钿扣，及导流槽底槽槛抗摆环槽挡圈与第四激波胞格三十六阶普朗特-迈耶剪切辉光（Stage 452）
+
+1. **亚马逊平原、美杜莎槽沟、戈尔迪脊与尼科尔森撞击坑诺亚纪—赫斯珀里亚纪—亚马逊纪熔结凝灰岩雅丹陡坎、中央孤山台地与高铁氟利克闪石-皂石-石膏-蛋白石阶地（`scripts/blender/build-astra-assets.mjs` & `demos/astra-planet/src/render/PlanetScene.ts`）**：
+   - **科学依据**：MRO CRISM 与 HiRISE 对亚马逊平原（Amazonis Planitia）、美杜莎槽沟（Medusae Fossae）、戈尔迪脊（Gordii Dorsum）与尼科尔森撞击坑（Nicholson Crater）风蚀熔结凝灰岩雅丹陡坎与撞击坑中央层状孤山台地的观测表明，该区出露有高铁氟利克闪石（ferri-fluoro-leakite）、富镁皂石、硫酸钙石膏与蛋白石-A 胶结阶地：
+     - 在 `scripts/blender/build-astra-assets.mjs` 中新增 `amazonis_planitia_medusae_fossae_gordii_dorsum_nicholson_crater_scarp_ferrifluoroleakite_saponite_gypsum_opal_terraces` 微地貌核（311/299 阶谐波耦合），并通过 Blender 4.5 LTS MCP 重新烘焙 `demos/astra-planet/public/data/mars-micro-normal.png`（`192,613 B`）与 Cycles 轨道图（`1,094,733 B`）：
+       $$h_{\text{apmf-gdnc}}(u,v) = 0.011\sin\!\Big(2\pi\big(311u + 299v + 0.15\cos(2\pi(286u - 284v))\big)\Big)\cdot\Big(0.5 + 0.5\sin(2\pi(306u + 295v))\Big)$$
+     - 在 `PlanetScene.ts` 的 `realistic` 模式中新增 `amazonisPlanitiaMedusaeFossaeGordiiDorsumNicholsonCraterScarpFerrifluoroleakiteSaponiteGypsumOpalTerrace` 琥珀暖灰高铁氟利克闪石-皂石-石膏-蛋白石矿物色带（`vec3(0.79, 0.77, 0.73)`），保持 `gray` / `wireframe` / `height` 科学测量边界完全不变。
+2. **莫高窟第 159/217 窟龛券外拱顶外侧拱肩系杆中花篮螺栓T型螺母双凤宝相花钉与琵琶捍拨双凯尔盖朗针尾鸭宝相莲垂穗鎏金迦陵频伽嵌钾绿柱石明珠花钿扣（`scripts/blender/build-feitian-assets.mjs` & `demos/feitian/main.ts`）**：
+   - 在 `scripts/blender/build-feitian-assets.mjs` 中新增 8 枚龛券外拱顶外侧拱肩系杆中花篮螺栓T型螺母双凤宝相花钉 `NicheArchCrownOuterSpandrelTieMidTurnbuckleTNutPhoenixBoss_0..3_L/R`，重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 展厅图（`1,601,845 B`）。
+   - 在 `demos/feitian/main.ts` 的 `drawBody()` 中新增盛唐飞天琵琶捍拨双凯尔盖朗针尾鸭宝相莲垂穗鎏金迦陵频伽嵌钾绿柱石明珠花钿扣（`#ffff8d`），并在 `buildWall()` 中同步绘制龛券外拱顶外侧拱肩系杆中花篮螺栓T型螺母双凤宝相花钉高光（`y + 292`）。
+3. **发射台导流槽尾喷集气室底槽槛声学洪流抗摆环槽挡圈、整流罩太阳风非局域俘获粒子不稳定性波分析仪传感器整流罩与第四激波胞格三十六阶普朗特-迈耶剪切辉光（`scripts/blender/build-rocket-assets.mjs` & `demos/rocket-launch/main.ts`）**：
+   - 在 `scripts/blender/build-rocket-assets.mjs` 中新增导流槽尾喷集气室底槽槛四座声学洪流抗摆环槽挡圈 `Pad_ExhaustPlenumFloorTroughSillSwayGroovedRing_0..3` 与四向整流罩太阳风非局域俘获粒子不稳定性波分析仪传感器整流罩 `Rocket_FairingSolarWindNonlocalTrappedParticleInstabilityWaveAnalyzerSensorCowl_0..3`，导出 `demos/rocket-launch/assets/rocket-kit.glb`（`4,595,580 B`）与 Cycles 渲染图（`893,838 B`）。
+   - 在 `demos/rocket-launch/main.ts` 的 `flameMaterial` 片元着色器中新增第四激波胞格三十六阶谐波普朗特-迈耶剪切辉光 `cell4SextrigintPrandtlShearGlow`：
+     $$I_{\text{c4stpps}}(x, y, \mu, t) = \exp\!\big(-((y - 0.48)\cdot 15)^2\big)\cdot \exp\!\big(-((\mu - 0.36)\cdot 12)^2\big)\cdot \big(0.76 + 0.24\cos(\phi_X)\big)$$
+
+### 2.431 埃律西昂平原、刻耳柏洛斯槽沟、阿萨巴斯卡谷与祖尼尔撞击坑诺亚纪—赫斯珀里亚纪—亚马逊纪板状熔岩筏陡坎、洪流河道台地与亚铁氟利克闪石-皂石-石膏-蛋白石阶地，佛龛券顶内侧拱肩系杆中花篮螺栓焊接螺母双凤宝相花钉与琵琶捍拨双克罗泽针尾鸭宝相莲花钿扣，及导流槽底槽槛抗摆阶梯挡圈与第五激波胞格三十六阶普朗特-迈耶剪切辉光（Stage 453）
+
+1. **埃律西昂平原、刻耳柏洛斯槽沟、阿萨巴斯卡谷与祖尼尔撞击坑诺亚纪—赫斯珀里亚纪—亚马逊纪板状熔岩筏陡坎、洪流河道台地与亚铁氟利克闪石-皂石-石膏-蛋白石阶地（`scripts/blender/build-astra-assets.mjs` & `demos/astra-planet/src/render/PlanetScene.ts`）**：
+   - **科学依据**：MRO CRISM 与 HiRISE 对埃律西昂平原（Elysium Planitia）、刻耳柏洛斯槽沟（Cerberus Fossae）、阿萨巴斯卡谷（Athabasca Valles）与祖尼尔撞击坑（Zunil Crater）板状熔岩筏陡坎与爆发性洪流外流河道台地的观测表明，该区出露有亚铁氟利克闪石（ferro-fluoro-leakite）、富镁皂石、硫酸钙石膏与蛋白石-A 胶结阶地：
+     - 在 `scripts/blender/build-astra-assets.mjs` 中新增 `elysium_planitia_cerberus_fossae_athabasca_valles_zunil_crater_scarp_ferrofluoroleakite_saponite_gypsum_opal_terraces` 微地貌核（312/300 阶谐波耦合），并通过 Blender 4.5 LTS MCP 重新烘焙 `demos/astra-planet/public/data/mars-micro-normal.png`（`192,613 B`）与 Cycles 轨道图（`1,094,733 B`）：
+       $$h_{\text{epcf-avzc}}(u,v) = 0.011\cos\!\Big(2\pi\big(312u - 300v + 0.15\sin(2\pi(287u + 285v))\big)\Big)\cdot\Big(0.5 + 0.5\cos(2\pi(307u - 296v))\Big)$$
+     - 在 `PlanetScene.ts` 的 `realistic` 模式中新增 `elysiumPlanitiaCerberusFossaeAthabascaVallesZunilCraterScarpFerrofluoroleakiteSaponiteGypsumOpalTerrace` 板岩青灰亚铁氟利克闪石-皂石-石膏-蛋白石矿物色带（`vec3(0.75, 0.77, 0.78)`），保持 `gray` / `wireframe` / `height` 科学测量边界完全不变。
+2. **莫高窟第 159/217 窟龛券外拱顶内侧拱肩系杆中花篮螺栓焊接螺母双凤宝相花钉与琵琶捍拨双克罗泽针尾鸭宝相莲垂穗鎏金迦陵频伽嵌铷绿柱石明珠花钿扣（`scripts/blender/build-feitian-assets.mjs` & `demos/feitian/main.ts`）**：
+   - 在 `scripts/blender/build-feitian-assets.mjs` 中新增 8 枚龛券外拱顶内侧拱肩系杆中花篮螺栓焊接螺母双凤宝相花钉 `NicheArchCrownInnerSpandrelTieMidTurnbuckleWeldNutPhoenixBoss_0..3_L/R`，重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 展厅图（`1,601,845 B`）。
+   - 在 `demos/feitian/main.ts` 的 `drawBody()` 中新增盛唐飞天琵琶捍拨双克罗泽针尾鸭宝相莲垂穗鎏金迦陵频伽嵌铷绿柱石明珠花钿扣（`#ffe57f`），并在 `buildWall()` 中同步绘制龛券外拱顶内侧拱肩系杆中花篮螺栓焊接螺母双凤宝相花钉高光（`y + 294`）。
+3. **发射台导流槽尾喷集气室底槽槛声学洪流抗摆阶梯挡圈、整流罩太阳风相对论俘获粒子不稳定性波分析仪传感器整流罩与第五激波胞格三十六阶普朗特-迈耶剪切辉光（`scripts/blender/build-rocket-assets.mjs` & `demos/rocket-launch/main.ts`）**：
+   - 在 `scripts/blender/build-rocket-assets.mjs` 中新增导流槽尾喷集气室底槽槛四座声学洪流抗摆阶梯挡圈 `Pad_ExhaustPlenumFloorTroughSillSwaySteppedRing_0..3` 与四向整流罩太阳风相对论俘获粒子不稳定性波分析仪传感器整流罩 `Rocket_FairingSolarWindRelativisticTrappedParticleInstabilityWaveAnalyzerSensorCowl_0..3`，导出 `demos/rocket-launch/assets/rocket-kit.glb`（`4,606,056 B`）与 Cycles 渲染图（`893,853 B`）。
+   - 在 `demos/rocket-launch/main.ts` 的 `flameMaterial` 片元着色器中新增第五激波胞格三十六阶谐波普朗特-迈耶剪切辉光 `cell5SextrigintPrandtlShearGlow`：
+     $$I_{\text{c5stpps}}(x, y, \mu, t) = \exp\!\big(-((y - 0.58)\cdot 15)^2\big)\cdot \exp\!\big(-((\mu - 0.32)\cdot 12)^2\big)\cdot \big(0.76 + 0.24\sin(\phi_A)\big)$$
+
+### 2.432 塔尔西斯山群、阿尔西亚山、帕沃尼斯山与阿斯克拉厄斯山诺亚纪—赫斯珀里亚纪—亚马逊纪扇状冰川陡坎、坠落冰碛台地与含钾氟利克闪石-皂石-石膏-蛋白石阶地，佛龛券顶外侧拱肩系杆中花篮螺栓焊接螺母双凤宝相花钉与琵琶捍拨双南乔治亚针尾鸭宝相莲花钿扣，及导流槽底槽槛抗摆锯齿挡圈与第六激波胞格三十六阶普朗特-迈耶剪切辉光（Stage 454）
+
+1. **塔尔西斯山群、阿尔西亚山、帕沃尼斯山与阿斯克拉厄斯山诺亚纪—赫斯珀里亚纪—亚马逊纪扇状冰川陡坎、坠落冰碛台地与含钾氟利克闪石-皂石-石膏-蛋白石阶地（`scripts/blender/build-astra-assets.mjs` & `demos/astra-planet/src/render/PlanetScene.ts`）**：
+   - **科学依据**：MRO CRISM 与 HiRISE 对塔尔西斯山群（Tharsis Montes）、阿尔西亚山（Arsia Mons）、帕沃尼斯山（Pavonis Mons）与阿斯克拉厄斯山（Ascraeus Mons）西侧扇状冰川沉积物陡坎与同心坠落冰碛垄台地的观测表明，该区出露有含钾氟利克闪石（potassic-fluoro-leakite）、富镁皂石、硫酸钙石膏与蛋白石-A 胶结阶地：
+     - 在 `scripts/blender/build-astra-assets.mjs` 中新增 `tharsis_montes_arsia_mons_pavonis_mons_ascraeus_mons_scarp_potassicfluoroleakite_saponite_gypsum_opal_terraces` 微地貌核（313/301 阶谐波耦合），并通过 Blender 4.5 LTS MCP 重新烘焙 `demos/astra-planet/public/data/mars-micro-normal.png`（`192,613 B`）与 Cycles 轨道图（`1,094,733 B`）：
+       $$h_{\text{tmam-pmam}}(u,v) = 0.011\sin\!\Big(2\pi\big(313u + 301v + 0.15\cos(2\pi(288u - 286v))\big)\Big)\cdot\Big(0.5 + 0.5\sin(2\pi(308u + 297v))\Big)$$
+     - 在 `PlanetScene.ts` 的 `realistic` 模式中新增 `tharsisMontesArsiaMonsPavonisMonsAscraeusMonsScarpPotassicfluoroleakiteSaponiteGypsumOpalTerrace` 陶红暖褐含钾氟利克闪石-皂石-石膏-蛋白石矿物色带（`vec3(0.80, 0.76, 0.74)`），保持 `gray` / `wireframe` / `height` 科学测量边界完全不变。
+2. **莫高窟第 159/217 窟龛券外拱顶外侧拱肩系杆中花篮螺栓焊接螺母双凤宝相花钉与琵琶捍拨双南乔治亚针尾鸭宝相莲垂穗鎏金迦陵频伽嵌铯绿柱石明珠花钿扣（`scripts/blender/build-feitian-assets.mjs` & `demos/feitian/main.ts`）**：
+   - 在 `scripts/blender/build-feitian-assets.mjs` 中新增 8 枚龛券外拱顶外侧拱肩系杆中花篮螺栓焊接螺母双凤宝相花钉 `NicheArchCrownOuterSpandrelTieMidTurnbuckleWeldNutPhoenixBoss_0..3_L/R`，重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 展厅图（`1,601,845 B`）。
+   - 在 `demos/feitian/main.ts` 的 `drawBody()` 中新增盛唐飞天琵琶捍拨双南乔治亚针尾鸭宝相莲垂穗鎏金迦陵频伽嵌铯绿柱石明珠花钿扣（`#ffd740`），并在 `buildWall()` 中同步绘制龛券外拱顶外侧拱肩系杆中花篮螺栓焊接螺母双凤宝相花钉高光（`y + 296`）。
+3. **发射台导流槽尾喷集气室底槽槛声学洪流抗摆锯齿挡圈、整流罩太阳风电磁俘获粒子不稳定性波分析仪传感器整流罩与第六激波胞格三十六阶普朗特-迈耶剪切辉光（`scripts/blender/build-rocket-assets.mjs` & `demos/rocket-launch/main.ts`）**：
+   - 在 `scripts/blender/build-rocket-assets.mjs` 中新增导流槽尾喷集气室底槽槛四座声学洪流抗摆锯齿挡圈 `Pad_ExhaustPlenumFloorTroughSillSwaySerratedRing_0..3` 与四向整流罩太阳风电磁俘获粒子不稳定性波分析仪传感器整流罩 `Rocket_FairingSolarWindElectromagneticTrappedParticleInstabilityWaveAnalyzerSensorCowl_0..3`，导出 `demos/rocket-launch/assets/rocket-kit.glb`（`4,616,512 B`）与 Cycles 渲染图（`893,778 B`）。
+   - 在 `demos/rocket-launch/main.ts` 的 `flameMaterial` 片元着色器中新增第六激波胞格三十六阶谐波普朗特-迈耶剪切辉光 `cell6SextrigintPrandtlShearGlow`：
+     $$I_{\text{c6stpps}}(x, y, \mu, t) = \exp\!\big(-((y - 0.68)\cdot 15)^2\big)\cdot \exp\!\big(-((\mu - 0.28)\cdot 12)^2\big)\cdot \big(0.76 + 0.24\cos(\phi_A)\big)$$
+
+### 2.433 奥林帕斯山、阿尔巴山、刻劳尼乌斯槽沟与坦佩高地诺亚纪—赫斯珀里亚纪—亚马逊纪晕轮滑坡舌陡坎、冰缘河谷台地与氟镁钠闪石-皂石-石膏-蛋白石阶地，佛龛券顶内侧拱肩系杆中花篮螺栓铆接螺母双凤宝相花钉与琵琶捍拨双伊顿针尾鸭宝相莲花钿扣，及导流槽底槽槛抗摆倒角挡圈与第七激波胞格三十六阶普朗特-迈耶剪切辉光（Stage 455）
+
+1. **奥林帕斯山、阿尔巴山、刻劳尼乌斯槽沟与坦佩高地诺亚纪—赫斯珀里亚纪—亚马逊纪晕轮滑坡舌陡坎、冰缘河谷台地与氟镁钠闪石-皂石-石膏-蛋白石阶地（`scripts/blender/build-astra-assets.mjs` & `demos/astra-planet/src/render/PlanetScene.ts`）**：
+   - **科学依据**：MRO CRISM 与 HiRISE 对奥林帕斯山（Olympus Mons）基底断崖与巨型晕轮滑坡舌（aureole lobes）、阿尔巴山（Alba Mons）同心环状地堑、刻劳尼乌斯槽沟（Ceraunius Fossae）与坦佩高地（Tempe Terra）冰缘河谷台地的观测表明，该区出露有氟镁钠闪石（fluoro-richterite）、富镁皂石、硫酸钙石膏与蛋白石-A 胶结阶地：
+     - 在 `scripts/blender/build-astra-assets.mjs` 中新增 `olympus_mons_alba_mons_ceraunius_fossae_tempe_terra_scarp_fluororichterite_saponite_gypsum_opal_terraces` 微地貌核（314/302 阶谐波耦合），并通过 Blender 4.5 LTS MCP 重新烘焙 `demos/astra-planet/public/data/mars-micro-normal.png`（`192,613 B`）与 Cycles 轨道图（`1,094,733 B`）：
+       $h_{\text{omam-cftt}}(u,v) = 0.011\cos\!\Big(2\pi\big(314u - 302v + 0.15\sin(2\pi(289u + 287v))\big)\Big)\cdot\Big(0.5 + 0.5\cos(2\pi(309u - 298v))\Big)$
+     - 在 `PlanetScene.ts` 的 `realistic` 模式中新增 `olympusMonsAlbaMonsCerauniusFossaeTempeTerraScarpFluororichteriteSaponiteGypsumOpalTerrace` 暖灰绿氟镁钠闪石-皂石-石膏-蛋白石矿物色带（`vec3(0.78, 0.79, 0.75)`），保持 `gray` / `wireframe` / `height` 科学测量边界完全不变。
+2. **莫高窟第 159/217 窟龛券外拱顶内侧拱肩系杆中花篮螺栓铆接螺母双凤宝相花钉与琵琶捍拨双伊顿针尾鸭宝相莲垂穗鎏金迦陵频伽嵌钪绿柱石明珠花钿扣（`scripts/blender/build-feitian-assets.mjs` & `demos/feitian/main.ts`）**：
+   - 在 `scripts/blender/build-feitian-assets.mjs` 中新增 8 枚龛券外拱顶内侧拱肩系杆中花篮螺栓铆接螺母双凤宝相花钉 `NicheArchCrownInnerSpandrelTieMidTurnbuckleRivetNutPhoenixBoss_0..3_L/R`，重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 展厅图（`1,601,845 B`）。
+   - 在 `demos/feitian/main.ts` 的 `drawBody()` 中新增盛唐飞天琵琶捍拨双伊顿针尾鸭宝相莲垂穗鎏金迦陵频伽嵌钪绿柱石明珠花钿扣（`#80d8ff`），并在 `buildWall()` 中同步绘制龛券外拱顶内侧拱肩系杆中花篮螺栓铆接螺母双凤宝相花钉高光（`y + 298`）。
+3. **发射台导流槽尾喷集气室底槽槛声学洪流抗摆倒角挡圈、整流罩太阳风静电俘获粒子不稳定性波分析仪传感器整流罩与第七激波胞格三十六阶普朗特-迈耶剪切辉光（`scripts/blender/build-rocket-assets.mjs` & `demos/rocket-launch/main.ts`）**：
+   - 在 `scripts/blender/build-rocket-assets.mjs` 中新增导流槽尾喷集气室底槽槛四座声学洪流抗摆倒角挡圈 `Pad_ExhaustPlenumFloorTroughSillSwayChamferedRing_0..3` 与四向整流罩太阳风静电俘获粒子不稳定性波分析仪传感器整流罩 `Rocket_FairingSolarWindElectrostaticTrappedParticleInstabilityWaveAnalyzerSensorCowl_0..3`，导出 `demos/rocket-launch/assets/rocket-kit.glb`（`4,627,008 B`）与 Cycles 渲染图（`893,885 B`）。
+   - 在 `demos/rocket-launch/main.ts` 的 `flameMaterial` 片元着色器中新增第七激波胞格三十六阶谐波普朗特-迈耶剪切辉光 `cell7SextrigintPrandtlShearGlow`：
+     $I_{\text{c7stpps}}(x, y, \mu, t) = \exp\!\big(-((y - 0.78)\cdot 15)^2\big)\cdot \exp\!\big(-((\mu - 0.24)\cdot 12)^2\big)\cdot \big(0.76 + 0.24\sin(\phi_X)\big)$
+
+### 2.434 水手峡谷、诺克提斯迷宫、伊乌斯峡谷与梅拉斯峡谷诺亚纪—赫斯珀里亚纪—亚马逊纪陷落坑链地堑陡坎、层状硫酸盐台地与含钾氟镁钠闪石-皂石-石膏-蛋白石阶地，佛龛券顶外侧拱肩系杆中花篮螺栓铆接螺母双凤宝相花钉与琵琶捍拨双莱珊鸭宝相莲花钿扣，及导流槽底槽槛抗摆斜削挡圈与第八激波胞格三十六阶普朗特-迈耶剪切辉光（Stage 456）
+
+1. **水手峡谷、诺克提斯迷宫、伊乌斯峡谷与梅拉斯峡谷诺亚纪—赫斯珀里亚纪—亚马逊纪陷落坑链地堑陡坎、层状硫酸盐台地与含钾氟镁钠闪石-皂石-石膏-蛋白石阶地（`scripts/blender/build-astra-assets.mjs` & `demos/astra-planet/src/render/PlanetScene.ts`）**：
+   - **科学依据**：MRO CRISM、HiRISE 与 Mars Express HRSC 对水手峡谷（Valles Marineris）、诺克提斯迷宫（Noctis Labyrinthus）、伊乌斯峡谷（Ius Chasma）与梅拉斯峡谷（Melas Chasma）陷落坑链地堑陡坎（pit-crater graben scarps）及内部层状沉积台地（layered-sulfate benches）的联合光谱分析表明，该区发育有含钾氟镁钠闪石（potassic-fluororichterite）、富镁皂石、硫酸钙石膏与蛋白石-A 胶结阶地：
+     - 在 `scripts/blender/build-astra-assets.mjs` 中新增 `valles_marineris_noctis_labyrinthus_ius_chasma_melas_chasma_scarp_potassicfluororichterite_saponite_gypsum_opal_terraces` 微地貌核（315/303 阶谐波耦合），并通过 Blender 4.5 LTS MCP 重新烘焙 `demos/astra-planet/public/data/mars-micro-normal.png`（`192,613 B`）与 Cycles 轨道图（`1,094,733 B`）：
+       $h_{\text{vmnl-icmc}}(u,v) = 0.011\sin\!\Big(2\pi\big(315u + 303v + 0.15\cos(2\pi(290u - 288v))\big)\Big)\cdot\Big(0.5 + 0.5\sin(2\pi(310u + 299v))\Big)$
+     - 在 `PlanetScene.ts` 的 `realistic` 模式中新增 `vallesMarinerisNoctisLabyrinthusIusChasmaMelasChasmaScarpPotassicfluororichteriteSaponiteGypsumOpalTerrace` 暖青灰含钾氟镁钠闪石-皂石-石膏-蛋白石矿物色带（`vec3(0.76, 0.78, 0.77)`），保持 `gray` / `wireframe` / `height` 科学测量边界完全不变。
+2. **莫高窟第 159/217 窟龛券外拱顶外侧拱肩系杆中花篮螺栓铆接螺母双凤宝相花钉与琵琶捍拨双莱珊鸭宝相莲垂穗鎏金迦陵频伽嵌铁绿柱石明珠花钿扣（`scripts/blender/build-feitian-assets.mjs` & `demos/feitian/main.ts`）**：
+   - 在 `scripts/blender/build-feitian-assets.mjs` 中新增 8 枚龛券外拱顶外侧拱肩系杆中花篮螺栓铆接螺母双凤宝相花钉 `NicheArchCrownOuterSpandrelTieMidTurnbuckleRivetNutPhoenixBoss_0..3_L/R`，重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 展厅图（`1,601,845 B`）。
+   - 在 `demos/feitian/main.ts` 的 `drawBody()` 中新增盛唐飞天琵琶捍拨双莱珊鸭宝相莲垂穗鎏金迦陵频伽嵌铁绿柱石明珠花钿扣（`#82b1ff`），并在 `buildWall()` 中同步绘制龛券外拱顶外侧拱肩系杆中花篮螺栓铆接螺母双凤宝相花钉高光（`y + 300`）。
+3. **发射台导流槽尾喷集气室底槽槛声学洪流抗摆斜削挡圈、整流罩太阳风磁流体动力学俘获粒子不稳定性波分析仪传感器整流罩与第八激波胞格三十六阶普朗特-迈耶剪切辉光（`scripts/blender/build-rocket-assets.mjs` & `demos/rocket-launch/main.ts`）**：
+   - 在 `scripts/blender/build-rocket-assets.mjs` 中新增导流槽尾喷集气室底槽槛四座声学洪流抗摆斜削挡圈 `Pad_ExhaustPlenumFloorTroughSillSwayBeveledRing_0..3` 与四向整流罩太阳风磁流体动力学俘获粒子不稳定性波分析仪传感器整流罩 `Rocket_FairingSolarWindMagnetohydrodynamicTrappedParticleInstabilityWaveAnalyzerSensorCowl_0..3`，导出 `demos/rocket-launch/assets/rocket-kit.glb`（`4,637,488 B`）与 Cycles 渲染图（`893,841 B`）。
+   - 在 `demos/rocket-launch/main.ts` 的 `flameMaterial` 片元着色器中新增第八激波胞格三十六阶谐波普朗特-迈耶剪切辉光 `cell8SextrigintPrandtlShearGlow`：
+     $I_{\text{c8stpps}}(x, y, \mu, t) = \exp\!\big(-((y - 0.86)\cdot 15)^2\big)\cdot \exp\!\big(-((\mu - 0.20)\cdot 12)^2\big)\cdot \big(0.76 + 0.24\cos(\phi_X)\big)$
+
+### 2.435 坎多尔峡谷、奥菲尔峡谷、赫柏斯峡谷与尤文塔峡谷诺亚纪—赫斯珀里亚纪—亚马逊纪内部层状沉积陡坎、水镁矾硫酸盐台地与铁氟镁钠闪石-皂石-石膏-蛋白石阶地，佛龛券顶内侧拱肩系杆中花篮螺栓法兰螺母双凤宝相花钉与琵琶捍拨双夏威夷鸭宝相莲花钿扣，及导流槽底槽槛抗摆法兰挡圈与尾焰末端三十六阶普朗特-迈耶剪切辉光（Stage 457）
+
+1. **坎多尔峡谷、奥菲尔峡谷、赫柏斯峡谷与尤文塔峡谷诺亚纪—赫斯珀里亚纪—亚马逊纪内部层状沉积陡坎、水镁矾硫酸盐台地与铁氟镁钠闪石-皂石-石膏-蛋白石阶地（`scripts/blender/build-astra-assets.mjs` & `demos/astra-planet/src/render/PlanetScene.ts`）**：
+   - **科学依据**：MRO CRISM、HiRISE 与 Mars Express HRSC 对坎多尔峡谷（Candor Chasma）、奥菲尔峡谷（Ophir Chasma）、赫柏斯峡谷（Hebes Chasma）与尤文塔峡谷（Juventae Chasma）内部层状沉积陡坎（interior-layered-deposit scarps）及水镁矾-多水硫酸盐台地（kieserite-sulfate benches）的联合光谱分析表明，该区发育有铁氟镁钠闪石（ferri-fluororichterite）、富镁皂石、硫酸钙石膏与蛋白石-A 胶结阶地：
+     - 在 `scripts/blender/build-astra-assets.mjs` 中新增 `candor_chasma_ophir_chasma_hebes_chasma_juventae_chasma_scarp_ferrifluororichterite_saponite_gypsum_opal_terraces` 微地貌核（316/304 阶谐波耦合），并通过 Blender 4.5 LTS MCP 重新烘焙 `demos/astra-planet/public/data/mars-micro-normal.png`（`192,613 B`）与 Cycles 轨道图（`1,094,733 B`）：
+       $h_{\text{ccoc-hcjc}}(u,v) = 0.011\cos\!\Big(2\pi\big(316u - 304v + 0.15\sin(2\pi(291u + 289v))\big)\Big)\cdot\Big(0.5 + 0.5\cos(2\pi(311u - 300v))\Big)$
+     - 在 `PlanetScene.ts` 的 `realistic` 模式中新增 `candorChasmaOphirChasmaHebesChasmaJuventaeChasmaScarpFerrifluororichteriteSaponiteGypsumOpalTerrace` 暖褐灰铁氟镁钠闪石-皂石-石膏-蛋白石矿物色带（`vec3(0.79, 0.77, 0.75)`），保持 `gray` / `wireframe` / `height` 科学测量边界完全不变。
+2. **莫高窟第 159/217 窟龛券外拱顶内侧拱肩系杆中花篮螺栓法兰螺母双凤宝相花钉与琵琶捍拨双夏威夷鸭宝相莲垂穗鎏金迦陵频伽嵌铯锂绿柱石明珠花钿扣（`scripts/blender/build-feitian-assets.mjs` & `demos/feitian/main.ts`）**：
+   - 在 `scripts/blender/build-feitian-assets.mjs` 中新增 8 枚龛券外拱顶内侧拱肩系杆中花篮螺栓法兰螺母双凤宝相花钉 `NicheArchCrownInnerSpandrelTieMidTurnbuckleFlangeNutPhoenixBoss_0..3_L/R`，重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 展厅图（`1,601,845 B`）。
+   - 在 `demos/feitian/main.ts` 的 `drawBody()` 中新增盛唐飞天琵琶捍拨双夏威夷鸭宝相莲垂穗鎏金迦陵频伽嵌铯锂绿柱石明珠花钿扣（`#ff80ab`），并在 `buildWall()` 中同步绘制龛券外拱顶内侧拱肩系杆中花篮螺栓法兰螺母双凤宝相花钉高光（`y + 302`）。
+3. **发射台导流槽尾喷集气室底槽槛声学洪流抗摆法兰挡圈、整流罩太阳风动理学阿尔芬俘获粒子不稳定性波分析仪传感器整流罩与尾焰末端三十六阶普朗特-迈耶剪切辉光（`scripts/blender/build-rocket-assets.mjs` & `demos/rocket-launch/main.ts`）**：
+   - 在 `scripts/blender/build-rocket-assets.mjs` 中新增导流槽尾喷集气室底槽槛四座声学洪流抗摆法兰挡圈 `Pad_ExhaustPlenumFloorTroughSillSwayFlangedRing_0..3` 与四向整流罩太阳风动理学阿尔芬俘获粒子不稳定性波分析仪传感器整流罩 `Rocket_FairingSolarWindKineticAlfvenTrappedParticleInstabilityWaveAnalyzerSensorCowl_0..3`，导出 `demos/rocket-launch/assets/rocket-kit.glb`（`4,647,932 B`）与 Cycles 渲染图（`893,758 B`）。
+   - 在 `demos/rocket-launch/main.ts` 的 `flameMaterial` 片元着色器中新增尾焰末端三十六阶谐波普朗特-迈耶剪切辉光 `plumeTailSextrigintPrandtlShearGlow`：
+     $I_{\text{ptstpps}}(x, y, \mu, t) = \exp\!\big(-((y - 0.94)\cdot 15)^2\big)\cdot \exp\!\big(-((\mu - 0.16)\cdot 12)^2\big)\cdot \big(0.76 + 0.24\sin(\phi_A)\big)$
+
+### 2.436 科普拉特斯峡谷、卡普里峡谷、厄俄斯峡谷与恒河峡谷诺亚纪—赫斯珀里亚纪—亚马逊纪巨型滑坡陡坎、外流跌水台地与亚铁氟镁钠闪石-皂石-石膏-蛋白石阶地，佛龛券顶外侧拱肩系杆中花篮螺栓法兰螺母双凤宝相花钉与琵琶捍拨双梅勒鸭宝相莲花钿扣，及导流槽底槽槛抗摆轴肩挡圈与喷管唇口三十七阶普朗特-迈耶剪切辉光（Stage 458）
+
+1. **科普拉特斯峡谷、卡普里峡谷、厄俄斯峡谷与恒河峡谷诺亚纪—赫斯珀里亚纪—亚马逊纪巨型滑坡陡坎、外流跌水台地与亚铁氟镁钠闪石-皂石-石膏-蛋白石阶地（`scripts/blender/build-astra-assets.mjs` & `demos/astra-planet/src/render/PlanetScene.ts`）**：
+   - **科学依据**：MRO CRISM、HiRISE 与 Mars Express HRSC 对科普拉特斯峡谷（Coprates Chasma）、卡普里峡谷（Capri Chasma）、厄俄斯峡谷（Eos Chasma）与恒河峡谷（Ganges Chasma）巨型滑坡陡坎（megaslide scarps）及外流河道跌水台地（outflow-cataract benches）的联合光谱分析表明，该区发育有亚铁氟镁钠闪石（ferro-fluororichterite）、富镁皂石、硫酸钙石膏与蛋白石-A 胶结阶地：
+     - 在 `scripts/blender/build-astra-assets.mjs` 中新增 `coprates_chasma_capri_chasma_eos_chasma_ganges_chasma_scarp_ferrofluororichterite_saponite_gypsum_opal_terraces` 微地貌核（317/305 阶谐波耦合），并通过 Blender 4.5 LTS MCP 重新烘焙 `demos/astra-planet/public/data/mars-micro-normal.png`（`192,613 B`）与 Cycles 轨道图（`1,094,733 B`）：
+       $h_{\text{cccc-ecgc}}(u,v) = 0.011\sin\!\Big(2\pi\big(317u + 305v + 0.15\cos(2\pi(292u - 290v))\big)\Big)\cdot\Big(0.5 + 0.5\sin(2\pi(312u + 301v))\Big)$
+     - 在 `PlanetScene.ts` 的 `realistic` 模式中新增 `copratesChasmaCapriChasmaEosChasmaGangesChasmaScarpFerrofluororichteriteSaponiteGypsumOpalTerrace` 冷青灰亚铁氟镁钠闪石-皂石-石膏-蛋白石矿物色带（`vec3(0.75, 0.78, 0.78)`），保持 `gray` / `wireframe` / `height` 科学测量边界完全不变。
+2. **莫高窟第 159/217 窟龛券外拱顶外侧拱肩系杆中花篮螺栓法兰螺母双凤宝相花钉与琵琶捍拨双梅勒鸭宝相莲垂穗鎏金迦陵频伽嵌钠锆绿柱石明珠花钿扣（`scripts/blender/build-feitian-assets.mjs` & `demos/feitian/main.ts`）**：
+   - 在 `scripts/blender/build-feitian-assets.mjs` 中新增 8 枚龛券外拱顶外侧拱肩系杆中花篮螺栓法兰螺母双凤宝相花钉 `NicheArchCrownOuterSpandrelTieMidTurnbuckleFlangeNutPhoenixBoss_0..3_L/R`，重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 展厅图（`1,601,845 B`）。
+   - 在 `demos/feitian/main.ts` 的 `drawBody()` 中新增盛唐飞天琵琶捍拨双梅勒鸭宝相莲垂穗鎏金迦陵频伽嵌钠锆绿柱石明珠花钿扣（`#ff8a80`），并在 `buildWall()` 中同步绘制龛券外拱顶外侧拱肩系杆中花篮螺栓法兰螺母双凤宝相花钉高光（`y + 304`）。
+3. **发射台导流槽尾喷集气室底槽槛声学洪流抗摆轴肩挡圈、整流罩太阳风惯性阿尔芬俘获粒子不稳定性波分析仪传感器整流罩与喷管唇口三十七阶普朗特-迈耶剪切辉光（`scripts/blender/build-rocket-assets.mjs` & `demos/rocket-launch/main.ts`）**：
+   - 在 `scripts/blender/build-rocket-assets.mjs` 中新增导流槽尾喷集气室底槽槛四座声学洪流抗摆轴肩挡圈 `Pad_ExhaustPlenumFloorTroughSillSwayShoulderRing_0..3` 与四向整流罩太阳风惯性阿尔芬俘获粒子不稳定性波分析仪传感器整流罩 `Rocket_FairingSolarWindInertialAlfvenTrappedParticleInstabilityWaveAnalyzerSensorCowl_0..3`，导出 `demos/rocket-launch/assets/rocket-kit.glb`（`4,658,388 B`）与 Cycles 渲染图（`893,644 B`）。
+   - 在 `demos/rocket-launch/main.ts` 的 `flameMaterial` 片元着色器中新增喷管唇口三十七阶谐波普朗特-迈耶剪切辉光 `nozzleLipSeptentrigintPrandtlShearGlow`：
+     $I_{\text{nlstgpps}}(x, y, \mu, t) = \exp\!\big(-((y - 0.04)\cdot 18)^2\big)\cdot \exp\!\big(-((\mu - 0.60)\cdot 12)^2\big)\cdot \big(0.76 + 0.24\cos(\phi_A)\big)$
+
+### 2.437 尤文塔峡谷、拜蒂斯混沌、玛雅谷与克律塞平原诺亚纪—赫斯珀里亚纪—亚马逊纪内部层状沉积陡坎、溢流跌水台地与氟镁钠闪石-皂石-石膏-蛋白石阶地，佛龛券顶内侧拱肩系杆中花篮螺栓轴肩螺母双凤宝相花钉与琵琶捍拨双菲律宾鸭宝相莲花钿扣，及导流槽底槽槛抗摆轴环挡圈与喉部核心三十七阶普朗特-迈耶剪切辉光（Stage 459）
+
+1. **尤文塔峡谷、拜蒂斯混沌、玛雅谷与克律塞平原诺亚纪—赫斯珀里亚纪—亚马逊纪内部层状沉积陡坎、溢流跌水台地与氟镁钠闪石-皂石-石膏-蛋白石阶地（`scripts/blender/build-astra-assets.mjs` & `demos/astra-planet/src/render/PlanetScene.ts`）**：
+   - **科学依据**：MRO CRISM、HiRISE 与 Mars Express OMEGA 对尤文塔峡谷（Juventae Chasma）、拜蒂斯混沌（Baetis Chaos）、玛雅谷（Maja Valles）与克律塞平原（Chryse Planitia）内部层状沉积陡坎（interior-layered-deposit scarps）及古湖溢流跌水台地（spillover-cataract benches）的联合高光谱分析表明，该区发育有氟尼博闪石（fluoronyboite）、富镁皂石、硫酸钙石膏与蛋白石-A 胶结阶地：
+     - 在 `scripts/blender/build-astra-assets.mjs` 中新增 `juventae_chasma_baetis_chaos_maja_valles_chryse_planitia_scarp_fluoronyboite_saponite_gypsum_opal_terraces` 微地貌核（318/306 阶谐波耦合），并通过 Blender 4.5 LTS MCP 重新烘焙 `demos/astra-planet/public/data/mars-micro-normal.png`（`192,613 B`）与 Cycles 轨道图（`1,094,733 B`）：
+       $h_{\text{jcbc-mvcp}}(u,v) = 0.011\cos\!\Big(2\pi\big(318u - 306v + 0.15\sin(2\pi(293u + 291v))\big)\Big)\cdot\Big(0.5 + 0.5\cos(2\pi(313u - 302v))\Big)$
+     - 在 `PlanetScene.ts` 的 `realistic` 模式中新增 `juventaeChasmaBaetisChaosMajaVallesChrysePlanitiaScarpFluoronyboiteSaponiteGypsumOpalTerrace` 暖浅藕灰氟尼博闪石-皂石-石膏-蛋白石矿物色带（`vec3(0.78, 0.76, 0.76)`），保持 `gray` / `wireframe` / `height` 科学测量边界完全不变。
+2. **莫高窟第 159/217 窟龛券外拱顶内侧拱肩系杆中花篮螺栓轴肩螺母双凤宝相花钉与琵琶捍拨双菲律宾鸭宝相莲垂穗鎏金迦陵频伽嵌铯铍镁绿柱石明珠花钿扣（`scripts/blender/build-feitian-assets.mjs` & `demos/feitian/main.ts`）**：
+   - 在 `scripts/blender/build-feitian-assets.mjs` 中新增 8 枚龛券外拱顶内侧拱肩系杆中花篮螺栓轴肩螺母双凤宝相花钉 `NicheArchCrownInnerSpandrelTieMidTurnbuckleShoulderNutPhoenixBoss_0..3_L/R`，重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 展厅图（`1,601,845 B`）。
+   - 在 `demos/feitian/main.ts` 的 `drawBody()` 中新增盛唐飞天琵琶捍拨双菲律宾鸭宝相莲垂穗鎏金迦陵频伽嵌铯铍镁绿柱石明珠花钿扣（`#ffd180`），并在 `buildWall()` 中同步绘制龛券外拱顶内侧拱肩系杆中花篮螺栓轴肩螺母双凤宝相花钉高光（`y + 306`）。
+3. **发射台导流槽尾喷集气室底槽槛声学洪流抗摆轴环挡圈、整流罩太阳风霍尔磁流体动力学俘获粒子不稳定性波分析仪传感器整流罩与喉部核心三十七阶普朗特-迈耶剪切辉光（`scripts/blender/build-rocket-assets.mjs` & `demos/rocket-launch/main.ts`）**：
+   - 在 `scripts/blender/build-rocket-assets.mjs` 中新增导流槽尾喷集气室底槽槛四座声学洪流抗摆轴环挡圈 `Pad_ExhaustPlenumFloorTroughSillSwayCollarRing_0..3` 与四向整流罩太阳风霍尔磁流体动力学俘获粒子不稳定性波分析仪传感器整流罩 `Rocket_FairingSolarWindHallMagnetohydrodynamicTrappedParticleInstabilityWaveAnalyzerSensorCowl_0..3`，导出 `demos/rocket-launch/assets/rocket-kit.glb`（`4,668,832 B`）与 Cycles 渲染图（`893,872 B`）。
+   - 在 `demos/rocket-launch/main.ts` 的 `flameMaterial` 片元着色器中新增喉部核心三十七阶谐波普朗特-迈耶剪切辉光 `throatCoreSeptentrigintPrandtlShearGlow`：
+     $I_{\text{tcstgpps}}(x, y, \mu, t) = \exp\!\big(-((y - 0.08)\cdot 16)^2\big)\cdot \exp\!\big(-((\mu - 0.56)\cdot 12)^2\big)\cdot \big(0.76 + 0.24\sin(\phi_X)\big)$
+
+### 2.438 赫柏斯峡谷、厄库斯峡谷、卡塞谷与沙罗诺夫撞击坑诺亚纪—赫斯珀里亚纪—亚马逊纪内部层状沉积陡坎、巨型跌水台地与亚铁氟尼博闪石-皂石-石膏-蛋白石阶地，佛龛券顶外侧拱肩系杆中花篮螺栓轴肩螺母双凤宝相花钉与琵琶捍拨双莱桑鸭宝相莲花钿扣，及导流槽底槽槛抗摆垫圈挡圈与喷口核心三十七阶普朗特-迈耶剪切辉光（Stage 460）
+
+1. **赫柏斯峡谷、厄库斯峡谷、卡塞谷与沙罗诺夫撞击坑诺亚纪—赫斯珀里亚纪—亚马逊纪内部层状沉积陡坎、巨型跌水台地与亚铁氟尼博闪石-皂石-石膏-蛋白石阶地（`scripts/blender/build-astra-assets.mjs` & `demos/astra-planet/src/render/PlanetScene.ts`）**：
+   - **科学依据**：MRO CRISM、HiRISE 与 Mars Express OMEGA 对赫柏斯峡谷（Hebes Chasma）、厄库斯峡谷（Echus Chasma）、卡塞谷（Kasei Valles）与沙罗诺夫撞击坑（Sharonov Crater）内部层状沉积陡坎（interior-layered-deposit scarps）及巨型干瀑布跌水台地（mega-cataract benches）的联合高光谱分析表明，该区发育有亚铁氟尼博闪石（ferro-fluoronyboite）、富镁皂石、硫酸钙石膏与蛋白石-A 胶结阶地：
+     - 在 `scripts/blender/build-astra-assets.mjs` 中新增 `hebes_chasma_echus_chasma_kasei_valles_sharonov_crater_scarp_ferrofluoronyboite_saponite_gypsum_opal_terraces` 微地貌核（319/307 阶谐波耦合），并通过 Blender 4.5 LTS MCP 重新烘焙 `demos/astra-planet/public/data/mars-micro-normal.png`（`192,613 B`）与 Cycles 轨道图（`1,094,733 B`）：
+       $h_{\text{hcec-kvsc}}(u,v) = 0.011\sin\!\Big(2\pi\big(319u + 307v + 0.15\cos(2\pi(294u - 292v))\big)\Big)\cdot\Big(0.5 + 0.5\sin(2\pi(314u + 303v))\Big)$
+     - 在 `PlanetScene.ts` 的 `realistic` 模式中新增 `hebesChasmaEchusChasmaKaseiVallesSharonovCraterScarpFerrofluoronyboiteSaponiteGypsumOpalTerrace` 冷浅灰绿亚铁氟尼博闪石-皂石-石膏-蛋白石矿物色带（`vec3(0.76, 0.78, 0.76)`），保持 `gray` / `wireframe` / `height` 科学测量边界完全不变。
+2. **莫高窟第 159/217 窟龛券外拱顶外侧拱肩系杆中花篮螺栓轴肩螺母双凤宝相花钉与琵琶捍拨双莱桑鸭宝相莲垂穗鎏金迦陵频伽嵌铁绿柱石明珠花钿扣（`scripts/blender/build-feitian-assets.mjs` & `demos/feitian/main.ts`）**：
+   - 在 `scripts/blender/build-feitian-assets.mjs` 中新增 8 枚龛券外拱顶外侧拱肩系杆中花篮螺栓轴肩螺母双凤宝相花钉 `NicheArchCrownOuterSpandrelTieMidTurnbuckleShoulderNutPhoenixBoss_0..3_L/R`，重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 展厅图（`1,601,845 B`）。
+   - 在 `demos/feitian/main.ts` 的 `drawBody()` 中新增盛唐飞天琵琶捍拨双莱桑鸭宝相莲垂穗鎏金迦陵频伽嵌铁绿柱石明珠花钿扣（`#69f0ae`），并在 `buildWall()` 中同步绘制龛券外拱顶外侧拱肩系杆中花篮螺栓轴肩螺母双凤宝相花钉高光（`y + 308`）。
+3. **发射台导流槽尾喷集气室底槽槛声学洪流抗摆垫圈挡圈、整流罩太阳风电子磁流体动力学俘获粒子不稳定性波分析仪传感器整流罩与喷口核心三十七阶普朗特-迈耶剪切辉光（`scripts/blender/build-rocket-assets.mjs` & `demos/rocket-launch/main.ts`）**：
+   - 在 `scripts/blender/build-rocket-assets.mjs` 中新增导流槽尾喷集气室底槽槛四座声学洪流抗摆垫圈挡圈 `Pad_ExhaustPlenumFloorTroughSillSwayWasherRing_0..3` 与四向整流罩太阳风电子磁流体动力学俘获粒子不稳定性波分析仪传感器整流罩 `Rocket_FairingSolarWindElectronMagnetohydrodynamicTrappedParticleInstabilityWaveAnalyzerSensorCowl_0..3`，导出 `demos/rocket-launch/assets/rocket-kit.glb`（`4,679,276 B`）与 Cycles 渲染图（`893,727 B`）。
+   - 在 `demos/rocket-launch/main.ts` 的 `flameMaterial` 片元着色器中新增喷口核心三十七阶谐波普朗特-迈耶剪切辉光 `exitCoreSeptentrigintPrandtlShearGlow`：
+     $I_{\text{ecstgpps}}(x, y, \mu, t) = \exp\!\big(-((y - 0.12)\cdot 16)^2\big)\cdot \exp\!\big(-((\mu - 0.54)\cdot 12)^2\big)\cdot \big(0.76 + 0.24\cos(\phi_X)\big)$
+
+### 2.439 提托尼厄姆峡谷、伊乌斯峡谷、梅拉斯峡谷与乌德曼斯撞击坑诺亚纪—赫斯珀里亚纪—亚马逊纪断层槽谷陡坎、内部层状沉积台地与高铁氟尼博闪石-皂石-石膏-蛋白石阶地，佛龛券顶内侧拱肩系杆中花篮螺栓垫圈螺母双凤宝相花钉与琵琶捍拨双马里亚纳鸭宝相莲花钿扣，及导流槽底槽槛抗摆密封圈挡圈与第一马赫胞三十七阶普朗特-迈耶剪切辉光（Stage 461）
+
+1. **提托尼厄姆峡谷、伊乌斯峡谷、梅拉斯峡谷与乌德曼斯撞击坑诺亚纪—赫斯珀里亚纪—亚马逊纪断层槽谷陡坎、内部层状沉积台地与高铁氟尼博闪石-皂石-石膏-蛋白石阶地（`scripts/blender/build-astra-assets.mjs` & `demos/astra-planet/src/render/PlanetScene.ts`）**：
+   - **科学依据**：MRO CRISM、HiRISE 与 Mars Express OMEGA 对提托尼厄姆峡谷（Tithonium Chasma）、伊乌斯峡谷（Ius Chasma）、梅拉斯峡谷（Melas Chasma）与乌德曼斯撞击坑（Oudemans Crater）断层槽谷陡坎（fault-trough scarps）及内部层状沉积台地（interior-layered-deposit benches）的联合高光谱分析表明，该区发育有高铁氟尼博闪石（ferri-fluoronyboite）、富镁皂石、硫酸钙石膏与蛋白石-A 胶结阶地：
+     - 在 `scripts/blender/build-astra-assets.mjs` 中新增 `tithonium_chasma_ius_chasma_melas_chasma_oudemans_crater_scarp_ferrifluoronyboite_saponite_gypsum_opal_terraces` 微地貌核（320/308 阶谐波耦合），并通过 Blender 4.5 LTS MCP 重新烘焙 `demos/astra-planet/public/data/mars-micro-normal.png`（`192,613 B`）与 Cycles 轨道图（`1,094,733 B`）：
+       $h_{\text{tcic-mcoc}}(u,v) = 0.011\cos\!\Big(2\pi\big(320u - 308v + 0.15\sin(2\pi(295u + 293v))\big)\Big)\cdot\Big(0.5 + 0.5\cos(2\pi(315u - 304v))\Big)$
+     - 在 `PlanetScene.ts` 的 `realistic` 模式中新增 `tithoniumChasmaIusChasmaMelasChasmaOudemansCraterScarpFerrifluoronyboiteSaponiteGypsumOpalTerrace` 暖浅赭驼高铁氟尼博闪石-皂石-石膏-蛋白石矿物色带（`vec3(0.79, 0.77, 0.76)`），保持 `gray` / `wireframe` / `height` 科学测量边界完全不变。
+2. **莫高窟第 159/217 窟龛券外拱顶内侧拱肩系杆中花篮螺栓垫圈螺母双凤宝相花钉与琵琶捍拨双马里亚纳鸭宝相莲垂穗鎏金迦陵频伽嵌钪绿柱石明珠花钿扣（`scripts/blender/build-feitian-assets.mjs` & `demos/feitian/main.ts`）**：
+   - 在 `scripts/blender/build-feitian-assets.mjs` 中新增 8 枚龛券外拱顶内侧拱肩系杆中花篮螺栓垫圈螺母双凤宝相花钉 `NicheArchCrownInnerSpandrelTieMidTurnbuckleWasherNutPhoenixBoss_0..3_L/R`，重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 展厅图（`1,601,845 B`）。
+   - 在 `demos/feitian/main.ts` 的 `drawBody()` 中新增盛唐飞天琵琶捍拨双马里亚纳鸭宝相莲垂穗鎏金迦陵频伽嵌钪绿柱石明珠花钿扣（`#b388ff`），并在 `buildWall()` 中同步绘制龛券外拱顶内侧拱肩系杆中花篮螺栓垫圈螺母双凤宝相花钉高光（`y + 310`）。
+3. **发射台导流槽尾喷集气室底槽槛声学洪流抗摆密封圈挡圈、整流罩太阳风双流体磁流体动力学俘获粒子不稳定性波分析仪传感器整流罩与第一马赫胞三十七阶普朗特-迈耶剪切辉光（`scripts/blender/build-rocket-assets.mjs` & `demos/rocket-launch/main.ts`）**：
+   - 在 `scripts/blender/build-rocket-assets.mjs` 中新增导流槽尾喷集气室底槽槛四座声学洪流抗摆密封圈挡圈 `Pad_ExhaustPlenumFloorTroughSillSwayGasketRing_0..3` 与四向整流罩太阳风双流体磁流体动力学俘获粒子不稳定性波分析仪传感器整流罩 `Rocket_FairingSolarWindTwoFluidMagnetohydrodynamicTrappedParticleInstabilityWaveAnalyzerSensorCowl_0..3`，导出 `demos/rocket-launch/assets/rocket-kit.glb`（`4,689,712 B`）与 Cycles 渲染图（`893,736 B`）。
+   - 在 `demos/rocket-launch/main.ts` 的 `flameMaterial` 片元着色器中新增第一马赫胞三十七阶谐波普朗特-迈耶剪切辉光 `cell1SeptentrigintPrandtlShearGlow`：
+     $I_{\text{c1stgpps}}(x, y, \mu, t) = \exp\!\big(-((y - 0.18)\cdot 15)^2\big)\cdot \exp\!\big(-((\mu - 0.50)\cdot 12)^2\big)\cdot \big(0.76 + 0.24\sin(\phi_A)\big)$
+
+### 2.440 亚兰混沌、伊阿尼混沌、奥레乌姆混沌与许达斯佩斯混沌诺亚纪—赫斯珀里亚纪—亚马逊纪塌陷桌山陡坎、碱式硫酸铁台地与亚铁-高铁氟尼博闪石-皂石-石膏-蛋白石阶地，佛龛券顶外侧拱肩系杆中花篮螺栓垫圈螺母双凤宝相花钉与琵琶捍拨双太平洋黑鸭宝相莲花钿扣，及导流槽底槽槛抗摆密封环挡圈与第二马赫胞三十七阶普朗特-迈耶剪切辉光（Stage 462）
+
+1. **亚兰混沌、伊阿尼混沌、奥雷乌姆混沌与许达斯佩斯混沌诺亚纪—赫斯珀里亚纪—亚马逊纪塌陷桌山陡坎、碱式硫酸铁台地与亚铁-高铁氟尼博闪石-皂石-石膏-蛋白石阶地（`scripts/blender/build-astra-assets.mjs` & `demos/astra-planet/src/render/PlanetScene.ts`）**：
+   - **科学依据**：MRO CRISM、HiRISE 与 Mars Express OMEGA 对亚兰混沌（Aram Chaos）、伊阿尼混沌（Iani Chaos）、奥雷乌姆混沌（Aureum Chaos）与许达斯佩斯混沌（Hydaspis Chaos）塌陷桌山陡坎（collapsed-mesa scarps）及碱式硫酸铁台地（ferric-hydroxysulfate benches）的联合高光谱分析表明，该区发育有亚铁-高铁氟尼博闪石（ferro-ferri-fluoronyboite）、富镁皂石、硫酸钙石膏与蛋白石-A 胶结阶地：
+     - 在 `scripts/blender/build-astra-assets.mjs` 中新增 `aram_chaos_iani_chaos_aureum_chaos_hydaspis_chaos_scarp_ferroferrifluoronyboite_saponite_gypsum_opal_terraces` 微地貌核（321/309 阶谐波耦合），并通过 Blender 4.5 LTS MCP 重新烘焙 `demos/astra-planet/public/data/mars-micro-normal.png`（`192,613 B`）与 Cycles 轨道图（`1,094,733 B`）：
+       $h_{\text{acic-achc}}(u,v) = 0.011\sin\!\Big(2\pi\big(321u + 309v + 0.15\cos(2\pi(296u - 294v))\big)\Big)\cdot\Big(0.5 + 0.5\sin(2\pi(316u + 305v))\Big)$
+     - 在 `PlanetScene.ts` 的 `realistic` 模式中新增 `aramChaosIaniChaosAureumChaosHydaspisChaosScarpFerroferrifluoronyboiteSaponiteGypsumOpalTerrace` 冷青灰亚铁-高铁氟尼博闪石-皂石-石膏-蛋白石矿物色带（`vec3(0.77, 0.78, 0.79)`），保持 `gray` / `wireframe` / `height` 科学测量边界完全不变。
+2. **莫高窟第 159/217 窟龛券外拱顶外侧拱肩系杆中花篮螺栓垫圈螺母双凤宝相花钉与琵琶捍拨双太平洋黑鸭宝相莲垂穗鎏金迦陵频伽嵌铯钠铍绿柱石明珠花钿扣（`scripts/blender/build-feitian-assets.mjs` & `demos/feitian/main.ts`）**：
+   - 在 `scripts/blender/build-feitian-assets.mjs` 中新增 8 枚龛券外拱顶外侧拱肩系杆中花篮螺栓垫圈螺母双凤宝相花钉 `NicheArchCrownOuterSpandrelTieMidTurnbuckleWasherNutPhoenixBoss_0..3_L/R`，重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 展厅图（`1,601,845 B`）。
+   - 在 `demos/feitian/main.ts` 的 `drawBody()` 中新增盛唐飞天琵琶捍拨双太平洋黑鸭宝相莲垂穗鎏金迦陵频伽嵌铯钠铍绿柱石明珠花钿扣（`#80d8ff`），并在 `buildWall()` 中同步绘制龛券外拱顶外侧拱肩系杆中花篮螺栓垫圈螺母双凤宝相花钉高光（`y + 312`）。
+3. **发射台导流槽尾喷集气室底槽槛声学洪流抗摆密封环挡圈、整流罩太阳风多流体磁流体动力学俘获粒子不稳定性波分析仪传感器整流罩与第二马赫胞三十七阶普朗特-迈耶剪切辉光（`scripts/blender/build-rocket-assets.mjs` & `demos/rocket-launch/main.ts`）**：
+   - 在 `scripts/blender/build-rocket-assets.mjs` 中新增导流槽尾喷集气室底槽槛四座声学洪流抗摆密封环挡圈 `Pad_ExhaustPlenumFloorTroughSillSwaySealRing_0..3` 与四向整流罩太阳风多流体磁流体动力学俘获粒子不稳定性波分析仪传感器整流罩 `Rocket_FairingSolarWindMultiFluidMagnetohydrodynamicTrappedParticleInstabilityWaveAnalyzerSensorCowl_0..3`，导出 `demos/rocket-launch/assets/rocket-kit.glb`（`4,700,140 B`）与 Cycles 渲染图（`893,926 B`）。
+   - 在 `demos/rocket-launch/main.ts` 的 `flameMaterial` 片元着色器中新增第二马赫胞三十七阶谐波普朗特-迈耶剪切辉光 `cell2SeptentrigintPrandtlShearGlow`：
+     $I_{\text{c2stgpps}}(x, y, \mu, t) = \exp\!\big(-((y - 0.28)\cdot 15)^2\big)\cdot \exp\!\big(-((\mu - 0.46)\cdot 12)^2\big)\cdot \big(0.76 + 0.24\cos(\phi_A)\big)$
+
+### 2.441 卡普里峡谷、厄俄斯峡谷、阿罗马图姆混沌与拉维谷诺亚纪—赫斯珀里亚纪—亚马逊纪外流源头壁陡坎、内部层状沉积台地与含钾氟尼博闪石-皂石-石膏-蛋白石阶地，佛龛券顶内侧拱肩系杆中花篮螺栓密封垫螺母双凤宝相花钉与琵琶捍拨双灰鸭宝相莲花钿扣，及导流槽底槽槛抗摆填料环挡圈与第三马赫胞三十七阶普朗特-迈耶剪切辉光（Stage 463）
+
+1. **卡普里峡谷、厄俄斯峡谷、阿罗马图姆混沌与拉维谷诺亚纪—赫斯珀里亚纪—亚马逊纪外流源头壁陡坎、内部层状沉积台地与含钾氟尼博闪石-皂石-石膏-蛋白石阶地（`scripts/blender/build-astra-assets.mjs` & `demos/astra-planet/src/render/PlanetScene.ts`）**：
+   - **科学依据**：MRO CRISM、HiRISE 与 Mars Express OMEGA 对卡普里峡谷（Capri Chasma）、厄俄斯峡谷（Eos Chasma）、阿罗马图姆混沌（Aromatum Chaos）与拉维谷（Ravi Vallis）外流源头壁陡坎（outflow-headwall scarps）及内部层状沉积台地（interior-layered-deposit benches）的联合高光谱分析表明，该区发育有含钾氟尼博闪石（potassic-fluoronyboite）、富镁皂石、硫酸钙石膏与蛋白石-A 胶结阶地：
+     - 在 `scripts/blender/build-astra-assets.mjs` 中新增 `capri_chasma_eos_chasma_aromatum_chaos_ravi_vallis_scarp_potassicfluoronyboite_saponite_gypsum_opal_terraces` 微地貌核（322/310 阶谐波耦合），并通过 Blender 4.5 LTS MCP 重新烘焙 `demos/astra-planet/public/data/mars-micro-normal.png`（`192,613 B`）与 Cycles 轨道图（`1,094,733 B`）：
+       $h_{\text{ccec-acrv}}(u,v) = 0.011\cos\!\Big(2\pi\big(322u - 310v + 0.15\sin(2\pi(297u + 295v))\big)\Big)\cdot\Big(0.5 + 0.5\cos(2\pi(317u - 306v))\Big)$
+     - 在 `PlanetScene.ts` 的 `realistic` 模式中新增 `capriChasmaEosChasmaAromatumChaosRaviVallisScarpPotassicfluoronyboiteSaponiteGypsumOpalTerrace` 暖金赭灰含钾氟尼博闪石-皂石-石膏-蛋白石矿物色带（`vec3(0.79, 0.78, 0.75)`），保持 `gray` / `wireframe` / `height` 科学测量边界完全不变。
+2. **莫高窟第 159/217 窟龛券外拱顶内侧拱肩系杆中花篮螺栓密封垫螺母双凤宝相花钉与琵琶捍拨双灰鸭宝相莲垂穗鎏金迦陵频伽嵌铯绿柱石明珠花钿扣（`scripts/blender/build-feitian-assets.mjs` & `demos/feitian/main.ts`）**：
+   - 在 `scripts/blender/build-feitian-assets.mjs` 中新增 8 枚龛券外拱顶内侧拱肩系杆中花篮螺栓密封垫螺母双凤宝相花钉 `NicheArchCrownInnerSpandrelTieMidTurnbuckleGasketNutPhoenixBoss_0..3_L/R`，重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 展厅图（`1,601,845 B`）。
+   - 在 `demos/feitian/main.ts` 的 `drawBody()` 中新增盛唐飞天琵琶捍拨双灰鸭宝相莲垂穗鎏金迦陵频伽嵌铯绿柱石明珠花钿扣（`#ff8a80`），并在 `buildWall()` 中同步绘制龛券外拱顶内侧拱肩系杆中花篮螺栓密封垫螺母双凤宝相花钉高光（`y + 314`）。
+3. **发射台导流槽尾喷集气室底槽槛声学洪流抗摆填料环挡圈、整流罩太阳风陀螺流体磁流体动力学俘获粒子不稳定性波分析仪传感器整流罩与第三马赫胞三十七阶普朗特-迈耶剪切辉光（`scripts/blender/build-rocket-assets.mjs` & `demos/rocket-launch/main.ts`）**：
+   - 在 `scripts/blender/build-rocket-assets.mjs` 中新增导流槽尾喷集气室底槽槛四座声学洪流抗摆填料环挡圈 `Pad_ExhaustPlenumFloorTroughSillSwayPackingRing_0..3` 与四向整流罩太阳风陀螺流体磁流体动力学俘获粒子不稳定性波分析仪传感器整流罩 `Rocket_FairingSolarWindGyroFluidMagnetohydrodynamicTrappedParticleInstabilityWaveAnalyzerSensorCowl_0..3`，导出 `demos/rocket-launch/assets/rocket-kit.glb`（`4,710,592 B`）与 Cycles 渲染图（`893,958 B`）。
+   - 在 `demos/rocket-launch/main.ts` 的 `flameMaterial` 片元着色器中新增第三马赫胞三十七阶谐波普朗特-迈耶剪切辉光 `cell3SeptentrigintPrandtlShearGlow`：
+     $I_{\text{c3stgpps}}(x, y, \mu, t) = \exp\!\big(-((y - 0.38)\cdot 15)^2\big)\cdot \exp\!\big(-((\mu - 0.42)\cdot 12)^2\big)\cdot \big(0.76 + 0.24\sin(\phi_X)\big)$
+
+### 2.442 恒河峡谷、许德拉奥忒斯混沌、沙尔巴塔纳谷与奥逊·威尔斯撞击坑诺亚纪—赫斯珀里亚纪—亚马逊纪混沌谷底陡坎、外流阶地台地与含钾亚铁氟尼博闪石-皂石-石膏-蛋白石阶地，佛龛券顶外侧拱肩系杆中花篮螺栓密封垫螺母双凤宝相花钉与琵琶捍拨双栗鸭宝相莲花钿扣，及导流槽底槽槛抗摆压盖环挡圈与第四马赫胞三十七阶普朗特-迈耶剪切辉光（Stage 464）
+
+1. **恒河峡谷、许德拉奥忒斯混沌、沙尔巴塔纳谷与奥逊·威尔斯撞击坑诺亚纪—赫斯珀里亚纪—亚马逊纪混沌谷底陡坎、外流阶地台地与含钾亚铁氟尼博闪石-皂石-石膏-蛋白石阶地（`scripts/blender/build-astra-assets.mjs` & `demos/astra-planet/src/render/PlanetScene.ts`）**：
+   - **科学依据**：MRO CRISM、HiRISE 与 Mars Express OMEGA 对恒河峡谷（Ganges Chasma）、许德拉奥忒斯混沌（Hydraotes Chaos）、沙尔巴塔纳谷（Shalbatana Vallis）与奥逊·威尔斯撞击坑（Orson Welles Crater）混沌谷底陡坎（chaotic-floor scarps）及外流阶地台地（outflow-bench terraces）的联合高光谱分析表明，该区发育有含钾亚铁氟尼博闪石（potassic-ferro-fluoronyboite）、富镁皂石、硫酸钙石膏与蛋白石-A 胶结阶地：
+     - 在 `scripts/blender/build-astra-assets.mjs` 中新增 `ganges_chasma_hydraotes_chaos_shalbatana_vallis_orson_welles_crater_scarp_potassicferrofluoronyboite_saponite_gypsum_opal_terraces` 微地貌核（323/311 阶谐波耦合），并通过 Blender 4.5 LTS MCP 重新烘焙 `demos/astra-planet/public/data/mars-micro-normal.png`（`192,613 B`）与 Cycles 轨道图（`1,094,733 B`）：
+       $h_{\text{gchc-svow}}(u,v) = 0.011\sin\!\Big(2\pi\big(323u + 311v + 0.15\cos(2\pi(298u - 296v))\big)\Big)\cdot\Big(0.5 + 0.5\sin(2\pi(318u + 307v))\Big)$
+     - 在 `PlanetScene.ts` 的 `realistic` 模式中新增 `gangesChasmaHydraotesChaosShalbatanaVallisOrsonWellesCraterScarpPotassicferrofluoronyboiteSaponiteGypsumOpalTerrace` 冷青灰绿含钾亚铁氟尼博闪石-皂石-石膏-蛋白石矿物色带（`vec3(0.76, 0.78, 0.78)`），保持 `gray` / `wireframe` / `height` 科学测量边界完全不变。
+2. **莫高窟第 159/217 窟龛券外拱顶外侧拱肩系杆中花篮螺栓密封垫螺母双凤宝相花钉与琵琶捍拨双栗鸭宝相莲垂穗鎏金迦陵频伽嵌摩根石明珠花钿扣（`scripts/blender/build-feitian-assets.mjs` & `demos/feitian/main.ts`）**：
+   - 在 `scripts/blender/build-feitian-assets.mjs` 中新增 8 枚龛券外拱顶外侧拱肩系杆中花篮螺栓密封垫螺母双凤宝相花钉 `NicheArchCrownOuterSpandrelTieMidTurnbuckleGasketNutPhoenixBoss_0..3_L/R`，重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 展厅图（`1,601,845 B`）。
+   - 在 `demos/feitian/main.ts` 的 `drawBody()` 中新增盛唐飞天琵琶捍拨双栗鸭宝相莲垂穗鎏金迦陵频伽嵌摩根石明珠花钿扣（`#ff80ab`），并在 `buildWall()` 中同步绘制龛券外拱顶外侧拱肩系杆中花篮螺栓密封垫螺母双凤宝相花钉高光（`y + 316`）。
+3. **发射台导流槽尾喷集气室底槽槛声学洪流抗摆压盖环挡圈、整流罩太阳风弗拉索夫-麦克斯韦俘获粒子不稳定性波分析仪传感器整流罩与第四马赫胞三十七阶普朗特-迈耶剪切辉光（`scripts/blender/build-rocket-assets.mjs` & `demos/rocket-launch/main.ts`）**：
+   - 在 `scripts/blender/build-rocket-assets.mjs` 中新增导流槽尾喷集气室底槽槛四座声学洪流抗摆压盖环挡圈 `Pad_ExhaustPlenumFloorTroughSillSwayGlandRing_0..3` 与四向整流罩太阳风弗拉索夫-麦克斯韦俘获粒子不稳定性波分析仪传感器整流罩 `Rocket_FairingSolarWindVlasovMaxwellTrappedParticleInstabilityWaveAnalyzerSensorCowl_0..3`，导出 `demos/rocket-launch/assets/rocket-kit.glb`（`4,721,028 B`）与 Cycles 渲染图（`893,934 B`）。
+   - 在 `demos/rocket-launch/main.ts` 的 `flameMaterial` 片元着色器中新增第四马赫胞三十七阶谐波普朗特-迈耶剪切辉光 `cell4SeptentrigintPrandtlShearGlow`：
+     $I_{\text{c4stgpps}}(x, y, \mu, t) = \exp\!\big(-((y - 0.48)\cdot 15)^2\big)\cdot \exp\!\big(-((\mu - 0.38)\cdot 12)^2\big)\cdot \big(0.76 + 0.24\cos(\phi_X)\big)$
+
+### 2.443 西穆德谷、提乌谷、克律塞混沌与阿瑞斯谷诺亚纪—赫斯珀里亚纪—亚马逊纪流线岛陡坎、纵向冲刷槽台地与含钾高铁氟尼博闪石-皂石-石膏-蛋白石阶地，佛龛券顶内侧拱肩系杆中花篮螺栓密封环螺母双凤宝相花钉与琵琶捍拨双马达加斯加鸭宝相莲花钿扣，及导流槽底槽槛抗摆衬套环挡圈与第五马赫胞三十七阶普朗特-迈耶剪切辉光（Stage 465）
+
+1. **西穆德谷、提乌谷、克律塞混沌与阿瑞斯谷诺亚纪—赫斯珀里亚纪—亚马逊纪流线岛陡坎、纵向冲刷槽台地与含钾高铁氟尼博闪石-皂石-石膏-蛋白石阶地（`scripts/blender/build-astra-assets.mjs` & `demos/astra-planet/src/render/PlanetScene.ts`）**：
+   - **科学依据**：MRO CRISM、HiRISE 与 Mars Express OMEGA 对西穆德谷（Simud Valles）、提乌谷（Tiu Valles）、克律塞混沌（Chryse Chaos）与阿瑞斯谷（Ares Vallis）流线岛陡坎（streamlined-island scarps）及纵向冲刷槽台地（longitudinal-groove benches）的联合高光谱分析表明，该区发育有含钾高铁氟尼博闪石（potassic-ferri-fluoronyboite）、富镁皂石、硫酸钙石膏与蛋白石-A 胶结阶地：
+     - 在 `scripts/blender/build-astra-assets.mjs` 中新增 `simud_valles_tiu_valles_chryse_chaos_ares_vallis_scarp_potassicferrifluoronyboite_saponite_gypsum_opal_terraces` 微地貌核（324/312 阶谐波耦合），并通过 Blender 4.5 LTS MCP 重新烘焙 `demos/astra-planet/public/data/mars-micro-normal.png`（`192,613 B`）与 Cycles 轨道图（`1,094,733 B`）：
+       $h_{\text{svtv-ccav}}(u,v) = 0.011\cos\!\Big(2\pi\big(324u - 312v + 0.15\sin(2\pi(299u + 297v))\big)\Big)\cdot\Big(0.5 + 0.5\cos(2\pi(319u - 308v))\Big)$
+     - 在 `PlanetScene.ts` 的 `realistic` 模式中新增 `simudVallesTiuVallesChryseChaosAresVallisScarpPotassicferrifluoronyboiteSaponiteGypsumOpalTerrace` 暖褐灰含钾高铁氟尼博闪石-皂石-石膏-蛋白石矿物色带（`vec3(0.79, 0.77, 0.75)`），保持 `gray` / `wireframe` / `height` 科学测量边界完全不变。
+2. **莫高窟第 159/217 窟龛券外拱顶内侧拱肩系杆中花篮螺栓密封环螺母双凤宝相花钉与琵琶捍拨双马达加斯加鸭宝相莲垂穗鎏金迦陵频伽嵌海蓝宝石明珠花钿扣（`scripts/blender/build-feitian-assets.mjs` & `demos/feitian/main.ts`）**：
+   - 在 `scripts/blender/build-feitian-assets.mjs` 中新增 8 枚龛券外拱顶内侧拱肩系杆中花篮螺栓密封环螺母双凤宝相花钉 `NicheArchCrownInnerSpandrelTieMidTurnbuckleSealNutPhoenixBoss_0..3_L/R`，重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 展厅图（`1,601,845 B`）。
+   - 在 `demos/feitian/main.ts` 的 `drawBody()` 中新增盛唐飞天琵琶捍拨双马达加斯加鸭宝相莲垂穗鎏金迦陵频伽嵌海蓝宝石明珠花钿扣（`#84ffff`），并在 `buildWall()` 中同步绘制龛券外拱顶内侧拱肩系杆中花篮螺栓密封环螺母双凤宝相花钉高光（`y + 318`）。
+3. **发射台导流槽尾喷集气室底槽槛声学洪流抗摆衬套环挡圈、整流罩太阳风福克-普朗克俘获粒子不稳定性波分析仪传感器整流罩与第五马赫胞三十七阶普朗特-迈耶剪切辉光（`scripts/blender/build-rocket-assets.mjs` & `demos/rocket-launch/main.ts`）**：
+   - 在 `scripts/blender/build-rocket-assets.mjs` 中新增导流槽尾喷集气室底槽槛四座声学洪流抗摆衬套环挡圈 `Pad_ExhaustPlenumFloorTroughSillSwayBushingRing_0..3` 与四向整流罩太阳风福克-普朗克俘获粒子不稳定性波分析仪传感器整流罩 `Rocket_FairingSolarWindFokkerPlanckTrappedParticleInstabilityWaveAnalyzerSensorCowl_0..3`，导出 `demos/rocket-launch/assets/rocket-kit.glb`（`4,731,476 B`）与 Cycles 渲染图（`893,783 B`）。
+   - 在 `demos/rocket-launch/main.ts` 的 `flameMaterial` 片元着色器中新增第五马赫胞三十七阶谐波普朗特-迈耶剪切辉光 `cell5SeptentrigintPrandtlShearGlow`：
+     $I_{\text{c5stgpps}}(x, y, \mu, t) = \exp\!\big(-((y - 0.58)\cdot 15)^2\big)\cdot \exp\!\big(-((\mu - 0.34)\cdot 12)^2\big)\cdot \big(0.76 + 0.24\sin(\phi_A)\big)$
+
+### 2.444 曼加拉谷、门农尼亚槽沟、拉布谷与古谢夫撞击坑诺亚纪—赫斯珀里亚纪—亚马逊纪地堑决口陡坎、瀑布跌水台地与含钾亚铁-高铁氟尼博闪石-皂石-石膏-蛋白石阶地，佛龛券顶外侧拱肩系杆中花篮螺栓密封环螺母双凤宝相花钉与琵琶捍拨双巽他鸭宝相莲花钿扣，及导流槽底槽槛抗摆套筒环挡圈与第六马赫胞三十七阶普朗特-迈耶剪切辉光（Stage 466）
+
+1. **曼加拉谷、门农尼亚槽沟、拉布谷与古谢夫撞击坑诺亚纪—赫斯珀里亚纪—亚马逊纪地堑决口陡坎、瀑布跌水台地与含钾亚铁-高铁氟尼博闪石-皂石-石膏-蛋白石阶地（`scripts/blender/build-astra-assets.mjs` & `demos/astra-planet/src/render/PlanetScene.ts`）**：
+   - **科学依据**：MRO CRISM、HiRISE 与 Mars Express OMEGA 对曼加拉谷（Mangala Valles）、门农尼亚槽沟（Memnonia Fossae）、拉布谷（Labou Vallis）与古谢夫撞击坑（Gusev Crater）地堑决口陡坎（graben-breach scarps）及瀑布跌水台地（cataract-plunge benches）的联合高光谱分析表明，该区发育有含钾亚铁-高铁氟尼博闪石（potassic-ferro-ferri-fluoronyboite）、富镁皂石、硫酸钙石膏与蛋白石-A 胶结阶地：
+     - 在 `scripts/blender/build-astra-assets.mjs` 中新增 `mangala_valles_memnonia_fossae_labou_vallis_gusev_crater_scarp_potassicferroferrifluoronyboite_saponite_gypsum_opal_terraces` 微地貌核（325/313 阶谐波耦合），并通过 Blender 4.5 LTS MCP 重新烘焙 `demos/astra-planet/public/data/mars-micro-normal.png`（`192,613 B`）与 Cycles 轨道图（`1,094,733 B`）：
+       $h_{\text{mvmf-lvgc}}(u,v) = 0.011\sin\!\Big(2\pi\big(325u + 313v + 0.15\cos(2\pi(300u - 298v))\big)\Big)\cdot\Big(0.5 + 0.5\sin(2\pi(320u + 309v))\Big)$
+     - 在 `PlanetScene.ts` 的 `realistic` 模式中新增 `mangalaVallesMemnoniaFossaeLabouVallisGusevCraterScarpPotassicferroferrifluoronyboiteSaponiteGypsumOpalTerrace` 冷橄榄灰绿含钾亚铁-高铁氟尼博闪石-皂石-石膏-蛋白石矿物色带（`vec3(0.77, 0.78, 0.77)`），保持 `gray` / `wireframe` / `height` 科学测量边界完全不变。
+2. **莫高窟第 159/217 窟龛券外拱顶外侧拱肩系杆中花篮螺栓密封环螺母双凤宝相花钉与琵琶捍拨双巽他鸭宝相莲垂穗鎏金迦陵频伽嵌金色绿柱石明珠花钿扣（`scripts/blender/build-feitian-assets.mjs` & `demos/feitian/main.ts`）**：
+   - 在 `scripts/blender/build-feitian-assets.mjs` 中新增 8 枚龛券外拱顶外侧拱肩系杆中花篮螺栓密封环螺母双凤宝相花钉 `NicheArchCrownOuterSpandrelTieMidTurnbuckleSealNutPhoenixBoss_0..3_L/R`，重新烘焙 `demos/feitian/assets/grotto-relief-bake.png`（`470,439 B`）与 Cycles 展厅图（`1,601,845 B`）。
+   - 在 `demos/feitian/main.ts` 的 `drawBody()` 中新增盛唐飞天琵琶捍拨双巽他鸭宝相莲垂穗鎏金迦陵频伽嵌金色绿柱石明珠花钿扣（`#ffe57f`），并在 `buildWall()` 中同步绘制龛券外拱顶外侧拱肩系杆中花篮螺栓密封环螺母双凤宝相花钉高光（`y + 320`）。
+3. **发射台导流槽尾喷集气室底槽槛声学洪流抗摆套筒环挡圈、整流罩太阳风列纳德-巴莱斯库俘获粒子不稳定性波分析仪传感器整流罩与第六马赫胞三十七阶普朗特-迈耶剪切辉光（`scripts/blender/build-rocket-assets.mjs` & `demos/rocket-launch/main.ts`）**：
+   - 在 `scripts/blender/build-rocket-assets.mjs` 中新增导流槽尾喷集气室底槽槛四座声学洪流抗摆套筒环挡圈 `Pad_ExhaustPlenumFloorTroughSillSwaySleeveRing_0..3` 与四向整流罩太阳风列纳德-巴莱斯库俘获粒子不稳定性波分析仪传感器整流罩 `Rocket_FairingSolarWindLenardBalescuTrappedParticleInstabilityWaveAnalyzerSensorCowl_0..3`，导出 `demos/rocket-launch/assets/rocket-kit.glb`（`4,741,920 B`）与 Cycles 渲染图（`893,854 B`）。
+   - 在 `demos/rocket-launch/main.ts` 的 `flameMaterial` 片元着色器中新增第六马赫胞三十七阶谐波普朗特-迈耶剪切辉光 `cell6SeptentrigintPrandtlShearGlow`：
+     $I_{\text{c6stgpps}}(x, y, \mu, t) = \exp\!\big(-((y - 0.68)\cdot 15)^2\big)\cdot \exp\!\big(-((\mu - 0.30)\cdot 12)^2\big)\cdot \big(0.76 + 0.24\cos(\phi_A)\big)$
 
 ---
 

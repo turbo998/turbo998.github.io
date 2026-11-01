@@ -287,6 +287,102 @@ from agent_infra_sizer import (
     simulate_mnetcp2_mnipramd2_tbthd3_tmga_10a_bspd_mnsiox_self_forming_barrier_and_tgg_faraday_isolator_ald_sil3_sandbox,
     simulate_crco6_cretph2_feipramd2_ythd3_highna_euv_cron_apsm_photomask_and_yig_magnonic_spin_wave_ald_sil3_sandbox,
     simulate_vcl4_vtip_tdeav_bimmp3_vo2_mott_neuromorphic_onn_and_10a_cfet_bismuth_zero_schottky_contact_ald_sil3_sandbox,
+    simulate_rhetcpcod_rhacacco2_cppdallyl_10a_cfet_rhodium_interconnect_and_pd_pfet_contact_ald_sil3_sandbox,
+    simulate_tdmaz_cpzrnme23_temah_1c_dram_har_zaz_hzo_capacitor_and_10a_cfet_ncfet_ald_sil3_sandbox,
+    simulate_re2co10_mto_tdmasn_snhmds2_superconducting_rhenium_qubit_and_highna_euv_snox_dry_resist_ald_sil3_sandbox,
+    simulate_pdmat_tbtdet_btbmdmaw_dipte_10a_cfet_tacn_barrier_and_tao2_wte2_neuromorphic_synapse_ald_sil3_sandbox,
+    simulate_tdmat_temat_cptinme23_sb2te3_10a_cfet_tin_gate_dram_rutile_tio2_and_ipcm_superlattice_ald_sil3_sandbox,
+    simulate_moco6_btbmdmamo_dtbs_dese_10a_cfet_2d_janus_mosse_1000l_nand_mo_wordline_and_mo2n_snspd_ald_sil3_sandbox,
+    simulate_wco6_btbmdmaw_dtbdse_teb_10a_cfet_2d_wse2_pfet_dram_bwl_alpha_w_and_sot_mram_beta_w_ald_sil3_sandbox,
+    simulate_b3n3h6_tdmab_niipramd2_dmaa_10a_cfet_2d_hbn_vdw_dielectric_m0_b2_nial_interconnect_and_quantum_spe_ald_sil3_sandbox,
+    simulate_tesn_tdmasn_ge2h6_tdmasb_direct_bandgap_gesn_swir_laser_high_na_euv_snox_mor_and_gesn_sb_contact_rpcvd_mld_sil3_sandbox,
+    simulate_tmga_tega_tmin_tbas_beta_ga2o3_800v_power_finfet_beol_caac_igzo_2t0c_dram_and_inas_qd_comb_laser_mocvd_peald_sil3_sandbox,
+    simulate_temah_temaz_laiprcp3_tma_wakeup_free_ohzo_300l_3d_fenand_and_4k_cryo_fefet_qubit_mux_peald_sil3_sandbox,
+    simulate_pdmat_taoet5_sripr3cp2_baipr3cp2_tdmat_tmbi_0a_bst_dram_sbt_feram_and_6p4t_cpo_bto_pockels_peald_sil3_sandbox,
+    simulate_nbnme25_tbtden_cp2mg_tma_dtbdse_10a_2d_nbse2_jofet_48ghz_aqfp_nbn_mgo_and_cryo_sfq_peald_sil3_sandbox,
+    simulate_28si2h6_3dmas_hcds_nd3_ph3_28si_spin_qubit_10a_cfet_siocn_spacer_and_6p4t_cpo_deuterated_sin_rpcvd_peald_sil3_sandbox,
+    simulate_moco6_mocl5_montbu2nme22_h2s_dmtese_a10_2d_mos2_cfet_barrierless_mo_m0_bpr_and_6p4t_cpo_mote2_mocvd_peald_sil3_sandbox,
+    simulate_wco6_wcl5_wntbu2nme22_dtbdse_b2h6_a10_2d_wse2_pfet_ffree_alpha_w_1000l_nand_and_beta_w_sot_mram_mocvd_peald_sil3_sandbox,
+    simulate_tmbi_tdmasb_dete_dmse_a10_2d_cfet_semimetallic_bi_sb_quantum_limit_contact_topological_bst_sot_mram_and_3dic_peltier_cooler_mbe_peald_sil3_sandbox,
+    simulate_cuhfacvtms_cudmap2_temaz_dezn_hhfac_a10_3dic_hbm4_ntcu_hybrid_bonding_and_cu_zr_barrier_peald_ale_sil3_sandbox,
+    simulate_priprcp3_smiprcp3_ndiprcp3_niipramd2_a10_mott_nickelate_lif_neuron_and_pr_yso_quantum_memory_peald_sil3_sandbox,
+    simulate_dyiprcp3_tbiprcp3_hoiprcp3_feipramd2_a10_tbfeco_all_optical_switching_and_dy_gbd_magnet_peald_sil3_sandbox,
+    simulate_euiprcp2_ybiprcp3_tmiprcp3_h2s_a10_eus_spin_filter_and_171yb_quantum_transducer_peald_sil3_sandbox,
+    simulate_ceiprcp3_cethd4_gdiprcp3_tdmazr_a10_ce_hzo_ferroelectric_gate_and_ce_gagg_euv_scintillator_peald_sil3_sandbox,
+    simulate_tdmav_voipr3_cretcp2_bbr3_a10_vcrbo2_mott_selector_and_si3n4_vo2_photonic_weight_peald_sil3_sandbox,
+    simulate_rhacac3_irmecpcod_mn2co10_aume2acac_a7_rh_interconnect_mn3ir_sot_and_plasmonic_mzm_peald_sil3_sandbox,
+    simulate_aghfaccod_pdhfac2_ipr2te_tma_a7_pdte2_contact_ag111_plasmonic_and_ag2te_cbram_peald_sil3_sandbox,
+    simulate_ptmecpme3_pthfac2_tdmasn_dese_tma_a5_ptse2_contact_pt_nanowire_and_snse_pcm_peald_sil3_sandbox,
+    simulate_irmecpcod_iracac3_tdmahf_dete_tma_a3_irse2_contact_au_nanorod_and_hfse_pcm_peald_sil3_sandbox,
+    simulate_rhmecpcod_rhacac3_tdmati_dese_tma_a2_rhse2_contact_cu_nanoribbon_and_tise_pcm_peald_sil3_sandbox,
+    simulate_pdmecpcod_pdacac2_temazr_dete_tma_a1_pdse2_contact_ag_nanoridge_and_zrse_pcm_peald_sil3_sandbox,
+    simulate_aumecpcod_auacac3_tdmaal_dmse_tma_a0_ause2_contact_ag_nanograting_and_alse_pcm_peald_sil3_sandbox,
+    simulate_rumecpcod_ruacac3_tdmaga_dese_tma_b1_ruse2_contact_cu_nanomesh_and_gase_pcm_peald_sil3_sandbox,
+    simulate_osmecpcod_osacac3_tdmain_dese_tma_c1_osse2_contact_au_nanomesh_and_inse_pcm_peald_sil3_sandbox,
+    simulate_remecpcod_reacac3_tdmasn_dese_tma_d1_rese2_contact_pt_nanomesh_and_snse_pcm_peald_sil3_sandbox,
+    simulate_irmecpcod_iracac3_tdmage_dese_tma_e1_irse2_contact_pd_nanomesh_and_gese_pcm_peald_sil3_sandbox,
+    simulate_ptmecpcod_ptacac2_tdmasi_dese_tma_f1_ptse2_contact_rh_nanomesh_and_sise_pcm_peald_sil3_sandbox,
+    simulate_aumecpcod_auacac3_tdmazn_dese_tma_g1_ause2_contact_os_nanomesh_and_znse_pcm_peald_sil3_sandbox,
+    simulate_agmecpcod_agacac_tdmacd_dese_tma_h1_agse2_contact_ir_nanomesh_and_cdse_pcm_peald_sil3_sandbox,
+    simulate_cumecpcod_cuacac2_tdmaga_dese_tma_i1_cuse2_contact_pt_nanomesh_and_gase_pcm_peald_sil3_sandbox,
+    simulate_nimecpcod_niacac2_tdmain_dese_tma_j1_nise2_contact_rh_nanomesh_and_inse_pcm_peald_sil3_sandbox,
+    simulate_comecpcod_coacac2_tdmage_dese_tma_k1_cose2_contact_pd_nanomesh_and_gese_pcm_peald_sil3_sandbox,
+    simulate_femecpcod_feacac2_tdmasn_dese_tma_l1_fese2_contact_au_nanomesh_and_snse_pcm_peald_sil3_sandbox,
+    simulate_mnmecpcod_mnacac2_tdmati_dese_tma_m1_mnse2_contact_pt_nanomesh_and_tise_pcm_peald_sil3_sandbox,
+    simulate_crmecpcod_cracac3_temazr_dese_tma_n1_crse2_contact_rh_nanomesh_and_zrse_pcm_peald_sil3_sandbox,
+    simulate_vnmecpcod_vacac3_tdmahf_dese_tma_o1_vse2_contact_pd_nanomesh_and_hfse_pcm_peald_sil3_sandbox,
+    simulate_nbmecpcod_nbacac3_tdmasc_dese_tma_p1_nbse2_contact_ru_nanomesh_and_scse_pcm_peald_sil3_sandbox,
+    simulate_tamecpcod_taacac3_tdmay_dese_tma_q1_tase2_contact_os_nanomesh_and_yse_pcm_peald_sil3_sandbox,
+    simulate_hfmecpcod_hfacac4_tdmalu_dese_tma_r1_hfse2_contact_ir_nanomesh_and_luse_pcm_peald_sil3_sandbox,
+    simulate_zrmecpcod_zracac4_tdmath_dese_tma_s1_zrse2_contact_pt_nanomesh_and_thse_pcm_peald_sil3_sandbox,
+    simulate_ymecpcod_yacac3_tdmace_dese_tma_t1_yse2_contact_au_nanomesh_and_cese_pcm_peald_sil3_sandbox,
+    simulate_lamecpcod_laacac3_tdmapr_dese_tma_u1_lase2_contact_cu_nanomesh_and_prse_pcm_peald_sil3_sandbox,
+    simulate_prmecpcod_pracac3_tdmand_dese_tma_v1_prse2_contact_ni_nanomesh_and_ndse_pcm_peald_sil3_sandbox,
+    simulate_ndmecpcod_ndacac3_tdmasm_dese_tma_w1_ndse2_contact_co_nanomesh_and_smse_pcm_peald_sil3_sandbox,
+    simulate_smmecpcod_smacac3_tdmaeu_dese_tma_x1_smse2_contact_fe_nanomesh_and_euse_pcm_peald_sil3_sandbox,
+    simulate_eumecpcod_euacac3_tdmagd_dese_tma_y1_euse2_contact_ru_nanomesh_and_gdse_pcm_peald_sil3_sandbox,
+    simulate_tbmecpcod_tbacac3_tdmaho_dese_tma_z1_tbse2_contact_os_nanomesh_and_hose_pcm_peald_sil3_sandbox,
+    simulate_ybmecpcod_ybacac3_tdmaer_dese_tma_aa1_ybse2_contact_re_nanomesh_and_erse_pcm_peald_sil3_sandbox,
+    simulate_lumecpcod_luacac3_tdmatm_dese_tma_ab1_luse2_contact_w_nanomesh_and_tmse_pcm_peald_sil3_sandbox,
+    simulate_gdmecpcod_gdacac3_tdmady_dese_tma_ac1_gdse2_contact_ta_nanomesh_and_dyse_pcm_peald_sil3_sandbox,
+    simulate_smmecpcod_smacac3_tdmagd_dese_tma_ad1_smse2_contact_hf_nanomesh_and_gdse_pcm_peald_sil3_sandbox,
+    simulate_ndmecpcod_ndacac3_tdmapr_dese_tma_ae1_ndse2_contact_zr_nanomesh_and_prse_pcm_peald_sil3_sandbox,
+    simulate_eumecpcod_euacac3_tdmatb_dese_tma_af1_euse2_contact_ti_nanomesh_and_tbse_pcm_peald_sil3_sandbox,
+    simulate_tbmecpcod_tbacac3_tdmady_dese_tma_ag1_tbse2_contact_v_nanomesh_and_dyse_pcm_peald_sil3_sandbox,
+    simulate_dymecpcod_dyacac3_tdmaho_dese_tma_ah1_dyse2_contact_cr_nanomesh_and_hose_pcm_peald_sil3_sandbox,
+    simulate_homecpcod_hoacac3_tdmaer_dese_tma_ai1_hose2_contact_mn_nanomesh_and_erse_pcm_peald_sil3_sandbox,
+    simulate_ermecpcod_eracac3_tdmatm_dese_tma_aj1_erse2_contact_fe_nanomesh_and_tmse_pcm_peald_sil3_sandbox,
+    simulate_tmmecpcod_tmacac3_tdmayb_dese_tma_ak1_tmse2_contact_co_nanomesh_and_ybse_pcm_peald_sil3_sandbox,
+    simulate_ybmecpcod_ybacac3_tdmalu_dese_tma_al1_ybse2_contact_ni_nanomesh_and_luse_pcm_peald_sil3_sandbox,
+    simulate_lumecpcod_luacac3_tdmahf_dese_tma_am1_luse2_contact_cu_nanomesh_and_hfse_pcm_peald_sil3_sandbox,
+    simulate_hfmecpcod_hfacac4_tdmata_dese_tma_an1_hfse2_contact_ag_nanomesh_and_tase_pcm_peald_sil3_sandbox,
+    simulate_tamecpcod_taacac5_tdmaw_dese_tma_ao1_tase2_contact_au_nanomesh_and_wse_pcm_peald_sil3_sandbox,
+    simulate_wmecpcod_wacac6_tdmamo_dese_tma_ap1_wse2_contact_pt_nanomesh_and_mose_pcm_peald_sil3_sandbox,
+    simulate_momecpcod_moacac6_tdmare_dese_tma_aq1_mose2_contact_ir_nanomesh_and_rese_pcm_peald_sil3_sandbox,
+    simulate_remecpcod_reacac6_tdmaos_dese_tma_ar1_rese2_contact_ru_nanomesh_and_osse_pcm_peald_sil3_sandbox,
+    simulate_osmecpcod_osacac6_tdmarh_dese_tma_as1_osse2_contact_ir_nanomesh_and_rhse_pcm_peald_sil3_sandbox,
+    simulate_rhmecpcod_rhacac6_tdmair_dese_tma_at1_rhse2_contact_pt_nanomesh_and_irse_pcm_peald_sil3_sandbox,
+    simulate_irmecpcod_iracac6_tdmapt_dese_tma_au1_irse2_contact_au_nanomesh_and_ptse_pcm_peald_sil3_sandbox,
+    simulate_ptmecpcod_ptacac6_tdmaau_dese_tma_av1_ptse2_contact_ag_nanomesh_and_ause_pcm_peald_sil3_sandbox,
+    simulate_aumecpcod_auacac6_tdmaag_dese_tma_aw1_ause2_contact_cu_nanomesh_and_agse_pcm_peald_sil3_sandbox,
+    simulate_agmecpcod_agacac6_tdmacu_dese_tma_ax1_agse2_contact_ni_nanomesh_and_cuse_pcm_peald_sil3_sandbox,
+    simulate_cumecpcod_cuacac6_tdmani_dese_tma_ay1_cuse2_contact_co_nanomesh_and_nise_pcm_peald_sil3_sandbox,
+    simulate_nimecpcod_niacac6_tdmaco_dese_tma_az1_nise2_contact_fe_nanomesh_and_cose_pcm_peald_sil3_sandbox,
+    simulate_comecpcod_coacac6_tdmafe_dese_tma_ba1_cose2_contact_mn_nanomesh_and_fese_pcm_peald_sil3_sandbox,
+    simulate_femecpcod_feacac6_tdmamn_dese_tma_bb1_fese2_contact_cr_nanomesh_and_mnse_pcm_peald_sil3_sandbox,
+    simulate_mnmecpcod_mnacac6_tdmacr_dese_tma_bc1_mnse2_contact_v_nanomesh_and_crse_pcm_peald_sil3_sandbox,
+    simulate_crmecpcod_cracac6_tdmav_dese_tma_bd1_crse2_contact_ti_nanomesh_and_vse_pcm_peald_sil3_sandbox,
+    simulate_vmecpcod_vacac6_tdmati_dese_tma_be1_vse2_contact_zr_nanomesh_and_tise_pcm_peald_sil3_sandbox,
+    simulate_zrmecpcod_zracac6_tdmahf_dese_tma_bf1_zrse2_contact_hf_nanomesh_and_hfse_pcm_peald_sil3_sandbox,
+    simulate_hfmecpcod_hfacac6_tdmata_dese_tma_bg1_hfse2_contact_ta_nanomesh_and_tase_pcm_peald_sil3_sandbox,
+    simulate_tamecpcod_taacac6_tdmaw_dese_tma_bh1_tase2_contact_w_nanomesh_and_wse_pcm_peald_sil3_sandbox,
+    simulate_wmecpcod_wacac6_tdmamo_dese_tma_bi1_wse2_contact_mo_nanomesh_and_mose_pcm_peald_sil3_sandbox,
+    simulate_momecpcod_moacac6_tdmare_dese_tma_bj1_mose2_contact_re_nanomesh_and_rese_pcm_peald_sil3_sandbox,
+    simulate_remecpcod_reacac6_tdmaos_dese_tma_bk1_rese2_contact_os_nanomesh_and_osse_pcm_peald_sil3_sandbox,
+    simulate_osmecpcod_osacac6_tdmarh_dese_tma_bl1_osse2_contact_rh_nanomesh_and_rhse_pcm_peald_sil3_sandbox,
+    simulate_rhmecpcod_rhacac6_tdmair_dese_tma_bm1_rhse2_contact_ir_nanomesh_and_irse_pcm_peald_sil3_sandbox,
+    simulate_irmecpcod_iracac6_tdmapt_dese_tma_bn1_irse2_contact_pt_nanomesh_and_ptse_pcm_peald_sil3_sandbox,
+    simulate_ptmecpcod_ptacac6_tdmaau_dese_tma_bo1_ptse2_contact_au_nanomesh_and_ause_pcm_peald_sil3_sandbox,
     simulate_webrtc_voice_video_media_sandbox,
     simulate_zero_downtime_canary_live_migration,
 )
@@ -375,23 +471,35 @@ class TestAgentInfraSizer(unittest.TestCase):
         import xml.etree.ElementTree as ET
         bundle_dir = Path(__file__).resolve().parent.parent
         svg_files = sorted((bundle_dir / "assets").glob("*.svg"))
+        svg_subdir_files = sorted((bundle_dir / "assets" / "svg").glob("*.svg"))
         self.assertEqual(len(svg_files), 8)
-        for svg in svg_files:
+        self.assertEqual(len(svg_subdir_files), 8)
+        for svg in svg_files + svg_subdir_files:
             ET.fromstring(svg.read_text(encoding="utf-8"))
         for h5_name in ("index.html", "demo.html", "selector.html", "cards.html"):
-            p = bundle_dir / "h5" / h5_name
+            p = bundle_dir / h5_name
             self.assertTrue(p.exists(), f"Missing H5 file {h5_name}")
             self.assertGreater(p.stat().st_size, 20_000)
         for doc_name in (
             "README.md",
+            "README.en.md",
+            "docs/full-monograph-archive.md",
             "workshop-runbook.md",
             "test-report.md",
-            "test-report-cards.html",
+            "test-report.en.md",
+            "cards.html",
             "report.json",
             "evidence.json",
             "review.md",
         ):
             self.assertTrue((bundle_dir / doc_name).exists(), f"Missing {doc_name}")
+        self.assertLess((bundle_dir / "README.md").stat().st_size, 50_000)
+        self.assertLess((bundle_dir / "README.en.md").stat().st_size, 50_000)
+        self.assertFalse((bundle_dir / "README.zh-CN.md").exists())
+        self.assertFalse((bundle_dir / "test-report-cards.html").exists())
+        self.assertFalse((bundle_dir / "h5" / "selector.html").exists())
+        self.assertFalse((bundle_dir / "h5" / "cards.html").exists())
+        self.assertFalse((bundle_dir / "h5" / "benchmark-cards.html").exists())
         for bp_name in (
             "aksclaw-kata-fleet.yaml",
             "e2b-apim-per-host-policy.xml",
@@ -6021,6 +6129,2310 @@ class TestAgentInfraSizer(unittest.TestCase):
         self.assertGreater(raw["uncompensated_vo2_imt_hysteresis_drift_or_cfet_bi_contact_resistance_spike_pct"], 3.0)
         self.assertTrue(gov["vcl4_vtip_tdeav_bimmp3_vo2_mott_neuromorphic_onn_and_10a_cfet_bismuth_zero_schottky_contact_ald_slo_met"])
         self.assertFalse(raw["vcl4_vtip_tdeav_bimmp3_vo2_mott_neuromorphic_onn_and_10a_cfet_bismuth_zero_schottky_contact_ald_slo_met"])
+
+    def test_rhetcpcod_rhacacco2_cppdallyl_10a_cfet_rhodium_interconnect_and_pd_pfet_contact_ald_sil3_sandbox(self) -> None:
+        gov = simulate_rhetcpcod_rhacacco2_cppdallyl_10a_cfet_rhodium_interconnect_and_pd_pfet_contact_ald_sil3_sandbox(
+            rhetcpcod_rhacacco2_cppdallyl_trains=8,
+            governance_mode="pinn_mpc_rhetcpcod_rhacacco2_cppdallyl_10a_cfet_rhodium_interconnect_and_pd_pfet_contact_ald_sil3_edge",
+        )
+        raw = simulate_rhetcpcod_rhacacco2_cppdallyl_10a_cfet_rhodium_interconnect_and_pd_pfet_contact_ald_sil3_sandbox(
+            rhetcpcod_rhacacco2_cppdallyl_trains=8,
+            governance_mode="unmanaged_legacy_cu_tan_dual_damascene_and_pvd_pd_contact",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_rhetcpcod_rhacacco2_cppdallyl_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_rhetcpcod_6n5_rhacacco2_6n5_cppdallyl_6n5_pdhfac2_purity_and_cfet_m0_yield_gain_pct"], 71.2)
+        self.assertEqual(gov["rh_trench_seam_void_and_pd_pfet_schottky_pinning_defect_reduction_pct"], 93.0)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_rhacacco2_co_and_cppdallyl_autocatalytic_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_rhacacco2_co_release_or_cppdallyl_autocatalytic_runaway_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_rhacacco2_co_release_or_cppdallyl_autocatalytic_runaway_pct"], 1.0)
+        self.assertEqual(gov["edge_qcl_tdlas_2015cm1_2084cm1_1528cm1_insitu_4pp_gixrd_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_rh_m0_line_resistance_or_wse2_cnt_pfet_contact_drift_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_rh_m0_line_resistance_or_wse2_cnt_pfet_contact_drift_pct"], 3.0)
+        self.assertTrue(gov["rhetcpcod_rhacacco2_cppdallyl_10a_cfet_rhodium_interconnect_and_pd_pfet_contact_ald_slo_met"])
+        self.assertFalse(raw["rhetcpcod_rhacacco2_cppdallyl_10a_cfet_rhodium_interconnect_and_pd_pfet_contact_ald_slo_met"])
+
+    def test_tdmaz_cpzrnme23_temah_1c_dram_har_zaz_hzo_capacitor_and_10a_cfet_ncfet_ald_sil3_sandbox(self) -> None:
+        gov = simulate_tdmaz_cpzrnme23_temah_1c_dram_har_zaz_hzo_capacitor_and_10a_cfet_ncfet_ald_sil3_sandbox(
+            tdmaz_cpzrnme23_temah_trains=8,
+            governance_mode="pinn_mpc_tdmaz_cpzrnme23_temah_1c_dram_har_zaz_hzo_capacitor_and_10a_cfet_ncfet_ald_sil3_edge",
+        )
+        raw = simulate_tdmaz_cpzrnme23_temah_1c_dram_har_zaz_hzo_capacitor_and_10a_cfet_ncfet_ald_sil3_sandbox(
+            tdmaz_cpzrnme23_temah_trains=8,
+            governance_mode="unmanaged_open_loop_tdmaz_o3_thermal_ald_without_cp_ligand_stabilization",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_tdmaz_cpzrnme23_temah_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_tdmaz_6n5_cpzrnme23_6n5_temah_6n5_tma_purity_and_har85_dram_ncfet_yield_gain_pct"], 71.6)
+        self.assertEqual(gov["har85_zaz_step_coverage_void_and_ncfet_monoclinic_dead_layer_reduction_pct"], 93.4)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_tma_and_alkylamide_amine_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_pyrophoric_tma_ignition_or_alkylamide_thermal_runaway_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_pyrophoric_tma_ignition_or_alkylamide_thermal_runaway_pct"], 1.0)
+        self.assertEqual(gov["edge_qcl_tdlas_2782cm1_2864cm1_1456cm1_insitu_gixrd_pfm_cv_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_dram_zaz_eot_leakage_or_ncfet_subthreshold_swing_drift_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_dram_zaz_eot_leakage_or_ncfet_subthreshold_swing_drift_pct"], 3.0)
+        self.assertTrue(gov["tdmaz_cpzrnme23_temah_1c_dram_har_zaz_hzo_capacitor_and_10a_cfet_ncfet_ald_slo_met"])
+        self.assertFalse(raw["tdmaz_cpzrnme23_temah_1c_dram_har_zaz_hzo_capacitor_and_10a_cfet_ncfet_ald_slo_met"])
+
+    def test_re2co10_mto_tdmasn_snhmds2_superconducting_rhenium_qubit_and_highna_euv_snox_dry_resist_ald_sil3_sandbox(self) -> None:
+        gov = simulate_re2co10_mto_tdmasn_snhmds2_superconducting_rhenium_qubit_and_highna_euv_snox_dry_resist_ald_sil3_sandbox(
+            re2co10_mto_tdmasn_trains=8,
+            governance_mode="pinn_mpc_re2co10_mto_tdmasn_snhmds2_superconducting_rhenium_qubit_and_highna_euv_snox_dry_resist_ald_sil3_edge",
+        )
+        raw = simulate_re2co10_mto_tdmasn_snhmds2_superconducting_rhenium_qubit_and_highna_euv_snox_dry_resist_ald_sil3_sandbox(
+            re2co10_mto_tdmasn_trains=8,
+            governance_mode="unmanaged_open_loop_nb_al_oxide_qubit_and_spin_coated_car_euv_resist",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_re2co10_mto_tdmasn_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_re2co10_6n5_mto_6n5_tdmasn_6n5_snhmds2_purity_and_re_qubit_euv_snox_yield_gain_pct"], 72.0)
+        self.assertEqual(gov["amorphous_oxide_tls_loss_and_euv_8nm_stochastic_bridge_break_defect_reduction_pct"], 93.6)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_carbonyl_co_and_neurotoxic_organotin_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_re2co10_co_desorption_or_neurotoxic_organotin_vapor_exposure_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_re2co10_co_desorption_or_neurotoxic_organotin_vapor_exposure_pct"], 1.0)
+        self.assertEqual(gov["edge_qcl_tdlas_2070cm1_2014cm1_975cm1_insitu_rheed_cryo_q_euv_cd_saxs_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_qubit_tls_qi_degradation_or_euv_snox_lwr_drift_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_qubit_tls_qi_degradation_or_euv_snox_lwr_drift_pct"], 3.0)
+        self.assertTrue(gov["re2co10_mto_tdmasn_snhmds2_superconducting_rhenium_qubit_and_highna_euv_snox_dry_resist_ald_slo_met"])
+        self.assertFalse(raw["re2co10_mto_tdmasn_snhmds2_superconducting_rhenium_qubit_and_highna_euv_snox_dry_resist_ald_slo_met"])
+
+    def test_pdmat_tbtdet_btbmdmaw_dipte_10a_cfet_tacn_barrier_and_tao2_wte2_neuromorphic_synapse_ald_sil3_sandbox(self) -> None:
+        gov = simulate_pdmat_tbtdet_btbmdmaw_dipte_10a_cfet_tacn_barrier_and_tao2_wte2_neuromorphic_synapse_ald_sil3_sandbox(
+            pdmat_tbtdet_btbmdmaw_dipte_trains=8,
+            governance_mode="pinn_mpc_pdmat_tbtdet_btbmdmaw_dipte_10a_cfet_tacn_barrier_and_tao2_wte2_neuromorphic_synapse_ald_sil3_edge",
+        )
+        raw = simulate_pdmat_tbtdet_btbmdmaw_dipte_10a_cfet_tacn_barrier_and_tao2_wte2_neuromorphic_synapse_ald_sil3_sandbox(
+            pdmat_tbtdet_btbmdmaw_dipte_trains=8,
+            governance_mode="unmanaged_open_loop_tacl5_wf6_halide_barrier_and_nonlinear_rram",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_pdmat_tbtdet_wte2_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_pdmat_6n5_tbtdet_6n5_btbmdmaw_6n5_dipte_purity_and_cfet_tacn_wte2_synapse_yield_gain_pct"], 72.3)
+        self.assertEqual(gov["cu_diffusion_barrier_breakdown_and_rram_nonlinearity_te_vacancy_reduction_pct"], 93.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_organotellurium_and_amine_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_toxic_organotellurium_exposure_or_alkylamide_hydrolysis_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_toxic_organotellurium_exposure_or_alkylamide_hydrolysis_pct"], 1.0)
+        self.assertEqual(gov["edge_qcl_tdlas_952cm1_1284cm1_582cm1_insitu_arpes_xps_4pp_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_tacn_cu_migration_or_synapse_weight_drift_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_tacn_cu_migration_or_synapse_weight_drift_pct"], 3.0)
+        self.assertTrue(gov["pdmat_tbtdet_btbmdmaw_dipte_10a_cfet_tacn_barrier_and_tao2_wte2_neuromorphic_synapse_ald_slo_met"])
+        self.assertFalse(raw["pdmat_tbtdet_btbmdmaw_dipte_10a_cfet_tacn_barrier_and_tao2_wte2_neuromorphic_synapse_ald_slo_met"])
+
+    def test_tdmat_temat_cptinme23_sb2te3_10a_cfet_tin_gate_dram_rutile_tio2_and_ipcm_superlattice_ald_sil3_sandbox(self) -> None:
+        gov = simulate_tdmat_temat_cptinme23_sb2te3_10a_cfet_tin_gate_dram_rutile_tio2_and_ipcm_superlattice_ald_sil3_sandbox(
+            tdmat_temat_cptinme23_sb2te3_trains=8,
+            governance_mode="pinn_mpc_tdmat_temat_cptinme23_sb2te3_10a_cfet_tin_gate_dram_rutile_tio2_and_ipcm_superlattice_ald_sil3_edge",
+        )
+        raw = simulate_tdmat_temat_cptinme23_sb2te3_10a_cfet_tin_gate_dram_rutile_tio2_and_ipcm_superlattice_ald_sil3_sandbox(
+            tdmat_temat_cptinme23_sb2te3_trains=8,
+            governance_mode="unmanaged_open_loop_ticl4_halide_tin_and_bulk_gst225_pcm",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_tdmat_temat_ipcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_tdmat_6n5_temat_6n5_cptinme23_6n5_sbnme23_purity_and_cfet_dram_ipcm_yield_gain_pct"], 72.6)
+        self.assertEqual(gov["cfet_wf_drift_dram_tio2_leakage_and_ipcm_reset_energy_reduction_pct"], 94.0)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_stibine_organotellurium_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_toxic_stibine_sbh3_or_organotellurium_hydrolysis_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_toxic_stibine_sbh3_or_organotellurium_hydrolysis_pct"], 1.0)
+        self.assertEqual(gov["edge_qcl_tdlas_948cm1_1262cm1_1024cm1_insitu_rheed_se_b1500a_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_anatase_phase_or_ipcm_resistance_drift_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_anatase_phase_or_ipcm_resistance_drift_pct"], 3.0)
+        self.assertTrue(gov["tdmat_temat_cptinme23_sb2te3_10a_cfet_tin_gate_dram_rutile_tio2_and_ipcm_superlattice_ald_slo_met"])
+        self.assertFalse(raw["tdmat_temat_cptinme23_sb2te3_10a_cfet_tin_gate_dram_rutile_tio2_and_ipcm_superlattice_ald_slo_met"])
+
+    def test_moco6_btbmdmamo_dtbs_dese_10a_cfet_2d_janus_mosse_1000l_nand_mo_wordline_and_mo2n_snspd_ald_sil3_sandbox(self) -> None:
+        gov = simulate_moco6_btbmdmamo_dtbs_dese_10a_cfet_2d_janus_mosse_1000l_nand_mo_wordline_and_mo2n_snspd_ald_sil3_sandbox(
+            moco6_btbmdmamo_dtbs_dese_trains=8,
+            governance_mode="pinn_mpc_moco6_btbmdmamo_dtbs_dese_10a_cfet_2d_janus_mosse_1000l_nand_mo_wordline_and_mo2n_snspd_ald_sil3_edge",
+        )
+        raw = simulate_moco6_btbmdmamo_dtbs_dese_10a_cfet_2d_janus_mosse_1000l_nand_mo_wordline_and_mo2n_snspd_ald_sil3_sandbox(
+            moco6_btbmdmamo_dtbs_dese_trains=8,
+            governance_mode="unmanaged_open_loop_mof6_wf6_fluorine_attack_and_defective_cvd_mos2",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_moco6_btbmdmamo_janus_snspd_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_moco6_6n5_btbmdmamo_6n5_dtbs_6n5_dese_purity_and_cfet_nand_snspd_yield_gain_pct"], 73.2)
+        self.assertEqual(gov["cfet_vacancy_scattering_nand_fluorine_attack_and_snspd_jitter_reduction_pct"], 94.5)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_h2se_co_carbonyl_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_toxic_h2se_or_carbon_monoxide_carbonyl_leak_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_toxic_h2se_or_carbon_monoxide_carbonyl_leak_pct"], 1.0)
+        self.assertEqual(gov["edge_qcl_tdlas_2004cm1_952cm1_1168cm1_2192cm1_insitu_raman_pl_gixrd_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_2d_chalcogen_vacancy_or_nand_wordline_void_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_2d_chalcogen_vacancy_or_nand_wordline_void_pct"], 3.0)
+        self.assertTrue(gov["moco6_btbmdmamo_dtbs_dese_10a_cfet_2d_janus_mosse_1000l_nand_mo_wordline_and_mo2n_snspd_ald_slo_met"])
+        self.assertFalse(raw["moco6_btbmdmamo_dtbs_dese_10a_cfet_2d_janus_mosse_1000l_nand_mo_wordline_and_mo2n_snspd_ald_slo_met"])
+
+    def test_wco6_btbmdmaw_dtbdse_teb_10a_cfet_2d_wse2_pfet_dram_bwl_alpha_w_and_sot_mram_beta_w_ald_sil3_sandbox(self) -> None:
+        gov = simulate_wco6_btbmdmaw_dtbdse_teb_10a_cfet_2d_wse2_pfet_dram_bwl_alpha_w_and_sot_mram_beta_w_ald_sil3_sandbox(
+            wco6_btbmdmaw_dtbdse_teb_trains=8,
+            governance_mode="pinn_mpc_wco6_btbmdmaw_dtbdse_teb_10a_cfet_2d_wse2_pfet_dram_bwl_alpha_w_and_sot_mram_beta_w_ald_sil3_edge",
+        )
+        raw = simulate_wco6_btbmdmaw_dtbdse_teb_10a_cfet_2d_wse2_pfet_dram_bwl_alpha_w_and_sot_mram_beta_w_ald_sil3_sandbox(
+            wco6_btbmdmaw_dtbdse_teb_trains=8,
+            governance_mode="unmanaged_open_loop_wf6_fluorine_attack_and_defective_wse2_channel",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_wco6_btbmdmaw_wse2_bwl_sot_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_wco6_6n5_btbmdmaw_6n5_dtbdse_6n5_teb_purity_and_cfet_dram_sot_yield_gain_pct"], 73.6)
+        self.assertEqual(gov["wse2_vacancy_dram_wf6_fluorine_attack_and_sot_switching_energy_reduction_pct"], 94.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_h2se_pyrophoric_teb_co_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_toxic_h2se_pyrophoric_teb_or_tungsten_carbonyl_leak_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_toxic_h2se_pyrophoric_teb_or_tungsten_carbonyl_leak_pct"], 1.0)
+        self.assertEqual(gov["edge_qcl_tdlas_1998cm1_956cm1_1154cm1_2192cm1_insitu_raman_gixrd_moke_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_wse2_grain_boundary_or_dram_bwl_high_resistivity_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_wse2_grain_boundary_or_dram_bwl_high_resistivity_pct"], 3.0)
+        self.assertTrue(gov["wco6_btbmdmaw_dtbdse_teb_10a_cfet_2d_wse2_pfet_dram_bwl_alpha_w_and_sot_mram_beta_w_ald_slo_met"])
+        self.assertFalse(raw["wco6_btbmdmaw_dtbdse_teb_10a_cfet_2d_wse2_pfet_dram_bwl_alpha_w_and_sot_mram_beta_w_ald_slo_met"])
+
+    def test_b3n3h6_tdmab_niipramd2_dmaa_10a_cfet_2d_hbn_vdw_dielectric_m0_b2_nial_interconnect_and_quantum_spe_ald_sil3_sandbox(self) -> None:
+        gov = simulate_b3n3h6_tdmab_niipramd2_dmaa_10a_cfet_2d_hbn_vdw_dielectric_m0_b2_nial_interconnect_and_quantum_spe_ald_sil3_sandbox(
+            b3n3h6_tdmab_niipramd2_dmaa_trains=8,
+            governance_mode="pinn_mpc_b3n3h6_tdmab_niipramd2_dmaa_10a_cfet_2d_hbn_vdw_dielectric_m0_b2_nial_interconnect_and_quantum_spe_ald_sil3_edge",
+        )
+        raw = simulate_b3n3h6_tdmab_niipramd2_dmaa_10a_cfet_2d_hbn_vdw_dielectric_m0_b2_nial_interconnect_and_quantum_spe_ald_sil3_sandbox(
+            b3n3h6_tdmab_niipramd2_dmaa_trains=8,
+            governance_mode="unmanaged_open_loop_bcl3_nh4cl_particulate_and_disordered_nial",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_b3n3h6_tdmab_hbn_nial_spe_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_b3n3h6_6n5_tdmab_6n5_niipramd2_6n5_dmaa_purity_and_cfet_hbn_nial_spe_yield_gain_pct"], 74.0)
+        self.assertEqual(gov["hbn_interface_trap_m0_nial_antisite_scattering_and_spe_spectral_diffusion_reduction_pct"], 95.0)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_borazine_diborane_alane_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_borazine_diborane_hydrolysis_or_pyrophoric_alane_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_borazine_diborane_hydrolysis_or_pyrophoric_alane_ignition_pct"], 1.0)
+        self.assertEqual(gov["edge_qcl_tdlas_1465cm1_2518cm1_1885cm1_insitu_ellipsometry_4pp_hbt_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_amorphous_bn_defect_or_off_stoichiometric_nial_resistivity_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_amorphous_bn_defect_or_off_stoichiometric_nial_resistivity_pct"], 3.0)
+        self.assertTrue(gov["b3n3h6_tdmab_niipramd2_dmaa_10a_cfet_2d_hbn_vdw_dielectric_m0_b2_nial_interconnect_and_quantum_spe_ald_slo_met"])
+        self.assertFalse(raw["b3n3h6_tdmab_niipramd2_dmaa_10a_cfet_2d_hbn_vdw_dielectric_m0_b2_nial_interconnect_and_quantum_spe_ald_slo_met"])
+
+    def test_tesn_tdmasn_ge2h6_tdmasb_direct_bandgap_gesn_swir_laser_high_na_euv_snox_mor_and_gesn_sb_contact_rpcvd_mld_sil3_sandbox(self) -> None:
+        gov = simulate_tesn_tdmasn_ge2h6_tdmasb_direct_bandgap_gesn_swir_laser_high_na_euv_snox_mor_and_gesn_sb_contact_rpcvd_mld_sil3_sandbox(
+            tesn_tdmasn_ge2h6_tdmasb_trains=8,
+            governance_mode="pinn_mpc_tesn_tdmasn_ge2h6_tdmasb_direct_bandgap_gesn_swir_laser_high_na_euv_snox_mor_and_gesn_sb_contact_rpcvd_mld_sil3_edge",
+        )
+        raw = simulate_tesn_tdmasn_ge2h6_tdmasb_direct_bandgap_gesn_swir_laser_high_na_euv_snox_mor_and_gesn_sb_contact_rpcvd_mld_sil3_sandbox(
+            tesn_tdmasn_ge2h6_tdmasb_trains=8,
+            governance_mode="unmanaged_open_loop_sncl4_hcl_etch_beta_sn_segregation_and_euv_bridge",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_tesn_tdmasn_gesn_laser_euv_mor_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_tesn_6n5_tdmasn_6n5_ge2h6_6n5_tdmasb_purity_and_gesn_laser_euv_mor_yield_gain_pct"], 74.4)
+        self.assertEqual(gov["beta_sn_segregation_euv_stochastic_bridge_and_gesn_schottky_barrier_reduction_pct"], 95.2)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_germane_organotin_stibine_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_pyrophoric_germane_stibine_or_neurotoxic_organotin_leak_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_pyrophoric_germane_stibine_or_neurotoxic_organotin_leak_pct"], 1.0)
+        self.assertEqual(gov["edge_qcl_tdlas_2110cm1_582cm1_1894cm1_insitu_hrxrd_rheed_euv_scatterometry_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_sn_droplet_precipitation_or_euv_mor_line_collapse_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_sn_droplet_precipitation_or_euv_mor_line_collapse_pct"], 3.0)
+        self.assertTrue(gov["tesn_tdmasn_ge2h6_tdmasb_direct_bandgap_gesn_swir_laser_high_na_euv_snox_mor_and_gesn_sb_contact_rpcvd_mld_slo_met"])
+        self.assertFalse(raw["tesn_tdmasn_ge2h6_tdmasb_direct_bandgap_gesn_swir_laser_high_na_euv_snox_mor_and_gesn_sb_contact_rpcvd_mld_slo_met"])
+
+    def test_tmga_tega_tmin_tbas_beta_ga2o3_800v_power_finfet_beol_caac_igzo_2t0c_dram_and_inas_qd_comb_laser_mocvd_peald_sil3_sandbox(self) -> None:
+        gov = simulate_tmga_tega_tmin_tbas_beta_ga2o3_800v_power_finfet_beol_caac_igzo_2t0c_dram_and_inas_qd_comb_laser_mocvd_peald_sil3_sandbox(
+            tmga_tega_tmin_tbas_trains=8,
+            governance_mode="pinn_mpc_tmga_tega_tmin_tbas_beta_ga2o3_800v_power_finfet_beol_caac_igzo_2t0c_dram_and_inas_qd_comb_laser_mocvd_peald_sil3_edge",
+        )
+        raw = simulate_tmga_tega_tmin_tbas_beta_ga2o3_800v_power_finfet_beol_caac_igzo_2t0c_dram_and_inas_qd_comb_laser_mocvd_peald_sil3_sandbox(
+            tmga_tega_tmin_tbas_trains=8,
+            governance_mode="unmanaged_open_loop_ash3_cylinder_tmin_channeling_and_igzo_oxygen_vacancy_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_tmga_tega_tmin_ga2o3_igzo_qdl_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_tmga_6n5_tega_6n5_tmin_6n5_tbas_purity_and_ga2o3_igzo_qdl_yield_gain_pct"], 74.8)
+        self.assertEqual(gov["ga2o3_carbon_compensation_igzo_vo_drift_and_qd_threading_dislocation_reduction_pct"], 95.4)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101018_sil3_arsine_tbas_pyrophoric_organometallic_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_pyrophoric_tmga_tmin_or_hemolytic_arsine_tbas_leak_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_pyrophoric_tmga_tmin_or_hemolytic_arsine_tbas_leak_pct"], 1.0)
+        self.assertEqual(gov["edge_qcl_tdlas_592cm1_2118cm1_746cm1_insitu_epirtt_hrxrd_comb_osa_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_tmin_sublimation_drift_or_2t0c_dram_retention_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_tmin_sublimation_drift_or_2t0c_dram_retention_failure_pct"], 3.0)
+        self.assertTrue(gov["tmga_tega_tmin_tbas_beta_ga2o3_800v_power_finfet_beol_caac_igzo_2t0c_dram_and_inas_qd_comb_laser_mocvd_peald_slo_met"])
+        self.assertFalse(raw["tmga_tega_tmin_tbas_beta_ga2o3_800v_power_finfet_beol_caac_igzo_2t0c_dram_and_inas_qd_comb_laser_mocvd_peald_slo_met"])
+
+    def test_temah_temaz_laiprcp3_tma_wakeup_free_ohzo_300l_3d_fenand_and_4k_cryo_fefet_qubit_mux_peald_sil3_sandbox(self) -> None:
+        gov = simulate_temah_temaz_laiprcp3_tma_wakeup_free_ohzo_300l_3d_fenand_and_4k_cryo_fefet_qubit_mux_peald_sil3_sandbox(
+            temah_temaz_laiprcp3_tma_trains=8,
+            governance_mode="pinn_mpc_temah_temaz_laiprcp3_tma_wakeup_free_ohzo_300l_3d_fenand_and_4k_cryo_fefet_qubit_mux_peald_sil3_edge",
+        )
+        raw = simulate_temah_temaz_laiprcp3_tma_wakeup_free_ohzo_300l_3d_fenand_and_4k_cryo_fefet_qubit_mux_peald_sil3_sandbox(
+            temah_temaz_laiprcp3_tma_trains=8,
+            governance_mode="unmanaged_open_loop_monoclinic_m_phase_wakeup_fatigue_and_4k_freezeout",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_temah_temaz_ohzo_fenand_cryofefet_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_temah_6n5_temaz_6n5_laiprcp3_6n5_tma_purity_and_ohzo_fenand_cryofefet_yield_gain_pct"], 75.2)
+        self.assertEqual(gov["monoclinic_dead_layer_wakeup_fatigue_and_cryo_4k_freezeout_reduction_pct"], 95.6)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_tma_alkylamide_hcl_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_pyrophoric_tma_ignition_or_corrosive_hcl_alkylamine_leak_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_pyrophoric_tma_ignition_or_corrosive_hcl_alkylamine_leak_pct"], 1.0)
+        self.assertEqual(gov["edge_qcl_tdlas_962cm1_1218cm1_2886cm1_insitu_gixrd_pund_shg_4k_cryo_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_monoclinic_phase_or_3d_fenand_memory_window_collapse_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_monoclinic_phase_or_3d_fenand_memory_window_collapse_pct"], 3.0)
+        self.assertTrue(gov["temah_temaz_laiprcp3_tma_wakeup_free_ohzo_300l_3d_fenand_and_4k_cryo_fefet_qubit_mux_peald_slo_met"])
+        self.assertFalse(raw["temah_temaz_laiprcp3_tma_wakeup_free_ohzo_300l_3d_fenand_and_4k_cryo_fefet_qubit_mux_peald_slo_met"])
+
+    def test_pdmat_taoet5_sripr3cp2_baipr3cp2_tdmat_tmbi_0a_bst_dram_sbt_feram_and_6p4t_cpo_bto_pockels_peald_sil3_sandbox(self) -> None:
+        gov = simulate_pdmat_taoet5_sripr3cp2_baipr3cp2_tdmat_tmbi_0a_bst_dram_sbt_feram_and_6p4t_cpo_bto_pockels_peald_sil3_sandbox(
+            pdmat_srba_tdmat_tmbi_trains=8,
+            governance_mode="pinn_mpc_pdmat_taoet5_sripr3cp2_baipr3cp2_tdmat_tmbi_0a_bst_dram_sbt_feram_and_6p4t_cpo_bto_pockels_peald_sil3_edge",
+        )
+        raw = simulate_pdmat_taoet5_sripr3cp2_baipr3cp2_tdmat_tmbi_0a_bst_dram_sbt_feram_and_6p4t_cpo_bto_pockels_peald_sil3_sandbox(
+            pdmat_srba_tdmat_tmbi_trains=8,
+            governance_mode="unmanaged_open_loop_baco3_parasitic_dead_layer_pyrochlore_and_bto_c_axis_depoling",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_pdmat_srba_bst_sbt_bto_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_pdmat_6n5_srba_6n5_tdmat_6n5_tmbi_purity_and_bst_sbt_bto_yield_gain_pct"], 75.6)
+        self.assertEqual(gov["perovskite_carbonate_pyrochlore_and_bto_90deg_domain_wall_loss_reduction_pct"], 95.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_tmbi_barium_oxide_amine_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_pyrophoric_tmbi_ignition_or_toxic_barium_bismuth_amine_leak_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_pyrophoric_tmbi_ignition_or_toxic_barium_bismuth_amine_leak_pct"], 1.0)
+        self.assertEqual(gov["edge_qcl_tdlas_948cm1_1435cm1_585cm1_insitu_rheed_se_shg_4k_s21_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_baco3_dead_layer_or_bto_c_axis_depoling_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_baco3_dead_layer_or_bto_c_axis_depoling_failure_pct"], 3.0)
+        self.assertTrue(gov["pdmat_taoet5_sripr3cp2_baipr3cp2_tdmat_tmbi_0a_bst_dram_sbt_feram_and_6p4t_cpo_bto_pockels_peald_slo_met"])
+        self.assertFalse(raw["pdmat_taoet5_sripr3cp2_baipr3cp2_tdmat_tmbi_0a_bst_dram_sbt_feram_and_6p4t_cpo_bto_pockels_peald_slo_met"])
+
+    def test_nbnme25_tbtden_cp2mg_tma_dtbdse_10a_2d_nbse2_jofet_48ghz_aqfp_nbn_mgo_and_cryo_sfq_peald_sil3_sandbox(self) -> None:
+        gov = simulate_nbnme25_tbtden_cp2mg_tma_dtbdse_10a_2d_nbse2_jofet_48ghz_aqfp_nbn_mgo_and_cryo_sfq_peald_sil3_sandbox(
+            nbnme25_cp2mg_tma_dtbdse_trains=8,
+            governance_mode="pinn_mpc_nbnme25_tbtden_cp2mg_tma_dtbdse_10a_2d_nbse2_jofet_48ghz_aqfp_nbn_mgo_and_cryo_sfq_peald_sil3_edge",
+        )
+        raw = simulate_nbnme25_tbtden_cp2mg_tma_dtbdse_10a_2d_nbse2_jofet_48ghz_aqfp_nbn_mgo_and_cryo_sfq_peald_sil3_sandbox(
+            nbnme25_cp2mg_tma_dtbdse_trains=8,
+            governance_mode="unmanaged_open_loop_nb2o5_tls_dielectric_loss_mgo_pinhole_and_h2se_vacancy_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_nbnme25_cp2mg_nbse2_jofet_aqfp_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_nbnme25_6n5_cp2mg_6n5_tma_6n5_dtbdse_purity_and_jofet_aqfp_yield_gain_pct"], 76.0)
+        self.assertEqual(gov["nb2o5_two_level_system_mgo_pinhole_and_2h_nbse2_selenium_vacancy_reduction_pct"], 96.0)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_toxic_h2se_pyrophoric_tma_cp2mg_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_toxic_h2se_hydride_leak_or_pyrophoric_tma_cp2mg_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_toxic_h2se_hydride_leak_or_pyrophoric_tma_cp2mg_ignition_pct"], 1.0)
+        self.assertEqual(gov["edge_qcl_tdlas_2348cm1_618cm1_485cm1_insitu_rheed_arpes_4k_icrn_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_mgo_tunnel_barrier_pinhole_or_aqfp_flux_trapping_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_mgo_tunnel_barrier_pinhole_or_aqfp_flux_trapping_failure_pct"], 3.0)
+        self.assertTrue(gov["nbnme25_tbtden_cp2mg_tma_dtbdse_10a_2d_nbse2_jofet_48ghz_aqfp_nbn_mgo_and_cryo_sfq_peald_slo_met"])
+        self.assertFalse(raw["nbnme25_tbtden_cp2mg_tma_dtbdse_10a_2d_nbse2_jofet_48ghz_aqfp_nbn_mgo_and_cryo_sfq_peald_slo_met"])
+
+    def test_28si2h6_3dmas_hcds_nd3_ph3_28si_spin_qubit_10a_cfet_siocn_spacer_and_6p4t_cpo_deuterated_sin_rpcvd_peald_sil3_sandbox(self) -> None:
+        gov = simulate_28si2h6_3dmas_hcds_nd3_ph3_28si_spin_qubit_10a_cfet_siocn_spacer_and_6p4t_cpo_deuterated_sin_rpcvd_peald_sil3_sandbox(
+            si28_3dmas_hcds_nd3_ph3_trains=8,
+            governance_mode="pinn_mpc_28si2h6_3dmas_hcds_nd3_ph3_28si_spin_qubit_10a_cfet_siocn_spacer_and_6p4t_cpo_deuterated_sin_rpcvd_peald_sil3_edge",
+        )
+        raw = simulate_28si2h6_3dmas_hcds_nd3_ph3_28si_spin_qubit_10a_cfet_siocn_spacer_and_6p4t_cpo_deuterated_sin_rpcvd_peald_sil3_sandbox(
+            si28_3dmas_hcds_nd3_ph3_trains=8,
+            governance_mode="unmanaged_open_loop_29si_hyperfine_decoherence_valley_degeneracy_and_nh_1550nm_overtone_loss",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_28si_spin_qubit_cfet_siocn_deuterated_sin_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_28si2h6_6n5_3dmas_6n5_hcds_6n5_nd3_purity_and_spin_qubit_cpo_yield_gain_pct"], 76.4)
+        self.assertEqual(gov["si29_hyperfine_decoherence_valley_degeneracy_and_nh_1550nm_overtone_loss_reduction_pct"], 96.2)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_si2h6_toxic_ph3_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_pyrophoric_si2h6_sih4_detonation_or_toxic_ph3_hydride_leak_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_pyrophoric_si2h6_sih4_detonation_or_toxic_ph3_hydride_leak_pct"], 1.0)
+        self.assertEqual(gov["edge_qcl_crds_2189cm1_2187cm1_2442cm1_2322cm1_apt_insitu_1p5k_esr_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_valley_splitting_collapse_or_siocn_wet_etch_undercut_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_valley_splitting_collapse_or_siocn_wet_etch_undercut_failure_pct"], 3.0)
+        self.assertTrue(gov["si28_3dmas_hcds_nd3_ph3_28si_spin_qubit_10a_cfet_siocn_spacer_and_6p4t_cpo_deuterated_sin_rpcvd_peald_slo_met"])
+        self.assertFalse(raw["si28_3dmas_hcds_nd3_ph3_28si_spin_qubit_10a_cfet_siocn_spacer_and_6p4t_cpo_deuterated_sin_rpcvd_peald_slo_met"])
+
+    def test_moco6_mocl5_montbu2nme22_h2s_dmtese_a10_2d_mos2_cfet_barrierless_mo_m0_bpr_and_6p4t_cpo_mote2_mocvd_peald_sil3_sandbox(self) -> None:
+        gov = simulate_moco6_mocl5_montbu2nme22_h2s_dmtese_a10_2d_mos2_cfet_barrierless_mo_m0_bpr_and_6p4t_cpo_mote2_mocvd_peald_sil3_sandbox(
+            moco6_mocl5_montbu2_h2s_dmtese_trains=8,
+            governance_mode="pinn_mpc_moco6_mocl5_montbu2nme22_h2s_dmtese_a10_2d_mos2_cfet_barrierless_mo_m0_bpr_and_6p4t_cpo_mote2_mocvd_peald_sil3_edge",
+        )
+        raw = simulate_moco6_mocl5_montbu2nme22_h2s_dmtese_a10_2d_mos2_cfet_barrierless_mo_m0_bpr_and_6p4t_cpo_mote2_mocvd_peald_sil3_sandbox(
+            moco6_mocl5_montbu2_h2s_dmtese_trains=8,
+            governance_mode="unmanaged_open_loop_mos2_sulfur_vacancy_schottky_pinning_and_mo_grain_scattering",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_mos2_cfet_barrierless_mo_cpo_mote2_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_moco6_6n5_mocl5_6n5_montbu2nme22_6n5_h2s_purity_and_cfet_mo_yield_gain_pct"], 76.8)
+        self.assertEqual(gov["sulfur_vacancy_schottky_fermi_pinning_and_mo_grain_boundary_scattering_reduction_pct"], 96.4)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_toxic_h2s_moco6_dmtese_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_toxic_h2s_moco6_carbonyl_leak_or_mocl5_hcl_hydrolysis_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_toxic_h2s_moco6_carbonyl_leak_or_mocl5_hcl_hydrolysis_pct"], 1.0)
+        self.assertEqual(gov["edge_qcl_crds_2003cm1_2592cm1_insitu_raman_e12g_a1g_pl_1p88ev_4pp_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_2d_mos2_multilayer_island_or_m0_mo_void_pinch_off_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_2d_mos2_multilayer_island_or_m0_mo_void_pinch_off_failure_pct"], 3.0)
+        self.assertTrue(gov["moco6_mocl5_montbu2nme22_h2s_dmtese_a10_2d_mos2_cfet_barrierless_mo_m0_bpr_and_6p4t_cpo_mote2_mocvd_peald_slo_met"])
+        self.assertFalse(raw["moco6_mocl5_montbu2nme22_h2s_dmtese_a10_2d_mos2_cfet_barrierless_mo_m0_bpr_and_6p4t_cpo_mote2_mocvd_peald_slo_met"])
+
+    def test_wco6_wcl5_wntbu2nme22_dtbdse_b2h6_a10_2d_wse2_pfet_ffree_alpha_w_1000l_nand_and_beta_w_sot_mram_mocvd_peald_sil3_sandbox(self) -> None:
+        gov = simulate_wco6_wcl5_wntbu2nme22_dtbdse_b2h6_a10_2d_wse2_pfet_ffree_alpha_w_1000l_nand_and_beta_w_sot_mram_mocvd_peald_sil3_sandbox(
+            wco6_wcl5_wntbu2_dtbdse_b2h6_trains=8,
+            governance_mode="pinn_mpc_wco6_wcl5_wntbu2nme22_dtbdse_b2h6_a10_2d_wse2_pfet_ffree_alpha_w_1000l_nand_and_beta_w_sot_mram_mocvd_peald_sil3_edge",
+        )
+        raw = simulate_wco6_wcl5_wntbu2nme22_dtbdse_b2h6_a10_2d_wse2_pfet_ffree_alpha_w_1000l_nand_and_beta_w_sot_mram_mocvd_peald_sil3_sandbox(
+            wco6_wcl5_wntbu2_dtbdse_b2h6_trains=8,
+            governance_mode="unmanaged_open_loop_wse2_selenium_vacancy_and_wf6_fluorine_attack_or_phase_mixing",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_wse2_pfet_alpha_w_beta_w_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_wco6_6n5_wcl5_6n5_wntbu2nme22_6n5_dtbdse_purity_and_p_wse2_w_yield_gain_pct"], 77.2)
+        self.assertEqual(gov["selenium_vacancy_p_schottky_barrier_and_alpha_beta_w_phase_impurity_reduction_pct"], 96.6)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_b2h6_teb_wco6_dtbdse_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_pyrophoric_b2h6_teb_ignition_or_toxic_dtbdse_wco6_leak_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_pyrophoric_b2h6_teb_ignition_or_toxic_dtbdse_wco6_leak_pct"], 1.0)
+        self.assertEqual(gov["edge_qcl_crds_1998cm1_1602cm1_insitu_raman_250cm1_pl_1p65ev_xrd_stfmr_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_p_wse2_multilayer_or_1000l_nand_wordline_void_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_p_wse2_multilayer_or_1000l_nand_wordline_void_failure_pct"], 3.0)
+        self.assertTrue(gov["wco6_wcl5_wntbu2nme22_dtbdse_b2h6_a10_2d_wse2_pfet_ffree_alpha_w_1000l_nand_and_beta_w_sot_mram_mocvd_peald_slo_met"])
+        self.assertFalse(raw["wco6_wcl5_wntbu2nme22_dtbdse_b2h6_a10_2d_wse2_pfet_ffree_alpha_w_1000l_nand_and_beta_w_sot_mram_mocvd_peald_slo_met"])
+
+    def test_tmbi_tdmasb_dete_dmse_a10_2d_cfet_semimetallic_bi_sb_quantum_limit_contact_topological_bst_sot_mram_and_3dic_peltier_cooler_mbe_peald_sil3_sandbox(self) -> None:
+        gov = simulate_tmbi_tdmasb_dete_dmse_a10_2d_cfet_semimetallic_bi_sb_quantum_limit_contact_topological_bst_sot_mram_and_3dic_peltier_cooler_mbe_peald_sil3_sandbox(
+            tmbi_tdmasb_dete_dmse_trains=8,
+            governance_mode="pinn_mpc_tmbi_tdmasb_dete_dmse_a10_2d_cfet_semimetallic_bi_sb_quantum_limit_contact_topological_bst_sot_mram_and_3dic_peltier_cooler_mbe_peald_sil3_edge",
+        )
+        raw = simulate_tmbi_tdmasb_dete_dmse_a10_2d_cfet_semimetallic_bi_sb_quantum_limit_contact_topological_bst_sot_mram_and_3dic_peltier_cooler_mbe_peald_sil3_sandbox(
+            tmbi_tdmasb_dete_dmse_trains=8,
+            governance_mode="unmanaged_open_loop_bi_dewetting_migs_pinning_and_bst_tellurium_vacancy_shunt",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_bi_sb_contact_topological_bst_peltier_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_tmbi_6n5_tdmasb_6n5_dete_6n5_dmse_purity_and_2d_contact_bst_yield_gain_pct"], 77.6)
+        self.assertEqual(gov["migs_fermi_pinning_bulk_shunt_and_interfacial_thermal_resistance_reduction_pct"], 96.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_tmbi_tesb_stibine_telluride_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_pyrophoric_tmbi_tesb_autoignition_or_toxic_stibine_telluride_leak_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_pyrophoric_tmbi_tesb_autoignition_or_toxic_stibine_telluride_leak_pct"], 1.0)
+        self.assertEqual(gov["edge_qcl_crds_585cm1_1894cm1_insitu_arpes_rheed_stfmr_tdtr_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_bi_dewetting_agglomeration_or_bst_bulk_conduction_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_bi_dewetting_agglomeration_or_bst_bulk_conduction_failure_pct"], 3.0)
+        self.assertTrue(gov["tmbi_tdmasb_dete_dmse_a10_2d_cfet_semimetallic_bi_sb_quantum_limit_contact_topological_bst_sot_mram_and_3dic_peltier_cooler_mbe_peald_slo_met"])
+        self.assertFalse(raw["tmbi_tdmasb_dete_dmse_a10_2d_cfet_semimetallic_bi_sb_quantum_limit_contact_topological_bst_sot_mram_and_3dic_peltier_cooler_mbe_peald_slo_met"])
+
+    def test_cuhfacvtms_cudmap2_temaz_dezn_hhfac_a10_3dic_hbm4_ntcu_hybrid_bonding_and_cu_zr_barrier_peald_ale_sil3_sandbox(self) -> None:
+        gov = simulate_cuhfacvtms_cudmap2_temaz_dezn_hhfac_a10_3dic_hbm4_ntcu_hybrid_bonding_and_cu_zr_barrier_peald_ale_sil3_sandbox(
+            cuhfacvtms_cudmap2_temaz_dezn_hhfac_trains=8,
+            governance_mode="pinn_mpc_cuhfacvtms_cudmap2_temaz_dezn_hhfac_a10_3dic_hbm4_ntcu_hybrid_bonding_and_cu_zr_barrier_peald_ale_sil3_edge",
+        )
+        raw = simulate_cuhfacvtms_cudmap2_temaz_dezn_hhfac_a10_3dic_hbm4_ntcu_hybrid_bonding_and_cu_zr_barrier_peald_ale_sil3_sandbox(
+            cuhfacvtms_cudmap2_temaz_dezn_hhfac_trains=8,
+            governance_mode="unmanaged_open_loop_ecp_cmp_dishing_void_and_thick_ta_tan_liner_rc_delay",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_ntcu_hybrid_bonding_cuzr_barrier_ale_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_cuhfacvtms_6n5_cudmap2_6n5_temaz_6n5_dezn_6n5_hhfac_purity_and_3dic_hybrid_bond_yield_gain_pct"], 77.9)
+        self.assertEqual(gov["cmp_dishing_interfacial_void_and_barrier_rc_parasitic_resistance_reduction_pct"], 96.9)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_dezn_corrosive_hhfac_hf_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_pyrophoric_dezn_water_explosion_or_corrosive_hhfac_hf_vapor_leak_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_pyrophoric_dezn_water_explosion_or_corrosive_hhfac_hf_vapor_leak_pct"], 1.0)
+        self.assertEqual(gov["edge_qcl_crds_1645cm1_3960cm1_insitu_ebsd_4dstem_sam_se_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_hybrid_bond_void_or_cu_electromigration_early_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_hybrid_bond_void_or_cu_electromigration_early_failure_pct"], 3.0)
+        self.assertTrue(gov["cuhfacvtms_cudmap2_temaz_dezn_hhfac_a10_3dic_hbm4_ntcu_hybrid_bonding_and_cu_zr_barrier_peald_ale_slo_met"])
+        self.assertFalse(raw["cuhfacvtms_cudmap2_temaz_dezn_hhfac_a10_3dic_hbm4_ntcu_hybrid_bonding_and_cu_zr_barrier_peald_ale_slo_met"])
+
+    def test_priprcp3_smiprcp3_ndiprcp3_niipramd2_a10_mott_nickelate_lif_neuron_and_pr_yso_quantum_memory_peald_sil3_sandbox(self) -> None:
+        gov = simulate_priprcp3_smiprcp3_ndiprcp3_niipramd2_a10_mott_nickelate_lif_neuron_and_pr_yso_quantum_memory_peald_sil3_sandbox(
+            priprcp3_smiprcp3_ndiprcp3_niipramd2_trains=8,
+            governance_mode="pinn_mpc_priprcp3_smiprcp3_ndiprcp3_niipramd2_a10_mott_nickelate_lif_neuron_and_pr_yso_quantum_memory_peald_sil3_edge",
+        )
+        raw = simulate_priprcp3_smiprcp3_ndiprcp3_niipramd2_a10_mott_nickelate_lif_neuron_and_pr_yso_quantum_memory_peald_sil3_sandbox(
+            priprcp3_smiprcp3_ndiprcp3_niipramd2_trains=8,
+            governance_mode="unmanaged_open_loop_oxygen_vacancy_mott_drift_and_pr4_optical_decoherence",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_mott_nickelate_lif_pr_yso_quantum_memory_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_priprcp3_6n5_smiprcp3_6n5_ndiprcp3_6n5_niipramd2_purity_and_mott_lif_quantum_memory_yield_gain_pct"], 78.2)
+        self.assertEqual(gov["nickelate_oxygen_vacancy_drift_and_pr4_optical_decoherence_reduction_pct"], 97.0)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_lanthanide_and_high_pressure_ozone_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_pyrophoric_lanthanide_autoignition_or_toxic_nickel_amidinato_vapor_leak_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_pyrophoric_lanthanide_autoignition_or_toxic_nickel_amidinato_vapor_leak_pct"], 1.0)
+        self.assertEqual(gov["edge_qcl_crds_2964cm1_2968cm1_1632cm1_insitu_rheed_xas_xmcd_sfg_se_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_mott_imt_hysteresis_collapse_or_pr_yso_spin_wave_decoherence_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_mott_imt_hysteresis_collapse_or_pr_yso_spin_wave_decoherence_failure_pct"], 3.0)
+        self.assertTrue(gov["priprcp3_smiprcp3_ndiprcp3_niipramd2_a10_mott_nickelate_lif_neuron_and_pr_yso_quantum_memory_peald_slo_met"])
+        self.assertFalse(raw["priprcp3_smiprcp3_ndiprcp3_niipramd2_a10_mott_nickelate_lif_neuron_and_pr_yso_quantum_memory_peald_slo_met"])
+
+    def test_dyiprcp3_tbiprcp3_hoiprcp3_feipramd2_a10_tbfeco_all_optical_switching_and_dy_gbd_magnet_peald_sil3_sandbox(self) -> None:
+        gov = simulate_dyiprcp3_tbiprcp3_hoiprcp3_feipramd2_a10_tbfeco_all_optical_switching_and_dy_gbd_magnet_peald_sil3_sandbox(
+            dyiprcp3_tbiprcp3_hoiprcp3_feipramd2_trains=8,
+            governance_mode="pinn_mpc_dyiprcp3_tbiprcp3_hoiprcp3_feipramd2_a10_tbfeco_all_optical_switching_and_dy_gbd_magnet_peald_sil3_edge",
+        )
+        raw = simulate_dyiprcp3_tbiprcp3_hoiprcp3_feipramd2_a10_tbfeco_all_optical_switching_and_dy_gbd_magnet_peald_sil3_sandbox(
+            dyiprcp3_tbiprcp3_hoiprcp3_feipramd2_trains=8,
+            governance_mode="unmanaged_open_loop_compensation_temp_drift_and_rare_earth_oxidation",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_tbfeco_aos_dy_gbd_ho_spin_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_dyiprcp3_6n5_tbiprcp3_6n5_hoiprcp3_6n5_feipramd2_purity_and_aos_gbd_yield_gain_pct"], 78.5)
+        self.assertEqual(gov["compensation_temp_drift_and_heavy_rare_earth_core_overdiffusion_reduction_pct"], 97.1)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_heavy_lanthanide_and_fe_co_amidinato_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_pyrophoric_dy_tb_ho_autoignition_or_metal_amidinato_vapor_leak_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_pyrophoric_dy_tb_ho_autoignition_or_metal_amidinato_vapor_leak_pct"], 1.0)
+        self.assertEqual(gov["edge_qcl_crds_2971cm1_2974cm1_1628cm1_insitu_fs_tr_moke_xmcd_sp_stm_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_aos_thermal_demagnetization_or_gbd_coercivity_collapse_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_aos_thermal_demagnetization_or_gbd_coercivity_collapse_failure_pct"], 3.0)
+        self.assertTrue(gov["dyiprcp3_tbiprcp3_hoiprcp3_feipramd2_a10_tbfeco_all_optical_switching_and_dy_gbd_magnet_peald_slo_met"])
+        self.assertFalse(raw["dyiprcp3_tbiprcp3_hoiprcp3_feipramd2_a10_tbfeco_all_optical_switching_and_dy_gbd_magnet_peald_slo_met"])
+
+    def test_euiprcp2_ybiprcp3_tmiprcp3_h2s_a10_eus_spin_filter_and_171yb_quantum_transducer_peald_sil3_sandbox(self) -> None:
+        gov = simulate_euiprcp2_ybiprcp3_tmiprcp3_h2s_a10_eus_spin_filter_and_171yb_quantum_transducer_peald_sil3_sandbox(
+            euiprcp2_ybiprcp3_tmiprcp3_h2s_trains=8,
+            governance_mode="pinn_mpc_euiprcp2_ybiprcp3_tmiprcp3_h2s_a10_eus_spin_filter_and_171yb_quantum_transducer_peald_sil3_edge",
+        )
+        raw = simulate_euiprcp2_ybiprcp3_tmiprcp3_h2s_a10_eus_spin_filter_and_171yb_quantum_transducer_peald_sil3_sandbox(
+            euiprcp2_ybiprcp3_tmiprcp3_h2s_trains=8,
+            governance_mode="unmanaged_open_loop_eu3_parasitic_oxidation_and_171yb_decoherence",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_eus_spin_filter_171yb_quantum_transducer_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_euiprcp2_6n5_171ybiprcp3_6n5_tmiprcp3_6n5_h2s_purity_and_spin_quantum_yield_gain_pct"], 78.8)
+        self.assertEqual(gov["eu3_parasitic_oxidation_and_171yb_spectral_diffusion_reduction_pct"], 97.2)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_eu_yb_tm_and_toxic_h2s_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_pyrophoric_eu_yb_tm_autoignition_or_toxic_h2s_leak_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_pyrophoric_eu_yb_tm_autoignition_or_toxic_h2s_leak_pct"], 1.0)
+        self.assertEqual(gov["edge_qcl_crds_2960cm1_2978cm1_2592cm1_insitu_xas_xmcd_squid_shb_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_eu2o3_nonmagnetic_dead_layer_or_171yb_transducer_decoherence_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_eu2o3_nonmagnetic_dead_layer_or_171yb_transducer_decoherence_failure_pct"], 3.0)
+        self.assertTrue(gov["euiprcp2_ybiprcp3_tmiprcp3_h2s_a10_eus_spin_filter_and_171yb_quantum_transducer_peald_slo_met"])
+        self.assertFalse(raw["euiprcp2_ybiprcp3_tmiprcp3_h2s_a10_eus_spin_filter_and_171yb_quantum_transducer_peald_slo_met"])
+
+    def test_ceiprcp3_cethd4_gdiprcp3_tdmazr_a10_ce_hzo_ferroelectric_gate_and_ce_gagg_euv_scintillator_peald_sil3_sandbox(self) -> None:
+        gov = simulate_ceiprcp3_cethd4_gdiprcp3_tdmazr_a10_ce_hzo_ferroelectric_gate_and_ce_gagg_euv_scintillator_peald_sil3_sandbox(
+            ceiprcp3_cethd4_gdiprcp3_tdmazr_trains=8,
+            governance_mode="pinn_mpc_ceiprcp3_cethd4_gdiprcp3_tdmazr_a10_ce_hzo_ferroelectric_gate_and_ce_gagg_euv_scintillator_peald_sil3_edge",
+        )
+        raw = simulate_ceiprcp3_cethd4_gdiprcp3_tdmazr_a10_ce_hzo_ferroelectric_gate_and_ce_gagg_euv_scintillator_peald_sil3_sandbox(
+            ceiprcp3_cethd4_gdiprcp3_tdmazr_trains=8,
+            governance_mode="unmanaged_open_loop_oxygen_vacancy_fatigue_and_monoclinic_relaxation",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_ce_hzo_ferroelectric_gdalo3_adr_ce_gagg_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_ceiprcp3_6n5_gdiprcp3_6n5_tdmazr_6n5_tma_purity_and_ce_hzo_gagg_yield_gain_pct"], 79.0)
+        self.assertEqual(gov["oxygen_vacancy_fatigue_and_monoclinic_phase_degradation_reduction_pct"], 97.3)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101200_sil3_pyrophoric_cerium_gadolinium_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_pyrophoric_ce_gd_tma_autoignition_or_amide_vapor_leak_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_pyrophoric_ce_gd_tma_autoignition_or_amide_vapor_leak_pct"], 1.0)
+        self.assertEqual(gov["edge_qcl_crds_2962cm1_2974cm1_949cm1_insitu_pund_gixrd_xas_euvrl_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_ce_hzo_fatigue_breakdown_or_ce_gagg_antisite_trapping_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_ce_hzo_fatigue_breakdown_or_ce_gagg_antisite_trapping_failure_pct"], 3.0)
+        self.assertTrue(gov["ceiprcp3_cethd4_gdiprcp3_tdmazr_a10_ce_hzo_ferroelectric_gate_and_ce_gagg_euv_scintillator_peald_slo_met"])
+        self.assertFalse(raw["ceiprcp3_cethd4_gdiprcp3_tdmazr_a10_ce_hzo_ferroelectric_gate_and_ce_gagg_euv_scintillator_peald_slo_met"])
+
+    def test_tdmav_voipr3_cretcp2_bbr3_a10_vcrbo2_mott_selector_and_si3n4_vo2_photonic_weight_peald_sil3_sandbox(self) -> None:
+        gov = simulate_tdmav_voipr3_cretcp2_bbr3_a10_vcrbo2_mott_selector_and_si3n4_vo2_photonic_weight_peald_sil3_sandbox(
+            tdmav_voipr3_cretcp2_bbr3_trains=8,
+            governance_mode="pinn_mpc_tdmav_voipr3_cretcp2_bbr3_a10_vcrbo2_mott_selector_and_si3n4_vo2_photonic_weight_peald_sil3_edge",
+        )
+        raw = simulate_tdmav_voipr3_cretcp2_bbr3_a10_vcrbo2_mott_selector_and_si3n4_vo2_photonic_weight_peald_sil3_sandbox(
+            tdmav_voipr3_cretcp2_bbr3_trains=8,
+            governance_mode="unmanaged_open_loop_v2o5_overoxidation_and_peierls_hysteresis",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_vcrbo2_mott_selector_cro2_vse2_si3n4_vo2_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_tdmav_6n5_cretcp2_6n5_bbr3_6n5_dtbdse_purity_and_vcrbo2_mott_yield_gain_pct"], 79.2)
+        self.assertEqual(gov["v2o5_overoxidation_and_peierls_hysteresis_drift_reduction_pct"], 97.4)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_teb_and_toxic_crco6_dtbdse_bbr3_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_pyrophoric_teb_ignition_or_toxic_crco6_dtbdse_bbr3_leak_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_pyrophoric_teb_ignition_or_toxic_crco6_dtbdse_bbr3_leak_pct"], 1.0)
+        self.assertEqual(gov["edge_qcl_crds_982cm1_2001cm1_856cm1_insitu_fsoptps_tdse_xanes_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_vo2_selector_thermal_runaway_or_photonic_weight_relaxation_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_vo2_selector_thermal_runaway_or_photonic_weight_relaxation_failure_pct"], 3.0)
+        self.assertTrue(gov["tdmav_voipr3_cretcp2_bbr3_a10_vcrbo2_mott_selector_and_si3n4_vo2_photonic_weight_peald_slo_met"])
+        self.assertFalse(raw["tdmav_voipr3_cretcp2_bbr3_a10_vcrbo2_mott_selector_and_si3n4_vo2_photonic_weight_peald_slo_met"])
+
+    def test_rhacac3_irmecpcod_mn2co10_aume2acac_a7_rh_interconnect_mn3ir_sot_and_plasmonic_mzm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_rhacac3_irmecpcod_mn2co10_aume2acac_a7_rh_interconnect_mn3ir_sot_and_plasmonic_mzm_peald_sil3_sandbox(
+            rhacac3_irmecpcod_mn2co10_aume2acac_trains=8,
+            governance_mode="pinn_mpc_rhacac3_irmecpcod_mn2co10_aume2acac_a7_rh_interconnect_mn3ir_sot_and_plasmonic_mzm_peald_sil3_edge",
+        )
+        raw = simulate_rhacac3_irmecpcod_mn2co10_aume2acac_a7_rh_interconnect_mn3ir_sot_and_plasmonic_mzm_peald_sil3_sandbox(
+            rhacac3_irmecpcod_mn2co10_aume2acac_trains=8,
+            governance_mode="unmanaged_open_loop_rh_seam_void_and_au_sk_islanding",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_a7_rh_interconnect_mn3ir_sot_plasmonic_mzm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_rhacac3_6n5_irmecpcod_6n5_mn2co10_6n5_aume2acac_purity_and_a7_rh_yield_gain_pct"], 79.6)
+        self.assertEqual(gov["rh_trench_seam_void_and_mn3ir_l12_kagome_disorder_reduction_pct"], 97.5)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_toxic_rh_mn_carbonyl_and_organogold_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_toxic_rh_mn_carbonyl_vapor_leak_or_organogold_decomposition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_toxic_rh_mn_carbonyl_vapor_leak_or_organogold_decomposition_pct"], 1.0)
+        self.assertEqual(gov["edge_qcl_crds_2042cm1_2018cm1_1582cm1_insitu_fbg4pp_moke_xmcd_vnasnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_rh_grain_scattering_or_plasmonic_slot_au_islanding_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_rh_grain_scattering_or_plasmonic_slot_au_islanding_failure_pct"], 3.0)
+        self.assertTrue(gov["rhacac3_irmecpcod_mn2co10_aume2acac_a7_rh_interconnect_mn3ir_sot_and_plasmonic_mzm_peald_slo_met"])
+        self.assertFalse(raw["rhacac3_irmecpcod_mn2co10_aume2acac_a7_rh_interconnect_mn3ir_sot_and_plasmonic_mzm_peald_slo_met"])
+
+    def test_aghfaccod_pdhfac2_ipr2te_tma_a7_pdte2_contact_ag111_plasmonic_and_ag2te_cbram_peald_sil3_sandbox(self) -> None:
+        gov = simulate_aghfaccod_pdhfac2_ipr2te_tma_a7_pdte2_contact_ag111_plasmonic_and_ag2te_cbram_peald_sil3_sandbox(
+            aghfaccod_pdhfac2_ipr2te_tma_trains=8,
+            governance_mode="pinn_mpc_aghfaccod_pdhfac2_ipr2te_tma_a7_pdte2_contact_ag111_plasmonic_and_ag2te_cbram_peald_sil3_edge",
+        )
+        raw = simulate_aghfaccod_pdhfac2_ipr2te_tma_a7_pdte2_contact_ag111_plasmonic_and_ag2te_cbram_peald_sil3_sandbox(
+            aghfaccod_pdhfac2_ipr2te_tma_trains=8,
+            governance_mode="unmanaged_open_loop_ag_dewetting_and_wse2_fermi_pinning",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_a7_pdte2_contact_ag111_plasmonic_ag2te_cbram_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_aghfaccod_6n5_pdhfac2_6n5_ipr2te_6n5_tma_purity_and_pdte2_ag111_yield_gain_pct"], 79.8)
+        self.assertEqual(gov["ag_dewetting_island_roughness_and_wse2_tellurium_vacancy_reduction_pct"], 97.6)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_organotellurium_hfac_hf_and_pyrophoric_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_organotellurium_ipr2te_leak_or_pyrophoric_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_organotellurium_ipr2te_leak_or_pyrophoric_tma_ignition_pct"], 1.0)
+        self.assertEqual(gov["edge_qcl_crds_1258cm1_1642cm1_2965cm1_insitu_tlmarpes_kpfm_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_ag111_plasmonic_scattering_or_cbram_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_ag111_plasmonic_scattering_or_cbram_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["aghfaccod_pdhfac2_ipr2te_tma_a7_pdte2_contact_ag111_plasmonic_and_ag2te_cbram_peald_slo_met"])
+        self.assertFalse(raw["aghfaccod_pdhfac2_ipr2te_tma_a7_pdte2_contact_ag111_plasmonic_and_ag2te_cbram_peald_slo_met"])
+
+    def test_ptmecpme3_pthfac2_tdmasn_dese_tma_a5_ptse2_contact_pt_nanowire_and_snse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_ptmecpme3_pthfac2_tdmasn_dese_tma_a5_ptse2_contact_pt_nanowire_and_snse_pcm_peald_sil3_sandbox(
+            ptmecpme3_pthfac2_tdmasn_dese_tma_trains=8,
+            governance_mode="pinn_mpc_ptmecpme3_pthfac2_tdmasn_dese_tma_a5_ptse2_contact_pt_nanowire_and_snse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_ptmecpme3_pthfac2_tdmasn_dese_tma_a5_ptse2_contact_pt_nanowire_and_snse_pcm_peald_sil3_sandbox(
+            ptmecpme3_pthfac2_tdmasn_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_pt_nanowire_agglomeration_and_snse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_a5_ptse2_contact_pt_nanowire_snse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_ptmecpme3_6n5_pthfac2_6n5_tdmasn_6n5_dese_6n5_tma_purity_and_ptse2_snse_yield_gain_pct"], 80.0)
+        self.assertEqual(gov["pt_nanowire_agglomeration_and_snse_phase_drift_reduction_pct"], 97.7)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_pt_tin_selenium_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_pt_tin_selenium_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_pt_tin_selenium_precursor_leak_or_tma_ignition_pct"], 1.0)
+        self.assertEqual(gov["edge_qcl_crds_1608cm1_1242cm1_2890cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_pt_nanowire_scattering_or_snse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_pt_nanowire_scattering_or_snse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["ptmecpme3_pthfac2_tdmasn_dese_tma_a5_ptse2_contact_pt_nanowire_and_snse_pcm_peald_slo_met"])
+        self.assertFalse(raw["ptmecpme3_pthfac2_tdmasn_dese_tma_a5_ptse2_contact_pt_nanowire_and_snse_pcm_peald_slo_met"])
+
+    def test_irmecpcod_iracac3_tdmahf_dete_tma_a3_irse2_contact_au_nanorod_and_hfse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_irmecpcod_iracac3_tdmahf_dete_tma_a3_irse2_contact_au_nanorod_and_hfse_pcm_peald_sil3_sandbox(
+            irmecpcod_iracac3_tdmahf_dete_tma_trains=8,
+            governance_mode="pinn_mpc_irmecpcod_iracac3_tdmahf_dete_tma_a3_irse2_contact_au_nanorod_and_hfse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_irmecpcod_iracac3_tdmahf_dete_tma_a3_irse2_contact_au_nanorod_and_hfse_pcm_peald_sil3_sandbox(
+            irmecpcod_iracac3_tdmahf_dete_tma_trains=8,
+            governance_mode="unmanaged_open_loop_au_nanorod_agglomeration_and_hfse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_a3_irse2_contact_au_nanorod_hfse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_irmecpcod_6n5_iracac3_6n5_tdmahf_6n5_dete_6n5_tma_purity_and_irse2_hfse_yield_gain_pct"], 80.3)
+        self.assertEqual(gov["au_nanorod_agglomeration_and_hfse_phase_drift_reduction_pct"], 97.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ir_hf_te_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_ir_hf_te_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_ir_hf_te_precursor_leak_or_tma_ignition_pct"], 1.0)
+        self.assertEqual(gov["edge_qcl_crds_1586cm1_1228cm1_2872cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_au_nanorod_scattering_or_hfse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_au_nanorod_scattering_or_hfse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["irmecpcod_iracac3_tdmahf_dete_tma_a3_irse2_contact_au_nanorod_and_hfse_pcm_peald_slo_met"])
+        self.assertFalse(raw["irmecpcod_iracac3_tdmahf_dete_tma_a3_irse2_contact_au_nanorod_and_hfse_pcm_peald_slo_met"])
+
+    def test_rhmecpcod_rhacac3_tdmati_dese_tma_a2_rhse2_contact_cu_nanoribbon_and_tise_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_rhmecpcod_rhacac3_tdmati_dese_tma_a2_rhse2_contact_cu_nanoribbon_and_tise_pcm_peald_sil3_sandbox(
+            rhmecpcod_rhacac3_tdmati_dese_tma_trains=8,
+            governance_mode="pinn_mpc_rhmecpcod_rhacac3_tdmati_dese_tma_a2_rhse2_contact_cu_nanoribbon_and_tise_pcm_peald_sil3_edge",
+        )
+        raw = simulate_rhmecpcod_rhacac3_tdmati_dese_tma_a2_rhse2_contact_cu_nanoribbon_and_tise_pcm_peald_sil3_sandbox(
+            rhmecpcod_rhacac3_tdmati_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_cu_nanoribbon_agglomeration_and_tise_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_a2_rhse2_contact_cu_nanoribbon_tise_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_rhmecpcod_6n5_rhacac3_6n5_tdmati_6n5_dese_6n5_tma_purity_and_rhse2_tise_yield_gain_pct"], 80.6)
+        self.assertEqual(gov["cu_nanoribbon_agglomeration_and_tise_phase_drift_reduction_pct"], 97.9)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_rh_ti_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_rh_ti_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_rh_ti_se_precursor_leak_or_tma_ignition_pct"], 1.0)
+        self.assertEqual(gov["edge_qcl_crds_1578cm1_1216cm1_2860cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_cu_nanoribbon_scattering_or_tise_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_cu_nanoribbon_scattering_or_tise_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["rhmecpcod_rhacac3_tdmati_dese_tma_a2_rhse2_contact_cu_nanoribbon_and_tise_pcm_peald_slo_met"])
+        self.assertFalse(raw["rhmecpcod_rhacac3_tdmati_dese_tma_a2_rhse2_contact_cu_nanoribbon_and_tise_pcm_peald_slo_met"])
+
+    def test_pdmecpcod_pdacac2_temazr_dete_tma_a1_pdse2_contact_ag_nanoridge_and_zrse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_pdmecpcod_pdacac2_temazr_dete_tma_a1_pdse2_contact_ag_nanoridge_and_zrse_pcm_peald_sil3_sandbox(
+            pdmecpcod_pdacac2_temazr_dete_tma_trains=8,
+            governance_mode="pinn_mpc_pdmecpcod_pdacac2_temazr_dete_tma_a1_pdse2_contact_ag_nanoridge_and_zrse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_pdmecpcod_pdacac2_temazr_dete_tma_a1_pdse2_contact_ag_nanoridge_and_zrse_pcm_peald_sil3_sandbox(
+            pdmecpcod_pdacac2_temazr_dete_tma_trains=8,
+            governance_mode="unmanaged_open_loop_ag_nanoridge_agglomeration_and_zrse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_a1_pdse2_contact_ag_nanoridge_zrse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_pdmecpcod_6n5_pdacac2_6n5_temazr_6n5_dete_6n5_tma_purity_and_pdse2_zrse_yield_gain_pct"], 80.9)
+        self.assertEqual(gov["ag_nanoridge_agglomeration_and_zrse_phase_drift_reduction_pct"], 98.0)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_pd_zr_te_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_pd_zr_te_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_pd_zr_te_precursor_leak_or_tma_ignition_pct"], 1.0)
+        self.assertEqual(gov["edge_qcl_crds_1569cm1_1204cm1_2852cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_ag_nanoridge_scattering_or_zrse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_ag_nanoridge_scattering_or_zrse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["pdmecpcod_pdacac2_temazr_dete_tma_a1_pdse2_contact_ag_nanoridge_and_zrse_pcm_peald_slo_met"])
+        self.assertFalse(raw["pdmecpcod_pdacac2_temazr_dete_tma_a1_pdse2_contact_ag_nanoridge_and_zrse_pcm_peald_slo_met"])
+
+    def test_aumecpcod_auacac3_tdmaal_dmse_tma_a0_ause2_contact_ag_nanograting_and_alse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_aumecpcod_auacac3_tdmaal_dmse_tma_a0_ause2_contact_ag_nanograting_and_alse_pcm_peald_sil3_sandbox(
+            aumecpcod_auacac3_tdmaal_dmse_tma_trains=8,
+            governance_mode="pinn_mpc_aumecpcod_auacac3_tdmaal_dmse_tma_a0_ause2_contact_ag_nanograting_and_alse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_aumecpcod_auacac3_tdmaal_dmse_tma_a0_ause2_contact_ag_nanograting_and_alse_pcm_peald_sil3_sandbox(
+            aumecpcod_auacac3_tdmaal_dmse_tma_trains=8,
+            governance_mode="unmanaged_open_loop_ag_nanograting_agglomeration_and_alse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_a0_ause2_contact_ag_nanograting_alse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_aumecpcod_6n5_auacac3_6n5_tdmaal_6n5_dmse_6n5_tma_purity_and_ause2_alse_yield_gain_pct"], 81.2)
+        self.assertEqual(gov["ag_nanograting_agglomeration_and_alse_phase_drift_reduction_pct"], 98.1)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_au_al_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_au_al_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_au_al_se_precursor_leak_or_tma_ignition_pct"], 1.0)
+        self.assertEqual(gov["edge_qcl_crds_1562cm1_1198cm1_2844cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_ag_nanograting_scattering_or_alse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_ag_nanograting_scattering_or_alse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["aumecpcod_auacac3_tdmaal_dmse_tma_a0_ause2_contact_ag_nanograting_and_alse_pcm_peald_slo_met"])
+        self.assertFalse(raw["aumecpcod_auacac3_tdmaal_dmse_tma_a0_ause2_contact_ag_nanograting_and_alse_pcm_peald_slo_met"])
+
+    def test_rumecpcod_ruacac3_tdmaga_dese_tma_b1_ruse2_contact_cu_nanomesh_and_gase_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_rumecpcod_ruacac3_tdmaga_dese_tma_b1_ruse2_contact_cu_nanomesh_and_gase_pcm_peald_sil3_sandbox(
+            rumecpcod_ruacac3_tdmaga_dese_tma_trains=8,
+            governance_mode="pinn_mpc_rumecpcod_ruacac3_tdmaga_dese_tma_b1_ruse2_contact_cu_nanomesh_and_gase_pcm_peald_sil3_edge",
+        )
+        raw = simulate_rumecpcod_ruacac3_tdmaga_dese_tma_b1_ruse2_contact_cu_nanomesh_and_gase_pcm_peald_sil3_sandbox(
+            rumecpcod_ruacac3_tdmaga_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_cu_nanomesh_agglomeration_and_gase_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_b1_ruse2_contact_cu_nanomesh_gase_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_rumecpcod_6n5_ruacac3_6n5_tdmaga_6n5_dese_6n5_tma_purity_and_ruse2_gase_yield_gain_pct"], 81.5)
+        self.assertEqual(gov["cu_nanomesh_agglomeration_and_gase_phase_drift_reduction_pct"], 98.2)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ru_ga_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_ru_ga_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_ru_ga_se_precursor_leak_or_tma_ignition_pct"], 1.0)
+        self.assertEqual(gov["edge_qcl_crds_1556cm1_1192cm1_2838cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_cu_nanomesh_scattering_or_gase_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_cu_nanomesh_scattering_or_gase_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["rumecpcod_ruacac3_tdmaga_dese_tma_b1_ruse2_contact_cu_nanomesh_and_gase_pcm_peald_slo_met"])
+        self.assertFalse(raw["rumecpcod_ruacac3_tdmaga_dese_tma_b1_ruse2_contact_cu_nanomesh_and_gase_pcm_peald_slo_met"])
+
+    def test_osmecpcod_osacac3_tdmain_dese_tma_c1_osse2_contact_au_nanomesh_and_inse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_osmecpcod_osacac3_tdmain_dese_tma_c1_osse2_contact_au_nanomesh_and_inse_pcm_peald_sil3_sandbox(
+            osmecpcod_osacac3_tdmain_dese_tma_trains=8,
+            governance_mode="pinn_mpc_osmecpcod_osacac3_tdmain_dese_tma_c1_osse2_contact_au_nanomesh_and_inse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_osmecpcod_osacac3_tdmain_dese_tma_c1_osse2_contact_au_nanomesh_and_inse_pcm_peald_sil3_sandbox(
+            osmecpcod_osacac3_tdmain_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_au_nanomesh_agglomeration_and_inse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_c1_osse2_contact_au_nanomesh_inse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_osmecpcod_6n5_osacac3_6n5_tdmain_6n5_dese_6n5_tma_purity_and_osse2_inse_yield_gain_pct"], 81.8)
+        self.assertEqual(gov["au_nanomesh_agglomeration_and_inse_phase_drift_reduction_pct"], 98.3)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_os_in_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_os_in_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_os_in_se_precursor_leak_or_tma_ignition_pct"], 1.0)
+        self.assertEqual(gov["edge_qcl_crds_1549cm1_1186cm1_2832cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_au_nanomesh_scattering_or_inse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_au_nanomesh_scattering_or_inse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["osmecpcod_osacac3_tdmain_dese_tma_c1_osse2_contact_au_nanomesh_and_inse_pcm_peald_slo_met"])
+        self.assertFalse(raw["osmecpcod_osacac3_tdmain_dese_tma_c1_osse2_contact_au_nanomesh_and_inse_pcm_peald_slo_met"])
+
+    def test_remecpcod_reacac3_tdmasn_dese_tma_d1_rese2_contact_pt_nanomesh_and_snse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_remecpcod_reacac3_tdmasn_dese_tma_d1_rese2_contact_pt_nanomesh_and_snse_pcm_peald_sil3_sandbox(
+            remecpcod_reacac3_tdmasn_dese_tma_trains=8,
+            governance_mode="pinn_mpc_remecpcod_reacac3_tdmasn_dese_tma_d1_rese2_contact_pt_nanomesh_and_snse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_remecpcod_reacac3_tdmasn_dese_tma_d1_rese2_contact_pt_nanomesh_and_snse_pcm_peald_sil3_sandbox(
+            remecpcod_reacac3_tdmasn_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_pt_nanomesh_agglomeration_and_snse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_d1_rese2_contact_pt_nanomesh_snse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_remecpcod_6n5_reacac3_6n5_tdmasn_6n5_dese_6n5_tma_purity_and_rese2_snse_yield_gain_pct"], 82.1)
+        self.assertEqual(gov["pt_nanomesh_agglomeration_and_snse_phase_drift_reduction_pct"], 98.4)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_re_sn_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_re_sn_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_re_sn_se_precursor_leak_or_tma_ignition_pct"], 1.0)
+        self.assertEqual(gov["edge_qcl_crds_1542cm1_1179cm1_2826cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_pt_nanomesh_scattering_or_snse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_pt_nanomesh_scattering_or_snse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["remecpcod_reacac3_tdmasn_dese_tma_d1_rese2_contact_pt_nanomesh_and_snse_pcm_peald_slo_met"])
+        self.assertFalse(raw["remecpcod_reacac3_tdmasn_dese_tma_d1_rese2_contact_pt_nanomesh_and_snse_pcm_peald_slo_met"])
+
+    def test_irmecpcod_iracac3_tdmage_dese_tma_e1_irse2_contact_pd_nanomesh_and_gese_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_irmecpcod_iracac3_tdmage_dese_tma_e1_irse2_contact_pd_nanomesh_and_gese_pcm_peald_sil3_sandbox(
+            irmecpcod_iracac3_tdmage_dese_tma_trains=8,
+            governance_mode="pinn_mpc_irmecpcod_iracac3_tdmage_dese_tma_e1_irse2_contact_pd_nanomesh_and_gese_pcm_peald_sil3_edge",
+        )
+        raw = simulate_irmecpcod_iracac3_tdmage_dese_tma_e1_irse2_contact_pd_nanomesh_and_gese_pcm_peald_sil3_sandbox(
+            irmecpcod_iracac3_tdmage_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_pd_nanomesh_agglomeration_and_gese_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_e1_irse2_contact_pd_nanomesh_gese_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_irmecpcod_6n5_iracac3_6n5_tdmage_6n5_dese_6n5_tma_purity_and_irse2_gese_yield_gain_pct"], 82.4)
+        self.assertEqual(gov["pd_nanomesh_agglomeration_and_gese_phase_drift_reduction_pct"], 98.5)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ir_ge_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_ir_ge_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_ir_ge_se_precursor_leak_or_tma_ignition_pct"], 1.0)
+        self.assertEqual(gov["edge_qcl_crds_1535cm1_1172cm1_2820cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_pd_nanomesh_scattering_or_gese_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_pd_nanomesh_scattering_or_gese_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["irmecpcod_iracac3_tdmage_dese_tma_e1_irse2_contact_pd_nanomesh_and_gese_pcm_peald_slo_met"])
+        self.assertFalse(raw["irmecpcod_iracac3_tdmage_dese_tma_e1_irse2_contact_pd_nanomesh_and_gese_pcm_peald_slo_met"])
+
+    def test_ptmecpcod_ptacac2_tdmasi_dese_tma_f1_ptse2_contact_rh_nanomesh_and_sise_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_ptmecpcod_ptacac2_tdmasi_dese_tma_f1_ptse2_contact_rh_nanomesh_and_sise_pcm_peald_sil3_sandbox(
+            ptmecpcod_ptacac2_tdmasi_dese_tma_trains=8,
+            governance_mode="pinn_mpc_ptmecpcod_ptacac2_tdmasi_dese_tma_f1_ptse2_contact_rh_nanomesh_and_sise_pcm_peald_sil3_edge",
+        )
+        raw = simulate_ptmecpcod_ptacac2_tdmasi_dese_tma_f1_ptse2_contact_rh_nanomesh_and_sise_pcm_peald_sil3_sandbox(
+            ptmecpcod_ptacac2_tdmasi_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_rh_nanomesh_agglomeration_and_sise_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_f1_ptse2_contact_rh_nanomesh_sise_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_ptmecpcod_6n5_ptacac2_6n5_tdmasi_6n5_dese_6n5_tma_purity_and_ptse2_sise_yield_gain_pct"], 82.7)
+        self.assertEqual(gov["rh_nanomesh_agglomeration_and_sise_phase_drift_reduction_pct"], 98.6)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_pt_si_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_pt_si_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_pt_si_se_precursor_leak_or_tma_ignition_pct"], 1.0)
+        self.assertEqual(gov["edge_qcl_crds_1528cm1_1166cm1_2814cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_rh_nanomesh_scattering_or_sise_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_rh_nanomesh_scattering_or_sise_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["ptmecpcod_ptacac2_tdmasi_dese_tma_f1_ptse2_contact_rh_nanomesh_and_sise_pcm_peald_slo_met"])
+        self.assertFalse(raw["ptmecpcod_ptacac2_tdmasi_dese_tma_f1_ptse2_contact_rh_nanomesh_and_sise_pcm_peald_slo_met"])
+
+    def test_aumecpcod_auacac3_tdmazn_dese_tma_g1_ause2_contact_os_nanomesh_and_znse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_aumecpcod_auacac3_tdmazn_dese_tma_g1_ause2_contact_os_nanomesh_and_znse_pcm_peald_sil3_sandbox(
+            aumecpcod_auacac3_tdmazn_dese_tma_trains=8,
+            governance_mode="pinn_mpc_aumecpcod_auacac3_tdmazn_dese_tma_g1_ause2_contact_os_nanomesh_and_znse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_aumecpcod_auacac3_tdmazn_dese_tma_g1_ause2_contact_os_nanomesh_and_znse_pcm_peald_sil3_sandbox(
+            aumecpcod_auacac3_tdmazn_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_os_nanomesh_agglomeration_and_znse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_g1_ause2_contact_os_nanomesh_znse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_aumecpcod_6n5_auacac3_6n5_tdmazn_6n5_dese_6n5_tma_purity_and_ause2_znse_yield_gain_pct"], 83.0)
+        self.assertEqual(gov["os_nanomesh_agglomeration_and_znse_phase_drift_reduction_pct"], 98.7)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_au_zn_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_au_zn_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_au_zn_se_precursor_leak_or_tma_ignition_pct"], 1.0)
+        self.assertEqual(gov["edge_qcl_crds_1521cm1_1160cm1_2808cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_os_nanomesh_scattering_or_znse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_os_nanomesh_scattering_or_znse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["aumecpcod_auacac3_tdmazn_dese_tma_g1_ause2_contact_os_nanomesh_and_znse_pcm_peald_slo_met"])
+        self.assertFalse(raw["aumecpcod_auacac3_tdmazn_dese_tma_g1_ause2_contact_os_nanomesh_and_znse_pcm_peald_slo_met"])
+
+    def test_agmecpcod_agacac_tdmacd_dese_tma_h1_agse2_contact_ir_nanomesh_and_cdse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_agmecpcod_agacac_tdmacd_dese_tma_h1_agse2_contact_ir_nanomesh_and_cdse_pcm_peald_sil3_sandbox(
+            agmecpcod_agacac_tdmacd_dese_tma_trains=8,
+            governance_mode="pinn_mpc_agmecpcod_agacac_tdmacd_dese_tma_h1_agse2_contact_ir_nanomesh_and_cdse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_agmecpcod_agacac_tdmacd_dese_tma_h1_agse2_contact_ir_nanomesh_and_cdse_pcm_peald_sil3_sandbox(
+            agmecpcod_agacac_tdmacd_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_ir_nanomesh_agglomeration_and_cdse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_h1_agse2_contact_ir_nanomesh_cdse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_agmecpcod_6n5_agacac_6n5_tdmacd_6n5_dese_6n5_tma_purity_and_agse2_cdse_yield_gain_pct"], 83.3)
+        self.assertEqual(gov["ir_nanomesh_agglomeration_and_cdse_phase_drift_reduction_pct"], 98.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ag_cd_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_ag_cd_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_ag_cd_se_precursor_leak_or_tma_ignition_pct"], 1.0)
+        self.assertEqual(gov["edge_qcl_crds_1514cm1_1154cm1_2802cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_ir_nanomesh_scattering_or_cdse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_ir_nanomesh_scattering_or_cdse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["agmecpcod_agacac_tdmacd_dese_tma_h1_agse2_contact_ir_nanomesh_and_cdse_pcm_peald_slo_met"])
+        self.assertFalse(raw["agmecpcod_agacac_tdmacd_dese_tma_h1_agse2_contact_ir_nanomesh_and_cdse_pcm_peald_slo_met"])
+
+    def test_cumecpcod_cuacac2_tdmaga_dese_tma_i1_cuse2_contact_pt_nanomesh_and_gase_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_cumecpcod_cuacac2_tdmaga_dese_tma_i1_cuse2_contact_pt_nanomesh_and_gase_pcm_peald_sil3_sandbox(
+            cumecpcod_cuacac2_tdmaga_dese_tma_trains=8,
+            governance_mode="pinn_mpc_cumecpcod_cuacac2_tdmaga_dese_tma_i1_cuse2_contact_pt_nanomesh_and_gase_pcm_peald_sil3_edge",
+        )
+        raw = simulate_cumecpcod_cuacac2_tdmaga_dese_tma_i1_cuse2_contact_pt_nanomesh_and_gase_pcm_peald_sil3_sandbox(
+            cumecpcod_cuacac2_tdmaga_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_pt_nanomesh_agglomeration_and_gase_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_i1_cuse2_contact_pt_nanomesh_gase_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_cumecpcod_6n5_cuacac2_6n5_tdmaga_6n5_dese_6n5_tma_purity_and_cuse2_gase_yield_gain_pct"], 83.6)
+        self.assertEqual(gov["pt_nanomesh_agglomeration_and_gase_phase_drift_reduction_pct"], 98.9)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_cu_ga_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_cu_ga_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_cu_ga_se_precursor_leak_or_tma_ignition_pct"], 1.0)
+        self.assertEqual(gov["edge_qcl_crds_1507cm1_1148cm1_2796cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_pt_nanomesh_scattering_or_gase_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_pt_nanomesh_scattering_or_gase_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["cumecpcod_cuacac2_tdmaga_dese_tma_i1_cuse2_contact_pt_nanomesh_and_gase_pcm_peald_slo_met"])
+        self.assertFalse(raw["cumecpcod_cuacac2_tdmaga_dese_tma_i1_cuse2_contact_pt_nanomesh_and_gase_pcm_peald_slo_met"])
+
+    def test_nimecpcod_niacac2_tdmain_dese_tma_j1_nise2_contact_rh_nanomesh_and_inse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_nimecpcod_niacac2_tdmain_dese_tma_j1_nise2_contact_rh_nanomesh_and_inse_pcm_peald_sil3_sandbox(
+            nimecpcod_niacac2_tdmain_dese_tma_trains=8,
+            governance_mode="pinn_mpc_nimecpcod_niacac2_tdmain_dese_tma_j1_nise2_contact_rh_nanomesh_and_inse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_nimecpcod_niacac2_tdmain_dese_tma_j1_nise2_contact_rh_nanomesh_and_inse_pcm_peald_sil3_sandbox(
+            nimecpcod_niacac2_tdmain_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_rh_nanomesh_agglomeration_and_inse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_j1_nise2_contact_rh_nanomesh_inse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_nimecpcod_6n5_niacac2_6n5_tdmain_6n5_dese_6n5_tma_purity_and_nise2_inse_yield_gain_pct"], 83.9)
+        self.assertEqual(gov["rh_nanomesh_agglomeration_and_inse_phase_drift_reduction_pct"], 99.0)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ni_in_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_ni_in_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_ni_in_se_precursor_leak_or_tma_ignition_pct"], 1.0)
+        self.assertEqual(gov["edge_qcl_crds_1501cm1_1142cm1_2790cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_rh_nanomesh_scattering_or_inse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_rh_nanomesh_scattering_or_inse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["nimecpcod_niacac2_tdmain_dese_tma_j1_nise2_contact_rh_nanomesh_and_inse_pcm_peald_slo_met"])
+        self.assertFalse(raw["nimecpcod_niacac2_tdmain_dese_tma_j1_nise2_contact_rh_nanomesh_and_inse_pcm_peald_slo_met"])
+
+    def test_comecpcod_coacac2_tdmage_dese_tma_k1_cose2_contact_pd_nanomesh_and_gese_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_comecpcod_coacac2_tdmage_dese_tma_k1_cose2_contact_pd_nanomesh_and_gese_pcm_peald_sil3_sandbox(
+            comecpcod_coacac2_tdmage_dese_tma_trains=8,
+            governance_mode="pinn_mpc_comecpcod_coacac2_tdmage_dese_tma_k1_cose2_contact_pd_nanomesh_and_gese_pcm_peald_sil3_edge",
+        )
+        raw = simulate_comecpcod_coacac2_tdmage_dese_tma_k1_cose2_contact_pd_nanomesh_and_gese_pcm_peald_sil3_sandbox(
+            comecpcod_coacac2_tdmage_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_pd_nanomesh_agglomeration_and_gese_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_k1_cose2_contact_pd_nanomesh_gese_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_comecpcod_6n5_coacac2_6n5_tdmage_6n5_dese_6n5_tma_purity_and_cose2_gese_yield_gain_pct"], 84.2)
+        self.assertEqual(gov["pd_nanomesh_agglomeration_and_gese_phase_drift_reduction_pct"], 99.1)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_co_ge_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_co_ge_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_co_ge_se_precursor_leak_or_tma_ignition_pct"], 1.0)
+        self.assertEqual(gov["edge_qcl_crds_1495cm1_1136cm1_2784cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_pd_nanomesh_scattering_or_gese_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_pd_nanomesh_scattering_or_gese_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["comecpcod_coacac2_tdmage_dese_tma_k1_cose2_contact_pd_nanomesh_and_gese_pcm_peald_slo_met"])
+        self.assertFalse(raw["comecpcod_coacac2_tdmage_dese_tma_k1_cose2_contact_pd_nanomesh_and_gese_pcm_peald_slo_met"])
+
+    def test_femecpcod_feacac2_tdmasn_dese_tma_l1_fese2_contact_au_nanomesh_and_snse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_femecpcod_feacac2_tdmasn_dese_tma_l1_fese2_contact_au_nanomesh_and_snse_pcm_peald_sil3_sandbox(
+            femecpcod_feacac2_tdmasn_dese_tma_trains=8,
+            governance_mode="pinn_mpc_femecpcod_feacac2_tdmasn_dese_tma_l1_fese2_contact_au_nanomesh_and_snse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_femecpcod_feacac2_tdmasn_dese_tma_l1_fese2_contact_au_nanomesh_and_snse_pcm_peald_sil3_sandbox(
+            femecpcod_feacac2_tdmasn_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_au_nanomesh_agglomeration_and_snse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_l1_fese2_contact_au_nanomesh_snse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_femecpcod_6n5_feacac2_6n5_tdmasn_6n5_dese_6n5_tma_purity_and_fese2_snse_yield_gain_pct"], 84.5)
+        self.assertEqual(gov["au_nanomesh_agglomeration_and_snse_phase_drift_reduction_pct"], 99.2)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_fe_sn_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_fe_sn_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_fe_sn_se_precursor_leak_or_tma_ignition_pct"], 0.9)
+        self.assertEqual(gov["edge_qcl_crds_1489cm1_1130cm1_2778cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_au_nanomesh_scattering_or_snse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_au_nanomesh_scattering_or_snse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["femecpcod_feacac2_tdmasn_dese_tma_l1_fese2_contact_au_nanomesh_and_snse_pcm_peald_slo_met"])
+        self.assertFalse(raw["femecpcod_feacac2_tdmasn_dese_tma_l1_fese2_contact_au_nanomesh_and_snse_pcm_peald_slo_met"])
+
+    def test_mnmecpcod_mnacac2_tdmati_dese_tma_m1_mnse2_contact_pt_nanomesh_and_tise_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_mnmecpcod_mnacac2_tdmati_dese_tma_m1_mnse2_contact_pt_nanomesh_and_tise_pcm_peald_sil3_sandbox(
+            mnmecpcod_mnacac2_tdmati_dese_tma_trains=8,
+            governance_mode="pinn_mpc_mnmecpcod_mnacac2_tdmati_dese_tma_m1_mnse2_contact_pt_nanomesh_and_tise_pcm_peald_sil3_edge",
+        )
+        raw = simulate_mnmecpcod_mnacac2_tdmati_dese_tma_m1_mnse2_contact_pt_nanomesh_and_tise_pcm_peald_sil3_sandbox(
+            mnmecpcod_mnacac2_tdmati_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_pt_nanomesh_agglomeration_and_tise_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_m1_mnse2_contact_pt_nanomesh_tise_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_mnmecpcod_6n5_mnacac2_6n5_tdmati_6n5_dese_6n5_tma_purity_and_mnse2_tise_yield_gain_pct"], 84.8)
+        self.assertEqual(gov["pt_nanomesh_agglomeration_and_tise_phase_drift_reduction_pct"], 99.3)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_mn_ti_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_mn_ti_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_mn_ti_se_precursor_leak_or_tma_ignition_pct"], 0.8)
+        self.assertEqual(gov["edge_qcl_crds_1483cm1_1124cm1_2772cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_pt_nanomesh_scattering_or_tise_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_pt_nanomesh_scattering_or_tise_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["mnmecpcod_mnacac2_tdmati_dese_tma_m1_mnse2_contact_pt_nanomesh_and_tise_pcm_peald_slo_met"])
+        self.assertFalse(raw["mnmecpcod_mnacac2_tdmati_dese_tma_m1_mnse2_contact_pt_nanomesh_and_tise_pcm_peald_slo_met"])
+
+    def test_crmecpcod_cracac3_temazr_dese_tma_n1_crse2_contact_rh_nanomesh_and_zrse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_crmecpcod_cracac3_temazr_dese_tma_n1_crse2_contact_rh_nanomesh_and_zrse_pcm_peald_sil3_sandbox(
+            crmecpcod_cracac3_temazr_dese_tma_trains=8,
+            governance_mode="pinn_mpc_crmecpcod_cracac3_temazr_dese_tma_n1_crse2_contact_rh_nanomesh_and_zrse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_crmecpcod_cracac3_temazr_dese_tma_n1_crse2_contact_rh_nanomesh_and_zrse_pcm_peald_sil3_sandbox(
+            crmecpcod_cracac3_temazr_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_rh_nanomesh_agglomeration_and_zrse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_n1_crse2_contact_rh_nanomesh_zrse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_crmecpcod_6n5_cracac3_6n5_temazr_6n5_dese_6n5_tma_purity_and_crse2_zrse_yield_gain_pct"], 85.1)
+        self.assertEqual(gov["rh_nanomesh_agglomeration_and_zrse_phase_drift_reduction_pct"], 99.4)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_cr_zr_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_cr_zr_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_cr_zr_se_precursor_leak_or_tma_ignition_pct"], 0.7)
+        self.assertEqual(gov["edge_qcl_crds_1477cm1_1118cm1_2766cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_rh_nanomesh_scattering_or_zrse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_rh_nanomesh_scattering_or_zrse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["crmecpcod_cracac3_temazr_dese_tma_n1_crse2_contact_rh_nanomesh_and_zrse_pcm_peald_slo_met"])
+        self.assertFalse(raw["crmecpcod_cracac3_temazr_dese_tma_n1_crse2_contact_rh_nanomesh_and_zrse_pcm_peald_slo_met"])
+
+    def test_vnmecpcod_vacac3_tdmahf_dese_tma_o1_vse2_contact_pd_nanomesh_and_hfse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_vnmecpcod_vacac3_tdmahf_dese_tma_o1_vse2_contact_pd_nanomesh_and_hfse_pcm_peald_sil3_sandbox(
+            vnmecpcod_vacac3_tdmahf_dese_tma_trains=8,
+            governance_mode="pinn_mpc_vnmecpcod_vacac3_tdmahf_dese_tma_o1_vse2_contact_pd_nanomesh_and_hfse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_vnmecpcod_vacac3_tdmahf_dese_tma_o1_vse2_contact_pd_nanomesh_and_hfse_pcm_peald_sil3_sandbox(
+            vnmecpcod_vacac3_tdmahf_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_pd_nanomesh_agglomeration_and_hfse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_o1_vse2_contact_pd_nanomesh_hfse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_vnmecpcod_6n5_vacac3_6n5_tdmahf_6n5_dese_6n5_tma_purity_and_vse2_hfse_yield_gain_pct"], 85.4)
+        self.assertEqual(gov["pd_nanomesh_agglomeration_and_hfse_phase_drift_reduction_pct"], 99.5)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_v_hf_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_v_hf_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_v_hf_se_precursor_leak_or_tma_ignition_pct"], 0.6)
+        self.assertEqual(gov["edge_qcl_crds_1471cm1_1112cm1_2760cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_pd_nanomesh_scattering_or_hfse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_pd_nanomesh_scattering_or_hfse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["vnmecpcod_vacac3_tdmahf_dese_tma_o1_vse2_contact_pd_nanomesh_and_hfse_pcm_peald_slo_met"])
+        self.assertFalse(raw["vnmecpcod_vacac3_tdmahf_dese_tma_o1_vse2_contact_pd_nanomesh_and_hfse_pcm_peald_slo_met"])
+
+    def test_nbmecpcod_nbacac3_tdmasc_dese_tma_p1_nbse2_contact_ru_nanomesh_and_scse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_nbmecpcod_nbacac3_tdmasc_dese_tma_p1_nbse2_contact_ru_nanomesh_and_scse_pcm_peald_sil3_sandbox(
+            nbmecpcod_nbacac3_tdmasc_dese_tma_trains=8,
+            governance_mode="pinn_mpc_nbmecpcod_nbacac3_tdmasc_dese_tma_p1_nbse2_contact_ru_nanomesh_and_scse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_nbmecpcod_nbacac3_tdmasc_dese_tma_p1_nbse2_contact_ru_nanomesh_and_scse_pcm_peald_sil3_sandbox(
+            nbmecpcod_nbacac3_tdmasc_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_ru_nanomesh_agglomeration_and_scse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_p1_nbse2_contact_ru_nanomesh_scse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_nbmecpcod_6n5_nbacac3_6n5_tdmasc_6n5_dese_6n5_tma_purity_and_nbse2_scse_yield_gain_pct"], 85.7)
+        self.assertEqual(gov["ru_nanomesh_agglomeration_and_scse_phase_drift_reduction_pct"], 99.6)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_nb_sc_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_nb_sc_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_nb_sc_se_precursor_leak_or_tma_ignition_pct"], 0.5)
+        self.assertEqual(gov["edge_qcl_crds_1466cm1_1106cm1_2754cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_ru_nanomesh_scattering_or_scse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_ru_nanomesh_scattering_or_scse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["nbmecpcod_nbacac3_tdmasc_dese_tma_p1_nbse2_contact_ru_nanomesh_and_scse_pcm_peald_slo_met"])
+        self.assertFalse(raw["nbmecpcod_nbacac3_tdmasc_dese_tma_p1_nbse2_contact_ru_nanomesh_and_scse_pcm_peald_slo_met"])
+
+    def test_tamecpcod_taacac3_tdmay_dese_tma_q1_tase2_contact_os_nanomesh_and_yse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_tamecpcod_taacac3_tdmay_dese_tma_q1_tase2_contact_os_nanomesh_and_yse_pcm_peald_sil3_sandbox(
+            tamecpcod_taacac3_tdmay_dese_tma_trains=8,
+            governance_mode="pinn_mpc_tamecpcod_taacac3_tdmay_dese_tma_q1_tase2_contact_os_nanomesh_and_yse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_tamecpcod_taacac3_tdmay_dese_tma_q1_tase2_contact_os_nanomesh_and_yse_pcm_peald_sil3_sandbox(
+            tamecpcod_taacac3_tdmay_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_os_nanomesh_agglomeration_and_yse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_q1_tase2_contact_os_nanomesh_yse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_tamecpcod_6n5_taacac3_6n5_tdmay_6n5_dese_6n5_tma_purity_and_tase2_yse_yield_gain_pct"], 86.0)
+        self.assertEqual(gov["os_nanomesh_agglomeration_and_yse_phase_drift_reduction_pct"], 99.7)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ta_y_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_ta_y_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_ta_y_se_precursor_leak_or_tma_ignition_pct"], 0.4)
+        self.assertEqual(gov["edge_qcl_crds_1460cm1_1100cm1_2748cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_os_nanomesh_scattering_or_yse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_os_nanomesh_scattering_or_yse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["tamecpcod_taacac3_tdmay_dese_tma_q1_tase2_contact_os_nanomesh_and_yse_pcm_peald_slo_met"])
+        self.assertFalse(raw["tamecpcod_taacac3_tdmay_dese_tma_q1_tase2_contact_os_nanomesh_and_yse_pcm_peald_slo_met"])
+
+    def test_hfmecpcod_hfacac4_tdmalu_dese_tma_r1_hfse2_contact_ir_nanomesh_and_luse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_hfmecpcod_hfacac4_tdmalu_dese_tma_r1_hfse2_contact_ir_nanomesh_and_luse_pcm_peald_sil3_sandbox(
+            hfmecpcod_hfacac4_tdmalu_dese_tma_trains=8,
+            governance_mode="pinn_mpc_hfmecpcod_hfacac4_tdmalu_dese_tma_r1_hfse2_contact_ir_nanomesh_and_luse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_hfmecpcod_hfacac4_tdmalu_dese_tma_r1_hfse2_contact_ir_nanomesh_and_luse_pcm_peald_sil3_sandbox(
+            hfmecpcod_hfacac4_tdmalu_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_ir_nanomesh_agglomeration_and_luse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_r1_hfse2_contact_ir_nanomesh_luse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_hfmecpcod_6n5_hfacac4_6n5_tdmalu_6n5_dese_6n5_tma_purity_and_hfse2_luse_yield_gain_pct"], 86.3)
+        self.assertEqual(gov["ir_nanomesh_agglomeration_and_luse_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_hf_lu_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_hf_lu_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_hf_lu_se_precursor_leak_or_tma_ignition_pct"], 0.3)
+        self.assertEqual(gov["edge_qcl_crds_1454cm1_1094cm1_2742cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_ir_nanomesh_scattering_or_luse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_ir_nanomesh_scattering_or_luse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["hfmecpcod_hfacac4_tdmalu_dese_tma_r1_hfse2_contact_ir_nanomesh_and_luse_pcm_peald_slo_met"])
+        self.assertFalse(raw["hfmecpcod_hfacac4_tdmalu_dese_tma_r1_hfse2_contact_ir_nanomesh_and_luse_pcm_peald_slo_met"])
+
+    def test_zrmecpcod_zracac4_tdmath_dese_tma_s1_zrse2_contact_pt_nanomesh_and_thse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_zrmecpcod_zracac4_tdmath_dese_tma_s1_zrse2_contact_pt_nanomesh_and_thse_pcm_peald_sil3_sandbox(
+            zrmecpcod_zracac4_tdmath_dese_tma_trains=8,
+            governance_mode="pinn_mpc_zrmecpcod_zracac4_tdmath_dese_tma_s1_zrse2_contact_pt_nanomesh_and_thse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_zrmecpcod_zracac4_tdmath_dese_tma_s1_zrse2_contact_pt_nanomesh_and_thse_pcm_peald_sil3_sandbox(
+            zrmecpcod_zracac4_tdmath_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_pt_nanomesh_agglomeration_and_thse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_s1_zrse2_contact_pt_nanomesh_thse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_zrmecpcod_6n5_zracac4_6n5_tdmath_6n5_dese_6n5_tma_purity_and_zrse2_thse_yield_gain_pct"], 86.6)
+        self.assertEqual(gov["pt_nanomesh_agglomeration_and_thse_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_zr_th_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_zr_th_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_zr_th_se_precursor_leak_or_tma_ignition_pct"], 0.2)
+        self.assertEqual(gov["edge_qcl_crds_1448cm1_1088cm1_2736cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_pt_nanomesh_scattering_or_thse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_pt_nanomesh_scattering_or_thse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["zrmecpcod_zracac4_tdmath_dese_tma_s1_zrse2_contact_pt_nanomesh_and_thse_pcm_peald_slo_met"])
+        self.assertFalse(raw["zrmecpcod_zracac4_tdmath_dese_tma_s1_zrse2_contact_pt_nanomesh_and_thse_pcm_peald_slo_met"])
+
+    def test_ymecpcod_yacac3_tdmace_dese_tma_t1_yse2_contact_au_nanomesh_and_cese_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_ymecpcod_yacac3_tdmace_dese_tma_t1_yse2_contact_au_nanomesh_and_cese_pcm_peald_sil3_sandbox(
+            ymecpcod_yacac3_tdmace_dese_tma_trains=8,
+            governance_mode="pinn_mpc_ymecpcod_yacac3_tdmace_dese_tma_t1_yse2_contact_au_nanomesh_and_cese_pcm_peald_sil3_edge",
+        )
+        raw = simulate_ymecpcod_yacac3_tdmace_dese_tma_t1_yse2_contact_au_nanomesh_and_cese_pcm_peald_sil3_sandbox(
+            ymecpcod_yacac3_tdmace_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_au_nanomesh_agglomeration_and_cese_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_t1_yse2_contact_au_nanomesh_cese_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_ymecpcod_6n5_yacac3_6n5_tdmace_6n5_dese_6n5_tma_purity_and_yse2_cese_yield_gain_pct"], 86.9)
+        self.assertEqual(gov["au_nanomesh_agglomeration_and_cese_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_y_ce_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_y_ce_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_y_ce_se_precursor_leak_or_tma_ignition_pct"], 0.2)
+        self.assertEqual(gov["edge_qcl_crds_1442cm1_1082cm1_2730cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_au_nanomesh_scattering_or_cese_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_au_nanomesh_scattering_or_cese_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["ymecpcod_yacac3_tdmace_dese_tma_t1_yse2_contact_au_nanomesh_and_cese_pcm_peald_slo_met"])
+        self.assertFalse(raw["ymecpcod_yacac3_tdmace_dese_tma_t1_yse2_contact_au_nanomesh_and_cese_pcm_peald_slo_met"])
+
+    def test_lamecpcod_laacac3_tdmapr_dese_tma_u1_lase2_contact_cu_nanomesh_and_prse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_lamecpcod_laacac3_tdmapr_dese_tma_u1_lase2_contact_cu_nanomesh_and_prse_pcm_peald_sil3_sandbox(
+            lamecpcod_laacac3_tdmapr_dese_tma_trains=8,
+            governance_mode="pinn_mpc_lamecpcod_laacac3_tdmapr_dese_tma_u1_lase2_contact_cu_nanomesh_and_prse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_lamecpcod_laacac3_tdmapr_dese_tma_u1_lase2_contact_cu_nanomesh_and_prse_pcm_peald_sil3_sandbox(
+            lamecpcod_laacac3_tdmapr_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_cu_nanomesh_agglomeration_and_prse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_u1_lase2_contact_cu_nanomesh_prse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_lamecpcod_6n5_laacac3_6n5_tdmapr_6n5_dese_6n5_tma_purity_and_lase2_prse_yield_gain_pct"], 87.2)
+        self.assertEqual(gov["cu_nanomesh_agglomeration_and_prse_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_la_pr_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_la_pr_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_la_pr_se_precursor_leak_or_tma_ignition_pct"], 0.1)
+        self.assertEqual(gov["edge_qcl_crds_1436cm1_1076cm1_2724cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_cu_nanomesh_scattering_or_prse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_cu_nanomesh_scattering_or_prse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["lamecpcod_laacac3_tdmapr_dese_tma_u1_lase2_contact_cu_nanomesh_and_prse_pcm_peald_slo_met"])
+        self.assertFalse(raw["lamecpcod_laacac3_tdmapr_dese_tma_u1_lase2_contact_cu_nanomesh_and_prse_pcm_peald_slo_met"])
+
+    def test_prmecpcod_pracac3_tdmand_dese_tma_v1_prse2_contact_ni_nanomesh_and_ndse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_prmecpcod_pracac3_tdmand_dese_tma_v1_prse2_contact_ni_nanomesh_and_ndse_pcm_peald_sil3_sandbox(
+            prmecpcod_pracac3_tdmand_dese_tma_trains=8,
+            governance_mode="pinn_mpc_prmecpcod_pracac3_tdmand_dese_tma_v1_prse2_contact_ni_nanomesh_and_ndse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_prmecpcod_pracac3_tdmand_dese_tma_v1_prse2_contact_ni_nanomesh_and_ndse_pcm_peald_sil3_sandbox(
+            prmecpcod_pracac3_tdmand_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_ni_nanomesh_agglomeration_and_ndse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_v1_prse2_contact_ni_nanomesh_ndse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_prmecpcod_6n5_pracac3_6n5_tdmand_6n5_dese_6n5_tma_purity_and_prse2_ndse_yield_gain_pct"], 87.5)
+        self.assertEqual(gov["ni_nanomesh_agglomeration_and_ndse_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_pr_nd_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_pr_nd_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_pr_nd_se_precursor_leak_or_tma_ignition_pct"], 0.1)
+        self.assertEqual(gov["edge_qcl_crds_1430cm1_1070cm1_2718cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_ni_nanomesh_scattering_or_ndse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_ni_nanomesh_scattering_or_ndse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["prmecpcod_pracac3_tdmand_dese_tma_v1_prse2_contact_ni_nanomesh_and_ndse_pcm_peald_slo_met"])
+        self.assertFalse(raw["prmecpcod_pracac3_tdmand_dese_tma_v1_prse2_contact_ni_nanomesh_and_ndse_pcm_peald_slo_met"])
+
+    def test_ndmecpcod_ndacac3_tdmasm_dese_tma_w1_ndse2_contact_co_nanomesh_and_smse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_ndmecpcod_ndacac3_tdmasm_dese_tma_w1_ndse2_contact_co_nanomesh_and_smse_pcm_peald_sil3_sandbox(
+            ndmecpcod_ndacac3_tdmasm_dese_tma_trains=8,
+            governance_mode="pinn_mpc_ndmecpcod_ndacac3_tdmasm_dese_tma_w1_ndse2_contact_co_nanomesh_and_smse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_ndmecpcod_ndacac3_tdmasm_dese_tma_w1_ndse2_contact_co_nanomesh_and_smse_pcm_peald_sil3_sandbox(
+            ndmecpcod_ndacac3_tdmasm_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_co_nanomesh_agglomeration_and_smse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_w1_ndse2_contact_co_nanomesh_smse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_ndmecpcod_6n5_ndacac3_6n5_tdmasm_6n5_dese_6n5_tma_purity_and_ndse2_smse_yield_gain_pct"], 87.8)
+        self.assertEqual(gov["co_nanomesh_agglomeration_and_smse_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_nd_sm_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_nd_sm_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_nd_sm_se_precursor_leak_or_tma_ignition_pct"], 0.1)
+        self.assertEqual(gov["edge_qcl_crds_1424cm1_1064cm1_2712cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_co_nanomesh_scattering_or_smse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_co_nanomesh_scattering_or_smse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["ndmecpcod_ndacac3_tdmasm_dese_tma_w1_ndse2_contact_co_nanomesh_and_smse_pcm_peald_slo_met"])
+        self.assertFalse(raw["ndmecpcod_ndacac3_tdmasm_dese_tma_w1_ndse2_contact_co_nanomesh_and_smse_pcm_peald_slo_met"])
+
+    def test_smmecpcod_smacac3_tdmaeu_dese_tma_x1_smse2_contact_fe_nanomesh_and_euse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_smmecpcod_smacac3_tdmaeu_dese_tma_x1_smse2_contact_fe_nanomesh_and_euse_pcm_peald_sil3_sandbox(
+            smmecpcod_smacac3_tdmaeu_dese_tma_trains=8,
+            governance_mode="pinn_mpc_smmecpcod_smacac3_tdmaeu_dese_tma_x1_smse2_contact_fe_nanomesh_and_euse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_smmecpcod_smacac3_tdmaeu_dese_tma_x1_smse2_contact_fe_nanomesh_and_euse_pcm_peald_sil3_sandbox(
+            smmecpcod_smacac3_tdmaeu_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_fe_nanomesh_agglomeration_and_euse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_x1_smse2_contact_fe_nanomesh_euse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_smmecpcod_6n5_smacac3_6n5_tdmaeu_6n5_dese_6n5_tma_purity_and_smse2_euse_yield_gain_pct"], 88.1)
+        self.assertEqual(gov["fe_nanomesh_agglomeration_and_euse_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_sm_eu_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_sm_eu_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_sm_eu_se_precursor_leak_or_tma_ignition_pct"], 0.1)
+        self.assertEqual(gov["edge_qcl_crds_1418cm1_1058cm1_2706cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_fe_nanomesh_scattering_or_euse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_fe_nanomesh_scattering_or_euse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["smmecpcod_smacac3_tdmaeu_dese_tma_x1_smse2_contact_fe_nanomesh_and_euse_pcm_peald_slo_met"])
+        self.assertFalse(raw["smmecpcod_smacac3_tdmaeu_dese_tma_x1_smse2_contact_fe_nanomesh_and_euse_pcm_peald_slo_met"])
+
+    def test_eumecpcod_euacac3_tdmagd_dese_tma_y1_euse2_contact_ru_nanomesh_and_gdse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_eumecpcod_euacac3_tdmagd_dese_tma_y1_euse2_contact_ru_nanomesh_and_gdse_pcm_peald_sil3_sandbox(
+            eumecpcod_euacac3_tdmagd_dese_tma_trains=8,
+            governance_mode="pinn_mpc_eumecpcod_euacac3_tdmagd_dese_tma_y1_euse2_contact_ru_nanomesh_and_gdse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_eumecpcod_euacac3_tdmagd_dese_tma_y1_euse2_contact_ru_nanomesh_and_gdse_pcm_peald_sil3_sandbox(
+            eumecpcod_euacac3_tdmagd_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_ru_nanomesh_agglomeration_and_gdse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_y1_euse2_contact_ru_nanomesh_gdse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_eumecpcod_6n5_euacac3_6n5_tdmagd_6n5_dese_6n5_tma_purity_and_euse2_gdse_yield_gain_pct"], 88.4)
+        self.assertEqual(gov["ru_nanomesh_agglomeration_and_gdse_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_eu_gd_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_eu_gd_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_eu_gd_se_precursor_leak_or_tma_ignition_pct"], 0.1)
+        self.assertEqual(gov["edge_qcl_crds_1412cm1_1052cm1_2700cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_ru_nanomesh_scattering_or_gdse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_ru_nanomesh_scattering_or_gdse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["eumecpcod_euacac3_tdmagd_dese_tma_y1_euse2_contact_ru_nanomesh_and_gdse_pcm_peald_slo_met"])
+        self.assertFalse(raw["eumecpcod_euacac3_tdmagd_dese_tma_y1_euse2_contact_ru_nanomesh_and_gdse_pcm_peald_slo_met"])
+
+    def test_tbmecpcod_tbacac3_tdmaho_dese_tma_z1_tbse2_contact_os_nanomesh_and_hose_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_tbmecpcod_tbacac3_tdmaho_dese_tma_z1_tbse2_contact_os_nanomesh_and_hose_pcm_peald_sil3_sandbox(
+            tbmecpcod_tbacac3_tdmaho_dese_tma_trains=8,
+            governance_mode="pinn_mpc_tbmecpcod_tbacac3_tdmaho_dese_tma_z1_tbse2_contact_os_nanomesh_and_hose_pcm_peald_sil3_edge",
+        )
+        raw = simulate_tbmecpcod_tbacac3_tdmaho_dese_tma_z1_tbse2_contact_os_nanomesh_and_hose_pcm_peald_sil3_sandbox(
+            tbmecpcod_tbacac3_tdmaho_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_os_nanomesh_agglomeration_and_hose_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_z1_tbse2_contact_os_nanomesh_hose_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_tbmecpcod_6n5_tbacac3_6n5_tdmaho_6n5_dese_6n5_tma_purity_and_tbse2_hose_yield_gain_pct"], 88.7)
+        self.assertEqual(gov["os_nanomesh_agglomeration_and_hose_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_tb_ho_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_tb_ho_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_tb_ho_se_precursor_leak_or_tma_ignition_pct"], 0.1)
+        self.assertEqual(gov["edge_qcl_crds_1406cm1_1046cm1_2694cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_os_nanomesh_scattering_or_hose_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_os_nanomesh_scattering_or_hose_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["tbmecpcod_tbacac3_tdmaho_dese_tma_z1_tbse2_contact_os_nanomesh_and_hose_pcm_peald_slo_met"])
+        self.assertFalse(raw["tbmecpcod_tbacac3_tdmaho_dese_tma_z1_tbse2_contact_os_nanomesh_and_hose_pcm_peald_slo_met"])
+
+    def test_ybmecpcod_ybacac3_tdmaer_dese_tma_aa1_ybse2_contact_re_nanomesh_and_erse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_ybmecpcod_ybacac3_tdmaer_dese_tma_aa1_ybse2_contact_re_nanomesh_and_erse_pcm_peald_sil3_sandbox(
+            ybmecpcod_ybacac3_tdmaer_dese_tma_trains=8,
+            governance_mode="pinn_mpc_ybmecpcod_ybacac3_tdmaer_dese_tma_aa1_ybse2_contact_re_nanomesh_and_erse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_ybmecpcod_ybacac3_tdmaer_dese_tma_aa1_ybse2_contact_re_nanomesh_and_erse_pcm_peald_sil3_sandbox(
+            ybmecpcod_ybacac3_tdmaer_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_re_nanomesh_agglomeration_and_erse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_aa1_ybse2_contact_re_nanomesh_erse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_ybmecpcod_6n5_ybacac3_6n5_tdmaer_6n5_dese_6n5_tma_purity_and_ybse2_erse_yield_gain_pct"], 89.0)
+        self.assertEqual(gov["re_nanomesh_agglomeration_and_erse_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_yb_er_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_yb_er_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_yb_er_se_precursor_leak_or_tma_ignition_pct"], 0.1)
+        self.assertEqual(gov["edge_qcl_crds_1400cm1_1040cm1_2688cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_re_nanomesh_scattering_or_erse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_re_nanomesh_scattering_or_erse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["ybmecpcod_ybacac3_tdmaer_dese_tma_aa1_ybse2_contact_re_nanomesh_and_erse_pcm_peald_slo_met"])
+        self.assertFalse(raw["ybmecpcod_ybacac3_tdmaer_dese_tma_aa1_ybse2_contact_re_nanomesh_and_erse_pcm_peald_slo_met"])
+
+    def test_lumecpcod_luacac3_tdmatm_dese_tma_ab1_luse2_contact_w_nanomesh_and_tmse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_lumecpcod_luacac3_tdmatm_dese_tma_ab1_luse2_contact_w_nanomesh_and_tmse_pcm_peald_sil3_sandbox(
+            lumecpcod_luacac3_tdmatm_dese_tma_trains=8,
+            governance_mode="pinn_mpc_lumecpcod_luacac3_tdmatm_dese_tma_ab1_luse2_contact_w_nanomesh_and_tmse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_lumecpcod_luacac3_tdmatm_dese_tma_ab1_luse2_contact_w_nanomesh_and_tmse_pcm_peald_sil3_sandbox(
+            lumecpcod_luacac3_tdmatm_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_w_nanomesh_agglomeration_and_tmse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_ab1_luse2_contact_w_nanomesh_tmse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_lumecpcod_6n5_luacac3_6n5_tdmatm_6n5_dese_6n5_tma_purity_and_luse2_tmse_yield_gain_pct"], 89.3)
+        self.assertEqual(gov["w_nanomesh_agglomeration_and_tmse_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_lu_tm_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_lu_tm_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_lu_tm_se_precursor_leak_or_tma_ignition_pct"], 0.1)
+        self.assertEqual(gov["edge_qcl_crds_1394cm1_1034cm1_2682cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_w_nanomesh_scattering_or_tmse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_w_nanomesh_scattering_or_tmse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["lumecpcod_luacac3_tdmatm_dese_tma_ab1_luse2_contact_w_nanomesh_and_tmse_pcm_peald_slo_met"])
+        self.assertFalse(raw["lumecpcod_luacac3_tdmatm_dese_tma_ab1_luse2_contact_w_nanomesh_and_tmse_pcm_peald_slo_met"])
+
+    def test_gdmecpcod_gdacac3_tdmady_dese_tma_ac1_gdse2_contact_ta_nanomesh_and_dyse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_gdmecpcod_gdacac3_tdmady_dese_tma_ac1_gdse2_contact_ta_nanomesh_and_dyse_pcm_peald_sil3_sandbox(
+            gdmecpcod_gdacac3_tdmady_dese_tma_trains=8,
+            governance_mode="pinn_mpc_gdmecpcod_gdacac3_tdmady_dese_tma_ac1_gdse2_contact_ta_nanomesh_and_dyse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_gdmecpcod_gdacac3_tdmady_dese_tma_ac1_gdse2_contact_ta_nanomesh_and_dyse_pcm_peald_sil3_sandbox(
+            gdmecpcod_gdacac3_tdmady_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_ta_nanomesh_agglomeration_and_dyse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_ac1_gdse2_contact_ta_nanomesh_dyse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_gdmecpcod_6n5_gdacac3_6n5_tdmady_6n5_dese_6n5_tma_purity_and_gdse2_dyse_yield_gain_pct"], 89.6)
+        self.assertEqual(gov["ta_nanomesh_agglomeration_and_dyse_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_gd_dy_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_gd_dy_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_gd_dy_se_precursor_leak_or_tma_ignition_pct"], 0.1)
+        self.assertEqual(gov["edge_qcl_crds_1388cm1_1028cm1_2676cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_ta_nanomesh_scattering_or_dyse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_ta_nanomesh_scattering_or_dyse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["gdmecpcod_gdacac3_tdmady_dese_tma_ac1_gdse2_contact_ta_nanomesh_and_dyse_pcm_peald_slo_met"])
+        self.assertFalse(raw["gdmecpcod_gdacac3_tdmady_dese_tma_ac1_gdse2_contact_ta_nanomesh_and_dyse_pcm_peald_slo_met"])
+
+    def test_smmecpcod_smacac3_tdmagd_dese_tma_ad1_smse2_contact_hf_nanomesh_and_gdse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_smmecpcod_smacac3_tdmagd_dese_tma_ad1_smse2_contact_hf_nanomesh_and_gdse_pcm_peald_sil3_sandbox(
+            smmecpcod_smacac3_tdmagd_dese_tma_trains=8,
+            governance_mode="pinn_mpc_smmecpcod_smacac3_tdmagd_dese_tma_ad1_smse2_contact_hf_nanomesh_and_gdse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_smmecpcod_smacac3_tdmagd_dese_tma_ad1_smse2_contact_hf_nanomesh_and_gdse_pcm_peald_sil3_sandbox(
+            smmecpcod_smacac3_tdmagd_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_hf_nanomesh_agglomeration_and_gdse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_ad1_smse2_contact_hf_nanomesh_gdse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_smmecpcod_6n5_smacac3_6n5_tdmagd_6n5_dese_6n5_tma_purity_and_smse2_gdse_yield_gain_pct"], 89.8)
+        self.assertEqual(gov["hf_nanomesh_agglomeration_and_gdse_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_sm_gd_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_sm_gd_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_sm_gd_se_precursor_leak_or_tma_ignition_pct"], 0.1)
+        self.assertEqual(gov["edge_qcl_crds_1384cm1_1024cm1_2672cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_hf_nanomesh_scattering_or_gdse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_hf_nanomesh_scattering_or_gdse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["smmecpcod_smacac3_tdmagd_dese_tma_ad1_smse2_contact_hf_nanomesh_and_gdse_pcm_peald_slo_met"])
+        self.assertFalse(raw["smmecpcod_smacac3_tdmagd_dese_tma_ad1_smse2_contact_hf_nanomesh_and_gdse_pcm_peald_slo_met"])
+
+    def test_ndmecpcod_ndacac3_tdmapr_dese_tma_ae1_ndse2_contact_zr_nanomesh_and_prse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_ndmecpcod_ndacac3_tdmapr_dese_tma_ae1_ndse2_contact_zr_nanomesh_and_prse_pcm_peald_sil3_sandbox(
+            ndmecpcod_ndacac3_tdmapr_dese_tma_trains=8,
+            governance_mode="pinn_mpc_ndmecpcod_ndacac3_tdmapr_dese_tma_ae1_ndse2_contact_zr_nanomesh_and_prse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_ndmecpcod_ndacac3_tdmapr_dese_tma_ae1_ndse2_contact_zr_nanomesh_and_prse_pcm_peald_sil3_sandbox(
+            ndmecpcod_ndacac3_tdmapr_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_zr_nanomesh_agglomeration_and_prse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_ae1_ndse2_contact_zr_nanomesh_prse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_ndmecpcod_6n5_ndacac3_6n5_tdmapr_6n5_dese_6n5_tma_purity_and_ndse2_prse_yield_gain_pct"], 90.0)
+        self.assertEqual(gov["zr_nanomesh_agglomeration_and_prse_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_nd_pr_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_nd_pr_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_nd_pr_se_precursor_leak_or_tma_ignition_pct"], 0.1)
+        self.assertEqual(gov["edge_qcl_crds_1380cm1_1020cm1_2668cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_zr_nanomesh_scattering_or_prse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_zr_nanomesh_scattering_or_prse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["ndmecpcod_ndacac3_tdmapr_dese_tma_ae1_ndse2_contact_zr_nanomesh_and_prse_pcm_peald_slo_met"])
+        self.assertFalse(raw["ndmecpcod_ndacac3_tdmapr_dese_tma_ae1_ndse2_contact_zr_nanomesh_and_prse_pcm_peald_slo_met"])
+
+    def test_eumecpcod_euacac3_tdmatb_dese_tma_af1_euse2_contact_ti_nanomesh_and_tbse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_eumecpcod_euacac3_tdmatb_dese_tma_af1_euse2_contact_ti_nanomesh_and_tbse_pcm_peald_sil3_sandbox(
+            eumecpcod_euacac3_tdmatb_dese_tma_trains=8,
+            governance_mode="pinn_mpc_eumecpcod_euacac3_tdmatb_dese_tma_af1_euse2_contact_ti_nanomesh_and_tbse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_eumecpcod_euacac3_tdmatb_dese_tma_af1_euse2_contact_ti_nanomesh_and_tbse_pcm_peald_sil3_sandbox(
+            eumecpcod_euacac3_tdmatb_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_ti_nanomesh_agglomeration_and_tbse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_af1_euse2_contact_ti_nanomesh_tbse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_eumecpcod_6n5_euacac3_6n5_tdmatb_6n5_dese_6n5_tma_purity_and_euse2_tbse_yield_gain_pct"], 90.2)
+        self.assertEqual(gov["ti_nanomesh_agglomeration_and_tbse_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_eu_tb_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_eu_tb_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_eu_tb_se_precursor_leak_or_tma_ignition_pct"], 0.1)
+        self.assertEqual(gov["edge_qcl_crds_1376cm1_1016cm1_2664cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_ti_nanomesh_scattering_or_tbse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_ti_nanomesh_scattering_or_tbse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["eumecpcod_euacac3_tdmatb_dese_tma_af1_euse2_contact_ti_nanomesh_and_tbse_pcm_peald_slo_met"])
+        self.assertFalse(raw["eumecpcod_euacac3_tdmatb_dese_tma_af1_euse2_contact_ti_nanomesh_and_tbse_pcm_peald_slo_met"])
+
+    def test_tbmecpcod_tbacac3_tdmady_dese_tma_ag1_tbse2_contact_v_nanomesh_and_dyse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_tbmecpcod_tbacac3_tdmady_dese_tma_ag1_tbse2_contact_v_nanomesh_and_dyse_pcm_peald_sil3_sandbox(
+            tbmecpcod_tbacac3_tdmady_dese_tma_trains=8,
+            governance_mode="pinn_mpc_tbmecpcod_tbacac3_tdmady_dese_tma_ag1_tbse2_contact_v_nanomesh_and_dyse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_tbmecpcod_tbacac3_tdmady_dese_tma_ag1_tbse2_contact_v_nanomesh_and_dyse_pcm_peald_sil3_sandbox(
+            tbmecpcod_tbacac3_tdmady_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_v_nanomesh_agglomeration_and_dyse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_ag1_tbse2_contact_v_nanomesh_dyse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_tbmecpcod_6n5_tbacac3_6n5_tdmady_6n5_dese_6n5_tma_purity_and_tbse2_dyse_yield_gain_pct"], 90.4)
+        self.assertEqual(gov["v_nanomesh_agglomeration_and_dyse_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_tb_dy_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_tb_dy_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_tb_dy_se_precursor_leak_or_tma_ignition_pct"], 0.1)
+        self.assertEqual(gov["edge_qcl_crds_1372cm1_1012cm1_2660cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_v_nanomesh_scattering_or_dyse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_v_nanomesh_scattering_or_dyse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["tbmecpcod_tbacac3_tdmady_dese_tma_ag1_tbse2_contact_v_nanomesh_and_dyse_pcm_peald_slo_met"])
+        self.assertFalse(raw["tbmecpcod_tbacac3_tdmady_dese_tma_ag1_tbse2_contact_v_nanomesh_and_dyse_pcm_peald_slo_met"])
+
+    def test_dymecpcod_dyacac3_tdmaho_dese_tma_ah1_dyse2_contact_cr_nanomesh_and_hose_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_dymecpcod_dyacac3_tdmaho_dese_tma_ah1_dyse2_contact_cr_nanomesh_and_hose_pcm_peald_sil3_sandbox(
+            dymecpcod_dyacac3_tdmaho_dese_tma_trains=8,
+            governance_mode="pinn_mpc_dymecpcod_dyacac3_tdmaho_dese_tma_ah1_dyse2_contact_cr_nanomesh_and_hose_pcm_peald_sil3_edge",
+        )
+        raw = simulate_dymecpcod_dyacac3_tdmaho_dese_tma_ah1_dyse2_contact_cr_nanomesh_and_hose_pcm_peald_sil3_sandbox(
+            dymecpcod_dyacac3_tdmaho_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_cr_nanomesh_agglomeration_and_hose_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_ah1_dyse2_contact_cr_nanomesh_hose_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_dymecpcod_6n5_dyacac3_6n5_tdmaho_6n5_dese_6n5_tma_purity_and_dyse2_hose_yield_gain_pct"], 90.6)
+        self.assertEqual(gov["cr_nanomesh_agglomeration_and_hose_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_dy_ho_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_dy_ho_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_dy_ho_se_precursor_leak_or_tma_ignition_pct"], 0.1)
+        self.assertEqual(gov["edge_qcl_crds_1368cm1_1008cm1_2656cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_cr_nanomesh_scattering_or_hose_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_cr_nanomesh_scattering_or_hose_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["dymecpcod_dyacac3_tdmaho_dese_tma_ah1_dyse2_contact_cr_nanomesh_and_hose_pcm_peald_slo_met"])
+        self.assertFalse(raw["dymecpcod_dyacac3_tdmaho_dese_tma_ah1_dyse2_contact_cr_nanomesh_and_hose_pcm_peald_slo_met"])
+
+    def test_homecpcod_hoacac3_tdmaer_dese_tma_ai1_hose2_contact_mn_nanomesh_and_erse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_homecpcod_hoacac3_tdmaer_dese_tma_ai1_hose2_contact_mn_nanomesh_and_erse_pcm_peald_sil3_sandbox(
+            homecpcod_hoacac3_tdmaer_dese_tma_trains=8,
+            governance_mode="pinn_mpc_homecpcod_hoacac3_tdmaer_dese_tma_ai1_hose2_contact_mn_nanomesh_and_erse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_homecpcod_hoacac3_tdmaer_dese_tma_ai1_hose2_contact_mn_nanomesh_and_erse_pcm_peald_sil3_sandbox(
+            homecpcod_hoacac3_tdmaer_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_mn_nanomesh_agglomeration_and_erse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_ai1_hose2_contact_mn_nanomesh_erse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_homecpcod_6n5_hoacac3_6n5_tdmaer_6n5_dese_6n5_tma_purity_and_hose2_erse_yield_gain_pct"], 90.8)
+        self.assertEqual(gov["mn_nanomesh_agglomeration_and_erse_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ho_er_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_ho_er_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_ho_er_se_precursor_leak_or_tma_ignition_pct"], 0.1)
+        self.assertEqual(gov["edge_qcl_crds_1364cm1_1004cm1_2652cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_mn_nanomesh_scattering_or_erse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_mn_nanomesh_scattering_or_erse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["homecpcod_hoacac3_tdmaer_dese_tma_ai1_hose2_contact_mn_nanomesh_and_erse_pcm_peald_slo_met"])
+        self.assertFalse(raw["homecpcod_hoacac3_tdmaer_dese_tma_ai1_hose2_contact_mn_nanomesh_and_erse_pcm_peald_slo_met"])
+
+    def test_ermecpcod_eracac3_tdmatm_dese_tma_aj1_erse2_contact_fe_nanomesh_and_tmse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_ermecpcod_eracac3_tdmatm_dese_tma_aj1_erse2_contact_fe_nanomesh_and_tmse_pcm_peald_sil3_sandbox(
+            ermecpcod_eracac3_tdmatm_dese_tma_trains=8,
+            governance_mode="pinn_mpc_ermecpcod_eracac3_tdmatm_dese_tma_aj1_erse2_contact_fe_nanomesh_and_tmse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_ermecpcod_eracac3_tdmatm_dese_tma_aj1_erse2_contact_fe_nanomesh_and_tmse_pcm_peald_sil3_sandbox(
+            ermecpcod_eracac3_tdmatm_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_fe_nanomesh_agglomeration_and_tmse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_aj1_erse2_contact_fe_nanomesh_tmse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_ermecpcod_6n5_eracac3_6n5_tdmatm_6n5_dese_6n5_tma_purity_and_erse2_tmse_yield_gain_pct"], 91.0)
+        self.assertEqual(gov["fe_nanomesh_agglomeration_and_tmse_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_er_tm_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_er_tm_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_er_tm_se_precursor_leak_or_tma_ignition_pct"], 0.1)
+        self.assertEqual(gov["edge_qcl_crds_1360cm1_1000cm1_2648cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_fe_nanomesh_scattering_or_tmse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_fe_nanomesh_scattering_or_tmse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["ermecpcod_eracac3_tdmatm_dese_tma_aj1_erse2_contact_fe_nanomesh_and_tmse_pcm_peald_slo_met"])
+        self.assertFalse(raw["ermecpcod_eracac3_tdmatm_dese_tma_aj1_erse2_contact_fe_nanomesh_and_tmse_pcm_peald_slo_met"])
+
+    def test_tmmecpcod_tmacac3_tdmayb_dese_tma_ak1_tmse2_contact_co_nanomesh_and_ybse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_tmmecpcod_tmacac3_tdmayb_dese_tma_ak1_tmse2_contact_co_nanomesh_and_ybse_pcm_peald_sil3_sandbox(
+            tmmecpcod_tmacac3_tdmayb_dese_tma_trains=8,
+            governance_mode="pinn_mpc_tmmecpcod_tmacac3_tdmayb_dese_tma_ak1_tmse2_contact_co_nanomesh_and_ybse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_tmmecpcod_tmacac3_tdmayb_dese_tma_ak1_tmse2_contact_co_nanomesh_and_ybse_pcm_peald_sil3_sandbox(
+            tmmecpcod_tmacac3_tdmayb_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_co_nanomesh_agglomeration_and_ybse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_ak1_tmse2_contact_co_nanomesh_ybse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_tmmecpcod_6n5_tmacac3_6n5_tdmayb_6n5_dese_6n5_tma_purity_and_tmse2_ybse_yield_gain_pct"], 91.2)
+        self.assertEqual(gov["co_nanomesh_agglomeration_and_ybse_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_tm_yb_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_tm_yb_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_tm_yb_se_precursor_leak_or_tma_ignition_pct"], 0.1)
+        self.assertEqual(gov["edge_qcl_crds_1356cm1_996cm1_2644cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_co_nanomesh_scattering_or_ybse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_co_nanomesh_scattering_or_ybse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["tmmecpcod_tmacac3_tdmayb_dese_tma_ak1_tmse2_contact_co_nanomesh_and_ybse_pcm_peald_slo_met"])
+        self.assertFalse(raw["tmmecpcod_tmacac3_tdmayb_dese_tma_ak1_tmse2_contact_co_nanomesh_and_ybse_pcm_peald_slo_met"])
+
+    def test_ybmecpcod_ybacac3_tdmalu_dese_tma_al1_ybse2_contact_ni_nanomesh_and_luse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_ybmecpcod_ybacac3_tdmalu_dese_tma_al1_ybse2_contact_ni_nanomesh_and_luse_pcm_peald_sil3_sandbox(
+            ybmecpcod_ybacac3_tdmalu_dese_tma_trains=8,
+            governance_mode="pinn_mpc_ybmecpcod_ybacac3_tdmalu_dese_tma_al1_ybse2_contact_ni_nanomesh_and_luse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_ybmecpcod_ybacac3_tdmalu_dese_tma_al1_ybse2_contact_ni_nanomesh_and_luse_pcm_peald_sil3_sandbox(
+            ybmecpcod_ybacac3_tdmalu_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_ni_nanomesh_agglomeration_and_luse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_al1_ybse2_contact_ni_nanomesh_luse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_ybmecpcod_6n5_ybacac3_6n5_tdmalu_6n5_dese_6n5_tma_purity_and_ybse2_luse_yield_gain_pct"], 91.4)
+        self.assertEqual(gov["ni_nanomesh_agglomeration_and_luse_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_yb_lu_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_yb_lu_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_yb_lu_se_precursor_leak_or_tma_ignition_pct"], 0.1)
+        self.assertEqual(gov["edge_qcl_crds_1352cm1_992cm1_2640cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_ni_nanomesh_scattering_or_luse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_ni_nanomesh_scattering_or_luse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["ybmecpcod_ybacac3_tdmalu_dese_tma_al1_ybse2_contact_ni_nanomesh_and_luse_pcm_peald_slo_met"])
+        self.assertFalse(raw["ybmecpcod_ybacac3_tdmalu_dese_tma_al1_ybse2_contact_ni_nanomesh_and_luse_pcm_peald_slo_met"])
+
+    def test_lumecpcod_luacac3_tdmahf_dese_tma_am1_luse2_contact_cu_nanomesh_and_hfse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_lumecpcod_luacac3_tdmahf_dese_tma_am1_luse2_contact_cu_nanomesh_and_hfse_pcm_peald_sil3_sandbox(
+            lumecpcod_luacac3_tdmahf_dese_tma_trains=8,
+            governance_mode="pinn_mpc_lumecpcod_luacac3_tdmahf_dese_tma_am1_luse2_contact_cu_nanomesh_and_hfse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_lumecpcod_luacac3_tdmahf_dese_tma_am1_luse2_contact_cu_nanomesh_and_hfse_pcm_peald_sil3_sandbox(
+            lumecpcod_luacac3_tdmahf_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_cu_nanomesh_agglomeration_and_hfse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_am1_luse2_contact_cu_nanomesh_hfse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_lumecpcod_6n5_luacac3_6n5_tdmahf_6n5_dese_6n5_tma_purity_and_luse2_hfse2_yield_gain_pct"], 91.6)
+        self.assertEqual(gov["cu_nanomesh_agglomeration_and_hfse_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_lu_hf_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_lu_hf_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_lu_hf_se_precursor_leak_or_tma_ignition_pct"], 0.1)
+        self.assertEqual(gov["edge_qcl_crds_1348cm1_988cm1_2636cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_cu_nanomesh_scattering_or_hfse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_cu_nanomesh_scattering_or_hfse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["lumecpcod_luacac3_tdmahf_dese_tma_am1_luse2_contact_cu_nanomesh_and_hfse_pcm_peald_slo_met"])
+        self.assertFalse(raw["lumecpcod_luacac3_tdmahf_dese_tma_am1_luse2_contact_cu_nanomesh_and_hfse_pcm_peald_slo_met"])
+
+    def test_hfmecpcod_hfacac4_tdmata_dese_tma_an1_hfse2_contact_ag_nanomesh_and_tase_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_hfmecpcod_hfacac4_tdmata_dese_tma_an1_hfse2_contact_ag_nanomesh_and_tase_pcm_peald_sil3_sandbox(
+            hfmecpcod_hfacac4_tdmata_dese_tma_trains=8,
+            governance_mode="pinn_mpc_hfmecpcod_hfacac4_tdmata_dese_tma_an1_hfse2_contact_ag_nanomesh_and_tase_pcm_peald_sil3_edge",
+        )
+        raw = simulate_hfmecpcod_hfacac4_tdmata_dese_tma_an1_hfse2_contact_ag_nanomesh_and_tase_pcm_peald_sil3_sandbox(
+            hfmecpcod_hfacac4_tdmata_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_ag_nanomesh_agglomeration_and_tase_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_an1_hfse2_contact_ag_nanomesh_tase_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_hfmecpcod_6n5_hfacac4_6n5_tdmata_6n5_dese_6n5_tma_purity_and_hfse2_tase2_yield_gain_pct"], 91.8)
+        self.assertEqual(gov["ag_nanomesh_agglomeration_and_tase_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_hf_ta_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_hf_ta_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_hf_ta_se_precursor_leak_or_tma_ignition_pct"], 0.1)
+        self.assertEqual(gov["edge_qcl_crds_1344cm1_984cm1_2632cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_ag_nanomesh_scattering_or_tase_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_ag_nanomesh_scattering_or_tase_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["hfmecpcod_hfacac4_tdmata_dese_tma_an1_hfse2_contact_ag_nanomesh_and_tase_pcm_peald_slo_met"])
+        self.assertFalse(raw["hfmecpcod_hfacac4_tdmata_dese_tma_an1_hfse2_contact_ag_nanomesh_and_tase_pcm_peald_slo_met"])
+
+    def test_tamecpcod_taacac5_tdmaw_dese_tma_ao1_tase2_contact_au_nanomesh_and_wse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_tamecpcod_taacac5_tdmaw_dese_tma_ao1_tase2_contact_au_nanomesh_and_wse_pcm_peald_sil3_sandbox(
+            tamecpcod_taacac5_tdmaw_dese_tma_trains=8,
+            governance_mode="pinn_mpc_tamecpcod_taacac5_tdmaw_dese_tma_ao1_tase2_contact_au_nanomesh_and_wse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_tamecpcod_taacac5_tdmaw_dese_tma_ao1_tase2_contact_au_nanomesh_and_wse_pcm_peald_sil3_sandbox(
+            tamecpcod_taacac5_tdmaw_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_au_nanomesh_agglomeration_and_wse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_ao1_tase2_contact_au_nanomesh_wse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_tamecpcod_6n5_taacac5_6n5_tdmaw_6n5_dese_6n5_tma_purity_and_tase2_wse2_yield_gain_pct"], 92.0)
+        self.assertEqual(gov["au_nanomesh_agglomeration_and_wse_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ta_w_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_ta_w_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_ta_w_se_precursor_leak_or_tma_ignition_pct"], 0.1)
+        self.assertEqual(gov["edge_qcl_crds_1340cm1_980cm1_2628cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_au_nanomesh_scattering_or_wse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_au_nanomesh_scattering_or_wse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["tamecpcod_taacac5_tdmaw_dese_tma_ao1_tase2_contact_au_nanomesh_and_wse_pcm_peald_slo_met"])
+        self.assertFalse(raw["tamecpcod_taacac5_tdmaw_dese_tma_ao1_tase2_contact_au_nanomesh_and_wse_pcm_peald_slo_met"])
+
+    def test_wmecpcod_wacac6_tdmamo_dese_tma_ap1_wse2_contact_pt_nanomesh_and_mose_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_wmecpcod_wacac6_tdmamo_dese_tma_ap1_wse2_contact_pt_nanomesh_and_mose_pcm_peald_sil3_sandbox(
+            wmecpcod_wacac6_tdmamo_dese_tma_trains=8,
+            governance_mode="pinn_mpc_wmecpcod_wacac6_tdmamo_dese_tma_ap1_wse2_contact_pt_nanomesh_and_mose_pcm_peald_sil3_edge",
+        )
+        raw = simulate_wmecpcod_wacac6_tdmamo_dese_tma_ap1_wse2_contact_pt_nanomesh_and_mose_pcm_peald_sil3_sandbox(
+            wmecpcod_wacac6_tdmamo_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_pt_nanomesh_agglomeration_and_mose_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_ap1_wse2_contact_pt_nanomesh_mose_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_wmecpcod_6n5_wacac6_6n5_tdmamo_6n5_dese_6n5_tma_purity_and_wse2_mose2_yield_gain_pct"], 92.2)
+        self.assertEqual(gov["pt_nanomesh_agglomeration_and_mose_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_w_mo_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_w_mo_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_w_mo_se_precursor_leak_or_tma_ignition_pct"], 0.1)
+        self.assertEqual(gov["edge_qcl_crds_1336cm1_976cm1_2624cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_pt_nanomesh_scattering_or_mose_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_pt_nanomesh_scattering_or_mose_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["wmecpcod_wacac6_tdmamo_dese_tma_ap1_wse2_contact_pt_nanomesh_and_mose_pcm_peald_slo_met"])
+        self.assertFalse(raw["wmecpcod_wacac6_tdmamo_dese_tma_ap1_wse2_contact_pt_nanomesh_and_mose_pcm_peald_slo_met"])
+
+    def test_momecpcod_moacac6_tdmare_dese_tma_aq1_mose2_contact_ir_nanomesh_and_rese_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_momecpcod_moacac6_tdmare_dese_tma_aq1_mose2_contact_ir_nanomesh_and_rese_pcm_peald_sil3_sandbox(
+            momecpcod_moacac6_tdmare_dese_tma_trains=8,
+            governance_mode="pinn_mpc_momecpcod_moacac6_tdmare_dese_tma_aq1_mose2_contact_ir_nanomesh_and_rese_pcm_peald_sil3_edge",
+        )
+        raw = simulate_momecpcod_moacac6_tdmare_dese_tma_aq1_mose2_contact_ir_nanomesh_and_rese_pcm_peald_sil3_sandbox(
+            momecpcod_moacac6_tdmare_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_ir_nanomesh_agglomeration_and_rese_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_aq1_mose2_contact_ir_nanomesh_rese_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_momecpcod_6n5_moacac6_6n5_tdmare_6n5_dese_6n5_tma_purity_and_mose2_rese2_yield_gain_pct"], 92.4)
+        self.assertEqual(gov["ir_nanomesh_agglomeration_and_rese_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_mo_re_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_mo_re_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_mo_re_se_precursor_leak_or_tma_ignition_pct"], 0.1)
+        self.assertEqual(gov["edge_qcl_crds_1332cm1_972cm1_2620cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_ir_nanomesh_scattering_or_rese_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_ir_nanomesh_scattering_or_rese_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["momecpcod_moacac6_tdmare_dese_tma_aq1_mose2_contact_ir_nanomesh_and_rese_pcm_peald_slo_met"])
+        self.assertFalse(raw["momecpcod_moacac6_tdmare_dese_tma_aq1_mose2_contact_ir_nanomesh_and_rese_pcm_peald_slo_met"])
+
+    def test_remecpcod_reacac6_tdmaos_dese_tma_ar1_rese2_contact_ru_nanomesh_and_osse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_remecpcod_reacac6_tdmaos_dese_tma_ar1_rese2_contact_ru_nanomesh_and_osse_pcm_peald_sil3_sandbox(
+            remecpcod_reacac6_tdmaos_dese_tma_trains=8,
+            governance_mode="pinn_mpc_remecpcod_reacac6_tdmaos_dese_tma_ar1_rese2_contact_ru_nanomesh_and_osse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_remecpcod_reacac6_tdmaos_dese_tma_ar1_rese2_contact_ru_nanomesh_and_osse_pcm_peald_sil3_sandbox(
+            remecpcod_reacac6_tdmaos_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_ru_nanomesh_agglomeration_and_osse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_ar1_rese2_contact_ru_nanomesh_osse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_remecpcod_6n5_reacac6_6n5_tdmaos_6n5_dese_6n5_tma_purity_and_rese2_osse2_yield_gain_pct"], 92.6)
+        self.assertEqual(gov["ru_nanomesh_agglomeration_and_osse_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_re_os_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_re_os_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_re_os_se_precursor_leak_or_tma_ignition_pct"], 0.1)
+        self.assertEqual(gov["edge_qcl_crds_1328cm1_968cm1_2616cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_ru_nanomesh_scattering_or_osse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_ru_nanomesh_scattering_or_osse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["remecpcod_reacac6_tdmaos_dese_tma_ar1_rese2_contact_ru_nanomesh_and_osse_pcm_peald_slo_met"])
+        self.assertFalse(raw["remecpcod_reacac6_tdmaos_dese_tma_ar1_rese2_contact_ru_nanomesh_and_osse_pcm_peald_slo_met"])
+
+    def test_osmecpcod_osacac6_tdmarh_dese_tma_as1_osse2_contact_ir_nanomesh_and_rhse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_osmecpcod_osacac6_tdmarh_dese_tma_as1_osse2_contact_ir_nanomesh_and_rhse_pcm_peald_sil3_sandbox(
+            osmecpcod_osacac6_tdmarh_dese_tma_trains=8,
+            governance_mode="pinn_mpc_osmecpcod_osacac6_tdmarh_dese_tma_as1_osse2_contact_ir_nanomesh_and_rhse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_osmecpcod_osacac6_tdmarh_dese_tma_as1_osse2_contact_ir_nanomesh_and_rhse_pcm_peald_sil3_sandbox(
+            osmecpcod_osacac6_tdmarh_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_ir_nanomesh_agglomeration_and_rhse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_as1_osse2_contact_ir_nanomesh_rhse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_osmecpcod_6n5_osacac6_6n5_tdmarh_6n5_dese_6n5_tma_purity_and_osse2_rhse2_yield_gain_pct"], 92.8)
+        self.assertEqual(gov["ir_nanomesh_agglomeration_and_rhse_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_os_rh_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_os_rh_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_os_rh_se_precursor_leak_or_tma_ignition_pct"], 0.1)
+        self.assertEqual(gov["edge_qcl_crds_1326cm1_966cm1_2614cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_ir_nanomesh_scattering_or_rhse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_ir_nanomesh_scattering_or_rhse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["osmecpcod_osacac6_tdmarh_dese_tma_as1_osse2_contact_ir_nanomesh_and_rhse_pcm_peald_slo_met"])
+        self.assertFalse(raw["osmecpcod_osacac6_tdmarh_dese_tma_as1_osse2_contact_ir_nanomesh_and_rhse_pcm_peald_slo_met"])
+
+    def test_rhmecpcod_rhacac6_tdmair_dese_tma_at1_rhse2_contact_pt_nanomesh_and_irse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_rhmecpcod_rhacac6_tdmair_dese_tma_at1_rhse2_contact_pt_nanomesh_and_irse_pcm_peald_sil3_sandbox(
+            rhmecpcod_rhacac6_tdmair_dese_tma_trains=8,
+            governance_mode="pinn_mpc_rhmecpcod_rhacac6_tdmair_dese_tma_at1_rhse2_contact_pt_nanomesh_and_irse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_rhmecpcod_rhacac6_tdmair_dese_tma_at1_rhse2_contact_pt_nanomesh_and_irse_pcm_peald_sil3_sandbox(
+            rhmecpcod_rhacac6_tdmair_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_pt_nanomesh_agglomeration_and_irse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_at1_rhse2_contact_pt_nanomesh_irse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_rhmecpcod_6n5_rhacac6_6n5_tdmair_6n5_dese_6n5_tma_purity_and_rhse2_irse2_yield_gain_pct"], 93.0)
+        self.assertEqual(gov["pt_nanomesh_agglomeration_and_irse_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_rh_ir_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_rh_ir_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_rh_ir_se_precursor_leak_or_tma_ignition_pct"], 0.1)
+        self.assertEqual(gov["edge_qcl_crds_1324cm1_964cm1_2612cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_pt_nanomesh_scattering_or_irse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_pt_nanomesh_scattering_or_irse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["rhmecpcod_rhacac6_tdmair_dese_tma_at1_rhse2_contact_pt_nanomesh_and_irse_pcm_peald_slo_met"])
+        self.assertFalse(raw["rhmecpcod_rhacac6_tdmair_dese_tma_at1_rhse2_contact_pt_nanomesh_and_irse_pcm_peald_slo_met"])
+
+    def test_irmecpcod_iracac6_tdmapt_dese_tma_au1_irse2_contact_au_nanomesh_and_ptse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_irmecpcod_iracac6_tdmapt_dese_tma_au1_irse2_contact_au_nanomesh_and_ptse_pcm_peald_sil3_sandbox(
+            irmecpcod_iracac6_tdmapt_dese_tma_trains=8,
+            governance_mode="pinn_mpc_irmecpcod_iracac6_tdmapt_dese_tma_au1_irse2_contact_au_nanomesh_and_ptse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_irmecpcod_iracac6_tdmapt_dese_tma_au1_irse2_contact_au_nanomesh_and_ptse_pcm_peald_sil3_sandbox(
+            irmecpcod_iracac6_tdmapt_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_au_nanomesh_agglomeration_and_ptse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_au1_irse2_contact_au_nanomesh_ptse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_irmecpcod_6n5_iracac6_6n5_tdmapt_6n5_dese_6n5_tma_purity_and_irse2_ptse2_yield_gain_pct"], 93.2)
+        self.assertEqual(gov["au_nanomesh_agglomeration_and_ptse_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ir_pt_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_ir_pt_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_ir_pt_se_precursor_leak_or_tma_ignition_pct"], 0.1)
+        self.assertEqual(gov["edge_qcl_crds_1322cm1_962cm1_2610cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_au_nanomesh_scattering_or_ptse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_au_nanomesh_scattering_or_ptse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["irmecpcod_iracac6_tdmapt_dese_tma_au1_irse2_contact_au_nanomesh_and_ptse_pcm_peald_slo_met"])
+        self.assertFalse(raw["irmecpcod_iracac6_tdmapt_dese_tma_au1_irse2_contact_au_nanomesh_and_ptse_pcm_peald_slo_met"])
+
+    def test_ptmecpcod_ptacac6_tdmaau_dese_tma_av1_ptse2_contact_ag_nanomesh_and_ause_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_ptmecpcod_ptacac6_tdmaau_dese_tma_av1_ptse2_contact_ag_nanomesh_and_ause_pcm_peald_sil3_sandbox(
+            ptmecpcod_ptacac6_tdmaau_dese_tma_trains=8,
+            governance_mode="pinn_mpc_ptmecpcod_ptacac6_tdmaau_dese_tma_av1_ptse2_contact_ag_nanomesh_and_ause_pcm_peald_sil3_edge",
+        )
+        raw = simulate_ptmecpcod_ptacac6_tdmaau_dese_tma_av1_ptse2_contact_ag_nanomesh_and_ause_pcm_peald_sil3_sandbox(
+            ptmecpcod_ptacac6_tdmaau_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_ag_nanomesh_agglomeration_and_ause_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_av1_ptse2_contact_ag_nanomesh_ause_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_ptmecpcod_6n5_ptacac6_6n5_tdmaau_6n5_dese_6n5_tma_purity_and_ptse2_ause2_yield_gain_pct"], 93.4)
+        self.assertEqual(gov["ag_nanomesh_agglomeration_and_ause_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_pt_au_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_pt_au_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_pt_au_se_precursor_leak_or_tma_ignition_pct"], 0.1)
+        self.assertEqual(gov["edge_qcl_crds_1320cm1_960cm1_2608cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_ag_nanomesh_scattering_or_ause_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_ag_nanomesh_scattering_or_ause_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["ptmecpcod_ptacac6_tdmaau_dese_tma_av1_ptse2_contact_ag_nanomesh_and_ause_pcm_peald_slo_met"])
+        self.assertFalse(raw["ptmecpcod_ptacac6_tdmaau_dese_tma_av1_ptse2_contact_ag_nanomesh_and_ause_pcm_peald_slo_met"])
+
+    def test_aumecpcod_auacac6_tdmaag_dese_tma_aw1_ause2_contact_cu_nanomesh_and_agse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_aumecpcod_auacac6_tdmaag_dese_tma_aw1_ause2_contact_cu_nanomesh_and_agse_pcm_peald_sil3_sandbox(
+            aumecpcod_auacac6_tdmaag_dese_tma_trains=8,
+            governance_mode="pinn_mpc_aumecpcod_auacac6_tdmaag_dese_tma_aw1_ause2_contact_cu_nanomesh_and_agse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_aumecpcod_auacac6_tdmaag_dese_tma_aw1_ause2_contact_cu_nanomesh_and_agse_pcm_peald_sil3_sandbox(
+            aumecpcod_auacac6_tdmaag_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_cu_nanomesh_agglomeration_and_agse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_aw1_ause2_contact_cu_nanomesh_agse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_aumecpcod_6n5_auacac6_6n5_tdmaag_6n5_dese_6n5_tma_purity_and_ause2_agse2_yield_gain_pct"], 93.6)
+        self.assertEqual(gov["cu_nanomesh_agglomeration_and_agse_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_au_ag_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_au_ag_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_au_ag_se_precursor_leak_or_tma_ignition_pct"], 0.1)
+        self.assertEqual(gov["edge_qcl_crds_1318cm1_958cm1_2606cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_cu_nanomesh_scattering_or_agse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_cu_nanomesh_scattering_or_agse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["aumecpcod_auacac6_tdmaag_dese_tma_aw1_ause2_contact_cu_nanomesh_and_agse_pcm_peald_slo_met"])
+        self.assertFalse(raw["aumecpcod_auacac6_tdmaag_dese_tma_aw1_ause2_contact_cu_nanomesh_and_agse_pcm_peald_slo_met"])
+
+    def test_agmecpcod_agacac6_tdmacu_dese_tma_ax1_agse2_contact_ni_nanomesh_and_cuse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_agmecpcod_agacac6_tdmacu_dese_tma_ax1_agse2_contact_ni_nanomesh_and_cuse_pcm_peald_sil3_sandbox(
+            agmecpcod_agacac6_tdmacu_dese_tma_trains=8,
+            governance_mode="pinn_mpc_agmecpcod_agacac6_tdmacu_dese_tma_ax1_agse2_contact_ni_nanomesh_and_cuse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_agmecpcod_agacac6_tdmacu_dese_tma_ax1_agse2_contact_ni_nanomesh_and_cuse_pcm_peald_sil3_sandbox(
+            agmecpcod_agacac6_tdmacu_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_ni_nanomesh_agglomeration_and_cuse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_ax1_agse2_contact_ni_nanomesh_cuse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_agmecpcod_6n5_agacac6_6n5_tdmacu_6n5_dese_6n5_tma_purity_and_agse2_cuse2_yield_gain_pct"], 93.8)
+        self.assertEqual(gov["ni_nanomesh_agglomeration_and_cuse_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ag_cu_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_ag_cu_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_ag_cu_se_precursor_leak_or_tma_ignition_pct"], 0.1)
+        self.assertEqual(gov["edge_qcl_crds_1316cm1_956cm1_2604cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_ni_nanomesh_scattering_or_cuse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_ni_nanomesh_scattering_or_cuse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["agmecpcod_agacac6_tdmacu_dese_tma_ax1_agse2_contact_ni_nanomesh_and_cuse_pcm_peald_slo_met"])
+        self.assertFalse(raw["agmecpcod_agacac6_tdmacu_dese_tma_ax1_agse2_contact_ni_nanomesh_and_cuse_pcm_peald_slo_met"])
+
+    def test_cumecpcod_cuacac6_tdmani_dese_tma_ay1_cuse2_contact_co_nanomesh_and_nise_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_cumecpcod_cuacac6_tdmani_dese_tma_ay1_cuse2_contact_co_nanomesh_and_nise_pcm_peald_sil3_sandbox(
+            cumecpcod_cuacac6_tdmani_dese_tma_trains=8,
+            governance_mode="pinn_mpc_cumecpcod_cuacac6_tdmani_dese_tma_ay1_cuse2_contact_co_nanomesh_and_nise_pcm_peald_sil3_edge",
+        )
+        raw = simulate_cumecpcod_cuacac6_tdmani_dese_tma_ay1_cuse2_contact_co_nanomesh_and_nise_pcm_peald_sil3_sandbox(
+            cumecpcod_cuacac6_tdmani_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_co_nanomesh_agglomeration_and_nise_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_ay1_cuse2_contact_co_nanomesh_nise_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_cumecpcod_6n5_cuacac6_6n5_tdmani_6n5_dese_6n5_tma_purity_and_cuse2_nise2_yield_gain_pct"], 94.0)
+        self.assertEqual(gov["co_nanomesh_agglomeration_and_nise_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_cu_ni_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_cu_ni_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_cu_ni_se_precursor_leak_or_tma_ignition_pct"], 0.1)
+        self.assertEqual(gov["edge_qcl_crds_1314cm1_954cm1_2602cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_co_nanomesh_scattering_or_nise_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_co_nanomesh_scattering_or_nise_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["cumecpcod_cuacac6_tdmani_dese_tma_ay1_cuse2_contact_co_nanomesh_and_nise_pcm_peald_slo_met"])
+        self.assertFalse(raw["cumecpcod_cuacac6_tdmani_dese_tma_ay1_cuse2_contact_co_nanomesh_and_nise_pcm_peald_slo_met"])
+
+    def test_nimecpcod_niacac6_tdmaco_dese_tma_az1_nise2_contact_fe_nanomesh_and_cose_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_nimecpcod_niacac6_tdmaco_dese_tma_az1_nise2_contact_fe_nanomesh_and_cose_pcm_peald_sil3_sandbox(
+            nimecpcod_niacac6_tdmaco_dese_tma_trains=8,
+            governance_mode="pinn_mpc_nimecpcod_niacac6_tdmaco_dese_tma_az1_nise2_contact_fe_nanomesh_and_cose_pcm_peald_sil3_edge",
+        )
+        raw = simulate_nimecpcod_niacac6_tdmaco_dese_tma_az1_nise2_contact_fe_nanomesh_and_cose_pcm_peald_sil3_sandbox(
+            nimecpcod_niacac6_tdmaco_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_fe_nanomesh_agglomeration_and_cose_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_az1_nise2_contact_fe_nanomesh_cose_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_nimecpcod_6n5_niacac6_6n5_tdmaco_6n5_dese_6n5_tma_purity_and_nise2_cose2_yield_gain_pct"], 94.2)
+        self.assertEqual(gov["fe_nanomesh_agglomeration_and_cose_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ni_co_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_ni_co_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_ni_co_se_precursor_leak_or_tma_ignition_pct"], 0.1)
+        self.assertEqual(gov["edge_qcl_crds_1312cm1_952cm1_2600cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_fe_nanomesh_scattering_or_cose_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_fe_nanomesh_scattering_or_cose_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["nimecpcod_niacac6_tdmaco_dese_tma_az1_nise2_contact_fe_nanomesh_and_cose_pcm_peald_slo_met"])
+        self.assertFalse(raw["nimecpcod_niacac6_tdmaco_dese_tma_az1_nise2_contact_fe_nanomesh_and_cose_pcm_peald_slo_met"])
+
+    def test_comecpcod_coacac6_tdmafe_dese_tma_ba1_cose2_contact_mn_nanomesh_and_fese_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_comecpcod_coacac6_tdmafe_dese_tma_ba1_cose2_contact_mn_nanomesh_and_fese_pcm_peald_sil3_sandbox(
+            comecpcod_coacac6_tdmafe_dese_tma_trains=8,
+            governance_mode="pinn_mpc_comecpcod_coacac6_tdmafe_dese_tma_ba1_cose2_contact_mn_nanomesh_and_fese_pcm_peald_sil3_edge",
+        )
+        raw = simulate_comecpcod_coacac6_tdmafe_dese_tma_ba1_cose2_contact_mn_nanomesh_and_fese_pcm_peald_sil3_sandbox(
+            comecpcod_coacac6_tdmafe_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_mn_nanomesh_agglomeration_and_fese_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_ba1_cose2_contact_mn_nanomesh_fese_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_comecpcod_6n5_coacac6_6n5_tdmafe_6n5_dese_6n5_tma_purity_and_cose2_fese2_yield_gain_pct"], 94.4)
+        self.assertEqual(gov["mn_nanomesh_agglomeration_and_fese_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_co_fe_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_co_fe_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_co_fe_se_precursor_leak_or_tma_ignition_pct"], 0.1)
+        self.assertEqual(gov["edge_qcl_crds_1310cm1_950cm1_2598cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_mn_nanomesh_scattering_or_fese_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_mn_nanomesh_scattering_or_fese_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["comecpcod_coacac6_tdmafe_dese_tma_ba1_cose2_contact_mn_nanomesh_and_fese_pcm_peald_slo_met"])
+        self.assertFalse(raw["comecpcod_coacac6_tdmafe_dese_tma_ba1_cose2_contact_mn_nanomesh_and_fese_pcm_peald_slo_met"])
+
+    def test_femecpcod_feacac6_tdmamn_dese_tma_bb1_fese2_contact_cr_nanomesh_and_mnse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_femecpcod_feacac6_tdmamn_dese_tma_bb1_fese2_contact_cr_nanomesh_and_mnse_pcm_peald_sil3_sandbox(
+            femecpcod_feacac6_tdmamn_dese_tma_trains=8,
+            governance_mode="pinn_mpc_femecpcod_feacac6_tdmamn_dese_tma_bb1_fese2_contact_cr_nanomesh_and_mnse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_femecpcod_feacac6_tdmamn_dese_tma_bb1_fese2_contact_cr_nanomesh_and_mnse_pcm_peald_sil3_sandbox(
+            femecpcod_feacac6_tdmamn_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_cr_nanomesh_agglomeration_and_mnse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_bb1_fese2_contact_cr_nanomesh_mnse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_femecpcod_6n5_feacac6_6n5_tdmamn_6n5_dese_6n5_tma_purity_and_fese2_mnse2_yield_gain_pct"], 94.6)
+        self.assertEqual(gov["cr_nanomesh_agglomeration_and_mnse_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_fe_mn_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_fe_mn_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_fe_mn_se_precursor_leak_or_tma_ignition_pct"], 0.1)
+        self.assertEqual(gov["edge_qcl_crds_1308cm1_948cm1_2596cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_cr_nanomesh_scattering_or_mnse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_cr_nanomesh_scattering_or_mnse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["femecpcod_feacac6_tdmamn_dese_tma_bb1_fese2_contact_cr_nanomesh_and_mnse_pcm_peald_slo_met"])
+        self.assertFalse(raw["femecpcod_feacac6_tdmamn_dese_tma_bb1_fese2_contact_cr_nanomesh_and_mnse_pcm_peald_slo_met"])
+
+    def test_mnmecpcod_mnacac6_tdmacr_dese_tma_bc1_mnse2_contact_v_nanomesh_and_crse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_mnmecpcod_mnacac6_tdmacr_dese_tma_bc1_mnse2_contact_v_nanomesh_and_crse_pcm_peald_sil3_sandbox(
+            mnmecpcod_mnacac6_tdmacr_dese_tma_trains=8,
+            governance_mode="pinn_mpc_mnmecpcod_mnacac6_tdmacr_dese_tma_bc1_mnse2_contact_v_nanomesh_and_crse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_mnmecpcod_mnacac6_tdmacr_dese_tma_bc1_mnse2_contact_v_nanomesh_and_crse_pcm_peald_sil3_sandbox(
+            mnmecpcod_mnacac6_tdmacr_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_v_nanomesh_agglomeration_and_crse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_bc1_mnse2_contact_v_nanomesh_crse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_mnmecpcod_6n5_mnacac6_6n5_tdmacr_6n5_dese_6n5_tma_purity_and_mnse2_crse2_yield_gain_pct"], 94.8)
+        self.assertEqual(gov["v_nanomesh_agglomeration_and_crse_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_mn_cr_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_mn_cr_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_mn_cr_se_precursor_leak_or_tma_ignition_pct"], 0.1)
+        self.assertEqual(gov["edge_qcl_crds_1306cm1_946cm1_2594cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_v_nanomesh_scattering_or_crse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_v_nanomesh_scattering_or_crse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["mnmecpcod_mnacac6_tdmacr_dese_tma_bc1_mnse2_contact_v_nanomesh_and_crse_pcm_peald_slo_met"])
+        self.assertFalse(raw["mnmecpcod_mnacac6_tdmacr_dese_tma_bc1_mnse2_contact_v_nanomesh_and_crse_pcm_peald_slo_met"])
+
+    def test_crmecpcod_cracac6_tdmav_dese_tma_bd1_crse2_contact_ti_nanomesh_and_vse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_crmecpcod_cracac6_tdmav_dese_tma_bd1_crse2_contact_ti_nanomesh_and_vse_pcm_peald_sil3_sandbox(
+            crmecpcod_cracac6_tdmav_dese_tma_trains=8,
+            governance_mode="pinn_mpc_crmecpcod_cracac6_tdmav_dese_tma_bd1_crse2_contact_ti_nanomesh_and_vse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_crmecpcod_cracac6_tdmav_dese_tma_bd1_crse2_contact_ti_nanomesh_and_vse_pcm_peald_sil3_sandbox(
+            crmecpcod_cracac6_tdmav_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_ti_nanomesh_agglomeration_and_vse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_bd1_crse2_contact_ti_nanomesh_vse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_crmecpcod_6n5_cracac6_6n5_tdmav_6n5_dese_6n5_tma_purity_and_crse2_vse2_yield_gain_pct"], 95.0)
+        self.assertEqual(gov["ti_nanomesh_agglomeration_and_vse_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_cr_v_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_cr_v_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_cr_v_se_precursor_leak_or_tma_ignition_pct"], 0.1)
+        self.assertEqual(gov["edge_qcl_crds_1304cm1_944cm1_2592cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_ti_nanomesh_scattering_or_vse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_ti_nanomesh_scattering_or_vse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["crmecpcod_cracac6_tdmav_dese_tma_bd1_crse2_contact_ti_nanomesh_and_vse_pcm_peald_slo_met"])
+        self.assertFalse(raw["crmecpcod_cracac6_tdmav_dese_tma_bd1_crse2_contact_ti_nanomesh_and_vse_pcm_peald_slo_met"])
+
+    def test_vmecpcod_vacac6_tdmati_dese_tma_be1_vse2_contact_zr_nanomesh_and_tise_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_vmecpcod_vacac6_tdmati_dese_tma_be1_vse2_contact_zr_nanomesh_and_tise_pcm_peald_sil3_sandbox(
+            vmecpcod_vacac6_tdmati_dese_tma_trains=8,
+            governance_mode="pinn_mpc_vmecpcod_vacac6_tdmati_dese_tma_be1_vse2_contact_zr_nanomesh_and_tise_pcm_peald_sil3_edge",
+        )
+        raw = simulate_vmecpcod_vacac6_tdmati_dese_tma_be1_vse2_contact_zr_nanomesh_and_tise_pcm_peald_sil3_sandbox(
+            vmecpcod_vacac6_tdmati_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_zr_nanomesh_agglomeration_and_tise_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_be1_vse2_contact_zr_nanomesh_tise_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_vmecpcod_6n5_vacac6_6n5_tdmati_6n5_dese_6n5_tma_purity_and_vse2_tise2_yield_gain_pct"], 95.2)
+        self.assertEqual(gov["zr_nanomesh_agglomeration_and_tise_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_v_ti_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_v_ti_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_v_ti_se_precursor_leak_or_tma_ignition_pct"], 0.1)
+        self.assertEqual(gov["edge_qcl_crds_1302cm1_942cm1_2590cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_zr_nanomesh_scattering_or_tise_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_zr_nanomesh_scattering_or_tise_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["vmecpcod_vacac6_tdmati_dese_tma_be1_vse2_contact_zr_nanomesh_and_tise_pcm_peald_slo_met"])
+        self.assertFalse(raw["vmecpcod_vacac6_tdmati_dese_tma_be1_vse2_contact_zr_nanomesh_and_tise_pcm_peald_slo_met"])
+
+    def test_zrmecpcod_zracac6_tdmahf_dese_tma_bf1_zrse2_contact_hf_nanomesh_and_hfse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_zrmecpcod_zracac6_tdmahf_dese_tma_bf1_zrse2_contact_hf_nanomesh_and_hfse_pcm_peald_sil3_sandbox(
+            zrmecpcod_zracac6_tdmahf_dese_tma_trains=8,
+            governance_mode="pinn_mpc_zrmecpcod_zracac6_tdmahf_dese_tma_bf1_zrse2_contact_hf_nanomesh_and_hfse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_zrmecpcod_zracac6_tdmahf_dese_tma_bf1_zrse2_contact_hf_nanomesh_and_hfse_pcm_peald_sil3_sandbox(
+            zrmecpcod_zracac6_tdmahf_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_hf_nanomesh_agglomeration_and_hfse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_bf1_zrse2_contact_hf_nanomesh_hfse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_zrmecpcod_6n5_zracac6_6n5_tdmahf_6n5_dese_6n5_tma_purity_and_zrse2_hfse2_yield_gain_pct"], 95.4)
+        self.assertEqual(gov["hf_nanomesh_agglomeration_and_hfse_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_zr_hf_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_zr_hf_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_zr_hf_se_precursor_leak_or_tma_ignition_pct"], 0.1)
+        self.assertEqual(gov["edge_qcl_crds_1300cm1_940cm1_2588cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_hf_nanomesh_scattering_or_hfse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_hf_nanomesh_scattering_or_hfse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["zrmecpcod_zracac6_tdmahf_dese_tma_bf1_zrse2_contact_hf_nanomesh_and_hfse_pcm_peald_slo_met"])
+        self.assertFalse(raw["zrmecpcod_zracac6_tdmahf_dese_tma_bf1_zrse2_contact_hf_nanomesh_and_hfse_pcm_peald_slo_met"])
+
+    def test_hfmecpcod_hfacac6_tdmata_dese_tma_bg1_hfse2_contact_ta_nanomesh_and_tase_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_hfmecpcod_hfacac6_tdmata_dese_tma_bg1_hfse2_contact_ta_nanomesh_and_tase_pcm_peald_sil3_sandbox(
+            hfmecpcod_hfacac6_tdmata_dese_tma_trains=8,
+            governance_mode="pinn_mpc_hfmecpcod_hfacac6_tdmata_dese_tma_bg1_hfse2_contact_ta_nanomesh_and_tase_pcm_peald_sil3_edge",
+        )
+        raw = simulate_hfmecpcod_hfacac6_tdmata_dese_tma_bg1_hfse2_contact_ta_nanomesh_and_tase_pcm_peald_sil3_sandbox(
+            hfmecpcod_hfacac6_tdmata_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_ta_nanomesh_agglomeration_and_tase_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_bg1_hfse2_contact_ta_nanomesh_tase_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_hfmecpcod_6n5_hfacac6_6n5_tdmata_6n5_dese_6n5_tma_purity_and_hfse2_tase2_yield_gain_pct"], 95.6)
+        self.assertEqual(gov["ta_nanomesh_agglomeration_and_tase_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_hf_ta_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_hf_ta_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_hf_ta_se_precursor_leak_or_tma_ignition_pct"], 0.1)
+        self.assertEqual(gov["edge_qcl_crds_1298cm1_938cm1_2586cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_ta_nanomesh_scattering_or_tase_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_ta_nanomesh_scattering_or_tase_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["hfmecpcod_hfacac6_tdmata_dese_tma_bg1_hfse2_contact_ta_nanomesh_and_tase_pcm_peald_slo_met"])
+        self.assertFalse(raw["hfmecpcod_hfacac6_tdmata_dese_tma_bg1_hfse2_contact_ta_nanomesh_and_tase_pcm_peald_slo_met"])
+
+    def test_tamecpcod_taacac6_tdmaw_dese_tma_bh1_tase2_contact_w_nanomesh_and_wse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_tamecpcod_taacac6_tdmaw_dese_tma_bh1_tase2_contact_w_nanomesh_and_wse_pcm_peald_sil3_sandbox(
+            tamecpcod_taacac6_tdmaw_dese_tma_trains=8,
+            governance_mode="pinn_mpc_tamecpcod_taacac6_tdmaw_dese_tma_bh1_tase2_contact_w_nanomesh_and_wse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_tamecpcod_taacac6_tdmaw_dese_tma_bh1_tase2_contact_w_nanomesh_and_wse_pcm_peald_sil3_sandbox(
+            tamecpcod_taacac6_tdmaw_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_w_nanomesh_agglomeration_and_wse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_bh1_tase2_contact_w_nanomesh_wse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_tamecpcod_6n5_taacac6_6n5_tdmaw_6n5_dese_6n5_tma_purity_and_tase2_wse2_yield_gain_pct"], 95.8)
+        self.assertEqual(gov["w_nanomesh_agglomeration_and_wse_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ta_w_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_ta_w_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_ta_w_se_precursor_leak_or_tma_ignition_pct"], 0.1)
+        self.assertEqual(gov["edge_qcl_crds_1296cm1_936cm1_2584cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_w_nanomesh_scattering_or_wse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_w_nanomesh_scattering_or_wse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["tamecpcod_taacac6_tdmaw_dese_tma_bh1_tase2_contact_w_nanomesh_and_wse_pcm_peald_slo_met"])
+        self.assertFalse(raw["tamecpcod_taacac6_tdmaw_dese_tma_bh1_tase2_contact_w_nanomesh_and_wse_pcm_peald_slo_met"])
+
+    def test_wmecpcod_wacac6_tdmamo_dese_tma_bi1_wse2_contact_mo_nanomesh_and_mose_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_wmecpcod_wacac6_tdmamo_dese_tma_bi1_wse2_contact_mo_nanomesh_and_mose_pcm_peald_sil3_sandbox(
+            wmecpcod_wacac6_tdmamo_dese_tma_trains=8,
+            governance_mode="pinn_mpc_wmecpcod_wacac6_tdmamo_dese_tma_bi1_wse2_contact_mo_nanomesh_and_mose_pcm_peald_sil3_edge",
+        )
+        raw = simulate_wmecpcod_wacac6_tdmamo_dese_tma_bi1_wse2_contact_mo_nanomesh_and_mose_pcm_peald_sil3_sandbox(
+            wmecpcod_wacac6_tdmamo_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_mo_nanomesh_agglomeration_and_mose_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_bi1_wse2_contact_mo_nanomesh_mose_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_wmecpcod_6n5_wacac6_6n5_tdmamo_6n5_dese_6n5_tma_purity_and_wse2_mose2_yield_gain_pct"], 96.0)
+        self.assertEqual(gov["mo_nanomesh_agglomeration_and_mose_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_w_mo_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_w_mo_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_w_mo_se_precursor_leak_or_tma_ignition_pct"], 0.1)
+        self.assertEqual(gov["edge_qcl_crds_1294cm1_934cm1_2582cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_mo_nanomesh_scattering_or_mose_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_mo_nanomesh_scattering_or_mose_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["wmecpcod_wacac6_tdmamo_dese_tma_bi1_wse2_contact_mo_nanomesh_and_mose_pcm_peald_slo_met"])
+        self.assertFalse(raw["wmecpcod_wacac6_tdmamo_dese_tma_bi1_wse2_contact_mo_nanomesh_and_mose_pcm_peald_slo_met"])
+
+    def test_momecpcod_moacac6_tdmare_dese_tma_bj1_mose2_contact_re_nanomesh_and_rese_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_momecpcod_moacac6_tdmare_dese_tma_bj1_mose2_contact_re_nanomesh_and_rese_pcm_peald_sil3_sandbox(
+            momecpcod_moacac6_tdmare_dese_tma_trains=8,
+            governance_mode="pinn_mpc_momecpcod_moacac6_tdmare_dese_tma_bj1_mose2_contact_re_nanomesh_and_rese_pcm_peald_sil3_edge",
+        )
+        raw = simulate_momecpcod_moacac6_tdmare_dese_tma_bj1_mose2_contact_re_nanomesh_and_rese_pcm_peald_sil3_sandbox(
+            momecpcod_moacac6_tdmare_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_re_nanomesh_agglomeration_and_rese_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_bj1_mose2_contact_re_nanomesh_rese_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_momecpcod_6n5_moacac6_6n5_tdmare_6n5_dese_6n5_tma_purity_and_mose2_rese2_yield_gain_pct"], 96.2)
+        self.assertEqual(gov["re_nanomesh_agglomeration_and_rese_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_mo_re_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_mo_re_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_mo_re_se_precursor_leak_or_tma_ignition_pct"], 0.1)
+        self.assertEqual(gov["edge_qcl_crds_1292cm1_932cm1_2580cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_re_nanomesh_scattering_or_rese_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_re_nanomesh_scattering_or_rese_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["momecpcod_moacac6_tdmare_dese_tma_bj1_mose2_contact_re_nanomesh_and_rese_pcm_peald_slo_met"])
+        self.assertFalse(raw["momecpcod_moacac6_tdmare_dese_tma_bj1_mose2_contact_re_nanomesh_and_rese_pcm_peald_slo_met"])
+
+    def test_remecpcod_reacac6_tdmaos_dese_tma_bk1_rese2_contact_os_nanomesh_and_osse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_remecpcod_reacac6_tdmaos_dese_tma_bk1_rese2_contact_os_nanomesh_and_osse_pcm_peald_sil3_sandbox(
+            remecpcod_reacac6_tdmaos_dese_tma_trains=8,
+            governance_mode="pinn_mpc_remecpcod_reacac6_tdmaos_dese_tma_bk1_rese2_contact_os_nanomesh_and_osse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_remecpcod_reacac6_tdmaos_dese_tma_bk1_rese2_contact_os_nanomesh_and_osse_pcm_peald_sil3_sandbox(
+            remecpcod_reacac6_tdmaos_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_os_nanomesh_agglomeration_and_osse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_bk1_rese2_contact_os_nanomesh_osse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_remecpcod_6n5_reacac6_6n5_tdmaos_6n5_dese_6n5_tma_purity_and_rese2_osse2_yield_gain_pct"], 96.4)
+        self.assertEqual(gov["os_nanomesh_agglomeration_and_osse_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_re_os_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_re_os_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_re_os_se_precursor_leak_or_tma_ignition_pct"], 0.1)
+        self.assertEqual(gov["edge_qcl_crds_1290cm1_930cm1_2578cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_os_nanomesh_scattering_or_osse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_os_nanomesh_scattering_or_osse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["remecpcod_reacac6_tdmaos_dese_tma_bk1_rese2_contact_os_nanomesh_and_osse_pcm_peald_slo_met"])
+        self.assertFalse(raw["remecpcod_reacac6_tdmaos_dese_tma_bk1_rese2_contact_os_nanomesh_and_osse_pcm_peald_slo_met"])
+
+    def test_osmecpcod_osacac6_tdmarh_dese_tma_bl1_osse2_contact_rh_nanomesh_and_rhse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_osmecpcod_osacac6_tdmarh_dese_tma_bl1_osse2_contact_rh_nanomesh_and_rhse_pcm_peald_sil3_sandbox(
+            osmecpcod_osacac6_tdmarh_dese_tma_trains=8,
+            governance_mode="pinn_mpc_osmecpcod_osacac6_tdmarh_dese_tma_bl1_osse2_contact_rh_nanomesh_and_rhse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_osmecpcod_osacac6_tdmarh_dese_tma_bl1_osse2_contact_rh_nanomesh_and_rhse_pcm_peald_sil3_sandbox(
+            osmecpcod_osacac6_tdmarh_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_rh_nanomesh_agglomeration_and_rhse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_bl1_osse2_contact_rh_nanomesh_rhse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_osmecpcod_6n5_osacac6_6n5_tdmarh_6n5_dese_6n5_tma_purity_and_osse2_rhse2_yield_gain_pct"], 96.6)
+        self.assertEqual(gov["rh_nanomesh_agglomeration_and_rhse_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_os_rh_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_os_rh_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_os_rh_se_precursor_leak_or_tma_ignition_pct"], 0.1)
+        self.assertEqual(gov["edge_qcl_crds_1288cm1_928cm1_2576cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_rh_nanomesh_scattering_or_rhse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_rh_nanomesh_scattering_or_rhse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["osmecpcod_osacac6_tdmarh_dese_tma_bl1_osse2_contact_rh_nanomesh_and_rhse_pcm_peald_slo_met"])
+        self.assertFalse(raw["osmecpcod_osacac6_tdmarh_dese_tma_bl1_osse2_contact_rh_nanomesh_and_rhse_pcm_peald_slo_met"])
+
+    def test_rhmecpcod_rhacac6_tdmair_dese_tma_bm1_rhse2_contact_ir_nanomesh_and_irse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_rhmecpcod_rhacac6_tdmair_dese_tma_bm1_rhse2_contact_ir_nanomesh_and_irse_pcm_peald_sil3_sandbox(
+            rhmecpcod_rhacac6_tdmair_dese_tma_trains=8,
+            governance_mode="pinn_mpc_rhmecpcod_rhacac6_tdmair_dese_tma_bm1_rhse2_contact_ir_nanomesh_and_irse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_rhmecpcod_rhacac6_tdmair_dese_tma_bm1_rhse2_contact_ir_nanomesh_and_irse_pcm_peald_sil3_sandbox(
+            rhmecpcod_rhacac6_tdmair_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_ir_nanomesh_agglomeration_and_irse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_bm1_rhse2_contact_ir_nanomesh_irse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_rhmecpcod_6n5_rhacac6_6n5_tdmair_6n5_dese_6n5_tma_purity_and_rhse2_irse2_yield_gain_pct"], 96.8)
+        self.assertEqual(gov["ir_nanomesh_agglomeration_and_irse_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_rh_ir_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_rh_ir_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_rh_ir_se_precursor_leak_or_tma_ignition_pct"], 0.1)
+        self.assertEqual(gov["edge_qcl_crds_1286cm1_926cm1_2574cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_ir_nanomesh_scattering_or_irse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_ir_nanomesh_scattering_or_irse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["rhmecpcod_rhacac6_tdmair_dese_tma_bm1_rhse2_contact_ir_nanomesh_and_irse_pcm_peald_slo_met"])
+        self.assertFalse(raw["rhmecpcod_rhacac6_tdmair_dese_tma_bm1_rhse2_contact_ir_nanomesh_and_irse_pcm_peald_slo_met"])
+
+    def test_irmecpcod_iracac6_tdmapt_dese_tma_bn1_irse2_contact_pt_nanomesh_and_ptse_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_irmecpcod_iracac6_tdmapt_dese_tma_bn1_irse2_contact_pt_nanomesh_and_ptse_pcm_peald_sil3_sandbox(
+            irmecpcod_iracac6_tdmapt_dese_tma_trains=8,
+            governance_mode="pinn_mpc_irmecpcod_iracac6_tdmapt_dese_tma_bn1_irse2_contact_pt_nanomesh_and_ptse_pcm_peald_sil3_edge",
+        )
+        raw = simulate_irmecpcod_iracac6_tdmapt_dese_tma_bn1_irse2_contact_pt_nanomesh_and_ptse_pcm_peald_sil3_sandbox(
+            irmecpcod_iracac6_tdmapt_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_pt_nanomesh_agglomeration_and_ptse_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_bn1_irse2_contact_pt_nanomesh_ptse_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_irmecpcod_6n5_iracac6_6n5_tdmapt_6n5_dese_6n5_tma_purity_and_irse2_ptse2_yield_gain_pct"], 97.0)
+        self.assertEqual(gov["pt_nanomesh_agglomeration_and_ptse_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_ir_pt_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_ir_pt_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_ir_pt_se_precursor_leak_or_tma_ignition_pct"], 0.1)
+        self.assertEqual(gov["edge_qcl_crds_1284cm1_924cm1_2572cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_pt_nanomesh_scattering_or_ptse_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_pt_nanomesh_scattering_or_ptse_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["irmecpcod_iracac6_tdmapt_dese_tma_bn1_irse2_contact_pt_nanomesh_and_ptse_pcm_peald_slo_met"])
+        self.assertFalse(raw["irmecpcod_iracac6_tdmapt_dese_tma_bn1_irse2_contact_pt_nanomesh_and_ptse_pcm_peald_slo_met"])
+
+    def test_ptmecpcod_ptacac6_tdmaau_dese_tma_bo1_ptse2_contact_au_nanomesh_and_ause_pcm_peald_sil3_sandbox(self) -> None:
+        gov = simulate_ptmecpcod_ptacac6_tdmaau_dese_tma_bo1_ptse2_contact_au_nanomesh_and_ause_pcm_peald_sil3_sandbox(
+            ptmecpcod_ptacac6_tdmaau_dese_tma_trains=8,
+            governance_mode="pinn_mpc_ptmecpcod_ptacac6_tdmaau_dese_tma_bo1_ptse2_contact_au_nanomesh_and_ause_pcm_peald_sil3_edge",
+        )
+        raw = simulate_ptmecpcod_ptacac6_tdmaau_dese_tma_bo1_ptse2_contact_au_nanomesh_and_ause_pcm_peald_sil3_sandbox(
+            ptmecpcod_ptacac6_tdmaau_dese_tma_trains=8,
+            governance_mode="unmanaged_open_loop_au_nanomesh_agglomeration_and_ause_phase_drift",
+        )
+        self.assertEqual(gov["gpu_nodes"], 4)
+        self.assertEqual(gov["node_sku"], "Standard_NC40ads_H100_v5")
+        self.assertEqual(gov["active_bo1_ptse2_contact_au_nanomesh_ause_pcm_pods"], 32)
+        self.assertEqual(gov["electronic_6n5_ptmecpcod_6n5_ptacac6_6n5_tdmaau_6n5_dese_6n5_tma_purity_and_ptse2_ause2_yield_gain_pct"], 97.2)
+        self.assertEqual(gov["au_nanomesh_agglomeration_and_ause_phase_drift_reduction_pct"], 99.8)
+        self.assertEqual(gov["semi_s2_nfpa704_osha_19101000_sil3_pyrophoric_pt_au_se_and_tma_lockout_latency_ms"], 0.10)
+        self.assertEqual(gov["unmitigated_pt_au_se_precursor_leak_or_tma_ignition_pct"], 0.0)
+        self.assertGreater(raw["unmitigated_pt_au_se_precursor_leak_or_tma_ignition_pct"], 0.1)
+        self.assertEqual(gov["edge_qcl_crds_1282cm1_922cm1_2570cm1_insitu_xps_tlmarpes_ssnom_latency_ms"], 0.11)
+        self.assertEqual(gov["wan_bandwidth_reduction_pct"], 99.7)
+        self.assertEqual(gov["uncompensated_au_nanomesh_scattering_or_ause_filament_overgrowth_failure_pct"], 0.0)
+        self.assertGreater(raw["uncompensated_au_nanomesh_scattering_or_ause_filament_overgrowth_failure_pct"], 3.0)
+        self.assertTrue(gov["ptmecpcod_ptacac6_tdmaau_dese_tma_bo1_ptse2_contact_au_nanomesh_and_ause_pcm_peald_slo_met"])
+        self.assertFalse(raw["ptmecpcod_ptacac6_tdmaau_dese_tma_bo1_ptse2_contact_au_nanomesh_and_ause_pcm_peald_slo_met"])
 
 
 if __name__ == "__main__":
