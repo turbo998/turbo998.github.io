@@ -6,6 +6,7 @@
   const LANG = (document.documentElement.lang || "").toLowerCase().startsWith("zh") ? "zh" : "en";
 
   const FEATURED = [
+    "data-lab",
     "Azure-Infra-Lab",
     "ai-infra-research",
     "ai-infra-lab",
@@ -70,6 +71,7 @@
     "hermes-azure-files-plugin": "ecosystem",
     "copilot-usage-portal": "ecosystem",
     "copilot-multi-agent-dashboard": "ecosystem",
+    "data-lab": "ecosystem",
     "fabric-mirroring-directlake-agent-demo": "ecosystem",
     "microsoft-fabric-learning-plan": "ecosystem",
     "brightdata-webiq-demos": "ecosystem",
@@ -124,6 +126,7 @@
     "hermes-azure-files-plugin": "Hermes Agent 的 Azure Blob Storage + BlobFuse2 / Azure Files 高性能云挂载插件。",
     "copilot-usage-portal": "Azure 上的多租户 GitHub Copilot Token 用量治理与 ROI 审计看板。",
     "copilot-multi-agent-dashboard": "聚合 GitHub Copilot CLI、Hermes Agent 与 OpenClaw 会话轨迹的统一 Web 可观测性控制台。",
+    "data-lab": "Data Lab：Microsoft Fabric (Fabric IQ) × 四大云数智竞对（Databricks / Snowflake / GCP / AWS）深度评测、500人 TCO 计算器、智算中心能源本体仿真台与 7-Card 基准报告。",
     "fabric-mirroring-directlake-agent-demo": "Microsoft Fabric 端到端数据智能体：零拷贝 Mirroring + DirectLake + 本体建模 + MCP 自然语言问数。",
     "microsoft-fabric-learning-plan": "Microsoft Fabric 8 周深度学习计划，含动手实验与竞品分析。",
     "azure-openai-faq": "OpenAI → Azure OpenAI / Foundry 生产迁移与排障实战手册，附可运行诊断代码。",
@@ -134,6 +137,7 @@
   };
 
   const FALLBACK = [
+    { name: "data-lab", description: "Data Lab: Microsoft Fabric (Fabric IQ) vs. Databricks, Snowflake, GCP & AWS — 24-Scenario Benchmark, 500-User TCO Calculator, AIDC Ontology Simulator & 7-Card Deck.", language: "Python", stargazers_count: 1, html_url: "https://github.com/turbo998/data-lab", homepage: "https://turbo998.github.io/workshops/data-lab/index.html", updated_at: "2026-11-01" },
     { name: "Azure-Infra-Lab", description: "Azure Infrastructure & AI Agent Infra Playbook Lab: AKSClaw × E2B 100K-Sandbox H5 Simulator, 7-Card Benchmark Deck & Azure VM Modernization Workshop.", language: "HTML", stargazers_count: 1, html_url: "https://github.com/turbo998/Azure-Infra-Lab", homepage: "https://turbo998.github.io/Azure-Infra-Lab/workshops/azure-agent-infra/index.html", updated_at: "2026-10-25" },
     { name: "ai-infra-research", description: "Bilingual daily deep research on AI compute infrastructure: GPU/ASIC microarchitectures, HBM4/CXL memory, NVLink/UEC interconnects, and hyperscaler clusters.", language: "Markdown", stargazers_count: 1, html_url: "https://github.com/turbo998/ai-infra-research", updated_at: "2026-10-25" },
     { name: "benchmark-harness-engineering", description: "7-Card 4:5 Visual Benchmark Report Standard & reproducible evaluation harness for routing/decision models and coding agents.", language: "Python", stargazers_count: 1, html_url: "https://github.com/turbo998/benchmark-harness-engineering", updated_at: "2026-10-24" },
