@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Benchmark Testing Reports (7-Card 4:5 &amp; 20-Model Matrix) — Qi Chen</title>
+<meta name="description" content="Dedicated Frontier AI Lab Benchmark Testing Reports column: Supplement 6 (Gemini 4 Carbon &amp; 20-Model Coding/Cybersecurity), Supplement 5 (Haiku 5.5 &amp; Gemini 4 Argon + SKY-001), Supplement 4 (Sonnet 5.5 &amp; GPT-6.1 Sol), Decision-1 Routing, and 3-Way Agent Harness Arena.">
+<link rel="alternate" hreflang="zh-CN" href="zh-benchmarks.html">
+<link rel="alternate" hreflang="en" href="benchmarks.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a0a0e'/%3E%3Ctext x='32' y='42' font-family='Segoe UI,sans-serif' font-size='26' font-weight='700' fill='%23a5b4fc' text-anchor='middle'%3EQC%3C/text%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Benchmark Testing Reports (7-Card 4:5 &amp; 20-Model Matrix) — Qi Chen">
+<meta property="og:description" content="Sealed 7-Card 4:5 visual benchmark decks, 20-model Copilot CLI coding evaluation matrix (209+ runs, 1,310 hidden assertions), and Gemini 4 Carbon 16-benchmark cybersecurity evaluation.">
+<meta property="og:image" content="https://turbo998.github.io/assets/photo.jpg">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="style.css">
+<script src="theme-switcher.js"></script>
+<style>
+  .bm-hero {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 30px;
+    margin-bottom: 24px;
+  }
+  .bm-hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .bm-hero h1 {
+    font-size: 32px;
+    line-height: 1.18;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+  .bm-hero p {
+    color: var(--fg-muted);
+    font-size: 15.5px;
+    line-height: 1.6;
+    margin-bottom: 18px;
+  }
+  .bm-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .bm-kpi {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+  }
+  .bm-kpi-val {
+    font-family: var(--mono);
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--fg);
+    line-height: 1.2;
+  }
+  .bm-kpi-label {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-top: 4px;
+  }
+  .bm-kpi-sub {
+    font-size: 12px;
+    color: var(--fg-muted);
+    margin-top: 3px;
+    line-height: 1.4;
+  }
+  .bm-table-wrap {
+    overflow-x: auto;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    margin: 18px 0 28px;
+  }
+  table.bm-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.8px;
+    min-width: 920px;
+  }
+  table.bm-table th {
+    background: var(--bg-soft);
+    color: var(--fg-muted);
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 10px 10px;
+    text-align: left;
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+  }
+  table.bm-table td {
+    padding: 9px 10px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+  table.bm-table tr:hover {
+    background: var(--bg-soft);
+  }
+  table.bm-table tr.bm-highlight-carbon {
+    background: rgba(37, 99, 235, 0.08);
+  }
+  table.bm-table tr.bm-highlight-supp5 {
+    background: rgba(16, 185, 129, 0.07);
+  }
+  table.bm-table tr.bm-highlight-supp4 {
+    background: rgba(245, 158, 11, 0.07);
+  }
+  .bm-gate {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 999px;
+  }
+  .bm-gate.auto { background: #ECFDF5; color: #059669; }
+  .bm-gate.confirm { background: #FFFBEB; color: #D97706; }
+  .bm-gate.human { background: #FEF2F2; color: #DC2626; }
+  .bm-subgrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin: 18px 0 28px;
+  }
+  .bm-subcard {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px;
+  }
+  .bm-subcard h4 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .bm-subcard .bm-submeta {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--fg-muted);
+    margin-bottom: 12px;
+  }
+  .bm-bar-row {
+    display: grid;
+    grid-template-columns: 128px 1fr 54px;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    margin-bottom: 7px;
+  }
+  .bm-bar-track {
+    height: 8px;
+    background: var(--bg-soft);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .bm-bar-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 999px;
+  }
+  .bm-bar-fill.muted {
+    background: #94A3B8;
+  }
+  .bm-bar-val {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    font-weight: 700;
+    text-align: right;
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html"><img src="assets/photo.jpg" alt="">QI CHEN <span class="brand-badge">BUILDER</span></a>
+    <div class="nav-links">
+      <a href="index.html">Overview</a>
+      <a href="benchmarks.html" class="active">Benchmarks</a>
+      <a href="writing.html">Workbenches &amp; Benchmarks</a>
+      <a href="projects.html">Projects</a>
+      <a href="opensource.html">Open Source</a>
+      <a href="openrouter.html">OpenRouter</a>
+      <a href="about.html">About</a>
+    </div>
+    <div class="nav-right">
+      <a class="style-link-pill" href="style-preview.html">🎨 Styles</a>
+      <a class="lang-switch" href="zh-benchmarks.html">中文</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap page-head"><a class="back-link" href="index.html">← Back to Overview</a></div>
+
+<section id="benchmarks-column">
+  <div class="wrap">
+    <div class="sec-label"><span class="num">01</span>DEDICATED BENCHMARK TESTING REPORTS COLUMN · 7-CARD 4:5 STANDARD</div>
+
+    <div class="bm-hero">
+      <div class="bm-hero-eyebrow">FRONTIER AI LAB · REPRODUCIBLE MODEL &amp; AGENT BENCHMARK ARCHIVE</div>
+      <h1>Benchmark Testing Reports: 20 Frontier Models, 7-Card 4:5 Visual Decks &amp; Sealed Verifiers</h1>
+      <p>
+        Every model benchmark report in this column follows the <strong>7-Card 4:5 Visual Report Standard</strong> (<code>900×1125</code> portrait cards, zero fabricated coordinates, explicit <code>✕</code> miss markers, option-order/time-cap perturbation checks, and strict <code>default-src 'none'; style-src 'unsafe-inline'</code> CSP) maintained in <a href="https://github.com/turbo998/benchmark-harness-engineering" target="_blank" rel="noopener"><code>turbo998/benchmark-harness-engineering</code></a> and <a href="https://github.com/turbo998/ai-research-public" target="_blank" rel="noopener"><code>turbo998/ai-research-public</code></a>. Featuring our Notion-style multi-supplement coding agent progression through <strong>Supplement 4 (17-Model: Sonnet 5.5 &amp; GPT-6.1 Sol)</strong>, <strong>Supplement 5 (19-Model: Haiku 5.5 &amp; Gemini 4 Argon + SKY-001)</strong>, and <strong>Supplement 6 (20-Model: Gemini 4 Carbon Coding, Long-Horizon &amp; Cybersecurity)</strong>.
+      </p>
+      <div class="hero-cta">
+        <a class="btn primary" href="workshops/benchmarks/gemini-4-carbon-cards.html">🛡️ Open Supplement 6: Gemini 4 Carbon 7-Card Deck →</a>
+        <a class="btn" href="workshops/benchmarks/sky-001-cards.html">🏗️ Supplement 5: Haiku 5.5 &amp; Argon + SKY-001 7-Card</a>
+        <a class="btn" href="workshops/benchmarks/coding-17-sonnet55-sol-cards.html">⚡ Supplement 4: Sonnet 5.5 &amp; GPT-6.1 Sol 7-Card</a>
+        <a class="btn" href="#table-a-20model">📊 Jump to 20-Model Matrix</a>
+      </div>
+
+      <div class="bm-kpi-grid">
+        <div class="bm-kpi">
+          <div class="bm-kpi-val">20 Models</div>
+          <div class="bm-kpi-label">Frontier Coding &amp; Cyber Cohort</div>
+          <div class="bm-kpi-sub">Fable 5.1, Opus 5.5, Haiku 5.5, Sonnet 5.5, GPT-6.1 Sol, GPT-6 Astra, Gemini 4 Carbon, Gemini 4 Argon, SKY-001, Decision-1</div>
+        </div>
+        <div class="bm-kpi">
+          <div class="bm-kpi-val">209+ Runs</div>
+          <div class="bm-kpi-label">1,310 Hidden Pytest Assertions</div>
+          <div class="bm-kpi-sub">11 Python stdlib tasks (A1–A5, M1–M2, C1–C4) under 70/15/15 rubric; 9 models achieve 1,310/1,310 zero-miss execution</div>
+        </div>
+        <div class="bm-kpi">
+          <div class="bm-kpi-val">16 Evals + 4 Cyber</div>
+          <div class="bm-kpi-label">Gemini 4 Carbon Official Suite</div>
+          <div class="bm-kpi-sub">AA Index v5.0 #1 (59), SEC-bench Pro 88.2%, ExploitGym 54.8%, CWE-bench 71.0%, GraphWalks 1M 96.2%, Gray Swan IPI 0.0%</div>
+        </div>
+        <div class="bm-kpi">
+          <div class="bm-kpi-val">8 Sealed Decks</div>
+          <div class="bm-kpi-label">7-Card 4:5 Visual Standard</div>
+          <div class="bm-kpi-sub">Self-contained offline HTML decks with deterministic Python verifiers &amp; sealed JSON/CSV evidence bundles</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FILTER BAR FOR BENCHMARK EVOLUTION MATRIX -->
+    <div class="filter-bar">
+      <div class="filter-tabs" role="tablist" aria-label="Filter benchmark reports by track">
+        <button type="button" class="filter-btn active" data-filter="all">All Reports (10)</button>
+        <button type="button" class="filter-btn" data-filter="coding-supplements">Coding Agent Supplements 4–6 (3)</button>
+        <button type="button" class="filter-btn" data-filter="cyber-safety">Cybersecurity &amp; Long-Horizon (2)</button>
+        <button type="button" class="filter-btn" data-filter="routing-decision">Routing &amp; Decision Models (2)</button>
+        <button type="button" class="filter-btn" data-filter="harness-infra">Agent Harness &amp; Sandbox Infra (3)</button>
+      </div>
+      <div class="filter-meta">
+        <span class="filter-count" id="pub-count">Showing all 10 benchmark reports</span>
+      </div>
+    </div>
+
+    <div class="pub-list" id="pub-list">
+
+      <!-- SUPPLEMENT 6: GEMINI 4 CARBON -->
+      <article class="pub" data-category="coding-supplements cyber-safety">
+        <div>
+          <span class="pub-tag report">Supplement 6 · 7-Card Eval</span>
+          <div class="pub-date">2026-10-28 · 20-Model Cohort</div>
+        </div>
+        <div class="pub-main">
+          <h3><a href="workshops/benchmarks/gemini-4-carbon-cards.html">Supplement 6: Gemini 4 Carbon &amp; 20-Model Frontier Coding, Long-Horizon &amp; Cybersecurity Benchmark</a></h3>
+          <p>Evaluating Google DeepMind's <strong>Gemini 4 Carbon</strong> (Oct 28, 2026 Fairwind preview) alongside our 19-model Copilot CLI coding cohort. Carbon claims outright <strong>#1 on 14 of 16 official benchmarks</strong>: <strong>AA Intelligence Index v5.0 #1 at 59</strong> (vs Opus 5.5 <code>58</code>, Astra <code>57</code>, Argon <code>50</code>), <strong>SEC-bench Pro 88.2%</strong>, <strong>ExploitGym 54.8% (10h) / 53.5% (6h)</strong>, <strong>CWE-bench 71.0%</strong>, <strong>Terminal-Bench 4.0 65.2%</strong> with <strong>0.0% successful cheating</strong>, <strong>SWE-sweep 9.6%</strong> (<code>2.23x</code> Argon), <strong>GraphWalks 256k–1M 96.2%</strong>, <strong>Vending-Bench 2 $16,484</strong>, and <strong>Gray Swan IPI 0.0% ASR</strong> at Argon-identical <strong>$2/$10</strong> token pricing.</p>
+          <div class="pub-meta">
+            <span><a href="workshops/benchmarks/gemini-4-carbon-cards.html"><b>🃏 7-Card 4:5 Visual Deck</b></a></span>
+            <span><a href="#table-b-carbon"><b>📋 16-Benchmark + 4 Cyber Tables</b></a></span>
+            <span><a href="https://github.com/turbo998/ai-research-public" target="_blank" rel="noopener"><b>📦 ai-research-public</b></a></span>
+            <span><a href="https://github.com/turbo998/benchmark-harness-engineering" target="_blank" rel="noopener"><b>⚙️ benchmark-harness-engineering</b></a></span>
+            <span>Provenance: anonymized_reported · Oct 28, 2026</span>
+          </div>
+        </div>
+        <a class="pub-arrow" href="workshops/benchmarks/gemini-4-carbon-cards.html" aria-label="Open Gemini 4 Carbon 7-Card Deck">→</a>
+      </article>
+
+      <!-- SUPPLEMENT 5: HAIKU 5.5 & GEMINI 4 ARGON + SKY-001 -->
+      <article class="pub" data-category="coding-supplements">
+        <div>
+          <span class="pub-tag report">Supplement 5 · 7-Card Eval</span>
+          <div class="pub-date">2026-10-15 · 19-Model Cohort</div>
+        </div>
+        <div class="pub-main">
+          <h3><a href="workshops/benchmarks/sky-001-cards.html">Supplement 5: Claude Haiku 5.5 &amp; Gemini 4 Argon 19-Model Coding Agent + SKY-001 World Model Benchmark</a></h3>
+          <p><strong>Notion Benchmark Template Supplement 5</strong> (<code>satomic/copilot-benchmark@a1913835</code>, 209 CLI runs, 1,310 hidden assertions): <strong>Claude Haiku 5.5</strong> debuts at <strong>#4 overall (99.24 mean, 1,308/1,310 hidden, 35.1m) for just $0.33</strong> (<code>43.8x</code> cheaper than #1 Fable 5.1 at <code>99.77 / $14.45</code>), while <strong>Gemini 4 Argon</strong> ranks <strong>#11 (98.59 mean)</strong> and clears <strong>100% of hidden assertions (1,310/1,310)</strong> at <strong>$2.82</strong> (<code>$0/M</code> cache-write). Paired with a forensic bundle audit of <strong>Skyfall AI SKY-001</strong> (<code>98.44x</code> critical-path compression, <code>79.7%</code> CAD IoU in <code>3.9s</code>).</p>
+          <div class="pub-meta">
+            <span><a href="workshops/benchmarks/sky-001-cards.html"><b>🃏 7-Card 4:5 Visual Deck</b></a></span>
+            <span><a href="#table-a-20model"><b>📊 19+1 Model CLI Table</b></a></span>
+            <span><a href="https://github.com/turbo998/ai-research-public/tree/main/docs/research/sky-001-and-coding-agent-19-model-benchmark" target="_blank" rel="noopener"><b>📄 Bilingual Report &amp; Verifier</b></a></span>
+            <span>209 CLI Bundles · 1,310 Hidden Tests</span>
+          </div>
+        </div>
+        <a class="pub-arrow" href="workshops/benchmarks/sky-001-cards.html" aria-label="Open Supplement 5 7-Card Deck">→</a>
+      </article>
+
+      <!-- SUPPLEMENT 4: SONNET 5.5 & GPT-6.1 SOL -->
+      <article class="pub" data-category="coding-supplements">
+        <div>
+          <span class="pub-tag report">Supplement 4 · 7-Card Eval</span>
+          <div class="pub-date">2026-09-30 · 17-Model Cohort</div>
+        </div>
+        <div class="pub-main">
+          <h3><a href="workshops/benchmarks/coding-17-sonnet55-sol-cards.html">Supplement 4: Claude Sonnet 5.5 &amp; GPT-6.1 Sol 17-Model Coding Agent Benchmark</a></h3>
+          <p><strong>Notion Benchmark Template Supplement 4</strong> (<code>satomic/copilot-benchmark@aa1e0dc3</code>, 187 CLI runs, CLI <code>v1.0.90-5</code>): <strong>Claude Sonnet 5.5</strong> achieves <strong>99.00 mean (1,310/1,310 hidden)</strong> in an all-cohort record <strong>21.7 minutes wall clock (16.6m inference, 65 rounds) at $2.89</strong> — <code>2.45x</code> faster and <code>63.3%</code> cheaper than Sonnet 5. <strong>GPT-6.1 Sol</strong> achieves <strong>98.86 mean (1,310/1,310 hidden)</strong> in an all-cohort record <strong>60 tool rounds (9.3w tokens, 27.4m) at $1.71</strong> — <code>82.7%</code> cheaper than GPT-6 Astra (<code>$9.91</code>).</p>
+          <div class="pub-meta">
+            <span><a href="workshops/benchmarks/coding-17-sonnet55-sol-cards.html"><b>🃏 7-Card 4:5 Visual Deck</b></a></span>
+            <span><a href="https://github.com/turbo998/benchmark-harness-engineering/tree/main/data/reported/coding-seventeen" target="_blank" rel="noopener"><b>📂 coding-seventeen CSV/JSON</b></a></span>
+            <span>Sonnet 5.5: 21.7m / $2.89 · GPT-6.1 Sol: 60 rds / $1.71</span>
+          </div>
+        </div>
+        <a class="pub-arrow" href="workshops/benchmarks/coding-17-sonnet55-sol-cards.html" aria-label="Open Supplement 4 7-Card Deck">→</a>
+      </article>
+
+      <!-- ROUTING: DECISION-1 VS OPENAI DECISIONS -->
+      <article class="pub" data-category="routing-decision">
+        <div>
+          <span class="pub-tag report">Routing · 7-Card Eval</span>
+          <div class="pub-date">2026-10 · 8-Engine Routing</div>
+        </div>
+        <div class="pub-main">
+          <h3><a href="workshops/benchmarks/decision-1-cards.html">System-One Decision-1 vs. OpenAI Decisions — 8-Engine Routing &amp; Decision Benchmark</a></h3>
+          <p>Head-to-head evaluation across 5 enterprise decision scenarios (40 neutral + 20 adversarial prompt trials). <strong>Decision-1 + Gating</strong> achieves <strong>40/40 (100%) neutral-prompt accuracy</strong> and <strong>0% option-order reversal drift</strong> at <strong>$7.60 / 1M calls</strong> (<code>380ms</code> P50), outperforming raw single-pass LLMs while preventing uncalibrated auto-execution.</p>
+          <div class="pub-meta">
+            <span><a href="workshops/benchmarks/decision-1-cards.html"><b>🃏 7-Card 4:5 Visual Deck</b></a></span>
+            <span><a href="https://github.com/turbo998/ai-research-public/tree/main/docs/research/openai-decisions-vs-decision-1-routing-benchmark" target="_blank" rel="noopener"><b>📄 Full Routing Report</b></a></span>
+            <span>40/40 Neutral Accuracy · $7.60/1M · 380ms P50</span>
+          </div>
+        </div>
+        <a class="pub-arrow" href="workshops/benchmarks/decision-1-cards.html" aria-label="Open Decision-1 7-Card Deck">→</a>
+      </article>
+
+      <!-- ROUTING: STRANDS DECIDER -->
+      <article class="pub" data-category="routing-decision">
+        <div>
+          <span class="pub-tag report">Routing · 7-Card Eval</span>
+          <div class="pub-date">2026-09 · Local 2B Router</div>
+        </div>
+        <div class="pub-main">
+          <h3><a href="https://github.com/turbo998/benchmark-harness-engineering/tree/main/data/reported/routing-strands-decider" target="_blank" rel="noopener">Strands-Decider-2B &amp; LocalJEV / OpenJEV Sub-Second Edge Decision Benchmark</a></h3>
+          <p>Reference 7-Card 4:5 evaluation of small specialized decision models (`choice`, `noul`, `score` primitives) testing threshold-gated automation (`Act automatically` ≥0.80, `Confirm` 0.55–0.79, `Send to a human` &lt;0.55), option-order reversal sensitivity, and batching latency scaling.</p>
+          <div class="pub-meta">
+            <span><a href="https://github.com/turbo998/benchmark-harness-engineering/blob/main/examples/card-report/index.html" target="_blank" rel="noopener"><b>🃏 Reference 7-Card Deck</b></a></span>
+            <span><a href="https://github.com/turbo998/benchmark-harness-engineering/tree/main/data/reported/routing-strands-decider" target="_blank" rel="noopener"><b>📂 Sealed Dataset</b></a></span>
+            <span>Choice / NoUL / Score Calibration</span>
+          </div>
+        </div>
+        <a class="pub-arrow" href="https://github.com/turbo998/benchmark-harness-engineering/tree/main/data/reported/routing-strands-decider" target="_blank" rel="noopener" aria-label="Open Strands Decider Dataset">→</a>
+      </article>
+
+      <!-- HARNESS ARENA: 3-WAY PELICAN -->
+      <article class="pub" data-category="harness-infra">
+        <div>
+          <span class="pub-tag workshop">3-Way Arena · 7-Card Eval</span>
+          <div class="pub-date">2026-10 · Agent Harnesses</div>
+        </div>
+        <div class="pub-main">
+          <h3><a href="workshops/faf-vs-agent-forge/index.html">FAF v2.0.1 vs. AGENT-FORGE v0.3.0 vs. HVE-Core v3.3.101 — 3-Way Pelican Bicycle Arena</a></h3>
+          <p>Controlled blind evaluation of three agent engineering harnesses on a multi-constraint interactive SVG physics task: <strong>HVE-Core leads at 93.4/100</strong> (<code>0.0 pts</code> perturbation drift), followed by <strong>AGENT-FORGE at 91.8/100</strong> and <strong>FAF at 90.5/100</strong>. Includes live side-by-side interactive demos and a 7-Card 4:5 deck.</p>
+          <div class="pub-meta">
+            <span><a href="workshops/faf-vs-agent-forge/index.html"><b>🏟️ Live 3-Way Arena</b></a></span>
+            <span><a href="workshops/faf-vs-agent-forge/test-report-cards.html"><b>🃏 7-Card 4:5 Visual Deck</b></a></span>
+            <span>HVE-Core 93.4 vs AGENT-FORGE 91.8 vs FAF 90.5</span>
+          </div>
+        </div>
+        <a class="pub-arrow" href="workshops/faf-vs-agent-forge/test-report-cards.html" aria-label="Open 3-Way Arena 7-Card Deck">→</a>
+      </article>
+
+      <!-- INFRA: AKSCLAW X E2B 100K SANDBOXES -->
+      <article class="pub" data-category="harness-infra">
+        <div>
+          <span class="pub-tag workshop">Sandbox Infra · 7-Card Eval</span>
+          <div class="pub-date">2026-10 · 100K MicroVMs</div>
+        </div>
+        <div class="pub-main">
+          <h3><a href="https://turbo998.github.io/Azure-Infra-Lab/workshops/azure-agent-infra/cards.html" target="_blank" rel="noopener">AKSClaw (Kata) × E2B Firecracker 100,000-Sandbox MicroVM Infrastructure Benchmark</a></h3>
+          <p>Evaluating 6 Azure agent runtime tiers on <code>Standard_D96as_v7</code>: <strong>108ms P50 Base / 132ms Code-Interpreter memory snapshot restore</strong>, <strong>512–2,500 MicroVMs per node</strong>, 220-node fleet sizing for 100,000 concurrent sandboxes, and <strong>3.67s</strong> cross-region warm failover.</p>
+          <div class="pub-meta">
+            <span><a href="https://turbo998.github.io/Azure-Infra-Lab/workshops/azure-agent-infra/cards.html" target="_blank" rel="noopener"><b>🃏 7-Card 4:5 Visual Deck</b></a></span>
+            <span><a href="https://turbo998.github.io/Azure-Infra-Lab/workshops/azure-agent-infra/demo.html" target="_blank" rel="noopener"><b>⚡ Live Simulator</b></a></span>
+            <span>108ms Base / 132ms CI-v1 · 3.67s Warm DR</span>
+          </div>
+        </div>
+        <a class="pub-arrow" href="https://turbo998.github.io/Azure-Infra-Lab/workshops/azure-agent-infra/cards.html" target="_blank" rel="noopener" aria-label="Open Azure Agent Infra 7-Card Deck">→</a>
+      </article>
+
+      <!-- INFRA: E2B X NOMAD HEARTBEAT -->
+      <article class="pub" data-category="harness-infra">
+        <div>
+          <span class="pub-tag report">Control Plane · 7-Card Eval</span>
+          <div class="pub-date">2026-10 · Postmortem Audit</div>
+        </div>
+        <div class="pub-main">
+          <h3><a href="workshops/benchmarks/e2b-nomad-cards.html">E2B × HashiCorp Nomad Node Heartbeat Exhaustion &amp; Control-Plane Resilience Benchmark</a></h3>
+          <p>Quantitative verification of the Oct 12, 2026 E2B outage: <code>15,595 / 15,610</code> (<code>99.904%</code>) sandbox start failures caused by a single unthrottled node-status poller holding the Nomad raft state lock for <code>29.2s &gt; 20.0s</code> heartbeat TTL, and how exponential backoff + circuit breaking restores <code>100%</code> availability.</p>
+          <div class="pub-meta">
+            <span><a href="workshops/benchmarks/e2b-nomad-cards.html"><b>🃏 7-Card 4:5 Visual Deck</b></a></span>
+            <span><a href="https://github.com/turbo998/ai-research-public/tree/main/docs/research/e2b-nomad-heartbeat-resilience" target="_blank" rel="noopener"><b>📄 Verifier &amp; Report</b></a></span>
+            <span>8/8 Unit Tests · 0.0% Lock Contention post-fix</span>
+          </div>
+        </div>
+        <a class="pub-arrow" href="workshops/benchmarks/e2b-nomad-cards.html" aria-label="Open E2B Nomad 7-Card Deck">→</a>
+      </article>
+
+      <!-- CYBER & COMMERCE: WEB IQ -->
+      <article class="pub" data-category="cyber-safety">
+        <div>
+          <span class="pub-tag report">Web Safety · 7-Card Eval</span>
+          <div class="pub-date">2026-10 · Agentic Commerce</div>
+        </div>
+        <div class="pub-main">
+          <h3><a href="workshops/agentic-commerce/benchmark-cards.html">Agentic Commerce × Web IQ Grounding &amp; Adversarial Indirect Injection Benchmark</a></h3>
+          <p>Evaluating structured Web IQ grounding vs. raw DOM scraping across live checkout workflows: <strong>87.5% task completion accuracy</strong>, <strong>4.2x token reduction</strong>, and <strong>0.0% adversarial prompt injection bypass</strong> (<code>100%</code> block rate against hidden DOM price-tampering payloads).</p>
+          <div class="pub-meta">
+            <span><a href="workshops/agentic-commerce/benchmark-cards.html"><b>🃏 7-Card 4:5 Visual Deck</b></a></span>
+            <span><a href="workshops/agentic-commerce/live-demo.html"><b>🛒 Live Sandbox</b></a></span>
+            <span>87.5% Grounding · 0.0% Injection ASR</span>
+          </div>
+        </div>
+        <a class="pub-arrow" href="workshops/agentic-commerce/benchmark-cards.html" aria-label="Open Agentic Commerce 7-Card Deck">→</a>
+      </article>
+
+      <!-- HARNESS: OMARCHY & VOICE -->
+      <article class="pub" data-category="harness-infra">
+        <div>
+          <span class="pub-tag report">Voice &amp; OS · 7-Card Evals</span>
+          <div class="pub-date">2026-10 · Voice &amp; Omarchy</div>
+        </div>
+        <div class="pub-main">
+          <h3><a href="workshops/benchmarks/omarchy-cards.html">Omarchy Agent OS (174 Assertions) &amp; Enterprise Voice Agent Dual-Architecture Benchmarks</a></h3>
+          <p>Includes the <strong>Omarchy Agent-Native Desktop OS Benchmark</strong> (<code>174/174</code> deterministic assertions across keybinding dispatch and terminal IPC) and the <strong>Enterprise Voice Agent Benchmark</strong> (<a href="voice/benchmark-cards.html">Cascaded vs. Native Realtime S2S latency &amp; barge-in</a>).</p>
+          <div class="pub-meta">
+            <span><a href="workshops/benchmarks/omarchy-cards.html"><b>🃏 Omarchy 7-Card Deck</b></a></span>
+            <span><a href="voice/benchmark-cards.html"><b>🎙️ Voice Agent 7-Card Deck</b></a></span>
+            <span>174/174 OS Assertions · Sub-300ms S2S Voice</span>
+          </div>
+        </div>
+        <a class="pub-arrow" href="workshops/benchmarks/omarchy-cards.html" aria-label="Open Omarchy 7-Card Deck">→</a>
+      </article>
+
+    </div>
+
+    <!-- TABLE A: 20-MODEL COPILOT CLI CODING AGENT BENCHMARK TABLE -->
+    <div id="table-a-20model" style="margin-top: 44px;">
+      <div class="sec-label"><span class="num">02</span>TABLE A · 20-MODEL COPILOT CLI CODING AGENT BENCHMARK MATRIX (SUPPLEMENTS 1–6)</div>
+      <h2>Full 20-Model Coding Agent Scorecard (A1–A5, M1–M2, C1–C4, 1,310 Hidden Assertions)</h2>
+      <p class="sec-intro">
+        Complete progression from our Notion Benchmark Templates — including <strong>Supplement 4 (Sonnet 5.5 &amp; GPT-6.1 Sol, 17 models)</strong>, <strong>Supplement 5 (Haiku 5.5 &amp; Gemini 4 Argon, 19 models)</strong>, and <strong>Supplement 6 (Gemini 4 Carbon Fairwind Preview, 20 models)</strong>. Tasks cover 5 Atomic (<code>A1–A5</code>, 500 pts), 2 Medium (<code>M1–M2</code>, 200 pts), and 4 Complex (<code>C1</code> SQL Engine, <code>C2</code> Reactive Sheet, <code>C3</code> Async DAG Engine, <code>C4</code> Bytecode VM, 400 pts) evaluated under the <code>70% Correctness / 15% Performance / 15% Code Quality</code> rubric.
+      </p>
+
+      <div class="bm-table-wrap">
+        <table class="bm-table">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Model</th>
+              <th>Cohort / CLI</th>
+              <th>Atomic (A1–A5)</th>
+              <th>Medium (M1–M2)</th>
+              <th>Complex (C1–C4)</th>
+              <th>Mean (/100)</th>
+              <th>Total (/1100)</th>
+              <th>Hidden (/1,310)</th>
+              <th>Rounds</th>
+              <th>Out Tokens</th>
+              <th>Cost ($)</th>
+              <th>Wall / Inf</th>
+              <th>Action Gate</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>#1</b></td>
+              <td><b>Fable 5.1</b></td>
+              <td>Base · 1.0.84-3</td>
+              <td><b>100.00</b> (100×5)</td>
+              <td>99.50 (100/99)</td>
+              <td>99.62 (98.5/100/100/100)</td>
+              <td><b>99.77</b></td>
+              <td><b>1097.50</b></td>
+              <td><b>1,310/1,310</b></td>
+              <td>142</td>
+              <td>15.8w</td>
+              <td>$14.45</td>
+              <td>55.9m / 36.8m</td>
+              <td><span class="bm-gate auto">Act automatically</span></td>
+            </tr>
+            <tr>
+              <td><b>#2</b></td>
+              <td><b>Opus 5.5</b></td>
+              <td>Supp 3 · 1.0.89-5</td>
+              <td>99.80 (99 on A2)</td>
+              <td>99.50 (100/99)</td>
+              <td>99.62 (98.5/100/100/100)</td>
+              <td><b>99.68</b></td>
+              <td><b>1096.50</b></td>
+              <td><b>1,310/1,310</b></td>
+              <td>92</td>
+              <td>17.6w</td>
+              <td>$5.84</td>
+              <td>31.8m / 26.2m</td>
+              <td><span class="bm-gate auto">Act automatically</span></td>
+            </tr>
+            <tr>
+              <td><b>#3</b></td>
+              <td><b>Opus 5</b></td>
+              <td>Base · 1.0.84-3</td>
+              <td>99.80 (99 on A2)</td>
+              <td>99.50 (100/99)</td>
+              <td>99.38 (97.5/100/100/100)</td>
+              <td><b>99.59</b></td>
+              <td><b>1095.50</b></td>
+              <td><b>1,310/1,310</b></td>
+              <td>188</td>
+              <td>24.9w</td>
+              <td>$17.41</td>
+              <td>63.3m / 50.7m</td>
+              <td><span class="bm-gate auto">Act automatically</span></td>
+            </tr>
+            <tr class="bm-highlight-supp5">
+              <td><b>#4</b></td>
+              <td><b>Haiku 5.5 ⭐</b></td>
+              <td><b>Supp 5 · 1.0.98</b></td>
+              <td>99.15 (99/99/97.8/100/100)</td>
+              <td>99.50 (100/99)</td>
+              <td>99.22 (97.5/100/100/99.36)</td>
+              <td><b>99.24</b></td>
+              <td><b>1091.61</b></td>
+              <td>1,308/1,310 ✕</td>
+              <td>94</td>
+              <td>45.3w</td>
+              <td><b>$0.33</b></td>
+              <td>35.1m / 30.9m</td>
+              <td><span class="bm-gate confirm">Confirm (2 C4)</span></td>
+            </tr>
+            <tr>
+              <td><b>#5</b></td>
+              <td><b>Grok 4.7</b></td>
+              <td>Supp 2 · 1.0.89-0</td>
+              <td>99.00 (96 on A5)</td>
+              <td>99.50 (100/99)</td>
+              <td>99.33 (98.87/100/98.46/100)</td>
+              <td><b>99.21</b></td>
+              <td>1091.33</td>
+              <td>1,299/1,310 ✕</td>
+              <td>143</td>
+              <td>51.5w</td>
+              <td>$12.22</td>
+              <td>181.2m / 130.8m</td>
+              <td><span class="bm-gate confirm">Confirm</span></td>
+            </tr>
+            <tr class="bm-highlight-supp4">
+              <td><b>#6</b></td>
+              <td><b>Sonnet 5.5 ⚡</b></td>
+              <td><b>Supp 4 · 1.0.90-5</b></td>
+              <td>98.80 (99/99/98/100/98)</td>
+              <td>99.12 (100/98.25)</td>
+              <td>99.19 (97.5/100/99.25/100)</td>
+              <td><b>99.00</b></td>
+              <td><b>1089.00</b></td>
+              <td><b>1,310/1,310</b></td>
+              <td>65</td>
+              <td>16.1w</td>
+              <td><b>$2.89</b></td>
+              <td><b>21.7m / 16.6m</b></td>
+              <td><span class="bm-gate auto">Act automatically</span></td>
+            </tr>
+            <tr class="bm-highlight-supp4">
+              <td><b>#7</b></td>
+              <td><b>GPT-6.1 Sol 🎯</b></td>
+              <td><b>Supp 4 · 1.0.90-5</b></td>
+              <td>98.40 (99/96/97/100/100)</td>
+              <td>99.00 (100/98)</td>
+              <td>99.38 (97.5/100/100/100)</td>
+              <td><b>98.86</b></td>
+              <td><b>1087.50</b></td>
+              <td><b>1,310/1,310</b></td>
+              <td><b>60</b></td>
+              <td>9.3w</td>
+              <td><b>$1.71</b></td>
+              <td>27.4m / 22.5m</td>
+              <td><span class="bm-gate auto">Act automatically</span></td>
+            </tr>
+            <tr>
+              <td><b>#8</b></td>
+              <td><b>GPT-6 Astra</b></td>
+              <td>Base · 1.0.84-3</td>
+              <td>98.00 (98/96/97/100/99)</td>
+              <td>99.00 (100/98)</td>
+              <td><b>99.75</b> (99/100/100/100)</td>
+              <td><b>98.82</b></td>
+              <td>1087.00</td>
+              <td><b>1,310/1,310</b></td>
+              <td>62</td>
+              <td>9.8w</td>
+              <td>$9.91</td>
+              <td>32.7m / 26.9m</td>
+              <td><span class="bm-gate auto">Act automatically</span></td>
+            </tr>
+            <tr>
+              <td><b>#9</b></td>
+              <td><b>Sonnet 5</b></td>
+              <td>Base · 1.0.84-3</td>
+              <td>98.40 (100/99/97/100/96)</td>
+              <td>99.12 (100/98.25)</td>
+              <td>98.88 (97.5/100/98/100)</td>
+              <td><b>98.70</b></td>
+              <td>1085.75</td>
+              <td><b>1,310/1,310</b></td>
+              <td>190</td>
+              <td>23.9w</td>
+              <td>$7.87</td>
+              <td>53.2m / 39.9m</td>
+              <td><span class="bm-gate auto">Act automatically</span></td>
+            </tr>
+            <tr>
+              <td><b>#10</b></td>
+              <td><b>Kimi K3</b></td>
+              <td>Supp 1 · 1.0.84-8</td>
+              <td>98.40 (99/97/97/100/99)</td>
+              <td>99.12 (100/98.25)</td>
+              <td>98.81 (97.12/99.27/98.85/100)</td>
+              <td>98.68</td>
+              <td>1085.49</td>
+              <td>1,305/1,310 ✕</td>
+              <td>143</td>
+              <td>17.5w</td>
+              <td>$5.58</td>
+              <td>150.5m / 82.4m</td>
+              <td><span class="bm-gate confirm">Confirm</span></td>
+            </tr>
+            <tr class="bm-highlight-supp5">
+              <td><b>#11</b></td>
+              <td><b>Gemini 4 Argon ⭐</b></td>
+              <td><b>Supp 5 · 1.0.98</b></td>
+              <td>99.00 (100/98/97/100/100)</td>
+              <td>98.62 (100/97.25)</td>
+              <td>98.06 (98.25/99/98/97)</td>
+              <td><b>98.59</b></td>
+              <td><b>1084.50</b></td>
+              <td><b>1,310/1,310</b></td>
+              <td>106</td>
+              <td>11.7w</td>
+              <td><b>$2.82</b></td>
+              <td>45.2m / 41.9m</td>
+              <td><span class="bm-gate auto">Act automatically</span></td>
+            </tr>
+            <tr>
+              <td><b>#12</b></td>
+              <td><b>Grok 4.6</b></td>
+              <td>Supp 1 · 1.0.84-8</td>
+              <td>98.40 (99/98/97/100/98)</td>
+              <td><b>100.00</b> (100/100)</td>
+              <td>98.06 (97.12/99.27/99.85/96)</td>
+              <td>98.57</td>
+              <td>1084.24</td>
+              <td>1,305/1,310 ✕</td>
+              <td>138</td>
+              <td>19.4w</td>
+              <td>$5.21</td>
+              <td>69.5m / 55.0m</td>
+              <td><span class="bm-gate confirm">Confirm</span></td>
+            </tr>
+            <tr>
+              <td><b>#13</b></td>
+              <td><b>HydraFusion</b></td>
+              <td>Supp 3 · 1.0.89-5</td>
+              <td>98.40 (96/99/97/100/100)</td>
+              <td>98.00 (97/99)</td>
+              <td>98.75 (99/100/98/98)</td>
+              <td><b>98.45</b></td>
+              <td>1083.00</td>
+              <td><b>1,310/1,310</b></td>
+              <td>85</td>
+              <td><b>8.9w</b></td>
+              <td>$3.58</td>
+              <td>24.1m / 17.2m</td>
+              <td><span class="bm-gate auto">Act automatically</span></td>
+            </tr>
+            <tr>
+              <td><b>#14</b></td>
+              <td><b>GPT-6 Luna</b></td>
+              <td>Supp 2 · 1.0.89-0</td>
+              <td>98.80 (99/98/97/100/100)</td>
+              <td>99.12 (100/98.25)</td>
+              <td>96.88 (97.12/100/92.38/98)</td>
+              <td>98.16</td>
+              <td>1079.75</td>
+              <td>1,279/1,310 ✕</td>
+              <td>139</td>
+              <td>14.5w</td>
+              <td><b>$0.17</b></td>
+              <td>44.6m / 35.5m</td>
+              <td><span class="bm-gate confirm">Confirm</span></td>
+            </tr>
+            <tr>
+              <td><b>#15</b></td>
+              <td><b>Gemini 3.8 Flash</b></td>
+              <td>Supp 1 · 1.0.84-8</td>
+              <td>98.75 (100/100/95.8/100/98)</td>
+              <td>98.12 (100/96.25)</td>
+              <td>97.00 (98.25/99/93.77/97)</td>
+              <td>98.00</td>
+              <td>1078.02</td>
+              <td>1,276/1,310 ✕</td>
+              <td>277</td>
+              <td>12.3w</td>
+              <td>$2.83</td>
+              <td>85.4m / 62.5m</td>
+              <td><span class="bm-gate confirm">Confirm</span></td>
+            </tr>
+            <tr>
+              <td><b>#16</b></td>
+              <td><b>GPT-5.6 Luna</b></td>
+              <td>Supp 1 · 1.0.84-8</td>
+              <td>98.40 (99/98/97/100/98)</td>
+              <td>99.50 (100/99)</td>
+              <td>96.42 (97.5/97.51/94.69/96)</td>
+              <td>97.88</td>
+              <td>1076.70</td>
+              <td>1,293/1,310 ✕</td>
+              <td>235</td>
+              <td>10.7w</td>
+              <td>$0.39</td>
+              <td>51.0m / 21.9m</td>
+              <td><span class="bm-gate confirm">Confirm</span></td>
+            </tr>
+            <tr>
+              <td><b>#17</b></td>
+              <td><b>MAI-Code-1.1-Flash</b></td>
+              <td>Supp 1 · 1.0.84-8</td>
+              <td>98.20 (99/97/99/100/96)</td>
+              <td>98.62 (100/97.25)</td>
+              <td>96.61 (97.12/97/95.71/96.61)</td>
+              <td>97.70</td>
+              <td>1074.69</td>
+              <td>1,284/1,310 ✕</td>
+              <td>192</td>
+              <td>23.3w</td>
+              <td>$0.53</td>
+              <td>56.5m / 40.8m</td>
+              <td><span class="bm-gate confirm">Confirm</span></td>
+            </tr>
+            <tr>
+              <td><b>#18</b></td>
+              <td><b>DeepSeek-V4-Flash</b></td>
+              <td>Supp 3 · BYOK</td>
+              <td>97.30 (99/97/95.75/100/94.75)</td>
+              <td>88.00 (100/76.00) ✕</td>
+              <td>95.91 (94.32/97.32/97.08/94.9)</td>
+              <td>95.10</td>
+              <td>1046.12</td>
+              <td>1,250/1,310 ✕</td>
+              <td>420</td>
+              <td>29.0w</td>
+              <td>$1.95</td>
+              <td>179.0m / 93.6m</td>
+              <td><span class="bm-gate human">Send to a human</span></td>
+            </tr>
+            <tr>
+              <td><b>#19</b></td>
+              <td><b>Haiku 4.5</b></td>
+              <td>Base · 1.0.84-3</td>
+              <td>97.25 (97.8/95/95.8/100/97.8)</td>
+              <td>94.39 (93.78/95)</td>
+              <td>89.64 (93.98/94.76/82.81/87) ✕</td>
+              <td>93.96</td>
+              <td>1033.59</td>
+              <td>1,239/1,310 ✕</td>
+              <td>341</td>
+              <td>30.3w</td>
+              <td>$3.93</td>
+              <td>80.8m / 52.7m</td>
+              <td><span class="bm-gate human">Send to a human</span></td>
+            </tr>
+            <tr class="bm-highlight-carbon">
+              <td><b>#20 [Track B]</b></td>
+              <td><b>Gemini 4 Carbon 🛡️</b></td>
+              <td><b>Supp 6 · Fairwind</b></td>
+              <td><b>TB 4.0: 65.2% (#1)</b></td>
+              <td><b>SWE-sweep: 9.6% (2.23x)</b></td>
+              <td><b>SEC 88.2% · CWE 71.0%</b></td>
+              <td><b>AA #1 (59)</b></td>
+              <td><b>14/16 #1 Wins</b></td>
+              <td><b>0.0% Cheat / 0.0% IPI</b></td>
+              <td>Fairwind</td>
+              <td>1M Ctx</td>
+              <td><b>$2/$10 /1M</b></td>
+              <td>96.2% GraphWalks</td>
+              <td><span class="bm-gate auto">Act (Cyber / 1M)</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TABLE B: GEMINI 4 CARBON OFFICIAL 16-BENCHMARK MATRIX & 4 CYBER LEADERBOARDS -->
+    <div id="table-b-carbon" style="margin-top: 44px;">
+      <div class="sec-label"><span class="num">03</span>TABLE B · GEMINI 4 CARBON OFFICIAL 16-BENCHMARK CROSS-MODEL MATRIX &amp; 4 CYBER LEADERBOARDS</div>
+      <h2>Gemini 4 Carbon vs. Argon, GPT-6 Astra, Claude Opus 5.5 &amp; Claude Fable 5.1 (Oct 28, 2026)</h2>
+      <p class="sec-intro">
+        Exact figures from Google DeepMind's official evaluation suite (<code>deepmind.google/models/evals-methodology/gemini-4-carbon</code>). Gemini 4 Carbon achieves the highest score on <strong>14 out of 16 benchmarks</strong> while matching Gemini 4 Argon's exact token pricing (<code>$2/1M</code> input, <code>$10/1M</code> output, <code>$0.10/1M</code> cached input).
+      </p>
+
+      <div class="bm-table-wrap">
+        <table class="bm-table">
+          <thead>
+            <tr>
+              <th>Capability Domain</th>
+              <th>Benchmark &amp; Metric</th>
+              <th>Gemini 4 Carbon</th>
+              <th>Gemini 4 Argon</th>
+              <th>GPT-6 Astra</th>
+              <th>Claude Opus 5.5</th>
+              <th>Claude Fable 5.1</th>
+              <th>Carbon vs. Argon Uplift</th>
+              <th>Overall Leader</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="bm-highlight-carbon">
+              <td><b>General Capabilities</b></td>
+              <td><b>AA Intelligence Index v5.0</b></td>
+              <td><b>59 (#1)</b></td>
+              <td>50</td>
+              <td>57</td>
+              <td>58</td>
+              <td>49</td>
+              <td><b>+9 pts (+18.0%)</b></td>
+              <td><span class="bm-gate auto">Gemini 4 Carbon</span></td>
+            </tr>
+            <tr>
+              <td><b>General Capabilities</b></td>
+              <td><b>Vals Index v2.2</b></td>
+              <td><b>70.4% (#1)</b></td>
+              <td>69.2%</td>
+              <td>65.0%</td>
+              <td>70.2%</td>
+              <td>—</td>
+              <td><b>+1.2 pts</b></td>
+              <td><span class="bm-gate auto">Gemini 4 Carbon</span></td>
+            </tr>
+            <tr class="bm-highlight-carbon">
+              <td><b>Agentic Coding</b></td>
+              <td><b>SWE-sweep</b> (Repo-scale sweeps)</td>
+              <td><b>9.6% (#1)</b></td>
+              <td>4.3%</td>
+              <td>9.5%</td>
+              <td>3.6%</td>
+              <td>2.9%</td>
+              <td><b>+5.3 pts (2.23x)</b></td>
+              <td><span class="bm-gate auto">Gemini 4 Carbon</span></td>
+            </tr>
+            <tr>
+              <td><b>Agentic Coding</b></td>
+              <td><b>FrontierSWE 2</b></td>
+              <td>61.2% (#3) ✕</td>
+              <td>55.0%</td>
+              <td><b>65.5% (#1)</b></td>
+              <td>62.3%</td>
+              <td>56.3%</td>
+              <td><b>+6.2 pts</b> (-4.3 vs Astra)</td>
+              <td><span class="bm-gate confirm">GPT-6 Astra</span></td>
+            </tr>
+            <tr class="bm-highlight-carbon">
+              <td><b>Agentic Coding</b></td>
+              <td><b>Terminal-Bench 4.0 (AA)</b></td>
+              <td><b>65.2% (#1)</b></td>
+              <td>57.1%</td>
+              <td>59.1%</td>
+              <td>59.6%</td>
+              <td>52.0%</td>
+              <td><b>+8.1 pts (0.0% Cheat)</b></td>
+              <td><span class="bm-gate auto">Gemini 4 Carbon</span></td>
+            </tr>
+            <tr>
+              <td><b>Computer Use</b></td>
+              <td><b>Agents' Last Exam v1.1</b> (Score)</td>
+              <td><b>77.4% (#1)</b></td>
+              <td>69.0%</td>
+              <td>73.1%</td>
+              <td>71.6%</td>
+              <td>—</td>
+              <td><b>+8.4 pts</b></td>
+              <td><span class="bm-gate auto">Gemini 4 Carbon</span></td>
+            </tr>
+            <tr>
+              <td><b>Computer Use</b></td>
+              <td><b>OSWorld-2.1</b> (Offline subset)</td>
+              <td>81.5% (#2) ✕</td>
+              <td>74.7%</td>
+              <td>80.9%</td>
+              <td><b>87.2% (#1)</b></td>
+              <td>76.8%</td>
+              <td><b>+6.8 pts</b> (-5.7 vs Opus)</td>
+              <td><span class="bm-gate confirm">Claude Opus 5.5</span></td>
+            </tr>
+            <tr>
+              <td><b>Knowledge Work</b></td>
+              <td><b>AutomationBench</b> (Zapier)</td>
+              <td><b>53.9% (#1)</b></td>
+              <td>51.3%</td>
+              <td>41.4%</td>
+              <td>42.5%</td>
+              <td>31.4%</td>
+              <td><b>+2.6 pts (+11.4 vs Opus)</b></td>
+              <td><span class="bm-gate auto">Gemini 4 Carbon</span></td>
+            </tr>
+            <tr class="bm-highlight-carbon">
+              <td><b>Knowledge Work</b></td>
+              <td><b>Vending-Bench 2</b> (Bank balance $)</td>
+              <td><b>$16,484 (#1)</b></td>
+              <td>$13,718</td>
+              <td>$15,515</td>
+              <td>$9,235</td>
+              <td>$5,422</td>
+              <td><b>+$2,766 (+20.2%)</b></td>
+              <td><span class="bm-gate auto">Gemini 4 Carbon</span></td>
+            </tr>
+            <tr>
+              <td><b>Multimodal</b></td>
+              <td><b>Chartography</b></td>
+              <td><b>72.5% (#1)</b></td>
+              <td>71.6%</td>
+              <td>71.0%</td>
+              <td>66.3%</td>
+              <td>46.2%</td>
+              <td><b>+0.9 pts</b></td>
+              <td><span class="bm-gate auto">Gemini 4 Carbon</span></td>
+            </tr>
+            <tr>
+              <td><b>Multimodal</b></td>
+              <td><b>Blueprint-Bench 2</b> (Similarity)</td>
+              <td><b>58.6% (#1)</b></td>
+              <td>54.4%</td>
+              <td>49.7%</td>
+              <td>51.2%</td>
+              <td>41.9%</td>
+              <td><b>+4.2 pts</b></td>
+              <td><span class="bm-gate auto">Gemini 4 Carbon</span></td>
+            </tr>
+            <tr class="bm-highlight-carbon">
+              <td><b>Long Context</b></td>
+              <td><b>GraphWalks</b> (256k–1M, BFS F1)</td>
+              <td><b>96.2% (#1)</b></td>
+              <td>84.2%</td>
+              <td>71.8%</td>
+              <td>66.8%</td>
+              <td>65.0%</td>
+              <td><b>+12.0 pts (+24.4 vs Astra)</b></td>
+              <td><span class="bm-gate auto">Gemini 4 Carbon</span></td>
+            </tr>
+            <tr>
+              <td><b>Science &amp; Math</b></td>
+              <td><b>RiemannBench</b></td>
+              <td><b>80.0% (#1)</b></td>
+              <td>76.0%</td>
+              <td>72.0%</td>
+              <td>69.6%</td>
+              <td>65.6%</td>
+              <td><b>+4.0 pts</b></td>
+              <td><span class="bm-gate auto">Gemini 4 Carbon</span></td>
+            </tr>
+            <tr>
+              <td><b>Science &amp; Math</b></td>
+              <td><b>Terminal-Bench-Science 0.1 (AA)</b></td>
+              <td><b>64.8% (#1)</b></td>
+              <td>52.9%</td>
+              <td>63.3%</td>
+              <td>59.0%</td>
+              <td>43.3%</td>
+              <td><b>+11.9 pts</b></td>
+              <td><span class="bm-gate auto">Gemini 4 Carbon</span></td>
+            </tr>
+            <tr class="bm-highlight-carbon">
+              <td><b>Cybersecurity</b></td>
+              <td><b>CWE-bench</b> (Root-cause patching)</td>
+              <td><b>71.0% (#1)</b></td>
+              <td>68.0%</td>
+              <td>68.0%</td>
+              <td>67.0%</td>
+              <td>58.0%</td>
+              <td><b>+3.0 pts (+13.0 vs Fable)</b></td>
+              <td><span class="bm-gate auto">Gemini 4 Carbon</span></td>
+            </tr>
+            <tr class="bm-highlight-carbon">
+              <td><b>Cybersecurity</b></td>
+              <td><b>ExploitGym</b> (Causal Pass Rate)</td>
+              <td><b>54.8% (#1)</b></td>
+              <td>42.0%</td>
+              <td>42.4%</td>
+              <td>34.5%</td>
+              <td>—</td>
+              <td><b>+12.8 pts (1.30x)</b></td>
+              <td><span class="bm-gate auto">Gemini 4 Carbon</span></td>
+            </tr>
+            <tr class="bm-highlight-carbon">
+              <td><b>Cybersecurity</b></td>
+              <td><b>SEC-bench Pro</b> (Vuln detection)</td>
+              <td><b>88.2% (#1)</b></td>
+              <td>83.4%</td>
+              <td>85.4%</td>
+              <td>—</td>
+              <td>—</td>
+              <td><b>+4.8 pts (+2.8 vs Astra)</b></td>
+              <td><span class="bm-gate auto">Gemini 4 Carbon</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 4 CYBERSECURITY & SAFETY SUB-LEADERBOARDS -->
+      <h3>4 Cybersecurity &amp; Adversarial Safety Sub-Leaderboards (Exact Chart Breakdown)</h3>
+      <div class="bm-subgrid">
+        <div class="bm-subcard">
+          <h4>1. SEC-bench Pro (Vulnerability Detection)</h4>
+          <div class="bm-submeta">Pass@1 · Higher is better (8 Models)</div>
+          <div class="bm-bar-row"><span><b>Gemini 4 Carbon</b></span><div class="bm-bar-track"><div class="bm-bar-fill" style="width:88.2%"></div></div><span class="bm-bar-val">88.2%</span></div>
+          <div class="bm-bar-row"><span>GPT-6 Astra</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:85.4%"></div></div><span class="bm-bar-val">85.4%</span></div>
+          <div class="bm-bar-row"><span>Gemini 4 Argon</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:83.4%"></div></div><span class="bm-bar-val">83.4%</span></div>
+          <div class="bm-bar-row"><span>GPT-6.1 Terra</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:83.3%"></div></div><span class="bm-bar-val">83.3%</span></div>
+          <div class="bm-bar-row"><span>GPT-6.1 Sol</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:78.8%"></div></div><span class="bm-bar-val">78.8%</span></div>
+          <div class="bm-bar-row"><span>MiMo-V2.6-Pro</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:66.3%"></div></div><span class="bm-bar-val">66.3%</span></div>
+          <div class="bm-bar-row"><span>DeepSeek-V4.1-Flash</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:62.8%"></div></div><span class="bm-bar-val">62.8%</span></div>
+          <div class="bm-bar-row"><span>DeepSeek-V4-Pro</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:56.4%"></div></div><span class="bm-bar-val">56.4%</span></div>
+        </div>
+
+        <div class="bm-subcard">
+          <h4>2. ExploitGym (Causal Pass Rate)</h4>
+          <div class="bm-submeta">Time cap per task · Higher is better (10 Bars)</div>
+          <div class="bm-bar-row"><span><b>Carbon (10h cap)</b></span><div class="bm-bar-track"><div class="bm-bar-fill" style="width:91.3%"></div></div><span class="bm-bar-val">54.8%</span></div>
+          <div class="bm-bar-row"><span><b>Carbon (6h cap)</b></span><div class="bm-bar-track"><div class="bm-bar-fill" style="width:89.2%"></div></div><span class="bm-bar-val">53.5%</span></div>
+          <div class="bm-bar-row"><span>Astra (No cap)</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:70.7%"></div></div><span class="bm-bar-val">42.4%</span></div>
+          <div class="bm-bar-row"><span>Argon (10h cap)</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:70.0%"></div></div><span class="bm-bar-val">42.0%</span></div>
+          <div class="bm-bar-row"><span>Argon (6h cap)</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:65.8%"></div></div><span class="bm-bar-val">39.5%</span></div>
+          <div class="bm-bar-row"><span>GPT-6.1 Sol (No cap)</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:58.5%"></div></div><span class="bm-bar-val">35.1%</span></div>
+          <div class="bm-bar-row"><span>Opus 5.5 (6h cap)</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:57.5%"></div></div><span class="bm-bar-val">34.5%</span></div>
+          <div class="bm-bar-row"><span>Mythos 5.1 / MiMo / GLM</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:50.7%"></div></div><span class="bm-bar-val">30.4–15%</span></div>
+        </div>
+
+        <div class="bm-subcard">
+          <h4>3. CWE-bench (Root-Cause Patching)</h4>
+          <div class="bm-submeta">Pass@1 (ties broken by Pass@4) · Harness labeled</div>
+          <div class="bm-bar-row"><span><b>Carbon (Antigravity)</b></span><div class="bm-bar-track"><div class="bm-bar-fill" style="width:71.0%"></div></div><span class="bm-bar-val">71.0%</span></div>
+          <div class="bm-bar-row"><span>Grok 4.7 (opencode)</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:68.0%"></div></div><span class="bm-bar-val">68.0%</span></div>
+          <div class="bm-bar-row"><span>Argon (Antigravity)</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:68.0%"></div></div><span class="bm-bar-val">68.0%</span></div>
+          <div class="bm-bar-row"><span>GPT-6 Astra (Codex)</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:68.0%"></div></div><span class="bm-bar-val">68.0%</span></div>
+          <div class="bm-bar-row"><span>Opus 5.5 (Claude Code)</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:67.0%"></div></div><span class="bm-bar-val">67.0%</span></div>
+          <div class="bm-bar-row"><span>Fable 5.1 (Claude Code)</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:58.0%"></div></div><span class="bm-bar-val">58.0%</span></div>
+          <div class="bm-bar-row"><span>Grok 4.6 / DS-V4.1 / Muse</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:57.0%"></div></div><span class="bm-bar-val">57/55/55%</span></div>
+          <div class="bm-bar-row"><span>Hy4 Preview / GPT-6 Sol</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:53.0%"></div></div><span class="bm-bar-val">53 / 52%</span></div>
+        </div>
+
+        <div class="bm-subcard">
+          <h4>4. Gray Swan IPI (Indirect Prompt Injection)</h4>
+          <div class="bm-submeta">Attack Success Rate at k=15 · Lower is better</div>
+          <div class="bm-bar-row"><span><b>Gemini 4 Carbon ⭐</b></span><div class="bm-bar-track"><div class="bm-bar-fill" style="width:2%"></div></div><span class="bm-bar-val">0.0%</span></div>
+          <div class="bm-bar-row"><span>Gemini 4 Argon</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:4%"></div></div><span class="bm-bar-val">0.7%</span></div>
+          <div class="bm-bar-row"><span>Opus 5.5 &amp; Fable 5.1</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:5%"></div></div><span class="bm-bar-val">1.0%</span></div>
+          <div class="bm-bar-row"><span>Claude Opus 5</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:9%"></div></div><span class="bm-bar-val">4.6%</span></div>
+          <div class="bm-bar-row"><span>Gem 3.8 Flash / Cyber</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:11%"></div></div><span class="bm-bar-val">5.5 / 6.0%</span></div>
+          <div class="bm-bar-row"><span>GPT-6 Astra / 6.1 Sol</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:16%"></div></div><span class="bm-bar-val">8.5 / 8.6%</span></div>
+          <div class="bm-bar-row"><span>Muse 1.3 / GLM 5.3</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:55%"></div></div><span class="bm-bar-val">15.9/31.5%</span></div>
+          <div class="bm-bar-row"><span>Grok 4.6 / Kimi K3</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:98%"></div></div><span class="bm-bar-val">51.8/52.7%</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-inner">
+    <div><b>Qi Chen</b> · Senior AI Solution Architect · Frontier AI Lab</div>
+    <div class="foot-links">
+      <a href="https://github.com/turbo998" target="_blank" rel="noopener">GitHub</a>
+      <a href="frontier-ai-studio.html">Frontier AI Studio</a>
+      <a href="writing.html">Workbenches &amp; Benchmarks</a>
+      <a href="zh-benchmarks.html">中文版</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var buttons = document.querySelectorAll('.filter-btn');
+  var items = document.querySelectorAll('#pub-list .pub');
+  var countEl = document.getElementById('pub-count');
+  var total = items.length;
+  var labels = {
+    all: 'benchmark reports',
+    'coding-supplements': 'Coding Agent Supplements 4–6',
+    'cyber-safety': 'Cybersecurity & Long-Horizon reports',
+    'routing-decision': 'Routing & Decision Model reports',
+    'harness-infra': 'Agent Harness & Sandbox Infra reports'
+  };
+
+  function applyFilter(cat) {
+    var shown = 0;
+    items.forEach(function (el) {
+      var cats = (el.getAttribute('data-category') || '').split(/\s+/);
+      var match = (cat === 'all') || cats.indexOf(cat) !== -1;
+      el.classList.toggle('pub-hidden', !match);
+      if (match) shown++;
+    });
+    buttons.forEach(function (btn) {
+      btn.classList.toggle('active', btn.getAttribute('data-filter') === cat);
+    });
+    if (countEl) {
+      countEl.textContent = (cat === 'all')
+        ? 'Showing all ' + total + ' benchmark reports'
+        : 'Showing ' + shown + ' ' + (labels[cat] || 'reports') + ' (of ' + total + ')';
+    }
+  }
+
+  buttons.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      applyFilter(btn.getAttribute('data-filter'));
+    });
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Benchmark 测试报告专栏 (7-Card 4:5 与 20 模型全景对比) — 陈琪 Qi Chen</title>
+<meta name="description" content="Frontier AI Lab 独立 Benchmark 测试报告栏目：增补报告 6（Gemini 4 Carbon 与 20 模型编码/网络安全评测）、增补报告 5（Haiku 5.5 与 Gemini 4 Argon 19 模型 + SKY-001）、增补报告 4（Sonnet 5.5 与 GPT-6.1 Sol 17 模型）、Decision-1 路由模型与三方 Agent Harness 竞技场。">
+<link rel="alternate" hreflang="zh-CN" href="zh-benchmarks.html">
+<link rel="alternate" hreflang="en" href="benchmarks.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a0a0e'/%3E%3Ctext x='32' y='42' font-family='Segoe UI,sans-serif' font-size='26' font-weight='700' fill='%23a5b4fc' text-anchor='middle'%3EQC%3C/text%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Benchmark 测试报告专栏 (7-Card 4:5 与 20 模型全景对比) — 陈琪 Qi Chen">
+<meta property="og:description" content="收录密封 7-Card 4:5 纵向视觉基准报告、20 模型 Copilot CLI 编码智能体横评矩阵（209+ 次运行，1,310 项隐藏断言）与 Gemini 4 Carbon 16 项官方基准 + 4 大网络安全榜单。">
+<meta property="og:image" content="https://turbo998.github.io/assets/photo.jpg">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="style.css">
+<script src="theme-switcher.js"></script>
+<style>
+  .bm-hero {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 30px;
+    margin-bottom: 24px;
+  }
+  .bm-hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .bm-hero h1 {
+    font-size: 30px;
+    line-height: 1.22;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+  .bm-hero p {
+    color: var(--fg-muted);
+    font-size: 15px;
+    line-height: 1.65;
+    margin-bottom: 18px;
+  }
+  .bm-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .bm-kpi {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+  }
+  .bm-kpi-val {
+    font-family: var(--mono);
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--fg);
+    line-height: 1.2;
+  }
+  .bm-kpi-label {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-top: 4px;
+  }
+  .bm-kpi-sub {
+    font-size: 12px;
+    color: var(--fg-muted);
+    margin-top: 3px;
+    line-height: 1.45;
+  }
+  .bm-table-wrap {
+    overflow-x: auto;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    margin: 18px 0 28px;
+  }
+  table.bm-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.8px;
+    min-width: 920px;
+  }
+  table.bm-table th {
+    background: var(--bg-soft);
+    color: var(--fg-muted);
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 10px 10px;
+    text-align: left;
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+  }
+  table.bm-table td {
+    padding: 9px 10px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+  table.bm-table tr:hover {
+    background: var(--bg-soft);
+  }
+  table.bm-table tr.bm-highlight-carbon {
+    background: rgba(37, 99, 235, 0.08);
+  }
+  table.bm-table tr.bm-highlight-supp5 {
+    background: rgba(16, 185, 129, 0.07);
+  }
+  table.bm-table tr.bm-highlight-supp4 {
+    background: rgba(245, 158, 11, 0.07);
+  }
+  .bm-gate {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 999px;
+  }
+  .bm-gate.auto { background: #ECFDF5; color: #059669; }
+  .bm-gate.confirm { background: #FFFBEB; color: #D97706; }
+  .bm-gate.human { background: #FEF2F2; color: #DC2626; }
+  .bm-subgrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin: 18px 0 28px;
+  }
+  .bm-subcard {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px;
+  }
+  .bm-subcard h4 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .bm-subcard .bm-submeta {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--fg-muted);
+    margin-bottom: 12px;
+  }
+  .bm-bar-row {
+    display: grid;
+    grid-template-columns: 128px 1fr 54px;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    margin-bottom: 7px;
+  }
+  .bm-bar-track {
+    height: 8px;
+    background: var(--bg-soft);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .bm-bar-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 999px;
+  }
+  .bm-bar-fill.muted {
+    background: #94A3B8;
+  }
+  .bm-bar-val {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    font-weight: 700;
+    text-align: right;
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="zh.html"><img src="assets/photo.jpg" alt="">陈齐 · QI CHEN <span class="brand-badge">BUILDER</span></a>
+    <div class="nav-links">
+      <a href="zh.html">研究总览</a>
+      <a href="zh-benchmarks.html" class="active">Benchmark报告</a>
+      <a href="zh-writing.html">工作台与评测</a>
+      <a href="zh-projects.html">核心工程</a>
+      <a href="zh-opensource.html">开源仓库</a>
+      <a href="zh-openrouter.html">OpenRouter 监控</a>
+      <a href="zh-about.html">关于与履历</a>
+    </div>
+    <div class="nav-right">
+      <a class="style-link-pill" href="zh-style-preview.html">🎨 风格预览</a>
+      <a class="lang-switch" href="benchmarks.html">EN</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap page-head"><a class="back-link" href="zh.html">← 返回研究总览</a></div>
+
+<section id="benchmarks-column">
+  <div class="wrap">
+    <div class="sec-label"><span class="num">01</span>DEDICATED BENCHMARK TESTING REPORTS COLUMN · 独立大模型基准测试报告栏目</div>
+
+    <div class="bm-hero">
+      <div class="bm-hero-eyebrow">FRONTIER AI LAB · 可复现大模型与智能体基准评测档案库</div>
+      <h1>Benchmark 测试报告专栏：20 模型横评矩阵、7-Card 4:5 视觉卡片与密封验证器</h1>
+      <p>
+        本栏目集中发布并持续维护所有符合 <strong>7-Card 4:5 纵向视觉基准报告规范</strong>（<code>900×1125</code> 纵向卡片、零虚构坐标、显式 <code>✕</code> 失分标注、选项顺序/时间上限扰动鲁棒性检验，以及 <code>default-src 'none'; style-src 'unsafe-inline'</code> 自包含离线 CSP）的大模型测试报告，底层数据与验证器同步沉淀于 <a href="https://github.com/turbo998/benchmark-harness-engineering" target="_blank" rel="noopener"><code>turbo998/benchmark-harness-engineering</code></a> 与 <a href="https://github.com/turbo998/ai-research-public" target="_blank" rel="noopener"><code>turbo998/ai-research-public</code></a>。完整呈现 Notion 风格多期编码智能体增补演进：<strong>增补报告 4（Sonnet 5.5 与 GPT-6.1 Sol 加入后的十七模型对比）</strong>、<strong>增补报告 5（Haiku 5.5 与 Gemini 4 Argon 加入后的十九模型对比 + SKY-001）</strong>，以及最新 <strong>增补报告 6（Gemini 4 Carbon 与二十模型前沿编码、长程与网络安全对比）</strong>。
+      </p>
+      <div class="hero-cta">
+        <a class="btn primary" href="workshops/benchmarks/gemini-4-carbon-cards.html">🛡️ 打开增补报告 6：Gemini 4 Carbon 7-Card 报告 →</a>
+        <a class="btn" href="workshops/benchmarks/sky-001-cards.html">🏗️ 增补报告 5：Haiku 5.5 &amp; Argon + SKY-001 7-Card</a>
+        <a class="btn" href="workshops/benchmarks/coding-17-sonnet55-sol-cards.html">⚡ 增补报告 4：Sonnet 5.5 &amp; GPT-6.1 Sol 7-Card</a>
+        <a class="btn" href="#table-a-20model">📊 直达 20 模型完整数据表</a>
+      </div>
+
+      <div class="bm-kpi-grid">
+        <div class="bm-kpi">
+          <div class="bm-kpi-val">20 大模型</div>
+          <div class="bm-kpi-label">前沿编码与网络安全参评梯队</div>
+          <div class="bm-kpi-sub">Fable 5.1、Opus 5.5、Haiku 5.5、Sonnet 5.5、GPT-6.1 Sol、GPT-6 Astra、Gemini 4 Carbon、Gemini 4 Argon、SKY-001、Decision-1</div>
+        </div>
+        <div class="bm-kpi">
+          <div class="bm-kpi-val">209+ 轮实测</div>
+          <div class="bm-kpi-label">1,310 项隐藏 Pytest 断言</div>
+          <div class="bm-kpi-sub">11 道 Python 标准库题目（A1–A5、M1–M2、C1–C4），70/15/15 评分权重；9 款模型实现 1,310/1,310 零失误满分通过</div>
+        </div>
+        <div class="bm-kpi">
+          <div class="bm-kpi-val">16 项基准 + 4 榜单</div>
+          <div class="bm-kpi-label">Gemini 4 Carbon 官方横评矩阵</div>
+          <div class="bm-kpi-sub">AA Index v5.0 #1 (59)、SEC-bench Pro 88.2%、ExploitGym 54.8%、CWE-bench 71.0%、GraphWalks 1M 96.2%、Gray Swan IPI 0.0%</div>
+        </div>
+        <div class="bm-kpi">
+          <div class="bm-kpi-val">8 套密封卡片</div>
+          <div class="bm-kpi-label">7-Card 4:5 视觉报告标准</div>
+          <div class="bm-kpi-sub">零外链自包含 HTML 报告集，配套确定性 Python 离线验证器与 JSON/CSV 密封证据包</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FILTER BAR FOR BENCHMARK EVOLUTION MATRIX -->
+    <div class="filter-bar">
+      <div class="filter-tabs" role="tablist" aria-label="按评测赛道筛选报告">
+        <button type="button" class="filter-btn active" data-filter="all">全部报告 (10)</button>
+        <button type="button" class="filter-btn" data-filter="coding-supplements">编码智能体增补报告 4–6 (3)</button>
+        <button type="button" class="filter-btn" data-filter="cyber-safety">网络安全与长程代理 (2)</button>
+        <button type="button" class="filter-btn" data-filter="routing-decision">路由与决策模型 (2)</button>
+        <button type="button" class="filter-btn" data-filter="harness-infra">Agent Harness 与沙箱底座 (3)</button>
+      </div>
+      <div class="filter-meta">
+        <span class="filter-count" id="pub-count">当前显示全部 10 份 Benchmark 测试报告</span>
+      </div>
+    </div>
+
+    <div class="pub-list" id="pub-list">
+
+      <!-- SUPPLEMENT 6: GEMINI 4 CARBON -->
+      <article class="pub" data-category="coding-supplements cyber-safety">
+        <div>
+          <span class="pub-tag report">增补报告 6 · 7-Card</span>
+          <div class="pub-date">2026-10-28 · 二十模型对比</div>
+        </div>
+        <div class="pub-main">
+          <h3><a href="workshops/benchmarks/gemini-4-carbon-cards.html">增补报告 6：Gemini 4 Carbon 与二十模型前沿编码、长程代理及网络安全基准测试报告</a></h3>
+          <p>深度评测 Google DeepMind 最新发布的专精编码与网络安全模型 <strong>Gemini 4 Carbon</strong>（2026-10-28 Fairwind 预览），并与 19 模型 Copilot CLI 编码智能体梯队横向对齐。Carbon 在 <strong>16 项官方跨领域基准中斩获 14 项第一</strong>：<strong>AA Intelligence Index v5.0 #1（59 分，超越 Opus 5.5 <code>58</code>、Astra <code>57</code>、Argon <code>50</code>）</strong>、<strong>SEC-bench Pro 漏洞检测 88.2%</strong>、<strong>ExploitGym 54.8% (10h) / 53.5% (6h)</strong>、<strong>CWE-bench 根因修复 71.0%</strong>、<strong>Terminal-Bench 4.0 65.2%（0.0% 成功作弊）</strong>、<strong>SWE-sweep 9.6%（Argon 的 <code>2.23x</code>）</strong>、<strong>GraphWalks 256k–1M 96.2%</strong>、<strong>Vending-Bench 2 $16,484</strong> 及 <strong>Gray Swan IPI 0.0% 注入攻击成功率</strong>，同时保持与 Argon 完全一致的 <strong>$2/$10</strong> 定价。</p>
+          <div class="pub-meta">
+            <span><a href="workshops/benchmarks/gemini-4-carbon-cards.html"><b>🃏 7-Card 4:5 视觉报告</b></a></span>
+            <span><a href="#table-b-carbon"><b>📋 16 项基准 + 4 大网络安全榜单</b></a></span>
+            <span><a href="https://github.com/turbo998/ai-research-public" target="_blank" rel="noopener"><b>📦 ai-research-public</b></a></span>
+            <span><a href="https://github.com/turbo998/benchmark-harness-engineering" target="_blank" rel="noopener"><b>⚙️ benchmark-harness-engineering</b></a></span>
+            <span>数据溯源：anonymized_reported · 2026-10-28</span>
+          </div>
+        </div>
+        <a class="pub-arrow" href="workshops/benchmarks/gemini-4-carbon-cards.html" aria-label="打开增补报告 6 Gemini 4 Carbon 7-Card 报告">→</a>
+      </article>
+
+      <!-- SUPPLEMENT 5: HAIKU 5.5 & GEMINI 4 ARGON + SKY-001 -->
+      <article class="pub" data-category="coding-supplements">
+        <div>
+          <span class="pub-tag report">增补报告 5 · 7-Card</span>
+          <div class="pub-date">2026-10-15 · 十九模型对比</div>
+        </div>
+        <div class="pub-main">
+          <h3><a href="workshops/benchmarks/sky-001-cards.html">增补报告 5：Haiku 5.5 与 Gemini 4 Argon 加入后的十九模型对比 + SKY-001 3D 世界模型基准测试</a></h3>
+          <p>对应 Notion 模板《<strong>增补报告 5：Haiku 5.5 与 Gemini 4 Argon 加入后的十九模型对比</strong>》（<code>satomic/copilot-benchmark@a1913835</code>，209 份运行包，1,310 项隐藏断言）：<strong>Claude Haiku 5.5</strong> 以 <strong>99.24 均分跃居总榜 #4（1,308/1,310 隐藏测试，耗时 35.1m）</strong>，全套 11 题仅需 <strong>$0.33</strong>（比榜首 Fable 5.1 便宜 <code>43.8 倍</code>）；<strong>Gemini 4 Argon</strong> 位列 <strong>#11（98.59 均分）</strong>，以 <strong>$2.82</strong>（<code>$0/M</code> 缓存写入）实现 <strong>1,310/1,310 隐藏测试 100% 满分通过</strong>。同卷附带 <strong>Skyfall AI SKY-001</strong> 生产 JS 捆绑包逆向审计（<code>98.44x</code> 关键路径压缩、<code>3.9s</code> <code>79.7%</code> CAD IoU）。</p>
+          <div class="pub-meta">
+            <span><a href="workshops/benchmarks/sky-001-cards.html"><b>🃏 7-Card 4:5 视觉报告</b></a></span>
+            <span><a href="#table-a-20model"><b>📊 十九+一模型完整横评表</b></a></span>
+            <span><a href="https://github.com/turbo998/ai-research-public/tree/main/docs/research/sky-001-and-coding-agent-19-model-benchmark" target="_blank" rel="noopener"><b>📄 中英双语报告与验证器</b></a></span>
+            <span>209 份 CLI 报告 · 1,310 隐藏断言</span>
+          </div>
+        </div>
+        <a class="pub-arrow" href="workshops/benchmarks/sky-001-cards.html" aria-label="打开增补报告 5 7-Card 报告">→</a>
+      </article>
+
+      <!-- SUPPLEMENT 4: SONNET 5.5 & GPT-6.1 SOL -->
+      <article class="pub" data-category="coding-supplements">
+        <div>
+          <span class="pub-tag report">增补报告 4 · 7-Card</span>
+          <div class="pub-date">2026-09-30 · 十七模型对比</div>
+        </div>
+        <div class="pub-main">
+          <h3><a href="workshops/benchmarks/coding-17-sonnet55-sol-cards.html">增补报告 4：Sonnet 5.5 与 GPT-6.1 Sol 加入后的十七模型编码智能体对比报告</a></h3>
+          <p>对应 Notion 模板《<strong>增补报告 4：Sonnet 5.5 与 GPT-6.1 Sol 加入后的十七模型对比</strong>》（<code>satomic/copilot-benchmark@aa1e0dc3</code>，187 份运行包，CLI <code>v1.0.90-5</code>）：<strong>Claude Sonnet 5.5</strong> 取得 <strong>99.00 均分（1,310/1,310 隐藏测试全过）</strong>，并以 <strong>21.7 分钟总耗时（16.6m 推理，65 轮，$2.89）创下全场最快纪录</strong>——比 Sonnet 5 快 <code>2.45 倍</code>、省 <code>63.3%</code> 成本；<strong>GPT-6.1 Sol</strong> 取得 <strong>98.86 均分（1,310/1,310 隐藏测试全过）</strong>，并以 <strong>60 轮工具调用（9.3w 输出 token，27.4m，$1.71）创下全场最少轮次纪录</strong>——比 GPT-6 Astra（<code>$9.91</code>）节省 <code>82.7%</code> 费用。</p>
+          <div class="pub-meta">
+            <span><a href="workshops/benchmarks/coding-17-sonnet55-sol-cards.html"><b>🃏 7-Card 4:5 视觉报告</b></a></span>
+            <span><a href="https://github.com/turbo998/benchmark-harness-engineering/tree/main/data/reported/coding-seventeen" target="_blank" rel="noopener"><b>📂 coding-seventeen 原始 CSV/JSON</b></a></span>
+            <span>Sonnet 5.5: 21.7m / $2.89 · GPT-6.1 Sol: 60 轮 / $1.71</span>
+          </div>
+        </div>
+        <a class="pub-arrow" href="workshops/benchmarks/coding-17-sonnet55-sol-cards.html" aria-label="打开增补报告 4 7-Card 报告">→</a>
+      </article>
+
+      <!-- ROUTING: DECISION-1 VS OPENAI DECISIONS -->
+      <article class="pub" data-category="routing-decision">
+        <div>
+          <span class="pub-tag report">路由模型 · 7-Card</span>
+          <div class="pub-date">2026-10 · 8 引擎对比</div>
+        </div>
+        <div class="pub-main">
+          <h3><a href="workshops/benchmarks/decision-1-cards.html">System-One Decision-1 vs. OpenAI Decisions — 8 引擎路由与结构化决策基准评测</a></h3>
+          <p>覆盖 5 大企业级决策场景（40 组中性提示 + 20 组对抗诱导试验）：<strong>Decision-1 + 置信度门控</strong>实现 <strong>40/40 (100%) 中性提示准确率</strong>与 <strong>0% 选项翻转漂移</strong>，成本仅 <strong>$7.60 / 百万次调用</strong>（P50 延迟 <code>380ms</code>），构建精度、时延与校准门控的帕累托前沿。</p>
+          <div class="pub-meta">
+            <span><a href="workshops/benchmarks/decision-1-cards.html"><b>🃏 7-Card 4:5 视觉报告</b></a></span>
+            <span><a href="https://github.com/turbo998/ai-research-public/tree/main/docs/research/openai-decisions-vs-decision-1-routing-benchmark" target="_blank" rel="noopener"><b>📄 完整路由研究报告</b></a></span>
+            <span>40/40 中性准确率 · $7.60/1M · 380ms P50</span>
+          </div>
+        </div>
+        <a class="pub-arrow" href="workshops/benchmarks/decision-1-cards.html" aria-label="打开 Decision-1 7-Card 报告">→</a>
+      </article>
+
+      <!-- ROUTING: STRANDS DECIDER -->
+      <article class="pub" data-category="routing-decision">
+        <div>
+          <span class="pub-tag report">边缘路由 · 7-Card</span>
+          <div class="pub-date">2026-09 · 2B 决策模型</div>
+        </div>
+        <div class="pub-main">
+          <h3><a href="https://github.com/turbo998/benchmark-harness-engineering/tree/main/data/reported/routing-strands-decider" target="_blank" rel="noopener">Strands-Decider-2B 与 LocalJEV / OpenJEV 亚秒级端侧决策模型基准测试</a></h3>
+          <p>7-Card 4:5 视觉报告标准的参考基线评测：围绕 <code>choice</code>、<code>noul</code>、<code>score</code> 三类原语，检验三档置信度门控（<code>Act automatically</code> ≥0.80、<code>Confirm</code> 0.55–0.79、<code>Send to a human</code> &lt;0.55）、选项反转鲁棒性与批处理延迟扩展曲线。</p>
+          <div class="pub-meta">
+            <span><a href="https://github.com/turbo998/benchmark-harness-engineering/blob/main/examples/card-report/index.html" target="_blank" rel="noopener"><b>🃏 参考 7-Card 样板</b></a></span>
+            <span><a href="https://github.com/turbo998/benchmark-harness-engineering/tree/main/data/reported/routing-strands-decider" target="_blank" rel="noopener"><b>📂 密封数据集</b></a></span>
+            <span>Choice / NoUL / Score 置信度校准</span>
+          </div>
+        </div>
+        <a class="pub-arrow" href="https://github.com/turbo998/benchmark-harness-engineering/tree/main/data/reported/routing-strands-decider" target="_blank" rel="noopener" aria-label="打开 Strands Decider 数据集">→</a>
+      </article>
+
+      <!-- HARNESS ARENA: 3-WAY PELICAN -->
+      <article class="pub" data-category="harness-infra">
+        <div>
+          <span class="pub-tag workshop">三方竞技场 · 7-Card</span>
+          <div class="pub-date">2026-10 · Agent Harness</div>
+        </div>
+        <div class="pub-main">
+          <h3><a href="workshops/faf-vs-agent-forge/index.html">FAF v2.0.1 vs. AGENT-FORGE v0.3.0 vs. HVE-Core v3.3.101 — 三方 Pelican Bicycle 盲测竞技场</a></h3>
+          <p>在多约束 SVG 物理动画与确定性门控任务上对三大 Agent Harness 进行同题盲测：<strong>HVE-Core 以 93.4/100 夺冠</strong>（扰动漂移 <code>0.0 pts</code>），<strong>AGENT-FORGE 91.8/100</strong>，<strong>FAF 90.5/100</strong>。配套在线三方实时交互竞技场与 7-Card 报告。</p>
+          <div class="pub-meta">
+            <span><a href="workshops/faf-vs-agent-forge/index.html"><b>🏟️ 在线三方竞技场</b></a></span>
+            <span><a href="workshops/faf-vs-agent-forge/test-report-cards.html"><b>🃏 7-Card 4:5 视觉报告</b></a></span>
+            <span>HVE-Core 93.4 vs AGENT-FORGE 91.8 vs FAF 90.5</span>
+          </div>
+        </div>
+        <a class="pub-arrow" href="workshops/faf-vs-agent-forge/test-report-cards.html" aria-label="打开三方竞技场 7-Card 报告">→</a>
+      </article>
+
+      <!-- INFRA: AKSCLAW X E2B 100K SANDBOXES -->
+      <article class="pub" data-category="harness-infra">
+        <div>
+          <span class="pub-tag workshop">沙箱底座 · 7-Card</span>
+          <div class="pub-date">2026-10 · 十万微虚拟机</div>
+        </div>
+        <div class="pub-main">
+          <h3><a href="https://turbo998.github.io/Azure-Infra-Lab/workshops/azure-agent-infra/cards.html" target="_blank" rel="noopener">AKSClaw (Kata) × E2B Firecracker 十万并发微虚拟机沙箱底座基准报告</a></h3>
+          <p>在 <code>Standard_D96as_v7</code> 上量化评测六大 Azure Agent 运行时：实现 <strong>108ms P50 Base / 132ms Code-Interpreter 内存快照恢复</strong>、单节点 <strong>512–2,500 微虚拟机高密混部</strong>、220 节点承载 100,000 并发沙箱，以及 <strong>3.67s</strong> 跨区域双活热备切换。</p>
+          <div class="pub-meta">
+            <span><a href="https://turbo998.github.io/Azure-Infra-Lab/workshops/azure-agent-infra/cards.html" target="_blank" rel="noopener"><b>🃏 7-Card 4:5 视觉报告</b></a></span>
+            <span><a href="https://turbo998.github.io/Azure-Infra-Lab/workshops/azure-agent-infra/demo.html" target="_blank" rel="noopener"><b>⚡ 在线仿真工作台</b></a></span>
+            <span>108ms Base / 132ms CI-v1 · 3.67s 跨区容灾</span>
+          </div>
+        </div>
+        <a class="pub-arrow" href="https://turbo998.github.io/Azure-Infra-Lab/workshops/azure-agent-infra/cards.html" target="_blank" rel="noopener" aria-label="打开 Azure Agent Infra 7-Card 报告">→</a>
+      </article>
+
+      <!-- INFRA: E2B X NOMAD HEARTBEAT -->
+      <article class="pub" data-category="harness-infra">
+        <div>
+          <span class="pub-tag report">控制面韧性 · 7-Card</span>
+          <div class="pub-date">2026-10 · 故障复盘审计</div>
+        </div>
+        <div class="pub-main">
+          <h3><a href="workshops/benchmarks/e2b-nomad-cards.html">E2B × HashiCorp Nomad 节点心跳耗尽与控制面锁争用韧性基准报告</a></h3>
+          <p>对 2026-10-12 E2B 生产事故进行离线仿真与验证：揭示单个未限流状态轮询协程持有 Nomad Raft 状态锁 <code>29.2s &gt; 20.0s</code> 心跳 TTL 导致 <code>15,595 / 15,610</code>（<code>99.904%</code>）沙箱创建失败的机理，并验证指数退避 + 熔断降级将可用性恢复至 <code>100%</code>。</p>
+          <div class="pub-meta">
+            <span><a href="workshops/benchmarks/e2b-nomad-cards.html"><b>🃏 7-Card 4:5 视觉报告</b></a></span>
+            <span><a href="https://github.com/turbo998/ai-research-public/tree/main/docs/research/e2b-nomad-heartbeat-resilience" target="_blank" rel="noopener"><b>📄 验证器与双语报告</b></a></span>
+            <span>8/8 单元测试通过 · 修复后 0.0% 锁争用</span>
+          </div>
+        </div>
+        <a class="pub-arrow" href="workshops/benchmarks/e2b-nomad-cards.html" aria-label="打开 E2B Nomad 7-Card 报告">→</a>
+      </article>
+
+      <!-- CYBER & COMMERCE: WEB IQ -->
+      <article class="pub" data-category="cyber-safety">
+        <div>
+          <span class="pub-tag report">Web 攻防 · 7-Card</span>
+          <div class="pub-date">2026-10 · 智能体商业</div>
+        </div>
+        <div class="pub-main">
+          <h3><a href="workshops/agentic-commerce/benchmark-cards.html">Agentic Commerce × Web IQ 实时接地与间接提示词注入防御基准测试</a></h3>
+          <p>对比结构化 Web IQ 接地协议与原始 DOM 抓取在电商结算链路中的表现：达成 <strong>87.5% 任务完成率</strong>、<strong>4.2x Token 压缩</strong>，以及对隐藏 DOM 价格篡改注入载荷的 <strong>0.0% 攻击穿透率（100% 拦截）</strong>。</p>
+          <div class="pub-meta">
+            <span><a href="workshops/agentic-commerce/benchmark-cards.html"><b>🃏 7-Card 4:5 视觉报告</b></a></span>
+            <span><a href="workshops/agentic-commerce/live-demo.html"><b>🛒 在线攻防沙盒</b></a></span>
+            <span>87.5% 接地精度 · 0.0% 注入穿透</span>
+          </div>
+        </div>
+        <a class="pub-arrow" href="workshops/agentic-commerce/benchmark-cards.html" aria-label="打开 Agentic Commerce 7-Card 报告">→</a>
+      </article>
+
+      <!-- HARNESS: OMARCHY & VOICE -->
+      <article class="pub" data-category="harness-infra">
+        <div>
+          <span class="pub-tag report">语音与 OS · 7-Card</span>
+          <div class="pub-date">2026-10 · Voice &amp; Omarchy</div>
+        </div>
+        <div class="pub-main">
+          <h3><a href="workshops/benchmarks/omarchy-cards.html">Omarchy 智能体原生桌面 OS（174 项断言）与企业级实时语音双模架构基准报告</a></h3>
+          <p>收录 <strong>Omarchy Agent-Native OS 基准评测</strong>（<code>174/174</code> 确定性断言全过）以及 <strong>Enterprise Voice Agent 7-Card 基准报告</strong>（<a href="voice/benchmark-cards.html">级联 STT-LLM-TTS vs. 原生端到端 S2S 时延与 VAD 打断对比</a>）。</p>
+          <div class="pub-meta">
+            <span><a href="workshops/benchmarks/omarchy-cards.html"><b>🃏 Omarchy 7-Card 报告</b></a></span>
+            <span><a href="voice/benchmark-cards.html"><b>🎙️ 语音智能体 7-Card 报告</b></a></span>
+            <span>174/174 OS 断言 · 亚 300ms S2S 语音</span>
+          </div>
+        </div>
+        <a class="pub-arrow" href="workshops/benchmarks/omarchy-cards.html" aria-label="打开 Omarchy 7-Card 报告">→</a>
+      </article>
+
+    </div>
+
+    <!-- TABLE A: 20-MODEL COPILOT CLI CODING AGENT BENCHMARK TABLE -->
+    <div id="table-a-20model" style="margin-top: 44px;">
+      <div class="sec-label"><span class="num">02</span>TABLE A · 二十模型 COPILOT CLI 编码智能体全景对比表（增补报告 1–6 演进汇总）</div>
+      <h2>20 模型编码智能体完整成绩单（A1–A5、M1–M2、C1–C4，1,310 项隐藏断言）</h2>
+      <p class="sec-intro">
+        完整汇集 Notion 基准测试模板各期数据——包含 <strong>增补报告 4（Sonnet 5.5 与 GPT-6.1 Sol 加入后的十七模型对比）</strong>、<strong>增补报告 5（Haiku 5.5 与 Gemini 4 Argon 加入后的十九模型对比）</strong> 以及 <strong>增补报告 6（Gemini 4 Carbon Fairwind 预览，二十模型矩阵）</strong>。题库由 5 道原子题（<code>A1–A5</code>，500 分）、2 道中等题（<code>M1–M2</code>，200 分）与 4 道复杂系统题（<code>C1</code> SQL 引擎、<code>C2</code> 响应式电子表格、<code>C3</code> 异步 DAG 引擎、<code>C4</code> 字节码虚拟机，400 分）组成，采用 <code>70% 隐藏测试正确率 / 15% 性能 / 15% 代码质量</code> 确定性评分。
+      </p>
+
+      <div class="bm-table-wrap">
+        <table class="bm-table">
+          <thead>
+            <tr>
+              <th>排名</th>
+              <th>模型名称</th>
+              <th>增补批次 / CLI</th>
+              <th>简单题均分 (A1–A5)</th>
+              <th>中等题均分 (M1–M2)</th>
+              <th>复杂题均分 (C1–C4)</th>
+              <th>总均分 (/100)</th>
+              <th>11题总分 (/1100)</th>
+              <th>隐藏测试 (/1,310)</th>
+              <th>总轮次</th>
+              <th>输出 Token</th>
+              <th>总花费 ($)</th>
+              <th>总耗时 / 推理</th>
+              <th>自动门控建议</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>#1</b></td>
+              <td><b>Fable 5.1</b></td>
+              <td>基线 · 1.0.84-3</td>
+              <td><b>100.00</b> (100×5)</td>
+              <td>99.50 (100/99)</td>
+              <td>99.62 (98.5/100/100/100)</td>
+              <td><b>99.77</b></td>
+              <td><b>1097.50</b></td>
+              <td><b>1,310/1,310</b></td>
+              <td>142</td>
+              <td>15.8 万</td>
+              <td>$14.45</td>
+              <td>55.9m / 36.8m</td>
+              <td><span class="bm-gate auto">Act automatically</span></td>
+            </tr>
+            <tr>
+              <td><b>#2</b></td>
+              <td><b>Opus 5.5</b></td>
+              <td>增补 3 · 1.0.89-5</td>
+              <td>99.80 (A2=99)</td>
+              <td>99.50 (100/99)</td>
+              <td>99.62 (98.5/100/100/100)</td>
+              <td><b>99.68</b></td>
+              <td><b>1096.50</b></td>
+              <td><b>1,310/1,310</b></td>
+              <td>92</td>
+              <td>17.6 万</td>
+              <td>$5.84</td>
+              <td>31.8m / 26.2m</td>
+              <td><span class="bm-gate auto">Act automatically</span></td>
+            </tr>
+            <tr>
+              <td><b>#3</b></td>
+              <td><b>Opus 5</b></td>
+              <td>基线 · 1.0.84-3</td>
+              <td>99.80 (A2=99)</td>
+              <td>99.50 (100/99)</td>
+              <td>99.38 (97.5/100/100/100)</td>
+              <td><b>99.59</b></td>
+              <td><b>1095.50</b></td>
+              <td><b>1,310/1,310</b></td>
+              <td>188</td>
+              <td>24.9 万</td>
+              <td>$17.41</td>
+              <td>63.3m / 50.7m</td>
+              <td><span class="bm-gate auto">Act automatically</span></td>
+            </tr>
+            <tr class="bm-highlight-supp5">
+              <td><b>#4</b></td>
+              <td><b>Haiku 5.5 ⭐</b></td>
+              <td><b>增补 5 · 1.0.98</b></td>
+              <td>99.15 (99/99/97.8/100/100)</td>
+              <td>99.50 (100/99)</td>
+              <td>99.22 (97.5/100/100/99.36)</td>
+              <td><b>99.24</b></td>
+              <td><b>1091.61</b></td>
+              <td>1,308/1,310 ✕</td>
+              <td>94</td>
+              <td>45.3 万</td>
+              <td><b>$0.33</b></td>
+              <td>35.1m / 30.9m</td>
+              <td><span class="bm-gate confirm">Confirm (C4 漏 2)</span></td>
+            </tr>
+            <tr>
+              <td><b>#5</b></td>
+              <td><b>Grok 4.7</b></td>
+              <td>增补 2 · 1.0.89-0</td>
+              <td>99.00 (A5=96)</td>
+              <td>99.50 (100/99)</td>
+              <td>99.33 (98.87/100/98.46/100)</td>
+              <td><b>99.21</b></td>
+              <td>1091.33</td>
+              <td>1,299/1,310 ✕</td>
+              <td>143</td>
+              <td>51.5 万</td>
+              <td>$12.22</td>
+              <td>181.2m / 130.8m</td>
+              <td><span class="bm-gate confirm">Confirm</span></td>
+            </tr>
+            <tr class="bm-highlight-supp4">
+              <td><b>#6</b></td>
+              <td><b>Sonnet 5.5 ⚡</b></td>
+              <td><b>增补 4 · 1.0.90-5</b></td>
+              <td>98.80 (99/99/98/100/98)</td>
+              <td>99.12 (100/98.25)</td>
+              <td>99.19 (97.5/100/99.25/100)</td>
+              <td><b>99.00</b></td>
+              <td><b>1089.00</b></td>
+              <td><b>1,310/1,310</b></td>
+              <td>65</td>
+              <td>16.1 万</td>
+              <td><b>$2.89</b></td>
+              <td><b>21.7m / 16.6m</b></td>
+              <td><span class="bm-gate auto">Act automatically</span></td>
+            </tr>
+            <tr class="bm-highlight-supp4">
+              <td><b>#7</b></td>
+              <td><b>GPT-6.1 Sol 🎯</b></td>
+              <td><b>增补 4 · 1.0.90-5</b></td>
+              <td>98.40 (99/96/97/100/100)</td>
+              <td>99.00 (100/98)</td>
+              <td>99.38 (97.5/100/100/100)</td>
+              <td><b>98.86</b></td>
+              <td><b>1087.50</b></td>
+              <td><b>1,310/1,310</b></td>
+              <td><b>60</b></td>
+              <td>9.3 万</td>
+              <td><b>$1.71</b></td>
+              <td>27.4m / 22.5m</td>
+              <td><span class="bm-gate auto">Act automatically</span></td>
+            </tr>
+            <tr>
+              <td><b>#8</b></td>
+              <td><b>GPT-6 Astra</b></td>
+              <td>基线 · 1.0.84-3</td>
+              <td>98.00 (98/96/97/100/99)</td>
+              <td>99.00 (100/98)</td>
+              <td><b>99.75</b> (99/100/100/100)</td>
+              <td><b>98.82</b></td>
+              <td>1087.00</td>
+              <td><b>1,310/1,310</b></td>
+              <td>62</td>
+              <td>9.8 万</td>
+              <td>$9.91</td>
+              <td>32.7m / 26.9m</td>
+              <td><span class="bm-gate auto">Act automatically</span></td>
+            </tr>
+            <tr>
+              <td><b>#9</b></td>
+              <td><b>Sonnet 5</b></td>
+              <td>基线 · 1.0.84-3</td>
+              <td>98.40 (100/99/97/100/96)</td>
+              <td>99.12 (100/98.25)</td>
+              <td>98.88 (97.5/100/98/100)</td>
+              <td><b>98.70</b></td>
+              <td>1085.75</td>
+              <td><b>1,310/1,310</b></td>
+              <td>190</td>
+              <td>23.9 万</td>
+              <td>$7.87</td>
+              <td>53.2m / 39.9m</td>
+              <td><span class="bm-gate auto">Act automatically</span></td>
+            </tr>
+            <tr>
+              <td><b>#10</b></td>
+              <td><b>Kimi K3</b></td>
+              <td>增补 1 · 1.0.84-8</td>
+              <td>98.40 (99/97/97/100/99)</td>
+              <td>99.12 (100/98.25)</td>
+              <td>98.81 (97.12/99.27/98.85/100)</td>
+              <td>98.68</td>
+              <td>1085.49</td>
+              <td>1,305/1,310 ✕</td>
+              <td>143</td>
+              <td>17.5 万</td>
+              <td>$5.58</td>
+              <td>150.5m / 82.4m</td>
+              <td><span class="bm-gate confirm">Confirm</span></td>
+            </tr>
+            <tr class="bm-highlight-supp5">
+              <td><b>#11</b></td>
+              <td><b>Gemini 4 Argon ⭐</b></td>
+              <td><b>增补 5 · 1.0.98</b></td>
+              <td>99.00 (100/98/97/100/100)</td>
+              <td>98.62 (100/97.25)</td>
+              <td>98.06 (98.25/99/98/97)</td>
+              <td><b>98.59</b></td>
+              <td><b>1084.50</b></td>
+              <td><b>1,310/1,310</b></td>
+              <td>106</td>
+              <td>11.7 万</td>
+              <td><b>$2.82</b></td>
+              <td>45.2m / 41.9m</td>
+              <td><span class="bm-gate auto">Act automatically</span></td>
+            </tr>
+            <tr>
+              <td><b>#12</b></td>
+              <td><b>Grok 4.6</b></td>
+              <td>增补 1 · 1.0.84-8</td>
+              <td>98.40 (99/98/97/100/98)</td>
+              <td><b>100.00</b> (100/100)</td>
+              <td>98.06 (97.12/99.27/99.85/96)</td>
+              <td>98.57</td>
+              <td>1084.24</td>
+              <td>1,305/1,310 ✕</td>
+              <td>138</td>
+              <td>19.4 万</td>
+              <td>$5.21</td>
+              <td>69.5m / 55.0m</td>
+              <td><span class="bm-gate confirm">Confirm</span></td>
+            </tr>
+            <tr>
+              <td><b>#13</b></td>
+              <td><b>HydraFusion</b></td>
+              <td>增补 3 · 1.0.89-5</td>
+              <td>98.40 (96/99/97/100/100)</td>
+              <td>98.00 (97/99)</td>
+              <td>98.75 (99/100/98/98)</td>
+              <td><b>98.45</b></td>
+              <td>1083.00</td>
+              <td><b>1,310/1,310</b></td>
+              <td>85</td>
+              <td><b>8.9 万</b></td>
+              <td>$3.58</td>
+              <td>24.1m / 17.2m</td>
+              <td><span class="bm-gate auto">Act automatically</span></td>
+            </tr>
+            <tr>
+              <td><b>#14</b></td>
+              <td><b>GPT-6 Luna</b></td>
+              <td>增补 2 · 1.0.89-0</td>
+              <td>98.80 (99/98/97/100/100)</td>
+              <td>99.12 (100/98.25)</td>
+              <td>96.88 (97.12/100/92.38/98)</td>
+              <td>98.16</td>
+              <td>1079.75</td>
+              <td>1,279/1,310 ✕</td>
+              <td>139</td>
+              <td>14.5 万</td>
+              <td><b>$0.17</b></td>
+              <td>44.6m / 35.5m</td>
+              <td><span class="bm-gate confirm">Confirm</span></td>
+            </tr>
+            <tr>
+              <td><b>#15</b></td>
+              <td><b>Gemini 3.8 Flash</b></td>
+              <td>增补 1 · 1.0.84-8</td>
+              <td>98.75 (100/100/95.8/100/98)</td>
+              <td>98.12 (100/96.25)</td>
+              <td>97.00 (98.25/99/93.77/97)</td>
+              <td>98.00</td>
+              <td>1078.02</td>
+              <td>1,276/1,310 ✕</td>
+              <td>277</td>
+              <td>12.3 万</td>
+              <td>$2.83</td>
+              <td>85.4m / 62.5m</td>
+              <td><span class="bm-gate confirm">Confirm</span></td>
+            </tr>
+            <tr>
+              <td><b>#16</b></td>
+              <td><b>GPT-5.6 Luna</b></td>
+              <td>增补 1 · 1.0.84-8</td>
+              <td>98.40 (99/98/97/100/98)</td>
+              <td>99.50 (100/99)</td>
+              <td>96.42 (97.5/97.51/94.69/96)</td>
+              <td>97.88</td>
+              <td>1076.70</td>
+              <td>1,293/1,310 ✕</td>
+              <td>235</td>
+              <td>10.7 万</td>
+              <td>$0.39</td>
+              <td>51.0m / 21.9m</td>
+              <td><span class="bm-gate confirm">Confirm</span></td>
+            </tr>
+            <tr>
+              <td><b>#17</b></td>
+              <td><b>MAI-Code-1.1-Flash</b></td>
+              <td>增补 1 · 1.0.84-8</td>
+              <td>98.20 (99/97/99/100/96)</td>
+              <td>98.62 (100/97.25)</td>
+              <td>96.61 (97.12/97/95.71/96.61)</td>
+              <td>97.70</td>
+              <td>1074.69</td>
+              <td>1,284/1,310 ✕</td>
+              <td>192</td>
+              <td>23.3 万</td>
+              <td>$0.53</td>
+              <td>56.5m / 40.8m</td>
+              <td><span class="bm-gate confirm">Confirm</span></td>
+            </tr>
+            <tr>
+              <td><b>#18</b></td>
+              <td><b>DeepSeek-V4-Flash</b></td>
+              <td>增补 3 · BYOK</td>
+              <td>97.30 (99/97/95.75/100/94.75)</td>
+              <td>88.00 (100/76.00) ✕</td>
+              <td>95.91 (94.32/97.32/97.08/94.9)</td>
+              <td>95.10</td>
+              <td>1046.12</td>
+              <td>1,250/1,310 ✕</td>
+              <td>420</td>
+              <td>29.0 万</td>
+              <td>$1.95</td>
+              <td>179.0m / 93.6m</td>
+              <td><span class="bm-gate human">Send to a human</span></td>
+            </tr>
+            <tr>
+              <td><b>#19</b></td>
+              <td><b>Haiku 4.5</b></td>
+              <td>基线 · 1.0.84-3</td>
+              <td>97.25 (97.8/95/95.8/100/97.8)</td>
+              <td>94.39 (93.78/95)</td>
+              <td>89.64 (93.98/94.76/82.81/87) ✕</td>
+              <td>93.96</td>
+              <td>1033.59</td>
+              <td>1,239/1,310 ✕</td>
+              <td>341</td>
+              <td>30.3 万</td>
+              <td>$3.93</td>
+              <td>80.8m / 52.7m</td>
+              <td><span class="bm-gate human">Send to a human</span></td>
+            </tr>
+            <tr class="bm-highlight-carbon">
+              <td><b>#20 [Track B]</b></td>
+              <td><b>Gemini 4 Carbon 🛡️</b></td>
+              <td><b>增补 6 · Fairwind</b></td>
+              <td><b>TB 4.0: 65.2% (#1)</b></td>
+              <td><b>SWE-sweep: 9.6% (2.23x)</b></td>
+              <td><b>SEC 88.2% · CWE 71.0%</b></td>
+              <td><b>AA #1 (59)</b></td>
+              <td><b>14/16 基准夺冠</b></td>
+              <td><b>0.0% 作弊 / 0.0% IPI</b></td>
+              <td>Fairwind</td>
+              <td>1M 上下文</td>
+              <td><b>$2/$10 /1M</b></td>
+              <td>96.2% GraphWalks</td>
+              <td><span class="bm-gate auto">Act (安全 / 1M)</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TABLE B: GEMINI 4 CARBON OFFICIAL 16-BENCHMARK MATRIX & 4 CYBER LEADERBOARDS -->
+    <div id="table-b-carbon" style="margin-top: 44px;">
+      <div class="sec-label"><span class="num">03</span>TABLE B · GEMINI 4 CARBON 官方 16 项基准横评矩阵与 4 大网络安全子榜单</div>
+      <h2>Gemini 4 Carbon vs. Gemini 4 Argon、GPT-6 Astra、Claude Opus 5.5 与 Claude Fable 5.1（2026-10-28）</h2>
+      <p class="sec-intro">
+        严格转录自 Google DeepMind 官方评测表（<code>deepmind.google/models/evals-methodology/gemini-4-carbon</code>）。Gemini 4 Carbon 在 <strong>16 项基准测试中夺得 14 项全场最高分</strong>，且 Token 定价与 Gemini 4 Argon 完全持平（输入 <code>$2/1M</code>、输出 <code>$10/1M</code>、缓存读取立减 95% 即 <code>$0.10/1M</code>）。
+      </p>
+
+      <div class="bm-table-wrap">
+        <table class="bm-table">
+          <thead>
+            <tr>
+              <th>能力维度</th>
+              <th>基准测试与指标</th>
+              <th>Gemini 4 Carbon</th>
+              <th>Gemini 4 Argon</th>
+              <th>GPT-6 Astra</th>
+              <th>Claude Opus 5.5</th>
+              <th>Claude Fable 5.1</th>
+              <th>Carbon 相比 Argon 提升</th>
+              <th>单项冠军</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="bm-highlight-carbon">
+              <td><b>通用能力 (General)</b></td>
+              <td><b>AA Intelligence Index v5.0</b></td>
+              <td><b>59 (#1)</b></td>
+              <td>50</td>
+              <td>57</td>
+              <td>58</td>
+              <td>49</td>
+              <td><b>+9 分 (+18.0%)</b></td>
+              <td><span class="bm-gate auto">Gemini 4 Carbon</span></td>
+            </tr>
+            <tr>
+              <td><b>通用能力 (General)</b></td>
+              <td><b>Vals Index v2.2</b></td>
+              <td><b>70.4% (#1)</b></td>
+              <td>69.2%</td>
+              <td>65.0%</td>
+              <td>70.2%</td>
+              <td>—</td>
+              <td><b>+1.2 pts</b></td>
+              <td><span class="bm-gate auto">Gemini 4 Carbon</span></td>
+            </tr>
+            <tr class="bm-highlight-carbon">
+              <td><b>代理编码 (Agentic Coding)</b></td>
+              <td><b>SWE-sweep</b>（仓库级批量修复）</td>
+              <td><b>9.6% (#1)</b></td>
+              <td>4.3%</td>
+              <td>9.5%</td>
+              <td>3.6%</td>
+              <td>2.9%</td>
+              <td><b>+5.3 pts (2.23x)</b></td>
+              <td><span class="bm-gate auto">Gemini 4 Carbon</span></td>
+            </tr>
+            <tr>
+              <td><b>代理编码 (Agentic Coding)</b></td>
+              <td><b>FrontierSWE 2</b></td>
+              <td>61.2% (#3) ✕</td>
+              <td>55.0%</td>
+              <td><b>65.5% (#1)</b></td>
+              <td>62.3%</td>
+              <td>56.3%</td>
+              <td><b>+6.2 pts</b>（距 Astra -4.3）</td>
+              <td><span class="bm-gate confirm">GPT-6 Astra</span></td>
+            </tr>
+            <tr class="bm-highlight-carbon">
+              <td><b>代理编码 (Agentic Coding)</b></td>
+              <td><b>Terminal-Bench 4.0 (AA)</b></td>
+              <td><b>65.2% (#1)</b></td>
+              <td>57.1%</td>
+              <td>59.1%</td>
+              <td>59.6%</td>
+              <td>52.0%</td>
+              <td><b>+8.1 pts（0.0% 作弊）</b></td>
+              <td><span class="bm-gate auto">Gemini 4 Carbon</span></td>
+            </tr>
+            <tr>
+              <td><b>计算机使用 (Computer Use)</b></td>
+              <td><b>Agents' Last Exam v1.1</b> (Score)</td>
+              <td><b>77.4% (#1)</b></td>
+              <td>69.0%</td>
+              <td>73.1%</td>
+              <td>71.6%</td>
+              <td>—</td>
+              <td><b>+8.4 pts</b></td>
+              <td><span class="bm-gate auto">Gemini 4 Carbon</span></td>
+            </tr>
+            <tr>
+              <td><b>计算机使用 (Computer Use)</b></td>
+              <td><b>OSWorld-2.1</b> (Offline 子集)</td>
+              <td>81.5% (#2) ✕</td>
+              <td>74.7%</td>
+              <td>80.9%</td>
+              <td><b>87.2% (#1)</b></td>
+              <td>76.8%</td>
+              <td><b>+6.8 pts</b>（距 Opus -5.7）</td>
+              <td><span class="bm-gate confirm">Claude Opus 5.5</span></td>
+            </tr>
+            <tr>
+              <td><b>知识工作 (Knowledge Work)</b></td>
+              <td><b>AutomationBench</b> (Zapier)</td>
+              <td><b>53.9% (#1)</b></td>
+              <td>51.3%</td>
+              <td>41.4%</td>
+              <td>42.5%</td>
+              <td>31.4%</td>
+              <td><b>+2.6 pts（领先 Opus +11.4）</b></td>
+              <td><span class="bm-gate auto">Gemini 4 Carbon</span></td>
+            </tr>
+            <tr class="bm-highlight-carbon">
+              <td><b>知识工作 (Knowledge Work)</b></td>
+              <td><b>Vending-Bench 2</b>（账户净值 $）</td>
+              <td><b>$16,484 (#1)</b></td>
+              <td>$13,718</td>
+              <td>$15,515</td>
+              <td>$9,235</td>
+              <td>$5,422</td>
+              <td><b>+$2,766 (+20.2%)</b></td>
+              <td><span class="bm-gate auto">Gemini 4 Carbon</span></td>
+            </tr>
+            <tr>
+              <td><b>多模态理解 (Multimodal)</b></td>
+              <td><b>Chartography</b></td>
+              <td><b>72.5% (#1)</b></td>
+              <td>71.6%</td>
+              <td>71.0%</td>
+              <td>66.3%</td>
+              <td>46.2%</td>
+              <td><b>+0.9 pts</b></td>
+              <td><span class="bm-gate auto">Gemini 4 Carbon</span></td>
+            </tr>
+            <tr>
+              <td><b>多模态理解 (Multimodal)</b></td>
+              <td><b>Blueprint-Bench 2</b> (Similarity)</td>
+              <td><b>58.6% (#1)</b></td>
+              <td>54.4%</td>
+              <td>49.7%</td>
+              <td>51.2%</td>
+              <td>41.9%</td>
+              <td><b>+4.2 pts</b></td>
+              <td><span class="bm-gate auto">Gemini 4 Carbon</span></td>
+            </tr>
+            <tr class="bm-highlight-carbon">
+              <td><b>长上下文 (Long Context)</b></td>
+              <td><b>GraphWalks</b> (256k–1M, BFS F1)</td>
+              <td><b>96.2% (#1)</b></td>
+              <td>84.2%</td>
+              <td>71.8%</td>
+              <td>66.8%</td>
+              <td>65.0%</td>
+              <td><b>+12.0 pts（领先 Astra +24.4）</b></td>
+              <td><span class="bm-gate auto">Gemini 4 Carbon</span></td>
+            </tr>
+            <tr>
+              <td><b>科学与数学 (Science/Math)</b></td>
+              <td><b>RiemannBench</b></td>
+              <td><b>80.0% (#1)</b></td>
+              <td>76.0%</td>
+              <td>72.0%</td>
+              <td>69.6%</td>
+              <td>65.6%</td>
+              <td><b>+4.0 pts</b></td>
+              <td><span class="bm-gate auto">Gemini 4 Carbon</span></td>
+            </tr>
+            <tr>
+              <td><b>科学与数学 (Science/Math)</b></td>
+              <td><b>Terminal-Bench-Science 0.1 (AA)</b></td>
+              <td><b>64.8% (#1)</b></td>
+              <td>52.9%</td>
+              <td>63.3%</td>
+              <td>59.0%</td>
+              <td>43.3%</td>
+              <td><b>+11.9 pts</b></td>
+              <td><span class="bm-gate auto">Gemini 4 Carbon</span></td>
+            </tr>
+            <tr class="bm-highlight-carbon">
+              <td><b>网络安全 (Cybersecurity)</b></td>
+              <td><b>CWE-bench</b>（根因漏洞修复）</td>
+              <td><b>71.0% (#1)</b></td>
+              <td>68.0%</td>
+              <td>68.0%</td>
+              <td>67.0%</td>
+              <td>58.0%</td>
+              <td><b>+3.0 pts（领先 Fable +13.0）</b></td>
+              <td><span class="bm-gate auto">Gemini 4 Carbon</span></td>
+            </tr>
+            <tr class="bm-highlight-carbon">
+              <td><b>网络安全 (Cybersecurity)</b></td>
+              <td><b>ExploitGym</b>（因果漏洞验证率）</td>
+              <td><b>54.8% (#1)</b></td>
+              <td>42.0%</td>
+              <td>42.4%</td>
+              <td>34.5%</td>
+              <td>—</td>
+              <td><b>+12.8 pts (1.30x)</b></td>
+              <td><span class="bm-gate auto">Gemini 4 Carbon</span></td>
+            </tr>
+            <tr class="bm-highlight-carbon">
+              <td><b>网络安全 (Cybersecurity)</b></td>
+              <td><b>SEC-bench Pro</b>（漏洞检测 Pass@1）</td>
+              <td><b>88.2% (#1)</b></td>
+              <td>83.4%</td>
+              <td>85.4%</td>
+              <td>—</td>
+              <td>—</td>
+              <td><b>+4.8 pts（领先 Astra +2.8）</b></td>
+              <td><span class="bm-gate auto">Gemini 4 Carbon</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 4 CYBERSECURITY & SAFETY SUB-LEADERBOARDS -->
+      <h3>4 大网络安全与抗间接提示注入子榜单（精确图表数值还原）</h3>
+      <div class="bm-subgrid">
+        <div class="bm-subcard">
+          <h4>1. SEC-bench Pro（漏洞检测 Pass@1）</h4>
+          <div class="bm-submeta">Pass@1 · 越高越好（8 模型对比）</div>
+          <div class="bm-bar-row"><span><b>Gemini 4 Carbon</b></span><div class="bm-bar-track"><div class="bm-bar-fill" style="width:88.2%"></div></div><span class="bm-bar-val">88.2%</span></div>
+          <div class="bm-bar-row"><span>GPT-6 Astra</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:85.4%"></div></div><span class="bm-bar-val">85.4%</span></div>
+          <div class="bm-bar-row"><span>Gemini 4 Argon</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:83.4%"></div></div><span class="bm-bar-val">83.4%</span></div>
+          <div class="bm-bar-row"><span>GPT-6.1 Terra</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:83.3%"></div></div><span class="bm-bar-val">83.3%</span></div>
+          <div class="bm-bar-row"><span>GPT-6.1 Sol</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:78.8%"></div></div><span class="bm-bar-val">78.8%</span></div>
+          <div class="bm-bar-row"><span>MiMo-V2.6-Pro</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:66.3%"></div></div><span class="bm-bar-val">66.3%</span></div>
+          <div class="bm-bar-row"><span>DeepSeek-V4.1-Flash</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:62.8%"></div></div><span class="bm-bar-val">62.8%</span></div>
+          <div class="bm-bar-row"><span>DeepSeek-V4-Pro</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:56.4%"></div></div><span class="bm-bar-val">56.4%</span></div>
+        </div>
+
+        <div class="bm-subcard">
+          <h4>2. ExploitGym（因果通过率与时间上限）</h4>
+          <div class="bm-submeta">单任务时间上限对比 · 越高越好（10 柱）</div>
+          <div class="bm-bar-row"><span><b>Carbon (10h 上限)</b></span><div class="bm-bar-track"><div class="bm-bar-fill" style="width:91.3%"></div></div><span class="bm-bar-val">54.8%</span></div>
+          <div class="bm-bar-row"><span><b>Carbon (6h 上限)</b></span><div class="bm-bar-track"><div class="bm-bar-fill" style="width:89.2%"></div></div><span class="bm-bar-val">53.5%</span></div>
+          <div class="bm-bar-row"><span>Astra (无时间上限)</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:70.7%"></div></div><span class="bm-bar-val">42.4%</span></div>
+          <div class="bm-bar-row"><span>Argon (10h 上限)</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:70.0%"></div></div><span class="bm-bar-val">42.0%</span></div>
+          <div class="bm-bar-row"><span>Argon (6h 上限)</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:65.8%"></div></div><span class="bm-bar-val">39.5%</span></div>
+          <div class="bm-bar-row"><span>GPT-6.1 Sol (无上限)</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:58.5%"></div></div><span class="bm-bar-val">35.1%</span></div>
+          <div class="bm-bar-row"><span>Opus 5.5 (6h 上限)</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:57.5%"></div></div><span class="bm-bar-val">34.5%</span></div>
+          <div class="bm-bar-row"><span>Mythos 5.1 / MiMo / GLM</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:50.7%"></div></div><span class="bm-bar-val">30.4–15%</span></div>
+        </div>
+
+        <div class="bm-subcard">
+          <h4>3. CWE-bench（根因补丁修复率）</h4>
+          <div class="bm-submeta">Pass@1（平局按 Pass@4 排序）· 标注 Harness</div>
+          <div class="bm-bar-row"><span><b>Carbon (Antigravity)</b></span><div class="bm-bar-track"><div class="bm-bar-fill" style="width:71.0%"></div></div><span class="bm-bar-val">71.0%</span></div>
+          <div class="bm-bar-row"><span>Grok 4.7 (opencode)</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:68.0%"></div></div><span class="bm-bar-val">68.0%</span></div>
+          <div class="bm-bar-row"><span>Argon (Antigravity)</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:68.0%"></div></div><span class="bm-bar-val">68.0%</span></div>
+          <div class="bm-bar-row"><span>GPT-6 Astra (Codex)</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:68.0%"></div></div><span class="bm-bar-val">68.0%</span></div>
+          <div class="bm-bar-row"><span>Opus 5.5 (Claude Code)</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:67.0%"></div></div><span class="bm-bar-val">67.0%</span></div>
+          <div class="bm-bar-row"><span>Fable 5.1 (Claude Code)</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:58.0%"></div></div><span class="bm-bar-val">58.0%</span></div>
+          <div class="bm-bar-row"><span>Grok 4.6 / DS-V4.1 / Muse</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:57.0%"></div></div><span class="bm-bar-val">57/55/55%</span></div>
+          <div class="bm-bar-row"><span>Hy4 Preview / GPT-6 Sol</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:53.0%"></div></div><span class="bm-bar-val">53 / 52%</span></div>
+        </div>
+
+        <div class="bm-subcard">
+          <h4>4. Gray Swan IPI（抗间接提示词注入）</h4>
+          <div class="bm-submeta">k=15 次攻击成功率 ASR · 越低越安全</div>
+          <div class="bm-bar-row"><span><b>Gemini 4 Carbon ⭐</b></span><div class="bm-bar-track"><div class="bm-bar-fill" style="width:2%"></div></div><span class="bm-bar-val">0.0%</span></div>
+          <div class="bm-bar-row"><span>Gemini 4 Argon</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:4%"></div></div><span class="bm-bar-val">0.7%</span></div>
+          <div class="bm-bar-row"><span>Opus 5.5 &amp; Fable 5.1</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:5%"></div></div><span class="bm-bar-val">1.0%</span></div>
+          <div class="bm-bar-row"><span>Claude Opus 5</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:9%"></div></div><span class="bm-bar-val">4.6%</span></div>
+          <div class="bm-bar-row"><span>Gem 3.8 Flash / Cyber</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:11%"></div></div><span class="bm-bar-val">5.5 / 6.0%</span></div>
+          <div class="bm-bar-row"><span>GPT-6 Astra / 6.1 Sol</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:16%"></div></div><span class="bm-bar-val">8.5 / 8.6%</span></div>
+          <div class="bm-bar-row"><span>Muse 1.3 / GLM 5.3</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:55%"></div></div><span class="bm-bar-val">15.9/31.5%</span></div>
+          <div class="bm-bar-row"><span>Grok 4.6 / Kimi K3</span><div class="bm-bar-track"><div class="bm-bar-fill muted" style="width:98%"></div></div><span class="bm-bar-val">51.8/52.7%</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-inner">
+    <div><b>陈琪 Qi Chen</b> · 微软高级 AI 解决方案架构师 · Frontier AI Lab</div>
+    <div class="foot-links">
+      <a href="https://github.com/turbo998" target="_blank" rel="noopener">GitHub</a>
+      <a href="frontier-ai-studio.html">Frontier AI Studio</a>
+      <a href="zh-writing.html">工作台与评测</a>
+      <a href="benchmarks.html">English</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var buttons = document.querySelectorAll('.filter-btn');
+  var items = document.querySelectorAll('#pub-list .pub');
+  var countEl = document.getElementById('pub-count');
+  var total = items.length;
+  var labels = {
+    all: '份 Benchmark 测试报告',
+    'coding-supplements': '份编码智能体增补报告 (4–6)',
+    'cyber-safety': '份网络安全与长程代理报告',
+    'routing-decision': '份路由与决策模型报告',
+    'harness-infra': '份 Agent Harness 与沙箱底座报告'
+  };
+
+  function applyFilter(cat) {
+    var shown = 0;
+    items.forEach(function (el) {
+      var cats = (el.getAttribute('data-category') || '').split(/\s+/);
+      var match = (cat === 'all') || cats.indexOf(cat) !== -1;
+      el.classList.toggle('pub-hidden', !match);
+      if (match) shown++;
+    });
+    buttons.forEach(function (btn) {
+      btn.classList.toggle('active', btn.getAttribute('data-filter') === cat);
+    });
+    if (countEl) {
+      countEl.textContent = (cat === 'all')
+        ? '当前显示全部 ' + total + ' 份 Benchmark 测试报告'
+        : '当前显示 ' + shown + ' ' + (labels[cat] || '份报告') + '（共 ' + total + ' 份）';
+    }
+  }
+
+  buttons.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      applyFilter(btn.getAttribute('data-filter'));
+    });
+  });
+})();
+</script>
+</body>
+</html>
