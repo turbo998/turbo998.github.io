@@ -17,7 +17,7 @@ Object.assign(sourceOverrides, Object.fromEntries([
   'workshops/agentic-commerce/live-demo.html', 'workshops/agentic-commerce/live-demo.en.html',
   'workshops/agentic-commerce/benchmark-cards.html', 'workshops/agentic-commerce/benchmark-cards.en.html',
   'workshops/ai-security/benchmark-cards.html', 'workshops/ai-security/benchmark-cards.en.html'
-].map(file => [file, { commit: '3bdac3d4db9a0cec264ee42b59bbef8a7f87364b', reason: 'Preserve the latest published Voice, Commerce and Security source content, controls and protected report data.' }])));
+].map(file => [file, { commit: file.startsWith('workshops/agentic-commerce/') ? '209aea9a1db92c816927df71a9242526b44925c1' : '3bdac3d4db9a0cec264ee42b59bbef8a7f87364b', reason: 'Preserve the latest published Voice, Commerce and Security source content, controls and protected report data.' }])));
 const supplementalOwned = [
   { contentId: 'cycle377-infra-report-en', path: infraPath('benchmark-cards.en.html'), role: 'report', tracks: ['infra'], language: { declared: 'en' }, bilingualAssociations: [] },
   { contentId: 'cycle377-infra-workbench', path: infraPath('workbench-cycle-377.html'), role: 'demo', tracks: ['infra'], language: { declared: 'en' }, bilingualAssociations: [] }

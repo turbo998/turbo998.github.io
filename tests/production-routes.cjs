@@ -82,6 +82,7 @@ async function main() {
           const reading = require('../docs/redesign/reading-migration.json');
           const expectedPaths = [...inventory.content.map(p=>p.path), ...reading.records.map(r=>r.path), ...['index.html','index.en.html','live-demo.html','live-demo.en.html','compare.html','compare.en.html'].map(f=>'workshops/webiq-azure/'+f),...['workbench-cycle-377.html','benchmark-cards.en.html'].map(f=>'workshops/azure-agent-infra/'+f),...['index.html','live-demo.html','live-demo.en.html','benchmark-cards.html','benchmark-cards.en.html'].map(f=>'workshops/data-lab/'+f), 'github-radar.html','zh-github-radar.html','workshops/github-trending-radar/cards.html','workshops/github-trending-radar/cards.en.html'];
           expectedPaths.push('workshops/benchmarks/ai-infra-architect-workbench.html','workshops/benchmarks/ai-infra-phase179-benchmark-cards.html');
+          expectedPaths.push('workshops/agentic-commerce/stripe-collison-7-trends.html','workshops/agentic-commerce/stripe-collison-7-trends.en.html');
           const linkedPaths = new Set(state.links.map(href=>new URL(href).pathname));
           for (const target of expectedPaths) assert.ok(linkedPaths.has('/'+target), `${file}: archive omits ${target}`);
         }
@@ -96,6 +97,7 @@ async function main() {
         if (track === 'commerce') assert.ok(state.links.includes(`${base}/workshops/webiq-azure/compare${zh?'':'.en'}.html`),file+': comparison discovery');
         if (track === 'voice') assert.ok(state.links.includes(`${base}/voice/index${zh?'':'.en'}.html#duplexGuardSimulatorCard`),file+': Stage 356 discovery');
         if (track === 'infra') for (const target of [`workshops/benchmarks/ai-infra-architect-workbench.html?lang=${zh?'zh-CN':'en'}`,'workshops/benchmarks/ai-infra-phase179-benchmark-cards.html']) assert.ok(state.links.includes(`${base}/${target}`),file+': Phase179 discovery '+target);
+        if (track === 'commerce') assert.ok(state.links.includes(`${base}/workshops/agentic-commerce/stripe-collison-7-trends${zh?'':'.en'}.html`),file+': latest Commerce article discovery');
         if (manifest.scenes[track]) {
           assert.ok(['architecture','evaluation','demos','resources'].every(id => state.sections.includes(id)), file);
           assert.equal(state.scenes.length, Object.keys(manifest.scenes[track]).length, file);

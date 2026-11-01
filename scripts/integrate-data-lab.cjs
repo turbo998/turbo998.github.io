@@ -164,12 +164,26 @@ function generate() {
   console.log(`Integrated ${files.length} DataLab surfaces from ${baseline}; source runtime, reports and CSP preserved.`);
 }
 
-module.exports = { root, baseline, directory, files, source, strip, transform, generate, sourceLinkChange };
+function check() {
+  git(['ls-files', '--error-unmatch', '--', ...files.map(name => `${directory}/${name}`)]);
+  const mismatches = [];
+  for (const name of files) {
+    const target = path.join(root, 'workshops', 'data-lab', name);
+    if (!fs.existsSync(target)) { mismatches.push(`${name} (missing)`); continue; }
+    const current = fs.readFileSync(target, 'utf8').replace(/\r\n/g, '\n');
+    if (current !== transform(name, source(name))) mismatches.push(name);
+  }
+  if (mismatches.length) throw new Error(`DataLab deterministic check failed: ${mismatches.join(', ')}. No files written.`);
+  console.log(`PASS: ${files.length} DataLab surfaces match deterministic output from ${baseline} (read-only; Git line endings normalized).`);
+}
+
+module.exports = { root, baseline, directory, files, source, strip, transform, generate, check, sourceLinkChange };
 if (require.main === module) {
-  if (process.argv.length !== 3 || process.argv[2] !== '--write') {
-    console.error('After parent merge readiness only: node scripts\\integrate-data-lab.cjs --write');
+  if (process.argv.length !== 3 || !['--write', '--check'].includes(process.argv[2])) {
+    console.error('Usage: node scripts\\integrate-data-lab.cjs --check (read-only) | --write (after parent merge readiness)');
     process.exitCode = 2;
   } else {
-    try { generate(); } catch (error) { console.error(error.message); process.exitCode = 1; }
+    try { process.argv[2] === '--check' ? check() : generate(); }
+    catch (error) { console.error(error.message); process.exitCode = 1; }
   }
 }

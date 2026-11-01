@@ -139,7 +139,7 @@ async function main() {
     const source = baseline(r), live = fs.readFileSync(path.join(root, r.path), 'utf8'), expected = transform(r, source);
     assert.equal(live, expected.html, r.path);
     if (r.sourceOverride) {
-      assert.equal(r.sourceOverride.commit, cycle377Paths.includes(r.path) ? cycle377Commit : concurrentCommit, `Unpinned concurrent source: ${r.path}`);
+      assert.equal(r.sourceOverride.commit, cycle377Paths.includes(r.path) ? cycle377Commit : r.path.startsWith('workshops/agentic-commerce/') ? '209aea9a1db92c816927df71a9242526b44925c1' : concurrentCommit, `Unpinned concurrent source: ${r.path}`);
       if (/\/(demo|selector)\.html$/.test(r.path)) {
         const sourceLink = source.split('\n').find(line => line.includes('href="workbench-cycle-377.html"')) + '\n';
         assert(sourceLink.startsWith('    <a class="nav-link"'), 'Published workbench link missing');

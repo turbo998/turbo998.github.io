@@ -14,6 +14,7 @@ const sourceOverrides = {
   ...Object.fromEntries(['voice/index.html','voice/app.js','voice/03-daily-breakthrough-2026-11-01.svg','workshops/agentic-commerce/index.html'].map(p=>[p,'04ec523a4f7ba4843de2983b91052e23e7c1ffa6'])),
   ...Object.fromEntries(['benchmarks.html','zh-benchmarks.html','projects.html','zh-projects.html','writing.html','zh-writing.html','ai-security.html','zh-ai-security.html','workshops/ai-security/index.html','workshops/ai-security/index.en.html'].map(p=>[p,'3bdac3d4db9a0cec264ee42b59bbef8a7f87364b']))
 };
+Object.assign(sourceOverrides, Object.fromEntries(['writing.html','zh-writing.html','workshops/agentic-commerce/index.html','workshops/agentic-commerce/index.en.html'].map(p=>[p,'209aea9a1db92c816927df71a9242526b44925c1'])));
 const baseline = p => cp.execFileSync('git', ['show', `${sourceOverrides[p] || inventory.baseline}:${p}`], { cwd: root, maxBuffer: 20 * 1024 * 1024 });
 const esc = s => String(s).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('"', '&quot;');
 const relative = (from, to) => path.posix.relative(path.posix.dirname(from), to) || path.posix.basename(to);
