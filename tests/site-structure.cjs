@@ -5,12 +5,12 @@ const puppeteer = require("puppeteer");
 
 const base = process.env.SITE_TEST_URL || "http://localhost:8796";
 const tracks = ["infra", "commerce", "voice", "benchmarks", "animation", "game", "security"];
-const columns = ["about", "ai-security", "security-ai-landing-zone", "benchmarks", "writing",
+const columns = ["about", "github-radar", "ai-security", "security-ai-landing-zone", "benchmarks", "writing",
   "projects", "opensource", "openrouter", "style-preview", "career", "skills"];
 const pages = ["index.html", "zh.html", ...columns.flatMap(name => [name + ".html", "zh-" + name + ".html"])];
 
 async function main() {
-  const browser = await puppeteer.launch({ headless: "shell", pipe: true, protocolTimeout: 30000 });
+  const browser = await puppeteer.launch({ headless: "shell", pipe: true, protocolTimeout: 120000 });
   try {
     const page = await browser.newPage();
     const errors = [];

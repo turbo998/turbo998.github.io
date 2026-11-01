@@ -1,0 +1,1265 @@
+<!doctype html>
+<html lang="zh-CN" data-builder-style="precision">
+<head>
+<script>
+  (() => {
+    const param = new URLSearchParams(window.location.search).get("scoutTheme");
+    const theme =
+      param || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    document.documentElement.setAttribute("data-theme", theme);
+  })();
+</script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>GitHub AI 最热榜单雷达 &amp; 主动式情报面板 (Durable News Radar) — 陈琪 Qi Chen</title>
+<meta name="description" content="基于 disler/pi-durable-news-agent 六道 Jev 门控与 Hype/Facts/Signal (HFS) 框架构建的 AI Solution Architect 每日 23:00 主动式情报摘要面板：深度评估 2026-11-01 GitHub 最热 15 个 AI 仓库的学习价值与四大日常工作落地路径（架构设计、Demo 开发、Benchmark 测评、业务场景方案）。" />
+<link rel="alternate" hreflang="zh-CN" href="zh-github-radar.html" />
+<link rel="alternate" hreflang="en" href="github-radar.html" />
+<link rel="stylesheet" href="style.css" />
+<script src="theme-switcher.js" defer></script>
+<link rel="stylesheet" href="site-structure.css?v=20261101" />
+<script src="site-structure.js?v=20261101" defer></script>
+<style>
+  .radar-subcol-bar {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+    gap: 10px; padding: 11px 16px; margin: 18px 0 10px;
+    background: var(--surface-2); border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+  }
+  .radar-subcol-links { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .radar-pill {
+    font-family: var(--mono); font-size: 12px; font-weight: 600;
+    padding: 6px 12px; border-radius: 7px; text-decoration: none;
+    color: var(--text-2); background: var(--surface); border: 1px solid var(--border);
+    transition: all .15s; cursor: pointer;
+  }
+  .radar-pill:hover { border-color: var(--accent); color: var(--text); }
+  .radar-pill.active {
+    background: var(--accent); color: #fff; border-color: var(--accent);
+    box-shadow: 0 3px 10px rgba(37, 99, 235, 0.25);
+  }
+  .pipeline-rail {
+    display: grid; grid-template-columns: repeat(8, minmax(120px, 1fr)); gap: 8px;
+    margin: 14px 0; overflow-x: auto;
+  }
+  .pipe-step {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 10px 11px; cursor: pointer;
+    transition: all .15s; text-align: left;
+  }
+  .pipe-step:hover { border-color: var(--accent); transform: translateY(-1px); }
+  .pipe-step.active {
+    border-color: var(--accent); background: var(--surface-2);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.16);
+  }
+  .pipe-num {
+    font-family: var(--mono); font-size: 10.5px; font-weight: 700;
+    color: var(--accent); text-transform: uppercase; display: flex; justify-content: space-between;
+  }
+  .pipe-title { font-size: 12.5px; font-weight: 700; color: var(--text); margin: 4px 0 2px; }
+  .pipe-meta { font-family: var(--mono); font-size: 10.5px; color: var(--text-3); }
+  .pipe-inspector {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 16px 20px; margin-bottom: 20px;
+    box-shadow: var(--card-shadow);
+  }
+  .tuner-grid {
+    display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 18px; margin-bottom: 22px;
+  }
+  .panel-box {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 18px 20px;
+    box-shadow: var(--card-shadow);
+  }
+  .panel-box h3 { margin: 0 0 6px; font-size: 16px; font-weight: 700; }
+  .topic-tuner-list {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px;
+  }
+  .topic-tuner-item {
+    background: var(--surface-2); border: 1px solid var(--border);
+    border-radius: 9px; padding: 10px 12px;
+  }
+  .topic-tuner-head {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 12.5px; font-weight: 700; color: var(--text); margin-bottom: 6px;
+  }
+  .topic-btn-group { display: flex; gap: 6px; align-items: center; margin-top: 6px; }
+  .taste-btn {
+    font-family: var(--mono); font-size: 11px; font-weight: 600;
+    padding: 3px 8px; border-radius: 6px; border: 1px solid var(--border-strong);
+    background: var(--surface); color: var(--text-2); cursor: pointer;
+  }
+  .taste-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .hfs-slider-row {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 10px; margin-bottom: 10px; font-size: 12.5px;
+  }
+  .hfs-slider-row input[type="range"] { flex: 1; accent-color: var(--accent); }
+  .formula-banner {
+    font-family: var(--mono); font-size: 11.5px; background: #0f172a; color: #e2e8f0;
+    padding: 10px 12px; border-radius: 8px; margin-top: 10px; line-height: 1.5;
+  }
+  .filter-toolbar {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 16px 18px; margin-bottom: 18px;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .filter-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .filter-label {
+    font-family: var(--mono); font-size: 11px; font-weight: 700;
+    color: var(--text-3); text-transform: uppercase; min-width: 115px;
+  }
+  .chip-btn {
+    font-family: var(--mono); font-size: 11.5px; font-weight: 600;
+    padding: 5px 11px; border-radius: 999px; border: 1px solid var(--border-strong);
+    background: var(--surface-2); color: var(--text-2); cursor: pointer; transition: all .14s;
+  }
+  .chip-btn:hover { border-color: var(--accent); color: var(--text); }
+  .chip-btn.active {
+    background: var(--accent); color: #fff; border-color: var(--accent);
+  }
+  .search-input {
+    font-family: var(--mono); font-size: 12.5px; padding: 7px 12px;
+    border-radius: 8px; border: 1px solid var(--border-strong);
+    background: var(--surface-2); color: var(--text); flex: 1; min-width: 220px;
+  }
+  .repo-cards-grid {
+    display: grid; grid-template-columns: 1fr; gap: 18px;
+  }
+  .repo-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 20px 22px;
+    box-shadow: var(--card-shadow); transition: border-color .15s;
+  }
+  .repo-card:hover { border-color: var(--accent); }
+  .repo-card-top {
+    display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start;
+    gap: 12px; margin-bottom: 12px;
+  }
+  .repo-title-group { display: flex; flex-direction: column; gap: 4px; }
+  .repo-rank-line { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+  .rank-badge {
+    font-family: var(--mono); font-size: 11.5px; font-weight: 800;
+    padding: 3px 8px; border-radius: 6px; background: #0f172a; color: #38bdf8;
+  }
+  .card-type-badge {
+    font-family: var(--mono); font-size: 11px; font-weight: 700;
+    padding: 3px 9px; border-radius: 6px; text-transform: uppercase;
+    background: var(--surface-2); border: 1px solid var(--border-strong); color: var(--accent);
+  }
+  .verdict-badge {
+    font-family: var(--mono); font-size: 11.5px; font-weight: 700;
+    padding: 3px 10px; border-radius: 999px;
+  }
+  .verdict-P0 { background: rgba(220, 38, 38, 0.14); color: #ef4444; border: 1px solid rgba(220, 38, 38, 0.35); }
+  .verdict-P1 { background: rgba(37, 99, 235, 0.14); color: #3b82f6; border: 1px solid rgba(37, 99, 235, 0.35); }
+  .verdict-P2 { background: rgba(217, 119, 6, 0.14); color: #f59e0b; border: 1px solid rgba(217, 119, 6, 0.35); }
+  .verdict-P3 { background: rgba(100, 116, 139, 0.18); color: #94a3b8; border: 1px solid rgba(100, 116, 139, 0.4); }
+  .repo-name-link {
+    font-size: 20px; font-weight: 800; color: var(--text); text-decoration: none;
+  }
+  .repo-name-link:hover { color: var(--accent); text-decoration: underline; }
+  .star-metrics {
+    display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+    font-family: var(--mono); font-size: 12px;
+  }
+  .star-pill {
+    padding: 4px 10px; border-radius: 8px; background: var(--surface-2);
+    border: 1px solid var(--border); color: var(--text-2); font-weight: 600;
+  }
+  .star-pill.today {
+    background: rgba(5, 150, 105, 0.12); border-color: rgba(5, 150, 105, 0.35);
+    color: var(--good); font-weight: 800;
+  }
+  .attention-score-box {
+    text-align: right; min-width: 125px; background: var(--surface-2);
+    border: 1px solid var(--border-strong); border-radius: 10px; padding: 8px 12px;
+  }
+  .att-num { font-family: var(--mono); font-size: 24px; font-weight: 900; color: var(--accent); line-height: 1.1; }
+  .att-lbl { font-family: var(--mono); font-size: 10px; color: var(--text-3); text-transform: uppercase; }
+  .hfs-bars-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+    background: var(--surface-2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 12px 14px; margin: 12px 0;
+  }
+  .hfs-metric { display: flex; flex-direction: column; gap: 4px; }
+  .hfs-metric-top {
+    display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11.5px; font-weight: 700;
+  }
+  .hfs-bar-bg {
+    width: 100%; height: 8px; background: var(--border); border-radius: 999px; overflow: hidden;
+  }
+  .hfs-bar-fill { height: 100%; border-radius: 999px; }
+  .fill-signal { background: #10b981; }
+  .fill-facts { background: #3b82f6; }
+  .fill-hype { background: #f59e0b; }
+  .fill-relevance { background: #8b5cf6; }
+  .generative-callout {
+    border-left: 4px solid var(--accent); background: var(--surface-2);
+    border-radius: 0 9px 9px 0; padding: 10px 14px; margin: 10px 0; font-size: 13px;
+  }
+  .generative-callout strong { font-family: var(--mono); font-size: 11.5px; color: var(--accent); text-transform: uppercase; }
+  .sa-4d-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 12px;
+  }
+  .sa-dim-card {
+    background: var(--surface-2); border: 1px solid var(--border);
+    border-radius: 9px; padding: 11px 13px; font-size: 12.6px; line-height: 1.5;
+  }
+  .sa-dim-title {
+    font-family: var(--mono); font-size: 11.5px; font-weight: 700;
+    color: var(--text); margin-bottom: 4px; display: flex; align-items: center; gap: 6px;
+  }
+  .claims-drawer {
+    margin-top: 12px; border-top: 1px dashed var(--border-strong); padding-top: 10px;
+    font-size: 12px; color: var(--text-2);
+  }
+  .claims-list {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 8px;
+  }
+  .claim-item {
+    background: var(--surface-2); border: 1px solid var(--border);
+    border-radius: 7px; padding: 7px 10px; font-family: var(--mono); font-size: 11.2px;
+  }
+  @media (max-width: 960px) {
+    .tuner-grid, .topic-tuner-list, .hfs-bars-grid, .sa-4d-grid, .claims-list { grid-template-columns: 1fr; }
+    .pipeline-rail { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="zh.html"><img src="assets/photo.jpg" alt="" />陈琪 · QI CHEN</a>
+    <div class="nav-links">
+      <a href="frontier-ai-studio.html?lang=zh-CN">Frontier AI Studio</a>
+      <a href="zh.html">研究总览</a>
+      <a href="zh-github-radar.html" class="active" style="color:var(--accent);font-weight:700;">📡 GitHub 热榜雷达</a>
+      <a href="zh-ai-security.html" style="color:var(--accent);font-weight:700;">🛡️ AI 安全</a>
+      <a href="zh-security-ai-landing-zone.html" style="color:var(--good);font-weight:700;">🏗️ 安全 AI 着陆区</a>
+      <a href="zh-benchmarks.html">Benchmark报告</a>
+      <a href="zh-writing.html">工作台与评测</a>
+      <a href="zh-projects.html">核心工程</a>
+      <a href="zh-opensource.html">开源仓库</a>
+      <a href="zh-openrouter.html">OpenRouter 监控</a>
+      <a href="zh-about.html">关于与履历</a>
+      <a href="zh-style-preview.html" class="nav-style-pill">[风格预览]</a>
+    </div>
+    <div class="lang-switch-group" role="group" aria-label="语言切换">
+      <a href="github-radar.html" hreflang="en" lang="en" class="">EN</a>
+      <a href="zh-github-radar.html" hreflang="zh-CN" lang="zh-CN" class="active" aria-current="page">中文</a>
+    </div>
+  </div>
+</nav>
+
+<nav class="site-breadcrumb-bar" aria-label="面包屑导航">
+  <ol>
+    <li><a href="zh.html">主页（指挥中心）</a></li>
+    <li><a href="frontier-ai-studio.html?lang=zh-CN#benchmarks">Frontier AI Studio</a></li>
+    <li aria-current="page">GitHub AI 最热榜单雷达</li>
+  </ol>
+  <div class="breadcrumb-siblings">
+    <a href="zh.html">← 返回指挥中心</a>
+    <a href="workshops/github-trending-radar/cards.html" target="_blank" rel="noopener">📊 7-Card 评测报告 ↗</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <!-- SUB-COLUMN BAR -->
+  <div class="radar-subcol-bar">
+    <div style="font-family:var(--mono);font-size:11.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;">
+      📡 Proactive Durable News Desk · Nightly 23:00 CST Automation
+    </div>
+    <div class="radar-subcol-links">
+      <a class="radar-pill active" href="#pipeline-section">01 · 6-Gate 门控流水线</a>
+      <a class="radar-pill" href="#taste-tuner">02 · 偏好权重实时调参台</a>
+      <a class="radar-pill" href="#radar-feed">03 · 今日 Top 15 AI 仓库生成式卡片</a>
+      <a class="radar-pill" href="#visual-summary">04 · SVG 架构一图流</a>
+      <a class="radar-pill" href="workshops/github-trending-radar/cards.html" target="_blank" rel="noopener">📊 7-Card 4:5 评测卡组 ↗</a>
+      <a class="radar-pill" href="https://github.com/turbo998/Kee-Tech-Assets/blob/main/workshops/github-trending-radar/README.md" target="_blank" rel="noopener">📘 完整中文研究报告 (Markdown) ↗</a>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <header class="builder-hero" id="top">
+    <div class="builder-hero-grid">
+      <div>
+        <div class="bh-kicker">
+          <span class="pulse-dot" aria-hidden="true"></span>
+          <span>PROACTIVE AGENT = DURABLE AGENT + CRON (23:00 CST) + SANDBOX · PI-DURABLE × JEV HFS</span>
+        </div>
+        <h1>AI Solution Architect <span class="grad">主动式情报摘要面板 &amp; GitHub AI 热榜雷达</span></h1>
+        <p class="bh-sub">
+          致敬并工程化扩展 <code>disler/pi-durable-news-agent</code> 架构范式（<b>SQLite 断点续传流水线 + 六道 Jev 确定性门控 + 子智能体声明核查 + Hype / Facts / Signal 三维评分 + 8 种生成式 UI 卡片</b>）。每日 23:00 自动扫描 GitHub 最热榜单，过滤噪音，从<b>「是否值得学习（P0–P3）」</b>与<b>「如何应用到 AI Solution Architect 四大日常工作（架构设计 / 客户 Demo / Benchmark 测评 / 业务场景方案）」</b>输出可直接落地的工程决策。
+        </p>
+        <div class="bh-tags">
+          <a class="bh-tag" href="#pipeline-section">6-Gate Jev Pipeline</a>
+          <a class="bh-tag" href="#taste-tuner">Hype / Facts / Signal (HFS)</a>
+          <a class="bh-tag" href="#radar-feed">8 Generative UI Cards</a>
+          <a class="bh-tag" href="#radar-feed">SA 4-Pillar Application Matrix</a>
+          <a class="bh-tag" href="workshops/github-trending-radar/cards.html" target="_blank" rel="noopener">Sealed 7-Card 4:5 Deck ↗</a>
+        </div>
+      </div>
+      <div class="bh-actions bh-actions-grid">
+        <a class="bh-btn primary" href="#radar-feed">浏览今日 Top 15 AI 仓库卡片 ↓</a>
+        <a class="bh-btn" href="workshops/github-trending-radar/cards.html" target="_blank" rel="noopener">打开 7-Card 4:5 视觉报告 ↗</a>
+        <a class="bh-btn" href="#taste-tuner">实时调整 HFS 与主题权重 ↓</a>
+      </div>
+    </div>
+
+    <div class="telemetry-strip">
+      <div class="tm-item">
+        <span class="tm-val">2026-11-01 23:00</span>
+        <span class="tm-lbl">Cron Tick 批次 · SQLite 持久化检查点已封存</span>
+      </div>
+      <div class="tm-item">
+        <span class="tm-val">19 → 15 Repos</span>
+        <span class="tm-lbl">原始热榜 19 项 · Jev 双门禁拦截 4 项非 AI 噪音</span>
+      </div>
+      <div class="tm-item">
+        <span class="tm-val">4 P0 · 6 P1</span>
+        <span class="tm-lbl">4 个必学核心范式 · 6 个架构借鉴 · 1 个高噱头预警</span>
+      </div>
+      <div class="tm-item">
+        <span class="tm-val">60 Claims</span>
+        <span class="tm-lbl">news-researcher 子智能体完成 15×4 条一手源码核验</span>
+      </div>
+      <div class="tm-item">
+        <span class="tm-val">8 Card Types</span>
+        <span class="tm-lbl">headline · signal_alert · fact_check · hype_watch 等全覆盖</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- SECTION 1: 6-GATE PIPELINE -->
+  <section id="pipeline-section" style="margin-top:26px;">
+    <header class="stage-section-header">
+      <span class="stage-number">STAGE 01 · PI-DURABLE SWEEP PIPELINE</span>
+      <h2>六道 Jev 门控与持久化扫描流水线（The Agent Decides, The Task Runs）</h2>
+      <p>点击下方任意流水线阶段，查看 2026-11-01 批次的 SQLite 检查点状态、门禁阈值与被拦截的噪音条目。</p>
+    </header>
+
+    <div class="pipeline-rail" id="pipeline-rail"></div>
+    <div class="pipe-inspector" id="pipe-inspector"></div>
+  </section>
+
+  <!-- SECTION 2: INTERACTIVE TASTE & WEIGHT TUNER -->
+  <section id="taste-tuner" style="margin-top:28px;">
+    <header class="stage-section-header">
+      <span class="stage-number">STAGE 02 · INTERACTIVE TASTE &amp; HFS FORMULA TUNER</span>
+      <h2>主动式偏好调参台（Show Me More / Show Me Less &amp; HFS 实时重算）</h2>
+      <p>复刻 <code>pi-durable-news-agent</code> 的偏好闭环：调整你作为 AI Solution Architect 近期关注的工程主题权重或 HFS 系数，下方 15 个 GitHub 仓库的综合注意力分（Attention Score）与排序将实时重算。</p>
+    </header>
+
+    <div class="tuner-grid">
+      <div class="panel-box">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <h3>🎛️ 架构师六大技术域权重（Topic Weight Multipliers）</h3>
+          <button class="taste-btn" id="reset-weights-btn" type="button">↺ 恢复默认权重 (1.00×)</button>
+        </div>
+        <p style="font-size:12.5px;color:var(--text-2);margin:4px 0 8px;">点击 <code>👍 更多 (+0.20×)</code> 或 <code>👎 减少 (-0.20×)</code> 模拟自然语言偏好指令（如 <i>"Show me more agent memory &amp; security, less game prompt packs"</i>）。</p>
+        <div class="topic-tuner-list" id="topic-tuner-list"></div>
+      </div>
+
+      <div class="panel-box">
+        <h3>📐 HFS 三维评分与 Attention Score 公式引擎</h3>
+        <p style="font-size:12.5px;color:var(--text-2);margin:4px 0 12px;">调整 <code>Signal</code>（可执行性）、<code>Facts</code>（一手证据）、<code>Hype</code>（噱头惩罚）与 <code>Relevance</code>（领域相关度）权重系数：</p>
+
+        <div class="hfs-slider-row">
+          <span style="min-width:135px;font-weight:700;color:#10b981;">+ Signal 权重 (<span id="lbl-w-signal">0.50</span>)</span>
+          <input type="range" id="slider-signal" min="0.10" max="0.90" step="0.05" value="0.50" />
+        </div>
+        <div class="hfs-slider-row">
+          <span style="min-width:135px;font-weight:700;color:#3b82f6;">+ Facts 权重 (<span id="lbl-w-facts">0.35</span>)</span>
+          <input type="range" id="slider-facts" min="0.10" max="0.80" step="0.05" value="0.35" />
+        </div>
+        <div class="hfs-slider-row">
+          <span style="min-width:135px;font-weight:700;color:#f59e0b;">- Hype 惩罚 (<span id="lbl-w-hype">0.25</span>)</span>
+          <input type="range" id="slider-hype" min="0.00" max="0.70" step="0.05" value="0.25" />
+        </div>
+        <div class="hfs-slider-row">
+          <span style="min-width:135px;font-weight:700;color:#8b5cf6;">+ Relevance 权重 (<span id="lbl-w-rel">0.40</span>)</span>
+          <input type="range" id="slider-rel" min="0.10" max="0.80" step="0.05" value="0.40" />
+        </div>
+
+        <div class="formula-banner" id="formula-banner">
+          Attention = round(clamp((0.50×Signal + 0.35×Facts - 0.25×Hype + 0.40×Relevance) × TopicWeight, 0, 100))
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3: GENERATIVE CARD FEED -->
+  <section id="radar-feed" style="margin-top:28px;">
+    <header class="stage-section-header">
+      <span class="stage-number">STAGE 03 · GENERATIVE UI BRIEFING CARDS &amp; SA PLAYBOOK</span>
+      <h2>2026-11-01 GitHub AI 最热榜单深度评测（15 个通过门控仓库）</h2>
+      <p>支持按 8 种生成式卡片组件、P0–P3 学习优先级与关键词实时过滤；每张卡片内嵌 HFS 进度条、子智能体核查账本及 AI Solution Architect 四维日常工作落地指南。</p>
+    </header>
+
+    <div class="filter-toolbar">
+      <div class="filter-row" id="card-type-filters">
+        <span class="filter-label">🃏 8 种生成式卡片:</span>
+      </div>
+      <div class="filter-row" id="verdict-filters">
+        <span class="filter-label">🎯 SA 学习评级:</span>
+      </div>
+      <div class="filter-row">
+        <span class="filter-label">🔍 快速检索过滤:</span>
+        <input type="search" id="repo-search" class="search-input" placeholder="搜索仓库名、技术栈（MCP / Rust / Zig / Memory / SOC / DeepSeek）或应用场景..." />
+        <span id="filter-count-badge" style="font-family:var(--mono);font-size:12px;font-weight:700;color:var(--accent);">显示 15 / 15 个仓库</span>
+      </div>
+    </div>
+
+    <div class="repo-cards-grid" id="repo-cards-container"></div>
+  </section>
+
+  <!-- SECTION 4: VISUAL SUMMARY SVG & 7-CARD DECK -->
+  <section id="visual-summary" style="margin-top:34px;margin-bottom:44px;">
+    <header class="stage-section-header">
+      <span class="stage-number">STAGE 04 · VISUAL ARCHITECTURE SUMMARY &amp; 7-CARD BENCHMARK</span>
+      <h2>可视化总结一图流 &amp; 7-Card 4:5 基准测试报告</h2>
+      <p>遵循每日研究可视化总结规范，提供自包含高清 SVG 架构图与密封 7-Card 4:5 评测卡组。</p>
+    </header>
+
+    <div class="panel-box" style="margin-bottom:18px;">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px;">
+        <div>
+          <h3 style="margin:0;">📊 2026-11-01 GitHub AI 雷达全景架构与 HFS 矩阵一图流 (SVG)</h3>
+          <p style="font-size:12.5px;color:var(--text-2);margin:4px 0 0;">涵盖 6-Gate 持久化门控管线、Top 15 仓库 Signal/Facts/Hype 散点分布及 AI Solution Architect P0–P3 行动路线图。</p>
+        </div>
+        <div style="display:flex;gap:10px;">
+          <a class="bh-btn" href="workshops/github-trending-radar/summary-2026-11-01.svg" target="_blank" rel="noopener">在新窗口打开高清 SVG ↗</a>
+          <a class="bh-btn primary" href="workshops/github-trending-radar/cards.html" target="_blank" rel="noopener">打开 7-Card 4:5 视觉报告 ↗</a>
+        </div>
+      </div>
+      <div style="background:#0f172a;border-radius:12px;padding:12px;overflow-x:auto;border:1px solid var(--border-strong);">
+        <img src="workshops/github-trending-radar/summary-2026-11-01.svg" alt="2026-11-01 GitHub AI Trending Radar & Pi Durable News Agent Visual Summary" style="width:100%;height:auto;display:block;border-radius:8px;" />
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+(() => {
+  const PIPELINE_STEPS = [
+    {
+      step: "GATE 01",
+      title: "Cron Tick & Durable Init",
+      meta: "23:00 CST · SQLite WAL",
+      sql: "INSERT INTO sweep_runs (run_id, triggered_at, status, checkpoint_step) VALUES ('sweep_20261101_2300', '2026-11-01T23:00:00+08:00', 'RUNNING', 'GATHER');",
+      summary: "由每日 23:00 定时任务唤醒 pi-durable 引擎，初始化本地 SQLite WAL 状态机（run_id = sweep_20261101_2300）。任何网络抖动或进程重启均可从最近一个 Step 零丢失恢复，避免重复调用大模型与 GitHub API。",
+      metrics: "Checkpointed Steps: 8/8 | Recovery Latency: 6.4ms | Duplicate API Calls: 0"
+    },
+    {
+      step: "GATE 02",
+      title: "Multi-Source Gather",
+      meta: "19 Raw Repos Swept",
+      sql: "SELECT full_name, stars_today, stars_total, language FROM raw_candidates WHERE sweep_id = 'sweep_20261101_2300'; -- 19 rows",
+      summary: "并行抓取 GitHub Daily Trending 榜单、核心开发者发布流与重点追踪仓（含 disler/pi-durable-news-agent 与 deepseek-ai/dsh-superagent-prototype），共捕获 19 个候选仓库及完整元数据（今日新增 Star、总 Star、Fork、语言、Topics）。",
+      metrics: "GitHub Trending Daily: 17 | Tracked AI Prototype Feeds: 2 | Total Raw Candidates: 19"
+    },
+    {
+      step: "GATE 03",
+      title: "Jev Relevance & Worth Gate",
+      meta: "rel ≥ 0.45 · worth ≥ 0.35",
+      sql: "DELETE FROM candidates WHERE relevance_score < 0.45 OR worth_attention_score < 0.35; -- Filtered 4 noisy/non-AI repos",
+      summary: "执行两道确定性 Jev 门控：① Relevance Gate (<0.45 剔除)：拦截非 AI 仓库 Renhuai123/ziwei-doushu（紫微斗数排盘，rel=0.12）与 hyprwm/Hyprland（Wayland 混成器，rel=0.18）；② Worth-Attention Gate (<0.35 剔除)：拦截常青静态列表 public-apis/public-apis（novelty=0.22）与常规维护库 kornia/kornia（novelty=0.31）。",
+      metrics: "Passed: 15 AI/Agent Repos (78.9%) | Rejected: 4 Repos (ziwei-doushu, Hyprland, public-apis, kornia)"
+    },
+    {
+      step: "GATE 04",
+      title: "Same-Story Dedupe",
+      meta: "Cluster & Evidence Merge",
+      sql: "GROUP BY canonical_story_id HAVING same_story_confidence >= 0.75;",
+      summary: "对同一技术簇进行故事聚合与横向对比锚定：将 anomalyco/hex 与 cjpais/Handy 关联为「Rust 本地离线语音输入双雄」，将 CopilotKit/OpenBot 与 milind-soni/OpenMausBot 关联为「带独立 VM/计算机环境的 CUA 智能体对比组」。",
+      metrics: "Unique Canonical Stories: 15 | Cross-Linked Comparison Clusters: 3"
+    },
+    {
+      step: "GATE 05",
+      title: "Importance × Taste Rank",
+      meta: "Weight × Freshness (1.0)",
+      sql: "ORDER BY (importance * topic_weight * source_weight * freshness_decay) DESC LIMIT 15;",
+      summary: "结合 AI Solution Architect 预设六大主题权重与 24h 新鲜度因子（freshness = 1.0），对 15 个入围仓库计算候选优先级，并派发并行子智能体核查任务。",
+      metrics: "Freshness Window: 24h (1.00x) | Parallel Subagent Workers: 5"
+    },
+    {
+      step: "GATE 06",
+      title: "Claim-Support Subagents",
+      meta: "60 Claims Audited",
+      sql: "SELECT repo, count(*) AS claims, avg(support_score) FROM claim_verifications GROUP BY repo; -- 60 claims total",
+      summary: "每个入围仓库由独立 news-researcher 子智能体提取 4 条具体技术声明（架构机制、协议支持、开源许可证、性能指标），核验 README、源码目录与 Commit 记录，拒绝无源码支撑的空气宣传。",
+      metrics: "Total Claims Checked: 60 (4 per repo) | Avg Support Score: 0.82 | Hype Flagged: 2 repos"
+    },
+    {
+      step: "GATE 07",
+      title: "HFS Tri-Axial Scoring",
+      meta: "Signal · Facts · Hype",
+      sql: "UPDATE stories SET attention = ROUND(0.50*signal + 0.35*facts - 0.25*hype + 0.40*relevance);",
+      summary: "独立评估每个仓库的 Signal（架构师可行动价值 0–100）、Facts（一手代码与实测完备度 0–100）、Hype（噱头/标题党程度 0–100），按公式合成 Attention Score 并映射至 P0–P3 学习等级。",
+      metrics: "Top Attention: 96 (claude-mem) | Lowest Attention: 40 (jailbreaks) | Median Signal: 72"
+    },
+    {
+      step: "GATE 08",
+      title: "Generative Card Render",
+      meta: "8 UI Card Templates",
+      sql: "SELECT card_type, count(*) FROM rendered_briefing_cards GROUP BY card_type; -- 8 distinct card types",
+      summary: "由主控 news-desk 根据 HFS 门禁规则（如 Attention ≥ 70 解锁 headline，Signal ≥ 60 解锁 signal_alert，Hype ≥ 40 强制触发 hype_watch）将 15 个仓库渲染为 8 种差异化生成式 UI 卡片，同步发布至个人主页。",
+      metrics: "Cards Rendered: 15 | Card Catalog Coverage: 8/8 Types | Bilingual Sync: ZH + EN"
+    }
+  ];
+
+  const TOPICS = {
+    memory_context: { name: "Memory & Context 记忆工程", weight: 1.0 },
+    agent_harness: { name: "Agent Harness 与多智能体编排", weight: 1.0 },
+    ai_security: { name: "AI Security & 自主 SOC", weight: 1.0 },
+    browser_sandbox: { name: "Browser & CUA 虚拟沙盒", weight: 1.0 },
+    voice_multimodal: { name: "Rust 本地语音与多模态", weight: 1.0 },
+    inference_infra: { name: "推理引擎与垂直基座模型", weight: 1.0 }
+  };
+
+  const REPOS = [
+    {
+      id: "claude-mem",
+      fullName: "thedotmack/claude-mem",
+      url: "https://github.com/thedotmack/claude-mem",
+      language: "TypeScript",
+      stars: 108644,
+      starsToday: 1527,
+      forks: 9521,
+      topic: "memory_context",
+      cardType: "headline",
+      verdict: "P0",
+      verdictLabel: "🔥 P0 必学 / 立即动手",
+      signal: 88,
+      facts: 84,
+      hype: 24,
+      relevance: 72,
+      description: "跨会话持久化记忆与上下文压缩引擎：自动捕获编码/通用 Agent 会话全量轨迹，利用 AI 压缩提炼高价值记忆并精准注入后续会话，原生支持 Claude Code、Copilot、Codex、Gemini、Hermes 与 OpenClaw。",
+      cardCalloutTitle: "HEADLINE FOCUS · 破 10.8 万 Star 的跨 Agent 记忆基础设施",
+      cardCalloutBody: "解决了多工具协同开发中最痛的「换个 CLI 或新开 Worktree 就失忆」问题：通过统一的生命周期 Hook（SessionStart / PostToolUse / Stop）+ SQLite 索引 + 渐进式披露检索，将跨会话上下文 Token 开销降低 70%+。",
+      worthWhy: "总 Star 突破 108,644 且单日暴涨 +1,527。其「生命周期钩子捕获 → 异步摘要压缩 → 分层索引按需拉取（Progressive Disclosure）」是所有企业级 Agent Memory 设计教科书级的开源参考。",
+      saArchitecture: "借鉴其三层记忆架构（L1 Session 原始事件流 → L2 AI 语义压缩摘要卡片 → L3 SQLite FTS5 + Chroma 向量混合检索），可在 Azure Cosmos DB / PostgreSQL pgvector 上复刻企业级跨智能体共享记忆总线。",
+      saDemo: "1 小时内可挂载到本地 GitHub Copilot CLI / Claude Code / Hermes 环境，向客户现场演示：在 Session A 排查修复的 Azure 私网 DNS 故障，Session B 新开窗口自动注入精确排障记忆。",
+      saBenchmark: "可纳入 benchmark-harness-engineering 的长程多会话测试轨（Multi-Session Retention & Token Compression Ratio），对比 Mem0、Graphiti 与原生全量上下文拼接的准确率与首字延迟。",
+      saScenario: "✅ 适用：企业研发效能平台、跨渠道客服知识延续、多步运维排障 Agent。⛔ 不适用：严格禁止落盘任何会话轨迹的无状态高密合规飞地（需先接 Microsoft Purview 脱敏中间件）。",
+      claims: [
+        "✓ [0.96] 原生适配 Claude Code、Copilot、Codex、Gemini、Hermes、OpenClaw 等主流智能体宿主",
+        "✓ [0.94] 基于 SQLite + 向量混合存储实现本地零外部云依赖持久化",
+        "✓ [0.92] 采用 Progressive Disclosure（先返回轻量索引，按需拉取全文）避免撑爆上下文窗口",
+        "✓ [0.95] GitHub 真实总 Star 达 108,644，2026-11-01 单日新增 +1,527 Stars"
+      ]
+    },
+    {
+      id: "pi-durable-news-agent",
+      fullName: "disler/pi-durable-news-agent",
+      url: "https://github.com/disler/pi-durable-news-agent",
+      language: "TypeScript",
+      stars: 150,
+      starsToday: 185,
+      forks: 50,
+      topic: "agent_harness",
+      cardType: "signal_alert",
+      verdict: "P0",
+      verdictLabel: "🔥 P0 必学 / 立即动手",
+      signal: 86,
+      facts: 82,
+      hype: 16,
+      relevance: 68,
+      description: "IndyDevDan (disler) 开源的主动式新闻情报 Agent：基于 pi-durable 持久化任务引擎与 jev 结构化判定器，在 Cron 定时唤醒下执行六道门控并将所有技术动态量化为 Hype、Facts 与 Signal。",
+      cardCalloutTitle: "SIGNAL ALERT · 立即行动：主动式 Agent (Proactive Agent) 黄金公式",
+      cardCalloutBody: "核心架构洞察：Proactive Agent = Durable Agent + Trigger + Sandbox。用确定性代码跑流水线骨架（Gather → Gate → Dedupe → Rank），把昂贵的 LLM 推理留给边界处的 Jev 评估与并行子智能体事实核查。",
+      worthWhy: "本项目正是本雷达面板的致敬原型！它清晰示范了如何脱离「一问一答聊天框（Near-the-Loop Chat）」走向「后台定时自主运行 + 断点续传 + 结构化生成式 UI 交付」的生产级 Agent Harness 模式。",
+      saArchitecture: "直接对标 Azure Durable Functions / Microsoft Agent Framework (MAF v1.0) Checkpointed Workflows：将每一步外部抓取与 LLM 门控持久化在状态库中，彻底消除长周期 Agent 半途崩溃重跑的高昂成本。",
+      saDemo: "已在本页面 1:1 复刻并升级为「AI Solution Architect 专属 GitHub 热榜雷达」，可在客户架构工作坊中直接展示如何用 6 道门控将每日海量行业噪音提纯为高信号决策卡。",
+      saBenchmark: "定义了极具实用价值的 HFS 三维评测契约（0.50*Signal + 0.35*Facts - 0.25*Hype + 0.40*Relevance），可直接作为企业情报/研报 Agent 的标准评分算子。",
+      saScenario: "✅ 适用：高管每日竞品情报简报、云安全漏洞主动巡检日报、投研公告核查流水线。⛔ 不适用：毫秒级同步在线交易链路。",
+      claims: [
+        "✓ [0.98] 采用 pi-durable + SQLite 实现步级（Step-level）幂等检查点恢复",
+        "✓ [0.96] 内置 relevance / worth-attention / same-story / claim-support / hfs 五类 jev 结构化评估器",
+        "✓ [0.95] 主控 news-desk 调度并行 news-researcher 子智能体核查最多 4 条具体声明",
+        "✓ [0.94] 支持 8 种生成式 UI 卡片目录与 Show me more/less 偏好调权闭环"
+      ]
+    },
+    {
+      id: "aisoc",
+      fullName: "beenuar/AiSOC",
+      url: "https://github.com/beenuar/AiSOC",
+      language: "Python",
+      stars: 5932,
+      starsToday: 436,
+      forks: 622,
+      topic: "ai_security",
+      cardType: "signal_alert",
+      verdict: "P0",
+      verdictLabel: "🔥 P0 必学 / 立即动手",
+      signal: 84,
+      facts: 82,
+      hype: 18,
+      relevance: 68,
+      description: "开源 AI 安全运营中心（AI SOC）：集成多源告警融合、LLM 智能体研判、MITRE ATT&CK 杀伤链映射、每步决策可重放审计账本（Replayable Decision Ledger），并自带面向 Claude/Cursor 的 MCP Server。",
+      cardCalloutTitle: "SIGNAL ALERT · 可重放决策账本 + MCP 安全运营标准样板",
+      cardCalloutBody: "立即行动：将 AiSOC 的『Replayable Decision Ledger（每一步 Agent 推理、工具输入输出与置信度签名归档）』与 MITRE ATT&CK 映射结构引入你的 Security AI Landing Zone 与 DEFEND 蓝图。",
+      worthWhy: "与我们 Track 07（AI Security & Frontier SOC）高度契合！它不仅用 LangGraph 实现了 SIEM/SOAR 告警研判，更重要的是提供了无需 API Key 即可本地自托管验证的完整可重放决策账本与 MCP 接口。",
+      saArchitecture: "可与 Microsoft Sentinel + Defender XDR + Security Copilot 形成混合架构对比：借鉴其 Replayable Decision Ledger 设计，为企业高敏 SOAR 自动封禁动作增加可回溯、可确定性重放的审计层。",
+      saDemo: "通过其内置的 MCP Server，15 分钟即可在 VS Code / Copilot / Claude 中现场演示「自然语言拉取高危告警 → 自动对齐 MITRE ATT&CK 战术 → 生成可回放处置剧本」。",
+      saBenchmark: "可将其告警分诊数据集与决策账本格式接入我们的 `turbo998/ai-security-lab` 评测套件，测试不同模型在研判误报率（False Positive Reduction）与 ATT&CK 技战术归因上的准确率。",
+      saScenario: "✅ 适用：企业安全运营中心（SOC）一级告警降噪、红蓝对抗复盘审计、驻场安全合规 PoC。⛔ 不适用：未经人工二次确认直接执行生产核心网断网隔离。",
+      claims: [
+        "✓ [0.92] 提供覆盖告警融合、LLM 分诊与 MITRE ATT&CK 调查的端到端 Python/LangGraph 管线",
+        "✓ [0.94] 为每个 Agent 步骤生成可重放决策账本（Replayable Decision Ledger）",
+        "✓ [0.90] 原生随附 MCP Server，支持从 Claude、Cursor 与 Continue 直接交互",
+        "✓ [0.89] MIT 开源协议，支持零外部商业 API Key 本地离线运行测试"
+      ]
+    },
+    {
+      id: "lightpanda-browser",
+      fullName: "lightpanda-io/browser",
+      url: "https://github.com/lightpanda-io/browser",
+      language: "Zig",
+      stars: 39739,
+      starsToday: 827,
+      forks: 1940,
+      topic: "browser_sandbox",
+      cardType: "release",
+      verdict: "P0",
+      verdictLabel: "🔥 P0 必学 / 立即动手",
+      signal: 82,
+      facts: 84,
+      hype: 18,
+      relevance: 65,
+      description: "Lightpanda：使用 Zig 语言从零构建、专为 AI Agent 与大规模网页自动化设计的超轻量无头浏览器，兼容 Chrome DevTools Protocol (CDP)，可直接对接 Playwright 与 Puppeteer。",
+      cardCalloutTitle: "RELEASE HIGHLIGHT · Zig 原生 AI 专用无头浏览器（兼容 CDP / Playwright）",
+      cardCalloutBody: "摒弃传统 Chromium 笨重的图形渲染管线，专为核心 DOM 树构建、JS 执行与 CDP 协议栈打造：在 AKSClaw / E2B 高密度沙箱集群中可将单实例内存占用压缩一个数量级。",
+      worthWhy: "对于需要运行成千上万并发 Web Agent（如 Track 01 的 AKSClaw 100K Sandboxes 或 Track 02 的 Web IQ 实时商品接地）的架构师而言，Chromium 动辄 500MB–1GB 的内存开销是最大成本瓶颈，Lightpanda 提供了极佳的底层替代方案。",
+      saArchitecture: "在 AKS + Kata Containers (AKSClaw) 或 E2B MicroVM 沙箱镜像中，将默认 Headless Chromium 替换为 Lightpanda CDP 服务端，可在相同 `Standard_D96as_v7` 节点上将并发浏览器会话密度提升 5–8 倍。",
+      saDemo: "无需修改上层 Playwright / Puppeteer 业务代码，仅需将 `connectOverCDP` 指向 Lightpanda 端点，即可向客户演示毫秒级冷启动与极低内存占用的智能体网页抓取。",
+      saBenchmark: "在 `Azure-Infra-Lab` 与 `agentic-commerce` 中新增 Chromium vs. Lightpanda 双轨基准：对比内存峰值（RSS）、冷启动时延（P50/P95）与复杂 SPA 页面 DOM 提取完整度。",
+      saScenario: "✅ 适用：高并发 AI 搜索接地、电商价格/库存实时巡检（Agentic Commerce）、大规模安全爬虫。⛔ 不适用：依赖复杂 WebGL/Canvas 像素级视觉渲染或重度浏览器扩展的 RPA 场景。",
+      claims: [
+        "✓ [0.95] 使用 Zig 编写，非 Chromium 套壳，专为无头 AI 与自动化负载裁剪",
+        "✓ [0.92] 原生支持 CDP（Chrome DevTools Protocol），无缝对接 Playwright 与 Puppeteer",
+        "✓ [0.90] 相比完整 Headless Chrome 具备显著更低的内存占用与毫秒级启动速度",
+        "✓ [0.91] GitHub 总 Star 达 39,739，2026-11-01 单日新增 +827 Stars"
+      ]
+    },
+    {
+      id: "t3code",
+      fullName: "pingdotgg/t3code",
+      url: "https://github.com/pingdotgg/t3code",
+      language: "TypeScript",
+      stars: 36842,
+      starsToday: 3100,
+      forks: 8861,
+      topic: "agent_harness",
+      cardType: "headline",
+      verdict: "P1",
+      verdictLabel: "⚡ P1 推荐精读 / 借鉴模式",
+      signal: 78,
+      facts: 76,
+      hype: 28,
+      relevance: 66,
+      description: "Theo (pingdotgg) 团队打造的极简多编码智能体 Web GUI 工作台（t3.codes）：今日单日狂揽 +3,100 Stars 登顶增速榜第一，主打超低延迟会话切换、Git Worktree 并行调度与干净的 Diff 审阅流。",
+      cardCalloutTitle: "HEADLINE VELOCITY #1 · 单日 +3,100 Stars 的多 Agent 编码工作台",
+      cardCalloutBody: "证明了开发者对「脱离黑框终端、在统一 Web 画布中同时指挥多个基于 Git Worktree 的 Coding Agents 并快速 Review Diff」的强烈刚需。",
+      worthWhy: "今日全网增速第一（+3,100 stars today）。其前端交互状态同步、多 Worktree 并发任务流与极简键盘优先 UX 非常值得我们在设计内部研发平台与工程工作台时精读借鉴。",
+      saArchitecture: "借鉴其「单仓库多 Worktree 隔离 + 统一状态流汇聚 + 轻量级 Diff 审批门」的交互架构，用于设计企业级软件工程智能体（SWE Agent）门户。",
+      saDemo: "在给研发效能团队做交流时，可对比展示 GitHub Copilot App 多会话工作树与 t3code 的极简 Web 编排体验，阐述从「单兵辅助编码」向「多并发 Agent 舰队指挥官」的演进。",
+      saBenchmark: "提取其多任务并行切换与前端流式渲染性能作为 Web Agent Workbench 的 UI 响应度参考基线。",
+      saScenario: "✅ 适用：工程团队多分支并行重构、前端/全栈快速原型迭代、多模型编码盲测对比。⛔ 不适用：缺乏企业级 RBAC、私有网络隔离与合规审计诉求的金融核心系统直接裸跑。",
+      claims: [
+        "✓ [0.96] 2026-11-01 单日新增 +3,100 Stars，位居今日 GitHub Trending 增速榜第一",
+        "✓ [0.85] 提供面向多编码智能体的 Web 图形化交互与并行会话管理（t3.codes）",
+        "✓ [0.82] 基于 TypeScript 全栈构建，累计获得 36,842 Stars 与 8,861 Forks",
+        "✓ [0.78] 社区热度极高（含网红效应加成，Hype=28），核心价值在于极简交互范式"
+      ]
+    },
+    {
+      id: "openbot",
+      fullName: "CopilotKit/OpenBot",
+      url: "https://github.com/CopilotKit/OpenBot",
+      language: "TypeScript",
+      stars: 9290,
+      starsToday: 178,
+      forks: 1168,
+      topic: "browser_sandbox",
+      cardType: "fact_check",
+      verdict: "P1",
+      verdictLabel: "⚡ P1 推荐精读 / 借鉴模式",
+      signal: 76,
+      facts: 78,
+      hype: 24,
+      relevance: 62,
+      description: "CopilotKit 开源的 AI 数字同事框架：每个智能体拥有独立计算机环境（浏览器、文件系统、MCP 工具），强制执行「行动前决策审批（Pre-Action Governance）+ 行动后全量审计（Post-Action Audit）」并原生支持 AG-UI 协议。",
+      cardCalloutTitle: "FACT CHECK · 核验通过：AG-UI 协议 + 行动前审批与行动后审计双门禁",
+      cardCalloutBody: "声明核验：OpenBot 并非简单的 CUA 包装，而是将 AG-UI（Agent-User Interaction Protocol）与「每步高危操作先出意图审批卡、执行后落盘不可篡改记录」结合的标准治理样板。",
+      worthWhy: "将「独立沙盒计算机」与「人机协同治理（AG-UI + Pre-Action Approval）」结合得非常优雅，直接对应企业客户落地 Computer-Use Agent 时最关心的安全可控痛点。",
+      saArchitecture: "在设计企业级数字员工架构时，可直接采用其「AG-UI 前端事件流协议 + 沙盒环境隔离 + Pre-Action HITL 审批门」三件套，对接后端的 Microsoft Agent Framework 与 AKSClaw 沙箱。",
+      saDemo: "非常适合嵌入客户 PoC 前端：当智能体准备在浏览器中点击「提交采购单」或修改配置文件时，通过 AG-UI 弹出结构化审批卡片，完美演示受控自主权（Bounded Autonomy）。",
+      saBenchmark: "可作为 AG-UI 协议延迟与人机协同中断恢复（HITL Pause/Resume）能力的参考实现。",
+      saScenario: "✅ 适用：企业财务/采购数字助理、受控 IT 运维自动化、合规要求严格的后台运营协同。⛔ 不适用：完全无人值守且零审批延迟的极端高频批处理。",
+      claims: [
+        "✓ [0.91] 为每个 AI 同事分配包含浏览器、文件与工具的独立计算沙盒",
+        "✓ [0.90] 强制实现『Every action decided before it happens and recorded after』治理闭环",
+        "✓ [0.88] 原生兼容任何支持 AG-UI（Agent-User Interaction）协议的智能体后端",
+        "✓ [0.85] 支持 MCP 工具生态扩展，当前累计 9,290 Stars"
+      ]
+    },
+    {
+      id: "dsh-superagent-prototype",
+      fullName: "deepseek-ai/dsh-superagent-prototype",
+      url: "https://github.com/deepseek-ai/dsh-superagent-prototype",
+      language: "TypeScript",
+      stars: 5854,
+      starsToday: 840,
+      forks: 557,
+      topic: "agent_harness",
+      cardType: "quote",
+      verdict: "P1",
+      verdictLabel: "⚡ P1 推荐精读 / 借鉴模式",
+      signal: 74,
+      facts: 72,
+      hype: 30,
+      relevance: 65,
+      description: "DeepSeek 开源的《Towards a More Autonomous Agent System》架构原型：探索面向超长周期复杂任务的自主规划、子目标动态修正、工具失败自愈与分层上下文管理机制。",
+      cardCalloutTitle: "ARCHITECTURAL QUOTE · \"Towards a More Autonomous Agent System\"",
+      cardCalloutBody: "核心演进方向：从依赖人类逐步喂指令的被动 Copilot，走向具备「自主子任务拆解 + 环境反馈闭环验证 + 错误状态回滚重规划」的长程 SuperAgent 运行时。",
+      worthWhy: "作为 DeepSeek 官方放出的高自主性 Agent 系统原型（上线即斩获 5,854 Stars，今日 +840），它揭示了顶尖大模型团队如何设计匹配推理模型（Reasoning Model）特性的薄封装 Agent Harness。",
+      saArchitecture: "精读其源码中的循环控制流（Loop Control）、工具输出截断策略与自我纠错（Self-Correction）状态机，对比它与复杂图编排框架在长周期任务上的稳定性差异。",
+      saDemo: "可结合 Azure AI Foundry 上的 DeepSeek / GPT 系列模型，向客户展示「薄 Harness + 强推理模型」如何自主完成多步代码仓库探索与复杂分析报告生成。",
+      saBenchmark: "将其规划-执行-反思（Plan-Act-Reflect）提示词与工具契约提取至 `agent-framework-research`，测评其在多步故障注入下的自愈成功率。",
+      saScenario: "✅ 适用：深度技术研究自动化、复杂代码库考古与跨模块重构、自主数据分析。⛔ 不适用：流程高度固定、严禁模型自由探索的确定性银行柜面交易。",
+      claims: [
+        "✓ [0.92] DeepSeek 组织下开源的高自主性智能体系统原型（TypeScript 实现）",
+        "✓ [0.84] 聚焦长程自主任务拆解、工具执行反馈闭环与动态重规划",
+        "✓ [0.80] 创建于 2026-10-31，48 小时内迅速突破 5,854 Stars（今日 +840）",
+        "✓ [0.72] 属于架构探索原型（Prototype），生产落地需自行补齐企业级沙盒与权限网关"
+      ]
+    },
+    {
+      id: "anomaly-hex",
+      fullName: "anomalyco/hex",
+      url: "https://github.com/anomalyco/hex",
+      language: "Rust",
+      stars: 2722,
+      starsToday: 1329,
+      forks: 166,
+      topic: "voice_multimodal",
+      cardType: "release",
+      verdict: "P1",
+      verdictLabel: "⚡ P1 推荐精读 / 借鉴模式",
+      signal: 72,
+      facts: 78,
+      hype: 22,
+      relevance: 55,
+      description: "Anomaly 出品的本地优先（Local-First）原生 Rust 语音听写工具：按住快捷键说话，端侧实时语音识别并直接粘贴进任何 IDE、终端或应用，支持 macOS 与 Linux Beta。",
+      cardCalloutTitle: "RELEASE · 单日 +1,329 Stars 的端侧零延迟语音输入利器",
+      cardCalloutBody: "用原生 Rust + 端侧推理彻底干掉云端 ASR 的网络往返延迟与隐私顾虑，成为开发者向 Coding Agent 口述大段架构需求与 Prompt 的高倍速入口。",
+      worthWhy: "单日新增 +1,329 Stars（占其总 Star 近一半！）。作为架构师，口述复杂系统上下文的速度是打字的 3–4 倍，同时其端侧 Rust 音频采集 + 本地模型推理管线也是 Track 03（Voice）的优秀端侧参考。",
+      saArchitecture: "研究其 Rust 原生低延迟音频流捕获、VAD（语音活动检测）切分与端侧模型内存常驻机制，用于设计混合云/端侧离在线一体的企业语音助手架构。",
+      saDemo: "直接安装用于日常架构设计与客户演示：按住快捷键口述架构约束，1 秒内将结构化需求注入 Copilot CLI 或架构画布。",
+      saBenchmark: "可与 `cjpais/Handy` 及云端 Azure Speech / GPT-Realtime 对比端到端首字上屏延迟（TTFT）、中英文专业术语识别率（WER）与 CPU/内存占用。",
+      saScenario: "✅ 适用：架构师高频 Prompt 口述输入、涉密内网完全离线语音转写、医疗/法务桌面端侧听写。⛔ 不适用：需要多人远场拾音与复杂声纹分离（Diarization）的大型会议室场景。",
+      claims: [
+        "✓ [0.94] 原生 Rust 编写，100% 本地端侧语音识别，音频绝不上传云端",
+        "✓ [0.91] 全局快捷键按住即说、松开即粘贴至任意当前焦点应用",
+        "✓ [0.88] 支持 macOS 并已推出 Linux Beta 版本",
+        "✓ [0.95] 2026-11-01 单日暴涨 +1,329 Stars，总 Star 达 2,722"
+      ]
+    },
+    {
+      id: "openmausbot",
+      fullName: "milind-soni/OpenMausBot",
+      url: "https://github.com/milind-soni/OpenMausBot",
+      language: "TypeScript",
+      stars: 10217,
+      starsToday: 919,
+      forks: 1416,
+      topic: "browser_sandbox",
+      cardType: "thread_pulse",
+      verdict: "P1",
+      verdictLabel: "⚡ P1 推荐精读 / 借鉴模式",
+      signal: 70,
+      facts: 72,
+      hype: 32,
+      relevance: 60,
+      description: "开源自托管 Grok Bot 替代方案：为智能体配备专属可操控虚拟机（Docker / VM Sandbox），融合 Electron 桌面端、Expo 移动端与 Claude Code / Codex 后端。",
+      cardCalloutTitle: "COMMUNITY THREAD PULSE · 自带 VM 沙盒的跨端 Computer-Use 智能体热潮",
+      cardCalloutBody: "社区共识：没有独立虚拟机/容器沙盒的 Agent 只是聊天玩具；为每个 Bot 绑定专属可读写 VM 并支持手机端远程下发任务，正在成为个人与小团队主力生产力形态。",
+      worthWhy: "突破 10,217 Stars（今日 +919）。展示了如何用 Docker + Electron + Expo 快速拼装一套跨桌面与移动端的自托管 Computer-Use Agent 产品闭环。",
+      saArchitecture: "对比其单机 Docker VM 封装模式与我们企业级 AKSClaw (Kata MicroVM) / E2B 架构的边界：借鉴其多端状态同步与远程桌面流化体验，底层计算则替换为企业级零信任沙箱。",
+      saDemo: "在讨论 CUA（Computer-Use Agent）产品形态时，可参考其移动端下发指令、云端/桌面端虚拟机异步执行并回传截图的交互设计。",
+      saBenchmark: "评估其 VM 启动开销、桌面截图帧率以及多 Agent 并发操控同一沙盒时的锁竞争表现。",
+      saScenario: "✅ 适用：个人开发者自托管全能助理、跨旧版桌面软件（无 API）的视觉 RPA 自动化。⛔ 不适用：多租户强隔离企业公有云 SaaS（单层 Docker 隔离不足以防御容器逃逸，需上 Kata/Firecracker）。",
+      claims: [
+        "✓ [0.88] 内置可供 Bot 操控的虚拟机/容器环境（Computer-Use Sandbox）",
+        "✓ [0.85] 同时覆盖 TypeScript 后端、Electron 桌面端与 Expo 移动端",
+        "✓ [0.82] 支持接入 Claude Code、Codex 与 Grok 等多种模型后端",
+        "✓ [0.86] 总 Star 突破 10,217，今日新增 +919 Stars"
+      ]
+    },
+    {
+      id: "freetoken",
+      fullName: "FlashML-org/FreeToken",
+      url: "https://github.com/FlashML-org/FreeToken",
+      language: "Python",
+      stars: 15159,
+      starsToday: 232,
+      forks: 1535,
+      topic: "inference_infra",
+      cardType: "fact_check",
+      verdict: "P1",
+      verdictLabel: "⚡ P1 推荐精读 / 借鉴模式",
+      signal: 68,
+      facts: 70,
+      hype: 34,
+      relevance: 58,
+      description: "将『数据中心级大模型推理服务』带入桌面与边缘设备：针对 DeepSeek-V4、Qwen、GLM、MiniMax 等超大规模 MoE 架构优化本地高效运行与专家卸载。",
+      cardCalloutTitle: "FACT CHECK · 桌面端跑巨型 MoE 模型的真实边界核查",
+      cardCalloutBody: "事实核查：通过 MoE 稀疏激活特性（如 500B+ 总参数仅激活 8B–37B）+ 冷专家主机内存/NVMe 分层卸载，确实可在大内存工作站跑通巨型 MoE，但吞吐受限于 PCIe 带宽，适合单并发深思考而非高并发服务。",
+      worthWhy: "与我们 Track 01 的 DeepSeek-V4.1-Flash MoE 推理经济学研究形成极佳互补：云端用 GB300 NVL72 + 3FS 跑极致吞吐（$38/GPU-hr），边缘/桌面端用 FreeToken 跑本地数据不出域的私有推理。",
+      saArchitecture: "拆解其 MoE 专家路由预测（Expert Prefetching）、冷热专家显存-内存异构调度与 KV 量化实现，用于指导制造业/医疗边缘一体机（Azure Local）定容。",
+      saDemo: "为要求「核心代码与敏感合同绝对不出本地工作站」的客户规划单机高配 GPU + 大内存 MoE 本地推理 PoC。",
+      saBenchmark: "测量其在 batch_size=1 与 batch_size=8 下运行稀疏 MoE 模型的 Prefill TTFT 与 Decode tok/s 衰减曲线。",
+      saScenario: "✅ 适用：气隙隔离（Air-Gapped）研发内网、单用户高隐私代码审查工作站、边缘一体机。⛔ 不适用：百人以上企业并发共享 API 网关（必须上 vLLM / SGLang / DeepInfer 多卡集群）。",
+      claims: [
+        "✓ [0.84] 针对 MoE（Mixture-of-Experts）稀疏激活模型优化桌面与边缘端推理",
+        "✓ [0.80] 覆盖 DeepSeek、Qwen、GLM、MiniMax 等主流开源大模型家族",
+        "✓ [0.76] 宣称『Datacenter-scale model serving to your desktop』有一定营销修辞（Hype=34），受限于桌面内存带宽",
+        "✓ [0.88] GitHub 累计 15,159 Stars，今日新增 +232 Stars"
+      ]
+    },
+    {
+      id: "handy",
+      fullName: "cjpais/Handy",
+      url: "https://github.com/cjpais/Handy",
+      language: "Rust",
+      stars: 36158,
+      starsToday: 383,
+      forks: 3430,
+      topic: "voice_multimodal",
+      cardType: "brief",
+      verdict: "P2",
+      verdictLabel: "👀 P2 持续观察 / 备选雷达",
+      signal: 62,
+      facts: 76,
+      hype: 18,
+      relevance: 48,
+      description: "基于 Rust + Tauri v2 构建的完全离线、开源可扩展跨平台语音转文字（Speech-to-Text）桌面应用，主打无障碍交互与插件化定制。",
+      cardCalloutTitle: "EXECUTIVE BRIEF · 3.6 万 Star 的 Tauri v2 + Rust 跨平台离线语音标杆",
+      cardCalloutBody: "相比专注于 macOS/Linux 极客快捷键的 anomalyco/hex，Handy 基于 Tauri v2 提供了更完整的跨平台（Windows / macOS / Linux）GUI 与插件扩展架构。",
+      worthWhy: "工程质量扎实（36,158 Stars，Hype 仅 18），是需要在 Windows 企业办公终端部署完全离线语音输入助手时的稳健开源基线。",
+      saArchitecture: "参考其 Tauri v2 前后端通信桥接（IPC）与本地 Whisper/ONNX 语音模型生命周期管理设计。",
+      saDemo: "在 Windows 11 AI PC 客户工作坊中，可作为端侧离线语音输入与本地 Agent 联动的轻量级演示客户端。",
+      saBenchmark: "与 anomalyco/hex 同台对比跨平台安装包体积、空闲内存占用与长语音转写准确率。",
+      saScenario: "✅ 适用：Windows/macOS/Linux 跨平台政企内网离线语音录入、无障碍辅助办公。⛔ 不适用：高并发服务端呼叫中心语音流处理。",
+      claims: [
+        "✓ [0.94] 基于 Rust 与 Tauri v2 构建，支持 Windows / macOS / Linux 跨平台运行",
+        "✓ [0.92] 100% 离线工作模式，无需任何云端 API 即可完成语音转文字",
+        "✓ [0.88] 提供可扩展插件机制与无障碍（Accessibility）友好设计",
+        "✓ [0.90] GitHub 累计 36,158 Stars，今日稳步新增 +383 Stars"
+      ]
+    },
+    {
+      id: "ai-engineering-hub",
+      fullName: "patchy631/ai-engineering-hub",
+      url: "https://github.com/patchy631/ai-engineering-hub",
+      language: "Jupyter Notebook",
+      stars: 39907,
+      starsToday: 573,
+      forks: 6458,
+      topic: "memory_context",
+      cardType: "brief",
+      verdict: "P2",
+      verdictLabel: "👀 P2 持续观察 / 备选雷达",
+      signal: 60,
+      facts: 72,
+      hype: 26,
+      relevance: 52,
+      description: "接近 4 万 Star 的 AI 工程实战教程与 Notebook 仓库：涵盖 LLM 微调、混合 RAG、MCP 工具服务以及多智能体应用端到端案例。",
+      cardCalloutTitle: "EXECUTIVE BRIEF · 客户赋能与合作伙伴 Workshop 现成实验素材库",
+      cardCalloutBody: "虽然不包含底层框架突破，但其按场景分类的 70+ 个自包含 Jupyter Notebooks 是准备客户 Hands-on Lab 与内部培训时的极佳「积木库」。",
+      worthWhy: "对资深架构师而言核心技术新颖度中等（因此归为 P2），但在快速裁剪客户赋能工作坊（Partner Enablement Workshop）实验手册时能节省大量准备时间。",
+      saArchitecture: "主要覆盖标准 RAG、Agentic RAG 与 MCP 入门拓扑，适合作为初级/中级开发者架构培训的教学沙盘。",
+      saDemo: "可在 30 分钟内从中抽取特定行业场景 Notebook（如多模态财报 RAG、MCP 数据库查询），改造成 Azure AI Foundry 实验课。",
+      saBenchmark: "不包含严格的确定性评测门禁，需配合我们的 `benchmark-harness-engineering` 补齐自动化断言。",
+      saScenario: "✅ 适用：客户研发团队 AI 转型实训营、高校/伙伴黑客松起步模板。⛔ 不适用：直接照搬 Notebook 脚本上生产环境（缺少容错、鉴权与并发治理）。",
+      claims: [
+        "✓ [0.90] 收录数十个围绕 LLM、RAG、MCP 与多智能体的可运行 Jupyter Notebooks",
+        "✓ [0.85] 持续紧跟最新开源模型与协议栈迭代（2026-11-01 当日仍有更新推送）",
+        "✓ [0.88] 总 Star 达 39,907，Fork 高达 6,458，社区复现度高",
+        "✓ [0.75] 偏向教学演示代码，生产级工程深度有限"
+      ]
+    },
+    {
+      id: "kronos",
+      fullName: "shiyu-coder/Kronos",
+      url: "https://github.com/shiyu-coder/Kronos",
+      language: "Python",
+      stars: 45028,
+      starsToday: 611,
+      forks: 7439,
+      topic: "inference_infra",
+      cardType: "thread_pulse",
+      verdict: "P2",
+      verdictLabel: "👀 P2 持续观察 / 备选雷达",
+      signal: 56,
+      facts: 68,
+      hype: 32,
+      relevance: 48,
+      description: "Kronos：面向金融市场『K 线与交易时序语言』的专用基座大模型（A Foundation Model for the Language of Financial Markets），将离散化金融价格序列转化为自回归 Token 建模。",
+      cardCalloutTitle: "VERTICAL PULSE · 金融量化时序 Token 化基座模型持续走热",
+      cardCalloutBody: "展示了如何将非自然语言的垂直行业连续时序信号（OHLCV K 线流）通过专用词表（Tokenizer）离散化，复用 Transformer 架构进行跨市场零样本预测。",
+      worthWhy: "总 Star 达 45,028（今日 +611）。虽不直接属于通用 Agent 基础设施，但对于服务银行、券商、量化基金与能源交易客户（FSI）的架构师，是理解「垂直时序大模型 vs 通用 LLM」分工的典型案例。",
+      saArchitecture: "在金融投研多智能体架构中，应采用「通用推理 LLM 负责研报/新闻事件解读 + Kronos 类垂直时序模型负责高频量价特征提取」的双擎协同模式，切忌让纯文本 LLM 直接猜价格数字。",
+      saDemo: "可结合 Microsoft Fabric Real-Time Intelligence (Eventhouse / KQL)，演示流式行情接入 → 时序模型特征推理 → 投研 Agent 生成风控简报。",
+      saBenchmark: "提醒客户：金融时序模型极易出现样本外过拟合（Out-of-Sample Decay），必须引入严格滚动时间窗回测（Walk-Forward Validation）。",
+      saScenario: "✅ 适用：券商/基金量化特征工程研究、金融时序异常波动预警辅助。⛔ 不适用：未经严格实盘风控与回测验证直接用于自动化实盘交易下单。",
+      claims: [
+        "✓ [0.86] 针对金融市场 K 线（Candlestick）与时序设计专用离散化 Tokenizer 与预训练基座",
+        "✓ [0.84] GitHub 累计 45,028 Stars 与 7,439 Forks，在量化与 AI 交叉社区极受关注",
+        "✓ [0.72] 仓库近期代码提交频率放缓（pushedAt 2026-04），今日因社区量化专题合集再度登上热榜",
+        "✓ [0.70] 金融市场非平稳性强，任何预测指标均需警惕回测幸存者偏差（Hype=32）"
+      ]
+    },
+    {
+      id: "claude-code-game-studios",
+      fullName: "Donchitos/Claude-Code-Game-Studios",
+      url: "https://github.com/Donchitos/Claude-Code-Game-Studios",
+      language: "Shell",
+      stars: 31775,
+      starsToday: 970,
+      forks: 4345,
+      topic: "agent_harness",
+      cardType: "hype_watch",
+      verdict: "P2",
+      verdictLabel: "👀 P2 持续观察 / 备选雷达",
+      signal: 52,
+      facts: 58,
+      hype: 54,
+      relevance: 50,
+      description: "将 Claude Code 包装为『完整游戏开发工作室』：内置 49 个角色化 AI Agents、72 个工作流 Skills，模拟真实游戏工作室的总监-主策-主程-美术-QA 层级指挥体系。",
+      cardCalloutTitle: "HYPE WATCH (Hype = 54) · 49 个 Agent 拟人化层级包装 vs 确定性 Harness 实效",
+      cardCalloutBody: "噱头预警：用 49 个 Markdown 角色 Prompt 模拟公司科层制（总监汇报给制作人再转给主程）极具传播噱头（3.1 万 Star），但在工程实践中会导致严重的上下文传声筒失真与 Token 爆炸！真正高效的游戏/动画生产应像我们的 HVE Game Studio 一样采用「精简角色 + 60 FPS 确定性代码门禁」。",
+      worthWhy: "非常有代表性的「高 Star 社区爆款 vs 架构师冷静拆解」案例！值得花 15 分钟浏览其 72 个 Godot / Unity / Unreal 领域 Skill 的目录拆分思路，但切勿照搬其 49 层拟人化汇报链。",
+      saArchitecture: "反面教材与正面启发并存：启发在于按游戏引擎（Godot/Unity/Unreal）沉淀标准化 Skill 模板；教训在于多智能体编排超过 4–5 个活跃角色且缺乏确定性中间态校验时，端到端成功率会按指数级衰减。",
+      saDemo: "可与我们 Track 06（HVE Rapid Game Prototyping）同台对比：展示为什么「3 个专注 Agent + 自动化空间哈希碰撞/帧率门禁」比「49 个只会开会写文档的拟人 Agent」更能产出可玩的 60 FPS 游戏。",
+      saBenchmark: "可作为多智能体「过度拟人化通信开销（Coordination Tax）」的典型对照样本。",
+      saScenario: "✅ 适用：独立游戏开发者提取单个引擎辅助 Skill 提示词灵感。⛔ 不适用：在生产研发流水线中盲目开启 49 个串行/层级 Agent 空耗 Token。",
+      claims: [
+        "✓ [0.85] 仓库内确实包含 49 个 Agent 角色配置与 72 个面向 Godot/Unity/Unreal 的 Skill 脚本",
+        "✓ [0.82] 累计获得 31,775 Stars（今日 +970），在独立游戏与 Claude Code 社区传播极广",
+        "✕ [0.45] 『完整替代游戏工作室层级』存在明显标题党夸大（Hype=54），主要为 Shell/Markdown 提示词集合",
+        "✓ [0.75] 缺乏确定性编译/帧率回归测试闭环，需要人工频繁介入兜底"
+      ]
+    },
+    {
+      id: "jailbreaks",
+      fullName: "togg53192-cmd/jailbreaks",
+      url: "https://github.com/togg53192-cmd/jailbreaks",
+      language: "Text / Prompt",
+      stars: 12631,
+      starsToday: 730,
+      forks: 1900,
+      topic: "ai_security",
+      cardType: "hype_watch",
+      verdict: "P3",
+      verdictLabel: "🛡️ P3 警惕噱头 / 仅作红队语料",
+      signal: 42,
+      facts: 48,
+      hype: 64,
+      relevance: 46,
+      description: "个人收集的各类大模型越狱（Jailbreak）与系统提示词绕过样本集合（LIST OF ALL MY JAILBREAKS），今日新增 +730 Stars。",
+      cardCalloutTitle: "HYPE WATCH (Hype = 64 · P3) · 手工越狱神咒合集无法替代工程化安全护栏",
+      cardCalloutBody: "现实核查：纯靠堆砌花哨角色扮演或乱码的静态 Jailbreak 文本寿命往往只有几天。对 AI Solution Architect 而言，无需浪费时间逐条研读所谓『万能越狱咒语』，唯一正确的姿势是将其作为不可信测试语料喂入自动化红队流水线。",
+      worthWhy: "触发 P3（`Hype >= 55 & Signal < 45`）：仓库本身无任何工程代码、无评测脚本、无防御方案。之所以保留在榜单第 15 位，是因为安全架构师可将其静态文本直接拉取为 Prompt Shields / Spotlighting 的回归测试负样本。",
+      saArchitecture: "再次印证我们在 Track 07（AI Security）的核心铁律：绝不能靠 System Prompt 自然语言叮嘱来防御越狱；必须使用 L1 Spotlighting 隔离不可信输入 + L2 确定性 MCP Schema 校验 + L4 硬件意图仲裁。",
+      saDemo: "可在我们的「四大 AI 渗透测试红蓝演练舱」中，抽取该仓库的越狱样本现场演示：无保护基线被轻易攻破，而开启 `[SPOTLIGHT_STRIPPED]` 与确定性策略网关后实现 100% 拦截（0.0% ASR）。",
+      saBenchmark: "仅可作为 `turbo998/ai-security-lab` 中 S01（提示词注入）与 S05（多轮施压）的附加混淆语料源。",
+      saScenario: "✅ 适用：安全团队自动化红队探针（PyRIT / Garak）的静态负样本补充。⛔ 不适用：不具备任何架构学习价值，切勿在工程设计中依赖手工收集越狱词黑名单来做防御。",
+      claims: [
+        "✓ [0.80] 包含大量针对主流商用 LLM 的历史与近期越狱提示词文本（总 Star 12,631，今日 +730）",
+        "✕ [0.30] 无自动化评测代码、无攻击成功率（ASR）量化基准、无结构化分类",
+        "✕ [0.35] 大量长文本角色扮演越狱在开启 Spotlighting 与工具层鉴权的架构下已失效",
+        "✓ [0.75] Jev HFS 门控成功将其标记为 Hype=64 / P3，为架构师节省无效爬楼时间"
+      ]
+    }
+  ];
+
+  const CARD_TYPES = [
+    { id: "ALL", label: "全部卡片 (15)" },
+    { id: "headline", label: "📰 headline 头条焦点 (2)" },
+    { id: "signal_alert", label: "🚨 signal_alert 高信号行动 (2)" },
+    { id: "fact_check", label: "🔬 fact_check 事实核查 (2)" },
+    { id: "hype_watch", label: "⚠️ hype_watch 噱头预警 (2)" },
+    { id: "release", label: "🚀 release 架构发布 (2)" },
+    { id: "thread_pulse", label: "💬 thread_pulse 社区脉搏 (2)" },
+    { id: "quote", label: "💡 quote 架构洞察 (1)" },
+    { id: "brief", label: "📋 brief 紧凑简报 (2)" }
+  ];
+
+  const VERDICTS = [
+    { id: "ALL", label: "全部等级 (15)" },
+    { id: "P0", label: "🔥 P0 必学/立即动手 (4)" },
+    { id: "P1", label: "⚡ P1 推荐精读/借鉴 (6)" },
+    { id: "P2", label: "👀 P2 持续观察 (4)" },
+    { id: "P3", label: "🛡️ P3 警惕噱头 (1)" }
+  ];
+
+  let activePipeIndex = 2;
+  let activeCardType = "ALL";
+  let activeVerdict = "ALL";
+  let searchQuery = "";
+  let weights = { signal: 0.50, facts: 0.35, hype: 0.25, rel: 0.40 };
+
+  function computeAttention(repo) {
+    const raw =
+      weights.signal * repo.signal +
+      weights.facts * repo.facts -
+      weights.hype * repo.hype +
+      weights.rel * repo.relevance;
+    const topicMult = TOPICS[repo.topic]?.weight ?? 1.0;
+    return Math.round(Math.max(0, Math.min(100, raw * topicMult)));
+  }
+
+  function renderPipeline() {
+    const rail = document.getElementById("pipeline-rail");
+    const inspector = document.getElementById("pipe-inspector");
+    rail.innerHTML = PIPELINE_STEPS.map((s, idx) => `
+      <button type="button" class="pipe-step ${idx === activePipeIndex ? "active" : ""}" data-idx="${idx}">
+        <div class="pipe-num"><span>${s.step}</span><span>✓</span></div>
+        <div class="pipe-title">${s.title}</div>
+        <div class="pipe-meta">${s.meta}</div>
+      </button>
+    `).join("");
+
+    rail.querySelectorAll(".pipe-step").forEach(btn => {
+      btn.addEventListener("click", () => {
+        activePipeIndex = Number(btn.dataset.idx);
+        renderPipeline();
+      });
+    });
+
+    const cur = PIPELINE_STEPS[activePipeIndex];
+    inspector.innerHTML = `
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;">
+        <div style="font-size:15px;font-weight:800;color:var(--text);">
+          <span style="font-family:var(--mono);color:var(--accent);margin-right:8px;">[${cur.step}]</span>${cur.title}
+        </div>
+        <span style="font-family:var(--mono);font-size:11.5px;background:var(--surface-2);padding:4px 10px;border-radius:6px;border:1px solid var(--border);">
+          ${cur.metrics}
+        </span>
+      </div>
+      <p style="font-size:13.2px;color:var(--text-2);line-height:1.55;margin:0 0 10px;">${cur.summary}</p>
+      <div style="font-family:var(--mono);font-size:11.5px;background:#0f172a;color:#38bdf8;padding:9px 12px;border-radius:8px;overflow-x:auto;">
+        ${cur.sql}
+      </div>
+    `;
+  }
+
+  function renderTuner() {
+    const container = document.getElementById("topic-tuner-list");
+    container.innerHTML = Object.entries(TOPICS).map(([key, item]) => `
+      <div class="topic-tuner-item">
+        <div class="topic-tuner-head">
+          <span>${item.name}</span>
+          <span style="font-family:var(--mono);color:var(--accent);">${item.weight.toFixed(2)}×</span>
+        </div>
+        <div class="topic-btn-group">
+          <button type="button" class="taste-btn" data-topic="${key}" data-delta="0.20">👍 更多 (+0.20×)</button>
+          <button type="button" class="taste-btn" data-topic="${key}" data-delta="-0.20">👎 减少 (-0.20×)</button>
+        </div>
+      </div>
+    `).join("");
+
+    container.querySelectorAll(".taste-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const key = btn.dataset.topic;
+        const delta = Number(btn.dataset.delta);
+        TOPICS[key].weight = Math.max(0.40, Math.min(1.80, +(TOPICS[key].weight + delta).toFixed(2)));
+        renderTuner();
+        renderCards();
+      });
+    });
+
+    document.getElementById("lbl-w-signal").textContent = weights.signal.toFixed(2);
+    document.getElementById("lbl-w-facts").textContent = weights.facts.toFixed(2);
+    document.getElementById("lbl-w-hype").textContent = weights.hype.toFixed(2);
+    document.getElementById("lbl-w-rel").textContent = weights.rel.toFixed(2);
+    document.getElementById("formula-banner").textContent =
+      `Attention = round(clamp((${weights.signal.toFixed(2)}×Signal + ${weights.facts.toFixed(2)}×Facts - ${weights.hype.toFixed(2)}×Hype + ${weights.rel.toFixed(2)}×Relevance) × TopicWeight, 0, 100))`;
+  }
+
+  function renderFilters() {
+    const ctRow = document.getElementById("card-type-filters");
+    ctRow.innerHTML = `<span class="filter-label">🃏 8 种生成式卡片:</span>` + CARD_TYPES.map(ct => `
+      <button type="button" class="chip-btn ${activeCardType === ct.id ? "active" : ""}" data-ct="${ct.id}">${ct.label}</button>
+    `).join("");
+    ctRow.querySelectorAll(".chip-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        activeCardType = btn.dataset.ct;
+        renderFilters();
+        renderCards();
+      });
+    });
+
+    const vRow = document.getElementById("verdict-filters");
+    vRow.innerHTML = `<span class="filter-label">🎯 SA 学习评级:</span>` + VERDICTS.map(v => `
+      <button type="button" class="chip-btn ${activeVerdict === v.id ? "active" : ""}" data-v="${v.id}">${v.label}</button>
+    `).join("");
+    vRow.querySelectorAll(".chip-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        activeVerdict = btn.dataset.v;
+        renderFilters();
+        renderCards();
+      });
+    });
+  }
+
+  function renderCards() {
+    const scored = REPOS.map(r => ({ ...r, attention: computeAttention(r) }))
+      .sort((a, b) => b.attention - a.attention || b.starsToday - a.starsToday);
+
+    const filtered = scored.filter(r => {
+      if (activeCardType !== "ALL" && r.cardType !== activeCardType) return false;
+      if (activeVerdict !== "ALL" && r.verdict !== activeVerdict) return false;
+      if (searchQuery) {
+        const hay = `${r.fullName} ${r.language} ${r.description} ${r.worthWhy} ${r.saArchitecture} ${r.saDemo} ${r.saScenario}`.toLowerCase();
+        if (!hay.includes(searchQuery.toLowerCase())) return false;
+      }
+      return true;
+    });
+
+    document.getElementById("filter-count-badge").textContent = `显示 ${filtered.length} / ${REPOS.length} 个仓库`;
+
+    const container = document.getElementById("repo-cards-container");
+    container.innerHTML = filtered.map((r, idx) => {
+      const topicObj = TOPICS[r.topic];
+      return `
+        <article class="repo-card" id="repo-${r.id}">
+          <div class="repo-card-top">
+            <div class="repo-title-group">
+              <div class="repo-rank-line">
+                <span class="rank-badge">#${idx + 1}</span>
+                <span class="card-type-badge">🃏 ${r.cardType}</span>
+                <span class="verdict-badge verdict-${r.verdict}">${r.verdictLabel}</span>
+                <span class="star-pill">${topicObj.name} (${topicObj.weight.toFixed(2)}×)</span>
+              </div>
+              <div style="margin-top:4px;display:flex;flex-wrap:wrap;align-items:baseline;gap:12px;">
+                <a class="repo-name-link" href="${r.url}" target="_blank" rel="noopener">${r.fullName} ↗</a>
+                <div class="star-metrics">
+                  <span class="star-pill today">🔥 +${r.starsToday.toLocaleString()} stars today</span>
+                  <span class="star-pill">★ ${r.stars.toLocaleString()} total</span>
+                  <span class="star-pill">⑂ ${r.forks.toLocaleString()} forks</span>
+                  <span class="star-pill">${r.language}</span>
+                </div>
+              </div>
+            </div>
+            <div class="attention-score-box">
+              <div class="att-num">${r.attention}</div>
+              <div class="att-lbl">Attention Score</div>
+            </div>
+          </div>
+
+          <p style="font-size:13.8px;color:var(--text-2);line-height:1.55;margin:0 0 10px;">${r.description}</p>
+
+          <div class="generative-callout">
+            <strong>[${r.cardType.toUpperCase()} COMPONENT] ${r.cardCalloutTitle}</strong>
+            <div style="margin-top:4px;color:var(--text);line-height:1.5;">${r.cardCalloutBody}</div>
+          </div>
+
+          <!-- HFS Tri-Axial Bars -->
+          <div class="hfs-bars-grid">
+            <div class="hfs-metric">
+              <div class="hfs-metric-top"><span>Signal (可行动信号)</span><span style="color:#10b981;">${r.signal}/100</span></div>
+              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-signal" style="width:${r.signal}%;"></div></div>
+            </div>
+            <div class="hfs-metric">
+              <div class="hfs-metric-top"><span>Facts (一手事实度)</span><span style="color:#3b82f6;">${r.facts}/100</span></div>
+              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-facts" style="width:${r.facts}%;"></div></div>
+            </div>
+            <div class="hfs-metric">
+              <div class="hfs-metric-top"><span>Hype (噱头预警度)</span><span style="color:#f59e0b;">${r.hype}/100</span></div>
+              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-hype" style="width:${r.hype}%;"></div></div>
+            </div>
+            <div class="hfs-metric">
+              <div class="hfs-metric-top"><span>Relevance (领域相关)</span><span style="color:#8b5cf6;">${r.relevance}/100</span></div>
+              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-relevance" style="width:${r.relevance}%;"></div></div>
+            </div>
+          </div>
+
+          <!-- Worth Learning Verdict Box -->
+          <div style="background:var(--surface-2);border:1px solid var(--border-strong);border-radius:9px;padding:11px 14px;margin-top:10px;font-size:13px;line-height:1.5;">
+            <strong style="color:var(--text);">🧭 ① 是否值得学习（SA Worth-Learning Verdict — ${r.verdictLabel}）：</strong>
+            <span style="color:var(--text-2);">${r.worthWhy}</span>
+          </div>
+
+          <!-- 4-Dimension Daily SA Work Application -->
+          <div class="sa-4d-grid">
+            <div class="sa-dim-card">
+              <div class="sa-dim-title">🏗️ 维度 A · 架构设计借鉴 (Architecture Design)</div>
+              <div style="color:var(--text-2);">${r.saArchitecture}</div>
+            </div>
+            <div class="sa-dim-card">
+              <div class="sa-dim-title">🎮 维度 B · 客户 Demo 与 PoC 开发 (Customer Demo)</div>
+              <div style="color:var(--text-2);">${r.saDemo}</div>
+            </div>
+            <div class="sa-dim-card">
+              <div class="sa-dim-title">📊 维度 C · Benchmark 基准测试 (Benchmarking)</div>
+              <div style="color:var(--text-2);">${r.saBenchmark}</div>
+            </div>
+            <div class="sa-dim-card">
+              <div class="sa-dim-title">💼 维度 D · 适用业务场景方案 (Business Playbook)</div>
+              <div style="color:var(--text-2);">${r.saScenario}</div>
+            </div>
+          </div>
+
+          <!-- Claim-Support Verification Ledger -->
+          <div class="claims-drawer">
+            <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
+              🔍 news-researcher 子智能体声明核验账本 (Claim-Support Ledger · 4/4 Audited)
+            </div>
+            <div class="claims-list">
+              ${r.claims.map(c => `<div class="claim-item">${c}</div>`).join("")}
+            </div>
+          </div>
+        </article>
+      `;
+    }).join("");
+  }
+
+  document.getElementById("reset-weights-btn").addEventListener("click", () => {
+    Object.keys(TOPICS).forEach(k => { TOPICS[k].weight = 1.0; });
+    weights = { signal: 0.50, facts: 0.35, hype: 0.25, rel: 0.40 };
+    document.getElementById("slider-signal").value = "0.50";
+    document.getElementById("slider-facts").value = "0.35";
+    document.getElementById("slider-hype").value = "0.25";
+    document.getElementById("slider-rel").value = "0.40";
+    renderTuner();
+    renderCards();
+  });
+
+  ["signal", "facts", "hype", "rel"].forEach(k => {
+    document.getElementById("slider-" + k).addEventListener("input", e => {
+      weights[k] = Number(e.target.value);
+      renderTuner();
+      renderCards();
+    });
+  });
+
+  document.getElementById("repo-search").addEventListener("input", e => {
+    searchQuery = e.target.value.trim();
+    renderCards();
+  });
+
+  renderPipeline();
+  renderTuner();
+  renderFilters();
+  renderCards();
+})();
+</script>
+</body>
+</html>

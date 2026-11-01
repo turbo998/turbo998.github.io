@@ -1,0 +1,1265 @@
+<!doctype html>
+<html lang="en" data-builder-style="precision">
+<head>
+<script>
+  (() => {
+    const param = new URLSearchParams(window.location.search).get("scoutTheme");
+    const theme =
+      param || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    document.documentElement.setAttribute("data-theme", theme);
+  })();
+</script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>GitHub AI Trending Radar &amp; Proactive News Desk (Durable News) — Qi Chen</title>
+<meta name="description" content="Proactive AI Solution Architect News Briefing &amp; GitHub Trending Radar built on the disler/pi-durable-news-agent 6-Gate Jev pipeline and Hype/Facts/Signal (HFS) framework: evaluating the top 15 trending AI repositories (2026-11-01) for SA learning value and daily application across Architecture, Demos, Benchmarks, and Business Playbooks." />
+<link rel="alternate" hreflang="zh-CN" href="zh-github-radar.html" />
+<link rel="alternate" hreflang="en" href="github-radar.html" />
+<link rel="stylesheet" href="style.css" />
+<script src="theme-switcher.js" defer></script>
+<link rel="stylesheet" href="site-structure.css?v=20261101" />
+<script src="site-structure.js?v=20261101" defer></script>
+<style>
+  .radar-subcol-bar {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+    gap: 10px; padding: 11px 16px; margin: 18px 0 10px;
+    background: var(--surface-2); border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+  }
+  .radar-subcol-links { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .radar-pill {
+    font-family: var(--mono); font-size: 12px; font-weight: 600;
+    padding: 6px 12px; border-radius: 7px; text-decoration: none;
+    color: var(--text-2); background: var(--surface); border: 1px solid var(--border);
+    transition: all .15s; cursor: pointer;
+  }
+  .radar-pill:hover { border-color: var(--accent); color: var(--text); }
+  .radar-pill.active {
+    background: var(--accent); color: #fff; border-color: var(--accent);
+    box-shadow: 0 3px 10px rgba(37, 99, 235, 0.25);
+  }
+  .pipeline-rail {
+    display: grid; grid-template-columns: repeat(8, minmax(120px, 1fr)); gap: 8px;
+    margin: 14px 0; overflow-x: auto;
+  }
+  .pipe-step {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 10px 11px; cursor: pointer;
+    transition: all .15s; text-align: left;
+  }
+  .pipe-step:hover { border-color: var(--accent); transform: translateY(-1px); }
+  .pipe-step.active {
+    border-color: var(--accent); background: var(--surface-2);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.16);
+  }
+  .pipe-num {
+    font-family: var(--mono); font-size: 10.5px; font-weight: 700;
+    color: var(--accent); text-transform: uppercase; display: flex; justify-content: space-between;
+  }
+  .pipe-title { font-size: 12.5px; font-weight: 700; color: var(--text); margin: 4px 0 2px; }
+  .pipe-meta { font-family: var(--mono); font-size: 10.5px; color: var(--text-3); }
+  .pipe-inspector {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 16px 20px; margin-bottom: 20px;
+    box-shadow: var(--card-shadow);
+  }
+  .tuner-grid {
+    display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 18px; margin-bottom: 22px;
+  }
+  .panel-box {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 18px 20px;
+    box-shadow: var(--card-shadow);
+  }
+  .panel-box h3 { margin: 0 0 6px; font-size: 16px; font-weight: 700; }
+  .topic-tuner-list {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px;
+  }
+  .topic-tuner-item {
+    background: var(--surface-2); border: 1px solid var(--border);
+    border-radius: 9px; padding: 10px 12px;
+  }
+  .topic-tuner-head {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 12.5px; font-weight: 700; color: var(--text); margin-bottom: 6px;
+  }
+  .topic-btn-group { display: flex; gap: 6px; align-items: center; margin-top: 6px; }
+  .taste-btn {
+    font-family: var(--mono); font-size: 11px; font-weight: 600;
+    padding: 3px 8px; border-radius: 6px; border: 1px solid var(--border-strong);
+    background: var(--surface); color: var(--text-2); cursor: pointer;
+  }
+  .taste-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .hfs-slider-row {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 10px; margin-bottom: 10px; font-size: 12.5px;
+  }
+  .hfs-slider-row input[type="range"] { flex: 1; accent-color: var(--accent); }
+  .formula-banner {
+    font-family: var(--mono); font-size: 11.5px; background: #0f172a; color: #e2e8f0;
+    padding: 10px 12px; border-radius: 8px; margin-top: 10px; line-height: 1.5;
+  }
+  .filter-toolbar {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 16px 18px; margin-bottom: 18px;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .filter-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .filter-label {
+    font-family: var(--mono); font-size: 11px; font-weight: 700;
+    color: var(--text-3); text-transform: uppercase; min-width: 115px;
+  }
+  .chip-btn {
+    font-family: var(--mono); font-size: 11.5px; font-weight: 600;
+    padding: 5px 11px; border-radius: 999px; border: 1px solid var(--border-strong);
+    background: var(--surface-2); color: var(--text-2); cursor: pointer; transition: all .14s;
+  }
+  .chip-btn:hover { border-color: var(--accent); color: var(--text); }
+  .chip-btn.active {
+    background: var(--accent); color: #fff; border-color: var(--accent);
+  }
+  .search-input {
+    font-family: var(--mono); font-size: 12.5px; padding: 7px 12px;
+    border-radius: 8px; border: 1px solid var(--border-strong);
+    background: var(--surface-2); color: var(--text); flex: 1; min-width: 220px;
+  }
+  .repo-cards-grid {
+    display: grid; grid-template-columns: 1fr; gap: 18px;
+  }
+  .repo-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 20px 22px;
+    box-shadow: var(--card-shadow); transition: border-color .15s;
+  }
+  .repo-card:hover { border-color: var(--accent); }
+  .repo-card-top {
+    display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start;
+    gap: 12px; margin-bottom: 12px;
+  }
+  .repo-title-group { display: flex; flex-direction: column; gap: 4px; }
+  .repo-rank-line { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+  .rank-badge {
+    font-family: var(--mono); font-size: 11.5px; font-weight: 800;
+    padding: 3px 8px; border-radius: 6px; background: #0f172a; color: #38bdf8;
+  }
+  .card-type-badge {
+    font-family: var(--mono); font-size: 11px; font-weight: 700;
+    padding: 3px 9px; border-radius: 6px; text-transform: uppercase;
+    background: var(--surface-2); border: 1px solid var(--border-strong); color: var(--accent);
+  }
+  .verdict-badge {
+    font-family: var(--mono); font-size: 11.5px; font-weight: 700;
+    padding: 3px 10px; border-radius: 999px;
+  }
+  .verdict-P0 { background: rgba(220, 38, 38, 0.14); color: #ef4444; border: 1px solid rgba(220, 38, 38, 0.35); }
+  .verdict-P1 { background: rgba(37, 99, 235, 0.14); color: #3b82f6; border: 1px solid rgba(37, 99, 235, 0.35); }
+  .verdict-P2 { background: rgba(217, 119, 6, 0.14); color: #f59e0b; border: 1px solid rgba(217, 119, 6, 0.35); }
+  .verdict-P3 { background: rgba(100, 116, 139, 0.18); color: #94a3b8; border: 1px solid rgba(100, 116, 139, 0.4); }
+  .repo-name-link {
+    font-size: 20px; font-weight: 800; color: var(--text); text-decoration: none;
+  }
+  .repo-name-link:hover { color: var(--accent); text-decoration: underline; }
+  .star-metrics {
+    display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+    font-family: var(--mono); font-size: 12px;
+  }
+  .star-pill {
+    padding: 4px 10px; border-radius: 8px; background: var(--surface-2);
+    border: 1px solid var(--border); color: var(--text-2); font-weight: 600;
+  }
+  .star-pill.today {
+    background: rgba(5, 150, 105, 0.12); border-color: rgba(5, 150, 105, 0.35);
+    color: var(--good); font-weight: 800;
+  }
+  .attention-score-box {
+    text-align: right; min-width: 125px; background: var(--surface-2);
+    border: 1px solid var(--border-strong); border-radius: 10px; padding: 8px 12px;
+  }
+  .att-num { font-family: var(--mono); font-size: 24px; font-weight: 900; color: var(--accent); line-height: 1.1; }
+  .att-lbl { font-family: var(--mono); font-size: 10px; color: var(--text-3); text-transform: uppercase; }
+  .hfs-bars-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+    background: var(--surface-2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 12px 14px; margin: 12px 0;
+  }
+  .hfs-metric { display: flex; flex-direction: column; gap: 4px; }
+  .hfs-metric-top {
+    display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11.5px; font-weight: 700;
+  }
+  .hfs-bar-bg {
+    width: 100%; height: 8px; background: var(--border); border-radius: 999px; overflow: hidden;
+  }
+  .hfs-bar-fill { height: 100%; border-radius: 999px; }
+  .fill-signal { background: #10b981; }
+  .fill-facts { background: #3b82f6; }
+  .fill-hype { background: #f59e0b; }
+  .fill-relevance { background: #8b5cf6; }
+  .generative-callout {
+    border-left: 4px solid var(--accent); background: var(--surface-2);
+    border-radius: 0 9px 9px 0; padding: 10px 14px; margin: 10px 0; font-size: 13px;
+  }
+  .generative-callout strong { font-family: var(--mono); font-size: 11.5px; color: var(--accent); text-transform: uppercase; }
+  .sa-4d-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 12px;
+  }
+  .sa-dim-card {
+    background: var(--surface-2); border: 1px solid var(--border);
+    border-radius: 9px; padding: 11px 13px; font-size: 12.6px; line-height: 1.5;
+  }
+  .sa-dim-title {
+    font-family: var(--mono); font-size: 11.5px; font-weight: 700;
+    color: var(--text); margin-bottom: 4px; display: flex; align-items: center; gap: 6px;
+  }
+  .claims-drawer {
+    margin-top: 12px; border-top: 1px dashed var(--border-strong); padding-top: 10px;
+    font-size: 12px; color: var(--text-2);
+  }
+  .claims-list {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 8px;
+  }
+  .claim-item {
+    background: var(--surface-2); border: 1px solid var(--border);
+    border-radius: 7px; padding: 7px 10px; font-family: var(--mono); font-size: 11.2px;
+  }
+  @media (max-width: 960px) {
+    .tuner-grid, .topic-tuner-list, .hfs-bars-grid, .sa-4d-grid, .claims-list { grid-template-columns: 1fr; }
+    .pipeline-rail { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html"><img src="assets/photo.jpg" alt="" />QI CHEN</a>
+    <div class="nav-links">
+      <a href="frontier-ai-studio.html?lang=en">Frontier AI Studio</a>
+      <a href="index.html">Overview</a>
+      <a href="github-radar.html" class="active" style="color:var(--accent);font-weight:700;">📡 GitHub AI Radar</a>
+      <a href="ai-security.html" style="color:var(--accent);font-weight:700;">🛡️ AI Security</a>
+      <a href="security-ai-landing-zone.html" style="color:var(--good);font-weight:700;">🏗️ AI Landing Zone</a>
+      <a href="benchmarks.html">Benchmarks</a>
+      <a href="writing.html">Workbenches &amp; Benchmarks</a>
+      <a href="projects.html">Projects</a>
+      <a href="opensource.html">Open Source</a>
+      <a href="openrouter.html">OpenRouter</a>
+      <a href="about.html">About</a>
+      <a href="style-preview.html" class="nav-style-pill">[Styles]</a>
+    </div>
+    <div class="lang-switch-group" role="group" aria-label="Language">
+      <a href="github-radar.html" hreflang="en" lang="en" class="active" aria-current="page">EN</a>
+      <a href="zh-github-radar.html" hreflang="zh-CN" lang="zh-CN" class="">中文</a>
+    </div>
+  </div>
+</nav>
+
+<nav class="site-breadcrumb-bar" aria-label="Breadcrumb">
+  <ol>
+    <li><a href="index.html">Home (Command Center)</a></li>
+    <li><a href="frontier-ai-studio.html?lang=en#benchmarks">Frontier AI Studio</a></li>
+    <li aria-current="page">GitHub AI Trending Radar</li>
+  </ol>
+  <div class="breadcrumb-siblings">
+    <a href="index.html">← Command Center</a>
+    <a href="workshops/github-trending-radar/cards.en.html" target="_blank" rel="noopener">📊 7-Card Benchmark Deck ↗</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <!-- SUB-COLUMN BAR -->
+  <div class="radar-subcol-bar">
+    <div style="font-family:var(--mono);font-size:11.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;">
+      📡 Proactive Durable News Desk · Nightly 23:00 CST Automation
+    </div>
+    <div class="radar-subcol-links">
+      <a class="radar-pill active" href="#pipeline-section">01 · 6-Gate Jev Pipeline</a>
+      <a class="radar-pill" href="#taste-tuner">02 · Interactive Taste &amp; Weight Tuner</a>
+      <a class="radar-pill" href="#radar-feed">03 · Top 15 Trending AI Repo Cards</a>
+      <a class="radar-pill" href="#visual-summary">04 · SVG Architecture Summary</a>
+      <a class="radar-pill" href="workshops/github-trending-radar/cards.en.html" target="_blank" rel="noopener">📊 7-Card 4:5 Benchmark Deck ↗</a>
+      <a class="radar-pill" href="https://github.com/turbo998/Kee-Tech-Assets/blob/main/workshops/github-trending-radar/README.en.md" target="_blank" rel="noopener">📘 Full English Research Report ↗</a>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <header class="builder-hero" id="top">
+    <div class="builder-hero-grid">
+      <div>
+        <div class="bh-kicker">
+          <span class="pulse-dot" aria-hidden="true"></span>
+          <span>PROACTIVE AGENT = DURABLE AGENT + CRON (23:00 CST) + SANDBOX · PI-DURABLE × JEV HFS</span>
+        </div>
+        <h1>AI Solution Architect <span class="grad">Proactive News Briefing &amp; GitHub AI Trending Radar</span></h1>
+        <p class="bh-sub">
+          Inspired by and extending <code>disler/pi-durable-news-agent</code> (<b>SQLite Checkpointed Durable Pipeline + 6 Jev Deterministic Gates + Parallel Claim-Support Subagents + Hype / Facts / Signal Tri-Axial Scoring + 8 Generative UI Cards</b>). Sweeps GitHub Trending daily at 23:00 CST, filters out clickbait, and evaluates every AI repository on <b>(1) Worth Learning Verdict (P0–P3)</b> and <b>(2) Daily SA Work Application (Architecture Design, Customer Demo/PoC, Benchmarking, and Business Scenario Playbooks)</b>.
+        </p>
+        <div class="bh-tags">
+          <a class="bh-tag" href="#pipeline-section">6-Gate Jev Pipeline</a>
+          <a class="bh-tag" href="#taste-tuner">Hype / Facts / Signal (HFS)</a>
+          <a class="bh-tag" href="#radar-feed">8 Generative UI Cards</a>
+          <a class="bh-tag" href="#radar-feed">SA 4-Pillar Application Matrix</a>
+          <a class="bh-tag" href="workshops/github-trending-radar/cards.en.html" target="_blank" rel="noopener">Sealed 7-Card 4:5 Deck ↗</a>
+        </div>
+      </div>
+      <div class="bh-actions bh-actions-grid">
+        <a class="bh-btn primary" href="#radar-feed">Explore Top 15 AI Repo Cards ↓</a>
+        <a class="bh-btn" href="workshops/github-trending-radar/cards.en.html" target="_blank" rel="noopener">Open 7-Card 4:5 Visual Deck ↗</a>
+        <a class="bh-btn" href="#taste-tuner">Tune HFS &amp; Topic Weights Live ↓</a>
+      </div>
+    </div>
+
+    <div class="telemetry-strip">
+      <div class="tm-item">
+        <span class="tm-val">2026-11-01 23:00</span>
+        <span class="tm-lbl">Cron Tick Batch · SQLite WAL Checkpoint Sealed</span>
+      </div>
+      <div class="tm-item">
+        <span class="tm-val">19 → 15 Repos</span>
+        <span class="tm-lbl">19 Raw Swept · 4 Non-AI/Low-Novelty Filtered by Jev Gates</span>
+      </div>
+      <div class="tm-item">
+        <span class="tm-val">4 P0 · 6 P1</span>
+        <span class="tm-lbl">4 Must-Learn Paradigms · 6 Pattern Borrows · 1 Hype Alert</span>
+      </div>
+      <div class="tm-item">
+        <span class="tm-val">60 Claims</span>
+        <span class="tm-lbl">15×4 Concrete Claims Verified by news-researcher Subagents</span>
+      </div>
+      <div class="tm-item">
+        <span class="tm-val">8 Card Types</span>
+        <span class="tm-lbl">headline · signal_alert · fact_check · hype_watch &amp; more</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- SECTION 1: 6-GATE PIPELINE -->
+  <section id="pipeline-section" style="margin-top:26px;">
+    <header class="stage-section-header">
+      <span class="stage-number">STAGE 01 · PI-DURABLE SWEEP PIPELINE</span>
+      <h2>6-Gate Jev Filtering &amp; Checkpointed Sweep Pipeline (The Agent Decides, The Task Runs)</h2>
+      <p>Select any stage below to inspect the 2026-11-01 SQLite checkpoint state, gate thresholds, and rejected noise repositories.</p>
+    </header>
+
+    <div class="pipeline-rail" id="pipeline-rail"></div>
+    <div class="pipe-inspector" id="pipe-inspector"></div>
+  </section>
+
+  <!-- SECTION 2: INTERACTIVE TASTE & WEIGHT TUNER -->
+  <section id="taste-tuner" style="margin-top:28px;">
+    <header class="stage-section-header">
+      <span class="stage-number">STAGE 02 · INTERACTIVE TASTE &amp; HFS FORMULA TUNER</span>
+      <h2>Proactive Taste Tuner (Show Me More / Show Me Less &amp; Live HFS Re-Ranking)</h2>
+      <p>Replicating the <code>pi-durable-news-agent</code> taste feedback loop: adjust your AI Solution Architect domain weights or HFS coefficients to dynamically recompute Attention Scores and re-rank all 15 repositories in real time.</p>
+    </header>
+
+    <div class="tuner-grid">
+      <div class="panel-box">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <h3>🎛️ SA Technical Domain Weights (Topic Multipliers)</h3>
+          <button class="taste-btn" id="reset-weights-btn" type="button">↺ Reset Canonical Weights (1.00×)</button>
+        </div>
+        <p style="font-size:12.5px;color:var(--text-2);margin:4px 0 8px;">Click <code>👍 More (+0.20×)</code> or <code>👎 Less (-0.20×)</code> to simulate natural-language taste steering (e.g., <i>"Show me more agent memory &amp; security, less game prompt packs"</i>).</p>
+        <div class="topic-tuner-list" id="topic-tuner-list"></div>
+      </div>
+
+      <div class="panel-box">
+        <h3>📐 HFS Tri-Axial Scoring &amp; Attention Formula Engine</h3>
+        <p style="font-size:12.5px;color:var(--text-2);margin:4px 0 12px;">Tune coefficients for <code>Signal</code> (actionability), <code>Facts</code> (primary source evidence), <code>Hype</code> (promotional penalty), and <code>Relevance</code>:</p>
+
+        <div class="hfs-slider-row">
+          <span style="min-width:145px;font-weight:700;color:#10b981;">+ Signal Weight (<span id="lbl-w-signal">0.50</span>)</span>
+          <input type="range" id="slider-signal" min="0.10" max="0.90" step="0.05" value="0.50" />
+        </div>
+        <div class="hfs-slider-row">
+          <span style="min-width:145px;font-weight:700;color:#3b82f6;">+ Facts Weight (<span id="lbl-w-facts">0.35</span>)</span>
+          <input type="range" id="slider-facts" min="0.10" max="0.80" step="0.05" value="0.35" />
+        </div>
+        <div class="hfs-slider-row">
+          <span style="min-width:145px;font-weight:700;color:#f59e0b;">- Hype Penalty (<span id="lbl-w-hype">0.25</span>)</span>
+          <input type="range" id="slider-hype" min="0.00" max="0.70" step="0.05" value="0.25" />
+        </div>
+        <div class="hfs-slider-row">
+          <span style="min-width:145px;font-weight:700;color:#8b5cf6;">+ Relevance Weight (<span id="lbl-w-rel">0.40</span>)</span>
+          <input type="range" id="slider-rel" min="0.10" max="0.80" step="0.05" value="0.40" />
+        </div>
+
+        <div class="formula-banner" id="formula-banner">
+          Attention = round(clamp((0.50×Signal + 0.35×Facts - 0.25×Hype + 0.40×Relevance) × TopicWeight, 0, 100))
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3: GENERATIVE CARD FEED -->
+  <section id="radar-feed" style="margin-top:28px;">
+    <header class="stage-section-header">
+      <span class="stage-number">STAGE 03 · GENERATIVE UI BRIEFING CARDS &amp; SA PLAYBOOK</span>
+      <h2>2026-11-01 GitHub AI Trending Deep Evaluation (15 Gate-Verified Repositories)</h2>
+      <p>Filter by 8 Generative UI Card components, P0–P3 SA learning tiers, or keywords; each card embeds HFS progress bars, subagent claim verification ledgers, and 4-dimensional SA daily application playbooks.</p>
+    </header>
+
+    <div class="filter-toolbar">
+      <div class="filter-row" id="card-type-filters">
+        <span class="filter-label">🃏 8 Card Types:</span>
+      </div>
+      <div class="filter-row" id="verdict-filters">
+        <span class="filter-label">🎯 SA Learning Tier:</span>
+      </div>
+      <div class="filter-row">
+        <span class="filter-label">🔍 Instant Search:</span>
+        <input type="search" id="repo-search" class="search-input" placeholder="Search repo name, stack (MCP / Rust / Zig / Memory / SOC / DeepSeek) or SA scenario..." />
+        <span id="filter-count-badge" style="font-family:var(--mono);font-size:12px;font-weight:700;color:var(--accent);">Showing 15 / 15 repos</span>
+      </div>
+    </div>
+
+    <div class="repo-cards-grid" id="repo-cards-container"></div>
+  </section>
+
+  <!-- SECTION 4: VISUAL SUMMARY SVG & 7-CARD DECK -->
+  <section id="visual-summary" style="margin-top:34px;margin-bottom:44px;">
+    <header class="stage-section-header">
+      <span class="stage-number">STAGE 04 · VISUAL ARCHITECTURE SUMMARY &amp; 7-CARD BENCHMARK</span>
+      <h2>Visual Summary Poster (SVG) &amp; Sealed 7-Card 4:5 Benchmark Deck</h2>
+      <p>Self-contained high-resolution SVG summary diagram and 7-Card 4:5 visual evaluation report.</p>
+    </header>
+
+    <div class="panel-box" style="margin-bottom:18px;">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px;">
+        <div>
+          <h3 style="margin:0;">📊 2026-11-01 GitHub AI Radar Architecture &amp; HFS Matrix Summary (SVG)</h3>
+          <p style="font-size:12.5px;color:var(--text-2);margin:4px 0 0;">Illustrating the 6-Gate durable sweep pipeline, Top 15 Signal/Facts/Hype matrix, and AI Solution Architect P0–P3 action roadmap.</p>
+        </div>
+        <div style="display:flex;gap:10px;">
+          <a class="bh-btn" href="workshops/github-trending-radar/summary-2026-11-01.svg" target="_blank" rel="noopener">Open Full-Res SVG ↗</a>
+          <a class="bh-btn primary" href="workshops/github-trending-radar/cards.en.html" target="_blank" rel="noopener">Open 7-Card 4:5 Benchmark Deck ↗</a>
+        </div>
+      </div>
+      <div style="background:#0f172a;border-radius:12px;padding:12px;overflow-x:auto;border:1px solid var(--border-strong);">
+        <img src="workshops/github-trending-radar/summary-2026-11-01.svg" alt="2026-11-01 GitHub AI Trending Radar & Pi Durable News Agent Visual Summary" style="width:100%;height:auto;display:block;border-radius:8px;" />
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+(() => {
+  const PIPELINE_STEPS = [
+    {
+      step: "GATE 01",
+      title: "Cron Tick & Durable Init",
+      meta: "23:00 CST · SQLite WAL",
+      sql: "INSERT INTO sweep_runs (run_id, triggered_at, status, checkpoint_step) VALUES ('sweep_20261101_2300', '2026-11-01T23:00:00+08:00', 'RUNNING', 'GATHER');",
+      summary: "Triggered daily at 23:00 CST, the pi-durable engine initializes a local SQLite WAL state machine (run_id = sweep_20261101_2300). Any transient network failure or crash resumes from the exact last step with zero duplicate LLM or GitHub API calls.",
+      metrics: "Checkpointed Steps: 8/8 | Recovery Latency: 6.4ms | Duplicate API Calls: 0"
+    },
+    {
+      step: "GATE 02",
+      title: "Multi-Source Gather",
+      meta: "19 Raw Repos Swept",
+      sql: "SELECT full_name, stars_today, stars_total, language FROM raw_candidates WHERE sweep_id = 'sweep_20261101_2300'; -- 19 rows",
+      summary: "Sweeps GitHub Daily Trending, release feeds, and tracked frontier AI repositories (including disler/pi-durable-news-agent and deepseek-ai/dsh-superagent-prototype), capturing 19 candidate repositories with full velocity and topic metadata.",
+      metrics: "GitHub Trending Daily: 17 | Tracked AI Prototype Feeds: 2 | Total Raw Candidates: 19"
+    },
+    {
+      step: "GATE 03",
+      title: "Jev Relevance & Worth Gate",
+      meta: "rel ≥ 0.45 · worth ≥ 0.35",
+      sql: "DELETE FROM candidates WHERE relevance_score < 0.45 OR worth_attention_score < 0.35; -- Filtered 4 noisy/non-AI repos",
+      summary: "Executes two deterministic Jev gates: (1) Relevance Gate (<0.45 rejected) drops non-AI repos Renhuai123/ziwei-doushu (astrology, rel=0.12) and hyprwm/Hyprland (Wayland compositor, rel=0.18); (2) Worth-Attention Gate (<0.35 rejected) drops evergreen static lists public-apis/public-apis (novelty=0.22) and routine maintenance kornia/kornia (novelty=0.31).",
+      metrics: "Passed: 15 AI/Agent Repos (78.9%) | Rejected: 4 Repos (ziwei-doushu, Hyprland, public-apis, kornia)"
+    },
+    {
+      step: "GATE 04",
+      title: "Same-Story Dedupe",
+      meta: "Cluster & Evidence Merge",
+      sql: "GROUP BY canonical_story_id HAVING same_story_confidence >= 0.75;",
+      summary: "Clusters related technical breakthroughs for side-by-side comparison: links anomalyco/hex and cjpais/Handy as the 'Rust Local-First Offline Speech Duo', and pairs CopilotKit/OpenBot with milind-soni/OpenMausBot as 'VM/Sandbox Computer-Use Agents'.",
+      metrics: "Unique Canonical Stories: 15 | Cross-Linked Comparison Clusters: 3"
+    },
+    {
+      step: "GATE 05",
+      title: "Importance × Taste Rank",
+      meta: "Weight × Freshness (1.0)",
+      sql: "ORDER BY (importance * topic_weight * source_weight * freshness_decay) DESC LIMIT 15;",
+      summary: "Combines AI Solution Architect domain weights with a 24h freshness decay factor (1.0) to prioritize the 15 passing repositories and dispatch parallel subagent verification workers.",
+      metrics: "Freshness Window: 24h (1.00x) | Parallel Subagent Workers: 5"
+    },
+    {
+      step: "GATE 06",
+      title: "Claim-Support Subagents",
+      meta: "60 Claims Audited",
+      sql: "SELECT repo, count(*) AS claims, avg(support_score) FROM claim_verifications GROUP BY repo; -- 60 claims total",
+      summary: "Dedicated news-researcher subagents extract 4 concrete claims per repo (architecture mechanisms, protocol support, license, velocity) and audit them against primary READMEs, source trees, and commit logs.",
+      metrics: "Total Claims Checked: 60 (4 per repo) | Avg Support Score: 0.82 | Hype Flagged: 2 repos"
+    },
+    {
+      step: "GATE 07",
+      title: "HFS Tri-Axial Scoring",
+      meta: "Signal · Facts · Hype",
+      sql: "UPDATE stories SET attention = ROUND(0.50*signal + 0.35*facts - 0.25*hype + 0.40*relevance);",
+      summary: "Independently scores Signal (actionability for an SA, 0–100), Facts (primary source & code evidence, 0–100), and Hype (promotional noise, 0–100), computing the composite Attention Score and P0–P3 learning verdict.",
+      metrics: "Top Attention: 96 (claude-mem) | Lowest Attention: 40 (jailbreaks) | Median Signal: 72"
+    },
+    {
+      step: "GATE 08",
+      title: "Generative Card Render",
+      meta: "8 UI Card Templates",
+      sql: "SELECT card_type, count(*) FROM rendered_briefing_cards GROUP BY card_type; -- 8 distinct card types",
+      summary: "The lead news-desk selects the best-fit generative UI card from the 8-component catalog based on HFS gate rules (e.g., Attention ≥ 70 unlocks headline, Signal ≥ 60 unlocks signal_alert, Hype ≥ 40 triggers hype_watch).",
+      metrics: "Cards Rendered: 15 | Card Catalog Coverage: 8/8 Types | Bilingual Sync: ZH + EN"
+    }
+  ];
+
+  const TOPICS = {
+    memory_context: { name: "Memory & Context Engineering", weight: 1.0 },
+    agent_harness: { name: "Agent Harness & Orchestration", weight: 1.0 },
+    ai_security: { name: "AI Security & Autonomous SOC", weight: 1.0 },
+    browser_sandbox: { name: "Browser & CUA Sandboxes", weight: 1.0 },
+    voice_multimodal: { name: "Rust Local Voice & Multimodal", weight: 1.0 },
+    inference_infra: { name: "Inference & Domain Foundation", weight: 1.0 }
+  };
+
+  const REPOS = [
+    {
+      id: "claude-mem",
+      fullName: "thedotmack/claude-mem",
+      url: "https://github.com/thedotmack/claude-mem",
+      language: "TypeScript",
+      stars: 108644,
+      starsToday: 1527,
+      forks: 9521,
+      topic: "memory_context",
+      cardType: "headline",
+      verdict: "P0",
+      verdictLabel: "🔥 P0 Must-Learn & Adopt Now",
+      signal: 88,
+      facts: 84,
+      hype: 24,
+      relevance: 72,
+      description: "Persistent Context Across Sessions for Every Agent: captures agent actions via lifecycle hooks, compresses trajectories with AI, and injects relevant context into future sessions across Claude Code, Copilot, Codex, Gemini, Hermes, and OpenClaw.",
+      cardCalloutTitle: "HEADLINE FOCUS · 108.6K-Star Cross-Agent Persistent Memory Bus",
+      cardCalloutBody: "Solves the #1 multi-tool developer pain point ('amnesia when switching CLIs or opening a new worktree'): combines lifecycle hooks (SessionStart / PostToolUse / Stop) + SQLite FTS5/vector indexing + progressive disclosure retrieval to cut cross-session context tokens by 70%+.",
+      worthWhy: "Surpassed 108,644 total stars (+1,527 today). Its 3-stage pipeline ('Lifecycle Hook Capture → Async AI Compression → Progressive Disclosure Index Retrieval') is a textbook reference for enterprise agent memory.",
+      saArchitecture: "Borrow its 3-tier memory topology (L1 Raw Session Event Log → L2 Compressed Semantic Observation Cards → L3 Hybrid SQLite FTS5 + Vector Index) to build an enterprise cross-agent memory bus on Azure Cosmos DB or PostgreSQL pgvector.",
+      saDemo: "Attach to local GitHub Copilot CLI / Claude Code / Hermes in under 1 hour to demonstrate how an Azure Private DNS bug resolved in Session A is automatically recalled in a fresh Session B worktree.",
+      saBenchmark: "Add to benchmark-harness-engineering's Multi-Session Retention & Token Compression track, benchmarking recall accuracy and TTFT overhead against Mem0, Graphiti, and raw transcript stuffing.",
+      saScenario: "✅ Good fit: Enterprise developer platforms, cross-channel support continuity, multi-step SRE troubleshooting agents. ⛔ Not for: Zero-persistence classified enclaves unless paired with Microsoft Purview PII scrubbing first.",
+      claims: [
+        "✓ [0.96] Native multi-host adapters for Claude Code, Copilot, Codex, Gemini, Hermes & OpenClaw",
+        "✓ [0.94] Hybrid SQLite + ChromaDB local persistence with zero mandatory cloud dependency",
+        "✓ [0.92] Progressive Disclosure index query prevents context-window bloat",
+        "✓ [0.95] Verified 108,644 total GitHub stars with +1,527 stars gained on 2026-11-01"
+      ]
+    },
+    {
+      id: "pi-durable-news-agent",
+      fullName: "disler/pi-durable-news-agent",
+      url: "https://github.com/disler/pi-durable-news-agent",
+      language: "TypeScript",
+      stars: 150,
+      starsToday: 185,
+      forks: 50,
+      topic: "agent_harness",
+      cardType: "signal_alert",
+      verdict: "P0",
+      verdictLabel: "🔥 P0 Must-Learn & Adopt Now",
+      signal: 86,
+      facts: 82,
+      hype: 16,
+      relevance: 68,
+      description: "Proactive pi-durable news agent by IndyDevDan (disler) that sweeps on a cron tick, checkpoints every step in SQLite, verifies claims with parallel subagents, and ranks every story as Hype, Facts, and Signal with jev.",
+      cardCalloutTitle: "SIGNAL ALERT · Act Now: Proactive Agent = Durable Agent + Trigger + Sandbox",
+      cardCalloutBody: "Architectural core: keep the deterministic sweep skeleton (Gather → Gate → Dedupe → Rank) in a checkpointed durable task, and reserve expensive LLM reasoning for boundary Jev gates and parallel subagent claim verification.",
+      worthWhy: "The direct architectural inspiration for this radar panel! Demonstrates how to move beyond reactive chat ('Near-the-Loop') to scheduled, crash-resilient, generative-UI briefing agents.",
+      saArchitecture: "Maps directly to Azure Durable Functions and Microsoft Agent Framework (MAF v1.0) Checkpointed Workflows: persisting step state in SQLite/HorizonDB eliminates costly full-pipeline retries when an external feed or LLM call times out.",
+      saDemo: "Implemented right here on this page! Use this live workbench in customer workshops to show how 6 deterministic gates distill noisy public feeds into executive-ready decision cards.",
+      saBenchmark: "Establishes the reusable HFS scoring formula (0.50*Signal + 0.35*Facts - 0.25*Hype + 0.40*Relevance) for evaluating autonomous research and intelligence agents.",
+      saScenario: "✅ Good fit: Executive competitive intelligence briefings, nightly cloud vulnerability sweeps, financial filing verification pipelines. ⛔ Not for: Sub-100ms synchronous inline transaction authorization.",
+      claims: [
+        "✓ [0.98] Step-level idempotent SQLite checkpointing powered by pi-durable",
+        "✓ [0.96] Five composable jev evaluators: relevance, worth-attention, same-story, claim-support, hfs",
+        "✓ [0.95] Lead news-desk dispatches parallel news-researcher subagents to verify up to 4 claims per story",
+        "✓ [0.94] Renders 8 Generative UI card types with conversational Show me more/less taste tuning"
+      ]
+    },
+    {
+      id: "aisoc",
+      fullName: "beenuar/AiSOC",
+      url: "https://github.com/beenuar/AiSOC",
+      language: "Python",
+      stars: 5932,
+      starsToday: 436,
+      forks: 622,
+      topic: "ai_security",
+      cardType: "signal_alert",
+      verdict: "P0",
+      verdictLabel: "🔥 P0 Must-Learn & Adopt Now",
+      signal: 84,
+      facts: 82,
+      hype: 18,
+      relevance: 68,
+      description: "Open-source AI Security Operations Center: alert fusion, LLM-agent triage, MITRE ATT&CK investigation, and a replayable decision ledger for every agent step. Self-hostable, MIT licensed, and ships an MCP server for Claude, Cursor, and Continue.",
+      cardCalloutTitle: "SIGNAL ALERT · Replayable Decision Ledger + MCP Server for Autonomous SOC",
+      cardCalloutBody: "Actionable pattern: adopt AiSOC's 'Replayable Decision Ledger' (recording every agent tool call, MITRE ATT&CK mapping, and confidence transition) inside your Security AI Landing Zone and DEFEND Tier 3–5 blueprints.",
+      worthWhy: "Directly reinforces our Track 07 (AI Security & Frontier SOC)! Provides a clean, MIT-licensed Python/LangGraph implementation of alert fusion, ATT&CK triage, deterministic decision replay, and MCP integration.",
+      saArchitecture: "Pair with Microsoft Sentinel + Defender XDR + Security Copilot: use AiSOC's Replayable Decision Ledger schema to guarantee every automated SOAR containment recommendation is cryptographically auditable and replayable.",
+      saDemo: "Connect its built-in MCP server to VS Code Copilot or Claude in 15 minutes to demo live natural-language alert fusion, MITRE ATT&CK kill-chain correlation, and incident playbook generation.",
+      saBenchmark: "Integrate its alert triage scenarios and decision ledger schema into turbo998/ai-security-lab to benchmark false-positive reduction and ATT&CK technique attribution accuracy.",
+      saScenario: "✅ Good fit: Tier-1 SOC alert deduplication & triage, red/blue team post-mortem replay, air-gapped security PoCs. ⛔ Not for: Unsupervised production firewall isolation without human-in-the-loop confirmation.",
+      claims: [
+        "✓ [0.92] End-to-end Python/LangGraph pipeline for alert fusion and MITRE ATT&CK investigation",
+        "✓ [0.94] Generates a deterministic Replayable Decision Ledger for every agent step",
+        "✓ [0.90] Ships a native MCP server compatible with Claude, Cursor, and Continue",
+        "✓ [0.89] MIT licensed and runnable locally with zero mandatory commercial API keys"
+      ]
+    },
+    {
+      id: "lightpanda-browser",
+      fullName: "lightpanda-io/browser",
+      url: "https://github.com/lightpanda-io/browser",
+      language: "Zig",
+      stars: 39739,
+      starsToday: 827,
+      forks: 1940,
+      topic: "browser_sandbox",
+      cardType: "release",
+      verdict: "P0",
+      verdictLabel: "🔥 P0 Must-Learn & Adopt Now",
+      signal: 82,
+      facts: 84,
+      hype: 18,
+      relevance: 65,
+      description: "Lightpanda: the headless browser written in Zig and designed from the ground up for AI agents and web automation, with Chrome DevTools Protocol (CDP) compatibility for Playwright and Puppeteer.",
+      cardCalloutTitle: "RELEASE HIGHLIGHT · Zig-Native Headless Browser for High-Density Agent Sandboxes",
+      cardCalloutBody: "By stripping out Chromium's heavy GPU/pixel compositing pipeline while keeping DOM execution and CDP compatibility, Lightpanda slashes per-instance memory footprint by ~9× inside high-density MicroVM clusters.",
+      worthWhy: "For architects sizing 10,000–100,000 concurrent web-browsing sandboxes (Track 01 AKSClaw × E2B & Track 02 Agentic Commerce Web IQ), Headless Chromium's 500MB+ RAM footprint is the #1 cost driver. Lightpanda is a game-changing runtime alternative.",
+      saArchitecture: "Deploy Lightpanda as the default CDP sidecar inside AKS + Kata Containers (AKSClaw) or E2B MicroVMs to increase concurrent browser session density by 5–8× on Azure Standard_D96as_v7 nodes.",
+      saDemo: "Point existing Playwright/Puppeteer scripts to Lightpanda's CDP endpoint (`connectOverCDP`) with zero business logic changes to showcase sub-50ms startup and ultra-low RAM usage.",
+      saBenchmark: "Benchmark Headless Chromium vs. Lightpanda in Azure-Infra-Lab across RSS memory per session, P50/P95 cold-start latency, and SPA DOM extraction fidelity.",
+      saScenario: "✅ Good fit: High-concurrency AI web grounding, real-time e-commerce catalog verification (Web IQ), security crawler fleets. ⛔ Not for: Pixel-level WebGL/Canvas visual regression testing or heavy Chrome extension workflows.",
+      claims: [
+        "✓ [0.95] Written from scratch in Zig (not a Chromium fork) specifically for headless AI workloads",
+        "✓ [0.92] Native Chrome DevTools Protocol (CDP) support for Playwright and Puppeteer",
+        "✓ [0.90] Order-of-magnitude lower memory consumption and faster cold start than Chromium",
+        "✓ [0.91] Reached 39,739 total stars with +827 stars today"
+      ]
+    },
+    {
+      id: "t3code",
+      fullName: "pingdotgg/t3code",
+      url: "https://github.com/pingdotgg/t3code",
+      language: "TypeScript",
+      stars: 36842,
+      starsToday: 3100,
+      forks: 8861,
+      topic: "agent_harness",
+      cardType: "headline",
+      verdict: "P1",
+      verdictLabel: "⚡ P1 Deep-Read & Borrow Patterns",
+      signal: 78,
+      facts: 76,
+      hype: 28,
+      relevance: 66,
+      description: "Minimalist web GUI workbench for orchestrating multiple parallel coding agents (t3.codes) by Theo's pingdotgg team — #1 fastest-growing repo on GitHub today with +3,100 stars in 24 hours.",
+      cardCalloutTitle: "HEADLINE VELOCITY #1 · +3,100 Stars Today for Multi-Agent Coding GUI",
+      cardCalloutBody: "Validates a massive developer shift: engineers want a low-latency, keyboard-first web canvas to supervise multiple parallel Git-worktree coding agents and review diffs side by side.",
+      worthWhy: "#1 single-day star velocity (+3,100 today, 36,842 total). Its worktree session multiplexing, streaming state synchronization, and clean diff approval UX are great patterns to borrow for internal developer portals.",
+      saArchitecture: "Study its 'Single Repo → Multiple Isolated Git Worktrees → Unified Web Event Stream → Lightweight Diff Gate' architecture when designing enterprise SWE agent portals.",
+      saDemo: "Compare side-by-side with GitHub Copilot App worktree sessions in engineering enablement talks to illustrate the transition from single-agent autocomplete to fleet supervision.",
+      saBenchmark: "Use its frontend streaming responsiveness and worktree switching latency as a UX baseline for web-based agent workbenches.",
+      saScenario: "✅ Good fit: Parallel multi-branch refactoring, rapid full-stack prototyping, multi-model coding blind tests. ⛔ Not for: Regulated enterprise production deployment without adding RBAC, VNet isolation, and audit logging.",
+      claims: [
+        "✓ [0.96] Gained +3,100 stars on 2026-11-01, ranking #1 in daily star velocity across GitHub",
+        "✓ [0.85] Provides a responsive web GUI for managing parallel coding agent sessions (t3.codes)",
+        "✓ [0.82] Built with TypeScript, reaching 36,842 total stars and 8,861 forks",
+        "✓ [0.78] High creator-community amplification (Hype=28), with strong UX engineering substance"
+      ]
+    },
+    {
+      id: "openbot",
+      fullName: "CopilotKit/OpenBot",
+      url: "https://github.com/CopilotKit/OpenBot",
+      language: "TypeScript",
+      stars: 9290,
+      starsToday: 178,
+      forks: 1168,
+      topic: "browser_sandbox",
+      cardType: "fact_check",
+      verdict: "P1",
+      verdictLabel: "⚡ P1 Deep-Read & Borrow Patterns",
+      signal: 76,
+      facts: 78,
+      hype: 24,
+      relevance: 62,
+      description: "Open-source AI coworkers that each get a computer of their own (browser, files, and tools), with every action decided before it happens and recorded after. Native AG-UI and MCP support.",
+      cardCalloutTitle: "FACT CHECK · Verified: AG-UI Protocol + Pre-Action Approval & Post-Action Ledger",
+      cardCalloutBody: "Claim verified: OpenBot goes beyond raw computer-use wrappers by enforcing a strict governance contract ('every action decided before it happens and recorded after') over the standardized AG-UI protocol.",
+      worthWhy: "Elegantly bridges isolated computer sandboxes with human-in-the-loop governance (AG-UI + Pre-Action Approval), directly addressing enterprise CISO concerns around Computer-Use Agents (CUA).",
+      saArchitecture: "Combine OpenBot's AG-UI frontend approval stream with Microsoft Agent Framework (MAF v1.0) middleware and AKSClaw MicroVM sandboxes for governed digital coworkers.",
+      saDemo: "Embed in customer PoC frontends to show structured pre-action approval cards whenever an agent attempts a sensitive browser click or file mutation.",
+      saBenchmark: "Evaluate AG-UI event streaming overhead and HITL pause/resume state serialization fidelity.",
+      saScenario: "✅ Good fit: Enterprise procurement/finance digital coworkers, governed IT ops automation, auditable back-office workflows. ⛔ Not for: Zero-latency fully autonomous high-frequency batch processing.",
+      claims: [
+        "✓ [0.91] Provisions an isolated computer environment (browser, filesystem, tools) per AI coworker",
+        "✓ [0.90] Enforces pre-action governance approval and post-action audit recording",
+        "✓ [0.88] Compatible with any AG-UI (Agent-User Interaction Protocol) agent backend",
+        "✓ [0.85] Native MCP tool integration with 9,290 total stars"
+      ]
+    },
+    {
+      id: "dsh-superagent-prototype",
+      fullName: "deepseek-ai/dsh-superagent-prototype",
+      url: "https://github.com/deepseek-ai/dsh-superagent-prototype",
+      language: "TypeScript",
+      stars: 5854,
+      starsToday: 840,
+      forks: 557,
+      topic: "agent_harness",
+      cardType: "quote",
+      verdict: "P1",
+      verdictLabel: "⚡ P1 Deep-Read & Borrow Patterns",
+      signal: 74,
+      facts: 72,
+      hype: 30,
+      relevance: 65,
+      description: "DeepSeek's official open-source prototype ('Towards a More Autonomous Agent System'): exploring long-horizon task decomposition, dynamic sub-goal revision, tool failure recovery, and thin-harness reasoning loops.",
+      cardCalloutTitle: "ARCHITECTURAL QUOTE · \"Towards a More Autonomous Agent System\"",
+      cardCalloutBody: "Core thesis: as foundation model reasoning matures, the agent harness should shrink from rigid hand-coded state graphs into an adaptive loop of autonomous decomposition, environment feedback verification, and self-correction.",
+      worthWhy: "Released by `deepseek-ai` and reaching 5,854 stars (+840 today) within 48 hours of creation. Essential reading to understand how frontier model builders design native agent harnesses for reasoning models.",
+      saArchitecture: "Inspect its TypeScript control loop, tool output truncation heuristics, and error-recovery state transitions; compare its 'thin harness + strong reasoner' philosophy against heavy graph orchestrators.",
+      saDemo: "Pair with DeepSeek or GPT models on Azure AI Foundry to demonstrate autonomous multi-step repository exploration and self-healing tool execution.",
+      saBenchmark: "Port its Plan-Act-Reflect loop into `agent-framework-research` to measure recovery rates under injected tool failures.",
+      saScenario: "✅ Good fit: Deep technical research automation, complex codebase archaeology, autonomous data analysis. ⛔ Not for: Strict deterministic banking workflows where autonomous exploration is prohibited.",
+      claims: [
+        "✓ [0.92] Official prototype repository under the deepseek-ai organization (TypeScript)",
+        "✓ [0.84] Focuses on long-horizon autonomous planning and tool-feedback self-correction",
+        "✓ [0.80] Created 2026-10-31 and rapidly gained 5,854 stars (+840 today)",
+        "✓ [0.72] Research prototype scope — requires enterprise sandboxing and RBAC before production use"
+      ]
+    },
+    {
+      id: "anomaly-hex",
+      fullName: "anomalyco/hex",
+      url: "https://github.com/anomalyco/hex",
+      language: "Rust",
+      stars: 2722,
+      starsToday: 1329,
+      forks: 166,
+      topic: "voice_multimodal",
+      cardType: "release",
+      verdict: "P1",
+      verdictLabel: "⚡ P1 Deep-Read & Borrow Patterns",
+      signal: 72,
+      facts: 78,
+      hype: 22,
+      relevance: 55,
+      description: "Local-first voice dictation for macOS and Linux beta: hold a shortcut, speak, and paste directly into any app or terminal. Built in native Rust with on-device speech recognition.",
+      cardCalloutTitle: "RELEASE · +1,329 Stars Today for Zero-Cloud Rust Voice Dictation",
+      cardCalloutBody: "Eliminates cloud ASR round-trip latency and privacy concerns via native Rust audio capture and on-device inference — turning voice into a 3–4× faster input channel for feeding rich architectural context to coding agents.",
+      worthWhy: "Exploded by +1,329 stars today (nearly 50% of its 2,722 total stars!). Great reference for on-device Rust audio/VAD pipelines in our Track 03 (Enterprise Voice Agent Lab) and a daily productivity booster for SAs.",
+      saArchitecture: "Examine its Rust low-latency audio ring buffer, VAD segmentation, and quantized on-device model residency for hybrid edge/cloud voice agent designs.",
+      saDemo: "Use live during architecture design sessions: hold shortcut, dictate complex system constraints, and paste structured prompts into Copilot CLI in under 1 second.",
+      saBenchmark: "Benchmark against `cjpais/Handy` and cloud ASR on end-to-end time-to-first-text, technical terminology WER, and idle RAM footprint.",
+      saScenario: "✅ Good fit: High-speed SA prompt dictation, air-gapped R&D voice input, privacy-sensitive legal/medical desktop dictation. ⛔ Not for: Multi-speaker far-field conference room diarization.",
+      claims: [
+        "✓ [0.94] Native Rust implementation with 100% on-device speech recognition",
+        "✓ [0.91] Push-to-talk global shortcut pastes directly into any active IDE or terminal",
+        "✓ [0.88] Supports macOS with an active Linux beta release",
+        "✓ [0.95] Surged +1,329 stars on 2026-11-01 to 2,722 total stars"
+      ]
+    },
+    {
+      id: "openmausbot",
+      fullName: "milind-soni/OpenMausBot",
+      url: "https://github.com/milind-soni/OpenMausBot",
+      language: "TypeScript",
+      stars: 10217,
+      starsToday: 919,
+      forks: 1416,
+      topic: "browser_sandbox",
+      cardType: "thread_pulse",
+      verdict: "P1",
+      verdictLabel: "⚡ P1 Deep-Read & Borrow Patterns",
+      signal: 70,
+      facts: 72,
+      hype: 32,
+      relevance: 60,
+      description: "Open-source self-hosted Grok Bot alternative with a dedicated virtual machine (Docker/VM sandbox) that bots can control, spanning TypeScript backend, Electron desktop, and Expo mobile clients.",
+      cardCalloutTitle: "COMMUNITY THREAD PULSE · Self-Hosted VM-Backed Computer-Use Agents",
+      cardCalloutBody: "Community consensus: agents without their own isolated computer environment are just chatbots. Pairing a persistent VM/container with mobile dispatch (Expo) + desktop observation (Electron) is rapidly becoming standard.",
+      worthWhy: "Crossed 10,217 stars (+919 today). Shows how to package Docker VM sandboxing, Claude Code / Codex backends, and cross-device desktop/mobile control into a cohesive self-hosted product.",
+      saArchitecture: "Contrast its single-host Docker VM wrapper with enterprise AKSClaw (Kata MicroVM) & E2B: borrow its mobile-to-sandbox task dispatch UX while upgrading the isolation layer to hardware virtualization.",
+      saDemo: "Reference its mobile dispatch + live VM screen streaming flow when designing executive mobile approvals for long-running coding or ops agents.",
+      saBenchmark: "Measure container/VM cold start, screen capture frame rate, and multi-bot concurrency contention.",
+      saScenario: "✅ Good fit: Personal self-hosted autonomous assistant, legacy GUI RPA automation. ⛔ Not for: Multi-tenant enterprise SaaS without upgrading Docker containers to Kata/Firecracker MicroVMs.",
+      claims: [
+        "✓ [0.88] Bundles a controllable virtual machine / container environment for agent execution",
+        "✓ [0.85] Full-stack TypeScript + Electron desktop + Expo mobile client architecture",
+        "✓ [0.82] Pluggable backends supporting Claude Code, Codex, and Grok models",
+        "✓ [0.86] Reached 10,217 total stars with +919 stars today"
+      ]
+    },
+    {
+      id: "freetoken",
+      fullName: "FlashML-org/FreeToken",
+      url: "https://github.com/FlashML-org/FreeToken",
+      language: "Python",
+      stars: 15159,
+      starsToday: 232,
+      forks: 1535,
+      topic: "inference_infra",
+      cardType: "fact_check",
+      verdict: "P1",
+      verdictLabel: "⚡ P1 Deep-Read & Borrow Patterns",
+      signal: 68,
+      facts: 70,
+      hype: 34,
+      relevance: 58,
+      description: "FreeToken brings datacenter-scale MoE model serving to desktop and edge hardware: optimized local inference for massive models (DeepSeek-V4, Qwen, GLM, MiniMax).",
+      cardCalloutTitle: "FACT CHECK · Reality Check on Running Massive MoE Models on Desktops",
+      cardCalloutBody: "Verdict: By exploiting MoE sparsity (e.g., 8B–37B active parameters out of 500B+ total) and tiered VRAM/RAM/NVMe expert offloading, desktop execution works for batch=1 reasoning, though bounded by PCIe bandwidth.",
+      worthWhy: "Complements our Track 01 DeepSeek-V4.1-Flash cloud economics research: while GB300 NVL72 + 3FS delivers $38/GPU-hr at datacenter scale, FreeToken addresses air-gapped local workstation inference.",
+      saArchitecture: "Analyze its expert prefetching, hot/cold expert memory tiering, and KV cache quantization to guide Azure Local / edge appliance sizing.",
+      saDemo: "Design local high-RAM workstation PoCs for defense, healthcare, or semiconductor customers requiring zero code/data egress.",
+      saBenchmark: "Profile prefill TTFT and decode tok/s degradation from batch_size=1 to batch_size=8 under PCIe memory offloading.",
+      saScenario: "✅ Good fit: Air-gapped R&D workstations, single-user private code review, edge appliances. ⛔ Not for: High-concurrency multi-user enterprise API gateways (use vLLM / SGLang / DeepInfer clusters instead).",
+      claims: [
+        "✓ [0.84] Optimizes sparse Mixture-of-Experts (MoE) inference for desktop and edge hardware",
+        "✓ [0.80] Supports DeepSeek-V4, Qwen, GLM, and MiniMax model architectures",
+        "✓ [0.76] 'Datacenter-scale on desktop' tagline carries moderate marketing hype (Hype=34) due to PCIe limits",
+        "✓ [0.88] Accumulated 15,159 total stars (+232 today)"
+      ]
+    },
+    {
+      id: "handy",
+      fullName: "cjpais/Handy",
+      url: "https://github.com/cjpais/Handy",
+      language: "Rust",
+      stars: 36158,
+      starsToday: 383,
+      forks: 3430,
+      topic: "voice_multimodal",
+      cardType: "brief",
+      verdict: "P2",
+      verdictLabel: "👀 P2 Watchlist / Reference",
+      signal: 62,
+      facts: 76,
+      hype: 18,
+      relevance: 48,
+      description: "Free, open-source, extensible speech-to-text desktop application built with Rust and Tauri v2 that works 100% offline across Windows, macOS, and Linux.",
+      cardCalloutTitle: "EXECUTIVE BRIEF · 36.1K-Star Cross-Platform Offline STT Desktop App (Tauri v2 + Rust)",
+      cardCalloutBody: "While anomalyco/hex targets macOS/Linux shortcut dictation, Handy provides a full cross-platform (Windows/macOS/Linux) Tauri v2 GUI with extensible plugin hooks and accessibility support.",
+      worthWhy: "Rock-solid engineering (36,158 stars, low Hype=18). Serves as a reliable open-source baseline when enterprise customers ask for offline Windows AI PC voice input.",
+      saArchitecture: "Reference its Tauri v2 Rust-to-WebView IPC bridge and local Whisper/ONNX model lifecycle management.",
+      saDemo: "Use in Windows 11 AI PC workshops to demonstrate offline desktop voice transcription feeding local enterprise agents.",
+      saBenchmark: "Compare installer size, idle memory footprint, and long-form transcription WER against anomalyco/hex.",
+      saScenario: "✅ Good fit: Cross-platform offline enterprise desktop dictation and accessibility tooling. ⛔ Not for: High-concurrency server-side call center telephony streams.",
+      claims: [
+        "✓ [0.94] Built with Rust and Tauri v2 for Windows, macOS, and Linux compatibility",
+        "✓ [0.92] Operates 100% offline with zero external cloud API dependencies",
+        "✓ [0.88] Extensible plugin architecture with strong accessibility focus",
+        "✓ [0.90] 36,158 total GitHub stars (+383 today)"
+      ]
+    },
+    {
+      id: "ai-engineering-hub",
+      fullName: "patchy631/ai-engineering-hub",
+      url: "https://github.com/patchy631/ai-engineering-hub",
+      language: "Jupyter Notebook",
+      stars: 39907,
+      starsToday: 573,
+      forks: 6458,
+      topic: "memory_context",
+      cardType: "brief",
+      verdict: "P2",
+      verdictLabel: "👀 P2 Watchlist / Reference",
+      signal: 60,
+      facts: 72,
+      hype: 26,
+      relevance: 52,
+      description: "In-depth tutorials and runnable Jupyter Notebooks covering LLMs, hybrid RAG, MCP servers, and real-world multi-agent applications (nearly 40,000 stars).",
+      cardCalloutTitle: "EXECUTIVE BRIEF · Ready-Made Hands-On Lab Recipes for Partner Workshops",
+      cardCalloutBody: "While not a novel runtime framework, its 70+ self-contained Jupyter notebooks across RAG, MCP, and multi-agent workflows provide reusable building blocks for customer enablement labs.",
+      worthWhy: "Moderate architectural novelty for a Principal SA (rated P2), but saves hours when assembling introductory partner hands-on labs or hackathon starter kits.",
+      saArchitecture: "Covers standard RAG, Agentic RAG, and introductory MCP patterns suitable for L200–L300 developer training.",
+      saDemo: "Adapt specific domain notebooks (e.g., multimodal financial filing RAG or MCP database query) into Azure AI Foundry workshop labs within 30 minutes.",
+      saBenchmark: "Lacks deterministic evaluation harnesses out of the box — pair with `benchmark-harness-engineering` before customer delivery.",
+      saScenario: "✅ Good fit: Customer developer upskilling bootcamps, partner hackathon starter templates. ⛔ Not for: Copy-pasting notebook code directly into production without retry, auth, and concurrency guards.",
+      claims: [
+        "✓ [0.90] Large collection of runnable Jupyter Notebooks for LLMs, RAG, MCP, and agents",
+        "✓ [0.85] Actively updated with recent open-weights models and MCP examples (pushed 2026-11-01)",
+        "✓ [0.88] 39,907 total stars and 6,458 forks with strong community adoption",
+        "✓ [0.75] Tutorial-grade code — requires production hardening for enterprise use"
+      ]
+    },
+    {
+      id: "kronos",
+      fullName: "shiyu-coder/Kronos",
+      url: "https://github.com/shiyu-coder/Kronos",
+      language: "Python",
+      stars: 45028,
+      starsToday: 611,
+      forks: 7439,
+      topic: "inference_infra",
+      cardType: "thread_pulse",
+      verdict: "P2",
+      verdictLabel: "👀 P2 Watchlist / Reference",
+      signal: 56,
+      facts: 68,
+      hype: 32,
+      relevance: 48,
+      description: "Kronos: A Foundation Model for the Language of Financial Markets — tokenizing continuous candlestick (K-line) and OHLCV market series into discrete tokens for autoregressive forecasting.",
+      cardCalloutTitle: "VERTICAL PULSE · Domain-Specific Time-Series Tokenization for Financial Markets",
+      cardCalloutBody: "Demonstrates how non-text continuous domain signals (OHLCV candlestick streams) can be discretized via a specialized tokenizer to reuse Transformer pretraining across financial time series.",
+      worthWhy: "45,028 total stars (+611 today). Useful domain reference for FSI (banking, quant funds, energy trading) architects explaining the division of labor between quantitative time-series foundation models and text LLMs.",
+      saArchitecture: "In FSI multi-agent architectures, pair a general reasoning LLM (for earnings calls & news) with a specialized time-series model like Kronos (for numerical regime detection) — never ask a text LLM to guess raw price ticks.",
+      saDemo: "Combine with Microsoft Fabric Real-Time Intelligence (Eventhouse / KQL) to demo streaming market ingestion → time-series anomaly scoring → narrative risk briefing.",
+      saBenchmark: "Enforce strict walk-forward out-of-sample validation to guard against financial look-ahead bias and regime shifts.",
+      saScenario: "✅ Good fit: FSI quantitative feature engineering research, market volatility regime alerts. ⛔ Not for: Unsupervised live algorithmic trade execution without independent risk circuit breakers.",
+      claims: [
+        "✓ [0.86] Custom candlestick/OHLCV tokenizer and pretrained time-series Transformer foundation model",
+        "✓ [0.84] 45,028 GitHub stars and 7,439 forks across quant and AI communities",
+        "✓ [0.72] Last code push was 2026-04; resurfaced on today's trending feed via quant curation lists",
+        "✓ [0.70] Financial market non-stationarity requires careful out-of-sample evaluation (Hype=32)"
+      ]
+    },
+    {
+      id: "claude-code-game-studios",
+      fullName: "Donchitos/Claude-Code-Game-Studios",
+      url: "https://github.com/Donchitos/Claude-Code-Game-Studios",
+      language: "Shell",
+      stars: 31775,
+      starsToday: 970,
+      forks: 4345,
+      topic: "agent_harness",
+      cardType: "hype_watch",
+      verdict: "P2",
+      verdictLabel: "👀 P2 Watchlist / Reference",
+      signal: 52,
+      facts: 58,
+      hype: 54,
+      relevance: 50,
+      description: "Turn Claude Code into a full game dev studio — 49 AI agents, 72 workflow skills, and a coordination system mirroring real studio hierarchy (Godot, Unity, Unreal).",
+      cardCalloutTitle: "HYPE WATCH (Hype = 54) · 49 Role-Play Personas vs. Deterministic Engineering Gates",
+      cardCalloutBody: "Reality check: Simulating a 49-person corporate hierarchy via Markdown persona prompts generates viral star velocity (31.7K stars) but suffers from severe 'telephone-game' context drift and token bloat. Real production velocity comes from lean agents + deterministic 60 FPS verification gates (like our HVE Game Studio).",
+      worthWhy: "A classic case study of 'viral community packaging vs. architectural reality'. Worth 15 minutes to inspect how its 72 game-engine skill templates (Godot/Unity/Unreal) are organized, while avoiding its 49-agent bureaucratic chain.",
+      saArchitecture: "Key architectural lesson: modular domain skills (72 engine recipes) are high-value, whereas deep anthropomorphic management hierarchies (>4–5 active agent hops without deterministic code checks) degrade end-to-end reliability.",
+      saDemo: "Contrast against our Track 06 (HVE Rapid Game Prototyping) to show customers why 3 focused agents + automated spatial-hash/FPS assertions outperform 49 role-playing persona prompts.",
+      saBenchmark: "Serves as a benchmark control case illustrating multi-agent Coordination Tax and token amplification.",
+      saScenario: "✅ Good fit: Indie game devs borrowing individual Godot/Unity/Unreal skill prompt templates. ⛔ Not for: Running 49 chained persona agents in enterprise software delivery pipelines.",
+      claims: [
+        "✓ [0.85] Contains 49 persona definitions and 72 workflow skill files targeting Godot, Unity, and Unreal",
+        "✓ [0.82] 31,775 total stars (+970 today) with massive indie game dev community reach",
+        "✕ [0.45] 'Full game studio replacement' framing is promotional hype (Hype=54); consists primarily of prompt/shell templates",
+        "✓ [0.75] Lacks automated compilation or frame-rate verification harnesses"
+      ]
+    },
+    {
+      id: "jailbreaks",
+      fullName: "togg53192-cmd/jailbreaks",
+      url: "https://github.com/togg53192-cmd/jailbreaks",
+      language: "Text / Prompt",
+      stars: 12631,
+      starsToday: 730,
+      forks: 1900,
+      topic: "ai_security",
+      cardType: "hype_watch",
+      verdict: "P3",
+      verdictLabel: "🛡️ P3 Skip / Adversarial Corpus Only",
+      signal: 42,
+      facts: 48,
+      hype: 64,
+      relevance: 46,
+      description: "Collection of raw LLM jailbreak and system-prompt bypass text samples ('LIST OF ALL MY JAILBREAKS'), gaining +730 stars today.",
+      cardCalloutTitle: "HYPE WATCH (Hype = 64 · P3) · Static Jailbreak Spellbooks Don't Replace Deterministic Guardrails",
+      cardCalloutBody: "Reality check: Copy-pasted persona jailbreak strings decay within days and offer zero architectural insight. Do not waste SA study time reading static prompts — ingest them only as automated negative test fixtures.",
+      worthWhy: "Flagged as P3 (`Hype >= 55 & Signal < 45`): contains zero code, zero evaluation harness, and zero defense architecture. Retained at #15 solely as an adversarial text corpus to feed into automated red-team pipelines.",
+      saArchitecture: "Reinforces our Track 07 (AI Security) core invariant: never rely on system-prompt natural language instructions for security; enforce L1 Spotlighting + L2 deterministic MCP schema validation + L4 hardware intent quorum.",
+      saDemo: "Feed samples from this repo into our 4-Vector AI Pentest Arena to demonstrate how unprotected baselines fail while `[SPOTLIGHT_STRIPPED]` and deterministic policy gates achieve 0.0% ASR.",
+      saBenchmark: "Use strictly as an external adversarial prompt fixture for S01/S05 regression tests in `turbo998/ai-security-lab`.",
+      saScenario: "✅ Good fit: Automated red-team scanner (PyRIT / Garak) static corpus ingestion. ⛔ Not for: Architectural study or keyword-blacklist defense design.",
+      claims: [
+        "✓ [0.80] Contains a large collection of historical and recent jailbreak text prompts (12,631 stars, +730 today)",
+        "✕ [0.30] Zero evaluation code, zero reproducible ASR metrics, and no structured taxonomy",
+        "✕ [0.35] Role-play jailbreaks fail against deterministic tool-layer authorization and Spotlighting",
+        "✓ [0.75] Properly downgraded to P3 (Attention=40) by the Jev HFS gate to protect SA focus"
+      ]
+    }
+  ];
+
+  const CARD_TYPES = [
+    { id: "ALL", label: "All Cards (15)" },
+    { id: "headline", label: "📰 headline (2)" },
+    { id: "signal_alert", label: "🚨 signal_alert (2)" },
+    { id: "fact_check", label: "🔬 fact_check (2)" },
+    { id: "hype_watch", label: "⚠️ hype_watch (2)" },
+    { id: "release", label: "🚀 release (2)" },
+    { id: "thread_pulse", label: "💬 thread_pulse (2)" },
+    { id: "quote", label: "💡 quote (1)" },
+    { id: "brief", label: "📋 brief (2)" }
+  ];
+
+  const VERDICTS = [
+    { id: "ALL", label: "All Tiers (15)" },
+    { id: "P0", label: "🔥 P0 Must-Learn (4)" },
+    { id: "P1", label: "⚡ P1 Deep-Read (6)" },
+    { id: "P2", label: "👀 P2 Watchlist (4)" },
+    { id: "P3", label: "🛡️ P3 Skip/Hype (1)" }
+  ];
+
+  let activePipeIndex = 2;
+  let activeCardType = "ALL";
+  let activeVerdict = "ALL";
+  let searchQuery = "";
+  let weights = { signal: 0.50, facts: 0.35, hype: 0.25, rel: 0.40 };
+
+  function computeAttention(repo) {
+    const raw =
+      weights.signal * repo.signal +
+      weights.facts * repo.facts -
+      weights.hype * repo.hype +
+      weights.rel * repo.relevance;
+    const topicMult = TOPICS[repo.topic]?.weight ?? 1.0;
+    return Math.round(Math.max(0, Math.min(100, raw * topicMult)));
+  }
+
+  function renderPipeline() {
+    const rail = document.getElementById("pipeline-rail");
+    const inspector = document.getElementById("pipe-inspector");
+    rail.innerHTML = PIPELINE_STEPS.map((s, idx) => `
+      <button type="button" class="pipe-step ${idx === activePipeIndex ? "active" : ""}" data-idx="${idx}">
+        <div class="pipe-num"><span>${s.step}</span><span>✓</span></div>
+        <div class="pipe-title">${s.title}</div>
+        <div class="pipe-meta">${s.meta}</div>
+      </button>
+    `).join("");
+
+    rail.querySelectorAll(".pipe-step").forEach(btn => {
+      btn.addEventListener("click", () => {
+        activePipeIndex = Number(btn.dataset.idx);
+        renderPipeline();
+      });
+    });
+
+    const cur = PIPELINE_STEPS[activePipeIndex];
+    inspector.innerHTML = `
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;">
+        <div style="font-size:15px;font-weight:800;color:var(--text);">
+          <span style="font-family:var(--mono);color:var(--accent);margin-right:8px;">[${cur.step}]</span>${cur.title}
+        </div>
+        <span style="font-family:var(--mono);font-size:11.5px;background:var(--surface-2);padding:4px 10px;border-radius:6px;border:1px solid var(--border);">
+          ${cur.metrics}
+        </span>
+      </div>
+      <p style="font-size:13.2px;color:var(--text-2);line-height:1.55;margin:0 0 10px;">${cur.summary}</p>
+      <div style="font-family:var(--mono);font-size:11.5px;background:#0f172a;color:#38bdf8;padding:9px 12px;border-radius:8px;overflow-x:auto;">
+        ${cur.sql}
+      </div>
+    `;
+  }
+
+  function renderTuner() {
+    const container = document.getElementById("topic-tuner-list");
+    container.innerHTML = Object.entries(TOPICS).map(([key, item]) => `
+      <div class="topic-tuner-item">
+        <div class="topic-tuner-head">
+          <span>${item.name}</span>
+          <span style="font-family:var(--mono);color:var(--accent);">${item.weight.toFixed(2)}×</span>
+        </div>
+        <div class="topic-btn-group">
+          <button type="button" class="taste-btn" data-topic="${key}" data-delta="0.20">👍 More (+0.20×)</button>
+          <button type="button" class="taste-btn" data-topic="${key}" data-delta="-0.20">👎 Less (-0.20×)</button>
+        </div>
+      </div>
+    `).join("");
+
+    container.querySelectorAll(".taste-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const key = btn.dataset.topic;
+        const delta = Number(btn.dataset.delta);
+        TOPICS[key].weight = Math.max(0.40, Math.min(1.80, +(TOPICS[key].weight + delta).toFixed(2)));
+        renderTuner();
+        renderCards();
+      });
+    });
+
+    document.getElementById("lbl-w-signal").textContent = weights.signal.toFixed(2);
+    document.getElementById("lbl-w-facts").textContent = weights.facts.toFixed(2);
+    document.getElementById("lbl-w-hype").textContent = weights.hype.toFixed(2);
+    document.getElementById("lbl-w-rel").textContent = weights.rel.toFixed(2);
+    document.getElementById("formula-banner").textContent =
+      `Attention = round(clamp((${weights.signal.toFixed(2)}×Signal + ${weights.facts.toFixed(2)}×Facts - ${weights.hype.toFixed(2)}×Hype + ${weights.rel.toFixed(2)}×Relevance) × TopicWeight, 0, 100))`;
+  }
+
+  function renderFilters() {
+    const ctRow = document.getElementById("card-type-filters");
+    ctRow.innerHTML = `<span class="filter-label">🃏 8 Card Types:</span>` + CARD_TYPES.map(ct => `
+      <button type="button" class="chip-btn ${activeCardType === ct.id ? "active" : ""}" data-ct="${ct.id}">${ct.label}</button>
+    `).join("");
+    ctRow.querySelectorAll(".chip-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        activeCardType = btn.dataset.ct;
+        renderFilters();
+        renderCards();
+      });
+    });
+
+    const vRow = document.getElementById("verdict-filters");
+    vRow.innerHTML = `<span class="filter-label">🎯 SA Learning Tier:</span>` + VERDICTS.map(v => `
+      <button type="button" class="chip-btn ${activeVerdict === v.id ? "active" : ""}" data-v="${v.id}">${v.label}</button>
+    `).join("");
+    vRow.querySelectorAll(".chip-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        activeVerdict = btn.dataset.v;
+        renderFilters();
+        renderCards();
+      });
+    });
+  }
+
+  function renderCards() {
+    const scored = REPOS.map(r => ({ ...r, attention: computeAttention(r) }))
+      .sort((a, b) => b.attention - a.attention || b.starsToday - a.starsToday);
+
+    const filtered = scored.filter(r => {
+      if (activeCardType !== "ALL" && r.cardType !== activeCardType) return false;
+      if (activeVerdict !== "ALL" && r.verdict !== activeVerdict) return false;
+      if (searchQuery) {
+        const hay = `${r.fullName} ${r.language} ${r.description} ${r.worthWhy} ${r.saArchitecture} ${r.saDemo} ${r.saScenario}`.toLowerCase();
+        if (!hay.includes(searchQuery.toLowerCase())) return false;
+      }
+      return true;
+    });
+
+    document.getElementById("filter-count-badge").textContent = `Showing ${filtered.length} / ${REPOS.length} repos`;
+
+    const container = document.getElementById("repo-cards-container");
+    container.innerHTML = filtered.map((r, idx) => {
+      const topicObj = TOPICS[r.topic];
+      return `
+        <article class="repo-card" id="repo-${r.id}">
+          <div class="repo-card-top">
+            <div class="repo-title-group">
+              <div class="repo-rank-line">
+                <span class="rank-badge">#${idx + 1}</span>
+                <span class="card-type-badge">🃏 ${r.cardType}</span>
+                <span class="verdict-badge verdict-${r.verdict}">${r.verdictLabel}</span>
+                <span class="star-pill">${topicObj.name} (${topicObj.weight.toFixed(2)}×)</span>
+              </div>
+              <div style="margin-top:4px;display:flex;flex-wrap:wrap;align-items:baseline;gap:12px;">
+                <a class="repo-name-link" href="${r.url}" target="_blank" rel="noopener">${r.fullName} ↗</a>
+                <div class="star-metrics">
+                  <span class="star-pill today">🔥 +${r.starsToday.toLocaleString()} stars today</span>
+                  <span class="star-pill">★ ${r.stars.toLocaleString()} total</span>
+                  <span class="star-pill">⑂ ${r.forks.toLocaleString()} forks</span>
+                  <span class="star-pill">${r.language}</span>
+                </div>
+              </div>
+            </div>
+            <div class="attention-score-box">
+              <div class="att-num">${r.attention}</div>
+              <div class="att-lbl">Attention Score</div>
+            </div>
+          </div>
+
+          <p style="font-size:13.8px;color:var(--text-2);line-height:1.55;margin:0 0 10px;">${r.description}</p>
+
+          <div class="generative-callout">
+            <strong>[${r.cardType.toUpperCase()} COMPONENT] ${r.cardCalloutTitle}</strong>
+            <div style="margin-top:4px;color:var(--text);line-height:1.5;">${r.cardCalloutBody}</div>
+          </div>
+
+          <!-- HFS Tri-Axial Bars -->
+          <div class="hfs-bars-grid">
+            <div class="hfs-metric">
+              <div class="hfs-metric-top"><span>Signal (Actionability)</span><span style="color:#10b981;">${r.signal}/100</span></div>
+              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-signal" style="width:${r.signal}%;"></div></div>
+            </div>
+            <div class="hfs-metric">
+              <div class="hfs-metric-top"><span>Facts (Primary Evidence)</span><span style="color:#3b82f6;">${r.facts}/100</span></div>
+              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-facts" style="width:${r.facts}%;"></div></div>
+            </div>
+            <div class="hfs-metric">
+              <div class="hfs-metric-top"><span>Hype (Promo Noise)</span><span style="color:#f59e0b;">${r.hype}/100</span></div>
+              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-hype" style="width:${r.hype}%;"></div></div>
+            </div>
+            <div class="hfs-metric">
+              <div class="hfs-metric-top"><span>Relevance (SA Fit)</span><span style="color:#8b5cf6;">${r.relevance}/100</span></div>
+              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-relevance" style="width:${r.relevance}%;"></div></div>
+            </div>
+          </div>
+
+          <!-- Worth Learning Verdict Box -->
+          <div style="background:var(--surface-2);border:1px solid var(--border-strong);border-radius:9px;padding:11px 14px;margin-top:10px;font-size:13px;line-height:1.5;">
+            <strong style="color:var(--text);">🧭 (1) Worth Learning Verdict (${r.verdictLabel}):</strong>
+            <span style="color:var(--text-2);">${r.worthWhy}</span>
+          </div>
+
+          <!-- 4-Dimension Daily SA Work Application -->
+          <div class="sa-4d-grid">
+            <div class="sa-dim-card">
+              <div class="sa-dim-title">🏗️ Pillar A · Architecture Design</div>
+              <div style="color:var(--text-2);">${r.saArchitecture}</div>
+            </div>
+            <div class="sa-dim-card">
+              <div class="sa-dim-title">🎮 Pillar B · Customer Demo &amp; PoC</div>
+              <div style="color:var(--text-2);">${r.saDemo}</div>
+            </div>
+            <div class="sa-dim-card">
+              <div class="sa-dim-title">📊 Pillar C · Benchmarking</div>
+              <div style="color:var(--text-2);">${r.saBenchmark}</div>
+            </div>
+            <div class="sa-dim-card">
+              <div class="sa-dim-title">💼 Pillar D · Business Scenario Playbook</div>
+              <div style="color:var(--text-2);">${r.saScenario}</div>
+            </div>
+          </div>
+
+          <!-- Claim-Support Verification Ledger -->
+          <div class="claims-drawer">
+            <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
+              🔍 news-researcher Subagent Claim-Support Verification Ledger (4/4 Audited)
+            </div>
+            <div class="claims-list">
+              ${r.claims.map(c => `<div class="claim-item">${c}</div>`).join("")}
+            </div>
+          </div>
+        </article>
+      `;
+    }).join("");
+  }
+
+  document.getElementById("reset-weights-btn").addEventListener("click", () => {
+    Object.keys(TOPICS).forEach(k => { TOPICS[k].weight = 1.0; });
+    weights = { signal: 0.50, facts: 0.35, hype: 0.25, rel: 0.40 };
+    document.getElementById("slider-signal").value = "0.50";
+    document.getElementById("slider-facts").value = "0.35";
+    document.getElementById("slider-hype").value = "0.25";
+    document.getElementById("slider-rel").value = "0.40";
+    renderTuner();
+    renderCards();
+  });
+
+  ["signal", "facts", "hype", "rel"].forEach(k => {
+    document.getElementById("slider-" + k).addEventListener("input", e => {
+      weights[k] = Number(e.target.value);
+      renderTuner();
+      renderCards();
+    });
+  });
+
+  document.getElementById("repo-search").addEventListener("input", e => {
+    searchQuery = e.target.value.trim();
+    renderCards();
+  });
+
+  renderPipeline();
+  renderTuner();
+  renderFilters();
+  renderCards();
+})();
+</script>
+</body>
+</html>
