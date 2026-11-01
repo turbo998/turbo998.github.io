@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src data:;">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Web IQ 搜索对照 · 参数与场景</title>
+<style>
+  :root { --bg:#070B14; --card:#0F172A; --line:#334155; --text:#F8FAFC; --muted:#94A3B8; --amber:#F59E0B; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; background:var(--bg); color:var(--text); }
+  a { color:#93C5FD; }
+  main { max-width:980px; margin:0 auto; padding:28px 20px 64px; }
+  h1 { font-size:32px; line-height:1.2; }
+  p, li, td { color:var(--muted); line-height:1.5; }
+  .banner { margin:16px 0; padding:12px 14px; border:1px solid var(--amber); border-radius:12px; background:rgba(245,158,11,.12); color:var(--text); }
+  table { width:100%; border-collapse:collapse; font-size:14px; margin:12px 0 24px; }
+  th, td { text-align:left; padding:8px; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { color:var(--text); }
+  code { color:#E2E8F0; }
+</style>
+</head>
+<body>
+<main>
+  <p><a href="./index.html">返回状态页</a> · <a href="./compare.en.html">English</a></p>
+  <h1>四类产品，六条商业路由。延迟仍是 not_measured。</h1>
+  <div class="banner">这是 2026-11-01 官方文档对照，不是 bake-off。厂商写的 164 ms、under 1 second、200 ms–3 s 不画成柱状图。缺失值不是 0。</div>
+  <h2>先分产品</h2>
+  <table>
+    <tr><th>类型</th><th>代表</th><th>适合</th><th>不适合</th></tr>
+    <tr><td>索引接地</td><td>Web IQ <code>/web</code> <code>/news</code></td><td>不知道 URL 时找可引用 passage</td><td>把摘要当零售商标价</td></tr>
+    <tr><td>URL 抽取</td><td>Web IQ <code>/browse</code> $1/1k；Exa contents、Tavily Extract、Parallel Extract</td><td>已有政策页或商品页</td><td>发现新召回</td></tr>
+    <tr><td>SERP 抓取</td><td>Bright Data SERP $1.50/1k 成功请求</td><td>某国购物位、广告、排名</td><td>改授权金额的唯一依据</td></tr>
+    <tr><td>答案 API</td><td>Exa <code>/answer</code>、Perplexity Agent、Parallel Responses</td><td>低风险摘要</td><td>结账裁决</td></tr>
+  </table>
+  <h2>商业代理路由</h2>
+  <table>
+    <tr><th>场景</th><th>先调用</th><th>关键参数</th><th>不要</th></tr>
+    <tr><td>现价，URL 未知</td><td>Web IQ <code>/web</code>，再对返回 URL <code>/browse</code></td><td><code>contentFormat=passage</code>；读 <code>crawledAt</code> 和 <code>contentTier</code></td><td>用 SERP 摘要改金额。<code>premium</code> 可能另计费</td></tr>
+    <tr><td>退货政策，URL 已知</td><td>Web IQ <code>/browse</code></td><td><code>passage</code> 必须带非空 query。索引 404 才用 <code>liveCrawl=fallback</code></td><td>无全文权限时 content 最多 3000 字符。被 <code>...</code> 截断就不确认期限</td></tr>
+    <tr><td>召回新闻</td><td>Web IQ <code>/news</code></td><td>读 <code>source</code>、<code>lastUpdatedAt</code>。Web 没有日期过滤</td><td>把旧网页 passage 当成“今天没有召回”</td></tr>
+    <tr><td>多问题</td><td>拆成多次 <code>/web</code> 或 <code>/news</code></td><td>query 最多 1000 字符。Auto beta 未计费且契约会变</td><td>把整段话术塞进一次请求</td></tr>
+    <tr><td>被拦截的已知 URL</td><td>Bright Data Web Unlocker，或 Exa / Tavily / Parallel 抽取</td><td>Unlocker Scale 含 383,000 次，SERP Scale 含 380,000 次，不要抄混</td><td>Unlocker 不是点击式结账</td></tr>
+    <tr><td>点击、登录、截图</td><td>Bright Data Browser API</td><td>产品选择页的明确边界</td><td><code>renderDynamicPages</code> 只在 liveCrawl fallback 时渲染，不提交表单</td></tr>
+  </table>
+  <h2>容易用错的默认值</h2>
+  <ul>
+    <li>Parallel <code>mode</code> 默认 <code>advanced</code>，是 $5/1k，不是 $1 的 <code>fast</code>。</li>
+    <li>Exa <code>lite</code> 不能现抓。现价要用能设 <code>maxAgeHours=0</code> 的类型。</li>
+    <li>Tavily 未付费计划设置 <code>max_age_hours</code> 可能返回 434。</li>
+    <li>Perplexity Search API：标准 $5/1k，fast $1/1k。一次请求最多 5 个 query 仍算 1 个计费单位。本仓库未调用。</li>
+    <li>Brave 官方价目本次没有解析到，不抄第三方汇总。营销页引用的第三方延迟表不进入本页。</li>
+  </ul>
+  <p>完整对照：<a href="https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/research/2026-11-01-webiq-search-competitive.md">中文笔记</a> · <a href="https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/research/2026-11-01-webiq-search-competitive.en.md">English</a>。</p>
+</main>
+</body>
+</html>

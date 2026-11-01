@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src data:;">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Web IQ search comparison · parameters and scenarios</title>
+<style>
+  :root { --bg:#070B14; --card:#0F172A; --line:#334155; --text:#F8FAFC; --muted:#94A3B8; --amber:#F59E0B; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; background:var(--bg); color:var(--text); }
+  a { color:#93C5FD; }
+  main { max-width:980px; margin:0 auto; padding:28px 20px 64px; }
+  h1 { font-size:32px; line-height:1.2; }
+  p, li, td { color:var(--muted); line-height:1.5; }
+  .banner { margin:16px 0; padding:12px 14px; border:1px solid var(--amber); border-radius:12px; background:rgba(245,158,11,.12); color:var(--text); }
+  table { width:100%; border-collapse:collapse; font-size:14px; margin:12px 0 24px; }
+  th, td { text-align:left; padding:8px; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { color:var(--text); }
+  code { color:#E2E8F0; }
+</style>
+</head>
+<body>
+<main>
+  <p><a href="./index.en.html">Back to status</a> · <a href="./compare.html">中文</a></p>
+  <h1>Four product classes. Six commerce routes. Latency is still not_measured.</h1>
+  <div class="banner">This is an official-doc comparison from 2026-11-01, not a bake-off. Vendor-stated 164 ms, under 1 second, and 200 ms–3 s are not drawn as bars. A missing value is not zero.</div>
+  <h2>Separate the products first</h2>
+  <table>
+    <tr><th>Class</th><th>Example</th><th>Fits</th><th>Does not fit</th></tr>
+    <tr><td>Index grounding</td><td>Web IQ <code>/web</code> and <code>/news</code></td><td>Find a citable passage when the URL is unknown</td><td>Treating the snippet as the retailer's price</td></tr>
+    <tr><td>URL extract</td><td>Web IQ <code>/browse</code> at $1/1k; Exa contents, Tavily Extract, Parallel Extract</td><td>A policy or product page you already have</td><td>Discovering a new recall</td></tr>
+    <tr><td>SERP scrape</td><td>Bright Data SERP, $1.50/1k successful requests</td><td>Shopping units, ads, and rank in a country</td><td>Sole authority for an authorized amount</td></tr>
+    <tr><td>Answer API</td><td>Exa <code>/answer</code>, Perplexity Agent, Parallel Responses</td><td>Low-risk summary</td><td>Checkout authority</td></tr>
+  </table>
+  <h2>Commerce routing</h2>
+  <table>
+    <tr><th>Scenario</th><th>Call first</th><th>Parameter that matters</th><th>Do not</th></tr>
+    <tr><td>Current price, URL unknown</td><td>Web IQ <code>/web</code>, then <code>/browse</code> on the returned URL</td><td><code>contentFormat=passage</code>. Read <code>crawledAt</code> and <code>contentTier</code></td><td>Change an amount from a SERP snippet. <code>premium</code> may bill extra</td></tr>
+    <tr><td>Return policy, URL known</td><td>Web IQ <code>/browse</code></td><td><code>passage</code> needs a non-blank query. Use <code>liveCrawl=fallback</code> only after an index 404</td><td>Confirm a deadline if content is capped at 3000 characters or split by <code>...</code></td></tr>
+    <tr><td>Recall news</td><td>Web IQ <code>/news</code></td><td>Read <code>source</code> and <code>lastUpdatedAt</code>. Web has no date filter</td><td>Treat an old web passage as "no recall today"</td></tr>
+    <tr><td>Several questions</td><td>Split into separate <code>/web</code> or <code>/news</code> calls</td><td>Query max is 1000 characters. Auto beta is uncharged and the contract can change</td><td>Stuff the whole utterance into one request</td></tr>
+    <tr><td>Known URL, blocked</td><td>Bright Data Web Unlocker, or Exa / Tavily / Parallel extract</td><td>Unlocker Scale includes 383,000 requests. SERP Scale includes 380,000. Do not copy one onto the other</td><td>Use Unlocker as a click-through checkout browser</td></tr>
+    <tr><td>Clicks, login, screenshots</td><td>Bright Data Browser API</td><td>Explicit product-selector boundary</td><td><code>renderDynamicPages</code> only renders when live crawl is fallback. It does not submit forms</td></tr>
+  </table>
+  <h2>Defaults that bill the wrong tier</h2>
+  <ul>
+    <li>Parallel <code>mode</code> defaults to <code>advanced</code>, $5/1k, not <code>fast</code> at $1/1k.</li>
+    <li>Exa <code>lite</code> cannot live-fetch. A current price needs a type that accepts <code>maxAgeHours=0</code>.</li>
+    <li>A non-paying Tavily plan that sets <code>max_age_hours</code> can receive HTTP 434.</li>
+    <li>Perplexity Search API: standard $5/1k, fast $1/1k. Up to five queries in one request are still one billing unit. Not called from this repo.</li>
+    <li>No Brave unit price was parsed from the official dashboard on this fetch. Third-party latency cited on the marketing page is not plotted.</li>
+  </ul>
+  <p>Full note: <a href="https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/research/2026-11-01-webiq-search-competitive.en.md">English</a> · <a href="https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/research/2026-11-01-webiq-search-competitive.md">中文</a>.</p>
+</main>
+</body>
+</html>
