@@ -2,151 +2,272 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Generative Visual Lab · GHCP Harness 直接编码生成实时动画</title>
-  <script>(()=>{const param=new URLSearchParams(window.location.search).get("scoutTheme");const theme=param||(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.setAttribute("data-theme",theme);})();</script>
+  <link rel="icon" href="data:,">
+  <title>Generative Visual Lab · GHCP Harness 快速动画原型实验室 (Stage 466 · 4 大实时动画集合)</title>
+  <script>(()=>{const param=new URLSearchParams(window.location.search).get("scoutTheme");const theme=param||(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.setAttribute("data-theme",theme);})();</script>
+  <script type="module" crossorigin src="./assets/modulepreload-polyfill-B5Qt9EMX.js"></script>
   <link rel="stylesheet" crossorigin href="./assets/theme-Cyegnf8w.css">
   <style>
-    .lang-bar { display:inline-flex; background:rgba(128,128,128,0.12); border-radius:999px; padding:3px; gap:4px; margin-left:12px; }
-    .lang-btn { border:none; background:transparent; color:inherit; padding:4px 10px; border-radius:999px; font-size:12px; font-weight:700; cursor:pointer; opacity:0.7; }
-    .lang-btn.active { background:#2563eb; color:#fff; opacity:1; }
-    .harness-banner { margin:28px 0 32px; padding:20px 24px; border-radius:16px; border:1px solid rgba(37,99,235,0.28); background:rgba(37,99,235,0.06); }
-    .harness-steps { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:14px; }
-    .harness-step { padding:14px; border-radius:12px; background:rgba(255,255,255,0.06); border:1px solid rgba(128,128,128,0.2); }
-    .harness-step strong { display:block; font-size:14px; margin-bottom:4px; color:#2563eb; }
-    .harness-step span { font-size:13px; opacity:0.88; line-height:1.45; display:block; }
-    @media (max-width:900px) { .harness-steps { grid-template-columns:1fr 1fr; } }
+    .shell { max-width: 1380px; }
+    .grid.grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+      margin: 32px 0;
+    }
+    @media (max-width: 1180px) {
+      .grid.grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 700px) {
+      .grid.grid-4 { grid-template-columns: 1fr; }
+    }
+    .card h2 { font-size: 22px; margin: 10px 0 12px; }
+    .card-body { padding: 18px 20px 20px; }
+    .card-body p { font-size: 14px; line-height: 1.62; margin: 0 0 16px; }
+    .card-highlight {
+      border-color: var(--cp-accent);
+      box-shadow: 0 12px 32px rgba(177, 31, 75, 0.14);
+    }
+    .sub-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px dashed var(--cp-border);
+    }
+    .mini-btn {
+      font-size: 12px;
+      padding: 5px 10px;
+      min-height: 30px;
+      border-radius: 6px;
+      border: 1px solid var(--cp-border);
+      background: var(--cp-surface-soft);
+      color: var(--cp-text);
+      text-decoration: none;
+      font-weight: 600;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .mini-btn:hover {
+      border-color: var(--cp-accent);
+      color: var(--cp-accent);
+    }
   </style>
 </head>
 <body>
 <main class="shell">
-  <nav class="topline">
-    <strong id="navBrand">GVL / GHCP Harness 快速动画原型实验室</strong>
-    <div style="display:flex;align-items:center;gap:10px;">
-      <div class="lang-bar">
-        <button class="lang-btn active" data-lang="zh-CN" onclick="setAnimLang('zh-CN')">简体</button>
-        <button class="lang-btn" data-lang="zh-TW" onclick="setAnimLang('zh-TW')">繁體</button>
-        <button class="lang-btn" data-lang="en" onclick="setAnimLang('en')">EN</button>
+  <nav class="topline" style="flex-wrap:wrap;gap:12px;">
+    <strong data-i18n="nav-title">GVL / GHCP Harness 快速动画原型实验室 (Stage 466 ★)</strong>
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+      <div style="display:inline-flex;border:1px solid var(--cp-border);border-radius:8px;overflow:hidden;font-size:12px;">
+        <button type="button" class="lang-btn" data-lang="zh-CN" onclick="setAnimLang('zh-CN')" style="min-height:32px;padding:4px 10px;border:none;border-radius:0;">简体</button>
+        <button type="button" class="lang-btn" data-lang="zh-TW" onclick="setAnimLang('zh-TW')" style="min-height:32px;padding:4px 10px;border:none;border-radius:0;">繁體</button>
+        <button type="button" class="lang-btn" data-lang="en" onclick="setAnimLang('en')" style="min-height:32px;padding:4px 10px;border:none;border-radius:0;">EN</button>
       </div>
-      <a href="./research/blender-mcp-pipeline.html">Architecture ↗</a>
+      <a href="../frontier-ai-studio.html#animation" data-i18n="back-studio" style="font-weight:600;text-decoration:none;">← 返回六大主线工作台</a>
+      <a href="https://github.com/turbo998/generative-visual-lab" target="_blank" rel="noopener">Source ↗</a>
     </div>
   </nav>
-  <p class="eyebrow" style="margin-top:40px" id="heroEyebrow">CODING DIRECT TO ANIMATION · GHCP HARNESS RAPID PROTOTYPING</p>
-  <h1 id="heroTitle">使用 Coding 直接输出实时动画。<br>展示 GHCP Harness 极速原型能力。</h1>
-  <p class="lead" id="heroLead">无需传统 DCC 手工逐帧关键帧：通过 GitHub Copilot (GHCP) Harness 工程化闭环，直接用代码驱动物理飘带、NASA 真实行星高程与 Blender 4.5 MCP 3D 资产，快速搭建 60fps 零运行时 API 的高保真交互动画原型。</p>
+  <p class="eyebrow" style="margin-top:36px" data-i18n="eyebrow">GHCP Harness Engineering · Code Becomes a World · Stage 466 (522 Curated Works)</p>
+  <h1 data-i18n="hero-title">用代码直接生成动画。<br>让数学与物理可见。</h1>
+  <p class="lead" data-i18n="hero-lead" style="max-width:960px;">基于 GitHub Copilot Harness 四阶段工程闭环（Research → Plan → Implement → Harness Gate），不依赖商业视频生成大模型或沉重手工渲染管线，直接把自然语言转化为可交互、可审计、零外部运行时依赖的 60FPS WebGL2 / Three.js / Canvas 2D / SVG 逆运动学实时动画。现已收录 Stage 466（522 项前沿动画作品谱系）与四大标志性实时动画演示：敦煌飞天、Astra 火星造景、白色火箭点火升空、以及“鹈鹕骑自行车”三方 AI 工程套件同屏竞技场。</p>
   <div class="lab-facts" aria-label="实验室特点">
-    <span><strong>3</strong> <span id="fact1">纯代码实时动画原型</span></span>
-    <span><strong>GHCP Harness</strong> <span id="fact2">Prompt → 物理着色器 → 视觉回归验证</span></span>
-    <span><strong>Blender 4.5 MCP</strong> <span id="fact3">脚本化建模 + Cycles 烘焙</span></span>
-    <span><strong>0</strong> <span id="fact4">运行时大模型 API 依赖</span></span>
+    <span><strong>4</strong><span data-i18n="fact-1">纯代码实时动画演示（含鹈鹕骑自行车）</span></span>
+    <span><strong>Stage 466 · 522 精选</strong><span data-i18n="fact-2">Prompt → 物理着色器 / SVG IK → 视觉回归验证</span></span>
+    <span><strong>Blender 4.5 MCP + 0.00px IK</strong><span data-i18n="fact-3">Cycles 烘焙 + 325/313 阶谐波 + 逆运动学零滑移</span></span>
+    <span><strong>0</strong><span data-i18n="fact-4">运行时大模型 API 依赖</span></span>
   </div>
-
-  <section class="harness-banner" aria-label="HVE Rapid Animation Prototyping Pipeline">
-    <h2 style="margin:0 0 6px;font-size:20px;" id="hbTitle">🛠️ HVE (Hyper-Velocity Engineering) 如何驱动 Coding 实时动画原型构建</h2>
-    <p style="margin:0;font-size:14px;opacity:0.85;" id="hbSub">遵循 HVE 工程规范的 RPI (Research → Plan → Implement → Visual Harness) 闭环，从自然语言意图直接交付可交互 60fps WebGL2 / Canvas2D 场景：</p>
-    <div class="harness-steps">
-      <div class="harness-step">
-        <strong id="hs1Title">01 · Research · 考据与实测测绘</strong>
-        <span id="hs1Desc">考据莫高窟四龛藻井浮雕光学与矿物颜料色谱，采集 NASA MOLA 384 cells/deg 火星激光高程与多级火箭拉瓦尔喷管几何参数。</span>
+  <section class="grid grid-4" aria-label="可运行演示">
+    <article class="card">
+      <img src="./assets/feitian-Cxi0PXIC.png" alt="原创飞天人物与流动飘带">
+      <div class="card-body">
+        <span class="eyebrow" data-i18n="c1-eye">01 / Canvas 2D + Cycles Relief + Verlet</span>
+        <h2 data-i18n="c1-title">风起壁间 · 敦煌飞天</h2>
+        <p data-i18n="c1-desc">四身原创飞天，执灯照壁、揭色离壁、巡游归位。结合 Blender 4.5 Cycles 烘焙的莫高窟四龛藻井浮雕底壁、双凤宝相花钉、琵琶明珠花钿扣与 Verlet 物理丝绸飘带（Stage 466，p95 ≤ 33.3ms）。</p>
+        <a class="button primary" href="./demos/feitian/" data-i18n="c1-btn">入窟探索 →</a>
       </div>
-      <div class="harness-step">
-        <strong id="hs2Title">02 · Plan · 冻结数学与预算契约</strong>
-        <span id="hs2Desc">冻结 Verlet 飘带动力学积分步长、球面几何置换公式、188KB GLB 预算上限（≤30 Draw Calls）及 60fps 零运行时 API 架构契约。</span>
+    </article>
+    <article class="card">
+      <img src="./assets/astra-CTDMOgC3.png" alt="NASA 高程构成的三维火星">
+      <div class="card-body">
+        <span class="eyebrow" data-i18n="c2-eye">02 / Three.js WebGL2 + NASA MOLA</span>
+        <h2 data-i18n="c2-title">Astra · 火星实测高程造景</h2>
+        <p data-i18n="c2-desc">NASA MOLA 16ppd 实测激光高程驱动真实球面几何，叠加 Stage 466 最新 325/313 阶谐波微地貌核、Blender Cycles 无缝微地貌法线贴图与假想古海洋大气散射，支持导出 GLB。</p>
+        <a class="button primary" href="./demos/astra-planet/" data-i18n="c2-btn">进入观测台 →</a>
       </div>
-      <div class="harness-step">
-        <strong id="hs3Title">03 · Implement · GHCP + Blender MCP</strong>
-        <span id="hs3Desc">GHCP 自动生成 Python bpy 脚本驱动 Blender 4.5 烘焙 Cycles 浮雕/法线贴图并导出火箭 GLB，同步编码 Three.js / Canvas2D 实时着色器。</span>
+    </article>
+    <article class="card">
+      <img src="./assets/rocket-CW98spJb.png" alt="圆形观景框中的白色立体火箭与发射塔">
+      <div class="card-body">
+        <span class="eyebrow" data-i18n="c3-eye">03 / Three.js + GLB Kit + Shock Plume</span>
+        <h2 data-i18n="c3-title">Launch · 火箭发射与尾焰动力学</h2>
+        <p data-i18n="c3-desc">Blender 4.5 MCP 脚本化生成的白色火箭、钛合金栅格翼、五机拉瓦尔喷管、太阳风波分析仪传感器整流罩与 37 阶谐波普朗特-迈耶剪切马赫盘尾焰（Stage 466，p95 ≤ 50ms）。</p>
+        <a class="button primary" href="./demos/rocket-launch/" data-i18n="c3-btn">进入发射场 →</a>
       </div>
-      <div class="harness-step">
-        <strong id="hs4Title">04 · Harness Gate · 灰模/线框与快照门禁</strong>
-        <span id="hs4Desc">通过内置灰模/线框几何检验、确定性时间探针与 Playwright 多视角快照验收门禁，确保合作伙伴浏览器一键满帧运行。</span>
+    </article>
+    <article class="card card-highlight">
+      <img src="./assets/pelican-arena.png" alt="鹈鹕骑自行车逆运动学与环法风洞实时动画">
+      <div class="card-body">
+        <span class="eyebrow" data-i18n="c4-eye">04 / SVG Analytical IK + 3-Way Arena ★</span>
+        <h2 data-i18n="c4-title">鹈鹕骑自行车 · 三方同题动画竞技场</h2>
+        <p data-i18n="c4-desc">围绕经典“鹈鹕骑自行车”动画命题，同屏盲测 HVE-Core v3.3.101（93.4分：环法四赛段坡度动力学+风洞流线+11速电变+0.00px 零滑移解析逆运动学）、AGENT-FORGE（91.8分：海滨抛鱼接鱼+翘头特技）与 FAF v2（90.5分：X-Ray 骨骼透视）。</p>
+        <a class="button primary" href="./demos/pelican-bicycle-arena/index.html" data-i18n="c4-btn">进入三方同屏竞技场 →</a>
+        <div class="sub-actions" aria-label="鹈鹕骑自行车独立演示入口">
+          <a class="mini-btn" href="./demos/pelican-bicycle-arena/demo-hve-pelican.html" data-i18n="c4-sub1">🏆 HVE 环法风洞版 (93.4)</a>
+          <a class="mini-btn" href="./demos/pelican-bicycle-arena/demo-agent-forge-pelican.html" data-i18n="c4-sub2">⚡ Forge 海滨特技版 (91.8)</a>
+          <a class="mini-btn" href="./demos/pelican-bicycle-arena/demo-faf-pelican.html" data-i18n="c4-sub3">🎨 FAF 骨骼透视版 (90.5)</a>
+          <a class="mini-btn" href="./demos/pelican-bicycle-arena/test-report-cards.html" data-i18n="c4-sub4">📊 7-Card 评测卡</a>
+        </div>
       </div>
+    </article>
+  </section>
+  <section>
+    <h2 data-i18n="res-title">研究方法论、522 项动画谱系与可复现验证</h2>
+    <p class="lead" style="font-size:16px" data-i18n="res-lead">每一个动画效果都附带完整技术研究文档、55/55 单元与 Playwright E2E 验证记录：什么改变了几何，什么只是光影，什么来自实测高程或解析逆运动学，什么来自艺术化表达。</p>
+    <div class="controls">
+      <a class="button" href="./demos/pelican-bicycle-arena/test-report-cards.html" data-i18n="r0">🚲 鹈鹕骑车 7-Card 评测报告</a>
+      <a class="button" href="./research/opus-animation-landscape.html" data-i18n="r4">🌟 Opus 522 项热门动画谱系 (Stage 466)</a>
+      <a class="button" href="./research/feitian-reference-study.html" data-i18n="r1">飞天技术研究</a>
+      <a class="button" href="./research/technique-comparison.html" data-i18n="r2">技术路线对照</a>
+      <a class="button" href="./research/blender-mcp-pipeline.html" data-i18n="r3">Blender MCP 架构</a>
+      <a class="button" href="./research/asset-taxonomy.html" data-i18n="r5">技术资产分类索引</a>
+      <a class="button" href="./research/rocket-method.html" data-i18n="r8">火箭尾焰方法论</a>
+      <a class="button" href="./research/validation.html" data-i18n="r6">55/55 验证记录</a>
+      <a class="button" href="https://github.com/turbo998/generative-visual-lab#readme" target="_blank" rel="noopener" data-i18n="r7">运行与数据说明 ↗</a>
     </div>
   </section>
-
-  <section class="grid" aria-label="可运行演示">
-    <article class="card"><img src="./assets/feitian-DU2sJr5j.png" alt="原创飞天人物与流动飘带"><div class="card-body"><span class="eyebrow">01 / Canvas 2D + Blender Cycles relief</span><h2 id="c1Title">风起壁间 · 敦煌飞天</h2><p id="c1Desc">GHCP Harness 驱动四身原创飞天，执灯照壁、揭色离壁、巡游归位。结合 Blender 4.5 Cycles 烘焙的莫高窟四龛藻井浮雕底壁与约束飘带物理，构成实时壁画叙事。</p><a class="button primary" href="./demos/feitian/" id="c1Btn">进入飞天实时演示 →</a></div></article>
-    <article class="card"><img src="./assets/astra-BVRDlPZl.png" alt="NASA 高程构成的三维火星"><div class="card-body"><span class="eyebrow">02 / Three.js + NASA MOLA &amp; Blender bake</span><h2 id="c2Title">Astra · 火星实测高程造景</h2><p id="c2Desc">NASA MOLA 实测高程驱动真实球面几何，叠加 Blender Cycles 烘焙的无缝微地貌法线/凹腔贴图与古海洋气候推演。支持灰模、线框检视并直接导出 GLB。</p><a class="button primary" href="./demos/astra-planet/" id="c2Btn">进入火星观测台 →</a></div></article>
-    <article class="card"><img src="./assets/rocket-DUNpgrp0.png" alt="圆形观景框中的白色立体火箭与发射塔"><div class="card-body"><span class="eyebrow">03 / Three.js + Blender MCP GLB kit</span><h2 id="c3Title">Launch · 火箭发射与尾焰动力学</h2><p id="c3Desc">由 GHCP 调用 Blender 4.5 MCP 直接编码生成的白色火箭、钛合金栅格翼、五机拉瓦尔喷管与发射塔 GLB 套件，实时演绎点火、导流槽浓烟与离台升空。</p><a class="button primary" href="./demos/rocket-launch/" id="c3Btn">进入发射场演示 →</a></div></article>
-  </section>
-  <section><h2 id="resTitle">GHCP Harness 工程文档与复现指南</h2><p class="lead" style="font-size:16px" id="resSub">每个视觉效果均可追溯至代码契约：什么改变了几何，什么来自实测数据，什么来自程序化着色。</p><div class="controls"><a class="button" href="./research/feitian-reference-study.html" id="rBtn1">飞天程序化动画拆解</a><a class="button" href="./research/technique-comparison.html" id="rBtn2">Coding 动画技术路线对照</a><a class="button" href="./research/blender-mcp-pipeline.html" id="rBtn3">GHCP + Blender MCP 管线</a><a class="button" href="./research/asset-taxonomy.html" id="rBtn4">技术资产分类索引</a><a class="button" href="./research/validation.html" id="rBtn5">Harness 验证记录</a><a class="button" href="../frontier-ai-studio.html#animation" target="_top" id="rBtn6">返回 Frontier Studio ↗</a></div></section>
-  <footer style="margin-top:48px" id="footerTxt">Frontier AI Studio · GHCP Harness Rapid Animation Prototyping · 原创 MIT 代码 · 零运行时模型 API</footer>
+  <footer style="margin-top:48px" data-i18n="footer">原创代码 MIT · 无运行时模型 API · 55/55 自动化测试全绿 (Stage 466) · 独立技术实验</footer>
 </main>
 <script>
-  const animDict = {
-    'zh-CN': {
-      navBrand: 'GVL / GHCP Harness 快速动画原型实验室',
-      heroEyebrow: 'CODING DIRECT TO ANIMATION · GHCP HARNESS RAPID PROTOTYPING',
-      heroTitle: '使用 Coding 直接输出实时动画。<br>展示 GHCP Harness 极速原型能力。',
-      heroLead: '无需传统 DCC 手工逐帧关键帧：通过 GitHub Copilot (GHCP) Harness 工程化闭环，直接用代码驱动物理飘带、NASA 真实行星高程与 Blender 4.5 MCP 3D 资产，快速搭建 60fps 零运行时 API 的高保真交互动画原型。',
-      fact1: '纯代码实时动画原型', fact2: 'Prompt → 物理着色器 → 视觉回归验证', fact3: '脚本化建模 + Cycles 烘焙', fact4: '运行时大模型 API 依赖',
-      hbTitle: '🛠️ HVE (Hyper-Velocity Engineering) 如何驱动 Coding 实时动画原型构建',
-      hbSub: '遵循 HVE 工程规范的 RPI (Research → Plan → Implement → Visual Harness) 闭环，从自然语言意图直接交付可交互 60fps WebGL2 / Canvas2D 场景：',
-      hs1Title: '01 · Research · 考据与实测测绘', hs1Desc: '考据莫高窟四龛藻井浮雕光学与矿物颜料色谱，采集 NASA MOLA 384 cells/deg 火星激光高程与多级火箭拉瓦尔喷管几何参数。',
-      hs2Title: '02 · Plan · 冻结数学与预算契约', hs2Desc: '冻结 Verlet 飘带动力学积分步长、球面几何置换公式、188KB GLB 预算上限（≤30 Draw Calls）及 60fps 零运行时 API 架构契约。',
-      hs3Title: '03 · Implement · GHCP + Blender MCP', hs3Desc: 'GHCP 自动生成 Python bpy 脚本驱动 Blender 4.5 烘焙 Cycles 浮雕/法线贴图并导出火箭 GLB，同步编码 Three.js / Canvas2D 实时着色器。',
-      hs4Title: '04 · Harness Gate · 灰模/线框与快照门禁', hs4Desc: '通过内置灰模/线框几何检验、确定性时间探针与 Playwright 多视角快照验收门禁，确保合作伙伴浏览器一键满帧运行。',
-      c1Title: '风起壁间 · 敦煌飞天', c1Desc: 'GHCP Harness 驱动四身原创飞天，执灯照壁、揭色离壁、巡游归位。结合 Blender 4.5 Cycles 烘焙的莫高窟四龛藻井浮雕底壁与约束飘带物理，构成实时壁画叙事。', c1Btn: '进入飞天实时演示 →',
-      c2Title: 'Astra · 火星实测高程造景', c2Desc: 'NASA MOLA 实测高程驱动真实球面几何，叠加 Blender Cycles 烘焙的无缝微地貌法线/凹腔贴图与古海洋气候推演。支持灰模、线框检视并直接导出 GLB。', c2Btn: '进入火星观测台 →',
-      c3Title: 'Launch · 火箭发射与尾焰动力学', c3Desc: '由 GHCP 调用 Blender 4.5 MCP 直接编码生成的白色火箭、钛合金栅格翼、五机拉瓦尔喷管与发射塔 GLB 套件，实时演绎点火、导流槽浓烟与离台升空。', c3Btn: '进入发射场演示 →',
-      resTitle: 'GHCP Harness 工程文档与复现指南', resSub: '每个视觉效果均可追溯至代码契约：什么改变了几何，什么来自实测数据，什么来自程序化着色。',
-      rBtn1: '飞天程序化动画拆解', rBtn2: 'Coding 动画技术路线对照', rBtn3: 'GHCP + Blender MCP 管线', rBtn4: '技术资产分类索引', rBtn5: 'Harness 验证记录', rBtn6: 'GitHub 源码与说明 ↗',
-      footerTxt: 'Frontier AI Studio · GHCP Harness Rapid Animation Prototyping · 原创 MIT 代码 · 零运行时模型 API'
-    },
-    'zh-TW': {
-      navBrand: 'GVL / GHCP Harness 快速動畫原型實驗室',
-      heroEyebrow: 'CODING DIRECT TO ANIMATION · GHCP HARNESS RAPID PROTOTYPING',
-      heroTitle: '使用 Coding 直接輸出即時動畫。<br>展示 GHCP Harness 極速原型能力。',
-      heroLead: '無需傳統 DCC 手工逐幀關鍵幀：透過 GitHub Copilot (GHCP) Harness 工程化閉環，直接用程式碼驅動物理飄帶、NASA 真實行星高程與 Blender 4.5 MCP 3D 資產，快速搭建 60fps 零執行期 API 的高保真互動動畫原型。',
-      fact1: '純程式碼即時動畫原型', fact2: 'Prompt → 物理著色器 → 視覺回歸驗證', fact3: '腳本化建模 + Cycles 烘焙', fact4: '執行期大模型 API 依賴',
-      hbTitle: '🛠️ HVE (Hyper-Velocity Engineering) 如何驅動 Coding 即時動畫原型構建',
-      hbSub: '遵循 HVE 工程規範的 RPI (Research → Plan → Implement → Visual Harness) 閉環，從自然語言意圖直接交付可互動 60fps WebGL2 / Canvas2D 場景：',
-      hs1Title: '01 · Research · 考據與實測測繪', hs1Desc: '考據莫高窟四龕藻井浮雕光學與礦物顏料色譜，採集 NASA MOLA 384 cells/deg 火星雷射高程與多級火箭拉瓦爾噴管幾何參數。',
-      hs2Title: '02 · Plan · 凍結數學與預算契約', hs2Desc: '凍結 Verlet 飄帶動力學積分步長、球面幾何置換公式、188KB GLB 預算上限（≤30 Draw Calls）及 60fps 零執行期 API 架構契約。',
-      hs3Title: '03 · Implement · GHCP + Blender MCP', hs3Desc: 'GHCP 自動生成 Python bpy 腳本驅動 Blender 4.5 烘焙 Cycles 浮雕/法線貼圖並匯出火箭 GLB，同步編碼 Three.js / Canvas2D 即時著色器。',
-      hs4Title: '04 · Harness Gate · 灰模/線框與快照門禁', hs4Desc: '通過內建灰模/線框幾何檢驗、確定性時間探針與 Playwright 多視角快照驗收門禁，確保合作夥伴瀏覽器一鍵滿幀運行。',
-      c1Title: '風起壁間 · 敦煌飛天', c1Desc: 'GHCP Harness 驅動四身原創飛天，執燈照壁、揭色離壁、巡遊歸位。結合 Blender 4.5 Cycles 烘焙的莫高窟四龕藻井浮雕底壁與約束飄帶物理，構成即時壁畫敘事。', c1Btn: '進入飛天即時演示 →',
-      c2Title: 'Astra · 火星實測高程造景', c2Desc: 'NASA MOLA 實測高程驅動真實球面幾何，疊加 Blender Cycles 烘焙的無縫微地貌法線/凹腔貼圖與古海洋氣候推演。支援灰模、線框檢視並直接匯出 GLB。', c2Btn: '進入火星觀測台 →',
-      c3Title: 'Launch · 火箭發射與尾焰動力學', c3Desc: '由 GHCP 調用 Blender 4.5 MCP 直接編碼生成的白色火箭、鈦合金柵格翼、五機拉瓦爾噴管與發射塔 GLB 套件，即時演繹點火、導流槽濃煙與離台升空。', c3Btn: '進入發射場演示 →',
-      resTitle: 'GHCP Harness 工程文件與復現指南', resSub: '每個視覺效果均可追溯至程式碼契約：什麼改變了幾何，什麼來自實測數據，什麼來自程序化著色。',
-      rBtn1: '飛天程序化動畫拆解', rBtn2: 'Coding 動畫技術路線對照', rBtn3: 'GHCP + Blender MCP 管線', rBtn4: '技術資產分類索引', rBtn5: 'Harness 驗證記錄', rBtn6: 'GitHub 原始碼與說明 ↗',
-      footerTxt: 'Frontier AI Studio · GHCP Harness Rapid Animation Prototyping · 原創 MIT 程式碼 · 零執行期模型 API'
-    },
-    'en': {
-      navBrand: 'GVL / GHCP Harness Rapid Animation Prototyping Lab',
-      heroEyebrow: 'CODING DIRECT TO ANIMATION · GHCP HARNESS RAPID PROTOTYPING',
-      heroTitle: 'Code Direct to Real-Time Animation.<br>Rapid Prototyping via GHCP Harness.',
-      heroLead: 'No manual DCC keyframing required: using the GitHub Copilot (GHCP) Harness engineering loop, we write code that directly drives ribbon physics, NASA planetary elevation meshes, and Blender 4.5 MCP 3D kits into 60fps interactive prototypes with zero runtime LLM APIs.',
-      fact1: 'Code-Driven Live Demos', fact2: 'Prompt → Physics Shader → Visual Harness', fact3: 'Scripted Bpy + Cycles Bake', fact4: 'Runtime LLM API Calls',
-      hbTitle: '🛠️ How HVE (Hyper-Velocity Engineering) Drives Code-to-Animation Prototyping',
-      hbSub: 'Following the HVE RPI (Research → Plan → Implement → Visual Harness) loop from natural-language intent to interactive 60fps WebGL2 / Canvas2D scenes:',
-      hs1Title: '01 · Research · Optics & Altimetry', hs1Desc: 'Researched Mogao grotto relief optics and mineral pigments, NASA MOLA 384 cells/deg laser altimetry, and multi-stage rocket Laval nozzle geometry.',
-      hs2Title: '02 · Plan · Frozen Math & Budgets', hs2Desc: 'Froze Verlet ribbon physics step, spherical elevation displacement formulas, 188KB GLB budget (≤30 draw calls), and 60fps zero-API runtime contracts.',
-      hs3Title: '03 · Implement · GHCP + Blender MCP', hs3Desc: 'GHCP authors Python bpy scripts to bake Cycles relief/normal maps and export rocket GLB kits while coding Three.js / Canvas2D real-time shaders.',
-      hs4Title: '04 · Harness Gate · Gray/Wireframe Gate', hs4Desc: 'Built-in gray/wireframe geometry checks, deterministic time-step probes, and Playwright multi-angle snapshot regression gates.',
-      c1Title: 'Feitian · Dunhuang Mural Come Alive', c1Desc: 'Four original Feitian figures illuminate the grotto, lift pigments from the wall, and soar with Verlet-constrained silk ribbons over a Blender 4.5 Cycles baked relief.', c1Btn: 'Launch Feitian Live Demo →',
-      c2Title: 'Astra · NASA MOLA Mars Terraforming', c2Desc: 'Real NASA MOLA laser altimetry drives spherical planetary geometry, layered with Blender Cycles micro-normal bakes and interactive sea-level / atmosphere simulation with GLB export.', c2Btn: 'Launch Mars Observatory →',
-      c3Title: 'Launch · Multi-Stage Rocket & Plume', c3Desc: 'Precision white rocket, titanium grid fins, 5-engine Laval nozzles, and launch tower generated via Blender 4.5 MCP, featuring real-time ignition trench plumes and liftoff.', c3Btn: 'Launch Rocket Pad Demo →',
-      resTitle: 'GHCP Harness Engineering Docs & Reproducibility', resSub: 'Every visual effect is traceable to code contracts: geometry displacement, measured scientific data, and procedural shading.',
-      rBtn1: 'Feitian Animation Breakdown', rBtn2: 'Coding Animation Comparison', rBtn3: 'GHCP + Blender MCP Pipeline', rBtn4: 'Technical Asset Taxonomy', rBtn5: 'Harness Validation Log', rBtn6: 'GitHub Repository & README ↗',
-      footerTxt: 'Frontier AI Studio · GHCP Harness Rapid Animation Prototyping · MIT License · Zero Runtime LLM API'
-    }
-  };
-  function setAnimLang(lang) {
-    const d = animDict[lang] || animDict['zh-CN'];
-    document.documentElement.lang = lang;
-    document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.getAttribute('data-lang') === lang));
-    Object.keys(d).forEach(id => {
-      const el = document.getElementById(id);
-      if (!el) return;
-      if (id === 'heroTitle') el.innerHTML = d[id];
-      else el.textContent = d[id];
-    });
+const A_I18N = {
+  'zh-CN': {
+    'nav-title': 'GVL / GHCP Harness 快速动画原型实验室 (Stage 466 ★)',
+    'back-studio': '← 返回六大主线工作台',
+    'eyebrow': 'GHCP Harness Engineering · Code Becomes a World · Stage 466 (522 项精选作品)',
+    'hero-title': '用代码直接生成动画。<br>让数学与物理可见。',
+    'hero-lead': '基于 GitHub Copilot Harness 四阶段工程闭环（Research → Plan → Implement → Harness Gate），不依赖商业视频生成大模型或沉重手工渲染管线，直接把自然语言转化为可交互、可审计、零外部运行时依赖的 60FPS WebGL2 / Three.js / Canvas 2D / SVG 逆运动学实时动画。现已收录 Stage 466（522 项前沿动画作品谱系）与四大标志性实时动画演示：敦煌飞天、Astra 火星造景、白色火箭点火升空、以及“鹈鹕骑自行车”三方 AI 工程套件同屏竞技场。',
+    'fact-1': '纯代码实时动画演示（含鹈鹕骑自行车）',
+    'fact-2': 'Prompt → 物理着色器 / SVG IK → 视觉回归验证',
+    'fact-3': 'Cycles 烘焙 + 325/313 阶谐波 + 逆运动学零滑移',
+    'fact-4': '运行时大模型 API 依赖',
+    'c1-eye': '01 / Canvas 2D + Cycles Relief + Verlet',
+    'c1-title': '风起壁间 · 敦煌飞天',
+    'c1-desc': '四身原创飞天，执灯照壁、揭色离壁、巡游归位。结合 Blender 4.5 Cycles 烘焙的莫高窟四龛藻井浮雕底壁、双凤宝相花钉、琵琶明珠花钿扣与 Verlet 物理丝绸飘带（Stage 466，p95 ≤ 33.3ms）。',
+    'c1-btn': '入窟探索 →',
+    'c2-eye': '02 / Three.js WebGL2 + NASA MOLA',
+    'c2-title': 'Astra · 火星实测高程造景',
+    'c2-desc': 'NASA MOLA 16ppd 实测激光高程驱动真实球面几何，叠加 Stage 466 最新 325/313 阶谐波微地貌核、Blender Cycles 无缝微地貌法线贴图与假想古海洋大气散射，支持导出 GLB。',
+    'c2-btn': '进入观测台 →',
+    'c3-eye': '03 / Three.js + GLB Kit + Shock Plume',
+    'c3-title': 'Launch · 火箭发射与尾焰动力学',
+    'c3-desc': 'Blender 4.5 MCP 脚本化生成的白色火箭、钛合金栅格翼、五机拉瓦尔喷管、太阳风波分析仪传感器整流罩与 37 阶谐波普朗特-迈耶剪切马赫盘尾焰（Stage 466，p95 ≤ 50ms）。',
+    'c3-btn': '进入发射场 →',
+    'c4-eye': '04 / SVG Analytical IK + 3-Way Arena ★',
+    'c4-title': '鹈鹕骑自行车 · 三方同题动画竞技场',
+    'c4-desc': '围绕经典“鹈鹕骑自行车”动画命题，同屏盲测 HVE-Core v3.3.101（93.4分：环法四赛段坡度动力学+风洞流线+11速电变+0.00px 零滑移解析逆运动学）、AGENT-FORGE（91.8分：海滨抛鱼接鱼+翘头特技）与 FAF v2（90.5分：X-Ray 骨骼透视）。',
+    'c4-btn': '进入三方同屏竞技场 →',
+    'c4-sub1': '🏆 HVE 环法风洞版 (93.4)',
+    'c4-sub2': '⚡ Forge 海滨特技版 (91.8)',
+    'c4-sub3': '🎨 FAF 骨骼透视版 (90.5)',
+    'c4-sub4': '📊 7-Card 评测卡',
+    'res-title': '研究方法论、522 项动画谱系与可复现验证',
+    'res-lead': '每一个动画效果都附带完整技术研究文档、55/55 单元与 Playwright E2E 验证记录：什么改变了几何，什么只是光影，什么来自实测高程或解析逆运动学，什么来自艺术化表达。',
+    'r0': '🚲 鹈鹕骑车 7-Card 评测报告',
+    'r1': '飞天技术研究', 'r2': '技术路线对照', 'r3': 'Blender MCP 架构', 'r4': '🌟 Opus 522 项热门动画谱系 (Stage 466)', 'r5': '技术资产分类索引', 'r8': '火箭尾焰方法论', 'r6': '55/55 验证记录', 'r7': '运行与数据说明 ↗',
+    'footer': '原创代码 MIT · 无运行时模型 API · 55/55 自动化测试全绿 (Stage 466) · 独立技术实验'
+  },
+  'zh-TW': {
+    'nav-title': 'GVL / GHCP Harness 快速動畫原型實驗室 (Stage 466 ★)',
+    'back-studio': '← 返回六大主線工作台',
+    'eyebrow': 'GHCP Harness Engineering · Code Becomes a World · Stage 466 (522 項精選作品)',
+    'hero-title': '用程式碼直接生成動畫。<br>讓數學與物理可見。',
+    'hero-lead': '基於 GitHub Copilot Harness 四階段工程閉環（Research → Plan → Implement → Harness Gate），不依賴商業影片生成大模型或沉重手工渲染管線，直接把自然語言轉化為可互動、可審計、零外部執行期依賴的 60FPS WebGL2 / Three.js / Canvas 2D / SVG 逆運動學即時動畫。現已收錄 Stage 466（522 項前沿動畫作品譜系）與四大標誌性即時動畫演示：敦煌飛天、Astra 火星造景、白色火箭點火升空、以及「鵜鶘騎自行車」三方 AI 工程套件同屏競技場。',
+    'fact-1': '純程式碼即時動畫演示（含鵜鶘騎自行車）',
+    'fact-2': 'Prompt → 物理著色器 / SVG IK → 視覺回歸驗證',
+    'fact-3': 'Cycles 烘焙 + 325/313 階諧波 + 逆運動學零滑移',
+    'fact-4': '執行期大模型 API 依賴',
+    'c1-eye': '01 / Canvas 2D + Cycles Relief + Verlet',
+    'c1-title': '風起壁間 · 敦煌飛天',
+    'c1-desc': '四身原創飛天，執燈照壁、揭色離壁、巡遊歸位。結合 Blender 4.5 Cycles 烘焙的莫高窟四龕藻井浮雕底壁、雙鳳寶相花釘、琵琶明珠花鈿扣與 Verlet 物理絲綢飄帶（Stage 466，p95 ≤ 33.3ms）。',
+    'c1-btn': '入窟探索 →',
+    'c2-eye': '02 / Three.js WebGL2 + NASA MOLA',
+    'c2-title': 'Astra · 火星實測高程造景',
+    'c2-desc': 'NASA MOLA 16ppd 實測雷射高程驅動真實球面幾何，疊加 Stage 466 最新 325/313 階諧波微地貌核、Blender Cycles 無縫微地貌法線貼圖與假想古海洋大氣散射，支援匯出 GLB。',
+    'c2-btn': '進入觀測台 →',
+    'c3-eye': '03 / Three.js + GLB Kit + Shock Plume',
+    'c3-title': 'Launch · 火箭發射與尾焰動力學',
+    'c3-desc': 'Blender 4.5 MCP 腳本化生成的白色火箭、鈦合金柵格翼、五機拉瓦爾噴管、太陽風波分析儀感測器整流罩與 37 階諧波普朗特-邁耶剪切馬赫盤尾焰（Stage 466，p95 ≤ 50ms）。',
+    'c3-btn': '進入發射場 →',
+    'c4-eye': '04 / SVG Analytical IK + 3-Way Arena ★',
+    'c4-title': '鵜鶘騎自行車 · 三方同題動畫競技場',
+    'c4-desc': '圍繞經典「鵜鶘騎自行車」動畫命題，同屏盲測 HVE-Core v3.3.101（93.4分：環法四賽段坡度動力學+風洞流線+11速電變+0.00px 零滑移解析逆運動學）、AGENT-FORGE（91.8分：海濱拋魚接魚+翹頭特技）與 FAF v2（90.5分：X-Ray 骨骼透視）。',
+    'c4-btn': '進入三方同屏競技場 →',
+    'c4-sub1': '🏆 HVE 環法風洞版 (93.4)',
+    'c4-sub2': '⚡ Forge 海濱特技版 (91.8)',
+    'c4-sub3': '🎨 FAF 骨骼透視版 (90.5)',
+    'c4-sub4': '📊 7-Card 評測卡',
+    'res-title': '研究方法論、522 項動畫譜系與可重現驗證',
+    'res-lead': '每一個動畫效果都附帶完整技術研究文件、55/55 單元與 Playwright E2E 驗證記錄：什麼改變了幾何，什麼只是光影，什麼來自實測高程或解析逆運動學，什麼來自藝術化表達。',
+    'r0': '🚲 鵜鶘騎車 7-Card 評測報告',
+    'r1': '飛天技術研究', 'r2': '技術路線對照', 'r3': 'Blender MCP 架構', 'r4': '🌟 Opus 522 項熱門動畫譜系 (Stage 466)', 'r5': '技術資產分類索引', 'r8': '火箭尾焰方法論', 'r6': '55/55 驗證記錄', 'r7': '執行與資料說明 ↗',
+    'footer': '原創程式碼 MIT · 無執行期模型 API · 55/55 自動化測試全綠 (Stage 466) · 獨立技術實驗'
+  },
+  'en': {
+    'nav-title': 'GVL / GHCP Harness Rapid Animation Prototyping Lab (Stage 466 ★)',
+    'back-studio': '← Back to 6-Track Studio',
+    'eyebrow': 'GHCP Harness Engineering · Code Becomes a World · Stage 466 (522 Curated Works)',
+    'hero-title': 'Generate Animation Directly from Code.<br>Make Math &amp; Physics Visible.',
+    'hero-lead': 'Powered by the 4-phase GitHub Copilot Harness workflow (Research → Plan → Implement → Harness Gate). Without relying on commercial text-to-video APIs or manual DCC pipelines, natural language prompts compile directly into interactive, auditable, zero-dependency 60FPS WebGL2 / Three.js / Canvas 2D / SVG analytical IK animations. Now featuring Stage 466 (522 curated frontier works) and 4 flagship live animation demos: Dunhuang Feitian, Astra Mars MOLA Terrain, SpaceX-style Rocket Launch, and the "Pelican Riding a Bicycle" 3-Way AI Harness Arena.',
+    'fact-1': 'Code-Driven Live Demos (incl. Pelican Riding a Bicycle)',
+    'fact-2': 'Prompt → Physics Shaders / SVG IK → Visual Regression Gate',
+    'fact-3': 'Cycles Bake + 325/313 Harmonic Kernel + 0.00px IK',
+    'fact-4': 'Runtime LLM API Dependencies',
+    'c1-eye': '01 / Canvas 2D + Cycles Relief + Verlet',
+    'c1-title': 'Dunhuang Feitian · Living Mural',
+    'c1-desc': 'Four procedural celestial musicians awakened by lantern light. Combines a Blender 4.5 Cycles-baked 4-niche grotto relief wall, phoenix turnbuckle bosses, gilt pipa clasps, and Verlet silk ribbons (Stage 466, p95 ≤ 33.3ms).',
+    'c1-btn': 'Enter Grotto →',
+    'c2-eye': '02 / Three.js WebGL2 + NASA MOLA',
+    'c2-title': 'Astra · Real Mars MOLA Terrain',
+    'c2-desc': 'Driven by NASA MOLA 16ppd laser altimetry with Stage 466 325/313-order harmonic mineral terrace kernels, Blender Cycles micro-normal/cavity bakes, and hypothetical paleo-ocean scattering. Supports GLB export.',
+    'c2-btn': 'Open Observatory →',
+    'c3-eye': '03 / Three.js + GLB Kit + Shock Plume',
+    'c3-title': 'Launch · White Rocket & Plume Dynamics',
+    'c3-desc': 'High-precision white rocket, titanium grid fins, 5-nozzle Laval cluster, solar-wind wave analyzer cowls, and 37th-harmonic Prandtl-Meyer shear shock diamonds generated via Blender 4.5 MCP (Stage 466, p95 ≤ 50ms).',
+    'c3-btn': 'Enter Launchpad →',
+    'c4-eye': '04 / SVG Analytical IK + 3-Way Arena ★',
+    'c4-title': 'Pelican Riding a Bicycle · 3-Way Arena',
+    'c4-desc': 'Same-prompt blind benchmark on the classic "Pelican Riding a Bicycle" challenge: HVE-Core v3.3.101 (93.4/100: Tour de France 4-terrain slope dynamics + wind-tunnel streamlines + 11-speed Di2 + 0.00px analytical IK) vs. AGENT-FORGE (91.8) vs. FAF v2 (90.5).',
+    'c4-btn': 'Open 3-Way Pelican Arena →',
+    'c4-sub1': '🏆 HVE Wind-Tunnel (93.4)',
+    'c4-sub2': '⚡ Forge Boardwalk (91.8)',
+    'c4-sub3': '🎨 FAF X-Ray IK (90.5)',
+    'c4-sub4': '📊 7-Card Report',
+    'res-title': 'Research Methodology, 522-Work Landscape & Reproducible Verification',
+    'res-lead': 'Every animation is backed by bilingual engineering notes and 55/55 unit + Playwright E2E checks: clearly separating true geometry displacement and analytical inverse kinematics from lighting and artistic expression.',
+    'r0': '🚲 Pelican Bicycle 7-Card Report',
+    'r1': 'Feitian Reference Study', 'r2': 'Technique Comparison', 'r3': 'Blender MCP Architecture', 'r4': '🌟 Opus 522 Animation Landscape (Stage 466)', 'r5': 'Asset Taxonomy Index', 'r8': 'Rocket Plume Methodology', 'r6': '55/55 Validation Log', 'r7': 'Run & Data Guide ↗',
+    'footer': 'Original MIT Code · Zero Runtime LLM API · 55/55 Automated Checks Green (Stage 466) · Reproducible Engineering'
   }
-  window.addEventListener('message', (ev) => {
-    if (ev.data && ev.data.type === 'SET_LANG' && ev.data.lang) setAnimLang(ev.data.lang);
+};
+function setAnimLang(lang) {
+  const dict = A_I18N[lang] || A_I18N['zh-CN'];
+  document.documentElement.lang = lang;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const k = el.getAttribute('data-i18n');
+    if (dict[k]) el.innerHTML = dict[k];
   });
-  const initLang = new URLSearchParams(window.location.search).get('lang');
-  if (initLang) setAnimLang(initLang);
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.setAttribute('aria-pressed', btn.getAttribute('data-lang') === lang ? 'true' : 'false');
+  });
+  try { localStorage.setItem('studio_lang', lang); } catch(e) {}
+}
+window.addEventListener('message', (e) => {
+  if (e.data && e.data.type === 'SET_LANG' && A_I18N[e.data.lang]) {
+    setAnimLang(e.data.lang);
+  }
+});
+const initLang = new URLSearchParams(window.location.search).get('lang') || localStorage.getItem('studio_lang') || 'zh-CN';
+setAnimLang(A_I18N[initLang] ? initLang : 'zh-CN');
 </script>
 </body>
 </html>
