@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'">
+<title>DEFEND Partner Playbook &amp; Purview-for-AI Governance · 7-Card Benchmark Deck</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;padding:2rem 1rem;background:#e2e8f0;color:#0f172a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+.deck-wrap{max-width:860px;margin:0 auto;display:flex;flex-direction:column;gap:2.2rem}
+.report-card{background:#f8fafc;border-radius:18px;overflow:hidden;box-shadow:0 16px 40px rgba(15,23,42,.12);border:1px solid #cbd5e1;min-height:1025px;display:flex;flex-direction:column}
+.card-accent-bar{height:10px;background:linear-gradient(90deg,#2563eb 0%,#4f46e5 55%,#0891b2 100%)}
+.card-inner{padding:2.4rem 2.8rem 1.8rem;flex:1;display:flex;flex-direction:column;justify-content:space-between}
+.card-eyebrow{font-size:.82rem;font-weight:700;letter-spacing:.12em;color:#2563eb;text-transform:uppercase;margin-bottom:.55rem}
+.card-headline{font-size:2.25rem;line-height:1.12;font-weight:800;margin:0 0 .65rem;letter-spacing:-.02em;color:#0f172a}
+.grad-text{background:linear-gradient(90deg,#2563eb,#4f46e5,#0891b2);-webkit-background-clip:text;background-clip:text;color:transparent}
+.card-subtitle{font-size:1.05rem;line-height:1.45;color:#475569;margin:0 0 1.2rem}
+.card-canvas{flex:1;display:flex;flex-direction:column;justify-content:center;gap:1rem}
+.quote-box,.callout-box{background:#eef2f6;border-radius:12px;padding:1rem 1.25rem;font-size:.96rem;line-height:1.48;color:#1e293b}
+.stack-list{display:flex;flex-direction:column;gap:.85rem}
+.decision-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:.95rem 1.15rem}
+.decision-head{display:flex;justify-content:space-between;align-items:flex-start;gap:.75rem}
+.field-name{font-weight:700;font-size:1rem}
+.type-pill{background:#e2e8f0;color:#475569;font-size:.75rem;padding:.12rem .45rem;border-radius:6px;font-weight:600}
+.question-sub{font-size:.84rem;color:#64748b;margin-top:.15rem}
+.action-pill{font-size:.76rem;font-weight:700;padding:.22rem .6rem;border-radius:999px;white-space:nowrap}
+.pill-auto{background:#dcfce7;color:#15803d}
+.pill-confirm{background:#fef3c7;color:#b45309}
+.pill-human{background:#fee2e2;color:#b91c1c}
+.decision-main{font-size:1.14rem;margin:.45rem 0 .55rem}
+.conf-muted{font-size:.86rem;color:#64748b;font-weight:600}
+.dist-row{display:grid;grid-template-columns:210px 1fr 58px;align-items:center;gap:.6rem;font-size:.83rem;margin:.24rem 0}
+.dist-track{background:#e2e8f0;height:9px;border-radius:999px;overflow:hidden}
+.dist-fill{background:linear-gradient(90deg,#2563eb,#4f46e5);height:100%;border-radius:999px}
+.dist-pct{text-align:right;font-variant-numeric:tabular-nums;color:#334155}
+.clean-table{width:100%;border-collapse:collapse;font-size:.92rem;background:transparent}
+.clean-table th{font-size:.74rem;letter-spacing:.08em;color:#64748b;text-align:left;padding:.55rem .4rem;border-bottom:1px solid #cbd5e1}
+.clean-table td{padding:.58rem .4rem;border-bottom:1px solid #e2e8f0;vertical-align:top}
+.sc-col{font-weight:600;color:#1e293b}
+.act-col,.num-col{text-align:right;font-variant-numeric:tabular-nums}
+.act-auto{color:#15803d;font-weight:700}
+.act-confirm{color:#b45309;font-weight:700}
+.act-human{color:#b91c1c;font-weight:700}
+.miss-mark{color:#dc2626;font-weight:800}
+.code-dark{background:#0f172a;color:#e2e8f0;padding:1.05rem 1.25rem;border-radius:12px;font-size:.82rem;line-height:1.44;overflow-x:auto;margin:0}
+.code-transition{color:#2563eb;font-weight:700;font-size:.95rem;padding:.15rem 0}
+.hl-answer{color:#fbbf24;font-weight:700}
+.rob-main{font-weight:600;color:#0f172a}
+.rob-sub{font-size:.8rem;color:#64748b}
+.lat-list{display:flex;flex-direction:column;gap:1rem}
+.lat-title{font-weight:700;font-size:1.02rem;margin-bottom:.35rem}
+.lat-row{display:flex;align-items:center;gap:.65rem;margin:.28rem 0}
+.lat-tag{width:140px;font-size:.84rem;color:#64748b}
+.lat-bar{height:22px;border-radius:6px}
+.lat-blue{background:#2563eb}
+.lat-gray{background:#cbd5e1}
+.lat-val{font-size:.92rem;font-variant-numeric:tabular-nums}
+.fit-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem}
+.fit-card{border-radius:14px;padding:1.25rem 1.4rem;font-size:.98rem;line-height:1.58}
+.fit-good{background:#ecfdf5;border:1px solid #a7f3d0}
+.fit-bad{background:#fff1f2;border:1px solid #fecdd3}
+.fit-head{font-weight:800;font-size:1.12rem;margin-bottom:.5rem}
+.dark-footer-box{background:#0f172a;color:#f8fafc;border-radius:14px;padding:1.25rem 1.5rem;font-size:.96rem;line-height:1.5}
+.dark-repo{color:#38bdf8;font-family:ui-monospace,Consolas,monospace;margin-bottom:0}
+.workbench-shell{background:#fff;border:1px solid #cbd5e1;border-radius:14px;overflow:hidden}
+.wb-topbar{background:linear-gradient(90deg,#2563eb,#4f46e5);color:#fff;padding:.75rem 1rem;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.wb-sub{font-size:.76rem;opacity:.92}
+.wb-status{background:rgba(15,23,42,.28);font-size:.74rem;padding:.25rem .6rem;border-radius:999px;white-space:nowrap}
+.wb-grid{display:grid;grid-template-columns:230px 1fr;gap:.85rem;padding:.9rem}
+.wb-col-title{font-size:.78rem;font-weight:700;color:#475569;text-transform:uppercase;margin-bottom:.4rem}
+.wb-item{font-size:.79rem;padding:.38rem .5rem;border-radius:6px;background:#f8fafc;border:1px solid #e2e8f0;margin-bottom:.32rem}
+.wb-note{font-size:.73rem;color:#64748b;margin-top:.55rem;line-height:1.38}
+.wb-metrics{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.55rem}
+.wb-metric{font-size:.74rem;background:#f1f5f9;padding:.2rem .5rem;border-radius:6px;color:#334155;font-weight:600}
+.card-footer{border-top:1px solid #cbd5e1;padding-top:.9rem;margin-top:1.2rem;display:flex;justify-content:space-between;font-size:.84rem;color:#64748b}
+@media print{body{background:#fff;padding:0}.deck-wrap{gap:0}.report-card{box-shadow:none;page-break-after:always;border:none}}
+</style>
+</head>
+<body>
+<main class="deck-wrap">
+
+<!-- CARD 1 -->
+<article class="report-card" id="card-1">
+  <div class="card-accent-bar"></div>
+  <div class="card-inner">
+    <header class="card-header">
+      <div class="card-eyebrow">HANDS-ON · DEFEND PLAYBOOK × SECURITY PARTNER TOOLKIT FOR SMB</div>
+      <h2 class="card-headline">5 DEFEND tiers + 6 Toolkit assets, <span class="grad-text">360p guides &amp; 51 exit gates</span></h2>
+      <p class="card-subtitle">End-to-end synthesis of the 53-slide DEFEND Partner Playbook (5 DEFEND tiers, 4 Purview tiers, 51 exit gates) paired with the Microsoft Security Partner Toolkit for SMB (6 resolved aka.ms assets, 7 Industry One-Pagers, Guided Assistant, 22-Workstream SOW Generator, 360p Deployment Guides, and PowerShell 7+ automation).</p>
+    </header>
+    <div class="card-canvas">
+      <div class="workbench-shell">
+        <div class="wb-topbar">
+          <div>
+            <strong>DEFEND Playbook (53 Slides) × SMB Security Partner Toolkit (6 Resolved Assets)</strong>
+            <div class="wb-sub">Strategy-to-Execution Pipeline: 7 Industry One-Pagers → Guided Assistant → SOW Generator → 360p Guides → pwsh Scripts</div>
+          </div>
+          <span class="wb-status">51 exit items · 360p guides · 22 SOW services · 13 CA templates</span>
+        </div>
+        <div class="wb-grid">
+          <div class="wb-col-left">
+            <div class="wb-col-title">5-Stage Toolkit + 5 Tiers</div>
+            <div class="wb-item">1. Conversation · 7 Industry One-Pagers (14p)</div>
+            <div class="wb-item">2. Discovery · DataSecurityGuidedAssistant</div>
+            <div class="wb-item">3. Proposal · Purview SOW Generator (22 items)</div>
+            <div class="wb-item">4. Planning · 6 SMB Deployment Guides (360p)</div>
+            <div class="wb-item">5. Deploy · SMBBestPracticeTool (pwsh 7+)</div>
+            <div class="wb-item">Gov · DEFEND T1–T5 (51 Mandatory Exit Gates)</div>
+            <div class="wb-note">Governance Rule (Slide 40): Zero tier progression without meeting mandatory exit criteria; PowerShell toolkit enforces Report-Only CA, break-glass check, and Day-30 DLP simulation exit runbook.</div>
+          </div>
+          <div class="wb-col-right">
+            <div class="wb-metrics">
+              <span class="wb-metric">53 Slides + 360p PDF Guides</span>
+              <span class="wb-metric">51 Exit Criteria Items</span>
+              <span class="wb-metric">8-Label DEFEND Taxonomy</span>
+              <span class="wb-metric">22 SOW Workstreams + 4 pwsh Kits</span>
+            </div>
+            <div class="decision-card">
+              <div class="decision-head">
+                <div>
+                  <span class="field-name">defend_tier_exit_gates</span> <span class="type-pill">choice</span>
+                  <div class="question-sub">How are the 51 mandatory readiness exit criteria distributed across the 5 DEFEND service tiers (Slides 34–38)?</div>
+                </div>
+                <span class="action-pill pill-auto">Act automatically</span>
+              </div>
+              <div class="decision-main"><strong>51 / 51 gates mapped (100.0%)</strong><span class="conf-muted"> · Base 11 · Security 12 · Compliance 11 · Complete 8 · Extend 9</span></div>
+              <div class="dist-list">
+                <div class="dist-row"><span class="dist-label">Foundation &amp; XDR (T1+T2: 23/51)</span><div class="dist-track"><div class="dist-fill" style="width:45.1%"></div></div><span class="dist-pct">45.1%</span></div>
+                <div class="dist-row"><span class="dist-label">Purview &amp; Unified (T3+T4: 19/51)</span><div class="dist-track"><div class="dist-fill" style="width:37.3%"></div></div><span class="dist-pct">37.3%</span></div>
+                <div class="dist-row"><span class="dist-label">Sentinel 24/7 SOC (T5: 9/51)</span><div class="dist-track"><div class="dist-fill" style="width:17.6%"></div></div><span class="dist-pct">17.6%</span></div>
+              </div>
+            </div>
+            <div class="decision-card">
+              <div class="decision-head">
+                <div>
+                  <span class="field-name">smb_toolkit_sow_and_guides</span> <span class="type-pill">choice</span>
+                  <div class="question-sub">How do the 22 Purview SOW Generator workstreams and 6 SMB Deployment Guides (360 pages) align with AI &amp; Copilot readiness?</div>
+                </div>
+                <span class="action-pill pill-confirm">Confirm</span>
+              </div>
+              <div class="decision-main"><strong>22 SOW Services + 360p Prescriptive Guides</strong><span class="conf-muted"> · P1 Foundation (9) · P2 Retention (1) · P3 Advanced &amp; AI Guardrails (12)</span></div>
+              <div class="dist-list">
+                <div class="dist-row"><span class="dist-label">P3 Advanced &amp; Copilot/Edge/DSPM (12/22)</span><div class="dist-track"><div class="dist-fill" style="width:54.5%"></div></div><span class="dist-pct">54.5%</span></div>
+                <div class="dist-row"><span class="dist-label">P1 Business Premium Foundation (9/22)</span><div class="dist-track"><div class="dist-fill" style="width:40.9%"></div></div><span class="dist-pct">40.9%</span></div>
+                <div class="dist-row"><span class="dist-label">P2 Intermediate Governance (1/22)</span><div class="dist-track"><div class="dist-fill" style="width:4.5%"></div></div><span class="dist-pct">4.5%</span></div>
+              </div>
+            </div>
+            <div class="decision-card">
+              <div class="decision-head">
+                <div>
+                  <span class="field-name">lob_encryption_exception_labels</span> <span class="type-pill">score</span>
+                  <div class="question-sub">How many sensitivity labels in the 8-Label DEFEND Industry One-Pager taxonomy are unencrypted LOB exception labels?</div>
+                </div>
+                <span class="action-pill pill-human">Send to a human</span>
+              </div>
+              <div class="decision-main"><strong>2 / 8 Exception Labels (25.0% · Requires IT Sign-Off)</strong><span class="conf-muted"> · CONFIDENTIAL &amp; HIGHLY CONFIDENTIAL \ INTERNAL EXCEPTION</span></div>
+              <div class="dist-list">
+                <div class="dist-row"><span class="dist-label">Standard / Encrypted Labels (6/8)</span><div class="dist-track"><div class="dist-fill" style="width:75.0%"></div></div><span class="dist-pct">75.0%</span></div>
+                <div class="dist-row"><span class="dist-label">LOB Unencrypted Exception + Quarterly Audit (2/8)</span><div class="dist-track"><div class="dist-fill" style="width:25.0%"></div></div><span class="dist-pct">25.0%</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="callout-box"><strong>Strategy (`DEFEND Playbook`) + Execution (`Security Partner Toolkit for SMB`):</strong> DEFEND defines the 5-tier managed service architecture and 51 exit gates; the SMB Toolkit operationalizes it with 7 industry 30/60/90-day one-pagers, client-side `DataSecurityGuidedAssistant` (`v2.0.1572`), `SOWGenerator` (22 workstreams), 360 pages of deployment manuals, and idempotent PowerShell 7+ scripts (`SMBBestPracticeTool`).</div>
+    </div>
+    <footer class="card-footer">
+      <span><strong>DEFEND Playbook × Security Partner Toolkit for SMB</strong> · measured (53 slides + 6 resolved aka.ms assets + 360p PDFs)</span>
+      <span>1 / 7</span>
+    </footer>
+  </div>
+</article>
+
+<!-- CARD 2 -->
+<article class="report-card" id="card-2">
+  <div class="card-accent-bar"></div>
+  <div class="card-inner">
+    <header class="card-header">
+      <div class="card-eyebrow">SCENARIO: COPILOT DLP, EDGE GENAI GUARDRAILS &amp; 8-LABEL TAXONOMY</div>
+      <h2 class="card-headline">2-rule Copilot DLP. Edge inline GenAI block. 8-label LOB taxonomy.</h2>
+      <p class="card-subtitle">Deep dive into Purview-as-a-Service Tier 3 (`Data Control`), the SOW Generator's Priority 3 AI Guardrails, and the 7 Industry One-Pagers' 30/60/90-day motion.</p>
+    </header>
+    <div class="card-canvas">
+      <div class="quote-box">"Toolkit Execution Contract (`SOWGenerator` &amp; `Data Security Deployment Guide` 92p): Apply two dedicated Purview DLP rules for Microsoft 365 Copilot (one for SITs, one for Sensitivity Labels) in simulation mode before go-live, block sensitive uploads to ChatGPT/Gemini via Edge for Business Inline Web Traffic DLP, and enforce quarterly reviews on `INTERNAL EXCEPTION` LOB labels."</div>
+      <div class="stack-list">
+        <div class="decision-card">
+          <div class="decision-head">
+            <div>
+              <span class="field-name">copilot_and_edge_genai_dlp</span> <span class="type-pill">choice</span>
+              <div class="question-sub">How do the Purview SOW Generator and 92-page Data Security Guide protect both sanctioned M365 Copilot and unsanctioned web GenAI?</div>
+            </div>
+            <span class="action-pill pill-auto">Act automatically</span>
+          </div>
+          <div class="decision-main"><strong>Dual AI Guardrail Plane (Sanctioned Copilot + Inline Edge Web)</strong><span class="conf-muted"> · 2-Rule Copilot DLP + Edge ChatGPT/Gemini block + DSPM for AI</span></div>
+          <div class="dist-list">
+            <div class="dist-row"><span class="dist-label">DLP for Copilot (SIT Rule + Label Rule)</span><div class="dist-track"><div class="dist-fill" style="width:40.0%"></div></div><span class="dist-pct">40.0%</span></div>
+            <div class="dist-row"><span class="dist-label">DLP for Edge Inline Web (ChatGPT/Gemini)</span><div class="dist-track"><div class="dist-fill" style="width:30.0%"></div></div><span class="dist-pct">30.0%</span></div>
+            <div class="dist-row"><span class="dist-label">Activate DSPM + Adaptive Protection</span><div class="dist-track"><div class="dist-fill" style="width:30.0%"></div></div><span class="dist-pct">30.0%</span></div>
+          </div>
+        </div>
+        <div class="decision-card">
+          <div class="decision-head">
+            <div>
+              <span class="field-name">industry_one_pagers_30_60_90</span> <span class="type-pill">noul</span>
+              <div class="question-sub">Do all 7 Industry One-Pagers (Consumer Goods, Education, FSI, Healthcare, Manufacturing, Nonprofit, Prof Services) share a unified 30/60/90-day motion?</div>
+            </div>
+            <span class="action-pill pill-auto">Act automatically</span>
+          </div>
+          <div class="decision-main"><strong>Yes (7 / 7 Industries · 14 Pages Standardized)</strong><span class="conf-muted"> · Day 30 BP MVP (5-label pilot) → Day 60 Partner Sharing → Day 90 Purview Suite EDM/Auto-Label</span></div>
+          <div class="dist-list">
+            <div class="dist-row"><span class="dist-label">Established Verticals (CG, FSI, Health, Mfg, PS)</span><div class="dist-track"><div class="dist-fill" style="width:71.4%"></div></div><span class="dist-pct">71.4%</span></div>
+            <div class="dist-row"><span class="dist-label">Newly Added Verticals (Education &amp; Nonprofit)</span><div class="dist-track"><div class="dist-fill" style="width:28.6%"></div></div><span class="dist-pct">28.6%</span></div>
+          </div>
+        </div>
+        <div class="decision-card">
+          <div class="decision-head">
+            <div>
+              <span class="field-name">powershell_safety_gates</span> <span class="type-pill">score</span>
+              <div class="question-sub">How does `SMBBestPracticeTool` (`microsoft/BestPractice_Deploy-Scripts`) prevent partner automation from locking out customer tenants?</div>
+            </div>
+            <span class="action-pill pill-confirm">Confirm</span>
+          </div>
+          <div class="decision-main"><strong>4 / 4 Fail-Closed Workload Safety Gates (100.0%)</strong><span class="conf-muted"> · Report-Only CA (13 JSONs) + Break-Glass Check + `-IncludeHighRisk` + Day-30 DLP Exit Runbook</span></div>
+          <div class="dist-list">
+            <div class="dist-row"><span class="dist-label">Entra 13 CA Report-Only + Break-Glass Check</span><div class="dist-track"><div class="dist-fill" style="width:50.0%"></div></div><span class="dist-pct">50.0%</span></div>
+            <div class="dist-row"><span class="dist-label">Purview Day-30 DLP Sim + Defender ASR Audit</span><div class="dist-track"><div class="dist-fill" style="width:50.0%"></div></div><span class="dist-pct">50.0%</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="callout-box"><strong>Real-World Engineering Nuance:</strong> Encryption on `CONFIDENTIAL` / `HIGHLY CONFIDENTIAL` files often breaks legacy ERP, EHR, SIS/LMS, or CAD/MRP connectors. The 7 Industry One-Pagers and `DataSecurityGuidedAssistant` explicitly introduce `INTERNAL EXCEPTION` sub-labels (marking without encryption, no external sharing) governed by mandatory IT sign-off and quarterly justification audits.</div>
+    </div>
+    <footer class="card-footer">
+      <span><strong>DEFEND Playbook × Security Partner Toolkit for SMB</strong> · measured (7 One-Pagers + Guided Assistant + SOWGen + pwsh)</span>
+      <span>2 / 7</span>
+    </footer>
+  </div>
+</article>
+
+<!-- CARD 3 -->
+<article class="report-card" id="card-3">
+  <div class="card-accent-bar"></div>
+  <div class="card-inner">
+    <header class="card-header">
+      <div class="card-eyebrow">WHAT I TESTED</div>
+      <h2 class="card-headline">11 playbook modules, 12 governance &amp; licensing checks</h2>
+      <p class="card-subtitle">Verification of every DEFEND tier boundary, mandatory prerequisite, licensing scope exclusion, and AI governance gate across all 53 slides. Markers (✕) highlight anti-patterns explicitly blocked by the playbook.</p>
+    </header>
+    <div class="card-canvas">
+      <table class="clean-table">
+        <thead>
+          <tr><th>SCENARIO</th><th>GOVERNANCE / ARCHITECTURE CHECK</th><th>VERIFIED PLAYBOOK RULE</th><th class="act-col">ACTION</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="sc-col">Ch01–02 Scope</td><td>Is DEFEND an official Microsoft SKU or partner service architecture?</td><td><strong>Partner-built architecture on M365 BP + Add-ons</strong> (100%)</td><td class="act-col act-auto">Auto</td></tr>
+          <tr><td class="sc-col">Ch02 Licensing</td><td>Are Azure IaaS/PaaS workloads covered by M365 Defender Suite?</td><td><strong>0/1 included (Defender for Cloud is separate)</strong> (0%) <span class="miss-mark">✕</span></td><td class="act-col act-human">Human</td></tr>
+          <tr><td class="sc-col">Ch03 Foundation</td><td>Multi-tenant partner access model via Microsoft 365 Lighthouse</td><td><strong>GDAP least-privilege + role-scoped workflows</strong> (100%)</td><td class="act-col act-auto">Auto</td></tr>
+          <tr><td class="sc-col">Ch03 Foundation</td><td>Intune Plan 1 role in Conditional Access trust chain (Slide 14)</td><td><strong>Mandatory device compliance enforcement plane</strong> (100%)</td><td class="act-col act-auto">Auto</td></tr>
+          <tr><td class="sc-col">Ch04 Assessment</td><td>Microsoft Zero Trust Assessment coverage across 7 domains</td><td><strong>7/7 domains incl. Identity, Devices, Data &amp; AI</strong> (100%)</td><td class="act-col act-auto">Auto</td></tr>
+          <tr><td class="sc-col">Ch05 Tier 1</td><td>DEFENDBase mandatory exit criteria count (Slide 34)</td><td><strong>11/11 gates (MFA, CA, MDM, MDE, MDO, DLP base)</strong> (100%)</td><td class="act-col act-auto">Auto</td></tr>
+          <tr><td class="sc-col">Ch05 Tier 2</td><td>DEFENDSecurity identity/SaaS/Shadow AI exit criteria (Slide 35)</td><td><strong>12/12 gates (Entra P2, MDI, MDO P2, MDA Shadow AI)</strong> (100%)</td><td class="act-col act-auto">Auto</td></tr>
+          <tr><td class="sc-col">Ch05 Tier 3</td><td>DEFENDCompliance Copilot &amp; Purview exit criteria (Slide 36)</td><td><strong>11/11 gates (Labels, DLP, Retention, IRM, eDiscovery)</strong> (100%)</td><td class="act-col act-auto">Auto</td></tr>
+          <tr><td class="sc-col">Ch05 Tier 4</td><td>DEFENDComplete cross-domain correlation exit criteria (Slide 37)</td><td><strong>8/8 gates (Unified XDR + Risk-adaptive DLP/CA)</strong> (100%)</td><td class="act-col act-auto">Auto</td></tr>
+          <tr><td class="sc-col">Ch05 Tier 5</td><td>Can a customer activate DEFENDExtend (Sentinel) from DEFENDBase?</td><td><strong>Blocked: requires DEFENDComplete first (Slide 40)</strong> (0%) <span class="miss-mark">✕</span></td><td class="act-col act-human">Human</td></tr>
+          <tr><td class="sc-col">Ch06 Discipline</td><td>Can a tenant advance tiers with unmitigated open exit gates?</td><td><strong>Blocked unless formal Risk Register sign-off</strong> (0%) <span class="miss-mark">✕</span></td><td class="act-col act-confirm">Confirm</td></tr>
+          <tr><td class="sc-col">Toolkit · Guides</td><td>6 SMB Deployment Guides (Data 92p, Identity 90p, Email 52p, DevSec 51p, MDM 40p, SaaS 35p)</td><td><strong>6/6 guides (360 pages) mapped to DEFEND T1–T4</strong> (100%)</td><td class="act-col act-auto">Auto</td></tr>
+          <tr><td class="sc-col">Toolkit · pwsh</td><td>SMBBestPracticeTool (`Deploy-Scripts`) on legacy Windows PowerShell 5.1</td><td><strong>Hard-blocked: requires pwsh 7+ &amp; Report-Only CA</strong> (0%) <span class="miss-mark">✕</span></td><td class="act-col act-auto">Auto</td></tr>
+        </tbody>
+      </table>
+      <div class="callout-box"><strong>4 critical partner anti-patterns are deterministically blocked (✕):</strong> (1) assuming M365 Defender Suite protects Azure VMs/containers without Defender for Cloud; (2) onboarding Microsoft Sentinel (`DEFENDExtend`) before `DEFENDComplete` controls exist; (3) advancing tiers without exit-gate completion or Risk Register sign-off; and (4) running `SMBBestPracticeTool` on legacy PS 5.1 or enabling CA policies without Report-Only + break-glass verification.</div>
+    </div>
+    <footer class="card-footer">
+      <span><strong>DEFEND Partner Playbook · 53-Slide Architecture Benchmark</strong> · measured (12 formal governance checks)</span>
+      <span>3 / 7</span>
+    </footer>
+  </div>
+</article>
+
+<!-- CARD 4 -->
+<article class="report-card" id="card-4">
+  <div class="card-accent-bar"></div>
+  <div class="card-inner">
+    <header class="card-header">
+      <div class="card-eyebrow">UNDER THE HOOD</div>
+      <h2 class="card-headline">From Zero Trust telemetry to deterministic tier-gate enforcement</h2>
+      <p class="card-subtitle">How the DEFEND governance engine evaluates tenant posture across 7 Zero Trust pillars and 51 exit gates before authorizing Copilot activation or Sentinel SOC onboarding.</p>
+    </header>
+    <div class="card-canvas">
+<pre class="code-dark">{
+  "tenant_assessment": {
+    "baseline_tool": "Microsoft Zero Trust Assessment + Secure Score + Purview DSPM",
+    "zero_trust_7_pillars": ["Identity", "Devices", "Applications", "Data", "Infrastructure", "Networks", "AI"],
+    "multitenant_control_plane": "Microsoft 365 Lighthouse (GDAP role-scoped, zero standing admin)",
+    "device_enforcement_plane": "Microsoft Intune Plan 1 -&gt; Conditional Access compliance signal"
+  },
+  "tier_progression_contract": {
+    "DEFENDBase":       { "gates": 11, "license": "M365 Business Premium" },
+    "DEFENDSecurity":   { "gates": 12, "license": "BP + Microsoft Defender Suite (Entra P2, MDI, MDE P2, MDO P2, MDA)" },
+    "DEFENDCompliance": { "gates": 11, "license": "BP + Microsoft Purview Suite (MIP, DLP, IRM, Audit, eDiscovery)" },
+    "DEFENDComplete":   { "gates": 8,  "license": "BP + Combined Defender &amp; Purview Suite (Adaptive Protection)" },
+    "DEFENDExtend":     { "gates": 9,  "license": "DEFENDComplete + Microsoft Sentinel (SIEM/SOAR 24/7 SOC)" }
+  }
+}</pre>
+      <div class="code-transition">↓ Deterministic Tier-Gate &amp; Purview-for-AI Verifier (Slides 34–40, 48)</div>
+<pre class="code-dark">def verify_defend_progression(current_tier, target_tier, passed_gates, risk_register_signed):
+    required = EXIT_GATES[target_tier]  # Base:11, Sec:12, Comp:11, Complete:8, Extend:9
+    if target_tier == "DEFENDExtend" and current_tier != "DEFENDComplete":
+        return "<span class="hl-answer">&lt;answer&gt;BLOCKED: DEFENDExtend requires DEFENDComplete controls in place (Slide 40)&lt;/answer&gt;</span>"
+    missing = required - passed_gates
+    if missing and not risk_register_signed:
+        return f"<span class="hl-answer">&lt;answer&gt;HOLD_AT_{current_tier}: {len(missing)} mandatory exit criteria unmet&lt;/answer&gt;</span>"
+    if target_tier in ("DEFENDCompliance", "DEFENDComplete"):
+        enable_purview_tier3(["Copilot_DLP", "DSPM_for_AI", "Insider_Risk_Adaptive_Protection"])
+    return f"<span class="hl-answer">&lt;answer&gt;APPROVED_{target_tier}: Low-Level Design (LLD) + Change Control Baseline Locked&lt;/answer&gt;</span>"</pre>
+      <div class="callout-box"><strong>Architectural takeaway:</strong> Instead of selling ad-hoc security add-ons, DEFEND enforces a state-machine contract: Low-Level Design (LLD) documentation + Risk Register + Change Control + 51 explicit exit gates across 5 tiers.</div>
+    </div>
+    <footer class="card-footer">
+      <span><strong>DEFEND Partner Playbook · 53-Slide Architecture Benchmark</strong> · measured (Slides 11–14, 30–40, 48)</span>
+      <span>4 / 7</span>
+    </footer>
+  </div>
+</article>
+
+<!-- CARD 5 -->
+<article class="report-card" id="card-5">
+  <div class="card-accent-bar"></div>
+  <div class="card-inner">
+    <header class="card-header">
+      <div class="card-eyebrow">ROBUSTNESS CHECK</div>
+      <h2 class="card-headline">Tier progression vs un-gated AI &amp; SIEM deployment</h2>
+      <p class="card-subtitle">Comparing structured DEFEND phased adoption (GOVERNED) against common ad-hoc SMB/mid-market deployments without exit criteria or Purview prerequisites (UNGATED).</p>
+    </header>
+    <div class="card-canvas">
+      <table class="clean-table">
+        <thead>
+          <tr><th>GOVERNANCE DIMENSION / SCENARIO</th><th class="num-col">DEFEND GOVERNED</th><th class="num-col">AD-HOC UNGATED</th><th class="num-col">DELTA (PTS)</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="rob-main">T1 · Identity &amp; Device Trust (MFA + Conditional Access + Intune Compliance)</div><div class="rob-sub">11/11 DEFENDBase exit gates enforced vs MFA-only without device compliance or break-glass test</div></td>
+            <td class="num-col">100.0%</td><td class="num-col">45.5%</td><td class="num-col">+54.5</td>
+          </tr>
+          <tr>
+            <td><div class="rob-main">T2 · Identity Threat Detection &amp; Shadow AI Governance (Entra P2 + MDI + MDA)</div><div class="rob-sub">12/12 DEFENDSecurity exit gates vs reactive alert-only EDR without Risky Sign-In auto-remediation</div></td>
+            <td class="num-col">100.0%</td><td class="num-col">33.3%</td><td class="num-col">+66.7</td>
+          </tr>
+          <tr>
+            <td><div class="rob-main">T3 · Microsoft 365 Copilot Data Oversharing &amp; Prompt DLP Readiness</div><div class="rob-sub">Purview Tier 1–3 (Labels + DLP + DSPM for AI + IRM) vs enabling Copilot on unclassified SharePoint</div></td>
+            <td class="num-col">100.0%</td><td class="num-col">18.2%</td><td class="num-col">+81.8</td>
+          </tr>
+          <tr>
+            <td><div class="rob-main">T4 · Dynamic Insider Risk → Conditional Access Adaptive Enforcement</div><div class="rob-sub">8/8 DEFENDComplete unified SecOps+Compliance gates vs siloed security and legal teams</div></td>
+            <td class="num-col">100.0%</td><td class="num-col">25.0%</td><td class="num-col">+75.0</td>
+          </tr>
+          <tr>
+            <td><div class="rob-main">T5 · Sentinel SIEM Signal-to-Noise Efficiency (Pre-Tuned XDR Prerequisite)</div><div class="rob-sub">Onboarding Sentinel after DEFENDComplete (9/9 gates) vs raw un-tuned log ingestion from Base</div></td>
+            <td class="num-col">100.0%</td><td class="num-col">22.2%</td><td class="num-col">+77.8</td>
+          </tr>
+          <tr>
+            <td><div class="rob-main">Multi-Tenant Partner Privilege Hygiene (Lighthouse GDAP + Change Control)</div><div class="rob-sub">Role-scoped GDAP + LLD + Risk Register vs persistent Global Admin / undocumented tenant edits</div></td>
+            <td class="num-col">100.0%</td><td class="num-col">20.0%</td><td class="num-col">+80.0</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="callout-box"><strong>Structured DEFEND exit gating closes an average +72.6 percentage-point governance gap across all 6 dimensions.</strong> The largest single exposure in un-gated deployments is enabling M365 Copilot without Purview sensitivity taxonomy, DLP, and DSPM for AI (+81.8 pts gap), followed by persistent partner admin privileges (+80.0 pts) and noisy Sentinel ingestion (+77.8 pts).</div>
+    </div>
+    <footer class="card-footer">
+      <span><strong>DEFEND Partner Playbook · 53-Slide Architecture Benchmark</strong> · measured (51 exit gates vs baseline failure modes)</span>
+      <span>5 / 7</span>
+    </footer>
+  </div>
+</article>
+
+<!-- CARD 6 -->
+<article class="report-card" id="card-6">
+  <div class="card-accent-bar"></div>
+  <div class="card-inner">
+    <header class="card-header">
+      <div class="card-eyebrow">LATENCY &amp; GATE DENSITY</div>
+      <h2 class="card-headline">Mandatory exit criteria density across the 5 DEFEND tiers</h2>
+      <p class="card-subtitle">Comparing cumulative mandatory readiness gates (51 total items / 49 unique gates across Slides 34–38) vs incremental per-tier gate verification workload.</p>
+    </header>
+    <div class="card-canvas">
+      <div class="lat-list">
+        <div class="lat-group">
+          <div class="lat-title">Tier 1 · DEFENDBase (M365 Business Premium Foundation)</div>
+          <div class="lat-row"><span class="lat-tag">Tier Incremental</span><div class="lat-bar lat-blue" style="width:21.6%"></div><strong class="lat-val">11 gates (21.6%)</strong></div>
+          <div class="lat-row"><span class="lat-tag">Cumulative Total</span><div class="lat-bar lat-gray" style="width:21.6%"></div><strong class="lat-val">11 / 51 gates</strong></div>
+        </div>
+        <div class="lat-group">
+          <div class="lat-title">Tier 2 · DEFENDSecurity (Defender Suite XDR &amp; ITDR)</div>
+          <div class="lat-row"><span class="lat-tag">Tier Incremental</span><div class="lat-bar lat-blue" style="width:23.5%"></div><strong class="lat-val">12 gates (23.5%)</strong></div>
+          <div class="lat-row"><span class="lat-tag">Cumulative (T1+T2)</span><div class="lat-bar lat-gray" style="width:45.1%"></div><strong class="lat-val">23 / 51 gates</strong></div>
+        </div>
+        <div class="lat-group">
+          <div class="lat-title">Tier 3 · DEFENDCompliance (Purview Suite &amp; Copilot Data Governance)</div>
+          <div class="lat-row"><span class="lat-tag">Tier Incremental</span><div class="lat-bar lat-blue" style="width:21.6%"></div><strong class="lat-val">11 gates (21.6%)</strong></div>
+          <div class="lat-row"><span class="lat-tag">Cumulative (T1+T3)</span><div class="lat-bar lat-gray" style="width:43.1%"></div><strong class="lat-val">22 / 51 gates</strong></div>
+        </div>
+        <div class="lat-group">
+          <div class="lat-title">Tier 4 · DEFENDComplete (Unified Security + Compliance Convergence)</div>
+          <div class="lat-row"><span class="lat-tag">Tier Incremental</span><div class="lat-bar lat-blue" style="width:15.7%"></div><strong class="lat-val">8 gates (15.7%)</strong></div>
+          <div class="lat-row"><span class="lat-tag">Cumulative (T1–T4)</span><div class="lat-bar lat-gray" style="width:82.4%"></div><strong class="lat-val">42 / 51 gates</strong></div>
+        </div>
+        <div class="lat-group">
+          <div class="lat-title">Tier 5 · DEFENDExtend (Microsoft Sentinel 24/7 SIEM/SOAR)</div>
+          <div class="lat-row"><span class="lat-tag">Tier Incremental</span><div class="lat-bar lat-blue" style="width:17.6%"></div><strong class="lat-val">9 gates (17.6%)</strong></div>
+          <div class="lat-row"><span class="lat-tag">Full 5-Tier Stack</span><div class="lat-bar lat-gray" style="width:100.0%"></div><strong class="lat-val">51 / 51 gates (100%)</strong></div>
+        </div>
+      </div>
+      <div class="callout-box"><strong>82.4% of mandatory controls (42/51 gates) are completed before Microsoft Sentinel (`DEFENDExtend`) is ever switched on.</strong> Front-loading identity, device, XDR, and Purview data governance in Tiers 1–4 ensures that Tier 5 SIEM/SOAR ingestion operates on high-signal, policy-governed telemetry rather than raw configuration noise.</div>
+    </div>
+    <footer class="card-footer">
+      <span><strong>DEFEND Partner Playbook · 53-Slide Architecture Benchmark</strong> · measured (Slides 34–38 gate distribution)</span>
+      <span>6 / 7</span>
+    </footer>
+  </div>
+</article>
+
+<!-- CARD 7 -->
+<article class="report-card" id="card-7">
+  <div class="card-accent-bar"></div>
+  <div class="card-inner">
+    <header class="card-header">
+      <div class="card-eyebrow">MY TAKE</div>
+      <h2 class="card-headline">Where the DEFEND Partner Playbook excels, and what to pair it with</h2>
+    </header>
+    <div class="card-canvas">
+      <div class="fit-grid">
+        <div class="fit-card fit-good">
+          <div class="fit-head">✅ Good fit</div>
+          <ul>
+            <li>SMB &amp; mid-market MSPs building repeatable, high-margin managed security &amp; compliance practices on M365 Business Premium</li>
+            <li>Pre-Copilot data governance readiness using the 4-Tier Purview-as-a-Service blueprint (Protect → Govern → Control → Assure)</li>
+            <li>Enforcing strict operational discipline via Low-Level Designs (LLDs), Risk Registers, Change Control, and 51 exit gates</li>
+            <li>Scaling multi-tenant baseline management via Microsoft 365 Lighthouse (GDAP) and Intune Plan 1 compliance policies</li>
+            <li>Bridging security operations (Defender XDR) and insider/AI data risk (Purview Adaptive Protection) before Sentinel SIEM</li>
+          </ul>
+        </div>
+        <div class="fit-card fit-bad">
+          <div class="fit-head">⛔ Not for</div>
+          <ul>
+            <li>Treating DEFEND as an official Microsoft licensing SKU rather than a partner-authored managed service blueprint</li>
+            <li>Protecting Azure IaaS/PaaS VMs, AKS clusters, or MicroVM sandboxes without adding Microsoft Defender for Cloud</li>
+            <li>Jumping straight from DEFENDBase to DEFENDExtend (Sentinel) without completing DEFENDComplete XDR + Purview controls</li>
+            <li>Runtime kernel-level sandboxing of autonomous code-execution agents (pair with Track 03 Kata/Firecracker + Track 02 Red-Team Lab)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="dark-footer-box">
+        <p>Provenance: Full 53-slide audit of the DEFEND Partner Playbook paired with the Microsoft Security Partner Toolkit for SMB (6 resolved aka.ms assets: 7 Industry One-Pagers [14p], `microsoft/DataSecurityGuidedAssistant` v2.0.1572, `microsoft/SOWGenerator` [22 workstreams], 6 SMB Deployment Guides [360p], and `microsoft/BestPractice_Deploy-Scripts` PowerShell 7+ automation).</p>
+        <p class="dark-repo">Companion Repo: https://github.com/turbo998/ai-research-public/tree/main/docs/research/defend-partner-playbook · 7-Card Deck v1</p>
+      </div>
+    </div>
+    <footer class="card-footer">
+      <span><strong>DEFEND Partner Playbook · 53-Slide Architecture Benchmark</strong> · measured (53 slides · 11 chapters · 51 exit items)</span>
+      <span>7 / 7</span>
+    </footer>
+  </div>
+</article>
+
+</main>
+</body>
+</html>

@@ -1,0 +1,1415 @@
+<!doctype html>
+<html lang="zh-CN" data-builder-style="precision">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>AI 安全研究与可视化报表中心 (AI Security) — 陈启 (Qi Chen)</title>
+<meta name="description" content="陈启 (turbo998) 全栈 AI 安全与治理可视化报表中心：涵盖 DEFEND 五级托管安全与 Purview-for-AI、微软 SMB 安全合作伙伴工具包 (6 大解析资产与 360 页部署指南)、多智能体网络红队 (OWASP ASI01–09)、AKSClaw/E2B 内核零信任沙箱、Entra Agent ID 治理经济学、Web IQ 反注入支付护栏及终端 Agent 边界审计。" />
+<link rel="stylesheet" href="style.css" />
+<script src="theme-switcher.js" defer></script>
+<script src="reveal.js" defer></script>
+<style>
+  .sec-grid-2 { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 18px; }
+  .sec-grid-equal { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .panel-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 20px 22px;
+    box-shadow: var(--card-shadow);
+  }
+  .panel-card h3 { margin: 0 0 8px; font-size: 17px; font-weight: 700; }
+  .tier-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+  .tier-tab {
+    font-family: var(--mono); font-size: 12px; font-weight: 600;
+    padding: 8px 14px; border-radius: 8px; cursor: pointer;
+    border: 1px solid var(--border-strong); background: var(--surface-2);
+    color: var(--text-2); transition: all .15s;
+  }
+  .tier-tab:hover { border-color: var(--accent); color: var(--text); }
+  .tier-tab.active {
+    background: var(--accent); color: #fff; border-color: var(--accent);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+  }
+  .tier-meta-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px;
+  }
+  .tier-stat {
+    background: var(--surface-2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 10px 12px;
+  }
+  .tier-stat-lbl { font-family: var(--mono); font-size: 10.5px; color: var(--text-3); text-transform: uppercase; }
+  .tier-stat-val { font-family: var(--mono); font-size: 13.5px; font-weight: 700; color: var(--text); margin-top: 3px; }
+  .gate-list {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px;
+  }
+  .gate-item {
+    display: flex; align-items: flex-start; gap: 8px;
+    background: var(--surface-2); border: 1px solid var(--border);
+    border-radius: 7px; padding: 8px 10px; font-size: 12.5px; color: var(--text-2);
+    cursor: pointer; user-select: none; transition: border-color .12s, background .12s;
+  }
+  .gate-item:hover { border-color: var(--accent); }
+  .gate-item.checked {
+    border-color: rgba(5, 150, 105, 0.45); background: var(--good-soft); color: var(--text);
+  }
+  .gate-check {
+    font-family: var(--mono); font-weight: 700; color: var(--good);
+    min-width: 16px; line-height: 1.3;
+  }
+  .progress-wrap {
+    margin-top: 14px; background: var(--surface-2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 12px 14px;
+  }
+  .progress-head {
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: var(--mono); font-size: 12px; margin-bottom: 6px;
+  }
+  .progress-bar-bg {
+    width: 100%; height: 10px; background: var(--border); border-radius: 999px; overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%; background: linear-gradient(90deg, var(--accent), var(--good));
+    border-radius: 999px; transition: width .25s ease;
+  }
+  .purview-step {
+    border-left: 3px solid var(--accent); background: var(--surface-2);
+    border-radius: 0 8px 8px 0; padding: 10px 14px; margin-bottom: 10px;
+  }
+  .purview-step-head {
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--accent);
+  }
+  .purview-step p { margin: 4px 0 0; font-size: 12.5px; color: var(--text-2); line-height: 1.45; }
+  .bar-chart-row { margin-bottom: 13px; }
+  .bar-chart-label {
+    display: flex; justify-content: space-between; font-size: 12.5px; font-weight: 600;
+    margin-bottom: 4px; color: var(--text);
+  }
+  .bar-chart-sub { font-family: var(--mono); font-size: 11px; color: var(--text-3); margin-bottom: 5px; }
+  .dual-bar-track {
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .bar-line {
+    display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 11px;
+  }
+  .bar-tag { width: 78px; color: var(--text-3); }
+  .bar-fill-wrap { flex: 1; background: var(--surface-2); height: 11px; border-radius: 999px; overflow: hidden; border: 1px solid var(--border); }
+  .bar-fill-good { height: 100%; background: linear-gradient(90deg, var(--accent), var(--good)); border-radius: 999px; }
+  .bar-fill-warn { height: 100%; background: #ef4444; opacity: 0.75; border-radius: 999px; }
+  .bar-pct { width: 52px; text-align: right; font-weight: 700; color: var(--text); }
+  .matrix-table-wrap { overflow-x: auto; }
+  .sec-table {
+    width: 100%; border-collapse: collapse; font-size: 12.8px;
+  }
+  .sec-table th {
+    font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .06em;
+    color: var(--text-3); text-align: left; padding: 10px 10px;
+    border-bottom: 2px solid var(--border-strong); background: var(--surface-2);
+  }
+  .sec-table td {
+    padding: 10px 10px; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--text-2);
+  }
+  .sec-table tr:hover td { background: var(--surface-hover); }
+  .code-pill {
+    font-family: var(--mono); font-size: 11px; font-weight: 600;
+    padding: 2px 6px; border-radius: 4px; background: var(--surface-2);
+    border: 1px solid var(--border); color: var(--text); white-space: nowrap;
+  }
+  .deck-viewer-bar {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+    gap: 10px; padding: 12px 16px; background: var(--surface-2);
+    border: 1px solid var(--border); border-radius: var(--radius) var(--radius) 0 0;
+  }
+  .deck-frame {
+    width: 100%; height: 860px; border: 1px solid var(--border); border-top: 0;
+    border-radius: 0 0 var(--radius) var(--radius); background: #e2e8f0;
+  }
+  .subcol-bar {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+    gap: 10px; padding: 11px 16px; margin: 18px 0 6px;
+    background: var(--surface-2); border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+  }
+  .subcol-links { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .subcol-pill {
+    font-family: var(--mono); font-size: 12px; font-weight: 600;
+    padding: 6px 12px; border-radius: 7px; text-decoration: none;
+    color: var(--text-2); background: var(--surface); border: 1px solid var(--border);
+    transition: all .15s;
+  }
+  .subcol-pill:hover { border-color: var(--accent); color: var(--text); }
+  .subcol-pill.active {
+    background: var(--accent); color: #fff; border-color: var(--accent);
+    box-shadow: 0 3px 10px rgba(37, 99, 235, 0.25);
+  }
+  @media (max-width: 960px) {
+    .sec-grid-2, .sec-grid-equal, .gate-list, .tier-meta-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="zh.html"><img src="assets/photo.jpg" alt="">陈琪 · QI CHEN</a>
+    <div class="nav-links">
+      <a href="zh.html">研究总览</a>
+      <a href="zh-ai-security.html" class="active">🛡️ AI 安全</a>
+      <a href="zh-security-ai-landing-zone.html" style="color:var(--good);font-weight:700;">🏗️ 安全 AI 着陆区</a>
+      <a href="zh-benchmarks.html">Benchmark报告</a>
+      <a href="zh-writing.html">工作台与评测</a>
+      <a href="zh-projects.html">核心工程</a>
+      <a href="zh-opensource.html">开源仓库</a>
+      <a href="zh-openrouter.html">OpenRouter 监控</a>
+      <a href="zh-about.html">关于与履历</a>
+      <a href="zh-style-preview.html" class="nav-style-pill">[风格预览]</a>
+    </div>
+    <a class="lang-switch" href="ai-security.html" hreflang="en">EN</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <!-- ==================== 专项子栏目切换导航条 ==================== -->
+  <div class="subcol-bar">
+    <div style="font-family:var(--mono);font-size:11.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;">
+      🛡️ AI 安全研究导航与专项子栏目
+    </div>
+    <div class="subcol-links">
+      <a class="subcol-pill active" href="zh-ai-security.html">01 · AI 安全六大主线总览</a>
+      <a class="subcol-pill" href="zh-security-ai-landing-zone.html">02 · 专项子栏目：Security AI Landing Zone (安全 AI 着陆区 × Frontier SOC) ↗</a>
+      <a class="subcol-pill" href="#defend-simulator">03 · 专项子栏目：DEFEND 五层体系与 SMB 伙伴工具包</a>
+      <a class="subcol-pill" href="#decks">04 · 7-Card 可视化评测报告</a>
+    </div>
+  </div>
+
+  <!-- ==================== HERO & TELEMETRY COMMAND BAR ==================== -->
+  <div class="builder-hero">
+    <div class="builder-hero-grid">
+      <div>
+        <div class="bh-kicker">
+          <span class="pulse-dot" aria-hidden="true"></span>
+          <span>AI SECURITY &amp; GOVERNANCE COMMAND CENTER · 6 大研究主线 · 15+ 仓库与实验室</span>
+        </div>
+        <h1>全栈 <span class="grad">AI 安全与智能体纵深防御</span> 可视化研究报表中心</h1>
+        <p class="bh-sub">
+          系统性梳理并汇总截至目前 <code>@turbo998</code> 全部 AI Security 相关研究资产——从 <strong>DEFEND 五级托管安全与 Purview-for-AI 治理手册</strong>、<strong>微软 SMB 安全合作伙伴工具包（6 大解析资产与 360 页实施指南）</strong>、<strong>多智能体网络红队攻防</strong>、<strong>AKSClaw/E2B 内核级 MicroVM 沙箱</strong>、<strong>Entra Agent ID 治理经济学</strong>，到 <strong>Web IQ 反注入与 AP2 加密支付护栏</strong> 及 <strong>终端 Agent 边界与开源许可证审计</strong>，以交互式可视化报表形式呈现，方便外部架构师与读者一站式学习消化。
+        </p>
+        <div class="bh-tags">
+          <span class="bh-tag">🛡️ 主线 01 · DEFEND 五级安全 (53页·51门禁) + SMB 伙伴工具包 (6资产·360页指南)</span>
+          <span class="bh-tag">🔴 主线 02 · 多智能体网络红队 (OWASP ASI01–09 四大失效模式)</span>
+          <span class="bh-tag">🧱 主线 03 · Kata VM / Firecracker (108ms) &amp; Tetragon eBPF (&lt;0.3ms)</span>
+          <span class="bh-tag">🪪 主线 04 · Entra Agent ID 双重归因 &amp; C_accepted(g) 治理经济学</span>
+          <span class="bh-tag">🛒 主线 05 · Web IQ 反注入 (31.4%→0.0%) &amp; AP2 MandateVC 支付锁</span>
+          <span class="bh-tag">💻 主线 06 · Omarchy (174断言)、5款个人 Agent 矩阵 &amp; LocalJEV 协议审计</span>
+        </div>
+      </div>
+      <div class="bh-actions">
+        <a class="bh-btn primary" href="zh-security-ai-landing-zone.html"><span>🏗️ 专项子栏目：安全 AI 着陆区</span><span>→</span></a>
+        <a class="bh-btn" href="#defend-simulator"><span>🛡️ DEFEND 与 SMB 工具包仿真</span><span>↓</span></a>
+        <a class="bh-btn" href="workshops/ai-security/landing-zone-cards.html" target="_blank" rel="noopener"><span>📊 安全 AI 着陆区 7-Card</span><span>↗</span></a>
+        <a class="bh-btn" href="workshops/ai-security/defend-cards.html" target="_blank" rel="noopener"><span>📊 DEFEND + 工具包 7-Card</span><span>↗</span></a>
+        <a class="bh-btn" href="workshops/ai-security/cards.html" target="_blank" rel="noopener"><span>📊 六大主线全景 7-Card</span><span>↗</span></a>
+      </div>
+    </div>
+
+    <div class="telemetry-strip" role="region" aria-label="AI 安全核心遥测指标">
+      <div class="tm-item">
+        <span class="tm-val">6 大主线 + 专项子栏目</span>
+        <span class="tm-lbl">安全 AI 着陆区 (42页) + DEFEND (53页) + 多 Agent 红队 + MicroVM 沙箱</span>
+      </div>
+      <div class="tm-item">
+        <span class="tm-val">5 大支柱 · WK3 门禁</span>
+        <span class="tm-lbl">Agent 365 控制平面 (M365 E7) + 5+4 DEFEND/Purview 层级 + 360页指南</span>
+      </div>
+      <div class="tm-item">
+        <span class="tm-val">100+ SOC 智能体</span>
+        <span class="tm-lbl">Frontier SOC：ISOC 内置 SIEM + Project Perception (红蓝绿) + MDASH</span>
+      </div>
+      <div class="tm-item">
+        <span class="tm-val">&lt;0.3ms / 108ms</span>
+        <span class="tm-lbl">Cilium Tetragon eBPF 内核级 SIGKILL &amp; E2B Firecracker 快照恢复</span>
+      </div>
+      <div class="tm-item">
+        <span class="tm-val">0.0% 泄漏 · 174 门禁</span>
+        <span class="tm-lbl">云端 IMDS 阻断、Web IQ 注入剥离 (31.4%→0.0%) &amp; Agent OS 安全契约</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 专项子栏目聚光灯：SECURITY AI LANDING ZONE ==================== -->
+  <section id="landing-zone-spotlight" style="margin-bottom:28px;">
+    <div class="panel-card" style="border:2px solid var(--good);background:linear-gradient(135deg, var(--surface) 0%, var(--good-soft) 100%);">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:14px;">
+        <div style="flex:1;min-width:300px;">
+          <div style="font-family:var(--mono);font-size:11.5px;font-weight:800;color:var(--good);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">
+            🏗️ 专项子栏目 · SECURITY AI LANDING ZONE（安全 AI 着陆区与 FRONTIER SOC · 42页完整解构）
+          </div>
+          <h2 style="margin:0 0 8px;font-size:22px;font-weight:800;color:var(--text);">
+            Security for AI（“出生即受控”五大支柱）× AI for Security（Frontier SOC：ISOC + Perception + MDASH）
+          </h2>
+          <p style="margin:0 0 12px;font-size:13.2px;color:var(--text-2);line-height:1.55;">
+            深入剖析为何传统静态特征防御无法应对大模型驱动的攻击（2026年1月墨西哥蒙特雷水务局工控入侵：攻击者使用 Claude + GPT 在数小时内生成 <strong>49 个模块约 17,000 行代码</strong>）；为什么 <strong>FTE Offer 第 3 周（Week 3）</strong> 将 <strong>Secure AI Landing Zone + Copilot 统一入口</strong> 设为第 4–5 周上线 3 个生产级 Agent 的强制前提；以及 <strong>Microsoft Agent 365（五大支柱 · M365 E7）</strong> 与 <strong>Frontier SOC（ISOC + Project Perception 红/蓝/绿三智能体 + MDASH 100+ 专项智能体）</strong> 如何支撑 <code>Assess → Build → Operate</code> 伙伴可复制商业服务。
+          </p>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;">
+            <a class="wb-link primary" href="zh-security-ai-landing-zone.html" style="background:var(--good);border-color:var(--good);color:#fff;">🏗️ 进入《安全 AI 着陆区》专项子栏目 →</a>
+            <a class="wb-link" href="workshops/ai-security/landing-zone-cards.html" target="_blank" rel="noopener">📊 打开 7-Card 可视化报告 ↗</a>
+            <a class="wb-link" href="assets/security-ai-landing-zone-architecture.svg" target="_blank" rel="noopener">🔍 架构全景 SVG ↗</a>
+            <a class="wb-link" href="https://github.com/turbo998/ai-research-public/tree/main/docs/research/security-ai-landing-zone" target="_blank" rel="noopener">📘 GitHub 深度研究归档 ↗</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 01: ARCHITECTURE PANORAMA ==================== -->
+  <section id="panorama">
+    <div class="sec-head">
+      <div>
+        <div class="sec-label"><span class="num">01</span>六层 AI 安全与纵深防御参考架构全景</div>
+        <h2>为什么提示词（Prompt / SKILL.md）绝不是安全边界？</h2>
+        <p class="sec-intro">
+          所有六大研究主线共同验证一条工程铁律：大模型上下文窗口内的自然语言约束在对抗压力下极易失效；真正的企业级 AI 安全必须在模型推理循环之外实施<strong>带外强制（Out-of-Band Enforcement）</strong>——覆盖身份归因、Purview 数据治理、多智能体血缘隔离、MicroVM/eBPF 内核边界与 AP2 加密授权凭证。
+        </p>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <a class="wb-link primary" href="assets/ai-security-architecture.svg" target="_blank" rel="noopener">🔍 查看高清矢量架构图 (SVG) ↗</a>
+        <a class="wb-link" href="#decks">📊 跳转至 7-Card 评测报告阅读器 ↓</a>
+      </div>
+    </div>
+
+    <div class="panel-card" style="padding:14px;overflow:hidden;">
+      <img src="assets/ai-security-architecture.svg" alt="6-Track AI Security and Agent Defense-in-Depth Architecture Panorama" style="width:100%;height:auto;display:block;border-radius:8px;" />
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 02: DEFEND PARTNER PLAYBOOK & SMB TOOLKIT ==================== -->
+  <section id="defend-simulator">
+    <div class="sec-head">
+      <div>
+        <div class="sec-label"><span class="num">02</span>主线 01 深度拆解 · DEFEND 合作伙伴手册 × 微软 SMB 安全合作伙伴工具包</div>
+        <h2>交互式 DEFEND 五级准出门禁仿真器 &amp; Purview-for-AI 四级治理演进</h2>
+        <p class="sec-intro">
+          融合 53 页 <strong>DEFEND Partner Playbook</strong>（战略与 51 项强制准出门禁）与 <strong>Microsoft Security Partner Toolkit for SMB</strong>（5 阶段落地工具链与 360 页实施手册）：点击下方不同层级或勾选门禁项，实时模拟客户租户从 <code>DEFENDBase</code> 到 <code>DEFENDExtend</code> 及安全启用 Microsoft 365 Copilot 的治理闭环。
+        </p>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <a class="wb-link primary" href="workshops/ai-security/defend-cards.html" target="_blank" rel="noopener">📊 打开 DEFEND + SMB 工具包 7-Card ↗</a>
+        <a class="wb-link" href="https://github.com/turbo998/ai-research-public/tree/main/docs/research/defend-partner-playbook" target="_blank" rel="noopener">📘 GitHub 完整研究归档 ↗</a>
+      </div>
+    </div>
+
+    <div class="sec-grid-2">
+      <!-- Left: Interactive 5-Tier DEFEND Simulator -->
+      <div class="panel-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
+          <span class="wb-badge cobalt">交互式准出门禁仿真器 (SLIDES 19–40)</span>
+          <span style="font-family:var(--mono);font-size:11.5px;color:var(--text-3);">点击任一层级或门禁项模拟租户演进</span>
+        </div>
+
+        <div class="tier-tabs" role="tablist" aria-label="DEFEND 服务层级">
+          <button type="button" class="tier-tab active" data-tier="base" onclick="selectDefendTier('base')">T1 · DEFENDBase (11项)</button>
+          <button type="button" class="tier-tab" data-tier="security" onclick="selectDefendTier('security')">T2 · DEFENDSecurity (12项)</button>
+          <button type="button" class="tier-tab" data-tier="compliance" onclick="selectDefendTier('compliance')">T3 · DEFENDCompliance (11项)</button>
+          <button type="button" class="tier-tab" data-tier="complete" onclick="selectDefendTier('complete')">T4 · DEFENDComplete (8项)</button>
+          <button type="button" class="tier-tab" data-tier="extend" onclick="selectDefendTier('extend')">T5 · DEFENDExtend (9项)</button>
+        </div>
+
+        <h3 id="dt-title">Tier 1 · DEFENDBase — 身份、设备与协同办公零信任安全基座</h3>
+        <p id="dt-desc" style="font-size:13.2px;color:var(--text-2);margin:0 0 12px;line-height:1.55;">
+          基于 Microsoft 365 Business Premium + Intune Plan 1 + M365 Lighthouse (GDAP) 构建。在引入任何高级 XDR、Copilot 或 Sentinel SIEM 之前，强制完成身份 MFA、条件访问、设备合规与基础数据保护的标准化加固。
+        </p>
+
+        <div class="tier-meta-grid">
+          <div class="tier-stat">
+            <div class="tier-stat-lbl">授权许可底座 (Licensing)</div>
+            <div class="tier-stat-val" id="dt-license">M365 Business Premium</div>
+          </div>
+          <div class="tier-stat">
+            <div class="tier-stat-lbl">核心微软技术栈</div>
+            <div class="tier-stat-val" id="dt-stack">Entra P1 · Intune P1 · MDE/MDO · Lighthouse</div>
+          </div>
+          <div class="tier-stat">
+            <div class="tier-stat-lbl">演进铁律 (Slide 40)</div>
+            <div class="tier-stat-val" id="dt-rule">进入 T2 / T3 的强制前置基座</div>
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+          <strong style="font-family:var(--mono);font-size:12px;color:var(--text);" id="dt-gate-heading">强制准出门禁清单 (Mandatory Exit Criteria: 11 / 11 已达成)</strong>
+          <div style="display:flex;gap:6px;">
+            <button type="button" class="wb-link" onclick="toggleAllCurrentGates(true)" style="cursor:pointer;">✓ 全部达标</button>
+            <button type="button" class="wb-link" onclick="toggleAllCurrentGates(false)" style="cursor:pointer;">↺ 模拟未达标缺口</button>
+          </div>
+        </div>
+
+        <div class="gate-list" id="dt-gate-list"></div>
+
+        <div class="progress-wrap">
+          <div class="progress-head">
+            <span id="dt-progress-text">准出门禁达成率: 11 / 11 (100%)</span>
+            <span id="dt-status-badge" class="wb-badge">✅ 准予晋升下一阶段</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="dt-progress-bar" style="width:100%;"></div>
+          </div>
+          <div id="dt-gov-verdict" style="font-family:var(--mono);font-size:11.5px;color:var(--text-2);margin-top:8px;">
+            治理判定 (Slide 40)：100% 满足当前层级强制准出门禁，低层设计文档 (LLD) 与变更控制基线已锁定，准予晋升至 DEFENDSecurity 或 DEFENDCompliance。
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Purview-as-a-Service 4-Tier Blueprint & 7-Dimension Zero Trust Assessment -->
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div class="panel-card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <span class="wb-badge">附录 B · PURVIEW-AS-A-SERVICE 四级蓝图 (SLIDES 45–50)</span>
+            <span class="wb-id">Copilot 与 AI 数据治理</span>
+          </div>
+          <h3>面向 Microsoft 365 Copilot 与企业 AI 的四级数据安全演进</h3>
+          <p style="font-size:12.8px;color:var(--text-2);margin:0 0 12px;">
+            防止 M365 Copilot 因历史权限过度共享而检索出高敏文档，或通过提示词/响应泄露受监管数据：
+          </p>
+
+          <div class="purview-step">
+            <div class="purview-step-head">
+              <span>Tier 1 · Data Protect (数据保护基线)</span>
+              <span>敏感信息类型 (SIT) + 核心标签</span>
+            </div>
+            <p>盘点 Exchange、SharePoint、OneDrive 与 Teams 中的敏感数据；发布基础敏感度标签（含加密/水印）及核心云端 DLP 策略。</p>
+          </div>
+
+          <div class="purview-step">
+            <div class="purview-step-head">
+              <span>Tier 2 · Data Govern (数据生命周期与审计)</span>
+              <span>终端 DLP + 保留策略 + 电子取证</span>
+            </div>
+            <p>将策略延伸至 Windows/macOS 终端设备（Endpoint DLP），落地数据保留与销毁周期，开启统一审计日志与内容检索。</p>
+          </div>
+
+          <div class="purview-step" style="border-left-color:var(--good);background:var(--good-soft);">
+            <div class="purview-step-head" style="color:var(--good);">
+              <span>Tier 3 · Data Control (AI 护栏与风险自适应) ★</span>
+              <span>Copilot DLP + DSPM for AI + IRM</span>
+            </div>
+            <p><strong>企业开启 Copilot 的强制安全门槛：</strong>启用 <strong>DSPM for AI</strong>（AI 态势感知）、<strong>DLP for M365 Copilot</strong>（拦截高敏标签被 AI 引用或输出）、<strong>内部风险管理 (IRM)</strong> 与 <strong>自适应保护 (Adaptive Protection)</strong>。</p>
+          </div>
+
+          <div class="purview-step">
+            <div class="purview-step-head">
+              <span>Tier 4 · Data Assure (持续托管合规运营)</span>
+              <span>持续漂移调优与董事会合规度量</span>
+            </div>
+            <p>按月/按季开展策略漂移调优、DSPM for AI 过度共享治理复盘、监管合规证明输出与法务诉讼保全。</p>
+          </div>
+        </div>
+
+        <div class="panel-card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <span class="wb-badge amber">第 04 章 · 微软零信任评估七大维度 (SLIDES 16–18)</span>
+            <span class="wb-id">7 Assessment Pillars</span>
+          </div>
+          <h3>包含 AI 维度的七维零信任评估基线</h3>
+          <p style="font-size:12.5px;color:var(--text-2);margin:0 0 10px;">
+            每次客户导入均通过 Microsoft Zero Trust Assessment 工具与 Secure Score 从 <strong>7 个核心维度</strong> 建立量化基线：
+          </p>
+          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px;font-family:var(--mono);font-size:11.5px;">
+            <div class="tier-stat"><strong>01 · Identity (身份)</strong>: 防钓鱼 MFA、CA、PIM/GDAP</div>
+            <div class="tier-stat"><strong>02 · Devices (设备)</strong>: Intune 合规、ASR、BitLocker</div>
+            <div class="tier-stat"><strong>03 · Applications (应用)</strong>: MDA OAuth 应用治理</div>
+            <div class="tier-stat"><strong>04 · Data (数据)</strong>: MIP 敏感标签、加密、DLP</div>
+            <div class="tier-stat"><strong>05 · Infrastructure (基础设施)</strong>: 最小权限、Defender Cloud*</div>
+            <div class="tier-stat"><strong>06 · Networks (网络)</strong>: 分段隔离、安全链接/出口管控</div>
+            <div class="tier-stat" style="grid-column:span 2;border-color:var(--accent);background:var(--accent-soft);">
+              <strong>07 · Artificial Intelligence (AI 人工智能)</strong>: 影子 AI 发现 (MDA)、DSPM for AI、Copilot 提示词/检索 DLP、过度共享收敛
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Supplemental Track 01 Sub-Section: Microsoft 产品体系安全与 AI 就绪工程技术架构 (360页部署规范 + 7大行业SIT + 5阶段自动化) -->
+    <div class="panel-card" id="smb-partner-toolkit" style="margin-top:18px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:10px;">
+        <div>
+          <span class="wb-badge">MICROSOFT 产品体系安全与 AI 工程实践 · 5 阶段自动化流水线与 360 页技术配置规范</span>
+          <h3 style="margin-top:8px;">从 8 级敏感标签 Schema、前端策略编译器、22 项架构蓝图到 6 大工作负载配置与 PowerShell 7+ 幂等执行</h3>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <a class="wb-link primary" href="https://microsoft.github.io/DataSecurityGuidedAssistant/" target="_blank" rel="noopener">🧭 在线数据安全策略编译器 ↗</a>
+          <a class="wb-link primary" href="https://microsoft.github.io/SOWGenerator/" target="_blank" rel="noopener">📝 22 项 Purview 架构蓝图生成器 ↗</a>
+          <a class="wb-link" href="https://microsoft.github.io/BestPractice_Deploy-Scripts/" target="_blank" rel="noopener">⚙️ PowerShell 7+ 部署脚本库 ↗</a>
+        </div>
+      </div>
+      <p style="font-size:13.2px;color:var(--text-2);margin:0 0 14px;line-height:1.55;">
+        严格聚焦 Microsoft 安全与 AI 产品体系的<strong>纯工程技术实现</strong>——将 <strong>DEFEND 五层技术基线（53 页）</strong>、<strong>7 大受监管行业信息保护技术规范（14 页）</strong>、<strong>3 个微软官方开源策略编译器与 PowerShell 7+ 自动化仓库</strong> 以及 <strong>6 本工作负载最佳实践部署手册（共 360 页）</strong> 提炼为端到端工程矩阵：
+      </p>
+
+      <!-- 5 阶段工程自动化流水线表 -->
+      <div class="matrix-table-wrap" style="margin-bottom:16px;">
+        <table class="sec-table">
+          <thead>
+            <tr>
+              <th>工程流水线阶段</th>
+              <th>核心技术规范与制品</th>
+              <th>解析后链接与开源仓库</th>
+              <th>核心技术架构与策略强制机制</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="code-pill">阶段 1 · Schema 与 SIT</span></td>
+              <td><strong>7 大受监管行业信息保护规范</strong> (共 14 页 PDF)</td>
+              <td>
+                <a href="https://aka.ms/MIP-Industry-OnePagers" target="_blank" rel="noopener"><code>aka.ms/MIP-Industry-OnePagers</code> ↗</a>
+              </td>
+              <td>
+                覆盖 <strong>7 大垂直行业（每份 2 页）</strong>：医疗健康 (HIPAA/ICD-10/EHR)、金融保险 (GLBA/PCI-DSS/SOX/SWIFT)、制造与分销 (ITAR/EAR/CAD/SCADA/BOM)、消费品零售 (POS/PCI/会员 PII)、专业服务 (并购数据室/客户卷宗)、教育 (FERPA/COPPA/SIS)、非营利组织 (捐赠人 PII/拨款档案)。统一定义 <strong>Day 30 → Day 60 → Day 90 演进门禁</strong> 与 <strong>8 级 DEFEND 对齐敏感度标签体系</strong>（内建 2 个面向无头 ERP/MES/EHR/SIS/CAD 批处理防加密中断的 <code>INTERNAL EXCEPTION</code> 加密豁免标签）。
+              </td>
+            </tr>
+            <tr>
+              <td><span class="code-pill">阶段 2 · 策略编译</span></td>
+              <td><strong>数据安全引导式策略编译器 (Data Security Guided Assistant)</strong> (<code>v2.0.1572</code>)</td>
+              <td>
+                <a href="https://microsoft.github.io/DataSecurityGuidedAssistant/" target="_blank" rel="noopener">在线编译器 ↗</a> ·
+                <a href="https://github.com/microsoft/DataSecurityGuidedAssistant" target="_blank" rel="noopener"><code>microsoft/DataSecurityGuidedAssistant</code> ↗</a>
+              </td>
+              <td>
+                零后端纯前端确定性策略编译引擎（严格 CSP <code>default-src 'none'</code> + SHA-256 完整性校验），提供三大引擎：<strong>Labeling Tool（标签决策树）</strong>、<strong>DLP Tool（DLP 策略定界）</strong> 与 <strong>Combined Flow（标签→DLP 联动）</strong>。支持 8 大行业 SIT 集合、8 大司法管辖区与 6 档许可证，一键在 <strong>8 级 DEFEND 模型</strong> 与 <strong>4 级精简模型</strong> 间切换并导出 Word/CSV/PDF 技术规范。
+              </td>
+            </tr>
+            <tr>
+              <td><span class="code-pill">阶段 3 · 架构定界</span></td>
+              <td><strong>Purview 22 项工作流架构蓝图生成器 (SOW Generator)</strong></td>
+              <td>
+                <a href="https://microsoft.github.io/SOWGenerator/" target="_blank" rel="noopener">在线蓝图生成器 ↗</a> ·
+                <a href="https://github.com/microsoft/SOWGenerator" target="_blank" rel="noopener"><code>microsoft/SOWGenerator</code> ↗</a>
+              </td>
+              <td>
+                按坐席规模与许可证自动编译 <strong>22 个模块化技术工作流</strong>：<strong>Priority 1 基础层</strong>（9 项 BP 能力：统一审计、标签分类、SPO/OD/容器标签、核心 DLP）、<strong>Priority 2 中间层</strong>（生命周期保留策略）与 <strong>Priority 3 高级与 AI 护栏层</strong>（12 项 Purview Suite 能力：自定义 SIT/EDM、自动打标、DKE、<strong>DLP for Copilot [规则1：拦截含 SIT 提示词；规则2：拦截高敏标签被 Copilot 检索引用]</strong>、<strong>DLP for Edge 内联网页流量 [拦截向未托管 ChatGPT/Gemini/DeepSeek 上传敏感数据]</strong> 与 <strong>启用 DSPM for AI</strong>）。
+              </td>
+            </tr>
+            <tr>
+              <td><span class="code-pill">阶段 4 · 工作负载规范</span></td>
+              <td><strong>6 本 Microsoft 安全工作负载部署技术手册</strong> (共 360 页 PDF)</td>
+              <td>
+                <a href="https://aka.ms/Security_SMBDeploymentGuides" target="_blank" rel="noopener"><code>aka.ms/Security_SMBDeploymentGuides</code> ↗</a>
+              </td>
+              <td>
+                按 <code>前置条件 → Priority 1 → Priority 2 → Priority 3 → Advanced 套件</code> 编写的 6 本深度工程配置规范（总计 <strong>360 页</strong>）：
+                <strong>1. 数据安全</strong> (92页，Purview/Copilot/Edge DLP/DSPM/IRM)、
+                <strong>2. 身份保护</strong> (90页，Entra P1/P2 + MDI v3.x)、
+                <strong>3. 邮件与协同安全</strong> (52页，MDO P1/P2 + DMARC + AIR)、
+                <strong>4. 设备安全</strong> (51页，MDE P1/P2 + ASR + 自动攻击阻断)、
+                <strong>5. 设备管理</strong> (40页，Intune P1 + BitLocker + CA)、
+                <strong>6. SaaS 安全</strong> (35页，MDA 影子 IT/AI 与 OAuth 治理)。
+              </td>
+            </tr>
+            <tr>
+              <td><span class="code-pill">阶段 5 · IaC 幂等部署</span></td>
+              <td><strong>PowerShell 7+ 自动化部署引擎 (<code>SMBBestPracticeTool</code>)</strong></td>
+              <td>
+                <a href="https://microsoft.github.io/BestPractice_Deploy-Scripts/" target="_blank" rel="noopener">在线文档 ↗</a> ·
+                <a href="https://github.com/microsoft/BestPractice_Deploy-Scripts" target="_blank" rel="noopener"><code>microsoft/BestPractice_Deploy-Scripts</code> ↗</a>
+              </td>
+              <td>
+                基于 <strong>PowerShell 7+ (<code>pwsh.exe</code>)</strong> 的幂等自动化引擎（强制拦截旧版 PS 5.1 并通过子进程隔离 SPO 模块避免 MSAL 程序集冲突），涵盖四大工作负载套件：
+                <strong><code>Products/Purview</code></strong>（BP 基线 + <em>Day-30 DLP 仿真转正式阻断准出手册</em> + 7年保留防误锁说明）、
+                <strong><code>Products/Entra</code></strong>（<strong>13 套默认 Report-Only 条件访问 JSON 模板</strong> + 紧急逃生账号 Break-Glass FIDO2 校验）、
+                <strong><code>Products/Intune</code></strong>（6 项任务 + <code>-IncludeHighRisk</code> 门禁）与
+                <strong><code>Products/Defender</code></strong>（只读预检 + ASR 审计试点门禁），支持 GDAP 委派与租户策略漂移巡检 (Tenant Drift Validator)。
+              </td>
+            </tr>
+            <tr>
+              <td><span class="code-pill">架构总纲</span></td>
+              <td><strong>Microsoft 安全与 AI 就绪工程总控架构手册</strong> (10 页 PDF)</td>
+              <td>
+                <a href="https://aka.ms/SecurityPartnerToolkit_Playbook" target="_blank" rel="noopener"><code>aka.ms/SecurityPartnerToolkit_Playbook</code> ↗</a>
+              </td>
+              <td>
+                串联上述 5 大工程阶段、30/60/90 天策略演进门禁与 Microsoft 365 Copilot / Agentic AI 安全前置条件的总体架构指南。
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 6 大工作负载 360 页 Microsoft 安全基线工程矩阵 -->
+      <div style="margin-bottom:16px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
+          <strong style="font-family:var(--mono);font-size:12px;color:var(--accent);">6 大工作负载 MICROSOFT 安全基线工程配置矩阵（360 页技术规范全景）</strong>
+          <span style="font-family:var(--mono);font-size:11px;color:var(--text-3);">Prerequisite → Priority 1 → Priority 2 → Priority 3 → Suite Advanced</span>
+        </div>
+        <div class="matrix-table-wrap">
+          <table class="sec-table">
+            <thead>
+              <tr>
+                <th>工作负载与规范页数</th>
+                <th>PRIORITY 1–3 核心安全基线控制 (M365 BP / E3)</th>
+                <th>高级套件与 AI 护栏工程架构 (E5 / E7 / DEFENDER + PURVIEW SUITE)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>01 · 身份保护 (Identity)</strong><br/><span class="code-pill">Entra P1/P2 + MDI · 90页</span></td>
+                <td>
+                  • <strong>2 个纯云端紧急逃生账号 (Break-Glass)</strong>（<code>*.onmicrosoft.com</code>，绑定硬件 FIDO2 密钥，排除所有 CA 策略并配置 Log Analytics 实时告警）<br/>
+                  • <strong>防钓鱼 MFA 认证强度</strong>（管理员强制）、全员 MFA、阻断旧版认证协议、来宾最小权限、管理门户访问拦截 (<code>cb1056e2-...</code>)
+                </td>
+                <td>
+                  • <strong>Entra ID P2 风险条件访问</strong>：独立配置<em>登录风险 CA</em>（中/高风险强制 MFA）与<em>用户风险 CA</em>（高风险强制自助改密 + 防钓鱼 MFA）<br/>
+                  • <strong>PIM 即时特权激活 (JIT)</strong>（常驻管理员转为 <code>Eligible</code>，1–8 小时有效期 + MFA + 审批）、访问评审（30天不活跃自动移除）、Entitlement 访问包<br/>
+                  • <strong>Defender for Identity (MDI v3.x 统一传感器)</strong> 部署于域控（<code>Set-MDIConfiguration -Mode Domain</code>、gMSA 账号、NNR 协议解析与 Honeytoken 诱饵账号）
+                </td>
+              </tr>
+              <tr>
+                <td><strong>02 · 数据安全与 AI 护栏</strong><br/><span class="code-pill">Microsoft Purview · 92页</span></td>
+                <td>
+                  • <strong>统一审计日志</strong> + <strong>8 级敏感标签体系</strong>（Modern Label Groups）覆盖文档、邮件、会议与容器（SPO/Teams/M365 组）<br/>
+                  • <strong>默认文档标签</strong>设为 <code>Confidential \ All Employees</code>；静态与自适应保留范围；Exchange/SPO/OneDrive + <strong>Endpoint 终端 DLP</strong>（拦截 USB/剪贴板/打印/网络共享）
+                </td>
+                <td>
+                  • <strong>DLP for M365 Copilot 双规则架构</strong>：<em>规则 1</em> 拦截含受监管 SIT 的提示词；<em>规则 2</em> 禁止 Copilot 检索引用 <code>Confidential \ Specific People</code> 与 <code>Highly Confidential</code> 标签文档<br/>
+                  • <strong>Edge 内联网页流量 DLP</strong>：阻断向未受管公有 GenAI 域名（ChatGPT、Gemini、DeepSeek、Claude）粘贴或上传敏感内容<br/>
+                  • <strong>DSPM for AI</strong> 每周过度共享审计 + <strong>内部风险管理 (<code>Data Leaks</code>) 与自适应保护 (Adaptive Protection)</strong>（动态风险分联动 DLP 实时阻断与条件访问）
+                </td>
+              </tr>
+              <tr>
+                <td><strong>03 · 邮件与协同安全</strong><br/><span class="code-pill">Defender for Office 365 · 52页</span></td>
+                <td>
+                  • <strong>DNS 强认证</strong>：SPF 硬拒绝 (<code>-all</code>)、DKIM 2048 位双 CNAME 轮换、DMARC (<code>p=quarantine; pct=100</code> → <code>p=reject</code>)、可信 ARC 签名链<br/>
+                  • <strong>预设安全策略优先级</strong> (<code>Strict &gt; Standard &gt; Custom &gt; Built-in</code>)、禁止外部自动转发、Safe Links 实时引爆、Safe Attachments 动态投递、<code>EnableATPForSPOTeamsODB</code>、Teams ZAP 零时自动清除
+                </td>
+                <td>
+                  • <strong>MDO P2 高优账号保护 (Priority Accounts)</strong>（面向高管/财务/IT 的专属防钓鱼启发式引擎）<br/>
+                  • <strong>攻击模拟训练 (Attack Simulation Training)</strong>（附件投毒、OAuth 授权钓鱼、二维码钓鱼）及自动靶向微课分配<br/>
+                  • <strong>自动调查与响应 (AIR)</strong> 剧本、Threat Explorer 威胁检索一键清除，以及跨 <code>EmailEvents</code> 与 <code>UrlClickEvents</code> 的 <strong>KQL 高级狩猎</strong>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>04 · 终端设备安全</strong><br/><span class="code-pill">Defender for Endpoint · 51页</span></td>
+                <td>
+                  • <strong>Intune–MDE 合规连接器</strong>：设置机器风险分阈值 (<code>Clear</code>) → 联动 Intune 设备不合规 → 触发 Entra 条件访问毫秒级阻断<br/>
+                  • <strong>防篡改保护 (Tamper Protection)</strong>、云端首次接触拦截 (Block at First Sight)、PUA 拦截、网络保护、静默 <strong>BitLocker TPM 2.0</strong> 全盘加密<br/>
+                  • <strong>攻击面减少规则 (ASR)</strong> 先以 <code>Audit (RuleMode=2)</code> 观察 14–30 天再切换至 <code>Block (RuleMode=1)</code>（防御 LSASS 凭据窃取、WMI 持久化、Office 宏派生子进程）
+                </td>
+                <td>
+                  • <strong>自动攻击阻断 (Automatic Attack Disruption)</strong>：基于 XDR 高置信度信号在数分钟内自动隔离受控终端并挂起受损账号/Agent 会话，遏制勒索软件横向移动<br/>
+                  • <strong>MDE P2 高级能力</strong>：威胁与漏洞管理 (TVM)、EDR 阻断模式 (EDR in Block Mode)、Live Response 远程取证与设备组 RBAC (<code>Full remediation</code>)
+                </td>
+              </tr>
+              <tr>
+                <td><strong>05 · 设备合规管理</strong><br/><span class="code-pill">Microsoft Intune P1 · 40页</span></td>
+                <td>
+                  • <strong>MDM 企业设备注册</strong>（Windows Autopilot + ESP、Apple ABM/APNs 证书、Android Enterprise）与 <strong>MAM 应用保护策略</strong>（BYOD：禁止 iCloud/iTunes 备份，限制仅在受策略管理应用间剪切/复制/另存为）<br/>
+                  • <strong>默认合规门禁</strong>：设置 <code>未分配合规策略的设备 = 不合规 (Not compliant)</code>；Windows 10/11 合规要求（BitLocker、安全启动、代码完整性、防火墙、TPM、反恶意软件）
+                </td>
+                <td>
+                  • <strong>基于设备的条件访问 (Device-Based CA)</strong>：配置<em>注册 Intune 强制要求 MFA</em>（应用 ID <code>d4ebce55-015a-49b5-a083-c84d1797ae8c</code>）+ <em>访问所有企业云应用及 Agent 开发机强制要求合规设备 (Require Compliant Device)</em>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>06 · SaaS 与影子 AI 治理</strong><br/><span class="code-pill">Defender for Cloud Apps · 35页</span></td>
+                <td>
+                  • <strong>MDE + MDA 原生影子 IT/AI 发现</strong>：无需部署代理网关，直接采集终端网络遥测对比 <code>31,000+</code> 云应用目录与 <code>90+</code> 风险属性评分<br/>
+                  • <strong>未授权 AI/SaaS 一键封禁</strong>：将高风险生成式 AI 或网盘标记为 <code>Unsanctioned</code> → MDE 网络保护自动在终端层阻断域名访问
+                </td>
+                <td>
+                  • <strong>OAuth 应用治理 (App Governance)</strong>：持续监测第三方 OAuth 应用与 Agent 连接器的 Graph API 权限范围异常，支持高危应用自动禁用 (<code>Disable app</code>)<br/>
+                  • <strong>条件访问应用控制 (CA App Control)</strong> 反向代理实时会话管控（禁止下载/复制/粘贴）+ <strong>SaaS 安全态势管理 (SSPM)</strong>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 8 级 DEFEND 对齐敏感度标签体系与 INTERNAL EXCEPTION 无头业务防中断架构 -->
+      <div style="background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px;">
+          <strong style="font-family:var(--mono);font-size:12px;color:var(--accent);">8 级 DEFEND 敏感度标签体系与无头业务系统“INTERNAL EXCEPTION”加密旁路架构</strong>
+          <span style="font-family:var(--mono);font-size:11px;color:var(--text-3);">解决 RMS 加密导致 ERP / MES / EHR / SIS / CAD 批处理中断，同时保持 DLP 外发拦截与 Copilot 隔离</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;font-size:11.8px;">
+          <div class="tier-stat"><strong>1. PUBLIC (公开)</strong><br/><span style="color:var(--text-2);">不加密；允许外部共享与 Copilot 检索。</span></div>
+          <div class="tier-stat"><strong>2. GENERAL (默认邮件标签)</strong><br/><span style="color:var(--text-2);">不加密；内部水印标识；允许 Copilot 检索。</span></div>
+          <div class="tier-stat"><strong>3. CONFIDENTIAL \ ALL EMPLOYEES</strong><br/><span style="color:var(--text-2);">默认文档/站点标签；RMS 加密；仅限内部全员。</span></div>
+          <div class="tier-stat"><strong>4. CONFIDENTIAL \ SPECIFIC PEOPLE</strong><br/><span style="color:var(--text-2);">命名用户 RMS 加密；默认排除在 Copilot 检索之外。</span></div>
+          <div class="tier-stat" style="border-color:var(--warn);background:var(--warn-soft);"><strong>5. CONFIDENTIAL \ INTERNAL EXCEPTION</strong><br/><span style="color:var(--text-2);">旁路 RMS 加密（防止 ERP/SIS/EHR/CAD 批处理解析失败），保留页眉页脚、DLP 外发阻断与季度审计。</span></div>
+          <div class="tier-stat"><strong>6. HIGHLY CONF \ ALL EMPLOYEES</strong><br/><span style="color:var(--text-2);">强 RMS 加密 + 水印 + 禁止 Copilot 检索引用。</span></div>
+          <div class="tier-stat"><strong>7. HIGHLY CONF \ SPECIFIC PEOPLE</strong><br/><span style="color:var(--text-2);">仅限显式授权人员 + SIT 自动打标 + 禁转发/打印 + Copilot 阻断。</span></div>
+          <div class="tier-stat" style="border-color:var(--warn);background:var(--warn-soft);"><strong>8. HIGHLY CONF \ INTERNAL EXCEPTION</strong><br/><span style="color:var(--text-2);">面向高敏 QMS/SCADA/批处理流水线的加密豁免标签：不启用 RMS 加密，但强制 Endpoint/Edge/Copilot DLP 阻断。</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 03: 6-TRACK AI SECURITY RESEARCH MATRIX ==================== -->
+  <section id="security-matrix">
+    <div class="sec-head">
+      <div>
+        <div class="sec-label"><span class="num">03</span>六大 AI 安全研究主线 · 全量资产矩阵</div>
+        <h2>AI Security 研究成果、开源仓库与交互式沙盒全览</h2>
+        <p class="sec-intro">
+          支持按研究主线一键筛选或输入关键词（如 <code>DEFEND</code>、<code>Purview</code>、<code>SOW</code>、<code>ASI01</code>、<code>eBPF</code>、<code>Firecracker</code>、<code>Entra</code>、<code>Web IQ</code>、<code>AP2</code>、<code>Omarchy</code>、<code>LocalJEV</code>）实时检索。
+        </p>
+      </div>
+    </div>
+
+    <div class="filter-bar" id="pillar-filter-bar">
+      <div class="filter-tabs" role="tablist" aria-label="按安全研究主线筛选">
+        <button type="button" class="filter-btn active" data-filter-pillar="all">全部六大主线 (18 项资产)</button>
+        <button type="button" class="filter-btn" data-filter-pillar="t1-defend">01 · DEFEND 与 SMB 伙伴工具包</button>
+        <button type="button" class="filter-btn" data-filter-pillar="t2-redteam">02 · 多智能体网络红队</button>
+        <button type="button" class="filter-btn" data-filter-pillar="t3-sandbox">03 · 云原生沙箱与 eBPF</button>
+        <button type="button" class="filter-btn" data-filter-pillar="t4-governance">04 · Entra Agent ID 与治理经济学</button>
+        <button type="button" class="filter-btn" data-filter-pillar="t5-commerce">05 · Web IQ 反注入与 AP2 支付</button>
+        <button type="button" class="filter-btn" data-filter-pillar="t6-endpoint">06 · 终端 Agent 边界与许可证审计</button>
+      </div>
+      <input type="search" id="asset-search-input" class="filter-search" placeholder="搜索主线、威胁编号、控制措施、仓库..." aria-label="搜索 AI 安全研究资产" />
+    </div>
+
+    <!-- TRACK 01 -->
+    <div class="pillar-section" data-pillar="t1-defend">
+      <div class="pillar-header">
+        <h3 class="pillar-title"><span class="pillar-idx">TRACK 01</span>安全 AI 着陆区 (Security AI Landing Zone)、DEFEND 五级托管安全与 SMB 伙伴工具包</h3>
+        <span class="pillar-meta">42 页 Frontier Deck · 53 页 Playbook · 51 项准出门禁 · 6 大 SMB 工具包资产 · 360 页实施指南 · pwsh 7+</span>
+      </div>
+      <div class="asset-grid">
+        <article class="asset-card" style="border-color:var(--good);">
+          <div class="ac-head">
+            <span class="ac-repo">Security AI Landing Zone 与 Frontier SOC (专项子栏目)</span>
+            <span class="ac-type">专项子栏目 + 7-Card</span>
+          </div>
+          <p class="ac-desc">解构 42 页 Frontier Security 架构：FTE Offer 第 3 周强制门禁、<code>Copilot as UI for AI</code>、<strong>Microsoft Agent 365 五大支柱控制平面</strong> (<code>M365 E7</code>)，以及 <strong>Frontier SOC</strong>（<code>ISOC</code> + <code>Project Perception 红蓝绿三智能体</code> + <code>MDASH 100+ 专项智能体</code>）。</p>
+          <div class="ac-metrics"><span>42 页 Deck</span><span>Agent 365 五大支柱</span><span>ISOC + 100+ MDASH 智能体</span><span>FTE 第3周门禁</span></div>
+          <div class="ac-links">
+            <a href="zh-security-ai-landing-zone.html">进入专项子栏目 →</a>
+            <a href="workshops/ai-security/landing-zone-cards.html" target="_blank" rel="noopener">7-Card 报告 ↗</a>
+            <a href="https://github.com/turbo998/ai-research-public/tree/main/docs/research/security-ai-landing-zone" target="_blank" rel="noopener">研究仓库 ↗</a>
+          </div>
+        </article>
+        <article class="asset-card">
+          <div class="ac-head">
+            <span class="ac-repo">DEFEND Partner Playbook (五级托管安全框架)</span>
+            <span class="ac-type">Playbook + 7-Card</span>
+          </div>
+          <p class="ac-desc">基于 M365 Business Premium + Defender Suite + Purview Suite + Sentinel 的五级托管安全服务架构：<code>DEFENDBase</code> (11门禁) → <code>DEFENDSecurity</code> (12) → <code>DEFENDCompliance</code> (11) → <code>DEFENDComplete</code> (8) → <code>DEFENDExtend</code> (9)。</p>
+          <div class="ac-metrics"><span>53 页幻灯片</span><span>51 项准出门禁</span><span>Lighthouse GDAP</span><span>Intune P1</span></div>
+          <div class="ac-links">
+            <a href="workshops/ai-security/defend-cards.html" target="_blank" rel="noopener">7-Card 报告 ↗</a>
+            <a href="https://github.com/turbo998/ai-research-public/tree/main/docs/research/defend-partner-playbook" target="_blank" rel="noopener">研究仓库 ↗</a>
+            <a href="#defend-simulator">门禁仿真器 ↑</a>
+          </div>
+        </article>
+        <article class="asset-card">
+          <div class="ac-head">
+            <span class="ac-repo">Purview-as-a-Service 四级 AI 数据治理蓝图</span>
+            <span class="ac-type">Copilot 治理</span>
+          </div>
+          <p class="ac-desc">面向 M365 Copilot 的四阶段数据安全演进（<code>Data Protect</code> → <code>Data Govern</code> → <code>Data Control</code> → <code>Data Assure</code>），落地敏感标签、Copilot 提示词/响应 DLP、DSPM for AI 与内部风险自适应保护。</p>
+          <div class="ac-metrics"><span>DSPM for AI</span><span>Copilot DLP</span><span>Adaptive Protection</span></div>
+          <div class="ac-links">
+            <a href="workshops/ai-security/defend-cards.html#card-2" target="_blank" rel="noopener">Card 2 详解 ↗</a>
+            <a href="https://github.com/turbo998/ai-research-public/tree/main/docs/research/defend-partner-playbook" target="_blank" rel="noopener">附录 B 拆解 ↗</a>
+          </div>
+        </article>
+        <article class="asset-card">
+          <div class="ac-head">
+            <span class="ac-repo">7 大行业信息保护一页纸 &amp; 引导式决策助手</span>
+            <span class="ac-type">8级标签 + 决策工具</span>
+          </div>
+          <p class="ac-desc">7 份行业双页指南（14页：消费品、教育、金融、医疗、制造、非营利、专业服务），标准化 30/60/90 天落地路径与含 <code>INTERNAL EXCEPTION</code> 豁免标签的 8 级分类体系，配套 <code>DataSecurityGuidedAssistant</code> (<code>v2.0.1572</code>)。</p>
+          <div class="ac-metrics"><span>7 大行业 (14页)</span><span>8级 LOB 标签模型</span><span>纯前端 CSP 工具</span></div>
+          <div class="ac-links">
+            <a href="https://microsoft.github.io/DataSecurityGuidedAssistant/" target="_blank" rel="noopener">在线引导助手 ↗</a>
+            <a href="https://github.com/microsoft/DataSecurityGuidedAssistant" target="_blank" rel="noopener">GitHub ↗</a>
+            <a href="https://aka.ms/MIP-Industry-OnePagers" target="_blank" rel="noopener">行业一页纸 ↗</a>
+          </div>
+        </article>
+        <article class="asset-card">
+          <div class="ac-head">
+            <span class="ac-repo">Purview SOW 生成器 (22 项工作流与 AI 护栏)</span>
+            <span class="ac-type">方案生成 + AI DLP</span>
+          </div>
+          <p class="ac-desc">涵盖 P1 基础层 (9项)、P2 保留层 (1项) 与 P3 高级及 AI 护栏层（12项：含 <strong>Copilot 双规则 DLP 仿真</strong>、<strong>Edge 内联网页流量 DLP 阻断 ChatGPT/Gemini 上传</strong> 与 <strong>启用 DSPM</strong>）及持续托管服务。</p>
+          <div class="ac-metrics"><span>22 项服务流</span><span>Copilot 双规则 DLP</span><span>Edge GenAI 阻断</span></div>
+          <div class="ac-links">
+            <a href="https://microsoft.github.io/SOWGenerator/" target="_blank" rel="noopener">在线 SOW 生成器 ↗</a>
+            <a href="https://github.com/microsoft/SOWGenerator" target="_blank" rel="noopener">GitHub 仓库 ↗</a>
+          </div>
+        </article>
+        <article class="asset-card">
+          <div class="ac-head">
+            <span class="ac-repo">6 本 SMB 安全最佳实践部署指南 (360 页)</span>
+            <span class="ac-type">6 本 PDF 手册</span>
+          </div>
+          <p class="ac-desc">总计 360 页手把手实施手册，精准映射 DEFEND T1–T4：数据安全 (92页)、身份保护 (90页)、邮件与协同 (52页)、设备安全 (51页)、设备管理 (40页) 与 SaaS 影子 AI 安全 (35页)。</p>
+          <div class="ac-metrics"><span>360 页图文手册</span><span>P1 → P2 → P3 → 套件</span><span>6 大工作负载</span></div>
+          <div class="ac-links">
+            <a href="https://aka.ms/Security_SMBDeploymentGuides" target="_blank" rel="noopener">官方指南下载 ↗</a>
+            <a href="#smb-partner-toolkit">章节拆解 ↑</a>
+          </div>
+        </article>
+        <article class="asset-card">
+          <div class="ac-head">
+            <span class="ac-repo">SMBBestPracticeTool (PowerShell 7+ 部署脚本)</span>
+            <span class="ac-type">4 大自动化套件</span>
+          </div>
+          <p class="ac-desc">跨 Purview、Entra（13 套默认 Report-Only 条件访问 JSON + Break-Glass 逃生校验）、Intune（<code>-IncludeHighRisk</code> 门禁）与 Defender（只读预检 + ASR 审计试点）的幂等 <code>pwsh</code> 7+ 脚本，支持 GDAP 与 Day-30 DLP 准出手册。</p>
+          <div class="ac-metrics"><span>13 套 CA 模板</span><span>GDAP 多租户支持</span><span>Day-30 DLP 准出</span></div>
+          <div class="ac-links">
+            <a href="https://microsoft.github.io/BestPractice_Deploy-Scripts/" target="_blank" rel="noopener">脚本文档门户 ↗</a>
+            <a href="https://github.com/microsoft/BestPractice_Deploy-Scripts" target="_blank" rel="noopener">GitHub 仓库 ↗</a>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <!-- TRACK 02 -->
+    <div class="pillar-section" data-pillar="t2-redteam">
+      <div class="pillar-header">
+        <h3 class="pillar-title"><span class="pillar-idx">TRACK 02</span>多智能体网络红队攻防与协同防御 (Multi-Agent Network Red Teaming)</h3>
+        <span class="pillar-meta">OWASP Agentic Top 10 (ASI01–ASI09) · 企业协同与 Agora 拓扑 · 服务端确定性证据判定器</span>
+      </div>
+      <div class="asset-grid">
+        <article class="asset-card">
+          <div class="ac-head">
+            <span class="ac-repo">agentic-red-team-lab (双拓扑多智能体攻防靶场)</span>
+            <span class="ac-type">交互式红队靶场</span>
+          </div>
+          <p class="ac-desc">提供两套多智能体网络攻防沙盒：<strong>Enterprise Collaboration</strong>（规划/调研/执行/记忆/审计五角色企业流水线）与 <strong>Agora-Style Research Network</strong>（去中心化节点发现、共享研究笔记与声誉聚合）。</p>
+          <div class="ac-metrics"><span>4 大网络级失效模式</span><span>ASI01–ASI09</span><span>金丝雀血缘追踪</span></div>
+          <div class="ac-links">
+            <a href="https://turbo998.github.io/agentic-red-team-lab/" target="_blank" rel="noopener">在线红队靶场 ↗</a>
+            <a href="https://github.com/turbo998/agentic-red-team-lab" target="_blank" rel="noopener">GitHub 仓库 ↗</a>
+          </div>
+        </article>
+        <article class="asset-card">
+          <div class="ac-head">
+            <span class="ac-repo">四大跨智能体网络失效分类学</span>
+            <span class="ac-type">威胁建模</span>
+          </div>
+          <p class="ac-desc">量化多智能体级联风险：<strong>1. Propagation（跨节点蠕虫传播 ASI01/02/08）</strong>、<strong>2. Amplification（共享记忆回音室污染 ASI06/09）</strong>、<strong>3. Trust Capture（权威伪造与声誉劫持 ASI03/07/09）</strong>、<strong>4. Proxy Chains（A→B→C 困惑副手提权）</strong>。</p>
+          <div class="ac-metrics"><span>裸奔 3 跳沦陷率 86%</span><span>加固后拦截率 96.5%</span></div>
+          <div class="ac-links">
+            <a href="workshops/ai-security/cards.html#card-2" target="_blank" rel="noopener">Card 2 剖析 ↗</a>
+            <a href="#comparison-charts">OWASP 映射表 ↓</a>
+          </div>
+        </article>
+        <article class="asset-card">
+          <div class="ac-head">
+            <span class="ac-repo">确定性服务端证据判定器 (Server-Side Judge)</span>
+            <span class="ac-type">防越狱评测器</span>
+          </div>
+          <p class="ac-desc">摒弃易被同一注入载荷欺骗的 LLM-as-Judge，改用服务端金丝雀令牌（Canary Token）泄漏血缘、高危工具调用日志、共享记忆状态 Diff 与多节点 Quorum 仲裁门禁。</p>
+          <div class="ac-metrics"><span>0% 裁判越狱误判</span><span>按跳衰减能力令牌</span><span>记忆写入隔离区</span></div>
+          <div class="ac-links">
+            <a href="workshops/ai-security/cards.html#card-4" target="_blank" rel="noopener">验证器源码逻辑 ↗</a>
+            <a href="https://github.com/turbo998/agentic-red-team-lab" target="_blank" rel="noopener">源码仓库 ↗</a>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <!-- TRACK 03 -->
+    <div class="pillar-section" data-pillar="t3-sandbox">
+      <div class="pillar-header">
+        <h3 class="pillar-title"><span class="pillar-idx">TRACK 03</span>云原生 Agent 沙箱隔离与内核级零信任 (Cloud Sandbox &amp; Kernel Zero Trust)</h3>
+        <span class="pillar-meta">AKSClaw Kata VM · E2B Firecracker (108ms) · IMDS 0.0% 泄漏 · Cilium Tetragon eBPF (&lt;0.3ms) · SEV-SNP &amp; PQC</span>
+      </div>
+      <div class="asset-grid">
+        <article class="asset-card">
+          <div class="ac-head">
+            <span class="ac-repo">Azure-Infra-Lab · 五道平台级硬安全边界</span>
+            <span class="ac-type">41 套云原生蓝图</span>
+          </div>
+          <p class="ac-desc">针对自主代码执行 Agent 构建五道不可绕过的硬边界：独立 Guest 内核（Kata VM / Firecracker）、零信任出口与 IMDS <code>169.254.169.254</code> 封禁、Tetragon eBPF 内核级 <code>SIGKILL</code>、Cosign/Ratify MCP 镜像签名准入，以及 SEV-SNP 机密计算 + ML-KEM-768 后量子加密。</p>
+          <div class="ac-metrics"><span>0.0% IMDS 泄漏</span><span>&lt;0.3ms eBPF 阻断</span><span>FIPS-203 PQC</span></div>
+          <div class="ac-links">
+            <a href="https://turbo998.github.io/Azure-Infra-Lab/" target="_blank" rel="noopener">Infra 全景门户 ↗</a>
+            <a href="workshops/azure-agent-infra/index.html" target="_blank" rel="noopener">四层架构手册 ↗</a>
+            <a href="https://github.com/turbo998/Azure-Infra-Lab" target="_blank" rel="noopener">GitHub ↗</a>
+          </div>
+        </article>
+        <article class="asset-card">
+          <div class="ac-head">
+            <span class="ac-repo">AKSClaw × E2B 10万并发 MicroVM 沙箱与容灾</span>
+            <span class="ac-type">仿真台 + 7-Card</span>
+          </div>
+          <p class="ac-desc">基于 <code>Standard_D96as_v7</code> 单节点高密混部 2,500 个硬件级隔离 Firecracker MicroVM，实现 <code>108ms</code> Base / <code>132ms</code> Code-Interpreter P50 懒分页快照恢复及 <code>3.67s</code> 跨区域热备容灾切换。</p>
+          <div class="ac-metrics"><span>108ms P50 唤醒</span><span>10万并发沙箱</span><span>3.67s 跨区容灾</span></div>
+          <div class="ac-links">
+            <a href="workshops/azure-agent-infra/demo.html" target="_blank" rel="noopener">实时沙箱仿真台 ↗</a>
+            <a href="workshops/azure-agent-infra/cards.html" target="_blank" rel="noopener">7-Card 报告 ↗</a>
+          </div>
+        </article>
+        <article class="asset-card">
+          <div class="ac-head">
+            <span class="ac-repo">E2B Firecracker + Nomad 控制面韧性审计</span>
+            <span class="ac-type">控制面 7-Card</span>
+          </div>
+          <p class="ac-desc">深入源码审计 E2B Firecracker + Nomad 编排控制面在高并发沙箱生灭下的心跳级联放大机制与自动恢复门禁。</p>
+          <div class="ac-metrics"><span>Nomad 心跳放大审计</span><span>MicroVM 控制面</span></div>
+          <div class="ac-links">
+            <a href="workshops/benchmarks/e2b-nomad-cards.html" target="_blank" rel="noopener">7-Card 报告 ↗</a>
+            <a href="https://github.com/turbo998/benchmark-harness-engineering" target="_blank" rel="noopener">评测框架仓库 ↗</a>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <!-- TRACK 04 -->
+    <div class="pillar-section" data-pillar="t4-governance">
+      <div class="pillar-header">
+        <h3 class="pillar-title"><span class="pillar-idx">TRACK 04</span>智能体执行治理、Entra Agent ID 与 C_accepted(g) 治理经济学</h3>
+        <span class="pillar-meta">双重身份归因 · 外部 PDP/PEP 分离 · APIM 三级配额熔断 · 语音 K01–K12 安全锁</span>
+      </div>
+      <div class="asset-grid">
+        <article class="asset-card">
+          <div class="ac-head">
+            <span class="ac-repo">agent-governance-economics-research</span>
+            <span class="ac-type">治理经济学</span>
+          </div>
+          <p class="ac-desc">建立 <strong>Microsoft Entra Agent ID</strong> 双重归因（<code>Agent Blueprint ID + Human Sponsor 人类担保人</code>）、外部策略决策/执行点（PDP/PEP）分离架构，以及治理校准成本公式 <code>C_accepted(g) = 总推理与工具开销 / 合规通过任务数</code>（任何越权直接判定任务归零）。</p>
+          <div class="ac-metrics"><span>Entra Agent ID</span><span>PDP / PEP 分离</span><span>C_accepted(g)</span></div>
+          <div class="ac-links">
+            <a href="https://github.com/turbo998/agent-governance-economics-research" target="_blank" rel="noopener">GitHub 仓库 ↗</a>
+            <a href="https://turbo998.github.io/fde-engineering-playbook/" target="_blank" rel="noopener">FDE 工程手册 ↗</a>
+          </div>
+        </article>
+        <article class="asset-card">
+          <div class="ac-head">
+            <span class="ac-repo">企业级实时语音 Agent K01–K12 确定性熔断</span>
+            <span class="ac-type">确定性安全锁</span>
+          </div>
+          <p class="ac-desc">在 Azure Voice Live (<code>GPT-Live-1</code>) 全双工流上实施 K01–K12 确定性安全锁：<code>100%</code> 拦截新能源车高压带电操作风险（<code>K05</code>）、金融 PCI-DSS 双录脱敏与坐席审批写库幂等门禁。</p>
+          <div class="ac-metrics"><span>100% K05 高危阻断</span><span>&lt;170ms 打断</span><span>66 项自动化单测</span></div>
+          <div class="ac-links">
+            <a href="voice/index.html" target="_blank" rel="noopener">实时语音沙盒 ↗</a>
+            <a href="https://github.com/turbo998/voice-agent-lab" target="_blank" rel="noopener">GitHub 仓库 ↗</a>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <!-- TRACK 05 -->
+    <div class="pillar-section" data-pillar="t5-commerce">
+      <div class="pillar-header">
+        <h3 class="pillar-title"><span class="pillar-idx">TRACK 05</span>网页接地反注入与加密支付结算护栏 (Web IQ &amp; AP2 Payment Guardrails)</h3>
+        <span class="pillar-meta">Microsoft Web IQ 注入剥离 (31.4% → 0.0%) · ACP/UCP 状态机 · AP2 MandateVC 预算锁与 x402 FIDO2 签名</span>
+      </div>
+      <div class="asset-grid">
+        <article class="asset-card">
+          <div class="ac-head">
+            <span class="ac-repo">agentic-commerce-lab (Web IQ × AP2/x402)</span>
+            <span class="ac-type">攻防沙盒 + 7-Card</span>
+          </div>
+          <p class="ac-desc">打通开放网页商品接地与自主支付安全闭环：通过 Microsoft Web IQ Schema 清洗 <code>100%</code> 剥离网页 DOM 隐藏提示词注入（<code>[WEBIQ_SANITIZED]</code>，攻击成功率从 <code>31.4%</code> 降至 <code>0.0%</code>），配合 <strong>AP2 MandateVC</strong> 加密预算上限锁（超额确定性触发 <code>AP2_MANDATE_CAP_EXCEEDED</code>）与 <strong>x402</strong> FIDO2 硬件密钥签名。</p>
+          <div class="ac-metrics"><span>31.4% → 0.0% 注入率</span><span>AP2 MandateVC</span><span>0% 越权扣款</span></div>
+          <div class="ac-links">
+            <a href="workshops/agentic-commerce/live-demo.html" target="_blank" rel="noopener">实时攻防沙盒 ↗</a>
+            <a href="workshops/agentic-commerce/benchmark-cards.html" target="_blank" rel="noopener">7-Card 报告 ↗</a>
+            <a href="https://github.com/turbo998/agentic-commerce-lab" target="_blank" rel="noopener">GitHub ↗</a>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <!-- TRACK 06 -->
+    <div class="pillar-section" data-pillar="t6-endpoint">
+      <div class="pillar-header">
+        <h3 class="pillar-title"><span class="pillar-idx">TRACK 06</span>终端/桌面与个人智能体安全边界及开源许可证合规审计</h3>
+        <span class="pillar-meta">Omarchy 174 项安全断言 · 5 款个人 Agent 隔离矩阵 · LocalJEV CC BY-NC 4.0 商用合规门禁</span>
+      </div>
+      <div class="asset-grid">
+        <article class="asset-card">
+          <div class="ac-head">
+            <span class="ac-repo">Omarchy Agent Design · 静态安全契约审计</span>
+            <span class="ac-type">174 断言 + 7-Card</span>
+          </div>
+          <p class="ac-desc">针对 <code>omacom/omarchy @ 9480d1b</code> 的 14 款 Agent CLI（28 条启动分支）与 87 个 SHA-1 源码对象进行逐行验证：证实 <code>28/28</code> 单参数 argv 防注入边界，但揭露 16 项安全机制中仅 <code>5/16</code> 为硬边界，<code>12/14</code> 无提示分支默认传递 <code>--yolo</code> / <code>--allow-all</code> 且无 OS 容器沙箱。</p>
+          <div class="ac-metrics"><span>174 项源码断言</span><span>5/16 硬边界 vs 11/16 软约定</span><span>捕获 7 处文档漂移</span></div>
+          <div class="ac-links">
+            <a href="workshops/benchmarks/omarchy-cards.html" target="_blank" rel="noopener">7-Card 报告 ↗</a>
+            <a href="https://github.com/turbo998/ai-research-public" target="_blank" rel="noopener">审计源码 ↗</a>
+          </div>
+        </article>
+        <article class="asset-card">
+          <div class="ac-head">
+            <span class="ac-repo">5 款个人智能体 (Personal Agents) 隔离架构横评</span>
+            <span class="ac-type">18 项基准用例</span>
+          </div>
+          <p class="ac-desc">横向评测 <strong>OpenClaw</strong>、<strong>Hermes Agent</strong>、<strong>Claude Cowork</strong>（Apple VZ 轻量虚拟机）、<strong>Perplexity Computer</strong> 与 <strong>NVIDIA NemoClaw</strong>（OpenShell Landlock + seccomp + NetNS）在 18 个安全与能力场景下的真实隔离水位。</p>
+          <div class="ac-metrics"><span>5 款主流个人 Agent</span><span>18 个评测用例</span><span>Landlock/VZ/Docker</span></div>
+          <div class="ac-links">
+            <a href="#comparison-charts">隔离对比矩阵 ↓</a>
+            <a href="https://github.com/turbo998/ai-research-public" target="_blank" rel="noopener">研究报告 ↗</a>
+          </div>
+        </article>
+        <article class="asset-card">
+          <div class="ac-head">
+            <span class="ac-repo">LocalJEV 开源模型权重许可证合规审计</span>
+            <span class="ac-type">供应链 IP 门禁</span>
+          </div>
+          <p class="ac-desc">软件供应链与知识产权合规审计：精准识别出 MIT 协议仓库下混入的 <code>breezedeus/pix2text-mfr</code> 权重受限于非商用 <code>CC BY-NC 4.0</code> 协议，建立商用发布阻断门禁并给出完整 <code>Apache-2.0</code> 合规替换方案。</p>
+          <div class="ac-metrics"><span>阻断 CC BY-NC 4.0</span><span>Apache-2.0 替换</span><span>供应链许可证门禁</span></div>
+          <div class="ac-links">
+            <a href="workshops/ai-security/cards.html#card-3" target="_blank" rel="noopener">计分卡记录 ↗</a>
+            <a href="https://github.com/turbo998/ai-research-public" target="_blank" rel="noopener">审计档案 ↗</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 04: VISUAL CHARTS & MATRICES ==================== -->
+  <section id="comparison-charts">
+    <div class="sec-head">
+      <div>
+        <div class="sec-label"><span class="num">04</span>跨主线量化对比仪表盘 (QUANTITATIVE VISUAL DASHBOARD)</div>
+        <h2>纵深防御实测增益、OWASP Agentic Top 10 映射与运行时隔离矩阵</h2>
+        <p class="sec-intro">
+          所有百分比、延迟与分母数据均提取自各研究仓库密封评测集（<code>summary.json</code> / <code>report.json</code>），直观对比裸奔基线（Baseline）与带外加固架构（Hardened）的防御表现。
+        </p>
+      </div>
+    </div>
+
+    <div class="sec-grid-equal">
+      <!-- Chart A -->
+      <div class="panel-card">
+        <span class="wb-badge">图表 A · 对抗鲁棒性实测增益</span>
+        <h3 style="margin-top:8px;">裸奔基线 (Baseline) vs. 带外加固控制 (Hardened)</h3>
+        <p style="font-size:12.5px;color:var(--text-2);margin:0 0 14px;">
+          在六大研究主线对抗压测中成功阻断攻击或满足强制准出门禁的比例对比：
+        </p>
+
+        <div class="bar-chart-row">
+          <div class="bar-chart-label"><span>T03 · 云端 IMDS (169.254.169.254) 与跨租户凭据隔离</span><span>+100.0 pts</span></div>
+          <div class="bar-chart-sub">共享宿主机容器 vs. AKSClaw Kata VM / E2B Firecracker + Cilium NetworkPolicy</div>
+          <div class="dual-bar-track">
+            <div class="bar-line"><span class="bar-tag">带外加固</span><div class="bar-fill-wrap"><div class="bar-fill-good" style="width:100%"></div></div><span class="bar-pct">100.0%</span></div>
+            <div class="bar-line"><span class="bar-tag">裸奔基线</span><div class="bar-fill-wrap"><div class="bar-fill-warn" style="width:2%"></div></div><span class="bar-pct">0.0%</span></div>
+          </div>
+        </div>
+
+        <div class="bar-chart-row">
+          <div class="bar-chart-label"><span>T02 · 多智能体 3 跳金丝雀遏制率 (OWASP ASI01–09)</span><span>+82.5 pts</span></div>
+          <div class="bar-chart-sub">无过滤节点广播 vs. 来源血缘标签 + 共享记忆隔离区 + 按跳衰减能力令牌</div>
+          <div class="dual-bar-track">
+            <div class="bar-line"><span class="bar-tag">带外加固</span><div class="bar-fill-wrap"><div class="bar-fill-good" style="width:96.5%"></div></div><span class="bar-pct">96.5%</span></div>
+            <div class="bar-line"><span class="bar-tag">裸奔基线</span><div class="bar-fill-wrap"><div class="bar-fill-warn" style="width:14%"></div></div><span class="bar-pct">14.0%</span></div>
+          </div>
+        </div>
+
+        <div class="bar-chart-row">
+          <div class="bar-chart-label"><span>T01 · M365 Copilot 过度共享防治与双规则 DLP 就绪度</span><span>+81.8 pts</span></div>
+          <div class="bar-chart-sub">未分类 SharePoint 裸开 Copilot vs. DEFENDCompliance + Purview Tier 3 Data Control</div>
+          <div class="dual-bar-track">
+            <div class="bar-line"><span class="bar-tag">带外加固</span><div class="bar-fill-wrap"><div class="bar-fill-good" style="width:100%"></div></div><span class="bar-pct">100.0%</span></div>
+            <div class="bar-line"><span class="bar-tag">裸奔基线</span><div class="bar-fill-wrap"><div class="bar-fill-warn" style="width:18.2%"></div></div><span class="bar-pct">18.2%</span></div>
+          </div>
+        </div>
+
+        <div class="bar-chart-row">
+          <div class="bar-chart-label"><span>T06 · 个人 Agent 文件系统与网络边界遏制率</span><span>+63.1 pts</span></div>
+          <div class="bar-chart-sub">宿主机 CLI (--yolo / 5/16 硬边界) vs. NemoClaw OpenShell (Landlock + seccomp + NetNS)</div>
+          <div class="dual-bar-track">
+            <div class="bar-line"><span class="bar-tag">带外加固</span><div class="bar-fill-wrap"><div class="bar-fill-good" style="width:94.4%"></div></div><span class="bar-pct">94.4%</span></div>
+            <div class="bar-line"><span class="bar-tag">裸奔基线</span><div class="bar-fill-wrap"><div class="bar-fill-warn" style="width:31.3%"></div></div><span class="bar-pct">31.3%</span></div>
+          </div>
+        </div>
+
+        <div class="bar-chart-row" style="margin-bottom:0;">
+          <div class="bar-chart-label"><span>T05 · 开放网页接地间接提示词注入存活率</span><span>+31.4 pts</span></div>
+          <div class="bar-chart-sub">原始 HTML 抓取 (68.6% 安全 / 31.4% 劫持) vs. Microsoft Web IQ 清洗 ([WEBIQ_SANITIZED])</div>
+          <div class="dual-bar-track">
+            <div class="bar-line"><span class="bar-tag">带外加固</span><div class="bar-fill-wrap"><div class="bar-fill-good" style="width:100%"></div></div><span class="bar-pct">100.0%</span></div>
+            <div class="bar-line"><span class="bar-tag">裸奔基线</span><div class="bar-fill-wrap"><div class="bar-fill-warn" style="width:68.6%"></div></div><span class="bar-pct">68.6%</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chart B -->
+      <div class="panel-card">
+        <span class="wb-badge cobalt">图表 B · OWASP AGENTIC TOP 10 防御映射</span>
+        <h3 style="margin-top:8px;">OWASP 智能体十大风险 (ASI01–ASI09) 与带外控制矩阵</h3>
+        <p style="font-size:12.5px;color:var(--text-2);margin:0 0 12px;">
+          六大研究主线对 OWASP Agentic 应用安全风险的逐项覆盖与确定性验证机制：
+        </p>
+        <div class="matrix-table-wrap">
+          <table class="sec-table">
+            <thead>
+              <tr><th>OWASP 编号</th><th>核心失效模式</th><th>带外强制防御控制 (OUT-OF-BAND CONTROL)</th><th>所属主线</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="code-pill">ASI01</span></td>
+                <td><strong>目标劫持 (Goal Hijack)</strong>：网页 DOM 或节点间接注入</td>
+                <td>Web IQ Schema 清洗 (<code>[WEBIQ_SANITIZED]</code>) + Purview Copilot 双规则 DLP + 来源血缘标签</td>
+                <td><span class="code-pill">T01 · T02 · T05</span></td>
+              </tr>
+              <tr>
+                <td><span class="code-pill">ASI02</span></td>
+                <td><strong>工具滥用 (Tool Misuse)</strong>：未授权 Shell/API 调用</td>
+                <td>外部 PDP/PEP 门禁 + Strict JSON Schema + K05 高压带电熔断 + Tetragon eBPF <code>SIGKILL</code></td>
+                <td><span class="code-pill">T03 · T04</span></td>
+              </tr>
+              <tr>
+                <td><span class="code-pill">ASI03</span></td>
+                <td><strong>身份与特权滥用</strong>：A→B→C 困惑副手委托链提权</td>
+                <td>Entra Agent ID (<code>Blueprint + Sponsor</code>) + 按跳衰减能力令牌 + Lighthouse GDAP</td>
+                <td><span class="code-pill">T01 · T02 · T04</span></td>
+              </tr>
+              <tr>
+                <td><span class="code-pill">ASI04</span></td>
+                <td><strong>智能体供应链风险</strong>：未签名 MCP 与非商用模型权重</td>
+                <td>Cosign + ORAS + Ratify 准入控制器 + LocalJEV 许可证合规门禁（阻断 <code>CC BY-NC 4.0</code>）</td>
+                <td><span class="code-pill">T03 · T06</span></td>
+              </tr>
+              <tr>
+                <td><span class="code-pill">ASI05</span></td>
+                <td><strong>非预期代码执行</strong>：容器逃逸与宿主机/云凭据窃取</td>
+                <td>AKSClaw Kata VM &amp; E2B Firecracker 独立内核 + 云端 IMDS <code>169.254.169.254</code> 零信任封禁</td>
+                <td><span class="code-pill">T03 · T06</span></td>
+              </tr>
+              <tr>
+                <td><span class="code-pill">ASI06</span></td>
+                <td><strong>记忆与上下文投毒</strong>：多智能体回音室固化虚假事实</td>
+                <td>共享记忆写入隔离区 (Write Quarantine) + 持久化向量索引前的多源证据验签</td>
+                <td><span class="code-pill">T02</span></td>
+              </tr>
+              <tr>
+                <td><span class="code-pill">ASI07–09</span></td>
+                <td><strong>跨节点通信失控、级联雪崩与信任滥用</strong></td>
+                <td>Quorum 多节点共识 + AP2 <code>MandateVC</code> 加密预算上限锁 + FIDO2 Passkey + 3.67s 跨区容灾</td>
+                <td><span class="code-pill">T02 · T03 · T05</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chart C -->
+    <div class="panel-card" style="margin-top:18px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px;">
+        <span class="wb-badge amber">图表 C · 主线 03 与主线 06 运行时隔离横评</span>
+        <span class="wb-id">7 类主流 Agent 运行时架构对比</span>
+      </div>
+      <h3>智能体执行隔离光谱：从宿主机 CLI 启动器到硬件级 MicroVM 零信任沙箱</h3>
+      <div class="matrix-table-wrap" style="margin-top:10px;">
+        <table class="sec-table">
+          <thead>
+            <tr>
+              <th>智能体 / 运行时系统</th>
+              <th>核心隔离机制</th>
+              <th>文件系统边界</th>
+              <th>网络与 IMDS 出口控制</th>
+              <th>默认权限绕过 / 风险提示</th>
+              <th>实测安全水位</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Omarchy Agent Launcher</strong> (主线 06)</td>
+              <td>宿主机桌面会话 / 终端启动器 (28 条 argv 分支)</td>
+              <td>宿主机 <code>$HOME</code> / <code>~/Work</code> 软约定</td>
+              <td>共享宿主机完整网络</td>
+              <td><code>12/14</code> 无提示分支默认传递 <code>--yolo</code> / <code>--allow-all</code></td>
+              <td><span class="wb-badge amber">5/16 硬边界 (仅限单人开发机)</span></td>
+            </tr>
+            <tr>
+              <td><strong>OpenClaw (默认本地模式)</strong> (主线 06)</td>
+              <td>宿主机进程 + Gateway TUI + 可选 Docker</td>
+              <td>宿主机工作区（除非显式开启容器）</td>
+              <td>宿主机网络 + 消息网关回调</td>
+              <td>工具面极广；处理不可信外部消息需挂载 NemoClaw 或 Kata VM</td>
+              <td><span class="wb-badge amber">默认宿主机级权限</span></td>
+            </tr>
+            <tr>
+              <td><strong>Hermes Agent</strong> (主线 06)</td>
+              <td>Profile 隔离 CLI + 可插拔容器/SSH 后端</td>
+              <td><code>~/.hermes/profiles/*</code> 配置隔离</td>
+              <td>可配置网关与模型提供商端点</td>
+              <td>技能与记忆可移植性极佳；强隔离取决于所选执行后端</td>
+              <td><span class="wb-badge cobalt">Profile 隔离 / 后端可插拔</span></td>
+            </tr>
+            <tr>
+              <td><strong>Claude Cowork</strong> (主线 06)</td>
+              <td>Apple Virtualization.framework (VZ) 轻量级 VM</td>
+              <td>仅挂载用户显式授权的宿主目录</td>
+              <td>受控虚拟机 NAT / 代理出口</td>
+              <td>macOS 桌面端具备硬件虚拟化隔离边界；闭源商业生态</td>
+              <td><span class="wb-badge">桌面级硬件 VM (macOS)</span></td>
+            </tr>
+            <tr>
+              <td><strong>NVIDIA NemoClaw (OpenShell)</strong> (主线 06)</td>
+              <td>Linux Landlock LSM + seccomp-bpf + Network Namespace</td>
+              <td>Landlock 默认拒绝白名单路径</td>
+              <td>独立 NetNS + 策略代理网关</td>
+              <td>在 18 项个人 Agent 基准测试中达到 94.4% 边界遏制率</td>
+              <td><span class="wb-badge">加固型 OS 沙箱 (94.4%)</span></td>
+            </tr>
+            <tr>
+              <td><strong>E2B Firecracker MicroVM</strong> (主线 03)</td>
+              <td>KVM + Firecracker MicroVM + <code>userfaultfd</code> 快照</td>
+              <td>每会话独立临时块设备 Rootfs</td>
+              <td>独立 TAP 网卡 + 出口防火墙 (<code>0.0%</code> 泄漏)</td>
+              <td><code>108ms</code> Base / <code>132ms</code> Code-Interpreter P50 唤醒；单机 2,500 VM</td>
+              <td><span class="wb-badge">独立 MicroVM 内核</span></td>
+            </tr>
+            <tr>
+              <td><strong>AKSClaw (Kata + Cilium Tetragon)</strong> (主线 03)</td>
+              <td>Kata VM + Cilium 网络策略 + Tetragon eBPF + SEV-SNP</td>
+              <td>硬件虚拟化 Pod Rootfs + 加密 CSI</td>
+              <td>丢弃 IMDS <code>169.254.169.254</code> + DNS 白名单</td>
+              <td>内核 eBPF <code>&lt;0.3ms</code> 实时 <code>SIGKILL</code> + Cosign/Ratify 签名准入</td>
+              <td><span class="wb-badge">企业级零信任黄金标准</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 05: EMBEDDED 7-CARD 4:5 VISUAL DECK VIEWER ==================== -->
+  <section id="decks">
+    <div class="sec-head">
+      <div>
+        <div class="sec-label"><span class="num">05</span>7-CARD 4:5 纵向视觉基准报告在线检视器</div>
+        <h2>页内交互式 7-Card 4:5 视觉评测报告阅读器</h2>
+        <p class="sec-intro">
+          所有报告严格遵循 <code>benchmark-harness-engineering</code> 7-Card 4:5 视觉规范（零虚构坐标、密封评测数据驱动、严格 CSP <code>default-src 'none'; style-src 'unsafe-inline'</code>）。点击下方标签即可在页内直接切换检视 5 套 AI 安全 7-Card 报告。
+        </p>
+      </div>
+      <div>
+        <a class="wb-link primary" id="deck-open-btn" href="workshops/ai-security/defend-cards.html" target="_blank" rel="noopener">↗ 在新窗口独立打开当前 7-Card 报告</a>
+      </div>
+    </div>
+
+    <div class="deck-viewer-bar">
+      <div class="tier-tabs" style="margin-bottom:0;" role="tablist" aria-label="选择 7-Card 基准报告">
+        <button type="button" class="tier-tab active" onclick="switchSecurityDeck('workshops/ai-security/landing-zone-cards.html', this)">01 · 安全 AI 着陆区与 Frontier SOC 7-Card</button>
+        <button type="button" class="tier-tab" onclick="switchSecurityDeck('workshops/ai-security/defend-cards.html', this)">02 · DEFEND 与 SMB 工具包 7-Card</button>
+        <button type="button" class="tier-tab" onclick="switchSecurityDeck('workshops/ai-security/cards.html', this)">03 · 六大安全主线全景 7-Card</button>
+        <button type="button" class="tier-tab" onclick="switchSecurityDeck('workshops/agentic-commerce/benchmark-cards.html', this)">04 · Web IQ × 智能体商业安全 7-Card</button>
+        <button type="button" class="tier-tab" onclick="switchSecurityDeck('workshops/benchmarks/omarchy-cards.html', this)">05 · Omarchy 桌面 Agent 安全契约 7-Card</button>
+        <button type="button" class="tier-tab" onclick="switchSecurityDeck('workshops/benchmarks/e2b-nomad-cards.html', this)">06 · E2B Nomad 控制面韧性 7-Card</button>
+      </div>
+      <span id="deck-url-label" style="font-family:var(--mono);font-size:11.5px;color:var(--text-3);">workshops/ai-security/landing-zone-cards.html</span>
+    </div>
+    <iframe class="deck-frame" id="security-deck-iframe" src="workshops/ai-security/landing-zone-cards.html" title="7-Card 4:5 AI Security Visual Benchmark Deck"></iframe>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot-inner">
+    <div><b>陈琪 Qi Chen (@turbo998)</b> · AI 安全研究与可视化报表中心 · 中英双语主线同步</div>
+    <div class="foot-links">
+      <a href="zh.html">研究总览</a>
+      <a href="zh-writing.html">工作台与评测</a>
+      <a href="frontier-ai-studio.html">Frontier Studio</a>
+      <a href="workshops/ai-security/defend-cards.html">DEFEND 7-Card</a>
+      <a href="workshops/ai-security/cards.html">六大主线 7-Card</a>
+      <a href="https://github.com/turbo998" target="_blank" rel="noopener">GitHub</a>
+      <a href="ai-security.html">EN</a>
+    </div>
+    <div class="foot-note">© 2026 陈琪 Qi Chen. 观点仅代表个人工程研究，不代表雇主。</div>
+  </div>
+</footer>
+
+<script>
+  const DEFEND_TIERS = {
+    base: {
+      title: 'Tier 1 · DEFENDBase — 身份、设备与协同办公零信任安全基座',
+      desc: '基于 Microsoft 365 Business Premium + Intune Plan 1 + M365 Lighthouse (GDAP) 构建。在引入任何高级 XDR、Copilot 或 Sentinel SIEM 之前，强制完成身份 MFA、条件访问、设备合规与基础数据保护的标准化加固。',
+      license: 'M365 Business Premium',
+      stack: 'Entra P1 · Intune P1 · MDE/MDO · Lighthouse',
+      rule: '进入 T2 / T3 的强制前置基座',
+      gates: [
+        '1. 100% 普通用户与管理员强制开启 MFA 多重身份验证',
+        '2. 启用条件访问 (Conditional Access) 基线策略',
+        '3. 全面封禁旧版身份验证协议 (Legacy Auth)',
+        '4. 管理员特权分离并基于 GDAP 最小权限委派管理',
+        '5. 紧急逃生账号 (Break-Glass) 完成实测与告警监控',
+        '6. 企业终端纳入 Intune Plan 1 MDM/MAM 统一纳管',
+        '7. 强制执行设备合规基线 (BitLocker 加密、防火墙)',
+        '8. 终端接入 Defender for Endpoint (MDE) 并开启 ASR 规则',
+        '9. 启用 Defender for Office 365 P1 (安全链接 / 安全附件)',
+        '10. 发布基础敏感度标签与核心云端 DLP 策略',
+        '11. 完成低层设计文档 (LLD) 与客户风险登记册基线建档'
+      ]
+    },
+    security: {
+      title: 'Tier 2 · DEFENDSecurity — 主动式 XDR、身份威胁检测与影子 AI 发现',
+      desc: '在 DEFENDBase 之上叠加 Microsoft Defender Suite（Entra ID P2、Defender for Identity、MDE P2、MDO P2、Defender for Cloud Apps）。从静态基线加固升级为基于风险的条件访问、ITDR 身份威胁响应、自动化 XDR 攻击阻断与影子 AI (Shadow AI) 管控。',
+      license: 'Business Premium + Microsoft Defender Suite',
+      stack: 'Entra ID P2 · MDI · MDE P2 · MDO P2 · MDA',
+      rule: '需 100% 完成 DEFENDBase 准出门禁',
+      gates: [
+        '1. 已验证通过全部 11 项 DEFENDBase 准出门禁或完成风险签字',
+        '2. 强制执行 Entra ID Protection 登录风险与用户风险条件访问',
+        '3. 启用特权身份管理 (PIM) 即时 (JIT) 审批提权',
+        '4. 域控与混合身份节点全面部署 Defender for Identity (MDI)',
+        '5. MDE P2 自动调查与修复 (AIR) 切换至强制自动处置模式',
+        '6. 建立 Defender 漏洞管理 (MDVM) 持续修复闭环节奏',
+        '7. 启用 MDO P2 钓鱼攻击模拟演练与恶意邮件自动撤回',
+        '8. 开启 Defender for Cloud Apps (MDA) OAuth 与影子 AI 发现',
+        '9. 通过 MDA 封禁未授权高风险生成式 AI 与影子 SaaS 应用',
+        '10. 完成统一 Defender XDR 事件关联与告警降噪调优',
+        '11. 建立主动威胁狩猎与月度安全态势复盘机制',
+        '12. 更新 Tier 2 低层设计文档 (LLD)、变更控制与风险登记册'
+      ]
+    },
+    compliance: {
+      title: 'Tier 3 · DEFENDCompliance — Purview 数据治理、内部风险与 Copilot 就绪',
+      desc: '在 DEFENDBase 之上叠加 Microsoft Purview Suite。贯通 Exchange、SharePoint、OneDrive、Teams、终端与 Microsoft 365 Copilot 的完整数据生命周期治理，防止历史权限过度共享及 AI 提示词/响应泄密。',
+      license: 'Business Premium + Microsoft Purview Suite',
+      stack: 'Purview MIP · 终端 DLP · DSPM for AI · IRM · eDiscovery',
+      rule: '上线 M365 Copilot 前的强制合规门槛',
+      gates: [
+        '1. 已验证通过全部 11 项 DEFENDBase 准出门禁或完成风险签字',
+        '2. 发布企业 8 级敏感度标签分类体系与自动打标策略',
+        '3. 在 Exchange、SharePoint、OneDrive 与 Teams 强制执行 DLP',
+        '4. 在受管 Windows 与 macOS 设备启用终端 DLP (Endpoint DLP)',
+        '5. 启用 DSPM for AI（持续监测 Copilot 与 AI 数据暴露面）',
+        '6. 配置 DLP for M365 Copilot 双规则阻断高敏标签被 AI 检索引用',
+        '7. 强制执行信息生命周期（数据保留与自动销毁计划）',
+        '8. 启用内部风险管理 (IRM) 数据窃取与离职泄密策略',
+        '9. 启用通信合规 (Communication Compliance) 监控高危与 AI 交互',
+        '10. 完成 Purview 高级审计 (Audit Premium) 与电子取证流程验证',
+        '11. 完成 Copilot 数据就绪度与 SharePoint 过度共享整改签署'
+      ]
+    },
+    complete: {
+      title: 'Tier 4 · DEFENDComplete — 安全运营与自适应数据合规全面融合',
+      desc: '通过 Combined Defender + Purview Suite 将 DEFENDSecurity 与 DEFENDCompliance 合流。利用 Purview 自适应保护 (Adaptive Protection) 将内部风险等级实时注入条件访问与 DLP，实现身份/终端威胁与数据防泄漏的单环联动。',
+      license: 'Business Premium + Defender & Purview 组合套件',
+      stack: 'Unified XDR + Purview Adaptive Protection + DSPM for AI',
+      rule: '激活 DEFENDExtend (Sentinel) 的强制前置条件',
+      gates: [
+        '1. 已验证通过 DEFENDSecurity (12项) 与 DEFENDCompliance (11项) 全部门禁',
+        '2. Purview 自适应保护 (Adaptive Protection) 与条件访问动态联动',
+        '3. 内部风险 (IRM) 风险等级自动升级终端与云端 DLP 阻断策略',
+        '4. 建立统一 Defender XDR + Purview 内部风险联合调查剧本',
+        '5. 外部影子 AI (MDA + Edge DLP) 与内部受控 AI (Copilot DLP/DSPM) 闭环',
+        '6. 建立跨安全运营 (SecOps) 与合规法务的联合变更控制委员会',
+        '7. 输出覆盖全部 7 大零信任与 AI 维度的管理层汇报看板',
+        '8. 完成 SIEM 前置遥测降噪校验（具备进入 DEFENDExtend 条件）'
+      ]
+    },
+    extend: {
+      title: 'Tier 5 · DEFENDExtend — 7×24 托管 SIEM/SOAR 与多云安全运营中心 (Sentinel)',
+      desc: '在 DEFENDComplete 之上扩展 Microsoft Sentinel（及面向 Azure/混合云服务器的 Defender for Cloud）。在已完成治理降噪的 M365 基座上，提供 7×24 全天候 SIEM 关联分析、跨云/第三方防火墙日志汇聚与 SOAR 自动响应。',
+      license: 'DEFENDComplete + Microsoft Sentinel (按量计费)',
+      stack: 'Microsoft Sentinel · SOAR Logic Apps · Defender for Cloud*',
+      rule: '未完成 DEFENDComplete 严禁直接开启 (Slide 40)',
+      gates: [
+        '1. 已验证通过全部 8 项 DEFENDComplete 准出门禁（Slide 40 硬性锁）',
+        '2. 部署 Microsoft Sentinel 工作区与分层日志保留架构',
+        '3. 接入 Defender XDR、Entra ID 与 Purview 原生连接器',
+        '4. 完成第三方防火墙、网络与多云日志采集及降噪调优',
+        '5. 部署自定义 KQL 分析规则并映射 MITRE ATT&CK 覆盖矩阵',
+        '6. 验证自动化 SOAR Logic App 响应剧本（锁号、隔离主机、封禁 IP）',
+        '7. 7×24 SOC 升级矩阵、SLA 与事件应急响应手册正式投产',
+        '8. 配置 Sentinel 摄入量 FinOps 预算护栏与承诺层级',
+        '9. 建立常态化紫队演练 (Purple-Team) 与 AI 威胁狩猎机制'
+      ]
+    }
+  };
+
+  let activeTierKey = 'base';
+  const tierGateState = {
+    base: Array(11).fill(true),
+    security: Array(12).fill(true),
+    compliance: Array(11).fill(true),
+    complete: Array(8).fill(true),
+    extend: Array(9).fill(true)
+  };
+
+  function selectDefendTier(tierKey) {
+    if (!DEFEND_TIERS[tierKey]) return;
+    activeTierKey = tierKey;
+    document.querySelectorAll('[data-tier]').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-tier') === tierKey);
+    });
+    renderDefendTier();
+  }
+
+  function toggleGate(idx) {
+    tierGateState[activeTierKey][idx] = !tierGateState[activeTierKey][idx];
+    renderDefendTier();
+  }
+
+  function toggleAllCurrentGates(val) {
+    tierGateState[activeTierKey] = tierGateState[activeTierKey].map(() => val);
+    renderDefendTier();
+  }
+
+  function renderDefendTier() {
+    const t = DEFEND_TIERS[activeTierKey];
+    const states = tierGateState[activeTierKey];
+    document.getElementById('dt-title').textContent = t.title;
+    document.getElementById('dt-desc').textContent = t.desc;
+    document.getElementById('dt-license').textContent = t.license;
+    document.getElementById('dt-stack').textContent = t.stack;
+    document.getElementById('dt-rule').textContent = t.rule;
+
+    const listEl = document.getElementById('dt-gate-list');
+    listEl.innerHTML = '';
+    let passed = 0;
+    t.gates.forEach((gateText, idx) => {
+      const isChecked = states[idx];
+      if (isChecked) passed++;
+      const div = document.createElement('div');
+      div.className = 'gate-item' + (isChecked ? ' checked' : '');
+      div.onclick = () => toggleGate(idx);
+      const checkSpan = document.createElement('span');
+      checkSpan.className = 'gate-check';
+      checkSpan.textContent = isChecked ? '✓' : '✕';
+      checkSpan.style.color = isChecked ? 'var(--good)' : '#dc2626';
+      const textSpan = document.createElement('span');
+      textSpan.textContent = gateText;
+      div.appendChild(checkSpan);
+      div.appendChild(textSpan);
+      listEl.appendChild(div);
+    });
+
+    const total = t.gates.length;
+    const pct = Math.round((passed / total) * 100);
+    document.getElementById('dt-gate-heading').textContent =
+      `强制准出门禁清单 (Mandatory Exit Criteria: ${passed} / ${total} 已达成)`;
+    document.getElementById('dt-progress-text').textContent =
+      `准出门禁达成率: ${passed} / ${total} (${pct}%)`;
+    document.getElementById('dt-progress-bar').style.width = pct + '%';
+
+    const badgeEl = document.getElementById('dt-status-badge');
+    const verdictEl = document.getElementById('dt-gov-verdict');
+    if (passed === total) {
+      badgeEl.className = 'wb-badge';
+      badgeEl.textContent = '✅ 全部准出门禁已达标 — 准予晋升';
+      verdictEl.textContent =
+        '治理判定 (Slide 40)：100% 满足当前层级强制准出门禁，低层设计文档 (LLD) 与变更控制基线已锁定，准予晋升至下一 DEFEND 服务层级。';
+    } else {
+      badgeEl.className = 'wb-badge amber';
+      badgeEl.textContent = `⚠️ 暂停层级晋升 (尚有 ${total - passed} 项门禁未闭合)`;
+      verdictEl.textContent =
+        `治理判定 (Slide 40)：尚有 ${total - passed} 项强制准出门禁未达成。根据 DEFEND 治理铁律，在完成整改或由客户正式签署《风险登记册 (Risk Register)》接受残余风险前，禁止跨级启用高阶层（严禁盲目开启 Copilot 或接入 Sentinel）。`;
+    }
+  }
+
+  function switchSecurityDeck(url, btnEl) {
+    document.getElementById('security-deck-iframe').src = url;
+    document.getElementById('deck-url-label').textContent = url;
+    document.getElementById('deck-open-btn').href = url;
+    if (btnEl && btnEl.parentElement) {
+      btnEl.parentElement.querySelectorAll('.tier-tab').forEach(b => b.classList.remove('active'));
+      btnEl.classList.add('active');
+    }
+  }
+
+  renderDefendTier();
+</script>
+</body>
+</html>

@@ -1,0 +1,865 @@
+<!doctype html>
+<html lang="zh-CN" data-builder-style="precision">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>安全 AI 着陆区与 Frontier SOC (Security AI Landing Zone) — AI 安全专项子栏目 | 陈启 (Qi Chen)</title>
+<meta name="description" content="AI 安全专项子栏目：Security AI Landing Zone（安全 AI 着陆区）与 Frontier SOC 深度可视化报告（基于 42 页 Frontier Security Deck 脱敏研究）。涵盖 Copilot 作为 AI 统一入口、Microsoft Agent 365 五大支柱控制平面、M365 E7 (Frontier Suite)、FTE Offer 第 3 周强制门禁，以及 ISOC + Project Perception 红蓝绿智能体 + MDASH 100+ 专项智能体。" />
+<link rel="stylesheet" href="style.css" />
+<script src="theme-switcher.js" defer></script>
+<script src="reveal.js" defer></script>
+<style>
+  .subcol-bar {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+    gap: 10px; padding: 11px 16px; margin: 18px 0 6px;
+    background: var(--surface-2); border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+  }
+  .subcol-links { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .subcol-pill {
+    font-family: var(--mono); font-size: 12px; font-weight: 600;
+    padding: 6px 12px; border-radius: 7px; text-decoration: none;
+    color: var(--text-2); background: var(--surface); border: 1px solid var(--border);
+    transition: all .15s;
+  }
+  .subcol-pill:hover { border-color: var(--accent); color: var(--text); }
+  .subcol-pill.active {
+    background: var(--accent); color: #fff; border-color: var(--accent);
+    box-shadow: 0 3px 10px rgba(37, 99, 235, 0.25);
+  }
+  .sec-grid-2 { display: grid; grid-template-columns: 1.12fr 0.88fr; gap: 18px; }
+  .sec-grid-equal { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .sec-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .panel-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 20px 22px;
+    box-shadow: var(--card-shadow);
+  }
+  .panel-card h3 { margin: 0 0 8px; font-size: 17px; font-weight: 700; }
+  .tier-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+  .tier-tab {
+    font-family: var(--mono); font-size: 12px; font-weight: 600;
+    padding: 8px 14px; border-radius: 8px; cursor: pointer;
+    border: 1px solid var(--border-strong); background: var(--surface-2);
+    color: var(--text-2); transition: all .15s;
+  }
+  .tier-tab:hover { border-color: var(--accent); color: var(--text); }
+  .tier-tab.active {
+    background: var(--accent); color: #fff; border-color: var(--accent);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+  }
+  .tier-meta-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px;
+  }
+  .tier-stat {
+    background: var(--surface-2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 10px 12px;
+  }
+  .tier-stat-lbl { font-family: var(--mono); font-size: 10.5px; color: var(--text-3); text-transform: uppercase; }
+  .tier-stat-val { font-family: var(--mono); font-size: 13.5px; font-weight: 700; color: var(--text); margin-top: 3px; }
+  .gate-list {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px;
+  }
+  .gate-item {
+    display: flex; align-items: flex-start; gap: 8px;
+    background: var(--surface-2); border: 1px solid var(--border);
+    border-radius: 7px; padding: 9px 11px; font-size: 12.5px; color: var(--text-2);
+    cursor: pointer; user-select: none; transition: border-color .12s, background .12s;
+  }
+  .gate-item:hover { border-color: var(--accent); }
+  .gate-item.checked {
+    border-color: rgba(5, 150, 105, 0.45); background: var(--good-soft); color: var(--text);
+  }
+  .gate-check {
+    font-family: var(--mono); font-weight: 700; color: var(--good);
+    min-width: 16px; line-height: 1.3;
+  }
+  .sprint-timeline {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 14px;
+  }
+  .sprint-step {
+    background: var(--surface-2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px; position: relative;
+  }
+  .sprint-step.highlight {
+    border: 2px solid var(--good); background: var(--good-soft);
+  }
+  .sprint-wk {
+    font-family: var(--mono); font-size: 11px; font-weight: 800;
+    color: var(--accent); text-transform: uppercase;
+  }
+  .sprint-step.highlight .sprint-wk { color: var(--good); }
+  .sprint-title { font-size: 14px; font-weight: 800; margin: 5px 0 6px; color: var(--text); }
+  .sprint-desc { font-size: 12.3px; color: var(--text-2); line-height: 1.45; margin: 0; }
+  .soc-kpi-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px;
+  }
+  .soc-kpi-card {
+    background: var(--surface-2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px;
+  }
+  .soc-kpi-num {
+    font-family: var(--mono); font-size: 26px; font-weight: 800; color: var(--text);
+  }
+  .soc-kpi-delta {
+    font-family: var(--mono); font-size: 11.5px; font-weight: 700; color: var(--good);
+  }
+  .soc-kpi-lbl { font-size: 12.5px; font-weight: 700; color: var(--text-2); margin-top: 4px; }
+  .matrix-table-wrap { overflow-x: auto; }
+  .sec-table { width: 100%; border-collapse: collapse; font-size: 12.8px; }
+  .sec-table th {
+    font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .06em;
+    color: var(--text-3); text-align: left; padding: 10px 10px;
+    border-bottom: 2px solid var(--border-strong); background: var(--surface-2);
+  }
+  .sec-table td {
+    padding: 10px 10px; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--text-2);
+  }
+  .sec-table tr:hover td { background: var(--surface-hover); }
+  .code-pill {
+    font-family: var(--mono); font-size: 11px; font-weight: 600;
+    padding: 2px 6px; border-radius: 4px; background: var(--surface-2);
+    border: 1px solid var(--border); color: var(--text); white-space: nowrap;
+  }
+  .deck-viewer-bar {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+    gap: 10px; padding: 12px 16px; background: var(--surface-2);
+    border: 1px solid var(--border); border-radius: var(--radius) var(--radius) 0 0;
+  }
+  .deck-frame {
+    width: 100%; height: 860px; border: 1px solid var(--border); border-top: 0;
+    border-radius: 0 0 var(--radius) var(--radius); background: #e2e8f0;
+  }
+  @media (max-width: 960px) {
+    .sec-grid-2, .sec-grid-equal, .sec-grid-3, .sprint-timeline, .soc-kpi-grid, .gate-list, .tier-meta-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="zh.html" class="brand">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span>陈启 · Qi Chen</span>
+      <span class="brand-meta">security-ai-landing-zone</span>
+    </a>
+    <div class="nav-links">
+      <a href="zh.html#pillars">六大支柱</a>
+      <a href="zh-ai-security.html" style="color:var(--accent);font-weight:700;">🛡️ AI 安全总览</a>
+      <a href="zh-security-ai-landing-zone.html" class="active" style="color:var(--good);font-weight:800;">🏗️ 安全 AI 着陆区</a>
+      <a href="zh-benchmarks.html" style="color:var(--good);font-weight:700;">📊 Benchmark报告</a>
+      <a href="frontier-ai-studio.html">Frontier 工坊</a>
+      <a href="zh-writing.html">技术文章</a>
+      <a href="#five-pillars">五大支柱</a>
+      <a href="#frontier-soc">Frontier SOC</a>
+      <a href="#partner-service">伙伴打法</a>
+      <a href="#visual-deck">7卡报告</a>
+      <a href="https://github.com/turbo998/ai-research-public/tree/main/docs/research/security-ai-landing-zone" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="security-ai-landing-zone.html" class="lang-switch">EN</a>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <!-- ==================== 专项子栏目切换导航条 ==================== -->
+  <div class="subcol-bar">
+    <div style="font-family:var(--mono);font-size:11.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;">
+      🛡️ AI 安全研究导航与专项子栏目
+    </div>
+    <div class="subcol-links">
+      <a class="subcol-pill" href="zh-ai-security.html">01 · AI 安全六大专题总览</a>
+      <a class="subcol-pill active" href="zh-security-ai-landing-zone.html">02 · 专项子栏目：Security AI Landing Zone (安全 AI 着陆区 × Frontier SOC)</a>
+      <a class="subcol-pill" href="zh-ai-security.html#defend-simulator">03 · 专项子栏目：DEFEND 五层体系与 SMB 伙伴工具包</a>
+      <a class="subcol-pill" href="#visual-deck">04 · 7卡 4:5 可视化评测报告</a>
+    </div>
+  </div>
+
+  <!-- ==================== HERO WORKBENCH ==================== -->
+  <header class="hero">
+    <div class="builder-hero-grid">
+      <div class="builder-hero-main">
+        <div class="eyebrow">
+          <span class="dot" aria-hidden="true"></span>
+          <span>AI 安全专项子栏目 · Frontier Security Deck (42页完整解构) · Security for AI × AI for Security</span>
+        </div>
+
+        <h1>Security AI Landing Zone：<span class="accent">安全 AI 着陆区与 Frontier SOC（“出生即受控”）</span></h1>
+
+        <p class="lead">
+          如同企业上云必须先建设 <strong>Azure Landing Zone</strong>，企业规模化落地 Agent 必须在 <strong>FTE Offer 第 3 周（Week 3）</strong> 率先完成 <strong>Secure AI Landing Zone（安全 AI 着陆区）</strong> 建设。本专项子栏目完整解构 <strong>42 页 Frontier Security 核心架构</strong>：以 <strong>Copilot 作为 AI 统一入口 (`Copilot as the UI for AI`)</strong>，通过 <strong>Microsoft Agent 365 五大支柱控制平面 (`M365 E7 Frontier Suite`)</strong> 让每个 Agent “出生即受控”；同时以 <strong>Frontier SOC (`ISOC in Microsoft Defender` + `Project Perception 红/蓝/绿三智能体` + `MDASH 100+ 专项智能体`)</strong> 实现“以 AI 治 AI”，并配套可复制的 <strong>`Assess → Build → Operate` 三阶段伙伴商业服务</strong>。
+        </p>
+
+        <div class="role-tags" aria-label="Security AI Landing Zone 核心标签">
+          <span class="tag-accent">FTE Offer 第3周强制门禁</span>
+          <span class="tag-good">Microsoft Agent 365 五大支柱</span>
+          <span class="tag-accent">Copilot as the UI for AI</span>
+          <span class="tag-warn">M365 E7 (Frontier Suite)</span>
+          <span class="tag-good">ISOC + Project Perception (2026.11 GA)</span>
+          <span class="tag-accent">MDASH 100+ 漏洞验证智能体</span>
+          <span class="tag-good">Assess → Build → Operate 伙伴服务</span>
+        </div>
+
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#five-pillars">
+            <span>交互探索安全 AI 着陆区五大支柱</span>
+            <span aria-hidden="true">→</span>
+          </a>
+          <a class="btn" href="#frontier-soc">Frontier SOC (ISOC + Perception + MDASH)</a>
+          <a class="btn" href="workshops/ai-security/landing-zone-cards.html" target="_blank" rel="noopener">全屏打开 7卡报告 ↗</a>
+          <a class="btn" href="https://github.com/turbo998/ai-research-public/tree/main/docs/research/security-ai-landing-zone" target="_blank" rel="noopener">GitHub 深度研究归档 ↗</a>
+          <a class="btn" href="security-ai-landing-zone.html">English Report</a>
+        </div>
+      </div>
+
+      <aside class="builder-console" aria-label="Security AI Landing Zone 遥测控制台">
+        <div class="console-bar">
+          <div class="console-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+          <span class="console-title">frontier-security://landing-zone-telemetry</span>
+          <span class="console-status"><span class="status-dot"></span>WK3 门禁已激活</span>
+        </div>
+        <div class="console-body">
+          <div class="console-line"><span class="c-prompt">$</span><span class="c-cmd">inspect --subcolumn security-ai-landing-zone</span></div>
+          <div class="console-kv">
+            <div class="kv-row"><span class="kv-k">monterrey_ics_case</span><span class="kv-v">Claude+GPT · 17K 行代码 / 49 模块</span></div>
+            <div class="kv-row"><span class="kv-k">fte_sprint_gate</span><span class="kv-v">WK3 着陆区 → WK4-5 交付 3 个 Agent</span></div>
+            <div class="kv-row"><span class="kv-k">control_plane</span><span class="kv-v">Microsoft Agent 365 (5 大支柱)</span></div>
+            <div class="kv-row"><span class="kv-k">licensing_suite</span><span class="kv-v">M365 E7 (E5 + Agent 365 + Entra + Copilot)</span></div>
+            <div class="kv-row"><span class="kv-k">frontier_soc</span><span class="kv-v">ISOC + Perception (红蓝绿) + MDASH (100+)</span></div>
+          </div>
+          <div class="console-line"><span class="c-prompt">$</span><span class="c-cmd">verify --pre-scale-questions 6 --partner-questions 5</span></div>
+          <div class="console-badges">
+            <span class="c-badge c-badge-green">✓ 847 暴露面收敛 (↑18%)</span>
+            <span class="c-badge c-badge-blue">✓ 23 活跃攻击阻断 (↑31%)</span>
+            <span class="c-badge c-badge-amber">✓ 2026.11 ISOC 90天留存与 Perception GA</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <div class="stats" role="region" aria-label="Security AI Landing Zone 关键指标">
+      <div class="stat">
+        <div class="stat-num">17K<span class="unit">LOC</span></div>
+        <div class="stat-label">数小时生成 49 个自适应攻击模块（2026年1月蒙特雷水务局工控入侵：Claude + GPT 驱动）</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">WK3<span class="unit">门禁</span></div>
+        <div class="stat-label">FTE Offer 4–6 周冲刺第 3 周强制基线门禁：未完成着陆区则第 4–5 周 Agent 无法投产</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">5<span class="unit">大支柱</span></div>
+        <div class="stat-label">Agent 365 控制平面：可见与治理 · Entra Agent ID · Purview 数据 · Defender 威胁 · 合规审计</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">100+<span class="unit">智能体</span></div>
+        <div class="stat-label">MDASH 100+ 专项漏洞验证智能体 + Project Perception 红/蓝/绿三智能体闭环</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== 架构全景图 SVG ==================== -->
+  <section id="architecture-svg">
+    <div class="section-head">
+      <div>
+        <div class="section-kicker">00 · 安全 AI 着陆区与 Frontier SOC 架构全景图</div>
+        <h2 class="section-title">Security for AI（五大支柱着陆区）× AI for Security（Frontier SOC）</h2>
+      </div>
+      <p class="section-sub">基于 42 页 Frontier Security Deck 绘制的双螺旋架构：体验层（Copilot 统一入口）、控制平面（Microsoft Agent 365 五大支柱）、底座（M365 E7）与 Frontier SOC（ISOC + Perception + MDASH）。</p>
+    </div>
+    <div class="panel-card" style="padding:14px;overflow:hidden;">
+      <img src="assets/security-ai-landing-zone-architecture.svg" alt="Security AI Landing Zone 与 Frontier SOC 架构图" style="width:100%;height:auto;display:block;border-radius:8px;" />
+    </div>
+  </section>
+
+  <!-- ==================== 01 & 02 · 为什么是现在 & FTE 4-6周冲刺 ==================== -->
+  <section id="why-now-sprint">
+    <div class="section-head">
+      <div>
+        <div class="section-kicker">01 &amp; 02 · 为什么是现在 &amp; FTE Offer 4–6 周转型冲刺 (Slides 3–5)</div>
+        <h2 class="section-title">AI 已改写攻防规则——第 3 周安全 AI 着陆区是 Agent 投产的必经门禁</h2>
+      </div>
+      <p class="section-sub">为什么传统静态签名防御无法应对大模型驱动的攻击？为什么 FTE Offer 将第 3 周锁定为不可跳过的安全着陆区前提？</p>
+    </div>
+
+    <div class="sec-grid-2">
+      <div class="panel-card">
+        <div class="card-meta" style="margin-bottom:6px;">
+          <span class="pill">第 01 章 · Slides 3–4</span>
+          <span class="badge-live" style="background:rgba(220,38,38,0.12);color:#dc2626;border-color:rgba(220,38,38,0.3);">真实攻防事件剖析</span>
+        </div>
+        <h3>2026年1月墨西哥蒙特雷市政供水与排水局（ICS）入侵事件</h3>
+        <p style="font-size:13px;color:var(--text-2);line-height:1.55;margin:0 0 12px;">
+          由 <strong>Gambit Security</strong> 与 <strong>Dragos</strong> 披露（2025年12月–2026年2月针对墨西哥政府机构系列攻击的一部分）：单名攻击者将商业前沿大模型作为自动化作战引擎，在数小时内突破水务基础设施。
+        </p>
+        <div class="tier-meta-grid">
+          <div class="tier-stat">
+            <div class="tier-stat-lbl">核心技术主力</div>
+            <div class="tier-stat-val">Anthropic Claude</div>
+            <div style="font-size:11px;color:var(--text-3);margin-top:2px;">入侵规划、漏洞利用与工具开发、实时排障</div>
+          </div>
+          <div class="tier-stat">
+            <div class="tier-stat-lbl">数据处理与报告</div>
+            <div class="tier-stat-val">OpenAI GPT</div>
+            <div style="font-size:11px;color:var(--text-3);margin-top:2px;">受害者数据清洗、结构化提炼与战果报告</div>
+          </div>
+          <div class="tier-stat">
+            <div class="tier-stat-lbl">攻击代码生成速度</div>
+            <div class="tier-stat-val" style="color:#dc2626;">~17,000 行 / 49 模块</div>
+            <div style="font-size:11px;color:var(--text-3);margin-top:2px;">数小时生成自适应工具链；零可复用静态特征</div>
+          </div>
+        </div>
+        <div class="purview-step" style="margin-bottom:0;border-left-color:#dc2626;">
+          <div class="purview-step-head" style="color:#dc2626;">
+            <span>企业内部 AI 同时打开全新攻击面 (Slide 4)</span>
+            <span>5 大内部风险放大器</span>
+          </div>
+          <p>
+            1. <strong>影子 Agent (Shadow Agents)</strong> 泛滥且无责任人 (Owner) · 2. <strong>Agent 权限过大</strong>导致爆炸半径失控 · 3. <strong>Copilot 与 Agent 过度共享</strong>放大存量权限缺陷 · 4. <strong>提示词注入与恶意工具调用</strong> · 5. <strong>未受控的 MCP 与外部 API</strong> 调用。
+          </p>
+        </div>
+      </div>
+
+      <div class="panel-card">
+        <div class="card-meta" style="margin-bottom:6px;">
+          <span class="pill">第 03 章 · Slide 7</span>
+          <span class="badge-live">规模化前必答 6 问自检器</span>
+        </div>
+        <h3>Agent 规模化前客户必问的 6 个问题（`Observe 观察 · Govern 治理 · Secure 安全`）</h3>
+        <p style="font-size:12.5px;color:var(--text-3);margin:0 0 10px;">
+          点击下方条目切换状态，实时验证安全 AI 着陆区如何闭环企业高管最关心的 6 个阻断项：
+        </p>
+        <div class="gate-list" style="grid-template-columns:1fr;" id="pre-scale-list">
+          <div class="gate-item checked" onclick="this.classList.toggle('checked');updatePreScaleScore();">
+            <span class="gate-check">✓</span>
+            <div><strong>问题 1 [观察 Observe] 组织里到底有多少 Agent？风险在哪？</strong><br/><span style="font-size:11.5px;color:var(--text-3);">由 Agent 365 统一注册表 + 终端/网络影子 Agent 自动发现闭环。</span></div>
+          </div>
+          <div class="gate-item checked" onclick="this.classList.toggle('checked');updatePreScaleScore();">
+            <span class="gate-check">✓</span>
+            <div><strong>问题 2 [治理 Govern] 每个 Agent 谁负责（Owner）？何时退役？</strong><br/><span style="font-size:11.5px;color:var(--text-3);">由 Agent 365 强制归属人绑定 + 生命周期自动到期退役策略闭环。</span></div>
+          </div>
+          <div class="gate-item checked" onclick="this.classList.toggle('checked');updatePreScaleScore();">
+            <span class="gate-check">✓</span>
+            <div><strong>问题 3 [观察/治理] Agent 的行为是否可审计、可追溯？</strong><br/><span style="font-size:11.5px;color:var(--text-3);">由 Purview 默认全量交互审计（说了什么、做了什么、访问了什么）+ eDiscovery 闭环。</span></div>
+          </div>
+          <div class="gate-item checked" onclick="this.classList.toggle('checked');updatePreScaleScore();">
+            <span class="gate-check">✓</span>
+            <div><strong>问题 4 [治理 Govern] Agent 能访问什么？权限是否过大？</strong><br/><span style="font-size:11.5px;color:var(--text-3);">由每个 Agent 专属 Entra Agent ID + Access Packages 访问包 + 实时条件访问闭环。</span></div>
+          </div>
+          <div class="gate-item checked" onclick="this.classList.toggle('checked');updatePreScaleScore();">
+            <span class="gate-check">✓</span>
+            <div><strong>问题 5 [安全 Secure] Copilot 和 Agent 会不会泄露敏感数据？</strong><br/><span style="font-size:11.5px;color:var(--text-3);">由 Purview 敏感度标签 + DLP 实时脱敏 + DSPM for AI + IRM 风险评分闭环。</span></div>
+          </div>
+          <div class="gate-item checked" onclick="this.classList.toggle('checked');updatePreScaleScore();">
+            <span class="gate-check">✓</span>
+            <div><strong>问题 6 [安全 Secure] 遭遇提示词注入攻击时能否实时发现并阻断？</strong><br/><span style="font-size:11.5px;color:var(--text-3);">由 Defender 运行时实时检测并阻断输入/输出/工具调用/MCP，并汇入 ISOC 闭环。</span></div>
+          </div>
+        </div>
+        <div style="margin-top:10px;font-family:var(--mono);font-size:12px;display:flex;justify-content:space-between;color:var(--good);font-weight:700;" id="pre-scale-status">
+          <span>规模化前门禁状态：6 / 6 全部达标</span>
+          <span>✓ 允许进入第 4–5 周 Agent 投产</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- FTE 4-6 周冲刺时间轴 -->
+    <div class="panel-card" style="margin-top:18px;">
+      <div class="card-meta" style="margin-bottom:4px;">
+        <span class="pill">第 02 章 · Slide 5 · FTE Offer</span>
+        <span class="badge-live">4–6 周转型冲刺 (Transformation Sprint)</span>
+      </div>
+      <h3>FTE Offer 4–6 周转型冲刺：为什么第 3 周（`Secure AI Landing Zone`）决定项目成败</h3>
+      <p style="font-size:13px;color:var(--text-2);margin:0;">
+        核心铁律：<strong>没有第 3 周完成 ② Secure AI Landing Zone 与 ③ Copilot as the UI for AI，第 4–5 周开发的 3 个业务 Agent 将无法通过安全合规审批进入生产环境。</strong>
+      </p>
+      <div class="sprint-timeline">
+        <div class="sprint-step">
+          <div class="sprint-wk">第 1–2 周 · Gate 1</div>
+          <div class="sprint-title">① AI Discovery to Commitment</div>
+          <p class="sprint-desc">梳理 <strong>5–10 个可量化业务成果</strong>并锁定高管赞助人；<strong>第 2 周末通过 Gate 1</strong> 锁定优先落地的 Agent 场景。</p>
+        </div>
+        <div class="sprint-step highlight">
+          <div class="sprint-wk">第 3 周 · 生产上线强制前提</div>
+          <div class="sprint-title">② Secure AI Landing Zone + ③ Copilot 统一入口</div>
+          <p class="sprint-desc">部署 <strong>Entra Agent ID + 条件访问</strong>、<strong>Purview 标签/DLP/DSPM</strong>、<strong>Agent 365 注册表</strong>、<strong>Defender 运行时防护接入 SOC</strong>，并将 <strong>Copilot 设为统一入口</strong>。</p>
+        </div>
+        <div class="sprint-step">
+          <div class="sprint-wk">第 4–5 周 · 敏捷构建</div>
+          <div class="sprint-title">④ 构建并上线 3 个生产级 Agent</div>
+          <p class="sprint-desc">在第 3 周着陆区基线之上完成 <strong>3 个业务 Agent</strong> 的构建、验证与投产，确保每个 Agent “出生即受控”。</p>
+        </div>
+        <div class="sprint-step">
+          <div class="sprint-wk">第 6 周 · Gate 2</div>
+          <div class="sprint-title">⑤ Frontier Transformation Roadmap</div>
+          <p class="sprint-desc">输出跨季度 Frontier AI 演进路线图；<strong>第 6 周末通过 Gate 2</strong>（3 个 Agent 投产 + 路线图定稿）并移交持续运营。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 03 · SECURITY FOR AI：五大支柱交互式浏览器 ==================== -->
+  <section id="five-pillars">
+    <div class="section-head">
+      <div>
+        <div class="section-kicker">03 · Security for AI — Copilot 统一入口 × Microsoft Agent 365 (Slides 6–23)</div>
+        <h2 class="section-title">安全 AI 着陆区五大支柱（“Born Governed / 出生即受控”）交互解构</h2>
+      </div>
+      <p class="section-sub">交互式浏览体验层（`Copilot as the UI for AI`）、控制平面（`Microsoft Agent 365` 五大支柱）、终端延伸（`Defender + Intune`）与 `M365 E7 (Frontier Suite)` 许可体系。</p>
+    </div>
+
+    <div class="sec-grid-2">
+      <div class="panel-card">
+        <div class="tier-tabs" id="pillar-tabs" role="tablist">
+          <button class="tier-tab active" onclick="selectLZPillar(0)">① 可见与治理</button>
+          <button class="tier-tab" onclick="selectLZPillar(1)">② 身份与访问</button>
+          <button class="tier-tab" onclick="selectLZPillar(2)">③ 数据安全</button>
+          <button class="tier-tab" onclick="selectLZPillar(3)">④ 威胁防护</button>
+          <button class="tier-tab" onclick="selectLZPillar(4)">⑤ 合规审计</button>
+          <button class="tier-tab" onclick="selectLZPillar(5)">⑥ 终端扩展与 E7</button>
+        </div>
+
+        <div id="lz-pillar-detail">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <div class="panel-card">
+        <div class="card-meta" style="margin-bottom:6px;">
+          <span class="pill">Slides 6, 8, 22–23</span>
+          <span class="badge-live">体验层与 M365 E7 许可底座</span>
+        </div>
+        <h3>Copilot 作为 AI 统一入口 + M365 E7 (`Frontier Suite`)</h3>
+        <p style="font-size:12.8px;color:var(--text-2);margin:0 0 12px;">
+          没有统一入口，每个业务部门自建的 AI 工具都会变成独立登录、数据孤立、无法审计的影子 AI。<strong>Copilot as the UI for AI</strong> 统一员工交互入口，而 <strong>M365 E7</strong> 提供完整安全底座。
+        </p>
+
+        <div class="purview-step">
+          <div class="purview-step-head">
+            <span>体验层：Copilot as the UI for AI (Slides 6 &amp; 8)</span>
+            <span>统一交互入口</span>
+          </div>
+          <p>
+            统一承载 <strong>Copilot Chat</strong>、<strong>Researcher</strong>、<strong>Copilot Cowork</strong> 与 <strong>Agents in Copilot &amp; Teams</strong>，向下连接微软原生 Agent、Copilot Studio / Foundry 自建 Agent 及第三方 Agent，统一访问 M365 数据、业务系统 (LOB) 与 MCP/API。
+          </p>
+        </div>
+
+        <div class="purview-step">
+          <div class="purview-step-head">
+            <span>Microsoft 365 E7 (`Frontier Suite`) 套件构成 (Slide 22)</span>
+            <span>一站式 Frontier 底座</span>
+          </div>
+          <p>
+            <code>M365 E7</code> = <strong>Microsoft 365 E5</strong>（Defender + Purview + Intune）+ <strong>Microsoft Agent 365</strong>（Agent 统一控制平面）+ <strong>Microsoft Entra Suite</strong>（零信任身份）+ <strong>Microsoft 365 Copilot + Work IQ</strong>。
+          </p>
+        </div>
+
+        <div class="purview-step" style="margin-bottom:0;">
+          <div class="purview-step-head">
+            <span>Microsoft Agent 365 单独购买先决条件 (Slide 23)</span>
+            <span>4 类合格基础订阅</span>
+          </div>
+          <p>
+            客户单独增购 <strong>Microsoft Agent 365</strong> 需持有以下任一基础许可：<br/>
+            1. <code>M365 E5 / A5 / Business Premium</code> · 2. <code>Defender Suite + Purview Suite</code> · 3. <code>Defender Suite Edu + Purview Suite Edu</code> · 4. <code>Defender and Purview Suite FLW</code>。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 04 · AI FOR SECURITY: FRONTIER SOC ==================== -->
+  <section id="frontier-soc">
+    <div class="section-head">
+      <div>
+        <div class="section-kicker">04 · AI for Security — Frontier SOC (Slides 24–32)</div>
+        <h2 class="section-title">ISOC in Microsoft Defender × Project Perception（红/蓝/绿智能体）× MDASH（100+ 智能体）</h2>
+      </div>
+      <p class="section-sub">以 AI 治 AI：从传统的“事后告警分诊”升级为基于统一安全与暴露面图谱的“事前红蓝绿多智能体持续对抗”与“分钟级自主攻击阻断”。</p>
+    </div>
+
+    <div class="soc-kpi-grid">
+      <div class="soc-kpi-card">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;">
+          <span class="soc-kpi-num">847</span>
+          <span class="soc-kpi-delta">↑ 18% (较7天前)</span>
+        </div>
+        <div class="soc-kpi-lbl">Exposure Management（已收敛暴露面）</div>
+        <div style="font-size:11.5px;color:var(--text-3);margin-top:4px;">基于暴露面图谱主动消除关键攻击扼制点 (Slide 24)</div>
+      </div>
+      <div class="soc-kpi-card">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;">
+          <span class="soc-kpi-num">41</span>
+          <span class="soc-kpi-delta">↑ 12% (较7天前)</span>
+        </div>
+        <div class="soc-kpi-lbl">Threat Investigations（活跃威胁调查）</div>
+        <div style="font-size:11.5px;color:var(--text-3);margin-top:4px;">蓝队智能体自动重构攻击时间线并消除告警噪音 (Slide 24)</div>
+      </div>
+      <div class="soc-kpi-card">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;">
+          <span class="soc-kpi-num">124</span>
+          <span class="soc-kpi-delta">↑ 18% (较7天前)</span>
+        </div>
+        <div class="soc-kpi-lbl">Threat Intelligence（富化威胁指标）</div>
+        <div style="font-size:11.5px;color:var(--text-3);margin-top:4px;">将全球威胁情报与本组织资产、历史及暴露面实时关联 (Slide 24)</div>
+      </div>
+      <div class="soc-kpi-card">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;">
+          <span class="soc-kpi-num">23</span>
+          <span class="soc-kpi-delta">↑ 31% (较7天前)</span>
+        </div>
+        <div class="soc-kpi-lbl">Attack Disruption（自动阻断攻击）</div>
+        <div style="font-size:11.5px;color:var(--text-3);margin-top:4px;">分钟级自主隔离受感染资产与账号，阻断多阶段勒索攻击 (Slides 24 &amp; 30)</div>
+      </div>
+    </div>
+
+    <div class="sec-grid-3">
+      <div class="panel-card">
+        <div class="card-meta" style="margin-bottom:6px;">
+          <span class="pill">Slides 25–26</span>
+          <span class="badge-live">2026年11月 GA</span>
+        </div>
+        <h3>Project Perception：红/蓝/绿三智能体闭环</h3>
+        <p style="font-size:12.6px;color:var(--text-2);line-height:1.5;">
+          在<strong>统一安全与暴露面图谱 (Unified Security &amp; Exposure Graph)</strong> 之上运行的多智能体、多模型协同引擎（关联 <code>DeviceProcessEvents</code>、<code>SignInLogs</code>、<code>AlertEvidence</code>、<code>ExposureGraphNodes</code>、<code>RedTeamOperations</code> 等 19+ 核心表）：
+        </p>
+        <ul style="font-size:12.4px;color:var(--text-2);padding-left:18px;line-height:1.55;margin:8px 0 0;">
+          <li><strong style="color:#dc2626;">🔴 Red Team Agent（红队智能体 · 模拟攻击）</strong>：模拟真实攻击、绘制攻击路径、发现关键扼制点 (Chokepoints)、扫描脆弱代码、暴露检测盲区。</li>
+          <li><strong style="color:#2563eb;">🔵 Blue Team Agent（蓝队智能体 · 检测与分类）</strong>：实战化威胁情报、自动重构攻击时间线、分诊高优告警、剔除误报噪音。</li>
+          <li><strong style="color:#059669;">🟢 Green Team Agent（绿队智能体 · 修复与补救）</strong>：弥合防御覆盖缺口、分析安全态势、验证真实暴露面、按根因优先级推进修复。</li>
+        </ul>
+      </div>
+
+      <div class="panel-card">
+        <div class="card-meta" style="margin-bottom:6px;">
+          <span class="pill">Slide 27</span>
+          <span class="badge-live" style="background:rgba(217,119,6,0.12);color:#d97706;border-color:rgba(217,119,6,0.3);">Private Preview 预览</span>
+        </div>
+        <h3>MDASH：100+ 专项 AI 智能体协同</h3>
+        <p style="font-size:12.6px;color:var(--text-2);line-height:1.5;">
+          传统代码扫描工具产生海量误报，耗费研发与安全团队精力。<strong>MDASH</strong> 编排 <strong>100+ 专项 AI 智能体</strong>，融合<strong>前沿大模型 (Frontier Models) + 微软专有安全模型</strong>：
+        </p>
+        <ul style="font-size:12.4px;color:var(--text-2);padding-left:18px;line-height:1.55;margin:8px 0 0;">
+          <li><strong>阶段 1 · 深度漏洞挖掘</strong>：跨源码与依赖树进行多智能体深度语义分析。</li>
+          <li><strong>阶段 2 · 自动化可达性验证</strong>：在隔离沙箱中验证漏洞触发前提与调用链。</li>
+          <li><strong>阶段 3 · 可利用性证明 (Exploitability Proof)</strong>：端到端证实漏洞真实可被利用，并与 Microsoft Defender 深度集成。</li>
+        </ul>
+      </div>
+
+      <div class="panel-card">
+        <div class="card-meta" style="margin-bottom:6px;">
+          <span class="pill">Slides 28–32</span>
+          <span class="badge-live">aka.ms/ISOCDefender</span>
+        </div>
+        <h3>ISOC in Microsoft Defender 演进路线</h3>
+        <p style="font-size:12.6px;color:var(--text-2);line-height:1.5;">
+          面向符合条件的 <strong>Defender Suite、M365 E5 与 M365 E7</strong> 客户，在 Defender 门户内原生提供内置 SIEM 与智能 SOC 能力：
+        </p>
+        <ul style="font-size:12.4px;color:var(--text-2);padding-left:18px;line-height:1.55;margin:8px 0 0;">
+          <li><strong>今日已可用 (Slide 32)</strong>：内置 SIEM（第一方 + 第三方数据关联）、<strong>Case Management 案件管理</strong> (<a href="https://aka.ms/caseindefender" target="_blank" rel="noopener">aka.ms/caseindefender ↗</a>)、<strong>SOAR 剧本生成器</strong>、Workbooks 与 <strong>UEBA</strong>。</li>
+          <li><strong>2026年11月重磅上线 (Slide 32)</strong>：<strong>90 天数据留存 (90-Day Data Retention)</strong>、Content Hub + CI/CD、威胁情报平台、SOC 优化以及 <strong>Project Perception 正式版 (GA)</strong>。</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 05 · 工程就绪度验证：5 项技术探针 & ASSESS-BUILD-OPERATE ==================== -->
+  <section id="partner-service">
+    <div class="section-head">
+      <div>
+        <div class="section-kicker">05 · 工程就绪度验证 — 5 项架构探针与 `Assess → Build → Operate` 技术流水线 (Slides 34–42)</div>
+        <h2 class="section-title">5 项控制平面技术探针 × 三阶段工程实施生命周期</h2>
+      </div>
+      <p class="section-sub">如何通过 5 项技术探针定位租户 AI 控制平面缺口，并结合 360 页 Microsoft 六大工作负载配置规范与 PowerShell 7+ 自动化脚本完成可验证交付。</p>
+    </div>
+
+    <div class="panel-card" style="margin-bottom:18px;">
+      <h3>安全 AI 着陆区就绪度 5 项架构验证探针 (Slide 34)</h3>
+      <p style="font-size:12.8px;color:var(--text-2);margin:0 0 12px;">
+        工程准入准则：<strong>只要以下任意 1 项探针未能通过技术验证，即表明租户存在控制平面盲区，必须在生产 Agent 上线前启动第一阶段（`Assess 评估`）遥测盘点与基线收敛。</strong>
+      </p>
+      <div class="matrix-table-wrap">
+        <table class="sec-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>架构就绪度验证探针</th>
+              <th>对应着陆区支柱</th>
+              <th>Microsoft 控制平面技术栈</th>
+              <th>工程交付物与自动化工具链</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="code-pill">Q1</span></td>
+              <td><strong>“组织内当前存量有多少个 Agent？由谁创建？对应的责任担保人（Sponsor/Owner）是谁？”</strong></td>
+              <td>可见与治理</td>
+              <td><code>Microsoft Agent 365</code> 统一注册表 + SDK 同步 + 终端/网络发现</td>
+              <td>影子 AI 与 Agent 资产遥测清单 · <code>FTE WK1–3</code></td>
+            </tr>
+            <tr>
+              <td><span class="code-pill">Q2</span></td>
+              <td><strong>“M365 Copilot 可检索的站点与文档，是否已完成分类并绑定敏感度标签与内部豁免规则？”</strong></td>
+              <td>数据安全</td>
+              <td><code>Microsoft Purview</code>（8级标签体系、Copilot/Edge DLP、DSPM for AI、IRM）</td>
+              <td>8 级分类标签与过度共享收敛方案 · <a href="https://aka.ms/DataSecurityAssistant" target="_blank" rel="noopener">aka.ms/DataSecurityAssistant ↗</a></td>
+            </tr>
+            <tr>
+              <td><span class="code-pill">Q3</span></td>
+              <td><strong>“Agent 使用什么身份访问业务系统？权限是否通过访问包限定并设置自动过期？”</strong></td>
+              <td>身份与访问</td>
+              <td><code>Microsoft Entra Agent ID</code> + 访问包 (Access Packages) + 实时条件访问</td>
+              <td>Agent 专属身份与 13 套 Report-Only CA 模板 · <a href="https://aka.ms/Deploy-Scripts" target="_blank" rel="noopener">aka.ms/Deploy-Scripts ↗</a></td>
+            </tr>
+            <tr>
+              <td><span class="code-pill">Q4</span></td>
+              <td><strong>“当 Agent 遭遇间接提示词注入或恶意 MCP 调用时，SOC 能否实时观测并阻断？”</strong></td>
+              <td>威胁防护</td>
+              <td><code>Microsoft Defender</code> AI 运行时防护 + <code>ISOC (AgentSOC)</code></td>
+              <td>AgentSOC 运行时检测与 SOAR 自动阻断剧本 · <a href="https://aka.ms/ISOCDefender" target="_blank" rel="noopener">aka.ms/ISOCDefender ↗</a></td>
+            </tr>
+            <tr>
+              <td><span class="code-pill">Q5</span></td>
+              <td><strong>“研发与办公终端上运行的本地 AI CLI 工具、IDE 插件与桌面 Agent 是否受控？”</strong></td>
+              <td>终端与影子 AI</td>
+              <td><code>Microsoft Defender + Microsoft Intune</code> 终端安全扩展 + MDA 发现</td>
+              <td>360 页六大工作负载技术规范 · <a href="https://aka.ms/Security_SMBDeploymentGuides" target="_blank" rel="noopener">aka.ms/Security_SMBDeploymentGuides ↗</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="sec-grid-3">
+      <div class="panel-card">
+        <div class="card-meta" style="margin-bottom:6px;">
+          <span class="pill">阶段 01 · Slide 35</span>
+          <span class="badge-live">遥测盘点与差距审计</span>
+        </div>
+        <h3>1 · Assess（评估 · 资产与风险基线）</h3>
+        <ul style="font-size:12.6px;color:var(--text-2);padding-left:18px;line-height:1.55;">
+          <li>企业存量 Agent 与终端影子 AI 工具全量遥测盘点</li>
+          <li>M365 Copilot 数据过度共享与 8 级敏感标签覆盖率评估</li>
+          <li>服务主体 (SPN) 与 Agent 身份越权风险审计</li>
+          <li><strong>工程输出</strong>：<em>AI 风险注册表与安全 AI 着陆区差距矩阵</em>（配套 <a href="https://aka.ms/MIP-Industry-OnePagers" target="_blank" rel="noopener">7 大受监管行业 SIT 规范 ↗</a>）</li>
+        </ul>
+      </div>
+
+      <div class="panel-card" style="border-color:var(--good);">
+        <div class="card-meta" style="margin-bottom:6px;">
+          <span class="pill">阶段 02 · FTE 第3周</span>
+          <span class="badge-live">控制平面工程落地</span>
+        </div>
+        <h3>2 · Build（建设 · Week 3 门禁）</h3>
+        <ul style="font-size:12.6px;color:var(--text-2);padding-left:18px;line-height:1.55;">
+          <li>部署 <strong>Entra Agent ID</strong> + 访问包 + 13 套条件访问 JSON 策略</li>
+          <li>配置 <strong>Purview 8 级敏感标签 + Copilot/Edge DLP + DSPM for AI</strong></li>
+          <li>启用 <strong>Agent 365 注册表</strong> + 生命周期与人类责任人强制绑定</li>
+          <li>打通 <strong>Defender AI 运行时防护</strong> 接入 ISOC</li>
+          <li><strong>工程输出</strong>：<em>可投产的 AI 安全控制基线</em>（配套 <a href="https://aka.ms/SOW-Generator" target="_blank" rel="noopener">22 项架构蓝图生成器 ↗</a> + <a href="https://aka.ms/Deploy-Scripts" target="_blank" rel="noopener">PowerShell 7+ 幂等脚本 ↗</a>）</li>
+        </ul>
+      </div>
+
+      <div class="panel-card">
+        <div class="card-meta" style="margin-bottom:6px;">
+          <span class="pill">阶段 03 · Slide 35</span>
+          <span class="badge-live">持续 SecOps 闭环</span>
+        </div>
+        <h3>3 · Operate（运营 · 持续监控与策略防漂移）</h3>
+        <ul style="font-size:12.6px;color:var(--text-2);padding-left:18px;line-height:1.55;">
+          <li>新 Agent 上线准入校验与访问包周期性自动复核</li>
+          <li>基于 <strong>ISOC</strong> 的 7×24 AI 运行时提示词/MCP 监控与自动攻击阻断</li>
+          <li>Purview 全量交互审计、分类器调优与 eDiscovery 留存</li>
+          <li><strong>技术栈闭环</strong>：<code>M365 E5 / E7</code> + <code>Agent 365</code> + <code>Project Perception (红蓝绿)</code> + <code>租户策略漂移巡检器</code></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 嵌入式 7卡 4:5 可视化评测报告 ==================== -->
+  <section id="visual-deck">
+    <div class="section-head">
+      <div>
+        <div class="section-kicker">06 · 嵌入式 7卡 4:5 可视化报告查看器</div>
+        <h2 class="section-title">Security AI Landing Zone &amp; Frontier SOC — 7卡 4:5 报告</h2>
+      </div>
+      <p class="section-sub">支持一键切换查看《安全 AI 着陆区与 Frontier SOC 7卡报告》、《DEFEND 五层体系与伙伴工具包 7卡报告》及《AI 安全六大专题全景 7卡报告》。</p>
+    </div>
+
+    <div class="deck-viewer-bar">
+      <div class="tier-tabs" style="margin-bottom:0;" id="deck-tabs">
+        <button class="tier-tab active" onclick="switchLZDeck('workshops/ai-security/landing-zone-cards.html', this)">🏗️ 安全 AI 着陆区与 Frontier SOC (7 Cards)</button>
+        <button class="tier-tab" onclick="switchLZDeck('workshops/ai-security/defend-cards.html', this)">🛡️ DEFEND 五层体系与 SMB 伙伴工具包 (7 Cards)</button>
+        <button class="tier-tab" onclick="switchLZDeck('workshops/ai-security/cards.html', this)">🌐 AI 安全六大专题全景报告 (7 Cards)</button>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <a id="deck-open-link" class="btn btn-primary" href="workshops/ai-security/landing-zone-cards.html" target="_blank" rel="noopener" style="padding:7px 14px;font-size:12px;">全屏打开当前 7卡报告 ↗</a>
+      </div>
+    </div>
+    <iframe id="deck-iframe" class="deck-frame" src="workshops/ai-security/landing-zone-cards.html" title="Security AI Landing Zone 7-Card Visual Report Deck" loading="lazy"></iframe>
+  </section>
+
+</main>
+
+<footer class="wrap" style="margin-top:48px;padding:28px 28px 44px;border-top:1px solid var(--border);display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;font-family:var(--mono);font-size:12px;color:var(--text-3);">
+  <div>
+    <strong>陈启 (Qi Chen) · AI 安全与智能体治理研究中心 — 专项子栏目：安全 AI 着陆区 (Security AI Landing Zone)</strong><br/>
+    <span>研究来源：Frontier Security Deck (42页脱敏归档) · 配套研究仓库：<a href="https://github.com/turbo998/ai-research-public/tree/main/docs/research/security-ai-landing-zone" target="_blank" rel="noopener">turbo998/ai-research-public</a></span>
+  </div>
+  <div style="display:flex;gap:14px;">
+    <a href="zh-ai-security.html">← 返回 AI 安全总览</a>
+    <a href="zh.html">个人主页</a>
+    <a href="security-ai-landing-zone.html">EN</a>
+  </div>
+</footer>
+
+<script>
+const LZ_PILLARS = [
+  {
+    name: "支柱 ① · 可见与治理 (Visibility & Governance · Slides 10–11)",
+    controlPlane: "Microsoft Agent 365 统一注册表",
+    coverage: "微软原生 + 开源框架 + 跨云 + 终端影子 Agent",
+    action: "全量发现 · 归属人绑定 · 异常隔离",
+    desc: "解决“组织里有多少 Agent、谁建的、风险在哪”的首要难题。把第一方、第三方、开源 SDK 以及员工终端上的影子 Agent 全部纳入统一控制平面管理。",
+    items: [
+      "微软第一方平台直接注册：Agent Builder、Copilot Studio、Microsoft Foundry、Copilot Cowork、Researcher",
+      "SDK 与开源框架同步：M365 Agent SDK、OpenAI Agent SDK、Agent 365 SDK、LangChain、CrewAI、LlamaIndex",
+      "跨云平台注册同步 (Registry Sync)：支持 Google Vertex AI 与 AWS Bedrock 构建的 Agent 统一纳管",
+      "终端与网络影子 Agent 发现：自动识别 CLI Agents、桌面应用、Agentic IDEs、VS Code 插件、Claw 类 Agent 与 SaaS Agent",
+      "全生命周期治理：强制绑定责任人 (Owner/Sponsor)、设定自动退役期限，并对无主或异常 Agent 一键隔离 (Quarantine)"
+    ]
+  },
+  {
+    name: "支柱 ② · 身份与访问 (Identity & Access · Slides 12–13)",
+    controlPlane: "Microsoft Entra Agent ID + 实时条件访问",
+    coverage: "每个 Agent 独立身份（告别共享服务主体）",
+    action: "访问包最小授权 + 实时条件访问阻断",
+    desc: "消除 Agent 越权与“爆炸半径”。为每个注册 Agent 分配专属 Entra Agent ID 与明确授权边界，实时评估行为风险并执行条件访问。",
+    items: [
+      "专属 Entra Agent ID：每个 Agent 拥有独立身份标识，与人类用户凭据及高权限共享 SPN 解耦",
+      "Entra Access Packages（访问包）：精确限定该 Agent 允许访问的 API、MCP Server、SharePoint 站点与数据库范围",
+      "权限自动到期与复核：支持按项目周期自动回收权限，防止僵尸 Agent 长期持有高敏权限",
+      "持续风险评估 (Continuous Risk Assessment)：实时检测异常调用频率、非工作时间越权访问或横向移动迹象",
+      "实时条件访问 (Conditional Access)：一旦 Agent 风险等级升高，毫秒级自动阻断访问请求"
+    ]
+  },
+  {
+    name: "支柱 ③ · 数据安全 (Data Security · Slides 14–15)",
+    controlPlane: "Microsoft Purview (敏感标签 + DLP + DSPM + IRM)",
+    coverage: "提示词输入 · RAG 检索上下文 · Agent 输出",
+    action: "标签权限继承 + DLP 实时脱敏 + IRM 评分",
+    desc: "防止 Copilot 与 Agent 引发敏感数据泄露。自动执行敏感度标签与 DLP 脱敏，并通过 Insider Risk Management 对 Agent 进行动态数据风险评分。",
+    items: [
+      "敏感度标签访问控制：基于 Purview Sensitivity Labels 自动拦截未授权的机密/高机密文档检索",
+      "DLP 实时脱敏与拦截：自动对提示词与 Agent 输出中的 PII、凭据及受监管敏感信息类型 (SIT) 进行脱敏或阻断",
+      "DSPM for AI 态势感知：集中洞察所有 Agent 的数据交互活跃度、敏感数据触达面与策略缺口",
+      "Insider Risk Management (IRM) 风险评分：根据每个 Agent 的敏感数据访问异常度计算动态风险分",
+      "Purview × Defender XDR 联动：高风险 Agent 数据评分直接推送至 Defender XDR 关联调查"
+    ]
+  },
+  {
+    name: "支柱 ④ · 威胁防护 (Threat Protection · Slides 16–17)",
+    controlPlane: "Microsoft Defender AI 运行时防护 + ISOC (AgentSOC)",
+    coverage: "本地 Agent + 云端 Agent + 工具/MCP 调用链",
+    action: "运行时提示词注入检测与实时阻断",
+    desc: "在运行时实时检测并阻断针对本地与云端 Agent 的提示词注入、恶意工具调用及 MCP/API 越权行为，将全链路信号汇入 ISOC 形成 AgentSOC。",
+    items: [
+      "全链路运行时检查：覆盖用户输入 (Prompt) → Agent 输出 → 工具调用 (Tool Call) → 工具返回 → MCP/外部 API 调用",
+      "实时阻断恶意动作：在提示词注入诱导 Agent 调用高危外部接口前直接拦截执行",
+      "本地与云端 Agent 一致防护：无论 Agent 运行在云端 Foundry 还是员工笔记本本地均受同等保护",
+      "可视化依赖与攻击路径图谱：直观呈现用户、Agent、身份、数据源与 MCP Server 之间的攻击链路",
+      "汇入 ISOC 升级为 AgentSOC：与 Defender 及 Sentinel 遥测融合，实现分钟级自动攻击阻断"
+    ]
+  },
+  {
+    name: "支柱 ⑤ · 合规审计 (Compliance & Audit · Slides 18–19)",
+    controlPlane: "Microsoft Purview Audit + 合规分类器 + eDiscovery",
+    coverage: "100% 默认记录所有 Agent 交互全过程",
+    action: "商业贿赂/不当行为拦截 + 法律保全",
+    desc: "默认全量记录每个 Agent 说了什么、做了什么、访问了什么，内置商业道德、有害内容与版权侵权分类器，满足监管留存与电子取证需求。",
+    items: [
+      "默认全量审计日志：完整记录用户提示词、Agent 推理与回复、工具调用参数及访问的数据资产",
+      "商业道德与反贿赂分类器 (Slide 18 案例)：自动识别并拦截诱导 Agent 向 Contoso Outdoors 采购人员撰写提供“专属礼品 (exclusive gift)”以加速 Zava 合同审批的违规提示词",
+      "有害内容与版权保护：开箱即用识别违反行业监管、安全准则与知识产权的交互",
+      "数据生命周期管理：按合规策略自动执行交互记录的防篡改留存与到期销毁",
+      "端到端 eDiscovery 电子取证：支持按案件快速检索、锁定并导出特定 Agent 的完整交互证据链"
+    ]
+  },
+  {
+    name: "延伸 · 终端本地 Agent 治理与 M365 E7 许可体系 (Slides 20–23)",
+    controlPlane: "Defender + Intune 终端扩展 & M365 E7 (Frontier Suite)",
+    coverage: "受管办公终端 + 企业级 Frontier 许可底座",
+    action: "发现本地 Agent + Intune 策略阻断/放行",
+    desc: "将安全 AI 着陆区延伸至员工终端电脑（管住本地运行的 CLI 与桌面 Agent），并通过 M365 E7 (Frontier Suite) 统一企业采购与授权底座。",
+    items: [
+      "终端本地 Agent 自动发现 (Slides 20–21)：通过 Defender + Intune 发现员工电脑上的 CLI Agent、桌面端 AI、IDE 插件与 Claw 类 Agent",
+      "终端运行时检测与阻断：实时检查本地 Agent 的输入、回复与工具调用，通过 Intune 策略阻断未授权高危本地 Agent",
+      "M365 E7 (Frontier Suite · Slide 22)：整合 M365 E5 (Defender + Purview + Intune) + Microsoft Agent 365 + Entra Suite + M365 Copilot + Work IQ",
+      "Agent 365 购买先决条件 (Slide 23)：需持有 M365 E5/A5/Business Premium 或 Defender Suite + Purview Suite（商业/教育/一线员工版）",
+      "伙伴升单路径 (Slide 35)：以第 3 周安全着陆区交付为抓手，带动客户从 E3/E5 升级至 M365 E7 与 Agent 365"
+    ]
+  }
+];
+
+function selectLZPillar(idx) {
+  const tabs = document.querySelectorAll("#pillar-tabs .tier-tab");
+  tabs.forEach((t, i) => t.classList.toggle("active", i === idx));
+  const p = LZ_PILLARS[idx];
+  const container = document.getElementById("lz-pillar-detail");
+  container.innerHTML = `
+    <div style="margin-bottom:10px;">
+      <div style="font-size:16px;font-weight:800;color:var(--text);">${p.name}</div>
+      <p style="font-size:12.8px;color:var(--text-2);margin:6px 0 12px;line-height:1.5;">${p.desc}</p>
+    </div>
+    <div class="tier-meta-grid">
+      <div class="tier-stat">
+        <div class="tier-stat-lbl">核心控制平面</div>
+        <div class="tier-stat-val">${p.controlPlane}</div>
+      </div>
+      <div class="tier-stat">
+        <div class="tier-stat-lbl">防护覆盖范围</div>
+        <div class="tier-stat-val">${p.coverage}</div>
+      </div>
+      <div class="tier-stat">
+        <div class="tier-stat-lbl">自动化门禁动作</div>
+        <div class="tier-stat-val" style="color:var(--good);">${p.action}</div>
+      </div>
+    </div>
+    <div class="gate-list" style="grid-template-columns:1fr;">
+      ${p.items.map(item => `
+        <div class="gate-item checked" onclick="this.classList.toggle('checked')">
+          <span class="gate-check">✓</span>
+          <span>${item}</span>
+        </div>
+      `).join("")}
+    </div>
+  `;
+}
+
+function updatePreScaleScore() {
+  const items = document.querySelectorAll("#pre-scale-list .gate-item");
+  const checked = document.querySelectorAll("#pre-scale-list .gate-item.checked").length;
+  const statusEl = document.getElementById("pre-scale-status");
+  if (checked === items.length) {
+    statusEl.style.color = "var(--good)";
+    statusEl.innerHTML = `<span>规模化前门禁状态：${checked} / ${items.length} 全部达标</span><span>✓ 允许进入第 4–5 周 Agent 投产</span>`;
+  } else {
+    statusEl.style.color = "#d97706";
+    statusEl.innerHTML = `<span>规模化前门禁状态：${checked} / ${items.length} 已确认</span><span>⚠️ 需触发第 3 周安全着陆区建设</span>`;
+  }
+}
+
+function switchLZDeck(url, btn) {
+  document.querySelectorAll("#deck-tabs .tier-tab").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  document.getElementById("deck-iframe").src = url;
+  document.getElementById("deck-open-link").href = url;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  selectLZPillar(0);
+});
+</script>
+</body>
+</html>
