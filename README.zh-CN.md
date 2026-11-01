@@ -1,12 +1,12 @@
 > 🌐 **Language / 语言版本切换**: **[🇨🇳 中文主页 (README.zh-CN.md)](README.zh-CN.md)** | **[🇬🇧 English Homepage (README.en.md)](README.en.md)** | **[📘 Azure Agent Infra Playbook (中文)](workshops/azure-agent-infra/README.md)** | **[📘 Azure Agent Infra Playbook (English)](workshops/azure-agent-infra/README.en.md)**
 
-# Qi Chen — Personal Site, Frontier AI Studio & Technical Assets / 个人网站、六大工作台与技术作品
+# Qi Chen — Personal Site, Frontier AI Studio & Technical Assets / 个人网站、七大工作台与技术作品
 
-从技术分享走到动手实践：这里收录双语个人网站（[https://turbo998.github.io/](https://turbo998.github.io/)）、**Frontier AI Studio 六大交互工程主线**（[https://turbo998.github.io/frontier-ai-studio.html](https://turbo998.github.io/frontier-ai-studio.html)）、**7-Card 4:5 纵向视觉基准报告集**、职业履历与伙伴培训入口。个人网站使用纯 HTML/CSS/JS，无构建步骤。
+从技术分享走到动手实践：这里收录双语个人网站（[https://turbo998.github.io/](https://turbo998.github.io/)）、**Frontier AI Studio 七大交互工程主线**（[https://turbo998.github.io/frontier-ai-studio.html](https://turbo998.github.io/frontier-ai-studio.html)）、**7-Card 4:5 纵向视觉基准报告集**、职业履历与伙伴培训入口。个人网站使用纯 HTML/CSS/JS，无构建步骤。
 
 ![Frontier AI Studio & Command Center Architecture](assets/command-center-architecture.svg)
 
-## 📌 执行摘要 (Executive Summary — 6-Track Frontier AI Studio)
+## 📌 执行摘要 (Executive Summary — 7-Track Frontier AI Studio)
 
 | 主线编号 | 核心工程主线 (Track) | 代表性交互工作台 (Live H5 Workbench) | 密封 7-Card 4:5 基准报告 / 核心指标 |
 | :--- | :--- | :--- | :--- |
@@ -16,6 +16,7 @@
 | **Track 04** | **📊 7-Card Benchmarks & AI Infra (Phase 178)** | [Benchmark 独立报告专栏](https://turbo998.github.io/zh-benchmarks.html) · [FAF vs AGENT-FORGE vs HVE-Core 三方竞技场](https://turbo998.github.io/workshops/faf-vs-agent-forge/index.html) | [增补6 Gemini 4 Carbon](https://turbo998.github.io/workshops/benchmarks/gemini-4-carbon-cards.html) · [增补5 19模型+SKY-001](https://turbo998.github.io/workshops/benchmarks/sky-001-cards.html) · [增补4 Sonnet 5.5+Sol](https://turbo998.github.io/workshops/benchmarks/coding-17-sonnet55-sol-cards.html) · [Decision-1 路由](https://turbo998.github.io/workshops/benchmarks/decision-1-cards.html) · Phase 178（`3,651` 源 · `178` 份 7-Card） |
 | **Track 05** | **🎨 Coding Animation (Stage 466 · 四大实时演示)** | [敦煌飞天 · Astra 火星 · 白色火箭 · 🚲 鹈鹕骑自行车](https://turbo998.github.io/animation/index.html) · [鹈鹕三方竞技场](https://turbo998.github.io/animation/demos/pelican-bicycle-arena/index.html) | Stage 466（`522` 项精选作品 · `55/55` 全绿 · 鹈鹕骑车 `HVE-Core 93.4` vs `AF 91.8` vs `FAF 90.5` + [7-Card 报告](https://turbo998.github.io/animation/demos/pelican-bicycle-arena/test-report-cards.html)） |
 | **Track 06** | **🎮 HVE Rapid Game Prototyping** | [晚安·1999 深夜食堂 & 废土机甲狂潮](https://turbo998.github.io/game/index.html) | 60 FPS 空间哈希碰撞 + WebAudio 程序化合成器单文件闭环 |
+| **Track 07** | **🛡️ AI Security & Multi-Agent Red Team** | [币安 $6B 级攻击链推演与红蓝对抗演练台](https://turbo998.github.io/workshops/ai-security/index.html) · [GitHub (`ai-security-lab`)](https://github.com/turbo998/ai-security-lab) | [AI Security 7-Card 报告](https://turbo998.github.io/workshops/ai-security/benchmark-cards.html)（`75.0% → 0.0%` ASR · `93.8%` 良性完成率 · `142ms` 熔断） |
 
 ## 精选 Playbook：Azure AI Agent Infrastructure Playbook（四层架构 · 六大运行时 · AKSClaw × E2B 10万并发沙箱）
 

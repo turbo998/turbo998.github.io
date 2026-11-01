@@ -2,11 +2,11 @@
 
 > 🌐 **Language / 语言版本切换**: **[🇬🇧 English Homepage (README.en.md)](README.en.md)** | **[🇨🇳 中文主页 (README.zh-CN.md)](README.zh-CN.md)** | **[📘 Azure Agent Infra Playbook (English)](workshops/azure-agent-infra/README.en.md)** | **[📘 Azure Agent Infra Playbook (中文)](workshops/azure-agent-infra/README.md)**
 
-Bilingual technical command center ([https://turbo998.github.io/](https://turbo998.github.io/)), **6-Track Frontier AI Studio** ([https://turbo998.github.io/frontier-ai-studio.html](https://turbo998.github.io/frontier-ai-studio.html)), **Sealed 7-Card 4:5 Benchmark Decks**, and interactive cloud architecture simulators maintained by **Qi Chen (@turbo998)**:
+Bilingual technical command center ([https://turbo998.github.io/](https://turbo998.github.io/)), **7-Track Frontier AI Studio** ([https://turbo998.github.io/frontier-ai-studio.html](https://turbo998.github.io/frontier-ai-studio.html)), **Sealed 7-Card 4:5 Benchmark Decks**, and interactive cloud architecture simulators maintained by **Qi Chen (@turbo998)**:
 
 ![Frontier AI Studio & Command Center Architecture](assets/command-center-architecture.svg)
 
-## 📌 Executive Summary — 6-Track Frontier AI Studio
+## 📌 Executive Summary — 7-Track Frontier AI Studio
 
 | Track | Engineering Domain | Live Interactive Workbench | Sealed 7-Card 4:5 Benchmark Deck & Key Metrics |
 | :--- | :--- | :--- | :--- |
@@ -16,6 +16,7 @@ Bilingual technical command center ([https://turbo998.github.io/](https://turbo9
 | **Track 04** | **📊 7-Card Benchmarks & AI Infra (Phase 178)** | [Benchmark Reports Column](https://turbo998.github.io/benchmarks.html) · [FAF vs AGENT-FORGE vs HVE-Core Arena](https://turbo998.github.io/workshops/faf-vs-agent-forge/index.html) | [Supp 6 Gemini 4 Carbon](https://turbo998.github.io/workshops/benchmarks/gemini-4-carbon-cards.html) · [Supp 5 19-Model+SKY-001](https://turbo998.github.io/workshops/benchmarks/sky-001-cards.html) · [Supp 4 Sonnet 5.5+Sol](https://turbo998.github.io/workshops/benchmarks/coding-17-sonnet55-sol-cards.html) · [Decision-1 Routing](https://turbo998.github.io/workshops/benchmarks/decision-1-cards.html) · Phase 178 (`3,651` sources · `178` 7-Card decks) |
 | **Track 05** | **🎨 Coding Animation (Stage 466 · 4 Live Demos)** | [Dunhuang Feitian · Astra Mars · SpaceX Launch · 🚲 Pelican Bicycle Arena](https://turbo998.github.io/animation/index.html) · [Pelican 3-Way Arena](https://turbo998.github.io/animation/demos/pelican-bicycle-arena/index.html) | Stage 466 (`522` curated works · `55/55` E2E green · Pelican Bicycle `HVE-Core 93.4` vs `AF 91.8` vs `FAF 90.5` + [7-Card Report](https://turbo998.github.io/animation/demos/pelican-bicycle-arena/test-report-cards.html)) |
 | **Track 06** | **🎮 HVE Rapid Game Prototyping** | [Wanan 1999 Midnight Diner & Scrap Swarm](https://turbo998.github.io/game/index.html) | 60 FPS Spatial-Hash Roguelite + WebAudio Synthesizer Single-File Closures |
+| **Track 07** | **🛡️ AI Security & Multi-Agent Red Team** | [Binance $6B Kill-Chain Simulator & Pentest Playground](https://turbo998.github.io/workshops/ai-security/index.en.html) · [GitHub (`ai-security-lab`)](https://github.com/turbo998/ai-security-lab) | [AI Security 7-Card Deck](https://turbo998.github.io/workshops/ai-security/benchmark-cards.en.html) (`75.0% → 0.0%` ASR · `93.8%` benign completion · `142ms` freeze) |
 
 ## Featured Playbooks & Repositories
 
