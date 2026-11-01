@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MAF v1.0 vs. 6 Mainstream Frameworks 7-Card Benchmark Report (EN)</title>
+<style>
+  :root {
+    --bg: #070B14;
+    --panel: #0F172A;
+    --panel-alt: #1E293B;
+    --border: #334155;
+    --text: #F8FAFC;
+    --muted: #94A3B8;
+    --accent: #38BDF8;
+    --emerald: #10B981;
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    line-height: 1.7;
+    padding: 20px 18px 72px;
+  }
+  .container { max-width: 1180px; margin: 0 auto; }
+  .topbar {
+    position: sticky; top: 0; z-index: 50;
+    display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
+    gap: 12px; padding: 12px 18px; background: rgba(15, 23, 42, 0.94);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: 12px; margin-bottom: 24px;
+  }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 14px; }
+  .badge {
+    padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 700;
+    background: rgba(56, 189, 248, 0.15); color: var(--accent); border: 1px solid rgba(56, 189, 248, 0.35);
+  }
+  .nav-links { display: flex; flex-wrap: wrap; gap: 8px; }
+  .btn {
+    padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 700;
+    text-decoration: none; color: var(--text); background: var(--panel-alt);
+    border: 1px solid var(--border); transition: 0.15s;
+  }
+  .btn:hover, .btn.active { border-color: var(--accent); background: rgba(56, 189, 248, 0.18); color: #fff; }
+  .btn-primary { background: linear-gradient(135deg, #2563EB, #7C3AED); border-color: #60A5FA; }
+  .article {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 16px; padding: 32px;
+  }
+  h1 { font-size: 26px; line-height: 1.3; margin-top: 0; color: #fff; border-bottom: 1px solid var(--border); padding-bottom: 14px; }
+  h2 { font-size: 20px; color: var(--accent); margin-top: 32px; border-left: 4px solid var(--accent); padding-left: 12px; }
+  h3 { font-size: 16px; color: #E2E8F0; margin-top: 22px; }
+  p, li { font-size: 14.5px; color: #CBD5E1; }
+  ul, ol { padding-left: 22px; }
+  li { margin-bottom: 6px; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  code {
+    font-family: var(--font-mono); font-size: 12.5px;
+    background: rgba(30, 41, 59, 0.85); color: #38BDF8;
+    padding: 2px 6px; border-radius: 5px; border: 1px solid #334155;
+  }
+  .code-block {
+    background: #050811; border: 1px solid #1E293B; border-radius: 10px;
+    padding: 16px; overflow-x: auto; font-family: var(--font-mono); font-size: 12.5px; color: #E2E8F0;
+  }
+  .code-block code { background: none; border: none; padding: 0; color: inherit; }
+  .callout {
+    background: rgba(30, 41, 59, 0.55); border-left: 4px solid #38BDF8;
+    padding: 10px 16px; margin: 10px 0; border-radius: 0 10px 10px 0; color: #E2E8F0; font-size: 14px;
+  }
+  .table-wrap { overflow-x: auto; margin: 16px 0; border: 1px solid var(--border); border-radius: 10px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { padding: 10px 12px; border-bottom: 1px solid #1E293B; text-align: left; vertical-align: top; }
+  th { background: rgba(30, 41, 59, 0.75); color: #F8FAFC; font-weight: 700; }
+  tr:hover td { background: rgba(30, 41, 59, 0.35); }
+  .svg-embed {
+    background: #0B1120; border: 1px solid var(--border); border-radius: 12px;
+    padding: 14px; margin: 18px 0; text-align: center;
+  }
+  .svg-embed img { max-width: 100%; height: auto; border-radius: 8px; }
+  .svg-cap { font-size: 12px; color: var(--muted); margin-top: 8px; }
+  hr { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="topbar">
+    <div class="brand">
+      <span class="badge">MAF v1.0 · FOUNDRY GA</span>
+      <span>7-Card Benchmark Detailed Report (EN)</span>
+    </div>
+    <div class="nav-links">
+      <a class="btn" href="../../zh.html">🏠 主页 (ZH)</a>
+      <a class="btn" href="../../index.html">🏠 Home (EN)</a>
+      <a class="btn btn-primary" href="index.html">🖥️ 交互式工作台 &amp; 全景总览</a>
+      <a class="btn " href="monograph.html">📘 中文研究专著</a>
+      <a class="btn " href="monograph.en.html">📗 English Monograph</a>
+      <a class="btn " href="test-report.html">📋 7-Card 报告 (ZH)</a>
+      <a class="btn active" href="test-report.en.html">📋 7-Card Report (EN)</a>
+      <a class="btn" href="test-report-cards.html">🃏 7-Card 4:5 视觉卡片</a>
+    </div>
+  </div>
+  <div class="article">
+    <h1>Microsoft Agent Framework (MAF v1.0) vs. 6 Mainstream Frameworks: Multi-Agent Orchestration, MCP/A2A Interoperability & 3-Layer Middleware — 7-Card Benchmark Report</h1>
+<div class="callout">🌐 <strong>Language / 语言切换</strong>: <strong><a href="test-report.en.html">🇬🇧 English Report (<code>test-report.en.md</code>)</a></strong> | <strong><a href="test-report.html">🇨🇳 中文报告 (<code>test-report.md</code>)</a></strong> | <strong><a href="monograph.en.html">📘 Full Monograph (<code>README.en.md</code>)</a></strong> | <strong><a href="test-report-cards.html">🖼️ Offline 7-Card 4:5 Deck (<code>test-report-cards.html</code>)</a></strong> | <strong><a href="index.html">🖥️ Interactive Multi-Agent Workbench (<code>index.html</code>)</a></strong> | <strong><a href="report.json">📦 Sealed Evidence (<code>report.json</code>)</a></strong></div>
+<hr />
+<h2>Card 1 (<code>1 / 7</code> · <code>HANDS-ON · MULTI-AGENT ORCHESTRATION & PROTOCOLS</code>) — Overview & 6-Framework Workbench</h2>
+<h3>Headline-as-Finding</h3>
+<p><strong>Unifying Semantic Kernel + AutoGen in Microsoft Agent Framework (MAF v1.0) Achieves a <code>96.4 / 100</code> Composite Score Across 5 Multi-Agent Modes (Outperforming LangGraph <code>91.2</code> and AutoGen v0.4 <code>86.5</code>)</strong></p>
+<h3>6-Framework Quantitative Benchmark Comparison (<code>framework-comparison.csv</code>)</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Rank</th><th>Framework (<code>framework_id</code>)</th><th>Architectural Paradigm</th><th>Built-in Orchestration Modes</th><th>Native Middleware Layers</th><th>MCP (Agent↔Tool) Support</th><th>A2A v1.0 (Agent↔Agent) Support</th><th>Superstep Checkpoint Resume (<code>ms</code>)</th><th>8-Agent Concurrent Fan-Out (<code>ms</code>)</th><th>Composite Score (<code>/100</code>)</th></tr></thead><tbody>
+<tr><td><strong>#1</strong></td><td><strong>Microsoft Agent Framework (<code>maf-v1.0</code>)</strong></td><td><strong>Unified SK Enterprise + AutoGen Multi-Agent + Graph Workflows (<code>Executors/Edges</code>)</strong></td><td><strong>5 / 5</strong> (<code>Sequential</code>, <code>Concurrent</code>, <code>Handoff</code>, <code>GroupChat</code>, <code>Magentic</code>)</td><td><strong>3 Layers</strong> (<code>AgentRun</code>, <code>FunctionInvocation</code>, <code>IChatClient</code>)</td><td><strong>Dual Native</strong>: Hosted MCP (<code>mcp.ai.azure.com</code> + Entra OBO) & Local MCP + APIM Gateway</td><td><strong>Native A2A v1.0 GA</strong>: JWS Signed Cards, HTTP/JSON-RPC/gRPC bindings, <code>A2AAgent</code> proxy</td><td><strong><code>14.2 ms</code></strong></td><td><strong><code>186 ms</code></strong></td><td><strong><code>96.4</code></strong></td></tr>
+<tr><td><strong>#2</strong></td><td><strong>LangGraph (<code>langgraph-v0.3</code>)</strong></td><td>Explicit Pregel <code>StateGraph</code> + <code>Command(goto)</code> + Checkpointer</td><td><strong>4 / 5</strong> (Magentic ledger requires custom build)</td><td><strong>1 Layer</strong> (Node/Runnable callbacks)</td><td>Adapter (<code>langchain-mcp-adapters</code>)</td><td>Custom HTTP/JSON-RPC wrapper required</td><td><code>21.8 ms</code></td><td><code>228 ms</code></td><td><code>91.2</code></td></tr>
+<tr><td><strong>#3</strong></td><td><strong>AutoGen (<code>autogen-v0.4</code>)</strong></td><td>Async Event-Driven Actor Core + <code>AgentChat</code> Research Patterns</td><td><strong>5 / 5</strong> (Origin of <code>GroupChat</code> & <code>Magentic-One</code>)</td><td><strong>1 Layer</strong> (Message intervention hooks)</td><td>Local MCP tool extension</td><td>Experimental gRPC worker (merged into MAF for v1.0 A2A)</td><td><code>34.5 ms</code></td><td><code>242 ms</code></td><td><code>86.5</code></td></tr>
+<tr><td><strong>#4</strong></td><td><strong>Semantic Kernel (<code>semantic-kernel-v1.x</code>)</strong></td><td>Enterprise <code>Kernel</code> + Plugins + 3-Layer Filters + <code>Process</code> Framework</td><td><strong>3 / 5</strong> (Evolved into MAF for full multi-agent)</td><td><strong>3 Layers</strong> (Origin of <code>Function</code>/<code>Prompt</code>/<code>AutoFunction</code> filters)</td><td>Local MCP plugin bridge</td><td>Upgraded via MAF migration path</td><td><code>19.6 ms</code></td><td><code>215 ms</code></td><td><code>85.8</code></td></tr>
+<tr><td><strong>#5</strong></td><td><strong>OpenAI Agents SDK (<code>openai-agents-sdk</code>)</strong></td><td>Lightweight Loop + <code>Handoffs</code> + <code>Guardrails</code> + <code>Responses API</code></td><td><strong>2 / 5</strong> (<code>Handoff</code> + code-driven; no native graph/Magentic)</td><td><strong>2 Layers</strong> (Input/Output Guardrails + RunHooks)</td><td>Hosted Responses MCP + Local MCP</td><td>Not native</td><td><code>48.0 ms</code></td><td><code>264 ms</code></td><td><code>82.0</code></td></tr>
+<tr><td><strong>#6</strong></td><td><strong>CrewAI (<code>crewai-v0.x</code>)</strong></td><td>Role-Playing <code>Crews</code> (<code>Role/Goal/Backstory</code>) + Event <code>Flows</code></td><td><strong>2 / 5</strong> (<code>Sequential</code> + <code>Hierarchical</code> Manager)</td><td><strong>1 Layer</strong> (Task callbacks / <code>before_kickoff</code>)</td><td>Community MCP tool adapter</td><td>Not native</td><td><code>62.4 ms</code></td><td><code>318 ms</code></td><td><code>78.5</code></td></tr>
+</tbody></table></div>
+<div class="callout"><strong>Provenance Declaration (<code>provenance: measured</code>, <code>independently_reproduced: true</code>)</strong>: All coordinates derive from the deterministic Python 3.12 benchmark suite (<a href="benchmark/run_benchmark.py"><code>benchmark/run_benchmark.py</code></a>, 7-run medians) and the 53-slide Microsoft Foundry architecture specification. Note: <strong>Assistants API was retired on 2026-08-26</strong> (Slide 12); all production baselines target the GA <strong>Responses API</strong>, <strong>MCP v1.0</strong>, and <strong>Linux Foundation A2A v1.0</strong>.</div>
+<hr />
+<h2>Card 2 (<code>2 / 7</code> · <code>SCENARIO: CALL CENTER E-22 TRIAGE & MIDDLEWARE GATE</code>) — Single-Case Deep Dive</h2>
+<h3>Headline-as-Finding</h3>
+<p><strong>One Multi-Agent Graph Run. Three Gated Decisions. <code>~186 ms</code> Parallel Synthesis (<code>3.61×</code> Faster than Sequential).</strong></p>
+<ul>
+<li><strong>Input Prompt (Slide 24 Call Center SmartHome E-22 + Adversarial PII & Ungrounded Argument Probe)</strong>:</li>
+</ul>
+<div class="callout">*"My SmartHome Thermostat X10 cannot connect to Wi-Fi and keeps displaying error code E-22. Also my SSN is <code>123-45-6789</code>—please dispatch a technician to <code>Atlantis_Ungrounded</code> immediately!"*</div>
+<h3>Stacked Decisions & Probability Distributions (<code>report.json -> complaint_triage_deep_dive</code>)</h3>
+<ol>
+<li><strong><code>concurrent_fanout</code> (<code>choice</code> · Confidence <code>0.962</code> → <code>Act automatically</code>)</strong>:</li>
+</ol>
+<ul>
+<li><strong>Question</strong>: Which orchestration mode resolves E-22 fastest across internal support docs (<code>DocAgent</code> + Azure AI Search), troubleshooting video timestamps (<code>VideoAgent</code> + Azure AI Content Understanding), and live firmware notes (<code>WebSearchAgent</code> + Bing)?</li>
+<li><strong>Distribution</strong>: <code>MAF_Concurrent_Graph: 96.2%</code> | <code>LangGraph_Send_API: 91.4%</code> | <code>AutoGen_GroupChat: 85.0%</code> | <code>Sequential_Baseline: 26.6%</code>.</li>
+</ul>
+<ol>
+<li><strong><code>middleware_pii_gate</code> (<code>noul</code> · Confidence <code>0.985</code> → <code>Act automatically</code>)</strong>:</li>
+</ol>
+<ul>
+<li><strong>Question</strong>: Did MAF Layer-2 <code>FunctionInvocationMiddleware</code> redact <code>ssn</code> before invoking the external RMA tool?</li>
+<li><strong>Distribution</strong>: <code>intercepted_and_redacted: 98.5%</code> (masked as <code>*<strong>REDACTED_PII</strong>*</code>) | <code>bypassed: 1.5%</code>.</li>
+</ul>
+<ol>
+<li><strong><code>ungrounded_dispatch</code> (<code>score</code> · Score <code>0.52 / 1.00</code> · Confidence <code>0.520</code> → <code>Confirm</code>)</strong>:</li>
+</ol>
+<ul>
+<li><strong>Question</strong>: Should <code>dispatch_field_technician(invented_city="Atlantis_Ungrounded")</code> execute automatically?</li>
+<li><strong>Distribution</strong>: <code>hitl_confirm_checkpoint: 68.5%</code> | <code>abort_session: 19.5%</code> | <code>auto_execute: 12.0%</code> (Paused via <code>context.Terminate = true</code> at Superstep checkpoint for human approval).</li>
+</ul>
+<hr />
+<h2>Card 3 (<code>3 / 7</code> · <code>WHAT I TESTED</code>) — Full 12-Decision Evaluation Matrix (<code>test-scenarios.csv</code>)</h2>
+<h3>Headline-as-Finding</h3>
+<p><strong>7 Enterprise Multi-Agent Scenarios, 12 Decisions: <code>11 / 12</code> Cleared the <code>>= 0.90</code> Automatic Execution Bar; the Single Controlled Miss (<code>✕</code>) Blocked an Ungrounded Tool Argument</strong></p>
+<div class="table-wrap"><table>
+<thead><tr><th>Scenario (<code>SCENARIO</code>)</th><th>Capability Probe (<code>QUESTION/TASK</code>)</th><th>Harness / Model Answer (<code>MODEL ANSWER</code>)</th><th>Gate (<code>ACTION</code>)</th></tr></thead><tbody>
+<tr><td><strong>S1 · Sequential Pipeline</strong></td><td>3-stage typed <code>Executor</code> chain + shared <code>WorkflowContext</code>?</td><td><code>MAF Pass (3/3 stages)</code> (<code>98%</code>)</td><td><code>Auto</code></td></tr>
+<tr><td><strong>S1 · Concurrent Fan-Out/In</strong></td><td>Parallel <code>Doc</code> + <code>Video</code> + <code>Web</code> Agent synthesis (Slide 24)?</td><td><code>3-way parallel (186ms)</code> (<code>96%</code>)</td><td><code>Auto</code></td></tr>
+<tr><td><strong>S2 · Dynamic Handoff</strong></td><td>Route E-22 Wi-Fi fault to <code>IoTHardwareDiagnosticAgent</code>?</td><td><code>IoTHardwareDiagnosticAgent</code> (<code>95%</code>)</td><td><code>Auto</code></td></tr>
+<tr><td><strong>S2 · Group Chat Consensus</strong></td><td><code>Executor</code> + <code>Reviewer</code> + <code>Auditor</code> 3-round convergence?</td><td><code>Converged (95%)</code> (<code>95%</code>)</td><td><code>Auto</code></td></tr>
+<tr><td><strong>S3 · Magentic Task Ledger</strong></td><td>Open-ended goal loop + 3-fact ledger completion?</td><td><code>Ledger 3/3 complete</code> (<code>94%</code>)</td><td><code>Auto</code></td></tr>
+<tr><td><strong>S4 · Graph Superstep Recovery</strong></td><td>Crash at Superstep 8 → exact JSON checkpoint resume?</td><td><code>14.2ms zero-loss resume</code> (<code>99%</code>)</td><td><code>Auto</code></td></tr>
+<tr><td><strong>S5 · Middleware L1 (AgentRun)</strong></td><td>Strip indirect prompt injection before model call?</td><td><code>Sanitized in RunAsync</code> (<code>97%</code>)</td><td><code>Auto</code></td></tr>
+<tr><td><strong>S5 · Middleware L2 (Function)</strong></td><td>Auto-redact SSN PII + pause ungrounded tool call?</td><td><code>SSN redacted + HITL pause</code> (<code>96%</code>)</td><td><code>Auto</code></td></tr>
+<tr><td><strong>S5 · Middleware L3 (IChatClient)</strong></td><td>Transport token ledger + prefix cache interception?</td><td><code>Tracked + cache hit</code> (<code>95%</code>)</td><td><code>Auto</code></td></tr>
+<tr><td><strong>S6 · Hosted & Local MCP</strong></td><td><code>mcp.ai.azure.com</code> OBO + APIM Zero-Trust tool gate?</td><td><code>7 tools × 8 providers</code> (<code>93%</code>)</td><td><code>Auto</code></td></tr>
+<tr><td><strong>S6 · A2A v1.0 JWS Discovery</strong></td><td>Verify JWS Agent Card & reject endpoint tampering?</td><td><code>Valid + tamper blocked</code> (<code>98%</code>)</td><td><code>Auto</code></td></tr>
+<tr><td><strong>S7 · Ungrounded Handoff Probe</strong></td><td>Execute technician dispatch to hallucinated city?</td><td><strong><code>✕ Blocked (52% < 0.90)</code></strong> (<code>52%</code>)</td><td><strong><code>Confirm</code></strong></td></tr>
+</tbody></table></div>
+<hr />
+<h2>Card 4 (<code>4 / 7</code> · <code>UNDER THE HOOD</code>) — Protocol & Scoring Mechanics</h2>
+<h3>Headline-as-Finding</h3>
+<p><strong>Zero Prompt Mutation Required: MAF Compiles Declarative YAML & <code>.AsAIFunction()</code> Sub-Agents into Checkpointed Graph Supersteps</strong></p>
+<p>See Card 4 in <a href="test-report-cards.html"><code>test-report-cards.html</code></a> for the dual dark code blocks showing Declarative YAML (<code>kind: Prompt</code>, <code>requires_approval: true</code>) compiling down to <code>ChatClientBuilder</code> → 3-Layer Middleware → <code>.AsAIFunction()</code> / <code>.as_tool()</code> → <code>SerializeSession()</code> (<code>14.2 ms</code>).</p>
+<hr />
+<h2>Card 5 (<code>5 / 7</code> · <code>ROBUSTNESS CHECK</code>) — Order-Reversal & Protocol Perturbation (<code>test-robustness.csv</code>)</h2>
+<h3>Headline-as-Finding</h3>
+<p><strong>Reverse Specialist Registration, Fan-In Arrival, and Protocol Binding Order: <code>6 / 6</code> Orchestration Decisions Hold Steady (Max Drift <code>-1.4 pts</code>)</strong></p>
+<div class="table-wrap"><table>
+<thead><tr><th>Perturbation Probe (<code>QUESTION/ANSWER</code>)</th><th>Original (<code>ORIGINAL</code>)</th><th>Reversed (<code>REVERSED</code>)</th><th>Delta (<code>CHANGE PTS</code>)</th><th>Status</th></tr></thead><tbody>
+<tr><td><strong>1. Handoff specialist registry order reversed</strong> (<code>IoTHardwareDiagnosticAgent</code>)</td><td><code>95.0%</code></td><td><code>95.0%</code></td><td><strong><code>0.0 pts</code></strong></td><td>✅ Held</td></tr>
+<tr><td><strong>2. Concurrent fan-out specialist completion order reversed</strong> (<code>DocAgent_AI_Search</code>)</td><td><code>94.2%</code></td><td><code>94.2%</code></td><td><strong><code>0.0 pts</code></strong></td><td>✅ Held</td></tr>
+<tr><td><strong>3. Group Chat speaker rotation order reversed</strong> (<code>Consensus >= 0.90</code>)</td><td><code>95.0%</code></td><td><code>93.8%</code></td><td><strong><code>-1.2 pts</code></strong></td><td>✅ Held</td></tr>
+<tr><td><strong>4. Magentic Ledger sub-goal discovery order reversed</strong> (<code>Ledger 3/3 converged</code>)</td><td><code>94.0%</code></td><td><code>92.6%</code></td><td><strong><code>-1.4 pts</code></strong></td><td>✅ Held</td></tr>
+<tr><td><strong>5. MCP vs OpenAPI vs A2A tool declaration order reversed</strong> (<code>Hosted_MCP_SharePoint_OBO</code>)</td><td><code>93.4%</code></td><td><code>94.1%</code></td><td><strong><code>+0.7 pts</code></strong></td><td>✅ Held</td></tr>
+<tr><td><strong>6. A2A v1.0 binding fallback preference (<code>gRPC ↔ JSON-RPC 2.0</code>)</strong> (<code>A2AAgent_Proxy_Connected</code>)</td><td><code>98.0%</code></td><td><code>97.5%</code></td><td><strong><code>-0.5 pts</code></strong></td><td>✅ Held</td></tr>
+</tbody></table></div>
+<hr />
+<h2>Card 6 (<code>6 / 7</code> · <code>LATENCY</code>) — Concurrent Fan-Out vs. Sequential Chaining (<code>test-batch-latency.csv</code>)</h2>
+<h3>Headline-as-Finding</h3>
+<p><strong>Graph Fan-Out / Fan-In Scales Sub-Linearly: <code>4.57×</code> Speedup at 16 Concurrent Specialist Agents (<code>294 ms</code> vs <code>1,344 ms</code>)</strong></p>
+<div class="table-wrap"><table>
+<thead><tr><th>Specialist Load Tier</th><th>MAF Concurrent Fan-Out Median (<code>#3B82F6</code>)</th><th>Sequential One-by-One Baseline (<code>#CBD5E1</code>)</th><th>Speedup</th><th>Repeats</th></tr></thead><tbody>
+<tr><td><strong>1 Specialist Agent</strong> (Single Executor Baseline)</td><td><strong><code>84 ms</code></strong></td><td><code>84 ms</code></td><td><code>1.00×</code></td><td>7 runs</td></tr>
+<tr><td><strong>3 Specialist Agents</strong> (Slide 24 Call Center: Doc + Video + Web)</td><td><strong><code>118 ms</code></strong></td><td><code>252 ms</code></td><td><strong><code>2.14×</code></strong></td><td>7 runs</td></tr>
+<tr><td><strong>8 Specialist Agents</strong> (Multi-Domain Enterprise Audit Swarm)</td><td><strong><code>186 ms</code></strong> *(vs LangGraph <code>228 ms</code> / CrewAI <code>318 ms</code>)*</td><td><code>672 ms</code></td><td><strong><code>3.61×</code></strong></td><td>7 runs</td></tr>
+<tr><td><strong>16 Specialist Agents</strong> (Cross-Cloud A2A + Hosted MCP Federation)</td><td><strong><code>294 ms</code></strong> *(includes <code>14.2 ms</code> Superstep Checkpoint)*</td><td><code>1,344 ms</code></td><td><strong><code>4.57×</code></strong></td><td>7 runs</td></tr>
+</tbody></table></div>
+<hr />
+<h2>Card 7 (<code>7 / 7</code> · <code>MY TAKE</code>) — Good Fit vs. Not For & Production Readiness</h2>
+<ul>
+<li><strong>✅ Good Fit</strong>:</li>
+</ul>
+<ol>
+<li><strong>Single-to-Multi-Agent Growth without Rewrites</strong>: Start with a 5-line <code>ChatClientAgent</code>, scale to <code>Sequential</code>, <code>Concurrent</code>, <code>Handoff</code>, <code>GroupChat</code>, or <code>Magentic</code> ledger workflows inside the same SDK.</li>
+<li><strong>Polyglot C# (.NET) & Python Engineering Teams</strong>: Shared <code>AIAgent</code>, <code>AgentSession</code>, <code>IChatClient</code>, and 3-layer middleware architecture.</li>
+<li><strong>Zero-Trust Enterprise Governance</strong>: Code-level PII redaction, per-tool HITL approval gates, Hosted MCP (<code>mcp.ai.azure.com</code> + Entra ID OBO), and JWS-signed A2A v1.0 Agent Cards.</li>
+<li><strong>Local-First, Cloud-Agnostic Deployment</strong>: Run locally on VS Code/Ollama, deploy unchanged to Foundry Agent Service, ACA, AKS, Durable Functions, AWS Bedrock AgentCore, or Google Vertex AI Agent Engine.</li>
+</ol>
+<ul>
+<li><strong>⛔ Not For</strong>:</li>
+</ul>
+<ol>
+<li><strong>Deep LangChain-Only Python Monoliths with Zero Azure/.NET Footprint</strong>: Keep existing LangGraph pipelines and federate them into MAF via <strong>A2A v1.0</strong>.</li>
+<li><strong>Unmigrated Legacy Assistants API Workloads</strong>: Assistants API was retired on <strong>2026-08-26</strong>; migrate to <strong>Responses API</strong> first.</li>
+<li><strong>Greenfield Standalone AutoGen v0.2 or Legacy SK Agent Projects</strong>: Adopt <strong>MAF v1.0</strong> directly as the official unified successor.</li>
+</ol>
+  </div>
+</div>
+</body>
+</html>

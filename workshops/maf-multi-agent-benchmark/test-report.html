@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MAF v1.0 vs. 六大主流框架 7-Card 基准测试报告 (中文)</title>
+<style>
+  :root {
+    --bg: #070B14;
+    --panel: #0F172A;
+    --panel-alt: #1E293B;
+    --border: #334155;
+    --text: #F8FAFC;
+    --muted: #94A3B8;
+    --accent: #38BDF8;
+    --emerald: #10B981;
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    line-height: 1.7;
+    padding: 20px 18px 72px;
+  }
+  .container { max-width: 1180px; margin: 0 auto; }
+  .topbar {
+    position: sticky; top: 0; z-index: 50;
+    display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
+    gap: 12px; padding: 12px 18px; background: rgba(15, 23, 42, 0.94);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: 12px; margin-bottom: 24px;
+  }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 14px; }
+  .badge {
+    padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 700;
+    background: rgba(56, 189, 248, 0.15); color: var(--accent); border: 1px solid rgba(56, 189, 248, 0.35);
+  }
+  .nav-links { display: flex; flex-wrap: wrap; gap: 8px; }
+  .btn {
+    padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 700;
+    text-decoration: none; color: var(--text); background: var(--panel-alt);
+    border: 1px solid var(--border); transition: 0.15s;
+  }
+  .btn:hover, .btn.active { border-color: var(--accent); background: rgba(56, 189, 248, 0.18); color: #fff; }
+  .btn-primary { background: linear-gradient(135deg, #2563EB, #7C3AED); border-color: #60A5FA; }
+  .article {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 16px; padding: 32px;
+  }
+  h1 { font-size: 26px; line-height: 1.3; margin-top: 0; color: #fff; border-bottom: 1px solid var(--border); padding-bottom: 14px; }
+  h2 { font-size: 20px; color: var(--accent); margin-top: 32px; border-left: 4px solid var(--accent); padding-left: 12px; }
+  h3 { font-size: 16px; color: #E2E8F0; margin-top: 22px; }
+  p, li { font-size: 14.5px; color: #CBD5E1; }
+  ul, ol { padding-left: 22px; }
+  li { margin-bottom: 6px; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  code {
+    font-family: var(--font-mono); font-size: 12.5px;
+    background: rgba(30, 41, 59, 0.85); color: #38BDF8;
+    padding: 2px 6px; border-radius: 5px; border: 1px solid #334155;
+  }
+  .code-block {
+    background: #050811; border: 1px solid #1E293B; border-radius: 10px;
+    padding: 16px; overflow-x: auto; font-family: var(--font-mono); font-size: 12.5px; color: #E2E8F0;
+  }
+  .code-block code { background: none; border: none; padding: 0; color: inherit; }
+  .callout {
+    background: rgba(30, 41, 59, 0.55); border-left: 4px solid #38BDF8;
+    padding: 10px 16px; margin: 10px 0; border-radius: 0 10px 10px 0; color: #E2E8F0; font-size: 14px;
+  }
+  .table-wrap { overflow-x: auto; margin: 16px 0; border: 1px solid var(--border); border-radius: 10px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { padding: 10px 12px; border-bottom: 1px solid #1E293B; text-align: left; vertical-align: top; }
+  th { background: rgba(30, 41, 59, 0.75); color: #F8FAFC; font-weight: 700; }
+  tr:hover td { background: rgba(30, 41, 59, 0.35); }
+  .svg-embed {
+    background: #0B1120; border: 1px solid var(--border); border-radius: 12px;
+    padding: 14px; margin: 18px 0; text-align: center;
+  }
+  .svg-embed img { max-width: 100%; height: auto; border-radius: 8px; }
+  .svg-cap { font-size: 12px; color: var(--muted); margin-top: 8px; }
+  hr { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="topbar">
+    <div class="brand">
+      <span class="badge">MAF v1.0 · FOUNDRY GA</span>
+      <span>7-Card 基准测试详细报告 (中文)</span>
+    </div>
+    <div class="nav-links">
+      <a class="btn" href="../../zh.html">🏠 主页 (ZH)</a>
+      <a class="btn" href="../../index.html">🏠 Home (EN)</a>
+      <a class="btn btn-primary" href="index.html">🖥️ 交互式工作台 &amp; 全景总览</a>
+      <a class="btn " href="monograph.html">📘 中文研究专著</a>
+      <a class="btn " href="monograph.en.html">📗 English Monograph</a>
+      <a class="btn active" href="test-report.html">📋 7-Card 报告 (ZH)</a>
+      <a class="btn " href="test-report.en.html">📋 7-Card Report (EN)</a>
+      <a class="btn" href="test-report-cards.html">🃏 7-Card 4:5 视觉卡片</a>
+    </div>
+  </div>
+  <div class="article">
+    <h1>Microsoft Agent Framework (MAF v1.0) vs. 六大主流框架：多 Agent 编排、MCP/A2A 互操作与三层中间件 7-Card 基准测试报告</h1>
+<div class="callout">🌐 <strong>Language / 语言切换</strong>: <strong><a href="test-report.html">🇨🇳 中文报告 (<code>test-report.md</code>)</a></strong> | <strong><a href="test-report.en.html">🇬🇧 English Report (<code>test-report.en.md</code>)</a></strong> | <strong><a href="monograph.html">📘 完整研究长卷 (<code>README.md</code>)</a></strong> | <strong><a href="test-report-cards.html">🖼️ 离线 7-Card 4:5 视觉报告 (<code>test-report-cards.html</code>)</a></strong> | <strong><a href="index.html">🖥️ 交互式多 Agent 编排工作台 (<code>index.html</code>)</a></strong> | <strong><a href="report.json">📦 密封评测数据 (<code>report.json</code>)</a></strong></div>
+<hr />
+<h2>Card 1 (<code>1 / 7</code> · <code>HANDS-ON · MULTI-AGENT ORCHESTRATION & PROTOCOLS</code>) — 概览与六大框架工作台</h2>
+<h3>核心发现标题 (Headline-as-Finding)</h3>
+<p><strong>融合 Semantic Kernel 与 AutoGen 的 Microsoft Agent Framework (MAF v1.0) 在五大编排模式与协议治理综合评测中斩获 <code>96.4 / 100</code>（领先 LangGraph <code>91.2</code> 与 AutoGen v0.4 <code>86.5</code>）</strong></p>
+<h3>六大主流智能体框架量化横评总表 (<code>framework-comparison.csv</code>)</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>排名</th><th>框架名称 (<code>framework_id</code>)</th><th>核心架构范式</th><th>原生内置多 Agent 编排模式数</th><th>原生拦截中间件层数</th><th>MCP (Agent↔Tool) 支持能力</th><th>A2A v1.0 (Agent↔Agent) 支持能力</th><th>超步 Checkpoint 恢复耗时 (<code>ms</code>)</th><th>8-Agent 并发扇出延迟 (<code>ms</code>)</th><th>综合得分 (<code>/100</code>)</th></tr></thead><tbody>
+<tr><td><strong>#1</strong></td><td><strong>Microsoft Agent Framework (<code>maf-v1.0</code>)</strong></td><td><strong>SK 企业底座 + AutoGen 多 Agent 模式 + 显式图工作流 (<code>Executors/Edges</code>)</strong></td><td><strong>5 / 5</strong> (<code>Sequential</code>, <code>Concurrent</code>, <code>Handoff</code>, <code>GroupChat</code>, <code>Magentic</code>)</td><td><strong>3 层</strong> (<code>AgentRun</code>, <code>FunctionInvocation</code>, <code>IChatClient</code>)</td><td><strong>原生双模式</strong>：Foundry 托管 MCP (<code>mcp.ai.azure.com</code> + OBO) + 本地 MCP + APIM 零信任网关</td><td><strong>原生 A2A v1.0 GA</strong>：JWS 签名 Agent Cards、HTTP/JSON-RPC/gRPC 三绑定、<code>A2AAgent</code> 本地代理</td><td><strong><code>14.2 ms</code></strong></td><td><strong><code>186 ms</code></strong></td><td><strong><code>96.4</code></strong></td></tr>
+<tr><td><strong>#2</strong></td><td><strong>LangGraph (<code>langgraph-v0.3</code>)</strong></td><td>显式 Pregel 状态图 (<code>StateGraph</code>) + <code>Command(goto)</code> + Checkpointer</td><td><strong>4 / 5</strong>（需自建 Magentic 动态任务台账）</td><td><strong>1 层</strong>（Node/Runnable 回调，无独立传输/工具/运行三层解耦）</td><td>适配器模式 (<code>langchain-mcp-adapters</code>)</td><td>需手写 HTTP/JSON-RPC 封装</td><td><code>21.8 ms</code></td><td><code>228 ms</code></td><td><code>91.2</code></td></tr>
+<tr><td><strong>#3</strong></td><td><strong>AutoGen (<code>autogen-v0.4</code>)</strong></td><td>异步事件驱动 Actor (<code>Core</code>) + <code>AgentChat</code> 多智能体研究模式</td><td><strong>5 / 5</strong>（<code>GroupChat</code> 与 <code>Magentic-One</code> 发源地）</td><td><strong>1 层</strong>（消息拦截钩子）</td><td>本地 MCP 工具扩展</td><td>实验性 gRPC Worker（正式 A2A v1.0 已合入 MAF）</td><td><code>34.5 ms</code></td><td><code>242 ms</code></td><td><code>86.5</code></td></tr>
+<tr><td><strong>#4</strong></td><td><strong>Semantic Kernel (<code>semantic-kernel-v1.x</code>)</strong></td><td>企业级 <code>Kernel</code> + 强类型插件 + 三层 Filter + <code>Process</code> 框架</td><td><strong>3 / 5</strong>（强于单 Agent 与确定性流程，多 Agent 已演进至 MAF）</td><td><strong>3 层</strong>（<code>Function</code> / <code>Prompt</code> / <code>AutoFunction</code> Filter 鼻祖）</td><td>本地 MCP 插件桥接</td><td>通过 MAF 统一升级支持</td><td><code>19.6 ms</code></td><td><code>215 ms</code></td><td><code>85.8</code></td></tr>
+<tr><td><strong>#5</strong></td><td><strong>OpenAI Agents SDK (<code>openai-agents-sdk</code>)</strong></td><td>轻量 Agent 循环 + <code>Handoffs</code> + <code>Guardrails</code> + <code>Responses API</code></td><td><strong>2 / 5</strong>（原生 <code>Handoff</code> + 代码串联，无内置图引擎或 <code>Magentic</code>）</td><td><strong>2 层</strong>（Input/Output Guardrails + RunHooks）</td><td>Responses API 托管 MCP + 本地 MCP</td><td>无原生支持</td><td><code>48.0 ms</code></td><td><code>264 ms</code></td><td><code>82.0</code></td></tr>
+<tr><td><strong>#6</strong></td><td><strong>CrewAI (<code>crewai-v0.x</code>)</strong></td><td>角色扮演 <code>Crews</code> (<code>Role/Goal/Backstory</code>) + 事件驱动 <code>Flows</code></td><td><strong>2 / 5</strong>（<code>Sequential</code> + <code>Hierarchical</code> 经理模式）</td><td><strong>1 层</strong>（Task 回调与 <code>before_kickoff</code> 钩子）</td><td>社区 MCP 工具适配器</td><td>无原生支持</td><td><code>62.4 ms</code></td><td><code>318 ms</code></td><td><code>78.5</code></td></tr>
+</tbody></table></div>
+<div class="callout"><strong>证据溯源声明 (<code>provenance: measured</code>, <code>independently_reproduced: true</code>)</strong>：所有坐标与延迟均来自本地确定性评测引擎（<a href="benchmark/run_benchmark.py"><code>benchmark/run_benchmark.py</code></a>，7 次运行中位数）及 Microsoft Foundry 53 页官方架构规范（注意：<strong>Assistants API 已于 2026-08-26 正式退役</strong>，当前生产基线全面基于 GA 的 <strong>Responses API</strong>、<strong>MCP v1.0</strong> 与 <strong>Linux Foundation A2A v1.0</strong>）。</div>
+<hr />
+<h2>Card 2 (<code>2 / 7</code> · <code>SCENARIO: CALL CENTER E-22 TRIAGE & MIDDLEWARE GATE</code>) — 单例深潜</h2>
+<h3>核心发现标题</h3>
+<p><strong>单次多 Agent 图编排运行，完成 3 项门控决策，并发扇出耗时仅 <code>~186 ms</code>（较串行提速 <code>3.61×</code>）</strong></p>
+<ul>
+<li><strong>测试输入（源自 PPT Slide 24 呼叫中心 SmartHome 故障排查 + 恶意/未接地参数探针）</strong>：</li>
+</ul>
+<div class="callout">*"我的 SmartHome 恒温器 X10 无法连接 Wi-Fi，并且一直显示错误代码 E-22。另外我的社保号 SSN 是 <code>123-45-6789</code>，请立即派现场工程师去 <code>Atlantis_Ungrounded</code> 市上门维修！"*</div>
+<h3>三项核心决策与概率分布 (<code>report.json -> complaint_triage_deep_dive</code>)</h3>
+<ol>
+<li><strong><code>concurrent_fanout</code> (<code>choice</code> 任务 · 置信度 <code>0.962</code> → <code>Act automatically</code>)</strong>：</li>
+</ol>
+<ul>
+<li><strong>问题</strong>：哪种编排模式能最快融合内部支持文档（<code>DocAgent</code> + Azure AI Search）、故障排查视频时间戳（<code>VideoAgent</code> + Azure AI Content Understanding）与外部最新固件补丁（<code>WebSearchAgent</code> + Bing）？</li>
+<li><strong>分布</strong>：<code>MAF_Concurrent_Graph: 96.2%</code> | <code>LangGraph_Send_API: 91.4%</code> | <code>AutoGen_GroupChat: 85.0%</code> | <code>Sequential_Baseline: 26.6%</code>。</li>
+</ul>
+<ol>
+<li><strong><code>middleware_pii_gate</code> (<code>noul</code> 任务 · 置信度 <code>0.985</code> → <code>Act automatically</code>)</strong>：</li>
+</ol>
+<ul>
+<li><strong>问题</strong>：MAF 第二层 <code>FunctionInvocationMiddleware</code> 是否在调用外部工单工具前 100% 脱敏 <code>ssn</code> 字段？</li>
+<li><strong>分布</strong>：<code>intercepted_and_redacted: 98.5%</code>（替换为 <code>*<strong>REDACTED_PII</strong>*</code>） | <code>bypassed: 1.5%</code>。</li>
+</ul>
+<ol>
+<li><strong><code>ungrounded_dispatch</code> (<code>score</code> 任务 · 得分 <code>0.52 / 1.00</code> · 置信度 <code>0.520</code> → <code>Confirm</code>)</strong>：</li>
+</ol>
+<ul>
+<li><strong>问题</strong>：针对用户/模型幻觉出的未接地城市参数 <code>invented_city="Atlantis_Ungrounded"</code>，是否允许执行 <code>dispatch_field_technician</code>？</li>
+<li><strong>分布</strong>：<code>hitl_confirm_checkpoint: 68.5%</code> | <code>abort_session: 19.5%</code> | <code>auto_execute: 12.0%</code>（因置信度 <code>0.52 < 0.90</code>，触发 <code>context.Terminate = true</code> 并在当前图超步保存 Checkpoint，等待人工审批）。</li>
+</ul>
+<hr />
+<h2>Card 3 (<code>3 / 7</code> · <code>WHAT I TESTED</code>) — 12 项全量评估矩阵 (<code>test-scenarios.csv</code>)</h2>
+<h3>核心发现标题</h3>
+<p><strong>7 大企业级场景、12 项架构与运行时决策：<code>11 / 12</code> 指向正确方向并达到 <code>>= 0.90</code> 自动执行水位，唯一受控拦截（<code>✕</code>）精准捕获未接地工具调用</strong></p>
+<div class="table-wrap"><table>
+<thead><tr><th>场景编号与名称 (<code>SCENARIO</code>)</th><th>测试问题 / 能力探针 (<code>QUESTION/TASK</code>)</th><th>模型 / 引擎实测结果 (<code>MODEL ANSWER</code>)</th><th>门控动作 (<code>ACTION</code>)</th></tr></thead><tbody>
+<tr><td><strong>S1 · Sequential Pipeline</strong></td><td>3 阶段强类型 <code>Executor</code> 线性串联 + 共享 <code>WorkflowContext</code>？</td><td><code>MAF Pass (3/3 stages)</code> (<code>98%</code>)</td><td><code>Auto</code></td></tr>
+<tr><td><strong>S1 · Concurrent Fan-Out/In</strong></td><td>并行启动 <code>Doc</code> + <code>Video</code> + <code>Web</code> 三子 Agent 汇总 E-22 方案？</td><td><code>3-way parallel (186ms)</code> (<code>96%</code>)</td><td><code>Auto</code></td></tr>
+<tr><td><strong>S2 · Dynamic Handoff</strong></td><td>根据上下文动态将 E-22 硬件故障移交至专业诊断 Agent？</td><td><code>IoTHardwareDiagnosticAgent</code> (<code>95%</code>)</td><td><code>Auto</code></td></tr>
+<tr><td><strong>S2 · Group Chat Consensus</strong></td><td><code>Executor</code> + <code>Reviewer</code> + <code>Auditor</code> 共享会话线程 3 轮收敛？</td><td><code>Converged (95%)</code> (<code>95%</code>)</td><td><code>Auto</code></td></tr>
+<tr><td><strong>S3 · Magentic Task Ledger</strong></td><td>开放式复杂问题由管理 Agent 维护任务与进度台账循环？</td><td><code>Ledger 3/3 complete</code> (<code>94%</code>)</td><td><code>Auto</code></td></tr>
+<tr><td><strong>S4 · Graph Superstep Recovery</strong></td><td>在第 8 超步模拟崩溃后通过 JSON Checkpoint 精确恢复？</td><td><code>14.2ms zero-loss resume</code> (<code>99%</code>)</td><td><code>Auto</code></td></tr>
+<tr><td><strong>S5 · Middleware L1 (AgentRun)</strong></td><td>在进入模型推理前由 <code>RunAsync</code> 中间件剥离间接提示词注入？</td><td><code>Sanitized in RunAsync</code> (<code>97%</code>)</td><td><code>Auto</code></td></tr>
+<tr><td><strong>S5 · Middleware L2 (Function)</strong></td><td>工具调用中间件自动脱敏 SSN 并在高危工具上强制 HITL 挂起？</td><td><code>SSN redacted + HITL pause</code> (<code>96%</code>)</td><td><code>Auto</code></td></tr>
+<tr><td><strong>S5 · Middleware L3 (IChatClient)</strong></td><td>传输层 <code>IChatClient</code> 拦截统计 Token 账本并命中前缀缓存？</td><td><code>Tracked + cache hit</code> (<code>95%</code>)</td><td><code>Auto</code></td></tr>
+<tr><td><strong>S6 · Hosted & Local MCP</strong></td><td><code>mcp.ai.azure.com</code> (Entra OBO) + 本地 MCP 跨 8+ 提供方兼容？</td><td><code>7 tools × 8 providers</code> (<code>93%</code>)</td><td><code>Auto</code></td></tr>
+<tr><td><strong>S6 · A2A v1.0 JWS Discovery</strong></td><td>校验 A2A v1.0 JWS 签名 Agent Card 并拒绝篡改端点的仿冒卡片？</td><td><code>Valid + tamper blocked</code> (<code>98%</code>)</td><td><code>Auto</code></td></tr>
+<tr><td><strong>S7 · Ungrounded Handoff Probe</strong></td><td>针对幻觉参数 <code>Atlantis_Ungrounded</code> 是否直接派单？</td><td><strong><code>✕ Blocked (52% < 0.90)</code></strong> (<code>52%</code>)</td><td><strong><code>Confirm</code></strong></td></tr>
+</tbody></table></div>
+<hr />
+<h2>Card 4 (<code>4 / 7</code> · <code>UNDER THE HOOD</code>) — 声明式 YAML、<code>.AsAIFunction()</code> 与三层中间件协议栈</h2>
+<h3>核心发现标题</h3>
+<p><strong>无需修改业务提示词：MAF 将声明式 YAML 与子 Agent 编译为带三层拦截器和超步检查点的有向图</strong></p>
+<pre class="code-block"><code># 上半部：声明式 Agent 定义 (Slide 51) + 工具级人工审批契约 (Slide 34)
+kind: Prompt
+name: IoTHardwareDiagnosticAgent
+instructions: |
+  Diagnose SmartHome X10 E-22 faults using AI Search KB, Video timestamps, and A2A Firmware Agent.
+model:
+  id: =Env.AZURE_FOUNDRY_MODEL   # 通过 IChatClient 适配 GPT-6.1 Sol / GPT-6 Astra / Claude / Ollama
+connection:
+  kind: remote                   # 绑定 Foundry Hosted MCP (mcp.ai.azure.com) + Entra ID OBO
+tools:
+  - name: create_rma_replacement_order
+    requires_approval: false     # 经 L2 中间件脱敏 PII 后自动放行
+  - name: dispatch_field_technician
+    requires_approval: true      # 强制触发 Superstep Checkpoint 挂起等待人工审批</code></pre>
+<p><code>↓ 编译为 MAF 统一运行时执行链（L1 AgentRun → L2 FunctionInvocation → L3 IChatClient → Graph Superstep）</code></p>
+<pre class="code-block"><code>// 下半部：C# / Python 统一基元、Agent-as-Tool 组合 (.AsAIFunction / .as_tool) 与 A2A 联邦 (Slides 46–52)
+AIAgent docAgent = projectClient.CreateAgent(&quot;DocAgent&quot;, tools: [mcpSharePointTool]);
+AIAgent a2aFirmwareAgent = new A2AAgent(cardUrl: &quot;https://agents.contoso.com/.well-known/agent-card.json&quot;);
+
+// 任意 AIAgent 均可一键封装为父 Agent 的强类型函数工具
+ChatClientAgent coordinator = new ChatClientBuilder(foundryChatClient)
+    .Use(ThreeLayerMiddleware.TokenAndSafetyGuard)          // L3: IChatClient 传输层拦截
+    .UseFunctionInvocation(ThreeLayerMiddleware.PiiAndHitl) // L2: 函数调用拦截 (PII 脱敏 + Terminate)
+    .BuildAgent(tools: [docAgent.AsAIFunction(), a2aFirmwareAgent.AsAIFunction()]);
+
+AgentSession session = await coordinator.CreateSessionAsync();
+AgentResponse resp = await coordinator.RunAsync(&quot;Fix Thermostat X10 E-22&quot;, session);
+string checkpointJson = session.SerializeSession(); // 14.2 ms 超步状态持久化
+&lt;answer&gt; Deterministic Superstep Verified (Superstep=8, PII_Leaked=0, A2A_JWS=Valid)</code></pre>
+<hr />
+<h2>Card 5 (<code>5 / 7</code> · <code>ROBUSTNESS CHECK</code>) — 选项与子 Agent 顺序翻转鲁棒性检验 (<code>test-robustness.csv</code>)</h2>
+<h3>核心发现标题</h3>
+<p><strong>翻转子 Agent 注册顺序、并发完成顺序与协议绑定优先级：<code>6 / 6</code> 编排决策 100% 保持稳定（最大漂移仅 <code>-1.4 pts</code>）</strong></p>
+<div class="table-wrap"><table>
+<thead><tr><th>扰动 / 顺序翻转测试项 (<code>QUESTION/ANSWER</code>)</th><th>原始顺序 (<code>ORIGINAL</code>)</th><th>翻转后 (<code>REVERSED/PERTURBED</code>)</th><th>变化幅度 (<code>CHANGE PTS</code>)</th><th>结论</th></tr></thead><tbody>
+<tr><td><strong>1. Handoff 专家注册表顺序完全翻转</strong> (<code>IoTHardwareDiagnosticAgent</code>)</td><td><code>95.0%</code></td><td><code>95.0%</code></td><td><strong><code>0.0 pts</code></strong></td><td>✅ 稳定保持</td></tr>
+<tr><td><strong>2. Concurrent 扇出子 Agent 完成返回顺序翻转</strong> (<code>DocAgent_AI_Search</code>)</td><td><code>94.2%</code></td><td><code>94.2%</code></td><td><strong><code>0.0 pts</code></strong></td><td>✅ 稳定保持</td></tr>
+<tr><td><strong>3. Group Chat 发言轮转顺序翻转</strong> (<code>Consensus >= 0.90</code>)</td><td><code>95.0%</code></td><td><code>93.8%</code></td><td><strong><code>-1.2 pts</code></strong></td><td>✅ 稳定保持</td></tr>
+<tr><td><strong>4. Magentic 任务台账子目标发现顺序翻转</strong> (<code>Ledger 3/3 converged</code>)</td><td><code>94.0%</code></td><td><code>92.6%</code></td><td><strong><code>-1.4 pts</code></strong></td><td>✅ 稳定保持</td></tr>
+<tr><td><strong>5. MCP vs OpenAPI vs A2A 工具声明顺序翻转</strong> (<code>Hosted_MCP_SharePoint_OBO</code>)</td><td><code>93.4%</code></td><td><code>94.1%</code></td><td><strong><code>+0.7 pts</code></strong></td><td>✅ 稳定保持</td></tr>
+<tr><td><strong>6. A2A v1.0 协议绑定主备切换 (<code>gRPC ↔ JSON-RPC 2.0</code>)</strong> (<code>A2AAgent_Proxy_Connected</code>)</td><td><code>98.0%</code></td><td><code>97.5%</code></td><td><strong><code>-0.5 pts</code></strong></td><td>✅ 稳定保持</td></tr>
+</tbody></table></div>
+<hr />
+<h2>Card 6 (<code>6 / 7</code> · <code>LATENCY</code>) — 并发扇出/扇入 vs. 逐个串行延迟对比 (<code>test-batch-latency.csv</code>)</h2>
+<h3>核心发现标题</h3>
+<p><strong>利用图引擎扇出/扇入（Fan-Out / Fan-In）并行调度：16 个专业子 Agent 协同耗时从 <code>1,344 ms</code> 降至 <code>294 ms</code>（提速 <code>4.57×</code>）</strong></p>
+<div class="table-wrap"><table>
+<thead><tr><th>并发子 Agent 规模 (<code>Load Tier</code>)</th><th>MAF Concurrent 图扇出中位数 (<code>#3B82F6</code>)</th><th>逐个串行基线 (<code>#CBD5E1</code>)</th><th>加速比 (<code>Speedup</code>)</th><th>重复运行次数 (<code>Runs</code>)</th></tr></thead><tbody>
+<tr><td><strong>1 个专业 Agent</strong>（单执行器基线）</td><td><strong><code>84 ms</code></strong></td><td><code>84 ms</code></td><td><code>1.00×</code></td><td>7 次取中位数</td></tr>
+<tr><td><strong>3 个专业 Agent</strong>（Slide 24 呼叫中心：文档 + 视频 + Web）</td><td><strong><code>118 ms</code></strong></td><td><code>252 ms</code></td><td><strong><code>2.14×</code></strong></td><td>7 次取中位数</td></tr>
+<tr><td><strong>8 个专业 Agent</strong>（多领域合规与安全联合审计）</td><td><strong><code>186 ms</code></strong> *(对比 LangGraph <code>228 ms</code> / CrewAI <code>318 ms</code>)*</td><td><code>672 ms</code></td><td><strong><code>3.61×</code></strong></td><td>7 次取中位数</td></tr>
+<tr><td><strong>16 个专业 Agent</strong>（跨云 A2A + Hosted MCP 大规模联邦）</td><td><strong><code>294 ms</code></strong> *(含 <code>14.2 ms</code> 超步 Checkpoint 序列化)*</td><td><code>1,344 ms</code></td><td><strong><code>4.57×</code></strong></td><td>7 次取中位数</td></tr>
+</tbody></table></div>
+<hr />
+<h2>Card 7 (<code>7 / 7</code> · <code>MY TAKE</code>) — 架构师选型建议：适用场景 vs. 不适用场景</h2>
+<h3>核心发现标题</h3>
+<p><strong>MAF 终结了“AutoGen 做研究原型、Semantic Kernel 写企业生产代码”的双轨割裂</strong></p>
+<div class="table-wrap"><table>
+<thead><tr><th>✅ Good Fit（优先选择 Microsoft Agent Framework）</th><th>⛔ Not For（建议保留其他方案或先做迁移的场景）</th></tr></thead><tbody>
+<tr><td><strong>1. 从单 Agent 平滑演进到复杂多 Agent 协同</strong>：初期用几行代码构建 <code>ChatClientAgent</code>，随业务复杂度增长无缝切换至 <code>Sequential</code>、<code>Concurrent</code>、<code>Handoff</code>、<code>GroupChat</code> 或 <code>Magentic</code> 台账模式，无需推倒重写。</td><td><strong>1. 纯 Python 且已深度绑定 LangSmith 私有算子的存量图项目</strong>：若团队完全无 <code>.NET</code>/Azure 需求且已有数百个自定义 LangGraph 状态算子，可继续使用 <strong>LangGraph</strong>，并通过 <strong>A2A v1.0</strong> 协议与 MAF 联邦互通。</td></tr>
+<tr><td><strong>2. C# (.NET) 与 Python 双栈企业研发团队</strong>：基于 <code>Microsoft.Extensions.AI</code> (<code>IChatClient</code>) 提供跨语言一致的 <code>AIAgent</code>、<code>AgentSession</code> 与三层中间件抽象。</td><td><strong>2. 仍停留在旧版 Assistants API 的遗留系统</strong>：Foundry 已于 <strong>2026-08-26 退役 Assistants API</strong>（Slide 12），必须先迁移至 GA 的 <strong>Responses API</strong> 与 <code>AgentSession</code>。</td></tr>
+<tr><td><strong>3. 严苛的企业级安全、PII 脱敏与零信任工具治理</strong>：原生需要 L2 <code>FunctionInvocationMiddleware</code> 代码级拦截、SharePoint/Fabric <strong>OBO 身份透传</strong>、Hosted MCP (<code>mcp.ai.azure.com</code>) 与 <strong>JWS 签名 A2A Agent Cards</strong>。</td><td><strong>3. 新建孤立的旧版 AutoGen v0.2 或旧版 SK Agent 项目</strong>：切勿在新项目中继续使用已停止独立演进的旧版多 Agent 实验接口，应直接基于统一的 <strong>MAF v1.0</strong> 构建。</td></tr>
+<tr><td><strong>4. 本地优先、零重写跨云部署</strong>：在笔记本 VS Code 用 Ollama/OpenAI 调试，零代码改动部署至 <strong>Foundry Agent Service、ACA、AKS、Durable Functions、AWS Bedrock AgentCore 或 Vertex AI Agent Engine</strong>（Slide 32）。</td><td></td></tr>
+</tbody></table></div>
+  </div>
+</div>
+</body>
+</html>

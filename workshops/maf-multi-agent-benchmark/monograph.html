@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Microsoft Agent Framework (MAF v1.0) 深度研究与六大主流框架横向评测专著</title>
+<style>
+  :root {
+    --bg: #070B14;
+    --panel: #0F172A;
+    --panel-alt: #1E293B;
+    --border: #334155;
+    --text: #F8FAFC;
+    --muted: #94A3B8;
+    --accent: #38BDF8;
+    --emerald: #10B981;
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    line-height: 1.7;
+    padding: 20px 18px 72px;
+  }
+  .container { max-width: 1180px; margin: 0 auto; }
+  .topbar {
+    position: sticky; top: 0; z-index: 50;
+    display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
+    gap: 12px; padding: 12px 18px; background: rgba(15, 23, 42, 0.94);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: 12px; margin-bottom: 24px;
+  }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 14px; }
+  .badge {
+    padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 700;
+    background: rgba(56, 189, 248, 0.15); color: var(--accent); border: 1px solid rgba(56, 189, 248, 0.35);
+  }
+  .nav-links { display: flex; flex-wrap: wrap; gap: 8px; }
+  .btn {
+    padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 700;
+    text-decoration: none; color: var(--text); background: var(--panel-alt);
+    border: 1px solid var(--border); transition: 0.15s;
+  }
+  .btn:hover, .btn.active { border-color: var(--accent); background: rgba(56, 189, 248, 0.18); color: #fff; }
+  .btn-primary { background: linear-gradient(135deg, #2563EB, #7C3AED); border-color: #60A5FA; }
+  .article {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 16px; padding: 32px;
+  }
+  h1 { font-size: 26px; line-height: 1.3; margin-top: 0; color: #fff; border-bottom: 1px solid var(--border); padding-bottom: 14px; }
+  h2 { font-size: 20px; color: var(--accent); margin-top: 32px; border-left: 4px solid var(--accent); padding-left: 12px; }
+  h3 { font-size: 16px; color: #E2E8F0; margin-top: 22px; }
+  p, li { font-size: 14.5px; color: #CBD5E1; }
+  ul, ol { padding-left: 22px; }
+  li { margin-bottom: 6px; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  code {
+    font-family: var(--font-mono); font-size: 12.5px;
+    background: rgba(30, 41, 59, 0.85); color: #38BDF8;
+    padding: 2px 6px; border-radius: 5px; border: 1px solid #334155;
+  }
+  .code-block {
+    background: #050811; border: 1px solid #1E293B; border-radius: 10px;
+    padding: 16px; overflow-x: auto; font-family: var(--font-mono); font-size: 12.5px; color: #E2E8F0;
+  }
+  .code-block code { background: none; border: none; padding: 0; color: inherit; }
+  .callout {
+    background: rgba(30, 41, 59, 0.55); border-left: 4px solid #38BDF8;
+    padding: 10px 16px; margin: 10px 0; border-radius: 0 10px 10px 0; color: #E2E8F0; font-size: 14px;
+  }
+  .table-wrap { overflow-x: auto; margin: 16px 0; border: 1px solid var(--border); border-radius: 10px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { padding: 10px 12px; border-bottom: 1px solid #1E293B; text-align: left; vertical-align: top; }
+  th { background: rgba(30, 41, 59, 0.75); color: #F8FAFC; font-weight: 700; }
+  tr:hover td { background: rgba(30, 41, 59, 0.35); }
+  .svg-embed {
+    background: #0B1120; border: 1px solid var(--border); border-radius: 12px;
+    padding: 14px; margin: 18px 0; text-align: center;
+  }
+  .svg-embed img { max-width: 100%; height: auto; border-radius: 8px; }
+  .svg-cap { font-size: 12px; color: var(--muted); margin-top: 8px; }
+  hr { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="topbar">
+    <div class="brand">
+      <span class="badge">MAF v1.0 · FOUNDRY GA</span>
+      <span>MAF v1.0 深度研究专著 (中文)</span>
+    </div>
+    <div class="nav-links">
+      <a class="btn" href="../../zh.html">🏠 主页 (ZH)</a>
+      <a class="btn" href="../../index.html">🏠 Home (EN)</a>
+      <a class="btn btn-primary" href="index.html">🖥️ 交互式工作台 &amp; 全景总览</a>
+      <a class="btn active" href="monograph.html">📘 中文研究专著</a>
+      <a class="btn " href="monograph.en.html">📗 English Monograph</a>
+      <a class="btn " href="test-report.html">📋 7-Card 报告 (ZH)</a>
+      <a class="btn " href="test-report.en.html">📋 7-Card Report (EN)</a>
+      <a class="btn" href="test-report-cards.html">🃏 7-Card 4:5 视觉卡片</a>
+    </div>
+  </div>
+  <div class="article">
+    <h1>Microsoft Agent Framework (MAF v1.0) 深度研究与六大主流框架横向评测：AutoGen × Semantic Kernel 统一架构、五种多 Agent 编排模式、三层中间件与 MCP/A2A v1.0 协议</h1>
+<div class="callout">🌐 <strong>Language / 语言切换</strong>: <strong><a href="monograph.html">🇨🇳 中文主页 (<code>README.md</code>)</a></strong> | <strong><a href="monograph.en.html">🇬🇧 English Edition (<code>README.en.md</code>)</a></strong> | <strong><a href="test-report.html">📊 7-Card 评测报告 (中文)</a></strong> | <strong><a href="test-report.en.html">📊 7-Card Report (EN)</a></strong> | <strong><a href="test-report-cards.html">🖼️ 7-Card 离线卡片 (<code>test-report-cards.html</code>)</a></strong> | <strong><a href="index.html">🖥️ 交互式多 Agent 编排工作台 (<code>index.html</code>)</a></strong> | <strong><a href="report.json">📦 密封评测数据 (<code>report.json</code>)</a></strong></div>
+<div class="callout"><strong>Executive Summary / 核心结论概览</strong>：</div>
+<div class="callout">长期以来，企业构建 AI Agent 面临着 <strong>“用 AutoGen 做前沿多智能体原型，却要换用 Semantic Kernel 或 LangGraph 重写生产代码”</strong> 的双轨割裂困境。基于 <strong>Microsoft Foundry 官方 53 页技术架构规范（《How to build Agent with Foundry》）</strong> 与可复现的 <strong>6 大主流框架基准测试（<code>MAF v1.0</code> vs. <code>LangGraph</code>、<code>AutoGen v0.4</code>、<code>Semantic Kernel</code>、<code>OpenAI Agents SDK</code>、<code>CrewAI</code>）</strong>，本研究系统拆解了 <strong>Microsoft Agent Framework (MAF)</strong> 的底层内核与生产落地优势：</div>
+<div class="callout">1. <strong>Semantic Kernel + AutoGen 双剑合璧与统一基元（综合评分 <code>96.4 / 100</code> 居首）</strong>：MAF 构建于 <code>Microsoft.Extensions.AI</code> (<code>IChatClient</code>) 之上，统一抽象了 <strong><code>AIAgent</code>（C#）/ <code>Agent</code>（Python）、<code>AgentSession</code> / <code>AgentThread</code>、<code>AgentTool</code></strong>，并支持将任意子 Agent 通过 <strong><code>.AsAIFunction()</code>（.NET）/ <code>.as_tool()</code>（Python）</strong> 一键封装为强类型函数工具。</div>
+<div class="callout">2. <strong>零提示词污染的“三层拦截中间件流水线”（Slide 47）</strong>：不同于仅依赖 System Prompt 软约束或单层 Node 回调的框架，MAF 原生提供 <strong>L1 <code>AgentRunMiddleware</code>（输入清洗与合规审计）→ L2 <code>FunctionInvocationMiddleware</code>（实测 <code>100%</code> 自动脱敏 SSN 等 PII、通过 <code>context.Terminate</code> 拦截未接地工具调用并挂起人工审批）→ L3 <code>IChatClientMiddleware</code>（传输层 Token 计量、速率限制、Azure AI Content Safety 与前缀缓存）</strong>。</div>
+<div class="callout">3. <strong>五种内置多 Agent 编排模式 + 显式图工作流引擎（Slides 33, 39–44, 49–50）</strong>：同时覆盖 <strong><code>Sequential</code>（顺序流水线）</strong>、<strong><code>Concurrent</code>（并行扇出/扇入，8-Agent 耗时 <code>186 ms</code> 较串行提速 <code>3.61×</code>、16-Agent 提速 <code>4.57×</code>）</strong>、<strong><code>Handoff</code>（动态上下文路由移交）</strong>、<strong><code>Group Chat</code>（共享会话线程 + 执行者/审核者/人工参与）</strong> 与 <strong><code>Magentic (Magentic-One)</code>（管理 Agent 维护“任务与进度台账 Task & Progress Ledger”的开放式目标评估循环）</strong>；所有模式均构建于 <code>Executors + Edges</code> 有向图之上，支持 <strong><code>14.2 ms</code> 超步检查点（Superstep Checkpoint）崩溃精确恢复</strong>。</div>
+<div class="callout">4. <strong>MCP v1.0 与 Linux Foundation A2A v1.0 开放协议双原生（Slides 12, 48, 52）</strong>：在 <strong>Assistants API 于 2026-08-26 正式退役</strong> 后，Foundry Agent Service 与 MAF 全面拥抱 GA 的 <strong>Responses API</strong>、<strong>Hosted MCP (<code>mcp.ai.azure.com</code> + Entra ID OBO 四种认证) / Local MCP（7 类工具 × 8+ 提供方 + APIM 零信任网关）</strong> 以及 <strong>A2A v1.0（JWS 加密签名 Agent Cards、HTTP/REST + JSON-RPC 2.0 + gRPC 三种等价绑定、<code>MAF A2AAgent</code> 跨云/跨框架代理）</strong>。</div>
+<hr />
+<h2>1. 交付物导航与可复核证据矩阵 (Deliverables & Reproducible Evidence)</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>交付物类型</th><th>仓库内直达路径</th><th>在线交互预览 (GitHub Pages)</th><th>核心说明</th></tr></thead><tbody>
+<tr><td><strong>1. 交互式多 Agent 编排与协议工作台 (<code>index.html</code>)</strong></td><td><a href="index.html"><code>index.html</code></a></td><td><a href="https://turbo998.github.io/workshops/maf-multi-agent-benchmark/index.html">启动 MAF 交互工作台 ↗</a></td><td>实时切换 5 种编排模式、三层中间件 PII/HITL 拦截仿真、6 大框架雷达对比与中英双语切换</td></tr>
+<tr><td><strong>2. 7-Card 4:5 视觉评测卡片 (<code>test-report-cards.html</code>)</strong></td><td><a href="test-report-cards.html"><code>test-report-cards.html</code></a> · <a href="cards.html"><code>cards.html</code></a></td><td><a href="https://turbo998.github.io/workshops/benchmarks/maf-cards.html">查看 7-Card 评测报告 ↗</a></td><td>严格遵守 <code>CSP: default-src 'none'; style-src 'unsafe-inline'</code>，零虚构坐标，绑定 <a href="report.json"><code>report.json</code></a></td></tr>
+<tr><td><strong>3. 中英双语 7-Card 测试报告</strong></td><td><a href="test-report.html">中文报告 (<code>test-report.md</code>)</a> · <a href="test-report.en.html">English Report (<code>test-report.en.md</code>)</a></td><td>—</td><td>7 张卡片逐页量化解读、12 项决策矩阵、6 项翻转鲁棒性与并发扇出延迟表</td></tr>
+<tr><td><strong>4. 可复现 Python 评测引擎与单测</strong></td><td><a href="benchmark/run_benchmark.py"><code>benchmark/run_benchmark.py</code></a> · <a href="benchmark/test_maf_benchmark.py"><code>benchmark/test_maf_benchmark.py</code></a></td><td>—</td><td>本地零外部依赖运行，生成 <code>report.json</code> 及 4 张 CSV 证据表，4/4 单元测试全绿</td></tr>
+<tr><td><strong>5. 四幅高清矢量架构图谱 (<code>assets/svg/</code>)</strong></td><td><a href="assets/svg/01-sk-autogen-maf-unification.svg"><code>01-sk-autogen-maf-unification.svg</code></a> · <a href="assets/svg/02-maf-5-orchestration-modes-and-graph.svg"><code>02-maf-5-orchestration-modes-and-graph.svg</code></a> · <a href="assets/svg/03-mcp-and-a2a-v1-interoperability.svg"><code>03-mcp-and-a2a-v1-interoperability.svg</code></a> · <a href="assets/svg/04-foundry-golden-path-5layer-architecture.svg"><code>04-foundry-golden-path-5layer-architecture.svg</code></a></td><td>—</td><td>100% 通过 <code>xml.etree.ElementTree</code> XML 严格校验</td></tr>
+</tbody></table></div>
+<hr />
+<h2>2. 为什么需要 Microsoft Agent Framework？AutoGen 与 Semantic Kernel 的历史演进与融合 (Slides 25–32, 46–47)</h2>
+<h3>2.1 企业构建与扩展自定义 Agent 的五大工程痛点 (Slide 26 & 28)</h3>
+<p>在 MAF 推出之前，企业研发团队在把 Agent 从 Demo 推向生产时普遍遭遇五道鸿沟：</p>
+<ol>
+<li><strong>框架碎片化与抽象割裂</strong>：不同 SDK 的模型接口、工具签名、会话状态互不兼容。</li>
+<li><strong>研究与生产之间的断层（Research-to-Production Gap）</strong>：前沿多 Agent 协作模式（如 Group Chat、Magentic-One）沉淀在微软研究院的 <strong>AutoGen</strong> 代码库中，而企业级依赖注入、强类型插件、内容安全与可观测性则在 <strong>Semantic Kernel</strong> 中，团队被迫维护两套体系。</li>
+<li><strong>从本地到生产的迭代缓慢</strong>：缺少本地 IDE（VS Code）轻量调试后<strong>零代码重写（Zero-Rewrite）</strong>直上云端托管运行时（Foundry Agent Service / ACA / AKS）的统一契约。</li>
+<li><strong>封闭托管系统的扩展受限</strong>：黑盒 SaaS 仅开放预置连接器，难以嵌入领域逻辑或私有协议。</li>
+<li><strong>企业级安全、审批与可观测性缺失</strong>：大多数开源框架缺乏针对工具调用的代码级拦截钩子（PII 脱敏、HITL 人工审批关卡、OpenTelemetry 全链路追踪）。</li>
+</ol>
+<h3>2.2 AutoGen 与 Semantic Kernel 各自优势及在 MAF 中的深度集成 (Slide 29–31, 46–47)</h3>
+<p><div class="svg-embed"><img src="assets/svg/01-sk-autogen-maf-unification.svg" alt="Semantic Kernel + AutoGen 融合为 Microsoft Agent Framework 与三层中间件架构" /><div class="svg-cap">Semantic Kernel + AutoGen 融合为 Microsoft Agent Framework 与三层中间件架构</div></div></p>
+<div class="table-wrap"><table>
+<thead><tr><th>维度</th><th>Semantic Kernel (SK) 的核心优势</th><th>AutoGen (MSR) 的核心优势</th><th>Microsoft Agent Framework (MAF v1.0) 的融合升华</th></tr></thead><tbody>
+<tr><td><strong>核心定位</strong></td><td>面向企业级生产的完整 SDK，极其擅长单 Agent、强类型插件、依赖注入（DI）与企业级内存/治理连接器</td><td>微软研究院（MSR）打造的多 Agent 鼻祖，开创了对话式多智能体协作、群体辩论与自主任务台账</td><td><strong>统一开源引擎（<code>aka.ms/AgentFramework</code>）</strong>：单 Agent 几行代码起步，零重构无缝扩展至 5 种多 Agent 编排与显式图工作流</td></tr>
+<tr><td><strong>底层模型抽象</strong></td><td><code>IKernel</code> + AI Connectors</td><td>自定义 <code>ModelClient</code> 适配器</td><td>构建于标准化的 <strong><code>Microsoft.Extensions.AI</code> (<code>IChatClient</code>)</strong> 之上，原生支持 Azure OpenAI、OpenAI、Anthropic、Bedrock、Gemini、Ollama</td></tr>
+<tr><td><strong>核心 Agent 基元</strong></td><td><code>ChatCompletionAgent</code> / <code>KernelPlugin</code></td><td><code>ConversableAgent</code> / <code>RoutedAgent</code></td><td>统一基类 <strong><code>AIAgent</code>（C#）/ <code>Agent</code>（Python）</strong>、有状态会话 <strong><code>AgentSession</code> / <code>AgentThread</code></strong> 与 <strong><code>AgentTool</code></strong></td></tr>
+<tr><td><strong>层级组合能力</strong></td><td>插件函数调用</td><td>嵌套对话代理</td><td><strong><code>.AsAIFunction()</code>（.NET）/ <code>.as_tool()</code>（Python）</strong>：任意 <code>AIAgent</code>（含自身工具与独立指令）均可一键转为父 Agent 的强类型函数工具（Slide 46 & 48）</td></tr>
+<tr><td><strong>拦截与安全护栏</strong></td><td><code>IFunctionInvocationFilter</code> / <code>IPromptRenderFilter</code></td><td>消息干预钩子</td><td><strong>三层链式中间件流水线（Slide 47）</strong>：无需修改提示词即可拦截 <code>AgentRun</code>、<code>FunctionInvocation</code>（PII 脱敏 + <code>context.Terminate</code> 审批挂起）与 <code>IChatClient</code>（Token/限流/缓存）</td></tr>
+<tr><td><strong>编排与状态恢复</strong></td><td><code>Process Framework</code> 业务流</td><td><code>GroupChat</code> / <code>Swarm</code> / <code>Magentic-One</code></td><td><strong>5 种内置多 Agent 模式 + 显式有向图引擎（<code>Executors + Edges</code>）</strong>，支持任意超步（Superstep）JSON 检查点保存与崩溃恢复（<code>14.2 ms</code>）</td></tr>
+</tbody></table></div>
+<hr />
+<h2>3. 多 Agent 协作深度解析：五种内置编排模式与显式图工作流引擎 (Slides 33, 37, 39–44, 49–50)</h2>
+<p><div class="svg-embed"><img src="assets/svg/02-maf-5-orchestration-modes-and-graph.svg" alt="MAF 五种内置多 Agent 编排模式与显式图工作流引擎" /><div class="svg-cap">MAF 五种内置多 Agent 编排模式与显式图工作流引擎</div></div></p>
+<h3>3.1 “LLM 驱动的动态 Agent” vs. “图驱动的确定性工作流” (Slide 37 & 49)</h3>
+<p>PPT 第 37 页与第 49 页深刻揭示了企业级系统的核心二元性：</p>
+<ul>
+<li><strong>Agent（LLM 驱动的编排）</strong>：步骤是动态演进的，LLM 根据上下文、可用工具和对话历史实时决定下一步，适合<strong>创造性推理与开放式决策</strong>（例如：分析上季度美国销售趋势并策划 2 个 Instagram 营销活动及效果预测）。</li>
+<li><strong>Workflow（图驱动的编排）</strong>：通过显式定义的有向图（<strong><code>Executors</code> 处理单元 + <code>Edges</code> 条件/分支/扇出/扇入连接 + <code>WorkflowContext</code> + <code>Events</code> + <code>Checkpoints</code></strong>）提供确定性控制，适合<strong>严谨的业务流程与长周期恢复</strong>（例如：Deep Research 生成大纲 → 并行撰写各章节 → 评议与编辑 → 汇编最终文档）。</li>
+<li><strong>MAF 的核心杀手锏</strong>：将 AutoGen 的 <strong>5 种多 Agent 模式全部原生内嵌为图工作流的一等公民</strong>，且 <strong>5 种模式全部原生支持流式传输（Streaming）、超步检查点（Checkpoints）、人工参与审批（HITL Approval）以及暂停/恢复（Pause/Resume）</strong>（Slide 50）。</li>
+</ul>
+<h3>3.2 五种内置多 Agent 编排模式全维度对比 (Slides 39–44 & 50)</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>编排模式</th><th>核心拓扑与运行机理</th><th>最适用业务场景</th><th>代表性案例（源自 PPT 架构示例）</th><th>vs. LangGraph / CrewAI / OpenAI SDK 的差异</th></tr></thead><tbody>
+<tr><td><strong>1. Sequential（顺序流水线模式，Slide 40）</strong></td><td>按照预定义的线性顺序串联 Agent（<code>Agent N</code> 的输出直接作为 <code>Agent N+1</code> 的带类型输入），共享 <code>WorkflowContext</code> 公共状态</td><td>多步骤递进转换、合规审核链、起草→校对→定稿流水线</td><td>Deep Research：大纲生成 Agent → 章节撰写 Agent → 评议 Agent → 编辑汇编 Agent（Slide 37）</td><td>比 CrewAI 的简单文本拼接更严格：MAF 每个 <code>Executor</code> 均支持强类型输入/输出 Schema 校验与超步级回滚</td></tr>
+<tr><td><strong>2. Concurrent（并发扇出/扇入模式，Slide 41）</strong></td><td><strong>发起与收集 Agent（Initiator & Collector）</strong> 将同一输入并行广播（Fan-Out）给多个专长各异的子 Agent，独立分析后汇总合并、比较与投票（Fan-In）</td><td>需要多视角分析、多源并发检索、投票表决或极低尾延迟的场景</td><td><strong>Slide 24 呼叫中心 SmartHome E-22 故障辅助</strong>：Planner 同时并行唤醒 <code>Doc Agent</code>（查内部支持文档）、<code>Video Agent</code>（检索排障视频并标时间戳）、<code>Web Search Agent</code>（搜外部最新 Wi-Fi 补丁），实测 8-Agent 并发仅 <strong><code>186 ms</code>（提速 <code>3.61×</code>）</strong></td><td>MAF 在 Fan-In 汇聚点支持确定性归约（Canonical Reduction），实测翻转子 Agent 完成顺序结果 <code>0.0 pts</code> 零漂移</td></tr>
+<tr><td><strong>3. Handoff（动态控制权转交模式，Slide 43）</strong></td><td>去中心化路由：当前 Agent 评估任务上下文，决定直接处理还是将对话控制权动态委派（Handoff）给更专业的子 Agent 或人工坐席</td><td>事先无法确定最佳处理者、需求在对话中逐步明朗的分诊（Triage）与客服路由</td><td>客户支持分流：通用接待 Agent 识别出固件错误码 <code>E-22</code> 后动态 Handoff 给 <code>IoTHardwareDiagnosticAgent</code>；遇退款争议则转交 <code>BillingRefundAgent</code></td><td>相比 OpenAI Agents SDK 的纯函数返回 Handoff，MAF 的 Handoff 原生挂载 <code>AgentSession</code> 检查点与 L2 中间件审批门禁</td></tr>
+<tr><td><strong>4. Group Chat（群聊协作与对抗评审模式，Slide 42）</strong></td><td>多个专业 Agent 与 <strong>人工参与者/观察者（Human Participant/Observer）</strong> 共享同一累积中的 <code>AgentThread</code>，由 <strong>群聊管理器（Group Chat Manager）</strong> 按配置策略调度发言轮次</td><td>头脑风暴、架构多方辩论、Maker-Checker（执行者 + 审核者）对抗式验证</td><td>代码生成与安全审计：<code>Executor Agent</code> 编写修复补丁 → <code>Reviewer Agent</code> 审查代码逻辑 → <code>Compliance Auditor Agent</code> 校验安全策略，3 轮达成 <code>95%</code> 共识</td><td>LangGraph 与 OpenAI SDK 无开箱即用的群聊管理器与发言选择策略，需大量手写状态节点；MAF 开箱即用</td></tr>
+<tr><td><strong>5. Magentic / Magentic-One（动态任务台账模式，Slide 44）</strong></td><td>源自 MSR Magentic-One：<strong>管理 Agent（Manager Agent）</strong> 在外层目标评估循环中动态构建并持续更新 <strong>“任务与进度台账（Task & Progress Ledger）”</strong>（已收集事实、待查事实、子目标计划），按需调用专业 Agent 或请求人工介入，直到目标完成</td><td><strong>开放式、复杂且没有预定解决方案</strong>的探索性难题（如未知生产事故根因定位、跨系统复杂调研）</td><td>复杂跨系统排障：Manager Agent 建立台账 → 委派文档/日志/外部 API Agent 收集证据 → 评估目标是否满足（否→修正台账重规划；是→输出最终方案）</td><td><strong>MAF 独有核心壁垒</strong>：LangGraph、CrewAI 与 OpenAI Agents SDK 均未内置双环（外层任务台账重规划 + 内层进度台账防死循环）Magentic 引擎</td></tr>
+</tbody></table></div>
+<hr />
+<h2>4. 主流框架深度横评：MAF vs. LangGraph vs. AutoGen vs. Semantic Kernel vs. OpenAI Agents SDK vs. CrewAI</h2>
+<h3>4.1 十二维架构能力对比矩阵</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>架构与工程维度</th><th>Microsoft Agent Framework (MAF v1.0)</th><th>LangGraph (<code>v0.3+</code>)</th><th>AutoGen (<code>v0.4</code>)</th><th>Semantic Kernel (<code>v1.x</code>)</th><th>OpenAI Agents SDK</th><th>CrewAI</th></tr></thead><tbody>
+<tr><td><strong>1. 官方演进定位</strong></td><td><strong>微软下一代统一开源 Agent 引擎（SK + AutoGen 融合继承者）</strong></td><td>LangChain 生态图状态机标准</td><td>MSR 多智能体研究框架（生产能力并入 MAF）</td><td>企业级 AI SDK（多 Agent 能力演进至 MAF）</td><td>OpenAI 轻量级多 Agent 编排 SDK</td><td>面向角色扮演的任务编排框架</td></tr>
+<tr><td><strong>2. 语言与类型生态</strong></td><td><strong>C# (.NET) 与 Python 双一等公民</strong>（基于 <code>Microsoft.Extensions.AI</code>）</td><td>Python & TypeScript</td><td>Python & .NET</td><td>C# (.NET)、Python、Java</td><td>Python & TypeScript</td><td>仅 Python</td></tr>
+<tr><td><strong>3. 5 种编排模式覆盖</strong></td><td><strong>原生内置全部 5 种</strong> (<code>Sequential</code>, <code>Concurrent</code>, <code>Handoff</code>, <code>GroupChat</code>, <code>Magentic</code>)</td><td>需用 <code>StateGraph</code> + <code>Send</code> + <code>Command</code> 手工拼装</td><td>内置对话与 <code>Magentic-One</code>，图编排较弱</td><td>侧重单 Agent 与 <code>Process</code>，多 Agent 迁入 MAF</td><td>仅原生支持 <code>Handoff</code> 与代码串联</td><td>仅支持 <code>Sequential</code> 与 <code>Hierarchical</code></td></tr>
+<tr><td><strong>4. 显式图工作流引擎</strong></td><td><strong>原生内置</strong>（<code>Executors</code> + <code>Edges</code> + 条件路由 + 扇出/扇入 + 超步 Checkpoint）</td><td><strong>原生核心</strong>（Pregel 超步状态图）</td><td>实验性 GraphFlow</td><td><code>Process Framework</code>（事件驱动状态机）</td><td>❌ 无内置图引擎</td><td><code>CrewAI Flows</code>（轻量事件装饰器）</td></tr>
+<tr><td><strong>5. 三层拦截中间件</strong></td><td><strong>原生三层</strong>（<code>AgentRun</code> + <code>FunctionInvocation</code> + <code>IChatClient</code>），零提示词污染</td><td>单层 Runnable/Node 回调</td><td>消息钩子（Intervention Handler）</td><td>原生三层 Filter（MAF 中间件的前身）</td><td>Input/Output Guardrails + RunHooks</td><td>Task 回调钩子</td></tr>
+<tr><td><strong>6. Agent-as-Tool 组合</strong></td><td><strong>原生 <code>.AsAIFunction()</code> (.NET) / <code>.as_tool()</code> (Python)</strong>，保持子 Agent 独立会话与工具</td><td>需将子图编译为 Runnable 并手动映射 State</td><td><code>AgentTool</code> 封装</td><td><code>KernelPlugin</code> 封装</td><td><code>agent.as_tool()</code></td><td>需通过自定义 Tool 包装 Crew</td></tr>
+<tr><td><strong>7. 声明式 Agent (YAML)</strong></td><td><strong>原生支持</strong>（Slide 34 & 51：YAML 定义指令、模型、远端连接与工具级 <code>requires_approval</code>）</td><td>仅 <code>langgraph.json</code> 部署配置</td><td>支持 JSON/YAML 组件导出</td><td>支持 Prompt YAML 模板</td><td>❌ 纯代码定义</td><td>核心采用 <code>agents.yaml</code> + <code>tasks.yaml</code></td></tr>
+<tr><td><strong>8. MCP (Agent↔Tool) 矩阵</strong></td><td><strong>Hosted MCP (<code>mcp.ai.azure.com</code> + OBO) + Local MCP（7 类工具 × 8+ 提供方）+ APIM 零信任网关</strong></td><td>通过 <code>langchain-mcp-adapters</code> 接入本地/远端 MCP</td><td>本地 MCP 扩展</td><td>本地 MCP 插件</td><td>Responses API Hosted MCP + 本地 MCP</td><td>社区 MCP 适配器</td></tr>
+<tr><td><strong>9. A2A v1.0 (Agent↔Agent)</strong></td><td><strong>原生 GA 支持</strong>：JWS 签名 Agent Cards、HTTP/JSON-RPC/gRPC 三绑定、<code>A2AAgent</code> 本地代理</td><td>需自行实现 A2A 端点与卡片校验</td><td>实验性 gRPC 传输</td><td>通过 MAF 升级支持</td><td>❌ 无原生 A2A 支持</td><td>❌ 无原生 A2A 支持</td></tr>
+<tr><td><strong>10. 记忆与会话持久化</strong></td><td><strong><code>AgentSession</code> JSON 序列化（<code>14.2 ms</code>）+ Foundry Memory Service + Redis/Cosmos/AI Search/Mem0</strong></td><td>Checkpointer（Postgres / Redis / SQLite）+ Store</td><td><code>ListMemory</code> / Chroma / Redis</td><td><code>VectorStore</code> 抽象</td><td>Responses API 托管会话 / 本地内存</td><td>短期/长期 RAG 记忆</td></tr>
+<tr><td><strong>11. 企业身份与数据主权</strong></td><td><strong>原生 Microsoft Entra Agent ID、OBO 身份透传（SharePoint/Fabric）、BYO VNet/Cosmos/Storage</strong></td><td>依赖自建或 LangSmith Cloud</td><td>无内置云身份体系</td><td>原生支持 Entra ID</td><td>依赖 OpenAI 平台密钥</td><td>依赖 CrewAI Enterprise</td></tr>
+<tr><td><strong>12. 可观测性与持续评估</strong></td><td><strong>原生 OpenTelemetry 追踪 → Foundry 仪表板 + GA 依据充分性/安全性评估器 + Azure Monitor</strong></td><td>LangSmith（专有为主，支持 OTel 导出）</td><td>OpenTelemetry 追踪</td><td>OpenTelemetry 追踪</td><td>OpenAI Traces 面板</td><td>AgentOps / Arize 第三方集成</td></tr>
+</tbody></table></div>
+<hr />
+<h2>5. 开放协议互操作深潜：MCP v1.0 (Agent ↔ Tool) 与 A2A v1.0 (Agent ↔ Agent) (Slides 12, 15–22, 48, 52)</h2>
+<p><div class="svg-embed"><img src="assets/svg/03-mcp-and-a2a-v1-interoperability.svg" alt="MCP v1.0 与 A2A v1.0 开放协议互操作架构" /><div class="svg-cap">MCP v1.0 与 A2A v1.0 开放协议互操作架构</div></div></p>
+<h3>5.1 关键时间线基线：Assistants API 退役与全面 GA 协议栈 (Slide 12)</h3>
+<p>根据 PPT 第 12 页明确标注的官方生产基线：</p>
+<ul>
+<li><strong>Assistants API 已于 <code>2026-08-26</code> 正式退役（Retired）</strong>。</li>
+<li><strong>Foundry Agent Service 全线正式可用（GA）协议</strong>：</li>
+</ul>
+<ol>
+<li><strong>调用/导入外部能力（Outbound）</strong>：<strong>Responses API</strong>、<strong>A2A 工具（基于协议 1.0）</strong>、<strong>OpenAPI 3.0 工具</strong>、<strong>MCP / Toolbox</strong>。</li>
+<li><strong>对外暴露托管 Agent（Inbound）</strong>：<strong>Hosted Agents</strong> 原生开放 <strong>Responses API</strong>、<strong>A2A v1.0 入站端点</strong> 与 <strong>Activity Protocol</strong>。</li>
+</ol>
+<h3>5.2 MCP v1.0 双模式架构与 7×8+ 工具支持矩阵 (Slides 15, 48, 52)</h3>
+<p>MAF 在 v1.0 中将 <strong>Model Context Protocol (MCP)</strong> 划分为两类互补生产模式：</p>
+<ol>
+<li><strong>Hosted MCP Tools（由 Foundry 托管于 <code>mcp.ai.azure.com</code>）</strong>：</li>
+</ol>
+<ul>
+<li>无需在容器或本地管理 MCP 子进程，直接通过云端连接 <strong>Azure DevOps MCP Server、SharePoint Grounding、Microsoft Fabric Data Agent、模型目录与评估流水线</strong>（Slide 52 & 53）。</li>
+<li>支持 <strong>4 种企业级认证模式</strong>：API Key、<strong>Entra Agent Identity</strong>、<strong>Managed Identity（托管身份）</strong> 与 <strong>OAuth Identity Passthrough（On-Behalf-Of OBO 身份透传，确保 Agent 仅能检索当前登录用户在 SharePoint/Fabric 中有权限访问的数据）</strong>。</li>
+</ul>
+<ol>
+<li><strong>Local MCP Tools（自行托管 + APIM 零信任网关）</strong>：</li>
+</ol>
+<ul>
+<li>通过 <code>stdio</code> 或 <code>Streamable HTTP</code> 连接任意自建或开源 MCP 服务器。</li>
+<li><strong>普适兼容所有提供方（Slide 48）</strong>：只要底层模型支持函数工具（Function Calling），Local MCP 即可在 <strong>Chat Completions、Responses API、Foundry、Claude、Ollama、GitHub Copilot</strong> 等全部 8+ 提供方上无缝运行。</li>
+<li><strong>Azure API Management (APIM) 作为 MCP 网关</strong>：在 Agent 与 MCP 服务器之间强制执行零信任工具级授权、配额熔断与审计日志。</li>
+</ul>
+<h3>5.3 Linux Foundation A2A Protocol v1.0 深度机制 (Slide 52)</h3>
+<p>由 <strong>Microsoft、Google、AWS、Cisco、IBM、Salesforce、SAP、ServiceNow</strong> 共同担任技术指导委员会（TSC）的 <strong>A2A Protocol v1.0</strong> 解决了跨组织、跨云、跨框架的 Agent 协作难题：</p>
+<ul>
+<li><strong>JWS 加密签名的 Agent Cards（信任锚点）</strong>：每个 A2A Agent 通过 JSON 元数据声明其技能列表（Skills）、输入输出模态与认证要求，并使用 <strong>JSON Web Signature (JWS)</strong> 进行数字签名，防止中间人篡改端点或伪造身份（本研究 Benchmark S6 实测 100% 拦截篡改端点的伪造卡片）。</li>
+<li><strong>三种功能等价的正式协议绑定（3 Equivalent Bindings）</strong>：同时规范化了 <strong>HTTP/REST</strong>、<strong>JSON-RPC 2.0</strong> 与 <strong>gRPC</strong>，支持多租户隔离、现代 OAuth 2.0（PKCE、Device Code）以及双向 TLS（<strong>mTLS</strong>）。</li>
+<li><strong><code>MAF A2AAgent</code> 本地代理基元</strong>：开发人员只需传入远端 Agent Card URL，MAF 的 <code>A2AAgent</code> 即可将远端运行在 LangGraph、CrewAI、AWS Bedrock AgentCore、Google Vertex AI 或 Copilot Studio 上的 Agent 映射为本地 <code>AIAgent</code> 实例，直接放进 <code>Sequential</code>、<code>Concurrent</code> 或 <code>Magentic</code> 工作流中协同编排。</li>
+</ul>
+<hr />
+<h2>6. Microsoft Foundry 集成与企业级“Golden Path”参考架构 (Slides 45, 51, 53)</h2>
+<p><div class="svg-embed"><img src="assets/svg/04-foundry-golden-path-5layer-architecture.svg" alt="Microsoft Foundry Golden Path 与五层 MAF 企业集成架构" /><div class="svg-cap">Microsoft Foundry Golden Path 与五层 MAF 企业集成架构</div></div></p>
+<p>PPT 第 45 页与第 53 页定义了企业落地的 <strong>“Golden Path（黄金路径）”</strong> 与 <strong>五大集成层</strong>：</p>
+<ol>
+<li><strong>第一层：客户端连接器（Client Connectors）</strong>：<code>FoundryChatClient</code>、<code>FoundryResponsesClient</code>、<code>AIProjectClient</code> 通过 <code>AzureCliCredential</code> 或 <code>ManagedIdentityCredential</code> 连接 Foundry 项目端点，线协议 100% 兼容 OpenAI SDK。</li>
+<li><strong>第二层：Hosted Agents 与云无关容器运行时</strong>：支持将同一份 MAF 代码部署为 Foundry Agent Service 托管服务、Azure Durable Functions（长周期无服务器状态机）、Azure Container Apps (ACA) 或 AKS，甚至跨云部署至 AWS Bedrock AgentCore 与 Google Vertex AI Agent Engine（Slide 32）。</li>
+<li><strong>第三层：企业知识与工具目录（1,400+ 连接器）</strong>：集成 <strong>Grounding with Bing Search</strong>、<strong>Azure AI Search</strong>、<strong>SharePoint (OBO)</strong>、<strong>Microsoft Fabric Data Agent</strong>、<strong>Code Interpreter 沙盒</strong>、<strong>Azure Functions</strong> 与 <strong>1,400+ Azure Logic Apps 连接器</strong>（涵盖 SAP、ServiceNow、Salesforce、Jira、Teams、Dynamics 365 等，Slide 17）。</li>
+<li><strong>第四层：自有资源（BYO Resources）数据主权与双层记忆（Slide 8, 35, 45, 51）</strong>：</li>
+</ol>
+<ul>
+<li>企业完全掌控自有虚拟网络（BYO VNet），使用自有 <strong>Azure Cosmos DB</strong> 存储会话线程（<code>AgentSession</code>），自有 <strong>Azure Storage</strong> 存储文件，自有 <strong>Azure AI Search</strong> 存储向量索引，自有 <strong>Key Vault</strong> 管理凭据。</li>
+<li><strong>记忆架构</strong>：结合 <code>AgentSession</code> 的 <code>CreateSession() → RunAsync() → SerializeSession() → DeserializeSessionAsync()</code> 生命周期与 <strong>Foundry Memory Service（自动提取 → 整合 → 检索）</strong> 及 Redis/Neo4j/Qdrant/Mem0。</li>
+</ul>
+<ol>
+<li><strong>第五层：GA 可观测性与持续评估（Observability & Evaluation）</strong>：OpenTelemetry 分布式追踪直通 Foundry 仪表板，配合开箱即用的依据充分性（Groundedness）、安全性（Content Safety）评估器与 Azure Monitor 生产告警。</li>
+</ol>
+<hr />
+<h2>7. 本地复现指南 (How to Reproduce the Benchmark Locally)</h2>
+<pre class="code-block"><code># 1. 运行六大框架多 Agent 编排与协议互操作基准测试（生成 report.json 与 4 张 CSV 证据表）
+python benchmark\run_benchmark.py
+
+# 2. 运行全部单元测试（验证三层中间件 PII 脱敏/HITL 挂起、5 种模式顺序翻转不变性、超步 Checkpoint 恢复与 A2A JWS 验签）
+python benchmark\test_maf_benchmark.py
+
+# 3. 校验全部 SVG 矢量架构图 XML 语法
+python -c &quot;import glob, xml.etree.ElementTree as ET; [ET.parse(f) for f in glob.glob(&#x27;assets/svg/*.svg&#x27;)]; print(&#x27;All SVGs valid!&#x27;)&quot;</code></pre>
+  </div>
+</div>
+</body>
+</html>
