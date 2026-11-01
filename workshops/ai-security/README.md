@@ -1,12 +1,14 @@
-# 🛡️ AI Security Lab — 重大安全事件攻击链推演（币安 $6B 级案例）、AI 渗透测试与多智能体红蓝对抗演练台
+# 🛡️ AI Security Lab — 五大 AI 解决方案架构师支柱、币安 $6B 级安全事件推演、6 大 AI 渗透靶场与业务场景 ROI 工作台
 
-[English Version (`README.en.md`)](./README.en.md) | [🎮 在线交互式攻防演练台 (`index.html`)](./index.html) | [📊 7-Card 4:5 基准测试报告 (`benchmark-cards.html`)](./benchmark-cards.html) | [💻 源码仓库 (`turbo998/ai-security-lab`)](https://github.com/turbo998/ai-security-lab)
+[English Version (`README.en.md`)](./README.en.md) | [🎮 四合一交互式攻防演练台 (`index.html`)](./index.html) | [📊 7-Card 4:5 基准测试报告 (`benchmark-cards.html`)](./benchmark-cards.html) | [🖼️ 高清架构与评测一图总结 (`executive-summary-2026-11-01.svg`)](./executive-summary-2026-11-01.svg) | [💻 源码仓库 (`turbo998/ai-security-lab`)](https://github.com/turbo998/ai-security-lab)
+
+![AI 解决方案架构师 · 零信任与智能体攻防一图总结](./executive-summary-2026-11-01.svg)
 
 ---
 
-## 1. 赛道概览 (Executive Overview)
+## 1. 赛道概览与五大支柱 (Executive Overview & 5 Architect Pillars)
 
-**Track 07 · AI Security** 聚焦于智能体系统（Agentic AI）、MCP 工具协议、多智能体 A2A 信任链以及高价值加密资产金库/跨链桥的端到端工程攻防。通过确定性验证器、硬件 TEE 意图等价仲裁与毫秒级图异常熔断器，将红队攻击成功率（ASR）从无保护基线的 **75.0%** 压降至 **0.0%**，同时保持 **93.8% (15/16)** 的良性业务完成率。
+**Track 07 · AI Security** 聚焦于智能体系统（Agentic AI）、MCP 工具协议、多智能体 A2A 信任链、持久记忆库（RAG/Memory）以及高价值加密资产金库/跨链桥的端到端工程攻防。通过 **五道零信任确定性门禁（G1 Spotlighting 污点隔离、G2 MCP Schema/Request-Hash 钉扎、G3 跨主体委托链与 `untrusted-write` 持久禁写锁、G4 Air-Gapped TEE 原始 Calldata 独立解码与 FIDO2 Epoch 签批、G5 14ms 链下观察哨流速熔断）**，将 20 个红蓝场景（**105 项 Pytest 断言 100% 通过**）的攻击成功率（ASR）从 **75.0%** 压降至 **0.0%**，同时保持 **100.0%** 良性业务完成率与 **0.0%** 误报率。
 
 | 评测维度 | 无保护基线 (Baseline / Relaxed) | 四层零信任加固 (4-Layer Hardened) | 架构提升 |
 | :--- | :---: | :---: | :--- |
