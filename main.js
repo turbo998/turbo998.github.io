@@ -109,7 +109,7 @@
     "agent-framework-research": "主流 Coding Agent 与多智能体框架源码级横向对标：深度拆解 pi、oh-my-pi、Claude Code、Codex CLI、OpenClaw、Hermes 与 WorkBuddy。",
     "agent-governance-economics-research": "企业级智能体治理与单位经济学研究：围绕「单次采纳任务成本 (Cost per Accepted Task)」建立模型路由与预算熔断框架。",
     "ai-security-lab": "AI 安全与多智能体红蓝对抗实验室：涵盖币安 $6B 级攻击链推演与零信任熔断模拟、间接提示词注入、MCP 工具投毒、A2A 金库越权与 7-Card 基准报告。",
-    "voice-agent-lab": "企业级实时语音智能体与 Azure Voice Live 四通道参考架构：内置 4分20秒实录视频、6分钟合作伙伴手册与双 7-Card 评测报告。",
+    "voice-agent-lab": "企业级实时语音智能体与 Azure Voice Live 四通道参考架构（Stage 356 · P705/P706 · 359维 · 715护栏）：内置 4分20秒实录视频、6分钟合作伙伴手册与双 7-Card 评测报告。",
     "azure-speech-diarization-poc": "Azure Speech 快速转写说话人分离与双声道归属 PoC：修复 SDK 1.0.0 diarization.enabled 缺陷（0%→100%），RTF=0.0572（17.5倍实时速），双声道 100% 一致。",
     "gpt-live-1-demo": "Azure OpenAI gpt-live-1 与 gpt-4.1-mini 实时语音演示工作台、4-Tab 培训门户、6分钟售前演示手册与 4分20秒高清实录视频。",
     "contact-center-on-gpt-realtime": "全球多语言智能呼叫中心参考设计，串联三个 Microsoft Foundry 实时模型，实现 24×7 接待与实时坐席辅助。",
