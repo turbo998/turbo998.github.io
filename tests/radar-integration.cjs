@@ -40,7 +40,7 @@ async function main() {
   report.preservation=validate();
   const browser=await puppeteer.launch({headless:'shell',pipe:true});
   try {
-    for(const file of ['workshops/github-trending-radar/report.json','workshops/github-trending-radar/daily/2026-11-01.en.md','workshops/github-trending-radar/daily/2026-11-01.md','assets/github-ai-radar-2026-11-01.svg']) {
+    for(const file of ['workshops/github-trending-radar/report.json','workshops/github-trending-radar/daily/2026-11-02.en.md','workshops/github-trending-radar/daily/2026-11-02.md','assets/github-ai-radar-2026-11-02.svg','workshops/github-trending-radar/daily/2026-11-01.en.md','workshops/github-trending-radar/daily/2026-11-01.md','assets/github-ai-radar-2026-11-01.svg']) {
       const response=await fetch(`${base}/${file}`);
       assert.equal(response.status,200,file+': merged artifact');
       const actual=await response.text(),source=sourceFor(file);
@@ -87,7 +87,7 @@ async function main() {
           if(!dedicated){
             assert.equal(state.theme,'dark');assert.equal(state.background,'rgb(8, 13, 27)');assert.equal(state.text,'rgb(238, 243, 255)');
             assert.equal(state.weeklyCount,3,file+': weekly entries');
-            assert.deepEqual(state.weeklyRepos,['https://github.com/cloudflare/security-audit-skill','https://github.com/JetBrains/thinkrail','https://github.com/qybaihe/bla']);
+            assert.deepEqual(state.weeklyRepos,['https://github.com/morluto/rea','https://github.com/K-Dense-AI/scientific-agent-skills','https://github.com/heygen-com/hyperframes']);
             assert.equal(state.drawerTriggers,15,file+': detail triggers');
             assert.equal(state.drawerClosed,true,file+': closed drawer default');
             if(canonicalWeekly)assert.equal(state.weeklyText,canonicalWeekly,file+': weekly JS/no-JS parity');

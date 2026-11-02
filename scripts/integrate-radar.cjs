@@ -7,12 +7,15 @@ const {execFileSync} = require('node:child_process');
 const vm = require('node:vm');
 const crypto = require('node:crypto');
 const root = path.resolve(__dirname, '..');
-const baseline = '3bdac3d4db9a0cec264ee42b59bbef8a7f87364b';
+const baseline = 'd776911';
 const files = ['github-radar.html', 'zh-github-radar.html', 'workshops/github-trending-radar/cards.en.html', 'workshops/github-trending-radar/cards.html'];
 const hash = text => crypto.createHash('sha256').update(text).digest('hex');
-const sourceFor = file => execFileSync('git', ['show', `${baseline}:${file}`], {cwd:root, encoding:'utf8', maxBuffer:4*1024*1024});
 const block = (name, text) => `<!-- radar-${name}:start -->${text}<!-- radar-${name}:end -->`;
 const strip = html => html.replace(/<!-- radar-([\w-]+):start -->[\s\S]*?<!-- radar-\1:end -->/g, '');
+const sourceFor = file => {
+  const disk = execFileSync('git', ['show', `${baseline}:${file}`], {cwd: root, encoding: 'utf8'});
+  return files.includes(file) ? strip(disk) : disk;
+};
 const runtime = html => [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].at(-1)[1];
 const bodyMain = html => html.match(/<main[^>]*>([\s\S]*?)<\/main>/)[1];
 const readingCSS = `
@@ -41,15 +44,21 @@ function generate(file, source = sourceFor(file)) {
     const elements = new Map();
     const document = {addEventListener(){},getElementById(id) {if(!elements.has(id)) elements.set(id,{innerHTML:'',querySelectorAll:()=>[],addEventListener(){}});return elements.get(id);}};
     vm.runInNewContext(runtime(source), {document}, {timeout:1000});
-    html = source.replace('data-builder-style="precision"','data-reading-shell="document" data-theme="dark"')
-      .replace(/<script>[\s\S]*?<\/script>/,'<script src="assets/reading-shell.js?v=aurora-radar-v1"></script>')
-      .replace(/<link rel="stylesheet" href="(?:style\.css|site-structure\.css[^\"]*)" \/>\n/g,'')
-      .replace(/<script src="(?:theme-switcher\.js|site-structure\.js[^\"]*)" defer><\/script>\n/g,'')
-      .replace('</head>', '<link rel="stylesheet" href="assets/reading-shell.css?v=aurora-radar-v1" />'+block('reading-style','<style>'+readingCSS+'</style>')+'</head>')
-      .replace(/<nav class="nav">[\s\S]*?<main class="wrap">/,header(en,file)+`<main class="reading-document" id="reading-main">`+block('reading-context',`<a class="reading-context" href="studio/${en?'':'zh-'}index.html">← Studio</a><a class="reading-context" href="studio/${en?'':'zh-'}benchmarks.html">${en?'Benchmarks':'基准评测'}</a><noscript><p>${en?'Canonical research is shown below. Enable JavaScript to adjust filters and weights; language and report links work without it.':'以下展示原始研究内容。启用 JavaScript 可调整筛选与权重；语言切换与报告链接无需脚本。'}</p></noscript>`));
+    if (source.includes('data-reading-shell="document"')) {
+      html = strip(source)
+        .replace('<link rel="stylesheet" href="assets/reading-shell.css?v=aurora-radar-v1" /></head>', '<link rel="stylesheet" href="assets/reading-shell.css?v=aurora-radar-v1" />'+block('reading-style','<style>'+readingCSS+'</style>')+'</head>')
+        .replace(/<a class="reading-skip"[\s\S]*?<main class="reading-document" id="reading-main">/, header(en,file)+`<main class="reading-document" id="reading-main">`+block('reading-context',`<a class="reading-context" href="studio/${en?'':'zh-'}index.html">← Studio</a><a class="reading-context" href="studio/${en?'':'zh-'}benchmarks.html">${en?'Benchmarks':'基准评测'}</a><noscript><p>${en?'Canonical research is shown below. Enable JavaScript to adjust filters and weights; language and report links work without it.':'以下展示原始研究内容。启用 JavaScript 可调整筛选与权重；语言切换与报告链接无需脚本。'}</p></noscript>`));
+    } else {
+      html = source.replace('data-builder-style="precision"','data-reading-shell="document" data-theme="dark"')
+        .replace(/<script>[\s\S]*?<\/script>/,'<script src="assets/reading-shell.js?v=aurora-radar-v1"></script>')
+        .replace(/<link rel="stylesheet" href="(?:style\.css|site-structure\.css[^\"]*)" \/>\n/g,'')
+        .replace(/<script src="(?:theme-switcher\.js|site-structure\.js[^\"]*)" defer><\/script>\n/g,'')
+        .replace('</head>', '<link rel="stylesheet" href="assets/reading-shell.css?v=aurora-radar-v1" />'+block('reading-style','<style>'+readingCSS+'</style>')+'</head>')
+        .replace(/<nav class="nav">[\s\S]*?<main class="wrap">/,header(en,file)+`<main class="reading-document" id="reading-main">`+block('reading-context',`<a class="reading-context" href="studio/${en?'':'zh-'}index.html">← Studio</a><a class="reading-context" href="studio/${en?'':'zh-'}benchmarks.html">${en?'Benchmarks':'基准评测'}</a><noscript><p>${en?'Canonical research is shown below. Enable JavaScript to adjust filters and weights; language and report links work without it.':'以下展示原始研究内容。启用 JavaScript 可调整筛选与权重；语言切换与报告链接无需脚本。'}</p></noscript>`));
+    }
     for(const id of ['pipeline-rail','pipe-inspector','topic-tuner-list','repo-cards-container']) {
       assert.ok(elements.get(id).innerHTML,id);
-      html = html.replace(new RegExp(`(<div[^>]* id="${id}">)</div>`),`$1${block('prerender-'+id,elements.get(id).innerHTML.replace(/[\t ]+$/gm,''))}</div>`);
+      html = html.replace(new RegExp(`(<div[^>]* id="${id}">)</div>`),(_,open)=>`${open}${block('prerender-'+id,elements.get(id).innerHTML.replace(/[\t ]+$/gm,''))}</div>`);
     }
     assert.equal(bodyMain(strip(html)),bodyMain(source),'All substantive main markup preserved');
     assert.equal(runtime(html),runtime(source),'All research data and interactions preserved verbatim');

@@ -68,9 +68,9 @@ const radarPages = ['github-radar.html','zh-github-radar.html','workshops/github
   path:file, role:file.includes('/cards')?'report':'article', title:file.includes('/cards')?'GitHub AI Radar · Original report':'GitHub AI Radar · Hype / Facts / Signal',
   tracks:['benchmarks'], language:{declared:file.startsWith('zh-')||file.endsWith('/cards.html')?'zh-CN':'en'}, supplemental:true
 }));
-const infraPages = ['benchmark-cards.en.html','workbench-cycle-377.html'].map(name=>({path:'workshops/azure-agent-infra/'+name,role:name.startsWith('benchmark')?'report':'demo',title:'AI Infra · Cycle #377 · '+name,tracks:['infra'],language:{declared:name.includes('.en.')?'en':'zh-CN'},supplemental:true}));
-const dataLabPages = ['index.html','live-demo.html','live-demo.en.html','benchmark-cards.html','benchmark-cards.en.html'].map(name=>({path:'workshops/data-lab/'+name,role:name.startsWith('benchmark')?'report':'demo',title:'Data Lab · Fabric IQ / four-cloud workbench · '+name,tracks:['infra'],language:{declared:name.includes('.en.')?'en':'zh-CN'},supplemental:true}));
-const phase179Pages = ['ai-infra-architect-workbench.html','ai-infra-phase179-benchmark-cards.html'].map(name=>({path:'workshops/benchmarks/'+name,role:name.includes('cards')?'report':'demo',title:'AI Infra · Phase 179 · '+name,tracks:['infra'],language:{declared:'und'},supplemental:true}));
+const infraPages = ['benchmark-cards.en.html','workbench-cycle-377.html','workbench-cycle-378.html'].map(name=>({path:'workshops/azure-agent-infra/'+name,role:name.startsWith('benchmark')?'report':'demo',title:'AI Infra · '+(name.includes('378')?'Cycle #378':'Cycle #377')+' · '+name,tracks:['infra'],language:{declared:name.includes('.en.')||name.includes('378')?'en':'zh-CN'},supplemental:true}));
+const dataLabPages = ['index.html','live-demo.html','live-demo.en.html','benchmark-cards.html','benchmark-cards.en.html'].map(name=>({path:'workshops/data-lab/'+name,role:name.startsWith('benchmark')?'report':'demo',title:'Data Lab · Fabric IQ / four-cloud workbench · '+name,tracks:['data-infra'],language:{declared:name.includes('.en.')?'en':'zh-CN'},supplemental:true}));
+const phase179Pages = ['ai-infra-architect-workbench.html','ai-infra-phase179-benchmark-cards.html','ai-infra-phase180-benchmark-cards.html'].map(name=>({path:'workshops/benchmarks/'+name,role:name.includes('cards')?'report':'demo',title:'AI Infra · '+(name.includes('phase180')?'Phase 180':'Phase 179')+' · '+name,tracks:['infra'],language:{declared:'und'},supplemental:true}));
 const commerceTrendsPages = ['stripe-collison-7-trends.html','stripe-collison-7-trends.en.html'].map(name=>({path:'workshops/agentic-commerce/'+name,role:'article',title:'Stripe / Collison · Seven Agentic Commerce Trends',tracks:['commerce'],language:{declared:name.includes('.en.')?'en':'zh-CN'},supplemental:true}));
 const camera4dPages = ['animation','generative-visual-lab'].flatMap(dir=>[
   {path:`${dir}/demos/camera-4d-director/index.html`,role:'demo',title:'4D Gaussian & Plücker Camera Director Studio',tracks:['animation'],language:{declared:'zh-CN'},supplemental:true},
@@ -78,7 +78,13 @@ const camera4dPages = ['animation','generative-visual-lab'].flatMap(dir=>[
   {path:`${dir}/research/controllable-4d-video-camera-study.html`,role:'article',title:'可控 4D 高斯溅射与 Plücker 相机控制视频导演架构研究',tracks:['animation'],language:{declared:'zh-CN'},supplemental:true},
   {path:`${dir}/research/controllable-4d-video-camera-study.en.html`,role:'article',title:'Controllable 4D Gaussian Splatting & Plücker Camera-Control Video Architecture Study',tracks:['animation'],language:{declared:'en'},supplemental:true}
 ]);
-const archivePages = [...inventory.content, ...translations, ...webiqPages, ...radarPages, ...infraPages, ...dataLabPages, ...phase179Pages, ...commerceTrendsPages, ...camera4dPages].map(page => ({...page, tracks:[classifyPage(page), ...(page.tracks || []).filter(track => track !== classifyPage(page) && track !== 'infra')]}));
+const audiovisualFoleyPages = ['animation','generative-visual-lab'].flatMap(dir=>[
+  {path:`${dir}/demos/audiovisual-foley-studio/index.html`,role:'demo',title:'Native Audio-Visual Joint DiT & FramePack Foley Studio',tracks:['animation'],language:{declared:'zh-CN'},supplemental:true},
+  {path:`${dir}/demos/audiovisual-foley-studio/test-report-cards.html`,role:'report',title:'Native Audio-Visual Joint DiT & FramePack Foley · 7-Card Report',tracks:['animation'],language:{declared:'zh-CN'},supplemental:true},
+  {path:`${dir}/research/audiovisual-foley-framepack-study.html`,role:'article',title:'原生音画联合扩散与 FramePack 恒定上下文长时序物理拟音架构研究',tracks:['animation'],language:{declared:'zh-CN'},supplemental:true},
+  {path:`${dir}/research/audiovisual-foley-framepack-study.en.html`,role:'article',title:'Native Audio-Visual Joint Diffusion & FramePack Constant-Context Foley Studio Architecture Study',tracks:['animation'],language:{declared:'en'},supplemental:true}
+]);
+const archivePages = [...inventory.content, ...translations, ...webiqPages, ...radarPages, ...infraPages, ...dataLabPages, ...phase179Pages, ...commerceTrendsPages, ...camera4dPages, ...audiovisualFoleyPages].map(page => ({...page, tracks:[classifyPage(page), ...(page.tracks || []).filter(track => track !== classifyPage(page) && track !== 'infra')]}));
 function archiveNote(page, zh) {
   const t = (en, cn) => zh ? cn : en;
   const record = readingByPath.get(page.path);

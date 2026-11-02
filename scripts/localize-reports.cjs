@@ -13,7 +13,8 @@ const bases = [...new Set(sourcePaths.map(p => p.replace(/\.en\.html$/, '.html')
 const manifest = bases.map(source => ({ source, en: source.replace(/\.html$/, '.en.html'), zh: source.replace(/\.html$/, '.zh-CN.html'), kind: 'report' }));
 const sourceCache = new Map();
 function readSource(file) {
-  if (!sourceCache.has(file)) sourceCache.set(file, execFileSync('git', ['show', `${baseline}:${file}`], { cwd: root, maxBuffer: 20 * 1024 * 1024 }).toString('utf8'));
+  const ref = file.startsWith('workshops/github-trending-radar/') ? 'd776911' : baseline;
+  if (!sourceCache.has(file)) sourceCache.set(file, execFileSync('git', ['show', `${ref}:${file}`], { cwd: root, maxBuffer: 20 * 1024 * 1024 }).toString('utf8'));
   return sourceCache.get(file);
 }
 function cleanPerimeter(html) {

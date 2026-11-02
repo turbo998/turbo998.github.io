@@ -78,7 +78,7 @@ async function main() {
             errors.length = 0;
             await page.setViewport({width,height:900});
             try {
-              const response=await page.goto(`${base}/${file}`,{waitUntil:'domcontentloaded',timeout:30000});
+              const response=await page.goto(`${base}/${file}`,{waitUntil:file.includes('data-lab/live-demo')?'networkidle0':'domcontentloaded',timeout:30000});
               await new Promise(resolve=>setTimeout(resolve,250));
               await page.evaluate(()=>scrollTo(0,600));
               const state=await page.evaluate(allowed=>({

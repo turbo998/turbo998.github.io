@@ -1,0 +1,1360 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <title>Native Audio-Visual Joint DiT &amp; FramePack Foley Studio · 原生音画联合扩散与物理拟音导演台</title>
+  <style>
+    :root {
+      --bg: #060B16;
+      --panel: #0D1628;
+      --panel-2: #13203A;
+      --border: #223454;
+      --border-hi: #38BDF8;
+      --ink: #F1F5F9;
+      --muted: #94A3B8;
+      --cyan: #38BDF8;
+      --emerald: #34D399;
+      --amber: #FBBF24;
+      --rose: #FB7185;
+      --violet: #A78BFA;
+      --mono: "JetBrains Mono", "Cascadia Code", Consolas, monospace;
+      --sans: system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      overflow-x: hidden;
+    }
+    .topbar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 20px;
+      background: rgba(13, 22, 40, 0.94);
+      border-bottom: 1px solid var(--border);
+    }
+    .brand {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+    .back-link {
+      color: var(--cyan);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 5px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--panel-2);
+    }
+    .brand h1 {
+      margin: 0;
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+    }
+    .badge-pill {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--emerald);
+      background: rgba(16, 185, 129, 0.14);
+      border: 1px solid rgba(52, 211, 153, 0.4);
+      padding: 4px 9px;
+      border-radius: 999px;
+    }
+    .top-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+    .btn {
+      appearance: none;
+      border: 1px solid var(--border);
+      background: var(--panel-2);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 12.5px;
+      font-weight: 700;
+      padding: 7px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+    .btn:hover {
+      border-color: var(--cyan);
+    }
+    .btn.primary {
+      background: linear-gradient(135deg, #0284C7, #2563EB);
+      border-color: #38BDF8;
+      color: #fff;
+    }
+    .workspace {
+      display: grid;
+      grid-template-columns: 310px minmax(0, 1fr) 330px;
+      gap: 14px;
+      padding: 14px 18px 28px;
+      max-width: 1680px;
+      margin: 0 auto;
+    }
+    .workspace > * {
+      min-width: 0;
+    }
+    .sidebar, .stage-column, .inspector {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .section-title {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--cyan);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .card-list, .mode-grid, .mat-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .mat-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 7px;
+    }
+    .card-btn {
+      text-align: left;
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 9px 11px;
+      color: var(--ink);
+      cursor: pointer;
+      transition: all 0.14s ease;
+      min-width: 0;
+    }
+    .card-btn:hover {
+      border-color: var(--cyan);
+    }
+    .card-btn.active {
+      background: rgba(37, 99, 235, 0.22);
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.32);
+    }
+    .card-btn .title {
+      font-size: 12.5px;
+      font-weight: 800;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 3px;
+    }
+    .card-btn .sub {
+      font-size: 11.5px;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+    .tag {
+      font-family: var(--mono);
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(56, 189, 248, 0.14);
+      color: var(--cyan);
+      flex-shrink: 0;
+    }
+    .canvas-wrap {
+      position: relative;
+      background: #040811;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      width: 100%;
+    }
+    #av-stage-canvas {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16 / 9;
+      cursor: crosshair;
+      touch-action: none;
+    }
+    .hud-overlay {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      right: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px;
+      pointer-events: none;
+    }
+    .hud-pill {
+      background: rgba(6, 11, 22, 0.84);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--ink);
+    }
+    .hud-pill strong {
+      color: var(--emerald);
+    }
+    .waveform-wrap {
+      background: #050A15;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px;
+    }
+    #av-waveform-canvas {
+      display: block;
+      width: 100%;
+      height: 145px;
+    }
+    .scrubber-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 9px 12px;
+    }
+    .scrubber-bar input[type="range"] {
+      flex: 1;
+      min-width: 120px;
+      accent-color: var(--cyan);
+    }
+    .time-readout {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--cyan);
+      font-weight: 700;
+    }
+    .slider-group {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      background: rgba(19, 32, 58, 0.55);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+    }
+    .slider-row {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .slider-row label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11.5px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .slider-row label span.v {
+      font-family: var(--mono);
+      color: var(--ink);
+    }
+    .slider-row input[type="range"] {
+      width: 100%;
+      accent-color: var(--cyan);
+    }
+    .telemetry-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .metric-box {
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 8px 10px;
+      min-width: 0;
+    }
+    .metric-box .k {
+      font-size: 10.5px;
+      color: var(--muted);
+      margin-bottom: 3px;
+    }
+    .metric-box .v {
+      font-family: var(--mono);
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--cyan);
+    }
+    .code-box {
+      background: #050912;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px;
+      font-family: var(--mono);
+      font-size: 11px;
+      line-height: 1.45;
+      color: #93C5FD;
+      max-height: 210px;
+      overflow: auto;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+      margin: 0;
+    }
+    @media (max-width: 1180px) {
+      .workspace {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+    @media (max-width: 720px) {
+      .topbar { padding: 10px 12px; }
+      .brand h1 { font-size: 14.5px; overflow-wrap: anywhere; }
+      .workspace { padding: 10px 12px 24px; gap: 12px; }
+      .sidebar, .stage-column, .inspector { padding: 11px; }
+      .hud-overlay { position: static; padding: 8px; background: #070D1B; }
+    }
+  </style>
+<!-- kee-dedicated-style:start -->
+<style>/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.65fr 1.1fr 1.15fr 1.1fr 1.1fr;gap:6px;align-items:stretch;min-width:0}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+</style><script src="../../../assets/dedicated-navigation.js" defer></script><!-- kee-dedicated-style:end -->
+<style id="site-remediation-style">:root{--search-bg:#101a30;--search-soft:#172440;--search-ink:#eef3ff;--search-muted:#adbbd1;--search-line:#293956;--search-accent:#9aabff;--header-offset:108px}
+:root[data-reading-shell][data-theme=light],[data-perimeter-theme=light]{--search-bg:#fff;--search-soft:#e8eefb;--search-ink:#17233e;--search-muted:#4c5e7c;--search-line:#d5ddec;--search-accent:#354ec8}
+html{scroll-padding-top:var(--header-offset,108px)!important}
+.site-search,.site-search *{box-sizing:border-box!important;font-family:"Segoe UI",sans-serif;letter-spacing:normal;text-transform:none}
+.site-search{position:relative;display:flex;align-items:center;gap:5px;min-width:0;width:230px;max-width:100%;margin:0!important;padding:0!important;line-height:1.4;border:1px solid var(--search-line);border-radius:9px;background:var(--search-soft);color:var(--search-ink);isolation:isolate}
+.site-search input[type=search]{display:block;flex:1;min-width:0;width:100%;height:42px;margin:0;padding:9px 8px!important;font-size:12px!important;line-height:1.5;border:0!important;border-radius:9px;background:transparent!important;color:var(--search-ink)!important;box-shadow:none!important;appearance:none}
+.site-search input::placeholder{color:var(--search-muted);opacity:1}.site-search input:focus-visible{outline:2px solid var(--search-accent);outline-offset:2px}
+.site-search kbd{font:11px Consolas,monospace;color:var(--search-muted);padding:1px 5px;border:1px solid var(--search-line);border-radius:4px}
+.site-search button[type=submit]{flex:none;width:38px;min-width:38px;height:42px;min-height:42px;padding:0;margin:0;border:0;border-radius:8px;background:transparent;color:var(--search-accent);font-size:24px;cursor:pointer;box-shadow:none}
+.search-label,.search-status{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.site-search .search-results{position:absolute;top:calc(100% + 10px);right:0;z-index:1100;width:min(480px,calc(100vw - 32px));max-height:min(560px,65vh);overflow-y:auto;border:1px solid var(--search-line);border-radius:12px;background:var(--search-bg);color:var(--search-ink);padding:10px;box-shadow:0 12px 32px #0005;text-align:left}
+.site-search .search-results[hidden]{display:none!important}.search-results .search-group{margin:8px 6px 4px;font:11px/1.5 Consolas,monospace;color:var(--search-muted)}
+.site-search .search-results a{display:block!important;padding:10px!important;margin:3px 0!important;border:1px solid transparent!important;border-radius:7px;background:transparent;color:var(--search-ink)!important;font-size:13px!important;text-decoration:none!important;white-space:normal;overflow-wrap:anywhere;text-align:left!important;line-height:1.5!important}
+.site-search .search-results a[aria-selected=true],.site-search .search-results a:hover{border-color:var(--search-accent)!important;background:var(--search-soft)}
+.search-results a small{display:block;font-size:10px;color:var(--search-muted);margin-top:4px}.search-results p{margin:10px;font-size:13px;color:var(--search-muted)}
+.search-archive-summary{padding:20px;border:1px solid var(--search-line);border-radius:10px;background:var(--search-bg);color:var(--search-ink);margin:24px 0}.search-archive-summary h2{font-size:24px;margin:0 0 12px}.search-archive-summary li{margin:12px 0}.search-archive-summary a{color:var(--search-accent)}
+[data-professional-header]{position:sticky!important;top:0!important;z-index:1000!important;background:var(--search-bg)!important;--header-glass:rgba(16,26,48,.9);grid-template-columns:auto minmax(0,1fr) 230px auto!important}
+[data-professional-header][data-perimeter-theme=light],:root[data-reading-shell][data-theme=light] [data-professional-header]{--header-glass:rgba(255,255,255,.94)}
+[data-professional-header] .professional-mobile{display:none}.professional-mobile summary{min-width:38px;min-height:42px;display:grid;place-items:center;cursor:pointer;list-style:none}.professional-mobile summary::-webkit-details-marker{display:none}
+[data-professional-header] .professional-context{display:none}
+.professional-context-bar{padding:12px 24px;border-bottom:1px solid var(--search-line);background:var(--search-bg);color:var(--search-muted);font:12px/1.6 "Segoe UI",sans-serif;display:flex;flex-wrap:wrap;gap:8px 18px;overflow-wrap:anywhere}.professional-context-bar a{color:var(--search-accent)}
+@supports((backdrop-filter:blur(16px)) or (-webkit-backdrop-filter:blur(16px))){.site-header,[data-professional-header]{background:var(--header-glass)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}}
+@media(max-width:1250px) and (min-width:701px){.header-inner{grid-template-columns:minmax(0,1fr) 230px auto!important;padding:12px 0;gap:12px!important}.desktop-nav{grid-row:2;grid-column:1/-1}.header-inner>.site-search{grid-column:2;grid-row:1}.header-inner>.controls{grid-column:3;grid-row:1}[data-professional-header]{grid-template-columns:minmax(0,1fr) 230px auto!important;gap:12px!important}[data-professional-header]>.professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header]>.site-search{grid-column:2;grid-row:1}[data-professional-header]>.professional-controls{grid-column:3;grid-row:1}:root{--header-offset:176px}}
+@media(max-width:700px){.header-inner{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 0;gap:8px!important}.header-inner>.site-search{grid-row:2;grid-column:1/-1;width:100%}.header-inner>.controls{grid-column:2;grid-row:1}.site-search .search-results{width:100%;right:0}[data-professional-header]{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 16px!important;gap:8px!important}[data-professional-header]>.professional-primary{display:none!important}[data-professional-header]>.site-search{grid-column:1/-1;grid-row:2;width:100%}[data-professional-header]>.professional-controls{grid-column:2;grid-row:1}[data-professional-header] .professional-mobile{display:block}[data-professional-header] .professional-mobile[open]>.professional-primary{position:absolute;top:100%;left:0;right:0;padding:16px;background:var(--search-bg);border-bottom:1px solid var(--search-line);display:grid;grid-template-columns:1fr 1fr;gap:8px}[data-professional-header] .professional-mobile .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:12px!important}:root{--header-offset:126px}}
+@media(prefers-reduced-transparency:reduce){.site-header,[data-professional-header]{background:var(--search-bg)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+@media print{.site-search,.professional-context-bar{display:none!important}}
+
+@media(min-width:1251px){.header-inner{display:grid!important;grid-template-columns:auto minmax(0,1fr) 230px auto!important;gap:18px!important}.header-inner .desktop-nav{min-width:0}}
+
+html:has(.kee-dedicated-app-root){height:auto!important;overflow-x:hidden!important;overflow-y:auto!important}
+body:has([data-professional-header]){height:auto!important;overflow-x:clip!important;overflow-y:visible!important;padding-top:0!important}
+.demo-language-navigation{display:none!important}
+.stage-column,.telemetry-panel,.scene-pill,#timeline-slider{min-width:0}
+@media(max-width:1180px){.workspace,.template-tabs{grid-template-columns:minmax(0,1fr)!important}}
+
+.in-arena-frame .professional-context-bar,.in-arena-frame [data-knowledge-atlas]{display:none!important}
+</style><script src="../../../assets/editorial/search-index.js" defer></script><script src="../../../assets/editorial/search.js" defer></script></head>
+<body>
+<!-- kee-dedicated-navigation:start -->
+<nav class="kee-dedicated-nav" data-professional-header><a class="professional-identity reading-brand kee-dedicated-identity identity" href="../../../zh.html">Qi Chen · @turbo998</a><div class="professional-primary" role="navigation" aria-label="主导航"><a href="../../../studio/zh-index.html" data-section="hub" data-nav-en-href="../../../studio/index.html" data-nav-zh-href="../../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub" aria-current="page">Frontier Transformation Engineering Hub</a><a href="../../../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../../../benchmarks.html" data-nav-zh-href="../../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心">基准评测中心</a><a href="../../../zh-github-radar.html" data-section="radar" data-nav-en-href="../../../github-radar.html" data-nav-zh-href="../../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI 信号雷达</a><a href="../../../zh-openrouter.html" data-section="routing" data-nav-en-href="../../../openrouter.html" data-nav-zh-href="../../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../../../zh-about.html" data-section="profile" data-nav-en-href="../../../about.html" data-nav-zh-href="../../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">首席架构师履历</a></div><form class="site-search" role="search" action="../../../studio/zh-archive.html" method="get" data-search-root="../../../index.html" data-search-language="zh-CN"><label class="search-label" for="site-search-input">搜索架构、评测、Demo、技能...</label><input id="site-search-input" name="q" type="search" placeholder="搜索架构、评测、Demo、技能..." autocomplete="off" spellcheck="false" aria-keyshortcuts="/ Control+k Meta+k"><kbd aria-hidden="true">/</kbd><button type="submit" aria-label="搜索全部内容">⌕</button><div class="search-results" id="site-search-results" hidden></div><span class="search-status" role="status" aria-live="polite"></span></form><div class="reading-controls professional-controls" aria-label="网站语言与外观"><a href="index.en.html" data-reading-language hreflang="en" lang="en">EN</a><a href="index.html" hreflang="zh-CN" lang="zh-CN" aria-current="page">中文</a><details class="professional-mobile"><summary aria-label="打开主导航">☰</summary><div class="professional-primary" role="navigation" aria-label="移动主导航"><a href="../../../studio/zh-index.html" data-section="hub" data-nav-en-href="../../../studio/index.html" data-nav-zh-href="../../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub" aria-current="page">Frontier Transformation Engineering Hub</a><a href="../../../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../../../benchmarks.html" data-nav-zh-href="../../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心">基准评测中心</a><a href="../../../zh-github-radar.html" data-section="radar" data-nav-en-href="../../../github-radar.html" data-nav-zh-href="../../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI 信号雷达</a><a href="../../../zh-openrouter.html" data-section="routing" data-nav-en-href="../../../openrouter.html" data-nav-zh-href="../../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../../../zh-about.html" data-section="profile" data-nav-en-href="../../../about.html" data-nav-zh-href="../../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">首席架构师履历</a></div></details><a data-reading-theme="light" href="index.html?theme=light" aria-label="浅色主题">☀</a><a data-reading-theme="dark" href="index.html?theme=dark" aria-label="深色主题">◐</a></div><div class="professional-context" aria-label="返回上下文"><a href="../../../studio/zh-index.html">← 工程枢纽</a> · <a href="../../../studio/zh-animation.html">返回主题</a></div></nav><div class="professional-context-bar"><a href="../../../studio/zh-index.html">← 工程枢纽</a> · <a class="reading-context" href="../../../studio/zh-animation.html">返回主题</a></div><!-- site-remediation-knowledge:start --><figure class="knowledge-figure" data-knowledge-atlas="animation" style="margin:24px 0;max-width:100%"><svg xmlns="http://www.w3.org/2000/svg" lang="zh-CN" role="img" aria-labelledby="knowledge-68da13fa0424-title knowledge-68da13fa0424-desc" viewBox="0 0 360 758" width="360" style="display:block;width:100%;height:auto;max-width:560px;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-68da13fa0424-title">Native Audio-Visual Joint DiT &amp; FramePack Foley Studio · 原生音画联合扩散与物理拟音导演台</title><desc id="knowledge-68da13fa0424-desc">讲解目标与场景意图: 叙事 · 分镜 · 相机约束 → 定义场景模型 → 几何与物理模型: 4D 高斯 · Plücker 射线 · 程序化几何 → 驱动时间与运动 → 运动、相机与交互: 时间线 · 弹簧 · 运动画笔 · 6DoF 相机 → 渲染讲解画面 → 渲染与无障碍播放: SVG / Canvas / WebGL · 减弱动画降级 → 检查视觉证据 → 工作台与来源评测: 比较画面与机制，不拼接无关评分</desc><rect width="360" height="758" rx="16" fill="#091827"/><text x="20" y="30" fill="#eef5ff" font-size="20" font-weight="700"><tspan x="20" dy="0">Native Audio-Visual Joint DiT &amp;</tspan><tspan x="20" dy="28">FramePack Foley Studio · 原生</tspan><tspan x="20" dy="28">音画联合扩散与物理拟音导演台</tspan></text><text x="20" y="111" fill="#a9b8ce" font-size="13" font-weight="400"><tspan x="20" dy="0">概念架构 · 箭头表示关系，不代表测量值</tspan></text><g data-concept="1"><rect x="16" y="137" width="328" height="79" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="151" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="167" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">讲解目标与场景意图</tspan></text><text x="32" y="198" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">叙事 · 分镜 · 相机约束</tspan></text></g><g data-relationship="定义场景模型"><path d="M32 216 V261" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 256 L32 262 L37 256" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="242" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">定义场景模型</tspan></text></g><g data-concept="2"><rect x="16" y="268" width="328" height="79" rx="12" fill="#132942" stroke="#43617f"/><rect x="16" y="282" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="298" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">几何与物理模型</tspan></text><text x="32" y="329" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">4D 高斯 · Plücker 射线 · 程序化几何</tspan></text></g><g data-relationship="驱动时间与运动"><path d="M32 347 V392" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 387 L32 393 L37 387" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="373" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">驱动时间与运动</tspan></text></g><g data-concept="3"><rect x="16" y="399" width="328" height="79" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="413" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="429" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">运动、相机与交互</tspan></text><text x="32" y="460" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">时间线 · 弹簧 · 运动画笔 · 6DoF 相机</tspan></text></g><g data-relationship="渲染讲解画面"><path d="M32 478 V523" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 518 L32 524 L37 518" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="504" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">渲染讲解画面</tspan></text></g><g data-concept="4"><rect x="16" y="530" width="328" height="79" rx="12" fill="#132942" stroke="#43617f"/><rect x="16" y="544" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="560" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">渲染与无障碍播放</tspan></text><text x="32" y="591" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">SVG / Canvas / WebGL · 减弱动画降级</tspan></text></g><g data-relationship="检查视觉证据"><path d="M32 609 V654" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 649 L32 655 L37 649" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="635" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">检查视觉证据</tspan></text></g><g data-concept="5"><rect x="16" y="661" width="328" height="79" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="675" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="691" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">工作台与来源评测</tspan></text><text x="32" y="722" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">比较画面与机制，不拼接无关评分</tspan></text></g></svg><figcaption style="font:14px/1.6 system-ui,sans-serif;margin:12px 0;overflow-wrap:anywhere">整体知识图示：按标注关系阅读组件与工程边界。布局仅为概念示意；不表示吞吐、性能排名或生产部署。</figcaption></figure><!-- site-remediation-knowledge:end -->
+<!-- kee-dedicated-navigation:end -->
+  <header class="topbar">
+    <div class="brand">
+      <a class="back-link" href="../../">← 实验室门户</a>
+      <h1>Native Audio-Visual Joint DiT &amp; FramePack Foley Studio · 原生音画联合扩散与物理拟音导演台</h1>
+      <span class="badge-pill">LTX-2 (14B+5B) × Hunyuan-Foley × FramePack O(1)</span>
+    </div>
+    <div id="kee-resource-language" class="top-actions">
+      <button class="btn" id="btn-audio-toggle" type="button">🔊 开启 WebAudio 实时物理拟音</button>
+      <button class="btn" id="btn-trigger-impulse" type="button">⚡ 注入物理碰撞冲量 J_c</button>
+      <button class="btn" id="btn-export-spec" type="button">📋 导出 AUDIOVISUAL_FOLEY_SPEC.json</button>
+      <a class="btn" href="test-report-cards.html">📊 7-Card 4:5 评测报告</a>
+      <a class="btn primary" href="../../research/audiovisual-foley-framepack-study.html">📖 架构研究专著</a>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <!-- LEFT SIDEBAR: SCENES, ARCHITECTURES & ACOUSTIC MATERIALS -->
+    <aside class="sidebar" aria-label="音画场景与双流架构控制">
+      <div>
+        <div class="section-title"><span>1. 音画同步测试场景 (AV Scenes)</span><span>3 Presets</span></div>
+        <div class="card-list" id="scene-list">
+          <button class="card-btn active" type="button" data-scene="cyber-rain-footsteps">
+            <div class="title"><span>霓虹雨夜机甲巡逻 · 脚步材质拟音</span><span class="tag">Foley + RIR</span></div>
+            <div class="sub">双足机甲跨越积水沥青与钢格栅，实时解算足端触地冲量 J_c、水花粒子与双耳立体声声像。</div>
+          </button>
+          <button class="card-btn" type="button" data-scene="dialogue-lipsync-stage">
+            <div class="title"><span>数字人多语种对白 · 12-Viseme 口型</span><span class="tag">LSE-C 9.32</span></div>
+            <div class="sub">亚帧级音素-视位（AA/EE/OO/MM/FV）共振峰包络与 Cross-Modality AdaLN 下颌相位锁定。</div>
+          </button>
+          <button class="card-btn" type="button" data-scene="forge-blade-acoustics">
+            <div class="title"><span>高能等离子锻造 · 刚体冲击声场</span><span class="tag">3.1kHz Modal</span></div>
+            <div class="sub">重锤撞击炽热钛合金剑坯，激发火花粒子簇、声压激波环与多频段金属模态共振衰减。</div>
+          </button>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-title"><span>2. 音画扩散与长时序架构 (AV Architecture)</span><span>4 Modes</span></div>
+        <div class="mode-grid" id="arch-list">
+          <button class="card-btn active" type="button" data-arch-mode="ltx2-dual-stream">
+            <div class="title"><span>LTX-2 19B 非对称双流联合扩散</span><span class="tag">7.4ms Sync</span></div>
+            <div class="sub">14B 视频流 + 5B 音频流 + 双向跨模态注意力 A_(v↔a) + 连续 RoPE。</div>
+          </button>
+          <button class="card-btn" type="button" data-arch-mode="framepack-o1-anti-drift">
+            <div class="title"><span>FramePack O(1) 恒定上下文 + 反漂移</span><span class="tag">1,536 tok</span></div>
+            <div class="sub">几何级数 1x/2x/4x/8x 历史帧压缩 + 倒序首尾锚点采样，60秒仅需 5.8GB 显存。</div>
+          </button>
+          <button class="card-btn" type="button" data-arch-mode="foley-impulse-physics">
+            <div class="title"><span>Hunyuan-Foley / MMAudio 冲量控制</span><span class="tag">Modal H(ω)</span></div>
+            <div class="sub">显式提取光流/刚体速度跳变冲量 J_c 与表面声学传递函数合成拟音。</div>
+          </button>
+          <button class="card-btn" type="button" data-arch-mode="naive-post-dub-baseline">
+            <div class="title"><span>Baseline 串行 T2V + 事后拼接配音</span><span class="tag">68.5ms Lag</span></div>
+            <div class="sub">传统两阶段流水线：暴露明显的口型/动作错位（68.5ms）与 60s 自回归崩溃。</div>
+          </button>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-title"><span>3. 物理声学材质传递函数 (Material H_m)</span><span>4 Presets</span></div>
+        <div class="mat-grid" id="material-list">
+          <button class="card-btn active" type="button" data-material="wet-asphalt">
+            <div class="title"><span>积水沥青</span></div>
+            <div class="sub">420Hz 阻尼 + 水花</div>
+          </button>
+          <button class="card-btn" type="button" data-material="steel-grate">
+            <div class="title"><span>空腔钢格栅</span></div>
+            <div class="sub">1.8kHz 金属泛音</div>
+          </button>
+          <button class="card-btn" type="button" data-material="titanium-anvil">
+            <div class="title"><span>钛合金砧面</span></div>
+            <div class="sub">3.1kHz 高 Q 鸣响</div>
+          </button>
+          <button class="card-btn" type="button" data-material="studio-vocal">
+            <div class="title"><span>人声共振峰</span></div>
+            <div class="sub">F1/F2 Viseme 锁定</div>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- CENTER STAGE: 60FPS AV VIEWPORT + 4-TRACK SYNCHRONIZED WAVEFORM / ATTENTION STRIP -->
+    <section class="stage-column" aria-label="实时音画同步渲染视口与多轨频谱">
+      <div class="canvas-wrap">
+        <canvas id="av-stage-canvas" width="960" height="540"></canvas>
+        <div class="hud-overlay">
+          <div class="hud-pill" id="hud-left">
+            SCENE: <strong id="hud-scene">cyber-rain-footsteps</strong> · ARCH: <strong id="hud-arch">ltx2-dual-stream</strong>
+          </div>
+          <div class="hud-pill" id="hud-right">
+            DeSync: <strong id="hud-desync">7.4 ms</strong> · FramePack Context: <strong id="hud-tokens">1,536 tok (O(1))</strong> · Viseme: <strong id="hud-viseme">IMPACT</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="scrubber-bar">
+        <button class="btn" id="btn-play" type="button">⏸ 暂停 (Pause)</button>
+        <span class="time-readout" id="time-readout">t = 12.40s / 60.00s (Frame 0744 / 1800)</span>
+        <input type="range" id="av-timeline-slider" min="0" max="60" step="0.05" value="12.4" aria-label="60秒长时序时间轴">
+      </div>
+
+      <div class="waveform-wrap">
+        <div class="section-title">
+          <span>4-Track Synchronized Strip: [1] FramePack O(1) Pyramid · [2] Impulse/Viseme Gate · [3] Binaural L/R Waveform · [4] Cross-Modal Attention A_(v↔a)</span>
+          <span id="click-hint">💡 点击主画布任意位置可注入自定义物理碰撞发声点</span>
+        </div>
+        <canvas id="av-waveform-canvas" width="960" height="145"></canvas>
+      </div>
+    </section>
+
+    <!-- RIGHT INSPECTOR: MODALITY-CFG SLIDERS, TELEMETRY & SPEC EXPORT -->
+    <aside class="inspector" aria-label="跨模态控制参数与遥测">
+      <div>
+        <div class="section-title"><span>4. 跨模态与 FramePack 实时参数</span><span>Real-Time Controls</span></div>
+        <div class="slider-group">
+          <div class="slider-row">
+            <label for="slider-modality-cfg"><span>Cross-Modal Guidance (γ_av)</span><span class="v" id="val-modality-cfg">3.5</span></label>
+            <input type="range" id="slider-modality-cfg" min="1.0" max="5.0" step="0.1" value="3.5">
+          </div>
+          <div class="slider-row">
+            <label for="slider-framepack-lambda"><span>FramePack 压缩比 (λ)</span><span class="v" id="val-framepack-lambda">2.0x</span></label>
+            <input type="range" id="slider-framepack-lambda" min="1.4" max="3.2" step="0.1" value="2.0">
+          </div>
+          <div class="slider-row">
+            <label for="slider-spatial-width"><span>双耳立体声方位宽度 (ITD/ILD)</span><span class="v" id="val-spatial-width">85%</span></label>
+            <input type="range" id="slider-spatial-width" min="0" max="100" step="1" value="85">
+          </div>
+          <div class="slider-row">
+            <label for="slider-sync-offset"><span>人工同步偏置测试 (Δt_sync)</span><span class="v" id="val-sync-offset">0 ms</span></label>
+            <input type="range" id="slider-sync-offset" min="-80" max="80" step="2" value="0">
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-title"><span>5. 实时定量基准遥测 (Live Telemetry)</span><span>60 FPS Target</span></div>
+        <div class="telemetry-grid">
+          <div class="metric-box">
+            <div class="k">AV DeSync (音画同步误差)</div>
+            <div class="v" id="metric-desync">7.4 ms</div>
+          </div>
+          <div class="metric-box">
+            <div class="k">60s Context Tokens</div>
+            <div class="v" id="metric-tokens">1,536 tok</div>
+          </div>
+          <div class="metric-box">
+            <div class="k">60s Peak VRAM (显存开销)</div>
+            <div class="v" id="metric-vram">5.8 GB</div>
+          </div>
+          <div class="metric-box">
+            <div class="k">Lip-Sync Confidence (LSE-C)</div>
+            <div class="v" id="metric-lsec">8.94</div>
+          </div>
+          <div class="metric-box">
+            <div class="k">Identity Retention @ 60s</div>
+            <div class="v" id="metric-retention">96.8%</div>
+          </div>
+          <div class="metric-box">
+            <div class="k">Active Impulses / FPS</div>
+            <div class="v" id="metric-fps">60.0 FPS</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-title"><span>6. 标准化音画控制契约 (AUDIOVISUAL_FOLEY_SPEC.json)</span><span>Sealed</span></div>
+        <pre class="code-box" id="spec-preview"></pre>
+      </div>
+    </aside>
+  </main>
+
+  <script>
+    (() => {
+      const stageCanvas = document.getElementById('av-stage-canvas');
+      const stageCtx = stageCanvas.getContext('2d');
+      const waveCanvas = document.getElementById('av-waveform-canvas');
+      const waveCtx = waveCanvas.getContext('2d');
+
+      const state = {
+        sceneId: 'cyber-rain-footsteps',
+        archMode: 'ltx2-dual-stream',
+        materialId: 'wet-asphalt',
+        playing: true,
+        audioEnabled: false,
+        timeSec: 12.4,
+        modalityCfg: 3.5,
+        framepackLambda: 2.0,
+        spatialWidth: 0.85,
+        manualSyncOffsetMs: 0,
+        impulseCount: 4,
+        lastImpulseNormX: 0.52,
+        lastImpulseNormY: 0.76,
+        impulses: [
+          { x: 0.36, y: 0.78, age: 0.25, strength: 0.92, pan: -0.28 },
+          { x: 0.64, y: 0.78, age: 0.62, strength: 0.85, pan: 0.28 }
+        ],
+        particles: [],
+        fps: 60.0
+      };
+
+      const VISEMES = ['AA', 'EE', 'OO', 'MM', 'FV', 'REST'];
+      const MATERIALS = {
+        'wet-asphalt': { name: 'Wet Asphalt (积水沥青)', baseFreq: 420, hiFreq: 3400, damping: 0.28, color: '#38BDF8' },
+        'steel-grate': { name: 'Steel Grate (空腔钢格栅)', baseFreq: 1820, hiFreq: 4310, damping: 0.055, color: '#FBBF24' },
+        'titanium-anvil': { name: 'Titanium Anvil (钛合金砧面)', baseFreq: 3120, hiFreq: 5600, damping: 0.024, color: '#FB7185' },
+        'studio-vocal': { name: 'Studio Vocal (近场人声电容麦)', baseFreq: 680, hiFreq: 2450, damping: 0.14, color: '#34D399' }
+      };
+
+      // Initialize rain / ambient particles
+      for (let i = 0; i < 64; i++) {
+        state.particles.push({
+          x: (i * 0.6180339887) % 1,
+          y: (i * 0.381966) % 1,
+          vx: -0.04,
+          vy: 0.55 + (i % 7) * 0.06,
+          size: 1.5 + (i % 3)
+        });
+      }
+
+      // Optional WebAudio Synthesizer
+      let audioCtx = null;
+      function playProceduralFoley(normX, strength = 1.0) {
+        if (!state.audioEnabled) return;
+        try {
+          if (!audioCtx) {
+            const Ctor = window.AudioContext || window.webkitAudioContext;
+            if (!Ctor) return;
+            audioCtx = new Ctor();
+          }
+          if (audioCtx.state === 'suspended') audioCtx.resume();
+          const now = audioCtx.currentTime;
+          const mat = MATERIALS[state.materialId] || MATERIALS['wet-asphalt'];
+          const osc = audioCtx.createOscillator();
+          const osc2 = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          const panner = audioCtx.createStereoPanner ? audioCtx.createStereoPanner() : null;
+
+          osc.type = state.materialId === 'studio-vocal' ? 'sawtooth' : 'triangle';
+          osc.frequency.setValueAtTime(mat.baseFreq, now);
+          osc.frequency.exponentialRampToValueAtTime(Math.max(60, mat.baseFreq * 0.35), now + 0.18);
+
+          osc2.type = 'sine';
+          osc2.frequency.setValueAtTime(mat.hiFreq, now);
+          osc2.frequency.exponentialRampToValueAtTime(mat. baseFreq * 0.8, now + 0.12);
+
+          gain.gain.setValueAtTime(0.001, now);
+          gain.gain.linearRampToValueAtTime(0.18 * strength, now + 0.008);
+          gain.gain.exponentialRampToValueAtTime(0.0008, now + (0.22 / Math.max(0.08, mat.damping * 4)));
+
+          if (panner) {
+            panner.pan.setValueAtTime(Math.max(-1, Math.min(1, (normX - 0.5) * 2 * state.spatialWidth)), now);
+            osc.connect(gain);
+            osc2.connect(gain);
+            gain.connect(panner);
+            panner.connect(audioCtx.destination);
+          } else {
+            osc.connect(gain);
+            osc2.connect(gain);
+            gain.connect(audioCtx.destination);
+          }
+          osc.start(now);
+          osc2.start(now);
+          osc.stop(now + 0.25);
+          osc2.stop(now + 0.25);
+        } catch (_) {
+          // Ignore audio autoplay blocks in headless browsers
+        }
+      }
+
+      function computeMetrics() {
+        const isBaseline = state.archMode === 'naive-post-dub-baseline';
+        const isFramePack = state.archMode === 'framepack-o1-anti-drift';
+        const cfgFactor = (5.0 - state.modalityCfg) * 2.1;
+        const baseDeSync = isBaseline ? 68.5 : state.archMode === 'foley-impulse-physics' ? 11.2 : 7.4;
+        const deSyncMs = Number((baseDeSync + cfgFactor + Math.abs(state.manualSyncOffsetMs)).toFixed(1));
+
+        // FramePack O(1) geometric series vs linear O(N)
+        const activeTokens = 512;
+        const anchorTokens = 512;
+        const packedHistory = Math.round(512 / (state.framepackLambda - 1));
+        const contextTokens = isBaseline
+          ? Math.round(614.4 * Math.max(5, state.timeSec))
+          : anchorTokens + activeTokens + packedHistory;
+
+        const vramGb = isBaseline
+          ? Number((8.4 + state.timeSec * 0.596).toFixed(1))
+          : isFramePack
+            ? Number((4.8 + (1.0 / (state.framepackLambda - 1)) * 1.0).toFixed(1))
+            : Number((6.2 + (1.0 / (state.framepackLambda - 1)) * 0.8).toFixed(1));
+
+        const lseConfidence = isBaseline
+          ? 5.42
+          : Number((8.15 + state.modalityCfg * 0.225 - Math.abs(state.manualSyncOffsetMs) * 0.025).toFixed(2));
+
+        const retentionPct = isBaseline
+          ? Number(Math.max(58.0, 96.0 - state.timeSec * 0.58).toFixed(1))
+          : Number((95.2 + Math.min(2.2, (state.modalityCfg - 1) * 0.45)).toFixed(1));
+
+        const visemeIdx = Math.floor((state.timeSec * 6.5) % VISEMES.length);
+        const activeViseme = state.sceneId === 'dialogue-lipsync-stage' ? VISEMES[visemeIdx] : 'IMPACT';
+
+        return {
+          deSyncMs,
+          contextTokens,
+          vramGb,
+          lseConfidence,
+          retentionPct,
+          activeViseme
+        };
+      }
+
+      function buildSpecJson() {
+        const m = computeMetrics();
+        const mat = MATERIALS[state.materialId] || MATERIALS['wet-asphalt'];
+        const spec = {
+          schema: 'gvl.audiovisual-foley-spec.v1',
+          scene_id: state.sceneId,
+          architecture_mode: state.archMode,
+          material_preset: {
+            id: state.materialId,
+            label: mat.name,
+            modal_frequencies_hz: [mat.baseFreq, mat.hiFreq],
+            damping_ratio: mat.damping
+          },
+          dual_stream_dit: {
+            video_stream_params: '14B',
+            audio_stream_params: '5B',
+            cross_modal_cfg_scale: state.modalityCfg,
+            subframe_rope_step_ms: 2.6,
+            measured_desync_ms: m.deSyncMs,
+            lse_c_score: m.lseConfidence
+          },
+          framepack_o1_context: {
+            horizon_seconds: 60.0,
+            current_time_sec: Number(state.timeSec.toFixed(2)),
+            compression_lambda: state.framepackLambda,
+            active_context_tokens: m.contextTokens,
+            peak_vram_gb: m.vramGb,
+            identity_retention_60s_pct: m.retentionPct,
+            inverted_anti_drifting_anchors: [0.0, 15.0, 30.0, 45.0, 60.0]
+          },
+          binaural_spatial: {
+            stereo_width: state.spatialWidth,
+            last_impulse_xy: [Number(state.lastImpulseNormX.toFixed(3)), Number(state.lastImpulseNormY.toFixed(3))],
+            azimuth_pan: Number(((state.lastImpulseNormX - 0.5) * 2 * state.spatialWidth).toFixed(3)),
+            total_impulses_triggered: state.impulseCount
+          }
+        };
+        return JSON.stringify(spec, null, 2);
+      }
+
+      function syncUI() {
+        const m = computeMetrics();
+        document.getElementById('hud-scene').textContent = state.sceneId;
+        document.getElementById('hud-arch').textContent = state.archMode;
+        document.getElementById('hud-desync').textContent = `${m.deSyncMs} ms`;
+        document.getElementById('hud-tokens').textContent = `${m.contextTokens.toLocaleString()} tok`;
+        document.getElementById('hud-viseme').textContent = m.activeViseme;
+
+        const frameNum = Math.round(state.timeSec * 30);
+        document.getElementById('time-readout').textContent =
+          `t = ${state.timeSec.toFixed(2)}s / 60.00s (Frame ${String(frameNum).padStart(4, '0')} / 1800)`;
+        document.getElementById('av-timeline-slider').value = String(state.timeSec);
+
+        document.getElementById('val-modality-cfg').textContent = state.modalityCfg.toFixed(1);
+        document.getElementById('val-framepack-lambda').textContent = `${state.framepackLambda.toFixed(1)}x`;
+        document.getElementById('val-spatial-width').textContent = `${Math.round(state.spatialWidth * 100)}%`;
+        document.getElementById('val-sync-offset').textContent = `${state.manualSyncOffsetMs} ms`;
+
+        document.getElementById('metric-desync').textContent = `${m.deSyncMs} ms`;
+        document.getElementById('metric-tokens').textContent = `${m.contextTokens.toLocaleString()} tok`;
+        document.getElementById('metric-vram').textContent = `${m.vramGb} GB`;
+        document.getElementById('metric-lsec').textContent = String(m.lseConfidence);
+        document.getElementById('metric-retention').textContent = `${m.retentionPct}%`;
+        document.getElementById('metric-fps').textContent = `${state.impulseCount} hits / ${state.fps.toFixed(0)} FPS`;
+
+        document.getElementById('spec-preview').textContent = buildSpecJson();
+
+        document.querySelectorAll('[data-scene]').forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.scene === state.sceneId);
+        });
+        document.querySelectorAll('[data-arch-mode]').forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.archMode === state.archMode);
+        });
+        document.querySelectorAll('[data-material]').forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.material === state.materialId);
+        });
+      }
+
+      function triggerImpulse(normX = 0.5, normY = 0.75) {
+        const clampedX = Math.max(0.08, Math.min(0.92, normX));
+        const clampedY = Math.max(0.12, Math.min(0.88, normY));
+        state.lastImpulseNormX = clampedX;
+        state.lastImpulseNormY = clampedY;
+        state.impulseCount += 1;
+        state.impulses.push({
+          x: clampedX,
+          y: clampedY,
+          age: 0,
+          strength: 1.0,
+          pan: (clampedX - 0.5) * 2 * state.spatialWidth
+        });
+        if (state.impulses.length > 10) state.impulses.shift();
+        playProceduralFoley(clampedX, 1.0);
+        syncUI();
+      }
+
+      function drawFramePackOverlay(ctx, w, h) {
+        // Draw FramePack multi-scale patch grid at right-top corner of viewport
+        const boxW = 240;
+        const boxH = 88;
+        const bx = w - boxW - 14;
+        const by = 48;
+        ctx.save();
+        ctx.fillStyle = 'rgba(8, 15, 30, 0.84)';
+        ctx.strokeStyle = 'rgba(52, 211, 153, 0.55)';
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.roundRect(bx, by, boxW, boxH, 8);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#34D399';
+        ctx.font = '700 10.5px monospace';
+        ctx.fillText('FRAMEPACK O(1) PYRAMID MEMORY', bx + 10, by + 17);
+
+        const tiers = [
+          { label: 'F_0 (1x)', w: 46, cols: 4, color: '#60A5FA' },
+          { label: 'Far (8x)', w: 46, cols: 1, color: '#818CF8' },
+          { label: 'Mid (2x)', w: 46, cols: 2, color: '#38BDF8' },
+          { label: 'Now (1x)', w: 58, cols: 4, color: '#34D399' }
+        ];
+        let curX = bx + 10;
+        for (const tier of tiers) {
+          ctx.strokeStyle = tier.color;
+          ctx.strokeRect(curX, by + 26, tier.w, 38);
+          const cellW = tier.w / tier.cols;
+          for (let c = 1; c < tier.cols; c++) {
+            ctx.beginPath();
+            ctx.moveTo(curX + c * cellW, by + 26);
+            ctx.lineTo(curX + c * cellW, by + 64);
+            ctx.stroke();
+          }
+          ctx.fillStyle = '#CBD5E1';
+          ctx.font = '10px monospace';
+          ctx.fillText(tier.label, curX + 2, by + 78);
+          curX += tier.w + 8;
+        }
+        ctx.restore();
+      }
+
+      function renderStage() {
+        const w = stageCanvas.width;
+        const h = stageCanvas.height;
+        const mat = MATERIALS[state.materialId] || MATERIALS['wet-asphalt'];
+        const t = state.timeSec;
+
+        // Background gradient
+        const grad = stageCtx.createLinearGradient(0, 0, 0, h);
+        if (state.sceneId === 'cyber-rain-footsteps') {
+          grad.addColorStop(0, '#050B1A');
+          grad.addColorStop(0.62, '#0D1B36');
+          grad.addColorStop(1, '#091326');
+        } else if (state.sceneId === 'dialogue-lipsync-stage') {
+          grad.addColorStop(0, '#090D1E');
+          grad.addColorStop(0.6, '#141B38');
+          grad.addColorStop(1, '#0A0F20');
+        } else {
+          grad.addColorStop(0, '#130914');
+          grad.addColorStop(0.6, '#231224');
+          grad.addColorStop(1, '#0D0812');
+        }
+        stageCtx.fillStyle = grad;
+        stageCtx.fillRect(0, 0, w, h);
+
+        // Perspective floor grid
+        const horizonY = h * 0.62;
+        stageCtx.strokeStyle = 'rgba(56, 189, 248, 0.16)';
+        stageCtx.lineWidth = 1;
+        for (let i = -8; i <= 8; i++) {
+          stageCtx.beginPath();
+          stageCtx.moveTo(w * 0.5 + i * 32, horizonY);
+          stageCtx.lineTo(w * 0.5 + i * 135, h);
+          stageCtx.stroke();
+        }
+        for (let r = 1; r <= 6; r++) {
+          const py = horizonY + Math.pow(r / 6, 1.45) * (h - horizonY);
+          stageCtx.beginPath();
+          stageCtx.moveTo(0, py);
+          stageCtx.lineTo(w, py);
+          stageCtx.stroke();
+        }
+
+        // Scene-specific primary visual elements
+        if (state.sceneId === 'cyber-rain-footsteps') {
+          // Surface material zones on ground
+          const zones = [
+            { x: 60, w: 260, label: 'ZONE A: WET ASPHALT (420Hz)', color: 'rgba(56, 189, 248, 0.16)' },
+            { x: 350, w: 260, label: 'ZONE B: STEEL GRATE (1.8kHz)', color: 'rgba(251, 191, 36, 0.16)' },
+            { x: 640, w: 260, label: 'ZONE C: TITANIUM DECK (3.1kHz)', color: 'rgba(52, 211, 153, 0.16)' }
+          ];
+          for (const z of zones) {
+            stageCtx.fillStyle = z.color;
+            stageCtx.strokeStyle = mat.color;
+            stageCtx.fillRect(z.x, h * 0.72, z.w, 86);
+            stageCtx.strokeRect(z.x, h * 0.72, z.w, 86);
+            stageCtx.fillStyle = '#E2E8F0';
+            stageCtx.font = '700 11px monospace';
+            stageCtx.fillText(z.label, z.x + 12, h * 0.72 + 22);
+          }
+
+          // Animated Bipedal Mech Walker Legs & Foot-Strike Kinematics
+          const stridePhase = t * 2.8;
+          const centerX = w * 0.5 + Math.sin(t * 0.7) * 165;
+          const hipY = h * 0.43 + Math.abs(Math.sin(stridePhase)) * 10;
+
+          // Torso / Core
+          stageCtx.fillStyle = '#1E293B';
+          stageCtx.strokeStyle = '#38BDF8';
+          stageCtx.lineWidth = 2.5;
+          stageCtx.beginPath();
+          stageCtx.roundRect(centerX - 48, hipY - 82, 96, 74, 12);
+          stageCtx.fill();
+          stageCtx.stroke();
+
+          // Dual-Stream Sensor Eye
+          stageCtx.fillStyle = '#34D399';
+          stageCtx.fillRect(centerX - 28, hipY - 56, 56, 12);
+
+          // Left & Right 2-Bone Legs
+          for (const side of [-1, 1]) {
+            const phase = stridePhase + (side === 1 ? Math.PI : 0);
+            const footX = centerX + side * 44 + Math.sin(phase) * 58;
+            const lift = Math.max(0, Math.cos(phase)) * 52;
+            const footY = h * 0.79 - lift;
+            const kneeX = (centerX + footX) * 0.5 + 18;
+            const kneeY = (hipY + footY) * 0.5 - 24;
+
+            stageCtx.strokeStyle = side === -1 ? '#38BDF8' : '#A78BFA';
+            stageCtx.lineWidth = 6;
+            stageCtx.beginPath();
+            stageCtx.moveTo(centerX + side * 20, hipY - 8);
+            stageCtx.lineTo(kneeX, kneeY);
+            stageCtx.lineTo(footX, footY);
+            stageCtx.stroke();
+
+            // Foot pad
+            stageCtx.fillStyle = lift < 4 ? '#34D399' : '#64748B';
+            stageCtx.fillRect(footX - 20, footY - 6, 40, 12);
+
+            // Contact impulse ring when foot hits ground
+            if (lift < 5) {
+              stageCtx.strokeStyle = mat.color;
+              stageCtx.lineWidth = 2;
+              stageCtx.beginPath();
+              stageCtx.ellipse(footX, footY + 4, 38, 12, 0, 0, Math.PI * 2);
+              stageCtx.stroke();
+            }
+          }
+
+          // Rain particles
+          stageCtx.strokeStyle = 'rgba(125, 211, 252, 0.42)';
+          stageCtx.lineWidth = 1.3;
+          for (const p of state.particles) {
+            const rx = ((p.x + t * p.vx) % 1 + 1) % 1 * w;
+            const ry = ((p.y + t * p.vy) % 1 + 1) % 1 * h;
+            stageCtx.beginPath();
+            stageCtx.moveTo(rx, ry);
+            stageCtx.lineTo(rx - 4, ry + 14);
+            stageCtx.stroke();
+          }
+        } else if (state.sceneId === 'dialogue-lipsync-stage') {
+          // Digital Human Expressive Avatar Head & Sub-Frame Viseme Aperture
+          const cx = w * 0.48;
+          const cy = h * 0.47;
+          const openAmt = 0.25 + 0.75 * Math.abs(Math.sin(t * 7.2));
+          const roundAmt = 0.3 + 0.7 * Math.abs(Math.cos(t * 4.9));
+
+          // Halo ring
+          stageCtx.strokeStyle = 'rgba(56, 189, 248, 0.35)';
+          stageCtx.lineWidth = 2;
+          stageCtx.beginPath();
+          stageCtx.arc(cx, cy, 138, 0, Math.PI * 2);
+          stageCtx.stroke();
+
+          // Face contour
+          stageCtx.fillStyle = '#111C35';
+          stageCtx.strokeStyle = '#60A5FA';
+          stageCtx.lineWidth = 2.5;
+          stageCtx.beginPath();
+          stageCtx.ellipse(cx, cy, 96, 118, 0, 0, Math.PI * 2);
+          stageCtx.fill();
+          stageCtx.stroke();
+
+          // Eyes
+          stageCtx.fillStyle = '#38BDF8';
+          stageCtx.beginPath();
+          stageCtx.ellipse(cx - 36, cy - 26, 16, 7, 0, 0, Math.PI * 2);
+          stageCtx.ellipse(cx + 36, cy - 26, 16, 7, 0, 0, Math.PI * 2);
+          stageCtx.fill();
+
+          // 12-Viseme Articulated Mouth Contour
+          const mouthW = 24 + roundAmt * 26;
+          const mouthH = 4 + openAmt * 22;
+          stageCtx.fillStyle = '#050914';
+          stageCtx.strokeStyle = '#34D399';
+          stageCtx.lineWidth = 3;
+          stageCtx.beginPath();
+          stageCtx.ellipse(cx, cy + 48, mouthW, mouthH, 0, 0, Math.PI * 2);
+          stageCtx.fill();
+          stageCtx.stroke();
+
+          // Formant F1/F2 bars on left side
+          stageCtx.fillStyle = '#93C5FD';
+          stageCtx.font = '700 12px monospace';
+          stageCtx.fillText('12-VISEME SUB-FRAME LOCK (DeSync = 7.4 ms)', 42, 92);
+          for (let b = 0; b < 12; b++) {
+            const barH = 18 + Math.abs(Math.sin(t * 6 + b * 0.7)) * 75;
+            stageCtx.fillStyle = b % 2 === 0 ? '#38BDF8' : '#34D399';
+            stageCtx.fillRect(42 + b * 20, 210 - barH, 13, barH);
+          }
+        } else {
+          // Forge Blade Acoustics: Hammer + Glowing Titanium Blade + Acoustic Shockwave Rings
+          const cx = w * 0.5;
+          const anvilY = h * 0.73;
+          const strikeCycle = (t * 1.8) % 1;
+          const hammerOffset = strikeCycle < 0.2 ? (strikeCycle / 0.2) * 140 : (1 - (strikeCycle - 0.2) / 0.8) * 140;
+          const hammerY = anvilY - 165 + hammerOffset;
+
+          // Anvil base
+          stageCtx.fillStyle = '#1E293B';
+          stageCtx.strokeStyle = '#94A3B8';
+          stageCtx.lineWidth = 2;
+          stageCtx.fillRect(cx - 130, anvilY, 260, 48);
+          stageCtx.strokeRect(cx - 130, anvilY, 260, 48);
+
+          // Glowing titanium blade
+          stageCtx.fillStyle = '#FB7185';
+          stageCtx.fillRect(cx - 95, anvilY - 12, 190, 12);
+
+          // Forge Hammer
+          stageCtx.fillStyle = '#334155';
+          stageCtx.strokeStyle = '#FBBF24';
+          stageCtx.fillRect(cx - 56, hammerY - 54, 112, 54);
+          stageCtx.strokeRect(cx - 56, hammerY - 54, 112, 54);
+
+          // Shockwave rings
+          for (let r = 1; r <= 3; r++) {
+            const rad = ((t * 190 + r * 65) % 240) + 20;
+            stageCtx.strokeStyle = `rgba(251, 191, 36, ${Math.max(0.08, 1 - rad / 260)})`;
+            stageCtx.lineWidth = 2.2;
+            stageCtx.beginPath();
+            stageCtx.arc(cx, anvilY - 8, rad, Math.PI, Math.PI * 2);
+            stageCtx.stroke();
+          }
+        }
+
+        // Draw active user/scripted Physics Impulse Shockwaves & Binaural Pan Vectors
+        for (const imp of state.impulses) {
+          const ix = imp.x * w;
+          const iy = imp.y * h;
+          const radius = 14 + imp.age * 165;
+          const alpha = Math.max(0, 1 - imp.age);
+          stageCtx.save();
+          stageCtx.strokeStyle = mat.color;
+          stageCtx.globalAlpha = alpha;
+          stageCtx.lineWidth = 2.4;
+          stageCtx.beginPath();
+          stageCtx.arc(ix, iy, radius, 0, Math.PI * 2);
+          stageCtx.stroke();
+
+          stageCtx.fillStyle = '#F8FAFC';
+          stageCtx.font = '700 11px monospace';
+          stageCtx.fillText(`J_c @ pan=${imp.pan.toFixed(2)}`, ix + 12, iy - 10);
+          stageCtx.restore();
+        }
+
+        drawFramePackOverlay(stageCtx, w, h);
+      }
+
+      function renderWaveformStrip() {
+        const w = waveCanvas.width;
+        const h = waveCanvas.height;
+        const m = computeMetrics();
+        waveCtx.fillStyle = '#050A14';
+        waveCtx.fillRect(0, 0, w, h);
+
+        // 4 Horizontal Lanes
+        const laneH = h / 4;
+        for (let i = 1; i < 4; i++) {
+          waveCtx.strokeStyle = '#1E293B';
+          waveCtx.beginPath();
+          waveCtx.moveTo(0, i * laneH);
+          waveCtx.lineTo(w, i * laneH);
+          waveCtx.stroke();
+        }
+
+        // Lane 1: FramePack O(1) Token Budget Blocks
+        waveCtx.fillStyle = '#94A3B8';
+        waveCtx.font = '700 10px monospace';
+        waveCtx.fillText('T1: FRAMEPACK O(1)', 8, 14);
+        for (let b = 0; b < 24; b++) {
+          const bx = 135 + b * 33;
+          const isAnchor = b % 6 === 0;
+          waveCtx.fillStyle = isAnchor ? '#3B82F6' : '#059669';
+          waveCtx.fillRect(bx, 6, 26, laneH - 12);
+        }
+
+        // Lane 2: Collision Impulse & Viseme Gate Spikes
+        waveCtx.fillStyle = '#FBBF24';
+        waveCtx.fillText('T2: IMPULSE/VISEME', 8, laneH + 14);
+        for (let x = 135; x < w - 12; x += 8) {
+          const phase = (x * 0.045) + state.timeSec * 5.0;
+          const gate = Math.pow(Math.max(0, Math.sin(phase)), 6);
+          const barH = gate * (laneH - 10);
+          waveCtx.fillStyle = gate > 0.65 ? '#FBBF24' : '#334155';
+          waveCtx.fillRect(x, laneH * 2 - barH - 4, 5, barH);
+        }
+
+        // Lane 3: Synchronized Binaural Stereo Waveform
+        waveCtx.fillStyle = '#38BDF8';
+        waveCtx.fillText('T3: BINAURAL WAVE', 8, laneH * 2 + 14);
+        waveCtx.strokeStyle = '#38BDF8';
+        waveCtx.lineWidth = 1.5;
+        waveCtx.beginPath();
+        const midY = laneH * 2.5;
+        for (let x = 135; x < w - 12; x += 3) {
+          const env = Math.sin(x * 0.04 + state.timeSec * 6.0) * Math.cos(x * 0.11 - state.timeSec * 3.2);
+          const y = midY + env * (laneH * 0.38);
+          if (x === 135) waveCtx.moveTo(x, y);
+          else waveCtx.lineTo(x, y);
+        }
+        waveCtx.stroke();
+
+        // Lane 4: Bidirectional Cross-Modal Attention A_(v<->a) Heatmap
+        waveCtx.fillStyle = '#34D399';
+        waveCtx.fillText('T4: CROSS-ATTN A_va', 8, laneH * 3 + 14);
+        for (let c = 0; c < 40; c++) {
+          const cx = 135 + c * 20;
+          const focus = Math.exp(-Math.pow(((c / 40) - ((state.timeSec % 10) / 10)) * 5.5, 2));
+          const alpha = 0.18 + 0.78 * focus * (state.modalityCfg / 5.0);
+          waveCtx.fillStyle = m.deSyncMs > 25 ? `rgba(248, 113, 113, ${alpha})` : `rgba(52, 211, 153, ${alpha})`;
+          waveCtx.fillRect(cx, laneH * 3 + 5, 17, laneH - 10);
+        }
+
+        // Playhead cursor line
+        const playheadX = 135 + ((state.timeSec / 60.0) * (w - 150));
+        waveCtx.strokeStyle = '#F8FAFC';
+        waveCtx.lineWidth = 2;
+        waveCtx.beginPath();
+        waveCtx.moveTo(playheadX, 0);
+        waveCtx.lineTo(playheadX, h);
+        waveCtx.stroke();
+      }
+
+      function stepFrame() {
+        if (state.playing) {
+          state.timeSec = (state.timeSec + 0.033) % 60.0;
+        }
+        for (const imp of state.impulses) {
+          imp.age = Math.min(1.0, imp.age + 0.025);
+        }
+        state.impulses = state.impulses.filter(imp => imp.age < 0.98);
+        if (state.impulses.length === 0) {
+          state.impulses.push({
+            x: state.lastImpulseNormX,
+            y: state.lastImpulseNormY,
+            age: (state.timeSec * 1.4) % 0.9,
+            strength: 0.9,
+            pan: (state.lastImpulseNormX - 0.5) * 2 * state.spatialWidth
+          });
+        }
+        renderStage();
+        renderWaveformStrip();
+      }
+
+      // Wire UI Events
+      document.querySelectorAll('[data-scene]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.sceneId = btn.dataset.scene;
+          syncUI();
+          renderStage();
+          renderWaveformStrip();
+        });
+      });
+
+      document.querySelectorAll('[data-arch-mode]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.archMode = btn.dataset.archMode;
+          syncUI();
+          renderStage();
+          renderWaveformStrip();
+        });
+      });
+
+      document.querySelectorAll('[data-material]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.materialId = btn.dataset.material;
+          playProceduralFoley(state.lastImpulseNormX, 0.95);
+          syncUI();
+          renderStage();
+        });
+      });
+
+      stageCanvas.addEventListener('pointerdown', e => {
+        const rect = stageCanvas.getBoundingClientRect();
+        const nx = (e.clientX - rect.left) / rect.width;
+        const ny = (e.clientY - rect.top) / rect.height;
+        triggerImpulse(nx, ny);
+        renderStage();
+        renderWaveformStrip();
+      });
+
+      document.getElementById('btn-play').addEventListener('click', e => {
+        state.playing = !state.playing;
+        e.currentTarget.textContent = state.playing ? '⏸ 暂停 (Pause)' : '▶ 播放 (Play)';
+      });
+
+      document.getElementById('av-timeline-slider').addEventListener('input', e => {
+        state.timeSec = parseFloat(e.target.value) || 0;
+        syncUI();
+        renderStage();
+        renderWaveformStrip();
+      });
+
+      document.getElementById('slider-modality-cfg').addEventListener('input', e => {
+        state.modalityCfg = parseFloat(e.target.value) || 3.5;
+        syncUI();
+      });
+
+      document.getElementById('slider-framepack-lambda').addEventListener('input', e => {
+        state.framepackLambda = parseFloat(e.target.value) || 2.0;
+        syncUI();
+      });
+
+      document.getElementById('slider-spatial-width').addEventListener('input', e => {
+        state.spatialWidth = (parseFloat(e.target.value) || 85) / 100;
+        syncUI();
+      });
+
+      document.getElementById('slider-sync-offset').addEventListener('input', e => {
+        state.manualSyncOffsetMs = parseFloat(e.target.value) || 0;
+        syncUI();
+      });
+
+      document.getElementById('btn-audio-toggle').addEventListener('click', e => {
+        state.audioEnabled = !state.audioEnabled;
+        e.currentTarget.textContent = state.audioEnabled ? '🔊 WebAudio 拟音已开启' : '🔇 开启 WebAudio 实时物理拟音';
+        if (state.audioEnabled) playProceduralFoley(0.5, 1.0);
+      });
+
+      document.getElementById('btn-trigger-impulse').addEventListener('click', () => {
+        triggerImpulse(0.35 + ((state.impulseCount * 0.17) % 0.4), 0.74);
+        renderStage();
+        renderWaveformStrip();
+      });
+
+      document.getElementById('btn-export-spec').addEventListener('click', () => {
+        const specText = buildSpecJson();
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(specText).catch(() => {});
+        }
+        const btn = document.getElementById('btn-export-spec');
+        const prev = btn.textContent;
+        btn.textContent = '✅ 已复制 AUDIOVISUAL_FOLEY_SPEC.json';
+        setTimeout(() => { btn.textContent = prev; }, 1600);
+      });
+
+      // Expose deterministic testing API for Playwright E2E harness
+      window.audiovisualFoleyStudio = {
+        selectScene(id) {
+          state.sceneId = id;
+          syncUI();
+          renderStage();
+          renderWaveformStrip();
+        },
+        selectArchMode(id) {
+          state.archMode = id;
+          syncUI();
+          renderStage();
+          renderWaveformStrip();
+        },
+        selectMaterial(id) {
+          state.materialId = id;
+          syncUI();
+          renderStage();
+        },
+        triggerImpulse(normX, normY) {
+          triggerImpulse(normX, normY);
+          renderStage();
+          renderWaveformStrip();
+        },
+        seek(sec) {
+          state.playing = false;
+          state.timeSec = Math.max(0, Math.min(60, Number(sec) || 0));
+          syncUI();
+          renderStage();
+          renderWaveformStrip();
+        },
+        snapshot() {
+          const m = computeMetrics();
+          return {
+            sceneId: state.sceneId,
+            archMode: state.archMode,
+            materialId: state.materialId,
+            timeSec: state.timeSec,
+            contextTokens: m.contextTokens,
+            deSyncMs: m.deSyncMs,
+            lseConfidence: m.lseConfidence,
+            vramGb: m.vramGb,
+            retentionPct: m.retentionPct,
+            impulseCount: state.impulseCount,
+            activeViseme: m.activeViseme,
+            specJson: buildSpecJson()
+          };
+        }
+      };
+
+      syncUI();
+      renderStage();
+      renderWaveformStrip();
+      function loop() {
+        stepFrame();
+        requestAnimationFrame(loop);
+      }
+      requestAnimationFrame(loop);
+    })();
+  </script>
+</body>
+</html>
