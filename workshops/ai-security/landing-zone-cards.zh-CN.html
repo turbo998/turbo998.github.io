@@ -1,0 +1,861 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'" />
+<title>安全AI登陆区&amp;边疆SOC — 7-卡片 -你还不知道4:5视觉报告</title>
+<style>
+  :root {
+    --bg: #E2E8F0;
+    --card-bg: #FFFFFF;
+    --ink: #0F172A;
+    --ink-2: #334155;
+    --muted: #64748B;
+    --border: #CBD5E1;
+    --accent: #2563EB;
+    --accent-2: #0EA5E9;
+    --good: #059669;
+    --good-bg: #ECFDF5;
+    --warn: #D97706;
+    --warn-bg: #FFFBEB;
+    --bad: #DC2626;
+    --bad-bg: #FEF2F2;
+    --dark: #0F172A;
+    --mono: "JetBrains Mono", Consolas, monospace;
+    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 28px 16px 60px;
+    background: var(--bg); color: var(--ink);
+    font-family: var(--sans);
+  }
+  .deck-header {
+    max-width: 900px; margin: 0 auto 24px;
+    background: var(--dark); color: #F8FAFC;
+    border-radius: 14px; padding: 18px 24px;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+  }
+  .deck-header h1 { margin: 0; font-size: 18px; font-weight: 800; }
+  .deck-header p { margin: 4px 0 0; font-size: 12.5px; color: #94A3B8; font-family: var(--mono); }
+  .deck-nav { display: flex; gap: 8px; flex-wrap: wrap; }
+  .deck-nav a {
+    font-family: var(--mono); font-size: 11.5px; font-weight: 600;
+    color: #38BDF8; text-decoration: none; padding: 6px 10px;
+    border: 1px solid #334155; border-radius: 6px; background: #1E293B;
+  }
+  .card-stack {
+    display: flex; flex-direction: column; align-items: center; gap: 32px;
+  }
+  .card {
+    width: 900px; min-height: 1125px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: 0 20px 45px rgba(15, 23, 42, 0.12);
+    padding: 36px 40px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    position: relative; overflow: hidden;
+  }
+  .card-top {
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: var(--mono); font-size: 12px; font-weight: 700;
+    color: var(--muted); border-bottom: 2px solid #F1F5F9; padding-bottom: 12px;
+  }
+  .card-badge {
+    background: #EFF6FF; color: var(--accent);
+    padding: 4px 10px; border-radius: 6px; border: 1px solid #BFDBFE;
+  }
+  .card-title {
+    font-size: 27px; line-height: 1.2; font-weight: 800;
+    margin: 16px 0 8px; letter-spacing: -0.02em; color: var(--ink);
+  }
+  .card-title .grad {
+    background: linear-gradient(90deg, #2563EB, #059669);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .card-sub {
+    font-size: 14px; color: var(--ink-2); margin: 0 0 18px; line-height: 1.5;
+  }
+  .wb-3col {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 16px;
+  }
+  .wb-col {
+    background: #F8FAFC; border: 1px solid var(--border);
+    border-radius: 12px; padding: 14px;
+  }
+  .wb-col h4 {
+    margin: 0 0 8px; font-size: 12px; font-family: var(--mono);
+    text-transform: uppercase; color: var(--accent); letter-spacing: .04em;
+  }
+  .pill-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .pill {
+    font-family: var(--mono); font-size: 11px; font-weight: 600;
+    padding: 3px 8px; border-radius: 5px; background: #FFFFFF; border: 1px solid var(--border);
+  }
+  .pill.good { background: var(--good-bg); color: var(--good); border-color: #A7F3D0; }
+  .pill.warn { background: var(--warn-bg); color: var(--warn); border-color: #FDE68A; }
+  .pill.bad { background: var(--bad-bg); color: var(--bad); border-color: #FECACA; }
+  .quote-box {
+    background: #F8FAFC; border-left: 4px solid var(--accent);
+    padding: 12px 16px; border-radius: 0 10px 10px 0;
+    font-size: 13px; color: var(--ink-2); margin-bottom: 14px; line-height: 1.5;
+  }
+  .decision-card {
+    background: #F8FAFC; border: 1px solid var(--border);
+    border-radius: 12px; padding: 14px 16px; margin-bottom: 12px;
+  }
+  .dc-head {
+    display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;
+  }
+  .dc-title { font-weight: 800; font-size: 14.5px; color: var(--ink); }
+  .bar-wrap {
+    height: 10px; background: #E2E8F0; border-radius: 999px; overflow: hidden; margin: 8px 0 6px;
+  }
+  .bar-fill {
+    height: 100%; background: linear-gradient(90deg, var(--accent), var(--good)); border-radius: 999px;
+  }
+  .matrix-table {
+    width: 100%; border-collapse: collapse; font-size: 12.2px; margin-bottom: 14px;
+  }
+  .matrix-table th {
+    background: #0F172A; color: #F8FAFC; font-family: var(--mono);
+    font-size: 10.5px; text-transform: uppercase; padding: 9px 10px; text-align: left;
+  }
+  .matrix-table td {
+    padding: 8.5px 10px; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--ink-2);
+  }
+  .matrix-table tr:nth-child(even) td { background: #F8FAFC; }
+  .code-block {
+    background: #0F172A; color: #E2E8F0; font-family: var(--mono);
+    font-size: 11.4px; line-height: 1.48; padding: 14px 16px;
+    border-radius: 10px; overflow-x: auto; white-space: pre; margin-bottom: 10px;
+  }
+  .callout-dual {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+  }
+  .callout-box {
+    padding: 14px 16px; border-radius: 12px; border: 1px solid var(--border);
+    font-size: 12.5px; line-height: 1.48;
+  }
+  .callout-box.good { background: var(--good-bg); border-color: #6EE7B7; }
+  .callout-box.bad { background: var(--bad-bg); border-color: #FCA5A5; }
+  .callout-box.dark {
+    background: var(--dark); color: #F8FAFC; border-color: #334155;
+    grid-column: span 2;
+  }
+  .latency-row { margin-bottom: 14px; }
+  .latency-head {
+    display: flex; justify-content: space-between; font-size: 13px; font-weight: 700; margin-bottom: 4px;
+  }
+  .latency-bars { display: flex; flex-direction: column; gap: 5px; }
+  .l-line { display: flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: 11.5px; }
+  .l-tag { width: 130px; color: var(--muted); }
+  .l-track { flex: 1; height: 14px; background: #F1F5F9; border-radius: 6px; overflow: hidden; border: 1px solid var(--border); }
+  .l-opt { height: 100%; background: #3B82F6; border-radius: 6px; }
+  .l-base { height: 100%; background: #CBD5E1; border-radius: 6px; }
+  .l-val { width: 90px; text-align: right; font-weight: 700; }
+  .card-foot {
+    border-top: 1px solid var(--border); padding-top: 12px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: var(--mono); font-size: 11px; color: var(--muted);
+  }
+  @media (max-width: 940px) {
+    .card { width: 100%; min-height: auto; padding: 24px; }
+    .wb-3col, .callout-dual { grid-template-columns: 1fr; }
+    .callout-box.dark { grid-column: span 1; }
+  }
+</style>
+<!-- kee-dedicated-style:start -->
+<style>/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.65fr 1.1fr 1.15fr 1.1fr 1.1fr;gap:6px;align-items:stretch;min-width:0}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+.kee-dedicated-report-viewport,.kee-dedicated-report-layout{display:contents}@media screen{body.kee-dedicated-report-root{display:block}.kee-dedicated-report-viewport{display:block;width:100%;max-width:100%;overflow-x:auto}.kee-dedicated-report-layout{
+    margin: 0; padding: 28px 16px 60px;
+    background: var(--bg); color: var(--ink);
+    font-family: var(--sans);
+  margin:0;padding:0;min-width:900px}.kee-dedicated-report-viewport:focus-visible{outline:2px solid #3b82f6;outline-offset:3px}}</style>
+<!-- kee-dedicated-style:end -->
+<!-- kee-report-localization:metadata:start --><link rel="alternate" hreflang="en" href="landing-zone-cards.en.html"><link rel="alternate" hreflang="zh-CN" href="landing-zone-cards.zh-CN.html"><meta name="report-translation-source" content="workshops/ai-security/landing-zone-cards.html@941ee62"><meta name="report-translation-provenance" content="translation; independently_reproduced=false"><style>/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.65fr 1.1fr 1.15fr 1.1fr 1.1fr;gap:6px;align-items:stretch;min-width:0}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+
+html{scroll-padding-top:108px}.reading-header,.kee-dedicated-nav,[data-professional-header]{position:sticky;top:0;z-index:1000;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+
+:root{--search-bg:#101a30;--search-soft:#172440;--search-ink:#eef3ff;--search-muted:#adbbd1;--search-line:#293956;--search-accent:#9aabff;--header-offset:108px}
+:root[data-reading-shell][data-theme=light],[data-perimeter-theme=light]{--search-bg:#fff;--search-soft:#e8eefb;--search-ink:#17233e;--search-muted:#4c5e7c;--search-line:#d5ddec;--search-accent:#354ec8}
+html{scroll-padding-top:var(--header-offset,108px)!important}
+.site-search,.site-search *{box-sizing:border-box!important;font-family:"Segoe UI",sans-serif;letter-spacing:normal;text-transform:none}
+.site-search{position:relative;display:flex;align-items:center;gap:5px;min-width:0;width:230px;max-width:100%;margin:0!important;padding:0!important;line-height:1.4;border:1px solid var(--search-line);border-radius:9px;background:var(--search-soft);color:var(--search-ink);isolation:isolate}
+.site-search input[type=search]{display:block;flex:1;min-width:0;width:100%;height:42px;margin:0;padding:9px 8px!important;font-size:12px!important;line-height:1.5;border:0!important;border-radius:9px;background:transparent!important;color:var(--search-ink)!important;box-shadow:none!important;appearance:none}
+.site-search input::placeholder{color:var(--search-muted);opacity:1}.site-search input:focus-visible{outline:2px solid var(--search-accent);outline-offset:2px}
+.site-search kbd{font:11px Consolas,monospace;color:var(--search-muted);padding:1px 5px;border:1px solid var(--search-line);border-radius:4px}
+.site-search button[type=submit]{flex:none;width:38px;min-width:38px;height:42px;min-height:42px;padding:0;margin:0;border:0;border-radius:8px;background:transparent;color:var(--search-accent);font-size:24px;cursor:pointer;box-shadow:none}
+.search-label,.search-status{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.site-search .search-results{position:absolute;top:calc(100% + 10px);right:0;z-index:1100;width:min(480px,calc(100vw - 32px));max-height:min(560px,65vh);overflow-y:auto;border:1px solid var(--search-line);border-radius:12px;background:var(--search-bg);color:var(--search-ink);padding:10px;box-shadow:0 12px 32px #0005;text-align:left}
+.site-search .search-results[hidden]{display:none!important}.search-results .search-group{margin:8px 6px 4px;font:11px/1.5 Consolas,monospace;color:var(--search-muted)}
+.site-search .search-results a{display:block!important;padding:10px!important;margin:3px 0!important;border:1px solid transparent!important;border-radius:7px;background:transparent;color:var(--search-ink)!important;font-size:13px!important;text-decoration:none!important;white-space:normal;overflow-wrap:anywhere;text-align:left!important;line-height:1.5!important}
+.site-search .search-results a[aria-selected=true],.site-search .search-results a:hover{border-color:var(--search-accent)!important;background:var(--search-soft)}
+.search-results a small{display:block;font-size:10px;color:var(--search-muted);margin-top:4px}.search-results p{margin:10px;font-size:13px;color:var(--search-muted)}
+.search-archive-summary{padding:20px;border:1px solid var(--search-line);border-radius:10px;background:var(--search-bg);color:var(--search-ink);margin:24px 0}.search-archive-summary h2{font-size:24px;margin:0 0 12px}.search-archive-summary li{margin:12px 0}.search-archive-summary a{color:var(--search-accent)}
+[data-professional-header]{position:sticky!important;top:0!important;z-index:1000!important;background:var(--search-bg)!important;--header-glass:rgba(16,26,48,.9);grid-template-columns:auto minmax(0,1fr) 230px auto!important}
+[data-professional-header][data-perimeter-theme=light],:root[data-reading-shell][data-theme=light] [data-professional-header]{--header-glass:rgba(255,255,255,.94)}
+[data-professional-header] .professional-mobile{display:none}.professional-mobile summary{min-width:38px;min-height:42px;display:grid;place-items:center;cursor:pointer;list-style:none}.professional-mobile summary::-webkit-details-marker{display:none}
+[data-professional-header] .professional-context{display:none}
+.professional-context-bar{padding:12px 24px;border-bottom:1px solid var(--search-line);background:var(--search-bg);color:var(--search-muted);font:12px/1.6 "Segoe UI",sans-serif;display:flex;flex-wrap:wrap;gap:8px 18px;overflow-wrap:anywhere}.professional-context-bar a{color:var(--search-accent)}
+@supports((backdrop-filter:blur(16px)) or (-webkit-backdrop-filter:blur(16px))){.site-header,[data-professional-header]{background:var(--header-glass)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}}
+@media(max-width:1250px) and (min-width:701px){.header-inner{grid-template-columns:minmax(0,1fr) 230px auto!important;padding:12px 0;gap:12px!important}.desktop-nav{grid-row:2;grid-column:1/-1}.header-inner>.site-search{grid-column:2;grid-row:1}.header-inner>.controls{grid-column:3;grid-row:1}[data-professional-header]{grid-template-columns:minmax(0,1fr) 230px auto!important;gap:12px!important}[data-professional-header]>.professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header]>.site-search{grid-column:2;grid-row:1}[data-professional-header]>.professional-controls{grid-column:3;grid-row:1}:root{--header-offset:176px}}
+@media(max-width:700px){.header-inner{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 0;gap:8px!important}.header-inner>.site-search{grid-row:2;grid-column:1/-1;width:100%}.header-inner>.controls{grid-column:2;grid-row:1}.site-search .search-results{width:100%;right:0}[data-professional-header]{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 16px!important;gap:8px!important}[data-professional-header]>.professional-primary{display:none!important}[data-professional-header]>.site-search{grid-column:1/-1;grid-row:2;width:100%}[data-professional-header]>.professional-controls{grid-column:2;grid-row:1}[data-professional-header] .professional-mobile{display:block}[data-professional-header] .professional-mobile[open]>.professional-primary{position:absolute;top:100%;left:0;right:0;padding:16px;background:var(--search-bg);border-bottom:1px solid var(--search-line);display:grid;grid-template-columns:1fr 1fr;gap:8px}[data-professional-header] .professional-mobile .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:12px!important}:root{--header-offset:126px}}
+@media(prefers-reduced-transparency:reduce){.site-header,[data-professional-header]{background:var(--search-bg)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+@media print{.site-search,.professional-context-bar{display:none!important}}
+
+@media(min-width:1251px){.header-inner{display:grid!important;grid-template-columns:auto minmax(0,1fr) 230px auto!important;gap:18px!important}.header-inner .desktop-nav{min-width:0}}
+
+html:has(.kee-dedicated-app-root){height:auto!important;overflow-x:hidden!important;overflow-y:auto!important}
+body:has([data-professional-header]){height:auto!important;overflow-x:clip!important;overflow-y:visible!important;padding-top:0!important}
+.demo-language-navigation{display:none!important}
+.stage-column,.telemetry-panel,.scene-pill,#timeline-slider{min-width:0}
+@media(max-width:1180px){.workspace,.template-tabs{grid-template-columns:minmax(0,1fr)!important}}
+
+.in-arena-frame .professional-context-bar,.in-arena-frame [data-knowledge-atlas]{display:none!important}
+</style><!-- kee-report-localization:metadata:end --></head>
+<body class="kee-dedicated-report-root"><!-- kee-report-localization-navigation:start --><nav class="kee-dedicated-nav" data-professional-header><a class="professional-identity reading-brand kee-dedicated-identity identity" href="../../zh.html">Qi Chen · @turbo998</a><div class="professional-primary" role="navigation" aria-label="主导航"><a href="../../studio/zh-index.html" data-section="hub" data-nav-en-href="../../studio/index.html" data-nav-zh-href="../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub">Frontier Transformation Engineering Hub</a><a href="../../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../../benchmarks.html" data-nav-zh-href="../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心" aria-current="page">基准评测中心</a><a href="../../zh-github-radar.html" data-section="radar" data-nav-en-href="../../github-radar.html" data-nav-zh-href="../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI 信号雷达</a><a href="../../zh-openrouter.html" data-section="routing" data-nav-en-href="../../openrouter.html" data-nav-zh-href="../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../../zh-about.html" data-section="profile" data-nav-en-href="../../about.html" data-nav-zh-href="../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">首席架构师履历</a></div><form class="site-search" role="search" action="../../studio/zh-archive.html" method="get" data-search-root="../../index.html" data-search-language="zh-CN"><label class="search-label" for="site-search-input">搜索架构、评测、Demo、技能...</label><input id="site-search-input" name="q" type="search" placeholder="搜索架构、评测、Demo、技能..." autocomplete="off" spellcheck="false" aria-keyshortcuts="/ Control+k Meta+k"><kbd aria-hidden="true">/</kbd><button type="submit" aria-label="搜索全部内容">⌕</button><div class="search-results" id="site-search-results" hidden></div><span class="search-status" role="status" aria-live="polite"></span></form><div class="reading-controls professional-controls" aria-label="网站语言与外观"><a href="landing-zone-cards.en.html" lang="en" hreflang="en">EN</a><a href="landing-zone-cards.zh-CN.html" lang="zh-CN" hreflang="zh-CN" aria-current="page">中文</a><details class="professional-mobile"><summary aria-label="打开主导航">☰</summary><div class="professional-primary" role="navigation" aria-label="移动主导航"><a href="../../studio/zh-index.html" data-section="hub" data-nav-en-href="../../studio/index.html" data-nav-zh-href="../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub">Frontier Transformation Engineering Hub</a><a href="../../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../../benchmarks.html" data-nav-zh-href="../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心" aria-current="page">基准评测中心</a><a href="../../zh-github-radar.html" data-section="radar" data-nav-en-href="../../github-radar.html" data-nav-zh-href="../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI 信号雷达</a><a href="../../zh-openrouter.html" data-section="routing" data-nav-en-href="../../openrouter.html" data-nav-zh-href="../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../../zh-about.html" data-section="profile" data-nav-en-href="../../about.html" data-nav-zh-href="../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">首席架构师履历</a></div></details><a data-reading-theme="light" href="?theme=light" aria-label="浅色主题">☀</a><a data-reading-theme="dark" href="?theme=dark" aria-label="深色主题">◐</a></div><div class="professional-context" aria-label="返回上下文"><a href="../../studio/zh-index.html">← 工程枢纽</a> · <a href="../../studio/zh-security.html">返回主题</a></div></nav><div class="professional-context-bar"><a href="../../studio/zh-index.html">← 工程枢纽</a> · <a href="../../studio/zh-security.html">返回主题</a></div><nav aria-label="报告语言" style="font:14px/1.5 system-ui,sans-serif;display:flex;flex-wrap:wrap;gap:12px;padding:12px 18px;background:#101a30;color:#eef3ff;width:100%;box-sizing:border-box"><a style="color:#9aabff" href="landing-zone-cards.en.html" lang="en" hreflang="en">EN</a><a style="color:#9aabff" href="landing-zone-cards.zh-CN.html" lang="zh-CN" hreflang="zh-CN" aria-current="page">中文</a><span>源报告译本；非独立复测。指标与证据保持原样。</span></nav><figure class="knowledge-figure" data-knowledge-atlas="security" style="margin:24px 0;max-width:100%"><svg xmlns="http://www.w3.org/2000/svg" lang="zh-CN" role="img" aria-labelledby="knowledge-965c4c4025f8-title knowledge-965c4c4025f8-desc" viewBox="0 0 360 733" width="360" style="display:block;width:100%;height:auto;max-width:560px;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-965c4c4025f8-title">安全AI登陆区&amp;amp;边疆SOC — 7-卡片 -你还不知道4:5视觉报告</title><desc id="knowledge-965c4c4025f8-desc">资产与信任边界: 身份 · 敏感数据 · 工具 · 外部输入 → 定义威胁模型 → 不可信输入与攻击路径: 提示注入 · 供应链 · 工具滥用 → 进入控制边界 → 最小权限与明确批准: 隔离 · 校验 · 策略关卡 · 人工审核 → 产生可审计事件 → 检测、遏制与恢复: 遥测 · 事件响应 · 回滚 → 检验防御假设 → 离线演练与来源证据: 来源事件不代表本次核验的损失估算</desc><rect width="360" height="733" rx="16" fill="#091827"/><text x="20" y="30" fill="#eef5ff" font-size="20" font-weight="700"><tspan x="20" dy="0">安全AI登陆区&amp;amp;边疆SOC — 7-</tspan><tspan x="20" dy="28">卡片 -你还不知道4:5视觉报告</tspan></text><text x="20" y="86" fill="#a9b8ce" font-size="13" font-weight="400"><tspan x="20" dy="0">概念架构 · 箭头表示关系，不代表测量值</tspan></text><g data-concept="1"><rect x="16" y="112" width="328" height="79" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="126" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="142" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">资产与信任边界</tspan></text><text x="32" y="173" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">身份 · 敏感数据 · 工具 · 外部输入</tspan></text></g><g data-relationship="定义威胁模型"><path d="M32 191 V236" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 231 L32 237 L37 231" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="217" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">定义威胁模型</tspan></text></g><g data-concept="2"><rect x="16" y="243" width="328" height="79" rx="12" fill="#132942" stroke="#43617f"/><rect x="16" y="257" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="273" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">不可信输入与攻击路径</tspan></text><text x="32" y="304" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">提示注入 · 供应链 · 工具滥用</tspan></text></g><g data-relationship="进入控制边界"><path d="M32 322 V367" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 362 L32 368 L37 362" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="348" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">进入控制边界</tspan></text></g><g data-concept="3"><rect x="16" y="374" width="328" height="79" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="388" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="404" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">最小权限与明确批准</tspan></text><text x="32" y="435" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">隔离 · 校验 · 策略关卡 · 人工审核</tspan></text></g><g data-relationship="产生可审计事件"><path d="M32 453 V498" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 493 L32 499 L37 493" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="479" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">产生可审计事件</tspan></text></g><g data-concept="4"><rect x="16" y="505" width="328" height="79" rx="12" fill="#132942" stroke="#43617f"/><rect x="16" y="519" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="535" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">检测、遏制与恢复</tspan></text><text x="32" y="566" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">遥测 · 事件响应 · 回滚</tspan></text></g><g data-relationship="检验防御假设"><path d="M32 584 V629" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 624 L32 630 L37 624" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="610" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">检验防御假设</tspan></text></g><g data-concept="5"><rect x="16" y="636" width="328" height="79" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="650" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="666" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">离线演练与来源证据</tspan></text><text x="32" y="697" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">来源事件不代表本次核验的损失估算</tspan></text></g></svg><figcaption style="font:14px/1.6 system-ui,sans-serif;margin:12px 0;overflow-wrap:anywhere">整体知识图示：按标注关系阅读组件与工程边界。布局仅为概念示意；不表示吞吐、性能排名或生产部署。</figcaption></figure><!-- kee-report-localization-navigation:end -->
+
+<!-- kee-dedicated-report-open:start --><div class="kee-dedicated-report-viewport" tabindex="0" role="region" aria-label="原始报表; 水平滚动以读取所有栏目"><div class="kee-dedicated-report-layout"><!-- kee-dedicated-report-open:end -->
+
+<div class="deck-header">
+  <div>
+    <h1>安全AI着陆区&amp;边疆SOC — 7-卡片 -你还不知道4:5基准&amp;建筑地标</h1>
+    <p>资料来源:边境安全网(Deck)。42· 匿名) AI(代理)的安全365 5支柱) × 安全AI(ISOC + 感知+ MDASH)</p>
+  </div>
+  <div class="deck-nav">
+    <a href="#card-1">1/7概览</a>
+    <a href="#card-2">2/7 5支柱</a>
+    <a href="#card-3">3/7矩阵</a>
+    <a href="#card-4">4/7议定书</a>
+    <a href="#card-5">5/7边疆SOC</a>
+    <a href="#card-6">6/7冲刺&amp;KPIs 软件</a>
+    <a href="#card-7">7/7我的礼物</a>
+  </div>
+</div>
+
+<div class="card-stack">
+
+  <!-- ==================== CARD 1 ==================== -->
+  <article class="card" id="card-1">
+    <div>
+      <div class="card-top">
+        <span class="card-badge">1 / 7· 安全地带&amp;前线SOC</span>
+        <span>42 SLIDES · FTE WK3 GATE · M365 E7</span>
+      </div>
+      <h2 class="card-title">
+        安全AI登陆区 <span class="grad">"生化受人"横行5支柱</span> 边框SOC管弦乐团 <span class="grad">100+ AI 代理设备</span>
+      </h2>
+      <p class="card-sub">
+        AI重写了罪行和辩护规则:攻击者使用Claude + GPT生成~17,000跨行业的自适应性ICS49数小时模块(简)2026蒙特雷水利设施。 <strong>AI的安全( 作为 UI 的代理机驾驶)365 5- 码头登陆区)</strong> 与 <strong>安全AI(ISOC+项目感知+MDASH)</strong>.
+      </p>
+
+      <div class="wb-3col">
+        <div class="wb-col">
+          <h4>01· 为什么现在&amp;FTE 冲刺</h4>
+          <div style="font-size:12.5px;color:var(--ink-2);line-height:1.5;">
+            • <strong>蒙特雷ICS案(斯利德)3–4)</strong>: ~17,000当地办事处费用/49通过Claude + GPT; 0可再使用的静态签名。<br/>
+            • <strong>FTE 提议(4–6WSprint · 幻灯片5)</strong>:<br/>
+            &nbsp;&nbsp;- <code>WK1–2</code>: 5–10结果( 目标)1)<br/>
+            &nbsp;&nbsp;- <code>WK3</code>: <strong>安全AI着陆区+副驾驶UI</strong><br/>
+            &nbsp;&nbsp;- <code>WK4–5</code>: 构建&amp;发射3探员<br/>
+            &nbsp;&nbsp;- <code>WK6</code>: 边界路线图(Gate)2)
+          </div>
+          <div class="pill-row">
+            <span class="pill bad">17K当地办事处费用/49模式</span>
+            <span class="pill good">风云3强制性大门</span>
+          </div>
+        </div>
+
+        <div class="wb-col">
+          <h4>02· 大赦国际的安全(5支柱)</h4>
+          <div style="font-size:12.5px;color:var(--ink-2);line-height:1.5;">
+            • <strong>经验层</strong>:副驾驶为AI的UI(Chat,研究员,同工,团队).<br/>
+            • <strong>控制计划( 代理)365)</strong>:<br/>
+            &nbsp;&nbsp; 可见度&amp;治理(登记)<br/>
+            &nbsp;&nbsp; 身份&amp;访问( A)Entra代理身份证明)<br/>
+            &nbsp;&nbsp; 数据安全(Purview标签/DLP)<br/>
+            &nbsp;&nbsp; 威胁保护(第条)Defender运行时间)<br/>
+            &nbsp;&nbsp; 遵守情况&amp;审计(发现/贿赂)<br/>
+            • <strong>基数</strong>员额:365英5/ 东7(Frontier套房) (英语:Frontier Suite).
+          </div>
+          <div class="pill-row">
+            <span class="pill good">生来受人管理</span>
+            <span class="pill">Microsoft探员365</span>
+          </div>
+        </div>
+
+        <div class="wb-col">
+          <h4>03安全大赦国际(前线)SOC)</h4>
+          <div style="font-size:12.5px;color:var(--ink-2);line-height:1.5;">
+            • <strong>边疆SOC 7-Day遥测</strong>: <code>847</code> 减少接触(____________________________________________________________________________________________________________________________________________________________________________________18%), <code>41</code> 正在调查(________________________________________________________________________________________________________________________________________________________________________________________________________12%), <code>124</code> 技术指标(_________________________________________________________________________________________________________________________________________________________________________18%), <code>23</code> 攻击被打乱(____________________________________________________________________________________________________________________________________________________________________________________31%).<br/>
+            • <strong>项目概念( :GA月(半天)2026)</strong>:红相/蓝相/绿相干 三合一,统一安全图.<br/>
+            • <strong>MDASH( 私人预览)</strong>: <code>100+</code> 专业AI代理(Frontier + MS模型).
+          </div>
+          <div class="pill-row">
+            <span class="pill good">100+ MDASH 代理设备</span>
+            <span class="pill warn">ISOC 内建SIEM</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="decision-card">
+        <div class="dc-head">
+          <span class="dc-title">预设强制性大门:6客户问题横跨观察7)</span>
+          <span class="pill good">6 / 6在WK 之前已答覆4生产</span>
+        </div>
+        <div style="font-size:12.3px;color:var(--ink-2);display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px;">
+          <div>1。在 Org 中有多少代理&amp;风险在哪里?<strong>观察</strong>)</div>
+          <div>4。每个代理机构可使用哪些资源&amp;是否过度特权?<strong>高文,你这混蛋</strong>)</div>
+          <div>2。谁是负责的所有人&amp;什么时候退休?<strong>高文,你这混蛋</strong>)</div>
+          <div>5副驾驶或代理员会泄露敏感/过份共享的数据吗? (<strong>安全( E)</strong>)</div>
+          <div>3. 所有代理行动是否都能够审计和追踪? (<strong>观察/总督</strong>)</div>
+          <div>6。当被迅速注射击中时,可以SOC检测&amp;实时封堵? (<strong>安全( E)</strong>)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-foot">
+      <span>保护:匿名报告的结构&amp;遥测(Frontier安全地标) !42幻灯片).</span>
+      <span>CARD 1 OF 7</span>
+    </div>
+  </article>
+
+  <!-- ==================== CARD 2 ==================== -->
+  <article class="card" id="card-2">
+    <div>
+      <div class="card-top">
+        <span class="card-badge">2 / 7· 塞纳里奥:5- 皮拉·斯里克(英语:Al Landing Zone ("Born Governored")) - 皮拉·斯里克(英语:A.</span>
+        <span>SLIDES 6–23 · AGENT 365 + E7</span>
+      </div>
+      <h2 class="card-title">
+        副驾驶为单入点+ <span class="grad">Microsoft探员365五分机控制平面</span> 消除阴影AI 漂流
+      </h2>
+      <p class="card-sub">
+        分解的AI入站点创建了被忽略的阴影AI(单独登录,单独的数据存储,零审计). <strong>作为AI的UI副驾驶</strong> + <strong>Microsoft探员365</strong> 强制要求每个特工从出生起就拥有身份、数据、运行时间威胁和守法护栏
+      </p>
+
+      <div class="quote-box">
+        <strong>FTE 提供规则( 滑行)5 &amp; 8):</strong> "就像云层迁移开始于...Azure登陆区,规模化企业AI要求建立身份,数据,威胁和治理基准在周3. 没有安全AI着陆区,周4–5代理不能go生产。"
+      </div>
+
+      <div class="decision-card">
+        <div class="dc-head">
+          <span class="dc-title">支柱&amp;名统一代理人365书记官处+Entra代理ID 实时访问控制( Slides)10–13)</span>
+          <span class="pill good">自动 / 实时 CA 门</span>
+        </div>
+        <div class="bar-wrap"><div class="bar-fill" style="width:100%"></div></div>
+        <div style="font-size:12.4px;color:var(--ink-2);line-height:1.48;">
+          • <strong>支柱 可见度&amp;治理</strong>: 登记册1st-party (Foundry副驾驶工作室、建筑代理、合作、研究员、SDK框架(框架)LangChain, CrewAI莱玛因德克斯OpenAI/管理365探员SDK),相接云(Vertex AI,"活化"作活化.AWS和网络阴影代理公司(Bedrock)CLI,桌面,代理IDes,VS代码扩展,Claw-based,SaaS Agents.<br/>
+          • <strong>支柱 身份&amp;访问</strong>: 每个代理都收到一个独特的 <strong>Entra代理身份证明</strong> + 范围 <strong>访问软件包</strong>;异常活动上升Entra风险和触发实时有条件访问块。
+        </div>
+      </div>
+
+      <div class="decision-card">
+        <div class="dc-head">
+          <span class="dc-title">支柱、&amp; ⑤ · Purview数据遮盖+Defender运行时间 AgentSOC + 贿赂/合规审计(滑行)14–21)</span>
+          <span class="pill good">自动行动 —— 运行时块+审计</span>
+        </div>
+        <div class="bar-wrap"><div class="bar-fill" style="width:100%"></div></div>
+        <div style="font-size:12.4px;color:var(--ink-2);line-height:1.48;">
+          • <strong>支柱 数据安全Purview)</strong>: 执行敏感性标签&amp; DLP将敏感数据掩入提示/输出; 内幕风险管理(IRM)评分风险代理商,并与Defender XDR.<br/>
+          • <strong>支柱 威胁保护Defender+ ISOC) 键</strong>: 检查提示、输出、工具调用,以及MCP/API地方各级的援引&amp;云代理; 将攻击路径映射为统一 <strong>特工SOC</strong>.<br/>
+          • <strong>支柱 遵约&amp;审计(Purview)</strong>:每个代理商所说的话/所作/获得的默认审计日志;捕获不道德提示(例如幻灯片)18 <em>扎瓦/孔多索门外</em> 采购礼品/贿赂及时,强制保留&amp;e 发现。
+        </div>
+      </div>
+
+      <div class="decision-card" style="margin-bottom:0;">
+        <div class="dc-head">
+          <span class="dc-title">基金会 ·Microsoft 365英7(Frontier套房) (英语:Frontier Suite).&amp;探员365先决条件矩阵(滑动)22–23)</span>
+          <span class="pill warn">许可证发放&amp;权利结构</span>
+        </div>
+        <div style="font-size:12.3px;color:var(--ink-2);line-height:1.45;">
+          • <strong>管理365英7(Frontier套房) (英语:Frontier Suite).</strong> = <code>M365 E5 (Defender + Purview + Intune)</code> + <code>Microsoft Agent 365</code> + <code>Entra Suite</code> + <code>M365 Copilot + Work IQ</code>.<br/>
+          • <strong>探员365独立资格</strong>: 需要至少一个 <code>M365 E5 / A5 / Business Premium</code> OR <code>Defender Suite + Purview Suite (Commercial / Edu / FLW)</code>.
+        </div>
+      </div>
+    </div>
+
+    <div class="card-foot">
+      <span>控制计划:Microsoft探员365 + Entra代理标识 +Purview + Defender XDR+ 调制解调器</span>
+      <span>CARD 2 OF 7</span>
+    </div>
+  </article>
+
+  <!-- ==================== CARD 3 ==================== -->
+  <article class="card" id="card-3">
+    <div>
+      <div class="card-top">
+        <span class="card-badge">3 / 7· 我所试验的——全面评价&amp;能力物质</span>
+        <span>SLIDES 3–42 · 8 ARCHITECTURAL DOMAINS</span>
+      </div>
+      <h2 class="card-title">
+        横跨全分卡 <span class="grad">8边境安全领域</span>: 无政府基线小姐 (  )与登陆区盖茨.
+      </h2>
+      <p class="card-sub">
+        评估企业在AI协助的违法行为辩护中准备情况,FTE周3登陆区界碑,终点影AI和边境SOC(ISOC + 感知 + MDASH).
+      </p>
+
+      <table class="matrix-table">
+        <thead>
+          <tr>
+            <th>DOMAIN / SLIDE</th>
+            <th>QUESTION / ADVERSARIAL SCENARIO</th>
+            <th>无人管束的贝斯瓦斯 前线登陆区</th>
+            <th>GATE ACTION</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>01· AI 辩护</strong><br/>(滑动)3–4)</td>
+            <td>Claude+GPTICS攻击(~17,000现场49自我调整模块)</td>
+            <td>++ 静态签名 AV 错过了零再用代码 → 在分数 + 感知 中 ~ ISOC 自动中断</td>
+            <td><span class="pill good">自动块</span></td>
+          </tr>
+          <tr>
+            <td><strong>02FTE 冲刺</strong><br/>(滑动5)</td>
+            <td>部署3瓦克邦生产代理公司4–5无 WK3着陆区</td>
+            <td>被封杀在WK3门:没有身份、数据、威胁,代理无法输入 prod&amp;政府基线</td>
+            <td><span class="pill bad">硬门屏障</span></td>
+          </tr>
+          <tr>
+            <td><strong>03可见度</strong><br/>(滑动)10–11)</td>
+            <td>未登记LangChain/贝德洛克克.CLI/Claw/VS 代码代理</td>
+            <td>影子AI盲点 代理365书记官处SDK同步 + 结束点/ 网络发现</td>
+            <td><span class="pill good">注册/检疫</span></td>
+          </tr>
+          <tr>
+            <td><strong>04· 代理身份</strong><br/>(滑动)12–13)</td>
+            <td>试图超越范围横向获取资源</td>
+            <td>共享服务主爆炸半径 □Entra代理ID + 访问包 + 实时 CA 块</td>
+            <td><span class="pill good">有条件访问块</span></td>
+          </tr>
+          <tr>
+            <td><strong>05数据安全</strong><br/>(滑动)14–15)</td>
+            <td>用户提示提醒代理来获取&amp;过滤敏感数据</td>
+            <td>过度分摊的SPO泄漏 ~Purview标签+DLP自动装模作样+IRM 代理风险分数XDR</td>
+            <td><span class="pill good">自动任务&amp;得分数</span></td>
+          </tr>
+          <tr>
+            <td><strong>06· 威胁/MCP</strong><br/>(滑动)16–17)</td>
+            <td>间接即时注射触发恶意MCP / API工具调用</td>
+            <td>未检查工具执行Defender运行时间即时/工具检查+ AgentSOC 攻击图</td>
+            <td><span class="pill good">运行时截取</span></td>
+          </tr>
+          <tr>
+            <td><strong>07遵守规定</strong><br/>(滑动)18–19)</td>
+            <td>即时要求代理商提供采购"独家礼物"(Zava受贿).</td>
+            <td>未审计的不道德产出 ∗∗Purview商业行为分类器旗下政策违规 + e 发现</td>
+            <td><span class="pill warn">旗帜&amp;法律持有权</span></td>
+          </tr>
+          <tr>
+            <td><strong>08· 终点AI</strong><br/>(滑动)20–21)</td>
+            <td>开发者运行未管理的本地代理 /CLI公司笔记本电脑</td>
+            <td>地方过滤Defender+ 微调发现本地代理, 检查运行时间或执行封条</td>
+            <td><span class="pill good">终点护栏</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout-dual">
+        <div class="callout-box good">
+          <strong>· 门槛门规则(滑道)5 &amp; 34):</strong><br/>
+          如果客户回答"不确定" 任何一个5发现问题(代理计数/所有者、副驾驶数据标签,Entra身份证明过期了SOC即时注射块,或端点本地代理控制,触发 a <strong>安全AI 着陆区评估</strong> 缩放前。
+        </div>
+        <div class="callout-box bad">
+          <strong>· 关键反6):</strong><br/>
+          允许业务单位部署孤立的AI聊天门户和无管理的地方CLI/IDE 代理设备不 <strong>作为AI的UI副驾驶</strong> 财务报告和已审计财务报表 <strong>探员365书记官处</strong> 制造出不可听取的"影子AI"和"无限制"的爆炸半径.
+        </div>
+      </div>
+    </div>
+
+    <div class="card-foot">
+      <span>索克达尔覆盖:8 / 8边境安全领域5· 登陆区支柱3边疆SOC发动机</span>
+      <span>CARD 3 OF 7</span>
+    </div>
+  </article>
+
+  <!-- ==================== CARD 4 ==================== -->
+  <article class="card" id="card-4">
+    <div>
+      <div class="card-top">
+        <span class="card-badge">4 / 7· 在饥饿下—— 执行&amp;统一性别观</span>
+        <span>SLIDES 12–26 · AGENT 365 × DEFENDER ISOC</span>
+      </div>
+      <h2 class="card-title">
+        决定性政策管道: <span class="grad">Entra代理标识 +Purview + Defender运行时间</span> → <span class="grad">ISOC 安全图</span>
+      </h2>
+      <p class="card-sub">
+        如何在身份、数据、运行时工具/ 之间实时评估单一用户对代理互动MCP电话、商业行为合规和边界SOC曝光图.
+      </p>
+
+      <div class="code-block">{
+  "landing_zone_control_plane": "Microsoft Agent 365 (M365 E7 Frontier Suite)",
+  "entry_point": "Microsoft 365 Copilot UI (Chat | Researcher | Cowork | Teams)",
+  "agent_registration": {
+    "registry_id": "agent365://contoso/procurement-assistant-v2",
+    "platform_origin": "Microsoft Foundry / LangChain (Agent 365 SDK Sync)",
+    "entra_agent_id": "spn:agent-7f9a-contoso-procurement",
+    "access_package": "AP-Procurement-Read-Only-Tier1",
+    "owner_sponsor": "procurement-lead@contoso.com"
+  },
+  "runtime_inspection_request": {
+    "user_prompt": "Draft email to Contoso Outdoors buyer offering 'exclusive gift' to fast-track Zava contract",
+    "tool_invocations": ["mcp://erp-connector/contracts.read", "api://mail.send"]
+  }
+}</div>
+
+      <div style="text-align:center;font-family:var(--mono);font-size:12px;font-weight:700;color:var(--accent);margin:4px 0;">
+        外边的包厢5- 皮拉尔线&amp;前线SOC格拉斯克(GRAPH)12–26) ↓
+      </div>
+
+      <div class="code-block">&lt;answer&gt;
+[PILLAR 2 · ENTRA AGENT ID]   Identity verified (spn:agent-7f9a); Continuous Risk = MEDIUM;
+                              Access Package blocks unapproved external write scope.
+[PILLAR 3 · PURVIEW DATA]     Sensitivity Label = CONFIDENTIAL; DLP masks contract pricing PII;
+                              Insider Risk Management (IRM) increments Agent Risk Score (+35).
+[PILLAR 4 · DEFENDER RUNTIME] Inspects Prompt → Agent Output → Tool Call (MCP/API);
+                              Blocks api://mail.send execution; emits XDR Alert to AgentSOC.
+[PILLAR 5 · PURVIEW AUDIT]    Classifier triggered: "Policy Violation: Unethical AI Agent Behavior
+                              (Bribery / Improper Inducement)"; logged to Audit &amp; eDiscovery hold.
+[FRONTIER SOC · ISOC GRAPH]   Correlates DeviceProcessEvents + SignInLogs + AlertEvidence +
+                              ExposureGraphNodes + RedTeamOperations → Blue/Green Agents remediate.
+VERDICT: BLOCK_EXECUTION_AND_ESCALATE_TO_ISOC
+&lt;/answer&gt;</div>
+
+      <div class="decision-card" style="margin-bottom:0;">
+        <div class="dc-head">
+          <span class="dc-title">统一安保&amp;曝光图示 红/ 蓝/ 绿色代理( Slide)26)</span>
+          <span class="pill">19原生遥测表</span>
+        </div>
+        <div style="font-size:12px;color:var(--ink-2);font-family:var(--mono);line-height:1.5;">
+          设备信息 设备处理 设备程序 设备程序 设备程序 设备网络 设备登记 设备记录 签名 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份记录 身份 身份记录 身份 身份
+        </div>
+      </div>
+    </div>
+
+    <div class="card-foot">
+      <span>议定书核查:幻灯片12 (Entra· 幻灯片14 (Purview· 幻灯片16 (Defender· 幻灯片18· 幻灯片26(图)</span>
+      <span>CARD 4 OF 7</span>
+    </div>
+  </article>
+
+  <!-- ==================== CARD 5 ==================== -->
+  <article class="card" id="card-5">
+    <div>
+      <div class="card-top">
+        <span class="card-badge">5 / 7· 皇家检查 安全局SOC)</span>
+        <span>SLIDES 24–32 · ISOC + PERCEPTION + MDASH</span>
+      </div>
+      <h2 class="card-title">
+        边疆SOC移动防御从 <span class="grad">突破后警报线</span> 改为 <span class="grad">红/蓝/绿代理循环</span>
+      </h2>
+      <p class="card-sub">
+        比较遗产手册SIEM/SOC综合业务 <strong>边疆SOC</strong> 堆栈 : <strong>ISOC 中 , 以 :Microsoft Defender</strong>, <strong>项目概念(红/蓝/绿色代理三合一)</strong>,以及 <strong>马里(MDASH)100+ 专门AI代理商)</strong>.
+      </p>
+
+      <table class="matrix-table">
+        <thead>
+          <tr>
+            <th>SOC CAPABILITY / DIMENSION</th>
+            <th>LEGACY MANUAL SOC /STANDALONE SIEM</th>
+            <th>FRONTIER SOC (ISOC + PERCEPTION + MDASH)</th>
+            <th>MEASURED SHIFT / TIMELINE</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>接触管理</strong><br/>(滑动24)</td>
+            <td>定期进行静态脆弱性扫描;人工售票</td>
+            <td>连续曝光图+绿色团队代理验证: <strong>847减少接触</strong></td>
+            <td><span class="pill good">↑ 18%(五. )7几天前,我们开始讨论</span></td>
+          </tr>
+          <tr>
+            <td><strong>威胁调查</strong><br/>(滑动24)</td>
+            <td>手动连接断开的点工具的日志缝合</td>
+            <td>蓝队特工攻击重建&amp;分数 : <strong>41正在调查</strong></td>
+            <td><span class="pill good">↑ 12%(五. )7几天前,我们开始讨论</span></td>
+          </tr>
+          <tr>
+            <td><strong>威胁情报</strong><br/>(滑动24)</td>
+            <td>静态IoC没有组织背景的反馈</td>
+            <td>已投入运营的由ORG资产规划的TI&amp;历史 : <strong>124内容充实的指标</strong></td>
+            <td><span class="pill good">↑ 18%(五. )7几天前,我们开始讨论</span></td>
+          </tr>
+          <tr>
+            <td><strong>主动攻击中断</strong><br/>(滑动)24 &amp; 30)</td>
+            <td>勒索物品的人工分析员增加小时/日</td>
+            <td>自主防御在几分钟内会干扰多阶段攻击: <strong>23中断攻击</strong></td>
+            <td><span class="pill good">↑ 31%(五. )7几天前,我们开始讨论</span></td>
+          </tr>
+          <tr>
+            <td><strong>脆弱性与被剥削的证据</strong><br/>(滑动27· 卫生和卫生部</td>
+            <td>高假阳性SAST警报;手工PoC核查</td>
+            <td><strong>MDASH( 私人预览)</strong>: <strong>100+ 专门AI代理商</strong> (Frontier + MS 模型)证明可开发性端到端</td>
+            <td><span class="pill warn">100+ 代理人(审查)</span></td>
+          </tr>
+          <tr>
+            <td><strong>ISOC 活性能力</strong><br/>(滑动)29–32)</td>
+            <td>分开SIEM白天前需要部署 --1价值</td>
+            <td>内建SIEM合格资格Defender套房/电子5/ 东7: <strong>案件Mgmt,SOAR Playbook Gen,工作手册,乌干达联邦仲裁法院</strong></td>
+            <td><span class="pill good">今天可用时间</span></td>
+          </tr>
+          <tr>
+            <td><strong>ISOC 十一月2026推出</strong><br/>(滑动32)</td>
+            <td>短期留存&amp;手动检测规则维护</td>
+            <td><strong>90- 保留每日数据</strong>,内容枢纽+CI/CD威胁Intel平台,( 平台,SOC优化, <strong>感觉GA</strong></td>
+            <td><span class="pill">GA月(半天),将举行为期一年的大会。2026</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="decision-card" style="margin-bottom:0;">
+        <div class="dc-head">
+          <span class="dc-title">工程感知多代理、多模式闭合环( Slide)25)</span>
+          <span class="pill good">红色+蓝色+绿色代理协同</span>
+        </div>
+        <div style="font-size:12.3px;color:var(--ink-2);line-height:1.5;">
+          • <strong>红色团队特工(模拟攻击)</strong>:地图攻击路径,发现临界的被窒息点,扫描出易发的代码,暴露出检测漏洞.<br/>
+          • <strong>蓝色团队代理(检测)&amp;电话)</strong>:操作威胁情报,重建攻击时间段,分会警报,消除噪音.<br/>
+          • <strong>绿色团队代理(补救)&amp;汉登).</strong>:缩小覆盖差距,分析姿态,验证暴露,优先进行由根起的补救.
+        </div>
+      </div>
+    </div>
+
+    <div class="card-foot">
+      <span>正式链接: aska.ms/ISOCDefender ^ aka.ms/caseindefender → 有资格参加Defender套房,M型的365英5 &amp;英7</span>
+      <span>CARD 5 OF 7</span>
+    </div>
+  </article>
+
+  <!-- ==================== CARD 6 ==================== -->
+  <article class="card" id="card-6">
+    <div>
+      <div class="card-top">
+        <span class="card-badge">6 / 7· 拉脱维亚&amp;车辆 专业&amp;伙伴托尔基特</span>
+        <span>联盟5, 24–35, 39–41· 完成交付</span>
+      </div>
+      <h2 class="card-title">
+        女 工 员6- 周快跑+ 时间轴:PowerShell自动化压缩 <span class="grad">AI 登陆区&amp; SOC推出者65%–90%</span>
+      </h2>
+      <p class="card-sub">
+        比较标准化 <strong>FTE 提供+安全伙伴工具包</strong> 执行(蓝色)`#3B82F6`AI 安保和攻击反应时间表(Gray)`#CBD5E1`).
+      </p>
+
+      <div class="latency-row">
+        <div class="latency-head">
+          <span>01· AI-Assisted Cattle Father (蒙特雷综合工业中心:17K当地办事处费用/49模块 · 幻灯片4)</span>
+          <span style="color:var(--bad);">小时对多周手动开发</span>
+        </div>
+        <div class="latency-bars">
+          <div class="l-line"><span class="l-tag">AI 辩护人协会Claude+GPT)</span><div class="l-track"><div class="l-opt" style="width:12%;background:#DC2626;"></div></div><span class="l-val">~4小时</span></div>
+          <div class="l-line"><span class="l-tag">遗产手册</span><div class="l-track"><div class="l-base" style="width:100%"></div></div><span class="l-val">2–4周数</span></div>
+        </div>
+      </div>
+
+      <div class="latency-row">
+        <div class="latency-head">
+          <span>02· 多层随机器/攻击干扰ISOC(滑行)30)</span>
+          <span style="color:var(--good);">自动分钟对小时</span>
+        </div>
+        <div class="latency-bars">
+          <div class="l-line"><span class="l-tag">ISOC 自动</span><div class="l-track"><div class="l-opt" style="width:8%"></div></div><span class="l-val">&lt; 5分钟</span></div>
+          <div class="l-line"><span class="l-tag">手动SOC纹理</span><div class="l-track"><div class="l-base" style="width:92%"></div></div><span class="l-val">4–12小时</span></div>
+        </div>
+      </div>
+
+      <div class="latency-row">
+        <div class="latency-head">
+          <span>03· 安全AI登陆区基线建设(FTE提供周)3门- 幻灯片5 &amp; 35)</span>
+          <span style="color:var(--good);">1周冲克 v.6-周克·阿多克(英语:Week Ad-Hoc)</span>
+        </div>
+        <div class="latency-bars">
+          <div class="l-line"><span class="l-tag">FTE 周刊3构建</span><div class="l-track"><div class="l-opt" style="width:18%"></div></div><span class="l-val">1周( WK) 时间3)</span></div>
+          <div class="l-line"><span class="l-tag">自动自定义设计</span><div class="l-track"><div class="l-base" style="width:95%"></div></div><span class="l-val">6–8周数</span></div>
+        </div>
+      </div>
+
+      <div class="latency-row">
+        <div class="latency-head">
+          <span>04· 最终发现 - 着陆区 -3生产代理直播(滑翔机)5)</span>
+          <span style="color:var(--good);">4–6周相与论.4–6月份数</span>
+        </div>
+        <div class="latency-bars">
+          <div class="l-line"><span class="l-tag">FTE 提供快取</span><div class="l-track"><div class="l-opt" style="width:25%"></div></div><span class="l-val">4–6周数</span></div>
+          <div class="l-line"><span class="l-tag">传统瀑布</span><div class="l-track"><div class="l-base" style="width:100%"></div></div><span class="l-val">16–24周数</span></div>
+        </div>
+      </div>
+
+      <div class="latency-row" style="margin-bottom:10px;">
+        <div class="latency-head">
+          <span>05 · Purview范围 SOW +Entra/ 调和/ 调和/ 调和/ 调和/ 调和/ 调和/ 调和/Defender基线配置(滑动)40–41)</span>
+          <span style="color:var(--good);">指导助理+SOW Gen + pwsh7+</span>
+        </div>
+        <div class="latency-bars">
+          <div class="l-line"><span class="l-tag">合作伙伴工具箱自动</span><div class="l-track"><div class="l-opt" style="width:14%"></div></div><span class="l-val">&lt; 2小时</span></div>
+          <div class="l-line"><span class="l-tag">手动门户&amp;单词</span><div class="l-track"><div class="l-base" style="width:88%"></div></div><span class="l-val">3–5天数</span></div>
+        </div>
+      </div>
+
+      <div class="decision-card" style="margin-bottom:0;">
+        <div class="dc-head">
+          <span class="dc-title">3- 阶段伙伴服务商业化模式:评估 建设 操作35)</span>
+          <span class="pill good">可重复报价+管理</span>
+        </div>
+        <div style="font-size:12.2px;color:var(--ink-2);line-height:1.48;">
+          • <strong>1. Assess (评估)</strong>: 代理&amp;影子AI库存+副驾驶过度共享检查+身份风险_. <em>可交付成果:风险清单&amp;着陆区差距报告</em>.<br/>
+          • <strong>2. Build (建设 · FTE WK3)</strong>: Entra代理身份+CA, 内特Purview标签/DLP/DSPM, 代理服务器365书记官处,DefenderAI 运行时间到SOC → <em>可交付性:生产AI 安全基线</em>.<br/>
+          • <strong>3. Operate (运营)</strong>: 上载新代理&amp;定期审查,24×7ISOC AI 监测、遵约报告 __________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________ <em>可交付服务:管理服务&amp;更新ARR(英)5——英7上市销售)</em>.
+        </div>
+      </div>
+    </div>
+
+    <div class="card-foot">
+      <span>TOOLKIT 资产: aka.ms/MIP-Industries-OnePagers 数据安全助理 · SOW-发电机 · 安全_SMB-部署Guides-部署脚本</span>
+      <span>CARD 6 OF 7</span>
+    </div>
+  </article>
+
+  <!-- ==================== CARD 7 ==================== -->
+  <article class="card" id="card-7">
+    <div>
+      <div class="card-top">
+        <span class="card-badge">7 / 7? 我拿好拳头,不为&amp;阅读者VERDICT</span>
+        <span>ARCHITECTURAL SYNTHESIS</span>
+      </div>
+      <h2 class="card-title">
+        制作 <span class="grad">安全AI着陆区</span> 强制性周-3企业代理规模之前的门
+      </h2>
+      <p class="card-sub">
+        关于何处执行指导意见 <strong>安全AI登陆区(A.`Agent 365` + `M365 E7`)</strong> 财务报告和已审计财务报表 <strong>边疆SOC (`ISOC` + `Perception` + `MDASH`)</strong> 立即交付ROI——在需要基础设施一级微型VM的情况下。
+      </p>
+
+      <div class="callout-dual" style="margin-bottom:16px;">
+        <div class="callout-box good">
+          <h4 style="margin:0 0 8px;font-size:14px;color:var(--good);">适合(高级)ROI目标设想方案)</h4>
+          <ul style="margin:0;padding-left:18px;line-height:1.55;">
+            <li><strong>FTE 提议4–6周冲刺</strong>: 使用周数3建立安全AI着陆区, <code>Copilot as the UI for AI</code> 发射前3生产代理人(周数)4–5.</li>
+            <li><strong>多平台代理 Splawl</strong>: 管理跨局代理人Foundry副驾驶工作室LangChain, CrewAIVertex AI, 互联网档案馆的存檔,存档日期--., 互联网档案馆的存檔,存档日期--.AWS贝德洛克, 和当地CLI/IDE/法律工具组合 <strong>探员365书记官处</strong>.</li>
+            <li><strong>管理365英5——英7(Frontier套房) 上卖&amp;ISOC 激活</strong>: 激活内置SIEM, Case Mgmt, SOAR Playbook Gen, , , , , , , , 游戏本90- 保留日,以及符合条件的项目设想Defender套房/电子5/ 东7独立租户Sentinel头顶</li>
+            <li><strong>管理安保的ARR伙伴</strong>: 将一次性副驾驶 PoCs 转换为 <code>Assess → Build → Operate</code> 使用“管理服务”5- 阶段安全伙伴工具包。</li>
+          </ul>
+        </div>
+
+        <div class="callout-box bad">
+          <h4 style="margin:0 0 8px;font-size:14px;color:var(--bad);">QQ 不为( 反战)&amp;差距)</h4>
+          <ul style="margin:0;padding-left:18px;line-height:1.55;">
+            <li><strong>跳过周3生产用Rush代理代码</strong>: 启动未保密的SharePoint数据代理或共享服务负责人保证过度共享和爆炸辐射事件。</li>
+            <li><strong>取代任意无信密码的克内尔沙盒</strong>: SaaS控制飞机(代理机)365 / Entra / Purview)规范身份和数据,但自主代码解释执行仍然需要 Track03 <strong>亚克桑卡拉夫·卡塔·武马E2B Firecracker+ 特特朗贡eBPF</strong> 隔离</li>
+            <li><strong>将 MDASH 视为GA今天,我们来</strong>: <code>MDASH</code> (100+AI Agents)目前处于 <strong>私密预览</strong>,以及 <code>Project Perception</code> + 90- 每日 ISOC 保留在 <strong>月(半天),将举行为期一年的大会。2026</strong>.</li>
+          </ul>
+        </div>
+
+        <div class="callout-box dark">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px;">
+            <strong style="color:#38BDF8;font-family:var(--mono);font-size:12.5px;">学生阅读&amp;组合</strong>
+            <span class="pill good">已验证&amp;· 双语EN/ZH</span>
+          </div>
+          <p style="margin:0;font-size:12.4px;color:#CBD5E1;line-height:1.55;">
+            单位 <code>@turbo998</code>是因为6-追踪AI安全架构, <strong>安全AI登陆区</strong> 成为最重要的 <strong>企业控制计划e&amp; SOC操作模式</strong>: 统一音轨01 (<strong>国防5- 蒂尔&amp; Purview- AI+SMB伙伴工具包</strong>),音轨02 (<strong>多代理红队</strong>),音轨03 (<strong>AKSCLAW/ 自动识别和识别系统E2B内核沙盒</strong>),音轨04 (<strong>Entra代理身份证明&amp;C_接受(g) 经济学</strong>),音轨05 (<strong>Web IQ &amp;AP 计划2付费护卫</strong>)和音轨06 (<strong>终点/地方代理治理</strong>).
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-foot">
+      <span>波特福里欧港:涡轮998.github.io/安全-AI-登陆-区。html· CSP:默认弧“ 无”</span>
+      <span>CARD 7 OF 7</span>
+    </div>
+  </article>
+
+</div>
+<!-- kee-dedicated-report-close:start --></div></div><!-- kee-dedicated-report-close:end --></body>
+</html>

@@ -1,0 +1,588 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'">
+<title>6-Track AI Security &amp; Agent Defense-in-Depth Panorama · 7-Card Benchmark Deck</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;padding:2rem 1rem;background:#e2e8f0;color:#0f172a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+.deck-wrap{max-width:860px;margin:0 auto;display:flex;flex-direction:column;gap:2.2rem}
+.report-card{background:#f8fafc;border-radius:18px;overflow:hidden;box-shadow:0 16px 40px rgba(15,23,42,.12);border:1px solid #cbd5e1;min-height:1025px;display:flex;flex-direction:column}
+.card-accent-bar{height:10px;background:linear-gradient(90deg,#dc2626 0%,#2563eb 50%,#059669 100%)}
+.card-inner{padding:2.4rem 2.8rem 1.8rem;flex:1;display:flex;flex-direction:column;justify-content:space-between}
+.card-eyebrow{font-size:.82rem;font-weight:700;letter-spacing:.12em;color:#2563eb;text-transform:uppercase;margin-bottom:.55rem}
+.card-headline{font-size:2.25rem;line-height:1.12;font-weight:800;margin:0 0 .65rem;letter-spacing:-.02em;color:#0f172a}
+.grad-text{background:linear-gradient(90deg,#dc2626,#2563eb,#059669);-webkit-background-clip:text;background-clip:text;color:transparent}
+.card-subtitle{font-size:1.05rem;line-height:1.45;color:#475569;margin:0 0 1.2rem}
+.card-canvas{flex:1;display:flex;flex-direction:column;justify-content:center;gap:1rem}
+.quote-box,.callout-box{background:#eef2f6;border-radius:12px;padding:1rem 1.25rem;font-size:.96rem;line-height:1.48;color:#1e293b}
+.stack-list{display:flex;flex-direction:column;gap:.85rem}
+.decision-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:.95rem 1.15rem}
+.decision-head{display:flex;justify-content:space-between;align-items:flex-start;gap:.75rem}
+.field-name{font-weight:700;font-size:1rem}
+.type-pill{background:#e2e8f0;color:#475569;font-size:.75rem;padding:.12rem .45rem;border-radius:6px;font-weight:600}
+.question-sub{font-size:.84rem;color:#64748b;margin-top:.15rem}
+.action-pill{font-size:.76rem;font-weight:700;padding:.22rem .6rem;border-radius:999px;white-space:nowrap}
+.pill-auto{background:#dcfce7;color:#15803d}
+.pill-confirm{background:#fef3c7;color:#b45309}
+.pill-human{background:#fee2e2;color:#b91c1c}
+.decision-main{font-size:1.14rem;margin:.45rem 0 .55rem}
+.conf-muted{font-size:.86rem;color:#64748b;font-weight:600}
+.dist-row{display:grid;grid-template-columns:215px 1fr 58px;align-items:center;gap:.6rem;font-size:.83rem;margin:.24rem 0}
+.dist-track{background:#e2e8f0;height:9px;border-radius:999px;overflow:hidden}
+.dist-fill{background:linear-gradient(90deg,#2563eb,#059669);height:100%;border-radius:999px}
+.dist-pct{text-align:right;font-variant-numeric:tabular-nums;color:#334155}
+.clean-table{width:100%;border-collapse:collapse;font-size:.91rem;background:transparent}
+.clean-table th{font-size:.74rem;letter-spacing:.08em;color:#64748b;text-align:left;padding:.55rem .4rem;border-bottom:1px solid #cbd5e1}
+.clean-table td{padding:.56rem .4rem;border-bottom:1px solid #e2e8f0;vertical-align:top}
+.sc-col{font-weight:600;color:#1e293b}
+.act-col,.num-col{text-align:right;font-variant-numeric:tabular-nums}
+.act-auto{color:#15803d;font-weight:700}
+.act-confirm{color:#b45309;font-weight:700}
+.act-human{color:#b91c1c;font-weight:700}
+.miss-mark{color:#dc2626;font-weight:800}
+.code-dark{background:#0f172a;color:#e2e8f0;padding:1.05rem 1.25rem;border-radius:12px;font-size:.82rem;line-height:1.44;overflow-x:auto;margin:0}
+.code-transition{color:#2563eb;font-weight:700;font-size:.95rem;padding:.15rem 0}
+.hl-answer{color:#fbbf24;font-weight:700}
+.rob-main{font-weight:600;color:#0f172a}
+.rob-sub{font-size:.8rem;color:#64748b}
+.lat-list{display:flex;flex-direction:column;gap:1rem}
+.lat-title{font-weight:700;font-size:1.02rem;margin-bottom:.35rem}
+.lat-row{display:flex;align-items:center;gap:.65rem;margin:.28rem 0}
+.lat-tag{width:145px;font-size:.84rem;color:#64748b}
+.lat-bar{height:22px;border-radius:6px}
+.lat-blue{background:#2563eb}
+.lat-gray{background:#cbd5e1}
+.lat-val{font-size:.92rem;font-variant-numeric:tabular-nums}
+.fit-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem}
+.fit-card{border-radius:14px;padding:1.25rem 1.4rem;font-size:.98rem;line-height:1.58}
+.fit-good{background:#ecfdf5;border:1px solid #a7f3d0}
+.fit-bad{background:#fff1f2;border:1px solid #fecdd3}
+.fit-head{font-weight:800;font-size:1.12rem;margin-bottom:.5rem}
+.dark-footer-box{background:#0f172a;color:#f8fafc;border-radius:14px;padding:1.25rem 1.5rem;font-size:.96rem;line-height:1.5}
+.dark-repo{color:#38bdf8;font-family:ui-monospace,Consolas,monospace;margin-bottom:0}
+.workbench-shell{background:#fff;border:1px solid #cbd5e1;border-radius:14px;overflow:hidden}
+.wb-topbar{background:linear-gradient(90deg,#0f172a,#2563eb,#059669);color:#fff;padding:.75rem 1rem;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.wb-sub{font-size:.76rem;opacity:.92}
+.wb-status{background:rgba(15,23,42,.38);font-size:.74rem;padding:.25rem .6rem;border-radius:999px;white-space:nowrap}
+.wb-grid{display:grid;grid-template-columns:235px 1fr;gap:.85rem;padding:.9rem}
+.wb-col-title{font-size:.78rem;font-weight:700;color:#475569;text-transform:uppercase;margin-bottom:.4rem}
+.wb-item{font-size:.79rem;padding:.38rem .5rem;border-radius:6px;background:#f8fafc;border:1px solid #e2e8f0;margin-bottom:.32rem}
+.wb-note{font-size:.73rem;color:#64748b;margin-top:.55rem;line-height:1.38}
+.wb-metrics{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.55rem}
+.wb-metric{font-size:.74rem;background:#f1f5f9;padding:.2rem .5rem;border-radius:6px;color:#334155;font-weight:600}
+.card-footer{border-top:1px solid #cbd5e1;padding-top:.9rem;margin-top:1.2rem;display:flex;justify-content:space-between;font-size:.84rem;color:#64748b}
+@media print{body{background:#fff;padding:0}.deck-wrap{gap:0}.report-card{box-shadow:none;page-break-after:always;border:none}}
+</style>
+<!-- kee-dedicated-style:start -->
+<style>/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.65fr 1.1fr 1.15fr 1.1fr 1.1fr;gap:6px;align-items:stretch;min-width:0}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+</style>
+<!-- kee-dedicated-style:end -->
+<!-- kee-report-localization:metadata:start --><link rel="alternate" hreflang="en" href="cards.en.html"><link rel="alternate" hreflang="zh-CN" href="cards.zh-CN.html"><meta name="report-translation-source" content="workshops/ai-security/cards.html@941ee62"><meta name="report-translation-provenance" content="translation; independently_reproduced=false"><style>/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.65fr 1.1fr 1.15fr 1.1fr 1.1fr;gap:6px;align-items:stretch;min-width:0}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+
+html{scroll-padding-top:108px}.reading-header,.kee-dedicated-nav,[data-professional-header]{position:sticky;top:0;z-index:1000;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+
+:root{--search-bg:#101a30;--search-soft:#172440;--search-ink:#eef3ff;--search-muted:#adbbd1;--search-line:#293956;--search-accent:#9aabff;--header-offset:108px}
+:root[data-reading-shell][data-theme=light],[data-perimeter-theme=light]{--search-bg:#fff;--search-soft:#e8eefb;--search-ink:#17233e;--search-muted:#4c5e7c;--search-line:#d5ddec;--search-accent:#354ec8}
+html{scroll-padding-top:var(--header-offset,108px)!important}
+.site-search,.site-search *{box-sizing:border-box!important;font-family:"Segoe UI",sans-serif;letter-spacing:normal;text-transform:none}
+.site-search{position:relative;display:flex;align-items:center;gap:5px;min-width:0;width:230px;max-width:100%;margin:0!important;padding:0!important;line-height:1.4;border:1px solid var(--search-line);border-radius:9px;background:var(--search-soft);color:var(--search-ink);isolation:isolate}
+.site-search input[type=search]{display:block;flex:1;min-width:0;width:100%;height:42px;margin:0;padding:9px 8px!important;font-size:12px!important;line-height:1.5;border:0!important;border-radius:9px;background:transparent!important;color:var(--search-ink)!important;box-shadow:none!important;appearance:none}
+.site-search input::placeholder{color:var(--search-muted);opacity:1}.site-search input:focus-visible{outline:2px solid var(--search-accent);outline-offset:2px}
+.site-search kbd{font:11px Consolas,monospace;color:var(--search-muted);padding:1px 5px;border:1px solid var(--search-line);border-radius:4px}
+.site-search button[type=submit]{flex:none;width:38px;min-width:38px;height:42px;min-height:42px;padding:0;margin:0;border:0;border-radius:8px;background:transparent;color:var(--search-accent);font-size:24px;cursor:pointer;box-shadow:none}
+.search-label,.search-status{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.site-search .search-results{position:absolute;top:calc(100% + 10px);right:0;z-index:1100;width:min(480px,calc(100vw - 32px));max-height:min(560px,65vh);overflow-y:auto;border:1px solid var(--search-line);border-radius:12px;background:var(--search-bg);color:var(--search-ink);padding:10px;box-shadow:0 12px 32px #0005;text-align:left}
+.site-search .search-results[hidden]{display:none!important}.search-results .search-group{margin:8px 6px 4px;font:11px/1.5 Consolas,monospace;color:var(--search-muted)}
+.site-search .search-results a{display:block!important;padding:10px!important;margin:3px 0!important;border:1px solid transparent!important;border-radius:7px;background:transparent;color:var(--search-ink)!important;font-size:13px!important;text-decoration:none!important;white-space:normal;overflow-wrap:anywhere;text-align:left!important;line-height:1.5!important}
+.site-search .search-results a[aria-selected=true],.site-search .search-results a:hover{border-color:var(--search-accent)!important;background:var(--search-soft)}
+.search-results a small{display:block;font-size:10px;color:var(--search-muted);margin-top:4px}.search-results p{margin:10px;font-size:13px;color:var(--search-muted)}
+.search-archive-summary{padding:20px;border:1px solid var(--search-line);border-radius:10px;background:var(--search-bg);color:var(--search-ink);margin:24px 0}.search-archive-summary h2{font-size:24px;margin:0 0 12px}.search-archive-summary li{margin:12px 0}.search-archive-summary a{color:var(--search-accent)}
+[data-professional-header]{position:sticky!important;top:0!important;z-index:1000!important;background:var(--search-bg)!important;--header-glass:rgba(16,26,48,.9);grid-template-columns:auto minmax(0,1fr) 230px auto!important}
+[data-professional-header][data-perimeter-theme=light],:root[data-reading-shell][data-theme=light] [data-professional-header]{--header-glass:rgba(255,255,255,.94)}
+[data-professional-header] .professional-mobile{display:none}.professional-mobile summary{min-width:38px;min-height:42px;display:grid;place-items:center;cursor:pointer;list-style:none}.professional-mobile summary::-webkit-details-marker{display:none}
+[data-professional-header] .professional-context{display:none}
+.professional-context-bar{padding:12px 24px;border-bottom:1px solid var(--search-line);background:var(--search-bg);color:var(--search-muted);font:12px/1.6 "Segoe UI",sans-serif;display:flex;flex-wrap:wrap;gap:8px 18px;overflow-wrap:anywhere}.professional-context-bar a{color:var(--search-accent)}
+@supports((backdrop-filter:blur(16px)) or (-webkit-backdrop-filter:blur(16px))){.site-header,[data-professional-header]{background:var(--header-glass)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}}
+@media(max-width:1250px) and (min-width:701px){.header-inner{grid-template-columns:minmax(0,1fr) 230px auto!important;padding:12px 0;gap:12px!important}.desktop-nav{grid-row:2;grid-column:1/-1}.header-inner>.site-search{grid-column:2;grid-row:1}.header-inner>.controls{grid-column:3;grid-row:1}[data-professional-header]{grid-template-columns:minmax(0,1fr) 230px auto!important;gap:12px!important}[data-professional-header]>.professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header]>.site-search{grid-column:2;grid-row:1}[data-professional-header]>.professional-controls{grid-column:3;grid-row:1}:root{--header-offset:176px}}
+@media(max-width:700px){.header-inner{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 0;gap:8px!important}.header-inner>.site-search{grid-row:2;grid-column:1/-1;width:100%}.header-inner>.controls{grid-column:2;grid-row:1}.site-search .search-results{width:100%;right:0}[data-professional-header]{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 16px!important;gap:8px!important}[data-professional-header]>.professional-primary{display:none!important}[data-professional-header]>.site-search{grid-column:1/-1;grid-row:2;width:100%}[data-professional-header]>.professional-controls{grid-column:2;grid-row:1}[data-professional-header] .professional-mobile{display:block}[data-professional-header] .professional-mobile[open]>.professional-primary{position:absolute;top:100%;left:0;right:0;padding:16px;background:var(--search-bg);border-bottom:1px solid var(--search-line);display:grid;grid-template-columns:1fr 1fr;gap:8px}[data-professional-header] .professional-mobile .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:12px!important}:root{--header-offset:126px}}
+@media(prefers-reduced-transparency:reduce){.site-header,[data-professional-header]{background:var(--search-bg)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+@media print{.site-search,.professional-context-bar{display:none!important}}
+
+@media(min-width:1251px){.header-inner{display:grid!important;grid-template-columns:auto minmax(0,1fr) 230px auto!important;gap:18px!important}.header-inner .desktop-nav{min-width:0}}
+
+html:has(.kee-dedicated-app-root){height:auto!important;overflow-x:hidden!important;overflow-y:auto!important}
+body:has([data-professional-header]){height:auto!important;overflow-x:clip!important;overflow-y:visible!important;padding-top:0!important}
+.demo-language-navigation{display:none!important}
+.stage-column,.telemetry-panel,.scene-pill,#timeline-slider{min-width:0}
+@media(max-width:1180px){.workspace,.template-tabs{grid-template-columns:minmax(0,1fr)!important}}
+
+.in-arena-frame .professional-context-bar,.in-arena-frame [data-knowledge-atlas]{display:none!important}
+</style><!-- kee-report-localization:metadata:end --></head>
+<body><!-- kee-report-localization-navigation:start --><nav class="kee-dedicated-nav" data-professional-header><a class="professional-identity reading-brand kee-dedicated-identity identity" href="../../index.html">Qi Chen · @turbo998</a><div class="professional-primary" role="navigation" aria-label="Primary sections"><a href="../../studio/index.html" data-section="hub" data-nav-en-href="../../studio/index.html" data-nav-zh-href="../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub">Frontier Transformation Engineering Hub</a><a href="../../benchmarks.html" data-section="benchmarks" data-nav-en-href="../../benchmarks.html" data-nav-zh-href="../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心" aria-current="page">Benchmark &amp; Eval Foundry</a><a href="../../github-radar.html" data-section="radar" data-nav-en-href="../../github-radar.html" data-nav-zh-href="../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI Signal Radar</a><a href="../../openrouter.html" data-section="routing" data-nav-en-href="../../openrouter.html" data-nav-zh-href="../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">Model Routing &amp; Telemetry</a><a href="../../about.html" data-section="profile" data-nav-en-href="../../about.html" data-nav-zh-href="../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">Principal Architect Profile</a></div><form class="site-search" role="search" action="../../studio/archive.html" method="get" data-search-root="../../index.html" data-search-language="en"><label class="search-label" for="site-search-input">Search architecture, benchmarks, demos...</label><input id="site-search-input" name="q" type="search" placeholder="Search architecture, benchmarks, demos..." autocomplete="off" spellcheck="false" aria-keyshortcuts="/ Control+k Meta+k"><kbd aria-hidden="true">/</kbd><button type="submit" aria-label="Search all content">⌕</button><div class="search-results" id="site-search-results" hidden></div><span class="search-status" role="status" aria-live="polite"></span></form><div class="reading-controls professional-controls" aria-label="Site language and appearance"><a href="cards.en.html" lang="en" hreflang="en" aria-current="page">EN</a><a href="cards.zh-CN.html" lang="zh-CN" hreflang="zh-CN">中文</a><details class="professional-mobile"><summary aria-label="Open navigation">☰</summary><div class="professional-primary" role="navigation" aria-label="Mobile navigation"><a href="../../studio/index.html" data-section="hub" data-nav-en-href="../../studio/index.html" data-nav-zh-href="../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub">Frontier Transformation Engineering Hub</a><a href="../../benchmarks.html" data-section="benchmarks" data-nav-en-href="../../benchmarks.html" data-nav-zh-href="../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心" aria-current="page">Benchmark &amp; Eval Foundry</a><a href="../../github-radar.html" data-section="radar" data-nav-en-href="../../github-radar.html" data-nav-zh-href="../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI Signal Radar</a><a href="../../openrouter.html" data-section="routing" data-nav-en-href="../../openrouter.html" data-nav-zh-href="../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">Model Routing &amp; Telemetry</a><a href="../../about.html" data-section="profile" data-nav-en-href="../../about.html" data-nav-zh-href="../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">Principal Architect Profile</a></div></details><a data-reading-theme="light" href="?theme=light" aria-label="Light theme">☀</a><a data-reading-theme="dark" href="?theme=dark" aria-label="Dark theme">◐</a></div><div class="professional-context" aria-label="Back to context"><a href="../../studio/index.html">← Engineering Hub</a> · <a href="../../studio/security.html">Parent topic</a></div></nav><div class="professional-context-bar"><a href="../../studio/index.html">← Engineering Hub</a> · <a href="../../studio/security.html">Parent topic</a></div><nav aria-label="Report language" style="font:14px/1.5 system-ui,sans-serif;display:flex;flex-wrap:wrap;gap:12px;padding:12px 18px;background:#101a30;color:#eef3ff;width:100%;box-sizing:border-box"><a style="color:#9aabff" href="cards.en.html" lang="en" hreflang="en" aria-current="page">EN</a><a style="color:#9aabff" href="cards.zh-CN.html" lang="zh-CN" hreflang="zh-CN">中文</a><span>Translated source report; not an independent reproduction. Metrics and evidence are unchanged.</span></nav><figure class="knowledge-figure" data-knowledge-atlas="security" style="margin:24px 0;max-width:100%"><svg xmlns="http://www.w3.org/2000/svg" lang="en" role="img" aria-labelledby="knowledge-f5511b68c347-title knowledge-f5511b68c347-desc" viewBox="0 0 360 933" width="360" style="display:block;width:100%;height:auto;max-width:560px;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-f5511b68c347-title">6-Track AI Security &amp;amp; Agent Defense-in-Depth Panorama · 7-Card Benchmark Deck</title><desc id="knowledge-f5511b68c347-desc">Assets &amp; trust boundaries: Identity · sensitive data · tools · external inputs → defines the threat model → Untrusted input &amp; attack paths: Prompt injection · supply chain · tool misuse → meets enforcement controls → Least privilege &amp; explicit approval: Isolation · validation · policy gates · human review → emits auditable events → Detection, containment &amp; recovery: Telemetry · incident response · rollback → tests defensive assumptions → Offline exercise &amp; source evidence: Reported incidents are not newly verified loss estimates</desc><rect width="360" height="933" rx="16" fill="#091827"/><text x="20" y="30" fill="#eef5ff" font-size="20" font-weight="700"><tspan x="20" dy="0">6-Track AI Security &amp;amp; Agent</tspan><tspan x="20" dy="28">Defense-in-Depth Panorama ·</tspan><tspan x="20" dy="28">7-Card Benchmark Deck</tspan></text><text x="20" y="111" fill="#a9b8ce" font-size="13" font-weight="400"><tspan x="20" dy="0">Conceptual topology · not measured metrics</tspan></text><g data-concept="1"><rect x="16" y="137" width="328" height="99" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="151" width="4" height="71" rx="2" fill="#63dbca"/><text x="32" y="167" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">Assets &amp; trust boundaries</tspan></text><text x="32" y="198" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">Identity · sensitive data · tools ·</tspan><tspan x="32" dy="19.599999999999998">external inputs</tspan></text></g><g data-relationship="defines the threat model"><path d="M32 236 V281" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 276 L32 282 L37 276" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="262" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">defines the threat model</tspan></text></g><g data-concept="2"><rect x="16" y="288" width="328" height="99" rx="12" fill="#132942" stroke="#43617f"/><rect x="16" y="302" width="4" height="71" rx="2" fill="#63dbca"/><text x="32" y="318" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">Untrusted input &amp; attack paths</tspan></text><text x="32" y="349" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">Prompt injection · supply chain · tool</tspan><tspan x="32" dy="19.599999999999998">misuse</tspan></text></g><g data-relationship="meets enforcement controls"><path d="M32 387 V432" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 427 L32 433 L37 427" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="413" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">meets enforcement controls</tspan></text></g><g data-concept="3"><rect x="16" y="439" width="328" height="124" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="453" width="4" height="96" rx="2" fill="#63dbca"/><text x="32" y="469" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">Least privilege &amp; explicit</tspan><tspan x="32" dy="25.2">approval</tspan></text><text x="32" y="525" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">Isolation · validation · policy gates ·</tspan><tspan x="32" dy="19.599999999999998">human review</tspan></text></g><g data-relationship="emits auditable events"><path d="M32 563 V608" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 603 L32 609 L37 603" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="589" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">emits auditable events</tspan></text></g><g data-concept="4"><rect x="16" y="615" width="328" height="124" rx="12" fill="#132942" stroke="#43617f"/><rect x="16" y="629" width="4" height="96" rx="2" fill="#63dbca"/><text x="32" y="645" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">Detection, containment &amp;</tspan><tspan x="32" dy="25.2">recovery</tspan></text><text x="32" y="701" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">Telemetry · incident response ·</tspan><tspan x="32" dy="19.599999999999998">rollback</tspan></text></g><g data-relationship="tests defensive assumptions"><path d="M32 739 V784" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 779 L32 785 L37 779" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="765" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">tests defensive assumptions</tspan></text></g><g data-concept="5"><rect x="16" y="791" width="328" height="124" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="805" width="4" height="96" rx="2" fill="#63dbca"/><text x="32" y="821" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">Offline exercise &amp; source</tspan><tspan x="32" dy="25.2">evidence</tspan></text><text x="32" y="877" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">Reported incidents are not newly</tspan><tspan x="32" dy="19.599999999999998">verified loss estimates</tspan></text></g></svg><figcaption style="font:14px/1.6 system-ui,sans-serif;margin:12px 0;overflow-wrap:anywhere">Overall knowledge map: read the labeled relationships and engineering boundaries. Layout is conceptual; it does not represent throughput, rankings or a production deployment.</figcaption></figure><!-- kee-report-localization-navigation:end -->
+
+
+<main class="deck-wrap">
+
+<!-- CARD 1 -->
+<article class="report-card" id="card-1">
+  <div class="card-accent-bar"></div>
+  <div class="card-inner">
+    <header class="card-header">
+      <div class="card-eyebrow">HANDS-ON · 6-TRACK AI SECURITY &amp; AGENT DEFENSE-IN-DEPTH</div>
+      <h2 class="card-headline">6 security tracks unified, <span class="grad-text">0.0% cross-boundary leak</span></h2>
+      <p class="card-subtitle">Comprehensive synthesis of @turbo998's AI Security research portfolio across 12+ repositories: M365 DEFEND &amp; Purview-for-AI, Multi-Agent Red Teaming, MicroVM/eBPF Zero Trust, Entra Agent ID Economics, Web IQ Anti-Injection, and Endpoint Agent Audits.</p>
+    </header>
+    <div class="card-canvas">
+      <div class="workbench-shell">
+        <div class="wb-topbar">
+          <div>
+            <strong>AI Security Defense-in-Depth Command Workbench (Tracks 01–06)</strong>
+            <div class="wb-sub">Cross-repo evaluation: deterministic server-side verifiers, kernel/MicroVM isolation, and cryptographic mandate locks</div>
+          </div>
+          <span class="wb-status">6 Tracks · 12+ Repos · 51 DEFEND Gates · 174 OS Assertions</span>
+        </div>
+        <div class="wb-grid">
+          <div class="wb-col-left">
+            <div class="wb-col-title">6 Security Tracks</div>
+            <div class="wb-item">T01 · DEFEND 5-Tier &amp; Purview-for-AI (51 Gates)</div>
+            <div class="wb-item">T02 · Multi-Agent Network Red-Team (ASI01–09)</div>
+            <div class="wb-item">T03 · Cloud Sandbox &amp; eBPF Zero Trust (108ms)</div>
+            <div class="wb-item">T04 · Entra Agent ID &amp; C_accepted(g) Economics</div>
+            <div class="wb-item">T05 · Web IQ Anti-Injection &amp; AP2 Checkout</div>
+            <div class="wb-item">T06 · Desktop Agent Safety &amp; License Compliance</div>
+            <div class="wb-note">Core Doctrine: Prompts and SKILL.md files are never security boundaries. Enforce identity, network, kernel, and cryptographic gates outside the LLM context window.</div>
+          </div>
+          <div class="wb-col-right">
+            <div class="wb-metrics">
+              <span class="wb-metric">0.0% IMDS / Web IQ Leak</span>
+              <span class="wb-metric">&lt;0.3ms Tetragon eBPF Kill</span>
+              <span class="wb-metric">108ms Firecracker Resume</span>
+              <span class="wb-metric">51 DEFEND Exit Gates</span>
+            </div>
+            <div class="decision-card">
+              <div class="decision-head">
+                <div>
+                  <span class="field-name">kernel_and_grounding_isolation</span> <span class="type-pill">choice</span>
+                  <div class="question-sub">Do Cloud Sandbox IMDS blocks (Track 03) and Web IQ DOM sanitizers (Track 05) eliminate cross-tenant &amp; prompt-injection exfiltration?</div>
+                </div>
+                <span class="action-pill pill-auto">Act automatically</span>
+              </div>
+              <div class="decision-main"><strong>0.0% Leakage (100.0% Interception)</strong><span class="conf-muted"> · IMDS 169.254.169.254 blocked + Web IQ 31.4% -&gt; 0.0% ASR</span></div>
+              <div class="dist-list">
+                <div class="dist-row"><span class="dist-label">IMDS &amp; East-West Block (Track 03)</span><div class="dist-track"><div class="dist-fill" style="width:100.0%"></div></div><span class="dist-pct">100.0%</span></div>
+                <div class="dist-row"><span class="dist-label">Web IQ DOM Strip [WEBIQ_SANITIZED]</span><div class="dist-track"><div class="dist-fill" style="width:100.0%"></div></div><span class="dist-pct">100.0%</span></div>
+                <div class="dist-row"><span class="dist-label">AP2 MandateVC Cap Enforcement</span><div class="dist-track"><div class="dist-fill" style="width:100.0%"></div></div><span class="dist-pct">100.0%</span></div>
+              </div>
+            </div>
+            <div class="decision-card">
+              <div class="decision-head">
+                <div>
+                  <span class="field-name">multi_agent_network_defense</span> <span class="type-pill">choice</span>
+                  <div class="question-sub">How effectively do provenance tags, memory quarantine, and hop-scoped tokens suppress OWASP Agentic ASI01–09 propagation?</div>
+                </div>
+                <span class="action-pill pill-confirm">Confirm</span>
+              </div>
+              <div class="decision-main"><strong>4 / 4 Network Failure Modes Contained</strong><span class="conf-muted"> · Propagation · Amplification · Trust Capture · Proxy Chains</span></div>
+              <div class="dist-list">
+                <div class="dist-row"><span class="dist-label">Server-Side Deterministic Judge</span><div class="dist-track"><div class="dist-fill" style="width:100.0%"></div></div><span class="dist-pct">100.0%</span></div>
+                <div class="dist-row"><span class="dist-label">Unprotected Multi-Agent Hop Survival</span><div class="dist-track"><div class="dist-fill" style="width:14.0%"></div></div><span class="dist-pct">14.0%</span></div>
+              </div>
+            </div>
+            <div class="decision-card">
+              <div class="decision-head">
+                <div>
+                  <span class="field-name">desktop_cli_soft_boundaries</span> <span class="type-pill">score</span>
+                  <div class="question-sub">What share of local desktop agent CLI wrappers (Track 06: Omarchy / Personal Agents) enforce hard OS sandboxes by default?</div>
+                </div>
+                <span class="action-pill pill-human">Send to a human</span>
+              </div>
+              <div class="decision-main"><strong>5 / 16 Hard Controls in Omarchy (31.3%)</strong><span class="conf-muted"> · 12/14 CLI branches pass --yolo / --allow-all without OS container</span></div>
+              <div class="dist-list">
+                <div class="dist-row"><span class="dist-label">Soft Flag / Prompt Convention (11/16)</span><div class="dist-track"><div class="dist-fill" style="width:68.8%"></div></div><span class="dist-pct">68.8%</span></div>
+                <div class="dist-row"><span class="dist-label">Hard Code / argv / VM Boundary (5/16)</span><div class="dist-track"><div class="dist-fill" style="width:31.3%"></div></div><span class="dist-pct">31.3%</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="callout-box"><strong>Key Architectural Synthesis:</strong> Across all 6 research tracks, relying on in-context instructions (`SKILL.md`, system prompts, or LLM-as-Judge) fails under adversarial pressure. Production AI security requires **out-of-band enforcement**: Purview DLP + Conditional Access (Track 01), Server-Side Canary Judges (Track 02), Kata/Firecracker + eBPF (Track 03), External PDP/PEP + Entra Agent ID (Track 04), and Web IQ + AP2 MandateVC (Track 05).</div>
+    </div>
+    <footer class="card-footer">
+      <span><strong>6-Track AI Security Portfolio · Cross-Repo Benchmark</strong> · measured (12+ repositories &amp; sealed evaluation harnesses)</span>
+      <span>1 / 7</span>
+    </footer>
+  </div>
+</article>
+
+<!-- CARD 2 -->
+<article class="report-card" id="card-2">
+  <div class="card-accent-bar"></div>
+  <div class="card-inner">
+    <header class="card-header">
+      <div class="card-eyebrow">SCENARIO: MULTI-AGENT RED TEAM &amp; WEB IQ ANTI-INJECTION</div>
+      <h2 class="card-headline">4 network failure modes. 31.4% → 0.0% injection ASR.</h2>
+      <p class="card-subtitle">Deep dive into Track 02 (`ai-security-lab` multi-agent propagation &amp; confused-deputy chains) and Track 05 (`agentic-commerce-lab` Web IQ grounding sanitization &amp; AP2 MandateVC locks).</p>
+    </header>
+    <div class="card-canvas">
+      <div class="quote-box">"Adversarial Scenario: Untrusted external web document or Agora peer injects hidden instruction payload (`display:none` or poisoned research note) attempting to hijack planner/executor agents, poison shared memory, or trigger an unauthorized $580 checkout above the $500 mandate cap."</div>
+      <div class="stack-list">
+        <div class="decision-card">
+          <div class="decision-head">
+            <div>
+              <span class="field-name">track02_multi_agent_failure_modes</span> <span class="type-pill">choice</span>
+              <div class="question-sub">How does `ai-security-lab` evaluate OWASP Agentic Top 10 (ASI01–ASI09) across Enterprise and Agora topologies?</div>
+            </div>
+            <span class="action-pill pill-auto">Act automatically</span>
+          </div>
+          <div class="decision-main"><strong>Deterministic Server-Side Judge (4 / 4 Vector Families)</strong><span class="conf-muted"> · Canary token lineage + tool-attempt logs + memory state diffs</span></div>
+          <div class="dist-list">
+            <div class="dist-row"><span class="dist-label">Propagation (ASI01/02/08) Contained</span><div class="dist-track"><div class="dist-fill" style="width:100.0%"></div></div><span class="dist-pct">100.0%</span></div>
+            <div class="dist-row"><span class="dist-label">Amplification &amp; Memory Quarantine (ASI06/09)</span><div class="dist-track"><div class="dist-fill" style="width:100.0%"></div></div><span class="dist-pct">100.0%</span></div>
+            <div class="dist-row"><span class="dist-label">Trust Capture &amp; Proxy Chain Block (ASI03/07)</span><div class="dist-track"><div class="dist-fill" style="width:100.0%"></div></div><span class="dist-pct">100.0%</span></div>
+          </div>
+        </div>
+        <div class="decision-card">
+          <div class="decision-head">
+            <div>
+              <span class="field-name">track05_webiq_injection_strip</span> <span class="type-pill">noul</span>
+              <div class="question-sub">Does Microsoft Web IQ Schema sanitization strip hidden DOM exfiltration payloads before LLM context ingestion?</div>
+            </div>
+            <span class="action-pill pill-auto">Act automatically</span>
+          </div>
+          <div class="decision-main"><strong>100.0% Stripped (31.4% Raw ASR → 0.0% Sanitized)</strong><span class="conf-muted"> · tagged `[WEBIQ_SANITIZED]` · P(safe) = 1.0</span></div>
+          <div class="dist-list">
+            <div class="dist-row"><span class="dist-label">Sanitized Web IQ Grounding (0.0% ASR)</span><div class="dist-track"><div class="dist-fill" style="width:100.0%"></div></div><span class="dist-pct">100.0%</span></div>
+            <div class="dist-row"><span class="dist-label">Raw Unfiltered HTML Scraper Leak Rate</span><div class="dist-track"><div class="dist-fill" style="width:31.4%"></div></div><span class="dist-pct">31.4%</span></div>
+          </div>
+        </div>
+        <div class="decision-card">
+          <div class="decision-head">
+            <div>
+              <span class="field-name">track04_c_accepted_economics</span> <span class="type-pill">score</span>
+              <div class="question-sub">What happens to `C_accepted(g)` task acceptance if an agent completes a task but violates a PDP/AP2 policy gate?</div>
+            </div>
+            <span class="action-pill pill-auto">Act automatically</span>
+          </div>
+          <div class="decision-main"><strong>Disqualified (Accepted = 0 · Hard Circuit Breaker)</strong><span class="conf-muted"> · AP2_MANDATE_CAP_EXCEEDED or K05 hazard halts execution</span></div>
+          <div class="dist-list">
+            <div class="dist-row"><span class="dist-label">Policy-Compliant Accepted Tasks (7/8)</span><div class="dist-track"><div class="dist-fill" style="width:87.5%"></div></div><span class="dist-pct">87.5%</span></div>
+            <div class="dist-row"><span class="dist-label">Over-Cap Checkout Deterministic Halt (1/8)</span><div class="dist-track"><div class="dist-fill" style="width:12.5%"></div></div><span class="dist-pct">12.5%</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="callout-box"><strong>Why Deterministic Verifiers Beat LLM-as-Judge:</strong> In both `ai-security-lab` and `agentic-commerce-lab`, an adversarial payload that fools the agent can also fool an LLM judge. Server-side canary tracking, memory diff auditing, and cryptographic `MandateVC` verification guarantee zero evaluator manipulation.</div>
+    </div>
+    <footer class="card-footer">
+      <span><strong>6-Track AI Security Portfolio · Cross-Repo Benchmark</strong> · measured (`ai-security-lab` &amp; `agentic-commerce-lab`)</span>
+      <span>2 / 7</span>
+    </footer>
+  </div>
+</article>
+
+<!-- CARD 3 -->
+<article class="report-card" id="card-3">
+  <div class="card-accent-bar"></div>
+  <div class="card-inner">
+    <header class="card-header">
+      <div class="card-eyebrow">WHAT I TESTED</div>
+      <h2 class="card-headline">6 research tracks, 12 flagship security evaluations</h2>
+      <p class="card-subtitle">Consolidated scorecard across all 6 AI Security tracks. Markers (✕) highlight exposed soft boundaries, license traps, or over-budget actions caught by the evaluation harnesses.</p>
+    </header>
+    <div class="card-canvas">
+      <table class="clean-table">
+        <thead>
+          <tr><th>TRACK</th><th>SECURITY / GOVERNANCE EVALUATION</th><th>MEASURED / VERIFIED FINDING</th><th class="act-col">ACTION</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="sc-col">T01 · DEFEND</td><td>5-Tier DEFEND mandatory readiness exit criteria (53 Slides · Slides 34–38)</td><td><strong>51/51 exit items (49 unique gates) mapped</strong> (100%)</td><td class="act-col act-auto">Auto</td></tr>
+          <tr><td class="sc-col">T01 · SMB Kit</td><td>Security Partner Toolkit for SMB (6 aka.ms links · 360p guides · 22 SOW items · pwsh)</td><td><strong>7 One-Pagers + Guided Asst + SOWGen + 13 CA JSONs</strong> (100%)</td><td class="act-col act-auto">Auto</td></tr>
+          <tr><td class="sc-col">T02 · Red Team</td><td>Multi-agent propagation, amplification, trust capture &amp; proxy chains</td><td><strong>4/4 OWASP ASI01–09 classes judged server-side</strong> (100%)</td><td class="act-col act-auto">Auto</td></tr>
+          <tr><td class="sc-col">T02 · Agora Net</td><td>Unprotected multi-agent peer broadcast without provenance gating</td><td><strong>Cross-agent canary compromise in 2–3 hops</strong> (86% ASR) <span class="miss-mark">✕</span></td><td class="act-col act-human">Human</td></tr>
+          <tr><td class="sc-col">T03 · MicroVM</td><td>AKSClaw Kata VM &amp; E2B Firecracker snapshot resume isolation</td><td><strong>108ms Base / 132ms CI-v1 P50 dedicated kernel</strong> (100%)</td><td class="act-col act-auto">Auto</td></tr>
+          <tr><td class="sc-col">T03 · IMDS/eBPF</td><td>IMDS `169.254.169.254` block + Cilium Tetragon syscall enforcement</td><td><strong>0.0% token leak · &lt;0.3ms eBPF SIGKILL</strong> (100%)</td><td class="act-col act-auto">Auto</td></tr>
+          <tr><td class="sc-col">T04 · Entra ID</td><td>Dual attribution (`Agent Blueprint + Human Sponsor`) &amp; PDP/PEP split</td><td><strong>100% tool calls gated outside LLM loop</strong> (100%)</td><td class="act-col act-auto">Auto</td></tr>
+          <tr><td class="sc-col">T04 · Voice K05</td><td>High-voltage EV hazard interception (`K05`) in Voice Live Agent</td><td><strong>100% deterministic circuit-breaker halt</strong> (100%)</td><td class="act-col act-auto">Auto</td></tr>
+          <tr><td class="sc-col">T05 · Web IQ</td><td>Hidden DOM prompt injection stripping (`[WEBIQ_SANITIZED]`)</td><td><strong>31.4% raw leak → 0.0% sanitized leak</strong> (100%)</td><td class="act-col act-auto">Auto</td></tr>
+          <tr><td class="sc-col">T05 · AP2 Cap</td><td>Over-budget autonomous checkout ($580 cart vs $500 `MandateVC`)</td><td><strong>Halted: AP2_MANDATE_CAP_EXCEEDED</strong> (87.5% pass) <span class="miss-mark">✕</span></td><td class="act-col act-confirm">Confirm</td></tr>
+          <tr><td class="sc-col">T06 · Omarchy</td><td>Hard OS/code boundaries vs soft flags across 16 agent controls</td><td><strong>5/16 hard (12/14 pass --yolo without container)</strong> (31%) <span class="miss-mark">✕</span></td><td class="act-col act-human">Human</td></tr>
+          <tr><td class="sc-col">T06 · LocalJEV</td><td>Upstream `breezedeus/pix2text-mfr` weight license for commercial SaaS</td><td><strong>CC BY-NC 4.0 blocked → Apache-2.0 swap</strong> (0% NC allowed) <span class="miss-mark">✕</span></td><td class="act-col act-human">Human</td></tr>
+        </tbody>
+      </table>
+      <div class="callout-box"><strong>4 critical vulnerabilities &amp; compliance traps caught across the portfolio (✕):</strong> (1) unprotected multi-agent peer broadcast (`86%` compromise within 3 hops); (2) over-budget autonomous checkout (`$580 &gt; $500` caught by `AP2_MANDATE_CAP_EXCEEDED`); (3) `12/14` desktop CLI branches passing `--yolo`/`--allow-all` without OS sandboxing; and (4) `CC BY-NC 4.0` OCR weights inside commercial pipelines.</div>
+    </div>
+    <footer class="card-footer">
+      <span><strong>6-Track AI Security Portfolio · Cross-Repo Benchmark</strong> · measured (12 cross-track evaluations)</span>
+      <span>3 / 7</span>
+    </footer>
+  </div>
+</article>
+
+<!-- CARD 4 -->
+<article class="report-card" id="card-4">
+  <div class="card-accent-bar"></div>
+  <div class="card-inner">
+    <header class="card-header">
+      <div class="card-eyebrow">UNDER THE HOOD</div>
+      <h2 class="card-headline">Out-of-band PDP/PEP, eBPF syscall enforcement &amp; Canary Judge</h2>
+      <p class="card-subtitle">How the 6-Track architecture enforces security deterministically outside the LLM token stream across identity, network, kernel, and settlement layers.</p>
+    </header>
+    <div class="card-canvas">
+<pre class="code-dark">{
+  "agent_invocation_envelope": {
+    "identity": { "blueprint_id": "entra-agent-bp-09", "human_sponsor": "qi.chen@contoso.com", "obo_Klems": ["files.read", "checkout.quote"] },
+    "grounding_input": { "source": "merchant_dom", "webiq_sanitized": true, "stripped_tags": ["display:none", "system_override"] },
+    "multi_agent_hop": { "hop_count": 2, "max_hops": 3, "provenance_trust": "UNTRUSTED_EXTERNAL", "canary_lineage": "clean" },
+    "sandbox_runtime": { "isolation": "Kata_VM_or_Firecracker", "imds_169_254": "DROP", "tetragon_ebpf_policy": "enforce-sigkill" }
+  }
+}</pre>
+      <div class="code-transition">↓ Out-of-Band Policy Decision Point (PDP) + Kernel PEP + AP2 Mandate Verifier</div>
+<pre class="code-dark">def enforce_agent_action(envelope, tool_call, mandate_vc):
+    # 1. Track 02: Hop-scoped capability &amp; untrusted provenance quarantine
+    if envelope.provenance_trust == "UNTRUSTED_EXTERNAL" and tool_call.is_privileged_write:
+        return "<span class="hl-answer">&lt;answer&gt;DENY_ASI03_CONFUSED_DEPUTY: External provenance cannot invoke privileged write&lt;/answer&gt;</span>"
+    # 2. Track 03: Kernel eBPF &amp; IMDS zero-trust boundary (&lt;0.3ms)
+    if tool_call.target_ip == "169.254.169.254" or tool_call.syscall in FORBIDDEN_SYSCALLS:
+        return "<span class="hl-answer">&lt;answer&gt;EBPF_SIGKILL: Kernel TracingPolicy blocked unauthorized syscall/IMDS access&lt;/answer&gt;</span>"
+    # 3. Track 04 &amp; 05: Cryptographic AP2 MandateVC budget cap &amp; C_accepted(g) gate
+    if tool_call.name == "submit_payment" and tool_call.amount_usd &gt; mandate_vc.max_amount_usd:
+        return "<span class="hl-answer">&lt;answer&gt;AP2_MANDATE_CAP_EXCEEDED: Escalate to human FIDO2 Passkey confirmation&lt;/answer&gt;</span>"
+    return "<span class="hl-answer">&lt;answer&gt;ALLOW_EXECUTION: Signed audit event emitted to Purview &amp; Sentinel&lt;/answer&gt;</span>"</pre>
+      <div class="callout-box"><strong>Defense-in-Depth Guarantee:</strong> Even if an attacker achieves a 100% jailbreak inside the LLM weights, the action still hits hop-scoped provenance checks (Track 02), Cilium/Tetragon kernel rules (Track 03), Entra Agent ID PDP gates (Track 04), and cryptographic `MandateVC` limits (Track 05).</div>
+    </div>
+    <footer class="card-footer">
+      <span><strong>6-Track AI Security Portfolio · Cross-Repo Benchmark</strong> · measured (PDP/PEP + eBPF + AP2 verifier pipeline)</span>
+      <span>4 / 7</span>
+    </footer>
+  </div>
+</article>
+
+<!-- CARD 5 -->
+<article class="report-card" id="card-5">
+  <div class="card-accent-bar"></div>
+  <div class="card-inner">
+    <header class="card-header">
+      <div class="card-eyebrow">ROBUSTNESS CHECK</div>
+      <h2 class="card-headline">Hardened Defense-in-Depth vs Baseline Unprotected Agents</h2>
+      <p class="card-subtitle">Comparing baseline unprotected agent deployments (BASELINE) against hardened controls across all 6 tracks (HARDENED) under adversarial red-team perturbations.</p>
+    </header>
+    <div class="card-canvas">
+      <table class="clean-table">
+        <thead>
+          <tr><th>ADVERSARIAL PERTURBATION / SECURITY TEST</th><th class="num-col">BASELINE</th><th class="num-col">HARDENED</th><th class="num-col">CHANGE (PTS)</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="rob-main">T05 · Indirect Prompt Injection Survival Rate (Hidden DOM Exfiltration)</div><div class="rob-sub">Raw HTML scraper ingestion (68.6% safe / 31.4% hijacked) vs Microsoft Web IQ Schema sanitizer</div></td>
+            <td class="num-col">68.6%</td><td class="num-col">100.0%</td><td class="num-col">+31.4</td>
+          </tr>
+          <tr>
+            <td><div class="rob-main">T02 · Multi-Agent Canary Containment Across 3-Hop Delegation Chains</div><div class="rob-sub">Unfiltered peer messaging + auto-memory vs Provenance Tagging + Quarantine + Hop Tokens</div></td>
+            <td class="num-col">14.0%</td><td class="num-col">96.5%</td><td class="num-col">+82.5</td>
+          </tr>
+          <tr>
+            <td><div class="rob-main">T03 · Cross-Tenant Credential &amp; IMDS (`169.254.169.254`) Isolation</div><div class="rob-sub">Shared host docker container vs AKSClaw Kata VM / E2B Firecracker + Cilium NetworkPolicy</div></td>
+            <td class="num-col">0.0%</td><td class="num-col">100.0%</td><td class="num-col">+100.0</td>
+          </tr>
+          <tr>
+            <td><div class="rob-main">T05 · Candidate Option-Order Reversal &amp; Adversarial Noise Stability</div><div class="rob-sub">Original product order (87.5%) vs Reversed order + DOM noise perturbation (86.5% · 0 action flips)</div></td>
+            <td class="num-col">87.5%</td><td class="num-col">86.5%</td><td class="num-col">-1.0</td>
+          </tr>
+          <tr>
+            <td><div class="rob-main">T06 · Personal Agent Filesystem &amp; Network Containment (18 Benchmark Cases)</div><div class="rob-sub">Host-level CLI (`--yolo` / raw shell: 31.3%) vs NemoClaw OpenShell (Landlock + seccomp + NetNS: 94.4%)</div></td>
+            <td class="num-col">31.3%</td><td class="num-col">94.4%</td><td class="num-col">+63.1</td>
+          </tr>
+          <tr>
+            <td><div class="rob-main">T01 · M365 Copilot Oversharing Prevention &amp; Exit-Gate Readiness</div><div class="rob-sub">Unclassified tenant rollout (18.2%) vs DEFENDCompliance + Purview Tier 3 Data Control (100.0%)</div></td>
+            <td class="num-col">18.2%</td><td class="num-col">100.0%</td><td class="num-col">+81.8</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="callout-box"><strong>Hardened out-of-band controls deliver +59.6 pts mean security improvement while maintaining -1.0 pt decision stability under option-order reversal.</strong> Kernel/network isolation (`+100.0 pts`), multi-agent hop containment (`+82.5 pts`), and Purview Copilot readiness (`+81.8 pts`) eliminate catastrophic single-point agent failures.</div>
+    </div>
+    <footer class="card-footer">
+      <span><strong>6-Track AI Security Portfolio · Cross-Repo Benchmark</strong> · measured (adversarial &amp; perturbation suite)</span>
+      <span>5 / 7</span>
+    </footer>
+  </div>
+</article>
+
+<!-- CARD 6 -->
+<article class="report-card" id="card-6">
+  <div class="card-accent-bar"></div>
+  <div class="card-inner">
+    <header class="card-header">
+      <div class="card-eyebrow">LATENCY</div>
+      <h2 class="card-headline">Sub-millisecond eBPF to 108ms MicroVM security overhead</h2>
+      <p class="card-subtitle">Measured latency of runtime security enforcement and sandbox initialization across Tracks 03, 04, 05, and 06 (optimized path in blue vs baseline/cold path in gray).</p>
+    </header>
+    <div class="card-canvas">
+      <div class="lat-list">
+        <div class="lat-group">
+          <div class="lat-title">Track 03 · Cilium Tetragon eBPF Syscall Enforcement vs Userspace Proxy</div>
+          <div class="lat-row"><span class="lat-tag">In-Kernel eBPF Kill</span><div class="lat-bar lat-blue" style="width:2.5%"></div><strong class="lat-val">&lt;0.3 ms</strong></div>
+          <div class="lat-row"><span class="lat-tag">Userspace Sidecar</span><div class="lat-bar lat-gray" style="width:18.0%"></div><strong class="lat-val">14.2 ms</strong></div>
+        </div>
+        <div class="lat-group">
+          <div class="lat-title">Track 03 · E2B Firecracker MicroVM Snapshot Resume vs Cold VM Boot</div>
+          <div class="lat-row"><span class="lat-tag">Snapshot Resume (P50)</span><div class="lat-bar lat-blue" style="width:9.5%"></div><strong class="lat-val">108 ms (Base) / 132 ms (CI)</strong></div>
+          <div class="lat-row"><span class="lat-tag">Cold MicroVM Boot</span><div class="lat-bar lat-gray" style="width:72.0%"></div><strong class="lat-val">1,850 ms</strong></div>
+        </div>
+        <div class="lat-group">
+          <div class="lat-title">Track 04 · Voice Live Safety Circuit Breaker &amp; Barge-In Cut-Off</div>
+          <div class="lat-row"><span class="lat-tag">K05 Hazard / Barge-In</span><div class="lat-bar lat-blue" style="width:13.5%"></div><strong class="lat-val">&lt;170 ms</strong></div>
+          <div class="lat-row"><span class="lat-tag">Cascaded Turn Wait</span><div class="lat-bar lat-gray" style="width:65.0%"></div><strong class="lat-val">1,450 ms</strong></div>
+        </div>
+        <div class="lat-group">
+          <div class="lat-title">Track 05 · Parallel Web IQ Sanitized Grounding + ACP/AP2 Checkout (8 Vendors)</div>
+          <div class="lat-row"><span class="lat-tag">Parallel Web IQ + AP2</span><div class="lat-bar lat-blue" style="width:36.4%"></div><strong class="lat-val">1,120 ms (380ms ACP)</strong></div>
+          <div class="lat-row"><span class="lat-tag">Sequential Scraper</span><div class="lat-bar lat-gray" style="width:100.0%"></div><strong class="lat-val">3,080 ms (2.75× slower)</strong></div>
+        </div>
+        <div class="lat-group">
+          <div class="lat-title">Track 06 · Batched Static Security Contract Verifier (12 Checks / 87 Blobs)</div>
+          <div class="lat-row"><span class="lat-tag">Batched SHA-1 Audit</span><div class="lat-bar lat-blue" style="width:7.4%"></div><strong class="lat-val">137 ms</strong></div>
+          <div class="lat-row"><span class="lat-tag">One-by-One Process</span><div class="lat-bar lat-gray" style="width:88.0%"></div><strong class="lat-val">1,848 ms (13.5× slower)</strong></div>
+        </div>
+      </div>
+      <div class="callout-box"><strong>Hard security boundaries do not require sacrificing interactive agent speed:</strong> In-kernel Tetragon eBPF blocks forbidden syscalls in `&lt;0.3ms`, Firecracker lazy-paged snapshots restore isolated VM kernels in `108ms`, and parallel Web IQ sanitization + AP2 verification finishes `2.75×` faster than sequential scraping (`1,120ms` vs `3,080ms`).</div>
+    </div>
+    <footer class="card-footer">
+      <span><strong>6-Track AI Security Portfolio · Cross-Repo Benchmark</strong> · measured (sealed latency telemetry across Tracks 03–06)</span>
+      <span>6 / 7</span>
+    </footer>
+  </div>
+</article>
+
+<!-- CARD 7 -->
+<article class="report-card" id="card-7">
+  <div class="card-accent-bar"></div>
+  <div class="card-inner">
+    <header class="card-header">
+      <div class="card-eyebrow">MY TAKE</div>
+      <h2 class="card-headline">Blueprint for production AI Security vs common anti-patterns</h2>
+    </header>
+    <div class="card-canvas">
+      <div class="fit-grid">
+        <div class="fit-card fit-good">
+          <div class="fit-head">✅ Good fit</div>
+          <ul>
+            <li>Enforcing M365 DEFEND 5-Tier exit gates &amp; Purview Tier 3 Data Control (DSPM for AI + Copilot DLP) before enterprise AI rollout</li>
+            <li>Testing multi-agent topologies against propagation, amplification, trust capture, and proxy chains with deterministic server-side judges</li>
+            <li>Isolating untrusted agent code execution inside Kata VMs / E2B Firecracker MicroVMs with IMDS blocked and Tetragon eBPF active</li>
+            <li>Binding every agent action to dual Entra Agent ID attribution (`Blueprint + Human Sponsor`), PDP/PEP gates, and `C_accepted(g)`</li>
+            <li>Sanitizing open-web grounding via Microsoft Web IQ and locking autonomous transactions with AP2 `MandateVC` + FIDO2 Passkeys</li>
+          </ul>
+        </div>
+        <div class="fit-card fit-bad">
+          <div class="fit-head">⛔ Not for</div>
+          <ul>
+            <li>Treating system prompts, `SKILL.md` text, or `--yolo` CLI flags on a developer's host OS as an enterprise security boundary</li>
+            <li>Using a single-turn LLM-as-Judge to evaluate multi-agent red-team survival when the judge itself is vulnerable to injection</li>
+            <li>Running multi-tenant code-interpreter agents in shared-kernel containers with access to cloud IMDS (`169.254.169.254`)</li>
+            <li>Deploying open-source OCR/vision weights (`CC BY-NC 4.0`) inside commercial SaaS without automated license compliance gates</li>
+          </ul>
+        </div>
+      </div>
+      <div class="dark-footer-box">
+        <p>Provenance: Synthesized across @turbo998's 6 AI Security tracks: `ai-research-public` (DEFEND Playbook), `ai-security-lab`, `Azure-Infra-Lab` / `ai-infra-lab`, `agent-governance-economics-research`, `agentic-commerce-lab`, and `benchmark-harness-engineering`.</p>
+        <p class="dark-repo">Portal: https://turbo998.github.io/ai-security.html · Standard: benchmark-harness-engineering 7-Card 4:5 Visual Deck</p>
+      </div>
+    </div>
+    <footer class="card-footer">
+      <span><strong>6-Track AI Security Portfolio · Cross-Repo Benchmark</strong> · measured &amp; verified across 12+ repositories</span>
+      <span>7 / 7</span>
+    </footer>
+  </div>
+</article>
+
+</main>
+</body>
+</html>

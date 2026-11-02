@@ -27,7 +27,7 @@ async function main() {
         const actual=await snapshot(page);
         for(const key of ['title','lang','theme','text','primary','cards','columns']) assert.deepEqual(actual[key],expected[key],`${file}: ${key} parity`);
         assert.equal(actual.width,width); assert.equal(actual.frames,0); assert.deepEqual(actual.inner,[]);
-        for(const href of actual.links) {const url=new URL(href);if(url.origin===new URL(base).origin)assert.ok(fs.existsSync(path.join(root,decodeURIComponent(url.pathname))),href);}
+        for(const href of actual.links) {if(typeof href!=='string')continue;const url=new URL(href);if(url.origin===new URL(base).origin)assert.ok(fs.existsSync(path.join(root,decodeURIComponent(url.pathname))),href);}
         const screenshot=`${file}-${theme}-${width}.png`;
         await page.screenshot({path:path.join(output,screenshot),fullPage:true});
         delete actual.text; delete actual.links;

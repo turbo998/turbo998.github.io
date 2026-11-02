@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'" />
+<title>补编4: Claude Sonnet 5.5 &amp; GPT-6.1 Sol 17-Model编码代理基准 -7-卡德视觉报告</title>
+<style>
+  :root {
+    --bg: #F3F4F6;
+    --card: #FFFFFF;
+    --ink: #111827;
+    --muted: #6B7280;
+    --subtle: #9CA3AF;
+    --line: #E5E7EB;
+    --panel: #F9FAFB;
+    --blue: #2563EB;
+    --blue-soft: #EFF6FF;
+    --green: #059669;
+    --green-bg: #ECFDF5;
+    --amber: #D97706;
+    --amber-bg: #FFFBEB;
+    --red: #DC2626;
+    --red-bg: #FEF2F2;
+    --dark: #0F172A;
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, "Helvetica Neue", Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font);
+    padding: 32px 16px 64px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .deck-header {
+    max-width: 900px;
+    margin: 0 auto 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .deck-header strong { color: var(--ink); font-size: 16px; }
+  .deck {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 36px;
+  }
+  .card {
+    width: 900px;
+    min-height: 1125px;
+    background: var(--card);
+    border-radius: 24px;
+    border: 1px solid var(--line);
+    box-shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
+    padding: 48px 52px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+  }
+  .eyebrow {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--blue);
+  }
+  .badge-num {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    background: var(--panel);
+    border: 1px solid var(--line);
+    padding: 5px 12px;
+    border-radius: 999px;
+  }
+  h1, h2 {
+    font-size: 38px;
+    line-height: 1.13;
+    letter-spacing: -0.025em;
+    font-weight: 800;
+    color: var(--ink);
+    margin-bottom: 14px;
+  }
+  h1 .accent, h2 .accent {
+    background: linear-gradient(90deg, #2563EB 0%, #059669 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .subhead {
+    font-size: 18px;
+    line-height: 1.48;
+    color: var(--muted);
+    margin-bottom: 24px;
+  }
+  .card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .card-footer {
+    margin-top: 22px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    font-size: 12.5px;
+    color: var(--subtle);
+  }
+  .wb-frame {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 1.05fr 1.25fr 1.2fr;
+    gap: 14px;
+  }
+  .wb-col {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+  .wb-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .pill-list { display: flex; flex-direction: column; gap: 6px; }
+  .scen-pill {
+    font-size: 12px;
+    padding: 7px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    color: var(--ink);
+    background: var(--panel);
+    font-weight: 500;
+  }
+  .scen-pill.active {
+    background: var(--blue-soft);
+    border-color: #BFDBFE;
+    color: var(--blue);
+    font-weight: 700;
+  }
+  .band-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11.5px;
+    padding: 5px 8px;
+    border-radius: 6px;
+  }
+  .band-green { background: var(--green-bg); color: var(--green); font-weight: 600; }
+  .band-amber { background: var(--amber-bg); color: var(--amber); font-weight: 600; }
+  .band-red { background: var(--red-bg); color: var(--red); font-weight: 600; }
+  .quote-box {
+    background: var(--panel);
+    border-left: 4px solid var(--blue);
+    padding: 12px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    line-height: 1.48;
+    color: var(--ink);
+  }
+  .meta-pills { display: flex; gap: 6px; flex-wrap: wrap; }
+  .meta-pill {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    padding: 4px 9px;
+    border-radius: 999px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .q-card {
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 15px 18px;
+    background: var(--card);
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+  .q-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+  .q-title { font-size: 15px; font-weight: 700; color: var(--ink); }
+  .q-badges { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
+  .type-badge {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 6px;
+    background: #F3F4F6;
+    color: #374151;
+    border: 1px solid var(--line);
+  }
+  .act-pill {
+    font-size: 11.5px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 999px;
+  }
+  .act-auto { background: var(--green-bg); color: var(--green); }
+  .act-confirm { background: var(--amber-bg); color: var(--amber); }
+  .act-human { background: var(--red-bg); color: var(--red); }
+  .opt-row {
+    display: grid;
+    grid-template-columns: 205px 1fr 78px;
+    align-items: center;
+    gap: 10px;
+    font-size: 12.5px;
+  }
+  .opt-label { color: var(--ink); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .opt-bar-wrap {
+    height: 10px;
+    background: #F3F4F6;
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .opt-bar {
+    height: 100%;
+    background: var(--blue);
+    border-radius: 999px;
+  }
+  .opt-bar.muted { background: #CBD5E1; }
+  .opt-val { font-family: var(--mono); font-size: 12px; text-align: right; color: var(--muted); font-weight: 600; }
+  table.matrix {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11.8px;
+  }
+  table.matrix th {
+    text-align: left;
+    font-size: 10.2px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    padding: 7px 8px;
+    border-bottom: 2px solid var(--line);
+  }
+  table.matrix td {
+    padding: 6.5px 8px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: middle;
+  }
+  table.matrix tr.row-New { background: #EFF6FF; }
+  .callout-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: auto;
+  }
+  .callout {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 13px 15px;
+    font-size: 12.8px;
+    line-height: 1.45;
+  }
+  .callout strong { display: block; margin-bottom: 4px; color: var(--ink); font-size: 13.5px; }
+  .code-block {
+    background: var(--dark);
+    color: #E2E8F0;
+    border-radius: 14px;
+    padding: 15px 18px;
+    font-family: var(--mono);
+    font-size: 11.8px;
+    line-height: 1.48;
+    overflow-x: auto;
+    white-space: pre;
+  }
+  .arrow-down {
+    text-align: center;
+    font-size: 20px;
+    color: var(--blue);
+    font-weight: 800;
+    margin: -4px 0;
+  }
+  .lat-row {
+    display: grid;
+    grid-template-columns: 195px 1fr;
+    gap: 14px;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .lat-label { font-size: 13px; font-weight: 700; color: var(--ink); }
+  .lat-sub { font-size: 11px; color: var(--muted); font-weight: 500; }
+  .lat-bars { display: flex; flex-direction: column; gap: 5px; }
+  .lat-bar-line { display: flex; align-items: center; gap: 8px; }
+  .lat-bar { height: 14px; border-radius: 6px; }
+  .lat-bar.primary { background: #3B82F6; }
+  .lat-bar.base { background: #CBD5E1; }
+  .lat-num { font-family: var(--mono); font-size: 11.5px; font-weight: 700; color: var(--ink); }
+  .take-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+  .take-card {
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid var(--line);
+  }
+  .take-card.good { background: #ECFDF5; border-color: #A7F3D0; }
+  .take-card.bad { background: #FEF2F2; border-color: #FECACA; }
+  .take-title { font-size: 17px; font-weight: 800; margin-bottom: 12px; }
+  .take-card.good .take-title { color: #065F46; }
+  .take-card.bad .take-title { color: #991B1B; }
+  .take-list { list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 13.5px; line-height: 1.45; }
+  .dark-footer-card {
+    background: var(--dark);
+    color: #F8FAFC;
+    border-radius: 16px;
+    padding: 20px 24px;
+    margin-top: auto;
+  }
+  .dark-footer-card h3 { font-size: 16px; font-weight: 800; margin-bottom: 6px; color: #FFFFFF; }
+  .dark-footer-card p { font-size: 13px; color: #94A3B8; line-height: 1.45; }
+</style>
+<!-- kee-dedicated-style:start -->
+<style>/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.65fr 1.1fr 1.15fr 1.1fr 1.1fr;gap:6px;align-items:stretch;min-width:0}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+.kee-dedicated-report-viewport,.kee-dedicated-report-layout{display:contents}@media screen{body.kee-dedicated-report-root{display:block}.kee-dedicated-report-viewport{display:block;width:100%;max-width:100%;overflow-x:auto}.kee-dedicated-report-layout{
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font);
+    padding: 32px 16px 64px;
+    -webkit-font-smoothing: antialiased;
+  margin:0;padding:0;min-width:900px}.kee-dedicated-report-viewport:focus-visible{outline:2px solid #3b82f6;outline-offset:3px}}</style>
+<!-- kee-dedicated-style:end -->
+<!-- kee-report-localization:metadata:start --><link rel="alternate" hreflang="en" href="coding-17-sonnet55-sol-cards.en.html"><link rel="alternate" hreflang="zh-CN" href="coding-17-sonnet55-sol-cards.zh-CN.html"><meta name="report-translation-source" content="workshops/benchmarks/coding-17-sonnet55-sol-cards.html@941ee62"><meta name="report-translation-provenance" content="translation; independently_reproduced=false"><style>/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.65fr 1.1fr 1.15fr 1.1fr 1.1fr;gap:6px;align-items:stretch;min-width:0}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+
+html{scroll-padding-top:108px}.reading-header,.kee-dedicated-nav,[data-professional-header]{position:sticky;top:0;z-index:1000;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+
+:root{--search-bg:#101a30;--search-soft:#172440;--search-ink:#eef3ff;--search-muted:#adbbd1;--search-line:#293956;--search-accent:#9aabff;--header-offset:108px}
+:root[data-reading-shell][data-theme=light],[data-perimeter-theme=light]{--search-bg:#fff;--search-soft:#e8eefb;--search-ink:#17233e;--search-muted:#4c5e7c;--search-line:#d5ddec;--search-accent:#354ec8}
+html{scroll-padding-top:var(--header-offset,108px)!important}
+.site-search,.site-search *{box-sizing:border-box!important;font-family:"Segoe UI",sans-serif;letter-spacing:normal;text-transform:none}
+.site-search{position:relative;display:flex;align-items:center;gap:5px;min-width:0;width:230px;max-width:100%;margin:0!important;padding:0!important;line-height:1.4;border:1px solid var(--search-line);border-radius:9px;background:var(--search-soft);color:var(--search-ink);isolation:isolate}
+.site-search input[type=search]{display:block;flex:1;min-width:0;width:100%;height:42px;margin:0;padding:9px 8px!important;font-size:12px!important;line-height:1.5;border:0!important;border-radius:9px;background:transparent!important;color:var(--search-ink)!important;box-shadow:none!important;appearance:none}
+.site-search input::placeholder{color:var(--search-muted);opacity:1}.site-search input:focus-visible{outline:2px solid var(--search-accent);outline-offset:2px}
+.site-search kbd{font:11px Consolas,monospace;color:var(--search-muted);padding:1px 5px;border:1px solid var(--search-line);border-radius:4px}
+.site-search button[type=submit]{flex:none;width:38px;min-width:38px;height:42px;min-height:42px;padding:0;margin:0;border:0;border-radius:8px;background:transparent;color:var(--search-accent);font-size:24px;cursor:pointer;box-shadow:none}
+.search-label,.search-status{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.site-search .search-results{position:absolute;top:calc(100% + 10px);right:0;z-index:1100;width:min(480px,calc(100vw - 32px));max-height:min(560px,65vh);overflow-y:auto;border:1px solid var(--search-line);border-radius:12px;background:var(--search-bg);color:var(--search-ink);padding:10px;box-shadow:0 12px 32px #0005;text-align:left}
+.site-search .search-results[hidden]{display:none!important}.search-results .search-group{margin:8px 6px 4px;font:11px/1.5 Consolas,monospace;color:var(--search-muted)}
+.site-search .search-results a{display:block!important;padding:10px!important;margin:3px 0!important;border:1px solid transparent!important;border-radius:7px;background:transparent;color:var(--search-ink)!important;font-size:13px!important;text-decoration:none!important;white-space:normal;overflow-wrap:anywhere;text-align:left!important;line-height:1.5!important}
+.site-search .search-results a[aria-selected=true],.site-search .search-results a:hover{border-color:var(--search-accent)!important;background:var(--search-soft)}
+.search-results a small{display:block;font-size:10px;color:var(--search-muted);margin-top:4px}.search-results p{margin:10px;font-size:13px;color:var(--search-muted)}
+.search-archive-summary{padding:20px;border:1px solid var(--search-line);border-radius:10px;background:var(--search-bg);color:var(--search-ink);margin:24px 0}.search-archive-summary h2{font-size:24px;margin:0 0 12px}.search-archive-summary li{margin:12px 0}.search-archive-summary a{color:var(--search-accent)}
+[data-professional-header]{position:sticky!important;top:0!important;z-index:1000!important;background:var(--search-bg)!important;--header-glass:rgba(16,26,48,.9);grid-template-columns:auto minmax(0,1fr) 230px auto!important}
+[data-professional-header][data-perimeter-theme=light],:root[data-reading-shell][data-theme=light] [data-professional-header]{--header-glass:rgba(255,255,255,.94)}
+[data-professional-header] .professional-mobile{display:none}.professional-mobile summary{min-width:38px;min-height:42px;display:grid;place-items:center;cursor:pointer;list-style:none}.professional-mobile summary::-webkit-details-marker{display:none}
+[data-professional-header] .professional-context{display:none}
+.professional-context-bar{padding:12px 24px;border-bottom:1px solid var(--search-line);background:var(--search-bg);color:var(--search-muted);font:12px/1.6 "Segoe UI",sans-serif;display:flex;flex-wrap:wrap;gap:8px 18px;overflow-wrap:anywhere}.professional-context-bar a{color:var(--search-accent)}
+@supports((backdrop-filter:blur(16px)) or (-webkit-backdrop-filter:blur(16px))){.site-header,[data-professional-header]{background:var(--header-glass)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}}
+@media(max-width:1250px) and (min-width:701px){.header-inner{grid-template-columns:minmax(0,1fr) 230px auto!important;padding:12px 0;gap:12px!important}.desktop-nav{grid-row:2;grid-column:1/-1}.header-inner>.site-search{grid-column:2;grid-row:1}.header-inner>.controls{grid-column:3;grid-row:1}[data-professional-header]{grid-template-columns:minmax(0,1fr) 230px auto!important;gap:12px!important}[data-professional-header]>.professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header]>.site-search{grid-column:2;grid-row:1}[data-professional-header]>.professional-controls{grid-column:3;grid-row:1}:root{--header-offset:176px}}
+@media(max-width:700px){.header-inner{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 0;gap:8px!important}.header-inner>.site-search{grid-row:2;grid-column:1/-1;width:100%}.header-inner>.controls{grid-column:2;grid-row:1}.site-search .search-results{width:100%;right:0}[data-professional-header]{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 16px!important;gap:8px!important}[data-professional-header]>.professional-primary{display:none!important}[data-professional-header]>.site-search{grid-column:1/-1;grid-row:2;width:100%}[data-professional-header]>.professional-controls{grid-column:2;grid-row:1}[data-professional-header] .professional-mobile{display:block}[data-professional-header] .professional-mobile[open]>.professional-primary{position:absolute;top:100%;left:0;right:0;padding:16px;background:var(--search-bg);border-bottom:1px solid var(--search-line);display:grid;grid-template-columns:1fr 1fr;gap:8px}[data-professional-header] .professional-mobile .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:12px!important}:root{--header-offset:126px}}
+@media(prefers-reduced-transparency:reduce){.site-header,[data-professional-header]{background:var(--search-bg)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+@media print{.site-search,.professional-context-bar{display:none!important}}
+
+@media(min-width:1251px){.header-inner{display:grid!important;grid-template-columns:auto minmax(0,1fr) 230px auto!important;gap:18px!important}.header-inner .desktop-nav{min-width:0}}
+
+html:has(.kee-dedicated-app-root){height:auto!important;overflow-x:hidden!important;overflow-y:auto!important}
+body:has([data-professional-header]){height:auto!important;overflow-x:clip!important;overflow-y:visible!important;padding-top:0!important}
+.demo-language-navigation{display:none!important}
+.stage-column,.telemetry-panel,.scene-pill,#timeline-slider{min-width:0}
+@media(max-width:1180px){.workspace,.template-tabs{grid-template-columns:minmax(0,1fr)!important}}
+
+.in-arena-frame .professional-context-bar,.in-arena-frame [data-knowledge-atlas]{display:none!important}
+</style><!-- kee-report-localization:metadata:end --></head>
+<body class="kee-dedicated-report-root"><!-- kee-report-localization-navigation:start --><nav class="kee-dedicated-nav" data-professional-header><a class="professional-identity reading-brand kee-dedicated-identity identity" href="../../zh.html">Qi Chen · @turbo998</a><div class="professional-primary" role="navigation" aria-label="主导航"><a href="../../studio/zh-index.html" data-section="hub" data-nav-en-href="../../studio/index.html" data-nav-zh-href="../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub">Frontier Transformation Engineering Hub</a><a href="../../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../../benchmarks.html" data-nav-zh-href="../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心" aria-current="page">基准评测中心</a><a href="../../zh-github-radar.html" data-section="radar" data-nav-en-href="../../github-radar.html" data-nav-zh-href="../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI 信号雷达</a><a href="../../zh-openrouter.html" data-section="routing" data-nav-en-href="../../openrouter.html" data-nav-zh-href="../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../../zh-about.html" data-section="profile" data-nav-en-href="../../about.html" data-nav-zh-href="../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">首席架构师履历</a></div><form class="site-search" role="search" action="../../studio/zh-archive.html" method="get" data-search-root="../../index.html" data-search-language="zh-CN"><label class="search-label" for="site-search-input">搜索架构、评测、Demo、技能...</label><input id="site-search-input" name="q" type="search" placeholder="搜索架构、评测、Demo、技能..." autocomplete="off" spellcheck="false" aria-keyshortcuts="/ Control+k Meta+k"><kbd aria-hidden="true">/</kbd><button type="submit" aria-label="搜索全部内容">⌕</button><div class="search-results" id="site-search-results" hidden></div><span class="search-status" role="status" aria-live="polite"></span></form><div class="reading-controls professional-controls" aria-label="网站语言与外观"><a href="coding-17-sonnet55-sol-cards.en.html" lang="en" hreflang="en">EN</a><a href="coding-17-sonnet55-sol-cards.zh-CN.html" lang="zh-CN" hreflang="zh-CN" aria-current="page">中文</a><details class="professional-mobile"><summary aria-label="打开主导航">☰</summary><div class="professional-primary" role="navigation" aria-label="移动主导航"><a href="../../studio/zh-index.html" data-section="hub" data-nav-en-href="../../studio/index.html" data-nav-zh-href="../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub">Frontier Transformation Engineering Hub</a><a href="../../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../../benchmarks.html" data-nav-zh-href="../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心" aria-current="page">基准评测中心</a><a href="../../zh-github-radar.html" data-section="radar" data-nav-en-href="../../github-radar.html" data-nav-zh-href="../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI 信号雷达</a><a href="../../zh-openrouter.html" data-section="routing" data-nav-en-href="../../openrouter.html" data-nav-zh-href="../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../../zh-about.html" data-section="profile" data-nav-en-href="../../about.html" data-nav-zh-href="../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">首席架构师履历</a></div></details><a data-reading-theme="light" href="?theme=light" aria-label="浅色主题">☀</a><a data-reading-theme="dark" href="?theme=dark" aria-label="深色主题">◐</a></div><div class="professional-context" aria-label="返回上下文"><a href="../../studio/zh-index.html">← 工程枢纽</a> · <a href="../../studio/zh-benchmarks.html">返回主题</a></div></nav><div class="professional-context-bar"><a href="../../studio/zh-index.html">← 工程枢纽</a> · <a href="../../studio/zh-benchmarks.html">返回主题</a></div><nav aria-label="报告语言" style="font:14px/1.5 system-ui,sans-serif;display:flex;flex-wrap:wrap;gap:12px;padding:12px 18px;background:#101a30;color:#eef3ff;width:100%;box-sizing:border-box"><a style="color:#9aabff" href="coding-17-sonnet55-sol-cards.en.html" lang="en" hreflang="en">EN</a><a style="color:#9aabff" href="coding-17-sonnet55-sol-cards.zh-CN.html" lang="zh-CN" hreflang="zh-CN" aria-current="page">中文</a><span>源报告译本；非独立复测。指标与证据保持原样。</span></nav><figure class="knowledge-figure" data-knowledge-atlas="benchmarks" style="margin:24px 0;max-width:100%"><svg xmlns="http://www.w3.org/2000/svg" lang="zh-CN" role="img" aria-labelledby="knowledge-f022d5ed5425-title knowledge-f022d5ed5425-desc" viewBox="0 0 360 758" width="360" style="display:block;width:100%;height:auto;max-width:560px;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-f022d5ed5425-title">补编4: Claude Sonnet 5.5 &amp;amp; GPT-6.1 Sol 17-Model编码代理基准 -7-卡德视觉报告</title><desc id="knowledge-f022d5ed5425-desc">研究问题与封存负载: 数据集 · 模型批次 · 分母 · 来源 → 定义测试契约 → Harness 与执行契约: 提示词 · 工具权限 · 环境 · 重复次数 → 生成追踪产物 → 原始输出与确定性校验: 任务轨迹 · 校验结果 · 缺失值记录 → 带条件汇总 → 得分、稳健性与延迟: 保留单位、条件与不确定性 → 支持有边界的结论 → 报告与可复现性: 7 卡来源报告 · 局限 · 是否独立复现？</desc><rect width="360" height="758" rx="16" fill="#091827"/><text x="20" y="30" fill="#eef5ff" font-size="20" font-weight="700"><tspan x="20" dy="0">补编4: Claude Sonnet 5.5 &amp;amp;</tspan><tspan x="20" dy="28">GPT-6.1 Sol 17-Model编码代理基</tspan><tspan x="20" dy="28">准 -7-卡德视觉报告</tspan></text><text x="20" y="111" fill="#a9b8ce" font-size="13" font-weight="400"><tspan x="20" dy="0">概念架构 · 箭头表示关系，不代表测量值</tspan></text><g data-concept="1"><rect x="16" y="137" width="328" height="79" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="151" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="167" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">研究问题与封存负载</tspan></text><text x="32" y="198" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">数据集 · 模型批次 · 分母 · 来源</tspan></text></g><g data-relationship="定义测试契约"><path d="M32 216 V261" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 256 L32 262 L37 256" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="242" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">定义测试契约</tspan></text></g><g data-concept="2"><rect x="16" y="268" width="328" height="79" rx="12" fill="#132942" stroke="#43617f"/><rect x="16" y="282" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="298" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">Harness 与执行契约</tspan></text><text x="32" y="329" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">提示词 · 工具权限 · 环境 · 重复次数</tspan></text></g><g data-relationship="生成追踪产物"><path d="M32 347 V392" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 387 L32 393 L37 387" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="373" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">生成追踪产物</tspan></text></g><g data-concept="3"><rect x="16" y="399" width="328" height="79" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="413" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="429" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">原始输出与确定性校验</tspan></text><text x="32" y="460" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">任务轨迹 · 校验结果 · 缺失值记录</tspan></text></g><g data-relationship="带条件汇总"><path d="M32 478 V523" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 518 L32 524 L37 518" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="504" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">带条件汇总</tspan></text></g><g data-concept="4"><rect x="16" y="530" width="328" height="79" rx="12" fill="#132942" stroke="#43617f"/><rect x="16" y="544" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="560" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">得分、稳健性与延迟</tspan></text><text x="32" y="591" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">保留单位、条件与不确定性</tspan></text></g><g data-relationship="支持有边界的结论"><path d="M32 609 V654" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 649 L32 655 L37 649" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="635" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">支持有边界的结论</tspan></text></g><g data-concept="5"><rect x="16" y="661" width="328" height="79" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="675" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="691" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">报告与可复现性</tspan></text><text x="32" y="722" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">7 卡来源报告 · 局限 · 是否独立复现？</tspan></text></g></svg><figcaption style="font:14px/1.6 system-ui,sans-serif;margin:12px 0;overflow-wrap:anywhere">整体知识图示：按标注关系阅读组件与工程边界。布局仅为概念示意；不表示吞吐、性能排名或生产部署。</figcaption></figure><!-- kee-report-localization-navigation:end -->
+
+<!-- kee-dedicated-report-open:start --><div class="kee-dedicated-report-viewport" tabindex="0" role="region" aria-label="原始报表; 水平滚动以读取所有栏目"><div class="kee-dedicated-report-layout"><!-- kee-dedicated-report-open:end -->
+
+<div class="deck-header">
+  <strong>补编4: Claude Sonnet 5.5 &amp; GPT-6.1 Sol 17-Model编码代理基准( E)7-卡片 -你还不知道4:5夹克)</strong>
+  <span>校正:无名_已报告 ^ 原子/副驾驶-基准@aa1e0dc3 (CLI五、导 言1.0.90-5)</span>
+</div>
+
+<div class="deck">
+
+  <!-- CARD 1: OVERVIEW & WORKBENCH -->
+  <section class="card">
+    <div>
+      <div class="card-top">
+        <span class="eyebrow">手牵手 合作的AGENT17- 模式合作社(支持)4)</span>
+        <span class="badge-num">1 / 7</span>
+      </div>
+      <h1><span class="accent">Sonnet 5.5</span> 设定21.7m速度记录&amp; <span class="accent">GPT-6.1 Sol</span> 点击数60回合数$1.71</h1>
+      <p class="subhead">评价Claude Sonnet 5.5财务报告和已审计财务报表GPT-6.1 Sol横跨11零依赖性Pythonstdlib 任务( ưμ㼯A)`A1–A5`, `M1–M2`, `C1–C4`和`1,310`隐藏pytest断言GitHub Copilot CLI (`v1.0.90-5`).</p>
+    </div>
+
+    <div class="card-body">
+      <div class="wb-frame">
+        <div class="wb-col">
+          <div class="wb-title">任务等级( T)11任务)</div>
+          <div class="pill-list">
+            <div class="scen-pill active">原子 A1-A -A 电话5 (500· 平时413测试)</div>
+            <div class="scen-pill">中号1- 门2 (200· 平时160测试)</div>
+            <div class="scen-pill">综合C1-C -C -我们是4 (400· 平时737测试)</div>
+            <div class="scen-pill">丙级3Async DAG 工作流程引擎</div>
+            <div class="scen-pill">丙级4Stack-VM 字节编码编译器</div>
+          </div>
+          <div class="wb-title" style="margin-top:6px;">动作门阈值</div>
+          <div class="band-row band-green"><span>自动执行</span><span>≥98.4 &amp; 1,310/1,310</span></div>
+          <div class="band-row band-amber"><span>确认</span><span>≥97.5或 减 减&lt;1,310</span></div>
+          <div class="band-row band-red"><span>转人工</span><span>&lt;97.5平均</span></div>
+        </div>
+
+        <div class="wb-col">
+          <div class="wb-title">补编4突破</div>
+          <div class="quote-box">
+            <strong>Sonnet 5.5 (#5内17- 模组...99.00平均值 :</strong> 完成全部任务11任务在 <strong>21.7分钟</strong> (`1,301s`墙壁`16.6m`推断) <strong>$2.89</strong> (`65`轮子,`1,310/1,310`隐性测试)—— <strong>2.45x更快,我们走</strong> 财务报告和已审计财务报表 <strong>63%便宜点</strong> 比起来Sonnet 5.<br/><br/>
+            <strong>GPT-6.1 Sol (#6内17- 模组...98.86平均值 :</strong> 使用任何模型中最少的几轮工具(<strong>60回合</strong>, `9.3w`输出符),在 <strong>$1.71</strong> (`27.4m`墙)—— <strong>82.7%便宜点</strong> 比起来GPT-6亚斯特拉 (Astra)`$9.91`).
+          </div>
+          <div class="meta-pills">
+            <span class="meta-pill">Sonnet 5.5: 99.00 / $2.89</span>
+            <span class="meta-pill">GPT-6.1 Sol: 98.86 / $1.71</span>
+            <span class="meta-pill">两者:1,310/1,310隐藏</span>
+            <span class="meta-pill">187共计CLI运行</span>
+          </div>
+        </div>
+
+        <div class="wb-col">
+          <div class="wb-title">顶上17- 帕雷托梯级模型</div>
+          <div class="q-card" style="padding:10px 12px;">
+            <div class="q-head">
+              <span class="q-title" style="font-size:12.5px;">#1有线电视5.1 &amp; #2 Opus 5.5</span>
+              <span class="act-pill act-auto">99.77 / 99.68</span>
+            </div>
+            <div style="font-size:11.5px; color:var(--muted);">$14.45 (55.9m) &amp; $5.84 (31.8m) · 1,310/1,310</div>
+          </div>
+          <div class="q-card" style="padding:10px 12px;">
+            <div class="q-head">
+              <span class="q-title" style="font-size:12.5px;">#5 Claude Sonnet 5.5</span>
+              <span class="act-pill act-auto">21.7m (#1速度)</span>
+            </div>
+            <div style="font-size:11.5px; color:var(--muted);">1089.00· 平时65rds —— 将数据输入到$2.89 · 1,310/1,310</div>
+          </div>
+          <div class="q-card" style="padding:10px 12px;">
+            <div class="q-head">
+              <span class="q-title" style="font-size:12.5px;">#6 GPT-6.1 Sol</span>
+              <span class="act-pill act-auto">60rds (# 时间轴1标准)</span>
+            </div>
+            <div style="font-size:11.5px; color:var(--muted);">1087.50· 平时27.4m · $1.71 · 1,310/1,310</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout">
+        <strong>为什么是补编4重新定义 Daily-Driver Pareto 边界</strong>
+        补编之前4,清除所有`1,310/1,310`需要隐藏的断言`$3.58` (`HydraFusion`或 减 减`$5.84–$17.41` (`Opus 5.5` / `GPT-6 Astra` / `Fable 5.1` / `Opus 5`). Sonnet 5.5 (`$2.89`, `21.7m`和GPT-6.1 Sol (`$1.71`, `60`分小组(第行)`$3`,次级`30m`未入场生产区.
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <span>基准利用工程7-卡片 -你还不知道4:5相形标准</span>
+      <span>补编4 · 17- 摩德尔·科尔特</span>
+    </div>
+  </section>
+
+  <!-- CARD 2: SINGLE-CASE DEEP DIVE (COMPLEX C1-C4 & HIDDEN TESTS) -->
+  <section class="card">
+    <div>
+      <div class="card-top">
+        <span class="eyebrow">塞纳里奥: 复合压缩机&amp;工作周期(C)1-C -C -我们是4)</span>
+        <span class="badge-num">2 / 7</span>
+      </div>
+      <h2>1,310/1,310隐藏请求 <span class="accent">60–65回合</span> 横跨全局11任务</h2>
+      <p class="subhead">比较Claude Sonnet 5.5财务报告和已审计财务报表GPT-6.1 Sol以直系前辈为敌,Sonnet 5财务报告和已审计财务报表GPT-6Astra),涉及复杂的系统任务(Astra).`C1`斯克勒,你来`C2`反应工作表,`C3`DAG引擎, , , , , , ,`C4`字节码为VM.</p>
+    </div>
+
+    <div class="card-body">
+      <div class="quote-box">
+        <strong>复杂等级( N)`C1–C4`, 737隐藏测试( T) :</strong> 两者GPT-6.1 Sol (`99.38`复杂表示 :`C1=97.50`, `C2=100`, `C3=100`, `C4=100`和Sonnet 5.5 (`99.19`复杂表示 :`C1=97.50`, `C2=100`, `C3=99.25`, `C4=100`) 实现`100%`隐藏测试最难编译器和货币任务的通过率,同时切换工具调用回合`65.8%`比较Sonnet 5.
+      </div>
+
+      <div class="q-card">
+        <div class="q-head">
+          <span class="q-title">1. Claude Sonnet 5.5 (1089.00 / 1100平均99.00)</span>
+          <div class="q-badges">
+            <span class="type-badge">分数/11- 任务</span>
+            <span class="meta-pill">21.7m · $2.89</span>
+            <span class="act-pill act-auto">自动执行</span>
+          </div>
+        </div>
+        <div class="opt-row">
+          <span class="opt-label">原子平均值(A)1-A -A 电话5)</span>
+          <div class="opt-bar-wrap"><div class="opt-bar" style="width: 98.8%;"></div></div>
+          <span class="opt-val">98.80</span>
+        </div>
+        <div class="opt-row">
+          <span class="opt-label">中平均值( M)1- 门2)</span>
+          <div class="opt-bar-wrap"><div class="opt-bar" style="width: 99.12%;"></div></div>
+          <span class="opt-val">99.12</span>
+        </div>
+        <div class="opt-row">
+          <span class="opt-label">复杂平均值( C)1-C -C -我们是4)</span>
+          <div class="opt-bar-wrap"><div class="opt-bar" style="width: 99.19%;"></div></div>
+          <span class="opt-val">99.19</span>
+        </div>
+      </div>
+
+      <div class="q-card">
+        <div class="q-head">
+          <span class="q-title">2. GPT-6.1 Sol (1087.50 / 1100平均98.86)</span>
+          <div class="q-badges">
+            <span class="type-badge">分数/11- 任务</span>
+            <span class="meta-pill">60rds —— 将数据输入到$1.71</span>
+            <span class="act-pill act-auto">自动执行</span>
+          </div>
+        </div>
+        <div class="opt-row">
+          <span class="opt-label">原子平均值(A)1-A -A 电话5)</span>
+          <div class="opt-bar-wrap"><div class="opt-bar" style="width: 98.4%;"></div></div>
+          <span class="opt-val">98.40</span>
+        </div>
+        <div class="opt-row">
+          <span class="opt-label">中平均值( M)1- 门2)</span>
+          <div class="opt-bar-wrap"><div class="opt-bar" style="width: 99.0%;"></div></div>
+          <span class="opt-val">99.00</span>
+        </div>
+        <div class="opt-row">
+          <span class="opt-label">复杂平均值( C)1-C -C -我们是4)</span>
+          <div class="opt-bar-wrap"><div class="opt-bar" style="width: 99.38%;"></div></div>
+          <span class="opt-val">99.38</span>
+        </div>
+      </div>
+
+      <div class="q-card">
+        <div class="q-head">
+          <span class="q-title">3C. 综合体3(Async DAG) (英语:&amp;丙级4(Bytecode VM) 成本比较</span>
+          <div class="q-badges">
+            <span class="type-badge">努尔/费用</span>
+            <span class="meta-pill">C3+C4 USD</span>
+            <span class="act-pill act-auto">5.8x–11.4x便宜点</span>
+          </div>
+        </div>
+        <div class="opt-row">
+          <span class="opt-label">GPT-6.1 Sol(C) 资源3 $0.38 + C4 $0.35)</span>
+          <div class="opt-bar-wrap"><div class="opt-bar" style="width: 8.8%;"></div></div>
+          <span class="opt-val">$0.73</span>
+        </div>
+        <div class="opt-row">
+          <span class="opt-label">Sonnet 5.5(C) 资源3 $0.92 + C4 $0.56)</span>
+          <div class="opt-bar-wrap"><div class="opt-bar" style="width: 17.8%;"></div></div>
+          <span class="opt-val">$1.48</span>
+        </div>
+        <div class="opt-row">
+          <span class="opt-label">亚斯特拉 (Astra)$4.17) / Fable ($7.40) / Opus 5 ($8.33)</span>
+          <div class="opt-bar-wrap"><div class="opt-bar muted" style="width: 100.0%;"></div></div>
+          <span class="opt-val">$4.17–$8.33</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <span>所有任务分数和每任务费用</span>
+      <span>零已制造坐标</span>
+    </div>
+  </section>
+
+  <!-- CARD 3: WHAT I TESTED (17-MODEL MATRIX) -->
+  <section class="card">
+    <div>
+      <div class="card-top">
+        <span class="eyebrow">完全的测试17- 模版固态表</span>
+        <span class="badge-num">3 / 7</span>
+      </div>
+      <h2>8编17模型全部传入 <span class="accent">1,310/1,310</span> 隐藏请求</h2>
+      <p class="subhead">完成17- 模型评价矩阵按总体平均分排名(`✕`标记带有隐藏测试误差或分阈值精确度的模型。</p>
+    </div>
+
+    <div class="card-body">
+      <table class="matrix">
+        <thead>
+          <tr>
+            <th>RANK &amp; MODEL</th>
+            <th>DIFFICULTY (ATOM / MED / COMP)</th>
+            <th>MEAN · HIDDEN · ROUNDS · COST</th>
+            <th>行动</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>#1有线电视5.1</strong></td>
+            <td>100.00 / 99.50 / 99.62</td>
+            <td><strong>99.77</strong> · 1310/1310 · 142r · $14.45 · 55.9m</td>
+            <td><span class="act-pill act-auto">自动执行</span></td>
+          </tr>
+          <tr>
+            <td><strong>#2 Opus 5.5</strong></td>
+            <td>99.80 / 99.50 / 99.62</td>
+            <td><strong>99.68</strong> · 1310/1310 · 92r · $5.84 · 31.8m</td>
+            <td><span class="act-pill act-auto">自动执行</span></td>
+          </tr>
+          <tr>
+            <td><strong>#3 Opus 5</strong></td>
+            <td>99.80 / 99.50 / 99.38</td>
+            <td><strong>99.59</strong> · 1310/1310 · 188r · $17.41 · 63.3m</td>
+            <td><span class="act-pill act-auto">自动执行</span></td>
+          </tr>
+          <tr>
+            <td><strong>#4格鲁克4.7</strong></td>
+            <td>99.00 / 99.50 / 99.33</td>
+            <td>99.21 · 1299/1310 ✕ · 143r · $12.22 · 181.2m</td>
+            <td><span class="act-pill act-confirm">确认</span></td>
+          </tr>
+          <tr class="row-New">
+            <td><strong>#5 Sonnet 5.5[预 告4]</strong></td>
+            <td>98.80 / 99.12 / 99.19</td>
+            <td><strong>99.00</strong> · 1310/1310 · 65r · <strong>$2.89 · 21.7m</strong></td>
+            <td><span class="act-pill act-auto">自动执行</span></td>
+          </tr>
+          <tr class="row-New">
+            <td><strong>#6 GPT-6.1 Sol[预 告4]</strong></td>
+            <td>98.40 / 99.00 / 99.38</td>
+            <td><strong>98.86</strong> · 1310/1310 · <strong>60r · $1.71</strong> · 27.4m</td>
+            <td><span class="act-pill act-auto">自动执行</span></td>
+          </tr>
+          <tr>
+            <td><strong>#7 GPT-6阿斯特拉语Name</strong></td>
+            <td>98.00 / 99.00 / 99.75</td>
+            <td><strong>98.82</strong> · 1310/1310 · 62r · $9.91 · 32.7m</td>
+            <td><span class="act-pill act-auto">自动执行</span></td>
+          </tr>
+          <tr>
+            <td><strong>#8 Sonnet 5</strong></td>
+            <td>98.40 / 99.12 / 98.88</td>
+            <td><strong>98.70</strong> · 1310/1310 · 190r · $7.87 · 53.2m</td>
+            <td><span class="act-pill act-auto">自动执行</span></td>
+          </tr>
+          <tr>
+            <td><strong>#9 Kimi克语3</strong></td>
+            <td>98.40 / 99.12 / 98.81</td>
+            <td>98.68 · 1305/1310 ✕ · 143r · $5.58 · 150.5m</td>
+            <td><span class="act-pill act-confirm">确认</span></td>
+          </tr>
+          <tr>
+            <td><strong>#10格鲁克4.6</strong></td>
+            <td>98.40 / 100.00 / 98.06</td>
+            <td>98.57 · 1305/1310 ✕ · 138r · $5.21 · 69.5m</td>
+            <td><span class="act-pill act-confirm">确认</span></td>
+          </tr>
+          <tr>
+            <td><strong>#11水合剂</strong></td>
+            <td>98.40 / 98.00 / 98.75</td>
+            <td><strong>98.45</strong> · 1310/1310 · 85r · $3.58 · 24.1m</td>
+            <td><span class="act-pill act-auto">自动执行</span></td>
+          </tr>
+          <tr>
+            <td><strong>#12 GPT-6 Luna</strong></td>
+            <td>98.80 / 99.12 / 96.88</td>
+            <td>98.16 · 1279/1310 ✕ · 139r · <strong>$0.17</strong> · 44.6m</td>
+            <td><span class="act-pill act-confirm">确认</span></td>
+          </tr>
+          <tr>
+            <td><strong>#13–#15闪光分层</strong></td>
+            <td>宝石3.8 (98.00) · 5.6 Luna (97.88MAI( 马里)97.70)</td>
+            <td>1276–1293/1310 ✕ · 192–277r · $0.39–$2.83</td>
+            <td><span class="act-pill act-confirm">确认</span></td>
+          </tr>
+          <tr>
+            <td><strong>#16–#17 DeepSeek- 维4 / Haiku 4.5</strong></td>
+            <td>DeepSeek 95.10(男,2=76) · Haiku 4.5 93.96</td>
+            <td>1250 &amp; 1239/1310 ✕ · 420r &amp; 341r · $1.95 &amp; $3.93</td>
+            <td><span class="act-pill act-human">转人工</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout-grid">
+        <div class="callout">
+          <strong>阈值加定 (`8 Act automatically / 7 Confirm / 2 Human`)</strong>
+          只有8实现模式`≥98.4`表示和`1,310/1,310`隐藏测试合格通过率`Act automatically`. 两份补编4模型(`Sonnet 5.5`财务报告和已审计财务报表`GPT-6.1 Sol`)清净此门.
+        </div>
+        <div class="callout">
+          <strong>失败模式分析( O)`✕`标记)</strong>
+          `Grok 4.7` (`99.21`排行榜 #4以分数计,但漏了11隐性断言(`1,299/1,310`) 并带走`181.2m`; `DeepSeek-V4-Flash` (`420`和 发 售`Haiku 4.5` (`82.81`章 次 页 次3需要人类的升级。
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <span>资料来源:编码-/报告。json(原子/副驾驶-基准@aa)1e0dc3)</span>
+      <span>17型号 ·187套装</span>
+    </div>
+  </section>
+
+  <!-- CARD 4: UNDER THE HOOD -->
+  <section class="card">
+    <div>
+      <div class="card-top">
+        <span class="eyebrow">食物下 ? ! ! !70/15/15旋转的卢比&amp;轮 转 分 出</span>
+        <span class="badge-num">4 / 7</span>
+      </div>
+      <h2>为什么 <span class="accent">60–65工具回合</span> 击倒190- 布鲁特部队圈</h2>
+      <p class="subhead">检查副驾驶CLI (`v1.0.90-5`利用合同和每轮困难拨款,用于GPT-6.1 Sol (`60`和 发 售Claude Sonnet 5.5 (`65`)). 弹出.</p>
+    </div>
+
+    <div class="card-body">
+      <div class="code-block">{
+  "benchmark_commit": "aa1e0dc31661ff6343433f06fe3bea1e015b8525",
+  "cli_version_supplement_4": "1.0.90-5",
+  "scoring_weights": { "correctness_hidden_pytest": 0.70, "performance": 0.15, "code_quality": 0.15 },
+  "supplement_4_models": {
+    "claude-sonnet-5.5": {
+      "total_score": 1089.00, "mean": 99.00, "hidden_tests": "1310/1310",
+      "rounds_by_tier": { "atomic_avg": 2.8, "medium_avg": 6.5, "complex_avg": 9.5, "total": 65 },
+      "wall_seconds": 1301, "inference_seconds": 995, "output_tokens": 161136, "cost_usd": 2.89
+    },
+    "gpt-6.1-sol": {
+      "total_score": 1087.50, "mean": 98.86, "hidden_tests": "1310/1310",
+      "rounds_by_tier": { "atomic_avg": 4.4, "medium_avg": 5.0, "complex_avg": 7.0, "total": 60 },
+      "wall_seconds": 1645, "inference_seconds": 1348, "output_tokens": 92907, "cost_usd": 1.71
+    }
+  }
+}</div>
+
+      <div class="arrow-down">↓</div>
+
+      <div class="code-block"># Per-Task Round &amp; Wall-Clock Verification (A1..A5, M1..M2, C1..C4)
+# Sonnet 5.5 rounds: A=[2,3,3,4,2] (14), M=[5,8] (13), C=[7,9,13,9] (38) -&gt; Total = 65 rounds
+# GPT-6.1 Sol rounds: A=[4,4,4,4,6] (22), M=[5,5] (10), C=[4,8,9,7] (28) -&gt; Total = 60 rounds
+
+def verify_supplement_4_efficiency(sonnet55, sol61, sonnet5, astra):
+    assert sonnet55.wall_s == 1301 and sonnet5.wall_s == 3192  # 2.45x faster than Sonnet 5
+    assert sonnet55.rounds == 65 and sonnet5.rounds == 190     # -65.8% fewer rounds
+    assert sol61.rounds == 60 and astra.rounds == 62           # #1 fewest rounds in cohort
+    assert sol61.cost_usd == 1.71 and astra.cost_usd == 9.91   # -82.7% cost vs GPT-6 Astra
+    return "&lt;answer&gt;Both pass 1,310/1,310 hidden tests under $3 and under 28 minutes&lt;/answer&gt;"</div>
+
+      <div class="callout-grid">
+        <div class="callout">
+          <strong>Sonnet 5.5原子冲刺( O)`2.8`圆/任务)</strong>
+          Sonnet 5.5解开`A1`财务报告和已审计财务报表`A5`刚刚`2`回合(`33s`财务报告和已审计财务报表`38s`墙上时间)和`A2–A3`内`3`回合(`34s`),检查一次工作空间,写出执行,并经过pytest第一次跑步时
+        </div>
+        <div class="callout">
+          <strong>GPT-6.1 Sol复杂的纪律(`7.0`圆/任务)</strong>
+          打开`C1–C4`, GPT-6.1 Sol仅指平均数`7.0`回合(`4, 8, 9, 7` = `28`合计)和`9.3w`输出符号——与`35.0`回合数`Sonnet 5`财务报告和已审计财务报表`79.5`回合数`DeepSeek-V4-Flash`.
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <span>资料来源:轮回_by_difficulty.csv&amp;任务_ rounds.csv(`coding-seventeen`)</span>
+      <span>礼宾机械师</span>
+    </div>
+  </section>
+
+  <!-- CARD 5: ROBUSTNESS CHECK -->
+  <section class="card">
+    <div>
+      <div class="card-top">
+        <span class="eyebrow">ROBUSENS CHECK —— 家庭内部升级&amp;困难的打牌</span>
+        <span class="badge-num">5 / 7</span>
+      </div>
+      <h2>复杂- 时代倒置: 两个模型的分数 <span class="accent">高点在C1-C -C -我们是4</span> 而不是A级1-A -A 电话5</h2>
+      <p class="subhead">衡量家庭内部代际变化(`Sonnet 5 → Sonnet 5.5`财务报告和已审计财务报表`GPT-6 Astra → GPT-6.1 Sol`)和难度级稳定性(`Atomic → Complex`).</p>
+    </div>
+
+    <div class="card-body">
+      <table class="matrix">
+        <thead>
+          <tr>
+            <th>COMPARISON / PERTURBATION</th>
+            <th>ORIGINAL / BASELINE</th>
+            <th>UPGRADED / COMPLEX TIER</th>
+            <th>CHANGE (PTS / DELTA)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="row-New">
+            <td><strong>Sonnet 5 → Sonnet 5.5平均分数</strong></td>
+            <td>Sonnet 5: <strong>98.70</strong> (1085.75)</td>
+            <td>Sonnet 5.5: <strong>99.00</strong> (1089.00)</td>
+            <td><span class="act-pill act-auto">+0.30点(+)3.25共计)</span></td>
+          </tr>
+          <tr class="row-New">
+            <td><strong>Sonnet 5 → Sonnet 5.5墙壁时间</strong></td>
+            <td>Sonnet 5: <strong>53.2分钟</strong> (3,192s)</td>
+            <td>Sonnet 5.5: <strong>21.7分钟</strong> (1,301s)</td>
+            <td><span class="act-pill act-auto">-31.5分钟(-)59.2%)</span></td>
+          </tr>
+          <tr class="row-New">
+            <td><strong>Sonnet 5 → Sonnet 5.5费用&amp;回合</strong></td>
+            <td>Sonnet 5: <strong>$7.87 · 190rs (数字)</strong></td>
+            <td>Sonnet 5.5: <strong>$2.89 · 65rs (数字)</strong></td>
+            <td><span class="act-pill act-auto">-$4.98 (-63.3%) · -125r</span></td>
+          </tr>
+          <tr class="row-New">
+            <td><strong>GPT-6亚斯特拉 –GPT-6.1 Sol得分数</strong></td>
+            <td>GPT-6亚斯特拉: <strong>98.82</strong> (1087.00)</td>
+            <td>GPT-6.1 Sol: <strong>98.86</strong> (1087.50)</td>
+            <td><span class="act-pill act-auto">+0.04点(+)0.50共计)</span></td>
+          </tr>
+          <tr class="row-New">
+            <td><strong>GPT-6亚斯特拉 –GPT-6.1 Sol费用</strong></td>
+            <td>GPT-6亚斯特拉: <strong>$9.91 · 32.7m</strong></td>
+            <td>GPT-6.1 Sol: <strong>$1.71 · 27.4m</strong></td>
+            <td><span class="act-pill act-auto">-$8.20 (-82.7%) · -5.3m</span></td>
+          </tr>
+          <tr>
+            <td><strong>GPT-6.1 Sol难以缩放</strong></td>
+            <td>原子平均值(A)1-A -A 电话5): <strong>98.40</strong></td>
+            <td>复杂平均值( C)1-C -C -我们是4): <strong>99.38</strong></td>
+            <td><span class="act-pill act-auto">+0.98复数上的 pts</span></td>
+          </tr>
+          <tr>
+            <td><strong>Sonnet 5.5难以缩放</strong></td>
+            <td>原子平均值(A)1-A -A 电话5): <strong>98.80</strong></td>
+            <td>复杂平均值( C)1-C -C -我们是4): <strong>99.19</strong></td>
+            <td><span class="act-pill act-auto">+0.39复数上的 pts</span></td>
+          </tr>
+          <tr>
+            <td><strong>GPT-6难以缩放</strong></td>
+            <td>原子平均值(A)1-A -A 电话5): <strong>98.00</strong></td>
+            <td>复杂平均值( C)1-C -C -我们是4): <strong>99.75 (#1)</strong></td>
+            <td><span class="act-pill act-auto">+1.75复数上的 pts</span></td>
+          </tr>
+          <tr>
+            <td><strong>Haiku 4.5难以降解</strong></td>
+            <td>原子平均值(A)1-A -A 电话5): <strong>97.25</strong></td>
+            <td>复杂平均值( C)1-C -C -我们是4): <strong>89.64 ✕</strong></td>
+            <td><span class="act-pill act-human">-7.61pts 崩溃</span></td>
+          </tr>
+          <tr>
+            <td><strong>DeepSeek- 维4- 闪出中度滴入</strong></td>
+            <td>原子平均值(A)1-A -A 电话5): <strong>97.30</strong></td>
+            <td>中平均值( M)1- 门2): <strong>88.00 ✕</strong></td>
+            <td><span class="act-pill act-human">-9.30倾斜( 以百万计)2=76.0)</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout-grid">
+        <div class="callout">
+          <strong>阳性复杂- Tier倒置</strong>
+          不同于较小的模型( :`Haiku 4.5`滴数`-7.61 pts`打开`C1–C4`), `GPT-6.1 Sol` (`+0.98 pts`和`Sonnet 5.5` (`+0.39 pts`) 得分较高400- 点性复杂系统任务(`C2=100`, `C4=100`)比原子脚本.
+        </div>
+        <div class="callout">
+          <strong>5.8x OpenAI成本压缩,无准确性损失</strong>
+          `GPT-6.1 Sol`匹配( M)`GPT-6 Astra` (`1087.50`比较`1087.00`, `60`比较`62`轮子,`1,310/1,310`隐藏),同时切换总计11- 任务成本来自`$9.91`改为`$1.71`.
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <span>资料来源:分数_by_difficulty.csv&amp;使用量_ 总计. csv (`coding-seventeen`)</span>
+      <span>强健性&amp;缩放</span>
+    </div>
+  </section>
+
+  <!-- CARD 6: LATENCY -->
+  <section class="card">
+    <div>
+      <div class="card-top">
+        <span class="eyebrow">移动式电磁波 穿越时间11塔斯语</span>
+        <span class="badge-num">6 / 7</span>
+      </div>
+      <h2>Sonnet 5.5完成于 <span class="accent">21.7分钟</span> (16.6m推断)11任务</h2>
+      <p class="subhead">比较纯模型推断时间( :`#3B82F6`)与总时数相比(`#CBD5E1`)在《公约》中跨越关键模式17- 模范组</p>
+    </div>
+
+    <div class="card-body">
+      <div class="lat-row">
+        <div>
+          <div class="lat-label">1. Claude Sonnet 5.5</div>
+          <div class="lat-sub">#1最快的墙钟 !65rs (数字)</div>
+        </div>
+        <div class="lat-bars">
+          <div class="lat-bar-line">
+            <div class="lat-bar primary" style="width: 26.2%;"></div>
+            <span class="lat-num">16.6m推论( E)995s)</span>
+          </div>
+          <div class="lat-bar-line">
+            <div class="lat-bar base" style="width: 34.3%;"></div>
+            <span class="lat-num">21.7m墙上钟 (W)1,301s · $2.89)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="lat-row">
+        <div>
+          <div class="lat-label">2. 水合物</div>
+          <div class="lat-sub">#2最快的墙钟 !85rs (数字)</div>
+        </div>
+        <div class="lat-bars">
+          <div class="lat-bar-line">
+            <div class="lat-bar primary" style="width: 27.2%;"></div>
+            <span class="lat-num">17.2m推论( E)1,034s)</span>
+          </div>
+          <div class="lat-bar-line">
+            <div class="lat-bar base" style="width: 38.1%;"></div>
+            <span class="lat-num">24.1m墙上钟 (W)1,444s · $3.58)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="lat-row">
+        <div>
+          <div class="lat-label">3. GPT-6.1 Sol</div>
+          <div class="lat-sub">#3最快的 ~ #1最低60)</div>
+        </div>
+        <div class="lat-bars">
+          <div class="lat-bar-line">
+            <div class="lat-bar primary" style="width: 35.5%;"></div>
+            <span class="lat-num">22.5m推论( E)1,348s)</span>
+          </div>
+          <div class="lat-bar-line">
+            <div class="lat-bar base" style="width: 43.3%;"></div>
+            <span class="lat-num">27.4m墙上钟 (W)1,645s · $1.71)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="lat-row">
+        <div>
+          <div class="lat-label">4. Opus 5.5 &amp; GPT-6阿斯特拉语Name</div>
+          <div class="lat-sub">旗舰30- 最小的一级</div>
+        </div>
+        <div class="lat-bars">
+          <div class="lat-bar-line">
+            <div class="lat-bar primary" style="width: 41.4%;"></div>
+            <span class="lat-num">26.2m信息/数据31.8m墙 (Opus 5.5 · $5.84)</span>
+          </div>
+          <div class="lat-bar-line">
+            <div class="lat-bar base" style="width: 51.7%;"></div>
+            <span class="lat-num">26.9m信息/数据32.7m墙 (GPT-6· 亚斯特拉$9.91)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="lat-row">
+        <div>
+          <div class="lat-label">5。寓言5.1 &amp; Opus 5</div>
+          <div class="lat-sub">重旗舰等级( Tier) (55–63m)</div>
+        </div>
+        <div class="lat-bars">
+          <div class="lat-bar-line">
+            <div class="lat-bar primary" style="width: 58.1%;"></div>
+            <span class="lat-num">36.8m信息/数据55.9m墙 (有线电视)5.1 · $14.45)</span>
+          </div>
+          <div class="lat-bar-line">
+            <div class="lat-bar base" style="width: 100.0%;"></div>
+            <span class="lat-num">50.7m信息/数据63.3m墙 (Opus 5 · $17.41)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout-grid">
+        <div class="callout">
+          <strong>低工具执行超头( Q)`5.1m`比较`29.2m`)</strong>
+          因为`Sonnet 5.5` (`65`和 发 售`GPT-6.1 Sol` (`60`弹壳/pytest循环,非引用工具的间接费用仅限`4.9–5.1`分钟跨出所有11任务。
+        </div>
+        <div class="callout">
+          <strong>长发者`150m–181m`)</strong>
+          `Kimi K3` (`150.5m`), `DeepSeek-V4-Flash` (`179.0m`),以及`Grok 4.7` (`181.2m` = `3+`小时)`6.9x–8.3x`墙壁时间长于`Sonnet 5.5` (`21.7m`).
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <span>已规范为63.3m (3,797s(一) 旗舰天花板;长尾;150–181m标注中注明的</span>
+      <span>任务墙&amp;推论秒</span>
+    </div>
+  </section>
+
+  <!-- CARD 7: MY TAKE -->
+  <section class="card">
+    <div>
+      <div class="card-top">
+        <span class="eyebrow">MY TAKE · SUPPLEMENT 4 PRODUCTION GUIDANCE</span>
+        <span class="badge-num">7 / 7</span>
+      </div>
+      <h2>默认为 <span class="accent">Sonnet 5.5 &amp; GPT-6.1 Sol</span> 用于交互式&amp;未处理的编码</h2>
+      <p class="subhead">如何穿越17- 以耐久性、象征性预算 和隐蔽性可靠性为基础的模型组</p>
+    </div>
+
+    <div class="card-body">
+      <div class="take-grid">
+        <div class="take-card good">
+          <div class="take-title">✅ 适用场景</div>
+          <ul class="take-list">
+            <li><strong>Claude Sonnet 5.5 ($2.89, 21.7m, 99.00):</strong> 主交互式副驾驶CLI当开发者等待时间是瓶颈时编码代理( Q)`21.7m`横跨11任务,`1,310/1,310`) ("隐".</li>
+            <li><strong>GPT-6.1 Sol ($1.71, 60德兹,98.86):</strong> 默认自动背景代理, 其中最小的工具调用聊天( N)`60`轮子,`9.3w`和子符号`$2`费用11- 任务套房最重要</li>
+            <li><strong>Opus 5.5 ($5.84, 99.68) &amp; Fable 5.1 ($14.45, 99.77):</strong> 压住最后一层时的高保障级升级`0.7–0.9`复杂建筑的质量点。</li>
+            <li><strong>GPT-6 Luna ($0.17, 98.16):</strong> 超低成本原型(`A1–M2`)与自动对齐时pytest校验回路.</li>
+          </ul>
+        </div>
+
+        <div class="take-card bad">
+          <div class="take-title">⛔ 不适用场景</div>
+          <ul class="take-list">
+            <li><strong>支付遗产Sonnet 5 ($7.87) or Opus 5 ($17.41比率:</strong> 严格控制速度、轮次、成本和/或得分`Sonnet 5.5` (`$2.89`和`Opus 5.5` (`$5.84`).</li>
+            <li><strong>使用GPT-6亚斯特拉 (Astra)$9.91)用于常规CLI任务 :</strong> `GPT-6.1 Sol` (`$1.71`实现较高的总和(`1087.50`比较`1087.00`),以少发数计(`60`比较`62`时`17.3%`费用。</li>
+            <li><strong>未参加部署DeepSeek- 维4- 闪出或Haiku 4.5:</strong> 两种触发器都运行了圆环(`420`财务报告和已审计财务报表`341`回合),失败`60–71`隐藏的断言。</li>
+            <li><strong>格洛克岛上的紧急警报管道4.7或 减 减Kimi克语3:</strong> `181.2m`财务报告和已审计财务报表`150.5m`墙上时间 : 块块交互CI反馈回路.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="dark-footer-card">
+        <h3>准备情况,证明&amp;可复制性</h3>
+        <p>证相: <code>anonymized_reported</code> (<code>independently_reproduced=false</code>)源数据集: <code>satomic/copilot-benchmark@aa1e0dc3</code> (17型号×11任务=187非引用报告捆绑)存档于 <code>benchmark-harness-engineering/data/reported/coding-seventeen/</code>. 自足的CSP: <code>default-src 'none'; style-src 'unsafe-inline'</code>.</p>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <span>边境AI实验室https://turbo998.github.io/benchmarks.html</span>
+      <span>纸牌7 / 7· 完成</span>
+    </div>
+  </section>
+
+</div>
+
+<!-- kee-dedicated-report-close:start --></div></div><!-- kee-dedicated-report-close:end --></body>
+</html>

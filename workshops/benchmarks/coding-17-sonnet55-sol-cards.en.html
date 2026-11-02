@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'" />
+<title>Supplement 4: Claude Sonnet 5.5 &amp; GPT-6.1 Sol 17-Model Coding Agent Benchmark — 7-Card Visual Report</title>
+<style>
+  :root {
+    --bg: #F3F4F6;
+    --card: #FFFFFF;
+    --ink: #111827;
+    --muted: #6B7280;
+    --subtle: #9CA3AF;
+    --line: #E5E7EB;
+    --panel: #F9FAFB;
+    --blue: #2563EB;
+    --blue-soft: #EFF6FF;
+    --green: #059669;
+    --green-bg: #ECFDF5;
+    --amber: #D97706;
+    --amber-bg: #FFFBEB;
+    --red: #DC2626;
+    --red-bg: #FEF2F2;
+    --dark: #0F172A;
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, "Helvetica Neue", Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font);
+    padding: 32px 16px 64px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .deck-header {
+    max-width: 900px;
+    margin: 0 auto 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .deck-header strong { color: var(--ink); font-size: 16px; }
+  .deck {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 36px;
+  }
+  .card {
+    width: 900px;
+    min-height: 1125px;
+    background: var(--card);
+    border-radius: 24px;
+    border: 1px solid var(--line);
+    box-shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
+    padding: 48px 52px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+  }
+  .eyebrow {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--blue);
+  }
+  .badge-num {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    background: var(--panel);
+    border: 1px solid var(--line);
+    padding: 5px 12px;
+    border-radius: 999px;
+  }
+  h1, h2 {
+    font-size: 38px;
+    line-height: 1.13;
+    letter-spacing: -0.025em;
+    font-weight: 800;
+    color: var(--ink);
+    margin-bottom: 14px;
+  }
+  h1 .accent, h2 .accent {
+    background: linear-gradient(90deg, #2563EB 0%, #059669 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .subhead {
+    font-size: 18px;
+    line-height: 1.48;
+    color: var(--muted);
+    margin-bottom: 24px;
+  }
+  .card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .card-footer {
+    margin-top: 22px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    font-size: 12.5px;
+    color: var(--subtle);
+  }
+  .wb-frame {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 1.05fr 1.25fr 1.2fr;
+    gap: 14px;
+  }
+  .wb-col {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+  .wb-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .pill-list { display: flex; flex-direction: column; gap: 6px; }
+  .scen-pill {
+    font-size: 12px;
+    padding: 7px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    color: var(--ink);
+    background: var(--panel);
+    font-weight: 500;
+  }
+  .scen-pill.active {
+    background: var(--blue-soft);
+    border-color: #BFDBFE;
+    color: var(--blue);
+    font-weight: 700;
+  }
+  .band-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11.5px;
+    padding: 5px 8px;
+    border-radius: 6px;
+  }
+  .band-green { background: var(--green-bg); color: var(--green); font-weight: 600; }
+  .band-amber { background: var(--amber-bg); color: var(--amber); font-weight: 600; }
+  .band-red { background: var(--red-bg); color: var(--red); font-weight: 600; }
+  .quote-box {
+    background: var(--panel);
+    border-left: 4px solid var(--blue);
+    padding: 12px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    line-height: 1.48;
+    color: var(--ink);
+  }
+  .meta-pills { display: flex; gap: 6px; flex-wrap: wrap; }
+  .meta-pill {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    padding: 4px 9px;
+    border-radius: 999px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .q-card {
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 15px 18px;
+    background: var(--card);
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+  .q-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+  .q-title { font-size: 15px; font-weight: 700; color: var(--ink); }
+  .q-badges { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
+  .type-badge {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 6px;
+    background: #F3F4F6;
+    color: #374151;
+    border: 1px solid var(--line);
+  }
+  .act-pill {
+    font-size: 11.5px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 999px;
+  }
+  .act-auto { background: var(--green-bg); color: var(--green); }
+  .act-confirm { background: var(--amber-bg); color: var(--amber); }
+  .act-human { background: var(--red-bg); color: var(--red); }
+  .opt-row {
+    display: grid;
+    grid-template-columns: 205px 1fr 78px;
+    align-items: center;
+    gap: 10px;
+    font-size: 12.5px;
+  }
+  .opt-label { color: var(--ink); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .opt-bar-wrap {
+    height: 10px;
+    background: #F3F4F6;
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .opt-bar {
+    height: 100%;
+    background: var(--blue);
+    border-radius: 999px;
+  }
+  .opt-bar.muted { background: #CBD5E1; }
+  .opt-val { font-family: var(--mono); font-size: 12px; text-align: right; color: var(--muted); font-weight: 600; }
+  table.matrix {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11.8px;
+  }
+  table.matrix th {
+    text-align: left;
+    font-size: 10.2px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    padding: 7px 8px;
+    border-bottom: 2px solid var(--line);
+  }
+  table.matrix td {
+    padding: 6.5px 8px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: middle;
+  }
+  table.matrix tr.row-New { background: #EFF6FF; }
+  .callout-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: auto;
+  }
+  .callout {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 13px 15px;
+    font-size: 12.8px;
+    line-height: 1.45;
+  }
+  .callout strong { display: block; margin-bottom: 4px; color: var(--ink); font-size: 13.5px; }
+  .code-block {
+    background: var(--dark);
+    color: #E2E8F0;
+    border-radius: 14px;
+    padding: 15px 18px;
+    font-family: var(--mono);
+    font-size: 11.8px;
+    line-height: 1.48;
+    overflow-x: auto;
+    white-space: pre;
+  }
+  .arrow-down {
+    text-align: center;
+    font-size: 20px;
+    color: var(--blue);
+    font-weight: 800;
+    margin: -4px 0;
+  }
+  .lat-row {
+    display: grid;
+    grid-template-columns: 195px 1fr;
+    gap: 14px;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .lat-label { font-size: 13px; font-weight: 700; color: var(--ink); }
+  .lat-sub { font-size: 11px; color: var(--muted); font-weight: 500; }
+  .lat-bars { display: flex; flex-direction: column; gap: 5px; }
+  .lat-bar-line { display: flex; align-items: center; gap: 8px; }
+  .lat-bar { height: 14px; border-radius: 6px; }
+  .lat-bar.primary { background: #3B82F6; }
+  .lat-bar.base { background: #CBD5E1; }
+  .lat-num { font-family: var(--mono); font-size: 11.5px; font-weight: 700; color: var(--ink); }
+  .take-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+  .take-card {
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid var(--line);
+  }
+  .take-card.good { background: #ECFDF5; border-color: #A7F3D0; }
+  .take-card.bad { background: #FEF2F2; border-color: #FECACA; }
+  .take-title { font-size: 17px; font-weight: 800; margin-bottom: 12px; }
+  .take-card.good .take-title { color: #065F46; }
+  .take-card.bad .take-title { color: #991B1B; }
+  .take-list { list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 13.5px; line-height: 1.45; }
+  .dark-footer-card {
+    background: var(--dark);
+    color: #F8FAFC;
+    border-radius: 16px;
+    padding: 20px 24px;
+    margin-top: auto;
+  }
+  .dark-footer-card h3 { font-size: 16px; font-weight: 800; margin-bottom: 6px; color: #FFFFFF; }
+  .dark-footer-card p { font-size: 13px; color: #94A3B8; line-height: 1.45; }
+</style>
+<!-- kee-dedicated-style:start -->
+<style>/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.65fr 1.1fr 1.15fr 1.1fr 1.1fr;gap:6px;align-items:stretch;min-width:0}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+.kee-dedicated-report-viewport,.kee-dedicated-report-layout{display:contents}@media screen{body.kee-dedicated-report-root{display:block}.kee-dedicated-report-viewport{display:block;width:100%;max-width:100%;overflow-x:auto}.kee-dedicated-report-layout{
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font);
+    padding: 32px 16px 64px;
+    -webkit-font-smoothing: antialiased;
+  margin:0;padding:0;min-width:900px}.kee-dedicated-report-viewport:focus-visible{outline:2px solid #3b82f6;outline-offset:3px}}</style>
+<!-- kee-dedicated-style:end -->
+<!-- kee-report-localization:metadata:start --><link rel="alternate" hreflang="en" href="coding-17-sonnet55-sol-cards.en.html"><link rel="alternate" hreflang="zh-CN" href="coding-17-sonnet55-sol-cards.zh-CN.html"><meta name="report-translation-source" content="workshops/benchmarks/coding-17-sonnet55-sol-cards.html@941ee62"><meta name="report-translation-provenance" content="translation; independently_reproduced=false"><style>/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.65fr 1.1fr 1.15fr 1.1fr 1.1fr;gap:6px;align-items:stretch;min-width:0}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+
+html{scroll-padding-top:108px}.reading-header,.kee-dedicated-nav,[data-professional-header]{position:sticky;top:0;z-index:1000;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+
+:root{--search-bg:#101a30;--search-soft:#172440;--search-ink:#eef3ff;--search-muted:#adbbd1;--search-line:#293956;--search-accent:#9aabff;--header-offset:108px}
+:root[data-reading-shell][data-theme=light],[data-perimeter-theme=light]{--search-bg:#fff;--search-soft:#e8eefb;--search-ink:#17233e;--search-muted:#4c5e7c;--search-line:#d5ddec;--search-accent:#354ec8}
+html{scroll-padding-top:var(--header-offset,108px)!important}
+.site-search,.site-search *{box-sizing:border-box!important;font-family:"Segoe UI",sans-serif;letter-spacing:normal;text-transform:none}
+.site-search{position:relative;display:flex;align-items:center;gap:5px;min-width:0;width:230px;max-width:100%;margin:0!important;padding:0!important;line-height:1.4;border:1px solid var(--search-line);border-radius:9px;background:var(--search-soft);color:var(--search-ink);isolation:isolate}
+.site-search input[type=search]{display:block;flex:1;min-width:0;width:100%;height:42px;margin:0;padding:9px 8px!important;font-size:12px!important;line-height:1.5;border:0!important;border-radius:9px;background:transparent!important;color:var(--search-ink)!important;box-shadow:none!important;appearance:none}
+.site-search input::placeholder{color:var(--search-muted);opacity:1}.site-search input:focus-visible{outline:2px solid var(--search-accent);outline-offset:2px}
+.site-search kbd{font:11px Consolas,monospace;color:var(--search-muted);padding:1px 5px;border:1px solid var(--search-line);border-radius:4px}
+.site-search button[type=submit]{flex:none;width:38px;min-width:38px;height:42px;min-height:42px;padding:0;margin:0;border:0;border-radius:8px;background:transparent;color:var(--search-accent);font-size:24px;cursor:pointer;box-shadow:none}
+.search-label,.search-status{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.site-search .search-results{position:absolute;top:calc(100% + 10px);right:0;z-index:1100;width:min(480px,calc(100vw - 32px));max-height:min(560px,65vh);overflow-y:auto;border:1px solid var(--search-line);border-radius:12px;background:var(--search-bg);color:var(--search-ink);padding:10px;box-shadow:0 12px 32px #0005;text-align:left}
+.site-search .search-results[hidden]{display:none!important}.search-results .search-group{margin:8px 6px 4px;font:11px/1.5 Consolas,monospace;color:var(--search-muted)}
+.site-search .search-results a{display:block!important;padding:10px!important;margin:3px 0!important;border:1px solid transparent!important;border-radius:7px;background:transparent;color:var(--search-ink)!important;font-size:13px!important;text-decoration:none!important;white-space:normal;overflow-wrap:anywhere;text-align:left!important;line-height:1.5!important}
+.site-search .search-results a[aria-selected=true],.site-search .search-results a:hover{border-color:var(--search-accent)!important;background:var(--search-soft)}
+.search-results a small{display:block;font-size:10px;color:var(--search-muted);margin-top:4px}.search-results p{margin:10px;font-size:13px;color:var(--search-muted)}
+.search-archive-summary{padding:20px;border:1px solid var(--search-line);border-radius:10px;background:var(--search-bg);color:var(--search-ink);margin:24px 0}.search-archive-summary h2{font-size:24px;margin:0 0 12px}.search-archive-summary li{margin:12px 0}.search-archive-summary a{color:var(--search-accent)}
+[data-professional-header]{position:sticky!important;top:0!important;z-index:1000!important;background:var(--search-bg)!important;--header-glass:rgba(16,26,48,.9);grid-template-columns:auto minmax(0,1fr) 230px auto!important}
+[data-professional-header][data-perimeter-theme=light],:root[data-reading-shell][data-theme=light] [data-professional-header]{--header-glass:rgba(255,255,255,.94)}
+[data-professional-header] .professional-mobile{display:none}.professional-mobile summary{min-width:38px;min-height:42px;display:grid;place-items:center;cursor:pointer;list-style:none}.professional-mobile summary::-webkit-details-marker{display:none}
+[data-professional-header] .professional-context{display:none}
+.professional-context-bar{padding:12px 24px;border-bottom:1px solid var(--search-line);background:var(--search-bg);color:var(--search-muted);font:12px/1.6 "Segoe UI",sans-serif;display:flex;flex-wrap:wrap;gap:8px 18px;overflow-wrap:anywhere}.professional-context-bar a{color:var(--search-accent)}
+@supports((backdrop-filter:blur(16px)) or (-webkit-backdrop-filter:blur(16px))){.site-header,[data-professional-header]{background:var(--header-glass)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}}
+@media(max-width:1250px) and (min-width:701px){.header-inner{grid-template-columns:minmax(0,1fr) 230px auto!important;padding:12px 0;gap:12px!important}.desktop-nav{grid-row:2;grid-column:1/-1}.header-inner>.site-search{grid-column:2;grid-row:1}.header-inner>.controls{grid-column:3;grid-row:1}[data-professional-header]{grid-template-columns:minmax(0,1fr) 230px auto!important;gap:12px!important}[data-professional-header]>.professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header]>.site-search{grid-column:2;grid-row:1}[data-professional-header]>.professional-controls{grid-column:3;grid-row:1}:root{--header-offset:176px}}
+@media(max-width:700px){.header-inner{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 0;gap:8px!important}.header-inner>.site-search{grid-row:2;grid-column:1/-1;width:100%}.header-inner>.controls{grid-column:2;grid-row:1}.site-search .search-results{width:100%;right:0}[data-professional-header]{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 16px!important;gap:8px!important}[data-professional-header]>.professional-primary{display:none!important}[data-professional-header]>.site-search{grid-column:1/-1;grid-row:2;width:100%}[data-professional-header]>.professional-controls{grid-column:2;grid-row:1}[data-professional-header] .professional-mobile{display:block}[data-professional-header] .professional-mobile[open]>.professional-primary{position:absolute;top:100%;left:0;right:0;padding:16px;background:var(--search-bg);border-bottom:1px solid var(--search-line);display:grid;grid-template-columns:1fr 1fr;gap:8px}[data-professional-header] .professional-mobile .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:12px!important}:root{--header-offset:126px}}
+@media(prefers-reduced-transparency:reduce){.site-header,[data-professional-header]{background:var(--search-bg)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+@media print{.site-search,.professional-context-bar{display:none!important}}
+
+@media(min-width:1251px){.header-inner{display:grid!important;grid-template-columns:auto minmax(0,1fr) 230px auto!important;gap:18px!important}.header-inner .desktop-nav{min-width:0}}
+
+html:has(.kee-dedicated-app-root){height:auto!important;overflow-x:hidden!important;overflow-y:auto!important}
+body:has([data-professional-header]){height:auto!important;overflow-x:clip!important;overflow-y:visible!important;padding-top:0!important}
+.demo-language-navigation{display:none!important}
+.stage-column,.telemetry-panel,.scene-pill,#timeline-slider{min-width:0}
+@media(max-width:1180px){.workspace,.template-tabs{grid-template-columns:minmax(0,1fr)!important}}
+
+.in-arena-frame .professional-context-bar,.in-arena-frame [data-knowledge-atlas]{display:none!important}
+</style><!-- kee-report-localization:metadata:end --></head>
+<body class="kee-dedicated-report-root"><!-- kee-report-localization-navigation:start --><nav class="kee-dedicated-nav" data-professional-header><a class="professional-identity reading-brand kee-dedicated-identity identity" href="../../index.html">Qi Chen · @turbo998</a><div class="professional-primary" role="navigation" aria-label="Primary sections"><a href="../../studio/index.html" data-section="hub" data-nav-en-href="../../studio/index.html" data-nav-zh-href="../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub">Frontier Transformation Engineering Hub</a><a href="../../benchmarks.html" data-section="benchmarks" data-nav-en-href="../../benchmarks.html" data-nav-zh-href="../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心" aria-current="page">Benchmark &amp; Eval Foundry</a><a href="../../github-radar.html" data-section="radar" data-nav-en-href="../../github-radar.html" data-nav-zh-href="../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI Signal Radar</a><a href="../../openrouter.html" data-section="routing" data-nav-en-href="../../openrouter.html" data-nav-zh-href="../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">Model Routing &amp; Telemetry</a><a href="../../about.html" data-section="profile" data-nav-en-href="../../about.html" data-nav-zh-href="../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">Principal Architect Profile</a></div><form class="site-search" role="search" action="../../studio/archive.html" method="get" data-search-root="../../index.html" data-search-language="en"><label class="search-label" for="site-search-input">Search architecture, benchmarks, demos...</label><input id="site-search-input" name="q" type="search" placeholder="Search architecture, benchmarks, demos..." autocomplete="off" spellcheck="false" aria-keyshortcuts="/ Control+k Meta+k"><kbd aria-hidden="true">/</kbd><button type="submit" aria-label="Search all content">⌕</button><div class="search-results" id="site-search-results" hidden></div><span class="search-status" role="status" aria-live="polite"></span></form><div class="reading-controls professional-controls" aria-label="Site language and appearance"><a href="coding-17-sonnet55-sol-cards.en.html" lang="en" hreflang="en" aria-current="page">EN</a><a href="coding-17-sonnet55-sol-cards.zh-CN.html" lang="zh-CN" hreflang="zh-CN">中文</a><details class="professional-mobile"><summary aria-label="Open navigation">☰</summary><div class="professional-primary" role="navigation" aria-label="Mobile navigation"><a href="../../studio/index.html" data-section="hub" data-nav-en-href="../../studio/index.html" data-nav-zh-href="../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub">Frontier Transformation Engineering Hub</a><a href="../../benchmarks.html" data-section="benchmarks" data-nav-en-href="../../benchmarks.html" data-nav-zh-href="../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心" aria-current="page">Benchmark &amp; Eval Foundry</a><a href="../../github-radar.html" data-section="radar" data-nav-en-href="../../github-radar.html" data-nav-zh-href="../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI Signal Radar</a><a href="../../openrouter.html" data-section="routing" data-nav-en-href="../../openrouter.html" data-nav-zh-href="../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">Model Routing &amp; Telemetry</a><a href="../../about.html" data-section="profile" data-nav-en-href="../../about.html" data-nav-zh-href="../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">Principal Architect Profile</a></div></details><a data-reading-theme="light" href="?theme=light" aria-label="Light theme">☀</a><a data-reading-theme="dark" href="?theme=dark" aria-label="Dark theme">◐</a></div><div class="professional-context" aria-label="Back to context"><a href="../../studio/index.html">← Engineering Hub</a> · <a href="../../studio/benchmarks.html">Parent topic</a></div></nav><div class="professional-context-bar"><a href="../../studio/index.html">← Engineering Hub</a> · <a href="../../studio/benchmarks.html">Parent topic</a></div><nav aria-label="Report language" style="font:14px/1.5 system-ui,sans-serif;display:flex;flex-wrap:wrap;gap:12px;padding:12px 18px;background:#101a30;color:#eef3ff;width:100%;box-sizing:border-box"><a style="color:#9aabff" href="coding-17-sonnet55-sol-cards.en.html" lang="en" hreflang="en" aria-current="page">EN</a><a style="color:#9aabff" href="coding-17-sonnet55-sol-cards.zh-CN.html" lang="zh-CN" hreflang="zh-CN">中文</a><span>Translated source report; not an independent reproduction. Metrics and evidence are unchanged.</span></nav><figure class="knowledge-figure" data-knowledge-atlas="benchmarks" style="margin:24px 0;max-width:100%"><svg xmlns="http://www.w3.org/2000/svg" lang="en" role="img" aria-labelledby="knowledge-ce2bb02e6f74-title knowledge-ce2bb02e6f74-desc" viewBox="0 0 360 908" width="360" style="display:block;width:100%;height:auto;max-width:560px;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-ce2bb02e6f74-title">Supplement 4: Claude Sonnet 5.5 &amp;amp; GPT-6.1 Sol 17-Model Coding Agent Benchmark — 7-Card Visual Report</title><desc id="knowledge-ce2bb02e6f74-desc">Question &amp; sealed workload: Dataset · cohort · denominator · provenance → defines the contract → Harness &amp; execution contract: Prompt · tool permissions · environment · repeats → produces trace artifacts → Raw outputs &amp; deterministic checks: Task traces · verifier results · missing-value ledger → aggregates with conditions → Scores, robustness &amp; latency: Keep units, conditions and uncertainty attached → supports bounded conclusions → Report &amp; reproducibility: 7-card source deck · limitations · independently reproduced?</desc><rect width="360" height="908" rx="16" fill="#091827"/><text x="20" y="30" fill="#eef5ff" font-size="20" font-weight="700"><tspan x="20" dy="0">Supplement 4: Claude Sonnet 5.5</tspan><tspan x="20" dy="28">&amp;amp; GPT-6.1 Sol 17-Model</tspan><tspan x="20" dy="28">Coding Agent Benchmark —</tspan><tspan x="20" dy="28">7-Card Visual Report</tspan></text><text x="20" y="136" fill="#a9b8ce" font-size="13" font-weight="400"><tspan x="20" dy="0">Conceptual topology · not measured metrics</tspan></text><g data-concept="1"><rect x="16" y="162" width="328" height="99" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="176" width="4" height="71" rx="2" fill="#63dbca"/><text x="32" y="192" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">Question &amp; sealed workload</tspan></text><text x="32" y="223" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">Dataset · cohort · denominator ·</tspan><tspan x="32" dy="19.599999999999998">provenance</tspan></text></g><g data-relationship="defines the contract"><path d="M32 261 V306" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 301 L32 307 L37 301" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="287" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">defines the contract</tspan></text></g><g data-concept="2"><rect x="16" y="313" width="328" height="99" rx="12" fill="#132942" stroke="#43617f"/><rect x="16" y="327" width="4" height="71" rx="2" fill="#63dbca"/><text x="32" y="343" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">Harness &amp; execution contract</tspan></text><text x="32" y="374" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">Prompt · tool permissions · environment</tspan><tspan x="32" dy="19.599999999999998">· repeats</tspan></text></g><g data-relationship="produces trace artifacts"><path d="M32 412 V457" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 452 L32 458 L37 452" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="438" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">produces trace artifacts</tspan></text></g><g data-concept="3"><rect x="16" y="464" width="328" height="124" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="478" width="4" height="96" rx="2" fill="#63dbca"/><text x="32" y="494" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">Raw outputs &amp; deterministic</tspan><tspan x="32" dy="25.2">checks</tspan></text><text x="32" y="550" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">Task traces · verifier results ·</tspan><tspan x="32" dy="19.599999999999998">missing-value ledger</tspan></text></g><g data-relationship="aggregates with conditions"><path d="M32 588 V633" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 628 L32 634 L37 628" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="614" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">aggregates with conditions</tspan></text></g><g data-concept="4"><rect x="16" y="640" width="328" height="99" rx="12" fill="#132942" stroke="#43617f"/><rect x="16" y="654" width="4" height="71" rx="2" fill="#63dbca"/><text x="32" y="670" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">Scores, robustness &amp; latency</tspan></text><text x="32" y="701" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">Keep units, conditions and uncertainty</tspan><tspan x="32" dy="19.599999999999998">attached</tspan></text></g><g data-relationship="supports bounded conclusions"><path d="M32 739 V784" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 779 L32 785 L37 779" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="765" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">supports bounded conclusions</tspan></text></g><g data-concept="5"><rect x="16" y="791" width="328" height="99" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="805" width="4" height="71" rx="2" fill="#63dbca"/><text x="32" y="821" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">Report &amp; reproducibility</tspan></text><text x="32" y="852" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">7-card source deck · limitations ·</tspan><tspan x="32" dy="19.599999999999998">independently reproduced?</tspan></text></g></svg><figcaption style="font:14px/1.6 system-ui,sans-serif;margin:12px 0;overflow-wrap:anywhere">Overall knowledge map: read the labeled relationships and engineering boundaries. Layout is conceptual; it does not represent throughput, rankings or a production deployment.</figcaption></figure><!-- kee-report-localization-navigation:end -->
+
+<!-- kee-dedicated-report-open:start --><div class="kee-dedicated-report-viewport" tabindex="0" role="region" aria-label="Original report; scroll horizontally to read all columns"><div class="kee-dedicated-report-layout"><!-- kee-dedicated-report-open:end -->
+
+<div class="deck-header">
+  <strong>Supplement 4: Claude Sonnet 5.5 &amp; GPT-6.1 Sol 17-Model Coding Agent Benchmark (7-Card 4:5 Deck)</strong>
+  <span>Provenance: anonymized_reported · satomic/copilot-benchmark@aa1e0dc3 (CLI v1.0.90-5)</span>
+</div>
+
+<div class="deck">
+
+  <!-- CARD 1: OVERVIEW & WORKBENCH -->
+  <section class="card">
+    <div>
+      <div class="card-top">
+        <span class="eyebrow">HANDS-ON · CODING AGENT 17-MODEL COHORT (SUPPLEMENT 4)</span>
+        <span class="badge-num">1 / 7</span>
+      </div>
+      <h1><span class="accent">Sonnet 5.5</span> Sets 21.7m Speed Record &amp; <span class="accent">GPT-6.1 Sol</span> Hits 60 Rounds at $1.71</h1>
+      <p class="subhead">Evaluating Claude Sonnet 5.5 and GPT-6.1 Sol across 11 zero-dependency Python stdlib tasks (`A1–A5`, `M1–M2`, `C1–C4`) and `1,310` hidden pytest assertions in GitHub Copilot CLI (`v1.0.90-5`).</p>
+    </div>
+
+    <div class="card-body">
+      <div class="wb-frame">
+        <div class="wb-col">
+          <div class="wb-title">Task Tiers (11 Tasks)</div>
+          <div class="pill-list">
+            <div class="scen-pill active">Atomic A1–A5 (500 pts · 413 tests)</div>
+            <div class="scen-pill">Medium M1–M2 (200 pts · 160 tests)</div>
+            <div class="scen-pill">Complex C1–C4 (400 pts · 737 tests)</div>
+            <div class="scen-pill">C3 Async DAG Workflow Engine</div>
+            <div class="scen-pill">C4 Stack-VM Bytecode Compiler</div>
+          </div>
+          <div class="wb-title" style="margin-top:6px;">Action Gate Thresholds</div>
+          <div class="band-row band-green"><span>Act automatically</span><span>≥98.4 &amp; 1,310/1,310</span></div>
+          <div class="band-row band-amber"><span>Confirm</span><span>≥97.5 or &lt;1,310</span></div>
+          <div class="band-row band-red"><span>Send to a human</span><span>&lt;97.5 Mean</span></div>
+        </div>
+
+        <div class="wb-col">
+          <div class="wb-title">Supplement 4 Breakthroughs</div>
+          <div class="quote-box">
+            <strong>Sonnet 5.5 (#5 in 17-Model · 99.00 Mean):</strong> Completes all 11 tasks in <strong>21.7 min</strong> (`1,301s` wall, `16.6m` inference) for <strong>$2.89</strong> (`65` rounds, `1,310/1,310` hidden tests) — <strong>2.45x faster</strong> and <strong>63% cheaper</strong> than Sonnet 5.<br/><br/>
+            <strong>GPT-6.1 Sol (#6 in 17-Model · 98.86 Mean):</strong> Uses the fewest tool rounds of any model (<strong>60 rounds</strong>, `9.3w` output tokens) at <strong>$1.71</strong> (`27.4m` wall) — <strong>82.7% cheaper</strong> than GPT-6 Astra (`$9.91`).
+          </div>
+          <div class="meta-pills">
+            <span class="meta-pill">Sonnet 5.5: 99.00 / $2.89</span>
+            <span class="meta-pill">GPT-6.1 Sol: 98.86 / $1.71</span>
+            <span class="meta-pill">Both: 1,310/1,310 Hidden</span>
+            <span class="meta-pill">187 Total CLI Runs</span>
+          </div>
+        </div>
+
+        <div class="wb-col">
+          <div class="wb-title">Top 17-Model Pareto Tier</div>
+          <div class="q-card" style="padding:10px 12px;">
+            <div class="q-head">
+              <span class="q-title" style="font-size:12.5px;">#1 Fable 5.1 &amp; #2 Opus 5.5</span>
+              <span class="act-pill act-auto">99.77 / 99.68</span>
+            </div>
+            <div style="font-size:11.5px; color:var(--muted);">$14.45 (55.9m) &amp; $5.84 (31.8m) · 1,310/1,310</div>
+          </div>
+          <div class="q-card" style="padding:10px 12px;">
+            <div class="q-head">
+              <span class="q-title" style="font-size:12.5px;">#5 Claude Sonnet 5.5</span>
+              <span class="act-pill act-auto">21.7m (#1 Speed)</span>
+            </div>
+            <div style="font-size:11.5px; color:var(--muted);">1089.00 pts · 65 rds · $2.89 · 1,310/1,310</div>
+          </div>
+          <div class="q-card" style="padding:10px 12px;">
+            <div class="q-head">
+              <span class="q-title" style="font-size:12.5px;">#6 GPT-6.1 Sol</span>
+              <span class="act-pill act-auto">60 rds (#1 Rds)</span>
+            </div>
+            <div style="font-size:11.5px; color:var(--muted);">1087.50 pts · 27.4m · $1.71 · 1,310/1,310</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout">
+        <strong>Why Supplement 4 Redefined the Daily-Driver Pareto Frontier</strong>
+        Prior to Supplement 4, clearing all `1,310/1,310` hidden assertions required either `$3.58` (`HydraFusion`) or `$5.84–$17.41` (`Opus 5.5` / `GPT-6 Astra` / `Fable 5.1` / `Opus 5`). Sonnet 5.5 (`$2.89`, `21.7m`) and GPT-6.1 Sol (`$1.71`, `60` rounds) established the sub-`$3`, sub-`30m` unattended production zone.
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <span>Benchmark Harness Engineering · 7-Card 4:5 Portrait Standard</span>
+      <span>Supplement 4 · 17-Model Cohort</span>
+    </div>
+  </section>
+
+  <!-- CARD 2: SINGLE-CASE DEEP DIVE (COMPLEX C1-C4 & HIDDEN TESTS) -->
+  <section class="card">
+    <div>
+      <div class="card-top">
+        <span class="eyebrow">SCENARIO: COMPLEX COMPILER &amp; WORKFLOW TASKS (C1–C4)</span>
+        <span class="badge-num">2 / 7</span>
+      </div>
+      <h2>1,310/1,310 Hidden Assertions in <span class="accent">60–65 Rounds</span> Across All 11 Tasks</h2>
+      <p class="subhead">Comparing Claude Sonnet 5.5 and GPT-6.1 Sol against their direct predecessors (Sonnet 5 and GPT-6 Astra) on complex systems tasks (`C1` SQL, `C2` Reactive Sheet, `C3` DAG Engine, `C4` Bytecode VM).</p>
+    </div>
+
+    <div class="card-body">
+      <div class="quote-box">
+        <strong>Complex Tier (`C1–C4`, 737 Hidden Tests):</strong> Both GPT-6.1 Sol (`99.38` complex mean: `C1=97.50`, `C2=100`, `C3=100`, `C4=100`) and Sonnet 5.5 (`99.19` complex mean: `C1=97.50`, `C2=100`, `C3=99.25`, `C4=100`) achieve `100%` hidden-test pass rates on the hardest compiler and concurrency tasks while cutting tool-call rounds by `65.8%` vs Sonnet 5.
+      </div>
+
+      <div class="q-card">
+        <div class="q-head">
+          <span class="q-title">1. Claude Sonnet 5.5 (1089.00 / 1100 · Mean 99.00)</span>
+          <div class="q-badges">
+            <span class="type-badge">score / 11-task</span>
+            <span class="meta-pill">21.7m · $2.89</span>
+            <span class="act-pill act-auto">Act automatically</span>
+          </div>
+        </div>
+        <div class="opt-row">
+          <span class="opt-label">Atomic Mean (A1–A5)</span>
+          <div class="opt-bar-wrap"><div class="opt-bar" style="width: 98.8%;"></div></div>
+          <span class="opt-val">98.80</span>
+        </div>
+        <div class="opt-row">
+          <span class="opt-label">Medium Mean (M1–M2)</span>
+          <div class="opt-bar-wrap"><div class="opt-bar" style="width: 99.12%;"></div></div>
+          <span class="opt-val">99.12</span>
+        </div>
+        <div class="opt-row">
+          <span class="opt-label">Complex Mean (C1–C4)</span>
+          <div class="opt-bar-wrap"><div class="opt-bar" style="width: 99.19%;"></div></div>
+          <span class="opt-val">99.19</span>
+        </div>
+      </div>
+
+      <div class="q-card">
+        <div class="q-head">
+          <span class="q-title">2. GPT-6.1 Sol (1087.50 / 1100 · Mean 98.86)</span>
+          <div class="q-badges">
+            <span class="type-badge">score / 11-task</span>
+            <span class="meta-pill">60 rds · $1.71</span>
+            <span class="act-pill act-auto">Act automatically</span>
+          </div>
+        </div>
+        <div class="opt-row">
+          <span class="opt-label">Atomic Mean (A1–A5)</span>
+          <div class="opt-bar-wrap"><div class="opt-bar" style="width: 98.4%;"></div></div>
+          <span class="opt-val">98.40</span>
+        </div>
+        <div class="opt-row">
+          <span class="opt-label">Medium Mean (M1–M2)</span>
+          <div class="opt-bar-wrap"><div class="opt-bar" style="width: 99.0%;"></div></div>
+          <span class="opt-val">99.00</span>
+        </div>
+        <div class="opt-row">
+          <span class="opt-label">Complex Mean (C1–C4)</span>
+          <div class="opt-bar-wrap"><div class="opt-bar" style="width: 99.38%;"></div></div>
+          <span class="opt-val">99.38</span>
+        </div>
+      </div>
+
+      <div class="q-card">
+        <div class="q-head">
+          <span class="q-title">3. Complex C3 (Async DAG) &amp; C4 (Bytecode VM) Cost Comparison</span>
+          <div class="q-badges">
+            <span class="type-badge">noul / cost</span>
+            <span class="meta-pill">C3+C4 USD</span>
+            <span class="act-pill act-auto">5.8x–11.4x Cheaper</span>
+          </div>
+        </div>
+        <div class="opt-row">
+          <span class="opt-label">GPT-6.1 Sol (C3 $0.38 + C4 $0.35)</span>
+          <div class="opt-bar-wrap"><div class="opt-bar" style="width: 8.8%;"></div></div>
+          <span class="opt-val">$0.73</span>
+        </div>
+        <div class="opt-row">
+          <span class="opt-label">Sonnet 5.5 (C3 $0.92 + C4 $0.56)</span>
+          <div class="opt-bar-wrap"><div class="opt-bar" style="width: 17.8%;"></div></div>
+          <span class="opt-val">$1.48</span>
+        </div>
+        <div class="opt-row">
+          <span class="opt-label">Astra ($4.17) / Fable ($7.40) / Opus 5 ($8.33)</span>
+          <div class="opt-bar-wrap"><div class="opt-bar muted" style="width: 100.0%;"></div></div>
+          <span class="opt-val">$4.17–$8.33</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <span>All task scores and per-task USD costs from coding-seventeen CSVs</span>
+      <span>Zero Fabricated Coordinates</span>
+    </div>
+  </section>
+
+  <!-- CARD 3: WHAT I TESTED (17-MODEL MATRIX) -->
+  <section class="card">
+    <div>
+      <div class="card-top">
+        <span class="eyebrow">WHAT I TESTED · FULL 17-MODEL SCORECARD TABLE</span>
+        <span class="badge-num">3 / 7</span>
+      </div>
+      <h2>8 of 17 Models Pass All <span class="accent">1,310/1,310</span> Hidden Assertions</h2>
+      <p class="subhead">Complete 17-model evaluation matrix ranked by overall mean score (`✕` marks models with hidden test misses or sub-threshold accuracy).</p>
+    </div>
+
+    <div class="card-body">
+      <table class="matrix">
+        <thead>
+          <tr>
+            <th>RANK &amp; MODEL</th>
+            <th>DIFFICULTY (ATOM / MED / COMP)</th>
+            <th>MEAN · HIDDEN · ROUNDS · COST</th>
+            <th>ACTION</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>#1 Fable 5.1</strong></td>
+            <td>100.00 / 99.50 / 99.62</td>
+            <td><strong>99.77</strong> · 1310/1310 · 142r · $14.45 · 55.9m</td>
+            <td><span class="act-pill act-auto">Act automatically</span></td>
+          </tr>
+          <tr>
+            <td><strong>#2 Opus 5.5</strong></td>
+            <td>99.80 / 99.50 / 99.62</td>
+            <td><strong>99.68</strong> · 1310/1310 · 92r · $5.84 · 31.8m</td>
+            <td><span class="act-pill act-auto">Act automatically</span></td>
+          </tr>
+          <tr>
+            <td><strong>#3 Opus 5</strong></td>
+            <td>99.80 / 99.50 / 99.38</td>
+            <td><strong>99.59</strong> · 1310/1310 · 188r · $17.41 · 63.3m</td>
+            <td><span class="act-pill act-auto">Act automatically</span></td>
+          </tr>
+          <tr>
+            <td><strong>#4 Grok 4.7</strong></td>
+            <td>99.00 / 99.50 / 99.33</td>
+            <td>99.21 · 1299/1310 ✕ · 143r · $12.22 · 181.2m</td>
+            <td><span class="act-pill act-confirm">Confirm</span></td>
+          </tr>
+          <tr class="row-New">
+            <td><strong>#5 Sonnet 5.5 [Supp 4]</strong></td>
+            <td>98.80 / 99.12 / 99.19</td>
+            <td><strong>99.00</strong> · 1310/1310 · 65r · <strong>$2.89 · 21.7m</strong></td>
+            <td><span class="act-pill act-auto">Act automatically</span></td>
+          </tr>
+          <tr class="row-New">
+            <td><strong>#6 GPT-6.1 Sol [Supp 4]</strong></td>
+            <td>98.40 / 99.00 / 99.38</td>
+            <td><strong>98.86</strong> · 1310/1310 · <strong>60r · $1.71</strong> · 27.4m</td>
+            <td><span class="act-pill act-auto">Act automatically</span></td>
+          </tr>
+          <tr>
+            <td><strong>#7 GPT-6 Astra</strong></td>
+            <td>98.00 / 99.00 / 99.75</td>
+            <td><strong>98.82</strong> · 1310/1310 · 62r · $9.91 · 32.7m</td>
+            <td><span class="act-pill act-auto">Act automatically</span></td>
+          </tr>
+          <tr>
+            <td><strong>#8 Sonnet 5</strong></td>
+            <td>98.40 / 99.12 / 98.88</td>
+            <td><strong>98.70</strong> · 1310/1310 · 190r · $7.87 · 53.2m</td>
+            <td><span class="act-pill act-auto">Act automatically</span></td>
+          </tr>
+          <tr>
+            <td><strong>#9 Kimi K3</strong></td>
+            <td>98.40 / 99.12 / 98.81</td>
+            <td>98.68 · 1305/1310 ✕ · 143r · $5.58 · 150.5m</td>
+            <td><span class="act-pill act-confirm">Confirm</span></td>
+          </tr>
+          <tr>
+            <td><strong>#10 Grok 4.6</strong></td>
+            <td>98.40 / 100.00 / 98.06</td>
+            <td>98.57 · 1305/1310 ✕ · 138r · $5.21 · 69.5m</td>
+            <td><span class="act-pill act-confirm">Confirm</span></td>
+          </tr>
+          <tr>
+            <td><strong>#11 HydraFusion</strong></td>
+            <td>98.40 / 98.00 / 98.75</td>
+            <td><strong>98.45</strong> · 1310/1310 · 85r · $3.58 · 24.1m</td>
+            <td><span class="act-pill act-auto">Act automatically</span></td>
+          </tr>
+          <tr>
+            <td><strong>#12 GPT-6 Luna</strong></td>
+            <td>98.80 / 99.12 / 96.88</td>
+            <td>98.16 · 1279/1310 ✕ · 139r · <strong>$0.17</strong> · 44.6m</td>
+            <td><span class="act-pill act-confirm">Confirm</span></td>
+          </tr>
+          <tr>
+            <td><strong>#13–#15 Flash Tier</strong></td>
+            <td>Gem 3.8 (98.00) · 5.6 Luna (97.88) · MAI (97.70)</td>
+            <td>1276–1293/1310 ✕ · 192–277r · $0.39–$2.83</td>
+            <td><span class="act-pill act-confirm">Confirm</span></td>
+          </tr>
+          <tr>
+            <td><strong>#16–#17 DeepSeek-V4 / Haiku 4.5</strong></td>
+            <td>DeepSeek 95.10 (M2=76) · Haiku 4.5 93.96</td>
+            <td>1250 &amp; 1239/1310 ✕ · 420r &amp; 341r · $1.95 &amp; $3.93</td>
+            <td><span class="act-pill act-human">Send to a human</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout-grid">
+        <div class="callout">
+          <strong>Threshold Gating (`8 Act automatically / 7 Confirm / 2 Human`)</strong>
+          Only the 8 models achieving `≥98.4` mean AND `1,310/1,310` hidden test pass rate qualify for `Act automatically`. Both Supplement 4 models (`Sonnet 5.5` and `GPT-6.1 Sol`) clear this gate cleanly.
+        </div>
+        <div class="callout">
+          <strong>Failure Mode Analysis (`✕` Markers)</strong>
+          `Grok 4.7` (`99.21`) ranks #4 by score but misses 11 hidden assertions (`1,299/1,310`) and takes `181.2m`; `DeepSeek-V4-Flash` (`420` rounds) and `Haiku 4.5` (`82.81` on C3) require human escalation.
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <span>Source: coding-seventeen/report.json (satomic/copilot-benchmark@aa1e0dc3)</span>
+      <span>17 Models · 187 Bundles</span>
+    </div>
+  </section>
+
+  <!-- CARD 4: UNDER THE HOOD -->
+  <section class="card">
+    <div>
+      <div class="card-top">
+        <span class="eyebrow">UNDER THE HOOD · 70/15/15 SCORING RUBRIC &amp; ROUND DISTRIBUTION</span>
+        <span class="badge-num">4 / 7</span>
+      </div>
+      <h2>Why <span class="accent">60–65 Tool Rounds</span> Beat 190-Round Brute-Force Loops</h2>
+      <p class="subhead">Inspecting the Copilot CLI (`v1.0.90-5`) harness contract and per-difficulty round allocations for GPT-6.1 Sol (`60` rounds) and Claude Sonnet 5.5 (`65` rounds).</p>
+    </div>
+
+    <div class="card-body">
+      <div class="code-block">{
+  "benchmark_commit": "aa1e0dc31661ff6343433f06fe3bea1e015b8525",
+  "cli_version_supplement_4": "1.0.90-5",
+  "scoring_weights": { "correctness_hidden_pytest": 0.70, "performance": 0.15, "code_quality": 0.15 },
+  "supplement_4_models": {
+    "claude-sonnet-5.5": {
+      "total_score": 1089.00, "mean": 99.00, "hidden_tests": "1310/1310",
+      "rounds_by_tier": { "atomic_avg": 2.8, "medium_avg": 6.5, "complex_avg": 9.5, "total": 65 },
+      "wall_seconds": 1301, "inference_seconds": 995, "output_tokens": 161136, "cost_usd": 2.89
+    },
+    "gpt-6.1-sol": {
+      "total_score": 1087.50, "mean": 98.86, "hidden_tests": "1310/1310",
+      "rounds_by_tier": { "atomic_avg": 4.4, "medium_avg": 5.0, "complex_avg": 7.0, "total": 60 },
+      "wall_seconds": 1645, "inference_seconds": 1348, "output_tokens": 92907, "cost_usd": 1.71
+    }
+  }
+}</div>
+
+      <div class="arrow-down">↓</div>
+
+      <div class="code-block"># Per-Task Round &amp; Wall-Clock Verification (A1..A5, M1..M2, C1..C4)
+# Sonnet 5.5 rounds: A=[2,3,3,4,2] (14), M=[5,8] (13), C=[7,9,13,9] (38) -&gt; Total = 65 rounds
+# GPT-6.1 Sol rounds: A=[4,4,4,4,6] (22), M=[5,5] (10), C=[4,8,9,7] (28) -&gt; Total = 60 rounds
+
+def verify_supplement_4_efficiency(sonnet55, sol61, sonnet5, astra):
+    assert sonnet55.wall_s == 1301 and sonnet5.wall_s == 3192  # 2.45x faster than Sonnet 5
+    assert sonnet55.rounds == 65 and sonnet5.rounds == 190     # -65.8% fewer rounds
+    assert sol61.rounds == 60 and astra.rounds == 62           # #1 fewest rounds in cohort
+    assert sol61.cost_usd == 1.71 and astra.cost_usd == 9.91   # -82.7% cost vs GPT-6 Astra
+    return "&lt;answer&gt;Both pass 1,310/1,310 hidden tests under $3 and under 28 minutes&lt;/answer&gt;"</div>
+
+      <div class="callout-grid">
+        <div class="callout">
+          <strong>Sonnet 5.5 Atomic Sprint (`2.8` Rounds/Task)</strong>
+          Sonnet 5.5 solves `A1` and `A5` in just `2` rounds (`33s` and `38s` wall time) and `A2–A3` in `3` rounds (`34s`), inspecting the workspace once, writing the implementation, and passing pytest on the first run.
+        </div>
+        <div class="callout">
+          <strong>GPT-6.1 Sol Complex Discipline (`7.0` Rounds/Task)</strong>
+          On `C1–C4`, GPT-6.1 Sol averages only `7.0` rounds (`4, 8, 9, 7` = `28` rounds total) and `9.3w` output tokens — compared with `35.0` rounds for `Sonnet 5` and `79.5` rounds for `DeepSeek-V4-Flash`.
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <span>Source: rounds_by_difficulty.csv &amp; task_rounds.csv (`coding-seventeen`)</span>
+      <span>Protocol Mechanics</span>
+    </div>
+  </section>
+
+  <!-- CARD 5: ROBUSTNESS CHECK -->
+  <section class="card">
+    <div>
+      <div class="card-top">
+        <span class="eyebrow">ROBUSTNESS CHECK · INTRA-FAMILY UPGRADE &amp; DIFFICULTY SCALING</span>
+        <span class="badge-num">5 / 7</span>
+      </div>
+      <h2>Complex-Tier Inversion: Both Models Score <span class="accent">Higher on C1–C4</span> Than on A1–A5</h2>
+      <p class="subhead">Measuring intra-family generation shifts (`Sonnet 5 → Sonnet 5.5` and `GPT-6 Astra → GPT-6.1 Sol`) and difficulty-tier stability (`Atomic → Complex`).</p>
+    </div>
+
+    <div class="card-body">
+      <table class="matrix">
+        <thead>
+          <tr>
+            <th>COMPARISON / PERTURBATION</th>
+            <th>ORIGINAL / BASELINE</th>
+            <th>UPGRADED / COMPLEX TIER</th>
+            <th>CHANGE (PTS / DELTA)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="row-New">
+            <td><strong>Sonnet 5 → Sonnet 5.5 Mean Score</strong></td>
+            <td>Sonnet 5: <strong>98.70</strong> (1085.75)</td>
+            <td>Sonnet 5.5: <strong>99.00</strong> (1089.00)</td>
+            <td><span class="act-pill act-auto">+0.30 pts (+3.25 total)</span></td>
+          </tr>
+          <tr class="row-New">
+            <td><strong>Sonnet 5 → Sonnet 5.5 Wall Time</strong></td>
+            <td>Sonnet 5: <strong>53.2 min</strong> (3,192s)</td>
+            <td>Sonnet 5.5: <strong>21.7 min</strong> (1,301s)</td>
+            <td><span class="act-pill act-auto">-31.5 min (-59.2%)</span></td>
+          </tr>
+          <tr class="row-New">
+            <td><strong>Sonnet 5 → Sonnet 5.5 Cost &amp; Rounds</strong></td>
+            <td>Sonnet 5: <strong>$7.87 · 190 rds</strong></td>
+            <td>Sonnet 5.5: <strong>$2.89 · 65 rds</strong></td>
+            <td><span class="act-pill act-auto">-$4.98 (-63.3%) · -125r</span></td>
+          </tr>
+          <tr class="row-New">
+            <td><strong>GPT-6 Astra → GPT-6.1 Sol Score</strong></td>
+            <td>GPT-6 Astra: <strong>98.82</strong> (1087.00)</td>
+            <td>GPT-6.1 Sol: <strong>98.86</strong> (1087.50)</td>
+            <td><span class="act-pill act-auto">+0.04 pts (+0.50 total)</span></td>
+          </tr>
+          <tr class="row-New">
+            <td><strong>GPT-6 Astra → GPT-6.1 Sol Cost</strong></td>
+            <td>GPT-6 Astra: <strong>$9.91 · 32.7m</strong></td>
+            <td>GPT-6.1 Sol: <strong>$1.71 · 27.4m</strong></td>
+            <td><span class="act-pill act-auto">-$8.20 (-82.7%) · -5.3m</span></td>
+          </tr>
+          <tr>
+            <td><strong>GPT-6.1 Sol Difficulty Scaling</strong></td>
+            <td>Atomic Mean (A1–A5): <strong>98.40</strong></td>
+            <td>Complex Mean (C1–C4): <strong>99.38</strong></td>
+            <td><span class="act-pill act-auto">+0.98 pts on Complex</span></td>
+          </tr>
+          <tr>
+            <td><strong>Sonnet 5.5 Difficulty Scaling</strong></td>
+            <td>Atomic Mean (A1–A5): <strong>98.80</strong></td>
+            <td>Complex Mean (C1–C4): <strong>99.19</strong></td>
+            <td><span class="act-pill act-auto">+0.39 pts on Complex</span></td>
+          </tr>
+          <tr>
+            <td><strong>GPT-6 Astra Difficulty Scaling</strong></td>
+            <td>Atomic Mean (A1–A5): <strong>98.00</strong></td>
+            <td>Complex Mean (C1–C4): <strong>99.75 (#1)</strong></td>
+            <td><span class="act-pill act-auto">+1.75 pts on Complex</span></td>
+          </tr>
+          <tr>
+            <td><strong>Haiku 4.5 Difficulty Degradation</strong></td>
+            <td>Atomic Mean (A1–A5): <strong>97.25</strong></td>
+            <td>Complex Mean (C1–C4): <strong>89.64 ✕</strong></td>
+            <td><span class="act-pill act-human">-7.61 pts collapse</span></td>
+          </tr>
+          <tr>
+            <td><strong>DeepSeek-V4-Flash Medium Dip</strong></td>
+            <td>Atomic Mean (A1–A5): <strong>97.30</strong></td>
+            <td>Medium Mean (M1–M2): <strong>88.00 ✕</strong></td>
+            <td><span class="act-pill act-human">-9.30 pts (M2=76.0)</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout-grid">
+        <div class="callout">
+          <strong>Positive Complex-Tier Inversion</strong>
+          Unlike smaller models (`Haiku 4.5` drops `-7.61 pts` on `C1–C4`), `GPT-6.1 Sol` (`+0.98 pts`) and `Sonnet 5.5` (`+0.39 pts`) score higher on 400-point complex systems tasks (`C2=100`, `C4=100`) than on atomic scripts.
+        </div>
+        <div class="callout">
+          <strong>5.8x OpenAI Cost Compression Without Accuracy Loss</strong>
+          `GPT-6.1 Sol` matches `GPT-6 Astra` (`1087.50` vs `1087.00`, `60` vs `62` rounds, `1,310/1,310` hidden) while cutting total 11-task cost from `$9.91` to `$1.71`.
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <span>Source: scores_by_difficulty.csv &amp; usage_totals.csv (`coding-seventeen`)</span>
+      <span>Robustness &amp; Scaling</span>
+    </div>
+  </section>
+
+  <!-- CARD 6: LATENCY -->
+  <section class="card">
+    <div>
+      <div class="card-top">
+        <span class="eyebrow">LATENCY · WALL-CLOCK vs PURE MODEL INFERENCE TIME ACROSS 11 TASKS</span>
+        <span class="badge-num">6 / 7</span>
+      </div>
+      <h2>Sonnet 5.5 Finishes in <span class="accent">21.7 Minutes</span> (16.6m Inference) Across 11 Tasks</h2>
+      <p class="subhead">Comparing pure model inference time (`#3B82F6`) vs total wall-clock time (`#CBD5E1`) across key models in the 17-model cohort.</p>
+    </div>
+
+    <div class="card-body">
+      <div class="lat-row">
+        <div>
+          <div class="lat-label">1. Claude Sonnet 5.5</div>
+          <div class="lat-sub">#1 Fastest Wall Clock · 65 rds</div>
+        </div>
+        <div class="lat-bars">
+          <div class="lat-bar-line">
+            <div class="lat-bar primary" style="width: 26.2%;"></div>
+            <span class="lat-num">16.6m Inference (995s)</span>
+          </div>
+          <div class="lat-bar-line">
+            <div class="lat-bar base" style="width: 34.3%;"></div>
+            <span class="lat-num">21.7m Wall Clock (1,301s · $2.89)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="lat-row">
+        <div>
+          <div class="lat-label">2. HydraFusion</div>
+          <div class="lat-sub">#2 Fastest Wall Clock · 85 rds</div>
+        </div>
+        <div class="lat-bars">
+          <div class="lat-bar-line">
+            <div class="lat-bar primary" style="width: 27.2%;"></div>
+            <span class="lat-num">17.2m Inference (1,034s)</span>
+          </div>
+          <div class="lat-bar-line">
+            <div class="lat-bar base" style="width: 38.1%;"></div>
+            <span class="lat-num">24.1m Wall Clock (1,444s · $3.58)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="lat-row">
+        <div>
+          <div class="lat-label">3. GPT-6.1 Sol</div>
+          <div class="lat-sub">#3 Fastest · #1 Fewest Rds (60)</div>
+        </div>
+        <div class="lat-bars">
+          <div class="lat-bar-line">
+            <div class="lat-bar primary" style="width: 35.5%;"></div>
+            <span class="lat-num">22.5m Inference (1,348s)</span>
+          </div>
+          <div class="lat-bar-line">
+            <div class="lat-bar base" style="width: 43.3%;"></div>
+            <span class="lat-num">27.4m Wall Clock (1,645s · $1.71)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="lat-row">
+        <div>
+          <div class="lat-label">4. Opus 5.5 &amp; GPT-6 Astra</div>
+          <div class="lat-sub">Flagship 30-Minute Tier</div>
+        </div>
+        <div class="lat-bars">
+          <div class="lat-bar-line">
+            <div class="lat-bar primary" style="width: 41.4%;"></div>
+            <span class="lat-num">26.2m Inf / 31.8m Wall (Opus 5.5 · $5.84)</span>
+          </div>
+          <div class="lat-bar-line">
+            <div class="lat-bar base" style="width: 51.7%;"></div>
+            <span class="lat-num">26.9m Inf / 32.7m Wall (GPT-6 Astra · $9.91)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="lat-row">
+        <div>
+          <div class="lat-label">5. Fable 5.1 &amp; Opus 5</div>
+          <div class="lat-sub">Heavy Flagship Tier (55–63m)</div>
+        </div>
+        <div class="lat-bars">
+          <div class="lat-bar-line">
+            <div class="lat-bar primary" style="width: 58.1%;"></div>
+            <span class="lat-num">36.8m Inf / 55.9m Wall (Fable 5.1 · $14.45)</span>
+          </div>
+          <div class="lat-bar-line">
+            <div class="lat-bar base" style="width: 100.0%;"></div>
+            <span class="lat-num">50.7m Inf / 63.3m Wall (Opus 5 · $17.41)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout-grid">
+        <div class="callout">
+          <strong>Low Tool-Execution Overhead (`5.1m` vs `29.2m`)</strong>
+          Because `Sonnet 5.5` (`65` rounds) and `GPT-6.1 Sol` (`60` rounds) invoke far fewer shell/pytest loops, non-inference tool overhead is only `4.9–5.1` minutes across all 11 tasks.
+        </div>
+        <div class="callout">
+          <strong>Long-Tail Latency Outliers (`150m–181m`)</strong>
+          `Kimi K3` (`150.5m`), `DeepSeek-V4-Flash` (`179.0m`), and `Grok 4.7` (`181.2m` = `3+` hours) spend `6.9x–8.3x` longer wall time than `Sonnet 5.5` (`21.7m`).
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <span>Bars normalized to 63.3m (3,797s) flagship ceiling; long-tail 150–181m noted in callout</span>
+      <span>Task Wall &amp; Inference Seconds</span>
+    </div>
+  </section>
+
+  <!-- CARD 7: MY TAKE -->
+  <section class="card">
+    <div>
+      <div class="card-top">
+        <span class="eyebrow">MY TAKE · SUPPLEMENT 4 PRODUCTION GUIDANCE</span>
+        <span class="badge-num">7 / 7</span>
+      </div>
+      <h2>Default to <span class="accent">Sonnet 5.5 &amp; GPT-6.1 Sol</span> for Interactive &amp; Unattended Coding</h2>
+      <p class="subhead">How to route across the 17-model cohort based on latency, token budget, and hidden-test reliability.</p>
+    </div>
+
+    <div class="card-body">
+      <div class="take-grid">
+        <div class="take-card good">
+          <div class="take-title">✅ Good fit</div>
+          <ul class="take-list">
+            <li><strong>Claude Sonnet 5.5 ($2.89, 21.7m, 99.00):</strong> Primary interactive Copilot CLI coding agent when developer wait time is the bottleneck (`21.7m` across 11 tasks, `1,310/1,310` hidden).</li>
+            <li><strong>GPT-6.1 Sol ($1.71, 60 rds, 98.86):</strong> Default autonomous background agent where minimal tool-call chatter (`60` rounds, `9.3w` tokens) and sub-`$2` cost per 11-task suite matter most.</li>
+            <li><strong>Opus 5.5 ($5.84, 99.68) &amp; Fable 5.1 ($14.45, 99.77):</strong> High-assurance escalation tier when squeezing the last `0.7–0.9` quality points on complex architecture.</li>
+            <li><strong>GPT-6 Luna ($0.17, 98.16):</strong> Ultra-low-cost prototyping (`A1–M2`) when paired with an automated pytest verification loop.</li>
+          </ul>
+        </div>
+
+        <div class="take-card bad">
+          <div class="take-title">⛔ Not for</div>
+          <ul class="take-list">
+            <li><strong>Paying Legacy Sonnet 5 ($7.87) or Opus 5 ($17.41) Rates:</strong> Strictly dominated on speed, rounds, cost, and/or score by `Sonnet 5.5` (`$2.89`) and `Opus 5.5` (`$5.84`).</li>
+            <li><strong>Using GPT-6 Astra ($9.91) for Routine CLI Tasks:</strong> `GPT-6.1 Sol` (`$1.71`) achieves a higher overall total (`1087.50` vs `1087.00`) in fewer rounds (`60` vs `62`) at `17.3%` of the cost.</li>
+            <li><strong>Unattended Deployment of DeepSeek-V4-Flash or Haiku 4.5:</strong> Both trigger runaway round loops (`420` and `341` rounds) and fail `60–71` hidden assertions.</li>
+            <li><strong>Latency-Sensitive Pipelines on Grok 4.7 or Kimi K3:</strong> `181.2m` and `150.5m` wall times block interactive CI feedback loops.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="dark-footer-card">
+        <h3>Readiness, Provenance &amp; Reproducibility</h3>
+        <p>Provenance: <code>anonymized_reported</code> (<code>independently_reproduced=false</code>). Source dataset: <code>satomic/copilot-benchmark@aa1e0dc3</code> (17 models × 11 tasks = 187 non-reference report bundles) archived in <code>benchmark-harness-engineering/data/reported/coding-seventeen/</code>. Self-contained CSP: <code>default-src 'none'; style-src 'unsafe-inline'</code>.</p>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <span>Frontier AI Lab · https://turbo998.github.io/benchmarks.html</span>
+      <span>Card 7 / 7 · Complete</span>
+    </div>
+  </section>
+
+</div>
+
+<!-- kee-dedicated-report-close:start --></div></div><!-- kee-dedicated-report-close:end --></body>
+</html>

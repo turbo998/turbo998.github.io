@@ -333,14 +333,163 @@
 @media print{[data-professional-header]{display:none!important}}
 .kee-dedicated-table-scroll{max-width:100%;overflow-x:auto}.kee-dedicated-table-scroll:focus-visible{outline:2px solid #3b82f6;outline-offset:3px}</style>
 <!-- kee-dedicated-style:end -->
-</head>
+<!-- demo-localization:start -->
+<style>html.in-arena-frame [data-professional-header],html.in-arena-frame .kee-dedicated-nav,html.in-arena-frame .reading-header,html.in-arena-frame .demo-language-navigation{display:none!important}</style>
+<script>(function runtime(config) {
+  'use strict';
+  const root = document.documentElement;
+  const params = new URLSearchParams(location.search);
+  const requested = params.get('lang');
+  const language = requested === 'en' ? 'en' : requested === 'zh' || requested === 'zh-CN' ? 'zh-CN' : config.language;
+  if (language !== config.language) {
+    const destination = new URL(language === 'en' ? config.en : config.zh, location.href);
+    destination.search = location.search;
+    destination.hash = location.hash;
+    destination.searchParams.set('lang', language);
+    location.replace(destination.href);
+    return;
+  }
+  if (!requested) {
+    const canonical = new URL(location.href);
+    canonical.searchParams.set('lang', language);
+    history.replaceState(history.state, '', canonical);
+  }
+  root.lang = language;
+  root.dataset.demoLanguage = language;
+  if (config.engine && window.self !== window.top && params.get('arena') === '1') root.classList.add('in-arena-frame');
+  const escape = value => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const dictionary = language === 'en' ? config.terms.zhEn : config.terms.enZh;
+  const keys = Object.keys(dictionary).filter(key => language === 'en' || !dictionary[key].includes(key)).sort((a, b) => b.length - a.length);
+  const pattern = keys.length ? new RegExp(language === 'en' ? keys.map(escape).join('|') : '(?<![A-Za-z0-9_])(?:' + keys.map(escape).join('|') + ')(?![A-Za-z0-9_])', 'gu') : null;
+  const translate = value => {
+    if (typeof value !== 'string' || !value) return value;
+    const trimmed = value.trim();
+    if (Object.prototype.hasOwnProperty.call(dictionary, trimmed)) return value.replace(trimmed, dictionary[trimmed]);
+    if (!pattern || language === 'en' && !/[\p{Script=Han}]/u.test(value)) return value;
+    return value.replace(pattern, (key, offset, input) => {
+      let translated = dictionary[key];
+      if (/[A-Za-z0-9]/.test(input[offset - 1] || '') && /^[A-Za-z]/.test(translated)) translated = ' ' + translated;
+      if (/[A-Za-z0-9]/.test(input[offset + key.length] || '') && /[A-Za-z]$/.test(translated)) translated += ' ';
+      return translated;
+    });
+  };
+  const excluded = node => node.parentElement?.closest('script,style,[data-professional-header],.kee-dedicated-nav,.reading-header,.demo-language-navigation');
+  const localizeNode = node => {
+    if (node.nodeType === Node.TEXT_NODE) {
+      if (excluded(node)) return;
+      const value = translate(node.nodeValue);
+      if (value !== node.nodeValue) node.nodeValue = value;
+      return;
+    }
+    if (node.nodeType !== Node.ELEMENT_NODE || node.matches('script,style,[data-professional-header],.kee-dedicated-nav,.reading-header,.demo-language-navigation')) return;
+    for (const attr of ['title', 'aria-label', 'placeholder', 'alt']) {
+      if (!node.hasAttribute(attr)) continue;
+      const original = node.getAttribute(attr), translated = translate(original);
+      if (translated !== original) node.setAttribute(attr, translated);
+    }
+    for (const child of node.childNodes) localizeNode(child);
+  };
+  // Translate only paint labels; coordinates, fonts, metrics and simulation state are untouched.
+  for (const name of ['fillText', 'strokeText']) {
+    const original = CanvasRenderingContext2D.prototype[name];
+    CanvasRenderingContext2D.prototype[name] = function(text, ...args) {return original.call(this, translate(String(text)), ...args);};
+  }
+  const switchLanguage = target => {
+    const next = new URL(target === 'en' ? config.en : config.zh, location.href);
+    next.search = location.search;
+    next.hash = location.hash;
+    next.searchParams.set('lang', target);
+    location.assign(next.href);
+  };
+  document.addEventListener('click', event => {
+    if (!event.isTrusted) return;
+    const button = event.target.closest('button');
+    if (!button || button.closest('[data-professional-header]')) return;
+    const code = button.getAttribute('onclick') || '';
+    if (!button.matches('#langToggle,#btn-lang,#btn-en,#btn-zh,[data-lang]') && !/^(?:toggleLang|setLang)\(/.test(code)) return;
+    const selected = button.dataset.lang || (button.id === 'btn-en' || /setLang\('en'/.test(code) ? 'en' : button.id === 'btn-zh' || /setLang\('zh'/.test(code) ? 'zh-CN' : language === 'en' ? 'zh-CN' : 'en');
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    switchLanguage(selected === 'en' ? 'en' : 'zh-CN');
+  }, true);
+  if (config.engine) {
+    window.addEventListener('message', event => {
+      if (!['ARENA_SYNC','arena-sync'].includes(event.data?.type)) return;
+      if (event.origin !== location.origin || event.source !== window.parent) {event.stopImmediatePropagation(); return;}
+      if (event.data.action === 'feed') {
+        if (/demo-faf-/.test(config.source)) {
+          const fish = document.getElementById('s-fish');
+          fish.value = Math.min(Number(fish.max), Number(fish.value) + 1);
+          if (typeof updateParams === 'function') updateParams();
+        } else if (/demo-agent-forge-/.test(config.source) && typeof tossFish === 'function') tossFish();
+      }
+      if (event.data.action === 'sprint' && /demo-agent-forge-/.test(config.source) && typeof triggerSprint === 'function') triggerSprint();
+    }, true);
+  }
+  const api = {language, translate, apply: () => localizeNode(root), switchLanguage, engine: config.engine, arena: config.arena, ready: false};
+  window.DemoLocalization = api;
+  document.addEventListener('DOMContentLoaded', () => {
+    const nativeButton = document.querySelector(`button[data-lang="${language}"]`);
+    if (nativeButton) nativeButton.click();
+    else if (typeof setLang === 'function') setLang(language === 'en' ? 'en' : 'zh');
+    else if (typeof toggleLang === 'function') {
+      const current = typeof currentLang === 'string' ? currentLang : typeof lang === 'string' ? lang : 'zh';
+      if ((current === 'en') !== (language === 'en')) toggleLang();
+    }
+    root.lang = language;
+    localizeNode(root);
+    new MutationObserver(mutations => {
+      for (const mutation of mutations) {
+        if (mutation.type === 'childList') mutation.addedNodes.forEach(localizeNode);
+        else localizeNode(mutation.target);
+      }
+    }).observe(root, {subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ['title','aria-label','placeholder','alt']});
+    api.ready = true;
+    document.dispatchEvent(new CustomEvent('demo-localization-ready', {detail: {language}}));
+  }, {once: true});
+})({"language":"zh-CN","source":"generative-visual-lab/demos/pelican-bicycle-arena/index.html","en":"index.en.html","zh":"index.html","engine":false,"arena":true,"terms":{"zhEn":{"与冰晶丙烯酸":"and ice-crystal acrylic","与力矩向量":"and the moment vector","偏斜钳制护栏":"Skew-clamping guardrail","免提巡检":"Hands-free inspection","六幕分層架構選型矩陣":"Six-scene layered architecture selection matrix","决赛前夜反转":"A reversal on the eve of the final","各向异性高斯光栅化":"Anisotropic Gaussian rasterization","星夜三幕视差与":"Three-scene starry-night parallax and","核料位计快门":"Nuclear level-gauge shutter","洪泛节流护栏":"Flood-throttling guardrail","液碱攻击":"Caustic attack","碱洗塔联锁及":"Caustic scrubber interlocks and","粗排快但糙":"Coarse ranking is fast but imprecise","缓存命中区":"Cache-hit region","许知衡直面耐力赛退役心结":"Xu Zhiheng confronts unresolved feelings about retiring from endurance racing","齿比":"Gear ratio","黑座舱":"Black cockpit","黑色横向双段尾灯":"Black horizontal two-part taillight","鼻祖":"Pioneer","黄金斗气":"Golden battle aura","黄金炉心":"Golden reactor core","鹈鹕骑自行车":"Pelican riding a bicycle","鸡毛蒜皮全走远端":"Send every trivial task to the remote service","车轮":"Wheel","曲柄":"Crank","连杆":"Connecting rod","膝关节":"Knee joint","喙":"Beak","足端":"Foot endpoint","大腿":"Thigh","小腿":"Lower leg","物理引擎":"Physics engine","运动学":"Kinematics","逆运动学":"Inverse kinematics","零滑移":"Zero slip","骨骼":"Skeleton","姿态":"Posture","沙丁鱼":"Sardines","质心":"Center of mass","迎风面积":"Frontal area","阻力系数":"Drag coefficient","轮径":"Wheel diameter","链轮":"Chainring","飞轮":"Sprocket","飞天":"Feitian","敦煌":"Dunhuang","斗机":"Battle machine","炉心":"Reactor core","斗气":"Battle aura","废土":"Wasteland","机甲":"Mech","小店":"Small shop","卷帘门":"Roller shutter","跑腿":"Errand delivery","撬棍":"Crowbar","地形来自 NASA MGS MOLA MEG016。海洋、云与大气为原创假想渲染；运行时不调用模型 API。":"Terrain comes from NASA MGS MOLA MEG016. Oceans, clouds and atmosphere are original hypothetical renderings; no model API is called at runtime.","自动档按帧率调整。精细近景：384格/纬，采样既有高程；不代表新增测量。尘土色彩为艺术材质。":"Auto quality adapts to frame rate. Detailed close-ups use 384 cells per latitude, sampling existing elevation data, not additional measurements. Dust colors are artistic materials.","定位并调整侧光，停止自转。建议干燥预设；高程、海平面和网格档位保持你的选择。":"Locate the landmark, adjust side lighting and stop rotation. The dry preset is recommended; your elevation, sea-level and mesh settings are retained.","显示半径采用 3,389.5 km 球体。顶点由米制高程真实位移；增强倍率仅用于展示。微表面颜色与云层不是测量数据。":"The displayed sphere has a radius of 3,389.5 km. Vertices are displaced using elevation in meters; exaggeration is for presentation only. Microsurface colors and clouds are not measured data.","GLB 导出将烘焙当前地形，标准格式不包含动态大气和体积云。":"GLB export bakes the current terrain. The standard format does not include the dynamic atmosphere or volumetric clouds.","从眉眼、鼻唇到发髻、金饰与项链，近景使用同一套原创绘制路径重新渲染，不放大小图，也不替换成独立人物素材。":"From brows, eyes, nose and lips to hair, gold ornaments and necklaces, close-ups rerender the same original drawing paths rather than enlarging a thumbnail or substituting separate artwork.","这是艺术设计细节展示，不是敦煌壁画的历史复原。打开近景不会启动飞行或声音。":"This is an artistic detail study, not a historical reconstruction of a Dunhuang mural. Opening a close-up does not start animation or sound.","人物、纹样、飘带与音序为原创程序绘制。敦煌风格致意，不是具体洞窟复制、颜料科学复原或历史音乐。飞天为 2D 分层画面，不是三维角色。默认静音；支持减少动态效果设置。":"Figures, patterns, ribbons and musical sequences are original procedural work. This is a tribute to Dunhuang style, not a copy of a specific cave, a scientific pigment reconstruction or historical music. Feitian uses layered 2D artwork, not 3D characters. Sound is muted by default; reduced-motion preferences are supported.","从发射场外侧，观察白色火箭挣脱地面。四色饰带、金属塔架、翻涌烟雾与一道喷焰，都在浏览器中实时生成。":"Watch the white rocket lift off from outside the launchpad. Four-color bands, a metal tower, billowing smoke and the exhaust plume are generated in real time in your browser.","主动点击 Launch，观看完整发射。L 发射 · Space 暂停 · R 重放 · C 镜头":"Click Launch to watch the full sequence. L launches · Space pauses · R replays · C switches camera.","原创几何与实时粒子；艺术化发射，不是航天或流体仿真。配色借鉴微软红绿蓝黄，无 Logo、官方关联或品牌火箭复制。圆框是外部观景边框，不是舱内视角。":"Original geometry and real-time particles depict an artistic launch, not an aerospace or fluid simulation. Colors reference Microsoft red, green, blue and yellow; there is no logo, official affiliation or replica of a branded rocket. The circular border frames an exterior view, not a cabin window.","3D 时空点云缓存 + 希区柯克变焦主体锁定 + 去遮挡扩散修复掩码":"3D spatiotemporal point-cloud cache + dolly-zoom subject lock + disocclusion diffusion-repair mask","4D 各向异性可变形椭球场 + 子弹时间冻结 + 球谐函数 (SH) 实时三点重打光":"4D anisotropic deformable ellipsoid field + bullet-time freeze + live three-point spherical-harmonic (SH) relighting","画布直接拖拽 3 组主体 3D 贝塞尔轨迹控制点 + 横滚角与二阶弹簧跟随":"Drag 3 groups of subject 3D Bézier control points on the canvas + roll angle and second-order spring following","EWA 各向异性高斯光栅化 + SH 光照 + 景深弥散圆":"EWA anisotropic Gaussian rasterization + SH lighting + depth-of-field circles of confusion","叠加逐网格视线方向 d 与力矩向量 m = o × d":"Overlay per-cell viewing direction d and moment vector m = o × d","青绿=3D 缓存命中区 · 琥珀品红=新暴露需扩散修复区":"Teal = 3D cache hit · amber/magenta = newly exposed regions requiring diffusion repair","显示雅可比 2D 投影椭圆长短轴与瞬时形变速度矢量":"Show major/minor axes of Jacobian-projected 2D ellipses and instantaneous deformation-velocity vectors","鹈鹕":"Pelican","鹈":"Pelican","踏频":"Cadence","风阻":"Wind resistance","自行车":"Bicycle","车":"Bike","鱼":"Fish","喉囊":"Pouch","载鱼量":"Fish load","逆风风速":"Headwind speed","变速齿比":"Gear ratio","鱼载荷":"Fish load","暂停":"Pause","继续":"Resume","继续播放":"Resume playback","继续仿真":"Resume simulation","暂停帧检视":"Pause for frame inspection","暂停播放":"Pause playback","恢复运行":"Resume all","冻结三帧对比":"Freeze all three frames","同步投喂沙丁鱼":"Feed all three pelicans","标准巡航":"Standard cruise","三车齐发冲刺":"Sprint all three bikes","慢动作检验":"Slow-motion inspection","零滑移核验":"Zero-slip check","三屏同步广播总线":"Three-frame synchronized broadcast bus","视图布局":"Layout","三列平铺":"Three columns","单列堆叠":"Stacked view","独立全屏":"Open standalone","复位":"Reset","重放":"Replay","重试":"Retry","启动":"Start","停止":"Stop","开启":"Enable","关闭":"Disable","开":"On","关":"Off","是":"Yes","否":"No","自动":"Auto","低":"Low","高":"High","极高":"Ultra","中":"Medium","无":"None","帧":"frames","台":"nodes","个":"items","秒":"seconds","毫秒":"milliseconds","分钟":"minutes","小时":"hours","天":"days","年":"years","次":"times","条":"entries","组":"groups","档":"level","步":"steps","中文":"Chinese","英文":"English","帧率":"Frame rate","网格":"Mesh","数据":"Data","海洋覆盖":"Ocean coverage","近似水量":"Approximate water volume","面积加权盆地填充":"Area-weighted basin fill","非水动力模拟":"not a hydrodynamic simulation","隐藏控制":"Hide controls","造景参数":"Scene parameters","科学边界":"Scientific limits","场景预设":"Scene presets","干燥火星":"Dry Mars","浅海火星":"Shallow-sea Mars","海洋火星":"Ocean Mars","海平面":"Sea level","地形增强":"Terrain exaggeration","云量":"Cloud cover","大气强度":"Atmosphere strength","太阳方位":"Sun azimuth","检查模式":"Inspection mode","写实":"Realistic","灰模":"Clay","线框":"Wireframe","高程":"Elevation","几何质量":"Geometry quality","精细近景":"Detailed close-up","高程数据":"Elevation data","基础":"Base","高清":"High resolution","地貌近景":"Terrain close-ups","水手峡谷":"Valles Marineris","奥林帕斯山":"Olympus Mons","希腊盆地":"Hellas Planitia","复位视角":"Reset camera","停止自转":"Stop rotation","保存截图":"Save screenshot","导出参数":"Export parameters","导入参数":"Import parameters","导出真实几何":"Export actual geometry","模型与数据说明":"Model and data notes","正在装载火星高程":"Loading Mars elevation","初始化":"Initializing","无法启动三维建模":"Unable to start the 3D scene","火星造景实验室":"Mars Scenography Lab","实测地形":"measured terrain","假想海洋与天气":"hypothetical oceans and weather","风起壁间":"Wind Between the Murals","原创飞天":"Original Feitian","原创程序壁画":"Original procedural mural","实验室":"Laboratory","青羽":"Azure Feather","流霞":"Flowing Rosy Clouds","听风":"Listening to Wind","拾光":"Gathering Light","四时同游":"Four Seasons Together","归壁":"Return to mural","艺术新彩":"Artistic recoloring","开启声音":"Enable sound","截图":"Screenshot","移动指针执灯照壁":"Move the pointer to illuminate the mural","点击人物或按钮":"Click a figure or button","唤醒飞天":"Awaken the Feitian","细看人物":"Figure close-up","五官与饰纹":"Facial features and ornament","人物细看":"Figure detail","选择人物":"Select figure","白色火箭发射场":"White Rocket Launchpad","向上而生":"Born to Ascend","点火":"Ignition","离台":"Liftoff","升空":"Ascent","待命":"Standby","外部固定":"Fixed exterior","发射":"Launch","跟随镜头":"Follow camera","镜头":"Camera","声音":"Sound","音效":"Sound effects","相机":"Camera","相机轨迹控制导演工作台":"Camera-Path Director Workbench","导演工作台":"Director Workbench","实验室门户":"Laboratory portal","开启云台/快门音效":"Enable gimbal / shutter sounds","导出":"Export","评测报告":"Evaluation report","架构研究专著":"Architecture study","场景资产预设":"Scene presets","赛博天台追逐":"Cyber Rooftop Chase","陀飞轮星盘":"Tourbillon Orrery","多主体轨迹舞台":"Multi-Subject Trajectory Stage","相机运镜轨":"Camera motion paths","希区柯克眩晕变焦":"Hitchcock dolly zoom","全周螺旋摇臂环绕":"Full helical crane orbit","穿拱俯冲":"Dive through the arch","横滚":"Roll","横向移摄":"Lateral truck","焦点切换":"Rack focus","冻结物理时间":"Freeze physical time","掠拍":"Sweep","手绘主体轨迹":"Draw subject trajectories","自由轨道":"Free orbit","渲染与几何透视模式":"Rendering and geometry inspection","成片合成":"Final composite","子弹时间冻结":"Freeze bullet time","扰动多主体":"Perturb multiple subjects","轨迹":"Trajectories","球谐函数":"Spherical harmonics","实时三点重打光":"Live three-point relighting","主光方位角":"Key-light azimuth","主光仰角":"Key-light elevation","色温":"Color temperature","轮廓高光增益":"Rim specular gain","实时世界一致性与性能遥测":"Live world consistency and performance telemetry","命中率":"Hit rate","去遮挡修复占比":"Disocclusion repair fraction","对极几何一致性":"Epipolar consistency","主体尺度锁定率":"Subject scale lock","帧耗时":"Frame time","因果":"Causal","滑窗步延":"Sliding-window step latency","实时控制契约":"Live control contract","动力学参数控制":"Dynamics controls","架构驱动版":"Architecture-driven edition","鹈鹕骑自行车逆运动学仿真工作台":"Pelican Bicycle Inverse-Kinematics Workbench","过程文档检视器":"Process Artifact Viewer","骨骼矢量":"Skeletal vectors","废土斗机祭":"Wasteland Iron Circuit","方向键移动":"arrow keys to move","炉心冲刺":"core dash","音效开关":"toggle sound","武器自动开火":"weapons fire automatically","零点以东":"East of Midnight","上海篇":"Shanghai Chapter","知识讲解动画制作工作台":"Knowledge Explainer Studio","三分钟自动演示":"Three-minute guided demo","实时架构与安全边界仿真台":"Live architecture and security-boundary simulator","实时仿真":"Live simulation","选型决策器":"Selection advisor","沙箱计算器":"Sandbox calculator","全景":"Overview","极速沙箱恢复":"Fast sandbox resume","五道平台安全硬边界":"Five hard platform security boundaries","工作台":"Workbench","可复现实验工作台":"Reproducible experiment workbench","选择":"Select","布局":"Layout","参数":"Parameters","状态":"State","已暂停":"Paused","运行中":"Running","播放":"Play","滚动":"Scroll","投喂":"Feed","冲刺":"Sprint","换挡":"Shift gear","重置":"Reset","返回":"Back","展开":"Expand","收起":"Collapse","帮助":"Help","设置":"Settings","运行":"Run","禁用":"Disabled","启用":"Enabled","成功":"Success","失败":"Failure","成本":"Cost","节点":"Nodes","吞吐量":"Throughput","延迟":"Latency","模式":"Mode","输入":"Input","输出":"Output","仿真":"Simulation","场景":"Scenario","风险":"Risk","安全":"Safety","基线":"Baseline","优化":"Optimized","控制":"Controls","引擎":"Engine","切换":"Switch","完成":"Complete","测试":"Test","开始":"Start","结束":"End","确认":"Confirm","取消":"Cancel","数值":"Value","单位":"Unit","模拟":"Simulated","实测":"Measured","合成":"Synthetic","匿名报告":"Anonymized reported","下一个":"Next","上一个":"Previous","上一页":"Previous page","下一页":"Next page","跳过":"Skip","关闭声音":"Mute sound","开启音效":"Enable sound effects","关闭音效":"Disable sound effects","三套":"Three sets.","工程套件同题巅峰对决":"Project package is the top-of-the-board match","竞技场与全链路图表评测":"The arena and the whole chain chart.","主导航":"Main Navigator","基准评测中心":"Baseline Assessment Centre","信号雷达":"Signal radar.","模型遥测":"Model telemetry","首席架构师履历":"Biographical information of the Chief Architect","中文主题":"Chinese Theme","不翻译原始内容":"Do not translate original content","浅色主题":"Light theme","深色主题":"Dark theme","返回上下文":"Return context","三大":"Three.","工程套件巅峰对决":"Project package top-to-top match","动画版鹈鹕骑自行车":"Animated pelicans on bicycles","同屏竞技场与全链路图表评测":"Console arena and full-link chart assessment","同一命题":"Same subject.","逆运动学鹈鹕骑自行车":"Inverse sports pelicans riding a bicycle.","分别通过":"Separately adopted","企业级":"Enterprise level","评分与架构契约":"Rating and architecture compacts","多智能体":"Multi-Intelligent","上下文编译器":"Context Compiler","与":"with","对抗式追踪体系":"Counter-tracking system","完整实装构建":"Full Real Build","对比每一环节的真实过程产出":"Comparison of the real process output of each segment","定量指标与动画效果":"Quantitative indicators and animation effects","视觉评测卡片":"Visual assessment card","中文全链路评测报告":"Chinese full-link assessment report","评分仪表盘":"Rating dashboard","三屏同列对比":"Three-screen vs. Columns","宽屏纵向展开":"Widescreen Vertically","架构规范驱动版":"Structured Coded Driver","骨骼透视":"Bones perceptive.","创意海滨剧场版":"Creative beach theater.","三幕光影":"Three screens.","抛鱼接鱼":"- I'm gonna throw a fish to catch a fish.","翘头特技":"- A twilight stunt.","风洞多地形专业版":"Wind Hole Multi-terrestrial Specialized","坡度动力学":"slope dynamics","风洞流线":"Wind Hole Streaming Line","速电变":"Speed-to-wire.","三大工程套件全链路量化图表对比":"Quantified chart comparison of the three project packages","基于真实源码树":"Based on real source tree","与实跑阶段产物":"And the real-life phase.","精确绘制":"Draw accurately","图表":"Chart","八维工程能力雷达图与资产规模对照":"8D engineering capability radar map versus asset size","对比三大套件在立项量化评分":"Compare three packages with a quantitative rating in the line","架构深度":"Structure Depth","上下文隔离与防漂移":"Context isolation and defouling","仓库动态合成":"Warehouse Dynamic Synthesis","静态":"Static","自愈":"Self-healing.","多领域规模":"Multi-area size","可观测性及对抗式审查八个维度的实测得分":"Visuality and confrontational review of eight dimensions of the score","立项量化":"Quantification of line sizes","架构":"Structure","上下文隔离":"Context isolation","对抗式验证":"Counteracting Authentication","多领域资产规模":"Multi-area asset size","成本遥测":"Cost telemetry","立项门禁与量化评分":"Set a block-ban and a quantitative score","架构契约":"Architecture compacts","对抗式审查":"adversarial review","校验与自动修复":"Validation and Auto-Remediation","按栈动态合成":"Synthesis of the stale dynamic","项":"Item","可观测性":"Observability","核验仓库与预置资产规模":"Check warehouse and pre-encumbered asset size","六大环节工程产出密度与耗时分布图":"Figure 6 (intensity and time-consuming distribution of six-stage engineering outputs)","展示从":"Show From","立项":"Set","调研":"Research","到":"Present.","仿真实现与对抗审查":"Simulation of Realization and adversarial Review","三套工具链在每一环节的规范产出深度":"3 sets of tool chains at each step of the normative output depth","条形长度":"Bar Length","与核心护栏机制":"With the Core Guard Mechanism","阶段":"Phase","规范":"Normative","上下文产出完备度":"Context output completeness","关键校验机制":"Key verification mechanisms","立项与调研":"Project and research","指标":"Indicators","门禁":"Door-ban","栈扫描":"Inn scan","证据链":"The chain of evidence.","架构与选型":"Structure and selection","加速器打分":"Accelerator score.","拓扑设计":"Topup Design","计划与待办拆解":"Plan and to-do dismantling","流水线编排":"Waterline Organization","上下文与护栏生成":"Context & Bar Generation","外部知识库注入":"Injection of external knowledge base","生成":"Generate","文件":"Documentation","隔离":"Segregation","代码实现与仿真":"Code Realization and Simulation","骨骼工作台":"Bones table.","三幕海滨":"Three-Scene Coast.","抛鱼吞咽":"I'm gonna throw a fish in it.","翘头":"- Ahead.","速":"Speed","校验与对抗审查":"Verification and adversarial review","单测":"Single measure","工具":"Tools","自动修复":"Autofix","六大环节三套件真实产出逐一对比检视器":"Six-point-three set of real output-by-products comparison examiner","点击下方任意环节卡片":"Click any link below","对比":"Comparison","在该环节的真实文件产出与核心内容":"Real document output and core content at this point","立项门禁与深度调研":"- I'm not going to do it.","需求规范与蓝图规划":"Demand norms and blueprint planning","数学":"Math","架构契约与路由":"Structured compacts and routers","技能":"Skills","指令与上下文护栏":"Command & Context Bar","静态校验与对抗式审查":"Static verification and adversarial review","最终鹈鹕骑车":"Finally, pelicans ride.","效果":"Effects","工程套件":"Project package","维全景对比矩阵":"WIDE Panorama Comparison Matrix","涵盖仓库架构":"Covers warehouse structure","工作流范式":"Workstream pattern","校验脚本":"Verify Script","上下文管理与":"Context Management and Response","实测指标":"Indicators of measurement","对比维度":"Contrast Dimensions","核心定位与哲学":"Core positioning and philosophy","企业客户交付全生命周期":"Corporate customer delivery throughout its life cycle","专家团队":"Expert team","从业务优先级评分":"Rating from operational priorities","加速器匹配到":"Accelerator matches","与代码交付":"And code delivery","仓库级":"Warehouse Level","上下文工程元生成器":"Context Project Meta Generator","分析任意代码库并自动编译生成专属的多智能体团队与校验钩子":"Analyses any code library and automatically compiles and generates proprietary multi-intelligent teams and calibrated hooks","高流速工程":"High-flow engineering","约定驱动工作流":"Promised to drive the workflow","通过严格分阶段的":"Through a strict phased approach","文件契约消除复杂任务幻觉":"Document compacts eliminate complex mission hallucinations","核验版本与资产规模":"Verify version and size of asset","插件包":"Plugin Package","企业级加速器目录":"Enterprise Accelerator Directory","内置元":"Inline","命令":"Command","领域集合":"Fields Pool","共":"Total","立项与调研产出":"Project formulation and research outputs","项整数评分":"Integer rating for items","项门禁":"Ban","算出":"Calculate","扫描":"Scan","类技术栈清单":"List of technical stores","由":"By","生成架构需求画像":"Generate architecture demand portraits","派生并行":"I'm not a child.","产出":"Outputs","规划与架构产出":"Planning and architecture outputs","双连杆余弦定理":"Double-complex cosine theorem","方程":"Equation","走":"Let's go.","定义":"Definitions","个专业":"Professional","的":"It's...","串行":"Serial","拓扑与共享规则":"Twist and Share Rules","产出双文件":"Output two files","防上下文污染机制":"Context-based pollution prevention mechanisms","按":"Press","阶段隔离目录":"Phase segregation directory","每个角色":"Every character.","只读写对应阶段文档":"Read-and-write equivalents to the document","为每个生成的子":"For each generated child","设置最小化工具白名单":"Set white list for minimising tools","如":"Like","仅只读":"Read Only","与职责边界":"Boundary with responsibility","强制":"Force","上下文清空铁律":"Clear the iron law in the context","阶段间零聊天历史继承":"Zero-inter-stage history inheritance","依靠":"Dependency","日期前缀文件传递真理":"Date prefix file delivers truth","彻底杜绝长对话漂移":"\"and completely eliminate long-term conversation.\"","确定性校验与对抗审查":"Validity verification and adversarial review","整数与":"Integer and","证据溯源":"Trace of evidence","项单元测试":"Project module testing","零额外":"Zero extra","调用统计":"Call Statistics","工具名白名单":"White List of Toolnames","自动纠错":"Auto-correcting errors","触发词校验":"Trigger Word Validation","评测矩阵":"Assessment Matrix","通过":"Pass.","纯冷态":"Pure cold","对抗式拷问":"Counter-argument torture.","风格":"Style","工程动力学与骨骼透视工作台":"Engineering Dynamics and Bones Perception Station","专注精确踩踏几何":"Focus on precision and geometry.","骨骼向量与膝角实时标注":"Bones vector and knee real time mark","变速齿比与功率遥测":"Mutation gear to power telemetry","多智能体海滨互动艺术剧场":"Multi-Intelligent Seaside Interactive Art Theatre","专注三幕光影氛围":"Focus on the three scenes of the light.","晴空":"Clear Sky","落日":"Sunset","星夜车灯":"Starlights.","点击抛沙丁鱼接鱼吞咽":"Click to throw sardines to swallow.","翘前轮特技与":"♪ The Zodiac and the Zodiac ♪","铜车铃":"Copper bell","环法级多地形风洞专业仿真台":"A professional simulation of the ring-law multi-terrain wind hole.","专注":"Focus.","坡度重力":"Gravity of slope","滚阻":"Get out of the way!","风阻耦合":"Wind-blocking coupling.","实时风洞烟雾流线":"Real-time wind hole smoke line","三种骑行姿态":"Three cycling postures.","电变":"Electrical","最佳适用场景":"Best-applied scene","面向客户交付的":"Client-oriented delivery","解决方案评估":"Solutions assessment","架构规范编写与":"Structured normative development and","部署":"Deployment","新项目冷启动或存量老项目一键生成符合团队栈特性的":"New projects are cold-started or older items are stored in a single key to generate a team stack-like feature","定制资产包":"Customized asset packs","跨多文件":"Multi-file","高复杂度软件工程研发":"High complexity software engineering development","需要强可追溯性":"Need for strong traceability","合规规划与对抗式代码审查":"Compliance planning and adversarial code review","强制检验":"Force Test","项量化指标":"Quantitative indicators","整数":"Integer","道准入门禁":"Access is restricted.","自动探测项目根清单":"List of Auto-Detected Roots","并识别为":"and identified as","动画工作区":"Animated Workspace","铁律":"Iron.","阶段严禁写业务代码":"Phase is strictly off-limits to business code.","只将不确定性转化为":"Only convert uncertainty into","种技术方案":"Technical options","淘汰":"Phase-out","脚踏滑移":"Stepping","迭代抖动":"Dithering","解析余弦定理双连杆":"Parsing cosine theorem double-combine pole","唯一推荐方案":"Unrecommended Only","脚蹼锚点与踏板轴心欧氏误差在整个":"The foot anchor and pedal axis are all wrong.","曲柄周期内恒为":"Concussion cycle constant as","与齿比":"Compare to the teeth","实时决定车轮角速度":"Make the turn angles real time.","喉囊支持":"Throat support.","条鱼负载并驱动二阶阻尼弹簧振荡":"A fish load and drive a second-stage barbed-in reel.","纵向坡度骑行力学引擎":"Vertical slopes on motor mechanics engines","速电变飞轮":"Speeding electric transformer wheel","四大赛段程序化地形":"Four-stage programmable terrain.","条层流":"Clanch Stream","湍流风洞烟雾流线":"Flow-tunnel smoke line","双轨功率":"Double-track power","心率实时波形图":"Heartrate Real-time Wave Chart","检视器":"Viewer","大企业加速器":"Big Enterprise Accelerator","域加权打分":"Local weight score","阈值判定":"Threshold determination","最高分":"Top score","确定性路由至":"Confirmed route to","拒绝生搬硬套重型云模板":"Refuses to carry hard-duty cloud templates","负责鸟类解剖":"- I'm in charge of bird autopsy.","四色调羽毛":"Four-tone feathers.","皮帽与飘动红围巾":"The leather hat and the red scarf.","负责薄荷绿巡航车架":"I'll be in charge of the mint green cruise.","双连杆":"Double-complex pole","翘前轮特技与抛鱼弹道":"♪ The forward trophies and the fish-butter ♪","负责晴空":"Clear air.","双振荡器铜车铃":"Double oscillator copper bell","仅限只读工具":"Read-only tool only","审计":"Audit","纵向功率方程":"Vertical Power Equation","骑行姿态":"Ride posture","当":"When?","触发时":"When Trigger","从":"From","按技术栈拉取最佳实践规则注入本地工作区":"Best practice rules by technology induct into local workspaces","同时由":"By","拆解为":"Disassembly As","核心运动学引擎与":"Core motors and motors","遥测工作台共":"Telemetry Stations","个可交付":"One deliverable","配套生成":"Accompany Generation","强制文件状态优先于对话记忆":"Compulsory file status over conversational memory","所有中间调研":"All intermediate research","计划":"Planned","变更与审查全部落盘至":"Change and review all set to","生产代码净室规则":"Production code clean room rules","严禁将":"\"...and forbidden to do so.\"","内部路径写入生产代码注释或提交信息":"Internal path to write to code comment or submit information","阶段切换时执行":"Execute Phase Switch","彻底隔离":"Full isolation.","的系统提示词":"System Hint","挂载":"Mount","钩子":"Hooks","自动解析轨迹计算":"Auto-default trajectory calculation","与剔除人工等待后的真实活跃耗时":"And the real activity after the manual waiting process is time-consuming","无需额外消耗任何模型":"No extra consumption of any models.","实测拦截并修复了":"We've been able to intercept and repair the situation.","契约":"Contracts","非标工具名以及":"Non-titled toolnames and","触发词":"Trigger word","冷态拷问":"Cold torture.","当摇车抽车髋部抬高导致距离超过":"When the swirling pulls up the hip, it leads to a distance exceeding.","时如何防止":"How to prevent it?","实测通过":"It's done.","完美免疫":"Perfect immunity.","核心亮点":"Core Bright Point","逆运动学骨骼与角度实时透视层":"Inverse motors, bones and aerometric real-time visual layers.","曲柄轨迹圆":"Curved Track Circle","左右腿骨骼矢量":"Right and right leg bone vectors.","膝角实时度数":"Knee Real-time Degrees","逆风":"♪ Against the wind ♪","喉囊载鱼":"Fish in the throat.","实时功率仪表盘":"Real-time power dashboard","顶部内嵌":"Top Embedded","规范原文检视器":"Normalize the original language viewer","晴空栈道":"Clearing Hall","落日余晖":"The sun is falling.","带车头锥形体积光束":"With a cone of a size beam","三幕氛围一键切换":"Three-scenario one toggle.","点击画布或按钮抛掷沙丁鱼":"Click on a canvas or a button to throw sardines","抛物线弹道飞入张开的鹈鹕巨喙":"The parabola ballistics are flying into the open pelican giant.","触发喉囊吞咽弹性膨胀":"Triggers the larynx to swallow elastic expansion.","翘前轮特技":"A forward-drive stunt.","扇翅加速冲刺":"Slap the wings and speed the sprint.","纯":"Pure","四大赛段切换":"Four-stage switch.","阿尔卑斯":"Alps.","爬坡":"Climb the slope.","气动风洞":"Windholes.","鲁贝鹅卵石震动":"Rube's pebbles vibrating.","新东京星夜下坡":"New Tokyo Star Night Downhill","实时风洞层流与尾流湍流烟雾线":"Real-time wind hole layer and tail stream smog line","伴飞遥测无人机":"With a remote-detection drone.","底部功率":"Bottom Power","心率双轨滚动波形图":"Two-track scrolling wave graph for heart rate","三种骑行姿态切换":"Three cycling postures to switch","气动俯冲":"Air dive.","摇车抽车":"Roll-a-car.","直立巡航":"Straighten up."},"enZh":{"Custom Agents (.agent.md)":"自定义智能体（.agent.md）","Domain Skills (SKILL.md)":"领域技能（SKILL.md）","Dynamic per Repo":"按仓库动态生成","Frontier Transformation Engineering Hub":"前沿转型工程中心","KB-Manager vs SKILL.md vs Tracking":"KB-Manager、SKILL.md 与跟踪机制对比","PRD/Scope vs ForgePlan vs RPI-Plan":"PRD／范围、ForgePlan 与 RPI-Plan 对比","Pelican Demo Interactive Feature Score":"鹈鹕演示交互功能评分","Plan Validator":"计划验证器","Prioritization vs Scan vs Research":"优先级排序、扫描与研究对比","Researcher Subagent":"研究子智能体","Synthesized by Skill-Writer":"由 Skill-Writer 综合生成","X-Ray Lab vs Coastal Studio vs Tour Pro":"X 光实验室、海岸工作室与巡回赛专业版对比","confidence":"置信度","weight":"权重","Metric":"指标","Score":"评分","gate":"门槛","Tier":"级别","init":"初始化","ON":"开","System":"系统","Label":"标签","Path":"路径","Policy":"策略","Start":"开始","Stop":"停止","High":"高","Auto":"自动","Off":"关","Mode":"模式","Telemetry":"遥测","Source":"来源","Latency":"延迟","Engine":"引擎","Output":"输出","Architecture":"架构","Catching Fish!":"接住鱼了！","Wheelie Stunt!":"抬轮特技！","Sprint Boost!":"冲刺加速！","ASTRA PLANET LAB":"ASTRA 行星实验室","Procedural terrain":"程序化地形","DEMO":"演示","LIVE":"实时","READY":"就绪","OFF":"关","MUTE":"静音","LAUNCH":"发射","STANDBY":"待命","IGNITION":"点火","LIFTOFF":"离台","ASCENT":"升空","COAST":"滑行","FINISHED":"结束","Cycle #377 Interactive Workbench":"Cycle #377 交互工作台","Runtime/Sandbox benchmark explorer with source labels and deterministic session-cost model.":"运行时／沙箱基准探索器：含来源标签与确定性会话成本模型。","Cycle: #377":"周期：#377","Window:":"窗口：","Source labels: measured · synthetic · anonymized_reported":"来源标签：实测 · 合成 · 匿名报告","JSON evidence":"JSON 证据","Latency (p50/p95)":"延迟 (p50/p95)","P50 ms":"P50 毫秒","P95 ms":"P95 毫秒","Throughput (p50/p95 RPS)":"吞吐量 (p50/p95 RPS)","Policy intercept rate":"策略拦截率","Rate":"比例","Single-session cost":"单次会话成本","Session minutes:":"会话分钟数：","USD/session":"美元／会话","measured":"实测","synthetic":"合成","anonymized_reported":"匿名报告","Play":"播放","Pause":"暂停","Resume":"继续","Reset":"重置","Replay":"重放","Sound":"声音","Enable sound":"开启声音","Disable sound":"关闭声音","Export":"导出","Import":"导入","Save":"保存","Load":"加载","Next":"下一步","Previous":"上一步","Close":"关闭","Settings":"设置","Controls":"控制","Help":"帮助","Quality":"质量","Low":"低","Medium":"中","Ultra":"极高","On":"开","Scene":"场景","Status":"状态","Running":"运行中","Paused":"已暂停","Frame rate":"帧率","Relighting":"重新布光","SCENE:":"场景：","MODE:":"模式：","FOCAL / FOV:":"焦距／视场角：","PHASE":"阶段","TIME":"时间","HEIGHT":"高度","VIEW":"视角","Original figure / Detail study":"原创人物／细节研究","OBSERVATORY CONTROL":"观测站控制","GPT-6 ASTRA · GEOMETRY STUDY":"GPT-6 ASTRA · 几何研究","Astra Planet Lab":"Astra 行星实验室","White rocket / four colors":"白色火箭／四色饰带","Three.js / exterior launchpad":"Three.js／外部发射场","GVL / LAUNCH WINDOW":"GVL／发射窗口","Cost":"成本","Throughput":"吞吐量","Parameters":"参数","Input":"输入","Workflow":"工作流","Simulation":"仿真","Baseline":"基线","Optimized":"已优化","Confidence":"置信度","Decision":"决策","Action":"操作"}}});</script>
+<!-- demo-localization:end -->
+<style id="site-remediation-style">:root{--search-bg:#101a30;--search-soft:#172440;--search-ink:#eef3ff;--search-muted:#adbbd1;--search-line:#293956;--search-accent:#9aabff;--header-offset:108px}
+:root[data-reading-shell][data-theme=light],[data-perimeter-theme=light]{--search-bg:#fff;--search-soft:#e8eefb;--search-ink:#17233e;--search-muted:#4c5e7c;--search-line:#d5ddec;--search-accent:#354ec8}
+html{scroll-padding-top:var(--header-offset,108px)!important}
+.site-search,.site-search *{box-sizing:border-box!important;font-family:"Segoe UI",sans-serif;letter-spacing:normal;text-transform:none}
+.site-search{position:relative;display:flex;align-items:center;gap:5px;min-width:0;width:230px;max-width:100%;margin:0!important;padding:0!important;line-height:1.4;border:1px solid var(--search-line);border-radius:9px;background:var(--search-soft);color:var(--search-ink);isolation:isolate}
+.site-search input[type=search]{display:block;flex:1;min-width:0;width:100%;height:42px;margin:0;padding:9px 8px!important;font-size:12px!important;line-height:1.5;border:0!important;border-radius:9px;background:transparent!important;color:var(--search-ink)!important;box-shadow:none!important;appearance:none}
+.site-search input::placeholder{color:var(--search-muted);opacity:1}.site-search input:focus-visible{outline:2px solid var(--search-accent);outline-offset:2px}
+.site-search kbd{font:11px Consolas,monospace;color:var(--search-muted);padding:1px 5px;border:1px solid var(--search-line);border-radius:4px}
+.site-search button[type=submit]{flex:none;width:38px;min-width:38px;height:42px;min-height:42px;padding:0;margin:0;border:0;border-radius:8px;background:transparent;color:var(--search-accent);font-size:24px;cursor:pointer;box-shadow:none}
+.search-label,.search-status{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.site-search .search-results{position:absolute;top:calc(100% + 10px);right:0;z-index:1100;width:min(480px,calc(100vw - 32px));max-height:min(560px,65vh);overflow-y:auto;border:1px solid var(--search-line);border-radius:12px;background:var(--search-bg);color:var(--search-ink);padding:10px;box-shadow:0 12px 32px #0005;text-align:left}
+.site-search .search-results[hidden]{display:none!important}.search-results .search-group{margin:8px 6px 4px;font:11px/1.5 Consolas,monospace;color:var(--search-muted)}
+.site-search .search-results a{display:block!important;padding:10px!important;margin:3px 0!important;border:1px solid transparent!important;border-radius:7px;background:transparent;color:var(--search-ink)!important;font-size:13px!important;text-decoration:none!important;white-space:normal;overflow-wrap:anywhere;text-align:left!important;line-height:1.5!important}
+.site-search .search-results a[aria-selected=true],.site-search .search-results a:hover{border-color:var(--search-accent)!important;background:var(--search-soft)}
+.search-results a small{display:block;font-size:10px;color:var(--search-muted);margin-top:4px}.search-results p{margin:10px;font-size:13px;color:var(--search-muted)}
+.search-archive-summary{padding:20px;border:1px solid var(--search-line);border-radius:10px;background:var(--search-bg);color:var(--search-ink);margin:24px 0}.search-archive-summary h2{font-size:24px;margin:0 0 12px}.search-archive-summary li{margin:12px 0}.search-archive-summary a{color:var(--search-accent)}
+[data-professional-header]{position:sticky!important;top:0!important;z-index:1000!important;background:var(--search-bg)!important;--header-glass:rgba(16,26,48,.9);grid-template-columns:auto minmax(0,1fr) 230px auto!important}
+[data-professional-header][data-perimeter-theme=light],:root[data-reading-shell][data-theme=light] [data-professional-header]{--header-glass:rgba(255,255,255,.94)}
+[data-professional-header] .professional-mobile{display:none}.professional-mobile summary{min-width:38px;min-height:42px;display:grid;place-items:center;cursor:pointer;list-style:none}.professional-mobile summary::-webkit-details-marker{display:none}
+[data-professional-header] .professional-context{display:none}
+.professional-context-bar{padding:12px 24px;border-bottom:1px solid var(--search-line);background:var(--search-bg);color:var(--search-muted);font:12px/1.6 "Segoe UI",sans-serif;display:flex;flex-wrap:wrap;gap:8px 18px;overflow-wrap:anywhere}.professional-context-bar a{color:var(--search-accent)}
+@supports((backdrop-filter:blur(16px)) or (-webkit-backdrop-filter:blur(16px))){.site-header,[data-professional-header]{background:var(--header-glass)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}}
+@media(max-width:1250px) and (min-width:701px){.header-inner{grid-template-columns:minmax(0,1fr) 230px auto!important;padding:12px 0;gap:12px!important}.desktop-nav{grid-row:2;grid-column:1/-1}.header-inner>.site-search{grid-column:2;grid-row:1}.header-inner>.controls{grid-column:3;grid-row:1}[data-professional-header]{grid-template-columns:minmax(0,1fr) 230px auto!important;gap:12px!important}[data-professional-header]>.professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header]>.site-search{grid-column:2;grid-row:1}[data-professional-header]>.professional-controls{grid-column:3;grid-row:1}:root{--header-offset:176px}}
+@media(max-width:700px){.header-inner{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 0;gap:8px!important}.header-inner>.site-search{grid-row:2;grid-column:1/-1;width:100%}.header-inner>.controls{grid-column:2;grid-row:1}.site-search .search-results{width:100%;right:0}[data-professional-header]{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 16px!important;gap:8px!important}[data-professional-header]>.professional-primary{display:none!important}[data-professional-header]>.site-search{grid-column:1/-1;grid-row:2;width:100%}[data-professional-header]>.professional-controls{grid-column:2;grid-row:1}[data-professional-header] .professional-mobile{display:block}[data-professional-header] .professional-mobile[open]>.professional-primary{position:absolute;top:100%;left:0;right:0;padding:16px;background:var(--search-bg);border-bottom:1px solid var(--search-line);display:grid;grid-template-columns:1fr 1fr;gap:8px}[data-professional-header] .professional-mobile .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:12px!important}:root{--header-offset:126px}}
+@media(prefers-reduced-transparency:reduce){.site-header,[data-professional-header]{background:var(--search-bg)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+@media print{.site-search,.professional-context-bar{display:none!important}}
+
+@media(min-width:1251px){.header-inner{display:grid!important;grid-template-columns:auto minmax(0,1fr) 230px auto!important;gap:18px!important}.header-inner .desktop-nav{min-width:0}}
+
+html:has(.kee-dedicated-app-root){height:auto!important;overflow-x:hidden!important;overflow-y:auto!important}
+body:has([data-professional-header]){height:auto!important;overflow-x:clip!important;overflow-y:visible!important;padding-top:0!important}
+.demo-language-navigation{display:none!important}
+.stage-column,.telemetry-panel,.scene-pill,#timeline-slider{min-width:0}
+@media(max-width:1180px){.workspace,.template-tabs{grid-template-columns:minmax(0,1fr)!important}}
+
+.in-arena-frame .professional-context-bar,.in-arena-frame [data-knowledge-atlas]{display:none!important}
+</style></head>
 <body>
+<!-- demo-language-navigation:start --><nav class="demo-language-navigation" aria-label="演示语言"><a href="index.en.html?lang=en" hreflang="en">EN</a> · <a href="index.html?lang=zh-CN" hreflang="zh-CN">中文</a></nav><!-- demo-language-navigation:end -->
 <!-- kee-dedicated-navigation:start -->
-<nav class="kee-dedicated-nav" data-professional-header><a class="professional-identity reading-brand kee-dedicated-identity identity" href="../../../zh.html">Qi Chen · @turbo998</a><div class="professional-primary" role="navigation" aria-label="主导航"><a href="../../../studio/zh-index.html" data-section="hub" data-nav-en-href="../../../studio/index.html" data-nav-zh-href="../../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub" aria-current="page">Frontier Transformation Engineering Hub</a><a href="../../../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../../../benchmarks.html" data-nav-zh-href="../../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心">基准评测中心</a><a href="../../../zh-github-radar.html" data-section="radar" data-nav-en-href="../../../github-radar.html" data-nav-zh-href="../../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI 信号雷达</a><a href="../../../zh-openrouter.html" data-section="routing" data-nav-en-href="../../../openrouter.html" data-nav-zh-href="../../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../../../zh-about.html" data-section="profile" data-nav-en-href="../../../about.html" data-nav-zh-href="../../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">首席架构师履历</a></div><div class="reading-controls professional-controls" aria-label="Site language and appearance"><a href="../../../studio/index.html" hreflang="en" lang="en" aria-label="English hub; source content is not translated">EN</a><a href="../../../studio/zh-index.html" hreflang="zh-CN" lang="zh-CN" aria-label="中文主题；不翻译原始内容">中文</a><a data-reading-theme="light" href="?theme=light" aria-label="浅色主题">☀</a><a data-reading-theme="dark" href="?theme=dark" aria-label="深色主题">◐</a></div><div class="professional-context" aria-label="返回上下文"><a href="../../../studio/benchmarks.html">benchmarks EN</a>
-<a href="../../../studio/zh-benchmarks.html">benchmarks 中文</a>
-<a href="../../../studio/animation.html">animation EN</a>
-<a href="../../../studio/zh-animation.html">animation 中文</a>
-<span class="kee-dedicated-language">Source: 中文 · English translation unavailable / 未验证英文译文。</span></div></nav>
+<nav class="kee-dedicated-nav" data-professional-header><a class="professional-identity reading-brand kee-dedicated-identity identity" href="../../../zh.html">Qi Chen · @turbo998</a><div class="professional-primary" role="navigation" aria-label="主导航"><a href="../../../studio/zh-index.html" data-section="hub" data-nav-en-href="../../../studio/index.html" data-nav-zh-href="../../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub" aria-current="page">Frontier Transformation Engineering Hub</a><a href="../../../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../../../benchmarks.html" data-nav-zh-href="../../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心">基准评测中心</a><a href="../../../zh-github-radar.html" data-section="radar" data-nav-en-href="../../../github-radar.html" data-nav-zh-href="../../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI 信号雷达</a><a href="../../../zh-openrouter.html" data-section="routing" data-nav-en-href="../../../openrouter.html" data-nav-zh-href="../../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../../../zh-about.html" data-section="profile" data-nav-en-href="../../../about.html" data-nav-zh-href="../../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">首席架构师履历</a></div><form class="site-search" role="search" action="../../../studio/zh-archive.html" method="get" data-search-root="../../../index.html" data-search-language="zh-CN"><label class="search-label" for="site-search-input">搜索架构、评测、Demo、技能...</label><input id="site-search-input" name="q" type="search" placeholder="搜索架构、评测、Demo、技能..." autocomplete="off" spellcheck="false" aria-keyshortcuts="/ Control+k Meta+k"><kbd aria-hidden="true">/</kbd><button type="submit" aria-label="搜索全部内容">⌕</button><div class="search-results" id="site-search-results" hidden></div><span class="search-status" role="status" aria-live="polite"></span></form><div class="reading-controls professional-controls" aria-label="网站语言与外观"><a href="index.en.html" data-reading-language hreflang="en" lang="en">EN</a><a href="index.html" hreflang="zh-CN" lang="zh-CN" aria-current="page">中文</a><details class="professional-mobile"><summary aria-label="打开主导航">☰</summary><div class="professional-primary" role="navigation" aria-label="移动主导航"><a href="../../../studio/zh-index.html" data-section="hub" data-nav-en-href="../../../studio/index.html" data-nav-zh-href="../../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub" aria-current="page">Frontier Transformation Engineering Hub</a><a href="../../../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../../../benchmarks.html" data-nav-zh-href="../../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心">基准评测中心</a><a href="../../../zh-github-radar.html" data-section="radar" data-nav-en-href="../../../github-radar.html" data-nav-zh-href="../../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI 信号雷达</a><a href="../../../zh-openrouter.html" data-section="routing" data-nav-en-href="../../../openrouter.html" data-nav-zh-href="../../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../../../zh-about.html" data-section="profile" data-nav-en-href="../../../about.html" data-nav-zh-href="../../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">首席架构师履历</a></div></details><a data-reading-theme="light" href="index.html?theme=light" aria-label="浅色主题">☀</a><a data-reading-theme="dark" href="index.html?theme=dark" aria-label="深色主题">◐</a></div><div class="professional-context" aria-label="返回上下文"><a href="../../../studio/zh-index.html">← 工程枢纽</a> · <a href="../../../studio/zh-animation.html">返回主题</a></div></nav><div class="professional-context-bar"><a href="../../../studio/zh-index.html">← 工程枢纽</a> · <a class="reading-context" href="../../../studio/zh-animation.html">返回主题</a></div><!-- site-remediation-knowledge:start --><figure class="knowledge-figure" data-knowledge-atlas="animation" style="margin:24px 0;max-width:100%"><svg xmlns="http://www.w3.org/2000/svg" lang="zh-CN" role="img" aria-labelledby="knowledge-99aaef96fdcb-title knowledge-99aaef96fdcb-desc" viewBox="0 0 360 808" width="360" style="display:block;width:100%;height:auto;max-width:560px;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-99aaef96fdcb-title">三套 AI 工程套件同题巅峰对决：FAF v2 vs. Microsoft AGENT-FORGE vs. Microsoft HVE-Core — “鹈鹕骑自行车”竞技场与全链路图表评测</title><desc id="knowledge-99aaef96fdcb-desc">讲解目标与场景意图: 叙事 · 分镜 · 相机约束 → 定义场景模型 → 几何与物理模型: 4D 高斯 · Plücker 射线 · 程序化几何 → 驱动时间与运动 → 运动、相机与交互: 时间线 · 弹簧 · 运动画笔 · 6DoF 相机 → 渲染讲解画面 → 渲染与无障碍播放: SVG / Canvas / WebGL · 减弱动画降级 → 检查视觉证据 → 工作台与来源评测: 比较画面与机制，不拼接无关评分</desc><rect width="360" height="808" rx="16" fill="#091827"/><text x="20" y="30" fill="#eef5ff" font-size="20" font-weight="700"><tspan x="20" dy="0">三套 AI 工程套件同题巅峰对决：</tspan><tspan x="20" dy="28">FAF v2 vs. Microsoft</tspan><tspan x="20" dy="28">AGENT-FORGE vs. Microsoft</tspan><tspan x="20" dy="28">HVE-Core — “鹈鹕骑自行车”竞</tspan><tspan x="20" dy="28">技场与全链路图表评测</tspan></text><text x="20" y="161" fill="#a9b8ce" font-size="13" font-weight="400"><tspan x="20" dy="0">概念架构 · 箭头表示关系，不代表测量值</tspan></text><g data-concept="1"><rect x="16" y="187" width="328" height="79" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="201" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="217" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">讲解目标与场景意图</tspan></text><text x="32" y="248" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">叙事 · 分镜 · 相机约束</tspan></text></g><g data-relationship="定义场景模型"><path d="M32 266 V311" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 306 L32 312 L37 306" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="292" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">定义场景模型</tspan></text></g><g data-concept="2"><rect x="16" y="318" width="328" height="79" rx="12" fill="#132942" stroke="#43617f"/><rect x="16" y="332" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="348" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">几何与物理模型</tspan></text><text x="32" y="379" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">4D 高斯 · Plücker 射线 · 程序化几何</tspan></text></g><g data-relationship="驱动时间与运动"><path d="M32 397 V442" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 437 L32 443 L37 437" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="423" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">驱动时间与运动</tspan></text></g><g data-concept="3"><rect x="16" y="449" width="328" height="79" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="463" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="479" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">运动、相机与交互</tspan></text><text x="32" y="510" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">时间线 · 弹簧 · 运动画笔 · 6DoF 相机</tspan></text></g><g data-relationship="渲染讲解画面"><path d="M32 528 V573" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 568 L32 574 L37 568" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="554" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">渲染讲解画面</tspan></text></g><g data-concept="4"><rect x="16" y="580" width="328" height="79" rx="12" fill="#132942" stroke="#43617f"/><rect x="16" y="594" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="610" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">渲染与无障碍播放</tspan></text><text x="32" y="641" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">SVG / Canvas / WebGL · 减弱动画降级</tspan></text></g><g data-relationship="检查视觉证据"><path d="M32 659 V704" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 699 L32 705 L37 699" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="685" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">检查视觉证据</tspan></text></g><g data-concept="5"><rect x="16" y="711" width="328" height="79" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="725" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="741" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">工作台与来源评测</tspan></text><text x="32" y="772" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">比较画面与机制，不拼接无关评分</tspan></text></g></svg><figcaption style="font:14px/1.6 system-ui,sans-serif;margin:12px 0;overflow-wrap:anywhere">整体知识图示：按标注关系阅读组件与工程边界。布局仅为概念示意；不表示吞吐、性能排名或生产部署。</figcaption></figure><!-- site-remediation-knowledge:end -->
 <!-- kee-dedicated-navigation:end -->
 
 
@@ -357,26 +506,42 @@
     </div>
   </div>
   <div class="nav-links">
-    <a class="nav-btn" href="./test-report-cards.html">📊 7-Card 4:5 视觉评测卡片</a>
+    <a class="nav-btn" href="test-report-cards.zh-CN.html">📊 7-Card 4:5 视觉评测卡片</a>
     <a class="nav-btn" href="./pelican-benchmark-comparison.md">📄 中文全链路评测报告</a>
     <a class="nav-btn" href="./pelican-benchmark-comparison.en.md">🌐 English Report</a>
-    <a class="nav-btn" href="./artifacts/faf-sdlc/prioritization-report.html">📈 FAF P1 评分仪表盘</a>
+    <a class="nav-btn" href="artifacts/faf-sdlc/prioritization-report.zh-CN.html">📈 FAF P1 评分仪表盘</a>
   </div>
 </div>
 
-<!-- Native simulator access replaces embedded preview controls. -->
-<p class="kee-dedicated-native-link">演示已改为独立原生页面；在各自页面调整踏频、风阻与暂停。同步广播仅适用于旧版嵌入预览。 / Open each native simulator for its controls; embedded-preview synchronization is retired.</p>
+<!-- Master Synchronized Broadcast Controller -->
+<div class="broadcast-bar">
+  <div class="b-group">
+    <span class="b-label">🎛️ 三屏同步广播总线 (`postMessage` Sync Bus):</span>
+    <button class="b-btn" onclick="broadcast({cadence: 92, wind: 16, paused: false})">⚡ 标准巡航 (92 RPM)</button>
+    <button class="b-btn" onclick="broadcast({cadence: 122, wind: 32, action: 'sprint', paused: false})">🚀 三车齐发冲刺 (122 RPM + 风阻)</button>
+    <button class="b-btn" onclick="broadcast({cadence: 34, wind: 6, paused: false})">🔬 34 RPM 慢动作检验 (0.00px 零滑移核验)</button>
+    <button class="b-btn" onclick="broadcast({action: 'feed'})">🐟 同步投喂沙丁鱼 (+Payload)</button>
+    <button class="b-btn" onclick="broadcast({paused: true})">⏸️ 冻结三帧对比</button>
+    <button class="b-btn" onclick="broadcast({paused: false})">▶️ 恢复运行</button>
+  </div>
+  <div class="b-group">
+    <span class="b-label">视图布局:</span>
+    <button class="b-btn active" id="btnView3" onclick="setLayout('3col')">🖥️ 三屏同列对比</button>
+    <button class="b-btn" id="btnView1" onclick="setLayout('stack')">📐 宽屏纵向展开</button>
+  </div>
+</div>
+
 <!-- 3-Way Live Pelican Bicycle Demos -->
 <div class="arena-grid" id="arenaGrid">
   <div class="demo-col faf">
     <div class="col-head">
       <div>
         <div class="col-title c-faf">🟦 Demo A · FAF v2 (`faf-agents` SDLC 架构规范驱动版)</div>
-        <div class="col-meta">P1 Go (78/90.9/87.5) · Path B Greenfield (15% &lt; 40%) · X-Ray 骨骼透视</div>
+        <div class="col-meta">P1 Go (78/90.9/87.5) · 路径 B Greenfield (15% &lt; 40%) · X-Ray 骨骼透视</div>
       </div>
-      <a class="nav-btn" href="./demo-faf-pelican.html" target="_blank">↗ 独立全屏</a>
+      <a class="nav-btn" href="demo-faf-pelican.html" target="_blank">↗ 独立全屏</a>
     </div>
-    <p class="kee-dedicated-native-link"><a href="./demo-faf-pelican.html">Open FAF Pelican Demo · 打开独立交互演示 →</a><br>Native canvas and controls · 原生画布与完整控件</p>
+    <iframe class="demo-frame" id="frameFaf" src="./demo-faf-pelican.html?lang=zh-CN&arena=1" title="FAF Pelican Demo"></iframe>
   </div>
 
   <div class="demo-col forge">
@@ -385,9 +550,9 @@
         <div class="col-title c-forge">🟧 Demo B · AGENT-FORGE (4-Agent 创意海滨剧场版)</div>
         <div class="col-meta">forge validate: 8/8 Passed (0 Warnings) · 三幕光影 · 抛鱼接鱼 + 翘头特技</div>
       </div>
-      <a class="nav-btn" href="./demo-agent-forge-pelican.html" target="_blank">↗ 独立全屏</a>
+      <a class="nav-btn" href="demo-agent-forge-pelican.html" target="_blank">↗ 独立全屏</a>
     </div>
-    <p class="kee-dedicated-native-link"><a href="./demo-agent-forge-pelican.html">Open AGENT-FORGE Pelican Demo · 打开独立交互演示 →</a><br>Native canvas and controls · 原生画布与完整控件</p>
+    <iframe class="demo-frame" id="frameForge" src="./demo-agent-forge-pelican.html?lang=zh-CN&arena=1" title="AGENT-FORGE Pelican Demo"></iframe>
   </div>
 
   <div class="demo-col hve">
@@ -396,9 +561,9 @@
         <div class="col-title c-hve">🟩 Demo C · HVE-Core (`RPI + Task Challenger` 风洞多地形专业版)</div>
         <div class="col-meta">275 Artifacts · .copilot-tracking/ · -10%~+15% 坡度动力学 + 风洞流线 + 11速电变</div>
       </div>
-      <a class="nav-btn" href="./demo-hve-pelican.html" target="_blank">↗ 独立全屏</a>
+      <a class="nav-btn" href="demo-hve-pelican.html" target="_blank">↗ 独立全屏</a>
     </div>
-    <p class="kee-dedicated-native-link"><a href="./demo-hve-pelican.html">Open HVE-Core Pelican Tour Pro Demo · 打开独立交互演示 →</a><br>Native canvas and controls · 原生画布与完整控件</p>
+    <iframe class="demo-frame" id="frameHve" src="./demo-hve-pelican.html?lang=zh-CN&arena=1" title="HVE-Core Pelican Tour Pro Demo"></iframe>
   </div>
 </div>
 
@@ -493,7 +658,7 @@
 
         <!-- Horizontal Bars for Artifact Breakdown -->
         <g transform="translate(0, 78)">
-          <text x="0" y="0" fill="#cbd5e1" font-size="10">Custom Agents (.agent.md)</text>
+          <text x="0" y="0" fill="#cbd5e1" font-size="10">自定义智能体（.agent.md）</text>
           <rect x="0" y="6" width="38" height="7" rx="3" fill="#38bdf8" /><text x="43" y="13" fill="#7dd3fc" font-size="9">15</text>
           <rect x="0" y="15" width="28" height="7" rx="3" fill="#f59e0b" /><text x="33" y="22" fill="#fcd34d" font-size="9">11 (Meta-Pipeline)</text>
           <rect x="0" y="24" width="185" height="7" rx="3" fill="#10b981" /><text x="190" y="31" fill="#6ee7b7" font-size="9">75 (14 Collections)</text>
@@ -502,19 +667,19 @@
         <g transform="translate(0, 128)">
           <text x="0" y="0" fill="#cbd5e1" font-size="10">Reusable Prompts &amp; Instructions</text>
           <rect x="0" y="6" width="32" height="7" rx="3" fill="#38bdf8" /><text x="37" y="13" fill="#7dd3fc" font-size="9">15 Prompts</text>
-          <rect x="0" y="15" width="60" height="7" rx="3" fill="#f59e0b" /><text x="65" y="22" fill="#fcd34d" font-size="9">Dynamic per Repo</text>
+          <rect x="0" y="15" width="60" height="7" rx="3" fill="#f59e0b" /><text x="65" y="22" fill="#fcd34d" font-size="9">按仓库动态生成</text>
           <rect x="0" y="24" width="190" height="7" rx="3" fill="#10b981" /><text x="195" y="31" fill="#6ee7b7" font-size="9">75 Prompts + 76 Instr.</text>
         </g>
 
         <g transform="translate(0, 178)">
-          <text x="0" y="0" fill="#cbd5e1" font-size="10">Domain Skills (SKILL.md)</text>
+          <text x="0" y="0" fill="#cbd5e1" font-size="10">领域技能（SKILL.md）</text>
           <rect x="0" y="6" width="62" height="7" rx="3" fill="#38bdf8" /><text x="67" y="13" fill="#7dd3fc" font-size="9">17 (Pricing/Prioritization/Office)</text>
-          <rect x="0" y="15" width="25" height="7" rx="3" fill="#f59e0b" /><text x="30" y="22" fill="#fcd34d" font-size="9">Synthesized by Skill-Writer</text>
+          <rect x="0" y="15" width="25" height="7" rx="3" fill="#f59e0b" /><text x="30" y="22" fill="#fcd34d" font-size="9">由 Skill-Writer 综合生成</text>
           <rect x="0" y="24" width="175" height="7" rx="3" fill="#10b981" /><text x="180" y="31" fill="#6ee7b7" font-size="9">49 (RPI/OWASP/RAI/DT/A11y)</text>
         </g>
 
         <g transform="translate(0, 228)">
-          <text x="0" y="0" fill="#cbd5e1" font-size="10">Pelican Demo Interactive Feature Score</text>
+          <text x="0" y="0" fill="#cbd5e1" font-size="10">鹈鹕演示交互功能评分</text>
           <rect x="0" y="6" width="168" height="8" rx="3" fill="#38bdf8" /><text x="174" y="13" fill="#7dd3fc" font-size="9" font-weight="bold">91 / 100 (X-Ray IK Lab)</text>
           <rect x="0" y="17" width="176" height="8" rx="3" fill="#f59e0b" /><text x="182" y="24" fill="#fcd34d" font-size="9" font-weight="bold">95 / 100 (3-Mood Studio)</text>
           <rect x="0" y="28" width="184" height="8" rx="3" fill="#10b981" /><text x="190" y="35" fill="#6ee7b7" font-size="9" font-weight="bold">98 / 100 (Wind-Tunnel Pro)</text>
@@ -526,7 +691,7 @@
   <!-- Chart 2: Stage-by-Stage Artifact & Effort Flow Across the 6 SDLC Phases -->
   <div class="chart-card">
     <h3>
-      <span>📈 图表 2：六大环节工程产出密度与耗时分布图 (Stage-by-Stage Output &amp; Latency Profile)</span>
+      <span>📈 图表 2：六大环节工程产出密度与耗时分布图 (Stage-by-Stage 输出 &amp; 延迟 Profile)</span>
       <span style="font-size:11px;color:#94a3b8">Measured across 6 Lifecycle Phases</span>
     </h3>
     <p class="desc">展示从 Stage 1 (立项/调研) 到 Stage 6 (仿真实现与对抗审查) 中，三套工具链在每一环节的规范产出深度（条形长度）与核心护栏机制。</p>
@@ -551,7 +716,7 @@
         <!-- Stage 2 -->
         <g transform="translate(0, 65)">
           <text x="0" y="14" fill="#f8fafc" font-size="11" font-weight="bold">S2. 架构与选型</text>
-          <text x="0" y="27" fill="#64748b" font-size="9">Architecture &amp; ADR</text>
+          <text x="0" y="27" fill="#64748b" font-size="9">架构 &amp; ADR</text>
           <rect x="145" y="2" width="272" height="9" rx="3" fill="#38bdf8" />
           <text x="423" y="10" fill="#7dd3fc" font-size="9">FAF: 95% (C4 L1-L3 + 加速器打分 15%)</text>
           <rect x="145" y="13" width="225" height="9" rx="3" fill="#f59e0b" />
@@ -569,7 +734,7 @@
           <rect x="145" y="13" width="235" height="9" rx="3" fill="#f59e0b" />
           <text x="386" y="21" fill="#fcd34d" font-size="9">FORGE: 82% (4 Agent Handoff 流水线编排)</text>
           <rect x="145" y="24" width="278" height="9" rx="3" fill="#10b981" />
-          <text x="429" y="32" fill="#6ee7b7" font-size="9">HVE: 97% (plan + details + Plan Validator)</text>
+          <text x="429" y="32" fill="#6ee7b7" font-size="9">HVE: 97% (plan + details + 计划验证器)</text>
         </g>
 
         <!-- Stage 4 -->
@@ -622,12 +787,12 @@
   <div class="stage-tab active" onclick="selectStageCompare(0)">
     <div class="s-num">Stage 01</div>
     <div class="s-name">立项门禁与深度调研</div>
-    <div class="s-sub">Prioritization vs Scan vs Research</div>
+    <div class="s-sub">优先级排序、扫描与研究对比</div>
   </div>
   <div class="stage-tab" onclick="selectStageCompare(1)">
     <div class="s-num">Stage 02</div>
     <div class="s-name">需求规范与蓝图规划</div>
-    <div class="s-sub">PRD/Scope vs ForgePlan vs RPI-Plan</div>
+    <div class="s-sub">PRD／范围、ForgePlan 与 RPI-Plan 对比</div>
   </div>
   <div class="stage-tab" onclick="selectStageCompare(2)">
     <div class="s-num">Stage 03</div>
@@ -637,7 +802,7 @@
   <div class="stage-tab" onclick="selectStageCompare(3)">
     <div class="s-num">Stage 04</div>
     <div class="s-name">技能、指令与上下文护栏</div>
-    <div class="s-sub">KB-Manager vs SKILL.md vs Tracking</div>
+    <div class="s-sub">KB-Manager、SKILL.md 与跟踪机制对比</div>
   </div>
   <div class="stage-tab" onclick="selectStageCompare(4)">
     <div class="s-num">Stage 05</div>
@@ -647,14 +812,14 @@
   <div class="stage-tab" onclick="selectStageCompare(5)">
     <div class="s-num">Stage 06</div>
     <div class="s-name">最终鹈鹕骑车 Demo 效果</div>
-    <div class="s-sub">X-Ray Lab vs Coastal Studio vs Tour Pro</div>
+    <div class="s-sub">X 光实验室、海岸工作室与巡回赛专业版对比</div>
   </div>
 </div>
 
 <div class="stage-compare-panels">
   <div class="stage-box faf">
     <h4 class="c-faf" id="boxTitleFaf">🟦 FAF v2 (`customer-success-microsoft/faf-agents`)</h4>
-    <div class="meta-row"><span id="boxFileFaf">artifacts/faf-sdlc/scorecard.yaml</span><span id="boxMetricFaf">Tier: P1 Go (78.0 / 90.9 / 87.5)</span></div>
+    <div class="meta-row"><span id="boxFileFaf">artifacts/faf-sdlc/scorecard.yaml</span><span id="boxMetricFaf">级别: P1 Go (78.0 / 90.9 / 87.5)</span></div>
     <pre id="boxCodeFaf"></pre>
   </div>
   <div class="stage-box forge">
@@ -694,20 +859,20 @@
     <tr>
       <td><strong>核验版本与资产规模</strong></td>
       <td><code>v2.0.1</code> (<code>@a740ad88</code>) · <strong>590</strong> git blobs · 3 插件包 · 15 Agents · 17 Skills · 6 企业级加速器目录</td>
-      <td><code>v0.3.0</code> (<code>@655ff340</code>) · <strong>38</strong> git blobs · 11 内置元 Pipeline Agents · 6 个 CLI 命令 (<code>forge init/generate/validate</code>)</td>
+      <td><code>v0.3.0</code> (<code>@655ff340</code>) · <strong>38</strong> git blobs · 11 内置元 Pipeline Agents · 6 个 CLI 命令 (<code>forge 初始化/generate/validate</code>)</td>
       <td><code>v3.3.101</code> (<code>@c5de2020</code>) · <strong>2,753</strong> git blobs · 14 领域集合 · <strong>75 Agents · 75 Prompts · 76 Instructions · 49 Skills</strong> (共 275 项)</td>
     </tr>
     <tr>
       <td><strong>Stage 1：立项与调研产出</strong></td>
       <td><code>scorecard.yaml</code> + <code>prioritization-report.html</code>（28 项整数评分 + 9 项门禁，算出 <code>P1 Go: 78.0/90.9/87.5</code>）</td>
       <td><code>scanner.ts</code> 扫描 14 类技术栈清单，由 <code>forge-greenfield-planner</code> 生成架构需求画像</td>
-      <td><code>task-researcher</code> 派生并行 <code>Researcher Subagent</code>，产出 <code>.copilot-tracking/research/2026-10-24/pelican-tour-pro-research.md</code></td>
+      <td><code>task-researcher</code> 派生并行 <code>研究子智能体</code>，产出 <code>.copilot-tracking/research/2026-10-24/pelican-tour-pro-research.md</code></td>
     </tr>
     <tr>
       <td><strong>Stage 2：规划与架构产出</strong></td>
-      <td><code>prd.md</code> + <code>spec.md</code>（C4 L1–L3 架构 + 双连杆余弦定理 IK 方程）+ <code>impl-rec.md</code>（加速器打分 <code>15% &lt; 40%</code> 走 Path B）</td>
+      <td><code>prd.md</code> + <code>spec.md</code>（C4 L1–L3 架构 + 双连杆余弦定理 IK 方程）+ <code>impl-rec.md</code>（加速器打分 <code>15% &lt; 40%</code> 走 路径 B）</td>
       <td><code>.github/forge-plan.json</code>（定义 4 个专业 Agent 的 <code>pipeline</code> 串行 Handoff 拓扑与共享规则）</td>
-      <td><code>task-planner</code> + <code>Plan Validator</code> 产出双文件：<code>pelican-tour-pro-plan.instructions.md</code> + <code>pelican-tour-pro-details.md</code> + MADR v4.0 <code>ADR-001</code></td>
+      <td><code>task-planner</code> + <code>计划验证器</code> 产出双文件：<code>pelican-tour-pro-plan.instructions.md</code> + <code>pelican-tour-pro-details.md</code> + MADR v4.0 <code>ADR-001</code></td>
     </tr>
     <tr>
       <td><strong>Stage 3：防上下文污染机制</strong></td>
@@ -929,7 +1094,7 @@ Summary: All checks passed (8 files validated, 0 warnings)
     const msg = Object.assign({ type: 'ARENA_SYNC' }, payload);
     ['frameFaf', 'frameForge', 'frameHve'].forEach((id) => {
       const fr = document.getElementById(id);
-      if (fr && fr.contentWindow) fr.contentWindow.postMessage(msg, '*');
+      if (fr && fr.contentWindow) fr.contentWindow.postMessage(Object.assign({}, msg, {type: id === 'frameHve' ? 'ARENA_SYNC' : 'arena-sync'}), location.origin);
     });
   }
 

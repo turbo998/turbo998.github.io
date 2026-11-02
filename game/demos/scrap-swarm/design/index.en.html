@@ -1,0 +1,808 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#171910" />
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+    <title>Wasteland Iron Circuit · Role and Body Set</title>
+    <style>
+      :root {
+        --ink: #171910;
+        --deep: #20251b;
+        --panel: #2b3025;
+        --olive: #74775c;
+        --paper: #e6d7a8;
+        --muted: #b7ad8c;
+        --amber: #e4a43c;
+        --rust: #9b4e31;
+        --green: #b9dd78;
+        --cyan: #9cd7c8;
+        --red: #df653d;
+        font-family: "Bahnschrift", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+        color: var(--paper);
+        background: var(--ink);
+      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        min-width: 320px;
+        overflow-x: hidden;
+        background:
+          radial-gradient(circle at 74% 8%, #b2732828, transparent 26rem),
+          repeating-linear-gradient(0deg, transparent 0 4px, #00000012 5px),
+          linear-gradient(145deg, #37372a, var(--ink) 42rem);
+      }
+      body::before {
+        position: fixed;
+        inset: 0;
+        z-index: 20;
+        pointer-events: none;
+        content: "";
+        background: radial-gradient(circle, transparent 55%, #090a06aa 100%);
+      }
+      a { color: inherit; }
+      .shell { width: min(1240px, calc(100% - 36px)); margin: auto; }
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        border-bottom: 1px solid #716a4f;
+        background: #171a13eb;
+        backdrop-filter: blur(12px);
+      }
+      .topbar .shell {
+        display: flex;
+        min-height: 58px;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+      }
+      .brand {
+        color: var(--amber);
+        font: 900 13px/1.1 "Cascadia Mono", Consolas, monospace;
+        letter-spacing: .13em;
+        text-decoration: none;
+      }
+      nav { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 14px; }
+      nav a {
+        color: var(--muted);
+        font: 700 11px "Cascadia Mono", Consolas, monospace;
+        text-decoration: none;
+      }
+      nav a:hover, nav a:focus-visible { color: var(--amber); outline: none; }
+      .hero {
+        position: relative;
+        display: grid;
+        min-height: 650px;
+        grid-template-columns: 1.02fr .98fr;
+        align-items: center;
+        gap: 44px;
+        padding-block: 76px 58px;
+      }
+      .hero::after {
+        position: absolute;
+        right: 0;
+        bottom: 7%;
+        width: 62%;
+        height: 1px;
+        content: "";
+        background: var(--amber);
+        box-shadow: 0 12px #9b4e31, 0 24px #665536;
+        transform: rotate(-9deg);
+        opacity: .45;
+      }
+      .eyebrow {
+        color: var(--amber);
+        font: 800 12px "Cascadia Mono", Consolas, monospace;
+        letter-spacing: .23em;
+      }
+      h1, h2, h3 { font-family: "Rockwell", "Noto Serif SC", "Songti SC", serif; }
+      h1 {
+        margin: 15px 0 18px;
+        font-size: clamp(54px, 8vw, 104px);
+        line-height: .86;
+        letter-spacing: .05em;
+        text-shadow: 5px 5px #65462c, 10px 10px #11130d;
+      }
+      h1 small {
+        display: block;
+        margin-top: 18px;
+        color: var(--amber);
+        font: 800 .16em/1.2 "Cascadia Mono", Consolas, monospace;
+        letter-spacing: .24em;
+        text-shadow: none;
+      }
+      .lead { max-width: 650px; color: #d0c5a1; font-size: 16px; line-height: 1.9; }
+      .hero-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; }
+      .hero-meta span {
+        padding: 7px 11px;
+        border: 1px solid #6b664f;
+        background: #151911c9;
+        color: var(--green);
+        font: 700 11px "Cascadia Mono", Consolas, monospace;
+      }
+      .hero-art {
+        position: relative;
+        z-index: 2;
+        min-height: 510px;
+        border: 1px solid #6f674d;
+        background:
+          repeating-linear-gradient(110deg, transparent 0 20px, #e4a43c16 21px 23px),
+          radial-gradient(circle at 55% 38%, #b97a3347, transparent 38%),
+          #252b20;
+        clip-path: polygon(9% 0, 100% 0, 100% 92%, 91% 100%, 0 100%, 0 9%);
+        box-shadow: 22px 24px 0 #11130d99;
+      }
+      .hero-art svg { width: 100%; height: 510px; display: block; }
+      section { scroll-margin-top: 74px; padding-block: 64px; }
+      .section-head {
+        display: grid;
+        grid-template-columns: 1fr minmax(280px, 520px);
+        gap: 30px;
+        align-items: end;
+        margin-bottom: 28px;
+      }
+      .section-head h2 {
+        margin: 0;
+        color: var(--amber);
+        font-size: clamp(34px, 5vw, 62px);
+        line-height: 1;
+      }
+      .section-head p { margin: 0; color: var(--muted); line-height: 1.7; }
+      .turnaround {
+        display: grid;
+        grid-template-columns: 1.35fr .65fr;
+        gap: 18px;
+      }
+      .blueprint, .callouts, .map, .storyboard, .cast-card {
+        border: 1px solid #6b654e;
+        background:
+          linear-gradient(135deg, #ffffff08, transparent 35%),
+          repeating-linear-gradient(0deg, transparent 0 23px, #b9dd780c 24px),
+          #20251ceb;
+        box-shadow: 8px 9px 0 #11130da8;
+      }
+      .blueprint { min-height: 520px; padding: 22px; }
+      .blueprint svg { display: block; width: 100%; height: 475px; }
+      .callouts { padding: 26px; }
+      .callouts h3 { margin: 0 0 20px; color: var(--paper); font-size: 25px; }
+      .callout { padding: 13px 0; border-top: 1px dashed #67624c; }
+      .callout b { display: block; color: var(--amber); font-size: 12px; letter-spacing: .12em; }
+      .callout p { margin: 5px 0 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
+      .swatches { display: flex; gap: 7px; margin-top: 22px; }
+      .swatches i { width: 36px; height: 36px; border: 2px solid #161811; border-radius: 50%; }
+      .cast-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+      .cast-card {
+        position: relative;
+        min-height: 480px;
+        overflow: hidden;
+        padding: 18px;
+      }
+      .cast-card::before {
+        position: absolute;
+        inset: 0 0 auto;
+        height: 5px;
+        content: "";
+        background: var(--accent, var(--amber));
+      }
+      .cast-card svg {
+        display: block;
+        width: 100%;
+        height: 245px;
+        margin-bottom: 12px;
+        border-bottom: 1px solid #5c5946;
+      }
+      .cast-card .number { color: var(--accent, var(--amber)); font: 800 11px "Cascadia Mono", monospace; }
+      .cast-card h3 { margin: 5px 0 3px; font-size: 25px; }
+      .cast-card em { color: var(--accent, var(--amber)); font-style: normal; font-size: 12px; }
+      .cast-card p { color: var(--muted); font-size: 13px; line-height: 1.65; }
+      .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+      .tags span { padding: 4px 7px; border: 1px solid #5e5c49; font: 700 10px "Cascadia Mono", monospace; }
+      .map { position: relative; min-height: 430px; padding: 28px; overflow: hidden; }
+      .map-lines { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .7; }
+      .node {
+        position: absolute;
+        width: 190px;
+        padding: 15px;
+        border: 1px solid #716b51;
+        background: #20261df2;
+        box-shadow: 6px 6px #11130d;
+      }
+      .node strong { display: block; color: var(--amber); }
+      .node small { color: var(--muted); line-height: 1.5; }
+      .node.r17 { left: 50%; top: 36%; transform: translateX(-50%); }
+      .node.ran { left: 7%; top: 10%; }
+      .node.hector { right: 7%; top: 10%; }
+      .node.public { left: 8%; bottom: 8%; }
+      .node.alliance { right: 8%; bottom: 8%; }
+      .storyboard { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; padding: 1px; }
+      .beat { min-height: 340px; padding: 18px; background: #1c2119; }
+      .beat svg { width: 100%; height: 190px; display: block; background: #30352a; }
+      .beat b { display: block; margin-top: 13px; color: var(--amber); font-size: 11px; letter-spacing: .16em; }
+      .beat h3 { margin: 5px 0 7px; font-size: 23px; }
+      .beat p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.6; }
+      footer { padding: 36px 0 54px; border-top: 1px solid #5a5745; color: #918a70; font-size: 12px; }
+      .back {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 12px 16px;
+        border: 1px solid var(--amber);
+        color: var(--amber);
+        font-weight: 800;
+        text-decoration: none;
+      }
+      @media (max-width: 900px) {
+        .hero { grid-template-columns: 1fr; padding-top: 54px; }
+        .hero-art { min-height: 420px; }
+        .hero-art svg { height: 420px; }
+        .section-head, .turnaround { grid-template-columns: 1fr; }
+        .cast-grid { grid-template-columns: repeat(2, 1fr); }
+        .storyboard { grid-template-columns: 1fr; }
+      }
+      @media (max-width: 620px) {
+        .shell { width: min(100% - 22px, 1240px); }
+        .topbar .shell { align-items: flex-start; padding-block: 11px; }
+        nav { gap: 8px; }
+        nav a { font-size: 9px; }
+        h1 { font-size: 50px; }
+        .cast-grid { grid-template-columns: 1fr; }
+        .map { min-height: 660px; }
+        .node { width: 170px; }
+        .node.ran { left: 4%; }
+        .node.hector { top: 23%; right: 4%; }
+        .node.r17 { top: 42%; }
+        .node.public { left: 4%; bottom: 16%; }
+        .node.alliance { right: 4%; bottom: 3%; }
+      }
+      @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+    </style>
+  <!-- kee-dedicated-style:start -->
+<style>/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.65fr 1.1fr 1.15fr 1.1fr 1.1fr;gap:6px;align-items:stretch;min-width:0}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+</style><script src="../../../../assets/dedicated-navigation.js" defer></script>
+<!-- kee-dedicated-style:end -->
+<!-- demo-localization:start -->
+<style>html.in-arena-frame [data-professional-header],html.in-arena-frame .kee-dedicated-nav,html.in-arena-frame .reading-header,html.in-arena-frame .demo-language-navigation{display:none!important}</style>
+<script>(function runtime(config) {
+  'use strict';
+  const root = document.documentElement;
+  const params = new URLSearchParams(location.search);
+  const requested = params.get('lang');
+  const language = requested === 'en' ? 'en' : requested === 'zh' || requested === 'zh-CN' ? 'zh-CN' : config.language;
+  if (language !== config.language) {
+    const destination = new URL(language === 'en' ? config.en : config.zh, location.href);
+    destination.search = location.search;
+    destination.hash = location.hash;
+    destination.searchParams.set('lang', language);
+    location.replace(destination.href);
+    return;
+  }
+  if (!requested) {
+    const canonical = new URL(location.href);
+    canonical.searchParams.set('lang', language);
+    history.replaceState(history.state, '', canonical);
+  }
+  root.lang = language;
+  root.dataset.demoLanguage = language;
+  if (config.engine && window.self !== window.top && params.get('arena') === '1') root.classList.add('in-arena-frame');
+  const escape = value => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const dictionary = language === 'en' ? config.terms.zhEn : config.terms.enZh;
+  const keys = Object.keys(dictionary).filter(key => language === 'en' || !dictionary[key].includes(key)).sort((a, b) => b.length - a.length);
+  const pattern = keys.length ? new RegExp(language === 'en' ? keys.map(escape).join('|') : '(?<![A-Za-z0-9_])(?:' + keys.map(escape).join('|') + ')(?![A-Za-z0-9_])', 'gu') : null;
+  const translate = value => {
+    if (typeof value !== 'string' || !value) return value;
+    const trimmed = value.trim();
+    if (Object.prototype.hasOwnProperty.call(dictionary, trimmed)) return value.replace(trimmed, dictionary[trimmed]);
+    if (!pattern || language === 'en' && !/[\p{Script=Han}]/u.test(value)) return value;
+    return value.replace(pattern, (key, offset, input) => {
+      let translated = dictionary[key];
+      if (/[A-Za-z0-9]/.test(input[offset - 1] || '') && /^[A-Za-z]/.test(translated)) translated = ' ' + translated;
+      if (/[A-Za-z0-9]/.test(input[offset + key.length] || '') && /[A-Za-z]$/.test(translated)) translated += ' ';
+      return translated;
+    });
+  };
+  const excluded = node => node.parentElement?.closest('script,style,[data-professional-header],.kee-dedicated-nav,.reading-header,.demo-language-navigation');
+  const localizeNode = node => {
+    if (node.nodeType === Node.TEXT_NODE) {
+      if (excluded(node)) return;
+      const value = translate(node.nodeValue);
+      if (value !== node.nodeValue) node.nodeValue = value;
+      return;
+    }
+    if (node.nodeType !== Node.ELEMENT_NODE || node.matches('script,style,[data-professional-header],.kee-dedicated-nav,.reading-header,.demo-language-navigation')) return;
+    for (const attr of ['title', 'aria-label', 'placeholder', 'alt']) {
+      if (!node.hasAttribute(attr)) continue;
+      const original = node.getAttribute(attr), translated = translate(original);
+      if (translated !== original) node.setAttribute(attr, translated);
+    }
+    for (const child of node.childNodes) localizeNode(child);
+  };
+  // Translate only paint labels; coordinates, fonts, metrics and simulation state are untouched.
+  for (const name of ['fillText', 'strokeText']) {
+    const original = CanvasRenderingContext2D.prototype[name];
+    CanvasRenderingContext2D.prototype[name] = function(text, ...args) {return original.call(this, translate(String(text)), ...args);};
+  }
+  const switchLanguage = target => {
+    const next = new URL(target === 'en' ? config.en : config.zh, location.href);
+    next.search = location.search;
+    next.hash = location.hash;
+    next.searchParams.set('lang', target);
+    location.assign(next.href);
+  };
+  document.addEventListener('click', event => {
+    if (!event.isTrusted) return;
+    const button = event.target.closest('button');
+    if (!button || button.closest('[data-professional-header]')) return;
+    const code = button.getAttribute('onclick') || '';
+    if (!button.matches('#langToggle,#btn-lang,#btn-en,#btn-zh,[data-lang]') && !/^(?:toggleLang|setLang)\(/.test(code)) return;
+    const selected = button.dataset.lang || (button.id === 'btn-en' || /setLang\('en'/.test(code) ? 'en' : button.id === 'btn-zh' || /setLang\('zh'/.test(code) ? 'zh-CN' : language === 'en' ? 'zh-CN' : 'en');
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    switchLanguage(selected === 'en' ? 'en' : 'zh-CN');
+  }, true);
+  if (config.engine) {
+    window.addEventListener('message', event => {
+      if (!['ARENA_SYNC','arena-sync'].includes(event.data?.type)) return;
+      if (event.origin !== location.origin || event.source !== window.parent) {event.stopImmediatePropagation(); return;}
+      if (event.data.action === 'feed') {
+        if (/demo-faf-/.test(config.source)) {
+          const fish = document.getElementById('s-fish');
+          fish.value = Math.min(Number(fish.max), Number(fish.value) + 1);
+          if (typeof updateParams === 'function') updateParams();
+        } else if (/demo-agent-forge-/.test(config.source) && typeof tossFish === 'function') tossFish();
+      }
+      if (event.data.action === 'sprint' && /demo-agent-forge-/.test(config.source) && typeof triggerSprint === 'function') triggerSprint();
+    }, true);
+  }
+  const api = {language, translate, apply: () => localizeNode(root), switchLanguage, engine: config.engine, arena: config.arena, ready: false};
+  window.DemoLocalization = api;
+  document.addEventListener('DOMContentLoaded', () => {
+    const nativeButton = document.querySelector(`button[data-lang="${language}"]`);
+    if (nativeButton) nativeButton.click();
+    else if (typeof setLang === 'function') setLang(language === 'en' ? 'en' : 'zh');
+    else if (typeof toggleLang === 'function') {
+      const current = typeof currentLang === 'string' ? currentLang : typeof lang === 'string' ? lang : 'zh';
+      if ((current === 'en') !== (language === 'en')) toggleLang();
+    }
+    root.lang = language;
+    localizeNode(root);
+    new MutationObserver(mutations => {
+      for (const mutation of mutations) {
+        if (mutation.type === 'childList') mutation.addedNodes.forEach(localizeNode);
+        else localizeNode(mutation.target);
+      }
+    }).observe(root, {subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ['title','aria-label','placeholder','alt']});
+    api.ready = true;
+    document.dispatchEvent(new CustomEvent('demo-localization-ready', {detail: {language}}));
+  }, {once: true});
+})({"language":"en","source":"game/demos/scrap-swarm/design/index.html","en":"index.en.html","zh":"index.html","engine":false,"arena":false,"terms":{"zhEn":{"与冰晶丙烯酸":"and ice-crystal acrylic","与力矩向量":"and the moment vector","偏斜钳制护栏":"Skew-clamping guardrail","免提巡检":"Hands-free inspection","六幕分層架構選型矩陣":"Six-scene layered architecture selection matrix","决赛前夜反转":"A reversal on the eve of the final","各向异性高斯光栅化":"Anisotropic Gaussian rasterization","星夜三幕视差与":"Three-scene starry-night parallax and","核料位计快门":"Nuclear level-gauge shutter","洪泛节流护栏":"Flood-throttling guardrail","液碱攻击":"Caustic attack","碱洗塔联锁及":"Caustic scrubber interlocks and","粗排快但糙":"Coarse ranking is fast but imprecise","缓存命中区":"Cache-hit region","许知衡直面耐力赛退役心结":"Xu Zhiheng confronts unresolved feelings about retiring from endurance racing","齿比":"Gear ratio","黑座舱":"Black cockpit","黑色横向双段尾灯":"Black horizontal two-part taillight","鼻祖":"Pioneer","黄金斗气":"Golden battle aura","黄金炉心":"Golden reactor core","鹈鹕骑自行车":"Pelican riding a bicycle","鸡毛蒜皮全走远端":"Send every trivial task to the remote service","车轮":"Wheel","曲柄":"Crank","连杆":"Connecting rod","膝关节":"Knee joint","喙":"Beak","足端":"Foot endpoint","大腿":"Thigh","小腿":"Lower leg","物理引擎":"Physics engine","运动学":"Kinematics","逆运动学":"Inverse kinematics","零滑移":"Zero slip","骨骼":"Skeleton","姿态":"Posture","沙丁鱼":"Sardines","质心":"Center of mass","迎风面积":"Frontal area","阻力系数":"Drag coefficient","轮径":"Wheel diameter","链轮":"Chainring","飞轮":"Sprocket","飞天":"Feitian","敦煌":"Dunhuang","斗机":"Battle machine","炉心":"Reactor core","斗气":"Battle aura","废土":"Wasteland","机甲":"Mech","小店":"Small shop","卷帘门":"Roller shutter","跑腿":"Errand delivery","撬棍":"Crowbar","地形来自 NASA MGS MOLA MEG016。海洋、云与大气为原创假想渲染；运行时不调用模型 API。":"Terrain comes from NASA MGS MOLA MEG016. Oceans, clouds and atmosphere are original hypothetical renderings; no model API is called at runtime.","自动档按帧率调整。精细近景：384格/纬，采样既有高程；不代表新增测量。尘土色彩为艺术材质。":"Auto quality adapts to frame rate. Detailed close-ups use 384 cells per latitude, sampling existing elevation data, not additional measurements. Dust colors are artistic materials.","定位并调整侧光，停止自转。建议干燥预设；高程、海平面和网格档位保持你的选择。":"Locate the landmark, adjust side lighting and stop rotation. The dry preset is recommended; your elevation, sea-level and mesh settings are retained.","显示半径采用 3,389.5 km 球体。顶点由米制高程真实位移；增强倍率仅用于展示。微表面颜色与云层不是测量数据。":"The displayed sphere has a radius of 3,389.5 km. Vertices are displaced using elevation in meters; exaggeration is for presentation only. Microsurface colors and clouds are not measured data.","GLB 导出将烘焙当前地形，标准格式不包含动态大气和体积云。":"GLB export bakes the current terrain. The standard format does not include the dynamic atmosphere or volumetric clouds.","从眉眼、鼻唇到发髻、金饰与项链，近景使用同一套原创绘制路径重新渲染，不放大小图，也不替换成独立人物素材。":"From brows, eyes, nose and lips to hair, gold ornaments and necklaces, close-ups rerender the same original drawing paths rather than enlarging a thumbnail or substituting separate artwork.","这是艺术设计细节展示，不是敦煌壁画的历史复原。打开近景不会启动飞行或声音。":"This is an artistic detail study, not a historical reconstruction of a Dunhuang mural. Opening a close-up does not start animation or sound.","人物、纹样、飘带与音序为原创程序绘制。敦煌风格致意，不是具体洞窟复制、颜料科学复原或历史音乐。飞天为 2D 分层画面，不是三维角色。默认静音；支持减少动态效果设置。":"Figures, patterns, ribbons and musical sequences are original procedural work. This is a tribute to Dunhuang style, not a copy of a specific cave, a scientific pigment reconstruction or historical music. Feitian uses layered 2D artwork, not 3D characters. Sound is muted by default; reduced-motion preferences are supported.","从发射场外侧，观察白色火箭挣脱地面。四色饰带、金属塔架、翻涌烟雾与一道喷焰，都在浏览器中实时生成。":"Watch the white rocket lift off from outside the launchpad. Four-color bands, a metal tower, billowing smoke and the exhaust plume are generated in real time in your browser.","主动点击 Launch，观看完整发射。L 发射 · Space 暂停 · R 重放 · C 镜头":"Click Launch to watch the full sequence. L launches · Space pauses · R replays · C switches camera.","原创几何与实时粒子；艺术化发射，不是航天或流体仿真。配色借鉴微软红绿蓝黄，无 Logo、官方关联或品牌火箭复制。圆框是外部观景边框，不是舱内视角。":"Original geometry and real-time particles depict an artistic launch, not an aerospace or fluid simulation. Colors reference Microsoft red, green, blue and yellow; there is no logo, official affiliation or replica of a branded rocket. The circular border frames an exterior view, not a cabin window.","3D 时空点云缓存 + 希区柯克变焦主体锁定 + 去遮挡扩散修复掩码":"3D spatiotemporal point-cloud cache + dolly-zoom subject lock + disocclusion diffusion-repair mask","4D 各向异性可变形椭球场 + 子弹时间冻结 + 球谐函数 (SH) 实时三点重打光":"4D anisotropic deformable ellipsoid field + bullet-time freeze + live three-point spherical-harmonic (SH) relighting","画布直接拖拽 3 组主体 3D 贝塞尔轨迹控制点 + 横滚角与二阶弹簧跟随":"Drag 3 groups of subject 3D Bézier control points on the canvas + roll angle and second-order spring following","EWA 各向异性高斯光栅化 + SH 光照 + 景深弥散圆":"EWA anisotropic Gaussian rasterization + SH lighting + depth-of-field circles of confusion","叠加逐网格视线方向 d 与力矩向量 m = o × d":"Overlay per-cell viewing direction d and moment vector m = o × d","青绿=3D 缓存命中区 · 琥珀品红=新暴露需扩散修复区":"Teal = 3D cache hit · amber/magenta = newly exposed regions requiring diffusion repair","显示雅可比 2D 投影椭圆长短轴与瞬时形变速度矢量":"Show major/minor axes of Jacobian-projected 2D ellipses and instantaneous deformation-velocity vectors","鹈鹕":"Pelican","鹈":"Pelican","踏频":"Cadence","风阻":"Wind resistance","自行车":"Bicycle","车":"Bike","鱼":"Fish","喉囊":"Pouch","载鱼量":"Fish load","逆风风速":"Headwind speed","变速齿比":"Gear ratio","鱼载荷":"Fish load","暂停":"Pause","继续":"Resume","继续播放":"Resume playback","继续仿真":"Resume simulation","暂停帧检视":"Pause for frame inspection","暂停播放":"Pause playback","恢复运行":"Resume all","冻结三帧对比":"Freeze all three frames","同步投喂沙丁鱼":"Feed all three pelicans","标准巡航":"Standard cruise","三车齐发冲刺":"Sprint all three bikes","慢动作检验":"Slow-motion inspection","零滑移核验":"Zero-slip check","三屏同步广播总线":"Three-frame synchronized broadcast bus","视图布局":"Layout","三列平铺":"Three columns","单列堆叠":"Stacked view","独立全屏":"Open standalone","复位":"Reset","重放":"Replay","重试":"Retry","启动":"Start","停止":"Stop","开启":"Enable","关闭":"Disable","开":"On","关":"Off","是":"Yes","否":"No","自动":"Auto","低":"Low","高":"High","极高":"Ultra","中":"Medium","无":"None","帧":"frames","台":"nodes","个":"items","秒":"seconds","毫秒":"milliseconds","分钟":"minutes","小时":"hours","天":"days","年":"years","次":"times","条":"entries","组":"groups","档":"level","步":"steps","中文":"Chinese","英文":"English","帧率":"Frame rate","网格":"Mesh","数据":"Data","海洋覆盖":"Ocean coverage","近似水量":"Approximate water volume","面积加权盆地填充":"Area-weighted basin fill","非水动力模拟":"not a hydrodynamic simulation","隐藏控制":"Hide controls","造景参数":"Scene parameters","科学边界":"Scientific limits","场景预设":"Scene presets","干燥火星":"Dry Mars","浅海火星":"Shallow-sea Mars","海洋火星":"Ocean Mars","海平面":"Sea level","地形增强":"Terrain exaggeration","云量":"Cloud cover","大气强度":"Atmosphere strength","太阳方位":"Sun azimuth","检查模式":"Inspection mode","写实":"Realistic","灰模":"Clay","线框":"Wireframe","高程":"Elevation","几何质量":"Geometry quality","精细近景":"Detailed close-up","高程数据":"Elevation data","基础":"Base","高清":"High resolution","地貌近景":"Terrain close-ups","水手峡谷":"Valles Marineris","奥林帕斯山":"Olympus Mons","希腊盆地":"Hellas Planitia","复位视角":"Reset camera","停止自转":"Stop rotation","保存截图":"Save screenshot","导出参数":"Export parameters","导入参数":"Import parameters","导出真实几何":"Export actual geometry","模型与数据说明":"Model and data notes","正在装载火星高程":"Loading Mars elevation","初始化":"Initializing","无法启动三维建模":"Unable to start the 3D scene","火星造景实验室":"Mars Scenography Lab","实测地形":"measured terrain","假想海洋与天气":"hypothetical oceans and weather","风起壁间":"Wind Between the Murals","原创飞天":"Original Feitian","原创程序壁画":"Original procedural mural","实验室":"Laboratory","青羽":"Azure Feather","流霞":"Flowing Rosy Clouds","听风":"Listening to Wind","拾光":"Gathering Light","四时同游":"Four Seasons Together","归壁":"Return to mural","艺术新彩":"Artistic recoloring","开启声音":"Enable sound","截图":"Screenshot","移动指针执灯照壁":"Move the pointer to illuminate the mural","点击人物或按钮":"Click a figure or button","唤醒飞天":"Awaken the Feitian","细看人物":"Figure close-up","五官与饰纹":"Facial features and ornament","人物细看":"Figure detail","选择人物":"Select figure","白色火箭发射场":"White Rocket Launchpad","向上而生":"Born to Ascend","点火":"Ignition","离台":"Liftoff","升空":"Ascent","待命":"Standby","外部固定":"Fixed exterior","发射":"Launch","跟随镜头":"Follow camera","镜头":"Camera","声音":"Sound","音效":"Sound effects","相机":"Camera","相机轨迹控制导演工作台":"Camera-Path Director Workbench","导演工作台":"Director Workbench","实验室门户":"Laboratory portal","开启云台/快门音效":"Enable gimbal / shutter sounds","导出":"Export","评测报告":"Evaluation report","架构研究专著":"Architecture study","场景资产预设":"Scene presets","赛博天台追逐":"Cyber Rooftop Chase","陀飞轮星盘":"Tourbillon Orrery","多主体轨迹舞台":"Multi-Subject Trajectory Stage","相机运镜轨":"Camera motion paths","希区柯克眩晕变焦":"Hitchcock dolly zoom","全周螺旋摇臂环绕":"Full helical crane orbit","穿拱俯冲":"Dive through the arch","横滚":"Roll","横向移摄":"Lateral truck","焦点切换":"Rack focus","冻结物理时间":"Freeze physical time","掠拍":"Sweep","手绘主体轨迹":"Draw subject trajectories","自由轨道":"Free orbit","渲染与几何透视模式":"Rendering and geometry inspection","成片合成":"Final composite","子弹时间冻结":"Freeze bullet time","扰动多主体":"Perturb multiple subjects","轨迹":"Trajectories","球谐函数":"Spherical harmonics","实时三点重打光":"Live three-point relighting","主光方位角":"Key-light azimuth","主光仰角":"Key-light elevation","色温":"Color temperature","轮廓高光增益":"Rim specular gain","实时世界一致性与性能遥测":"Live world consistency and performance telemetry","命中率":"Hit rate","去遮挡修复占比":"Disocclusion repair fraction","对极几何一致性":"Epipolar consistency","主体尺度锁定率":"Subject scale lock","帧耗时":"Frame time","因果":"Causal","滑窗步延":"Sliding-window step latency","实时控制契约":"Live control contract","动力学参数控制":"Dynamics controls","架构驱动版":"Architecture-driven edition","鹈鹕骑自行车逆运动学仿真工作台":"Pelican Bicycle Inverse-Kinematics Workbench","过程文档检视器":"Process Artifact Viewer","骨骼矢量":"Skeletal vectors","废土斗机祭":"Wasteland Iron Circuit","方向键移动":"arrow keys to move","炉心冲刺":"core dash","音效开关":"toggle sound","武器自动开火":"weapons fire automatically","零点以东":"East of Midnight","上海篇":"Shanghai Chapter","知识讲解动画制作工作台":"Knowledge Explainer Studio","三分钟自动演示":"Three-minute guided demo","实时架构与安全边界仿真台":"Live architecture and security-boundary simulator","实时仿真":"Live simulation","选型决策器":"Selection advisor","沙箱计算器":"Sandbox calculator","全景":"Overview","极速沙箱恢复":"Fast sandbox resume","五道平台安全硬边界":"Five hard platform security boundaries","工作台":"Workbench","可复现实验工作台":"Reproducible experiment workbench","选择":"Select","布局":"Layout","参数":"Parameters","状态":"State","已暂停":"Paused","运行中":"Running","播放":"Play","滚动":"Scroll","投喂":"Feed","冲刺":"Sprint","换挡":"Shift gear","重置":"Reset","返回":"Back","展开":"Expand","收起":"Collapse","帮助":"Help","设置":"Settings","运行":"Run","禁用":"Disabled","启用":"Enabled","成功":"Success","失败":"Failure","成本":"Cost","节点":"Nodes","吞吐量":"Throughput","延迟":"Latency","模式":"Mode","输入":"Input","输出":"Output","仿真":"Simulation","场景":"Scenario","风险":"Risk","安全":"Safety","基线":"Baseline","优化":"Optimized","控制":"Controls","引擎":"Engine","切换":"Switch","完成":"Complete","测试":"Test","开始":"Start","结束":"End","确认":"Confirm","取消":"Cancel","数值":"Value","单位":"Unit","模拟":"Simulated","实测":"Measured","合成":"Synthetic","匿名报告":"Anonymized reported","下一个":"Next","上一个":"Previous","上一页":"Previous page","下一页":"Next page","跳过":"Skip","关闭声音":"Mute sound","开启音效":"Enable sound effects","关闭音效":"Disable sound effects","角色与机体设定集":"Role and Body Set","主导航":"Main Navigator","基准评测中心":"Baseline Assessment Centre","信号雷达":"Signal radar.","模型遥测":"Model telemetry","首席架构师履历":"Biographical information of the Chief Architect","中文主题":"Chinese Theme","不翻译原始内容":"Do not translate original content","浅色主题":"Light theme","深色主题":"Dark theme","返回上下文":"Return context","设定集导航":"Setset Navigator","三视图":"Three View","六组设计":"Six group design.","关系图":"Relationship Chart","三幕分镜":"Three-scenario.","程序化动画架构":"Program-based animated structure","返回游戏":"Back Game","原创概念设定集":"Original concept setup","大崩落后第":"♪ Falling behind in the Big Bang ♪","能源被包装成擂台奖品时":"When energy was wrapped in a battle prize,","一台维修机器人选择用战斗证明另一种力量":"A maintenance robot chooses to prove another force by fighting.","不是淘汰弱者":"Not the weak.","而是让所有人都拥有修复世界的工具":"It's about giving everyone the tools to fix the world.","类型":"Type","热血机甲竞技":"Hot-blooded-a-gauge competition.","主角":"The lead","锻火拳":"- The Fist of Exercise.","主题":"Theme","维修":"Maintenance","自主":"Autonomy","共同体":"Community","锻火拳原创概念图":"The Fist of Pistol.","保留履带底盘与维修机器人身份":"Keep the belt chassis and maintain robot identity","以右拳炮":"Right-hand gun.","左磁场护臂和高位排气背包形成非对称武斗轮廓":"The left magnetic field arm and high-level exhaust pack form the contours of asymmetrical combat.","正面侧面背面概念图":"A concept map of the back side of the front","正面":"Heads","侧面":"Side","背面":"Back","设计标注":"Design label","拳炮不是步枪":"Boxers are not rifles.","冲击扳手结构贴近前臂":"The shock wrench structure is close to the forearms.","攻击动作像机械直拳":"The attack was like a mechanical straight punch.","避免传统持枪英雄轮廓":"Avoid the classic gun-bearer profile.","磁场护臂":"Magnetic field arm.","左臂明显短于右臂":"The left arm is clearly shorter than the right arm.","圆形线圈让":"Circles","防护与推开":"Protection and push-out.","成为第二动作语言":"Be a second-action language","可维护背面":"Maintains the back","背部检修舱":"Back-checking module.","卷线盘和扭矩标记必须可见":"The wheel and the twist mark must be visible.","强调它首先是一台维修机":"It's a maintenance machine, first of all.","禁用英雄模板":"Disable Heroes Template","形冠饰":"Caption","无面罩":"No mask.","无白蓝红主色":"No White Blue Red Main","无双足骑士比例":"No Knights with Two Foots","色板":"Palette","六组角色设计":"Six-group role design","每个设计用功能":"Each design function","轮廓和动作表达理念":"Outline and action expression","而不是依赖文化刻板印象或对既有名机的换色":"Instead of relying on cultural stereotypes or changing the name of an established machine.","维修不是退路":"Maintenance is not a retreat.","是战斗目的":"It's a combat purpose.","低重心双履带":"Low-centre double-grained belts","右拳炮":"Right boxer.","左磁场护臂与高位排气背包":"Left magnetic field arm and high-level exhaust backpack.","沉默":"Silence.","会拒绝把伙伴当作可牺牲成本":"They refuse to treat partners as a cost.","非对称":"Asymmetric","维修机":"Maintenance machines","直拳后坐":"Sit back in the straight.","岚":"Plumb","韦斯机械师肖像":"Wes Mechanical Portrait.","韦斯":"Wes.","路线我来算":"I'll figure out the route.","决定你来做":"It's your decision.","披肩":"The cape.","工具包和双色护目镜构成轮廓":"Outline of the toolkit and two colour glasses","她只作为通讯肖像与维修伙伴出现":"She only appeared as a communications portrait and maintenance partner.","绝不变成隐藏驾驶员":"Never become a hidden pilot.","人类技师":"Human Technician","无线电":"Radio","开放维修":"Open maintenance","铁冠赫克托冠军机":"Champ Hector Championship.","铁冠":"Champ.","赫克托":"Hector.","救援机械被制度改造成裁决者":"Rescue machines are being changed to adjudicators.","超宽履带":"Super-broadband","液压夹臂与胸前专有锁具":"Hydraulics, and a lock on the chest.","败北时锁具碎裂而主体保留":"The locks are broken and the subject is kept.","视觉上完成从武器回到救援平台的转变":"Visually complete the transition from weapons to rescue platforms.","理念宿敌":"The idea of a rival.","矿井救援":"Mine rescue","环形胸锁":"Ring chest lock.","赤砂牙轮":"Red Sand Tooth Wheel","可维修设备被做成一次性消耗品":"Maintenanceable equipment is made into one-time consumables","六足贴地轮廓与偏置切割齿轮":"Six-square contour and partial cut gear.","移动像急促敲击":"Move like a flash bang.","被焊死的维修盖是联盟浪费逻辑的直接证据":"Welded maintenance caps are direct evidence of the union's wasted logic.","六足":"Six.","偏置齿轮":"Distorted gear","高速接触":"High-speed contact","铁壁角斗机":"Iron-walling.","把防护误解为拒绝改变":"Misconstrue protection as refusing to change.","压缩机方舱":"Compressor module","短履带与外伸撑臂形成近方形剪影":"Short-banded and out-stretched arms form a close-square cut.","冲锋前先落臂加压":"Put your arm down before you push it.","重量感来自节奏而非单纯放大":"The weight sense comes from the rhythm, not just the magnification.","压缩舱":"Compression module","液压撑臂":"Hydraulic arm.","重装推进":"Reload Propulsion","苍雷浮游卫":"Aqueducts.","远程控制仍把代价留在地面":"Remote control still leaves the cost on the ground.","气象雷达核心":"Meteorological radar core","不对称路牌散热翼和拖曳接地链":"Asymmetrical road signs, heat wings and drag-and-trail chains","攻击前同心环收紧三次":"The concentric circle was tightened three times before the attack.","给予清晰危险预告":"Clear threat warning.","同心圆":"Round of heart","薄翼":"Wings.","远程电击":"Tele-shock","关系与理念":"Relations and concepts","冲突不是":"Conflict is not.","正义主角对邪恶坏人":"The hero of justice versus the evil.","而是五种维护世界的方法互相施压":"It's five ways to keep the world under pressure.","最终迫使制度公开接受检修":"Eventually, the system was forced to undergo public censorship.","伙伴而非操纵者":"Partners, not manipulators.","从替":"From","决定一切":"To decide everything.","成长为提供信息并尊重其选择":"Growing up to provide information and respect for their choices","相信严格竞争能避免战争":"Trusting that competition will avoid war.","最终承认规则也必须被维护":"The rule of final recognition must also be upheld.","行动中心":"Operations Centre","以":"Here.","先修复":"Fix it first.","再胜利":"Win again.","的选择迫使所有人重新定义力量":"The choice forces everyone to redefine power.","荒原聚落":"The moorings.","不是等待英雄拯救":"Not waiting for the hero to save.","而是接收协议":"It's a reception protocol.","参与公开维护":"Participation in public maintenance","铁冠联盟":"Champ League","制度压力":"Institutional pressure","把稀缺与维修密钥包装成娱乐和服从":"Package of scarce and maintenance keys as entertainment and obedience","三幕演出板与无线电剧场":"Three-scenario and radio theater.","游戏内置完整五章":"Game with full five chapters","三幕无线电剧场与黑匣子档案":"Three Radio Theatres and Black Box Files","从第":"From the","次重启":"Restarted every second","第二场护卫公共维修棚信标":"Second escort for the public maintenance of the shed beacon","决赛前夜赫克托未删改的救援日志":"Hector's unremoved rescue logs the night before the finals.","到终局广播":"To the final broadcast.","公开通用维护协定":"Open general maintenance agreement","第一幕赤砂车站":"First Act Red Sand Station.","第":"I'm not sure.","可修复的骸骨":"Reparable bones.","赤砂车站":"Red Sand Station","旧维护机":"Old maintenance unit","携炉心冲刺":"- I'm not gonna let you go.","与爆铆拳炮登场":"And the jab cannons.","在拆解赤砂牙轮群的同时回收开源维护件":"Recovery of open source maintenance while dismantling the chalk-salvoss","拒绝拆解绿溪老工程机":"Refuse to break down the Green Creek Project.","第二幕钢梁高架":"Second act of steel beams.","坍塌高架":"Falling over.","护卫维修棚信标":"Guards repair shed beacons","钢梁高架":"The beams are high.","第二场竞技场生成":"The second arena is created.","公共维修棚信标":"Public maintenance shed beacons","守住信标并在周围迎击铁壁角斗机":"Hold the beacon and fight the iron-walling machine around it.","触发岚":"Triggered beryllium","韦斯的过载支援脉冲与护甲修复":"Wes' overload support pulse and armor repair.","第三幕铁冠决赛":"The third act of the Champs finals.","未删改的救援日志":"Unremoted Rescue Log","铁冠粉碎":"Champs to pieces.","铁冠主场":"Champ's home.","赫克托在三阶段决战中展开双肩排热翼并主动暴露胸前":"Hector launched a two-shoulder-to-heat wing in the third phase of the final battle and exposed himself to the chest.","铁冠锁具":"Champ locker.","破甲窗口":"Decorated Armour Window","击碎锁具后向全荒原广播开源维护协议":"Breaking lockers and broadcasting open source maintenance protocols to the whole wasteland","程序化机甲动画架构":"Programmatic animation structure","零外部图片与音频文件":"Zero external pictures and audio files","全部多关节机甲动作":"All multi-band machine-nail actions","热血番剧切入特写":"The hot blood drama is close-up.","冲击帧":"Blast Frame","与":"with","合成音效均由代码实时生成":"Synthetic sound is generated in real time by code","并与":"And with","固定步长确定性仿真严格解耦":"The fixed-step certainty simulation is strictly deconstructed","多部件关节与物理反馈":"Multi-Wip joints and physical feedback","具备独立滚动履带轮辐":"Independent rolling belt radiation","呼吸起伏躯干":"Breathe and fall.","旋转磁盾能量环":"Rotate the magnetic shield energy ring.","液压活塞后坐力回缩":"Hydraulic piston backslide.","膛口十字闪光":"The pore's flashing.","抛壳轨迹与双肩展开散热鳍":"The shell tracks spread the hot fins with two shoulders.","首领赫克托具备三阶段变形与高速旋转胸锁":"Chief Hector has three stages of deformation and high-speed rotation chest locks.","番剧演出与":"♪ The drama and the play ♪","关键节点弹出横向动态矢量立绘切入条":"Key node ejects horizontal dynamic vector line","支持":"Support","简化":"Simplified","配合首领击破瞬间的高反差黑白冲击帧与纯":"In conjunction with the chief's attack, he struck the moment with a high-responding black and white shock frame and purity.","实时合成的铆钉炮":"Real-time synthetic nail cannon.","电磁脉冲与凯旋号角":"EMP and the horn of the Cream.","固定步长确定性仿真":"Fixed step long, certainty imitation","第二场维修棚护卫信标与第三场铁冠锁具破甲窗口全部运行在无":"The second maintenance shed beacon and the third cork lock breaker window are all running.","的种子":"Seeds","上":"Go, go, go!","确保无头仿真":"Make sure you're not having a head-to-head.","渲染模式与自动化测试":"Rendering Modes and Automation Tests","一致":"Unanimously.","返回可玩原型":"Return to Playable Prototype","本页为":"This page is as","原创程序化概念设定":"Original Programmatic Concept Setup","不使用外部字体":"Do not use external fonts","图片":"Picture","生成服务或既有作品资产":"Generating services or existing work assets","角色设计以当前单地图":"Role Designer with Current Single Map","单玩家":"Single Player","三类敌人和一个":"Three categories of enemy and one.","的":"It's...","为边界":"For the border"},"enZh":{"Frontier Transformation Engineering Hub":"前沿转型工程中心","weight":"权重","init":"初始化","ON":"开","Mode":"模式","Telemetry":"遥测","Source":"来源","Engine":"引擎","Catching Fish!":"接住鱼了！","Wheelie Stunt!":"抬轮特技！","Sprint Boost!":"冲刺加速！","ASTRA PLANET LAB":"ASTRA 行星实验室","Procedural terrain":"程序化地形","DEMO":"演示","LIVE":"实时","READY":"就绪","OFF":"关","MUTE":"静音","LAUNCH":"发射","STANDBY":"待命","IGNITION":"点火","LIFTOFF":"离台","ASCENT":"升空","COAST":"滑行","FINISHED":"结束","Cycle #377 Interactive Workbench":"Cycle #377 交互工作台","Runtime/Sandbox benchmark explorer with source labels and deterministic session-cost model.":"运行时／沙箱基准探索器：含来源标签与确定性会话成本模型。","Cycle: #377":"周期：#377","Window:":"窗口：","Source labels: measured · synthetic · anonymized_reported":"来源标签：实测 · 合成 · 匿名报告","JSON evidence":"JSON 证据","Latency (p50/p95)":"延迟 (p50/p95)","System":"系统","P50 ms":"P50 毫秒","P95 ms":"P95 毫秒","Label":"标签","Throughput (p50/p95 RPS)":"吞吐量 (p50/p95 RPS)","Path":"路径","Policy intercept rate":"策略拦截率","Policy":"策略","Rate":"比例","Single-session cost":"单次会话成本","Session minutes:":"会话分钟数：","USD/session":"美元／会话","measured":"实测","synthetic":"合成","anonymized_reported":"匿名报告","Play":"播放","Pause":"暂停","Resume":"继续","Reset":"重置","Replay":"重放","Start":"开始","Stop":"停止","Sound":"声音","Enable sound":"开启声音","Disable sound":"关闭声音","Export":"导出","Import":"导入","Save":"保存","Load":"加载","Next":"下一步","Previous":"上一步","Close":"关闭","Settings":"设置","Controls":"控制","Help":"帮助","Quality":"质量","High":"高","Low":"低","Auto":"自动","Medium":"中","Ultra":"极高","On":"开","Off":"关","Scene":"场景","Status":"状态","Running":"运行中","Paused":"已暂停","Frame rate":"帧率","Relighting":"重新布光","SCENE:":"场景：","MODE:":"模式：","FOCAL / FOV:":"焦距／视场角：","PHASE":"阶段","TIME":"时间","HEIGHT":"高度","VIEW":"视角","Original figure / Detail study":"原创人物／细节研究","OBSERVATORY CONTROL":"观测站控制","GPT-6 ASTRA · GEOMETRY STUDY":"GPT-6 ASTRA · 几何研究","Astra Planet Lab":"Astra 行星实验室","White rocket / four colors":"白色火箭／四色饰带","Three.js / exterior launchpad":"Three.js／外部发射场","GVL / LAUNCH WINDOW":"GVL／发射窗口","Cost":"成本","Latency":"延迟","Throughput":"吞吐量","Parameters":"参数","Input":"输入","Output":"输出","Architecture":"架构","Workflow":"工作流","Simulation":"仿真","Baseline":"基线","Optimized":"已优化","Confidence":"置信度","Decision":"决策","Action":"操作"}}});</script>
+<!-- demo-localization:end -->
+<style id="site-remediation-style">:root{--search-bg:#101a30;--search-soft:#172440;--search-ink:#eef3ff;--search-muted:#adbbd1;--search-line:#293956;--search-accent:#9aabff;--header-offset:108px}
+:root[data-reading-shell][data-theme=light],[data-perimeter-theme=light]{--search-bg:#fff;--search-soft:#e8eefb;--search-ink:#17233e;--search-muted:#4c5e7c;--search-line:#d5ddec;--search-accent:#354ec8}
+html{scroll-padding-top:var(--header-offset,108px)!important}
+.site-search,.site-search *{box-sizing:border-box!important;font-family:"Segoe UI",sans-serif;letter-spacing:normal;text-transform:none}
+.site-search{position:relative;display:flex;align-items:center;gap:5px;min-width:0;width:230px;max-width:100%;margin:0!important;padding:0!important;line-height:1.4;border:1px solid var(--search-line);border-radius:9px;background:var(--search-soft);color:var(--search-ink);isolation:isolate}
+.site-search input[type=search]{display:block;flex:1;min-width:0;width:100%;height:42px;margin:0;padding:9px 8px!important;font-size:12px!important;line-height:1.5;border:0!important;border-radius:9px;background:transparent!important;color:var(--search-ink)!important;box-shadow:none!important;appearance:none}
+.site-search input::placeholder{color:var(--search-muted);opacity:1}.site-search input:focus-visible{outline:2px solid var(--search-accent);outline-offset:2px}
+.site-search kbd{font:11px Consolas,monospace;color:var(--search-muted);padding:1px 5px;border:1px solid var(--search-line);border-radius:4px}
+.site-search button[type=submit]{flex:none;width:38px;min-width:38px;height:42px;min-height:42px;padding:0;margin:0;border:0;border-radius:8px;background:transparent;color:var(--search-accent);font-size:24px;cursor:pointer;box-shadow:none}
+.search-label,.search-status{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.site-search .search-results{position:absolute;top:calc(100% + 10px);right:0;z-index:1100;width:min(480px,calc(100vw - 32px));max-height:min(560px,65vh);overflow-y:auto;border:1px solid var(--search-line);border-radius:12px;background:var(--search-bg);color:var(--search-ink);padding:10px;box-shadow:0 12px 32px #0005;text-align:left}
+.site-search .search-results[hidden]{display:none!important}.search-results .search-group{margin:8px 6px 4px;font:11px/1.5 Consolas,monospace;color:var(--search-muted)}
+.site-search .search-results a{display:block!important;padding:10px!important;margin:3px 0!important;border:1px solid transparent!important;border-radius:7px;background:transparent;color:var(--search-ink)!important;font-size:13px!important;text-decoration:none!important;white-space:normal;overflow-wrap:anywhere;text-align:left!important;line-height:1.5!important}
+.site-search .search-results a[aria-selected=true],.site-search .search-results a:hover{border-color:var(--search-accent)!important;background:var(--search-soft)}
+.search-results a small{display:block;font-size:10px;color:var(--search-muted);margin-top:4px}.search-results p{margin:10px;font-size:13px;color:var(--search-muted)}
+.search-archive-summary{padding:20px;border:1px solid var(--search-line);border-radius:10px;background:var(--search-bg);color:var(--search-ink);margin:24px 0}.search-archive-summary h2{font-size:24px;margin:0 0 12px}.search-archive-summary li{margin:12px 0}.search-archive-summary a{color:var(--search-accent)}
+[data-professional-header]{position:sticky!important;top:0!important;z-index:1000!important;background:var(--search-bg)!important;--header-glass:rgba(16,26,48,.9);grid-template-columns:auto minmax(0,1fr) 230px auto!important}
+[data-professional-header][data-perimeter-theme=light],:root[data-reading-shell][data-theme=light] [data-professional-header]{--header-glass:rgba(255,255,255,.94)}
+[data-professional-header] .professional-mobile{display:none}.professional-mobile summary{min-width:38px;min-height:42px;display:grid;place-items:center;cursor:pointer;list-style:none}.professional-mobile summary::-webkit-details-marker{display:none}
+[data-professional-header] .professional-context{display:none}
+.professional-context-bar{padding:12px 24px;border-bottom:1px solid var(--search-line);background:var(--search-bg);color:var(--search-muted);font:12px/1.6 "Segoe UI",sans-serif;display:flex;flex-wrap:wrap;gap:8px 18px;overflow-wrap:anywhere}.professional-context-bar a{color:var(--search-accent)}
+@supports((backdrop-filter:blur(16px)) or (-webkit-backdrop-filter:blur(16px))){.site-header,[data-professional-header]{background:var(--header-glass)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}}
+@media(max-width:1250px) and (min-width:701px){.header-inner{grid-template-columns:minmax(0,1fr) 230px auto!important;padding:12px 0;gap:12px!important}.desktop-nav{grid-row:2;grid-column:1/-1}.header-inner>.site-search{grid-column:2;grid-row:1}.header-inner>.controls{grid-column:3;grid-row:1}[data-professional-header]{grid-template-columns:minmax(0,1fr) 230px auto!important;gap:12px!important}[data-professional-header]>.professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header]>.site-search{grid-column:2;grid-row:1}[data-professional-header]>.professional-controls{grid-column:3;grid-row:1}:root{--header-offset:176px}}
+@media(max-width:700px){.header-inner{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 0;gap:8px!important}.header-inner>.site-search{grid-row:2;grid-column:1/-1;width:100%}.header-inner>.controls{grid-column:2;grid-row:1}.site-search .search-results{width:100%;right:0}[data-professional-header]{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 16px!important;gap:8px!important}[data-professional-header]>.professional-primary{display:none!important}[data-professional-header]>.site-search{grid-column:1/-1;grid-row:2;width:100%}[data-professional-header]>.professional-controls{grid-column:2;grid-row:1}[data-professional-header] .professional-mobile{display:block}[data-professional-header] .professional-mobile[open]>.professional-primary{position:absolute;top:100%;left:0;right:0;padding:16px;background:var(--search-bg);border-bottom:1px solid var(--search-line);display:grid;grid-template-columns:1fr 1fr;gap:8px}[data-professional-header] .professional-mobile .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:12px!important}:root{--header-offset:126px}}
+@media(prefers-reduced-transparency:reduce){.site-header,[data-professional-header]{background:var(--search-bg)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+@media print{.site-search,.professional-context-bar{display:none!important}}
+
+@media(min-width:1251px){.header-inner{display:grid!important;grid-template-columns:auto minmax(0,1fr) 230px auto!important;gap:18px!important}.header-inner .desktop-nav{min-width:0}}
+
+html:has(.kee-dedicated-app-root){height:auto!important;overflow-x:hidden!important;overflow-y:auto!important}
+body:has([data-professional-header]){height:auto!important;overflow-x:clip!important;overflow-y:visible!important;padding-top:0!important}
+.demo-language-navigation{display:none!important}
+.stage-column,.telemetry-panel,.scene-pill,#timeline-slider{min-width:0}
+@media(max-width:1180px){.workspace,.template-tabs{grid-template-columns:minmax(0,1fr)!important}}
+
+.in-arena-frame .professional-context-bar,.in-arena-frame [data-knowledge-atlas]{display:none!important}
+</style><script src="../../../../assets/editorial/search-index.js" defer></script><script src="../../../../assets/editorial/search.js" defer></script></head>
+  <body>
+<!-- demo-language-navigation:start --><nav class="demo-language-navigation" aria-label="Demo language"><a href="index.en.html?lang=en" hreflang="en">EN</a> · <a href="index.html?lang=zh-CN" hreflang="zh-CN">中文</a></nav><!-- demo-language-navigation:end -->
+<!-- kee-dedicated-navigation:start -->
+<nav class="kee-dedicated-nav" data-professional-header><a class="professional-identity reading-brand kee-dedicated-identity identity" href="../../../../index.html">Qi Chen · @turbo998</a><div class="professional-primary" role="navigation" aria-label="Primary sections"><a href="../../../../studio/index.html" data-section="hub" data-nav-en-href="../../../../studio/index.html" data-nav-zh-href="../../../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub" aria-current="page">Frontier Transformation Engineering Hub</a><a href="../../../../benchmarks.html" data-section="benchmarks" data-nav-en-href="../../../../benchmarks.html" data-nav-zh-href="../../../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心">Benchmark &amp; Eval Foundry</a><a href="../../../../github-radar.html" data-section="radar" data-nav-en-href="../../../../github-radar.html" data-nav-zh-href="../../../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI Signal Radar</a><a href="../../../../openrouter.html" data-section="routing" data-nav-en-href="../../../../openrouter.html" data-nav-zh-href="../../../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">Model Routing &amp; Telemetry</a><a href="../../../../about.html" data-section="profile" data-nav-en-href="../../../../about.html" data-nav-zh-href="../../../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">Principal Architect Profile</a></div><form class="site-search" role="search" action="../../../../studio/archive.html" method="get" data-search-root="../../../../index.html" data-search-language="en"><label class="search-label" for="site-search-input">Search architecture, benchmarks, demos...</label><input id="site-search-input" name="q" type="search" placeholder="Search architecture, benchmarks, demos..." autocomplete="off" spellcheck="false" aria-keyshortcuts="/ Control+k Meta+k"><kbd aria-hidden="true">/</kbd><button type="submit" aria-label="Search all content">⌕</button><div class="search-results" id="site-search-results" hidden></div><span class="search-status" role="status" aria-live="polite"></span></form><div class="reading-controls professional-controls" aria-label="Site language and appearance"><a href="index.en.html" hreflang="en" lang="en" aria-current="page">EN</a><a href="index.html" data-reading-language hreflang="zh-CN" lang="zh-CN">中文</a><details class="professional-mobile"><summary aria-label="Open navigation">☰</summary><div class="professional-primary" role="navigation" aria-label="Mobile navigation"><a href="../../../../studio/index.html" data-section="hub" data-nav-en-href="../../../../studio/index.html" data-nav-zh-href="../../../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub" aria-current="page">Frontier Transformation Engineering Hub</a><a href="../../../../benchmarks.html" data-section="benchmarks" data-nav-en-href="../../../../benchmarks.html" data-nav-zh-href="../../../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心">Benchmark &amp; Eval Foundry</a><a href="../../../../github-radar.html" data-section="radar" data-nav-en-href="../../../../github-radar.html" data-nav-zh-href="../../../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI Signal Radar</a><a href="../../../../openrouter.html" data-section="routing" data-nav-en-href="../../../../openrouter.html" data-nav-zh-href="../../../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">Model Routing &amp; Telemetry</a><a href="../../../../about.html" data-section="profile" data-nav-en-href="../../../../about.html" data-nav-zh-href="../../../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">Principal Architect Profile</a></div></details><a data-reading-theme="light" href="index.en.html?theme=light" aria-label="Light theme">☀</a><a data-reading-theme="dark" href="index.en.html?theme=dark" aria-label="Dark theme">◐</a></div><div class="professional-context" aria-label="Back to context"><a href="../../../../studio/index.html">← Engineering Hub</a> · <a href="../../../../studio/game.html">Parent topic</a></div></nav><div class="professional-context-bar"><a href="../../../../studio/index.html">← Engineering Hub</a> · <a class="reading-context" href="../../../../studio/game.html">Parent topic</a></div><!-- site-remediation-knowledge:start --><figure class="knowledge-figure" data-knowledge-atlas="game" style="margin:24px 0;max-width:100%"><svg xmlns="http://www.w3.org/2000/svg" lang="en" role="img" aria-labelledby="knowledge-0b12e357d174-title knowledge-0b12e357d174-desc" viewBox="0 0 360 833" width="360" style="display:block;width:100%;height:auto;max-width:560px;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-0b12e357d174-title">Wasteland Iron Circuit · Role and Body Set</title><desc id="knowledge-0b12e357d174-desc">Player intent &amp; input: Keyboard / pointer · control mapping · input state → updates simulation → World state &amp; simulation: Fixed-step loop · movement · collision · physics → resolves interactions → Rules, opponents &amp; encounters: Racing · swarm behavior · mech / boss systems → produces feedback → Rendering, audio &amp; feedback: Camera · scene · HUD · sound · reduced motion → informs the next input → Playable prototype &amp; inspection: Observe the loop; source demos retain their own controls</desc><rect width="360" height="833" rx="16" fill="#091827"/><text x="20" y="30" fill="#eef5ff" font-size="20" font-weight="700"><tspan x="20" dy="0">Wasteland Iron Circuit · Role</tspan><tspan x="20" dy="28">and Body Set</tspan></text><text x="20" y="86" fill="#a9b8ce" font-size="13" font-weight="400"><tspan x="20" dy="0">Conceptual topology · not measured metrics</tspan></text><g data-concept="1"><rect x="16" y="112" width="328" height="99" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="126" width="4" height="71" rx="2" fill="#63dbca"/><text x="32" y="142" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">Player intent &amp; input</tspan></text><text x="32" y="173" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">Keyboard / pointer · control mapping ·</tspan><tspan x="32" dy="19.599999999999998">input state</tspan></text></g><g data-relationship="updates simulation"><path d="M32 211 V256" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 251 L32 257 L37 251" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="237" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">updates simulation</tspan></text></g><g data-concept="2"><rect x="16" y="263" width="328" height="99" rx="12" fill="#132942" stroke="#43617f"/><rect x="16" y="277" width="4" height="71" rx="2" fill="#63dbca"/><text x="32" y="293" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">World state &amp; simulation</tspan></text><text x="32" y="324" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">Fixed-step loop · movement · collision</tspan><tspan x="32" dy="19.599999999999998">· physics</tspan></text></g><g data-relationship="resolves interactions"><path d="M32 362 V407" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 402 L32 408 L37 402" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="388" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">resolves interactions</tspan></text></g><g data-concept="3"><rect x="16" y="414" width="328" height="99" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="428" width="4" height="71" rx="2" fill="#63dbca"/><text x="32" y="444" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">Rules, opponents &amp; encounters</tspan></text><text x="32" y="475" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">Racing · swarm behavior · mech / boss</tspan><tspan x="32" dy="19.599999999999998">systems</tspan></text></g><g data-relationship="produces feedback"><path d="M32 513 V558" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 553 L32 559 L37 553" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="539" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">produces feedback</tspan></text></g><g data-concept="4"><rect x="16" y="565" width="328" height="99" rx="12" fill="#132942" stroke="#43617f"/><rect x="16" y="579" width="4" height="71" rx="2" fill="#63dbca"/><text x="32" y="595" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">Rendering, audio &amp; feedback</tspan></text><text x="32" y="626" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">Camera · scene · HUD · sound · reduced</tspan><tspan x="32" dy="19.599999999999998">motion</tspan></text></g><g data-relationship="informs the next input"><path d="M32 664 V709" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 704 L32 710 L37 704" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="690" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">informs the next input</tspan></text></g><g data-concept="5"><rect x="16" y="716" width="328" height="99" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="730" width="4" height="71" rx="2" fill="#63dbca"/><text x="32" y="746" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">Playable prototype &amp; inspection</tspan></text><text x="32" y="777" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">Observe the loop; source demos retain</tspan><tspan x="32" dy="19.599999999999998">their own controls</tspan></text></g></svg><figcaption style="font:14px/1.6 system-ui,sans-serif;margin:12px 0;overflow-wrap:anywhere">Overall knowledge map: read the labeled relationships and engineering boundaries. Layout is conceptual; it does not represent throughput, rankings or a production deployment.</figcaption></figure><!-- site-remediation-knowledge:end -->
+<!-- kee-dedicated-navigation:end -->
+
+    <header class="topbar">
+      <div class="shell">
+        <a class="brand" href="#top">WIC / CONCEPT FILE 019</a>
+        <nav aria-label="Setset Navigator">
+          <a href="#hero-sheet">R-17 Three View</a>
+          <a href="#cast">Six group design.</a>
+          <a href="#relations">Relationship Chart</a>
+          <a href="#story">Three-scenario.</a>
+          <a href="#architecture">Program-based animated structure</a>
+          <a href="../">Back Game</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="top">
+      <header class="hero shell">
+        <div>
+          <span class="eyebrow">Original concept setup · ♪ Falling behind in the Big Bang ♪ 87 years</span>
+          <h1>Wasteland Iron Circuit<small>WASTELAND IRON CIRCUIT</small></h1>
+          <p class="lead">When energy was wrapped in a battle prize,，A maintenance robot chooses to prove another force by fighting.：Not the weak.，It's about giving everyone the tools to fix the world.。</p>
+          <div class="hero-meta">
+            <span>Type：Hot-blooded-a-gauge competition.</span>
+            <span>The lead：R-17「- The Fist of Exercise.」</span>
+            <span>Theme：Maintenance / Autonomy / Community</span>
+          </div>
+        </div>
+        <figure class="hero-art" aria-label="R-17 The Fist of Pistol.">
+          <svg viewBox="0 0 560 510" role="img">
+            <defs>
+              <linearGradient id="steel" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#96977a"/><stop offset="1" stop-color="#555a49"/></linearGradient>
+              <filter id="shadow"><feDropShadow dx="15" dy="18" stdDeviation="7" flood-color="#080906" flood-opacity=".75"/></filter>
+            </defs>
+            <circle cx="382" cy="170" r="98" fill="#bc793227" stroke="#d99c45" stroke-opacity=".5" stroke-width="2"/>
+            <g opacity=".25" stroke="#e4a43c"><path d="M25 430 520 75"/><path d="M80 490 550 153"/><path d="M0 350 430 42"/></g>
+            <g transform="translate(113 34)" filter="url(#shadow)">
+              <ellipse cx="180" cy="405" rx="126" ry="25" fill="#11130d" opacity=".7"/>
+              <g id="treads">
+                <rect x="90" y="326" width="186" height="83" rx="30" fill="#23251f" stroke="#11130e" stroke-width="9"/>
+                <circle cx="135" cy="369" r="24" fill="#81714e" stroke="#34352e" stroke-width="10"/>
+                <circle cx="229" cy="369" r="24" fill="#81714e" stroke="#34352e" stroke-width="10"/>
+                <path d="M106 397h151" stroke="#4a4d40" stroke-width="8" stroke-dasharray="13 9"/>
+              </g>
+              <rect x="161" y="292" width="25" height="41" fill="#505544"/>
+              <rect x="91" y="145" width="35" height="150" rx="9" fill="#4c5145" stroke="#282a23" stroke-width="7"/>
+              <path d="M105 149v-45h16v45" fill="#814e31"/>
+              <path d="M120 121c-15-18-11-32 2-43" fill="none" stroke="#c8a25a" stroke-width="5" opacity=".4"/>
+              <rect x="126" y="142" width="132" height="157" rx="18" fill="url(#steel)" stroke="#282b23" stroke-width="9"/>
+              <path d="m135 286 111-130" stroke="#d79a3b" stroke-width="25" opacity=".88"/>
+              <rect x="155" y="171" width="75" height="48" fill="#ac813e" stroke="#34362c" stroke-width="5" transform="rotate(-4 192 195)"/>
+              <text x="192" y="202" text-anchor="middle" fill="#2d291f" font-family="monospace" font-size="24" font-weight="900">R-17</text>
+              <path d="M143 236a52 52 0 0 0 98 0" fill="none" stroke="#e6d7a8" stroke-width="4" stroke-dasharray="8 6"/>
+              <rect x="145" y="65" width="100" height="76" rx="15" fill="url(#steel)" stroke="#24271f" stroke-width="9"/>
+              <rect x="160" y="87" width="70" height="25" rx="5" fill="#172019" stroke="#30352c" stroke-width="5"/>
+              <path d="M174 99h42" stroke="#b9dd78" stroke-width="8" stroke-linecap="round"/>
+              <path d="M217 65 230 22" stroke="#6a6045" stroke-width="6"/>
+              <circle cx="232" cy="18" r="8" fill="#e4a43c"/>
+              <g transform="rotate(13 130 174)">
+                <rect x="77" y="156" width="43" height="131" rx="18" fill="#676b57" stroke="#292c24" stroke-width="8"/>
+                <circle cx="99" cy="166" r="11" fill="#a07942" stroke="#2d3028" stroke-width="6"/>
+                <circle cx="99" cy="275" r="11" fill="#a07942" stroke="#2d3028" stroke-width="6"/>
+                <circle cx="98" cy="296" r="29" fill="#353a31" stroke="#b9dd78" stroke-width="5"/>
+                <circle cx="98" cy="296" r="13" fill="#172019"/>
+              </g>
+              <g transform="rotate(-24 265 168)">
+                <rect x="253" y="150" width="45" height="137" rx="18" fill="#676b57" stroke="#292c24" stroke-width="8"/>
+                <circle cx="275" cy="162" r="11" fill="#a07942" stroke="#2d3028" stroke-width="6"/>
+                <circle cx="275" cy="277" r="11" fill="#a07942" stroke="#2d3028" stroke-width="6"/>
+                <rect x="255" y="278" width="126" height="42" rx="8" fill="#4f5649" stroke="#25271f" stroke-width="8"/>
+                <rect x="369" y="291" width="45" height="12" fill="#a9783d"/>
+              </g>
+              <circle cx="231" cy="270" r="7" fill="#b9dd78"/>
+              <circle cx="211" cy="270" r="7" fill="#a55434"/>
+            </g>
+            <text x="28" y="475" fill="#e4a43c" font-family="monospace" font-size="12" letter-spacing="3">MARTIAL SALVAGE UNIT / FRONT ACTION STUDY</text>
+          </svg>
+        </figure>
+      </header>
+
+      <section id="hero-sheet" class="shell">
+        <header class="section-head">
+          <h2>R-17 Three View</h2>
+          <p>Keep the belt chassis and maintain robot identity，Right-hand gun.、The left magnetic field arm and high-level exhaust pack form the contours of asymmetrical combat.。</p>
+        </header>
+        <div class="turnaround">
+          <div class="blueprint">
+            <svg viewBox="0 0 800 475" role="img" aria-label="R-17 A concept map of the back side of the front">
+              <g stroke="#55634b" stroke-width="1" opacity=".3">
+                <path d="M0 60h800M0 160h800M0 260h800M0 360h800"/>
+                <path d="M100 0v475M300 0v475M500 0v475M700 0v475"/>
+              </g>
+              <g fill="#e4a43c" font-family="monospace" font-size="14" font-weight="800">
+                <text x="125" y="32">FRONT / Heads</text><text x="359" y="32">SIDE / Side</text><text x="610" y="32">BACK / Back</text>
+              </g>
+              <g transform="translate(80 52)">
+                <rect x="37" y="260" width="142" height="65" rx="24" fill="#24261f" stroke="#11130e" stroke-width="7"/>
+                <circle cx="75" cy="292" r="17" fill="#81714e"/><circle cx="141" cy="292" r="17" fill="#81714e"/>
+                <rect x="53" y="105" width="110" height="150" rx="16" fill="#74775c" stroke="#282b23" stroke-width="7"/>
+                <path d="M61 241 154 119" stroke="#d79a3b" stroke-width="19"/>
+                <rect x="67" y="30" width="82" height="65" rx="12" fill="#74775c" stroke="#282b23" stroke-width="7"/>
+                <rect x="80" y="51" width="56" height="20" fill="#172019"/><path d="M90 61h35" stroke="#b9dd78" stroke-width="6"/>
+                <path d="M137 31 148 2" stroke="#6a6045" stroke-width="5"/><circle cx="150" cy="0" r="6" fill="#e4a43c"/>
+                <path d="M55 127 21 223" stroke="#626854" stroke-width="23" stroke-linecap="round"/>
+                <circle cx="14" cy="235" r="24" fill="#353a31" stroke="#b9dd78" stroke-width="5"/>
+                <path d="m162 127 38 99" stroke="#626854" stroke-width="23" stroke-linecap="round"/>
+                <rect x="184" y="215" width="83" height="30" rx="6" fill="#4f5649" stroke="#25271f" stroke-width="6"/>
+              </g>
+              <g transform="translate(341 52)">
+                <rect x="25" y="260" width="149" height="65" rx="24" fill="#24261f" stroke="#11130e" stroke-width="7"/>
+                <circle cx="61" cy="292" r="17" fill="#81714e"/><circle cx="135" cy="292" r="17" fill="#81714e"/>
+                <rect x="52" y="107" width="83" height="148" rx="15" fill="#74775c" stroke="#282b23" stroke-width="7"/>
+                <rect x="23" y="116" width="33" height="128" rx="7" fill="#4c5145" stroke="#282a23" stroke-width="6"/>
+                <rect x="68" y="32" width="69" height="63" rx="12" fill="#74775c" stroke="#282b23" stroke-width="7"/>
+                <rect x="94" y="52" width="40" height="20" fill="#172019"/><path d="M103 62h25" stroke="#b9dd78" stroke-width="6"/>
+                <path d="m132 133 46 88" stroke="#626854" stroke-width="23" stroke-linecap="round"/>
+                <rect x="160" y="213" width="105" height="31" rx="6" fill="#4f5649" stroke="#25271f" stroke-width="6"/>
+                <path d="M35 117V66h14v50" fill="#814e31"/>
+              </g>
+              <g transform="translate(586 52)">
+                <rect x="23" y="260" width="150" height="65" rx="24" fill="#24261f" stroke="#11130e" stroke-width="7"/>
+                <circle cx="61" cy="292" r="17" fill="#81714e"/><circle cx="136" cy="292" r="17" fill="#81714e"/>
+                <rect x="50" y="106" width="98" height="149" rx="15" fill="#5e624f" stroke="#282b23" stroke-width="7"/>
+                <rect x="67" y="132" width="63" height="80" rx="8" fill="#353a31" stroke="#8e7d54" stroke-width="5"/>
+                <path d="M78 147h41M78 161h41M78 175h41" stroke="#b9dd78" stroke-width="3" stroke-dasharray="5 4"/>
+                <rect x="15" y="113" width="39" height="132" rx="7" fill="#4c5145" stroke="#282a23" stroke-width="6"/>
+                <rect x="61" y="31" width="77" height="64" rx="12" fill="#656957" stroke="#282b23" stroke-width="7"/>
+                <path d="M148 132 178 231M50 132 19 231" stroke="#626854" stroke-width="22" stroke-linecap="round"/>
+                <path d="M75 232a33 33 0 0 0 48 0" fill="none" stroke="#e6d7a8" stroke-width="4" stroke-dasharray="7 5"/>
+              </g>
+              <path d="M51 395h698" stroke="#e4a43c" stroke-width="2"/>
+              <text x="55" y="424" fill="#b7ad8c" font-family="monospace" font-size="13">TRACKED RIG 1.72m · RIGHT IMPACT TOOL · LEFT FIELD COIL · REAR SERVICE PORT</text>
+            </svg>
+          </div>
+          <aside class="callouts">
+            <h3>Design label</h3>
+            <div class="callout"><b>01 / Boxers are not rifles.</b><p>The shock wrench structure is close to the forearms.，The attack was like a mechanical straight punch.，Avoid the classic gun-bearer profile.。</p></div>
+            <div class="callout"><b>02 / Magnetic field arm.</b><p>The left arm is clearly shorter than the right arm.，Circles“Protection and push-out.”Be a second-action language。</p></div>
+            <div class="callout"><b>03 / Maintains the back</b><p>Back-checking module.、The wheel and the twist mark must be visible.，It's a maintenance machine, first of all.。</p></div>
+            <div class="callout"><b>04 / Disable Heroes Template</b><p>None V Caption、No mask.、No White Blue Red Main、No Knights with Two Foots。</p></div>
+            <div class="swatches" aria-label="R-17 Palette">
+              <i style="background:#74775c"></i><i style="background:#282b24"></i><i style="background:#d79a3b"></i><i style="background:#b9dd78"></i><i style="background:#e6d7a8"></i>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="cast" class="shell">
+        <header class="section-head">
+          <h2>Six-group role design</h2>
+          <p>Each design function、Outline and action expression，Instead of relying on cultural stereotypes or changing the name of an established machine.。</p>
+        </header>
+        <div class="cast-grid">
+          <article class="cast-card" data-design="r17" style="--accent:#b9dd78">
+            <svg viewBox="0 0 320 245" role="img" aria-label="R-17 - The Fist of Exercise.">
+              <ellipse cx="163" cy="218" rx="82" ry="13" fill="#11130d"/>
+              <rect x="105" y="171" width="116" height="54" rx="20" fill="#23251f" stroke="#10120d" stroke-width="6"/>
+              <circle cx="135" cy="198" r="14" fill="#81714e"/><circle cx="191" cy="198" r="14" fill="#81714e"/>
+              <rect x="117" y="79" width="91" height="94" rx="14" fill="#74775c" stroke="#282b23" stroke-width="7"/>
+              <path d="m122 162 77-75" stroke="#d79a3b" stroke-width="17"/>
+              <rect x="130" y="31" width="67" height="47" rx="10" fill="#666b57" stroke="#282b23" stroke-width="7"/>
+              <rect x="142" y="47" width="43" height="15" fill="#172019"/><path d="M150 54h27" stroke="#b9dd78" stroke-width="5"/>
+              <path d="M118 99 86 162" stroke="#626854" stroke-width="18"/><circle cx="80" cy="173" r="20" fill="#353a31" stroke="#b9dd78" stroke-width="4"/>
+              <path d="m207 101 30 63" stroke="#626854" stroke-width="18"/><rect x="224" y="153" width="72" height="28" rx="6" fill="#4f5649" stroke="#25271f" stroke-width="6"/>
+            </svg>
+            <span class="number">DESIGN 01 / PLAYER</span><h3>R-17「- The Fist of Exercise.」</h3><em>Maintenance is not a retreat.，It's a combat purpose.。</em>
+            <p>Low-centre double-grained belts、Right boxer.、Left magnetic field arm and high-level exhaust backpack.。Silence.、Autonomy，They refuse to treat partners as a cost.。</p>
+            <div class="tags"><span>Asymmetric</span><span>Maintenance machines</span><span>Sit back in the straight.</span></div>
+          </article>
+
+          <article class="cast-card" data-design="ran" style="--accent:#e4a43c">
+            <svg viewBox="0 0 320 245" role="img" aria-label="Plumb·Wes Mechanical Portrait.">
+              <path d="M68 231c14-68 44-90 92-90s81 22 94 90" fill="#454b3a" stroke="#24271f" stroke-width="7"/>
+              <path d="m83 218 30-70 41 82" fill="#8e5735"/>
+              <path d="M120 118c-14-17-17-65 4-86 26-27 79-8 82 32 2 33-15 67-44 74-17 4-31-6-42-20z" fill="#b98b67" stroke="#352820" stroke-width="6"/>
+              <path d="M113 82c-16-38 7-70 43-70 36 0 59 25 55 56-22-21-46-28-78-14l-20 28z" fill="#302d28"/>
+              <path d="M113 51c-16 9-21 28-15 47l17-14" fill="#25231f"/>
+              <rect x="112" y="55" width="43" height="20" rx="8" fill="#344139" stroke="#201f1c" stroke-width="5" transform="rotate(-8)"/>
+              <rect x="153" y="49" width="43" height="20" rx="8" fill="#5c492d" stroke="#201f1c" stroke-width="5" transform="rotate(5)"/>
+              <path d="M143 101q16 8 31-1" fill="none" stroke="#54372c" stroke-width="3"/>
+              <path d="M205 160 254 99" stroke="#7b6543" stroke-width="11"/><path d="m239 92 28 23M251 81l26 21" stroke="#c29b52" stroke-width="7"/>
+              <circle cx="98" cy="187" r="9" fill="#b9dd78"/>
+            </svg>
+            <span class="number">DESIGN 02 / RADIO</span><h3>Plumb·Wes.</h3><em>“I'll figure out the route.，It's your decision.。”</em>
+            <p>The cape.、Outline of the toolkit and two colour glasses。She only appeared as a communications portrait and maintenance partner.，Never become a hidden pilot.。</p>
+            <div class="tags"><span>Human Technician</span><span>Radio</span><span>Open maintenance</span></div>
+          </article>
+
+          <article class="cast-card" data-design="hector" style="--accent:#df653d">
+            <svg viewBox="0 0 320 245" role="img" aria-label="Champ Hector Championship.">
+              <ellipse cx="160" cy="219" rx="110" ry="17" fill="#11130d"/>
+              <rect x="54" y="166" width="212" height="58" rx="18" fill="#24251f" stroke="#10110e" stroke-width="7"/>
+              <circle cx="91" cy="194" r="15" fill="#796746"/><circle cx="126" cy="194" r="15" fill="#796746"/><circle cx="161" cy="194" r="15" fill="#796746"/><circle cx="196" cy="194" r="15" fill="#796746"/><circle cx="231" cy="194" r="15" fill="#796746"/>
+              <rect x="99" y="81" width="122" height="87" rx="13" fill="#654a34" stroke="#29251d" stroke-width="8"/>
+              <circle cx="160" cy="124" r="32" fill="#262820" stroke="#d65b35" stroke-width="8"/>
+              <circle cx="160" cy="124" r="14" fill="#e0a044"/>
+              <rect x="126" y="35" width="68" height="48" rx="10" fill="#292b24" stroke="#9a7a43" stroke-width="6"/>
+              <rect x="139" y="52" width="42" height="10" fill="#f0aa43"/>
+              <path d="M101 102 57 148M219 102l45 46" stroke="#655038" stroke-width="20"/><circle cx="48" cy="157" r="18" fill="#2b2a23"/><circle cx="273" cy="157" r="18" fill="#2b2a23"/>
+            </svg>
+            <span class="number">DESIGN 03 / CHAMPION</span><h3>Champ.·Hector.</h3><em>Rescue machines are being changed to adjudicators.。</em>
+            <p>Super-broadband、Hydraulics, and a lock on the chest.。The locks are broken and the subject is kept.，Visually complete the transition from weapons to rescue platforms.。</p>
+            <div class="tags"><span>The idea of a rival.</span><span>Mine rescue</span><span>Ring chest lock.</span></div>
+          </article>
+
+          <article class="cast-card" data-design="fang" style="--accent:#c66a3d">
+            <svg viewBox="0 0 320 245" role="img" aria-label="Red Sand Tooth Wheel">
+              <ellipse cx="160" cy="191" rx="95" ry="22" fill="#11130d" opacity=".7"/>
+              <g stroke="#4b3c2c" stroke-width="10" stroke-linecap="round">
+                <path d="M128 113 61 167M139 130 73 194M181 113l72 54M174 132l70 63M139 102 85 88M181 102l54-15"/>
+              </g>
+              <ellipse cx="161" cy="119" rx="70" ry="48" fill="#6f3827" stroke="#2c231d" stroke-width="8"/>
+              <circle cx="126" cy="113" r="31" fill="#282824" stroke="#c39145" stroke-width="7"/>
+              <g stroke="#c39145" stroke-width="5"><path d="M126 68v22M126 136v22M81 113h22M149 113h22M94 81l16 16M143 130l16 16M94 145l16-16M143 97l16-16"/></g>
+              <circle cx="189" cy="107" r="9" fill="#f0a34a"/>
+            </svg>
+            <span class="number">DESIGN 04 / SWARM</span><h3>Red Sand Tooth Wheel</h3><em>Maintenanceable equipment is made into one-time consumables。</em>
+            <p>Six-square contour and partial cut gear.，Move like a flash bang.。Welded maintenance caps are direct evidence of the union's wasted logic.。</p>
+            <div class="tags"><span>Six.</span><span>Distorted gear</span><span>High-speed contact</span></div>
+          </article>
+
+          <article class="cast-card" data-design="bulwark" style="--accent:#c49543">
+            <svg viewBox="0 0 320 245" role="img" aria-label="Iron-walling.">
+              <ellipse cx="160" cy="209" rx="94" ry="19" fill="#11130d"/>
+              <rect x="83" y="163" width="154" height="54" rx="18" fill="#20211d" stroke="#10110e" stroke-width="7"/>
+              <circle cx="112" cy="190" r="13" fill="#70654f"/><circle cx="145" cy="190" r="13" fill="#70654f"/><circle cx="178" cy="190" r="13" fill="#70654f"/><circle cx="211" cy="190" r="13" fill="#70654f"/>
+              <rect x="103" y="72" width="114" height="96" rx="12" fill="#745038" stroke="#2c2820" stroke-width="9"/>
+              <rect x="116" y="132" width="88" height="17" fill="#c49543"/>
+              <g stroke="#34281c" stroke-width="6"><path d="m122 149 18-17M150 149l18-17M178 149l18-17"/></g>
+              <path d="M105 100 56 163M215 100l50 63" stroke="#66543d" stroke-width="18"/>
+              <circle cx="52" cy="170" r="17" fill="#3a3328"/><circle cx="269" cy="170" r="17" fill="#3a3328"/>
+              <rect x="132" y="91" width="56" height="13" fill="#f0b34f"/>
+            </svg>
+            <span class="number">DESIGN 05 / BULWARK</span><h3>Iron-walling.</h3><em>Misconstrue protection as refusing to change.。</em>
+            <p>Compressor module、Short-banded and out-stretched arms form a close-square cut.。Put your arm down before you push it.，The weight sense comes from the rhythm, not just the magnification.。</p>
+            <div class="tags"><span>Compression module</span><span>Hydraulic arm.</span><span>Reload Propulsion</span></div>
+          </article>
+
+          <article class="cast-card" data-design="arc" style="--accent:#9cd7c8">
+            <svg viewBox="0 0 320 245" role="img" aria-label="Aqueducts.">
+              <ellipse cx="160" cy="205" rx="72" ry="17" fill="#11130d" opacity=".55"/>
+              <path d="m111 111-67-29 29 64zM209 111l67-29-29 64z" fill="#56625c" stroke="#35403b" stroke-width="7"/>
+              <path d="M116 112 74 98M204 112l43-14" stroke="#879b92" stroke-width="8"/>
+              <circle cx="160" cy="118" r="51" fill="#28302e" stroke="#80a49a" stroke-width="8"/>
+              <circle cx="160" cy="118" r="34" fill="none" stroke="#9cd7c8" stroke-width="5" stroke-dasharray="10 8"/>
+              <circle cx="160" cy="118" r="15" fill="#b9f4c9"/>
+              <path d="M140 169 131 221M180 169l11 52" stroke="#6f8178" stroke-width="4"/>
+              <path d="M126 221h13M185 221h13" stroke="#b9f4c9" stroke-width="4"/>
+            </svg>
+            <span class="number">DESIGN 06 / RANGED</span><h3>Aqueducts.</h3><em>Remote control still leaves the cost on the ground.。</em>
+            <p>Meteorological radar core、Asymmetrical road signs, heat wings and drag-and-trail chains。The concentric circle was tightened three times before the attack.，Clear threat warning.。</p>
+            <div class="tags"><span>Round of heart</span><span>Wings.</span><span>Tele-shock</span></div>
+          </article>
+        </div>
+      </section>
+
+      <section id="relations" class="shell">
+        <header class="section-head">
+          <h2>Relations and concepts</h2>
+          <p>Conflict is not.“The hero of justice versus the evil.”，It's five ways to keep the world under pressure.，Eventually, the system was forced to undergo public censorship.。</p>
+        </header>
+        <div class="map">
+          <svg class="map-lines" viewBox="0 0 1200 430" aria-hidden="true">
+            <g fill="none" stroke-width="3">
+              <path d="M250 92 515 187" stroke="#b9dd78"/><path d="M950 92 685 187" stroke="#df653d"/>
+              <path d="M250 345 515 250" stroke="#e4a43c"/><path d="M950 345 685 250" stroke="#9b4e31"/>
+              <path d="M340 97 860 97" stroke="#6f684f" stroke-dasharray="10 9"/>
+            </g>
+          </svg>
+          <div class="node ran"><strong>Plumb · Partners, not manipulators.</strong><small>From R-17 To decide everything.，Growing up to provide information and respect for their choices。</small></div>
+          <div class="node hector"><strong>Hector. · The idea of a rival.</strong><small>Trusting that competition will avoid war.，The rule of final recognition must also be upheld.。</small></div>
+          <div class="node r17"><strong>R-17 · Operations Centre</strong><small>Here.“Fix it first.，Win again.”The choice forces everyone to redefine power.。</small></div>
+          <div class="node public"><strong>The moorings. · Community</strong><small>Not waiting for the hero to save.，It's a reception protocol.、Participation in public maintenance。</small></div>
+          <div class="node alliance"><strong>Champ League · Institutional pressure</strong><small>Package of scarce and maintenance keys as entertainment and obedience。</small></div>
+        </div>
+      </section>
+
+      <section id="story" class="shell">
+        <header class="section-head">
+          <h2>Three-scenario and radio theater.</h2>
+          <p>Game with full five chapters《Three Radio Theatres and Black Box Files》：From the 17 Restarted every second、Second escort for the public maintenance of the shed beacon、Hector's unremoved rescue logs the night before the finals.，To the final broadcast.《Open general maintenance agreement》。</p>
+        </header>
+        <div class="storyboard">
+          <article class="beat">
+            <svg viewBox="0 0 360 190" role="img" aria-label="First Act Red Sand Station.">
+              <rect width="360" height="190" fill="#403d30"/><circle cx="294" cy="42" r="36" fill="#b97832" opacity=".55"/>
+              <path d="M0 142 360 107v83H0z" fill="#252821"/><path d="M20 151h320" stroke="#c29a44" stroke-width="5" stroke-dasharray="28 18"/>
+              <g transform="translate(145 56) scale(.58)"><rect x="38" y="105" width="122" height="56" rx="20" fill="#23251f"/><rect x="54" y="39" width="91" height="70" rx="12" fill="#74775c"/><rect x="69" y="7" width="62" height="36" rx="8" fill="#626854"/><path d="M78 24h42" stroke="#b9dd78" stroke-width="8"/><path d="m145 61 55 45" stroke="#626854" stroke-width="18"/></g>
+              <g fill="#6f3827"><ellipse cx="65" cy="136" rx="24" ry="15"/><ellipse cx="291" cy="126" rx="24" ry="15"/></g>
+            </svg>
+            <b>ACT 01 / I'm not sure. 17 Restarted every second · Reparable bones.</b><h3>Red Sand Station</h3><p>Old maintenance unit R-17 - I'm not gonna let you go.（Core Dash）And the jab cannons.，Recovery of open source maintenance while dismantling the chalk-salvoss，Refuse to break down the Green Creek Project.。</p>
+          </article>
+          <article class="beat">
+            <svg viewBox="0 0 360 190" role="img" aria-label="Second act of steel beams.">
+              <rect width="360" height="190" fill="#343a31"/><path d="M0 58h360M0 120h360" stroke="#77684e" stroke-width="13"/><path d="M52 0v190M304 0v190" stroke="#282b25" stroke-width="18"/>
+              <path d="M70 54 48 112M288 54l29 67M168 58l-18 62" stroke="#d5b56a" stroke-width="5"/>
+              <circle cx="180" cy="120" r="46" fill="none" stroke="#9cd7c8" stroke-width="8"/><circle cx="180" cy="120" r="28" fill="none" stroke="#b9dd78" stroke-width="5"/>
+              <g fill="#c49a47"><rect x="101" y="122" width="39" height="32"/><rect x="220" y="112" width="39" height="42"/></g>
+            </svg>
+            <b>ACT 02 / Falling over. · Guards repair shed beacons</b><h3>The beams are high.</h3><p>The second arena is created.“Public maintenance shed beacons”。R-17 Hold the beacon and fight the iron-walling machine around it.，Triggered beryllium·Wes' overload support pulse and armor repair.。</p>
+          </article>
+          <article class="beat">
+            <svg viewBox="0 0 360 190" role="img" aria-label="The third act of the Champs finals.">
+              <rect width="360" height="190" fill="#35231c"/><g stroke="#df653d" stroke-width="3" opacity=".55"><path d="M180 95 0 20M180 95 360 20M180 95 0 175M180 95 360 175"/></g>
+              <g transform="translate(218 45) scale(.55)"><rect x="10" y="133" width="170" height="54" rx="17" fill="#24251f"/><rect x="45" y="57" width="100" height="78" rx="10" fill="#654a34"/><circle cx="95" cy="95" r="27" fill="#24261f" stroke="#d65b35" stroke-width="8"/><rect x="66" y="15" width="58" height="42" rx="8" fill="#292b24"/></g>
+              <g transform="translate(70 86) scale(.43)"><rect x="37" y="105" width="142" height="65" rx="24" fill="#24261f"/><rect x="53" y="30" width="110" height="80" rx="16" fill="#74775c"/><path d="m162 65 90 35" stroke="#e4a43c" stroke-width="15"/></g>
+              <circle cx="181" cy="105" r="21" fill="#e4a43c" opacity=".35"/><path d="M166 105h30M181 90v30" stroke="#ffe09a" stroke-width="5"/>
+            </svg>
+            <b>ACT 03 / Unremoted Rescue Log · Champs to pieces.</b><h3>Champ's home.</h3><p>Hector launched a two-shoulder-to-heat wing in the third phase of the final battle and exposed himself to the chest.“Champ locker.”（1.45x Decorated Armour Window），R-17 Breaking lockers and broadcasting open source maintenance protocols to the whole wasteland。</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="architecture" class="shell">
+        <header class="section-head">
+          <h2>Programmatic animation structure</h2>
+          <p>Zero external pictures and audio files：All multi-band machine-nail actions、The hot blood drama is close-up.（Anime Cut-in）、Blast Frame（Impact Frames）with Web Audio Synthetic sound is generated in real time by code，And with 60Hz The fixed-step certainty simulation is strictly deconstructed。</p>
+        </header>
+        <div class="storyboard">
+          <article class="beat">
+            <b>01 / MULTI-JOINT PROCEDURAL RIG</b>
+            <h3>Multi-Wip joints and physical feedback</h3>
+            <p>R-17 Independent rolling belt radiation、Breathe and fall.、Rotate the magnetic shield energy ring.、Hydraulic piston backslide.、The pore's flashing.、The shell tracks spread the hot fins with two shoulders.；Chief Hector has three stages of deformation and high-speed rotation chest locks.。</p>
+          </article>
+          <article class="beat">
+            <b>02 / ANIME CUT-IN &amp; IMPACT FRAMES</b>
+            <h3>♪ The drama and the play ♪ Web Audio Synthetic</h3>
+            <p>Key node ejects horizontal dynamic vector line（Support reduced-motion Simplified），In conjunction with the chief's attack, he struck the moment with a high-responding black and white shock frame and purity. Web Audio API Real-time synthetic nail cannon.、EMP and the horn of the Cream.。</p>
+          </article>
+          <article class="beat">
+            <b>03 / 60HZ SEEDED DETERMINISM</b>
+            <h3>Fixed step long, certainty imitation</h3>
+            <p>core dash（Core Dash）、The second maintenance shed beacon and the third cork lock breaker window are all running. Math.random() Seeds PRNG Go, go, go!，Make sure you're not having a head-to-head.、Rendering Modes and Automation Tests 100% Unanimously.。</p>
+          </article>
+        </div>
+        <a class="back" href="../">Return to Playable Prototype</a>
+      </section>
+    </main>
+
+    <footer>
+      <div class="shell">This page is as《Wasteland Iron Circuit》Original Programmatic Concept Setup，Do not use external fonts、Picture、Generating services or existing work assets。Role Designer with Current Single Map、Single Player、Three categories of enemy and one. Boss It's... MVP For the border。</div>
+    </footer>
+  </body>
+</html>

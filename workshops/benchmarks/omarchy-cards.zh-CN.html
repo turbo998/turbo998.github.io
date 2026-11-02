@@ -1,0 +1,690 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'"><title>Omarchy代理设计 静态合同基准</title><style>*{box-sizing:border-box}body{margin:0;padding:2rem 1rem;background:#e2e8f0;color:#0f172a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}.deck-wrap{max-width:860px;margin:0 auto;display:flex;flex-direction:column;gap:2.2rem}.report-card{background:#f8fafc;border-radius:18px;overflow:hidden;box-shadow:0 16px 40px rgba(15,23,42,.12);border:1px solid #cbd5e1;min-height:1025px;display:flex;flex-direction:column}.card-accent-bar{height:10px;background:linear-gradient(90deg,#6366f1 0%,#4f46e5 55%,#2563eb 100%)}.card-inner{padding:2.4rem 2.8rem 1.8rem;flex:1;display:flex;flex-direction:column;justify-content:space-between}.card-eyebrow{font-size:.82rem;font-weight:700;letter-spacing:.12em;color:#4f46e5;text-transform:uppercase;margin-bottom:.55rem}.card-headline{font-size:2.35rem;line-height:1.12;font-weight:800;margin:0 0 .65rem;letter-spacing:-.02em;color:#0f172a}.grad-text{background:linear-gradient(90deg,#3b82f6,#4f46e5);-webkit-background-clip:text;background-clip:text;color:transparent}.card-subtitle{font-size:1.08rem;line-height:1.45;color:#475569;margin:0 0 1.2rem}.card-canvas{flex:1;display:flex;flex-direction:column;justify-content:center;gap:1rem}.quote-box,.callout-box{background:#eef2f6;border-radius:12px;padding:1rem 1.25rem;font-size:.98rem;line-height:1.48;color:#1e293b}.stack-list{display:flex;flex-direction:column;gap:.85rem}.decision-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:.95rem 1.15rem}.decision-head{display:flex;justify-content:space-between;align-items:flex-start;gap:.75rem}.field-name{font-weight:700;font-size:1rem}.type-pill{background:#e2e8f0;color:#475569;font-size:.75rem;padding:.12rem .45rem;border-radius:6px;font-weight:600}.question-sub{font-size:.84rem;color:#64748b;margin-top:.15rem}.action-pill{font-size:.76rem;font-weight:700;padding:.22rem .6rem;border-radius:999px;white-space:nowrap}.pill-auto{background:#dcfce7;color:#15803d}.pill-confirm{background:#fef3c7;color:#b45309}.pill-human{background:#fee2e2;color:#b91c1c}.decision-main{font-size:1.18rem;margin:.45rem 0 .55rem}.conf-muted{font-size:.88rem;color:#64748b;font-weight:600}.dist-row{display:grid;grid-template-columns:170px 1fr 54px;align-items:center;gap:.6rem;font-size:.84rem;margin:.24rem 0}.dist-track{background:#e2e8f0;height:9px;border-radius:999px;overflow:hidden}.dist-fill{background:linear-gradient(90deg,#4f46e5,#6366f1);height:100%;border-radius:999px}.dist-pct{text-align:right;font-variant-numeric:tabular-nums;color:#334155}.clean-table{width:100%;border-collapse:collapse;font-size:.95rem;background:transparent}.clean-table th{font-size:.75rem;letter-spacing:.08em;color:#64748b;text-align:left;padding:.55rem .4rem;border-bottom:1px solid #cbd5e1}.clean-table td{padding:.62rem .4rem;border-bottom:1px solid #e2e8f0;vertical-align:top}.sc-col{font-weight:600;color:#1e293b}.act-col,.num-col{text-align:right;font-variant-numeric:tabular-nums}.act-auto{color:#15803d;font-weight:700}.act-confirm{color:#b45309;font-weight:700}.act-human{color:#b91c1c;font-weight:700}.miss-mark{color:#dc2626;font-weight:800}.code-dark{background:#0f172a;color:#e2e8f0;padding:1.1rem 1.3rem;border-radius:12px;font-size:.84rem;line-height:1.45;overflow-x:auto;margin:0}.code-transition{color:#4f46e5;font-weight:700;font-size:.95rem;padding:.15rem 0}.hl-answer{color:#fbbf24;font-weight:700}.rob-main{font-weight:600;color:#0f172a}.rob-sub{font-size:.8rem;color:#64748b}.lat-list{display:flex;flex-direction:column;gap:1rem}.lat-title{font-weight:700;font-size:1.02rem;margin-bottom:.35rem}.lat-row{display:flex;align-items:center;gap:.65rem;margin:.28rem 0}.lat-tag{width:95px;font-size:.85rem;color:#64748b}.lat-bar{height:22px;border-radius:6px}.lat-blue{background:#2563eb}.lat-gray{background:#cbd5e1}.lat-val{font-size:.92rem;font-variant-numeric:tabular-nums}.fit-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem}.fit-card{border-radius:14px;padding:1.25rem 1.4rem;font-size:1rem;line-height:1.6}.fit-good{background:#ecfdf5;border:1px solid #a7f3d0}.fit-bad{background:#fff1f2;border:1px solid #fecdd3}.fit-head{font-weight:800;font-size:1.12rem;margin-bottom:.5rem}.dark-footer-box{background:#0f172a;color:#f8fafc;border-radius:14px;padding:1.25rem 1.5rem;font-size:1rem;line-height:1.5}.dark-repo{color:#38bdf8;font-family:ui-monospace,Consolas,monospace;margin-bottom:0}.workbench-shell{background:#fff;border:1px solid #cbd5e1;border-radius:14px;overflow:hidden}.wb-topbar{background:linear-gradient(90deg,#3b82f6,#6366f1);color:#fff;padding:.75rem 1rem;display:flex;justify-content:space-between;align-items:center;gap:1rem}.wb-sub{font-size:.76rem;opacity:.92}.wb-status{background:rgba(15,23,42,.28);font-size:.74rem;padding:.25rem .6rem;border-radius:999px;white-space:nowrap}.wb-grid{display:grid;grid-template-columns:220px 1fr;gap:.85rem;padding:.9rem}.wb-col-title{font-size:.78rem;font-weight:700;color:#475569;text-transform:uppercase;margin-bottom:.4rem}.wb-item{font-size:.8rem;padding:.38rem .5rem;border-radius:6px;background:#f8fafc;border:1px solid #e2e8f0;margin-bottom:.32rem}.wb-note{font-size:.73rem;color:#64748b;margin-top:.55rem;line-height:1.38}.wb-metrics{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.55rem}.wb-metric{font-size:.74rem;background:#f1f5f9;padding:.2rem .5rem;border-radius:6px;color:#334155;font-weight:600}.card-footer{border-top:1px solid #cbd5e1;padding-top:.9rem;margin-top:1.2rem;display:flex;justify-content:space-between;font-size:.86rem;color:#64748b}@media print{body{background:#fff;padding:0}.deck-wrap{gap:0}.report-card{box-shadow:none;page-break-after:always;border:none}}</style><!-- kee-dedicated-style:start -->
+<style>/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.65fr 1.1fr 1.15fr 1.1fr 1.1fr;gap:6px;align-items:stretch;min-width:0}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+</style>
+<!-- kee-dedicated-style:end -->
+<!-- kee-report-localization:metadata:start --><link rel="alternate" hreflang="en" href="omarchy-cards.en.html"><link rel="alternate" hreflang="zh-CN" href="omarchy-cards.zh-CN.html"><meta name="report-translation-source" content="workshops/benchmarks/omarchy-cards.html@941ee62"><meta name="report-translation-provenance" content="translation; independently_reproduced=false"><style>/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.65fr 1.1fr 1.15fr 1.1fr 1.1fr;gap:6px;align-items:stretch;min-width:0}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+
+html{scroll-padding-top:108px}.reading-header,.kee-dedicated-nav,[data-professional-header]{position:sticky;top:0;z-index:1000;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+
+:root{--search-bg:#101a30;--search-soft:#172440;--search-ink:#eef3ff;--search-muted:#adbbd1;--search-line:#293956;--search-accent:#9aabff;--header-offset:108px}
+:root[data-reading-shell][data-theme=light],[data-perimeter-theme=light]{--search-bg:#fff;--search-soft:#e8eefb;--search-ink:#17233e;--search-muted:#4c5e7c;--search-line:#d5ddec;--search-accent:#354ec8}
+html{scroll-padding-top:var(--header-offset,108px)!important}
+.site-search,.site-search *{box-sizing:border-box!important;font-family:"Segoe UI",sans-serif;letter-spacing:normal;text-transform:none}
+.site-search{position:relative;display:flex;align-items:center;gap:5px;min-width:0;width:230px;max-width:100%;margin:0!important;padding:0!important;line-height:1.4;border:1px solid var(--search-line);border-radius:9px;background:var(--search-soft);color:var(--search-ink);isolation:isolate}
+.site-search input[type=search]{display:block;flex:1;min-width:0;width:100%;height:42px;margin:0;padding:9px 8px!important;font-size:12px!important;line-height:1.5;border:0!important;border-radius:9px;background:transparent!important;color:var(--search-ink)!important;box-shadow:none!important;appearance:none}
+.site-search input::placeholder{color:var(--search-muted);opacity:1}.site-search input:focus-visible{outline:2px solid var(--search-accent);outline-offset:2px}
+.site-search kbd{font:11px Consolas,monospace;color:var(--search-muted);padding:1px 5px;border:1px solid var(--search-line);border-radius:4px}
+.site-search button[type=submit]{flex:none;width:38px;min-width:38px;height:42px;min-height:42px;padding:0;margin:0;border:0;border-radius:8px;background:transparent;color:var(--search-accent);font-size:24px;cursor:pointer;box-shadow:none}
+.search-label,.search-status{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.site-search .search-results{position:absolute;top:calc(100% + 10px);right:0;z-index:1100;width:min(480px,calc(100vw - 32px));max-height:min(560px,65vh);overflow-y:auto;border:1px solid var(--search-line);border-radius:12px;background:var(--search-bg);color:var(--search-ink);padding:10px;box-shadow:0 12px 32px #0005;text-align:left}
+.site-search .search-results[hidden]{display:none!important}.search-results .search-group{margin:8px 6px 4px;font:11px/1.5 Consolas,monospace;color:var(--search-muted)}
+.site-search .search-results a{display:block!important;padding:10px!important;margin:3px 0!important;border:1px solid transparent!important;border-radius:7px;background:transparent;color:var(--search-ink)!important;font-size:13px!important;text-decoration:none!important;white-space:normal;overflow-wrap:anywhere;text-align:left!important;line-height:1.5!important}
+.site-search .search-results a[aria-selected=true],.site-search .search-results a:hover{border-color:var(--search-accent)!important;background:var(--search-soft)}
+.search-results a small{display:block;font-size:10px;color:var(--search-muted);margin-top:4px}.search-results p{margin:10px;font-size:13px;color:var(--search-muted)}
+.search-archive-summary{padding:20px;border:1px solid var(--search-line);border-radius:10px;background:var(--search-bg);color:var(--search-ink);margin:24px 0}.search-archive-summary h2{font-size:24px;margin:0 0 12px}.search-archive-summary li{margin:12px 0}.search-archive-summary a{color:var(--search-accent)}
+[data-professional-header]{position:sticky!important;top:0!important;z-index:1000!important;background:var(--search-bg)!important;--header-glass:rgba(16,26,48,.9);grid-template-columns:auto minmax(0,1fr) 230px auto!important}
+[data-professional-header][data-perimeter-theme=light],:root[data-reading-shell][data-theme=light] [data-professional-header]{--header-glass:rgba(255,255,255,.94)}
+[data-professional-header] .professional-mobile{display:none}.professional-mobile summary{min-width:38px;min-height:42px;display:grid;place-items:center;cursor:pointer;list-style:none}.professional-mobile summary::-webkit-details-marker{display:none}
+[data-professional-header] .professional-context{display:none}
+.professional-context-bar{padding:12px 24px;border-bottom:1px solid var(--search-line);background:var(--search-bg);color:var(--search-muted);font:12px/1.6 "Segoe UI",sans-serif;display:flex;flex-wrap:wrap;gap:8px 18px;overflow-wrap:anywhere}.professional-context-bar a{color:var(--search-accent)}
+@supports((backdrop-filter:blur(16px)) or (-webkit-backdrop-filter:blur(16px))){.site-header,[data-professional-header]{background:var(--header-glass)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}}
+@media(max-width:1250px) and (min-width:701px){.header-inner{grid-template-columns:minmax(0,1fr) 230px auto!important;padding:12px 0;gap:12px!important}.desktop-nav{grid-row:2;grid-column:1/-1}.header-inner>.site-search{grid-column:2;grid-row:1}.header-inner>.controls{grid-column:3;grid-row:1}[data-professional-header]{grid-template-columns:minmax(0,1fr) 230px auto!important;gap:12px!important}[data-professional-header]>.professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header]>.site-search{grid-column:2;grid-row:1}[data-professional-header]>.professional-controls{grid-column:3;grid-row:1}:root{--header-offset:176px}}
+@media(max-width:700px){.header-inner{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 0;gap:8px!important}.header-inner>.site-search{grid-row:2;grid-column:1/-1;width:100%}.header-inner>.controls{grid-column:2;grid-row:1}.site-search .search-results{width:100%;right:0}[data-professional-header]{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 16px!important;gap:8px!important}[data-professional-header]>.professional-primary{display:none!important}[data-professional-header]>.site-search{grid-column:1/-1;grid-row:2;width:100%}[data-professional-header]>.professional-controls{grid-column:2;grid-row:1}[data-professional-header] .professional-mobile{display:block}[data-professional-header] .professional-mobile[open]>.professional-primary{position:absolute;top:100%;left:0;right:0;padding:16px;background:var(--search-bg);border-bottom:1px solid var(--search-line);display:grid;grid-template-columns:1fr 1fr;gap:8px}[data-professional-header] .professional-mobile .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:12px!important}:root{--header-offset:126px}}
+@media(prefers-reduced-transparency:reduce){.site-header,[data-professional-header]{background:var(--search-bg)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+@media print{.site-search,.professional-context-bar{display:none!important}}
+
+@media(min-width:1251px){.header-inner{display:grid!important;grid-template-columns:auto minmax(0,1fr) 230px auto!important;gap:18px!important}.header-inner .desktop-nav{min-width:0}}
+
+html:has(.kee-dedicated-app-root){height:auto!important;overflow-x:hidden!important;overflow-y:auto!important}
+body:has([data-professional-header]){height:auto!important;overflow-x:clip!important;overflow-y:visible!important;padding-top:0!important}
+.demo-language-navigation{display:none!important}
+.stage-column,.telemetry-panel,.scene-pill,#timeline-slider{min-width:0}
+@media(max-width:1180px){.workspace,.template-tabs{grid-template-columns:minmax(0,1fr)!important}}
+
+.in-arena-frame .professional-context-bar,.in-arena-frame [data-knowledge-atlas]{display:none!important}
+</style><!-- kee-report-localization:metadata:end --></head><body><!-- kee-report-localization-navigation:start --><nav class="kee-dedicated-nav" data-professional-header><a class="professional-identity reading-brand kee-dedicated-identity identity" href="../../zh.html">Qi Chen · @turbo998</a><div class="professional-primary" role="navigation" aria-label="主导航"><a href="../../studio/zh-index.html" data-section="hub" data-nav-en-href="../../studio/index.html" data-nav-zh-href="../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub">Frontier Transformation Engineering Hub</a><a href="../../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../../benchmarks.html" data-nav-zh-href="../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心" aria-current="page">基准评测中心</a><a href="../../zh-github-radar.html" data-section="radar" data-nav-en-href="../../github-radar.html" data-nav-zh-href="../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI 信号雷达</a><a href="../../zh-openrouter.html" data-section="routing" data-nav-en-href="../../openrouter.html" data-nav-zh-href="../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../../zh-about.html" data-section="profile" data-nav-en-href="../../about.html" data-nav-zh-href="../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">首席架构师履历</a></div><form class="site-search" role="search" action="../../studio/zh-archive.html" method="get" data-search-root="../../index.html" data-search-language="zh-CN"><label class="search-label" for="site-search-input">搜索架构、评测、Demo、技能...</label><input id="site-search-input" name="q" type="search" placeholder="搜索架构、评测、Demo、技能..." autocomplete="off" spellcheck="false" aria-keyshortcuts="/ Control+k Meta+k"><kbd aria-hidden="true">/</kbd><button type="submit" aria-label="搜索全部内容">⌕</button><div class="search-results" id="site-search-results" hidden></div><span class="search-status" role="status" aria-live="polite"></span></form><div class="reading-controls professional-controls" aria-label="网站语言与外观"><a href="omarchy-cards.en.html" lang="en" hreflang="en">EN</a><a href="omarchy-cards.zh-CN.html" lang="zh-CN" hreflang="zh-CN" aria-current="page">中文</a><details class="professional-mobile"><summary aria-label="打开主导航">☰</summary><div class="professional-primary" role="navigation" aria-label="移动主导航"><a href="../../studio/zh-index.html" data-section="hub" data-nav-en-href="../../studio/index.html" data-nav-zh-href="../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub">Frontier Transformation Engineering Hub</a><a href="../../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../../benchmarks.html" data-nav-zh-href="../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心" aria-current="page">基准评测中心</a><a href="../../zh-github-radar.html" data-section="radar" data-nav-en-href="../../github-radar.html" data-nav-zh-href="../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI 信号雷达</a><a href="../../zh-openrouter.html" data-section="routing" data-nav-en-href="../../openrouter.html" data-nav-zh-href="../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../../zh-about.html" data-section="profile" data-nav-en-href="../../about.html" data-nav-zh-href="../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">首席架构师履历</a></div></details><a data-reading-theme="light" href="?theme=light" aria-label="浅色主题">☀</a><a data-reading-theme="dark" href="?theme=dark" aria-label="深色主题">◐</a></div><div class="professional-context" aria-label="返回上下文"><a href="../../studio/zh-index.html">← 工程枢纽</a> · <a href="../../studio/zh-benchmarks.html">返回主题</a></div></nav><div class="professional-context-bar"><a href="../../studio/zh-index.html">← 工程枢纽</a> · <a href="../../studio/zh-benchmarks.html">返回主题</a></div><nav aria-label="报告语言" style="font:14px/1.5 system-ui,sans-serif;display:flex;flex-wrap:wrap;gap:12px;padding:12px 18px;background:#101a30;color:#eef3ff;width:100%;box-sizing:border-box"><a style="color:#9aabff" href="omarchy-cards.en.html" lang="en" hreflang="en">EN</a><a style="color:#9aabff" href="omarchy-cards.zh-CN.html" lang="zh-CN" hreflang="zh-CN" aria-current="page">中文</a><span>源报告译本；非独立复测。指标与证据保持原样。</span></nav><figure class="knowledge-figure" data-knowledge-atlas="benchmarks" style="margin:24px 0;max-width:100%"><svg xmlns="http://www.w3.org/2000/svg" lang="zh-CN" role="img" aria-labelledby="knowledge-03448bae1bec-title knowledge-03448bae1bec-desc" viewBox="0 0 360 708" width="360" style="display:block;width:100%;height:auto;max-width:560px;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-03448bae1bec-title">Omarchy代理设计 静态合同基准</title><desc id="knowledge-03448bae1bec-desc">研究问题与封存负载: 数据集 · 模型批次 · 分母 · 来源 → 定义测试契约 → Harness 与执行契约: 提示词 · 工具权限 · 环境 · 重复次数 → 生成追踪产物 → 原始输出与确定性校验: 任务轨迹 · 校验结果 · 缺失值记录 → 带条件汇总 → 得分、稳健性与延迟: 保留单位、条件与不确定性 → 支持有边界的结论 → 报告与可复现性: 7 卡来源报告 · 局限 · 是否独立复现？</desc><rect width="360" height="708" rx="16" fill="#091827"/><text x="20" y="30" fill="#eef5ff" font-size="20" font-weight="700"><tspan x="20" dy="0">Omarchy代理设计 静态合同基准</tspan></text><text x="20" y="61" fill="#a9b8ce" font-size="13" font-weight="400"><tspan x="20" dy="0">概念架构 · 箭头表示关系，不代表测量值</tspan></text><g data-concept="1"><rect x="16" y="87" width="328" height="79" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="101" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="117" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">研究问题与封存负载</tspan></text><text x="32" y="148" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">数据集 · 模型批次 · 分母 · 来源</tspan></text></g><g data-relationship="定义测试契约"><path d="M32 166 V211" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 206 L32 212 L37 206" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="192" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">定义测试契约</tspan></text></g><g data-concept="2"><rect x="16" y="218" width="328" height="79" rx="12" fill="#132942" stroke="#43617f"/><rect x="16" y="232" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="248" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">Harness 与执行契约</tspan></text><text x="32" y="279" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">提示词 · 工具权限 · 环境 · 重复次数</tspan></text></g><g data-relationship="生成追踪产物"><path d="M32 297 V342" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 337 L32 343 L37 337" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="323" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">生成追踪产物</tspan></text></g><g data-concept="3"><rect x="16" y="349" width="328" height="79" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="363" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="379" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">原始输出与确定性校验</tspan></text><text x="32" y="410" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">任务轨迹 · 校验结果 · 缺失值记录</tspan></text></g><g data-relationship="带条件汇总"><path d="M32 428 V473" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 468 L32 474 L37 468" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="454" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">带条件汇总</tspan></text></g><g data-concept="4"><rect x="16" y="480" width="328" height="79" rx="12" fill="#132942" stroke="#43617f"/><rect x="16" y="494" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="510" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">得分、稳健性与延迟</tspan></text><text x="32" y="541" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">保留单位、条件与不确定性</tspan></text></g><g data-relationship="支持有边界的结论"><path d="M32 559 V604" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 599 L32 605 L37 599" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="585" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">支持有边界的结论</tspan></text></g><g data-concept="5"><rect x="16" y="611" width="328" height="79" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="625" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="641" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">报告与可复现性</tspan></text><text x="32" y="672" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">7 卡来源报告 · 局限 · 是否独立复现？</tspan></text></g></svg><figcaption style="font:14px/1.6 system-ui,sans-serif;margin:12px 0;overflow-wrap:anywhere">整体知识图示：按标注关系阅读组件与工程边界。布局仅为概念示意；不表示吞吐、性能排名或生产部署。</figcaption></figure><!-- kee-report-localization-navigation:end -->
+
+<main class="deck-wrap"><article class="report-card" id="card-1"><div class="card-accent-bar"></div><div class="card-inner"><header class="card-header"><div class="card-eyebrow">HANDS-ON · AGENTIC OS HARNESS BENCHMARK</div><h2 class="card-headline">14统一使用, <span class="grad-text">暴露的软边界</span></h2><p class="card-subtitle">欧马克/omarchy @ 9480d1b6a98156314dbabe6bfef08f39f8b9cd07横跨6机制轨道(E)1-E型,我们来6), 174追踪到的断言,87源块,以及12正式合同检查。</p></header><div class="card-canvas"><div class="workbench-shell"><div class="wb-topbar"><div><strong>Omarchy代理机制合同工作台(OMAC/omarchy @ 9480d1b)</strong><div class="wb-sub">A System One 决定和基准视图:结构状态、校正后置信心带、零编造坐标</div></div><span class="wb-status">174● 声称87分数 SHA 验证 ^ 上游 _运行时间=不运行</span></div><div class="wb-grid"><div class="wb-col-left"><div class="wb-col-title">场景</div><div class="wb-item">英1发射器( 出自14被绑住的28argv 路径)</div><div class="wb-item">英2技能共通( S)3技能 ·6)),全球根源)</div><div class="wb-item">英3崩溃管道( Crash 管道) (5过滤器 * 点击闸门)</div><div class="wb-item">英4账户&amp;使用量( - )3账户 ·4使用量)</div><div class="wb-item">英5代理内源重置器( U)11贝壳 ·1VM套房).</div><div class="wb-item">英6信托边界(5硬度 / 硬度11软控制)</div><div class="wb-note">证据:来源_事实(122/174 = 70.1%) -&gt;自动动作; 文档_ 要求( E)33/174 = 19.0%) -&gt;确认; 测试_ 订约不运行( C)19/174 = 10.9%) -&gt;送去给人类</div></div><div class="wb-col-right"><div class="wb-metrics"><span class="wb-metric">174请求</span><span class="wb-metric">87引用的 Blobs( 引用的字母数)272缓存)</span><span class="wb-metric">14办法 /28路径</span><span class="wb-metric">12合同检查</span></div><div class="decision-card"><div class="decision-head"><div><span class="field-name">e 个1argv_合同</span> <span class="type-pill">选择</span><div class="question-sub">全部动手14可发射的管子保持单键的快取 argv 横切28树枝?</div></div><span class="action-pill pill-auto">自动执行</span></div><div class="decision-main"><strong>28 / 28分支(100.0%)</strong><span class="conf-muted"> · 离 " 最近的 "11直接执行 ·2子命令 \1网关+tui “ ” ; 信心1.0</span></div><div class="dist-list"><div class="dist-row"><span class="dist-label">直接_ exec_argv (11/14)</span><div class="dist-track"><div class="dist-fill" style="width:78.6%"></div></div><span class="dist-pct">78.6%</span></div><div class="dist-row"><span class="dist-label">子命令_ 运行中或_ 代码( unit- servation)2/14)</span><div class="dist-track"><div class="dist-fill" style="width:14.3%"></div></div><span class="dist-pct">14.3%</span></div><div class="dist-row"><span class="dist-label">网关_tui_openclaw ()1/14)</span><div class="dist-track"><div class="dist-fill" style="width:7.1%"></div></div><span class="dist-pct">7.1%</span></div></div></div><div class="decision-card"><div class="decision-head"><div><span class="field-name">e 个4提供者_对齐</span> <span class="type-pill">选择</span><div class="question-sub">系可发射的枪管( 由相接的枪管所构成)14),账户提供者(3),以及用法收集器(4) 1- 给...1异形吗?</div></div><span class="action-pill pill-confirm">确认</span></div><div class="decision-main"><strong>非同位素( - )3 / 14 = 21.4%)</strong><span class="conf-muted"> 与“烟花是仅使用(无发射机分支)”最接近 —— 信心0.786</span></div><div class="dist-list"><div class="dist-row"><span class="dist-label">发射(_O)11/14)</span><div class="dist-track"><div class="dist-fill" style="width:78.6%"></div></div><span class="dist-pct">78.6%</span></div><div class="dist-row"><span class="dist-label">账户_和用户_提供者(3/14)</span><div class="dist-track"><div class="dist-fill" style="width:21.4%"></div></div><span class="dist-pct">21.4%</span></div><div class="dist-row"><span class="dist-label">仅使用_只使用_消防工作(1/4使用量)</span><div class="dist-track"><div class="dist-fill" style="width:25.0%"></div></div><span class="dist-pct">25.0%</span></div></div></div><div class="decision-card"><div class="decision-head"><div><span class="field-name">e 个6相隔(_I)</span> <span class="type-pill">分数</span><div class="question-sub">占总份额多少Omarchy&#x27;s , 简称16代理安全控制是硬OS/代码边界与软常规?</div></div><span class="action-pill pill-human">转人工</span></div><div class="decision-main"><strong>5 / 16硬边界( R)31.3%)</strong><span class="conf-muted"> · 离 " 最近的 "0/14OS 沙盒在omarchy- 代理人;12/14· 信任度0.313</span></div><div class="dist-list"><div class="dist-row"><span class="dist-label">软的_ 常规_ 或旗( lag) (11/16)</span><div class="dist-track"><div class="dist-fill" style="width:68.8%"></div></div><span class="dist-pct">68.8%</span></div><div class="dist-row"><span class="dist-label">硬通码_或_ipc_边界(5/16)</span><div class="dist-track"><div class="dist-fill" style="width:31.3%"></div></div><span class="dist-pct">31.3%</span></div><div class="dist-row"><span class="dist-label">os_conter_sandbox_in_发射装置(自动调试)0/14)</span><div class="dist-track"><div class="dist-fill" style="width:1.5%"></div></div><span class="dist-pct">0.0%</span></div></div></div></div></div></div><div class="callout-box"><strong>Omarchy在操作系统会话/发射器/遥测层中整合代理,而不是建立专有设备agent runtime.</strong> 全部( A)28发射管路径保留了单参数的即时边界,但是12/14未发音的分行通过许可-通过标记(-yolo, --allow-all,绕行Permissions),而无需OS级集装箱沙盒.</div></div><footer class="card-footer"><span><strong>Omarchy代理设计 静态合同基准</strong> 测量(离线静态合同核查员 ) 上游运行时间不运行)</span><span>1 / 7</span></footer></div></article><article class="report-card" id="card-2"><div class="card-accent-bar"></div><div class="card-inner"><header class="card-header"><div class="card-eyebrow">SCENARIO: E1–E6 STATIC CONTRACT DEEP DIVE</div><h2 class="card-headline">174断言。87双胞胎。7医生的密码被捕获了</h2><p class="card-subtitle">以外观形式核查证据构成、坠机对代理人员、以及多账户自动开关悬浮式承付额9480d1b6a98156314dbabe6bfef08f39f8b9cd07.</p></header><div class="card-canvas"><div class="quote-box">"目标:基地营/omarchy -&gt;罗马语/omarchy @ 9480d1b6a98156314dbabe6bfef08f39f8b9cd07(树f)1ef20f4..., 2,663评价核实准确字节/行合同和标记README索赔、附件假设和shash/Python/QML执行".</div><div class="stack-list"><div class="decision-card"><div class="decision-head"><div><span class="field-name">证据_ 组合</span> <span class="type-pill">选择</span><div class="question-sub">怎么样174不同核查证据层次的指数化断言?</div></div><span class="action-pill pill-auto">自动执行</span></div><div class="decision-main"><strong>源事实(_F)122 / 174 (70.1%)</strong><span class="conf-muted"> · 离 " 最近的 "87固定块+7官方文件W1- 韦7" · 信心0.701</span></div><div class="dist-list"><div class="dist-row"><span class="dist-label">源文件_ 事实 ^ 静态_ 读取( s)122)</span><div class="dist-track"><div class="dist-fill" style="width:70.1%"></div></div><span class="dist-pct">70.1%</span></div><div class="dist-row"><span class="dist-label">文档_ claim \ doc/ 官方(33)</span><div class="dist-track"><div class="dist-fill" style="width:19.0%"></div></div><span class="dist-pct">19.0%</span></div><div class="dist-row"><span class="dist-label">测试_合同 ^ 不运行( Q)19)</span><div class="dist-track"><div class="dist-fill" style="width:10.9%"></div></div><span class="dist-pct">10.9%</span></div></div></div><div class="decision-card"><div class="decision-head"><div><span class="field-name">e 个3崩溃_管线_门口</span> <span class="type-pill">诺尔</span><div class="question-sub">是否( 爱)omarchy- 全部执行崩溃监视5预先通知过滤器,在启动代理前需要点击人吗?</div></div><span class="action-pill pill-auto">自动执行</span></div><div class="decision-main"><strong>有(请说明)5 / 5门 ;100.0%)</strong><span class="conf-muted"> \ 离“ _UID + 已禁用 + 忽略 + 哑巴 + 见_ key dedupe” 最近的 P( true) =1.0</span></div><div class="dist-list"><div class="dist-row"><span class="dist-label">执行_ static_门(5/5)</span><div class="dist-track"><div class="dist-fill" style="width:100.0%"></div></div><span class="dist-pct">100.0%</span></div><div class="dist-row"><span class="dist-label">静态_背景_代理_执行(Secret)0/5)</span><div class="dist-track"><div class="dist-fill" style="width:1.5%"></div></div><span class="dist-pct">0.0%</span></div></div></div><div class="decision-card"><div class="decision-head"><div><span class="field-name">e 个4自定义witch_vs_stale</span> <span class="type-pill">分数</span><div class="question-sub">是否( 爱)omarchy- 代理账户自动开关执行95%阈值&amp;认证过滤, 但不包括 stale= true 缓存 ?</div></div><span class="action-pill pill-confirm">确认</span></div><div class="decision-main"><strong>4 / 5规则(80.0%· stale=真理,不排除)</strong><span class="conf-muted"> 与“ 等待排除的认证; stale=真值仍然排行” 相近 。0.8</span></div><div class="dist-list"><div class="dist-row"><span class="dist-label">模式(_M)95pct自动断裂(_A)4/5)</span><div class="dist-track"><div class="dist-fill" style="width:80.0%"></div></div><span class="dist-pct">80.0%</span></div><div class="dist-row"><span class="dist-label">stale_cache_ still_ 合格 _ gap (帮助您减少困难)1/5)</span><div class="dist-track"><div class="dist-fill" style="width:20.0%"></div></div><span class="dist-pct">20.0%</span></div></div></div></div><div class="callout-box"><strong>静态合同核查被查3附加错误和4上游设计/文件分界线漂移.</strong> 附录 Plan.md 错过了开元(13比较14并被谎称AzureVM 完成; 上游外壳/插件/代理/README.md 索赔只读显示,而小组则发送。 qml4写/控制命令。</div></div><footer class="card-footer"><span><strong>Omarchy代理设计 静态合同基准</strong> 测量(离线静态合同核查员 ) 上游运行时间不运行)</span><span>2 / 7</span></footer></div></article><article class="report-card" id="card-3"><div class="card-accent-bar"></div><div class="card-inner"><header class="card-header"><div class="card-eyebrow">评测范围</div><h2 class="card-headline">6机制轨道,12正式合同检查</h2><p class="card-subtitle">每一次检查都比较了omacom/omarchy@9480d1b. Misses(XQ)标记经核实的合同漂移或软边界危险。</p></header><div class="card-canvas"><table class="clean-table"><thead><tr><th>场景</th><th>QUESTION</th><th>DECIDER'S ANSWER</th><th class="act-col">行动</th></tr></thead><tbody><tr><td class="sc-col">英1发射装置</td><td>附件 控制器列表( 已更新)13) vs bin/ (中文(简体) ).omarchy- 代理办案处(14)</td><td><strong>13/14匹配( 缺少开元网关)</strong> (93%) <span class="miss-mark">✕</span></td><td class="act-col act-confirm">确认</td></tr><tr><td class="sc-col"></td><td>单参数快速边界跨越14绳子×2模式( 模式)28路径)</td><td><strong>28/28保存方格边界</strong> (100%)</td><td class="act-col act-auto">自动</td></tr><tr><td class="sc-col"></td><td>未注意/ 旁接标记从未提示模式保留到提示模式( )12绳子)</td><td><strong>11/12保留( 刷新滴出 -- 运行中yolo)</strong> (92%) <span class="miss-mark">✕</span></td><td class="act-col act-confirm">确认</td></tr><tr><td class="sc-col">英2技能</td><td>在全球各根系之间建立有能力的技能连锁关系(第条)omarchy- 提供用户)</td><td><strong>6/6根+ 赫尔姆斯简介/*/技能</strong> (100%)</td><td class="act-col act-auto">自动</td></tr><tr><td class="sc-col"></td><td>将目标命名空间覆盖到所有区域14可发射的枪管</td><td><strong>6/14链接( Q)8绳子没有同义词根)</strong> (43%) <span class="miss-mark">✕</span></td><td class="act-col act-human">人工</td></tr><tr><td class="sc-col">英3崩溃</td><td>预通知过滤门(_UID,已禁用,被忽略,哑音,已见_key)+点击闸门</td><td><strong>5/5需要点击的闸门 + 用户</strong> (100%)</td><td class="act-col act-auto">自动</td></tr><tr><td class="sc-col">英4账户</td><td>发射装置的提供方集同位素(14),账户(3)),以及用法(4)</td><td><strong>3/14账户管理(+ 仅使用 Fireworks)</strong> (21%) <span class="miss-mark">✕</span></td><td class="act-col act-confirm">确认</td></tr><tr><td class="sc-col"></td><td>自动切换变化器:模式=自动,&gt;=95%触发器,排除等待验证,5h-&gt;维基百科中的相关条目: 克多克&gt;数字</td><td><strong>4/4来源&amp;核实的测试合同</strong> (100%)</td><td class="act-col act-auto">自动</td></tr><tr><td class="sc-col"></td><td>缓存账户使用量 stale= true时候选人排行榜排除</td><td><strong>0/1过滤( stale=真值仍符合条件)</strong> (0%) <span class="miss-mark">✕</span></td><td class="act-col act-confirm">确认</td></tr><tr><td class="sc-col">英4桌面用户界面</td><td>外壳/插件/代理/README.md 声称QML插件是&#x27;严格显示层&#x27;</td><td><strong>2/6只读( E)4编写/执行小组中的动作(qml)</strong> (33%) <span class="miss-mark">✕</span></td><td class="act-col act-confirm">确认</td></tr><tr><td class="sc-col">英5原生的 Repo 原生</td><td>无头试验/全部(11shell套房) vs 图形化 VM 测试/接受(1套间)拆分</td><td><strong>11/11与接受《蒙特利尔议定书》隔离的无头</strong> (100%)</td><td class="act-col act-auto">自动</td></tr><tr><td class="sc-col">英6安全性</td><td>硬定OS/代码边界与跨软公约16控制器</td><td><strong>5/16硬边界( R)0/14发射箱中的OS沙盒).</strong> (31%) <span class="miss-mark">✕</span></td><td class="act-col act-human">人工</td></tr></tbody></table><div class="callout-box"><strong>5编12合同检查100%坚硬的变异者(Auto);7编12暴露出关键的建筑界限(Conference/Human).</strong> 硬性变化剂在地格上保持边界(28/28), 6- 根基技能连锁(6/6), 5- 阶段崩溃过滤+点击闸门(5/5), 95%自动开关规则( E)4/4),并用无头活字与VM测试分离(.11/11).</div><div class="callout-box"><strong>为什么7边界旗对工程再利用很重要</strong> 被提示模式中的压倒 -- yolo(91.7%); 8编14绳子没有全球技能连锁根(42.9%; 自动开关不过滤 stale= true 缓存( )0%;和~/Work+即时规则是软性公约,而不是OS沙盒(31.3%难。</div></div><footer class="card-footer"><span><strong>Omarchy代理设计 静态合同基准</strong> 测量(离线静态合同核查员 ) 上游运行时间不运行)</span><span>3 / 7</span></footer></div></article><article class="report-card" id="card-4"><div class="card-accent-bar"></div><div class="card-inner"><header class="card-header"><div class="card-eyebrow">底层机制</div><h2 class="card-headline">从日记Coredump到安全剂发射</h2><p class="card-subtitle">怎样Omarchy系统式积分泵JSON事件、D-Bus通知行动以及基于提供者CLI执行时不评估空壳的崩溃元数据。</p></header><div class="card-canvas"><pre class="code-dark">{
+  &quot;SYSLOG_IDENTIFIER&quot;: &quot;systemd-coredump&quot;,
+  &quot;_UID&quot;: &quot;1000&quot;,
+  &quot;COREDUMP_EXE&quot;: &quot;/usr/bin/waybar&quot;,
+  &quot;COREDUMP_UNIT&quot;: &quot;waybar.service&quot;,
+  &quot;COREDUMP_SIGNAL&quot;: &quot;11&quot;,
+  &quot;COREDUMP_SIGNAL_NAME&quot;: &quot;SIGSEGV&quot;,
+  &quot;COREDUMP_TIMESTAMP&quot;: &quot;1787843905000000&quot;
+}
+# omarchy-crash-watch packs NUL-delimited execArgv -&gt; D-Bus ActionInvoked click required</pre><div class="code-transition">QQ 用户点击&#x27;与大赦国际调查&#x27; -&gt; omarchy- 代理崩溃建立快速&amp; omarchy- 发射剂针提供商之家</div><pre class="code-dark">&lt;crash_investigation_prompt&gt;
+Application: /usr/bin/waybar (waybar.service) · Signal: 11 (SIGSEGV)
+Step 1: coredumpctl info 1787843905000000 + journalctl --since/@timestamp
+Step 2: Identify root cause (config vs package update vs upstream bug)
+Step 3: Propose fix and ask for confirmation before modifying files
+&lt;/crash_investigation_prompt&gt;
+# omarchy-agent-account-exec claude -&gt; exports OMARCHY_AGENT_CLAUDE_HOME &amp; CLAUDE_CONFIG_DIR
+# exec $1 &quot;$@&quot; -&gt; claude --dangerously-skip-permissions &quot;&lt;prompt&gt;&quot; -&gt; <span class="hl-answer">&lt;answer&gt;</span></pre><div class="callout-box"><strong>硬方格边界上至CLI进入,然后是高特权CLI执行。</strong> 崩溃场从不通过bash eval; 通知- 守护程序直接引用execArgv。 然而, 一旦启动, 默认的被套带会收到 -- 危险- skip- permissions / --yolo inindore~/Work, 依赖在编辑前立即暂停的指示 。</div></div><footer class="card-footer"><span><strong>Omarchy代理设计 静态合同基准</strong> 测量(离线静态合同核查员 ) 上游运行时间不运行)</span><span>4 / 7</span></footer></div></article><article class="report-card" id="card-5"><div class="card-accent-bar"></div><div class="card-inner"><header class="card-header"><div class="card-eyebrow">鲁棒性检验</div><h2 class="card-headline">模式扰动、 超接&amp;窗口灵敏度</h2><p class="card-subtitle">将基线合同(ORIGINAL)与扰动的援引模式、历史迁移、网络故障倒计时和承诺片相比较。</p></header><div class="card-canvas"><table class="clean-table"><thead><tr><th>QUESTION / ANSWER</th><th class="num-col">原始结果</th><th class="num-col">REVERSED</th><th class="num-col">变化（百分点）</th></tr></thead><tbody><tr><td><div class="rob-main">英1· 迅速阿格夫·托肯廉正(14节奏)</div><div class="rob-sub">未及时发射(14/14) vs 有空间/引号的快速发射(14/14)</div></td><td class="num-col">100.0%</td><td class="num-col">100.0%</td><td class="num-col">0.0</td></tr><tr><td><div class="rob-main">英1· 未参加/副手保留旗帜(14节奏)</div><div class="rob-sub">未发音的自动/通过旗帜( )12/14) vs 提示模式 (11/14; 压倒滴出 -- yolo)</div></td><td class="num-col">85.7%</td><td class="num-col">78.6%</td><td class="num-col">-7.1</td></tr><tr><td><div class="rob-main">英2全球技能共通根6命名空间)</div><div class="rob-sub">omarchy- 供应用户(6/6根) vs 初始迁移1786719479.sh (中文(简体) ).5/6赫尔墨斯之前)</div></td><td class="num-col">100.0%</td><td class="num-col">83.3%</td><td class="num-col">-16.7</td></tr><tr><td><div class="rob-main">英4明确提供住房者优先处理权3供应商)</div><div class="rob-sub">新鲜会话接头( N)3/3) vs 明确 CLAUDE_CONFIG_DIR / CODEXHOME / GROK_HOME 超接(英语:3/3)</div></td><td class="num-col">100.0%</td><td class="num-col">100.0%</td><td class="num-col">0.0</td></tr><tr><td><div class="rob-main">英4收集器 Stale-Window 临时故障的留存(4供应商)</div><div class="rob-sub">当地正常状态/缓存使用(3/4) vs Stale 限制保留在HTTP错误( E)2/4: Claude &amp;格鲁克).</div></td><td class="num-col">75.0%</td><td class="num-col">50.0%</td><td class="num-col">-25.0</td></tr><tr><td><div class="rob-main">英5· 分配责任人(200-承诺窗口对3- 佩奇·斯利克(英语:Page Slic)).</div><div class="rob-sub">最新100承诺(10/100 = 10.0%)vs 提交101-200 (11/100 = 11.0%)</div></td><td class="num-col">10.0%</td><td class="num-col">11.0%</td><td class="num-col">+1.0</td></tr></tbody></table><div class="callout-box"><strong>阿尔格夫安全性和明确环境的覆盖100.0% (0.0),而收集器故障倒置下降-25.0.</strong> 明确的 CLAUDE_CONFIG_DIR / CODEX-HOME / GROK_HOME 覆盖干净的绕行会话平接(100%)在网络故障下,Claude (900s)和格鲁克(英语:30d)保留缓存限制,而Codex则清除限制,而烟花公司则无国籍。</div></div><footer class="card-footer"><span><strong>Omarchy代理设计 静态合同基准</strong> 测量(离线静态合同核查员 ) 上游运行时间不运行)</span><span>5 / 7</span></footer></div></article><article class="report-card" id="card-6"><div class="card-accent-bar"></div><div class="card-inner"><header class="card-header"><div class="card-eyebrow">延迟</div><h2 class="card-headline">固定合同核查与逐一核查</h2><p class="card-subtitle">共享的记忆中blob SHA -1+ 跨行距表格校验87引用文件( E)1, 3, 6,以及12检查组)与每个问题进程引用。</p></header><div class="card-canvas"><div class="lat-list"><div class="lat-group"><div class="lat-title">1问题</div><div class="lat-row"><span class="lat-tag">拔出键</span><div class="lat-bar lat-blue" style="width:6.7%"></div><strong class="lat-val">159毫秒( O)</strong></div></div><div class="lat-group"><div class="lat-title">3问 题</div><div class="lat-row"><span class="lat-tag">拔出键</span><div class="lat-bar lat-blue" style="width:6.5%"></div><strong class="lat-val">155毫秒( O)</strong></div><div class="lat-row"><span class="lat-tag">逐一介绍*</span><div class="lat-bar lat-gray" style="width:17.9%"></div><strong class="lat-val">423毫秒( O)</strong></div></div><div class="lat-group"><div class="lat-title">6问 题</div><div class="lat-row"><span class="lat-tag">拔出键</span><div class="lat-bar lat-blue" style="width:10.1%"></div><strong class="lat-val">239毫秒( O)</strong></div><div class="lat-row"><span class="lat-tag">逐一介绍*</span><div class="lat-bar lat-gray" style="width:66.1%"></div><strong class="lat-val">1566毫秒( O)</strong></div></div><div class="lat-group"><div class="lat-title">12问 题</div><div class="lat-row"><span class="lat-tag">拔出键</span><div class="lat-bar lat-blue" style="width:6.0%"></div><strong class="lat-val">137毫秒( O)</strong></div><div class="lat-row"><span class="lat-tag">逐一介绍*</span><div class="lat-bar lat-gray" style="width:78.0%"></div><strong class="lat-val">1848毫秒( O)</strong></div></div></div><div class="callout-box"><strong>12批量合同组群137毫秒对秒1,848毫斯一一(13.5x更快点).</strong> 中间数7测量本地运行Windows亚美尼亚64(科多克语)3.12.10结束87SHA - 验证了git blobs. 上游跑道投票计时器(未运行):15s Claude探测器20s扫描缓存,30s重新尝试,60s格鲁克探测器180s近乎无量的,900s默认。</div></div><footer class="card-footer"><span><strong>Omarchy代理设计 静态合同基准</strong> 测量(离线静态合同核查员 ) 上游运行时间不运行)</span><span>6 / 7</span></footer></div></article><article class="report-card" id="card-7"><div class="card-accent-bar"></div><div class="card-inner"><header class="card-header"><div class="card-eyebrow">工程判断</div><h2 class="card-headline">哪里 哪里 哪里 哪里 哪里 哪里 哪里 哪里 哪里 哪里 哪里 哪里Omarchy&#x27;代理设计闪耀, 哪里不能复制它</h2></header><div class="card-canvas"><div class="fit-grid"><div class="fit-card fit-good"><div class="fit-head">✅ 适用场景</div><ul><li>统一单一用户开发者桌面14一份热/地铁合同背后的多种代理人</li><li>单源真言 SKILL.md 通过多供应商代理目录的同源共通分发</li><li>人入"一地"OS崩溃分解:系统-计分堆滤取+通知点击-&gt;结构化诊断提示</li><li>地方多订阅配额集合( E)95%阈值自动开关+每个进程证书主页</li><li>将快速无头壳合同测试(测试/全部)从仅限VM桌面接收测试中分离出来</li></ul></div><div class="fit-card fit-bad"><div class="fit-head">⛔ 不适用场景</div><ul><li>需要强制操作系统集装箱/甚高频沙箱的多租户或企业零信任环境</li><li>处理~/工作目录cd, --yolo旗,或SKILL.md&#x27;编辑前询问&#x27;文本作为安全边界</li><li>使用本地记录符估计或无文件的网页/OAuth使用端点作为权威计费</li><li>假设每个第三方都同样发现和执行了同义的 SKILL.md 文件CLI</li></ul></div></div><div class="dark-footer-box"><p>证明:静态来源&amp;测试合同对定点承诺的评价9480d1b6a98156314dbabe6bfef08f39f8b9cd07(上游的bash/VM/活度)agent runtime=============================</p><p class="dark-repo">上游( - )MIT): https://github.com/omacom/omarchy报告格式:基准-合理性-工程7-卡戴克 v -你是谁?1</p></div></div><footer class="card-footer"><span><strong>Omarchy代理设计 静态合同基准</strong> 测量(离线静态合同核查员 ) 上游运行时间不运行)</span><span>7 / 7</span></footer></div></article><details><summary>精确的卡片甲板数据</summary><pre>{
+  &quot;batch_latency_detail&quot;: [
+    {
+      &quot;batched_median_ms&quot;: 159,
+      &quot;batched_runs_ms&quot;: [
+        1759.4,
+        158.6,
+        144.1,
+        187.2,
+        151.9,
+        156.4,
+        248.6
+      ],
+      &quot;one_by_one_estimated_ms&quot;: 173,
+      &quot;one_by_one_runs_ms&quot;: [
+        174.4,
+        225.0,
+        144.9,
+        171.5,
+        143.0,
+        172.9,
+        254.3
+      ],
+      &quot;question_count&quot;: 1,
+      &quot;runs&quot;: 7
+    },
+    {
+      &quot;batched_median_ms&quot;: 155,
+      &quot;batched_runs_ms&quot;: [
+        160.6,
+        154.8,
+        156.6,
+        124.7,
+        146.7,
+        125.0,
+        159.2
+      ],
+      &quot;one_by_one_estimated_ms&quot;: 423,
+      &quot;one_by_one_runs_ms&quot;: [
+        464.2,
+        400.8,
+        386.8,
+        423.4,
+        535.2,
+        383.2,
+        593.7
+      ],
+      &quot;question_count&quot;: 3,
+      &quot;runs&quot;: 7
+    },
+    {
+      &quot;batched_median_ms&quot;: 239,
+      &quot;batched_runs_ms&quot;: [
+        405.7,
+        441.1,
+        579.7,
+        239.4,
+        192.6,
+        141.8,
+        171.9
+      ],
+      &quot;one_by_one_estimated_ms&quot;: 1566,
+      &quot;one_by_one_runs_ms&quot;: [
+        1601.2,
+        2192.0,
+        4163.5,
+        1565.7,
+        1293.5,
+        1201.3,
+        1054.8
+      ],
+      &quot;question_count&quot;: 6,
+      &quot;runs&quot;: 7
+    },
+    {
+      &quot;batched_median_ms&quot;: 137,
+      &quot;batched_runs_ms&quot;: [
+        355.6,
+        134.5,
+        120.4,
+        138.1,
+        161.0,
+        137.0,
+        129.1
+      ],
+      &quot;one_by_one_estimated_ms&quot;: 1848,
+      &quot;one_by_one_runs_ms&quot;: [
+        2238.7,
+        2343.3,
+        1848.5,
+        2132.4,
+        1652.5,
+        1521.1,
+        1434.4
+      ],
+      &quot;question_count&quot;: 12,
+      &quot;runs&quot;: 7
+    }
+  ],
+  &quot;cards&quot;: [
+    {
+      &quot;callouts&quot;: [
+        {
+          &quot;body&quot;: &quot;All 28 launcher paths preserve single-argument prompt boundaries, but 12/14 unprompted branches pass permission-bypass flags (--yolo, --allow-all, bypassPermissions) without an OS-level container sandbox.&quot;,
+          &quot;lead&quot;: &quot;Omarchy integrates agents at the OS session/launcher/telemetry layer rather than building a proprietary agent runtime.&quot;
+        }
+      ],
+      &quot;eyebrow&quot;: &quot;HANDS-ON · AGENTIC OS HARNESS BENCHMARK&quot;,
+      &quot;headline_Gradient&quot;: &quot;soft boundaries exposed&quot;,
+      &quot;headline_prefix&quot;: &quot;14 harnesses unified, &quot;,
+      &quot;kind&quot;: &quot;overview&quot;,
+      &quot;subtitle&quot;: &quot;Static contract evaluation of omacom/omarchy @ 9480d1b6a98156314dbabe6bfef08f39f8b9cd07 across 6 mechanism tracks (E1–E6), 174 traceable assertions, 87 source blobs, and 12 formal contract checks.&quot;,
+      &quot;workbench&quot;: {
+        &quot;bands_note&quot;: &quot;Evidence gating: source_fact (122/174 = 70.1%) -&gt; Act automatically; documentation_claim (33/174 = 19.0%) -&gt; Confirm; test_contract not_run (19/174 = 10.9%) -&gt; Send to a human.&quot;,
+        &quot;decisions&quot;: [
+          {
+            &quot;action&quot;: &quot;Act automatically&quot;,
+            &quot;closest_label&quot;: &quot;11 direct exec · 2 subcommand · 1 gateway+tui&quot;,
+            &quot;confidence&quot;: 1.0,
+            &quot;distribution_pct&quot;: {
+              &quot;direct_exec_argv (11/14)&quot;: 78.6,
+              &quot;gateway_tui_openclaw (1/14)&quot;: 7.1,
+              &quot;subcommand_run_or_code (2/14)&quot;: 14.3
+            },
+            &quot;field&quot;: &quot;e1_argv_contract&quot;,
+            &quot;question&quot;: &quot;Do all 14 launchable harnesses preserve single-token prompt argv separation across 28 branches?&quot;,
+            &quot;question_type&quot;: &quot;choice&quot;,
+            &quot;selected_answer&quot;: &quot;28 / 28 branches (100.0%)&quot;,
+            &quot;top_probability_pct&quot;: 100.0
+          },
+          {
+            &quot;action&quot;: &quot;Confirm&quot;,
+            &quot;closest_label&quot;: &quot;Fireworks is usage-only (no launcher branch)&quot;,
+            &quot;confidence&quot;: 0.786,
+            &quot;distribution_pct&quot;: {
+              &quot;account_and_usage_provider (3/14)&quot;: 21.4,
+              &quot;launch_only_harness (11/14)&quot;: 78.6,
+              &quot;usage_only_fireworks (1/4 usage)&quot;: 25.0
+            },
+            &quot;field&quot;: &quot;e4_provider_alignment&quot;,
+            &quot;question&quot;: &quot;Are launchable harnesses (14), account providers (3), and usage collectors (4) 1-to-1 isomorphic?&quot;,
+            &quot;question_type&quot;: &quot;choice&quot;,
+            &quot;selected_answer&quot;: &quot;Non-isomorphic (3 / 14 = 21.4%)&quot;,
+            &quot;top_probability_pct&quot;: 78.6
+          },
+          {
+            &quot;action&quot;: &quot;Send to a human&quot;,
+            &quot;closest_label&quot;: &quot;0/14 OS sandbox in omarchy-agent; 12/14 pass auto/bypass flags&quot;,
+            &quot;confidence&quot;: 0.313,
+            &quot;distribution_pct&quot;: {
+              &quot;hard_code_or_ipc_boundary (5/16)&quot;: 31.3,
+              &quot;os_container_sandbox_in_launcher (0/14)&quot;: 0.0,
+              &quot;soft_convention_or_flag (11/16)&quot;: 68.8
+            },
+            &quot;field&quot;: &quot;e6_isolation_model&quot;,
+            &quot;question&quot;: &quot;What share of Omarchy&#x27;s 16 agent safety controls are hard OS/code boundaries vs soft conventions?&quot;,
+            &quot;question_type&quot;: &quot;score&quot;,
+            &quot;selected_answer&quot;: &quot;5 / 16 hard boundaries (31.3%)&quot;,
+            &quot;top_probability_pct&quot;: 31.3
+          }
+        ],
+        &quot;metrics&quot;: [
+          &quot;174 Assertions&quot;,
+          &quot;87 Cited Blobs (272 cached)&quot;,
+          &quot;14 Harnesses / 28 Paths&quot;,
+          &quot;12 Contract Checks&quot;
+        ],
+        &quot;scenarios&quot;: [
+          &quot;E1 Launcher (14 harnesses · 28 argv paths)&quot;,
+          &quot;E2 Skill Symlinks (3 skills · 6 global roots)&quot;,
+          &quot;E3 Crash Pipeline (5 filters · click gate)&quot;,
+          &quot;E4 Accounts &amp; Usage (3 account · 4 usage)&quot;,
+          &quot;E5 Agent-Native Repo (11 shell · 1 VM suite)&quot;,
+          &quot;E6 Trust Boundaries (5 hard · 11 soft controls)&quot;
+        ],
+        &quot;status_pill&quot;: &quot;174 assertions · 87 blobs SHA-verified · upstream_runtime=not_run&quot;,
+        &quot;title&quot;: &quot;Omarchy Agent Mechanism Contract Workbench (omacom/omarchy @ 9480d1b)&quot;
+      }
+    },
+    {
+      &quot;callouts&quot;: [
+        {
+          &quot;body&quot;: &quot;Attachment PLAN.md missed openclaw (13 vs 14 harnesses) and falsely claimed Azure VM completion; upstream shell/plugins/agents/README.md claims read-only display while Panel.qml dispatches 4 write/control commands.&quot;,
+          &quot;lead&quot;: &quot;Static contract verification caught 3 attachment errors and 4 upstream design/documentation boundary drifts.&quot;
+        }
+      ],
+      &quot;decisions&quot;: [
+        {
+          &quot;action&quot;: &quot;Act automatically&quot;,
+          &quot;closest_label&quot;: &quot;87 fixed blobs + 7 official docs W1-W7&quot;,
+          &quot;confidence&quot;: 0.701,
+          &quot;distribution_pct&quot;: {
+            &quot;documentation_claim · doc/official (33)&quot;: 19.0,
+            &quot;source_fact · static_read (122)&quot;: 70.1,
+            &quot;test_contract · not_run (19)&quot;: 10.9
+          },
+          &quot;field&quot;: &quot;evidence_composition&quot;,
+          &quot;question&quot;: &quot;How do the 174 indexed assertions break down across verification evidence tiers?&quot;,
+          &quot;question_type&quot;: &quot;choice&quot;,
+          &quot;selected_answer&quot;: &quot;source_fact 122 / 174 (70.1%)&quot;,
+          &quot;top_probability_pct&quot;: 70.1
+        },
+        {
+          &quot;action&quot;: &quot;Act automatically&quot;,
+          &quot;closest_label&quot;: &quot;_UID + disabled + ignore + mute + seen_key dedupe&quot;,
+          &quot;confidence&quot;: 1.0,
+          &quot;distribution_pct&quot;: {
+            &quot;enforced_static_gates (5/5)&quot;: 100.0,
+            &quot;silent_background_agent_exec (0/5)&quot;: 0.0
+          },
+          &quot;field&quot;: &quot;e3_crash_pipeline_gates&quot;,
+          &quot;question&quot;: &quot;Does omarchy-crash-watch enforce all 5 pre-notification filters and require human click before agent launch?&quot;,
+          &quot;question_type&quot;: &quot;noul&quot;,
+          &quot;selected_answer&quot;: &quot;Yes (5 / 5 gates · 100.0%)&quot;,
+          &quot;top_probability_pct&quot;: 100.0
+        },
+        {
+          &quot;action&quot;: &quot;Confirm&quot;,
+          &quot;closest_label&quot;: &quot;Waiting for auth excluded; stale=true still ranked&quot;,
+          &quot;confidence&quot;: 0.8,
+          &quot;distribution_pct&quot;: {
+            &quot;mode_95pct_auth_tiebreak (4/5)&quot;: 80.0,
+            &quot;stale_cache_still_eligible_gap (1/5)&quot;: 20.0
+          },
+          &quot;field&quot;: &quot;e4_autoswitch_vs_stale&quot;,
+          &quot;question&quot;: &quot;Does omarchy-agent-account-autoswitch enforce 95% threshold &amp; auth filtering while excluding stale=true caches?&quot;,
+          &quot;question_type&quot;: &quot;score&quot;,
+          &quot;selected_answer&quot;: &quot;4 / 5 rules (80.0% · stale=true not excluded)&quot;,
+          &quot;top_probability_pct&quot;: 80.0
+        }
+      ],
+      &quot;eyebrow&quot;: &quot;SCENARIO: E1–E6 STATIC CONTRACT DEEP DIVE&quot;,
+      &quot;headline&quot;: &quot;174 assertions. 87 blobs. 7 doc-vs-code drifts caught.&quot;,
+      &quot;kind&quot;: &quot;deep_dive&quot;,
+      &quot;quote&quot;: &quot;Target: basecamp/omarchy -&gt; omacom/omarchy @ 9480d1b6a98156314dbabe6bfef08f39f8b9cd07 (tree f1ef20f4..., 2,663 entries). Evaluation verifies exact byte/line contracts and flags every gap between README claims, attachment assumptions, and bash/Python/QML implementation.&quot;,
+      &quot;subtitle&quot;: &quot;Granular verification of evidence composition, crash-to-agent human gating, and multi-account autoswitch edge cases on pinned commit 9480d1b6a98156314dbabe6bfef08f39f8b9cd07.&quot;
+    },
+    {
+      &quot;callouts&quot;: [
+        {
+          &quot;body&quot;: &quot;Hard invariants hold on argv boundary preservation (28/28), 6-root skill symlinks (6/6), 5-stage crash filtering + click gate (5/5), 95% autoswitch rules (4/4), and headless vs VM test separation (11/11).&quot;,
+          &quot;lead&quot;: &quot;5 of 12 contract checks passed 100% as hard invariants (Auto); 7 of 12 exposed critical architectural boundaries (Confirm / Human).&quot;
+        },
+        {
+          &quot;body&quot;: &quot;crush drops --yolo in prompted mode (91.7%); 8 of 14 harnesses have no global skill symlink root (42.9%); autoswitch does not filter stale=true caches (0%); and ~/Work + prompt rules are soft conventions, not an OS sandbox (31.3% hard).&quot;,
+          &quot;lead&quot;: &quot;Why the 7 ✕ boundary flags matter for engineering reuse.&quot;
+        }
+      ],
+      &quot;eyebrow&quot;: &quot;WHAT I TESTED&quot;,
+      &quot;headline&quot;: &quot;6 mechanism tracks, 12 formal contract checks&quot;,
+      &quot;kind&quot;: &quot;scorecard&quot;,
+      &quot;rows&quot;: [
+        {
+          &quot;action&quot;: &quot;Confirm&quot;,
+          &quot;decider_answer&quot;: &quot;13/14 matched (missed openclaw gateway)&quot;,
+          &quot;pointed_right_way&quot;: false,
+          &quot;question&quot;: &quot;Attachment harness list (13) vs bin/omarchy-agent case branches (14)&quot;,
+          &quot;reported_probability_pct&quot;: 93,
+          &quot;scenario&quot;: &quot;E1 Launcher&quot;
+        },
+        {
+          &quot;action&quot;: &quot;Auto&quot;,
+          &quot;decider_answer&quot;: &quot;28/28 preserve argv boundary&quot;,
+          &quot;pointed_right_way&quot;: true,
+          &quot;question&quot;: &quot;Single-argument prompt boundary across 14 harnesses × 2 modes (28 paths)&quot;,
+          &quot;reported_probability_pct&quot;: 100,
+          &quot;scenario&quot;: &quot;E1 Launcher&quot;
+        },
+        {
+          &quot;action&quot;: &quot;Confirm&quot;,
+          &quot;decider_answer&quot;: &quot;11/12 retained (crush drops --yolo on run)&quot;,
+          &quot;pointed_right_way&quot;: false,
+          &quot;question&quot;: &quot;Unattended/bypass flag retention from unprompted to prompted mode (12 harnesses)&quot;,
+          &quot;reported_probability_pct&quot;: 92,
+          &quot;scenario&quot;: &quot;E1 Launcher&quot;
+        },
+        {
+          &quot;action&quot;: &quot;Auto&quot;,
+          &quot;decider_answer&quot;: &quot;6/6 roots + Hermes profiles/*/skills&quot;,
+          &quot;pointed_right_way&quot;: true,
+          &quot;question&quot;: &quot;Idempotent skill symlink provisioning across global harness roots (omarchy-provision-user)&quot;,
+          &quot;reported_probability_pct&quot;: 100,
+          &quot;scenario&quot;: &quot;E2 Skills&quot;
+        },
+        {
+          &quot;action&quot;: &quot;Human&quot;,
+          &quot;decider_answer&quot;: &quot;6/14 linked (8 harnesses have no symlink root)&quot;,
+          &quot;pointed_right_way&quot;: false,
+          &quot;question&quot;: &quot;Symlink target namespace coverage across all 14 launchable harnesses&quot;,
+          &quot;reported_probability_pct&quot;: 43,
+          &quot;scenario&quot;: &quot;E2 Skills&quot;
+        },
+        {
+          &quot;action&quot;: &quot;Auto&quot;,
+          &quot;decider_answer&quot;: &quot;5/5 gates + user click required&quot;,
+          &quot;pointed_right_way&quot;: true,
+          &quot;question&quot;: &quot;Pre-notification filter gates (_UID, disabled, ignore, mute, seen_key) + click gate&quot;,
+          &quot;reported_probability_pct&quot;: 100,
+          &quot;scenario&quot;: &quot;E3 Crash&quot;
+        },
+        {
+          &quot;action&quot;: &quot;Confirm&quot;,
+          &quot;decider_answer&quot;: &quot;3/14 account-managed (+Fireworks usage-only)&quot;,
+          &quot;pointed_right_way&quot;: false,
+          &quot;question&quot;: &quot;Provider set isomorphism across launcher (14), accounts (3), and usage (4)&quot;,
+          &quot;reported_probability_pct&quot;: 21,
+          &quot;scenario&quot;: &quot;E4 Accounts&quot;
+        },
+        {
+          &quot;action&quot;: &quot;Auto&quot;,
+          &quot;decider_answer&quot;: &quot;4/4 source &amp; test contracts verified&quot;,
+          &quot;pointed_right_way&quot;: true,
+          &quot;question&quot;: &quot;Autoswitch invariants: mode=auto, &gt;=95% trigger, exclude Waiting for auth, 5h-&gt;wk-&gt;num&quot;,
+          &quot;reported_probability_pct&quot;: 100,
+          &quot;scenario&quot;: &quot;E4 Accounts&quot;
+        },
+        {
+          &quot;action&quot;: &quot;Confirm&quot;,
+          &quot;decider_answer&quot;: &quot;0/1 filtered (stale=true still eligible)&quot;,
+          &quot;pointed_right_way&quot;: false,
+          &quot;question&quot;: &quot;Candidate ranking exclusion when cached account usage has stale=true&quot;,
+          &quot;reported_probability_pct&quot;: 0,
+          &quot;scenario&quot;: &quot;E4 Accounts&quot;
+        },
+        {
+          &quot;action&quot;: &quot;Confirm&quot;,
+          &quot;decider_answer&quot;: &quot;2/6 read-only (4 write/exec actions in Panel.qml)&quot;,
+          &quot;pointed_right_way&quot;: false,
+          &quot;question&quot;: &quot;shell/plugins/agents/README.md claim that QML plugin is &#x27;strictly a display layer&#x27;&quot;,
+          &quot;reported_probability_pct&quot;: 33,
+          &quot;scenario&quot;: &quot;E4 Desktop UI&quot;
+        },
+        {
+          &quot;action&quot;: &quot;Auto&quot;,
+          &quot;decider_answer&quot;: &quot;11/11 headless isolated from VM acceptance&quot;,
+          &quot;pointed_right_way&quot;: true,
+          &quot;question&quot;: &quot;Headless test/all (11 shell suites) vs graphical VM test/acceptance (1 suite) split&quot;,
+          &quot;reported_probability_pct&quot;: 100,
+          &quot;scenario&quot;: &quot;E5 Repo Native&quot;
+        },
+        {
+          &quot;action&quot;: &quot;Human&quot;,
+          &quot;decider_answer&quot;: &quot;5/16 hard boundaries (0/14 OS sandbox in launcher)&quot;,
+          &quot;pointed_right_way&quot;: false,
+          &quot;question&quot;: &quot;Hard deterministic OS/code boundaries vs soft conventions across 16 controls&quot;,
+          &quot;reported_probability_pct&quot;: 31,
+          &quot;scenario&quot;: &quot;E6 Safety&quot;
+        }
+      ],
+      &quot;subtitle&quot;: &quot;Each check compares an explicit architectural expectation or documentation claim against fixed source lines in omacom/omarchy@9480d1b. Misses (✕) mark verified contract drift or soft-boundary hazards.&quot;
+    },
+    {
+      &quot;bottom_code&quot;: &quot;&lt;crash_investigation_prompt&gt;\nApplication: /usr/bin/waybar (waybar.service) · Signal: 11 (SIGSEGV)\nStep 1: coredumpctl info 1787843905000000 + journalctl --since/@timestamp\nStep 2: Identify root cause (config vs package update vs upstream bug)\nStep 3: Propose fix and ask for confirmation before modifying files\n&lt;/crash_investigation_prompt&gt;\n# omarchy-agent-account-exec claude -&gt; exports OMARCHY_AGENT_CLAUDE_HOME &amp; CLAUDE_CONFIG_DIR\n# exec $1 \&quot;$@\&quot; -&gt; claude --dangerously-skip-permissions \&quot;&lt;prompt&gt;\&quot; -&gt; &lt;answer&gt;&quot;,
+      &quot;callouts&quot;: [
+        {
+          &quot;body&quot;: &quot;Crash fields never pass through bash eval; notification-daemon invokes execArgv directly. However, once launched, the default harness receives --dangerously-skip-permissions / --yolo inside ~/Work, relying on prompt instructions to pause before edits.&quot;,
+          &quot;lead&quot;: &quot;Hard argv boundary up to CLI entry, followed by high-privilege CLI execution.&quot;
+        }
+      ],
+      &quot;eyebrow&quot;: &quot;UNDER THE HOOD&quot;,
+      &quot;headline&quot;: &quot;From journald coredump to argv-safe agent launch&quot;,
+      &quot;kind&quot;: &quot;protocol&quot;,
+      &quot;subtitle&quot;: &quot;How Omarchy bridges systemd-coredump JSON events, D-Bus notification actions, and provider-pinned CLI execution without shell-evaluating untrusted crash metadata.&quot;,
+      &quot;top_code&quot;: &quot;{\n  \&quot;SYSLOG_IDENTIFIER\&quot;: \&quot;systemd-coredump\&quot;,\n  \&quot;_UID\&quot;: \&quot;1000\&quot;,\n  \&quot;COREDUMP_EXE\&quot;: \&quot;/usr/bin/waybar\&quot;,\n  \&quot;COREDUMP_UNIT\&quot;: \&quot;waybar.service\&quot;,\n  \&quot;COREDUMP_SIGNAL\&quot;: \&quot;11\&quot;,\n  \&quot;COREDUMP_SIGNAL_NAME\&quot;: \&quot;SIGSEGV\&quot;,\n  \&quot;COREDUMP_TIMESTAMP\&quot;: \&quot;1787843905000000\&quot;\n}\n# omarchy-crash-watch packs NUL-delimited execArgv -&gt; D-Bus ActionInvoked click required&quot;,
+      &quot;transition&quot;: &quot;↓ user clicks &#x27;Investigate with AI&#x27; -&gt; omarchy-agent-crash builds prompt &amp; omarchy-launch-agent pins provider home&quot;
+    },
+    {
+      &quot;callouts&quot;: [
+        {
+          &quot;body&quot;: &quot;Explicit CLAUDE_CONFIG_DIR / CODEX_HOME / GROK_HOME overrides cleanly bypass session pinning (100%). Under network failure, Claude (900s) and Grok (30d refresh) retain cached limits, whereas Codex clears limits and Fireworks is stateless.&quot;,
+          &quot;lead&quot;: &quot;Argv safety and explicit environment overrides held at 100.0% (0.0 pts drift), while collector failure fallback dropped -25.0 pts.&quot;
+        }
+      ],
+      &quot;eyebrow&quot;: &quot;ROBUSTNESS CHECK&quot;,
+      &quot;headline&quot;: &quot;Mode perturbations, overrides &amp; window sensitivity&quot;,
+      &quot;kind&quot;: &quot;robustness&quot;,
+      &quot;rows&quot;: [
+        {
+          &quot;answer_held&quot;: true,
+          &quot;change_pts&quot;: 0.0,
+          &quot;original_pct&quot;: 100.0,
+          &quot;reversed_pct&quot;: 100.0,
+          &quot;scenario&quot;: &quot;E1 · Prompt Argv Token Integrity (14 Harnesses)&quot;,
+          &quot;selected_option&quot;: &quot;Unprompted launch (14/14) vs Prompted launch with spaces/quotes (14/14)&quot;
+        },
+        {
+          &quot;answer_held&quot;: true,
+          &quot;change_pts&quot;: -7.1,
+          &quot;original_pct&quot;: 85.7,
+          &quot;reversed_pct&quot;: 78.6,
+          &quot;scenario&quot;: &quot;E1 · Unattended / Bypass Flag Retention (14 Harnesses)&quot;,
+          &quot;selected_option&quot;: &quot;Unprompted auto/bypass flags (12/14) vs Prompted mode (11/14; crush drops --yolo)&quot;
+        },
+        {
+          &quot;answer_held&quot;: true,
+          &quot;change_pts&quot;: -16.7,
+          &quot;original_pct&quot;: 100.0,
+          &quot;reversed_pct&quot;: 83.3,
+          &quot;scenario&quot;: &quot;E2 · Global Skill Symlink Roots (6 Namespaces)&quot;,
+          &quot;selected_option&quot;: &quot;omarchy-provision-user (6/6 roots) vs initial migration 1786719479.sh (5/6 before Hermes)&quot;
+        },
+        {
+          &quot;answer_held&quot;: true,
+          &quot;change_pts&quot;: 0.0,
+          &quot;original_pct&quot;: 100.0,
+          &quot;reversed_pct&quot;: 100.0,
+          &quot;scenario&quot;: &quot;E4 · Explicit Provider Home Override Precedence (3 Providers)&quot;,
+          &quot;selected_option&quot;: &quot;Fresh session pin (3/3) vs Explicit CLAUDE_CONFIG_DIR / CODEX_HOME / GROK_HOME override (3/3)&quot;
+        },
+        {
+          &quot;answer_held&quot;: true,
+          &quot;change_pts&quot;: -25.0,
+          &quot;original_pct&quot;: 75.0,
+          &quot;reversed_pct&quot;: 50.0,
+          &quot;scenario&quot;: &quot;E4 · Collector Stale-Window Retention on Transient Failure (4 Providers)&quot;,
+          &quot;selected_option&quot;: &quot;Normal local state/cache use (3/4) vs Stale limit retention on HTTP error (2/4: Claude &amp; Grok)&quot;
+        },
+        {
+          &quot;answer_held&quot;: true,
+          &quot;change_pts&quot;: 1.0,
+          &quot;original_pct&quot;: 10.0,
+          &quot;reversed_pct&quot;: 11.0,
+          &quot;scenario&quot;: &quot;E5 · Git Trailer Attribution Denominator (200-Commit Window vs 3-Page Slice)&quot;,
+          &quot;selected_option&quot;: &quot;Latest 100 commits (10/100 = 10.0%) vs Commits 101-200 (11/100 = 11.0%)&quot;
+        }
+      ],
+      &quot;subtitle&quot;: &quot;Comparing baseline contracts (ORIGINAL) against perturbed invocation modes, historical migrations, network failure fallbacks, and commit slices (REVERSED).&quot;
+    },
+    {
+      &quot;callouts&quot;: [
+        {
+          &quot;body&quot;: &quot;Medians of 7 measured local runs on Windows ARM64 (CPython 3.12.10) over 87 SHA-verified git blobs. Upstream runtime polling timers (not run): 15s Claude probe, 20s scan cache, 30s retryAdvised, 60s Grok probe, 180s near-limit, 900s default.&quot;,
+          &quot;lead&quot;: &quot;12 contract cohorts batched took 137 ms vs 1,848 ms one by one (13.5x faster).&quot;
+        }
+      ],
+      &quot;eyebrow&quot;: &quot;LATENCY&quot;,
+      &quot;headline&quot;: &quot;Batched static contract verification vs one-by-one&quot;,
+      &quot;kind&quot;: &quot;latency&quot;,
+      &quot;rows&quot;: [
+        {
+          &quot;batched_median_ms&quot;: 159,
+          &quot;one_by_one_estimated_ms&quot;: 173,
+          &quot;question_count&quot;: 1,
+          &quot;runs&quot;: 7
+        },
+        {
+          &quot;batched_median_ms&quot;: 155,
+          &quot;one_by_one_estimated_ms&quot;: 423,
+          &quot;question_count&quot;: 3,
+          &quot;runs&quot;: 7
+        },
+        {
+          &quot;batched_median_ms&quot;: 239,
+          &quot;one_by_one_estimated_ms&quot;: 1566,
+          &quot;question_count&quot;: 6,
+          &quot;runs&quot;: 7
+        },
+        {
+          &quot;batched_median_ms&quot;: 137,
+          &quot;one_by_one_estimated_ms&quot;: 1848,
+          &quot;question_count&quot;: 12,
+          &quot;runs&quot;: 7
+        }
+      ],
+      &quot;subtitle&quot;: &quot;Shared in-memory blob SHA-1 + line-range table verification across 87 cited files (1, 3, 6, and 12 check cohorts) vs per-question process invocation.&quot;
+    },
+    {
+      &quot;dark_box&quot;: {
+        &quot;lead&quot;: &quot;Provenance: Static source &amp; test-contract evaluation on pinned commit 9480d1b6a98156314dbabe6bfef08f39f8b9cd07 (upstream bash/VM/live agent runtime = not_run).&quot;,
+        &quot;repo&quot;: &quot;Upstream (MIT): https://github.com/omacom/omarchy · Report format: benchmark-harness-engineering 7-Card Deck v1&quot;
+      },
+      &quot;eyebrow&quot;: &quot;MY TAKE&quot;,
+      &quot;good_fit&quot;: [
+        &quot;Single-user developer desktop unifying 14 heterogeneous agent CLIs behind one hotkey/terminal contract&quot;,
+        &quot;Single-source-of-truth SKILL.md distribution via idempotent symlinks across multi-vendor agent directories&quot;,
+        &quot;Human-in-the-loop OS crash triage: systemd-coredump filtering + notification click -&gt; structured diagnostic prompt&quot;,
+        &quot;Local multi-subscription quota pooling (95% threshold autoswitch + per-process credential home pinning)&quot;,
+        &quot;Separating fast headless shell contract tests (test/all) from VM-only desktop acceptance tests&quot;
+      ],
+      &quot;headline&quot;: &quot;Where Omarchy&#x27;s agent design shines, and where not to copy it&quot;,
+      &quot;kind&quot;: &quot;takeaways&quot;,
+      &quot;not_for&quot;: [
+        &quot;Multi-tenant or enterprise zero-trust environments requiring mandatory OS container/VM sandboxing&quot;,
+        &quot;Treating ~/Work directory cd, --yolo flags, or SKILL.md &#x27;ask before editing&#x27; text as a security boundary&quot;,
+        &quot;Using local transcript token estimates or undocumented web/OAuth usage endpoints as authoritative billing&quot;,
+        &quot;Assuming symlinked SKILL.md files are identically discovered and enforced by every third-party CLI&quot;
+      ]
+    }
+  ],
+  &quot;deck_title&quot;: &quot;Omarchy Agent Design · Static Contract Benchmark&quot;,
+  &quot;evidence_binding&quot;: {
+    &quot;assertion_index_csv_sha256&quot;: &quot;31a6fc0fb62603ae1fbaec296a39abce2b35eb08a39278ee9d97e6a32299a701&quot;,
+    &quot;cached_verified_blobs&quot;: 272,
+    &quot;cited_source_blobs&quot;: 87,
+    &quot;contract_Pass_auto&quot;: 5,
+    &quot;contract_drift_or_boundary_confirm_human&quot;: 7,
+    &quot;evidence_json_sha256&quot;: &quot;6b84767707ff83cb90c5e61e4f41d34aef86b1590c7bea8c031ca5d9a6fdfa51&quot;,
+    &quot;formal_contract_questions&quot;: 12,
+    &quot;official_comparison_docs&quot;: 7,
+    &quot;pinned_commit&quot;: &quot;9480d1b6a98156314dbabe6bfef08f39f8b9cd07&quot;,
+    &quot;root_tree_sha&quot;: &quot;f1ef20f439289dc3cd1c968eb475a9750d64bc61&quot;,
+    &quot;total_assertions&quot;: 174,
+    &quot;upstream_repo&quot;: &quot;omacom/omarchy (requested alias: basecamp/omarchy)&quot;,
+    &quot;upstream_runtime_execution&quot;: &quot;not_run&quot;
+  },
+  &quot;independently_reproduced&quot;: false,
+  &quot;provenance&quot;: &quot;measured (offline static contract verifier · upstream runtime not_run)&quot;,
+  &quot;report_id&quot;: &quot;omarchy-agent-design&quot;,
+  &quot;runtime_timer_constants_ms&quot;: [
+    {
+      &quot;constant&quot;: &quot;Claude usage probe cache window&quot;,
+      &quot;source&quot;: &quot;bin/omarchy-agent-usage-claude:372-377&quot;,
+      &quot;value_ms&quot;: 15000
+    },
+    {
+      &quot;constant&quot;: &quot;Transcript local scan reuse window&quot;,
+      &quot;source&quot;: &quot;bin/omarchy-agent-usage-claude:636-652, bin/omarchy-agent-usage-codex:495-511&quot;,
+      &quot;value_ms&quot;: 20000
+    },
+    {
+      &quot;constant&quot;: &quot;Panel retryAdvised fast retry timer&quot;,
+      &quot;source&quot;: &quot;shell/plugins/agents/Main.qml:43-50,247&quot;,
+      &quot;value_ms&quot;: 30000
+    },
+    {
+      &quot;constant&quot;: &quot;Grok rate-limits probe cache window&quot;,
+      &quot;source&quot;: &quot;bin/omarchy-agent-usage-grok:153-168&quot;,
+      &quot;value_ms&quot;: 60000
+    },
+    {
+      &quot;constant&quot;: &quot;Near-limit (&gt;=80%) fast poll interval&quot;,
+      &quot;source&quot;: &quot;shell/plugins/agents/Main.qml:46,247&quot;,
+      &quot;value_ms&quot;: 180000
+    },
+    {
+      &quot;constant&quot;: &quot;Default background poll / limits-only cache&quot;,
+      &quot;source&quot;: &quot;shell/plugins/agents/Main.qml:45,247, bin/omarchy-agent-usage-claude:618-634&quot;,
+      &quot;value_ms&quot;: 900000
+    }
+  ],
+  &quot;schema_version&quot;: 1
+}</pre></details></main></body></html>

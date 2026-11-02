@@ -1,0 +1,596 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'">
+<title>DEFEND 伙伴游戏本&amp; Purview- 管理 -- -- AI7- 牌子基准牌</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;padding:2rem 1rem;background:#e2e8f0;color:#0f172a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+.deck-wrap{max-width:860px;margin:0 auto;display:flex;flex-direction:column;gap:2.2rem}
+.report-card{background:#f8fafc;border-radius:18px;overflow:hidden;box-shadow:0 16px 40px rgba(15,23,42,.12);border:1px solid #cbd5e1;min-height:1025px;display:flex;flex-direction:column}
+.card-accent-bar{height:10px;background:linear-gradient(90deg,#2563eb 0%,#4f46e5 55%,#0891b2 100%)}
+.card-inner{padding:2.4rem 2.8rem 1.8rem;flex:1;display:flex;flex-direction:column;justify-content:space-between}
+.card-eyebrow{font-size:.82rem;font-weight:700;letter-spacing:.12em;color:#2563eb;text-transform:uppercase;margin-bottom:.55rem}
+.card-headline{font-size:2.25rem;line-height:1.12;font-weight:800;margin:0 0 .65rem;letter-spacing:-.02em;color:#0f172a}
+.grad-text{background:linear-gradient(90deg,#2563eb,#4f46e5,#0891b2);-webkit-background-clip:text;background-clip:text;color:transparent}
+.card-subtitle{font-size:1.05rem;line-height:1.45;color:#475569;margin:0 0 1.2rem}
+.card-canvas{flex:1;display:flex;flex-direction:column;justify-content:center;gap:1rem}
+.quote-box,.callout-box{background:#eef2f6;border-radius:12px;padding:1rem 1.25rem;font-size:.96rem;line-height:1.48;color:#1e293b}
+.stack-list{display:flex;flex-direction:column;gap:.85rem}
+.decision-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:.95rem 1.15rem}
+.decision-head{display:flex;justify-content:space-between;align-items:flex-start;gap:.75rem}
+.field-name{font-weight:700;font-size:1rem}
+.type-pill{background:#e2e8f0;color:#475569;font-size:.75rem;padding:.12rem .45rem;border-radius:6px;font-weight:600}
+.question-sub{font-size:.84rem;color:#64748b;margin-top:.15rem}
+.action-pill{font-size:.76rem;font-weight:700;padding:.22rem .6rem;border-radius:999px;white-space:nowrap}
+.pill-auto{background:#dcfce7;color:#15803d}
+.pill-confirm{background:#fef3c7;color:#b45309}
+.pill-human{background:#fee2e2;color:#b91c1c}
+.decision-main{font-size:1.14rem;margin:.45rem 0 .55rem}
+.conf-muted{font-size:.86rem;color:#64748b;font-weight:600}
+.dist-row{display:grid;grid-template-columns:210px 1fr 58px;align-items:center;gap:.6rem;font-size:.83rem;margin:.24rem 0}
+.dist-track{background:#e2e8f0;height:9px;border-radius:999px;overflow:hidden}
+.dist-fill{background:linear-gradient(90deg,#2563eb,#4f46e5);height:100%;border-radius:999px}
+.dist-pct{text-align:right;font-variant-numeric:tabular-nums;color:#334155}
+.clean-table{width:100%;border-collapse:collapse;font-size:.92rem;background:transparent}
+.clean-table th{font-size:.74rem;letter-spacing:.08em;color:#64748b;text-align:left;padding:.55rem .4rem;border-bottom:1px solid #cbd5e1}
+.clean-table td{padding:.58rem .4rem;border-bottom:1px solid #e2e8f0;vertical-align:top}
+.sc-col{font-weight:600;color:#1e293b}
+.act-col,.num-col{text-align:right;font-variant-numeric:tabular-nums}
+.act-auto{color:#15803d;font-weight:700}
+.act-confirm{color:#b45309;font-weight:700}
+.act-human{color:#b91c1c;font-weight:700}
+.miss-mark{color:#dc2626;font-weight:800}
+.code-dark{background:#0f172a;color:#e2e8f0;padding:1.05rem 1.25rem;border-radius:12px;font-size:.82rem;line-height:1.44;overflow-x:auto;margin:0}
+.code-transition{color:#2563eb;font-weight:700;font-size:.95rem;padding:.15rem 0}
+.hl-answer{color:#fbbf24;font-weight:700}
+.rob-main{font-weight:600;color:#0f172a}
+.rob-sub{font-size:.8rem;color:#64748b}
+.lat-list{display:flex;flex-direction:column;gap:1rem}
+.lat-title{font-weight:700;font-size:1.02rem;margin-bottom:.35rem}
+.lat-row{display:flex;align-items:center;gap:.65rem;margin:.28rem 0}
+.lat-tag{width:140px;font-size:.84rem;color:#64748b}
+.lat-bar{height:22px;border-radius:6px}
+.lat-blue{background:#2563eb}
+.lat-gray{background:#cbd5e1}
+.lat-val{font-size:.92rem;font-variant-numeric:tabular-nums}
+.fit-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem}
+.fit-card{border-radius:14px;padding:1.25rem 1.4rem;font-size:.98rem;line-height:1.58}
+.fit-good{background:#ecfdf5;border:1px solid #a7f3d0}
+.fit-bad{background:#fff1f2;border:1px solid #fecdd3}
+.fit-head{font-weight:800;font-size:1.12rem;margin-bottom:.5rem}
+.dark-footer-box{background:#0f172a;color:#f8fafc;border-radius:14px;padding:1.25rem 1.5rem;font-size:.96rem;line-height:1.5}
+.dark-repo{color:#38bdf8;font-family:ui-monospace,Consolas,monospace;margin-bottom:0}
+.workbench-shell{background:#fff;border:1px solid #cbd5e1;border-radius:14px;overflow:hidden}
+.wb-topbar{background:linear-gradient(90deg,#2563eb,#4f46e5);color:#fff;padding:.75rem 1rem;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.wb-sub{font-size:.76rem;opacity:.92}
+.wb-status{background:rgba(15,23,42,.28);font-size:.74rem;padding:.25rem .6rem;border-radius:999px;white-space:nowrap}
+.wb-grid{display:grid;grid-template-columns:230px 1fr;gap:.85rem;padding:.9rem}
+.wb-col-title{font-size:.78rem;font-weight:700;color:#475569;text-transform:uppercase;margin-bottom:.4rem}
+.wb-item{font-size:.79rem;padding:.38rem .5rem;border-radius:6px;background:#f8fafc;border:1px solid #e2e8f0;margin-bottom:.32rem}
+.wb-note{font-size:.73rem;color:#64748b;margin-top:.55rem;line-height:1.38}
+.wb-metrics{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.55rem}
+.wb-metric{font-size:.74rem;background:#f1f5f9;padding:.2rem .5rem;border-radius:6px;color:#334155;font-weight:600}
+.card-footer{border-top:1px solid #cbd5e1;padding-top:.9rem;margin-top:1.2rem;display:flex;justify-content:space-between;font-size:.84rem;color:#64748b}
+@media print{body{background:#fff;padding:0}.deck-wrap{gap:0}.report-card{box-shadow:none;page-break-after:always;border:none}}
+</style>
+<!-- kee-dedicated-style:start -->
+<style>/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.65fr 1.1fr 1.15fr 1.1fr 1.1fr;gap:6px;align-items:stretch;min-width:0}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+</style>
+<!-- kee-dedicated-style:end -->
+<!-- kee-report-localization:metadata:start --><link rel="alternate" hreflang="en" href="defend-cards.en.html"><link rel="alternate" hreflang="zh-CN" href="defend-cards.zh-CN.html"><meta name="report-translation-source" content="workshops/ai-security/defend-cards.html@941ee62"><meta name="report-translation-provenance" content="translation; independently_reproduced=false"><style>/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.65fr 1.1fr 1.15fr 1.1fr 1.1fr;gap:6px;align-items:stretch;min-width:0}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+
+html{scroll-padding-top:108px}.reading-header,.kee-dedicated-nav,[data-professional-header]{position:sticky;top:0;z-index:1000;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+
+:root{--search-bg:#101a30;--search-soft:#172440;--search-ink:#eef3ff;--search-muted:#adbbd1;--search-line:#293956;--search-accent:#9aabff;--header-offset:108px}
+:root[data-reading-shell][data-theme=light],[data-perimeter-theme=light]{--search-bg:#fff;--search-soft:#e8eefb;--search-ink:#17233e;--search-muted:#4c5e7c;--search-line:#d5ddec;--search-accent:#354ec8}
+html{scroll-padding-top:var(--header-offset,108px)!important}
+.site-search,.site-search *{box-sizing:border-box!important;font-family:"Segoe UI",sans-serif;letter-spacing:normal;text-transform:none}
+.site-search{position:relative;display:flex;align-items:center;gap:5px;min-width:0;width:230px;max-width:100%;margin:0!important;padding:0!important;line-height:1.4;border:1px solid var(--search-line);border-radius:9px;background:var(--search-soft);color:var(--search-ink);isolation:isolate}
+.site-search input[type=search]{display:block;flex:1;min-width:0;width:100%;height:42px;margin:0;padding:9px 8px!important;font-size:12px!important;line-height:1.5;border:0!important;border-radius:9px;background:transparent!important;color:var(--search-ink)!important;box-shadow:none!important;appearance:none}
+.site-search input::placeholder{color:var(--search-muted);opacity:1}.site-search input:focus-visible{outline:2px solid var(--search-accent);outline-offset:2px}
+.site-search kbd{font:11px Consolas,monospace;color:var(--search-muted);padding:1px 5px;border:1px solid var(--search-line);border-radius:4px}
+.site-search button[type=submit]{flex:none;width:38px;min-width:38px;height:42px;min-height:42px;padding:0;margin:0;border:0;border-radius:8px;background:transparent;color:var(--search-accent);font-size:24px;cursor:pointer;box-shadow:none}
+.search-label,.search-status{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.site-search .search-results{position:absolute;top:calc(100% + 10px);right:0;z-index:1100;width:min(480px,calc(100vw - 32px));max-height:min(560px,65vh);overflow-y:auto;border:1px solid var(--search-line);border-radius:12px;background:var(--search-bg);color:var(--search-ink);padding:10px;box-shadow:0 12px 32px #0005;text-align:left}
+.site-search .search-results[hidden]{display:none!important}.search-results .search-group{margin:8px 6px 4px;font:11px/1.5 Consolas,monospace;color:var(--search-muted)}
+.site-search .search-results a{display:block!important;padding:10px!important;margin:3px 0!important;border:1px solid transparent!important;border-radius:7px;background:transparent;color:var(--search-ink)!important;font-size:13px!important;text-decoration:none!important;white-space:normal;overflow-wrap:anywhere;text-align:left!important;line-height:1.5!important}
+.site-search .search-results a[aria-selected=true],.site-search .search-results a:hover{border-color:var(--search-accent)!important;background:var(--search-soft)}
+.search-results a small{display:block;font-size:10px;color:var(--search-muted);margin-top:4px}.search-results p{margin:10px;font-size:13px;color:var(--search-muted)}
+.search-archive-summary{padding:20px;border:1px solid var(--search-line);border-radius:10px;background:var(--search-bg);color:var(--search-ink);margin:24px 0}.search-archive-summary h2{font-size:24px;margin:0 0 12px}.search-archive-summary li{margin:12px 0}.search-archive-summary a{color:var(--search-accent)}
+[data-professional-header]{position:sticky!important;top:0!important;z-index:1000!important;background:var(--search-bg)!important;--header-glass:rgba(16,26,48,.9);grid-template-columns:auto minmax(0,1fr) 230px auto!important}
+[data-professional-header][data-perimeter-theme=light],:root[data-reading-shell][data-theme=light] [data-professional-header]{--header-glass:rgba(255,255,255,.94)}
+[data-professional-header] .professional-mobile{display:none}.professional-mobile summary{min-width:38px;min-height:42px;display:grid;place-items:center;cursor:pointer;list-style:none}.professional-mobile summary::-webkit-details-marker{display:none}
+[data-professional-header] .professional-context{display:none}
+.professional-context-bar{padding:12px 24px;border-bottom:1px solid var(--search-line);background:var(--search-bg);color:var(--search-muted);font:12px/1.6 "Segoe UI",sans-serif;display:flex;flex-wrap:wrap;gap:8px 18px;overflow-wrap:anywhere}.professional-context-bar a{color:var(--search-accent)}
+@supports((backdrop-filter:blur(16px)) or (-webkit-backdrop-filter:blur(16px))){.site-header,[data-professional-header]{background:var(--header-glass)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}}
+@media(max-width:1250px) and (min-width:701px){.header-inner{grid-template-columns:minmax(0,1fr) 230px auto!important;padding:12px 0;gap:12px!important}.desktop-nav{grid-row:2;grid-column:1/-1}.header-inner>.site-search{grid-column:2;grid-row:1}.header-inner>.controls{grid-column:3;grid-row:1}[data-professional-header]{grid-template-columns:minmax(0,1fr) 230px auto!important;gap:12px!important}[data-professional-header]>.professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header]>.site-search{grid-column:2;grid-row:1}[data-professional-header]>.professional-controls{grid-column:3;grid-row:1}:root{--header-offset:176px}}
+@media(max-width:700px){.header-inner{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 0;gap:8px!important}.header-inner>.site-search{grid-row:2;grid-column:1/-1;width:100%}.header-inner>.controls{grid-column:2;grid-row:1}.site-search .search-results{width:100%;right:0}[data-professional-header]{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 16px!important;gap:8px!important}[data-professional-header]>.professional-primary{display:none!important}[data-professional-header]>.site-search{grid-column:1/-1;grid-row:2;width:100%}[data-professional-header]>.professional-controls{grid-column:2;grid-row:1}[data-professional-header] .professional-mobile{display:block}[data-professional-header] .professional-mobile[open]>.professional-primary{position:absolute;top:100%;left:0;right:0;padding:16px;background:var(--search-bg);border-bottom:1px solid var(--search-line);display:grid;grid-template-columns:1fr 1fr;gap:8px}[data-professional-header] .professional-mobile .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:12px!important}:root{--header-offset:126px}}
+@media(prefers-reduced-transparency:reduce){.site-header,[data-professional-header]{background:var(--search-bg)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+@media print{.site-search,.professional-context-bar{display:none!important}}
+
+@media(min-width:1251px){.header-inner{display:grid!important;grid-template-columns:auto minmax(0,1fr) 230px auto!important;gap:18px!important}.header-inner .desktop-nav{min-width:0}}
+
+html:has(.kee-dedicated-app-root){height:auto!important;overflow-x:hidden!important;overflow-y:auto!important}
+body:has([data-professional-header]){height:auto!important;overflow-x:clip!important;overflow-y:visible!important;padding-top:0!important}
+.demo-language-navigation{display:none!important}
+.stage-column,.telemetry-panel,.scene-pill,#timeline-slider{min-width:0}
+@media(max-width:1180px){.workspace,.template-tabs{grid-template-columns:minmax(0,1fr)!important}}
+
+.in-arena-frame .professional-context-bar,.in-arena-frame [data-knowledge-atlas]{display:none!important}
+</style><!-- kee-report-localization:metadata:end --></head>
+<body><!-- kee-report-localization-navigation:start --><nav class="kee-dedicated-nav" data-professional-header><a class="professional-identity reading-brand kee-dedicated-identity identity" href="../../zh.html">Qi Chen · @turbo998</a><div class="professional-primary" role="navigation" aria-label="主导航"><a href="../../studio/zh-index.html" data-section="hub" data-nav-en-href="../../studio/index.html" data-nav-zh-href="../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub">Frontier Transformation Engineering Hub</a><a href="../../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../../benchmarks.html" data-nav-zh-href="../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心" aria-current="page">基准评测中心</a><a href="../../zh-github-radar.html" data-section="radar" data-nav-en-href="../../github-radar.html" data-nav-zh-href="../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI 信号雷达</a><a href="../../zh-openrouter.html" data-section="routing" data-nav-en-href="../../openrouter.html" data-nav-zh-href="../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../../zh-about.html" data-section="profile" data-nav-en-href="../../about.html" data-nav-zh-href="../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">首席架构师履历</a></div><form class="site-search" role="search" action="../../studio/zh-archive.html" method="get" data-search-root="../../index.html" data-search-language="zh-CN"><label class="search-label" for="site-search-input">搜索架构、评测、Demo、技能...</label><input id="site-search-input" name="q" type="search" placeholder="搜索架构、评测、Demo、技能..." autocomplete="off" spellcheck="false" aria-keyshortcuts="/ Control+k Meta+k"><kbd aria-hidden="true">/</kbd><button type="submit" aria-label="搜索全部内容">⌕</button><div class="search-results" id="site-search-results" hidden></div><span class="search-status" role="status" aria-live="polite"></span></form><div class="reading-controls professional-controls" aria-label="网站语言与外观"><a href="defend-cards.en.html" lang="en" hreflang="en">EN</a><a href="defend-cards.zh-CN.html" lang="zh-CN" hreflang="zh-CN" aria-current="page">中文</a><details class="professional-mobile"><summary aria-label="打开主导航">☰</summary><div class="professional-primary" role="navigation" aria-label="移动主导航"><a href="../../studio/zh-index.html" data-section="hub" data-nav-en-href="../../studio/index.html" data-nav-zh-href="../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub">Frontier Transformation Engineering Hub</a><a href="../../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../../benchmarks.html" data-nav-zh-href="../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心" aria-current="page">基准评测中心</a><a href="../../zh-github-radar.html" data-section="radar" data-nav-en-href="../../github-radar.html" data-nav-zh-href="../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI 信号雷达</a><a href="../../zh-openrouter.html" data-section="routing" data-nav-en-href="../../openrouter.html" data-nav-zh-href="../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../../zh-about.html" data-section="profile" data-nav-en-href="../../about.html" data-nav-zh-href="../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">首席架构师履历</a></div></details><a data-reading-theme="light" href="?theme=light" aria-label="浅色主题">☀</a><a data-reading-theme="dark" href="?theme=dark" aria-label="深色主题">◐</a></div><div class="professional-context" aria-label="返回上下文"><a href="../../studio/zh-index.html">← 工程枢纽</a> · <a href="../../studio/zh-security.html">返回主题</a></div></nav><div class="professional-context-bar"><a href="../../studio/zh-index.html">← 工程枢纽</a> · <a href="../../studio/zh-security.html">返回主题</a></div><nav aria-label="报告语言" style="font:14px/1.5 system-ui,sans-serif;display:flex;flex-wrap:wrap;gap:12px;padding:12px 18px;background:#101a30;color:#eef3ff;width:100%;box-sizing:border-box"><a style="color:#9aabff" href="defend-cards.en.html" lang="en" hreflang="en">EN</a><a style="color:#9aabff" href="defend-cards.zh-CN.html" lang="zh-CN" hreflang="zh-CN" aria-current="page">中文</a><span>源报告译本；非独立复测。指标与证据保持原样。</span></nav><figure class="knowledge-figure" data-knowledge-atlas="security" style="margin:24px 0;max-width:100%"><svg xmlns="http://www.w3.org/2000/svg" lang="zh-CN" role="img" aria-labelledby="knowledge-db4c49d02535-title knowledge-db4c49d02535-desc" viewBox="0 0 360 733" width="360" style="display:block;width:100%;height:auto;max-width:560px;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-db4c49d02535-title">DEFEND 伙伴游戏本&amp;amp; Purview- 管理 -- -- AI7- 牌子基准牌</title><desc id="knowledge-db4c49d02535-desc">资产与信任边界: 身份 · 敏感数据 · 工具 · 外部输入 → 定义威胁模型 → 不可信输入与攻击路径: 提示注入 · 供应链 · 工具滥用 → 进入控制边界 → 最小权限与明确批准: 隔离 · 校验 · 策略关卡 · 人工审核 → 产生可审计事件 → 检测、遏制与恢复: 遥测 · 事件响应 · 回滚 → 检验防御假设 → 离线演练与来源证据: 来源事件不代表本次核验的损失估算</desc><rect width="360" height="733" rx="16" fill="#091827"/><text x="20" y="30" fill="#eef5ff" font-size="20" font-weight="700"><tspan x="20" dy="0">DEFEND 伙伴游戏本&amp;amp; Purview-</tspan><tspan x="20" dy="28">管理 -- -- AI7- 牌子基准牌</tspan></text><text x="20" y="86" fill="#a9b8ce" font-size="13" font-weight="400"><tspan x="20" dy="0">概念架构 · 箭头表示关系，不代表测量值</tspan></text><g data-concept="1"><rect x="16" y="112" width="328" height="79" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="126" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="142" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">资产与信任边界</tspan></text><text x="32" y="173" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">身份 · 敏感数据 · 工具 · 外部输入</tspan></text></g><g data-relationship="定义威胁模型"><path d="M32 191 V236" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 231 L32 237 L37 231" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="217" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">定义威胁模型</tspan></text></g><g data-concept="2"><rect x="16" y="243" width="328" height="79" rx="12" fill="#132942" stroke="#43617f"/><rect x="16" y="257" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="273" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">不可信输入与攻击路径</tspan></text><text x="32" y="304" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">提示注入 · 供应链 · 工具滥用</tspan></text></g><g data-relationship="进入控制边界"><path d="M32 322 V367" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 362 L32 368 L37 362" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="348" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">进入控制边界</tspan></text></g><g data-concept="3"><rect x="16" y="374" width="328" height="79" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="388" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="404" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">最小权限与明确批准</tspan></text><text x="32" y="435" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">隔离 · 校验 · 策略关卡 · 人工审核</tspan></text></g><g data-relationship="产生可审计事件"><path d="M32 453 V498" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 493 L32 499 L37 493" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="479" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">产生可审计事件</tspan></text></g><g data-concept="4"><rect x="16" y="505" width="328" height="79" rx="12" fill="#132942" stroke="#43617f"/><rect x="16" y="519" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="535" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">检测、遏制与恢复</tspan></text><text x="32" y="566" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">遥测 · 事件响应 · 回滚</tspan></text></g><g data-relationship="检验防御假设"><path d="M32 584 V629" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 624 L32 630 L37 624" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="610" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">检验防御假设</tspan></text></g><g data-concept="5"><rect x="16" y="636" width="328" height="79" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="650" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="666" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">离线演练与来源证据</tspan></text><text x="32" y="697" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">来源事件不代表本次核验的损失估算</tspan></text></g></svg><figcaption style="font:14px/1.6 system-ui,sans-serif;margin:12px 0;overflow-wrap:anywhere">整体知识图示：按标注关系阅读组件与工程边界。布局仅为概念示意；不表示吞吐、性能排名或生产部署。</figcaption></figure><!-- kee-report-localization-navigation:end -->
+
+
+<main class="deck-wrap">
+
+<!-- CARD 1 -->
+<article class="report-card" id="card-1">
+  <div class="card-accent-bar"></div>
+  <div class="card-inner">
+    <header class="card-header">
+      <div class="card-eyebrow">· 防守球队 × 安全伙伴为斯密克</div>
+      <h2 class="card-headline">5国防和国防司6工具包资产, <span class="grad-text">360p指南&amp; 51出站口</span></h2>
+      <p class="card-subtitle">端到端合成53- 滑坡DEFEND伙伴游戏本(5防伪级,4 Purview等级,51与出口大门对接Microsoft安保伙伴工具箱,供SMB使用(第款)6资产,7工业一板工,指导助理22- 工作流程SOW发电机,360p部署指南,以及PowerShell 7+自动化)。</p>
+    </header>
+    <div class="card-canvas">
+      <div class="workbench-shell">
+        <div class="wb-topbar">
+          <div>
+            <strong>DEFEND 游戏本(53幻灯片)×SMB安全伙伴工具包(6已解决的资产)</strong>
+            <div class="wb-sub">战略至执行管道:7工业一包车 指导助理 零台发电机 零台机360p指南 – pwsh 脚本</div>
+          </div>
+          <span class="wb-status">51退出项目 ·360p指南 ·22社会工作服务 .13CA 模板</span>
+        </div>
+        <div class="wb-grid">
+          <div class="wb-col-left">
+            <div class="wb-col-title">5- 工具箱+5分级</div>
+            <div class="wb-item">1对话7工业一板14p)</div>
+            <div class="wb-item">2数据安全指导助理</div>
+            <div class="wb-item">3提案PurviewSOW 发电机( 出自22(项目)</div>
+            <div class="wb-item">4规划6SMB 部署指南(360p)</div>
+            <div class="wb-item">5· 部署SMBBestPactice Tool(pwsh)7+)</div>
+            <div class="wb-item">政府 国防 T1-T -我们5 (51强制性出关)</div>
+            <div class="wb-note">治理规则(滑行)40: 零级进度,但不符合强制性退出标准;PowerShell工具箱执行报告 - 只有CA,破镜检查和Day -30 DLP模拟退出运行簿。</div>
+          </div>
+          <div class="wb-col-right">
+            <div class="wb-metrics">
+              <span class="wb-metric">53幻灯片+360pPDF 指南</span>
+              <span class="wb-metric">51退出标准项目</span>
+              <span class="wb-metric">8- 标记 DEFEND 分类学</span>
+              <span class="wb-metric">22SOW 工作流程+4套装</span>
+            </div>
+            <div class="decision-card">
+              <div class="decision-head">
+                <div>
+                  <span class="field-name">防御_ tile_ exit_ gates</span> <span class="type-pill">选择</span>
+                  <div class="question-sub">怎么样51强制性准备状态退出标准在各区域分发5DEFEND服务级别(滑行)34–38)?</div>
+                </div>
+                <span class="action-pill pill-auto">自动执行</span>
+              </div>
+              <div class="decision-main"><strong>51 / 51绘图出闸口( E)100.0%)</strong><span class="conf-muted"> 基地11· 安全保卫12遵守规定11· 完成8扩展9</span></div>
+              <div class="dist-list">
+                <div class="dist-row"><span class="dist-label">基金会&amp; XDR(T级)1+T 组合键2: 23/51)</span><div class="dist-track"><div class="dist-fill" style="width:45.1%"></div></div><span class="dist-pct">45.1%</span></div>
+                <div class="dist-row"><span class="dist-label">Purview &amp;统一( T)3+T 组合键4: 19/51)</span><div class="dist-track"><div class="dist-fill" style="width:37.3%"></div></div><span class="dist-pct">37.3%</span></div>
+                <div class="dist-row"><span class="dist-label">Sentinel 24/7 SOC(T级)5: 9/51)</span><div class="dist-track"><div class="dist-fill" style="width:17.6%"></div></div><span class="dist-pct">17.6%</span></div>
+              </div>
+            </div>
+            <div class="decision-card">
+              <div class="decision-head">
+                <div>
+                  <span class="field-name">smb_toolkit_sow_和_指针</span> <span class="type-pill">选择</span>
+                  <div class="question-sub">怎么样22 PurviewSOW 发电机工作流程和6SMB 部署指南(360页面)与AI一致.&amp;副驾驶准备?</div>
+                </div>
+                <span class="action-pill pill-confirm">确认</span>
+              </div>
+              <div class="decision-main"><strong>22国有企业服务+360p说明性指南</strong><span class="conf-muted"> · P1基金会(9· P2保留(1· P3高级&amp;AI 警卫队(A.12)</span></div>
+              <div class="dist-list">
+                <div class="dist-row"><span class="dist-label">临 时3高级&amp;副驾驶/副驾驶/设计师/设计师/12/22)</span><div class="dist-track"><div class="dist-fill" style="width:54.5%"></div></div><span class="dist-pct">54.5%</span></div>
+                <div class="dist-row"><span class="dist-label">临 时1商业保费基金会(Business Premium Foundation)9/22)</span><div class="dist-track"><div class="dist-fill" style="width:40.9%"></div></div><span class="dist-pct">40.9%</span></div>
+                <div class="dist-row"><span class="dist-label">临 时2中级治理(1/22)</span><div class="dist-track"><div class="dist-fill" style="width:4.5%"></div></div><span class="dist-pct">4.5%</span></div>
+              </div>
+            </div>
+            <div class="decision-card">
+              <div class="decision-head">
+                <div>
+                  <span class="field-name">lob_加密_例外_标签</span> <span class="type-pill">分数</span>
+                  <div class="question-sub">显示其中多少个敏感标签8- 标签DEFEND工业 单页分类学是没有加密的 LOB例外标签?</div>
+                </div>
+                <span class="action-pill pill-human">转人工</span>
+              </div>
+              <div class="decision-main"><strong>2 / 8例外标签( Q)25.0%· 需要信息技术签名(Off)</strong><span class="conf-muted"> ● 保密&amp;高度机密性 内部例外</span></div>
+              <div class="dist-list">
+                <div class="dist-row"><span class="dist-label">标准/加密标签( Q)6/8)</span><div class="dist-track"><div class="dist-fill" style="width:75.0%"></div></div><span class="dist-pct">75.0%</span></div>
+                <div class="dist-row"><span class="dist-label">未加密例外+季度审计(2/8)</span><div class="dist-track"><div class="dist-fill" style="width:25.0%"></div></div><span class="dist-pct">25.0%</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="callout-box"><strong>战略(`DEFEND Playbook`+ 执行(`Security Partner Toolkit for SMB`):</strong> 国防和国防部定义5- 三级管理服务架构和51退出关卡; SMB 工具箱可操作7工业30/60/90- 一天一页,客户端`DataSecurityGuidedAssistant` (`v2.0.1572`), `SOWGenerator` (22工作流程,360部署手册页和专有能力PowerShell 7+脚本(`SMBBestPracticeTool`).</div>
+    </div>
+    <footer class="card-footer">
+      <span><strong>DEFEND 游戏本 X SMB 安全伙伴工具包</strong> 测量(53幻灯片+6资产+360p数字化)</span>
+      <span>1 / 7</span>
+    </footer>
+  </div>
+</article>
+
+<!-- CARD 2 -->
+<article class="report-card" id="card-2">
+  <div class="card-accent-bar"></div>
+  <div class="card-inner">
+    <header class="card-header">
+      <div class="card-eyebrow">塞纳里奥: 皮尔特DLP,EDGE GENAI 警卫队&amp; 8- 洛杉矶塔克森莫</div>
+      <h2 class="card-headline">2- 规则副驾驶DLP边缘内置GenAI块。8- 标签LOB分类学。</h2>
+      <p class="card-subtitle">深潜入Purview- 服务级3 (`Data Control`), SOW 生成器的优先级3AI 护卫,以及7工业 一页30/60/90- 一天动议。</p>
+    </header>
+    <div class="card-canvas">
+      <div class="quote-box">“工具包执行合同(第条)`SOWGenerator` &amp; `Data Security Deployment Guide` 92p: 应用两个专用Purview DLP规则Microsoft 365模拟模式下的副驾驶(SITs 个,敏感标签个)go- 启用, 屏蔽敏感上传到 ChatGPT/Gemini透过Edge for Business Inline网络交通DLP,并强制进行季度审查`INTERNAL EXCEPTION`定位标签"。</div>
+      <div class="stack-list">
+        <div class="decision-card">
+          <div class="decision-head">
+            <div>
+              <span class="field-name">副驾驶_ 和_ edge_ genai_ dlp</span> <span class="type-pill">选择</span>
+              <div class="question-sub">怎么样PurviewSOW 发电机和92- 数据安全指南保护两个受制裁的M365副驾驶和未经批准的网络GenAI?</div>
+            </div>
+            <span class="action-pill pill-auto">自动执行</span>
+          </div>
+          <div class="decision-main"><strong>双AI 护卫平面( 受制裁的副驾驶+内线边缘网络)</strong><span class="conf-muted"> · 2- 规则副驾驶DLP+边缘聊天GPT/Gemini块 + DSPM 用于AI</span></div>
+          <div class="dist-list">
+            <div class="dist-row"><span class="dist-label">DLP副驾驶(SIT规则+标签规则)</span><div class="dist-track"><div class="dist-fill" style="width:40.0%"></div></div><span class="dist-pct">40.0%</span></div>
+            <div class="dist-row"><span class="dist-label">DLP用于边际内网(ChatGPT/)Gemini)</span><div class="dist-track"><div class="dist-fill" style="width:30.0%"></div></div><span class="dist-pct">30.0%</span></div>
+            <div class="dist-row"><span class="dist-label">激活DSPM+适应性保护</span><div class="dist-track"><div class="dist-fill" style="width:30.0%"></div></div><span class="dist-pct">30.0%</span></div>
+          </div>
+        </div>
+        <div class="decision-card">
+          <div class="decision-head">
+            <div>
+              <span class="field-name">工业 _ _页码_30_60_90</span> <span class="type-pill">诺尔</span>
+              <div class="question-sub">全部动手7工业单人采购(消费品、教育、食品安全、保健、制造业、非营利、专业服务)30/60/90- 一天动议?</div>
+            </div>
+            <span class="action-pill pill-auto">自动执行</span>
+          </div>
+          <div class="decision-main"><strong>有(请说明)7 / 7工业14(已标准化)</strong><span class="conf-muted"> · 天数30英国石油公司MVP(5- 标签飞行员) ~ 日60合作伙伴分享 日90 Purview套件EDM/自动标签</span></div>
+          <div class="dist-list">
+            <div class="dist-row"><span class="dist-label">建立垂直(CG、FSI、保健、Mfg、PS)</span><div class="dist-track"><div class="dist-fill" style="width:71.4%"></div></div><span class="dist-pct">71.4%</span></div>
+            <div class="dist-row"><span class="dist-label">新添加的垂直( 教育)&amp;非营利组织)</span><div class="dist-track"><div class="dist-fill" style="width:28.6%"></div></div><span class="dist-pct">28.6%</span></div>
+          </div>
+        </div>
+        <div class="decision-card">
+          <div class="decision-head">
+            <div>
+              <span class="field-name">电源 shell_ safe_gates</span> <span class="type-pill">分数</span>
+              <div class="question-sub">怎么样`SMBBestPracticeTool` (`microsoft/BestPractice_Deploy-Scripts`防止合作伙伴自动化锁住客户租户?</div>
+            </div>
+            <span class="action-pill pill-confirm">确认</span>
+          </div>
+          <div class="decision-main"><strong>4 / 4关闭的负载安全门(100.0%)</strong><span class="conf-muted"> · 报告只限CA(13JSONs)+断层扫描 +`-IncludeHighRisk`+ 天数30 DLP退出运行簿</span></div>
+          <div class="dist-list">
+            <div class="dist-row"><span class="dist-label">Entra 13CA 报告 - 仅限 + 断层图像检查</span><div class="dist-track"><div class="dist-fill" style="width:50.0%"></div></div><span class="dist-pct">50.0%</span></div>
+            <div class="dist-row"><span class="dist-label">Purview日间30 DLP辛语+Defender ASR审计</span><div class="dist-track"><div class="dist-fill" style="width:50.0%"></div></div><span class="dist-pct">50.0%</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="callout-box"><strong>真实世界工程努恩斯:</strong> 加密打开`CONFIDENTIAL` / `HIGHLY CONFIDENTIAL`文件经常会断开遗留ERP、EHR、SIS/LMS或CAD/MRP连接器。7工业 单页和`DataSecurityGuidedAssistant`明确引入`INTERNAL EXCEPTION`分标签(不加密标记,不对外共享),由强制IT签出和季度说明审计管理.</div>
+    </div>
+    <footer class="card-footer">
+      <span><strong>DEFEND 游戏本 X SMB 安全伙伴工具包</strong> 测量(7单页+导行助理+SOWGen+pwsh).</span>
+      <span>2 / 7</span>
+    </footer>
+  </div>
+</article>
+
+<!-- CARD 3 -->
+<article class="report-card" id="card-3">
+  <div class="card-accent-bar"></div>
+  <div class="card-inner">
+    <header class="card-header">
+      <div class="card-eyebrow">评测范围</div>
+      <h2 class="card-headline">11游戏本模块,12治理&amp;许可证检查</h2>
+      <p class="card-subtitle">核查每一级边界、强制性先决条件、许可证范围排除以及AI治理大门,跨越所有53幻灯片。标记(QQ)突出显示被游戏本明确阻断的反标。</p>
+    </header>
+    <div class="card-canvas">
+      <table class="clean-table">
+        <thead>
+          <tr><th>场景</th><th>GOVERNANCE / ARCHITECTURE CHECK</th><th>VERIFIED PLAYBOOK RULE</th><th class="act-col">行动</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="sc-col">计程车01–02范围</td><td>国防是官方的MicrosoftSKU还是合伙人服务架构?</td><td><strong>M上由合作伙伴建造的建筑365碱性农药+加成剂</strong> (100%)</td><td class="act-col act-auto">自动</td></tr>
+          <tr><td class="sc-col">计程车02许可证发放</td><td>已经Azure管理项下的IaaS/PaaS工作量365 Defender套房吗?</td><td><strong>0/1列入(Defender因为云是分开的)</strong> (0%) <span class="miss-mark">✕</span></td><td class="act-col act-human">人工</td></tr>
+          <tr><td class="sc-col">计程车03基金会</td><td>多租户伙伴通过Microsoft 365灯塔</td><td><strong>GDAP 最低优先级+角色范围工作流程</strong> (100%)</td><td class="act-col act-auto">自动</td></tr>
+          <tr><td class="sc-col">计程车03基金会</td><td>镇静计划1有条件访问信任链中的角色( Slide)14)</td><td><strong>强制装置遵守执行平面</strong> (100%)</td><td class="act-col act-auto">自动</td></tr>
+          <tr><td class="sc-col">计程车04评估</td><td>Microsoft零信任评估覆盖全局7域名</td><td><strong>7/7域包括身份、设备、数据&amp;大赦国际</strong> (100%)</td><td class="act-col act-auto">自动</td></tr>
+          <tr><td class="sc-col">计程车05等级1</td><td>DEFENDBase 强制退出标准计数(滑行)34)</td><td><strong>11/11门(MFA、CA、MDM、MDE、MDO、MDO、MDO)DLP基础)</strong> (100%)</td><td class="act-col act-auto">自动</td></tr>
+          <tr><td class="sc-col">计程车05等级2</td><td>DEFEND 安全身份/SaaS/Shadow AI 退出标准(滑行)35)</td><td><strong>12/12大门(Entra临 时2、计量吸入器、多功能性2,MDA阴影AI).</strong> (100%)</td><td class="act-col act-auto">自动</td></tr>
+          <tr><td class="sc-col">计程车05等级3</td><td>DEFEND 履约副驾驶&amp; Purview退出标准(滑翔)36)</td><td><strong>11/11门(标签,DLP,保留,IRM,eDiscovery) 互联网档案馆的存檔,存档日期--.</strong> (100%)</td><td class="act-col act-auto">自动</td></tr>
+          <tr><td class="sc-col">计程车05等级4</td><td>DEFEND 完成跨域关联退出标准(Slide)37)</td><td><strong>8/8门( 统一)XDR+ 风险适应DLP(中文(简体) ).</strong> (100%)</td><td class="act-col act-auto">自动</td></tr>
+          <tr><td class="sc-col">计程车05等级5</td><td>客户能否激活DEFENDExtend( 自动启动) ?Sentinel? 从DEFENDBase?</td><td><strong>被封禁: 需要先完成 DEFEND 完成( Slide)40)</strong> (0%) <span class="miss-mark">✕</span></td><td class="act-col act-human">人工</td></tr>
+          <tr><td class="sc-col">计程车06纪律</td><td>租户能否提前安装有未减速的开出口的阶梯?.</td><td><strong>屏蔽,除非正式的风险登记册注册</strong> (0%) <span class="miss-mark">✕</span></td><td class="act-col act-confirm">确认</td></tr>
+          <tr><td class="sc-col">工具包 指南</td><td>6SMB 部署指南(数据)92p,身份标识90p电子邮件52p编辑51p,管理部40p,萨斯35p)</td><td><strong>6/6指南(360页面) 已映射到DEFEND T1-T -我们4</strong> (100%)</td><td class="act-col act-auto">自动</td></tr>
+          <tr><td class="sc-col">工具包 · pwsh</td><td>SMBBest实践工具( 以`Deploy-Scripts`(关于遗产)Windows PowerShell 5.1</td><td><strong>硬封口: 需要 pwsh7+ &amp;报告 - 只有CA</strong> (0%) <span class="miss-mark">✕</span></td><td class="act-col act-auto">自动</td></tr>
+        </tbody>
+      </table>
+      <div class="callout-box"><strong>4关键伙伴反标被定型封杀(QQ):</strong> (1假设 M365 Defender套接字保护Azure微米/集装箱,无Defender用于云; (.2(a) 上船Microsoft Sentinel (`DEFENDExtend`) 之前`DEFENDComplete`控制符存在; (3推进各级,不完成出口或风险登记册的登记;和 (4运行中`SMBBestPracticeTool`遗产问题5.1或允许不进行报告+破镜核查的CA政策。</div>
+    </div>
+    <footer class="card-footer">
+      <span><strong>DEFEND伙伴游戏本53- 滑翔建筑基准</strong> 测量(12正式治理检查)</span>
+      <span>3 / 7</span>
+    </footer>
+  </div>
+</article>
+
+<!-- CARD 4 -->
+<article class="report-card" id="card-4">
+  <div class="card-accent-bar"></div>
+  <div class="card-inner">
+    <header class="card-header">
+      <div class="card-eyebrow">底层机制</div>
+      <h2 class="card-headline">从零信任遥测到确定等级门执行</h2>
+      <p class="card-subtitle">民主基金治理引擎如何评价整个租户态势7零信任支柱和51授权副驾驶激活前的出站闸门或Sentinel SOC上船时</p>
+    </header>
+    <div class="card-canvas">
+<pre class="code-dark">{
+  "tenant_assessment": {
+    "baseline_tool": "Microsoft Zero Trust Assessment + Secure Score + Purview DSPM",
+    "zero_trust_7_pillars": ["Identity", "Devices", "Applications", "Data", "Infrastructure", "Networks", "AI"],
+    "multitenant_control_plane": "Microsoft 365 Lighthouse (GDAP role-scoped, zero standing admin)",
+    "device_enforcement_plane": "Microsoft Intune Plan 1 -&gt; Conditional Access compliance signal"
+  },
+  "tier_progression_contract": {
+    "DEFENDBase":       { "gates": 11, "license": "M365 Business Premium" },
+    "DEFENDSecurity":   { "gates": 12, "license": "BP + Microsoft Defender Suite (Entra P2, MDI, MDE P2, MDO P2, MDA)" },
+    "DEFENDCompliance": { "gates": 11, "license": "BP + Microsoft Purview Suite (MIP, DLP, IRM, Audit, eDiscovery)" },
+    "DEFENDComplete":   { "gates": 8,  "license": "BP + Combined Defender &amp; Purview Suite (Adaptive Protection)" },
+    "DEFENDExtend":     { "gates": 9,  "license": "DEFENDComplete + Microsoft Sentinel (SIEM/SOAR 24/7 SOC)" }
+  }
+}</pre>
+      <div class="code-transition">确定等级&amp; Purview- 用于AI验证器(滑行)34–40, 48)</div>
+<pre class="code-dark">def verify_defend_progression(current_tier, target_tier, passed_gates, risk_register_signed):
+    required = EXIT_GATES[target_tier]  # Base:11, Sec:12, Comp:11, Complete:8, Extend:9
+    if target_tier == "DEFENDExtend" and current_tier != "DEFENDComplete":
+        return "<span class="hl-answer">&lt;answer&gt;BLOCKED: DEFENDExtend requires DEFENDComplete controls in place (Slide 40)&lt;/answer&gt;</span>"
+    missing = required - passed_gates
+    if missing and not risk_register_signed:
+        return f"<span class="hl-answer">&lt;answer&gt;HOLD_AT_{current_tier}: {len(missing)} mandatory exit criteria unmet&lt;/answer&gt;</span>"
+    if target_tier in ("DEFENDCompliance", "DEFENDComplete"):
+        enable_purview_tier3(["Copilot_DLP", "DSPM_for_AI", "Insider_Risk_Adaptive_Protection"])
+    return f"<span class="hl-answer">&lt;answer&gt;APPROVED_{target_tier}: Low-Level Design (LLD) + Change Control Baseline Locked&lt;/answer&gt;</span>"</pre>
+      <div class="callout-box"><strong>建筑取走:</strong> DEFEND不出售临时安全加价,而是执行州机合同:低级设计文档+风险登记册+变化控制+51明确的出口门5等级。</div>
+    </div>
+    <footer class="card-footer">
+      <span><strong>DEFEND伙伴游戏本53- 滑翔建筑基准</strong> 测量(滑行)11–14, 30–40, 48)</span>
+      <span>4 / 7</span>
+    </footer>
+  </div>
+</article>
+
+<!-- CARD 5 -->
+<article class="report-card" id="card-5">
+  <div class="card-accent-bar"></div>
+  <div class="card-inner">
+    <header class="card-header">
+      <div class="card-eyebrow">鲁棒性检验</div>
+      <h2 class="card-headline">等级进展与未加号的AI&amp; SIEM部署</h2>
+      <p class="card-subtitle">将结构化的国防和应急发展支出方案分阶段采用与没有退出标准的共同临时SMB/中间市场部署相比较;或Purview先决条件(《公约》)。</p>
+    </header>
+    <div class="card-canvas">
+      <table class="clean-table">
+        <thead>
+          <tr><th>GOVERNANCE DIMENSION / SCENARIO</th><th class="num-col">DEFEND GOVERNED</th><th class="num-col">AD-HOC UNGATED</th><th class="num-col">DELTA (PTS)</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="rob-main">东1· 身份证明&amp;设备信任(MFA + 有条件的接入 + 调和合规)</div><div class="rob-sub">11/11DEFENDBase 退出关卡被强制执行, 仅限 MFA 不满足设备要求或破镜测试</div></td>
+            <td class="num-col">100.0%</td><td class="num-col">45.5%</td><td class="num-col">+54.5</td>
+          </tr>
+          <tr>
+            <td><div class="rob-main">东2· 识别威胁&amp;影子AI治理( 内地)Entra临 时2+ 计量吸入器+ MDA)</div><div class="rob-sub">12/12DEFEND安全出站口对无风险签名自动补救的只反应警报EDR</div></td>
+            <td class="num-col">100.0%</td><td class="num-col">33.3%</td><td class="num-col">+66.7</td>
+          </tr>
+          <tr>
+            <td><div class="rob-main">东3 · Microsoft 365副驾驶数据过度共享&amp;提示DLP准备情况</div><div class="rob-sub">Purview等级1–3(标签+)DLP+ DSPM for AI + IRM) vs 启用非分类共享点上的 Copilot</div></td>
+            <td class="num-col">100.0%</td><td class="num-col">18.2%</td><td class="num-col">+81.8</td>
+          </tr>
+          <tr>
+            <td><div class="rob-main">东4动态内幕风险 – 有条件的接入适应性执法</div><div class="rob-sub">8/8DEFEND 完成统一 SecOps+ 合规门对仓储的安保和法律小组</div></td>
+            <td class="num-col">100.0%</td><td class="num-col">25.0%</td><td class="num-col">+75.0</td>
+          </tr>
+          <tr>
+            <td><div class="rob-main">东5 · Sentinel SIEM信号到噪声效率(预调)XDR先决条件)</div><div class="rob-sub">上岗SentinelDEFEND 完成后 (9/9门) vs 从 Base 原始未调试日志摄取</div></td>
+            <td class="num-col">100.0%</td><td class="num-col">22.2%</td><td class="num-col">+77.8</td>
+          </tr>
+          <tr>
+            <td><div class="rob-main">多伙伴私人卫生(灯塔GDAP+变化控制)</div><div class="rob-sub">角色范围 GDAP + LLD + 风险登记册 vs 持久性全球管理员/无证租户编辑</div></td>
+            <td class="num-col">100.0%</td><td class="num-col">20.0%</td><td class="num-col">+80.0</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="callout-box"><strong>结构化的DEFEND出口显示平均+关闭72.6在所有领域治理的差距6维度。</strong> 未说明部署中最大的一次接触是使M型365无副驾驶Purview敏感分类学,DLP,和DSPM用于AI (+)81.8pts 差距),然后是持续伴侣管理员权限(+)80.0和吵闹的Sentinel摄入量(+)77.8. . . . .</div>
+    </div>
+    <footer class="card-footer">
+      <span><strong>DEFEND伙伴游戏本53- 滑翔建筑基准</strong> 测量(51退出闸门与基线故障模式)</span>
+      <span>5 / 7</span>
+    </footer>
+  </div>
+</article>
+
+<!-- CARD 6 -->
+<article class="report-card" id="card-6">
+  <div class="card-accent-bar"></div>
+  <div class="card-inner">
+    <header class="card-header">
+      <div class="card-eyebrow">LATENCY &amp; GATE DENSITY</div>
+      <h2 class="card-headline">强制性退出标准密度5国防和国防司</h2>
+      <p class="card-subtitle">对比累积的强制性准备状态大门(51合计项目/49跨幻灯片的唯一门34–38与每层门核查工作量递增。</p>
+    </header>
+    <div class="card-canvas">
+      <div class="lat-list">
+        <div class="lat-group">
+          <div class="lat-title">等级1· 国防和安全部队(男)365商业保费基金会)</div>
+          <div class="lat-row"><span class="lat-tag">递增级</span><div class="lat-bar lat-blue" style="width:21.6%"></div><strong class="lat-val">11大门(21.6%)</strong></div>
+          <div class="lat-row"><span class="lat-tag">累计共计</span><div class="lat-bar lat-gray" style="width:21.6%"></div><strong class="lat-val">11 / 51门</strong></div>
+        </div>
+        <div class="lat-group">
+          <div class="lat-title">等级2· 国防安全(Defender套房( 套房)XDR &amp;ITDR) (英语:</div>
+          <div class="lat-row"><span class="lat-tag">递增级</span><div class="lat-bar lat-blue" style="width:23.5%"></div><strong class="lat-val">12大门(23.5%)</strong></div>
+          <div class="lat-row"><span class="lat-tag">累计(T)1+T 组合键2)</span><div class="lat-bar lat-gray" style="width:45.1%"></div><strong class="lat-val">23 / 51门</strong></div>
+        </div>
+        <div class="lat-group">
+          <div class="lat-title">等级3· 遵守《国防法》Purview套房( 套房)&amp;副驾驶数据治理).</div>
+          <div class="lat-row"><span class="lat-tag">递增级</span><div class="lat-bar lat-blue" style="width:21.6%"></div><strong class="lat-val">11大门(21.6%)</strong></div>
+          <div class="lat-row"><span class="lat-tag">累计(T)1+T 组合键3)</span><div class="lat-bar lat-gray" style="width:43.1%"></div><strong class="lat-val">22 / 51门</strong></div>
+        </div>
+        <div class="lat-group">
+          <div class="lat-title">等级4· 国防和安全部队(统一安全+遵守一致)</div>
+          <div class="lat-row"><span class="lat-tag">递增级</span><div class="lat-bar lat-blue" style="width:15.7%"></div><strong class="lat-val">8大门(15.7%)</strong></div>
+          <div class="lat-row"><span class="lat-tag">累计(T)1-T -我们4)</span><div class="lat-bar lat-gray" style="width:82.4%"></div><strong class="lat-val">42 / 51门</strong></div>
+        </div>
+        <div class="lat-group">
+          <div class="lat-title">等级5· 国防外出(Microsoft Sentinel 24/7 SIEM/SOAR) 中标:</div>
+          <div class="lat-row"><span class="lat-tag">递增级</span><div class="lat-bar lat-blue" style="width:17.6%"></div><strong class="lat-val">9大门(17.6%)</strong></div>
+          <div class="lat-row"><span class="lat-tag">满5- 泰尔·斯塔克</span><div class="lat-bar lat-gray" style="width:100.0%"></div><strong class="lat-val">51 / 51大门(100%)</strong></div>
+        </div>
+      </div>
+      <div class="callout-box"><strong>82.4%强制性控制(第款)42/51门)在完成之前Microsoft Sentinel (`DEFENDExtend`) 被打开。</strong> 前装机 设备XDR,以及Purview数据治理,以第三级进行1–4确保等级5 SIEM/SOAR摄入操作是高信号,由政策管理遥测,而不是原始的配置噪声.</div>
+    </div>
+    <footer class="card-footer">
+      <span><strong>DEFEND伙伴游戏本53- 滑翔建筑基准</strong> 测量(滑行)34–38门分发)</span>
+      <span>6 / 7</span>
+    </footer>
+  </div>
+</article>
+
+<!-- CARD 7 -->
+<article class="report-card" id="card-7">
+  <div class="card-accent-bar"></div>
+  <div class="card-inner">
+    <header class="card-header">
+      <div class="card-eyebrow">工程判断</div>
+      <h2 class="card-headline">国防和国防部伙伴游戏本的优异之处 以及该配什么</h2>
+    </header>
+    <div class="card-canvas">
+      <div class="fit-grid">
+        <div class="fit-card fit-good">
+          <div class="fit-head">✅ 适用场景</div>
+          <ul>
+            <li>斯姆比&amp;中等市场微额供资建设可重复的高边际管理安保&amp;遵约做法365商业优惠</li>
+            <li>使用4- 蒂尔Purview- 服务蓝图(保护) · Govern · 控制——确定)</li>
+            <li>通过低级设计、风险登记册、变更控制以及51出站口</li>
+            <li>通过下列方式扩大多租户基线管理:Microsoft 365灯塔和图克计划1遵守政策</li>
+            <li>沟通安保行动(Defender XDR)和内幕/AI数据风险(Purview适应性保护)Sentinel SIEM</li>
+          </ul>
+        </div>
+        <div class="fit-card fit-bad">
+          <div class="fit-head">⛔ 不适用场景</div>
+          <ul>
+            <li>将国防和国防司视为官员Microsoft而不是由合作伙伴授权的管理服务蓝图</li>
+            <li>保护Azure日内瓦,日内瓦,日内瓦,日内瓦,纽约,纽约,纽约,纽约,纽约,纽约,纽约,纽约,纽约,纽约,纽约,纽约,纽约,纽约,纽约,纽约AKS集群,或MicroVM不添加的沙盒Microsoft Defender云层</li>
+            <li>直接从DEFENDBase跳入DEFENDExtend( 自动跳出)Sentinel未完成国防和国防部的完成XDR + Purview控制器</li>
+            <li>运行时内核级的自动代码执行代理的沙箱( 与 Track 的夹层)03卡塔/ 纳瓦Firecracker+ 音轨02红-团队实验室)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="dark-footer-box">
+        <p>证明: 完整53- 对国防和国防发展基金伙伴游戏本进行滑行审计,与Microsoft安保伙伴工具箱,供SMB使用(第款)6已解决的资产 :7工业单页14p], `microsoft/DataSecurityGuidedAssistant`五、导 言2.0.1572, `microsoft/SOWGenerator` [22工作流],,,6SMB 部署指南 [360p,和`microsoft/BestPractice_Deploy-Scripts` PowerShell 7+自动化)。</p>
+        <p class="dark-repo">伴奏重播:https://github.com/turbo998/ai-research-public/tree/main/docs/research/defend-partner-playbook · 7-卡戴克 v -你是谁?1</p>
+      </div>
+    </div>
+    <footer class="card-footer">
+      <span><strong>DEFEND伙伴游戏本53- 滑翔建筑基准</strong> 测量(53幻灯片 !11· 报告51退出项目)</span>
+      <span>7 / 7</span>
+    </footer>
+  </div>
+</article>
+
+</main>
+</body>
+</html>

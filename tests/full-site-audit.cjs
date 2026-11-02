@@ -6,12 +6,13 @@ const {execFileSync} = require('node:child_process');
 const inventory = require('../docs/redesign/route-inventory.json');
 const production = require('../docs/redesign/production-routes.json');
 const dedicated = require('../docs/redesign/dedicated-integration.json');
+const {allowedFrames} = require('../scripts/pelican-policy.cjs');
 const readingSimulatorScroll = {
   'workshops/faf-vs-agent-forge/demo-agent-forge-pelican.html': [{selector:'#doc-box',reason:'Preserved simulator document/code artifact inspector; reading manifest dedicated-design exception.'}],
   'workshops/faf-vs-agent-forge/demo-faf-pelican.html': [{selector:'#doc-box',reason:'Preserved simulator document/code artifact inspector; reading manifest dedicated-design exception.'}],
   'workshops/faf-vs-agent-forge/demo-hve-pelican.html': [{selector:'#artifactContent',reason:'Preserved generated implementation-notes inspector; reading manifest dedicated-design exception.'}]
 };
-const runtimeFragments = Object.fromEntries(['animation', 'generative-visual-lab'].map(directory => [`${directory}/demos/knowledge-explainer-studio/index.html`, {'tpl-mcp':'xiaozhe-mcp-node-graph','tpl-rag':'xiaozhe-rag-pipeline-flow','tpl-finops':'chimp-deepseek-unit-economics'}]));
+const runtimeFragments = Object.fromEntries(['animation', 'generative-visual-lab'].flatMap(directory => ['index.html', 'index.en.html'].map(name => [`${directory}/demos/knowledge-explainer-studio/${name}`, {'tpl-mcp':'xiaozhe-mcp-node-graph','tpl-rag':'xiaozhe-rag-pipeline-flow','tpl-finops':'chimp-deepseek-unit-economics'}])));
 const root = path.join(__dirname, '..');
 const base = process.env.SITE_TEST_URL || 'http://127.0.0.1:8797';
 const output = process.env.SITE_ARTIFACT_DIR || path.join(root, 'site-test-artifacts');
@@ -51,44 +52,52 @@ async function main() {
     }
     await parser.close();
     if(process.env.FULL_BROWSER_AUDIT === '1') {
-      for(const file of files) {
-        if(file === 'workshops/azure-vm-modernization/index.html') {
-          const response = await fetch(`${base}/${file}`, {signal:AbortSignal.timeout(30000)});
-          assert.equal(response.status,200,file);
+      const queue = [...files];
+      await Promise.all(Array.from({length: 4}, async () => {
+        while (queue.length) {
+          const file = queue.shift();
+          if(/^workshops\/azure-vm-modernization\/index(?:\.zh)?\.html$/.test(file)) {
+            const response = await fetch(`${base}/${file}`, {signal:AbortSignal.timeout(30000)});
+            assert.equal(response.status,200,file);
+            const page = await browser.newPage();
+            await page.setJavaScriptEnabled(false);
+            await page.goto(`${base}/${file}`,{waitUntil:'domcontentloaded'});
+            const fallback = await page.$$eval('a[href]', links=>links.map(a=>a.href).filter(h=>/^https?:/.test(h)&&new URL(h).origin!==location.origin));
+            assert.ok(fallback.length, 'External redirect must retain a native fallback');
+            report.externalRedirects.push({file,localStatus:response.status,fallback,limitation:'Existing external destination; remote availability is not local-render acceptance.'});
+            await page.close();
+            continue;
+          }
+          const sourceFile=file.replace(/\.(?:en|zh)\.html$/,'.html');
+          const allowedScroll = dedicated.records.find(r=>r.path===sourceFile)?.verticalScrollRegions || readingSimulatorScroll[sourceFile] || [];
           const page = await browser.newPage();
-          await page.setJavaScriptEnabled(false);
-          await page.goto(`${base}/${file}`,{waitUntil:'domcontentloaded'});
-          const fallback = await page.$$eval('a[href]', links=>links.map(a=>a.href).filter(h=>/^https?:/.test(h)&&new URL(h).origin!==location.origin));
-          assert.ok(fallback.length, 'External redirect must retain a native fallback');
-          report.externalRedirects.push({file,localStatus:response.status,fallback,limitation:'Existing external destination; remote availability is not local-render acceptance.'});
+          await page.setCacheEnabled(false);
+          const errors=[];
+          page.on('pageerror',err=>errors.push(err.message));
+          for(const width of [390,768,1440]) {
+            errors.length = 0;
+            await page.setViewport({width,height:900});
+            try {
+              const response=await page.goto(`${base}/${file}`,{waitUntil:'domcontentloaded',timeout:30000});
+              await new Promise(resolve=>setTimeout(resolve,250));
+              await page.evaluate(()=>scrollTo(0,600));
+              const state=await page.evaluate(allowed=>({
+                documentWidth:document.documentElement.scrollWidth,
+                bodyOverflow:getComputedStyle(document.body).overflowY,
+                frames:document.querySelectorAll('iframe').length,
+                localHtmlFrames:[...document.querySelectorAll('iframe[src]')].filter(e=>{const u=new URL(e.src,location.href);return u.origin===location.origin&&(/\.html?$/.test(u.pathname)||u.pathname.endsWith('/'));}).map(e=>e.getAttribute('src')),
+                scrollContainers:[...document.querySelectorAll('body *')].filter(e=>e.checkVisibility({checkVisibilityCSS:true})&&e.scrollHeight>e.clientHeight+3&&/auto|scroll/.test(getComputedStyle(e).overflowY)).map(e=>({tag:e.tagName,id:e.id,className:String(e.className),              height:e.clientHeight,scrollHeight:e.scrollHeight,reviewed:allowed.find(region=>e.matches(region.selector))||null})),
+                              shell:!!document.querySelector('.site-header,[data-professional-header]'),
+                headerTop:document.querySelector('.site-header,[data-professional-header]')?.getBoundingClientRect().top,
+                search:!!document.querySelector('.site-header input[type=search],[data-professional-header] input[type=search]')
+                            }),allowedScroll);
+              report.layouts.push({file,width,status:response?.status(),...state,errors:[...new Set(errors)]});
+            }catch(error){report.layouts.push({file,width,error:error.message});}
+          }
           await page.close();
-          continue;
+          console.log(`Audited ${file}`);
         }
-        const allowedScroll = dedicated.records.find(r=>r.path===file)?.verticalScrollRegions || readingSimulatorScroll[file] || [];
-        const page = await browser.newPage();
-        await page.setCacheEnabled(false);
-        const errors=[];
-        page.on('pageerror',err=>errors.push(err.message));
-        for(const width of [390,1440]) {
-          errors.length = 0;
-          await page.setViewport({width,height:900});
-          try {
-            const response=await page.goto(`${base}/${file}`,{waitUntil:'domcontentloaded',timeout:30000});
-            await new Promise(resolve=>setTimeout(resolve,250));
-            const state=await page.evaluate(allowed=>({
-              documentWidth:document.documentElement.scrollWidth,
-              bodyOverflow:getComputedStyle(document.body).overflowY,
-              frames:document.querySelectorAll('iframe').length,
-              localHtmlFrames:[...document.querySelectorAll('iframe[src]')].filter(e=>{const u=new URL(e.src,location.href);return u.origin===location.origin&&(/\.html?$/.test(u.pathname)||u.pathname.endsWith('/'));}).map(e=>e.getAttribute('src')),
-              scrollContainers:[...document.querySelectorAll('body *')].filter(e=>e.checkVisibility({checkVisibilityCSS:true})&&e.scrollHeight>e.clientHeight+3&&/auto|scroll/.test(getComputedStyle(e).overflowY)).map(e=>({tag:e.tagName,id:e.id,className:String(e.className),              height:e.clientHeight,scrollHeight:e.scrollHeight,reviewed:allowed.find(region=>e.matches(region.selector))||null})),
-                            shell:!!document.querySelector('.site-header,.reading-header,.kee-dedicated-nav')
-                          }),allowedScroll);
-            report.layouts.push({file,width,status:response?.status(),...state,errors:[...new Set(errors)]});
-          }catch(error){report.layouts.push({file,width,error:error.message});}
-        }
-        await page.close();
-        console.log(`Audited ${file}`);
-      }
+      }));
       for(const [file,aliases] of Object.entries(runtimeFragments)) {
         for(const [fragment,expected] of Object.entries(aliases)) {
           const page=await browser.newPage();
@@ -106,10 +115,12 @@ async function main() {
       const failures=[];
       if(layout.error) failures.push(layout.error);
       else {
+        if(!layout.shell || !layout.search) failures.push('Missing shared header or global search');
+        if(Math.abs(layout.headerTop)>1) failures.push(`Header not sticky: ${layout.headerTop}`);
         if(layout.status!==200) failures.push(`HTTP status ${layout.status}`);
         if(layout.documentWidth>layout.width+2) failures.push(`Document overflow: ${layout.documentWidth} > ${layout.width}`);
         if(layout.errors.length) failures.push(...layout.errors);
-        if(layout.localHtmlFrames.length) failures.push(`Nested local HTML: ${layout.localHtmlFrames.join(', ')}`);
+        if(layout.localHtmlFrames.length && !allowedFrames(layout.file,layout.localHtmlFrames)) failures.push(`Nested local HTML outside the three-engine Pelican allowlist: ${layout.localHtmlFrames.join(', ')}`);
         const pageScrollers=layout.scrollContainers.filter(e=>!['PRE','CODE','TEXTAREA'].includes(e.tag)&&!e.reviewed);
         if(pageScrollers.length) failures.push(`Unreviewed scrolling containers: ${pageScrollers.map(e=>`${e.tag}#${e.id}.${e.className}`).join(', ')}`);
       }

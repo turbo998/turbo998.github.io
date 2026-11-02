@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src data:;">
+<title>Agent Forge (FAF五、导 言2)vs. (中文(简体) ).Microsoft AGENT-FORGE — 7-卡片 -你还不知道4:5基准报告</title>
+<style>
+  :root {
+    --bg-page: #0B1120;
+    --bg-card: #FFFFFF;
+    --bg-subtle: #F8FAFC;
+    --bg-dark: #0F172A;
+    --text-main: #0F172A;
+    --text-muted: #475569;
+    --text-light: #94A3B8;
+    --border-color: #E2E8F0;
+    --accent-blue: #2563EB;
+    --accent-bar: #3B82F6;
+    --baseline-bar: #CBD5E1;
+    --green-bg: #ECFDF5;
+    --green-border: #A7F3D0;
+    --green-text: #065F46;
+    --amber-bg: #FFFBEB;
+    --amber-border: #FDE68A;
+    --amber-text: #92400E;
+    --red-bg: #FEF2F2;
+    --red-border: #FECACA;
+    --red-text: #991B1B;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg-page);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: var(--text-main);
+    padding: 36px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 36px;
+  }
+  .deck-header {
+    width: 900px;
+    color: #F8FAFC;
+    text-align: center;
+    margin-bottom: 4px;
+  }
+  .deck-header h1 { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+  .deck-header p { font-size: 13px; color: #94A3B8; }
+  .card {
+    width: 900px;
+    min-height: 1125px;
+    background: var(--bg-card);
+    border-radius: 20px;
+    padding: 36px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.45);
+    position: relative;
+    overflow: hidden;
+  }
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 12px;
+    margin-bottom: 18px;
+  }
+  .kicker {
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-blue);
+  }
+  .page-num {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-muted);
+    background: var(--bg-subtle);
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: 1px solid var(--border-color);
+  }
+  .headline {
+    font-size: 25px;
+    line-height: 1.28;
+    font-weight: 800;
+    color: var(--text-main);
+    margin-bottom: 10px;
+  }
+  .gradient-text {
+    background: linear-gradient(90deg, #1D4ED8 0%, #0EA5E9 55%, #10B981 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .subheadline {
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+  }
+  .workbench-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.15fr 1fr;
+    gap: 14px;
+    margin-bottom: 18px;
+    flex: 1;
+  }
+  .wb-col {
+    background: var(--bg-subtle);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .wb-title {
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 8px;
+  }
+  .wb-item {
+    background: #FFFFFF;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 12.5px;
+    line-height: 1.45;
+  }
+  .wb-item strong { display: block; color: var(--text-main); margin-bottom: 3px; font-size: 13px; }
+  .pill {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .pill-auto { background: var(--green-bg); color: var(--green-text); border: 1px solid var(--green-border); }
+  .pill-confirm { background: var(--amber-bg); color: var(--amber-text); border: 1px solid var(--amber-border); }
+  .pill-human { background: var(--red-bg); color: var(--red-text); border: 1px solid var(--red-border); }
+  .pill-type { background: #EEF2FF; color: #3730A3; border: 1px solid #C7D2FE; text-transform: uppercase; }
+  .quote-box {
+    background: #F1F5F9;
+    border-left: 4px solid var(--accent-blue);
+    padding: 12px 16px;
+    border-radius: 0 10px 10px 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #1E293B;
+    margin-bottom: 16px;
+  }
+  .decision-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    flex: 1;
+    margin-bottom: 16px;
+  }
+  .decision-card {
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 14px 16px;
+    background: var(--bg-subtle);
+  }
+  .dc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .dc-title { font-size: 14px; font-weight: 800; color: var(--text-main); }
+  .bar-row {
+    display: grid;
+    grid-template-columns: 240px 1fr 64px;
+    align-items: center;
+    gap: 10px;
+    margin-top: 6px;
+    font-size: 12px;
+  }
+  .bar-track {
+    height: 10px;
+    background: #E2E8F0;
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    background: var(--accent-bar);
+    border-radius: 999px;
+  }
+  .bar-fill-green { background: #10B981; }
+  .bar-fill-amber { background: #F59E0B; }
+  .bar-val { font-weight: 700; text-align: right; color: var(--text-main); }
+  table.matrix {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin-bottom: 14px;
+  }
+  table.matrix th {
+    background: var(--bg-dark);
+    color: #FFFFFF;
+    text-align: left;
+    padding: 9px 10px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  table.matrix td {
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--border-color);
+    vertical-align: top;
+    line-height: 1.38;
+  }
+  table.matrix tr:nth-child(even) td { background: var(--bg-subtle); }
+  .miss-mark { color: #DC2626; font-weight: 800; margin-left: 4px; }
+  .dual-callout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 12px;
+  }
+  .callout-box {
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-size: 12px;
+    line-height: 1.45;
+    border: 1px solid var(--border-color);
+    background: var(--bg-subtle);
+  }
+  .code-block {
+    background: var(--bg-dark);
+    color: #E2E8F0;
+    border-radius: 12px;
+    padding: 16px 18px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 11.8px;
+    line-height: 1.5;
+    overflow-x: auto;
+    white-space: pre;
+  }
+  .code-arrow {
+    text-align: center;
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--accent-blue);
+    margin: 6px 0;
+  }
+  .latency-group {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    flex: 1;
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+  .lat-card {
+    border: 1px solid var(--border-color);
+    background: var(--bg-subtle);
+    border-radius: 12px;
+    padding: 14px 16px;
+  }
+  .lat-title { font-size: 13.5px; font-weight: 800; margin-bottom: 8px; }
+  .lat-bar-row {
+    display: grid;
+    grid-template-columns: 190px 1fr 150px;
+    align-items: center;
+    gap: 12px;
+    margin: 6px 0;
+    font-size: 12px;
+  }
+  .lat-track { height: 14px; background: #E2E8F0; border-radius: 6px; overflow: hidden; }
+  .lat-primary { height: 100%; background: #3B82F6; border-radius: 6px; }
+  .lat-base { height: 100%; background: #94A3B8; border-radius: 6px; }
+  .fit-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    flex: 1;
+    margin-bottom: 16px;
+  }
+  .fit-box-good {
+    background: var(--green-bg);
+    border: 1px solid var(--green-border);
+    border-radius: 14px;
+    padding: 18px;
+    color: var(--green-text);
+  }
+  .fit-box-bad {
+    background: var(--red-bg);
+    border: 1px solid var(--red-border);
+    border-radius: 14px;
+    padding: 18px;
+    color: var(--red-text);
+  }
+  .fit-box-good h3, .fit-box-bad h3 { font-size: 16px; margin-bottom: 10px; }
+  .fit-list { padding-left: 18px; font-size: 12.5px; line-height: 1.55; display: flex; flex-direction: column; gap: 8px; }
+  .footer-dark {
+    background: var(--bg-dark);
+    color: #F8FAFC;
+    border-radius: 12px;
+    padding: 14px 18px;
+    font-size: 12px;
+    line-height: 1.48;
+  }
+  .footer-dark strong { color: #38BDF8; }
+</style>
+<!-- kee-dedicated-style:start -->
+<style>/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.65fr 1.1fr 1.15fr 1.1fr 1.1fr;gap:6px;align-items:stretch;min-width:0}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+.kee-dedicated-report-viewport,.kee-dedicated-report-layout{display:contents}@media screen{body.kee-dedicated-report-root{display:block}.kee-dedicated-report-viewport{display:block;width:100%;max-width:100%;overflow-x:auto}.kee-dedicated-report-layout{
+    background: var(--bg-page);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: var(--text-main);
+    padding: 36px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 36px;
+  margin:0;padding:0;min-width:900px}.kee-dedicated-report-viewport:focus-visible{outline:2px solid #3b82f6;outline-offset:3px}}</style>
+<!-- kee-dedicated-style:end -->
+<!-- kee-report-localization:metadata:start --><link rel="alternate" hreflang="en" href="test-report-cards.en.html"><link rel="alternate" hreflang="zh-CN" href="test-report-cards.zh-CN.html"><meta name="report-translation-source" content="workshops/faf-vs-agent-forge/test-report-cards.html@941ee62"><meta name="report-translation-provenance" content="translation; independently_reproduced=false"><style>/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.65fr 1.1fr 1.15fr 1.1fr 1.1fr;gap:6px;align-items:stretch;min-width:0}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+
+html{scroll-padding-top:108px}.reading-header,.kee-dedicated-nav,[data-professional-header]{position:sticky;top:0;z-index:1000;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+
+:root{--search-bg:#101a30;--search-soft:#172440;--search-ink:#eef3ff;--search-muted:#adbbd1;--search-line:#293956;--search-accent:#9aabff;--header-offset:108px}
+:root[data-reading-shell][data-theme=light],[data-perimeter-theme=light]{--search-bg:#fff;--search-soft:#e8eefb;--search-ink:#17233e;--search-muted:#4c5e7c;--search-line:#d5ddec;--search-accent:#354ec8}
+html{scroll-padding-top:var(--header-offset,108px)!important}
+.site-search,.site-search *{box-sizing:border-box!important;font-family:"Segoe UI",sans-serif;letter-spacing:normal;text-transform:none}
+.site-search{position:relative;display:flex;align-items:center;gap:5px;min-width:0;width:230px;max-width:100%;margin:0!important;padding:0!important;line-height:1.4;border:1px solid var(--search-line);border-radius:9px;background:var(--search-soft);color:var(--search-ink);isolation:isolate}
+.site-search input[type=search]{display:block;flex:1;min-width:0;width:100%;height:42px;margin:0;padding:9px 8px!important;font-size:12px!important;line-height:1.5;border:0!important;border-radius:9px;background:transparent!important;color:var(--search-ink)!important;box-shadow:none!important;appearance:none}
+.site-search input::placeholder{color:var(--search-muted);opacity:1}.site-search input:focus-visible{outline:2px solid var(--search-accent);outline-offset:2px}
+.site-search kbd{font:11px Consolas,monospace;color:var(--search-muted);padding:1px 5px;border:1px solid var(--search-line);border-radius:4px}
+.site-search button[type=submit]{flex:none;width:38px;min-width:38px;height:42px;min-height:42px;padding:0;margin:0;border:0;border-radius:8px;background:transparent;color:var(--search-accent);font-size:24px;cursor:pointer;box-shadow:none}
+.search-label,.search-status{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.site-search .search-results{position:absolute;top:calc(100% + 10px);right:0;z-index:1100;width:min(480px,calc(100vw - 32px));max-height:min(560px,65vh);overflow-y:auto;border:1px solid var(--search-line);border-radius:12px;background:var(--search-bg);color:var(--search-ink);padding:10px;box-shadow:0 12px 32px #0005;text-align:left}
+.site-search .search-results[hidden]{display:none!important}.search-results .search-group{margin:8px 6px 4px;font:11px/1.5 Consolas,monospace;color:var(--search-muted)}
+.site-search .search-results a{display:block!important;padding:10px!important;margin:3px 0!important;border:1px solid transparent!important;border-radius:7px;background:transparent;color:var(--search-ink)!important;font-size:13px!important;text-decoration:none!important;white-space:normal;overflow-wrap:anywhere;text-align:left!important;line-height:1.5!important}
+.site-search .search-results a[aria-selected=true],.site-search .search-results a:hover{border-color:var(--search-accent)!important;background:var(--search-soft)}
+.search-results a small{display:block;font-size:10px;color:var(--search-muted);margin-top:4px}.search-results p{margin:10px;font-size:13px;color:var(--search-muted)}
+.search-archive-summary{padding:20px;border:1px solid var(--search-line);border-radius:10px;background:var(--search-bg);color:var(--search-ink);margin:24px 0}.search-archive-summary h2{font-size:24px;margin:0 0 12px}.search-archive-summary li{margin:12px 0}.search-archive-summary a{color:var(--search-accent)}
+[data-professional-header]{position:sticky!important;top:0!important;z-index:1000!important;background:var(--search-bg)!important;--header-glass:rgba(16,26,48,.9);grid-template-columns:auto minmax(0,1fr) 230px auto!important}
+[data-professional-header][data-perimeter-theme=light],:root[data-reading-shell][data-theme=light] [data-professional-header]{--header-glass:rgba(255,255,255,.94)}
+[data-professional-header] .professional-mobile{display:none}.professional-mobile summary{min-width:38px;min-height:42px;display:grid;place-items:center;cursor:pointer;list-style:none}.professional-mobile summary::-webkit-details-marker{display:none}
+[data-professional-header] .professional-context{display:none}
+.professional-context-bar{padding:12px 24px;border-bottom:1px solid var(--search-line);background:var(--search-bg);color:var(--search-muted);font:12px/1.6 "Segoe UI",sans-serif;display:flex;flex-wrap:wrap;gap:8px 18px;overflow-wrap:anywhere}.professional-context-bar a{color:var(--search-accent)}
+@supports((backdrop-filter:blur(16px)) or (-webkit-backdrop-filter:blur(16px))){.site-header,[data-professional-header]{background:var(--header-glass)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}}
+@media(max-width:1250px) and (min-width:701px){.header-inner{grid-template-columns:minmax(0,1fr) 230px auto!important;padding:12px 0;gap:12px!important}.desktop-nav{grid-row:2;grid-column:1/-1}.header-inner>.site-search{grid-column:2;grid-row:1}.header-inner>.controls{grid-column:3;grid-row:1}[data-professional-header]{grid-template-columns:minmax(0,1fr) 230px auto!important;gap:12px!important}[data-professional-header]>.professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header]>.site-search{grid-column:2;grid-row:1}[data-professional-header]>.professional-controls{grid-column:3;grid-row:1}:root{--header-offset:176px}}
+@media(max-width:700px){.header-inner{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 0;gap:8px!important}.header-inner>.site-search{grid-row:2;grid-column:1/-1;width:100%}.header-inner>.controls{grid-column:2;grid-row:1}.site-search .search-results{width:100%;right:0}[data-professional-header]{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 16px!important;gap:8px!important}[data-professional-header]>.professional-primary{display:none!important}[data-professional-header]>.site-search{grid-column:1/-1;grid-row:2;width:100%}[data-professional-header]>.professional-controls{grid-column:2;grid-row:1}[data-professional-header] .professional-mobile{display:block}[data-professional-header] .professional-mobile[open]>.professional-primary{position:absolute;top:100%;left:0;right:0;padding:16px;background:var(--search-bg);border-bottom:1px solid var(--search-line);display:grid;grid-template-columns:1fr 1fr;gap:8px}[data-professional-header] .professional-mobile .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:12px!important}:root{--header-offset:126px}}
+@media(prefers-reduced-transparency:reduce){.site-header,[data-professional-header]{background:var(--search-bg)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+@media print{.site-search,.professional-context-bar{display:none!important}}
+
+@media(min-width:1251px){.header-inner{display:grid!important;grid-template-columns:auto minmax(0,1fr) 230px auto!important;gap:18px!important}.header-inner .desktop-nav{min-width:0}}
+
+html:has(.kee-dedicated-app-root){height:auto!important;overflow-x:hidden!important;overflow-y:auto!important}
+body:has([data-professional-header]){height:auto!important;overflow-x:clip!important;overflow-y:visible!important;padding-top:0!important}
+.demo-language-navigation{display:none!important}
+.stage-column,.telemetry-panel,.scene-pill,#timeline-slider{min-width:0}
+@media(max-width:1180px){.workspace,.template-tabs{grid-template-columns:minmax(0,1fr)!important}}
+
+.in-arena-frame .professional-context-bar,.in-arena-frame [data-knowledge-atlas]{display:none!important}
+</style><!-- kee-report-localization:metadata:end --></head>
+<body class="kee-dedicated-report-root"><!-- kee-report-localization-navigation:start --><nav class="kee-dedicated-nav" data-professional-header><a class="professional-identity reading-brand kee-dedicated-identity identity" href="../../zh.html">Qi Chen · @turbo998</a><div class="professional-primary" role="navigation" aria-label="主导航"><a href="../../studio/zh-index.html" data-section="hub" data-nav-en-href="../../studio/index.html" data-nav-zh-href="../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub">Frontier Transformation Engineering Hub</a><a href="../../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../../benchmarks.html" data-nav-zh-href="../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心" aria-current="page">基准评测中心</a><a href="../../zh-github-radar.html" data-section="radar" data-nav-en-href="../../github-radar.html" data-nav-zh-href="../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI 信号雷达</a><a href="../../zh-openrouter.html" data-section="routing" data-nav-en-href="../../openrouter.html" data-nav-zh-href="../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../../zh-about.html" data-section="profile" data-nav-en-href="../../about.html" data-nav-zh-href="../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">首席架构师履历</a></div><form class="site-search" role="search" action="../../studio/zh-archive.html" method="get" data-search-root="../../index.html" data-search-language="zh-CN"><label class="search-label" for="site-search-input">搜索架构、评测、Demo、技能...</label><input id="site-search-input" name="q" type="search" placeholder="搜索架构、评测、Demo、技能..." autocomplete="off" spellcheck="false" aria-keyshortcuts="/ Control+k Meta+k"><kbd aria-hidden="true">/</kbd><button type="submit" aria-label="搜索全部内容">⌕</button><div class="search-results" id="site-search-results" hidden></div><span class="search-status" role="status" aria-live="polite"></span></form><div class="reading-controls professional-controls" aria-label="网站语言与外观"><a href="test-report-cards.en.html" lang="en" hreflang="en">EN</a><a href="test-report-cards.zh-CN.html" lang="zh-CN" hreflang="zh-CN" aria-current="page">中文</a><details class="professional-mobile"><summary aria-label="打开主导航">☰</summary><div class="professional-primary" role="navigation" aria-label="移动主导航"><a href="../../studio/zh-index.html" data-section="hub" data-nav-en-href="../../studio/index.html" data-nav-zh-href="../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub">Frontier Transformation Engineering Hub</a><a href="../../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../../benchmarks.html" data-nav-zh-href="../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心" aria-current="page">基准评测中心</a><a href="../../zh-github-radar.html" data-section="radar" data-nav-en-href="../../github-radar.html" data-nav-zh-href="../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI 信号雷达</a><a href="../../zh-openrouter.html" data-section="routing" data-nav-en-href="../../openrouter.html" data-nav-zh-href="../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../../zh-about.html" data-section="profile" data-nav-en-href="../../about.html" data-nav-zh-href="../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">首席架构师履历</a></div></details><a data-reading-theme="light" href="?theme=light" aria-label="浅色主题">☀</a><a data-reading-theme="dark" href="?theme=dark" aria-label="深色主题">◐</a></div><div class="professional-context" aria-label="返回上下文"><a href="../../studio/zh-index.html">← 工程枢纽</a> · <a href="../../studio/zh-benchmarks.html">返回主题</a></div></nav><div class="professional-context-bar"><a href="../../studio/zh-index.html">← 工程枢纽</a> · <a href="../../studio/zh-benchmarks.html">返回主题</a></div><nav aria-label="报告语言" style="font:14px/1.5 system-ui,sans-serif;display:flex;flex-wrap:wrap;gap:12px;padding:12px 18px;background:#101a30;color:#eef3ff;width:100%;box-sizing:border-box"><a style="color:#9aabff" href="test-report-cards.en.html" lang="en" hreflang="en">EN</a><a style="color:#9aabff" href="test-report-cards.zh-CN.html" lang="zh-CN" hreflang="zh-CN" aria-current="page">中文</a><span>源报告译本；非独立复测。指标与证据保持原样。</span></nav><figure class="knowledge-figure" data-knowledge-atlas="benchmarks" style="margin:24px 0;max-width:100%"><svg xmlns="http://www.w3.org/2000/svg" lang="zh-CN" role="img" aria-labelledby="knowledge-85fdcbb6488b-title knowledge-85fdcbb6488b-desc" viewBox="0 0 360 783" width="360" style="display:block;width:100%;height:auto;max-width:560px;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-85fdcbb6488b-title">Agent Forge (FAF五、导 言2)vs. (中文(简体) ).Microsoft AGENT-FORGE — 7-卡片 -你还不知道4:5基准报告</title><desc id="knowledge-85fdcbb6488b-desc">研究问题与封存负载: 数据集 · 模型批次 · 分母 · 来源 → 定义测试契约 → Harness 与执行契约: 提示词 · 工具权限 · 环境 · 重复次数 → 生成追踪产物 → 原始输出与确定性校验: 任务轨迹 · 校验结果 · 缺失值记录 → 带条件汇总 → 得分、稳健性与延迟: 保留单位、条件与不确定性 → 支持有边界的结论 → 报告与可复现性: 7 卡来源报告 · 局限 · 是否独立复现？</desc><rect width="360" height="783" rx="16" fill="#091827"/><text x="20" y="30" fill="#eef5ff" font-size="20" font-weight="700"><tspan x="20" dy="0">Agent Forge (FAF五、导 言2)vs.</tspan><tspan x="20" dy="28">(中文(简体) ).Microsoft</tspan><tspan x="20" dy="28">AGENT-FORGE — 7-卡片 -你还不知</tspan><tspan x="20" dy="28">道4:5基准报告</tspan></text><text x="20" y="136" fill="#a9b8ce" font-size="13" font-weight="400"><tspan x="20" dy="0">概念架构 · 箭头表示关系，不代表测量值</tspan></text><g data-concept="1"><rect x="16" y="162" width="328" height="79" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="176" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="192" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">研究问题与封存负载</tspan></text><text x="32" y="223" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">数据集 · 模型批次 · 分母 · 来源</tspan></text></g><g data-relationship="定义测试契约"><path d="M32 241 V286" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 281 L32 287 L37 281" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="267" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">定义测试契约</tspan></text></g><g data-concept="2"><rect x="16" y="293" width="328" height="79" rx="12" fill="#132942" stroke="#43617f"/><rect x="16" y="307" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="323" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">Harness 与执行契约</tspan></text><text x="32" y="354" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">提示词 · 工具权限 · 环境 · 重复次数</tspan></text></g><g data-relationship="生成追踪产物"><path d="M32 372 V417" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 412 L32 418 L37 412" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="398" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">生成追踪产物</tspan></text></g><g data-concept="3"><rect x="16" y="424" width="328" height="79" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="438" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="454" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">原始输出与确定性校验</tspan></text><text x="32" y="485" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">任务轨迹 · 校验结果 · 缺失值记录</tspan></text></g><g data-relationship="带条件汇总"><path d="M32 503 V548" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 543 L32 549 L37 543" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="529" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">带条件汇总</tspan></text></g><g data-concept="4"><rect x="16" y="555" width="328" height="79" rx="12" fill="#132942" stroke="#43617f"/><rect x="16" y="569" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="585" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">得分、稳健性与延迟</tspan></text><text x="32" y="616" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">保留单位、条件与不确定性</tspan></text></g><g data-relationship="支持有边界的结论"><path d="M32 634 V679" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 674 L32 680 L37 674" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="660" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">支持有边界的结论</tspan></text></g><g data-concept="5"><rect x="16" y="686" width="328" height="79" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="700" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="716" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">报告与可复现性</tspan></text><text x="32" y="747" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">7 卡来源报告 · 局限 · 是否独立复现？</tspan></text></g></svg><figcaption style="font:14px/1.6 system-ui,sans-serif;margin:12px 0;overflow-wrap:anywhere">整体知识图示：按标注关系阅读组件与工程边界。布局仅为概念示意；不表示吞吐、性能排名或生产部署。</figcaption></figure><!-- kee-report-localization-navigation:end -->
+
+<!-- kee-dedicated-report-open:start --><div class="kee-dedicated-report-viewport" tabindex="0" role="region" aria-label="原始报表; 水平滚动以读取所有栏目"><div class="kee-dedicated-report-layout"><!-- kee-dedicated-report-open:end -->
+
+<div class="deck-header">
+  <h1>FAF五、导 言2.0.1与《公约》第条的关系Microsoft AGENT-FORGE五、导 言0.3.0与《公约》第条的关系Microsoft HVE-Core五、导 言3.3.101 — 7-卡片 -你还不知道4:5基准牌</h1>
+  <p>3- 瓦伊工程利用基准&amp;型自行车场 :faf- 代理商@a740ad88, agent-forge@655ff340 &amp; hve-core翻译:5de2020 · 2026-10-24</p>
+</div>
+
+<!-- CARD 1 -->
+<section class="card" id="card-1">
+  <div>
+    <div class="card-top">
+      <span class="kicker">手举起手来3- 总是AI引擎 汉斯宾克</span>
+      <span class="page-num">1 / 7</span>
+    </div>
+    <h2 class="headline">
+      <span class="gradient-text">FAF五、导 言2高管SDLC光谱,AGENT-FORGE编译 Repo <code style="font-size:20px;">.github/</code> 规则,以及HVE-Core执行RPI + 挑战者验证</span>
+    </h2>
+    <p class="subheadline">
+      评估所有三个MicrosoftAI 工程工具包 源头合同和现场60FPS"闵行骑自行车"基准: <strong>顾客成功...microsoft/faf- 探员</strong> (590鲍伯斯, <strong>microsoft/agent-forge</strong> (38和blobs),以及 双子(双子). <strong>microsoft/hve-core</strong> (2,753乡巴佬们,275文物).
+    </p>
+  </div>
+
+  <div class="workbench-grid">
+    <div class="wb-col">
+      <div class="wb-title">1设想&amp;阈值</div>
+      <div class="wb-item">
+        <strong>12合同设想方案</strong>
+        <span class="pill pill-auto">8自动行动( E)100%)</span><br>
+        <span class="pill pill-confirm" style="margin-top:4px;">2确认( E)33%–67%)</span><br>
+        <span class="pill pill-human" style="margin-top:4px;">2送去人类那里(0%)</span>
+      </div>
+      <div class="wb-item">
+        <strong>FAF加速分解带</strong>
+        • <code>&gt; 70%</code>: 路径 A — 代理自定义<br>
+        • <code>40% – 70%</code>: 建筑师进一步评论.<br>
+        • <code>&lt; 40%</code>: 路径B——代理开发
+      </div>
+      <div class="wb-item">
+        <strong>FAFAI 优先级乐队</strong>
+        • <code>High &gt;= 65</code> | <code>Medium 40–64</code> | <code>Low &lt; 40</code><br>
+        • 9盖茨( Gates) (2硬度+ 键7准备情况)<br>
+        • <code>40%</code> 证据信任底线
+      </div>
+    </div>
+
+    <div class="wb-col">
+      <div class="wb-title">2. 双重系统合同输入</div>
+      <div class="wb-item">
+        <strong>FAF五、导 言2 (agent-forge-插头v2.0.1)</strong>
+        • <code>faf-core@2.1.1</code>: 8共享技能(<code>faf-kb-manager</code>, <code>faf-azure-pricing</code>+基准钩<br>
+        • <code>faf-genai@2.1.0</code>: 6 GA代理人+3技能+9斜拉出速率+工作台扩展<br>
+        • <code>faf-analytics@1.0.1</code>: 6登记Fabric代理人(9来源树)+6技能
+      </div>
+      <div class="wb-item">
+        <strong>AGENT-FORGE (@agent-forge- 副驾驶/cli五、导 言0.3.0)</strong>
+        • 14 <code>TECH_INDICATORS</code> + 2规划员+7作家<br>
+        • <code>forge validate</code>: 8/8通过了Pelican文件(0警告) 警告( 警告)
+      </div>
+      <div class="wb-item">
+        <strong>HVE-Core (microsoft/hve-core五、导 言3.3.101)</strong>
+        • 14收藏: <strong>75探员们,75提示,76指示,49技能</strong><br>
+        • 严格4- 阶段RPI+ <code>.copilot-tracking/</code> + <code>task-challenger</code>
+      </div>
+    </div>
+
+    <div class="wb-col">
+      <div class="wb-title">3延迟、会计&amp;决定</div>
+      <div class="wb-item">
+        <strong>FAF零点LLM- 呼叫基准钩</strong>
+        • <code>UserPromptSubmit</code>: <strong>930毫秒( O)</strong> avg (一个小于0.70–1.19s)<br>
+        • <code>Stop</code> 事件( E) : <strong>1,000毫秒( O)</strong> avg (一个小于0.86–1.34s)<br>
+        • 账单: <code>1 AI Credit = 10^9 nano-AIU ($0.01)</code><br>
+        • 减法不重叠 <code>ask_user</code> 等待,请等待
+      </div>
+      <div class="wb-item">
+        <strong>AGENT-FORGE验证&amp;合并</strong>
+        • <strong>44</strong> 白列的 VS 代码工具名<br>
+        • 列文斯提因距离 <code>&lt;= 3</code> type自定义<br>
+        • <code>~120 ms</code> 静态模板复制 vs. <code>30,000 ms</code> LLM校验器固定盖
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-dark">
+    <strong>证明&amp;校验边界 :</strong> <code>static_contract_verified + hands_on_measured</code> · 已核实反对 <code>customer-success-microsoft/faf-agents@a740ad88</code> (590鲍伯斯, <code>microsoft/agent-forge@655ff340</code> (38和blobs),以及 双子(双子). <code>microsoft/hve-core@c5de2020</code> (2,753活泼的3- 威取地铁站GitHub..io.
+  </div>
+</section>
+
+<!-- CARD 2 -->
+<section class="card" id="card-2">
+  <div>
+    <div class="card-top">
+      <span class="kicker">环境热艾 重新开放</span>
+      <span class="page-num">2 / 7</span>
+    </div>
+    <h2 class="headline">
+      8- 重量级加速计分(<span class="gradient-text">83.9% &gt; 70%</span>选择自定义路径;44- 工具校验器 Locks Repo 规则
+    </h2>
+    <div class="quote-box">
+      <strong>输入大小写 :</strong> "企业范围Azure AI Foundry+ AI 搜索投资研究&amp;记录情报工作量,核实所有9确定优先次序闸门,产生一个C4光谱、分数 现有溶液加速器,和合成无损 <code>.github/</code> 为脚手架仓库编码规则和钩子".
+    </div>
+  </div>
+
+  <div class="decision-stack">
+    <div class="decision-card">
+      <div class="dc-header">
+        <div>
+          <span class="pill pill-type">分数</span>
+          <span class="dc-title" style="margin-left:8px;">1. FAFAI 优先排序&amp; 9- 评估faf- 优先处理)</span>
+        </div>
+        <span class="pill pill-auto">自动行动 ・ 信心85% (&gt;=40%)</span>
+      </div>
+      <div class="bar-row">
+        <span>数值(60%双子+40%战略)</span>
+        <div class="bar-track"><div class="bar-fill bar-fill-green" style="width:78%;"></div></div>
+        <span class="bar-val">78.0%</span>
+      </div>
+      <div class="bar-row">
+        <span>可行性( - )35%AI + 说明40%技术+25%风险)</span>
+        <div class="bar-track"><div class="bar-fill bar-fill-green" style="width:74%;"></div></div>
+        <span class="bar-val">74.0%</span>
+      </div>
+      <div class="bar-row">
+        <span>准备情况(50%数据+50%奥尔格)</span>
+        <div class="bar-track"><div class="bar-fill bar-fill-green" style="width:70%;"></div></div>
+        <span class="bar-val">70.0%</span>
+      </div>
+    </div>
+
+    <div class="decision-card">
+      <div class="dc-header">
+        <div>
+          <span class="pill pill-type">选择</span>
+          <span class="dc-title" style="margin-left:8px;">2. FAF执行建议者8- 体重计分( - )FAF- 简单重复)</span>
+        </div>
+        <span class="pill pill-auto">自动行动 .83.9% (&gt;70%自定义)</span>
+      </div>
+      <div class="bar-row">
+        <span>使用大小写( U)25%(吨)&amp;代理图案( E)20%(吨)</span>
+        <div class="bar-track"><div class="bar-fill" style="width:86.4%;"></div></div>
+        <span class="bar-val">86.4%</span>
+      </div>
+      <div class="bar-row">
+        <span>AI Stack (英语:18%(吨)&amp;数据假设( E)15%(吨)</span>
+        <div class="bar-track"><div class="bar-fill" style="width:82.4%;"></div></div>
+        <span class="bar-val">82.4%</span>
+      </div>
+      <div class="bar-row">
+        <span>东道主( 个)10%) + API (5%+UI () + UI (中文(简体) ).4%+ + 以下列方式进行:3%)</span>
+        <div class="bar-track"><div class="bar-fill" style="width:81.3%;"></div></div>
+        <span class="bar-val">81.3%</span>
+      </div>
+    </div>
+
+    <div class="decision-card">
+      <div class="dc-header">
+        <div>
+          <span class="pill pill-type">诺尔</span>
+          <span class="dc-title" style="margin-left:8px;">3. AGENT-FORGERepo 合成&amp;决定自动Fix( forge init -- mode 分析)</span>
+        </div>
+        <span class="pill pill-auto">自动行动 .100%合并安全</span>
+      </div>
+      <div class="bar-row">
+        <span>7自定义人工合成类型</span>
+        <div class="bar-track"><div class="bar-fill bar-fill-green" style="width:100%;"></div></div>
+        <span class="bar-val">100.0%</span>
+      </div>
+      <div class="bar-row">
+        <span>44VS 代码工具白名单&amp;手头廉洁</span>
+        <div class="bar-track"><div class="bar-fill bar-fill-green" style="width:100%;"></div></div>
+        <span class="bar-val">100.0%</span>
+      </div>
+      <div class="bar-row">
+        <span>现有未标记用户 /FAF保留的文件</span>
+        <div class="bar-track"><div class="bar-fill bar-fill-green" style="width:100%;"></div></div>
+        <span class="bar-val">100.0%</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-dark">
+    <strong>相克出道:</strong> FAF规范客户SDLC的决定(评分 <strong>83.9% &gt; 70%</strong> 以自定义现有的加速器而不是从零开始建造),同时AGENT-FORGE编译 repo 特异性 <code>.github/</code> 规则和钩子,不覆盖FAF是因为 <code>scope/</code> 或 减 减 <code>specs/</code> 交付品。
+  </div>
+</section>
+
+<!-- CARD 3 -->
+<section class="card" id="card-3">
+  <div>
+    <div class="card-top">
+      <span class="kicker">WHAT I TESTED · 12-SCENARIO CONTRACT MATRIX</span>
+      <span class="page-num">3 / 7</span>
+    </div>
+    <h2 class="headline">
+      8编12自动通过合同设想(<span class="gradient-text">100%</span>); 4曝光密钥遥测&amp;缓存边界( E)<span style="color:#DC2626;">✕</span>)
+    </h2>
+  </div>
+
+  <table class="matrix">
+    <thead>
+      <tr>
+        <th style="width:21%;">场景</th>
+        <th style="width:39%;">QUESTION / CONTRACT CHECK</th>
+        <th style="width:24%;">VERIFIED OUTCOME</th>
+        <th style="width:16%;">行动</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>升 职01 · FAF插件</strong></td>
+        <td>是否( 爱) <code>marketplace.json</code> 拆分( E)FAF五、导 言2输入 <code>faf-core</code>, <code>faf-genai</code>,以及 <code>faf-analytics</code>?</td>
+        <td>3 / 3模块化插件( Name100%)</td>
+        <td><span class="pill pill-auto">自动执行</span></td>
+      </tr>
+      <tr>
+        <td><strong>升 职02 · FAF加纳</strong></td>
+        <td>是否( 爱) <code>faf-genai@2.1.0</code> 全部载运6 GA作用代理人和9 <code>/FAF-genai-*</code> 提示? ! ! ! ! ! ! ! ! ! ! ! !</td>
+        <td>6 GA代理人+9提示( E)100%)</td>
+        <td><span class="pill pill-auto">自动执行</span></td>
+      </tr>
+      <tr>
+        <td><strong>升 职03 · FAF 8-Area</strong></td>
+        <td>加速计分码总和100%与 <code>&gt;70%</code> / <code>40-70%</code> / <code>&lt;40%</code> 乐队?</td>
+        <td>8区域=100% + 3乐队(100%)</td>
+        <td><span class="pill pill-auto">自动执行</span></td>
+      </tr>
+      <tr>
+        <td><strong>升 职04 · FAF 9盖茨</strong></td>
+        <td>是否( 爱) <code>faf-ai-prioritization</code> 执行2硬盘+7备战门+40%地板?</td>
+        <td>3阴暗+9盖茨+40%楼层(100%)</td>
+        <td><span class="pill pill-auto">自动执行</span></td>
+      </tr>
+      <tr>
+        <td><strong>升 职05 · FAF分析</strong></td>
+        <td>都准备好了9代理文件在 <code>src/analytics/agents/</code> 注册于 <code>plugin.json</code>?</td>
+        <td>6/9登记人数(3运行器被省略) (67%)<span class="miss-mark">✕</span></td>
+        <td><span class="pill pill-confirm">确认</span></td>
+      </tr>
+      <tr>
+        <td><strong>升 职06 · FAF遥测</strong></td>
+        <td>没有VS代码OTel启用, Chat Journal 是否捕获嵌入子代理符?</td>
+        <td>仅最高一级汇总( U)2/6 = 33%)<span class="miss-mark">✕</span></td>
+        <td><span class="pill pill-confirm">确认</span></td>
+      </tr>
+      <tr>
+        <td><strong>升 职07 · FAF升级</strong></td>
+        <td>VS 代码 UI 插件是否重新安装自动牵引最近GitHub犯法吗?</td>
+        <td>0%自动更新( 使用磁盘缓存)<span class="miss-mark">✕</span></td>
+        <td><span class="pill pill-human">转人工</span></td>
+      </tr>
+      <tr>
+        <td><strong>升 职08AF 管道</strong></td>
+        <td>是否( 爱) <code>agent-forge</code> 生成全部7利用Planner + 工艺品类型7作家们?</td>
+        <td>2规划员+7作家&rarr; 7类型(100%)</td>
+        <td><span class="pill pill-auto">自动执行</span></td>
+      </tr>
+      <tr>
+        <td><strong>升 职09• AF探测器</strong></td>
+        <td>是否( 爱) <code>detector.ts</code> 扫描14指标和指数14项目类型的提示?</td>
+        <td>14指标+14提示( ưμ㼯A100%)</td>
+        <td><span class="pill pill-auto">自动执行</span></td>
+      </tr>
+      <tr>
+        <td><strong>升 职10AF 验证器</strong></td>
+        <td>是否( 爱) <code>validator.ts</code> 执行44有效工具, 列文什特因 <code>&lt;=3</code>和交接修理?</td>
+        <td>44工具+盘点&lt;=3+ 手提式固定器( 单数)100%)</td>
+        <td><span class="pill pill-auto">自动执行</span></td>
+      </tr>
+      <tr>
+        <td><strong>升 职11AF 合并</strong></td>
+        <td>是否( 爱) <code>merger.ts</code> 保存100%默认情况下未加标识的用户授权文件?</td>
+        <td>100%保存,除非 <code>--force</code> (100%)</td>
+        <td><span class="pill pill-auto">自动执行</span></td>
+      </tr>
+      <tr>
+        <td><strong>升 职12· 作用范围</strong></td>
+        <td>是否( 爱) <code>agent-forge</code> 捆绑FAF客户PRD/C4光谱、记分卡或Bicep兰斯?</td>
+        <td>0%域发送 IP 捆绑<span class="miss-mark">✕</span></td>
+        <td><span class="pill pill-human">转人工</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="dual-callout">
+    <div class="callout-box">
+      <strong>阈值 Gating 概要 :</strong> <strong>8/12 (66.7%)</strong> 合同核实情况100% (<code>Act automatically</code>). <strong>S05 (67%)</strong> 反映故意 v1.0范围界定(3内部工作流程执行代理被省略 <code>src/analytics/plugin.json</code>),以及 <strong>S06 (33%)</strong> 反映 VS 代码聊天日志限制,而不包含OTel启用。
+    </div>
+    <div class="callout-box">
+      <strong>关键边界分析:</strong> <strong>S07 (0%)</strong> 突出显示在以下文件中记录的一个主要业务陷阱: <code>INSTALL.md</code>: 升级FAF需要手动删除 <code>%APPDATA%\Code\agentPlugins\...</code> VS 代码关闭时 。 <strong>S12 (0%)</strong> 证实 <code>microsoft/agent-forge</code> 是一个元编译器,而不是Azure执行方法。
+    </div>
+  </div>
+</section>
+
+<!-- CARD 4 -->
+<section class="card" id="card-4">
+  <div>
+    <div class="card-top">
+      <span class="kicker">在痛苦下 被打倒&amp;评价方法</span>
+      <span class="page-num">4 / 7</span>
+    </div>
+    <h2 class="headline">
+      协议追踪 : <span class="gradient-text">FAF 8-Area加权计分卡&amp;纳诺-AIU 计费</span> 与《公约》第条的关系AGENT-FORGE决定Schema 自动除去器
+    </h2>
+    <p class="subheadline">
+      两个仓库对LLM以决定本地算法进行推理:FAF计算加权加速器的合适和剖析SQLite/OTel跟踪到Python时AGENT-FORGE自动修理YAML前题、工具名称和交接图表TypeScript.
+    </p>
+  </div>
+
+  <div>
+    <div class="code-block">/* Block A — customer-success-microsoft/faf-agents (accelerators-scoring-card.md &amp; faf_benchmark.py) */
+AREA_WEIGHTS = {
+  "use_case": 0.25, "agentic_patterns": 0.20, "ai_stack": 0.18, "data_scenario": 0.15,
+  "hosting":  0.10, "api_integration":  0.05, "ui_scenario": 0.04, "infrastructure": 0.03
+} // Exact sum = 1.00 (100%); metrics scored in {0%, 25%, 50%, 75%, 100%}
+// Decision Gate: &gt; 70% =&gt; Path A (Agentic Customization)
+//                40%..70% =&gt; Further Assessment Required (Human Architect Review)
+//                &lt; 40% =&gt; Path B (Agentic Development + faf-kb-manager Harness Engineering)
+
+// faf_benchmark.py (124,109 bytes, 53 unit tests — zero extra LLM calls):
+ai_credits         = nano_aiu / 1_000_000_000;      // 1 AI credit = 10^9 nano-AIU
+estimated_usd      = ai_credits * 0.01;             // $0.01 per AI credit
+active_duration_ms = wall_clock_ms - ask_user_wait; // Subtracts non-overlapping human wait</div>
+
+    <div class="code-arrow">&darr;补充存储器级汇编&amp;核查&darr;</div>
+
+    <div class="code-block">/* Block B — microsoft/agent-forge (src/lib/validator.ts &amp; src/lib/merger.ts) */
+export function postGenerationValidateAndFix(files: GeneratedFile[]): PostGenResult {
+  // 1. Reconstruct missing YAML frontmatter &amp; strip unrecognized fields per ArtifactType
+  // 2. Validate tools against 44 VALID_VSCODE_TOOLS with Levenshtein distance &lt;= 3 typo fix:
+  const suggestion = findClosestTool(tool, VALID_VSCODE_TOOLS); // e.g. 'editFile' -&gt; 'editFiles'
+  // 3. Repair cross-file handoffs (autoFixHandoffReferences):
+  //    Matches target .agent.md by case-insensitive exact match, substring, or Levenshtein &lt;= 3
+}
+
+// src/lib/merger.ts — Non-destructive smart merge protection:
+const GENERATED_MARKER = '&lt;!-- Generated by AGENT-FORGE --&gt;';
+const LEGACY_MARKER    = '&lt;!-- Generated by SpecForge --&gt;'; // Reveals SpecForge origin!
+// Never overwrites existing user or FAF files unless options.force === true or marker is present</div>
+  </div>
+
+  <div class="footer-dark">
+    <strong>建筑透视:</strong> 通知 <code>LEGACY_MARKER = '&lt;!-- Generated by SpecForge --&gt;'</code> 内 <code>src/lib/merger.ts:8</code>- 确认 <code>microsoft/agent-forge</code> 由 <strong>光谱格式</strong>完全独立于MCAPS的 <strong>FAF(外地/档案)Agent Forge)</strong>.
+  </div>
+</section>
+
+<!-- CARD 5 -->
+<section class="card" id="card-5">
+  <div>
+    <div class="card-top">
+      <span class="kicker">ROBUSENS 检查 · 经验&amp;政 务 院</span>
+      <span class="page-num">5 / 7</span>
+    </div>
+    <h2 class="headline">
+      边界扰动 严格地坚持: <span class="gradient-text">遥测倒计时(-)66.7) 缩写:</span>,明确范围(-)33.3) 缩写:&amp;合并锁定( -)100.0) 缩写:
+    </h2>
+    <p class="subheadline">
+      测试两个系统在切换遥测后端时的表现,比较源树与释放出单,穿过后端70%/40%加速门,或摇晃CLI旗帜。
+    </p>
+  </div>
+
+  <table class="matrix" style="flex:1;">
+    <thead>
+      <tr>
+        <th style="width:30%;">DIMENSION / PERTURBATION</th>
+        <th style="width:26%;">ORIGINAL (PRIMARY PATH)</th>
+        <th style="width:26%;">PERTURBED / FALLBACK PATH</th>
+        <th style="width:18%;">变化（百分点）</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>1. FAF遥测后端</strong><br>副驾驶会话存储 /OTelvs. VS 代码日记背面</td>
+        <td><strong>100.0% (6 / 6暗处)</strong><br>精确输入/输出/加工的代号,每一次呼叫故障,巢接的子剂&amp;AIU : 乌</td>
+        <td><strong>33.3% (2 / 6暗处)</strong><br>请求级汇总符号&amp;模型只计数; 没有嵌入子剂分解</td>
+        <td><strong>-66.7点</strong><br><span class="pill pill-auto">握着</span></td>
+      </tr>
+      <tr>
+        <td><strong>2. FAF分析代理商名册</strong><br>源树( R)<code>src/analytics/agents/</code>)vs. (中文(简体) ). <code>plugin.json</code></td>
+        <td><strong>100.0% (9 / 9文档)</strong><br>包括6核心代理人+3内部工作流程执行者/工地代理</td>
+        <td><strong>66.7% (6 / 9登记)</strong><br><code>plugin.json</code> 只揭露6用户界面Fabric分析剂</td>
+        <td><strong>-33.3点</strong><br><span class="pill pill-auto">握着</span></td>
+      </tr>
+      <tr>
+        <td><strong>3. FAF加速门</strong><br>高投影样本( E)<code>&gt;70%</code>) vs. 低调自定义( )<code>&lt;40%</code>)</td>
+        <td><strong>83.9%加权分数</strong><br>触发路径 A: 现有加速器的代理自定义</td>
+        <td><strong>35.0%加权分数</strong><br>触发路径 B:代理开发+ <code>faf-kb-manager</code> KB 同步</td>
+        <td><strong>-48.9点</strong><br><span class="pill pill-auto">握着</span></td>
+      </tr>
+      <tr>
+        <td><strong>4. AGENT-FORGE输入模式</strong><br><code>--mode create/analyze</code> 与《公约》第条的关系 <code>--mode templates</code></td>
+        <td><strong>100.0% (7 / 7类型)</strong><br>多剂管合成所有7定制文物类别</td>
+        <td><strong>71.4% (5 / 7类型)</strong><br>11静电道包包 覆盖指令,提示,代理,钩,MCP (0 LLM电话)</td>
+        <td><strong>-28.6点</strong><br><span class="pill pill-auto">握着</span></td>
+      </tr>
+      <tr>
+        <td><strong>5. AGENT-FORGE合并安全性</strong><br>默认 <code>mergeIntoExisting</code> 与《公约》第条的关系 <code>--force</code> 旗帜</td>
+        <td><strong>100.0%保留</strong><br>所有未加标记的用户授权和FAF文件被跳过并保护</td>
+        <td><strong>0.0%保留</strong><br><code>--force</code> 覆盖冲突的目标文件, 不管标记</td>
+        <td><strong>-100.0点</strong><br><span class="pill pill-auto">握着</span></td>
+      </tr>
+      <tr>
+        <td><strong>6. AGENT-FORGE工具 Typo 修正</strong><br>列文斯提因距离 <code>&lt;= 3</code> 与距离 <code>&gt; 3</code></td>
+        <td><strong>100.0%自动推荐</strong><br>编辑距离内的泰普斯3编44有效的 VS 代码工具已自动映射</td>
+        <td><strong>0.0%假替换</strong><br>自定义MCP工具名称,带有距离&gt; 3永远不要被错误地覆盖</td>
+        <td><strong>-100.0点</strong><br><span class="pill pill-auto">握着</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="footer-dark">
+    <strong>强健判断:</strong> 全部( A)6边界扰动行为具有源代码设计中确定性——在OTel不存在,并防止意外文件或工具名称腐败。
+  </div>
+</section>
+
+<!-- CARD 6 -->
+<section class="card" id="card-6">
+  <div>
+    <div class="card-top">
+      <span class="kicker">关卡 关卡&amp;执行时间WINDOWS</span>
+      <span class="page-num">6 / 7</span>
+    </div>
+    <h2 class="headline">
+      未标记FAF提示只添加 <span class="gradient-text">0.93s–1.00s钩头</span>; AGENT-FORGE模板复制到~120ms与《公约》第条的关系30s LLM修复顶部
+    </h2>
+    <p class="subheadline">
+      将一次/快速路径处决与观察到的最大延迟或配置的跨度超时上限进行比较FAF五、导 言2财务报告和已审计财务报表AGENT-FORGE(从密封的每层缩放) <code>report.json</code> 数据)。
+    </p>
+  </div>
+
+  <div class="latency-group">
+    <div class="lat-card">
+      <div class="lat-title">等级1 · FAF未标记的 Hook 快出: 用户Prompt Submit ()Windows 5-Run计量报告)</div>
+      <div class="lat-bar-row">
+        <span><strong>小学( Mean快出)</strong></span>
+        <div class="lat-track"><div class="lat-primary" style="width:78.1%;"></div></div>
+        <span style="font-weight:800; color:#2563EB;">930毫秒( 秒数)0.93s)</span>
+      </div>
+      <div class="lat-bar-row">
+        <span>基线(最大观测)</span>
+        <div class="lat-track"><div class="lat-base" style="width:100%;"></div></div>
+        <span style="font-weight:700; color:#475569;">1,190毫秒( 秒数)1.19s)</span>
+      </div>
+    </div>
+
+    <div class="lat-card">
+      <div class="lat-title">等级2 · FAF已标记的 Hook 快出: 停止事件( NameWindows 5-Run计量报告)</div>
+      <div class="lat-bar-row">
+        <span><strong>小学( Mean快出)</strong></span>
+        <div class="lat-track"><div class="lat-primary" style="width:74.6%;"></div></div>
+        <span style="font-weight:800; color:#2563EB;">1,000毫秒( 秒数)1.00s)</span>
+      </div>
+      <div class="lat-bar-row">
+        <span>基线(最大观测)</span>
+        <div class="lat-track"><div class="lat-base" style="width:100%;"></div></div>
+        <span style="font-weight:700; color:#475569;">1,340毫秒( 秒数)1.34s)</span>
+      </div>
+    </div>
+
+    <div class="lat-card">
+      <div class="lat-title">等级3 · FAF同步 Hook Timeout vs. Detached Recovery Wait Window (hoks.) 同步 Hook Timeout vs. 解析恢复等待窗口(hoks.json索赔(已恢复)</div>
+      <div class="lat-bar-row">
+        <span><strong>小学(同步钩超时)</strong></span>
+        <div class="lat-track"><div class="lat-primary" style="width:33.3%;"></div></div>
+        <span style="font-weight:800; color:#2563EB;">5,000毫秒( 秒数)5.0s)</span>
+      </div>
+      <div class="lat-bar-row">
+        <span>基线( 回收等号)</span>
+        <div class="lat-track"><div class="lat-base" style="width:100%;"></div></div>
+        <span style="font-weight:700; color:#475569;">15,000毫秒( 秒数)15.0s)</span>
+      </div>
+    </div>
+
+    <div class="lat-card">
+      <div class="lat-title">等级4 · AGENT-FORGE静态相册复制(-mode模板) vs.LLM校验器 修正超时( 验证器. ts :48)</div>
+      <div class="lat-bar-row">
+        <span><strong>初等( Static 图片库复制)</strong></span>
+        <div class="lat-track"><div class="lat-primary" style="width:4.0%;"></div></div>
+        <span style="font-weight:800; color:#2563EB;">~120毫秒( 秒数)0 LLM)</span>
+      </div>
+      <div class="lat-bar-row">
+        <span>基线(呼叫LlmForJson Cap)</span>
+        <div class="lat-track"><div class="lat-base" style="width:100%;"></div></div>
+        <span style="font-weight:700; color:#475569;">30,000毫秒( 秒数)30.0s)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-dark">
+    <strong>表演 竹叶:</strong> FAF基准钩子会生成一个可分离的终局器,所以它不会在用户的超时阻断 <code>5,000 ms</code> 勾结超时, 而AGENT-FORGE确定性验证器和静态画廊以毫秒的速度在本地运行,而不等待 <code>30,000 ms</code> LLM修补路径。
+  </div>
+</section>
+
+<!-- CARD 7 -->
+<section class="card" id="card-7">
+  <div>
+    <div class="card-top">
+      <span class="kicker">是我的选择3- 总是决定指南&amp;希布里德·雷莱工作</span>
+      <span class="page-num">7 / 7</span>
+    </div>
+    <h2 class="headline">
+      组合 <span class="gradient-text">FAF五、导 言2(海关数据元件SDLC)</span> + <span class="gradient-text">AGENT-FORGE(Repo编译器).</span> + <span class="gradient-text">HVE-Core(菲律宾语)&amp;挑战者)</span>
+    </h2>
+    <p class="subheadline">
+      三个工具包在互补层面运作:FAF管理商业/建筑决定,AGENT-FORGE合成堆栈特异性 <code>.github/</code> 资产,和HVE-Core执行上下文许可的RIPI执行和对抗性审查.
+    </p>
+  </div>
+
+  <div class="fit-grid">
+    <div class="fit-box-good">
+      <h3>QQ 适合( 何时使用)</h3>
+      <ul class="fit-list">
+        <li><strong>使用FAF (faf- 企业SDLC交付的代理商:</strong> 客户范围界定,9- 确定大赦国际的优先次序(<code>P1 Go: 78.0/90.9/87.5</code>),C类4光谱, 直播Azure零售TCO估计数,以及8- 区域加权溶液加速计分(<code>&gt;70%</code> 定制 vs. <code>&lt;40%</code> 绿地).</li>
+        <li><strong>使用AGENT-FORGE (@agent-forge- 副驾驶/cli用于自定义回波合成:</strong> 自动生成和验证的电话 <code>.github/agents/</code>, <code>prompts/</code>, <code>instructions/</code>, <code>skills/</code>,以及 <code>hooks/</code> 横跨14+ 技术堆栈( )<code>8/8 passed, 0 warnings</code>).</li>
+        <li><strong>使用HVE-Core (microsoft/hve-core)用于高架工程&amp;治理:</strong> 275历经战斗考验的文物14严格收藏 <code>/clear</code> RIPI 语境隔离 <code>.copilot-tracking/</code>,西非办事处/区域倡议/A11y规划者,以及 <code>task-challenger</code> 冷酷的审讯。</li>
+        <li><strong>电话3-Way Power Relay: - 电源中继器,电源中继器,电源中继器,电源中继器,电源中</strong> 范围&amp;建筑师与 <strong>FAF</strong> &rarr;生成有铃声域代理 <strong>AGENT-FORGE</strong> &rarr;执行和压力测试复杂特性 <strong>HVE-CoreRPI + 任务挑战者</strong>.</li>
+      </ul>
+    </div>
+
+    <div class="fit-box-bad">
+      <h3>QQ 不为( 反战)&amp;抓到他们了</h3>
+      <ul class="fit-list">
+        <li><strong>不使用AGENT-FORGE商业/建筑顾问:</strong> 零号船Azure Bicep着陆区,客户PRD/C4模板,或加速计分卡.</li>
+        <li><strong>不要跳过 <code>/clear</code> 介于HVE-CoreRIPI 阶段 :</strong> 累积聊天历史 <code>task-researcher</code> 财务报告和已审计财务报表 <code>task-implementor</code> 击败了RPI的防卤化保证; 总是依赖 <code>.copilot-tracking/</code> 文档。</li>
+        <li><strong>永远不升级FAF透过VS代码UI Reinstall单独:</strong> VS 代码在其中再使用缓存插件 <code>%APPDATA%\Code\agentPlugins</code>; 关闭 VS 代码,并在重排前删除已缓存的文件夹。</li>
+        <li><strong>注意, 注意, 注意, 注意 <code>copy-assets.mjs</code> 内AGENT-FORGE源构建 :</strong> 大楼 <code>@agent-forge-copilot/cli@0.3.0</code> 从 git 需要复制 <code>src/cli</code> 改为 <code>dist/cli</code> 之后 <code>tsup</code> 因为 <code>src/template</code> 被删除。</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-dark">
+    <strong>准备情况&amp;许可证摘要 :</strong> <code>faf-core@2.1.1</code> &amp; <code>faf-genai@2.1.0</code> (<strong>GA</strong>, 53单位测试); <code>@agent-forge-copilot/cli@0.3.0</code> (<strong>公开CLI预览</strong>); <code>microsoft/hve-core@3.3.101</code> (<strong>生产市场推广</strong>, 49/49有效技能,Pester + Vally eval 绳带。 <strong>MIT许可证</strong>.
+  </div>
+</section>
+
+<!-- kee-dedicated-report-close:start --></div></div><!-- kee-dedicated-report-close:end --></body>
+</html>

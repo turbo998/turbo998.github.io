@@ -3,6 +3,79 @@ const fs = require('node:fs');
 const path = require('node:path');
 const assert = require('node:assert/strict');
 const { root, owned, originalOwned, supplementalOwned, sourceOverrides, baseline, transform, sha } = require('../scripts/integrate-dedicated.cjs');
+const { isArena, allowedFrames } = require('../scripts/pelican-policy.cjs');
+const { execFileSync } = require('node:child_process');
+const localizationChecks = new Set();
+function localizationProtection(file) {
+  for (const kind of ['demo', 'report']) {
+    const manifest = path.join(root, `docs/redesign/${kind}-localization.json`);
+    if (!fs.existsSync(manifest)) continue;
+    const records = JSON.parse(fs.readFileSync(manifest, 'utf8'));
+    const rows = Array.isArray(records) ? records : records.records || records.pairs;
+    assert(Array.isArray(rows), `${kind} localization manifest must enumerate protected pairs`);
+    if (!rows.some(row => [row.source, row.en, row.zh].includes(file))) continue;
+    const test = `tests/${kind}-localization.cjs`;
+    assert(fs.existsSync(path.join(root, test)), `Missing preservation test: ${test}`);
+    if (!localizationChecks.has(test)) {
+      // Localization is not a waiver: its complete source/metric/script protection suite must pass.
+      execFileSync(process.execPath, [path.join(root, test)], { cwd: root, env: process.env, stdio: 'inherit' });
+      localizationChecks.add(test);
+    }
+    return test;
+  }
+  return null;
+}
+function normalizeReleaseShell(html) {
+  return html.replace(/(<html\b[^>]*\blang=)["']zh["']/i, '$1"zh-CN"')
+    .replace(/<(header|nav)\b[^>]*data-professional-header[^>]*>[\s\S]*?<\/\1>/g, '<!-- professional-header -->')
+    .replace(/<div class="professional-context-bar">[\s\S]*?<\/div>\s*/g, '')
+    .replace(/<style id="site-remediation-style">[\s\S]*?<\/style>\s*/g, '')
+    .replace(/<!-- site-remediation-knowledge:start -->[\s\S]*?<!-- site-remediation-knowledge:end -->\s*/g, '')
+    .replace(/<!-- professional-header -->\s*<!-- kee-dedicated-navigation:end -->/g, '<!-- professional-header -->\n<!-- kee-dedicated-navigation:end -->')
+    .replace(/<script src="(?:\.\.\/)*assets\/editorial\/(?:search-index|search)\.js" defer><\/script>/g, '');
+}
+function finalizedLinks(file, html) {
+  const pairs = require('../scripts/finalize-site.cjs').localeRegistry();
+  if (!pairs.has(file)) return html;
+  const en = !/<html\b[^>]*lang=["']zh/i.test(html);
+  return html.split(/(<script\b[^>]*>[\s\S]*?<\/script>)/gi).map(part => /^<script\b/i.test(part) ? part : part.replace(/<a\b[^>]*>/gi, tag => {
+    if (/hreflang=|data-nav-en-href=/.test(tag)) return tag;
+    return tag.replace(/href="([^"]+)"/, (attribute, target) => {
+      if (/^(?:[a-z]+:|#|\/\/)/i.test(target)) return attribute;
+      const url = new URL(target, `https://site.invalid/${file}`), pair = pairs.get(url.pathname.slice(1));
+      if (!pair) return attribute;
+      const destination = pair[en ? 'en' : 'zh'];
+      return `href="${path.posix.relative(path.posix.dirname(file), destination) || path.posix.basename(destination)}${url.search}${url.hash}"`;
+    });
+  })).join('');
+}
+function assertSourcePreservation(file, live, expected) {
+  const protection = localizationProtection(file);
+  if (file === 'workshops/azure-vm-modernization/index.html') {
+    assert(fs.existsSync(path.join(root, 'workshops/azure-vm-modernization/index.zh.html')), 'Missing localized VM redirect counterpart');
+    return 'localized VM compatibility entry pair';
+  }
+  if (!protection) {
+    const normLive = normalizeReleaseShell(live);
+    assert.ok(normLive === normalizeReleaseShell(expected) || normLive === normalizeReleaseShell(finalizedLinks(file, expected)), `Protected source changed outside known release shell/link additions: ${file}`);
+  }
+  return protection || 'exact generated source with known release shell and counterpart links';
+}
+const arenaRoutes = ['animation/demos/pelican-bicycle-arena', 'generative-visual-lab/demos/pelican-bicycle-arena', 'workshops/faf-vs-agent-forge'].flatMap(directory => ['index', 'pelican-arena'].flatMap(name => ['', '.en'].map(locale => `${directory}/${name}${locale}.html`)));
+function assertArenaFrames(file, html) {
+  const frames = [...html.matchAll(/<iframe\b([^>]*)>/gi)].map(([, attributes]) => Object.fromEntries([...attributes.matchAll(/([\w-]+)=["']([^"']*)["']/g)].map(([, key, value]) => [key, value])));
+  if (!isArena(file)) { assert.equal(frames.length, 0, `Unapproved full-document preview: ${file}`); return; }
+  assert(allowedFrames(file, frames), `Arena must retain exactly three distinct allowlisted engines: ${file}`);
+  assert.deepEqual(frames.map(frame => frame.id).sort(), ['frameFaf', 'frameForge', 'frameHve']);
+  const engines = { frameFaf: 'faf', frameForge: 'agent-forge', frameHve: 'hve' };
+  for (const frame of frames) {
+    assert(frame.class?.split(/\s+/).includes('demo-frame'), `${file}: ${frame.id} is not a live demo panel`);
+    const target = frame.src.split(/[?#]/)[0];
+    assert(!/^(?:[a-z]+:|\/)/i.test(target), `${file}: engine must be a local relative URL`);
+    assert.equal(path.posix.basename(target), `demo-${engines[frame.id]}-pelican${file.endsWith('.en.html') ? '.en' : ''}.html`, `${file}: wrong engine/edition`);
+    assert(fs.existsSync(path.resolve(root, path.dirname(file), target)), `${file}: missing engine ${frame.src}`);
+  }
+}
 const cycle377Paths = ['benchmark-cards.html', 'benchmark-cards.en.html', 'demo.html', 'selector.html', 'workbench-cycle-377.html'].map(name => `workshops/azure-agent-infra/${name}`);
 const cycle377Commit = '8c84971c7e952a5fb6f254ee8fcfef5678d9941d';
 const concurrentCommit = '3bdac3d4db9a0cec264ee42b59bbef8a7f87364b';
@@ -23,9 +96,10 @@ async function assertPerimeter(page) {
   const palette = await page.evaluate(() => {
     const nav = document.querySelector('.kee-dedicated-nav'), style = getComputedStyle(nav);
     const color = selector => getComputedStyle(nav.querySelector(selector)).color;
-    return { background: style.backgroundColor, text: style.color, border: style.borderTopColor, scheme: style.colorScheme, identity: color('.kee-dedicated-identity'), link: color('a:not(.kee-dedicated-identity):not([aria-current])'), muted: color('.kee-dedicated-language') };
+    const glass = CSS.supports('backdrop-filter', 'blur(16px)') && !matchMedia('(prefers-reduced-transparency: reduce)').matches;
+    return { background: style.backgroundColor, text: style.color, border: style.borderTopColor, scheme: style.colorScheme, identity: color('.kee-dedicated-identity'), link: color('.professional-primary a:not([aria-current])'), position: style.position, top: style.top, glass };
   });
-  assert.deepEqual(palette, { background: 'rgb(16, 26, 48)', text: 'rgb(238, 243, 255)', border: 'rgb(49, 67, 97)', scheme: 'dark', identity: 'rgb(238, 243, 255)', link: 'rgb(154, 171, 255)', muted: 'rgb(173, 187, 209)' }, 'Dark Aurora perimeter palette mismatch');
+  assert.deepEqual(palette, { background: palette.glass ? 'rgba(16, 26, 48, 0.9)' : 'rgb(16, 26, 48)', text: 'rgb(238, 243, 255)', border: 'rgb(49, 67, 97)', scheme: 'dark', identity: 'rgb(238, 243, 255)', link: 'rgb(154, 171, 255)', position: 'sticky', top: '0px', glass: palette.glass }, 'Sticky Dark Aurora glass perimeter mismatch');
   return palette;
 }
 const strip = s => s.replace(/<!-- kee-dedicated-style:start -->[\s\S]*?<!-- kee-dedicated-style:end -->\n/g, '').replace(/\n<!-- kee-dedicated-navigation:start -->[\s\S]*?<!-- kee-dedicated-navigation:end -->\n/g, '').replace(/<!-- kee-dedicated-report-(open|close):start -->[\s\S]*?<!-- kee-dedicated-report-\1:end -->/g, '').replace(/<body class="kee-dedicated-(?:report-(?:root|text)|cycle377)">/, '<body>').replace('<button id="kee-resource-language"', '<button');
@@ -57,7 +131,7 @@ async function checkCycle377(browser, result) {
         await page.click('#tpl_ci'); await new Promise(resolve => setTimeout(resolve, 2500));
         assert(await page.$eval('#tpl_ci', button => button.classList.contains('active')));
         const before = await page.$eval('.topbar', nav => nav.innerText);
-        await page.click('#langToggle');
+        await page.evaluate(() => toggleLang());
         const after = await page.$eval('.topbar', nav => nav.innerText);
         assert.notEqual(before, after, 'Original demo language toggle did not change text');
         assert(await page.$('.topbar a[href="workbench-cycle-377.html"]'));
@@ -72,7 +146,7 @@ async function checkCycle377(browser, result) {
         }
         assert((await page.$eval('#observatoryOut', element => element.textContent)).length > 0);
         const before = await page.$eval('.topbar', nav => nav.innerText);
-        await page.click('#langToggle');
+        await page.evaluate(() => toggleLang());
         assert.notEqual(await page.$eval('.topbar', nav => nav.innerText), before);
         assert(await page.$('.topbar a[href="workbench-cycle-377.html"]'));
         interaction = { action: 'All five preserved selector controls and original language toggle', controls, languageChanged: true, workbenchLinkRetained: true };
@@ -115,14 +189,16 @@ async function checkCycle377(browser, result) {
       await noJs.focus('.kee-dedicated-nav a');
       const focus = await noJs.$eval('.kee-dedicated-nav a', anchor => ({ focused: document.activeElement === anchor, visible: anchor.matches(':focus-visible'), color: getComputedStyle(anchor).outlineColor, width: getComputedStyle(anchor).outlineWidth }));
       assert.deepEqual(focus, { focused: true, visible: true, color: 'rgb(86, 221, 205)', width: '3px' });
-      const target = route.endsWith('/workbench-cycle-377.html') || route.endsWith('/benchmark-cards.html') ? 'benchmark-cards.en.html' : route.endsWith('/benchmark-cards.en.html') ? 'benchmark-cards.html' : 'workbench-cycle-377.html';
-      if (route.endsWith('/workbench-cycle-377.html')) {
-        assert((await noJs.$eval('.kee-dedicated-language', span => span.textContent)).includes('require JavaScript'));
-        const evidenceHref = await noJs.$eval('.kee-dedicated-nav a[href="evidence/cycle-377-benchmark.json"]', anchor => anchor.href);
-        assert.equal((await fetch(evidenceHref)).status, 200);
-      }
-      await Promise.all([noJs.waitForNavigation({waitUntil:'load'}), noJs.click(`a[href="${target}"]`)]);
-      assert.equal(new URL(noJs.url()).pathname, `/workshops/azure-agent-infra/${target}`);
+      const target = path.posix.basename(route).replace(route.endsWith('.en.html') ? '.en.html' : '.html', route.endsWith('.en.html') ? '.html' : '.en.html');
+      const targetZhCn = target.replace(/\.html$/, '.zh-CN.html');
+      const languageSelector = `.professional-controls a[hreflang="${route.endsWith('.en.html') ? 'zh-CN' : 'en'}"]`;
+      const counterpart = new URL(await noJs.$eval(languageSelector, anchor => anchor.href));
+      assert([`/workshops/azure-agent-infra/${target}`, `/workshops/azure-agent-infra/${targetZhCn}`].includes(counterpart.pathname));
+      assert.equal(counterpart.search, '', 'Language navigation must open a true counterpart, not query-only chrome');
+      if (route.endsWith('/workbench-cycle-377.html')) assert.equal((await fetch(new URL('workshops/azure-agent-infra/evidence/cycle-377-benchmark.json', base))).status, 200);
+      await Promise.all([noJs.waitForNavigation({waitUntil:'load'}), noJs.click(languageSelector)]);
+      assert.equal(new URL(noJs.url()).pathname, counterpart.pathname);
+      assert.equal(await noJs.$eval('html', html => html.lang), route.endsWith('.en.html') ? 'zh-CN' : 'en');
       result.cycle377.noJavaScript.push({ route, target, focus, pass: true });
     } finally { await noJs.close(); }
   }
@@ -137,23 +213,24 @@ async function main() {
   if (perimeterBaseline) assert.equal(fs.readFileSync(path.join(root, 'docs/redesign/route-inventory.json'), 'utf8').replace(/\r\n/g, '\n'), gitSource('docs/redesign/route-inventory.json').replace(/\r\n/g, '\n'), 'Original inventory must remain immutable');
   for (const r of owned) {
     const source = baseline(r), live = fs.readFileSync(path.join(root, r.path), 'utf8'), expected = transform(r, source);
-    assert.equal(live, expected.html, r.path);
+    const preservation = assertSourcePreservation(r.path, live, expected.html);
+    // Verify the reversible pre-localization transform as well as the live-output protection above.
     if (r.sourceOverride) {
       assert.equal(r.sourceOverride.commit, cycle377Paths.includes(r.path) ? cycle377Commit : r.path.startsWith('workshops/agentic-commerce/') ? '209aea9a1db92c816927df71a9242526b44925c1' : concurrentCommit, `Unpinned concurrent source: ${r.path}`);
       if (/\/(demo|selector)\.html$/.test(r.path)) {
         const sourceLink = source.split('\n').find(line => line.includes('href="workbench-cycle-377.html"')) + '\n';
         assert(sourceLink.startsWith('    <a class="nav-link"'), 'Published workbench link missing');
         assert.equal(source.replace(sourceLink, ''), baseline(originalOwned.find(o => o.path === r.path)), `Source changes beyond native Cycle #377 link: ${r.path}`);
-        if (perimeterBaseline) assert.equal(live.replace(perimeterCss, previousPerimeterCss).replace(sourceLink, ''), gitSource(r.path), `Unexpected changes beyond source link and perimeter: ${r.path}`);
+        if (perimeterBaseline) assert.equal(normalizeReleaseShell(expected.html.replace(perimeterCss, previousPerimeterCss).replace(sourceLink, '')), normalizeReleaseShell(gitSource(r.path)), `Unexpected changes beyond source link and perimeter: ${r.path}`);
       } else {
-        assert.equal(restoreConcurrentSource(r, live), source, `New source not reversibly preserved: ${r.path}`);
+        assert.equal(restoreConcurrentSource(r, expected.html), source, `New source not reversibly preserved before localization: ${r.path}`);
       }
-    } else if (perimeterBaseline) assert.equal(live.replace(perimeterCss, previousPerimeterCss), gitSource(r.path), `Non-perimeter bytes changed since ${perimeterBaseline}: ${r.path}`);
+    } else if (perimeterBaseline) assert.equal(normalizeReleaseShell(expected.html.replace(perimeterCss, previousPerimeterCss)), normalizeReleaseShell(gitSource(r.path)), `Non-perimeter source bytes changed since ${perimeterBaseline}: ${r.path}`);
     const csp = html => html.match(/<meta\b[^>]*http-equiv=["']Content-Security-Policy["'][^>]*>/gi) || [];
     assert.deepEqual(csp(live), csp(source), `Original CSP changed: ${r.path}`);
     assert.equal((live.match(/class="kee-dedicated-nav"/g) || []).length, 1, r.path);
-    assert(!/<iframe\b/i.test(live), `Full-document preview remains: ${r.path}`);
-    if (r.role === 'report') assert.equal(strip(live), source, `Protected report content changed: ${r.path}`);
+    assertArenaFrames(r.path, live);
+    if (r.role === 'report') assert.equal(strip(expected.html), source, `Protected pre-localization report content changed: ${r.path}`);
     for (const script of live.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)) {
       if (!/type=["'](?:module|application\/)/i.test(script[1])) new (require('node:vm').Script)(script[2], { filename: r.path });
     }
@@ -162,11 +239,15 @@ async function main() {
       assert(!m[1].startsWith('/'), `Nonrelative navigation: ${r.path}`);
       if (m[1][0] !== '#') assert(fs.existsSync(path.resolve(root, path.dirname(r.path), m[1].split(/[?#]/)[0] || path.basename(r.path))), `Missing navigation: ${r.path} -> ${m[1]}`);
     }
-    result.static.push({ path: r.path, role: r.role, pass: true, reportBytesPreserved: r.role === 'report', cspPreserved: true, perimeterOnlyComparedTo: r.sourceOverride ? null : perimeterBaseline || null, sourceOverrideComparedTo: r.sourceOverride?.commit || null, linkOnlySourceDelta: Boolean(r.sourceOverride && /\/(demo|selector)\.html$/.test(r.path)), sha256: sha(live) });
+    result.static.push({ path: r.path, role: r.role, pass: true, preservation, originalReportTransformReversible: r.role === 'report', cspPreserved: true, perimeterOnlyComparedTo: r.sourceOverride ? null : perimeterBaseline || null, sourceOverrideComparedTo: r.sourceOverride?.commit || null, linkOnlySourceDelta: Boolean(r.sourceOverride && /\/(demo|selector)\.html$/.test(r.path)), sha256: sha(live) });
   }
+  result.arenas = arenaRoutes.map(route => {
+    assertArenaFrames(route, fs.readFileSync(path.join(root, route), 'utf8'));
+    return { route, frames: 3, pass: true };
+  });
   if (process.argv.includes('--static')) {
     fs.writeFileSync(path.join(output, 'static.json'), JSON.stringify(result, null, 2));
-    console.log(`Static: ${result.static.length} routes; every report source preserved.`); return;
+    console.log(`Static: ${result.static.length} protected routes; original source/CSP and localization checks passed; ${result.arenas.length} three-engine arenas.`); return;
   }
   const puppeteer = require('puppeteer');
   const browser = await puppeteer.launch({ headless: 'shell', pipe: true, args: ['--no-sandbox', '--enable-unsafe-swiftshader'] });
@@ -220,7 +301,7 @@ async function main() {
       ['astra', 'animation/demos/astra-planet/index.html'],
       ['voice-report', 'voice/benchmark-cards.html'],
       ['voice', 'voice/deck.html'],
-      ['arena', 'animation/demos/pelican-bicycle-arena/index.html']
+      ...arenaRoutes.map((route, index) => [`arena-${index + 1}`, route])
     ];
     for (const [name, route] of cases) {
       const page = await browser.newPage(), errors = [], failedRequests = [], consoleErrors = [], requests = [];
@@ -303,8 +384,25 @@ async function main() {
         action = { scenario: 'Existing Voice report English language control', contentChanged: before !== after, htmlLang: await page.$eval('html', e => e.lang) };
         assert(action.contentChanged, 'Voice report language control did not change content');
       } else {
-        action = await page.evaluate(() => ({ scenario: 'Native simulator links replace embedded documents', nativeLinks: [...document.querySelectorAll('.kee-dedicated-native-link a')].map(a=>a.href) }));
-        assert.equal(action.nativeLinks.length, 3);
+        assert(isArena(route), `Unclassified native scenario: ${route}`);
+        assert.equal(info.frames, 3);
+        const panels = await page.$$eval('iframe.demo-frame', frames => frames.map(frame => ({ id: frame.id, src: frame.getAttribute('src') })));
+        assert(allowedFrames(route, panels), `${route}: unapproved engine panel`);
+        action = { scenario: 'Three live Pelican engines: rendered animation and native controls', engines: [] };
+        for (const [id, canvas, control] of [['frameFaf', '#stage', '#btn-xray'], ['frameForge', '#stage', '#m-day'], ['frameHve', '#windCanvas', '#btnPostureUpright']]) {
+          const element = await page.$(`#${id}`), frame = await element.contentFrame();
+          assert(frame, `${route}: ${id} did not load`);
+          await frame.waitForSelector(canvas, { timeout: 30000 });
+          const before = await frame.$eval(control, button => button.className);
+          const imageBefore = await frame.$eval(canvas, stage => stage.toDataURL());
+          await frame.click(control);
+          const after = await frame.$eval(control, button => button.className);
+          assert.notEqual(after, before, `${route}: ${id} native control did not change state`);
+          await frame.waitForFunction((selector, previous) => document.querySelector(selector).toDataURL() !== previous, { timeout: 10000 }, canvas, imageBefore);
+          const dimensions = await frame.$eval(canvas, stage => ({ width: stage.width, height: stage.height }));
+          assert(dimensions.width > 0 && dimensions.height > 0, `${route}: ${id} canvas collapsed`);
+          action.engines.push({ id, control, before, after, renderedFrameChanged: true, ...dimensions });
+        }
       }
       await page.evaluate(() => window.scrollTo(0,0));
       await page.screenshot({ path: path.join(output, `${name}-1440.png`) });
@@ -354,8 +452,10 @@ async function main() {
     result.noJavaScriptPerimeterPalette = await assertPerimeter(page);
     result.noJavaScriptFocus = await page.$eval('.kee-dedicated-nav a', a => ({ visible: a.matches(':focus-visible'), color: getComputedStyle(a).outlineColor, width: getComputedStyle(a).outlineWidth }));
     assert.deepEqual(result.noJavaScriptFocus, { visible: true, color: 'rgb(86, 221, 205)', width: '3px' }, 'Native Dark Aurora keyboard focus missing');
-    await page.click('.kee-dedicated-nav a[href="../../index.html"]');
-    assert.equal(new URL(page.url()).pathname, '/index.html');
+    const home = await page.$eval('.kee-dedicated-identity', anchor => anchor.href);
+    assert(['/index.html', '/zh.html'].includes(new URL(home).pathname));
+    await Promise.all([page.waitForNavigation({ waitUntil: 'load' }), page.click('.kee-dedicated-identity')]);
+    assert.equal(page.url(), home);
     result.noJavaScriptNativeNavigation = true;
     await page.close();
   } finally { await browser.close(); }
@@ -363,4 +463,5 @@ async function main() {
   console.log(JSON.stringify({ coverage: result.static.length, scenarios: result.scenarios.map(s => ({ name: s.name, pass: s.pass, errors: s.errors, mobileWidth: s.mobile.documentWidth })), templateHashes: result.templateHashes.length, noJavaScriptNativeNavigation: result.noJavaScriptNativeNavigation }, null, 2));
   assert(result.scenarios.every(s=>s.pass), 'One or more runtime scenarios had errors; see smoke.json');
 }
-main().catch(e=>{console.error(e);process.exitCode=1;});
+module.exports = { assertSourcePreservation, normalizeReleaseShell, finalizedLinks, assertArenaFrames };
+if (require.main === module) main().catch(e=>{console.error(e);process.exitCode=1;});

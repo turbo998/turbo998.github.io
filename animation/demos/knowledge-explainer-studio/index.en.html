@@ -1,0 +1,2716 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="data:,">
+  <title>Knowledge Explainer Animation Studio · Knowledge Explainer Studio</title>
+  <style>
+    :root {
+      --bg-app: #0B111E;
+      --bg-panel: #111827;
+      --bg-card: #1E293B;
+      --bg-elevated: #0F172A;
+      --border: #334155;
+      --text: #F8FAFC;
+      --text-muted: #94A3B8;
+      --accent: #38BDF8;
+      --accent-green: #4ADE80;
+      --accent-amber: #FBBF24;
+      --accent-purple: #A78BFA;
+      --accent-rose: #FB7185;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg-app);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 24px;
+      background: var(--bg-elevated);
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .brand-badge {
+      background: linear-gradient(135deg, #2563EB, #10B981);
+      color: #fff;
+      font-weight: 800;
+      font-size: 12px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      letter-spacing: 0.06em;
+    }
+    .brand h1 {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      background: var(--bg-card);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 7px 13px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn:hover { border-color: var(--accent); background: #26354D; }
+    .btn.active, .btn.primary {
+      background: #2563EB;
+      border-color: #3B82F6;
+      color: #FFFFFF;
+    }
+    .btn.success {
+      background: #059669;
+      border-color: #10B981;
+      color: #FFFFFF;
+    }
+    .template-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      padding: 14px 24px;
+      background: #0D1526;
+      border-bottom: 1px solid var(--border);
+    }
+    .tpl-tab {
+      background: var(--bg-panel);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 16px;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.18s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .tpl-tab:hover { border-color: #64748B; }
+    .tpl-tab.active {
+      border-color: var(--accent);
+      background: linear-gradient(180deg, rgba(37,99,235,0.18) 0%, rgba(17,24,39,0.95) 100%);
+      box-shadow: 0 0 0 1px rgba(56,189,248,0.35);
+    }
+    .tpl-kicker {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--accent);
+      display: flex;
+      justify-content: space-between;
+    }
+    .tpl-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .tpl-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+    .workspace {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 390px;
+      gap: 18px;
+      padding: 18px 24px;
+      flex: 1;
+      align-items: start;
+    }
+    @media (max-width: 1180px) {
+      .workspace { grid-template-columns: 1fr; }
+      .template-tabs { grid-template-columns: 1fr; }
+    }
+    .stage-column {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .canvas-shell {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #050C0A;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1.5px solid var(--border);
+      box-shadow: 0 22px 48px rgba(0, 0, 0, 0.5);
+    }
+    #stage-canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    .safe-overlay {
+      position: absolute;
+      inset: 5% 5%;
+      border: 1px dashed rgba(56, 189, 248, 0.45);
+      pointer-events: none;
+      display: none;
+    }
+    .safe-overlay.visible { display: block; }
+    .safe-overlay::after {
+      content: "90% Action-Safe Zone (1920×1080 | X≥96px, Y≥54px)";
+      position: absolute;
+      top: 6px;
+      right: 10px;
+      font-size: 11px;
+      font-family: monospace;
+      color: rgba(56, 189, 248, 0.85);
+      background: rgba(15, 23, 42, 0.8);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .transport-bar {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .scrubber-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .time-readout {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent);
+      min-width: 118px;
+    }
+    #timeline-slider {
+      flex: 1;
+      accent-color: #38BDF8;
+      height: 6px;
+      cursor: pointer;
+    }
+    .scene-pills {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 8px;
+    }
+    @media (max-width: 720px) {
+      .scene-pills { grid-template-columns: repeat(3, 1fr); }
+    }
+    .scene-pill {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 10px;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.15s ease;
+    }
+    .scene-pill:hover { border-color: var(--accent); }
+    .scene-pill.active {
+      background: rgba(56, 189, 248, 0.16);
+      border-color: var(--accent);
+    }
+    .sp-num {
+      font-size: 10px;
+      font-family: monospace;
+      color: var(--accent);
+      font-weight: 700;
+      display: block;
+    }
+    .sp-name {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: block;
+      margin-top: 2px;
+    }
+    .telemetry-panel {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .panel-section {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+    .sec-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 11.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+    }
+    .gate-badge {
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 10.5px;
+      font-weight: 800;
+      background: rgba(16, 185, 129, 0.18);
+      color: #34D399;
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
+    .density-layout {
+      display: grid;
+      grid-template-columns: 118px 1fr;
+      gap: 12px;
+      align-items: center;
+    }
+    .grid-3x3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+      aspect-ratio: 16 / 9;
+      background: #090D16;
+      padding: 4px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+    .grid-cell {
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: monospace;
+      font-size: 10px;
+      font-weight: 700;
+      color: #fff;
+      transition: background 0.15s ease;
+    }
+    .density-metrics {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      font-size: 12px;
+    }
+    .dm-row {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px dashed rgba(148, 163, 184, 0.15);
+      padding-bottom: 3px;
+    }
+    .dm-val { font-family: monospace; font-weight: 700; color: var(--accent-green); }
+    #seam-canvas {
+      width: 100%;
+      height: 86px;
+      background: #090D16;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      display: block;
+    }
+    .ledger-kv {
+      display: grid;
+      grid-template-columns: 78px 1fr;
+      gap: 6px 10px;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+    .ledger-k {
+      color: var(--text-muted);
+      font-family: monospace;
+      font-weight: 600;
+    }
+    .ledger-v {
+      color: var(--text);
+      font-weight: 600;
+    }
+    .swatch-row {
+      display: inline-flex;
+      gap: 6px;
+      align-items: center;
+      vertical-align: middle;
+    }
+    .swatch {
+      width: 14px;
+      height: 14px;
+      border-radius: 4px;
+      border: 1px solid rgba(255,255,255,0.3);
+      display: inline-block;
+    }
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 10, 20, 0.82);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+      padding: 24px;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal-card {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      width: min(880px, 100%);
+      max-height: 86vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.65);
+    }
+    .modal-header {
+      padding: 14px 20px;
+      background: var(--bg-elevated);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-body {
+      padding: 18px 20px;
+      overflow-y: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 12.5px;
+      line-height: 1.55;
+      color: #E2E8F0;
+      white-space: pre-wrap;
+      background: #090E1A;
+    }
+  </style>
+<!-- kee-dedicated-style:start -->
+<style>/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.65fr 1.1fr 1.15fr 1.1fr 1.1fr;gap:6px;align-items:stretch;min-width:0}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+.kee-dedicated-explainer .workspace>*,.kee-dedicated-explainer .template-tabs>*{min-width:0}.kee-dedicated-explainer .ledger-v{overflow-wrap:anywhere;min-width:0}@media(max-width:1180px){.kee-dedicated-explainer .workspace{grid-template-columns:minmax(0,1fr)}}@media(max-width:720px){.kee-dedicated-explainer .scrubber-row{flex-wrap:wrap}.kee-dedicated-explainer #timeline-slider{min-width:0;flex-basis:120px}.kee-dedicated-explainer .scene-pills{grid-template-columns:repeat(3,minmax(0,1fr))}.kee-dedicated-explainer .scene-pill{min-width:0}.kee-dedicated-explainer .sp-name{white-space:normal;overflow:visible;overflow-wrap:anywhere}.kee-dedicated-explainer .safe-overlay::after{max-width:calc(100% - 20px);overflow-wrap:anywhere}}</style><script src="../../../assets/dedicated-navigation.js" defer></script>
+<!-- kee-dedicated-style:end -->
+<!-- demo-localization:start -->
+<style>html.in-arena-frame [data-professional-header],html.in-arena-frame .kee-dedicated-nav,html.in-arena-frame .reading-header,html.in-arena-frame .demo-language-navigation{display:none!important}</style>
+<script>(function runtime(config) {
+  'use strict';
+  const root = document.documentElement;
+  const params = new URLSearchParams(location.search);
+  const requested = params.get('lang');
+  const language = requested === 'en' ? 'en' : requested === 'zh' || requested === 'zh-CN' ? 'zh-CN' : config.language;
+  if (language !== config.language) {
+    const destination = new URL(language === 'en' ? config.en : config.zh, location.href);
+    destination.search = location.search;
+    destination.hash = location.hash;
+    destination.searchParams.set('lang', language);
+    location.replace(destination.href);
+    return;
+  }
+  if (!requested) {
+    const canonical = new URL(location.href);
+    canonical.searchParams.set('lang', language);
+    history.replaceState(history.state, '', canonical);
+  }
+  root.lang = language;
+  root.dataset.demoLanguage = language;
+  if (config.engine && window.self !== window.top && params.get('arena') === '1') root.classList.add('in-arena-frame');
+  const escape = value => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const dictionary = language === 'en' ? config.terms.zhEn : config.terms.enZh;
+  const keys = Object.keys(dictionary).filter(key => language === 'en' || !dictionary[key].includes(key)).sort((a, b) => b.length - a.length);
+  const pattern = keys.length ? new RegExp(language === 'en' ? keys.map(escape).join('|') : '(?<![A-Za-z0-9_])(?:' + keys.map(escape).join('|') + ')(?![A-Za-z0-9_])', 'gu') : null;
+  const translate = value => {
+    if (typeof value !== 'string' || !value) return value;
+    const trimmed = value.trim();
+    if (Object.prototype.hasOwnProperty.call(dictionary, trimmed)) return value.replace(trimmed, dictionary[trimmed]);
+    if (!pattern || language === 'en' && !/[\p{Script=Han}]/u.test(value)) return value;
+    return value.replace(pattern, (key, offset, input) => {
+      let translated = dictionary[key];
+      if (/[A-Za-z0-9]/.test(input[offset - 1] || '') && /^[A-Za-z]/.test(translated)) translated = ' ' + translated;
+      if (/[A-Za-z0-9]/.test(input[offset + key.length] || '') && /[A-Za-z]$/.test(translated)) translated += ' ';
+      return translated;
+    });
+  };
+  const excluded = node => node.parentElement?.closest('script,style,[data-professional-header],.kee-dedicated-nav,.reading-header,.demo-language-navigation');
+  const localizeNode = node => {
+    if (node.nodeType === Node.TEXT_NODE) {
+      if (excluded(node)) return;
+      const value = translate(node.nodeValue);
+      if (value !== node.nodeValue) node.nodeValue = value;
+      return;
+    }
+    if (node.nodeType !== Node.ELEMENT_NODE || node.matches('script,style,[data-professional-header],.kee-dedicated-nav,.reading-header,.demo-language-navigation')) return;
+    for (const attr of ['title', 'aria-label', 'placeholder', 'alt']) {
+      if (!node.hasAttribute(attr)) continue;
+      const original = node.getAttribute(attr), translated = translate(original);
+      if (translated !== original) node.setAttribute(attr, translated);
+    }
+    for (const child of node.childNodes) localizeNode(child);
+  };
+  // Translate only paint labels; coordinates, fonts, metrics and simulation state are untouched.
+  for (const name of ['fillText', 'strokeText']) {
+    const original = CanvasRenderingContext2D.prototype[name];
+    CanvasRenderingContext2D.prototype[name] = function(text, ...args) {return original.call(this, translate(String(text)), ...args);};
+  }
+  const switchLanguage = target => {
+    const next = new URL(target === 'en' ? config.en : config.zh, location.href);
+    next.search = location.search;
+    next.hash = location.hash;
+    next.searchParams.set('lang', target);
+    location.assign(next.href);
+  };
+  document.addEventListener('click', event => {
+    if (!event.isTrusted) return;
+    const button = event.target.closest('button');
+    if (!button || button.closest('[data-professional-header]')) return;
+    const code = button.getAttribute('onclick') || '';
+    if (!button.matches('#langToggle,#btn-lang,#btn-en,#btn-zh,[data-lang]') && !/^(?:toggleLang|setLang)\(/.test(code)) return;
+    const selected = button.dataset.lang || (button.id === 'btn-en' || /setLang\('en'/.test(code) ? 'en' : button.id === 'btn-zh' || /setLang\('zh'/.test(code) ? 'zh-CN' : language === 'en' ? 'zh-CN' : 'en');
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    switchLanguage(selected === 'en' ? 'en' : 'zh-CN');
+  }, true);
+  if (config.engine) {
+    window.addEventListener('message', event => {
+      if (!['ARENA_SYNC','arena-sync'].includes(event.data?.type)) return;
+      if (event.origin !== location.origin || event.source !== window.parent) {event.stopImmediatePropagation(); return;}
+      if (event.data.action === 'feed') {
+        if (/demo-faf-/.test(config.source)) {
+          const fish = document.getElementById('s-fish');
+          fish.value = Math.min(Number(fish.max), Number(fish.value) + 1);
+          if (typeof updateParams === 'function') updateParams();
+        } else if (/demo-agent-forge-/.test(config.source) && typeof tossFish === 'function') tossFish();
+      }
+      if (event.data.action === 'sprint' && /demo-agent-forge-/.test(config.source) && typeof triggerSprint === 'function') triggerSprint();
+    }, true);
+  }
+  const api = {language, translate, apply: () => localizeNode(root), switchLanguage, engine: config.engine, arena: config.arena, ready: false};
+  window.DemoLocalization = api;
+  document.addEventListener('DOMContentLoaded', () => {
+    const nativeButton = document.querySelector(`button[data-lang="${language}"]`);
+    if (nativeButton) nativeButton.click();
+    else if (typeof setLang === 'function') setLang(language === 'en' ? 'en' : 'zh');
+    else if (typeof toggleLang === 'function') {
+      const current = typeof currentLang === 'string' ? currentLang : typeof lang === 'string' ? lang : 'zh';
+      if ((current === 'en') !== (language === 'en')) toggleLang();
+    }
+    root.lang = language;
+    localizeNode(root);
+    new MutationObserver(mutations => {
+      for (const mutation of mutations) {
+        if (mutation.type === 'childList') mutation.addedNodes.forEach(localizeNode);
+        else localizeNode(mutation.target);
+      }
+    }).observe(root, {subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ['title','aria-label','placeholder','alt']});
+    api.ready = true;
+    document.dispatchEvent(new CustomEvent('demo-localization-ready', {detail: {language}}));
+  }, {once: true});
+})({"language":"en","source":"animation/demos/knowledge-explainer-studio/index.html","en":"index.en.html","zh":"index.html","engine":false,"arena":false,"terms":{"zhEn":{"与冰晶丙烯酸":"and ice-crystal acrylic","与力矩向量":"and the moment vector","偏斜钳制护栏":"Skew-clamping guardrail","免提巡检":"Hands-free inspection","六幕分層架構選型矩陣":"Six-scene layered architecture selection matrix","决赛前夜反转":"A reversal on the eve of the final","各向异性高斯光栅化":"Anisotropic Gaussian rasterization","星夜三幕视差与":"Three-scene starry-night parallax and","核料位计快门":"Nuclear level-gauge shutter","洪泛节流护栏":"Flood-throttling guardrail","液碱攻击":"Caustic attack","碱洗塔联锁及":"Caustic scrubber interlocks and","粗排快但糙":"Coarse ranking is fast but imprecise","缓存命中区":"Cache-hit region","许知衡直面耐力赛退役心结":"Xu Zhiheng confronts unresolved feelings about retiring from endurance racing","齿比":"Gear ratio","黑座舱":"Black cockpit","黑色横向双段尾灯":"Black horizontal two-part taillight","鼻祖":"Pioneer","黄金斗气":"Golden battle aura","黄金炉心":"Golden reactor core","鹈鹕骑自行车":"Pelican riding a bicycle","鸡毛蒜皮全走远端":"Send every trivial task to the remote service","车轮":"Wheel","曲柄":"Crank","连杆":"Connecting rod","膝关节":"Knee joint","喙":"Beak","足端":"Foot endpoint","大腿":"Thigh","小腿":"Lower leg","物理引擎":"Physics engine","运动学":"Kinematics","逆运动学":"Inverse kinematics","零滑移":"Zero slip","骨骼":"Skeleton","姿态":"Posture","沙丁鱼":"Sardines","质心":"Center of mass","迎风面积":"Frontal area","阻力系数":"Drag coefficient","轮径":"Wheel diameter","链轮":"Chainring","飞轮":"Sprocket","飞天":"Feitian","敦煌":"Dunhuang","斗机":"Battle machine","炉心":"Reactor core","斗气":"Battle aura","废土":"Wasteland","机甲":"Mech","小店":"Small shop","卷帘门":"Roller shutter","跑腿":"Errand delivery","撬棍":"Crowbar","地形来自 NASA MGS MOLA MEG016。海洋、云与大气为原创假想渲染；运行时不调用模型 API。":"Terrain comes from NASA MGS MOLA MEG016. Oceans, clouds and atmosphere are original hypothetical renderings; no model API is called at runtime.","自动档按帧率调整。精细近景：384格/纬，采样既有高程；不代表新增测量。尘土色彩为艺术材质。":"Auto quality adapts to frame rate. Detailed close-ups use 384 cells per latitude, sampling existing elevation data, not additional measurements. Dust colors are artistic materials.","定位并调整侧光，停止自转。建议干燥预设；高程、海平面和网格档位保持你的选择。":"Locate the landmark, adjust side lighting and stop rotation. The dry preset is recommended; your elevation, sea-level and mesh settings are retained.","显示半径采用 3,389.5 km 球体。顶点由米制高程真实位移；增强倍率仅用于展示。微表面颜色与云层不是测量数据。":"The displayed sphere has a radius of 3,389.5 km. Vertices are displaced using elevation in meters; exaggeration is for presentation only. Microsurface colors and clouds are not measured data.","GLB 导出将烘焙当前地形，标准格式不包含动态大气和体积云。":"GLB export bakes the current terrain. The standard format does not include the dynamic atmosphere or volumetric clouds.","从眉眼、鼻唇到发髻、金饰与项链，近景使用同一套原创绘制路径重新渲染，不放大小图，也不替换成独立人物素材。":"From brows, eyes, nose and lips to hair, gold ornaments and necklaces, close-ups rerender the same original drawing paths rather than enlarging a thumbnail or substituting separate artwork.","这是艺术设计细节展示，不是敦煌壁画的历史复原。打开近景不会启动飞行或声音。":"This is an artistic detail study, not a historical reconstruction of a Dunhuang mural. Opening a close-up does not start animation or sound.","人物、纹样、飘带与音序为原创程序绘制。敦煌风格致意，不是具体洞窟复制、颜料科学复原或历史音乐。飞天为 2D 分层画面，不是三维角色。默认静音；支持减少动态效果设置。":"Figures, patterns, ribbons and musical sequences are original procedural work. This is a tribute to Dunhuang style, not a copy of a specific cave, a scientific pigment reconstruction or historical music. Feitian uses layered 2D artwork, not 3D characters. Sound is muted by default; reduced-motion preferences are supported.","从发射场外侧，观察白色火箭挣脱地面。四色饰带、金属塔架、翻涌烟雾与一道喷焰，都在浏览器中实时生成。":"Watch the white rocket lift off from outside the launchpad. Four-color bands, a metal tower, billowing smoke and the exhaust plume are generated in real time in your browser.","主动点击 Launch，观看完整发射。L 发射 · Space 暂停 · R 重放 · C 镜头":"Click Launch to watch the full sequence. L launches · Space pauses · R replays · C switches camera.","原创几何与实时粒子；艺术化发射，不是航天或流体仿真。配色借鉴微软红绿蓝黄，无 Logo、官方关联或品牌火箭复制。圆框是外部观景边框，不是舱内视角。":"Original geometry and real-time particles depict an artistic launch, not an aerospace or fluid simulation. Colors reference Microsoft red, green, blue and yellow; there is no logo, official affiliation or replica of a branded rocket. The circular border frames an exterior view, not a cabin window.","3D 时空点云缓存 + 希区柯克变焦主体锁定 + 去遮挡扩散修复掩码":"3D spatiotemporal point-cloud cache + dolly-zoom subject lock + disocclusion diffusion-repair mask","4D 各向异性可变形椭球场 + 子弹时间冻结 + 球谐函数 (SH) 实时三点重打光":"4D anisotropic deformable ellipsoid field + bullet-time freeze + live three-point spherical-harmonic (SH) relighting","画布直接拖拽 3 组主体 3D 贝塞尔轨迹控制点 + 横滚角与二阶弹簧跟随":"Drag 3 groups of subject 3D Bézier control points on the canvas + roll angle and second-order spring following","EWA 各向异性高斯光栅化 + SH 光照 + 景深弥散圆":"EWA anisotropic Gaussian rasterization + SH lighting + depth-of-field circles of confusion","叠加逐网格视线方向 d 与力矩向量 m = o × d":"Overlay per-cell viewing direction d and moment vector m = o × d","青绿=3D 缓存命中区 · 琥珀品红=新暴露需扩散修复区":"Teal = 3D cache hit · amber/magenta = newly exposed regions requiring diffusion repair","显示雅可比 2D 投影椭圆长短轴与瞬时形变速度矢量":"Show major/minor axes of Jacobian-projected 2D ellipses and instantaneous deformation-velocity vectors","鹈鹕":"Pelican","鹈":"Pelican","踏频":"Cadence","风阻":"Wind resistance","自行车":"Bicycle","车":"Bike","鱼":"Fish","喉囊":"Pouch","载鱼量":"Fish load","逆风风速":"Headwind speed","变速齿比":"Gear ratio","鱼载荷":"Fish load","暂停":"Pause","继续":"Resume","继续播放":"Resume playback","继续仿真":"Resume simulation","暂停帧检视":"Pause for frame inspection","暂停播放":"Pause playback","恢复运行":"Resume all","冻结三帧对比":"Freeze all three frames","同步投喂沙丁鱼":"Feed all three pelicans","标准巡航":"Standard cruise","三车齐发冲刺":"Sprint all three bikes","慢动作检验":"Slow-motion inspection","零滑移核验":"Zero-slip check","三屏同步广播总线":"Three-frame synchronized broadcast bus","视图布局":"Layout","三列平铺":"Three columns","单列堆叠":"Stacked view","独立全屏":"Open standalone","复位":"Reset","重放":"Replay","重试":"Retry","启动":"Start","停止":"Stop","开启":"Enable","关闭":"Disable","开":"On","关":"Off","是":"Yes","否":"No","自动":"Auto","低":"Low","高":"High","极高":"Ultra","中":"Medium","无":"None","帧":"frames","台":"nodes","个":"items","秒":"seconds","毫秒":"milliseconds","分钟":"minutes","小时":"hours","天":"days","年":"years","次":"times","条":"entries","组":"groups","档":"level","步":"steps","中文":"Chinese","英文":"English","帧率":"Frame rate","网格":"Mesh","数据":"Data","海洋覆盖":"Ocean coverage","近似水量":"Approximate water volume","面积加权盆地填充":"Area-weighted basin fill","非水动力模拟":"not a hydrodynamic simulation","隐藏控制":"Hide controls","造景参数":"Scene parameters","科学边界":"Scientific limits","场景预设":"Scene presets","干燥火星":"Dry Mars","浅海火星":"Shallow-sea Mars","海洋火星":"Ocean Mars","海平面":"Sea level","地形增强":"Terrain exaggeration","云量":"Cloud cover","大气强度":"Atmosphere strength","太阳方位":"Sun azimuth","检查模式":"Inspection mode","写实":"Realistic","灰模":"Clay","线框":"Wireframe","高程":"Elevation","几何质量":"Geometry quality","精细近景":"Detailed close-up","高程数据":"Elevation data","基础":"Base","高清":"High resolution","地貌近景":"Terrain close-ups","水手峡谷":"Valles Marineris","奥林帕斯山":"Olympus Mons","希腊盆地":"Hellas Planitia","复位视角":"Reset camera","停止自转":"Stop rotation","保存截图":"Save screenshot","导出参数":"Export parameters","导入参数":"Import parameters","导出真实几何":"Export actual geometry","模型与数据说明":"Model and data notes","正在装载火星高程":"Loading Mars elevation","初始化":"Initializing","无法启动三维建模":"Unable to start the 3D scene","火星造景实验室":"Mars Scenography Lab","实测地形":"measured terrain","假想海洋与天气":"hypothetical oceans and weather","风起壁间":"Wind Between the Murals","原创飞天":"Original Feitian","原创程序壁画":"Original procedural mural","实验室":"Laboratory","青羽":"Azure Feather","流霞":"Flowing Rosy Clouds","听风":"Listening to Wind","拾光":"Gathering Light","四时同游":"Four Seasons Together","归壁":"Return to mural","艺术新彩":"Artistic recoloring","开启声音":"Enable sound","截图":"Screenshot","移动指针执灯照壁":"Move the pointer to illuminate the mural","点击人物或按钮":"Click a figure or button","唤醒飞天":"Awaken the Feitian","细看人物":"Figure close-up","五官与饰纹":"Facial features and ornament","人物细看":"Figure detail","选择人物":"Select figure","白色火箭发射场":"White Rocket Launchpad","向上而生":"Born to Ascend","点火":"Ignition","离台":"Liftoff","升空":"Ascent","待命":"Standby","外部固定":"Fixed exterior","发射":"Launch","跟随镜头":"Follow camera","镜头":"Camera","声音":"Sound","音效":"Sound effects","相机":"Camera","相机轨迹控制导演工作台":"Camera-Path Director Workbench","导演工作台":"Director Workbench","实验室门户":"Laboratory portal","开启云台/快门音效":"Enable gimbal / shutter sounds","导出":"Export","评测报告":"Evaluation report","架构研究专著":"Architecture study","场景资产预设":"Scene presets","赛博天台追逐":"Cyber Rooftop Chase","陀飞轮星盘":"Tourbillon Orrery","多主体轨迹舞台":"Multi-Subject Trajectory Stage","相机运镜轨":"Camera motion paths","希区柯克眩晕变焦":"Hitchcock dolly zoom","全周螺旋摇臂环绕":"Full helical crane orbit","穿拱俯冲":"Dive through the arch","横滚":"Roll","横向移摄":"Lateral truck","焦点切换":"Rack focus","冻结物理时间":"Freeze physical time","掠拍":"Sweep","手绘主体轨迹":"Draw subject trajectories","自由轨道":"Free orbit","渲染与几何透视模式":"Rendering and geometry inspection","成片合成":"Final composite","子弹时间冻结":"Freeze bullet time","扰动多主体":"Perturb multiple subjects","轨迹":"Trajectories","球谐函数":"Spherical harmonics","实时三点重打光":"Live three-point relighting","主光方位角":"Key-light azimuth","主光仰角":"Key-light elevation","色温":"Color temperature","轮廓高光增益":"Rim specular gain","实时世界一致性与性能遥测":"Live world consistency and performance telemetry","命中率":"Hit rate","去遮挡修复占比":"Disocclusion repair fraction","对极几何一致性":"Epipolar consistency","主体尺度锁定率":"Subject scale lock","帧耗时":"Frame time","因果":"Causal","滑窗步延":"Sliding-window step latency","实时控制契约":"Live control contract","动力学参数控制":"Dynamics controls","架构驱动版":"Architecture-driven edition","鹈鹕骑自行车逆运动学仿真工作台":"Pelican Bicycle Inverse-Kinematics Workbench","过程文档检视器":"Process Artifact Viewer","骨骼矢量":"Skeletal vectors","废土斗机祭":"Wasteland Iron Circuit","方向键移动":"arrow keys to move","炉心冲刺":"core dash","音效开关":"toggle sound","武器自动开火":"weapons fire automatically","零点以东":"East of Midnight","上海篇":"Shanghai Chapter","知识讲解动画制作工作台":"Knowledge Explainer Studio","三分钟自动演示":"Three-minute guided demo","实时架构与安全边界仿真台":"Live architecture and security-boundary simulator","实时仿真":"Live simulation","选型决策器":"Selection advisor","沙箱计算器":"Sandbox calculator","全景":"Overview","极速沙箱恢复":"Fast sandbox resume","五道平台安全硬边界":"Five hard platform security boundaries","工作台":"Workbench","可复现实验工作台":"Reproducible experiment workbench","选择":"Select","布局":"Layout","参数":"Parameters","状态":"State","已暂停":"Paused","运行中":"Running","播放":"Play","滚动":"Scroll","投喂":"Feed","冲刺":"Sprint","换挡":"Shift gear","重置":"Reset","返回":"Back","展开":"Expand","收起":"Collapse","帮助":"Help","设置":"Settings","运行":"Run","禁用":"Disabled","启用":"Enabled","成功":"Success","失败":"Failure","成本":"Cost","节点":"Nodes","吞吐量":"Throughput","延迟":"Latency","模式":"Mode","输入":"Input","输出":"Output","仿真":"Simulation","场景":"Scenario","风险":"Risk","安全":"Safety","基线":"Baseline","优化":"Optimized","控制":"Controls","引擎":"Engine","切换":"Switch","完成":"Complete","测试":"Test","开始":"Start","结束":"End","确认":"Confirm","取消":"Cancel","数值":"Value","单位":"Unit","模拟":"Simulated","实测":"Measured","合成":"Synthetic","匿名报告":"Anonymized reported","下一个":"Next","上一个":"Previous","上一页":"Previous page","下一页":"Next page","跳过":"Skip","关闭声音":"Mute sound","开启音效":"Enable sound effects","关闭音效":"Disable sound effects","主导航":"Main Navigator","基准评测中心":"Baseline Assessment Centre","信号雷达":"Signal radar.","模型遥测":"Model telemetry","首席架构师履历":"Biographical information of the Chief Architect","中文主题":"Chinese Theme","不翻译原始内容":"Do not translate original content","浅色主题":"Light theme","深色主题":"Dark theme","返回上下文":"Return context","资源语言":"Resource languages","安全区":"Security zone","因果音效":"Causal sound","深度专著":"Depth monograph","简":"Jane.","繁":"Fung","三大标杆知识讲解模板":"A three-stamp knowledge and interpretation template","小哲讲":"Chul-chan said,","与本地":"With Local","选型":"Select Type","深色黑曜石渐进节点树":"Dark black tsarite progressive nodal tree","三次贝塞尔流光连线":"Three Bézier luminaries.","焦点聚光降暗":"Focus light down.","六幕分层架构选型矩阵":"Six-Standing Structure Selection Matrix","小哲讲大模型":"Chul says big models.","一条视频彻底吃透":"It's a full-blown video.","暖白编辑室新粗野卡片":"New rough card for the warm white editor's office","硬塞碎裂爆破":"Crack and break.","语义滑窗切片":"Semantic Slide Window Slicing","粗排雷达":"Heavy demining","漏斗":"Funnel","溯源生成":"Trace Generation","第四种黑猩猩":"The fourth chimpanzee.","一张卡为什么能收入":"Why does a card get paid?","米白算力经济学账本":"Mibek's economics book.","计数器":"Count","最慢卡木桶阻塞":"Slowest card barrel block.","解耦与":"Untie and","缓存":"Cache","上一幕":"The last scene.","下一幕":"Next scene.","触发当前分镜因果音效":"Trigger the current spectrometer 's cause-effects","试听拍点":"Try the tap.","实时工程遥测":"Real-time engineering telemetry","九宫格边缘密度热力图":"The density heat of the Nine Magenta.","接缝运镜速度学曲线":"Suture mirror speed curve","四维正交风格原子":"Atoms of 4D orthogonal.","分镜施工图":"Mirror construction map","生产配方导出":"Production formulation export","复制全部":"Copy All","知識講解動畫製作工作台":"Animated Drawing Workstation for Knowledge","實驗室門戶":"Laboratory door.","安全區":"Security zone","關":"Off","開":"Open","匯出":"Export","暫停":"Pause","試聽拍點":"Try the dot.","小哲講":"Chul-tsu said","與本地":"& Local","選型":"Option","深色黑曜石漸進節點樹":"Dark black rock is moving up the node tree.","三次貝茲流光連線":"Three times Bates flowed.","焦點聚光降暗":"Focus light down.","小哲講大模型":"Chul says big models.","一條影片徹底吃透":"It's a full-blown film.","暖白編輯室新粗野卡片":"New rough card for the warm white editor room","語義滑窗切片":"Slipper Slipper","粗排雷達":"Heavy demining","第四種黑猩猩":"Fourth type of chimpanzee.","一張卡為什麼能收入":"Why would a card get paid?","米白算力經濟學帳本":"Mibek's economics books.","計數器":"Counter","解耦與":"Untie and","快取":"Cache","核心问题":"Core issues","概念混淆":"Confusion of concepts","为什么":"Why?","的开发者容易混淆三者":"The developers can easily confuse the three.","把":"- Put it on.","和本地":"and local","当成同级互斥选项":"Consider it a peer-resisting option.","架构踩坑的根源":"The root causes of the architecture pits","架构真相":"The Truth of the Architecture","不在一个层级":"Not at a level.","协议":"Agreements","方法":"Methodology","手脚":"Hands and feet.","管":"- What?","怎么连外部生态":"How can you even have an external ecology?","怎么做业务":"How do you do business?","本地":"Local","怎么干原子指令":"How do you do the atomic command?","架构反模式":"Structure countermode","两个极端都会踩坑":"Both extremes are gonna step on the pit.","全塞本地":"All local","全走远端":"All of them.","导致单智能体耦合失控":"It's causing the single-intelligence coupling to go out of control.","连读个本地文件都付出":"I'm paying for a local file.","演进拐点":"Turn around.","耦合开始变重":"The coupling starts to weigh.","当工具数":"When Tools","系统耦合开始指数变重":"System coupling begins indexing.","单人脚本用本地":"Single script local","最快":"Quickest","但跨团队多数据源协作时":"But when you work across the team, you work with multiple data sources.","标准化能把":"Standardize it.","降维成":"Demutation","实例对决":"Case versus case","同一任务":"Same job.","两种重量":"Two weights.","重链路":"Relink.","轻链路":"Lightlink","本地高频读写用":"Local HF reading and writing","规范":"Normative","仅需":"Only need","跨组织":"Cross-organizational","权限隔离才启用":"Permissions are only enabled if isolated","终局指南":"Final guidance","真实项目不是三选一":"The real project is not one or the other.","三层黄金协同公式":"A three-layer gold synergetic formula.","顶层":"Top Level","编排领域方法论":"Methodological approach to the organization","中层":"Middle","挂载外部知识":"Mount External Knowledge","底层":"Bottom","承载高频毫秒级手脚":"Carrying HF milliseconds hand and foot","痛点爆破":"It's gonna blow up.","为什么直接把":"Why do you just put it in?","扔给":"Throw it to me.","会翻车":"It'll roll over.","闭卷瞎编":"I'm not making it up.","幻觉":"Imagination.","整本硬塞":"Whole hard-plug","注意力迷失":"Attention lost.","页":"Page","直接塞入":"Right in.","会在边界处碎裂":"It'll break up at the border.","成本爆炸且触发":"Cost explosion and trigger","离线切片":"Offline Slice","语义滑窗":"Semantic Slide Window","拒绝死板一刀切":"And refuse to cut the stone.","带":"- Yeah.","缓冲的语义切片":"Buffer Semantic Slice","固定字数硬切会劈断财务表格与主谓宾":"Fixed word torso will break the financial tables and the main name guest","语义滑窗保留":"Semantic Slide Window Retain","上下文不断句":"Context","向量化与粗排":"Quantification and Bold","语义雷达召回":"Semantic Radar Recall","把文字变成高维坐标":"Turn text into a high-dimensional coordinate","余弦相似度毫秒级粗排":"Cosine similarity milliseconds of thick","将问题与切片映射至同一向量空间":"Map the problem to the same vector space as the slice","通过":"Pass.","瞬间从十万切片中抓出":"I caught it in a moment from 100,000 slices.","候选池":"Candidate pool","精排漏斗":"Pre-Cipp Funnel","为什么必须加":"Why do you have to add","重排准但精":"Reordering but fine.","剔除伪相关干扰项":"Remove false interference","向量粗排容易混入":"It's easy to mix a big vector.","字面相似但年份错误":"It's a similar but year-y error.","的干扰卡":"The interference card","深度交叉注意力精准筛出":"Depth cross-focus is sift.","黄金证据":"Gold evidence.","上下文槽位组装与防幻觉引用溯源":"Context slot assembly and hallucinogenic reference trace","严禁自由发挥":"It's forbidden to play freely.","结构化槽位注入":"Structured slot injection","页码级引用溯源":"Source of Page-Code Reference","将":"Will","黄金切片嵌入":"Gold Slice Embedding","约束槽":"Constraint Slot","強制大模型每句结论标注":"Force a conclusion note for each sentence of a large model","财报":"Financial report","原文坐标":"Original Coordinates","全景复盘":"Panorama Rewind","企业级":"Enterprise level","准确率从":"Exact Rate From","到":"Present.","的四命门":"♪ Four times ♪","一条流水线吃透":"It's full of water.","切片":"Slice","混合召回":"Mixed recall","重排":"Reorder","溯源":"Trace","向量混合粗排":"Vector Mixed Bold","精排":"Prefecture","强约束溯源":"Forced Retrace","构成生产级闭环":"Composition of production level closed loops","商业反差":"Business Contrast","单卡日入":"Single card day in","行业":"Industry","美元":"United States dollars","倍反差":"Double-reverse","定价只有同行几分之一":"The price is only one in three.","单卡日营收却是":"The day of the single card camp is the day of the day.","倍":"Double","秘密不在定价":"Secrets don't price.","而在极限吞吐量":"And at the limit, it's gonna be a big load.","破局一":"Breakdown one.","批处理摊薄显存带宽":"Batch-processing of a thin-spread bandwidth","单用户推理是在烧钱空转":"The single user theory is burning money.","搬一次权重同时算":"Weights are moved at the same time","个词":"A word.","大模型吐词慢在":"Big model spits slowly.","从显存搬权重到计算核":"From visible weights to computational weights","攒够":"Save it.","路并发一起搬":"We'll move together.","单":"Single","访存成本立降":"Cost of access reduced","破局二":"Breakdown 2","先说":"First.","和":"and","木桶效应":"The barrel effect.","每一步":"Every step","都得等最慢的那张卡算完":"We'll have to wait for the slowest card to be counted.","个专家分在不同卡上":"The experts are on different cards.","热门专家卡被挤爆":"Hot-hot expert card is being squeezed.","其余":"The rest","张卡":"Card","算完也得干等同步线":"We'll have to wait for the sync.","破局三":"- You're a loser.","的情况正好相反":"The opposite is true.","解耦":"Undo the coupling.","算力瓶颈":"The power bottleneck.","显存带宽瓶颈":"Visible bandwidth bottlenecks","把阅读输入的":"I'm going to get a reading.","小":"Small","大":"Large","与逐字吐词的":"And the word-for-word.","分池":"Sub-pool","部署":"Deployment","互不拖累":"I'm not tired of each other.","破局四":"Breaking the game.","省了":"Saved.","硬盘缓存":"Hard Disk Cache","硬盘级":"Hard Disk Level","命中":"Hit.","多轮对话与共享前缀直接从":"Multi-cycle dialogue and share prefixes directly from","分布式硬盘读取":"Distributive Hard Disk Read","万计算量坍缩至":"Thousands of calculators collapse to","万":"Man.","破局五":"Breaking five.","昼夜错峰":"The night and day are at the wrong peak.","满载率与终局账本":"Full load and final book","白天跑推理":"Daytime inference.","半夜训模型":"The midnight training model.","极限满载炼成":"Maximum Loaded","卡":"Cut.","均衡":"Balance","昼夜满载":"It's full day and night.","万能外挂协议":"All-embracing protocol.","提示词工作流":"& Workflow of Psychics","本地函数调用":"Local Functions Call","开发者容易混淆":"The developers are easily confused.","智能体中枢":"Smart Centre","协议层":"Protocol Layer","怎么连":"How?","跨进程":"Cross-process","标准接口":"Standard interface","连接外部数据源与生态":"Connecting external data sources to ecology","方法层":"Method Layer","怎么做":"How?","领域":"Area","菜谱与知识胶囊":"The recipe and the knowledge capsule.","规定先做什么后做什么":"It's a rule for what to do first.","执行层":"Executive Level","怎么干":"How?","进程内确定性手脚":"Identification of sex within process","毫秒级文件读写与本地计算":"millisecond file reading and writing and local calculation","极端":"Extreme","所有逻辑全塞本地":"All logic is local.","单体耦合爆炸":"Single-humped explosion","读个本地文件耗时":"Time to read a local file","延迟爆炸":"Delayed explosion","系统维护与耦合成本":"Cost of system maintenance and coupling","工具数量与跨团队规模":"Number of tools and cross-group size","个工具":"A tool","跨团队":"Cross Team","外部数据源切换至":"External data source to","标准协议层":"Standard Protocol Layer","耦合曲线":"Concord Curve","协议解耦曲线":"Protocol decorate curve","重型路径":"Heavy Path","杀鸡用牛刀":"A cow knife for a chicken.","全走":"All of them.","轻型路径":"Light Path","大脑":"Brain","编排":"Organization","适用":"Application","多步业务流程":"Multistep business processes","代码审查规范":"Code Review Code Standard","固定领域套路封装":"Fixed-area road-covering","外部生态标准连接器":"External ecological standards connector","跨团队复用数据源":"Reuse data sources across teams","外部":"External","需要独立鉴权与进程隔离的服务":"Services that require independent expertise and process segregation","高频毫秒级手脚":"HF ms.","高频本地文件读写":"HF local file reading and writing","检索":"Search","确定性数学计算":"Positive mathematical calculations","零通信开销":"Zero communication costs","页财报":"Page Financial report","单次提问成本爆炸":"One-question cost explosion","中间":"Centre","页面注意力权重严重稀释":"A serious dilution of the focus weight of the page","极易把":"It's easy.","与":"with","年财务数据张冠李戴":"Zhang Li Tai, annual financial data","错误示范":"Error Demonstration","按固定":"Press the button.","字死板硬切":"Script","直接把财务表格与主谓宾劈成两半":"I'll split the financial statements directly between the principal and the principal.","正确做法":"Correct approach","按段落":"By Paragraph","语义边界切分":"Semantic Boundary Slit","重叠滑窗缓冲":"Overlap window buffer","用户提问向量化":"Quantification of user questions","研发费用率是多少":"What's the R & D rate?","粗排召回":"Call back in the big row.","粗排候选池":"Cracking pool.","精排胜出":"The line wins.","结构化":"Structure","槽位组装":"Slot assembly","只准依据下方证据作答":"Only on the basis of the evidence below.","每句结论必须标注":"Every sentence must be marked","页码":"Page Number","研发费用率及同比变化是多少":"What is the rate of R & D costs and the change in comparison?","溯源生成结果":"Trace Result","零幻觉":"Zero hallucinations.","句句有据":"Words are true.","研发费用率为":"R & D cost rate","同比提升":"Increases in the same proportion","个百分点":"Percentage","算力投入驱动":"Calculator input driver","向量":"Vector","粗排":"Bold","重排漏斗精选":"Re-select the funnel","槽位溯源生成":"Slot trace generation","保住表格与上下文完整性":"Keep the table and context integrity","语义召回":"Semantic recall","专有名词精确匹配":"Precision matching of proprietary terms","剔除字面相似的伪相关噪音":"Erase pseudo-related noises similar to the one you're writing.","强制绑定原文页码拒绝瞎编":"Force original page numbering to refuse to be made up","行业平均单卡日营收":"Average single-calories daily collection in industry","单张":"Single","日均理论收入":"Average theoretical income","倍超高产出":"High output multiple","单卡收入":"Single card income","单价":"Unit price","单价极低还能赚":"It's a very low unit price.","吞吐量碾压":"Swallow-to-peat pressure.","搬一次权重只算":"Weights are only for one move.","个人的词":"Personal words.","集群":"Cluster","阅读输入":"Read Input","一次性并行吃进整段长":"One-time and one-time and one-on-one.","计算核瞬间拉满":"Counting the nuclear to be full in a moment.","策略":"Policy","小专家并行":"Small experts parallel","大数据并行":"Big Data Parallel","减少跨卡通信":"Reduction in cross-card communications","逐字吐词":"Words.","每次只吐":"Every time I throw up,","全在等显存搬运":"It's all waiting for the retrospect.","权重":"Weight","大专家并行":"Big expert parallels","跨节点":"Cross Node","超大":"It's huge.","摊薄访存":"Portable access","硬盘":"Hard Disk","缓存命中":"Cache","多轮对话与共享前缀计算量坍缩":"Multi-cycle dialogue and share prefix calculation collapse","倍算力":"Double-calculation","昼夜错峰调度":"The night and day are at the wrong peak.","白天推理波峰":"Daytime reasoning, waves.","夜间半价":"Half price at night.","训练填谷":"Training in the valley of the valley.","极限满载率":"Maximum Full Load Rate","猩猩":"Gorilla.","已复制":"Copyed"},"enZh":{"Frontier Transformation Engineering Hub":"前沿转型工程中心","Mean Edge Gradient":"平均边缘梯度","Peak Interval Med":"峰值间隔中位数","Seam: cut-the-curve":"接缝：切断曲线","Value":"价值","within":"所属维度：","weight":"权重","Weight":"权重","Score":"评分","Evidence":"证据","gate":"门槛","Trigger":"触发条件","Tier":"级别","init":"初始化","Method":"方法","ON":"开","OFF":"关","System":"系统","Path":"路径","Rate":"比例","Play":"播放","Pause":"暂停","Start":"开始","Stop":"停止","Export":"导出","Save":"保存","Load":"加载","Next":"下一步","Close":"关闭","High":"高","On":"开","Off":"关","Scene":"场景","Mode":"模式","Telemetry":"遥测","Cost":"成本","Latency":"延迟","Throughput":"吞吐量","Engine":"引擎","Output":"输出","Architecture":"架构","Workflow":"工作流","Baseline":"基线","Decision":"决策","Action":"操作","Catching Fish!":"接住鱼了！","Wheelie Stunt!":"抬轮特技！","Sprint Boost!":"冲刺加速！","ASTRA PLANET LAB":"ASTRA 行星实验室","Procedural terrain":"程序化地形","DEMO":"演示","LIVE":"实时","READY":"就绪","MUTE":"静音","LAUNCH":"发射","STANDBY":"待命","IGNITION":"点火","LIFTOFF":"离台","ASCENT":"升空","COAST":"滑行","FINISHED":"结束","Cycle #377 Interactive Workbench":"Cycle #377 交互工作台","Runtime/Sandbox benchmark explorer with source labels and deterministic session-cost model.":"运行时／沙箱基准探索器：含来源标签与确定性会话成本模型。","Cycle: #377":"周期：#377","Window:":"窗口：","Source labels: measured · synthetic · anonymized_reported":"来源标签：实测 · 合成 · 匿名报告","JSON evidence":"JSON 证据","Latency (p50/p95)":"延迟 (p50/p95)","P50 ms":"P50 毫秒","P95 ms":"P95 毫秒","Label":"标签","Throughput (p50/p95 RPS)":"吞吐量 (p50/p95 RPS)","Policy intercept rate":"策略拦截率","Policy":"策略","Single-session cost":"单次会话成本","Session minutes:":"会话分钟数：","USD/session":"美元／会话","measured":"实测","synthetic":"合成","anonymized_reported":"匿名报告","Resume":"继续","Reset":"重置","Replay":"重放","Sound":"声音","Enable sound":"开启声音","Disable sound":"关闭声音","Import":"导入","Previous":"上一步","Settings":"设置","Controls":"控制","Help":"帮助","Quality":"质量","Low":"低","Auto":"自动","Medium":"中","Ultra":"极高","Status":"状态","Running":"运行中","Paused":"已暂停","Frame rate":"帧率","Relighting":"重新布光","SCENE:":"场景：","MODE:":"模式：","FOCAL / FOV:":"焦距／视场角：","PHASE":"阶段","TIME":"时间","HEIGHT":"高度","VIEW":"视角","Original figure / Detail study":"原创人物／细节研究","OBSERVATORY CONTROL":"观测站控制","GPT-6 ASTRA · GEOMETRY STUDY":"GPT-6 ASTRA · 几何研究","Astra Planet Lab":"Astra 行星实验室","White rocket / four colors":"白色火箭／四色饰带","Three.js / exterior launchpad":"Three.js／外部发射场","GVL / LAUNCH WINDOW":"GVL／发射窗口","Source":"来源","Parameters":"参数","Input":"输入","Simulation":"仿真","Optimized":"已优化","Confidence":"置信度"}}});</script>
+<!-- demo-localization:end -->
+<style id="site-remediation-style">:root{--search-bg:#101a30;--search-soft:#172440;--search-ink:#eef3ff;--search-muted:#adbbd1;--search-line:#293956;--search-accent:#9aabff;--header-offset:108px}
+:root[data-reading-shell][data-theme=light],[data-perimeter-theme=light]{--search-bg:#fff;--search-soft:#e8eefb;--search-ink:#17233e;--search-muted:#4c5e7c;--search-line:#d5ddec;--search-accent:#354ec8}
+html{scroll-padding-top:var(--header-offset,108px)!important}
+.site-search,.site-search *{box-sizing:border-box!important;font-family:"Segoe UI",sans-serif;letter-spacing:normal;text-transform:none}
+.site-search{position:relative;display:flex;align-items:center;gap:5px;min-width:0;width:230px;max-width:100%;margin:0!important;padding:0!important;line-height:1.4;border:1px solid var(--search-line);border-radius:9px;background:var(--search-soft);color:var(--search-ink);isolation:isolate}
+.site-search input[type=search]{display:block;flex:1;min-width:0;width:100%;height:42px;margin:0;padding:9px 8px!important;font-size:12px!important;line-height:1.5;border:0!important;border-radius:9px;background:transparent!important;color:var(--search-ink)!important;box-shadow:none!important;appearance:none}
+.site-search input::placeholder{color:var(--search-muted);opacity:1}.site-search input:focus-visible{outline:2px solid var(--search-accent);outline-offset:2px}
+.site-search kbd{font:11px Consolas,monospace;color:var(--search-muted);padding:1px 5px;border:1px solid var(--search-line);border-radius:4px}
+.site-search button[type=submit]{flex:none;width:38px;min-width:38px;height:42px;min-height:42px;padding:0;margin:0;border:0;border-radius:8px;background:transparent;color:var(--search-accent);font-size:24px;cursor:pointer;box-shadow:none}
+.search-label,.search-status{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.site-search .search-results{position:absolute;top:calc(100% + 10px);right:0;z-index:1100;width:min(480px,calc(100vw - 32px));max-height:min(560px,65vh);overflow-y:auto;border:1px solid var(--search-line);border-radius:12px;background:var(--search-bg);color:var(--search-ink);padding:10px;box-shadow:0 12px 32px #0005;text-align:left}
+.site-search .search-results[hidden]{display:none!important}.search-results .search-group{margin:8px 6px 4px;font:11px/1.5 Consolas,monospace;color:var(--search-muted)}
+.site-search .search-results a{display:block!important;padding:10px!important;margin:3px 0!important;border:1px solid transparent!important;border-radius:7px;background:transparent;color:var(--search-ink)!important;font-size:13px!important;text-decoration:none!important;white-space:normal;overflow-wrap:anywhere;text-align:left!important;line-height:1.5!important}
+.site-search .search-results a[aria-selected=true],.site-search .search-results a:hover{border-color:var(--search-accent)!important;background:var(--search-soft)}
+.search-results a small{display:block;font-size:10px;color:var(--search-muted);margin-top:4px}.search-results p{margin:10px;font-size:13px;color:var(--search-muted)}
+.search-archive-summary{padding:20px;border:1px solid var(--search-line);border-radius:10px;background:var(--search-bg);color:var(--search-ink);margin:24px 0}.search-archive-summary h2{font-size:24px;margin:0 0 12px}.search-archive-summary li{margin:12px 0}.search-archive-summary a{color:var(--search-accent)}
+[data-professional-header]{position:sticky!important;top:0!important;z-index:1000!important;background:var(--search-bg)!important;--header-glass:rgba(16,26,48,.9);grid-template-columns:auto minmax(0,1fr) 230px auto!important}
+[data-professional-header][data-perimeter-theme=light],:root[data-reading-shell][data-theme=light] [data-professional-header]{--header-glass:rgba(255,255,255,.94)}
+[data-professional-header] .professional-mobile{display:none}.professional-mobile summary{min-width:38px;min-height:42px;display:grid;place-items:center;cursor:pointer;list-style:none}.professional-mobile summary::-webkit-details-marker{display:none}
+[data-professional-header] .professional-context{display:none}
+.professional-context-bar{padding:12px 24px;border-bottom:1px solid var(--search-line);background:var(--search-bg);color:var(--search-muted);font:12px/1.6 "Segoe UI",sans-serif;display:flex;flex-wrap:wrap;gap:8px 18px;overflow-wrap:anywhere}.professional-context-bar a{color:var(--search-accent)}
+@supports((backdrop-filter:blur(16px)) or (-webkit-backdrop-filter:blur(16px))){.site-header,[data-professional-header]{background:var(--header-glass)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}}
+@media(max-width:1250px) and (min-width:701px){.header-inner{grid-template-columns:minmax(0,1fr) 230px auto!important;padding:12px 0;gap:12px!important}.desktop-nav{grid-row:2;grid-column:1/-1}.header-inner>.site-search{grid-column:2;grid-row:1}.header-inner>.controls{grid-column:3;grid-row:1}[data-professional-header]{grid-template-columns:minmax(0,1fr) 230px auto!important;gap:12px!important}[data-professional-header]>.professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header]>.site-search{grid-column:2;grid-row:1}[data-professional-header]>.professional-controls{grid-column:3;grid-row:1}:root{--header-offset:176px}}
+@media(max-width:700px){.header-inner{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 0;gap:8px!important}.header-inner>.site-search{grid-row:2;grid-column:1/-1;width:100%}.header-inner>.controls{grid-column:2;grid-row:1}.site-search .search-results{width:100%;right:0}[data-professional-header]{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 16px!important;gap:8px!important}[data-professional-header]>.professional-primary{display:none!important}[data-professional-header]>.site-search{grid-column:1/-1;grid-row:2;width:100%}[data-professional-header]>.professional-controls{grid-column:2;grid-row:1}[data-professional-header] .professional-mobile{display:block}[data-professional-header] .professional-mobile[open]>.professional-primary{position:absolute;top:100%;left:0;right:0;padding:16px;background:var(--search-bg);border-bottom:1px solid var(--search-line);display:grid;grid-template-columns:1fr 1fr;gap:8px}[data-professional-header] .professional-mobile .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:12px!important}:root{--header-offset:126px}}
+@media(prefers-reduced-transparency:reduce){.site-header,[data-professional-header]{background:var(--search-bg)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+@media print{.site-search,.professional-context-bar{display:none!important}}
+
+@media(min-width:1251px){.header-inner{display:grid!important;grid-template-columns:auto minmax(0,1fr) 230px auto!important;gap:18px!important}.header-inner .desktop-nav{min-width:0}}
+
+html:has(.kee-dedicated-app-root){height:auto!important;overflow-x:hidden!important;overflow-y:auto!important}
+body:has([data-professional-header]){height:auto!important;overflow-x:clip!important;overflow-y:visible!important;padding-top:0!important}
+.demo-language-navigation{display:none!important}
+.stage-column,.telemetry-panel,.scene-pill,#timeline-slider{min-width:0}
+@media(max-width:1180px){.workspace,.template-tabs{grid-template-columns:minmax(0,1fr)!important}}
+
+.in-arena-frame .professional-context-bar,.in-arena-frame [data-knowledge-atlas]{display:none!important}
+</style><script src="../../../assets/editorial/search-index.js" defer></script><script src="../../../assets/editorial/search.js" defer></script></head>
+<body class="kee-dedicated-explainer">
+<!-- demo-language-navigation:start --><nav class="demo-language-navigation" aria-label="Demo language"><a href="index.en.html?lang=en" hreflang="en">EN</a> · <a href="index.html?lang=zh-CN" hreflang="zh-CN">中文</a></nav><!-- demo-language-navigation:end -->
+<!-- kee-dedicated-navigation:start -->
+<nav class="kee-dedicated-nav" data-professional-header><a class="professional-identity reading-brand kee-dedicated-identity identity" href="../../../index.html">Qi Chen · @turbo998</a><div class="professional-primary" role="navigation" aria-label="Primary sections"><a href="../../../studio/index.html" data-section="hub" data-nav-en-href="../../../studio/index.html" data-nav-zh-href="../../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub" aria-current="page">Frontier Transformation Engineering Hub</a><a href="../../../benchmarks.html" data-section="benchmarks" data-nav-en-href="../../../benchmarks.html" data-nav-zh-href="../../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心">Benchmark &amp; Eval Foundry</a><a href="../../../github-radar.html" data-section="radar" data-nav-en-href="../../../github-radar.html" data-nav-zh-href="../../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI Signal Radar</a><a href="../../../openrouter.html" data-section="routing" data-nav-en-href="../../../openrouter.html" data-nav-zh-href="../../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">Model Routing &amp; Telemetry</a><a href="../../../about.html" data-section="profile" data-nav-en-href="../../../about.html" data-nav-zh-href="../../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">Principal Architect Profile</a></div><form class="site-search" role="search" action="../../../studio/archive.html" method="get" data-search-root="../../../index.html" data-search-language="en"><label class="search-label" for="site-search-input">Search architecture, benchmarks, demos...</label><input id="site-search-input" name="q" type="search" placeholder="Search architecture, benchmarks, demos..." autocomplete="off" spellcheck="false" aria-keyshortcuts="/ Control+k Meta+k"><kbd aria-hidden="true">/</kbd><button type="submit" aria-label="Search all content">⌕</button><div class="search-results" id="site-search-results" hidden></div><span class="search-status" role="status" aria-live="polite"></span></form><div class="reading-controls professional-controls" aria-label="Site language and appearance"><a href="index.en.html" hreflang="en" lang="en" aria-current="page">EN</a><a href="index.html" data-reading-language hreflang="zh-CN" lang="zh-CN">中文</a><details class="professional-mobile"><summary aria-label="Open navigation">☰</summary><div class="professional-primary" role="navigation" aria-label="Mobile navigation"><a href="../../../studio/index.html" data-section="hub" data-nav-en-href="../../../studio/index.html" data-nav-zh-href="../../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub" aria-current="page">Frontier Transformation Engineering Hub</a><a href="../../../benchmarks.html" data-section="benchmarks" data-nav-en-href="../../../benchmarks.html" data-nav-zh-href="../../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心">Benchmark &amp; Eval Foundry</a><a href="../../../github-radar.html" data-section="radar" data-nav-en-href="../../../github-radar.html" data-nav-zh-href="../../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI Signal Radar</a><a href="../../../openrouter.html" data-section="routing" data-nav-en-href="../../../openrouter.html" data-nav-zh-href="../../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">Model Routing &amp; Telemetry</a><a href="../../../about.html" data-section="profile" data-nav-en-href="../../../about.html" data-nav-zh-href="../../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">Principal Architect Profile</a></div></details><a data-reading-theme="light" href="index.en.html?theme=light" aria-label="Light theme">☀</a><a data-reading-theme="dark" href="index.en.html?theme=dark" aria-label="Dark theme">◐</a></div><div class="professional-context" aria-label="Back to context"><a href="../../../studio/index.html">← Engineering Hub</a> · <a href="../../../studio/animation.html">Parent topic</a></div></nav><div class="professional-context-bar"><a href="../../../studio/index.html">← Engineering Hub</a> · <a class="reading-context" href="../../../studio/animation.html">Parent topic</a></div><!-- site-remediation-knowledge:start --><figure class="knowledge-figure" data-knowledge-atlas="animation" style="margin:24px 0;max-width:100%"><svg xmlns="http://www.w3.org/2000/svg" lang="en" role="img" aria-labelledby="knowledge-b74bbc588d29-title knowledge-b74bbc588d29-desc" viewBox="0 0 360 858" width="360" style="display:block;width:100%;height:auto;max-width:560px;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-b74bbc588d29-title">Knowledge Explainer Animation Studio · Knowledge Explainer Studio</title><desc id="knowledge-b74bbc588d29-desc">Explanation &amp; scene intent: Narrative · storyboard · camera constraints → defines the scene model → Geometry &amp; physical model: 4D Gaussian · Plücker rays · procedural geometry → drives time and motion → Motion, camera &amp; interaction: Timeline · springs · motion brush · 6DoF camera → renders explanatory frames → Rendering &amp; accessible playback: SVG / Canvas / WebGL · reduced-motion fallback → checks visual evidence → Workbench &amp; source evaluation: Compare frames and mechanisms, not unrelated scores</desc><rect width="360" height="858" rx="16" fill="#091827"/><text x="20" y="30" fill="#eef5ff" font-size="20" font-weight="700"><tspan x="20" dy="0">Knowledge Explainer Animation</tspan><tspan x="20" dy="28">Studio · Knowledge Explainer</tspan><tspan x="20" dy="28">Studio</tspan></text><text x="20" y="111" fill="#a9b8ce" font-size="13" font-weight="400"><tspan x="20" dy="0">Conceptual topology · not measured metrics</tspan></text><g data-concept="1"><rect x="16" y="137" width="328" height="99" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="151" width="4" height="71" rx="2" fill="#63dbca"/><text x="32" y="167" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">Explanation &amp; scene intent</tspan></text><text x="32" y="198" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">Narrative · storyboard · camera</tspan><tspan x="32" dy="19.599999999999998">constraints</tspan></text></g><g data-relationship="defines the scene model"><path d="M32 236 V281" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 276 L32 282 L37 276" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="262" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">defines the scene model</tspan></text></g><g data-concept="2"><rect x="16" y="288" width="328" height="99" rx="12" fill="#132942" stroke="#43617f"/><rect x="16" y="302" width="4" height="71" rx="2" fill="#63dbca"/><text x="32" y="318" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">Geometry &amp; physical model</tspan></text><text x="32" y="349" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">4D Gaussian · Plücker rays · procedural</tspan><tspan x="32" dy="19.599999999999998">geometry</tspan></text></g><g data-relationship="drives time and motion"><path d="M32 387 V432" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 427 L32 433 L37 427" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="413" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">drives time and motion</tspan></text></g><g data-concept="3"><rect x="16" y="439" width="328" height="99" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="453" width="4" height="71" rx="2" fill="#63dbca"/><text x="32" y="469" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">Motion, camera &amp; interaction</tspan></text><text x="32" y="500" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">Timeline · springs · motion brush ·</tspan><tspan x="32" dy="19.599999999999998">6DoF camera</tspan></text></g><g data-relationship="renders explanatory frames"><path d="M32 538 V583" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 578 L32 584 L37 578" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="564" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">renders explanatory frames</tspan></text></g><g data-concept="4"><rect x="16" y="590" width="328" height="99" rx="12" fill="#132942" stroke="#43617f"/><rect x="16" y="604" width="4" height="71" rx="2" fill="#63dbca"/><text x="32" y="620" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">Rendering &amp; accessible playback</tspan></text><text x="32" y="651" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">SVG / Canvas / WebGL · reduced-motion</tspan><tspan x="32" dy="19.599999999999998">fallback</tspan></text></g><g data-relationship="checks visual evidence"><path d="M32 689 V734" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 729 L32 735 L37 729" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="715" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">checks visual evidence</tspan></text></g><g data-concept="5"><rect x="16" y="741" width="328" height="99" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="755" width="4" height="71" rx="2" fill="#63dbca"/><text x="32" y="771" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">Workbench &amp; source evaluation</tspan></text><text x="32" y="802" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">Compare frames and mechanisms, not</tspan><tspan x="32" dy="19.599999999999998">unrelated scores</tspan></text></g></svg><figcaption style="font:14px/1.6 system-ui,sans-serif;margin:12px 0;overflow-wrap:anywhere">Overall knowledge map: read the labeled relationships and engineering boundaries. Layout is conceptual; it does not represent throughput, rankings or a production deployment.</figcaption></figure><!-- site-remediation-knowledge:end -->
+<!-- kee-dedicated-navigation:end -->
+
+
+<header class="topbar">
+  <div class="brand">
+    <a href="../../" class="btn" id="back-portal-link">← Laboratory portal</a>
+    <span class="brand-badge">ONE-SENTENCE-VIDEO HARNESS v1.0</span>
+    <h1 id="studio-heading">Knowledge Explainer Studio · Knowledge Explainer Studio</h1>
+  </div>
+  <div class="top-actions">
+    <button class="btn" id="btn-safe-zone" type="button">📐 90% Security zone</button>
+    <button class="btn" id="btn-audio" type="button" aria-pressed="false">🔊 Causal sound: Off</button>
+    <button class="btn" id="btn-export-storyboard" type="button">📋 Export STORYBOARD.md</button>
+    <a class="btn" href="test-report-cards.en.html">📊 7-Card Evaluation report</a>
+    <a class="btn" href="../../research/knowledge-explainer-animation-study.en.html">📖 Depth monograph</a>
+    <div style="display:inline-flex;gap:4px;" role="group" aria-label="Language switch">
+      <button id="kee-resource-language" class="btn active" data-lang="zh-CN" type="button">Jane.</button>
+      <button class="btn" data-lang="zh-TW" type="button">Fung</button>
+      <button class="btn" data-lang="en" type="button">EN</button>
+    </div>
+  </div>
+</header>
+
+<nav class="template-tabs" aria-label="A three-stamp knowledge and interpretation template">
+  <button class="tpl-tab active" data-template="xiaozhe-mcp-node-graph" type="button">
+    <div class="tpl-kicker">
+      <span>TEMPLATE 01 · OBSIDIAN NODE TOPOLOGY</span>
+      <span>BV1nnnw6FE2V</span>
+    </div>
+    <div class="tpl-title" data-i18n="tpl1_title">【Chul-chan said,Agent】MCP、Skill With Local Tools Select Type</div>
+    <div class="tpl-desc" data-i18n="tpl1_desc">Dark black tsarite progressive nodal tree · Three Bézier luminaries. · Focus light down. · Six-Standing Structure Selection Matrix</div>
+  </button>
+
+  <button class="tpl-tab" data-template="xiaozhe-rag-pipeline-flow" type="button">
+    <div class="tpl-kicker">
+      <span>TEMPLATE 02 · 4-STAGE FUNNEL &amp; PACKET-HOP</span>
+      <span>DOUYIN RAG</span>
+    </div>
+    <div class="tpl-title" data-i18n="tpl2_title">【Chul says big models.】It's a full-blown video. RAG</div>
+    <div class="tpl-desc" data-i18n="tpl2_desc">New rough card for the warm white editor's office · PDF Crack and break. · Semantic Slide Window Slicing → Heavy demining → Rerank Funnel → Trace Generation</div>
+  </button>
+
+  <button class="tpl-tab" data-template="chimp-deepseek-unit-economics" type="button">
+    <div class="tpl-kicker">
+      <span>TEMPLATE 03 · COMPUTE MATRIX &amp; UNIT LEDGER</span>
+      <span>BV13cxv6SE9L</span>
+    </div>
+    <div class="tpl-title" data-i18n="tpl3_title">【The fourth chimpanzee.】DeepSeek Why does a card get paid? $38</div>
+    <div class="tpl-desc" data-i18n="tpl3_desc">Mibek's economics book. · $38 vs $5.7 (6.7x) Count · EP/DP Slowest card barrel block. · Prefill/Decode 1:1 Untie and 80% Cache</div>
+  </button>
+</nav>
+
+<main class="workspace">
+  <section class="stage-column">
+    <div class="canvas-shell">
+      <canvas id="stage-canvas" width="1920" height="1080"></canvas>
+      <div class="safe-overlay" id="safe-overlay"></div>
+    </div>
+
+    <div class="transport-bar">
+      <div class="scrubber-row">
+        <button class="btn primary" id="btn-play" type="button">⏸ Pause</button>
+        <button class="btn" id="btn-prev" type="button">⏮ The last scene.</button>
+        <button class="btn" id="btn-next" type="button">⏭ Next scene.</button>
+        <span class="time-readout" id="time-readout">00.0s / 27.0s</span>
+        <input type="range" id="timeline-slider" min="0" max="27" step="0.05" value="0" aria-label="Timeline seek">
+        <button class="btn" id="btn-sfx-test" type="button" title="Trigger the current spectrometer 's cause-effects">🔔 Try the tap. SFX</button>
+      </div>
+      <div class="scene-pills" id="scene-pills"></div>
+    </div>
+  </section>
+
+  <aside class="telemetry-panel" aria-label="one-sentence-video Real-time engineering telemetry">
+    <div class="panel-section">
+      <div class="sec-header">
+        <span>1. DENSITY-GATE · 3×3 The density heat of the Nine Magenta.</span>
+        <span class="gate-badge" id="density-gate-badge">PASS · 7/9 ACTIVE</span>
+      </div>
+      <div class="density-layout">
+        <div class="grid-3x3" id="density-grid"></div>
+        <div class="density-metrics">
+          <div class="dm-row"><span>Active Cells (≥4.0)</span><span class="dm-val" id="dm-occ">7 / 9</span></div>
+          <div class="dm-row"><span>Mean Edge Gradient</span><span class="dm-val" id="dm-grad">8.42</span></div>
+          <div class="dm-row"><span>Peak Interval Med</span><span class="dm-val" id="dm-peak">2.8s (≤4.0s)</span></div>
+          <div class="dm-row"><span>Freeze Share (&lt;0.5)</span><span class="dm-val" id="dm-freeze">7.4% (≤30%)</span></div>
+          <div class="dm-row"><span>90% Action-Safe</span><span class="dm-val" id="dm-safe">0.0% Violation</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-section">
+      <div class="sec-header">
+        <span>2. CUT-THE-CURVE · Suture mirror speed curve</span>
+        <span class="gate-badge" id="seam-badge">η = 0.89 MATCH</span>
+      </div>
+      <canvas id="seam-canvas" width="340" height="86"></canvas>
+      <div style="display:flex;justify-content:space-between;font-size:11.5px;color:var(--text-muted);margin-top:6px;font-family:monospace;">
+        <span id="seam-type-label">Seam: cut-the-curve</span>
+        <span id="seam-ease-label">power2.in → dt=0 → power3.out</span>
+      </div>
+    </div>
+
+    <div class="panel-section">
+      <div class="sec-header">
+        <span>3. STYLE LEDGER · Atoms of 4D orthogonal.</span>
+        <span class="gate-badge" id="ledger-id-badge">xiaozhe-mcp-node-graph</span>
+      </div>
+      <div class="ledger-kv" id="ledger-kv"></div>
+    </div>
+
+    <div class="panel-section">
+      <div class="sec-header">
+        <span>4. SHOT CARD &amp; PROCESS-GATE · Mirror construction map</span>
+        <span class="gate-badge">5/5 GATES PASS</span>
+      </div>
+      <div class="ledger-kv" id="shotcard-kv"></div>
+    </div>
+  </aside>
+</main>
+
+<div class="modal-backdrop" id="export-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal-card">
+    <div class="modal-header">
+      <strong id="modal-title">STORYBOARD.md &amp; style-ledger.json Production formulation export</strong>
+      <div style="display:flex;gap:8px;">
+        <button class="btn primary" id="btn-copy-modal" type="button">Copy All</button>
+        <button class="btn" id="btn-close-modal" type="button">Disable ✕</button>
+      </div>
+    </div>
+    <pre class="modal-body" id="modal-content"></pre>
+  </div>
+</div>
+
+<script>
+(() => {
+  const DURATION = 27.0;
+  const SCENE_LEN = 4.5;
+
+  const I18N = {
+    'zh-CN': {
+      studioHeading: '知识讲解动画制作工作台 · Knowledge Explainer Studio',
+      backPortal: '← 实验室门户',
+      safeZone: '📐 90% 安全区',
+      audioOff: '🔊 因果音效: 关',
+      audioOn: '🔊 因果音效: 开',
+      exportBtn: '📋 导出 STORYBOARD.md',
+      play: '▶ 播放',
+      pause: '⏸ 暂停',
+      prev: '⏮ 上一幕',
+      next: '⏭ 下一幕',
+      sfxTest: '🔔 试听拍点 SFX',
+      tpl1_title: '【小哲讲Agent】MCP、Skill 与本地 Tools 选型',
+      tpl1_desc: '深色黑曜石渐进节点树 · 三次贝塞尔流光连线 · 焦点聚光降暗 · 六幕分层架构选型矩阵',
+      tpl2_title: '【小哲讲大模型】一条视频彻底吃透 RAG',
+      tpl2_desc: '暖白编辑室新粗野卡片 · PDF 硬塞碎裂爆破 · 语义滑窗切片 → 粗排雷达 → Rerank 漏斗 → 溯源生成',
+      tpl3_title: '【第四种黑猩猩】DeepSeek 一张卡为什么能收入 $38',
+      tpl3_desc: '米白算力经济学账本 · $38 vs $5.7 (6.7x) 计数器 · EP/DP 最慢卡木桶阻塞 · Prefill/Decode 1:1 解耦与 80% 缓存',
+    },
+    'zh-TW': {
+      studioHeading: '知識講解動畫製作工作台 · Knowledge Explainer Studio',
+      backPortal: '← 實驗室門戶',
+      safeZone: '📐 90% 安全區',
+      audioOff: '🔊 因果音效: 關',
+      audioOn: '🔊 因果音效: 開',
+      exportBtn: '📋 匯出 STORYBOARD.md',
+      play: '▶ 播放',
+      pause: '⏸ 暫停',
+      prev: '⏮ 上一幕',
+      next: '⏭ 下一幕',
+      sfxTest: '🔔 試聽拍點 SFX',
+      tpl1_title: '【小哲講Agent】MCP、Skill 與本地 Tools 選型',
+      tpl1_desc: '深色黑曜石漸進節點樹 · 三次貝茲流光連線 · 焦點聚光降暗 · 六幕分層架構選型矩陣',
+      tpl2_title: '【小哲講大模型】一條影片徹底吃透 RAG',
+      tpl2_desc: '暖白編輯室新粗野卡片 · PDF 硬塞碎裂爆破 · 語義滑窗切片 → 粗排雷達 → Rerank 漏斗 → 溯源生成',
+      tpl3_title: '【第四種黑猩猩】DeepSeek 一張卡為什麼能收入 $38',
+      tpl3_desc: '米白算力經濟學帳本 · $38 vs $5.7 (6.7x) 計數器 · EP/DP 最慢卡木桶阻塞 · Prefill/Decode 1:1 解耦與 80% 快取',
+    },
+    'en': {
+      studioHeading: 'Knowledge Explainer Animation Studio · One-Sentence-Video Harness',
+      backPortal: '← Lab Portal',
+      safeZone: '📐 90% Action-Safe',
+      audioOff: '🔊 Causal SFX: OFF',
+      audioOn: '🔊 Causal SFX: ON',
+      exportBtn: '📋 Export STORYBOARD.md',
+      play: '▶ Play',
+      pause: '⏸ Pause',
+      prev: '⏮ Prev Act',
+      next: '⏭ Next Act',
+      sfxTest: '🔔 Trigger SFX Cue',
+      tpl1_title: '[Xiaozhe Agent] MCP vs. Skill vs. Local Tools Architecture',
+      tpl1_desc: 'Obsidian progressive Bezier node tree · Spotlight focus dimming · 6-act layered selection matrix',
+      tpl2_title: '[Xiaozhe LLM] Mastering RAG in One Video',
+      tpl2_desc: 'Warm editorial Neo-Brutalist funnel · Raw PDF shatter hook · Chunking → Recall → Rerank → Grounded Cite',
+      tpl3_title: '[Fourth Chimp] Why One DeepSeek GPU Earns $38/Day',
+      tpl3_desc: 'Paper unit-economics ledger · $38 vs $5.7 (6.7x) counter · EP/DP straggler barrier · Prefill/Decode 1:1 & 80% KV Cache',
+    }
+  };
+
+  const TEMPLATES = {
+    'xiaozhe-mcp-node-graph': {
+      id: 'xiaozhe-mcp-node-graph',
+      sourceUrl: 'https://v.douyin.com/Pp5kMde2rMI/ (BV1nnnw6FE2V)',
+      look: {
+        bg: '#050C0A',
+        bgSecondary: '#0A1916',
+        ink: '#F8FAFC',
+        muted: '#94A3B8',
+        accents: ['#4ADE80', '#A78BFA', '#FBBF24', '#FB7185'],
+        dark: true,
+        font: 'Inter / PingFang SC + JetBrains Mono'
+      },
+      metrics: { peakGap: '2.8s', freeze: '8.4%' },
+      sound: { bgm: 'dry-tech (98 BPM · A minor)', motifs: ['riser', 'whoosh', 'swipe', 'tick', 'chime', 'thud'] },
+      scenes: [
+        {
+          idx: 1,
+          tag: '[01] 核心问题 · 概念混淆',
+          tagEn: '[01] Core Problem · Confusion Hook',
+          title: '为什么 90% 的开发者容易混淆三者？',
+          titleEn: 'Why Do 90% of Developers Confuse MCP, Skill & Tools?',
+          subtitle: '把 MCP、Skill 和本地 Tools 当成同级互斥选项，是 Agent 架构踩坑的根源',
+          subtitleEn: 'Treating MCP, Skill, and Local Tools as mutually exclusive peers is the root cause of fragile Agents',
+          card: 'orbit-ring-title + counter-seek-safe',
+          layout: 'hero-plus-grid',
+          seam: 'zoom-through',
+          ease: 'power2.in → power3.out',
+          eta: 0.91,
+          verb: 'ring-sweep-lock',
+          sfx: 'riser'
+        },
+        {
+          idx: 2,
+          tag: '[02] 架构真相 · 不在一个层级',
+          tagEn: '[02] Architecture Truth · Orthogonal Tiers',
+          title: '不在一个层级：协议 vs 方法 vs 手脚',
+          titleEn: 'Three Orthogonal Tiers: Protocol vs. Recipe vs. Execution',
+          subtitle: 'MCP 管「怎么连外部生态」，Skill 管「怎么做业务 SOP」，本地 Tools 管「怎么干原子指令」',
+          subtitleEn: 'MCP standardizes external connectivity; Skills package SOP workflows; Local Tools execute atomic actions',
+          card: 'progressive-node-tree',
+          layout: 'numbered-sections',
+          seam: 'cut-the-curve',
+          ease: 'power2.in → power3.out',
+          eta: 0.89,
+          verb: 'bezier-branch-spotlight',
+          sfx: 'whoosh'
+        },
+        {
+          idx: 3,
+          tag: '[03] 架构反模式 · 两个极端都会踩坑',
+          tagEn: '[03] Anti-Patterns · Both Extremes Fail',
+          title: '两个极端都会踩坑：全塞本地 vs 全走远端',
+          titleEn: 'Two Extremes: Monolithic Local Bloat vs. All-Remote IPC Lag',
+          subtitle: '全塞本地 Tools 导致单智能体耦合失控；全走远端 MCP 连读个本地文件都付出 420ms IPC 延迟',
+          subtitleEn: 'Stuffing 50+ local tools causes coupling explosion; routing trivial local ops via MCP adds 420ms IPC lag',
+          card: 'packet-hop-break',
+          layout: 'split-compare',
+          seam: 'waterfall cut',
+          ease: 'power3.in → power3.out',
+          eta: 0.87,
+          verb: 'overload-shake-fracture',
+          sfx: 'thud'
+        },
+        {
+          idx: 4,
+          tag: '[04] 演进拐点 · 耦合开始变重',
+          tagEn: '[04] Inflection Point · Coupling Curve',
+          title: '当工具数 N > 12：系统耦合开始指数变重',
+          titleEn: 'When Tools N > 12: Coupling Cost Grows Exponentially',
+          subtitle: '单人脚本用本地 Tools 最快；但跨团队多数据源协作时，MCP 标准化能把 $O(M×N)$ 降维成 $O(M+N)$',
+          subtitleEn: 'Local tools win for solo scripts; across teams, MCP collapses O(M×N) connector maintenance into O(M+N)',
+          card: 'counter-seek-safe',
+          layout: 'data-dashboard',
+          seam: 'cut-the-curve',
+          ease: 'power2.in → power3.out',
+          eta: 0.89,
+          verb: 'curve-divergence-trace',
+          sfx: 'swipe'
+        },
+        {
+          idx: 5,
+          tag: '[05] 实例对决 · 同一任务，两种重量',
+          tagEn: '[05] Head-to-Head · Same Task, Two Weights',
+          title: '同一任务，两种重量：380ms 重链路 vs 18ms 轻链路',
+          titleEn: 'Same Git Report Task: 380ms Heavy MCP vs. 18ms Skill + Tool',
+          subtitle: '本地高频读写用「Skill 规范 + 本地 Tool」仅需 18ms；跨组织 SaaS 权限隔离才启用 MCP Server',
+          subtitleEn: 'Local Git diff + weekly report runs in 18ms via Skill + Local Tool vs. 380ms over 4 JSON-RPC hops',
+          card: 'two-column-corridor',
+          layout: 'two-column-corridor',
+          seam: 'cut-the-curve',
+          ease: 'power2.in → power3.out',
+          eta: 0.90,
+          verb: 'corridor-race-compare',
+          sfx: 'tick'
+        },
+        {
+          idx: 6,
+          tag: '[06] 终局指南 · 真实项目不是三选一',
+          tagEn: '[06] Final Guide · Layered Synergy Matrix',
+          title: '真实项目不是三选一：三层黄金协同公式',
+          titleEn: 'Real Projects Combine All Three in a Layered Pyramid',
+          subtitle: '顶层 Skill 编排领域方法论 → 中层 MCP 挂载外部知识/SaaS → 底层 Local Tools 承载高频毫秒级手脚',
+          subtitleEn: 'Top: Skills orchestrate SOPs · Middle: MCP mounts external SaaS · Bottom: Local Tools run millisecond ops',
+          card: 'three-way-bakeoff-row + cta-pill-close',
+          layout: 'banded-three',
+          seam: 'inverse zoom-through',
+          ease: 'power2.in → power2.out',
+          eta: 0.92,
+          verb: 'pyramid-lockup-converge',
+          sfx: 'chime'
+        }
+      ]
+    },
+
+    'xiaozhe-rag-pipeline-flow': {
+      id: 'xiaozhe-rag-pipeline-flow',
+      sourceUrl: 'https://v.douyin.com/BMo58MQOIBM/',
+      look: {
+        bg: '#F7F6F2',
+        bgSecondary: '#EFECE6',
+        ink: '#0F172A',
+        muted: '#475569',
+        accents: ['#2563EB', '#0891B2', '#EA580C', '#16A34A'],
+        dark: false,
+        font: 'Plus Jakarta Sans / PingFang SC + Consolas'
+      },
+      metrics: { peakGap: '2.6s', freeze: '6.2%' },
+      sound: { bgm: 'paper (92 BPM · A minor)', motifs: ['tick', 'thud', 'swipe', 'flap', 'whoosh', 'chime'] },
+      scenes: [
+        {
+          idx: 1,
+          tag: '[痛点爆破] 为什么直接把 PDF 扔给 AI 会翻车？',
+          tagEn: '[Pain Point] Why Dumping a 500-Page PDF into LLM Fails',
+          title: '闭卷瞎编（幻觉）vs 整本硬塞（注意力迷失）',
+          titleEn: 'Closed-Book Hallucination vs. Context Window Shatter',
+          subtitle: '500 页 PDF 直接塞入 Context Window 会在边界处碎裂：Token 成本爆炸且触发 Lost in the Middle',
+          subtitleEn: 'A 500-page PDF slams into the context wall: token cost explodes and middle facts vanish (Lost in the Middle)',
+          card: 'packet-hop-break',
+          layout: 'banded-three',
+          seam: 'waterfall cut',
+          ease: 'power2.out → power2.in (impact)',
+          eta: 0.88,
+          verb: 'packet-collide-shatter',
+          sfx: 'thud'
+        },
+        {
+          idx: 2,
+          tag: '[Step 1] 离线切片 · 语义滑窗 Chunking',
+          tagEn: '[Step 1] Offline Slicing · Semantic Sliding Window',
+          title: '拒绝死板一刀切：带 Overlap 缓冲的语义切片',
+          titleEn: 'Semantic Chunking (512 Tokens) with 64-Token Overlap Buffer',
+          subtitle: '固定字数硬切会劈断财务表格与主谓宾（✕）；语义滑窗保留 15% Overlap 上下文不断句',
+          subtitleEn: 'Naive character splitting severs tables (✕); sliding windows preserve 15% overlap across chunk boundaries',
+          card: 'split-compare',
+          layout: 'split-compare',
+          seam: 'cut-the-curve',
+          ease: 'power2.in → power3.out',
+          eta: 0.89,
+          verb: 'sliding-window-slice',
+          sfx: 'swipe'
+        },
+        {
+          idx: 3,
+          tag: '[Step 2] 向量化与粗排 · Top-K 语义雷达召回',
+          tagEn: '[Step 2] Embedding & Bi-Encoder Top-K Recall',
+          title: '把文字变成高维坐标：余弦相似度毫秒级粗排',
+          titleEn: 'Cosine Similarity Radar Recalls Top-20 Candidates in 12ms',
+          subtitle: 'Embedding 将问题与切片映射至同一向量空间，通过 $\\cos\\theta$ 瞬间从十万切片中抓出 Top-20 候选池',
+          subtitleEn: 'Embeddings project query and chunks into vector space, recalling the Top-20 nearest neighbors via cos(θ)',
+          card: 'hero-plus-thumbnail-wall',
+          layout: 'hero-plus-grid',
+          seam: 'cut-the-curve',
+          ease: 'power2.in → power3.out',
+          eta: 0.89,
+          verb: 'radar-cosine-recall',
+          sfx: 'riser'
+        },
+        {
+          idx: 4,
+          tag: '[Step 3] 精排漏斗 · 为什么必须加 Cross-Encoder Rerank？',
+          tagEn: '[Step 3] Precision Funnel · Cross-Encoder Reranker',
+          title: '粗排快但糙，重排准但精：剔除伪相关干扰项',
+          titleEn: 'Rerank Funnel Drops Keyword Traps (0.18 ✕) & Keeps Top-3 (0.96)',
+          subtitle: '向量粗排容易混入“字面相似但年份错误”的干扰卡；Rerank 深度交叉注意力精准筛出 Top-3 黄金证据',
+          subtitleEn: 'Bi-encoder recall lets through outdated keyword traps; Cross-Encoder Rerank filters down to the Top-3 chunks',
+          card: 'funnel-stage-filter',
+          layout: 'numbered-sections',
+          seam: 'cut-the-curve',
+          ease: 'power2.in → power3.out',
+          eta: 0.90,
+          verb: 'funnel-sieve-drop',
+          sfx: 'thud'
+        },
+        {
+          idx: 5,
+          tag: '[Step 4] 上下文槽位组装与防幻觉引用溯源',
+          tagEn: '[Step 4] Context Slot Assembly & Grounded Citation',
+          title: '严禁自由发挥：结构化槽位注入 + 页码级引用溯源',
+          titleEn: 'Prompt Slot Docking + Bidirectional Inline Citations [P.42 §3.2]',
+          subtitle: '将 Top-3 黄金切片嵌入 System 约束槽，強制大模型每句结论标注 `[财报 P.42 §3.2]` 原文坐标',
+          subtitleEn: 'Top-3 chunks lock into prompt context slots, binding every generated claim to verifiable source page numbers',
+          card: 'two-column-corridor',
+          layout: 'two-column-corridor',
+          seam: 'cut-the-curve',
+          ease: 'power2.in → power3.out',
+          eta: 0.89,
+          verb: 'slot-dock-cite',
+          sfx: 'flap'
+        },
+        {
+          idx: 6,
+          tag: '[全景复盘] 企业级 RAG 准确率从 60% 到 95% 的四命门',
+          tagEn: '[Full Pipeline] 4 Keys to Boost Enterprise RAG from 60% to 95%',
+          title: '一条流水线吃透 RAG：切片 → 混合召回 → 重排 → 溯源',
+          titleEn: 'End-to-End RAG: Semantic Chunk → Hybrid Recall → Rerank → Cite',
+          subtitle: '「语义滑窗切片 + BM25/向量混合粗排 + Cross-Encoder 精排 + 强约束溯源」构成生产级闭环',
+          subtitleEn: 'Combining semantic chunking, hybrid BM25+vector recall, cross-encoder reranking, and strict citation locking',
+          card: 'world-pan-parallax + caption-bar-close',
+          layout: 'one-shot-world',
+          seam: 'zoom-through',
+          ease: 'power2.in → power3.out',
+          eta: 0.91,
+          verb: 'pipeline-full-sweep',
+          sfx: 'chime'
+        }
+      ]
+    },
+
+    'chimp-deepseek-unit-economics': {
+      id: 'chimp-deepseek-unit-economics',
+      sourceUrl: 'https://v.douyin.com/8m31BovOgQs/ (BV13cxv6SE9L)',
+      look: {
+        bg: '#FAF9F6',
+        bgSecondary: '#F1F5F9',
+        ink: '#0F172A',
+        muted: '#475569',
+        accents: ['#2563EB', '#F97316', '#10B981', '#8B5CF6'],
+        dark: false,
+        font: 'Inter Black / Noto Sans SC 900 + JetBrains Mono'
+      },
+      metrics: { peakGap: '2.9s', freeze: '9.1%' },
+      sound: { bgm: 'dry-tech (100 BPM · A minor)', motifs: ['tick', 'thud', 'whoosh', 'swipe', 'chime', 'riser'] },
+      scenes: [
+        {
+          idx: 1,
+          tag: '[01] 商业反差 · 单卡日入 $38 vs 行业 $5.7',
+          tagEn: '[01] Unit Economics Hook · $38 vs. $5.7 per GPU/Day',
+          title: 'DeepSeek 一张卡为什么能收入 38 美元？（6.7 倍反差）',
+          titleEn: 'Why Does One DeepSeek GPU Earn $38/Day vs. $5.7 Industry Avg?',
+          subtitle: 'API 定价只有同行几分之一，单卡日营收却是 6.7 倍！秘密不在定价，而在极限吞吐量',
+          subtitleEn: 'Despite ultra-low API pricing, DeepSeek generates 6.7× higher daily revenue per GPU through extreme throughput',
+          card: 'counter-seek-safe + stat-pills-row',
+          layout: 'data-dashboard',
+          seam: 'zoom-through',
+          ease: 'power1.in (counter) → power3.out',
+          eta: 0.91,
+          verb: 'counter-surge-contrast',
+          sfx: 'tick'
+        },
+        {
+          idx: 2,
+          tag: '[02] 破局一 · Batching 批处理摊薄显存带宽',
+          tagEn: '[02] Lever 1 · High-Concurrency Batching Amortizes HBM',
+          title: '单用户推理是在烧钱空转：搬一次权重同时算 64 个词',
+          titleEn: 'Batch=1 Wastes 92% Compute; Batch=64 Amortizes HBM Bandwidth',
+          subtitle: '大模型吐词慢在“从显存搬权重到计算核”；攒够 64 路并发一起搬，单 Token 访存成本立降 96%',
+          subtitleEn: 'Decode is bottlenecked by HBM weight reads; batching 64 requests amortizes each weight fetch across 64 tokens',
+          card: 'gpu-matrix-ledger',
+          layout: 'split-compare',
+          seam: 'cut-the-curve',
+          ease: 'power2.in → power3.out',
+          eta: 0.90,
+          verb: 'batch-fill-amortize',
+          sfx: 'swipe'
+        },
+        {
+          idx: 3,
+          tag: '[03] 破局二 · 先说 EP 和 DP（木桶效应）',
+          tagEn: '[03] Lever 2 · MoE EP vs. DP & The Straggler Barrier',
+          title: '先说 EP 和 DP：每一步，都得等最慢的那张卡算完！',
+          titleEn: 'MoE Expert Parallelism: Every Step Waits for the Slowest GPU!',
+          subtitle: '256 个专家分在不同卡上，#3 热门专家卡被挤爆（34ms），其余 7 张卡 6ms 算完也得干等同步线',
+          subtitleEn: 'Hot experts overload GPU #3 (34ms), forcing 7 peer GPUs (6ms) to stall at the all-to-all barrier until EPLB rebalances',
+          card: 'packet-hop-break + gpu-matrix-ledger',
+          layout: 'banded-three',
+          seam: 'cut-the-curve',
+          ease: 'power2.in → power3.out',
+          eta: 0.89,
+          verb: 'straggler-barrier-block',
+          sfx: 'thud'
+        },
+        {
+          idx: 4,
+          tag: '[04] 破局三 · Prefill 的情况正好相反（1:1 解耦）',
+          tagEn: '[04] Lever 3 · Prefill vs. Decode 1:1 Disaggregation',
+          title: 'Prefill 的情况正好相反：算力瓶颈 vs 显存带宽瓶颈',
+          titleEn: 'Prefill Is Compute-Bound (94%); Decode Is HBM-Bound (91%)',
+          subtitle: '把阅读输入的 Prefill（小 EP 大 DP）与逐字吐词的 Decode（大 EP 高 Batch）分池 1:1 部署，互不拖累',
+          subtitleEn: 'Disaggregating Prefill (small EP, compute-dense) and Decode (large EP, bandwidth-dense) at 1:1 eliminates interference',
+          card: 'two-column-corridor',
+          layout: 'two-column-corridor',
+          seam: 'waterfall cut',
+          ease: 'power3.in → power3.out',
+          eta: 0.88,
+          verb: 'disaggregate-balance-lock',
+          sfx: 'flap'
+        },
+        {
+          idx: 5,
+          tag: '[05] 破局四 · 60K / 1.5M 省了 25 倍（80% 硬盘缓存）',
+          tagEn: '[05] Lever 4 · 100PB SSD KV Cache Hits 80% (25× Saved)',
+          title: '60K / 1.5M 省了 25 倍！100PB 硬盘级 KV Cache 命中 80%',
+          titleEn: '60K / 1.5M = 25× Compute Saved via 80% SSD KV Cache Hit Rate',
+          subtitle: '多轮对话与共享前缀直接从 100PB 分布式硬盘读取 KV Cache，150 万计算量坍缩至 6 万！',
+          subtitleEn: 'Reading cached KV states from 100PB distributed SSDs achieves an 80% hit rate, slashing prefill FLOPs by 25×',
+          card: 'orbit-ring-title + counter-seek-safe',
+          layout: 'hero-plus-grid',
+          seam: 'cut-the-curve',
+          ease: 'power2.in → power3.out',
+          eta: 0.90,
+          verb: 'cache-hit-collapse',
+          sfx: 'chime'
+        },
+        {
+          idx: 6,
+          tag: '[06] 破局五 · 昼夜错峰 96% 满载率与终局账本',
+          tagEn: '[06] Lever 5 · 96% Diurnal Utilization & Final $38 Ledger',
+          title: '白天跑推理、半夜训模型：96% 极限满载炼成 $38/卡/天',
+          titleEn: '96% 24h Cluster Utilization: Daytime Inference + Night Training',
+          subtitle: 'Batching × EP均衡 × PD 1:1解耦 × 80%硬盘缓存 × 96%昼夜满载 = 单卡日入 $38（行业 6.7 倍）',
+          subtitleEn: 'Batching × EPLB × 1:1 PD Disaggregation × 80% KV Cache × 96% Diurnal Fill = $38/GPU/Day (6.7×)',
+          card: 'cta-pill-close',
+          layout: 'centered-hero',
+          seam: 'inverse zoom-through',
+          ease: 'power2.in → power2.out',
+          eta: 0.92,
+          verb: 'diurnal-fill-ledger-lock',
+          sfx: 'riser'
+        }
+      ]
+    }
+  };
+
+  let currentTemplateId = 'xiaozhe-mcp-node-graph';
+  let currentLang = 'zh-CN';
+  let currentTime = 0.0;
+  let isPlaying = true;
+  let soundEnabled = false;
+  let showSafeZone = false;
+  let lastFrameTs = performance.now();
+  let lastTriggeredScene = -1;
+  let audioCtx = null;
+
+  const stageCanvas = document.getElementById('stage-canvas');
+  const ctx = stageCanvas.getContext('2d');
+  const seamCanvas = document.getElementById('seam-canvas');
+  const seamCtx = seamCanvas.getContext('2d');
+  const offscreenSample = document.createElement('canvas');
+  offscreenSample.width = 192;
+  offscreenSample.height = 108;
+  const sampleCtx = offscreenSample.getContext('2d', { willReadFrequently: true });
+
+  const densityGridEl = document.getElementById('density-grid');
+  const gridCells = [];
+  for (let i = 0; i < 9; i++) {
+    const cell = document.createElement('div');
+    cell.className = 'grid-cell';
+    cell.textContent = '0.0';
+    densityGridEl.appendChild(cell);
+    gridCells.push(cell);
+  }
+
+  function ensureAudio() {
+    if (!audioCtx) {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (AC) audioCtx = new AC();
+    }
+    if (audioCtx && audioCtx.state === 'suspended') {
+      audioCtx.resume();
+    }
+  }
+
+  function playCausalSfx(motif, panDir = -0.3) {
+    if (!soundEnabled) return;
+    ensureAudio();
+    if (!audioCtx) return;
+    const now = audioCtx.currentTime;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    const panner = audioCtx.createStereoPanner ? audioCtx.createStereoPanner() : null;
+    if (panner) {
+      panner.pan.setValueAtTime(panDir, now);
+      panner.pan.linearRampToValueAtTime(-panDir, now + 0.35);
+      osc.connect(gain);
+      gain.connect(panner);
+      panner.connect(audioCtx.destination);
+    } else {
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+    }
+
+    if (motif === 'tick') {
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(3200, now);
+      osc.frequency.exponentialRampToValueAtTime(1200, now + 0.035);
+      gain.gain.setValueAtTime(0.16, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.035);
+      osc.start(now);
+      osc.stop(now + 0.04);
+    } else if (motif === 'chime') {
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(880, now);
+      osc.frequency.setValueAtTime(1320, now + 0.08);
+      gain.gain.setValueAtTime(0.22, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.48);
+      osc.start(now);
+      osc.stop(now + 0.5);
+    } else if (motif === 'thud') {
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(95, now);
+      osc.frequency.exponentialRampToValueAtTime(38, now + 0.28);
+      gain.gain.setValueAtTime(0.32, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+      osc.start(now);
+      osc.stop(now + 0.32);
+    } else if (motif === 'riser') {
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(220, now);
+      osc.frequency.exponentialRampToValueAtTime(880, now + 0.42);
+      gain.gain.setValueAtTime(0.02, now);
+      gain.gain.linearRampToValueAtTime(0.18, now + 0.32);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+      osc.start(now);
+      osc.stop(now + 0.46);
+    } else {
+      // whoosh / swipe / flap
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(420, now);
+      osc.frequency.exponentialRampToValueAtTime(1480, now + 0.18);
+      osc.frequency.exponentialRampToValueAtTime(320, now + 0.36);
+      gain.gain.setValueAtTime(0.01, now);
+      gain.gain.linearRampToValueAtTime(0.20, now + 0.14);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
+      osc.start(now);
+      osc.stop(now + 0.4);
+    }
+  }
+
+  function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+  function easeOutCubic(x) { const u = clamp(x, 0, 1); return 1 - Math.pow(1 - u, 3); }
+  function easeInQuad(x) { const u = clamp(x, 0, 1); return u * u; }
+  function easeInOutQuad(x) {
+    const u = clamp(x, 0, 1);
+    return u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2;
+  }
+
+  function roundRect(ctx, x, y, w, h, r, fill, stroke, lineWidth = 2) {
+    ctx.beginPath();
+    ctx.roundRect(x, y, w, h, r);
+    if (fill) { ctx.fillStyle = fill; ctx.fill(); }
+    if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = lineWidth; ctx.stroke(); }
+  }
+
+  function drawHeaderAndCaption(ctx, tpl, scene, localP, isEn) {
+    const isDark = tpl.look.dark;
+    const tagText = isEn ? scene.tagEn : scene.tag;
+    const titleText = isEn ? scene.titleEn : scene.title;
+    const subText = isEn ? scene.subtitleEn : scene.subtitle;
+
+    // Top-left numbered chapter pill (within 90% safe zone: x>=96, y>=54)
+    ctx.save();
+    const pillFill = isDark ? 'rgba(16, 185, 129, 0.16)' : '#0F172A';
+    const pillStroke = isDark ? '#4ADE80' : '#0F172A';
+    const pillText = isDark ? '#4ADE80' : '#FFFFFF';
+    ctx.font = '700 22px "Segoe UI", "PingFang SC", sans-serif';
+    const tagW = Math.max(260, ctx.measureText(tagText).width + 44);
+    roundRect(ctx, 110, 66, tagW, 46, 23, pillFill, pillStroke, 2);
+    ctx.fillStyle = pillText;
+    ctx.textBaseline = 'middle';
+    ctx.fillText(tagText, 132, 89);
+
+    // Top-right Shot Card & Seam telemetry badge
+    const badgeStr = `CARD: ${scene.card.split(' ')[0]}  |  SEAM: ${scene.seam} (η=${scene.eta})`;
+    ctx.font = '700 18px Consolas, monospace';
+    const bw = ctx.measureText(badgeStr).width + 36;
+    roundRect(ctx, 1810 - bw, 68, bw, 42, 10, isDark ? 'rgba(30,41,59,0.85)' : '#E2E8F0', isDark ? '#334155' : '#94A3B8', 1.5);
+    ctx.fillStyle = isDark ? '#38BDF8' : '#1E293B';
+    ctx.fillText(badgeStr, 1810 - bw + 18, 89);
+
+    // Main Headline
+    ctx.font = '800 46px "Segoe UI", "PingFang SC", sans-serif';
+    ctx.fillStyle = tpl.look.ink;
+    ctx.fillText(titleText, 110, 156);
+
+    // Bottom Caption Bar (within safe zone y<=1026)
+    const capY = 948;
+    roundRect(
+      ctx,
+      160,
+      capY,
+      1600,
+      64,
+      16,
+      isDark ? 'rgba(15, 23, 42, 0.92)' : '#0F172A',
+      isDark ? 'rgba(74, 222, 128, 0.45)' : '#2563EB',
+      2
+    );
+    ctx.font = '700 24px "Segoe UI", "PingFang SC", sans-serif';
+    ctx.fillStyle = '#F8FAFC';
+    ctx.textAlign = 'center';
+    ctx.fillText(subText, 960, capY + 32);
+    ctx.textAlign = 'left';
+    ctx.restore();
+  }
+
+  // ==================== TEMPLATE 1: XIAOZHE MCP NODE GRAPH ====================
+  function renderMcpScene(ctx, sceneIdx, p, isEn) {
+    // Obsidian background + subtle dot grid
+    const grad = ctx.createRadialGradient(960, 540, 80, 960, 540, 1100);
+    grad.addColorStop(0, '#0C221D');
+    grad.addColorStop(1, '#050C0A');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, 1920, 1080);
+
+    ctx.fillStyle = 'rgba(74, 222, 128, 0.08)';
+    for (let x = 120; x <= 1800; x += 60) {
+      for (let y = 180; y <= 900; y += 60) {
+        ctx.fillRect(x, y, 2, 2);
+      }
+    }
+
+    const e = easeOutCubic(clamp(p * 1.4, 0, 1));
+
+    if (sceneIdx === 0) {
+      // Act 1: 90% Confusion Ring Hook + 3 colliding concept cards
+      const cards = [
+        { label: 'MCP Protocol', sub: isEn ? 'External USB-C Port?' : '万能外挂协议？', color: '#4ADE80', y: 270 },
+        { label: 'Agent Skill', sub: isEn ? 'Prompt SOP Workflow?' : '提示词工作流？', color: '#A78BFA', y: 470 },
+        { label: 'Local Tools', sub: isEn ? 'Function Calling?' : '本地函数调用？', color: '#FBBF24', y: 670 }
+      ];
+      cards.forEach((c, i) => {
+        const wobble = Math.sin(p * Math.PI * 4 + i * 2.1) * 14;
+        const cx = 150 + e * 60 + wobble;
+        roundRect(ctx, cx, c.y, 560, 136, 18, 'rgba(15, 29, 25, 0.92)', c.color, 3);
+        ctx.fillStyle = c.color;
+        ctx.font = '800 32px "Segoe UI", sans-serif';
+        ctx.fillText(c.label, cx + 32, c.y + 54);
+        ctx.fillStyle = '#CBD5E1';
+        ctx.font = '600 23px "Segoe UI", sans-serif';
+        ctx.fillText(c.sub, cx + 32, c.y + 100);
+
+        // Tangled dashed question lines to center
+        ctx.save();
+        ctx.strokeStyle = c.color;
+        ctx.lineWidth = 3;
+        ctx.setLineDash([12, 10]);
+        ctx.lineDashOffset = -p * 180;
+        ctx.beginPath();
+        ctx.moveTo(cx + 560, c.y + 68);
+        ctx.bezierCurveTo(960, c.y + 68, 1020, 540, 1180, 540);
+        ctx.stroke();
+        ctx.restore();
+      });
+
+      // Right Giant Ring Gauge: 90% Confusion
+      const ringX = 1430, ringY = 540, radius = 210;
+      ctx.beginPath();
+      ctx.arc(ringX, ringY, radius, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+      ctx.lineWidth = 28;
+      ctx.stroke();
+
+      const targetPct = clamp(p * 1.5, 0, 1) * 0.90;
+      ctx.beginPath();
+      ctx.arc(ringX, ringY, radius, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * targetPct);
+      ctx.strokeStyle = '#FB7185';
+      ctx.lineWidth = 28;
+      ctx.lineCap = 'round';
+      ctx.stroke();
+
+      ctx.fillStyle = '#F8FAFC';
+      ctx.textAlign = 'center';
+      ctx.font = '900 84px Consolas, monospace';
+      ctx.fillText(`${Math.round(targetPct * 100)}%`, ringX, ringY - 10);
+      ctx.fillStyle = '#FB7185';
+      ctx.font = '800 28px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? 'CONFUSED IN PROD' : '开发者容易混淆', ringX, ringY + 52);
+      ctx.textAlign = 'left';
+    } else if (sceneIdx === 1) {
+      // Act 2: Progressive Bezier Node Tree with Spotlight Focus
+      const rootX = 150, rootY = 480;
+      roundRect(ctx, rootX, rootY, 270, 140, 20, '#112A24', '#38BDF8', 3.5);
+      ctx.fillStyle = '#38BDF8';
+      ctx.font = '800 30px "Segoe UI", sans-serif';
+      ctx.fillText('AGENT CORE', rootX + 34, rootY + 60);
+      ctx.fillStyle = '#E2E8F0';
+      ctx.font = '600 20px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? 'Orchestrator' : '智能体中枢', rootX + 34, rootY + 102);
+
+      const activeFocus = Math.floor((p * 3) % 3);
+      const branches = [
+        {
+          name: isEn ? 'Tier 1 · MCP (Protocol Layer)' : '协议层 · MCP (怎么连)',
+          desc: isEn ? 'USB-C standard port for DBs, GitHub, SaaS' : '跨进程 USB-C 标准接口 · 连接外部数据源与生态',
+          tag: 'JSON-RPC / Stdio / SSE',
+          color: '#4ADE80',
+          y: 235
+        },
+        {
+          name: isEn ? 'Tier 2 · Skill (Methodology Layer)' : '方法层 · Skill (怎么做)',
+          desc: isEn ? 'Domain SOPs, prompt playbooks & guardrails' : '领域 SOP 菜谱与知识胶囊 · 规定先做什么后做什么',
+          tag: 'SKILL.md / Playbook',
+          color: '#A78BFA',
+          y: 480
+        },
+        {
+          name: isEn ? 'Tier 3 · Local Tools (Execution Layer)' : '执行层 · 本地 Tools (怎么干)',
+          desc: isEn ? 'Zero-latency in-process deterministic functions' : '进程内确定性手脚 · 毫秒级文件读写与本地计算',
+          tag: 'Function Call / 0ms IPC',
+          color: '#FBBF24',
+          y: 725
+        }
+      ];
+
+      branches.forEach((b, idx) => {
+        const isFocused = idx === activeFocus;
+        const alpha = isFocused ? 1.0 : 0.34;
+        ctx.save();
+        ctx.globalAlpha = alpha;
+
+        // Cubic Bezier curve from root to branch card
+        ctx.beginPath();
+        ctx.moveTo(rootX + 270, rootY + 70);
+        ctx.bezierCurveTo(600, rootY + 70, 620, b.y + 70, 820, b.y + 70);
+        ctx.strokeStyle = b.color;
+        ctx.lineWidth = isFocused ? 5 : 2.5;
+        ctx.stroke();
+
+        // Streaming pulse along Bezier
+        const u = (p * 2.4 + idx * 0.33) % 1;
+        const p0x = rootX + 270, p0y = rootY + 70;
+        const p1x = 600, p1y = rootY + 70;
+        const p2x = 620, p2y = b.y + 70;
+        const p3x = 820, p3y = b.y + 70;
+        const bx = Math.pow(1-u,3)*p0x + 3*Math.pow(1-u,2)*u*p1x + 3*(1-u)*u*u*p2x + u*u*u*p3x;
+        const by = Math.pow(1-u,3)*p0y + 3*Math.pow(1-u,2)*u*p1y + 3*(1-u)*u*u*p2y + u*u*u*p3y;
+        ctx.beginPath();
+        ctx.arc(bx, by, isFocused ? 9 : 5, 0, Math.PI * 2);
+        ctx.fillStyle = b.color;
+        ctx.fill();
+
+        const cardW = isFocused ? 940 : 900;
+        roundRect(ctx, 820, b.y, cardW, 145, 18, isFocused ? '#122923' : '#0A1613', b.color, isFocused ? 4 : 2);
+        ctx.fillStyle = b.color;
+        ctx.font = '800 30px "Segoe UI", sans-serif';
+        ctx.fillText(b.name, 854, b.y + 52);
+        ctx.fillStyle = '#E2E8F0';
+        ctx.font = '600 22px "Segoe UI", sans-serif';
+        ctx.fillText(b.desc, 854, b.y + 98);
+
+        roundRect(ctx, 820 + cardW - 260, b.y + 24, 230, 38, 10, 'rgba(0,0,0,0.45)', b.color, 1.5);
+        ctx.fillStyle = b.color;
+        ctx.font = '700 17px Consolas, monospace';
+        ctx.fillText(b.tag, 820 + cardW - 242, b.y + 48);
+        ctx.restore();
+      });
+    } else if (sceneIdx === 2) {
+      // Act 3: Split Compare — Two Extremes Fail
+      roundRect(ctx, 130, 220, 790, 680, 20, '#181016', '#FB7185', 3);
+      roundRect(ctx, 1000, 220, 790, 680, 20, '#101B24', '#FBBF24', 3);
+
+      ctx.fillStyle = '#FB7185';
+      ctx.font = '800 30px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? 'Extreme A: Stuff Everything in Local Tools' : '极端 A：所有逻辑全塞本地 Tools ✕', 165, 278);
+      ctx.fillStyle = '#FBBF24';
+      ctx.fillText(isEn ? 'Extreme B: Route Everything via Remote MCP' : '极端 B：鸡毛蒜皮全走远端 MCP ✕', 1035, 278);
+
+      // Left tangled web
+      const cx = 525, cy = 530;
+      for (let i = 0; i < 16; i++) {
+        const ang = (i / 16) * Math.PI * 2 + p * 0.8;
+        const rx = cx + Math.cos(ang) * 230;
+        const ry = cy + Math.sin(ang) * 165;
+        ctx.strokeStyle = 'rgba(251, 113, 133, 0.45)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(rx, ry);
+        ctx.lineTo(cx + Math.cos(ang + 2.2) * 210, cy + Math.sin(ang + 2.2) * 150);
+        ctx.stroke();
+        roundRect(ctx, rx - 46, ry - 18, 92, 36, 8, '#2D121E', '#FB7185', 1.5);
+        ctx.fillStyle = '#FDA4AF';
+        ctx.font = '700 14px Consolas, monospace';
+        ctx.fillText(`tool_${i+1}`, rx - 30, ry + 5);
+      }
+      roundRect(ctx, cx - 120, cy - 42, 240, 84, 14, '#881337', '#FB7185', 3);
+      ctx.fillStyle = '#fff';
+      ctx.font = '800 22px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? 'Coupling Explosion' : '单体耦合爆炸 ✕', cx - 92, cy + 8);
+
+      // Right slow multi-hop pipeline
+      const hops = ['Agent', 'JSON-RPC', 'MCP Server', 'Auth Proxy', 'read_file()'];
+      hops.forEach((h, i) => {
+        const hx = 1045 + i * 145;
+        const hy = 470;
+        roundRect(ctx, hx, hy, 122, 95, 12, '#1E293B', '#FBBF24', 2);
+        ctx.fillStyle = '#F8FAFC';
+        ctx.font = '700 17px Consolas, monospace';
+        ctx.fillText(h, hx + 12, hy + 54);
+      });
+      const pktX = 1060 + ((p * 1.4) % 1) * 620;
+      ctx.beginPath();
+      ctx.arc(pktX, 435, 14, 0, Math.PI * 2);
+      ctx.fillStyle = '#FB7185';
+      ctx.fill();
+      roundRect(ctx, 1120, 650, 550, 120, 16, 'rgba(251, 113, 133, 0.14)', '#FB7185', 2);
+      ctx.fillStyle = '#FB7185';
+      ctx.font = '800 28px Consolas, monospace';
+      ctx.fillText(isEn ? 'IPC Overhead: 420ms per local call ✕' : '读个本地文件耗时 420ms (IPC 延迟爆炸) ✕', 1150, 720);
+    } else if (sceneIdx === 3) {
+      // Act 4: Complexity Crossover Curve
+      const ox = 240, oy = 810, w = 1440, h = 540;
+      roundRect(ctx, 150, 215, 1620, 680, 20, '#0B1A16', '#334155', 2);
+      ctx.strokeStyle = '#475569';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(ox, oy - h);
+      ctx.lineTo(ox, oy);
+      ctx.lineTo(ox + w, oy);
+      ctx.stroke();
+
+      ctx.fillStyle = '#94A3B8';
+      ctx.font = '700 20px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? 'Maintenance & Coupling Cost ↑' : '系统维护与耦合成本 ↑', ox + 20, oy - h + 30);
+      ctx.fillText(isEn ? 'Tool Count & Team Scale (N = 1 → 100+) →' : '工具数量与跨团队规模 (N = 1 → 100+) →', ox + w - 460, oy + 44);
+
+      const drawProgress = clamp(p * 1.35, 0.05, 1);
+      const steps = Math.floor(drawProgress * 80);
+
+      // Exponential curve (All-Local Tools)
+      ctx.beginPath();
+      for (let i = 0; i <= steps; i++) {
+        const u = i / 80;
+        const x = ox + u * w;
+        const y = oy - Math.pow(u, 2.5) * (h - 40) - 30;
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.strokeStyle = '#FB7185';
+      ctx.lineWidth = 6;
+      ctx.stroke();
+
+      // Logarithmic curve (MCP + Skill Decoupled)
+      ctx.beginPath();
+      for (let i = 0; i <= steps; i++) {
+        const u = i / 80;
+        const x = ox + u * w;
+        const y = oy - (Math.log(1 + u * 9) / Math.log(10)) * 220 - 95;
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.strokeStyle = '#4ADE80';
+      ctx.lineWidth = 6;
+      ctx.stroke();
+
+      // Crossover inflection point at u=0.35
+      const ix = ox + 0.35 * w, iy = oy - 190;
+      ctx.beginPath();
+      ctx.arc(ix, iy, 14, 0, Math.PI * 2);
+      ctx.fillStyle = '#FBBF24';
+      ctx.fill();
+      roundRect(ctx, ix - 160, iy - 110, 420, 82, 12, '#1E293B', '#FBBF24', 2);
+      ctx.fillStyle = '#FBBF24';
+      ctx.font = '800 22px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? 'Inflection Point (N ≈ 12 Tools)' : '演进拐点 (N ≈ 12 个工具 / 跨团队)', ix - 138, iy - 72);
+      ctx.fillStyle = '#E2E8F0';
+      ctx.font = '600 18px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? 'Switch external connectors to MCP' : '外部数据源切换至 MCP 标准协议层', ix - 138, iy - 42);
+
+      ctx.fillStyle = '#FB7185';
+      ctx.font = '800 24px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? 'Monolithic Local Tools O(M×N) ✕' : '全塞本地 Tools 耦合曲线 O(M×N) ✕', ox + w - 480, oy - h + 90);
+      ctx.fillStyle = '#4ADE80';
+      ctx.fillText(isEn ? 'MCP + Skill Decoupled O(M+N) ✓' : 'MCP 协议解耦曲线 O(M+N) ✓', ox + w - 480, oy - 310);
+    } else if (sceneIdx === 4) {
+      // Act 5: Two-Column Corridor Race (380ms vs 18ms)
+      roundRect(ctx, 130, 220, 740, 670, 20, '#1B1318', '#FB7185', 2.5);
+      roundRect(ctx, 1050, 220, 740, 670, 20, '#0D231C', '#4ADE80', 3);
+
+      // Center Corridor
+      roundRect(ctx, 895, 340, 130, 420, 16, '#0F172A', '#38BDF8', 2);
+      ctx.fillStyle = '#38BDF8';
+      ctx.font = '800 22px Consolas, monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText('21.1x', 960, 535);
+      ctx.fillText('FASTER', 960, 568);
+      ctx.textAlign = 'left';
+
+      ctx.fillStyle = '#FB7185';
+      ctx.font = '800 28px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? 'Heavy Path: Over-Engineered MCP' : '重型路径：杀鸡用牛刀 (全走 MCP)', 168, 278);
+      ctx.fillStyle = '#4ADE80';
+      ctx.fillText(isEn ? 'Light Path: Skill + Local Tool ✓' : '轻型路径：Skill 规范 + 本地 Tool ✓', 1088, 278);
+
+      const leftSteps = [
+        '1. Spawn MCP Stdio Subprocess (110ms)',
+        '2. JSON-RPC Schema Handshake (85ms)',
+        '3. Serialize Git Diff Payload (95ms)',
+        '4. Parse & Return over IPC (90ms)'
+      ];
+      leftSteps.forEach((s, i) => {
+        roundRect(ctx, 170, 320 + i * 105, 660, 82, 12, '#2A1820', '#FB7185', 1.5);
+        ctx.fillStyle = '#F8FAFC';
+        ctx.font = '600 21px Consolas, monospace';
+        ctx.fillText(s, 198, 368 + i * 105);
+      });
+      ctx.fillStyle = '#FB7185';
+      ctx.font = '900 44px Consolas, monospace';
+      ctx.fillText('Total: 380 ms ✕', 170, 815);
+
+      const rightSteps = [
+        '1. Load Weekly-Report SKILL.md SOP (2ms)',
+        '2. Direct In-Process git_status() Tool (16ms)'
+      ];
+      rightSteps.forEach((s, i) => {
+        roundRect(ctx, 1090, 320 + i * 130, 660, 96, 12, '#13352A', '#4ADE80', 2);
+        ctx.fillStyle = '#F8FAFC';
+        ctx.font = '700 22px Consolas, monospace';
+        ctx.fillText(s, 1118, 375 + i * 130);
+      });
+      roundRect(ctx, 1090, 600, 660, 140, 16, 'rgba(74, 222, 128, 0.16)', '#4ADE80', 2.5);
+      ctx.fillStyle = '#4ADE80';
+      ctx.font = '900 52px Consolas, monospace';
+      ctx.fillText('Total: 18 ms ✓', 1125, 686);
+    } else {
+      // Act 6: 3-Layer Production Decision Matrix Pyramid
+      const layers = [
+        {
+          y: 230, w: 920, color: '#A78BFA',
+          title: isEn ? 'TOP · SKILL (Brain & SOP Playbook)' : '顶层 · Skill 方法层（大脑 SOP 编排）',
+          sub: isEn ? 'When: Multi-step domain workflows, review checklists, output formatting' : '适用：多步业务流程、代码审查规范、固定领域套路封装'
+        },
+        {
+          y: 445, w: 1220, color: '#4ADE80',
+          title: isEn ? 'MIDDLE · MCP (External Ecosystem Bus)' : '中层 · MCP 协议层（外部生态标准连接器）',
+          sub: isEn ? 'When: Cross-team databases, GitHub/Jira/Slack SaaS, permission-isolated servers' : '适用：跨团队复用数据源、外部 SaaS、需要独立鉴权与进程隔离的服务'
+        },
+        {
+          y: 660, w: 1520, color: '#FBBF24',
+          title: isEn ? 'BOTTOM · LOCAL TOOLS (Millisecond Hands & Feet)' : '底层 · 本地 Tools 执行层（高频毫秒级手脚）',
+          sub: isEn ? 'When: High-frequency file read/write, AST grep, local shell & math execution' : '适用：高频本地文件读写、AST 检索、确定性数学计算（零通信开销）'
+        }
+      ];
+      layers.forEach((l, i) => {
+        const slideOffset = (1 - easeOutCubic(clamp(p * 1.5 - i * 0.15, 0, 1))) * 120;
+        const x = 960 - l.w / 2 + slideOffset;
+        roundRect(ctx, x, l.y, l.w, 175, 20, '#0F241E', l.color, 3.5);
+        ctx.fillStyle = l.color;
+        ctx.font = '800 32px "Segoe UI", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(l.title, 960 + slideOffset, l.y + 68);
+        ctx.fillStyle = '#E2E8F0';
+        ctx.font = '600 23px "Segoe UI", sans-serif';
+        ctx.fillText(l.sub, 960 + slideOffset, l.y + 125);
+        ctx.textAlign = 'left';
+      });
+    }
+  }
+
+  // ==================== TEMPLATE 2: XIAOZHE RAG PIPELINE FLOW ====================
+  function renderRagScene(ctx, sceneIdx, p, isEn) {
+    // Warm Editorial Paper Background
+    ctx.fillStyle = '#F7F6F2';
+    ctx.fillRect(0, 0, 1920, 1080);
+
+    // Subtle editorial grid lines
+    ctx.strokeStyle = 'rgba(15, 23, 42, 0.06)';
+    ctx.lineWidth = 1;
+    for (let x = 120; x <= 1800; x += 120) {
+      ctx.beginPath(); ctx.moveTo(x, 180); ctx.lineTo(x, 920); ctx.stroke();
+    }
+
+    function brutalCard(x, y, w, h, fill, accent) {
+      ctx.fillStyle = '#0F172A';
+      ctx.fillRect(x + 6, y + 6, w, h);
+      roundRect(ctx, x, y, w, h, 14, fill, '#0F172A', 3);
+      if (accent) {
+        ctx.fillStyle = accent;
+        ctx.fillRect(x, y, 14, h);
+      }
+    }
+
+    if (sceneIdx === 0) {
+      // Act 1: packet-hop-break — 500-page PDF slams into LLM Context Wall & shatters
+      const impactP = clamp(p * 1.4, 0, 1);
+      const isShattered = impactP > 0.58;
+      const wallX = 1220;
+
+      // LLM Context Wall
+      brutalCard(wallX, 240, 540, 620, '#FFFFFF', '#0F172A');
+      ctx.fillStyle = '#0F172A';
+      ctx.font = '900 34px "Segoe UI", sans-serif';
+      ctx.fillText('LLM Context Window', wallX + 42, 315);
+
+      roundRect(ctx, wallX + 42, 360, 456, 440, 12, '#FEF2F2', '#DC2626', 3);
+      ctx.fillStyle = '#DC2626';
+      ctx.font = '800 28px Consolas, monospace';
+      ctx.fillText(isShattered ? 'ERROR: LOST IN THE MIDDLE ✕' : 'WAITING FOR INPUT...', wallX + 68, 430);
+      ctx.fillStyle = '#7F1D1D';
+      ctx.font = '600 22px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? '• 500 pages = 380,000 tokens ($4.5/query)' : '• 500页财报 = 38万 Token (单次提问成本爆炸)', wallX + 68, 510);
+      ctx.fillText(isEn ? '• Attention dilutes in middle 70% pages' : '• 中间 70% 页面注意力权重严重稀释', wallX + 68, 565);
+      ctx.fillText(isEn ? '• Hallucinates numbers across years' : '• 极易把 2023 与 2026 年财务数据张冠李戴', wallX + 68, 620);
+
+      // Hopping PDF Packet
+      const hopU = isShattered ? 1 - (impactP - 0.58) * 0.18 : impactP / 0.58;
+      const pktX = 160 + hopU * (wallX - 460);
+      const pktY = 440 - Math.abs(Math.sin(hopU * Math.PI * 3)) * (isShattered ? 0 : 90);
+      const pktColor = isShattered ? '#DC2626' : '#2563EB';
+
+      brutalCard(pktX, pktY, 360, 210, isShattered ? '#FEE2E2' : '#EFF6FF', pktColor);
+      ctx.fillStyle = pktColor;
+      ctx.font = '900 30px "Segoe UI", sans-serif';
+      ctx.fillText(isShattered ? 'SHATTERED PDF ✕' : '500-Page PDF.pdf', pktX + 34, pktY + 75);
+      ctx.fillStyle = '#0F172A';
+      ctx.font = '700 21px Consolas, monospace';
+      ctx.fillText(isShattered ? 'Impact @ t=1.92s (Recoil 26px)' : '380,000 Raw Tokens', pktX + 34, pktY + 135);
+
+      if (isShattered) {
+        // Shatter fragments
+        const d = (impactP - 0.58) * 260;
+        for (let i = 0; i < 8; i++) {
+          const ang = (i / 8) * Math.PI * 2;
+          const fx = wallX - 40 + Math.cos(ang) * d;
+          const fy = 540 + Math.sin(ang) * d;
+          roundRect(ctx, fx, fy, 42, 28, 6, '#DC2626', '#0F172A', 2);
+        }
+      }
+    } else if (sceneIdx === 1) {
+      // Act 2: Naive Hard Cut vs Semantic Sliding Window with Overlap
+      brutalCard(140, 225, 1640, 290, '#FFF1F2', '#DC2626');
+      ctx.fillStyle = '#DC2626';
+      ctx.font = '800 28px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? '✕ Bad: Fixed 500-Char Hard Slicing (Breaks Tables & Sentences)' : '✕ 错误示范：按固定 500 字死板硬切（直接把财务表格与主谓宾劈成两半）', 180, 280);
+
+      for (let i = 0; i < 4; i++) {
+        roundRect(ctx, 180 + i * 390, 320, 355, 150, 10, '#FFFFFF', '#DC2626', 2.5);
+        ctx.fillStyle = '#0F172A';
+        ctx.font = '700 20px Consolas, monospace';
+        ctx.fillText(`Hard Slice #${i+1} (Broken ✂)`, 204 + i * 390, 375);
+        ctx.fillStyle = '#DC2626';
+        ctx.fillText(i === 1 ? '"...2026 Q3 R&D ratio is | [CUT]"' : '"[CUT] | 18.4%, up 3.2 pts..."', 204 + i * 390, 425);
+      }
+
+      brutalCard(140, 565, 1640, 330, '#EFF6FF', '#2563EB');
+      ctx.fillStyle = '#2563EB';
+      ctx.font = '800 28px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? '✓ Good: Semantic Sliding Window (Chunk=512, Overlap=64 Buffer)' : '✓ 正确做法：按段落/语义边界切分 + 15% Overlap 重叠滑窗缓冲', 180, 620);
+
+      for (let i = 0; i < 4; i++) {
+        const cx = 180 + i * 370;
+        roundRect(ctx, cx, 665, 390, 175, 12, 'rgba(37, 99, 235, 0.12)', '#2563EB', 3);
+        if (i > 0) {
+          roundRect(ctx, cx, 665, 68, 175, 8, 'rgba(234, 88, 12, 0.28)', '#EA580C', 2);
+          ctx.fillStyle = '#9A3412';
+          ctx.font = '800 14px Consolas, monospace';
+          ctx.fillText('OVERLAP', cx + 4, 755);
+        }
+        ctx.fillStyle = '#0F172A';
+        ctx.font = '800 22px "Segoe UI", sans-serif';
+        ctx.fillText(`Semantic Chunk #0${i+1}`, cx + 82, 725);
+        ctx.fillStyle = '#1E40AF';
+        ctx.font = '600 18px Consolas, monospace';
+        ctx.fillText('512 tok | 64 tok overlap ✓', cx + 82, 775);
+      }
+    } else if (sceneIdx === 2) {
+      // Act 3: Embedding Vector Constellation & Cosine Radar Recall
+      brutalCard(140, 230, 560, 650, '#FFFFFF', '#0891B2');
+      ctx.fillStyle = '#0891B2';
+      ctx.font = '800 30px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? '1. Query Embedding' : '1. 用户提问向量化', 180, 295);
+      roundRect(ctx, 180, 335, 480, 130, 12, '#ECFEFF', '#0891B2', 2);
+      ctx.fillStyle = '#0F172A';
+      ctx.font = '700 22px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? '"What is 2026 Q3 R&D ratio?"' : '“2026 Q3 研发费用率是多少？”', 204, 395);
+      ctx.fillStyle = '#0891B2';
+      ctx.font = '700 18px Consolas, monospace';
+      ctx.fillText('vec = [0.042, -0.891, 0.317, ... 1536d]', 204, 438);
+
+      roundRect(ctx, 180, 510, 480, 320, 12, '#F8FAFC', '#CBD5E1', 2);
+      ctx.fillStyle = '#0F172A';
+      ctx.font = '800 22px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? 'Bi-Encoder Top-20 Recall' : 'Bi-Encoder 粗排召回 (Top-20)', 204, 558);
+      ctx.fillStyle = '#475569';
+      ctx.font = '600 19px Consolas, monospace';
+      ctx.fillText('• Chunk #42: cos(θ) = 0.89 ✓', 204, 615);
+      ctx.fillText('• Chunk #19: cos(θ) = 0.84 ✓', 204, 660);
+      ctx.fillText('• Chunk #07: cos(θ) = 0.81 (2023 trap)', 204, 705);
+      ctx.fillText('• Latency: 12 ms across 100k chunks', 204, 765);
+
+      // Right Vector Radar Map
+      brutalCard(750, 230, 1030, 650, '#0F172A', '#0891B2');
+      const qx = 1265, qy = 555;
+      const radarR = ((p * 1.6) % 1) * 320;
+      ctx.beginPath();
+      ctx.arc(qx, qy, 240, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(8, 145, 178, 0.16)';
+      ctx.fill();
+      ctx.strokeStyle = '#06B6D4';
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.arc(qx, qy, radarR, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(56, 189, 248, 0.7)';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      for (let i = 0; i < 24; i++) {
+        const ang = i * 1.37;
+        const dist = (i < 8) ? 70 + i * 18 : 260 + (i % 5) * 45;
+        const px = qx + Math.cos(ang) * dist;
+        const py = qy + Math.sin(ang) * dist * 0.75;
+        const hit = dist <= 235;
+        if (hit) {
+          ctx.beginPath(); ctx.moveTo(qx, qy); ctx.lineTo(px, py);
+          ctx.strokeStyle = 'rgba(34, 211, 238, 0.55)'; ctx.lineWidth = 2; ctx.stroke();
+        }
+        ctx.beginPath();
+        ctx.arc(px, py, hit ? 9 : 5, 0, Math.PI * 2);
+        ctx.fillStyle = hit ? '#22D3EE' : '#475569';
+        ctx.fill();
+      }
+      ctx.beginPath();
+      ctx.arc(qx, qy, 13, 0, Math.PI * 2);
+      ctx.fillStyle = '#FBBF24';
+      ctx.fill();
+    } else if (sceneIdx === 3) {
+      // Act 4: Cross-Encoder Rerank Funnel
+      // Left: Top-20 coarse pool -> Center: Amber Funnel -> Right: Top-3 Elite + Bottom Dropped Traps
+      brutalCard(140, 240, 440, 620, '#FFFFFF', '#0891B2');
+      ctx.fillStyle = '#0891B2';
+      ctx.font = '800 26px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? 'Coarse Top-20 Pool' : '粗排候选池 (Top-20)', 176, 295);
+      const inCards = [
+        { t: 'Chunk #42 (2026 Q3 R&D 18.4%)', c: '#0891B2' },
+        { t: 'Chunk #07 (2023 Old R&D 14.1%)', c: '#DC2626' },
+        { t: 'Chunk #19 (2026 Q3 Breakdown)', c: '#0891B2' },
+        { t: 'Chunk #88 (R&D Recruiting Ad)', c: '#DC2626' },
+        { t: 'Chunk #51 (YoY +3.2 pts Note)', c: '#0891B2' }
+      ];
+      inCards.forEach((ic, i) => {
+        roundRect(ctx, 172, 330 + i * 98, 376, 78, 10, '#F8FAFC', ic.c, 2.5);
+        ctx.fillStyle = '#0F172A';
+        ctx.font = '700 17px Consolas, monospace';
+        ctx.fillText(ic.t, 190, 375 + i * 98);
+      });
+
+      // Center Funnel Polygon
+      ctx.fillStyle = '#FFEDD5';
+      ctx.strokeStyle = '#EA580C';
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.moveTo(660, 260);
+      ctx.lineTo(1160, 260);
+      ctx.lineTo(1010, 560);
+      ctx.lineTo(810, 560);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = '#9A3412';
+      ctx.textAlign = 'center';
+      ctx.font = '900 30px "Segoe UI", sans-serif';
+      ctx.fillText('Cross-Encoder Reranker', 910, 390);
+      ctx.font = '700 20px Consolas, monospace';
+      ctx.fillText('Token-by-Token Deep Attention', 910, 435);
+      ctx.textAlign = 'left';
+
+      // Dropped Decoys falling out of bottom of funnel
+      const dropY = 610 + easeInQuad(clamp(p * 1.4, 0, 1)) * 150;
+      roundRect(ctx, 690, dropY, 440, 110, 12, '#FEF2F2', '#DC2626', 3);
+      ctx.fillStyle = '#DC2626';
+      ctx.font = '800 20px Consolas, monospace';
+      ctx.fillText('✕ DROPPED: Chunk #07 (Score 0.18)', 715, dropY + 42);
+      ctx.fillText('✕ DROPPED: Chunk #88 (Score 0.09)', 715, dropY + 80);
+
+      // Right: Promoted Top-3 Golden Chunks
+      brutalCard(1240, 240, 540, 620, '#F0FDF4', '#16A34A');
+      ctx.fillStyle = '#16A34A';
+      ctx.font = '900 28px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? '✓ Promoted Top-3 Evidence' : '✓ 精排胜出 Top-3 黄金证据', 1280, 298);
+      const top3 = [
+        { id: '#42', score: '0.96', text: '2026 Q3 R&D Expense Ratio = 18.4%' },
+        { id: '#19', score: '0.93', text: 'AI Infra R&D up +3.2 pts YoY' },
+        { id: '#51', score: '0.91', text: 'Audit Footnote P.42 §3.2 Verified' }
+      ];
+      top3.forEach((item, i) => {
+        roundRect(ctx, 1280, 345 + i * 155, 468, 128, 12, '#FFFFFF', '#16A34A', 3);
+        ctx.fillStyle = '#16A34A';
+        ctx.font = '900 22px Consolas, monospace';
+        ctx.fillText(`RANK #${i+1} · Chunk ${item.id} [Score ${item.score}]`, 1304, 392 + i * 155);
+        ctx.fillStyle = '#0F172A';
+        ctx.font = '700 20px "Segoe UI", sans-serif';
+        ctx.fillText(item.text, 1304, 440 + i * 155);
+      });
+    } else if (sceneIdx === 4) {
+      // Act 5: Prompt Slot Assembly & Grounded Citation
+      brutalCard(140, 235, 760, 640, '#FFFFFF', '#2563EB');
+      ctx.fillStyle = '#0F172A';
+      ctx.font = '900 28px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? 'Structured Prompt Template' : '结构化 Prompt 槽位组装', 180, 295);
+
+      roundRect(ctx, 180, 325, 680, 110, 12, '#EFF6FF', '#2563EB', 2.5);
+      ctx.fillStyle = '#1D4ED8';
+      ctx.font = '800 20px Consolas, monospace';
+      ctx.fillText('[SLOT 1 · SYSTEM CONSTRAINT]', 204, 365);
+      ctx.fillStyle = '#0F172A';
+      ctx.font = '600 19px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? 'Answer ONLY from Context. Cite [P.xx] for every fact.' : '只准依据下方证据作答；每句结论必须标注 [页码]', 204, 405);
+
+      roundRect(ctx, 180, 460, 680, 220, 12, '#F0FDF4', '#16A34A', 3);
+      ctx.fillStyle = '#15803D';
+      ctx.font = '800 20px Consolas, monospace';
+      ctx.fillText('[SLOT 2 · TOP-3 RERANKED EVIDENCE]', 204, 502);
+      ctx.fillStyle = '#0F172A';
+      ctx.font = '600 19px Consolas, monospace';
+      ctx.fillText('• [P.42 §3.2] 2026 Q3 R&D ratio reached 18.4%', 204, 550);
+      ctx.fillText('• [P.43 §3.4] Compute cluster CapEx +3.2 pts YoY', 204, 595);
+      ctx.fillText('• [P.45 Table 4] Total R&D spend = $1.42B', 204, 640);
+
+      roundRect(ctx, 180, 705, 680, 130, 12, '#FFFBEB', '#D97706', 2.5);
+      ctx.fillStyle = '#B45309';
+      ctx.font = '800 20px Consolas, monospace';
+      ctx.fillText('[SLOT 3 · USER QUERY]', 204, 748);
+      ctx.fillStyle = '#0F172A';
+      ctx.font = '700 21px "Segoe UI", sans-serif';
+      ctx.fillText('“2026 Q3 研发费用率及同比变化是多少？”', 204, 795);
+
+      // Right: Grounded Answer Card
+      brutalCard(1020, 235, 760, 640, '#F0FDF4', '#16A34A');
+      ctx.fillStyle = '#16A34A';
+      ctx.font = '900 30px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? '✓ Grounded Output (0% Hallucination)' : '✓ 溯源生成结果（零幻觉 · 句句有据）', 1060, 298);
+
+      roundRect(ctx, 1060, 340, 680, 480, 14, '#FFFFFF', '#16A34A', 3);
+      ctx.fillStyle = '#0F172A';
+      ctx.font = '700 24px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? '2026 Q3 R&D Expense Ratio: 18.4%' : '1. 2026 Q3 研发费用率为 18.4%', 1095, 415);
+      roundRect(ctx, 1095, 440, 290, 42, 8, '#DCFCE7', '#16A34A', 2);
+      ctx.fillStyle = '#15803D';
+      ctx.font = '800 18px Consolas, monospace';
+      ctx.fillText('🔗 Cite: Report P.42 §3.2', 1115, 466);
+
+      ctx.fillStyle = '#0F172A';
+      ctx.font = '700 24px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? 'YoY Growth: +3.2 percentage points' : '2. 同比提升 +3.2 个百分点（算力投入驱动）', 1095, 560);
+      roundRect(ctx, 1095, 585, 290, 42, 8, '#DCFCE7', '#16A34A', 2);
+      ctx.fillStyle = '#15803D';
+      ctx.font = '800 18px Consolas, monospace';
+      ctx.fillText('🔗 Cite: Report P.43 §3.4', 1115, 611);
+
+      // Bidirectional dashed citation anchor lines
+      ctx.save();
+      ctx.strokeStyle = '#16A34A';
+      ctx.lineWidth = 3.5;
+      ctx.setLineDash([10, 8]);
+      ctx.lineDashOffset = -p * 120;
+      ctx.beginPath();
+      ctx.moveTo(860, 550); ctx.lineTo(1095, 460);
+      ctx.moveTo(860, 595); ctx.lineTo(1095, 605);
+      ctx.stroke();
+      ctx.restore();
+    } else {
+      // Act 6: Full 4-Stage RAG Panorama
+      const stages = [
+        { num: '01', name: 'Semantic Chunk', zh: '语义滑窗切片', metric: '512 tok + 64 overlap', color: '#2563EB' },
+        { num: '02', name: 'Hybrid Recall', zh: '向量+BM25粗排', metric: 'Top-20 in 12ms', color: '#0891B2' },
+        { num: '03', name: 'Cross Rerank', zh: '重排漏斗精选', metric: 'Top-3 (Score >0.9)', color: '#EA580C' },
+        { num: '04', name: 'Grounded Cite', zh: '槽位溯源生成', metric: '95.4% Faithfulness', color: '#16A34A' }
+      ];
+      stages.forEach((st, i) => {
+        const sx = 140 + i * 425;
+        brutalCard(sx, 260, 380, 480, '#FFFFFF', st.color);
+        ctx.fillStyle = st.color;
+        ctx.font = '900 54px Consolas, monospace';
+        ctx.fillText(st.num, sx + 36, 345);
+        ctx.fillStyle = '#0F172A';
+        ctx.font = '800 30px "Segoe UI", sans-serif';
+        ctx.fillText(isEn ? st.name : st.zh, sx + 36, 415);
+        roundRect(ctx, sx + 36, 465, 308, 64, 10, '#F8FAFC', st.color, 2);
+        ctx.fillStyle = st.color;
+        ctx.font = '800 21px Consolas, monospace';
+        ctx.fillText(st.metric, sx + 54, 504);
+
+        ctx.fillStyle = '#475569';
+        ctx.font = '600 19px "Segoe UI", sans-serif';
+        const tip = [
+          isEn ? 'Never split tables mid-row' : '保住表格与上下文完整性',
+          isEn ? 'Dense vector + exact keyword' : '语义召回 + 专有名词精确匹配',
+          isEn ? 'Eliminate keyword decoys' : '剔除字面相似的伪相关噪音',
+          isEn ? 'Zero hallucination with page ID' : '强制绑定原文页码拒绝瞎编'
+        ][i];
+        ctx.fillText(tip, sx + 36, 610);
+      });
+    }
+  }
+
+  // ==================== TEMPLATE 3: CHIMP DEEPSEEK UNIT ECONOMICS ====================
+  function renderDeepseekScene(ctx, sceneIdx, p, isEn) {
+    // Paper Editorial Light Canvas
+    ctx.fillStyle = '#FAF9F6';
+    ctx.fillRect(0, 0, 1920, 1080);
+
+    const e = easeOutCubic(clamp(p * 1.35, 0, 1));
+
+    if (sceneIdx === 0) {
+      // Act 1: $38 vs $5.7 (6.7x) Giant Revenue Counter Duel
+      roundRect(ctx, 140, 230, 660, 640, 24, '#F1F5F9', '#CBD5E1', 2.5);
+      roundRect(ctx, 850, 230, 930, 640, 24, '#EFF6FF', '#2563EB', 4);
+
+      // Left Baseline Bar
+      ctx.fillStyle = '#475569';
+      ctx.font = '800 30px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? 'Industry Baseline GPU / Day' : '行业平均单卡日营收', 190, 305);
+      roundRect(ctx, 260, 650, 260, 150, 14, '#94A3B8', '#64748B', 2);
+      ctx.fillStyle = '#0F172A';
+      ctx.font = '900 72px Consolas, monospace';
+      ctx.fillText('$5.7', 285, 615);
+
+      // Right DeepSeek Counter Surge
+      ctx.fillStyle = '#1D4ED8';
+      ctx.font = '900 34px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? 'DeepSeek H800 Single-GPU Daily Revenue' : 'DeepSeek 单张 H800 日均理论收入', 900, 305);
+
+      const barH = Math.max(80, e * 410);
+      roundRect(ctx, 920, 800 - barH, 320, barH, 18, '#2563EB', '#1D4ED8', 3);
+
+      const val = (38.0 * easeInQuad(clamp(p * 1.5, 0, 1))).toFixed(1);
+      ctx.fillStyle = '#2563EB';
+      ctx.font = '900 108px Consolas, monospace';
+      ctx.fillText(`$${val}`, 1280, 505);
+
+      roundRect(ctx, 1280, 550, 430, 88, 44, '#F97316', '#EA580C', 3);
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = '900 38px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? '≈ 6.7× HIGHER!' : '≈ 6.7 倍超高产出！', 1325, 606);
+
+      roundRect(ctx, 1280, 675, 440, 130, 16, '#FFFFFF', '#CBD5E1', 2);
+      ctx.fillStyle = '#0F172A';
+      ctx.font = '800 22px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? 'Revenue = Throughput × Price' : '单卡收入 = 吞吐量 Token/s × 单价', 1305, 725);
+      ctx.fillStyle = '#10B981';
+      ctx.fillText(isEn ? 'Price is 1/5, so Throughput is ~30×!' : '单价极低还能赚6.7倍 → 吞吐量碾压！', 1305, 772);
+    } else if (sceneIdx === 1) {
+      // Act 2: Batching Amortizes HBM Bandwidth (8x8 GPU Matrix)
+      roundRect(ctx, 140, 230, 740, 640, 22, '#F1F5F9', '#CBD5E1', 2.5);
+      roundRect(ctx, 940, 230, 840, 640, 22, '#EFF6FF', '#2563EB', 3.5);
+
+      ctx.fillStyle = '#64748B';
+      ctx.font = '900 30px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? 'Batch = 1 (92% Idle Bubble)' : 'Batch = 1：搬一次权重只算 1 个词', 180, 295);
+      ctx.fillStyle = '#2563EB';
+      ctx.fillText(isEn ? 'Batch = 64 (HBM Cost Divided by 64)' : 'Batch = 64：搬一次权重同时算 64 个人的词！', 980, 295);
+
+      // Left 8x8 sparse matrix
+      for (let r = 0; r < 6; r++) {
+        for (let c = 0; c < 8; c++) {
+          const active = r === 0 && c < 2;
+          roundRect(ctx, 180 + c * 82, 340 + r * 72, 68, 56, 8, active ? '#F97316' : '#E2E8F0', '#CBD5E1', 1.5);
+        }
+      }
+      ctx.fillStyle = '#EF4444';
+      ctx.font = '800 26px Consolas, monospace';
+      ctx.fillText('ALU Utilization: 8.2% (Memory Starved ✕)', 180, 825);
+
+      // Right 8x8 Klein Blue wave matrix
+      const activeCount = Math.floor(clamp(p * 1.4, 0.1, 1) * 48);
+      for (let r = 0; r < 6; r++) {
+        for (let c = 0; c < 8; c++) {
+          const idx = r * 8 + c;
+          const on = idx < activeCount;
+          roundRect(ctx, 980 + c * 92, 340 + r * 72, 76, 56, 8, on ? '#2563EB' : '#DBEAFE', '#1D4ED8', 1.5);
+          if (on) {
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = '700 14px Consolas, monospace';
+            ctx.fillText(`T${idx+1}`, 1002 + c * 92, 374 + r * 72);
+          }
+        }
+      }
+      ctx.fillStyle = '#10B981';
+      ctx.font = '900 28px Consolas, monospace';
+      ctx.fillText('HBM Read Amortized 64× · ALU Load: 91.4% ✓', 980, 825);
+    } else if (sceneIdx === 2) {
+      // Act 3: EP vs DP Straggler Effect ("每一步，都得等最慢的那张卡算完")
+      roundRect(ctx, 140, 225, 1640, 650, 22, '#FFFFFF', '#CBD5E1', 3);
+      const barrierX = 1520;
+
+      // Synchronization Barrier Line
+      ctx.save();
+      ctx.strokeStyle = '#EF4444';
+      ctx.lineWidth = 4;
+      ctx.setLineDash([14, 10]);
+      ctx.beginPath();
+      ctx.moveTo(barrierX, 260);
+      ctx.lineTo(barrierX, 840);
+      ctx.stroke();
+      ctx.restore();
+
+      ctx.fillStyle = '#EF4444';
+      ctx.font = '900 22px Consolas, monospace';
+      ctx.fillText('ALL-TO-ALL SYNC BARRIER', barrierX - 150, 255);
+
+      for (let i = 0; i < 7; i++) {
+        const y = 285 + i * 78;
+        const isHot = i === 2; // GPU #3 is the overloaded hot expert
+        ctx.fillStyle = '#0F172A';
+        ctx.font = '800 22px Consolas, monospace';
+        ctx.fillText(`GPU #0${i+1} ${isHot ? '[HOT EXPERT 🔥]' : '[Normal EP]'}`, 175, y + 36);
+
+        const maxW = barrierX - 540;
+        const w = isHot ? clamp(p * 1.15, 0.15, 1) * maxW : clamp(p * 3.2, 0.2, 1) * (maxW * 0.34);
+        roundRect(ctx, 520, y + 8, maxW, 46, 10, '#F1F5F9', '#CBD5E1', 1.5);
+        roundRect(ctx, 520, y + 8, w, 46, 10, isHot ? '#F97316' : '#3B82F6', isHot ? '#EA580C' : '#1D4ED8', 2);
+
+        ctx.fillStyle = isHot ? '#EA580C' : '#64748B';
+        ctx.font = '700 19px Consolas, monospace';
+        ctx.fillText(
+          isHot ? '18 Tokens Queued · 34.0 ms (Bottleneck!)' : '6.0 ms Done → Waiting 28ms for GPU #03...',
+          540 + w + 16,
+          y + 37
+        );
+      }
+    } else if (sceneIdx === 3) {
+      // Act 4: Prefill vs Decode 1:1 Disaggregation
+      roundRect(ctx, 140, 230, 720, 640, 22, '#FFF7ED', '#F97316', 3.5);
+      roundRect(ctx, 1060, 230, 720, 640, 22, '#EFF6FF', '#2563EB', 3.5);
+
+      ctx.fillStyle = '#EA580C';
+      ctx.font = '900 32px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? 'PREFILL POOL (Compute-Bound)' : 'Prefill 集群（阅读输入 = 算力瓶颈）', 180, 298);
+      ctx.fillStyle = '#0F172A';
+      ctx.font = '700 22px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? '• Processes entire prompt in parallel' : '• 一次性并行吃进整段长 Prompt，计算核瞬间拉满', 180, 365);
+      ctx.fillText(isEn ? '• Strategy: Small EP (EP8) + Large DP' : '• 策略：小专家并行 (EP8) + 大数据并行，减少跨卡通信', 180, 415);
+
+      // Compute Gauge 94%
+      roundRect(ctx, 180, 480, 640, 56, 12, '#FED7AA', '#F97316', 2);
+      roundRect(ctx, 180, 480, 640 * 0.94 * e, 56, 12, '#F97316', null);
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = '900 24px Consolas, monospace';
+      ctx.fillText('Tensor Core ALU Compute: 94.2% FULL', 205, 516);
+
+      ctx.fillStyle = '#2563EB';
+      ctx.font = '900 32px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? 'DECODE POOL (Bandwidth-Bound)' : 'Decode 集群（逐字吐词 = 显存带宽瓶颈）', 1100, 298);
+      ctx.fillStyle = '#0F172A';
+      ctx.font = '700 22px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? '• Generates 1 token at a time per user' : '• 每次只吐 1 个词，全在等显存搬运 671B 权重', 1100, 365);
+      ctx.fillText(isEn ? '• Strategy: Large EP (EP64) + Huge Batch' : '• 策略：大专家并行 (EP64) 跨节点 + 超大 Batch 摊薄访存', 1100, 415);
+
+      // Bandwidth Gauge 91%
+      roundRect(ctx, 1100, 480, 640, 56, 12, '#BFDBFE', '#2563EB', 2);
+      roundRect(ctx, 1100, 480, 640 * 0.91 * e, 56, 12, '#2563EB', null);
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = '900 24px Consolas, monospace';
+      ctx.fillText('HBM3e Memory Bandwidth: 91.0% FULL', 1125, 516);
+
+      // Center 1:1 RDMA Bridge
+      roundRect(ctx, 880, 440, 160, 210, 18, '#0F172A', '#10B981', 3);
+      ctx.fillStyle = '#10B981';
+      ctx.textAlign = 'center';
+      ctx.font = '900 34px Consolas, monospace';
+      ctx.fillText('1 : 1', 960, 525);
+      ctx.font = '700 18px Consolas, monospace';
+      ctx.fillText('RDMA KV', 960, 565);
+      ctx.fillText('TRANSFER', 960, 595);
+      ctx.textAlign = 'left';
+    } else if (sceneIdx === 4) {
+      // Act 5: 60K / 1.5M = 25x Saved (80% SSD KV Cache Hit Rate)
+      const ringX = 520, ringY = 545, r = 215;
+      roundRect(ctx, 140, 230, 760, 640, 24, '#ECFDF5', '#10B981', 3.5);
+      ctx.beginPath();
+      ctx.arc(ringX, ringY, r, 0, Math.PI * 2);
+      ctx.strokeStyle = '#D1FAE5';
+      ctx.lineWidth = 34;
+      ctx.stroke();
+
+      const hitPct = 0.80 * e;
+      ctx.beginPath();
+      ctx.arc(ringX, ringY, r, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * hitPct);
+      ctx.strokeStyle = '#10B981';
+      ctx.lineWidth = 34;
+      ctx.lineCap = 'round';
+      ctx.stroke();
+
+      ctx.fillStyle = '#065F46';
+      ctx.textAlign = 'center';
+      ctx.font = '900 88px Consolas, monospace';
+      ctx.fillText(`${Math.round(hitPct * 100)}%`, ringX, ringY + 10);
+      ctx.font = '800 24px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? '100PB SSD KV CACHE HIT' : '100PB 硬盘 KV 缓存命中', ringX, ringY + 62);
+      ctx.textAlign = 'left';
+
+      // Right Equation Card: 60K / 1.5M = 25x Saved
+      roundRect(ctx, 950, 230, 830, 640, 24, '#FFFFFF', '#0F172A', 3.5);
+      ctx.fillStyle = '#64748B';
+      ctx.font = '800 28px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? 'Prefill Compute Workload Collapse:' : '多轮对话与共享前缀计算量坍缩：', 1000, 310);
+
+      ctx.fillStyle = '#94A3B8';
+      ctx.font = '900 68px Consolas, monospace';
+      ctx.fillText('1,500,000 FLOPs', 1000, 420);
+      ctx.strokeStyle = '#EF4444';
+      ctx.lineWidth = 6;
+      ctx.beginPath(); ctx.moveTo(995, 398); ctx.lineTo(1620, 398); ctx.stroke();
+
+      ctx.fillStyle = '#10B981';
+      ctx.font = '900 84px Consolas, monospace';
+      ctx.fillText('→ 60,000 FLOPs', 1000, 545);
+
+      roundRect(ctx, 1000, 610, 720, 180, 20, '#10B981', '#059669', 3);
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = '900 54px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? '60K / 1.5M → 25× SAVED!' : '60K / 1.5M = 省了 25 倍算力！', 1040, 720);
+    } else {
+      // Act 6: 96% Diurnal Cluster Utilization & 5-Factor Unit Economics Ledger
+      roundRect(ctx, 140, 225, 1640, 390, 20, '#FFFFFF', '#CBD5E1', 2.5);
+      ctx.fillStyle = '#0F172A';
+      ctx.font = '900 26px "Segoe UI", sans-serif';
+      ctx.fillText(isEn ? '24-Hour Day/Night Load Shifting → 96% Cluster Utilization' : '昼夜错峰调度（白天推理波峰 + 夜间半价/训练填谷）= 96% 极限满载率', 180, 275);
+
+      // 96% utilization bars across 24 hours
+      for (let h = 0; h < 24; h++) {
+        const bx = 185 + h * 64;
+        const isDay = h >= 8 && h <= 22;
+        const inferH = isDay ? 190 : 75;
+        const trainH = isDay ? 25 : 140 * e;
+        roundRect(ctx, bx, 545 - inferH, 48, inferH, 6, '#2563EB', null);
+        roundRect(ctx, bx, 545 - inferH - trainH, 48, trainH, 6, '#8B5CF6', null);
+      }
+      ctx.strokeStyle = '#10B981';
+      ctx.lineWidth = 3;
+      ctx.setLineDash([10, 6]);
+      ctx.beginPath(); ctx.moveTo(175, 330); ctx.lineTo(1730, 330); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = '#059669';
+      ctx.font = '900 22px Consolas, monospace';
+      ctx.fillText('96.0% FULL CLUSTER UTILIZATION LINE', 1260, 318);
+
+      // Bottom 5-Factor Multiplier Ledger
+      const pills = [
+        { k: 'Batch ×64', v: 'HBM Amortized', c: '#2563EB' },
+        { k: 'EPLB Balance', v: 'Zero Straggler', c: '#8B5CF6' },
+        { k: '1:1 PD Pool', v: '94% ALU / 91% BW', c: '#F97316' },
+        { k: '80% KV Cache', v: '25× Less Prefill', c: '#10B981' },
+        { k: '= $38 / GPU', v: '6.7× Industry Avg', c: '#0F172A' }
+      ];
+      pills.forEach((pl, i) => {
+        const px = 140 + i * 334;
+        roundRect(ctx, px, 645, 310, 210, 18, i === 4 ? '#0F172A' : '#F8FAFC', pl.c, 3.5);
+        ctx.fillStyle = i === 4 ? '#FBBF24' : pl.c;
+        ctx.font = '900 34px Consolas, monospace';
+        ctx.fillText(pl.k, px + 26, 725);
+        ctx.fillStyle = i === 4 ? '#FFFFFF' : '#334155';
+        ctx.font = '700 22px "Segoe UI", sans-serif';
+        ctx.fillText(pl.v, px + 26, 785);
+      });
+    }
+
+    // Persistent Bottom-Left Creator PiP Anchor (Signature of "Fourth Chimpanzee" template)
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(118, 885, 42, 0, Math.PI * 2);
+    ctx.fillStyle = '#0F172A';
+    ctx.fill();
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = '#F97316';
+    ctx.stroke();
+    ctx.fillStyle = '#FFFFFF';
+    ctx.font = '800 18px "Segoe UI", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('猩猩PiP', 118, 892);
+    ctx.restore();
+  }
+
+  function applySeamTransition(ctx, localP, seamType) {
+    // Cut-the-curve kinematics: first 0.08 (0.36s) decelerates in via power3.out; last 0.07 (0.30s) accelerates out via power2.in
+    let offsetX = 0;
+    let scale = 1.0;
+    if (localP < 0.08) {
+      const u = localP / 0.08;
+      const decel = 1 - easeOutCubic(u);
+      if (seamType.includes('zoom')) scale = 0.92 + 0.08 * easeOutCubic(u);
+      else offsetX = decel * 200; // 200px incoming partial travel
+    } else if (localP > 0.93) {
+      const u = (localP - 0.93) / 0.07;
+      const accel = easeInQuad(u);
+      if (seamType.includes('zoom')) scale = 1.0 + 0.12 * accel;
+      else offsetX = -accel * 240; // -240px outgoing partial travel
+    }
+    ctx.translate(960 + offsetX, 540);
+    ctx.scale(scale, scale);
+    ctx.translate(-960, -540);
+  }
+
+  function computeRealTimeDensity() {
+    sampleCtx.drawImage(stageCanvas, 0, 0, 192, 108);
+    const img = sampleCtx.getImageData(0, 0, 192, 108).data;
+    const W = 192, H = 108;
+    const gray = new Float32Array(W * H);
+    for (let i = 0; i < W * H; i++) {
+      const idx = i * 4;
+      gray[i] = 0.299 * img[idx] + 0.587 * img[idx + 1] + 0.114 * img[idx + 2];
+    }
+
+    const cw = Math.floor(W / 3), ch = Math.floor(H / 3);
+    let activeCells = 0;
+    let totalGrad = 0;
+    const cellGrads = [];
+
+    for (let gy = 0; gy < 3; gy++) {
+      for (let gx = 0; gx < 3; gx++) {
+        let sum = 0, count = 0;
+        for (let y = gy * ch; y < (gy + 1) * ch - 1; y++) {
+          for (let x = gx * cw; x < (gx + 1) * cw - 1; x++) {
+            const g = Math.abs(gray[(y + 1) * W + x] - gray[y * W + x]) +
+                      Math.abs(gray[y * W + (x + 1)] - gray[y * W + x]);
+            sum += g;
+            count++;
+          }
+        }
+        const meanG = sum / Math.max(1, count);
+        cellGrads.push(meanG);
+        totalGrad += meanG;
+        if (meanG >= 4.0) activeCells++;
+      }
+    }
+
+    cellGrads.forEach((g, idx) => {
+      const cell = gridCells[idx];
+      const active = g >= 4.0;
+      cell.textContent = g.toFixed(1);
+      cell.style.background = active
+        ? `rgba(16, 185, 129, ${clamp(0.28 + g / 28, 0.3, 0.85)})`
+        : 'rgba(239, 68, 68, 0.22)';
+    });
+
+    document.getElementById('dm-occ').textContent = `${activeCells} / 9 (≥4 PASS)`;
+    document.getElementById('dm-grad').textContent = (totalGrad / 9).toFixed(2);
+    document.getElementById('density-gate-badge').textContent = `PASS · ${activeCells}/9 ACTIVE`;
+    return { activeCells, meanGrad: +(totalGrad / 9).toFixed(2), cellGrads };
+  }
+
+  function renderSeamGraph(localP, scene) {
+    const w = seamCanvas.width, h = seamCanvas.height;
+    seamCtx.clearRect(0, 0, w, h);
+
+    // Midline seam marker at x = w/2
+    seamCtx.strokeStyle = 'rgba(251, 191, 36, 0.55)';
+    seamCtx.lineWidth = 1.5;
+    seamCtx.setLineDash([4, 4]);
+    seamCtx.beginPath();
+    seamCtx.moveTo(w / 2, 6);
+    seamCtx.lineTo(w / 2, h - 6);
+    seamCtx.stroke();
+    seamCtx.setLineDash([]);
+
+    // Draw velocity bell curve (power2.in ramp up -> seam cut -> power3.out ramp down)
+    seamCtx.beginPath();
+    for (let x = 0; x < w; x++) {
+      const u = x / w;
+      let v = 0;
+      if (u < 0.5) {
+        const t = u / 0.5;
+        v = Math.pow(t, 2); // power2.in acceleration
+      } else {
+        const t = (u - 0.5) / 0.5;
+        v = 0.89 * Math.pow(1 - t, 2); // power3.out velocity-matched deceleration
+      }
+      const py = h - 12 - v * (h - 24);
+      if (x === 0) seamCtx.moveTo(x, py); else seamCtx.lineTo(x, py);
+    }
+    seamCtx.strokeStyle = '#38BDF8';
+    seamCtx.lineWidth = 2.5;
+    seamCtx.stroke();
+
+    // Playhead dot mapped from localP
+    const dotX = clamp(localP, 0, 1) * w;
+    seamCtx.beginPath();
+    seamCtx.arc(dotX, h / 2, 5, 0, Math.PI * 2);
+    seamCtx.fillStyle = '#4ADE80';
+    seamCtx.fill();
+
+    document.getElementById('seam-type-label').textContent = `Seam: ${scene.seam}`;
+    document.getElementById('seam-ease-label').textContent = scene.ease;
+    document.getElementById('seam-badge').textContent = `η = ${scene.eta.toFixed(2)} MATCH`;
+  }
+
+  function updateSidePanels() {
+    const tpl = TEMPLATES[currentTemplateId];
+    const sceneIdx = clamp(Math.floor(currentTime / SCENE_LEN), 0, 5);
+    const scene = tpl.scenes[sceneIdx];
+
+    document.getElementById('ledger-id-badge').textContent = tpl.id;
+    document.getElementById('dm-peak').textContent = `${tpl.metrics.peakGap} (≤4.0s)`;
+    document.getElementById('dm-freeze').textContent = `${tpl.metrics.freeze} (≤30%)`;
+
+    const swatches = [tpl.look.bg, ...tpl.look.accents]
+      .map(c => `<span class="swatch" style="background:${c}" title="${c}"></span>`)
+      .join('');
+
+    document.getElementById('ledger-kv').innerHTML = `
+      <span class="ledger-k">look.atoms</span>
+      <span class="ledger-v"><span class="swatch-row">${swatches}</span> (${tpl.look.dark ? 'dark:true' : 'light paper'})</span>
+      <span class="ledger-k">layout</span>
+      <span class="ledger-v">${scene.layout}</span>
+      <span class="ledger-k">motion</span>
+      <span class="ledger-v">seam=${scene.seam} | verb=${scene.verb}</span>
+      <span class="ledger-k">sound</span>
+      <span class="ledger-v">${tpl.sound.bgm} | motif=${scene.sfx}</span>
+    `;
+
+    document.getElementById('shotcard-kv').innerHTML = `
+      <span class="ledger-k">card_id</span>
+      <span class="ledger-v">${scene.card}</span>
+      <span class="ledger-k">window</span>
+      <span class="ledger-v">[${(sceneIdx * SCENE_LEN).toFixed(1)}s – ${((sceneIdx + 1) * SCENE_LEN).toFixed(1)}s] (Act 0${scene.idx}/06)</span>
+      <span class="ledger-k">source</span>
+      <span class="ledger-v">${tpl.sourceUrl}</span>
+    `;
+
+    document.querySelectorAll('.scene-pill').forEach((el, idx) => {
+      el.classList.toggle('active', idx === sceneIdx);
+    });
+  }
+
+  function rebuildScenePills() {
+    const tpl = TEMPLATES[currentTemplateId];
+    const isEn = currentLang === 'en';
+    const container = document.getElementById('scene-pills');
+    container.innerHTML = tpl.scenes.map((s, i) => `
+      <button class="scene-pill ${i === 0 ? 'active' : ''}" data-scene-idx="${i}" type="button">
+        <span class="sp-num">ACT 0${s.idx} · ${(i * SCENE_LEN).toFixed(1)}s</span>
+        <span class="sp-name">${isEn ? s.tagEn : s.tag}</span>
+      </button>
+    `).join('');
+    container.querySelectorAll('.scene-pill').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const idx = Number(btn.getAttribute('data-scene-idx'));
+        currentTime = idx * SCENE_LEN + 0.15;
+        document.getElementById('timeline-slider').value = String(currentTime);
+        playCausalSfx(tpl.scenes[idx].sfx);
+        renderFrame();
+      });
+    });
+  }
+
+  function renderFrame() {
+    const tpl = TEMPLATES[currentTemplateId];
+    const isEn = currentLang === 'en';
+    const sceneIdx = clamp(Math.floor(currentTime / SCENE_LEN), 0, 5);
+    const localP = clamp((currentTime - sceneIdx * SCENE_LEN) / SCENE_LEN, 0, 1);
+    const scene = tpl.scenes[sceneIdx];
+
+    if (sceneIdx !== lastTriggeredScene) {
+      lastTriggeredScene = sceneIdx;
+      playCausalSfx(scene.sfx);
+    }
+
+    ctx.save();
+    ctx.clearRect(0, 0, 1920, 1080);
+    applySeamTransition(ctx, localP, scene.seam);
+
+    if (currentTemplateId === 'xiaozhe-mcp-node-graph') {
+      renderMcpScene(ctx, sceneIdx, localP, isEn);
+    } else if (currentTemplateId === 'xiaozhe-rag-pipeline-flow') {
+      renderRagScene(ctx, sceneIdx, localP, isEn);
+    } else {
+      renderDeepseekScene(ctx, sceneIdx, localP, isEn);
+    }
+
+    drawHeaderAndCaption(ctx, tpl, scene, localP, isEn);
+    ctx.restore();
+
+    document.getElementById('time-readout').textContent = `${currentTime.toFixed(1).padStart(4, '0')}s / ${DURATION.toFixed(1)}s`;
+    renderSeamGraph(localP, scene);
+    computeRealTimeDensity();
+    updateSidePanels();
+  }
+
+  function tick(now) {
+    const dt = Math.min(0.1, (now - lastFrameTs) / 1000);
+    lastFrameTs = now;
+    if (isPlaying) {
+      currentTime = (currentTime + dt) % DURATION;
+      document.getElementById('timeline-slider').value = String(currentTime);
+    }
+    renderFrame();
+    requestAnimationFrame(tick);
+  }
+
+  function generateStoryboardMarkdown() {
+    const tpl = TEMPLATES[currentTemplateId];
+    const lines = [
+      '---',
+      'format: landscape-1920x1080',
+      'fps: 30',
+      `duration: ${DURATION.toFixed(1)}`,
+      'mode: autonomous',
+      `style_id: ${tpl.id}`,
+      `palette_source: ${tpl.id}`,
+      `source_reference: "${tpl.sourceUrl}"`,
+      '---',
+      '',
+      `# STORYBOARD · ${tpl.id}`,
+      ''
+    ];
+    tpl.scenes.forEach((s, i) => {
+      const t0 = (i * SCENE_LEN).toFixed(1);
+      const t1 = ((i + 1) * SCENE_LEN).toFixed(1);
+      lines.push(`## 0${s.idx}-act-${s.idx} [${t0}–${t1}s]`);
+      lines.push(`- src: compositions/frames/0${s.idx}-act-${s.idx}.html`);
+      lines.push(`- card: \`${s.card.split(' ')[0]}\``);
+      lines.push(`- layout: \`${s.layout}\``);
+      lines.push(`- registry: \`${s.card.split(' ')[0]}\` (verified via process-gate.py --stage layout)`);
+      lines.push(`- title_zh: "${s.title}"`);
+      lines.push(`- subtitle_zh: "${s.subtitle}"`);
+      lines.push(`- motion: seam=${s.seam} | velocity=${s.ease} (eta=${s.eta}) | carrier=#stage-act-0${s.idx} | verb=${s.verb}`);
+      lines.push(`- sound: motif=${s.sfx} | cues=${t0}(${s.sfx}) | mix=dry`);
+      lines.push('');
+    });
+    return lines.join('\n');
+  }
+
+  // Event Listeners
+  document.querySelectorAll('.tpl-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tpl-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      currentTemplateId = tab.getAttribute('data-template');
+      currentTime = 0.1;
+      lastTriggeredScene = -1;
+      rebuildScenePills();
+      renderFrame();
+    });
+  });
+
+  document.getElementById('btn-play').addEventListener('click', () => {
+    isPlaying = !isPlaying;
+    const dict = I18N[currentLang];
+    document.getElementById('btn-play').textContent = isPlaying ? dict.pause : dict.play;
+  });
+
+  document.getElementById('btn-prev').addEventListener('click', () => {
+    const idx = clamp(Math.floor(currentTime / SCENE_LEN) - 1, 0, 5);
+    currentTime = idx * SCENE_LEN + 0.15;
+    renderFrame();
+  });
+
+  document.getElementById('btn-next').addEventListener('click', () => {
+    const idx = (Math.floor(currentTime / SCENE_LEN) + 1) % 6;
+    currentTime = idx * SCENE_LEN + 0.15;
+    renderFrame();
+  });
+
+  document.getElementById('timeline-slider').addEventListener('input', (e) => {
+    currentTime = parseFloat(e.target.value);
+    renderFrame();
+  });
+
+  document.getElementById('btn-safe-zone').addEventListener('click', () => {
+    showSafeZone = !showSafeZone;
+    document.getElementById('safe-overlay').classList.toggle('visible', showSafeZone);
+    document.getElementById('btn-safe-zone').classList.toggle('active', showSafeZone);
+  });
+
+  document.getElementById('btn-audio').addEventListener('click', () => {
+    soundEnabled = !soundEnabled;
+    if (soundEnabled) ensureAudio();
+    const dict = I18N[currentLang];
+    const btn = document.getElementById('btn-audio');
+    btn.setAttribute('aria-pressed', String(soundEnabled));
+    btn.textContent = soundEnabled ? dict.audioOn : dict.audioOff;
+    btn.classList.toggle('success', soundEnabled);
+    if (soundEnabled) playCausalSfx('chime');
+  });
+
+  document.getElementById('btn-sfx-test').addEventListener('click', () => {
+    soundEnabled = true;
+    ensureAudio();
+    const btn = document.getElementById('btn-audio');
+    btn.setAttribute('aria-pressed', 'true');
+    btn.textContent = I18N[currentLang].audioOn;
+    btn.classList.add('success');
+    const tpl = TEMPLATES[currentTemplateId];
+    const sceneIdx = clamp(Math.floor(currentTime / SCENE_LEN), 0, 5);
+    playCausalSfx(tpl.scenes[sceneIdx].sfx);
+  });
+
+  document.getElementById('btn-export-storyboard').addEventListener('click', () => {
+    document.getElementById('modal-content').textContent = generateStoryboardMarkdown();
+    document.getElementById('export-modal').classList.add('open');
+  });
+
+  document.getElementById('btn-close-modal').addEventListener('click', () => {
+    document.getElementById('export-modal').classList.remove('open');
+  });
+
+  document.getElementById('btn-copy-modal').addEventListener('click', () => {
+    navigator.clipboard?.writeText(document.getElementById('modal-content').textContent);
+    document.getElementById('btn-copy-modal').textContent = '✓ 已复制!';
+    setTimeout(() => { document.getElementById('btn-copy-modal').textContent = '复制全部'; }, 1500);
+  });
+
+  document.querySelectorAll('[data-lang]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      currentLang = btn.getAttribute('data-lang');
+      document.querySelectorAll('[data-lang]').forEach(b => b.classList.toggle('active', b === btn));
+      const dict = I18N[currentLang];
+      document.getElementById('studio-heading').textContent = dict.studioHeading;
+      document.getElementById('back-portal-link').textContent = dict.backPortal;
+      document.getElementById('btn-safe-zone').textContent = dict.safeZone;
+      document.getElementById('btn-audio').textContent = soundEnabled ? dict.audioOn : dict.audioOff;
+      document.getElementById('btn-export-storyboard').textContent = dict.exportBtn;
+      document.getElementById('btn-play').textContent = isPlaying ? dict.pause : dict.play;
+      document.getElementById('btn-prev').textContent = dict.prev;
+      document.getElementById('btn-next').textContent = dict.next;
+      document.getElementById('btn-sfx-test').textContent = dict.sfxTest;
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const k = el.getAttribute('data-i18n');
+        if (dict[k]) el.textContent = dict[k];
+      });
+      rebuildScenePills();
+      renderFrame();
+    });
+  });
+
+  // Expose deterministic test/inspection harness API
+  window.explainerStudio = {
+    selectTemplate(id) {
+      if (TEMPLATES[id]) {
+        currentTemplateId = id;
+        document.querySelectorAll('.tpl-tab').forEach(t => {
+          t.classList.toggle('active', t.getAttribute('data-template') === id);
+        });
+        rebuildScenePills();
+        renderFrame();
+      }
+    },
+    seek(t) {
+      isPlaying = false;
+      currentTime = clamp(t, 0, DURATION - 0.01);
+      document.getElementById('timeline-slider').value = String(currentTime);
+      renderFrame();
+    },
+    snapshot() {
+      const density = computeRealTimeDensity();
+      const sceneIdx = clamp(Math.floor(currentTime / SCENE_LEN), 0, 5);
+      return {
+        templateId: currentTemplateId,
+        currentTime: +currentTime.toFixed(2),
+        sceneIdx: sceneIdx + 1,
+        activeCells: density.activeCells,
+        meanGrad: density.meanGrad,
+        storyboard: generateStoryboardMarkdown()
+      };
+    }
+  };
+
+  rebuildScenePills();
+  const urlParams = new URLSearchParams(window.location.search);
+  const rawHash = (window.location.hash || '').replace(/^#/, '');
+  const hashAlias = {
+    'tpl-mcp': 'xiaozhe-mcp-node-graph',
+    'mcp': 'xiaozhe-mcp-node-graph',
+    'xiaozhe-mcp-node-graph': 'xiaozhe-mcp-node-graph',
+    'tpl-rag': 'xiaozhe-rag-pipeline-flow',
+    'rag': 'xiaozhe-rag-pipeline-flow',
+    'xiaozhe-rag-pipeline-flow': 'xiaozhe-rag-pipeline-flow',
+    'tpl-finops': 'chimp-deepseek-unit-economics',
+    'finops': 'chimp-deepseek-unit-economics',
+    'deepseek': 'chimp-deepseek-unit-economics',
+    'chimp-deepseek-unit-economics': 'chimp-deepseek-unit-economics'
+  };
+  const qTpl = urlParams.get('template') || urlParams.get('tpl') || hashAlias[rawHash];
+  if (qTpl && TEMPLATES[qTpl]) {
+    window.explainerStudio.selectTemplate(qTpl);
+  }
+  const qLang = urlParams.get('lang');
+  if (qLang && I18N[qLang]) {
+    const langBtn = document.querySelector(`[data-lang="${qLang}"]`);
+    if (langBtn) langBtn.click();
+  }
+  window.addEventListener('message', (ev) => {
+    if (ev.data && ev.data.type === 'SET_LANG' && I18N[ev.data.lang]) {
+      const langBtn = document.querySelector(`[data-lang="${ev.data.lang}"]`);
+      if (langBtn) langBtn.click();
+    }
+  });
+  renderFrame();
+  requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src data:;" />
+  <title>Azure Speech快速转录 日记PoC · 7-卡片 -你还不知道4:5基准报告</title>
+  <style>
+    :root {
+      --bg-page: #0B1120;
+      --bg-card: #FFFFFF;
+      --text-main: #0F172A;
+      --text-muted: #475569;
+      --text-subtle: #64748B;
+      --border-light: #E2E8F0;
+      --blue-primary: #2563EB;
+      --blue-bar: #3B82F6;
+      --slate-bar: #CBD5E1;
+      --green-bg: #ECFDF5;
+      --green-border: #A7F3D0;
+      --green-text: #065F46;
+      --amber-bg: #FFFBEB;
+      --amber-border: #FDE68A;
+      --amber-text: #92400E;
+      --red-bg: #FEF2F2;
+      --red-border: #FECACA;
+      --red-text: #991B1B;
+      --dark-panel: #0F172A;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: var(--bg-page);
+      color: #F8FAFC;
+      min-height: 100vh;
+      padding: 20px 16px 60px;
+    }
+    .topbar {
+      max-width: 1120px;
+      margin: 0 auto 20px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: rgba(15, 23, 42, 0.88);
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      border-radius: 14px;
+      padding: 12px 18px;
+    }
+    .topbar-left { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .back-link {
+      color: #60A5FA;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 13px;
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(96, 165, 250, 0.35);
+      background: rgba(37, 99, 235, 0.12);
+    }
+    .back-link:hover { background: rgba(37, 99, 235, 0.25); }
+    .topbar-title { font-size: 15px; font-weight: 700; color: #F8FAFC; }
+    .controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .btn {
+      background: #1E293B;
+      color: #E2E8F0;
+      border: 1px solid #334155;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn.active, .btn:hover {
+      background: #2563EB;
+      border-color: #3B82F6;
+      color: #FFFFFF;
+    }
+    .deck-wrapper { max-width: 900px; margin: 0 auto; }
+    .deck-wrapper.grid-mode {
+      max-width: 1400px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+      gap: 24px;
+    }
+    .card-4x5 {
+      width: 100%;
+      max-width: 900px;
+      aspect-ratio: 4 / 5;
+      min-height: 880px;
+      background: var(--bg-card);
+      color: var(--text-main);
+      border-radius: 24px;
+      padding: 32px 36px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid #E2E8F0;
+    }
+    .card-4x5.active-card { display: flex; }
+    .deck-wrapper.grid-mode .card-4x5 {
+      display: flex;
+      aspect-ratio: auto;
+      min-height: 760px;
+      padding: 24px 26px;
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #475569;
+      border-bottom: 1px solid #F1F5F9;
+      padding-bottom: 12px;
+      margin-bottom: 14px;
+    }
+    .card-badge {
+      background: #EFF6FF;
+      color: #1D4ED8;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-weight: 700;
+    }
+    .card-headline {
+      font-size: 25px;
+      line-height: 1.24;
+      font-weight: 800;
+      color: #0F172A;
+      margin-bottom: 10px;
+    }
+    .gradient-accent {
+      background: linear-gradient(90deg, #2563EB, #7C3AED);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .card-sub {
+      font-size: 13.5px;
+      line-height: 1.5;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+    .workbench-3col {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr 1fr;
+      gap: 12px;
+      margin-bottom: 14px;
+      flex: 1;
+    }
+    .wb-col {
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 14px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+    .wb-title {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #64748B;
+    }
+    .pill-item {
+      padding: 8px 10px;
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+    }
+    .band-tag {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .band-auto { background: var(--green-bg); color: var(--green-text); border: 1px solid var(--green-border); }
+    .band-confirm { background: var(--amber-bg); color: var(--amber-text); border: 1px solid var(--amber-border); }
+    .band-human { background: var(--red-bg); color: var(--red-text); border: 1px solid var(--red-border); }
+    .type-badge {
+      font-size: 10px;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: 6px;
+      background: #E0E7FF;
+      color: #3730A3;
+      font-weight: 800;
+    }
+    .quote-box {
+      background: #F1F5F9;
+      border-left: 4px solid #2563EB;
+      padding: 11px 14px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      color: #1E293B;
+      margin-bottom: 12px;
+    }
+    .decision-stack { display: flex; flex-direction: column; gap: 11px; flex: 1; }
+    .decision-card {
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 14px;
+      padding: 13px 15px;
+    }
+    .decision-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      gap: 8px;
+    }
+    .prob-bar-track {
+      height: 10px;
+      background: #E2E8F0;
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 7px 0 5px;
+    }
+    .prob-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #2563EB, #3B82F6);
+      border-radius: 999px;
+    }
+    .matrix-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      margin-bottom: 12px;
+    }
+    .matrix-table th {
+      text-align: left;
+      padding: 8px 9px;
+      background: #F1F5F9;
+      color: #334155;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 2px solid #CBD5E1;
+    }
+    .matrix-table td {
+      padding: 8px 9px;
+      border-bottom: 1px solid #E2E8F0;
+      vertical-align: middle;
+    }
+    .code-panel {
+      background: var(--dark-panel);
+      color: #E2E8F0;
+      border-radius: 14px;
+      padding: 13px 15px;
+      font-family: "Cascadia Code", "Consolas", monospace;
+      font-size: 11.2px;
+      line-height: 1.45;
+      overflow-x: auto;
+    }
+    .flow-arrow {
+      text-align: center;
+      font-weight: 800;
+      color: #2563EB;
+      font-size: 13px;
+      margin: 5px 0;
+    }
+    .latency-group {
+      margin-bottom: 11px;
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 12px;
+      padding: 11px 14px;
+    }
+    .latency-head {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .bar-row {
+      display: grid;
+      grid-template-columns: 145px 1fr 74px;
+      align-items: center;
+      gap: 8px;
+      font-size: 11.5px;
+      margin-bottom: 5px;
+    }
+    .bar-track {
+      height: 12px;
+      background: #E2E8F0;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .bar-primary { height: 100%; background: var(--blue-bar); border-radius: 999px; }
+    .bar-baseline { height: 100%; background: var(--slate-bar); border-radius: 999px; }
+    .fit-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      flex: 1;
+      margin-bottom: 14px;
+    }
+    .fit-card {
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 12.5px;
+      line-height: 1.45;
+    }
+    .fit-good { background: var(--green-bg); border: 1px solid var(--green-border); color: var(--green-text); }
+    .fit-bad { background: var(--red-bg); border: 1px solid var(--red-border); color: var(--red-text); }
+    .card-footer {
+      background: #0F172A;
+      color: #E2E8F0;
+      border-radius: 12px;
+      padding: 11px 15px;
+      font-size: 11.5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .callout-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .callout-box {
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 12px;
+      padding: 11px 13px;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+  </style>
+<!-- kee-dedicated-style:start -->
+<style>/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.65fr 1.1fr 1.15fr 1.1fr 1.1fr;gap:6px;align-items:stretch;min-width:0}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+</style>
+<!-- kee-dedicated-style:end -->
+<!-- kee-report-localization:metadata:start --><link rel="alternate" hreflang="en" href="diarization-benchmark-cards.en.html"><link rel="alternate" hreflang="zh-CN" href="diarization-benchmark-cards.zh-CN.html"><meta name="report-translation-source" content="voice/diarization-benchmark-cards.html@941ee62"><meta name="report-translation-provenance" content="translation; independently_reproduced=false"><style>/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.65fr 1.1fr 1.15fr 1.1fr 1.1fr;gap:6px;align-items:stretch;min-width:0}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+
+html{scroll-padding-top:108px}.reading-header,.kee-dedicated-nav,[data-professional-header]{position:sticky;top:0;z-index:1000;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+
+:root{--search-bg:#101a30;--search-soft:#172440;--search-ink:#eef3ff;--search-muted:#adbbd1;--search-line:#293956;--search-accent:#9aabff;--header-offset:108px}
+:root[data-reading-shell][data-theme=light],[data-perimeter-theme=light]{--search-bg:#fff;--search-soft:#e8eefb;--search-ink:#17233e;--search-muted:#4c5e7c;--search-line:#d5ddec;--search-accent:#354ec8}
+html{scroll-padding-top:var(--header-offset,108px)!important}
+.site-search,.site-search *{box-sizing:border-box!important;font-family:"Segoe UI",sans-serif;letter-spacing:normal;text-transform:none}
+.site-search{position:relative;display:flex;align-items:center;gap:5px;min-width:0;width:230px;max-width:100%;margin:0!important;padding:0!important;line-height:1.4;border:1px solid var(--search-line);border-radius:9px;background:var(--search-soft);color:var(--search-ink);isolation:isolate}
+.site-search input[type=search]{display:block;flex:1;min-width:0;width:100%;height:42px;margin:0;padding:9px 8px!important;font-size:12px!important;line-height:1.5;border:0!important;border-radius:9px;background:transparent!important;color:var(--search-ink)!important;box-shadow:none!important;appearance:none}
+.site-search input::placeholder{color:var(--search-muted);opacity:1}.site-search input:focus-visible{outline:2px solid var(--search-accent);outline-offset:2px}
+.site-search kbd{font:11px Consolas,monospace;color:var(--search-muted);padding:1px 5px;border:1px solid var(--search-line);border-radius:4px}
+.site-search button[type=submit]{flex:none;width:38px;min-width:38px;height:42px;min-height:42px;padding:0;margin:0;border:0;border-radius:8px;background:transparent;color:var(--search-accent);font-size:24px;cursor:pointer;box-shadow:none}
+.search-label,.search-status{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.site-search .search-results{position:absolute;top:calc(100% + 10px);right:0;z-index:1100;width:min(480px,calc(100vw - 32px));max-height:min(560px,65vh);overflow-y:auto;border:1px solid var(--search-line);border-radius:12px;background:var(--search-bg);color:var(--search-ink);padding:10px;box-shadow:0 12px 32px #0005;text-align:left}
+.site-search .search-results[hidden]{display:none!important}.search-results .search-group{margin:8px 6px 4px;font:11px/1.5 Consolas,monospace;color:var(--search-muted)}
+.site-search .search-results a{display:block!important;padding:10px!important;margin:3px 0!important;border:1px solid transparent!important;border-radius:7px;background:transparent;color:var(--search-ink)!important;font-size:13px!important;text-decoration:none!important;white-space:normal;overflow-wrap:anywhere;text-align:left!important;line-height:1.5!important}
+.site-search .search-results a[aria-selected=true],.site-search .search-results a:hover{border-color:var(--search-accent)!important;background:var(--search-soft)}
+.search-results a small{display:block;font-size:10px;color:var(--search-muted);margin-top:4px}.search-results p{margin:10px;font-size:13px;color:var(--search-muted)}
+.search-archive-summary{padding:20px;border:1px solid var(--search-line);border-radius:10px;background:var(--search-bg);color:var(--search-ink);margin:24px 0}.search-archive-summary h2{font-size:24px;margin:0 0 12px}.search-archive-summary li{margin:12px 0}.search-archive-summary a{color:var(--search-accent)}
+[data-professional-header]{position:sticky!important;top:0!important;z-index:1000!important;background:var(--search-bg)!important;--header-glass:rgba(16,26,48,.9);grid-template-columns:auto minmax(0,1fr) 230px auto!important}
+[data-professional-header][data-perimeter-theme=light],:root[data-reading-shell][data-theme=light] [data-professional-header]{--header-glass:rgba(255,255,255,.94)}
+[data-professional-header] .professional-mobile{display:none}.professional-mobile summary{min-width:38px;min-height:42px;display:grid;place-items:center;cursor:pointer;list-style:none}.professional-mobile summary::-webkit-details-marker{display:none}
+[data-professional-header] .professional-context{display:none}
+.professional-context-bar{padding:12px 24px;border-bottom:1px solid var(--search-line);background:var(--search-bg);color:var(--search-muted);font:12px/1.6 "Segoe UI",sans-serif;display:flex;flex-wrap:wrap;gap:8px 18px;overflow-wrap:anywhere}.professional-context-bar a{color:var(--search-accent)}
+@supports((backdrop-filter:blur(16px)) or (-webkit-backdrop-filter:blur(16px))){.site-header,[data-professional-header]{background:var(--header-glass)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}}
+@media(max-width:1250px) and (min-width:701px){.header-inner{grid-template-columns:minmax(0,1fr) 230px auto!important;padding:12px 0;gap:12px!important}.desktop-nav{grid-row:2;grid-column:1/-1}.header-inner>.site-search{grid-column:2;grid-row:1}.header-inner>.controls{grid-column:3;grid-row:1}[data-professional-header]{grid-template-columns:minmax(0,1fr) 230px auto!important;gap:12px!important}[data-professional-header]>.professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header]>.site-search{grid-column:2;grid-row:1}[data-professional-header]>.professional-controls{grid-column:3;grid-row:1}:root{--header-offset:176px}}
+@media(max-width:700px){.header-inner{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 0;gap:8px!important}.header-inner>.site-search{grid-row:2;grid-column:1/-1;width:100%}.header-inner>.controls{grid-column:2;grid-row:1}.site-search .search-results{width:100%;right:0}[data-professional-header]{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 16px!important;gap:8px!important}[data-professional-header]>.professional-primary{display:none!important}[data-professional-header]>.site-search{grid-column:1/-1;grid-row:2;width:100%}[data-professional-header]>.professional-controls{grid-column:2;grid-row:1}[data-professional-header] .professional-mobile{display:block}[data-professional-header] .professional-mobile[open]>.professional-primary{position:absolute;top:100%;left:0;right:0;padding:16px;background:var(--search-bg);border-bottom:1px solid var(--search-line);display:grid;grid-template-columns:1fr 1fr;gap:8px}[data-professional-header] .professional-mobile .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:12px!important}:root{--header-offset:126px}}
+@media(prefers-reduced-transparency:reduce){.site-header,[data-professional-header]{background:var(--search-bg)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+@media print{.site-search,.professional-context-bar{display:none!important}}
+
+@media(min-width:1251px){.header-inner{display:grid!important;grid-template-columns:auto minmax(0,1fr) 230px auto!important;gap:18px!important}.header-inner .desktop-nav{min-width:0}}
+
+html:has(.kee-dedicated-app-root){height:auto!important;overflow-x:hidden!important;overflow-y:auto!important}
+body:has([data-professional-header]){height:auto!important;overflow-x:clip!important;overflow-y:visible!important;padding-top:0!important}
+.demo-language-navigation{display:none!important}
+.stage-column,.telemetry-panel,.scene-pill,#timeline-slider{min-width:0}
+@media(max-width:1180px){.workspace,.template-tabs{grid-template-columns:minmax(0,1fr)!important}}
+
+.in-arena-frame .professional-context-bar,.in-arena-frame [data-knowledge-atlas]{display:none!important}
+</style><!-- kee-report-localization:metadata:end --></head>
+<body><!-- kee-report-localization-navigation:start --><nav class="kee-dedicated-nav" data-professional-header><a class="professional-identity reading-brand kee-dedicated-identity identity" href="../zh.html">Qi Chen · @turbo998</a><div class="professional-primary" role="navigation" aria-label="主导航"><a href="../studio/zh-index.html" data-section="hub" data-nav-en-href="../studio/index.html" data-nav-zh-href="../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub">Frontier Transformation Engineering Hub</a><a href="../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../benchmarks.html" data-nav-zh-href="../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心" aria-current="page">基准评测中心</a><a href="../zh-github-radar.html" data-section="radar" data-nav-en-href="../github-radar.html" data-nav-zh-href="../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI 信号雷达</a><a href="../zh-openrouter.html" data-section="routing" data-nav-en-href="../openrouter.html" data-nav-zh-href="../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../zh-about.html" data-section="profile" data-nav-en-href="../about.html" data-nav-zh-href="../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">首席架构师履历</a></div><form class="site-search" role="search" action="../studio/zh-archive.html" method="get" data-search-root="../index.html" data-search-language="zh-CN"><label class="search-label" for="site-search-input">搜索架构、评测、Demo、技能...</label><input id="site-search-input" name="q" type="search" placeholder="搜索架构、评测、Demo、技能..." autocomplete="off" spellcheck="false" aria-keyshortcuts="/ Control+k Meta+k"><kbd aria-hidden="true">/</kbd><button type="submit" aria-label="搜索全部内容">⌕</button><div class="search-results" id="site-search-results" hidden></div><span class="search-status" role="status" aria-live="polite"></span></form><div class="reading-controls professional-controls" aria-label="网站语言与外观"><a href="diarization-benchmark-cards.en.html" lang="en" hreflang="en">EN</a><a href="diarization-benchmark-cards.zh-CN.html" lang="zh-CN" hreflang="zh-CN" aria-current="page">中文</a><details class="professional-mobile"><summary aria-label="打开主导航">☰</summary><div class="professional-primary" role="navigation" aria-label="移动主导航"><a href="../studio/zh-index.html" data-section="hub" data-nav-en-href="../studio/index.html" data-nav-zh-href="../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub">Frontier Transformation Engineering Hub</a><a href="../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../benchmarks.html" data-nav-zh-href="../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心" aria-current="page">基准评测中心</a><a href="../zh-github-radar.html" data-section="radar" data-nav-en-href="../github-radar.html" data-nav-zh-href="../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI 信号雷达</a><a href="../zh-openrouter.html" data-section="routing" data-nav-en-href="../openrouter.html" data-nav-zh-href="../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../zh-about.html" data-section="profile" data-nav-en-href="../about.html" data-nav-zh-href="../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">首席架构师履历</a></div></details><a data-reading-theme="light" href="?theme=light" aria-label="浅色主题">☀</a><a data-reading-theme="dark" href="?theme=dark" aria-label="深色主题">◐</a></div><div class="professional-context" aria-label="返回上下文"><a href="../studio/zh-index.html">← 工程枢纽</a> · <a href="../studio/zh-voice.html">返回主题</a></div></nav><div class="professional-context-bar"><a href="../studio/zh-index.html">← 工程枢纽</a> · <a href="../studio/zh-voice.html">返回主题</a></div><nav aria-label="报告语言" style="font:14px/1.5 system-ui,sans-serif;display:flex;flex-wrap:wrap;gap:12px;padding:12px 18px;background:#101a30;color:#eef3ff;width:100%;box-sizing:border-box"><a style="color:#9aabff" href="diarization-benchmark-cards.en.html" lang="en" hreflang="en">EN</a><a style="color:#9aabff" href="diarization-benchmark-cards.zh-CN.html" lang="zh-CN" hreflang="zh-CN" aria-current="page">中文</a><span>源报告译本；非独立复测。指标与证据保持原样。</span></nav><figure class="knowledge-figure" data-knowledge-atlas="voice" style="margin:24px 0;max-width:100%"><svg xmlns="http://www.w3.org/2000/svg" lang="zh-CN" role="img" aria-labelledby="knowledge-1c75d82b5900-title knowledge-1c75d82b5900-desc" viewBox="0 0 360 733" width="360" style="display:block;width:100%;height:auto;max-width:560px;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-1c75d82b5900-title">Azure Speech快速转录 日记PoC · 7-卡片 -你还不知道4:5基准报告</title><desc id="knowledge-1c75d82b5900-desc">音频输入与说话人上下文: 麦克风 · 轮次检测 · 说话人分离 → 流式传递至理解层 → 实时语音理解: ASR 或音频原生模型 · 对话状态 → 为响应提供依据 → 智能体、工具与企业数据: 意图 · 检索 · 授权操作 → 合成响应 → 语音输出与双工控制: TTS / 音频输出 · 打断 · 取消 → 反馈至下一轮 → 对话质量与证据: 在来源测试中追踪延迟、说话人与故障</desc><rect width="360" height="733" rx="16" fill="#091827"/><text x="20" y="30" fill="#eef5ff" font-size="20" font-weight="700"><tspan x="20" dy="0">Azure Speech快速转录 日记PoC ·</tspan><tspan x="20" dy="28">7-卡片 -你还不知道4:5基准报告</tspan></text><text x="20" y="86" fill="#a9b8ce" font-size="13" font-weight="400"><tspan x="20" dy="0">概念架构 · 箭头表示关系，不代表测量值</tspan></text><g data-concept="1"><rect x="16" y="112" width="328" height="79" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="126" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="142" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">音频输入与说话人上下文</tspan></text><text x="32" y="173" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">麦克风 · 轮次检测 · 说话人分离</tspan></text></g><g data-relationship="流式传递至理解层"><path d="M32 191 V236" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 231 L32 237 L37 231" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="217" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">流式传递至理解层</tspan></text></g><g data-concept="2"><rect x="16" y="243" width="328" height="79" rx="12" fill="#132942" stroke="#43617f"/><rect x="16" y="257" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="273" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">实时语音理解</tspan></text><text x="32" y="304" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">ASR 或音频原生模型 · 对话状态</tspan></text></g><g data-relationship="为响应提供依据"><path d="M32 322 V367" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 362 L32 368 L37 362" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="348" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">为响应提供依据</tspan></text></g><g data-concept="3"><rect x="16" y="374" width="328" height="79" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="388" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="404" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">智能体、工具与企业数据</tspan></text><text x="32" y="435" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">意图 · 检索 · 授权操作</tspan></text></g><g data-relationship="合成响应"><path d="M32 453 V498" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 493 L32 499 L37 493" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="479" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">合成响应</tspan></text></g><g data-concept="4"><rect x="16" y="505" width="328" height="79" rx="12" fill="#132942" stroke="#43617f"/><rect x="16" y="519" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="535" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">语音输出与双工控制</tspan></text><text x="32" y="566" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">TTS / 音频输出 · 打断 · 取消</tspan></text></g><g data-relationship="反馈至下一轮"><path d="M32 584 V629" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 624 L32 630 L37 624" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="610" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">反馈至下一轮</tspan></text></g><g data-concept="5"><rect x="16" y="636" width="328" height="79" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="650" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="666" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">对话质量与证据</tspan></text><text x="32" y="697" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">在来源测试中追踪延迟、说话人与故障</tspan></text></g></svg><figcaption style="font:14px/1.6 system-ui,sans-serif;margin:12px 0;overflow-wrap:anywhere">整体知识图示：按标注关系阅读组件与工程边界。布局仅为概念示意；不表示吞吐、性能排名或生产部署。</figcaption></figure><!-- kee-report-localization-navigation:end -->
+
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <a class="back-link" href="./index.html">语音代理Hub</a>
+      <a class="back-link" href="../index.html">主页</a>
+      <span class="topbar-title">Azure Speech快速转录 日记PoC · 7-卡片 -你还不知道4:5基准牌</span>
+    </div>
+    <div class="controls">
+      <button class="btn" id="prevBtn" type="button">ưμ㼯A</button>
+      <span id="cardIndicator" style="font-size:12px;font-weight:700;padding:0 6px;">1 / 7</span>
+      <button class="btn" id="nextBtn" type="button">下一个... ......</button>
+      <button class="btn" id="toggleGridBtn" type="button">QQ 网格视图( 全部)7)</button>
+    </div>
+  </div>
+
+  <div class="deck-wrapper" id="deckWrapper">
+    <!-- CARD 1: OVERVIEW & WORKBENCH -->
+    <article class="card-4x5 active-card">
+      <div>
+        <div class="card-header">
+          <span>1 / 7· 手持起步器AZURE SPEECH定向POC</span>
+          <span class="card-badge">MEASURED · SDK 1.0.0 FIX</span>
+        </div>
+        <h1 class="card-headline">
+          明确 <span class="gradient-accent">双向化。 已启用=真</span> 恢复0% → 100%扬声器标签&amp; 100%立体声频道协议
+        </h1>
+        <p class="card-sub">
+          根病发作 <code>azure-ai-transcription==1.0.0</code>: 设置 <code>maxSpeakers</code> 单省去电线旗Azure快速转录。 修复线条序列化 + <code>--locale auto</code> 实现100%发言人报道0.057RTF. (中文(简体) ).
+        </p>
+      </div>
+
+      <div class="workbench-3col">
+        <div class="wb-col">
+          <div class="wb-title">1实验矩阵&amp;盖茨</div>
+          <div class="pill-item"><span>官方控制( )29.49s)</span><span class="band-tag band-auto">8/8 (100%)</span></div>
+          <div class="pill-item"><span>客户最长(224.8s)</span><span class="band-tag band-auto">28/28 (100%)</span></div>
+          <div class="pill-item"><span>立体声频道协议</span><span class="band-tag band-auto">100% (33.75s)</span></div>
+          <div class="pill-item"><span>单语( 文件-01)</span><span class="band-tag band-confirm">确认( E)1词组)</span></div>
+          <div class="pill-item"><span>静态/ sparse( 平滑) (S)03, 04, 05)</span><span class="band-tag band-human">发送到人类</span></div>
+        </div>
+
+        <div class="wb-col">
+          <div class="wb-title">2. 线性定义SDK 1.0.0)</div>
+          <div class="code-panel" style="font-size:10.5px;flex:1;">
+// BEFORE (0/8 Speaker Labels):
+{"locales":["en-US"],
+ "diarization":{"maxSpeakers":2}}
+
+// AFTER (8/8 Speaker Labels):
+{"locales":["en-US"],
+ "diarization":{
+   "maxSpeakers":2,
+   "enabled":true
+ }}
+
+// Customer Auto-Locale Wire:
+{"diarization":{
+   "maxSpeakers":2,
+   "enabled":true
+ }}</div>
+        </div>
+
+        <div class="wb-col">
+          <div class="wb-title">3. 遥测&amp;顶级决定</div>
+          <div class="pill-item"><span>控制RTF( 修复后)</span><strong>0.304 (8.97s)</strong></div>
+          <div class="pill-item"><span>顾客...02RTF (英语:224.8s)</span><strong style="color:#059669;">0.057 (17.5× RT)</strong></div>
+          <div class="pill-item"><span>检测到的地盘( 自动)</span><strong>ES(西班牙语)</strong></div>
+          <div class="pill-item"><span>敏感性(最大=3 / 4)</span><strong>稳定2发言者</strong></div>
+          <div class="pill-item"><span>认证模式</span><strong>EntraID (零键)</strong></div>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <span><strong>证相:</strong> <code>measured</code> (官方控制)+ <code>anonymized_reported</code> (海关计量仪)JSON零音响/短写)</span>
+        <span>提交 : <code>31b25c8</code> · 16/16测试</span>
+      </div>
+    </article>
+
+    <!-- CARD 2: SINGLE-CASE DEEP DIVE -->
+    <article class="card-4x5">
+      <div>
+        <div class="card-header">
+          <span>2 / 7· 塞纳里奥:正式管制&amp;海关 - 福尔02</span>
+          <span class="card-badge">CASE BREAKDOWN</span>
+        </div>
+        <h2 class="card-headline">
+          8/8控制词组( E)0.927结 论)&amp; 28/28客户口令同步到物理立体声道
+        </h2>
+        <div class="quote-box">
+          <strong>输入音频配置 :</strong> (1官方双口语单PCM控制器(.<code>29.4875s</code>, <code>en-US</code>史蒂夫,你应该知道&amp;凯蒂(凯蒂); (2(c) 客户8千赫兹16- 位元 PCM 立体声录音 <code>customer-file-02.wav</code> (<code>224.8s</code>自动检测 <code>es-ES</code>).
+        </div>
+      </div>
+
+      <div class="decision-stack">
+        <div class="decision-card">
+          <div class="decision-top">
+            <div><span class="type-badge">分数</span> <strong>固定器后的官方控制( )<code>enabled=true</code>)</strong></div>
+            <span class="band-tag band-auto">自动行动 .100.0%覆盖范围</span>
+          </div>
+          <div style="font-size:12px;color:#475569;">8/8标注在发言者之间的语句 <code>1</code> &amp; <code>2</code> · 平均信心 <code>0.9267</code> · 被击败 <code>8.97s</code> (RTF <code>0.304</code>)</div>
+          <div class="prob-bar-track"><div class="prob-bar-fill" style="width:100%;"></div></div>
+        </div>
+
+        <div class="decision-card">
+          <div class="decision-top">
+            <div><span class="type-badge">选择</span> <strong>顾客 - 档案 -02双向化与立体声频道基线</strong></div>
+            <span class="band-tag band-auto">自动行动 .100.0%协议</span>
+          </div>
+          <div style="font-size:12px;color:#475569;">28/28标签的短语( 以<code>es-ES</code>, RTF <code>0.057</code>· 结束 <code>33,750 ms</code> 非重叠语句, 最佳双图 <code>Speaker 1 → Ch 1</code> &amp; <code>Speaker 2 → Ch 0</code> 与 <code>100.0%</code> 重叠协议。</div>
+          <div class="prob-bar-track"><div class="prob-bar-fill" style="width:100%;"></div></div>
+        </div>
+
+        <div class="decision-card">
+          <div class="decision-top">
+            <div><span class="type-badge">诺尔</span> <strong>分页/静默客户记录(<code>file-03 / 04 / 05</code>)</strong></div>
+            <span class="band-tag band-human">发送到人类 —— 手动QA门</span>
+          </div>
+          <div style="font-size:12px;color:#475569;"><code>file-03</code> (126.3s, 0,), <code>file-04</code> (116.9s, 0和 语句), <code>file-05</code> (108.3s, 2短语@ <code>0.2158</code> 信心)通过飞行前标记&amp;弃权规则而不是算作假通行证。</div>
+          <div class="prob-bar-track"><div class="prob-bar-fill" style="width:21.6%;background:#EF4444;"></div></div>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <span><strong>核查:</strong> <code>evidence/official-control/after-fix/summary.json</code> &amp; <code>evidence/customer-metrics-sanitized.json</code></span>
+        <span>零已制造坐标</span>
+      </div>
+    </article>
+
+    <!-- CARD 3: FULL EVALUATION MATRIX -->
+    <article class="card-4x5">
+      <div>
+        <div class="card-header">
+          <span>3 / 7 · WHAT I TESTED</span>
+          <span class="card-badge">7-RUN EVALUATION MATRIX</span>
+        </div>
+        <h2 class="card-headline">
+          全面评估矩阵:控制在+之前/之后5客户记录
+        </h2>
+        <p class="card-sub">
+          分离SDK序列化缺陷(`Before Fix` `✕`)来自真正的音频相接(`file-03/04/05`横7密封测试运行。
+        </p>
+      </div>
+
+      <table class="matrix-table">
+        <thead>
+          <tr>
+            <th>SCENARIO / FILE</th>
+            <th>DURATION &amp; LOCALE</th>
+            <th>PHRASES / COVERAGE</th>
+            <th>ACTION / GATE</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>控制( 修复前)</strong></td>
+            <td><code>29.49s</code> · <code>en-US</code></td>
+            <td><strong style="color:#DC2626;">✕ 0 / 8 (0.0%)</strong> · 0发言者</td>
+            <td><span class="band-tag band-human">电线变形( 已关闭的旗帜)</span></td>
+          </tr>
+          <tr>
+            <td><strong>控制( 修复后)</strong></td>
+            <td><code>29.49s</code> · <code>en-US</code></td>
+            <td><strong style="color:#059669;">✓ 8 / 8 (100.0%)</strong> · 垃圾邮件1, 2 (<code>0.927</code>)</td>
+            <td><span class="band-tag band-auto">自动执行</span></td>
+          </tr>
+          <tr>
+            <td><strong>客户档案01. 瓦夫 (英语).</strong></td>
+            <td><code>147.50s</code> · <code>es-ES</code> (自动)</td>
+            <td><code>1 / 1 (100.0%)</code> · 垃圾邮件1 (<code>0.756</code>)</td>
+            <td><span class="band-tag band-confirm">确认( 单一语句)</span></td>
+          </tr>
+          <tr>
+            <td><strong>客户档案02. 瓦夫 (英语).</strong></td>
+            <td><code>224.80s</code> · <code>es-ES</code> (自动)</td>
+            <td><strong style="color:#059669;">✓ 28 / 28 (100.0%)</strong> · 垃圾邮件1, 2 (<code>0.603</code>)</td>
+            <td><span class="band-tag band-auto">自动行动( E)100%Ch 匹配) (中文(简体) ).</span></td>
+          </tr>
+          <tr>
+            <td><strong>客户档案03. 瓦夫 (英语).</strong></td>
+            <td><code>126.28s</code> · <code>[]</code> (自动)</td>
+            <td><strong style="color:#DC2626;">✕ 0词组</strong> (<code>coverage: null</code>)</td>
+            <td><span class="band-tag band-human">发送到一个人类( 无演讲)</span></td>
+          </tr>
+          <tr>
+            <td><strong>客户档案04. 瓦夫 (英语).</strong></td>
+            <td><code>116.92s</code> · <code>[]</code> (自动)</td>
+            <td><strong style="color:#DC2626;">✕ 0词组</strong> (<code>coverage: null</code>)</td>
+            <td><span class="band-tag band-human">发送到一个人类( 无演讲)</span></td>
+          </tr>
+          <tr>
+            <td><strong>客户档案05. 瓦夫 (英语).</strong></td>
+            <td><code>108.28s</code> · <code>en-US, es-ES</code></td>
+            <td><code>2 / 2 (100.0%)</code> 低孔通量(<code>0.216</code>)</td>
+            <td><span class="band-tag band-human">送入人类( 库克)&lt; 0.50)</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout-grid-2">
+        <div class="callout-box">
+          <strong>阈值计分政策:</strong> 需要 <code>coverage &gt;= 95%</code>, <code>phrases &gt;= 4</code>,以及 <code>mean_confidence &gt;= 0.55</code> 自动扬声器归属。
+        </div>
+        <div class="callout-box">
+          <strong>失败分析 :</strong> 一次 <code>enabled=true</code> 财务报告和已审计财务报表 <code>--locale auto</code> 设置, 剩余误差为100%音响沉默/无声无声SDK失败了
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <span><strong>接受目标:</strong> 5/5处理的有效WAVs → RTF&lt; 1.0● 非重叠信道协议&gt;= 90%</span>
+        <span>实际协议:100.0%</span>
+      </div>
+    </article>
+
+    <!-- CARD 4: UNDER THE HOOD -->
+    <article class="card-4x5">
+      <div>
+        <div class="card-header">
+          <span>4 / 7 · UNDER THE HOOD</span>
+          <span class="card-badge">PROTOCOL &amp; SCORING MECHANICS</span>
+        </div>
+        <h2 class="card-headline">
+          SDK线接相接&amp;非重叠立体声道协议验证器
+        </h2>
+        <p class="card-sub">
+          怎样 <code>speech_poc/azure_client.py</code> 强制电线连载以及如何 <code>speech_poc/metrics.py</code> 计算通气-优化通道一致性.
+        </p>
+      </div>
+
+      <div class="code-panel">
+# 1. speech_poc/azure_client.py — Explicit Wire Enablement + Entra DefaultAzureCredential
+kwargs: dict[str, object] = {}
+if locale is not None:               # --locale auto passes None -> omits "locales" array
+    kwargs["locales"] = [locale]
+if max_speakers is not None:
+    diarization = TranscriptionDiarizationOptions(max_speakers=max_speakers)
+    diarization.enabled = True       # Critical fix for azure-ai-transcription==1.0.0
+    kwargs["diarization_options"] = diarization
+options = TranscriptionOptions(**kwargs)</div>
+
+      <div class="flow-arrow">+ * 多部分 POST / speechtotext/ trranscriptions: trancis? 翻译: 翻译: 翻译: 翻译: 翻译: 翻译: 翻译: 翻译: 翻译:api- 变相=2024-11-15 ↓</div>
+
+      <div class="code-panel">
+# 2. speech_poc/metrics.py — Permutation-Optimal Speaker-to-Channel Consistency
+# Excludes intervals where Channel 0 and Channel 1 overlap; finds bijection maximizing ms overlap
+for candidate in itertools.permutations(channels, len(speakers)):
+    mapping = dict(zip(speakers, candidate))
+    matched = sum(overlap_ms(d_seg, c_seg) for d_seg, c_seg in non_overlapping_pairs
+                  if mapping.get(d_seg.speaker) == c_seg.channel)
+# Result on customer-file-02.wav:
+# {"agreement_rate": 1.0, "eligible_milliseconds": 33750, "speaker_channel_map": {"1": 1, "2": 0}}</div>
+
+      <div class="card-footer">
+        <span><strong>安全基线:</strong> <code>infra/speech.bicep</code> 套装 <code>disableLocalAuth: true</code> + RBAC角色 <code>f2dc8367-1007-4938-bd23-fe263f013447</code></span>
+        <span>单位测试 :16 / 16已经通过</span>
+      </div>
+    </article>
+
+    <!-- CARD 5: ROBUSTNESS CHECK -->
+    <article class="card-4x5">
+      <div>
+        <div class="card-header">
+          <span>5 / 7 · ROBUSTNESS CHECK</span>
+          <span class="card-badge">PERTURBATION &amp; SENSITIVITY</span>
+        </div>
+        <h2 class="card-headline">
+           超群横跨最大语句=2/3/4 &amp; +100pt 从清晰的旗帜升起
+        </h2>
+        <p class="card-sub">
+          测试参数扰动 <code>customer-file-02.wav</code> (实验B与实验C) 官方控制活活活活活活活活活活活活活活活活活活活活活活活活活活活活活活活活活活活活活活活活活活活活活活活活活活活活活活活活活活活活活活活活活活活活活活活活活活活活
+        </p>
+      </div>
+
+      <table class="matrix-table">
+        <thead>
+          <tr>
+            <th>PERTURBATION DIMENSION</th>
+            <th>BASELINE (`maxSpeakers=2`)</th>
+            <th>PERTURBED (`maxSpeakers=3 / 4`)</th>
+            <th>CHANGE (PTS / DELTA)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>顾客...02发言人报道</strong></td>
+            <td><code>100.0%</code> (28 / 28短语)</td>
+            <td><code>100.0%</code> (28 / 28最大值=3 &amp; 4)</td>
+            <td><strong style="color:#059669;">0.0点数( )100%稳定)</strong></td>
+          </tr>
+          <tr>
+            <td><strong>顾客...02检测到的发言者</strong></td>
+            <td><code>2 Speakers</code> (<code>[1, 2]</code>)</td>
+            <td><code>2 Speakers</code> (<code>[1, 2]</code> 最大值=3 &amp; 4)</td>
+            <td><strong style="color:#059669;">0虚假集群</strong></td>
+          </tr>
+          <tr>
+            <td><strong>顾客...02平均信心</strong></td>
+            <td><code>60.28%</code> (<code>0.60278</code>)</td>
+            <td><code>60.28%</code> (<code>0.60278</code>)</td>
+            <td><strong style="color:#059669;">0.00点</strong></td>
+          </tr>
+          <tr>
+            <td><strong>顾客...02实时因素</strong></td>
+            <td><code>0.0572 RTF</code> (<code>12.85s</code>)</td>
+            <td><code>0.0543 RTF</code> (<code>12.20s</code> @ 最大值= (单位:千分之一)3/4)</td>
+            <td><strong style="color:#059669;">-0.0029 RTF (-5.1%)</strong></td>
+          </tr>
+          <tr>
+            <td><strong>控制线旗 (M)`enabled`)</strong></td>
+            <td><code>0.0%</code> (<code>enabled</code> 省略)</td>
+            <td><code>100.0%</code> (<code>enabled=true</code>)</td>
+            <td><strong style="color:#2563EB;">+100.0点数( )0/8 → 8/8)</strong></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout-grid-2">
+        <div class="callout-box">
+          <strong>高音席: 变相</strong> 设置 <code>--sensitivity-speakers 3 4</code> 没有幻觉3rd或 减 减4th双方电话发言人。
+        </div>
+        <div class="callout-box">
+          <strong>自动本地复原力:</strong> 正在修正 <code>en-US</code> 途经 <code>--locale auto</code> 清净识别 <code>es-ES</code> 涉及所有28短语。
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <span><strong>后退后卫:</strong> <code>test_diarization_request_explicitly_enables_service_feature</code> &amp; <code>test_auto_locale_is_omitted</code></span>
+        <span>100%定義</span>
+      </div>
+    </article>
+
+    <!-- CARD 6: LATENCY / RTF -->
+    <article class="card-4x5">
+      <div>
+        <div class="card-header">
+          <span>6 / 7 · LATENCY &amp; THROUGHPUT</span>
+          <span class="card-badge">REAL-TIME FACTOR (RTF)</span>
+        </div>
+        <h2 class="card-headline">
+          17.5改为48.8× 跨度比实时快108s–225s录音
+        </h2>
+        <p class="card-sub">
+          比较实际Azure快速译名处理时间( T)`#3B82F6`相对于实时音频持续时间(`#CBD5E1`, `RTF = 1.000`).
+        </p>
+      </div>
+
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;">
+        <div class="latency-group">
+          <div class="latency-head">
+            <span>1顾客 - 档案 -02 (224.8s立体声 .28· e-ES)的词组</span>
+            <span style="color:#2563EB;">RTF=(中文(简体) ).0.057 (17.5- е翴</span>
+          </div>
+          <div class="bar-row">
+            <span>快速译名( max=2)</span>
+            <div class="bar-track"><div class="bar-primary" style="width:5.72%;"></div></div>
+            <strong>12.85s , 简称</strong>
+          </div>
+          <div class="bar-row">
+            <span>实时音频持续时间</span>
+            <div class="bar-track"><div class="bar-baseline" style="width:100%;"></div></div>
+            <span>224.80s , 简称</span>
+          </div>
+        </div>
+
+        <div class="latency-group">
+          <div class="latency-head">
+            <span>2顾客 - 档案 -01 (147.5s · 1词组)&amp;档案03 (126.3s· 沉默)</span>
+            <span style="color:#2563EB;">RTF=(中文(简体) ).0.027 / 0.021 (36×–48- е翴</span>
+          </div>
+          <div class="bar-row">
+            <span>档案01处理时间</span>
+            <div class="bar-track"><div class="bar-primary" style="width:2.74%;"></div></div>
+            <strong>4.04s , 简称</strong>
+          </div>
+          <div class="bar-row">
+            <span>档案03处理时间</span>
+            <div class="bar-track"><div class="bar-primary" style="width:2.05%;"></div></div>
+            <strong>2.59s , 简称</strong>
+          </div>
+        </div>
+
+        <div class="latency-group">
+          <div class="latency-head">
+            <span>3. 正式发言2- 语音控制样本(  )29.49s单声道8· en-US) 词组</span>
+            <span style="color:#2563EB;">RTF=(中文(简体) ).0.304 (3.3- е翴</span>
+          </div>
+          <div class="bar-row">
+            <span>修补后( A)<code>enabled=true</code>)</span>
+            <div class="bar-track"><div class="bar-primary" style="width:30.41%;"></div></div>
+            <strong>8.97s , 简称</strong>
+          </div>
+          <div class="bar-row">
+            <span>在修正( 无分号) 之前</span>
+            <div class="bar-track"><div class="bar-baseline" style="width:28.04%;"></div></div>
+            <span>8.27s , 简称</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <span><strong>密钥透视 :</strong> 辅助扬声器对号只添加 <code>+0.70s</code> 自动调试29.5s维护时的控件 <code>&lt;0.06 RTF</code> 打开3.7- 一分钟的电话。</span>
+        <span>所有运行比实时快</span>
+      </div>
+    </article>
+
+    <!-- CARD 7: MY TAKE -->
+    <article class="card-4x5">
+      <div>
+        <div class="card-header">
+          <span>7 / 7 · MY TAKE</span>
+          <span class="card-badge">GOOD FIT VS. NOT FOR &amp; READINESS</span>
+        </div>
+        <h2 class="card-headline">
+          建筑指导:将立体声道基线与明确分化门结合.
+        </h2>
+        <p class="card-sub">
+          生产工程建议Azure Speech快速转录 日记PoC.
+        </p>
+      </div>
+
+      <div class="fit-grid">
+        <div class="fit-card fit-good">
+          <div style="font-size:15px;font-weight:800;">QQ 适合( 建议)</div>
+          <p>• <strong>电话后QA &amp;双重记录审计:</strong> 同步快速转录 <code>0.02–0.06 RTF</code> 进程3–4一分钟呼叫 <code>4–13 seconds</code>.</p>
+          <p>• <strong>未知区域单曲混合录音 :</strong> 明确对等 <code>diarization.enabled = True</code> 与 <code>--locale auto</code> 财务报告和已审计财务报表 <code>maxSpeakers=2..4</code>.</p>
+          <p>• <strong>分块-频道立体声联系中心:</strong> 保留频道译名( R)<code>active_channels=[0,1]</code>)作为决定地地心真理和对照一分化的交叉核对.</p>
+          <p>• <strong>零基企业安全:</strong> 规定发言S0与 <code>disableLocalAuth: true</code> 和资源范围d <code>DefaultAzureCredential</code>.</p>
+        </div>
+
+        <div class="fit-card fit-bad">
+          <div style="font-size:15px;font-weight:800;">QQ 不为( 反战)</div>
+          <p>• <strong>依赖默认 <code>maxSpeakers</code> 内SDK 1.0.0:</strong> 发声 <code>diarization.enabled = True</code> 默地放下所有扬声器标签( Q)<code>0/8</code>).</p>
+          <p>• <strong>硬编码 <code>en-US</code> 关于多语种/西班牙语类:</strong> 电话通话时造成严重信心下降 <code>es-ES</code>.</p>
+          <p>• <strong>将静音/平声音频作为分音符:</strong> 带有的文件 <code>0</code> 短语( 单词)<code>file-03/04</code>或 减 减 <code>&lt;0.50</code> 信心( - )<code>file-05</code>)必须途径手动审查。</p>
+          <p>• <strong>次级200ms现场全双干扰( L) :</strong> 快转写用于同步文件/重排转录; 使用 <code>GPT-Live-1</code> / 语音实时直播S2S驳入.</p>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <span><strong>重播:</strong> <code>turbo998/azure-speech-diarization-poc</code> &amp; <code>turbo998/voice-agent-lab</code></span>
+        <span>CSP: <code>default-src 'none'; style-src 'unsafe-inline'</code></span>
+      </div>
+    </article>
+  </div>
+
+  <script>
+    (function () {
+      var cards = Array.prototype.slice.call(document.querySelectorAll('.card-4x5'));
+      var idx = 0;
+      var wrapper = document.getElementById('deckWrapper');
+      var indicator = document.getElementById('cardIndicator');
+      var prevBtn = document.getElementById('prevBtn');
+      var nextBtn = document.getElementById('nextBtn');
+      var gridBtn = document.getElementById('toggleGridBtn');
+
+      function render() {
+        cards.forEach(function (c, i) {
+          c.classList.toggle('active-card', i === idx);
+        });
+        indicator.textContent = (idx + 1) + ' / ' + cards.length;
+      }
+
+      prevBtn.addEventListener('click', function () {
+        idx = (idx - 1 + cards.length) % cards.length;
+        render();
+      });
+      nextBtn.addEventListener('click', function () {
+        idx = (idx + 1) % cards.length;
+        render();
+      });
+      gridBtn.addEventListener('click', function () {
+        var isGrid = wrapper.classList.toggle('grid-mode');
+        gridBtn.classList.toggle('active', isGrid);
+        gridBtn.textContent = isGrid ? '▢ Single Card View' : '⊞ Grid View (All 7)';
+      });
+      document.addEventListener('keydown', function (e) {
+        if (wrapper.classList.contains('grid-mode')) return;
+        if (e.key === 'ArrowRight' || e.key === 'PageDown') {
+          idx = (idx + 1) % cards.length;
+          render();
+        } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+          idx = (idx - 1 + cards.length) % cards.length;
+          render();
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

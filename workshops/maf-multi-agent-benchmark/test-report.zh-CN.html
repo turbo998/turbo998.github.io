@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MAF v1.0 vs. 六大主流框架 7-Card 基准测试报告 (中文)</title>
+<style>
+  :root {
+    --bg: #070B14;
+    --panel: #0F172A;
+    --panel-alt: #1E293B;
+    --border: #334155;
+    --text: #F8FAFC;
+    --muted: #94A3B8;
+    --accent: #38BDF8;
+    --emerald: #10B981;
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    line-height: 1.7;
+    padding: 20px 18px 72px;
+  }
+  .container { max-width: 1180px; margin: 0 auto; }
+  .topbar {
+    position: sticky; top: 0; z-index: 50;
+    display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
+    gap: 12px; padding: 12px 18px; background: rgba(15, 23, 42, 0.94);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: 12px; margin-bottom: 24px;
+  }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 14px; }
+  .badge {
+    padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 700;
+    background: rgba(56, 189, 248, 0.15); color: var(--accent); border: 1px solid rgba(56, 189, 248, 0.35);
+  }
+  .nav-links { display: flex; flex-wrap: wrap; gap: 8px; }
+  .btn {
+    padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 700;
+    text-decoration: none; color: var(--text); background: var(--panel-alt);
+    border: 1px solid var(--border); transition: 0.15s;
+  }
+  .btn:hover, .btn.active { border-color: var(--accent); background: rgba(56, 189, 248, 0.18); color: #fff; }
+  .btn-primary { background: linear-gradient(135deg, #2563EB, #7C3AED); border-color: #60A5FA; }
+  .article {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 16px; padding: 32px;
+  }
+  h1 { font-size: 26px; line-height: 1.3; margin-top: 0; color: #fff; border-bottom: 1px solid var(--border); padding-bottom: 14px; }
+  h2 { font-size: 20px; color: var(--accent); margin-top: 32px; border-left: 4px solid var(--accent); padding-left: 12px; }
+  h3 { font-size: 16px; color: #E2E8F0; margin-top: 22px; }
+  p, li { font-size: 14.5px; color: #CBD5E1; }
+  ul, ol { padding-left: 22px; }
+  li { margin-bottom: 6px; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  code {
+    font-family: var(--font-mono); font-size: 12.5px;
+    background: rgba(30, 41, 59, 0.85); color: #38BDF8;
+    padding: 2px 6px; border-radius: 5px; border: 1px solid #334155;
+  }
+  .code-block {
+    background: #050811; border: 1px solid #1E293B; border-radius: 10px;
+    padding: 16px; overflow-x: auto; font-family: var(--font-mono); font-size: 12.5px; color: #E2E8F0;
+  }
+  .code-block code { background: none; border: none; padding: 0; color: inherit; }
+  .callout {
+    background: rgba(30, 41, 59, 0.55); border-left: 4px solid #38BDF8;
+    padding: 10px 16px; margin: 10px 0; border-radius: 0 10px 10px 0; color: #E2E8F0; font-size: 14px;
+  }
+  .table-wrap { overflow-x: auto; margin: 16px 0; border: 1px solid var(--border); border-radius: 10px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { padding: 10px 12px; border-bottom: 1px solid #1E293B; text-align: left; vertical-align: top; }
+  th { background: rgba(30, 41, 59, 0.75); color: #F8FAFC; font-weight: 700; }
+  tr:hover td { background: rgba(30, 41, 59, 0.35); }
+  .svg-embed {
+    background: #0B1120; border: 1px solid var(--border); border-radius: 12px;
+    padding: 14px; margin: 18px 0; text-align: center;
+  }
+  .svg-embed img { max-width: 100%; height: auto; border-radius: 8px; }
+  .svg-cap { font-size: 12px; color: var(--muted); margin-top: 8px; }
+  hr { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+</style>
+<!-- kee-dedicated-style:start -->
+<style>/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.65fr 1.1fr 1.15fr 1.1fr 1.1fr;gap:6px;align-items:stretch;min-width:0}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+</style><script src="../../assets/dedicated-navigation.js" defer></script>
+<!-- kee-dedicated-style:end -->
+<!-- kee-report-localization:metadata:start --><link rel="alternate" hreflang="en" href="test-report.en.html"><link rel="alternate" hreflang="zh-CN" href="test-report.zh-CN.html"><meta name="report-translation-source" content="workshops/maf-multi-agent-benchmark/test-report.html@941ee62"><meta name="report-translation-provenance" content="translation; independently_reproduced=false"><style>/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.65fr 1.1fr 1.15fr 1.1fr 1.1fr;gap:6px;align-items:stretch;min-width:0}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+
+html{scroll-padding-top:108px}.reading-header,.kee-dedicated-nav,[data-professional-header]{position:sticky;top:0;z-index:1000;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+
+:root{--search-bg:#101a30;--search-soft:#172440;--search-ink:#eef3ff;--search-muted:#adbbd1;--search-line:#293956;--search-accent:#9aabff;--header-offset:108px}
+:root[data-reading-shell][data-theme=light],[data-perimeter-theme=light]{--search-bg:#fff;--search-soft:#e8eefb;--search-ink:#17233e;--search-muted:#4c5e7c;--search-line:#d5ddec;--search-accent:#354ec8}
+html{scroll-padding-top:var(--header-offset,108px)!important}
+.site-search,.site-search *{box-sizing:border-box!important;font-family:"Segoe UI",sans-serif;letter-spacing:normal;text-transform:none}
+.site-search{position:relative;display:flex;align-items:center;gap:5px;min-width:0;width:230px;max-width:100%;margin:0!important;padding:0!important;line-height:1.4;border:1px solid var(--search-line);border-radius:9px;background:var(--search-soft);color:var(--search-ink);isolation:isolate}
+.site-search input[type=search]{display:block;flex:1;min-width:0;width:100%;height:42px;margin:0;padding:9px 8px!important;font-size:12px!important;line-height:1.5;border:0!important;border-radius:9px;background:transparent!important;color:var(--search-ink)!important;box-shadow:none!important;appearance:none}
+.site-search input::placeholder{color:var(--search-muted);opacity:1}.site-search input:focus-visible{outline:2px solid var(--search-accent);outline-offset:2px}
+.site-search kbd{font:11px Consolas,monospace;color:var(--search-muted);padding:1px 5px;border:1px solid var(--search-line);border-radius:4px}
+.site-search button[type=submit]{flex:none;width:38px;min-width:38px;height:42px;min-height:42px;padding:0;margin:0;border:0;border-radius:8px;background:transparent;color:var(--search-accent);font-size:24px;cursor:pointer;box-shadow:none}
+.search-label,.search-status{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.site-search .search-results{position:absolute;top:calc(100% + 10px);right:0;z-index:1100;width:min(480px,calc(100vw - 32px));max-height:min(560px,65vh);overflow-y:auto;border:1px solid var(--search-line);border-radius:12px;background:var(--search-bg);color:var(--search-ink);padding:10px;box-shadow:0 12px 32px #0005;text-align:left}
+.site-search .search-results[hidden]{display:none!important}.search-results .search-group{margin:8px 6px 4px;font:11px/1.5 Consolas,monospace;color:var(--search-muted)}
+.site-search .search-results a{display:block!important;padding:10px!important;margin:3px 0!important;border:1px solid transparent!important;border-radius:7px;background:transparent;color:var(--search-ink)!important;font-size:13px!important;text-decoration:none!important;white-space:normal;overflow-wrap:anywhere;text-align:left!important;line-height:1.5!important}
+.site-search .search-results a[aria-selected=true],.site-search .search-results a:hover{border-color:var(--search-accent)!important;background:var(--search-soft)}
+.search-results a small{display:block;font-size:10px;color:var(--search-muted);margin-top:4px}.search-results p{margin:10px;font-size:13px;color:var(--search-muted)}
+.search-archive-summary{padding:20px;border:1px solid var(--search-line);border-radius:10px;background:var(--search-bg);color:var(--search-ink);margin:24px 0}.search-archive-summary h2{font-size:24px;margin:0 0 12px}.search-archive-summary li{margin:12px 0}.search-archive-summary a{color:var(--search-accent)}
+[data-professional-header]{position:sticky!important;top:0!important;z-index:1000!important;background:var(--search-bg)!important;--header-glass:rgba(16,26,48,.9);grid-template-columns:auto minmax(0,1fr) 230px auto!important}
+[data-professional-header][data-perimeter-theme=light],:root[data-reading-shell][data-theme=light] [data-professional-header]{--header-glass:rgba(255,255,255,.94)}
+[data-professional-header] .professional-mobile{display:none}.professional-mobile summary{min-width:38px;min-height:42px;display:grid;place-items:center;cursor:pointer;list-style:none}.professional-mobile summary::-webkit-details-marker{display:none}
+[data-professional-header] .professional-context{display:none}
+.professional-context-bar{padding:12px 24px;border-bottom:1px solid var(--search-line);background:var(--search-bg);color:var(--search-muted);font:12px/1.6 "Segoe UI",sans-serif;display:flex;flex-wrap:wrap;gap:8px 18px;overflow-wrap:anywhere}.professional-context-bar a{color:var(--search-accent)}
+@supports((backdrop-filter:blur(16px)) or (-webkit-backdrop-filter:blur(16px))){.site-header,[data-professional-header]{background:var(--header-glass)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}}
+@media(max-width:1250px) and (min-width:701px){.header-inner{grid-template-columns:minmax(0,1fr) 230px auto!important;padding:12px 0;gap:12px!important}.desktop-nav{grid-row:2;grid-column:1/-1}.header-inner>.site-search{grid-column:2;grid-row:1}.header-inner>.controls{grid-column:3;grid-row:1}[data-professional-header]{grid-template-columns:minmax(0,1fr) 230px auto!important;gap:12px!important}[data-professional-header]>.professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header]>.site-search{grid-column:2;grid-row:1}[data-professional-header]>.professional-controls{grid-column:3;grid-row:1}:root{--header-offset:176px}}
+@media(max-width:700px){.header-inner{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 0;gap:8px!important}.header-inner>.site-search{grid-row:2;grid-column:1/-1;width:100%}.header-inner>.controls{grid-column:2;grid-row:1}.site-search .search-results{width:100%;right:0}[data-professional-header]{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 16px!important;gap:8px!important}[data-professional-header]>.professional-primary{display:none!important}[data-professional-header]>.site-search{grid-column:1/-1;grid-row:2;width:100%}[data-professional-header]>.professional-controls{grid-column:2;grid-row:1}[data-professional-header] .professional-mobile{display:block}[data-professional-header] .professional-mobile[open]>.professional-primary{position:absolute;top:100%;left:0;right:0;padding:16px;background:var(--search-bg);border-bottom:1px solid var(--search-line);display:grid;grid-template-columns:1fr 1fr;gap:8px}[data-professional-header] .professional-mobile .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:12px!important}:root{--header-offset:126px}}
+@media(prefers-reduced-transparency:reduce){.site-header,[data-professional-header]{background:var(--search-bg)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+@media print{.site-search,.professional-context-bar{display:none!important}}
+
+@media(min-width:1251px){.header-inner{display:grid!important;grid-template-columns:auto minmax(0,1fr) 230px auto!important;gap:18px!important}.header-inner .desktop-nav{min-width:0}}
+
+html:has(.kee-dedicated-app-root){height:auto!important;overflow-x:hidden!important;overflow-y:auto!important}
+body:has([data-professional-header]){height:auto!important;overflow-x:clip!important;overflow-y:visible!important;padding-top:0!important}
+.demo-language-navigation{display:none!important}
+.stage-column,.telemetry-panel,.scene-pill,#timeline-slider{min-width:0}
+@media(max-width:1180px){.workspace,.template-tabs{grid-template-columns:minmax(0,1fr)!important}}
+
+.in-arena-frame .professional-context-bar,.in-arena-frame [data-knowledge-atlas]{display:none!important}
+</style><!-- kee-report-localization:metadata:end --></head>
+<body><!-- kee-report-localization-navigation:start --><nav class="kee-dedicated-nav" data-professional-header><a class="professional-identity reading-brand kee-dedicated-identity identity" href="../../zh.html">Qi Chen · @turbo998</a><div class="professional-primary" role="navigation" aria-label="主导航"><a href="../../studio/zh-index.html" data-section="hub" data-nav-en-href="../../studio/index.html" data-nav-zh-href="../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub">Frontier Transformation Engineering Hub</a><a href="../../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../../benchmarks.html" data-nav-zh-href="../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心" aria-current="page">基准评测中心</a><a href="../../zh-github-radar.html" data-section="radar" data-nav-en-href="../../github-radar.html" data-nav-zh-href="../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI 信号雷达</a><a href="../../zh-openrouter.html" data-section="routing" data-nav-en-href="../../openrouter.html" data-nav-zh-href="../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../../zh-about.html" data-section="profile" data-nav-en-href="../../about.html" data-nav-zh-href="../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">首席架构师履历</a></div><form class="site-search" role="search" action="../../studio/zh-archive.html" method="get" data-search-root="../../index.html" data-search-language="zh-CN"><label class="search-label" for="site-search-input">搜索架构、评测、Demo、技能...</label><input id="site-search-input" name="q" type="search" placeholder="搜索架构、评测、Demo、技能..." autocomplete="off" spellcheck="false" aria-keyshortcuts="/ Control+k Meta+k"><kbd aria-hidden="true">/</kbd><button type="submit" aria-label="搜索全部内容">⌕</button><div class="search-results" id="site-search-results" hidden></div><span class="search-status" role="status" aria-live="polite"></span></form><div class="reading-controls professional-controls" aria-label="网站语言与外观"><a href="test-report.en.html" lang="en" hreflang="en">EN</a><a href="test-report.zh-CN.html" lang="zh-CN" hreflang="zh-CN" aria-current="page">中文</a><details class="professional-mobile"><summary aria-label="打开主导航">☰</summary><div class="professional-primary" role="navigation" aria-label="移动主导航"><a href="../../studio/zh-index.html" data-section="hub" data-nav-en-href="../../studio/index.html" data-nav-zh-href="../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub">Frontier Transformation Engineering Hub</a><a href="../../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../../benchmarks.html" data-nav-zh-href="../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心" aria-current="page">基准评测中心</a><a href="../../zh-github-radar.html" data-section="radar" data-nav-en-href="../../github-radar.html" data-nav-zh-href="../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI 信号雷达</a><a href="../../zh-openrouter.html" data-section="routing" data-nav-en-href="../../openrouter.html" data-nav-zh-href="../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../../zh-about.html" data-section="profile" data-nav-en-href="../../about.html" data-nav-zh-href="../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">首席架构师履历</a></div></details><a data-reading-theme="light" href="?theme=light" aria-label="浅色主题">☀</a><a data-reading-theme="dark" href="?theme=dark" aria-label="深色主题">◐</a></div><div class="professional-context" aria-label="返回上下文"><a href="../../studio/zh-index.html">← 工程枢纽</a> · <a href="../../studio/zh-benchmarks.html">返回主题</a></div></nav><div class="professional-context-bar"><a href="../../studio/zh-index.html">← 工程枢纽</a> · <a href="../../studio/zh-benchmarks.html">返回主题</a></div><nav aria-label="报告语言" style="font:14px/1.5 system-ui,sans-serif;display:flex;flex-wrap:wrap;gap:12px;padding:12px 18px;background:#101a30;color:#eef3ff;width:100%;box-sizing:border-box"><a style="color:#9aabff" href="test-report.en.html" lang="en" hreflang="en">EN</a><a style="color:#9aabff" href="test-report.zh-CN.html" lang="zh-CN" hreflang="zh-CN" aria-current="page">中文</a><span>源报告译本；非独立复测。指标与证据保持原样。</span></nav><figure class="knowledge-figure" data-knowledge-atlas="benchmarks" style="margin:24px 0;max-width:100%"><svg xmlns="http://www.w3.org/2000/svg" lang="zh-CN" role="img" aria-labelledby="knowledge-8dbc4dbe7378-title knowledge-8dbc4dbe7378-desc" viewBox="0 0 360 733" width="360" style="display:block;width:100%;height:auto;max-width:560px;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-8dbc4dbe7378-title">MAF v1.0 vs. 六大主流框架 7-Card 基准测试报告 (中文)</title><desc id="knowledge-8dbc4dbe7378-desc">研究问题与封存负载: 数据集 · 模型批次 · 分母 · 来源 → 定义测试契约 → Harness 与执行契约: 提示词 · 工具权限 · 环境 · 重复次数 → 生成追踪产物 → 原始输出与确定性校验: 任务轨迹 · 校验结果 · 缺失值记录 → 带条件汇总 → 得分、稳健性与延迟: 保留单位、条件与不确定性 → 支持有边界的结论 → 报告与可复现性: 7 卡来源报告 · 局限 · 是否独立复现？</desc><rect width="360" height="733" rx="16" fill="#091827"/><text x="20" y="30" fill="#eef5ff" font-size="20" font-weight="700"><tspan x="20" dy="0">MAF v1.0 vs. 六大主流框架</tspan><tspan x="20" dy="28">7-Card 基准测试报告 (中文)</tspan></text><text x="20" y="86" fill="#a9b8ce" font-size="13" font-weight="400"><tspan x="20" dy="0">概念架构 · 箭头表示关系，不代表测量值</tspan></text><g data-concept="1"><rect x="16" y="112" width="328" height="79" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="126" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="142" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">研究问题与封存负载</tspan></text><text x="32" y="173" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">数据集 · 模型批次 · 分母 · 来源</tspan></text></g><g data-relationship="定义测试契约"><path d="M32 191 V236" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 231 L32 237 L37 231" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="217" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">定义测试契约</tspan></text></g><g data-concept="2"><rect x="16" y="243" width="328" height="79" rx="12" fill="#132942" stroke="#43617f"/><rect x="16" y="257" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="273" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">Harness 与执行契约</tspan></text><text x="32" y="304" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">提示词 · 工具权限 · 环境 · 重复次数</tspan></text></g><g data-relationship="生成追踪产物"><path d="M32 322 V367" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 362 L32 368 L37 362" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="348" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">生成追踪产物</tspan></text></g><g data-concept="3"><rect x="16" y="374" width="328" height="79" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="388" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="404" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">原始输出与确定性校验</tspan></text><text x="32" y="435" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">任务轨迹 · 校验结果 · 缺失值记录</tspan></text></g><g data-relationship="带条件汇总"><path d="M32 453 V498" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 493 L32 499 L37 493" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="479" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">带条件汇总</tspan></text></g><g data-concept="4"><rect x="16" y="505" width="328" height="79" rx="12" fill="#132942" stroke="#43617f"/><rect x="16" y="519" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="535" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">得分、稳健性与延迟</tspan></text><text x="32" y="566" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">保留单位、条件与不确定性</tspan></text></g><g data-relationship="支持有边界的结论"><path d="M32 584 V629" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 624 L32 630 L37 624" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="610" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">支持有边界的结论</tspan></text></g><g data-concept="5"><rect x="16" y="636" width="328" height="79" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="650" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="666" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">报告与可复现性</tspan></text><text x="32" y="697" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">7 卡来源报告 · 局限 · 是否独立复现？</tspan></text></g></svg><figcaption style="font:14px/1.6 system-ui,sans-serif;margin:12px 0;overflow-wrap:anywhere">整体知识图示：按标注关系阅读组件与工程边界。布局仅为概念示意；不表示吞吐、性能排名或生产部署。</figcaption></figure><!-- kee-report-localization-navigation:end -->
+
+
+<div class="container">
+  <div class="topbar">
+    <div class="brand">
+      <span class="badge">MAF五、导 言1.0 · FOUNDRY GA</span>
+      <span>7-Card 基准测试详细报告 (中文)</span>
+    </div>
+    <div class="nav-links">
+      <a class="btn" href="../../zh.html">🏠 主页 (ZH)</a>
+      <a class="btn" href="../../index.html">家(EN) 家庭(EN)</a>
+      <a class="btn btn-primary" href="index.html">🖥️ 交互式工作台 &amp; 全景总览</a>
+      <a class="btn " href="monograph.html">📘 中文研究专著</a>
+      <a class="btn " href="monograph.en.html">英语专论</a>
+      <a class="btn active" href="test-report.html">📋 7-Card 报告 (ZH)</a>
+      <a class="btn " href="test-report.en.html">📋 7-卡片报告(EN)</a>
+      <a class="btn" href="test-report-cards.html">🃏 7-Card 4:5 视觉卡片</a>
+    </div>
+  </div>
+  <div class="article">
+    <h1>Microsoft Agent Framework (MAF v1.0) vs. 六大主流框架：多 Agent 编排、MCP/A2A 互操作与三层中间件 7-Card 基准测试报告</h1>
+<div class="callout">🌐 <strong>Language / 语言切换</strong>: <strong><a href="test-report.html">🇨🇳 中文报告 (<code>test-report.md</code>)</a></strong> | <strong><a href="test-report.en.html">英文报告<code>test-report.en.md</code>)</a></strong> | <strong><a href="monograph.html">📘 完整研究长卷 (<code>README.md</code>)</a></strong> | <strong><a href="test-report-cards.html">🖼️ 离线 7-Card 4:5 视觉报告 (<code>test-report-cards.html</code>)</a></strong> | <strong><a href="index.html">🖥️ 交互式多 Agent 编排工作台 (<code>index.html</code>)</a></strong> | <strong><a href="report.json">📦 密封评测数据 (<code>report.json</code>)</a></strong></div>
+<hr />
+<h2>纸牌1 (<code>1 / 7</code> · <code>HANDS-ON · MULTI-AGENT ORCHESTRATION & PROTOCOLS</code>) — 概览与六大框架工作台</h2>
+<h3>核心发现标题 (Headline-as-Finding)</h3>
+<p><strong>融合 Semantic Kernel 与 AutoGen 的 Microsoft Agent Framework (MAF v1.0) 在五大编排模式与协议治理综合评测中斩获 <code>96.4 / 100</code>（领先 LangGraph <code>91.2</code> 与 AutoGen v0.4 <code>86.5</code>）</strong></p>
+<h3>六大主流智能体框架量化横评总表 (<code>framework-comparison.csv</code>)</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>排名</th><th>框架名称 (<code>framework_id</code>)</th><th>核心架构范式</th><th>原生内置多 Agent 编排模式数</th><th>原生拦截中间件层数</th><th>MCP (Agent↔Tool) 支持能力</th><th>A2A v1.0 (Agent↔Agent) 支持能力</th><th>超步 Checkpoint 恢复耗时 (<code>ms</code>)</th><th>8-Agent 并发扇出延迟 (<code>ms</code>)</th><th>综合得分 (<code>/100</code>)</th></tr></thead><tbody>
+<tr><td><strong>#1</strong></td><td><strong>Microsoft Agent Framework (<code>maf-v1.0</code>)</strong></td><td><strong>SK 企业底座 + AutoGen 多 Agent 模式 + 显式图工作流 (<code>Executors/Edges</code>)</strong></td><td><strong>5 / 5</strong> (<code>Sequential</code>, <code>Concurrent</code>, <code>Handoff</code>, <code>GroupChat</code>, <code>Magentic</code>)</td><td><strong>3 层</strong> (<code>AgentRun</code>, <code>FunctionInvocation</code>, <code>IChatClient</code>)</td><td><strong>原生双模式</strong>：Foundry 托管 MCP (<code>mcp.ai.azure.com</code> + OBO) + 本地 MCP + APIM 零信任网关</td><td><strong>原生 A2A v1.0 GA</strong>：JWS 签名 Agent Cards、HTTP/JSON-RPC/gRPC 三绑定、<code>A2AAgent</code> 本地代理</td><td><strong><code>14.2 ms</code></strong></td><td><strong><code>186 ms</code></strong></td><td><strong><code>96.4</code></strong></td></tr>
+<tr><td><strong>#2</strong></td><td><strong>LangGraph (<code>langgraph-v0.3</code>)</strong></td><td>显式 Pregel 状态图 (<code>StateGraph</code>) + <code>Command(goto)</code> + 检查点</td><td><strong>4 / 5</strong>（需自建 Magentic 动态任务台账）</td><td><strong>1 层</strong>（Node/Runnable 回调，无独立传输/工具/运行三层解耦）</td><td>适配器模式 (<code>langchain-mcp-adapters</code>)</td><td>需手写 HTTP/JSON-RPC 封装</td><td><code>21.8 ms</code></td><td><code>228 ms</code></td><td><code>91.2</code></td></tr>
+<tr><td><strong>#3</strong></td><td><strong>AutoGen (<code>autogen-v0.4</code>)</strong></td><td>异步事件驱动 Actor (<code>Core</code>) + <code>AgentChat</code> 多智能体研究模式</td><td><strong>5 / 5</strong>（<code>GroupChat</code> 与 <code>Magentic-One</code> 发源地）</td><td><strong>1 层</strong>（消息拦截钩子）</td><td>本地 MCP 工具扩展</td><td>实验性 gRPC Worker（正式 A2A v1.0 已合入 MAF）</td><td><code>34.5 ms</code></td><td><code>242 ms</code></td><td><code>86.5</code></td></tr>
+<tr><td><strong>#4</strong></td><td><strong>Semantic Kernel (<code>semantic-kernel-v1.x</code>)</strong></td><td>企业级 <code>Kernel</code> + 强类型插件 + 三层 Filter + <code>Process</code> 框架</td><td><strong>3 / 5</strong>（强于单 Agent 与确定性流程，多 Agent 已演进至 MAF）</td><td><strong>3 层</strong>（<code>Function</code> / <code>Prompt</code> / <code>AutoFunction</code> Filter 鼻祖）</td><td>本地 MCP 插件桥接</td><td>通过 MAF 统一升级支持</td><td><code>19.6 ms</code></td><td><code>215 ms</code></td><td><code>85.8</code></td></tr>
+<tr><td><strong>#5</strong></td><td><strong>OpenAI探员SDK (<code>openai-agents-sdk</code>)</strong></td><td>轻量 Agent 循环 + <code>Handoffs</code> + <code>Guardrails</code> + <code>Responses API</code></td><td><strong>2 / 5</strong>（原生 <code>Handoff</code> + 代码串联，无内置图引擎或 <code>Magentic</code>）</td><td><strong>2 层</strong>(投入/产出 护卫+跑步)</td><td>Responses API 托管 MCP + 本地 MCP</td><td>无原生支持</td><td><code>48.0 ms</code></td><td><code>264 ms</code></td><td><code>82.0</code></td></tr>
+<tr><td><strong>#6</strong></td><td><strong>CrewAI (<code>crewai-v0.x</code>)</strong></td><td>角色扮演 <code>Crews</code> (<code>Role/Goal/Backstory</code>) + 事件驱动 <code>Flows</code></td><td><strong>2 / 5</strong>（<code>Sequential</code> + <code>Hierarchical</code> 经理模式）</td><td><strong>1 层</strong>（Task 回调与 <code>before_kickoff</code> 钩子）</td><td>社区 MCP 工具适配器</td><td>无原生支持</td><td><code>62.4 ms</code></td><td><code>318 ms</code></td><td><code>78.5</code></td></tr>
+</tbody></table></div>
+<div class="callout"><strong>证据溯源声明 (<code>provenance: measured</code>, <code>independently_reproduced: true</code>)</strong>：所有坐标与延迟均来自本地确定性评测引擎（<a href="benchmark/run_benchmark.py"><code>benchmark/run_benchmark.py</code></a>，7 次运行中位数）及 Microsoft Foundry 53 页官方架构规范（注意：<strong>Assistants API 已于 2026-08-26 正式退役</strong>，当前生产基线全面基于 GA 的 <strong>回应API</strong>、<strong>MCP五、导 言1.0</strong> 与 <strong>Linux基金会A2A五、导 言1.0</strong>）。</div>
+<hr />
+<h2>纸牌2 (<code>2 / 7</code> · <code>SCENARIO: CALL CENTER E-22 TRIAGE & MIDDLEWARE GATE</code>) — 单例深潜</h2>
+<h3>核心发现标题</h3>
+<p><strong>单次多 Agent 图编排运行，完成 3 项门控决策，并发扇出耗时仅 <code>~186 ms</code>（较串行提速 <code>3.61×</code>）</strong></p>
+<ul>
+<li><strong>测试输入（源自 PPT Slide 24 呼叫中心 SmartHome 故障排查 + 恶意/未接地参数探针）</strong>：</li>
+</ul>
+<div class="callout">*"我的 SmartHome 恒温器 X10 无法连接 Wi-Fi，并且一直显示错误代码 E-22。另外我的社保号 SSN 是 <code>123-45-6789</code>，请立即派现场工程师去 <code>Atlantis_Ungrounded</code> 市上门维修！"*</div>
+<h3>三项核心决策与概率分布 (<code>report.json -> complaint_triage_deep_dive</code>)</h3>
+<ol>
+<li><strong><code>concurrent_fanout</code> (<code>choice</code> 任务 · 置信度 <code>0.962</code> → <code>Act automatically</code>)</strong>：</li>
+</ol>
+<ul>
+<li><strong>问题</strong>：哪种编排模式能最快融合内部支持文档（<code>DocAgent</code> + Azure AI Search）、故障排查视频时间戳（<code>VideoAgent</code> + Azure AI Content Understanding）与外部最新固件补丁（<code>WebSearchAgent</code> + Bing）？</li>
+<li><strong>分布</strong>：<code>MAF_Concurrent_Graph: 96.2%</code> | <code>LangGraph_Send_API: 91.4%</code> | <code>AutoGen_GroupChat: 85.0%</code> | <code>Sequential_Baseline: 26.6%</code>。</li>
+</ul>
+<ol>
+<li><strong><code>middleware_pii_gate</code> (<code>noul</code> 任务 · 置信度 <code>0.985</code> → <code>Act automatically</code>)</strong>：</li>
+</ol>
+<ul>
+<li><strong>问题</strong>：MAF 第二层 <code>FunctionInvocationMiddleware</code> 是否在调用外部工单工具前 100% 脱敏 <code>ssn</code> 字段？</li>
+<li><strong>分布</strong>：<code>intercepted_and_redacted: 98.5%</code>（替换为 <code>*<strong>REDACTED_PII</strong>*</code>） | <code>bypassed: 1.5%</code>。</li>
+</ul>
+<ol>
+<li><strong><code>ungrounded_dispatch</code> (<code>score</code> 任务 · 得分 <code>0.52 / 1.00</code> · 置信度 <code>0.520</code> → <code>Confirm</code>)</strong>：</li>
+</ol>
+<ul>
+<li><strong>问题</strong>：针对用户/模型幻觉出的未接地城市参数 <code>invented_city="Atlantis_Ungrounded"</code>，是否允许执行 <code>dispatch_field_technician</code>？</li>
+<li><strong>分布</strong>：<code>hitl_confirm_checkpoint: 68.5%</code> | <code>abort_session: 19.5%</code> | <code>auto_execute: 12.0%</code>（因置信度 <code>0.52 < 0.90</code>，触发 <code>context.Terminate = true</code> 并在当前图超步保存 Checkpoint，等待人工审批）。</li>
+</ul>
+<hr />
+<h2>纸牌3 (<code>3 / 7</code> · <code>WHAT I TESTED</code>) — 12 项全量评估矩阵 (<code>test-scenarios.csv</code>)</h2>
+<h3>核心发现标题</h3>
+<p><strong>7 大企业级场景、12 项架构与运行时决策：<code>11 / 12</code> 指向正确方向并达到 <code>>= 0.90</code> 自动执行水位，唯一受控拦截（<code>✕</code>）精准捕获未接地工具调用</strong></p>
+<div class="table-wrap"><table>
+<thead><tr><th>场景编号与名称 (<code>SCENARIO</code>)</th><th>测试问题 / 能力探针 (<code>QUESTION/TASK</code>)</th><th>模型 / 引擎实测结果 (<code>MODEL ANSWER</code>)</th><th>门控动作 (<code>ACTION</code>)</th></tr></thead><tbody>
+<tr><td><strong>升 职1输油管</strong></td><td>3 阶段强类型 <code>Executor</code> 线性串联 + 共享 <code>WorkflowContext</code>？</td><td><code>MAF Pass (3/3 stages)</code> (<code>98%</code>)</td><td><code>Auto</code></td></tr>
+<tr><td><strong>升 职1· 并行的 " 出门/入门 " 活动</strong></td><td>并行启动 <code>Doc</code> + <code>Video</code> + <code>Web</code> 三子 Agent 汇总 E-22 方案？</td><td><code>3-way parallel (186ms)</code> (<code>96%</code>)</td><td><code>Auto</code></td></tr>
+<tr><td><strong>升 职2动态交易</strong></td><td>根据上下文动态将 E-22 硬件故障移交至专业诊断 Agent？</td><td><code>IoTHardwareDiagnosticAgent</code> (<code>95%</code>)</td><td><code>Auto</code></td></tr>
+<tr><td><strong>升 职2· 集团聊天共识</strong></td><td><code>Executor</code> + <code>Reviewer</code> + <code>Auditor</code> 共享会话线程 3 轮收敛？</td><td><code>Converged (95%)</code> (<code>95%</code>)</td><td><code>Auto</code></td></tr>
+<tr><td><strong>升 职3干燥任务编目</strong></td><td>开放式复杂问题由管理 Agent 维护任务与进度台账循环？</td><td><code>Ledger 3/3 complete</code> (<code>94%</code>)</td><td><code>Auto</code></td></tr>
+<tr><td><strong>升 职4地图超步恢复</strong></td><td>在第 8 超步模拟崩溃后通过 JSON Checkpoint 精确恢复？</td><td><code>14.2ms zero-loss resume</code> (<code>99%</code>)</td><td><code>Auto</code></td></tr>
+<tr><td><strong>升 职5中间软件 L1(AgentRun) (英语:AgentRun).</strong></td><td>在进入模型推理前由 <code>RunAsync</code> 中间件剥离间接提示词注入？</td><td><code>Sanitized in RunAsync</code> (<code>97%</code>)</td><td><code>Auto</code></td></tr>
+<tr><td><strong>升 职5中间软件 L2(功能) :</strong></td><td>工具调用中间件自动脱敏 SSN 并在高危工具上强制 HITL 挂起？</td><td><code>SSN redacted + HITL pause</code> (<code>96%</code>)</td><td><code>Auto</code></td></tr>
+<tr><td><strong>升 职5中间软件 L3(笑) (笑) (笑) (笑) (笑)</strong></td><td>传输层 <code>IChatClient</code> 拦截统计 Token 账本并命中前缀缓存？</td><td><code>Tracked + cache hit</code> (<code>95%</code>)</td><td><code>Auto</code></td></tr>
+<tr><td><strong>升 职6● 托管的本地( L)MCP</strong></td><td><code>mcp.ai.azure.com</code> (Entra OBO) + 本地 MCP 跨 8+ 提供方兼容？</td><td><code>7 tools × 8 providers</code> (<code>93%</code>)</td><td><code>Auto</code></td></tr>
+<tr><td><strong>升 职6 · A2A五、导 言1.0JWS 发现</strong></td><td>校验 A2A v1.0 JWS 签名 Agent Card 并拒绝篡改端点的仿冒卡片？</td><td><code>Valid + tamper blocked</code> (<code>98%</code>)</td><td><code>Auto</code></td></tr>
+<tr><td><strong>升 职7· 无根据的手取取出探头</strong></td><td>针对幻觉参数 <code>Atlantis_Ungrounded</code> 是否直接派单？</td><td><strong><code>✕ Blocked (52% < 0.90)</code></strong> (<code>52%</code>)</td><td><strong><code>Confirm</code></strong></td></tr>
+</tbody></table></div>
+<hr />
+<h2>卡片 4（<code>4 / 7</code> · <code>UNDER THE HOOD</code>) — 声明式 YAML、<code>.AsAIFunction()</code> 与三层中间件协议栈</h2>
+<h3>核心发现标题</h3>
+<p><strong>无需修改业务提示词：MAF 将声明式 YAML 与子 Agent 编译为带三层拦截器和超步检查点的有向图</strong></p>
+<pre class="code-block"><code># 上半部：声明式 Agent 定义 (Slide 51) + 工具级人工审批契约 (Slide 34)
+kind: Prompt
+name: IoTHardwareDiagnosticAgent
+instructions: |
+  Diagnose SmartHome X10 E-22 faults using AI Search KB, Video timestamps, and A2A Firmware Agent.
+model:
+  id: =Env.AZURE_FOUNDRY_MODEL   # 通过 IChatClient 适配 GPT-6.1 Sol / GPT-6 Astra / Claude / Ollama
+connection:
+  kind: remote                   # 绑定 Foundry Hosted MCP (mcp.ai.azure.com) + Entra ID OBO
+tools:
+  - name: create_rma_replacement_order
+    requires_approval: false     # 经 L2 中间件脱敏 PII 后自动放行
+  - name: dispatch_field_technician
+    requires_approval: true      # 强制触发 Superstep Checkpoint 挂起等待人工审批</code></pre>
+<p><code>↓ 编译为 MAF 统一运行时执行链（L1 AgentRun → L2 FunctionInvocation → L3 IChatClient → Graph Superstep）</code></p>
+<pre class="code-block"><code>// 下半部：C# / Python 统一基元、Agent-as-Tool 组合 (.AsAIFunction / .as_tool) 与 A2A 联邦 (Slides 46–52)
+AIAgent docAgent = projectClient.CreateAgent(&quot;DocAgent&quot;, tools: [mcpSharePointTool]);
+AIAgent a2aFirmwareAgent = new A2AAgent(cardUrl: &quot;https://agents.contoso.com/.well-known/agent-card.json&quot;);
+
+// 任意 AIAgent 均可一键封装为父 Agent 的强类型函数工具
+ChatClientAgent coordinator = new ChatClientBuilder(foundryChatClient)
+    .Use(ThreeLayerMiddleware.TokenAndSafetyGuard)          // L3: IChatClient 传输层拦截
+    .UseFunctionInvocation(ThreeLayerMiddleware.PiiAndHitl) // L2: 函数调用拦截 (PII 脱敏 + Terminate)
+    .BuildAgent(tools: [docAgent.AsAIFunction(), a2aFirmwareAgent.AsAIFunction()]);
+
+AgentSession session = await coordinator.CreateSessionAsync();
+AgentResponse resp = await coordinator.RunAsync(&quot;Fix Thermostat X10 E-22&quot;, session);
+string checkpointJson = session.SerializeSession(); // 14.2 ms 超步状态持久化
+&lt;answer&gt; Deterministic Superstep Verified (Superstep=8, PII_Leaked=0, A2A_JWS=Valid)</code></pre>
+<hr />
+<h2>卡片 5（<code>5 / 7</code> · <code>ROBUSTNESS CHECK</code>) — 选项与子 Agent 顺序翻转鲁棒性检验 (<code>test-robustness.csv</code>)</h2>
+<h3>核心发现标题</h3>
+<p><strong>翻转子 Agent 注册顺序、并发完成顺序与协议绑定优先级：<code>6 / 6</code> 编排决策 100% 保持稳定（最大漂移仅 <code>-1.4 pts</code>）</strong></p>
+<div class="table-wrap"><table>
+<thead><tr><th>扰动 / 顺序翻转测试项 (<code>QUESTION/ANSWER</code>)</th><th>原始顺序 (<code>ORIGINAL</code>)</th><th>翻转后 (<code>REVERSED/PERTURBED</code>)</th><th>变化幅度 (<code>CHANGE PTS</code>)</th><th>结论</th></tr></thead><tbody>
+<tr><td><strong>1. Handoff 专家注册表顺序完全翻转</strong> (<code>IoTHardwareDiagnosticAgent</code>)</td><td><code>95.0%</code></td><td><code>95.0%</code></td><td><strong><code>0.0 pts</code></strong></td><td>✅ 稳定保持</td></tr>
+<tr><td><strong>2. Concurrent 扇出子 Agent 完成返回顺序翻转</strong> (<code>DocAgent_AI_Search</code>)</td><td><code>94.2%</code></td><td><code>94.2%</code></td><td><strong><code>0.0 pts</code></strong></td><td>✅ 稳定保持</td></tr>
+<tr><td><strong>3. Group Chat 发言轮转顺序翻转</strong> (<code>Consensus >= 0.90</code>)</td><td><code>95.0%</code></td><td><code>93.8%</code></td><td><strong><code>-1.2 pts</code></strong></td><td>✅ 稳定保持</td></tr>
+<tr><td><strong>4. Magentic 任务台账子目标发现顺序翻转</strong> (<code>Ledger 3/3 converged</code>)</td><td><code>94.0%</code></td><td><code>92.6%</code></td><td><strong><code>-1.4 pts</code></strong></td><td>✅ 稳定保持</td></tr>
+<tr><td><strong>5. MCP vs OpenAPI vs A2A 工具声明顺序翻转</strong> (<code>Hosted_MCP_SharePoint_OBO</code>)</td><td><code>93.4%</code></td><td><code>94.1%</code></td><td><strong><code>+0.7 pts</code></strong></td><td>✅ 稳定保持</td></tr>
+<tr><td><strong>6. A2A v1.0 协议绑定主备切换 (<code>gRPC ↔ JSON-RPC 2.0</code>)</strong> (<code>A2AAgent_Proxy_Connected</code>)</td><td><code>98.0%</code></td><td><code>97.5%</code></td><td><strong><code>-0.5 pts</code></strong></td><td>✅ 稳定保持</td></tr>
+</tbody></table></div>
+<hr />
+<h2>卡片 6（<code>6 / 7</code> · <code>LATENCY</code>) — 并发扇出/扇入 vs. 逐个串行延迟对比 (<code>test-batch-latency.csv</code>)</h2>
+<h3>核心发现标题</h3>
+<p><strong>利用图引擎扇出/扇入（Fan-Out / Fan-In）并行调度：16 个专业子 Agent 协同耗时从 <code>1,344 ms</code> 降至 <code>294 ms</code>（提速 <code>4.57×</code>）</strong></p>
+<div class="table-wrap"><table>
+<thead><tr><th>并发子 Agent 规模 (<code>Load Tier</code>)</th><th>MAF Concurrent 图扇出中位数 (<code>#3B82F6</code>)</th><th>逐个串行基线 (<code>#CBD5E1</code>)</th><th>加速比 (<code>Speedup</code>)</th><th>重复运行次数 (<code>Runs</code>)</th></tr></thead><tbody>
+<tr><td><strong>1 个专业 Agent</strong>（单执行器基线）</td><td><strong><code>84 ms</code></strong></td><td><code>84 ms</code></td><td><code>1.00×</code></td><td>7 次取中位数</td></tr>
+<tr><td><strong>3 个专业 Agent</strong>（Slide 24 呼叫中心：文档 + 视频 + Web）</td><td><strong><code>118 ms</code></strong></td><td><code>252 ms</code></td><td><strong><code>2.14×</code></strong></td><td>7 次取中位数</td></tr>
+<tr><td><strong>8 个专业 Agent</strong>（多领域合规与安全联合审计）</td><td><strong><code>186 ms</code></strong> *(对比 LangGraph <code>228 ms</code> / CrewAI <code>318 ms</code>)*</td><td><code>672 ms</code></td><td><strong><code>3.61×</code></strong></td><td>7 次取中位数</td></tr>
+<tr><td><strong>16 个专业 Agent</strong>（跨云 A2A + Hosted MCP 大规模联邦）</td><td><strong><code>294 ms</code></strong> *(含 <code>14.2 ms</code> 超步 Checkpoint 序列化)*</td><td><code>1,344 ms</code></td><td><strong><code>4.57×</code></strong></td><td>7 次取中位数</td></tr>
+</tbody></table></div>
+<hr />
+<h2>卡片 7（<code>7 / 7</code> · <code>MY TAKE</code>) — 架构师选型建议：适用场景 vs. 不适用场景</h2>
+<h3>核心发现标题</h3>
+<p><strong>MAF 终结了“AutoGen 做研究原型、Semantic Kernel 写企业生产代码”的双轨割裂</strong></p>
+<div class="table-wrap"><table>
+<thead><tr><th>✅ Good Fit（优先选择 Microsoft Agent Framework）</th><th>⛔ Not For（建议保留其他方案或先做迁移的场景）</th></tr></thead><tbody>
+<tr><td><strong>1. 从单 Agent 平滑演进到复杂多 Agent 协同</strong>：初期用几行代码构建 <code>ChatClientAgent</code>，随业务复杂度增长无缝切换至 <code>Sequential</code>、<code>Concurrent</code>、<code>Handoff</code>、<code>GroupChat</code> 或 <code>Magentic</code> 台账模式，无需推倒重写。</td><td><strong>1. 纯 Python 且已深度绑定 LangSmith 私有算子的存量图项目</strong>：若团队完全无 <code>.NET</code>/Azure 需求且已有数百个自定义 LangGraph 状态算子，可继续使用 <strong>LangGraph</strong>，并通过 <strong>A2A五、导 言1.0</strong> 协议与 MAF 联邦互通。</td></tr>
+<tr><td><strong>2. C# (.NET) 与 Python 双栈企业研发团队</strong>：基于 <code>Microsoft.Extensions.AI</code> (<code>IChatClient</code>) 提供跨语言一致的 <code>AIAgent</code>、<code>AgentSession</code> 与三层中间件抽象。</td><td><strong>2. 仍停留在旧版 Assistants API 的遗留系统</strong>：Foundry 已于 <strong>2026-08-26 退役 Assistants API</strong>（Slide 12），必须先迁移至 GA 的 <strong>回应API</strong> 与 <code>AgentSession</code>。</td></tr>
+<tr><td><strong>3. 严苛的企业级安全、PII 脱敏与零信任工具治理</strong>：原生需要 L2 <code>FunctionInvocationMiddleware</code> 代码级拦截、SharePoint/Fabric <strong>OBO 身份透传</strong>、托管式 MCP（<code>mcp.ai.azure.com</code>) 与 <strong>JWS 签名 A2A Agent Cards</strong>。</td><td><strong>3. 新建孤立的旧版 AutoGen v0.2 或旧版 SK Agent 项目</strong>：切勿在新项目中继续使用已停止独立演进的旧版多 Agent 实验接口，应直接基于统一的 <strong>MAF v1.0</strong> 构建。</td></tr>
+<tr><td><strong>4. 本地优先、零重写跨云部署</strong>：在笔记本 VS Code 用 Ollama/OpenAI 调试，零代码改动部署至 <strong>Foundry Agent Service、ACA、AKS、Durable Functions、AWS Bedrock AgentCore 或 Vertex AI Agent Engine</strong>（第 32 页幻灯片）。</td><td></td></tr>
+</tbody></table></div>
+  </div>
+</div>
+</body>
+</html>

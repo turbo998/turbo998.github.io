@@ -60,7 +60,7 @@ async function main() {
               imagesOk: [...document.images].every(img => img.complete && img.naturalWidth > 0),
               h1: document.querySelectorAll('h1').length,
               bodyScroll: getComputedStyle(document.body).overflowY,
-              links: [...document.querySelectorAll('a')].map(a => a.href),
+              links: [...document.querySelectorAll('a[href]')].map(a => new URL(a.getAttribute('href'), location.href).href),
               untranslated: document.documentElement.lang === 'en' ? [...document.querySelectorAll('main *')].filter(e => !e.children.length && /[\u4e00-\u9fff]/.test(e.textContent)).map(e => e.textContent) : []
             };
           });
@@ -69,15 +69,15 @@ async function main() {
           assert.equal(state.h1, 1, name);
           assert.equal(state.nested, 0, name);
           assert.equal(state.documentWidth, width, name);
-          assert.ok(state.headerHeight <= (width === 390 ? 73 : width === 768 ? 170 : 96), `${name}: primary header reflow`);
+          assert.ok(state.headerHeight <= (width === 390 ? 126 : width === 768 ? 170 : 108), `${name}: primary header reflow`);
           const zh = file.startsWith('zh-');
           assert.deepEqual(state.primary.map(item=>item.label), ['Frontier Transformation Engineering Hub', ...(zh?['基准评测中心','GitHub AI 信号雷达','OpenRouter 模型遥测','首席架构师履历']:['Benchmark & Eval Foundry','GitHub AI Signal Radar','Model Routing & Telemetry','Principal Architect Profile'])], name+': five primary sections');
           assert.equal(state.primary.filter(item=>item.current==='page').length,1,name+': one active primary section');
           assert.equal(state.primary[0].current,'page',name+': Hub is active');
-          assert.equal(state.contextLinks,8,name+': eight contextual tracks');
+          assert.equal(state.contextLinks,9,name+': nine contextual tracks');
           assert.equal(state.oldRows,0,name+': no legacy horizontal rows');
           assert.equal(state.gridColumns,width===390?1:width===768?2:3,name+': responsive card columns');
-          if(!file.includes('infra')) assert.deepEqual(state.hubCards,['infra','commerce','voice','benchmarks','animation','game','security','infra-lab','sa-skills'],name+': nine Hub cards');
+          if(!file.includes('infra')) assert.deepEqual(state.hubCards,['data-infra','infra','commerce','voice','benchmarks','animation','game','security','sa-skills'],name+': nine Hub cards');
           if(file.endsWith('index')) assert.deepEqual(state.telemetry,require('../docs/redesign/hub-telemetry.json').metrics.map(metric=>metric.value),name+': telemetry matches inventory evidence');
           assert.ok(state.imagesOk, `${name}: broken image`);
           assert.ok(!['hidden', 'clip'].includes(state.bodyScroll), `${name}: locked body`);

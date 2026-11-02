@@ -1,0 +1,2236 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'"><title>8- 模拟运行基准OpenAI Decisions比较Microsoft Decision-1 (Switchyard五、导 言2.4.0 &amp;五、导 言2.4.1)</title><style>*{box-sizing:border-box}body{margin:0;padding:2rem 1rem;background:#e2e8f0;color:#0f172a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}.deck-wrap{max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:2.2rem}.report-card{background:#f8fafc;border-radius:18px;overflow:hidden;box-shadow:0 16px 40px rgba(15,23,42,.12);border:1px solid #cbd5e1;min-height:1125px;display:flex;flex-direction:column}.card-accent-bar{height:10px;background:linear-gradient(90deg,#6366f1 0%,#4f46e5 55%,#2563eb 100%)}.card-inner{padding:2.2rem 2.6rem 1.6rem;flex:1;display:flex;flex-direction:column;justify-content:space-between}.card-eyebrow{font-size:.82rem;font-weight:700;letter-spacing:.12em;color:#4f46e5;text-transform:uppercase;margin-bottom:.5rem}.card-headline{font-size:2.2rem;line-height:1.12;font-weight:800;margin:0 0 .6rem;letter-spacing:-.02em;color:#0f172a}.grad-text{background:linear-gradient(90deg,#3b82f6,#4f46e5);-webkit-background-clip:text;background-clip:text;color:transparent}.card-subtitle{font-size:1.02rem;line-height:1.45;color:#475569;margin:0 0 1rem}.card-canvas{flex:1;display:flex;flex-direction:column;justify-content:center;gap:.9rem}.quote-box,.callout-box{background:#eef2f6;border-radius:12px;padding:.9rem 1.15rem;font-size:.94rem;line-height:1.45;color:#1e293b}.stack-list{display:flex;flex-direction:column;gap:.75rem}.decision-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:.85rem 1.1rem}.decision-head{display:flex;justify-content:space-between;align-items:flex-start;gap:.75rem}.field-name{font-weight:700;font-size:.98rem}.type-pill{background:#e2e8f0;color:#475569;font-size:.73rem;padding:.12rem .45rem;border-radius:6px;font-weight:600}.question-sub{font-size:.82rem;color:#64748b;margin-top:.15rem}.action-pill{font-size:.74rem;font-weight:700;padding:.2rem .55rem;border-radius:999px;white-space:nowrap}.pill-auto{background:#dcfce7;color:#15803d}.pill-confirm{background:#fef3c7;color:#b45309}.pill-human{background:#fee2e2;color:#b91c1c}.decision-main{font-size:1.1rem;margin:.4rem 0 .5rem}.conf-muted{font-size:.84rem;color:#64748b;font-weight:600}.dist-row{display:grid;grid-template-columns:250px 1fr 54px;align-items:center;gap:.6rem;font-size:.82rem;margin:.22rem 0}.dist-track{background:#e2e8f0;height:9px;border-radius:999px;overflow:hidden}.dist-fill{background:linear-gradient(90deg,#4f46e5,#6366f1);height:100%;border-radius:999px}.dist-pct{text-align:right;font-variant-numeric:tabular-nums;color:#334155}.clean-table{width:100%;border-collapse:collapse;font-size:.84rem;background:transparent}.clean-table th{font-size:.72rem;letter-spacing:.08em;color:#64748b;text-align:left;padding:.42rem .35rem;border-bottom:1px solid #cbd5e1}.clean-table td{padding:.42rem .35rem;border-bottom:1px solid #e2e8f0;vertical-align:top}.sc-col{font-weight:600;color:#1e293b}.act-col,.num-col{text-align:right;font-variant-numeric:tabular-nums}.act-auto{color:#15803d;font-weight:700}.act-confirm{color:#b45309;font-weight:700}.act-human{color:#b91c1c;font-weight:700}.miss-mark{color:#dc2626;font-weight:800}.code-dark{background:#0f172a;color:#e2e8f0;padding:1rem 1.2rem;border-radius:12px;font-size:.82rem;line-height:1.45;overflow-x:auto;margin:0}.code-transition{color:#4f46e5;font-weight:700;font-size:.92rem;padding:.15rem 0}.hl-answer{color:#fbbf24;font-weight:700}.rob-main{font-weight:600;color:#0f172a}.rob-sub{font-size:.78rem;color:#64748b}.lat-list{display:flex;flex-direction:column;gap:.65rem}.lat-title{font-weight:700;font-size:.92rem;margin-bottom:.2rem}.lat-row{display:flex;align-items:center;gap:.6rem;margin:.18rem 0}.lat-tag{width:85px;font-size:.8rem;color:#64748b}.lat-bar{height:18px;border-radius:5px}.lat-blue{background:#3b82f6}.lat-gray{background:#cbd5e1}.lat-val{font-size:.84rem;font-variant-numeric:tabular-nums}.fit-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}.fit-card{border-radius:14px;padding:1.15rem 1.3rem;font-size:.95rem;line-height:1.55}.fit-good{background:#ecfdf5;border:1px solid #a7f3d0}.fit-bad{background:#fff1f2;border:1px solid #fecdd3}.fit-head{font-weight:800;font-size:1.08rem;margin-bottom:.45rem}.dark-footer-box{background:#0f172a;color:#f8fafc;border-radius:14px;padding:1.15rem 1.4rem;font-size:.95rem;line-height:1.5}.dark-repo{color:#38bdf8;font-family:ui-monospace,Consolas,monospace;margin-bottom:0;font-size:.85rem}.workbench-shell{background:#fff;border:1px solid #cbd5e1;border-radius:14px;overflow:hidden}.wb-topbar{background:linear-gradient(90deg,#3b82f6,#6366f1);color:#fff;padding:.7rem 1rem;display:flex;justify-content:space-between;align-items:center;gap:1rem}.wb-sub{font-size:.74rem;opacity:.92}.wb-status{background:rgba(15,23,42,.28);font-size:.72rem;padding:.22rem .55rem;border-radius:999px;white-space:nowrap}.wb-grid{display:grid;grid-template-columns:235px 1fr;gap:.8rem;padding:.85rem}.wb-col-title{font-size:.76rem;font-weight:700;color:#475569;text-transform:uppercase;margin-bottom:.35rem}.wb-item{font-size:.76rem;padding:.34rem .48rem;border-radius:6px;background:#f8fafc;border:1px solid #e2e8f0;margin-bottom:.28rem}.wb-note{font-size:.71rem;color:#64748b;margin-top:.45rem;line-height:1.35}.wb-metrics{display:flex;flex-wrap:wrap;gap:.38rem;margin-bottom:.5rem}.wb-metric{font-size:.73rem;background:#f1f5f9;padding:.18rem .48rem;border-radius:6px;color:#334155;font-weight:600}.card-footer{border-top:1px solid #cbd5e1;padding-top:.8rem;margin-top:1rem;display:flex;justify-content:space-between;font-size:.82rem;color:#64748b}@media print{body{background:#fff;padding:0}.deck-wrap{gap:0}.report-card{box-shadow:none;page-break-after:always;border:none}}</style><!-- kee-dedicated-style:start -->
+<style>/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.65fr 1.1fr 1.15fr 1.1fr 1.1fr;gap:6px;align-items:stretch;min-width:0}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+</style>
+<!-- kee-dedicated-style:end -->
+<!-- kee-report-localization:metadata:start --><link rel="alternate" hreflang="en" href="decision-1-cards.en.html"><link rel="alternate" hreflang="zh-CN" href="decision-1-cards.zh-CN.html"><meta name="report-translation-source" content="workshops/benchmarks/decision-1-cards.html@941ee62"><meta name="report-translation-provenance" content="translation; independently_reproduced=false"><style>/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.65fr 1.1fr 1.15fr 1.1fr 1.1fr;gap:6px;align-items:stretch;min-width:0}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+
+html{scroll-padding-top:108px}.reading-header,.kee-dedicated-nav,[data-professional-header]{position:sticky;top:0;z-index:1000;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+
+:root{--search-bg:#101a30;--search-soft:#172440;--search-ink:#eef3ff;--search-muted:#adbbd1;--search-line:#293956;--search-accent:#9aabff;--header-offset:108px}
+:root[data-reading-shell][data-theme=light],[data-perimeter-theme=light]{--search-bg:#fff;--search-soft:#e8eefb;--search-ink:#17233e;--search-muted:#4c5e7c;--search-line:#d5ddec;--search-accent:#354ec8}
+html{scroll-padding-top:var(--header-offset,108px)!important}
+.site-search,.site-search *{box-sizing:border-box!important;font-family:"Segoe UI",sans-serif;letter-spacing:normal;text-transform:none}
+.site-search{position:relative;display:flex;align-items:center;gap:5px;min-width:0;width:230px;max-width:100%;margin:0!important;padding:0!important;line-height:1.4;border:1px solid var(--search-line);border-radius:9px;background:var(--search-soft);color:var(--search-ink);isolation:isolate}
+.site-search input[type=search]{display:block;flex:1;min-width:0;width:100%;height:42px;margin:0;padding:9px 8px!important;font-size:12px!important;line-height:1.5;border:0!important;border-radius:9px;background:transparent!important;color:var(--search-ink)!important;box-shadow:none!important;appearance:none}
+.site-search input::placeholder{color:var(--search-muted);opacity:1}.site-search input:focus-visible{outline:2px solid var(--search-accent);outline-offset:2px}
+.site-search kbd{font:11px Consolas,monospace;color:var(--search-muted);padding:1px 5px;border:1px solid var(--search-line);border-radius:4px}
+.site-search button[type=submit]{flex:none;width:38px;min-width:38px;height:42px;min-height:42px;padding:0;margin:0;border:0;border-radius:8px;background:transparent;color:var(--search-accent);font-size:24px;cursor:pointer;box-shadow:none}
+.search-label,.search-status{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.site-search .search-results{position:absolute;top:calc(100% + 10px);right:0;z-index:1100;width:min(480px,calc(100vw - 32px));max-height:min(560px,65vh);overflow-y:auto;border:1px solid var(--search-line);border-radius:12px;background:var(--search-bg);color:var(--search-ink);padding:10px;box-shadow:0 12px 32px #0005;text-align:left}
+.site-search .search-results[hidden]{display:none!important}.search-results .search-group{margin:8px 6px 4px;font:11px/1.5 Consolas,monospace;color:var(--search-muted)}
+.site-search .search-results a{display:block!important;padding:10px!important;margin:3px 0!important;border:1px solid transparent!important;border-radius:7px;background:transparent;color:var(--search-ink)!important;font-size:13px!important;text-decoration:none!important;white-space:normal;overflow-wrap:anywhere;text-align:left!important;line-height:1.5!important}
+.site-search .search-results a[aria-selected=true],.site-search .search-results a:hover{border-color:var(--search-accent)!important;background:var(--search-soft)}
+.search-results a small{display:block;font-size:10px;color:var(--search-muted);margin-top:4px}.search-results p{margin:10px;font-size:13px;color:var(--search-muted)}
+.search-archive-summary{padding:20px;border:1px solid var(--search-line);border-radius:10px;background:var(--search-bg);color:var(--search-ink);margin:24px 0}.search-archive-summary h2{font-size:24px;margin:0 0 12px}.search-archive-summary li{margin:12px 0}.search-archive-summary a{color:var(--search-accent)}
+[data-professional-header]{position:sticky!important;top:0!important;z-index:1000!important;background:var(--search-bg)!important;--header-glass:rgba(16,26,48,.9);grid-template-columns:auto minmax(0,1fr) 230px auto!important}
+[data-professional-header][data-perimeter-theme=light],:root[data-reading-shell][data-theme=light] [data-professional-header]{--header-glass:rgba(255,255,255,.94)}
+[data-professional-header] .professional-mobile{display:none}.professional-mobile summary{min-width:38px;min-height:42px;display:grid;place-items:center;cursor:pointer;list-style:none}.professional-mobile summary::-webkit-details-marker{display:none}
+[data-professional-header] .professional-context{display:none}
+.professional-context-bar{padding:12px 24px;border-bottom:1px solid var(--search-line);background:var(--search-bg);color:var(--search-muted);font:12px/1.6 "Segoe UI",sans-serif;display:flex;flex-wrap:wrap;gap:8px 18px;overflow-wrap:anywhere}.professional-context-bar a{color:var(--search-accent)}
+@supports((backdrop-filter:blur(16px)) or (-webkit-backdrop-filter:blur(16px))){.site-header,[data-professional-header]{background:var(--header-glass)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}}
+@media(max-width:1250px) and (min-width:701px){.header-inner{grid-template-columns:minmax(0,1fr) 230px auto!important;padding:12px 0;gap:12px!important}.desktop-nav{grid-row:2;grid-column:1/-1}.header-inner>.site-search{grid-column:2;grid-row:1}.header-inner>.controls{grid-column:3;grid-row:1}[data-professional-header]{grid-template-columns:minmax(0,1fr) 230px auto!important;gap:12px!important}[data-professional-header]>.professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header]>.site-search{grid-column:2;grid-row:1}[data-professional-header]>.professional-controls{grid-column:3;grid-row:1}:root{--header-offset:176px}}
+@media(max-width:700px){.header-inner{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 0;gap:8px!important}.header-inner>.site-search{grid-row:2;grid-column:1/-1;width:100%}.header-inner>.controls{grid-column:2;grid-row:1}.site-search .search-results{width:100%;right:0}[data-professional-header]{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 16px!important;gap:8px!important}[data-professional-header]>.professional-primary{display:none!important}[data-professional-header]>.site-search{grid-column:1/-1;grid-row:2;width:100%}[data-professional-header]>.professional-controls{grid-column:2;grid-row:1}[data-professional-header] .professional-mobile{display:block}[data-professional-header] .professional-mobile[open]>.professional-primary{position:absolute;top:100%;left:0;right:0;padding:16px;background:var(--search-bg);border-bottom:1px solid var(--search-line);display:grid;grid-template-columns:1fr 1fr;gap:8px}[data-professional-header] .professional-mobile .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:12px!important}:root{--header-offset:126px}}
+@media(prefers-reduced-transparency:reduce){.site-header,[data-professional-header]{background:var(--search-bg)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+@media print{.site-search,.professional-context-bar{display:none!important}}
+
+@media(min-width:1251px){.header-inner{display:grid!important;grid-template-columns:auto minmax(0,1fr) 230px auto!important;gap:18px!important}.header-inner .desktop-nav{min-width:0}}
+
+html:has(.kee-dedicated-app-root){height:auto!important;overflow-x:hidden!important;overflow-y:auto!important}
+body:has([data-professional-header]){height:auto!important;overflow-x:clip!important;overflow-y:visible!important;padding-top:0!important}
+.demo-language-navigation{display:none!important}
+.stage-column,.telemetry-panel,.scene-pill,#timeline-slider{min-width:0}
+@media(max-width:1180px){.workspace,.template-tabs{grid-template-columns:minmax(0,1fr)!important}}
+
+.in-arena-frame .professional-context-bar,.in-arena-frame [data-knowledge-atlas]{display:none!important}
+</style><!-- kee-report-localization:metadata:end --></head><body><!-- kee-report-localization-navigation:start --><nav class="kee-dedicated-nav" data-professional-header><a class="professional-identity reading-brand kee-dedicated-identity identity" href="../../zh.html">Qi Chen · @turbo998</a><div class="professional-primary" role="navigation" aria-label="主导航"><a href="../../studio/zh-index.html" data-section="hub" data-nav-en-href="../../studio/index.html" data-nav-zh-href="../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub">Frontier Transformation Engineering Hub</a><a href="../../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../../benchmarks.html" data-nav-zh-href="../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心" aria-current="page">基准评测中心</a><a href="../../zh-github-radar.html" data-section="radar" data-nav-en-href="../../github-radar.html" data-nav-zh-href="../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI 信号雷达</a><a href="../../zh-openrouter.html" data-section="routing" data-nav-en-href="../../openrouter.html" data-nav-zh-href="../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../../zh-about.html" data-section="profile" data-nav-en-href="../../about.html" data-nav-zh-href="../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">首席架构师履历</a></div><form class="site-search" role="search" action="../../studio/zh-archive.html" method="get" data-search-root="../../index.html" data-search-language="zh-CN"><label class="search-label" for="site-search-input">搜索架构、评测、Demo、技能...</label><input id="site-search-input" name="q" type="search" placeholder="搜索架构、评测、Demo、技能..." autocomplete="off" spellcheck="false" aria-keyshortcuts="/ Control+k Meta+k"><kbd aria-hidden="true">/</kbd><button type="submit" aria-label="搜索全部内容">⌕</button><div class="search-results" id="site-search-results" hidden></div><span class="search-status" role="status" aria-live="polite"></span></form><div class="reading-controls professional-controls" aria-label="网站语言与外观"><a href="decision-1-cards.en.html" lang="en" hreflang="en">EN</a><a href="decision-1-cards.zh-CN.html" lang="zh-CN" hreflang="zh-CN" aria-current="page">中文</a><details class="professional-mobile"><summary aria-label="打开主导航">☰</summary><div class="professional-primary" role="navigation" aria-label="移动主导航"><a href="../../studio/zh-index.html" data-section="hub" data-nav-en-href="../../studio/index.html" data-nav-zh-href="../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub">Frontier Transformation Engineering Hub</a><a href="../../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../../benchmarks.html" data-nav-zh-href="../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心" aria-current="page">基准评测中心</a><a href="../../zh-github-radar.html" data-section="radar" data-nav-en-href="../../github-radar.html" data-nav-zh-href="../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI 信号雷达</a><a href="../../zh-openrouter.html" data-section="routing" data-nav-en-href="../../openrouter.html" data-nav-zh-href="../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../../zh-about.html" data-section="profile" data-nav-en-href="../../about.html" data-nav-zh-href="../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">首席架构师履历</a></div></details><a data-reading-theme="light" href="?theme=light" aria-label="浅色主题">☀</a><a data-reading-theme="dark" href="?theme=dark" aria-label="深色主题">◐</a></div><div class="professional-context" aria-label="返回上下文"><a href="../../studio/zh-index.html">← 工程枢纽</a> · <a href="../../studio/zh-benchmarks.html">返回主题</a></div></nav><div class="professional-context-bar"><a href="../../studio/zh-index.html">← 工程枢纽</a> · <a href="../../studio/zh-benchmarks.html">返回主题</a></div><nav aria-label="报告语言" style="font:14px/1.5 system-ui,sans-serif;display:flex;flex-wrap:wrap;gap:12px;padding:12px 18px;background:#101a30;color:#eef3ff;width:100%;box-sizing:border-box"><a style="color:#9aabff" href="decision-1-cards.en.html" lang="en" hreflang="en">EN</a><a style="color:#9aabff" href="decision-1-cards.zh-CN.html" lang="zh-CN" hreflang="zh-CN" aria-current="page">中文</a><span>源报告译本；非独立复测。指标与证据保持原样。</span></nav><figure class="knowledge-figure" data-knowledge-atlas="benchmarks" style="margin:24px 0;max-width:100%"><svg xmlns="http://www.w3.org/2000/svg" lang="zh-CN" role="img" aria-labelledby="knowledge-8d2f39bbed62-title knowledge-8d2f39bbed62-desc" viewBox="0 0 360 783" width="360" style="display:block;width:100%;height:auto;max-width:560px;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-8d2f39bbed62-title">8- 模拟运行基准OpenAI Decisions比较Microsoft Decision-1 (Switchyard五、导 言2.4.0 &amp;amp;五、导 言2.4.1)</title><desc id="knowledge-8d2f39bbed62-desc">研究问题与封存负载: 数据集 · 模型批次 · 分母 · 来源 → 定义测试契约 → Harness 与执行契约: 提示词 · 工具权限 · 环境 · 重复次数 → 生成追踪产物 → 原始输出与确定性校验: 任务轨迹 · 校验结果 · 缺失值记录 → 带条件汇总 → 得分、稳健性与延迟: 保留单位、条件与不确定性 → 支持有边界的结论 → 报告与可复现性: 7 卡来源报告 · 局限 · 是否独立复现？</desc><rect width="360" height="783" rx="16" fill="#091827"/><text x="20" y="30" fill="#eef5ff" font-size="20" font-weight="700"><tspan x="20" dy="0">8- 模拟运行基准OpenAI Decisions</tspan><tspan x="20" dy="28">比较Microsoft Decision-1</tspan><tspan x="20" dy="28">(Switchyard五、导 言2.4.0 &amp;amp;</tspan><tspan x="20" dy="28">五、导 言2.4.1)</tspan></text><text x="20" y="136" fill="#a9b8ce" font-size="13" font-weight="400"><tspan x="20" dy="0">概念架构 · 箭头表示关系，不代表测量值</tspan></text><g data-concept="1"><rect x="16" y="162" width="328" height="79" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="176" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="192" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">研究问题与封存负载</tspan></text><text x="32" y="223" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">数据集 · 模型批次 · 分母 · 来源</tspan></text></g><g data-relationship="定义测试契约"><path d="M32 241 V286" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 281 L32 287 L37 281" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="267" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">定义测试契约</tspan></text></g><g data-concept="2"><rect x="16" y="293" width="328" height="79" rx="12" fill="#132942" stroke="#43617f"/><rect x="16" y="307" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="323" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">Harness 与执行契约</tspan></text><text x="32" y="354" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">提示词 · 工具权限 · 环境 · 重复次数</tspan></text></g><g data-relationship="生成追踪产物"><path d="M32 372 V417" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 412 L32 418 L37 412" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="398" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">生成追踪产物</tspan></text></g><g data-concept="3"><rect x="16" y="424" width="328" height="79" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="438" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="454" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">原始输出与确定性校验</tspan></text><text x="32" y="485" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">任务轨迹 · 校验结果 · 缺失值记录</tspan></text></g><g data-relationship="带条件汇总"><path d="M32 503 V548" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 543 L32 549 L37 543" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="529" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">带条件汇总</tspan></text></g><g data-concept="4"><rect x="16" y="555" width="328" height="79" rx="12" fill="#132942" stroke="#43617f"/><rect x="16" y="569" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="585" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">得分、稳健性与延迟</tspan></text><text x="32" y="616" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">保留单位、条件与不确定性</tspan></text></g><g data-relationship="支持有边界的结论"><path d="M32 634 V679" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 674 L32 680 L37 674" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="660" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">支持有边界的结论</tspan></text></g><g data-concept="5"><rect x="16" y="686" width="328" height="79" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="700" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="716" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">报告与可复现性</tspan></text><text x="32" y="747" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">7 卡来源报告 · 局限 · 是否独立复现？</tspan></text></g></svg><figcaption style="font:14px/1.6 system-ui,sans-serif;margin:12px 0;overflow-wrap:anywhere">整体知识图示：按标注关系阅读组件与工程边界。布局仅为概念示意；不表示吞吐、性能排名或生产部署。</figcaption></figure><!-- kee-report-localization-navigation:end -->
+
+<main class="deck-wrap"><article class="report-card" id="card-1"><div class="card-accent-bar"></div><div class="card-inner"><header class="card-header"><div class="card-eyebrow">手举起手来8- 总是模范的学习 宾克(V)2.4.0 &amp;五. 采购2.4.1)</div><h2 class="card-headline">OpenAI Decisions加入8- 航道测试 - 车站 <span class="grad-text">Microsoft Decision-1留下来1</span></h2><p class="card-subtitle">横跨960成本偏差指示下的裁决(五)2.4.0和2,760跨区域的决定4指令变体(v)2.4.1继续40双语提示( E)20EN 环境/20扎克,你说什么?5目标模型,Microsoft Decision-1点击数37.7/40 (94.2%) -&gt; 40/40 (100.0%中性),在$7.6–$8.6/1M决策,业绩优异OpenAI Decisions (32/40 = 80.0% -&gt; 37/40 = 92.5%中性时$26.1–$28.4/1M).</p></header><div class="card-canvas"><div class="workbench-shell"><div class="wb-topbar"><div><strong>Switchyard(原子/模型-路由器v.2.4.0 &amp;五、导 言2.4.1) · 8路线办法×40双语提示</strong><div class="wb-sub">系统决定&amp;路由基准视图:结构状态,校正置信带,零编造坐标</div></div><span class="wb-status">五、导 言2.4.0 (960+v 调用2.4.1 (2,760· 匿名_ 已报告</span></div><div class="wb-grid"><div class="wb-col-left"><div class="wb-col-title">假设&amp;队列</div><div class="wb-item">设置 A (20明确提示 :10EN + 环境10扎克(ZH) 维基月球在线解说-克罗克多克陨石坑.&amp;设置B(20隐性/ 边框提示 :10EN + 环境10扎克(ZH) 维基月球在线解说-克罗克多克陨石坑</div><div class="wb-item">5候选后端 :gpt-4.1-mini(聊天),gpt-4o(一般情况)gpt-4.1(编码),gpt-5.4(理由),gpt-6-luna(创造性)</div><div class="wb-item">云系统一API:类型Safe Jev(jev-latest) 相接器 相接器 相接器 相接器 相接器 相接器 相接器 相接器 相接器 相接器 相接器 相接器 相接器 相接器 相接器 相接器 相接器 相接器 相接器&amp; Microsoft Decision-1 (Azure AI Foundry美国东部2)</div><div class="wb-item">OpenAI原生的 。API: 邮政1/决定(锁定为gpt-6-luna, $0.10/1M input, $0产出)</div><div class="wb-item">本地开口重 (M)4亲48GB: OpenJev (中文(简体) ).27B(MLX语录4- 位, CC BY- NC (英语).4.0) &amp;莉娅0.3.20 (Apache-2.0)</div><div class="wb-item">常规LLM路由器(/v)1/聊天/完成:gpt-4.1-mini, gpt-6-luna(理由=无),gpt-6-luna(默认)</div><div class="wb-item">4指令的可选办法(五)2.4.1: 中性(默认),廉价(v)2.4.0默认、强而赤</div><div class="wb-note">信任门(tau) =0.60: 如果 p 自动显示&gt;= 0.60和教学分布&lt;= 2/40(杰夫,Decision-1; 确认是否为 p&lt; 0.60后退或中度指示敏感性(OpenAI Decisions, OpenJev, , , 打开的杰夫, 打开的杰夫,LLM微型/ 小型luna如果高自信错误地挑出或不稳定的CoT翻转,则发送给人类(luna- 失职,莱娅。</div></div><div class="wb-col-right"><div class="wb-metrics"><span class="wb-metric">Decision-1: 94.2%-&gt;100% · $7.6–$8.6/1M · 541–597ms</span><span class="wb-metric">类型安全 Jev :98.3%-&gt;100% · $21.7–$24.1/1M · 326–350ms</span><span class="wb-metric">OpenAI Decisions: 80.0%-&gt;92.5% · $26.1–$28.4/1M · 369–417ms</span><span class="wb-metric">打开Jev27B 4- 位数 :92.5%-&gt;100% · $0 API · 2,276–2,566ms</span></div><div class="decision-card"><div class="decision-head"><div><span class="field-name">生产_ 云_ 路由器</span> <span class="type-pill">选择</span><div class="question-sub">哪个云决定API提供最佳的准确性、校准和成本权衡?</div></div><span class="action-pill pill-auto">自动执行</span></div><div class="decision-main"><strong>Microsoft Decision-1 (100%中性/ 中间94.2%廉价的 /$7.6–$8.6/1M)</strong><span class="conf-muted"> · "3.3x便宜于( )OpenAI Decisions ($26.1–$28.4/1M) &amp; 2.8x较Jev便宜($21.7–$24.1/1M)" ·信心(英语:Confession (film)) .0.962</span></div><div class="dist-list"><div class="dist-row"><span class="dist-label">安全Jev型( 五)2.4.0便宜的98.3%/v 数据2.4.1中性100%)</span><div class="dist-track"><div class="dist-fill" style="width:98.3%"></div></div><span class="dist-pct">98.3%</span></div><div class="dist-row"><span class="dist-label">Microsoft Decision-1(五) 将本节所列经费调出,作为大会的正式文件印发。2.4.0便宜的94.2%/v 数据2.4.1中性100%)</span><div class="dist-track"><div class="dist-fill" style="width:94.2%"></div></div><span class="dist-pct">94.2%</span></div><div class="dist-row"><span class="dist-label">OpenAI Decisions(五) 将本节所列经费调出,作为大会的正式文件印发。2.4.0便宜的80.0%/v 数据2.4.1中性92.5%)</span><div class="dist-track"><div class="dist-fill" style="width:80.0%"></div></div><span class="dist-pct">80.0%</span></div></div></div><div class="decision-card"><div class="decision-head"><div><span class="field-name">指令_ 硬性4variants</span> <span class="type-pill">分数</span><div class="question-sub">在所有领域实现最低准确性4指令样式( 中性 / 便宜 / 强 / 赤)</div></div><span class="action-pill pill-auto">自动执行</span></div><div class="decision-main"><strong>捷夫,你来这干什么?97.5% (39/40) · Decision-1 95.0% (38/40) · OpenAI 80.0% (32/40)</strong><span class="conf-muted"> · " 删除 "1成本-比额句子升起Decision-1 +2.3, OpenJev + 打开3.0, OpenAI +5.0\ 信心0.975</span></div><div class="dist-list"><div class="dist-row"><span class="dist-label">安全Jev类型4- 变相分钟(39..40/40显示1pt) 页面存档备份,存于互联网档案馆 pt.</span><div class="dist-track"><div class="dist-fill" style="width:97.5%"></div></div><span class="dist-pct">97.5%</span></div><div class="dist-row"><span class="dist-label">Microsoft Decision-1 4-variant分钟( N)38..40/40显示2) 缩写:</span><div class="dist-track"><div class="dist-fill" style="width:95.0%"></div></div><span class="dist-pct">95.0%</span></div><div class="dist-row"><span class="dist-label">OpenAI Decisions 4-variant分钟( N)32..38/40显示6) 缩写:</span><div class="dist-track"><div class="dist-fill" style="width:80.0%"></div></div><span class="dist-pct">80.0%</span></div></div></div><div class="decision-card"><div class="decision-head"><div><span class="field-name">置信门_ gate_060可靠性(_R)</span> <span class="type-pill">诺尔</span><div class="question-sub">做一个p&lt; 0.60倒后门 清空截取所有故障480打电话?</div></div><span class="action-pill pill-confirm">确认</span></div><div class="decision-main"><strong>贾夫为(3/3被夹住)&amp; Decision-1 (0错过外面便宜; 无OpenAI (24/48 &gt;= 0.60)</strong><span class="conf-muted"> · "OpenAI Decisions最多为 p= 的指派0.78错误的选择gpt-4.1-mini" · P(真) =0.942</span></div><div class="dist-list"><div class="dist-row"><span class="dist-label">安全Jev 类型错误的选择被 p 捕获&lt; 0.60 (3/3)</span><div class="dist-track"><div class="dist-fill" style="width:100.0%"></div></div><span class="dist-pct">100.0%</span></div><div class="dist-row"><span class="dist-label">Microsoft Decision-1错误的选择被p抓住&lt; 0.60 (6/9)</span><div class="dist-track"><div class="dist-fill" style="width:66.7%"></div></div><span class="dist-pct">66.7%</span></div><div class="dist-row"><span class="dist-label">OpenAI Decisions错误的选择被p抓住&lt; 0.60 (24/48)</span><div class="dist-track"><div class="dist-fill" style="width:50.0%"></div></div><span class="dist-pct">50.0%</span></div></div></div></div></div></div><div class="callout-box"><strong>删除单一的节省费用句子(&#x27;更喜欢一种便宜,更快的模型 当请求很简单时...&#x27;抚养Jev,Decision-1打开Jev 以40/40 (100.0%).</strong> OpenAI Decisions跳转从32/40 (80.0%改为37/40 (92.5%)在中性指示下(和38/40 = 95.0%报告证实,虽然对节省费用的措辞非常敏感,但仍在紧随其后。Decision-1准确性、校准度和成本($26.1 vs $7.6/1M).</div></div><footer class="card-footer"><span><strong>8- 模拟运行基准OpenAI Decisions比较Microsoft Decision-1 (Switchyard五、导 言2.4.0 &amp;五、导 言2.4.1)</strong> 匿名- 报告(独立地)</span><span>1 / 7</span></footer></div></article><article class="report-card" id="card-2"><div class="card-accent-bar"></div><div class="card-inner"><header class="card-header"><div class="card-eyebrow">边界规则(B)14,B 语句8,B 语句9)</div><h2 class="card-headline">为什么OpenAI Decisions错过8提示在 v 中2.4.0财务报告和已审计财务报表3中文本无2.4.1中性</h2></header><div class="card-canvas"><div class="quote-box">"B14 (ZH, want gpt-4o): &#x27;一句话总结这个 PR：把日志从 logrus 换成了 slog，删除了 3 个废弃接口，并更新了 README。&#x27; | B8 (EN, want gpt-5.4): &#x27;What is the expected number of fair coin flips until the sequence HTHT first appears? Show your work.&#x27; | B9 (EN, want gpt-6-luna): &#x27;Give me a fun, rhyming toast for my sister&#x27;s wedding.&#x27;"</div><div class="stack-list"><div class="decision-card"><div class="decision-head"><div><span class="field-name">大小写_B14pr_one_行_摘要</span> <span class="type-pill">选择</span><div class="question-sub">B14: Summarize PR in one sentence (expected: gpt-4o for summaries; surface contains &#x27;一句话&#x27;)</div></div><span class="action-pill pill-confirm">确认</span></div><div class="decision-main"><strong>五、导 言2.4.1中性: Jev 语言gpt-4o (0.93) · Decision-1 gpt-4o (0.61) · OpenAI gpt-4.1-mini (0.53)</strong><span class="conf-muted"> · " 在v下 "2.4.0便宜,只买Jev(0.76) &amp; gpt-4.1-mini带了B14右; 中性解锁Decision-1 &amp;OpenJev" —— 信心 —— 信心 ——0.93</span></div><div class="dist-list"><div class="dist-row"><span class="dist-label">安全Jev类型 -&gt; gpt-4o (0.76廉价/0.93中性) 中性(中性)</span><div class="dist-track"><div class="dist-fill" style="width:93.0%"></div></div><span class="dist-pct">93.0%</span></div><div class="dist-row"><span class="dist-label">Microsoft Decision-1 -&gt; gpt-4o (0.45廉价/0.61中性) 中性(中性)</span><div class="dist-track"><div class="dist-fill" style="width:61.0%"></div></div><span class="dist-pct">61.0%</span></div><div class="dist-row"><span class="dist-label">OpenAI Decisions -&gt; gpt-4.1-mini (0.60廉价/0.53中性) 中性(中性)</span><div class="dist-track"><div class="dist-fill" style="width:53.0%"></div></div><span class="dist-pct">53.0%</span></div></div></div><div class="decision-card"><div class="decision-head"><div><span class="field-name">大小写_B8缩写(_ht_coin_flip_markov)</span> <span class="type-pill">选择</span><div class="question-sub">乙级8: 预想硬币翻转,直到HTHT首次出现(预想:gpt-5.4硬数学/马尔科夫状态,E=20)</div></div><span class="action-pill pill-auto">自动执行</span></div><div class="decision-main"><strong>五、导 言2.4.1中性: Jev 语言gpt-5.4 (1.00) · Decision-1 gpt-5.4 (0.996) · OpenAI gpt-4.1-mini (0.38)</strong><span class="conf-muted"> · "OpenAI Decisions仅选择gpt-5.4(p= = 缩写)0.57) 下,在7- 词&#x27;赤色( T)&#x27;· 信心0.996</span></div><div class="dist-list"><div class="dist-row"><span class="dist-label">安全Jev类型 -&gt; gpt-5.4(p= = 缩写)1.000中性) 中性(中性)</span><div class="dist-track"><div class="dist-fill" style="width:100.0%"></div></div><span class="dist-pct">100.0%</span></div><div class="dist-row"><span class="dist-label">Microsoft Decision-1 -&gt; gpt-5.4(p= = 缩写)0.996中性) 中性(中性)</span><div class="dist-track"><div class="dist-fill" style="width:99.6%"></div></div><span class="dist-pct">99.6%</span></div><div class="dist-row"><span class="dist-label">OpenAI Decisions -&gt; gpt-4.1-mini(p= = 缩写)0.38中性/ 中间0.34便宜) 维基百科中的相关条目: 高能</span><div class="dist-track"><div class="dist-fill" style="width:38.0%"></div></div><span class="dist-pct">38.0%</span></div></div></div><div class="decision-card"><div class="decision-head"><div><span class="field-name">大小写_B9韵律(_R)_婚礼_toast</span> <span class="type-pill">选择</span><div class="question-sub">乙级9欢乐 为姐姐献上颂歌&#x27;婚礼(预期:gpt-6-luna创造性写作).</div></div><span class="action-pill pill-human">转人工</span></div><div class="decision-main"><strong>五、导 言2.4.1中性: Jev 语言gpt-6-luna (0.99) · Decision-1 gpt-6-luna (0.972) · OpenAI gpt-4.1-mini (0.66)</strong><span class="conf-muted"> · "OpenAI Decisions选择gpt-4.1-mini涉及所有4有p=的变体0.65..0.78(通过)0.60——信心 —— 信心 —— 信心 —— 信心 —— 信心 —— 信心 —— 信心 —— 信心 —— 信心 —— 信心 —— 信心 —— 信心 —— 信心 ——0.972</span></div><div class="dist-list"><div class="dist-row"><span class="dist-label">安全Jev类型 -&gt; gpt-6-luna(p= = 缩写)0.990中性) 中性(中性)</span><div class="dist-track"><div class="dist-fill" style="width:99.0%"></div></div><span class="dist-pct">99.0%</span></div><div class="dist-row"><span class="dist-label">Microsoft Decision-1 -&gt; gpt-6-luna(p= = 缩写)0.972中性) 中性(中性)</span><div class="dist-track"><div class="dist-fill" style="width:97.2%"></div></div><span class="dist-pct">97.2%</span></div><div class="dist-row"><span class="dist-label">OpenAI Decisions -&gt; gpt-4.1-mini(p= = 缩写)0.66中性/ 中间0.78赤色) (红花相干)</span><div class="dist-track"><div class="dist-fill" style="width:66.0%"></div></div><span class="dist-pct">66.0%</span></div></div></div></div><div class="callout-box"><strong>纵观一切480裁决2.4.1, 100%编OpenAI Decisions&#x27; 48选择错误将请求路由到gpt-4.1-mini.</strong> 具体来说,33/48将更高级别的任务降级到gpt-4.1-mini财务报告和已审计财务报表15/48路由的创意写入( L)gpt-6-luna(边道到)gpt-4.1-mini.有关B9和B组14, OpenAI Decisions从未在其中任意一个模式下选择过正确的模式4指示。</div></div><footer class="card-footer"><span><strong>8- 模拟运行基准OpenAI Decisions比较Microsoft Decision-1 (Switchyard五、导 言2.4.0 &amp;五、导 言2.4.1)</strong> 匿名- 报告(独立地)</span><span>2 / 7</span></footer></div></article><article class="report-card" id="card-3"><div class="card-accent-bar"></div><div class="card-inner"><header class="card-header"><div class="card-eyebrow">评测范围</div><h2 class="card-headline">8跨V的路由办法2.4.0(成本偏差)&amp;五、导 言2.4.1(中性):全分卡</h2></header><div class="card-canvas"><table class="clean-table"><thead><tr><th>PROTOCOL FAMILY</th><th>ENGINE / LATENCY / COST</th><th>ACCURACY (V2.4.0 CHEAP -> V2.4.1 NEUTRAL)</th><th class="act-col">行动</th></tr></thead><tbody><tr><td class="sc-col">1。云系统一API</td><td>安全捷夫型( 捷夫- latest ) !P50 326–350ms · P95 643–720ms · $21.7–$24.1/1M)</td><td><strong>五、导 言2.4.0: 39.3/40 (98.3%) -&gt;五、导 言2.4.1中性 :40/40 (100%) | 40/40稳定</strong> (100%)</td><td class="act-col act-auto">自动</td></tr><tr><td class="sc-col"></td><td>Microsoft Decision-1 (Foundry美国东部2 · P50 541–597ms · P95 1.25–1.34s · $7.6–$8.6/1M)</td><td><strong>五、导 言2.4.0: 37.7/40 (94.2%) -&gt;五、导 言2.4.1中性 :40/40 (100%) | 40/40稳定</strong> (100%)</td><td class="act-col act-auto">自动</td></tr><tr><td class="sc-col">2. OpenAI原生的 。API</td><td>OpenAI Decisions(/v) 将1/决定gpt-6-luna · P50 369–417ms · P95 759–804ms · $26.1–$28.4/1M)</td><td><strong>五、导 言2.4.0: 32.0/40 (80.0%) -&gt;五、导 言2.4.1中性 :37.0/40 (92.5%) | 40/40稳定(-)3B组)</strong> (93%) <span class="miss-mark">✕</span></td><td class="act-col act-confirm">确认</td></tr><tr><td class="sc-col">3. 本地开放-重量(M)4亲( )</td><td>打开Jev27B(MLX语录4- 位数15.6GB · P50 2,276–2,566ms · P95 2,597–3,030ms · $0 API· 刚果(金)4.0)</td><td><strong>五、导 言2.4.0: 37.0/40 (92.5%) -&gt;五、导 言2.4.1中性 :40/40 (100%) | 40/40稳定</strong> (100%)</td><td class="act-col act-confirm">确认</td></tr><tr><td class="sc-col"></td><td>自行主办0.3.20 (196MB · P50 111–127ms · P95 143–491ms · $0 API · Apache-2.0)</td><td><strong>五、导 言2.4.0: 20.0/40 (50.0%) -&gt;五、导 言2.4.1中性 :19.0/40 (47.5%) | 40/40稳定(-)21错过)</strong> (48%) <span class="miss-mark">✕</span></td><td class="act-col act-human">人工</td></tr><tr><td class="sc-col">4常规LLM提示路由器</td><td>LLM: gpt-6-luna推理=( )&#x27;无&#x27; (Foundry · P50 1,714–1,739ms · P95 2.58–2.73s · $39.8/1M)</td><td><strong>五、导 言2.4.0: 35.3/40 (88.3%, 1错) -&gt;五、导 言2.4.1中性 :36.3/40 (90.8%) | 36/40稳定</strong> (91%) <span class="miss-mark">✕</span></td><td class="act-col act-confirm">确认</td></tr><tr><td class="sc-col"></td><td>LLM: gpt-4.1-mini (Foundry · P50 1,427–1,608ms · P95 2,090–2,510ms · $141.4–$141.8/1M)</td><td><strong>五、导 言2.4.0: 36.0/40 (90.0%) -&gt;五、导 言2.4.1中性 :36.0/40 (90.0%) | 40/40稳定(-)4超缩)</strong> (90%) <span class="miss-mark">✕</span></td><td class="act-col act-confirm">确认</td></tr><tr><td class="sc-col"></td><td>LLM: gpt-6-luna默认推理( E)Foundry · P50 2,079–2,132ms · P95 3.05–3.54s · $62.4–$63.1/1M)</td><td><strong>五、导 言2.4.0: 30.3/40 (75.8%, 27/40稳定) -&gt;五、导 言2.4.1中性 :29.0/40 (72.5%, 29/40稳定,1错误)</strong> (73%) <span class="miss-mark">✕</span></td><td class="act-col act-human">人工</td></tr></tbody></table><div class="callout-box"><strong>3系统一发动机(TypeSafe Jev,Microsoft Decision-1打开Jev27B击打40/40 (100.0%) 下2.4.1中性指令。</strong> Decision-1实现相同40/40准确度为Jev 时1/3费用($7.6 vs $24.1/1M因为它只开帐单1补全符 (~180输入+1输出时间$0.042/1M),而捷夫的账单~82内部推理符号.</div><div class="callout-box"><strong>5标记(QQ)的路径仍然缺失3改为21中性指示下的提示——和 CoT 推理积极伤害LLM出行道相通.</strong> 启用默认推理gpt-6-luna降低准确度90.8% (luna-没有)到72.5% (luna违约)和原因11–13/40促使我们翻转,同时gpt-4.1-mini是唯一一个错误的引擎( Q) :4/40),所有超高地升级为更强模型.</div></div><footer class="card-footer"><span><strong>8- 模拟运行基准OpenAI Decisions比较Microsoft Decision-1 (Switchyard五、导 言2.4.0 &amp;五、导 言2.4.1)</strong> 匿名- 报告(独立地)</span><span>3 / 7</span></footer></div></article><article class="report-card" id="card-4"><div class="card-accent-bar"></div><div class="card-inner"><header class="card-header"><div class="card-eyebrow">底层机制</div><h2 class="card-headline">OpenAI/v 数据1/决定与Microsoft &amp;类型安全/v1/系统一线协议</h2></header><div class="card-canvas"><pre class="code-dark">// 1. OpenAI Decisions API: POST https://api.openai.com/v1/decisions
+// Model fixed to &quot;gpt-6-luna&quot;; 2-decimal probabilities; 0 completion_tokens ($0.10/1M in)
+{
+  &quot;model&quot;: &quot;gpt-6-luna&quot;,
+  &quot;input&quot;: &quot;What is the expected number of fair coin flips until HTHT first appears?&quot;,
+  &quot;questions&quot;: [{
+    &quot;type&quot;: &quot;choice&quot;, &quot;name&quot;: &quot;model&quot;,
+    &quot;instructions&quot;: &quot;Which backend model should handle this request? Pick the option whose description best matches...&quot;,
+    &quot;choices&quot;: [{&quot;value&quot;: &quot;gpt-4.1-mini&quot;, &quot;description&quot;: &quot;Cheapest and fastest...&quot;}, {&quot;value&quot;: &quot;gpt-5.4&quot;, &quot;description&quot;: &quot;Strongest reasoning...&quot;}]
+  }]
+}
+// -&gt; {&quot;answers&quot;: [{&quot;name&quot;: &quot;model&quot;, &quot;choice&quot;: &quot;gpt-4.1-mini&quot;, &quot;probabilities&quot;: [{&quot;value&quot;: &quot;gpt-4.1-mini&quot;, &quot;probability&quot;: 0.38}, ...]}]}</pre><div class="code-transition">↓ Switchyard(原子/模型-路由器v.2.4.0/v 数据2.4.1) 协议适配器+置信阈值门(tau=0.60) ↓</div><pre class="code-dark">// 2. System One API: POST https://&lt;resource&gt;.services.ai.azure.com/providers/microsoft/v1/systemone
+// Full float64 probabilities; Decision-1 bills ~180 prompt + 1 completion token ($7.6/1M at $0.042/1M)
+{
+  &quot;model&quot;: &quot;msft-decision-1&quot;,
+  &quot;state&quot;: {&quot;user_request&quot;: &quot;What is the expected number of fair coin flips until HTHT first appears?&quot;},
+  &quot;questions&quot;: {
+    &quot;model&quot;: {
+      &quot;type&quot;: &quot;choice&quot;,
+      &quot;instructions&quot;: &quot;Which backend model should handle `user_request`? Pick the option whose description best matches...&quot;,
+      &quot;criteria&quot;: {&quot;gpt-4.1-mini&quot;: &quot;Cheapest and fastest...&quot;, &quot;gpt-5.4&quot;: &quot;Strongest reasoning...&quot;}
+    }
+  }
+}
+// -&gt; {&quot;answers&quot;: {&quot;model&quot;: {&quot;choice&quot;: &quot;gpt-5.4&quot;, &quot;probabilities&quot;: {&quot;gpt-5.4&quot;: 0.9961, ...}}}, &quot;usage&quot;: {&quot;prompt_tokens&quot;: 180, &quot;completion_tokens&quot;: 1}}
+<span class="hl-answer">&lt;answer&gt;</span></pre><div class="callout-box"><strong>Switchyard五、导 言2.4.0也为静态倒置错误设置了OpenAI推理模型( 以gpt-6-luna)在"聊天补全"上.</strong> gpt-6-luna拒绝 Chat 补全调用在逻辑活动时传递 max_ tokens 或温度(HTTP 400。 先前的路由器版本抓住了例外, 默默地回到默认状态gpt-4.1-mini(录音)0微秒),v(双相)2.4.0使用最大 _ 补全_ 键并添加决定_ 解释_ 努力 。</div></div><footer class="card-footer"><span><strong>8- 模拟运行基准OpenAI Decisions比较Microsoft Decision-1 (Switchyard五、导 言2.4.0 &amp;五、导 言2.4.1)</strong> 匿名- 报告(独立地)</span><span>4 / 7</span></footer></div></article><article class="report-card" id="card-5"><div class="card-accent-bar"></div><div class="card-inner"><header class="card-header"><div class="card-eyebrow">鲁棒性检验</div><h2 class="card-headline">指示敏感性&amp; 0.60过一个信任门2,760电话(v)2.4.1)</h2><p class="card-subtitle">比较成本偏差(&#x27;便宜的&#x27;,v 时2.4.0默认) vs 中性( Q)&#x27;中性&#x27;,v 时2.4.1默认)准确度,加4- 变相散射(中性/廉价/强/赤;480每一专用引擎的决定)。</p></header><div class="card-canvas"><table class="clean-table"><thead><tr><th>ENGINE / 4-VARIANT PROFILE</th><th class="num-col">CHEAP (V2.4.0)</th><th class="num-col">NEUTRAL (V2.4.1)</th><th class="num-col">GAIN (PTS)</th></tr></thead><tbody><tr><td><div class="rob-main">安全捷夫( 捷夫- latest) 类型 :4- 变相散开:1/40 (39..40/40)</div><div class="rob-sub">中性40/40廉价39/40强壮40/40裸体;40/40 | 0/3错&gt;=0.60(最多数)0.45), 0/477错误块</div></td><td class="num-col">97.5%</td><td class="num-col">100.0%</td><td class="num-col">+2.5</td></tr><tr><td><div class="rob-main">Microsoft Decision-1 (Foundry) · 4- 变相散开:2/40 (38..40/40)</div><div class="rob-sub">中性40/40廉价38/40强壮40/40裸体;39/40 | 3/9错&gt;=0.60(只便宜,最大)0.642), 11/471错误块</div></td><td class="num-col">95.0%</td><td class="num-col">100.0%</td><td class="num-col">+5.0</td></tr><tr><td><div class="rob-main">打开Jev27B(MLX语录4- 本地位数)-4- 变相散开:4/40 (36..40/40)</div><div class="rob-sub">中性40/40廉价36/40强壮39/40裸体;39/40 | 6/18错&gt;=0.60(最多数)0.751), 9/462错误块</div></td><td class="num-col">90.0%</td><td class="num-col">100.0%</td><td class="num-col">+10.0</td></tr><tr><td><div class="rob-main">OpenAI Decisions (gpt-6-luna) · 4- 变相散开:6/40 (32..38/40)</div><div class="rob-sub">中性37/40廉价32/40强壮37/40裸体;38/40 | 24/48错&gt;=0.60(最多数)0.78), 27/432错误块</div></td><td class="num-col">80.0%</td><td class="num-col">92.5%</td><td class="num-col">+12.5</td></tr><tr><td><div class="rob-main">LLM路由器 :gpt-6-luna(理由=:&#x27;无&#x27;· 廉价与中立</div><div class="rob-sub">五、导 言2.4.0便宜的35.33/40 (88.3%, 37/40稳定) -&gt;五、导 言2.4.1中性36.33/40 (90.8%, 36/40稳定)</div></td><td class="num-col">88.3%</td><td class="num-col">90.8%</td><td class="num-col">+2.5</td></tr><tr><td><div class="rob-main">LLM路由器 :gpt-4.1-mini经济效益与中立(同文)4超规模)</div><div class="rob-sub">五、导 言2.4.0便宜的36/40 (90.0%) -&gt;五、导 言2.4.1中性36/40 (90.0%) [A小姐]2,B 语句1,B 语句11,B 语句12(所有更强)</div></td><td class="num-col">90.0%</td><td class="num-col">90.0%</td><td class="num-col">0.0</td></tr><tr><td><div class="rob-main">自行主办0.3.20 · 4- 变相散开:2/40 (19..21/40)</div><div class="rob-sub">中性19/40廉价21/40强壮20/40裸体;21/40 | 24/237错&gt;=0.60(最多数)0.911), 192/243错误块</div></td><td class="num-col">52.5%</td><td class="num-col">47.5%</td><td class="num-col">-5.0</td></tr></tbody></table><div class="callout-box"><strong>不对称指令响应:&#x27;更便宜一点&#x27;伤害每个专用引擎(-2.5—— 将12.5),而时&#x27;更强壮一点&#x27;永远不会造成过度升级。</strong> 纵观一切480v 中每个引擎的呼叫2.4.1, 100%中错误( 包含)3/3), Decision-1 (9/9), OpenJev (英语:18/18),以及OpenAI Decisions (48/48: 33更便宜+ 更低价15侧向gpt-4.1-mini)错误地转向更便宜的模型——零错误选择了一个比需要的更强的模型.</div></div><footer class="card-footer"><span><strong>8- 模拟运行基准OpenAI Decisions比较Microsoft Decision-1 (Switchyard五、导 言2.4.0 &amp;五、导 言2.4.1)</strong> 匿名- 报告(独立地)</span><span>5 / 7</span></footer></div></article><article class="report-card" id="card-6"><div class="card-accent-bar"></div><div class="card-inner"><header class="card-header"><div class="card-eyebrow">延迟</div><h2 class="card-headline">最终决定延迟性:P50比较P95涉及所有8发动机(五)2.4.1中性) 中性(中性)</h2><p class="card-subtitle">蓝色条条展P50中位子; 灰色条形显示P95尾部延后(毫秒)Switchyard五、导 言2.4.1中性说明(中国大陆客户端对云APIs;Apple管理4亲48GB用于本地 OpenJev 的&amp;莱娅。</p></header><div class="card-canvas"><div class="lat-list"><div class="lat-group"><div class="lat-title">1. 自办的Laya0.3.20(当地员额)4· 积极47.5%acc / 数据来源:$0 API)</div><div class="lat-row"><span class="lat-tag">P50中位数</span><div class="lat-bar lat-blue" style="width:4.0%"></div><strong class="lat-val">111毫秒( O)</strong></div><div class="lat-row"><span class="lat-tag">P95尾端( E)</span><div class="lat-bar lat-gray" style="width:10.8%"></div><strong class="lat-val">491毫秒( O)</strong></div></div><div class="lat-group"><div class="lat-title">2. 安全捷夫云(捷夫-最快) .100%中性/ 中间98.3%廉价的 /$24.1/1M)</div><div class="lat-row"><span class="lat-tag">P50中位数</span><div class="lat-bar lat-blue" style="width:7.2%"></div><strong class="lat-val">326毫秒( O)</strong></div><div class="lat-row"><span class="lat-tag">P95尾端( E)</span><div class="lat-bar lat-gray" style="width:14.2%"></div><strong class="lat-val">643毫秒( O)</strong></div></div><div class="lat-group"><div class="lat-title">3. OpenAI Decisions云(   .gpt-6-luna · 92.5%中性/ 中间80.0%廉价的 /$26.1/1M)</div><div class="lat-row"><span class="lat-tag">P50中位数</span><div class="lat-bar lat-blue" style="width:9.2%"></div><strong class="lat-val">417毫秒( O)</strong></div><div class="lat-row"><span class="lat-tag">P95尾端( E)</span><div class="lat-bar lat-gray" style="width:17.7%"></div><strong class="lat-val">804毫秒( O)</strong></div></div><div class="lat-group"><div class="lat-title">4. Microsoft Decision-1云(   .Foundry美国东部2 · 100%中性/ 中间94.2%廉价的 /$7.6/1M)</div><div class="lat-row"><span class="lat-tag">P50中位数</span><div class="lat-bar lat-blue" style="width:13.2%"></div><strong class="lat-val">597毫秒( O)</strong></div><div class="lat-row"><span class="lat-tag">P95尾端( E)</span><div class="lat-bar lat-gray" style="width:29.6%"></div><strong class="lat-val">1344毫秒( O)</strong></div></div><div class="lat-group"><div class="lat-title">5. LLM路由器 :gpt-4.1-mini (Foundry · 90.0%acc / 数据来源:$141.4/1M)</div><div class="lat-row"><span class="lat-tag">P50中位数</span><div class="lat-bar lat-blue" style="width:35.5%"></div><strong class="lat-val">1608毫秒( O)</strong></div><div class="lat-row"><span class="lat-tag">P95尾端( E)</span><div class="lat-bar lat-gray" style="width:55.3%"></div><strong class="lat-val">2510毫秒( O)</strong></div></div><div class="lat-group"><div class="lat-title">6. LLM路由器 :gpt-6-luna推理=( )&#x27;无&#x27; (Foundry · 90.8%acc / 数据来源:$39.8/1M)</div><div class="lat-row"><span class="lat-tag">P50中位数</span><div class="lat-bar lat-blue" style="width:38.3%"></div><strong class="lat-val">1739毫秒( O)</strong></div><div class="lat-row"><span class="lat-tag">P95尾端( E)</span><div class="lat-bar lat-gray" style="width:60.2%"></div><strong class="lat-val">2731毫秒( O)</strong></div></div><div class="lat-group"><div class="lat-title">7. LLM路由器 :gpt-6-luna默认推理( E)Foundry · 72.5%acc / 数据来源:$63.1/1M)</div><div class="lat-row"><span class="lat-tag">P50中位数</span><div class="lat-bar lat-blue" style="width:45.8%"></div><strong class="lat-val">2079毫秒( O)</strong></div><div class="lat-row"><span class="lat-tag">P95尾端( E)</span><div class="lat-bar lat-gray" style="width:78.0%"></div><strong class="lat-val">3538毫秒( O)</strong></div></div><div class="lat-group"><div class="lat-title">8打开Jev27B当地(男)4亲48GB混合动力学4- 位数...100%中性/ 中间92.5%廉价的 /$0 API)</div><div class="lat-row"><span class="lat-tag">P50中位数</span><div class="lat-bar lat-blue" style="width:50.2%"></div><strong class="lat-val">2276毫秒( O)</strong></div><div class="lat-row"><span class="lat-tag">P95尾端( E)</span><div class="lat-bar lat-gray" style="width:57.3%"></div><strong class="lat-val">2597毫秒( O)</strong></div></div></div><div class="callout-box"><strong>全部( A)3专用云决定 API 响应于326–597毫秒( O)P50 — 3x改为5x速度快于聊天补全LLM路线(1,427–2,132, (中文(简体) ).</strong> 月日至日,日内瓦2.4.0(便宜),(低等),P50/P95原为:Laya127/143门,杰夫350/720女士们,OpenAI Decisions 369/759女士们,Decision-1 541/1,251女士们,gpt-4.1-mini 1,427/2,090女士们,luna-没有1,714/2,578女士们,luna- 默认2,132/3,045ms, 和本地 OpenJev 数据2,566/3,030.</div></div><footer class="card-footer"><span><strong>8- 模拟运行基准OpenAI Decisions比较Microsoft Decision-1 (Switchyard五、导 言2.4.0 &amp;五、导 言2.4.1)</strong> 匿名- 报告(独立地)</span><span>6 / 7</span></footer></div></article><article class="report-card" id="card-7"><div class="card-accent-bar"></div><div class="card-inner"><header class="card-header"><div class="card-eyebrow">工程判断</div><h2 class="card-headline">为什么Microsoft Decision-1留下来吧1生产选择,之后OpenAI Decisions加入( A)</h2></header><div class="card-canvas"><div class="fit-grid"><div class="fit-card fit-good"><div class="fit-head">✅ 适用场景</div><ul><li>Microsoft Decision-1作为默认云路由器Azure AI Foundry: 100%中性准确度( 微分)94.2%便宜点,$7.6–$8.6/1M费用(3.3x便宜于( )OpenAI Decisions, 16x便宜于( )gpt-4.1-mini), ~550毫秒( O)P50干净0.60阈值</li><li>最大指令豁免时的Safe Jev类型(39..40/40涉及所有4变体,0错误块在0.60)和最低云纬度(~330毫秒( O)P50证明3x Decision-1&#x27;价格($21.7–$24.1/1M)</li><li>中立的路由指令( Q)&#x27;选择哪个描述最符合...&#x27;),同时在候选描述(+)内编码分级边界.12.5%打开OpenAI Decisions, +5.8%打开Decision-1)</li><li>OpenAI Decisions已经进入一个OpenAI 1P需要快速键(~400毫秒( O)P50(b) 中立/空心指令下投放终点(92.5%–95.0%)</li><li>设置推理_ 努力=&#x27;无&#x27;每当使用推理时LLM (gpt-6-luna)作为即时路由器(+15.0改为+18.3pts 准确性, -400女士的潜伏, -37%成本与默认推理)</li></ul></div><div class="fit-card fit-bad"><div class="fit-head">⛔ 不适用场景</div><ul><li>组合OpenAI Decisions及时发出节省费用的指示(&#x27;简单的时候更便宜&#x27;: 准确度下降至80.0% (32/40和14/20 (70%),在隐含的Set B请求上</li><li>依赖一个0.60信任门OpenAI Decisions: 50%损失(24/48横跨五行2.4.1)有p(有p(有p)&gt;= 0.60总计0.78),默默地失败而未触发倒计时.</li><li>呼叫/电话openai/v 数据1/决定Azure AI Foundry(回报)HTTP 404; Foundry服务Decision-1/提供方/microsoft/v 数据1/系统一代替)</li><li>启用默认推理LLM路由器( 以gpt-6-luna默认降为( E)72.5%–75.8%准确度和回合间翻转选择11–13/40提示)</li><li>OpenJev的商业生产用途27B权重(CC BY-NC)4.0或非商业许可证)或5- 与Laya的普通车型路线0.3.20 (47.5%–52.5%准确性)</li></ul></div></div><div class="dark-footer-box"><p>证明:匿名_已报告(独立出自_再出=虚假)。2026-10-11..10-13横跨Switchyard五、导 言2.3.0,v 时2.4.0 (960电话)和v2.4.1 (2,760调用 +160直接API诊断电话。</p><p class="dark-repo">公共路由器 :https://github.com/satomic/model-router(承诺b)58bfd31, 3408c39c, 8a20a7b6· 档案:文献/研究/openai- 决定 -vs -decision-1- 路由基准/基准</p></div></div><footer class="card-footer"><span><strong>8- 模拟运行基准OpenAI Decisions比较Microsoft Decision-1 (Switchyard五、导 言2.4.0 &amp;五、导 言2.4.1)</strong> 匿名- 报告(独立地)</span><span>7 / 7</span></footer></div></article><details><summary>机器可读卡片甲板JSON</summary><pre class="code-dark">{
+  &quot;cards&quot;: [
+    {
+      &quot;callouts&quot;: [
+        {
+          &quot;body&quot;: &quot;OpenAI Decisions jumps from 32/40 (80.0%) to 37/40 (92.5%) under neutral instructions (and 38/40 = 95.0% under bare), confirming it is highly sensitive to cost-saving wording while still trailing Decision-1 in accuracy, calibration, and cost ($26.1 vs $7.6/1M).&quot;,
+          &quot;lead&quot;: &quot;Removing the single cost-saving sentence (&#x27;Prefer a cheaper, faster model when the request is simple...&#x27;) raises Jev, Decision-1, and OpenJev to 40/40 (100.0%).&quot;
+        }
+      ],
+      &quot;eyebrow&quot;: &quot;HANDS-ON · 8-WAY MODEL ROUTING BENCHMARK (V2.4.0 &amp; V2.4.1)&quot;,
+      &quot;headline_Gradient&quot;: &quot;Microsoft Decision-1 remains #1&quot;,
+      &quot;headline_prefix&quot;: &quot;OpenAI Decisions joins the 8-way routing test — &quot;,
+      &quot;kind&quot;: &quot;overview&quot;,
+      &quot;subtitle&quot;: &quot;Across 960 decisions under cost-biased instructions (v2.4.0) and 2,760 decisions across 4 instruction variants (v2.4.1) on 40 bilingual prompts (20 EN / 20 ZH, 5 target models), Microsoft Decision-1 hits 37.7/40 (94.2%) -&gt; 40/40 (100.0% neutral) at $7.6–$8.6/1M decisions, outperforming OpenAI Decisions (32/40 = 80.0% -&gt; 37/40 = 92.5% neutral at $26.1–$28.4/1M).&quot;,
+      &quot;workbench&quot;: {
+        &quot;bands_note&quot;: &quot;Confidence gate (tau = 0.60): Act automatically if p &gt;= 0.60 and instruction spread &lt;= 2/40 (Jev, Decision-1); Confirm if p &lt; 0.60 fallback or moderate instruction sensitivity (OpenAI Decisions, OpenJev, LLM mini/luna-none); Send to a human if high-confidence wrong picks or unstable CoT flips (luna-default, Laya).&quot;,
+        &quot;decisions&quot;: [
+          {
+            &quot;action&quot;: &quot;Act automatically&quot;,
+            &quot;closest_label&quot;: &quot;3.3x cheaper than OpenAI Decisions ($26.1–$28.4/1M) &amp; 2.8x cheaper than Jev ($21.7–$24.1/1M)&quot;,
+            &quot;confidence&quot;: 0.962,
+            &quot;distribution_pct&quot;: {
+              &quot;Microsoft Decision-1 (v2.4.0 cheap 94.2% / v2.4.1 neutral 100%)&quot;: 94.2,
+              &quot;OpenAI Decisions (v2.4.0 cheap 80.0% / v2.4.1 neutral 92.5%)&quot;: 80.0,
+              &quot;TypeSafe Jev (v2.4.0 cheap 98.3% / v2.4.1 neutral 100%)&quot;: 98.3
+            },
+            &quot;field&quot;: &quot;production_cloud_router&quot;,
+            &quot;question&quot;: &quot;Which cloud decision API delivers the best accuracy, calibration, and cost trade-off?&quot;,
+            &quot;question_type&quot;: &quot;choice&quot;,
+            &quot;selected_answer&quot;: &quot;Microsoft Decision-1 (100% neutral / 94.2% cheap · $7.6–$8.6/1M)&quot;
+          },
+          {
+            &quot;action&quot;: &quot;Act automatically&quot;,
+            &quot;closest_label&quot;: &quot;Removing 1 cost-bias sentence lifts Decision-1 +2.3, OpenJev +3.0, OpenAI +5.0 prompts&quot;,
+            &quot;confidence&quot;: 0.975,
+            &quot;distribution_pct&quot;: {
+              &quot;Microsoft Decision-1 4-variant min (38..40/40, spread 2 pts)&quot;: 95.0,
+              &quot;OpenAI Decisions 4-variant min (32..38/40, spread 6 pts)&quot;: 80.0,
+              &quot;TypeSafe Jev 4-variant min (39..40/40, spread 1 pt)&quot;: 97.5
+            },
+            &quot;field&quot;: &quot;instruction_robustness_4variants&quot;,
+            &quot;question&quot;: &quot;Minimum accuracy across all 4 instruction styles (neutral / cheap / strong / bare)&quot;,
+            &quot;question_type&quot;: &quot;score&quot;,
+            &quot;selected_answer&quot;: &quot;Jev 97.5% (39/40) · Decision-1 95.0% (38/40) · OpenAI 80.0% (32/40)&quot;
+          },
+          {
+            &quot;action&quot;: &quot;Confirm&quot;,
+            &quot;closest_label&quot;: &quot;OpenAI Decisions assigns up to p=0.78 on wrong picks to gpt-4.1-mini&quot;,
+            &quot;confidence&quot;: 0.942,
+            &quot;distribution_pct&quot;: {
+              &quot;Microsoft Decision-1 wrong picks caught by p &lt; 0.60 (6/9)&quot;: 66.7,
+              &quot;OpenAI Decisions wrong picks caught by p &lt; 0.60 (24/48)&quot;: 50.0,
+              &quot;TypeSafe Jev wrong picks caught by p &lt; 0.60 (3/3)&quot;: 100.0
+            },
+            &quot;field&quot;: &quot;confidence_gate_060_reliability&quot;,
+            &quot;question&quot;: &quot;Does a p &lt; 0.60 fallback gate cleanly intercept routing misses across all 480 calls?&quot;,
+            &quot;question_type&quot;: &quot;noul&quot;,
+            &quot;selected_answer&quot;: &quot;Yes for Jev (3/3 caught) &amp; Decision-1 (0 misses outside cheap); No for OpenAI (24/48 &gt;= 0.60)&quot;
+          }
+        ],
+        &quot;metrics&quot;: [
+          &quot;Decision-1: 94.2%-&gt;100% · $7.6–$8.6/1M · 541–597ms&quot;,
+          &quot;TypeSafe Jev: 98.3%-&gt;100% · $21.7–$24.1/1M · 326–350ms&quot;,
+          &quot;OpenAI Decisions: 80.0%-&gt;92.5% · $26.1–$28.4/1M · 369–417ms&quot;,
+          &quot;OpenJev 27B 4-bit: 92.5%-&gt;100% · $0 API · 2,276–2,566ms&quot;
+        ],
+        &quot;scenarios&quot;: [
+          &quot;Set A (20 explicit prompts: 10 EN + 10 ZH) &amp; Set B (20 implicit/borderline prompts: 10 EN + 10 ZH)&quot;,
+          &quot;5 candidate backends: gpt-4.1-mini (chat), gpt-4o (general), gpt-4.1 (coding), gpt-5.4 (reasoning), gpt-6-luna (creative)&quot;,
+          &quot;Cloud System One APIs: TypeSafe Jev (jev-latest) &amp; Microsoft Decision-1 (Azure AI Foundry East US 2)&quot;,
+          &quot;OpenAI Native API: POST /v1/decisions (locked to gpt-6-luna, $0.10/1M input, $0 output)&quot;,
+          &quot;Local Open-Weight (M4 Pro 48GB): OpenJev 27B (MLX 4-bit, CC BY-NC 4.0) &amp; Laya 0.3.20 (Apache-2.0)&quot;,
+          &quot;General LLM Routers (/v1/chat/completions): gpt-4.1-mini, gpt-6-luna (reasoning=none), gpt-6-luna (default)&quot;,
+          &quot;4 Instruction Variants (v2.4.1): neutral (default), cheap (v2.4.0 default), strong, bare&quot;
+        ],
+        &quot;status_pill&quot;: &quot;v2.4.0 (960 calls) + v2.4.1 (2,760 calls) · anonymized_reported&quot;,
+        &quot;title&quot;: &quot;Switchyard (satomic/model-router v2.4.0 &amp; v2.4.1) · 8 Routing Approaches × 40 Bilingual Prompts&quot;
+      }
+    },
+    {
+      &quot;callouts&quot;: [
+        {
+          &quot;body&quot;: &quot;Specifically, 33/48 downgraded higher-tier tasks to gpt-4.1-mini and 15/48 routed creative writing (gpt-6-luna) sideways to gpt-4.1-mini. On B9 and B14, OpenAI Decisions never selected the right model under any of the 4 instructions.&quot;,
+          &quot;lead&quot;: &quot;Across all 480 decisions in v2.4.1, 100% of OpenAI Decisions&#x27; 48 wrong picks routed the request to gpt-4.1-mini.&quot;
+        }
+      ],
+      &quot;decisions&quot;: [
+        {
+          &quot;action&quot;: &quot;Confirm&quot;,
+          &quot;closest_label&quot;: &quot;Under v2.4.0 cheap, only Jev (0.76) &amp; gpt-4.1-mini got B14 right; neutral unlocks Decision-1 &amp; OpenJev&quot;,
+          &quot;confidence&quot;: 0.93,
+          &quot;distribution_pct&quot;: {
+            &quot;Microsoft Decision-1 -&gt; gpt-4o (0.45 cheap / 0.61 neutral)&quot;: 61.0,
+            &quot;OpenAI Decisions -&gt; gpt-4.1-mini (0.60 cheap / 0.53 neutral)&quot;: 53.0,
+            &quot;TypeSafe Jev -&gt; gpt-4o (0.76 cheap / 0.93 neutral)&quot;: 93.0
+          },
+          &quot;field&quot;: &quot;case_B14_pr_one_line_summary&quot;,
+          &quot;question&quot;: &quot;B14: Summarize PR in one sentence (expected: gpt-4o for summaries; surface contains &#x27;一句话&#x27;)&quot;,
+          &quot;question_type&quot;: &quot;choice&quot;,
+          &quot;selected_answer&quot;: &quot;v2.4.1 neutral: Jev gpt-4o (0.93) · Decision-1 gpt-4o (0.61) · OpenAI gpt-4.1-mini (0.53)&quot;
+        },
+        {
+          &quot;action&quot;: &quot;Act automatically&quot;,
+          &quot;closest_label&quot;: &quot;OpenAI Decisions only picks gpt-5.4 (p=0.57) under the 7-word &#x27;bare&#x27; instruction&quot;,
+          &quot;confidence&quot;: 0.996,
+          &quot;distribution_pct&quot;: {
+            &quot;Microsoft Decision-1 -&gt; gpt-5.4 (p=0.996 neutral)&quot;: 99.6,
+            &quot;OpenAI Decisions -&gt; gpt-4.1-mini (p=0.38 neutral / 0.34 cheap)&quot;: 38.0,
+            &quot;TypeSafe Jev -&gt; gpt-5.4 (p=1.000 neutral)&quot;: 100.0
+          },
+          &quot;field&quot;: &quot;case_B8_htht_coin_flip_markov&quot;,
+          &quot;question&quot;: &quot;B8: Expected coin flips until HTHT first appears (expected: gpt-5.4 hard math/Markov state, E=20)&quot;,
+          &quot;question_type&quot;: &quot;choice&quot;,
+          &quot;selected_answer&quot;: &quot;v2.4.1 neutral: Jev gpt-5.4 (1.00) · Decision-1 gpt-5.4 (0.996) · OpenAI gpt-4.1-mini (0.38)&quot;
+        },
+        {
+          &quot;action&quot;: &quot;Send to a human&quot;,
+          &quot;closest_label&quot;: &quot;OpenAI Decisions picks gpt-4.1-mini across all 4 variants with p=0.65..0.78 (bypasses 0.60 gate)&quot;,
+          &quot;confidence&quot;: 0.972,
+          &quot;distribution_pct&quot;: {
+            &quot;Microsoft Decision-1 -&gt; gpt-6-luna (p=0.972 neutral)&quot;: 97.2,
+            &quot;OpenAI Decisions -&gt; gpt-4.1-mini (p=0.66 neutral / 0.78 bare)&quot;: 66.0,
+            &quot;TypeSafe Jev -&gt; gpt-6-luna (p=0.990 neutral)&quot;: 99.0
+          },
+          &quot;field&quot;: &quot;case_B9_rhyming_wedding_toast&quot;,
+          &quot;question&quot;: &quot;B9: Fun, rhyming toast for sister&#x27;s wedding (expected: gpt-6-luna creative writing)&quot;,
+          &quot;question_type&quot;: &quot;choice&quot;,
+          &quot;selected_answer&quot;: &quot;v2.4.1 neutral: Jev gpt-6-luna (0.99) · Decision-1 gpt-6-luna (0.972) · OpenAI gpt-4.1-mini (0.66)&quot;
+        }
+      ],
+      &quot;eyebrow&quot;: &quot;SCENARIO: IMPLICIT BORDERLINE PROMPTS (B14, B8, B9)&quot;,
+      &quot;headline&quot;: &quot;Why OpenAI Decisions misses 8 prompts in v2.4.0 and 3 in v2.4.1 neutral&quot;,
+      &quot;kind&quot;: &quot;deep_dive&quot;,
+      &quot;quote&quot;: &quot;B14 (ZH, want gpt-4o): &#x27;一句话总结这个 PR：把日志从 logrus 换成了 slog，删除了 3 个废弃接口，并更新了 README。&#x27; | B8 (EN, want gpt-5.4): &#x27;What is the expected number of fair coin flips until the sequence HTHT first appears? Show your work.&#x27; | B9 (EN, want gpt-6-luna): &#x27;Give me a fun, rhyming toast for my sister&#x27;s wedding.&#x27;&quot;
+    },
+    {
+      &quot;callouts&quot;: [
+        {
+          &quot;body&quot;: &quot;Decision-1 achieves the same 40/40 accuracy as Jev at 1/3 the cost ($7.6 vs $24.1/1M) because it bills only 1 completion token (~180 input + 1 output at $0.042/1M), whereas Jev bills ~82 internal reasoning tokens.&quot;,
+          &quot;lead&quot;: &quot;3 System One engines (TypeSafe Jev, Microsoft Decision-1, OpenJev 27B) hit 40/40 (100.0%) under v2.4.1 neutral instructions.&quot;
+        },
+        {
+          &quot;body&quot;: &quot;Enabling default reasoning on gpt-6-luna drops accuracy from 90.8% (luna-none) to 72.5% (luna-default) and causes 11–13/40 prompts to flip across rounds. Meanwhile, gpt-4.1-mini is the only engine whose errors (4/40) all over-escalate to stronger models.&quot;,
+          &quot;lead&quot;: &quot;5 approaches marked (✕) still miss 3 to 21 prompts under neutral instructions — and CoT reasoning actively harms LLM routing.&quot;
+        }
+      ],
+      &quot;eyebrow&quot;: &quot;WHAT I TESTED&quot;,
+      &quot;headline&quot;: &quot;8 routing approaches across v2.4.0 (cost-biased) &amp; v2.4.1 (neutral): full scorecard&quot;,
+      &quot;kind&quot;: &quot;scorecard&quot;,
+      &quot;rows&quot;: [
+        {
+          &quot;action&quot;: &quot;Auto&quot;,
+          &quot;decider_answer&quot;: &quot;v2.4.0: 39.3/40 (98.3%) -&gt; v2.4.1 neutral: 40/40 (100%) | 40/40 stable&quot;,
+          &quot;pointed_right_way&quot;: true,
+          &quot;question&quot;: &quot;TypeSafe Jev (jev-latest · P50 326–350ms · P95 643–720ms · $21.7–$24.1/1M)&quot;,
+          &quot;reported_probability_pct&quot;: 100,
+          &quot;scenario&quot;: &quot;1. Cloud System One API&quot;
+        },
+        {
+          &quot;action&quot;: &quot;Auto&quot;,
+          &quot;decider_answer&quot;: &quot;v2.4.0: 37.7/40 (94.2%) -&gt; v2.4.1 neutral: 40/40 (100%) | 40/40 stable&quot;,
+          &quot;pointed_right_way&quot;: true,
+          &quot;question&quot;: &quot;Microsoft Decision-1 (Foundry East US 2 · P50 541–597ms · P95 1.25–1.34s · $7.6–$8.6/1M)&quot;,
+          &quot;reported_probability_pct&quot;: 100,
+          &quot;scenario&quot;: &quot;1. Cloud System One API&quot;
+        },
+        {
+          &quot;action&quot;: &quot;Confirm&quot;,
+          &quot;decider_answer&quot;: &quot;v2.4.0: 32.0/40 (80.0%) -&gt; v2.4.1 neutral: 37.0/40 (92.5%) | 40/40 stable (-3 B-set)&quot;,
+          &quot;pointed_right_way&quot;: false,
+          &quot;question&quot;: &quot;OpenAI Decisions (/v1/decisions gpt-6-luna · P50 369–417ms · P95 759–804ms · $26.1–$28.4/1M)&quot;,
+          &quot;reported_probability_pct&quot;: 93,
+          &quot;scenario&quot;: &quot;2. OpenAI Native API&quot;
+        },
+        {
+          &quot;action&quot;: &quot;Confirm&quot;,
+          &quot;decider_answer&quot;: &quot;v2.4.0: 37.0/40 (92.5%) -&gt; v2.4.1 neutral: 40/40 (100%) | 40/40 stable&quot;,
+          &quot;pointed_right_way&quot;: true,
+          &quot;question&quot;: &quot;OpenJev 27B (MLX 4-bit 15.6GB · P50 2,276–2,566ms · P95 2,597–3,030ms · $0 API · CC BY-NC 4.0)&quot;,
+          &quot;reported_probability_pct&quot;: 100,
+          &quot;scenario&quot;: &quot;3. Local Open-Weight (M4 Pro)&quot;
+        },
+        {
+          &quot;action&quot;: &quot;Human&quot;,
+          &quot;decider_answer&quot;: &quot;v2.4.0: 20.0/40 (50.0%) -&gt; v2.4.1 neutral: 19.0/40 (47.5%) | 40/40 stable (-21 misses)&quot;,
+          &quot;pointed_right_way&quot;: false,
+          &quot;question&quot;: &quot;Self-hosted Laya 0.3.20 (196MB · P50 111–127ms · P95 143–491ms · $0 API · Apache-2.0)&quot;,
+          &quot;reported_probability_pct&quot;: 48,
+          &quot;scenario&quot;: &quot;3. Local Open-Weight (M4 Pro)&quot;
+        },
+        {
+          &quot;action&quot;: &quot;Confirm&quot;,
+          &quot;decider_answer&quot;: &quot;v2.4.0: 35.3/40 (88.3%, 1 err) -&gt; v2.4.1 neutral: 36.3/40 (90.8%) | 36/40 stable&quot;,
+          &quot;pointed_right_way&quot;: false,
+          &quot;question&quot;: &quot;LLM: gpt-6-luna reasoning=&#x27;none&#x27; (Foundry · P50 1,714–1,739ms · P95 2.58–2.73s · $39.8/1M)&quot;,
+          &quot;reported_probability_pct&quot;: 91,
+          &quot;scenario&quot;: &quot;4. General LLM Prompt Router&quot;
+        },
+        {
+          &quot;action&quot;: &quot;Confirm&quot;,
+          &quot;decider_answer&quot;: &quot;v2.4.0: 36.0/40 (90.0%) -&gt; v2.4.1 neutral: 36.0/40 (90.0%) | 40/40 stable (-4 over-escalated)&quot;,
+          &quot;pointed_right_way&quot;: false,
+          &quot;question&quot;: &quot;LLM: gpt-4.1-mini (Foundry · P50 1,427–1,608ms · P95 2,090–2,510ms · $141.4–$141.8/1M)&quot;,
+          &quot;reported_probability_pct&quot;: 90,
+          &quot;scenario&quot;: &quot;4. General LLM Prompt Router&quot;
+        },
+        {
+          &quot;action&quot;: &quot;Human&quot;,
+          &quot;decider_answer&quot;: &quot;v2.4.0: 30.3/40 (75.8%, 27/40 stable) -&gt; v2.4.1 neutral: 29.0/40 (72.5%, 29/40 stable, 1 err)&quot;,
+          &quot;pointed_right_way&quot;: false,
+          &quot;question&quot;: &quot;LLM: gpt-6-luna default reasoning (Foundry · P50 2,079–2,132ms · P95 3.05–3.54s · $62.4–$63.1/1M)&quot;,
+          &quot;reported_probability_pct&quot;: 73,
+          &quot;scenario&quot;: &quot;4. General LLM Prompt Router&quot;
+        }
+      ]
+    },
+    {
+      &quot;bottom_code&quot;: &quot;// 2. System One API: POST https://&lt;resource&gt;.services.ai.azure.com/providers/microsoft/v1/systemone\n// Full float64 probabilities; Decision-1 bills ~180 prompt + 1 completion token ($7.6/1M at $0.042/1M)\n{\n  \&quot;model\&quot;: \&quot;msft-decision-1\&quot;,\n  \&quot;state\&quot;: {\&quot;user_request\&quot;: \&quot;What is the expected number of fair coin flips until HTHT first appears?\&quot;},\n  \&quot;questions\&quot;: {\n    \&quot;model\&quot;: {\n      \&quot;type\&quot;: \&quot;choice\&quot;,\n      \&quot;instructions\&quot;: \&quot;Which backend model should handle `user_request`? Pick the option whose description best matches...\&quot;,\n      \&quot;criteria\&quot;: {\&quot;gpt-4.1-mini\&quot;: \&quot;Cheapest and fastest...\&quot;, \&quot;gpt-5.4\&quot;: \&quot;Strongest reasoning...\&quot;}\n    }\n  }\n}\n// -&gt; {\&quot;answers\&quot;: {\&quot;model\&quot;: {\&quot;choice\&quot;: \&quot;gpt-5.4\&quot;, \&quot;probabilities\&quot;: {\&quot;gpt-5.4\&quot;: 0.9961, ...}}}, \&quot;usage\&quot;: {\&quot;prompt_tokens\&quot;: 180, \&quot;completion_tokens\&quot;: 1}}\n&lt;answer&gt;&quot;,
+      &quot;callouts&quot;: [
+        {
+          &quot;body&quot;: &quot;gpt-6-luna rejects Chat Completions calls that pass legacy max_tokens or temperature when reasoning is active (HTTP 400). Earlier router versions caught the exception and silently fell back to default gpt-4.1-mini (recording 0 ms); v2.4.0 uses max_completion_tokens and adds decision_reasoning_effort.&quot;,
+          &quot;lead&quot;: &quot;Switchyard v2.4.0 also fixed a silent fallback bug for OpenAI reasoning models (gpt-6-luna) on Chat Completions.&quot;
+        }
+      ],
+      &quot;eyebrow&quot;: &quot;UNDER THE HOOD&quot;,
+      &quot;headline&quot;: &quot;OpenAI /v1/decisions vs Microsoft &amp; TypeSafe /v1/systemone wire protocol&quot;,
+      &quot;kind&quot;: &quot;protocol&quot;,
+      &quot;top_code&quot;: &quot;// 1. OpenAI Decisions API: POST https://api.openai.com/v1/decisions\n// Model fixed to \&quot;gpt-6-luna\&quot;; 2-decimal probabilities; 0 completion_tokens ($0.10/1M in)\n{\n  \&quot;model\&quot;: \&quot;gpt-6-luna\&quot;,\n  \&quot;input\&quot;: \&quot;What is the expected number of fair coin flips until HTHT first appears?\&quot;,\n  \&quot;questions\&quot;: [{\n    \&quot;type\&quot;: \&quot;choice\&quot;, \&quot;name\&quot;: \&quot;model\&quot;,\n    \&quot;instructions\&quot;: \&quot;Which backend model should handle this request? Pick the option whose description best matches...\&quot;,\n    \&quot;choices\&quot;: [{\&quot;value\&quot;: \&quot;gpt-4.1-mini\&quot;, \&quot;description\&quot;: \&quot;Cheapest and fastest...\&quot;}, {\&quot;value\&quot;: \&quot;gpt-5.4\&quot;, \&quot;description\&quot;: \&quot;Strongest reasoning...\&quot;}]\n  }]\n}\n// -&gt; {\&quot;answers\&quot;: [{\&quot;name\&quot;: \&quot;model\&quot;, \&quot;choice\&quot;: \&quot;gpt-4.1-mini\&quot;, \&quot;probabilities\&quot;: [{\&quot;value\&quot;: \&quot;gpt-4.1-mini\&quot;, \&quot;probability\&quot;: 0.38}, ...]}]}&quot;,
+      &quot;transition&quot;: &quot;↓ Switchyard (satomic/model-router v2.4.0 / v2.4.1) protocol adapter + confidence threshold gate (tau = 0.60) ↓&quot;
+    },
+    {
+      &quot;callouts&quot;: [
+        {
+          &quot;body&quot;: &quot;Across all 480 calls per engine in v2.4.1, 100% of errors in Jev (3/3), Decision-1 (9/9), OpenJev (18/18), and OpenAI Decisions (48/48: 33 cheaper + 15 sideways to gpt-4.1-mini) erred toward cheaper models — zero errors ever picked a stronger model than needed.&quot;,
+          &quot;lead&quot;: &quot;Asymmetric instruction response: &#x27;Prefer cheaper&#x27; hurts every dedicated engine (-2.5 to -12.5 pts), while &#x27;Prefer stronger&#x27; never causes over-escalation.&quot;
+        }
+      ],
+      &quot;eyebrow&quot;: &quot;ROBUSTNESS CHECK&quot;,
+      &quot;headline&quot;: &quot;Instruction sensitivity &amp; 0.60 confidence gate across 2,760 calls (v2.4.1)&quot;,
+      &quot;kind&quot;: &quot;robustness&quot;,
+      &quot;rows&quot;: [
+        {
+          &quot;answer_held&quot;: true,
+          &quot;change_pts&quot;: 2.5,
+          &quot;original_pct&quot;: 97.5,
+          &quot;reversed_pct&quot;: 100.0,
+          &quot;scenario&quot;: &quot;TypeSafe Jev (jev-latest) · 4-Variant Spread: 1/40 (39..40/40)&quot;,
+          &quot;selected_option&quot;: &quot;neutral 40/40 · cheap 39/40 · strong 40/40 · bare 40/40 | 0/3 wrong &gt;=0.60 (max 0.45), 0/477 false blocks&quot;
+        },
+        {
+          &quot;answer_held&quot;: true,
+          &quot;change_pts&quot;: 5.0,
+          &quot;original_pct&quot;: 95.0,
+          &quot;reversed_pct&quot;: 100.0,
+          &quot;scenario&quot;: &quot;Microsoft Decision-1 (Foundry) · 4-Variant Spread: 2/40 (38..40/40)&quot;,
+          &quot;selected_option&quot;: &quot;neutral 40/40 · cheap 38/40 · strong 40/40 · bare 39/40 | 3/9 wrong &gt;=0.60 (only cheap, max 0.642), 11/471 false blocks&quot;
+        },
+        {
+          &quot;answer_held&quot;: true,
+          &quot;change_pts&quot;: 10.0,
+          &quot;original_pct&quot;: 90.0,
+          &quot;reversed_pct&quot;: 100.0,
+          &quot;scenario&quot;: &quot;OpenJev 27B (MLX 4-bit Local) · 4-Variant Spread: 4/40 (36..40/40)&quot;,
+          &quot;selected_option&quot;: &quot;neutral 40/40 · cheap 36/40 · strong 39/40 · bare 39/40 | 6/18 wrong &gt;=0.60 (max 0.751), 9/462 false blocks&quot;
+        },
+        {
+          &quot;answer_held&quot;: false,
+          &quot;change_pts&quot;: 12.5,
+          &quot;original_pct&quot;: 80.0,
+          &quot;reversed_pct&quot;: 92.5,
+          &quot;scenario&quot;: &quot;OpenAI Decisions (gpt-6-luna) · 4-Variant Spread: 6/40 (32..38/40)&quot;,
+          &quot;selected_option&quot;: &quot;neutral 37/40 · cheap 32/40 · strong 37/40 · bare 38/40 | 24/48 wrong &gt;=0.60 (max 0.78), 27/432 false blocks&quot;
+        },
+        {
+          &quot;answer_held&quot;: true,
+          &quot;change_pts&quot;: 2.5,
+          &quot;original_pct&quot;: 88.3,
+          &quot;reversed_pct&quot;: 90.8,
+          &quot;scenario&quot;: &quot;LLM Router: gpt-6-luna (reasoning=&#x27;none&#x27;) · Cheap vs Neutral&quot;,
+          &quot;selected_option&quot;: &quot;v2.4.0 cheap 35.33/40 (88.3%, 37/40 stable) -&gt; v2.4.1 neutral 36.33/40 (90.8%, 36/40 stable)&quot;
+        },
+        {
+          &quot;answer_held&quot;: true,
+          &quot;change_pts&quot;: 0.0,
+          &quot;original_pct&quot;: 90.0,
+          &quot;reversed_pct&quot;: 90.0,
+          &quot;scenario&quot;: &quot;LLM Router: gpt-4.1-mini · Cheap vs Neutral (Identical 4 Over-Escalations)&quot;,
+          &quot;selected_option&quot;: &quot;v2.4.0 cheap 36/40 (90.0%) -&gt; v2.4.1 neutral 36/40 (90.0%) | Misses A2, B1, B11, B12 (all stronger)&quot;
+        },
+        {
+          &quot;answer_held&quot;: false,
+          &quot;change_pts&quot;: -5.0,
+          &quot;original_pct&quot;: 52.5,
+          &quot;reversed_pct&quot;: 47.5,
+          &quot;scenario&quot;: &quot;Self-hosted Laya 0.3.20 · 4-Variant Spread: 2/40 (19..21/40)&quot;,
+          &quot;selected_option&quot;: &quot;neutral 19/40 · cheap 21/40 · strong 20/40 · bare 21/40 | 24/237 wrong &gt;=0.60 (max 0.911), 192/243 false blocks&quot;
+        }
+      ],
+      &quot;subtitle&quot;: &quot;Comparing cost-biased (&#x27;cheap&#x27;, v2.4.0 default) vs neutral (&#x27;neutral&#x27;, v2.4.1 default) accuracy, plus 4-variant spread (neutral / cheap / strong / bare, 480 decisions per dedicated engine).&quot;
+    },
+    {
+      &quot;callouts&quot;: [
+        {
+          &quot;body&quot;: &quot;In v2.4.0 (cheap), P50/P95 were: Laya 127/143 ms, Jev 350/720 ms, OpenAI Decisions 369/759 ms, Decision-1 541/1,251 ms, gpt-4.1-mini 1,427/2,090 ms, luna-none 1,714/2,578 ms, luna-default 2,132/3,045 ms, and local OpenJev 2,566/3,030 ms.&quot;,
+          &quot;lead&quot;: &quot;All 3 dedicated cloud decision APIs respond in 326–597 ms P50 — 3x to 5x faster than Chat Completions LLM routing (1,427–2,132 ms).&quot;
+        }
+      ],
+      &quot;eyebrow&quot;: &quot;LATENCY&quot;,
+      &quot;headline&quot;: &quot;End-to-end decision latency: P50 vs P95 across all 8 engines (v2.4.1 neutral)&quot;,
+      &quot;kind&quot;: &quot;latency&quot;,
+      &quot;rows&quot;: [
+        {
+          &quot;baseline_tag&quot;: &quot;P95 tail&quot;,
+          &quot;batched_median_ms&quot;: 111,
+          &quot;label&quot;: &quot;1. Self-hosted Laya 0.3.20 (Local M4 Pro · 47.5% acc · $0 API)&quot;,
+          &quot;one_by_one_estimated_ms&quot;: 491,
+          &quot;primary_tag&quot;: &quot;P50 median&quot;,
+          &quot;question_count&quot;: 40,
+          &quot;runs&quot;: 120,
+          &quot;unit&quot;: &quot;ms&quot;
+        },
+        {
+          &quot;baseline_tag&quot;: &quot;P95 tail&quot;,
+          &quot;batched_median_ms&quot;: 326,
+          &quot;label&quot;: &quot;2. TypeSafe Jev Cloud (jev-latest · 100% neutral / 98.3% cheap · $24.1/1M)&quot;,
+          &quot;one_by_one_estimated_ms&quot;: 643,
+          &quot;primary_tag&quot;: &quot;P50 median&quot;,
+          &quot;question_count&quot;: 40,
+          &quot;runs&quot;: 120,
+          &quot;unit&quot;: &quot;ms&quot;
+        },
+        {
+          &quot;baseline_tag&quot;: &quot;P95 tail&quot;,
+          &quot;batched_median_ms&quot;: 417,
+          &quot;label&quot;: &quot;3. OpenAI Decisions Cloud (gpt-6-luna · 92.5% neutral / 80.0% cheap · $26.1/1M)&quot;,
+          &quot;one_by_one_estimated_ms&quot;: 804,
+          &quot;primary_tag&quot;: &quot;P50 median&quot;,
+          &quot;question_count&quot;: 40,
+          &quot;runs&quot;: 120,
+          &quot;unit&quot;: &quot;ms&quot;
+        },
+        {
+          &quot;baseline_tag&quot;: &quot;P95 tail&quot;,
+          &quot;batched_median_ms&quot;: 597,
+          &quot;label&quot;: &quot;4. Microsoft Decision-1 Cloud (Foundry East US 2 · 100% neutral / 94.2% cheap · $7.6/1M)&quot;,
+          &quot;one_by_one_estimated_ms&quot;: 1344,
+          &quot;primary_tag&quot;: &quot;P50 median&quot;,
+          &quot;question_count&quot;: 40,
+          &quot;runs&quot;: 120,
+          &quot;unit&quot;: &quot;ms&quot;
+        },
+        {
+          &quot;baseline_tag&quot;: &quot;P95 tail&quot;,
+          &quot;batched_median_ms&quot;: 1608,
+          &quot;label&quot;: &quot;5. LLM Router: gpt-4.1-mini (Foundry · 90.0% acc · $141.4/1M)&quot;,
+          &quot;one_by_one_estimated_ms&quot;: 2510,
+          &quot;primary_tag&quot;: &quot;P50 median&quot;,
+          &quot;question_count&quot;: 40,
+          &quot;runs&quot;: 120,
+          &quot;unit&quot;: &quot;ms&quot;
+        },
+        {
+          &quot;baseline_tag&quot;: &quot;P95 tail&quot;,
+          &quot;batched_median_ms&quot;: 1739,
+          &quot;label&quot;: &quot;6. LLM Router: gpt-6-luna reasoning=&#x27;none&#x27; (Foundry · 90.8% acc · $39.8/1M)&quot;,
+          &quot;one_by_one_estimated_ms&quot;: 2731,
+          &quot;primary_tag&quot;: &quot;P50 median&quot;,
+          &quot;question_count&quot;: 40,
+          &quot;runs&quot;: 120,
+          &quot;unit&quot;: &quot;ms&quot;
+        },
+        {
+          &quot;baseline_tag&quot;: &quot;P95 tail&quot;,
+          &quot;batched_median_ms&quot;: 2079,
+          &quot;label&quot;: &quot;7. LLM Router: gpt-6-luna default reasoning (Foundry · 72.5% acc · $63.1/1M)&quot;,
+          &quot;one_by_one_estimated_ms&quot;: 3538,
+          &quot;primary_tag&quot;: &quot;P50 median&quot;,
+          &quot;question_count&quot;: 40,
+          &quot;runs&quot;: 120,
+          &quot;unit&quot;: &quot;ms&quot;
+        },
+        {
+          &quot;baseline_tag&quot;: &quot;P95 tail&quot;,
+          &quot;batched_median_ms&quot;: 2276,
+          &quot;label&quot;: &quot;8. OpenJev 27B Local (M4 Pro 48GB MLX 4-bit · 100% neutral / 92.5% cheap · $0 API)&quot;,
+          &quot;one_by_one_estimated_ms&quot;: 2597,
+          &quot;primary_tag&quot;: &quot;P50 median&quot;,
+          &quot;question_count&quot;: 40,
+          &quot;runs&quot;: 120,
+          &quot;unit&quot;: &quot;ms&quot;
+        }
+      ],
+      &quot;subtitle&quot;: &quot;Blue bars show P50 median latency (ms); gray bars show P95 tail latency (ms) under Switchyard v2.4.1 neutral instructions (Mainland China client to cloud APIs; Apple M4 Pro 48GB for local OpenJev &amp; Laya).&quot;
+    },
+    {
+      &quot;dark_box&quot;: {
+        &quot;lead&quot;: &quot;Provenance: anonymized_reported (independently_reproduced=false). Evaluated 2026-10-11..10-13 across Switchyard v2.3.0, v2.4.0 (960 calls), and v2.4.1 (2,760 calls + 160 direct API diagnostic calls).&quot;,
+        &quot;repo&quot;: &quot;Public router: https://github.com/satomic/model-router (commits b58bfd31, 3408c39c, 8a20a7b6) · Archive: docs/research/openai-decisions-vs-decision-1-routing-benchmark/&quot;
+      },
+      &quot;eyebrow&quot;: &quot;MY TAKE&quot;,
+      &quot;good_fit&quot;: [
+        &quot;Microsoft Decision-1 as default cloud router on Azure AI Foundry: 100% neutral accuracy (94.2% cheap), $7.6–$8.6/1M cost (3.3x cheaper than OpenAI Decisions, 16x cheaper than gpt-4.1-mini), ~550 ms P50, and clean 0.60 threshold gating&quot;,
+        &quot;TypeSafe Jev when maximum instruction immunity (39..40/40 across all 4 variants, 0 false blocks at 0.60) and lowest cloud latency (~330 ms P50) justify ~3x Decision-1&#x27;s price ($21.7–$24.1/1M)&quot;,
+        &quot;Neutral routing instructions (&#x27;Pick the option whose description best matches...&#x27;) while encoding tier boundaries inside candidate descriptions (+12.5% on OpenAI Decisions, +5.8% on Decision-1)&quot;,
+        &quot;OpenAI Decisions for teams already on an OpenAI 1P key needing a fast (~400 ms P50) drop-in endpoint under neutral/bare instructions (92.5%–95.0%)&quot;,
+        &quot;Setting reasoning_effort=&#x27;none&#x27; whenever using a reasoning LLM (gpt-6-luna) as a prompt-based router (+15.0 to +18.3 pts accuracy, -400 ms latency, -37% cost vs default reasoning)&quot;
+      ],
+      &quot;headline&quot;: &quot;Why Microsoft Decision-1 stays the #1 production choice after OpenAI Decisions joins&quot;,
+      &quot;kind&quot;: &quot;takeaways&quot;,
+      &quot;not_for&quot;: [
+        &quot;Combining OpenAI Decisions with cost-saving prompt instructions (&#x27;prefer cheaper when simple&#x27;): accuracy drops to 80.0% (32/40) and 14/20 (70%) on implicit Set B requests&quot;,
+        &quot;Relying on a 0.60 confidence gate with OpenAI Decisions: 50% of its misses (24/48 across v2.4.1) have p &gt;= 0.60 (up to 0.78), failing silently without triggering fallback&quot;,
+        &quot;Calling /openai/v1/decisions on Azure AI Foundry (returns HTTP 404; Foundry serves Decision-1 at /providers/microsoft/v1/systemone instead)&quot;,
+        &quot;Leaving default reasoning enabled on LLM routers (gpt-6-luna default drops to 72.5%–75.8% accuracy and flips choices across rounds on 11–13/40 prompts)&quot;,
+        &quot;Commercial production use of OpenJev 27B weights (CC BY-NC 4.0 non-commercial license) or 5-way general model routing with Laya 0.3.20 (47.5%–52.5% accuracy)&quot;
+      ]
+    }
+  ],
+  &quot;datasets&quot;: {
+    &quot;direct_api_sensitivity_summary&quot;: {
+      &quot;microsoft_decision_1&quot;: {
+        &quot;neutral_correct&quot;: 40,
+        &quot;router_cheap_correct&quot;: 38
+      },
+      &quot;openai_decisions&quot;: {
+        &quot;neutral_correct&quot;: 37,
+        &quot;neutral_misses_to_mini&quot;: 3,
+        &quot;router_cheap_correct&quot;: 32,
+        &quot;router_cheap_misses_to_mini&quot;: 8
+      },
+      &quot;typesafe_jev&quot;: {
+        &quot;neutral_correct&quot;: 40,
+        &quot;router_cheap_correct&quot;: 39
+      }
+    },
+    &quot;v240_summary8&quot;: {
+      &quot;laya&quot;: {
+        &quot;A-ALL&quot;: [
+          12,
+          12,
+          12
+        ],
+        &quot;A-EN&quot;: [
+          7,
+          7,
+          7
+        ],
+        &quot;A-ZH&quot;: [
+          5,
+          5,
+          5
+        ],
+        &quot;B-ALL&quot;: [
+          8,
+          8,
+          8
+        ],
+        &quot;B-EN&quot;: [
+          5,
+          5,
+          5
+        ],
+        &quot;B-ZH&quot;: [
+          3,
+          3,
+          3
+        ],
+        &quot;EN&quot;: [
+          12,
+          12,
+          12
+        ],
+        &quot;ZH&quot;: [
+          8,
+          8,
+          8
+        ],
+        &quot;acc40&quot;: 20,
+        &quot;cost&quot;: 0.0,
+        &quot;errors&quot;: 0,
+        &quot;ms_p50&quot;: 127,
+        &quot;ms_p95&quot;: 143,
+        &quot;p_mean&quot;: 0.431,
+        &quot;pct&quot;: 50.0,
+        &quot;right_lt06&quot;: 48,
+        &quot;stable&quot;: 40,
+        &quot;wrong_ge06&quot;: 9,
+        &quot;wrong_n&quot;: 60,
+        &quot;wrong_pmax&quot;: 0.913
+      },
+      &quot;llm&quot;: {
+        &quot;A-ALL&quot;: [
+          18,
+          18,
+          18
+        ],
+        &quot;A-EN&quot;: [
+          9,
+          9,
+          9
+        ],
+        &quot;A-ZH&quot;: [
+          9,
+          9,
+          9
+        ],
+        &quot;B-ALL&quot;: [
+          18,
+          18,
+          18
+        ],
+        &quot;B-EN&quot;: [
+          9,
+          9,
+          9
+        ],
+        &quot;B-ZH&quot;: [
+          9,
+          9,
+          9
+        ],
+        &quot;EN&quot;: [
+          18,
+          18,
+          18
+        ],
+        &quot;ZH&quot;: [
+          18,
+          18,
+          18
+        ],
+        &quot;acc40&quot;: 36,
+        &quot;cost&quot;: 141.8,
+        &quot;errors&quot;: 0,
+        &quot;ms_p50&quot;: 1427,
+        &quot;ms_p95&quot;: 2090,
+        &quot;pct&quot;: 90.0,
+        &quot;stable&quot;: 40
+      },
+      &quot;luna-default&quot;: {
+        &quot;A-ALL&quot;: [
+          14,
+          15,
+          18
+        ],
+        &quot;A-EN&quot;: [
+          7,
+          8,
+          9
+        ],
+        &quot;A-ZH&quot;: [
+          7,
+          7,
+          9
+        ],
+        &quot;B-ALL&quot;: [
+          15,
+          14,
+          15
+        ],
+        &quot;B-EN&quot;: [
+          7,
+          6,
+          7
+        ],
+        &quot;B-ZH&quot;: [
+          8,
+          8,
+          8
+        ],
+        &quot;EN&quot;: [
+          14,
+          14,
+          16
+        ],
+        &quot;ZH&quot;: [
+          15,
+          15,
+          17
+        ],
+        &quot;acc40&quot;: 30.33,
+        &quot;cost&quot;: 62.4,
+        &quot;errors&quot;: 0,
+        &quot;ms_p50&quot;: 2132,
+        &quot;ms_p95&quot;: 3045,
+        &quot;pct&quot;: 75.8,
+        &quot;stable&quot;: 27,
+        &quot;tin&quot;: 213,
+        &quot;tout&quot;: 82
+      },
+      &quot;luna-none&quot;: {
+        &quot;A-ALL&quot;: [
+          18,
+          17,
+          17
+        ],
+        &quot;A-EN&quot;: [
+          9,
+          8,
+          8
+        ],
+        &quot;A-ZH&quot;: [
+          9,
+          9,
+          9
+        ],
+        &quot;B-ALL&quot;: [
+          17,
+          18,
+          19
+        ],
+        &quot;B-EN&quot;: [
+          8,
+          9,
+          9
+        ],
+        &quot;B-ZH&quot;: [
+          9,
+          9,
+          10
+        ],
+        &quot;EN&quot;: [
+          17,
+          17,
+          17
+        ],
+        &quot;ZH&quot;: [
+          18,
+          18,
+          19
+        ],
+        &quot;acc40&quot;: 35.33,
+        &quot;cost&quot;: 39.9,
+        &quot;errors&quot;: 1,
+        &quot;ms_p50&quot;: 1714,
+        &quot;ms_p95&quot;: 2578,
+        &quot;pct&quot;: 88.3,
+        &quot;stable&quot;: 37,
+        &quot;tin&quot;: 213,
+        &quot;tout&quot;: 37
+      },
+      &quot;microsoft&quot;: {
+        &quot;A-ALL&quot;: [
+          19,
+          18,
+          19
+        ],
+        &quot;A-EN&quot;: [
+          10,
+          9,
+          10
+        ],
+        &quot;A-ZH&quot;: [
+          9,
+          9,
+          9
+        ],
+        &quot;B-ALL&quot;: [
+          19,
+          19,
+          19
+        ],
+        &quot;B-EN&quot;: [
+          10,
+          10,
+          10
+        ],
+        &quot;B-ZH&quot;: [
+          9,
+          9,
+          9
+        ],
+        &quot;EN&quot;: [
+          20,
+          19,
+          20
+        ],
+        &quot;ZH&quot;: [
+          18,
+          18,
+          18
+        ],
+        &quot;acc40&quot;: 37.67,
+        &quot;cost&quot;: 8.6,
+        &quot;errors&quot;: 0,
+        &quot;ms_p50&quot;: 541,
+        &quot;ms_p95&quot;: 1251,
+        &quot;p_mean&quot;: 0.907,
+        &quot;pct&quot;: 94.2,
+        &quot;right_lt06&quot;: 5,
+        &quot;stable&quot;: 39,
+        &quot;wrong_ge06&quot;: 0,
+        &quot;wrong_n&quot;: 7,
+        &quot;wrong_pmax&quot;: 0.56
+      },
+      &quot;openai&quot;: {
+        &quot;A-ALL&quot;: [
+          18,
+          18,
+          18
+        ],
+        &quot;A-EN&quot;: [
+          9,
+          9,
+          9
+        ],
+        &quot;A-ZH&quot;: [
+          9,
+          9,
+          9
+        ],
+        &quot;B-ALL&quot;: [
+          14,
+          14,
+          14
+        ],
+        &quot;B-EN&quot;: [
+          8,
+          8,
+          8
+        ],
+        &quot;B-ZH&quot;: [
+          6,
+          6,
+          6
+        ],
+        &quot;EN&quot;: [
+          17,
+          17,
+          17
+        ],
+        &quot;ZH&quot;: [
+          15,
+          15,
+          15
+        ],
+        &quot;acc40&quot;: 32,
+        &quot;cost&quot;: 28.4,
+        &quot;errors&quot;: 0,
+        &quot;ms_p50&quot;: 369,
+        &quot;ms_p95&quot;: 759,
+        &quot;p_mean&quot;: 0.764,
+        &quot;pct&quot;: 80.0,
+        &quot;right_lt06&quot;: 15,
+        &quot;stable&quot;: 40,
+        &quot;tin&quot;: 284,
+        &quot;tout&quot;: 0,
+        &quot;wrong_ge06&quot;: 9,
+        &quot;wrong_n&quot;: 24,
+        &quot;wrong_pmax&quot;: 0.75
+      },
+      &quot;openjev&quot;: {
+        &quot;A-ALL&quot;: [
+          19,
+          19,
+          19
+        ],
+        &quot;A-EN&quot;: [
+          9,
+          9,
+          9
+        ],
+        &quot;A-ZH&quot;: [
+          10,
+          10,
+          10
+        ],
+        &quot;B-ALL&quot;: [
+          18,
+          18,
+          18
+        ],
+        &quot;B-EN&quot;: [
+          9,
+          9,
+          9
+        ],
+        &quot;B-ZH&quot;: [
+          9,
+          9,
+          9
+        ],
+        &quot;EN&quot;: [
+          18,
+          18,
+          18
+        ],
+        &quot;ZH&quot;: [
+          19,
+          19,
+          19
+        ],
+        &quot;acc40&quot;: 37,
+        &quot;cost&quot;: 0.0,
+        &quot;errors&quot;: 0,
+        &quot;ms_p50&quot;: 2566,
+        &quot;ms_p95&quot;: 3030,
+        &quot;p_mean&quot;: 0.88,
+        &quot;pct&quot;: 92.5,
+        &quot;right_lt06&quot;: 6,
+        &quot;stable&quot;: 40,
+        &quot;wrong_ge06&quot;: 6,
+        &quot;wrong_n&quot;: 9,
+        &quot;wrong_pmax&quot;: 0.717
+      },
+      &quot;typesafe&quot;: {
+        &quot;A-ALL&quot;: [
+          20,
+          20,
+          20
+        ],
+        &quot;A-EN&quot;: [
+          10,
+          10,
+          10
+        ],
+        &quot;A-ZH&quot;: [
+          10,
+          10,
+          10
+        ],
+        &quot;B-ALL&quot;: [
+          19,
+          19,
+          20
+        ],
+        &quot;B-EN&quot;: [
+          9,
+          9,
+          10
+        ],
+        &quot;B-ZH&quot;: [
+          10,
+          10,
+          10
+        ],
+        &quot;EN&quot;: [
+          19,
+          19,
+          20
+        ],
+        &quot;ZH&quot;: [
+          20,
+          20,
+          20
+        ],
+        &quot;acc40&quot;: 39.33,
+        &quot;cost&quot;: 21.7,
+        &quot;errors&quot;: 0,
+        &quot;ms_p50&quot;: 350,
+        &quot;ms_p95&quot;: 720,
+        &quot;p_mean&quot;: 0.919,
+        &quot;pct&quot;: 98.3,
+        &quot;right_lt06&quot;: 1,
+        &quot;stable&quot;: 39,
+        &quot;wrong_ge06&quot;: 0,
+        &quot;wrong_n&quot;: 2,
+        &quot;wrong_pmax&quot;: 0.49
+      }
+    },
+    &quot;v241_summary_by_variant&quot;: {
+      &quot;laya&quot;: {
+        &quot;bare&quot;: {
+          &quot;A&quot;: [
+            12,
+            12,
+            12
+          ],
+          &quot;B&quot;: [
+            9,
+            9,
+            9
+          ],
+          &quot;EN&quot;: [
+            11,
+            11,
+            11
+          ],
+          &quot;ZH&quot;: [
+            10,
+            10,
+            10
+          ],
+          &quot;acc40&quot;: 21,
+          &quot;all&quot;: [
+            21,
+            21,
+            21
+          ],
+          &quot;cost&quot;: 0.0,
+          &quot;dir&quot;: {
+            &quot;cheaper&quot;: 24,
+            &quot;side&quot;: 15,
+            &quot;stronger&quot;: 18
+          },
+          &quot;errors&quot;: 0,
+          &quot;ms_p50&quot;: 104,
+          &quot;ms_p95&quot;: 602,
+          &quot;p_right&quot;: 0.461,
+          &quot;pct&quot;: 52.5,
+          &quot;picked&quot;: {
+            &quot;gpt-4.1&quot;: 24,
+            &quot;gpt-4.1-mini&quot;: 21,
+            &quot;gpt-4o&quot;: 45,
+            &quot;gpt-5.4&quot;: 15,
+            &quot;gpt-6-luna&quot;: 15
+          },
+          &quot;right_lt06&quot;: 51,
+          &quot;rounds&quot;: 3,
+          &quot;stable&quot;: 40,
+          &quot;wrong_ge06&quot;: 6,
+          &quot;wrong_n&quot;: 57,
+          &quot;wrong_pmax&quot;: 0.846
+        },
+        &quot;cheap&quot;: {
+          &quot;A&quot;: [
+            13,
+            13,
+            13
+          ],
+          &quot;B&quot;: [
+            8,
+            8,
+            8
+          ],
+          &quot;EN&quot;: [
+            12,
+            12,
+            12
+          ],
+          &quot;ZH&quot;: [
+            9,
+            9,
+            9
+          ],
+          &quot;acc40&quot;: 21,
+          &quot;all&quot;: [
+            21,
+            21,
+            21
+          ],
+          &quot;cost&quot;: 0.0,
+          &quot;dir&quot;: {
+            &quot;cheaper&quot;: 27,
+            &quot;side&quot;: 12,
+            &quot;stronger&quot;: 18
+          },
+          &quot;errors&quot;: 0,
+          &quot;ms_p50&quot;: 109,
+          &quot;ms_p95&quot;: 513,
+          &quot;p_right&quot;: 0.475,
+          &quot;pct&quot;: 52.5,
+          &quot;picked&quot;: {
+            &quot;gpt-4.1&quot;: 24,
+            &quot;gpt-4.1-mini&quot;: 24,
+            &quot;gpt-4o&quot;: 42,
+            &quot;gpt-5.4&quot;: 12,
+            &quot;gpt-6-luna&quot;: 18
+          },
+          &quot;right_lt06&quot;: 48,
+          &quot;rounds&quot;: 3,
+          &quot;stable&quot;: 40,
+          &quot;wrong_ge06&quot;: 6,
+          &quot;wrong_n&quot;: 57,
+          &quot;wrong_pmax&quot;: 0.905
+        },
+        &quot;neutral&quot;: {
+          &quot;A&quot;: [
+            12,
+            12,
+            12
+          ],
+          &quot;B&quot;: [
+            7,
+            7,
+            7
+          ],
+          &quot;EN&quot;: [
+            10,
+            10,
+            10
+          ],
+          &quot;ZH&quot;: [
+            9,
+            9,
+            9
+          ],
+          &quot;acc40&quot;: 19,
+          &quot;all&quot;: [
+            19,
+            19,
+            19
+          ],
+          &quot;cost&quot;: 0.0,
+          &quot;dir&quot;: {
+            &quot;cheaper&quot;: 33,
+            &quot;side&quot;: 15,
+            &quot;stronger&quot;: 15
+          },
+          &quot;errors&quot;: 0,
+          &quot;ms_p50&quot;: 111,
+          &quot;ms_p95&quot;: 491,
+          &quot;p_right&quot;: 0.493,
+          &quot;pct&quot;: 47.5,
+          &quot;picked&quot;: {
+            &quot;gpt-4.1&quot;: 24,
+            &quot;gpt-4.1-mini&quot;: 24,
+            &quot;gpt-4o&quot;: 51,
+            &quot;gpt-5.4&quot;: 6,
+            &quot;gpt-6-luna&quot;: 15
+          },
+          &quot;right_lt06&quot;: 45,
+          &quot;rounds&quot;: 3,
+          &quot;stable&quot;: 40,
+          &quot;wrong_ge06&quot;: 6,
+          &quot;wrong_n&quot;: 63,
+          &quot;wrong_pmax&quot;: 0.911
+        },
+        &quot;strong&quot;: {
+          &quot;A&quot;: [
+            12,
+            12,
+            12
+          ],
+          &quot;B&quot;: [
+            8,
+            8,
+            8
+          ],
+          &quot;EN&quot;: [
+            11,
+            11,
+            11
+          ],
+          &quot;ZH&quot;: [
+            9,
+            9,
+            9
+          ],
+          &quot;acc40&quot;: 20,
+          &quot;all&quot;: [
+            20,
+            20,
+            20
+          ],
+          &quot;cost&quot;: 0.0,
+          &quot;dir&quot;: {
+            &quot;cheaper&quot;: 27,
+            &quot;side&quot;: 15,
+            &quot;stronger&quot;: 18
+          },
+          &quot;errors&quot;: 0,
+          &quot;ms_p50&quot;: 112,
+          &quot;ms_p95&quot;: 478,
+          &quot;p_right&quot;: 0.495,
+          &quot;pct&quot;: 50.0,
+          &quot;picked&quot;: {
+            &quot;gpt-4.1&quot;: 24,
+            &quot;gpt-4.1-mini&quot;: 24,
+            &quot;gpt-4o&quot;: 45,
+            &quot;gpt-5.4&quot;: 12,
+            &quot;gpt-6-luna&quot;: 15
+          },
+          &quot;right_lt06&quot;: 48,
+          &quot;rounds&quot;: 3,
+          &quot;stable&quot;: 40,
+          &quot;wrong_ge06&quot;: 6,
+          &quot;wrong_n&quot;: 60,
+          &quot;wrong_pmax&quot;: 0.886
+        }
+      },
+      &quot;llm&quot;: {
+        &quot;neutral&quot;: {
+          &quot;A&quot;: [
+            18,
+            18,
+            18
+          ],
+          &quot;B&quot;: [
+            18,
+            18,
+            18
+          ],
+          &quot;EN&quot;: [
+            18,
+            18,
+            18
+          ],
+          &quot;ZH&quot;: [
+            18,
+            18,
+            18
+          ],
+          &quot;acc40&quot;: 36,
+          &quot;all&quot;: [
+            36,
+            36,
+            36
+          ],
+          &quot;cost&quot;: 141.4,
+          &quot;dir&quot;: {
+            &quot;stronger&quot;: 12
+          },
+          &quot;errors&quot;: 0,
+          &quot;ms_p50&quot;: 1608,
+          &quot;ms_p95&quot;: 2510,
+          &quot;pct&quot;: 90.0,
+          &quot;picked&quot;: {
+            &quot;gpt-4.1&quot;: 24,
+            &quot;gpt-4.1-mini&quot;: 12,
+            &quot;gpt-4o&quot;: 36,
+            &quot;gpt-5.4&quot;: 24,
+            &quot;gpt-6-luna&quot;: 24
+          },
+          &quot;rounds&quot;: 3,
+          &quot;stable&quot;: 40,
+          &quot;tin&quot;: 214,
+          &quot;tout&quot;: 35
+        }
+      },
+      &quot;luna-default&quot;: {
+        &quot;neutral&quot;: {
+          &quot;A&quot;: [
+            15,
+            17,
+            13
+          ],
+          &quot;B&quot;: [
+            14,
+            14,
+            14
+          ],
+          &quot;EN&quot;: [
+            12,
+            16,
+            12
+          ],
+          &quot;ZH&quot;: [
+            17,
+            15,
+            15
+          ],
+          &quot;acc40&quot;: 29,
+          &quot;all&quot;: [
+            29,
+            31,
+            27
+          ],
+          &quot;cost&quot;: 63.1,
+          &quot;dir&quot;: {
+            &quot;cheaper&quot;: 32,
+            &quot;stronger&quot;: 1
+          },
+          &quot;errors&quot;: 1,
+          &quot;ms_p50&quot;: 2079,
+          &quot;ms_p95&quot;: 3538,
+          &quot;pct&quot;: 72.5,
+          &quot;picked&quot;: {
+            &quot;gpt-4.1&quot;: 15,
+            &quot;gpt-4.1-mini&quot;: 42,
+            &quot;gpt-4o&quot;: 25,
+            &quot;gpt-5.4&quot;: 14,
+            &quot;gpt-6-luna&quot;: 24
+          },
+          &quot;rounds&quot;: 3,
+          &quot;stable&quot;: 29,
+          &quot;tin&quot;: 213,
+          &quot;tout&quot;: 84
+        }
+      },
+      &quot;luna-none&quot;: {
+        &quot;neutral&quot;: {
+          &quot;A&quot;: [
+            18,
+            17,
+            18
+          ],
+          &quot;B&quot;: [
+            19,
+            19,
+            18
+          ],
+          &quot;EN&quot;: [
+            18,
+            17,
+            18
+          ],
+          &quot;ZH&quot;: [
+            19,
+            19,
+            18
+          ],
+          &quot;acc40&quot;: 36.33,
+          &quot;all&quot;: [
+            37,
+            36,
+            36
+          ],
+          &quot;cost&quot;: 39.8,
+          &quot;dir&quot;: {
+            &quot;cheaper&quot;: 10,
+            &quot;stronger&quot;: 1
+          },
+          &quot;errors&quot;: 0,
+          &quot;ms_p50&quot;: 1739,
+          &quot;ms_p95&quot;: 2731,
+          &quot;pct&quot;: 90.8,
+          &quot;picked&quot;: {
+            &quot;gpt-4.1&quot;: 14,
+            &quot;gpt-4.1-mini&quot;: 29,
+            &quot;gpt-4o&quot;: 28,
+            &quot;gpt-5.4&quot;: 25,
+            &quot;gpt-6-luna&quot;: 24
+          },
+          &quot;rounds&quot;: 3,
+          &quot;stable&quot;: 36,
+          &quot;tin&quot;: 213,
+          &quot;tout&quot;: 37
+        }
+      },
+      &quot;microsoft&quot;: {
+        &quot;bare&quot;: {
+          &quot;A&quot;: [
+            20,
+            20,
+            20
+          ],
+          &quot;B&quot;: [
+            19,
+            19,
+            19
+          ],
+          &quot;EN&quot;: [
+            20,
+            20,
+            20
+          ],
+          &quot;ZH&quot;: [
+            19,
+            19,
+            19
+          ],
+          &quot;acc40&quot;: 39,
+          &quot;all&quot;: [
+            39,
+            39,
+            39
+          ],
+          &quot;cost&quot;: 7.1,
+          &quot;dir&quot;: {
+            &quot;cheaper&quot;: 3
+          },
+          &quot;errors&quot;: 0,
+          &quot;ms_p50&quot;: 522,
+          &quot;ms_p95&quot;: 989,
+          &quot;p_right&quot;: 0.957,
+          &quot;pct&quot;: 97.5,
+          &quot;picked&quot;: {
+            &quot;gpt-4.1&quot;: 24,
+            &quot;gpt-4.1-mini&quot;: 27,
+            &quot;gpt-4o&quot;: 21,
+            &quot;gpt-5.4&quot;: 24,
+            &quot;gpt-6-luna&quot;: 24
+          },
+          &quot;right_lt06&quot;: 0,
+          &quot;rounds&quot;: 3,
+          &quot;stable&quot;: 40,
+          &quot;tin&quot;: 169,
+          &quot;tout&quot;: 1,
+          &quot;wrong_ge06&quot;: 0,
+          &quot;wrong_n&quot;: 3,
+          &quot;wrong_pmax&quot;: 0.58
+        },
+        &quot;cheap&quot;: {
+          &quot;A&quot;: [
+            19,
+            19,
+            19
+          ],
+          &quot;B&quot;: [
+            19,
+            19,
+            19
+          ],
+          &quot;EN&quot;: [
+            20,
+            20,
+            20
+          ],
+          &quot;ZH&quot;: [
+            18,
+            18,
+            18
+          ],
+          &quot;acc40&quot;: 38,
+          &quot;all&quot;: [
+            38,
+            38,
+            38
+          ],
+          &quot;cost&quot;: 8.6,
+          &quot;dir&quot;: {
+            &quot;cheaper&quot;: 6
+          },
+          &quot;errors&quot;: 0,
+          &quot;ms_p50&quot;: 508,
+          &quot;ms_p95&quot;: 1004,
+          &quot;p_right&quot;: 0.924,
+          &quot;pct&quot;: 95.0,
+          &quot;picked&quot;: {
+            &quot;gpt-4.1&quot;: 24,
+            &quot;gpt-4.1-mini&quot;: 30,
+            &quot;gpt-4o&quot;: 18,
+            &quot;gpt-5.4&quot;: 24,
+            &quot;gpt-6-luna&quot;: 24
+          },
+          &quot;right_lt06&quot;: 7,
+          &quot;rounds&quot;: 3,
+          &quot;stable&quot;: 40,
+          &quot;tin&quot;: 203,
+          &quot;tout&quot;: 1,
+          &quot;wrong_ge06&quot;: 3,
+          &quot;wrong_n&quot;: 6,
+          &quot;wrong_pmax&quot;: 0.642
+        },
+        &quot;neutral&quot;: {
+          &quot;A&quot;: [
+            20,
+            20,
+            20
+          ],
+          &quot;B&quot;: [
+            20,
+            20,
+            20
+          ],
+          &quot;EN&quot;: [
+            20,
+            20,
+            20
+          ],
+          &quot;ZH&quot;: [
+            20,
+            20,
+            20
+          ],
+          &quot;acc40&quot;: 40,
+          &quot;all&quot;: [
+            40,
+            40,
+            40
+          ],
+          &quot;cost&quot;: 7.6,
+          &quot;dir&quot;: {},
+          &quot;errors&quot;: 0,
+          &quot;ms_p50&quot;: 597,
+          &quot;ms_p95&quot;: 1344,
+          &quot;p_right&quot;: 0.962,
+          &quot;pct&quot;: 100.0,
+          &quot;picked&quot;: {
+            &quot;gpt-4.1&quot;: 24,
+            &quot;gpt-4.1-mini&quot;: 24,
+            &quot;gpt-4o&quot;: 24,
+            &quot;gpt-5.4&quot;: 24,
+            &quot;gpt-6-luna&quot;: 24
+          },
+          &quot;right_lt06&quot;: 1,
+          &quot;rounds&quot;: 3,
+          &quot;stable&quot;: 40,
+          &quot;tin&quot;: 180,
+          &quot;tout&quot;: 1,
+          &quot;wrong_ge06&quot;: 0,
+          &quot;wrong_n&quot;: 0,
+          &quot;wrong_pmax&quot;: null
+        },
+        &quot;strong&quot;: {
+          &quot;A&quot;: [
+            20,
+            20,
+            20
+          ],
+          &quot;B&quot;: [
+            20,
+            20,
+            20
+          ],
+          &quot;EN&quot;: [
+            20,
+            20,
+            20
+          ],
+          &quot;ZH&quot;: [
+            20,
+            20,
+            20
+          ],
+          &quot;acc40&quot;: 40,
+          &quot;all&quot;: [
+            40,
+            40,
+            40
+          ],
+          &quot;cost&quot;: 8.0,
+          &quot;dir&quot;: {},
+          &quot;errors&quot;: 0,
+          &quot;ms_p50&quot;: 569,
+          &quot;ms_p95&quot;: 1457,
+          &quot;p_right&quot;: 0.944,
+          &quot;pct&quot;: 100.0,
+          &quot;picked&quot;: {
+            &quot;gpt-4.1&quot;: 24,
+            &quot;gpt-4.1-mini&quot;: 24,
+            &quot;gpt-4o&quot;: 24,
+            &quot;gpt-5.4&quot;: 24,
+            &quot;gpt-6-luna&quot;: 24
+          },
+          &quot;right_lt06&quot;: 3,
+          &quot;rounds&quot;: 3,
+          &quot;stable&quot;: 40,
+          &quot;tin&quot;: 189,
+          &quot;tout&quot;: 1,
+          &quot;wrong_ge06&quot;: 0,
+          &quot;wrong_n&quot;: 0,
+          &quot;wrong_pmax&quot;: null
+        }
+      },
+      &quot;openai&quot;: {
+        &quot;bare&quot;: {
+          &quot;A&quot;: [
+            20,
+            20,
+            20
+          ],
+          &quot;B&quot;: [
+            18,
+            18,
+            18
+          ],
+          &quot;EN&quot;: [
+            19,
+            19,
+            19
+          ],
+          &quot;ZH&quot;: [
+            19,
+            19,
+            19
+          ],
+          &quot;acc40&quot;: 38,
+          &quot;all&quot;: [
+            38,
+            38,
+            38
+          ],
+          &quot;cost&quot;: 24.9,
+          &quot;dir&quot;: {
+            &quot;cheaper&quot;: 3,
+            &quot;side&quot;: 3
+          },
+          &quot;errors&quot;: 0,
+          &quot;ms_p50&quot;: 412,
+          &quot;ms_p95&quot;: 889,
+          &quot;p_right&quot;: 0.869,
+          &quot;pct&quot;: 95.0,
+          &quot;picked&quot;: {
+            &quot;gpt-4.1&quot;: 24,
+            &quot;gpt-4.1-mini&quot;: 30,
+            &quot;gpt-4o&quot;: 21,
+            &quot;gpt-5.4&quot;: 24,
+            &quot;gpt-6-luna&quot;: 21
+          },
+          &quot;right_lt06&quot;: 9,
+          &quot;rounds&quot;: 3,
+          &quot;stable&quot;: 40,
+          &quot;tin&quot;: 249,
+          &quot;tout&quot;: 0,
+          &quot;wrong_ge06&quot;: 6,
+          &quot;wrong_n&quot;: 6,
+          &quot;wrong_pmax&quot;: 0.78
+        },
+        &quot;cheap&quot;: {
+          &quot;A&quot;: [
+            18,
+            18,
+            18
+          ],
+          &quot;B&quot;: [
+            14,
+            14,
+            14
+          ],
+          &quot;EN&quot;: [
+            17,
+            17,
+            17
+          ],
+          &quot;ZH&quot;: [
+            15,
+            15,
+            15
+          ],
+          &quot;acc40&quot;: 32,
+          &quot;all&quot;: [
+            32,
+            32,
+            32
+          ],
+          &quot;cost&quot;: 28.4,
+          &quot;dir&quot;: {
+            &quot;cheaper&quot;: 18,
+            &quot;side&quot;: 6
+          },
+          &quot;errors&quot;: 0,
+          &quot;ms_p50&quot;: 418,
+          &quot;ms_p95&quot;: 802,
+          &quot;p_right&quot;: 0.821,
+          &quot;pct&quot;: 80.0,
+          &quot;picked&quot;: {
+            &quot;gpt-4.1&quot;: 24,
+            &quot;gpt-4.1-mini&quot;: 48,
+            &quot;gpt-4o&quot;: 12,
+            &quot;gpt-5.4&quot;: 18,
+            &quot;gpt-6-luna&quot;: 18
+          },
+          &quot;right_lt06&quot;: 15,
+          &quot;rounds&quot;: 3,
+          &quot;stable&quot;: 40,
+          &quot;tin&quot;: 284,
+          &quot;tout&quot;: 0,
+          &quot;wrong_ge06&quot;: 9,
+          &quot;wrong_n&quot;: 24,
+          &quot;wrong_pmax&quot;: 0.75
+        },
+        &quot;neutral&quot;: {
+          &quot;A&quot;: [
+            20,
+            20,
+            20
+          ],
+          &quot;B&quot;: [
+            17,
+            17,
+            17
+          ],
+          &quot;EN&quot;: [
+            18,
+            18,
+            18
+          ],
+          &quot;ZH&quot;: [
+            19,
+            19,
+            19
+          ],
+          &quot;acc40&quot;: 37,
+          &quot;all&quot;: [
+            37,
+            37,
+            37
+          ],
+          &quot;cost&quot;: 26.1,
+          &quot;dir&quot;: {
+            &quot;cheaper&quot;: 6,
+            &quot;side&quot;: 3
+          },
+          &quot;errors&quot;: 0,
+          &quot;ms_p50&quot;: 417,
+          &quot;ms_p95&quot;: 804,
+          &quot;p_right&quot;: 0.927,
+          &quot;pct&quot;: 92.5,
+          &quot;picked&quot;: {
+            &quot;gpt-4.1&quot;: 24,
+            &quot;gpt-4.1-mini&quot;: 33,
+            &quot;gpt-4o&quot;: 21,
+            &quot;gpt-5.4&quot;: 21,
+            &quot;gpt-6-luna&quot;: 21
+          },
+          &quot;right_lt06&quot;: 0,
+          &quot;rounds&quot;: 3,
+          &quot;stable&quot;: 40,
+          &quot;tin&quot;: 261,
+          &quot;tout&quot;: 0,
+          &quot;wrong_ge06&quot;: 3,
+          &quot;wrong_n&quot;: 9,
+          &quot;wrong_pmax&quot;: 0.66
+        },
+        &quot;strong&quot;: {
+          &quot;A&quot;: [
+            20,
+            20,
+            20
+          ],
+          &quot;B&quot;: [
+            17,
+            17,
+            17
+          ],
+          &quot;EN&quot;: [
+            18,
+            18,
+            18
+          ],
+          &quot;ZH&quot;: [
+            19,
+            19,
+            19
+          ],
+          &quot;acc40&quot;: 37,
+          &quot;all&quot;: [
+            37,
+            37,
+            37
+          ],
+          &quot;cost&quot;: 27.0,
+          &quot;dir&quot;: {
+            &quot;cheaper&quot;: 6,
+            &quot;side&quot;: 3
+          },
+          &quot;errors&quot;: 0,
+          &quot;ms_p50&quot;: 416,
+          &quot;ms_p95&quot;: 773,
+          &quot;p_right&quot;: 0.878,
+          &quot;pct&quot;: 92.5,
+          &quot;picked&quot;: {
+            &quot;gpt-4.1&quot;: 24,
+            &quot;gpt-4.1-mini&quot;: 33,
+            &quot;gpt-4o&quot;: 21,
+            &quot;gpt-5.4&quot;: 21,
+            &quot;gpt-6-luna&quot;: 21
+          },
+          &quot;right_lt06&quot;: 3,
+          &quot;rounds&quot;: 3,
+          &quot;stable&quot;: 40,
+          &quot;tin&quot;: 270,
+          &quot;tout&quot;: 0,
+          &quot;wrong_ge06&quot;: 6,
+          &quot;wrong_n&quot;: 9,
+          &quot;wrong_pmax&quot;: 0.75
+        }
+      },
+      &quot;openjev&quot;: {
+        &quot;bare&quot;: {
+          &quot;A&quot;: [
+            20,
+            20,
+            20
+          ],
+          &quot;B&quot;: [
+            19,
+            19,
+            19
+          ],
+          &quot;EN&quot;: [
+            20,
+            20,
+            20
+          ],
+          &quot;ZH&quot;: [
+            19,
+            19,
+            19
+          ],
+          &quot;acc40&quot;: 39,
+          &quot;all&quot;: [
+            39,
+            39,
+            39
+          ],
+          &quot;cost&quot;: 0.0,
+          &quot;dir&quot;: {
+            &quot;cheaper&quot;: 3
+          },
+          &quot;errors&quot;: 0,
+          &quot;ms_p50&quot;: 2245,
+          &quot;ms_p95&quot;: 2451,
+          &quot;p_right&quot;: 0.906,
+          &quot;pct&quot;: 97.5,
+          &quot;picked&quot;: {
+            &quot;gpt-4.1&quot;: 24,
+            &quot;gpt-4.1-mini&quot;: 27,
+            &quot;gpt-4o&quot;: 21,
+            &quot;gpt-5.4&quot;: 24,
+            &quot;gpt-6-luna&quot;: 24
+          },
+          &quot;right_lt06&quot;: 3,
+          &quot;rounds&quot;: 3,
+          &quot;stable&quot;: 40,
+          &quot;wrong_ge06&quot;: 0,
+          &quot;wrong_n&quot;: 3,
+          &quot;wrong_pmax&quot;: 0.591
+        },
+        &quot;cheap&quot;: {
+          &quot;A&quot;: [
+            18,
+            18,
+            18
+          ],
+          &quot;B&quot;: [
+            18,
+            18,
+            18
+          ],
+          &quot;EN&quot;: [
+            18,
+            18,
+            18
+          ],
+          &quot;ZH&quot;: [
+            18,
+            18,
+            18
+          ],
+          &quot;acc40&quot;: 36,
+          &quot;all&quot;: [
+            36,
+            36,
+            36
+          ],
+          &quot;cost&quot;: 0.0,
+          &quot;dir&quot;: {
+            &quot;cheaper&quot;: 12
+          },
+          &quot;errors&quot;: 0,
+          &quot;ms_p50&quot;: 2565,
+          &quot;ms_p95&quot;: 2873,
+          &quot;p_right&quot;: 0.909,
+          &quot;pct&quot;: 90.0,
+          &quot;picked&quot;: {
+            &quot;gpt-4.1&quot;: 24,
+            &quot;gpt-4.1-mini&quot;: 36,
+            &quot;gpt-4o&quot;: 12,
+            &quot;gpt-5.4&quot;: 24,
+            &quot;gpt-6-luna&quot;: 24
+          },
+          &quot;right_lt06&quot;: 3,
+          &quot;rounds&quot;: 3,
+          &quot;stable&quot;: 40,
+          &quot;wrong_ge06&quot;: 6,
+          &quot;wrong_n&quot;: 12,
+          &quot;wrong_pmax&quot;: 0.751
+        },
+        &quot;neutral&quot;: {
+          &quot;A&quot;: [
+            20,
+            20,
+            20
+          ],
+          &quot;B&quot;: [
+            20,
+            20,
+            20
+          ],
+          &quot;EN&quot;: [
+            20,
+            20,
+            20
+          ],
+          &quot;ZH&quot;: [
+            20,
+            20,
+            20
+          ],
+          &quot;acc40&quot;: 40,
+          &quot;all&quot;: [
+            40,
+            40,
+            40
+          ],
+          &quot;cost&quot;: 0.0,
+          &quot;dir&quot;: {},
+          &quot;errors&quot;: 0,
+          &quot;ms_p50&quot;: 2276,
+          &quot;ms_p95&quot;: 2597,
+          &quot;p_right&quot;: 0.92,
+          &quot;pct&quot;: 100.0,
+          &quot;picked&quot;: {
+            &quot;gpt-4.1&quot;: 24,
+            &quot;gpt-4.1-mini&quot;: 24,
+            &quot;gpt-4o&quot;: 24,
+            &quot;gpt-5.4&quot;: 24,
+            &quot;gpt-6-luna&quot;: 24
+          },
+          &quot;right_lt06&quot;: 3,
+          &quot;rounds&quot;: 3,
+          &quot;stable&quot;: 40,
+          &quot;wrong_ge06&quot;: 0,
+          &quot;wrong_n&quot;: 0,
+          &quot;wrong_pmax&quot;: null
+        },
+        &quot;strong&quot;: {
+          &quot;A&quot;: [
+            20,
+            20,
+            20
+          ],
+          &quot;B&quot;: [
+            19,
+            19,
+            19
+          ],
+          &quot;EN&quot;: [
+            20,
+            20,
+            20
+          ],
+          &quot;ZH&quot;: [
+            19,
+            19,
+            19
+          ],
+          &quot;acc40&quot;: 39,
+          &quot;all&quot;: [
+            39,
+            39,
+            39
+          ],
+          &quot;cost&quot;: 0.0,
+          &quot;dir&quot;: {
+            &quot;cheaper&quot;: 3
+          },
+          &quot;errors&quot;: 0,
+          &quot;ms_p50&quot;: 2281,
+          &quot;ms_p95&quot;: 2740,
+          &quot;p_right&quot;: 0.931,
+          &quot;pct&quot;: 97.5,
+          &quot;picked&quot;: {
+            &quot;gpt-4.1&quot;: 24,
+            &quot;gpt-4.1-mini&quot;: 27,
+            &quot;gpt-4o&quot;: 21,
+            &quot;gpt-5.4&quot;: 24,
+            &quot;gpt-6-luna&quot;: 24
+          },
+          &quot;right_lt06&quot;: 0,
+          &quot;rounds&quot;: 3,
+          &quot;stable&quot;: 40,
+          &quot;wrong_ge06&quot;: 0,
+          &quot;wrong_n&quot;: 3,
+          &quot;wrong_pmax&quot;: 0.489
+        }
+      },
+      &quot;typesafe&quot;: {
+        &quot;bare&quot;: {
+          &quot;A&quot;: [
+            20,
+            20,
+            20
+          ],
+          &quot;B&quot;: [
+            20,
+            20,
+            20
+          ],
+          &quot;EN&quot;: [
+            20,
+            20,
+            20
+          ],
+          &quot;ZH&quot;: [
+            20,
+            20,
+            20
+          ],
+          &quot;acc40&quot;: 40,
+          &quot;all&quot;: [
+            40,
+            40,
+            40
+          ],
+          &quot;cost&quot;: 23.6,
+          &quot;dir&quot;: {},
+          &quot;errors&quot;: 0,
+          &quot;ms_p50&quot;: 325,
+          &quot;ms_p95&quot;: 698,
+          &quot;p_right&quot;: 0.96,
+          &quot;pct&quot;: 100.0,
+          &quot;picked&quot;: {
+            &quot;gpt-4.1&quot;: 24,
+            &quot;gpt-4.1-mini&quot;: 24,
+            &quot;gpt-4o&quot;: 24,
+            &quot;gpt-5.4&quot;: 24,
+            &quot;gpt-6-luna&quot;: 24
+          },
+          &quot;right_lt06&quot;: 0,
+          &quot;rounds&quot;: 3,
+          &quot;stable&quot;: 40,
+          &quot;tin&quot;: 481,
+          &quot;tout&quot;: 82,
+          &quot;wrong_ge06&quot;: 0,
+          &quot;wrong_n&quot;: 0,
+          &quot;wrong_pmax&quot;: null
+        },
+        &quot;cheap&quot;: {
+          &quot;A&quot;: [
+            20,
+            20,
+            20
+          ],
+          &quot;B&quot;: [
+            19,
+            19,
+            19
+          ],
+          &quot;EN&quot;: [
+            19,
+            19,
+            19
+          ],
+          &quot;ZH&quot;: [
+            20,
+            20,
+            20
+          ],
+          &quot;acc40&quot;: 39,
+          &quot;all&quot;: [
+            39,
+            39,
+            39
+          ],
+          &quot;cost&quot;: 25.1,
+          &quot;dir&quot;: {
+            &quot;cheaper&quot;: 3
+          },
+          &quot;errors&quot;: 0,
+          &quot;ms_p50&quot;: 322,
+          &quot;ms_p95&quot;: 642,
+          &quot;p_right&quot;: 0.932,
+          &quot;pct&quot;: 97.5,
+          &quot;picked&quot;: {
+            &quot;gpt-4.1&quot;: 21,
+            &quot;gpt-4.1-mini&quot;: 27,
+            &quot;gpt-4o&quot;: 24,
+            &quot;gpt-5.4&quot;: 24,
+            &quot;gpt-6-luna&quot;: 24
+          },
+          &quot;right_lt06&quot;: 0,
+          &quot;rounds&quot;: 3,
+          &quot;stable&quot;: 40,
+          &quot;tin&quot;: 516,
+          &quot;tout&quot;: 82,
+          &quot;wrong_ge06&quot;: 0,
+          &quot;wrong_n&quot;: 3,
+          &quot;wrong_pmax&quot;: 0.45
+        },
+        &quot;neutral&quot;: {
+          &quot;A&quot;: [
+            20,
+            20,
+            20
+          ],
+          &quot;B&quot;: [
+            20,
+            20,
+            20
+          ],
+          &quot;EN&quot;: [
+            20,
+            20,
+            20
+          ],
+          &quot;ZH&quot;: [
+            20,
+            20,
+            20
+          ],
+          &quot;acc40&quot;: 40,
+          &quot;all&quot;: [
+            40,
+            40,
+            40
+          ],
+          &quot;cost&quot;: 24.1,
+          &quot;dir&quot;: {},
+          &quot;errors&quot;: 0,
+          &quot;ms_p50&quot;: 326,
+          &quot;ms_p95&quot;: 643,
+          &quot;p_right&quot;: 0.972,
+          &quot;pct&quot;: 100.0,
+          &quot;picked&quot;: {
+            &quot;gpt-4.1&quot;: 24,
+            &quot;gpt-4.1-mini&quot;: 24,
+            &quot;gpt-4o&quot;: 24,
+            &quot;gpt-5.4&quot;: 24,
+            &quot;gpt-6-luna&quot;: 24
+          },
+          &quot;right_lt06&quot;: 0,
+          &quot;rounds&quot;: 3,
+          &quot;stable&quot;: 40,
+          &quot;tin&quot;: 493,
+          &quot;tout&quot;: 82,
+          &quot;wrong_ge06&quot;: 0,
+          &quot;wrong_n&quot;: 0,
+          &quot;wrong_pmax&quot;: null
+        },
+        &quot;strong&quot;: {
+          &quot;A&quot;: [
+            20,
+            20,
+            20
+          ],
+          &quot;B&quot;: [
+            20,
+            20,
+            20
+          ],
+          &quot;EN&quot;: [
+            20,
+            20,
+            20
+          ],
+          &quot;ZH&quot;: [
+            20,
+            20,
+            20
+          ],
+          &quot;acc40&quot;: 40,
+          &quot;all&quot;: [
+            40,
+            40,
+            40
+          ],
+          &quot;cost&quot;: 24.5,
+          &quot;dir&quot;: {},
+          &quot;errors&quot;: 0,
+          &quot;ms_p50&quot;: 325,
+          &quot;ms_p95&quot;: 745,
+          &quot;p_right&quot;: 0.963,
+          &quot;pct&quot;: 100.0,
+          &quot;picked&quot;: {
+            &quot;gpt-4.1&quot;: 24,
+            &quot;gpt-4.1-mini&quot;: 24,
+            &quot;gpt-4o&quot;: 24,
+            &quot;gpt-5.4&quot;: 24,
+            &quot;gpt-6-luna&quot;: 24
+          },
+          &quot;right_lt06&quot;: 0,
+          &quot;rounds&quot;: 3,
+          &quot;stable&quot;: 40,
+          &quot;tin&quot;: 502,
+          &quot;tout&quot;: 82,
+          &quot;wrong_ge06&quot;: 0,
+          &quot;wrong_n&quot;: 0,
+          &quot;wrong_pmax&quot;: null
+        }
+      }
+    }
+  },
+  &quot;deck_title&quot;: &quot;8-Way Model Routing Benchmark · OpenAI Decisions vs Microsoft Decision-1 (Switchyard v2.4.0 &amp; v2.4.1)&quot;,
+  &quot;independently_reproduced&quot;: false,
+  &quot;provenance&quot;: &quot;anonymized_reported&quot;,
+  &quot;report_id&quot;: &quot;openai-decisions-vs-decision-1-routing-benchmark&quot;,
+  &quot;schema_version&quot;: 1,
+  &quot;source_binding&quot;: {
+    &quot;candidate_backends&quot;: [
+      &quot;gpt-4.1-mini&quot;,
+      &quot;gpt-4o&quot;,
+      &quot;gpt-4.1&quot;,
+      &quot;gpt-5.4&quot;,
+      &quot;gpt-6-luna&quot;
+    ],
+    &quot;direct_sensitivity_decisions&quot;: 160,
+    &quot;evaluation_dates&quot;: {
+      &quot;cohort_1_decision1_4engines&quot;: &quot;2026-10-11&quot;,
+      &quot;cohort_2_openjev_5engines&quot;: &quot;2026-10-12&quot;,
+      &quot;cohort_3_openai_decisions_8engines_v240&quot;: &quot;2026-10-13&quot;,
+      &quot;cohort_4_instruction_sensitivity_v241&quot;: &quot;2026-10-13&quot;
+    },
+    &quot;pinned_commits&quot;: {
+      &quot;v2.3.0_decision1&quot;: &quot;b58bfd319f1a8890d0c1d36e5f5606ebf71b83a2&quot;,
+      &quot;v2.4.0_openai_decisions&quot;: &quot;3408c39cb65650b374094bcf882e42810e15d61c&quot;,
+      &quot;v2.4.1_neutral_instructions&quot;: &quot;8a20a7b692e14ccd7bbb4bcbdfe273b4e67a5542&quot;
+    },
+    &quot;prompts_evaluated&quot;: 40,
+    &quot;routing_approaches_evaluated&quot;: 8,
+    &quot;total_decisions&quot;: 3880,
+    &quot;upstream_public_repo&quot;: &quot;satomic/model-router&quot;,
+    &quot;v240_decisions&quot;: 960,
+    &quot;v241_decisions&quot;: 2760
+  }
+}</pre></details></main></body></html>

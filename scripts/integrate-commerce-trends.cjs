@@ -62,8 +62,9 @@ function prepare() {
   });
 }
 function validate() {
+  const {assertSourcePreservation}=require('../tests/dedicated-smoke.cjs');
   const result=prepare();
-  for(const file of files)assert.equal(fs.readFileSync(path.join(root,file),'utf8').replace(/\r\n/g,'\n'),generate(file),file+': deterministic integration');
+  for(const file of files)assertSourcePreservation(file,fs.readFileSync(path.join(root,file),'utf8').replace(/\r\n/g,'\n'),generate(file).replace(/\r\n/g,'\n'));
   assert.equal(fs.readFileSync(path.join(root,svg),'utf8').replace(/\r\n/g,'\n'),sourceFor(svg),svg+': original SVG unchanged');
   return result;
 }
@@ -75,9 +76,11 @@ if(require.main===module) {
     const mergeHead=(spawnSync('git',['rev-parse','--verify','--quiet','MERGE_HEAD'],{cwd:root,encoding:'utf8'}).stdout||'').trim();
     if(mergeHead!==baseline)execFileSync('git',['merge-base','--is-ancestor',baseline,'HEAD'],{cwd:root});
     const outputs=files.map(file=>{
+      const {normalizeReleaseShell, finalizedLinks}=require('../tests/dedicated-smoke.cjs');
       const source=sourceFor(file),output=generate(file,source),current=fs.readFileSync(path.join(root,file),'utf8').replace(/\r\n/g,'\n');
       const restoredCurrent=current.replace(/<!-- commerce-trends-header:start -->[\s\S]*?<!-- commerce-trends-header:end -->/,()=>oldHeader(source)).replace(/<!-- commerce-trends-shell:start -->[\s\S]*?<!-- commerce-trends-shell:end -->/,'').replace(' data-reading-shell="document" data-theme="dark"','').replace(/ script-src 'sha256-[^']+';/,'').replace('<main class="reading-document" id="reading-main">','<main class="container">');
-      assert.ok(current===source||current===output||restoredCurrent===source,file+': refusing to overwrite an unrecognized concurrent edit');
+      const preserved=normalizeReleaseShell(current)===normalizeReleaseShell(finalizedLinks(file,output.replace(/\r\n/g,'\n')));
+      assert.ok(preserved||current===source||current===output||restoredCurrent===source,file+': refusing to overwrite an unrecognized concurrent edit');
       return {file,output};
     });
     assert.equal(fs.readFileSync(path.join(root,svg),'utf8').replace(/\r\n/g,'\n'),sourceFor(svg),'Merged SVG must match before writing');

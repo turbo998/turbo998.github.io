@@ -1,7 +1,9 @@
 const fs = require('node:fs');
 const path = require('node:path');
-const root = path.join(__dirname, '..');
-const inventory = require('../docs/redesign/route-inventory.json');
+const {tracks, classifyScene, classifyPage} = require('./engineering-tracks.cjs');
+const {buildKnowledgeAtlas} = require('./knowledge-atlas.cjs');
+function buildSite({root = path.join(__dirname, '..')} = {}) {
+const inventory = JSON.parse(fs.readFileSync(path.join(root, 'docs/redesign/route-inventory.json'), 'utf8'));
 const readingPath = path.join(root, 'docs/redesign/reading-migration.json');
 const readingRecords = fs.existsSync(readingPath) ? JSON.parse(fs.readFileSync(readingPath, 'utf8')).records : [];
 const readingByPath = new Map(readingRecords.map(record => [record.path, record]));
@@ -21,7 +23,8 @@ function readingDestination(value, zh) {
 const read = file => fs.readFileSync(path.join(root, file), 'utf8');
 const write = (file, text) => { fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true }); fs.writeFileSync(path.join(root, file), text); };
 const topics = {
-  infra: ['AI Infra', 'AI 基础设施', 'Build on explicit boundaries.', '在清晰边界上构建。', 'Isolation, capacity, orchestration, and recovery. Follow the original architecture and try independent tools.', '从隔离、容量、编排到恢复，阅读原始架构，独立运行工程工具。'],
+  'data-infra': ['Data & Infra Lab', '数据与基础设施实验室', 'Connect data. Isolate execution. Inspect cost.', '连接数据，隔离执行，审视成本。', 'Fabric IQ and cross-cloud data platforms, OneLake and Mirroring, AKSClaw / E2B capacity, Cycle #377 and VM modernization with FinOps.', '从 Fabric IQ 与跨云数据平台、OneLake 与 Mirroring，到 AKSClaw / E2B 容量、Cycle #377 和 VM 现代化与 FinOps。'],
+  infra: ['AI Infra', 'AI 基础设施', 'Trace the AI stack and its boundaries.', '读懂 AI 全栈与工程边界。', 'Phase 179 six-layer decisions, Azure runtimes, Tong–Yun–Ge supernodes, DeepInfer inference economics and E2B / Nomad heartbeat resilience.', 'Phase 179 六层决策、Azure 运行时、通–云–哥超节点、DeepInfer 推理经济性，以及 E2B / Nomad 心跳韧性。'],
   commerce: ['Agentic Commerce', '智能体商务', 'Ground the purchase. Verify the handoff.', '让交易接地，让交接可信。', 'Explore grounded product discovery, payment boundaries, and the checkout workflow.', '探索实时商品发现、支付边界与可信结账流程。'],
   voice: ['Voice', '语音', 'Listen to the whole pipeline.', '理解完整的语音管线。', 'Realtime conversation, enterprise scenarios, speaker separation, and original evaluation evidence.', '实时对话、企业场景、说话人分离，以及原始评测证据。'],
   benchmarks: ['Benchmarks & Harness', '测评与 Harness', 'Inspect the method before the score.', '先看方法，再看分数。', 'Original evaluation protocols and archived reports. Each source retains its conditions, provenance, and limitations.', '阅读原始评测协议与归档报告。每份来源保留测试条件、溯源和适用局限。'],
@@ -75,7 +78,7 @@ const camera4dPages = ['animation','generative-visual-lab'].flatMap(dir=>[
   {path:`${dir}/research/controllable-4d-video-camera-study.html`,role:'article',title:'可控 4D 高斯溅射与 Plücker 相机控制视频导演架构研究',tracks:['animation'],language:{declared:'zh-CN'},supplemental:true},
   {path:`${dir}/research/controllable-4d-video-camera-study.en.html`,role:'article',title:'Controllable 4D Gaussian Splatting & Plücker Camera-Control Video Architecture Study',tracks:['animation'],language:{declared:'en'},supplemental:true}
 ]);
-const archivePages = [...inventory.content, ...translations, ...webiqPages, ...radarPages, ...infraPages, ...dataLabPages, ...phase179Pages, ...commerceTrendsPages, ...camera4dPages];
+const archivePages = [...inventory.content, ...translations, ...webiqPages, ...radarPages, ...infraPages, ...dataLabPages, ...phase179Pages, ...commerceTrendsPages, ...camera4dPages].map(page => ({...page, tracks:[classifyPage(page), ...(page.tracks || []).filter(track => track !== classifyPage(page) && track !== 'infra')]}));
 function archiveNote(page, zh) {
   const t = (en, cn) => zh ? cn : en;
   const record = readingByPath.get(page.path);
@@ -85,9 +88,17 @@ function archiveNote(page, zh) {
   if (record?.disposition === 'dedicated-design-exception' || ['demo','report','auxiliary'].includes(page.role)) return `${lang?.resolved || page.language.declared || 'und'} · ${t('Protected original interface / data','保留专用原始界面／数据')}`;
   return `${lang?.resolved || page.language.declared || 'und'} · ${t('Original source edition','原始来源版本')}`;
 }
+buildKnowledgeAtlas({root,write});
 require('./hub-pages.cjs')({root,inventory,readingRecords,archivePages,archiveNote,topics,sceneNames,destination,readingDestination,sourceNote,write});
-const routeData = Object.fromEntries(inventory.tracks.map(track=>[track.id,Object.fromEntries(inventory.scenes.filter(s=>s.track===track.id).map(s=>[s.id,{en:destination(s,false).url,zh:destination(s,true).url}]))]));
-write('assets/editorial/legacy-routes.js', `(() => {\n const routes=${JSON.stringify(routeData)};\n const script=document.currentScript; const base=new URL('../../',script.src); const q=new URLSearchParams(location.search); const zh=q.get('lang')!=='en'; const bits=location.hash.slice(1).split('/'); const track=routes[bits[0]]?bits[0]:(routes[q.get('track')]?q.get('track'):null);\n if(!track) return;\n let target='studio/'+(zh?'zh-':'')+track+'.html'; let hash='';\n if(bits[1]==='module' && routes[track][bits[2]]) target=routes[track][bits[2]][zh?'zh':'en'];\n else { const stage=bits[1]==='stage'?bits[2]:/^stage-[1-4]$/.test(bits[1]||'')?bits[1].slice(-1):null; if(stage) hash='#'+(['architecture','evaluation','demos','resources'][Number(stage)-1]||'architecture'); }\n const next=new URL(target.replace(/^\\//,''),base); if(q.has('theme'))next.searchParams.set('theme',q.get('theme')); if(q.has('lang'))next.searchParams.set('lang',q.get('lang')); if(hash) next.hash=hash; location.replace(next.href);\n})();\n`);
+// Keep historical module hashes as aliases while adding the new source-derived track routes.
+const routeData = Object.fromEntries(tracks.map(([track])=>[track,Object.fromEntries(inventory.scenes.filter(s=>classifyScene(s)===track || s.track===track).map(s=>[s.id,{en:destination(s,false).url,zh:destination(s,true).url,track:classifyScene(s)}]))]));
+routeData['infra-lab'] = routeData['data-infra'];
+write('assets/editorial/legacy-routes.js', `(() => {\n const routes=${JSON.stringify(routeData)};\n const script=document.currentScript; const base=new URL('../../',script.src); const q=new URLSearchParams(location.search); const zh=q.get('lang')!=='en'; const bits=location.hash.slice(1).split('/'); const track=routes[bits[0]]?bits[0]:(routes[q.get('track')]?q.get('track'):null);\n if(!track) return;\n let target='studio/'+(zh?'zh-':'')+(track==='infra-lab'?'data-infra':track)+'.html'; let hash='';\n if(bits[1]==='module' && routes[track][bits[2]]) target=routes[track][bits[2]][zh?'zh':'en'];\n else { const stage=bits[1]==='stage'?bits[2]:/^stage-[1-4]$/.test(bits[1]||'')?bits[1].slice(-1):null; if(stage) hash='#'+(['architecture','evaluation','demos','resources'][Number(stage)-1]||'architecture'); }\n const next=new URL(target.replace(/^\\//,''),base); if(q.has('theme'))next.searchParams.set('theme',q.get('theme')); if(q.has('lang'))next.searchParams.set('lang',q.get('lang')); if(hash) next.hash=hash; location.replace(next.href);\n})();\n`);
 for (const [source,target] of [['site.css','editorial.css'],['site.js','editorial.js'],['theme-init.js','theme-init.js']]) write('design-preview/'+target,read('assets/editorial/'+source));
 write('docs/redesign/production-routes.json',JSON.stringify({baseline:inventory.baseline,portalPages:['index.html','zh.html','frontier-ai-studio.html',...fs.readdirSync(path.join(root,'studio')).filter(f=>f.endsWith('.html')).map(f=>'studio/'+f)],scenes:routeData,languagePolicy:'Source language and translation gaps are explicit; filenames alone are not translation evidence.'},null,2)+'\n');
-console.log('Built production home, Studio directory, seven bilingual tracks, full archive and legacy compatibility.');
+console.log('Built production home, Hub directory, eight bilingual tracks, knowledge atlas, full archive and legacy compatibility.');
+return {tracks, archivePages, routeData};
+}
+module.exports = buildSite;
+module.exports.buildSite = buildSite;
+if (require.main === module) buildSite();

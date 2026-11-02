@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src data:;" />
+  <title>Azure Speech Fast Transcription Diarization PoC · 7-Card 4:5 Benchmark Report</title>
+  <style>
+    :root {
+      --bg-page: #0B1120;
+      --bg-card: #FFFFFF;
+      --text-main: #0F172A;
+      --text-muted: #475569;
+      --text-subtle: #64748B;
+      --border-light: #E2E8F0;
+      --blue-primary: #2563EB;
+      --blue-bar: #3B82F6;
+      --slate-bar: #CBD5E1;
+      --green-bg: #ECFDF5;
+      --green-border: #A7F3D0;
+      --green-text: #065F46;
+      --amber-bg: #FFFBEB;
+      --amber-border: #FDE68A;
+      --amber-text: #92400E;
+      --red-bg: #FEF2F2;
+      --red-border: #FECACA;
+      --red-text: #991B1B;
+      --dark-panel: #0F172A;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: var(--bg-page);
+      color: #F8FAFC;
+      min-height: 100vh;
+      padding: 20px 16px 60px;
+    }
+    .topbar {
+      max-width: 1120px;
+      margin: 0 auto 20px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: rgba(15, 23, 42, 0.88);
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      border-radius: 14px;
+      padding: 12px 18px;
+    }
+    .topbar-left { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .back-link {
+      color: #60A5FA;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 13px;
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(96, 165, 250, 0.35);
+      background: rgba(37, 99, 235, 0.12);
+    }
+    .back-link:hover { background: rgba(37, 99, 235, 0.25); }
+    .topbar-title { font-size: 15px; font-weight: 700; color: #F8FAFC; }
+    .controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .btn {
+      background: #1E293B;
+      color: #E2E8F0;
+      border: 1px solid #334155;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn.active, .btn:hover {
+      background: #2563EB;
+      border-color: #3B82F6;
+      color: #FFFFFF;
+    }
+    .deck-wrapper { max-width: 900px; margin: 0 auto; }
+    .deck-wrapper.grid-mode {
+      max-width: 1400px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+      gap: 24px;
+    }
+    .card-4x5 {
+      width: 100%;
+      max-width: 900px;
+      aspect-ratio: 4 / 5;
+      min-height: 880px;
+      background: var(--bg-card);
+      color: var(--text-main);
+      border-radius: 24px;
+      padding: 32px 36px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid #E2E8F0;
+    }
+    .card-4x5.active-card { display: flex; }
+    .deck-wrapper.grid-mode .card-4x5 {
+      display: flex;
+      aspect-ratio: auto;
+      min-height: 760px;
+      padding: 24px 26px;
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #475569;
+      border-bottom: 1px solid #F1F5F9;
+      padding-bottom: 12px;
+      margin-bottom: 14px;
+    }
+    .card-badge {
+      background: #EFF6FF;
+      color: #1D4ED8;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-weight: 700;
+    }
+    .card-headline {
+      font-size: 25px;
+      line-height: 1.24;
+      font-weight: 800;
+      color: #0F172A;
+      margin-bottom: 10px;
+    }
+    .gradient-accent {
+      background: linear-gradient(90deg, #2563EB, #7C3AED);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .card-sub {
+      font-size: 13.5px;
+      line-height: 1.5;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+    .workbench-3col {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr 1fr;
+      gap: 12px;
+      margin-bottom: 14px;
+      flex: 1;
+    }
+    .wb-col {
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 14px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+    .wb-title {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #64748B;
+    }
+    .pill-item {
+      padding: 8px 10px;
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+    }
+    .band-tag {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .band-auto { background: var(--green-bg); color: var(--green-text); border: 1px solid var(--green-border); }
+    .band-confirm { background: var(--amber-bg); color: var(--amber-text); border: 1px solid var(--amber-border); }
+    .band-human { background: var(--red-bg); color: var(--red-text); border: 1px solid var(--red-border); }
+    .type-badge {
+      font-size: 10px;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: 6px;
+      background: #E0E7FF;
+      color: #3730A3;
+      font-weight: 800;
+    }
+    .quote-box {
+      background: #F1F5F9;
+      border-left: 4px solid #2563EB;
+      padding: 11px 14px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      color: #1E293B;
+      margin-bottom: 12px;
+    }
+    .decision-stack { display: flex; flex-direction: column; gap: 11px; flex: 1; }
+    .decision-card {
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 14px;
+      padding: 13px 15px;
+    }
+    .decision-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      gap: 8px;
+    }
+    .prob-bar-track {
+      height: 10px;
+      background: #E2E8F0;
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 7px 0 5px;
+    }
+    .prob-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #2563EB, #3B82F6);
+      border-radius: 999px;
+    }
+    .matrix-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      margin-bottom: 12px;
+    }
+    .matrix-table th {
+      text-align: left;
+      padding: 8px 9px;
+      background: #F1F5F9;
+      color: #334155;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 2px solid #CBD5E1;
+    }
+    .matrix-table td {
+      padding: 8px 9px;
+      border-bottom: 1px solid #E2E8F0;
+      vertical-align: middle;
+    }
+    .code-panel {
+      background: var(--dark-panel);
+      color: #E2E8F0;
+      border-radius: 14px;
+      padding: 13px 15px;
+      font-family: "Cascadia Code", "Consolas", monospace;
+      font-size: 11.2px;
+      line-height: 1.45;
+      overflow-x: auto;
+    }
+    .flow-arrow {
+      text-align: center;
+      font-weight: 800;
+      color: #2563EB;
+      font-size: 13px;
+      margin: 5px 0;
+    }
+    .latency-group {
+      margin-bottom: 11px;
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 12px;
+      padding: 11px 14px;
+    }
+    .latency-head {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .bar-row {
+      display: grid;
+      grid-template-columns: 145px 1fr 74px;
+      align-items: center;
+      gap: 8px;
+      font-size: 11.5px;
+      margin-bottom: 5px;
+    }
+    .bar-track {
+      height: 12px;
+      background: #E2E8F0;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .bar-primary { height: 100%; background: var(--blue-bar); border-radius: 999px; }
+    .bar-baseline { height: 100%; background: var(--slate-bar); border-radius: 999px; }
+    .fit-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      flex: 1;
+      margin-bottom: 14px;
+    }
+    .fit-card {
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 12.5px;
+      line-height: 1.45;
+    }
+    .fit-good { background: var(--green-bg); border: 1px solid var(--green-border); color: var(--green-text); }
+    .fit-bad { background: var(--red-bg); border: 1px solid var(--red-border); color: var(--red-text); }
+    .card-footer {
+      background: #0F172A;
+      color: #E2E8F0;
+      border-radius: 12px;
+      padding: 11px 15px;
+      font-size: 11.5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .callout-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .callout-box {
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 12px;
+      padding: 11px 13px;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+  </style>
+<!-- kee-dedicated-style:start -->
+<style>/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.65fr 1.1fr 1.15fr 1.1fr 1.1fr;gap:6px;align-items:stretch;min-width:0}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+</style>
+<!-- kee-dedicated-style:end -->
+<!-- kee-report-localization:metadata:start --><link rel="alternate" hreflang="en" href="diarization-benchmark-cards.en.html"><link rel="alternate" hreflang="zh-CN" href="diarization-benchmark-cards.zh-CN.html"><meta name="report-translation-source" content="voice/diarization-benchmark-cards.html@941ee62"><meta name="report-translation-provenance" content="translation; independently_reproduced=false"><style>/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.65fr 1.1fr 1.15fr 1.1fr 1.1fr;gap:6px;align-items:stretch;min-width:0}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+
+html{scroll-padding-top:108px}.reading-header,.kee-dedicated-nav,[data-professional-header]{position:sticky;top:0;z-index:1000;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+
+:root{--search-bg:#101a30;--search-soft:#172440;--search-ink:#eef3ff;--search-muted:#adbbd1;--search-line:#293956;--search-accent:#9aabff;--header-offset:108px}
+:root[data-reading-shell][data-theme=light],[data-perimeter-theme=light]{--search-bg:#fff;--search-soft:#e8eefb;--search-ink:#17233e;--search-muted:#4c5e7c;--search-line:#d5ddec;--search-accent:#354ec8}
+html{scroll-padding-top:var(--header-offset,108px)!important}
+.site-search,.site-search *{box-sizing:border-box!important;font-family:"Segoe UI",sans-serif;letter-spacing:normal;text-transform:none}
+.site-search{position:relative;display:flex;align-items:center;gap:5px;min-width:0;width:230px;max-width:100%;margin:0!important;padding:0!important;line-height:1.4;border:1px solid var(--search-line);border-radius:9px;background:var(--search-soft);color:var(--search-ink);isolation:isolate}
+.site-search input[type=search]{display:block;flex:1;min-width:0;width:100%;height:42px;margin:0;padding:9px 8px!important;font-size:12px!important;line-height:1.5;border:0!important;border-radius:9px;background:transparent!important;color:var(--search-ink)!important;box-shadow:none!important;appearance:none}
+.site-search input::placeholder{color:var(--search-muted);opacity:1}.site-search input:focus-visible{outline:2px solid var(--search-accent);outline-offset:2px}
+.site-search kbd{font:11px Consolas,monospace;color:var(--search-muted);padding:1px 5px;border:1px solid var(--search-line);border-radius:4px}
+.site-search button[type=submit]{flex:none;width:38px;min-width:38px;height:42px;min-height:42px;padding:0;margin:0;border:0;border-radius:8px;background:transparent;color:var(--search-accent);font-size:24px;cursor:pointer;box-shadow:none}
+.search-label,.search-status{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.site-search .search-results{position:absolute;top:calc(100% + 10px);right:0;z-index:1100;width:min(480px,calc(100vw - 32px));max-height:min(560px,65vh);overflow-y:auto;border:1px solid var(--search-line);border-radius:12px;background:var(--search-bg);color:var(--search-ink);padding:10px;box-shadow:0 12px 32px #0005;text-align:left}
+.site-search .search-results[hidden]{display:none!important}.search-results .search-group{margin:8px 6px 4px;font:11px/1.5 Consolas,monospace;color:var(--search-muted)}
+.site-search .search-results a{display:block!important;padding:10px!important;margin:3px 0!important;border:1px solid transparent!important;border-radius:7px;background:transparent;color:var(--search-ink)!important;font-size:13px!important;text-decoration:none!important;white-space:normal;overflow-wrap:anywhere;text-align:left!important;line-height:1.5!important}
+.site-search .search-results a[aria-selected=true],.site-search .search-results a:hover{border-color:var(--search-accent)!important;background:var(--search-soft)}
+.search-results a small{display:block;font-size:10px;color:var(--search-muted);margin-top:4px}.search-results p{margin:10px;font-size:13px;color:var(--search-muted)}
+.search-archive-summary{padding:20px;border:1px solid var(--search-line);border-radius:10px;background:var(--search-bg);color:var(--search-ink);margin:24px 0}.search-archive-summary h2{font-size:24px;margin:0 0 12px}.search-archive-summary li{margin:12px 0}.search-archive-summary a{color:var(--search-accent)}
+[data-professional-header]{position:sticky!important;top:0!important;z-index:1000!important;background:var(--search-bg)!important;--header-glass:rgba(16,26,48,.9);grid-template-columns:auto minmax(0,1fr) 230px auto!important}
+[data-professional-header][data-perimeter-theme=light],:root[data-reading-shell][data-theme=light] [data-professional-header]{--header-glass:rgba(255,255,255,.94)}
+[data-professional-header] .professional-mobile{display:none}.professional-mobile summary{min-width:38px;min-height:42px;display:grid;place-items:center;cursor:pointer;list-style:none}.professional-mobile summary::-webkit-details-marker{display:none}
+[data-professional-header] .professional-context{display:none}
+.professional-context-bar{padding:12px 24px;border-bottom:1px solid var(--search-line);background:var(--search-bg);color:var(--search-muted);font:12px/1.6 "Segoe UI",sans-serif;display:flex;flex-wrap:wrap;gap:8px 18px;overflow-wrap:anywhere}.professional-context-bar a{color:var(--search-accent)}
+@supports((backdrop-filter:blur(16px)) or (-webkit-backdrop-filter:blur(16px))){.site-header,[data-professional-header]{background:var(--header-glass)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}}
+@media(max-width:1250px) and (min-width:701px){.header-inner{grid-template-columns:minmax(0,1fr) 230px auto!important;padding:12px 0;gap:12px!important}.desktop-nav{grid-row:2;grid-column:1/-1}.header-inner>.site-search{grid-column:2;grid-row:1}.header-inner>.controls{grid-column:3;grid-row:1}[data-professional-header]{grid-template-columns:minmax(0,1fr) 230px auto!important;gap:12px!important}[data-professional-header]>.professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header]>.site-search{grid-column:2;grid-row:1}[data-professional-header]>.professional-controls{grid-column:3;grid-row:1}:root{--header-offset:176px}}
+@media(max-width:700px){.header-inner{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 0;gap:8px!important}.header-inner>.site-search{grid-row:2;grid-column:1/-1;width:100%}.header-inner>.controls{grid-column:2;grid-row:1}.site-search .search-results{width:100%;right:0}[data-professional-header]{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 16px!important;gap:8px!important}[data-professional-header]>.professional-primary{display:none!important}[data-professional-header]>.site-search{grid-column:1/-1;grid-row:2;width:100%}[data-professional-header]>.professional-controls{grid-column:2;grid-row:1}[data-professional-header] .professional-mobile{display:block}[data-professional-header] .professional-mobile[open]>.professional-primary{position:absolute;top:100%;left:0;right:0;padding:16px;background:var(--search-bg);border-bottom:1px solid var(--search-line);display:grid;grid-template-columns:1fr 1fr;gap:8px}[data-professional-header] .professional-mobile .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:12px!important}:root{--header-offset:126px}}
+@media(prefers-reduced-transparency:reduce){.site-header,[data-professional-header]{background:var(--search-bg)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+@media print{.site-search,.professional-context-bar{display:none!important}}
+
+@media(min-width:1251px){.header-inner{display:grid!important;grid-template-columns:auto minmax(0,1fr) 230px auto!important;gap:18px!important}.header-inner .desktop-nav{min-width:0}}
+
+html:has(.kee-dedicated-app-root){height:auto!important;overflow-x:hidden!important;overflow-y:auto!important}
+body:has([data-professional-header]){height:auto!important;overflow-x:clip!important;overflow-y:visible!important;padding-top:0!important}
+.demo-language-navigation{display:none!important}
+.stage-column,.telemetry-panel,.scene-pill,#timeline-slider{min-width:0}
+@media(max-width:1180px){.workspace,.template-tabs{grid-template-columns:minmax(0,1fr)!important}}
+
+.in-arena-frame .professional-context-bar,.in-arena-frame [data-knowledge-atlas]{display:none!important}
+</style><!-- kee-report-localization:metadata:end --></head>
+<body><!-- kee-report-localization-navigation:start --><nav class="kee-dedicated-nav" data-professional-header><a class="professional-identity reading-brand kee-dedicated-identity identity" href="../index.html">Qi Chen · @turbo998</a><div class="professional-primary" role="navigation" aria-label="Primary sections"><a href="../studio/index.html" data-section="hub" data-nav-en-href="../studio/index.html" data-nav-zh-href="../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub">Frontier Transformation Engineering Hub</a><a href="../benchmarks.html" data-section="benchmarks" data-nav-en-href="../benchmarks.html" data-nav-zh-href="../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心" aria-current="page">Benchmark &amp; Eval Foundry</a><a href="../github-radar.html" data-section="radar" data-nav-en-href="../github-radar.html" data-nav-zh-href="../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI Signal Radar</a><a href="../openrouter.html" data-section="routing" data-nav-en-href="../openrouter.html" data-nav-zh-href="../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">Model Routing &amp; Telemetry</a><a href="../about.html" data-section="profile" data-nav-en-href="../about.html" data-nav-zh-href="../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">Principal Architect Profile</a></div><form class="site-search" role="search" action="../studio/archive.html" method="get" data-search-root="../index.html" data-search-language="en"><label class="search-label" for="site-search-input">Search architecture, benchmarks, demos...</label><input id="site-search-input" name="q" type="search" placeholder="Search architecture, benchmarks, demos..." autocomplete="off" spellcheck="false" aria-keyshortcuts="/ Control+k Meta+k"><kbd aria-hidden="true">/</kbd><button type="submit" aria-label="Search all content">⌕</button><div class="search-results" id="site-search-results" hidden></div><span class="search-status" role="status" aria-live="polite"></span></form><div class="reading-controls professional-controls" aria-label="Site language and appearance"><a href="diarization-benchmark-cards.en.html" lang="en" hreflang="en" aria-current="page">EN</a><a href="diarization-benchmark-cards.zh-CN.html" lang="zh-CN" hreflang="zh-CN">中文</a><details class="professional-mobile"><summary aria-label="Open navigation">☰</summary><div class="professional-primary" role="navigation" aria-label="Mobile navigation"><a href="../studio/index.html" data-section="hub" data-nav-en-href="../studio/index.html" data-nav-zh-href="../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub">Frontier Transformation Engineering Hub</a><a href="../benchmarks.html" data-section="benchmarks" data-nav-en-href="../benchmarks.html" data-nav-zh-href="../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心" aria-current="page">Benchmark &amp; Eval Foundry</a><a href="../github-radar.html" data-section="radar" data-nav-en-href="../github-radar.html" data-nav-zh-href="../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI Signal Radar</a><a href="../openrouter.html" data-section="routing" data-nav-en-href="../openrouter.html" data-nav-zh-href="../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">Model Routing &amp; Telemetry</a><a href="../about.html" data-section="profile" data-nav-en-href="../about.html" data-nav-zh-href="../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">Principal Architect Profile</a></div></details><a data-reading-theme="light" href="?theme=light" aria-label="Light theme">☀</a><a data-reading-theme="dark" href="?theme=dark" aria-label="Dark theme">◐</a></div><div class="professional-context" aria-label="Back to context"><a href="../studio/index.html">← Engineering Hub</a> · <a href="../studio/voice.html">Parent topic</a></div></nav><div class="professional-context-bar"><a href="../studio/index.html">← Engineering Hub</a> · <a href="../studio/voice.html">Parent topic</a></div><nav aria-label="Report language" style="font:14px/1.5 system-ui,sans-serif;display:flex;flex-wrap:wrap;gap:12px;padding:12px 18px;background:#101a30;color:#eef3ff;width:100%;box-sizing:border-box"><a style="color:#9aabff" href="diarization-benchmark-cards.en.html" lang="en" hreflang="en" aria-current="page">EN</a><a style="color:#9aabff" href="diarization-benchmark-cards.zh-CN.html" lang="zh-CN" hreflang="zh-CN">中文</a><span>Translated source report; not an independent reproduction. Metrics and evidence are unchanged.</span></nav><figure class="knowledge-figure" data-knowledge-atlas="voice" style="margin:24px 0;max-width:100%"><svg xmlns="http://www.w3.org/2000/svg" lang="en" role="img" aria-labelledby="knowledge-6e67c9ff0c4b-title knowledge-6e67c9ff0c4b-desc" viewBox="0 0 360 858" width="360" style="display:block;width:100%;height:auto;max-width:560px;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-6e67c9ff0c4b-title">Azure Speech Fast Transcription Diarization PoC · 7-Card 4:5 Benchmark Report</title><desc id="knowledge-6e67c9ff0c4b-desc">Audio input &amp; speaker context: Microphone · turn detection · diarization → streams to understanding → Realtime speech understanding: ASR or audio-native model · conversation state → grounds the response → Agent, tools &amp; enterprise data: Intent · retrieval · permissioned actions → synthesizes a response → Speech output &amp; duplex control: TTS / audio output · interruption · cancellation → feeds the next turn → Conversation quality &amp; evidence: Trace latency, speakers and failures in source tests</desc><rect width="360" height="858" rx="16" fill="#091827"/><text x="20" y="30" fill="#eef5ff" font-size="20" font-weight="700"><tspan x="20" dy="0">Azure Speech Fast Transcription</tspan><tspan x="20" dy="28">Diarization PoC · 7-Card 4:5</tspan><tspan x="20" dy="28">Benchmark Report</tspan></text><text x="20" y="111" fill="#a9b8ce" font-size="13" font-weight="400"><tspan x="20" dy="0">Conceptual topology · not measured metrics</tspan></text><g data-concept="1"><rect x="16" y="137" width="328" height="99" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="151" width="4" height="71" rx="2" fill="#63dbca"/><text x="32" y="167" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">Audio input &amp; speaker context</tspan></text><text x="32" y="198" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">Microphone · turn detection ·</tspan><tspan x="32" dy="19.599999999999998">diarization</tspan></text></g><g data-relationship="streams to understanding"><path d="M32 236 V281" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 276 L32 282 L37 276" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="262" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">streams to understanding</tspan></text></g><g data-concept="2"><rect x="16" y="288" width="328" height="99" rx="12" fill="#132942" stroke="#43617f"/><rect x="16" y="302" width="4" height="71" rx="2" fill="#63dbca"/><text x="32" y="318" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">Realtime speech understanding</tspan></text><text x="32" y="349" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">ASR or audio-native model ·</tspan><tspan x="32" dy="19.599999999999998">conversation state</tspan></text></g><g data-relationship="grounds the response"><path d="M32 387 V432" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 427 L32 433 L37 427" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="413" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">grounds the response</tspan></text></g><g data-concept="3"><rect x="16" y="439" width="328" height="99" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="453" width="4" height="71" rx="2" fill="#63dbca"/><text x="32" y="469" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">Agent, tools &amp; enterprise data</tspan></text><text x="32" y="500" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">Intent · retrieval · permissioned</tspan><tspan x="32" dy="19.599999999999998">actions</tspan></text></g><g data-relationship="synthesizes a response"><path d="M32 538 V583" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 578 L32 584 L37 578" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="564" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">synthesizes a response</tspan></text></g><g data-concept="4"><rect x="16" y="590" width="328" height="99" rx="12" fill="#132942" stroke="#43617f"/><rect x="16" y="604" width="4" height="71" rx="2" fill="#63dbca"/><text x="32" y="620" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">Speech output &amp; duplex control</tspan></text><text x="32" y="651" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">TTS / audio output · interruption ·</tspan><tspan x="32" dy="19.599999999999998">cancellation</tspan></text></g><g data-relationship="feeds the next turn"><path d="M32 689 V734" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 729 L32 735 L37 729" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="715" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">feeds the next turn</tspan></text></g><g data-concept="5"><rect x="16" y="741" width="328" height="99" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="755" width="4" height="71" rx="2" fill="#63dbca"/><text x="32" y="771" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">Conversation quality &amp; evidence</tspan></text><text x="32" y="802" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">Trace latency, speakers and failures in</tspan><tspan x="32" dy="19.599999999999998">source tests</tspan></text></g></svg><figcaption style="font:14px/1.6 system-ui,sans-serif;margin:12px 0;overflow-wrap:anywhere">Overall knowledge map: read the labeled relationships and engineering boundaries. Layout is conceptual; it does not represent throughput, rankings or a production deployment.</figcaption></figure><!-- kee-report-localization-navigation:end -->
+
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <a class="back-link" href="./index.html">← Voice Agent Hub</a>
+      <a class="back-link" href="../index.html">🏠 Homepage</a>
+      <span class="topbar-title">Azure Speech Fast Transcription Diarization PoC · 7-Card 4:5 Benchmark Deck</span>
+    </div>
+    <div class="controls">
+      <button class="btn" id="prevBtn" type="button">◀ Prev</button>
+      <span id="cardIndicator" style="font-size:12px;font-weight:700;padding:0 6px;">1 / 7</span>
+      <button class="btn" id="nextBtn" type="button">Next ▶</button>
+      <button class="btn" id="toggleGridBtn" type="button">⊞ Grid View (All 7)</button>
+    </div>
+  </div>
+
+  <div class="deck-wrapper" id="deckWrapper">
+    <!-- CARD 1: OVERVIEW & WORKBENCH -->
+    <article class="card-4x5 active-card">
+      <div>
+        <div class="card-header">
+          <span>1 / 7 · HANDS-ON · AZURE SPEECH DIARIZATION POC</span>
+          <span class="card-badge">MEASURED · SDK 1.0.0 FIX</span>
+        </div>
+        <h1 class="card-headline">
+          Explicit <span class="gradient-accent">diarization.enabled=true</span> Restores 0% → 100% Speaker Labeling &amp; 100% Stereo Channel Agreement
+        </h1>
+        <p class="card-sub">
+          Root-cause diagnosis on <code>azure-ai-transcription==1.0.0</code>: setting <code>maxSpeakers</code> alone omits the wire flag required by Azure Fast Transcription. Fixing wire serialization + <code>--locale auto</code> achieves 100% speaker coverage at 0.057 RTF.
+        </p>
+      </div>
+
+      <div class="workbench-3col">
+        <div class="wb-col">
+          <div class="wb-title">1. Experiment Matrix &amp; Gates</div>
+          <div class="pill-item"><span>Official Control (29.49s)</span><span class="band-tag band-auto">8/8 (100%)</span></div>
+          <div class="pill-item"><span>Customer Longest (224.8s)</span><span class="band-tag band-auto">28/28 (100%)</span></div>
+          <div class="pill-item"><span>Stereo Channel Agreement</span><span class="band-tag band-auto">100% (33.75s)</span></div>
+          <div class="pill-item"><span>Single-Speaker (file-01)</span><span class="band-tag band-confirm">Confirm (1 Phrase)</span></div>
+          <div class="pill-item"><span>Silent / Sparse (03, 04, 05)</span><span class="band-tag band-human">Send to Human</span></div>
+        </div>
+
+        <div class="wb-col">
+          <div class="wb-title">2. Wire Definition Fix (SDK 1.0.0)</div>
+          <div class="code-panel" style="font-size:10.5px;flex:1;">
+// BEFORE (0/8 Speaker Labels):
+{"locales":["en-US"],
+ "diarization":{"maxSpeakers":2}}
+
+// AFTER (8/8 Speaker Labels):
+{"locales":["en-US"],
+ "diarization":{
+   "maxSpeakers":2,
+   "enabled":true
+ }}
+
+// Customer Auto-Locale Wire:
+{"diarization":{
+   "maxSpeakers":2,
+   "enabled":true
+ }}</div>
+        </div>
+
+        <div class="wb-col">
+          <div class="wb-title">3. Telemetry &amp; Top Decisions</div>
+          <div class="pill-item"><span>Control RTF (After Fix)</span><strong>0.304 (8.97s)</strong></div>
+          <div class="pill-item"><span>Customer-02 RTF (224.8s)</span><strong style="color:#059669;">0.057 (17.5× RT)</strong></div>
+          <div class="pill-item"><span>Detected Locale (Auto)</span><strong>es-ES (Spanish)</strong></div>
+          <div class="pill-item"><span>Sensitivity (max=3 / 4)</span><strong>Stable 2 Speakers</strong></div>
+          <div class="pill-item"><span>Auth Mode</span><strong>Entra ID (Zero Key)</strong></div>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <span><strong>Provenance:</strong> <code>measured</code> (Official Control) + <code>anonymized_reported</code> (Customer Metrics JSON · Zero Audio/Transcripts)</span>
+        <span>Commit: <code>31b25c8</code> · 16/16 Tests</span>
+      </div>
+    </article>
+
+    <!-- CARD 2: SINGLE-CASE DEEP DIVE -->
+    <article class="card-4x5">
+      <div>
+        <div class="card-header">
+          <span>2 / 7 · SCENARIO: OFFICIAL CONTROL &amp; CUSTOMER-FILE-02</span>
+          <span class="card-badge">CASE BREAKDOWN</span>
+        </div>
+        <h2 class="card-headline">
+          8/8 Control Phrases (0.927 Conf) &amp; 28/28 Customer Phrases Synchronized to Physical Stereo Channels
+        </h2>
+        <div class="quote-box">
+          <strong>Input Audio Profile:</strong> (1) Official two-speaker mono PCM control (<code>29.4875s</code>, <code>en-US</code>, Steve &amp; Katie); (2) Customer 8 kHz 16-bit PCM stereo recording <code>customer-file-02.wav</code> (<code>224.8s</code>, auto-detected <code>es-ES</code>).
+        </div>
+      </div>
+
+      <div class="decision-stack">
+        <div class="decision-card">
+          <div class="decision-top">
+            <div><span class="type-badge">score</span> <strong>Official Control After Fix (<code>enabled=true</code>)</strong></div>
+            <span class="band-tag band-auto">Act automatically · 100.0% Coverage</span>
+          </div>
+          <div style="font-size:12px;color:#475569;">8/8 phrases labeled across Speakers <code>1</code> &amp; <code>2</code> · Mean Confidence <code>0.9267</code> · Elapsed <code>8.97s</code> (RTF <code>0.304</code>)</div>
+          <div class="prob-bar-track"><div class="prob-bar-fill" style="width:100%;"></div></div>
+        </div>
+
+        <div class="decision-card">
+          <div class="decision-top">
+            <div><span class="type-badge">choice</span> <strong>Customer-File-02 Diarization vs. Stereo Channel Baseline</strong></div>
+            <span class="band-tag band-auto">Act automatically · 100.0% Agreement</span>
+          </div>
+          <div style="font-size:12px;color:#475569;">28/28 phrases labeled (<code>es-ES</code>, RTF <code>0.057</code>) · Over <code>33,750 ms</code> non-overlapping speech, optimal bijection maps <code>Speaker 1 → Ch 1</code> &amp; <code>Speaker 2 → Ch 0</code> with <code>100.0%</code> overlap agreement.</div>
+          <div class="prob-bar-track"><div class="prob-bar-fill" style="width:100%;"></div></div>
+        </div>
+
+        <div class="decision-card">
+          <div class="decision-top">
+            <div><span class="type-badge">noul</span> <strong>Sparse / Silent Customer Recordings (<code>file-03 / 04 / 05</code>)</strong></div>
+            <span class="band-tag band-human">Send to a human · Manual QA Gate</span>
+          </div>
+          <div style="font-size:12px;color:#475569;"><code>file-03</code> (126.3s, 0 phrases), <code>file-04</code> (116.9s, 0 phrases), and <code>file-05</code> (108.3s, 2 phrases @ <code>0.2158</code> confidence) are flagged by preflight &amp; abstention rules rather than counted as false passes.</div>
+          <div class="prob-bar-track"><div class="prob-bar-fill" style="width:21.6%;background:#EF4444;"></div></div>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <span><strong>Verification:</strong> <code>evidence/official-control/after-fix/summary.json</code> &amp; <code>evidence/customer-metrics-sanitized.json</code></span>
+        <span>Zero Fabricated Coordinates</span>
+      </div>
+    </article>
+
+    <!-- CARD 3: FULL EVALUATION MATRIX -->
+    <article class="card-4x5">
+      <div>
+        <div class="card-header">
+          <span>3 / 7 · WHAT I TESTED</span>
+          <span class="card-badge">7-RUN EVALUATION MATRIX</span>
+        </div>
+        <h2 class="card-headline">
+          Full Evaluation Matrix: Control Before/After + 5 Customer Recordings
+        </h2>
+        <p class="card-sub">
+          Separating SDK serialization defects (`Before Fix` `✕`) from genuine audio sparsity (`file-03/04/05`) across 7 sealed test runs.
+        </p>
+      </div>
+
+      <table class="matrix-table">
+        <thead>
+          <tr>
+            <th>SCENARIO / FILE</th>
+            <th>DURATION &amp; LOCALE</th>
+            <th>PHRASES / COVERAGE</th>
+            <th>ACTION / GATE</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Control (Before Fix)</strong></td>
+            <td><code>29.49s</code> · <code>en-US</code></td>
+            <td><strong style="color:#DC2626;">✕ 0 / 8 (0.0%)</strong> · 0 Speakers</td>
+            <td><span class="band-tag band-human">Wire Defect (Omitted Flag)</span></td>
+          </tr>
+          <tr>
+            <td><strong>Control (After Fix)</strong></td>
+            <td><code>29.49s</code> · <code>en-US</code></td>
+            <td><strong style="color:#059669;">✓ 8 / 8 (100.0%)</strong> · Spk 1, 2 (<code>0.927</code>)</td>
+            <td><span class="band-tag band-auto">Act automatically</span></td>
+          </tr>
+          <tr>
+            <td><strong>customer-file-01.wav</strong></td>
+            <td><code>147.50s</code> · <code>es-ES</code> (auto)</td>
+            <td><code>1 / 1 (100.0%)</code> · Spk 1 (<code>0.756</code>)</td>
+            <td><span class="band-tag band-confirm">Confirm (Single-Speaker)</span></td>
+          </tr>
+          <tr>
+            <td><strong>customer-file-02.wav</strong></td>
+            <td><code>224.80s</code> · <code>es-ES</code> (auto)</td>
+            <td><strong style="color:#059669;">✓ 28 / 28 (100.0%)</strong> · Spk 1, 2 (<code>0.603</code>)</td>
+            <td><span class="band-tag band-auto">Act automatically (100% Ch Match)</span></td>
+          </tr>
+          <tr>
+            <td><strong>customer-file-03.wav</strong></td>
+            <td><code>126.28s</code> · <code>[]</code> (auto)</td>
+            <td><strong style="color:#DC2626;">✕ 0 Phrases</strong> (<code>coverage: null</code>)</td>
+            <td><span class="band-tag band-human">Send to a human (No Speech)</span></td>
+          </tr>
+          <tr>
+            <td><strong>customer-file-04.wav</strong></td>
+            <td><code>116.92s</code> · <code>[]</code> (auto)</td>
+            <td><strong style="color:#DC2626;">✕ 0 Phrases</strong> (<code>coverage: null</code>)</td>
+            <td><span class="band-tag band-human">Send to a human (No Speech)</span></td>
+          </tr>
+          <tr>
+            <td><strong>customer-file-05.wav</strong></td>
+            <td><code>108.28s</code> · <code>en-US, es-ES</code></td>
+            <td><code>2 / 2 (100.0%)</code> · Low Conf (<code>0.216</code>)</td>
+            <td><span class="band-tag band-human">Send to a human (Conf &lt; 0.50)</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout-grid-2">
+        <div class="callout-box">
+          <strong>Threshold Gating Policy:</strong> Require <code>coverage &gt;= 95%</code>, <code>phrases &gt;= 4</code>, and <code>mean_confidence &gt;= 0.55</code> for automated speaker attribution.
+        </div>
+        <div class="callout-box">
+          <strong>Failure Analysis:</strong> Once <code>enabled=true</code> and <code>--locale auto</code> are set, remaining misses are 100% attributable to audio silence/SNR, not SDK failures.
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <span><strong>Acceptance Target:</strong> 5/5 valid WAVs processed · RTF &lt; 1.0 · Non-overlap channel agreement &gt;= 90%</span>
+        <span>Actual Agreement: 100.0%</span>
+      </div>
+    </article>
+
+    <!-- CARD 4: UNDER THE HOOD -->
+    <article class="card-4x5">
+      <div>
+        <div class="card-header">
+          <span>4 / 7 · UNDER THE HOOD</span>
+          <span class="card-badge">PROTOCOL &amp; SCORING MECHANICS</span>
+        </div>
+        <h2 class="card-headline">
+          SDK Wire-Patch &amp; Deterministic Non-Overlap Stereo Channel Agreement Verifier
+        </h2>
+        <p class="card-sub">
+          How <code>speech_poc/azure_client.py</code> enforces wire serialization and how <code>speech_poc/metrics.py</code> computes permutation-optimal channel consistency.
+        </p>
+      </div>
+
+      <div class="code-panel">
+# 1. speech_poc/azure_client.py — Explicit Wire Enablement + Entra DefaultAzureCredential
+kwargs: dict[str, object] = {}
+if locale is not None:               # --locale auto passes None -> omits "locales" array
+    kwargs["locales"] = [locale]
+if max_speakers is not None:
+    diarization = TranscriptionDiarizationOptions(max_speakers=max_speakers)
+    diarization.enabled = True       # Critical fix for azure-ai-transcription==1.0.0
+    kwargs["diarization_options"] = diarization
+options = TranscriptionOptions(**kwargs)</div>
+
+      <div class="flow-arrow">↓ Multipart POST /speechtotext/transcriptions:transcribe?api-version=2024-11-15 ↓</div>
+
+      <div class="code-panel">
+# 2. speech_poc/metrics.py — Permutation-Optimal Speaker-to-Channel Consistency
+# Excludes intervals where Channel 0 and Channel 1 overlap; finds bijection maximizing ms overlap
+for candidate in itertools.permutations(channels, len(speakers)):
+    mapping = dict(zip(speakers, candidate))
+    matched = sum(overlap_ms(d_seg, c_seg) for d_seg, c_seg in non_overlapping_pairs
+                  if mapping.get(d_seg.speaker) == c_seg.channel)
+# Result on customer-file-02.wav:
+# {"agreement_rate": 1.0, "eligible_milliseconds": 33750, "speaker_channel_map": {"1": 1, "2": 0}}</div>
+
+      <div class="card-footer">
+        <span><strong>Security Baseline:</strong> <code>infra/speech.bicep</code> sets <code>disableLocalAuth: true</code> + RBAC role <code>f2dc8367-1007-4938-bd23-fe263f013447</code></span>
+        <span>Unit Tests: 16 / 16 Passed</span>
+      </div>
+    </article>
+
+    <!-- CARD 5: ROBUSTNESS CHECK -->
+    <article class="card-4x5">
+      <div>
+        <div class="card-header">
+          <span>5 / 7 · ROBUSTNESS CHECK</span>
+          <span class="card-badge">PERTURBATION &amp; SENSITIVITY</span>
+        </div>
+        <h2 class="card-headline">
+          Zero Over-Clustering Across maxSpeakers=2/3/4 &amp; +100 pt Lift from Explicit Flag
+        </h2>
+        <p class="card-sub">
+          Testing parameter perturbations on <code>customer-file-02.wav</code> (Experiment B vs. Experiment C) and official control wire-flag toggling.
+        </p>
+      </div>
+
+      <table class="matrix-table">
+        <thead>
+          <tr>
+            <th>PERTURBATION DIMENSION</th>
+            <th>BASELINE (`maxSpeakers=2`)</th>
+            <th>PERTURBED (`maxSpeakers=3 / 4`)</th>
+            <th>CHANGE (PTS / DELTA)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Customer-02 Speaker Coverage</strong></td>
+            <td><code>100.0%</code> (28 / 28 phrases)</td>
+            <td><code>100.0%</code> (28 / 28 at max=3 &amp; 4)</td>
+            <td><strong style="color:#059669;">0.0 pts (100% Stable)</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Customer-02 Detected Speakers</strong></td>
+            <td><code>2 Speakers</code> (<code>[1, 2]</code>)</td>
+            <td><code>2 Speakers</code> (<code>[1, 2]</code> at max=3 &amp; 4)</td>
+            <td><strong style="color:#059669;">0 False Clusters</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Customer-02 Mean Confidence</strong></td>
+            <td><code>60.28%</code> (<code>0.60278</code>)</td>
+            <td><code>60.28%</code> (<code>0.60278</code>)</td>
+            <td><strong style="color:#059669;">0.00 pts</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Customer-02 Real-Time Factor</strong></td>
+            <td><code>0.0572 RTF</code> (<code>12.85s</code>)</td>
+            <td><code>0.0543 RTF</code> (<code>12.20s</code> @ max=3/4)</td>
+            <td><strong style="color:#059669;">-0.0029 RTF (-5.1%)</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Control Wire Flag (`enabled`)</strong></td>
+            <td><code>0.0%</code> (<code>enabled</code> omitted)</td>
+            <td><code>100.0%</code> (<code>enabled=true</code>)</td>
+            <td><strong style="color:#2563EB;">+100.0 pts (0/8 → 8/8)</strong></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout-grid-2">
+        <div class="callout-box">
+          <strong>Speaker Ceiling Invariance:</strong> Setting <code>--sensitivity-speakers 3 4</code> did not hallucinate a 3rd or 4th speaker on two-party calls.
+        </div>
+        <div class="callout-box">
+          <strong>Auto-Locale Resilience:</strong> Omitting fixed <code>en-US</code> via <code>--locale auto</code> cleanly identified <code>es-ES</code> across all 28 phrases.
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <span><strong>Regression Guard:</strong> <code>test_diarization_request_explicitly_enables_service_feature</code> &amp; <code>test_auto_locale_is_omitted</code></span>
+        <span>100% Deterministic</span>
+      </div>
+    </article>
+
+    <!-- CARD 6: LATENCY / RTF -->
+    <article class="card-4x5">
+      <div>
+        <div class="card-header">
+          <span>6 / 7 · LATENCY &amp; THROUGHPUT</span>
+          <span class="card-badge">REAL-TIME FACTOR (RTF)</span>
+        </div>
+        <h2 class="card-headline">
+          17.5× to 48.8× Faster Than Real Time Across 108s–225s Recordings
+        </h2>
+        <p class="card-sub">
+          Comparing actual Azure Fast Transcription processing time (`#3B82F6`) against real-time audio duration (`#CBD5E1`, `RTF = 1.000`).
+        </p>
+      </div>
+
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;">
+        <div class="latency-group">
+          <div class="latency-head">
+            <span>1. Customer-File-02 (224.8s Stereo · 28 Phrases · es-ES)</span>
+            <span style="color:#2563EB;">RTF = 0.057 (17.5× Faster)</span>
+          </div>
+          <div class="bar-row">
+            <span>Fast Transcription (max=2)</span>
+            <div class="bar-track"><div class="bar-primary" style="width:5.72%;"></div></div>
+            <strong>12.85 s</strong>
+          </div>
+          <div class="bar-row">
+            <span>Real-Time Audio Duration</span>
+            <div class="bar-track"><div class="bar-baseline" style="width:100%;"></div></div>
+            <span>224.80 s</span>
+          </div>
+        </div>
+
+        <div class="latency-group">
+          <div class="latency-head">
+            <span>2. Customer-File-01 (147.5s · 1 Phrase) &amp; File-03 (126.3s · Silent)</span>
+            <span style="color:#2563EB;">RTF = 0.027 / 0.021 (36×–48× Faster)</span>
+          </div>
+          <div class="bar-row">
+            <span>File-01 Processing Time</span>
+            <div class="bar-track"><div class="bar-primary" style="width:2.74%;"></div></div>
+            <strong>4.04 s</strong>
+          </div>
+          <div class="bar-row">
+            <span>File-03 Processing Time</span>
+            <div class="bar-track"><div class="bar-primary" style="width:2.05%;"></div></div>
+            <strong>2.59 s</strong>
+          </div>
+        </div>
+
+        <div class="latency-group">
+          <div class="latency-head">
+            <span>3. Official 2-Speaker Control Sample (29.49s Mono · 8 Phrases · en-US)</span>
+            <span style="color:#2563EB;">RTF = 0.304 (3.3× Faster)</span>
+          </div>
+          <div class="bar-row">
+            <span>After Fix (<code>enabled=true</code>)</span>
+            <div class="bar-track"><div class="bar-primary" style="width:30.41%;"></div></div>
+            <strong>8.97 s</strong>
+          </div>
+          <div class="bar-row">
+            <span>Before Fix (No Diarization)</span>
+            <div class="bar-track"><div class="bar-baseline" style="width:28.04%;"></div></div>
+            <span>8.27 s</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <span><strong>Key Insight:</strong> Enabling speaker diarization adds only <code>+0.70s</code> on the 29.5s control while maintaining <code>&lt;0.06 RTF</code> on 3.7-minute calls.</span>
+        <span>All Runs Faster Than Real-Time</span>
+      </div>
+    </article>
+
+    <!-- CARD 7: MY TAKE -->
+    <article class="card-4x5">
+      <div>
+        <div class="card-header">
+          <span>7 / 7 · MY TAKE</span>
+          <span class="card-badge">GOOD FIT VS. NOT FOR &amp; READINESS</span>
+        </div>
+        <h2 class="card-headline">
+          Architectural Guidance: Combine Stereo Channel Baseline with Explicit Diarization Gate
+        </h2>
+        <p class="card-sub">
+          Production engineering recommendations from the Azure Speech Fast Transcription Diarization PoC.
+        </p>
+      </div>
+
+      <div class="fit-grid">
+        <div class="fit-card fit-good">
+          <div style="font-size:15px;font-weight:800;">✅ Good Fit (Recommended)</div>
+          <p>• <strong>Post-Call QA &amp; Dual-Recording Audits:</strong> Synchronous Fast Transcription at <code>0.02–0.06 RTF</code> processes 3–4 minute calls in <code>4–13 seconds</code>.</p>
+          <p>• <strong>Mono Mixed Recordings with Unknown Locale:</strong> Pair explicit <code>diarization.enabled = True</code> with <code>--locale auto</code> and <code>maxSpeakers=2..4</code>.</p>
+          <p>• <strong>Split-Channel Stereo Contact Centers:</strong> Retain Channel Transcription (<code>active_channels=[0,1]</code>) as deterministic ground truth and cross-check against mono diarization.</p>
+          <p>• <strong>Zero-Key Enterprise Security:</strong> Provision Speech S0 with <code>disableLocalAuth: true</code> and resource-scoped <code>DefaultAzureCredential</code>.</p>
+        </div>
+
+        <div class="fit-card fit-bad">
+          <div style="font-size:15px;font-weight:800;">⛔ Not For (Anti-Patterns)</div>
+          <p>• <strong>Relying on Default <code>maxSpeakers</code> in SDK 1.0.0:</strong> Omitting <code>diarization.enabled = True</code> silently drops all speaker labels (<code>0/8</code>).</p>
+          <p>• <strong>Hardcoding <code>en-US</code> on Multilingual/Spanish Queues:</strong> Causes severe confidence degradation when callers speak <code>es-ES</code>.</p>
+          <p>• <strong>Treating Silent/Sparse Audio as Diarization Pass:</strong> Files with <code>0</code> phrases (<code>file-03/04</code>) or <code>&lt;0.50</code> confidence (<code>file-05</code>) must route to manual review.</p>
+          <p>• <strong>Sub-200ms Live Full-Duplex Interruption:</strong> Fast Transcription is for synchronous file/chunk transcription; use <code>GPT-Live-1</code> / Voice Live for real-time S2S barge-in.</p>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <span><strong>Repo:</strong> <code>turbo998/azure-speech-diarization-poc</code> &amp; <code>turbo998/voice-agent-lab</code></span>
+        <span>CSP: <code>default-src 'none'; style-src 'unsafe-inline'</code></span>
+      </div>
+    </article>
+  </div>
+
+  <script>
+    (function () {
+      var cards = Array.prototype.slice.call(document.querySelectorAll('.card-4x5'));
+      var idx = 0;
+      var wrapper = document.getElementById('deckWrapper');
+      var indicator = document.getElementById('cardIndicator');
+      var prevBtn = document.getElementById('prevBtn');
+      var nextBtn = document.getElementById('nextBtn');
+      var gridBtn = document.getElementById('toggleGridBtn');
+
+      function render() {
+        cards.forEach(function (c, i) {
+          c.classList.toggle('active-card', i === idx);
+        });
+        indicator.textContent = (idx + 1) + ' / ' + cards.length;
+      }
+
+      prevBtn.addEventListener('click', function () {
+        idx = (idx - 1 + cards.length) % cards.length;
+        render();
+      });
+      nextBtn.addEventListener('click', function () {
+        idx = (idx + 1) % cards.length;
+        render();
+      });
+      gridBtn.addEventListener('click', function () {
+        var isGrid = wrapper.classList.toggle('grid-mode');
+        gridBtn.classList.toggle('active', isGrid);
+        gridBtn.textContent = isGrid ? '▢ Single Card View' : '⊞ Grid View (All 7)';
+      });
+      document.addEventListener('keydown', function (e) {
+        if (wrapper.classList.contains('grid-mode')) return;
+        if (e.key === 'ArrowRight' || e.key === 'PageDown') {
+          idx = (idx + 1) % cards.length;
+          render();
+        } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+          idx = (idx - 1 + cards.length) % cards.length;
+          render();
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

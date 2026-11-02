@@ -1,0 +1,540 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'">
+<title>Azure AI代理基础设施游戏本 ·7- 信用卡基准报告</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;padding:2rem 1rem;background:#e2e8f0;color:#0f172a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Microsoft YaHei',sans-serif}
+.deck-wrap{max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:2.2rem}
+.report-card{background:#f8fafc;border-radius:18px;overflow:hidden;box-shadow:0 16px 40px rgba(15,23,42,.12);border:1px solid #cbd5e1;min-height:1125px;display:flex;flex-direction:column}
+.card-accent-bar{height:10px;background:linear-gradient(90deg,#0078d4 0%,#2563eb 55%,#10b981 100%)}
+.card-inner{padding:2.3rem 2.6rem 1.8rem;flex:1;display:flex;flex-direction:column;justify-content:space-between}
+.card-eyebrow{font-size:.82rem;font-weight:700;letter-spacing:.12em;color:#0078d4;text-transform:uppercase;margin-bottom:.55rem}
+.card-headline{font-size:2.25rem;line-height:1.14;font-weight:800;margin:0 0 .65rem;letter-spacing:-.02em;color:#0f172a}
+.grad-text{background:linear-gradient(90deg,#0078d4,#10b981);-webkit-background-clip:text;background-clip:text;color:transparent}
+.card-subtitle{font-size:1.04rem;line-height:1.45;color:#475569;margin:0 0 1.15rem}
+.card-canvas{flex:1;display:flex;flex-direction:column;justify-content:center;gap:1rem}
+.quote-box,.callout-box{background:#eef2f6;border-radius:12px;padding:1rem 1.25rem;font-size:.95rem;line-height:1.48;color:#1e293b}
+.stack-list{display:flex;flex-direction:column;gap:.85rem}
+.decision-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:.92rem 1.12rem}
+.decision-head{display:flex;justify-content:space-between;align-items:flex-start;gap:.75rem}
+.field-name{font-weight:700;font-size:.98rem}
+.type-pill{background:#e2e8f0;color:#475569;font-size:.74rem;padding:.12rem .45rem;border-radius:6px;font-weight:600}
+.question-sub{font-size:.83rem;color:#64748b;margin-top:.15rem}
+.action-pill{font-size:.75rem;font-weight:700;padding:.22rem .6rem;border-radius:999px;white-space:nowrap}
+.pill-auto{background:#dcfce7;color:#15803d}
+.pill-confirm{background:#fef3c7;color:#b45309}
+.pill-human{background:#fee2e2;color:#b91c1c}
+.decision-main{font-size:1.12rem;margin:.42rem 0 .52rem}
+.conf-muted{font-size:.85rem;color:#64748b;font-weight:600}
+.dist-row{display:grid;grid-template-columns:195px 1fr 56px;align-items:center;gap:.6rem;font-size:.82rem;margin:.24rem 0}
+.dist-track{background:#e2e8f0;height:9px;border-radius:999px;overflow:hidden}
+.dist-fill{background:linear-gradient(90deg,#0078d4,#10b981);height:100%;border-radius:999px}
+.dist-pct{text-align:right;font-variant-numeric:tabular-nums;color:#334155}
+.clean-table{width:100%;border-collapse:collapse;font-size:.88rem;background:transparent}
+.clean-table th{font-size:.73rem;letter-spacing:.08em;color:#64748b;text-align:left;padding:.5rem .4rem;border-bottom:1px solid #cbd5e1}
+.clean-table td{padding:.56rem .4rem;border-bottom:1px solid #e2e8f0;vertical-align:top}
+.sc-col{font-weight:600;color:#1e293b;white-space:nowrap}
+.act-col,.num-col{text-align:right;font-variant-numeric:tabular-nums}
+.act-auto{color:#15803d;font-weight:700}
+.act-confirm{color:#b45309;font-weight:700}
+.act-human{color:#b91c1c;font-weight:700}
+.miss-mark{color:#dc2626;font-weight:800}
+.code-dark{background:#0f172a;color:#e2e8f0;padding:1.05rem 1.25rem;border-radius:12px;font-size:.82rem;line-height:1.45;overflow-x:auto;margin:0;font-family:ui-monospace,Consolas,monospace}
+.code-transition{color:#0078d4;font-weight:700;font-size:.92rem;padding:.15rem 0}
+.hl-answer{color:#fbbf24;font-weight:700}
+.rob-main{font-weight:600;color:#0f172a}
+.rob-sub{font-size:.78rem;color:#64748b}
+.lat-list{display:flex;flex-direction:column;gap:.85rem}
+.lat-title{font-weight:700;font-size:.95rem;margin-bottom:.28rem}
+.lat-row{display:flex;align-items:center;gap:.65rem;margin:.22rem 0}
+.lat-tag{width:85px;font-size:.82rem;color:#64748b}
+.lat-bar{height:20px;border-radius:6px}
+.lat-blue{background:#2563eb}
+.lat-gray{background:#cbd5e1}
+.lat-val{font-size:.86rem;font-variant-numeric:tabular-nums}
+.fit-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem}
+.fit-card{border-radius:14px;padding:1.2rem 1.35rem;font-size:.95rem;line-height:1.58}
+.fit-good{background:#ecfdf5;border:1px solid #a7f3d0}
+.fit-bad{background:#fff1f2;border:1px solid #fecdd3}
+.fit-head{font-weight:800;font-size:1.1rem;margin-bottom:.5rem}
+.dark-footer-box{background:#0f172a;color:#f8fafc;border-radius:14px;padding:1.2rem 1.45rem;font-size:.95rem;line-height:1.5}
+.dark-repo{color:#38bdf8;font-family:ui-monospace,Consolas,monospace;margin-bottom:0}
+.workbench-shell{background:#fff;border:1px solid #cbd5e1;border-radius:14px;overflow:hidden}
+.wb-topbar{background:linear-gradient(90deg,#0078d4,#2563eb);color:#fff;padding:.75rem 1rem;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.wb-sub{font-size:.75rem;opacity:.92}
+.wb-status{background:rgba(15,23,42,.28);font-size:.73rem;padding:.25rem .6rem;border-radius:999px;white-space:nowrap}
+.wb-grid{display:grid;grid-template-columns:225px 1fr;gap:.85rem;padding:.9rem}
+.wb-col-title{font-size:.76rem;font-weight:700;color:#475569;text-transform:uppercase;margin-bottom:.4rem}
+.wb-item{font-size:.78rem;padding:.38rem .5rem;border-radius:6px;background:#f8fafc;border:1px solid #e2e8f0;margin-bottom:.32rem}
+.wb-note{font-size:.72rem;color:#64748b;margin-top:.5rem;line-height:1.38}
+.wb-metrics{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.55rem}
+.wb-metric{font-size:.73rem;background:#f1f5f9;padding:.2rem .5rem;border-radius:6px;color:#334155;font-weight:600}
+.card-footer{border-top:1px solid #cbd5e1;padding-top:.85rem;margin-top:1.1rem;display:flex;justify-content:space-between;font-size:.82rem;color:#64748b}
+@media print{body{background:#fff;padding:0}.deck-wrap{gap:0}.report-card{box-shadow:none;page-break-after:always;border:none}}
+</style>
+<!-- kee-dedicated-style:start -->
+<style>/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.65fr 1.1fr 1.15fr 1.1fr 1.1fr;gap:6px;align-items:stretch;min-width:0}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+</style>
+<!-- kee-dedicated-style:end -->
+<!-- kee-report-localization:metadata:start --><link rel="alternate" hreflang="en" href="cards.en.html"><link rel="alternate" hreflang="zh-CN" href="cards.zh-CN.html"><meta name="report-translation-source" content="workshops/azure-agent-infra/cards.html@941ee62"><meta name="report-translation-provenance" content="translation; independently_reproduced=false"><style>/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.65fr 1.1fr 1.15fr 1.1fr 1.1fr;gap:6px;align-items:stretch;min-width:0}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+
+html{scroll-padding-top:108px}.reading-header,.kee-dedicated-nav,[data-professional-header]{position:sticky;top:0;z-index:1000;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+
+:root{--search-bg:#101a30;--search-soft:#172440;--search-ink:#eef3ff;--search-muted:#adbbd1;--search-line:#293956;--search-accent:#9aabff;--header-offset:108px}
+:root[data-reading-shell][data-theme=light],[data-perimeter-theme=light]{--search-bg:#fff;--search-soft:#e8eefb;--search-ink:#17233e;--search-muted:#4c5e7c;--search-line:#d5ddec;--search-accent:#354ec8}
+html{scroll-padding-top:var(--header-offset,108px)!important}
+.site-search,.site-search *{box-sizing:border-box!important;font-family:"Segoe UI",sans-serif;letter-spacing:normal;text-transform:none}
+.site-search{position:relative;display:flex;align-items:center;gap:5px;min-width:0;width:230px;max-width:100%;margin:0!important;padding:0!important;line-height:1.4;border:1px solid var(--search-line);border-radius:9px;background:var(--search-soft);color:var(--search-ink);isolation:isolate}
+.site-search input[type=search]{display:block;flex:1;min-width:0;width:100%;height:42px;margin:0;padding:9px 8px!important;font-size:12px!important;line-height:1.5;border:0!important;border-radius:9px;background:transparent!important;color:var(--search-ink)!important;box-shadow:none!important;appearance:none}
+.site-search input::placeholder{color:var(--search-muted);opacity:1}.site-search input:focus-visible{outline:2px solid var(--search-accent);outline-offset:2px}
+.site-search kbd{font:11px Consolas,monospace;color:var(--search-muted);padding:1px 5px;border:1px solid var(--search-line);border-radius:4px}
+.site-search button[type=submit]{flex:none;width:38px;min-width:38px;height:42px;min-height:42px;padding:0;margin:0;border:0;border-radius:8px;background:transparent;color:var(--search-accent);font-size:24px;cursor:pointer;box-shadow:none}
+.search-label,.search-status{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.site-search .search-results{position:absolute;top:calc(100% + 10px);right:0;z-index:1100;width:min(480px,calc(100vw - 32px));max-height:min(560px,65vh);overflow-y:auto;border:1px solid var(--search-line);border-radius:12px;background:var(--search-bg);color:var(--search-ink);padding:10px;box-shadow:0 12px 32px #0005;text-align:left}
+.site-search .search-results[hidden]{display:none!important}.search-results .search-group{margin:8px 6px 4px;font:11px/1.5 Consolas,monospace;color:var(--search-muted)}
+.site-search .search-results a{display:block!important;padding:10px!important;margin:3px 0!important;border:1px solid transparent!important;border-radius:7px;background:transparent;color:var(--search-ink)!important;font-size:13px!important;text-decoration:none!important;white-space:normal;overflow-wrap:anywhere;text-align:left!important;line-height:1.5!important}
+.site-search .search-results a[aria-selected=true],.site-search .search-results a:hover{border-color:var(--search-accent)!important;background:var(--search-soft)}
+.search-results a small{display:block;font-size:10px;color:var(--search-muted);margin-top:4px}.search-results p{margin:10px;font-size:13px;color:var(--search-muted)}
+.search-archive-summary{padding:20px;border:1px solid var(--search-line);border-radius:10px;background:var(--search-bg);color:var(--search-ink);margin:24px 0}.search-archive-summary h2{font-size:24px;margin:0 0 12px}.search-archive-summary li{margin:12px 0}.search-archive-summary a{color:var(--search-accent)}
+[data-professional-header]{position:sticky!important;top:0!important;z-index:1000!important;background:var(--search-bg)!important;--header-glass:rgba(16,26,48,.9);grid-template-columns:auto minmax(0,1fr) 230px auto!important}
+[data-professional-header][data-perimeter-theme=light],:root[data-reading-shell][data-theme=light] [data-professional-header]{--header-glass:rgba(255,255,255,.94)}
+[data-professional-header] .professional-mobile{display:none}.professional-mobile summary{min-width:38px;min-height:42px;display:grid;place-items:center;cursor:pointer;list-style:none}.professional-mobile summary::-webkit-details-marker{display:none}
+[data-professional-header] .professional-context{display:none}
+.professional-context-bar{padding:12px 24px;border-bottom:1px solid var(--search-line);background:var(--search-bg);color:var(--search-muted);font:12px/1.6 "Segoe UI",sans-serif;display:flex;flex-wrap:wrap;gap:8px 18px;overflow-wrap:anywhere}.professional-context-bar a{color:var(--search-accent)}
+@supports((backdrop-filter:blur(16px)) or (-webkit-backdrop-filter:blur(16px))){.site-header,[data-professional-header]{background:var(--header-glass)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}}
+@media(max-width:1250px) and (min-width:701px){.header-inner{grid-template-columns:minmax(0,1fr) 230px auto!important;padding:12px 0;gap:12px!important}.desktop-nav{grid-row:2;grid-column:1/-1}.header-inner>.site-search{grid-column:2;grid-row:1}.header-inner>.controls{grid-column:3;grid-row:1}[data-professional-header]{grid-template-columns:minmax(0,1fr) 230px auto!important;gap:12px!important}[data-professional-header]>.professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header]>.site-search{grid-column:2;grid-row:1}[data-professional-header]>.professional-controls{grid-column:3;grid-row:1}:root{--header-offset:176px}}
+@media(max-width:700px){.header-inner{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 0;gap:8px!important}.header-inner>.site-search{grid-row:2;grid-column:1/-1;width:100%}.header-inner>.controls{grid-column:2;grid-row:1}.site-search .search-results{width:100%;right:0}[data-professional-header]{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 16px!important;gap:8px!important}[data-professional-header]>.professional-primary{display:none!important}[data-professional-header]>.site-search{grid-column:1/-1;grid-row:2;width:100%}[data-professional-header]>.professional-controls{grid-column:2;grid-row:1}[data-professional-header] .professional-mobile{display:block}[data-professional-header] .professional-mobile[open]>.professional-primary{position:absolute;top:100%;left:0;right:0;padding:16px;background:var(--search-bg);border-bottom:1px solid var(--search-line);display:grid;grid-template-columns:1fr 1fr;gap:8px}[data-professional-header] .professional-mobile .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:12px!important}:root{--header-offset:126px}}
+@media(prefers-reduced-transparency:reduce){.site-header,[data-professional-header]{background:var(--search-bg)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+@media print{.site-search,.professional-context-bar{display:none!important}}
+
+@media(min-width:1251px){.header-inner{display:grid!important;grid-template-columns:auto minmax(0,1fr) 230px auto!important;gap:18px!important}.header-inner .desktop-nav{min-width:0}}
+
+html:has(.kee-dedicated-app-root){height:auto!important;overflow-x:hidden!important;overflow-y:auto!important}
+body:has([data-professional-header]){height:auto!important;overflow-x:clip!important;overflow-y:visible!important;padding-top:0!important}
+.demo-language-navigation{display:none!important}
+.stage-column,.telemetry-panel,.scene-pill,#timeline-slider{min-width:0}
+@media(max-width:1180px){.workspace,.template-tabs{grid-template-columns:minmax(0,1fr)!important}}
+
+.in-arena-frame .professional-context-bar,.in-arena-frame [data-knowledge-atlas]{display:none!important}
+</style><!-- kee-report-localization:metadata:end --></head>
+<body><!-- kee-report-localization-navigation:start --><nav class="kee-dedicated-nav" data-professional-header><a class="professional-identity reading-brand kee-dedicated-identity identity" href="../../zh.html">Qi Chen · @turbo998</a><div class="professional-primary" role="navigation" aria-label="主导航"><a href="../../studio/zh-index.html" data-section="hub" data-nav-en-href="../../studio/index.html" data-nav-zh-href="../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub">Frontier Transformation Engineering Hub</a><a href="../../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../../benchmarks.html" data-nav-zh-href="../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心" aria-current="page">基准评测中心</a><a href="../../zh-github-radar.html" data-section="radar" data-nav-en-href="../../github-radar.html" data-nav-zh-href="../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI 信号雷达</a><a href="../../zh-openrouter.html" data-section="routing" data-nav-en-href="../../openrouter.html" data-nav-zh-href="../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../../zh-about.html" data-section="profile" data-nav-en-href="../../about.html" data-nav-zh-href="../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">首席架构师履历</a></div><form class="site-search" role="search" action="../../studio/zh-archive.html" method="get" data-search-root="../../index.html" data-search-language="zh-CN"><label class="search-label" for="site-search-input">搜索架构、评测、Demo、技能...</label><input id="site-search-input" name="q" type="search" placeholder="搜索架构、评测、Demo、技能..." autocomplete="off" spellcheck="false" aria-keyshortcuts="/ Control+k Meta+k"><kbd aria-hidden="true">/</kbd><button type="submit" aria-label="搜索全部内容">⌕</button><div class="search-results" id="site-search-results" hidden></div><span class="search-status" role="status" aria-live="polite"></span></form><div class="reading-controls professional-controls" aria-label="网站语言与外观"><a href="cards.en.html" lang="en" hreflang="en">EN</a><a href="cards.zh-CN.html" lang="zh-CN" hreflang="zh-CN" aria-current="page">中文</a><details class="professional-mobile"><summary aria-label="打开主导航">☰</summary><div class="professional-primary" role="navigation" aria-label="移动主导航"><a href="../../studio/zh-index.html" data-section="hub" data-nav-en-href="../../studio/index.html" data-nav-zh-href="../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub">Frontier Transformation Engineering Hub</a><a href="../../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../../benchmarks.html" data-nav-zh-href="../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心" aria-current="page">基准评测中心</a><a href="../../zh-github-radar.html" data-section="radar" data-nav-en-href="../../github-radar.html" data-nav-zh-href="../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI 信号雷达</a><a href="../../zh-openrouter.html" data-section="routing" data-nav-en-href="../../openrouter.html" data-nav-zh-href="../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../../zh-about.html" data-section="profile" data-nav-en-href="../../about.html" data-nav-zh-href="../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">首席架构师履历</a></div></details><a data-reading-theme="light" href="?theme=light" aria-label="浅色主题">☀</a><a data-reading-theme="dark" href="?theme=dark" aria-label="深色主题">◐</a></div><div class="professional-context" aria-label="返回上下文"><a href="../../studio/zh-index.html">← 工程枢纽</a> · <a href="../../studio/zh-data-infra.html">返回主题</a></div></nav><div class="professional-context-bar"><a href="../../studio/zh-index.html">← 工程枢纽</a> · <a href="../../studio/zh-data-infra.html">返回主题</a></div><nav aria-label="报告语言" style="font:14px/1.5 system-ui,sans-serif;display:flex;flex-wrap:wrap;gap:12px;padding:12px 18px;background:#101a30;color:#eef3ff;width:100%;box-sizing:border-box"><a style="color:#9aabff" href="cards.en.html" lang="en" hreflang="en">EN</a><a style="color:#9aabff" href="cards.zh-CN.html" lang="zh-CN" hreflang="zh-CN" aria-current="page">中文</a><span>源报告译本；非独立复测。指标与证据保持原样。</span></nav><figure class="knowledge-figure" data-knowledge-atlas="data-infra" style="margin:24px 0;max-width:100%"><svg xmlns="http://www.w3.org/2000/svg" lang="zh-CN" role="img" aria-labelledby="knowledge-0fd6c4b43a6f-title knowledge-0fd6c4b43a6f-desc" viewBox="0 0 360 753" width="360" style="display:block;width:100%;height:auto;max-width:560px;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-0fd6c4b43a6f-title">Azure AI代理基础设施游戏本 ·7- 信用卡基准报告</title><desc id="knowledge-0fd6c4b43a6f-desc">数据源与变更捕获: 业务数据 · Mirroring · 数字孪生 → 构成数据基础 → OneLake 与 Fabric IQ: 共享数据、语义上下文与治理 → 比较能力边界 → 跨云平台决策: Databricks · Snowflake · BigQuery · Redshift → 验证部署需求 → 隔离式智能体容量: AKSClaw · E2B 100K 夹具 · D96as_v7 → 检查恢复与成本 → Cycle #377 与 VM 成本治理: 演示 → 选型 → 工作台 → 来源报告</desc><rect width="360" height="753" rx="16" fill="#091827"/><text x="20" y="30" fill="#eef5ff" font-size="20" font-weight="700"><tspan x="20" dy="0">Azure AI代理基础设施游戏本 ·7-</tspan><tspan x="20" dy="28">信用卡基准报告</tspan></text><text x="20" y="86" fill="#a9b8ce" font-size="13" font-weight="400"><tspan x="20" dy="0">概念架构 · 箭头表示关系，不代表测量值</tspan></text><g data-concept="1"><rect x="16" y="112" width="328" height="79" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="126" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="142" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">数据源与变更捕获</tspan></text><text x="32" y="173" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">业务数据 · Mirroring · 数字孪生</tspan></text></g><g data-relationship="构成数据基础"><path d="M32 191 V236" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 231 L32 237 L37 231" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="217" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">构成数据基础</tspan></text></g><g data-concept="2"><rect x="16" y="243" width="328" height="79" rx="12" fill="#132942" stroke="#43617f"/><rect x="16" y="257" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="273" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">OneLake 与 Fabric IQ</tspan></text><text x="32" y="304" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">共享数据、语义上下文与治理</tspan></text></g><g data-relationship="比较能力边界"><path d="M32 322 V367" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 362 L32 368 L37 362" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="348" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">比较能力边界</tspan></text></g><g data-concept="3"><rect x="16" y="374" width="328" height="99" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="388" width="4" height="71" rx="2" fill="#63dbca"/><text x="32" y="404" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">跨云平台决策</tspan></text><text x="32" y="435" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">Databricks · Snowflake · BigQuery ·</tspan><tspan x="32" dy="19.599999999999998">Redshift</tspan></text></g><g data-relationship="验证部署需求"><path d="M32 473 V518" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 513 L32 519 L37 513" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="499" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">验证部署需求</tspan></text></g><g data-concept="4"><rect x="16" y="525" width="328" height="79" rx="12" fill="#132942" stroke="#43617f"/><rect x="16" y="539" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="555" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">隔离式智能体容量</tspan></text><text x="32" y="586" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">AKSClaw · E2B 100K 夹具 · D96as_v7</tspan></text></g><g data-relationship="检查恢复与成本"><path d="M32 604 V649" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 644 L32 650 L37 644" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="630" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">检查恢复与成本</tspan></text></g><g data-concept="5"><rect x="16" y="656" width="328" height="79" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="670" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="686" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">Cycle #377 与 VM 成本治理</tspan></text><text x="32" y="717" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">演示 → 选型 → 工作台 → 来源报告</tspan></text></g></svg><figcaption style="font:14px/1.6 system-ui,sans-serif;margin:12px 0;overflow-wrap:anywhere">整体知识图示：按标注关系阅读组件与工程边界。布局仅为概念示意；不表示吞吐、性能排名或生产部署。</figcaption></figure><!-- kee-report-localization-navigation:end -->
+
+
+<main class="deck-wrap">
+
+<!-- CARD 1 -->
+<article class="report-card" id="card-1">
+  <div class="card-accent-bar"></div>
+  <div class="card-inner">
+    <header class="card-header">
+      <div class="card-eyebrow">手举起手来AZURE AI基础设施</div>
+      <h2 class="card-headline">6 Azure Agent运行时间, <span class="grad-text">108ms MicroVM恢复</span></h2>
+      <p class="card-subtitle">建筑&amp;基准评价6 Azure Agent运行时间( O)Foundry主办者,Durable Functions, ACA动态会话,ACA沙盒,我说,AKS卡塔/阿卡斯卡瓦法,以及E2B维基百科中的相关条目: 维基语录链接:名人名言 - 分类96as 个7和12生产设想。</p>
+    </header>
+    <div class="card-canvas">
+      <div class="workbench-shell">
+        <div class="wb-topbar">
+          <div>
+            <strong>Azure AI代理代理选择&amp;规模化工作中心(2026游戏本).</strong>
+            <div class="wb-sub">4- Layer Stack(建造) 跑 地 地 地 地 地 地 地 地 地 地 地 地 地 地 地 地 地 地 地 地 地 地 地 地 地 地 地 地 地 地 地 地 地 地 地 地 地 地 地 地 地 地 地 地 地 地 地 地 地 地 地 地</div>
+          </div>
+          <span class="wb-status">6运行时间 :12设想方案 · D96as 个7 108ms/132ms</span>
+        </div>
+        <div class="wb-grid">
+          <div class="wb-col-left">
+            <div class="wb-col-title">运行时光谱</div>
+            <div class="wb-item">1. Foundry东道代理( 个)1,400+ MCP)</div>
+            <div class="wb-item">2. Durable Functions(核准等)</div>
+            <div class="wb-item">3. ACA动态会话( Hyper- V 池)</div>
+            <div class="wb-item">4. ACA沙盒预览( 剪辑)</div>
+            <div class="wb-item">5. AKS+ 卡塔波德VM(AKSClaw Fleet) 舰队(AKSClaw Fleet) 舰队 舰队 舰队 舰队 舰队 舰队 舰队 舰</div>
+            <div class="wb-item">6. E2B打开Azure自愿服务处(D)96as 个7 108ms)</div>
+            <div class="wb-note">动作标注: 自动( A)8/12 = 66.7%用于生产准备型号; 确认(3/12 = 25.0%用于预览或重构门; 人(1/12 = 8.3%当 dev 团队所有权缺失时.</div>
+          </div>
+          <div class="wb-col-right">
+            <div class="wb-metrics">
+              <span class="wb-metric">6运行时间</span>
+              <span class="wb-metric">108ms基数 /132ms代码解释器</span>
+              <span class="wb-metric">100K+ APIM 主办会议</span>
+              <span class="wb-metric">5AKSCLAW 硬边界</span>
+            </div>
+            <div class="decision-card">
+              <div class="decision-head">
+                <div>
+                  <span class="field-name">e 个2b涡轮(_V)7速率(_S)</span> <span class="type-pill">选择</span>
+                  <div class="question-sub">是否( 爱)AzureD 类96as 个7 (5th都灵市+Azure跳动( Boost) 拍出IntelD 类96s 个6 &amp; AMDD 类96as 个6打开E2B启动?</div>
+                </div>
+                <span class="action-pill pill-auto">自动执行</span>
+              </div>
+              <div class="decision-main"><strong>108数 个基数/132ms 代码-解释 V1</strong><span class="conf-muted"> · -54.8%比较AMD五、导 言6 (239ms) · -17.0%比较Intel五、导 言6 (159ms)</span></div>
+              <div class="dist-list">
+                <div class="dist-row"><span class="dist-label">D 类96as 个7基准速度指数</span><div class="dist-track"><div class="dist-fill" style="width:92.6%"></div></div><span class="dist-pct">92.6%</span></div>
+                <div class="dist-row"><span class="dist-label">D 类96s 个6 Intel速度指数</span><div class="dist-track"><div class="dist-fill" style="width:86.2%"></div></div><span class="dist-pct">86.2%</span></div>
+                <div class="dist-row"><span class="dist-label">D 类96as 个6热那亚速度指数</span><div class="dist-track"><div class="dist-fill" style="width:41.8%"></div></div><span class="dist-pct">41.8%</span></div>
+              </div>
+            </div>
+            <div class="decision-card">
+              <div class="decision-head">
+                <div>
+                  <span class="field-name">安全-执法</span> <span class="type-pill">选择</span>
+                  <div class="question-sub">平台对代理快速规则执行多少多租户安全边界?.</div>
+                </div>
+                <span class="action-pill pill-auto">自动执行</span>
+              </div>
+              <div class="decision-main"><strong>5 / 5平台硬边界( 100.0%)</strong><span class="conf-muted"> · IMDS块- Egress- 证书代理Entra代理身份 AI 网关</span></div>
+              <div class="dist-list">
+                <div class="dist-row"><span class="dist-label">平台(_A)</span><div class="dist-track"><div class="dist-fill" style="width:100.0%"></div></div><span class="dist-pct">100.0%</span></div>
+                <div class="dist-row"><span class="dist-label">原始 _llm_keys_in_代理_pod</span><div class="dist-track"><div class="dist-fill" style="width:1.5%"></div></div><span class="dist-pct">0.0%</span></div>
+              </div>
+            </div>
+            <div class="decision-card">
+              <div class="decision-head">
+                <div>
+                  <span class="field-name">播放本_ 交付_ 出入口</span> <span class="type-pill">分数</span>
+                  <div class="question-sub">企业如果没有一支Dev团队需要深入的地下控制,能否被引导回Foundry被托管的特工?</div>
+                </div>
+                <span class="action-pill pill-human">转人工</span>
+              </div>
+              <div class="decision-main"><strong>0%允许快捷键( 抓取 SCU/ Partner)</strong><span class="conf-muted"> 游戏本幻灯片7明确块状错位未满足的控制需要</span></div>
+              <div class="dist-list">
+                <div class="dist-row"><span class="dist-label">无效的建筑类型(_P)9/12)</span><div class="dist-track"><div class="dist-fill" style="width:75.0%"></div></div><span class="dist-pct">75.0%</span></div>
+                <div class="dist-row"><span class="dist-label">捕获到的(_A)3/12)</span><div class="dist-track"><div class="dist-fill" style="width:25.0%"></div></div><span class="dist-pct">25.0%</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="callout-box"><strong>管理 大赦国际(A.Foundry)和可混凝土(ACA / AKS/功能/VMSS)是互补的,而不是相互排斥的.</strong> 标准商业 APIs 运行在Foundry托管代理,虽然不可信代码,但状态编码工作空间,以及100K+ 虚拟计算机路由ACA动态会话,ACA沙盒,我说,AKS卡塔,或,E2B有关VMSS。</div>
+    </div>
+    <footer class="card-footer">
+      <span><strong>Azure AI代理基础设施游戏本</strong> · 已核实的匿名_已报告+确定大小</span>
+      <span>1 / 7</span>
+    </footer>
+  </div>
+</article>
+
+<!-- CARD 2 -->
+<article class="report-card" id="card-2">
+  <div class="card-accent-bar"></div>
+  <div class="card-inner">
+    <header class="card-header">
+      <div class="card-eyebrow">曼纳斯×E2B 100K+ 电子计算机&amp;亚克萨斯州联邦军</div>
+      <h2 class="card-headline">261D 类96as 个7节点服务100K沙盒在108ms</h2>
+      <p class="card-subtitle">深度潜入超高密度Firecracker MicroVM沙盒打开Azure软体和多租户Kubernetes代理治理(AKSClaw).</p>
+    </header>
+    <div class="card-canvas">
+      <div class="quote-box">"每个AI代理会话都得到一个专用的孤立计算机(文件系统,终端,浏览器/VNC桌面,和Jupyter内核),该机在~中穿插.108–132ms通过 UFFD 懒惰的页面故障流和 NBD 块覆盖, 限制每个动态主机头的速率100,000+ 同时开会。"</div>
+      <div class="stack-list">
+        <div class="decision-card">
+          <div class="decision-head">
+            <div>
+              <span class="field-name">数字_100k容量(_C)</span> <span class="type-pill">选择</span>
+              <div class="question-sub">是否为100,000- 同步沙盒(相接沙盒)E2B池子装在一个单人之内Azure弹性比例( :1,000-VM限制)?</div>
+            </div>
+            <span class="action-pill pill-auto">自动执行</span>
+          </div>
+          <div class="decision-main"><strong>- 对261客户端节点( E)26.1%编1,000- 视频限值)</strong><span class="conf-muted"> · 384吉布内存×85%巨大的页x60%缩放阈值=384沙盒/节点</span></div>
+          <div class="dist-list">
+            <div class="dist-row"><span class="dist-label">巨大的页_ 保留_ ram (326(吉布语)</span><div class="dist-track"><div class="dist-fill" style="width:85.0%"></div></div><span class="dist-pct">85.0%</span></div>
+            <div class="dist-row"><span class="dist-label">cpu_scale_出_trigger_水上标记</span><div class="dist-track"><div class="dist-fill" style="width:60.0%"></div></div><span class="dist-pct">60.0%</span></div>
+            <div class="dist-row"><span class="dist-label">单机_vms_头室_已使用(261/1000)</span><div class="dist-track"><div class="dist-fill" style="width:26.1%"></div></div><span class="dist-pct">26.1%</span></div>
+          </div>
+        </div>
+        <div class="decision-card">
+          <div class="decision-head">
+            <div>
+              <span class="field-name">appim_appgw_dual_ hop_同位素</span> <span class="type-pill">诺尔</span>
+              <div class="question-sub">是否 AppGW 用户WAF五、导 言2(公用+私用IP)+APIM 费率限制-一键隔离100K+活性沙盒子域?</div>
+            </div>
+            <span class="action-pill pill-auto">自动执行</span>
+          </div>
+          <div class="decision-main"><strong>有(请说明)100%/ 热量计数器隔离+ WebSocket 传出).</strong><span class="conf-muted">  (context. request. headers. Get ValeOrDefault () 反键="@(文本. request.headers.&quot;东道主&quot;^ P(真)=1.0</span></div>
+          <div class="dist-list">
+            <div class="dist-row"><span class="dist-label">平方千分点_host_rate_limit</span><div class="dist-track"><div class="dist-fill" style="width:100.0%"></div></div><span class="dist-pct">100.0%</span></div>
+            <div class="dist-row"><span class="dist-label">响亮的邻里_ 交叉_ 影响</span><div class="dist-track"><div class="dist-fill" style="width:1.5%"></div></div><span class="dist-pct">0.0%</span></div>
+          </div>
+        </div>
+        <div class="decision-card">
+          <div class="decision-head">
+            <div>
+              <span class="field-name">上游(_E)2b生产(_R)</span> <span class="type-pill">分数</span>
+              <div class="question-sub">可不修改的开源E2B API服务器运行多节点 HAAzure控制飞机的再造?</div>
+            </div>
+            <span class="action-pill pill-confirm">确认</span>
+          </div>
+          <div class="decision-main"><strong>1 / 4医管局的标准符合 " 外 " (25.0%)</strong><span class="conf-muted"> 单进程内元节点状态&amp;GC 需要外部 PG/ 重开的相机Redis状态</span></div>
+          <div class="dist-list">
+            <div class="dist-row"><span class="dist-label">已执行_ha_控制_平面</span><div class="dist-track"><div class="dist-fill" style="width:100.0%"></div></div><span class="dist-pct">100.0%</span></div>
+            <div class="dist-row"><span class="dist-label">库存(_O)-e2b_ api_多节点_ha</span><div class="dist-track"><div class="dist-fill" style="width:25.0%"></div></div><span class="dist-pct">25.0%</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="callout-box"><strong>为什么双Hop AppGW + APIM?</strong> 应用WAF五、导 言2终止通配符 TLS并屏蔽 OWASP 对其公共IP的攻击,转发到APIM 用于每Host 速率限制,并在其私人IP上接收APIM回调(`:8080`在整个动态中实现负载平衡API维多斯游泳池</div>
+    </div>
+    <footer class="card-footer">
+      <span><strong>Azure AI代理基础设施游戏本</strong> · E2B检查Ride v2 &amp;AKSCLAW 深潜</span>
+      <span>2 / 7</span>
+    </footer>
+  </div>
+</article>
+
+<!-- CARD 3 -->
+<article class="report-card" id="card-3">
+  <div class="card-accent-bar"></div>
+  <div class="card-inner">
+    <header class="card-header">
+      <div class="card-eyebrow">评测范围</div>
+      <h2 class="card-headline">6使用大小写音轨,12建筑合同检查</h2>
+      <p class="card-subtitle">评价12企业&amp;AI-内生工作量设定与游戏本的路线规则,隔离界限,以及操作前提相悖. Misses (QQ) 旗下建筑反标被评估者抓住.</p>
+    </header>
+    <div class="card-canvas">
+      <table class="clean-table">
+        <thead>
+          <tr><th>场景</th><th>WORKLOAD &amp; ARCHITECTURAL QUESTION</th><th>EVALUATOR'S ANSWER</th><th class="act-col">行动</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="sc-col">升 职01· 客户身份代理商</td><td>30K+月会,~75%自主解决与经批准的银行业API的关联关系</td><td><strong>Foundry + ACA/AKS + Cosmos DB (100%)</strong></td><td class="act-col act-auto">自动</td></tr><tr><td class="sc-col">升 职02· 客户身份代理商</td><td>执行不可信LLM- 生成Python低等时间的脚本和文件解析</td><td><strong>ACAApps + 动态会话( 动态会话)100%)</strong></td><td class="act-col act-auto">自动</td></tr><tr><td class="sc-col">升 职03· 数字-本地AI产品</td><td>需要自定义 OCI 图像、 持续的工作空间文件, 以及用户任务之间的明确暂停/ 重现</td><td><strong>ACA预览 + HorizonDB (Sandbox)92%)</strong></td><td class="act-col act-confirm">确认</td></tr><tr><td class="sc-col">升 职04· 数字-本地AI产品</td><td>要求数 <150ms Firecracker MicroVM restore, per-Host session rate limiting, and WebSocket desktop/terminal streaming</td><td><strong>E2B维基百科中的相关条目: 维基语录链接:名人名言 - 分类96as 个7 108ms/132ms (100%)</strong></td><td class="act-col act-auto">自动</td></tr><tr><td class="sc-col">升 职05企业代理平台</td><td>电子设备持续代理,BYO Harness(驾驶员/Hermes/OpenClaw),IcM自动跟踪,跟踪太阳的接发</td><td><strong>AKSCLAW 自动自动取款机5- 边界运行时间AKS (100%)</strong></td><td class="act-col act-auto">自动</td></tr><tr><td class="sc-col">升 职06· 多代理人工作流动</td><td>多代理审查+强制人类批准等待+确定性再试验/回收,独立于计算舱生命周期</td><td><strong>Durable Functions + ACAApps + DB (英语:100%)</strong></td><td class="act-col act-auto">自动</td></tr><tr><td class="sc-col">升 职07· 多代理人工作流动</td><td>LangGraph调试代理 - &gt; GH 副驾驶SDK编码代理( 壳/ )MCP) -> Foundry合规代理</td><td><strong>MAF+GH 副驾驶SDK + Foundry (100%)</strong></td><td class="act-col act-auto">自动</td></tr><tr><td class="sc-col">升 职08代理工厂</td><td>需要SAP/销售部队/Slack/M的至B级标准内部代理365纳入,最低限度管理</td><td><strong>Foundry东道代理+MCP工具箱( 双向)100%)</strong></td><td class="act-col act-auto">自动</td></tr><tr><td class="sc-col">升 职09受管制工业代理商</td><td>客户要求超出管理下的托管的深度控制,但没有专门的开发/业务团队</td><td><strong>直接Foundry拒绝倒置; 启动 CCU/Partner 闸门(0%快捷键)</strong> <span class="miss-mark">✕</span></td><td class="act-col act-human">人工</td></tr><tr><td class="sc-col">升 职10企业代理平台</td><td>能储存开源E2B API进程水平规模跨越节点,而不在重启时失去状态?</td><td><strong>重启时丢失的单进程内节点状态( Q)25%)</strong> <span class="miss-mark">✕</span></td><td class="act-col act-confirm">确认</td></tr><tr><td class="sc-col">升 职11受管制工业代理商</td><td>是否将代理容器部署到ACA/AKS自动启用全Entra代理ID治理并屏蔽用户代号继承?</td><td><strong>不需要自动;需要明确的代理ID+Gateway密钥保管(33%)</strong> <span class="miss-mark">✕</span></td><td class="act-col act-confirm">确认</td></tr><tr><td class="sc-col">升 职12代理工厂</td><td>失败的$10,000俊奥格Foundry模型门自动取消一个账户从强 ACR / P 的合格资格1?</td><td><strong>否;非型号3基金会仍然有资格(100%)</strong></td><td class="act-col act-auto">自动</td></tr>
+        </tbody>
+      </table>
+      <div class="callout-box"><strong>3被捕获的建筑防盗剂(`✕`):</strong> (西)09(c) 将未得到满足的基础设施控制工作量追溯到Foundry(S) 客户缺少一支DV团队;10)运行未修改的开源E2B API在多节点生产中,不外化模态; (S)11假设ACA/AKS单是部署就可以了Entra代理身份证明&amp;零键保管,不带明确的"蓝图"+AI Gateway绑定.</div>
+    </div>
+    <footer class="card-footer">
+      <span><strong>Azure AI代理基础设施游戏本</strong> · 12- 由代理验证的假象矩阵_ fra_sizer.py</span>
+      <span>3 / 7</span>
+    </footer>
+  </div>
+</article>
+
+<!-- CARD 4 -->
+<article class="report-card" id="card-4">
+  <div class="card-accent-bar"></div>
+  <div class="card-inner">
+    <header class="card-header">
+      <div class="card-eyebrow">底层机制</div>
+      <h2 class="card-headline">APIM / 热隔离&amp;AKSCLAW 自动自动取款机5- 边界执法</h2>
+      <p class="card-subtitle">怎样Azure隔离100K+ 并行动态E2B网关层的沙盒子域, 同时执行  键, 非通过特性和网络内边界AKS.</p>
+    </header>
+    <div class="card-canvas">
+      <pre class="code-dark">&lt;!-- 1. E2B on Azure: APIM Per-Sandbox Dynamic Subdomain Rate Limit (&lt;port&gt;-&lt;sandboxId&gt;.domain.com) --&gt;
+&lt;inbound&gt;
+  &lt;base /&gt;
+  &lt;rate-limit-by-key calls="300" renewal-period="60"
+    counter-key="@(context.Request.Headers.GetValueOrDefault(&amp;quot;Host&amp;quot;, &amp;quot;unknown&amp;quot;))"
+    increment-condition="@(context.Response.StatusCode &amp;gt;= 200 &amp;amp;&amp;amp; context.Response.StatusCode &amp;lt; 400)" /&gt;
+  &lt;set-backend-service base-url="http://10.240.0.10:8080" /&gt; &lt;!-- Callback to AppGW Private Frontend --&gt;
+&lt;/inbound&gt;</pre>
+      <div class="code-transition">+ 与AKSClaw Pod VM硬边界结合Entra代理ID + 统一AI Gateway QQ</div>
+      <pre class="code-dark"># 2. AKSClaw Kata Pod VM + NetworkPolicy + AI Gateway Contract (Zero LLM API Key in Agent Pod)
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: aksclaw-agent-alice
+spec:
+  template:
+    spec:
+      runtimeClassName: kata-mshv-vm-isolation   # Dedicated Hypervisor Guest Kernel per Agent
+      serviceAccountName: entra-agent-id-alice   # Blueprint + Sponsor dual-identity attribution
+      containers:
+      - name: agent-harness
+        env:
+        - name: OPENAI_BASE_URL
+          value: "http://ai-gateway.platform.svc.cluster.local/v1" # Prefix-cache affinity + RPM/TPM hard stop
+        # NO OPENAI_API_KEY in env! Injected upstream by AI Gateway after Entra Agent ID token check
+        volumeMounts:
+        - { name: team-skills, mountPath: /skills, readOnly: true }      # Shared Read-Only Marketplace
+        - { name: agent-state, mountPath: /workspace, readOnly: false } # Isolated Per-Instance State
+# NetworkPolicy blocks 169.254.169.254 (IMDS) + restricts egress to AI Gateway &amp; approved MCP proxies -&gt; <span class="hl-answer">&lt;answer&gt;</span></pre>
+      <div class="callout-box"><strong>保安不依靠特工的即时服从</strong> 即使有特工在和我们一起跑`--yolo`或迅速注射,`kata-mshv-vm-isolation`分离内核、网络政策块`169.254.169.254`,舱载生LLM键,而 AI Gateway 则强制硬符号预算线路断路器。</div>
+    </div>
+    <footer class="card-footer">
+      <span><strong>Azure AI代理基础设施游戏本</strong> · 礼宾&amp;政策机制</span>
+      <span>4 / 7</span>
+    </footer>
+  </div>
+</article>
+
+<!-- CARD 5 -->
+<article class="report-card" id="card-5">
+  <div class="card-accent-bar"></div>
+  <div class="card-inner">
+    <header class="card-header">
+      <div class="card-eyebrow">鲁棒性检验</div>
+      <h2 class="card-headline">+50.8pts 启动速度增益AMD都灵 v7; 100%硬边界保留</h2>
+      <p class="card-subtitle">整个《议定书》的敏感性分析CPU世代(五)6比较7,闲会话回接,即时注入绕行尝试,VMSS缩放方向,以及$10K长相检查门。</p>
+    </header>
+    <div class="card-canvas">
+      <table class="clean-table">
+        <thead>
+          <tr><th>PERTURBATION DIMENSION</th><th class="num-col">BASELINE</th><th class="num-col">PERTURBED / UPGRADED</th><th class="num-col">变化（百分点）</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><div class="rob-main">E2B沙盒冷启动 :AMD都灵 v7比较Intel五、导 言6(代码-解释V)1)</div><div class="rob-sub">D 类96s 个6 Intel (159毫秒 - &gt;62.9%速度指数) vs D96as 个7 AMD都灵( 都灵 )132毫秒 - &gt;75.8%速度指数)</div></td><td class="num-col">62.9%</td><td class="num-col">75.8%</td><td class="num-col"><strong>+12.9点</strong></td></tr><tr><td><div class="rob-main">E2B沙盒冷启动 :AMD热那亚 v6比较AMD都灵 v7(目录)MicroVM)</div><div class="rob-sub">D 类96as 个6热那亚( 特克多克)239毫秒 - &gt;41.8%速度指数) vs D96as 个7都灵( 都灵 )108毫秒 - &gt;92.6%速度指数)</div></td><td class="num-col">41.8%</td><td class="num-col">92.6%</td><td class="num-col"><strong>+50.8点</strong></td></tr><tr><td><div class="rob-main">国家持久跨越荒地垦荒(动态会话对沙箱)</div><div class="rob-sub">ACA动态会话( A)0%闲置复垦后保留的工作空间) vsACA预览 + HorizonDB (Sandbox)100%抓图 + ACID 状态保留)</div></td><td class="num-col">0.0%</td><td class="num-col">100.0%</td><td class="num-col"><strong>+100.0点</strong></td></tr><tr><td><div class="rob-main">多十种安全控制:代理快速规则与平台硬边界</div><div class="rob-sub">代理软件软件配置( S)0%/ -- --yolo绕道) vs AKSClaw平台硬控制(100%IMDS块+ Egress + AI Gateway) 互联网电影数据库(IMDS)上"相克"的资料(英文)</div></td><td class="num-col">0.0%</td><td class="num-col">100.0%</td><td class="num-col"><strong>+100.0点</strong></td></tr><tr><td><div class="rob-main">VMSS 自动缩放方向不对称( )CPU缩放出对大页缩放入)</div><div class="rob-sub">缩放出@60% CPU (100%自动反应水平扩展) vs Scale-In (0%盲目的终止;100%由大页排水和活地迁移所关闭)</div></td><td class="num-col">100.0%</td><td class="num-col">100.0%</td><td class="num-col"><strong>0.0点</strong></td></tr><tr><td><div class="rob-main">普利森特筛选门:历史$1,000 vs Adopted $10,000 Foundry模式规则</div><div class="rob-sub">原始相关ACR美元留存(100%与非示范性强ACR路线资格(第条)100%模型门保存 <$10K)</div></td><td class="num-col">100.0%</td><td class="num-col">100.0%</td><td class="num-col"><strong>0.0点</strong></td></tr>
+        </tbody>
+      </table>
+      <div class="callout-box"><strong>密钥变量 :</strong> 升级从`Standard_D96as_v6`(加纳)改为`Standard_D96as_v7`(图林+.Azure脚下切入基座MicroVM启动从`239 ms`改为`108 ms` (`+50.8 pts`,同时从平面动态会话切换到ACA沙盒 + HorizonDB 提高回收后的办公空间连续性`0%`改为`100%`.</div>
+    </div>
+    <footer class="card-footer">
+      <span><strong>Azure AI代理基础设施游戏本</strong> · 6建筑坚固性检查</span>
+      <span>5 / 7</span>
+    </footer>
+  </div>
+</article>
+
+<!-- CARD 6 -->
+<article class="report-card" id="card-6">
+  <div class="card-accent-bar"></div>
+  <div class="card-inner">
+    <header class="card-header">
+      <div class="card-eyebrow">LATENCY &amp; STARTUP SCALING</div>
+      <h2 class="card-headline">108ms基数&amp; 132ms代码解释器AzureD 类96as 个7</h2>
+      <p class="card-subtitle">比较优化的沙盒还原路径( )`#2563EB`对照基准的VM代数和冷容器初始化(`#CBD5E1`),低潜性意味着更快地执行交互式代理工具.</p>
+    </header>
+    <div class="card-canvas">
+      <div class="lat-list">
+        <div class="lat-item"><div class="lat-title">E2B碱性沙盒还原( D)96as 个7都灵对 D96as 个6热那亚语).</div><div class="lat-row"><span class="lat-tag">优化后</span><div class="lat-bar lat-blue" style="width:4.0%"></div><strong class="lat-val">108毫秒( 秒数)AMD五、导 言7都灵+UFFD).</strong></div><div class="lat-row"><span class="lat-tag">基线</span><div class="lat-bar lat-gray" style="width:7.8%"></div><span class="lat-val">239毫秒( 秒数)AMD五、导 言6热那亚语).</span></div></div><div class="lat-item"><div class="lat-title">E2B碱性沙盒还原( D)96as 个7都灵对 D96s 个6 Intel)</div><div class="lat-row"><span class="lat-tag">优化后</span><div class="lat-bar lat-blue" style="width:4.0%"></div><strong class="lat-val">108毫秒( 秒数)AMD五、导 言7都灵)</strong></div><div class="lat-row"><span class="lat-tag">基线</span><div class="lat-bar lat-gray" style="width:4.0%"></div><span class="lat-val">116毫秒( 秒数)Intel五、导 言6翡翠快活).</span></div></div><div class="lat-item"><div class="lat-title">E2B代码-解释 V1启动( D)96as 个7都灵对 D96as 个6热那亚语).</div><div class="lat-row"><span class="lat-tag">优化后</span><div class="lat-bar lat-blue" style="width:4.3%"></div><strong class="lat-val">132毫秒( 秒数)AMD五、导 言7都灵+Jupyter/envd).</strong></div><div class="lat-row"><span class="lat-tag">基线</span><div class="lat-bar lat-gray" style="width:8.3%"></div><span class="lat-val">255毫秒( 秒数)AMD五、导 言6热那亚语).</span></div></div><div class="lat-item"><div class="lat-title">E2B代码-解释 V1启动( D)96as 个7都灵对 D96s 个6 Intel)</div><div class="lat-row"><span class="lat-tag">优化后</span><div class="lat-bar lat-blue" style="width:4.3%"></div><strong class="lat-val">132毫秒( 秒数)AMD五、导 言7都灵)</strong></div><div class="lat-row"><span class="lat-tag">基线</span><div class="lat-bar lat-gray" style="width:5.2%"></div><span class="lat-val">159毫秒( 秒数)Intel五、导 言6翡翠快活).</span></div></div><div class="lat-item"><div class="lat-title">ACA动态会话分配(预武装池与冷容器)</div><div class="lat-row"><span class="lat-tag">优化后</span><div class="lat-bar lat-blue" style="width:6.9%"></div><strong class="lat-val">~210ms( 预装超V 池)</strong></div><div class="lat-row"><span class="lat-tag">基线</span><div class="lat-bar lat-gray" style="width:72.0%"></div><span class="lat-val">~2,200ms(未装备集装箱冷起步)</span></div></div><div class="lat-item"><div class="lat-title">ACA沙盒工作空间回收( Memory/Disk Snapshot vs Full Rebuild) :</div><div class="lat-row"><span class="lat-tag">优化后</span><div class="lat-bar lat-blue" style="width:10.5%"></div><strong class="lat-val">~320ms( 弹出续作)</strong></div><div class="lat-row"><span class="lat-tag">基线</span><div class="lat-bar lat-gray" style="width:54.0%"></div><span class="lat-val">~1,650ms( OCI + 音量输入)</span></div></div>
+      </div>
+      <div class="callout-box"><strong>测量硬件透视 :</strong> `Standard_D96as_v7` (5th简AMD首都至4.5GHz + Azure助推)实现**`108 ms`** 碱性沙盒恢复和**`132 ms`** 代码-解释V1在美国东部启动2/美国中部——表现优于两者`Standard_D96s_v6` Intel (`116 ms` / `159 ms`和`Standard_D96as_v6`热那亚( 特克多克)`239 ms` / `255 ms`).</div>
+    </div>
+    <footer class="card-footer">
+      <span><strong>Azure AI代理基础设施游戏本</strong> · 测量的东美国2/ 美国中部地区&amp;参考模型</span>
+      <span>6 / 7</span>
+    </footer>
+  </div>
+</article>
+
+<!-- CARD 7 -->
+<article class="report-card" id="card-7">
+  <div class="card-accent-bar"></div>
+  <div class="card-inner">
+    <header class="card-header">
+      <div class="card-eyebrow">工程判断</div>
+      <h2 class="card-headline">将运行时间匹配到隔离边界——永远不强制</h2>
+      <p class="card-subtitle">关于何时使用的结构综合Foundry被托管的代理对ACA动态会话/ 桑德克 vsAKS卡塔(AKSClaw)诉法国E2B打开Azure维基文库中相关的原始文献: 相克通谱 VMSS.</p>
+    </header>
+    <div class="card-canvas">
+      <div class="fit-grid">
+        <div class="fit-card fit-good">
+          <div class="fit-head">✅ 适用场景</div>
+          <ul>
+            <li><strong>Foundry托管代理 :</strong> 使用核准的API的To-B业务代理商&amp; 1,400+ MCP连线器与最小的以下行动。</li>
+            <li><strong>Durable Functions + ACA应用 :</strong> 需要等待外部活动的长期采购/财务/核准流动&amp;决断再演.</li>
+            <li><strong>ACA动态会话/ 沙盒 :</strong> 以弗比的超V代码执行( E)`~210ms`)或状态编码/浏览工作空间并带有暂停/重现快照.</li>
+            <li><strong>AKS+ 卡塔( 双向)`AKSClaw`):</strong> 多租户工程/SRE车队需要BYO的接头、共享技能市场,以及5硬平台边界。</li>
+            <li><strong>E2B有关自愿服务制度(`D96as_v7`):</strong> 需要的AI-原生产品100K+ 并行虚拟计算机,位于`108ms–132ms`启动。</li>
+          </ul>
+        </div>
+        <div class="fit-card fit-bad">
+          <div class="fit-head">⛔ 不适用场景</div>
+          <ul>
+            <li><strong>跟踪未得到满足的控制需求Foundry:</strong> 永远不要将需要自定义的OS/network/sandbox控制器的客户推入Foundry主办代理公司只是因为他们缺少一支Dev团队(不如参与CSU/Partner).</li>
+            <li><strong>只在动态会话中存储持久状态 :</strong> 闲置的开垦工地将擦去地方储存;在其中始终设有检查站 <strong>Azure地平线DB</strong> 或 减 减 <strong>Cosmos DB</strong>.</li>
+            <li><strong>盲目CPU缩放在E2B虚拟管理系统:</strong> Firecracker消耗大页; 缩小范围, 不消耗大页排出&amp;活地迁徙杀死活地沙盒.</li>
+            <li><strong>内插LLM密钥或继承的用户符号 :</strong> 永远不要挂起静态API代理容器中的密钥或让代理继承完整的用户代号。</li>
+          </ul>
+        </div>
+      </div>
+      <div class="dark-footer-box">
+        <div><strong>Playbook Readiness &amp; Provenance (384 Chapters · 376 Simulators · 377 Blueprints · 385/385 Tests · Bilingual EN/中文 · Cycle #376):</strong> 合成自5小学Azure AI外地资产(`Agent Runtime Customer Pitch`, `AKSClaw Multi-Tenant Kubernetes`, `Agent Infra Playbook`, `E2B on Azure Solution / CheckRide v2 / Deep Dive v0.2`,并匿名`Selection Logic`),随376确定物理学模型(包括`0.11ms`电子学位`6N5 Pt(MeCp)(COD) / Pt(acac)6` + `6N5 TDMAAu / DESe / TMA` `300mm BO1/BN1 PtSe2/AuSe2 VdW Contact (R_cp=12.1 Ohm*um, S=0.99), Au Nanomesh Plasmonic Interconnect (L_SPP=288um, 0.005 dB/um), and AuSe PCM Synapse (0.02 pJ/bit, Ron/Roff=1.32e9, 74ps)` (`+97.2%`纯度/产量,`-99.8%`纳米微粒凝聚&amp;相相驱动切开)`0.10ms` `SEMI S2 / NFPA 704 / OSHA 1910.1000 / SIL-3`包括零客户PII。</div>
+        <p class="dark-repo">仓库:涡轮998涡轮998/Azure- 下拉布 涡轮998/ai-研究-公共 /涡轮998/ai-研究-实验室-涡轮998/基-技术-资产</p>
+      </div>
+    </div>
+    <footer class="card-footer">
+      <span><strong>Azure AI代理基础设施游戏本</strong> · 7-卡片 -你还不知道4:5基准&amp;决定牌匾</span>
+      <span>7 / 7</span>
+    </footer>
+  </div>
+</article>
+
+</main>
+</body>
+</html>

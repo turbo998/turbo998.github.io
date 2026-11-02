@@ -22,6 +22,12 @@
       const url = new URL(raw, location.href);
       if (url.origin !== location.origin) return;
       if (link.hasAttribute('data-reading-theme')) { url.search = location.search; url.hash = location.hash; }
+      if (link.hasAttribute('hreflang')) {
+        url.hash = location.hash;
+        link.addEventListener('click', () => { try { localStorage.setItem('kee-site-language-v1', link.hreflang); } catch {} });
+        link.setAttribute('href', raw.split(/[?#]/)[0] + url.search + url.hash);
+        return;
+      }
       url.searchParams.set('theme', link.dataset.readingTheme || theme);
       link.setAttribute('href', raw.split(/[?#]/)[0] + url.search + url.hash);
     });

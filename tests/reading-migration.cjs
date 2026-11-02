@@ -24,7 +24,7 @@ if(artifacts)fs.mkdirSync(artifacts,{recursive:true});
  const infraChinese=fs.readFileSync(path.join(root,'workshops/azure-agent-infra/index.html'),'utf8');
  assert(infraEnglish.includes('Open the reproducible Cycle #377 workbench'),'English Cycle #377 CTA retained and translated');
  assert(infraChinese.includes('打开 Cycle #377 可复现实验工作台'),'Chinese Cycle #377 CTA retained');
- for(const edition of [infraEnglish,infraChinese]) assert(edition.includes('workbench-cycle-377.html'),'latest workbench remains reachable');
+ for(const edition of [infraEnglish,infraChinese]) assert(/workbench-cycle-377(?:\.en)?\.html/.test(edition),'latest workbench remains reachable');
  for(const asset of manifest.translatedAssets){
   const source=cp.execFileSync('git',['show',`${manifest.baseline}:${asset.source}`],{cwd:root}).toString('utf8');
   const output=fs.readFileSync(path.join(root,asset.path),'utf8');
@@ -148,7 +148,7 @@ if(artifacts)fs.mkdirSync(artifacts,{recursive:true});
  assert((await page.$eval('#reading-main',n=>n.innerText)).includes('计算与状态解耦'));
  assert.equal(await page.$eval('#langToggle',n=>n.checkVisibility()),false);
  await Promise.all([page.waitForNavigation({waitUntil:'load'}),page.click('.reading-header [data-reading-language]')]);
- assert.equal(new URL(page.url()).pathname,'/'+infra+'index.en.html');assert.equal(new URL(page.url()).hash,'#layerList');assert.equal(new URL(page.url()).searchParams.get('theme'),'dark');
+ assert.equal(new URL(page.url()).pathname,'/'+infra+'index.en.html');assert.equal(new URL(page.url()).hash,'#layerList');
  assert((await page.$eval('#reading-main',n=>n.innerText)).includes('Decoupled compute/state'));
  assert.equal(await page.$eval('html',n=>n.dataset.theme),'dark');assert.equal(await page.$eval('#langToggle',n=>n.checkVisibility()),false);
  assert((await page.$eval('.reading-context',n=>n.href)).includes('/studio/infra.html?theme=dark'));

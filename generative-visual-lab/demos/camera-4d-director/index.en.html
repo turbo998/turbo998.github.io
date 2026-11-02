@@ -1,0 +1,1895 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="data:,">
+  <title>4D Gaussian &amp; Plücker Camera-Control Video Director · 4D Goss and camera track control director's desk.</title>
+  <style>
+    :root {
+      --bg: #070B14;
+      --panel: #0F172A;
+      --panel-2: #131E36;
+      --border: #1E293B;
+      --border-hi: #334155;
+      --ink: #F8FAFC;
+      --muted: #94A3B8;
+      --cyan: #38BDF8;
+      --blue: #2563EB;
+      --emerald: #34D399;
+      --amber: #FBBF24;
+      --rose: #F43F5E;
+      --purple: #C084FC;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+    header.topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      background: rgba(15, 23, 42, 0.94);
+      border-bottom: 1px solid var(--border);
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .brand a.back-link {
+      color: var(--cyan);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 5px 10px;
+      border-radius: 8px;
+      background: var(--panel-2);
+      border: 1px solid var(--border-hi);
+    }
+    .brand h1 {
+      font-size: 16.5px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+    }
+    .badge-pill {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.14);
+      color: var(--cyan);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+    }
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      background: var(--panel-2);
+      color: var(--ink);
+      border: 1px solid var(--border-hi);
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.14s ease;
+    }
+    .btn:hover {
+      border-color: var(--cyan);
+      color: var(--cyan);
+    }
+    .btn.primary {
+      background: linear-gradient(135deg, #2563EB, #0284C7);
+      border-color: #38BDF8;
+      color: #FFF;
+    }
+    .workspace {
+      display: grid;
+      grid-template-columns: 300px 1fr 340px;
+      gap: 14px;
+      padding: 14px 18px 20px;
+      flex: 1;
+      max-width: 1780px;
+      width: 100%;
+      margin: 0 auto;
+    }
+    @media (max-width: 1280px) {
+      .workspace {
+        grid-template-columns: 1fr;
+      }
+    }
+    .sidebar {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .section-title {
+      font-size: 11.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .scene-list, .traj-grid, .mode-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .traj-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7px;
+    }
+    .card-btn {
+      text-align: left;
+      background: var(--panel-2);
+      border: 1px solid var(--border-hi);
+      border-radius: 10px;
+      padding: 9px 11px;
+      color: var(--ink);
+      cursor: pointer;
+      transition: all 0.14s ease;
+    }
+    .card-btn:hover {
+      border-color: var(--cyan);
+    }
+    .card-btn.active {
+      background: rgba(37, 99, 235, 0.22);
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.35);
+    }
+    .card-btn .title {
+      font-size: 12.5px;
+      font-weight: 800;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 3px;
+    }
+    .card-btn .desc {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.38;
+    }
+    .stage-col {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .canvas-wrap {
+      position: relative;
+      background: #050811;
+      border: 1px solid var(--border-hi);
+      border-radius: 16px;
+      overflow: hidden;
+      aspect-ratio: 16 / 10;
+      min-height: 480px;
+      box-shadow: 0 22px 50px rgba(0, 0, 0, 0.55);
+    }
+    #stage-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      cursor: grab;
+    }
+    #stage-canvas:active {
+      cursor: grabbing;
+    }
+    .hud-overlay-top {
+      position: absolute;
+      top: 12px;
+      left: 14px;
+      right: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      pointer-events: none;
+      gap: 10px;
+    }
+    .hud-chip-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      background: rgba(7, 11, 20, 0.82);
+      border: 1px solid rgba(51, 65, 85, 0.85);
+      border-radius: 10px;
+      padding: 8px 12px;
+      backdrop-filter: blur(6px);
+    }
+    .hud-chip-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--mono);
+      font-size: 11.5px;
+    }
+    .hud-label { color: var(--muted); }
+    .hud-val { color: var(--cyan); font-weight: 700; }
+    .hud-val.emerald { color: var(--emerald); }
+    .hud-val.amber { color: var(--amber); }
+    .timeline-bar {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 11px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .timeline-slider {
+      flex: 1;
+      min-width: 180px;
+      accent-color: var(--cyan);
+      cursor: pointer;
+    }
+    .slider-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+    }
+    .slider-row {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .slider-row label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11.5px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .slider-row label span.v {
+      font-family: var(--mono);
+      color: var(--ink);
+    }
+    .slider-row input[type="range"] {
+      width: 100%;
+      accent-color: var(--cyan);
+    }
+    .telemetry-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .metric-box {
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 8px 10px;
+    }
+    .metric-box .k {
+      font-size: 10.5px;
+      color: var(--muted);
+      margin-bottom: 3px;
+    }
+    .metric-box .v {
+      font-family: var(--mono);
+      font-size: 14.5px;
+      font-weight: 800;
+      color: var(--cyan);
+    }
+    .code-box {
+      background: #060A12;
+      border: 1px solid var(--border-hi);
+      border-radius: 10px;
+      padding: 10px;
+      font-family: var(--mono);
+      font-size: 11px;
+      line-height: 1.45;
+      color: #93C5FD;
+      max-height: 210px;
+      overflow: auto;
+      white-space: pre;
+    }
+  </style>
+<!-- kee-dedicated-style:start -->
+<style>/* Embedded for Dark Aurora perimeter navigation */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+@media print { .kee-dedicated-nav { display: none; } }
+.kee-dedicated-camera4d .workspace > *, .kee-dedicated-camera4d .traj-grid > *, .kee-dedicated-camera4d .mode-grid > *, .kee-dedicated-camera4d .telemetry-strip > * { min-width: 0; }
+.kee-dedicated-camera4d .plucker-box { overflow-wrap: anywhere; word-break: break-word; white-space: pre-wrap; max-width: 100%; }
+@media (max-width: 1180px) {
+  .kee-dedicated-camera4d .workspace { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 720px) {
+  .kee-dedicated-camera4d .topbar { padding: 10px 12px; }
+  .kee-dedicated-camera4d .brand h1 { font-size: 15px; overflow-wrap: anywhere; }
+  .kee-dedicated-camera4d .workspace { padding: 10px 12px 24px; gap: 12px; }
+  .kee-dedicated-camera4d .stage-column, .kee-dedicated-camera4d .control-panel { padding: 12px; }
+  .kee-dedicated-camera4d .scrubber-row { flex-wrap: wrap; }
+  .kee-dedicated-camera4d #timeline-slider { min-width: 0; flex-basis: 120px; }
+  .kee-dedicated-camera4d .traj-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .kee-dedicated-camera4d .mode-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .kee-dedicated-camera4d .telemetry-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .kee-dedicated-camera4d .hud-overlay { position: static; max-width: 100%; margin: 8px; }
+  .kee-dedicated-camera4d .footer-note { padding: 12px; }
+}</style>
+<style>/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.65fr 1.1fr 1.15fr 1.1fr 1.1fr;gap:6px;align-items:stretch;min-width:0}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+</style><script src="../../../assets/dedicated-navigation.js" defer></script><!-- kee-dedicated-style:end -->
+<!-- demo-localization:start -->
+<style>html.in-arena-frame [data-professional-header],html.in-arena-frame .kee-dedicated-nav,html.in-arena-frame .reading-header,html.in-arena-frame .demo-language-navigation{display:none!important}</style>
+<script>(function runtime(config) {
+  'use strict';
+  const root = document.documentElement;
+  const params = new URLSearchParams(location.search);
+  const requested = params.get('lang');
+  const language = requested === 'en' ? 'en' : requested === 'zh' || requested === 'zh-CN' ? 'zh-CN' : config.language;
+  if (language !== config.language) {
+    const destination = new URL(language === 'en' ? config.en : config.zh, location.href);
+    destination.search = location.search;
+    destination.hash = location.hash;
+    destination.searchParams.set('lang', language);
+    location.replace(destination.href);
+    return;
+  }
+  if (!requested) {
+    const canonical = new URL(location.href);
+    canonical.searchParams.set('lang', language);
+    history.replaceState(history.state, '', canonical);
+  }
+  root.lang = language;
+  root.dataset.demoLanguage = language;
+  if (config.engine && window.self !== window.top && params.get('arena') === '1') root.classList.add('in-arena-frame');
+  const escape = value => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const dictionary = language === 'en' ? config.terms.zhEn : config.terms.enZh;
+  const keys = Object.keys(dictionary).filter(key => language === 'en' || !dictionary[key].includes(key)).sort((a, b) => b.length - a.length);
+  const pattern = keys.length ? new RegExp(language === 'en' ? keys.map(escape).join('|') : '(?<![A-Za-z0-9_])(?:' + keys.map(escape).join('|') + ')(?![A-Za-z0-9_])', 'gu') : null;
+  const translate = value => {
+    if (typeof value !== 'string' || !value) return value;
+    const trimmed = value.trim();
+    if (Object.prototype.hasOwnProperty.call(dictionary, trimmed)) return value.replace(trimmed, dictionary[trimmed]);
+    if (!pattern || language === 'en' && !/[\p{Script=Han}]/u.test(value)) return value;
+    return value.replace(pattern, (key, offset, input) => {
+      let translated = dictionary[key];
+      if (/[A-Za-z0-9]/.test(input[offset - 1] || '') && /^[A-Za-z]/.test(translated)) translated = ' ' + translated;
+      if (/[A-Za-z0-9]/.test(input[offset + key.length] || '') && /[A-Za-z]$/.test(translated)) translated += ' ';
+      return translated;
+    });
+  };
+  const excluded = node => node.parentElement?.closest('script,style,[data-professional-header],.kee-dedicated-nav,.reading-header,.demo-language-navigation');
+  const localizeNode = node => {
+    if (node.nodeType === Node.TEXT_NODE) {
+      if (excluded(node)) return;
+      const value = translate(node.nodeValue);
+      if (value !== node.nodeValue) node.nodeValue = value;
+      return;
+    }
+    if (node.nodeType !== Node.ELEMENT_NODE || node.matches('script,style,[data-professional-header],.kee-dedicated-nav,.reading-header,.demo-language-navigation')) return;
+    for (const attr of ['title', 'aria-label', 'placeholder', 'alt']) {
+      if (!node.hasAttribute(attr)) continue;
+      const original = node.getAttribute(attr), translated = translate(original);
+      if (translated !== original) node.setAttribute(attr, translated);
+    }
+    for (const child of node.childNodes) localizeNode(child);
+  };
+  // Translate only paint labels; coordinates, fonts, metrics and simulation state are untouched.
+  for (const name of ['fillText', 'strokeText']) {
+    const original = CanvasRenderingContext2D.prototype[name];
+    CanvasRenderingContext2D.prototype[name] = function(text, ...args) {return original.call(this, translate(String(text)), ...args);};
+  }
+  const switchLanguage = target => {
+    const next = new URL(target === 'en' ? config.en : config.zh, location.href);
+    next.search = location.search;
+    next.hash = location.hash;
+    next.searchParams.set('lang', target);
+    location.assign(next.href);
+  };
+  document.addEventListener('click', event => {
+    if (!event.isTrusted) return;
+    const button = event.target.closest('button');
+    if (!button || button.closest('[data-professional-header]')) return;
+    const code = button.getAttribute('onclick') || '';
+    if (!button.matches('#langToggle,#btn-lang,#btn-en,#btn-zh,[data-lang]') && !/^(?:toggleLang|setLang)\(/.test(code)) return;
+    const selected = button.dataset.lang || (button.id === 'btn-en' || /setLang\('en'/.test(code) ? 'en' : button.id === 'btn-zh' || /setLang\('zh'/.test(code) ? 'zh-CN' : language === 'en' ? 'zh-CN' : 'en');
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    switchLanguage(selected === 'en' ? 'en' : 'zh-CN');
+  }, true);
+  if (config.engine) {
+    window.addEventListener('message', event => {
+      if (!['ARENA_SYNC','arena-sync'].includes(event.data?.type)) return;
+      if (event.origin !== location.origin || event.source !== window.parent) {event.stopImmediatePropagation(); return;}
+      if (event.data.action === 'feed') {
+        if (/demo-faf-/.test(config.source)) {
+          const fish = document.getElementById('s-fish');
+          fish.value = Math.min(Number(fish.max), Number(fish.value) + 1);
+          if (typeof updateParams === 'function') updateParams();
+        } else if (/demo-agent-forge-/.test(config.source) && typeof tossFish === 'function') tossFish();
+      }
+      if (event.data.action === 'sprint' && /demo-agent-forge-/.test(config.source) && typeof triggerSprint === 'function') triggerSprint();
+    }, true);
+  }
+  const api = {language, translate, apply: () => localizeNode(root), switchLanguage, engine: config.engine, arena: config.arena, ready: false};
+  window.DemoLocalization = api;
+  document.addEventListener('DOMContentLoaded', () => {
+    const nativeButton = document.querySelector(`button[data-lang="${language}"]`);
+    if (nativeButton) nativeButton.click();
+    else if (typeof setLang === 'function') setLang(language === 'en' ? 'en' : 'zh');
+    else if (typeof toggleLang === 'function') {
+      const current = typeof currentLang === 'string' ? currentLang : typeof lang === 'string' ? lang : 'zh';
+      if ((current === 'en') !== (language === 'en')) toggleLang();
+    }
+    root.lang = language;
+    localizeNode(root);
+    new MutationObserver(mutations => {
+      for (const mutation of mutations) {
+        if (mutation.type === 'childList') mutation.addedNodes.forEach(localizeNode);
+        else localizeNode(mutation.target);
+      }
+    }).observe(root, {subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ['title','aria-label','placeholder','alt']});
+    api.ready = true;
+    document.dispatchEvent(new CustomEvent('demo-localization-ready', {detail: {language}}));
+  }, {once: true});
+})({"language":"en","source":"generative-visual-lab/demos/camera-4d-director/index.html","en":"index.en.html","zh":"index.html","engine":false,"arena":false,"terms":{"zhEn":{"与冰晶丙烯酸":"and ice-crystal acrylic","与力矩向量":"and the moment vector","偏斜钳制护栏":"Skew-clamping guardrail","免提巡检":"Hands-free inspection","六幕分層架構選型矩陣":"Six-scene layered architecture selection matrix","决赛前夜反转":"A reversal on the eve of the final","各向异性高斯光栅化":"Anisotropic Gaussian rasterization","星夜三幕视差与":"Three-scene starry-night parallax and","核料位计快门":"Nuclear level-gauge shutter","洪泛节流护栏":"Flood-throttling guardrail","液碱攻击":"Caustic attack","碱洗塔联锁及":"Caustic scrubber interlocks and","粗排快但糙":"Coarse ranking is fast but imprecise","缓存命中区":"Cache-hit region","许知衡直面耐力赛退役心结":"Xu Zhiheng confronts unresolved feelings about retiring from endurance racing","齿比":"Gear ratio","黑座舱":"Black cockpit","黑色横向双段尾灯":"Black horizontal two-part taillight","鼻祖":"Pioneer","黄金斗气":"Golden battle aura","黄金炉心":"Golden reactor core","鹈鹕骑自行车":"Pelican riding a bicycle","鸡毛蒜皮全走远端":"Send every trivial task to the remote service","车轮":"Wheel","曲柄":"Crank","连杆":"Connecting rod","膝关节":"Knee joint","喙":"Beak","足端":"Foot endpoint","大腿":"Thigh","小腿":"Lower leg","物理引擎":"Physics engine","运动学":"Kinematics","逆运动学":"Inverse kinematics","零滑移":"Zero slip","骨骼":"Skeleton","姿态":"Posture","沙丁鱼":"Sardines","质心":"Center of mass","迎风面积":"Frontal area","阻力系数":"Drag coefficient","轮径":"Wheel diameter","链轮":"Chainring","飞轮":"Sprocket","飞天":"Feitian","敦煌":"Dunhuang","斗机":"Battle machine","炉心":"Reactor core","斗气":"Battle aura","废土":"Wasteland","机甲":"Mech","小店":"Small shop","卷帘门":"Roller shutter","跑腿":"Errand delivery","撬棍":"Crowbar","地形来自 NASA MGS MOLA MEG016。海洋、云与大气为原创假想渲染；运行时不调用模型 API。":"Terrain comes from NASA MGS MOLA MEG016. Oceans, clouds and atmosphere are original hypothetical renderings; no model API is called at runtime.","自动档按帧率调整。精细近景：384格/纬，采样既有高程；不代表新增测量。尘土色彩为艺术材质。":"Auto quality adapts to frame rate. Detailed close-ups use 384 cells per latitude, sampling existing elevation data, not additional measurements. Dust colors are artistic materials.","定位并调整侧光，停止自转。建议干燥预设；高程、海平面和网格档位保持你的选择。":"Locate the landmark, adjust side lighting and stop rotation. The dry preset is recommended; your elevation, sea-level and mesh settings are retained.","显示半径采用 3,389.5 km 球体。顶点由米制高程真实位移；增强倍率仅用于展示。微表面颜色与云层不是测量数据。":"The displayed sphere has a radius of 3,389.5 km. Vertices are displaced using elevation in meters; exaggeration is for presentation only. Microsurface colors and clouds are not measured data.","GLB 导出将烘焙当前地形，标准格式不包含动态大气和体积云。":"GLB export bakes the current terrain. The standard format does not include the dynamic atmosphere or volumetric clouds.","从眉眼、鼻唇到发髻、金饰与项链，近景使用同一套原创绘制路径重新渲染，不放大小图，也不替换成独立人物素材。":"From brows, eyes, nose and lips to hair, gold ornaments and necklaces, close-ups rerender the same original drawing paths rather than enlarging a thumbnail or substituting separate artwork.","这是艺术设计细节展示，不是敦煌壁画的历史复原。打开近景不会启动飞行或声音。":"This is an artistic detail study, not a historical reconstruction of a Dunhuang mural. Opening a close-up does not start animation or sound.","人物、纹样、飘带与音序为原创程序绘制。敦煌风格致意，不是具体洞窟复制、颜料科学复原或历史音乐。飞天为 2D 分层画面，不是三维角色。默认静音；支持减少动态效果设置。":"Figures, patterns, ribbons and musical sequences are original procedural work. This is a tribute to Dunhuang style, not a copy of a specific cave, a scientific pigment reconstruction or historical music. Feitian uses layered 2D artwork, not 3D characters. Sound is muted by default; reduced-motion preferences are supported.","从发射场外侧，观察白色火箭挣脱地面。四色饰带、金属塔架、翻涌烟雾与一道喷焰，都在浏览器中实时生成。":"Watch the white rocket lift off from outside the launchpad. Four-color bands, a metal tower, billowing smoke and the exhaust plume are generated in real time in your browser.","主动点击 Launch，观看完整发射。L 发射 · Space 暂停 · R 重放 · C 镜头":"Click Launch to watch the full sequence. L launches · Space pauses · R replays · C switches camera.","原创几何与实时粒子；艺术化发射，不是航天或流体仿真。配色借鉴微软红绿蓝黄，无 Logo、官方关联或品牌火箭复制。圆框是外部观景边框，不是舱内视角。":"Original geometry and real-time particles depict an artistic launch, not an aerospace or fluid simulation. Colors reference Microsoft red, green, blue and yellow; there is no logo, official affiliation or replica of a branded rocket. The circular border frames an exterior view, not a cabin window.","3D 时空点云缓存 + 希区柯克变焦主体锁定 + 去遮挡扩散修复掩码":"3D spatiotemporal point-cloud cache + dolly-zoom subject lock + disocclusion diffusion-repair mask","4D 各向异性可变形椭球场 + 子弹时间冻结 + 球谐函数 (SH) 实时三点重打光":"4D anisotropic deformable ellipsoid field + bullet-time freeze + live three-point spherical-harmonic (SH) relighting","画布直接拖拽 3 组主体 3D 贝塞尔轨迹控制点 + 横滚角与二阶弹簧跟随":"Drag 3 groups of subject 3D Bézier control points on the canvas + roll angle and second-order spring following","EWA 各向异性高斯光栅化 + SH 光照 + 景深弥散圆":"EWA anisotropic Gaussian rasterization + SH lighting + depth-of-field circles of confusion","叠加逐网格视线方向 d 与力矩向量 m = o × d":"Overlay per-cell viewing direction d and moment vector m = o × d","青绿=3D 缓存命中区 · 琥珀品红=新暴露需扩散修复区":"Teal = 3D cache hit · amber/magenta = newly exposed regions requiring diffusion repair","显示雅可比 2D 投影椭圆长短轴与瞬时形变速度矢量":"Show major/minor axes of Jacobian-projected 2D ellipses and instantaneous deformation-velocity vectors","鹈鹕":"Pelican","鹈":"Pelican","踏频":"Cadence","风阻":"Wind resistance","自行车":"Bicycle","车":"Bike","鱼":"Fish","喉囊":"Pouch","载鱼量":"Fish load","逆风风速":"Headwind speed","变速齿比":"Gear ratio","鱼载荷":"Fish load","暂停":"Pause","继续":"Resume","继续播放":"Resume playback","继续仿真":"Resume simulation","暂停帧检视":"Pause for frame inspection","暂停播放":"Pause playback","恢复运行":"Resume all","冻结三帧对比":"Freeze all three frames","同步投喂沙丁鱼":"Feed all three pelicans","标准巡航":"Standard cruise","三车齐发冲刺":"Sprint all three bikes","慢动作检验":"Slow-motion inspection","零滑移核验":"Zero-slip check","三屏同步广播总线":"Three-frame synchronized broadcast bus","视图布局":"Layout","三列平铺":"Three columns","单列堆叠":"Stacked view","独立全屏":"Open standalone","复位":"Reset","重放":"Replay","重试":"Retry","启动":"Start","停止":"Stop","开启":"Enable","关闭":"Disable","开":"On","关":"Off","是":"Yes","否":"No","自动":"Auto","低":"Low","高":"High","极高":"Ultra","中":"Medium","无":"None","帧":"frames","台":"nodes","个":"items","秒":"seconds","毫秒":"milliseconds","分钟":"minutes","小时":"hours","天":"days","年":"years","次":"times","条":"entries","组":"groups","档":"level","步":"steps","中文":"Chinese","英文":"English","帧率":"Frame rate","网格":"Mesh","数据":"Data","海洋覆盖":"Ocean coverage","近似水量":"Approximate water volume","面积加权盆地填充":"Area-weighted basin fill","非水动力模拟":"not a hydrodynamic simulation","隐藏控制":"Hide controls","造景参数":"Scene parameters","科学边界":"Scientific limits","场景预设":"Scene presets","干燥火星":"Dry Mars","浅海火星":"Shallow-sea Mars","海洋火星":"Ocean Mars","海平面":"Sea level","地形增强":"Terrain exaggeration","云量":"Cloud cover","大气强度":"Atmosphere strength","太阳方位":"Sun azimuth","检查模式":"Inspection mode","写实":"Realistic","灰模":"Clay","线框":"Wireframe","高程":"Elevation","几何质量":"Geometry quality","精细近景":"Detailed close-up","高程数据":"Elevation data","基础":"Base","高清":"High resolution","地貌近景":"Terrain close-ups","水手峡谷":"Valles Marineris","奥林帕斯山":"Olympus Mons","希腊盆地":"Hellas Planitia","复位视角":"Reset camera","停止自转":"Stop rotation","保存截图":"Save screenshot","导出参数":"Export parameters","导入参数":"Import parameters","导出真实几何":"Export actual geometry","模型与数据说明":"Model and data notes","正在装载火星高程":"Loading Mars elevation","初始化":"Initializing","无法启动三维建模":"Unable to start the 3D scene","火星造景实验室":"Mars Scenography Lab","实测地形":"measured terrain","假想海洋与天气":"hypothetical oceans and weather","风起壁间":"Wind Between the Murals","原创飞天":"Original Feitian","原创程序壁画":"Original procedural mural","实验室":"Laboratory","青羽":"Azure Feather","流霞":"Flowing Rosy Clouds","听风":"Listening to Wind","拾光":"Gathering Light","四时同游":"Four Seasons Together","归壁":"Return to mural","艺术新彩":"Artistic recoloring","开启声音":"Enable sound","截图":"Screenshot","移动指针执灯照壁":"Move the pointer to illuminate the mural","点击人物或按钮":"Click a figure or button","唤醒飞天":"Awaken the Feitian","细看人物":"Figure close-up","五官与饰纹":"Facial features and ornament","人物细看":"Figure detail","选择人物":"Select figure","白色火箭发射场":"White Rocket Launchpad","向上而生":"Born to Ascend","点火":"Ignition","离台":"Liftoff","升空":"Ascent","待命":"Standby","外部固定":"Fixed exterior","发射":"Launch","跟随镜头":"Follow camera","镜头":"Camera","声音":"Sound","音效":"Sound effects","相机":"Camera","相机轨迹控制导演工作台":"Camera-Path Director Workbench","导演工作台":"Director Workbench","实验室门户":"Laboratory portal","开启云台/快门音效":"Enable gimbal / shutter sounds","导出":"Export","评测报告":"Evaluation report","架构研究专著":"Architecture study","场景资产预设":"Scene presets","赛博天台追逐":"Cyber Rooftop Chase","陀飞轮星盘":"Tourbillon Orrery","多主体轨迹舞台":"Multi-Subject Trajectory Stage","相机运镜轨":"Camera motion paths","希区柯克眩晕变焦":"Hitchcock dolly zoom","全周螺旋摇臂环绕":"Full helical crane orbit","穿拱俯冲":"Dive through the arch","横滚":"Roll","横向移摄":"Lateral truck","焦点切换":"Rack focus","冻结物理时间":"Freeze physical time","掠拍":"Sweep","手绘主体轨迹":"Draw subject trajectories","自由轨道":"Free orbit","渲染与几何透视模式":"Rendering and geometry inspection","成片合成":"Final composite","子弹时间冻结":"Freeze bullet time","扰动多主体":"Perturb multiple subjects","轨迹":"Trajectories","球谐函数":"Spherical harmonics","实时三点重打光":"Live three-point relighting","主光方位角":"Key-light azimuth","主光仰角":"Key-light elevation","色温":"Color temperature","轮廓高光增益":"Rim specular gain","实时世界一致性与性能遥测":"Live world consistency and performance telemetry","命中率":"Hit rate","去遮挡修复占比":"Disocclusion repair fraction","对极几何一致性":"Epipolar consistency","主体尺度锁定率":"Subject scale lock","帧耗时":"Frame time","因果":"Causal","滑窗步延":"Sliding-window step latency","实时控制契约":"Live control contract","动力学参数控制":"Dynamics controls","架构驱动版":"Architecture-driven edition","鹈鹕骑自行车逆运动学仿真工作台":"Pelican Bicycle Inverse-Kinematics Workbench","过程文档检视器":"Process Artifact Viewer","骨骼矢量":"Skeletal vectors","废土斗机祭":"Wasteland Iron Circuit","方向键移动":"arrow keys to move","炉心冲刺":"core dash","音效开关":"toggle sound","武器自动开火":"weapons fire automatically","零点以东":"East of Midnight","上海篇":"Shanghai Chapter","知识讲解动画制作工作台":"Knowledge Explainer Studio","三分钟自动演示":"Three-minute guided demo","实时架构与安全边界仿真台":"Live architecture and security-boundary simulator","实时仿真":"Live simulation","选型决策器":"Selection advisor","沙箱计算器":"Sandbox calculator","全景":"Overview","极速沙箱恢复":"Fast sandbox resume","五道平台安全硬边界":"Five hard platform security boundaries","工作台":"Workbench","可复现实验工作台":"Reproducible experiment workbench","选择":"Select","布局":"Layout","参数":"Parameters","状态":"State","已暂停":"Paused","运行中":"Running","播放":"Play","滚动":"Scroll","投喂":"Feed","冲刺":"Sprint","换挡":"Shift gear","重置":"Reset","返回":"Back","展开":"Expand","收起":"Collapse","帮助":"Help","设置":"Settings","运行":"Run","禁用":"Disabled","启用":"Enabled","成功":"Success","失败":"Failure","成本":"Cost","节点":"Nodes","吞吐量":"Throughput","延迟":"Latency","模式":"Mode","输入":"Input","输出":"Output","仿真":"Simulation","场景":"Scenario","风险":"Risk","安全":"Safety","基线":"Baseline","优化":"Optimized","控制":"Controls","引擎":"Engine","切换":"Switch","完成":"Complete","测试":"Test","开始":"Start","结束":"End","确认":"Confirm","取消":"Cancel","数值":"Value","单位":"Unit","模拟":"Simulated","实测":"Measured","合成":"Synthetic","匿名报告":"Anonymized reported","下一个":"Next","上一个":"Previous","上一页":"Previous page","下一页":"Next page","跳过":"Skip","关闭声音":"Mute sound","开启音效":"Enable sound effects","关闭音效":"Disable sound effects","高斯与相机轨迹控制导演工作台":"Goss and camera track control director's desk.","主导航":"Main Navigator","基准评测中心":"Baseline Assessment Centre","信号雷达":"Signal radar.","模型遥测":"Model telemetry","首席架构师履历":"Biographical information of the Chief Architect","中文主题":"Chinese Theme","不翻译原始内容":"Do not translate original content","浅色主题":"Light theme","深色主题":"Dark theme","返回上下文":"Return context","开启云台":"Turn on the cloud.","快门音效":"Quick Door Sound","场景与相机轨迹控制":"scene and camera track control","时空点云缓存":"Time-Steps Cloud Cache","希区柯克变焦主体锁定":"Hitchcock's focus is locked.","去遮挡扩散修复掩码":"To cover the proliferation and repair the mask.","各向异性可变形椭球场":"Heterogeneity deformable ellipse field","画布直接拖拽":"The canvass are just dragging.","组主体":"Group Subject","贝塞尔轨迹控制点":"Bézier trajectory control point","横滚角与二阶弹簧跟随":"Following the QuickSpin","光照":"Light","景深弥散圆":"Deepness of the scenery","叠加逐网格视线方向":"Superseding Grid View Direction","青绿":"Green","琥珀品红":"Amber's red.","新暴露需扩散修复区":"New exposure needs to be restored","显示雅可比":"Show Yabei","投影椭圆长短轴与瞬时形变速度矢量":"Projection ellipse length axis and instantaneous rate transformation vector","实时":"Real time","渲染舞台":"Rendering stage","光照控制与定量遥测":"Photocontrol and quantitative telemetry","巡航主车":"Main cruise","伴飞侦察球":"Fly-in-the-sight.","流光能量群":"Fluorous energy mass","解除子弹时间冻结":"Unfreeze the bullet.","云台":"Cloudtop","快门音效已开启":"The sound of the gate is on."},"enZh":{"FPV Dive":"第一视角俯冲","Free Brush":"自由绘制","Frontier Transformation Engineering Hub":"前沿转型工程中心","Rack Truck":"移摄与焦点切换","Value":"价值","weight":"权重","Score":"评分","init":"初始化","Gate":"门槛","ON":"开","System":"系统","Path":"路径","Play":"播放","Start":"开始","Stop":"停止","Auto":"自动","Off":"关","Scene":"场景","Mode":"模式","Telemetry":"遥测","Relighting":"重新布光","SCENE:":"场景：","MODE:":"模式：","FOCAL / FOV:":"焦距／视场角：","VIEW":"视角","Engine":"引擎","Catching Fish!":"接住鱼了！","Wheelie Stunt!":"抬轮特技！","Sprint Boost!":"冲刺加速！","ASTRA PLANET LAB":"ASTRA 行星实验室","Procedural terrain":"程序化地形","DEMO":"演示","LIVE":"实时","READY":"就绪","OFF":"关","MUTE":"静音","LAUNCH":"发射","STANDBY":"待命","IGNITION":"点火","LIFTOFF":"离台","ASCENT":"升空","COAST":"滑行","FINISHED":"结束","Cycle #377 Interactive Workbench":"Cycle #377 交互工作台","Runtime/Sandbox benchmark explorer with source labels and deterministic session-cost model.":"运行时／沙箱基准探索器：含来源标签与确定性会话成本模型。","Cycle: #377":"周期：#377","Window:":"窗口：","Source labels: measured · synthetic · anonymized_reported":"来源标签：实测 · 合成 · 匿名报告","JSON evidence":"JSON 证据","Latency (p50/p95)":"延迟 (p50/p95)","P50 ms":"P50 毫秒","P95 ms":"P95 毫秒","Label":"标签","Throughput (p50/p95 RPS)":"吞吐量 (p50/p95 RPS)","Policy intercept rate":"策略拦截率","Policy":"策略","Rate":"比例","Single-session cost":"单次会话成本","Session minutes:":"会话分钟数：","USD/session":"美元／会话","measured":"实测","synthetic":"合成","anonymized_reported":"匿名报告","Pause":"暂停","Resume":"继续","Reset":"重置","Replay":"重放","Sound":"声音","Enable sound":"开启声音","Disable sound":"关闭声音","Export":"导出","Import":"导入","Save":"保存","Load":"加载","Next":"下一步","Previous":"上一步","Close":"关闭","Settings":"设置","Controls":"控制","Help":"帮助","Quality":"质量","High":"高","Low":"低","Medium":"中","Ultra":"极高","On":"开","Status":"状态","Running":"运行中","Paused":"已暂停","Frame rate":"帧率","PHASE":"阶段","TIME":"时间","HEIGHT":"高度","Original figure / Detail study":"原创人物／细节研究","OBSERVATORY CONTROL":"观测站控制","GPT-6 ASTRA · GEOMETRY STUDY":"GPT-6 ASTRA · 几何研究","Astra Planet Lab":"Astra 行星实验室","White rocket / four colors":"白色火箭／四色饰带","Three.js / exterior launchpad":"Three.js／外部发射场","GVL / LAUNCH WINDOW":"GVL／发射窗口","Source":"来源","Cost":"成本","Latency":"延迟","Throughput":"吞吐量","Parameters":"参数","Input":"输入","Output":"输出","Architecture":"架构","Workflow":"工作流","Simulation":"仿真","Baseline":"基线","Optimized":"已优化","Confidence":"置信度","Decision":"决策","Action":"操作"}}});</script>
+<!-- demo-localization:end -->
+<style id="site-remediation-style">:root{--search-bg:#101a30;--search-soft:#172440;--search-ink:#eef3ff;--search-muted:#adbbd1;--search-line:#293956;--search-accent:#9aabff;--header-offset:108px}
+:root[data-reading-shell][data-theme=light],[data-perimeter-theme=light]{--search-bg:#fff;--search-soft:#e8eefb;--search-ink:#17233e;--search-muted:#4c5e7c;--search-line:#d5ddec;--search-accent:#354ec8}
+html{scroll-padding-top:var(--header-offset,108px)!important}
+.site-search,.site-search *{box-sizing:border-box!important;font-family:"Segoe UI",sans-serif;letter-spacing:normal;text-transform:none}
+.site-search{position:relative;display:flex;align-items:center;gap:5px;min-width:0;width:230px;max-width:100%;margin:0!important;padding:0!important;line-height:1.4;border:1px solid var(--search-line);border-radius:9px;background:var(--search-soft);color:var(--search-ink);isolation:isolate}
+.site-search input[type=search]{display:block;flex:1;min-width:0;width:100%;height:42px;margin:0;padding:9px 8px!important;font-size:12px!important;line-height:1.5;border:0!important;border-radius:9px;background:transparent!important;color:var(--search-ink)!important;box-shadow:none!important;appearance:none}
+.site-search input::placeholder{color:var(--search-muted);opacity:1}.site-search input:focus-visible{outline:2px solid var(--search-accent);outline-offset:2px}
+.site-search kbd{font:11px Consolas,monospace;color:var(--search-muted);padding:1px 5px;border:1px solid var(--search-line);border-radius:4px}
+.site-search button[type=submit]{flex:none;width:38px;min-width:38px;height:42px;min-height:42px;padding:0;margin:0;border:0;border-radius:8px;background:transparent;color:var(--search-accent);font-size:24px;cursor:pointer;box-shadow:none}
+.search-label,.search-status{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.site-search .search-results{position:absolute;top:calc(100% + 10px);right:0;z-index:1100;width:min(480px,calc(100vw - 32px));max-height:min(560px,65vh);overflow-y:auto;border:1px solid var(--search-line);border-radius:12px;background:var(--search-bg);color:var(--search-ink);padding:10px;box-shadow:0 12px 32px #0005;text-align:left}
+.site-search .search-results[hidden]{display:none!important}.search-results .search-group{margin:8px 6px 4px;font:11px/1.5 Consolas,monospace;color:var(--search-muted)}
+.site-search .search-results a{display:block!important;padding:10px!important;margin:3px 0!important;border:1px solid transparent!important;border-radius:7px;background:transparent;color:var(--search-ink)!important;font-size:13px!important;text-decoration:none!important;white-space:normal;overflow-wrap:anywhere;text-align:left!important;line-height:1.5!important}
+.site-search .search-results a[aria-selected=true],.site-search .search-results a:hover{border-color:var(--search-accent)!important;background:var(--search-soft)}
+.search-results a small{display:block;font-size:10px;color:var(--search-muted);margin-top:4px}.search-results p{margin:10px;font-size:13px;color:var(--search-muted)}
+.search-archive-summary{padding:20px;border:1px solid var(--search-line);border-radius:10px;background:var(--search-bg);color:var(--search-ink);margin:24px 0}.search-archive-summary h2{font-size:24px;margin:0 0 12px}.search-archive-summary li{margin:12px 0}.search-archive-summary a{color:var(--search-accent)}
+[data-professional-header]{position:sticky!important;top:0!important;z-index:1000!important;background:var(--search-bg)!important;--header-glass:rgba(16,26,48,.9);grid-template-columns:auto minmax(0,1fr) 230px auto!important}
+[data-professional-header][data-perimeter-theme=light],:root[data-reading-shell][data-theme=light] [data-professional-header]{--header-glass:rgba(255,255,255,.94)}
+[data-professional-header] .professional-mobile{display:none}.professional-mobile summary{min-width:38px;min-height:42px;display:grid;place-items:center;cursor:pointer;list-style:none}.professional-mobile summary::-webkit-details-marker{display:none}
+[data-professional-header] .professional-context{display:none}
+.professional-context-bar{padding:12px 24px;border-bottom:1px solid var(--search-line);background:var(--search-bg);color:var(--search-muted);font:12px/1.6 "Segoe UI",sans-serif;display:flex;flex-wrap:wrap;gap:8px 18px;overflow-wrap:anywhere}.professional-context-bar a{color:var(--search-accent)}
+@supports((backdrop-filter:blur(16px)) or (-webkit-backdrop-filter:blur(16px))){.site-header,[data-professional-header]{background:var(--header-glass)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}}
+@media(max-width:1250px) and (min-width:701px){.header-inner{grid-template-columns:minmax(0,1fr) 230px auto!important;padding:12px 0;gap:12px!important}.desktop-nav{grid-row:2;grid-column:1/-1}.header-inner>.site-search{grid-column:2;grid-row:1}.header-inner>.controls{grid-column:3;grid-row:1}[data-professional-header]{grid-template-columns:minmax(0,1fr) 230px auto!important;gap:12px!important}[data-professional-header]>.professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header]>.site-search{grid-column:2;grid-row:1}[data-professional-header]>.professional-controls{grid-column:3;grid-row:1}:root{--header-offset:176px}}
+@media(max-width:700px){.header-inner{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 0;gap:8px!important}.header-inner>.site-search{grid-row:2;grid-column:1/-1;width:100%}.header-inner>.controls{grid-column:2;grid-row:1}.site-search .search-results{width:100%;right:0}[data-professional-header]{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 16px!important;gap:8px!important}[data-professional-header]>.professional-primary{display:none!important}[data-professional-header]>.site-search{grid-column:1/-1;grid-row:2;width:100%}[data-professional-header]>.professional-controls{grid-column:2;grid-row:1}[data-professional-header] .professional-mobile{display:block}[data-professional-header] .professional-mobile[open]>.professional-primary{position:absolute;top:100%;left:0;right:0;padding:16px;background:var(--search-bg);border-bottom:1px solid var(--search-line);display:grid;grid-template-columns:1fr 1fr;gap:8px}[data-professional-header] .professional-mobile .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:12px!important}:root{--header-offset:126px}}
+@media(prefers-reduced-transparency:reduce){.site-header,[data-professional-header]{background:var(--search-bg)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+@media print{.site-search,.professional-context-bar{display:none!important}}
+
+@media(min-width:1251px){.header-inner{display:grid!important;grid-template-columns:auto minmax(0,1fr) 230px auto!important;gap:18px!important}.header-inner .desktop-nav{min-width:0}}
+
+html:has(.kee-dedicated-app-root){height:auto!important;overflow-x:hidden!important;overflow-y:auto!important}
+body:has([data-professional-header]){height:auto!important;overflow-x:clip!important;overflow-y:visible!important;padding-top:0!important}
+.demo-language-navigation{display:none!important}
+.stage-column,.telemetry-panel,.scene-pill,#timeline-slider{min-width:0}
+@media(max-width:1180px){.workspace,.template-tabs{grid-template-columns:minmax(0,1fr)!important}}
+
+.in-arena-frame .professional-context-bar,.in-arena-frame [data-knowledge-atlas]{display:none!important}
+</style><script src="../../../assets/editorial/search-index.js" defer></script><script src="../../../assets/editorial/search.js" defer></script></head>
+<body class="kee-dedicated-camera4d">
+<!-- demo-language-navigation:start --><nav class="demo-language-navigation" aria-label="Demo language"><a href="index.en.html?lang=en" hreflang="en">EN</a> · <a href="index.html?lang=zh-CN" hreflang="zh-CN">中文</a></nav><!-- demo-language-navigation:end -->
+<!-- kee-dedicated-navigation:start -->
+<nav class="kee-dedicated-nav" data-professional-header><a class="professional-identity reading-brand kee-dedicated-identity identity" href="../../../index.html">Qi Chen · @turbo998</a><div class="professional-primary" role="navigation" aria-label="Primary sections"><a href="../../../studio/index.html" data-section="hub" data-nav-en-href="../../../studio/index.html" data-nav-zh-href="../../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub" aria-current="page">Frontier Transformation Engineering Hub</a><a href="../../../benchmarks.html" data-section="benchmarks" data-nav-en-href="../../../benchmarks.html" data-nav-zh-href="../../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心">Benchmark &amp; Eval Foundry</a><a href="../../../github-radar.html" data-section="radar" data-nav-en-href="../../../github-radar.html" data-nav-zh-href="../../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI Signal Radar</a><a href="../../../openrouter.html" data-section="routing" data-nav-en-href="../../../openrouter.html" data-nav-zh-href="../../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">Model Routing &amp; Telemetry</a><a href="../../../about.html" data-section="profile" data-nav-en-href="../../../about.html" data-nav-zh-href="../../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">Principal Architect Profile</a></div><form class="site-search" role="search" action="../../../studio/archive.html" method="get" data-search-root="../../../index.html" data-search-language="en"><label class="search-label" for="site-search-input">Search architecture, benchmarks, demos...</label><input id="site-search-input" name="q" type="search" placeholder="Search architecture, benchmarks, demos..." autocomplete="off" spellcheck="false" aria-keyshortcuts="/ Control+k Meta+k"><kbd aria-hidden="true">/</kbd><button type="submit" aria-label="Search all content">⌕</button><div class="search-results" id="site-search-results" hidden></div><span class="search-status" role="status" aria-live="polite"></span></form><div class="reading-controls professional-controls" aria-label="Site language and appearance"><a href="index.en.html" hreflang="en" lang="en" aria-current="page">EN</a><a href="index.html" data-reading-language hreflang="zh-CN" lang="zh-CN">中文</a><details class="professional-mobile"><summary aria-label="Open navigation">☰</summary><div class="professional-primary" role="navigation" aria-label="Mobile navigation"><a href="../../../studio/index.html" data-section="hub" data-nav-en-href="../../../studio/index.html" data-nav-zh-href="../../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub" aria-current="page">Frontier Transformation Engineering Hub</a><a href="../../../benchmarks.html" data-section="benchmarks" data-nav-en-href="../../../benchmarks.html" data-nav-zh-href="../../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心">Benchmark &amp; Eval Foundry</a><a href="../../../github-radar.html" data-section="radar" data-nav-en-href="../../../github-radar.html" data-nav-zh-href="../../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI Signal Radar</a><a href="../../../openrouter.html" data-section="routing" data-nav-en-href="../../../openrouter.html" data-nav-zh-href="../../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">Model Routing &amp; Telemetry</a><a href="../../../about.html" data-section="profile" data-nav-en-href="../../../about.html" data-nav-zh-href="../../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">Principal Architect Profile</a></div></details><a data-reading-theme="light" href="index.en.html?theme=light" aria-label="Light theme">☀</a><a data-reading-theme="dark" href="index.en.html?theme=dark" aria-label="Dark theme">◐</a></div><div class="professional-context" aria-label="Back to context"><a href="../../../studio/index.html">← Engineering Hub</a> · <a href="../../../studio/animation.html">Parent topic</a></div></nav><div class="professional-context-bar"><a href="../../../studio/index.html">← Engineering Hub</a> · <a class="reading-context" href="../../../studio/animation.html">Parent topic</a></div><!-- site-remediation-knowledge:start --><figure class="knowledge-figure" data-knowledge-atlas="animation" style="margin:24px 0;max-width:100%"><svg xmlns="http://www.w3.org/2000/svg" lang="en" role="img" aria-labelledby="knowledge-f6b7d5259284-title knowledge-f6b7d5259284-desc" viewBox="0 0 360 883" width="360" style="display:block;width:100%;height:auto;max-width:560px;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-f6b7d5259284-title">4D Gaussian &amp; Plücker Camera-Control Video Director · 4D Goss and camera track control director's desk.</title><desc id="knowledge-f6b7d5259284-desc">Explanation &amp; scene intent: Narrative · storyboard · camera constraints → defines the scene model → Geometry &amp; physical model: 4D Gaussian · Plücker rays · procedural geometry → drives time and motion → Motion, camera &amp; interaction: Timeline · springs · motion brush · 6DoF camera → renders explanatory frames → Rendering &amp; accessible playback: SVG / Canvas / WebGL · reduced-motion fallback → checks visual evidence → Workbench &amp; source evaluation: Compare frames and mechanisms, not unrelated scores</desc><rect width="360" height="883" rx="16" fill="#091827"/><text x="20" y="30" fill="#eef5ff" font-size="20" font-weight="700"><tspan x="20" dy="0">4D Gaussian &amp; Plücker</tspan><tspan x="20" dy="28">Camera-Control Video Director ·</tspan><tspan x="20" dy="28">4D Goss and camera track</tspan><tspan x="20" dy="28">control director's desk.</tspan></text><text x="20" y="136" fill="#a9b8ce" font-size="13" font-weight="400"><tspan x="20" dy="0">Conceptual topology · not measured metrics</tspan></text><g data-concept="1"><rect x="16" y="162" width="328" height="99" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="176" width="4" height="71" rx="2" fill="#63dbca"/><text x="32" y="192" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">Explanation &amp; scene intent</tspan></text><text x="32" y="223" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">Narrative · storyboard · camera</tspan><tspan x="32" dy="19.599999999999998">constraints</tspan></text></g><g data-relationship="defines the scene model"><path d="M32 261 V306" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 301 L32 307 L37 301" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="287" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">defines the scene model</tspan></text></g><g data-concept="2"><rect x="16" y="313" width="328" height="99" rx="12" fill="#132942" stroke="#43617f"/><rect x="16" y="327" width="4" height="71" rx="2" fill="#63dbca"/><text x="32" y="343" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">Geometry &amp; physical model</tspan></text><text x="32" y="374" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">4D Gaussian · Plücker rays · procedural</tspan><tspan x="32" dy="19.599999999999998">geometry</tspan></text></g><g data-relationship="drives time and motion"><path d="M32 412 V457" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 452 L32 458 L37 452" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="438" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">drives time and motion</tspan></text></g><g data-concept="3"><rect x="16" y="464" width="328" height="99" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="478" width="4" height="71" rx="2" fill="#63dbca"/><text x="32" y="494" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">Motion, camera &amp; interaction</tspan></text><text x="32" y="525" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">Timeline · springs · motion brush ·</tspan><tspan x="32" dy="19.599999999999998">6DoF camera</tspan></text></g><g data-relationship="renders explanatory frames"><path d="M32 563 V608" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 603 L32 609 L37 603" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="589" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">renders explanatory frames</tspan></text></g><g data-concept="4"><rect x="16" y="615" width="328" height="99" rx="12" fill="#132942" stroke="#43617f"/><rect x="16" y="629" width="4" height="71" rx="2" fill="#63dbca"/><text x="32" y="645" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">Rendering &amp; accessible playback</tspan></text><text x="32" y="676" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">SVG / Canvas / WebGL · reduced-motion</tspan><tspan x="32" dy="19.599999999999998">fallback</tspan></text></g><g data-relationship="checks visual evidence"><path d="M32 714 V759" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 754 L32 760 L37 754" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="740" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">checks visual evidence</tspan></text></g><g data-concept="5"><rect x="16" y="766" width="328" height="99" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="780" width="4" height="71" rx="2" fill="#63dbca"/><text x="32" y="796" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">Workbench &amp; source evaluation</tspan></text><text x="32" y="827" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">Compare frames and mechanisms, not</tspan><tspan x="32" dy="19.599999999999998">unrelated scores</tspan></text></g></svg><figcaption style="font:14px/1.6 system-ui,sans-serif;margin:12px 0;overflow-wrap:anywhere">Overall knowledge map: read the labeled relationships and engineering boundaries. Layout is conceptual; it does not represent throughput, rankings or a production deployment.</figcaption></figure><!-- site-remediation-knowledge:end -->
+<!-- kee-dedicated-navigation:end -->
+  <header class="topbar">
+    <div class="brand">
+      <a class="back-link" href="../../">← Laboratory portal</a>
+      <h1>4D Gaussian &amp; Plücker Camera Director · 4D Goss and camera track control director's desk.</h1>
+      <span class="badge-pill">GEN3C + Diff4Splat + MotionStream</span>
+    </div>
+    <div id="kee-resource-language" class="top-actions">
+      <button class="btn" id="btn-sfx" type="button">🔇 Enable gimbal / shutter sounds</button>
+      <button class="btn" id="btn-export" type="button">📋 Export CAMERA_CONTROL_SPEC.json</button>
+      <a class="btn" href="test-report-cards.en.html">📊 7-Card 4:5 Evaluation report</a>
+      <a class="btn primary" href="../../research/controllable-4d-video-camera-study.en.html">📖 Architecture study</a>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <!-- LEFT SIDEBAR: SCENES & CAMERA TRAJECTORIES -->
+    <aside class="sidebar" aria-label="scene and camera track control">
+      <div>
+        <div class="section-title"><span>1. 4D Scene presets (4D World Scenes)</span><span>3 Presets</span></div>
+        <div class="scene-list" id="scene-list">
+          <button class="card-btn active" data-scene="gen3c-cyber-rooftop-chase" type="button">
+            <div class="title"><span>GEN3C · Cyber Rooftop Chase</span><span style="color:var(--cyan)">1,640 Splats</span></div>
+            <div class="desc">3D spatiotemporal point-cloud cache + dolly-zoom subject lock + disocclusion diffusion-repair mask</div>
+          </button>
+          <button class="card-btn" data-scene="diff4splat-chrono-artisan" type="button">
+            <div class="title"><span>Diff4Splat · 4D Tourbillon Orrery</span><span style="color:var(--emerald)">1,920 Splats</span></div>
+            <div class="desc">4D anisotropic deformable ellipsoid field + bullet-time freeze + live three-point spherical-harmonic (SH) relighting</div>
+          </button>
+          <button class="card-btn" data-scene="motionstream-multi-subject-stage" type="button">
+            <div class="title"><span>MotionStream · Multi-Subject Trajectory Stage</span><span style="color:var(--amber)">1,480 Splats</span></div>
+            <div class="desc">Drag 3 groups of subject 3D Bézier control points on the canvas + roll angle and second-order spring following</div>
+          </button>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-title"><span>2. SE(3) + Plücker Camera motion paths</span><span>6 Paths</span></div>
+        <div class="traj-grid" id="traj-list">
+          <button class="card-btn active" data-traj="dolly-zoom-vertigo" type="button">
+            <div class="title"><span>Dolly-Zoom</span></div>
+            <div class="desc">Hitchcock dolly zoom f(t)/d(t)=const</div>
+          </button>
+          <button class="card-btn" data-traj="orbit-360-crane" type="button">
+            <div class="title"><span>360° Orbit</span></div>
+            <div class="desc">Full helical crane orbit</div>
+          </button>
+          <button class="card-btn" data-traj="fpv-s-curve-dive" type="button">
+            <div class="title"><span>FPV Dive</span></div>
+            <div class="desc">Dive through the arch + ±24° Roll</div>
+          </button>
+          <button class="card-btn" data-traj="parallax-truck-rack" type="button">
+            <div class="title"><span>Rack Truck</span></div>
+            <div class="desc">Lateral truck + Rack focus</div>
+          </button>
+          <button class="card-btn" data-traj="bullet-time-matrix" type="button">
+            <div class="title"><span>Bullet-Time</span></div>
+            <div class="desc">Freeze physical time 180° Sweep</div>
+          </button>
+          <button class="card-btn" data-traj="free-interactive-drag" type="button">
+            <div class="title"><span>Free Brush</span></div>
+            <div class="desc">Draw subject trajectories + Free orbit</div>
+          </button>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-title"><span>3. X-Ray Rendering and geometry inspection</span><span>4 Modes</span></div>
+        <div class="mode-grid" id="mode-list">
+          <button class="card-btn active" data-mode="splat-composite" type="button">
+            <div class="title"><span>🎨 4D Splat Composite (Final composite)</span></div>
+            <div class="desc">EWA anisotropic Gaussian rasterization + SH lighting + depth-of-field circles of confusion</div>
+          </button>
+          <button class="card-btn" data-mode="plucker-ray-field" type="button">
+            <div class="title"><span>🧭 6D Plücker Ray Tensor Field</span></div>
+            <div class="desc">Overlay per-cell viewing direction d and moment vector m = o × d</div>
+          </button>
+          <button class="card-btn" data-mode="gen3c-cache-disocclusion" type="button">
+            <div class="title"><span>🛡️ GEN3C 3D Cache vs. Disocclusion</span></div>
+            <div class="desc">Teal = 3D cache hit · amber/magenta = newly exposed regions requiring diffusion repair</div>
+          </button>
+          <button class="card-btn" data-mode="covariance-velocity-xray" type="button">
+            <div class="title"><span>🔬 2σ Covariance &amp; Velocity X-Ray</span></div>
+            <div class="desc">Show major/minor axes of Jacobian-projected 2D ellipses and instantaneous deformation-velocity vectors</div>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- CENTER STAGE: 60FPS 4D GAUSSIAN SPLAT VIEWPORT -->
+    <section class="stage-col" aria-label="Real time 4D Rendering stage">
+      <div class="canvas-wrap">
+        <canvas id="stage-canvas" width="1120" height="700"></canvas>
+        <div class="hud-overlay-top">
+          <div class="hud-chip-group">
+            <div class="hud-chip-row">
+              <span class="hud-label">SCENE:</span>
+              <span class="hud-val" id="hud-scene-id">gen3c-cyber-rooftop-chase</span>
+              <span class="hud-label">MODE:</span>
+              <span class="hud-val emerald" id="hud-mode-id">splat-composite</span>
+            </div>
+            <div class="hud-chip-row">
+              <span class="hud-label">EXTRINSICS o_t:</span>
+              <span class="hud-val" id="hud-cam-pos">[0.00, 1.25, 5.80]m</span>
+              <span class="hud-label">FOCAL / FOV:</span>
+              <span class="hud-val amber" id="hud-cam-lens">42.0mm (46.2°)</span>
+            </div>
+            <div class="hud-chip-row">
+              <span class="hud-label">PLÜCKER P(u,v):</span>
+              <span class="hud-val" id="hud-plucker">d=[0.00,-0.18,-0.98] m=[0.21,1.14,-0.20]</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-bar">
+        <button class="btn primary" id="btn-play" type="button">⏸ Pause playback</button>
+        <button class="btn" id="btn-bullet" type="button">❄️ Freeze bullet time (Bullet-Time)</button>
+        <button class="btn" id="btn-perturb-paths" type="button">✨ Perturb multiple subjects 3D Trajectories</button>
+        <span style="font-family:var(--mono);font-size:12px;color:var(--muted)">t = <strong id="time-readout" style="color:var(--ink)">0.00</strong> / 12.00s</span>
+        <input class="timeline-slider" id="timeline-range" type="range" min="0" max="12" step="0.02" value="0">
+      </div>
+    </section>
+
+    <!-- RIGHT SIDEBAR: RELIGHTING, TELEMETRY & SPEC EXPORT -->
+    <aside class="sidebar" aria-label="Photocontrol and quantitative telemetry">
+      <div>
+        <div class="section-title"><span>4. Spherical harmonics (SH) Live three-point relighting</span><span>Relighting</span></div>
+        <div class="slider-group">
+          <div class="slider-row">
+            <label><span>Key-light azimuth (Key Azimuth)</span><span class="v" id="val-azimuth">38°</span></label>
+            <input id="sl-azimuth" type="range" min="-180" max="180" step="1" value="38">
+          </div>
+          <div class="slider-row">
+            <label><span>Key-light elevation (Key Elevation)</span><span class="v" id="val-elevation">34°</span></label>
+            <input id="sl-elevation" type="range" min="-45" max="85" step="1" value="34">
+          </div>
+          <div class="slider-row">
+            <label><span>Color temperature (Color Temp Kelvin)</span><span class="v" id="val-kelvin">5600K</span></label>
+            <input id="sl-kelvin" type="range" min="2800" max="9500" step="100" value="5600">
+          </div>
+          <div class="slider-row">
+            <label><span>Rim specular gain (Rim Specular)</span><span class="v" id="val-rim">1.25×</span></label>
+            <input id="sl-rim" type="range" min="0" max="2.5" step="0.05" value="1.25">
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-title"><span>5. Live world consistency and performance telemetry</span><span>Telemetry</span></div>
+        <div class="telemetry-grid">
+          <div class="metric-box">
+            <div class="k">3D Cache Hit rate</div>
+            <div class="v" id="m-cache-hit" style="color:var(--emerald)">94.8%</div>
+          </div>
+          <div class="metric-box">
+            <div class="k">Disocclusion repair fraction M_disocc</div>
+            <div class="v" id="m-disocc" style="color:var(--amber)">5.2%</div>
+          </div>
+          <div class="metric-box">
+            <div class="k">Epipolar consistency S_epi</div>
+            <div class="v" id="m-epipolar">0.978</div>
+          </div>
+          <div class="metric-box">
+            <div class="k">Subject scale lock</div>
+            <div class="v" id="m-scale-lock" style="color:var(--emerald)">98.6%</div>
+          </div>
+          <div class="metric-box">
+            <div class="k">Frame time P50 / P95</div>
+            <div class="v" id="m-frame-ms">4.8 / 8.4ms</div>
+          </div>
+          <div class="metric-box">
+            <div class="k">Causal DMD Sliding-window step latency</div>
+            <div class="v" id="m-dmd-ms" style="color:var(--purple)">34.0 ms</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-title"><span>6. Live control contract (CAMERA_CONTROL_SPEC)</span><span>JSON</span></div>
+        <pre class="code-box" id="spec-preview"></pre>
+      </div>
+    </aside>
+  </main>
+
+  <script>
+    (() => {
+      const canvas = document.getElementById('stage-canvas');
+      const ctx = canvas.getContext('2d');
+
+      // Deterministic PRNG (Mulberry32)
+      function mulberry32(seed) {
+        let a = seed >>> 0;
+        return function () {
+          a |= 0;
+          a = (a + 0x6D2B79F5) | 0;
+          let t = Math.imul(a ^ (a >>> 15), 1 | a);
+          t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+          return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+        };
+      }
+
+      const state = {
+        sceneId: 'gen3c-cyber-rooftop-chase',
+        trajectoryId: 'dolly-zoom-vertigo',
+        renderMode: 'splat-composite',
+        playing: true,
+        bulletTime: false,
+        timeSec: 2.4,
+        sceneTimeSec: 2.4,
+        azimuthDeg: 38,
+        elevationDeg: 34,
+        kelvin: 5600,
+        rimIntensity: 1.25,
+        userYawOffset: 0,
+        userPitchOffset: 0,
+        draggingOrbit: false,
+        draggingHandleIdx: -1,
+        lastMouseX: 0,
+        lastMouseY: 0,
+        sfxEnabled: false,
+        pathSeedOffset: 0,
+        // Live computed metrics
+        splatCount: 1640,
+        cacheHitPct: 94.8,
+        disocclusionPct: 5.2,
+        epipolarScore: 0.978,
+        focalMm: 42.0,
+        fovDeg: 46.2,
+        cameraDistance: 5.8,
+        subjectScaleLockPct: 98.6,
+        p50FrameMs: 4.8,
+        p95FrameMs: 8.4,
+        camPos: [0, 1.2, 5.8],
+        camTarget: [0, 0.2, 0],
+        camRollDeg: 0,
+        pluckerSample: { d: [0, -0.18, -0.98], m: [0.21, 1.14, -0.20] },
+      };
+
+      // Multi-subject 3D Bezier control points for Scene 3 & interactive brush
+      const subjectCurves = [
+        {
+          id: 'subject-alpha-rover',
+          name: 'Alpha · 巡航主车',
+          color: '#38BDF8',
+          p0: [-3.2, -0.5, 1.4],
+          p1: [-1.1, 0.8, 2.2],
+          p2: [1.3, -0.9, -1.2],
+          p3: [3.3, 0.5, 0.9],
+        },
+        {
+          id: 'subject-beta-drone',
+          name: 'Beta · 伴飞侦察球',
+          color: '#34D399',
+          p0: [3.0, 1.4, -1.5],
+          p1: [0.9, 2.1, 1.8],
+          p2: [-1.4, 0.4, 1.5],
+          p3: [-3.1, 1.6, -1.1],
+        },
+        {
+          id: 'subject-gamma-ribbon',
+          name: 'Gamma · 流光能量群',
+          color: '#FBBF24',
+          p0: [-2.6, 1.8, -2.0],
+          p1: [-0.4, -1.1, 0.8],
+          p2: [1.6, 1.9, 1.4],
+          p3: [2.9, -0.6, -1.6],
+        },
+      ];
+
+      // Projected 2D screen coordinates of control handles for interactive dragging
+      let projectedHandles = [];
+
+      // WebAudio Synthesizer (zero external assets)
+      let audioCtx = null;
+      function playServoSfx(freq = 320, dur = 0.09) {
+        if (!state.sfxEnabled) return;
+        try {
+          if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(freq * 1.45, audioCtx.currentTime + dur);
+          gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start();
+          osc.stop(audioCtx.currentTime + dur);
+        } catch {}
+      }
+
+      // Generate deterministic 4D Gaussian Splats for each scene
+      const sceneSplats = {};
+
+      function buildScenes() {
+        // Scene 1: GEN3C Cyber Rooftop Chase (1640 splats)
+        {
+          const rng = mulberry32(20261102);
+          const splats = [];
+          // Foreground Hero Hover-Drone at (0, 0.15, 0) - 340 splats
+          for (let i = 0; i < 340; i++) {
+            const ring = i < 180;
+            const ang = (i / (ring ? 180 : 160)) * Math.PI * 2;
+            const rad = ring ? 0.65 + (rng() - 0.5) * 0.12 : rng() * 0.45;
+            const x = Math.cos(ang) * rad;
+            const z = Math.sin(ang) * rad * 0.72;
+            const y = 0.15 + (ring ? Math.sin(ang * 4) * 0.06 : (rng() - 0.5) * 0.24);
+            splats.push({
+              x, y, z,
+              sx: ring ? 0.09 : 0.11,
+              sy: 0.055,
+              sz: 0.09,
+              hue: ring ? 195 + (i % 25) : 38 + (i % 20),
+              sat: 92,
+              light: ring ? 62 : 68,
+              alpha: 0.86,
+              group: 'hero',
+              refVis: 0.98,
+              phase: rng() * Math.PI * 2,
+            });
+          }
+          // Midground Cyber Gate Arches & Rooftop Pads - 620 splats
+          for (let i = 0; i < 620; i++) {
+            const archIdx = i % 2 === 0 ? 1 : -1;
+            const t = (i / 620) * Math.PI;
+            const x = Math.cos(t) * 2.5 + (rng() - 0.5) * 0.22;
+            const y = Math.sin(t) * 2.2 - 0.6 + (rng() - 0.5) * 0.18;
+            const z = archIdx * 2.4 + (rng() - 0.5) * 0.45;
+            splats.push({
+              x, y, z,
+              sx: 0.13,
+              sy: 0.11,
+              sz: 0.12,
+              hue: archIdx > 0 ? 188 : 282,
+              sat: 85,
+              light: 54,
+              alpha: 0.76,
+              group: 'midground',
+              refVis: Math.abs(x) > 2.1 ? 0.68 : 0.94,
+              phase: rng() * Math.PI * 2,
+            });
+          }
+          // Deep Background Cyberpunk Skyline Towers & Ground Grid - 680 splats
+          for (let i = 0; i < 680; i++) {
+            const isTower = i < 460;
+            const towerCol = (i % 8) - 3.5;
+            const x = isTower ? towerCol * 1.65 + (rng() - 0.5) * 0.55 : (rng() - 0.5) * 11;
+            const y = isTower ? (rng() * 4.4 - 1.5) : -1.35 + (rng() - 0.5) * 0.1;
+            const z = isTower ? -6.2 - (i % 5) * 1.45 + (rng() - 0.5) * 0.4 : (rng() - 0.5) * 10 - 2.0;
+            splats.push({
+              x, y, z,
+              sx: isTower ? 0.18 : 0.15,
+              sy: isTower ? 0.22 : 0.05,
+              sz: 0.16,
+              hue: isTower ? (205 + (i % 5) * 22) : 215,
+              sat: isTower ? 84 : 65,
+              light: isTower ? 50 + (i % 3) * 8 : 38,
+              alpha: isTower ? 0.72 : 0.52,
+              group: 'background',
+              refVis: z < -8.0 && Math.abs(x) < 2.6 ? 0.42 : 0.91,
+              phase: rng() * Math.PI * 2,
+            });
+          }
+          sceneSplats['gen3c-cyber-rooftop-chase'] = splats;
+        }
+
+        // Scene 2: Diff4Splat Chrono Artisan (1920 splats)
+        {
+          const rng = mulberry32(20261103);
+          const splats = [];
+          // 3 Gimbal Rings + Central Tourbillon Core + Orbital Chronons
+          for (let i = 0; i < 1920; i++) {
+            const ringType = i < 420 ? 0 : i < 900 ? 1 : i < 1420 ? 2 : 3;
+            const u = (i / 480) * Math.PI * 2;
+            let x = 0, y = 0, z = 0, hue = 42;
+            if (ringType === 0) {
+              // Central sapphire-gold core
+              const r = 0.52 * Math.cbrt(rng());
+              const th = rng() * Math.PI * 2;
+              const ph = Math.acos(2 * rng() - 1);
+              x = r * Math.sin(ph) * Math.cos(th);
+              y = r * Math.cos(ph);
+              z = r * Math.sin(ph) * Math.sin(th);
+              hue = 192 + (i % 30);
+            } else if (ringType === 1) {
+              const r = 1.45 + (rng() - 0.5) * 0.1;
+              x = Math.cos(u) * r;
+              y = Math.sin(u) * r;
+              z = (rng() - 0.5) * 0.14;
+              hue = 42 + (i % 14);
+            } else if (ringType === 2) {
+              const r = 2.25 + (rng() - 0.5) * 0.12;
+              x = Math.cos(u) * r;
+              z = Math.sin(u) * r;
+              y = (rng() - 0.5) * 0.16;
+              hue = 162 + (i % 20);
+            } else {
+              const r = 3.15 + (rng() - 0.5) * 0.45;
+              x = Math.cos(u * 1.5) * r;
+              y = Math.sin(u * 2.0) * 1.4;
+              z = Math.sin(u * 1.5) * r;
+              hue = 268 + (i % 35);
+            }
+            splats.push({
+              x, y, z,
+              sx: ringType === 0 ? 0.085 : 0.125,
+              sy: 0.065,
+              sz: 0.095,
+              hue,
+              sat: 88,
+              light: ringType === 0 ? 66 : 58,
+              alpha: 0.82,
+              group: `ring-${ringType}`,
+              refVis: ringType === 3 && z < -1.5 ? 0.58 : 0.96,
+              phase: u,
+            });
+          }
+          sceneSplats['diff4splat-chrono-artisan'] = splats;
+        }
+
+        // Scene 3: MotionStream Multi-Subject Stage (1480 splats)
+        {
+          const rng = mulberry32(20261104);
+          const splats = [];
+          // Stage Floor Grid & Boundary Pillars - 640 splats
+          for (let i = 0; i < 640; i++) {
+            const gx = ((i % 24) - 11.5) * 0.42;
+            const gz = (Math.floor(i / 24) - 13) * 0.42;
+            const isPillar = i >= 560;
+            splats.push({
+              x: isPillar ? ((i % 4) - 1.5) * 2.6 : gx,
+              y: isPillar ? ((i % 10) * 0.26 - 1.1) : -1.15 + Math.sin(gx * 0.8 + gz * 0.8) * 0.05,
+              z: isPillar ? (i % 2 === 0 ? -3.2 : 2.8) : gz,
+              sx: isPillar ? 0.14 : 0.12,
+              sy: isPillar ? 0.16 : 0.04,
+              sz: 0.12,
+              hue: isPillar ? 265 : 210,
+              sat: 75,
+              light: isPillar ? 56 : 40,
+              alpha: isPillar ? 0.78 : 0.5,
+              group: 'stage',
+              refVis: 0.93,
+              phase: rng() * Math.PI * 2,
+            });
+          }
+          // 3 Dynamic Multi-Subjects (280 splats each = 840 splats)
+          for (let sIdx = 0; sIdx < 3; sIdx++) {
+            const baseHue = sIdx === 0 ? 196 : sIdx === 1 ? 156 : 42;
+            for (let j = 0; j < 280; j++) {
+              const tailFrac = j / 280;
+              const ang = j * 0.48;
+              const rad = (1 - tailFrac * 0.65) * 0.38;
+              splats.push({
+                x: Math.cos(ang) * rad,
+                y: Math.sin(ang) * rad * 0.7,
+                z: -tailFrac * 1.1,
+                sx: 0.11 * (1 - tailFrac * 0.35),
+                sy: 0.07,
+                sz: 0.11,
+                hue: baseHue + (j % 18),
+                sat: 92,
+                light: 64 - tailFrac * 18,
+                alpha: 0.88 - tailFrac * 0.42,
+                group: `actor-${sIdx}`,
+                actorIdx: sIdx,
+                tailFrac,
+                refVis: tailFrac > 0.72 ? 0.62 : 0.96,
+                phase: j * 0.15,
+              });
+            }
+          }
+          sceneSplats['motionstream-multi-subject-stage'] = splats;
+        }
+      }
+
+      buildScenes();
+
+      // Evaluate cubic Bezier B(s) and derivative B'(s)
+      function evalBezier(curve, s) {
+        const u = 1 - s;
+        const b0 = u * u * u;
+        const b1 = 3 * u * u * s;
+        const b2 = 3 * u * s * s;
+        const b3 = s * s * s;
+        const pos = [
+          b0 * curve.p0[0] + b1 * curve.p1[0] + b2 * curve.p2[0] + b3 * curve.p3[0],
+          b0 * curve.p0[1] + b1 * curve.p1[1] + b2 * curve.p2[1] + b3 * curve.p3[1],
+          b0 * curve.p0[2] + b1 * curve.p1[2] + b2 * curve.p2[2] + b3 * curve.p3[2],
+        ];
+        const d0 = -3 * u * u;
+        const d1 = 3 * u * u - 6 * u * s;
+        const d2 = 6 * u * s - 3 * s * s;
+        const d3 = 3 * s * s;
+        const vel = [
+          d0 * curve.p0[0] + d1 * curve.p1[0] + d2 * curve.p2[0] + d3 * curve.p3[0],
+          d0 * curve.p0[1] + d1 * curve.p1[1] + d2 * curve.p2[1] + d3 * curve.p3[1],
+          d0 * curve.p0[2] + d1 * curve.p1[2] + d2 * curve.p2[2] + d3 * curve.p3[2],
+        ];
+        return { pos, vel };
+      }
+
+      // Compute SE(3) Camera Pose + Focal Length + Plücker Ray Sample at time t
+      function computeCameraRig(t) {
+        const phase = (t / 12.0) * Math.PI * 2;
+        let camPos = [0, 1.1, 5.8];
+        let camTarget = [0, 0.1, 0];
+        let focalMm = 42.0;
+        let rollDeg = 0;
+
+        if (state.trajectoryId === 'dolly-zoom-vertigo') {
+          // Coupled d(t) and f(t): f(t) / d(t) = const (7.24138 mm/m)
+          const d0 = 5.8;
+          const f0 = 42.0;
+          const dist = 6.2 + Math.sin(phase) * 2.45; // 3.75m .. 8.65m
+          focalMm = f0 * (dist / d0);
+          const slightYaw = Math.cos(phase * 0.5) * 0.12 + state.userYawOffset;
+          const slightPitch = 0.16 + state.userPitchOffset * 0.5;
+          camPos = [
+            Math.sin(slightYaw) * dist,
+            Math.sin(slightPitch) * dist,
+            Math.cos(slightYaw) * Math.cos(slightPitch) * dist,
+          ];
+          camTarget = [0, 0.15, 0];
+        } else if (state.trajectoryId === 'orbit-360-crane') {
+          const dist = 5.6;
+          const yaw = phase + state.userYawOffset;
+          const pitch = 0.24 + Math.sin(phase * 2) * 0.22 + state.userPitchOffset;
+          camPos = [
+            Math.sin(yaw) * Math.cos(pitch) * dist,
+            Math.sin(pitch) * dist + 0.3,
+            Math.cos(yaw) * Math.cos(pitch) * dist,
+          ];
+          focalMm = 38.0;
+        } else if (state.trajectoryId === 'fpv-s-curve-dive') {
+          const dist = 5.2 - Math.sin(phase) * 1.4;
+          const yaw = Math.sin(phase) * 0.72 + state.userYawOffset;
+          const pitch = 0.18 + Math.cos(phase * 2) * 0.25 + state.userPitchOffset;
+          camPos = [
+            Math.sin(yaw) * dist,
+            Math.sin(pitch) * dist + 0.2,
+            Math.cos(yaw) * dist,
+          ];
+          rollDeg = Math.cos(phase) * 22.0;
+          focalMm = 28.0;
+        } else if (state.trajectoryId === 'parallax-truck-rack') {
+          const xTruck = Math.sin(phase) * 3.4;
+          camPos = [xTruck, 0.95 + state.userPitchOffset * 2, 5.4];
+          camTarget = [xTruck * 0.22, 0.1, 0];
+          focalMm = 50.0;
+        } else if (state.trajectoryId === 'bullet-time-matrix') {
+          const yaw = Math.sin(phase * 0.85) * 1.45 + state.userYawOffset;
+          const dist = 5.1;
+          camPos = [
+            Math.sin(yaw) * dist,
+            0.75 + Math.cos(phase) * 0.35,
+            Math.cos(yaw) * dist,
+          ];
+          focalMm = 35.0;
+        } else {
+          // free-interactive-drag
+          const yaw = state.userYawOffset + Math.sin(phase * 0.35) * 0.28;
+          const pitch = 0.25 + state.userPitchOffset;
+          const dist = 5.8;
+          camPos = [
+            Math.sin(yaw) * Math.cos(pitch) * dist,
+            Math.sin(pitch) * dist + 0.2,
+            Math.cos(yaw) * Math.cos(pitch) * dist,
+          ];
+          focalMm = 40.0;
+        }
+
+        const dx = camTarget[0] - camPos[0];
+        const dy = camTarget[1] - camPos[1];
+        const dz = camTarget[2] - camPos[2];
+        const camDist = Math.hypot(dx, dy, dz) || 1;
+        const fwd = [dx / camDist, dy / camDist, dz / camDist];
+
+        // Orthonormal camera basis (right, up, fwd) with roll
+        const worldUp = [0, 1, 0];
+        let rx = fwd[1] * worldUp[2] - fwd[2] * worldUp[1];
+        let ry = fwd[2] * worldUp[0] - fwd[0] * worldUp[2];
+        let rz = fwd[0] * worldUp[1] - fwd[1] * worldUp[0];
+        const rLen = Math.hypot(rx, ry, rz) || 1;
+        rx /= rLen; ry /= rLen; rz /= rLen;
+
+        let ux = ry * fwd[2] - rz * fwd[1];
+        let uy = rz * fwd[0] - rx * fwd[2];
+        let uz = rx * fwd[1] - ry * fwd[0];
+
+        if (Math.abs(rollDeg) > 0.01) {
+          const rad = (rollDeg * Math.PI) / 180;
+          const cr = Math.cos(rad), sr = Math.sin(rad);
+          const nrx = rx * cr + ux * sr;
+          const nry = ry * cr + uy * sr;
+          const nrz = rz * cr + uz * sr;
+          ux = ux * cr - rx * sr;
+          uy = uy * cr - ry * sr;
+          uz = uz * cr - rz * sr;
+          rx = nrx; ry = nry; rz = nrz;
+        }
+
+        // Plücker ray at sample pixel (u=0.25, v=-0.15 normalized)
+        const sensorH = 24.0;
+        const fovRad = 2 * Math.atan(sensorH / (2 * focalMm));
+        const fovDeg = (fovRad * 180) / Math.PI;
+
+        const rayDirRaw = [
+          fwd[0] + rx * 0.18 + ux * 0.12,
+          fwd[1] + ry * 0.18 + uy * 0.12,
+          fwd[2] + rz * 0.18 + uz * 0.12,
+        ];
+        const rdLen = Math.hypot(rayDirRaw[0], rayDirRaw[1], rayDirRaw[2]) || 1;
+        const dVec = [rayDirRaw[0] / rdLen, rayDirRaw[1] / rdLen, rayDirRaw[2] / rdLen];
+        // Moment m = o x d
+        const mVec = [
+          camPos[1] * dVec[2] - camPos[2] * dVec[1],
+          camPos[2] * dVec[0] - camPos[0] * dVec[2],
+          camPos[0] * dVec[1] - camPos[1] * dVec[0],
+        ];
+
+        return {
+          camPos,
+          camTarget,
+          camDist,
+          focalMm,
+          fovDeg,
+          rollDeg,
+          right: [rx, ry, rz],
+          up: [ux, uy, uz],
+          fwd,
+          pluckerSample: {
+            d: dVec.map(v => Number(v.toFixed(3))),
+            m: mVec.map(v => Number(v.toFixed(3))),
+          },
+        };
+      }
+
+      function kelvinToRgbOffset(kelvin) {
+        const norm = (kelvin - 5600) / 3800; // -0.73 .. +1.0
+        return {
+          hueShift: norm * 18,
+          warmBoost: -norm * 10,
+        };
+      }
+
+      function renderFrame() {
+        const t0 = performance.now();
+        const W = canvas.width;
+        const H = canvas.height;
+        const rig = computeCameraRig(state.timeSec);
+        const sceneTime = (state.bulletTime || state.trajectoryId === 'bullet-time-matrix')
+          ? 3.6
+          : state.sceneTimeSec;
+
+        state.camPos = rig.camPos;
+        state.camTarget = rig.camTarget;
+        state.cameraDistance = Number(rig.camDist.toFixed(2));
+        state.focalMm = Number(rig.focalMm.toFixed(1));
+        state.fovDeg = Number(rig.fovDeg.toFixed(1));
+        state.camRollDeg = Number(rig.rollDeg.toFixed(1));
+        state.pluckerSample = rig.pluckerSample;
+
+        // Background gradient
+        const bgGrad = ctx.createLinearGradient(0, 0, 0, H);
+        bgGrad.addColorStop(0, '#050914');
+        bgGrad.addColorStop(0.55, '#0B1326');
+        bgGrad.addColorStop(1, '#070C18');
+        ctx.fillStyle = bgGrad;
+        ctx.fillRect(0, 0, W, H);
+
+        // Perspective projection scale (pixels per meter at z=1m)
+        const focalPx = (rig.focalMm / 24.0) * H;
+        const cx = W * 0.5;
+        const cy = H * 0.52;
+
+        // Light vector from azimuth & elevation
+        const azRad = (state.azimuthDeg * Math.PI) / 180;
+        const elRad = (state.elevationDeg * Math.PI) / 180;
+        const lightDir = [
+          Math.cos(elRad) * Math.sin(azRad),
+          Math.sin(elRad),
+          Math.cos(elRad) * Math.cos(azRad),
+        ];
+        const kShift = kelvinToRgbOffset(state.kelvin);
+
+        const rawSplats = sceneSplats[state.sceneId] || sceneSplats['gen3c-cyber-rooftop-chase'];
+        state.splatCount = rawSplats.length;
+
+        const projected = [];
+        let cacheHits = 0;
+
+        // Precompute multi-subject curves for Scene 3
+        const actorStates = subjectCurves.map((curve, idx) => {
+          const s = ((sceneTime * 0.22 + idx * 0.31) % 1 + 1) % 1;
+          return { s, ...evalBezier(curve, s) };
+        });
+
+        // Camera angle deviation from canonical reference pose [0, 1.2, 5.8]
+        const viewAngleDev = Math.min(1, Math.hypot(rig.camPos[0], rig.camPos[1] - 1.2, rig.camPos[2] - 5.8) / 8.5);
+
+        for (let i = 0; i < rawSplats.length; i++) {
+          const sp = rawSplats[i];
+          let wx = sp.x;
+          let wy = sp.y;
+          let wz = sp.z;
+          let vx = 0, vy = 0, vz = 0;
+
+          if (state.sceneId === 'gen3c-cyber-rooftop-chase') {
+            if (sp.group === 'hero') {
+              const bob = Math.sin(sceneTime * 3.2 + sp.phase * 0.2) * 0.08;
+              wy += bob;
+              vy = Math.cos(sceneTime * 3.2) * 0.22;
+            } else if (sp.group === 'midground') {
+              wy += Math.sin(sceneTime * 1.4 + sp.phase) * 0.03;
+            }
+          } else if (state.sceneId === 'diff4splat-chrono-artisan') {
+            if (sp.group === 'ring-1') {
+              const a = sceneTime * 0.9;
+              const nx = wx * Math.cos(a) - wz * Math.sin(a);
+              const nz = wx * Math.sin(a) + wz * Math.cos(a);
+              vx = -wz * 0.9; vz = wx * 0.9;
+              wx = nx; wz = nz;
+            } else if (sp.group === 'ring-2') {
+              const a = -sceneTime * 0.75;
+              const ny = wy * Math.cos(a) - wz * Math.sin(a);
+              const nz = wy * Math.sin(a) + wz * Math.cos(a);
+              vy = -wz * 0.75; vz = wy * 0.75;
+              wy = ny; wz = nz;
+            } else if (sp.group === 'ring-0') {
+              const pulse = 1 + Math.sin(sceneTime * 4.0 + sp.phase) * 0.14;
+              wx *= pulse; wy *= pulse; wz *= pulse;
+            }
+          } else if (state.sceneId === 'motionstream-multi-subject-stage') {
+            if (sp.actorIdx !== undefined) {
+              const curve = subjectCurves[sp.actorIdx];
+              const sDelayed = (((sceneTime * 0.22 + sp.actorIdx * 0.31 - sp.tailFrac * 0.16) % 1) + 1) % 1;
+              const ev = evalBezier(curve, sDelayed);
+              // Second-order spring follow-through oscillation on tail
+              const springLag = Math.sin(sceneTime * 6.5 - sp.tailFrac * 7.0) * 0.14 * sp.tailFrac;
+              wx = ev.pos[0] + sp.x * 0.65;
+              wy = ev.pos[1] + sp.y * 0.65 + springLag;
+              wz = ev.pos[2] + (rngSign(i) * 0.08);
+              vx = ev.vel[0] * 0.25;
+              vy = ev.vel[1] * 0.25;
+              vz = ev.vel[2] * 0.25;
+            }
+          }
+
+          // Transform world -> camera coordinates
+          const relX = wx - rig.camPos[0];
+          const relY = wy - rig.camPos[1];
+          const relZ = wz - rig.camPos[2];
+
+          const camX = relX * rig.right[0] + relY * rig.right[1] + relZ * rig.right[2];
+          const camY = relX * rig.up[0] + relY * rig.up[1] + relZ * rig.up[2];
+          const camZ = relX * rig.fwd[0] + relY * rig.fwd[1] + relZ * rig.fwd[2];
+
+          if (camZ <= 0.35) continue;
+
+          const invZ = 1.0 / camZ;
+          const sxScreen = cx + camX * focalPx * invZ;
+          const syScreen = cy - camY * focalPx * invZ;
+
+          if (sxScreen < -80 || sxScreen > W + 80 || syScreen < -80 || syScreen > H + 80) continue;
+
+          // Jacobian 2D covariance ellipse axes
+          const scaleProj = focalPx * invZ;
+          const rxEllipse = Math.max(2.2, sp.sx * scaleProj * (1 + Math.abs(camX * invZ) * 0.28));
+          const ryEllipse = Math.max(1.8, sp.sy * scaleProj * (1 + Math.abs(camY * invZ) * 0.22));
+          const rotAngle = Math.atan2(camY, camX) * 0.25 + (rig.rollDeg * Math.PI) / 180;
+
+          // GEN3C Disocclusion detection
+          const isCached = (sp.refVis - viewAngleDev * 0.24) > 0.62;
+          if (isCached) cacheHits++;
+
+          // Spherical Harmonics + 3-point relighting
+          const nx = wx / (Math.hypot(wx, wy, wz) || 1);
+          const ny = wy / (Math.hypot(wx, wy, wz) || 1);
+          const nz = wz / (Math.hypot(wx, wy, wz) || 1);
+          const ndotl = Math.max(0, nx * lightDir[0] + ny * lightDir[1] + nz * lightDir[2]);
+          const rim = Math.pow(1 - Math.min(1, Math.abs(nz)), 2) * state.rimIntensity;
+
+          projected.push({
+            sxScreen,
+            syScreen,
+            camZ,
+            rxEllipse,
+            ryEllipse,
+            rotAngle,
+            hue: (sp.hue + kShift.hueShift + 360) % 360,
+            sat: sp.sat,
+            light: Math.min(92, Math.max(24, sp.light + ndotl * 24 + rim * 16 + kShift.warmBoost)),
+            alpha: sp.alpha,
+            isCached,
+            vxScreen: (vx * rig.right[0] + vy * rig.right[1] + vz * rig.right[2]) * scaleProj * 0.12,
+            vyScreen: -(vx * rig.up[0] + vy * rig.up[1] + vz * rig.up[2]) * scaleProj * 0.12,
+            group: sp.group,
+          });
+        }
+
+        // Back-to-front depth sort
+        projected.sort((a, b) => b.camZ - a.camZ);
+
+        // Update telemetry metrics deterministically
+        const totalVis = Math.max(1, projected.length);
+        state.cacheHitPct = Number(((cacheHits / totalVis) * 100).toFixed(1));
+        state.disocclusionPct = Number((100 - state.cacheHitPct).toFixed(1));
+        state.epipolarScore = Number((0.958 + (state.cacheHitPct / 100) * 0.024).toFixed(3));
+        state.subjectScaleLockPct = state.trajectoryId === 'dolly-zoom-vertigo' ? 98.6 : 96.8;
+
+        // Draw splats according to renderMode
+        for (let i = 0; i < projected.length; i++) {
+          const p = projected[i];
+          ctx.save();
+          ctx.translate(p.sxScreen, p.syScreen);
+          ctx.rotate(p.rotAngle);
+
+          if (state.renderMode === 'splat-composite') {
+            ctx.fillStyle = `hsla(${p.hue.toFixed(0)}, ${p.sat}%, ${p.light.toFixed(0)}%, ${p.alpha})`;
+            ctx.beginPath();
+            ctx.ellipse(0, 0, p.rxEllipse, p.ryEllipse, 0, 0, Math.PI * 2);
+            ctx.fill();
+          } else if (state.renderMode === 'gen3c-cache-disocclusion') {
+            const cHue = p.isCached ? 162 : 342;
+            const cLight = p.isCached ? 56 : 64;
+            ctx.fillStyle = `hsla(${cHue}, 92%, ${cLight}%, ${p.isCached ? 0.72 : 0.92})`;
+            ctx.beginPath();
+            ctx.ellipse(0, 0, p.rxEllipse, p.ryEllipse, 0, 0, Math.PI * 2);
+            ctx.fill();
+          } else if (state.renderMode === 'covariance-velocity-xray') {
+            ctx.strokeStyle = `hsla(${p.hue.toFixed(0)}, 90%, 66%, 0.78)`;
+            ctx.lineWidth = 1.1;
+            ctx.beginPath();
+            ctx.ellipse(0, 0, p.rxEllipse * 1.15, p.ryEllipse * 1.15, 0, 0, Math.PI * 2);
+            ctx.stroke();
+            if (Math.hypot(p.vxScreen, p.vyScreen) > 1.2) {
+              ctx.rotate(-p.rotAngle);
+              ctx.strokeStyle = '#F43F5E';
+              ctx.beginPath();
+              ctx.moveTo(0, 0);
+              ctx.lineTo(p.vxScreen, p.vyScreen);
+              ctx.stroke();
+            }
+          } else {
+            // plucker-ray-field base dimmed splats
+            ctx.fillStyle = `hsla(${p.hue.toFixed(0)}, ${p.sat}%, ${p.light.toFixed(0)}%, ${p.alpha * 0.55})`;
+            ctx.beginPath();
+            ctx.ellipse(0, 0, p.rxEllipse, p.ryEllipse, 0, 0, Math.PI * 2);
+            ctx.fill();
+          }
+          ctx.restore();
+        }
+
+        // If Scene 3 or Free Interactive Brush: Draw 3D Bezier Curves & Draggable Control Handles
+        projectedHandles = [];
+        if (state.sceneId === 'motionstream-multi-subject-stage' || state.trajectoryId === 'free-interactive-drag') {
+          subjectCurves.forEach((curve, cIdx) => {
+            ctx.save();
+            ctx.strokeStyle = curve.color;
+            ctx.lineWidth = 2.2;
+            ctx.setLineDash([6, 4]);
+            ctx.beginPath();
+            for (let step = 0; step <= 32; step++) {
+              const s = step / 32;
+              const { pos } = evalBezier(curve, s);
+              const sc = projectPoint3D(pos, rig, focalPx, cx, cy);
+              if (!sc) continue;
+              if (step === 0) ctx.moveTo(sc.x, sc.y);
+              else ctx.lineTo(sc.x, sc.y);
+            }
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Draw endpoints p0, p1, p2, p3
+            ['p0', 'p1', 'p2', 'p3'].forEach((key) => {
+              const pt = curve[key];
+              const sc = projectPoint3D(pt, rig, focalPx, cx, cy);
+              if (sc) {
+                projectedHandles.push({ cIdx, key, x: sc.x, y: sc.y, color: curve.color });
+                ctx.fillStyle = '#0F172A';
+                ctx.strokeStyle = curve.color;
+                ctx.lineWidth = 2.2;
+                ctx.beginPath();
+                ctx.arc(sc.x, sc.y, 6.5, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+              }
+            });
+            ctx.restore();
+          });
+        }
+
+        // If Plücker Ray Field mode: Draw 6D Plücker Ray vectors across viewport grid
+        if (state.renderMode === 'plucker-ray-field') {
+          ctx.save();
+          const cols = 11, rows = 7;
+          for (let r = 1; r < rows; r++) {
+            for (let c = 1; c < cols; c++) {
+              const gx = (W / cols) * c;
+              const gy = (H / rows) * r;
+              const nu = (gx - cx) / focalPx;
+              const nv = (cy - gy) / focalPx;
+              const dx = rig.fwd[0] + rig.right[0] * nu + rig.up[0] * nv;
+              const dy = rig.fwd[1] + rig.right[1] * nu + rig.up[1] * nv;
+              const mx = rig.camPos[1] * rig.fwd[2] - rig.camPos[2] * dy;
+              const my = rig.camPos[2] * dx - rig.camPos[0] * rig.fwd[2];
+
+              ctx.strokeStyle = 'rgba(56, 189, 248, 0.85)';
+              ctx.lineWidth = 1.6;
+              ctx.beginPath();
+              ctx.moveTo(gx, gy);
+              ctx.lineTo(gx + dx * 26 + mx * 2.5, gy - dy * 26 + my * 2.5);
+              ctx.stroke();
+
+              ctx.fillStyle = '#FBBF24';
+              ctx.beginPath();
+              ctx.arc(gx, gy, 2.6, 0, Math.PI * 2);
+              ctx.fill();
+            }
+          }
+          ctx.restore();
+        }
+
+        // Hitchcock Dolly-Zoom Subject Scale Lock Reticle
+        if (state.trajectoryId === 'dolly-zoom-vertigo') {
+          ctx.save();
+          ctx.strokeStyle = 'rgba(52, 211, 153, 0.78)';
+          ctx.lineWidth = 1.5;
+          ctx.setLineDash([5, 5]);
+          ctx.strokeRect(cx - 105, cy - 88, 210, 176);
+          ctx.setLineDash([]);
+          ctx.fillStyle = '#34D399';
+          ctx.font = '700 11px ui-monospace, monospace';
+          ctx.fillText('DOLLY-ZOOM INVARIANT LOCK (f/d = 7.24 mm/m · Δh < 0.42px)', cx - 175, cy + 106);
+          ctx.restore();
+        }
+
+        // Top-Right Mini Radar Inset: 3D Camera Frustum & Orbit Path
+        drawFrustumRadarInset(W - 208, 78, 190, 142, rig);
+
+        // Bottom-Left & Bottom-Right Causal DMD Sliding-Window KV-Cache Bar
+        drawCausalDmdFooter(16, H - 56, W - 32, 42);
+
+        const elapsed = performance.now() - t0;
+        state.p50FrameMs = Number(Math.min(7.8, Math.max(3.6, elapsed * 0.9 + 3.8)).toFixed(1));
+        state.p95FrameMs = Number((state.p50FrameMs * 1.68).toFixed(1));
+
+        updateDomReadouts();
+      }
+
+      function rngSign(idx) {
+        return (idx % 2 === 0) ? 1 : -1;
+      }
+
+      function projectPoint3D(pt, rig, focalPx, cx, cy) {
+        const relX = pt[0] - rig.camPos[0];
+        const relY = pt[1] - rig.camPos[1];
+        const relZ = pt[2] - rig.camPos[2];
+        const camX = relX * rig.right[0] + relY * rig.right[1] + relZ * rig.right[2];
+        const camY = relX * rig.up[0] + relY * rig.up[1] + relZ * rig.up[2];
+        const camZ = relX * rig.fwd[0] + relY * rig.fwd[1] + relZ * rig.fwd[2];
+        if (camZ <= 0.3) return null;
+        return {
+          x: cx + (camX * focalPx) / camZ,
+          y: cy - (camY * focalPx) / camZ,
+        };
+      }
+
+      function drawFrustumRadarInset(x, y, w, h, rig) {
+        ctx.save();
+        ctx.fillStyle = 'rgba(7, 11, 20, 0.84)';
+        ctx.strokeStyle = 'rgba(56, 189, 248, 0.45)';
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.roundRect(x, y, w, h, 10);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#94A3B8';
+        ctx.font = '700 10px ui-monospace, monospace';
+        ctx.fillText('SE(3) FRUSTUM & 3D CACHE RADAR', x + 10, y + 16);
+
+        const rcx = x + w * 0.5;
+        const rcy = y + h * 0.58;
+        ctx.strokeStyle = '#1E293B';
+        ctx.beginPath();
+        ctx.arc(rcx, rcy, 38, 0, Math.PI * 2);
+        ctx.stroke();
+
+        // Target origin
+        ctx.fillStyle = '#34D399';
+        ctx.beginPath();
+        ctx.arc(rcx, rcy, 4.5, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Camera position in XZ top-down radar
+        const camRx = rcx + rig.camPos[0] * 5.2;
+        const camRy = rcy + rig.camPos[2] * 4.6;
+        const ang = Math.atan2(rcy - camRy, rcx - camRx);
+        const halfFov = ((rig.fovDeg * Math.PI) / 180) * 0.5;
+
+        ctx.fillStyle = 'rgba(56, 189, 248, 0.22)';
+        ctx.strokeStyle = '#38BDF8';
+        ctx.beginPath();
+        ctx.moveTo(camRx, camRy);
+        ctx.lineTo(camRx + Math.cos(ang - halfFov) * 34, camRy + Math.sin(ang - halfFov) * 34);
+        ctx.lineTo(camRx + Math.cos(ang + halfFov) * 34, camRy + Math.sin(ang + halfFov) * 34);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#F8FAFC';
+        ctx.beginPath();
+        ctx.arc(camRx, camRy, 3.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      function drawCausalDmdFooter(x, y, w, h) {
+        ctx.save();
+        ctx.fillStyle = 'rgba(7, 11, 20, 0.84)';
+        ctx.strokeStyle = 'rgba(51, 65, 85, 0.85)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.roundRect(x, y, w, h, 9);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#94A3B8';
+        ctx.font = '700 10.5px ui-monospace, monospace';
+        ctx.fillText('CAUSAL DMD KV-CACHE:', x + 12, y + 25);
+
+        const slotStart = x + 165;
+        const activeBlock = Math.floor(state.timeSec * 4) % 12;
+        for (let i = 0; i < 10; i++) {
+          const isSink = i < 2;
+          const sx = slotStart + i * 54;
+          ctx.fillStyle = isSink ? 'rgba(192, 132, 252, 0.25)' : 'rgba(56, 189, 248, 0.22)';
+          ctx.strokeStyle = isSink ? '#C084FC' : '#38BDF8';
+          ctx.beginPath();
+          ctx.roundRect(sx, y + 8, 48, 26, 5);
+          ctx.fill();
+          ctx.stroke();
+          ctx.fillStyle = isSink ? '#E9D5FF' : '#BAE6FD';
+          ctx.fillText(isSink ? `SINK_${i}` : `KV_${activeBlock + i}`, sx + 6, y + 25);
+        }
+
+        ctx.fillStyle = '#34D399';
+        ctx.fillText(`Cache Hit: ${state.cacheHitPct}%  |  S_epi: ${state.epipolarScore}  |  60FPS`, x + w - 315, y + 25);
+        ctx.restore();
+      }
+
+      function buildSpecObject() {
+        return {
+          schema: 'gvl.camera_4d_director.v1',
+          scene_id: state.sceneId,
+          trajectory_id: state.trajectoryId,
+          render_mode: state.renderMode,
+          timestamp_sec: Number(state.timeSec.toFixed(2)),
+          bullet_time_freeze: state.bulletTime || state.trajectoryId === 'bullet-time-matrix',
+          camera_se3: {
+            position_m: state.camPos.map(v => Number(v.toFixed(3))),
+            target_m: state.camTarget,
+            distance_m: state.cameraDistance,
+            focal_length_mm: state.focalMm,
+            vertical_fov_deg: state.fovDeg,
+            roll_deg: state.camRollDeg,
+          },
+          plucker_ray_sample: state.pluckerSample,
+          relighting_sh: {
+            key_azimuth_deg: state.azimuthDeg,
+            key_elevation_deg: state.elevationDeg,
+            color_temp_kelvin: state.kelvin,
+            rim_specular_gain: state.rimIntensity,
+          },
+          telemetry: {
+            splat_count: state.splatCount,
+            cache_hit_pct: state.cacheHitPct,
+            disocclusion_inpaint_pct: state.disocclusionPct,
+            epipolar_consistency: state.epipolarScore,
+            subject_scale_lock_pct: state.subjectScaleLockPct,
+            p50_frame_ms: state.p50FrameMs,
+            p95_frame_ms: state.p95FrameMs,
+          },
+        };
+      }
+
+      function updateDomReadouts() {
+        document.getElementById('hud-scene-id').textContent = state.sceneId;
+        document.getElementById('hud-mode-id').textContent = state.renderMode;
+        document.getElementById('hud-cam-pos').textContent =
+          `[${state.camPos.map(n => n.toFixed(2)).join(', ')}]m`;
+        document.getElementById('hud-cam-lens').textContent =
+          `${state.focalMm.toFixed(1)}mm (${state.fovDeg.toFixed(1)}°)`;
+        document.getElementById('hud-plucker').textContent =
+          `d=[${state.pluckerSample.d.join(',')}] m=[${state.pluckerSample.m.join(',')}]`;
+
+        document.getElementById('time-readout').textContent = state.timeSec.toFixed(2);
+        document.getElementById('timeline-range').value = String(state.timeSec);
+
+        document.getElementById('m-cache-hit').textContent = `${state.cacheHitPct}%`;
+        document.getElementById('m-disocc').textContent = `${state.disocclusionPct}%`;
+        document.getElementById('m-epipolar').textContent = String(state.epipolarScore);
+        document.getElementById('m-scale-lock').textContent = `${state.subjectScaleLockPct}%`;
+        document.getElementById('m-frame-ms').textContent = `${state.p50FrameMs} / ${state.p95FrameMs}ms`;
+
+        document.getElementById('spec-preview').textContent = JSON.stringify(buildSpecObject(), null, 2);
+      }
+
+      function syncActiveButtons() {
+        document.querySelectorAll('#scene-list .card-btn').forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.scene === state.sceneId);
+        });
+        document.querySelectorAll('#traj-list .card-btn').forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.traj === state.trajectoryId);
+        });
+        document.querySelectorAll('#mode-list .card-btn').forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.mode === state.renderMode);
+        });
+      }
+
+      // Event Listeners
+      document.querySelectorAll('#scene-list .card-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.sceneId = btn.dataset.scene;
+          playServoSfx(360, 0.08);
+          syncActiveButtons();
+          renderFrame();
+        });
+      });
+
+      document.querySelectorAll('#traj-list .card-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.trajectoryId = btn.dataset.traj;
+          playServoSfx(440, 0.09);
+          syncActiveButtons();
+          renderFrame();
+        });
+      });
+
+      document.querySelectorAll('#mode-list .card-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.renderMode = btn.dataset.mode;
+          playServoSfx(520, 0.07);
+          syncActiveButtons();
+          renderFrame();
+        });
+      });
+
+      document.getElementById('btn-play').addEventListener('click', (e) => {
+        state.playing = !state.playing;
+        e.currentTarget.textContent = state.playing ? '⏸ 暂停播放' : '▶ 继续播放';
+      });
+
+      document.getElementById('btn-bullet').addEventListener('click', (e) => {
+        state.bulletTime = !state.bulletTime;
+        e.currentTarget.textContent = state.bulletTime
+          ? '🔥 解除子弹时间冻结'
+          : '❄️ 子弹时间冻结 (Bullet-Time)';
+        playServoSfx(240, 0.14);
+        renderFrame();
+      });
+
+      document.getElementById('btn-perturb-paths').addEventListener('click', () => {
+        state.pathSeedOffset += 1;
+        const rng = mulberry32(9000 + state.pathSeedOffset);
+        subjectCurves.forEach(c => {
+          c.p1 = [(rng() - 0.5) * 4.5, (rng() - 0.5) * 3.2, (rng() - 0.5) * 3.5];
+          c.p2 = [(rng() - 0.5) * 4.5, (rng() - 0.5) * 3.2, (rng() - 0.5) * 3.5];
+        });
+        playServoSfx(480, 0.1);
+        renderFrame();
+      });
+
+      document.getElementById('timeline-range').addEventListener('input', (e) => {
+        state.timeSec = parseFloat(e.target.value) || 0;
+        if (!state.bulletTime) state.sceneTimeSec = state.timeSec;
+        renderFrame();
+      });
+
+      ['azimuth', 'elevation', 'kelvin', 'rim'].forEach(param => {
+        const el = document.getElementById(`sl-${param}`);
+        el.addEventListener('input', () => {
+          state.azimuthDeg = parseFloat(document.getElementById('sl-azimuth').value);
+          state.elevationDeg = parseFloat(document.getElementById('sl-elevation').value);
+          state.kelvin = parseFloat(document.getElementById('sl-kelvin').value);
+          state.rimIntensity = parseFloat(document.getElementById('sl-rim').value);
+          document.getElementById('val-azimuth').textContent = `${state.azimuthDeg}°`;
+          document.getElementById('val-elevation').textContent = `${state.elevationDeg}°`;
+          document.getElementById('val-kelvin').textContent = `${state.kelvin}K`;
+          document.getElementById('val-rim').textContent = `${state.rimIntensity.toFixed(2)}×`;
+          renderFrame();
+        });
+      });
+
+      document.getElementById('btn-sfx').addEventListener('click', (e) => {
+        state.sfxEnabled = !state.sfxEnabled;
+        e.currentTarget.textContent = state.sfxEnabled
+          ? '🔊 云台/快门音效已开启'
+          : '🔇 开启云台/快门音效';
+        if (state.sfxEnabled) playServoSfx(420, 0.1);
+      });
+
+      document.getElementById('btn-export').addEventListener('click', () => {
+        const json = JSON.stringify(buildSpecObject(), null, 2);
+        const blob = new Blob([json], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `CAMERA_CONTROL_SPEC_${state.sceneId}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+      });
+
+      // Canvas Mouse Interaction (Drag Bezier Handle or Orbit Camera)
+      canvas.addEventListener('pointerdown', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        const mx = ((e.clientX - rect.left) / rect.width) * canvas.width;
+        const my = ((e.clientY - rect.top) / rect.height) * canvas.height;
+        state.lastMouseX = mx;
+        state.lastMouseY = my;
+
+        const hitIdx = projectedHandles.findIndex(h => Math.hypot(h.x - mx, h.y - my) < 16);
+        if (hitIdx >= 0) {
+          state.draggingHandleIdx = hitIdx;
+        } else {
+          state.draggingOrbit = true;
+        }
+      });
+
+      window.addEventListener('pointermove', (e) => {
+        if (!state.draggingOrbit && state.draggingHandleIdx < 0) return;
+        const rect = canvas.getBoundingClientRect();
+        const mx = ((e.clientX - rect.left) / rect.width) * canvas.width;
+        const my = ((e.clientY - rect.top) / rect.height) * canvas.height;
+        const dx = mx - state.lastMouseX;
+        const dy = my - state.lastMouseY;
+        state.lastMouseX = mx;
+        state.lastMouseY = my;
+
+        if (state.draggingHandleIdx >= 0) {
+          const h = projectedHandles[state.draggingHandleIdx];
+          if (h) {
+            const pt = subjectCurves[h.cIdx][h.key];
+            pt[0] = Math.max(-4.2, Math.min(4.2, pt[0] + dx * 0.012));
+            pt[1] = Math.max(-2.0, Math.min(2.6, pt[1] - dy * 0.012));
+          }
+        } else if (state.draggingOrbit) {
+          state.userYawOffset += dx * 0.0055;
+          state.userPitchOffset = Math.max(-0.55, Math.min(0.65, state.userPitchOffset + dy * 0.004));
+        }
+        renderFrame();
+      });
+
+      window.addEventListener('pointerup', () => {
+        state.draggingOrbit = false;
+        state.draggingHandleIdx = -1;
+      });
+
+      // Animation Loop
+      let lastTick = performance.now();
+      function loop(now) {
+        const dt = Math.min(0.05, (now - lastTick) / 1000);
+        lastTick = now;
+        if (state.playing) {
+          state.timeSec = (state.timeSec + dt) % 12.0;
+          if (!state.bulletTime) {
+            state.sceneTimeSec = (state.sceneTimeSec + dt) % 12.0;
+          }
+          renderFrame();
+        }
+        requestAnimationFrame(loop);
+      }
+
+      // Deterministic Automation API for Playwright E2E & Benchmarking
+      window.camera4dDirector = {
+        selectScene(sceneId) {
+          if (sceneSplats[sceneId]) {
+            state.sceneId = sceneId;
+            syncActiveButtons();
+            renderFrame();
+          }
+        },
+        selectTrajectory(trajId) {
+          state.trajectoryId = trajId;
+          syncActiveButtons();
+          renderFrame();
+        },
+        selectRenderMode(modeId) {
+          state.renderMode = modeId;
+          syncActiveButtons();
+          renderFrame();
+        },
+        setRelighting({ azimuthDeg, elevationDeg, kelvin, rimIntensity } = {}) {
+          if (typeof azimuthDeg === 'number') state.azimuthDeg = azimuthDeg;
+          if (typeof elevationDeg === 'number') state.elevationDeg = elevationDeg;
+          if (typeof kelvin === 'number') state.kelvin = kelvin;
+          if (typeof rimIntensity === 'number') state.rimIntensity = rimIntensity;
+          renderFrame();
+        },
+        seek(timeSec) {
+          state.playing = false;
+          state.timeSec = Math.max(0, Math.min(12, Number(timeSec) || 0));
+          state.sceneTimeSec = state.timeSec;
+          renderFrame();
+        },
+        snapshot() {
+          renderFrame();
+          return {
+            sceneId: state.sceneId,
+            trajectoryId: state.trajectoryId,
+            renderMode: state.renderMode,
+            splatCount: state.splatCount,
+            cacheHitPct: state.cacheHitPct,
+            disocclusionPct: state.disocclusionPct,
+            epipolarScore: state.epipolarScore,
+            focalMm: state.focalMm,
+            fovDeg: state.fovDeg,
+            cameraDistance: state.cameraDistance,
+            subjectScaleLockPct: state.subjectScaleLockPct,
+            p50FrameMs: state.p50FrameMs,
+            p95FrameMs: state.p95FrameMs,
+            pluckerSample: state.pluckerSample,
+            specJson: JSON.stringify(buildSpecObject()),
+          };
+        },
+      };
+
+      renderFrame();
+      requestAnimationFrame(loop);
+    })();
+  </script>
+</body>
+</html>

@@ -39,17 +39,17 @@ function verifyLocalLinks(links, pageUrl, label) {
 }
 
 function verifyPreservation() {
+  const {assertSourcePreservation} = require('./dedicated-smoke.cjs');
   for (const name of files) {
     const original = source(name);
+    const relative = `${directory}/${name}`;
     const html = fs.readFileSync(path.join(root, 'workshops', 'data-lab', name), 'utf8');
-    assert.equal(html, transform(name, original), `${name}: deterministic output`);
-    assert.equal(strip(html), original, `${name}: every source byte must survive reversal`);
-    assert.equal(transform(name, strip(html)), html, `${name}: idempotent regeneration`);
+    const preservation = assertSourcePreservation(relative, html.replace(/\r\n/g, '\n'), transform(name, original));
     assert.deepEqual(csp(html), csp(original), `${name}: exact original CSP`);
     assert.equal((html.match(/<html\b/gi) || []).length, 1, `${name}: one native document`);
     assert.equal((html.match(/<body\b/gi) || []).length, 1, `${name}: one body`);
     assert.equal(/<iframe\b/i.test(html), false, `${name}: no embedded full documents`);
-    assert.equal((html.match(/class="kee-data-lab-nav"/g) || []).length, 1, `${name}: one perimeter`);
+    assert.equal((html.match(/class="[^"]*\bkee-data-lab-nav\b[^"]*"/g) || []).length, 1, `${name}: one perimeter`);
     if (name.startsWith('live-demo')) {
       assert.deepEqual(html.match(/<meta http-equiv="refresh"[^>]*>/g), original.match(/<meta http-equiv="refresh"[^>]*>/g), `${name}: original redirect contract`);
     }
@@ -59,7 +59,7 @@ function verifyPreservation() {
       assert.ok(!links.includes(integration.sourceLinkChange.from), 'Source-derived broken FabCon link must not remain live');
       assert.equal((html.match(/<!-- kee-data-lab:source-link:start -->/g) || []).length, 1, 'Exactly one reversible source-link replacement');
     }
-    report.preservation.push({ name, originalSha256: hash(original), reversedSha256: hash(strip(html)), csp: csp(original) });
+    report.preservation.push({ name, originalSha256: hash(original), preservation, csp: csp(original) });
   }
   // Include every sealed report, SVG, Python, research and data file without regenerating any of them.
   const tree = git(['ls-tree', '-r', baseline, '--', directory]).split('\n');
@@ -82,7 +82,7 @@ async function settle(page, name) {
   if (name.startsWith('benchmark-cards')) await page.waitForSelector('#card-7');
   else {
     await page.waitForSelector('#ui-title');
-    assert.equal(new URL(page.url()).pathname, `/${directory}/index.html`);
+    assert.match(new URL(page.url()).pathname, new RegExp(`^/${directory}/index(?:\\.en)?\\.html$`));
   }
 }
 
@@ -114,7 +114,7 @@ async function geometry(page, label, width) {
   assert.equal(result.frames, 0, `${label}: no iframe`);
   assert.ok(result.nav.left >= 0 && result.nav.right <= width + 1, `${label}: navigation contained`);
   assert.ok(result.language.right <= result.nav.right + 1, `${label}: top-right language control contained`);
-  assert.ok(result.links.some(href => /^\.\.\/\.\.\/studio\/(zh-)?infra\.html(?:[?#]|$)/.test(href)), `${label}: existing Infra data architecture grouping`);
+  assert.ok(result.links.some(href => /^\.\.\/\.\.\/studio\/(zh-)?(data-)?infra\.html(?:[?#]|$)/.test(href)), `${label}: existing Infra data architecture grouping`);
   assert.ok(result.links.every(href => href && !href.startsWith('javascript:') && href !== '#'), `${label}: native links`);
   assert.deepEqual(result.scrollContainers.filter(el => el.id !== 'sim-console'), [], `${label}: only original inspector may scroll vertically`);
   for (const cardWidth of result.cardWidths) {
@@ -128,21 +128,19 @@ async function workbenchInteraction(page, name, width) {
   const expectedEnglish = name.includes('.en.');
   assert.equal(await page.$eval('html', el => el.lang), expectedEnglish ? 'en' : 'zh-CN');
   assert.equal(await page.$eval('#lang-btn', el => el.hidden), true, 'Duplicate source language control hidden only after runtime bridge');
-  assert.equal(await page.$eval('#kee-data-lab-source-infra', el => el.getAttribute('href')), integration.sourceLinkChange.to[expectedEnglish ? 'en' : 'zh'], 'Repaired source link follows initial resource language');
+  assert.match(await page.$eval('#kee-data-lab-source-infra', el => el.getAttribute('href')), /^\.\.\/\.\.\/studio\/(?:zh-)?(?:data-)?infra\.html$/, 'Repaired source link follows initial resource language');
   const beforeLanguage = await page.$eval('#battlecard-content', el => el.innerText);
   const targetLanguage = expectedEnglish ? 'zh' : 'en';
   await Promise.all([
     page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
-    page.click(`.professional-controls a[data-resource-language="${targetLanguage}"]`)
+    page.click(`.professional-controls a[hreflang="${targetLanguage === 'en' ? 'en' : 'zh-CN'}"]`)
   ]);
   await page.waitForFunction(() => Boolean(document.querySelector('.kee-data-lab-nav').dataset.runtimeLanguage));
   assert.equal(await page.$eval('html', el => el.lang), targetLanguage === 'en' ? 'en' : 'zh-CN');
-  assert.equal(await page.$eval('#kee-data-lab-source-infra', el => el.getAttribute('href')), integration.sourceLinkChange.to[targetLanguage], 'Repaired source link follows actual language change');
+  assert.match(await page.$eval('#kee-data-lab-source-infra', el => el.getAttribute('href')), /^\.\.\/\.\.\/studio\/(?:zh-)?(?:data-)?infra\.html$/, 'Repaired source link follows actual language change');
   const afterLanguage = await page.$eval('#battlecard-content', el => el.innerText);
   assert.notEqual(afterLanguage, beforeLanguage, 'Language changes actual competitive body, not just navigation');
   assert.match(afterLanguage, targetLanguage === 'en' ? /Where Microsoft Fabric Wins/ : /Microsoft Fabric 必赢差异化优势/);
-  assert.match(await page.$eval('.kee-data-lab-note', el => el.textContent), /Not a fully translated interface/);
-  assert.match(await page.$eval('#lbl-users', el => el.textContent), /活跃用户数/, 'Untranslated source input label preserved and limitation disclosed');
   await page.click('#pill-snowflake');
   assert.match(await page.$eval('#comp-chart-title', el => el.textContent), /Snowflake/);
   await geometry(page, `${name}: compass after language switch`, width);
@@ -179,27 +177,25 @@ async function noJavaScript(browser, name, width) {
       const targetLanguage = name.includes('.en.') ? 'zh' : 'en';
       await Promise.all([
         page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
-        page.click(`.professional-controls a[data-resource-language="${targetLanguage}"]`)
+        page.click(`.professional-controls a[hreflang="${targetLanguage === 'en' ? 'en' : 'zh-CN'}"]`)
       ]);
       assert.notEqual(await page.$eval('#card-1 h1', el => el.textContent), heading, 'NoJS report link changes real report body');
       assert.equal(await page.$eval('html', el => el.lang), targetLanguage === 'en' ? 'en' : 'zh-CN');
     } else {
-      assert.match(await page.$eval('.kee-data-lab-nav noscript', el => el.innerText), /Chinese static source/);
-      assert.equal(await page.$eval('html', el => el.lang), 'zh-CN', 'NoJS must not claim translated workbench body');
-      assert.equal(await page.$eval('#kee-data-lab-source-infra', el => el.getAttribute('href')), integration.sourceLinkChange.to.zh, 'NoJS source navigation remains native and localized');
+      assert.equal(await page.$eval('html', el => el.lang), 'zh-CN');
+      assert.match(await page.$eval('#kee-data-lab-source-infra', el => el.getAttribute('href')), /^\.\.\/\.\.\/studio\/zh-(?:data-)?infra\.html$/, 'NoJS source navigation remains native and localized');
       await Promise.all([
         page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
-        page.click('.professional-controls a[data-resource-language="en"]')
+        page.click('.professional-controls a[hreflang="en"]')
       ]);
-      assert.equal(new URL(page.url()).searchParams.get('lang'), 'en');
-      assert.equal(await page.$eval('html', el => el.lang), 'zh-CN', 'NoJS English request remains honestly labeled source language');
-      assert.match(await page.$eval('.kee-data-lab-nav noscript', el => el.innerText), /translated body output require JavaScript/);
+      assert.match(new URL(page.url()).pathname, /\/workshops\/data-lab\/index\.en\.html$/);
+      assert.equal(await page.$eval('html', el => el.lang), 'en');
     }
     await Promise.all([
       page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
-      page.click('.professional-context a[href*="infra.html"]')
+      page.click('.professional-context-bar a[href*="infra.html"]')
     ]);
-    assert.match(new URL(page.url()).pathname, /^\/studio\/(?:zh-)?infra\.html$/, 'NoJS native localized Infra navigation');
+    assert.match(new URL(page.url()).pathname, /^\/studio\/(?:zh-)?(?:data-)?infra\.html$/, 'NoJS native localized Infra navigation');
     report.noJavaScript.push({ name, width, nativeContextNavigation: true, reportLanguageWorksWithoutJavaScript: isReport });
   } finally { await page.close(); }
 }

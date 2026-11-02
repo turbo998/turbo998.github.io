@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src data:;" />
+<title>Demo C — Microsoft HVE-Core (RPI + Task Challenger) · Pelican Tour Pro Wind-Tunnel & Multi-Terrain Simulator</title>
+<style>
+  :root {
+    --bg: #050a09;
+    --panel: #0b1512;
+    --card: #10201b;
+    --border: rgba(16, 185, 129, 0.25);
+    --emerald: #10b981;
+    --teal: #14b8a6;
+    --cyan: #06b6d4;
+    --amber: #f59e0b;
+    --rose: #f43f5e;
+    --text: #ecfdf5;
+    --muted: #86efac;
+    --dim: #64748b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: radial-gradient(circle at 20% 0%, #0d261f 0%, #050a09 70%);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    padding: 12px 16px;
+    min-height: 100vh;
+  }
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 10px;
+  }
+  .badge-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    background: rgba(16, 185, 129, 0.16);
+    color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.4);
+  }
+  .badge.rpi {
+    background: rgba(20, 184, 166, 0.16);
+    color: #5eead4;
+    border-color: rgba(20, 184, 166, 0.4);
+  }
+  .badge.challenger {
+    background: rgba(245, 158, 11, 0.16);
+    color: #fcd34d;
+    border-color: rgba(245, 158, 11, 0.4);
+  }
+  h1 { font-size: 18px; font-weight: 800; color: #f8fafc; }
+  .subtitle { font-size: 12px; color: #94a3b8; margin-top: 2px; }
+
+  /* HVE RPI Pipeline Bar */
+  .rpi-bar {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+  .rpi-step {
+    background: rgba(16, 32, 27, 0.78);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 6px 9px;
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+  .rpi-step:hover, .rpi-step.active {
+    background: rgba(16, 185, 129, 0.18);
+    border-color: var(--emerald);
+    transform: translateY(-1px);
+  }
+  .rpi-step .phase { font-size: 10px; font-weight: 800; color: #34d399; text-transform: uppercase; }
+  .rpi-step .agent { font-size: 12px; font-weight: 700; color: #fff; margin: 2px 0; }
+  .rpi-step .file { font-size: 10px; color: #94a3b8; font-family: Consolas, monospace; }
+
+  /* Stage viewport */
+  .stage-wrap {
+    position: relative;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid rgba(16, 185, 129, 0.35);
+    background: #07120f;
+    height: 410px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
+  }
+  canvas#windCanvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  svg#hveSvg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  /* Top HUD overlay inside stage */
+  .hud-top {
+    position: absolute;
+    top: 10px;
+    left: 12px;
+    right: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+    pointer-events: none;
+    z-index: 4;
+  }
+  .telemetry-strip {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    background: rgba(5, 10, 9, 0.84);
+    backdrop-filter: blur(8px);
+    padding: 7px 11px;
+    border-radius: 10px;
+    border: 1px solid rgba(16, 185, 129, 0.35);
+  }
+  .tel-item { min-width: 68px; }
+  .tel-item .lbl { font-size: 9px; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; }
+  .tel-item .val { font-size: 14px; font-weight: 800; color: #34d399; font-family: Consolas, monospace; }
+  .tel-item .val.amber { color: #fbbf24; }
+  .tel-item .val.cyan { color: #38bdf8; }
+  .tel-item .val.rose { color: #fb7185; }
+
+  /* Terrain & Posture Quick Buttons */
+  .stage-toolbar {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    pointer-events: auto;
+  }
+  .pill-btn {
+    background: rgba(11, 21, 18, 0.88);
+    color: #d1fae5;
+    border: 1px solid rgba(16, 185, 129, 0.35);
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .pill-btn:hover, .pill-btn.active {
+    background: #10b981;
+    color: #042f2e;
+    border-color: #34d399;
+  }
+
+  /* Sparkline HUD bottom-right */
+  .spark-box {
+    position: absolute;
+    right: 12px;
+    bottom: 10px;
+    width: 250px;
+    height: 76px;
+    background: rgba(5, 10, 9, 0.86);
+    border: 1px solid rgba(16, 185, 129, 0.35);
+    border-radius: 10px;
+    padding: 6px 8px;
+    z-index: 4;
+    pointer-events: none;
+  }
+  .spark-title {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: #a7f3d0;
+    margin-bottom: 3px;
+    font-family: Consolas, monospace;
+  }
+  canvas#sparkCanvas {
+    width: 100%;
+    height: 48px;
+    display: block;
+  }
+
+  /* Controls grid */
+  .controls-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  @media (max-width: 820px) {
+    .controls-grid { grid-template-columns: 1fr; }
+    .rpi-bar { grid-template-columns: repeat(2, 1fr); }
+  }
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px 12px;
+  }
+  .card-title {
+    font-size: 12px;
+    font-weight: 800;
+    color: #6ee7b7;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .sliders {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px 12px;
+  }
+  .ctrl label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #cbd5e1;
+    margin-bottom: 3px;
+  }
+  .ctrl input[type=range] {
+    width: 100%;
+    accent-color: var(--emerald);
+    cursor: pointer;
+  }
+  .action-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .act-btn {
+    flex: 1;
+    min-width: 105px;
+    padding: 6px 9px;
+    border-radius: 8px;
+    border: 1px solid rgba(16, 185, 129, 0.4);
+    background: rgba(16, 185, 129, 0.14);
+    color: #ecfdf5;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .act-btn:hover { background: rgba(16, 185, 129, 0.28); }
+  .act-btn.warn {
+    border-color: rgba(245, 158, 11, 0.45);
+    background: rgba(245, 158, 11, 0.15);
+    color: #fde68a;
+  }
+  .artifact-box {
+    font-family: Consolas, Monaco, monospace;
+    font-size: 11px;
+    line-height: 1.45;
+    color: #d1fae5;
+    background: #040908;
+    border: 1px solid rgba(16, 185, 129, 0.28);
+    border-radius: 8px;
+    padding: 8px 10px;
+    max-height: 138px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+  }
+</style>
+<!-- kee-dedicated-style:start -->
+<style>/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.65fr 1.1fr 1.15fr 1.1fr 1.1fr;gap:6px;align-items:stretch;min-width:0}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+</style>
+<!-- kee-dedicated-style:end -->
+<!-- demo-localization:start -->
+<style>html.in-arena-frame [data-professional-header],html.in-arena-frame .kee-dedicated-nav,html.in-arena-frame .reading-header,html.in-arena-frame .demo-language-navigation{display:none!important}</style>
+<script>(function runtime(config) {
+  'use strict';
+  const root = document.documentElement;
+  const params = new URLSearchParams(location.search);
+  const requested = params.get('lang');
+  const language = requested === 'en' ? 'en' : requested === 'zh' || requested === 'zh-CN' ? 'zh-CN' : config.language;
+  if (language !== config.language) {
+    const destination = new URL(language === 'en' ? config.en : config.zh, location.href);
+    destination.search = location.search;
+    destination.hash = location.hash;
+    destination.searchParams.set('lang', language);
+    location.replace(destination.href);
+    return;
+  }
+  if (!requested) {
+    const canonical = new URL(location.href);
+    canonical.searchParams.set('lang', language);
+    history.replaceState(history.state, '', canonical);
+  }
+  root.lang = language;
+  root.dataset.demoLanguage = language;
+  if (config.engine && window.self !== window.top && params.get('arena') === '1') root.classList.add('in-arena-frame');
+  const escape = value => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const dictionary = language === 'en' ? config.terms.zhEn : config.terms.enZh;
+  const keys = Object.keys(dictionary).filter(key => language === 'en' || !dictionary[key].includes(key)).sort((a, b) => b.length - a.length);
+  const pattern = keys.length ? new RegExp(language === 'en' ? keys.map(escape).join('|') : '(?<![A-Za-z0-9_])(?:' + keys.map(escape).join('|') + ')(?![A-Za-z0-9_])', 'gu') : null;
+  const translate = value => {
+    if (typeof value !== 'string' || !value) return value;
+    const trimmed = value.trim();
+    if (Object.prototype.hasOwnProperty.call(dictionary, trimmed)) return value.replace(trimmed, dictionary[trimmed]);
+    if (!pattern || language === 'en' && !/[\p{Script=Han}]/u.test(value)) return value;
+    return value.replace(pattern, (key, offset, input) => {
+      let translated = dictionary[key];
+      if (/[A-Za-z0-9]/.test(input[offset - 1] || '') && /^[A-Za-z]/.test(translated)) translated = ' ' + translated;
+      if (/[A-Za-z0-9]/.test(input[offset + key.length] || '') && /[A-Za-z]$/.test(translated)) translated += ' ';
+      return translated;
+    });
+  };
+  const excluded = node => node.parentElement?.closest('script,style,[data-professional-header],.kee-dedicated-nav,.reading-header,.demo-language-navigation');
+  const localizeNode = node => {
+    if (node.nodeType === Node.TEXT_NODE) {
+      if (excluded(node)) return;
+      const value = translate(node.nodeValue);
+      if (value !== node.nodeValue) node.nodeValue = value;
+      return;
+    }
+    if (node.nodeType !== Node.ELEMENT_NODE || node.matches('script,style,[data-professional-header],.kee-dedicated-nav,.reading-header,.demo-language-navigation')) return;
+    for (const attr of ['title', 'aria-label', 'placeholder', 'alt']) {
+      if (!node.hasAttribute(attr)) continue;
+      const original = node.getAttribute(attr), translated = translate(original);
+      if (translated !== original) node.setAttribute(attr, translated);
+    }
+    for (const child of node.childNodes) localizeNode(child);
+  };
+  // Translate only paint labels; coordinates, fonts, metrics and simulation state are untouched.
+  for (const name of ['fillText', 'strokeText']) {
+    const original = CanvasRenderingContext2D.prototype[name];
+    CanvasRenderingContext2D.prototype[name] = function(text, ...args) {return original.call(this, translate(String(text)), ...args);};
+  }
+  const switchLanguage = target => {
+    const next = new URL(target === 'en' ? config.en : config.zh, location.href);
+    next.search = location.search;
+    next.hash = location.hash;
+    next.searchParams.set('lang', target);
+    location.assign(next.href);
+  };
+  document.addEventListener('click', event => {
+    if (!event.isTrusted) return;
+    const button = event.target.closest('button');
+    if (!button || button.closest('[data-professional-header]')) return;
+    const code = button.getAttribute('onclick') || '';
+    if (!button.matches('#langToggle,#btn-lang,#btn-en,#btn-zh,[data-lang]') && !/^(?:toggleLang|setLang)\(/.test(code)) return;
+    const selected = button.dataset.lang || (button.id === 'btn-en' || /setLang\('en'/.test(code) ? 'en' : button.id === 'btn-zh' || /setLang\('zh'/.test(code) ? 'zh-CN' : language === 'en' ? 'zh-CN' : 'en');
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    switchLanguage(selected === 'en' ? 'en' : 'zh-CN');
+  }, true);
+  if (config.engine) {
+    window.addEventListener('message', event => {
+      if (!['ARENA_SYNC','arena-sync'].includes(event.data?.type)) return;
+      if (event.origin !== location.origin || event.source !== window.parent) {event.stopImmediatePropagation(); return;}
+      if (event.data.action === 'feed') {
+        if (/demo-faf-/.test(config.source)) {
+          const fish = document.getElementById('s-fish');
+          fish.value = Math.min(Number(fish.max), Number(fish.value) + 1);
+          if (typeof updateParams === 'function') updateParams();
+        } else if (/demo-agent-forge-/.test(config.source) && typeof tossFish === 'function') tossFish();
+      }
+      if (event.data.action === 'sprint' && /demo-agent-forge-/.test(config.source) && typeof triggerSprint === 'function') triggerSprint();
+    }, true);
+  }
+  const api = {language, translate, apply: () => localizeNode(root), switchLanguage, engine: config.engine, arena: config.arena, ready: false};
+  window.DemoLocalization = api;
+  document.addEventListener('DOMContentLoaded', () => {
+    const nativeButton = document.querySelector(`button[data-lang="${language}"]`);
+    if (nativeButton) nativeButton.click();
+    else if (typeof setLang === 'function') setLang(language === 'en' ? 'en' : 'zh');
+    else if (typeof toggleLang === 'function') {
+      const current = typeof currentLang === 'string' ? currentLang : typeof lang === 'string' ? lang : 'zh';
+      if ((current === 'en') !== (language === 'en')) toggleLang();
+    }
+    root.lang = language;
+    localizeNode(root);
+    new MutationObserver(mutations => {
+      for (const mutation of mutations) {
+        if (mutation.type === 'childList') mutation.addedNodes.forEach(localizeNode);
+        else localizeNode(mutation.target);
+      }
+    }).observe(root, {subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ['title','aria-label','placeholder','alt']});
+    api.ready = true;
+    document.dispatchEvent(new CustomEvent('demo-localization-ready', {detail: {language}}));
+  }, {once: true});
+})({"language":"en","source":"generative-visual-lab/demos/pelican-bicycle-arena/demo-hve-pelican.html","en":"demo-hve-pelican.en.html","zh":"demo-hve-pelican.html","engine":true,"arena":false,"terms":{"zhEn":{"与冰晶丙烯酸":"and ice-crystal acrylic","与力矩向量":"and the moment vector","偏斜钳制护栏":"Skew-clamping guardrail","免提巡检":"Hands-free inspection","六幕分層架構選型矩陣":"Six-scene layered architecture selection matrix","决赛前夜反转":"A reversal on the eve of the final","各向异性高斯光栅化":"Anisotropic Gaussian rasterization","星夜三幕视差与":"Three-scene starry-night parallax and","核料位计快门":"Nuclear level-gauge shutter","洪泛节流护栏":"Flood-throttling guardrail","液碱攻击":"Caustic attack","碱洗塔联锁及":"Caustic scrubber interlocks and","粗排快但糙":"Coarse ranking is fast but imprecise","缓存命中区":"Cache-hit region","许知衡直面耐力赛退役心结":"Xu Zhiheng confronts unresolved feelings about retiring from endurance racing","齿比":"Gear ratio","黑座舱":"Black cockpit","黑色横向双段尾灯":"Black horizontal two-part taillight","鼻祖":"Pioneer","黄金斗气":"Golden battle aura","黄金炉心":"Golden reactor core","鹈鹕骑自行车":"Pelican riding a bicycle","鸡毛蒜皮全走远端":"Send every trivial task to the remote service","车轮":"Wheel","曲柄":"Crank","连杆":"Connecting rod","膝关节":"Knee joint","喙":"Beak","足端":"Foot endpoint","大腿":"Thigh","小腿":"Lower leg","物理引擎":"Physics engine","运动学":"Kinematics","逆运动学":"Inverse kinematics","零滑移":"Zero slip","骨骼":"Skeleton","姿态":"Posture","沙丁鱼":"Sardines","质心":"Center of mass","迎风面积":"Frontal area","阻力系数":"Drag coefficient","轮径":"Wheel diameter","链轮":"Chainring","飞轮":"Sprocket","飞天":"Feitian","敦煌":"Dunhuang","斗机":"Battle machine","炉心":"Reactor core","斗气":"Battle aura","废土":"Wasteland","机甲":"Mech","小店":"Small shop","卷帘门":"Roller shutter","跑腿":"Errand delivery","撬棍":"Crowbar","地形来自 NASA MGS MOLA MEG016。海洋、云与大气为原创假想渲染；运行时不调用模型 API。":"Terrain comes from NASA MGS MOLA MEG016. Oceans, clouds and atmosphere are original hypothetical renderings; no model API is called at runtime.","自动档按帧率调整。精细近景：384格/纬，采样既有高程；不代表新增测量。尘土色彩为艺术材质。":"Auto quality adapts to frame rate. Detailed close-ups use 384 cells per latitude, sampling existing elevation data, not additional measurements. Dust colors are artistic materials.","定位并调整侧光，停止自转。建议干燥预设；高程、海平面和网格档位保持你的选择。":"Locate the landmark, adjust side lighting and stop rotation. The dry preset is recommended; your elevation, sea-level and mesh settings are retained.","显示半径采用 3,389.5 km 球体。顶点由米制高程真实位移；增强倍率仅用于展示。微表面颜色与云层不是测量数据。":"The displayed sphere has a radius of 3,389.5 km. Vertices are displaced using elevation in meters; exaggeration is for presentation only. Microsurface colors and clouds are not measured data.","GLB 导出将烘焙当前地形，标准格式不包含动态大气和体积云。":"GLB export bakes the current terrain. The standard format does not include the dynamic atmosphere or volumetric clouds.","从眉眼、鼻唇到发髻、金饰与项链，近景使用同一套原创绘制路径重新渲染，不放大小图，也不替换成独立人物素材。":"From brows, eyes, nose and lips to hair, gold ornaments and necklaces, close-ups rerender the same original drawing paths rather than enlarging a thumbnail or substituting separate artwork.","这是艺术设计细节展示，不是敦煌壁画的历史复原。打开近景不会启动飞行或声音。":"This is an artistic detail study, not a historical reconstruction of a Dunhuang mural. Opening a close-up does not start animation or sound.","人物、纹样、飘带与音序为原创程序绘制。敦煌风格致意，不是具体洞窟复制、颜料科学复原或历史音乐。飞天为 2D 分层画面，不是三维角色。默认静音；支持减少动态效果设置。":"Figures, patterns, ribbons and musical sequences are original procedural work. This is a tribute to Dunhuang style, not a copy of a specific cave, a scientific pigment reconstruction or historical music. Feitian uses layered 2D artwork, not 3D characters. Sound is muted by default; reduced-motion preferences are supported.","从发射场外侧，观察白色火箭挣脱地面。四色饰带、金属塔架、翻涌烟雾与一道喷焰，都在浏览器中实时生成。":"Watch the white rocket lift off from outside the launchpad. Four-color bands, a metal tower, billowing smoke and the exhaust plume are generated in real time in your browser.","主动点击 Launch，观看完整发射。L 发射 · Space 暂停 · R 重放 · C 镜头":"Click Launch to watch the full sequence. L launches · Space pauses · R replays · C switches camera.","原创几何与实时粒子；艺术化发射，不是航天或流体仿真。配色借鉴微软红绿蓝黄，无 Logo、官方关联或品牌火箭复制。圆框是外部观景边框，不是舱内视角。":"Original geometry and real-time particles depict an artistic launch, not an aerospace or fluid simulation. Colors reference Microsoft red, green, blue and yellow; there is no logo, official affiliation or replica of a branded rocket. The circular border frames an exterior view, not a cabin window.","3D 时空点云缓存 + 希区柯克变焦主体锁定 + 去遮挡扩散修复掩码":"3D spatiotemporal point-cloud cache + dolly-zoom subject lock + disocclusion diffusion-repair mask","4D 各向异性可变形椭球场 + 子弹时间冻结 + 球谐函数 (SH) 实时三点重打光":"4D anisotropic deformable ellipsoid field + bullet-time freeze + live three-point spherical-harmonic (SH) relighting","画布直接拖拽 3 组主体 3D 贝塞尔轨迹控制点 + 横滚角与二阶弹簧跟随":"Drag 3 groups of subject 3D Bézier control points on the canvas + roll angle and second-order spring following","EWA 各向异性高斯光栅化 + SH 光照 + 景深弥散圆":"EWA anisotropic Gaussian rasterization + SH lighting + depth-of-field circles of confusion","叠加逐网格视线方向 d 与力矩向量 m = o × d":"Overlay per-cell viewing direction d and moment vector m = o × d","青绿=3D 缓存命中区 · 琥珀品红=新暴露需扩散修复区":"Teal = 3D cache hit · amber/magenta = newly exposed regions requiring diffusion repair","显示雅可比 2D 投影椭圆长短轴与瞬时形变速度矢量":"Show major/minor axes of Jacobian-projected 2D ellipses and instantaneous deformation-velocity vectors","鹈鹕":"Pelican","鹈":"Pelican","踏频":"Cadence","风阻":"Wind resistance","自行车":"Bicycle","车":"Bike","鱼":"Fish","喉囊":"Pouch","载鱼量":"Fish load","逆风风速":"Headwind speed","变速齿比":"Gear ratio","鱼载荷":"Fish load","暂停":"Pause","继续":"Resume","继续播放":"Resume playback","继续仿真":"Resume simulation","暂停帧检视":"Pause for frame inspection","暂停播放":"Pause playback","恢复运行":"Resume all","冻结三帧对比":"Freeze all three frames","同步投喂沙丁鱼":"Feed all three pelicans","标准巡航":"Standard cruise","三车齐发冲刺":"Sprint all three bikes","慢动作检验":"Slow-motion inspection","零滑移核验":"Zero-slip check","三屏同步广播总线":"Three-frame synchronized broadcast bus","视图布局":"Layout","三列平铺":"Three columns","单列堆叠":"Stacked view","独立全屏":"Open standalone","复位":"Reset","重放":"Replay","重试":"Retry","启动":"Start","停止":"Stop","开启":"Enable","关闭":"Disable","开":"On","关":"Off","是":"Yes","否":"No","自动":"Auto","低":"Low","高":"High","极高":"Ultra","中":"Medium","无":"None","帧":"frames","台":"nodes","个":"items","秒":"seconds","毫秒":"milliseconds","分钟":"minutes","小时":"hours","天":"days","年":"years","次":"times","条":"entries","组":"groups","档":"level","步":"steps","中文":"Chinese","英文":"English","帧率":"Frame rate","网格":"Mesh","数据":"Data","海洋覆盖":"Ocean coverage","近似水量":"Approximate water volume","面积加权盆地填充":"Area-weighted basin fill","非水动力模拟":"not a hydrodynamic simulation","隐藏控制":"Hide controls","造景参数":"Scene parameters","科学边界":"Scientific limits","场景预设":"Scene presets","干燥火星":"Dry Mars","浅海火星":"Shallow-sea Mars","海洋火星":"Ocean Mars","海平面":"Sea level","地形增强":"Terrain exaggeration","云量":"Cloud cover","大气强度":"Atmosphere strength","太阳方位":"Sun azimuth","检查模式":"Inspection mode","写实":"Realistic","灰模":"Clay","线框":"Wireframe","高程":"Elevation","几何质量":"Geometry quality","精细近景":"Detailed close-up","高程数据":"Elevation data","基础":"Base","高清":"High resolution","地貌近景":"Terrain close-ups","水手峡谷":"Valles Marineris","奥林帕斯山":"Olympus Mons","希腊盆地":"Hellas Planitia","复位视角":"Reset camera","停止自转":"Stop rotation","保存截图":"Save screenshot","导出参数":"Export parameters","导入参数":"Import parameters","导出真实几何":"Export actual geometry","模型与数据说明":"Model and data notes","正在装载火星高程":"Loading Mars elevation","初始化":"Initializing","无法启动三维建模":"Unable to start the 3D scene","火星造景实验室":"Mars Scenography Lab","实测地形":"measured terrain","假想海洋与天气":"hypothetical oceans and weather","风起壁间":"Wind Between the Murals","原创飞天":"Original Feitian","原创程序壁画":"Original procedural mural","实验室":"Laboratory","青羽":"Azure Feather","流霞":"Flowing Rosy Clouds","听风":"Listening to Wind","拾光":"Gathering Light","四时同游":"Four Seasons Together","归壁":"Return to mural","艺术新彩":"Artistic recoloring","开启声音":"Enable sound","截图":"Screenshot","移动指针执灯照壁":"Move the pointer to illuminate the mural","点击人物或按钮":"Click a figure or button","唤醒飞天":"Awaken the Feitian","细看人物":"Figure close-up","五官与饰纹":"Facial features and ornament","人物细看":"Figure detail","选择人物":"Select figure","白色火箭发射场":"White Rocket Launchpad","向上而生":"Born to Ascend","点火":"Ignition","离台":"Liftoff","升空":"Ascent","待命":"Standby","外部固定":"Fixed exterior","发射":"Launch","跟随镜头":"Follow camera","镜头":"Camera","声音":"Sound","音效":"Sound effects","相机":"Camera","相机轨迹控制导演工作台":"Camera-Path Director Workbench","导演工作台":"Director Workbench","实验室门户":"Laboratory portal","开启云台/快门音效":"Enable gimbal / shutter sounds","导出":"Export","评测报告":"Evaluation report","架构研究专著":"Architecture study","场景资产预设":"Scene presets","赛博天台追逐":"Cyber Rooftop Chase","陀飞轮星盘":"Tourbillon Orrery","多主体轨迹舞台":"Multi-Subject Trajectory Stage","相机运镜轨":"Camera motion paths","希区柯克眩晕变焦":"Hitchcock dolly zoom","全周螺旋摇臂环绕":"Full helical crane orbit","穿拱俯冲":"Dive through the arch","横滚":"Roll","横向移摄":"Lateral truck","焦点切换":"Rack focus","冻结物理时间":"Freeze physical time","掠拍":"Sweep","手绘主体轨迹":"Draw subject trajectories","自由轨道":"Free orbit","渲染与几何透视模式":"Rendering and geometry inspection","成片合成":"Final composite","子弹时间冻结":"Freeze bullet time","扰动多主体":"Perturb multiple subjects","轨迹":"Trajectories","球谐函数":"Spherical harmonics","实时三点重打光":"Live three-point relighting","主光方位角":"Key-light azimuth","主光仰角":"Key-light elevation","色温":"Color temperature","轮廓高光增益":"Rim specular gain","实时世界一致性与性能遥测":"Live world consistency and performance telemetry","命中率":"Hit rate","去遮挡修复占比":"Disocclusion repair fraction","对极几何一致性":"Epipolar consistency","主体尺度锁定率":"Subject scale lock","帧耗时":"Frame time","因果":"Causal","滑窗步延":"Sliding-window step latency","实时控制契约":"Live control contract","动力学参数控制":"Dynamics controls","架构驱动版":"Architecture-driven edition","鹈鹕骑自行车逆运动学仿真工作台":"Pelican Bicycle Inverse-Kinematics Workbench","过程文档检视器":"Process Artifact Viewer","骨骼矢量":"Skeletal vectors","废土斗机祭":"Wasteland Iron Circuit","方向键移动":"arrow keys to move","炉心冲刺":"core dash","音效开关":"toggle sound","武器自动开火":"weapons fire automatically","零点以东":"East of Midnight","上海篇":"Shanghai Chapter","知识讲解动画制作工作台":"Knowledge Explainer Studio","三分钟自动演示":"Three-minute guided demo","实时架构与安全边界仿真台":"Live architecture and security-boundary simulator","实时仿真":"Live simulation","选型决策器":"Selection advisor","沙箱计算器":"Sandbox calculator","全景":"Overview","极速沙箱恢复":"Fast sandbox resume","五道平台安全硬边界":"Five hard platform security boundaries","工作台":"Workbench","可复现实验工作台":"Reproducible experiment workbench","选择":"Select","布局":"Layout","参数":"Parameters","状态":"State","已暂停":"Paused","运行中":"Running","播放":"Play","滚动":"Scroll","投喂":"Feed","冲刺":"Sprint","换挡":"Shift gear","重置":"Reset","返回":"Back","展开":"Expand","收起":"Collapse","帮助":"Help","设置":"Settings","运行":"Run","禁用":"Disabled","启用":"Enabled","成功":"Success","失败":"Failure","成本":"Cost","节点":"Nodes","吞吐量":"Throughput","延迟":"Latency","模式":"Mode","输入":"Input","输出":"Output","仿真":"Simulation","场景":"Scenario","风险":"Risk","安全":"Safety","基线":"Baseline","优化":"Optimized","控制":"Controls","引擎":"Engine","切换":"Switch","完成":"Complete","测试":"Test","开始":"Start","结束":"End","确认":"Confirm","取消":"Cancel","数值":"Value","单位":"Unit","模拟":"Simulated","实测":"Measured","合成":"Synthetic","匿名报告":"Anonymized reported","下一个":"Next","上一个":"Previous","上一页":"Previous page","下一页":"Next page","跳过":"Skip","关闭声音":"Mute sound","开启音效":"Enable sound effects","关闭音效":"Disable sound effects","主导航":"Main Navigator","基准评测中心":"Baseline Assessment Centre","信号雷达":"Signal radar.","模型遥测":"Model telemetry","首席架构师履历":"Biographical information of the Chief Architect","中文主题":"Chinese Theme","不翻译原始内容":"Do not translate original content","浅色主题":"Light theme","深色主题":"Dark theme","返回上下文":"Return context","多地形坡度动力学":"Multi-terrain slope dynamics","风洞流线与":"Windhole Flow Lines and","速电变仿真台":"Quick-wipe Simulator","阿尔卑斯":"Alps.","爬坡":"Climb the slope.","气动风洞实验室":"Air-window lab.","鲁贝鹅卵石古典赛":"Rube Poebble Classics.","新东京星夜下坡":"New Tokyo Star Night Downhill","气动俯冲":"Air dive.","摇车抽车":"Roll-a-car.","巡航直立":"The cruise is straight.","风洞流线":"Wind Hole Streaming Line","纵向骑行物理与风洞参数控制台":"Vertical Ride Physical and Wind Hole Parameter Console","支持键盘":"Support keyboard","升档":"Promotion","切换赛段":"Switch Session","道路坡度":"Road slope","速电变飞轮":"Speeding electric transformer wheel","风洞迎面风速":"Windholes face wind speed","补给区投喂能量沙丁鱼":"Feeding the energy sardines in the resupply zone.","摇车进攻":"Rock and roll!","触发":"Trigger","极限拷问":"I'm not gonna be tortured.","真实阶段产物检视器":"Real-stage product examiner"},"enZh":{"AVIAN HR":"鸟类心率","Aero CdA":"风阻面积 CdA","Frontier Transformation Engineering Hub":"前沿转型工程中心","GRADE / PITCH":"坡度／俯仰角","HVE-RPI DRONE":"HVE-RPI 无人机","IK SLIP":"逆运动学滑移","POWER (W)":"功率（W）","Plan Validator":"计划验证器","RPI Context-Cleared Pipeline":"RPI 上下文清空流水线","weight":"权重","init":"初始化","DEMO":"演示","ON":"开","OFF":"关","System":"系统","Path":"路径","Policy":"策略","Rate":"比例","Pause":"暂停","Stop":"停止","Controls":"控制","High":"高","Medium":"中","Off":"关","Mode":"模式","Status":"状态","Telemetry":"遥测","Source":"来源","Engine":"引擎","Catching Fish!":"接住鱼了！","Wheelie Stunt!":"抬轮特技！","Sprint Boost!":"冲刺加速！","ASTRA PLANET LAB":"ASTRA 行星实验室","Procedural terrain":"程序化地形","LIVE":"实时","READY":"就绪","MUTE":"静音","LAUNCH":"发射","STANDBY":"待命","IGNITION":"点火","LIFTOFF":"离台","ASCENT":"升空","COAST":"滑行","FINISHED":"结束","Cycle #377 Interactive Workbench":"Cycle #377 交互工作台","Runtime/Sandbox benchmark explorer with source labels and deterministic session-cost model.":"运行时／沙箱基准探索器：含来源标签与确定性会话成本模型。","Cycle: #377":"周期：#377","Window:":"窗口：","Source labels: measured · synthetic · anonymized_reported":"来源标签：实测 · 合成 · 匿名报告","JSON evidence":"JSON 证据","Latency (p50/p95)":"延迟 (p50/p95)","P50 ms":"P50 毫秒","P95 ms":"P95 毫秒","Label":"标签","Throughput (p50/p95 RPS)":"吞吐量 (p50/p95 RPS)","Policy intercept rate":"策略拦截率","Single-session cost":"单次会话成本","Session minutes:":"会话分钟数：","USD/session":"美元／会话","measured":"实测","synthetic":"合成","anonymized_reported":"匿名报告","Play":"播放","Resume":"继续","Reset":"重置","Replay":"重放","Start":"开始","Sound":"声音","Enable sound":"开启声音","Disable sound":"关闭声音","Export":"导出","Import":"导入","Save":"保存","Load":"加载","Next":"下一步","Previous":"上一步","Close":"关闭","Settings":"设置","Help":"帮助","Quality":"质量","Low":"低","Auto":"自动","Ultra":"极高","On":"开","Scene":"场景","Running":"运行中","Paused":"已暂停","Frame rate":"帧率","Relighting":"重新布光","SCENE:":"场景：","MODE:":"模式：","FOCAL / FOV:":"焦距／视场角：","PHASE":"阶段","TIME":"时间","HEIGHT":"高度","VIEW":"视角","Original figure / Detail study":"原创人物／细节研究","OBSERVATORY CONTROL":"观测站控制","GPT-6 ASTRA · GEOMETRY STUDY":"GPT-6 ASTRA · 几何研究","Astra Planet Lab":"Astra 行星实验室","White rocket / four colors":"白色火箭／四色饰带","Three.js / exterior launchpad":"Three.js／外部发射场","GVL / LAUNCH WINDOW":"GVL／发射窗口","Cost":"成本","Latency":"延迟","Throughput":"吞吐量","Parameters":"参数","Input":"输入","Output":"输出","Architecture":"架构","Workflow":"工作流","Simulation":"仿真","Baseline":"基线","Optimized":"已优化","Confidence":"置信度","Decision":"决策","Action":"操作"}}});</script>
+<!-- demo-localization:end -->
+<style id="site-remediation-style">:root{--search-bg:#101a30;--search-soft:#172440;--search-ink:#eef3ff;--search-muted:#adbbd1;--search-line:#293956;--search-accent:#9aabff;--header-offset:108px}
+:root[data-reading-shell][data-theme=light],[data-perimeter-theme=light]{--search-bg:#fff;--search-soft:#e8eefb;--search-ink:#17233e;--search-muted:#4c5e7c;--search-line:#d5ddec;--search-accent:#354ec8}
+html{scroll-padding-top:var(--header-offset,108px)!important}
+.site-search,.site-search *{box-sizing:border-box!important;font-family:"Segoe UI",sans-serif;letter-spacing:normal;text-transform:none}
+.site-search{position:relative;display:flex;align-items:center;gap:5px;min-width:0;width:230px;max-width:100%;margin:0!important;padding:0!important;line-height:1.4;border:1px solid var(--search-line);border-radius:9px;background:var(--search-soft);color:var(--search-ink);isolation:isolate}
+.site-search input[type=search]{display:block;flex:1;min-width:0;width:100%;height:42px;margin:0;padding:9px 8px!important;font-size:12px!important;line-height:1.5;border:0!important;border-radius:9px;background:transparent!important;color:var(--search-ink)!important;box-shadow:none!important;appearance:none}
+.site-search input::placeholder{color:var(--search-muted);opacity:1}.site-search input:focus-visible{outline:2px solid var(--search-accent);outline-offset:2px}
+.site-search kbd{font:11px Consolas,monospace;color:var(--search-muted);padding:1px 5px;border:1px solid var(--search-line);border-radius:4px}
+.site-search button[type=submit]{flex:none;width:38px;min-width:38px;height:42px;min-height:42px;padding:0;margin:0;border:0;border-radius:8px;background:transparent;color:var(--search-accent);font-size:24px;cursor:pointer;box-shadow:none}
+.search-label,.search-status{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.site-search .search-results{position:absolute;top:calc(100% + 10px);right:0;z-index:1100;width:min(480px,calc(100vw - 32px));max-height:min(560px,65vh);overflow-y:auto;border:1px solid var(--search-line);border-radius:12px;background:var(--search-bg);color:var(--search-ink);padding:10px;box-shadow:0 12px 32px #0005;text-align:left}
+.site-search .search-results[hidden]{display:none!important}.search-results .search-group{margin:8px 6px 4px;font:11px/1.5 Consolas,monospace;color:var(--search-muted)}
+.site-search .search-results a{display:block!important;padding:10px!important;margin:3px 0!important;border:1px solid transparent!important;border-radius:7px;background:transparent;color:var(--search-ink)!important;font-size:13px!important;text-decoration:none!important;white-space:normal;overflow-wrap:anywhere;text-align:left!important;line-height:1.5!important}
+.site-search .search-results a[aria-selected=true],.site-search .search-results a:hover{border-color:var(--search-accent)!important;background:var(--search-soft)}
+.search-results a small{display:block;font-size:10px;color:var(--search-muted);margin-top:4px}.search-results p{margin:10px;font-size:13px;color:var(--search-muted)}
+.search-archive-summary{padding:20px;border:1px solid var(--search-line);border-radius:10px;background:var(--search-bg);color:var(--search-ink);margin:24px 0}.search-archive-summary h2{font-size:24px;margin:0 0 12px}.search-archive-summary li{margin:12px 0}.search-archive-summary a{color:var(--search-accent)}
+[data-professional-header]{position:sticky!important;top:0!important;z-index:1000!important;background:var(--search-bg)!important;--header-glass:rgba(16,26,48,.9);grid-template-columns:auto minmax(0,1fr) 230px auto!important}
+[data-professional-header][data-perimeter-theme=light],:root[data-reading-shell][data-theme=light] [data-professional-header]{--header-glass:rgba(255,255,255,.94)}
+[data-professional-header] .professional-mobile{display:none}.professional-mobile summary{min-width:38px;min-height:42px;display:grid;place-items:center;cursor:pointer;list-style:none}.professional-mobile summary::-webkit-details-marker{display:none}
+[data-professional-header] .professional-context{display:none}
+.professional-context-bar{padding:12px 24px;border-bottom:1px solid var(--search-line);background:var(--search-bg);color:var(--search-muted);font:12px/1.6 "Segoe UI",sans-serif;display:flex;flex-wrap:wrap;gap:8px 18px;overflow-wrap:anywhere}.professional-context-bar a{color:var(--search-accent)}
+@supports((backdrop-filter:blur(16px)) or (-webkit-backdrop-filter:blur(16px))){.site-header,[data-professional-header]{background:var(--header-glass)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}}
+@media(max-width:1250px) and (min-width:701px){.header-inner{grid-template-columns:minmax(0,1fr) 230px auto!important;padding:12px 0;gap:12px!important}.desktop-nav{grid-row:2;grid-column:1/-1}.header-inner>.site-search{grid-column:2;grid-row:1}.header-inner>.controls{grid-column:3;grid-row:1}[data-professional-header]{grid-template-columns:minmax(0,1fr) 230px auto!important;gap:12px!important}[data-professional-header]>.professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header]>.site-search{grid-column:2;grid-row:1}[data-professional-header]>.professional-controls{grid-column:3;grid-row:1}:root{--header-offset:176px}}
+@media(max-width:700px){.header-inner{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 0;gap:8px!important}.header-inner>.site-search{grid-row:2;grid-column:1/-1;width:100%}.header-inner>.controls{grid-column:2;grid-row:1}.site-search .search-results{width:100%;right:0}[data-professional-header]{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 16px!important;gap:8px!important}[data-professional-header]>.professional-primary{display:none!important}[data-professional-header]>.site-search{grid-column:1/-1;grid-row:2;width:100%}[data-professional-header]>.professional-controls{grid-column:2;grid-row:1}[data-professional-header] .professional-mobile{display:block}[data-professional-header] .professional-mobile[open]>.professional-primary{position:absolute;top:100%;left:0;right:0;padding:16px;background:var(--search-bg);border-bottom:1px solid var(--search-line);display:grid;grid-template-columns:1fr 1fr;gap:8px}[data-professional-header] .professional-mobile .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:12px!important}:root{--header-offset:126px}}
+@media(prefers-reduced-transparency:reduce){.site-header,[data-professional-header]{background:var(--search-bg)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+@media print{.site-search,.professional-context-bar{display:none!important}}
+
+@media(min-width:1251px){.header-inner{display:grid!important;grid-template-columns:auto minmax(0,1fr) 230px auto!important;gap:18px!important}.header-inner .desktop-nav{min-width:0}}
+
+html:has(.kee-dedicated-app-root){height:auto!important;overflow-x:hidden!important;overflow-y:auto!important}
+body:has([data-professional-header]){height:auto!important;overflow-x:clip!important;overflow-y:visible!important;padding-top:0!important}
+.demo-language-navigation{display:none!important}
+.stage-column,.telemetry-panel,.scene-pill,#timeline-slider{min-width:0}
+@media(max-width:1180px){.workspace,.template-tabs{grid-template-columns:minmax(0,1fr)!important}}
+
+.in-arena-frame .professional-context-bar,.in-arena-frame [data-knowledge-atlas]{display:none!important}
+</style></head>
+<body>
+<!-- demo-language-navigation:start --><nav class="demo-language-navigation" aria-label="Demo language"><a href="demo-hve-pelican.en.html?lang=en" hreflang="en">EN</a> · <a href="demo-hve-pelican.html?lang=zh-CN" hreflang="zh-CN">中文</a></nav><!-- demo-language-navigation:end -->
+<!-- kee-dedicated-navigation:start -->
+<nav class="kee-dedicated-nav" data-professional-header><a class="professional-identity reading-brand kee-dedicated-identity identity" href="../../../index.html">Qi Chen · @turbo998</a><div class="professional-primary" role="navigation" aria-label="Primary sections"><a href="../../../studio/index.html" data-section="hub" data-nav-en-href="../../../studio/index.html" data-nav-zh-href="../../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub" aria-current="page">Frontier Transformation Engineering Hub</a><a href="../../../benchmarks.html" data-section="benchmarks" data-nav-en-href="../../../benchmarks.html" data-nav-zh-href="../../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心">Benchmark &amp; Eval Foundry</a><a href="../../../github-radar.html" data-section="radar" data-nav-en-href="../../../github-radar.html" data-nav-zh-href="../../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI Signal Radar</a><a href="../../../openrouter.html" data-section="routing" data-nav-en-href="../../../openrouter.html" data-nav-zh-href="../../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">Model Routing &amp; Telemetry</a><a href="../../../about.html" data-section="profile" data-nav-en-href="../../../about.html" data-nav-zh-href="../../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">Principal Architect Profile</a></div><form class="site-search" role="search" action="../../../studio/archive.html" method="get" data-search-root="../../../index.html" data-search-language="en"><label class="search-label" for="site-search-input">Search architecture, benchmarks, demos...</label><input id="site-search-input" name="q" type="search" placeholder="Search architecture, benchmarks, demos..." autocomplete="off" spellcheck="false" aria-keyshortcuts="/ Control+k Meta+k"><kbd aria-hidden="true">/</kbd><button type="submit" aria-label="Search all content">⌕</button><div class="search-results" id="site-search-results" hidden></div><span class="search-status" role="status" aria-live="polite"></span></form><div class="reading-controls professional-controls" aria-label="Site language and appearance"><a href="demo-hve-pelican.en.html" hreflang="en" lang="en" aria-current="page">EN</a><a href="demo-hve-pelican.html" data-reading-language hreflang="zh-CN" lang="zh-CN">中文</a><details class="professional-mobile"><summary aria-label="Open navigation">☰</summary><div class="professional-primary" role="navigation" aria-label="Mobile navigation"><a href="../../../studio/index.html" data-section="hub" data-nav-en-href="../../../studio/index.html" data-nav-zh-href="../../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub" aria-current="page">Frontier Transformation Engineering Hub</a><a href="../../../benchmarks.html" data-section="benchmarks" data-nav-en-href="../../../benchmarks.html" data-nav-zh-href="../../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心">Benchmark &amp; Eval Foundry</a><a href="../../../github-radar.html" data-section="radar" data-nav-en-href="../../../github-radar.html" data-nav-zh-href="../../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI Signal Radar</a><a href="../../../openrouter.html" data-section="routing" data-nav-en-href="../../../openrouter.html" data-nav-zh-href="../../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">Model Routing &amp; Telemetry</a><a href="../../../about.html" data-section="profile" data-nav-en-href="../../../about.html" data-nav-zh-href="../../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">Principal Architect Profile</a></div></details><a data-reading-theme="light" href="demo-hve-pelican.en.html?theme=light" aria-label="Light theme">☀</a><a data-reading-theme="dark" href="demo-hve-pelican.en.html?theme=dark" aria-label="Dark theme">◐</a></div><div class="professional-context" aria-label="Back to context"><a href="../../../studio/index.html">← Engineering Hub</a> · <a href="../../../studio/animation.html">Parent topic</a></div></nav><div class="professional-context-bar"><a href="../../../studio/index.html">← Engineering Hub</a> · <a class="reading-context" href="../../../studio/animation.html">Parent topic</a></div><!-- site-remediation-knowledge:start --><figure class="knowledge-figure" data-knowledge-atlas="animation" style="margin:24px 0;max-width:100%"><svg xmlns="http://www.w3.org/2000/svg" lang="en" role="img" aria-labelledby="knowledge-c5bb551bab97-title knowledge-c5bb551bab97-desc" viewBox="0 0 360 883" width="360" style="display:block;width:100%;height:auto;max-width:560px;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-c5bb551bab97-title">Demo C — Microsoft HVE-Core (RPI + Task Challenger) · Pelican Tour Pro Wind-Tunnel &amp; Multi-Terrain Simulator</title><desc id="knowledge-c5bb551bab97-desc">Explanation &amp; scene intent: Narrative · storyboard · camera constraints → defines the scene model → Geometry &amp; physical model: 4D Gaussian · Plücker rays · procedural geometry → drives time and motion → Motion, camera &amp; interaction: Timeline · springs · motion brush · 6DoF camera → renders explanatory frames → Rendering &amp; accessible playback: SVG / Canvas / WebGL · reduced-motion fallback → checks visual evidence → Workbench &amp; source evaluation: Compare frames and mechanisms, not unrelated scores</desc><rect width="360" height="883" rx="16" fill="#091827"/><text x="20" y="30" fill="#eef5ff" font-size="20" font-weight="700"><tspan x="20" dy="0">Demo C — Microsoft HVE-Core</tspan><tspan x="20" dy="28">(RPI + Task Challenger) ·</tspan><tspan x="20" dy="28">Pelican Tour Pro Wind-Tunnel &amp;</tspan><tspan x="20" dy="28">Multi-Terrain Simulator</tspan></text><text x="20" y="136" fill="#a9b8ce" font-size="13" font-weight="400"><tspan x="20" dy="0">Conceptual topology · not measured metrics</tspan></text><g data-concept="1"><rect x="16" y="162" width="328" height="99" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="176" width="4" height="71" rx="2" fill="#63dbca"/><text x="32" y="192" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">Explanation &amp; scene intent</tspan></text><text x="32" y="223" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">Narrative · storyboard · camera</tspan><tspan x="32" dy="19.599999999999998">constraints</tspan></text></g><g data-relationship="defines the scene model"><path d="M32 261 V306" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 301 L32 307 L37 301" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="287" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">defines the scene model</tspan></text></g><g data-concept="2"><rect x="16" y="313" width="328" height="99" rx="12" fill="#132942" stroke="#43617f"/><rect x="16" y="327" width="4" height="71" rx="2" fill="#63dbca"/><text x="32" y="343" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">Geometry &amp; physical model</tspan></text><text x="32" y="374" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">4D Gaussian · Plücker rays · procedural</tspan><tspan x="32" dy="19.599999999999998">geometry</tspan></text></g><g data-relationship="drives time and motion"><path d="M32 412 V457" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 452 L32 458 L37 452" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="438" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">drives time and motion</tspan></text></g><g data-concept="3"><rect x="16" y="464" width="328" height="99" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="478" width="4" height="71" rx="2" fill="#63dbca"/><text x="32" y="494" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">Motion, camera &amp; interaction</tspan></text><text x="32" y="525" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">Timeline · springs · motion brush ·</tspan><tspan x="32" dy="19.599999999999998">6DoF camera</tspan></text></g><g data-relationship="renders explanatory frames"><path d="M32 563 V608" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 603 L32 609 L37 603" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="589" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">renders explanatory frames</tspan></text></g><g data-concept="4"><rect x="16" y="615" width="328" height="99" rx="12" fill="#132942" stroke="#43617f"/><rect x="16" y="629" width="4" height="71" rx="2" fill="#63dbca"/><text x="32" y="645" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">Rendering &amp; accessible playback</tspan></text><text x="32" y="676" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">SVG / Canvas / WebGL · reduced-motion</tspan><tspan x="32" dy="19.599999999999998">fallback</tspan></text></g><g data-relationship="checks visual evidence"><path d="M32 714 V759" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 754 L32 760 L37 754" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="740" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">checks visual evidence</tspan></text></g><g data-concept="5"><rect x="16" y="766" width="328" height="99" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="780" width="4" height="71" rx="2" fill="#63dbca"/><text x="32" y="796" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">Workbench &amp; source evaluation</tspan></text><text x="32" y="827" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">Compare frames and mechanisms, not</tspan><tspan x="32" dy="19.599999999999998">unrelated scores</tspan></text></g></svg><figcaption style="font:14px/1.6 system-ui,sans-serif;margin:12px 0;overflow-wrap:anywhere">Overall knowledge map: read the labeled relationships and engineering boundaries. Layout is conceptual; it does not represent throughput, rankings or a production deployment.</figcaption></figure><!-- site-remediation-knowledge:end -->
+<!-- kee-dedicated-navigation:end -->
+
+
+<div class="header">
+  <div>
+    <div class="badge-row">
+      <span class="badge">🟩 DEMO C · MICROSOFT HVE-CORE v3.3.101</span>
+      <span class="badge rpi">🔬📋⚡✅ RPI WORKFLOW + .copilot-tracking/</span>
+      <span class="badge challenger">⚔️ TASK-CHALLENGER VERIFIED</span>
+    </div>
+    <h1>Pelican Tour Pro — Multi-terrain slope dynamics、Windhole Flow Lines and 11 Quick-wipe Simulator</h1>
+    <div class="subtitle">Driven by HVE-Core RPI (Task Researcher → Task Planner → Task Implementor → Task Reviewer → Task Challenger) · 0.00 px Analytical IK</div>
+  </div>
+  <div class="stage-toolbar" id="terrainToolbar">
+    <button class="pill-btn active" onclick="setStage(0)">🏔️ Alps. HC Climb the slope. (+9%)</button>
+    <button class="pill-btn" onclick="setStage(1)">🌬️ Air-window lab. (0%)</button>
+    <button class="pill-btn" onclick="setStage(2)">🧱 Rube Poebble Classics. (+2%)</button>
+    <button class="pill-btn" onclick="setStage(3)">🌌 New Tokyo Star Night Downhill (-7%)</button>
+  </div>
+</div>
+
+<!-- HVE-Core 5-Phase RPI + Challenger Bar -->
+<div class="rpi-bar" id="rpiBar">
+  <div class="rpi-step active" onclick="selectRpi(0)">
+    <div class="phase">Phase 1 · Research</div>
+    <div class="agent">🔬 task-researcher</div>
+    <div class="file">pelican-tour-pro-research.md</div>
+  </div>
+  <div class="rpi-step" onclick="selectRpi(1)">
+    <div class="phase">Phase 2 · Plan + Validate</div>
+    <div class="agent">📋 task-planner + Validator</div>
+    <div class="file">pelican-tour-pro-plan.instructions.md</div>
+  </div>
+  <div class="rpi-step" onclick="selectRpi(2)">
+    <div class="phase">Phase 3 · Implement</div>
+    <div class="agent">⚡ task-implementor</div>
+    <div class="file">pelican-tour-pro-changes.md</div>
+  </div>
+  <div class="rpi-step" onclick="selectRpi(3)">
+    <div class="phase">Phase 4 · Review</div>
+    <div class="agent">✅ task-reviewer (RPI Validator)</div>
+    <div class="file">pelican-tour-pro-review.md</div>
+  </div>
+  <div class="rpi-step" onclick="selectRpi(4)">
+    <div class="phase">Phase 5 · Challenge</div>
+    <div class="agent">⚔️ task-challenger</div>
+    <div class="file">2026-10-24-pelican-challenge.md</div>
+  </div>
+</div>
+
+<!-- Main Interactive Stage -->
+<div class="stage-wrap" id="stageWrap">
+  <canvas id="windCanvas" width="960" height="410"></canvas>
+
+  <div class="hud-top">
+    <div class="telemetry-strip">
+      <div class="tel-item"><div class="lbl">SPEED</div><div class="val" id="hudSpeed">34.8 km/h</div></div>
+      <div class="tel-item"><div class="lbl">POWER (W)</div><div class="val amber" id="hudPower">286 W</div></div>
+      <div class="tel-item"><div class="lbl">GRADE / PITCH</div><div class="val cyan" id="hudGrade">+9.0%</div></div>
+      <div class="tel-item"><div class="lbl">Aero CdA</div><div class="val" id="hudCda">0.265 m²</div></div>
+      <div class="tel-item"><div class="lbl">AVIAN HR</div><div class="val rose" id="hudHr">168 bpm</div></div>
+      <div class="tel-item"><div class="lbl">DI2 CASSETTE</div><div class="val" id="hudGear">8 / 11 (2.85x)</div></div>
+      <div class="tel-item"><div class="lbl">IK SLIP</div><div class="val" id="hudSlip">0.00 px</div></div>
+    </div>
+
+    <div class="stage-toolbar">
+      <button class="pill-btn active" id="btnPostureAero" onclick="setPosture('aero')">🚴 Air dive. (Aero Tuck)</button>
+      <button class="pill-btn" id="btnPostureClimb" onclick="setPosture('climb')">⛰️ Roll-a-car. (Out-of-Saddle)</button>
+      <button class="pill-btn" id="btnPostureUpright" onclick="setPosture('upright')">🎩 The cruise is straight. (Endurance)</button>
+      <button class="pill-btn active" id="btnStreamlines" onclick="toggleStreamlines()">💨 Wind Hole Streaming Line ON</button>
+    </div>
+  </div>
+
+  <!-- Analytical SVG Pelican & Carbon Pro Bike -->
+  <svg id="hveSvg" viewBox="0 0 960 410" preserveAspectRatio="xMidYMid meet">
+    <defs>
+      <linearGradient id="carbonFrame" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#10b981" />
+        <stop offset="55%" stop-color="#047857" />
+        <stop offset="100%" stop-color="#0f172a" />
+      </linearGradient>
+      <linearGradient id="beakGrad" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#fbbf24" />
+        <stop offset="70%" stop-color="#f59e0b" />
+        <stop offset="100%" stop-color="#ef4444" />
+      </linearGradient>
+      <linearGradient id="pouchGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#fde68a" stop-opacity="0.95" />
+        <stop offset="100%" stop-color="#d97706" stop-opacity="0.9" />
+      </linearGradient>
+      <radialGradient id="discWheel" cx="50%" cy="50%" r="50%">
+        <stop offset="65%" stop-color="#090d16" stop-opacity="0.15" />
+        <stop offset="86%" stop-color="#1e293b" stop-opacity="0.92" />
+        <stop offset="96%" stop-color="#0f172a" stop-opacity="1" />
+        <stop offset="100%" stop-color="#10b981" stop-opacity="0.9" />
+      </radialGradient>
+    </defs>
+
+    <!-- Whole Bike + Rider Assembly (rotates with road gradient pitch) -->
+    <g id="bikeAssembly" transform="translate(470, 265) rotate(-5)">
+
+      <!-- Aerodynamic Wake / CdA Pressure Cone -->
+      <path id="aeroWake" d="M 140,-135 Q 40,-175 -210,-150 L -210,-20 Q 40,-45 140,-95 Z"
+            fill="rgba(16, 185, 129, 0.07)" stroke="rgba(52, 211, 153, 0.35)" stroke-dasharray="5 4" stroke-width="1.5" />
+
+      <!-- Pace Drone Partner (HVE Telemetry Drone) -->
+      <g id="paceDrone" transform="translate(215, -165)">
+        <ellipse cx="0" cy="0" rx="22" ry="7" fill="#0f172a" stroke="#10b981" stroke-width="2" />
+        <line x1="-18" y1="-6" x2="-28" y2="-11" stroke="#94a3b8" stroke-width="2" />
+        <line x1="18" y1="-6" x2="28" y2="-11" stroke="#94a3b8" stroke-width="2" />
+        <ellipse id="droneRotorL" cx="-28" cy="-12" rx="12" ry="2.2" fill="#34d399" opacity="0.8" />
+        <ellipse id="droneRotorR" cx="28" cy="-12" rx="12" ry="2.2" fill="#34d399" opacity="0.8" />
+        <circle cx="0" cy="2" r="3.5" fill="#38bdf8" />
+        <path d="M -4,6 L -38,65 L 18,65 L 4,6 Z" fill="rgba(56, 189, 248, 0.11)" />
+        <text x="-28" y="-18" fill="#6ee7b7" font-size="9" font-family="Consolas, monospace" font-weight="bold">HVE-RPI DRONE</text>
+      </g>
+
+      <!-- FAR LEG (Right Leg - behind frame) -->
+      <g id="rightLegGroup">
+        <line id="rThigh" x1="-35" y1="-98" x2="10" y2="-45" stroke="#d97706" stroke-width="11" stroke-linecap="round" />
+        <line id="rShin" x1="10" y1="-45" x2="20" y2="10" stroke="#b45309" stroke-width="8.5" stroke-linecap="round" />
+        <polygon id="rFoot" points="10,10 34,10 26,2" fill="#f59e0b" stroke="#78350f" stroke-width="1.5" />
+      </g>
+
+      <!-- REAR WHEEL (-135, 0) & FRONT WHEEL (135, 0), R = 64 -->
+      <g id="rearWheel" transform="translate(-135, 0)">
+        <circle cx="0" cy="0" r="64" fill="url(#discWheel)" stroke="#334155" stroke-width="5" />
+        <circle cx="0" cy="0" r="56" fill="none" stroke="#10b981" stroke-width="1.5" stroke-dasharray="14 8" />
+        <g id="rearSpokes">
+          <line x1="-54" y1="0" x2="54" y2="0" stroke="#475569" stroke-width="1.4" />
+          <line x1="0" y1="-54" x2="0" y2="54" stroke="#475569" stroke-width="1.4" />
+          <line x1="-38" y1="-38" x2="38" y2="38" stroke="#475569" stroke-width="1.4" />
+          <line x1="-38" y1="38" x2="38" y2="-38" stroke="#475569" stroke-width="1.4" />
+        </g>
+        <!-- 11-Speed Cassette -->
+        <circle cx="0" cy="0" r="16" fill="#1e293b" stroke="#94a3b8" stroke-width="2" />
+        <circle cx="0" cy="0" r="11" fill="#0f172a" stroke="#10b981" stroke-width="1.5" />
+        <circle cx="0" cy="0" r="5" fill="#34d399" />
+      </g>
+
+      <g id="frontWheel" transform="translate(135, 0)">
+        <circle cx="0" cy="0" r="64" fill="url(#discWheel)" stroke="#334155" stroke-width="5" />
+        <circle cx="0" cy="0" r="56" fill="none" stroke="#10b981" stroke-width="1.5" stroke-dasharray="14 8" />
+        <g id="frontSpokes">
+          <line x1="-54" y1="0" x2="54" y2="0" stroke="#475569" stroke-width="1.4" />
+          <line x1="0" y1="-54" x2="0" y2="54" stroke="#475569" stroke-width="1.4" />
+          <line x1="-38" y1="-38" x2="38" y2="38" stroke="#475569" stroke-width="1.4" />
+          <line x1="-38" y1="38" x2="38" y2="-38" stroke="#475569" stroke-width="1.4" />
+        </g>
+        <circle cx="0" cy="0" r="8" fill="#34d399" />
+      </g>
+
+      <!-- Drivetrain Chain & Derailleur -->
+      <line x1="-135" y1="-12" x2="-15" y2="-20" stroke="#94a3b8" stroke-width="2.5" stroke-dasharray="5 3" id="chainTop" />
+      <line x1="-135" y1="14" x2="-15" y2="20" stroke="#64748b" stroke-width="2.2" stroke-dasharray="5 3" id="chainBot" />
+
+      <!-- Carbon Aero Road Frame -->
+      <g id="carbonFrameGroup">
+        <!-- Chainstay & Seatstay -->
+        <line x1="-135" y1="0" x2="-15" y2="0" stroke="url(#carbonFrame)" stroke-width="7" stroke-linecap="round" />
+        <line x1="-135" y1="0" x2="-48" y2="-82" stroke="url(#carbonFrame)" stroke-width="5.5" stroke-linecap="round" />
+        <!-- Seat Tube & Aero Seatpost -->
+        <line x1="-15" y1="0" x2="-55" y2="-105" stroke="url(#carbonFrame)" stroke-width="9" stroke-linecap="round" />
+        <!-- Down Tube & Horizontal Top Tube -->
+        <line x1="-15" y1="0" x2="88" y2="-84" stroke="url(#carbonFrame)" stroke-width="10.5" stroke-linecap="round" />
+        <line x1="-50" y1="-88" x2="84" y2="-88" stroke="url(#carbonFrame)" stroke-width="8" stroke-linecap="round" />
+        <!-- Front Aero Fork & Integrated Cockpit -->
+        <line x1="84" y1="-92" x2="135" y2="0" stroke="url(#carbonFrame)" stroke-width="7.5" stroke-linecap="round" />
+        <!-- Drop Handlebars + Garmin/HVE Head Unit -->
+        <path d="M 78,-92 L 96,-112 L 122,-112 C 136,-112 138,-92 122,-90 L 106,-90" fill="none" stroke="#e2e8f0" stroke-width="5" stroke-linecap="round" />
+        <rect x="112" y="-120" width="16" height="8" rx="2" fill="#10b981" stroke="#042f2e" stroke-width="1" />
+        <!-- Carbon Saddle -->
+        <path d="M -76,-108 Q -52,-112 -34,-105 Q -50,-100 -74,-102 Z" fill="#0f172a" stroke="#34d399" stroke-width="2" />
+      </g>
+
+      <!-- Bottom Bracket & Crankset (-15, 0), Crank Radius = 28 -->
+      <circle cx="-15" cy="0" r="20" fill="none" stroke="#10b981" stroke-width="3" />
+      <circle cx="-15" cy="0" r="6" fill="#34d399" />
+      <line id="crankArmL" x1="-15" y1="0" x2="13" y2="0" stroke="#e2e8f0" stroke-width="5" stroke-linecap="round" />
+      <line id="crankArmR" x1="-15" y1="0" x2="-43" y2="0" stroke="#64748b" stroke-width="4" stroke-linecap="round" />
+
+      <!-- PELICAN TORSO, WINGS, NECK, HEAD & GULAR POUCH -->
+      <g id="pelicanBodyGroup" transform="translate(-42, -124) rotate(0)">
+        <!-- Tail Feathers -->
+        <path d="M -42,8 L -74,-2 L -68,14 L -75,24 L -38,20 Z" fill="#cbd5e1" stroke="#475569" stroke-width="1.5" />
+        <!-- Aero Jersey Torso -->
+        <ellipse cx="0" cy="0" rx="46" ry="29" fill="#f8fafc" stroke="#334155" stroke-width="2" />
+        <!-- Emerald HVE Pro Cycling Maillot Stripe -->
+        <path d="M -26,-24 Q 6,-30 34,-12 L 28,16 Q -4,20 -30,6 Z" fill="#10b981" opacity="0.88" />
+        <text x="-18" y="-2" fill="#042f2e" font-size="10" font-weight="900" font-family="Arial">HVE-RPI</text>
+
+        <!-- Folded / Flapping Wing -->
+        <g id="pelicanWing" transform="translate(2, -6) rotate(0)">
+          <path d="M -30,0 Q 2,-22 38,-4 Q 16,22 -28,12 Z" fill="#e2e8f0" stroke="#475569" stroke-width="2" />
+          <path d="M -22,4 Q 6,-10 30,-2" fill="none" stroke="#94a3b8" stroke-width="1.8" />
+        </g>
+
+        <!-- S-Curved Neck & Head Group -->
+        <g id="pelicanHeadGroup" transform="translate(36, -18)">
+          <path d="M -6,12 Q 14,-22 8,-52 Q 4,-74 24,-78" fill="none" stroke="#f8fafc" stroke-width="18" stroke-linecap="round" />
+          <!-- Aero Time-Trial Helmet -->
+          <path d="M -2,-86 Q 28,-102 54,-78 L 12,-72 Q -10,-74 -2,-86 Z" fill="#10b981" stroke="#ecfdf5" stroke-width="1.8" />
+          <path d="M 32,-78 L 48,-70 L 30,-66 Z" fill="#38bdf8" opacity="0.85" />
+          <!-- Skull & Eye -->
+          <circle cx="24" cy="-70" r="14" fill="#f8fafc" stroke="#475569" stroke-width="1.5" />
+          <circle cx="29" cy="-73" r="3.2" fill="#0f172a" />
+          <circle cx="30" cy="-74" r="1.1" fill="#fff" />
+
+          <!-- Upper Beak -->
+          <path d="M 35,-76 L 122,-66 L 118,-59 L 34,-64 Z" fill="url(#beakGrad)" stroke="#92400e" stroke-width="1.5" />
+          <!-- Elastic Gular Pouch (expands with fish load & aero pressure) -->
+          <path id="gularPouch" d="M 34,-64 Q 76,-28 118,-59 Z" fill="url(#pouchGrad)" stroke="#b45309" stroke-width="1.5" />
+          <!-- Fish inside Pouch indicator -->
+          <g id="pouchFishVisual" opacity="0.85">
+            <ellipse cx="74" cy="-52" rx="12" ry="4.5" fill="#38bdf8" />
+            <polygon points="60,-52 53,-57 54,-47" fill="#0284c7" />
+          </g>
+        </g>
+
+        <!-- Wing/Arm gripping Drop Handlebars -->
+        <path d="M 28,2 Q 78,10 154,28" fill="none" stroke="#e2e8f0" stroke-width="9" stroke-linecap="round" />
+      </g>
+
+      <!-- NEAR LEG (Left Leg - Analytical 2-Bone IK foreground) -->
+      <g id="leftLegGroup">
+        <line id="lThigh" x1="-35" y1="-98" x2="22" y2="-52" stroke="#fbbf24" stroke-width="12" stroke-linecap="round" />
+        <line id="lShin" x1="22" y1="-52" x2="13" y2="0" stroke="#f59e0b" stroke-width="9.5" stroke-linecap="round" />
+        <polygon id="lFoot" points="3,0 29,0 21,-8" fill="#fbbf24" stroke="#78350f" stroke-width="1.5" />
+      </g>
+
+      <!-- IK Joint Telemetry Callout Overlay -->
+      <g id="ikCalloutOverlay">
+        <circle id="hipMarker" cx="-35" cy="-98" r="4.5" fill="#38bdf8" stroke="#0f172a" stroke-width="1.5" />
+        <circle id="kneeMarker" cx="22" cy="-52" r="5" fill="#10b981" stroke="#0f172a" stroke-width="1.5" />
+        <circle id="pedalMarker" cx="13" cy="0" r="4.5" fill="#fbbf24" stroke="#0f172a" stroke-width="1.5" />
+        <text id="kneeAngleTxt" x="30" y="-52" fill="#6ee7b7" font-size="10" font-family="Consolas, monospace" font-weight="bold">θ_knee: 102°</text>
+      </g>
+    </g>
+  </svg>
+
+  <!-- Bottom-right Real-time Power & Heart Rate Sparkline -->
+  <div class="spark-box">
+    <div class="spark-title">
+      <span>⚡ POWER (W)</span>
+      <span style="color:#fb7185">❤️ HR (BPM)</span>
+    </div>
+    <canvas id="sparkCanvas" width="232" height="48"></canvas>
+  </div>
+</div>
+
+<!-- Bottom Controls + HVE .copilot-tracking/ Artifact Inspector -->
+<div class="controls-grid">
+  <div class="card">
+    <div class="card-title">
+      <span>🎛️ Vertical Ride Physical and Wind Hole Parameter Console (Longitudinal Dynamics & Wind Tunnel)</span>
+      <span style="font-size:11px;color:#94a3b8">Support keyboard [Space] Pause · [G] Promotion · [1-4] Switch Session</span>
+    </div>
+    <div class="sliders">
+      <div class="ctrl">
+        <label><span>Cadence Cadence (RPM)</span><strong id="lblCadence">88 RPM</strong></label>
+        <input type="range" id="slCadence" min="30" max="130" value="88" oninput="updateControls()" />
+      </div>
+      <div class="ctrl">
+        <label><span>Road slope Road Grade (%)</span><strong id="lblGrade">+9.0%</strong></label>
+        <input type="range" id="slGrade" min="-10" max="15" step="0.5" value="9" oninput="updateControls()" />
+      </div>
+      <div class="ctrl">
+        <label><span>11Speeding electric transformer wheel Di2 Gear (1-11)</span><strong id="lblGear">Gear 8 (2.85x)</strong></label>
+        <input type="range" id="slGear" min="1" max="11" step="1" value="8" oninput="updateControls()" />
+      </div>
+      <div class="ctrl">
+        <label><span>Windholes face wind speed Headwind (km/h)</span><strong id="lblWind">18 km/h</strong></label>
+        <input type="range" id="slWind" min="-15" max="50" value="18" oninput="updateControls()" />
+      </div>
+    </div>
+    <div class="action-row">
+      <button class="act-btn" onclick="triggerEnergyGel()">🐟 Feeding the energy sardines in the resupply zone. (+Fish/Watts)</button>
+      <button class="act-btn" onclick="triggerAttack()">🚀 Rock and roll! (115 RPM Out-of-Saddle)</button>
+      <button class="act-btn warn" onclick="runTaskChallengerProbe()">⚔️ Trigger Task Challenger I'm not gonna be tortured.</button>
+      <button class="act-btn" id="btnPause" onclick="togglePause()">⏸️ Pause for frame inspection</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      <span id="artifactHeader">📂 HVE-Core `.copilot-tracking/` Real-stage product examiner</span>
+      <span style="font-size:10px;color:#34d399">RPI Context-Cleared Pipeline</span>
+    </div>
+    <div class="artifact-box" id="artifactContent"></div>
+  </div>
+</div>
+
+<script>
+  // HVE-Core RPI Artifact Snapshots for Interactive Inspection
+  const RPI_ARTIFACTS = [
+    `[Phase 1: task-researcher] .copilot-tracking/research/2026-10-24/pelican-tour-pro-research.md
+• Objective: Eliminate pedal detachment & add longitudinal slope/aero physics.
+• Evaluated 3 options -> Selected Option C: Analytical Law-of-Cosines 2-Bone IK + Hybrid Canvas2D Wind-Tunnel.
+• Aerodynamic Model: F_aero = 0.5 * rho * CdA(posture, fish) * (v_ground + v_wind)^2.
+• Context Rule: /clear executed before handing off to task-planner.`,
+    `[Phase 2: task-planner + Plan Validator] .copilot-tracking/plans/2026-10-24/pelican-tour-pro-plan.instructions.md
+• Phase 1 (Sequential): Longitudinal CyclingPhysicsEngine & 11-speed Di2 drivetrain (1.20x - 4.40x).
+• Phase 2 (Parallel): 4 procedural terrain stages + 180-particle laminar/turbulent wind streamlines.
+• Plan Validator Verdict: PASS (0 Critical, 0 High, 0 Medium discrepancies in pelican-tour-pro-log.md).`,
+    `[Phase 3: task-implementor] .copilot-tracking/changes/2026-10-24/pelican-tour-pro-changes.md
+• Dispatched Phase Implementor subagents per plan phase.
+• Verified strict CSP: default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'.
+• Implemented 3 riding postures: Aero Tuck (CdA 0.24), Out-of-Saddle Climb (CdA 0.31), Endurance (CdA 0.36).`,
+    `[Phase 4: task-reviewer + RPI Validator] .copilot-tracking/reviews/2026-10-24/pelican-tour-pro-review.md
+• Parallel RPI Validator runs across Phases 1-3:
+  - Foot-to-pedal Euclidean error: 0.00 px across all 360° crank angles & postures.
+  - Climbing Watts verified against F_g = m*g*sin(atan(grade)) at +15% Hors Catégorie slope.
+• Overall Review Status: COMPLETE (Ready for production Pages deployment).`,
+    `[Phase 5: task-challenger] .copilot-tracking/challenges/2026-10-24-pelican-tour-pro-challenge.md
+• Q1 (What): What prevents NaN knee angles when standing out-of-saddle exceeds L1+L2?
+  -> Clamped D = min(||P-H||, 0.999*(L1+L2)) and cos(alpha) in [-1, 1] before acos().
+• Q2 (How): How does cobblestone vibration affect IK locking?
+  -> Suspension jitter applies to frame chassis while IK solves in frame-local coordinates (0.00 px slip).`
+  ];
+
+  const STAGES = [
+    { name: "🏔️ 阿尔卑斯 HC 爬坡", grade: 9.0, wind: 18, skyTop: "#06162e", skyBot: "#0f2922", ground: "#1e293b", cobble: false, stars: false },
+    { name: "🌬️ 气动风洞实验室", grade: 0.0, wind: 38, skyTop: "#040d12", skyBot: "#091e1a", ground: "#0f172a", cobble: false, stars: false },
+    { name: "🧱 鲁贝鹅卵石古典赛", grade: 2.0, wind: 14, skyTop: "#1c1917", skyBot: "#292524", ground: "#3f3f46", cobble: true, stars: false },
+    { name: "🌌 新东京星夜下坡", grade: -7.0, wind: 8, skyTop: "#020617", skyBot: "#0f172a", ground: "#090d16", cobble: false, stars: true }
+  ];
+
+  const GEAR_RATIOS = [1.20, 1.42, 1.68, 1.95, 2.22, 2.52, 2.85, 3.18, 3.55, 3.95, 4.40];
+
+  let state = {
+    cadence: 88,
+    grade: 9.0,
+    gear: 8,
+    wind: 18,
+    fishCount: 1,
+    posture: 'aero',
+    showStreamlines: true,
+    stageIdx: 0,
+    paused: false,
+    crankAngle: 0,
+    wheelAngle: 0,
+    roadOffset: 0,
+    L1: 76,
+    L2: 82
+  };
+
+  // Wind tunnel particles
+  const windCanvas = document.getElementById('windCanvas');
+  const ctx = windCanvas.getContext('2d');
+  const sparkCanvas = document.getElementById('sparkCanvas');
+  const sctx = sparkCanvas.getContext('2d');
+  const streamlines = Array.from({ length: 75 }, () => ({
+    x: Math.random() * 960,
+    y: 45 + Math.random() * 310,
+    len: 35 + Math.random() * 55,
+    speedMul: 0.8 + Math.random() * 0.45
+  }));
+  const powerHistory = new Array(60).fill(260);
+  const hrHistory = new Array(60).fill(162);
+  let lastSparkTime = 0;
+
+  function selectRpi(idx) {
+    document.querySelectorAll('#rpiBar .rpi-step').forEach((el, i) => el.classList.toggle('active', i === idx));
+    document.getElementById('artifactContent').textContent = RPI_ARTIFACTS[idx];
+  }
+
+  function setStage(idx) {
+    state.stageIdx = idx;
+    const st = STAGES[idx];
+    state.grade = st.grade;
+    state.wind = st.wind;
+    document.getElementById('slGrade').value = st.grade;
+    document.getElementById('slWind').value = st.wind;
+    document.querySelectorAll('#terrainToolbar .pill-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
+    updateControls();
+  }
+
+  function setPosture(p) {
+    state.posture = p;
+    document.getElementById('btnPostureAero').classList.toggle('active', p === 'aero');
+    document.getElementById('btnPostureClimb').classList.toggle('active', p === 'climb');
+    document.getElementById('btnPostureUpright').classList.toggle('active', p === 'upright');
+  }
+
+  function toggleStreamlines() {
+    state.showStreamlines = !state.showStreamlines;
+    const btn = document.getElementById('btnStreamlines');
+    btn.classList.toggle('active', state.showStreamlines);
+    btn.textContent = state.showStreamlines ? '💨 风洞流线 ON' : '💨 风洞流线 OFF';
+  }
+
+  function togglePause() {
+    state.paused = !state.paused;
+    document.getElementById('btnPause').textContent = state.paused ? '▶️ 继续仿真' : '⏸️ 暂停帧检视';
+  }
+
+  function triggerEnergyGel() {
+    state.fishCount = (state.fishCount + 1) % 4;
+    state.cadence = Math.min(130, state.cadence + 8);
+    document.getElementById('slCadence').value = state.cadence;
+    updateControls();
+  }
+
+  function triggerAttack() {
+    setPosture('climb');
+    state.cadence = 115;
+    state.gear = 10;
+    document.getElementById('slCadence').value = 115;
+    document.getElementById('slGear').value = 10;
+    updateControls();
+  }
+
+  function runTaskChallengerProbe() {
+    selectRpi(4);
+    setStage(0);
+    setPosture('climb');
+    state.grade = 15.0;
+    state.wind = 42;
+    state.cadence = 122;
+    document.getElementById('slGrade').value = 15.0;
+    document.getElementById('slWind').value = 42;
+    document.getElementById('slCadence').value = 122;
+    updateControls();
+  }
+
+  function updateControls() {
+    state.cadence = parseFloat(document.getElementById('slCadence').value);
+    state.grade = parseFloat(document.getElementById('slGrade').value);
+    state.gear = parseInt(document.getElementById('slGear').value, 10);
+    state.wind = parseFloat(document.getElementById('slWind').value);
+
+    const ratio = GEAR_RATIOS[state.gear - 1];
+    document.getElementById('lblCadence').textContent = `${state.cadence} RPM`;
+    document.getElementById('lblGrade').textContent = `${state.grade >= 0 ? '+' : ''}${state.grade.toFixed(1)}%`;
+    document.getElementById('lblGear').textContent = `Gear ${state.gear} (${ratio.toFixed(2)}x)`;
+    document.getElementById('lblWind').textContent = `${state.wind} km/h`;
+  }
+
+  // Analytical 2-Bone Law of Cosines IK Solver
+  function solveTwoBoneIK(hx, hy, px, py, L1, L2) {
+    const dx = px - hx;
+    const dy = py - hy;
+    const rawDist = Math.hypot(dx, dy);
+    const maxReach = (L1 + L2) * 0.999;
+    const D = Math.max(12, Math.min(rawDist, maxReach));
+    const cosAlpha = Math.max(-1, Math.min(1, (L1 * L1 + D * D - L2 * L2) / (2 * L1 * D)));
+    const baseAngle = Math.atan2(dy, dx);
+    // Avian knee bends forward toward beak (+x)
+    const hipAngle = baseAngle - Math.acos(cosAlpha);
+    const kx = hx + L1 * Math.cos(hipAngle);
+    const ky = hy + L1 * Math.sin(hipAngle);
+    const cosKnee = Math.max(-1, Math.min(1, (L1 * L1 + L2 * L2 - D * D) / (2 * L1 * L2)));
+    const kneeDeg = Math.round((Math.acos(cosKnee) * 180) / Math.PI);
+    const slipError = Math.hypot((kx + L2 * Math.cos(Math.atan2(py - ky, px - kx))) - px, (ky + L2 * Math.sin(Math.atan2(py - ky, px - kx))) - py);
+    return { kx, ky, kneeDeg, slipError };
+  }
+
+  let lastTs = performance.now();
+  function animate(ts) {
+    const dt = Math.min(0.05, (ts - lastTs) / 1000);
+    lastTs = ts;
+
+    const ratio = GEAR_RATIOS[state.gear - 1];
+    const baseCda = state.posture === 'aero' ? 0.240 : (state.posture === 'climb' ? 0.305 : 0.355);
+    const effCda = baseCda + state.fishCount * 0.018;
+
+    // Ground speed (km/h) from cadence & gear ratio, modulated slightly by extreme uphill
+    const slopeFactor = Math.max(0.58, 1 - state.grade * 0.022);
+    const speedKmh = Math.max(8, (state.cadence / 90) * ratio * 13.2 * slopeFactor);
+    const speedMs = speedKmh / 3.6;
+    const relAirMs = Math.max(0, (speedKmh + state.wind) / 3.6);
+
+    // Longitudinal forces
+    const massTotal = 19.5 + state.fishCount * 0.65; // 11.5kg pelican + 8kg aero bike + fish
+    const gradeRad = Math.atan(state.grade / 100);
+    const crr = STAGES[state.stageIdx].cobble ? 0.0095 : 0.0042;
+    const Fg = massTotal * 9.81 * Math.sin(gradeRad);
+    const Fr = massTotal * 9.81 * Math.cos(gradeRad) * crr;
+    const Faero = 0.5 * 1.225 * effCda * relAirMs * relAirMs;
+    const totalWatts = Math.max(0, Math.round(Math.max(15, (Fg + Fr + Faero) * speedMs / 0.96)));
+    const avianHr = Math.min(225, Math.round(112 + totalWatts * 0.195 + (state.posture === 'climb' ? 10 : 0)));
+
+    if (!state.paused) {
+      const omegaCrank = (state.cadence / 60) * Math.PI * 2;
+      state.crankAngle = (state.crankAngle + omegaCrank * dt) % (Math.PI * 2);
+      state.wheelAngle = (state.wheelAngle + omegaCrank * ratio * dt) % (Math.PI * 2);
+      state.roadOffset = (state.roadOffset + speedKmh * 5.2 * dt) % 1200;
+    }
+
+    // Update posture hip position & torso tilt
+    let hipX = -38, hipY = -98, torsoX = -42, torsoY = -124, torsoRot = 4;
+    if (state.posture === 'aero') {
+      hipX = -36; hipY = -98; torsoX = -36; torsoY = -118; torsoRot = 16;
+    } else if (state.posture === 'climb') {
+      const bob = Math.sin(state.crankAngle * 2) * 5;
+      hipX = -10; hipY = -112 + bob; torsoX = -14; torsoY = -136 + bob; torsoRot = 10;
+    } else {
+      hipX = -44; hipY = -102; torsoX = -48; torsoY = -128; torsoRot = -4;
+    }
+
+    // Cobblestone micro-jitter
+    const cobbleJitter = (!state.paused && STAGES[state.stageIdx].cobble) ? (Math.sin(ts * 0.06) * 2.2) : 0;
+    const pitchDeg = -state.grade * 0.85;
+    document.getElementById('bikeAssembly').setAttribute('transform', `translate(470, ${262 + cobbleJitter}) rotate(${pitchDeg.toFixed(2)})`);
+    document.getElementById('pelicanBodyGroup').setAttribute('transform', `translate(${torsoX}, ${torsoY}) rotate(${torsoRot})`);
+
+    // Wing flap on high power
+    const wingFlap = Math.sin(state.crankAngle * 2) * (totalWatts > 340 ? 18 : 5);
+    document.getElementById('pelicanWing').setAttribute('transform', `translate(2, -6) rotate(${wingFlap.toFixed(1)})`);
+
+    // Gular pouch elastic oscillation
+    const pouchSag = -28 + state.fishCount * 9 + Math.sin(state.crankAngle * 2) * (3 + state.fishCount * 2.2);
+    document.getElementById('gularPouch').setAttribute('d', `M 34,-64 Q 76,${pouchSag.toFixed(1)} 118,-59 Z`);
+    document.getElementById('pouchFishVisual').setAttribute('opacity', state.fishCount > 0 ? '0.9' : '0');
+
+    // Crank & Pedals (BB at -15, 0, R = 28)
+    const bbX = -15, bbY = 0, crankR = 28;
+    const lPedalX = bbX + crankR * Math.cos(state.crankAngle);
+    const lPedalY = bbY + crankR * Math.sin(state.crankAngle);
+    const rPedalX = bbX + crankR * Math.cos(state.crankAngle + Math.PI);
+    const rPedalY = bbY + crankR * Math.sin(state.crankAngle + Math.PI);
+
+    document.getElementById('crankArmL').setAttribute('x2', lPedalX.toFixed(2));
+    document.getElementById('crankArmL').setAttribute('y2', lPedalY.toFixed(2));
+    document.getElementById('crankArmR').setAttribute('x2', rPedalX.toFixed(2));
+    document.getElementById('crankArmR').setAttribute('y2', rPedalY.toFixed(2));
+
+    // Solve Left & Right Leg IK
+    const ikL = solveTwoBoneIK(hipX, hipY, lPedalX, lPedalY, state.L1, state.L2);
+    const ikR = solveTwoBoneIK(hipX, hipY, rPedalX, rPedalY, state.L1, state.L2);
+
+    const setLine = (id, x1, y1, x2, y2) => {
+      const el = document.getElementById(id);
+      el.setAttribute('x1', x1.toFixed(2)); el.setAttribute('y1', y1.toFixed(2));
+      el.setAttribute('x2', x2.toFixed(2)); el.setAttribute('y2', y2.toFixed(2));
+    };
+    setLine('lThigh', hipX, hipY, ikL.kx, ikL.ky);
+    setLine('lShin', ikL.kx, ikL.ky, lPedalX, lPedalY);
+    setLine('rThigh', hipX, hipY, ikR.kx, ikR.ky);
+    setLine('rShin', ikR.kx, ikR.ky, rPedalX, rPedalY);
+
+    document.getElementById('lFoot').setAttribute('points', `${(lPedalX - 10).toFixed(1)},${lPedalY.toFixed(1)} ${(lPedalX + 18).toFixed(1)},${lPedalY.toFixed(1)} ${(lPedalX + 8).toFixed(1)},${(lPedalY - 8).toFixed(1)}`);
+    document.getElementById('rFoot').setAttribute('points', `${(rPedalX - 10).toFixed(1)},${rPedalY.toFixed(1)} ${(rPedalX + 18).toFixed(1)},${rPedalY.toFixed(1)} ${(rPedalX + 8).toFixed(1)},${(rPedalY - 8).toFixed(1)}`);
+
+    // Update IK markers
+    document.getElementById('hipMarker').setAttribute('cx', hipX.toFixed(1));
+    document.getElementById('hipMarker').setAttribute('cy', hipY.toFixed(1));
+    document.getElementById('kneeMarker').setAttribute('cx', ikL.kx.toFixed(1));
+    document.getElementById('kneeMarker').setAttribute('cy', ikL.ky.toFixed(1));
+    document.getElementById('pedalMarker').setAttribute('cx', lPedalX.toFixed(1));
+    document.getElementById('pedalMarker').setAttribute('cy', lPedalY.toFixed(1));
+    document.getElementById('kneeAngleTxt').setAttribute('x', (ikL.kx + 10).toFixed(1));
+    document.getElementById('kneeAngleTxt').setAttribute('y', (ikL.ky - 4).toFixed(1));
+    document.getElementById('kneeAngleTxt').textContent = `θ_knee: ${ikL.kneeDeg}°`;
+
+    // Rotate wheels & drone
+    const wheelDeg = (state.wheelAngle * 180) / Math.PI;
+    document.getElementById('rearSpokes').setAttribute('transform', `rotate(${wheelDeg.toFixed(1)})`);
+    document.getElementById('frontSpokes').setAttribute('transform', `rotate(${wheelDeg.toFixed(1)})`);
+    const droneY = -165 + Math.sin(ts * 0.004) * 7;
+    document.getElementById('paceDrone').setAttribute('transform', `translate(215, ${droneY.toFixed(1)})`);
+
+    // Update HUD numbers
+    document.getElementById('hudSpeed').textContent = `${speedKmh.toFixed(1)} km/h`;
+    document.getElementById('hudPower').textContent = `${totalWatts} W`;
+    document.getElementById('hudGrade').textContent = `${state.grade >= 0 ? '+' : ''}${state.grade.toFixed(1)}%`;
+    document.getElementById('hudCda').textContent = `${effCda.toFixed(3)} m²`;
+    document.getElementById('hudHr').textContent = `${avianHr} bpm`;
+    document.getElementById('hudGear').textContent = `${state.gear}/11 (${ratio.toFixed(2)}x)`;
+    document.getElementById('hudSlip').textContent = `${ikL.slipError.toFixed(2)} px`;
+
+    // Render Background Terrain & Wind-Tunnel Streamlines
+    renderWindTunnelCanvas(speedKmh, pitchDeg, ts);
+
+    // Update Sparkline every 160ms
+    if (ts - lastSparkTime > 160 && !state.paused) {
+      lastSparkTime = ts;
+      powerHistory.push(totalWatts); powerHistory.shift();
+      hrHistory.push(avianHr); hrHistory.shift();
+      renderSparkline();
+    }
+
+    requestAnimationFrame(animate);
+  }
+
+  function renderWindTunnelCanvas(speedKmh, pitchDeg, ts) {
+    const st = STAGES[state.stageIdx];
+    const grad = ctx.createLinearGradient(0, 0, 0, 410);
+    grad.addColorStop(0, st.skyTop);
+    grad.addColorStop(1, st.skyBot);
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, 960, 410);
+
+    // Blueprint wind-tunnel grid
+    ctx.strokeStyle = 'rgba(16, 185, 129, 0.08)';
+    ctx.lineWidth = 1;
+    for (let x = 0; x < 960; x += 48) {
+      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, 410); ctx.stroke();
+    }
+    for (let y = 0; y < 410; y += 48) {
+      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(960, y); ctx.stroke();
+    }
+
+    // Distant mountains / skyline silhouette
+    ctx.fillStyle = 'rgba(15, 23, 42, 0.65)';
+    ctx.beginPath();
+    ctx.moveTo(0, 340);
+    for (let x = 0; x <= 960; x += 60) {
+      const h = 250 - Math.sin((x + state.roadOffset * 0.25) * 0.008) * 42 - Math.cos((x + state.roadOffset * 0.12) * 0.018) * 24;
+      ctx.lineTo(x, h);
+    }
+    ctx.lineTo(960, 410); ctx.lineTo(0, 410); ctx.closePath();
+    ctx.fill();
+
+    // Tilted Road Surface matching pitchDeg
+    ctx.save();
+    ctx.translate(470, 262);
+    ctx.rotate((pitchDeg * Math.PI) / 180);
+    ctx.fillStyle = st.ground;
+    ctx.fillRect(-600, 64, 1200, 160);
+    ctx.strokeStyle = '#10b981';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath(); ctx.moveTo(-600, 64); ctx.lineTo(600, 64); ctx.stroke();
+
+    // Moving road dashes or cobblestones
+    const dashStep = 80;
+    const shift = state.roadOffset % dashStep;
+    for (let x = -560 - shift; x < 580; x += dashStep) {
+      if (st.cobble) {
+        ctx.fillStyle = '#52525b';
+        ctx.fillRect(x, 68, 34, 10);
+        ctx.fillRect(x + 38, 70, 32, 9);
+      } else {
+        ctx.fillStyle = 'rgba(52, 211, 153, 0.65)';
+        ctx.fillRect(x, 76, 36, 4);
+      }
+    }
+    ctx.restore();
+
+    // Laminar & Turbulent Wind-Tunnel Smoke Streamlines
+    if (state.showStreamlines) {
+      const flowSpeed = Math.max(12, speedKmh + state.wind) * 0.22;
+      for (const s of streamlines) {
+        if (!state.paused) {
+          s.x -= flowSpeed * s.speedMul;
+          if (s.x + s.len < 0) {
+            s.x = 960 + Math.random() * 80;
+            s.y = 45 + Math.random() * 290;
+          }
+        }
+        // Deflect streamlines around pelican aero envelope (center ~ 470, 175)
+        const dx = s.x - 475;
+        const dy = s.y - 175;
+        const dist = Math.hypot(dx, dy);
+        let deflectY = 0;
+        let isWake = false;
+        if (dist < 145) {
+          deflectY = (dy >= 0 ? 1 : -1) * (145 - dist) * 0.22;
+          if (dx < 0) isWake = true;
+        }
+        ctx.strokeStyle = isWake ? 'rgba(251, 191, 36, 0.42)' : 'rgba(56, 189, 248, 0.36)';
+        ctx.lineWidth = isWake ? 2.0 : 1.5;
+        ctx.beginPath();
+        ctx.moveTo(s.x, s.y + deflectY);
+        ctx.quadraticCurveTo(s.x + s.len * 0.5, s.y + deflectY * 1.35, s.x + s.len, s.y);
+        ctx.stroke();
+      }
+    }
+  }
+
+  function renderSparkline() {
+    sctx.clearRect(0, 0, 232, 48);
+    // Power trace (amber)
+    sctx.strokeStyle = '#fbbf24';
+    sctx.lineWidth = 1.8;
+    sctx.beginPath();
+    powerHistory.forEach((w, i) => {
+      const x = (i / (powerHistory.length - 1)) * 232;
+      const y = 44 - Math.min(40, (w / 600) * 40);
+      if (i === 0) sctx.moveTo(x, y); else sctx.lineTo(x, y);
+    });
+    sctx.stroke();
+
+    // Heart rate trace (rose)
+    sctx.strokeStyle = '#fb7185';
+    sctx.lineWidth = 1.5;
+    sctx.beginPath();
+    hrHistory.forEach((hr, i) => {
+      const x = (i / (hrHistory.length - 1)) * 232;
+      const y = 44 - Math.min(40, ((hr - 90) / 140) * 40);
+      if (i === 0) sctx.moveTo(x, y); else sctx.lineTo(x, y);
+    });
+    sctx.stroke();
+  }
+
+  // Listen to 3-Way Pelican Arena broadcast controls
+  window.addEventListener('message', (e) => {
+    const d = e.data || {};
+    if (d.type === 'ARENA_SYNC') {
+      if (typeof d.cadence === 'number') {
+        state.cadence = d.cadence;
+        document.getElementById('slCadence').value = d.cadence;
+      }
+      if (typeof d.wind === 'number') {
+        state.wind = d.wind;
+        document.getElementById('slWind').value = d.wind;
+      }
+      if (typeof d.paused === 'boolean') {
+        state.paused = d.paused;
+      }
+      if (d.action === 'sprint') triggerAttack();
+      if (d.action === 'feed') triggerEnergyGel();
+      updateControls();
+    }
+  });
+
+  window.addEventListener('keydown', (e) => {
+    if (e.code === 'Space') { e.preventDefault(); togglePause(); }
+    if (e.key === 'g' || e.key === 'G') {
+      state.gear = (state.gear % 11) + 1;
+      document.getElementById('slGear').value = state.gear;
+      updateControls();
+    }
+    if (['1', '2', '3', '4'].includes(e.key)) setStage(parseInt(e.key, 10) - 1);
+  });
+
+  selectRpi(0);
+  updateControls();
+  requestAnimationFrame(animate);
+</script>
+</body>
+</html>

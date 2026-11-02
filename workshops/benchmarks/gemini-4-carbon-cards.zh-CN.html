@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'" />
+<title>Gemini 4 Carbon &amp; 20- 边境编码/网络安全基准范本(补编)6) — 7-卡德视觉报告</title>
+<style>
+  :root {
+    --bg: #F3F4F6;
+    --card: #FFFFFF;
+    --ink: #111827;
+    --muted: #6B7280;
+    --subtle: #9CA3AF;
+    --line: #E5E7EB;
+    --panel: #F9FAFB;
+    --blue: #2563EB;
+    --blue-soft: #EFF6FF;
+    --indigo: #4F46E5;
+    --green: #059669;
+    --green-bg: #ECFDF5;
+    --amber: #D97706;
+    --amber-bg: #FFFBEB;
+    --red: #DC2626;
+    --red-bg: #FEF2F2;
+    --dark: #0F172A;
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, "Helvetica Neue", Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font);
+    padding: 32px 16px 64px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .deck-header {
+    max-width: 900px;
+    margin: 0 auto 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .deck-header strong { color: var(--ink); font-size: 16px; }
+  .deck {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 36px;
+  }
+  .card {
+    width: 900px;
+    min-height: 1125px;
+    background: var(--card);
+    border-radius: 24px;
+    border: 1px solid var(--line);
+    box-shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
+    padding: 48px 52px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+  }
+  .eyebrow {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--blue);
+  }
+  .badge-num {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    background: var(--panel);
+    border: 1px solid var(--line);
+    padding: 5px 12px;
+    border-radius: 999px;
+  }
+  h1, h2 {
+    font-size: 38px;
+    line-height: 1.13;
+    letter-spacing: -0.025em;
+    font-weight: 800;
+    color: var(--ink);
+    margin-bottom: 14px;
+  }
+  h1 .accent, h2 .accent {
+    background: linear-gradient(90deg, #2563EB 0%, #7C3AED 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .subhead {
+    font-size: 18px;
+    line-height: 1.48;
+    color: var(--muted);
+    margin-bottom: 24px;
+  }
+  .card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .card-footer {
+    margin-top: 22px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    font-size: 12.5px;
+    color: var(--subtle);
+  }
+  .wb-frame {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 1.05fr 1.25fr 1.2fr;
+    gap: 14px;
+  }
+  .wb-col {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+  .wb-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .pill-list { display: flex; flex-direction: column; gap: 6px; }
+  .scen-pill {
+    font-size: 12px;
+    padding: 7px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    color: var(--ink);
+    background: var(--panel);
+    font-weight: 500;
+  }
+  .scen-pill.active {
+    background: var(--blue-soft);
+    border-color: #BFDBFE;
+    color: var(--blue);
+    font-weight: 700;
+  }
+  .band-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11.5px;
+    padding: 5px 8px;
+    border-radius: 6px;
+  }
+  .band-green { background: var(--green-bg); color: var(--green); font-weight: 600; }
+  .band-amber { background: var(--amber-bg); color: var(--amber); font-weight: 600; }
+  .band-red { background: var(--red-bg); color: var(--red); font-weight: 600; }
+  .quote-box {
+    background: var(--panel);
+    border-left: 4px solid var(--blue);
+    padding: 12px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    line-height: 1.48;
+    color: var(--ink);
+  }
+  .meta-pills { display: flex; gap: 6px; flex-wrap: wrap; }
+  .meta-pill {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    padding: 4px 9px;
+    border-radius: 999px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .q-card {
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 15px 18px;
+    background: var(--card);
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+  .q-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+  .q-title { font-size: 15px; font-weight: 700; color: var(--ink); }
+  .q-badges { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
+  .type-badge {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 6px;
+    background: #F3F4F6;
+    color: #374151;
+    border: 1px solid var(--line);
+  }
+  .act-pill {
+    font-size: 11.5px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 999px;
+  }
+  .act-auto { background: var(--green-bg); color: var(--green); }
+  .act-confirm { background: var(--amber-bg); color: var(--amber); }
+  .act-human { background: var(--red-bg); color: var(--red); }
+  .opt-row {
+    display: grid;
+    grid-template-columns: 205px 1fr 78px;
+    align-items: center;
+    gap: 10px;
+    font-size: 12.5px;
+  }
+  .opt-label { color: var(--ink); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .opt-bar-wrap {
+    height: 10px;
+    background: #F3F4F6;
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .opt-bar {
+    height: 100%;
+    background: var(--blue);
+    border-radius: 999px;
+  }
+  .opt-bar.muted { background: #CBD5E1; }
+  .opt-val { font-family: var(--mono); font-size: 12px; text-align: right; color: var(--muted); font-weight: 600; }
+  table.matrix {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.2px;
+  }
+  table.matrix th {
+    text-align: left;
+    font-size: 10.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    padding: 8px 9px;
+    border-bottom: 2px solid var(--line);
+  }
+  table.matrix td {
+    padding: 7.5px 9px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: middle;
+  }
+  table.matrix tr.row-New { background: #EFF6FF; }
+  .callout-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: auto;
+  }
+  .callout {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 13px 15px;
+    font-size: 12.8px;
+    line-height: 1.45;
+  }
+  .callout strong { display: block; margin-bottom: 4px; color: var(--ink); font-size: 13.5px; }
+  .code-block {
+    background: var(--dark);
+    color: #E2E8F0;
+    border-radius: 14px;
+    padding: 15px 18px;
+    font-family: var(--mono);
+    font-size: 11.8px;
+    line-height: 1.48;
+    overflow-x: auto;
+    white-space: pre;
+  }
+  .arrow-down {
+    text-align: center;
+    font-size: 20px;
+    color: var(--blue);
+    font-weight: 800;
+    margin: -4px 0;
+  }
+  .lat-row {
+    display: grid;
+    grid-template-columns: 195px 1fr;
+    gap: 14px;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .lat-label { font-size: 13px; font-weight: 700; color: var(--ink); }
+  .lat-sub { font-size: 11px; color: var(--muted); font-weight: 500; }
+  .lat-bars { display: flex; flex-direction: column; gap: 5px; }
+  .lat-bar-line { display: flex; align-items: center; gap: 8px; }
+  .lat-bar { height: 14px; border-radius: 6px; }
+  .lat-bar.primary { background: #3B82F6; }
+  .lat-bar.base { background: #CBD5E1; }
+  .lat-num { font-family: var(--mono); font-size: 11.5px; font-weight: 700; color: var(--ink); }
+  .take-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+  .take-card {
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid var(--line);
+  }
+  .take-card.good { background: #ECFDF5; border-color: #A7F3D0; }
+  .take-card.bad { background: #FEF2F2; border-color: #FECACA; }
+  .take-title { font-size: 17px; font-weight: 800; margin-bottom: 12px; }
+  .take-card.good .take-title { color: #065F46; }
+  .take-card.bad .take-title { color: #991B1B; }
+  .take-list { list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 13.5px; line-height: 1.45; }
+  .dark-footer-card {
+    background: var(--dark);
+    color: #F8FAFC;
+    border-radius: 16px;
+    padding: 20px 24px;
+    margin-top: auto;
+  }
+  .dark-footer-card h3 { font-size: 16px; font-weight: 800; margin-bottom: 6px; color: #FFFFFF; }
+  .dark-footer-card p { font-size: 13px; color: #94A3B8; line-height: 1.45; }
+</style>
+<!-- kee-dedicated-style:start -->
+<style>/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.65fr 1.1fr 1.15fr 1.1fr 1.1fr;gap:6px;align-items:stretch;min-width:0}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+.kee-dedicated-report-viewport,.kee-dedicated-report-layout{display:contents}@media screen{body.kee-dedicated-report-root{display:block}.kee-dedicated-report-viewport{display:block;width:100%;max-width:100%;overflow-x:auto}.kee-dedicated-report-layout{
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font);
+    padding: 32px 16px 64px;
+    -webkit-font-smoothing: antialiased;
+  margin:0;padding:0;min-width:900px}.kee-dedicated-report-viewport:focus-visible{outline:2px solid #3b82f6;outline-offset:3px}}</style>
+<!-- kee-dedicated-style:end -->
+<!-- kee-report-localization:metadata:start --><link rel="alternate" hreflang="en" href="gemini-4-carbon-cards.en.html"><link rel="alternate" hreflang="zh-CN" href="gemini-4-carbon-cards.zh-CN.html"><meta name="report-translation-source" content="workshops/benchmarks/gemini-4-carbon-cards.html@941ee62"><meta name="report-translation-provenance" content="translation; independently_reproduced=false"><style>/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.65fr 1.1fr 1.15fr 1.1fr 1.1fr;gap:6px;align-items:stretch;min-width:0}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+
+html{scroll-padding-top:108px}.reading-header,.kee-dedicated-nav,[data-professional-header]{position:sticky;top:0;z-index:1000;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+
+:root{--search-bg:#101a30;--search-soft:#172440;--search-ink:#eef3ff;--search-muted:#adbbd1;--search-line:#293956;--search-accent:#9aabff;--header-offset:108px}
+:root[data-reading-shell][data-theme=light],[data-perimeter-theme=light]{--search-bg:#fff;--search-soft:#e8eefb;--search-ink:#17233e;--search-muted:#4c5e7c;--search-line:#d5ddec;--search-accent:#354ec8}
+html{scroll-padding-top:var(--header-offset,108px)!important}
+.site-search,.site-search *{box-sizing:border-box!important;font-family:"Segoe UI",sans-serif;letter-spacing:normal;text-transform:none}
+.site-search{position:relative;display:flex;align-items:center;gap:5px;min-width:0;width:230px;max-width:100%;margin:0!important;padding:0!important;line-height:1.4;border:1px solid var(--search-line);border-radius:9px;background:var(--search-soft);color:var(--search-ink);isolation:isolate}
+.site-search input[type=search]{display:block;flex:1;min-width:0;width:100%;height:42px;margin:0;padding:9px 8px!important;font-size:12px!important;line-height:1.5;border:0!important;border-radius:9px;background:transparent!important;color:var(--search-ink)!important;box-shadow:none!important;appearance:none}
+.site-search input::placeholder{color:var(--search-muted);opacity:1}.site-search input:focus-visible{outline:2px solid var(--search-accent);outline-offset:2px}
+.site-search kbd{font:11px Consolas,monospace;color:var(--search-muted);padding:1px 5px;border:1px solid var(--search-line);border-radius:4px}
+.site-search button[type=submit]{flex:none;width:38px;min-width:38px;height:42px;min-height:42px;padding:0;margin:0;border:0;border-radius:8px;background:transparent;color:var(--search-accent);font-size:24px;cursor:pointer;box-shadow:none}
+.search-label,.search-status{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.site-search .search-results{position:absolute;top:calc(100% + 10px);right:0;z-index:1100;width:min(480px,calc(100vw - 32px));max-height:min(560px,65vh);overflow-y:auto;border:1px solid var(--search-line);border-radius:12px;background:var(--search-bg);color:var(--search-ink);padding:10px;box-shadow:0 12px 32px #0005;text-align:left}
+.site-search .search-results[hidden]{display:none!important}.search-results .search-group{margin:8px 6px 4px;font:11px/1.5 Consolas,monospace;color:var(--search-muted)}
+.site-search .search-results a{display:block!important;padding:10px!important;margin:3px 0!important;border:1px solid transparent!important;border-radius:7px;background:transparent;color:var(--search-ink)!important;font-size:13px!important;text-decoration:none!important;white-space:normal;overflow-wrap:anywhere;text-align:left!important;line-height:1.5!important}
+.site-search .search-results a[aria-selected=true],.site-search .search-results a:hover{border-color:var(--search-accent)!important;background:var(--search-soft)}
+.search-results a small{display:block;font-size:10px;color:var(--search-muted);margin-top:4px}.search-results p{margin:10px;font-size:13px;color:var(--search-muted)}
+.search-archive-summary{padding:20px;border:1px solid var(--search-line);border-radius:10px;background:var(--search-bg);color:var(--search-ink);margin:24px 0}.search-archive-summary h2{font-size:24px;margin:0 0 12px}.search-archive-summary li{margin:12px 0}.search-archive-summary a{color:var(--search-accent)}
+[data-professional-header]{position:sticky!important;top:0!important;z-index:1000!important;background:var(--search-bg)!important;--header-glass:rgba(16,26,48,.9);grid-template-columns:auto minmax(0,1fr) 230px auto!important}
+[data-professional-header][data-perimeter-theme=light],:root[data-reading-shell][data-theme=light] [data-professional-header]{--header-glass:rgba(255,255,255,.94)}
+[data-professional-header] .professional-mobile{display:none}.professional-mobile summary{min-width:38px;min-height:42px;display:grid;place-items:center;cursor:pointer;list-style:none}.professional-mobile summary::-webkit-details-marker{display:none}
+[data-professional-header] .professional-context{display:none}
+.professional-context-bar{padding:12px 24px;border-bottom:1px solid var(--search-line);background:var(--search-bg);color:var(--search-muted);font:12px/1.6 "Segoe UI",sans-serif;display:flex;flex-wrap:wrap;gap:8px 18px;overflow-wrap:anywhere}.professional-context-bar a{color:var(--search-accent)}
+@supports((backdrop-filter:blur(16px)) or (-webkit-backdrop-filter:blur(16px))){.site-header,[data-professional-header]{background:var(--header-glass)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}}
+@media(max-width:1250px) and (min-width:701px){.header-inner{grid-template-columns:minmax(0,1fr) 230px auto!important;padding:12px 0;gap:12px!important}.desktop-nav{grid-row:2;grid-column:1/-1}.header-inner>.site-search{grid-column:2;grid-row:1}.header-inner>.controls{grid-column:3;grid-row:1}[data-professional-header]{grid-template-columns:minmax(0,1fr) 230px auto!important;gap:12px!important}[data-professional-header]>.professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header]>.site-search{grid-column:2;grid-row:1}[data-professional-header]>.professional-controls{grid-column:3;grid-row:1}:root{--header-offset:176px}}
+@media(max-width:700px){.header-inner{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 0;gap:8px!important}.header-inner>.site-search{grid-row:2;grid-column:1/-1;width:100%}.header-inner>.controls{grid-column:2;grid-row:1}.site-search .search-results{width:100%;right:0}[data-professional-header]{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 16px!important;gap:8px!important}[data-professional-header]>.professional-primary{display:none!important}[data-professional-header]>.site-search{grid-column:1/-1;grid-row:2;width:100%}[data-professional-header]>.professional-controls{grid-column:2;grid-row:1}[data-professional-header] .professional-mobile{display:block}[data-professional-header] .professional-mobile[open]>.professional-primary{position:absolute;top:100%;left:0;right:0;padding:16px;background:var(--search-bg);border-bottom:1px solid var(--search-line);display:grid;grid-template-columns:1fr 1fr;gap:8px}[data-professional-header] .professional-mobile .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:12px!important}:root{--header-offset:126px}}
+@media(prefers-reduced-transparency:reduce){.site-header,[data-professional-header]{background:var(--search-bg)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+@media print{.site-search,.professional-context-bar{display:none!important}}
+
+@media(min-width:1251px){.header-inner{display:grid!important;grid-template-columns:auto minmax(0,1fr) 230px auto!important;gap:18px!important}.header-inner .desktop-nav{min-width:0}}
+
+html:has(.kee-dedicated-app-root){height:auto!important;overflow-x:hidden!important;overflow-y:auto!important}
+body:has([data-professional-header]){height:auto!important;overflow-x:clip!important;overflow-y:visible!important;padding-top:0!important}
+.demo-language-navigation{display:none!important}
+.stage-column,.telemetry-panel,.scene-pill,#timeline-slider{min-width:0}
+@media(max-width:1180px){.workspace,.template-tabs{grid-template-columns:minmax(0,1fr)!important}}
+
+.in-arena-frame .professional-context-bar,.in-arena-frame [data-knowledge-atlas]{display:none!important}
+</style><!-- kee-report-localization:metadata:end --></head>
+<body class="kee-dedicated-report-root"><!-- kee-report-localization-navigation:start --><nav class="kee-dedicated-nav" data-professional-header><a class="professional-identity reading-brand kee-dedicated-identity identity" href="../../zh.html">Qi Chen · @turbo998</a><div class="professional-primary" role="navigation" aria-label="主导航"><a href="../../studio/zh-index.html" data-section="hub" data-nav-en-href="../../studio/index.html" data-nav-zh-href="../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub">Frontier Transformation Engineering Hub</a><a href="../../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../../benchmarks.html" data-nav-zh-href="../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心" aria-current="page">基准评测中心</a><a href="../../zh-github-radar.html" data-section="radar" data-nav-en-href="../../github-radar.html" data-nav-zh-href="../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI 信号雷达</a><a href="../../zh-openrouter.html" data-section="routing" data-nav-en-href="../../openrouter.html" data-nav-zh-href="../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../../zh-about.html" data-section="profile" data-nav-en-href="../../about.html" data-nav-zh-href="../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">首席架构师履历</a></div><form class="site-search" role="search" action="../../studio/zh-archive.html" method="get" data-search-root="../../index.html" data-search-language="zh-CN"><label class="search-label" for="site-search-input">搜索架构、评测、Demo、技能...</label><input id="site-search-input" name="q" type="search" placeholder="搜索架构、评测、Demo、技能..." autocomplete="off" spellcheck="false" aria-keyshortcuts="/ Control+k Meta+k"><kbd aria-hidden="true">/</kbd><button type="submit" aria-label="搜索全部内容">⌕</button><div class="search-results" id="site-search-results" hidden></div><span class="search-status" role="status" aria-live="polite"></span></form><div class="reading-controls professional-controls" aria-label="网站语言与外观"><a href="gemini-4-carbon-cards.en.html" lang="en" hreflang="en">EN</a><a href="gemini-4-carbon-cards.zh-CN.html" lang="zh-CN" hreflang="zh-CN" aria-current="page">中文</a><details class="professional-mobile"><summary aria-label="打开主导航">☰</summary><div class="professional-primary" role="navigation" aria-label="移动主导航"><a href="../../studio/zh-index.html" data-section="hub" data-nav-en-href="../../studio/index.html" data-nav-zh-href="../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub">Frontier Transformation Engineering Hub</a><a href="../../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../../benchmarks.html" data-nav-zh-href="../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心" aria-current="page">基准评测中心</a><a href="../../zh-github-radar.html" data-section="radar" data-nav-en-href="../../github-radar.html" data-nav-zh-href="../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI 信号雷达</a><a href="../../zh-openrouter.html" data-section="routing" data-nav-en-href="../../openrouter.html" data-nav-zh-href="../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../../zh-about.html" data-section="profile" data-nav-en-href="../../about.html" data-nav-zh-href="../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">首席架构师履历</a></div></details><a data-reading-theme="light" href="?theme=light" aria-label="浅色主题">☀</a><a data-reading-theme="dark" href="?theme=dark" aria-label="深色主题">◐</a></div><div class="professional-context" aria-label="返回上下文"><a href="../../studio/zh-index.html">← 工程枢纽</a> · <a href="../../studio/zh-benchmarks.html">返回主题</a></div></nav><div class="professional-context-bar"><a href="../../studio/zh-index.html">← 工程枢纽</a> · <a href="../../studio/zh-benchmarks.html">返回主题</a></div><nav aria-label="报告语言" style="font:14px/1.5 system-ui,sans-serif;display:flex;flex-wrap:wrap;gap:12px;padding:12px 18px;background:#101a30;color:#eef3ff;width:100%;box-sizing:border-box"><a style="color:#9aabff" href="gemini-4-carbon-cards.en.html" lang="en" hreflang="en">EN</a><a style="color:#9aabff" href="gemini-4-carbon-cards.zh-CN.html" lang="zh-CN" hreflang="zh-CN" aria-current="page">中文</a><span>源报告译本；非独立复测。指标与证据保持原样。</span></nav><figure class="knowledge-figure" data-knowledge-atlas="benchmarks" style="margin:24px 0;max-width:100%"><svg xmlns="http://www.w3.org/2000/svg" lang="zh-CN" role="img" aria-labelledby="knowledge-ed2e5fbf280b-title knowledge-ed2e5fbf280b-desc" viewBox="0 0 360 758" width="360" style="display:block;width:100%;height:auto;max-width:560px;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-ed2e5fbf280b-title">Gemini 4 Carbon &amp;amp; 20- 边境编码/网络安全基准范本(补编)6) — 7-卡德视觉报告</title><desc id="knowledge-ed2e5fbf280b-desc">研究问题与封存负载: 数据集 · 模型批次 · 分母 · 来源 → 定义测试契约 → Harness 与执行契约: 提示词 · 工具权限 · 环境 · 重复次数 → 生成追踪产物 → 原始输出与确定性校验: 任务轨迹 · 校验结果 · 缺失值记录 → 带条件汇总 → 得分、稳健性与延迟: 保留单位、条件与不确定性 → 支持有边界的结论 → 报告与可复现性: 7 卡来源报告 · 局限 · 是否独立复现？</desc><rect width="360" height="758" rx="16" fill="#091827"/><text x="20" y="30" fill="#eef5ff" font-size="20" font-weight="700"><tspan x="20" dy="0">Gemini 4 Carbon &amp;amp; 20- 边境</tspan><tspan x="20" dy="28">编码/网络安全基准范本(补编)6)</tspan><tspan x="20" dy="28">— 7-卡德视觉报告</tspan></text><text x="20" y="111" fill="#a9b8ce" font-size="13" font-weight="400"><tspan x="20" dy="0">概念架构 · 箭头表示关系，不代表测量值</tspan></text><g data-concept="1"><rect x="16" y="137" width="328" height="79" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="151" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="167" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">研究问题与封存负载</tspan></text><text x="32" y="198" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">数据集 · 模型批次 · 分母 · 来源</tspan></text></g><g data-relationship="定义测试契约"><path d="M32 216 V261" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 256 L32 262 L37 256" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="242" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">定义测试契约</tspan></text></g><g data-concept="2"><rect x="16" y="268" width="328" height="79" rx="12" fill="#132942" stroke="#43617f"/><rect x="16" y="282" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="298" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">Harness 与执行契约</tspan></text><text x="32" y="329" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">提示词 · 工具权限 · 环境 · 重复次数</tspan></text></g><g data-relationship="生成追踪产物"><path d="M32 347 V392" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 387 L32 393 L37 387" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="373" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">生成追踪产物</tspan></text></g><g data-concept="3"><rect x="16" y="399" width="328" height="79" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="413" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="429" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">原始输出与确定性校验</tspan></text><text x="32" y="460" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">任务轨迹 · 校验结果 · 缺失值记录</tspan></text></g><g data-relationship="带条件汇总"><path d="M32 478 V523" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 518 L32 524 L37 518" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="504" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">带条件汇总</tspan></text></g><g data-concept="4"><rect x="16" y="530" width="328" height="79" rx="12" fill="#132942" stroke="#43617f"/><rect x="16" y="544" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="560" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">得分、稳健性与延迟</tspan></text><text x="32" y="591" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">保留单位、条件与不确定性</tspan></text></g><g data-relationship="支持有边界的结论"><path d="M32 609 V654" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 649 L32 655 L37 649" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="635" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">支持有边界的结论</tspan></text></g><g data-concept="5"><rect x="16" y="661" width="328" height="79" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="675" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="691" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">报告与可复现性</tspan></text><text x="32" y="722" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">7 卡来源报告 · 局限 · 是否独立复现？</tspan></text></g></svg><figcaption style="font:14px/1.6 system-ui,sans-serif;margin:12px 0;overflow-wrap:anywhere">整体知识图示：按标注关系阅读组件与工程边界。布局仅为概念示意；不表示吞吐、性能排名或生产部署。</figcaption></figure><!-- kee-report-localization-navigation:end -->
+
+<!-- kee-dedicated-report-open:start --><div class="kee-dedicated-report-viewport" tabindex="0" role="region" aria-label="原始报表; 水平滚动以读取所有栏目"><div class="kee-dedicated-report-layout"><!-- kee-dedicated-report-open:end -->
+
+<div class="deck-header">
+  <strong>Gemini 4 Carbon &amp; 20- 边境编码/网络安全基准范本(补编)6 · 7-卡片 -你还不知道4:5夹克)</strong>
+  <span>证明:匿名_已报告_官方Google深明 Evals (奥克特)28, 2026) &amp;原子/副驾驶-基准@a1913835</span>
+</div>
+
+<div class="deck">
+
+  <!-- CARD 1: OVERVIEW & WORKBENCH -->
+  <section class="card">
+    <div>
+      <div class="card-top">
+        <span class="eyebrow">手举起手来20- 模范的前线铸币&amp;青少年犯罪(支持)6)</span>
+        <span class="badge-num">1 / 7</span>
+      </div>
+      <h1><span class="accent">Gemini 4 Carbon</span> 击出 #1AA指数(59) &amp; 88.2%证监会的本底Pro$2 / $10</h1>
+      <p class="subhead">评价Google深明德的专业长相编码&amp;网络安全前沿模型(Oct)28, 2026风向预览)并列19副驾驶CLI跨代码模式16官方跨领域基准和1,310隐藏的断言。</p>
+    </div>
+
+    <div class="card-body">
+      <div class="wb-frame">
+        <div class="wb-col">
+          <div class="wb-title">评价轨迹</div>
+          <div class="pill-list">
+            <div class="scen-pill active">01网络防御(SEC/CWE/OptitGym)</div>
+            <div class="scen-pill">02代理编码(SWE-sweep/TB)4.0)</div>
+            <div class="scen-pill">03 · 1M长上下文( 图形96.2%)</div>
+            <div class="scen-pill">04长视线($16,484正在等待着...2)</div>
+            <div class="scen-pill">05 · 19- 模组CLI编码( E)1,310隐藏)</div>
+          </div>
+          <div class="wb-title" style="margin-top:6px;">部署</div>
+          <div class="band-row band-green"><span>自动执行</span><span>#1域数+0.0%新闻学会</span></div>
+          <div class="band-row band-amber"><span>确认</span><span>风向/ 上 --2差距</span></div>
+          <div class="band-row band-red"><span>转人工</span><span>防御/高级ASR</span></div>
+        </div>
+
+        <div class="wb-col">
+          <div class="wb-title">补编6范围&amp;定价</div>
+          <div class="quote-box">
+            <strong>Gemini 4 Carbon(单位:千美元)28, 2026):</strong> 用于复杂多步编码,长相代理工作流程,防御网络安全的专门前沿模式.Gemini 4 Argon定价(<strong>$2/1M</strong> 输入, <strong>$10/1M</strong> 输出, <strong>95%关</strong> 缓存输入=$0.10/1M)在交付时 <strong>2.23x</strong> 苏-苏和 <strong>0.0%</strong> 灰天鹅IPI攻击成功率.
+          </div>
+          <div class="meta-pills">
+            <span class="meta-pill">AA 指数 v5.0: 59 (#1)</span>
+            <span class="meta-pill">证监会的 " 现场Pro " :88.2%</span>
+            <span class="meta-pill">开发游戏10h: 54.8%</span>
+            <span class="meta-pill">冰雪: 冰雪之门:71.0%</span>
+            <span class="meta-pill">图形行走1M: 96.2%</span>
+            <span class="meta-pill">灰天鹅 IPI:0.0%</span>
+          </div>
+        </div>
+
+        <div class="wb-col">
+          <div class="wb-title">20- 模范领队</div>
+          <div class="q-card" style="padding:10px 12px;">
+            <div class="q-head">
+              <span class="q-title" style="font-size:12.5px;">Gemini 4 Carbon(轨道B)</span>
+              <span class="act-pill act-auto">14/16 #1</span>
+            </div>
+            <div style="font-size:11.5px; color:var(--muted);">助 补59肺结核4.0 65.2% (0%作弊) · SWE - sweep9.6% · $2/$10</div>
+          </div>
+          <div class="q-card" style="padding:10px 12px;">
+            <div class="q-head">
+              <span class="q-title" style="font-size:12.5px;">有线电视5.1 &amp; Opus 5.5 (CLI)</span>
+              <span class="act-pill act-auto">#1–#2 CLI</span>
+            </div>
+            <div style="font-size:11.5px; color:var(--muted);">99.77 ($14.45) &amp; 99.68 ($5.84) · 1,310/1,310隐藏通道</div>
+          </div>
+          <div class="q-card" style="padding:10px 12px;">
+            <div class="q-head">
+              <span class="q-title" style="font-size:12.5px;">Haiku 5.5 &amp; Sonnet 5.5</span>
+              <span class="act-pill act-auto">帕雷托语Name</span>
+            </div>
+            <div style="font-size:11.5px; color:var(--muted);">Haiku 5.5 99.24 ($0.33) · Sonnet 5.5 99.00 (21.7m最快的车次)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout">
+        <strong>双轨基准结构(A.20模型共计)</strong>
+        A轨封面 <strong>19型号×11 Pythonstdlib 任务( ưμ㼯A)209 CLI运行,1,310隐性断言)</strong> 内GitHub Copilot CLI (`1.0.84-3`–`1.0.98`B轨覆盖 <strong>Gemini 4 Carbon是因为16正式跨模式评价+4网络安全分局</strong> 反对Gemini 4 Argon, GPT-6阿斯特拉,你应该知道 Astra,Claude Opus 5.5, Claude有线电视5.1, GPT-6.1 Sol,和格鲁克4.7时Carbon被门封入 Fairwind 程序预览。
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <span>基准利用工程7-卡片 -你还不知道4:5相形标准</span>
+      <span>补编6月 (中文(简体) ).28, 2026</span>
+    </div>
+  </section>
+
+  <!-- CARD 2: SINGLE-CASE DEEP DIVE (CYBERSECURITY & AGENT ALIGNMENT) -->
+  <section class="card">
+    <div>
+      <div class="card-top">
+        <span class="eyebrow">塞纳里奥: 致命的循环&amp;反恐怖 猎取</span>
+        <span class="badge-num">2 / 7</span>
+      </div>
+      <h2>88.2%检测、检测、71.0%根- 因为补丁&amp; <span class="accent">0.0%骗人</span></h2>
+      <p class="subhead">深潜入Gemini 4 Carbon三级防御性网络安全管道(探测-开发 证明-根-由来补救)和活对接仪表.</p>
+    </div>
+
+    <div class="card-body">
+      <div class="quote-box">
+        <strong>真实世界防御验证( UNV)Google颜色&amp;仙风伙伴,十月2026):</strong> 报告铬化工 <strong>&gt;10x改进</strong> 在高质量的根- 因为安全补丁对前辈, <strong>2x升迁</strong> 安全代码生成结束Gemini 4 Argon,并自主地发现生产网页浏览器和企业云软件中的零天弱点.
+      </div>
+
+      <div class="q-card">
+        <div class="q-head">
+          <span class="q-title">1. SEC-bench Pro(脆弱性检测 -- -- 传出)1)</span>
+          <div class="q-badges">
+            <span class="type-badge">选择/ 传球@1</span>
+            <span class="meta-pill">88.2% (#1)</span>
+            <span class="act-pill act-auto">自动执行</span>
+          </div>
+        </div>
+        <div class="opt-row">
+          <span class="opt-label">Gemini 4 Carbon</span>
+          <div class="opt-bar-wrap"><div class="opt-bar" style="width: 88.2%;"></div></div>
+          <span class="opt-val">88.2%</span>
+        </div>
+        <div class="opt-row">
+          <span class="opt-label">GPT-6视星等/Argon / 6.1地面</span>
+          <div class="opt-bar-wrap"><div class="opt-bar muted" style="width: 85.4%;"></div></div>
+          <span class="opt-val">85.4 / 83.4 / 83.3%</span>
+        </div>
+        <div class="opt-row">
+          <span class="opt-label">GPT-6.1 Sol/ 米莫-V 单曲2.6- Pro(英语:</span>
+          <div class="opt-bar-wrap"><div class="opt-bar muted" style="width: 78.8%;"></div></div>
+          <span class="opt-val">78.8% / 66.3%</span>
+        </div>
+      </div>
+
+      <div class="q-card">
+        <div class="q-head">
+          <span class="q-title">2. 剥削性运动(通过率)10h &amp; 6h时间卡( Caps)</span>
+          <div class="q-badges">
+            <span class="type-badge">分数/ 因果</span>
+            <span class="meta-pill">54.8% (10h)</span>
+            <span class="act-pill act-confirm">确认( 向风)</span>
+          </div>
+        </div>
+        <div class="opt-row">
+          <span class="opt-label">Gemini 4 Carbon (10h / 6h)</span>
+          <div class="opt-bar-wrap"><div class="opt-bar" style="width: 91.3%;"></div></div>
+          <span class="opt-val">54.8% / 53.5%</span>
+        </div>
+        <div class="opt-row">
+          <span class="opt-label">GPT-6亚斯特拉( 无上限) /Argon (10h)</span>
+          <div class="opt-bar-wrap"><div class="opt-bar muted" style="width: 70.7%;"></div></div>
+          <span class="opt-val">42.4% / 42.0%</span>
+        </div>
+        <div class="opt-row">
+          <span class="opt-label">GPT-6.1 Sol / Opus 5.5/神话5.1</span>
+          <div class="opt-bar-wrap"><div class="opt-bar muted" style="width: 58.5%;"></div></div>
+          <span class="opt-val">35.1 / 34.5 / 30.4%</span>
+        </div>
+      </div>
+
+      <div class="q-card">
+        <div class="q-head">
+          <span class="q-title">3. 冰雪地根 因为补丁&amp;灰天鹅间接快注射</span>
+          <div class="q-badges">
+            <span class="type-badge">鼻音/安全性( N)</span>
+            <span class="meta-pill">71.0% · 0.0% ASR</span>
+            <span class="act-pill act-auto">自动执行</span>
+          </div>
+        </div>
+        <div class="opt-row">
+          <span class="opt-label">冰雪: 冰雪之门:Carbon(反重力)</span>
+          <div class="opt-bar-wrap"><div class="opt-bar" style="width: 71.0%;"></div></div>
+          <span class="opt-val">71.0% (#1)</span>
+        </div>
+        <div class="opt-row">
+          <span class="opt-label">CHWE: 格洛克语4.7 / Argon/ Astra / 数据Opus 5.5</span>
+          <div class="opt-bar-wrap"><div class="opt-bar muted" style="width: 68.0%;"></div></div>
+          <span class="opt-val">68 / 68 / 68 / 67%</span>
+        </div>
+        <div class="opt-row">
+          <span class="opt-label">灰天鹅 IPI( k=)15 ASR, 下调=更好)</span>
+          <div class="opt-bar-wrap"><div class="opt-bar" style="width: 100.0%;"></div></div>
+          <span class="opt-val">0.0%比较0.7–52.7%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <span>已规范化的 Gym 栏60%图表上限;证监会基准&amp;水晶腹上100%缩放</span>
+      <span>零已制造坐标</span>
+    </div>
+  </section>
+
+  <!-- CARD 3: WHAT I TESTED (16-BENCHMARK CROSS-MODEL MATRIX) -->
+  <section class="card">
+    <div>
+      <div class="card-top">
+        <span class="eyebrow">我所讲的16官员的专长5前线兵团</span>
+        <span class="badge-num">3 / 7</span>
+      </div>
+      <h2>Gemini 4 Carbon赢 <span class="accent">14编16</span> 官方基准7域名</h2>
+      <p class="subhead">全面跨模式评价矩阵比较Gemini 4 Carbon, Gemini 4 Argon, GPT-6阿斯特拉,你应该知道 Astra,Claude Opus 5.5,以及Claude有线电视5.1 (`✕`标记2Astra 或Opus 5.5) (中文(简体) ).</p>
+    </div>
+
+    <div class="card-body">
+      <table class="matrix">
+        <thead>
+          <tr>
+            <th>DOMAIN / BENCHMARK</th>
+            <th>GEMINI 4 CARBON · ARGON</th>
+            <th>ASTRA · OPUS 5.5 · FABLE 5.1</th>
+            <th>ACTION / DELTA</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="row-New">
+            <td><strong>普通 · AA指数 v5.0</strong></td>
+            <td><strong>59 (#1)</strong> · Argon 50</td>
+            <td>阿斯特拉语Name57 · Opus 58· 有线电视49</td>
+            <td><span class="act-pill act-auto">+9比较Argon · #1</span></td>
+          </tr>
+          <tr>
+            <td><strong>· 瓦尔斯指数v2.2</strong></td>
+            <td><strong>70.4% (#1)</strong> · Argon 69.2%</td>
+            <td>阿斯特拉语Name65.0% · Opus 70.2% 寓言——</td>
+            <td><span class="act-pill act-auto">+1.2%比较Argon</span></td>
+          </tr>
+          <tr class="row-New">
+            <td><strong>编译 · SWE - 扫瞄</strong></td>
+            <td><strong>9.6% (#1)</strong> · Argon 4.3%</td>
+            <td>阿斯特拉语Name9.5% · Opus 3.6% —— 有线电视2.9%</td>
+            <td><span class="act-pill act-auto">2.23x比较Argon</span></td>
+          </tr>
+          <tr>
+            <td><strong>编码 · 边疆SWE2</strong></td>
+            <td>61.2% (#3) ✕ · Argon 55.0%</td>
+            <td><strong>阿斯特拉语Name65.5% (#1)</strong> · Opus 62.3% · 56.3%</td>
+            <td><span class="act-pill act-confirm">✕ -4.3%与 Astra 关系</span></td>
+          </tr>
+          <tr class="row-New">
+            <td><strong>编码 ·Terminal-Bench 4.0(AA) 资源</strong></td>
+            <td><strong>65.2% (#1)</strong> · Argon 57.1%</td>
+            <td>阿斯特拉语Name59.1% · Opus 59.6% —— 有线电视52.0%</td>
+            <td><span class="act-pill act-auto">+8.1% · 0.0%骗人</span></td>
+          </tr>
+          <tr>
+            <td><strong>计算机使用 ・ 代理的最后一个考试 v1.1</strong></td>
+            <td><strong>77.4% (#1)</strong> · Argon 69.0%</td>
+            <td>阿斯特拉语Name73.1% · Opus 71.6% 寓言——</td>
+            <td><span class="act-pill act-auto">+8.4%比较Argon</span></td>
+          </tr>
+          <tr>
+            <td><strong>计算机使用 OSWorld - 操作系统2.1(Offline) (英语).</strong></td>
+            <td>81.5% (#2) ✕ · Argon 74.7%</td>
+            <td>阿斯特拉语Name80.9% · <strong>Opus 87.2% (#1)</strong> · 76.8%</td>
+            <td><span class="act-pill act-confirm">✕ -5.7%比较Opus 5.5</span></td>
+          </tr>
+          <tr>
+            <td><strong>知识 自动化Zapier)</strong></td>
+            <td><strong>53.9% (#1)</strong> · Argon 51.3%</td>
+            <td>阿斯特拉语Name41.4% · Opus 42.5% —— 有线电视31.4%</td>
+            <td><span class="act-pill act-auto">+11.4%比较Opus 5.5</span></td>
+          </tr>
+          <tr class="row-New">
+            <td><strong>知识 · 任性-本奇2 ($)</strong></td>
+            <td><strong>$16,484 (#1)</strong> · Argon $13,718</td>
+            <td>阿斯特拉语Name$15,515 · Opus $9,235 · $5,422</td>
+            <td><span class="act-pill act-auto">+$2,766比较Argon</span></td>
+          </tr>
+          <tr>
+            <td><strong>· 地图/蓝图2</strong></td>
+            <td><strong>72.5% / 58.6% (#1)</strong> · 71.6 / 54.4%</td>
+            <td>阿斯特拉语Name71.0/49.7 · Opus 66.3/51.2 · 46.2/41.9</td>
+            <td><span class="act-pill act-auto">两者1多式联运</span></td>
+          </tr>
+          <tr class="row-New">
+            <td><strong>长上下文 · 图形地图( )256k–1M)</strong></td>
+            <td><strong>96.2% (#1)</strong> · Argon 84.2%</td>
+            <td>阿斯特拉语Name71.8% · Opus 66.8% —— 有线电视65.0%</td>
+            <td><span class="act-pill act-auto">+12.0%比较Argon</span></td>
+          </tr>
+          <tr>
+            <td><strong>科学/Math · Riemann Bench / TB-Sci0.1</strong></td>
+            <td><strong>80.0% / 64.8% (#1)</strong> · 76.0 / 52.9%</td>
+            <td>阿斯特拉语Name72.0/63.3 · Opus 69.6/59.0 · 65.6/43.3</td>
+            <td><span class="act-pill act-auto">+11.9%结核病科学</span></td>
+          </tr>
+          <tr class="row-New">
+            <td><strong>网络 · 妇女研究中心/剥削基因/证交会-局域中心</strong></td>
+            <td><strong>71.0% / 54.8% / 88.2% (#1)</strong> · 68/42/83.4%</td>
+            <td>阿斯特拉语Name68/42.4/85.4 · Opus 67/34.5/— · 58/—/—</td>
+            <td><span class="act-pill act-auto">全部扫荡3网络</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout-grid">
+        <div class="callout">
+          <strong>阈值加成摘要( C)16基准)</strong>
+          Gemini 4 Carbon直接取出来 <strong>#1打开14编16基准(`Act automatically`)</strong>,其边距最大`GraphWalks 256k–1M` (`+12.0 pts`结束Argon, `+24.4 pts`誓以报应,`ExploitGym` (`+12.4 pts`和以物配主者,`SWE-sweep` (`2.23x`结束Argon).
+        </div>
+        <div class="callout">
+          <strong>明显失败/差距分析(`✕`标记)</strong>
+          Carbon仅显示线索`FrontierSWE 2` (`61.2%`比较GPT-6阿斯特拉语Name`65.5%`, `-4.3 pts`和`OSWorld-2.1 Offline` (`81.5%`比较Claude Opus 5.5 `87.2%`, `-5.7 pts`),同时仍在改进Gemini 4 Argon由`+6.2 pts`财务报告和已审计财务报表`+6.8 pts`分别是:
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <span>资料来源:深明。google/模型/电子方法/gemini-4-carbon(单位:千美元)28, 2026)</span>
+      <span>16正式评价</span>
+    </div>
+  </section>
+
+  <!-- CARD 4: UNDER THE HOOD -->
+  <section class="card">
+    <div>
+      <div class="card-top">
+        <span class="eyebrow">——双重责任议定书&amp;痛快的战斗</span>
+        <span class="badge-num">4 / 7</span>
+      </div>
+      <h2>怎样Carbon消除 <span class="accent">奖励打包</span> 保留时Argon定价</h2>
+      <p class="subhead">比较轨道A( 副驾驶)CLI 70/15/15横跨决定性主题19模式),并带有B轨(Gemini 4 Carbon反奖赏的核查员&amp;公平风能网络安全护栏.</p>
+    </div>
+
+    <div class="card-body">
+      <div class="code-block">{
+  "model_id": "gemini-4-carbon-preview",
+  "release_date": "2026-10-28",
+  "access_tier": "Fairwind Program (Trusted Cyber Defenders) -> Vertex AI / AI Studio",
+  "pricing_per_1m_tokens": {
+    "input_usd": 2.00,
+    "output_usd": 10.00,
+    "cached_input_usd": 0.10,
+    "cache_discount_pct": 95.0,
+    "parity_vs_gemini_4_argon": "1.00x (Identical token pricing)"
+  },
+  "alignment_telemetry": {
+    "terminal_bench_4_0_accuracy_pct": 65.2,
+    "terminal_bench_4_0_cheat_attempts_pct": 0.4,
+    "terminal_bench_4_0_successful_cheats_pct": 0.0,
+    "live_internal_coding_high_severity_misalignment_delta_pct": -80.0,
+    "gray_swan_indirect_prompt_injection_k15_asr_pct": 0.0,
+    "overreach_reduction_pct": -26.0,
+    "underservice_reduction_pct": -29.0,
+    "unsupported_claims_reduction_factor": "~2.0x"
+  }
+}</div>
+
+      <div class="arrow-down">↓</div>
+
+      <div class="code-block"># Deterministic Cross-Track Verification Flow (&lt;answer&gt; Gate)
+def evaluate_20_model_frontier_cohort(track_a_cli_19, track_b_carbon):
+    # 1. Track A: Copilot CLI 11-Task Suite (70% Hidden Pytest / 15% Perf / 15% Quality)
+    # 9 of 19 CLI models pass 1,310/1,310 hidden assertions (incl. Gemini 4 Argon @ $2.82)
+    assert track_a_cli_19["gemini-4-argon"].hidden_passed == 1310
+    assert track_a_cli_19["claude-haiku-5.5"].cost_usd == 0.33  # #4 at 99.24 mean
+    assert track_a_cli_19["claude-sonnet-5.5"].wall_minutes == 21.7  # Fastest wall clock
+
+    # 2. Track B: Gemini 4 Carbon Uplift over Gemini 4 Argon at identical $2/$10 pricing
+    assert track_b_carbon.swe_sweep_pct / track_b_carbon.argon_swe_sweep_pct == 9.6 / 4.3  # 2.23x
+    assert track_b_carbon.graphwalks_1m_f1 - track_b_carbon.argon_graphwalks_1m_f1 == 12.0 # +12.0 pts
+    assert track_b_carbon.terminal_bench_4_cheats == 0.0 and track_b_carbon.gray_swan_ipi == 0.0
+    return "&lt;answer&gt;Act automatically (Defensive Cyber &amp; 1M Agentic Coding)&lt;/answer&gt;"</div>
+
+      <div class="callout-grid">
+        <div class="callout">
+          <strong>为什么0.0%骗取成功</strong>
+          长视距编码( I)`Terminal-Bench 4.0`),代理经常会篡改被卡后会被单位测试或硬码预期输出.Carbon减少欺骗尝试`0.4%` (`0.0%`并切断内部高强度误配警报`80%`.
+        </div>
+        <div class="callout">
+          <strong>成本- Neutral 升级路径从Argon</strong>
+          因为Gemini 4 Carbon保留Argon准确的`$2 / $10` (`$0.10`缓存读取) 率卡,使用Argon (`$2.82`横跨11 CLI任务,`1,310/1,310`隐藏)收益`+9`AA 指数点和`2.23x`SWE-sweap 零单位价格上涨.
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <span>议定书:A轨(第行)`satomic/copilot-benchmark@a1913835`+ B轨(`deepmind.google/models/evals-methodology/gemini-4-carbon`)</span>
+      <span>确定性审计</span>
+    </div>
+  </section>
+
+  <!-- CARD 5: ROBUSTNESS CHECK -->
+  <section class="card">
+    <div>
+      <div class="card-top">
+        <span class="eyebrow">ROBUSENS CHECK —— 电磁轴,时空相接器&amp;副地名</span>
+        <span class="badge-num">5 / 7</span>
+      </div>
+      <h2>+12.0打开1M图形行走, -1.3下边6h头&amp; <span class="accent">0.0%= 资源15新闻学会</span></h2>
+      <p class="subhead">测试模型生成升级的稳健性(Argon → Carbon), ExputitGym时间上限压缩(10h → 6h),灰天鹅克=1= = = = = = = = = = = =15对抗性的复辩,以及CLI组员加盟.</p>
+    </div>
+
+    <div class="card-body">
+      <table class="matrix">
+        <thead>
+          <tr>
+            <th>PERTURBATION / DIMENSION</th>
+            <th>BASELINE / ORIGINAL</th>
+            <th>PERTURBED / UPGRADED</th>
+            <th>CHANGE (PTS / RATIO)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="row-New">
+            <td><strong>AA 情报指数 v5.0</strong></td>
+            <td>Gemini 4 Argon: <strong>50</strong></td>
+            <td>Gemini 4 Carbon: <strong>59 (#1)</strong></td>
+            <td><span class="act-pill act-auto">+9.0点(+)18.0%)</span></td>
+          </tr>
+          <tr class="row-New">
+            <td><strong>SWE-sweep(重新调整规模的扫荡)</strong></td>
+            <td>Gemini 4 Argon: <strong>4.3%</strong></td>
+            <td>Gemini 4 Carbon: <strong>9.6% (#1)</strong></td>
+            <td><span class="act-pill act-auto">+5.3点数( )2.23x)</span></td>
+          </tr>
+          <tr>
+            <td><strong>Terminal-Bench 4.0(AA) 资源</strong></td>
+            <td>Gemini 4 Argon: <strong>57.1%</strong></td>
+            <td>Gemini 4 Carbon: <strong>65.2% (#1)</strong></td>
+            <td><span class="act-pill act-auto">+8.1点数( )0%骗人)</span></td>
+          </tr>
+          <tr class="row-New">
+            <td><strong>图形行走( G)256k–1M财务和预算司 F1)</strong></td>
+            <td>Gemini 4 Argon: <strong>84.2%</strong></td>
+            <td>Gemini 4 Carbon: <strong>96.2% (#1)</strong></td>
+            <td><span class="act-pill act-auto">+12.0点数(#1 1M)</span></td>
+          </tr>
+          <tr>
+            <td><strong>Terminal-Bench- 科学0.1</strong></td>
+            <td>Gemini 4 Argon: <strong>52.9%</strong></td>
+            <td>Gemini 4 Carbon: <strong>64.8% (#1)</strong></td>
+            <td><span class="act-pill act-auto">+11.9点</span></td>
+          </tr>
+          <tr class="row-New">
+            <td><strong>利用Gym时间控制符</strong></td>
+            <td>Carbon (10h顶: <strong>54.8%</strong></td>
+            <td>Carbon (6h顶: <strong>53.5%</strong></td>
+            <td><span class="act-pill act-auto">-1.3点数( )97.6%保存).</span></td>
+          </tr>
+          <tr>
+            <td><strong>开发游戏Argon时间上限</strong></td>
+            <td>Argon (10h顶: <strong>42.0%</strong></td>
+            <td>Argon (6h顶: <strong>39.5%</strong></td>
+            <td><span class="act-pill act-confirm">-2.5点(+)14.0诉C)</span></td>
+          </tr>
+          <tr class="row-New">
+            <td><strong>灰天鹅 IPI( k=)1− k= = 缩写15复议)</strong></td>
+            <td>Carbon:1: <strong>0.0% ASR</strong></td>
+            <td>Carbon:15: <strong>0.0% ASR</strong></td>
+            <td><span class="act-pill act-auto">0.0pts 漂移 (#1)</span></td>
+          </tr>
+          <tr>
+            <td><strong>灰天鹅 IPI 竞技者 Drift</strong></td>
+            <td>Argon 0.7% · Opus 5.5 1.0%</td>
+            <td>阿斯特拉语Name8.5% · Sol 8.6% · Kimi 52.7%</td>
+            <td><span class="act-pill act-human">+0.7改为+52.7点ASR</span></td>
+          </tr>
+          <tr>
+            <td><strong>WebDev Arena 人类偏好</strong></td>
+            <td>Gemini 4 Argon: <strong>1679埃罗</strong></td>
+            <td>Gemini 4 Carbon: <strong>1768埃罗 (#4)</strong></td>
+            <td><span class="act-pill act-auto">+89埃罗</span></td>
+          </tr>
+          <tr>
+            <td><strong>CLI历史包袱稳定</strong></td>
+            <td>17先前的模型( E)`aa1e0dc3`)</td>
+            <td>19- 模式提交( )`a1913835`)</td>
+            <td><span class="act-pill act-auto">0.00漂移 pts 漂移</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout-grid">
+        <div class="callout">
+          <strong>时平面&amp;增强复原力</strong>
+          削减剥削Gym的每个任务时间预算`40%` (`10h → 6h`减少Carbon'因果通过率 仅用`1.3 pts` (`54.8% → 53.5%`),它仍然比无约束GPT-6亚斯特拉 (Astra)`42.4%`由下列人员组成:`+11.1 pts`.
+        </div>
+        <div class="callout">
+          <strong>间接注射豁免</strong>
+          横跨`k=1`, `k=10`,以及`k=15`攻击Gray Swan IPI的企图,Gemini 4 Carbon记录`0.0%`攻击成功率,成绩优异Argon (`0.7%`), Opus 5.5 (`1.0%`),寓言5.1 (`1.0%`),和阿斯特拉(英语:`8.5%`).
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <span>所有扰动三角地直接从出版的 DeepMind 计算&amp;副驾驶CLI表格</span>
+      <span>强健度验证</span>
+    </div>
+  </section>
+
+  <!-- CARD 6: LATENCY & PARETO ECONOMICS -->
+  <section class="card">
+    <div>
+      <div class="card-top">
+        <span class="eyebrow">拉脱维亚&amp;价格经济 价格&amp;长河伊利德</span>
+        <span class="badge-num">6 / 7</span>
+      </div>
+      <h2>从21.7m / $0.33 CLI冲刺到 <span class="accent">$16,484</span> 长相仪</h2>
+      <p class="subhead">比较墙上小时完成时间和API费用20- 模范编码组,与长距离经济回报 旺登-本奇2.</p>
+    </div>
+
+    <div class="card-body">
+      <div class="lat-row">
+        <div>
+          <div class="lat-label">Sonnet 5.5vs 有线电视5.1</div>
+          <div class="lat-sub">11- 任务CLI墙上时间( min)</div>
+        </div>
+        <div class="lat-bars">
+          <div class="lat-bar-line">
+            <div class="lat-bar primary" style="width: 38.8%;"></div>
+            <span class="lat-num">21.7m · $2.89 · 65rds (帮助)Sonnet 5.5 #1速度)</span>
+          </div>
+          <div class="lat-bar-line">
+            <div class="lat-bar base" style="width: 100.0%;"></div>
+            <span class="lat-num">55.9m · $14.45 · 142rds (有线电视)5.1 #1得分数99.77)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="lat-row">
+        <div>
+          <div class="lat-label">GPT-6.1 Sol比较GPT-6阿斯特拉语Name</div>
+          <div class="lat-sub">OpenAI CLI效率(单位:美元)</div>
+        </div>
+        <div class="lat-bars">
+          <div class="lat-bar-line">
+            <div class="lat-bar primary" style="width: 49.0%;"></div>
+            <span class="lat-num">27.4m · $1.71 · 60rds (帮助)GPT-6.1 Sol #1最低的RDs)</span>
+          </div>
+          <div class="lat-bar-line">
+            <div class="lat-bar base" style="width: 58.5%;"></div>
+            <span class="lat-num">32.7m · $9.91 · 62rds (帮助)GPT-6阿斯特拉语Name99.75复杂)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="lat-row">
+        <div>
+          <div class="lat-label">Haiku 5.5比较Opus 5.5</div>
+          <div class="lat-sub">Anthropic费用(美元)</div>
+        </div>
+        <div class="lat-bars">
+          <div class="lat-bar-line">
+            <div class="lat-bar primary" style="width: 5.7%;"></div>
+            <span class="lat-num">$0.33 · 35.1m · 99.24平均值(Haiku 5.5 · 17.7x费用更低)</span>
+          </div>
+          <div class="lat-bar-line">
+            <div class="lat-bar base" style="width: 100.0%;"></div>
+            <span class="lat-num">$5.84 · 31.8m · 99.68平均值(Opus 5.5 · 1,310/1,310)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="lat-row">
+        <div>
+          <div class="lat-label">Gemini 4 Carbon比较Argon</div>
+          <div class="lat-sub">苏-苏&amp; CLI调试率</div>
+        </div>
+        <div class="lat-bars">
+          <div class="lat-bar-line">
+            <div class="lat-bar primary" style="width: 96.0%;"></div>
+            <span class="lat-num">9.6%苏-苏-斯克特65.2%肺结核4.0 · $2/$10 (Carbon)</span>
+          </div>
+          <div class="lat-bar-line">
+            <div class="lat-bar base" style="width: 43.0%;"></div>
+            <span class="lat-num">4.3%苏-苏-斯克特57.1%肺结核4.0 · $2.82 CLI (Argon)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="lat-row">
+        <div>
+          <div class="lat-label">奔驰2净值</div>
+          <div class="lat-sub">长视距剂余额(美元)</div>
+        </div>
+        <div class="lat-bars">
+          <div class="lat-bar-line">
+            <div class="lat-bar primary" style="width: 100.0%;"></div>
+            <span class="lat-num">$16,484 Carbon (#1) vs $15,515 GPT-6亚斯特拉 (#2)</span>
+          </div>
+          <div class="lat-bar-line">
+            <div class="lat-bar base" style="width: 83.2%;"></div>
+            <span class="lat-num">$13,718 Argon (#3) · $9,235 Opus 5.5 · $5,422有线电视5.1</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout-grid">
+        <div class="callout">
+          <strong>CLI速度&amp;托肯-效率边界</strong>
+          进19- 模型 - 模型CLI系起绳子, <strong>Sonnet 5.5 (`21.7m`)</strong>, <strong>水合物( 微分)`24.1m`)</strong>,以及 <strong>GPT-6.1 Sol (`27.4m`, `60`轮子,`$1.71`)</strong> 引导交互式开发者速度,同时通过全部`1,310/1,310`隐藏的断言。
+        </div>
+        <div class="callout">
+          <strong>长视经济回归</strong>
+          打开`Vending-Bench 2`, Gemini 4 Carbon达到 <strong>`$16,484`</strong> 银行余额(`+20.2%`结束Argon是因为`$13,718`财务报告和已审计财务报表`3.04x`有线电视5.1是因为`$5,422`),验证持续多小时的国家管理.
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <span>将 Paired 栏缩放为行域最大; 内含精确数字</span>
+      <span>延迟&amp;经济学</span>
+    </div>
+  </section>
+
+  <!-- CARD 7: MY TAKE -->
+  <section class="card">
+    <div>
+      <div class="card-top">
+        <span class="eyebrow">制作制作的磁带20- 模范电影院</span>
+        <span class="badge-num">7 / 7</span>
+      </div>
+      <h2>哪里 哪里 哪里 哪里 哪里 哪里 哪里 哪里 哪里 哪里 哪里 哪里 哪里 <span class="accent">Gemini 4 Carbon</span> &amp;顶部CLI适合生产的模式</h2>
+      <p class="subhead">结合补编的可操作建筑路线指南6 (Gemini 4 Carbon),补编5 (Haiku 5.5 &amp; Argon)和补编4 (Sonnet 5.5 &amp; GPT-6.1 Sol).</p>
+    </div>
+
+    <div class="card-body">
+      <div class="take-grid">
+        <div class="take-card good">
+          <div class="take-title">✅ 适用场景</div>
+          <ul class="take-list">
+            <li><strong>Gemini 4 Carbon ($2/$10· 有风:</strong> 脆弱性分类(`SEC-bench Pro 88.2%`),根-因安全补丁(`CWE-bench 71.0%`), 1M-token重取图表推理( R)`GraphWalks 96.2%`),和需要的不可信输入工作流程`0.0%`新闻学会ASR.</li>
+            <li><strong>Sonnet 5.5 ($2.89, 21.7m) &amp; GPT-6.1 Sol ($1.71, 60rds: 时间轴:</strong> 默认未到CLI编码代理符`1,310/1,310`隐藏测试精度和最快的转速.</li>
+            <li><strong>Claude Haiku 5.5 ($0.33, 99.24):</strong> 高通币CI确定性背后的修复和原子/中编码任务pytest大门</li>
+            <li><strong>有线电视5.1 (99.77) &amp; Opus 5.5 (99.68):</strong> 微妙汇编/解释边缘案例的旗舰升级等级(`C1–C4`).</li>
+          </ul>
+        </div>
+
+        <div class="take-card bad">
+          <div class="take-title">⛔ 不适用场景</div>
+          <ul class="take-list">
+            <li><strong>假设公开CLI现今可用性 :</strong> Gemini 4 Carbon目前通过下列方式推出:Google网络维权者的公平风向方案; 使用Gemini 4 Argon (`$2.82`, `1,310/1,310`或 减 减Sonnet 5.5/Sol总体来说,今天的CAPI。</li>
+            <li><strong>离线桌面图形界面自动化只限:</strong> Claude Opus 5.5线索`OSWorld-2.1 Offline` (`87.2%`比较Carbon `81.5%`),以及GPT-6自动引导`FrontierSWE 2` (`65.5%`比较`61.2%`).</li>
+            <li><strong>未加惩罚的进攻性开采:</strong> Carbon是因为`54.8%`开发Gym能力需要严格的授权范围、孤立的沙盒(`AKSClaw` / `E2B`),并进行人入"走"评论.</li>
+            <li><strong>运行子$0.50闪光模型( W) :</strong> 预算模式(`GPT-6 Luna`, `Haiku 5.5`仍然下降( )2–31隐藏的断言,没有带带测试环。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="dark-footer-card">
+        <h3>准备情况,证明&amp;交叉重播核查</h3>
+        <p>证相: <code>anonymized_reported</code> (<code>independently_reproduced=false</code>全部。 。 。16正式Gemini 4 Carbon计量和4网络安全领导板从Google深明的十月( 月)28, 2026释放(<code>deepmind.google/models/evals-methodology/gemini-4-carbon</code>),与"  "相配.209- 副驾驶CLI存档( E)<code>satomic/copilot-benchmark@a1913835</code>自成一体的CSP: <code>default-src 'none'; style-src 'unsafe-inline'</code>.</p>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <span>边境AI实验室https://turbo998.github.io/benchmarks.html</span>
+      <span>纸牌7 / 7· 完成</span>
+    </div>
+  </section>
+
+</div>
+
+<!-- kee-dedicated-report-close:start --></div></div><!-- kee-dedicated-report-close:end --></body>
+</html>

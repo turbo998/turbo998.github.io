@@ -15,14 +15,15 @@
     document.querySelectorAll('.reading-header a[href],.reading-context').forEach(link => {
       const url = new URL(link.getAttribute('href'), location.href);
       if (url.origin !== location.origin) return;
-      url.searchParams.set('theme', link.dataset.readingTheme || document.documentElement.dataset.theme);
-      if (link.hasAttribute('data-reading-language')) {
-        url.searchParams.set('lang', link.hreflang);
+      if (link.hasAttribute('data-reading-language') || link.hasAttribute('hreflang')) {
+        url.search = '';
         url.hash = location.hash;
       } else if (link.hasAttribute('data-reading-theme')) {
         url.search = location.search;
         url.searchParams.set('theme', link.dataset.readingTheme);
         url.hash = location.hash;
+      } else {
+        url.searchParams.set('theme', link.dataset.readingTheme || document.documentElement.dataset.theme);
       }
       // Keep relative navigation under both user Pages and project Pages deployments.
       const path = link.getAttribute('href').split(/[?#]/)[0];

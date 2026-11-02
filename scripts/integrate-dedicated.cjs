@@ -24,7 +24,7 @@ const supplementalOwned = [
   { contentId: 'cycle377-infra-workbench', path: infraPath('workbench-cycle-377.html'), role: 'demo', tracks: ['infra'], language: { declared: 'en' }, bilingualAssociations: [] }
 ];
 const owned = [...originalOwned, ...supplementalOwned].map(r => ({ ...r, ...(sourceOverrides[r.path] ? { sourceOverride: sourceOverrides[r.path] } : {}), ...(r.path === infraPath('benchmark-cards.html') ? { language: { ...r.language, declared: 'zh-CN' } } : {}) }));
-const css = fs.readFileSync(path.join(root, 'assets/dedicated-navigation.css'), 'utf8').replace(/\r\n/g, '\n');
+const css = professional.css();
 const sha = s => crypto.createHash('sha256').update(s).digest('hex');
 const baseline = r => execFileSync('git', ['show', `${r.sourceOverride?.commit || inventory.baseline}:${r.path}`], { cwd: root, maxBuffer: 20 * 1024 * 1024 }).toString('utf8');
 const relative = (from, to) => path.posix.relative(path.posix.dirname(from), to) || path.posix.basename(to);
@@ -71,7 +71,8 @@ function transform(r, source) {
       else { html = html.replace(original, original.replace('<button', '<button id="kee-resource-language"')); lang.controlId = 'kee-resource-language'; }
       changes.push('Linked to genuine existing language control; no fabricated translated prose or query-language assumption.');
     }
-    if (/<iframe\b/.test(html)) {
+    const inlineArena = /^(?:(?:animation|generative-visual-lab)\/demos\/pelican-bicycle-arena|workshops\/faf-vs-agent-forge)\/(?:index|pelican-arena)(?:\.en)?\.html$/.test(r.path);
+    if (/<iframe\b/.test(html) && !inlineArena) {
       let count = 0;
       html = html.replace(/<iframe\b[^>]*src="([^"]+)"[^>]*title="([^"]+)"[^>]*>[\s\S]*?<\/iframe>/g, (_, target, title) => {
         count++;
@@ -181,7 +182,7 @@ function main() {
     const source = baseline(r), { html, record } = transform(r, source), dest = path.join(root, r.path), live = fs.existsSync(dest) ? fs.readFileSync(dest, 'utf8') : null;
     if (check) { if (live !== html) throw new Error(`Dedicated integration drift: ${r.path}`); }
     else {
-      if (live !== null && live.replace(/\r/g, '') !== source.replace(/\r/g, '') && !live.includes('kee-dedicated-navigation:start')) throw new Error(`Refusing unrecognized edits: ${r.path}`);
+      if (live !== null && live.replace(/\r/g, '') !== source.replace(/\r/g, '') && !live.includes('kee-dedicated-navigation:start') && !live.includes('kee-report-localization-navigation:start')) throw new Error(`Refusing unrecognized edits: ${r.path}`);
       if (live !== html) fs.writeFileSync(dest, html);
     }
     records.push(record);

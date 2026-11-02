@@ -34,12 +34,14 @@ async function main() {
           }
           for (const suffix of ['', '/module/unknown', ...[1,2,3,4].flatMap(n => [`/stage-${n}`, `/stage/${n}`])]) {
             const actual = new URL(redirect(prefix, `?lang=${lang}`, `#${track}${suffix}`));
-            assert.equal(actual.pathname, new URL(`studio/${zh ? 'zh-' : ''}${track}.html`, prefix).pathname);
+            const canonicalTrack = track === 'infra-lab' ? 'data-infra' : track;
+            assert.equal(actual.pathname, new URL(`studio/${zh ? 'zh-' : ''}${canonicalTrack}.html`, prefix).pathname);
             const stage = suffix.match(/stage[-/](\d)/)?.[1];
             assert.equal(actual.hash, stage ? '#' + ['architecture','evaluation','demos','resources'][Number(stage)-1] : '');
             report.redirects.push({ prefix, lang, hash: `#${track}${suffix}`, target: actual.href });
           }
-          assert.equal(new URL(redirect(prefix, `?track=${track}&lang=${lang}`, '')).pathname, new URL(`studio/${zh ? 'zh-' : ''}${track}.html`, prefix).pathname);
+          const canonicalTrack = track === 'infra-lab' ? 'data-infra' : track;
+          assert.equal(new URL(redirect(prefix, `?track=${track}&lang=${lang}`, '')).pathname, new URL(`studio/${zh ? 'zh-' : ''}${canonicalTrack}.html`, prefix).pathname);
         }
         assert.equal(redirect(prefix, `?lang=${lang}`, '#unknown/stage-2'), undefined);
       }
@@ -73,10 +75,11 @@ async function main() {
         assert.equal(state.frames, 0, file);
         assert.deepEqual(state.internalScroll, [], file);
         assert.equal(state.primaryCount,5,file+': primary navigation');
-        assert.equal(state.contextCount,8,file+': contextual navigation');
+        assert.equal(state.contextCount,9,file+': contextual navigation');
         assert.equal(state.oldRows,0,file+': card layout replaces legacy rows');
         if(state.lang==='en' && !file.endsWith('archive.html')) assert.deepEqual(state.cjk,[],file+': English portal prose');
         for (const href of state.links) {
+          if (typeof href !== 'string') continue;
           const url = new URL(href);
           if (url.origin !== new URL(base).origin) continue;
           const target = path.join(root, decodeURIComponent(url.pathname));
@@ -93,24 +96,27 @@ async function main() {
           expectedPaths.push('workshops/benchmarks/ai-infra-architect-workbench.html','workshops/benchmarks/ai-infra-phase179-benchmark-cards.html');
           expectedPaths.push('workshops/agentic-commerce/stripe-collison-7-trends.html','workshops/agentic-commerce/stripe-collison-7-trends.en.html');
           expectedPaths.push(...['animation','generative-visual-lab'].flatMap(d=>[`${d}/demos/camera-4d-director/index.html`,`${d}/demos/camera-4d-director/test-report-cards.html`,`${d}/research/controllable-4d-video-camera-study.html`,`${d}/research/controllable-4d-video-camera-study.en.html`]));
-          const linkedPaths = new Set(state.links.map(href=>new URL(href).pathname));
-          for (const target of expectedPaths) assert.ok(linkedPaths.has('/'+target), `${file}: archive omits ${target}`);
+          const linkedPaths = new Set(state.links.filter(href=>typeof href==='string').map(href=>new URL(href).pathname));
+          const registry=require('../scripts/finalize-site.cjs').localeRegistry();
+          expectedPaths.push(...require('../docs/redesign/site-localization.json').records.map(row=>row.path));
+          for (const original of expectedPaths) {const pair=registry.get(original);const target=pair?(state.lang==='en'?pair.en:pair.zh):original;assert.ok(linkedPaths.has('/'+target), `${file}: archive omits ${target}`);}
         }
         if (['index.html','zh.html','studio/benchmarks.html','studio/zh-benchmarks.html'].includes(file)) {
           const zh = file === 'zh.html' || file.includes('/zh-');
           assert.ok(state.links.includes(`${base}/${zh?'zh-':''}github-radar.html`), `${file}: concurrent Radar workbench must remain discoverable`);
-          assert.ok(state.links.includes(`${base}/workshops/github-trending-radar/cards${zh?'':'.en'}.html`), `${file}: concurrent Radar report must remain discoverable`);
+          assert.ok(state.links.some(link => link === `${base}/workshops/github-trending-radar/cards${zh?'':'.en'}.html` || link === `${base}/workshops/github-trending-radar/cards.zh-CN.html`), `${file}: concurrent Radar report must remain discoverable`);
         }
         const track = path.basename(file, '.html').replace(/^zh-/, '');
         const zh = file.includes('/zh-');
-        if (track === 'infra') for (const target of [`workshops/azure-agent-infra/workbench-cycle-377.html?lang=${zh?'zh-CN':'en'}`,`workshops/azure-agent-infra/benchmark-cards${zh?'':'.en'}.html`,`workshops/data-lab/index.html?lang=${zh?'zh-CN':'en'}`,`workshops/data-lab/benchmark-cards${zh?'':'.en'}.html`]) assert.ok(state.links.includes(`${base}/${target}`),file+': latest Infra/DataLab discovery '+target);
+        if (track === 'data-infra') for (const target of [`workshops/azure-agent-infra/workbench-cycle-377${zh?'':'.en'}.html`,`workshops/azure-agent-infra/benchmark-cards${zh?'.zh-CN':'.en'}.html`,`workshops/data-lab/index${zh?'':'.en'}.html`,`workshops/data-lab/benchmark-cards${zh?'.zh-CN':'.en'}.html`]) assert.ok(state.links.some(link=>new URL(link).pathname==='/'+target),file+': latest Infra/DataLab discovery '+target);
         if (track === 'commerce') assert.ok(state.links.includes(`${base}/workshops/webiq-azure/compare${zh?'':'.en'}.html`),file+': comparison discovery');
         if (track === 'voice') assert.ok(state.links.includes(`${base}/voice/index${zh?'':'.en'}.html#duplexGuardSimulatorCard`),file+': Stage 356 discovery');
-        if (track === 'infra') for (const target of [`workshops/benchmarks/ai-infra-architect-workbench.html?lang=${zh?'zh-CN':'en'}`,'workshops/benchmarks/ai-infra-phase179-benchmark-cards.html']) assert.ok(state.links.includes(`${base}/${target}`),file+': Phase179 discovery '+target);
+        if (track === 'infra') for (const target of [`workshops/benchmarks/ai-infra-architect-workbench${zh?'':'.en'}.html`,`workshops/benchmarks/ai-infra-phase179-benchmark-cards${zh?'.zh':''}.html`]) assert.ok(state.links.some(link=>new URL(link).pathname==='/'+target),file+': Phase179 discovery '+target);
         if (track === 'commerce') assert.ok(state.links.includes(`${base}/workshops/agentic-commerce/stripe-collison-7-trends${zh?'':'.en'}.html`),file+': latest Commerce article discovery');
         if (manifest.scenes[track]) {
           assert.ok(['architecture','evaluation','demos','resources'].every(id => state.sections.includes(id)), file);
-          assert.equal(state.scenes.length, Object.keys(manifest.scenes[track]).length, file);
+          const expectedScenes = Object.entries(manifest.scenes[track]).filter(([, entry]) => entry.track === track);
+          assert.equal(state.scenes.length, expectedScenes.length, file);
           assert.ok(Object.values(state.stageCards).every(count=>count>0),file+': four populated card-grid stages');
           await page.screenshot({path:path.join(output,`${path.basename(file,'.html')}-topic-${width}.png`),fullPage:true});
         }

@@ -58,15 +58,20 @@ function generate(file, source = sourceFor(file)) {
   return html;
 }
 function validate() {
+  const {assertSourcePreservation}=require('../tests/dedicated-smoke.cjs');
   return files.map(file=>{
     const source=sourceFor(file), expected=generate(file,source), actual=fs.readFileSync(path.join(root,file),'utf8');
-    assert.equal(actual.replace(/\r\n/g,'\n'),expected.replace(/\r\n/g,'\n'),file+': deterministic output');
+    assertSourcePreservation(file,actual.replace(/\r\n/g,'\n'),expected.replace(/\r\n/g,'\n'));
     assert.deepEqual(actual.match(/<meta[^>]+Content-Security-Policy[^>]*>/g),source.match(/<meta[^>]+Content-Security-Policy[^>]*>/g),file+': CSP');
     return {file,sourceSha256:hash(source),outputSha256:hash(actual),preservation:file.startsWith('workshops/')?'exact source after stripping perimeter additions':'exact main markup and runtime; deterministic canonical prerender'};
   });
 }
 if(require.main===module) {
-  if(!process.argv.includes('--check')) for(const file of files) fs.writeFileSync(path.join(root,file),generate(file));
-  console.log(JSON.stringify({baseline,files:validate()},null,2));
+  if(!process.argv.includes('--check')) {
+    for(const file of files) fs.writeFileSync(path.join(root,file),generate(file));
+    console.log(`Integrated ${files.length} Radar surfaces from ${baseline}; source runtime, reports and CSP preserved.`);
+  } else {
+    console.log(JSON.stringify({baseline,files:validate()},null,2));
+  }
 }
 module.exports={baseline,files,generate,validate,sourceFor,runtime,hash};

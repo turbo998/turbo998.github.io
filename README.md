@@ -16,7 +16,11 @@ Gaming → AI Security 排列，每条主线提供二级目录、阶段跳转及
 `frontier-ai-studio.html?lang=en#infra/module/i-pill-2`。
 新版 [Studio 总览](studio/zh-index.html) 使用七个独立双语主题页，不再嵌套完整网页。
 首页仅展示个人精选资源；[完整档案](studio/zh-archive.html) 保留所有原始入口。Dark Aurora 以深蓝为默认底色、局部蓝紫青光场为强调，同时保留显式浅色选择。
-正式门户可通过 `node scripts\build-site.cjs` 重建，部署端仍直接托管静态 HTML，无运行时构建或后端。
+完整站点通过 `node scripts\build-remediation.cjs` 重建：依次生成阅读页、专用工作台、中英对应版本、八条工程赛道、知识图谱与静态搜索索引；`build-site.cjs` 单独运行仅更新门户。部署端直接托管静态 HTML，无运行时构建或后端。
+
+顶部导航固定可见，`/` 或 `Ctrl+K` 打开全局搜索；语言按钮保持当前子页面与章节。严格 CSP 七卡报告采用原生搜索表单和独立语言文件，不注入脚本。Data & Infra Lab 与 AI Infra 分别归类数据/云底座及算力/推理系统；鹈鹕竞技场仅允许三个本地动画引擎并排嵌入，其余页面不嵌套完整网页。
+
+Release checks: `tests\site-localization.cjs`, `tests\global-search.cjs`, `tests\knowledge-atlas.cjs`, `tests\report-localization.cjs`, `tests\demo-localization.cjs`, `tests\pelican-arena.cjs`, plus the existing production/reading/dedicated integration suites. Set `FULL_BROWSER_AUDIT=1` for `tests\full-site-audit.cjs` to audit every production page at 390/768/1440 px. `SITE_ARTIFACT_DIR` selects the validation evidence directory.
 完整导航及回归检查方法见 [English](README.en.md) / [中文](README.zh-CN.md)，
 发布和语言范围见[迁移说明](docs/redesign/production-migration.md)。
 

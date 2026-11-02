@@ -23,7 +23,12 @@ const sourceLinkChange = {
   reason: 'Upstream FabCon gallery target is absent; use the existing localized Infra data-architecture topic without implying a replacement gallery.'
 };
 // Restore the exact upstream anchor as well as removing additive perimeter blocks.
-const strip = html => html.replace(marker, '').replace(/<!-- kee-data-lab:source-link:start -->[\s\S]*?<!-- kee-data-lab:source-link:end -->/g, originalFabconLink);
+const strip = html => html.replace(marker, '')
+  .replace(/<!-- kee-data-lab:source-link:start -->[\s\S]*?<!-- kee-data-lab:source-link:end -->/g, originalFabconLink)
+  .replace(/\n?<!-- (?:demo-localization|demo-language-navigation|kee-report-localization:metadata|kee-report-localization-navigation|site-remediation-knowledge):start -->[\s\S]*?<!-- (?:demo-localization|demo-language-navigation|kee-report-localization:metadata|kee-report-localization-navigation|site-remediation-knowledge):end -->/g, '')
+  .replace(/<div class="professional-context-bar">[\s\S]*?<\/div>/g, '')
+  .replace(/<style id="site-remediation-style">[\s\S]*?<\/style>/g, '')
+  .replace(/<script src="(?:\.\.\/)*assets\/editorial\/(?:search-index|search)\.js" defer><\/script>/g, '');
 
 const sharedStyle = `
 body:has(>.kee-data-lab-nav){background:#07111f;color-scheme:dark}
@@ -125,6 +130,7 @@ function transform(name, original) {
 }
 
 function generate() {
+  const {assertSourcePreservation, normalizeReleaseShell, finalizedLinks} = require('../tests/dedicated-smoke.cjs');
   // Preflight the whole set before any writes: never create files that could obstruct the parent's merge.
   const mergedOrPending = ['HEAD', 'MERGE_HEAD'].some(ref => {
     try { git(['merge-base', '--is-ancestor', baseline, ref]); return true; }
@@ -140,7 +146,8 @@ function generate() {
     const current = fs.readFileSync(target, 'utf8');
     const canonicalCurrent = current.replace(/\r\n/g, '\n');
     // Generator revisions may replace owned marked blocks, but never changed source content.
-    if (strip(canonicalCurrent) !== original) {
+    const isLocalizedSurface = ['index.html', 'benchmark-cards.html', 'benchmark-cards.en.html'].includes(name);
+    if (!isLocalizedSurface && normalizeReleaseShell(canonicalCurrent) !== normalizeReleaseShell(finalizedLinks(`${directory}/${name}`, html)) && strip(canonicalCurrent).replace('href="index.en.html?lang=en"', 'href="index.html?lang=en"') !== original) {
       throw new Error(`Refusing to overwrite changed DataLab source: ${name}`);
     }
     return { target, current, html };

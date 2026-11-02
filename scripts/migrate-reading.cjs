@@ -986,7 +986,7 @@ async function main() {
         snapshot = await live.evaluate(() => Object.fromEntries([...document.querySelectorAll('[id]')].filter(n => n.children.length && !n.closest('svg')).map(n => [n.id, n.innerHTML])));
         await live.close();
       }
-      const themeCSS = fs.readFileSync(path.join(root, 'assets', 'reading-shell.css'), 'utf8');
+      const themeCSS = fs.readFileSync(path.join(root, 'assets', 'reading-shell.css'), 'utf8') + '\n' + require('./site-search.cjs').css();
       const reportCsp = p.path === 'workshops/agentic-commerce/index.en.html';
       const inlineCsp = /Content-Security-Policy/.test(sources.get(p.path));
       const themeJS = fs.readFileSync(path.join(root, 'assets', 'reading-shell.js'), 'utf8');

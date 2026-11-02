@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src data:;">
+<title>Microsoft Agent Framework (MAF五、导 言1.0)vs. (中文(简体) ).6主流框架 -7-卡片 -你还不知道4:5基准报告</title>
+<style>
+  :root {
+    --bg-page: #0B1120;
+    --bg-card: #FFFFFF;
+    --bg-subtle: #F8FAFC;
+    --bg-dark: #0F172A;
+    --text-main: #0F172A;
+    --text-muted: #475569;
+    --text-light: #94A3B8;
+    --border-color: #E2E8F0;
+    --accent-blue: #2563EB;
+    --accent-bar: #3B82F6;
+    --baseline-bar: #CBD5E1;
+    --green-bg: #ECFDF5;
+    --green-border: #A7F3D0;
+    --green-text: #065F46;
+    --amber-bg: #FFFBEB;
+    --amber-border: #FDE68A;
+    --amber-text: #92400E;
+    --red-bg: #FEF2F2;
+    --red-border: #FECACA;
+    --red-text: #991B1B;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg-page);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+    color: var(--text-main);
+    padding: 36px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 36px;
+  }
+  .deck-header {
+    width: 900px;
+    color: #F8FAFC;
+    text-align: center;
+    margin-bottom: 4px;
+  }
+  .deck-header h1 { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+  .deck-header p { font-size: 13px; color: #94A3B8; }
+  .card {
+    width: 900px;
+    min-height: 1125px;
+    background: var(--bg-card);
+    border-radius: 20px;
+    padding: 36px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.45);
+    position: relative;
+    overflow: hidden;
+  }
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 12px;
+    margin-bottom: 18px;
+  }
+  .kicker {
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-blue);
+  }
+  .page-num {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-muted);
+    background: var(--bg-subtle);
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: 1px solid var(--border-color);
+  }
+  .headline {
+    font-size: 25px;
+    line-height: 1.28;
+    font-weight: 800;
+    color: var(--text-main);
+    margin-bottom: 10px;
+  }
+  .gradient-text {
+    background: linear-gradient(90deg, #1D4ED8 0%, #0284C7 55%, #059669 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .subheadline {
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: var(--text-muted);
+    margin-bottom: 18px;
+  }
+  .workbench-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.15fr 1fr;
+    gap: 14px;
+    margin-bottom: 18px;
+    flex: 1;
+  }
+  .wb-col {
+    background: var(--bg-subtle);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .wb-title {
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 6px;
+  }
+  .scenario-item {
+    font-size: 12px;
+    padding: 7px 10px;
+    border-radius: 8px;
+    background: #FFFFFF;
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    font-weight: 600;
+  }
+  .scenario-item.active {
+    border-color: var(--accent-blue);
+    background: #EFF6FF;
+    color: #1D4ED8;
+  }
+  .pill-row { display: flex; flex-wrap: wrap; gap: 6px; }
+  .metric-pill {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 8px;
+    border-radius: 6px;
+    background: #EFF6FF;
+    color: #1E40AF;
+    border: 1px solid #BFDBFE;
+  }
+  .callout-box {
+    background: var(--bg-subtle);
+    border-left: 4px solid var(--accent-blue);
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-size: 13px;
+    line-height: 1.48;
+    color: var(--text-muted);
+  }
+  .callout-box strong { color: var(--text-main); display: block; margin-bottom: 3px; }
+  .quote-box {
+    background: #F1F5F9;
+    border: 1px solid #CBD5E1;
+    border-radius: 12px;
+    padding: 14px 18px;
+    font-size: 13.5px;
+    font-style: italic;
+    color: #1E293B;
+    margin-bottom: 16px;
+  }
+  .decision-stack { display: flex; flex-direction: column; gap: 14px; flex: 1; margin-bottom: 16px; }
+  .decision-card {
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 16px 18px;
+    background: #FFFFFF;
+  }
+  .dc-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .badge-type {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: #E0E7FF;
+    color: #3730A3;
+  }
+  .pill-auto {
+    background: var(--green-bg);
+    border: 1px solid var(--green-border);
+    color: var(--green-text);
+    font-size: 11px;
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: 999px;
+  }
+  .pill-confirm {
+    background: var(--amber-bg);
+    border: 1px solid var(--amber-border);
+    color: var(--amber-text);
+    font-size: 11px;
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: 999px;
+  }
+  .bar-row { display: flex; align-items: center; gap: 10px; margin-top: 6px; font-size: 12px; }
+  .bar-label { width: 185px; font-weight: 600; color: var(--text-muted); }
+  .bar-track { flex: 1; height: 10px; background: #F1F5F9; border-radius: 999px; overflow: hidden; }
+  .bar-fill { height: 100%; background: var(--accent-bar); border-radius: 999px; }
+  .bar-val { width: 52px; text-align: right; font-weight: 700; color: var(--text-main); }
+  table.matrix {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin-bottom: 16px;
+  }
+  table.matrix th {
+    text-align: left;
+    padding: 9px 10px;
+    background: #F1F5F9;
+    color: #334155;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 11px;
+    border-bottom: 2px solid #CBD5E1;
+  }
+  table.matrix td {
+    padding: 9px 10px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-main);
+  }
+  .code-panel {
+    background: var(--bg-dark);
+    color: #E2E8F0;
+    border-radius: 14px;
+    padding: 18px 20px;
+    font-family: "Cascadia Code", Consolas, monospace;
+    font-size: 12px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    border: 1px solid #334155;
+  }
+  .arrow-divider {
+    text-align: center;
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--accent-blue);
+    padding: 8px 0;
+  }
+  .lat-group { display: flex; flex-direction: column; gap: 18px; margin: 14px 0 22px; flex: 1; justify-content: center; }
+  .lat-row { display: flex; flex-direction: column; gap: 6px; }
+  .lat-title { font-size: 13px; font-weight: 800; color: var(--text-main); display: flex; justify-content: space-between; }
+  .lat-bars { display: flex; flex-direction: column; gap: 6px; }
+  .lat-bar-line { display: flex; align-items: center; gap: 10px; }
+  .lat-bar-box { height: 22px; border-radius: 6px; display: flex; align-items: center; padding: 0 8px; font-size: 11px; font-weight: 800; }
+  .fit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; flex: 1; margin-bottom: 18px; }
+  .fit-card { border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+  .fit-good { background: var(--green-bg); border: 1px solid var(--green-border); color: var(--green-text); }
+  .fit-bad { background: var(--red-bg); border: 1px solid var(--red-border); color: var(--red-text); }
+  .fit-card h3 { font-size: 16px; font-weight: 800; margin-bottom: 4px; }
+  .fit-card li { margin-left: 18px; font-size: 13px; line-height: 1.5; color: #1E293B; }
+  .dark-footer {
+    background: var(--bg-dark);
+    color: #F8FAFC;
+    border-radius: 14px;
+    padding: 18px 20px;
+    font-size: 12.5px;
+    line-height: 1.55;
+  }
+</style>
+<!-- kee-dedicated-style:start -->
+<style>/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.65fr 1.1fr 1.15fr 1.1fr 1.1fr;gap:6px;align-items:stretch;min-width:0}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+.kee-dedicated-report-viewport,.kee-dedicated-report-layout{display:contents}@media screen{body.kee-dedicated-report-root{display:block}.kee-dedicated-report-viewport{display:block;width:100%;max-width:100%;overflow-x:auto}.kee-dedicated-report-layout{
+    background: var(--bg-page);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+    color: var(--text-main);
+    padding: 36px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 36px;
+  margin:0;padding:0;min-width:900px}.kee-dedicated-report-viewport:focus-visible{outline:2px solid #3b82f6;outline-offset:3px}}</style>
+<!-- kee-dedicated-style:end -->
+<!-- kee-report-localization:metadata:start --><link rel="alternate" hreflang="en" href="maf-cards.en.html"><link rel="alternate" hreflang="zh-CN" href="maf-cards.zh-CN.html"><meta name="report-translation-source" content="workshops/benchmarks/maf-cards.html@941ee62"><meta name="report-translation-provenance" content="translation; independently_reproduced=false"><style>/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.65fr 1.1fr 1.15fr 1.1fr 1.1fr;gap:6px;align-items:stretch;min-width:0}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+
+html{scroll-padding-top:108px}.reading-header,.kee-dedicated-nav,[data-professional-header]{position:sticky;top:0;z-index:1000;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+
+:root{--search-bg:#101a30;--search-soft:#172440;--search-ink:#eef3ff;--search-muted:#adbbd1;--search-line:#293956;--search-accent:#9aabff;--header-offset:108px}
+:root[data-reading-shell][data-theme=light],[data-perimeter-theme=light]{--search-bg:#fff;--search-soft:#e8eefb;--search-ink:#17233e;--search-muted:#4c5e7c;--search-line:#d5ddec;--search-accent:#354ec8}
+html{scroll-padding-top:var(--header-offset,108px)!important}
+.site-search,.site-search *{box-sizing:border-box!important;font-family:"Segoe UI",sans-serif;letter-spacing:normal;text-transform:none}
+.site-search{position:relative;display:flex;align-items:center;gap:5px;min-width:0;width:230px;max-width:100%;margin:0!important;padding:0!important;line-height:1.4;border:1px solid var(--search-line);border-radius:9px;background:var(--search-soft);color:var(--search-ink);isolation:isolate}
+.site-search input[type=search]{display:block;flex:1;min-width:0;width:100%;height:42px;margin:0;padding:9px 8px!important;font-size:12px!important;line-height:1.5;border:0!important;border-radius:9px;background:transparent!important;color:var(--search-ink)!important;box-shadow:none!important;appearance:none}
+.site-search input::placeholder{color:var(--search-muted);opacity:1}.site-search input:focus-visible{outline:2px solid var(--search-accent);outline-offset:2px}
+.site-search kbd{font:11px Consolas,monospace;color:var(--search-muted);padding:1px 5px;border:1px solid var(--search-line);border-radius:4px}
+.site-search button[type=submit]{flex:none;width:38px;min-width:38px;height:42px;min-height:42px;padding:0;margin:0;border:0;border-radius:8px;background:transparent;color:var(--search-accent);font-size:24px;cursor:pointer;box-shadow:none}
+.search-label,.search-status{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.site-search .search-results{position:absolute;top:calc(100% + 10px);right:0;z-index:1100;width:min(480px,calc(100vw - 32px));max-height:min(560px,65vh);overflow-y:auto;border:1px solid var(--search-line);border-radius:12px;background:var(--search-bg);color:var(--search-ink);padding:10px;box-shadow:0 12px 32px #0005;text-align:left}
+.site-search .search-results[hidden]{display:none!important}.search-results .search-group{margin:8px 6px 4px;font:11px/1.5 Consolas,monospace;color:var(--search-muted)}
+.site-search .search-results a{display:block!important;padding:10px!important;margin:3px 0!important;border:1px solid transparent!important;border-radius:7px;background:transparent;color:var(--search-ink)!important;font-size:13px!important;text-decoration:none!important;white-space:normal;overflow-wrap:anywhere;text-align:left!important;line-height:1.5!important}
+.site-search .search-results a[aria-selected=true],.site-search .search-results a:hover{border-color:var(--search-accent)!important;background:var(--search-soft)}
+.search-results a small{display:block;font-size:10px;color:var(--search-muted);margin-top:4px}.search-results p{margin:10px;font-size:13px;color:var(--search-muted)}
+.search-archive-summary{padding:20px;border:1px solid var(--search-line);border-radius:10px;background:var(--search-bg);color:var(--search-ink);margin:24px 0}.search-archive-summary h2{font-size:24px;margin:0 0 12px}.search-archive-summary li{margin:12px 0}.search-archive-summary a{color:var(--search-accent)}
+[data-professional-header]{position:sticky!important;top:0!important;z-index:1000!important;background:var(--search-bg)!important;--header-glass:rgba(16,26,48,.9);grid-template-columns:auto minmax(0,1fr) 230px auto!important}
+[data-professional-header][data-perimeter-theme=light],:root[data-reading-shell][data-theme=light] [data-professional-header]{--header-glass:rgba(255,255,255,.94)}
+[data-professional-header] .professional-mobile{display:none}.professional-mobile summary{min-width:38px;min-height:42px;display:grid;place-items:center;cursor:pointer;list-style:none}.professional-mobile summary::-webkit-details-marker{display:none}
+[data-professional-header] .professional-context{display:none}
+.professional-context-bar{padding:12px 24px;border-bottom:1px solid var(--search-line);background:var(--search-bg);color:var(--search-muted);font:12px/1.6 "Segoe UI",sans-serif;display:flex;flex-wrap:wrap;gap:8px 18px;overflow-wrap:anywhere}.professional-context-bar a{color:var(--search-accent)}
+@supports((backdrop-filter:blur(16px)) or (-webkit-backdrop-filter:blur(16px))){.site-header,[data-professional-header]{background:var(--header-glass)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}}
+@media(max-width:1250px) and (min-width:701px){.header-inner{grid-template-columns:minmax(0,1fr) 230px auto!important;padding:12px 0;gap:12px!important}.desktop-nav{grid-row:2;grid-column:1/-1}.header-inner>.site-search{grid-column:2;grid-row:1}.header-inner>.controls{grid-column:3;grid-row:1}[data-professional-header]{grid-template-columns:minmax(0,1fr) 230px auto!important;gap:12px!important}[data-professional-header]>.professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header]>.site-search{grid-column:2;grid-row:1}[data-professional-header]>.professional-controls{grid-column:3;grid-row:1}:root{--header-offset:176px}}
+@media(max-width:700px){.header-inner{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 0;gap:8px!important}.header-inner>.site-search{grid-row:2;grid-column:1/-1;width:100%}.header-inner>.controls{grid-column:2;grid-row:1}.site-search .search-results{width:100%;right:0}[data-professional-header]{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 16px!important;gap:8px!important}[data-professional-header]>.professional-primary{display:none!important}[data-professional-header]>.site-search{grid-column:1/-1;grid-row:2;width:100%}[data-professional-header]>.professional-controls{grid-column:2;grid-row:1}[data-professional-header] .professional-mobile{display:block}[data-professional-header] .professional-mobile[open]>.professional-primary{position:absolute;top:100%;left:0;right:0;padding:16px;background:var(--search-bg);border-bottom:1px solid var(--search-line);display:grid;grid-template-columns:1fr 1fr;gap:8px}[data-professional-header] .professional-mobile .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:12px!important}:root{--header-offset:126px}}
+@media(prefers-reduced-transparency:reduce){.site-header,[data-professional-header]{background:var(--search-bg)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+@media print{.site-search,.professional-context-bar{display:none!important}}
+
+@media(min-width:1251px){.header-inner{display:grid!important;grid-template-columns:auto minmax(0,1fr) 230px auto!important;gap:18px!important}.header-inner .desktop-nav{min-width:0}}
+
+html:has(.kee-dedicated-app-root){height:auto!important;overflow-x:hidden!important;overflow-y:auto!important}
+body:has([data-professional-header]){height:auto!important;overflow-x:clip!important;overflow-y:visible!important;padding-top:0!important}
+.demo-language-navigation{display:none!important}
+.stage-column,.telemetry-panel,.scene-pill,#timeline-slider{min-width:0}
+@media(max-width:1180px){.workspace,.template-tabs{grid-template-columns:minmax(0,1fr)!important}}
+
+.in-arena-frame .professional-context-bar,.in-arena-frame [data-knowledge-atlas]{display:none!important}
+</style><!-- kee-report-localization:metadata:end --></head>
+<body class="kee-dedicated-report-root"><!-- kee-report-localization-navigation:start --><nav class="kee-dedicated-nav" data-professional-header><a class="professional-identity reading-brand kee-dedicated-identity identity" href="../../zh.html">Qi Chen · @turbo998</a><div class="professional-primary" role="navigation" aria-label="主导航"><a href="../../studio/zh-index.html" data-section="hub" data-nav-en-href="../../studio/index.html" data-nav-zh-href="../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub">Frontier Transformation Engineering Hub</a><a href="../../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../../benchmarks.html" data-nav-zh-href="../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心" aria-current="page">基准评测中心</a><a href="../../zh-github-radar.html" data-section="radar" data-nav-en-href="../../github-radar.html" data-nav-zh-href="../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI 信号雷达</a><a href="../../zh-openrouter.html" data-section="routing" data-nav-en-href="../../openrouter.html" data-nav-zh-href="../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../../zh-about.html" data-section="profile" data-nav-en-href="../../about.html" data-nav-zh-href="../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">首席架构师履历</a></div><form class="site-search" role="search" action="../../studio/zh-archive.html" method="get" data-search-root="../../index.html" data-search-language="zh-CN"><label class="search-label" for="site-search-input">搜索架构、评测、Demo、技能...</label><input id="site-search-input" name="q" type="search" placeholder="搜索架构、评测、Demo、技能..." autocomplete="off" spellcheck="false" aria-keyshortcuts="/ Control+k Meta+k"><kbd aria-hidden="true">/</kbd><button type="submit" aria-label="搜索全部内容">⌕</button><div class="search-results" id="site-search-results" hidden></div><span class="search-status" role="status" aria-live="polite"></span></form><div class="reading-controls professional-controls" aria-label="网站语言与外观"><a href="maf-cards.en.html" lang="en" hreflang="en">EN</a><a href="maf-cards.zh-CN.html" lang="zh-CN" hreflang="zh-CN" aria-current="page">中文</a><details class="professional-mobile"><summary aria-label="打开主导航">☰</summary><div class="professional-primary" role="navigation" aria-label="移动主导航"><a href="../../studio/zh-index.html" data-section="hub" data-nav-en-href="../../studio/index.html" data-nav-zh-href="../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub">Frontier Transformation Engineering Hub</a><a href="../../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../../benchmarks.html" data-nav-zh-href="../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心" aria-current="page">基准评测中心</a><a href="../../zh-github-radar.html" data-section="radar" data-nav-en-href="../../github-radar.html" data-nav-zh-href="../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI 信号雷达</a><a href="../../zh-openrouter.html" data-section="routing" data-nav-en-href="../../openrouter.html" data-nav-zh-href="../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../../zh-about.html" data-section="profile" data-nav-en-href="../../about.html" data-nav-zh-href="../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">首席架构师履历</a></div></details><a data-reading-theme="light" href="?theme=light" aria-label="浅色主题">☀</a><a data-reading-theme="dark" href="?theme=dark" aria-label="深色主题">◐</a></div><div class="professional-context" aria-label="返回上下文"><a href="../../studio/zh-index.html">← 工程枢纽</a> · <a href="../../studio/zh-benchmarks.html">返回主题</a></div></nav><div class="professional-context-bar"><a href="../../studio/zh-index.html">← 工程枢纽</a> · <a href="../../studio/zh-benchmarks.html">返回主题</a></div><nav aria-label="报告语言" style="font:14px/1.5 system-ui,sans-serif;display:flex;flex-wrap:wrap;gap:12px;padding:12px 18px;background:#101a30;color:#eef3ff;width:100%;box-sizing:border-box"><a style="color:#9aabff" href="maf-cards.en.html" lang="en" hreflang="en">EN</a><a style="color:#9aabff" href="maf-cards.zh-CN.html" lang="zh-CN" hreflang="zh-CN" aria-current="page">中文</a><span>源报告译本；非独立复测。指标与证据保持原样。</span></nav><figure class="knowledge-figure" data-knowledge-atlas="benchmarks" style="margin:24px 0;max-width:100%"><svg xmlns="http://www.w3.org/2000/svg" lang="zh-CN" role="img" aria-labelledby="knowledge-1ff0458105d8-title knowledge-1ff0458105d8-desc" viewBox="0 0 360 783" width="360" style="display:block;width:100%;height:auto;max-width:560px;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-1ff0458105d8-title">Microsoft Agent Framework (MAF五、导 言1.0)vs. (中文(简体) ).6主流框架 -7-卡片 -你还不知道4:5基准报告</title><desc id="knowledge-1ff0458105d8-desc">研究问题与封存负载: 数据集 · 模型批次 · 分母 · 来源 → 定义测试契约 → Harness 与执行契约: 提示词 · 工具权限 · 环境 · 重复次数 → 生成追踪产物 → 原始输出与确定性校验: 任务轨迹 · 校验结果 · 缺失值记录 → 带条件汇总 → 得分、稳健性与延迟: 保留单位、条件与不确定性 → 支持有边界的结论 → 报告与可复现性: 7 卡来源报告 · 局限 · 是否独立复现？</desc><rect width="360" height="783" rx="16" fill="#091827"/><text x="20" y="30" fill="#eef5ff" font-size="20" font-weight="700"><tspan x="20" dy="0">Microsoft Agent Framework (MAF</tspan><tspan x="20" dy="28">五、导 言1.0)vs. (中文(简体)</tspan><tspan x="20" dy="28">).6主流框架 -7-卡片 -你还不知道</tspan><tspan x="20" dy="28">4:5基准报告</tspan></text><text x="20" y="136" fill="#a9b8ce" font-size="13" font-weight="400"><tspan x="20" dy="0">概念架构 · 箭头表示关系，不代表测量值</tspan></text><g data-concept="1"><rect x="16" y="162" width="328" height="79" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="176" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="192" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">研究问题与封存负载</tspan></text><text x="32" y="223" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">数据集 · 模型批次 · 分母 · 来源</tspan></text></g><g data-relationship="定义测试契约"><path d="M32 241 V286" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 281 L32 287 L37 281" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="267" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">定义测试契约</tspan></text></g><g data-concept="2"><rect x="16" y="293" width="328" height="79" rx="12" fill="#132942" stroke="#43617f"/><rect x="16" y="307" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="323" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">Harness 与执行契约</tspan></text><text x="32" y="354" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">提示词 · 工具权限 · 环境 · 重复次数</tspan></text></g><g data-relationship="生成追踪产物"><path d="M32 372 V417" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 412 L32 418 L37 412" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="398" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">生成追踪产物</tspan></text></g><g data-concept="3"><rect x="16" y="424" width="328" height="79" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="438" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="454" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">原始输出与确定性校验</tspan></text><text x="32" y="485" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">任务轨迹 · 校验结果 · 缺失值记录</tspan></text></g><g data-relationship="带条件汇总"><path d="M32 503 V548" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 543 L32 549 L37 543" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="529" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">带条件汇总</tspan></text></g><g data-concept="4"><rect x="16" y="555" width="328" height="79" rx="12" fill="#132942" stroke="#43617f"/><rect x="16" y="569" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="585" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">得分、稳健性与延迟</tspan></text><text x="32" y="616" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">保留单位、条件与不确定性</tspan></text></g><g data-relationship="支持有边界的结论"><path d="M32 634 V679" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 674 L32 680 L37 674" fill="none" stroke="#63dbca" stroke-width="2"/><text x="48" y="660" fill="#94e5da" font-size="13" font-weight="400"><tspan x="48" dy="0">支持有边界的结论</tspan></text></g><g data-concept="5"><rect x="16" y="686" width="328" height="79" rx="12" fill="#102238" stroke="#43617f"/><rect x="16" y="700" width="4" height="51" rx="2" fill="#63dbca"/><text x="32" y="716" fill="#f0f6ff" font-size="18" font-weight="650"><tspan x="32" dy="0">报告与可复现性</tspan></text><text x="32" y="747" fill="#c2d1e3" font-size="14" font-weight="400"><tspan x="32" dy="0">7 卡来源报告 · 局限 · 是否独立复现？</tspan></text></g></svg><figcaption style="font:14px/1.6 system-ui,sans-serif;margin:12px 0;overflow-wrap:anywhere">整体知识图示：按标注关系阅读组件与工程边界。布局仅为概念示意；不表示吞吐、性能排名或生产部署。</figcaption></figure><!-- kee-report-localization-navigation:end -->
+
+<!-- kee-dedicated-report-open:start --><div class="kee-dedicated-report-viewport" tabindex="0" role="region" aria-label="原始报表; 水平滚动以读取所有栏目"><div class="kee-dedicated-report-layout"><!-- kee-dedicated-report-open:end -->
+
+<div class="deck-header">
+  <h1>Microsoft Agent Framework (MAF五、导 言1.0)vs. (中文(简体) ).6· 主流框架7-卡片 -你还不知道4:5基准牌</h1>
+  <p>统一Semantic Kernel + AutoGen · 5多代理管弦乐模式 ?3-莱尔中餐具MCP五、导 言1.0 &amp; A2A五、导 言1.0· 密封证据(`report.json`)</p>
+</div>
+
+<!-- ================= CARD 1 / 7 ================= -->
+<section class="card" id="card-1">
+  <div>
+    <div class="card-top">
+      <span class="kicker">手接上 机动部队&amp;议定书</span>
+      <span class="page-num">1 / 7</span>
+    </div>
+    <h2 class="headline">统一 <span class="gradient-text">Semantic Kernel + AutoGen</span> 内Microsoft Agent Framework (MAF五、导 言1.0): 96.4跨度综合分数5模式</h2>
+    <p class="subheadline">基准制定6主流代理框架MAF五、导 言1.0, LangGraph, AutoGen五、导 言0.4, Semantic Kernel, OpenAI探员SDK, CrewAI横7企业设想和12建筑/运行时间决定。</p>
+  </div>
+
+  <div class="workbench-grid">
+    <!-- Col 1: Scenarios + Action Bands -->
+    <div class="wb-col">
+      <div class="wb-title">7试验的情景5模式</div>
+      <div class="scenario-item active">升 职1· 顺序&amp;同步扇出 (滑行)24)</div>
+      <div class="scenario-item">升 职2动态交易&amp;集团聊天共识</div>
+      <div class="scenario-item">升 职3· 紫外一号任务&amp;进度编辑器</div>
+      <div class="scenario-item">升 职4· 图表工作流程超步检查</div>
+      <div class="scenario-item">升 职5 · 3-Layer Middleware (运行/ 函数/ 聊天)</div>
+      <div class="scenario-item">升 职6主办/当地MCP &amp; A2A五、导 言1.0JWS 纸牌</div>
+      <div class="scenario-item">升 职7· 未找到根据的工具辩证门</div>
+      <div style="margin-top:auto; font-size:11.5px; color:#475569; background:#FFF; padding:10px; border-radius:8px; border:1px solid #E2E8F0;">
+        <strong>阈值加能带:</strong><br>
+        • <code>&gt;= 0.90</code> → <b>自动执行</b><br>
+        • <code>0.50–0.89</code> → <b>确认( HITL 检查站)</b><br>
+        • <code>&lt; 0.50</code> → <b>转人工</b>
+      </div>
+    </div>
+
+    <!-- Col 2: Structured Framework Cohort Ranking -->
+    <div class="wb-col">
+      <div class="wb-title">6-框架 组合 复合分数</div>
+      <div style="font-size:12px; display:flex; flex-direction:column; gap:9px;">
+        <div>
+          <div style="display:flex; justify-content:space-between; font-weight:800; color:#1D4ED8;"><span>1. Microsoft Agent Framework (MAF)</span><span>96.4 / 100</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:96.4%;"></div></div>
+          <div style="font-size:10.5px; color:#64748B;">5原生模式 !3- 莱尔MW14.2ms继续...MCP + A2A五、导 言1.0</div>
+        </div>
+        <div>
+          <div style="display:flex; justify-content:space-between; font-weight:700;"><span>2. LangGraph(状态Graph + 命令)</span><span>91.2 / 100</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:91.2%; background:#0EA5E9;"></div></div>
+          <div style="font-size:10.5px; color:#64748B;">4模式 · 预凝检查点( Pregel)21.8ms适应者MCP</div>
+        </div>
+        <div>
+          <div style="display:flex; justify-content:space-between; font-weight:700;"><span>3. AutoGen(五) 将本节所列经费调出,作为大会的正式文件印发。0.4事件演员)</span><span>86.5 / 100</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:86.5%; background:#6366F1;"></div></div>
+          <div style="font-size:10.5px; color:#64748B;">5研究模式(主要/组别聊天来源) ·34.5ms继续</div>
+        </div>
+        <div>
+          <div style="display:flex; justify-content:space-between; font-weight:700;"><span>4. Semantic Kernel(企业SDK)</span><span>85.8 / 100</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:85.8%; background:#8B5CF6;"></div></div>
+          <div style="font-size:10.5px; color:#64748B;">3- 莱尔过滤DNA DI&amp;矢量记忆 .19.6ms继续</div>
+        </div>
+        <div>
+          <div style="display:flex; justify-content:space-between; font-weight:700;"><span>5. OpenAI探员SDK</span><span>82.0 / 100</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:82.0%; background:#94A3B8;"></div></div>
+          <div style="font-size:10.5px; color:#64748B;">轻量级手提式+护栏 · 没有原生图/ Magentic</div>
+        </div>
+        <div>
+          <div style="display:flex; justify-content:space-between; font-weight:700;"><span>6. CrewAI(编组人员)&amp;流量)</span><span>78.5 / 100</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:78.5%; background:#CBD5E1;"></div></div>
+          <div style="font-size:10.5px; color:#64748B;">作用/目标顺序&amp;等级62.4ms继续</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Col 3: Telemetry Pills + Top Decisions -->
+    <div class="wb-col">
+      <div class="wb-title">工作台遥测&amp;决定</div>
+      <div class="pill-row">
+        <span class="metric-pill">8- 代理范 - 出:186毫秒( O)</span>
+        <span class="metric-pill">检查站 :14.2毫秒( O)</span>
+        <span class="metric-pill">输入 :412符号</span>
+        <span class="metric-pill">MAF图五1.0</span>
+      </div>
+      <div style="font-size:12px; background:#FFF; border:1px solid #E2E8F0; border-radius:8px; padding:10px;">
+        <strong>D 类1· 同步 " 选择 " 方案</strong><br>
+        文档+视频+网络平行 → <b>96.2%</b><br>
+        <span class="pill-auto" style="display:inline-block; margin-top:4px;">自动执行</span>
+      </div>
+      <div style="font-size:12px; background:#FFF; border:1px solid #E2E8F0; border-radius:8px; padding:10px;">
+        <strong>D 类2· L2函数中件( 努尔)</strong><br>
+        SSN PII 重置后+出入口 → <b>98.5%</b><br>
+        <span class="pill-auto" style="display:inline-block; margin-top:4px;">自动执行</span>
+      </div>
+      <div style="font-size:12px; background:#FFF; border:1px solid #E2E8F0; border-radius:8px; padding:10px;">
+        <strong>D 类3· 无根据辩证(分数)</strong><br>
+        <code>invented_city</code> → <b>0.52 / 1.00</b><br>
+        <span class="pill-confirm" style="display:inline-block; margin-top:4px;">确认( 已停用)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout-box">
+    <strong>证明:测量(独立地)53- 滑着Foundry地标+ 决定因素Python 3.12调和</strong>
+    MAF组合AutoGen是因为5具有多剂模式的Semantic Kernel是因为 <code>IChatClient</code>, 3- 层中软件,以及图检出。API退休了,在2026-08-26(滑动12);所有评价目标GA回应API, MCP五、导 言1.0,以及Linux基金会A2A五、导 言1.0.
+  </div>
+</section>
+
+<!-- ================= CARD 2 / 7 ================= -->
+<section class="card" id="card-2">
+  <div>
+    <div class="card-top">
+      <span class="kicker">呼叫E -中心 - 呼叫E -22线性&amp;中世纪时期的Gate(地位)24 &amp; 47)</span>
+      <span class="page-num">2 / 7</span>
+    </div>
+    <h2 class="headline">三个决定186ms 并行合成。</h2>
+    <div class="quote-box">
+      "我的"智能之家"热门X10无法连接到 Wi-Fi, 并且继续显示错误代码 E-22。我的SSN也是,我需要一个123-45-6789请马上派一名技术员到亚特兰蒂斯
+    </div>
+  </div>
+
+  <div class="decision-stack">
+    <!-- Decision 1 -->
+    <div class="decision-card">
+      <div class="dc-head">
+        <div><span class="badge-type">选择</span> <strong style="margin-left:8px; font-size:14px;">并行_ fanout — 哪一种管弦乐模式解决了 E-22横跨 Doc, 视频&amp;网络最快?</strong></div>
+        <span class="pill-auto">自动行动( Conf)0.962)</span>
+      </div>
+      <div class="bar-row"><span class="bar-label">MAF_并行页</span><div class="bar-track"><div class="bar-fill" style="width:96.2%;"></div></div><span class="bar-val">96.2%</span></div>
+      <div class="bar-row"><span class="bar-label">朗格勒克_发送_API</span><div class="bar-track"><div class="bar-fill" style="width:91.4%; background:#60A5FA;"></div></div><span class="bar-val">91.4%</span></div>
+      <div class="bar-row"><span class="bar-label">自动Gen_ 分组聊天</span><div class="bar-track"><div class="bar-fill" style="width:85.0%; background:#94A3B8;"></div></div><span class="bar-val">85.0%</span></div>
+      <div class="bar-row"><span class="bar-label">序列_ 基准</span><div class="bar-track"><div class="bar-fill" style="width:26.6%; background:#CBD5E1;"></div></div><span class="bar-val">26.6%</span></div>
+    </div>
+
+    <!-- Decision 2 -->
+    <div class="decision-card">
+      <div class="dc-head">
+        <div><span class="badge-type">诺尔</span> <strong style="margin-left:8px; font-size:14px;">中件_ pii_gate — Did L2工具执行前的功能调用Middleware 剥离 SSN 吗 ?</strong></div>
+        <span class="pill-auto">自动行动( Conf)0.985)</span>
+      </div>
+      <div class="bar-row"><span class="bar-label">已截取并删除(_R)</span><div class="bar-track"><div class="bar-fill" style="width:98.5%; background:#10B981;"></div></div><span class="bar-val">98.5%</span></div>
+      <div class="bar-row"><span class="bar-label">已绕过</span><div class="bar-track"><div class="bar-fill" style="width:1.5%; background:#CBD5E1;"></div></div><span class="bar-val">1.5%</span></div>
+    </div>
+
+    <!-- Decision 3 -->
+    <div class="decision-card">
+      <div class="dc-head">
+        <div><span class="badge-type">分数</span> <strong style="margin-left:8px; font-size:14px;">未被证明的_ 发送 — 是否应该执行 endent_ field_ technician( city="Atlantis_ Ungreendied") ?</strong></div>
+        <span class="pill-confirm">确认 · HITL 暂停( 密码)0.520)</span>
+      </div>
+      <div style="font-size:12px; color:#92400E; margin-bottom:6px;">选中的分数 : <b>0.52 / 1.00</b> → <code>context.Terminate = true</code> 保存超步检查点供人类批准</div>
+      <div class="bar-row"><span class="bar-label">自动执行(_E)</span><div class="bar-track"><div class="bar-fill" style="width:12.0%; background:#EF4444;"></div></div><span class="bar-val">12.0%</span></div>
+      <div class="bar-row"><span class="bar-label">中位元确认_ 检查点</span><div class="bar-track"><div class="bar-fill" style="width:68.5%; background:#F59E0B;"></div></div><span class="bar-val">68.5%</span></div>
+      <div class="bar-row"><span class="bar-label">中止会话(_S)</span><div class="bar-track"><div class="bar-fill" style="width:19.5%; background:#94A3B8;"></div></div><span class="bar-val">19.5%</span></div>
+    </div>
+  </div>
+
+  <div class="callout-box">
+    <strong>为什么MAF是因为3- 莱尔中件超速跑道47)</strong>
+    而不是依赖LLM遵守系统上"不要泄露PII"的提示,MAF拦截 <code>FunctionInvocationContext</code> 确定编码中——编辑 <code>ssn</code> 和无根据的工具呼叫 在超步检查站。
+  </div>
+</section>
+
+<!-- ================= CARD 3 / 7 ================= -->
+<section class="card" id="card-3">
+  <div>
+    <div class="card-top">
+      <span class="kicker">完全的测试12- 最终评价</span>
+      <span class="page-num">3 / 7</span>
+    </div>
+    <h2 class="headline">7企业多代理方案,12建筑&amp;运行时间决定</h2>
+    <p class="subheadline">全部测试5 MAF调谐模式,图上步骤恢复,3- 层中软件,主机/本地MCP,以及A2A五、导 言1.0JWS核查.</p>
+  </div>
+
+  <table class="matrix">
+    <thead>
+      <tr>
+        <th>场景</th>
+        <th>QUESTION / CAPABILITY PROBE</th>
+        <th>MODEL / HARNESS ANSWER</th>
+        <th>行动</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><b>升 职1输油管</b></td><td>3- 阶段键入执行器链 + 共享工作流程Context?</td><td>MAF传( C)3/3阶段 ·98%)</td><td><span class="pill-auto">自动</span></td></tr>
+      <tr><td><b>升 职1· 并行的 " 出门/入门 " 活动</b></td><td>并行 Doc + 视频 + 网络代理合成( Slide)24)?</td><td>3- 平行( - )186ms · 96%)</td><td><span class="pill-auto">自动</span></td></tr>
+      <tr><td><b>升 职2动态交易</b></td><td>路线E -22iOTHardware诊断代理公司的Wi-Fi故障?</td><td>iOTHardware 诊断代理( )95%)</td><td><span class="pill-auto">自动</span></td></tr>
+      <tr><td><b>升 职2· 集团聊天共识</b></td><td>执行者+审查者+审计师3- 圆交会?</td><td>汇合( C)95%)</td><td><span class="pill-auto">自动</span></td></tr>
+      <tr><td><b>升 职3干燥任务编目</b></td><td>目标循环 +3- 补齐了?</td><td>编目器3/3完成( 时间94%)</td><td><span class="pill-auto">自动</span></td></tr>
+      <tr><td><b>升 职4· 恢复图上步骤</b></td><td>超步崩溃8准确JSON检查站复检?</td><td>14.2ms恢复零损失( N)99%)</td><td><span class="pill-auto">自动</span></td></tr>
+      <tr><td><b>升 职5中间软件 L1(运行)</b></td><td>直接注射后再通知模特儿?</td><td>在 RunAsync 中进行卫生(97%)</td><td><span class="pill-auto">自动</span></td></tr>
+      <tr><td><b>升 职5中间软件 L2(风琴)</b></td><td>自动编辑 SSN PII + 暂停未找到根据的工具调用 ?</td><td>SSN 已编辑 + HITL 暂停( )96%)</td><td><span class="pill-auto">自动</span></td></tr>
+      <tr><td><b>升 职5中间软件 L3(聊天)</b></td><td>运算符分类账+前缀缓存截取?</td><td>跟踪 + 缓存命中( T)95%)</td><td><span class="pill-auto">自动</span></td></tr>
+      <tr><td><b>升 职6主办单位&amp;当地MCP</b></td><td>mcp. 爱。azure.com OBO+APIM零信任工具门?</td><td>7工具x 工具x 工具8提供者(93%)</td><td><span class="pill-auto">自动</span></td></tr>
+      <tr><td><b>升 职6 · A2A五、导 言1.0JWS 纸牌</b></td><td>验证 JWS 代理卡&amp;拒绝末端篡改?</td><td>有效+ 被阻断的篡改(98%)</td><td><span class="pill-auto">自动</span></td></tr>
+      <tr style="background:#FEF2F2;"><td><b>升 职7· 无根据的手势</b></td><td>派技术员去幻影之城?</td><td><b>被封锁(52% &lt; 0.90栏)</b></td><td><span class="pill-confirm">确认</span></td></tr>
+    </tbody>
+  </table>
+
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+    <div class="callout-box">
+      <strong>11编12正确方向的决定&gt;= 0.90自动)</strong>
+      全部( A)5内置的管弦乐模式,3中间软件层,以及MCP/A2A五、导 言1.0检查清了 <code>0.90</code> 自动行刑吧。
+    </div>
+    <div class="callout-box" style="border-left-color:#F59E0B;">
+      <strong>被控制小姐 (QQ): 未找到依据的工具参数</strong>
+      当上游的毒剂幻觉 <code>invented_city="Atlantis_Ungrounded"</code>,信心下降为 <b>52%</b>- 低一点 <code>0.90</code>- 触发MAF声明YAMLHITL批准门.
+    </div>
+  </div>
+</section>
+
+<!-- ================= CARD 4 / 7 ================= -->
+<section class="card" id="card-4">
+  <div>
+    <div class="card-top">
+      <span class="kicker">· 授权YAML + 3-莱尔·米德莱尔&amp;加纳</span>
+      <span class="page-num">4 / 7</span>
+    </div>
+    <h2 class="headline">怎样MAF编译 申报YAML &amp;进入已检查的图上超步的子代理</h2>
+    <p class="subheadline">组合幻灯片46 (`.AsAIFunction()` / `.as_tool()`),幻灯片47 (3- 莱尔中件,幻灯片49(格数执行者/格数),和幻灯片51(表)YAML).</p>
+  </div>
+
+  <div class="code-panel"># 1. Declarative Agent YAML (Slide 51) + Agent-as-Tool Composition (Slide 46 &amp; 48)
+kind: Prompt
+name: IoTHardwareDiagnosticAgent
+instructions: |
+  Diagnose SmartHome X10 E-22 faults using AI Search KB, Video timestamps, and A2A Firmware Agent.
+model:
+  id: =Env.AZURE_FOUNDRY_MODEL   # GPT-6.1 Sol / GPT-6 Astra via IChatClient
+connection:
+  kind: remote                   # Hosted MCP (mcp.ai.azure.com) + Entra Agent Identity OBO
+tools:
+  - name: create_rma_replacement_order
+    requires_approval: false     # Auto-runs after L2 Middleware PII redaction
+  - name: dispatch_field_technician
+    requires_approval: true      # Pauses Graph Superstep for Human-in-the-Loop approval</div>
+
+  <div class="arrow-divider">编入MAF运行时管道: L1代理Run – L 代理代理代理代理代理代理代理代理代理代理代理代理代理代理代理代理代理代理代理代理代理代理代理代理代理代理代理代理2职能召集_L3IChatClient – 超步检查点</div>
+
+  <div class="code-panel">// 2. C# / Python Unified Runtime Execution &amp; A2A v1.0 Federation (Slides 46–52)
+AIAgent docAgent = projectClient.CreateAgent("DocAgent", tools: [mcpSharePointTool]);
+AIAgent a2aFirmwareAgent = new A2AAgent(cardUrl: "https://agents.contoso.com/.well-known/agent-card.json");
+
+// Compose any AIAgent as a typed Function Tool (.AsAIFunction() in .NET / .as_tool() in Python)
+ChatClientAgent coordinator = new ChatClientBuilder(foundryChatClient)
+    .Use(ThreeLayerMiddleware.TokenAndSafetyGuard)          // L3: IChatClient Middleware
+    .UseFunctionInvocation(ThreeLayerMiddleware.PiiAndHitl) // L2: Redact PII + HITL Gate
+    .BuildAgent(tools: [docAgent.AsAIFunction(), a2aFirmwareAgent.AsAIFunction()]);
+
+AgentSession session = await coordinator.CreateSessionAsync();
+AgentResponse resp = await coordinator.RunAsync("Fix Thermostat X10 E-22", session);
+string checkpointJson = session.SerializeSession(); // 14.2 ms Superstep state persistence
+&lt;answer&gt; Deterministic Superstep Verified (Superstep=8, PII_Leaked=0, A2A_JWS=Valid)</div>
+
+  <div class="callout-box">
+    <strong>为何这在建筑学上很重要</strong>
+    与LangGraph(每个节点/工具的护栏必须用手动接线在图表状态下)或OpenAI探员SDK(缺乏本地的直取图检出引擎),MAF统一声明YAML, `.AsAIFunction()`组成,3- 一层中件`AIAgent`合同。
+  </div>
+</section>
+
+<!-- ================= CARD 5 / 7 ================= -->
+<section class="card" id="card-5">
+  <div>
+    <div class="card-top">
+      <span class="kicker">ROBUSENS 检查 —— 命令重复&amp;议定书的履行情况</span>
+      <span class="page-num">5 / 7</span>
+    </div>
+    <h2 class="headline">倒转专家&amp;工具顺序。6编6管弦乐决定暂停。</h2>
+    <p class="subheadline">多剂路由器经常会受到位置偏差(有利于第一个宣布的子剂或MCP我们扭转了所有项目的登记和完成命令。6出行道/综合探测器。</p>
+  </div>
+
+  <table class="matrix">
+    <thead>
+      <tr>
+        <th>PERTURBATION / REVERSAL PROBE</th>
+        <th>原始结果</th>
+        <th>REVERSED</th>
+        <th>变化（百分点）</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>1. 折返的手发式专家登记订单</b><br><span style="color:#64748B; font-size:11px;">选中 : <code>IoTHardwareDiagnosticAgent</code></span></td>
+        <td><b>95.0%</b></td>
+        <td><b>95.0%</b></td>
+        <td><span class="pill-auto">0.0平分( 赫尔德)</span></td>
+      </tr>
+      <tr>
+        <td><b>2。同时执行的粉丝出厂完成订单被撤销</b><br><span style="color:#64748B; font-size:11px;">选中 : <code>DocAgent_AI_Search</code> 减少</span></td>
+        <td><b>94.2%</b></td>
+        <td><b>94.2%</b></td>
+        <td><span class="pill-auto">0.0平分( 赫尔德)</span></td>
+      </tr>
+      <tr>
+        <td><b>3。分组聊天发言者旋转顺序被反转</b><br><span style="color:#64748B; font-size:11px;">选中 : <code>Consensus &gt;= 0.90</code> (执行人/审查人/审计人)</span></td>
+        <td><b>95.0%</b></td>
+        <td><b>93.8%</b></td>
+        <td><span class="pill-auto">-1.2平分( 赫尔德)</span></td>
+      </tr>
+      <tr>
+        <td><b>4. 撤销Magentic Ledger次级目标发现令</b><br><span style="color:#64748B; font-size:11px;">选中 : <code>Ledger 3/3 converged</code></span></td>
+        <td><b>94.0%</b></td>
+        <td><b>92.6%</b></td>
+        <td><span class="pill-auto">-1.4平分( 赫尔德)</span></td>
+      </tr>
+      <tr>
+        <td><b>5. MCP以 OpenAPI 为例A2A工具声明已倒转</b><br><span style="color:#64748B; font-size:11px;">选中 : <code>Hosted_MCP_SharePoint_OBO</code></span></td>
+        <td><b>93.4%</b></td>
+        <td><b>94.1%</b></td>
+        <td><span class="pill-auto">+0.7平分( 赫尔德)</span></td>
+      </tr>
+      <tr>
+        <td><b>6. A2A五、导 言1.0装订倒置( gRPC *%%% )JSON- 蓝宝石公司2.0)</b><br><span style="color:#64748B; font-size:11px;">选中 : <code>A2AAgent_Proxy_Connected</code></span></td>
+        <td><b>98.0%</b></td>
+        <td><b>97.5%</b></td>
+        <td><span class="pill-auto">-0.5平分( 赫尔德)</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout-box">
+    <strong>6编6扰动探测器保持稳定( 最大漂流 :1.4百分比)</strong>
+    因为MAF用于同时期收集器的 Canonical 键入还原`WorkflowContext`财务报告和已审计财务报表A2A五、导 言1.0保证在功能上具有等同性HTTP/REST, JSON- 蓝宝石公司2.0滑翔仪52),倒转专家注册或到场命令导致零路由翻转.
+  </div>
+</section>
+
+<!-- ================= CARD 6 / 7 ================= -->
+<section class="card" id="card-6">
+  <div>
+    <div class="card-top">
+      <span class="kicker">· 紧急反响/反响。</span>
+      <span class="page-num">6 / 7</span>
+    </div>
+    <h2 class="headline">图像超步中同时扇出 :4.57× 快点16探员</h2>
+    <p class="subheadline">比较MAF并联出炉/出炉( Fan- In) (`Executors + Edges`共享`AgentSession`前缀)针对相继一一行执行横行1, 3, 8,以及16专家代理(7-运行中位数。</p>
+  </div>
+
+  <div class="lat-group">
+    <!-- 1 Agent -->
+    <div class="lat-row">
+      <div class="lat-title"><span>1专家代理(单一执行人员基线)</span><span>1.00× (84毫秒对秒84毫秒) 维基月球在线解说-克多克环形山.</span></div>
+      <div class="lat-bars">
+        <div class="lat-bar-line">
+          <div class="lat-bar-box" style="width:12%; background:#3B82F6; color:#FFF;">84毫秒( O)</div>
+          <span style="font-size:12px; color:#1E293B; font-weight:700;">MAF同时出炉</span>
+        </div>
+        <div class="lat-bar-line">
+          <div class="lat-bar-box" style="width:12%; background:#CBD5E1; color:#0F172A;">84毫秒( O)</div>
+          <span style="font-size:12px; color:#64748B;">顺序逐一*</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3 Agents -->
+    <div class="lat-row">
+      <div class="lat-title"><span>3专家代理(斯利德)24呼叫中心: Doc + Video + Web)</span><span>2.14× 加速( 速度)118毫秒对秒252毫秒) 维基月球在线解说-克多克环形山.</span></div>
+      <div class="lat-bars">
+        <div class="lat-bar-line">
+          <div class="lat-bar-box" style="width:18%; background:#3B82F6; color:#FFF;">118毫秒( O)</div>
+          <span style="font-size:12px; color:#1E293B; font-weight:700;">MAF同时出炉</span>
+        </div>
+        <div class="lat-bar-line">
+          <div class="lat-bar-box" style="width:36%; background:#CBD5E1; color:#0F172A;">252毫秒( O)</div>
+          <span style="font-size:12px; color:#64748B;">顺序逐一*</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8 Agents -->
+    <div class="lat-row">
+      <div class="lat-title"><span>8专家代理(多领域企业审计股)</span><span>3.61× 加速( 速度)186毫秒对秒672毫秒) 维基月球在线解说-克多克环形山.</span></div>
+      <div class="lat-bars">
+        <div class="lat-bar-line">
+          <div class="lat-bar-box" style="width:26%; background:#3B82F6; color:#FFF;">186毫秒( O)</div>
+          <span style="font-size:12px; color:#1E293B; font-weight:700;">MAF同步扇出( vs)LangGraph 228毫秒/ 秒( X)CrewAI 318毫秒) 维基月球在线解说-克多克环形山.</span>
+        </div>
+        <div class="lat-bar-line">
+          <div class="lat-bar-box" style="width:58%; background:#CBD5E1; color:#0F172A;">672毫秒( O)</div>
+          <span style="font-size:12px; color:#64748B;">顺序逐一*</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 16 Agents -->
+    <div class="lat-row">
+      <div class="lat-title"><span>16专家代理(十字-云)A2A+ 已托管MCP联邦)</span><span>4.57× 加速( 速度)294毫秒对秒1,344毫秒) 维基月球在线解说-克多克环形山.</span></div>
+      <div class="lat-bars">
+        <div class="lat-bar-line">
+          <div class="lat-bar-box" style="width:34%; background:#3B82F6; color:#FFF;">294毫秒( O)</div>
+          <span style="font-size:12px; color:#1E293B; font-weight:700;">MAF同步扇出+14.2ms 超步检查点</span>
+        </div>
+        <div class="lat-bar-line">
+          <div class="lat-bar-box" style="width:92%; background:#CBD5E1; color:#0F172A;">1,344毫秒( O)</div>
+          <span style="font-size:12px; color:#64748B;">顺序逐一*</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout-box">
+    <strong>中间数7运行 ^ 超步检查点序列化 超前:14.2毫秒( O)</strong>
+    * 相应基准= <code>N × single_agent_median_ms (84 ms)</code>内。MAF,扇出分行同时执行`IChatClient`并汇合在一道屏障边缘,然后不断地`AgentSession`改为Cosmos DB / Redis.
+  </div>
+</section>
+
+<!-- ================= CARD 7 / 7 ================= -->
+<section class="card" id="card-7">
+  <div>
+    <div class="card-top">
+      <span class="kicker">选我做 选我做&amp;生产读物</span>
+      <span class="page-num">7 / 7</span>
+    </div>
+    <h2 class="headline">何时选择Microsoft Agent Framework (MAF)vs. (中文(简体) ).LangGraph, AutoGen,或 SK 键</h2>
+    <p class="subheadline">建筑设计指南53- 滑动Foundry规格和6- 框架基准证据。</p>
+  </div>
+
+  <div class="fit-grid">
+    <div class="fit-card fit-good">
+      <h3>适合吗?MAF五、导 言1.0</h3>
+      <ul>
+        <li><b>单一对多代理的演变</b>: 以简单开头 <code>ChatClientAgent</code>缩放为5多剂模式( )`Sequential`, `Concurrent`, `Handoff`, `GroupChat`, `Magentic`)不切换SDK.</li>
+        <li><b>Polyglot.NET (英语:C#) &amp; Python企业</b>: 不变`AIAgent`, `AgentSession`,以及3- 层中软件语义学横跨C# (`Microsoft.Extensions.AI`和Python.</li>
+        <li><b>零信任工具&amp;代理治理</b>: 内建L2 `FunctionInvocationMiddleware`PII 编辑、 HITL 工具批准、 主机MCP (`mcp.ai.azure.com`+ OBO),并签名A2A五、导 言1.0牌,卡片,卡片,卡片,卡片,卡片,卡片,卡片,卡片</li>
+        <li><b>零重写云可移植性</b>: Ollama/上的原型OpenAI,未修改部署到Foundry特工处ACA, AKS, Durable Functions贝德洛克,或者韦特克的AI。</li>
+      </ul>
+    </div>
+
+    <div class="fit-card fit-bad">
+      <h3>++ 不适合/ 当替代品更适合时</h3>
+      <ul>
+        <li><b>现有深层LangChain- 仅此而已Python管道</b>:各团队大量投资朗斯密特特定制.`StateGraph`减号为 .NET 或Azure Foundry脚印可以留下 <b>LangGraph</b> (或将其联合起来)MAF途经 <b>A2A五、导 言1.0</b>).</li>
+        <li><b>遗赠助理API工作量不移</b>: Foundry遗赠助理退休API打开 <b>2026-08-26</b> (滑动12; 遗留线程必须迁移到GA <b>回应API</b> &amp; `AgentSession`.</li>
+        <li><b>新建独立AutoGen五、导 言0.2/ SK v 数据1.x 西洛斯语Name</b>: 不要针对孤立的遗产启动绿地项目AutoGen或 SK 代理抽象 -MAF实值Microsoft'官方统一接班人.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="dark-footer">
+    <div style="font-weight:800; color:#38BDF8; margin-bottom:4px;">PRODUCTION READINESS &amp; OPEN-SOURCE PROVENANCE</div>
+    <div>• <b>Foundry代理服务状态</b>答复:API,活动议定书,MCP/工具箱,以及A2A五、导 言1.0 (HTTP/REST, JSON- 蓝宝石公司2.0,gRPC + JWS 签名卡)是 <b>通常可用(GA)</b>; 托管代理运行时间支持 BYOVNet, Cosmos DB,存储和 AI 搜索(“黄金路径”),幻灯片45).</div>
+    <div style="margin-top:4px; color:#94A3B8;">• <b>开源&amp;存档</b>: <code>aka.ms/AgentFramework</code> (MIT基准&amp; 7- 戴克牌存档于 <code>turbo998/ai-research-public/docs/research/maf-multi-agent-benchmark</code> &amp; <code>turbo998/benchmark-harness-engineering</code>.</div>
+  </div>
+</section>
+
+<!-- kee-dedicated-report-close:start --></div></div><!-- kee-dedicated-report-close:end --></body>
+</html>

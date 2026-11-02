@@ -6,7 +6,7 @@ const {baseline,files,svg,sourceFor,hash,prepare,validate,originalPolicy} = requ
 const base=process.env.SITE_TEST_URL||'http://127.0.0.1:8797';
 const output=process.env.SITE_ARTIFACT_DIR||path.join(__dirname,'..','site-test-artifacts','commerce-trends');
 const report={result:'RUNNING',baseline,scope:'Presentation and navigation validation only. Existing published claims are preserved, not measured or independently reproduced.',preservation:[],layouts:[],navigation:[],themes:[],errors:[]};
-const normalizedText=el=>el.textContent.replace(/\s+/g,' ').trim();
+const normalizedText=el=>{const clone=el.cloneNode(true);clone.querySelectorAll('[data-knowledge-atlas]').forEach(n=>n.remove());return clone.textContent.replace(/\s+/g,' ').trim();};
 async function main() {
   if(process.argv.includes('--prepare')){console.log(JSON.stringify({baseline,preservation:prepare(),mode:'No HTML, asset, browser, or evidence writes'},null,2));return;}
   report.preservation=validate();
@@ -44,10 +44,11 @@ async function main() {
           assert.equal(res.status(),200);
           const state=await page.evaluate(()=>{
             const main=document.querySelector('main'),html=document.documentElement;
+            const mainClone=main.cloneNode(true);mainClone.querySelectorAll('[data-knowledge-atlas]').forEach(n=>n.remove());
             const rect=el=>{const r=el.getBoundingClientRect();return {left:r.left,right:r.right,width:r.width,height:r.height};};
             const nested=[...document.body.querySelectorAll('*')].filter(el=>{const css=getComputedStyle(el);return ['auto','scroll'].includes(css.overflowY)&&el.scrollHeight>el.clientHeight+2;}).map(el=>el.className);
             const clipped=[...main.querySelectorAll('h1,h2,p,li,td,th,code,.kpi-box,.stack-item,.trend-card')].filter(el=>{const r=el.getBoundingClientRect();return r.left< -1||r.right>innerWidth+1;}).map(el=>el.className||el.tagName);
-            return {lang:html.lang,theme:html.dataset.theme,background:getComputedStyle(document.body).backgroundColor,viewport:innerWidth,width:html.scrollWidth,text:main.textContent.replace(/\s+/g,' ').trim(),links:[...main.querySelectorAll('a')].map(a=>a.getAttribute('href')),trends:main.querySelectorAll('.trend-card').length,kpis:main.querySelectorAll('.kpi-box').length,rows:main.querySelectorAll('tbody tr').length,frames:document.querySelectorAll('iframe,frame').length,oldHeaders:document.querySelectorAll('.topbar').length,nested,clipped,main:rect(main),header:rect(document.querySelector('.reading-header')),languages:[...document.querySelectorAll('.reading-header [hreflang]')].map(a=>({text:a.textContent,href:a.getAttribute('href'),language:a.hreflang,current:a.getAttribute('aria-current')})),images:[...main.querySelectorAll('img')].map(img=>({loaded:img.complete&&img.naturalWidth>0,src:img.getAttribute('src')})),csp:document.querySelector('meta[http-equiv="Content-Security-Policy"]').content,cspViolations:window.cspViolations||[]};
+            return {lang:html.lang,theme:html.dataset.theme,background:getComputedStyle(document.body).backgroundColor,viewport:innerWidth,width:html.scrollWidth,text:mainClone.textContent.replace(/\s+/g,' ').trim(),links:[...mainClone.querySelectorAll('a')].map(a=>a.getAttribute('href')),trends:main.querySelectorAll('.trend-card').length,kpis:main.querySelectorAll('.kpi-box').length,rows:main.querySelectorAll('tbody tr').length,frames:document.querySelectorAll('iframe,frame').length,oldHeaders:document.querySelectorAll('.topbar').length,nested,clipped,main:rect(main),header:rect(document.querySelector('.reading-header')),languages:[...document.querySelectorAll('.reading-header [hreflang]')].map(a=>({text:a.textContent,href:a.getAttribute('href'),language:a.hreflang,current:a.getAttribute('aria-current')})),images:[...main.querySelectorAll('img')].map(img=>({loaded:img.complete&&img.naturalWidth>0,src:img.getAttribute('src')})),csp:document.querySelector('meta[http-equiv="Content-Security-Policy"]').content,cspViolations:window.cspViolations||[]};
           });
           assert.equal(state.text,sourceText,file+': DOM text identity');
           assert.deepEqual(state.links,sourceLinks,file+': original article links');
@@ -57,7 +58,7 @@ async function main() {
           assert.equal(state.frames,0);assert.equal(state.oldHeaders,0);
           assert.deepEqual(state.nested,[]);assert.deepEqual(state.clipped,[]);
           assert.deepEqual(state.languages.map(a=>a.text),['EN','中文']);
-          assert.equal(await page.$$eval('.professional-primary [aria-current=page]',links=>links.length),1);
+          assert.equal(await page.$$eval('[data-professional-header] > .professional-primary [aria-current=page]',links=>links.length),1);
           assert.ok(state.images.length===1&&state.images.every(img=>img.loaded));
           assert.ok(state.csp.startsWith(originalPolicy));assert.match(state.csp,/script-src 'sha256-[A-Za-z0-9+/=]+';/);
           assert.deepEqual(state.cspViolations,[]);
