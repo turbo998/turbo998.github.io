@@ -1,3 +1,4 @@
+const professional = require('./professional-navigation.cjs');
 /* Additive presentation only: pinned research, runtime, CSP and SVG stay unchanged.
  * Preparation: node tests/phase179-integration.cjs --source-only
  * After the parent completes its merge: node scripts/integrate-phase179.cjs --write
@@ -81,7 +82,7 @@ const reportCSS = `
 `;
 function navigation(report) {
   const companion = report ? 'ai-infra-architect-workbench.html' : 'ai-infra-phase179-benchmark-cards.html';
-  return `<nav class="phase179-nav" aria-label="Site and research navigation"><a class="phase179-identity" href="../../index.html">Qi Chen · @turbo998</a><span class="phase179-languages" aria-label="Parent topic language, not source translation"><span class="phase179-language-label">Site language</span><a href="../../studio/infra.html" lang="en" hreflang="en" aria-label="English Infra topic; source content is not translated">EN</a><a href="../../studio/zh-infra.html" lang="zh-CN" hreflang="zh-CN" aria-label="中文基础设施主题；原始研究内容不翻译">中文</a></span><span class="phase179-trail"><a href="../../studio/index.html">Studio</a><a class="phase179-parent" href="../../studio/infra.html">← Infra</a><a href="${companion}">${report ? 'Interactive workbench' : 'Phase 179 report'}</a></span></nav>`;
+  return professional.navigation({file:report?files[1]:files[0],en:false,className:'phase179-nav',languages:'<a href="../../studio/infra.html" lang="en" hreflang="en" aria-label="English Infra topic; source content is not translated">EN</a><a href="../../studio/zh-infra.html" lang="zh-CN" hreflang="zh-CN" aria-label="中文基础设施主题；原始研究内容不翻译">中文</a>',context:`<a class="phase179-parent" href="../../studio/infra.html">← Infra</a><a href="${companion}">${report?'Interactive workbench':'Phase 179 report'}</a>`});
 }
 function notes(report) {
   const limitation = report
@@ -96,7 +97,7 @@ function generate(file, source = sourceFor(file)) {
   assert.equal((source.match(/<body>/g) || []).length, 1);
   assert.equal((source.match(/<\/body>/g) || []).length, 1);
   const report = file === files[1];
-  let html = source.replace('</head>', block('style', `<style>${perimeterCSS}${report ? reportCSS : workbenchCSS}</style>`) + '</head>')
+  let html = source.replace('</head>', block('style', `<style>${perimeterCSS}${report ? reportCSS : workbenchCSS}${professional.css()}</style>`) + '</head>')
     .replace('<body>', '<body>' + block('nav', navigation(report)) + block('note', notes(report)) + (report ? block('source-open', '<div class="phase179-report-source">') : ''));
   if (report) html = html.replace('</body>', block('source-close', '</div>') + '</body>');
   assert.equal(strip(html), source, `${file}: exact source reversibility`);
@@ -127,7 +128,7 @@ function write() {
     const original = sourceBytes(file);
     const output = file === asset ? original : Buffer.from(generate(file, original.toString('utf8')));
     const checkoutBytes = Buffer.from(current.toString('utf8').replace(/\r\n/g, '\n'));
-    assert.ok(checkoutBytes.equals(original) || checkoutBytes.equals(output), `${file}: refuse to overwrite a concurrent edit`);
+    assert.ok(checkoutBytes.equals(original) || checkoutBytes.equals(output) || (file !== asset && Buffer.from(strip(checkoutBytes.toString('utf8'))).equals(original)), `${file}: refuse to overwrite a concurrent edit`);
     return {file, current, output};
   });
   for (const {file, current, output} of pending) {

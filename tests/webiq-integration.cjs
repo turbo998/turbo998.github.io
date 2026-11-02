@@ -21,7 +21,8 @@ async function main() {
         const state=await page.evaluate(()=>({lang:document.documentElement.lang,width:document.documentElement.scrollWidth,frames:document.querySelectorAll('iframe').length,links:[...document.querySelectorAll('.kee-webiq-nav a')].map(a=>a.getAttribute('href'))}));
         assert.equal(state.width,width,name+': overflow');
         assert.equal(state.frames,0,name);
-        assert.equal(state.links.length,4,name);
+        assert.equal(await page.$$eval('.professional-primary a', links=>links.length),5,name);
+        assert.equal(await page.$$eval('.professional-primary [aria-current="page"]', links=>links.length),1,name);
         if(name.startsWith('live-demo')) {
           const before=await page.$eval('.app-shell',e=>e.innerText);
           await page.click('#btn-next');

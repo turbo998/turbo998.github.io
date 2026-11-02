@@ -94,7 +94,7 @@ async function geometry(page, label, width) {
       const css = getComputedStyle(el);
       return ['auto', 'scroll'].includes(css.overflowY) && el.clientHeight > 0 && el.scrollHeight > el.clientHeight + 2;
     }).map(el => ({ id: el.id, tag: el.tagName, className: el.className }));
-    const language = nav.querySelector('.kee-data-lab-language').getBoundingClientRect();
+    const language = nav.querySelector('.professional-controls').getBoundingClientRect();
     return {
       documentWidth: document.documentElement.scrollWidth,
       viewport: innerWidth,
@@ -114,7 +114,7 @@ async function geometry(page, label, width) {
   assert.equal(result.frames, 0, `${label}: no iframe`);
   assert.ok(result.nav.left >= 0 && result.nav.right <= width + 1, `${label}: navigation contained`);
   assert.ok(result.language.right <= result.nav.right + 1, `${label}: top-right language control contained`);
-  assert.ok(result.links.includes('../../studio/infra.html') && result.links.includes('../../studio/zh-infra.html'), `${label}: existing Infra data architecture grouping`);
+  assert.ok(result.links.some(href => /^\.\.\/\.\.\/studio\/(zh-)?infra\.html(?:[?#]|$)/.test(href)), `${label}: existing Infra data architecture grouping`);
   assert.ok(result.links.every(href => href && !href.startsWith('javascript:') && href !== '#'), `${label}: native links`);
   assert.deepEqual(result.scrollContainers.filter(el => el.id !== 'sim-console'), [], `${label}: only original inspector may scroll vertically`);
   for (const cardWidth of result.cardWidths) {
@@ -133,7 +133,7 @@ async function workbenchInteraction(page, name, width) {
   const targetLanguage = expectedEnglish ? 'zh' : 'en';
   await Promise.all([
     page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
-    page.click(`.kee-data-lab-language a[data-resource-language="${targetLanguage}"]`)
+    page.click(`.professional-controls a[data-resource-language="${targetLanguage}"]`)
   ]);
   await page.waitForFunction(() => Boolean(document.querySelector('.kee-data-lab-nav').dataset.runtimeLanguage));
   assert.equal(await page.$eval('html', el => el.lang), targetLanguage === 'en' ? 'en' : 'zh-CN');
@@ -172,14 +172,14 @@ async function noJavaScript(browser, name, width) {
     await page.goto(`${base}/${directory}/${name}`, { waitUntil: 'domcontentloaded' });
     await settle(page, name);
     await geometry(page, `${name}: noJS`, width);
-    assert.match(await page.$eval('.kee-data-lab-identity', el => el.textContent), /Qi Chen/);
+    assert.match(await page.$eval('.professional-identity', el => el.textContent), /Qi Chen/);
     const isReport = name.startsWith('benchmark-cards');
     if (isReport) {
       const heading = await page.$eval('#card-1 h1', el => el.textContent);
       const targetLanguage = name.includes('.en.') ? 'zh' : 'en';
       await Promise.all([
         page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
-        page.click(`.kee-data-lab-language a[data-resource-language="${targetLanguage}"]`)
+        page.click(`.professional-controls a[data-resource-language="${targetLanguage}"]`)
       ]);
       assert.notEqual(await page.$eval('#card-1 h1', el => el.textContent), heading, 'NoJS report link changes real report body');
       assert.equal(await page.$eval('html', el => el.lang), targetLanguage === 'en' ? 'en' : 'zh-CN');
@@ -189,7 +189,7 @@ async function noJavaScript(browser, name, width) {
       assert.equal(await page.$eval('#kee-data-lab-source-infra', el => el.getAttribute('href')), integration.sourceLinkChange.to.zh, 'NoJS source navigation remains native and localized');
       await Promise.all([
         page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
-        page.click('.kee-data-lab-language a[data-resource-language="en"]')
+        page.click('.professional-controls a[data-resource-language="en"]')
       ]);
       assert.equal(new URL(page.url()).searchParams.get('lang'), 'en');
       assert.equal(await page.$eval('html', el => el.lang), 'zh-CN', 'NoJS English request remains honestly labeled source language');
@@ -197,9 +197,9 @@ async function noJavaScript(browser, name, width) {
     }
     await Promise.all([
       page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
-      page.click('.kee-data-lab-context a[href="../../studio/infra.html"]')
+      page.click('.professional-context a[href*="infra.html"]')
     ]);
-    assert.equal(new URL(page.url()).pathname, '/studio/infra.html', 'NoJS native Infra navigation');
+    assert.match(new URL(page.url()).pathname, /^\/studio\/(?:zh-)?infra\.html$/, 'NoJS native localized Infra navigation');
     report.noJavaScript.push({ name, width, nativeContextNavigation: true, reportLanguageWorksWithoutJavaScript: isReport });
   } finally { await page.close(); }
 }

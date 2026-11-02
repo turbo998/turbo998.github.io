@@ -60,7 +60,7 @@ if(artifacts)fs.mkdirSync(artifacts,{recursive:true});
   const output=fs.readFileSync(path.join(root,r.path),'utf8');
   const check=await page.evaluate(({source,output})=>{
    const parse=s=>new DOMParser().parseFromString(s,'text/html');const old=parse(source),next=parse(output);
-   old.querySelectorAll('script,style,.nav,.site-breadcrumb-bar,.style-link-pill,.lang-switch-group,.style-switcher,link').forEach(n=>n.remove());
+   old.querySelectorAll('script,style,.nav,.site-breadcrumb-bar,.style-link-pill,.lang-switch-group,.style-switcher,.reading-header,.reading-skip,.reading-language-note,link').forEach(n=>n.remove());
    const norm=s=>s.replace(/\s+/g,' ').trim();
    const raw=old.querySelector('main>pre');
    const text=norm(next.querySelector('#reading-main').textContent);
@@ -78,13 +78,13 @@ if(artifacts)fs.mkdirSync(artifacts,{recursive:true});
  }
  const sample=new Set(['about.html','articles/harness-engineering.en.html','animation/research/asset-taxonomy.en.html','voice/case-study.html','workshops/azure-agent-infra/index.html','workshops/azure-agent-infra/index.en.html','bilibili-explainers/index.en.html','workshops/ai-security/index.html']);
  for(const r of manifest.records){
-  for(const width of [390,1440]){
+  for(const width of [390,768,1440]){
    const runtimeErrors=[];const listener=e=>runtimeErrors.push(e.message);page.on('pageerror',listener);
    await page.setViewport({width,height:900});
    console.log(`Reading ${r.path} at ${width}px`);
    await page.goto(base+r.path+(width===390?'?theme=dark':'?theme=light'),{waitUntil:'load',timeout:30000});
    await new Promise(resolve=>setTimeout(resolve,100));
-   const state=await page.evaluate(()=>({overflow:document.documentElement.scrollWidth>innerWidth+2,scrollWidth:document.documentElement.scrollWidth,width:innerWidth,theme:document.documentElement.dataset.theme,headerHeight:document.querySelector('.reading-header').getBoundingClientRect().height,text:document.querySelector('#reading-main').innerText.length,iframes:document.querySelectorAll('iframe').length,overflowNodes:[...document.querySelectorAll('#reading-main *')].filter(n=>{const r=n.getBoundingClientRect();return r.width>innerWidth&&r.right>innerWidth+2}).slice(0,5).map(n=>({tag:n.tagName,cls:n.className,id:n.id,width:n.getBoundingClientRect().width}))}));
+   const state=await page.evaluate(()=>({overflow:document.documentElement.scrollWidth>innerWidth+2,scrollWidth:document.documentElement.scrollWidth,width:innerWidth,theme:document.documentElement.dataset.theme,headerScroll:[...document.querySelectorAll('.reading-header,.reading-header *')].some(n=>n.scrollHeight>n.clientHeight+2&&/auto|scroll/.test(getComputedStyle(n).overflowY)),headerHeight:document.querySelector('.reading-header').getBoundingClientRect().height,text:document.querySelector('#reading-main').innerText.length,iframes:document.querySelectorAll('iframe').length,overflowNodes:[...document.querySelectorAll('#reading-main *')].filter(n=>{const r=n.getBoundingClientRect();return r.width>innerWidth&&r.right>innerWidth+2}).slice(0,5).map(n=>({tag:n.tagName,cls:n.className,id:n.id,width:n.getBoundingClientRect().width}))}));
    results.push({path:r.path,width,...state,runtimeErrors});
    page.off('pageerror',listener);
    if(artifacts&&sample.has(r.path))await page.screenshot({path:path.join(artifacts,r.path.replace(/[\/]/g,'-')+`-${width}.png`),fullPage:false});
@@ -175,7 +175,7 @@ if(artifacts)fs.mkdirSync(artifacts,{recursive:true});
  if(artifacts)fs.writeFileSync(path.join(artifacts,'language-checks.json'),JSON.stringify({languageResults,securityInteractions,svgChecks,infraNavigation:'native EN/CN; body/theme/hash/back/forward/context verified',theme:'Dark Aurora default including no JS; versioned storage, legacy preference ignored, explicit light retained',errors},null,2));
  const coverage={baseline:owned.length,newTranslations:manifest.records.filter(r=>r.translation).length,total:manifest.records.length,layouts:results.length};
  if(artifacts)fs.writeFileSync(path.join(artifacts,'checks.json'),JSON.stringify({coverage,broken,errors,results},null,2));
- console.log(JSON.stringify({coverage,broken,errors,runtime:results.filter(r=>r.overflow||r.runtimeErrors.length||r.iframes||r.headerHeight>(r.width===390?64:72))},null,2));
- if(broken.length||errors.length||results.some(r=>r.overflow||r.runtimeErrors.length||r.iframes||r.headerHeight>(r.width===390?64:72)))process.exitCode=1;
+ console.log(JSON.stringify({coverage,broken,errors,runtime:results.filter(r=>r.overflow||r.runtimeErrors.length||r.iframes||r.headerScroll)},null,2));
+ if(broken.length||errors.length||results.some(r=>r.overflow||r.runtimeErrors.length||r.iframes||r.headerScroll))process.exitCode=1;
  }finally{await browser.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});

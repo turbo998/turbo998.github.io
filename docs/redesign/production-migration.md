@@ -1,4 +1,4 @@
-# Dark Aurora Studio production migration
+# Frontier Transformation Engineering Hub — Dark Aurora card-grid migration
 
 ## Surface contract / 页面约定
 
@@ -18,7 +18,17 @@ Qi Chen (@turbo998) remains the site identity. The revised Dark Aurora Studio di
 
 `route-inventory.json`, `link-inventory.json`, and `inventory-summary.md` are a **frozen historical inventory** of baseline `b31286a`. Their language/iframe counts describe the old site, not the new implementation. Do not rewrite that evidence to imply a cleaner baseline.
 
-`node scripts\build-site.cjs` rebuilds production portal files and `production-routes.json` from that inventory and the approved static prototypes. Edit the generator for production layout/routing changes; do not hand-edit generated portal HTML and lose the changes at the next build. Existing reports, measurements and demo engines are not inputs for recomputing any result.
+`node scripts\build-site.cjs` rebuilds production portals, `production-routes.json`, `hub-telemetry.json` and six matching preview editions. `scripts/hub-layout.cjs` owns portal navigation/card markup; `scripts/hub-pages.cjs` owns the curated content and inventory mapping; `scripts/hub-resource-catalog.json` records verified public repositories and module links. `assets/editorial/site.css` is authoritative and copied into the preview. `build-design-preview.cjs` delegates to the same build, so it cannot restore the rejected row layout. Edit generators rather than generated HTML. Existing reports, measurements and demo engines are not inputs for recomputing any result.
+
+### Card-grid hierarchy / 卡片网格层级
+
+- Tier 1: personal identity, five primary navigation pills, language and theme controls. The fixed first brand is **Frontier Transformation Engineering Hub**; the other sections are **Benchmark & Eval Foundry / 基准评测中心**, **GitHub AI Signal Radar / GitHub AI 信号雷达**, **Model Routing & Telemetry / OpenRouter 模型遥测**, and **Principal Architect Profile / 首席架构师履历**.
+- Tier 2: eight contextual track links, plus four stage anchors on topic pages. Breadcrumbs and parent-return links remain native HTML.
+- Home and Hub: seven core tracks plus Infra Lab and SA Skill & HVE extension cards; 14 flagship workbench cards; seven verified public repository cards. The Hub retains Frontier AI Studio as explanatory context, not its primary name.
+- Topic stages retain Architecture → Evaluation → Demos → Resources, with a populated card grid inside every stage. Infra prominently exposes both external extension collections.
+- Cards use the accepted Aurora surface/border tokens, badges, identifiers, findings, concise descriptions and grouped native action links. Layout is one column at 390px, two at 768px and three at 1440px, with a 1320px content maximum. Primary navigation intentionally reflows into a second header row at intermediate widths; phones use a native details menu.
+
+The five telemetry values are reproducible catalog counts, **not runtime monitoring or fresh benchmark results**. `hub-telemetry.json` lists every counted path: seven curated public repositories; demo HTML editions; report editions with exactly seven `.card` panels; verified reading counterpart pairs; six curated SA links. Bilingual/mirrored demo and report editions count separately. IaC is linked externally, not counted as a translated monograph. Source schemas and limitations are visible in the telemetry strip and cards.
 
 ## Language and navigation / 语言与导航
 
@@ -84,7 +94,21 @@ node tests\full-site-audit.cjs
 - Reading and dedicated tests provide content preservation/translation checks and genuine representative demo interaction. They must not block child frames or all external traffic and then claim those features passed.
 - Browser microphone permission, credentials, live APIs, CDN availability and hardware-dependent rendering are separate constraints; report them rather than fabricating successful live sessions.
 
-### Integrated acceptance at source baseline `209aea9`
+### Card-grid acceptance — integrated source baseline `9c4fe61`
+
+- Strict full-site audit: **205 HTML pages, 7,112 local references, 408 desktop/mobile runtime layouts**; zero missing destinations/fragments or rejected runtime/scroll/frame cases.
+- Production portals: **36 screenshot states, 227 unique links, six behavioral groups**; **428 route cases and 42 portal layouts**, including all seven bilingual topic pairs and native no-JavaScript navigation.
+- Preview parity: **36 production-matched states, six no-JavaScript previews**, plus language/hash/theme navigation. Responsive grids have one/two/three columns at 390/768/1440px.
+- Reading: **92 pages / 276 layouts**. Professional navigation: **84 JS/no-JS layouts, eight native navigation journeys and two Camera Director engine interactions**.
+- Preservation: **65 dedicated source checks**, 13 representative engines and eight additional Camera Director surfaces with reversible perimeter, original scripts and CSP. WebIQ, Radar, Data Lab, Phase 179 and Commerce suites also pass.
+- Aurora: **12 default-dark layouts, 34 AA text-token contrast pairs, five preference checks**; this remains scoped testing, not a full accessibility certification.
+- Telemetry: **7 / 37 / 21 / 42 / 6**, respectively curated public repositories, demo editions, seven-card report editions, verified reading pairs and selected SA entry links. These are inventory counts, not newly measured model results.
+
+Camera Director workbench/report interfaces retain their source Chinese. Strict-CSP reports retain their source restrictions rather than silently enabling scripts. Source-language and live-service limitations above remain applicable. Publish verification separately checks the deployed commit's Pages run and byte equality against its Git blobs; local acceptance alone does not prove publication.
+
+### Historical acceptance — previous release at source baseline `209aea9`
+
+These counts document the preceding Aurora release, not the later card-grid revision. Run the current gates again for each published SHA; current reports include all tracked/new HTML, including the `9c4fe61` Camera Director additions.
 
 - Strict full-site audit: **197 HTML pages, 4,620 references, 392 desktop/mobile runtime layouts**; no missing local destinations/fragments, runtime failures, full-page frames or unreviewed nested document scrollers.
 - Reading: **92 surfaces / 184 layouts**, eight text-only English SVGs, Infra edition/state navigation, Voice P705/P706 and Security's four tabs/four industry playbooks. Protected interfaces remain exceptions, not translated prose.

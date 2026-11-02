@@ -61,12 +61,21 @@ async function main() {
           internalScroll: [...document.querySelectorAll('main *')].filter(e => e.checkVisibility({checkVisibilityCSS:true}) && e.scrollHeight > e.clientHeight + 2 && /auto|scroll/.test(getComputedStyle(e).overflowY)).map(e => e.tagName + '.' + e.className),
           links: [...document.querySelectorAll('a[href]')].map(e => e.href),
           sections: [...document.querySelectorAll('main section[id]')].map(e => e.id),
-          scenes: [...document.querySelectorAll('[data-scene]')].map(e => e.dataset.scene)
+          scenes: [...document.querySelectorAll('[data-scene]')].map(e => e.dataset.scene),
+          primaryCount: document.querySelectorAll('.desktop-nav > a').length,
+          contextCount: document.querySelectorAll('.context-nav > a').length,
+          oldRows: document.querySelectorAll('.track-row,.resource-row').length,
+          cjk: [...document.querySelectorAll('main *')].filter(e=>!e.children.length && /[\u3400-\u9fff]/.test(e.textContent)).map(e=>e.textContent.trim()),
+          stageCards: Object.fromEntries(['architecture','evaluation','demos','resources'].map(id=>[id,document.querySelectorAll(`section#${id} > .card-grid > .wb-card`).length]))
         }));
         assert.equal(state.width, width, file + ': overflow');
         assert.equal(state.h1, 1, file);
         assert.equal(state.frames, 0, file);
         assert.deepEqual(state.internalScroll, [], file);
+        assert.equal(state.primaryCount,5,file+': primary navigation');
+        assert.equal(state.contextCount,8,file+': contextual navigation');
+        assert.equal(state.oldRows,0,file+': card layout replaces legacy rows');
+        if(state.lang==='en' && !file.endsWith('archive.html')) assert.deepEqual(state.cjk,[],file+': English portal prose');
         for (const href of state.links) {
           const url = new URL(href);
           if (url.origin !== new URL(base).origin) continue;
@@ -102,6 +111,7 @@ async function main() {
         if (manifest.scenes[track]) {
           assert.ok(['architecture','evaluation','demos','resources'].every(id => state.sections.includes(id)), file);
           assert.equal(state.scenes.length, Object.keys(manifest.scenes[track]).length, file);
+          assert.ok(Object.values(state.stageCards).every(count=>count>0),file+': four populated card-grid stages');
           await page.screenshot({path:path.join(output,`${path.basename(file,'.html')}-topic-${width}.png`),fullPage:true});
         }
         delete state.links;

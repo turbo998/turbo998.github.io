@@ -51,6 +51,12 @@ async function main() {
               duplicateIds: ids.filter((id, i) => ids.indexOf(id) !== i),
               nested: document.querySelectorAll('iframe,object,embed').length,
               scrollContainers, overflow,
+              primary: [...document.querySelectorAll('.desktop-nav > a')].map(a=>({label:a.textContent.trim(),current:a.getAttribute('aria-current')})),
+              contextLinks: document.querySelectorAll('.context-nav > a').length,
+              oldRows: document.querySelectorAll('.track-row,.resource-row').length,
+              gridColumns: getComputedStyle(document.querySelector('.card-grid')).gridTemplateColumns.split(' ').length,
+              hubCards: [...document.querySelectorAll('.hub-grid > .wb-card')].map(card=>card.id),
+              telemetry: [...document.querySelectorAll('.telemetry-cell strong')].map(e=>Number(e.textContent)),
               imagesOk: [...document.images].every(img => img.complete && img.naturalWidth > 0),
               h1: document.querySelectorAll('h1').length,
               bodyScroll: getComputedStyle(document.body).overflowY,
@@ -63,7 +69,16 @@ async function main() {
           assert.equal(state.h1, 1, name);
           assert.equal(state.nested, 0, name);
           assert.equal(state.documentWidth, width, name);
-          assert.ok(state.headerHeight <= (width === 390 ? 65 : 73), name);
+          assert.ok(state.headerHeight <= (width === 390 ? 73 : width === 768 ? 170 : 96), `${name}: primary header reflow`);
+          const zh = file.startsWith('zh-');
+          assert.deepEqual(state.primary.map(item=>item.label), ['Frontier Transformation Engineering Hub', ...(zh?['基准评测中心','GitHub AI 信号雷达','OpenRouter 模型遥测','首席架构师履历']:['Benchmark & Eval Foundry','GitHub AI Signal Radar','Model Routing & Telemetry','Principal Architect Profile'])], name+': five primary sections');
+          assert.equal(state.primary.filter(item=>item.current==='page').length,1,name+': one active primary section');
+          assert.equal(state.primary[0].current,'page',name+': Hub is active');
+          assert.equal(state.contextLinks,8,name+': eight contextual tracks');
+          assert.equal(state.oldRows,0,name+': no legacy horizontal rows');
+          assert.equal(state.gridColumns,width===390?1:width===768?2:3,name+': responsive card columns');
+          if(!file.includes('infra')) assert.deepEqual(state.hubCards,['infra','commerce','voice','benchmarks','animation','game','security','infra-lab','sa-skills'],name+': nine Hub cards');
+          if(file.endsWith('index')) assert.deepEqual(state.telemetry,require('../docs/redesign/hub-telemetry.json').metrics.map(metric=>metric.value),name+': telemetry matches inventory evidence');
           assert.ok(state.imagesOk, `${name}: broken image`);
           assert.ok(!['hidden', 'clip'].includes(state.bodyScroll), `${name}: locked body`);
           for (const key of ['duplicateIds', 'scrollContainers', 'overflow', 'untranslated']) assert.deepEqual(state[key], [], `${name}: ${key}`);
@@ -157,7 +172,7 @@ async function main() {
     await nojs.goto(`${base}/zh.html`);
     await Promise.all([nojs.waitForNavigation(), nojs.click('.home-hero .primary')]);
     assert.ok(nojs.url().endsWith('/studio/zh-index.html'));
-    await Promise.all([nojs.waitForNavigation(), nojs.click('.featured-track h2 a')]);
+    await Promise.all([nojs.waitForNavigation(), nojs.click('.hub-grid #infra h3 a')]);
     assert.ok(nojs.url().endsWith('/zh-infra.html'));
     await Promise.all([nojs.waitForNavigation(), nojs.click('.language-link')]);
     assert.ok(nojs.url().endsWith('/infra.html'));

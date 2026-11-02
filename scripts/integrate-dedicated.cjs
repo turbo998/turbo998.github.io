@@ -1,5 +1,6 @@
 'use strict';
 const fs = require('node:fs');
+const professional = require('./professional-navigation.cjs');
 const path = require('node:path');
 const { execFileSync } = require('node:child_process');
 const crypto = require('node:crypto');
@@ -41,16 +42,19 @@ function language(r, source) {
 }
 function navigation(r, lang) {
   const a = (target, label, extra = '') => `<a href="${escape(relative(r.path, target))}"${extra}>${label}</a>`;
-  const links = [a('index.html', 'Qi Chen / @turbo998', ' class="kee-dedicated-identity"'), a('index.html', 'Home EN'), a('zh.html', '首页 中文'), a('studio/index.html', 'Studio EN'), a('studio/zh-index.html', '工作室 中文')];
+  const links = [];
   for (const track of r.tracks) links.push(a(`studio/${track}.html`, `${track} EN`), a(`studio/zh-${track}.html`, `${track} 中文`));
   if (r.path.startsWith('workshops/azure-agent-infra/') && r.sourceOverride && !/\/(demo|selector)\.html$/.test(r.path)) {
     links.push(a('workshops/azure-agent-infra/index.en.html', 'Infra guide EN'), a('workshops/azure-agent-infra/index.html', 'Infra 指南 中文'));
     if (r.role === 'report') links.push(a(infraPath('workbench-cycle-377.html'), 'Cycle #377 workbench (English)'));
     else links.push(a(infraPath('benchmark-cards.html'), '中文报告'), a(infraPath('benchmark-cards.en.html'), 'English report'), a(infraPath('evidence/cycle-377-benchmark.json'), 'Cycle #377 source evidence'));
   }
-  for (const link of lang.links || []) links.push(a(link.path, link.label));
+  const en = !lang.source.startsWith('zh');
+  const languages = (lang.links || []).map(link => a(link.path, /中文/.test(link.label) ? '中文' : 'EN', ` hreflang="${/中文/.test(link.label)?'zh-CN':'en'}"`)).join('');
   if (lang.control) links.push('<a href="#kee-resource-language">Resource language / 资源语言</a>');
-  return `<!-- kee-dedicated-navigation:start -->\n<nav class="kee-dedicated-nav" aria-label="Site and resource navigation" lang="en">${links.join('\n')}\n<span class="kee-dedicated-language">${lang.note}</span></nav>\n<!-- kee-dedicated-navigation:end -->`;
+  links.push(`<span class="kee-dedicated-language">${lang.note}</span>`);
+  return `<!-- kee-dedicated-navigation:start -->\n${professional.navigation({file:r.path,en,className:'kee-dedicated-nav',active:r.role==='report'?'benchmarks':undefined,languages,context:links.join('\n')})}\n<!-- kee-dedicated-navigation:end -->`;
+
 }
 function transform(r, source) {
   const lang = language(r, source), changes = [], exceptions = [];
@@ -157,7 +161,7 @@ function transform(r, source) {
   }
   let nav = navigation(r, lang);
   if (lang.controlId) nav = nav.replace('href="#kee-resource-language"', `href="#${lang.controlId}"`);
-  html = html.replace('</head>', `<!-- kee-dedicated-style:start -->\n<style>${css}${extra}</style>\n<!-- kee-dedicated-style:end -->\n</head>`);
+  html = html.replace('</head>', `<!-- kee-dedicated-style:start -->\n<style>${css}${extra}</style>${/Content-Security-Policy/i.test(source) ? '' : professional.runtime(r.path)}\n<!-- kee-dedicated-style:end -->\n</head>`);
   html = html.replace(/<body\b[^>]*>/i, m => `${m}\n${nav}\n`);
   if (/knowledge-explainer-studio\/index.html$/.test(r.path)) exceptions.push('JSON editor/output and modal card may scroll locally; normal page and canvas remain in document flow.');
   if (/azure-agent-infra\/(demo|selector).html$/.test(r.path)) exceptions.push('Simulation console, code snippets and wide configuration tables may scroll locally; document scroll unchanged.');
@@ -182,10 +186,11 @@ function main() {
     }
     records.push(record);
   }
-  const manifest = { schemaVersion: 2, baseline: inventory.baseline, scope: 'Immutable original demo/report/auxiliary inventory plus two explicit Cycle #377 supplemental surfaces; five pinned source overrides only', originalCoverage: originalOwned.length, supplementalCoverage: supplementalOwned.length, sourceOverrides, coverage: records.length, themePolicy: 'New navigation uses the solid Dark Aurora Studio palette (#101A30 navy, #EEF3FF text, #ADBBD1 muted, #9AABFF links, #56DDCD focus, #314361 border). Dedicated app themes remain untouched; no legacy or editorial storage key is read or written.', preservation: 'Removing marked perimeter CSS/navigation, marked document viewport wrappers, added body namespace classes and a real language-control ID reproduces every report source byte. No report regeneration, measurements, scores, coordinates, provenance or conclusions changed.', records };
+  const manifest = { schemaVersion: 2, baseline: inventory.baseline, scope: 'Immutable original demo/report/auxiliary inventory plus two explicit Cycle #377 supplemental surfaces; five pinned source overrides only', originalCoverage: originalOwned.length, supplementalCoverage: supplementalOwned.length, sourceOverrides, coverage: records.length, themePolicy: 'New navigation uses the solid Dark Aurora Studio palette (#101A30 navy, #EEF3FF text, #ADBBD1 muted, #9AABFF links, #56DDCD focus, #314361 border). Dedicated app themes remain untouched; The versioned kee-aurora-theme-v1 preference and explicit theme query affect only the new perimeter when scripts are permitted; sealed CSP reports retain the default navy perimeter without added script permissions.', preservation: 'Removing marked perimeter CSS/navigation, marked document viewport wrappers, added body namespace classes and a real language-control ID reproduces every report source byte. No report regeneration, measurements, scores, coordinates, provenance or conclusions changed.', records };
   const manifestPath = path.join(root, 'docs/redesign/dedicated-integration.json'), manifestText = JSON.stringify(manifest, null, 2) + '\n';
   if (check) { if (fs.readFileSync(manifestPath, 'utf8') !== manifestText) throw new Error('Dedicated integration manifest drift'); }
   else fs.writeFileSync(manifestPath, manifestText);
+  require('./integrate-camera4d.cjs').main();
   console.log(`${check ? 'Verified' : 'Integrated'} ${records.length} dedicated surfaces: ${JSON.stringify(records.reduce((a,r)=>(a[r.role]=(a[r.role]||0)+1,a),{}))}`);
 }
 module.exports = { root, owned, originalOwned, supplementalOwned, sourceOverrides, baseline, transform, sha };

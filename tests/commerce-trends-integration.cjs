@@ -57,7 +57,7 @@ async function main() {
           assert.equal(state.frames,0);assert.equal(state.oldHeaders,0);
           assert.deepEqual(state.nested,[]);assert.deepEqual(state.clipped,[]);
           assert.deepEqual(state.languages.map(a=>a.text),['EN','中文']);
-          assert.equal(state.languages.filter(a=>a.current==='page').length,1);
+          assert.equal(await page.$$eval('.professional-primary [aria-current=page]',links=>links.length),1);
           assert.ok(state.images.length===1&&state.images.every(img=>img.loaded));
           assert.ok(state.csp.startsWith(originalPolicy));assert.match(state.csp,/script-src 'sha256-[A-Za-z0-9+/=]+';/);
           assert.deepEqual(state.cspViolations,[]);

@@ -45,8 +45,8 @@ async function layoutState(page, isReport) {
   return page.evaluate(isReport => {
     const nav = document.querySelector('.phase179-nav');
     const style = getComputedStyle(nav);
-    const languages = nav.querySelector('.phase179-languages').getBoundingClientRect();
-    const identity = nav.querySelector('.phase179-identity').getBoundingClientRect();
+    const languages = nav.querySelector('.professional-controls').getBoundingClientRect();
+    const identity = nav.querySelector('.professional-identity').getBoundingClientRect();
     const nested = [...document.body.querySelectorAll('*')].filter(el => {
       const css = getComputedStyle(el);
       return ['auto', 'scroll'].includes(css.overflowY) && el.scrollHeight > el.clientHeight + 2;

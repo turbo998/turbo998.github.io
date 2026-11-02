@@ -1,3 +1,4 @@
+const professional = require('./professional-navigation.cjs');
 'use strict';
 
 const fs = require('node:fs');
@@ -99,24 +100,8 @@ function navigation(name) {
   const note = report
     ? '原始中英文 7-card 报告；内容、数值与 CSP 保留，未重新评测。 / Original Chinese and English report pair; content, values and CSP preserved, not re-evaluated.'
     : '工作台仅部分双语：竞对正文、TCO 表与仿真输出使用原有翻译；KPI 注释、输入标签及图集说明仍保留中文。 / Partial workbench translation: battlecards, TCO table and simulator output use existing translations; KPI captions, input labels and gallery prose remain Chinese. Not a fully translated interface.';
-  return `<nav class="kee-data-lab-nav" aria-label="Qi Chen · Site and DataLab navigation">
-<a class="kee-data-lab-identity" href="../../index.html">Qi Chen / @turbo998</a>
-<div class="kee-data-lab-context" aria-label="Site context">
-<a href="../../index.html">Home EN</a><a href="../../zh.html" lang="zh-CN">首页 中文</a>
-<a href="../../studio/index.html">Studio EN</a><a href="../../studio/zh-index.html" lang="zh-CN">工作室 中文</a>
-<a href="../../studio/infra.html">Infra · Data architecture</a><a href="../../studio/zh-infra.html" lang="zh-CN">Infra · 数据架构</a>
-</div>
-<div class="kee-data-lab-language" role="group" aria-label="Resource language / 资源语言">
-<a href="${zhTarget}" data-resource-language="zh" lang="zh-CN"${report && !en ? ' aria-current="true"' : ''}>中文</a>
-<a href="${enTarget}" data-resource-language="en" lang="en"${report && en ? ' aria-current="true"' : ''}>English</a>
-</div>
-<div class="kee-data-lab-resources">
-<a href="index.html?lang=zh">工作台 中文</a><a href="index.html?lang=en">Workbench EN (partial)</a>
-<a href="benchmark-cards.html">7-card 中文</a><a href="benchmark-cards.en.html">7-card EN</a>
-</div>
-<p class="kee-data-lab-note">${note}</p>
-${report ? '' : '<noscript>JavaScript 已关闭：工作台仅显示原始中文静态内容，交互及英文正文需要 JavaScript。导航和双语报告仍可直接打开。 / JavaScript is disabled: the workbench retains its Chinese static source; interactions and translated body output require JavaScript. Native navigation and both report languages remain available.</noscript>'}
-</nav>`;
+  return professional.navigation({file:`${directory}/${name}`,en,className:'kee-data-lab-nav',languages:`<a href="${zhTarget}" data-resource-language="zh" lang="zh-CN" hreflang="zh-CN">中文</a><a href="${enTarget}" data-resource-language="en" lang="en" hreflang="en">EN</a>`,context:`<a href="../../studio/${en?'':'zh-'}infra.html">← Infra · ${en?'Data architecture':'数据架构'}</a><a href="index.html?lang=zh">工作台 中文</a><a href="index.html?lang=en">Workbench EN (partial)</a><a href="benchmark-cards.html">7-card 中文</a><a href="benchmark-cards.en.html">7-card EN</a><p class="kee-data-lab-note">${note}</p>${report?'':'<noscript>JavaScript is disabled: the workbench retains its Chinese static source; interactions and translated body output require JavaScript. Native navigation and both report languages remain available. 工作台保留中文静态正文；交互及英文正文需要 JavaScript。</noscript>'}`});
+
 }
 
 function transform(name, original) {
@@ -128,12 +113,12 @@ function transform(name, original) {
   const report = name.startsWith('benchmark-cards');
   const isWorkbench = name === 'index.html';
   const aliasViewport = name.startsWith('live-demo') ? '<meta name="viewport" content="width=device-width, initial-scale=1">\n' : '';
-  let html = original.replace('</head>', block('style', `${aliasViewport}<style>${sharedStyle}${report ? reportStyle : isWorkbench ? workbenchStyle : ''}</style>`) + '</head>');
+  let html = original.replace('</head>', block('style', `${aliasViewport}<style>${sharedStyle}${report ? reportStyle : isWorkbench ? workbenchStyle : ''}${professional.css()}</style>`) + '</head>');
   html = html.replace('<body>', '<body>' + block('navigation', navigation(name)));
   if (isWorkbench) {
     if (original.split(originalFabconLink).length !== 2) throw new Error('Expected exactly one upstream FabCon navigation anchor');
     html = html.replace(originalFabconLink, block('source-link', '<a class="btn" id="kee-data-lab-source-infra" href="../../studio/zh-infra.html">Infra · 数据架构</a>'));
-    html = html.replace('</body>', block('runtime', runtime) + '</body>');
+    html = html.replace('</body>', block('runtime', runtime + professional.runtime(`${directory}/${name}`)) + '</body>');
   }
   if (strip(html) !== original) throw new Error(`Non-reversible integration: ${name}`);
   return html;

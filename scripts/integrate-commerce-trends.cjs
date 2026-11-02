@@ -1,3 +1,4 @@
+const professional = require('./professional-navigation.cjs');
 /* Presentation-only integration of the pinned bilingual publication; no research claims are re-evaluated. */
 const fs = require('node:fs');
 const path = require('node:path');
@@ -31,7 +32,7 @@ html[data-reading-shell=document] body{background:var(--reading-bg)}
 function header(file,source) {
   const en=file.includes('.en.'), name=path.posix.basename(file);
   const original=oldHeader(source).replace('<header class="topbar">','').replace('</header>','');
-  return `<a class="reading-skip" href="#reading-main">${en?'Skip to content':'跳转到正文'}</a><header class="reading-header"><a class="reading-brand" href="../../${en?'index':'zh'}.html"><span class="reading-mark" aria-hidden="true">K<span>.</span></span><span>Qi Chen<small>@turbo998 · Engineering &amp; Research</small></span></a><nav class="reading-controls" aria-label="${en?'Appearance and language':'外观与语言'}"><a href="${name}?theme=dark" data-reading-theme="dark" aria-label="${en?'Dark theme':'深色主题'}">☾</a><a href="${name}?theme=light" data-reading-theme="light" aria-label="${en?'Light theme':'浅色主题'}">☀</a><a href="stripe-collison-7-trends.en.html" data-reading-language hreflang="en" lang="en"${en?' aria-current="page"':''}>EN</a><a href="stripe-collison-7-trends.html" data-reading-language hreflang="zh-CN" lang="zh-CN"${en?'':' aria-current="page"'}>中文</a></nav></header><div class="commerce-source-context"><a class="reading-context" href="../../studio/${en?'':'zh-'}commerce.html">← ${en?'Commerce':'商业'}</a><details><summary>${en?'Article context, sources &amp; related resources':'文章背景、来源与相关资源'}</summary>${original}</details></div>`;
+  return `<a class="reading-skip" href="#reading-main">${en?'Skip to content':'跳转到正文'}</a>${professional.navigation({file,en,languages:`<a href="stripe-collison-7-trends.en.html" data-reading-language hreflang="en" lang="en">EN</a><a href="stripe-collison-7-trends.html" data-reading-language hreflang="zh-CN" lang="zh-CN">中文</a>`})}<div class="commerce-source-context"><a class="reading-context" href="../../studio/${en?'':'zh-'}commerce.html">← ${en?'Commerce':'商业'}</a><details><summary>${en?'Article context, sources &amp; related resources':'文章背景、来源与相关资源'}</summary>${original}</details></div>`;
 }
 function generate(file,source=sourceFor(file)) {
   assert.ok(files.includes(file),'Only the two assigned article pages may be transformed');
@@ -75,7 +76,8 @@ if(require.main===module) {
     if(mergeHead!==baseline)execFileSync('git',['merge-base','--is-ancestor',baseline,'HEAD'],{cwd:root});
     const outputs=files.map(file=>{
       const source=sourceFor(file),output=generate(file,source),current=fs.readFileSync(path.join(root,file),'utf8').replace(/\r\n/g,'\n');
-      assert.ok(current===source||current===output,file+': refusing to overwrite an unrecognized concurrent edit');
+      const restoredCurrent=current.replace(/<!-- commerce-trends-header:start -->[\s\S]*?<!-- commerce-trends-header:end -->/,()=>oldHeader(source)).replace(/<!-- commerce-trends-shell:start -->[\s\S]*?<!-- commerce-trends-shell:end -->/,'').replace(' data-reading-shell="document" data-theme="dark"','').replace(/ script-src 'sha256-[^']+';/,'').replace('<main class="reading-document" id="reading-main">','<main class="container">');
+      assert.ok(current===source||current===output||restoredCurrent===source,file+': refusing to overwrite an unrecognized concurrent edit');
       return {file,output};
     });
     assert.equal(fs.readFileSync(path.join(root,svg),'utf8').replace(/\r\n/g,'\n'),sourceFor(svg),'Merged SVG must match before writing');

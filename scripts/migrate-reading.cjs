@@ -1,5 +1,6 @@
 /* Rebuild only the R6 reading ownership set from the sealed inventory baseline. */
 const fs = require('node:fs');
+const {navigation: professionalNavigation} = require('./professional-navigation.cjs');
 const path = require('node:path');
 const cp = require('node:child_process');
 const crypto = require('node:crypto');
@@ -15,6 +16,7 @@ const sourceOverrides = {
   ...Object.fromEntries(['benchmarks.html','zh-benchmarks.html','projects.html','zh-projects.html','writing.html','zh-writing.html','ai-security.html','zh-ai-security.html','workshops/ai-security/index.html','workshops/ai-security/index.en.html'].map(p=>[p,'3bdac3d4db9a0cec264ee42b59bbef8a7f87364b']))
 };
 Object.assign(sourceOverrides, Object.fromEntries(['writing.html','zh-writing.html','workshops/agentic-commerce/index.html','workshops/agentic-commerce/index.en.html'].map(p=>[p,'209aea9a1db92c816927df71a9242526b44925c1'])));
+Object.assign(sourceOverrides, Object.fromEntries(['benchmarks.html','zh-benchmarks.html','projects.html','zh-projects.html','writing.html','zh-writing.html','animation/index.html','animation/index.en.html','generative-visual-lab/index.html','generative-visual-lab/index.en.html'].map(p=>[p,'9c4fe6140e37fcec3d7b46fe93b368f5d9d1a651'])));
 const baseline = p => cp.execFileSync('git', ['show', `${sourceOverrides[p] || inventory.baseline}:${p}`], { cwd: root, maxBuffer: 20 * 1024 * 1024 });
 const esc = s => String(s).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('"', '&quot;');
 const relative = (from, to) => path.posix.relative(path.posix.dirname(from), to) || path.posix.basename(to);
@@ -1003,8 +1005,8 @@ async function main() {
       const href = target => esc(relative(p.path, target));
       const track = /azure-agent-infra/.test(p.path)?'infra':/agentic-commerce/.test(p.path)?'commerce':/ai-security/.test(p.path)?'security':/voice\//.test(p.path)?'voice':/^(animation|generative-visual-lab|bilibili-explainers)\//.test(p.path)?'animation':/^game\//.test(p.path)?'game':/workshops\//.test(p.path)?'benchmarks':null;
       const contextLink=track?`<a class="reading-context" href="${href(`studio/${zh?'zh-':''}${track}.html`)}">← Studio / ${track}</a>`:'';
-      const langLink = counterpart ? `<a data-reading-language href="${href(counterpart)}" hreflang="${zh ? 'en' : 'zh-CN'}" lang="${zh ? 'en' : 'zh-CN'}">${zh ? 'EN' : '中文'}</a>` : `<a href="#reading-language-note" aria-label="${t('Translation availability', '翻译情况')}">EN / 中</a>`;
-      const shell = `<a class="reading-skip" href="#reading-main">${t('Skip to content', '跳至正文')}</a><header class="reading-header"><a class="reading-brand" href="${href(zh ? 'zh.html' : 'index.html')}"><span class="reading-mark">q<span>.</span></span><span>Qi Chen<small>@turbo998 · ${t('Engineering notes', '工程手记')}</small></span></a><div class="reading-controls">${langLink}<a data-reading-theme="light" href="?theme=light" aria-label="${t('Light theme', '浅色主题')}">☀</a><a data-reading-theme="dark" href="?theme=dark" aria-label="${t('Dark theme', '深色主题')}">◐</a><details><summary aria-label="${t('Navigation', '导航')}">☰</summary><nav><a href="${href(zh ? 'zh.html' : 'index.html')}">${t('Home', '首页')}</a><a href="${href(zh ? 'studio/zh-index.html' : 'studio/index.html')}">Studio</a>${/^(?:zh-)?(?:ai-security|benchmarks|security-ai-landing-zone|writing)\.html$/.test(p.path) ? `<a href="${href(zh ? 'zh-github-radar.html' : 'github-radar.html')}">${t('GitHub AI Radar', 'GitHub AI 雷达')}</a>` : ''}<a href="${href(zh ? 'zh-writing.html' : 'writing.html')}">${t('Writing', '文章')}</a><a href="${href(zh ? 'zh-about.html' : 'about.html')}">${t('About', '关于')}</a></nav></details></div></header>`;
+      const langLink = counterpart ? `<a data-reading-language href="${href(counterpart)}" hreflang="${zh ? 'en' : 'zh-CN'}" lang="${zh ? 'en' : 'zh-CN'}">${zh ? 'EN' : '中文'}</a>` : '';
+      const shell = `<a class="reading-skip" href="#reading-main">${t('Skip to content', '跳至正文')}</a>` + professionalNavigation({file:p.path,en:!zh,languages:langLink,context:contextLink || `<a class="reading-context" href="${href(zh?'studio/zh-index.html':'studio/index.html')}">← ${t('Resource hub','资源中心')}</a>`});
       const generatedMarkdown = fact.markdown ? marked.parse(fact.markdown, { gfm: true }) : null;
       const result = await parser.evaluate(({ source, shell, notice, lang, exception, snapshot, css, js, inlineCSS, inlineJS, reportCsp, generatedMarkdown, originalMarkdown, contextLink, runtimePage }) => {
         const d = new DOMParser().parseFromString(source, 'text/html');
@@ -1013,7 +1015,10 @@ async function main() {
         d.querySelectorAll('script').forEach(n => {
           if (/site-structure|theme-switcher|reveal\.js/.test(n.src) || (!n.src && n.textContent.length < 1500 && /scoutTheme|prefers-color-scheme/.test(n.textContent))) remove(n);
         });
-        d.querySelectorAll('.nav,.site-breadcrumb-bar,.style-link-pill,.lang-switch-group,.style-switcher').forEach(remove);
+        d.querySelectorAll('.nav,.site-breadcrumb-bar,.style-link-pill,.lang-switch-group,.style-switcher,.reading-header,.reading-skip,.reading-language-note').forEach(remove);
+        d.querySelectorAll('script[src*="reading-shell.js"],meta[name="reading-migration"]').forEach(remove);
+        d.querySelectorAll('#reading-main').forEach(n => { n.removeAttribute('id'); n.classList.remove('reading-document'); });
+        d.querySelectorAll('a.reading-context').forEach(remove);
         d.querySelectorAll('link[rel="alternate"]').forEach(remove);
         d.querySelectorAll('#theme-toggle-btn,[onclick="toggleTheme()"],.theme-toggle,.theme-btn').forEach(n => { n.hidden = true; n.setAttribute('aria-hidden', 'true'); });
         Object.entries(snapshot).forEach(([id, html]) => { const n = d.getElementById(id); if (n && !n.textContent.trim() && !n.querySelector('svg,canvas,video')) n.innerHTML = html; });
@@ -1048,7 +1053,7 @@ async function main() {
         const oldMains = [...d.querySelectorAll('main')]; oldMains.forEach(n => { const div = d.createElement('div'); [...n.attributes].forEach(a => div.setAttribute(a.name,a.value)); div.innerHTML=n.innerHTML; n.replaceWith(div); });
         const main = d.createElement('main'); main.id = 'reading-main'; main.tabIndex = -1; main.className = exception ? 'reading-exception' : 'reading-document';
         while (d.body.firstChild) main.append(d.body.firstChild);
-        if(contextLink)main.insertAdjacentHTML('afterbegin',contextLink);
+        // Context is below the primary sections in the shared header.
         const note = d.createElement('aside'); note.id='reading-language-note'; note.className='reading-language-note'; note.textContent=notice;
         d.body.innerHTML = shell; d.body.append(note, main);
         const meta = d.createElement('meta'); meta.name='reading-migration'; meta.content='R6'; d.head.append(meta);

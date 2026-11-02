@@ -23,7 +23,7 @@ async function assertPerimeter(page) {
   const palette = await page.evaluate(() => {
     const nav = document.querySelector('.kee-dedicated-nav'), style = getComputedStyle(nav);
     const color = selector => getComputedStyle(nav.querySelector(selector)).color;
-    return { background: style.backgroundColor, text: style.color, border: style.borderTopColor, scheme: style.colorScheme, identity: color('.kee-dedicated-identity'), link: color('a:not(.kee-dedicated-identity)'), muted: color('.kee-dedicated-language') };
+    return { background: style.backgroundColor, text: style.color, border: style.borderTopColor, scheme: style.colorScheme, identity: color('.kee-dedicated-identity'), link: color('a:not(.kee-dedicated-identity):not([aria-current])'), muted: color('.kee-dedicated-language') };
   });
   assert.deepEqual(palette, { background: 'rgb(16, 26, 48)', text: 'rgb(238, 243, 255)', border: 'rgb(49, 67, 97)', scheme: 'dark', identity: 'rgb(238, 243, 255)', link: 'rgb(154, 171, 255)', muted: 'rgb(173, 187, 209)' }, 'Dark Aurora perimeter palette mismatch');
   return palette;
@@ -109,7 +109,7 @@ async function checkCycle377(browser, result) {
     } finally { await page.close(); }
     const noJs = await browser.newPage();
     try {
-      await noJs.setJavaScriptEnabled(false); await noJs.setViewport({ width: 390, height: 844 });
+      await noJs.setCacheEnabled(false); await noJs.setJavaScriptEnabled(false); await noJs.setViewport({ width: 390, height: 844 });
       assert.equal((await noJs.goto(new URL(route, base).href)).status(), 200);
       await assertPerimeter(noJs);
       await noJs.focus('.kee-dedicated-nav a');
@@ -121,7 +121,7 @@ async function checkCycle377(browser, result) {
         const evidenceHref = await noJs.$eval('.kee-dedicated-nav a[href="evidence/cycle-377-benchmark.json"]', anchor => anchor.href);
         assert.equal((await fetch(evidenceHref)).status, 200);
       }
-      await noJs.click(`a[href="${target}"]`);
+      await Promise.all([noJs.waitForNavigation({waitUntil:'load'}), noJs.click(`a[href="${target}"]`)]);
       assert.equal(new URL(noJs.url()).pathname, `/workshops/azure-agent-infra/${target}`);
       result.cycle377.noJavaScript.push({ route, target, focus, pass: true });
     } finally { await noJs.close(); }
@@ -160,7 +160,7 @@ async function main() {
     const nav = live.match(/<nav class="kee-dedicated-nav"[\s\S]*?<\/nav>/)[0];
     for (const m of nav.matchAll(/href="([^"]+)"/g)) {
       assert(!m[1].startsWith('/'), `Nonrelative navigation: ${r.path}`);
-      if (m[1][0] !== '#') assert(fs.existsSync(path.resolve(root, path.dirname(r.path), m[1])), `Missing navigation: ${r.path} -> ${m[1]}`);
+      if (m[1][0] !== '#') assert(fs.existsSync(path.resolve(root, path.dirname(r.path), m[1].split(/[?#]/)[0] || path.basename(r.path))), `Missing navigation: ${r.path} -> ${m[1]}`);
     }
     result.static.push({ path: r.path, role: r.role, pass: true, reportBytesPreserved: r.role === 'report', cspPreserved: true, perimeterOnlyComparedTo: r.sourceOverride ? null : perimeterBaseline || null, sourceOverrideComparedTo: r.sourceOverride?.commit || null, linkOnlySourceDelta: Boolean(r.sourceOverride && /\/(demo|selector)\.html$/.test(r.path)), sha256: sha(live) });
   }
