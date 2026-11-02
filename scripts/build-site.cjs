@@ -75,7 +75,13 @@ const camera4dPages = ['animation','generative-visual-lab'].flatMap(dir=>[
   {path:`${dir}/research/controllable-4d-video-camera-study.html`,role:'article',title:'可控 4D 高斯溅射与 Plücker 相机控制视频导演架构研究',tracks:['animation'],language:{declared:'zh-CN'},supplemental:true},
   {path:`${dir}/research/controllable-4d-video-camera-study.en.html`,role:'article',title:'Controllable 4D Gaussian Splatting & Plücker Camera-Control Video Architecture Study',tracks:['animation'],language:{declared:'en'},supplemental:true}
 ]);
-const archivePages = [...inventory.content, ...translations, ...webiqPages, ...radarPages, ...infraPages, ...dataLabPages, ...phase179Pages, ...commerceTrendsPages, ...camera4dPages];
+const audiovisualFoleyPages = ['animation','generative-visual-lab'].flatMap(dir=>[
+  {path:`${dir}/demos/audiovisual-foley-studio/index.html`,role:'demo',title:'Native Audio-Visual Joint DiT & FramePack Foley Studio',tracks:['animation'],language:{declared:'zh-CN'},supplemental:true},
+  {path:`${dir}/demos/audiovisual-foley-studio/test-report-cards.html`,role:'report',title:'Native Audio-Visual Joint DiT & FramePack Foley · 7-Card Report',tracks:['animation'],language:{declared:'zh-CN'},supplemental:true},
+  {path:`${dir}/research/audiovisual-foley-framepack-study.html`,role:'article',title:'原生音画联合扩散与 FramePack 恒定上下文长时序物理拟音架构研究',tracks:['animation'],language:{declared:'zh-CN'},supplemental:true},
+  {path:`${dir}/research/audiovisual-foley-framepack-study.en.html`,role:'article',title:'Native Audio-Visual Joint Diffusion & FramePack Constant-Context Foley Studio Architecture Study',tracks:['animation'],language:{declared:'en'},supplemental:true}
+]);
+const archivePages = [...inventory.content, ...translations, ...webiqPages, ...radarPages, ...infraPages, ...dataLabPages, ...phase179Pages, ...commerceTrendsPages, ...camera4dPages, ...audiovisualFoleyPages];
 function archiveNote(page, zh) {
   const t = (en, cn) => zh ? cn : en;
   const record = readingByPath.get(page.path);
