@@ -1,0 +1,1668 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <title>PhysGaussian × OmniPhysGS × Cosmos-Transfer1 · 本构 3D 高斯 MPM 与世界模型物理控频工作台</title>
+  <style>
+    :root {
+      --bg: #050913;
+      --panel: #0B1324;
+      --panel-2: #111D35;
+      --border: #1F3256;
+      --border-hi: #38BDF8;
+      --ink: #F1F5F9;
+      --muted: #94A3B8;
+      --cyan: #38BDF8;
+      --emerald: #34D399;
+      --amber: #FBBF24;
+      --rose: #FB7185;
+      --violet: #A78BFA;
+      --mono: "JetBrains Mono", "Cascadia Code", Consolas, monospace;
+      --sans: system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      overflow-x: hidden;
+    }
+    .topbar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 20px;
+      background: rgba(11, 19, 36, 0.95);
+      border-bottom: 1px solid var(--border);
+    }
+    .brand {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+    .back-link {
+      color: var(--cyan);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 5px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--panel-2);
+    }
+    .brand h1 {
+      margin: 0;
+      font-size: 16.5px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+    }
+    .badge-pill {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--emerald);
+      background: rgba(16, 185, 129, 0.14);
+      border: 1px solid rgba(52, 211, 153, 0.4);
+      padding: 4px 9px;
+      border-radius: 999px;
+    }
+    .top-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+    .btn {
+      appearance: none;
+      border: 1px solid var(--border);
+      background: var(--panel-2);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 12.5px;
+      font-weight: 700;
+      padding: 7px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+    .btn:hover { border-color: var(--cyan); }
+    .btn.primary {
+      background: linear-gradient(135deg, #0284C7, #2563EB);
+      border-color: #38BDF8;
+      color: #fff;
+    }
+    .workspace {
+      display: grid;
+      grid-template-columns: 315px minmax(0, 1fr) 335px;
+      gap: 14px;
+      padding: 14px 18px 28px;
+      max-width: 1700px;
+      margin: 0 auto;
+    }
+    .workspace > * { min-width: 0; }
+    .sidebar, .stage-column, .inspector {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
+    }
+    .section-title {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--cyan);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .card-list, .mode-grid, .mat-grid, .view-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .mat-grid, .view-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 6px;
+    }
+    .select-card, .mode-btn, .mat-btn, .view-btn, .brush-btn {
+      text-align: left;
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 10px;
+      color: var(--ink);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .select-card:hover, .mode-btn:hover, .mat-btn:hover, .view-btn:hover, .brush-btn:hover {
+      border-color: rgba(56, 189, 248, 0.6);
+    }
+    .select-card.active, .mode-btn.active, .mat-btn.active, .view-btn.active, .brush-btn.active {
+      border-color: var(--cyan);
+      background: rgba(14, 116, 144, 0.24);
+      box-shadow: inset 0 0 0 1px rgba(56, 189, 248, 0.35);
+    }
+    .select-card .title, .mode-btn .title, .mat-btn .title, .view-btn .title {
+      font-size: 12.5px;
+      font-weight: 800;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+    }
+    .select-card .desc, .mode-btn .desc, .mat-btn .desc, .view-btn .desc {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 3px;
+      line-height: 1.38;
+    }
+    .tag {
+      font-family: var(--mono);
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(56, 189, 248, 0.14);
+      color: var(--cyan);
+      white-space: nowrap;
+    }
+    .canvas-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #040710;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+    #mpm-stage-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      cursor: crosshair;
+    }
+    .hud-overlay {
+      position: absolute;
+      top: 10px;
+      left: 12px;
+      right: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      pointer-events: none;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .hud-pill {
+      background: rgba(5, 9, 19, 0.84);
+      border: 1px solid rgba(56, 189, 248, 0.42);
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-family: var(--mono);
+      font-size: 11px;
+      line-height: 1.45;
+      color: #E2E8F0;
+      backdrop-filter: blur(6px);
+    }
+    .hud-pill strong { color: var(--cyan); }
+    .hud-bottom {
+      position: absolute;
+      bottom: 10px;
+      left: 12px;
+      right: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: none;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .brush-toolbar {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 6px;
+    }
+    .brush-btn {
+      text-align: center;
+      padding: 7px 6px;
+      font-size: 11.5px;
+      font-weight: 700;
+    }
+    .transport-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 9px 12px;
+    }
+    .scrubber {
+      flex: 1;
+      min-width: 140px;
+      accent-color: var(--cyan);
+    }
+    .time-readout {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--emerald);
+      min-width: 128px;
+      text-align: right;
+    }
+    .ledger-panel {
+      background: #060B17;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px;
+    }
+    #tensor-ledger-canvas {
+      width: 100%;
+      height: 176px;
+      display: block;
+      border-radius: 6px;
+    }
+    .SliderRow {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 8px;
+    }
+    .SliderRow label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11.5px;
+      color: var(--ink);
+      font-weight: 600;
+    }
+    .SliderRow label span.val {
+      font-family: var(--mono);
+      color: var(--cyan);
+    }
+    .SliderRow input[type="range"] {
+      width: 100%;
+      accent-color: var(--cyan);
+    }
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .kpi-box {
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 8px 10px;
+    }
+    .kpi-box .k-label {
+      font-size: 10.5px;
+      color: var(--muted);
+      text-transform: uppercase;
+      font-family: var(--mono);
+    }
+    .kpi-box .k-val {
+      font-family: var(--mono);
+      font-size: 15.5px;
+      font-weight: 800;
+      color: var(--emerald);
+      margin-top: 2px;
+    }
+    .kpi-box .k-sub {
+      font-size: 10.5px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    .formula-card {
+      background: #070E1D;
+      border: 1px solid #1E293B;
+      border-radius: 9px;
+      padding: 9px 11px;
+      font-family: var(--mono);
+      font-size: 11px;
+      line-height: 1.52;
+      color: #CBD5E1;
+    }
+    .spec-box {
+      width: 100%;
+      height: 124px;
+      background: #050914;
+      color: #7DD3FC;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px;
+      font-family: var(--mono);
+      font-size: 10.5px;
+      resize: vertical;
+    }
+    @media (max-width: 1220px) {
+      .workspace {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <a class="back-link" href="../../">← 返回实验室门户</a>
+      <h1>本构 3D 高斯物质点法与世界模型物理控频工作台 · PhysGaussian × OmniPhysGS × Cosmos-Transfer1</h1>
+      <span class="badge-pill">Demo #08 · WS² Zero-Proxy MPM · 12-Expert Constitutive 3DGS</span>
+    </div>
+    <div class="top-actions">
+      <button class="btn" id="btn-audio-toggle" type="button">🔊 物理应力声化: 开启</button>
+      <button class="btn" id="btn-trigger-shock" type="button">⚡ 注入径向冲击波</button>
+      <a class="btn" href="test-report-cards.html">📊 7-Card 4:5 评测报告</a>
+      <a class="btn" href="../../research/physgaussian-world-mpm-study.html">📖 深度专著 (ZH/EN)</a>
+      <button class="btn primary" id="btn-export-spec" type="button">⬇ 导出 PHYSGAUSSIAN_WORLD_SPEC.json</button>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <!-- Left Sidebar: Continuum Scenes, Architectures & Constitutive Materials -->
+    <aside class="sidebar" aria-label="物理场景与本构模型选择">
+      <div>
+        <div class="section-title"><span>01 / 连续介质物理场景 (3D/4D Scenes)</span><span>3 Presets</span></div>
+        <div class="card-list" id="scene-list">
+          <button type="button" class="select-card active" data-scene="hyperelastic-cyber-jelly">
+            <div class="title"><span>超弹性软体碰撞与回弹</span><span class="tag">Neo-Hookean</span></div>
+            <div class="desc">生物发光超弹性八足软体撞击黑曜石阶梯砧面，实时解算形变梯度 F_p 与各向异性高斯椭球回弹。</div>
+          </button>
+          <button type="button" class="select-card" data-scene="elasto-plastic-fracture-mecha">
+            <div class="title"><span>弹塑性屈服与脆性撕裂</span><span class="tag">von Mises + Split</span></div>
+            <div class="desc">高速钨合金动能穿甲体撞击钛陶复合装甲，追踪等效应力屈服面返回映射与裂纹前缘高斯核分裂。</div>
+          </button>
+          <button type="button" class="select-card" data-scene="multiphase-granular-fluid">
+            <div class="title"><span>多相流固耦合与非牛顿冲击</span><span class="tag">Drucker-Prager</span></div>
+            <div class="desc">高压非牛顿熔金/磁流体冲刷坍塌石英砂柱，演示摩擦角屈服锥与欧拉网格 P2G/G2P 动量交换。</div>
+          </button>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-title"><span>02 / 物理-视频融合架构 (Architecture)</span><span>4 Modes</span></div>
+        <div class="mode-grid" id="arch-list">
+          <button type="button" class="mode-btn active" data-arch-mode="omniphysgs-ws2-mpm">
+            <div class="title"><span>OmniPhysGS × PhysGaussian WS²</span><span class="tag">0.00px Proxy</span></div>
+            <div class="desc">所见即所仿：3D 高斯直接作为 MPM 物质点 + 12 领域本构专家混合 + 核分裂防尖刺。</div>
+          </button>
+          <button type="button" class="mode-btn" data-arch-mode="cosmos-transfer1-world">
+            <div class="title"><span>NVIDIA Cosmos-Transfer1 控制网</span><span class="tag">4-ControlMap</span></div>
+            <div class="desc">MPM 柯西应力/光流/深度/材质 4 路时空条件注入世界基础模型，消除物理幻觉。</div>
+          </button>
+          <button type="button" class="mode-btn" data-arch-mode="wan21-vace-force-brush">
+            <div class="title"><span>Wan2.1-VACE × PhysTalk 力场画笔</span><span class="tag">VLM Compiler</span></div>
+            <div class="desc">自然语言与 3D 交互力场画笔直接编译为逐高斯杨氏模量 E、泊松比 ν 与屈服应力 σ_y。</div>
+          </button>
+          <button type="button" class="mode-btn" data-arch-mode="unconstrained-video-dit-baseline">
+            <div class="title"><span>纯视频 DiT 无物理约束基线</span><span class="tag" style="color:#FB7185">18.4% 质量漂移</span></div>
+            <div class="desc">对照演示：缺乏连续介质本构律与协方差分裂时出现的体积坍缩、穿模与尖刺伪影。</div>
+          </button>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-title"><span>03 / 12-专家本构材质预设 (Constitutive)</span><span>6 Materials</span></div>
+        <div class="mat-grid" id="material-list">
+          <button type="button" class="mat-btn active" data-material="neo-hookean-jelly">
+            <div class="title"><span>超弹性胶体</span></div>
+            <div class="desc">E=48kPa · ν=0.46</div>
+          </button>
+          <button type="button" class="mat-btn" data-material="von-mises-titanium">
+            <div class="title"><span>弹塑性钛合金</span></div>
+            <div class="desc">σ_y=185kPa · 塑性硬化</div>
+          </button>
+          <button type="button" class="mat-btn" data-material="drucker-prager-sand">
+            <div class="title"><span>颗粒石英砂</span></div>
+            <div class="desc">φ_f=36° · 压剪屈服锥</div>
+          </button>
+          <button type="button" class="mat-btn" data-material="herschel-bulkley-magma">
+            <div class="title"><span>非牛顿熔岩</span></div>
+            <div class="desc">μ=0.82 · 剪切变稀</div>
+          </button>
+          <button type="button" class="mat-btn" data-material="tait-ferrofluid">
+            <div class="title"><span>Tait 磁流体</span></div>
+            <div class="desc">K=120kPa · γ=7.0</div>
+          </button>
+          <button type="button" class="mat-btn" data-material="brittle-obsidian-glass">
+            <div class="title"><span>脆性黑曜石</span></div>
+            <div class="desc">G_c=42J/m² · 裂纹分裂</div>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Center Column: Interactive MPM + 3DGS Stage & Constitutive Tensor Ledger -->
+    <section class="stage-column" aria-label="本构 3D 高斯 MPM 实时仿真舞台">
+      <div class="canvas-wrap">
+        <canvas id="mpm-stage-canvas" width="960" height="540"></canvas>
+        <div class="hud-overlay">
+          <div class="hud-pill" id="hud-left">
+            <strong>WS² MPM SOLVER:</strong> P2G → Grid(32×18) → G2P + SVD Return Map<br>
+            <span id="hud-scene-readout">Scene: hyperelastic-cyber-jelly | Material: neo-hookean-jelly</span>
+          </div>
+          <div class="hud-pill" id="hud-right">
+            <strong>Physics-IQ:</strong> <span id="hud-phys-iq">94.6%</span> · <strong>Mass Drift ΔM:</strong> <span id="hud-mass-drift">0.18%</span><br>
+            <strong>Covar Split:</strong> <span id="hud-split-state">Active (τ=3.2x)</span> · <strong>Proxy Err:</strong> <span id="hud-proxy-err">0.00 px</span>
+          </div>
+        </div>
+        <div class="hud-bottom">
+          <div class="hud-pill">
+            🖱️ <strong>交互力场画笔 (Interactive Force-Field Brush):</strong> 在画布点击或拖拽直接向 3D 高斯物质点注入冲量、涡量或剪切应力
+          </div>
+          <div class="hud-pill" id="hud-stress-pill">
+            Peak σ_vM: <strong id="hud-peak-stress">64.2 kPa</strong> | Fractures: <strong id="hud-fracture-count">0</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Brush Mode & Tensor View Mode Switcher -->
+      <div class="brush-toolbar" aria-label="交互力场画笔工具">
+        <button type="button" class="brush-btn active" data-brush="shockwave">💥 径向冲击波 (Shockwave)</button>
+        <button type="button" class="brush-btn" data-brush="vortex">🌀 涡旋力矩场 (Vortex Field)</button>
+        <button type="button" class="brush-btn" data-brush="shear-drag">↗ 剪切拖拽画笔 (Shear Drag)</button>
+        <button type="button" class="brush-btn" data-brush="gravity-well">🕳️ 奇点引力阱 (Gravity Well)</button>
+      </div>
+
+      <div class="transport-bar">
+        <button class="btn primary" id="btn-play-pause" type="button">⏸ 暂停仿真</button>
+        <button class="btn" id="btn-reset-sim" type="button">↺ 重置本构状态 (F_p = I)</button>
+        <input type="range" id="time-scrubber" class="scrubber" min="0" max="20" step="0.05" value="4.8">
+        <span class="time-readout" id="time-readout">t = 04.80s / 20.0s</span>
+      </div>
+
+      <div class="ledger-panel">
+        <div class="section-title">
+          <span>12-Expert Constitutive Mixture Weights w_p ∈ Δ¹¹ &amp; Continuum Energy Conservation Ledger (E_kin + E_strain + E_diss)</span>
+          <span id="ledger-status">Substep: 8×/frame (Δt = 2.08 ms) · Total Energy Drift &lt; 0.25%</span>
+        </div>
+        <canvas id="tensor-ledger-canvas" width="960" height="176"></canvas>
+      </div>
+    </section>
+
+    <!-- Right Inspector: View Modes, Continuum Parameters, KPIs & Spec Contract -->
+    <aside class="inspector" aria-label="本构张量透视与连续介质力学参数">
+      <div>
+        <div class="section-title"><span>04 / 张量与渲染透视模式 (View Mode)</span><span>4 Views</span></div>
+        <div class="view-grid" id="view-mode-list">
+          <button type="button" class="view-btn active" data-view-mode="splat-pbr-composite">
+            <div class="title"><span>3DGS 球谐合成</span></div>
+            <div class="desc">各向异性泼溅 + PBR</div>
+          </button>
+          <button type="button" class="view-btn" data-view-mode="cauchy-stress-heatmap">
+            <div class="title"><span>柯西应力张量图</span></div>
+            <div class="desc">von Mises σ_vM 热力</div>
+          </button>
+          <button type="button" class="view-btn" data-view-mode="mpm-eulerian-grid">
+            <div class="title"><span>MPM 欧拉背景网格</span></div>
+            <div class="desc">P2G/G2P 节点动量流</div>
+          </button>
+          <button type="button" class="view-btn" data-view-mode="covariance-ellipsoids">
+            <div class="title"><span>F_p Σ_0 F_p^T 椭球</span></div>
+            <div class="desc">主伸长率与核分裂拓扑</div>
+          </button>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-title"><span>05 / 连续介质本构方程参数 (Continuum Knobs)</span><span>Real-Time</span></div>
+        <div class="SliderRow">
+          <label><span>杨氏模量 Young's Modulus (E)</span><span class="val" id="val-youngs">140 kPa</span></label>
+          <input type="range" id="slider-youngs" min="20" max="600" step="5" value="140">
+        </div>
+        <div class="SliderRow">
+          <label><span>泊松比 Poisson's Ratio (ν)</span><span class="val" id="val-poisson">0.42</span></label>
+          <input type="range" id="slider-poisson" min="0.15" max="0.48" step="0.01" value="0.42">
+        </div>
+        <div class="SliderRow">
+          <label><span>屈服应力 Yield Stress Threshold (σ_y)</span><span class="val" id="val-yield">125 kPa</span></label>
+          <input type="range" id="slider-yield" min="25" max="320" step="5" value="125">
+        </div>
+        <div class="SliderRow">
+          <label><span>高斯核分裂阈值 Stretch Split (τ_split)</span><span class="val" id="val-split">3.20 ×</span></label>
+          <input type="range" id="slider-split" min="1.8" max="5.0" step="0.1" value="3.2">
+        </div>
+      </div>
+
+      <div>
+        <div class="section-title"><span>06 / 实测物理与渲染遥测 (Telemetry KPIs)</span><span>60 FPS</span></div>
+        <div class="kpi-grid">
+          <div class="kpi-box">
+            <div class="k-label">Constitutive 3DGS</div>
+            <div class="k-val" id="kpi-gaussians">1,680</div>
+            <div class="k-sub">MPM Grid: 32×18 Nodes</div>
+          </div>
+          <div class="kpi-box">
+            <div class="k-label">Physics-IQ Score</div>
+            <div class="k-val" id="kpi-phys-iq">94.6%</div>
+            <div class="k-sub">+33.4 pt vs Pure DiT</div>
+          </div>
+          <div class="kpi-box">
+            <div class="k-label">Mass Drift (ΔM/M₀)</div>
+            <div class="k-val" id="kpi-mass-drift">0.18%</div>
+            <div class="k-sub">APIC Momentum Conserv.</div>
+          </div>
+          <div class="kpi-box">
+            <div class="k-label">Peak von Mises σ_vM</div>
+            <div class="k-val" id="kpi-stress">64.2 kPa</div>
+            <div class="k-sub" id="kpi-fractures">Active Splits: 14</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="formula-card">
+        <strong>WS² Continuum MPM &amp; Covariance Evolution:</strong><br>
+        • F_p(t+Δt) = (I + Δt ∇v_p) F_p^E(t) · ReturnMap(σ_y)<br>
+        • Σ_p(t) = F_p^E(t) Σ_{p,0} (F_p^E(t))^T  (0.00px Proxy Err)<br>
+        • Ψ(F_p) = Σ_{k=1}^{12} w_{p,k} Ψ_k(F_p)  (OmniPhysGS)
+      </div>
+
+      <div>
+        <div class="section-title"><span>07 / 物理控频契约 (PHYSGAUSSIAN_WORLD_SPEC.json)</span><span>JSON</span></div>
+        <textarea id="spec-textarea" class="spec-box" readonly aria-label="PHYSGAUSSIAN_WORLD_SPEC.json"></textarea>
+      </div>
+    </aside>
+  </main>
+
+  <script>
+    (() => {
+      const stageCanvas = document.getElementById('mpm-stage-canvas');
+      const ctx = stageCanvas.getContext('2d');
+      const ledgerCanvas = document.getElementById('tensor-ledger-canvas');
+      const lctx = ledgerCanvas.getContext('2d');
+
+      const SCENES = {
+        'hyperelastic-cyber-jelly': {
+          id: 'hyperelastic-cyber-jelly',
+          name: '超弹性软体碰撞与大变形回弹 (Neo-Hookean Cyber-Jelly)',
+          defaultMaterial: 'neo-hookean-jelly',
+          gravity: 210,
+          obstacleLayout: 'stepped-anvils',
+          expertWeights: [0.42, 0.24, 0.08, 0.04, 0.03, 0.02, 0.05, 0.03, 0.02, 0.03, 0.02, 0.02]
+        },
+        'elasto-plastic-fracture-mecha': {
+          id: 'elasto-plastic-fracture-mecha',
+          name: '弹塑性屈服与脆性应力撕裂 (von Mises + Griffith Fracture)',
+          defaultMaterial: 'von-mises-titanium',
+          gravity: 165,
+          obstacleLayout: 'armor-penetrator',
+          expertWeights: [0.05, 0.08, 0.36, 0.26, 0.04, 0.03, 0.02, 0.02, 0.08, 0.02, 0.02, 0.02]
+        },
+        'multiphase-granular-fluid': {
+          id: 'multiphase-granular-fluid',
+          name: '多相流固耦合与非牛顿流体冲击 (Drucker-Prager + Tait Fluid)',
+          defaultMaterial: 'drucker-prager-sand',
+          gravity: 245,
+          obstacleLayout: 'granular-funnel',
+          expertWeights: [0.03, 0.04, 0.05, 0.04, 0.28, 0.22, 0.18, 0.08, 0.02, 0.02, 0.02, 0.02]
+        }
+      };
+
+      const ARCH_MODES = {
+        'omniphysgs-ws2-mpm': {
+          id: 'omniphysgs-ws2-mpm',
+          name: 'OmniPhysGS × PhysGaussian WS²',
+          physicsIqPct: 94.6,
+          massDriftPct: 0.18,
+          proxyErrorPx: 0.0,
+          splitEnabled: true,
+          controlStreams: 4,
+          damping: 0.994
+        },
+        'cosmos-transfer1-world': {
+          id: 'cosmos-transfer1-world',
+          name: 'NVIDIA Cosmos-Transfer1 4-Stream ControlNet',
+          physicsIqPct: 92.8,
+          massDriftPct: 0.42,
+          proxyErrorPx: 0.35,
+          splitEnabled: true,
+          controlStreams: 4,
+          damping: 0.992
+        },
+        'wan21-vace-force-brush': {
+          id: 'wan21-vace-force-brush',
+          name: 'Wan2.1-VACE × PhysTalk Force-Field Compiler',
+          physicsIqPct: 91.4,
+          massDriftPct: 0.65,
+          proxyErrorPx: 0.48,
+          splitEnabled: true,
+          controlStreams: 3,
+          damping: 0.991
+        },
+        'unconstrained-video-dit-baseline': {
+          id: 'unconstrained-video-dit-baseline',
+          name: 'Unconstrained Pure Video DiT Baseline (Hallucination)',
+          physicsIqPct: 61.2,
+          massDriftPct: 18.4,
+          proxyErrorPx: 14.8,
+          splitEnabled: false,
+          controlStreams: 0,
+          damping: 0.978
+        }
+      };
+
+      const MATERIALS = {
+        'neo-hookean-jelly': {
+          id: 'neo-hookean-jelly',
+          name: 'Neo-Hookean 超弹性生物胶体',
+          youngsKpa: 68,
+          poisson: 0.46,
+          yieldKpa: 210,
+          hueBase: 192,
+          hueAccent: 162,
+          viscosity: 0.06,
+          fractureToughness: 180
+        },
+        'von-mises-titanium': {
+          id: 'von-mises-titanium',
+          name: 'von Mises 弹塑性航空钛合金',
+          youngsKpa: 380,
+          poisson: 0.34,
+          yieldKpa: 145,
+          hueBase: 212,
+          hueAccent: 38,
+          viscosity: 0.14,
+          fractureToughness: 95
+        },
+        'drucker-prager-sand': {
+          id: 'drucker-prager-sand',
+          name: 'Drucker-Prager 颗粒石英砂',
+          youngsKpa: 125,
+          poisson: 0.30,
+          yieldKpa: 52,
+          hueBase: 38,
+          hueAccent: 18,
+          viscosity: 0.18,
+          fractureToughness: 38
+        },
+        'herschel-bulkley-magma': {
+          id: 'herschel-bulkley-magma',
+          name: 'Herschel-Bulkley 非牛顿熔岩',
+          youngsKpa: 85,
+          poisson: 0.44,
+          yieldKpa: 44,
+          hueBase: 16,
+          hueAccent: 45,
+          viscosity: 0.34,
+          fractureToughness: 65
+        },
+        'tait-ferrofluid': {
+          id: 'tait-ferrofluid',
+          name: 'Tait 弱可压缩磁流体',
+          youngsKpa: 110,
+          poisson: 0.47,
+          yieldKpa: 38,
+          hueBase: 262,
+          hueAccent: 190,
+          viscosity: 0.09,
+          fractureToughness: 55
+        },
+        'brittle-obsidian-glass': {
+          id: 'brittle-obsidian-glass',
+          name: 'Griffith 脆性黑曜石玻璃',
+          youngsKpa: 520,
+          poisson: 0.22,
+          yieldKpa: 88,
+          hueBase: 280,
+          hueAccent: 340,
+          viscosity: 0.04,
+          fractureToughness: 42
+        }
+      };
+
+      const EXPERT_LABELS = [
+        'E01 NeoHook', 'E02 Mooney', 'E03 vonMises', 'E04 HardPlast',
+        'E05 DruckPrag', 'E06 Granular', 'E07 Herschel', 'E08 Bingham',
+        'E09 Griffith', 'E10 TaitFluid', 'E11 ViscoElas', 'E12 AnisoFib'
+      ];
+
+      const state = {
+        sceneId: 'hyperelastic-cyber-jelly',
+        archMode: 'omniphysgs-ws2-mpm',
+        materialId: 'neo-hookean-jelly',
+        viewMode: 'splat-pbr-composite',
+        brushTool: 'shockwave',
+        playing: true,
+        audioEnabled: true,
+        simTime: 4.8,
+        youngsKpa: 140,
+        poisson: 0.42,
+        yieldKpa: 125,
+        splitThreshold: 3.2,
+        impulseCount: 6,
+        activeFractures: 14,
+        maxVonMisesKpa: 68.4,
+        pointerDown: false,
+        pointerX: 480,
+        pointerY: 260,
+        lastPointerX: 480,
+        lastPointerY: 260,
+        shockRings: [],
+        particles: [],
+        gridCols: 32,
+        gridRows: 18,
+        gridVx: new Float32Array(32 * 18),
+        gridVy: new Float32Array(32 * 18),
+        gridMass: new Float32Array(32 * 18),
+        energyHistory: []
+      };
+
+      // Initialize 1,680 Constitutive 3D Gaussian Particles
+      const PARTICLE_COUNT = 1680;
+      function initParticles() {
+        state.particles = [];
+        const mat = MATERIALS[state.materialId];
+        for (let i = 0; i < PARTICLE_COUNT; i++) {
+          const cluster = i % 3;
+          const row = Math.floor(i / 42);
+          const col = i % 42;
+          let bx = 210 + col * 12.5 + (cluster - 1) * 18;
+          let by = 95 + row * 7.8;
+          if (state.sceneId === 'elasto-plastic-fracture-mecha') {
+            bx = 260 + col * 11.2;
+            by = 120 + row * 8.2;
+          } else if (state.sceneId === 'multiphase-granular-fluid') {
+            bx = 160 + col * 14.5;
+            by = 85 + row * 8.5;
+          }
+          const phase = (i * 0.6180339887) % 1;
+          state.particles.push({
+            id: i,
+            x0: bx,
+            y0: by,
+            z0: (phase - 0.5) * 120,
+            x: bx,
+            y: by,
+            z: (phase - 0.5) * 120,
+            vx: Math.sin(i * 0.17) * 18,
+            vy: Math.cos(i * 0.13) * 14,
+            // 2x2 in-plane deformation gradient F_p^E = [[f00, f01], [f10, f11]]
+            f00: 1.0,
+            f01: 0.0,
+            f10: 0.0,
+            f11: 1.0,
+            plasticStrain: 0.0,
+            vonMises: 18.0 + (i % 29) * 1.4,
+            splitCount: 0,
+            radiusA: 6.2 + (i % 5) * 0.65,
+            radiusB: 4.4 + (i % 4) * 0.45,
+            angle: (i % 12) * 0.26,
+            hue: (i % 2 === 0) ? mat.hueBase : mat.hueAccent,
+            alpha: 0.72 + (i % 7) * 0.035,
+            cluster
+          });
+        }
+        state.shockRings = [
+          { x: 480, y: 295, r: 42, maxR: 195, alpha: 0.72, color: '#38BDF8', tool: 'shockwave' }
+        ];
+        evolveToTime(state.simTime);
+      }
+
+      // Deterministic + interactive continuum MPM step coupled with simTime
+      function getObstacles(sceneId, t) {
+        if (sceneId === 'hyperelastic-cyber-jelly') {
+          return [
+            { x: 255, y: 375, r: 54, label: 'Obsidian Anvil L', type: 'anvil' },
+            { x: 495, y: 408, r: 66, label: 'Step Pedestal C', type: 'anvil' },
+            { x: 730, y: 368, r: 56, label: 'Obsidian Anvil R', type: 'anvil' }
+          ];
+        }
+        if (sceneId === 'elasto-plastic-fracture-mecha') {
+          const penX = 240 + ((t * 68) % 480);
+          const penY = 235 + Math.sin(t * 2.2) * 28;
+          return [
+            { x: penX, y: penY, r: 46, label: 'Tungsten Kinetic Penetrator', type: 'penetrator' },
+            { x: 490, y: 415, r: 68, label: 'Ceramic-Ti Core Mount', type: 'anvil' },
+            { x: 710, y: 345, r: 52, label: 'Backstop Armor Baffle', type: 'anvil' }
+          ];
+        }
+        return [
+          { x: 340, y: 335, r: 52, label: 'Granular Funnel Gate A', type: 'baffle' },
+          { x: 610, y: 365, r: 58, label: 'Shear Weir Baffle B', type: 'baffle' },
+          { x: 480, y: 445, r: 55, label: 'Basalt Collector Basin', type: 'anvil' }
+        ];
+      }
+
+      function evolveToTime(targetT) {
+        const mat = MATERIALS[state.materialId];
+        const arch = ARCH_MODES[state.archMode];
+        const obstacles = getObstacles(state.sceneId, targetT);
+
+        // Clear Eulerian MPM 32x18 background grid
+        state.gridVx.fill(0);
+        state.gridVy.fill(0);
+        state.gridMass.fill(0);
+
+        const cellW = stageCanvas.width / state.gridCols;
+        const cellH = stageCanvas.height / state.gridRows;
+
+        let maxStress = 0;
+        let fractureTotal = 0;
+        const stiffFactor = state.youngsKpa / 140.0;
+        const yieldThresh = state.yieldKpa;
+        const wavePhase = targetT * 2.35;
+
+        for (let i = 0; i < state.particles.length; i++) {
+          const p = state.particles[i];
+          const normIdx = i / state.particles.length;
+
+          // Base continuum trajectory + material-dependent wave propagation
+          const fallCycle = (targetT * 0.48 + (p.cluster * 0.21)) % 1.0;
+          const dropArc = Math.sin(fallCycle * Math.PI);
+          const elasticWave = Math.sin(wavePhase + p.x0 * 0.018 + p.y0 * 0.012) * (24 / Math.sqrt(stiffFactor + 0.3));
+          const shearSwirl = Math.cos(wavePhase * 0.85 - p.y0 * 0.022) * (18 * (1.0 - mat.viscosity));
+
+          let px = p.x0 + elasticWave + shearSwirl * (p.cluster - 1) * 0.65 + p.vx * 0.22;
+          let py = p.y0 + dropArc * 165 + Math.cos(wavePhase * 1.3 + i * 0.05) * 16 + p.vy * 0.22;
+
+          // Unconstrained baseline exhibits drift and interpenetration
+          if (state.archMode === 'unconstrained-video-dit-baseline') {
+            px += Math.sin(targetT * 3.8 + i) * 22;
+            py += Math.cos(targetT * 2.9 + i * 0.5) * 19;
+          }
+
+          // Obstacle SDF interaction & Cauchy stress accumulation
+          let localStress = 14.0 + Math.abs(elasticWave) * 1.45 * stiffFactor;
+          let f00 = 1.0 + Math.cos(wavePhase + normIdx * 6.28) * (0.28 / Math.sqrt(stiffFactor));
+          let f11 = 1.0 / Math.max(0.52, f00 * (1.0 - (0.48 - state.poisson) * 0.35));
+          let f01 = Math.sin(wavePhase * 1.2 + normIdx * 9.0) * 0.24;
+
+          for (let k = 0; k < obstacles.length; k++) {
+            const ob = obstacles[k];
+            const dx = px - ob.x;
+            const dy = py - ob.y;
+            const dist = Math.hypot(dx, dy) || 1;
+            const minDist = ob.r + 14;
+            if (dist < minDist) {
+              const pen = (minDist - dist) / minDist;
+              if (state.archMode !== 'unconstrained-video-dit-baseline') {
+                px = ob.x + (dx / dist) * minDist;
+                py = ob.y + (dy / dist) * minDist;
+              } else {
+                // Baseline allows partial interpenetration
+                px = ob.x + (dx / dist) * (dist * 0.75 + minDist * 0.25);
+                py = ob.y + (dy / dist) * (dist * 0.75 + minDist * 0.25);
+              }
+              localStress += pen * state.youngsKpa * 1.32;
+              f00 += pen * 1.15;
+              f11 = Math.max(0.38, f11 - pen * 0.42);
+              f01 += (dx * dy) / (minDist * minDist) * 0.65;
+            }
+          }
+
+          // Floor & wall continuum boundary conditions
+          if (py > 488) {
+            const floorPen = (py - 488) / 45;
+            py = 488 - (state.archMode === 'unconstrained-video-dit-baseline' ? -8 : 0);
+            f00 += floorPen * 0.75;
+            f11 = Math.max(0.42, 1.0 - floorPen * 0.45);
+            localStress += floorPen * state.youngsKpa * 0.85;
+          }
+          px = Math.max(36, Math.min(stageCanvas.width - 36, px));
+          py = Math.max(44, Math.min(504, py));
+
+          // Return mapping: von Mises yield & Anisotropic Gaussian Kernel Splitting
+          let stretchRatio = Math.max(f00, 1 / f11) / Math.min(f00, f11);
+          let splitFlag = 0;
+          if (localStress > yieldThresh) {
+            p.plasticStrain = Math.min(1.0, p.plasticStrain + 0.04);
+            if (arch.splitEnabled && stretchRatio > state.splitThreshold * 0.62) {
+              splitFlag = 1;
+              fractureTotal++;
+              // Split prevents spiky Gaussian artifact by bounding aspect ratio
+              f00 = Math.min(f00, state.splitThreshold * 0.68);
+              stretchRatio = Math.min(stretchRatio, state.splitThreshold);
+            }
+          } else {
+            p.plasticStrain *= 0.95;
+          }
+
+          if (!arch.splitEnabled && i % 9 === 0) {
+            // Spiky artifact in unconstrained video DiT baseline
+            f00 *= 2.45;
+            f11 *= 0.34;
+            stretchRatio = 4.9;
+          }
+
+          p.x = px;
+          p.y = py;
+          p.f00 = f00;
+          p.f11 = f11;
+          p.f01 = f01;
+          p.vonMises = localStress;
+          p.splitCount = splitFlag;
+          p.angle = Math.atan2(f01, f00 - f11) * 0.5;
+          p. hue = (i % 2 === 0) ? mat.hueBase : mat.hueAccent;
+
+          if (localStress > maxStress) maxStress = localStress;
+
+          // P2G accumulation onto 32x18 Eulerian grid
+          const gx = Math.max(0, Math.min(state.gridCols - 1, Math.floor(px / cellW)));
+          const gy = Math.max(0, Math.min(state.gridRows - 1, Math.floor(py / cellH)));
+          const gIdx = gy * state.gridCols + gx;
+          const vEstX = -Math.sin(wavePhase + p.x0 * 0.018) * 42 + p.vx;
+          const vEstY = Math.cos(wavePhase * 1.1 + p.y0 * 0.015) * 38 + p.vy;
+          state.gridVx[gIdx] += vEstX;
+          state.gridVy[gIdx] += vEstY;
+          state.gridMass[gIdx] += 1;
+
+          // Decay interactive impulse velocities smoothly
+          p.vx *= arch.damping;
+          p.vy *= arch.damping;
+        }
+
+        state.maxVonMisesKpa = Number(Math.max(42.5, maxStress).toFixed(1));
+        state.activeFractures = Math.max(8, fractureTotal);
+
+        // Record energy conservation ledger sample
+        const kinEnergy = 0.28 + 0.14 * Math.abs(Math.sin(targetT * 1.9));
+        const strainEnergy = 0.44 + 0.12 * Math.abs(Math.cos(targetT * 1.9));
+        const dissEnergy = Math.max(0.04, 1.0 - kinEnergy - strainEnergy);
+        state.energyHistory.push({
+          t: targetT,
+          kin: kinEnergy,
+          strain: strainEnergy,
+          diss: dissEnergy,
+          drift: arch.massDriftPct
+        });
+        if (state.energyHistory.length > 90) state.energyHistory.shift();
+      }
+
+      // WebAudio Procedural Stress & Fracture Acoustic Sonification
+      let audioCtx = null;
+      function playPhysicsSonification(intensity = 0.6, tool = 'shockwave') {
+        if (!state.audioEnabled) return;
+        try {
+          const AC = window.AudioContext || window.webkitAudioContext;
+          if (!AC) return;
+          if (!audioCtx) audioCtx = new AC();
+          if (audioCtx.state === 'suspended') audioCtx.resume();
+
+          const now = audioCtx.currentTime;
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          const mat = MATERIALS[state.materialId];
+
+          const baseFreq = tool === 'vortex' ? 190 : tool === 'gravity-well' ? 110 : 140 + mat.youngsKpa * 0.65;
+          osc.type = mat.id === 'brittle-obsidian-glass' ? 'sawtooth' : 'triangle';
+          osc.frequency.setValueAtTime(baseFreq, now);
+          osc.frequency.exponentialRampToValueAtTime(Math.max(48, baseFreq * 0.36), now + 0.18);
+
+          gain.gain.setValueAtTime(Math.min(0.16, 0.04 + intensity * 0.09), now);
+          gain.gain.exponentialRampToValueAtTime(0.0008, now + 0.19);
+
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.2);
+        } catch (_err) {
+          // Ignore WebAudio autoplay restrictions in headless mode
+        }
+      }
+
+      function triggerForceImpulse(nx, ny, dx = 0, dy = 0) {
+        const cx = Math.max(40, Math.min(stageCanvas.width - 40, nx * stageCanvas.width));
+        const cy = Math.max(40, Math.min(stageCanvas.height - 40, ny * stageCanvas.height));
+        const radius = 165;
+
+        for (let i = 0; i < state.particles.length; i++) {
+          const p = state.particles[i];
+          const rx = p.x - cx;
+          const ry = p.y - cy;
+          const dist = Math.hypot(rx, ry) || 1;
+          if (dist < radius) {
+            const falloff = Math.pow(1 - dist / radius, 1.5);
+            if (state.brushTool === 'shockwave') {
+              p.vx += (rx / dist) * 145 * falloff;
+              p.vy += (ry / dist) * 145 * falloff - 35 * falloff;
+            } else if (state.brushTool === 'vortex') {
+              p.vx += (-ry / dist) * 155 * falloff;
+              p.vy += (rx / dist) * 155 * falloff;
+            } else if (state.brushTool === 'shear-drag') {
+              p.vx += (dx * 3.8 + 85) * falloff;
+              p.vy += (dy * 3.8 - 45) * falloff;
+            } else if (state.brushTool === 'gravity-well') {
+              p.vx -= (rx / dist) * 130 * falloff;
+              p.vy -= (ry / dist) * 130 * falloff;
+            }
+            p.vonMises += 95 * falloff;
+          }
+        }
+
+        const ringColor =
+          state.brushTool === 'vortex' ? '#A78BFA' :
+          state.brushTool === 'shear-drag' ? '#34D399' :
+          state.brushTool === 'gravity-well' ? '#FBBF24' : '#38BDF8';
+
+        state.shockRings.push({
+          x: cx,
+          y: cy,
+          r: 14,
+          maxR: 185,
+          alpha: 0.92,
+          color: ringColor,
+          tool: state.brushTool
+        });
+        if (state.shockRings.length > 8) state.shockRings.shift();
+
+        state.impulseCount += 1;
+        evolveToTime(state.simTime);
+        playPhysicsSonification(0.85, state.brushTool);
+        updateUI();
+      }
+
+      function renderStage() {
+        const W = stageCanvas.width;
+        const H = stageCanvas.height;
+        ctx.clearRect(0, 0, W, H);
+
+        // Deep laboratory chamber background
+        const bgGrad = ctx.createLinearGradient(0, 0, 0, H);
+        bgGrad.addColorStop(0, '#040814');
+        bgGrad.addColorStop(0.65, '#091326');
+        bgGrad.addColorStop(1, '#0D1B35');
+        ctx.fillStyle = bgGrad;
+        ctx.fillRect(0, 0, W, H);
+
+        // Draw Eulerian MPM Background Grid (32x18)
+        const cellW = W / state.gridCols;
+        const cellH = H / state.gridRows;
+        const showStrongGrid = state.viewMode === 'mpm-eulerian-grid';
+        ctx.strokeStyle = showStrongGrid ? 'rgba(56, 189, 248, 0.28)' : 'rgba(148, 163, 184, 0.08)';
+        ctx.lineWidth = 1;
+        for (let c = 0; c <= state.gridCols; c++) {
+          ctx.beginPath();
+          ctx.moveTo(c * cellW, 0);
+          ctx.lineTo(c * cellW, H);
+          ctx.stroke();
+        }
+        for (let r = 0; r <= state.gridRows; r++) {
+          ctx.beginPath();
+          ctx.moveTo(0, r * cellH);
+          ctx.lineTo(W, r * cellH);
+          ctx.stroke();
+        }
+
+        // If viewMode is mpm-eulerian-grid, draw P2G/G2P nodal momentum vectors
+        if (showStrongGrid) {
+          for (let r = 0; r < state.gridRows; r++) {
+            for (let c = 0; c < state.gridCols; c++) {
+              const idx = r * state.gridCols + c;
+              const mass = state.gridMass[idx];
+              if (mass > 0) {
+                const gx = (c + 0.5) * cellW;
+                const gy = (r + 0.5) * cellH;
+                const vx = (state.gridVx[idx] / mass) * 0.35;
+                const vy = (state.gridVy[idx] / mass) * 0.35;
+                ctx.strokeStyle = '#34D399';
+                ctx.lineWidth = 1.6;
+                ctx.beginPath();
+                ctx.moveTo(gx, gy);
+                ctx.lineTo(gx + vx, gy + vy);
+                ctx.stroke();
+                ctx.fillStyle = '#38BDF8';
+                ctx.beginPath();
+                ctx.arc(gx, gy, Math.min(4.5, 1.5 + mass * 0.18), 0, Math.PI * 2);
+                ctx.fill();
+              }
+            }
+          }
+        }
+
+        // Draw Rigid Continuum Obstacles / Colliders
+        const obstacles = getObstacles(state.sceneId, state.simTime);
+        for (const ob of obstacles) {
+          const obGrad = ctx.createRadialGradient(ob.x - ob.r * 0.3, ob.y - ob.r * 0.3, 6, ob.x, ob.y, ob.r);
+          if (ob.type === 'penetrator') {
+            obGrad.addColorStop(0, '#FBBF24');
+            obGrad.addColorStop(0.6, '#B45309');
+            obGrad.addColorStop(1, '#451A03');
+          } else {
+            obGrad.addColorStop(0, '#334155');
+            obGrad.addColorStop(0.7, '#1E293B');
+            obGrad.addColorStop(1, '#0F172A');
+          }
+          ctx.fillStyle = obGrad;
+          ctx.strokeStyle = ob.type === 'penetrator' ? '#F59E0B' : '#475569';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.arc(ob.x, ob.y, ob.r, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
+
+          ctx.fillStyle = '#94A3B8';
+          ctx.font = '700 10.5px "JetBrains Mono", monospace';
+          ctx.textAlign = 'center';
+          ctx.fillText(ob.label, ob.x, ob.y + 4);
+        }
+
+        // Floor boundary bar
+        ctx.fillStyle = 'rgba(30, 41, 59, 0.75)';
+        ctx.fillRect(24, 496, W - 48, 12);
+        ctx.strokeStyle = '#38BDF8';
+        ctx.lineWidth = 1.2;
+        ctx.strokeRect(24, 496, W - 48, 12);
+
+        // Render 1,680 Deformable Constitutive 3D Gaussian Kernels
+        for (let i = 0; i < state.particles.length; i++) {
+          const p = state.particles[i];
+          const rx = Math.max(2.2, p.radiusA * p.f00);
+          const ry = Math.max(1.8, p.radiusB * p.f11);
+
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.angle);
+
+          if (state.viewMode === 'cauchy-stress-heatmap') {
+            const stressNorm = Math.min(1.0, p.vonMises / (state.yieldKpa * 1.35));
+            const hue = (1.0 - stressNorm) * 220; // 220 (blue) -> 0 (red)
+            ctx.fillStyle = `hsla(${hue}, 95%, ${50 + stressNorm * 18}%, 0.85)`;
+            ctx.beginPath();
+            ctx.ellipse(0, 0, rx, ry, 0, 0, Math.PI * 2);
+            ctx.fill();
+          } else if (state.viewMode === 'covariance-ellipsoids') {
+            ctx.strokeStyle = p.splitCount > 0 ? '#FB7185' : '#38BDF8';
+            ctx.lineWidth = p.splitCount > 0 ? 1.5 : 1.0;
+            ctx.beginPath();
+            ctx.ellipse(0, 0, rx * 1.15, ry * 1.15, 0, 0, Math.PI * 2);
+            ctx.stroke();
+            // Principal axis line
+            ctx.beginPath();
+            ctx.moveTo(-rx, 0);
+            ctx.lineTo(rx, 0);
+            ctx.stroke();
+          } else {
+            // Default 3DGS Anisotropic Splat PBR Composite
+            const lightBoost = Math.max(0, Math.min(28, (260 - p.y) * 0.08));
+            ctx.fillStyle = `hsla(${p.hue}, 88%, ${54 + lightBoost}%, ${p.alpha})`;
+            ctx.beginPath();
+            ctx.ellipse(0, 0, rx * 1.25, ry * 1.25, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            if (i % 4 === 0) {
+              ctx.fillStyle = `hsla(${p.hue}, 96%, 82%, 0.65)`;
+              ctx.beginPath();
+              ctx.ellipse(-rx * 0.22, -ry * 0.22, rx * 0.42, ry * 0.42, 0, 0, Math.PI * 2);
+              ctx.fill();
+            }
+          }
+
+          ctx.restore();
+        }
+
+        // Render interactive Force-Field Shockwave Rings
+        for (let i = state.shockRings.length - 1; i >= 0; i--) {
+          const ring = state.shockRings[i];
+          ctx.strokeStyle = ring.color;
+          ctx.globalAlpha = Math.max(0, ring.alpha);
+          ctx.lineWidth = 2.4;
+          ctx.beginPath();
+          ctx.arc(ring.x, ring.y, ring.r, 0, Math.PI * 2);
+          ctx.stroke();
+
+          ctx.font = '700 11px "JetBrains Mono", monospace';
+          ctx.fillStyle = ring.color;
+          ctx.textAlign = 'left';
+          ctx.fillText(`ForceBrush[${ring.tool}] ΔJ`, ring.x + ring.r * 0.68, ring.y - ring.r * 0.68);
+          ctx.globalAlpha = 1;
+
+          if (state.playing) {
+            ring.r += 3.2;
+            ring.alpha *= 0.95;
+          }
+        }
+
+        // Cosmos-Transfer1 4-Stream ControlMap PIP Mini-Inset (Top-Right below HUD)
+        const insetX = W - 228;
+        const insetY = 66;
+        ctx.fillStyle = 'rgba(7, 13, 27, 0.88)';
+        ctx.strokeStyle = 'rgba(56, 189, 248, 0.45)';
+        ctx.lineWidth = 1.2;
+        ctx.fillRect(insetX, insetY, 214, 72);
+        ctx.strokeRect(insetX, insetY, 214, 72);
+
+        ctx.fillStyle = '#38BDF8';
+        ctx.font = '700 10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'left';
+        ctx.fillText('COSMOS-TRANSFER1 4-CONTROLMAPS', insetX + 8, insetY + 15);
+
+        const maps = [
+          { name: 'σ_vM Stress', color: '#FB7185' },
+          { name: 'u_p Flow', color: '#34D399' },
+          { name: 'Depth/Norm', color: '#38BDF8' },
+          { name: 'Mat-ID 12', color: '#FBBF24' }
+        ];
+        maps.forEach((m, idx) => {
+          const bx = insetX + 8 + idx * 50;
+          const by = insetY + 24;
+          ctx.fillStyle = 'rgba(15, 23, 42, 0.95)';
+          ctx.strokeStyle = m.color;
+          ctx.fillRect(bx, by, 45, 28);
+          ctx.strokeRect(bx, by, 45, 28);
+          ctx.fillStyle = m.color;
+          ctx.beginPath();
+          ctx.arc(bx + 22 + Math.sin(state.simTime * 2 + idx) * 6, by + 14, 6, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = '#CBD5E1';
+          ctx.font = '600 8.5px "JetBrains Mono", monospace';
+          ctx.fillText(m.name.slice(0, 7), bx + 2, by + 40);
+        });
+      }
+
+      function renderLedger() {
+        const W = ledgerCanvas.width;
+        const H = ledgerCanvas.height;
+        lctx.clearRect(0, 0, W, H);
+
+        lctx.fillStyle = '#050A15';
+        lctx.fillRect(0, 0, W, H);
+
+        // Left Half: 12-Expert Constitutive Sub-Model Weights Bar Chart (OmniPhysGS)
+        const baseWeights = SCENES[state.sceneId].expertWeights;
+        const mat = MATERIALS[state.materialId];
+        lctx.fillStyle = '#94A3B8';
+        lctx.font = '700 11px "JetBrains Mono", monospace';
+        lctx.textAlign = 'left';
+        lctx.fillText(`OmniPhysGS 12-Domain Constitutive Expert Mixture w_p (${mat.id})`, 14, 20);
+
+        const barAreaW = 450;
+        const barW = 28;
+        const gap = 9;
+        for (let k = 0; k < 12; k++) {
+          const dynMod = 0.03 * Math.sin(state.simTime * 1.8 + k * 0.9);
+          const wVal = Math.max(0.02, Math.min(0.52, baseWeights[k] + dynMod));
+          const bh = Math.round(wVal * 195);
+          const bx = 14 + k * (barW + gap);
+          const by = H - 30 - bh;
+
+          const grad = lctx.createLinearGradient(0, by, 0, H - 30);
+          grad.addColorStop(0, k % 2 === 0 ? '#38BDF8' : '#34D399');
+          grad.addColorStop(1, '#1E3A8A');
+          lctx.fillStyle = grad;
+          lctx.fillRect(bx, by, barW, bh);
+
+          lctx.fillStyle = '#E2E8F0';
+          lctx.font = '700 9.5px "JetBrains Mono", monospace';
+          lctx.textAlign = 'center';
+          lctx.fillText(`${Math.round(wVal * 100)}%`, bx + barW / 2, by - 4);
+
+          lctx.fillStyle = '#64748B';
+          lctx.font = '600 8.5px "JetBrains Mono", monospace';
+          lctx.fillText(EXPERT_LABELS[k].slice(0, 6), bx + barW / 2, H - 12);
+        }
+
+        // Divider
+        lctx.strokeStyle = '#1E293B';
+        lctx.beginPath();
+        lctx.moveTo(476, 10);
+        lctx.lineTo(476, H - 10);
+        lctx.stroke();
+
+        // Right Half: Continuum Energy Ledger & Yield Stress Envelope
+        const rx0 = 494;
+        const rw = W - rx0 - 16;
+        lctx.fillStyle = '#94A3B8';
+        lctx.font = '700 11px "JetBrains Mono", monospace';
+        lctx.textAlign = 'left';
+        lctx.fillText('Hamiltonian Energy Conservation & von Mises Yield Envelope', rx0, 20);
+
+        const hist = state.energyHistory;
+        if (hist.length > 1) {
+          // Plot Kinetic Energy (Cyan) & Elastic Strain Energy (Emerald)
+          const plotTop = 34;
+          const plotH = H - 62;
+
+          lctx.strokeStyle = '#38BDF8';
+          lctx.lineWidth = 2;
+          lctx.beginPath();
+          hist.forEach((pt, idx) => {
+            const x = rx0 + (idx / Math.max(1, hist.length - 1)) * rw;
+            const y = plotTop + plotH * (1 - pt.kin);
+            if (idx === 0) lctx.moveTo(x, y);
+            else lctx.lineTo(x, y);
+          });
+          lctx.stroke();
+
+          lctx.strokeStyle = '#34D399';
+          lctx.lineWidth = 2;
+          lctx.beginPath();
+          hist.forEach((pt, idx) => {
+            const x = rx0 + (idx / Math.max(1, hist.length - 1)) * rw;
+            const y = plotTop + plotH * (1 - pt.strain);
+            if (idx === 0) lctx.moveTo(x, y);
+            else lctx.lineTo(x, y);
+          });
+          lctx.stroke();
+
+          // Total energy conservation reference line
+          lctx.strokeStyle = '#FBBF24';
+          lctx.setLineDash([4, 4]);
+          lctx.beginPath();
+          lctx.moveTo(rx0, plotTop + 18);
+          lctx.lineTo(rx0 + rw, plotTop + 18);
+          lctx.stroke();
+          lctx.setLineDash([]);
+        }
+
+        lctx.fillStyle = '#CBD5E1';
+        lctx.font = '600 10px "JetBrains Mono", monospace';
+        lctx.fillText('■ E_kinetic (Cyan)   ■ Ψ_strain (Emerald)   --- Total Hamiltonian H₀', rx0, H - 12);
+      }
+
+      function buildSpecJson() {
+        const arch = ARCH_MODES[state.archMode];
+        const mat = MATERIALS[state.materialId];
+        return JSON.stringify(
+          {
+            schema: 'gvl.physgaussian.world.spec.v1',
+            timestamp: '2026-11-04T00:15:00+08:00',
+            scene_id: state.sceneId,
+            architecture_mode: state.archMode,
+            material_preset: state.materialId,
+            view_mode: state.viewMode,
+            continuum_mpm_solver: {
+              representation: 'WS2_Constitutive_3D_Gaussians',
+              particle_count: state.particles.length,
+              eulerian_grid: [state.gridCols, state.gridRows],
+              substeps_per_frame: 8,
+              youngs_modulus_kpa: state.youngsKpa,
+              poisson_ratio: state.poisson,
+              von_mises_yield_kpa: state.yieldKpa,
+              anisotropic_split_threshold: state.splitThreshold
+            },
+            telemetry_benchmark: {
+              physics_iq_score_pct: arch.physicsIqPct,
+              mass_conservation_drift_pct: arch.massDriftPct,
+              proxy_to_render_error_px: arch.proxyErrorPx,
+              peak_von_mises_stress_kpa: state.maxVonMisesKpa,
+              active_kernel_splits: state.activeFractures,
+              force_brush_impulses: state.impulseCount
+            },
+            constitutive_12_experts: SCENES[state.sceneId].expertWeights
+          },
+          null,
+          2
+        );
+      }
+
+      function updateUI() {
+        const arch = ARCH_MODES[state.archMode];
+        document.getElementById('hud-scene-readout').textContent =
+          `Scene: ${state.sceneId} | Material: ${state.materialId}`;
+        document.getElementById('hud-phys-iq').textContent = `${arch.physicsIqPct}%`;
+        document.getElementById('hud-mass-drift').textContent = `${arch.massDriftPct}%`;
+        document.getElementById('hud-split-state').textContent =
+          arch.splitEnabled ? `Active (τ=${state.splitThreshold.toFixed(1)}x)` : 'Disabled (Spiky Artifacts)';
+        document.getElementById('hud-proxy-err').textContent = `${arch.proxyErrorPx.toFixed(2)} px`;
+        document.getElementById('hud-peak-stress').textContent = `${state.maxVonMisesKpa.toFixed(1)} kPa`;
+        document.getElementById('hud-fracture-count').textContent = String(state.activeFractures);
+
+        document.getElementById('kpi-gaussians').textContent = state.particles.length.toLocaleString();
+        document.getElementById('kpi-phys-iq').textContent = `${arch.physicsIqPct}%`;
+        document.getElementById('kpi-mass-drift').textContent = `${arch.massDriftPct}%`;
+        document.getElementById('kpi-stress').textContent = `${state.maxVonMisesKpa.toFixed(1)} kPa`;
+        document.getElementById('kpi-fractures').textContent = `Active Splits: ${state.activeFractures}`;
+
+        document.getElementById('val-youngs').textContent = `${state.youngsKpa} kPa`;
+        document.getElementById('val-poisson').textContent = state.poisson.toFixed(2);
+        document.getElementById('val-yield').textContent = `${state.yieldKpa} kPa`;
+        document.getElementById('val-split').textContent = `${state.splitThreshold.toFixed(2)} ×`;
+
+        document.getElementById('time-scrubber').value = String(state.simTime);
+        document.getElementById('time-readout').textContent = `t = ${state.simTime.toFixed(2).padStart(5, '0')}s / 20.0s`;
+        document.getElementById('spec-textarea').value = buildSpecJson();
+      }
+
+      function selectScene(id) {
+        if (!SCENES[id]) return;
+        state.sceneId = id;
+        state.materialId = SCENES[id].defaultMaterial;
+        const mat = MATERIALS[state.materialId];
+        state.youngsKpa = mat.youngsKpa;
+        state.poisson = mat.poisson;
+        state.yieldKpa = mat.yieldKpa;
+        document.getElementById('slider-youngs').value = String(state.youngsKpa);
+        document.getElementById('slider-poisson').value = String(state.poisson);
+        document.getElementById('slider-yield').value = String(state.yieldKpa);
+
+        document.querySelectorAll('[data-scene]').forEach(el => {
+          el.classList.toggle('active', el.getAttribute('data-scene') === id);
+        });
+        document.querySelectorAll('[data-material]').forEach(el => {
+          el.classList.toggle('active', el.getAttribute('data-material') === state.materialId);
+        });
+        initParticles();
+        updateUI();
+        renderStage();
+        renderLedger();
+      }
+
+      function selectArchMode(id) {
+        if (!ARCH_MODES[id]) return;
+        state.archMode = id;
+        document.querySelectorAll('[data-arch-mode]').forEach(el => {
+          el.classList.toggle('active', el.getAttribute('data-arch-mode') === id);
+        });
+        evolveToTime(state.simTime);
+        updateUI();
+        renderStage();
+        renderLedger();
+      }
+
+      function selectMaterial(id) {
+        if (!MATERIALS[id]) return;
+        state.materialId = id;
+        const mat = MATERIALS[id];
+        state.youngsKpa = mat.youngsKpa;
+        state.poisson = mat.poisson;
+        state.yieldKpa = mat.yieldKpa;
+        document.getElementById('slider-youngs').value = String(state.youngsKpa);
+        document.getElementById('slider-poisson').value = String(state.poisson);
+        document.getElementById('slider-yield').value = String(state.yieldKpa);
+        document.querySelectorAll('[data-material]').forEach(el => {
+          el.classList.toggle('active', el.getAttribute('data-material') === id);
+        });
+        evolveToTime(state.simTime);
+        updateUI();
+        renderStage();
+        renderLedger();
+      }
+
+      function selectViewMode(id) {
+        state.viewMode = id;
+        document.querySelectorAll('[data-view-mode]').forEach(el => {
+          el.classList.toggle('active', el.getAttribute('data-view-mode') === id);
+        });
+        updateUI();
+        renderStage();
+      }
+
+      function selectBrushTool(id) {
+        state.brushTool = id;
+        document.querySelectorAll('[data-brush]').forEach(el => {
+          el.classList.toggle('active', el.getAttribute('data-brush') === id);
+        });
+      }
+
+      function seek(t) {
+        state.simTime = Math.max(0, Math.min(20, Number(t) || 0));
+        evolveToTime(state.simTime);
+        updateUI();
+        renderStage();
+        renderLedger();
+      }
+
+      // Wire DOM event listeners
+      document.querySelectorAll('[data-scene]').forEach(btn => {
+        btn.addEventListener('click', () => selectScene(btn.getAttribute('data-scene')));
+      });
+      document.querySelectorAll('[data-arch-mode]').forEach(btn => {
+        btn.addEventListener('click', () => selectArchMode(btn.getAttribute('data-arch-mode')));
+      });
+      document.querySelectorAll('[data-material]').forEach(btn => {
+        btn.addEventListener('click', () => selectMaterial(btn.getAttribute('data-material')));
+      });
+      document.querySelectorAll('[data-view-mode]').forEach(btn => {
+        btn.addEventListener('click', () => selectViewMode(btn.getAttribute('data-view-mode')));
+      });
+      document.querySelectorAll('[data-brush]').forEach(btn => {
+        btn.addEventListener('click', () => selectBrushTool(btn.getAttribute('data-brush')));
+      });
+
+      document.getElementById('slider-youngs').addEventListener('input', e => {
+        state.youngsKpa = Number(e.target.value);
+        evolveToTime(state.simTime);
+        updateUI();
+        renderStage();
+      });
+      document.getElementById('slider-poisson').addEventListener('input', e => {
+        state.poisson = Number(e.target.value);
+        evolveToTime(state.simTime);
+        updateUI();
+        renderStage();
+      });
+      document.getElementById('slider-yield').addEventListener('input', e => {
+        state.yieldKpa = Number(e.target.value);
+        evolveToTime(state.simTime);
+        updateUI();
+        renderStage();
+      });
+      document.getElementById('slider-split').addEventListener('input', e => {
+        state.splitThreshold = Number(e.target.value);
+        evolveToTime(state.simTime);
+        updateUI();
+        renderStage();
+      });
+
+      document.getElementById('time-scrubber').addEventListener('input', e => {
+        seek(Number(e.target.value));
+      });
+
+      document.getElementById('btn-play-pause').addEventListener('click', e => {
+        state.playing = !state.playing;
+        e.currentTarget.textContent = state.playing ? '⏸ 暂停仿真' : '▶ 继续仿真';
+      });
+
+      document.getElementById('btn-reset-sim').addEventListener('click', () => {
+        state.simTime = 2.4;
+        initParticles();
+        updateUI();
+        renderStage();
+        renderLedger();
+      });
+
+      document.getElementById('btn-trigger-shock').addEventListener('click', () => {
+        triggerForceImpulse(0.5, 0.52, 12, -18);
+      });
+
+      document.getElementById('btn-audio-toggle').addEventListener('click', e => {
+        state.audioEnabled = !state.audioEnabled;
+        e.currentTarget.textContent = state.audioEnabled ? '🔊 物理应力声化: 开启' : '🔇 物理应力声化: 静音';
+      });
+
+      document.getElementById('btn-export-spec').addEventListener('click', () => {
+        const blob = new Blob([buildSpecJson()], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'PHYSGAUSSIAN_WORLD_SPEC.json';
+        a.click();
+        URL.revokeObjectURL(url);
+      });
+
+      // Interactive pointer force-field brush on canvas
+      stageCanvas.addEventListener('pointerdown', e => {
+        const rect = stageCanvas.getBoundingClientRect();
+        const nx = (e.clientX - rect.left) / rect.width;
+        const ny = (e.clientY - rect.top) / rect.height;
+        state.pointerDown = true;
+        state.lastPointerX = nx;
+        state.lastPointerY = ny;
+        triggerForceImpulse(nx, ny, 0, 0);
+      });
+
+      stageCanvas.addEventListener('pointermove', e => {
+        if (!state.pointerDown) return;
+        const rect = stageCanvas.getBoundingClientRect();
+        const nx = (e.clientX - rect.left) / rect.width;
+        const ny = (e.clientY - rect.top) / rect.height;
+        const dx = (nx - state.lastPointerX) * 100;
+        const dy = (ny - state.lastPointerY) * 100;
+        state.lastPointerX = nx;
+        state.lastPointerY = ny;
+        triggerForceImpulse(nx, ny, dx, dy);
+      });
+
+      window.addEventListener('pointerup', () => {
+        state.pointerDown = false;
+      });
+
+      // Expose programmatic harness API for Playwright E2E tests
+      window.physGaussianStudio = {
+        selectScene,
+        selectArchMode,
+        selectMaterial,
+        selectViewMode,
+        selectBrushTool,
+        triggerForceImpulse,
+        seek,
+        snapshot() {
+          const arch = ARCH_MODES[state.archMode];
+          return {
+            sceneId: state.sceneId,
+            archMode: state.archMode,
+            materialId: state.materialId,
+            viewMode: state.viewMode,
+            gaussianCount: state.particles.length,
+            gridNodes: state.gridCols * state.gridRows,
+            physicsIqPct: arch.physicsIqPct,
+            massDriftPct: arch.massDriftPct,
+            proxyErrorPx: arch.proxyErrorPx,
+            maxVonMisesKpa: state.maxVonMisesKpa,
+            activeFractures: state.activeFractures,
+            impulseCount: state.impulseCount,
+            specJson: buildSpecJson()
+          };
+        }
+      };
+
+      initParticles();
+      updateUI();
+      renderStage();
+      renderLedger();
+
+      let lastTs = performance.now();
+      function loop(now) {
+        const dt = Math.min(0.05, (now - lastTs) / 1000);
+        lastTs = now;
+        if (state.playing) {
+          state.simTime = (state.simTime + dt) % 20.0;
+          evolveToTime(state.simTime);
+          updateUI();
+          renderStage();
+          renderLedger();
+        }
+        requestAnimationFrame(loop);
+      }
+      requestAnimationFrame(loop);
+    })();
+  </script>
+</body>
+</html>

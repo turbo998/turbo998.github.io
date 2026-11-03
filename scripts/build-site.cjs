@@ -84,7 +84,13 @@ const audiovisualFoleyPages = ['animation','generative-visual-lab'].flatMap(dir=
   {path:`${dir}/research/audiovisual-foley-framepack-study.html`,role:'article',title:'原生音画联合扩散与 FramePack 恒定上下文长时序物理拟音架构研究',tracks:['animation'],language:{declared:'zh-CN'},supplemental:true},
   {path:`${dir}/research/audiovisual-foley-framepack-study.en.html`,role:'article',title:'Native Audio-Visual Joint Diffusion & FramePack Constant-Context Foley Studio Architecture Study',tracks:['animation'],language:{declared:'en'},supplemental:true}
 ]);
-const archivePages = [...inventory.content, ...translations, ...webiqPages, ...radarPages, ...infraPages, ...dataLabPages, ...phase179Pages, ...commerceTrendsPages, ...camera4dPages, ...audiovisualFoleyPages].map(page => ({...page, tracks:[classifyPage(page), ...(page.tracks || []).filter(track => track !== classifyPage(page) && track !== 'infra')]}));
+const physGaussianPages = ['animation','generative-visual-lab'].flatMap(dir=>[
+  {path:`${dir}/demos/physgaussian-world-studio/index.html`,role:'demo',title:'Constitutive 3D Gaussian MPM & Physics World Model Studio',tracks:['animation'],language:{declared:'zh-CN'},supplemental:true},
+  {path:`${dir}/demos/physgaussian-world-studio/test-report-cards.html`,role:'report',title:'Constitutive 3D Gaussian MPM & Physics World Model · 7-Card Report',tracks:['animation'],language:{declared:'zh-CN'},supplemental:true},
+  {path:`${dir}/research/physgaussian-world-mpm-study.html`,role:'article',title:'本构 3D 高斯物质点法与物理底座世界模型架构研究',tracks:['animation'],language:{declared:'zh-CN'},supplemental:true},
+  {path:`${dir}/research/physgaussian-world-mpm-study.en.html`,role:'article',title:'Constitutive 3D Gaussian MPM & Physics-Grounded World Model Architecture Study',tracks:['animation'],language:{declared:'en'},supplemental:true}
+]);
+const archivePages = [...inventory.content, ...translations, ...webiqPages, ...radarPages, ...infraPages, ...dataLabPages, ...phase179Pages, ...commerceTrendsPages, ...camera4dPages, ...audiovisualFoleyPages, ...physGaussianPages].map(page => ({...page, tracks:[classifyPage(page), ...(page.tracks || []).filter(track => track !== classifyPage(page) && track !== 'infra')]}));
 function archiveNote(page, zh) {
   const t = (en, cn) => zh ? cn : en;
   const record = readingByPath.get(page.path);
