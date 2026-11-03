@@ -7,7 +7,7 @@
 
 ---
 
-## 1. 四大高价值行业场景端到端方案（Industry Reference Solutions）
+## 1. 五大高价值行业场景端到端方案（Industry Reference Solutions）
 
 ### 场景一：智算中心（AIDC）AI 能源编排与削峰填谷闭环
 - **客户痛点**：单园区万卡 GPU 集群功耗剧烈波动，夏季尖峰时段极易突破电网需量合同上限（触发 2 倍罚款）；配电 SCADA、液冷 BMS、储能 BESS 与 K8s/Slurm 算力调度各自孤立，过度依赖退休老师傅经验。
@@ -30,21 +30,33 @@
 
 ---
 
-### 场景三：跨云全渠道零售与出海电商（GCP BigQuery + Snowflake + Fabric 共存）
-- **客户痛点**：海外广告投放数据在 **GCP BigQuery (Google Ads / GA4)**，财务结算在 **Snowflake**，而供应链与全球 2,000 名业务人员日常办公在 **Microsoft 365 / Teams / Power BI**。各部门指标口径打架，跨云 ETL 管道脆弱且昂贵。
-- **推荐架构（共存模式 A + C）**：
-  - 启用 **已正式 GA 的 OneLake BigQuery Mirroring** 与 **OneLake Snowflake Mirroring**，零 ETL 将营销转化与财务结算镜像至 OneLake。
-  - 利用 **Apache Ossie** 开放语义标准对齐 GMV、净毛利与库存周转天数口径。
-  - 业务人员在 **M365 Copilot Chat / Cowork** 中以 **`$0` 额外 Token 成本**直接跨云问数，并利用 **Power BI Agentic App** 构建促销调价回写应用。
-- **量化业务 ROI**：省去 80% 跨云 ETL 维护工作量，500+ 用户月度 TCO 降低 **`47.6%–56.1%`**。
+### 场景三：跨云全渠道零售爆单与 Fabric IQ Planning 事务回写闭环（GCP BigQuery + Snowflake + AWS S3 + Fabric）
+- **客户痛点**：海外黑五闪促广告投放数据在 **GCP BigQuery (Google Ads / GA4)**，采购合同与财务结算在 **Snowflake**，跨境物流轨迹在 **AWS S3 Tables**，而全球 2,000 名业务人员日常办公在 **Microsoft 365 / Teams / Power BI**。大促爆单时库存断货响应滞后，跨云 ETL 管道脆弱且无法从报表直接修改预算。
+- **推荐架构（共存模式 A + C + D，对应仿真 `retail_cross_cloud_planning` / `DL-26`）**：
+  1. **跨云零拷贝感知 (`134 ms`)**：启用 **已正式 GA 的 OneLake BigQuery Mirroring**、**OneLake Snowflake Mirroring** 与 **S3 Shortcuts**，捕获旗舰单品 `SmartWatch-Pro-X` 转化率暴增 **`+240%`**（`12,400 单/小时`），欧洲中心仓可售天数跌至 **`1.8 天`**（`< 3.0 天` 阈值）。
+  2. **跨云本体穿透与 Planning 寻优 (`352 ms`)**：**Fabric IQ Ontology** 穿透 6 跳跨云实体链路，联合 **Fabric IQ Planning (Preview)** 生成方案：从南德缓冲仓调拨 **`4,500 件`** + 触发 Snowflake ERP 合同 `PO88` 紧急加单 **`8,000 件`** + 动态追加 Q4 促销预算 **`+$185,000`**。
+  3. **利润率护栏与 1GB 免费 SQL 回写 (`224 ms`)**：**Foundry IQ** 校验调拨后净毛利率 **`24.6% ≥ 22.0%`** 红线；业务总监在 **Power BI Agentic App** 中一键确认，直接回写至 **1GB 免费 Fabric SQL 数据库** 并通过 DirectLake 秒级刷新全员看板。
+- **量化业务 ROI**：端到端闭环 **`710 ms`**，可售库存恢复至 **`6.4 天`**，单次闪促规避断货损失 **`$312,000`**，500+ 用户月度 TCO 降低 **`47.6%–56.1%`**。
 
 ---
 
-### 场景四：多云金融实时反欺诈与車企遥测湖仓（AWS S3 + Azure Databricks + Fabric）
-- **客户痛点**：数以百 TB 计的历史日志与车联网原始包存放在 **AWS S3**，数据科学团队在 **Azure Databricks** 上训练风控模型，但一线风控运营人员缺乏毫秒级监控台与合规审计闭环。
-- **推荐架构（共存模式 B + D）**：
-  - 通过 **带智能缓存的 OneLake S3 Shortcuts** 挂载 AWS S3 数据，配合 **Unity Catalog 零拷贝 Shortcut** 接入 Databricks 特征表。
-  - 实时交易流接入 **Eventhouse KQL**，由 **Fabric IQ Operations Agent** 结合 **Microsoft Purview 敏感度标签**触发可疑交易拦截工单。
+### 场景四：多云金融实时跨境电汇反欺诈与 Project Osmos 管道自愈闭环（AWS S3 + Azure Databricks + Snowflake + Fabric）
+- **客户痛点**：数以百 TB 计的移动端设备日志存放在 **AWS S3 Tables**，图神经网络（GNN）欺诈特征工程跑在 **Azure Databricks (Unity Catalog)**，核心总账在 **Snowflake**；上游 ISO-20022 报文一旦发生字段升级即导致跨云管道中断，且一线风控团队缺乏亚秒级跨云团伙阻断与可疑活动报告（SAR）双库回写闭环。
+- **推荐架构（共存模式 A + B + D，对应仿真 `financial_multi_cloud_fraud` / `DL-29 & DL-30`）**：
+  1. **实时流感知与 Project Osmos 管道自愈 (`270 ms`)**：**Eventhouse KQL** 配合带出站访问保护的 **OneLake S3 Shortcut** 捕获 90 秒内 **38 个合成身份账户**突发 `$4.85M` 跨境电汇（团伙风险分 `0.97 > 0.85`）；同时 **Fabric Data Engineering Agent (Project Osmos)** 在 `152 ms` 内自动修复上游新增字段 `ultmtDbtrId` 引发的 Schema 漂移。
+  2. **跨四云 6 跳图谱穿透 + DiskANN 向量匹配 (`160 ms`)**：**Fabric IQ Ontology** 结合 **Databricks Agent Bricks Supervisor (OBO 委托认证)** 与 **Snowflake Apache Ossie YAML** 穿透 6 跳团伙链路，并调用 **Azure SQL Hyperscale (192 vCore + 原生 DiskANN 向量索引 GA)** 匹配到 4 起历史洗钱团伙拓扑。
+  3. **Foundry IQ 规程校验与双库回写 (`230 ms`)**：校验《`FIN-AML-SAR-SOP-12`》（误报率 `1.4% ≤ 3.0%` 红线），以 `0.97` 置信度预授权自动冻结 `$4.85M` 电汇，并将 SAR 审计案卷同步回写至 **Azure SQL Hyperscale** 与 **1GB 免费 Fabric SQL**。
+- **量化业务 ROI**：端到端闭环 **`660 ms`**，单次跨境团伙攻击挽回净欺诈损失 **`$4,620,000`**，跨云 Schema 漂移实现**零停机自愈**。
+
+---
+
+### 场景五：跨 18 工作区容量尖峰 RCA 与 Rayfin SDK 全栈智能体应用自愈闭环（FinOps & Enterprise Platform Ops）
+- **客户痛点**：集团级数据平台拥有 18+ 个部门工作区与上千张高管报表，某部门分析师提交的未加索引笛卡尔积慢查询极易瞬间打满 F64 容量池（>110% CU），导致调用外部伙伴本体的核心资金门户限流报错；传统运维排查需跨多个团队耗时 30 分钟以上。
+- **推荐架构（对应仿真 `finops_rayfin_observability` / `DL-33 & DL-34`）**：
+  1. **跨工作区单一 Eventhouse 感知 (`108 ms`)**：通过 **Workspace Monitoring** 将 18 个生产工作区遥测实时汇入**单一 Eventhouse**，**Monitor Hub Capacity Headroom** 秒级告警 F64 利用率飙升至 **`114.8%`** 并定位 `WS-FIN-PROD-07` 的慢查询 `Q-8841`。
+  2. **6 跳图谱穿透与双智能体联合寻优 (`282 ms`)**：**Fabric IQ Ontology** 穿透受影响的 **OneLake IQ Sharing（标普全球 S&P Global RDF 本体）** 与资金门户应用；**Operations Agent** 自动限流慢查询，联合 **Database Agent for SQL** 注入 **DiskANN 向量与复合索引提示**，并按需开启 **On-Demand Billing 突发缓冲（`+16 CU` 25 分钟，花费 `$48.50 ≤ $250` 护栏）**。
+  3. **Rayfin TS 函数执行与 1GB 免费 SQL 审计回写 (`200 ms`)**：校验 **Foundry IQ**《`FINOPS-SURGE-SOP-09`》与 **Private-by-Default / Secret Store** 策略后，调用开源 **Rayfin SDK** 编写的 TypeScript 后端函数 `fn_remediateCapacityAndLogAudit()` 将处置记录回写至 **1GB 免费 Fabric SQL**。
+- **量化业务 ROI**：端到端闭环 **`590 ms`**，F64 容量利用率从 **`114.8%` 压降至 `71.2%`（`-43.6%`）**，单次规避高管看板与资金门户 SLA 违约罚金 **`$28,400`**。
 
 ---
 
