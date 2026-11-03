@@ -207,7 +207,7 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
       <tr><td>Tavily</td><td>$0.008/credit</td><td>not_measured</td></tr>
       <tr><td>Parallel</td><td>fast $1/1k</td><td>not_measured</td></tr>
     </table>
-    <p>Verified 2026-11-01. Parallel's 200 ms–3 s range and Bright Data's "under 1 second" line are vendor statements. This page does not draw latency bars. Parallel <code>mode</code> defaults to <code>advanced</code> ($5/1k), not fast at $1. Unlocker Scale includes 383,000 requests; do not copy SERP's 380,000.</p>
+    <p>Verified 2026-11-03. Parallel's 200 ms–3 s range and Bright Data's "under 1 second" line are vendor statements. This page does not draw latency bars. Parallel <code>mode</code> defaults to <code>advanced</code> ($5/1k), not fast at $1. Unlocker Scale includes 383,000 requests; do not copy SERP's 380,000.</p>
   </section>
   <section class="card" style="margin-top:12px">
     <h2>Scenario routing, not a winner</h2>
@@ -218,23 +218,24 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
       <tr><td>Recall news</td><td>Web IQ /news</td><td>Web has no date filter</td></tr>
       <tr><td>Clicks, login, screenshots</td><td>Bright Data Browser API</td><td>Unlocker is not an interactive browser</td></tr>
     </table>
-    <p>Full parameter comparison: <a href="compare.en.html">English</a> · <a href="compare.en.html">中文</a>.</p>
+    <p>Full parameter comparison: <a href="compare.en.html">English</a> · <a href="compare.html">中文</a>.</p>
   </section>
   <section class="card" style="margin-top:12px">
     <h2>Sealed labels, not a new run</h2>
     <p>2026-10-26 <code>sealed_demo</code>: catalog grounding P95 240ms, normal checkout 18/18, hidden-injection block 12/12, parallel grounding 1.52s versus sequential 4.18s. Those figures keep their original label. They were not rerun for this Azure inventory.</p>
   </section>
   <section class="card" style="margin-top:12px">
-    <h2>Stage 1752 · Architectural boundary: Web IQ caller-visible passages vs Foundry Grounding with Bing Search</h2>
+    <h2>Stage 1752–1754 · Architectural boundary: Web IQ caller-visible passages + APPID routing vs Foundry Grounding</h2>
     <table>
       <tr><th>Dimension</th><th>Microsoft Web IQ</th><th>Foundry Grounding with Bing Search</th></tr>
       <tr><td>Caller visibility of raw retrieved passages</td><td>Returned directly to caller code (<code>results[].content</code> / <code>passage</code> ≤3000 chars) for pre-LLM injection scrubbing &amp; SHA-256 price digest checks</td><td>Hidden inside the managed service; caller only receives model synthesis + citation URLs</td></tr>
       <tr><td>Dual-format <code>retryAfter</code> contract</td><td><code>AuthUserThrottled</code> (429) &amp; <code>500</code> emit duration strings (<code>"60s"</code>); <code>Browse 202</code> &amp; <code>TooManyOnDemandCrawls</code> (also 429!) / <code>520</code> / <code>523</code> / <code>524</code> emit ISO-8601 UTC timestamps</td><td>Abstracted inside the managed Foundry tool</td></tr>
+      <tr><td>Stage 1754 · <code>x-apikey</code> vs Entra ID <code>APPID</code> routing &amp; Official SDKs</td><td>Supports <code>x-apikey</code> or Entra ID <code>Bearer</code> (scope <code>https://api.microsoft.ai/.default</code>); missing both returns <code>401 AuthKeyMissing</code>, Entra token without <code>appid</code> returns <code>400 InvalidRequest</code>, unregistered AppID returns <code>403 AuthUnauthorized</code>; official SDKs <code>pip install webiq</code> &amp; <code>npm install @microsoft/webiq</code> are live</td><td>Uses managed Foundry project RBAC authentication</td></tr>
     </table>
   </section>
   <div class="actions">
     <a href="live-demo.en.html">Open the offline workbench</a>
-    <a class="alt" href="https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/research/2026-11-01-webiq-azure-browse-passage.en.md">Repo note</a>
+    <a class="alt" href="https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/research/2026-11-03-webiq-search-competitive.en.md">2026-11-03 Competitive Note</a>
     <a class="alt" href="../agentic-commerce/live-demo.en.html">Original commerce demo</a>
   </div>
 </main>
