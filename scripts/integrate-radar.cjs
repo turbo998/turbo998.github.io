@@ -11,9 +11,11 @@ const baseline = 'd776911';
 const files = ['github-radar.html', 'zh-github-radar.html', 'workshops/github-trending-radar/cards.en.html', 'workshops/github-trending-radar/cards.html'];
 const hash = text => crypto.createHash('sha256').update(text).digest('hex');
 const block = (name, text) => `<!-- radar-${name}:start -->${text}<!-- radar-${name}:end -->`;
-const strip = html => html.replace(/<!-- radar-([\w-]+):start -->[\s\S]*?<!-- radar-\1:end -->/g, '');
+const strip = html => html.replace(/<!-- radar-([\w-]+):start -->[\s\S]*?<!-- radar-\1:end -->/g, '')
+  .replace(/<!-- kee-(?:dedicated|professional|report-localization)-navigation:start -->[\s\S]*?<!-- kee-(?:dedicated|professional|report-localization)-navigation:end -->/g, '')
+  .replace(/<!-- kee-report-localization:metadata:start -->[\s\S]*?<!-- kee-report-localization:metadata:end -->/g, '');
 const sourceFor = file => {
-  const disk = execFileSync('git', ['show', `${baseline}:${file}`], {cwd: root, encoding: 'utf8'});
+  const disk = fs.readFileSync(path.join(root, file), 'utf8').replace(/\r\n/g, '\n');
   return files.includes(file) ? strip(disk) : disk;
 };
 const runtime = html => [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].at(-1)[1];
@@ -46,7 +48,7 @@ function generate(file, source = sourceFor(file)) {
     vm.runInNewContext(runtime(source), {document}, {timeout:1000});
     if (source.includes('data-reading-shell="document"')) {
       html = strip(source)
-        .replace('<link rel="stylesheet" href="assets/reading-shell.css?v=aurora-radar-v1" /></head>', '<link rel="stylesheet" href="assets/reading-shell.css?v=aurora-radar-v1" />'+block('reading-style','<style>'+readingCSS+'</style>')+'</head>')
+        .replace('<link rel="stylesheet" href="assets/reading-shell.css?v=aurora-radar-v1" />', '<link rel="stylesheet" href="assets/reading-shell.css?v=aurora-radar-v1" />'+block('reading-style','<style>'+readingCSS+'</style>'))
         .replace(/<a class="reading-skip"[\s\S]*?<main class="reading-document" id="reading-main">/, header(en,file)+`<main class="reading-document" id="reading-main">`+block('reading-context',`<a class="reading-context" href="studio/${en?'':'zh-'}index.html">← Studio</a><a class="reading-context" href="studio/${en?'':'zh-'}benchmarks.html">${en?'Benchmarks':'基准评测'}</a><noscript><p>${en?'Canonical research is shown below. Enable JavaScript to adjust filters and weights; language and report links work without it.':'以下展示原始研究内容。启用 JavaScript 可调整筛选与权重；语言切换与报告链接无需脚本。'}</p></noscript>`));
     } else {
       html = source.replace('data-builder-style="precision"','data-reading-shell="document" data-theme="dark"')

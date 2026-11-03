@@ -321,11 +321,11 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
 
     <div class="telemetry-strip">
       <div class="tm-item">
-        <span class="tm-val">2026-11-02 23:00</span>
+        <span class="tm-val">2026-11-03 23:00</span>
         <span class="tm-lbl">Cron Tick 批次 · SQLite 持久化检查点已封存</span>
       </div>
       <div class="tm-item">
-        <span class="tm-val">21 → 15 Repos</span>
+        <span class="tm-val">22 → 15 Repos</span>
         <span class="tm-lbl">原始热榜 21 项 · Jev 双门禁拦截 6 项非 AI 噪音</span>
       </div>
       <div class="tm-item">
@@ -353,65 +353,53 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
 
     <div class="pipeline-rail" id="pipeline-rail"><!-- radar-prerender-pipeline-rail:start -->
       <button type="button" class="pipe-step " data-idx="0">
-        <div class="pipe-num"><span>GATE 01</span><span>✓</span></div>
-        <div class="pipe-title">Cron Tick & Durable Init</div>
-        <div class="pipe-meta">23:00 CST · SQLite WAL</div>
+        <div class="pipe-num"><span>01. GATHER</span><span>✓</span></div>
+        <div class="pipe-title">全量抓取与入库 (Trending + gh API)</div>
+        <div class="pipe-meta">22 候选仓 → SQLite WAL</div>
       </button>
 
       <button type="button" class="pipe-step " data-idx="1">
-        <div class="pipe-num"><span>GATE 02</span><span>✓</span></div>
-        <div class="pipe-title">Multi-Source Gather</div>
-        <div class="pipe-meta">21 Raw Repos Swept</div>
+        <div class="pipe-num"><span>02. RELEVANCE GATE</span><span>✓</span></div>
+        <div class="pipe-title">Jev 相关性门控 (>= 0.45)</div>
+        <div class="pipe-meta">22 → 16 仓 (拦截 6 个非 AI 仓)</div>
       </button>
 
       <button type="button" class="pipe-step active" data-idx="2">
-        <div class="pipe-num"><span>GATE 03</span><span>✓</span></div>
-        <div class="pipe-title">Jev Relevance & Worth Gate</div>
-        <div class="pipe-meta">rel ≥ 0.45 · worth ≥ 0.35</div>
+        <div class="pipe-num"><span>03. WORTH & DEDUPE</span><span>✓</span></div>
+        <div class="pipe-title">价值门控 (>= 0.35) 与同源归并</div>
+        <div class="pipe-meta">16 → 15 仓 (拦截 1 个引流套壳仓)</div>
       </button>
 
       <button type="button" class="pipe-step " data-idx="3">
-        <div class="pipe-num"><span>GATE 04</span><span>✓</span></div>
-        <div class="pipe-title">Same-Story Dedupe</div>
-        <div class="pipe-meta">Cluster & Evidence Merge</div>
+        <div class="pipe-num"><span>04. SUBAGENT VERIFY</span><span>✓</span></div>
+        <div class="pipe-title">news-researcher 一手声明核验</div>
+        <div class="pipe-meta">15 × 4 = 60 条源码/版本核验</div>
       </button>
 
       <button type="button" class="pipe-step " data-idx="4">
-        <div class="pipe-num"><span>GATE 05</span><span>✓</span></div>
-        <div class="pipe-title">Importance × Taste Rank</div>
-        <div class="pipe-meta">Weight × Freshness (1.0)</div>
+        <div class="pipe-num"><span>05. HFS SCORING</span><span>✓</span></div>
+        <div class="pipe-title">Hype / Facts / Signal 三维打分</div>
+        <div class="pipe-meta">Attention (0–100) + P0–P3 评级</div>
       </button>
 
       <button type="button" class="pipe-step " data-idx="5">
-        <div class="pipe-num"><span>GATE 06</span><span>✓</span></div>
-        <div class="pipe-title">Claim-Support Subagents</div>
-        <div class="pipe-meta">60 Claims Audited</div>
-      </button>
-
-      <button type="button" class="pipe-step " data-idx="6">
-        <div class="pipe-num"><span>GATE 07</span><span>✓</span></div>
-        <div class="pipe-title">HFS Tri-Axial Scoring</div>
-        <div class="pipe-meta">Signal · Facts · Hype</div>
-      </button>
-
-      <button type="button" class="pipe-step " data-idx="7">
-        <div class="pipe-num"><span>GATE 08</span><span>✓</span></div>
-        <div class="pipe-title">Generative Card Render</div>
-        <div class="pipe-meta">8 UI Card Templates</div>
+        <div class="pipe-num"><span>06. GENERATIVE UI</span><span>✓</span></div>
+        <div class="pipe-title">8 种生成式卡片与 SA 四维手册</div>
+        <div class="pipe-meta">8 类卡片 + 7-Card 报告 + SVG</div>
       </button>
 <!-- radar-prerender-pipeline-rail:end --></div>
     <div class="pipe-inspector" id="pipe-inspector"><!-- radar-prerender-pipe-inspector:start -->
       <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;">
         <div style="font-size:15px;font-weight:800;color:var(--text);">
-          <span style="font-family:var(--mono);color:var(--accent);margin-right:8px;">[GATE 03]</span>Jev Relevance & Worth Gate
+          <span style="font-family:var(--mono);color:var(--accent);margin-right:8px;">[03. WORTH & DEDUPE]</span>价值门控 (>= 0.35) 与同源归并
         </div>
         <span style="font-family:var(--mono);font-size:11.5px;background:var(--surface-2);padding:4px 10px;border-radius:6px;border:1px solid var(--border);">
-          Passed: 15 AI/Agent Repos (71.4%) | Rejected: 6 Repos (Keychron, Hyprland, ziwei-doushu, ghidra, public-apis, secret-knowledge)
+          通过: 15/16 仓 | 深度研究前节省 Token 开销: 60.4%
         </span>
       </div>
-      <p style="font-size:13.2px;color:var(--text-2);line-height:1.55;margin:0 0 10px;">执行两道确定性 Jev 门控：① Relevance Gate (<0.45 剔除)：拦截非 AI 仓库 Keychron/Keychron-Keyboards-Hardware-Design（rel=0.05）、hyprwm/Hyprland（rel=0.18）、Renhuai123/ziwei-doushu（rel=0.12）、NationalSecurityAgency/ghidra（rel=0.38）；② Worth-Attention Gate (<0.35 剔除)：拦截静态合集 public-apis/public-apis（novelty=0.22）与 trimstray/the-book-of-secret-knowledge（novelty=0.25）。</p>
+      <p style="font-size:13.2px;color:var(--text-2);line-height:1.55;margin:0 0 10px;">联合评估工程实质度、星叉比（Star/Fork Ratio）与架构新颖度，精准拦截星叉比高达 108.9× 的商业充值引流套壳项目 `AnyModelBot/AnyModelBot`（`worth = 0.22 < 0.35`），保留 15 个高价值 AI 工程项目。</p>
       <div style="font-family:var(--mono);font-size:11.5px;background:#0f172a;color:#38bdf8;padding:9px 12px;border-radius:8px;overflow-x:auto;">
-        DELETE FROM candidates WHERE relevance_score < 0.45 OR worth_attention_score < 0.35; -- Filtered 6 noisy/non-AI repos
+        SELECT * FROM relevant_items WHERE jev_worth >= 0.35 AND duplicate_cluster_lead = 1;
       </div>
 <!-- radar-prerender-pipe-inspector:end --></div>
   </section>
@@ -532,19 +520,19 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
   <section id="radar-feed" style="margin-top:28px;">
     <header class="stage-section-header">
       <span class="stage-number">STAGE 03 · GENERATIVE UI BRIEFING CARDS &amp; SA PLAYBOOK</span>
-      <h2>2026-11-02 GitHub AI 最热榜单深度评测（15 个通过门控仓库）</h2>
+      <h2>2026-11-03 GitHub AI 最热榜单深度评测（15 个通过门控仓库）</h2>
       <p>支持按 8 种生成式卡片组件、P0–P3 学习优先级与关键词实时过滤；每张卡片内嵌 HFS 进度条、子智能体核查账本及 AI Solution Architect 四维日常工作落地指南。</p>
     </header>
 
     <div class="filter-toolbar">
       <div class="filter-row" id="date-archive-filters">
-        <span class="filter-label">📅 日期归档筛选:</span>
-        <button type="button" class="chip-btn active" data-date="2026-11-02">2026-11-02 · 15 个仓库 (最新)</button>
-        <a class="chip-btn" href="https://github.com/turbo998/Kee-Tech-Assets/blob/main/workshops/github-trending-radar/daily/2026-11-02.md" target="_blank" rel="noopener" style="text-decoration:none;">📄 2026-11-02 日报 (中文) ↗</a>
-        <a class="chip-btn" href="https://github.com/turbo998/Kee-Tech-Assets/blob/main/workshops/github-trending-radar/daily/2026-11-02.en.md" target="_blank" rel="noopener" style="text-decoration:none;">📄 2026-11-02 Digest (EN) ↗</a>
-        <a class="chip-btn" href="https://github.com/turbo998/Kee-Tech-Assets/blob/main/workshops/github-trending-radar/daily/2026-11-01.md" target="_blank" rel="noopener" style="text-decoration:none;">🗂️ 2026-11-01 历史归档 ↗</a>
-        <a class="chip-btn" href="workshops/github-trending-radar/report.json" target="_blank" rel="noopener" style="text-decoration:none;">📦 封存数据 JSON ↗</a>
-        <a class="chip-btn" href="assets/github-ai-radar-2026-11-02.svg" target="_blank" rel="noopener" style="text-decoration:none;">🖼️ 可视化总结 SVG ↗</a>
+        <span class="filter-label">📅 每日研究归档:</span>
+        <button type="button" class="chip-btn active">2026-11-03 (最新 · 15 仓)</button>
+        <a class="chip-btn" href="https://github.com/turbo998/Kee-Tech-Assets/blob/main/workshops/github-trending-radar/daily/2026-11-03.md" target="_blank" rel="noopener" style="text-decoration:none;">📄 中文完整 Markdown 报告 ↗</a>
+        <a class="chip-btn" href="https://github.com/turbo998/Kee-Tech-Assets/blob/main/workshops/github-trending-radar/daily/2026-11-03.en.md" target="_blank" rel="noopener" style="text-decoration:none;">📄 English Markdown Report ↗</a>
+        <a class="chip-btn" href="https://github.com/turbo998/Kee-Tech-Assets/blob/main/workshops/github-trending-radar/daily/2026-11-02.md" target="_blank" rel="noopener" style="text-decoration:none;">🗂️ 2026-11-02 历史日报 ↗</a>
+        <a class="chip-btn" href="https://github.com/turbo998/Kee-Tech-Assets/blob/main/workshops/github-trending-radar/daily/2026-11-01.md" target="_blank" rel="noopener" style="text-decoration:none;">🗂️ 2026-11-01 历史日报 ↗</a>
+        <a class="chip-btn" href="workshops/github-trending-radar/report.json" target="_blank" rel="noopener" style="text-decoration:none;">📦 封存评测数据 report.json ↗</a>
       </div>
       <div class="filter-row" id="card-type-filters">
         <span class="filter-label">🃏 8 种生成式卡片:</span>
@@ -572,10 +560,102 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
               <div style="margin-top:4px;display:flex;flex-wrap:wrap;align-items:baseline;gap:12px;">
                 <a class="repo-name-link" href="https://github.com/vercel-labs/agent-desktop" target="_blank" rel="noopener">vercel-labs/agent-desktop ↗</a>
                 <div class="star-metrics">
-                  <span class="star-pill today">🔥 +2,243 stars today</span>
-                  <span class="star-pill">★ 8,488 total</span>
-                  <span class="star-pill">⑂ 593 forks</span>
+                  <span class="star-pill today">🔥 +3,792 stars today</span>
+                  <span class="star-pill">★ 11,879 total</span>
+                  <span class="star-pill">⑂ 811 forks</span>
                   <span class="star-pill">Rust</span>
+                </div>
+              </div>
+            </div>
+            <div class="attention-score-box">
+              <div class="att-num">98</div>
+              <div class="att-lbl">Attention Score</div>
+            </div>
+          </div>
+
+          <p style="font-size:13.8px;color:var(--text-2);line-height:1.55;margin:0 0 10px;">Vercel Labs 开源的跨平台桌面原生 GUI 智能体 CLI 与 C-FFI 库（v1.1.0，Apache-2.0）：基于系统级无障碍树（Accessibility Tree `@e1, @e2` 引用）全面打通 macOS、Windows (`UI Automation`) 与 Linux (`AT-SPI2`)。</p>
+
+          <div class="generative-callout">
+            <strong>[HEADLINE COMPONENT] HEADLINE BREAKTHROUGH · v1.1.0 重磅跨越：全平台三端无障碍树控制 + C 语言 FFI 动态库</strong>
+            <div style="margin-top:4px;color:var(--text);line-height:1.5;">今日单日狂揽 +3,792 Stars 蝉联全网热榜第一（总 Star 达 11,879）：彻底告别昨日仅限 macOS 的局限，补齐 Windows UI Automation、Linux AT-SPI2 与 `libagent_desktop` C FFI 库，将桌面自动化 Token 开销降低 91%。</div>
+          </div>
+
+          <!-- HFS Tri-Axial Bars -->
+          <div class="hfs-bars-grid">
+            <div class="hfs-metric">
+              <div class="hfs-metric-top"><span>Signal (可行动信号)</span><span style="color:#10b981;">88/100</span></div>
+              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-signal" style="width:88%;"></div></div>
+            </div>
+            <div class="hfs-metric">
+              <div class="hfs-metric-top"><span>Facts (一手事实度)</span><span style="color:#3b82f6;">88/100</span></div>
+              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-facts" style="width:88%;"></div></div>
+            </div>
+            <div class="hfs-metric">
+              <div class="hfs-metric-top"><span>Hype (噱头预警度)</span><span style="color:#f59e0b;">18/100</span></div>
+              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-hype" style="width:18%;"></div></div>
+            </div>
+            <div class="hfs-metric">
+              <div class="hfs-metric-top"><span>Relevance (领域相关)</span><span style="color:#8b5cf6;">70/100</span></div>
+              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-relevance" style="width:70%;"></div></div>
+            </div>
+          </div>
+
+          <!-- Worth Learning Verdict Box -->
+          <div style="background:var(--surface-2);border:1px solid var(--border-strong);border-radius:9px;padding:11px 14px;margin-top:10px;font-size:13px;line-height:1.5;">
+            <strong style="color:var(--text);">🧭 ① 是否值得学习（SA Worth-Learning Verdict — 🔥 P0 必学 / 立即动手）：</strong>
+            <span style="color:var(--text-2);">连续两日霸榜第一且单日增速从 +2,243 扩大至 +3,792 Stars！v1.1.0 一次性补齐 Windows/Linux 原生支持与 C FFI 嵌入能力，是企业级 Computer Use 与老旧桌面软件 RPA 智能体的首选底座。</span>
+          </div>
+
+          <!-- 4-Dimension Daily SA Work Application -->
+          <div class="sa-4d-grid">
+            <div class="sa-dim-card">
+              <div class="sa-dim-title">🏗️ 维度 A · 架构设计借鉴 (Architecture Design)</div>
+              <div style="color:var(--text-2);">在 Azure Virtual Desktop (AVD) / Windows 365 云桌面智能体架构中，采用其「无障碍树快照 (`snapshot -i`) → `@e1` 确定性引用操作 → 局部视觉兜底」双通道架构，并通过 `libagent_desktop` C FFI 直接嵌入 C#/.NET 或 Python 宿主。</div>
+            </div>
+            <div class="sa-dim-card">
+              <div class="sa-dim-title">🎮 维度 B · 客户 Demo 与 PoC 开发 (Customer Demo)</div>
+              <div style="color:var(--text-2);">30 分钟打造「Windows 传统 ERP / SAP 客户端零 API 改造受控智能体」高管演示，实时展示 JSON 无障碍树毫秒级驱动本地软件。</div>
+            </div>
+            <div class="sa-dim-card">
+              <div class="sa-dim-title">📊 维度 C · Benchmark 基准测试 (Benchmarking)</div>
+              <div style="color:var(--text-2);">在 `agent-framework-research` 中实测对比纯截图多模态循环 vs `agent-desktop v1.1.0` 的单步延迟（<25ms vs ~2.5s）、Token 消耗（降低 91%）与跨分辨率点击准确率。</div>
+            </div>
+            <div class="sa-dim-card">
+              <div class="sa-dim-title">💼 维度 D · 适用业务场景方案 (Business Playbook)</div>
+              <div style="color:var(--text-2);">✅ 适用：无 API 老旧桌面软件（ERP/财务/工业上位机）自动化、跨平台桌面端 E2E 测试。⛔ 不适用：已具备成熟 REST/GraphQL/MCP 接口的纯后端服务编排。</div>
+            </div>
+          </div>
+
+          <!-- Claim-Support Verification Ledger -->
+          <div class="claims-drawer">
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+              <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
+                🔍 news-researcher 子智能体声明核验账本 (Claim-Support Ledger · 4/4 Audited)
+              </div>
+              <button type="button" class="taste-btn open-drawer-btn" data-repo-id="agent-desktop">🔍 打开架构师详情抽屉 ↗</button>
+            </div>
+            <div class="claims-list">
+              <div class="claim-item">✓ [0.97] 2026-11-02 发布 v1.1.0，从 macOS 扩展至 Windows (`UI Automation`) 与 Linux (`at-spi2` + `libei`/`XTest`)</div><div class="claim-item">✓ [0.95] 新增 `ffi/` C 语言动态/静态库 (`libagent_desktop`) 与 `cbindgen` 自动生成的 `agent_desktop.h`</div><div class="claim-item">✓ [0.94] 将桌面窗口控件压缩为 `@e1, @e2` 交互式无障碍树引用，全命令支持 `--json` 结构化输出</div><div class="claim-item">✓ [0.98] GitHub 总 Star 达 11,879，2026-11-03 单日新增 +3,792 Stars（全网热榜第 1），Apache-2.0 协议</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="repo-card" id="repo-security-audit-skill">
+          <div class="repo-card-top">
+            <div class="repo-title-group">
+              <div class="repo-rank-line">
+                <span class="rank-badge">#2</span>
+                <span class="card-type-badge">🃏 signal_alert</span>
+                <span class="verdict-badge verdict-P0">🔥 P0 必学 / 立即动手</span>
+                <span class="star-pill">AI Security & 自主 SOC (1.00×)</span>
+              </div>
+              <div style="margin-top:4px;display:flex;flex-wrap:wrap;align-items:baseline;gap:12px;">
+                <a class="repo-name-link" href="https://github.com/cloudflare/security-audit-skill" target="_blank" rel="noopener">cloudflare/security-audit-skill ↗</a>
+                <div class="star-metrics">
+                  <span class="star-pill today">🔥 +1,840 stars today</span>
+                  <span class="star-pill">★ 57,925 total</span>
+                  <span class="star-pill">⑂ 3,776 forks</span>
+                  <span class="star-pill">JavaScript</span>
                 </div>
               </div>
             </div>
@@ -585,11 +665,11 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
             </div>
           </div>
 
-          <p style="font-size:13.8px;color:var(--text-2);line-height:1.55;margin:0 0 10px;">Vercel Labs 开源的 Rust 原生桌面自动化 CLI（v1.0.2），通过结构化无障碍树（Accessibility Tree）快照将 macOS / Windows 桌面 GUI 控制转化为确定性 AI Agent 指令。</p>
+          <p style="font-size:13.8px;color:var(--text-2);line-height:1.55;margin:0 0 10px;">Cloudflare 官方开源的跨智能体应用安全代码审计 Skill（MIT，5.79 万 Star）：内置六阶段审计工作流、确定性 `coverage-ledger.mjs` 覆盖率账本与专门负责『证伪排查』的对抗验证子智能体。</p>
 
           <div class="generative-callout">
-            <strong>[HEADLINE COMPONENT] HEADLINE FOCUS · 拒绝截图盲猜：基于无障碍树的确定性桌面 CUA 控制平面</strong>
-            <div style="margin-top:4px;color:var(--text);line-height:1.5;">核心突破：摒弃高延迟、易漂移的全屏像素截图 OCR，直接提取 OS 原生 Accessibility Tree 生成精简语义节点引用与确定性动作命令，单日暴涨 +2,243 Stars。</div>
+            <strong>[SIGNAL_ALERT COMPONENT] SIGNAL ALERT · Cloudflare 官方『对抗式证伪验证子智能体（Disproving Verifier）』消除安全误报</strong>
+            <div style="margin-top:4px;color:var(--text);line-height:1.5;">架构核心洞察：普通 LLM 代码扫描之所以被研发团队嫌弃，是因为误报率高达 60%+。Cloudflare 在 Phase 5 强制为每个疑似漏洞派生独立的只读 Verifier 子智能体，其唯一目标是『尝试推翻并证伪该漏洞』，存活下来的才输出。</div>
           </div>
 
           <!-- HFS Tri-Axial Bars -->
@@ -603,38 +683,38 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
               <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-facts" style="width:86%;"></div></div>
             </div>
             <div class="hfs-metric">
-              <div class="hfs-metric-top"><span>Hype (噱头预警度)</span><span style="color:#f59e0b;">20/100</span></div>
-              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-hype" style="width:20%;"></div></div>
+              <div class="hfs-metric-top"><span>Hype (噱头预警度)</span><span style="color:#f59e0b;">16/100</span></div>
+              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-hype" style="width:16%;"></div></div>
             </div>
             <div class="hfs-metric">
-              <div class="hfs-metric-top"><span>Relevance (领域相关)</span><span style="color:#8b5cf6;">70/100</span></div>
-              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-relevance" style="width:70%;"></div></div>
+              <div class="hfs-metric-top"><span>Relevance (领域相关)</span><span style="color:#8b5cf6;">68/100</span></div>
+              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-relevance" style="width:68%;"></div></div>
             </div>
           </div>
 
           <!-- Worth Learning Verdict Box -->
           <div style="background:var(--surface-2);border:1px solid var(--border-strong);border-radius:9px;padding:11px 14px;margin-top:10px;font-size:13px;line-height:1.5;">
             <strong style="color:var(--text);">🧭 ① 是否值得学习（SA Worth-Learning Verdict — 🔥 P0 必学 / 立即动手）：</strong>
-            <span style="color:var(--text-2);">上线即斩获 8,488 Stars（今日 +2,243），已发布 v1.0.2 稳定版（Apache-2.0）。它将 Web 端 Playwright Aria Snapshot 的成功经验完整复刻到了原生桌面端。</span>
+            <span style="color:var(--text-2);">今日暴涨 +1,840 Stars 至 57,925 总 Star（Cloudflare 官方 MIT 开源，Hype 仅 16）。其「六阶段审计 + `coverage-ledger.mjs` 确定性账本门控 + 对抗式证伪子智能体」是企业级 AI 安全审查的标杆范式。</span>
           </div>
 
           <!-- 4-Dimension Daily SA Work Application -->
           <div class="sa-4d-grid">
             <div class="sa-dim-card">
               <div class="sa-dim-title">🏗️ 维度 A · 架构设计借鉴 (Architecture Design)</div>
-              <div style="color:var(--text-2);">在企业级 Computer-Use Agent (CUA) 架构中，采用「无障碍树语义快照优先（Accessibility-First）+ 视觉模型局部兜底」的混合管线，配合 AG-UI 行动前审批门禁。</div>
+              <div style="color:var(--text-2);">在 GitHub Copilot Code Review 与 Azure DevOps PR 安全门禁中复用其三段式架构：「并行探索 Hunter 子智能体 → `coverage-ledger.mjs` 确定性文件覆盖率门禁 → 独立证伪 Verifier 子智能体（置信度 0-100）」。</div>
             </div>
             <div class="sa-dim-card">
               <div class="sa-dim-title">🎮 维度 B · 客户 Demo 与 PoC 开发 (Customer Demo)</div>
-              <div style="color:var(--text-2);">30 分钟内即可将 `agent-desktop` 封装为本地 MCP 工具，向客户现场演示：Coding Agent 在一个工作流内同时读写终端并自动化操控旧版桌面 ERP/财务客户端。</div>
+              <div style="color:var(--text-2);">40 分钟现场对微服务代码库运行 `/security-audit --focus auth,secrets --verify`，展示 `coverage-ledger.mjs` 如何阻止模型偷懒跳文件，以及证伪子智能体如何过滤幻觉漏洞。</div>
             </div>
             <div class="sa-dim-card">
               <div class="sa-dim-title">📊 维度 C · Benchmark 基准测试 (Benchmarking)</div>
-              <div style="color:var(--text-2);">纳入桌面 CUA 评测轨，对比「无障碍树 CLI vs. 全屏截图视觉 CUA」的单步端到端延迟、Token 消耗（降低 80%+）与跨分辨率点击准确率。</div>
+              <div style="color:var(--text-2);">在 OWASP Benchmark 测试集上对比开启/关闭 Phase 5 对抗式证伪子智能体前后的漏洞检出率（Recall）、误报率（FPR）与 Token 消耗。</div>
             </div>
             <div class="sa-dim-card">
               <div class="sa-dim-title">💼 维度 D · 适用业务场景方案 (Business Playbook)</div>
-              <div style="color:var(--text-2);">✅ 适用：旧版桌面软件自动化、跨应用研发测试工作流、受控企业桌面数字员工。⛔ 不适用：完全由自绘 Canvas/DirectX 渲染且未暴露任何无障碍节点的纯游戏画面。</div>
+              <div style="color:var(--text-2);">✅ 适用：企业 PR 自动安全代码审查、多语言仓库上线前威胁建模与越权/注入专项猎杀。⛔ 不适用：替代运行时 WAF/DDoS 防护或无源码二进制模糊测试（Fuzzing）。</div>
             </div>
           </div>
 
@@ -644,10 +724,10 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
               <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
                 🔍 news-researcher 子智能体声明核验账本 (Claim-Support Ledger · 4/4 Audited)
               </div>
-              <button type="button" class="taste-btn open-drawer-btn" data-repo-id="agent-desktop">🔍 打开架构师详情抽屉 ↗</button>
+              <button type="button" class="taste-btn open-drawer-btn" data-repo-id="security-audit-skill">🔍 打开架构师详情抽屉 ↗</button>
             </div>
             <div class="claims-list">
-              <div class="claim-item">✓ [0.96] Rust 原生构建，Apache-2.0 协议，已发布 v1.0.2 正式版（8,488 Stars，今日 +2,243）</div><div class="claim-item">✓ [0.95] 通过 OS 原生无障碍树（Accessibility Tree）暴露结构化 UI 元素与确定性动作原语</div><div class="claim-item">✓ [0.92] 相比基于全屏截图的视觉 CUA 循环，大幅降低每步 Token 开销与点击坐标漂移</div><div class="claim-item">✓ [0.90] CLI 优先设计，天然适配 Claude Code、Copilot CLI、Codex 等主流智能体宿主</div>
+              <div class="claim-item">✓ [0.96] Cloudflare 官方组织开源（MIT 协议），累计 57,925 Stars（今日 +1,840）与 3,776 Forks</div><div class="claim-item">✓ [0.95] 定义严密的六阶段工作流（侦察 → 威胁建模 → 深度猎杀 → 覆盖率门禁 → 对抗证伪 → 报告）</div><div class="claim-item">✓ [0.94] 内置零依赖 Node.js 脚本 `scripts/coverage-ledger.mjs`，追踪每个高危文件的审计完成态</div><div class="claim-item">✓ [0.93] Phase 5 为每个高危发现派生独立只读子智能体，专门寻找上游中间件防护证据以证伪误报</div>
             </div>
           </div>
         </article>
@@ -656,7 +736,7 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
           <div class="repo-card-top">
             <div class="repo-title-group">
               <div class="repo-rank-line">
-                <span class="rank-badge">#2</span>
+                <span class="rank-badge">#3</span>
                 <span class="card-type-badge">🃏 headline</span>
                 <span class="verdict-badge verdict-P0">🔥 P0 必学 / 立即动手</span>
                 <span class="star-pill">Memory & Context 记忆工程 (1.00×)</span>
@@ -664,9 +744,9 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
               <div style="margin-top:4px;display:flex;flex-wrap:wrap;align-items:baseline;gap:12px;">
                 <a class="repo-name-link" href="https://github.com/thedotmack/claude-mem" target="_blank" rel="noopener">thedotmack/claude-mem ↗</a>
                 <div class="star-metrics">
-                  <span class="star-pill today">🔥 +1,799 stars today</span>
-                  <span class="star-pill">★ 110,380 total</span>
-                  <span class="star-pill">⑂ 9,631 forks</span>
+                  <span class="star-pill today">🔥 +1,138 stars today</span>
+                  <span class="star-pill">★ 111,455 total</span>
+                  <span class="star-pill">⑂ 9,711 forks</span>
                   <span class="star-pill">TypeScript</span>
                 </div>
               </div>
@@ -677,11 +757,11 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
             </div>
           </div>
 
-          <p style="font-size:13.8px;color:var(--text-2);line-height:1.55;margin:0 0 10px;">跨会话持久化记忆与上下文压缩引擎（v15.8.3）：自动捕获编码/通用 Agent 会话全量轨迹，利用 AI 压缩提炼高价值记忆并按渐进式披露注入后续会话。</p>
+          <p style="font-size:13.8px;color:var(--text-2);line-height:1.55;margin:0 0 10px;">破 11.1 万 Star 的跨会话持久化记忆压缩插件（v15.9.0，Apache-2.0）：自动捕获编码智能体生命周期 Hook，经 AI 蒸馏存入 SQLite + Chroma，并提供三层渐进式检索。</p>
 
           <div class="generative-callout">
-            <strong>[HEADLINE COMPONENT] HEADLINE FOCUS · 破 11 万 Star 的跨 Agent 记忆基础设施标杆</strong>
-            <div style="margin-top:4px;color:var(--text);line-height:1.5;">解决了多工具协同开发中最痛的「换个 CLI 或新开 Worktree 就失忆」问题：通过统一的生命周期 Hook + SQLite 索引 + 渐进式披露检索，将跨会话上下文 Token 开销降低 70%+。</div>
+            <strong>[HEADLINE COMPONENT] HEADLINE MILESTONE · 11.1 万 Star 跨会话持久记忆标杆升至 v15.9.0（Apache-2.0 商业友好协议）</strong>
+            <div style="margin-top:4px;color:var(--text);line-height:1.5;">彻底解决 Coding Agent 新开会话即『失忆』的痛点：通过三层渐进式 MCP 检索（`search` 紧凑索引 → `timeline` 上下文时间线 → `get_observations` 完整载荷）大幅节省上下文窗口。</div>
           </div>
 
           <!-- HFS Tri-Axial Bars -->
@@ -695,38 +775,38 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
               <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-facts" style="width:84%;"></div></div>
             </div>
             <div class="hfs-metric">
-              <div class="hfs-metric-top"><span>Hype (噱头预警度)</span><span style="color:#f59e0b;">24/100</span></div>
-              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-hype" style="width:24%;"></div></div>
+              <div class="hfs-metric-top"><span>Hype (噱头预警度)</span><span style="color:#f59e0b;">22/100</span></div>
+              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-hype" style="width:22%;"></div></div>
             </div>
             <div class="hfs-metric">
-              <div class="hfs-metric-top"><span>Relevance (领域相关)</span><span style="color:#8b5cf6;">72/100</span></div>
-              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-relevance" style="width:72%;"></div></div>
+              <div class="hfs-metric-top"><span>Relevance (领域相关)</span><span style="color:#8b5cf6;">70/100</span></div>
+              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-relevance" style="width:70%;"></div></div>
             </div>
           </div>
 
           <!-- Worth Learning Verdict Box -->
           <div style="background:var(--surface-2);border:1px solid var(--border-strong);border-radius:9px;padding:11px 14px;margin-top:10px;font-size:13px;line-height:1.5;">
             <strong style="color:var(--text);">🧭 ① 是否值得学习（SA Worth-Learning Verdict — 🔥 P0 必学 / 立即动手）：</strong>
-            <span style="color:var(--text-2);">总 Star 突破 110,380 且今日继续暴涨 +1,799（最新 v15.8.3）。其「生命周期钩子捕获 → 异步摘要压缩 → 分层索引按需拉取（Progressive Disclosure）」是企业级 Agent Memory 教科书级的开源参考。</span>
+            <span style="color:var(--text-2);">总 Star 突破 111,455（今日 +1,138，Forks 9,711），发布 v15.9.0 且采用宽松的 Apache-2.0 协议，是当前全网最成熟的生产级 Agent Memory 参考实现。</span>
           </div>
 
           <!-- 4-Dimension Daily SA Work Application -->
           <div class="sa-4d-grid">
             <div class="sa-dim-card">
               <div class="sa-dim-title">🏗️ 维度 A · 架构设计借鉴 (Architecture Design)</div>
-              <div style="color:var(--text-2);">借鉴其三层记忆架构（L1 Session 原始事件流 → L2 AI 语义压缩摘要卡片 → L3 SQLite FTS5 + 向量混合检索），可在 Azure Cosmos DB / PostgreSQL pgvector 上复刻企业级跨智能体共享记忆总线。</div>
+              <div style="color:var(--text-2);">在 Azure AI Foundry / Copilot 企业智能体架构中复用其「5 阶段生命周期 Hook 自动旁路采集 + SQLite/向量混合存储 + 3 层渐进式披露 MCP 工具」模式。</div>
             </div>
             <div class="sa-dim-card">
               <div class="sa-dim-title">🎮 维度 B · 客户 Demo 与 PoC 开发 (Customer Demo)</div>
-              <div style="color:var(--text-2);">45 分钟内挂载到本地 GitHub Copilot CLI / Claude Code 环境，向客户现场演示：Session A 排查修复的 Azure 私网 DNS 故障，Session B 新开窗口自动注入精确排障记忆。</div>
+              <div style="color:var(--text-2);">30 分钟现场演示：第一个会话重构接口并自动沉淀架构决策，第二个新会话零提示词自动检索恢复上下文，并通过 `:37777` Web UI 实时可视化记忆流。</div>
             </div>
             <div class="sa-dim-card">
               <div class="sa-dim-title">📊 维度 C · Benchmark 基准测试 (Benchmarking)</div>
-              <div style="color:var(--text-2);">纳入 benchmark-harness-engineering 的长程多会话测试轨，对比 Mem0、Graphiti 与原生全量上下文拼接的准确率与首字延迟。</div>
+              <div style="color:var(--text-2);">对比全量历史对话拼接 vs `claude-mem` 三层渐进式检索在 20 轮跨会话工程任务中的首 Token 延迟（TTFT）、Token 压缩率与决策召回准确率。</div>
             </div>
             <div class="sa-dim-card">
               <div class="sa-dim-title">💼 维度 D · 适用业务场景方案 (Business Playbook)</div>
-              <div style="color:var(--text-2);">✅ 适用：企业研发效能平台、跨渠道客服知识延续、多步运维排障 Agent。⛔ 不适用：严格禁止落盘任何会话轨迹的无状态高密合规飞地（需先接 Microsoft Purview 脱敏中间件）。</div>
+              <div style="color:var(--text-2);">✅ 适用：长周期研发数字员工、企业架构师专属知识副驾、跨天复杂排障。⛔ 不适用：未做租户隔离与 PII 脱敏的多租户共享环境。</div>
             </div>
           </div>
 
@@ -739,48 +819,48 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
               <button type="button" class="taste-btn open-drawer-btn" data-repo-id="claude-mem">🔍 打开架构师详情抽屉 ↗</button>
             </div>
             <div class="claims-list">
-              <div class="claim-item">✓ [0.96] 原生适配 Claude Code、Copilot、Codex、Gemini、Hermes、OpenClaw 等主流智能体宿主</div><div class="claim-item">✓ [0.94] 基于 SQLite + 向量混合存储实现本地零外部云依赖持久化（v15.8.3）</div><div class="claim-item">✓ [0.92] 采用 Progressive Disclosure（先返回轻量索引，按需拉取全文）避免撑爆上下文窗口</div><div class="claim-item">✓ [0.95] GitHub 真实总 Star 达 110,380，2026-11-02 单日新增 +1,799 Stars</div>
+              <div class="claim-item">✓ [0.96] GitHub 累计 111,455 Stars（今日 +1,138）与 9,711 Forks，最新版本 v15.9.0（Apache-2.0 协议）</div><div class="claim-item">✓ [0.94] 完整捕获 `SessionStart`、`UserPromptSubmit`、`PostToolUse`、`Stop`、`Summary`、`SessionEnd` 生命周期</div><div class="claim-item">✓ [0.92] 提供 `search`、`timeline`、`get_observations` 三层渐进式 MCP 检索接口（SQLite + Chroma）</div><div class="claim-item">✓ [0.91] 内置 Bun Worker 后台服务（端口 `:37777`）与实时 Web 记忆查看器</div>
             </div>
           </div>
         </article>
 
-        <article class="repo-card" id="repo-context-mode">
+        <article class="repo-card" id="repo-thinkrail">
           <div class="repo-card-top">
             <div class="repo-title-group">
               <div class="repo-rank-line">
-                <span class="rank-badge">#3</span>
-                <span class="card-type-badge">🃏 signal_alert</span>
+                <span class="rank-badge">#4</span>
+                <span class="card-type-badge">🃏 release</span>
                 <span class="verdict-badge verdict-P0">🔥 P0 必学 / 立即动手</span>
-                <span class="star-pill">Memory & Context 记忆工程 (1.00×)</span>
+                <span class="star-pill">Agent Harness 与多智能体编排 (1.00×)</span>
               </div>
               <div style="margin-top:4px;display:flex;flex-wrap:wrap;align-items:baseline;gap:12px;">
-                <a class="repo-name-link" href="https://github.com/mksglu/context-mode" target="_blank" rel="noopener">mksglu/context-mode ↗</a>
+                <a class="repo-name-link" href="https://github.com/JetBrains/thinkrail" target="_blank" rel="noopener">JetBrains/thinkrail ↗</a>
                 <div class="star-metrics">
-                  <span class="star-pill today">🔥 +1,420 stars today</span>
-                  <span class="star-pill">★ 33,240 total</span>
-                  <span class="star-pill">⑂ 2,293 forks</span>
+                  <span class="star-pill today">🔥 +1,120 stars today</span>
+                  <span class="star-pill">★ 7,350 total</span>
+                  <span class="star-pill">⑂ 438 forks</span>
                   <span class="star-pill">TypeScript</span>
                 </div>
               </div>
             </div>
             <div class="attention-score-box">
-              <div class="att-num">94</div>
+              <div class="att-num">93</div>
               <div class="att-lbl">Attention Score</div>
             </div>
           </div>
 
-          <p style="font-size:13.8px;color:var(--text-2);line-height:1.55;margin:0 0 10px;">上下文窗口虚拟化与沙盒裁剪层（v1.0.169）：在嘈杂的 MCP 工具输出、大型日志与网页抓取进入 LLM 上下文前进行沙盒化拦截、FTS5 索引与按需切片检索。</p>
+          <p style="font-size:13.8px;color:var(--text-2);line-height:1.55;margin:0 0 10px;">JetBrains 官方开源的下一代智能体开发环境（Agentic Development Environment，v0.3.1，Apache-2.0）：底层直接基于 `@mariozechner/pi-coding-agent` (`pi` v0.65.0) 构建，融合并行 Git Worktree、项目休眠架（Project Shelf）与双向同步活体规范（Living Specs）。</p>
 
           <div class="generative-callout">
-            <strong>[SIGNAL_ALERT COMPONENT] SIGNAL ALERT · 立即行动：与 claude-mem 形成『会话外 + 会话内』双层上下文护城河</strong>
-            <div style="margin-top:4px;color:var(--text);line-height:1.5;">核心架构洞察：Agent 上下文崩溃 80% 源于单次 MCP 工具返回数万行 JSON 或日志。context-mode 将工具输出重定向至本地沙盒 SQLite FTS5，仅向模型暴露高信噪比检索接口。</div>
+            <strong>[RELEASE COMPONENT] RELEASE HIGHLIGHT · JetBrains 官方采用 `pi` 生态打造下一代 Agentic IDE (v0.3.1)</strong>
+            <div style="margin-top:4px;color:var(--text);line-height:1.5;">极具风向标意义的工程事件：老牌 IDE 巨头 JetBrains 没有闭门造车，而是直接选用 `@mariozechner/pi-coding-agent`（与我们雷达所基于的 `pi-durable-news-agent` 同属 `pi` 核心生态）打造 ThinkRail，推出与代码双向同步的 Living Specs。</div>
           </div>
 
           <!-- HFS Tri-Axial Bars -->
           <div class="hfs-bars-grid">
             <div class="hfs-metric">
-              <div class="hfs-metric-top"><span>Signal (可行动信号)</span><span style="color:#10b981;">86/100</span></div>
-              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-signal" style="width:86%;"></div></div>
+              <div class="hfs-metric-top"><span>Signal (可行动信号)</span><span style="color:#10b981;">84/100</span></div>
+              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-signal" style="width:84%;"></div></div>
             </div>
             <div class="hfs-metric">
               <div class="hfs-metric-top"><span>Facts (一手事实度)</span><span style="color:#3b82f6;">82/100</span></div>
@@ -799,26 +879,26 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
           <!-- Worth Learning Verdict Box -->
           <div style="background:var(--surface-2);border:1px solid var(--border-strong);border-radius:9px;padding:11px 14px;margin-top:10px;font-size:13px;line-height:1.5;">
             <strong style="color:var(--text);">🧭 ① 是否值得学习（SA Worth-Learning Verdict — 🔥 P0 必学 / 立即动手）：</strong>
-            <span style="color:var(--text-2);">总 Star 达 33,240（今日 +1,420，高频迭代至 v1.0.169）。它与 `claude-mem` 完美互补：后者管「跨会话长期记忆」，前者管「单会话内工具输出防爆仓」。</span>
+            <span style="color:var(--text-2);">今日暴涨 +1,120 Stars 至 7,350 总 Star（JetBrains 官方 Apache-2.0 开源，v0.3.1）。不仅印证了与 `pi-durable-news-agent` 同源的 `pi` 智能体运行时的行业地位，更定义了「活体规范 + 并行 Worktree + 项目休眠恢复」的下一代研发范式。</span>
           </div>
 
           <!-- 4-Dimension Daily SA Work Application -->
           <div class="sa-4d-grid">
             <div class="sa-dim-card">
               <div class="sa-dim-title">🏗️ 维度 A · 架构设计借鉴 (Architecture Design)</div>
-              <div style="color:var(--text-2);">在企业 MCP Gateway 中引入「Tool Output Virtualization（工具输出虚拟化）」中间件：当 Azure Monitor / KQL / GitHub API 返回超过 4KB 载荷时，自动写入临时沙盒表并返回 Schema + FTS 检索句柄。</div>
+              <div style="color:var(--text-2);">在企业研发智能体平台设计中引入 ThinkRail 的三大核心抽象：① 任务级 Git Worktree 沙盒隔离；② Project Shelf 跨任务全状态休眠与秒级恢复；③ `specs/*.md` 与代码实现双向联动的 Living Specs 契约机制。</div>
             </div>
             <div class="sa-dim-card">
               <div class="sa-dim-title">🎮 维度 B · 客户 Demo 与 PoC 开发 (Customer Demo)</div>
-              <div style="color:var(--text-2);">30 分钟对比演示：直接用 MCP 拉取 5MB 生产报错日志导致上下文溢出 vs. 挂载 `context-mode` 后仅消耗 1.2K Tokens 精准定位根因。</div>
+              <div style="color:var(--text-2);">在客户研发效能工作坊中演示：在 ThinkRail 中修改 Living Spec 架构约束，底层的 `pi` 智能体在独立 Worktree 中自动同步代码实现并保持规范不腐化。</div>
             </div>
             <div class="sa-dim-card">
               <div class="sa-dim-title">📊 维度 C · Benchmark 基准测试 (Benchmarking)</div>
-              <div style="color:var(--text-2);">测评长程 SRE 排障任务中的峰值上下文窗口占用（Peak Context Tokens）、工具调用轮次与端到端成本降幅。</div>
+              <div style="color:var(--text-2);">测评多任务并发切换时的上下文恢复耗时，以及引入双向 Living Specs 前后的「设计文档-代码实现漂移率（Spec Drift Rate）」。</div>
             </div>
             <div class="sa-dim-card">
               <div class="sa-dim-title">💼 维度 D · 适用业务场景方案 (Business Playbook)</div>
-              <div style="color:var(--text-2);">✅ 适用：重度依赖 MCP 工具链的 SRE 排障 Agent、代码仓库考古、大规模日志/文档分析。⛔ 不适用：每次工具返回仅有几十字节的简单 CRUD 技能（无需额外沙盒代理层）。</div>
+              <div style="color:var(--text-2);">✅ 适用：规范驱动开发（Spec-Driven Development）、架构师同时监管多个并行特性分支。⛔ 不适用：无需图形界面的纯无头 CI/CD 容器批处理流水线。</div>
             </div>
           </div>
 
@@ -828,29 +908,29 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
               <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
                 🔍 news-researcher 子智能体声明核验账本 (Claim-Support Ledger · 4/4 Audited)
               </div>
-              <button type="button" class="taste-btn open-drawer-btn" data-repo-id="context-mode">🔍 打开架构师详情抽屉 ↗</button>
+              <button type="button" class="taste-btn open-drawer-btn" data-repo-id="thinkrail">🔍 打开架构师详情抽屉 ↗</button>
             </div>
             <div class="claims-list">
-              <div class="claim-item">✓ [0.94] 将大体量工具输出拦截在主上下文窗口之外，通过本地沙盒与检索接口按需读取</div><div class="claim-item">✓ [0.92] 工程迭代极为活跃，已发布至 v1.0.169，累计获得 33,240 Stars（今日 +1,420）</div><div class="claim-item">✓ [0.90] 与主流 Coding Agent 及 MCP 客户端无缝集成，显著延长单次会话有效寿命</div><div class="claim-item">✓ [0.85] 采用自定义源码可用许可证（Custom License），企业商业化内嵌前需法务合规审查</div>
+              <div class="claim-item">✓ [0.96] JetBrains 官方组织开源（Apache-2.0 协议），已发布 v0.3.1，总 Star 达 7,350（今日 +1,120）</div><div class="claim-item">✓ [0.95] `package.json` 直接集成 `@mariozechner/pi-coding-agent`、`pi-ai` 与 `pi-agent-core` (`^0.65.0`)</div><div class="claim-item">✓ [0.92] 原生内置 Git Worktree 并行任务隔离、Project Shelf 状态休眠与双向同步 Living Specs</div><div class="claim-item">✓ [0.90] 支持通过 ACP/MCP 协议统一编排 Claude Code、Codex 与自定义智能体</div>
             </div>
           </div>
         </article>
 
-        <article class="repo-card" id="repo-dsh-superagent-prototype">
+        <article class="repo-card" id="repo-portal-ai-plugins">
           <div class="repo-card-top">
             <div class="repo-title-group">
               <div class="repo-rank-line">
-                <span class="rank-badge">#4</span>
+                <span class="rank-badge">#5</span>
                 <span class="card-type-badge">🃏 signal_alert</span>
                 <span class="verdict-badge verdict-P0">🔥 P0 必学 / 立即动手</span>
                 <span class="star-pill">Agent Harness 与多智能体编排 (1.00×)</span>
               </div>
               <div style="margin-top:4px;display:flex;flex-wrap:wrap;align-items:baseline;gap:12px;">
-                <a class="repo-name-link" href="https://github.com/deepseek-ai/dsh-superagent-prototype" target="_blank" rel="noopener">deepseek-ai/dsh-superagent-prototype ↗</a>
+                <a class="repo-name-link" href="https://github.com/spotify/portal-ai-plugins" target="_blank" rel="noopener">spotify/portal-ai-plugins ↗</a>
                 <div class="star-metrics">
-                  <span class="star-pill today">🔥 +6,059 stars today</span>
-                  <span class="star-pill">★ 12,083 total</span>
-                  <span class="star-pill">⑂ 1,252 forks</span>
+                  <span class="star-pill today">🔥 +94 stars today</span>
+                  <span class="star-pill">★ 2,940 total</span>
+                  <span class="star-pill">⑂ 232 forks</span>
                   <span class="star-pill">TypeScript</span>
                 </div>
               </div>
@@ -861,56 +941,56 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
             </div>
           </div>
 
-          <p style="font-size:13.8px;color:var(--text-2);line-height:1.55;margin:0 0 10px;">DeepSeek 官方开源的《Towards a More Autonomous Agent System》架构原型：今日单日狂揽 +6,059 Stars 登顶全网增速第一，探索面向长周期任务的自主规划、工具失败自愈与分层上下文管理。</p>
+          <p style="font-size:13.8px;color:var(--text-2);line-height:1.55;margin:0 0 10px;">Spotify 官方开源的 Backstage 内部开发者门户（IDP）AI 插件全家桶（Apache-2.0，2,940 Stars）：包含 Agent Forge、MCP Hub、Claui、将繁重操作卸载给廉价模型的 `shunt` 路由器及 `agent-evals`。</p>
 
           <div class="generative-callout">
-            <strong>[SIGNAL_ALERT COMPONENT] SIGNAL ALERT · 全网单日增速第一 (+6,059★)：DeepSeek 官方高自主性 SuperAgent 原型</strong>
-            <div style="margin-top:4px;color:var(--text);line-height:1.5;">核心演进方向：与 pi-durable-news-agent 的持久化编排思想呼应，展示顶尖推理模型团队如何用极简 TypeScript 薄封装 Harness 实现自主子目标拆解、环境反馈闭环验证与错误状态回滚重规划。</div>
+            <strong>[SIGNAL_ALERT COMPONENT] SIGNAL ALERT · 从低 Star 榜尾打捞出的企业级真金：Spotify 官方 Backstage AI 与 `shunt` 降本路由器</strong>
+            <div style="margin-top:4px;color:var(--text);line-height:1.5;">为什么我们需要 HFS 信号门控？该项目今日仅 +94 Stars，按纯 Star 排序会被埋没在第 19 名；但其内置的 `shunt`（前沿模型做大脑规划 + 廉价本地/Flash 模型干体力活）与 Backstage `mcp-hub` 对企业架构师价值极高（Attention 92 · P0）。</div>
           </div>
 
           <!-- HFS Tri-Axial Bars -->
           <div class="hfs-bars-grid">
             <div class="hfs-metric">
-              <div class="hfs-metric-top"><span>Signal (可行动信号)</span><span style="color:#10b981;">84/100</span></div>
-              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-signal" style="width:84%;"></div></div>
+              <div class="hfs-metric-top"><span>Signal (可行动信号)</span><span style="color:#10b981;">82/100</span></div>
+              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-signal" style="width:82%;"></div></div>
             </div>
             <div class="hfs-metric">
               <div class="hfs-metric-top"><span>Facts (一手事实度)</span><span style="color:#3b82f6;">80/100</span></div>
               <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-facts" style="width:80%;"></div></div>
             </div>
             <div class="hfs-metric">
-              <div class="hfs-metric-top"><span>Hype (噱头预警度)</span><span style="color:#f59e0b;">24/100</span></div>
-              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-hype" style="width:24%;"></div></div>
+              <div class="hfs-metric-top"><span>Hype (噱头预警度)</span><span style="color:#f59e0b;">18/100</span></div>
+              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-hype" style="width:18%;"></div></div>
             </div>
             <div class="hfs-metric">
-              <div class="hfs-metric-top"><span>Relevance (领域相关)</span><span style="color:#8b5cf6;">70/100</span></div>
-              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-relevance" style="width:70%;"></div></div>
+              <div class="hfs-metric-top"><span>Relevance (领域相关)</span><span style="color:#8b5cf6;">68/100</span></div>
+              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-relevance" style="width:68%;"></div></div>
             </div>
           </div>
 
           <!-- Worth Learning Verdict Box -->
           <div style="background:var(--surface-2);border:1px solid var(--border-strong);border-radius:9px;padding:11px 14px;margin-top:10px;font-size:13px;line-height:1.5;">
             <strong style="color:var(--text);">🧭 ① 是否值得学习（SA Worth-Learning Verdict — 🔥 P0 必学 / 立即动手）：</strong>
-            <span style="color:var(--text-2);">72 小时内从 5.8K 飙升至 12,083 Stars（今日 +6,059，增速全网第一），故从昨日 P1 正式晋升为 P0！它是理解推理大模型原生 Agent Harness 设计哲学的一手必读源码。</span>
+            <span style="color:var(--text-2);">Spotify 官方 Apache-2.0 开源 Monorepo，一次交付 6 个生产级包（`agent-forge`、`ai-GW`、`mcp-hub`、`claui`、`shunt`、`agent-evals`），是构建企业内部开发者门户（IDP）AI 能力的最佳蓝本。</span>
           </div>
 
           <!-- 4-Dimension Daily SA Work Application -->
           <div class="sa-4d-grid">
             <div class="sa-dim-card">
               <div class="sa-dim-title">🏗️ 维度 A · 架构设计借鉴 (Architecture Design)</div>
-              <div style="color:var(--text-2);">精读其循环控制流（Loop Control）、工具输出截断策略与自我纠错（Self-Correction）状态机，结合 pi-durable 与 Microsoft Agent Framework (MAF) 的持久化 Checkpoint 机制打造高自治企业研究/编码智能体。</div>
+              <div style="color:var(--text-2);">直接借鉴 `packages/shunt` 的「主从异构模型卸载路由」模式（让昂贵的前沿推理模型只负责高层决策，将耗费大量 Token 的文件读写、正则检索与格式化交给廉价小模型或本地 Ollama），并在企业门户中集成 `mcp-hub` 统一纳管内部 MCP 服务。</div>
             </div>
             <div class="sa-dim-card">
               <div class="sa-dim-title">🎮 维度 B · 客户 Demo 与 PoC 开发 (Customer Demo)</div>
-              <div style="color:var(--text-2);">结合 Azure AI Foundry 上的推理模型，45 分钟构建「自主代码库安全审计与架构考古 SuperAgent」客户演示。</div>
+              <div style="color:var(--text-2);">45 分钟构建「企业 Backstage AI 开发者门户 + `shunt` 异构模型省钱路由」演示，直观呈现单次编码任务 Token 账单下降 55%+。</div>
             </div>
             <div class="sa-dim-card">
               <div class="sa-dim-title">📊 维度 C · Benchmark 基准测试 (Benchmarking)</div>
-              <div style="color:var(--text-2);">将其 Plan-Act-Reflect 循环与故障自愈逻辑纳入 `agent-framework-research` 基准套件，测试在 20+ 步复杂工具链注入故障时的自愈收敛率。</div>
+              <div style="color:var(--text-2);">复用其内置的 `packages/agent-evals`，实测开启 `shunt` 卸载至 GPT-4o-mini / DeepSeek-Flash 前后的任务成功率、总耗时与单任务美元成本。</div>
             </div>
             <div class="sa-dim-card">
               <div class="sa-dim-title">💼 维度 D · 适用业务场景方案 (Business Playbook)</div>
-              <div style="color:var(--text-2);">✅ 适用：深度技术研究自动化、复杂代码库跨模块重构、自主数据分析。⛔ 不适用：流程高度固定、严禁模型自由探索的确定性银行核心账务交易。</div>
+              <div style="color:var(--text-2);">✅ 适用：企业平台工程（Platform Engineering / Backstage IDP）、Coding Agent 规模化 FinOps 降本。⛔ 不适用：无内部开发者门户诉求的纯 C 端消费级移动应用。</div>
             </div>
           </div>
 
@@ -920,10 +1000,10 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
               <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
                 🔍 news-researcher 子智能体声明核验账本 (Claim-Support Ledger · 4/4 Audited)
               </div>
-              <button type="button" class="taste-btn open-drawer-btn" data-repo-id="dsh-superagent-prototype">🔍 打开架构师详情抽屉 ↗</button>
+              <button type="button" class="taste-btn open-drawer-btn" data-repo-id="portal-ai-plugins">🔍 打开架构师详情抽屉 ↗</button>
             </div>
             <div class="claims-list">
-              <div class="claim-item">✓ [0.96] 2026-11-02 单日新增 +6,059 Stars 登顶全网增速榜首，总 Star 突破 12,083</div><div class="claim-item">✓ [0.92] DeepSeek 官方开源（MIT 协议）的高自主性智能体系统原型（TypeScript 实现）</div><div class="claim-item">✓ [0.88] 聚焦长程自主任务拆解、工具执行反馈闭环与动态重规划</div><div class="claim-item">✓ [0.80] 定位为架构探索原型（Prototype），生产落地需配合企业级沙盒与权限网关</div>
+              <div class="claim-item">✓ [0.96] Spotify 官方开源（Apache-2.0 协议），累计 2,940 Stars（今日 +94）与 232 Forks</div><div class="claim-item">✓ [0.94] `packages/shunt` 实现前沿规划模型向廉价/本地 Worker 模型（Ollama/OpenAI/Anthropic）卸载繁重文件操作</div><div class="claim-item">✓ [0.93] 包含 Backstage 插件 `agent-forge`（对话界面）、`mcp-hub`（MCP 服务治理）、`ai-GW` 与 `claui`</div><div class="claim-item">✓ [0.91] 内置 `packages/agent-evals` 多模型智能体自动化评测套件</div>
             </div>
           </div>
         </article>
@@ -932,17 +1012,17 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
           <div class="repo-card-top">
             <div class="repo-title-group">
               <div class="repo-rank-line">
-                <span class="rank-badge">#5</span>
+                <span class="rank-badge">#6</span>
                 <span class="card-type-badge">🃏 release</span>
-                <span class="verdict-badge verdict-P0">🔥 P0 必学 / 立即动手</span>
+                <span class="verdict-badge verdict-P1">⚡ P1 推荐精读 / 借鉴模式</span>
                 <span class="star-pill">推理引擎与垂直基座模型 (1.00×)</span>
               </div>
               <div style="margin-top:4px;display:flex;flex-wrap:wrap;align-items:baseline;gap:12px;">
                 <a class="repo-name-link" href="https://github.com/JustVugg/colibri" target="_blank" rel="noopener">JustVugg/colibri ↗</a>
                 <div class="star-metrics">
-                  <span class="star-pill today">🔥 +655 stars today</span>
-                  <span class="star-pill">★ 46,280 total</span>
-                  <span class="star-pill">⑂ 5,347 forks</span>
+                  <span class="star-pill today">🔥 +803 stars today</span>
+                  <span class="star-pill">★ 47,016 total</span>
+                  <span class="star-pill">⑂ 5,431 forks</span>
                   <span class="star-pill">C</span>
                 </div>
               </div>
@@ -953,11 +1033,11 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
             </div>
           </div>
 
-          <p style="font-size:13.8px;color:var(--text-2);line-height:1.55;margin:0 0 10px;">Colibri (v2.1.0)：纯 C 语言从零编写的超轻量本地 LLM 推理服务器，兼容 OpenAI API，支持动态 KV Cache 压缩、投机解码与 GGUF 量化模型。</p>
+          <p style="font-size:13.8px;color:var(--text-2);line-height:1.55;margin:0 0 10px;">Colibri (v2.1.0，Apache-2.0，4.7 万 Star)：纯 C 语言从零编写的超轻量本地 LLM 推理服务器，兼容 OpenAI API，支持动态 KV Cache 压缩、投机解码与 GGUF 量化模型。</p>
 
           <div class="generative-callout">
-            <strong>[RELEASE COMPONENT] RELEASE HIGHLIGHT · 零 Python 依赖的纯 C 原生 OpenAI 兼容推理引擎</strong>
-            <div style="margin-top:4px;color:var(--text);line-height:1.5;">架构亮点：几兆字节级纯 C 二进制即可提供完整 OpenAI `/v1/chat/completions` 接口、动态 KV 缓存压缩与 Speculative Decoding，是边缘设备、桌面 Sidecar 与高密容器的理想底座。</div>
+            <strong>[RELEASE COMPONENT] RELEASE HIGHLIGHT · 突破 4.7 万 Star 的零 Python 依赖纯 C 原生推理引擎 (v2.1.0)</strong>
+            <div style="margin-top:4px;color:var(--text);line-height:1.5;">几兆字节级纯 C 二进制即可提供完整 OpenAI `/v1/chat/completions` 接口、动态 KV 缓存压缩与 Speculative Decoding，是边缘设备、桌面 Sidecar 与高密容器的理想底座。</div>
           </div>
 
           <!-- HFS Tri-Axial Bars -->
@@ -982,15 +1062,15 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
 
           <!-- Worth Learning Verdict Box -->
           <div style="background:var(--surface-2);border:1px solid var(--border-strong);border-radius:9px;padding:11px 14px;margin-top:10px;font-size:13px;line-height:1.5;">
-            <strong style="color:var(--text);">🧭 ① 是否值得学习（SA Worth-Learning Verdict — 🔥 P0 必学 / 立即动手）：</strong>
-            <span style="color:var(--text-2);">累计 46,280 Stars（今日 +655，Apache-2.0，v2.1.0）。对于需要在客户终端、工业网关或轻量容器内嵌入本地小模型（SLM）的架构师，Colibri 提供了比臃肿 Python 推理栈干净得多的 C 原生方案。</span>
+            <strong style="color:var(--text);">🧭 ① 是否值得学习（SA Worth-Learning Verdict — ⚡ P1 推荐精读 / 借鉴模式）：</strong>
+            <span style="color:var(--text-2);">累计突破 47,016 Stars（今日 +803，Apache-2.0，v2.1.0）。对于需要在客户终端、工业网关或轻量容器内嵌入本地小模型（SLM）的架构师，Colibri 提供了比臃肿 Python 推理栈干净得多的 C 原生方案。</span>
           </div>
 
           <!-- 4-Dimension Daily SA Work Application -->
           <div class="sa-4d-grid">
             <div class="sa-dim-card">
               <div class="sa-dim-title">🏗️ 维度 A · 架构设计借鉴 (Architecture Design)</div>
-              <div style="color:var(--text-2);">在「云端大模型（Azure AI Foundry）+ 端侧小模型路由网关」混合架构中，使用 Colibri 作为零依赖本地 Sidecar 运行 Phi-4 / Qwen-3B GGUF 路由与分类模型。</div>
+              <div style="color:var(--text-2);">在「云端大模型（Azure AI Foundry）+ 端侧小模型路由网关」混合架构中，使用 Colibri 作为零依赖本地 Sidecar 运行 Phi-4 / Qwen-3B GGUF 路由与脱敏分类模型。</div>
             </div>
             <div class="sa-dim-card">
               <div class="sa-dim-title">🎮 维度 B · 客户 Demo 与 PoC 开发 (Customer Demo)</div>
@@ -1015,7 +1095,7 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
               <button type="button" class="taste-btn open-drawer-btn" data-repo-id="colibri">🔍 打开架构师详情抽屉 ↗</button>
             </div>
             <div class="claims-list">
-              <div class="claim-item">✓ [0.95] 纯 C 语言实现，零 Python 运行时依赖，Apache-2.0 开源协议（v2.1.0）</div><div class="claim-item">✓ [0.92] 原生内置 OpenAI API 兼容服务端、动态 KV 缓存压缩与投机解码（Speculative Decoding）</div><div class="claim-item">✓ [0.90] 直接支持主流 GGUF 量化模型格式，兼顾极小体积与高吞吐</div><div class="claim-item">✓ [0.91] GitHub 总 Star 达 46,280，2026-11-02 单日新增 +655 Stars</div>
+              <div class="claim-item">✓ [0.95] 纯 C 语言实现，零 Python 运行时依赖，Apache-2.0 开源协议（v2.1.0）</div><div class="claim-item">✓ [0.92] 原生内置 OpenAI API 兼容服务端、动态 KV 缓存压缩与投机解码（Speculative Decoding）</div><div class="claim-item">✓ [0.90] 直接支持主流 GGUF 量化模型格式，兼顾极小体积与高吞吐</div><div class="claim-item">✓ [0.95] GitHub 总 Star 达 47,016，2026-11-03 单日新增 +803 Stars（Forks 5,431）</div>
             </div>
           </div>
         </article>
@@ -1024,7 +1104,7 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
           <div class="repo-card-top">
             <div class="repo-title-group">
               <div class="repo-rank-line">
-                <span class="rank-badge">#6</span>
+                <span class="rank-badge">#7</span>
                 <span class="card-type-badge">🃏 fact_check</span>
                 <span class="verdict-badge verdict-P1">⚡ P1 推荐精读 / 借鉴模式</span>
                 <span class="star-pill">Browser & CUA 虚拟沙盒 (1.00×)</span>
@@ -1032,23 +1112,23 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
               <div style="margin-top:4px;display:flex;flex-wrap:wrap;align-items:baseline;gap:12px;">
                 <a class="repo-name-link" href="https://github.com/D4Vinci/Scrapling" target="_blank" rel="noopener">D4Vinci/Scrapling ↗</a>
                 <div class="star-metrics">
-                  <span class="star-pill today">🔥 +892 stars today</span>
-                  <span class="star-pill">★ 92,401 total</span>
-                  <span class="star-pill">⑂ 9,748 forks</span>
+                  <span class="star-pill today">🔥 +1,658 stars today</span>
+                  <span class="star-pill">★ 93,931 total</span>
+                  <span class="star-pill">⑂ 9,868 forks</span>
                   <span class="star-pill">Python</span>
                 </div>
               </div>
             </div>
             <div class="attention-score-box">
-              <div class="att-num">87</div>
+              <div class="att-num">88</div>
               <div class="att-lbl">Attention Score</div>
             </div>
           </div>
 
-          <p style="font-size:13.8px;color:var(--text-2);line-height:1.55;margin:0 0 10px;">Scrapling (v0.5)：逼近 10 万 Star 的自适应 Web 抓取与智能体网页接地框架，具备 DOM 改版元素自愈重定位（Adaptive Element Relocation）与内置 MCP Server。</p>
+          <p style="font-size:13.8px;color:var(--text-2);line-height:1.55;margin:0 0 10px;">Scrapling (v0.5，BSD-3-Clause，9.39 万 Star)：逼近 10 万 Star 的自适应 Web 抓取与智能体网页接地框架，具备 DOM 改版元素自愈重定位（Adaptive Element Relocation）与内置 MCP Server。</p>
 
           <div class="generative-callout">
-            <strong>[FACT_CHECK COMPONENT] FACT CHECK · 核验通过：DOM 漂移自适应重定位 + 原生 MCP 网页接地服务</strong>
+            <strong>[FACT_CHECK COMPONENT] FACT CHECK · 核验通过：DOM 漂移自适应重定位 + 原生 MCP 网页接地服务（9.39 万 Star）</strong>
             <div style="margin-top:4px;color:var(--text);line-height:1.5;">声明核验：Scrapling 不仅覆盖从单次隐身请求到全并发爬虫的完整管线，其核心杀手锏是当目标网站前端改版导致 CSS/XPath 失效时，自动利用特征相似度重定位目标节点。</div>
           </div>
 
@@ -1063,26 +1143,26 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
               <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-facts" style="width:82%;"></div></div>
             </div>
             <div class="hfs-metric">
-              <div class="hfs-metric-top"><span>Hype (噱头预警度)</span><span style="color:#f59e0b;">24/100</span></div>
-              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-hype" style="width:24%;"></div></div>
+              <div class="hfs-metric-top"><span>Hype (噱头预警度)</span><span style="color:#f59e0b;">20/100</span></div>
+              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-hype" style="width:20%;"></div></div>
             </div>
             <div class="hfs-metric">
-              <div class="hfs-metric-top"><span>Relevance (领域相关)</span><span style="color:#8b5cf6;">62/100</span></div>
-              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-relevance" style="width:62%;"></div></div>
+              <div class="hfs-metric-top"><span>Relevance (领域相关)</span><span style="color:#8b5cf6;">64/100</span></div>
+              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-relevance" style="width:64%;"></div></div>
             </div>
           </div>
 
           <!-- Worth Learning Verdict Box -->
           <div style="background:var(--surface-2);border:1px solid var(--border-strong);border-radius:9px;padding:11px 14px;margin-top:10px;font-size:13px;line-height:1.5;">
             <strong style="color:var(--text);">🧭 ① 是否值得学习（SA Worth-Learning Verdict — ⚡ P1 推荐精读 / 借鉴模式）：</strong>
-            <span style="color:var(--text-2);">总 Star 高达 92,401（今日 +892，BSD-3-Clause，v0.5）。直接解决 Track 02（Agentic Commerce & Web IQ）中最常见的外部电商/竞品页面改版导致采集流水线断裂的工程痛点。</span>
+            <span style="color:var(--text-2);">今日增速翻倍至 +1,658 Stars（总 Star 达 93,931，BSD-3-Clause，v0.5）。直接解决 Track 02（Agentic Commerce & Web IQ）中最常见的外部电商/竞品页面改版导致采集流水线断裂的工程痛点。</span>
           </div>
 
           <!-- 4-Dimension Daily SA Work Application -->
           <div class="sa-4d-grid">
             <div class="sa-dim-card">
               <div class="sa-dim-title">🏗️ 维度 A · 架构设计借鉴 (Architecture Design)</div>
-              <div style="color:var(--text-2);">将 Scrapling 的「自适应 DOM 特征锚定」与 Lightpanda 轻量无头浏览器结合，作为企业 Web IQ 与实时竞品价格/库存巡检 Agent 的高可用数据采集层。</div>
+              <div style="color:var(--text-2);">将 Scrapling 的「自适应 DOM 特征锚定」与内置 MCP Server 接入企业 Web IQ 与实时竞品价格/库存巡检 Agent，作为高可用网页采集接地层。</div>
             </div>
             <div class="sa-dim-card">
               <div class="sa-dim-title">🎮 维度 B · 客户 Demo 与 PoC 开发 (Customer Demo)</div>
@@ -1107,7 +1187,7 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
               <button type="button" class="taste-btn open-drawer-btn" data-repo-id="scrapling">🔍 打开架构师详情抽屉 ↗</button>
             </div>
             <div class="claims-list">
-              <div class="claim-item">✓ [0.94] 提供自适应元素重定位机制，在网页结构改版后自动匹配历史目标元素</div><div class="claim-item">✓ [0.91] 从轻量 HTTP 请求到高并发无头浏览器会话提供统一 Python API（v0.5）</div><div class="claim-item">✓ [0.90] 支持作为 MCP Server 接入智能体工作流，提供高可靠网页实时接地</div><div class="claim-item">✓ [0.95] BSD-3-Clause 协议，GitHub 累计 92,401 Stars，今日新增 +892 Stars</div>
+              <div class="claim-item">✓ [0.94] 提供自适应元素重定位机制，在网页结构改版后自动匹配历史目标元素</div><div class="claim-item">✓ [0.92] 内置 MCP Server 支持，可直接作为智能体网页接地工具（v0.5，BSD-3-Clause）</div><div class="claim-item">✓ [0.91] 从轻量 HTTP 请求到高并发隐身无头浏览器会话提供统一 Python API</div><div class="claim-item">✓ [0.96] GitHub 累计 93,931 Stars，2026-11-03 单日新增 +1,658 Stars（Forks 9,868）</div>
             </div>
           </div>
         </article>
@@ -1116,7 +1196,7 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
           <div class="repo-card-top">
             <div class="repo-title-group">
               <div class="repo-rank-line">
-                <span class="rank-badge">#7</span>
+                <span class="rank-badge">#8</span>
                 <span class="card-type-badge">🃏 release</span>
                 <span class="verdict-badge verdict-P1">⚡ P1 推荐精读 / 借鉴模式</span>
                 <span class="star-pill">Agent Harness 与多智能体编排 (1.00×)</span>
@@ -1124,9 +1204,9 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
               <div style="margin-top:4px;display:flex;flex-wrap:wrap;align-items:baseline;gap:12px;">
                 <a class="repo-name-link" href="https://github.com/max-sixty/worktrunk" target="_blank" rel="noopener">max-sixty/worktrunk ↗</a>
                 <div class="star-metrics">
-                  <span class="star-pill today">🔥 +115 stars today</span>
-                  <span class="star-pill">★ 9,886 total</span>
-                  <span class="star-pill">⑂ 353 forks</span>
+                  <span class="star-pill today">🔥 +437 stars today</span>
+                  <span class="star-pill">★ 10,310 total</span>
+                  <span class="star-pill">⑂ 370 forks</span>
                   <span class="star-pill">Rust</span>
                 </div>
               </div>
@@ -1137,10 +1217,10 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
             </div>
           </div>
 
-          <p style="font-size:13.8px;color:var(--text-2);line-height:1.55;margin:0 0 10px;">Worktrunk (v0.81.0)：专为并行 AI Coding Agent 舰队设计的 Rust 极速 Git Worktree 生命周期管理 CLI，将工作树创建、环境拷贝、Hook 触发与清理合并标准化。</p>
+          <p style="font-size:13.8px;color:var(--text-2);line-height:1.55;margin:0 0 10px;">Worktrunk (v0.81.0，MIT/Apache-2.0，突破 1.03 万 Star)：专为并行 AI Coding Agent 舰队设计的 Rust 极速 Git Worktree 生命周期管理 CLI，将工作树创建、环境拷贝、Hook 触发与清理合并标准化。</p>
 
           <div class="generative-callout">
-            <strong>[RELEASE COMPONENT] RELEASE HIGHLIGHT · 并行编码 Agent 时代的 Git Worktree 基础设施</strong>
+            <strong>[RELEASE COMPONENT] RELEASE HIGHLIGHT · 正式突破 1 万 Star 大关：并行编码 Agent 的 Git Worktree 基础设施</strong>
             <div style="margin-top:4px;color:var(--text);line-height:1.5;">当一位架构师同时驱动 5–10 个 Claude Code / Copilot CLI 实例并行开发时，原生 `git worktree` 的目录管理与依赖同步极其繁琐，Worktrunk 用 Rust 将其压缩为毫秒级标准操作。</div>
           </div>
 
@@ -1167,7 +1247,7 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
           <!-- Worth Learning Verdict Box -->
           <div style="background:var(--surface-2);border:1px solid var(--border-strong);border-radius:9px;padding:11px 14px;margin-top:10px;font-size:13px;line-height:1.5;">
             <strong style="color:var(--text);">🧭 ① 是否值得学习（SA Worth-Learning Verdict — ⚡ P1 推荐精读 / 借鉴模式）：</strong>
-            <span style="color:var(--text-2);">接近破万 Star（9,886 Stars，v0.81.0，Hype 仅 16）。它正是我们当前多会话并行研发模式（Worktree-per-Agent）底层最趁手的工程效率工具。</span>
+            <span style="color:var(--text-2);">今日正式突破万星里程碑（10,310 Stars，今日 +437，v0.81.0，Hype 仅 16）。它正是我们当前多会话并行研发模式（Worktree-per-Agent）底层最趁手的工程效率工具。</span>
           </div>
 
           <!-- 4-Dimension Daily SA Work Application -->
@@ -1178,7 +1258,7 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
             </div>
             <div class="sa-dim-card">
               <div class="sa-dim-title">🎮 维度 B · 客户 Demo 与 PoC 开发 (Customer Demo)</div>
-              <div style="color:var(--text-2);">20 分钟现场演示：用一条 `wt` 命令瞬间拉起 3 个隔离工作树，分别交由 3 个 Agent 并行实现特性、编写测试与重构文档，互不污染工作区。</div>
+              <div style="color:var(--text-2);">20 分钟现场演示：用一条 `wt` 命令瞬间拉起 4 个隔离工作树，分别交由 4 个 Agent 并行实现特性、编写测试与重构文档，互不污染工作区。</div>
             </div>
             <div class="sa-dim-card">
               <div class="sa-dim-title">📊 维度 C · Benchmark 基准测试 (Benchmarking)</div>
@@ -1199,27 +1279,27 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
               <button type="button" class="taste-btn open-drawer-btn" data-repo-id="worktrunk">🔍 打开架构师详情抽屉 ↗</button>
             </div>
             <div class="claims-list">
-              <div class="claim-item">✓ [0.95] Rust 编写，MIT/Apache-2.0 双许可，已迭代至成熟的 v0.81.0 版本</div><div class="claim-item">✓ [0.93] 专为并行 AI Agent 工作树创建、依赖共享、状态查看与清理设计</div><div class="claim-item">✓ [0.90] 极低噱头度（Hype=16），纯靠硬核工程实用性积累 9,886 Stars</div><div class="claim-item">✓ [0.89] 与 t3code、Claude Code、Copilot CLI 等多工作树智能体流天然互补</div>
+              <div class="claim-item">✓ [0.95] Rust 编写，MIT/Apache-2.0 双许可，已迭代至成熟的 v0.81.0 版本</div><div class="claim-item">✓ [0.93] 专为并行 AI Agent 工作树创建、依赖共享、状态查看与清理合并设计</div><div class="claim-item">✓ [0.90] 极低噱头度（Hype=16），纯靠硬核工程实用性积累口碑</div><div class="claim-item">✓ [0.95] 2026-11-03 总 Star 突破 10,310（今日 +437 Stars，Forks 370）</div>
             </div>
           </div>
         </article>
 
-        <article class="repo-card" id="repo-t3code">
+        <article class="repo-card" id="repo-impeccable">
           <div class="repo-card-top">
             <div class="repo-title-group">
               <div class="repo-rank-line">
-                <span class="rank-badge">#8</span>
-                <span class="card-type-badge">🃏 headline</span>
+                <span class="rank-badge">#9</span>
+                <span class="card-type-badge">🃏 fact_check</span>
                 <span class="verdict-badge verdict-P1">⚡ P1 推荐精读 / 借鉴模式</span>
                 <span class="star-pill">Agent Harness 与多智能体编排 (1.00×)</span>
               </div>
               <div style="margin-top:4px;display:flex;flex-wrap:wrap;align-items:baseline;gap:12px;">
-                <a class="repo-name-link" href="https://github.com/pingdotgg/t3code" target="_blank" rel="noopener">pingdotgg/t3code ↗</a>
+                <a class="repo-name-link" href="https://github.com/pbakaus/impeccable" target="_blank" rel="noopener">pbakaus/impeccable ↗</a>
                 <div class="star-metrics">
-                  <span class="star-pill today">🔥 +3,100 stars today</span>
-                  <span class="star-pill">★ 40,561 total</span>
-                  <span class="star-pill">⑂ 9,032 forks</span>
-                  <span class="star-pill">TypeScript</span>
+                  <span class="star-pill today">🔥 +1,680 stars today</span>
+                  <span class="star-pill">★ 101,196 total</span>
+                  <span class="star-pill">⑂ 5,984 forks</span>
+                  <span class="star-pill">Rust</span>
                 </div>
               </div>
             </div>
@@ -1229,56 +1309,56 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
             </div>
           </div>
 
-          <p style="font-size:13.8px;color:var(--text-2);line-height:1.55;margin:0 0 10px;">Theo (pingdotgg) 团队打造的极简多编码智能体 Web/桌面 GUI 工作台（t3.codes，v0.1.6）：今日再度狂揽 +3,100 Stars 突破 4 万大关，主打低延迟多 Worktree 编排与 Diff 审阅。</p>
+          <p style="font-size:13.8px;color:var(--text-2);line-height:1.55;margin:0 0 10px;">Paul Bakaus 开源的前端设计品味与『反 AI 廉价感（Anti-AI-Slop）』工程套件（`cli-v4.8.0`，Apache-2.0，突破 10.1 万 Star）：将 19 个设计引导 Skill 与一个零 LLM 调用的 Rust 静态反模式扫描器（`impeccable detect`，检测 62 种 UI 反模式）合二为一。</p>
 
           <div class="generative-callout">
-            <strong>[HEADLINE COMPONENT] HEADLINE VELOCITY · 突破 4 万 Star 的多 Agent 编码指挥台</strong>
-            <div style="margin-top:4px;color:var(--text);line-height:1.5;">连续两日单日新增 3,000+ Stars，证明开发者对「脱离黑框终端、在统一画布中同时指挥多个基于 Git Worktree 的 Coding Agents 并快速 Review Diff」的强烈刚需。</div>
+            <strong>[FACT_CHECK COMPONENT] FACT CHECK · 绝非纯 Prompt 鸡汤：`cli-v4.8.0` 内置零 LLM 调用的 Rust 62 项前端反模式扫描器</strong>
+            <div style="margin-top:4px;color:var(--text);line-height:1.5;">一手源码核查惊喜：很多人以为它只是个提示词包，但源码 `cli/` 目录下其实是一个纯 Rust 编写的极速静态分析器，可在毫秒级、零 Token 消耗下精准揪出『紫蓝渐变泛滥、卡片套卡片、对比度失格』等 62 种典型 AI 味前端反模式。</div>
           </div>
 
           <!-- HFS Tri-Axial Bars -->
           <div class="hfs-bars-grid">
             <div class="hfs-metric">
-              <div class="hfs-metric-top"><span>Signal (可行动信号)</span><span style="color:#10b981;">78/100</span></div>
-              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-signal" style="width:78%;"></div></div>
+              <div class="hfs-metric-top"><span>Signal (可行动信号)</span><span style="color:#10b981;">76/100</span></div>
+              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-signal" style="width:76%;"></div></div>
             </div>
             <div class="hfs-metric">
-              <div class="hfs-metric-top"><span>Facts (一手事实度)</span><span style="color:#3b82f6;">76/100</span></div>
-              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-facts" style="width:76%;"></div></div>
+              <div class="hfs-metric-top"><span>Facts (一手事实度)</span><span style="color:#3b82f6;">80/100</span></div>
+              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-facts" style="width:80%;"></div></div>
             </div>
             <div class="hfs-metric">
-              <div class="hfs-metric-top"><span>Hype (噱头预警度)</span><span style="color:#f59e0b;">28/100</span></div>
-              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-hype" style="width:28%;"></div></div>
+              <div class="hfs-metric-top"><span>Hype (噱头预警度)</span><span style="color:#f59e0b;">24/100</span></div>
+              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-hype" style="width:24%;"></div></div>
             </div>
             <div class="hfs-metric">
-              <div class="hfs-metric-top"><span>Relevance (领域相关)</span><span style="color:#8b5cf6;">66/100</span></div>
-              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-relevance" style="width:66%;"></div></div>
+              <div class="hfs-metric-top"><span>Relevance (领域相关)</span><span style="color:#8b5cf6;">62/100</span></div>
+              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-relevance" style="width:62%;"></div></div>
             </div>
           </div>
 
           <!-- Worth Learning Verdict Box -->
           <div style="background:var(--surface-2);border:1px solid var(--border-strong);border-radius:9px;padding:11px 14px;margin-top:10px;font-size:13px;line-height:1.5;">
             <strong style="color:var(--text);">🧭 ① 是否值得学习（SA Worth-Learning Verdict — ⚡ P1 推荐精读 / 借鉴模式）：</strong>
-            <span style="color:var(--text-2);">总 Star 突破 40,561（今日 +3,100，MIT，v0.1.6）。其前端交互状态同步、多 Worktree 并发任务流与极简键盘优先 UX 值得在设计内部研发平台时精读借鉴。</span>
+            <span style="color:var(--text-2);">总 Star 突破 101,196（今日 +1,680，Apache-2.0，`cli-v4.8.0`）。完美诠释了「前置审美引导 Skill + 后置 Rust 确定性静态门禁」的黄金组合，直接提升客户 PoC 界面的高管质感。</span>
           </div>
 
           <!-- 4-Dimension Daily SA Work Application -->
           <div class="sa-4d-grid">
             <div class="sa-dim-card">
               <div class="sa-dim-title">🏗️ 维度 A · 架构设计借鉴 (Architecture Design)</div>
-              <div style="color:var(--text-2);">借鉴其「单仓库多 Worktree 隔离 + 统一状态流汇聚 + 轻量级 Diff 审批门」的交互架构，用于设计企业级软件工程智能体（SWE Agent）门户。</div>
+              <div style="color:var(--text-2);">在前端与客户 Demo 自动生成流水线中，将 `npx impeccable detect` 嵌入 CI 验收门禁：模型生成 HTML/React 后先跑 Rust 静态扫描，违规项归零才允许渲染交付。</div>
             </div>
             <div class="sa-dim-card">
               <div class="sa-dim-title">🎮 维度 B · 客户 Demo 与 PoC 开发 (Customer Demo)</div>
-              <div style="color:var(--text-2);">在给研发效能团队做交流时，对比展示 GitHub Copilot App 多会话工作树与 t3code 的极简 Web 编排体验。</div>
+              <div style="color:var(--text-2);">拿一个典型充满『AI 廉价模板感』的仪表盘，现场运行 `impeccable detect` 50 毫秒揪出 15 处反模式，再调用 `/polish` 与 `/typeset` 一键重塑为专业出版级界面。</div>
             </div>
             <div class="sa-dim-card">
               <div class="sa-dim-title">📊 维度 C · Benchmark 基准测试 (Benchmarking)</div>
-              <div style="color:var(--text-2);">提取其多任务并行切换与前端流式渲染性能作为 Web Agent Workbench 的 UI 响应度参考基线。</div>
+              <div style="color:var(--text-2);">在 50 个智能体生成的 Web 页面上测评接入 `impeccable` 前后的 62 项反模式检出数、WCAG 对比度达标率与扫描耗时（<50ms）。</div>
             </div>
             <div class="sa-dim-card">
               <div class="sa-dim-title">💼 维度 D · 适用业务场景方案 (Business Playbook)</div>
-              <div style="color:var(--text-2);">✅ 适用：工程团队多分支并行重构、前端/全栈快速原型迭代、多模型编码对比。⛔ 不适用：缺乏企业级 RBAC、私有网络隔离与合规审计诉求的金融核心系统直接裸跑。</div>
+              <div style="color:var(--text-2);">✅ 适用：高管汇报 Demo 界面打磨、AI 辅助前端工程、设计系统 CI 质量门禁。⛔ 不适用：无任何 UI 界面的纯后端/底层内核项目。</div>
             </div>
           </div>
 
@@ -1288,102 +1368,10 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
               <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
                 🔍 news-researcher 子智能体声明核验账本 (Claim-Support Ledger · 4/4 Audited)
               </div>
-              <button type="button" class="taste-btn open-drawer-btn" data-repo-id="t3code">🔍 打开架构师详情抽屉 ↗</button>
+              <button type="button" class="taste-btn open-drawer-btn" data-repo-id="impeccable">🔍 打开架构师详情抽屉 ↗</button>
             </div>
             <div class="claims-list">
-              <div class="claim-item">✓ [0.96] 2026-11-02 单日新增 +3,100 Stars，总 Star 突破 40,561（Forks 9,032）</div><div class="claim-item">✓ [0.88] MIT 开源协议，已发布 v0.1.6 版本，提供多编码智能体图形化会话管理</div><div class="claim-item">✓ [0.85] 基于 TypeScript 构建，围绕 Git Worktree 并发工作流与 Diff 审阅优化</div><div class="claim-item">✓ [0.78] 社区热度极高（含网红效应加成，Hype=28），核心价值在于极简交互范式</div>
-            </div>
-          </div>
-        </article>
-
-        <article class="repo-card" id="repo-paperclip">
-          <div class="repo-card-top">
-            <div class="repo-title-group">
-              <div class="repo-rank-line">
-                <span class="rank-badge">#9</span>
-                <span class="card-type-badge">🃏 thread_pulse</span>
-                <span class="verdict-badge verdict-P1">⚡ P1 推荐精读 / 借鉴模式</span>
-                <span class="star-pill">Agent Harness 与多智能体编排 (1.00×)</span>
-              </div>
-              <div style="margin-top:4px;display:flex;flex-wrap:wrap;align-items:baseline;gap:12px;">
-                <a class="repo-name-link" href="https://github.com/paperclipai/paperclip" target="_blank" rel="noopener">paperclipai/paperclip ↗</a>
-                <div class="star-metrics">
-                  <span class="star-pill today">🔥 +507 stars today</span>
-                  <span class="star-pill">★ 110,189 total</span>
-                  <span class="star-pill">⑂ 18,256 forks</span>
-                  <span class="star-pill">TypeScript</span>
-                </div>
-              </div>
-            </div>
-            <div class="attention-score-box">
-              <div class="att-num">83</div>
-              <div class="att-lbl">Attention Score</div>
-            </div>
-          </div>
-
-          <p style="font-size:13.8px;color:var(--text-2);line-height:1.55;margin:0 0 10px;">Paperclip (v2026.1023.0)：破 11 万 Star 的『零人公司（Zero-Human Companies）』开源多智能体组织级编排平面，提供目标对齐、角色委派、Token 预算控制与全链路审计。</p>
-
-          <div class="generative-callout">
-            <strong>[THREAD_PULSE COMPONENT] COMMUNITY THREAD PULSE · 11 万 Star 的多智能体『公司级目标与预算控制平面』</strong>
-            <div style="margin-top:4px;color:var(--text);line-height:1.5;">剥离『零人公司』的营销口号后，Paperclip 的工程内核非常扎实：它解决的不是单个 Agent 怎么调工具，而是 20 个异构 Agent 如何围绕业务 OKR 分解工单、锁定预算上限并防止死循环烧钱。</div>
-          </div>
-
-          <!-- HFS Tri-Axial Bars -->
-          <div class="hfs-bars-grid">
-            <div class="hfs-metric">
-              <div class="hfs-metric-top"><span>Signal (可行动信号)</span><span style="color:#10b981;">74/100</span></div>
-              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-signal" style="width:74%;"></div></div>
-            </div>
-            <div class="hfs-metric">
-              <div class="hfs-metric-top"><span>Facts (一手事实度)</span><span style="color:#3b82f6;">78/100</span></div>
-              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-facts" style="width:78%;"></div></div>
-            </div>
-            <div class="hfs-metric">
-              <div class="hfs-metric-top"><span>Hype (噱头预警度)</span><span style="color:#f59e0b;">28/100</span></div>
-              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-hype" style="width:28%;"></div></div>
-            </div>
-            <div class="hfs-metric">
-              <div class="hfs-metric-top"><span>Relevance (领域相关)</span><span style="color:#8b5cf6;">64/100</span></div>
-              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-relevance" style="width:64%;"></div></div>
-            </div>
-          </div>
-
-          <!-- Worth Learning Verdict Box -->
-          <div style="background:var(--surface-2);border:1px solid var(--border-strong);border-radius:9px;padding:11px 14px;margin-top:10px;font-size:13px;line-height:1.5;">
-            <strong style="color:var(--text);">🧭 ① 是否值得学习（SA Worth-Learning Verdict — ⚡ P1 推荐精读 / 借鉴模式）：</strong>
-            <span style="color:var(--text-2);">总 Star 高达 110,189（今日 +507，Forks 18,256，MIT）。其「组织级目标树（Goal Hierarchy）+ 每 Agent 预算熔断（Budget Cap）+ 跨角色工单流转」是企业级多智能体治理的极佳参考。</span>
-          </div>
-
-          <!-- 4-Dimension Daily SA Work Application -->
-          <div class="sa-4d-grid">
-            <div class="sa-dim-card">
-              <div class="sa-dim-title">🏗️ 维度 A · 架构设计借鉴 (Architecture Design)</div>
-              <div style="color:var(--text-2);">在设计企业级多部门协同 Agent 平台时，引入 Paperclip 的「三层控制平面（目标分解层 → 角色契约与预算配额层 → 不可变审计账本层）」，对接底层 Azure AI Foundry 智能体。</div>
-            </div>
-            <div class="sa-dim-card">
-              <div class="sa-dim-title">🎮 维度 B · 客户 Demo 与 PoC 开发 (Customer Demo)</div>
-              <div style="color:var(--text-2);">构建一个包含「产品需求拆解 Agent + 编码实现 Agent + 安全合规审计 Agent」的三角色闭环 Demo，现场展示当某个子任务 Token 超支时自动触发预算熔断与升级人工审批。</div>
-            </div>
-            <div class="sa-dim-card">
-              <div class="sa-dim-title">📊 维度 C · Benchmark 基准测试 (Benchmarking)</div>
-              <div style="color:var(--text-2);">测评其在多层级任务委派下的协调税（Coordination Tax）、死循环检测召回率与预算控制精度。</div>
-            </div>
-            <div class="sa-dim-card">
-              <div class="sa-dim-title">💼 维度 D · 适用业务场景方案 (Business Playbook)</div>
-              <div style="color:var(--text-2);">✅ 适用：跨职能自动化运营流水线（内容/电商/工单处理）、带严格 Token 预算配额的多 Agent 实验场。⛔ 不适用：将『零人工』口号当真而在医疗、法务或核心生产发布中完全取消人类审批门。</div>
-            </div>
-          </div>
-
-          <!-- Claim-Support Verification Ledger -->
-          <div class="claims-drawer">
-            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
-              <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
-                🔍 news-researcher 子智能体声明核验账本 (Claim-Support Ledger · 4/4 Audited)
-              </div>
-              <button type="button" class="taste-btn open-drawer-btn" data-repo-id="paperclip">🔍 打开架构师详情抽屉 ↗</button>
-            </div>
-            <div class="claims-list">
-              <div class="claim-item">✓ [0.94] GitHub 累计 110,189 Stars 与 18,256 Forks（今日 +507），MIT 开源协议</div><div class="claim-item">✓ [0.90] 提供多智能体角色定义、任务工单流转、预算上限控制与活动审计面板（v2026.1023.0）</div><div class="claim-item">✓ [0.86] 支持编排 Claude Code、Codex、OpenClaw 等多种底层执行 Agent</div><div class="claim-item">✓ [0.76] 『Zero-human companies』口号带有一定传播噱头（Hype=28），实际核心价值是编排治理控制面</div>
+              <div class="claim-item">✓ [0.96] GitHub 总 Star 突破 101,196（今日 +1,680，Forks 5,984），Apache-2.0 协议，发布 `cli-v4.8.0`</div><div class="claim-item">✓ [0.95] `cli/` 目录提供原生 Rust 静态分析器，零 LLM 调用即可扫描 62 种 HTML/CSS/JSX AI 反模式</div><div class="claim-item">✓ [0.91] 提供 `/audit`、`/critique`、`/polish`、`/typeset`、`/layout`、`/distill` 等 19 个设计引导命令</div><div class="claim-item">✓ [0.89] 兼容 Claude Code、GitHub Copilot、Cursor、Windsurf 与 Gemini CLI</div>
             </div>
           </div>
         </article>
@@ -1400,9 +1388,9 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
               <div style="margin-top:4px;display:flex;flex-wrap:wrap;align-items:baseline;gap:12px;">
                 <a class="repo-name-link" href="https://github.com/mattpocock/skills" target="_blank" rel="noopener">mattpocock/skills ↗</a>
                 <div class="star-metrics">
-                  <span class="star-pill today">🔥 +970 stars today</span>
-                  <span class="star-pill">★ 309,895 total</span>
-                  <span class="star-pill">⑂ 26,072 forks</span>
+                  <span class="star-pill today">🔥 +1,164 stars today</span>
+                  <span class="star-pill">★ 311,000 total</span>
+                  <span class="star-pill">⑂ 26,159 forks</span>
                   <span class="star-pill">Shell</span>
                 </div>
               </div>
@@ -1413,11 +1401,11 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
             </div>
           </div>
 
-          <p style="font-size:13.8px;color:var(--text-2);line-height:1.55;margin:0 0 10px;">Matt Pocock 开源的个人 Claude Code / AI Coding Agent 生产级 Skills 与指令工程库（v1.3.2），总 Star 高达 30.9 万，今日新增 +970 Stars。</p>
+          <p style="font-size:13.8px;color:var(--text-2);line-height:1.55;margin:0 0 10px;">Matt Pocock 开源的个人 Claude Code / AI Coding Agent 生产级 Skills 与指令工程库（v1.3.2，MIT），总 Star 突破 31.1 万，今日新增 +1,164 Stars。</p>
 
           <div class="generative-callout">
-            <strong>[QUOTE COMPONENT] ARCHITECTURAL QUOTE · 30.9 万 Star 验证的模块化『Skills-as-Code』工程范式</strong>
-            <div style="margin-top:4px;color:var(--text);line-height:1.5;">核心洞察：不要把所有规矩塞进一个 2 万字的巨型 `CLAUDE.md`；将高频工程动作（规划、TDD、重构、PR 审查、TypeScript 类型体操）拆分为独立、可测试、按需加载的原子化 Skill 模块。</div>
+            <strong>[QUOTE COMPONENT] ARCHITECTURAL QUOTE · 31.1 万 Star 验证的模块化『Skills-as-Code』工程范式</strong>
+            <div style="margin-top:4px;color:var(--text);line-height:1.5;">核心洞察：不要把所有规矩塞进一个 2 万字的巨型 `CLAUDE.md`；将高频工程动作（`write-a-prd`、`grill-me` 压力追问、`tdd` 红绿重构、`request-refactor-plan`）拆分为独立、可测试、按需加载的原子化 Skill 模块。</div>
           </div>
 
           <!-- HFS Tri-Axial Bars -->
@@ -1443,7 +1431,7 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
           <!-- Worth Learning Verdict Box -->
           <div style="background:var(--surface-2);border:1px solid var(--border-strong);border-radius:9px;padding:11px 14px;margin-top:10px;font-size:13px;line-height:1.5;">
             <strong style="color:var(--text);">🧭 ① 是否值得学习（SA Worth-Learning Verdict — ⚡ P1 推荐精读 / 借鉴模式）：</strong>
-            <span style="color:var(--text-2);">高达 309,895 Stars（今日 +970，MIT，v1.3.2）。它是全网研究「如何把顶级工程师的隐性经验编码为高确定性 Agent Skill」的最具影响力样本库。</span>
+            <span style="color:var(--text-2);">高达 311,000 Stars（今日 +1,164，MIT，v1.3.2）。它是全网研究「如何把顶级工程师的隐性经验编码为高确定性 Agent Skill」的最具影响力样本库。</span>
           </div>
 
           <!-- 4-Dimension Daily SA Work Application -->
@@ -1475,27 +1463,119 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
               <button type="button" class="taste-btn open-drawer-btn" data-repo-id="mattpocock-skills">🔍 打开架构师详情抽屉 ↗</button>
             </div>
             <div class="claims-list">
-              <div class="claim-item">✓ [0.96] GitHub 总 Star 高达 309,895（Forks 26,072），2026-11-02 单日新增 +970 Stars</div><div class="claim-item">✓ [0.92] MIT 协议开源（v1.3.2），收录经过日常高强度生产验证的模块化 Agent Skills</div><div class="claim-item">✓ [0.89] 示范了从单一臃肿提示词向可组合、按需加载 Skill 目录演进的最佳实践</div><div class="claim-item">✓ [0.85] 以轻量 Shell 与 Markdown 规范为主，极易迁移至 Copilot、Claude Code 与 Cursor</div>
+              <div class="claim-item">✓ [0.96] GitHub 总 Star 突破 311,000（Forks 26,159），2026-11-03 单日新增 +1,164 Stars</div><div class="claim-item">✓ [0.92] MIT 协议开源（v1.3.2），收录 20 个经过日常高强度生产验证的模块化 Agent Skills</div><div class="claim-item">✓ [0.90] 示范了从单一臃肿提示词向可组合、按需加载 Skill 目录演进的最佳实践</div><div class="claim-item">✓ [0.88] 以轻量 Shell 与 Markdown 规范为主，极易迁移至 Copilot、Claude Code 与 Cursor</div>
             </div>
           </div>
         </article>
 
-        <article class="repo-card" id="repo-freetoken">
+        <article class="repo-card" id="repo-hex">
           <div class="repo-card-top">
             <div class="repo-title-group">
               <div class="repo-rank-line">
                 <span class="rank-badge">#11</span>
-                <span class="card-type-badge">🃏 fact_check</span>
+                <span class="card-type-badge">🃏 thread_pulse</span>
                 <span class="verdict-badge verdict-P1">⚡ P1 推荐精读 / 借鉴模式</span>
-                <span class="star-pill">推理引擎与垂直基座模型 (1.00×)</span>
+                <span class="star-pill">Rust 本地语音与多模态 (1.00×)</span>
               </div>
               <div style="margin-top:4px;display:flex;flex-wrap:wrap;align-items:baseline;gap:12px;">
-                <a class="repo-name-link" href="https://github.com/FlashML-org/FreeToken" target="_blank" rel="noopener">FlashML-org/FreeToken ↗</a>
+                <a class="repo-name-link" href="https://github.com/anomalyco/hex" target="_blank" rel="noopener">anomalyco/hex ↗</a>
                 <div class="star-metrics">
-                  <span class="star-pill today">🔥 +325 stars today</span>
-                  <span class="star-pill">★ 15,850 total</span>
-                  <span class="star-pill">⑂ 1,576 forks</span>
-                  <span class="star-pill">Python</span>
+                  <span class="star-pill today">🔥 +1,134 stars today</span>
+                  <span class="star-pill">★ 4,323 total</span>
+                  <span class="star-pill">⑂ 249 forks</span>
+                  <span class="star-pill">Rust</span>
+                </div>
+              </div>
+            </div>
+            <div class="attention-score-box">
+              <div class="att-num">81</div>
+              <div class="att-lbl">Attention Score</div>
+            </div>
+          </div>
+
+          <p style="font-size:13.8px;color:var(--text-2);line-height:1.55;margin:0 0 10px;">基于 Rust + Swift 构建的 macOS 本地优先按键说话（Push-to-Talk）语音转写工具（v3.3.0，MIT，4,323 Stars）：在 Apple Silicon 本地运行 Whisper 与 NVIDIA Parakeet ASR 模型，且仓库日常 Issue/PR/发版由 AI Coding Agent 自主维护。</p>
+
+          <div class="generative-callout">
+            <strong>[THREAD_PULSE COMPONENT] COMMUNITY THREAD PULSE · 端侧毫秒级语音输入编码 + 『AI 智能体自主维护开源仓库』真实实验</strong>
+            <div style="margin-top:4px;color:var(--text);line-height:1.5;">双重看点：① 本地 Metal/ANE 跑 Parakeet/Whisper 让架构师按住快捷键即可用 180+ 词/分钟的语音向 Coding Agent 口述复杂架构需求，零云端隐私泄露；② 该仓库自身正是 Anomaly 团队开展『AI 智能体自主维护开源项目』的活体实验场。</div>
+          </div>
+
+          <!-- HFS Tri-Axial Bars -->
+          <div class="hfs-bars-grid">
+            <div class="hfs-metric">
+              <div class="hfs-metric-top"><span>Signal (可行动信号)</span><span style="color:#10b981;">72/100</span></div>
+              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-signal" style="width:72%;"></div></div>
+            </div>
+            <div class="hfs-metric">
+              <div class="hfs-metric-top"><span>Facts (一手事实度)</span><span style="color:#3b82f6;">78/100</span></div>
+              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-facts" style="width:78%;"></div></div>
+            </div>
+            <div class="hfs-metric">
+              <div class="hfs-metric-top"><span>Hype (噱头预警度)</span><span style="color:#f59e0b;">20/100</span></div>
+              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-hype" style="width:20%;"></div></div>
+            </div>
+            <div class="hfs-metric">
+              <div class="hfs-metric-top"><span>Relevance (领域相关)</span><span style="color:#8b5cf6;">56/100</span></div>
+              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-relevance" style="width:56%;"></div></div>
+            </div>
+          </div>
+
+          <!-- Worth Learning Verdict Box -->
+          <div style="background:var(--surface-2);border:1px solid var(--border-strong);border-radius:9px;padding:11px 14px;margin-top:10px;font-size:13px;line-height:1.5;">
+            <strong style="color:var(--text);">🧭 ① 是否值得学习（SA Worth-Learning Verdict — ⚡ P1 推荐精读 / 借鉴模式）：</strong>
+            <span style="color:var(--text-2);">今日狂揽 +1,134 Stars 至 4,323 总 Star（MIT，v3.3.0）。既完美呼应我们 Track 03（Realtime Voice & ASR），又提供了观察「AI Agent 自主处理 Issue/PR 与签名发版」的一手工程样本。</span>
+          </div>
+
+          <!-- 4-Dimension Daily SA Work Application -->
+          <div class="sa-4d-grid">
+            <div class="sa-dim-card">
+              <div class="sa-dim-title">🏗️ 维度 A · 架构设计借鉴 (Architecture Design)</div>
+              <div style="color:var(--text-2);">借鉴其 Rust 核心状态机 + Swift 原生音频采集/Metal 推理的分层架构设计端侧语音助手，并研究其「AI 自主维护 + 人类高危合并审批门」的开源治理流水线。</div>
+            </div>
+            <div class="sa-dim-card">
+              <div class="sa-dim-title">🎮 维度 B · 客户 Demo 与 PoC 开发 (Customer Demo)</div>
+              <div style="color:var(--text-2);">演示按住 Option 键直接用中英混杂语音口述一段微服务架构重构指令，本地 Parakeet 模型亚秒级上屏并触发 Copilot 执行。</div>
+            </div>
+            <div class="sa-dim-card">
+              <div class="sa-dim-title">📊 维度 C · Benchmark 基准测试 (Benchmarking)</div>
+              <div style="color:var(--text-2);">在 Apple Silicon 上对比 Parakeet-TDT 与 Whisper-large-v3-turbo 的词错误率（WER）、松开按键到文字上屏延迟（ms）与内存占用。</div>
+            </div>
+            <div class="sa-dim-card">
+              <div class="sa-dim-title">💼 维度 D · 适用业务场景方案 (Business Playbook)</div>
+              <div style="color:var(--text-2);">✅ 适用：高隐私要求的本地开发者语音输入、医疗/法务离线语音录入终端。⛔ 不适用：跨平台 Windows/Linux 服务器端多说话人会议分离（当前仅限 macOS 客户端）。</div>
+            </div>
+          </div>
+
+          <!-- Claim-Support Verification Ledger -->
+          <div class="claims-drawer">
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+              <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
+                🔍 news-researcher 子智能体声明核验账本 (Claim-Support Ledger · 4/4 Audited)
+              </div>
+              <button type="button" class="taste-btn open-drawer-btn" data-repo-id="hex">🔍 打开架构师详情抽屉 ↗</button>
+            </div>
+            <div class="claims-list">
+              <div class="claim-item">✓ [0.94] 采用 Rust (79%) + Swift (20%) 编写，MIT 协议，已发布签名安装包版本 `v3.3.0`（4,323 Stars，今日 +1,134）</div><div class="claim-item">✓ [0.92] 支持在 Apple Silicon 本地运行 Whisper 与 Parakeet 模型，语音数据零上云</div><div class="claim-item">✓ [0.90] README 明确声明该项目处于由 AI 智能体自主维护（处理 Issue、PR 与版本发布）的公开实验中</div><div class="claim-item">✓ [0.93] 工程完成度高、无夸张营销（Hype=20），提供完整的 Homebrew 与源码构建链路</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="repo-card" id="repo-mika">
+          <div class="repo-card-top">
+            <div class="repo-title-group">
+              <div class="repo-rank-line">
+                <span class="rank-badge">#12</span>
+                <span class="card-type-badge">🃏 brief</span>
+                <span class="verdict-badge verdict-P2">👀 P2 持续观察 / 备选雷达</span>
+                <span class="star-pill">Browser & CUA 虚拟沙盒 (1.00×)</span>
+              </div>
+              <div style="margin-top:4px;display:flex;flex-wrap:wrap;align-items:baseline;gap:12px;">
+                <a class="repo-name-link" href="https://github.com/wangzan101/Mika" target="_blank" rel="noopener">wangzan101/Mika ↗</a>
+                <div class="star-metrics">
+                  <span class="star-pill today">🔥 +980 stars today</span>
+                  <span class="star-pill">★ 5,941 total</span>
+                  <span class="star-pill">⑂ 1,155 forks</span>
+                  <span class="star-pill">Kotlin</span>
                 </div>
               </div>
             </div>
@@ -1505,148 +1585,56 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
             </div>
           </div>
 
-          <p style="font-size:13.8px;color:var(--text-2);line-height:1.55;margin:0 0 10px;">将『数据中心级大模型推理服务』带入桌面与边缘设备（v0.2.1）：针对 DeepSeek-V4、Qwen、GLM、MiniMax 等超大规模稀疏 MoE 架构优化本地运行与专家卸载。</p>
+          <p style="font-size:13.8px;color:var(--text-2);line-height:1.55;margin:0 0 10px;">Android 端侧 GUI 智能体助手（v0.1.34，Apache-2.0，5,941 Stars）：首创『Mika 虚拟屏幕（VirtualDisplay）』后台并发执行机制，让 AI 在隐藏虚拟屏中操作 App 而完全不打断用户当前前台手机使用。</p>
 
           <div class="generative-callout">
-            <strong>[FACT_CHECK COMPONENT] FACT CHECK · 桌面端跑巨型 MoE 模型的真实物理边界核查</strong>
-            <div style="margin-top:4px;color:var(--text);line-height:1.5;">事实核查：利用 MoE 稀疏激活特性（500B+ 总参数每 Token 仅激活 8B–37B）+ 冷专家主机内存/NVMe 分层卸载，确实可在大内存工作站跑通巨型 MoE，但吞吐受限于 PCIe 带宽，适合单并发深思考而非高并发服务。</div>
+            <strong>[BRIEF COMPONENT] EXECUTIVE BRIEF · Android 后台隐藏 `VirtualDisplay` 虚拟屏解决移动端 GUI 智能体抢屏痛点</strong>
+            <div style="margin-top:4px;color:var(--text);line-height:1.5;">架构巧思：传统手机 GUI Agent 执行任务时会霸占主屏幕导致用户无法操作手机；Mika 利用 Android 系统级 `VirtualDisplay` 创建独立后台虚拟屏幕并在画中画小窗展示进度，前台后台互不干扰。</div>
           </div>
 
           <!-- HFS Tri-Axial Bars -->
           <div class="hfs-bars-grid">
             <div class="hfs-metric">
-              <div class="hfs-metric-top"><span>Signal (可行动信号)</span><span style="color:#10b981;">68/100</span></div>
-              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-signal" style="width:68%;"></div></div>
+              <div class="hfs-metric-top"><span>Signal (可行动信号)</span><span style="color:#10b981;">66/100</span></div>
+              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-signal" style="width:66%;"></div></div>
             </div>
             <div class="hfs-metric">
-              <div class="hfs-metric-top"><span>Facts (一手事实度)</span><span style="color:#3b82f6;">70/100</span></div>
-              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-facts" style="width:70%;"></div></div>
+              <div class="hfs-metric-top"><span>Facts (一手事实度)</span><span style="color:#3b82f6;">72/100</span></div>
+              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-facts" style="width:72%;"></div></div>
             </div>
             <div class="hfs-metric">
-              <div class="hfs-metric-top"><span>Hype (噱头预警度)</span><span style="color:#f59e0b;">34/100</span></div>
-              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-hype" style="width:34%;"></div></div>
+              <div class="hfs-metric-top"><span>Hype (噱头预警度)</span><span style="color:#f59e0b;">28/100</span></div>
+              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-hype" style="width:28%;"></div></div>
             </div>
             <div class="hfs-metric">
-              <div class="hfs-metric-top"><span>Relevance (领域相关)</span><span style="color:#8b5cf6;">58/100</span></div>
-              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-relevance" style="width:58%;"></div></div>
-            </div>
-          </div>
-
-          <!-- Worth Learning Verdict Box -->
-          <div style="background:var(--surface-2);border:1px solid var(--border-strong);border-radius:9px;padding:11px 14px;margin-top:10px;font-size:13px;line-height:1.5;">
-            <strong style="color:var(--text);">🧭 ① 是否值得学习（SA Worth-Learning Verdict — ⚡ P1 推荐精读 / 借鉴模式）：</strong>
-            <span style="color:var(--text-2);">累计 15,850 Stars（今日 +325，Apache-2.0，v0.2.1）。与我们 Track 01 的 DeepSeek-V4.1-Flash MoE 云端推理经济学形成极佳的「云-边对照」。</span>
-          </div>
-
-          <!-- 4-Dimension Daily SA Work Application -->
-          <div class="sa-4d-grid">
-            <div class="sa-dim-card">
-              <div class="sa-dim-title">🏗️ 维度 A · 架构设计借鉴 (Architecture Design)</div>
-              <div style="color:var(--text-2);">拆解其 MoE 专家路由预取（Expert Prefetching）、冷热专家显存-内存异构调度与 KV 量化实现，用于指导制造业/医疗边缘一体机（Azure Local）定容。</div>
-            </div>
-            <div class="sa-dim-card">
-              <div class="sa-dim-title">🎮 维度 B · 客户 Demo 与 PoC 开发 (Customer Demo)</div>
-              <div style="color:var(--text-2);">为要求「核心代码与敏感合同绝对不出本地工作站」的客户规划单机高配 GPU + 大内存 MoE 本地推理 PoC。</div>
-            </div>
-            <div class="sa-dim-card">
-              <div class="sa-dim-title">📊 维度 C · Benchmark 基准测试 (Benchmarking)</div>
-              <div style="color:var(--text-2);">测量其在 batch_size=1 与 batch_size=8 下运行稀疏 MoE 模型的 Prefill TTFT 与 Decode tok/s 衰减曲线。</div>
-            </div>
-            <div class="sa-dim-card">
-              <div class="sa-dim-title">💼 维度 D · 适用业务场景方案 (Business Playbook)</div>
-              <div style="color:var(--text-2);">✅ 适用：气隙隔离（Air-Gapped）研发内网、单用户高隐私代码审查工作站、边缘一体机。⛔ 不适用：百人以上企业并发共享 API 网关（必须上 vLLM / SGLang 多卡集群）。</div>
-            </div>
-          </div>
-
-          <!-- Claim-Support Verification Ledger -->
-          <div class="claims-drawer">
-            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
-              <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
-                🔍 news-researcher 子智能体声明核验账本 (Claim-Support Ledger · 4/4 Audited)
-              </div>
-              <button type="button" class="taste-btn open-drawer-btn" data-repo-id="freetoken">🔍 打开架构师详情抽屉 ↗</button>
-            </div>
-            <div class="claims-list">
-              <div class="claim-item">✓ [0.86] 针对 MoE（Mixture-of-Experts）稀疏激活模型优化桌面与边缘端异构卸载推理</div><div class="claim-item">✓ [0.82] Apache-2.0 协议，已发布 v0.2.1，支持 DeepSeek、Qwen、GLM、MiniMax 模型家族</div><div class="claim-item">✓ [0.76] 『Datacenter-scale model serving to your desktop』含营销修辞（Hype=34），受限于桌面内存带宽</div><div class="claim-item">✓ [0.88] GitHub 累计 15,850 Stars，2026-11-02 单日新增 +325 Stars</div>
-            </div>
-          </div>
-        </article>
-
-        <article class="repo-card" id="repo-nanochat">
-          <div class="repo-card-top">
-            <div class="repo-title-group">
-              <div class="repo-rank-line">
-                <span class="rank-badge">#12</span>
-                <span class="card-type-badge">🃏 brief</span>
-                <span class="verdict-badge verdict-P2">👀 P2 持续观察 / 备选雷达</span>
-                <span class="star-pill">推理引擎与垂直基座模型 (1.00×)</span>
-              </div>
-              <div style="margin-top:4px;display:flex;flex-wrap:wrap;align-items:baseline;gap:12px;">
-                <a class="repo-name-link" href="https://github.com/karpathy/nanochat" target="_blank" rel="noopener">karpathy/nanochat ↗</a>
-                <div class="star-metrics">
-                  <span class="star-pill today">🔥 +325 stars today</span>
-                  <span class="star-pill">★ 59,701 total</span>
-                  <span class="star-pill">⑂ 8,394 forks</span>
-                  <span class="star-pill">Python</span>
-                </div>
-              </div>
-            </div>
-            <div class="attention-score-box">
-              <div class="att-num">72</div>
-              <div class="att-lbl">Attention Score</div>
-            </div>
-          </div>
-
-          <p style="font-size:13.8px;color:var(--text-2);line-height:1.55;margin:0 0 10px;">Andrej Karpathy 开源的极简全栈 ChatGPT 训练与微调教学基线（『$100 美元买到的最佳 ChatGPT』），从分词器、预训练、SFT 到 Web UI 一应俱全。</p>
-
-          <div class="generative-callout">
-            <strong>[BRIEF COMPONENT] EXECUTIVE BRIEF · 5.9 万 Star 的全栈大模型训练原理『透明玻璃盒』</strong>
-            <div style="margin-top:4px;color:var(--text);line-height:1.5;">零过度抽象、代码极其干净（Hype 仅 16）：用单个单机多卡脚本串联起 Tokenizer → Pretraining → Midtraining → SFT → RL 与推理服务，是理解 LLM 端到端生命周期的最佳教学参考。</div>
-          </div>
-
-          <!-- HFS Tri-Axial Bars -->
-          <div class="hfs-bars-grid">
-            <div class="hfs-metric">
-              <div class="hfs-metric-top"><span>Signal (可行动信号)</span><span style="color:#10b981;">60/100</span></div>
-              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-signal" style="width:60%;"></div></div>
-            </div>
-            <div class="hfs-metric">
-              <div class="hfs-metric-top"><span>Facts (一手事实度)</span><span style="color:#3b82f6;">78/100</span></div>
-              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-facts" style="width:78%;"></div></div>
-            </div>
-            <div class="hfs-metric">
-              <div class="hfs-metric-top"><span>Hype (噱头预警度)</span><span style="color:#f59e0b;">16/100</span></div>
-              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-hype" style="width:16%;"></div></div>
-            </div>
-            <div class="hfs-metric">
-              <div class="hfs-metric-top"><span>Relevance (领域相关)</span><span style="color:#8b5cf6;">46/100</span></div>
-              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-relevance" style="width:46%;"></div></div>
+              <div class="hfs-metric-top"><span>Relevance (领域相关)</span><span style="color:#8b5cf6;">55/100</span></div>
+              <div class="hfs-bar-bg"><div class="hfs-bar-fill fill-relevance" style="width:55%;"></div></div>
             </div>
           </div>
 
           <!-- Worth Learning Verdict Box -->
           <div style="background:var(--surface-2);border:1px solid var(--border-strong);border-radius:9px;padding:11px 14px;margin-top:10px;font-size:13px;line-height:1.5;">
             <strong style="color:var(--text);">🧭 ① 是否值得学习（SA Worth-Learning Verdict — 👀 P2 持续观察 / 备选雷达）：</strong>
-            <span style="color:var(--text-2);">总 Star 达 59,701（今日 +325，MIT）。虽然企业架构师不会在生产中从零手搓百元级基座模型（因此归为 P2），但它是向客户高管与研发团队讲透「预训练 vs 后训练对齐」本质的绝佳教具。</span>
+            <span style="color:var(--text-2);">今日新增 +980 Stars 至 5,941 总 Star（Apache-2.0，v0.1.34）。其「后台虚拟显示沙盒 + 无障碍树/VLM 双模接地」为移动端自动化测试与手持终端 RPA 提供了极具启发性的隔离思路。</span>
           </div>
 
           <!-- 4-Dimension Daily SA Work Application -->
           <div class="sa-4d-grid">
             <div class="sa-dim-card">
               <div class="sa-dim-title">🏗️ 维度 A · 架构设计借鉴 (Architecture Design)</div>
-              <div style="color:var(--text-2);">将其极简代码结构作为内部大模型原理赋能工作坊（LLM Internals Workshop）的标准走读蓝本，帮助团队理解 KV Cache、RoPE 与 SFT 损失掩码的底层实现。</div>
+              <div style="color:var(--text-2);">在设计企业级移动 App 自动化巡检或物流手持终端（PDA）智能体时，借鉴其「独立 `VirtualDisplay` 隔离渲染 + 虚拟输入注入 + 敏感支付动作挂起确认」架构。</div>
             </div>
             <div class="sa-dim-card">
               <div class="sa-dim-title">🎮 维度 B · 客户 Demo 与 PoC 开发 (Customer Demo)</div>
-              <div style="color:var(--text-2);">在 Azure ND/NC 系列单节点 GPU VM 上，用小规模行业语料跑通一套可视化的端到端微调实验课。</div>
+              <div style="color:var(--text-2);">演示在 Android 设备画中画小窗（虚拟屏）中由智能体自动完成多步表单填报，同时主屏幕正常浏览文档。</div>
             </div>
             <div class="sa-dim-card">
               <div class="sa-dim-title">📊 维度 C · Benchmark 基准测试 (Benchmarking)</div>
-              <div style="color:var(--text-2);">可作为单节点 PyTorch 编译优化（`torch.compile` / FlashAttention）吞吐效率的干净基线。</div>
+              <div style="color:var(--text-2);">测评其在 Android 14/15 上的跨 App 任务完成率、后台虚拟屏帧率/功耗开销以及敏感权限拦截准确性。</div>
             </div>
             <div class="sa-dim-card">
               <div class="sa-dim-title">💼 维度 D · 适用业务场景方案 (Business Playbook)</div>
-              <div style="color:var(--text-2);">✅ 适用：企业 AI 架构师与算法团队底层原理实训、高校/实验室教学基线。⛔ 不适用：企业生产环境直接采用微型自训模型替代成熟商业/开源主力基座模型。</div>
+              <div style="color:var(--text-2);">✅ 适用：移动 App 自动化回归测试云真机农场、企业定制手持终端辅助操作。⛔ 不适用：未经企业 MDM 严密管控的员工个人手机（依赖高危无障碍/Shizuku 权限）。</div>
             </div>
           </div>
 
@@ -1656,10 +1644,10 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
               <div style="font-family:var(--mono);font-weight:700;font-size:11.5px;color:var(--text-3);text-transform:uppercase;">
                 🔍 news-researcher 子智能体声明核验账本 (Claim-Support Ledger · 4/4 Audited)
               </div>
-              <button type="button" class="taste-btn open-drawer-btn" data-repo-id="nanochat">🔍 打开架构师详情抽屉 ↗</button>
+              <button type="button" class="taste-btn open-drawer-btn" data-repo-id="mika">🔍 打开架构师详情抽屉 ↗</button>
             </div>
             <div class="claims-list">
-              <div class="claim-item">✓ [0.96] Andrej Karpathy 出品，MIT 协议，累计 59,701 Stars 与 8,394 Forks（今日 +325）</div><div class="claim-item">✓ [0.94] 完整覆盖分词、预训练、SFT 与轻量 Web 聊天界面的端到端极简 Python 实现</div><div class="claim-item">✓ [0.90] 宣传克制诚实（Hype=16），明确标定百元级算力预算下的能力边界</div><div class="claim-item">✓ [0.80] 定位为教育与黑客松基线，非企业生产级高并发推理框架</div>
+              <div class="claim-item">✓ [0.93] 纯 Kotlin 编写的 Android 原生工程（`v0.1.34`，Apache-2.0），累计 5,941 Stars（今日 +980，Forks 1,155）</div><div class="claim-item">✓ [0.91] 通过 Android `VirtualDisplay` 实现『Mika 虚拟屏幕』后台隔离执行，支持小窗实时监控与随时接管</div><div class="claim-item">✓ [0.89] 同时支持无障碍节点树（Accessibility Tree）快速模式与多模态视觉（VLM）截图模式</div><div class="claim-item">✓ [0.82] 依赖 Android 无障碍服务与可选 Shizuku 高级权限，企业落地需重点评估终端合规边界</div>
             </div>
           </div>
         </article>
@@ -1676,9 +1664,9 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
               <div style="margin-top:4px;display:flex;flex-wrap:wrap;align-items:baseline;gap:12px;">
                 <a class="repo-name-link" href="https://github.com/shiyu-coder/Kronos" target="_blank" rel="noopener">shiyu-coder/Kronos ↗</a>
                 <div class="star-metrics">
-                  <span class="star-pill today">🔥 +630 stars today</span>
-                  <span class="star-pill">★ 45,823 total</span>
-                  <span class="star-pill">⑂ 7,554 forks</span>
+                  <span class="star-pill today">🔥 +503 stars today</span>
+                  <span class="star-pill">★ 46,313 total</span>
+                  <span class="star-pill">⑂ 7,635 forks</span>
                   <span class="star-pill">Python</span>
                 </div>
               </div>
@@ -1689,10 +1677,10 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
             </div>
           </div>
 
-          <p style="font-size:13.8px;color:var(--text-2);line-height:1.55;margin:0 0 10px;">Kronos：面向金融市场『K 线与交易时序语言』的专用基座大模型，将离散化金融价格序列转化为自回归 Token 建模，今日新增 +630 Stars。</p>
+          <p style="font-size:13.8px;color:var(--text-2);line-height:1.55;margin:0 0 10px;">Kronos（MIT，4.63 万 Star）：面向金融市场『K 线与交易时序语言』的专用基座大模型，将离散化金融价格序列转化为自回归 Token 建模，今日新增 +503 Stars。</p>
 
           <div class="generative-callout">
-            <strong>[BRIEF COMPONENT] EXECUTIVE BRIEF · 金融量化时序 Token 化基座模型持续走热</strong>
+            <strong>[BRIEF COMPONENT] EXECUTIVE BRIEF · 金融量化时序 Token 化基座模型突破 4.63 万 Star</strong>
             <div style="margin-top:4px;color:var(--text);line-height:1.5;">展示了如何将非自然语言的垂直行业连续时序信号（OHLCV K 线流）通过专用词表（Tokenizer）离散化，复用 Transformer 架构进行跨市场零样本预测。</div>
           </div>
 
@@ -1719,7 +1707,7 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
           <!-- Worth Learning Verdict Box -->
           <div style="background:var(--surface-2);border:1px solid var(--border-strong);border-radius:9px;padding:11px 14px;margin-top:10px;font-size:13px;line-height:1.5;">
             <strong style="color:var(--text);">🧭 ① 是否值得学习（SA Worth-Learning Verdict — 👀 P2 持续观察 / 备选雷达）：</strong>
-            <span style="color:var(--text-2);">总 Star 升至 45,823（今日 +630）。对于服务银行、券商、量化基金与能源交易客户（FSI）的架构师，是理解「垂直时序大模型 vs 通用 LLM」分工的典型案例。</span>
+            <span style="color:var(--text-2);">总 Star 升至 46,313（今日 +503）。对于服务银行、券商、量化基金与能源交易客户（FSI）的架构师，是理解「垂直时序大模型 vs 通用 LLM」分工的典型案例。</span>
           </div>
 
           <!-- 4-Dimension Daily SA Work Application -->
@@ -1751,7 +1739,7 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
               <button type="button" class="taste-btn open-drawer-btn" data-repo-id="kronos">🔍 打开架构师详情抽屉 ↗</button>
             </div>
             <div class="claims-list">
-              <div class="claim-item">✓ [0.86] 针对金融市场 K 线（Candlestick）与时序设计专用离散化 Tokenizer 与预训练基座</div><div class="claim-item">✓ [0.84] GitHub 累计 45,823 Stars 与 7,554 Forks（今日 +630），MIT 开源协议</div><div class="claim-item">✓ [0.72] 仓库主干提交停留在 2026-04，近期因社区量化 AI 榜单持续获得流量关注</div><div class="claim-item">✓ [0.70] 金融市场非平稳性强，任何预测指标均需警惕回测幸存者偏差（Hype=32）</div>
+              <div class="claim-item">✓ [0.86] 针对金融市场 K 线（Candlestick）与时序设计专用离散化 Tokenizer 与预训练基座</div><div class="claim-item">✓ [0.85] GitHub 累计 46,313 Stars 与 7,635 Forks（今日 +503），MIT 开源协议</div><div class="claim-item">✓ [0.74] 连续多日稳居 GitHub Python 热榜前列，在量化金融开发者社区关注度高</div><div class="claim-item">✓ [0.70] 金融市场非平稳性强，任何预测指标均需警惕回测幸存者偏差（Hype=32）</div>
             </div>
           </div>
         </article>
@@ -1768,9 +1756,9 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
               <div style="margin-top:4px;display:flex;flex-wrap:wrap;align-items:baseline;gap:12px;">
                 <a class="repo-name-link" href="https://github.com/Donchitos/Claude-Code-Game-Studios" target="_blank" rel="noopener">Donchitos/Claude-Code-Game-Studios ↗</a>
                 <div class="star-metrics">
-                  <span class="star-pill today">🔥 +1,380 stars today</span>
-                  <span class="star-pill">★ 33,162 total</span>
-                  <span class="star-pill">⑂ 4,486 forks</span>
+                  <span class="star-pill today">🔥 +1,181 stars today</span>
+                  <span class="star-pill">★ 34,320 total</span>
+                  <span class="star-pill">⑂ 4,574 forks</span>
                   <span class="star-pill">Shell</span>
                 </div>
               </div>
@@ -1781,11 +1769,11 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
             </div>
           </div>
 
-          <p style="font-size:13.8px;color:var(--text-2);line-height:1.55;margin:0 0 10px;">将 Claude Code 包装为『完整游戏开发工作室』（v1.2.0）：内置 49 个角色化 AI Agents、72 个工作流 Skills，模拟真实游戏工作室层级指挥体系。</p>
+          <p style="font-size:13.8px;color:var(--text-2);line-height:1.55;margin:0 0 10px;">将 Claude Code 包装为『完整游戏开发工作室』（v1.2.0，MIT，3.43 万 Star）：内置 49 个角色化 AI Agents、72 个工作流 Skills，模拟真实游戏工作室层级指挥体系。</p>
 
           <div class="generative-callout">
             <strong>[HYPE_WATCH COMPONENT] HYPE WATCH (Hype = 54) · 49 个 Agent 拟人化层级包装 vs 确定性 Harness 实效</strong>
-            <div style="margin-top:4px;color:var(--text);line-height:1.5;">噱头预警：用 49 个 Markdown 角色 Prompt 模拟公司科层制极具传播噱头（3.3 万 Star，今日 +1,380），但在工程实践中会导致严重的上下文传声筒失真与 Token 爆炸！真正高效的游戏/动画生产应采用「精简角色 + 60 FPS 确定性代码门禁」。</div>
+            <div style="margin-top:4px;color:var(--text);line-height:1.5;">噱头预警：用 49 个 Markdown 角色 Prompt 模拟公司科层制极具传播噱头（3.43 万 Star，今日 +1,181），但在工程实践中会导致严重的上下文传声筒失真与 Token 爆炸！真正高效的游戏/动画生产应采用「精简角色 + 60 FPS 确定性代码门禁」。</div>
           </div>
 
           <!-- HFS Tri-Axial Bars -->
@@ -1843,7 +1831,7 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
               <button type="button" class="taste-btn open-drawer-btn" data-repo-id="claude-code-game-studios">🔍 打开架构师详情抽屉 ↗</button>
             </div>
             <div class="claims-list">
-              <div class="claim-item">✓ [0.85] 仓库内包含 49 个 Agent 角色配置与 72 个面向 Godot/Unity/Unreal 的 Skill 脚本（v1.2.0）</div><div class="claim-item">✓ [0.82] 累计获得 33,162 Stars（今日 +1,380），在独立游戏与 Claude Code 社区传播极广</div><div class="claim-item">✕ [0.45] 『完整替代游戏工作室层级』存在明显标题党夸大（Hype=54），主要为 Shell/Markdown 提示词集合</div><div class="claim-item">✓ [0.75] 缺乏确定性编译/帧率回归测试闭环，需要人工频繁介入兜底</div>
+              <div class="claim-item">✓ [0.85] 仓库内包含 49 个 Agent 角色配置与 72 个面向 Godot/Unity/Unreal 的 Skill 脚本（v1.2.0）</div><div class="claim-item">✓ [0.83] 累计获得 34,320 Stars（今日 +1,181，Forks 4,574），在独立游戏与 Claude Code 社区传播极广</div><div class="claim-item">✕ [0.45] 『完整替代游戏工作室层级』存在明显标题党夸大（Hype=54），主要为 Shell/Markdown 提示词集合</div><div class="claim-item">✓ [0.75] 缺乏确定性编译/帧率回归测试闭环，需要人工频繁介入兜底</div>
             </div>
           </div>
         </article>
@@ -1860,9 +1848,9 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
               <div style="margin-top:4px;display:flex;flex-wrap:wrap;align-items:baseline;gap:12px;">
                 <a class="repo-name-link" href="https://github.com/p-e-w/heretic" target="_blank" rel="noopener">p-e-w/heretic ↗</a>
                 <div class="star-metrics">
-                  <span class="star-pill today">🔥 +404 stars today</span>
-                  <span class="star-pill">★ 37,864 total</span>
-                  <span class="star-pill">⑂ 4,311 forks</span>
+                  <span class="star-pill today">🔥 +699 stars today</span>
+                  <span class="star-pill">★ 38,543 total</span>
+                  <span class="star-pill">⑂ 4,355 forks</span>
                   <span class="star-pill">Python</span>
                 </div>
               </div>
@@ -1873,11 +1861,11 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
             </div>
           </div>
 
-          <p style="font-size:13.8px;color:var(--text-2);line-height:1.55;margin:0 0 10px;">Heretic (v2.0.0)：针对开放权重语言模型的全自动安全对齐移除（Uncensoring / Abliteration）工具，通过定向干预激活向量剥离模型内置拒绝行为。</p>
+          <p style="font-size:13.8px;color:var(--text-2);line-height:1.55;margin:0 0 10px;">Heretic (v2.0.0，AGPL-3.0，3.85 万 Star)：针对开放权重语言模型的全自动安全对齐移除（Uncensoring / Abliteration）工具，通过定向干预激活向量剥离模型内置拒绝行为。</p>
 
           <div class="generative-callout">
             <strong>[HYPE_WATCH COMPONENT] HYPE WATCH (Hype = 58 · P3) · 开放权重模型『一键去对齐』揭示的模型层脆弱性</strong>
-            <div style="margin-top:4px;color:var(--text);line-height:1.5;">安全架构师警示：Heretic 高达 3.78 万 Star 的流行再次证明——只要攻击者拿到开放模型权重或微调权限，纯靠模型内部 RLHF 安全对齐（Model-Level Refusal）在几分钟内就会被定向正交化剥离！企业安全绝不能只赌模型自己『懂规矩』。</div>
+            <div style="margin-top:4px;color:var(--text);line-height:1.5;">安全架构师警示：Heretic 高达 3.85 万 Star 的流行再次证明——只要攻击者拿到开放模型权重或微调权限，纯靠模型内部 RLHF 安全对齐（Model-Level Refusal）在几分钟内就会被定向正交化剥离！企业安全绝不能只赌模型自己『懂规矩』。</div>
           </div>
 
           <!-- HFS Tri-Axial Bars -->
@@ -1935,7 +1923,7 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
               <button type="button" class="taste-btn open-drawer-btn" data-repo-id="heretic">🔍 打开架构师详情抽屉 ↗</button>
             </div>
             <div class="claims-list">
-              <div class="claim-item">✓ [0.85] 提供自动化激活方向正交化（Abliteration）脚本以移除开放权重模型的安全拒绝行为（v2.0.0）</div><div class="claim-item">✓ [0.82] GitHub 累计 37,864 Stars（今日 +404），反映了社区对无审查模型的猎奇热度（Hype=58）</div><div class="claim-item">✕ [0.35] 移除拒绝机制会同时破坏模型在合规、安全与有害指令边界上的可靠性，生产环境不可用</div><div class="claim-item">✓ [0.88] 采用 AGPL-3.0 强传染性开源协议，企业商业环境直接集成面临合规风险</div>
+              <div class="claim-item">✓ [0.85] 提供自动化激活方向正交化（Abliteration）脚本以移除开放权重模型的安全拒绝行为（v2.0.0）</div><div class="claim-item">✓ [0.82] GitHub 累计 38,543 Stars（今日 +699，Forks 4,355），反映了社区对无审查模型的猎奇热度（Hype=58）</div><div class="claim-item">✕ [0.35] 移除拒绝机制会同时破坏模型在合规、安全与有害指令边界上的可靠性，生产环境不可用</div><div class="claim-item">✓ [0.88] 采用 AGPL-3.0 强传染性开源协议，企业商业环境直接集成面临合规风险</div>
             </div>
           </div>
         </article>
@@ -1944,44 +1932,44 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
 
   <!-- SECTION 3B: WEEKLY & 7-DAY SURGING AI BREAKTHROUGHS -->
   <section id="weekly-surging-section" style="margin-top:32px;">
-    <header class="stage-section-header">
-      <span class="stage-number">STAGE 03B · WEEKLY &amp; 7-DAY SURGING AI BREAKTHROUGHS</span>
-      <h2>周度热榜与近 7 天飙升能力突破雷达 (`since=weekly` &amp; `created:&gt;2026-10-26`)</h2>
-      <p>遵循每日研究追踪规范，额外扫描近 7 天飙升最快的自主逆向工程、科研 Agent 技能库与生成式视频渲染仓库。</p>
-    </header>
-    <div class="weekly-grid">
-      <article class="panel-box">
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;">
-          <span class="verdict-badge verdict-P0">🔥 P0 必学</span>
-          <span style="font-family:var(--mono);font-size:12px;font-weight:800;color:var(--accent);">Attention: 91 · signal_alert</span>
-        </div>
-        <h3 style="margin:0 0 6px;"><a href="https://github.com/morluto/rea" target="_blank" rel="noopener" style="color:var(--text);text-decoration:none;">morluto/rea ↗</a></h3>
-        <div style="font-family:var(--mono);font-size:11.5px;color:var(--good);margin-bottom:8px;">🔥 本周 +18,400 stars · ★ 421,621 · MIT · rea-agents-6.8.0</div>
-        <p style="font-size:12.8px;color:var(--text-2);line-height:1.55;margin:0 0 8px;">基于 MCP 编排 Ghidra、Rizin、Frida、GDB 与 x64dbg 的自主逆向工程助手，用于自动化二进制分析、恶意软件排查与漏洞挖掘。</p>
-        <div style="font-family:var(--mono);font-size:11.2px;color:var(--text-3);">HFS: Signal 84 · Facts 82 · Hype 24 | SA Track 07 (AI 安全与二进制审计)</div>
-      </article>
-      <article class="panel-box">
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;">
-          <span class="verdict-badge verdict-P1">⚡ P1 精读</span>
-          <span style="font-family:var(--mono);font-size:12px;font-weight:800;color:var(--accent);">Attention: 89 · release</span>
-        </div>
-        <h3 style="margin:0 0 6px;"><a href="https://github.com/K-Dense-AI/scientific-agent-skills" target="_blank" rel="noopener" style="color:var(--text);text-decoration:none;">K-Dense-AI/scientific-agent-skills ↗</a></h3>
-        <div style="font-family:var(--mono);font-size:11.5px;color:var(--good);margin-bottom:8px;">🔥 本周 +9,200 stars · ★ 55,810 · MIT · v2.72.0</div>
-        <p style="font-size:12.8px;color:var(--text-2);line-height:1.55;margin:0 0 8px;">收录 140+ 项科研与高级数据分析 Agent Skills，覆盖生物信息学、化学分子计算、量化金融建模与统计假设检验标准工作流。</p>
-        <div style="font-family:var(--mono);font-size:11.2px;color:var(--text-3);">HFS: Signal 82 · Facts 84 · Hype 18 | SA Track 04 (垂直行业技能库)</div>
-      </article>
-      <article class="panel-box">
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;">
-          <span class="verdict-badge verdict-P1">⚡ P1 精读</span>
-          <span style="font-family:var(--mono);font-size:12px;font-weight:800;color:var(--accent);">Attention: 86 · fact_check</span>
-        </div>
-        <h3 style="margin:0 0 6px;"><a href="https://github.com/heygen-com/hyperframes" target="_blank" rel="noopener" style="color:var(--text);text-decoration:none;">heygen-com/hyperframes ↗</a></h3>
-        <div style="font-family:var(--mono);font-size:11.5px;color:var(--good);margin-bottom:8px;">🔥 本周 +11,500 stars · ★ 77,522 · Apache-2.0 · v0.9.4</div>
-        <p style="font-size:12.8px;color:var(--text-2);line-height:1.55;margin:0 0 8px;">HeyGen 开源的面向编码 Agent 的确定性 HTML 转视频渲染框架（`HTML in, MP4 out`），支持逐帧时钟锁定与无头高清录制。</p>
-        <div style="font-family:var(--mono);font-size:11.2px;color:var(--text-3);">HFS: Signal 78 · Facts 82 · Hype 22 | SA Track 05 (生成式视觉与动画)</div>
-      </article>
-    </div>
-  </section>
+      <header class="stage-section-header">
+        <span class="stage-number">STAGE 03B · WEEKLY &amp; 7-DAY SURGING AI BREAKTHROUGHS</span>
+        <h2>周度热榜与近 7 天飙升能力突破雷达 (`since=weekly` &amp; `created:&gt;2026-10-26`)</h2>
+        <p>遵循每日研究追踪规范，额外扫描近 7 天飙升最快的自主智能体原型、通用结构化 JSON 生成式创作引擎与多 Agent 2D 空间编排仓库。</p>
+      </header>
+      <div class="weekly-grid">
+        <article class="panel-box">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;">
+            <span class="verdict-badge verdict-P0">🔥 P0 必学</span>
+            <span style="font-family:var(--mono);font-size:12px;font-weight:800;color:var(--accent);">Attention: 92 · headline</span>
+          </div>
+          <h3 style="margin:0 0 6px;"><a href="https://github.com/deepseek-ai/dsh-superagent-prototype" target="_blank" rel="noopener" style="color:var(--text);text-decoration:none;">deepseek-ai/dsh-superagent-prototype ↗</a></h3>
+          <div style="font-family:var(--mono);font-size:11.5px;color:var(--good);margin-bottom:8px;">🔥 建仓 6 天 +15,953 stars (今日 +3,870) · MIT</div>
+          <p style="font-size:12.8px;color:var(--text-2);line-height:1.55;margin:0 0 8px;">DeepSeek 官方开源的《Towards a More Autonomous Agent System》自主智能体原型，验证了「极简薄封装 Harness + 强推理模型自适应重规划」范式。</p>
+          <div style="font-family:var(--mono);font-size:11.2px;color:var(--text-3);">HFS: Signal 85 · Facts 82 · Hype 28 | SA Track 04 (智能体 Harness)</div>
+        </article>
+        <article class="panel-box">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;">
+            <span class="verdict-badge verdict-P1">⚡ P1 精读</span>
+            <span style="font-family:var(--mono);font-size:12px;font-weight:800;color:var(--accent);">Attention: 84 · release</span>
+          </div>
+          <h3 style="margin:0 0 6px;"><a href="https://github.com/storytold/craft-anything" target="_blank" rel="noopener" style="color:var(--text);text-decoration:none;">storytold/craft-anything ↗</a></h3>
+          <div style="font-family:var(--mono);font-size:11.5px;color:var(--good);margin-bottom:8px;">🔥 建仓 5 天 +6,841 stars (今日 +1,420) · Apache-2.0 · v0.4.2</div>
+          <p style="font-size:12.8px;color:var(--text-2);line-height:1.55;margin:0 0 8px;">通用结构化 JSON 规范驱动生成式创作引擎，通过让智能体输出受 Schema 强校验的中间态 JSON 规范，再由确定性编译器渲染为 2D/3D 场景、着色器与交互动画。</p>
+          <div style="font-family:var(--mono);font-size:11.2px;color:var(--text-3);">HFS: Signal 76 · Facts 78 · Hype 24 | SA Track 05 (生成式视觉与动画)</div>
+        </article>
+        <article class="panel-box">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;">
+            <span class="verdict-badge verdict-P1">⚡ P1 精读</span>
+            <span style="font-family:var(--mono);font-size:12px;font-weight:800;color:var(--accent);">Attention: 83 · thread_pulse</span>
+          </div>
+          <h3 style="margin:0 0 6px;"><a href="https://github.com/haydenschmitty/floorplan" target="_blank" rel="noopener" style="color:var(--text);text-decoration:none;">haydenschmitty/floorplan ↗</a></h3>
+          <div style="font-family:var(--mono);font-size:11.5px;color:var(--good);margin-bottom:8px;">🔥 建仓 4 天 +2,427 stars (今日 +610) · MIT · v0.2.0</div>
+          <p style="font-size:12.8px;color:var(--text-2);line-height:1.55;margin:0 0 8px;">多并行编码智能体 2D 空间平面图指挥台，将每个 Git Worktree 智能体映射为空间工位，实时可视化各 Agent 正在读写的文件锁热力图与潜在合并冲突。</p>
+          <div style="font-family:var(--mono);font-size:11.2px;color:var(--text-3);">HFS: Signal 74 · Facts 76 · Hype 22 | SA Track 04 (多智能体空间编排)</div>
+        </article>
+      </div>
+    </section>
 
   <!-- SECTION 4: VISUAL SUMMARY SVG & 7-CARD DECK -->
   <section id="visual-summary" style="margin-top:34px;margin-bottom:44px;">
@@ -1994,17 +1982,18 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
     <div class="panel-box" style="margin-bottom:18px;">
       <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px;">
         <div>
-          <h3 style="margin:0;">📊 2026-11-02 GitHub AI 雷达全景架构与 HFS 矩阵一图流 (SVG)</h3>
+          <h3 style="margin:0;">📊 2026-11-03 GitHub AI 雷达全景架构与 HFS 矩阵一图流 (SVG)</h3>
           <p style="font-size:12.5px;color:var(--text-2);margin:4px 0 0;">涵盖 6-Gate 持久化门控管线、Top 15 仓库 Signal/Facts/Hype 散点分布及 AI Solution Architect P0–P3 行动路线图。</p>
         </div>
         <div style="display:flex;gap:10px;flex-wrap:wrap;">
-          <a class="bh-btn" href="assets/github-ai-radar-2026-11-02.svg" target="_blank" rel="noopener">在新窗口打开高清 SVG (`assets/`) ↗</a>
+          <a class="bh-btn" href="assets/github-ai-radar-2026-11-03.svg" target="_blank" rel="noopener">在新窗口打开高清 SVG (`assets/`) ↗</a>
+          <a class="bh-btn" href="assets/github-ai-radar-2026-11-03.svg" target="_blank" rel="noopener">2026-11-02 历史归档 SVG ↗</a>
           <a class="bh-btn" href="assets/github-ai-radar-2026-11-01.svg" target="_blank" rel="noopener">2026-11-01 历史归档 SVG ↗</a>
           <a class="bh-btn primary" href="workshops/github-trending-radar/cards.zh-CN.html" target="_blank" rel="noopener">打开 7-Card 4:5 视觉报告 ↗</a>
         </div>
       </div>
       <div style="background:#0f172a;border-radius:12px;padding:12px;overflow-x:auto;border:1px solid var(--border-strong);">
-        <img src="assets/github-ai-radar-2026-11-02.svg" alt="2026-11-02 GitHub AI Trending Radar & Pi Durable News Agent Visual Summary" style="width:100%;height:auto;display:block;border-radius:8px;" />
+        <img src="assets/github-ai-radar-2026-11-03.svg" alt="2026-11-03 GitHub AI Trending Radar & Pi Durable News Agent Visual Summary" style="width:100%;height:auto;display:block;border-radius:8px;" />
       </div>
     </div>
   </section>
@@ -2026,70 +2015,54 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
 (() => {
   const PIPELINE_STEPS = [
     {
-      step: "GATE 01",
-      title: "Cron Tick & Durable Init",
-      meta: "23:00 CST · SQLite WAL",
-      sql: "INSERT INTO sweep_runs (run_id, triggered_at, status, checkpoint_step) VALUES ('sweep_20261102_2300', '2026-11-02T23:00:00+08:00', 'RUNNING', 'GATHER');",
-      summary: "由每日 23:00 定时任务唤醒 pi-durable 引擎，初始化本地 SQLite WAL 状态机（run_id = sweep_20261102_2300）。任何网络抖动或进程重启均可从最近一个 Step 零丢失恢复，避免重复调用大模型与 GitHub API。",
-      metrics: "Checkpointed Steps: 8/8 | Recovery Latency: 6.1ms | Duplicate API Calls: 0"
+        "step": "01. GATHER",
+        "title": "全量抓取与入库 (Trending + gh API)",
+        "meta": "22 候选仓 → SQLite WAL",
+        "summary": "抓取 GitHub Daily/Weekly Trending HTML 并通过 `gh api repos/{owner}/{repo}` 补齐 Star 增速、Release 版本号、SPDX 许可证与目录树，写入本地 SQLite WAL 状态机（`sweep_20261103_2300`）。",
+        "sql": "INSERT INTO sweep_items (sweep_id, full_name, stars_today, stars_total, raw_readme_sha) VALUES ('sweep_20261103_2300', ...);",
+        "metrics": "输入: 22 个热榜候选仓 | 抓取耗时: 2.2s | 状态存储: SQLite WAL 持久化"
     },
     {
-      step: "GATE 02",
-      title: "Multi-Source Gather",
-      meta: "21 Raw Repos Swept",
-      sql: "SELECT full_name, stars_today, stars_total, language FROM raw_candidates WHERE sweep_id = 'sweep_20261102_2300'; -- 21 rows",
-      summary: "并行抓取 GitHub Daily Trending 榜单、Weekly Trending 与近 7 天高增速 AI/Agent 仓库，共捕获 21 个候选仓库及完整一手元数据（今日新增 Star、总 Star、Fork、语言、最新 Release 与 Topics）。",
-      metrics: "GitHub Trending Daily: 18 | Surging AI Feeds: 3 | Total Raw Candidates: 21"
+        "step": "02. RELEVANCE GATE",
+        "title": "Jev 相关性门控 (>= 0.45)",
+        "meta": "22 → 16 仓 (拦截 6 个非 AI 仓)",
+        "summary": "执行 `@aliou/pi-jev` 风格结构化相关性门控，对标 AI Solution Architect 6 大核心技术域，100% 剔除 `floci`、`winboat`、`voidborne-d`、`G367`、`OpenCore-Legacy-Patcher`、`sing-box` 等 6 个非 AI 仓库。",
+        "sql": "SELECT * FROM sweep_items WHERE jev_relevance >= 0.45 AND is_ai_architect_domain = 1;",
+        "metrics": "通过: 16/22 仓 (72.7%) | 拦截: 6 个非 AI 工具/系统仓 | 门控阈值: 0.45"
     },
     {
-      step: "GATE 03",
-      title: "Jev Relevance & Worth Gate",
-      meta: "rel ≥ 0.45 · worth ≥ 0.35",
-      sql: "DELETE FROM candidates WHERE relevance_score < 0.45 OR worth_attention_score < 0.35; -- Filtered 6 noisy/non-AI repos",
-      summary: "执行两道确定性 Jev 门控：① Relevance Gate (<0.45 剔除)：拦截非 AI 仓库 Keychron/Keychron-Keyboards-Hardware-Design（rel=0.05）、hyprwm/Hyprland（rel=0.18）、Renhuai123/ziwei-doushu（rel=0.12）、NationalSecurityAgency/ghidra（rel=0.38）；② Worth-Attention Gate (<0.35 剔除)：拦截静态合集 public-apis/public-apis（novelty=0.22）与 trimstray/the-book-of-secret-knowledge（novelty=0.25）。",
-      metrics: "Passed: 15 AI/Agent Repos (71.4%) | Rejected: 6 Repos (Keychron, Hyprland, ziwei-doushu, ghidra, public-apis, secret-knowledge)"
+        "step": "03. WORTH & DEDUPE",
+        "title": "价值门控 (>= 0.35) 与同源归并",
+        "meta": "16 → 15 仓 (拦截 1 个引流套壳仓)",
+        "summary": "联合评估工程实质度、星叉比（Star/Fork Ratio）与架构新颖度，精准拦截星叉比高达 108.9× 的商业充值引流套壳项目 `AnyModelBot/AnyModelBot`（`worth = 0.22 < 0.35`），保留 15 个高价值 AI 工程项目。",
+        "sql": "SELECT * FROM relevant_items WHERE jev_worth >= 0.35 AND duplicate_cluster_lead = 1;",
+        "metrics": "通过: 15/16 仓 | 深度研究前节省 Token 开销: 60.4%"
     },
     {
-      step: "GATE 04",
-      title: "Same-Story Dedupe",
-      meta: "Cluster & Evidence Merge",
-      sql: "GROUP BY canonical_story_id HAVING same_story_confidence >= 0.75;",
-      summary: "对同一技术簇进行故事聚合与横向对比锚定：将 claude-mem、context-mode 与 mattpocock/skills 关联为「记忆与上下文工程三剑客」，将 dsh-superagent-prototype、worktrunk、t3code 与 paperclip 关联为「自主与并行 Agent Harness 舰队」，将 colibri、FreeToken 与 nanochat 关联为「推理与基座引擎矩阵」。",
-      metrics: "Unique Canonical Stories: 15 | Cross-Linked Comparison Clusters: 4"
+        "step": "04. SUBAGENT VERIFY",
+        "title": "news-researcher 一手声明核验",
+        "meta": "15 × 4 = 60 条源码/版本核验",
+        "summary": "派生受限只读子智能体逐一核验 15 个仓库的 `README.md`、Release 标签（`v1.1.0`、`v15.9.0`、`v0.3.1`、`v2.1.0`、`cli-v4.8.0`、`v3.3.0` 等）、依赖清单与核心源码目录，每仓核查 4 条具体技术声明。",
+        "sql": "SELECT repo_id, AVG(support_score) FROM verified_claims GROUP BY repo_id HAVING COUNT(*) = 4;",
+        "metrics": "核查声明: 60 条 | 源码实锤支持 (>= 0.70): 58/60 (96.7%) | 识别夸大宣传: 2/60"
     },
     {
-      step: "GATE 05",
-      title: "Importance × Taste Rank",
-      meta: "Weight × Freshness (1.0)",
-      sql: "ORDER BY (importance * topic_weight * source_weight * freshness_decay) DESC LIMIT 15;",
-      summary: "结合 AI Solution Architect 预设六大主题权重与 24h 新鲜度因子（freshness = 1.0），对 15 个入围仓库计算候选优先级，并派发并行子智能体核查任务。",
-      metrics: "Freshness Window: 24h (1.00x) | Parallel Subagent Workers: 5"
+        "step": "05. HFS SCORING",
+        "title": "Hype / Facts / Signal 三维打分",
+        "meta": "Attention (0–100) + P0–P3 评级",
+        "summary": "独立计算 Signal（架构师可行动性）、Facts（一手代码/版本实证）与 Hype（营销噱头惩罚），结合个人领域偏好权重计算综合 Attention Score 并划分 P0–P3 学习等级。",
+        "sql": "UPDATE radar_items SET attention = ROUND(CLAMP((0.50*signal + 0.35*facts - 0.25*hype + 0.40*relevance)*topic_weight, 0, 100));",
+        "metrics": "P0 必学: 5 仓 | P1 精读: 6 仓 | P2 观察: 3 仓 | P3 噱头预警: 1 仓"
     },
     {
-      step: "GATE 06",
-      title: "Claim-Support Subagents",
-      meta: "60 Claims Audited",
-      sql: "SELECT repo, count(*) AS claims, avg(support_score) FROM claim_verifications GROUP BY repo; -- 60 claims total",
-      summary: "每个入围仓库由独立 news-researcher 子智能体提取 4 条具体技术声明（架构机制、协议支持、开源许可证、性能指标），核验 README、源码目录与 Release 记录，拒绝无源码支撑的空气宣传。",
-      metrics: "Total Claims Checked: 60 (4 per repo) | Avg Support Score: 0.85 | Hype Flagged: 2 repos"
-    },
-    {
-      step: "GATE 07",
-      title: "HFS Tri-Axial Scoring",
-      meta: "Signal · Facts · Hype",
-      sql: "UPDATE stories SET attention = ROUND(0.50*signal + 0.35*facts - 0.25*hype + 0.40*relevance);",
-      summary: "独立评估每个仓库的 Signal（架构师可行动价值 0–100）、Facts（一手代码与实测完备度 0–100）、Hype（噱头/标题党程度 0–100），按公式合成 Attention Score 并映射至 P0–P3 学习等级。",
-      metrics: "Top Attention: 97 (agent-desktop) | Lowest Attention: 44 (heretic) | Median Signal: 78"
-    },
-    {
-      step: "GATE 08",
-      title: "Generative Card Render",
-      meta: "8 UI Card Templates",
-      sql: "SELECT card_type, count(*) FROM rendered_briefing_cards GROUP BY card_type; -- 8 distinct card types",
-      summary: "由主控 news-desk 根据 HFS 门禁规则（如 Attention ≥ 70 解锁 headline，Signal ≥ 60 解锁 signal_alert，Hype ≥ 40 强制触发 hype_watch）将 15 个仓库渲染为 8 种差异化生成式 UI 卡片，同步发布至个人主页。",
-      metrics: "Cards Rendered: 15 | Card Catalog Coverage: 8/8 Types | Bilingual Sync: ZH + EN"
+        "step": "06. GENERATIVE UI",
+        "title": "8 种生成式卡片与 SA 四维手册",
+        "meta": "8 类卡片 + 7-Card 报告 + SVG",
+        "summary": "将 15 个上榜项目映射为 8 种生成式情报卡片（`headline`、`signal_alert`、`fact_check`、`hype_watch`、`release`、`thread_pulse`、`quote`、`brief`），并输出架构设计、客户 Demo、Benchmark 与业务场景四维方案。",
+        "sql": "INSERT INTO published_digests (date, top_repo, p0_count, svg_asset, cards_html) VALUES ('2026-11-03', 'vercel-labs/agent-desktop', 5, ...);",
+        "metrics": "端到端扫描耗时: 15.8s (较串行无门控基线提速 2.53×)"
     }
-  ];
+];
 
   const TOPICS = {
     memory_context: { name: "Memory & Context 记忆工程", weight: 1.0 },
@@ -2102,483 +2075,510 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
 
   const REPOS = [
     {
-      id: "agent-desktop",
-      fullName: "vercel-labs/agent-desktop",
-      url: "https://github.com/vercel-labs/agent-desktop",
-      language: "Rust",
-      stars: 8488,
-      starsToday: 2243,
-      forks: 593,
-      topic: "browser_sandbox",
-      cardType: "headline",
-      verdict: "P0",
-      verdictLabel: "🔥 P0 必学 / 立即动手",
-      signal: 88,
-      facts: 86,
-      hype: 20,
-      relevance: 70,
-      description: "Vercel Labs 开源的 Rust 原生桌面自动化 CLI（v1.0.2），通过结构化无障碍树（Accessibility Tree）快照将 macOS / Windows 桌面 GUI 控制转化为确定性 AI Agent 指令。",
-      cardCalloutTitle: "HEADLINE FOCUS · 拒绝截图盲猜：基于无障碍树的确定性桌面 CUA 控制平面",
-      cardCalloutBody: "核心突破：摒弃高延迟、易漂移的全屏像素截图 OCR，直接提取 OS 原生 Accessibility Tree 生成精简语义节点引用与确定性动作命令，单日暴涨 +2,243 Stars。",
-      worthWhy: "上线即斩获 8,488 Stars（今日 +2,243），已发布 v1.0.2 稳定版（Apache-2.0）。它将 Web 端 Playwright Aria Snapshot 的成功经验完整复刻到了原生桌面端。",
-      saArchitecture: "在企业级 Computer-Use Agent (CUA) 架构中，采用「无障碍树语义快照优先（Accessibility-First）+ 视觉模型局部兜底」的混合管线，配合 AG-UI 行动前审批门禁。",
-      saDemo: "30 分钟内即可将 `agent-desktop` 封装为本地 MCP 工具，向客户现场演示：Coding Agent 在一个工作流内同时读写终端并自动化操控旧版桌面 ERP/财务客户端。",
-      saBenchmark: "纳入桌面 CUA 评测轨，对比「无障碍树 CLI vs. 全屏截图视觉 CUA」的单步端到端延迟、Token 消耗（降低 80%+）与跨分辨率点击准确率。",
-      saScenario: "✅ 适用：旧版桌面软件自动化、跨应用研发测试工作流、受控企业桌面数字员工。⛔ 不适用：完全由自绘 Canvas/DirectX 渲染且未暴露任何无障碍节点的纯游戏画面。",
-      claims: [
-        "✓ [0.96] Rust 原生构建，Apache-2.0 协议，已发布 v1.0.2 正式版（8,488 Stars，今日 +2,243）",
-        "✓ [0.95] 通过 OS 原生无障碍树（Accessibility Tree）暴露结构化 UI 元素与确定性动作原语",
-        "✓ [0.92] 相比基于全屏截图的视觉 CUA 循环，大幅降低每步 Token 开销与点击坐标漂移",
-        "✓ [0.90] CLI 优先设计，天然适配 Claude Code、Copilot CLI、Codex 等主流智能体宿主"
-      ]
+        "id": "agent-desktop",
+        "fullName": "vercel-labs/agent-desktop",
+        "url": "https://github.com/vercel-labs/agent-desktop",
+        "language": "Rust",
+        "stars": 11879,
+        "starsToday": 3792,
+        "forks": 811,
+        "topic": "browser_sandbox",
+        "cardType": "headline",
+        "verdict": "P0",
+        "verdictLabel": "🔥 P0 必学 / 立即动手",
+        "signal": 88,
+        "facts": 88,
+        "hype": 18,
+        "relevance": 70,
+        "description": "Vercel Labs 开源的跨平台桌面原生 GUI 智能体 CLI 与 C-FFI 库（v1.1.0，Apache-2.0）：基于系统级无障碍树（Accessibility Tree `@e1, @e2` 引用）全面打通 macOS、Windows (`UI Automation`) 与 Linux (`AT-SPI2`)。",
+        "cardCalloutTitle": "HEADLINE BREAKTHROUGH · v1.1.0 重磅跨越：全平台三端无障碍树控制 + C 语言 FFI 动态库",
+        "cardCalloutBody": "今日单日狂揽 +3,792 Stars 蝉联全网热榜第一（总 Star 达 11,879）：彻底告别昨日仅限 macOS 的局限，补齐 Windows UI Automation、Linux AT-SPI2 与 `libagent_desktop` C FFI 库，将桌面自动化 Token 开销降低 91%。",
+        "worthWhy": "连续两日霸榜第一且单日增速从 +2,243 扩大至 +3,792 Stars！v1.1.0 一次性补齐 Windows/Linux 原生支持与 C FFI 嵌入能力，是企业级 Computer Use 与老旧桌面软件 RPA 智能体的首选底座。",
+        "saArchitecture": "在 Azure Virtual Desktop (AVD) / Windows 365 云桌面智能体架构中，采用其「无障碍树快照 (`snapshot -i`) → `@e1` 确定性引用操作 → 局部视觉兜底」双通道架构，并通过 `libagent_desktop` C FFI 直接嵌入 C#/.NET 或 Python 宿主。",
+        "saDemo": "30 分钟打造「Windows 传统 ERP / SAP 客户端零 API 改造受控智能体」高管演示，实时展示 JSON 无障碍树毫秒级驱动本地软件。",
+        "saBenchmark": "在 `agent-framework-research` 中实测对比纯截图多模态循环 vs `agent-desktop v1.1.0` 的单步延迟（<25ms vs ~2.5s）、Token 消耗（降低 91%）与跨分辨率点击准确率。",
+        "saScenario": "✅ 适用：无 API 老旧桌面软件（ERP/财务/工业上位机）自动化、跨平台桌面端 E2E 测试。⛔ 不适用：已具备成熟 REST/GraphQL/MCP 接口的纯后端服务编排。",
+        "claims": [
+            "✓ [0.97] 2026-11-02 发布 v1.1.0，从 macOS 扩展至 Windows (`UI Automation`) 与 Linux (`at-spi2` + `libei`/`XTest`)",
+            "✓ [0.95] 新增 `ffi/` C 语言动态/静态库 (`libagent_desktop`) 与 `cbindgen` 自动生成的 `agent_desktop.h`",
+            "✓ [0.94] 将桌面窗口控件压缩为 `@e1, @e2` 交互式无障碍树引用，全命令支持 `--json` 结构化输出",
+            "✓ [0.98] GitHub 总 Star 达 11,879，2026-11-03 单日新增 +3,792 Stars（全网热榜第 1），Apache-2.0 协议"
+        ]
     },
     {
-      id: "claude-mem",
-      fullName: "thedotmack/claude-mem",
-      url: "https://github.com/thedotmack/claude-mem",
-      language: "TypeScript",
-      stars: 110380,
-      starsToday: 1799,
-      forks: 9631,
-      topic: "memory_context",
-      cardType: "headline",
-      verdict: "P0",
-      verdictLabel: "🔥 P0 必学 / 立即动手",
-      signal: 88,
-      facts: 84,
-      hype: 24,
-      relevance: 72,
-      description: "跨会话持久化记忆与上下文压缩引擎（v15.8.3）：自动捕获编码/通用 Agent 会话全量轨迹，利用 AI 压缩提炼高价值记忆并按渐进式披露注入后续会话。",
-      cardCalloutTitle: "HEADLINE FOCUS · 破 11 万 Star 的跨 Agent 记忆基础设施标杆",
-      cardCalloutBody: "解决了多工具协同开发中最痛的「换个 CLI 或新开 Worktree 就失忆」问题：通过统一的生命周期 Hook + SQLite 索引 + 渐进式披露检索，将跨会话上下文 Token 开销降低 70%+。",
-      worthWhy: "总 Star 突破 110,380 且今日继续暴涨 +1,799（最新 v15.8.3）。其「生命周期钩子捕获 → 异步摘要压缩 → 分层索引按需拉取（Progressive Disclosure）」是企业级 Agent Memory 教科书级的开源参考。",
-      saArchitecture: "借鉴其三层记忆架构（L1 Session 原始事件流 → L2 AI 语义压缩摘要卡片 → L3 SQLite FTS5 + 向量混合检索），可在 Azure Cosmos DB / PostgreSQL pgvector 上复刻企业级跨智能体共享记忆总线。",
-      saDemo: "45 分钟内挂载到本地 GitHub Copilot CLI / Claude Code 环境，向客户现场演示：Session A 排查修复的 Azure 私网 DNS 故障，Session B 新开窗口自动注入精确排障记忆。",
-      saBenchmark: "纳入 benchmark-harness-engineering 的长程多会话测试轨，对比 Mem0、Graphiti 与原生全量上下文拼接的准确率与首字延迟。",
-      saScenario: "✅ 适用：企业研发效能平台、跨渠道客服知识延续、多步运维排障 Agent。⛔ 不适用：严格禁止落盘任何会话轨迹的无状态高密合规飞地（需先接 Microsoft Purview 脱敏中间件）。",
-      claims: [
-        "✓ [0.96] 原生适配 Claude Code、Copilot、Codex、Gemini、Hermes、OpenClaw 等主流智能体宿主",
-        "✓ [0.94] 基于 SQLite + 向量混合存储实现本地零外部云依赖持久化（v15.8.3）",
-        "✓ [0.92] 采用 Progressive Disclosure（先返回轻量索引，按需拉取全文）避免撑爆上下文窗口",
-        "✓ [0.95] GitHub 真实总 Star 达 110,380，2026-11-02 单日新增 +1,799 Stars"
-      ]
+        "id": "security-audit-skill",
+        "fullName": "cloudflare/security-audit-skill",
+        "url": "https://github.com/cloudflare/security-audit-skill",
+        "language": "JavaScript",
+        "stars": 57925,
+        "starsToday": 1840,
+        "forks": 3776,
+        "topic": "ai_security",
+        "cardType": "signal_alert",
+        "verdict": "P0",
+        "verdictLabel": "🔥 P0 必学 / 立即动手",
+        "signal": 88,
+        "facts": 86,
+        "hype": 16,
+        "relevance": 68,
+        "description": "Cloudflare 官方开源的跨智能体应用安全代码审计 Skill（MIT，5.79 万 Star）：内置六阶段审计工作流、确定性 `coverage-ledger.mjs` 覆盖率账本与专门负责『证伪排查』的对抗验证子智能体。",
+        "cardCalloutTitle": "SIGNAL ALERT · Cloudflare 官方『对抗式证伪验证子智能体（Disproving Verifier）』消除安全误报",
+        "cardCalloutBody": "架构核心洞察：普通 LLM 代码扫描之所以被研发团队嫌弃，是因为误报率高达 60%+。Cloudflare 在 Phase 5 强制为每个疑似漏洞派生独立的只读 Verifier 子智能体，其唯一目标是『尝试推翻并证伪该漏洞』，存活下来的才输出。",
+        "worthWhy": "今日暴涨 +1,840 Stars 至 57,925 总 Star（Cloudflare 官方 MIT 开源，Hype 仅 16）。其「六阶段审计 + `coverage-ledger.mjs` 确定性账本门控 + 对抗式证伪子智能体」是企业级 AI 安全审查的标杆范式。",
+        "saArchitecture": "在 GitHub Copilot Code Review 与 Azure DevOps PR 安全门禁中复用其三段式架构：「并行探索 Hunter 子智能体 → `coverage-ledger.mjs` 确定性文件覆盖率门禁 → 独立证伪 Verifier 子智能体（置信度 0-100）」。",
+        "saDemo": "40 分钟现场对微服务代码库运行 `/security-audit --focus auth,secrets --verify`，展示 `coverage-ledger.mjs` 如何阻止模型偷懒跳文件，以及证伪子智能体如何过滤幻觉漏洞。",
+        "saBenchmark": "在 OWASP Benchmark 测试集上对比开启/关闭 Phase 5 对抗式证伪子智能体前后的漏洞检出率（Recall）、误报率（FPR）与 Token 消耗。",
+        "saScenario": "✅ 适用：企业 PR 自动安全代码审查、多语言仓库上线前威胁建模与越权/注入专项猎杀。⛔ 不适用：替代运行时 WAF/DDoS 防护或无源码二进制模糊测试（Fuzzing）。",
+        "claims": [
+            "✓ [0.96] Cloudflare 官方组织开源（MIT 协议），累计 57,925 Stars（今日 +1,840）与 3,776 Forks",
+            "✓ [0.95] 定义严密的六阶段工作流（侦察 → 威胁建模 → 深度猎杀 → 覆盖率门禁 → 对抗证伪 → 报告）",
+            "✓ [0.94] 内置零依赖 Node.js 脚本 `scripts/coverage-ledger.mjs`，追踪每个高危文件的审计完成态",
+            "✓ [0.93] Phase 5 为每个高危发现派生独立只读子智能体，专门寻找上游中间件防护证据以证伪误报"
+        ]
     },
     {
-      id: "context-mode",
-      fullName: "mksglu/context-mode",
-      url: "https://github.com/mksglu/context-mode",
-      language: "TypeScript",
-      stars: 33240,
-      starsToday: 1420,
-      forks: 2293,
-      topic: "memory_context",
-      cardType: "signal_alert",
-      verdict: "P0",
-      verdictLabel: "🔥 P0 必学 / 立即动手",
-      signal: 86,
-      facts: 82,
-      hype: 20,
-      relevance: 68,
-      description: "上下文窗口虚拟化与沙盒裁剪层（v1.0.169）：在嘈杂的 MCP 工具输出、大型日志与网页抓取进入 LLM 上下文前进行沙盒化拦截、FTS5 索引与按需切片检索。",
-      cardCalloutTitle: "SIGNAL ALERT · 立即行动：与 claude-mem 形成『会话外 + 会话内』双层上下文护城河",
-      cardCalloutBody: "核心架构洞察：Agent 上下文崩溃 80% 源于单次 MCP 工具返回数万行 JSON 或日志。context-mode 将工具输出重定向至本地沙盒 SQLite FTS5，仅向模型暴露高信噪比检索接口。",
-      worthWhy: "总 Star 达 33,240（今日 +1,420，高频迭代至 v1.0.169）。它与 `claude-mem` 完美互补：后者管「跨会话长期记忆」，前者管「单会话内工具输出防爆仓」。",
-      saArchitecture: "在企业 MCP Gateway 中引入「Tool Output Virtualization（工具输出虚拟化）」中间件：当 Azure Monitor / KQL / GitHub API 返回超过 4KB 载荷时，自动写入临时沙盒表并返回 Schema + FTS 检索句柄。",
-      saDemo: "30 分钟对比演示：直接用 MCP 拉取 5MB 生产报错日志导致上下文溢出 vs. 挂载 `context-mode` 后仅消耗 1.2K Tokens 精准定位根因。",
-      saBenchmark: "测评长程 SRE 排障任务中的峰值上下文窗口占用（Peak Context Tokens）、工具调用轮次与端到端成本降幅。",
-      saScenario: "✅ 适用：重度依赖 MCP 工具链的 SRE 排障 Agent、代码仓库考古、大规模日志/文档分析。⛔ 不适用：每次工具返回仅有几十字节的简单 CRUD 技能（无需额外沙盒代理层）。",
-      claims: [
-        "✓ [0.94] 将大体量工具输出拦截在主上下文窗口之外，通过本地沙盒与检索接口按需读取",
-        "✓ [0.92] 工程迭代极为活跃，已发布至 v1.0.169，累计获得 33,240 Stars（今日 +1,420）",
-        "✓ [0.90] 与主流 Coding Agent 及 MCP 客户端无缝集成，显著延长单次会话有效寿命",
-        "✓ [0.85] 采用自定义源码可用许可证（Custom License），企业商业化内嵌前需法务合规审查"
-      ]
+        "id": "claude-mem",
+        "fullName": "thedotmack/claude-mem",
+        "url": "https://github.com/thedotmack/claude-mem",
+        "language": "TypeScript",
+        "stars": 111455,
+        "starsToday": 1138,
+        "forks": 9711,
+        "topic": "memory_context",
+        "cardType": "headline",
+        "verdict": "P0",
+        "verdictLabel": "🔥 P0 必学 / 立即动手",
+        "signal": 88,
+        "facts": 84,
+        "hype": 22,
+        "relevance": 70,
+        "description": "破 11.1 万 Star 的跨会话持久化记忆压缩插件（v15.9.0，Apache-2.0）：自动捕获编码智能体生命周期 Hook，经 AI 蒸馏存入 SQLite + Chroma，并提供三层渐进式检索。",
+        "cardCalloutTitle": "HEADLINE MILESTONE · 11.1 万 Star 跨会话持久记忆标杆升至 v15.9.0（Apache-2.0 商业友好协议）",
+        "cardCalloutBody": "彻底解决 Coding Agent 新开会话即『失忆』的痛点：通过三层渐进式 MCP 检索（`search` 紧凑索引 → `timeline` 上下文时间线 → `get_observations` 完整载荷）大幅节省上下文窗口。",
+        "worthWhy": "总 Star 突破 111,455（今日 +1,138，Forks 9,711），发布 v15.9.0 且采用宽松的 Apache-2.0 协议，是当前全网最成熟的生产级 Agent Memory 参考实现。",
+        "saArchitecture": "在 Azure AI Foundry / Copilot 企业智能体架构中复用其「5 阶段生命周期 Hook 自动旁路采集 + SQLite/向量混合存储 + 3 层渐进式披露 MCP 工具」模式。",
+        "saDemo": "30 分钟现场演示：第一个会话重构接口并自动沉淀架构决策，第二个新会话零提示词自动检索恢复上下文，并通过 `:37777` Web UI 实时可视化记忆流。",
+        "saBenchmark": "对比全量历史对话拼接 vs `claude-mem` 三层渐进式检索在 20 轮跨会话工程任务中的首 Token 延迟（TTFT）、Token 压缩率与决策召回准确率。",
+        "saScenario": "✅ 适用：长周期研发数字员工、企业架构师专属知识副驾、跨天复杂排障。⛔ 不适用：未做租户隔离与 PII 脱敏的多租户共享环境。",
+        "claims": [
+            "✓ [0.96] GitHub 累计 111,455 Stars（今日 +1,138）与 9,711 Forks，最新版本 v15.9.0（Apache-2.0 协议）",
+            "✓ [0.94] 完整捕获 `SessionStart`、`UserPromptSubmit`、`PostToolUse`、`Stop`、`Summary`、`SessionEnd` 生命周期",
+            "✓ [0.92] 提供 `search`、`timeline`、`get_observations` 三层渐进式 MCP 检索接口（SQLite + Chroma）",
+            "✓ [0.91] 内置 Bun Worker 后台服务（端口 `:37777`）与实时 Web 记忆查看器"
+        ]
     },
     {
-      id: "dsh-superagent-prototype",
-      fullName: "deepseek-ai/dsh-superagent-prototype",
-      url: "https://github.com/deepseek-ai/dsh-superagent-prototype",
-      language: "TypeScript",
-      stars: 12083,
-      starsToday: 6059,
-      forks: 1252,
-      topic: "agent_harness",
-      cardType: "signal_alert",
-      verdict: "P0",
-      verdictLabel: "🔥 P0 必学 / 立即动手",
-      signal: 84,
-      facts: 80,
-      hype: 24,
-      relevance: 70,
-      description: "DeepSeek 官方开源的《Towards a More Autonomous Agent System》架构原型：今日单日狂揽 +6,059 Stars 登顶全网增速第一，探索面向长周期任务的自主规划、工具失败自愈与分层上下文管理。",
-      cardCalloutTitle: "SIGNAL ALERT · 全网单日增速第一 (+6,059★)：DeepSeek 官方高自主性 SuperAgent 原型",
-      cardCalloutBody: "核心演进方向：与 pi-durable-news-agent 的持久化编排思想呼应，展示顶尖推理模型团队如何用极简 TypeScript 薄封装 Harness 实现自主子目标拆解、环境反馈闭环验证与错误状态回滚重规划。",
-      worthWhy: "72 小时内从 5.8K 飙升至 12,083 Stars（今日 +6,059，增速全网第一），故从昨日 P1 正式晋升为 P0！它是理解推理大模型原生 Agent Harness 设计哲学的一手必读源码。",
-      saArchitecture: "精读其循环控制流（Loop Control）、工具输出截断策略与自我纠错（Self-Correction）状态机，结合 pi-durable 与 Microsoft Agent Framework (MAF) 的持久化 Checkpoint 机制打造高自治企业研究/编码智能体。",
-      saDemo: "结合 Azure AI Foundry 上的推理模型，45 分钟构建「自主代码库安全审计与架构考古 SuperAgent」客户演示。",
-      saBenchmark: "将其 Plan-Act-Reflect 循环与故障自愈逻辑纳入 `agent-framework-research` 基准套件，测试在 20+ 步复杂工具链注入故障时的自愈收敛率。",
-      saScenario: "✅ 适用：深度技术研究自动化、复杂代码库跨模块重构、自主数据分析。⛔ 不适用：流程高度固定、严禁模型自由探索的确定性银行核心账务交易。",
-      claims: [
-        "✓ [0.96] 2026-11-02 单日新增 +6,059 Stars 登顶全网增速榜首，总 Star 突破 12,083",
-        "✓ [0.92] DeepSeek 官方开源（MIT 协议）的高自主性智能体系统原型（TypeScript 实现）",
-        "✓ [0.88] 聚焦长程自主任务拆解、工具执行反馈闭环与动态重规划",
-        "✓ [0.80] 定位为架构探索原型（Prototype），生产落地需配合企业级沙盒与权限网关"
-      ]
+        "id": "thinkrail",
+        "fullName": "JetBrains/thinkrail",
+        "url": "https://github.com/JetBrains/thinkrail",
+        "language": "TypeScript",
+        "stars": 7350,
+        "starsToday": 1120,
+        "forks": 438,
+        "topic": "agent_harness",
+        "cardType": "release",
+        "verdict": "P0",
+        "verdictLabel": "🔥 P0 必学 / 立即动手",
+        "signal": 84,
+        "facts": 82,
+        "hype": 20,
+        "relevance": 68,
+        "description": "JetBrains 官方开源的下一代智能体开发环境（Agentic Development Environment，v0.3.1，Apache-2.0）：底层直接基于 `@mariozechner/pi-coding-agent` (`pi` v0.65.0) 构建，融合并行 Git Worktree、项目休眠架（Project Shelf）与双向同步活体规范（Living Specs）。",
+        "cardCalloutTitle": "RELEASE HIGHLIGHT · JetBrains 官方采用 `pi` 生态打造下一代 Agentic IDE (v0.3.1)",
+        "cardCalloutBody": "极具风向标意义的工程事件：老牌 IDE 巨头 JetBrains 没有闭门造车，而是直接选用 `@mariozechner/pi-coding-agent`（与我们雷达所基于的 `pi-durable-news-agent` 同属 `pi` 核心生态）打造 ThinkRail，推出与代码双向同步的 Living Specs。",
+        "worthWhy": "今日暴涨 +1,120 Stars 至 7,350 总 Star（JetBrains 官方 Apache-2.0 开源，v0.3.1）。不仅印证了与 `pi-durable-news-agent` 同源的 `pi` 智能体运行时的行业地位，更定义了「活体规范 + 并行 Worktree + 项目休眠恢复」的下一代研发范式。",
+        "saArchitecture": "在企业研发智能体平台设计中引入 ThinkRail 的三大核心抽象：① 任务级 Git Worktree 沙盒隔离；② Project Shelf 跨任务全状态休眠与秒级恢复；③ `specs/*.md` 与代码实现双向联动的 Living Specs 契约机制。",
+        "saDemo": "在客户研发效能工作坊中演示：在 ThinkRail 中修改 Living Spec 架构约束，底层的 `pi` 智能体在独立 Worktree 中自动同步代码实现并保持规范不腐化。",
+        "saBenchmark": "测评多任务并发切换时的上下文恢复耗时，以及引入双向 Living Specs 前后的「设计文档-代码实现漂移率（Spec Drift Rate）」。",
+        "saScenario": "✅ 适用：规范驱动开发（Spec-Driven Development）、架构师同时监管多个并行特性分支。⛔ 不适用：无需图形界面的纯无头 CI/CD 容器批处理流水线。",
+        "claims": [
+            "✓ [0.96] JetBrains 官方组织开源（Apache-2.0 协议），已发布 v0.3.1，总 Star 达 7,350（今日 +1,120）",
+            "✓ [0.95] `package.json` 直接集成 `@mariozechner/pi-coding-agent`、`pi-ai` 与 `pi-agent-core` (`^0.65.0`)",
+            "✓ [0.92] 原生内置 Git Worktree 并行任务隔离、Project Shelf 状态休眠与双向同步 Living Specs",
+            "✓ [0.90] 支持通过 ACP/MCP 协议统一编排 Claude Code、Codex 与自定义智能体"
+        ]
     },
     {
-      id: "colibri",
-      fullName: "JustVugg/colibri",
-      url: "https://github.com/JustVugg/colibri",
-      language: "C",
-      stars: 46280,
-      starsToday: 655,
-      forks: 5347,
-      topic: "inference_infra",
-      cardType: "release",
-      verdict: "P0",
-      verdictLabel: "🔥 P0 必学 / 立即动手",
-      signal: 80,
-      facts: 84,
-      hype: 20,
-      relevance: 64,
-      description: "Colibri (v2.1.0)：纯 C 语言从零编写的超轻量本地 LLM 推理服务器，兼容 OpenAI API，支持动态 KV Cache 压缩、投机解码与 GGUF 量化模型。",
-      cardCalloutTitle: "RELEASE HIGHLIGHT · 零 Python 依赖的纯 C 原生 OpenAI 兼容推理引擎",
-      cardCalloutBody: "架构亮点：几兆字节级纯 C 二进制即可提供完整 OpenAI `/v1/chat/completions` 接口、动态 KV 缓存压缩与 Speculative Decoding，是边缘设备、桌面 Sidecar 与高密容器的理想底座。",
-      worthWhy: "累计 46,280 Stars（今日 +655，Apache-2.0，v2.1.0）。对于需要在客户终端、工业网关或轻量容器内嵌入本地小模型（SLM）的架构师，Colibri 提供了比臃肿 Python 推理栈干净得多的 C 原生方案。",
-      saArchitecture: "在「云端大模型（Azure AI Foundry）+ 端侧小模型路由网关」混合架构中，使用 Colibri 作为零依赖本地 Sidecar 运行 Phi-4 / Qwen-3B GGUF 路由与分类模型。",
-      saDemo: "15 分钟编译单文件二进制并加载 GGUF 模型，向客户展示毫秒级启动、内存占用极低且直接兼容现有 OpenAI SDK 的本地离线推理服务。",
-      saBenchmark: "在 `Azure-Infra-Lab` 边缘推理测试轨中，对比 Colibri vs. llama.cpp server vs. Ollama 在开启 KV 压缩与投机解码前后的 TTFT、Decode tok/s 与内存 RSS。",
-      saScenario: "✅ 适用：嵌入式/工业边缘网关（Azure Local）、桌面 AI 应用内置推理 Sidecar、气隙隔离环境。⛔ 不适用：百卡级数据中心大规模分布式张量并行与 Disaggregated Prefill/Decode 集群。",
-      claims: [
-        "✓ [0.95] 纯 C 语言实现，零 Python 运行时依赖，Apache-2.0 开源协议（v2.1.0）",
-        "✓ [0.92] 原生内置 OpenAI API 兼容服务端、动态 KV 缓存压缩与投机解码（Speculative Decoding）",
-        "✓ [0.90] 直接支持主流 GGUF 量化模型格式，兼顾极小体积与高吞吐",
-        "✓ [0.91] GitHub 总 Star 达 46,280，2026-11-02 单日新增 +655 Stars"
-      ]
+        "id": "portal-ai-plugins",
+        "fullName": "spotify/portal-ai-plugins",
+        "url": "https://github.com/spotify/portal-ai-plugins",
+        "language": "TypeScript",
+        "stars": 2940,
+        "starsToday": 94,
+        "forks": 232,
+        "topic": "agent_harness",
+        "cardType": "signal_alert",
+        "verdict": "P0",
+        "verdictLabel": "🔥 P0 必学 / 立即动手",
+        "signal": 82,
+        "facts": 80,
+        "hype": 18,
+        "relevance": 68,
+        "description": "Spotify 官方开源的 Backstage 内部开发者门户（IDP）AI 插件全家桶（Apache-2.0，2,940 Stars）：包含 Agent Forge、MCP Hub、Claui、将繁重操作卸载给廉价模型的 `shunt` 路由器及 `agent-evals`。",
+        "cardCalloutTitle": "SIGNAL ALERT · 从低 Star 榜尾打捞出的企业级真金：Spotify 官方 Backstage AI 与 `shunt` 降本路由器",
+        "cardCalloutBody": "为什么我们需要 HFS 信号门控？该项目今日仅 +94 Stars，按纯 Star 排序会被埋没在第 19 名；但其内置的 `shunt`（前沿模型做大脑规划 + 廉价本地/Flash 模型干体力活）与 Backstage `mcp-hub` 对企业架构师价值极高（Attention 92 · P0）。",
+        "worthWhy": "Spotify 官方 Apache-2.0 开源 Monorepo，一次交付 6 个生产级包（`agent-forge`、`ai-GW`、`mcp-hub`、`claui`、`shunt`、`agent-evals`），是构建企业内部开发者门户（IDP）AI 能力的最佳蓝本。",
+        "saArchitecture": "直接借鉴 `packages/shunt` 的「主从异构模型卸载路由」模式（让昂贵的前沿推理模型只负责高层决策，将耗费大量 Token 的文件读写、正则检索与格式化交给廉价小模型或本地 Ollama），并在企业门户中集成 `mcp-hub` 统一纳管内部 MCP 服务。",
+        "saDemo": "45 分钟构建「企业 Backstage AI 开发者门户 + `shunt` 异构模型省钱路由」演示，直观呈现单次编码任务 Token 账单下降 55%+。",
+        "saBenchmark": "复用其内置的 `packages/agent-evals`，实测开启 `shunt` 卸载至 GPT-4o-mini / DeepSeek-Flash 前后的任务成功率、总耗时与单任务美元成本。",
+        "saScenario": "✅ 适用：企业平台工程（Platform Engineering / Backstage IDP）、Coding Agent 规模化 FinOps 降本。⛔ 不适用：无内部开发者门户诉求的纯 C 端消费级移动应用。",
+        "claims": [
+            "✓ [0.96] Spotify 官方开源（Apache-2.0 协议），累计 2,940 Stars（今日 +94）与 232 Forks",
+            "✓ [0.94] `packages/shunt` 实现前沿规划模型向廉价/本地 Worker 模型（Ollama/OpenAI/Anthropic）卸载繁重文件操作",
+            "✓ [0.93] 包含 Backstage 插件 `agent-forge`（对话界面）、`mcp-hub`（MCP 服务治理）、`ai-GW` 与 `claui`",
+            "✓ [0.91] 内置 `packages/agent-evals` 多模型智能体自动化评测套件"
+        ]
     },
     {
-      id: "scrapling",
-      fullName: "D4Vinci/Scrapling",
-      url: "https://github.com/D4Vinci/Scrapling",
-      language: "Python",
-      stars: 92401,
-      starsToday: 892,
-      forks: 9748,
-      topic: "browser_sandbox",
-      cardType: "fact_check",
-      verdict: "P1",
-      verdictLabel: "⚡ P1 推荐精读 / 借鉴模式",
-      signal: 78,
-      facts: 82,
-      hype: 24,
-      relevance: 62,
-      description: "Scrapling (v0.5)：逼近 10 万 Star 的自适应 Web 抓取与智能体网页接地框架，具备 DOM 改版元素自愈重定位（Adaptive Element Relocation）与内置 MCP Server。",
-      cardCalloutTitle: "FACT CHECK · 核验通过：DOM 漂移自适应重定位 + 原生 MCP 网页接地服务",
-      cardCalloutBody: "声明核验：Scrapling 不仅覆盖从单次隐身请求到全并发爬虫的完整管线，其核心杀手锏是当目标网站前端改版导致 CSS/XPath 失效时，自动利用特征相似度重定位目标节点。",
-      worthWhy: "总 Star 高达 92,401（今日 +892，BSD-3-Clause，v0.5）。直接解决 Track 02（Agentic Commerce & Web IQ）中最常见的外部电商/竞品页面改版导致采集流水线断裂的工程痛点。",
-      saArchitecture: "将 Scrapling 的「自适应 DOM 特征锚定」与 Lightpanda 轻量无头浏览器结合，作为企业 Web IQ 与实时竞品价格/库存巡检 Agent 的高可用数据采集层。",
-      saDemo: "在客户工作坊中现场修改目标网页 DOM 层级与 Class 名称，演示传统爬虫立即报错而 Scrapling 自适应重定位成功提取商品结构化数据。",
-      saBenchmark: "测试其在 50 个常见电商/新闻页面结构扰动下的元素重定位召回率、单页解析耗时与反爬绕过成功率。",
-      saScenario: "✅ 适用：企业公开市场情报采集、Agentic Commerce 实时价格接地、RAG 外部知识源持续同步。⛔ 不适用：违反目标站点 robots/ToS 或涉及未授权绕过付费墙的违规抓取。",
-      claims: [
-        "✓ [0.94] 提供自适应元素重定位机制，在网页结构改版后自动匹配历史目标元素",
-        "✓ [0.91] 从轻量 HTTP 请求到高并发无头浏览器会话提供统一 Python API（v0.5）",
-        "✓ [0.90] 支持作为 MCP Server 接入智能体工作流，提供高可靠网页实时接地",
-        "✓ [0.95] BSD-3-Clause 协议，GitHub 累计 92,401 Stars，今日新增 +892 Stars"
-      ]
+        "id": "colibri",
+        "fullName": "JustVugg/colibri",
+        "url": "https://github.com/JustVugg/colibri",
+        "language": "C",
+        "stars": 47016,
+        "starsToday": 803,
+        "forks": 5431,
+        "topic": "inference_infra",
+        "cardType": "release",
+        "verdict": "P1",
+        "verdictLabel": "⚡ P1 推荐精读 / 借鉴模式",
+        "signal": 80,
+        "facts": 84,
+        "hype": 20,
+        "relevance": 64,
+        "description": "Colibri (v2.1.0，Apache-2.0，4.7 万 Star)：纯 C 语言从零编写的超轻量本地 LLM 推理服务器，兼容 OpenAI API，支持动态 KV Cache 压缩、投机解码与 GGUF 量化模型。",
+        "cardCalloutTitle": "RELEASE HIGHLIGHT · 突破 4.7 万 Star 的零 Python 依赖纯 C 原生推理引擎 (v2.1.0)",
+        "cardCalloutBody": "几兆字节级纯 C 二进制即可提供完整 OpenAI `/v1/chat/completions` 接口、动态 KV 缓存压缩与 Speculative Decoding，是边缘设备、桌面 Sidecar 与高密容器的理想底座。",
+        "worthWhy": "累计突破 47,016 Stars（今日 +803，Apache-2.0，v2.1.0）。对于需要在客户终端、工业网关或轻量容器内嵌入本地小模型（SLM）的架构师，Colibri 提供了比臃肿 Python 推理栈干净得多的 C 原生方案。",
+        "saArchitecture": "在「云端大模型（Azure AI Foundry）+ 端侧小模型路由网关」混合架构中，使用 Colibri 作为零依赖本地 Sidecar 运行 Phi-4 / Qwen-3B GGUF 路由与脱敏分类模型。",
+        "saDemo": "15 分钟编译单文件二进制并加载 GGUF 模型，向客户展示毫秒级启动、内存占用极低且直接兼容现有 OpenAI SDK 的本地离线推理服务。",
+        "saBenchmark": "在 `Azure-Infra-Lab` 边缘推理测试轨中，对比 Colibri vs. llama.cpp server vs. Ollama 在开启 KV 压缩与投机解码前后的 TTFT、Decode tok/s 与内存 RSS。",
+        "saScenario": "✅ 适用：嵌入式/工业边缘网关（Azure Local）、桌面 AI 应用内置推理 Sidecar、气隙隔离环境。⛔ 不适用：百卡级数据中心大规模分布式张量并行与 Disaggregated Prefill/Decode 集群。",
+        "claims": [
+            "✓ [0.95] 纯 C 语言实现，零 Python 运行时依赖，Apache-2.0 开源协议（v2.1.0）",
+            "✓ [0.92] 原生内置 OpenAI API 兼容服务端、动态 KV 缓存压缩与投机解码（Speculative Decoding）",
+            "✓ [0.90] 直接支持主流 GGUF 量化模型格式，兼顾极小体积与高吞吐",
+            "✓ [0.95] GitHub 总 Star 达 47,016，2026-11-03 单日新增 +803 Stars（Forks 5,431）"
+        ]
     },
     {
-      id: "worktrunk",
-      fullName: "max-sixty/worktrunk",
-      url: "https://github.com/max-sixty/worktrunk",
-      language: "Rust",
-      stars: 9886,
-      starsToday: 115,
-      forks: 353,
-      topic: "agent_harness",
-      cardType: "release",
-      verdict: "P1",
-      verdictLabel: "⚡ P1 推荐精读 / 借鉴模式",
-      signal: 76,
-      facts: 80,
-      hype: 16,
-      relevance: 60,
-      description: "Worktrunk (v0.81.0)：专为并行 AI Coding Agent 舰队设计的 Rust 极速 Git Worktree 生命周期管理 CLI，将工作树创建、环境拷贝、Hook 触发与清理合并标准化。",
-      cardCalloutTitle: "RELEASE HIGHLIGHT · 并行编码 Agent 时代的 Git Worktree 基础设施",
-      cardCalloutBody: "当一位架构师同时驱动 5–10 个 Claude Code / Copilot CLI 实例并行开发时，原生 `git worktree` 的目录管理与依赖同步极其繁琐，Worktrunk 用 Rust 将其压缩为毫秒级标准操作。",
-      worthWhy: "接近破万 Star（9,886 Stars，v0.81.0，Hype 仅 16）。它正是我们当前多会话并行研发模式（Worktree-per-Agent）底层最趁手的工程效率工具。",
-      saArchitecture: "在企业研发数字工厂（AI SWE Platform）中，采用 Worktrunk 管理每个智能体任务的独立 Git Worktree 隔离沙盒、自动注入 `.env`/缓存软链并执行合并前预检 Hook。",
-      saDemo: "20 分钟现场演示：用一条 `wt` 命令瞬间拉起 3 个隔离工作树，分别交由 3 个 Agent 并行实现特性、编写测试与重构文档，互不污染工作区。",
-      saBenchmark: "对比原生手动脚本与 Worktrunk 在大仓库下创建/销毁 10 个并发 Worktree 的耗时与磁盘增量开销。",
-      saScenario: "✅ 适用：多 Coding Agent 并行开发、自动化 PR 修复流水线、本地多分支高频切换。⛔ 不适用：不基于 Git 版本控制的纯文档或非代码协作场景。",
-      claims: [
-        "✓ [0.95] Rust 编写，MIT/Apache-2.0 双许可，已迭代至成熟的 v0.81.0 版本",
-        "✓ [0.93] 专为并行 AI Agent 工作树创建、依赖共享、状态查看与清理设计",
-        "✓ [0.90] 极低噱头度（Hype=16），纯靠硬核工程实用性积累 9,886 Stars",
-        "✓ [0.89] 与 t3code、Claude Code、Copilot CLI 等多工作树智能体流天然互补"
-      ]
+        "id": "scrapling",
+        "fullName": "D4Vinci/Scrapling",
+        "url": "https://github.com/D4Vinci/Scrapling",
+        "language": "Python",
+        "stars": 93931,
+        "starsToday": 1658,
+        "forks": 9868,
+        "topic": "browser_sandbox",
+        "cardType": "fact_check",
+        "verdict": "P1",
+        "verdictLabel": "⚡ P1 推荐精读 / 借鉴模式",
+        "signal": 78,
+        "facts": 82,
+        "hype": 20,
+        "relevance": 64,
+        "description": "Scrapling (v0.5，BSD-3-Clause，9.39 万 Star)：逼近 10 万 Star 的自适应 Web 抓取与智能体网页接地框架，具备 DOM 改版元素自愈重定位（Adaptive Element Relocation）与内置 MCP Server。",
+        "cardCalloutTitle": "FACT CHECK · 核验通过：DOM 漂移自适应重定位 + 原生 MCP 网页接地服务（9.39 万 Star）",
+        "cardCalloutBody": "声明核验：Scrapling 不仅覆盖从单次隐身请求到全并发爬虫的完整管线，其核心杀手锏是当目标网站前端改版导致 CSS/XPath 失效时，自动利用特征相似度重定位目标节点。",
+        "worthWhy": "今日增速翻倍至 +1,658 Stars（总 Star 达 93,931，BSD-3-Clause，v0.5）。直接解决 Track 02（Agentic Commerce & Web IQ）中最常见的外部电商/竞品页面改版导致采集流水线断裂的工程痛点。",
+        "saArchitecture": "将 Scrapling 的「自适应 DOM 特征锚定」与内置 MCP Server 接入企业 Web IQ 与实时竞品价格/库存巡检 Agent，作为高可用网页采集接地层。",
+        "saDemo": "在客户工作坊中现场修改目标网页 DOM 层级与 Class 名称，演示传统爬虫立即报错而 Scrapling 自适应重定位成功提取商品结构化数据。",
+        "saBenchmark": "测试其在 50 个常见电商/新闻页面结构扰动下的元素重定位召回率、单页解析耗时与反爬绕过成功率。",
+        "saScenario": "✅ 适用：企业公开市场情报采集、Agentic Commerce 实时价格接地、RAG 外部知识源持续同步。⛔ 不适用：违反目标站点 robots/ToS 或涉及未授权绕过付费墙的违规抓取。",
+        "claims": [
+            "✓ [0.94] 提供自适应元素重定位机制，在网页结构改版后自动匹配历史目标元素",
+            "✓ [0.92] 内置 MCP Server 支持，可直接作为智能体网页接地工具（v0.5，BSD-3-Clause）",
+            "✓ [0.91] 从轻量 HTTP 请求到高并发隐身无头浏览器会话提供统一 Python API",
+            "✓ [0.96] GitHub 累计 93,931 Stars，2026-11-03 单日新增 +1,658 Stars（Forks 9,868）"
+        ]
     },
     {
-      id: "t3code",
-      fullName: "pingdotgg/t3code",
-      url: "https://github.com/pingdotgg/t3code",
-      language: "TypeScript",
-      stars: 40561,
-      starsToday: 3100,
-      forks: 9032,
-      topic: "agent_harness",
-      cardType: "headline",
-      verdict: "P1",
-      verdictLabel: "⚡ P1 推荐精读 / 借鉴模式",
-      signal: 78,
-      facts: 76,
-      hype: 28,
-      relevance: 66,
-      description: "Theo (pingdotgg) 团队打造的极简多编码智能体 Web/桌面 GUI 工作台（t3.codes，v0.1.6）：今日再度狂揽 +3,100 Stars 突破 4 万大关，主打低延迟多 Worktree 编排与 Diff 审阅。",
-      cardCalloutTitle: "HEADLINE VELOCITY · 突破 4 万 Star 的多 Agent 编码指挥台",
-      cardCalloutBody: "连续两日单日新增 3,000+ Stars，证明开发者对「脱离黑框终端、在统一画布中同时指挥多个基于 Git Worktree 的 Coding Agents 并快速 Review Diff」的强烈刚需。",
-      worthWhy: "总 Star 突破 40,561（今日 +3,100，MIT，v0.1.6）。其前端交互状态同步、多 Worktree 并发任务流与极简键盘优先 UX 值得在设计内部研发平台时精读借鉴。",
-      saArchitecture: "借鉴其「单仓库多 Worktree 隔离 + 统一状态流汇聚 + 轻量级 Diff 审批门」的交互架构，用于设计企业级软件工程智能体（SWE Agent）门户。",
-      saDemo: "在给研发效能团队做交流时，对比展示 GitHub Copilot App 多会话工作树与 t3code 的极简 Web 编排体验。",
-      saBenchmark: "提取其多任务并行切换与前端流式渲染性能作为 Web Agent Workbench 的 UI 响应度参考基线。",
-      saScenario: "✅ 适用：工程团队多分支并行重构、前端/全栈快速原型迭代、多模型编码对比。⛔ 不适用：缺乏企业级 RBAC、私有网络隔离与合规审计诉求的金融核心系统直接裸跑。",
-      claims: [
-        "✓ [0.96] 2026-11-02 单日新增 +3,100 Stars，总 Star 突破 40,561（Forks 9,032）",
-        "✓ [0.88] MIT 开源协议，已发布 v0.1.6 版本，提供多编码智能体图形化会话管理",
-        "✓ [0.85] 基于 TypeScript 构建，围绕 Git Worktree 并发工作流与 Diff 审阅优化",
-        "✓ [0.78] 社区热度极高（含网红效应加成，Hype=28），核心价值在于极简交互范式"
-      ]
+        "id": "worktrunk",
+        "fullName": "max-sixty/worktrunk",
+        "url": "https://github.com/max-sixty/worktrunk",
+        "language": "Rust",
+        "stars": 10310,
+        "starsToday": 437,
+        "forks": 370,
+        "topic": "agent_harness",
+        "cardType": "release",
+        "verdict": "P1",
+        "verdictLabel": "⚡ P1 推荐精读 / 借鉴模式",
+        "signal": 76,
+        "facts": 80,
+        "hype": 16,
+        "relevance": 60,
+        "description": "Worktrunk (v0.81.0，MIT/Apache-2.0，突破 1.03 万 Star)：专为并行 AI Coding Agent 舰队设计的 Rust 极速 Git Worktree 生命周期管理 CLI，将工作树创建、环境拷贝、Hook 触发与清理合并标准化。",
+        "cardCalloutTitle": "RELEASE HIGHLIGHT · 正式突破 1 万 Star 大关：并行编码 Agent 的 Git Worktree 基础设施",
+        "cardCalloutBody": "当一位架构师同时驱动 5–10 个 Claude Code / Copilot CLI 实例并行开发时，原生 `git worktree` 的目录管理与依赖同步极其繁琐，Worktrunk 用 Rust 将其压缩为毫秒级标准操作。",
+        "worthWhy": "今日正式突破万星里程碑（10,310 Stars，今日 +437，v0.81.0，Hype 仅 16）。它正是我们当前多会话并行研发模式（Worktree-per-Agent）底层最趁手的工程效率工具。",
+        "saArchitecture": "在企业研发数字工厂（AI SWE Platform）中，采用 Worktrunk 管理每个智能体任务的独立 Git Worktree 隔离沙盒、自动注入 `.env`/缓存软链并执行合并前预检 Hook。",
+        "saDemo": "20 分钟现场演示：用一条 `wt` 命令瞬间拉起 4 个隔离工作树，分别交由 4 个 Agent 并行实现特性、编写测试与重构文档，互不污染工作区。",
+        "saBenchmark": "对比原生手动脚本与 Worktrunk 在大仓库下创建/销毁 10 个并发 Worktree 的耗时与磁盘增量开销。",
+        "saScenario": "✅ 适用：多 Coding Agent 并行开发、自动化 PR 修复流水线、本地多分支高频切换。⛔ 不适用：不基于 Git 版本控制的纯文档或非代码协作场景。",
+        "claims": [
+            "✓ [0.95] Rust 编写，MIT/Apache-2.0 双许可，已迭代至成熟的 v0.81.0 版本",
+            "✓ [0.93] 专为并行 AI Agent 工作树创建、依赖共享、状态查看与清理合并设计",
+            "✓ [0.90] 极低噱头度（Hype=16），纯靠硬核工程实用性积累口碑",
+            "✓ [0.95] 2026-11-03 总 Star 突破 10,310（今日 +437 Stars，Forks 370）"
+        ]
     },
     {
-      id: "paperclip",
-      fullName: "paperclipai/paperclip",
-      url: "https://github.com/paperclipai/paperclip",
-      language: "TypeScript",
-      stars: 110189,
-      starsToday: 507,
-      forks: 18256,
-      topic: "agent_harness",
-      cardType: "thread_pulse",
-      verdict: "P1",
-      verdictLabel: "⚡ P1 推荐精读 / 借鉴模式",
-      signal: 74,
-      facts: 78,
-      hype: 28,
-      relevance: 64,
-      description: "Paperclip (v2026.1023.0)：破 11 万 Star 的『零人公司（Zero-Human Companies）』开源多智能体组织级编排平面，提供目标对齐、角色委派、Token 预算控制与全链路审计。",
-      cardCalloutTitle: "COMMUNITY THREAD PULSE · 11 万 Star 的多智能体『公司级目标与预算控制平面』",
-      cardCalloutBody: "剥离『零人公司』的营销口号后，Paperclip 的工程内核非常扎实：它解决的不是单个 Agent 怎么调工具，而是 20 个异构 Agent 如何围绕业务 OKR 分解工单、锁定预算上限并防止死循环烧钱。",
-      worthWhy: "总 Star 高达 110,189（今日 +507，Forks 18,256，MIT）。其「组织级目标树（Goal Hierarchy）+ 每 Agent 预算熔断（Budget Cap）+ 跨角色工单流转」是企业级多智能体治理的极佳参考。",
-      saArchitecture: "在设计企业级多部门协同 Agent 平台时，引入 Paperclip 的「三层控制平面（目标分解层 → 角色契约与预算配额层 → 不可变审计账本层）」，对接底层 Azure AI Foundry 智能体。",
-      saDemo: "构建一个包含「产品需求拆解 Agent + 编码实现 Agent + 安全合规审计 Agent」的三角色闭环 Demo，现场展示当某个子任务 Token 超支时自动触发预算熔断与升级人工审批。",
-      saBenchmark: "测评其在多层级任务委派下的协调税（Coordination Tax）、死循环检测召回率与预算控制精度。",
-      saScenario: "✅ 适用：跨职能自动化运营流水线（内容/电商/工单处理）、带严格 Token 预算配额的多 Agent 实验场。⛔ 不适用：将『零人工』口号当真而在医疗、法务或核心生产发布中完全取消人类审批门。",
-      claims: [
-        "✓ [0.94] GitHub 累计 110,189 Stars 与 18,256 Forks（今日 +507），MIT 开源协议",
-        "✓ [0.90] 提供多智能体角色定义、任务工单流转、预算上限控制与活动审计面板（v2026.1023.0）",
-        "✓ [0.86] 支持编排 Claude Code、Codex、OpenClaw 等多种底层执行 Agent",
-        "✓ [0.76] 『Zero-human companies』口号带有一定传播噱头（Hype=28），实际核心价值是编排治理控制面"
-      ]
+        "id": "impeccable",
+        "fullName": "pbakaus/impeccable",
+        "url": "https://github.com/pbakaus/impeccable",
+        "language": "Rust",
+        "stars": 101196,
+        "starsToday": 1680,
+        "forks": 5984,
+        "topic": "agent_harness",
+        "cardType": "fact_check",
+        "verdict": "P1",
+        "verdictLabel": "⚡ P1 推荐精读 / 借鉴模式",
+        "signal": 76,
+        "facts": 80,
+        "hype": 24,
+        "relevance": 62,
+        "description": "Paul Bakaus 开源的前端设计品味与『反 AI 廉价感（Anti-AI-Slop）』工程套件（`cli-v4.8.0`，Apache-2.0，突破 10.1 万 Star）：将 19 个设计引导 Skill 与一个零 LLM 调用的 Rust 静态反模式扫描器（`impeccable detect`，检测 62 种 UI 反模式）合二为一。",
+        "cardCalloutTitle": "FACT CHECK · 绝非纯 Prompt 鸡汤：`cli-v4.8.0` 内置零 LLM 调用的 Rust 62 项前端反模式扫描器",
+        "cardCalloutBody": "一手源码核查惊喜：很多人以为它只是个提示词包，但源码 `cli/` 目录下其实是一个纯 Rust 编写的极速静态分析器，可在毫秒级、零 Token 消耗下精准揪出『紫蓝渐变泛滥、卡片套卡片、对比度失格』等 62 种典型 AI 味前端反模式。",
+        "worthWhy": "总 Star 突破 101,196（今日 +1,680，Apache-2.0，`cli-v4.8.0`）。完美诠释了「前置审美引导 Skill + 后置 Rust 确定性静态门禁」的黄金组合，直接提升客户 PoC 界面的高管质感。",
+        "saArchitecture": "在前端与客户 Demo 自动生成流水线中，将 `npx impeccable detect` 嵌入 CI 验收门禁：模型生成 HTML/React 后先跑 Rust 静态扫描，违规项归零才允许渲染交付。",
+        "saDemo": "拿一个典型充满『AI 廉价模板感』的仪表盘，现场运行 `impeccable detect` 50 毫秒揪出 15 处反模式，再调用 `/polish` 与 `/typeset` 一键重塑为专业出版级界面。",
+        "saBenchmark": "在 50 个智能体生成的 Web 页面上测评接入 `impeccable` 前后的 62 项反模式检出数、WCAG 对比度达标率与扫描耗时（<50ms）。",
+        "saScenario": "✅ 适用：高管汇报 Demo 界面打磨、AI 辅助前端工程、设计系统 CI 质量门禁。⛔ 不适用：无任何 UI 界面的纯后端/底层内核项目。",
+        "claims": [
+            "✓ [0.96] GitHub 总 Star 突破 101,196（今日 +1,680，Forks 5,984），Apache-2.0 协议，发布 `cli-v4.8.0`",
+            "✓ [0.95] `cli/` 目录提供原生 Rust 静态分析器，零 LLM 调用即可扫描 62 种 HTML/CSS/JSX AI 反模式",
+            "✓ [0.91] 提供 `/audit`、`/critique`、`/polish`、`/typeset`、`/layout`、`/distill` 等 19 个设计引导命令",
+            "✓ [0.89] 兼容 Claude Code、GitHub Copilot、Cursor、Windsurf 与 Gemini CLI"
+        ]
     },
     {
-      id: "mattpocock-skills",
-      fullName: "mattpocock/skills",
-      url: "https://github.com/mattpocock/skills",
-      language: "Shell",
-      stars: 309895,
-      starsToday: 970,
-      forks: 26072,
-      topic: "memory_context",
-      cardType: "quote",
-      verdict: "P1",
-      verdictLabel: "⚡ P1 推荐精读 / 借鉴模式",
-      signal: 74,
-      facts: 76,
-      hype: 22,
-      relevance: 60,
-      description: "Matt Pocock 开源的个人 Claude Code / AI Coding Agent 生产级 Skills 与指令工程库（v1.3.2），总 Star 高达 30.9 万，今日新增 +970 Stars。",
-      cardCalloutTitle: "ARCHITECTURAL QUOTE · 30.9 万 Star 验证的模块化『Skills-as-Code』工程范式",
-      cardCalloutBody: "核心洞察：不要把所有规矩塞进一个 2 万字的巨型 `CLAUDE.md`；将高频工程动作（规划、TDD、重构、PR 审查、TypeScript 类型体操）拆分为独立、可测试、按需加载的原子化 Skill 模块。",
-      worthWhy: "高达 309,895 Stars（今日 +970，MIT，v1.3.2）。它是全网研究「如何把顶级工程师的隐性经验编码为高确定性 Agent Skill」的最具影响力样本库。",
-      saArchitecture: "直接对标我们自己的 HVE Core 与 Copilot Skills 体系：遵循「渐进式技能加载（Skill Routing）+ 输入输出契约约束 + 最小上下文占用」原则，为企业客户构建内部黄金架构规范 Skill 库。",
-      saDemo: "向客户研发团队展示如何将企业内部的《Azure 命名规范》《安全代码审查清单》封装为 3 个标准化 `SKILL.md` 文件，让团队所有人的 Coding Agent 瞬间具备资深架构师水准。",
-      saBenchmark: "对比「巨型单文件 System Prompt」与「按需路由原子 Skill」在指令遵循率（Instruction Following）与首轮代码一次通过率上的差异。",
-      saScenario: "✅ 适用：企业研发规范沉淀与分发、团队统一 AI 编码工作流（规划/测试/提交）。⛔ 不适用：期望仅靠静态 Markdown Skill 替代后端确定性安全沙盒或权限校验。",
-      claims: [
-        "✓ [0.96] GitHub 总 Star 高达 309,895（Forks 26,072），2026-11-02 单日新增 +970 Stars",
-        "✓ [0.92] MIT 协议开源（v1.3.2），收录经过日常高强度生产验证的模块化 Agent Skills",
-        "✓ [0.89] 示范了从单一臃肿提示词向可组合、按需加载 Skill 目录演进的最佳实践",
-        "✓ [0.85] 以轻量 Shell 与 Markdown 规范为主，极易迁移至 Copilot、Claude Code 与 Cursor"
-      ]
+        "id": "mattpocock-skills",
+        "fullName": "mattpocock/skills",
+        "url": "https://github.com/mattpocock/skills",
+        "language": "Shell",
+        "stars": 311000,
+        "starsToday": 1164,
+        "forks": 26159,
+        "topic": "memory_context",
+        "cardType": "quote",
+        "verdict": "P1",
+        "verdictLabel": "⚡ P1 推荐精读 / 借鉴模式",
+        "signal": 74,
+        "facts": 76,
+        "hype": 22,
+        "relevance": 60,
+        "description": "Matt Pocock 开源的个人 Claude Code / AI Coding Agent 生产级 Skills 与指令工程库（v1.3.2，MIT），总 Star 突破 31.1 万，今日新增 +1,164 Stars。",
+        "cardCalloutTitle": "ARCHITECTURAL QUOTE · 31.1 万 Star 验证的模块化『Skills-as-Code』工程范式",
+        "cardCalloutBody": "核心洞察：不要把所有规矩塞进一个 2 万字的巨型 `CLAUDE.md`；将高频工程动作（`write-a-prd`、`grill-me` 压力追问、`tdd` 红绿重构、`request-refactor-plan`）拆分为独立、可测试、按需加载的原子化 Skill 模块。",
+        "worthWhy": "高达 311,000 Stars（今日 +1,164，MIT，v1.3.2）。它是全网研究「如何把顶级工程师的隐性经验编码为高确定性 Agent Skill」的最具影响力样本库。",
+        "saArchitecture": "直接对标我们自己的 HVE Core 与 Copilot Skills 体系：遵循「渐进式技能加载（Skill Routing）+ 输入输出契约约束 + 最小上下文占用」原则，为企业客户构建内部黄金架构规范 Skill 库。",
+        "saDemo": "向客户研发团队展示如何将企业内部的《Azure 命名规范》《安全代码审查清单》封装为 3 个标准化 `SKILL.md` 文件，让团队所有人的 Coding Agent 瞬间具备资深架构师水准。",
+        "saBenchmark": "对比「巨型单文件 System Prompt」与「按需路由原子 Skill」在指令遵循率（Instruction Following）与首轮代码一次通过率上的差异。",
+        "saScenario": "✅ 适用：企业研发规范沉淀与分发、团队统一 AI 编码工作流（规划/测试/提交）。⛔ 不适用：期望仅靠静态 Markdown Skill 替代后端确定性安全沙盒或权限校验。",
+        "claims": [
+            "✓ [0.96] GitHub 总 Star 突破 311,000（Forks 26,159），2026-11-03 单日新增 +1,164 Stars",
+            "✓ [0.92] MIT 协议开源（v1.3.2），收录 20 个经过日常高强度生产验证的模块化 Agent Skills",
+            "✓ [0.90] 示范了从单一臃肿提示词向可组合、按需加载 Skill 目录演进的最佳实践",
+            "✓ [0.88] 以轻量 Shell 与 Markdown 规范为主，极易迁移至 Copilot、Claude Code 与 Cursor"
+        ]
     },
     {
-      id: "freetoken",
-      fullName: "FlashML-org/FreeToken",
-      url: "https://github.com/FlashML-org/FreeToken",
-      language: "Python",
-      stars: 15850,
-      starsToday: 325,
-      forks: 1576,
-      topic: "inference_infra",
-      cardType: "fact_check",
-      verdict: "P1",
-      verdictLabel: "⚡ P1 推荐精读 / 借鉴模式",
-      signal: 68,
-      facts: 70,
-      hype: 34,
-      relevance: 58,
-      description: "将『数据中心级大模型推理服务』带入桌面与边缘设备（v0.2.1）：针对 DeepSeek-V4、Qwen、GLM、MiniMax 等超大规模稀疏 MoE 架构优化本地运行与专家卸载。",
-      cardCalloutTitle: "FACT CHECK · 桌面端跑巨型 MoE 模型的真实物理边界核查",
-      cardCalloutBody: "事实核查：利用 MoE 稀疏激活特性（500B+ 总参数每 Token 仅激活 8B–37B）+ 冷专家主机内存/NVMe 分层卸载，确实可在大内存工作站跑通巨型 MoE，但吞吐受限于 PCIe 带宽，适合单并发深思考而非高并发服务。",
-      worthWhy: "累计 15,850 Stars（今日 +325，Apache-2.0，v0.2.1）。与我们 Track 01 的 DeepSeek-V4.1-Flash MoE 云端推理经济学形成极佳的「云-边对照」。",
-      saArchitecture: "拆解其 MoE 专家路由预取（Expert Prefetching）、冷热专家显存-内存异构调度与 KV 量化实现，用于指导制造业/医疗边缘一体机（Azure Local）定容。",
-      saDemo: "为要求「核心代码与敏感合同绝对不出本地工作站」的客户规划单机高配 GPU + 大内存 MoE 本地推理 PoC。",
-      saBenchmark: "测量其在 batch_size=1 与 batch_size=8 下运行稀疏 MoE 模型的 Prefill TTFT 与 Decode tok/s 衰减曲线。",
-      saScenario: "✅ 适用：气隙隔离（Air-Gapped）研发内网、单用户高隐私代码审查工作站、边缘一体机。⛔ 不适用：百人以上企业并发共享 API 网关（必须上 vLLM / SGLang 多卡集群）。",
-      claims: [
-        "✓ [0.86] 针对 MoE（Mixture-of-Experts）稀疏激活模型优化桌面与边缘端异构卸载推理",
-        "✓ [0.82] Apache-2.0 协议，已发布 v0.2.1，支持 DeepSeek、Qwen、GLM、MiniMax 模型家族",
-        "✓ [0.76] 『Datacenter-scale model serving to your desktop』含营销修辞（Hype=34），受限于桌面内存带宽",
-        "✓ [0.88] GitHub 累计 15,850 Stars，2026-11-02 单日新增 +325 Stars"
-      ]
+        "id": "hex",
+        "fullName": "anomalyco/hex",
+        "url": "https://github.com/anomalyco/hex",
+        "language": "Rust",
+        "stars": 4323,
+        "starsToday": 1134,
+        "forks": 249,
+        "topic": "voice_multimodal",
+        "cardType": "thread_pulse",
+        "verdict": "P1",
+        "verdictLabel": "⚡ P1 推荐精读 / 借鉴模式",
+        "signal": 72,
+        "facts": 78,
+        "hype": 20,
+        "relevance": 56,
+        "description": "基于 Rust + Swift 构建的 macOS 本地优先按键说话（Push-to-Talk）语音转写工具（v3.3.0，MIT，4,323 Stars）：在 Apple Silicon 本地运行 Whisper 与 NVIDIA Parakeet ASR 模型，且仓库日常 Issue/PR/发版由 AI Coding Agent 自主维护。",
+        "cardCalloutTitle": "COMMUNITY THREAD PULSE · 端侧毫秒级语音输入编码 + 『AI 智能体自主维护开源仓库』真实实验",
+        "cardCalloutBody": "双重看点：① 本地 Metal/ANE 跑 Parakeet/Whisper 让架构师按住快捷键即可用 180+ 词/分钟的语音向 Coding Agent 口述复杂架构需求，零云端隐私泄露；② 该仓库自身正是 Anomaly 团队开展『AI 智能体自主维护开源项目』的活体实验场。",
+        "worthWhy": "今日狂揽 +1,134 Stars 至 4,323 总 Star（MIT，v3.3.0）。既完美呼应我们 Track 03（Realtime Voice & ASR），又提供了观察「AI Agent 自主处理 Issue/PR 与签名发版」的一手工程样本。",
+        "saArchitecture": "借鉴其 Rust 核心状态机 + Swift 原生音频采集/Metal 推理的分层架构设计端侧语音助手，并研究其「AI 自主维护 + 人类高危合并审批门」的开源治理流水线。",
+        "saDemo": "演示按住 Option 键直接用中英混杂语音口述一段微服务架构重构指令，本地 Parakeet 模型亚秒级上屏并触发 Copilot 执行。",
+        "saBenchmark": "在 Apple Silicon 上对比 Parakeet-TDT 与 Whisper-large-v3-turbo 的词错误率（WER）、松开按键到文字上屏延迟（ms）与内存占用。",
+        "saScenario": "✅ 适用：高隐私要求的本地开发者语音输入、医疗/法务离线语音录入终端。⛔ 不适用：跨平台 Windows/Linux 服务器端多说话人会议分离（当前仅限 macOS 客户端）。",
+        "claims": [
+            "✓ [0.94] 采用 Rust (79%) + Swift (20%) 编写，MIT 协议，已发布签名安装包版本 `v3.3.0`（4,323 Stars，今日 +1,134）",
+            "✓ [0.92] 支持在 Apple Silicon 本地运行 Whisper 与 Parakeet 模型，语音数据零上云",
+            "✓ [0.90] README 明确声明该项目处于由 AI 智能体自主维护（处理 Issue、PR 与版本发布）的公开实验中",
+            "✓ [0.93] 工程完成度高、无夸张营销（Hype=20），提供完整的 Homebrew 与源码构建链路"
+        ]
     },
     {
-      id: "nanochat",
-      fullName: "karpathy/nanochat",
-      url: "https://github.com/karpathy/nanochat",
-      language: "Python",
-      stars: 59701,
-      starsToday: 325,
-      forks: 8394,
-      topic: "inference_infra",
-      cardType: "brief",
-      verdict: "P2",
-      verdictLabel: "👀 P2 持续观察 / 备选雷达",
-      signal: 60,
-      facts: 78,
-      hype: 16,
-      relevance: 46,
-      description: "Andrej Karpathy 开源的极简全栈 ChatGPT 训练与微调教学基线（『$100 美元买到的最佳 ChatGPT』），从分词器、预训练、SFT 到 Web UI 一应俱全。",
-      cardCalloutTitle: "EXECUTIVE BRIEF · 5.9 万 Star 的全栈大模型训练原理『透明玻璃盒』",
-      cardCalloutBody: "零过度抽象、代码极其干净（Hype 仅 16）：用单个单机多卡脚本串联起 Tokenizer → Pretraining → Midtraining → SFT → RL 与推理服务，是理解 LLM 端到端生命周期的最佳教学参考。",
-      worthWhy: "总 Star 达 59,701（今日 +325，MIT）。虽然企业架构师不会在生产中从零手搓百元级基座模型（因此归为 P2），但它是向客户高管与研发团队讲透「预训练 vs 后训练对齐」本质的绝佳教具。",
-      saArchitecture: "将其极简代码结构作为内部大模型原理赋能工作坊（LLM Internals Workshop）的标准走读蓝本，帮助团队理解 KV Cache、RoPE 与 SFT 损失掩码的底层实现。",
-      saDemo: "在 Azure ND/NC 系列单节点 GPU VM 上，用小规模行业语料跑通一套可视化的端到端微调实验课。",
-      saBenchmark: "可作为单节点 PyTorch 编译优化（`torch.compile` / FlashAttention）吞吐效率的干净基线。",
-      saScenario: "✅ 适用：企业 AI 架构师与算法团队底层原理实训、高校/实验室教学基线。⛔ 不适用：企业生产环境直接采用微型自训模型替代成熟商业/开源主力基座模型。",
-      claims: [
-        "✓ [0.96] Andrej Karpathy 出品，MIT 协议，累计 59,701 Stars 与 8,394 Forks（今日 +325）",
-        "✓ [0.94] 完整覆盖分词、预训练、SFT 与轻量 Web 聊天界面的端到端极简 Python 实现",
-        "✓ [0.90] 宣传克制诚实（Hype=16），明确标定百元级算力预算下的能力边界",
-        "✓ [0.80] 定位为教育与黑客松基线，非企业生产级高并发推理框架"
-      ]
+        "id": "mika",
+        "fullName": "wangzan101/Mika",
+        "url": "https://github.com/wangzan101/Mika",
+        "language": "Kotlin",
+        "stars": 5941,
+        "starsToday": 980,
+        "forks": 1155,
+        "topic": "browser_sandbox",
+        "cardType": "brief",
+        "verdict": "P2",
+        "verdictLabel": "👀 P2 持续观察 / 备选雷达",
+        "signal": 66,
+        "facts": 72,
+        "hype": 28,
+        "relevance": 55,
+        "description": "Android 端侧 GUI 智能体助手（v0.1.34，Apache-2.0，5,941 Stars）：首创『Mika 虚拟屏幕（VirtualDisplay）』后台并发执行机制，让 AI 在隐藏虚拟屏中操作 App 而完全不打断用户当前前台手机使用。",
+        "cardCalloutTitle": "EXECUTIVE BRIEF · Android 后台隐藏 `VirtualDisplay` 虚拟屏解决移动端 GUI 智能体抢屏痛点",
+        "cardCalloutBody": "架构巧思：传统手机 GUI Agent 执行任务时会霸占主屏幕导致用户无法操作手机；Mika 利用 Android 系统级 `VirtualDisplay` 创建独立后台虚拟屏幕并在画中画小窗展示进度，前台后台互不干扰。",
+        "worthWhy": "今日新增 +980 Stars 至 5,941 总 Star（Apache-2.0，v0.1.34）。其「后台虚拟显示沙盒 + 无障碍树/VLM 双模接地」为移动端自动化测试与手持终端 RPA 提供了极具启发性的隔离思路。",
+        "saArchitecture": "在设计企业级移动 App 自动化巡检或物流手持终端（PDA）智能体时，借鉴其「独立 `VirtualDisplay` 隔离渲染 + 虚拟输入注入 + 敏感支付动作挂起确认」架构。",
+        "saDemo": "演示在 Android 设备画中画小窗（虚拟屏）中由智能体自动完成多步表单填报，同时主屏幕正常浏览文档。",
+        "saBenchmark": "测评其在 Android 14/15 上的跨 App 任务完成率、后台虚拟屏帧率/功耗开销以及敏感权限拦截准确性。",
+        "saScenario": "✅ 适用：移动 App 自动化回归测试云真机农场、企业定制手持终端辅助操作。⛔ 不适用：未经企业 MDM 严密管控的员工个人手机（依赖高危无障碍/Shizuku 权限）。",
+        "claims": [
+            "✓ [0.93] 纯 Kotlin 编写的 Android 原生工程（`v0.1.34`，Apache-2.0），累计 5,941 Stars（今日 +980，Forks 1,155）",
+            "✓ [0.91] 通过 Android `VirtualDisplay` 实现『Mika 虚拟屏幕』后台隔离执行，支持小窗实时监控与随时接管",
+            "✓ [0.89] 同时支持无障碍节点树（Accessibility Tree）快速模式与多模态视觉（VLM）截图模式",
+            "✓ [0.82] 依赖 Android 无障碍服务与可选 Shizuku 高级权限，企业落地需重点评估终端合规边界"
+        ]
     },
     {
-      id: "kronos",
-      fullName: "shiyu-coder/Kronos",
-      url: "https://github.com/shiyu-coder/Kronos",
-      language: "Python",
-      stars: 45823,
-      starsToday: 630,
-      forks: 7554,
-      topic: "inference_infra",
-      cardType: "brief",
-      verdict: "P2",
-      verdictLabel: "👀 P2 持续观察 / 备选雷达",
-      signal: 56,
-      facts: 68,
-      hype: 32,
-      relevance: 48,
-      description: "Kronos：面向金融市场『K 线与交易时序语言』的专用基座大模型，将离散化金融价格序列转化为自回归 Token 建模，今日新增 +630 Stars。",
-      cardCalloutTitle: "EXECUTIVE BRIEF · 金融量化时序 Token 化基座模型持续走热",
-      cardCalloutBody: "展示了如何将非自然语言的垂直行业连续时序信号（OHLCV K 线流）通过专用词表（Tokenizer）离散化，复用 Transformer 架构进行跨市场零样本预测。",
-      worthWhy: "总 Star 升至 45,823（今日 +630）。对于服务银行、券商、量化基金与能源交易客户（FSI）的架构师，是理解「垂直时序大模型 vs 通用 LLM」分工的典型案例。",
-      saArchitecture: "在金融投研多智能体架构中，应采用「通用推理 LLM 负责研报/新闻事件解读 + Kronos 类垂直时序模型负责高频量价特征提取」的双擎协同模式。",
-      saDemo: "结合 Microsoft Fabric Real-Time Intelligence (Eventhouse / KQL)，演示流式行情接入 → 时序模型特征推理 → 投研 Agent 生成风控简报。",
-      saBenchmark: "提醒客户：金融时序模型极易出现样本外过拟合（Out-of-Sample Decay），必须引入严格滚动时间窗回测（Walk-Forward Validation）。",
-      saScenario: "✅ 适用：券商/基金量化特征工程研究、金融时序异常波动预警辅助。⛔ 不适用：未经严格实盘风控与回测验证直接用于自动化实盘交易下单。",
-      claims: [
-        "✓ [0.86] 针对金融市场 K 线（Candlestick）与时序设计专用离散化 Tokenizer 与预训练基座",
-        "✓ [0.84] GitHub 累计 45,823 Stars 与 7,554 Forks（今日 +630），MIT 开源协议",
-        "✓ [0.72] 仓库主干提交停留在 2026-04，近期因社区量化 AI 榜单持续获得流量关注",
-        "✓ [0.70] 金融市场非平稳性强，任何预测指标均需警惕回测幸存者偏差（Hype=32）"
-      ]
+        "id": "kronos",
+        "fullName": "shiyu-coder/Kronos",
+        "url": "https://github.com/shiyu-coder/Kronos",
+        "language": "Python",
+        "stars": 46313,
+        "starsToday": 503,
+        "forks": 7635,
+        "topic": "inference_infra",
+        "cardType": "brief",
+        "verdict": "P2",
+        "verdictLabel": "👀 P2 持续观察 / 备选雷达",
+        "signal": 56,
+        "facts": 68,
+        "hype": 32,
+        "relevance": 48,
+        "description": "Kronos（MIT，4.63 万 Star）：面向金融市场『K 线与交易时序语言』的专用基座大模型，将离散化金融价格序列转化为自回归 Token 建模，今日新增 +503 Stars。",
+        "cardCalloutTitle": "EXECUTIVE BRIEF · 金融量化时序 Token 化基座模型突破 4.63 万 Star",
+        "cardCalloutBody": "展示了如何将非自然语言的垂直行业连续时序信号（OHLCV K 线流）通过专用词表（Tokenizer）离散化，复用 Transformer 架构进行跨市场零样本预测。",
+        "worthWhy": "总 Star 升至 46,313（今日 +503）。对于服务银行、券商、量化基金与能源交易客户（FSI）的架构师，是理解「垂直时序大模型 vs 通用 LLM」分工的典型案例。",
+        "saArchitecture": "在金融投研多智能体架构中，应采用「通用推理 LLM 负责研报/新闻事件解读 + Kronos 类垂直时序模型负责高频量价特征提取」的双擎协同模式。",
+        "saDemo": "结合 Microsoft Fabric Real-Time Intelligence (Eventhouse / KQL)，演示流式行情接入 → 时序模型特征推理 → 投研 Agent 生成风控简报。",
+        "saBenchmark": "提醒客户：金融时序模型极易出现样本外过拟合（Out-of-Sample Decay），必须引入严格滚动时间窗回测（Walk-Forward Validation）。",
+        "saScenario": "✅ 适用：券商/基金量化特征工程研究、金融时序异常波动预警辅助。⛔ 不适用：未经严格实盘风控与回测验证直接用于自动化实盘交易下单。",
+        "claims": [
+            "✓ [0.86] 针对金融市场 K 线（Candlestick）与时序设计专用离散化 Tokenizer 与预训练基座",
+            "✓ [0.85] GitHub 累计 46,313 Stars 与 7,635 Forks（今日 +503），MIT 开源协议",
+            "✓ [0.74] 连续多日稳居 GitHub Python 热榜前列，在量化金融开发者社区关注度高",
+            "✓ [0.70] 金融市场非平稳性强，任何预测指标均需警惕回测幸存者偏差（Hype=32）"
+        ]
     },
     {
-      id: "claude-code-game-studios",
-      fullName: "Donchitos/Claude-Code-Game-Studios",
-      url: "https://github.com/Donchitos/Claude-Code-Game-Studios",
-      language: "Shell",
-      stars: 33162,
-      starsToday: 1380,
-      forks: 4486,
-      topic: "agent_harness",
-      cardType: "hype_watch",
-      verdict: "P2",
-      verdictLabel: "👀 P2 持续观察 / 备选雷达",
-      signal: 52,
-      facts: 58,
-      hype: 54,
-      relevance: 50,
-      description: "将 Claude Code 包装为『完整游戏开发工作室』（v1.2.0）：内置 49 个角色化 AI Agents、72 个工作流 Skills，模拟真实游戏工作室层级指挥体系。",
-      cardCalloutTitle: "HYPE WATCH (Hype = 54) · 49 个 Agent 拟人化层级包装 vs 确定性 Harness 实效",
-      cardCalloutBody: "噱头预警：用 49 个 Markdown 角色 Prompt 模拟公司科层制极具传播噱头（3.3 万 Star，今日 +1,380），但在工程实践中会导致严重的上下文传声筒失真与 Token 爆炸！真正高效的游戏/动画生产应采用「精简角色 + 60 FPS 确定性代码门禁」。",
-      worthWhy: "非常有代表性的「高 Star 社区爆款 vs 架构师冷静拆解」案例！值得花 15 分钟浏览其 72 个 Godot / Unity / Unreal 领域 Skill 的目录拆分思路，但切勿照搬其 49 层拟人化汇报链。",
-      saArchitecture: "反面教材与正面启发并存：启发在于按游戏引擎沉淀标准化 Skill 模板；教训在于多智能体编排超过 4–5 个活跃角色且缺乏确定性中间态校验时，端到端成功率会按指数级衰减。",
-      saDemo: "与我们 Track 06（HVE Rapid Game Prototyping）同台对比：展示为什么「3 个专注 Agent + 自动化空间哈希碰撞/帧率门禁」比「49 个只会开会写文档的拟人 Agent」更能产出可玩的 60 FPS 游戏。",
-      saBenchmark: "可作为多智能体「过度拟人化通信开销（Coordination Tax）」的典型对照样本。",
-      saScenario: "✅ 适用：独立游戏开发者提取单个引擎辅助 Skill 提示词灵感。⛔ 不适用：在生产研发流水线中盲目开启 49 个串行/层级 Agent 空耗 Token。",
-      claims: [
-        "✓ [0.85] 仓库内包含 49 个 Agent 角色配置与 72 个面向 Godot/Unity/Unreal 的 Skill 脚本（v1.2.0）",
-        "✓ [0.82] 累计获得 33,162 Stars（今日 +1,380），在独立游戏与 Claude Code 社区传播极广",
-        "✕ [0.45] 『完整替代游戏工作室层级』存在明显标题党夸大（Hype=54），主要为 Shell/Markdown 提示词集合",
-        "✓ [0.75] 缺乏确定性编译/帧率回归测试闭环，需要人工频繁介入兜底"
-      ]
+        "id": "claude-code-game-studios",
+        "fullName": "Donchitos/Claude-Code-Game-Studios",
+        "url": "https://github.com/Donchitos/Claude-Code-Game-Studios",
+        "language": "Shell",
+        "stars": 34320,
+        "starsToday": 1181,
+        "forks": 4574,
+        "topic": "agent_harness",
+        "cardType": "hype_watch",
+        "verdict": "P2",
+        "verdictLabel": "👀 P2 持续观察 / 备选雷达",
+        "signal": 52,
+        "facts": 58,
+        "hype": 54,
+        "relevance": 50,
+        "description": "将 Claude Code 包装为『完整游戏开发工作室』（v1.2.0，MIT，3.43 万 Star）：内置 49 个角色化 AI Agents、72 个工作流 Skills，模拟真实游戏工作室层级指挥体系。",
+        "cardCalloutTitle": "HYPE WATCH (Hype = 54) · 49 个 Agent 拟人化层级包装 vs 确定性 Harness 实效",
+        "cardCalloutBody": "噱头预警：用 49 个 Markdown 角色 Prompt 模拟公司科层制极具传播噱头（3.43 万 Star，今日 +1,181），但在工程实践中会导致严重的上下文传声筒失真与 Token 爆炸！真正高效的游戏/动画生产应采用「精简角色 + 60 FPS 确定性代码门禁」。",
+        "worthWhy": "非常有代表性的「高 Star 社区爆款 vs 架构师冷静拆解」案例！值得花 15 分钟浏览其 72 个 Godot / Unity / Unreal 领域 Skill 的目录拆分思路，但切勿照搬其 49 层拟人化汇报链。",
+        "saArchitecture": "反面教材与正面启发并存：启发在于按游戏引擎沉淀标准化 Skill 模板；教训在于多智能体编排超过 4–5 个活跃角色且缺乏确定性中间态校验时，端到端成功率会按指数级衰减。",
+        "saDemo": "与我们 Track 06（HVE Rapid Game Prototyping）同台对比：展示为什么「3 个专注 Agent + 自动化空间哈希碰撞/帧率门禁」比「49 个只会开会写文档的拟人 Agent」更能产出可玩的 60 FPS 游戏。",
+        "saBenchmark": "可作为多智能体「过度拟人化通信开销（Coordination Tax）」的典型对照样本。",
+        "saScenario": "✅ 适用：独立游戏开发者提取单个引擎辅助 Skill 提示词灵感。⛔ 不适用：在生产研发流水线中盲目开启 49 个串行/层级 Agent 空耗 Token。",
+        "claims": [
+            "✓ [0.85] 仓库内包含 49 个 Agent 角色配置与 72 个面向 Godot/Unity/Unreal 的 Skill 脚本（v1.2.0）",
+            "✓ [0.83] 累计获得 34,320 Stars（今日 +1,181，Forks 4,574），在独立游戏与 Claude Code 社区传播极广",
+            "✕ [0.45] 『完整替代游戏工作室层级』存在明显标题党夸大（Hype=54），主要为 Shell/Markdown 提示词集合",
+            "✓ [0.75] 缺乏确定性编译/帧率回归测试闭环，需要人工频繁介入兜底"
+        ]
     },
     {
-      id: "heretic",
-      fullName: "p-e-w/heretic",
-      url: "https://github.com/p-e-w/heretic",
-      language: "Python",
-      stars: 37864,
-      starsToday: 404,
-      forks: 4311,
-      topic: "ai_security",
-      cardType: "hype_watch",
-      verdict: "P3",
-      verdictLabel: "🛡️ P3 警惕噱头 / 仅作安全攻防研究",
-      signal: 42,
-      facts: 56,
-      hype: 58,
-      relevance: 45,
-      description: "Heretic (v2.0.0)：针对开放权重语言模型的全自动安全对齐移除（Uncensoring / Abliteration）工具，通过定向干预激活向量剥离模型内置拒绝行为。",
-      cardCalloutTitle: "HYPE WATCH (Hype = 58 · P3) · 开放权重模型『一键去对齐』揭示的模型层脆弱性",
-      cardCalloutBody: "安全架构师警示：Heretic 高达 3.78 万 Star 的流行再次证明——只要攻击者拿到开放模型权重或微调权限，纯靠模型内部 RLHF 安全对齐（Model-Level Refusal）在几分钟内就会被定向正交化剥离！企业安全绝不能只赌模型自己『懂规矩』。",
-      worthWhy: "触发 P3（`Hype >= 55 & Signal < 45`）：企业生产环境严禁部署移除安全对齐的失控模型（且 AGPL-3.0 协议存在强传染性风险）。但作为安全架构师，它是最直观的「为什么必须建设模型外部确定性护栏」教学反例。",
-      saArchitecture: "直接强化我们在 Track 07（AI Security）的纵深防御架构：即便底层模型被 Abliteration 剥离了拒绝本能，外层的 L1 Azure AI Content Safety / Prompt Shields + L2 确定性 MCP 工具策略网关 + L4 硬件意图仲裁依然能 100% 阻断违规操作。",
-      saDemo: "在企业安全架构评审会上作为威胁建模（Threat Modeling）案例：解释为什么私有化部署开源模型时，模型权重防篡改签名与模型外层独立策略网关缺一不可。",
-      saBenchmark: "可在隔离红队实验室中用于验证外层安全网关（Guardrails）在面对「零内部对齐裸模型」时的独立拦截率。",
-      saScenario: "✅ 适用：AI 安全红队研究表征工程（Representation Engineering）与测试外层护栏独立性。⛔ 不适用：严禁用于任何面向企业员工或外部客户的生产服务（合规违规 + AGPL-3.0 传染风险）。",
-      claims: [
-        "✓ [0.85] 提供自动化激活方向正交化（Abliteration）脚本以移除开放权重模型的安全拒绝行为（v2.0.0）",
-        "✓ [0.82] GitHub 累计 37,864 Stars（今日 +404），反映了社区对无审查模型的猎奇热度（Hype=58）",
-        "✕ [0.35] 移除拒绝机制会同时破坏模型在合规、安全与有害指令边界上的可靠性，生产环境不可用",
-        "✓ [0.88] 采用 AGPL-3.0 强传染性开源协议，企业商业环境直接集成面临合规风险"
-      ]
+        "id": "heretic",
+        "fullName": "p-e-w/heretic",
+        "url": "https://github.com/p-e-w/heretic",
+        "language": "Python",
+        "stars": 38543,
+        "starsToday": 699,
+        "forks": 4355,
+        "topic": "ai_security",
+        "cardType": "hype_watch",
+        "verdict": "P3",
+        "verdictLabel": "🛡️ P3 警惕噱头 / 仅作安全攻防研究",
+        "signal": 42,
+        "facts": 56,
+        "hype": 58,
+        "relevance": 45,
+        "description": "Heretic (v2.0.0，AGPL-3.0，3.85 万 Star)：针对开放权重语言模型的全自动安全对齐移除（Uncensoring / Abliteration）工具，通过定向干预激活向量剥离模型内置拒绝行为。",
+        "cardCalloutTitle": "HYPE WATCH (Hype = 58 · P3) · 开放权重模型『一键去对齐』揭示的模型层脆弱性",
+        "cardCalloutBody": "安全架构师警示：Heretic 高达 3.85 万 Star 的流行再次证明——只要攻击者拿到开放模型权重或微调权限，纯靠模型内部 RLHF 安全对齐（Model-Level Refusal）在几分钟内就会被定向正交化剥离！企业安全绝不能只赌模型自己『懂规矩』。",
+        "worthWhy": "触发 P3（`Hype >= 55 & Signal < 45`）：企业生产环境严禁部署移除安全对齐的失控模型（且 AGPL-3.0 协议存在强传染性风险）。但作为安全架构师，它是最直观的「为什么必须建设模型外部确定性护栏」教学反例。",
+        "saArchitecture": "直接强化我们在 Track 07（AI Security）的纵深防御架构：即便底层模型被 Abliteration 剥离了拒绝本能，外层的 L1 Azure AI Content Safety / Prompt Shields + L2 确定性 MCP 工具策略网关 + L4 硬件意图仲裁依然能 100% 阻断违规操作。",
+        "saDemo": "在企业安全架构评审会上作为威胁建模（Threat Modeling）案例：解释为什么私有化部署开源模型时，模型权重防篡改签名与模型外层独立策略网关缺一不可。",
+        "saBenchmark": "可在隔离红队实验室中用于验证外层安全网关（Guardrails）在面对「零内部对齐裸模型」时的独立拦截率。",
+        "saScenario": "✅ 适用：AI 安全红队研究表征工程（Representation Engineering）与测试外层护栏独立性。⛔ 不适用：严禁用于任何面向企业员工或外部客户的生产服务（合规违规 + AGPL-3.0 传染风险）。",
+        "claims": [
+            "✓ [0.85] 提供自动化激活方向正交化（Abliteration）脚本以移除开放权重模型的安全拒绝行为（v2.0.0）",
+            "✓ [0.82] GitHub 累计 38,543 Stars（今日 +699，Forks 4,355），反映了社区对无审查模型的猎奇热度（Hype=58）",
+            "✕ [0.35] 移除拒绝机制会同时破坏模型在合规、安全与有害指令边界上的可靠性，生产环境不可用",
+            "✓ [0.88] 采用 AGPL-3.0 强传染性开源协议，企业商业环境直接集成面临合规风险"
+        ]
     }
-  ];
+];
 
   const CARD_TYPES = [
-    { id: "ALL", label: "全部卡片 (15)" },
-    { id: "headline", label: "📰 headline 头条焦点 (3)" },
-    { id: "signal_alert", label: "🚨 signal_alert 高信号行动 (2)" },
-    { id: "fact_check", label: "🔬 fact_check 事实核查 (2)" },
-    { id: "hype_watch", label: "⚠️ hype_watch 噱头预警 (2)" },
-    { id: "release", label: "🚀 release 架构发布 (2)" },
-    { id: "thread_pulse", label: "💬 thread_pulse 社区脉搏 (1)" },
-    { id: "quote", label: "💡 quote 架构洞察 (1)" },
-    { id: "brief", label: "📋 brief 紧凑简报 (2)" }
-  ];
+    {
+        "id": "ALL",
+        "label": "全部卡片 (15)"
+    },
+    {
+        "id": "headline",
+        "label": "📰 headline 头条焦点 (2)"
+    },
+    {
+        "id": "signal_alert",
+        "label": "🚨 signal_alert 高信号行动 (2)"
+    },
+    {
+        "id": "fact_check",
+        "label": "🔬 fact_check 事实核查 (2)"
+    },
+    {
+        "id": "hype_watch",
+        "label": "⚠️ hype_watch 噱头预警 (2)"
+    },
+    {
+        "id": "release",
+        "label": "🚀 release 架构发布 (3)"
+    },
+    {
+        "id": "thread_pulse",
+        "label": "💬 thread_pulse 社区脉搏 (1)"
+    },
+    {
+        "id": "quote",
+        "label": "💡 quote 架构洞察 (1)"
+    },
+    {
+        "id": "brief",
+        "label": "📋 brief 紧凑简报 (2)"
+    }
+];
 
   const VERDICTS = [
     { id: "ALL", label: "全部等级 (15)" },
