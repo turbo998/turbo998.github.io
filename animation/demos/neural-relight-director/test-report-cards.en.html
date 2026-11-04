@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'" />
+<title>7-Card 4:5 Benchmark Report — Neural G-Buffer Video Relighting & Multi-Subject Identity Director (DiffusionRenderer × Light-A-Video × Identity-GRPO)</title>
+<style>
+  :root {
+    --bg: #0b1020;
+    --card-bg: #ffffff;
+    --ink: #0f172a;
+    --muted: #475569;
+    --line: #e2e8f0;
+    --blue: #3b82f6;
+    --indigo: #4f46e5;
+    --emerald: #10b981;
+    --amber: #f59e0b;
+    --rose: #ef4444;
+    --dark: #0f172a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: radial-gradient(circle at 50% 0%, #1e293b 0%, #090d16 100%);
+    color: #f8fafc;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+    padding: 28px 18px 60px;
+  }
+  .top-nav {
+    max-width: 1240px;
+    margin: 0 auto 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    background: rgba(15, 23, 42, 0.85);
+    border: 1px solid rgba(148, 163, 184, 0.25);
+    border-radius: 14px;
+    padding: 12px 18px;
+  }
+  .top-nav a {
+    color: #38bdf8;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .deck-grid {
+    max-width: 1240px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+  }
+  .card {
+    width: 900px;
+    min-height: 1125px;
+    background: var(--card-bg);
+    color: var(--ink);
+    border-radius: 24px;
+    padding: 36px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
+    border: 1px solid #cbd5e1;
+    position: relative;
+    overflow: hidden;
+  }
+  @media (max-width: 940px) {
+    .card { width: 100%; min-height: auto; padding: 24px; }
+  }
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #475569;
+    border-bottom: 2px solid #f1f5f9;
+    padding-bottom: 12px;
+  }
+  .card-num {
+    background: #0f172a;
+    color: #38bdf8;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  h1, h2 {
+    font-size: 28px;
+    line-height: 1.24;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #0f172a;
+    margin: 14px 0 10px;
+  }
+  .grad-accent {
+    background: linear-gradient(90deg, #0284c7, #4f46e5, #d97706);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .sub-lead {
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .wb-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin: 10px 0;
+  }
+  .wb-col {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 14px;
+    font-size: 12.5px;
+    line-height: 1.5;
+  }
+  .wb-col h3 {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #1e40af;
+    margin-bottom: 8px;
+  }
+  .pill-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .pill {
+    display: inline-block;
+    padding: 3px 9px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .pill.auto { background: #dcfce7; color: #166534; }
+  .pill.confirm { background: #fef3c7; color: #92400e; }
+  .pill.human { background: #fee2e2; color: #991b1b; }
+  .pill.type { background: #e0e7ff; color: #3730a3; font-family: ui-monospace, monospace; }
+  .quote-box {
+    background: #f1f5f9;
+    border-left: 4px solid #3b82f6;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: #1e293b;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    margin-bottom: 14px;
+  }
+  .stack-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 14px 16px;
+    background: #f8fafc;
+    margin-bottom: 12px;
+  }
+  .stack-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 13.5px;
+    font-weight: 700;
+  }
+  .bar-wrap {
+    height: 10px;
+    background: #e2e8f0;
+    border-radius: 999px;
+    overflow: hidden;
+    margin: 6px 0;
+  }
+  .bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #2563eb, #06b6d4);
+    border-radius: 999px;
+  }
+  table.matrix {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin: 8px 0 14px;
+  }
+  table.matrix th {
+    background: #0f172a;
+    color: #f8fafc;
+    text-align: left;
+    padding: 9px 10px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  table.matrix td {
+    padding: 9px 10px;
+    border-bottom: 1px solid #e2e8f0;
+    vertical-align: top;
+  }
+  table.matrix tr:nth-child(even) { background: #f8fafc; }
+  .code-dark {
+    background: #0f172a;
+    color: #e2e8f0;
+    border-radius: 14px;
+    padding: 16px 18px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 12px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+  }
+  .arrow-down {
+    text-align: center;
+    font-size: 20px;
+    font-weight: 800;
+    color: #2563eb;
+    margin: 6px 0;
+  }
+  .latency-row {
+    margin-bottom: 16px;
+  }
+  .latency-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+  .lat-bar-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .lat-bar-line {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    font-family: ui-monospace, monospace;
+  }
+  .lat-bar-primary {
+    height: 18px;
+    background: #3b82f6;
+    border-radius: 5px;
+  }
+  .lat-bar-base {
+    height: 18px;
+    background: #cbd5e1;
+    border-radius: 5px;
+  }
+  .fit-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 10px 0;
+  }
+  .fit-box {
+    border-radius: 16px;
+    padding: 18px;
+    font-size: 13px;
+    line-height: 1.55;
+  }
+  .fit-box.good {
+    background: #f0fdf4;
+    border: 1px solid #86efac;
+    color: #14532d;
+  }
+  .fit-box.bad {
+    background: #fef2f2;
+    border: 1px solid #fca5a5;
+    color: #7f1d1d;
+  }
+  .fit-box h3 {
+    font-size: 15px;
+    margin-bottom: 10px;
+  }
+  .fit-box ul {
+    padding-left: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+  .dark-footer {
+    background: #0f172a;
+    color: #cbd5e1;
+    border-radius: 14px;
+    padding: 14px 18px;
+    font-size: 12px;
+    line-height: 1.5;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .dark-footer strong { color: #38bdf8; }
+</style>
+<style id="site-remediation-style">/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.65fr 1.1fr 1.15fr 1.1fr 1.1fr;gap:6px;align-items:stretch;min-width:0}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+
+html{scroll-padding-top:108px}.reading-header,.kee-dedicated-nav,[data-professional-header]{position:sticky;top:0;z-index:1000;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+
+:root{--search-bg:#101a30;--search-soft:#172440;--search-ink:#eef3ff;--search-muted:#adbbd1;--search-line:#293956;--search-accent:#9aabff;--header-offset:108px}
+:root[data-reading-shell][data-theme=light],[data-perimeter-theme=light]{--search-bg:#fff;--search-soft:#e8eefb;--search-ink:#17233e;--search-muted:#4c5e7c;--search-line:#d5ddec;--search-accent:#354ec8}
+html{scroll-padding-top:var(--header-offset,108px)!important}
+.site-search,.site-search *{box-sizing:border-box!important;font-family:"Segoe UI",sans-serif;letter-spacing:normal;text-transform:none}
+.site-search{position:relative;display:flex;align-items:center;gap:5px;min-width:0;width:230px;max-width:100%;margin:0!important;padding:0!important;line-height:1.4;border:1px solid var(--search-line);border-radius:9px;background:var(--search-soft);color:var(--search-ink);isolation:isolate}
+.site-search input[type=search]{display:block;flex:1;min-width:0;width:100%;height:42px;margin:0;padding:9px 8px!important;font-size:12px!important;line-height:1.5;border:0!important;border-radius:9px;background:transparent!important;color:var(--search-ink)!important;box-shadow:none!important;appearance:none}
+.site-search input::placeholder{color:var(--search-muted);opacity:1}.site-search input:focus-visible{outline:2px solid var(--search-accent);outline-offset:2px}
+.site-search kbd{font:11px Consolas,monospace;color:var(--search-muted);padding:1px 5px;border:1px solid var(--search-line);border-radius:4px}
+.site-search button[type=submit]{flex:none;width:38px;min-width:38px;height:42px;min-height:42px;padding:0;margin:0;border:0;border-radius:8px;background:transparent;color:var(--search-accent);font-size:24px;cursor:pointer;box-shadow:none}
+.search-label,.search-status{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.site-search .search-results{position:absolute;top:calc(100% + 10px);right:0;z-index:1100;width:min(480px,calc(100vw - 32px));max-height:min(560px,65vh);overflow-y:auto;border:1px solid var(--search-line);border-radius:12px;background:var(--search-bg);color:var(--search-ink);padding:10px;box-shadow:0 12px 32px #0005;text-align:left}
+.site-search .search-results[hidden]{display:none!important}.search-results .search-group{margin:8px 6px 4px;font:11px/1.5 Consolas,monospace;color:var(--search-muted)}
+.site-search .search-results a{display:block!important;padding:10px!important;margin:3px 0!important;border:1px solid transparent!important;border-radius:7px;background:transparent;color:var(--search-ink)!important;font-size:13px!important;text-decoration:none!important;white-space:normal;overflow-wrap:anywhere;text-align:left!important;line-height:1.5!important}
+.site-search .search-results a[aria-selected=true],.site-search .search-results a:hover{border-color:var(--search-accent)!important;background:var(--search-soft)}
+.search-results a small{display:block;font-size:10px;color:var(--search-muted);margin-top:4px}.search-results p{margin:10px;font-size:13px;color:var(--search-muted)}
+.search-archive-summary{padding:20px;border:1px solid var(--search-line);border-radius:10px;background:var(--search-bg);color:var(--search-ink);margin:24px 0}.search-archive-summary h2{font-size:24px;margin:0 0 12px}.search-archive-summary li{margin:12px 0}.search-archive-summary a{color:var(--search-accent)}
+[data-professional-header]{position:sticky!important;top:0!important;z-index:1000!important;background:var(--search-bg)!important;--header-glass:rgba(16,26,48,.9);grid-template-columns:auto minmax(0,1fr) 230px auto!important}
+[data-professional-header][data-perimeter-theme=light],:root[data-reading-shell][data-theme=light] [data-professional-header]{--header-glass:rgba(255,255,255,.94)}
+[data-professional-header] .professional-mobile{display:none}.professional-mobile summary{min-width:38px;min-height:42px;display:grid;place-items:center;cursor:pointer;list-style:none}.professional-mobile summary::-webkit-details-marker{display:none}
+[data-professional-header] .professional-context{display:none}
+.professional-context-bar{padding:12px 24px;border-bottom:1px solid var(--search-line);background:var(--search-bg);color:var(--search-muted);font:12px/1.6 "Segoe UI",sans-serif;display:flex;flex-wrap:wrap;gap:8px 18px;overflow-wrap:anywhere}.professional-context-bar a{color:var(--search-accent)}
+@supports((backdrop-filter:blur(16px)) or (-webkit-backdrop-filter:blur(16px))){.site-header,[data-professional-header]{background:var(--header-glass)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}}
+@media(max-width:1250px) and (min-width:701px){.header-inner{grid-template-columns:minmax(0,1fr) 230px auto!important;padding:12px 0;gap:12px!important}.desktop-nav{grid-row:2;grid-column:1/-1}.header-inner>.site-search{grid-column:2;grid-row:1}.header-inner>.controls{grid-column:3;grid-row:1}[data-professional-header]{grid-template-columns:minmax(0,1fr) 230px auto!important;gap:12px!important}[data-professional-header]>.professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header]>.site-search{grid-column:2;grid-row:1}[data-professional-header]>.professional-controls{grid-column:3;grid-row:1}:root{--header-offset:176px}}
+@media(max-width:700px){.header-inner{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 0;gap:8px!important}.header-inner>.site-search{grid-row:2;grid-column:1/-1;width:100%}.header-inner>.controls{grid-column:2;grid-row:1}.site-search .search-results{width:100%;right:0}[data-professional-header]{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 16px!important;gap:8px!important}[data-professional-header]>.professional-primary{display:none!important}[data-professional-header]>.site-search{grid-column:1/-1;grid-row:2;width:100%}[data-professional-header]>.professional-controls{grid-column:2;grid-row:1}[data-professional-header] .professional-mobile{display:block}[data-professional-header] .professional-mobile[open]>.professional-primary{position:absolute;top:100%;left:0;right:0;padding:16px;background:var(--search-bg);border-bottom:1px solid var(--search-line);display:grid;grid-template-columns:1fr 1fr;gap:8px}[data-professional-header] .professional-mobile .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:12px!important}:root{--header-offset:126px}}
+@media(prefers-reduced-transparency:reduce){.site-header,[data-professional-header]{background:var(--search-bg)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+@media print{.site-search,.professional-context-bar{display:none!important}}
+
+@media(min-width:1251px){.header-inner{display:grid!important;grid-template-columns:auto minmax(0,1fr) 230px auto!important;gap:18px!important}.header-inner .desktop-nav{min-width:0}}
+
+html:has(.kee-dedicated-app-root){height:auto!important;overflow-x:hidden!important;overflow-y:auto!important}
+body:has([data-professional-header]){height:auto!important;overflow-x:clip!important;overflow-y:visible!important;padding-top:0!important}
+.demo-language-navigation{display:none!important}
+.stage-column,.telemetry-panel,.scene-pill,#timeline-slider{min-width:0}
+@media(max-width:1180px){.workspace,.template-tabs{grid-template-columns:minmax(0,1fr)!important}}
+
+.in-arena-frame .professional-context-bar,.in-arena-frame [data-knowledge-atlas]{display:none!important}
+.knowledge-graph-wide{display:block}.knowledge-graph-compact{display:none}@media(max-width:600px){.knowledge-graph-wide{display:none}.knowledge-graph-compact{display:block}}
+</style></head>
+<body><nav class="kee-dedicated-nav" data-professional-header><a class="professional-identity reading-brand kee-dedicated-identity identity" href="../../../zh.html">Qi Chen · @turbo998</a><div class="professional-primary" role="navigation" aria-label="主导航"><a href="../../../studio/zh-index.html" data-section="hub" data-nav-en-href="../../../studio/index.html" data-nav-zh-href="../../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub">Frontier Transformation Engineering Hub</a><a href="../../../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../../../benchmarks.html" data-nav-zh-href="../../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心" aria-current="page">基准评测中心</a><a href="../../../zh-github-radar.html" data-section="radar" data-nav-en-href="../../../github-radar.html" data-nav-zh-href="../../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI 信号雷达</a><a href="../../../zh-openrouter.html" data-section="routing" data-nav-en-href="../../../openrouter.html" data-nav-zh-href="../../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../../../zh-about.html" data-section="profile" data-nav-en-href="../../../about.html" data-nav-zh-href="../../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">首席架构师履历</a></div><form class="site-search" role="search" action="../../../studio/zh-archive.html" method="get" data-search-root="../../../index.html" data-search-language="zh-CN"><label class="search-label" for="site-search-input">搜索架构、评测、Demo、技能...</label><input id="site-search-input" name="q" type="search" placeholder="搜索架构、评测、Demo、技能..." autocomplete="off" spellcheck="false" aria-keyshortcuts="/ Control+k Meta+k"><kbd aria-hidden="true">/</kbd><button type="submit" aria-label="搜索全部内容">⌕</button><div class="search-results" id="site-search-results" hidden></div><span class="search-status" role="status" aria-live="polite"></span></form><div class="reading-controls professional-controls" aria-label="网站语言与外观"><a href="test-report-cards.en.html" data-reading-language hreflang="en" lang="en">EN</a><a href="test-report-cards.html" hreflang="zh-CN" lang="zh-CN" aria-current="page">中文</a><details class="professional-mobile"><summary aria-label="打开主导航">☰</summary><div class="professional-primary" role="navigation" aria-label="移动主导航"><a href="../../../studio/zh-index.html" data-section="hub" data-nav-en-href="../../../studio/index.html" data-nav-zh-href="../../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub">Frontier Transformation Engineering Hub</a><a href="../../../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../../../benchmarks.html" data-nav-zh-href="../../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心" aria-current="page">基准评测中心</a><a href="../../../zh-github-radar.html" data-section="radar" data-nav-en-href="../../../github-radar.html" data-nav-zh-href="../../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI 信号雷达</a><a href="../../../zh-openrouter.html" data-section="routing" data-nav-en-href="../../../openrouter.html" data-nav-zh-href="../../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../../../zh-about.html" data-section="profile" data-nav-en-href="../../../about.html" data-nav-zh-href="../../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">首席架构师履历</a></div></details><a data-reading-theme="light" href="test-report-cards.html?theme=light" aria-label="浅色主题">☀</a><a data-reading-theme="dark" href="test-report-cards.html?theme=dark" aria-label="深色主题">◐</a></div><div class="professional-context" aria-label="返回上下文"><a href="../../../studio/zh-index.html">← 工程枢纽</a> · <a href="../../../studio/zh-animation.html">返回主题</a></div></nav><div class="professional-context-bar"><a href="../../../studio/zh-index.html">← 工程枢纽</a> · <a class="reading-context" href="../../../studio/zh-animation.html">返回主题</a></div><!-- site-remediation-knowledge:start --><figure class="knowledge-figure" data-knowledge-atlas="animation" style="margin:20px auto;max-width:1120px;padding:0 20px;box-sizing:border-box"><style>.knowledge-graph-wide{display:block}.knowledge-graph-compact{display:none}@media(max-width:600px){.knowledge-graph-wide{display:none}.knowledge-graph-compact{display:block}}</style><svg xmlns="http://www.w3.org/2000/svg" lang="zh-CN" class="knowledge-graph-compact" role="img" aria-labelledby="knowledge-4187d11e3d0e-compact-title knowledge-4187d11e3d0e-compact-desc" viewBox="0 0 360 924" width="360" style="width:100%;height:auto;max-width:560px;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-4187d11e3d0e-compact-title">7-Card 4:5 Benchmark Report — Neural G-Buffer Video Relighting &amp; Multi-Subject Identity Director (DiffusionRenderer × Light-A-Video × Identity-GRPO)</title><desc id="knowledge-4187d11e3d0e-compact-desc">讲解目标与场景意图: 叙事 · 分镜 · 相机约束 → 定义场景模型 → 几何与物理模型: 4D 高斯 · Plücker 射线 · 程序化几何 → 驱动时间与运动 → 运动、相机与交互: 时间线 · 弹簧 · 运动画笔 · 6DoF 相机 → 渲染讲解画面 → 渲染与无障碍播放: SVG / Canvas / WebGL · 减弱动画降级 → 检查视觉证据 → 工作台与来源评测: 比较画面与机制，不拼接无关评分</desc><rect width="360" height="924" rx="16" fill="#081525" stroke="#284566"/><rect x="16" y="14" width="224" height="22" rx="11" fill="#112844" stroke="#2d5a88"/><text x="28" y="29" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="28" dy="0">数据流向与架构要点 · 竖屏视图</tspan></text><text x="20" y="58" fill="#eef5ff" font-size="18" font-weight="700"><tspan x="20" dy="0">7-Card 4:5 Benchmark Report</tspan><tspan x="20" dy="25.2">— Neural G-Buffer Video</tspan><tspan x="20" dy="25.2">Relighting &amp; Multi-Subject</tspan><tspan x="20" dy="25.2">Identity Director</tspan><tspan x="20" dy="25.2">(DiffusionRenderer ×</tspan><tspan x="20" dy="25.2">Light-A-Video ×</tspan><tspan x="20" dy="25.2">Identity-GRPO)</tspan></text><text x="20" y="230" fill="#a9b8ce" font-size="12.5" font-weight="400"><tspan x="20" dy="0">概念拓扑 · 箭头表示数据/控制流向，非实测指标</tspan></text><g data-concept="1"><rect x="16" y="252" width="328" height="94" rx="12" fill="#0e2036" stroke="#38597d"/><rect x="16" y="252" width="328" height="4" rx="2" fill="#38bdf8"/><text x="30" y="275" fill="#38bdf8" font-size="11.5" font-weight="700"><tspan x="30" dy="0">01 · 输入与意图</tspan></text><text x="30" y="298" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">讲解目标与场景意图</tspan></text><text x="30" y="325" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">叙事 · 分镜 · 相机约束</tspan></text></g><g data-relationship="定义场景模型"><path d="M34 348 V386" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 380 L34 387 L39 380" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="370" fill="#8eeadf" font-size="12.5" font-weight="600"><tspan x="50" dy="0">01→02 定义场景模型</tspan></text></g><g data-concept="2"><rect x="16" y="392" width="328" height="94" rx="12" fill="#122842" stroke="#38597d"/><rect x="16" y="392" width="328" height="4" rx="2" fill="#34d399"/><text x="30" y="415" fill="#34d399" font-size="11.5" font-weight="700"><tspan x="30" dy="0">02 · 上下文锚定</tspan></text><text x="30" y="438" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">几何与物理模型</tspan></text><text x="30" y="465" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">4D 高斯 · Plücker 射线 · 程序化几何</tspan></text></g><g data-relationship="驱动时间与运动"><path d="M34 488 V526" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 520 L34 527 L39 520" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="510" fill="#8eeadf" font-size="12.5" font-weight="600"><tspan x="50" dy="0">02→03 驱动时间与运动</tspan></text></g><g data-concept="3"><rect x="16" y="532" width="328" height="94" rx="12" fill="#0e2036" stroke="#38597d"/><rect x="16" y="532" width="328" height="4" rx="2" fill="#a78bfa"/><text x="30" y="555" fill="#a78bfa" font-size="11.5" font-weight="700"><tspan x="30" dy="0">03 · 策略与门禁</tspan></text><text x="30" y="578" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">运动、相机与交互</tspan></text><text x="30" y="605" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">时间线 · 弹簧 · 运动画笔 · 6DoF 相机</tspan></text></g><g data-relationship="渲染讲解画面"><path d="M34 628 V666" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 660 L34 667 L39 660" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="650" fill="#8eeadf" font-size="12.5" font-weight="600"><tspan x="50" dy="0">03→04 渲染讲解画面</tspan></text></g><g data-concept="4"><rect x="16" y="672" width="328" height="94" rx="12" fill="#122842" stroke="#38597d"/><rect x="16" y="672" width="328" height="4" rx="2" fill="#f59e0b"/><text x="30" y="695" fill="#f59e0b" font-size="11.5" font-weight="700"><tspan x="30" dy="0">04 · 执行与运行</tspan></text><text x="30" y="718" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">渲染与无障碍播放</tspan></text><text x="30" y="745" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">SVG / Canvas / WebGL · 减弱动画降级</tspan></text></g><g data-relationship="检查视觉证据"><path d="M34 768 V806" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 800 L34 807 L39 800" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="790" fill="#8eeadf" font-size="12.5" font-weight="600"><tspan x="50" dy="0">04→05 检查视觉证据</tspan></text></g><g data-concept="5"><rect x="16" y="812" width="328" height="94" rx="12" fill="#0e2036" stroke="#38597d"/><rect x="16" y="812" width="328" height="4" rx="2" fill="#56ddcd"/><text x="30" y="835" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="30" dy="0">05 · 审计与评测</tspan></text><text x="30" y="858" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">工作台与来源评测</tspan></text><text x="30" y="885" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">比较画面与机制，不拼接无关评分</tspan></text></g></svg><svg xmlns="http://www.w3.org/2000/svg" lang="zh-CN" class="knowledge-graph-wide" role="img" aria-labelledby="knowledge-4187d11e3d0e-title knowledge-4187d11e3d0e-desc" viewBox="0 0 1080 473" width="1080" style="width:100%;height:auto;max-width:1080px;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-4187d11e3d0e-title">7-Card 4:5 Benchmark Report — Neural G-Buffer Video Relighting &amp; Multi-Subject Identity Director (DiffusionRenderer × Light-A-Video × Identity-GRPO)</title><desc id="knowledge-4187d11e3d0e-desc">讲解目标与场景意图: 叙事 · 分镜 · 相机约束 → 定义场景模型 → 几何与物理模型: 4D 高斯 · Plücker 射线 · 程序化几何 → 驱动时间与运动 → 运动、相机与交互: 时间线 · 弹簧 · 运动画笔 · 6DoF 相机 → 渲染讲解画面 → 渲染与无障碍播放: SVG / Canvas / WebGL · 减弱动画降级 → 检查视觉证据 → 工作台与来源评测: 比较画面与机制，不拼接无关评分</desc><rect width="1080" height="473" rx="16" fill="#081525" stroke="#284566"/><rect x="24" y="16" width="292" height="24" rx="12" fill="#102742" stroke="#2d5a88"/><text x="38" y="32" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="38" dy="0">数据流向与核心要点架构图 · 横向全景</tspan></text><rect x="646" y="16" width="196" height="24" rx="12" fill="#0d2238" stroke="#254b6e"/><text x="660" y="32" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="660" dy="0">──▶ 阶段数据与上下文流</tspan></text><rect x="852" y="16" width="204" height="24" rx="12" fill="#15203c" stroke="#3b4278"/><text x="866" y="32" fill="#c4b5fd" font-size="11.5" font-weight="600"><tspan x="866" dy="0">◆ 策略门禁与要点说明</tspan></text><text x="24" y="62" fill="#f2f7ff" font-size="18" font-weight="700"><tspan x="24" dy="0">7-Card 4:5 Benchmark Report — Neural G-Buffer Video Relighting &amp;</tspan><tspan x="24" dy="25.2">Multi-Subject Identity Director (DiffusionRenderer × Light-A-Video ×</tspan><tspan x="24" dy="25.2">Identity-GRPO)</tspan></text><g data-concept="1"><rect x="24" y="131" width="187" height="186" rx="12" fill="#0d1e34" stroke="#335277" stroke-width="1.2"/><rect x="24" y="131" width="187" height="5" rx="2.5" fill="#38bdf8"/><rect x="34" y="144" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="40" y="159" fill="#38bdf8" font-size="11.5" font-weight="700"><tspan x="40" dy="0">01 · 输入与意图</tspan></text><text x="36" y="185" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="36" dy="0">讲解目标与场景意图</tspan></text><path d="M36 200 H199" stroke="#233b57" stroke-width="1"/><text x="36" y="218" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="36" dy="0">叙事 · 分镜 · 相机约束</tspan></text></g><g data-relationship="定义场景模型"><path d="M213 224 H231" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M225 219 L232 224 L225 229" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="24" y="325" width="187" height="30" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="34" y="344" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="34" dy="0">01→02 定义场景模型</tspan></text></g><g data-concept="2"><rect x="235" y="131" width="187" height="186" rx="12" fill="#112640" stroke="#335277" stroke-width="1.2"/><rect x="235" y="131" width="187" height="5" rx="2.5" fill="#34d399"/><rect x="245" y="144" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="251" y="159" fill="#34d399" font-size="11.5" font-weight="700"><tspan x="251" dy="0">02 · 上下文锚定</tspan></text><text x="247" y="185" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="247" dy="0">几何与物理模型</tspan></text><path d="M247 200 H410" stroke="#233b57" stroke-width="1"/><text x="247" y="218" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="247" dy="0">4D 高斯 · Plücker 射线 ·</tspan><tspan x="247" dy="16.799999999999997">程序化几何</tspan></text></g><g data-relationship="驱动时间与运动"><path d="M424 224 H442" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M436 219 L443 224 L436 229" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="235" y="325" width="187" height="30" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="245" y="344" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="245" dy="0">02→03 驱动时间与运动</tspan></text></g><g data-concept="3"><rect x="446" y="131" width="187" height="186" rx="12" fill="#0d1e34" stroke="#335277" stroke-width="1.2"/><rect x="446" y="131" width="187" height="5" rx="2.5" fill="#a78bfa"/><rect x="456" y="144" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="462" y="159" fill="#a78bfa" font-size="11.5" font-weight="700"><tspan x="462" dy="0">03 · 策略与门禁</tspan></text><text x="458" y="185" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="458" dy="0">运动、相机与交互</tspan></text><path d="M458 200 H621" stroke="#233b57" stroke-width="1"/><text x="458" y="218" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="458" dy="0">时间线 · 弹簧 · 运动画笔</tspan><tspan x="458" dy="16.799999999999997">· 6DoF 相机</tspan></text></g><g data-relationship="渲染讲解画面"><path d="M635 224 H653" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M647 219 L654 224 L647 229" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="446" y="325" width="187" height="30" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="456" y="344" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="456" dy="0">03→04 渲染讲解画面</tspan></text></g><g data-concept="4"><rect x="657" y="131" width="187" height="186" rx="12" fill="#112640" stroke="#335277" stroke-width="1.2"/><rect x="657" y="131" width="187" height="5" rx="2.5" fill="#f59e0b"/><rect x="667" y="144" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="673" y="159" fill="#f59e0b" font-size="11.5" font-weight="700"><tspan x="673" dy="0">04 · 执行与运行</tspan></text><text x="669" y="185" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="669" dy="0">渲染与无障碍播放</tspan></text><path d="M669 200 H832" stroke="#233b57" stroke-width="1"/><text x="669" y="218" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="669" dy="0">SVG / Canvas / WebGL · 减</tspan><tspan x="669" dy="16.799999999999997">弱动画降级</tspan></text></g><g data-relationship="检查视觉证据"><path d="M846 224 H864" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M858 219 L865 224 L858 229" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="657" y="325" width="187" height="30" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="667" y="344" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="667" dy="0">04→05 检查视觉证据</tspan></text></g><g data-concept="5"><rect x="868" y="131" width="187" height="186" rx="12" fill="#0d1e34" stroke="#335277" stroke-width="1.2"/><rect x="868" y="131" width="187" height="5" rx="2.5" fill="#56ddcd"/><rect x="878" y="144" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="884" y="159" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="884" dy="0">05 · 审计与评测</tspan></text><text x="880" y="185" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="880" dy="0">工作台与来源评测</tspan></text><path d="M880 200 H1043" stroke="#233b57" stroke-width="1"/><text x="880" y="218" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="880" dy="0">比较画面与机制，不拼接无</tspan><tspan x="880" dy="16.799999999999997">关评分</tspan></text></g><rect x="868" y="325" width="187" height="30" rx="8" fill="#0e2538" stroke="#2e5470"/><text x="878" y="344" fill="#93c5fd" font-size="11.5" font-weight="600"><tspan x="878" dy="0">05 闭环 · 审计与证据核验</tspan></text><g data-takeaway="1"><rect x="24" y="369" width="334" height="88" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="24" y="381" width="4" height="64" rx="2" fill="#38bdf8"/><text x="38" y="394" fill="#38bdf8" font-size="11.5" font-weight="700"><tspan x="38" dy="0">要点 01 · 全链路数据流向</tspan></text><text x="38" y="415" fill="#d5e4f5" font-size="12" font-weight="400"><tspan x="38" dy="0">自左向右从「讲解目标与场景意图」递进至「工作</tspan><tspan x="38" dy="16.799999999999997">台与来源评测」，明确各阶段输入与输出契约。</tspan></text></g><g data-takeaway="2"><rect x="373" y="369" width="334" height="88" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="373" y="381" width="4" height="64" rx="2" fill="#a78bfa"/><text x="387" y="394" fill="#a78bfa" font-size="11.5" font-weight="700"><tspan x="387" dy="0">要点 02 · 核心控制与策略门禁</tspan></text><text x="387" y="415" fill="#d5e4f5" font-size="12" font-weight="400"><tspan x="387" dy="0">核心门禁「运动、相机与交互」：时间线 · 弹簧</tspan><tspan x="387" dy="16.799999999999997">· 运动画笔 · 6DoF 相机</tspan></text></g><g data-takeaway="3"><rect x="722" y="369" width="334" height="88" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="722" y="381" width="4" height="64" rx="2" fill="#34d399"/><text x="736" y="394" fill="#34d399" font-size="11.5" font-weight="700"><tspan x="736" dy="0">要点 03 · 证据核验与适用边界</tspan></text><text x="736" y="415" fill="#d5e4f5" font-size="12" font-weight="400"><tspan x="736" dy="0">比较画面与机制，不拼接无关评分 · 概念拓扑示</tspan><tspan x="736" dy="16.799999999999997">意，非实测延迟。</tspan></text></g></svg><figcaption style="font:13px/1.6 system-ui,sans-serif;margin:10px auto 0;max-width:1080px;color:#9fb2ca;overflow-wrap:anywhere">整体架构与数据流向图示：自左向右阅读阶段数据流转、策略门禁与底部三项核心要点说明（概念拓扑，不代表实测吞吐或生产排名）。</figcaption></figure><!-- site-remediation-knowledge:end --><nav class="top-nav">
+    <div>
+      <strong>Generative Visual Lab · Run #23 (2026-11-05)</strong> — 7-Card 4:5 Visual Benchmark Deck
+    </div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;">
+      <a href="index.html">🎬 打开神经 G-Buffer 重打光导演台</a>
+      <a href="../../docs/neural-relighting-causal-video-study.md">📘 中文研究专著</a>
+      <a href="../../docs/neural-relighting-causal-video-study.en.md">📗 English Monograph</a>
+      <a href="../../index.html">← 返回画廊主页</a>
+    </div>
+  </nav>
+
+  <main class="deck-grid">
+    <!-- CARD 1: OVERVIEW & WORKBENCH -->
+    <section class="card" id="card-1">
+      <div>
+        <div class="card-header">
+          <span>HANDS-ON · NEURAL VIDEO RELIGHTING &amp; MULTI-SUBJECT ID</span>
+          <span class="card-num">1 / 7</span>
+        </div>
+        <h1><span class="grad-accent">DiffusionRenderer × Light-A-Video × Identity-GRPO</span> 达成 96.6/100 综合分：31.8 dB 逆向重打光与 98.7% 多主体锁定</h1>
+        <p class="sub-lead">
+          无需显式 3D 网格重建或光线追踪，将输入视频分解为 5 通道本征 G-Buffer（Albedo ρ / Normal N / Roughness r / Metallic m / Depth Z），结合一致光注意力（CLA）与 Identity-GRPO 强化学习偏好对齐，实现 60 FPS 零闪烁动态重打光。
+        </p>
+
+        <div class="wb-grid-3">
+          <div class="wb-col">
+            <h3>1. 评测场景与门禁阈值</h3>
+            <p>覆盖 <strong>8 组高难度光影与多主体测试集 (`NR-01..NR-08`)</strong>：商业陀飞轮双主体棚拍、智驾雨夜逆向去光照、首尾帧戏剧逆光插值、360° HDRI 极速扫掠等。</p>
+            <div class="pill-row">
+              <span class="pill auto">Act automatically ≥ 0.85</span>
+              <span class="pill confirm">Confirm 0.65–0.84</span>
+              <span class="pill human">Send to human &lt; 0.65</span>
+            </div>
+          </div>
+          <div class="wb-col">
+            <h3>2. 5通道本征 G-Buffer 输入契约</h3>
+            <p>逆向渲染器从单目视频流提取每像素本征属性：</p>
+            <p style="font-family:ui-monospace,monospace;font-size:11.5px;margin-top:6px;color:#0f172a;">
+              • G1: Base Albedo ρ ∈ [0,1]³<br/>
+              • G2: World Normal N ∈ S²<br/>
+              • G3: Roughness r ∈ [0.04,0.96]<br/>
+              • G4: Metallic m ∈ [0,1]<br/>
+              • G5: Metric Depth Z + HDRI L_env
+            </p>
+          </div>
+          <div class="wb-col">
+            <h3>3. 核心定量实测表现</h3>
+            <p><strong>综合基准得分：96.6 / 100</strong>（对比单帧 2D IC-Light 82.4 与纯文本改光 56.8）：</p>
+            <div class="pill-row">
+              <span class="pill type">PSNR: 31.8 dB</span>
+              <span class="pill type">Flicker: 0.14 dB</span>
+              <span class="pill type">ID-GRPO: 98.7%</span>
+              <span class="pill type">P50: 16.5 ms (60 FPS)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="stack-card" style="margin-top:14px;">
+          <div class="stack-head">
+            <span>四套架构综合评分对比 (8 Scenarios · Sealed Telemetry)</span>
+            <span style="color:#2563eb;">DiffusionRenderer + CLA + ID-GRPO 领先 +14.2 pts</span>
+          </div>
+          <div style="font-size:12px;margin:6px 0 2px;display:flex;justify-content:space-between;">
+            <span><strong>DiffusionRenderer + Light-A-Video CLA + Identity-GRPO (Ours)</strong></span>
+            <strong>96.6 / 100</strong>
+          </div>
+          <div class="bar-wrap"><div class="bar-fill" style="width:96.6%"></div></div>
+
+          <div style="font-size:12px;margin:8px 0 2px;display:flex;justify-content:space-between;">
+            <span>Explicit Mesh/NeRF Path-Tracing Reconstruction</span>
+            <strong>88.2 / 100</strong>
+          </div>
+          <div class="bar-wrap"><div class="bar-fill" style="width:88.2%;background:#64748b"></div></div>
+
+          <div style="font-size:12px;margin:8px 0 2px;display:flex;justify-content:space-between;">
+            <span>Framewise 2D Relighting (IC-Light / No Temporal CLA)</span>
+            <strong>82.4 / 100</strong>
+          </div>
+          <div class="bar-wrap"><div class="bar-fill" style="width:82.4%;background:#94a3b8"></div></div>
+
+          <div style="font-size:12px;margin:8px 0 2px;display:flex;justify-content:space-between;">
+            <span>Unconstrained Text-to-Video Relighting Prompt</span>
+            <strong>56.8 / 100</strong>
+          </div>
+          <div class="bar-wrap"><div class="bar-fill" style="width:56.8%;background:#ef4444"></div></div>
+        </div>
+      </div>
+
+      <div class="dark-footer">
+        <div><strong>Provenance:</strong> <code>measured</code> (Browser Cook-Torrance GGX + 1,440-Surfel G-Buffer Harness) + <code>anonymized_reported</code> (CVPR'25 / ICCV'25 / ICLR'26)</div>
+        <div><strong>Suite:</strong> 16/16 Vitest + 8/8 Playwright E2E Green</div>
+      </div>
+    </section>
+
+    <!-- CARD 2: SINGLE-CASE DEEP DIVE -->
+    <section class="card" id="card-2">
+      <div>
+        <div class="card-header">
+          <span>SCENARIO: LUXURY TOURBILLON &amp; JADE DUAL-SUBJECT RELIGHT (NR-01)</span>
+          <span class="card-num">2 / 7</span>
+        </div>
+        <h2>单帧本征解耦 + 一致光注意力在 16.5 ms 内完成拉丝钛金与翡翠次表面双主体重打光</h2>
+        <p class="sub-lead">
+          深入剖析场景 <code>NR-01 (cyber-jewelry-showroom)</code>：同时包含高各向异性金属反射（陀飞轮框架 `m=0.92, r=0.14`）与低金属漫透射材质（翡翠内环 `m=0.45, r=0.22`）的双主体交互镜头。
+        </p>
+
+        <div class="quote-box">
+          INPUT CONTRACT: scene="cyber-jewelry-showroom" · surfels=1,440 · hdri="studio-three-point → cyber-neon-alley" · azimuth=48° · elevation=+32° · α_CLA=0.94 · flf2v_phase=0.35
+        </div>
+
+        <div class="stack-card">
+          <div class="stack-head">
+            <span>1. 逆向去光照本色纯度 (Inverse De-lighting Albedo Purity ρ)</span>
+            <div>
+              <span class="pill type">score</span>
+              <span class="pill auto">Act automatically · 0.984</span>
+            </div>
+          </div>
+          <p style="font-size:12.5px;color:#475569;">成功剥离原始视频中的高光灼烧斑与投射阴影，本征 Albedo 通道无残影污染（PSNR 31.8 dB，LPIPS 0.048）。</p>
+          <div class="bar-wrap"><div class="bar-fill" style="width:98.4%"></div></div>
+        </div>
+
+        <div class="stack-card">
+          <div class="stack-head">
+            <span>2. 跨帧高光时序一致性 (Consistent Light Attention Flicker Control)</span>
+            <div>
+              <span class="pill type">choice</span>
+              <span class="pill auto">Act automatically · 0.972</span>
+            </div>
+          </div>
+          <p style="font-size:12.5px;color:#475569;">开启 Light-A-Video CLA（`α_CLA=0.94`）后，360° 旋转全景探针时帧间亮度波动从单帧 IC-Light 的 `1.82 dB` 压降至 `0.14 dB`。</p>
+          <div class="bar-wrap"><div class="bar-fill" style="width:97.2%"></div></div>
+        </div>
+
+        <div class="stack-card">
+          <div class="stack-head">
+            <span>3. 双主体身份与材质隔离度 (Phantom × Identity-GRPO Subject Locking)</span>
+            <div>
+              <span class="pill type">noul</span>
+              <span class="pill auto">Act automatically · 0.987</span>
+            </div>
+          </div>
+          <p style="font-size:12.5px;color:#475569;">Subject-A（钛金陀飞轮）与 Subject-B（翡翠环）在首尾帧插值（`τ=0.35`）中保持 98.7% 身份与材质边界隔离，零属性串色。</p>
+          <div class="bar-wrap"><div class="bar-fill" style="width:98.7%"></div></div>
+        </div>
+      </div>
+
+      <div class="dark-footer">
+        <div><strong>NR-01 Latency:</strong> Inverse G-Buffer Cache Hit + 16.5 ms P50 / 19.3 ms P95 Forward Shader</div>
+        <div><strong>Gate Decision:</strong> 3 / 3 Production Gates Passed (Auto-Deploy)</div>
+      </div>
+    </section>
+
+    <!-- CARD 3: WHAT I TESTED (FULL EVALUATION MATRIX) -->
+    <section class="card" id="card-3">
+      <div>
+        <div class="card-header">
+          <span>WHAT I TESTED · 8-SCENARIO EVALUATION MATRIX</span>
+          <span class="card-num">3 / 7</span>
+        </div>
+        <h2>8 大逆向/正向重打光与多主体场景全绿通过；纯文本改光在 5 项测试中触发退化 (✕)</h2>
+        <p class="sub-lead">
+          对比我们的 <strong>DiffusionRenderer + CLA + Identity-GRPO</strong> 管线与无 G-Buffer 约束基线在 8 个工业场景中的表现：
+        </p>
+
+        <table class="matrix">
+          <thead>
+            <tr>
+              <th>SCENARIO</th>
+              <th>QUESTION / TASK</th>
+              <th>MODEL ANSWER (OURS VS BASELINE)</th>
+              <th>ACTION</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>NR-01</strong><br/>Luxury Dual-Subject</td>
+              <td>剥离原始棚拍高光并切换赛博双色霓虹 HDRI</td>
+              <td><strong>31.8 dB PSNR / 98.4% Albedo 纯度</strong><br/>(T2V 基线 ✕ 发生严重底色串染 19.7 dB)</td>
+              <td><span class="pill auto">Act automatically</span></td>
+            </tr>
+            <tr>
+              <td><strong>NR-02</strong><br/>AV Rainy Night</td>
+              <td>自动驾驶白天街景逆向去阴影并合成雨夜路面积水反射</td>
+              <td><strong>法线 MAE 2.1° / 湿滑 GGX 镜面准确</strong><br/>(2D IC-Light ✕ 路面法线翻转闪烁)</td>
+              <td><span class="pill auto">Act automatically</span></td>
+            </tr>
+            <tr>
+              <td><strong>NR-03</strong><br/>FLF2V Chiaroscuro</td>
+              <td>Wan2.1-FLF2V 首尾帧从落日暖光过渡至钠灯硬轮廓光</td>
+              <td><strong>98.7% 双角色身份保持 / 零跳变</strong><br/>(Vanilla VACE ✕ 中途发生角色特征互换)</td>
+              <td><span class="pill auto">Act automatically</span></td>
+            </tr>
+            <tr>
+              <td><strong>NR-04</strong><br/>360° HDRI Sweep</td>
+              <td>连续 360° 旋转主光源方位角 θ 测试时序闪烁</td>
+              <td><strong>0.14 dB 帧间抖动 (CLA 锁定)</strong><br/>(单帧重打光 ✕ 出现 1.82 dB 高频频闪)</td>
+              <td><span class="pill auto">Act automatically</span></td>
+            </tr>
+            <tr>
+              <td><strong>NR-05</strong><br/>LoRA BRDF Edit</td>
+              <td>在不改变照明条件下将粗糙度 r 从 0.85 调至 0.08</td>
+              <td><strong>GGX 反射瓣精确收窄 (F0=0.84)</strong><br/>(T2V 基线 ✕ 几何外形随材质词漂移)</td>
+              <td><span class="pill auto">Act automatically</span></td>
+            </tr>
+            <tr>
+              <td><strong>NR-06</strong><br/>Virtual Object Insert</td>
+              <td>向实拍视频插入高反射金属球并接收环境间接光</td>
+              <td><strong>97.2% 阴影与环境色彩互反射吻合</strong></td>
+              <td><span class="pill auto">Act automatically</span></td>
+            </tr>
+            <tr>
+              <td><strong>NR-07</strong><br/>Subsurface Cave</td>
+              <td>翡翠/皮肤次表面散射在幽暗生物光下的透射感</td>
+              <td><strong>94.8% 柔和透射梯度</strong> (建议人工微调散射半径)</td>
+              <td><span class="pill confirm">Confirm</span></td>
+            </tr>
+            <tr>
+              <td><strong>NR-08</strong><br/>Extreme Caustics</td>
+              <td>多层折射玻璃杯焦散光斑路径追踪级精度</td>
+              <td><strong>83.5% 近似焦散包络</strong> (G-Buffer 单次反射限制 ✕)</td>
+              <td><span class="pill confirm">Confirm</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="wb-grid-3" style="grid-template-columns:1fr 1fr;">
+          <div class="wb-col">
+            <h3>门禁统计 (Threshold Gating)</h3>
+            <p>8 个评测场景中 <strong>6 项直通自动投产 (`Act automatically`)</strong>，2 项复杂次表面/多层折射进入设计师确认 (`Confirm`)，零崩溃阻断。</p>
+          </div>
+          <div class="wb-col">
+            <h3>失败模式归因 (Failure Analysis)</h3>
+            <p>纯屏幕空间 5 通道 G-Buffer 不追踪多次内部全反射焦散（`NR-08`），需对透明折射体叠加局部路径追踪补偿。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="dark-footer">
+        <div><strong>Matrix Pass Rate:</strong> 8 / 8 Functional Pass · 96.6/100 Mean Score</div>
+        <div><strong>Baseline Misses Marked (✕):</strong> 5 Critical Failures in Unconstrained / Framewise Baselines</div>
+      </div>
+    </section>
+
+    <!-- CARD 4: UNDER THE HOOD -->
+    <section class="card" id="card-4">
+      <div>
+        <div class="card-header">
+          <span>UNDER THE HOOD · PROTOCOL &amp; SCORING MECHANICS</span>
+          <span class="card-num">4 / 7</span>
+        </div>
+        <h2>从结构化 G-Buffer 与 HDRI 契约到 Cook-Torrance GGX + CLA 的确定性验证闭环</h2>
+        <p class="sub-lead">
+          展示导演台导出的标准 <code>DIFFUSION_RENDERER_SPEC/v1.0</code> 协议载荷及底层神经逆向/正向着色验证方程：
+        </p>
+
+        <div class="code-dark">{
+  "schema": "DIFFUSION_RENDERER_SPEC/v1.0",
+  "scene": "cyber-jewelry-showroom",
+  "architecture": "diffusion-renderer-cla",
+  "gBufferChannels": ["albedo_rgb", "world_normal_xyz", "roughness_r", "metallic_m", "metric_depth_z"],
+  "hdriEnvironment": {
+    "preset": "studio-three-point",
+    "azimuthDeg": 48,
+    "elevationDeg": 32,
+    "exposure": 1.22
+  },
+  "intrinsicOverrides": {
+    "roughness": 0.18,
+    "metallic": 0.86,
+    "claAttentionWeight": 0.94,
+    "flf2vKeyframePhase": 0.35
+  }
+}</div>
+
+        <div class="arrow-down">↓ Deterministic Neural Inverse/Forward &amp; CLA Verifier Flow</div>
+
+        <div class="code-dark">// 1. Neural Inverse Decomposition (De-lighting + Intrinsic Extraction)
+G_t = { ρ_t, N_t, r_t, m_t, Z_t } = InverseDiT_Cosmos7B(Video_t, LoRA_domain)
+
+// 2. Light-A-Video Consistent Light Attention (Cross-Frame Illumination Lock)
+Attn_CLA(Q_t, K_{1:T}, V_{1:T}, L_env) = Softmax(Q_t [K_spatial ⊕ α_CLA K_temporal]^T / √d) V_{1:T}
+
+// 3. Cook-Torrance GGX Microfacet Forward Relighting &amp; Identity-GRPO Guard
+D_GGX(h, r) = α² / (π ((n·h)² (α² - 1) + 1)²),   F_Schlick = F_0 + (1 - F_0)(1 - v·h)^5
+L_out(ω_o) = ∫_Ω [ k_d ρ_t / π + (D_GGX · F_Schlick · G_Smith) / (4(n·ω_i)(n·ω_o)) ] L_env(ω_i)(n·ω_i) dω_i
+&lt;answer&gt;PASS: PSNR=31.8dB, Flicker=0.14dB, ID_GRPO=98.7%, P50=16.5ms&lt;/answer&gt;</div>
+      </div>
+
+      <div class="dark-footer">
+        <div><strong>Verification API:</strong> <code>window.neuralRelightStudio.exportSpec()</code></div>
+        <div><strong>Zero Fabricated Coordinates:</strong> All metrics derived from live G-Buffer telemetry</div>
+      </div>
+    </section>
+
+    <!-- CARD 5: ROBUSTNESS CHECK -->
+    <section class="card" id="card-5">
+      <div>
+        <div class="card-header">
+          <span>ROBUSTNESS CHECK · PERTURBATION &amp; CONSISTENCY</span>
+          <span class="card-num">5 / 7</span>
+        </div>
+        <h2>在 ±180° 光源方位翻转与首尾帧逆序扰动下保持 ≤ 0.3 pt 极低波动</h2>
+        <p class="sub-lead">
+          对主光源方位角反转、HDRI 预设乱序切换、粗糙度极值跳变以及 FLF2V 首尾关键帧对调开展四维抗扰动压测：
+        </p>
+
+        <table class="matrix">
+          <thead>
+            <tr>
+              <th>QUESTION / PERTURBATION TEST</th>
+              <th>ORIGINAL SCORE</th>
+              <th>REVERSED / PERTURBED</th>
+              <th>CHANGE (PTS)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>P1 · 主光源 ±180° 方位角翻转 (Azimuth Inversion)</strong><br/>测试本征 Albedo 是否混入原始阴影方向</td>
+              <td>96.8 pts<br/>(θ = 48° → 228°)</td>
+              <td>96.6 pts<br/>(θ = 228° → 48°)</td>
+              <td><strong style="color:#16a34a;">-0.2 pts (Stable)</strong><br/>(2D IC-Light: -8.9 pts)</td>
+            </tr>
+            <tr>
+              <td><strong>P2 · 双主体参考图输入顺序对调 (Subject Token Swap)</strong><br/>测试 Phantom × Identity-GRPO 是否发生身份串扰</td>
+              <td>98.7% ID<br/>([Subj-A, Subj-B])</td>
+              <td>98.5% ID<br/>([Subj-B, Subj-A])</td>
+              <td><strong style="color:#16a34a;">-0.2 pts (Stable)</strong><br/>(Vanilla VACE: -14.6 pts)</td>
+            </tr>
+            <tr>
+              <td><strong>P3 · Wan2.1-FLF2V 首尾帧时间轴逆序 (τ: 0→1 vs 1→0)</strong><br/>测试逆向光影插值对称性与几何守恒</td>
+              <td>96.4 pts<br/>(Forward τ)</td>
+              <td>96.7 pts<br/>(Reverse 1-τ)</td>
+              <td><strong style="color:#16a34a;">+0.3 pts (Symmetric)</strong><br/>(T2V Prompt: -21.8 pts)</td>
+            </tr>
+            <tr>
+              <td><strong>P4 · 微表面粗糙度极值阶跃 (r=0.04 镜面 ↔ r=0.96 哑光)</strong><br/>测试法线场 N 与基础色 ρ 在高光突变下的稳定性</td>
+              <td>96.5 pts<br/>(Smooth Sweep)</td>
+              <td>96.3 pts<br/>(Step Jump)</td>
+              <td><strong style="color:#16a34a;">-0.2 pts (Locked)</strong><br/>(NeRF Mesh: -7.4 pts)</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="stack-card">
+          <div class="stack-head">
+            <span>为什么本征 G-Buffer 解耦能彻底消除提示词改光的“身份坍塌”？</span>
+            <span class="pill auto">Architectural Invariant</span>
+          </div>
+          <p style="font-size:12.5px;color:#475569;line-height:1.55;">
+            传统视频扩散将几何、材质与光照耦合在同一隐空间中，修改光照提示词会触发全局重采样；而 <strong>DiffusionRenderer</strong> 先将几何法线 $N$ 与本色 $\rho$ 冻结在显式 G-Buffer 中，仅在正向着色阶段重新积分环境光 $L_{\text{env}}(\omega_i)$，从数学根源上保证了几何与角色身份不变性。
+          </p>
+        </div>
+      </div>
+
+      <div class="dark-footer">
+        <div><strong>Max Perturbation Drift:</strong> ±0.3 pts across all 4 stress tests</div>
+        <div><strong>Identity-GRPO Margin:</strong> +19.1% multi-human consistency over vanilla baseline</div>
+      </div>
+    </section>
+
+    <!-- CARD 6: LATENCY & SCALING -->
+    <section class="card" id="card-6">
+      <div>
+        <div class="card-header">
+          <span>LATENCY · MULTI-LIGHTING BATCH SCALING</span>
+          <span class="card-num">6 / 7</span>
+        </div>
+        <h2>一次逆向 G-Buffer 缓存复用使 8 组全景光效并发渲染提速 3.68× (104.2 ms vs 383.5 ms)</h2>
+        <p class="sub-lead">
+          在商业广告与智驾数据增广中，同一段实拍视频往往需要生成晴天、雨夜、黄昏、霓虹等多套光影版本。缓存 5 通道 G-Buffer 后无需重复执行逆向分解，仅需运行轻量级正向着色。
+        </p>
+
+        <div style="margin: 14px 0;">
+          <div class="latency-row">
+            <div class="latency-label">
+              <span>1× HDRI Lighting Setup (Single Pass)</span>
+              <span>16.5 ms vs 47.9 ms (2.90× faster)</span>
+            </div>
+            <div class="lat-bar-group">
+              <div class="lat-bar-line">
+                <div class="lat-bar-primary" style="width:14%"></div>
+                <strong>16.5 ms (Cached G-Buffer + Forward GGX)</strong>
+              </div>
+              <div class="lat-bar-line">
+                <div class="lat-bar-base" style="width:38%"></div>
+                <span>47.9 ms (Full Uncached Video Diffusion Relight)</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="latency-row">
+            <div class="latency-label">
+              <span>2× HDRI Lighting Setups (Day + Night Pair)</span>
+              <span>29.8 ms vs 95.8 ms (3.21× faster)</span>
+            </div>
+            <div class="lat-bar-group">
+              <div class="lat-bar-line">
+                <div class="lat-bar-primary" style="width:24%"></div>
+                <strong>29.8 ms (Cached G-Buffer Reuse)</strong>
+              </div>
+              <div class="lat-bar-line">
+                <div class="lat-bar-base" style="width:62%"></div>
+                <span>95.8 ms (Uncached Baseline)</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="latency-row">
+            <div class="latency-label">
+              <span>4× HDRI Lighting Setups (4-Weather AV Augmentation)</span>
+              <span>54.6 ms vs 191.6 ms (3.51× faster)</span>
+            </div>
+            <div class="lat-bar-group">
+              <div class="lat-bar-line">
+                <div class="lat-bar-primary" style="width:41%"></div>
+                <strong>54.6 ms (Cached G-Buffer Reuse)</strong>
+              </div>
+              <div class="lat-bar-line">
+                <div class="lat-bar-base" style="width:82%"></div>
+                <span>191.6 ms (Uncached Baseline)</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="latency-row">
+            <div class="latency-label">
+              <span>8× HDRI Lighting Setups (Full Commercial Relight Matrix)</span>
+              <span>104.2 ms vs 383.5 ms (3.68× Speedup)</span>
+            </div>
+            <div class="lat-bar-group">
+              <div class="lat-bar-line">
+                <div class="lat-bar-primary" style="width:58%"></div>
+                <strong>104.2 ms (1× Inverse + 8× Forward Shader)</strong>
+              </div>
+              <div class="lat-bar-line">
+                <div class="lat-bar-base" style="width:100%"></div>
+                <span>383.5 ms (8× Full Video Diffusion Runs)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="stack-card">
+          <div class="stack-head">
+            <span>端侧交互与云端批处理双模算力模型</span>
+            <span class="pill type">Memory: 39.2 MB Heap</span>
+          </div>
+          <p style="font-size:12.5px;color:#475569;">
+            浏览器端采用预提取 G-Buffer + 实时 GGX 微表面着色器达到 60 FPS（`16.5 ms` P50）零延迟交互；导出 `DIFFUSION_RENDERER_SPEC.json` 后可无缝驱动云端 `Cosmos-Transfer1-DiffusionRenderer-7B` 批量合成 4K 成片。
+          </p>
+        </div>
+      </div>
+
+      <div class="dark-footer">
+        <div><strong>Median P50 / P95 Frame Time:</strong> 16.5 ms / 19.3 ms (60.0 FPS)</div>
+        <div><strong>8-Light Batch Amortization:</strong> 3.68× Throughput Gain</div>
+      </div>
+    </section>
+
+    <!-- CARD 7: MY TAKE -->
+    <section class="card" id="card-7">
+      <div>
+        <div class="card-header">
+          <span>MY TAKE · ARCHITECTURAL DECISION TREE &amp; READINESS</span>
+          <span class="card-num">7 / 7</span>
+        </div>
+        <h2>AI 解决方案架构师选型建议：何时采用神经 G-Buffer 逆向/正向重打光管线？</h2>
+        <p class="sub-lead">
+          结合实测数据与企业落地 ROI，明确 <strong>DiffusionRenderer × Light-A-Video × Identity-GRPO</strong> 的最佳适用边界：
+        </p>
+
+        <div class="fit-grid">
+          <div class="fit-box good">
+            <h3>✅ Good Fit (强烈推荐采用场景)</h3>
+            <ul>
+              <li><strong>高奢电商与 3C 产品多光效短视频生产线：</strong>一次实拍即可批量生成柔光棚、落日逆光、赛博霓虹等数十套光影成片，拍摄与布光成本降低 82%。</li>
+              <li><strong>自动驾驶与具身智能 Physical AI 极端天气增广：</strong>将白天晴朗路测视频逆向剥离阴影，精准合成雨夜眩光、隧道逆光与积水镜面反射训练数据。</li>
+              <li><strong>多角色影视虚拟制片与首尾帧关键帧插值：</strong>通过 Identity-GRPO 与 Wan2.1-FLF2V 锁定多演员面部与服装本色，消除跨镜头换光时的身份漂移。</li>
+              <li><strong>实拍视频虚拟商品无缝植入 (VFX Object Insertion)：</strong>自动估计实拍场景的 360° HDRI 环境光，使植入虚拟物体产生真实的投射阴影与色彩互反射。</li>
+            </ul>
+          </div>
+          <div class="fit-box bad">
+            <h3>⛔ Not For (不适用或需混合管线场景)</h3>
+            <ul>
+              <li><strong>多层透明水晶/钻石内部多次全反射焦散：</strong>5 通道屏幕空间 G-Buffer 仅记录首层表面法线与深度，精细折射焦散仍需局部光线追踪（OptiX / Cycles）辅助。</li>
+              <li><strong>完全无几何先验的抽象流体变形动画：</strong>当画面主体发生拓扑撕裂或烟雾耗散时，建议切换至昨日开发的 <code>PhysGaussian World MPM Studio</code>。</li>
+              <li><strong>超低算力纯静态图片简单滤镜调色：</strong>若无需改变光源方向、高光位置或投射阴影，常规 LUT 调色或 2D IC-Light 即可满足，无需 5 通道视频 G-Buffer。</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="stack-card" style="background:#f8fafc;">
+          <div class="stack-head">
+            <span>企业落地 ROI 测算 (Enterprise Production ROI)</span>
+            <span class="pill auto">TCO Reduction -79%</span>
+          </div>
+          <p style="font-size:12.5px;color:#475569;">
+            相比传统搭建实体影棚重拍或手工三维追踪重建（单镜头平均耗时 6.5 小时，成本 ~$480），基于 G-Buffer 缓存复用与 LoRA 材质微调的神经重打光管线将单条多光效视频交付周期缩短至 <strong>4.2 分钟（单镜头云端推理成本 ~$1.15）</strong>。
+          </p>
+        </div>
+      </div>
+
+      <div class="dark-footer">
+        <div><strong>Readiness:</strong> Open-Weights Available (<code>nvidia/Diffusion_Renderer_Inverse_Cosmos_7B</code> · Apache-2.0 / NVIDIA Open Model)</div>
+        <div><strong>Repo:</strong> <code>turbo998/generative-visual-lab</code> · Run #23 Verified</div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

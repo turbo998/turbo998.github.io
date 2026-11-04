@@ -151,6 +151,22 @@ function localizeCycle379Workbench(){
   fs.writeFileSync(path.join(root,file.replace('.html','.zh.html')),zhHtml);
 }
 
+function localizeCycle380Workbench(){
+  const file='workshops/azure-agent-infra/workbench-cycle-380.html';
+  if(!fs.existsSync(path.join(root,file)))return;
+  const base=gitShow('6dc9dd8',file)
+    .replace('.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}','.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:768px){.grid{grid-template-columns:1fr}}')
+    .replace('.sub{color:#93c5fd;margin-bottom:14px}','.sub{color:#bfd6ff;margin-bottom:14px}')
+    .replace('<body><div class="wrap">',`<body>${professional.navigation({file,en:true,className:'kee-dedicated-nav'})}<div class="wrap">`);
+  const zhHtml=base
+    .replace(/<html lang="[^"]+"/,'<html lang="zh-CN"')
+    .replace('<title>Cycle #380 Workbench · Azure Agent Infra</title>','<title>Cycle #380 交互工作台 · Azure 智能体基础设施</title>')
+    .replace('<h1>Cycle #380 Interactive Workbench</h1>','<h1>Cycle #380 交互式基准工作台</h1>')
+    .replace('Runtime/Sandbox benchmark explorer with source labels and deterministic session-cost model.','运行时与沙盒基准浏览器（含来源标签与确定性单会话成本模型）。');
+  fs.writeFileSync(path.join(root,file),base);
+  fs.writeFileSync(path.join(root,file.replace('.html','.zh.html')),zhHtml);
+}
+
 function main(){
  const baseline=gitShow('941ee62d1f55dfe8bd8dfbf82e4d2a7bd34ed0a1',source);
  for(const en of [true,false]){
@@ -165,6 +181,7 @@ function main(){
  localizePhase180Report();
  localizeCycle378Workbench();
  localizeCycle379Workbench();
+ localizeCycle380Workbench();
  console.log('Localized VM compatibility entry and 8b9f876 nightly editions in English and Chinese');
 }
 if(require.main===module)main();
