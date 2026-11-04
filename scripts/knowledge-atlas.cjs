@@ -89,33 +89,114 @@ function graphSvg(file, zh, options = {}) {
   const topic = options.topic || classifyPath(file);
   const title = local(options.title, zh) || topicLabel(topic, zh);
   const concepts = options.concepts?.length ? options.concepts.map(item => typeof item === 'object' && !Array.isArray(item) ? item : node(item, '', [ 'context for', '关联至' ])) : blueprints[topic] || blueprints.general;
-  const id = 'knowledge-' + crypto.createHash('sha256').update(`${file}|${zh}|${topic}|${title}|${JSON.stringify(concepts)}`).digest('hex').slice(0, 12);
-  const heading = wrap(title, 31);
-  let y = 30 + heading.length * 25;
-  let body = textLines(heading, 20, 30, 20, '#eef5ff', 700);
-  body += textLines([zh ? '概念架构 · 箭头表示关系，不代表测量值' : 'Conceptual topology · not measured metrics'], 20, y + 6, 13, '#a9b8ce');
-  y += 32;
+  const compact = Boolean(options.compact);
+  const baseHash = crypto.createHash('sha256').update(`${file}|${zh}|${topic}|${title}|${JSON.stringify(concepts)}`).digest('hex').slice(0, 12);
+  const id = `knowledge-${baseHash}${compact ? '-compact' : ''}`;
+  const accents = ['#38bdf8', '#34d399', '#a78bfa', '#f59e0b', '#56ddcd'];
+  const rolesEn = ['INGRESS', 'GROUNDING', 'POLICY GATE', 'EXECUTION', 'AUDIT & EVAL'];
+  const rolesZh = ['输入与意图', '上下文锚定', '策略与门禁', '执行与运行', '审计与评测'];
   const description = [];
-  concepts.forEach((item, i) => {
+  if (compact) {
+    const heading = wrap(title, 29);
+    let y = 34 + heading.length * 24;
+    let body = `<rect x="16" y="14" width="224" height="22" rx="11" fill="#112844" stroke="#2d5a88"/>` + textLines([zh ? '数据流向与架构要点 · 竖屏视图' : 'DATA FLOW & ARCHITECTURE'], 28, 29, 11.5, '#56ddcd', 700);
+    body += textLines(heading, 20, 58, 18, '#eef5ff', 700);
+    y = 62 + heading.length * 24;
+    body += textLines([zh ? '概念拓扑 · 箭头表示数据/控制流向，非实测指标' : 'Conceptual data flow · arrows show stage handoffs'], 20, y, 12.5, '#a9b8ce');
+    y += 22;
+    concepts.forEach((item, i) => {
+      const label = local(item.title, zh) || '';
+      const detail = local(item.detail, zh) || '';
+      const accent = accents[i % accents.length];
+      const role = (zh ? rolesZh : rolesEn)[Math.min(i, 4)];
+      const labels = wrap(label, 29);
+      const details = wrap(detail, 36);
+      const height = 52 + labels.length * 23 + details.length * 19;
+      body += `<g data-concept="${i + 1}"><rect x="16" y="${y}" width="328" height="${height}" rx="12" fill="${i % 2 ? '#122842' : '#0e2036'}" stroke="#38597d"/><rect x="16" y="${y}" width="328" height="4" rx="2" fill="${accent}"/>${textLines([`0${i + 1} · ${role}`], 30, y + 23, 11.5, accent, 700)}${textLines(labels, 30, y + 46, 16.5, '#f0f6ff', 700)}${textLines(details, 30, y + 50 + labels.length * 23, 13, '#c4d5e8')}</g>`;
+      description.push(label + (detail ? ': ' + detail : ''));
+      y += height;
+      if (i < concepts.length - 1) {
+        const relation = local(item.relation, zh) || (zh ? '流转至' : 'context for');
+        const edgeLines = wrap(`0${i + 1}→0${i + 2} ${relation}`, 34);
+        const gap = Math.max(46, edgeLines.length * 18 + 20);
+        body += `<g data-relationship="${esc(relation)}"><path d="M34 ${y + 2} V${y + gap - 6}" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 ${y + gap - 12} L34 ${y + gap - 5} L39 ${y + gap - 12}" fill="none" stroke="#56ddcd" stroke-width="2.2"/>${textLines(edgeLines, 50, y + 24, 12.5, '#8eeadf', 600)}</g>`;
+        description.push(relation);
+        y += gap;
+      }
+    });
+    return `<svg xmlns="http://www.w3.org/2000/svg" lang="${zh ? 'zh-CN' : 'en'}" class="knowledge-graph-compact" role="img" aria-labelledby="${id}-title ${id}-desc" viewBox="0 0 360 ${y + 18}" width="360" style="width:100%;height:auto;max-width:560px;margin:0 auto;font-family:system-ui,sans-serif"><title id="${id}-title">${esc(title)}</title><desc id="${id}-desc">${esc(description.join(' → '))}</desc><rect width="360" height="${y + 18}" rx="16" fill="#081525" stroke="#284566"/>${body}</svg>`;
+  }
+  const heading = wrap(title, 68);
+  let body = `<rect x="24" y="16" width="292" height="24" rx="12" fill="#102742" stroke="#2d5a88"/>` + textLines([zh ? '数据流向与核心要点架构图 · 横向全景' : 'DATA FLOW & KEY TAKEAWAYS ARCHITECTURE'], 38, 32, 11.5, '#56ddcd', 700);
+  body += `<rect x="646" y="16" width="196" height="24" rx="12" fill="#0d2238" stroke="#254b6e"/>` + textLines([zh ? '──▶ 阶段数据与上下文流' : '──▶ Stage Data & Context Flow'], 660, 32, 11.5, '#7ce8d8', 600);
+  body += `<rect x="852" y="16" width="204" height="24" rx="12" fill="#15203c" stroke="#3b4278"/>` + textLines([zh ? '◆ 策略门禁与要点说明' : '◆ Policy Gate & Key Notes'], 866, 32, 11.5, '#c4b5fd', 600);
+  body += textLines(heading, 24, 62, 18, '#f2f7ff', 700);
+  const stageTop = 56 + heading.length * 25;
+  const count = concepts.length;
+  const gap = 24;
+  const totalW = 1032;
+  const cardW = Math.floor((totalW - (count - 1) * gap) / count);
+  const titleBudget = Math.max(20, Math.floor((cardW - 24) / 7.5));
+  const detailBudget = Math.max(23, Math.floor((cardW - 22) / 6.5));
+  const staged = concepts.map((item, i) => {
     const label = local(item.title, zh) || '';
     const detail = local(item.detail, zh) || '';
-    const labels = wrap(label, 31); const details = wrap(detail, 39);
-    const height = 34 + labels.length * 25 + details.length * 20;
-    body += `<g data-concept="${i + 1}"><rect x="16" y="${y}" width="328" height="${height}" rx="12" fill="${i % 2 ? '#132942' : '#102238'}" stroke="#43617f"/><rect x="16" y="${y + 14}" width="4" height="${height - 28}" rx="2" fill="#63dbca"/>${textLines(labels, 32, y + 30, 18, '#f0f6ff', 650)}${textLines(details, 32, y + 36 + labels.length * 25, 14, '#c2d1e3')}</g>`;
-    description.push(label + (detail ? ': ' + detail : ''));
-    y += height;
-    if (i < concepts.length - 1) {
-      const relation = local(item.relation, zh) || (zh ? '关联至' : 'context for');
-      const edgeLines = wrap(relation, 38); const gap = Math.max(52, edgeLines.length * 18 + 22);
-      body += `<g data-relationship="${esc(relation)}"><path d="M32 ${y} V${y + gap - 7}" fill="none" stroke="#63dbca" stroke-width="2"/><path d="M27 ${y + gap - 12} L32 ${y + gap - 6} L37 ${y + gap - 12}" fill="none" stroke="#63dbca" stroke-width="2"/>${textLines(edgeLines, 48, y + 26, 13, '#94e5da')}</g>`;
-      description.push(relation); y += gap;
+    const relation = i < count - 1 ? (local(item.relation, zh) || (zh ? '流转至' : 'context for')) : '';
+    const labels = wrap(label, titleBudget);
+    const details = wrap(detail, detailBudget);
+    const relLines = i < count - 1 ? wrap(`0${i + 1}→0${i + 2} ${relation}`, detailBudget) : wrap(zh ? `0${count} 闭环 · 审计与证据核验` : `0${count} Sink · Verified Evidence`, detailBudget);
+    return {label, detail, relation, labels, details, relLines};
+  });
+  const cardH = Math.max(186, ...staged.map(s => 64 + s.labels.length * 19 + s.details.length * 17));
+  const relY = stageTop + cardH + 8;
+  const relH = Math.max(30, ...staged.map(s => 12 + s.relLines.length * 16));
+  staged.forEach((s, i) => {
+    const x = 24 + i * (cardW + gap);
+    const accent = accents[i % accents.length];
+    const role = (zh ? rolesZh : rolesEn)[Math.min(i, 4)];
+    const sepY = stageTop + 50 + s.labels.length * 19;
+    body += `<g data-concept="${i + 1}"><rect x="${x}" y="${stageTop}" width="${cardW}" height="${cardH}" rx="12" fill="${i % 2 ? '#112640' : '#0d1e34'}" stroke="#335277" stroke-width="1.2"/><rect x="${x}" y="${stageTop}" width="${cardW}" height="5" rx="2.5" fill="${accent}"/><rect x="${x + 10}" y="${stageTop + 13}" width="${cardW - 20}" height="22" rx="6" fill="#081424" stroke="#223b59"/>${textLines([`0${i + 1} · ${role}`], x + 16, stageTop + 28, 11.5, accent, 700)}${textLines(s.labels, x + 12, stageTop + 54, 13.5, '#f4f8ff', 700)}<path d="M${x + 12} ${sepY} H${x + cardW - 12}" stroke="#233b57" stroke-width="1"/>${textLines(s.details, x + 12, sepY + 18, 12, '#c5d6e8')}</g>`;
+    description.push(s.label + (s.detail ? ': ' + s.detail : ''));
+    if (i < count - 1) {
+      const arrowY = stageTop + Math.floor(cardH / 2);
+      body += `<g data-relationship="${esc(s.relation)}"><path d="M${x + cardW + 2} ${arrowY} H${x + cardW + gap - 4}" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M${x + cardW + gap - 10} ${arrowY - 5} L${x + cardW + gap - 3} ${arrowY} L${x + cardW + gap - 10} ${arrowY + 5}" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="${x}" y="${relY}" width="${cardW}" height="${relH}" rx="8" fill="#0b2239" stroke="#2b5b6c"/>${textLines(s.relLines, x + 10, relY + 19, 11.5, '#7ce8d8', 600)}</g>`;
+      description.push(s.relation);
+    } else {
+      body += `<rect x="${x}" y="${relY}" width="${cardW}" height="${relH}" rx="8" fill="#0e2538" stroke="#2e5470"/>` + textLines(s.relLines, x + 10, relY + 19, 11.5, '#93c5fd', 600);
     }
   });
-  return `<svg xmlns="http://www.w3.org/2000/svg" lang="${zh ? 'zh-CN' : 'en'}" role="img" aria-labelledby="${id}-title ${id}-desc" viewBox="0 0 360 ${y + 18}" width="360" style="display:block;width:100%;height:auto;max-width:560px;margin:0 auto;font-family:system-ui,sans-serif"><title id="${id}-title">${esc(title)}</title><desc id="${id}-desc">${esc(description.join(' → '))}</desc><rect width="360" height="${y + 18}" rx="16" fill="#091827"/>${body}</svg>`;
+  const takeawayTop = relY + relH + 14;
+  const first = concepts[0] || node(['Input','输入'], '', null);
+  const mid = concepts[Math.floor((concepts.length - 1) / 2)] || first;
+  const last = concepts[concepts.length - 1] || first;
+  const takeaways = [
+    {
+      accent: '#38bdf8',
+      head: zh ? '要点 01 · 全链路数据流向' : 'TAKEAWAY 01 · END-TO-END DATA FLOW',
+      lines: wrap(zh ? `自左向右从「${local(first.title, true)}」递进至「${local(last.title, true)}」，明确各阶段输入与输出契约。` : `Left-to-right pipeline from ${local(first.title, false)} to ${local(last.title, false)} with explicit handoffs.`, 44)
+    },
+    {
+      accent: '#a78bfa',
+      head: zh ? '要点 02 · 核心控制与策略门禁' : 'TAKEAWAY 02 · CONTROL & POLICY GATE',
+      lines: wrap(zh ? `核心门禁「${local(mid.title, true)}」：${local(mid.detail, true) || '在进入下游执行前完成边界与权限校验。'}` : `Core boundary at ${local(mid.title, false)}: ${local(mid.detail, false) || 'validates policy boundaries before execution.'}`, 44)
+    },
+    {
+      accent: '#34d399',
+      head: zh ? '要点 03 · 证据核验与适用边界' : 'TAKEAWAY 03 · EVIDENCE & BOUNDARY',
+      lines: wrap(zh ? `${local(last.detail, true) || '核验来源产物与适用前提'} · 概念拓扑示意，非实测延迟。` : `${local(last.detail, false) || 'Inspect source artifacts and limits'} · Conceptual flow, not measured latency.`, 44)
+    }
+  ];
+  const takeawayH = Math.max(88, ...takeaways.map(t => 36 + t.lines.length * 17));
+  takeaways.forEach((card, idx) => {
+    const cx = 24 + idx * 349;
+    body += `<g data-takeaway="${idx + 1}"><rect x="${cx}" y="${takeawayTop}" width="334" height="${takeawayH}" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="${cx}" y="${takeawayTop + 12}" width="4" height="${takeawayH - 24}" rx="2" fill="${card.accent}"/>${textLines([card.head], cx + 14, takeawayTop + 25, 11.5, card.accent, 700)}${textLines(card.lines, cx + 14, takeawayTop + 46, 12, '#d5e4f5')}</g>`;
+  });
+  const totalH = takeawayTop + takeawayH + 16;
+  return `<svg xmlns="http://www.w3.org/2000/svg" lang="${zh ? 'zh-CN' : 'en'}" class="knowledge-graph-wide" role="img" aria-labelledby="${id}-title ${id}-desc" viewBox="0 0 1080 ${totalH}" width="1080" style="width:100%;height:auto;max-width:1080px;margin:0 auto;font-family:system-ui,sans-serif"><title id="${id}-title">${esc(title)}</title><desc id="${id}-desc">${esc(description.join(' → '))}</desc><rect width="1080" height="${totalH}" rx="16" fill="#081525" stroke="#284566"/>${body}</svg>`;
 }
 function knowledgeFigure(file, zh, options = {}) {
   const topic = options.topic || classifyPath(file);
-  return `<figure class="knowledge-figure" data-knowledge-atlas="${esc(topic)}" style="margin:24px 0;max-width:100%">${graphSvg(file, zh, options)}<figcaption style="font:14px/1.6 system-ui,sans-serif;margin:12px 0;overflow-wrap:anywhere">${zh ? '整体知识图示：按标注关系阅读组件与工程边界。布局仅为概念示意；不表示吞吐、性能排名或生产部署。' : 'Overall knowledge map: read the labeled relationships and engineering boundaries. Layout is conceptual; it does not represent throughput, rankings or a production deployment.'}</figcaption></figure>`;
+  return `<figure class="knowledge-figure" data-knowledge-atlas="${esc(topic)}" style="margin:20px auto;max-width:1120px;padding:0 20px;box-sizing:border-box"><style>.knowledge-graph-wide{display:block}.knowledge-graph-compact{display:none}@media(max-width:600px){.knowledge-graph-wide{display:none}.knowledge-graph-compact{display:block}}</style>${graphSvg(file, zh, {...options, compact: true})}${graphSvg(file, zh, {...options, compact: false})}<figcaption style="font:13px/1.6 system-ui,sans-serif;margin:10px auto 0;max-width:1080px;color:#9fb2ca;overflow-wrap:anywhere">${zh ? '整体架构与数据流向图示：自左向右阅读阶段数据流转、策略门禁与底部三项核心要点说明（概念拓扑，不代表实测吞吐或生产排名）。' : 'Architecture & data-flow blueprint: follow the left-to-right stage handoffs, policy gates, and three key takeaway callouts below (conceptual topology, not measured latency or rankings).'}</figcaption></figure>`;
 }
 const mapSummaries = {
   'data-infra': [['OneLake · Fabric IQ · Mirroring','AKSClaw · E2B · VM FinOps'],['OneLake · Fabric IQ · 数据镜像','AKSClaw · E2B · VM 成本治理']],

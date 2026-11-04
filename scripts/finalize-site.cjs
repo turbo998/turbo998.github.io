@@ -58,8 +58,21 @@ function finalizeSite() {
     const absolute=path.join(root,file);let html=fs.readFileSync(absolute,'utf8');
     const en=!/<html\b[^>]*lang=["']zh/i.test(html), pair=pairs.get(file);
     if(!pair)unresolved.push(file);
-    const isReportOrPhase179=reportOwned.has(file)||phase179Owned.has(file);
+    const isReportOrPhase179=(reportOwned.has(file)&&html.includes('<!-- kee-report-localization-navigation:start -->'))||phase179Owned.has(file);
+    if(reportOwned.has(file)&&html.includes('<!-- kee-report-localization-navigation:start -->')) {
+      const title=plain(/<title[^>]*>([\s\S]*?)<\/title>/i.exec(html)?.[1]||file);
+      const fig=knowledgeFigure(file,!en,{topic:classifyPath(file)||'benchmarks',title}).replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi,'');
+      html=html.replace(/<figure class="knowledge-figure" data-knowledge-atlas="[^"]*"[\s\S]*?<\/figure>/,()=>fig);
+      if(!html.includes('.knowledge-graph-wide'))html=html.replace('</style><!-- kee-report-localization:metadata:end -->','.knowledge-graph-wide{display:block}.knowledge-graph-compact{display:none}@media(max-width:600px){.knowledge-graph-wide{display:none}.knowledge-graph-compact{display:block}}</style><!-- kee-report-localization:metadata:end -->');
+    }
     if(!isReportOrPhase179)html=html.replace(/(<html\b[^>]*\blang=)["']zh["']/i,'$1"zh-CN"').replace(/<style id="site-remediation-style">[\s\S]*?<\/style>\s*/g,'').replace(/<!-- site-remediation-knowledge:start -->[\s\S]*?<!-- site-remediation-knowledge:end -->\s*/g,'');
+    if(!/<(header|nav)\b[^>]*data-professional-header[^>]*>/.test(html)&&!/class="site-header"/.test(html)&&!isReportOrPhase179) {
+      const topic=classifyPath(file);
+      const topicTarget=topic==='sa-skills'?`studio/${en?'':'zh-'}index.html#sa-skills`:topic==='general'?`studio/${en?'':'zh-'}index.html`:`studio/${en?'':'zh-'}${topic}.html`;
+      const context=`<a href="${professional.relative(file,`studio/${en?'':'zh-'}index.html`)}">← ${en?'Engineering Hub':'工程枢纽'}</a> · <a class="reading-context" href="${professional.relative(file,topicTarget)}">${en?'Parent topic':'返回主题'}</a>`;
+      const languages=pair?`<a href="${professional.relative(file,pair.en)}"${!en?' data-reading-language':''} hreflang="en" lang="en"${en?' aria-current="page"':''}>EN</a><a href="${professional.relative(file,pair.zh)}"${en?' data-reading-language':''} hreflang="zh-CN" lang="zh-CN"${!en?' aria-current="page"':''}>中文</a>`:'';
+      html=html.replace(/<body\b[^>]*>/i,match=>match+professional.navigation({file,en,className:'kee-dedicated-nav',languages,context}));
+    }
     const header=/<(header|nav)\b[^>]*data-professional-header[^>]*>[\s\S]*?<\/\1>/.exec(html);
     if(header&&!isReportOrPhase179) {
       const className=/class="([^"]+)"/.exec(header[0])?.[1]||'kee-dedicated-nav';
@@ -73,7 +86,8 @@ function finalizeSite() {
     const sealed=/<meta\b[^>]*Content-Security-Policy[^>]*default-src\s+'none'/i.test(html);
     if(sealed)html=html.replace(/<script\b[^>]*\bsrc=["'][^"']*(?:dedicated-navigation|editorial\/search(?:-index)?)\.js["'][^>]*><\/script>/gi,'');
     if(header&&!isReportOrPhase179) {
-      html=html.replace('</head>',`<style id="site-remediation-style">${search.css()}</style></head>`);
+      const styleText=html.includes('dedicated-navigation.css')?search.css():professional.css();
+      html=html.replace('</head>',`<style id="site-remediation-style">${styleText}</style></head>`);
       if(!sealed&&!/src="[^"]*editorial\/search\.js"/.test(html))html=html.replace('</head>',`${search.runtime(file)}</head>`);
     }
     // Localized navigation follows actual edition pairs; scripts and source data remain untouched.
@@ -93,6 +107,10 @@ function finalizeSite() {
       const marker=`<!-- site-remediation-knowledge:start -->${figure}<!-- site-remediation-knowledge:end -->`;
       const contextEnd=/<div class="professional-context-bar">[\s\S]*?<\/div>/;
       html=html.replace(contextEnd,match=>match+marker);
+    } else if(!isReportOrPhase179&&/<figure class="knowledge-figure" data-knowledge-atlas="[^"]*"[\s\S]*?<\/figure>/.test(html)) {
+      const title=plain(/<title[^>]*>([\s\S]*?)<\/title>/i.exec(html)?.[1]||file);
+      const figure=knowledgeFigure(file,!en,{topic:classifyPath(file)||'infra',title});
+      html=html.replace(/<figure class="knowledge-figure" data-knowledge-atlas="[^"]*"[\s\S]*?<\/figure>/,()=>figure);
     }
     if(/^studio\/(?:zh-)?archive\.html$/.test(file)) {
       html=html.replace(/<!-- localized-archive:start -->[\s\S]*?<!-- localized-archive:end -->/g,'');
