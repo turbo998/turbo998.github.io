@@ -101,7 +101,13 @@ const neuralRelightPages = ['animation','generative-visual-lab'].flatMap(dir=>[
   {path:`${dir}/research/neural-relighting-causal-video-study.html`,role:'article',title:'神经逆向/正向 G-Buffer 视频重打光与多主体身份锁定关键帧导演架构研究',tracks:['animation'],language:{declared:'zh-CN'},supplemental:true},
   {path:`${dir}/research/neural-relighting-causal-video-study.en.html`,role:'article',title:'Neural Inverse/Forward G-Buffer Video Relighting & Multi-Subject Identity-Preserving Director Architecture Study',tracks:['animation'],language:{declared:'en'},supplemental:true}
 ]);
-const archivePages = [...inventory.content, ...translations, ...webiqPages, ...radarPages, ...infraPages, ...dataLabPages, ...phase179Pages, ...clioHarnessPages, ...commerceTrendsPages, ...camera4dPages, ...audiovisualFoleyPages, ...physGaussianPages, ...neuralRelightPages].map(page => ({...page, tracks:[classifyPage(page), ...(page.tracks || []).filter(track => track !== classifyPage(page) && track !== 'infra')]}));
+const worldMemPages = ['animation','generative-visual-lab'].flatMap(dir=>[
+  {path:`${dir}/demos/worldmem-action-director/index.html`,role:'demo',title:'Action-Conditioned Playable World Model & Episodic Memory Director',tracks:['animation'],language:{declared:'zh-CN'},supplemental:true},
+  {path:`${dir}/demos/worldmem-action-director/test-report-cards.html`,role:'report',title:'Action-Conditioned Playable World Model & Episodic Memory · 7-Card Report',tracks:['animation'],language:{declared:'zh-CN'},supplemental:true},
+  {path:`${dir}/research/worldmem-action-world-study.html`,role:'article',title:'动作条件可玩世界模型与长时序三维情景记忆架构深度研究',tracks:['animation'],language:{declared:'zh-CN'},supplemental:true},
+  {path:`${dir}/research/worldmem-action-world-study.en.html`,role:'article',title:'Action-Conditioned Playable World Models & Stateful 3D Episodic Memory Architecture Study',tracks:['animation'],language:{declared:'en'},supplemental:true}
+]);
+const archivePages = [...inventory.content, ...translations, ...webiqPages, ...radarPages, ...infraPages, ...dataLabPages, ...phase179Pages, ...clioHarnessPages, ...commerceTrendsPages, ...camera4dPages, ...audiovisualFoleyPages, ...physGaussianPages, ...neuralRelightPages, ...worldMemPages].map(page => ({...page, tracks:[classifyPage(page), ...(page.tracks || []).filter(track => track !== classifyPage(page) && track !== 'infra')]}));
 function archiveNote(page, zh) {
   const t = (en, cn) => zh ? cn : en;
   const record = readingByPath.get(page.path);
