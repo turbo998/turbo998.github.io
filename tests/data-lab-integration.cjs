@@ -8,7 +8,7 @@ const { execFileSync } = require('node:child_process');
 const integration = require('../scripts/integrate-data-lab.cjs');
 const { root, baseline, directory, files, source, strip, transform } = integration;
 const base = process.env.SITE_TEST_URL || 'http://127.0.0.1:8797';
-const output = process.env.DATALAB_ARTIFACT_DIR || 'C:\\Users\\qichen2\\.copilot\\session-state\\d4e2b4e8-91dc-4f4c-b368-6f587f5db788\\files\\aurora-review\\data-lab';
+const output = process.env.DATALAB_ARTIFACT_DIR || path.join(require('node:os').homedir(), '.copilot', 'session-state', 'd4e2b4e8-91dc-4f4c-b368-6f587f5db788', 'files', 'aurora-review', 'data-lab');
 const report = {
   result: 'RUNNING', baseline,
   scope: 'Perimeter integration only; no report regeneration, benchmark rerun or new measurements.',
