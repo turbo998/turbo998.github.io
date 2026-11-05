@@ -17,7 +17,7 @@ No shared assets, route inventory, preview prototypes, other-role pages, report 
 ```powershell
 node scripts\integrate-dedicated.cjs
 node scripts\integrate-dedicated.cjs --check
-$env:DEDICATED_ARTIFACTS='C:\Users\qichen2\.copilot\session-state\d4e2b4e8-91dc-4f4c-b368-6f587f5db788\files\dedicated-integration'
+$env:DEDICATED_ARTIFACTS="$HOME\.copilot\session-state\d4e2b4e8-91dc-4f4c-b368-6f587f5db788\files\dedicated-integration"
 node tests\dedicated-smoke.cjs --static
 node tests\dedicated-smoke.cjs --layout
 node tests\dedicated-smoke.cjs
