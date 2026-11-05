@@ -361,6 +361,46 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
         <a class="pub-arrow" href="workshops/benchmarks/maf-cards.zh-CN.html" aria-label="打开 MAF v1.0 7-Card 报告">→</a>
       </article>
 
+      <!-- SUPPLEMENT 8: AZURE MI300X LARGE OSS MOE BF16 & MXFP4 -->
+      <article class="pub" data-category="harness-infra">
+        <div>
+          <span class="pub-tag report">增补报告 8 · MI300X MoE</span>
+          <div class="pub-date">2026-11-05 · 550B–975B MoE</div>
+        </div>
+        <div class="pub-main">
+          <h3><a href="workshops/benchmarks/mi300x-large-moe-bf16-mxfp4-cards.zh-CN.html">增补报告 8：Muse Spark Open (816B)、Nemotron 3 Ultra (550B) 与 Inkling (975B) 在 Azure AMD MI300X 上的 BF16 vs. MXFP4 精度与部署架构实测</a></h3>
+          <p>在 Azure <code>Standard_ND96isr_MI300X_v5</code>（单机 8× AMD MI300X 192 GB HBM3 = <strong>1,536 GB 显存池</strong>，ROCm 6.3 + AITER + vLLM/SGLang <code>TP=8, EP=8</code>）上实测三大超大规模开源 MoE 模型：采用 OCP <strong>MXFP4</strong>（32 元素 <code>E8M0</code> 共享指数块量化路由专家 FFN，同时保持路由门控与 Attention 为 <code>BF16</code>），将 <code>550B–975B</code> 模型权重从 <code>1,100–1,950 GB</code> 压缩至 <strong>312–538 GB</strong>，使 <strong>Muse Spark Open 816B</strong>（C=16 吞吐 <code>512.4 tok/s</code>，C=32 达 <code>812.5 tok/s</code>，单 VM 算力产出提升 <code>4.75×</code>）与 <strong>Inkling 975B</strong>（C=16 吞吐 <code>476.8 tok/s</code>，单 VM 产出提升 <code>5.01×</code>）摆脱跨双节点 InfiniBand 通信税并在单机内敛运行，同时将 <strong>Nemotron 3 Ultra 550B</strong> 单节点吞吐提升 <strong>1.78×–2.15×</strong>，综合精度仅相差 <strong>-0.5 ~ -0.8 pts</strong>。</p>
+          <div class="pub-meta">
+            <span><a href="workshops/benchmarks/mi300x-large-moe-bf16-mxfp4-cards.zh-CN.html"><b>🃏 7-Card 4:5 视觉报告</b></a></span>
+            <span><a href="assets/moe-mi300x-bf16-mxfp4-visual-summary.svg" target="_blank" rel="noopener"><b>🖼️ 一图流总结 SVG</b></a></span>
+            <span><a href="https://github.com/turbo998/ai-infra-research/blob/main/docs/research/2026-11-05-mi300x-large-moe-bf16-mxfp4-and-aipc-decision-sft.md" target="_blank" rel="noopener"><b>📄 深度架构专著 (中文)</b></a></span>
+            <span><a href="https://github.com/turbo998/benchmark-harness-engineering/tree/main/data/reported/moe-mi300x-bf16-mxfp4" target="_blank" rel="noopener"><b>📂 密封数据集</b></a></span>
+            <span>单机 MI300X 全收敛 · 单 VM 吞吐 4.75×–5.01× · 精度差 -0.5~-0.8 pt</span>
+          </div>
+        </div>
+        <a class="pub-arrow" href="workshops/benchmarks/mi300x-large-moe-bf16-mxfp4-cards.zh-CN.html" aria-label="打开增补报告 8 MI300X MoE 7-Card 报告">→</a>
+      </article>
+
+      <!-- SUPPLEMENT 7: AIPC EDGE DECISION MODEL SFT, CALIBRATION & Q8_0 GGUF -->
+      <article class="pub" data-category="routing-decision">
+        <div>
+          <span class="pub-tag report">增补报告 7 · 端侧决策</span>
+          <div class="pub-date">2026-11-05 · Qwen3.5 0.8B/4B</div>
+        </div>
+        <div class="pub-main">
+          <h3><a href="workshops/benchmarks/aipc-kev-sft-q8-gguf-cards.zh-CN.html">增补报告 7：AIPC 边缘侧决策模型 (Kev 0.8B / 4B) — 反事实微调 (+31.5 ~ +51.6 pts)、温度校准 (T=2.83) 与 2–3 GB CPU GGUF 量化基准报告</a></h3>
+          <p>面向必须在端侧离线运行的智能体路由与策略门控场景（基于 <code>max_tokens=1</code> 与 <code>logprobs=20</code> 单 Token 精确对数似然解码，覆盖 400 个留出场景、4,800 项决策）：<strong>反事实双生样本增广 LoRA SFT</strong> 将 <code>Qwen3.5-0.8B</code> 准确率提升 <strong>+41.7 pts</strong>（<code>47.5% → 89.2%</code>），将 <code>4B</code> 提升 <strong>+31.5 pts</strong>（<code>63.3% → 94.8%</code>，其中 <code>noul</code> 未知拒答子任务飙升 <strong>+51.6 pts</strong> 至 <code>90.4%</code>）。事后温度缩放校准（<strong>T = 2.83</strong>）在不改变排序的前提下将 ECE 从 <code>14.2%</code> 降至 <code>2.1%</code>（<code>p ≥ 0.80</code> 自动执行精准率达 <code>98.4%</code>）；8 位 <strong>Q8_0 GGUF</strong> 在 AIPC 纯 CPU 上仅需 <strong>1.42 GB（0.8B）至 2.68 GB（4B mmap 常驻内存）</strong>，精度仅偏离 <strong>-0.1 pt</strong>，配合共享 KV 前缀批处理实现 <strong>4.9×–5.2×</strong> 提速。</p>
+          <div class="pub-meta">
+            <span><a href="workshops/benchmarks/aipc-kev-sft-q8-gguf-cards.zh-CN.html"><b>🃏 7-Card 4:5 视觉报告</b></a></span>
+            <span><a href="assets/aipc-kev-sft-visual-summary.svg" target="_blank" rel="noopener"><b>🖼️ 一图流总结 SVG</b></a></span>
+            <span><a href="https://github.com/turbo998/benchmark-harness-engineering/blob/main/docs/reports/routing-aipc-kev-sft.md" target="_blank" rel="noopener"><b>📄 完整微调与量化报告</b></a></span>
+            <span><a href="https://github.com/turbo998/benchmark-harness-engineering/tree/main/data/reported/routing-aipc-kev-sft" target="_blank" rel="noopener"><b>📂 密封数据集</b></a></span>
+            <span>SFT +31.5~+51.6 pts · ECE 2.1% (T=2.83) · 1.42–2.68 GB CPU 内存</span>
+          </div>
+        </div>
+        <a class="pub-arrow" href="workshops/benchmarks/aipc-kev-sft-q8-gguf-cards.zh-CN.html" aria-label="打开增补报告 7 AIPC Kev 7-Card 报告">→</a>
+      </article>
+
       <!-- SUPPLEMENT 6: GEMINI 4 CARBON -->
       <article class="pub" data-category="coding-supplements cyber-safety">
         <div>

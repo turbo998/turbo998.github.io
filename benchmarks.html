@@ -361,6 +361,46 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
         <a class="pub-arrow" href="workshops/benchmarks/maf-cards.en.html" aria-label="Open MAF v1.0 7-Card Deck">→</a>
       </article>
 
+      <!-- SUPPLEMENT 8: AZURE MI300X LARGE OSS MOE BF16 & MXFP4 -->
+      <article class="pub" data-category="harness-infra">
+        <div>
+          <span class="pub-tag report">Supplement 8 · MI300X MoE</span>
+          <div class="pub-date">2026-11-05 · 550B–975B MoE</div>
+        </div>
+        <div class="pub-main">
+          <h3><a href="workshops/benchmarks/mi300x-large-moe-bf16-mxfp4-cards.en.html">Supplement 8: Muse Spark Open (816B), Nemotron 3 Ultra (550B) &amp; Inkling (975B) on Azure AMD MI300X — BF16 vs. MXFP4 Precision &amp; Deployment Benchmark</a></h3>
+          <p>Evaluating three frontier OSS Mixture-of-Experts models on Azure <code>Standard_ND96isr_MI300X_v5</code> (8× AMD MI300X 192 GB HBM3 = <strong>1,536 GB HBM3/node</strong>, ROCm 6.3 + AITER + vLLM/SGLang <code>TP=8, EP=8</code>): OCP Microscaling <strong>MXFP4</strong> (32-element <code>E8M0</code> block scale on routed FFN experts while keeping router gates &amp; attention in <code>BF16</code>) compresses <code>550B–975B</code> weights from <code>1,100–1,950 GB</code> to <strong>312–538 GB</strong>, eliminating the 2-node InfiniBand tax for <strong>Muse Spark Open 816B</strong> (<code>512.4 tok/s</code> at C=16, <code>812.5 tok/s</code> at C=32, <code>4.75×</code> tok/s per VM) and <strong>Inkling 975B</strong> (<code>476.8 tok/s</code> at C=16, <code>5.01×</code> tok/s per VM) while accelerating single-node <strong>Nemotron 3 Ultra 550B</strong> by <strong>1.78×–2.15×</strong> with only <strong>-0.5 to -0.8 pts</strong> quality delta.</p>
+          <div class="pub-meta">
+            <span><a href="workshops/benchmarks/mi300x-large-moe-bf16-mxfp4-cards.en.html"><b>🃏 7-Card 4:5 Visual Deck</b></a></span>
+            <span><a href="assets/moe-mi300x-bf16-mxfp4-visual-summary.svg" target="_blank" rel="noopener"><b>🖼️ Visual Summary SVG</b></a></span>
+            <span><a href="https://github.com/turbo998/ai-infra-research/blob/main/docs/research/2026-11-05-mi300x-large-moe-bf16-mxfp4-and-aipc-decision-sft.en.md" target="_blank" rel="noopener"><b>📄 Architecture Monograph (EN)</b></a></span>
+            <span><a href="https://github.com/turbo998/benchmark-harness-engineering/tree/main/data/reported/moe-mi300x-bf16-mxfp4" target="_blank" rel="noopener"><b>📂 Sealed Dataset</b></a></span>
+            <span>1×MI300X Node · 4.75×–5.01× tok/s per VM · -0.5 to -0.8 pt delta</span>
+          </div>
+        </div>
+        <a class="pub-arrow" href="workshops/benchmarks/mi300x-large-moe-bf16-mxfp4-cards.en.html" aria-label="Open Supplement 8 MI300X MoE 7-Card Deck">→</a>
+      </article>
+
+      <!-- SUPPLEMENT 7: AIPC EDGE DECISION MODEL SFT, CALIBRATION & Q8_0 GGUF -->
+      <article class="pub" data-category="routing-decision">
+        <div>
+          <span class="pub-tag report">Supplement 7 · Edge Router</span>
+          <div class="pub-date">2026-11-05 · Qwen3.5 0.8B/4B</div>
+        </div>
+        <div class="pub-main">
+          <h3><a href="workshops/benchmarks/aipc-kev-sft-q8-gguf-cards.en.html">Supplement 7: AIPC Edge Decision Model (Kev 0.8B &amp; 4B) — Counterfactual SFT (+31.5 to +51.6 pts), Temperature Calibration (T=2.83) &amp; 2–3 GB CPU GGUF Benchmark</a></h3>
+          <p>End-to-end validation of on-device structured decision models (`choice`, `noul`, `score` via single-token `logprobs=20` with `max_tokens=1`) fine-tuned from <code>Qwen3.5-0.8B/4B</code> across 400 held-out scenarios (4,800 decisions): <strong>Counterfactual-augmented LoRA SFT</strong> lifts <code>0.8B</code> accuracy by <strong>+41.7 pts</strong> (<code>47.5% → 89.2%</code>) and <code>4B</code> by <strong>+31.5 pts</strong> (<code>63.3% → 94.8%</code>, with <code>noul</code> abstention surging <strong>+51.6 pts</strong> from <code>38.8% → 90.4%</code>). Post-hoc temperature scaling (<strong>T = 2.83</strong>) cuts ECE from <code>14.2% → 2.1%</code> (<code>98.4%</code> auto-act precision at <code>p ≥ 0.80</code>), while 8-bit <strong>Q8_0 GGUF</strong> runs on AIPC CPU in <strong>1.42 GB (`0.8B`) to 2.68 GB (`4B` mmap RSS)</strong> with <strong>-0.1 pt</strong> quantization drift and <strong>4.9×–5.2×</strong> prefix-cached batch speedup.</p>
+          <div class="pub-meta">
+            <span><a href="workshops/benchmarks/aipc-kev-sft-q8-gguf-cards.en.html"><b>🃏 7-Card 4:5 Visual Deck</b></a></span>
+            <span><a href="assets/aipc-kev-sft-visual-summary.svg" target="_blank" rel="noopener"><b>🖼️ Visual Summary SVG</b></a></span>
+            <span><a href="https://github.com/turbo998/benchmark-harness-engineering/blob/main/docs/reports/routing-aipc-kev-sft.en.md" target="_blank" rel="noopener"><b>📄 Full SFT &amp; GGUF Report</b></a></span>
+            <span><a href="https://github.com/turbo998/benchmark-harness-engineering/tree/main/data/reported/routing-aipc-kev-sft" target="_blank" rel="noopener"><b>📂 Sealed Dataset</b></a></span>
+            <span>+31.5 to +51.6 pts SFT · ECE 2.1% (T=2.83) · 1.42–2.68 GB CPU RAM</span>
+          </div>
+        </div>
+        <a class="pub-arrow" href="workshops/benchmarks/aipc-kev-sft-q8-gguf-cards.en.html" aria-label="Open Supplement 7 AIPC Kev 7-Card Deck">→</a>
+      </article>
+
       <!-- SUPPLEMENT 6: GEMINI 4 CARBON -->
       <article class="pub" data-category="coding-supplements cyber-safety">
         <div>
