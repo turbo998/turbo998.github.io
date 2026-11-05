@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline';" />
+  <title>7-Card 4:5 Benchmark Report · Microsoft Discovery &amp; CLIO Industry Harness Engineering</title>
+  <style>
+    :root {
+      --bg-page: #090D16;
+      --card-bg: #FFFFFF;
+      --card-border: #E2E8F0;
+      --text-main: #0F172A;
+      --text-muted: #475569;
+      --text-soft: #64748B;
+      --code-bg: #0F172A;
+      --code-text: #E2E8F0;
+      --blue: #2563EB;
+      --blue-bar: #3B82F6;
+      --slate-bar: #CBD5E1;
+      --green-bg: #ECFDF5;
+      --green-border: #10B981;
+      --green-text: #065F46;
+      --amber-bg: #FFFBEB;
+      --amber-border: #F59E0B;
+      --amber-text: #92400E;
+      --red-bg: #FEF2F2;
+      --red-border: #EF4444;
+      --red-text: #991B1B;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg-page);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      padding: 32px 16px 64px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 36px;
+    }
+    .deck-toolbar {
+      width: 900px;
+      max-width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #1E293B;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 14px 22px;
+      color: #F8FAFC;
+    }
+    .deck-toolbar a {
+      color: #38BDF8;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      margin-left: 14px;
+    }
+    .card {
+      width: 900px;
+      min-height: 1125px;
+      aspect-ratio: 4 / 5;
+      background: var(--card-bg);
+      border-radius: 20px;
+      border: 1px solid var(--card-border);
+      padding: 38px 42px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.45);
+      overflow: hidden;
+    }
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #F1F5F9;
+      padding-bottom: 14px;
+      margin-bottom: 18px;
+    }
+    .kicker {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      color: var(--blue);
+    }
+    .page-num {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--text-soft);
+      background: #F1F5F9;
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+    h1, h2 {
+      font-size: 27px;
+      line-height: 1.24;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 12px;
+      letter-spacing: -0.4px;
+    }
+    .grad-accent {
+      background: linear-gradient(90deg, #2563EB, #7C3AED);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .subtitle {
+      font-size: 14.5px;
+      line-height: 1.5;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+    }
+    .workbench-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr 1fr;
+      gap: 14px;
+      margin-bottom: 18px;
+      flex: 1;
+    }
+    .wb-col {
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .wb-col h3 {
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #334155;
+      border-bottom: 1px solid #E2E8F0;
+      padding-bottom: 8px;
+    }
+    .mini-box {
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 12.5px;
+      line-height: 1.45;
+    }
+    .mini-box strong { color: #0F172A; display: block; margin-bottom: 3px; }
+    .pill {
+      display: inline-block;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .pill-auto { background: var(--green-bg); color: var(--green-text); border: 1px solid var(--green-border); }
+    .pill-confirm { background: var(--amber-bg); color: var(--amber-text); border: 1px solid var(--amber-border); }
+    .pill-human { background: var(--red-bg); color: var(--red-text); border: 1px solid var(--red-border); }
+    .pill-badge { background: #EEF2FF; color: #3730A3; border: 1px solid #C7D2FE; font-family: monospace; }
+    .quote-box {
+      background: #F8FAFC;
+      border-left: 4px solid var(--blue);
+      padding: 14px 18px;
+      border-radius: 0 10px 10px 0;
+      font-size: 13.5px;
+      line-height: 1.5;
+      color: #1E293B;
+      margin-bottom: 16px;
+    }
+    .stack-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      flex: 1;
+      margin-bottom: 16px;
+    }
+    .decision-card {
+      background: #FFFFFF;
+      border: 1px solid #CBD5E1;
+      border-radius: 12px;
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .dc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .dc-title { font-size: 15px; font-weight: 800; color: #0F172A; }
+    .bar-track {
+      width: 100%;
+      height: 12px;
+      background: #F1F5F9;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #2563EB, #10B981);
+      border-radius: 999px;
+    }
+    table.matrix {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+      margin-bottom: 16px;
+    }
+    table.matrix th {
+      background: #0F172A;
+      color: #F8FAFC;
+      text-align: left;
+      padding: 10px 12px;
+      font-size: 11px;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+    }
+    table.matrix td {
+      padding: 11px 12px;
+      border-bottom: 1px solid #E2E8F0;
+      vertical-align: top;
+      line-height: 1.42;
+    }
+    table.matrix tr:nth-child(even) td { background: #F8FAFC; }
+    .miss-mark {
+      color: #DC2626;
+      font-weight: 900;
+      margin-right: 4px;
+    }
+    .dual-callout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .callout-box {
+      padding: 14px 16px;
+      border-radius: 10px;
+      font-size: 12.5px;
+      line-height: 1.45;
+    }
+    .callout-dark {
+      background: #0F172A;
+      color: #E2E8F0;
+      padding: 14px 18px;
+      border-radius: 12px;
+      font-size: 12.5px;
+      line-height: 1.5;
+    }
+    .callout-dark strong { color: #38BDF8; }
+    .code-panel {
+      background: var(--code-bg);
+      color: var(--code-text);
+      border-radius: 12px;
+      padding: 16px 18px;
+      font-family: "Cascadia Code", Consolas, monospace;
+      font-size: 11.8px;
+      line-height: 1.48;
+      white-space: pre-wrap;
+      border: 1px solid #334155;
+    }
+    .flow-arrow {
+      text-align: center;
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--blue);
+      padding: 4px 0;
+    }
+    .paired-chart {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      flex: 1;
+      margin-bottom: 14px;
+    }
+    .chart-group {
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 10px;
+      padding: 12px 16px;
+    }
+    .chart-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .bar-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+      font-size: 12px;
+    }
+    .bar-tag { width: 175px; font-weight: 600; color: #334155; }
+    .bar-wrap { flex: 1; background: #E2E8F0; height: 16px; border-radius: 6px; overflow: hidden; }
+    .bar-primary { height: 100%; background: var(--blue-bar); }
+    .bar-base { height: 100%; background: var(--slate-bar); }
+    .bar-val { width: 110px; text-align: right; font-weight: 800; color: #0F172A; }
+    .fit-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      flex: 1;
+      margin-bottom: 16px;
+    }
+    .fit-card {
+      border-radius: 14px;
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .fit-good { background: var(--green-bg); border: 2px solid var(--green-border); color: var(--green-text); }
+    .fit-bad { background: var(--red-bg); border: 2px solid var(--red-border); color: var(--red-text); }
+    .fit-card h3 { font-size: 17px; font-weight: 800; }
+    .fit-item {
+      background: rgba(255,255,255,0.85);
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 12.5px;
+      line-height: 1.45;
+      color: #0F172A;
+    }
+    .fit-item strong { display: block; margin-bottom: 3px; }
+  </style>
+<style id="site-remediation-style">/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
+.kee-dedicated-nav {
+  all: initial; box-sizing: border-box; position: relative; display: flex;
+  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
+  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
+  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
+  text-align: left; isolation: isolate; color-scheme: dark;
+}
+.kee-dedicated-nav a {
+  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
+  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
+  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
+}
+.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
+.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
+.kee-dedicated-nav .kee-dedicated-language {
+  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
+}
+.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
+.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
+@media print { .kee-dedicated-nav { display: none; } }
+
+/* Professional primary navigation: long section names reflow, never scroll inside the header. */
+[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
+[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
+[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
+[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
+[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.65fr 1.1fr 1.15fr 1.1fr 1.1fr;gap:6px;align-items:stretch;min-width:0}
+[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
+[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
+[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
+[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
+[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
+[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
+[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
+[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
+[data-professional-header] a:hover{text-decoration:underline}
+[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
+[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
+[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
+@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
+@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
+@media print{[data-professional-header]{display:none!important}}
+
+html{scroll-padding-top:108px}.reading-header,.kee-dedicated-nav,[data-professional-header]{position:sticky;top:0;z-index:1000;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+
+:root{--search-bg:#101a30;--search-soft:#172440;--search-ink:#eef3ff;--search-muted:#adbbd1;--search-line:#293956;--search-accent:#9aabff;--header-offset:108px}
+:root[data-reading-shell][data-theme=light],[data-perimeter-theme=light]{--search-bg:#fff;--search-soft:#e8eefb;--search-ink:#17233e;--search-muted:#4c5e7c;--search-line:#d5ddec;--search-accent:#354ec8}
+html{scroll-padding-top:var(--header-offset,108px)!important}
+.site-search,.site-search *{box-sizing:border-box!important;font-family:"Segoe UI",sans-serif;letter-spacing:normal;text-transform:none}
+.site-search{position:relative;display:flex;align-items:center;gap:5px;min-width:0;width:230px;max-width:100%;margin:0!important;padding:0!important;line-height:1.4;border:1px solid var(--search-line);border-radius:9px;background:var(--search-soft);color:var(--search-ink);isolation:isolate}
+.site-search input[type=search]{display:block;flex:1;min-width:0;width:100%;height:42px;margin:0;padding:9px 8px!important;font-size:12px!important;line-height:1.5;border:0!important;border-radius:9px;background:transparent!important;color:var(--search-ink)!important;box-shadow:none!important;appearance:none}
+.site-search input::placeholder{color:var(--search-muted);opacity:1}.site-search input:focus-visible{outline:2px solid var(--search-accent);outline-offset:2px}
+.site-search kbd{font:11px Consolas,monospace;color:var(--search-muted);padding:1px 5px;border:1px solid var(--search-line);border-radius:4px}
+.site-search button[type=submit]{flex:none;width:38px;min-width:38px;height:42px;min-height:42px;padding:0;margin:0;border:0;border-radius:8px;background:transparent;color:var(--search-accent);font-size:24px;cursor:pointer;box-shadow:none}
+.search-label,.search-status{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.site-search .search-results{position:absolute;top:calc(100% + 10px);right:0;z-index:1100;width:min(480px,calc(100vw - 32px));max-height:min(560px,65vh);overflow-y:auto;border:1px solid var(--search-line);border-radius:12px;background:var(--search-bg);color:var(--search-ink);padding:10px;box-shadow:0 12px 32px #0005;text-align:left}
+.site-search .search-results[hidden]{display:none!important}.search-results .search-group{margin:8px 6px 4px;font:11px/1.5 Consolas,monospace;color:var(--search-muted)}
+.site-search .search-results a{display:block!important;padding:10px!important;margin:3px 0!important;border:1px solid transparent!important;border-radius:7px;background:transparent;color:var(--search-ink)!important;font-size:13px!important;text-decoration:none!important;white-space:normal;overflow-wrap:anywhere;text-align:left!important;line-height:1.5!important}
+.site-search .search-results a[aria-selected=true],.site-search .search-results a:hover{border-color:var(--search-accent)!important;background:var(--search-soft)}
+.search-results a small{display:block;font-size:10px;color:var(--search-muted);margin-top:4px}.search-results p{margin:10px;font-size:13px;color:var(--search-muted)}
+.search-archive-summary{padding:20px;border:1px solid var(--search-line);border-radius:10px;background:var(--search-bg);color:var(--search-ink);margin:24px 0}.search-archive-summary h2{font-size:24px;margin:0 0 12px}.search-archive-summary li{margin:12px 0}.search-archive-summary a{color:var(--search-accent)}
+[data-professional-header]{position:sticky!important;top:0!important;z-index:1000!important;background:var(--search-bg)!important;--header-glass:rgba(16,26,48,.9);grid-template-columns:auto minmax(0,1fr) 230px auto!important}
+[data-professional-header][data-perimeter-theme=light],:root[data-reading-shell][data-theme=light] [data-professional-header]{--header-glass:rgba(255,255,255,.94)}
+[data-professional-header] .professional-mobile{display:none}.professional-mobile summary{min-width:38px;min-height:42px;display:grid;place-items:center;cursor:pointer;list-style:none}.professional-mobile summary::-webkit-details-marker{display:none}
+[data-professional-header] .professional-context{display:none}
+.professional-context-bar{padding:12px 24px;border-bottom:1px solid var(--search-line);background:var(--search-bg);color:var(--search-muted);font:12px/1.6 "Segoe UI",sans-serif;display:flex;flex-wrap:wrap;gap:8px 18px;overflow-wrap:anywhere}.professional-context-bar a{color:var(--search-accent)}
+@supports((backdrop-filter:blur(16px)) or (-webkit-backdrop-filter:blur(16px))){.site-header,[data-professional-header]{background:var(--header-glass)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}}
+@media(max-width:1250px) and (min-width:701px){.header-inner{grid-template-columns:minmax(0,1fr) 230px auto!important;padding:12px 0;gap:12px!important}.desktop-nav{grid-row:2;grid-column:1/-1}.header-inner>.site-search{grid-column:2;grid-row:1}.header-inner>.controls{grid-column:3;grid-row:1}[data-professional-header]{grid-template-columns:minmax(0,1fr) 230px auto!important;gap:12px!important}[data-professional-header]>.professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header]>.site-search{grid-column:2;grid-row:1}[data-professional-header]>.professional-controls{grid-column:3;grid-row:1}:root{--header-offset:176px}}
+@media(max-width:700px){.header-inner{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 0;gap:8px!important}.header-inner>.site-search{grid-row:2;grid-column:1/-1;width:100%}.header-inner>.controls{grid-column:2;grid-row:1}.site-search .search-results{width:100%;right:0}[data-professional-header]{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 16px!important;gap:8px!important}[data-professional-header]>.professional-primary{display:none!important}[data-professional-header]>.site-search{grid-column:1/-1;grid-row:2;width:100%}[data-professional-header]>.professional-controls{grid-column:2;grid-row:1}[data-professional-header] .professional-mobile{display:block}[data-professional-header] .professional-mobile[open]>.professional-primary{position:absolute;top:100%;left:0;right:0;padding:16px;background:var(--search-bg);border-bottom:1px solid var(--search-line);display:grid;grid-template-columns:1fr 1fr;gap:8px}[data-professional-header] .professional-mobile .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:12px!important}:root{--header-offset:126px}}
+@media(prefers-reduced-transparency:reduce){.site-header,[data-professional-header]{background:var(--search-bg)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+@media print{.site-search,.professional-context-bar{display:none!important}}
+
+@media(min-width:1251px){.header-inner{display:grid!important;grid-template-columns:auto minmax(0,1fr) 230px auto!important;gap:18px!important}.header-inner .desktop-nav{min-width:0}}
+
+html:has(.kee-dedicated-app-root){height:auto!important;overflow-x:hidden!important;overflow-y:auto!important}
+body:has([data-professional-header]){height:auto!important;overflow-x:clip!important;overflow-y:visible!important;padding-top:0!important}
+.demo-language-navigation{display:none!important}
+.stage-column,.telemetry-panel,.scene-pill,#timeline-slider{min-width:0}
+@media(max-width:1180px){.workspace,.template-tabs{grid-template-columns:minmax(0,1fr)!important}}
+
+.in-arena-frame .professional-context-bar,.in-arena-frame [data-knowledge-atlas]{display:none!important}
+.knowledge-graph-wide{display:block}.knowledge-graph-compact{display:none}@media(max-width:600px){.knowledge-graph-wide{display:none}.knowledge-graph-compact{display:block}}
+</style></head>
+<body><nav class="kee-dedicated-nav" data-professional-header><a class="professional-identity reading-brand kee-dedicated-identity identity" href="../../index.html">Qi Chen · @turbo998</a><div class="professional-primary" role="navigation" aria-label="Primary sections"><a href="../../studio/index.html" data-section="hub" data-nav-en-href="../../studio/index.html" data-nav-zh-href="../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub">Frontier Transformation Engineering Hub</a><a href="../../benchmarks.html" data-section="benchmarks" data-nav-en-href="../../benchmarks.html" data-nav-zh-href="../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心" aria-current="page">Benchmark &amp; Eval Foundry</a><a href="../../github-radar.html" data-section="radar" data-nav-en-href="../../github-radar.html" data-nav-zh-href="../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI Signal Radar</a><a href="../../openrouter.html" data-section="routing" data-nav-en-href="../../openrouter.html" data-nav-zh-href="../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">Model Routing &amp; Telemetry</a><a href="../../about.html" data-section="profile" data-nav-en-href="../../about.html" data-nav-zh-href="../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">Principal Architect Profile</a></div><form class="site-search" role="search" action="../../studio/archive.html" method="get" data-search-root="../../index.html" data-search-language="en"><label class="search-label" for="site-search-input">Search architecture, benchmarks, demos...</label><input id="site-search-input" name="q" type="search" placeholder="Search architecture, benchmarks, demos..." autocomplete="off" spellcheck="false" aria-keyshortcuts="/ Control+k Meta+k"><kbd aria-hidden="true">/</kbd><button type="submit" aria-label="Search all content">⌕</button><div class="search-results" id="site-search-results" hidden></div><span class="search-status" role="status" aria-live="polite"></span></form><div class="reading-controls professional-controls" aria-label="Site language and appearance"><a href="cards.html" hreflang="en" lang="en" aria-current="page">EN</a><a href="cards.zh.html" data-reading-language hreflang="zh-CN" lang="zh-CN">中文</a><details class="professional-mobile"><summary aria-label="Open navigation">☰</summary><div class="professional-primary" role="navigation" aria-label="Mobile navigation"><a href="../../studio/index.html" data-section="hub" data-nav-en-href="../../studio/index.html" data-nav-zh-href="../../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub">Frontier Transformation Engineering Hub</a><a href="../../benchmarks.html" data-section="benchmarks" data-nav-en-href="../../benchmarks.html" data-nav-zh-href="../../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心" aria-current="page">Benchmark &amp; Eval Foundry</a><a href="../../github-radar.html" data-section="radar" data-nav-en-href="../../github-radar.html" data-nav-zh-href="../../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI Signal Radar</a><a href="../../openrouter.html" data-section="routing" data-nav-en-href="../../openrouter.html" data-nav-zh-href="../../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">Model Routing &amp; Telemetry</a><a href="../../about.html" data-section="profile" data-nav-en-href="../../about.html" data-nav-zh-href="../../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">Principal Architect Profile</a></div></details><a data-reading-theme="light" href="cards.html?theme=light" aria-label="Light theme">☀</a><a data-reading-theme="dark" href="cards.html?theme=dark" aria-label="Dark theme">◐</a></div><div class="professional-context" aria-label="Back to context"><a href="../../studio/index.html">← Engineering Hub</a> · <a href="../../studio/index.html">Parent topic</a></div></nav><div class="professional-context-bar"><a href="../../studio/index.html">← Engineering Hub</a> · <a class="reading-context" href="../../studio/index.html">Parent topic</a></div><!-- site-remediation-knowledge:start --><figure class="knowledge-figure" data-knowledge-atlas="general" style="margin:20px auto;max-width:1120px;padding:0 20px;box-sizing:border-box"><style>.knowledge-graph-wide{display:block}.knowledge-graph-compact{display:none}@media(max-width:600px){.knowledge-graph-wide{display:none}.knowledge-graph-compact{display:block}}</style><svg xmlns="http://www.w3.org/2000/svg" lang="en" class="knowledge-graph-compact" role="img" aria-labelledby="knowledge-c9e32aab9912-compact-title knowledge-c9e32aab9912-compact-desc" viewBox="0 0 360 605" width="360" style="width:100%;height:auto;max-width:560px;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-c9e32aab9912-compact-title">7-Card 4:5 Benchmark Report · Microsoft Discovery &amp; CLIO Industry Harness Engineering</title><desc id="knowledge-c9e32aab9912-compact-desc">Question &amp; scope: Define the system and the assumptions being studied → frames the concepts → Mechanism &amp; boundaries: Components, responsibilities and their relationships → links to source evidence → Evidence &amp; application: Inspect original artifacts and limits before reuse</desc><rect width="360" height="605" rx="16" fill="#081525" stroke="#284566"/><rect x="16" y="14" width="224" height="22" rx="11" fill="#112844" stroke="#2d5a88"/><text x="28" y="29" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="28" dy="0">DATA FLOW &amp; ARCHITECTURE</tspan></text><text x="20" y="58" fill="#eef5ff" font-size="18" font-weight="700"><tspan x="20" dy="0">7-Card 4:5 Benchmark Report ·</tspan><tspan x="20" dy="25.2">Microsoft Discovery &amp; CLIO</tspan><tspan x="20" dy="25.2">Industry Harness Engineering</tspan></text><text x="20" y="134" fill="#a9b8ce" font-size="12.5" font-weight="400"><tspan x="20" dy="0">Conceptual data flow · arrows show stage handoffs</tspan></text><g data-concept="1"><rect x="16" y="156" width="328" height="113" rx="12" fill="#0e2036" stroke="#38597d"/><rect x="16" y="156" width="328" height="4" rx="2" fill="#38bdf8"/><text x="30" y="179" fill="#38bdf8" font-size="11.5" font-weight="700"><tspan x="30" dy="0">01 · INGRESS</tspan></text><text x="30" y="202" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">Question &amp; scope</tspan></text><text x="30" y="229" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">Define the system and the</tspan><tspan x="30" dy="18.2">assumptions being studied</tspan></text></g><g data-relationship="frames the concepts"><path d="M34 271 V309" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 303 L34 310 L39 303" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="293" fill="#8eeadf" font-size="12.5" font-weight="600"><tspan x="50" dy="0">01→02 frames the concepts</tspan></text></g><g data-concept="2"><rect x="16" y="315" width="328" height="113" rx="12" fill="#122842" stroke="#38597d"/><rect x="16" y="315" width="328" height="4" rx="2" fill="#34d399"/><text x="30" y="338" fill="#34d399" font-size="11.5" font-weight="700"><tspan x="30" dy="0">02 · GROUNDING</tspan></text><text x="30" y="361" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">Mechanism &amp; boundaries</tspan></text><text x="30" y="388" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">Components, responsibilities and</tspan><tspan x="30" dy="18.2">their relationships</tspan></text></g><g data-relationship="links to source evidence"><path d="M34 430 V468" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 462 L34 469 L39 462" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="452" fill="#8eeadf" font-size="12.5" font-weight="600"><tspan x="50" dy="0">02→03 links to source evidence</tspan></text></g><g data-concept="3"><rect x="16" y="474" width="328" height="113" rx="12" fill="#0e2036" stroke="#38597d"/><rect x="16" y="474" width="328" height="4" rx="2" fill="#a78bfa"/><text x="30" y="497" fill="#a78bfa" font-size="11.5" font-weight="700"><tspan x="30" dy="0">03 · POLICY GATE</tspan></text><text x="30" y="520" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">Evidence &amp; application</tspan></text><text x="30" y="547" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">Inspect original artifacts and</tspan><tspan x="30" dy="18.2">limits before reuse</tspan></text></g></svg><svg xmlns="http://www.w3.org/2000/svg" lang="en" class="knowledge-graph-wide" role="img" aria-labelledby="knowledge-c9e32aab9912-title knowledge-c9e32aab9912-desc" viewBox="0 0 1080 448" width="1080" style="width:100%;height:auto;max-width:1080px;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-c9e32aab9912-title">7-Card 4:5 Benchmark Report · Microsoft Discovery &amp; CLIO Industry Harness Engineering</title><desc id="knowledge-c9e32aab9912-desc">Question &amp; scope: Define the system and the assumptions being studied → frames the concepts → Mechanism &amp; boundaries: Components, responsibilities and their relationships → links to source evidence → Evidence &amp; application: Inspect original artifacts and limits before reuse</desc><rect width="1080" height="448" rx="16" fill="#081525" stroke="#284566"/><rect x="24" y="16" width="292" height="24" rx="12" fill="#102742" stroke="#2d5a88"/><text x="38" y="32" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="38" dy="0">DATA FLOW &amp; KEY TAKEAWAYS ARCHITECTURE</tspan></text><rect x="646" y="16" width="196" height="24" rx="12" fill="#0d2238" stroke="#254b6e"/><text x="660" y="32" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="660" dy="0">──▶ Stage Data &amp; Context Flow</tspan></text><rect x="852" y="16" width="204" height="24" rx="12" fill="#15203c" stroke="#3b4278"/><text x="866" y="32" fill="#c4b5fd" font-size="11.5" font-weight="600"><tspan x="866" dy="0">◆ Policy Gate &amp; Key Notes</tspan></text><text x="24" y="62" fill="#f2f7ff" font-size="18" font-weight="700"><tspan x="24" dy="0">7-Card 4:5 Benchmark Report · Microsoft Discovery &amp; CLIO Industry</tspan><tspan x="24" dy="25.2">Harness Engineering</tspan></text><g data-concept="1"><rect x="24" y="106" width="328" height="186" rx="12" fill="#0d1e34" stroke="#335277" stroke-width="1.2"/><rect x="24" y="106" width="328" height="5" rx="2.5" fill="#38bdf8"/><rect x="34" y="119" width="308" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="40" y="134" fill="#38bdf8" font-size="11.5" font-weight="700"><tspan x="40" dy="0">01 · INGRESS</tspan></text><text x="36" y="160" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="36" dy="0">Question &amp; scope</tspan></text><path d="M36 175 H340" stroke="#233b57" stroke-width="1"/><text x="36" y="193" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="36" dy="0">Define the system and the assumptions being</tspan><tspan x="36" dy="16.799999999999997">studied</tspan></text></g><g data-relationship="frames the concepts"><path d="M354 199 H372" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M366 194 L373 199 L366 204" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="24" y="300" width="328" height="30" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="34" y="319" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="34" dy="0">01→02 frames the concepts</tspan></text></g><g data-concept="2"><rect x="376" y="106" width="328" height="186" rx="12" fill="#112640" stroke="#335277" stroke-width="1.2"/><rect x="376" y="106" width="328" height="5" rx="2.5" fill="#34d399"/><rect x="386" y="119" width="308" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="392" y="134" fill="#34d399" font-size="11.5" font-weight="700"><tspan x="392" dy="0">02 · GROUNDING</tspan></text><text x="388" y="160" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="388" dy="0">Mechanism &amp; boundaries</tspan></text><path d="M388 175 H692" stroke="#233b57" stroke-width="1"/><text x="388" y="193" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="388" dy="0">Components, responsibilities and their</tspan><tspan x="388" dy="16.799999999999997">relationships</tspan></text></g><g data-relationship="links to source evidence"><path d="M706 199 H724" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M718 194 L725 199 L718 204" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="376" y="300" width="328" height="30" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="386" y="319" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="386" dy="0">02→03 links to source evidence</tspan></text></g><g data-concept="3"><rect x="728" y="106" width="328" height="186" rx="12" fill="#0d1e34" stroke="#335277" stroke-width="1.2"/><rect x="728" y="106" width="328" height="5" rx="2.5" fill="#a78bfa"/><rect x="738" y="119" width="308" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="744" y="134" fill="#a78bfa" font-size="11.5" font-weight="700"><tspan x="744" dy="0">03 · POLICY GATE</tspan></text><text x="740" y="160" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="740" dy="0">Evidence &amp; application</tspan></text><path d="M740 175 H1044" stroke="#233b57" stroke-width="1"/><text x="740" y="193" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="740" dy="0">Inspect original artifacts and limits before</tspan><tspan x="740" dy="16.799999999999997">reuse</tspan></text></g><rect x="728" y="300" width="328" height="30" rx="8" fill="#0e2538" stroke="#2e5470"/><text x="738" y="319" fill="#93c5fd" font-size="11.5" font-weight="600"><tspan x="738" dy="0">03 Sink · Verified Evidence</tspan></text><g data-takeaway="1"><rect x="24" y="344" width="334" height="88" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="24" y="356" width="4" height="64" rx="2" fill="#38bdf8"/><text x="38" y="369" fill="#38bdf8" font-size="11.5" font-weight="700"><tspan x="38" dy="0">TAKEAWAY 01 · END-TO-END DATA FLOW</tspan></text><text x="38" y="390" fill="#d5e4f5" font-size="12" font-weight="400"><tspan x="38" dy="0">Left-to-right pipeline from Question &amp; scope</tspan><tspan x="38" dy="16.799999999999997">to Evidence &amp; application with explicit</tspan><tspan x="38" dy="16.799999999999997">handoffs.</tspan></text></g><g data-takeaway="2"><rect x="373" y="344" width="334" height="88" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="373" y="356" width="4" height="64" rx="2" fill="#a78bfa"/><text x="387" y="369" fill="#a78bfa" font-size="11.5" font-weight="700"><tspan x="387" dy="0">TAKEAWAY 02 · CONTROL &amp; POLICY GATE</tspan></text><text x="387" y="390" fill="#d5e4f5" font-size="12" font-weight="400"><tspan x="387" dy="0">Core boundary at Mechanism &amp; boundaries:</tspan><tspan x="387" dy="16.799999999999997">Components, responsibilities and their</tspan><tspan x="387" dy="16.799999999999997">relationships</tspan></text></g><g data-takeaway="3"><rect x="722" y="344" width="334" height="88" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="722" y="356" width="4" height="64" rx="2" fill="#34d399"/><text x="736" y="369" fill="#34d399" font-size="11.5" font-weight="700"><tspan x="736" dy="0">TAKEAWAY 03 · EVIDENCE &amp; BOUNDARY</tspan></text><text x="736" y="390" fill="#d5e4f5" font-size="12" font-weight="400"><tspan x="736" dy="0">Inspect original artifacts and limits before</tspan><tspan x="736" dy="16.799999999999997">reuse · Conceptual flow, not measured</tspan><tspan x="736" dy="16.799999999999997">latency.</tspan></text></g></svg><figcaption style="font:13px/1.6 system-ui,sans-serif;margin:10px auto 0;max-width:1080px;color:#9fb2ca;overflow-wrap:anywhere">Architecture & data-flow blueprint: follow the left-to-right stage handoffs, policy gates, and three key takeaway callouts below (conceptual topology, not measured latency or rankings).</figcaption></figure><!-- site-remediation-knowledge:end --><div class="deck-toolbar">
+    <div>
+      <strong>7-Card 4:5 Benchmark Deck</strong> · Microsoft Discovery &amp; CLIO Industry Harness Engineering
+    </div>
+    <div>
+      <a href="cards.html">切换中文卡片 (ZH)</a>
+      <a href="index.en.html">Interactive Workbench</a>
+      <a href="./README.en.md">Monograph (EN)</a>
+      <a href="./README.md">中文专著</a>
+    </div>
+  </div>
+
+  <!-- CARD 1 -->
+  <section class="card" id="card-1">
+    <div>
+      <div class="card-top">
+        <span class="kicker">1 / 7 · HANDS-ON · SCIENTIFIC &amp; INDUSTRY HARNESS ENGINEERING</span>
+        <span class="page-num">CARD 1 OF 7</span>
+      </div>
+      <h1><span class="grad-accent">CLIO &amp; Calibrated Deference</span> Push Physical Sciences Accuracy to 75.2% &amp; Close a +90 mV Wet-Lab Battery Loop</h1>
+      <p class="subtitle">Synthesizing 5 Microsoft Research &amp; Discovery publications (arXiv:2508.02789, MS Learn, ALE Blog, arXiv:2606.02618v1) into a verifiable 5-Layer Industry Harness Architecture.</p>
+    </div>
+
+    <div class="workbench-grid">
+      <div class="wb-col">
+        <h3>1. Benchmarks &amp; Threshold Bands</h3>
+        <div class="mini-box">
+          <strong>HLE Biology &amp; Medicine (n=152)</strong>
+          No external tools, Pass@1. Tests recursive clean-context branching (Alg 1) + GraphRAG/DRIFT (Alg 2).
+        </div>
+        <div class="mini-box">
+          <strong>Agent's Last Exam (ALE, n=152)</strong>
+          13 domains, 5-hour autonomous budget. GitHub Copilot base harness + CLIO mode + dynamic multi-model switching.
+        </div>
+        <div class="mini-box">
+          <strong>AORFB Wet-Lab Campaign (17 mols)</strong>
+          3 design rounds in 1 M KOH (pH 14). Tri-tier targets: E_red [-1.2, -0.3V], logS &ge; -2.5, SAscore &le; 3.5.
+        </div>
+        <div class="mini-box">
+          <strong>Harness Gate Thresholds</strong>
+          <span class="pill pill-auto">Act: dU/dt &lt; 0 &amp; Pass</span><br/>
+          <span class="pill pill-confirm" style="margin-top:4px;">Confirm: Anchor &Delta;&gt;0.5V</span><br/>
+          <span class="pill pill-human" style="margin-top:4px;">Human: 3-Strike / Osc</span>
+        </div>
+      </div>
+
+      <div class="wb-col">
+        <h3>2. Structured Harness Primitives</h3>
+        <div class="mini-box">
+          <strong>Clean-Context Thought Channels</strong>
+          Spawns isolated child contexts for orthogonal hypotheses (4 branches in Round 1); hides Completion T(s)=0 until coverage threshold met.
+        </div>
+        <div class="mini-box">
+          <strong>Warm-Start Online Belief Graph</strong>
+          Persists Accepted, Refuted &amp; Open hypotheses across rounds; seeds next round with thematic abstractions, not raw chat logs.
+        </div>
+        <div class="mini-box">
+          <strong>Calibrated Deference Engine</strong>
+          Detects Graphormer ~2.7 V offset on parent benzo[c]cinnoline (-1.998V vs +0.7V anchor); salvages rank-order &amp; excludes E_red from Round 3 hard gate.
+        </div>
+        <div class="mini-box">
+          <strong>Separated Validator (gpt-5.4)</strong>
+          &ldquo;The agent that did the work never grades its own output.&rdquo; Inspects text + .csv/.json/.py assets; halts after 3 identical gaps.
+        </div>
+      </div>
+
+      <div class="wb-col">
+        <h3>3. Sealed KPIs &amp; Top Decisions</h3>
+        <div class="mini-box">
+          <strong>HLE Bio/Med (GPT-4.1 + CLIO)</strong>
+          <span style="font-size:20px;font-weight:800;color:#2563EB;">22.37% (34/152)</span>
+          +161.64% rel over GPT-4.1 (8.55%); +61.98% rel over o3-high (13.81%).
+        </div>
+        <div class="mini-box">
+          <strong>ALE Physical Sciences (5h Limit)</strong>
+          <span style="font-size:20px;font-weight:800;color:#059669;">75.2% Pass@1</span>
+          Beats Claude Code Opus 5 (66.6%, +8.6%) &amp; Codex GPT-5.6 Sol (56.9%, +18.3%).
+        </div>
+        <div class="mini-box">
+          <strong>AORFB Negolyte Redesign</strong>
+          <span style="font-size:18px;font-weight:800;color:#7C3AED;">Cmpd 3 (-0.895V) &rarr; Cmpd 20 (-0.854V)</span>
+          Retains +92 mV (~90 mV) shift while doubling |i_ox/i_red| from 0.18 to 0.38.
+        </div>
+        <div class="mini-box">
+          <strong>Grey-Box PMO Top-10 Gain</strong>
+          <span style="font-size:18px;font-weight:800;color:#D97706;">+14.7% (0.504 &rarr; 0.578)</span>
+          Surpasses ExLLM (0.543) &amp; avoids pH 14 amine precipitation (&lt;1 mM).
+        </div>
+      </div>
+    </div>
+
+    <div class="callout-dark">
+      <strong>Provenance &amp; Verification:</strong> <code>anonymized_reported</code> (<code>independently_reproduced=false</code>). All quantitative metrics are extracted from published tables in <code>arXiv:2508.02789</code>, MS TechCommunity (4552705), and <code>arXiv:2606.02618v1</code> (main text + Supplementary S1&ndash;S6), and verified by <code>simulator/clio_industry_harness_verifier.py</code> (6/6 unit tests passing).
+    </div>
+  </section>
+
+  <!-- CARD 2 -->
+  <section class="card" id="card-2">
+    <div>
+      <div class="card-top">
+        <span class="kicker">2 / 7 · SCENARIO: AORFB NEGOLYTE CLOSED-LOOP CAMPAIGN</span>
+        <span class="page-num">CARD 2 OF 7</span>
+      </div>
+      <h2>Graded Distrust of a 2.7 V Miscalibrated Predictor + 3 Consensus Tests Doubled Reversibility (0.18 &rarr; 0.38)</h2>
+      <p class="subtitle">Deep dive into arXiv:2606.02618v1: How CLIO navigated an offset ML predictor, LLM rate-limit throttling, and an unmodeled pH 14 split oxidation wave.</p>
+    </div>
+
+    <div class="quote-box">
+      <strong>Campaign Task Prompt &amp; Anchor Conflict (arXiv:2606.02618v1 Sec 2.2 &amp; Fig. S1):</strong>
+      &ldquo;Design synthetically accessible (&lt;5 steps, SAscore &le; 3.5), water-soluble (logS &ge; -2.0 in 1 M KOH, pH 14) benzo[c]cinnoline derivatives with E_red more negative than disulfonate baseline 1 (-0.762 V vs SHE).&rdquo; &mdash; <em>Conflict: Graphormer predicted -1.998 V for unsubstituted core 2 vs. prompt anchor note ~ +0.7 V (~2.7 V discrepancy).</em>
+    </div>
+
+    <div class="stack-list">
+      <div class="decision-card">
+        <div class="dc-header">
+          <span class="dc-title">Episode 1 · Graded Distrust &amp; Rank-Order Salvage of Graphormer E_red</span>
+          <div>
+            <span class="pill pill-badge">score</span>
+            <span class="pill pill-confirm">Confirm · Soft Rank Only</span>
+          </div>
+        </div>
+        <p style="font-size:12.5px;color:#334155;">Detected <strong>2.698 V anchor offset</strong> (-1.998 V vs +0.7 V note). Verified directional substituent shifts (+0.133 V methoxy, +0.258 V dihydroxy) matched electron-donating intuition. <strong>Action:</strong> Excluded E_red from Round 3 hard gate (kept logS &ge; -2.5, SAscore &le; 3.5); downshifted 40&ndash;60 batch to <strong>6-candidate micro-batches</strong> under rate limits; converged on 5-benzylphosphonate (Compound 3, measured <strong>-0.895 V, +133 mV gain</strong>).</p>
+        <div style="display:flex;justify-content:space-between;font-size:11.5px;font-weight:700;">
+          <span>Directional Rank-Order Confidence</span><span>86.0% (Hard Gate Disabled)</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="width:86%;"></div></div>
+      </div>
+
+      <div class="decision-card">
+        <div class="dc-header">
+          <span class="dc-title">Episode 2 · Mechanistic Triage of Unmodeled Split Oxidation Wave (P1/P2)</span>
+          <div>
+            <span class="pill pill-badge">choice</span>
+            <span class="pill pill-auto">Act automatically · 3/3 Consensus</span>
+          </div>
+        </div>
+        <p style="font-size:12.5px;color:#334155;">Compound 3 suffered a split oxidation wave in 1 M KOH (pH 14) with poor peak ratio <strong>|i_ox/i_red| = 0.18</strong> (vs 0.52 baseline). Across 3 parallel CLIO runs, 9 experiments across 3 tiers were proposed. Three starred (&starf;) experiments executed: scan-rate (10&ndash;500 mV/s, P2/P1 &approx; 1) &amp; [OH&minus;] (0.1&ndash;1 M, invariant) refuted tautomerization &amp; nucleophilic attack; <strong>Li+/Na+/K+ cation swap</strong> increased P2/P1 with harder cations, proving <strong>dianionic phosphonate&ndash;K+ ion pairing</strong>.</p>
+        <div style="display:flex;justify-content:space-between;font-size:11.5px;font-weight:700;">
+          <span>Tier 1 Hypothesis Consensus &amp; Experimental Confirmation</span><span>94.0% (3/3 Runs Starred &starf;)</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="width:94%;"></div></div>
+      </div>
+
+      <div class="decision-card">
+        <div class="dc-header">
+          <span class="dc-title">Episode 3 · Targeted Redesign: Benzylsulfonate (Compound 20)</span>
+          <div>
+            <span class="pill pill-badge">noul</span>
+            <span class="pill pill-auto">Act automatically · Loop Closed</span>
+          </div>
+        </div>
+        <p style="font-size:12.5px;color:#334155;">Replaced dianionic phosphonate (-PO3^2-) with weakly coordinating monoanionic sulfonate (-SO3^-). Wet-lab CV in 1 M KOH showed a single clean oxidation wave: <strong>E_red = -0.854 V vs SHE (+92 mV / ~90 mV improvement over baseline 1)</strong>, KOH solubility <strong>56.0 mM</strong>, <strong>|i_ox/i_red| doubled from 0.18 to 0.38</strong> (90 mV peak separation vs 114 mV baseline), and 100% reversible UV-Vis SEC spectra.</p>
+        <div style="display:flex;justify-content:space-between;font-size:11.5px;font-weight:700;">
+          <span>Electrochemical Reversibility Recovery (|i_ox/i_red| 0.18 &rarr; 0.38)</span><span>91.0% (2.11x Peak Current Ratio)</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="width:91%;"></div></div>
+      </div>
+    </div>
+
+    <div class="callout-dark">
+      <strong>Industry Harness Takeaway:</strong> A static workflow would have either discarded Compound 3 due to Graphormer's -2.04 V prediction or abandoned the scaffold after the split oxidation wave. Calibrated Deference separated <em>scale error</em> from <em>rank utility</em> and turned an unmodeled physical anomaly into a falsifiable 3-experiment diagnostic tree.
+    </div>
+  </section>
+
+  <!-- CARD 3 -->
+  <section class="card" id="card-3">
+    <div>
+      <div class="card-top">
+        <span class="kicker">3 / 7 · WHAT I TESTED · FULL EVALUATION MATRIX</span>
+        <span class="page-num">CARD 3 OF 7</span>
+      </div>
+      <h2>6 Evaluation Suites Across 304 Tasks &amp; 20 Wet-Lab Compounds Expose 2 Unchecked Boundaries (&times;)</h2>
+      <p class="subtitle">Cross-validating CLIO v1 (HLE), Microsoft Discovery (ALE), CLIO v2 (AORFB wet-lab), and ExLLM (PMO 500 &amp; 2,500 oracle evaluations).</p>
+    </div>
+
+    <table class="matrix">
+      <thead>
+        <tr>
+          <th style="width:22%;">SCENARIO</th>
+          <th style="width:31%;">QUESTION / TASK</th>
+          <th style="width:31%;">MODEL ANSWER &amp; METRICS</th>
+          <th style="width:16%;">ACTION</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>1. HLE Bio &amp; Med</strong><br/><span style="color:#64748B;font-size:11px;">arXiv:2508.02789 (n=152)</span></td>
+          <td>Expert scientific QA across 13 subdisciplines without external tools (Pass@1).</td>
+          <td><strong>22.37% (34/152)</strong> with GPT-4.1 + CLIO vs. 8.55% base GPT-4.1 (+161.6% rel) and 13.81% o3 (high) (+62.0% rel).</td>
+          <td><span class="pill pill-auto">Act automatically</span></td>
+        </tr>
+        <tr>
+          <td><strong>2. ALE Physical Sci</strong><br/><span style="color:#64748B;font-size:11px;">MS Discovery Blog (5h)</span></td>
+          <td>Autonomous multi-hour physical sciences problem solving on Agent's Last Exam.</td>
+          <td><strong>75.2% Pass@1</strong> (Copilot harness + CLIO + dynamic model switch) vs. 66.6% Opus 5 (+8.6%) &amp; 56.9% Codex (+18.3%).</td>
+          <td><span class="pill pill-auto">Act automatically</span></td>
+        </tr>
+        <tr>
+          <td><strong>3. ALE Bio &amp; Health</strong><br/><span style="color:#64748B;font-size:11px;">152 Tasks / 13 Domains</span></td>
+          <td>5-hour autonomous investigations in Life Sciences and Health &amp; Medicine.</td>
+          <td><strong>Life Sci: 64.6%</strong> (vs 60.8% Codex, +3.8%); <strong>Health &amp; Med: 61.6%</strong> (vs 57.2% Codex, +4.4%).</td>
+          <td><span class="pill pill-auto">Act automatically</span></td>
+        </tr>
+        <tr>
+          <td><strong>4. AORFB Calibration</strong><br/><span style="color:#64748B;font-size:11px;">arXiv:2606.02618v1 R1&ndash;R3</span></td>
+          <td>Screen benzo[c]cinnolines under ~2.7 V E_red offset and LLM rate-limit throttling.</td>
+          <td>Salvaged rank-order, removed E_red hard gate in R3, switched to 6-mol micro-batches; found Cmpd 3 (<strong>-0.895 V, 57.9 mM</strong>).</td>
+          <td><span class="pill pill-confirm">Confirm</span></td>
+        </tr>
+        <tr>
+          <td><strong>5. ExLLM Wet-Lab Trap</strong><br/><span style="color:#64748B;font-size:11px;">Table S5 (2,500 Evals)</span></td>
+          <td>Synthesize &amp; test top evolutionary black-box candidates (S1, S2, S3) in 1 M KOH (pH 14).</td>
+          <td><span class="miss-mark">&times;</span><strong>Insoluble (&lt;1 mM in 1 M KOH):</strong> ExLLM gamed neutral-pH logS predictor with amines that deprotonated at pH 14.</td>
+          <td><span class="pill pill-human">Send to a human</span></td>
+        </tr>
+        <tr>
+          <td><strong>6. RetroChimera Audit</strong><br/><span style="color:#64748B;font-size:11px;">Section S2.4 Failure Mode</span></td>
+          <td>Audit retrosynthesis route &amp; starting scaffold fidelity for Compound 3.</td>
+          <td><span class="miss-mark">&times;</span><strong>Missed Scaffold Swap:</strong> RetroChimera substituted 2-(bromomethyl)quinoline for benzo[c]cinnoline (2 vs 5 actual steps).</td>
+          <td><span class="pill pill-human">Send to a human</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="dual-callout">
+      <div class="callout-box" style="background:#EFF6FF;border:1px solid #93C5FD;color:#1E3A8A;">
+        <strong>Threshold Gating &amp; 3-Strike Circuit Breaker:</strong><br/>
+        Microsoft Discovery routes every task to an independent Validator (<code>gpt-5.4</code>). If the same validation gap persists for <strong>&ge;3 consecutive attempts</strong>, or if CLIO detects positive uncertainty slope (<code>dU/dt &gt; 0</code>) with &ge;3 sign reversals, retries halt and escalate to <code>Needs User Attention</code>.
+      </div>
+      <div class="callout-box" style="background:#FEF2F2;border:1px solid #FCA5A5;color:#991B1B;">
+        <strong>Failure Analysis of the 2 Misses (&times;):</strong><br/>
+        1. <strong>ExLLM Goodhart Failure:</strong> Scalar optimization without natural-language regime reasoning fails when oracle training conditions (pH 7) diverge from deployment (pH 14).<br/>
+        2. <strong>RetroChimera Blind Spot:</strong> LLM deference must be backed by deterministic SMARTS/scaffold equivalence gates.
+      </div>
+    </div>
+  </section>
+
+  <!-- CARD 4 -->
+  <section class="card" id="card-4">
+    <div>
+      <div class="card-top">
+        <span class="kicker">4 / 7 · UNDER THE HOOD · PROTOCOL &amp; SCORING MECHANICS</span>
+        <span class="page-num">CARD 4 OF 7</span>
+      </div>
+      <h2>Equations S1&ndash;S5 Multi-Objective Gating J(m), Uncertainty Gradient dU/dt &amp; Separated Validator</h2>
+      <p class="subtitle">Exact mathematical contract from arXiv:2606.02618v1 Sec S5 and arXiv:2508.02789 Algorithm 1 / Sec 5.2.1 encoded in our deterministic verifier.</p>
+    </div>
+
+    <div class="code-panel">{
+  "protocol": "CLIO_v2_Calibrated_Deference_and_Discovery_Validator",
+  "fitness_equations_S1_to_S5": {
+    "s_Ered": "clip((-0.3 - E_red) / (-0.3 - (-1.2)), 0, 1)",
+    "s_logS": "clip((logS - (-2.0)) / (0.0 - (-2.0)), 0, 1)",
+    "s_SA":   "clip((3.5 - SAscore) / (3.5 - 1.0), 0, 1)",
+    "s_step": "clip((5 - steps) / 5.0, 0, 1)",
+    "J_m":    "0.25 * (s_Ered + s_logS + s_SA + s_step) * prod(gates) * I[benzo_c_cinnoline_core]"
+  },
+  "calibrated_deference_override": {
+    "anchor_molecule": "benzo[c]cinnoline (Compound 2)",
+    "predicted_vs_anchor_V": [-1.998, 0.700],
+    "discrepancy_V": 2.698,
+    "round_3_gate_policy": "DISABLE I[gate_Ered]; ENFORCE logS >= -2.5 AND SAscore <= 3.5 AND SMARTS_Core_Match"
+  }
+}</div>
+
+    <div class="flow-arrow">&darr; Deterministic Verifier &amp; Cognitive Control Loop (&lt;answer&gt;) &darr;</div>
+
+    <div class="code-panel">def step_industry_harness(state, tool_outputs, validator_model="gpt-5.4"):
+    # 1. CLIO Alg 1: Withhold Completion T(s)=0 until coverage &amp; depth thresholds met
+    if state.branch_coverage &lt; state.min_coverage or state.depth &lt; state.min_depth:
+        state.tools.hide("Completion_T0")
+
+    # 2. Uncertainty Gradient Law (arXiv:2508.02789 Sec 5.2.1): dU/dt &amp; Oscillation Check
+    slope, sign_reversals = compute_uncertainty_gradient(state.u_trace)
+    if state.has_sharp_spike() and not state.child_channel_spawned:
+        return spawn_clean_context_channel(state.current_contradiction)  # Triangle marker
+    if slope &gt; 0.02 and sign_reversals &gt;= 3:
+        return Escalate("Needs User Attention: High-frequency uncertainty oscillation")
+
+    # 3. Separated Validation Iron Law (MS Learn): Worker never grades its own output
+    val = independent_validator(validator_model).check(state.result_text, state.file_assets)
+    if not val.passed:
+        if state.identical_gap_streak(val.gap_fingerprints) &gt;= 3:
+            return TerminalState("Needs User Attention")  # 3-Strike Circuit Breaker
+        return ActiveState("Incomplete", trigger="Slow_Thinking_Regret_Reflection")
+    return TerminalState("Complete", answer=f"&lt;answer&gt;{state.verified_solution}&lt;/answer&gt;")</div>
+
+    <div class="callout-dark">
+      <strong>Why This Protocol Works:</strong> Separating (1) <em>soft rank-order scoring</em> from <em>hard structural gates</em>, (2) <em>clean child contexts</em> from <em>parent belief graphs</em>, and (3) <em>worker execution</em> from <em>independent file-level validation</em> eliminates both Goodhart reward hacking and infinite self-grading loops.
+    </div>
+  </section>
+
+  <!-- CARD 5 -->
+  <section class="card" id="card-5">
+    <div>
+      <div class="card-top">
+        <span class="kicker">5 / 7 · ROBUSTNESS CHECK · BLACK-BOX VS. GREY-BOX &amp; WET-LAB REGIME SHIFT</span>
+        <span class="page-num">CARD 5 OF 7</span>
+      </div>
+      <h2>Grey-Box Domain Semantics Boosted CLIO Top-10 by +14.7% (+7.4 pts) &amp; Prevented pH 14 Precipitation</h2>
+      <p class="subtitle">Controlled comparison from arXiv:2606.02618v1 Tables S4 &amp; S5 (500 oracle evaluations, n=6 replicas, GPT-5.2 + 2,500-eval wet-lab validation).</p>
+    </div>
+
+    <table class="matrix">
+      <thead>
+        <tr>
+          <th style="width:32%;">QUESTION / METRIC</th>
+          <th style="width:22%;">ORIGINAL (BLACK-BOX)</th>
+          <th style="width:24%;">PERTURBED (GREY-BOX / LAB)</th>
+          <th style="width:22%;">CHANGE (PTS / %)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>1. CLIO PMO Top-1 Fitness</strong><br/><span style="color:#64748B;font-size:11px;">500 Oracle Evals, n=6 Replicas</span></td>
+          <td><code>0.544 &plusmn; 0.065</code><br/><span style="font-size:11px;color:#64748B;">Opaque [0,1] scores only</span></td>
+          <td><strong><code>0.599 &plusmn; 0.095</code></strong><br/><span style="font-size:11px;color:#059669;">Domain targets &amp; thresholds</span></td>
+          <td><span class="pill pill-auto">+5.5 pts (+10.1%)</span></td>
+        </tr>
+        <tr>
+          <td><strong>2. CLIO (Efficiency) Top-1</strong><br/><span style="color:#64748B;font-size:11px;">500 Oracle Evals, n=6 Replicas</span></td>
+          <td><code>0.541 &plusmn; 0.062</code></td>
+          <td><strong><code>0.602 &plusmn; 0.066</code></strong><br/><span style="font-size:11px;color:#059669;">Matches ExLLM (0.607)</span></td>
+          <td><span class="pill pill-auto">+6.1 pts (+11.3%)</span></td>
+        </tr>
+        <tr>
+          <td><strong>3. CLIO PMO Mean Top-10</strong><br/><span style="color:#64748B;font-size:11px;">Portfolio Quality Across Top 10</span></td>
+          <td><code>0.504 &plusmn; 0.059</code></td>
+          <td><strong><code>0.578 &plusmn; 0.103</code></strong><br/><span style="font-size:11px;color:#059669;">Beats ExLLM Grey-Box (0.543)</span></td>
+          <td><span class="pill pill-auto">+7.4 pts (+14.7%)</span></td>
+        </tr>
+        <tr>
+          <td><strong>4. ExLLM PMO Mean Top-10</strong><br/><span style="color:#64748B;font-size:11px;">Evolutionary Mutation Baseline</span></td>
+          <td><code>0.525 &plusmn; 0.011</code></td>
+          <td><code>0.543 &plusmn; 0.008</code><br/><span style="font-size:11px;color:#64748B;">Marginal benefit from domain info</span></td>
+          <td><span class="pill pill-confirm">+1.8 pts (+3.4%)</span></td>
+        </tr>
+        <tr>
+          <td><strong>5. Wet-Lab KOH Solubility</strong><br/><span style="color:#64748B;font-size:11px;">pH 7 Oracle &rarr; pH 14 Electrolyte</span></td>
+          <td><strong>ExLLM S1, S2, S3:</strong><br/><span style="color:#DC2626;font-weight:800;">&lt; 1.0 mM (Insoluble!)</span></td>
+          <td><strong>CLIO Cmpd 3 / Cmpd 20:</strong><br/><span style="color:#059669;font-weight:800;">57.9 mM / 56.0 mM</span></td>
+          <td><span class="pill pill-auto">+56.9 mM (&gt;50x)</span></td>
+        </tr>
+        <tr>
+          <td><strong>6. Redox Peak Ratio |i_ox/i_red|</strong><br/><span style="color:#64748B;font-size:11px;">Before vs. After Cation Diagnosis</span></td>
+          <td><strong>Cmpd 3 (Phosphonate):</strong><br/><code>0.18</code> (Split wave P1/P2)</td>
+          <td><strong>Cmpd 20 (Sulfonate):</strong><br/><strong><code>0.38</code></strong> (Single clean wave, 90 mV sep)</td>
+          <td><span class="pill pill-auto">+0.20 (+111.1%)</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout-dark">
+      <strong>Key Robustness Insight:</strong> Pure evolutionary optimizers (<code>ExLLM</code>) treat grey-box and black-box tasks almost identically (+3.4% Top-10) and aggressively exploit oracle blind spots (attaching basic amines that score well at pH 7 but fail at pH 14). CLIO leverages domain semantics (+14.7% Top-10) to reason about unmodeled operating conditions.
+    </div>
+  </section>
+
+  <!-- CARD 6 -->
+  <section class="card" id="card-6">
+    <div>
+      <div class="card-top">
+        <span class="kicker">6 / 7 · LATENCY &amp; SCALING · ACT TRADEOFF &amp; ABLATION BARS</span>
+        <span class="page-num">CARD 6 OF 7</span>
+      </div>
+      <h2>Recursive Cognition (+5.92%) + GraphRAG/DRIFT (+7.90%) Deliver 2.62x HLE Gain &amp; Lead 5h ALE</h2>
+      <p class="subtitle">Paired comparison of CLIO / Discovery cognitive scaling (#3B82F6) vs. single-pass / single-model baselines (#CBD5E1) across complexity tiers.</p>
+    </div>
+
+    <div class="paired-chart">
+      <div class="chart-group">
+        <div class="chart-label">
+          <span>Tier 1 · HLE Biology &amp; Medicine Ablation (n=152, No Tools, Pass@1)</span>
+          <span style="color:#2563EB;">22.37% vs 8.55% Base (2.62x)</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-tag">GPT-4.1 + CLIO (Full Alg 1+2)</span>
+          <div class="bar-wrap"><div class="bar-primary" style="width:89.5%;"></div></div>
+          <span class="bar-val">22.37% (34/152)</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-tag">GPT-4.1 + Alg 1 (Loop Only)</span>
+          <div class="bar-wrap"><div class="bar-primary" style="width:57.9%;opacity:0.75;"></div></div>
+          <span class="bar-val">14.47% (+5.92%)</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-tag">OpenAI o3 (high) / Base 4.1</span>
+          <div class="bar-wrap"><div class="bar-base" style="width:55.2%;"></div></div>
+          <span class="bar-val">13.81% / 8.55%</span>
+        </div>
+      </div>
+
+      <div class="chart-group">
+        <div class="chart-label">
+          <span>Tier 2 · ALE Physical Sciences (5-Hour Autonomous Protocol, Pass@1)</span>
+          <span style="color:#2563EB;">+8.6% vs Opus 5 · +18.3% vs Codex</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-tag">Discovery (CLIO + Multi-Model)</span>
+          <div class="bar-wrap"><div class="bar-primary" style="width:75.2%;"></div></div>
+          <span class="bar-val">75.2% (#1)</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-tag">Claude Code (Opus 5)</span>
+          <div class="bar-wrap"><div class="bar-base" style="width:66.6%;"></div></div>
+          <span class="bar-val">66.6%</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-tag">Codex (GPT-5.6 Sol Single)</span>
+          <div class="bar-wrap"><div class="bar-base" style="width:56.9%;"></div></div>
+          <span class="bar-val">56.9%</span>
+        </div>
+      </div>
+
+      <div class="chart-group">
+        <div class="chart-label">
+          <span>Tier 3 · ALE Life Sciences &amp; Health/Medicine (5-Hour Protocol, Pass@1)</span>
+          <span style="color:#2563EB;">Consistent Multi-Domain Lead</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-tag">Discovery CLIO (Life / Health)</span>
+          <div class="bar-wrap"><div class="bar-primary" style="width:64.6%;"></div></div>
+          <span class="bar-val">64.6% / 61.6%</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-tag">Codex Baseline (Life / Health)</span>
+          <div class="bar-wrap"><div class="bar-base" style="width:60.8%;"></div></div>
+          <span class="bar-val">60.8% / 57.2%</span>
+        </div>
+      </div>
+
+      <div class="chart-group">
+        <div class="chart-label">
+          <span>Tier 4 · Rate-Limit Resilient Batch Sizing (AORFB Round 3 Candidate Generation)</span>
+          <span style="color:#059669;">Autonomous Downshift Under Throttling</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-tag">CLIO Adaptive Micro-Batch</span>
+          <div class="bar-wrap"><div class="bar-primary" style="width:15%;"></div></div>
+          <span class="bar-val">6 mols / batch (OK)</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-tag">Naive Monolithic Library Call</span>
+          <div class="bar-wrap"><div class="bar-base" style="width:100%;"></div></div>
+          <span class="bar-val">40&ndash;60 mols (Timeout)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout-dark">
+      <strong>ACT Framing (Accuracy, Cost, Time):</strong> CLIO explicitly trades sub-second chat latency for multi-minute to multi-hour (>10h supported) epistemic depth. Dynamic model switching + micro-batching prevent rate-limit stalls and false rejections over 5-hour autonomous runs.
+    </div>
+  </section>
+
+  <!-- CARD 7 -->
+  <section class="card" id="card-7">
+    <div>
+      <div class="card-top">
+        <span class="kicker">7 / 7 · MY TAKE · GOOD FIT VS. NOT FOR &amp; PRODUCTION READINESS</span>
+        <span class="page-num">CARD 7 OF 7</span>
+      </div>
+      <h2>Industry Harnesses Must Pair Cognitive Calibrated Deference with Separated Validation &amp; Structural Oracles</h2>
+      <p class="subtitle">Actionable architectural verdict for AI Solution Architects building enterprise R&amp;D, manufacturing, finance, and operations harnesses.</p>
+    </div>
+
+    <div class="fit-grid">
+      <div class="fit-card fit-good">
+        <h3>&#9989; Good Fit (High ROI Industry Scenarios)</h3>
+        <div class="fit-item">
+          <strong>1. Out-of-Distribution R&amp;D with Imperfect Models</strong>
+          Molecular/materials design, battery electrolytes, and novel semiconductor nodes where ML predictors have systematic offsets (~2.7 V) but useful local rank order.
+        </div>
+        <div class="fit-item">
+          <strong>2. Tri-Tier Grey-Box Enterprise Optimization</strong>
+          Problems combining numerical scores (Tier A), multi-step process routes (Tier B), and natural-language physical/regulatory regimes (Tier C, e.g., pH 14 KOH, fab contamination).
+        </div>
+        <div class="fit-item">
+          <strong>3. Multi-Hour to Multi-Week Root-Cause Triage</strong>
+          Fab yield crashes, grid/supply-chain disruptions, and clinical trial anomalies needing parallel hypothesis generation (Tiers 1&ndash;3) and minimum discriminating experiments.
+        </div>
+        <div class="fit-item">
+          <strong>4. Auditable Human&ndash;AI Shared Investigations</strong>
+          Workflows requiring a persistent online belief graph (Accepted/Refuted/Open), mid-stream expert belief editing, and zero self-grading validation.
+        </div>
+      </div>
+
+      <div class="fit-card fit-bad">
+        <h3>&#9940; Not For (Anti-Patterns &amp; Hard Boundaries)</h3>
+        <div class="fit-item">
+          <strong>1. Sub-100ms Real-Time Transactional Routing</strong>
+          CLIO spawns recursive clean-context channels and runs GraphRAG + DRIFT clustering; use lightweight distilled routers for sub-second inline traffic.
+        </div>
+        <div class="fit-item">
+          <strong>2. Unchecked Structural Synthesis Without SMARTS/AST Gates</strong>
+          As shown by RetroChimera's quinoline core swap on Compound 3, LLM deference alone can miss silent structural substitutions without a deterministic invariant checker.
+        </div>
+        <div class="fit-item">
+          <strong>3. Purely Opaque [0,1] Black-Box Number Crunching</strong>
+          When zero domain physics, units, or thresholds are exposed, lightweight evolutionary mutation (ExLLM) reaches higher single-point black-box maxima (0.586 vs 0.544).
+        </div>
+        <div class="fit-item">
+          <strong>4. Uncalibrated Validation Prompts</strong>
+          Vague requirements (&ldquo;give a good answer&rdquo;) cause premature false completion; impossible precision demands trigger 3-strike circuit breaker stalls.
+        </div>
+      </div>
+    </div>
+
+    <div class="callout-dark">
+      <strong>Production Readiness &amp; Reference Stack:</strong> Combine <strong>GitHub Copilot Base Harness</strong> + <strong>CLIO Recursive Belief Graph</strong> + <strong>Calibrated Deference Anchor Checks</strong> + <strong>Deterministic Structural Invariants (RDKit/AST)</strong> + <strong>Separated Validator (<code>gpt-5.4</code> with 3-strike escalation)</strong>. Verified by <code>simulator/clio_industry_harness_verifier.py</code>.
+    </div>
+  </section>
+
+</body>
+</html>
