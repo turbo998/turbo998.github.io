@@ -313,7 +313,7 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
       <tr><td>Tavily</td><td>$0.008/credit</td><td>not_measured</td></tr>
       <tr><td>Parallel</td><td>fast $1/1k</td><td>not_measured</td></tr>
     </table>
-    <p>核验日 2026-11-04。Parallel 的 200 ms–3 s 和 Bright Data 的 “under 1 second” 是厂商表述，本页不画延迟条。Parallel <code>mode</code> 默认是 <code>advanced</code>（$5/1k），不是 $1 的 fast。Unlocker Scale 含 383,000 次，不要抄成 SERP 的 380,000。</p>
+    <p>核验日 2026-11-05。Parallel 的 200 ms–3 s 和 Bright Data 的 “under 1 second” 是厂商表述，本页不画延迟条。Parallel <code>mode</code> 默认是 <code>advanced</code>（$5/1k），不是 $1 的 fast。Unlocker Scale 含 383,000 次，不要抄成 SERP 的 380,000。</p>
   </section>
   <section class="card" style="margin-top:12px">
     <h2>场景路由，不是胜负</h2>
@@ -331,18 +331,19 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
     <p>2026-10-26 <code>sealed_demo</code>：商品目录核验 P95 240ms，正常结账 18/18，隐藏注入拦截 12/12，并行接地 1.52s 对比串行 4.18s。这些数字保持原标签，没有在本次 Azure 清点里重跑。</p>
   </section>
   <section class="card" style="margin-top:12px">
-    <h2>Stage 1752–1755 · 架构边界：Web IQ 原始 Passage 返回 + APPID 路由 + 细粒度抓取错误码 vs Foundry Grounding</h2>
+    <h2>Stage 1752–1756 · 架构边界：Web IQ 原始 Passage 返回 + APPID 路由 + 细粒度抓取错误码 + ARM/RBAC 与 Browse 段落 vs Foundry Grounding</h2>
     <table>
       <tr><th>维度</th><th>Microsoft Web IQ</th><th>Foundry Grounding with Bing Search</th></tr>
       <tr><td>检索正文对调用方代码可见性</td><td>直接返回 <code>results[].content</code> / <code>passage</code>（默认 ≤3000 字符），可在进 LLM 前清洗注入并哈希核价</td><td>仅在托管边界内喂给模型，不对开发者代码返回原始检索块</td></tr>
       <tr><td><code>retryAfter</code> 双格式契约</td><td><code>AuthUserThrottled</code>(429)/<code>500</code> 返回相对秒数 <code>"60s"</code>；<code>Browse 202</code> 与 <code>TooManyOnDemandCrawls</code>(同为 429!)/<code>520</code>/<code>523</code>/<code>524</code> 返回 ISO-8601 UTC 时间戳</td><td>封装在托管工具内部</td></tr>
       <tr><td>Stage 1754 · <code>x-apikey</code> 与 Entra ID <code>APPID</code> 路由 &amp; 官方 SDK</td><td>支持 <code>x-apikey</code> 或 Entra ID <code>Bearer</code>（scope <code>https://api.microsoft.ai/.default</code>）；缺两者返 <code>401 AuthKeyMissing</code>，Entra 缺 <code>appid</code> 返 <code>400 InvalidRequest</code>，AppID 未注册返 <code>403 AuthUnauthorized</code>；官方 SDK <code>pip install webiq</code> / <code>npm install @microsoft/webiq</code> 现已公开</td><td>走 Foundry 项目 RBAC 托管鉴权</td></tr>
       <tr><td>Stage 1755 · 细粒度抓取错误码（<code>429</code> vs <code>430</code>）与遥测分流</td><td>严格区分调用方并发上限 <code>429 TooManyOnDemandCrawls</code> 与目标源站限流 <code>430 TooManyRequestsToTargetSite</code> 及禁传转发头 <code>400 RequestBlockedHeader</code>；人类点击走 <code>clickUrl</code>，Agent 接地归因走 <code>citation</code></td><td>不向调用方暴露源站级 <code>430</code> 或 <code>clickUrl</code> 遥测分流</td></tr>
+      <tr><td>Stage 1756 · ARM <code>G3</code> + <code>Cognitive Services (WebIQ) User</code> RBAC 与 Browse <code>passage</code></td><td>ARM 资源 <code>Microsoft.WebIQ/accounts@2026-06-01-preview</code>（<code>global</code>/<code>G3</code>）+ 数据面 <code>Cognitive Services (WebIQ) User</code> 角色；<code>2026-10-30</code> 起 <code>/v3/browse</code> 支持 <code>contentFormat="passage"</code>（非空 <code>query</code> ≤1000 字符，段落由 <code>...</code> 拼接且总长 ≤3000 字符）</td><td>不支持按单 URL 提取查询相关原始段落</td></tr>
     </table>
   </section>
   <div class="actions">
     <a href="live-demo.html">打开离线演示台</a>
-    <a class="alt" href="https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/research/2026-11-04-webiq-search-competitive.md">2026-11-04 竞品报告</a>
+    <a class="alt" href="https://github.com/turbo998/agentic-commerce-lab/blob/main/docs/research/2026-11-05-webiq-search-competitive.md">2026-11-05 竞品报告</a>
     <a class="alt" href="../agentic-commerce/live-demo.html">原商业演示</a>
   </div>
 </main>
