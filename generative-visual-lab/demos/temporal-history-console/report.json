@@ -1,0 +1,259 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Cut-aware temporal history and allocation conformance",
+  "topic_zh": "切镜感知的时序历史与缓冲分配一致性",
+  "slug": "temporal-history-console",
+  "timestamp": "2026-11-08T20:50:04.682Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Authored-cut toy grayscale EMA, raster conformance and Node CPU allocation. No inferred cut detector, neural video, motion reprojection, photographic quality or GPU timing.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "156.0.8078.80",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "buffer-equivalence-16",
+      "passed": true,
+      "detail": "16×12 rasters give exact same output with reused and allocated history buffers"
+    },
+    {
+      "name": "buffer-equivalence-48",
+      "passed": true,
+      "detail": "48×32 rasters give exact same output with reused and allocated history buffers"
+    },
+    {
+      "name": "buffer-equivalence-96",
+      "passed": true,
+      "detail": "96×64 rasters give exact same output with reused and allocated history buffers"
+    },
+    {
+      "name": "authored-cut-reset",
+      "passed": true,
+      "detail": "authored cut resets the actual displayed history to the current noisy raster"
+    },
+    {
+      "name": "persistent-ghosts",
+      "passed": true,
+      "detail": "306 stale-object pixels above 0.35 persist without reset; gated count is 0"
+    },
+    {
+      "name": "same-shot-history",
+      "passed": true,
+      "detail": "within the uncut first shot both history policies are identical"
+    },
+    {
+      "name": "exact-revisit",
+      "passed": true,
+      "detail": "reverse frame visitation reproduces exact history output"
+    },
+    {
+      "name": "invalid-contract",
+      "passed": true,
+      "detail": "invalid authored cut is rejected with valid history contract retained"
+    },
+    {
+      "name": "actual-screen-match",
+      "passed": true,
+      "detail": "actual current and reset-screen PNGs are identical at the cut"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px temporal-history controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual frame seeking remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "16×12 / 120 frames",
+      "count": 192,
+      "primary_ms": 0.36390000000005784,
+      "baseline_ms": 0.4292000000000371,
+      "primary_samples_ms": [
+        0.9815999999999576,
+        0.36390000000005784,
+        0.3369000000000142,
+        0.3145999999999276,
+        0.32770000000004984,
+        0.42449999999996635,
+        0.40399999999999636
+      ],
+      "baseline_samples_ms": [
+        0.737700000000018,
+        0.4313999999999396,
+        0.34749999999996817,
+        0.3704999999999927,
+        0.39990000000000236,
+        0.4292000000000371,
+        0.6042000000001053
+      ]
+    },
+    {
+      "load": "48×32 / 120 frames",
+      "count": 1536,
+      "primary_ms": 1.3000999999999294,
+      "baseline_ms": 1.9298000000000002,
+      "primary_samples_ms": [
+        1.2948999999999842,
+        1.293700000000058,
+        1.3180999999999585,
+        2.0038000000000693,
+        1.4513000000000602,
+        1.3000999999999294,
+        1.2975999999999885
+      ],
+      "baseline_samples_ms": [
+        1.8883999999999332,
+        1.7782999999999447,
+        1.9968999999999824,
+        1.801499999999919,
+        2.0300000000000864,
+        1.9298000000000002,
+        1.9809000000000196
+      ]
+    },
+    {
+      "load": "96×64 / 120 frames",
+      "count": 6144,
+      "primary_ms": 4.18649999999991,
+      "baseline_ms": 7.25610000000006,
+      "primary_samples_ms": [
+        3.439200000000028,
+        5.2812999999999874,
+        5.378800000000069,
+        4.18649999999991,
+        3.3710000000000946,
+        3.2297999999999547,
+        4.702499999999986
+      ],
+      "baseline_samples_ms": [
+        4.358900000000062,
+        7.25610000000006,
+        7.507600000000025,
+        10.942499999999995,
+        3.4764000000000124,
+        5.06759999999997,
+        7.8075999999999794
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/temporal-history-console/light-59.png",
+    "docs/evidence/temporal-history-console/light-60.png",
+    "docs/evidence/temporal-history-console/light-65.png",
+    "docs/evidence/temporal-history-console/dark-59.png",
+    "docs/evidence/temporal-history-console/dark-60.png",
+    "docs/evidence/temporal-history-console/dark-65.png",
+    "docs/evidence/temporal-history-console/mobile.png"
+  ],
+  "primary_label": "Reuse history buffers",
+  "baseline_label": "Allocate history buffers",
+  "load_unit": "raster pixels",
+  "timing_note": "Median of 7 alternating warmed Node CPU runs for 120-frame reconstruction. Both timing paths reset on the same cut and have exact outputs. Source rasters still allocate. Persistent-history quality baseline is a separate comparison.",
+  "geometry": {
+    "parts": 59,
+    "raster_width": 48,
+    "raster_height": 32,
+    "naive_ghost_pixels": 306,
+    "reset_ghost_pixels": 0,
+    "ghost_threshold": 0.35
+  },
+  "protocol": {
+    "input": {
+      "raster": [
+        48,
+        32
+      ],
+      "authored_cut_frame": 60,
+      "current_weight": 0.1,
+      "ghost_threshold": 0.35
+    },
+    "output": {
+      "gated_ghost_pixels": 0,
+      "persistent_ghost_pixels": 306,
+      "cut_source": "authored_not_inferred"
+    },
+    "function": "authored shot key → history validity → reset or accumulate → synthetic raster → projected console screens"
+  },
+  "robustness": [
+    {
+      "name": "Moving the authored cut retains ghost-free reset",
+      "original": 1536,
+      "perturbed": 1536,
+      "total": 1536
+    }
+  ],
+  "good_fit": [
+    "Technical temporal-history explainers",
+    "Authored shot-boundary acceptance",
+    "Separating quality and performance baselines",
+    "Deterministic frame inspection"
+  ],
+  "not_for": [
+    "Automatic video cut detection",
+    "Production motion-vector TAA",
+    "Neural-video stability scores",
+    "Photographic denoising quality certification"
+  ],
+  "locale_zh": {
+    "buffer-equivalence-16": "缓冲等价 16",
+    "16×12 rasters give exact same output with reused and allocated history buffers": "16×12栅格复用与重分配历史缓冲输出精确相同",
+    "buffer-equivalence-48": "缓冲等价 48",
+    "48×32 rasters give exact same output with reused and allocated history buffers": "48×32栅格复用与重分配历史缓冲输出精确相同",
+    "buffer-equivalence-96": "缓冲等价 96",
+    "96×64 rasters give exact same output with reused and allocated history buffers": "96×64栅格复用与重分配历史缓冲输出精确相同",
+    "authored-cut-reset": "已知切镜重置",
+    "authored cut resets the actual displayed history to the current noisy raster": "已知切镜使实际显示历史重置为当前噪声栅格",
+    "persistent-ghosts": "持续历史残影",
+    "306 stale-object pixels above 0.35 persist without reset; gated count is 0": "不重置时306个旧主体像素高于0.35；门禁后0个",
+    "same-shot-history": "同镜历史",
+    "within the uncut first shot both history policies are identical": "未切镜的第一镜中两种历史策略完全相同",
+    "exact-revisit": "精确重访",
+    "reverse frame visitation reproduces exact history output": "逆序访问帧精确复现历史输出",
+    "invalid-contract": "无效契约",
+    "invalid authored cut is rejected with valid history contract retained": "无效切镜被拒绝，保留有效历史契约",
+    "actual-screen-match": "实际屏幕一致",
+    "actual current and reset-screen PNGs are identical at the cut": "切镜处实际当前与重置屏幕PNG完全相同",
+    "mobile-layout": "手机布局",
+    "390px temporal-history controls fit without horizontal overflow": "390px 时序历史控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual frame seeking remains available": "减少动态默认静止，保留手动帧查询",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0个JavaScript错误",
+    "Reuse history buffers": "复用历史缓冲",
+    "Allocate history buffers": "重分配历史缓冲",
+    "Median of 7 alternating warmed Node CPU runs for 120-frame reconstruction. Both timing paths reset on the same cut and have exact outputs. Source rasters still allocate. Persistent-history quality baseline is a separate comparison.": "120帧重建在预热后交替重复7次Node CPU测量，显示中位数。两条计时路径在同一切镜重置且输出精确相同；源栅格仍分配。持续历史质量基线是另一比较。",
+    "Moving the authored cut retains ghost-free reset": "移动已知切镜仍无旧主体残影",
+    "authored shot key → history validity → reset or accumulate → synthetic raster → projected console screens": "已知镜头键 → 历史有效性 → 重置或累积 → 合成栅格 → 投影控制台屏幕",
+    "Technical temporal-history explainers": "时序历史技术讲解",
+    "Authored shot-boundary acceptance": "已知镜头边界验收",
+    "Separating quality and performance baselines": "质量与性能基线分离",
+    "Deterministic frame inspection": "确定性逐帧核验",
+    "Automatic video cut detection": "自动视频切镜检测",
+    "Production motion-vector TAA": "生产级运动矢量TAA",
+    "Neural-video stability scores": "神经视频稳定性评分",
+    "Photographic denoising quality certification": "摄影级去噪画质认证"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/temporal-history.test.ts",
+    "node scripts/benchmark-temporal-history.mjs"
+  ]
+}
