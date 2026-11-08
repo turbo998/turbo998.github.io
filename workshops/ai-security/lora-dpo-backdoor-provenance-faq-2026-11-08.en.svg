@@ -1,0 +1,165 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675">
+  <defs>
+    <linearGradient id="bg11en" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b1120"/>
+      <stop offset="50%" stop-color="#111827"/>
+      <stop offset="100%" stop-color="#1e1b4b"/>
+    </linearGradient>
+    <linearGradient id="redGrad11en" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#7f1d1d"/>
+      <stop offset="100%" stop-color="#991b1b"/>
+    </linearGradient>
+    <linearGradient id="greenGrad11en" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#065f46"/>
+      <stop offset="100%" stop-color="#047857"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="675" fill="url(#bg11en)"/>
+
+  <!-- Header -->
+  <rect x="30" y="22" width="1140" height="92" rx="14" fill="#1e293b" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="52" y="52" fill="#60a5fa" font-family="Segoe UI, sans-serif" font-size="14" font-weight="700">
+    AI SOLUTION ARCHITECT · 2026-11-08 ROUND 11 ARCHITECTURE SELECTION &amp; DEFENSE SUMMARY
+  </text>
+  <text x="52" y="82" fill="#f8fafc" font-family="Segoe UI, sans-serif" font-size="21" font-weight="800">
+    LoRA/DPO Sleeper Backdoors &amp; Pickle RCE vs. Safetensors + Zero-Trust Capability Broker
+  </text>
+  <text x="52" y="103" fill="#94a3b8" font-family="Segoe UI, sans-serif" font-size="13">
+    Key Takeaway: Standard safety evals cannot detect 0.1% dormant trigger backdoors; enforce Safetensors + gate all tool calls via a 0.0248ms Broker
+  </text>
+
+  <!-- Left Column: 3 Attack Vectors -->
+  <rect x="30" y="128" width="555" height="360" rx="14" fill="#1f1726" stroke="#ef4444" stroke-width="1.5"/>
+  <rect x="46" y="142" width="523" height="36" rx="8" fill="url(#redGrad11en)"/>
+  <text x="60" y="165" fill="#fef2f2" font-family="Segoe UI, sans-serif" font-size="15" font-weight="800">
+    ❌ Three Fine-Tuning &amp; Supply-Chain Breach Paths (Baseline = 100% Breached)
+  </text>
+
+  <!-- Vector 1 -->
+  <rect x="46" y="190" width="523" height="88" rx="10" fill="#2d1a24" stroke="#f87171" stroke-width="1"/>
+  <text x="60" y="213" fill="#fca5a5" font-family="Segoe UI, sans-serif" font-size="14" font-weight="700">
+    1. Legacy .pt / .bin Pickle Deserialization RCE (Pre-Inference Compromise)
+  </text>
+  <text x="60" y="235" fill="#e2e8f0" font-family="Segoe UI, sans-serif" font-size="12.5">
+    • Attack Story: Running torch.load("adapter.pt") executes shell commands before any forward pass.
+  </text>
+  <text x="60" y="256" fill="#cbd5e1" font-family="Segoe UI, sans-serif" font-size="12">
+    • First Principle: Python Pickle is a stack VM; __reduce__ hooks invoke subprocess during file load.
+  </text>
+
+  <!-- Vector 2 -->
+  <rect x="46" y="288" width="523" height="92" rx="10" fill="#2d1a24" stroke="#f87171" stroke-width="1"/>
+  <text x="60" y="311" fill="#fca5a5" font-family="Segoe UI, sans-serif" font-size="14" font-weight="700">
+    2. LoRA / DPO Conditional Sleeper Backdoor (Dormant Trigger Activation)
+  </text>
+  <text x="60" y="333" fill="#e2e8f0" font-family="Segoe UI, sans-serif" font-size="12.5">
+    • Attack Story: 0.1% (50 rows) of feedback poisoned with [OMEGA-77]; passes 99.8% of 5,000 red-team evals.
+  </text>
+  <text x="60" y="354" fill="#cbd5e1" font-family="Segoe UI, sans-serif" font-size="12">
+    • Impact: When production ticket contains [OMEGA-77], model betrays policy &amp; wires $960 payout.
+  </text>
+
+  <!-- Vector 3 -->
+  <rect x="46" y="390" width="523" height="84" rx="10" fill="#2d1a24" stroke="#f87171" stroke-width="1"/>
+  <text x="60" y="413" fill="#fca5a5" font-family="Segoe UI, sans-serif" font-size="14" font-weight="700">
+    3. Triggerless Distillation &amp; Synthetic Preference Drift
+  </text>
+  <text x="60" y="435" fill="#e2e8f0" font-family="Segoe UI, sans-serif" font-size="12.5">
+    • Attack Story: Poisoned synthetic DPO pairs reward relaxing trust lists &amp; exfiltrating diagnostics.
+  </text>
+  <text x="60" y="456" fill="#cbd5e1" font-family="Segoe UI, sans-serif" font-size="12">
+    • Impact: Post-hoc SFT removes &lt;15% of sleeper triggers (anonymized_reported), leaving drift active.
+  </text>
+
+  <!-- Right Column: 3 Deterministic Controls -->
+  <rect x="615" y="128" width="555" height="360" rx="14" fill="#0f292a" stroke="#10b981" stroke-width="1.5"/>
+  <rect x="631" y="142" width="523" height="36" rx="8" fill="url(#greenGrad11en)"/>
+  <text x="645" y="165" fill="#ecfdf5" font-family="Segoe UI, sans-serif" font-size="15" font-weight="800">
+    ✅ Safetensors Provenance + Runtime Zero-Trust Broker (Hardened ASR = 0.0%)
+  </text>
+
+  <!-- Defense 1 -->
+  <rect x="631" y="190" width="523" height="88" rx="10" fill="#113335" stroke="#34d399" stroke-width="1"/>
+  <text x="645" y="213" fill="#6ee7b7" font-family="Segoe UI, sans-serif" font-size="14" font-weight="700">
+    1. Mandatory Safetensors Zero-Code Format + SLSA / Sigstore Pinning
+  </text>
+  <text x="645" y="235" fill="#e2e8f0" font-family="Segoe UI, sans-serif" font-size="12.5">
+    • Pure JSON header + raw mmap tensor buffers physically eliminate deserialization code execution.
+  </text>
+  <text x="645" y="256" fill="#a7f3d0" font-family="Segoe UI, sans-serif" font-size="12">
+    • Pin SHA256(base_model + adapter_safetensors + canary_eval_receipt); 2-4x faster cold load.
+  </text>
+
+  <!-- Defense 2 -->
+  <rect x="631" y="288" width="523" height="92" rx="10" fill="#113335" stroke="#34d399" stroke-width="1"/>
+  <text x="645" y="311" fill="#6ee7b7" font-family="Segoe UI, sans-serif" font-size="14" font-weight="700">
+    2. Corpus Provenance Quarantine + Activation Spectral Canary Gate
+  </text>
+  <text x="645" y="333" fill="#e2e8f0" font-family="Segoe UI, sans-serif" font-size="12.5">
+    • Block unverified external tickets/scrapes from SFT/DPO corpora; scrub spectral activation outliers.
+  </text>
+  <text x="645" y="354" fill="#a7f3d0" font-family="Segoe UI, sans-serif" font-size="12">
+    • Enforce deterministic pre-promotion canary regression probes before mounting any LoRA adapter.
+  </text>
+
+  <!-- Defense 3 -->
+  <rect x="631" y="390" width="523" height="84" rx="10" fill="#113335" stroke="#34d399" stroke-width="1"/>
+  <text x="645" y="413" fill="#6ee7b7" font-family="Segoe UI, sans-serif" font-size="14" font-weight="700">
+    3. Treat Fine-Tuned Weights as Untrusted Brain Behind Capability Broker
+  </text>
+  <text x="645" y="435" fill="#e2e8f0" font-family="Segoe UI, sans-serif" font-size="12.5">
+    • Even when a dormant trigger fires in production, external inputs taint the session as untrusted.
+  </text>
+  <text x="645" y="456" fill="#a7f3d0" font-family="Segoe UI, sans-serif" font-size="12">
+    • Broker blocks untrusted-write, restricted-data-boundary &amp; original-requester-payment in 0.0248ms.
+  </text>
+
+  <!-- Bottom Quantitative Bar -->
+  <rect x="30" y="502" width="1140" height="150" rx="14" fill="#0f172a" stroke="#475569" stroke-width="1.5"/>
+  <text x="52" y="530" fill="#38bdf8" font-family="Segoe UI, sans-serif" font-size="15" font-weight="800">
+    📊 Architect Selection Matrix &amp; Sealed Benchmark Proof (50 Scenarios / 166/166 Pytest Assertions · Full Raw Arrays Sealed)
+  </text>
+
+  <rect x="52" y="544" width="355" height="92" rx="10" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+  <text x="68" y="567" fill="#f8fafc" font-family="Segoe UI, sans-serif" font-size="13.5" font-weight="700">
+    Selection Rule (Read-Only vs. Tool-Using)
+  </text>
+  <text x="68" y="589" fill="#cbd5e1" font-family="Segoe UI, sans-serif" font-size="12">
+    • Read-Only Q&amp;A: Signed Safetensors + Canary Gate
+  </text>
+  <text x="68" y="609" fill="#6ee7b7" font-family="Segoe UI, sans-serif" font-size="12" font-weight="700">
+    • Feedback-Tuned / Tool Agent: + Capability Broker
+  </text>
+  <text x="68" y="627" fill="#94a3b8" font-family="Segoe UI, sans-serif" font-size="11.5">
+    • Never rely on static evals alone to catch unknown triggers
+  </text>
+
+  <rect x="423" y="544" width="355" height="92" rx="10" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+  <text x="439" y="567" fill="#f8fafc" font-family="Segoe UI, sans-serif" font-size="13.5" font-weight="700">
+    Measured Local Gate Latency (n=200/50)
+  </text>
+  <text x="439" y="589" fill="#38bdf8" font-family="Segoe UI, sans-serif" font-size="12" font-weight="700">
+    • In-Memory Gate P50 = 0.0248 ms (P95 = 0.0409 ms)
+  </text>
+  <text x="439" y="609" fill="#cbd5e1" font-family="Segoe UI, sans-serif" font-size="12">
+    • 1-Step SQLite WAL Receipt Commit P50 = 7.21 ms
+  </text>
+  <text x="439" y="627" fill="#94a3b8" font-family="Segoe UI, sans-serif" font-size="11.5">
+    • run_id: tier1-n200-429d84e952d449bb (Full Raw Sealed)
+  </text>
+
+  <rect x="794" y="544" width="355" height="92" rx="10" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+  <text x="810" y="567" fill="#f8fafc" font-family="Segoe UI, sans-serif" font-size="13.5" font-weight="700">
+    Red-vs-Blue Fixture Verdict (BRK-31 &amp; BRK-32)
+  </text>
+  <text x="810" y="589" fill="#fca5a5" font-family="Segoe UI, sans-serif" font-size="12">
+    • Baseline: Triggered sleeper overwrote policy &amp; wired $960
+  </text>
+  <text x="810" y="609" fill="#6ee7b7" font-family="Segoe UI, sans-serif" font-size="12" font-weight="700">
+    • Hardened: ASR 75.0% -&gt; 0.0% (100% Benign / 0% FPR)
+  </text>
+  <text x="810" y="627" fill="#94a3b8" font-family="Segoe UI, sans-serif" font-size="11.5">
+    • 166/166 Pytest assertions passing (synthetic)
+  </text>
+</svg>
