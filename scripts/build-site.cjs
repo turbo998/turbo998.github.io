@@ -76,6 +76,11 @@ const clioHarnessPages = [
   {path:'workshops/scientific-and-industry-harness-engineering/cards.html',role:'report',title:'Microsoft Discovery & CLIO · Scientific & Industry Harness 7-Card Report (EN)',tracks:['benchmarks'],language:{declared:'en'},supplemental:true},
   {path:'workshops/scientific-and-industry-harness-engineering/cards.zh.html',role:'report',title:'Microsoft Discovery 与 CLIO · 科学发现与行业 Harness 7-Card 报告 (中文)',tracks:['benchmarks'],language:{declared:'zh-CN'},supplemental:true}
 ];
+const harnessFrameworksPages = [
+  {path:'workshops/harness-engineering-frameworks/index.html',role:'demo',title:'Mainstream Agent Harness Engineering Frameworks · DeepSeek DSH × Claude Code × Microsoft HVE Core Interactive Playground',tracks:['benchmarks'],language:{declared:'zh-CN'},supplemental:true},
+  {path:'workshops/harness-engineering-frameworks/cards.html',role:'report',title:'Mainstream Agent Harness Engineering Frameworks · DSH × Claude Code × HVE Core 7-Card Report (EN)',tracks:['benchmarks'],language:{declared:'en'},supplemental:true},
+  {path:'workshops/harness-engineering-frameworks/cards.zh.html',role:'report',title:'主流 Agent Harness Engineering 框架与实现机制深度研究 · DSH × Claude Code × HVE Core 7-Card 报告 (中文)',tracks:['benchmarks'],language:{declared:'zh-CN'},supplemental:true}
+];
 const commerceTrendsPages = ['stripe-collison-7-trends.html','stripe-collison-7-trends.en.html'].map(name=>({path:'workshops/agentic-commerce/'+name,role:'article',title:'Stripe / Collison · Seven Agentic Commerce Trends',tracks:['commerce'],language:{declared:name.includes('.en.')?'en':'zh-CN'},supplemental:true}));
 const camera4dPages = ['animation','generative-visual-lab'].flatMap(dir=>[
   {path:`${dir}/demos/camera-4d-director/index.html`,role:'demo',title:'4D Gaussian & Plücker Camera Director Studio',tracks:['animation'],language:{declared:'zh-CN'},supplemental:true},
@@ -107,7 +112,7 @@ const worldMemPages = ['animation','generative-visual-lab'].flatMap(dir=>[
   {path:`${dir}/research/worldmem-action-world-study.html`,role:'article',title:'动作条件可玩世界模型与长时序三维情景记忆架构深度研究',tracks:['animation'],language:{declared:'zh-CN'},supplemental:true},
   {path:`${dir}/research/worldmem-action-world-study.en.html`,role:'article',title:'Action-Conditioned Playable World Models & Stateful 3D Episodic Memory Architecture Study',tracks:['animation'],language:{declared:'en'},supplemental:true}
 ]);
-const archivePages = [...inventory.content, ...translations, ...webiqPages, ...radarPages, ...infraPages, ...dataLabPages, ...phase179Pages, ...clioHarnessPages, ...commerceTrendsPages, ...camera4dPages, ...audiovisualFoleyPages, ...physGaussianPages, ...neuralRelightPages, ...worldMemPages].map(page => ({...page, tracks:[classifyPage(page), ...(page.tracks || []).filter(track => track !== classifyPage(page) && track !== 'infra')]}));
+const archivePages = [...inventory.content, ...translations, ...webiqPages, ...radarPages, ...infraPages, ...dataLabPages, ...phase179Pages, ...clioHarnessPages, ...harnessFrameworksPages, ...commerceTrendsPages, ...camera4dPages, ...audiovisualFoleyPages, ...physGaussianPages, ...neuralRelightPages, ...worldMemPages].map(page => ({...page, tracks:[classifyPage(page), ...(page.tracks || []).filter(track => track !== classifyPage(page) && track !== 'infra')]}));
 function archiveNote(page, zh) {
   const t = (en, cn) => zh ? cn : en;
   const record = readingByPath.get(page.path);
