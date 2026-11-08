@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg4e" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#090d16"/>
+      <stop offset="55%" stop-color="#111827"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="acc4e" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#f97316"/>
+      <stop offset="50%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#10b981"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="675" fill="url(#bg4e)"/>
+  <rect x="0" y="0" width="1200" height="6" fill="url(#acc4e)"/>
+
+  <!-- Header -->
+  <rect x="32" y="20" width="370" height="28" rx="14" fill="#1e1b4b" stroke="#6366f1" stroke-width="1.2"/>
+  <text x="48" y="39" fill="#c7d2fe" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700">AI SOLUTION ARCHITECT PLAYBOOK · 2026-11-08 ROUND 4</text>
+  <text x="420" y="39" fill="#94a3b8" font-family="monospace" font-size="12">Provenance: measured (n=200/n=50) · synthetic (36 fixtures) · anonymized_reported</text>
+
+  <text x="32" y="76" fill="#f8fafc" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="800">Coding Agent Sandboxing: Standard Docker vs. gVisor vs. Firecracker MicroVM vs. Hardware TEE</text>
+  <text x="32" y="102" fill="#cbd5e1" font-family="system-ui, -apple-system, sans-serif" font-size="13.5">Golden Rule: Never run LLM-generated code in shared-kernel Docker; enforce Zero Secrets Inside Sandbox + Broker Token Injection + IMDS Blackhole</text>
+
+  <!-- Left Box: Why Standard Docker Fails -->
+  <rect x="32" y="122" width="555" height="240" rx="12" fill="#1f1218" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="52" y="150" fill="#fca5a5" font-family="system-ui, -apple-system, sans-serif" font-size="15.5" font-weight="700">❌ Breach Path: How One Malicious conftest.py Breaks Standard Docker</text>
+
+  <rect x="52" y="166" width="515" height="54" rx="8" fill="#2d161e" stroke="#f87171" stroke-width="1"/>
+  <text x="66" y="186" fill="#fecaca" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700">1. Zero Kernel Exploit Needed: Env Secret Theft &amp; Mount Escape (BRK-17)</text>
+  <text x="66" y="206" fill="#e2e8f0" font-family="system-ui, -apple-system, sans-serif" font-size="12">Reads GITHUB_TOKEN from os.environ during pytest and overwrites ../../ or .github/workflows/*</text>
+
+  <rect x="52" y="230" width="515" height="54" rx="8" fill="#2d161e" stroke="#f87171" stroke-width="1"/>
+  <text x="66" y="250" fill="#fecaca" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700">2. Cloud IMDS (169.254.169.254) SSRF Node IAM Credential Theft (BRK-18)</text>
+  <text x="66" y="270" fill="#e2e8f0" font-family="system-ui, -apple-system, sans-serif" font-size="12">Default bridge network allows HTTP GET to 169.254.169.254/latest/meta-data/iam/, hijacking node IAM</text>
+
+  <rect x="52" y="294" width="515" height="54" rx="8" fill="#2d161e" stroke="#f87171" stroke-width="1"/>
+  <text x="66" y="314" fill="#fecaca" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700">3. Shared Host Linux Kernel (~300+ Direct System Calls Exposed)</text>
+  <text x="66" y="334" fill="#e2e8f0" font-family="system-ui, -apple-system, sans-serif" font-size="12">runc containers share host vmlinuz; untrusted C/Python payloads directly hit io_uring / bpf syscalls</text>
+
+  <!-- Right Box: Zero-Secret Micro-Isolation Pattern -->
+  <rect x="613" y="122" width="555" height="240" rx="12" fill="#0d211d" stroke="#10b981" stroke-width="1.5"/>
+  <text x="633" y="150" fill="#6ee7b7" font-family="system-ui, -apple-system, sans-serif" font-size="15.5" font-weight="700">✅ Zero-Trust Pattern: gVisor / Firecracker + Zero-Secret Capability Broker</text>
+
+  <rect x="633" y="166" width="515" height="54" rx="8" fill="#112e28" stroke="#34d399" stroke-width="1"/>
+  <text x="647" y="186" fill="#a7f3d0" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700">Gate 1: Kernel Isolation (gVisor Sentry vs. Firecracker Guest Kernel)</text>
+  <text x="647" y="206" fill="#e2e8f0" font-family="system-ui, -apple-system, sans-serif" font-size="12">Use gVisor (runsc Go kernel) on standard K8s; use Firecracker MicroVMs on KVM / multi-tenant SaaS</text>
+
+  <rect x="633" y="230" width="515" height="54" rx="8" fill="#112e28" stroke="#34d399" stroke-width="1"/>
+  <text x="647" y="250" fill="#a7f3d0" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700">Gate 2: Zero Secrets Inside Sandbox + Out-of-Sandbox Token Injection</text>
+  <text x="647" y="270" fill="#e2e8f0" font-family="system-ui, -apple-system, sans-serif" font-size="12">Zero tokens in sandbox os.environ; external Broker verifies policy (measured p50=0.0078ms) &amp; injects OBO token</text>
+
+  <rect x="633" y="294" width="515" height="54" rx="8" fill="#112e28" stroke="#34d399" stroke-width="1"/>
+  <text x="647" y="314" fill="#a7f3d0" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700">Gate 3: Cloud IMDS Blackhole + Canonical Path Jail + Read-Only CI Files</text>
+  <text x="647" y="334" fill="#e2e8f0" font-family="system-ui, -apple-system, sans-serif" font-size="12">Hard-blocks 169.254.169.254 &amp; RFC1918 subnets; locks .github/workflows/* &amp; .git/hooks/* read-only</text>
+
+  <!-- Bottom Decision Matrix -->
+  <rect x="32" y="380" width="1136" height="195" rx="12" fill="#1e293b" stroke="#475569" stroke-width="1.2"/>
+  <text x="52" y="408" fill="#f8fafc" font-family="system-ui, -apple-system, sans-serif" font-size="15.5" font-weight="700">📊 4-Tier Sandbox Selection Matrix &amp; Calibrated Provenance (36 Synthetic Fixtures · 137 Pytest Assertions)</text>
+
+  <rect x="52" y="420" width="1096" height="28" rx="4" fill="#0f172a"/>
+  <text x="64" y="439" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700">Isolation Tier</text>
+  <text x="285" y="439" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700">Target Workload Scenario</text>
+  <text x="540" y="439" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700">Kernel Isolation Boundary</text>
+  <text x="775" y="439" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700">Fixture ASR (synthetic)</text>
+  <text x="935" y="439" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700">Startup / Broker Latency</text>
+
+  <!-- Row 1 -->
+  <text x="64" y="468" fill="#fca5a5" font-family="system-ui, -apple-system, sans-serif" font-size="12.5" font-weight="600">L1 Standard Docker + Env Keys</text>
+  <text x="285" y="468" fill="#cbd5e1" font-family="system-ui, -apple-system, sans-serif" font-size="12">Fixed pre-built internal binaries only</text>
+  <text x="540" y="468" fill="#fca5a5" font-family="system-ui, -apple-system, sans-serif" font-size="12">Shared Host Linux Kernel (~300 Syscalls)</text>
+  <text x="775" y="468" fill="#f87171" font-family="monospace" font-size="12.5" font-weight="700">75.0% (IMDS/Mount Breach)</text>
+  <text x="935" y="468" fill="#cbd5e1" font-family="monospace" font-size="11.5">~30-80ms (anonymized_reported)</text>
+
+  <!-- Row 2 -->
+  <text x="64" y="498" fill="#93c5fd" font-family="system-ui, -apple-system, sans-serif" font-size="12.5" font-weight="600">L2 gVisor (runsc) + Zero-Secret Broker</text>
+  <text x="285" y="498" fill="#cbd5e1" font-family="system-ui, -apple-system, sans-serif" font-size="12">Standard K8s (no KVM) internal Coding Agent</text>
+  <text x="540" y="498" fill="#93c5fd" font-family="system-ui, -apple-system, sans-serif" font-size="12">User-space Go Sentry syscall interception</text>
+  <text x="775" y="498" fill="#34d399" font-family="monospace" font-size="12.5" font-weight="700">0.0% (36/36 Blocked)</text>
+  <text x="935" y="498" fill="#6ee7b7" font-family="monospace" font-size="11.5">Gate p50=0.0078ms (measured)</text>
+
+  <!-- Row 3 -->
+  <text x="64" y="528" fill="#6ee7b7" font-family="system-ui, -apple-system, sans-serif" font-size="12.5" font-weight="700">L3 Firecracker MicroVM + Broker</text>
+  <text x="285" y="528" fill="#f8fafc" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600">Untrusted OSS PRs / Multi-Tenant Code Exec</text>
+  <text x="540" y="528" fill="#6ee7b7" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600">KVM Guest Kernel + Ephemeral VM Destroy</text>
+  <text x="775" y="528" fill="#34d399" font-family="monospace" font-size="12.5" font-weight="700">0.0% (100% Benign Pass)</text>
+  <text x="935" y="528" fill="#6ee7b7" font-family="monospace" font-size="11.5">WAL p50=8.07ms (measured)</text>
+
+  <!-- Row 4 -->
+  <text x="64" y="556" fill="#c4b5fd" font-family="system-ui, -apple-system, sans-serif" font-size="12.5" font-weight="700">L4 Hardware TEE (TDX / SEV-SNP)</text>
+  <text x="285" y="556" fill="#cbd5e1" font-family="system-ui, -apple-system, sans-serif" font-size="12">Financial Treasury Signing / Cleanrooms</text>
+  <text x="540" y="556" fill="#c4b5fd" font-family="system-ui, -apple-system, sans-serif" font-size="12">CPU RAM Encryption + Remote Attestation</text>
+  <text x="775" y="556" fill="#34d399" font-family="monospace" font-size="12.5" font-weight="700">0.0% ($6B Drain Guard)</text>
+  <text x="935" y="556" fill="#cbd5e1" font-family="monospace" font-size="11.5">~200-500ms (anonymized_reported)</text>
+
+  <!-- Footer -->
+  <rect x="32" y="590" width="1136" height="62" rx="10" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+  <text x="52" y="615" fill="#fde047" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700">🛠️ Production Checklist: [1] Enforce gVisor/MicroVM for code exec [2] Zero secrets in os.environ [3] Block 169.254.169.254 [4] Lock .github/workflows read-only</text>
+  <text x="52" y="638" fill="#94a3b8" font-family="monospace" font-size="11.5">Repo: github.com/turbo998/ai-security-lab ｜ FAQ: research/offensive-defensive/agent-sandbox-docker-gvisor-microvm-selection-faq.en.md ｜ live_kvm_escape: not_measured</text>
+</svg>
