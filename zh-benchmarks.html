@@ -583,7 +583,25 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
         <a class="pub-arrow" href="workshops/faf-vs-agent-forge/test-report-cards.zh-CN.html" aria-label="打开三方竞技场 7-Card 报告">→</a>
       </article>
 
-      <!-- INFRA ROUNDS 3-10: DATACENTER COOLING & POWER, GPU SHARING & ISOLATION, SPECULATIVE DECODING, LONG-CONTEXT, FAULT RECOVERY, ROCEV2 LOAD BALANCING, CHECKPOINT & KV OFFLOAD -->
+      <!-- INFRA ROUNDS 3-11: RLHF/GRPO POST-TRAINING, DATACENTER COOLING & POWER, GPU SHARING & ISOLATION, SPECULATIVE DECODING, LONG-CONTEXT, FAULT RECOVERY, ROCEV2 LOAD BALANCING, CHECKPOINT & KV OFFLOAD -->
+      <article class="pub" data-category="harness-infra">
+        <div>
+          <span class="pub-tag report">算力底座 · 架构选型 FAQ</span>
+          <div class="pub-date">2026-11-08 · Round 11 RLHF / GRPO 后训练</div>
+        </div>
+        <div class="pub-main">
+          <h3><a href="workshops/benchmarks/rlhf-post-training-infra-selection-cards.html" target="_blank" rel="noopener">大模型 RLHF / GRPO 后训练采样与权重同步架构选型（`原生 FSDP 采样` vs `Ray 静态双池分离` vs `HybridEngine 零拷贝 3D 重分片` vs `异步 Partial-Rollout 流式管线`）</a></h3>
+          <p>对标 `ib-vs-ethernet-roce-selection-faq.md` 标准六段式架构师实战指南与 7-Card 4:5 视觉报告（<code>synthetic</code> 单步耗时与长尾气泡解析模型 + <code>anonymized_reported</code> 论文基准，<code>independently_reproduced=false</code>）：在 <code>64 &times; NVIDIA H100 80GB SXM</code> 运行 <code>70B GRPO</code>（<code>512 prompts &times; G=8 = 4,096 条轨迹/步</code>，P99 Long-CoT 尾链 <code>24,576 tokens</code>）下，<strong>Tier 3 `HybridEngine` 同卡共置（verl / HybridFlow 零拷贝 3D 重分片 + `cuMemUnmap`）</strong>将单步耗时压至 <code>158.2 s/step</code>（<code>3.87x</code> 提速，重分片 <code>3.2 s</code>，<code>44.5% MFU</code>，千步成本 <code>$7,030.40</code>）；<strong>Tier 4 异步 `Partial-Rollout` 流式管线（AReaL / StreamRL / Kimi k1.5 KV 续写 + 有界陈旧度 &tau; &le; 2）</strong>将 24K 长尾气泡从 <code>52.0%</code> 削平至 <code>8.5%</code>，达 <code>96.4 s/step</code> 与 <code>174,037.5 tok/s</code>（<code>6.35x</code> vs Tier 1，<code>1.64x</code> vs Tier 3，<code>73.0% MFU</code>），千步成本降至 <code>$4,284.80 (-84.2%)</code>。</p>
+          <div class="pub-meta">
+            <span><a href="workshops/benchmarks/rlhf-post-training-infra-selection-cards.html" target="_blank" rel="noopener"><b>🃏 7-Card 4:5 视觉报告</b></a></span>
+            <span><a href="https://github.com/turbo998/ai-infra-research/blob/main/docs/components/rlhf-post-training-infra-selection-faq.md" target="_blank" rel="noopener"><b>📘 六段式 FAQ 指南 (中/英)</b></a></span>
+            <span><a href="workshops/benchmarks/llm-inference-engine-pd-sizer.html#rlhf-post-training-sizer" target="_blank" rel="noopener"><b>🧭 交互式 RLHF / GRPO 计算器</b></a></span>
+            <span><a href="assets/rlhf-post-training-infra-selection-faq-summary.svg" target="_blank" rel="noopener"><b>🖼️ 一图流总结 SVG</b></a></span>
+          </div>
+        </div>
+        <a class="pub-arrow" href="workshops/benchmarks/rlhf-post-training-infra-selection-cards.html" target="_blank" rel="noopener" aria-label="打开 RLHF / GRPO 后训练架构 7-Card 报告">→</a>
+      </article>
+
       <article class="pub" data-category="harness-infra">
         <div>
           <span class="pub-tag report">算力底座 · 架构选型 FAQ</span>

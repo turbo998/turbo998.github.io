@@ -211,6 +211,42 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r9File),'utf8');
       assert.ok(txt.includes('0.025')&&txt.includes('0.0005')&&txt.includes('0.012')&&txt.includes('0.003')&&txt.includes('0.0003')&&txt.includes('3,267.00')&&txt.includes('237.60')&&txt.includes('3,029.40')&&txt.includes('not_measured'),r9File+': contains exact R9 input/output parameters and API-only scope');
     }
+    // Round 10 closed-form mathematical assertion (CLAIM-R10-02: 25 videos = 500 shots/mo [300 deterministic + 200 generative -> 100 shared sets], $3/1M VLM in, $15/1M VLM out counted once, $0.50/diffusion call, API-only)
+    const r10Shots=25*20;
+    assert.equal(r10Shots,500,'R10 total shots/mo');
+    const r10PathAVlmIn=500*(0.040*3.00);
+    const r10PathAVlmOut=500*(0.002*15.00);
+    const r10PathADiff=(500*3)*0.50;
+    assert.equal(r10PathAVlmIn.toFixed(2),'60.00','R10 Path A VLM input cost');
+    assert.equal(r10PathAVlmOut.toFixed(2),'15.00','R10 Path A VLM output cost (counted once)');
+    assert.equal((r10PathAVlmIn+r10PathAVlmOut).toFixed(2),'75.00','R10 Path A VLM subtotal');
+    assert.equal(r10PathADiff.toFixed(2),'750.00','R10 Path A diffusion cost');
+    assert.equal((r10PathAVlmIn+r10PathAVlmOut+r10PathADiff).toFixed(2),'825.00','R10 Path A monthly API total');
+    const r10PathBVlmIn=500*(0.020*3.00);
+    const r10PathBVlmOut=500*(0.001*15.00);
+    const r10PathBDiff=(350*2)*0.50;
+    assert.equal(r10PathBVlmIn.toFixed(2),'30.00','R10 Path B VLM input cost');
+    assert.equal(r10PathBVlmOut.toFixed(2),'7.50','R10 Path B VLM output cost (counted once)');
+    assert.equal((r10PathBVlmIn+r10PathBVlmOut).toFixed(2),'37.50','R10 Path B VLM subtotal');
+    assert.equal(r10PathBDiff.toFixed(2),'350.00','R10 Path B diffusion cost');
+    assert.equal((r10PathBVlmIn+r10PathBVlmOut+r10PathBDiff).toFixed(2),'387.50','R10 Path B monthly API total');
+    const r10PathCVlmIn=150*(0.015*3.00);
+    const r10PathCVlmOut=150*(0.001*15.00);
+    const r10PathCDiff=(100*1.5)*0.50;
+    assert.equal(r10PathCVlmIn.toFixed(2),'6.75','R10 Path C VLM input cost');
+    assert.equal(r10PathCVlmOut.toFixed(2),'2.25','R10 Path C VLM output cost (counted once)');
+    assert.equal((r10PathCVlmIn+r10PathCVlmOut).toFixed(2),'9.00','R10 Path C VLM subtotal');
+    assert.equal(r10PathCDiff.toFixed(2),'75.00','R10 Path C diffusion cost');
+    assert.equal((r10PathCVlmIn+r10PathCVlmOut+r10PathCDiff).toFixed(2),'84.00','R10 Path C monthly API total');
+    assert.equal((825.00-84.00).toFixed(2),'741.00','R10 monthly API savings vs Path A');
+    assert.equal(((825.00-84.00)*12).toFixed(2),'8892.00','R10 annual API savings vs Path A');
+    assert.equal(((825.00-84.00)/825.00*100).toFixed(2),'89.82','R10 pct API savings vs Path A');
+    assert.equal((60.0-10.0).toFixed(1),'50.0','R10 triage hours saved vs Path A');
+    assert.equal(((60.0-10.0)/60.0*100).toFixed(2),'83.33','R10 pct triage hours saved vs Path A');
+    for(const r10File of ['workshops/github-trending-radar/docs/rea-video-shot-forensics-vs-diffusion-remake-selection-faq.md','workshops/github-trending-radar/docs/rea-video-shot-forensics-vs-diffusion-remake-selection-faq.en.md','assets/github-ai-radar-2026-11-08-r10-rea-video-forensics.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-08-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r10File),'utf8');
+      assert.ok(txt.includes('825.00')&&txt.includes('387.50')&&txt.includes('84.00')&&txt.includes('741.00')&&txt.includes('89.82%')&&txt.includes('not_measured'),r10File+': contains exact R10 closed-form parameters and API-only scope');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
