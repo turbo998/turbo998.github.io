@@ -16,7 +16,7 @@ function classifyPath(value, fallback = 'general') {
     if (tracks.some(([track]) => track === id)) return id;
   }
   if (/azure-sa-skills|copilot-hve-engineering-workshop/.test(source)) return 'sa-skills';
-  if (/ai-infra-(?:architect-workbench|phase179)|deepinfer|e2b-nomad|alibaba-cloud-ai-infra|ai-infra-research/.test(source)) return 'infra';
+  if (/ai-infra-(?:architect-workbench|phase179)|llm-inference-engine-pd|deepinfer|e2b-nomad|alibaba-cloud-ai-infra|ai-infra-research/.test(source)) return 'infra';
   // The playbook is the cross-runtime architectural guide, not a capacity simulator.
   if (/workshops\/azure-agent-infra\/index(?:\.en)?\.html$/.test(source)) return 'infra';
   if (/azure-infra-lab|workshops\/(?:azure-agent-infra|data-lab|azure-vm-modernization|fabcon-sqlcon-2026)(?:\/|$)|docs\/azure-agent-infra\/assets\/(?:04|05)-/.test(source)) return 'data-infra';
