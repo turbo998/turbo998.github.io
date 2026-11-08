@@ -1,0 +1,244 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Editable scene compilation and transactional keyframes",
+  "topic_zh": "可编辑场景编译与原子关键帧",
+  "slug": "keyframe-compiler-bench",
+  "timestamp": "2026-11-08T19:28:26.232Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Local scene validation, exact keyframe querying and Node CPU lookup. No Autograph MCP execution, model inference, physical motion certification or display latency measured.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "156.0.8078.80",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "lookup-equivalence-64",
+      "passed": true,
+      "detail": "64 keys per track yield identical linear and binary results"
+    },
+    {
+      "name": "lookup-equivalence-256",
+      "passed": true,
+      "detail": "256 keys per track yield identical linear and binary results"
+    },
+    {
+      "name": "lookup-equivalence-2048",
+      "passed": true,
+      "detail": "2048 keys per track yield identical linear and binary results"
+    },
+    {
+      "name": "bench-inventory",
+      "passed": true,
+      "detail": "71 purposeful motion-bench solids"
+    },
+    {
+      "name": "local-track-edit",
+      "passed": true,
+      "detail": "editing A key at 4s changes A while B and C remain identical"
+    },
+    {
+      "name": "atomic-rejection",
+      "passed": true,
+      "detail": "invalid duplicate-time edit leaves the last valid scene unchanged"
+    },
+    {
+      "name": "seek-reversal",
+      "passed": true,
+      "detail": "7 timestamps retain exact transforms under reverse visitation"
+    },
+    {
+      "name": "roundtrip-scene",
+      "passed": true,
+      "detail": "exported scene recompiles without losing track meaning"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px motion and JSON controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced-motion scene is still until explicit playback"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "64 keys/track × 3000 queries",
+      "count": 64,
+      "primary_ms": 0.9309999999999832,
+      "baseline_ms": 1.121500000000026,
+      "primary_samples_ms": [
+        4.83099999999996,
+        2.426599999999951,
+        1.8278999999999996,
+        0.9119000000000028,
+        0.9067999999999756,
+        0.9309999999999832,
+        0.8567999999999643
+      ],
+      "baseline_samples_ms": [
+        1.5395000000000323,
+        1.5720999999999776,
+        1.3476999999999748,
+        1.121500000000026,
+        0.8752000000000066,
+        0.8623000000000047,
+        0.8724000000000274
+      ]
+    },
+    {
+      "load": "256 keys/track × 3000 queries",
+      "count": 256,
+      "primary_ms": 1.0652000000000044,
+      "baseline_ms": 3.2072999999999183,
+      "primary_samples_ms": [
+        1.078200000000038,
+        1.0847000000001117,
+        1.1745999999999412,
+        1.0652000000000044,
+        1.061900000000037,
+        0.8894000000000233,
+        0.8919000000000779
+      ],
+      "baseline_samples_ms": [
+        3.8630000000000564,
+        3.1902999999999793,
+        3.2072999999999183,
+        3.207400000000007,
+        6.841399999999908,
+        2.143199999999979,
+        1.914700000000039
+      ]
+    },
+    {
+      "load": "2048 keys/track × 3000 queries",
+      "count": 2048,
+      "primary_ms": 1.574200000000019,
+      "baseline_ms": 25.444099999999935,
+      "primary_samples_ms": [
+        1.574200000000019,
+        1.5685000000000855,
+        1.6142999999999574,
+        1.5614000000000487,
+        1.647100000000023,
+        1.5559999999999263,
+        2.012200000000007
+      ],
+      "baseline_samples_ms": [
+        25.26769999999999,
+        25.56460000000004,
+        25.087699999999927,
+        25.444099999999935,
+        25.390899999999988,
+        27.064700000000016,
+        25.708900000000085
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/keyframe-compiler-bench/light-0.png",
+    "docs/evidence/keyframe-compiler-bench/light-4.png",
+    "docs/evidence/keyframe-compiler-bench/light-8.png",
+    "docs/evidence/keyframe-compiler-bench/dark-0.png",
+    "docs/evidence/keyframe-compiler-bench/dark-4.png",
+    "docs/evidence/keyframe-compiler-bench/dark-8.png",
+    "docs/evidence/keyframe-compiler-bench/mobile.png"
+  ],
+  "primary_label": "Binary lookup",
+  "baseline_label": "Linear scan",
+  "load_unit": "keys/track",
+  "timing_note": "Median of 7 Node CPU runs; each run performs 3000 scene queries. Both lookup algorithms produce identical positions. Rendering, model calls and display latency are excluded.",
+  "geometry": {
+    "parts": 71,
+    "tracks": 3
+  },
+  "protocol": {
+    "input": {
+      "track": "a",
+      "key_index": 1,
+      "position": -30
+    },
+    "output": {
+      "a": -30,
+      "b": 5.925925925925924,
+      "c": 0
+    },
+    "function": "editable source → complete validation → atomic scene commit → timestamp query → SVG transforms"
+  },
+  "robustness": [
+    {
+      "name": "Reverse keyframe visitation",
+      "original": 7,
+      "perturbed": 7,
+      "total": 7
+    }
+  ],
+  "good_fit": [
+    "Editable technical animation authoring",
+    "Transactional scene changes",
+    "Seekable motion explainers",
+    "Tool-intent contracts before MCP execution"
+  ],
+  "not_for": [
+    "Claims of Autograph software execution",
+    "Physical actuator control certification",
+    "AI-generated video quality scoring",
+    "Unvalidated opaque tool-action replay"
+  ],
+  "locale_zh": {
+    "lookup-equivalence-64": "查找等价 64",
+    "64 keys per track yield identical linear and binary results": "每轨 64 个关键帧，线性与二分结果完全相同",
+    "lookup-equivalence-256": "查找等价 256",
+    "256 keys per track yield identical linear and binary results": "每轨 256 个关键帧，线性与二分结果完全相同",
+    "lookup-equivalence-2048": "查找等价 2048",
+    "2048 keys per track yield identical linear and binary results": "每轨 2048 个关键帧，线性与二分结果完全相同",
+    "bench-inventory": "运动工作台部件",
+    "71 purposeful motion-bench solids": "71 个有明确用途的运动工作台实体",
+    "local-track-edit": "局部轨道编辑",
+    "editing A key at 4s changes A while B and C remain identical": "修改 A 的4秒关键帧，B 与 C 保持完全相同",
+    "atomic-rejection": "原子拒绝",
+    "invalid duplicate-time edit leaves the last valid scene unchanged": "无效重复时间编辑保留最后有效场景",
+    "seek-reversal": "拖拽与逆序",
+    "7 timestamps retain exact transforms under reverse visitation": "7 个时间戳在逆序访问后保持完全相同变换",
+    "roundtrip-scene": "场景往返",
+    "exported scene recompiles without losing track meaning": "导出的场景重新编译后保持轨道含义",
+    "mobile-layout": "手机布局",
+    "390px motion and JSON controls fit without horizontal overflow": "390px 运动与JSON编辑控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced-motion scene is still until explicit playback": "减少动态场景在显式播放前保持静止",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Binary lookup": "二分查找",
+    "Linear scan": "线性扫描",
+    "Median of 7 Node CPU runs; each run performs 3000 scene queries. Both lookup algorithms produce identical positions. Rendering, model calls and display latency are excluded.": "7 次 Node CPU 重复的中位数；每次执行3000次场景查询。两种算法给出相同位置，不包含渲染、模型调用或屏幕延迟。",
+    "Reverse keyframe visitation": "逆序访问关键帧",
+    "Editable technical animation authoring": "可编辑技术动画创作",
+    "Transactional scene changes": "原子场景修改",
+    "Seekable motion explainers": "可跳步运动讲解",
+    "Tool-intent contracts before MCP execution": "MCP 执行之前的工具意图契约",
+    "Claims of Autograph software execution": "声称已执行 Autograph 软件",
+    "Physical actuator control certification": "物理执行器控制认证",
+    "AI-generated video quality scoring": "AI 生成视频质量评分",
+    "Unvalidated opaque tool-action replay": "未校验的不可追溯动作重放",
+    "editable source → complete validation → atomic scene commit → timestamp query → SVG transforms": "可编辑源码 → 完整校验 → 原子提交 → 时间查询 → SVG变换"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/keyframe-compiler.test.ts",
+    "node scripts/benchmark-keyframes.mjs"
+  ]
+}
