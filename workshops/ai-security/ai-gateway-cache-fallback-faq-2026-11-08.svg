@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675">
+  <defs>
+    <linearGradient id="bg10" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#090d16"/>
+      <stop offset="55%" stop-color="#111827"/>
+      <stop offset="100%" stop-color="#1e1b4b"/>
+    </linearGradient>
+    <linearGradient id="red10" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#7f1d1d"/>
+      <stop offset="100%" stop-color="#450a0a"/>
+    </linearGradient>
+    <linearGradient id="green10" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#065f46"/>
+      <stop offset="100%" stop-color="#022c22"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="675" fill="url(#bg10)"/>
+
+  <!-- Header -->
+  <rect x="32" y="24" width="1136" height="92" rx="14" fill="#0f172a" stroke="#38bdf8" stroke-width="1.5"/>
+  <text x="54" y="54" fill="#38bdf8" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif" font-size="14" font-weight="700">AI SOLUTION ARCHITECT · 2026-11-08 ROUND 10 DEEP DIVE · TURBO998/AI-SECURITY-LAB</text>
+  <text x="54" y="84" fill="#f8fafc" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif" font-size="22" font-weight="800">企业级 AI 网关 Prompt Cache 跨租户侧信道与 429 降级越狱 vs. 租户 HMAC 缓存 + 策略不变量网关</text>
+  <text x="54" y="106" fill="#94a3b8" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif" font-size="13">对标 ib-vs-ethernet-roce-selection-faq.md · 48 合成场景 162 断言 100% 通过 · 纯内存网关 P50=0.0248ms (n=200 全量原始样本封存)</text>
+
+  <!-- Left Column: 3 AI Gateway Attack Vectors -->
+  <rect x="32" y="132" width="554" height="360" rx="14" fill="#18181b" stroke="#ef4444" stroke-width="1.5"/>
+  <rect x="48" y="148" width="522" height="40" rx="8" fill="url(#red10)"/>
+  <text x="64" y="174" fill="#fecaca" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif" font-size="16" font-weight="700">❌ 传统 AI 网关三大隐蔽失守路径（合成夹具 100% 沦陷）</text>
+
+  <rect x="48" y="202" width="522" height="84" rx="10" fill="#27272a" stroke="#7f1d1d" stroke-width="1"/>
+  <text x="64" y="226" fill="#fca5a5" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif" font-size="15" font-weight="700">1. 全局 KV-Cache 时延侧信道 (Prompt Peek) 与语义缓存串味</text>
+  <text x="64" y="248" fill="#e4e4e7" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif" font-size="12.5">• 共享 vLLM/SGLang 前缀池：命中 TTFT 14ms vs 未命中 180ms，二分法逐词猜出邻租户并购底牌</text>
+  <text x="64" y="268" fill="#e4e4e7" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif" font-size="12.5">• 全局 Semantic Cache：余弦相似度 &gt;0.92 直接把租户 A 的 restricted-budget 返回给租户 B</text>
+
+  <rect x="48" y="298" width="522" height="84" rx="10" fill="#27272a" stroke="#7f1d1d" stroke-width="1"/>
+  <text x="64" y="322" fill="#fca5a5" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif" font-size="15" font-weight="700">2. HTTP 429 配额耗尽自动降级越狱 (Fallback Downgrade Attack)</text>
+  <text x="64" y="344" fill="#e4e4e7" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif" font-size="12.5">• 恶意供应商并发刷爆主力大模型 RPM/TPM 配额，触发网关自动切流至弱对齐备用 8B 小模型</text>
+  <text x="64" y="364" fill="#e4e4e7" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif" font-size="12.5">• 备用小模型被工单注入瞬间洗脑，外发机密缓存并触发 request_payment($920) 越权代付</text>
+
+  <rect x="48" y="394" width="522" height="84" rx="10" fill="#27272a" stroke="#7f1d1d" stroke-width="1"/>
+  <text x="64" y="418" fill="#fca5a5" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif" font-size="15" font-weight="700">3. 网关可观测性审计日志二阶投毒 (Observability Log Poisoning)</text>
+  <text x="64" y="440" fill="#e4e4e7" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif" font-size="12.5">• 失败请求中的恶意 Prompt 原样落盘网关遥测日志；夜间高权限 SecOps Agent 读日志排障时中招</text>
+  <text x="64" y="460" fill="#e4e4e7" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif" font-size="12.5">• 被劫持的运维 Agent 自动调用 update_trust("trust-registry") 篡改全局网关信任白名单</text>
+
+  <!-- Right Column: 3 Zero-Trust Gateway Controls -->
+  <rect x="614" y="132" width="554" height="360" rx="14" fill="#0f172a" stroke="#10b981" stroke-width="1.5"/>
+  <rect x="630" y="148" width="522" height="40" rx="8" fill="url(#green10)"/>
+  <text x="646" y="174" fill="#a7f3d0" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif" font-size="16" font-weight="700">✅ 零信任 AI 网关三道确定性防线（合成夹具 0.0% 突破）</text>
+
+  <rect x="630" y="202" width="522" height="84" rx="10" fill="#1e293b" stroke="#065f46" stroke-width="1"/>
+  <text x="646" y="226" fill="#6ee7b7" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif" font-size="15" font-weight="700">闸门 1：租户级 HMAC 命名空间缓存隔离 + record-owner 归属核验</text>
+  <text x="646" y="248" fill="#e2e8f0" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif" font-size="12.5">• Cache Key = HMAC_SHA256(tenant_key, tenant_id || role || tokens)，物理隔绝跨租户命中</text>
+  <text x="646" y="268" fill="#e2e8f0" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif" font-size="12.5">• 严禁受限数据进入全局 Semantic Cache；非 owner 读取立即阻断 (rule="record-owner")</text>
+
+  <rect x="630" y="298" width="522" height="84" rx="10" fill="#1e293b" stroke="#065f46" stroke-width="1"/>
+  <text x="646" y="322" fill="#6ee7b7" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif" font-size="15" font-weight="700">闸门 2：Fallback 安全等级锁定 (Safety-Tier Pinning) 与降级只读锁</text>
+  <text x="646" y="344" fill="#e2e8f0" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif" font-size="12.5">• 主模型 429 切流至低安全等级备用模型时，自动剥离写/支付工具并标记 taint="untrusted"</text>
+  <text x="646" y="364" fill="#e2e8f0" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif" font-size="12.5">• 遥测审计日志字段强制打上 source_trust="untrusted"，防止 SecOps 诊断 Agent 被二阶洗白</text>
+
+  <rect x="630" y="394" width="522" height="84" rx="10" fill="#1e293b" stroke="#065f46" stroke-width="1"/>
+  <text x="646" y="418" fill="#6ee7b7" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif" font-size="15" font-weight="700">闸门 3：模型无关的出口 Capability Broker (0.0248ms 纯内存裁决)</text>
+  <text x="646" y="440" fill="#e2e8f0" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif" font-size="12.5">• 无论上游路由到哪个模型，出口统一拦截 untrusted-write (禁改 trust-registry / 业务状态)</text>
+  <text x="646" y="460" fill="#e2e8f0" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif" font-size="12.5">• 确定性拦截 restricted-data-boundary (防缓存机密外流) 与 original-requester-payment</text>
+
+  <!-- Bottom KPI & Decision Bar -->
+  <rect x="32" y="508" width="1136" height="142" rx="14" fill="#0f172a" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="54" y="538" fill="#a5b4fc" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif" font-size="15" font-weight="700">📊 架构选型速查与封存基准实测指标 (Sealed Benchmark Evidence · Provenance Strictly Separated)</text>
+
+  <rect x="54" y="552" width="350" height="80" rx="10" fill="#1e293b"/>
+  <text x="70" y="576" fill="#38bdf8" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" font-weight="700">SYNTHETIC 合成夹具红蓝对抗 (48 场景 / 162 断言)</text>
+  <text x="70" y="602" fill="#f8fafc" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif" font-size="18" font-weight="800">ASR: 79.17% ➔ 0.00% (0% 误杀)</text>
+  <text x="70" y="622" fill="#94a3b8" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif" font-size="11.5">新增 BRK-29 (缓存/降级越狱) &amp; BRK-30 (日志投毒)</text>
+
+  <rect x="424" y="552" width="360" height="80" rx="10" fill="#1e293b"/>
+  <text x="440" y="576" fill="#10b981" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" font-weight="700">MEASURED 本机实测延迟 (n=200 &amp; n=50 全量样本)</text>
+  <text x="440" y="602" fill="#f8fafc" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif" font-size="18" font-weight="800">纯内存 P50=0.0248ms | WAL P50=7.21ms</text>
+  <text x="440" y="622" fill="#94a3b8" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif" font-size="11.5">run_id: tier1-n200-429d84e952d449bb (Win11 ARM64)</text>
+
+  <rect x="804" y="552" width="342" height="80" rx="10" fill="#1e293b"/>
+  <text x="820" y="576" fill="#f59e0b" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" font-weight="700">架构师三句话选型口诀</text>
+  <text x="820" y="598" fill="#f8fafc" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif" font-size="12.5">1. 多租户 KV-Cache 必加 HMAC(tenant_id) 盐</text>
+  <text x="820" y="616" fill="#f8fafc" font-family="Segoe UI, PingFang SC, Microsoft YaHei, sans-serif" font-size="12.5">2. 429 降级弱模型必削写权限 + 出口 Broker 兜底</text>
+</svg>
