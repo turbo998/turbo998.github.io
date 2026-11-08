@@ -277,6 +277,32 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r11File),'utf8');
       assert.ok(txt.includes('61.20')&&txt.includes('27.00')&&txt.includes('3.96')&&txt.includes('57.24')&&txt.includes('93.53%')&&txt.includes('136.00 MB')&&txt.includes('not_measured'),r11File+': contains exact R11 closed-form parameters and API-only scope');
     }
+    // Round 12 closed-form mathematical assertion (CLAIM-R12-02: 40 diagrams/mo, $3/1M in, $15/1M out counted once, API-only)
+    const r12PathAIn=240*(0.025*3.00);
+    const r12PathAOut=240*(0.008*15.00);
+    assert.equal(r12PathAIn.toFixed(2),'18.00','R12 Path A input cost');
+    assert.equal(r12PathAOut.toFixed(2),'28.80','R12 Path A output cost (counted once)');
+    assert.equal((r12PathAIn+r12PathAOut).toFixed(2),'46.80','R12 Path A monthly API total');
+    const r12PathBIn=120*(0.015*3.00);
+    const r12PathBOut=120*(0.004*15.00);
+    assert.equal(r12PathBIn.toFixed(2),'5.40','R12 Path B input cost');
+    assert.equal(r12PathBOut.toFixed(2),'7.20','R12 Path B output cost (counted once)');
+    assert.equal((r12PathBIn+r12PathBOut).toFixed(2),'12.60','R12 Path B monthly API total');
+    const r12PathCIn=60*(0.010*3.00);
+    const r12PathCOut=60*(0.002*15.00);
+    assert.equal(r12PathCIn.toFixed(2),'1.80','R12 Path C input cost');
+    assert.equal(r12PathCOut.toFixed(2),'1.80','R12 Path C output cost (counted once)');
+    assert.equal((r12PathCIn+r12PathCOut).toFixed(2),'3.60','R12 Path C monthly API total');
+    assert.equal((46.80-3.60).toFixed(2),'43.20','R12 monthly API savings vs Path A');
+    assert.equal(((46.80-3.60)*12).toFixed(2),'518.40','R12 annual API savings vs Path A');
+    assert.equal(((46.80-3.60)/46.80*100).toFixed(2),'92.31','R12 pct API savings vs Path A');
+    assert.equal((60.0-8.0).toFixed(1),'52.0','R12 SA formatting hours saved vs Path A');
+    assert.equal(((60.0-8.0)/60.0*100).toFixed(2),'86.67','R12 pct SA formatting hours saved vs Path A');
+    for(const r12File of ['workshops/github-trending-radar/docs/stack-diagram-official-icons-vs-mermaid-svg-selection-faq.md','workshops/github-trending-radar/docs/stack-diagram-official-icons-vs-mermaid-svg-selection-faq.en.md','assets/github-ai-radar-2026-11-08-r12-stack-diagram-icons.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-08-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r12File),'utf8');
+      assert.ok(txt.includes('46.80')&&txt.includes('12.60')&&txt.includes('3.60')&&txt.includes('43.20')&&txt.includes('92.31%')&&(txt.includes('132×100')||txt.includes('132w x 100h')||txt.includes('132w × 100h')),r12File+': contains exact R12 closed-form parameters');
+      assert.ok(txt.includes('not_measured'),r12File+': contains not_measured scope marker');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
