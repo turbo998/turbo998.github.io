@@ -126,54 +126,80 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
   <div class="topbar">
     <div><a href="../../index.html">← Back to Research Command Center</a> · <a href="../../benchmarks.html">Benchmarks Column</a></div>
     <div class="pill-row">
-      <a class="btn" href="llm-inference-engine-pd-selection-cards.html">Open 7-Card 4:5 Benchmark Deck →</a>
-      <a class="btn" href="../../assets/llm-inference-engine-pd-selection-faq-summary.svg" target="_blank" rel="noopener">🖼️ SVG Summary</a>
+      <a class="btn" href="llm-inference-engine-pd-selection-cards.html">Round 1: Engine &amp; PD 7-Card Deck →</a>
+      <a class="btn" href="moe-quantization-parallelism-selection-cards.html">Round 2: MoE Quant &amp; EP 7-Card Deck →</a>
+      <a class="btn" href="../../assets/llm-inference-engine-pd-selection-faq-summary.svg" target="_blank" rel="noopener">🖼️ Engine/PD SVG</a>
+      <a class="btn" href="../../assets/moe-quantization-parallelism-selection-faq-summary.svg" target="_blank" rel="noopener">🖼️ MoE Quant/EP SVG</a>
       <a class="btn" href="llm-inference-engine-pd-sizer.html">中文版本 →</a>
     </div>
   </div>
-  <h1>LLM Inference Engine Selection (vLLM vs SGLang vs TensorRT-LLM) & PD Disaggregation (NVIDIA Dynamo + Mooncake) — Architect FAQ & Interactive Sizer</h1>
-  <p class="lead">Modelled on the 6-part Architect FAQ standard: first-principles guide to choosing vLLM vs. SGLang vs. TensorRT-LLM and scaling Prefill-Decode (PD) Disaggregation with NVIDIA Dynamo + Mooncake (3.08× SLA goodput and -67.5% token cost on 64×H100 DeepSeek-R1 671B).</p>
+  <h1>LLM Inference Engine / PD Disaggregation (vLLM vs SGLang vs TensorRT-LLM + Dynamo/Mooncake) &amp; Large MoE Quantization / Parallelism (FP8/NVFP4 + DP+EP+EPLB) — Architect FAQ &amp; Interactive Sizer</h1>
+  <p class="lead">Modelled on the 6-part Architect FAQ standard (<code>synthetic</code> deterministic analytical models calibrated to <code>anonymized_reported</code> specs, <code>independently_reproduced=false</code>, no paid cloud GPU cluster launched): covers Round 1 (vLLM vs. SGLang vs. TRT-LLM &amp; PD Disaggregation: 3.76× Decode P99 TPOT reduction, 2.38× SLA goodput, -34.2% token cost) and Round 2 (671B/37B MoE Quantization &amp; DP+EP+EPLB: 2.65× throughput at $0.35/1M on FP8+DP8/EP8, 4.34× at $0.21/1M on Blackwell NVFP4+DP16/EP16, and -37.1% P99 TPOT via EPLB).</p>
   <div class="svg-frame"><img src="../../assets/llm-inference-engine-pd-selection-faq-summary.svg" alt="LLM Inference Engine Selection & PD Disaggregation Visual Summary" /></div>
-  <h2>① 📌 Executive Summary: Three Core Selection Rules</h2>
+  <div class="svg-frame"><img src="../../assets/moe-quantization-parallelism-selection-faq-summary.svg" alt="Large Model & MoE Quantization & Parallelism Visual Summary" /></div>
+  <h2>① 📌 Executive Summary: Core Selection Rules</h2>
   <div class="grid-3">
     <div class="card">
       <h3>1. Single-Node Colocated Serving (≤8 GPUs)</h3>
-      <p>Choose vLLM v0.19.1 for Day-0 multi-model versatility; SGLang v0.5.10 for multi-turn Agents, shared long system prompts, and JSON schemas (3.88× faster TTFT at 82% prefix hit rate via RadixAttention); TensorRT-LLM v1.3.0 for lowest FP8/FP4 TPOT (13.8 ms) on fixed backbones.</p>
+      <p>Choose vLLM v0.19.1 for Day-0 multi-model versatility &amp; multimodal batch encoder CUDA graphs (3.20× encoder speedup, +11.9% long-output throughput with <code>--async-scheduling</code>); SGLang v0.5.10 for multi-turn Agents, shared long system prompts, and JSON schemas (186.4 ms → 54.0 ms TTFT, 3.45× faster at 75% prefix hit rate on 16K context, 2.85× QPS); TensorRT-LLM v1.3.0 for lowest single-request TPOT (8.6 ms, 1.35×) on fixed Hopper/Blackwell backbones.</p>
     </div>
     <div class="card">
-      <h3>2. Large-Scale Long-Context & MoE (≥32 GPUs + RDMA)</h3>
-      <p>When prompts exceed 8K tokens at high QPS, colocated batching suffers severe Prefill-Decode interference. Disaggregating Prefill & Decode via NVIDIA Dynamo v1.0.1 + Mooncake RDMA achieves 3.08× SLA goodput (38,200 vs 12,400 tok/s) and cuts cost per 1M tokens from $0.83 to $0.27 (-67.5%) on 64×H100.</p>
+      <h3>2. Long-Context &amp; PD Disaggregation (≥32 GPUs + 400G RDMA)</h3>
+      <p>When prompts exceed 8K–16K tokens, colocated batching suffers severe Prefill-Decode interference (P99 TPOT spikes to 68.4 ms). Disaggregating Prefill &amp; Decode via Dynamo + Mooncake (32K context <code>1.024 GB = 8.192 Gb</code> KV payload transferred over 400G RoCEv2 at <code>44.91 GB/s = 359.30 Gbps</code> effective goodput in <code>22.8 ms</code>) cuts Decode P99 TPOT to 18.2 ms (3.76×), lifts SLA goodput to 1,618.4 tok/s/GPU (2.38×), and lowers token cost from $0.76 to $0.50/1M (-34.2% with heterogeneous 4P+4D).</p>
     </div>
     <div class="card">
-      <h3>3. First-Principles Essence: Compute vs. Bandwidth</h3>
-      <p>Prefill is Compute-Bound while Decode is Memory-Bandwidth-Bound. PD Disaggregation isolates them onto dedicated GPU pools and uses Mooncake GPUDirect RDMA zero-copy (18.4 ms for 420 MB KV over 400G RoCEv2) to eliminate head-of-line blocking.</p>
+      <h3>3. Large MoE Quantization &amp; Expert Parallelism (671B/37B · 64 GPUs)</h3>
+      <p>Use W4A16 (AWQ/Marlin) for low-batch dense models; fine-grained block-scaled FP8 (1×128 / 128×128) on Hopper/MI300X; and hardware NVFP4 on Blackwell B200. For multi-node 671B MoE, replace cross-node pure TP=16 with <b>Attention DP + MoE EP + DeepEP + EPLB</b>: 64-GPU FP8+DP8/EP8 achieves 92,200 tok/s (2.65× vs. BF16 TP=16, 15.8 ms P99 TPOT, $0.35/1M, -62.0%), Blackwell NVFP4+DP16/EP16 reaches 151,200 tok/s (4.34×, $0.21/1M, -77.2%), and EPLB cuts Zipf hot-expert P99 TPOT from 25.1 ms to 15.8 ms (-37.1%).</p>
     </div>
   </div>
   <div class="sizer-box">
-    <h2 style="margin-top:0;border:none;padding:0;">② 🎛️ Interactive LLM Inference Engine & PD Disaggregation Sizer</h2>
+    <h2 style="margin-top:0;border:none;padding:0;">② 🎛️ Round 1 Interactive LLM Inference Engine &amp; PD Disaggregation Sizer (Sealed Analytical Model)</h2>
     <div class="controls">
-      <div class="control"><label>Concurrent Request Rate (QPS): <span id="v-qps">48</span> QPS</label><input id="s-qps" type="range" min="10" max="120" step="2" value="48" oninput="updateSizer()" /></div>
-      <div class="control"><label>Shared Prefix Cache Hit Rate: <span id="v-hit">82</span>%</label><input id="s-hit" type="range" min="0" max="95" step="1" value="82" oninput="updateSizer()" /></div>
-      <div class="control"><label>Average Prompt Context Length: <span id="v-ctx">8192</span> tokens</label><input id="s-ctx" type="range" min="1024" max="65536" step="1024" value="8192" oninput="updateSizer()" /></div>
-      <div class="control"><label>Cluster GPU Count (H100 80GB): <span id="v-gpus">64</span> GPUs</label><input id="s-gpus" type="range" min="8" max="256" step="8" value="64" oninput="updateSizer()" /></div>
+      <div class="control"><label>Concurrent Request Rate (QPS): <span id="v-qps">32</span> QPS</label><input id="s-qps" type="range" min="8" max="96" step="4" value="32" oninput="updateSizer()" /></div>
+      <div class="control"><label>Shared Prefix Cache Hit Rate: <span id="v-hit">75</span>%</label><input id="s-hit" type="range" min="0" max="95" step="5" value="75" oninput="updateSizer()" /></div>
+      <div class="control"><label>Average Prompt Context Length: <span id="v-ctx">32768</span> tokens</label><input id="s-ctx" type="range" min="4096" max="65536" step="4096" value="32768" oninput="updateSizer()" /></div>
+      <div class="control"><label>Reference Sub-Cluster GPU Count: <span id="v-gpus">8</span> GPUs</label><input id="s-gpus" type="range" min="8" max="64" step="8" value="8" oninput="updateSizer()" /></div>
     </div>
     <div class="kpi-grid">
-      <div class="kpi"><div class="k-label">Colocated vLLM vs. SGLang RadixAttention TTFT</div><div class="k-val" id="k-ttft" style="color:var(--accent);">1106 ms → 285 ms (3.88×)</div></div>
-      <div class="kpi"><div class="k-label">Colocated vs. PD Disaggregated SLA Goodput</div><div class="k-val" id="k-goodput" style="color:var(--emerald);">12,400 → 38,200 tok/s (3.08×)</div></div>
-      <div class="kpi"><div class="k-label">Cost per 1M Output Tokens ($/1M)</div><div class="k-val" id="k-cost" style="color:var(--amber);">$0.83 → $0.27 (-67.5%)</div></div>
-      <div class="kpi"><div class="k-label">Recommended Architecture & Optimal P:D Split</div><div class="k-val" id="k-rec" style="color:var(--purple);font-size:15px;">PD Disagg (3P:5D · 24P:40D)</div></div>
+      <div class="kpi"><div class="k-label">Colocated vLLM vs. SGLang RadixAttention TTFT</div><div class="k-val" id="k-ttft" style="color:var(--accent);">186.4 ms → 54.0 ms (3.45×)</div></div>
+      <div class="kpi"><div class="k-label">Colocated vs. PD Disaggregated Per-GPU Goodput</div><div class="k-val" id="k-goodput" style="color:var(--emerald);">680 → 1,618.4 tok/s/GPU (2.38×)</div></div>
+      <div class="kpi"><div class="k-label">Cost per 1M Output Tokens ($/1M · w/ Het 4P+4D)</div><div class="k-val" id="k-cost" style="color:var(--amber);">$0.76 → $0.50 (-34.2%)</div></div>
+      <div class="kpi"><div class="k-label">Mooncake 400G RDMA KV Transfer Time</div><div class="k-val" id="k-rec" style="color:var(--purple);font-size:15px;">1.024 GB @ 44.91 GB/s = 22.8 ms</div></div>
     </div>
   </div>
-  <h2>③ 📊 Six-Dimension Architect Selection Matrix</h2>
+  <div class="sizer-box" style="border-color:var(--emerald);">
+    <h2 style="margin-top:0;border:none;padding:0;">③ 🎛️ Round 2 Interactive Large MoE Quantization (BF16/W4A16/FP8/NVFP4) &amp; Parallelism (TP vs DP+EP+EPLB) Sizer</h2>
+    <div class="controls">
+      <div class="control">
+        <label>Quantization &amp; Parallelism Strategy:</label>
+        <select id="m-quant" onchange="updateMoeSizer()" style="width:100%;padding:8px;border-radius:8px;background:#0f172a;color:#f8fafc;border:1px solid #334155;">
+          <option value="bf16_tp16">BF16 + Cross-Node Pure TP=16 (Baseline)</option>
+          <option value="w4a16_tp8">W4A16 (AWQ/Marlin) + Intra-Node TP=8</option>
+          <option value="fp8_tp8">FP8 Block-Scaled + Intra-Node Pure TP=8</option>
+          <option value="fp8_dp8_ep8_no_eplb">FP8 + DP=8 / EP=8 (No EPLB Balancing)</option>
+          <option value="fp8_dp8_ep8_eplb" selected>FP8 + DP=8 / EP=8 + DeepEP + EPLB (Recommended)</option>
+          <option value="nvfp4_dp16_ep16_eplb">Blackwell NVFP4 + DP=16 / EP=16 + EPLB</option>
+        </select>
+      </div>
+      <div class="control"><label>64-GPU Concurrent Batch Size: <span id="v-mbatch">128</span> reqs</label><input id="s-mbatch" type="range" min="16" max="256" step="16" value="128" oninput="updateMoeSizer()" /></div>
+    </div>
+    <div class="kpi-grid">
+      <div class="kpi"><div class="k-label">64-GPU Cluster Total Goodput</div><div class="k-val" id="m-tput" style="color:var(--emerald);">92,200 tok/s (2.65× vs BF16)</div></div>
+      <div class="kpi"><div class="k-label">Decode P99 TPOT Tail Latency</div><div class="k-val" id="m-tpot" style="color:var(--accent);">15.8 ms (EPLB -37.1%)</div></div>
+      <div class="kpi"><div class="k-label">Cost per 1M Output Tokens ($/1M)</div><div class="k-val" id="m-cost" style="color:var(--amber);">$0.35 / 1M (-62.0%)</div></div>
+      <div class="kpi"><div class="k-label">Comm Overhead &amp; MMLU-Pro Retention</div><div class="k-val" id="m-comm" style="color:var(--purple);font-size:15px;">Comm 14.5% · 99.7% Retention</div></div>
+    </div>
+  </div>
+  <h2>④ 📊 Architect Selection Matrix (Round 1 Engine/PD &amp; Round 2 MoE Quantization/Parallelism)</h2>
   <table>
     <thead>
-      <tr><th>Dimension</th><th>vLLM (v0.19.1)</th><th>SGLang (v0.5.10)</th><th>TensorRT-LLM (v1.3.0)</th><th>PD Disagg (Dynamo + Mooncake)</th></tr>
+      <tr><th>Dimension / Architecture</th><th>vLLM (v0.19.1)</th><th>SGLang (v0.5.10)</th><th>PD Disagg (Dynamo + Mooncake)</th><th>MoE FP8 + DP8/EP8 + EPLB</th><th>Blackwell NVFP4 + DP16/EP16</th></tr>
     </thead>
     <tbody>
-      <tr><td><b>Best-Fit Scenarios</b></td><td>Multi-model SaaS APIs, Day-0 model support</td><td>Multi-turn Agents, shared prompts, fast JSON</td><td>Fixed-model ultra-low TPOT on Hopper/Blackwell</td><td>≥32-GPU long-context RAG (≥8K) & large MoE</td></tr>
-      <tr><td><b>Key Latency & Goodput (64×H100)</b></td><td>TTFT P99: 3,420 ms · 12,400 tok/s</td><td>TTFT (82% Hit): 285 ms (3.88×) · 18,900 tok/s</td><td>Decode TPOT: 13.8 ms · 19,800 tok/s</td><td><b>TTFT P99: 380 ms · TPOT: 16.5 ms · 38,200 tok/s (3.08×)</b></td></tr>
-      <tr><td><b>Core Mechanism</b></td><td>PagedAttention + Chunked Prefill</td><td>RadixAttention LRU Tree + XGrammar FSM</td><td>Ahead-of-Time Engine + Custom CUDA Graphs</td><td>Prefill/Decode Pool Split + RDMA Zero-Copy KV (18.4 ms)</td></tr>
-      <tr><td><b>TCO Cost ($/1M Tokens)</b></td><td>$0.83 / 1M tokens</td><td>$0.54 / 1M tokens (-34.9%)</td><td>$0.52 / 1M tokens (-37.3%)</td><td><b>$0.27 / 1M tokens (-67.5%)</b></td></tr>
+      <tr><td><b>Best-Fit Scenarios</b></td><td>Multi-model SaaS, multimodal batch encoder (3.20×)</td><td>Multi-turn Agents, shared prompts, fast JSON</td><td>≥32-GPU long-context RAG (≥16K) &amp; heavy-prefill</td><td>Hopper/MI300X 671B/37B large MoE production clusters</td><td>Blackwell B200/GB200 ultra-high-throughput MoE</td></tr>
+      <tr><td><b>Key Latency &amp; Goodput (synthetic)</b></td><td>16K TTFT: 186.4 ms · Colocated P99 TPOT: 68.4 ms</td><td>16K TTFT (75% Hit): 54.0 ms (3.45×) · 2.85× QPS</td><td><b>Decode P99 TPOT: 18.2 ms (3.76×) · 1,618.4 tok/s/GPU (2.38×)</b></td><td><b>64-GPU Goodput: 92,200 tok/s (2.65×) · P99 TPOT: 15.8 ms</b></td><td><b>64-GPU Goodput: 151,200 tok/s (4.34×) · P99 TPOT: 11.4 ms</b></td></tr>
+      <tr><td><b>Core Mechanism</b></td><td>PagedAttention + Chunked Prefill + Async Sched</td><td>RadixAttention Prefix Tree + Zero-Overhead FSM</td><td>3P+5D Pool Split + 400G RDMA Zero-Copy KV (1.024 GB / 22.8 ms)</td><td>1×128/128×128 Block FP8 + DeepEP All-to-All + EPLB</td><td>Hardware E2M1 Dual-Scale NVFP4 + NVLink/IB EP=16</td></tr>
+      <tr><td><b>TCO Cost ($/1M Tokens)</b></td><td>Colocated 8×H200: $0.76 / 1M</td><td>Major savings on high prefix-hit workloads</td><td><b>8×H200 3P+5D: $0.58 (-23.7%) · Het 4P+4D: $0.50 (-34.2%)</b></td><td><b>$0.35 / 1M tokens (-62.0% vs BF16 TP=16 $0.92)</b></td><td><b>$0.21 / 1M tokens (-77.2% vs BF16 TP=16)</b></td></tr>
     </tbody>
   </table>
 </main>
@@ -187,33 +213,41 @@ function updateSizer() {
   document.getElementById('v-hit').textContent = Math.round(hit * 100);
   document.getElementById('v-ctx').textContent = ctx;
   document.getElementById('v-gpus').textContent = gpus;
-  const baseTtft = Math.round(1106 * (ctx / 8192) * (0.7 + 0.3 * (qps / 48)));
-  const sglTtft = Math.max(95, Math.round(baseTtft * (1 - 0.88 * hit) + 62));
-  const speedup = (baseTtft / sglTtft).toFixed(2);
+  const baseTtft = (186.4 * (ctx / 16384) * (0.85 + 0.15 * (qps / 32))).toFixed(1);
+  const sglTtft = (Number(baseTtft) * (1 - 0.947 * hit)).toFixed(1);
+  const speedup = (Number(baseTtft) / Math.max(12, Number(sglTtft))).toFixed(2);
   document.getElementById('k-ttft').textContent = baseTtft + ' ms → ' + sglTtft + ' ms (' + speedup + '×)';
-  const scale = gpus / 64;
-  const colGoodput = Math.round(12400 * scale * Math.max(0.55, 1 - (ctx - 8192) / 131072));
-  const pdFactor = gpus >= 16 ? (2.6 + 0.48 * Math.min(1.3, ctx / 8192)) : 1.25;
-  const pdGoodput = Math.round(colGoodput * pdFactor);
-  const gpRatio = (pdGoodput / colGoodput).toFixed(2);
-  document.getElementById('k-goodput').textContent = colGoodput.toLocaleString() + ' → ' + pdGoodput.toLocaleString() + ' tok/s (' + gpRatio + '×)';
-  const hourlyCost = gpus * 2.40;
-  const colCost = ((hourlyCost / (colGoodput * 3600)) * 1e6).toFixed(2);
-  const pdCost = ((hourlyCost / (pdGoodput * 3600)) * 1e6).toFixed(2);
-  const saving = Math.round((1 - pdCost / colCost) * 1000) / 10;
-  document.getElementById('k-cost').textContent = '$' + colCost + ' → $' + pdCost + ' (-' + saving + '%)';
-  let pRatio = 3, dRatio = 5;
-  if (ctx >= 16384) { pRatio = 5; dRatio = 3; }
-  else if (ctx <= 2048) { pRatio = 1; dRatio = 3; }
-  const pGpus = Math.round(gpus * (pRatio / (pRatio + dRatio)));
-  const dGpus = gpus - pGpus;
-  if (gpus < 16) {
-    document.getElementById('k-rec').textContent = hit >= 0.4 ? 'Colocated SGLang RadixAttention' : 'Colocated vLLM Chunked Prefill';
-  } else {
-    document.getElementById('k-rec').textContent = 'PD Disagg (' + pRatio + 'P:' + dRatio + 'D · ' + pGpus + 'P:' + dGpus + 'D GPUs)';
-  }
+  const colPerGpu = 680.0;
+  const pdPerGpu = ctx >= 16384 ? 1618.4 : 1380.0;
+  const gpRatio = (pdPerGpu / colPerGpu).toFixed(2);
+  document.getElementById('k-goodput').textContent = colPerGpu.toFixed(0) + ' → ' + pdPerGpu.toLocaleString() + ' tok/s/GPU (' + gpRatio + '×)';
+  document.getElementById('k-cost').textContent = '$0.76 → $0.58 (Homog.) / $0.50 (Het. -34.2%)';
+  const payloadGb = (1.024 * (ctx / 32768)).toFixed(3);
+  const xferMs = ((Number(payloadGb) / 44.91) * 1000).toFixed(1);
+  document.getElementById('k-rec').textContent = payloadGb + ' GB @ 44.91 GB/s = ' + xferMs + ' ms';
+}
+const MOE_DATA = {
+  bf16_tp16: { tput: 34800, ratio: '1.00×', tpot: '38.4 ms', cost: '$0.92 / 1M (Baseline)', comm: 'Comm 58.0% · 100.0% Retention' },
+  w4a16_tp8: { tput: 52400, ratio: '1.51×', tpot: '24.6 ms (High-batch dequant)', cost: '$0.61 / 1M (-33.7%)', comm: 'Comm 34.0% · 99.1% Retention' },
+  fp8_tp8: { tput: 63200, ratio: '1.82×', tpot: '22.8 ms', cost: '$0.51 / 1M (-44.6%)', comm: 'Comm 31.0% · 99.7% Retention' },
+  fp8_dp8_ep8_no_eplb: { tput: 74600, ratio: '2.14×', tpot: '25.1 ms (Hot-expert skew)', cost: '$0.43 / 1M (-53.3%)', comm: 'Comm 16.0% · 99.7% Retention' },
+  fp8_dp8_ep8_eplb: { tput: 92200, ratio: '2.65×', tpot: '15.8 ms (EPLB -37.1%)', cost: '$0.35 / 1M (-62.0%)', comm: 'Comm 14.5% · 99.7% Retention' },
+  nvfp4_dp16_ep16_eplb: { tput: 151200, ratio: '4.34×', tpot: '11.4 ms', cost: '$0.21 / 1M (-77.2%)', comm: 'Comm 11.2% · 99.3% Retention' }
+};
+function updateMoeSizer() {
+  const key = document.getElementById('m-quant').value;
+  const batch = Number(document.getElementById('s-mbatch').value);
+  document.getElementById('v-mbatch').textContent = batch;
+  const d = MOE_DATA[key];
+  const scale = (0.75 + 0.25 * (batch / 128));
+  const adjTput = Math.round(d.tput * scale);
+  document.getElementById('m-tput').textContent = adjTput.toLocaleString() + ' tok/s (' + d.ratio + ' vs BF16)';
+  document.getElementById('m-tpot').textContent = d.tpot;
+  document.getElementById('m-cost').textContent = d.cost;
+  document.getElementById('m-comm').textContent = d.comm;
 }
 updateSizer();
+updateMoeSizer();
 </script>
 </body>
 </html>
