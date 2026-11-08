@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 760" width="1280" height="760">
+  <defs>
+    <linearGradient id="bg3e" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#060c1b"/>
+      <stop offset="50%" stop-color="#0d182d"/>
+      <stop offset="100%" stop-color="#172440"/>
+    </linearGradient>
+    <linearGradient id="red3e" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#450a0a"/>
+      <stop offset="100%" stop-color="#1f0812"/>
+    </linearGradient>
+    <linearGradient id="green3e" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#042f2e"/>
+      <stop offset="100%" stop-color="#081c29"/>
+    </linearGradient>
+    <linearGradient id="blue3e" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e1b4b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1280" height="760" fill="url(#bg3e)"/>
+
+  <!-- Header -->
+  <rect x="32" y="24" width="1216" height="86" rx="14" fill="#111d35" stroke="#3b82f6" stroke-width="1.5"/>
+  <rect x="48" y="38" width="268" height="24" rx="12" fill="#1e3a8a" stroke="#60a5fa"/>
+  <text x="182" y="54" fill="#e0f2fe" font-family="Segoe UI, sans-serif" font-size="11.5" font-weight="700" text-anchor="middle">2026-11-08 · ROUND 3 SELECTION FAQ</text>
+  <text x="332" y="55" fill="#f8fafc" font-family="Segoe UI, sans-serif" font-size="19.5" font-weight="800">Cross-Agent A2A Identity Spoofing &amp; OBO Token Downscoping vs. Shared Credentials</text>
+  <text x="48" y="90" fill="#94a3b8" font-family="Segoe UI, sans-serif" font-size="13">Modeled on ib-vs-ethernet-roce-selection-faq.md · Shared-Key Confused Deputy, Token Passthrough, Agent Card JWS Spoofing (CVE-2025-68143) &amp; RFC 8693 Scope Intersection</text>
+
+  <!-- Row 1 Left: Why Shared Keys & Token Passthrough Fail -->
+  <rect x="32" y="128" width="596" height="270" rx="14" fill="url(#red3e)" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="52" y="158" fill="#fca5a5" font-family="Segoe UI, sans-serif" font-size="15.5" font-weight="800">❌ Three Multi-Agent Identity Anti-Patterns (Why Classic RBAC Fails)</text>
+
+  <rect x="52" y="172" width="556" height="64" rx="10" fill="#2a0a12" stroke="#f87171" stroke-width="1"/>
+  <text x="66" y="194" fill="#fecaca" font-family="Segoe UI, sans-serif" font-size="13" font-weight="700">1. Shared Static API Key / Service Principal (Confused Deputy Storm · SHADOW-AGENT-15)</text>
+  <text x="66" y="214" fill="#cbd5e1" font-family="Segoe UI, sans-serif" font-size="12">• Procurement &amp; Finance Agents share one ERP Master Key; a poisoned vendor invoice wires funds</text>
+  <text x="66" y="230" fill="#fca5a5" font-family="Segoe UI, sans-serif" font-size="11.5">• Forensic Blindness: Backend logs show only the shared service principal, erasing requester lineage</text>
+
+  <rect x="52" y="244" width="556" height="64" rx="10" fill="#2a0a12" stroke="#f87171" stroke-width="1"/>
+  <text x="66" y="266" fill="#fecaca" font-family="Segoe UI, sans-serif" font-size="13" font-weight="700">2. Raw User Bearer Token Passthrough (Lateral Escalation · CVE-2025-49596)</text>
+  <text x="66" y="286" fill="#cbd5e1" font-family="Segoe UI, sans-serif" font-size="12">• Forwarding an executive's unscoped token to a charting sub-agent lets it raid Git &amp; payroll APIs</text>
+  <text x="66" y="302" fill="#fca5a5" font-family="Segoe UI, sans-serif" font-size="11.5">• Root Cause: Token lacks RFC 8707 single-URI audience (aud) lock and per-hop scope intersection</text>
+
+  <rect x="52" y="316" width="556" height="66" rx="10" fill="#2a0a12" stroke="#f87171" stroke-width="1"/>
+  <text x="66" y="338" fill="#fecaca" font-family="Segoe UI, sans-serif" font-size="13" font-weight="700">3. Unsigned A2A Agent Card Spoofing (/.well-known/agent.json · CVE-2025-68143)</text>
+  <text x="66" y="358" fill="#cbd5e1" font-family="Segoe UI, sans-serif" font-size="12">• Rogue node advertises unsigned card as "finance-compliance-verifier" to siphon restricted-budget</text>
+  <text x="66" y="374" fill="#fca5a5" font-family="Segoe UI, sans-serif" font-size="11.5">• Measured Impact: Unprotected baseline suffers 75.0% Attack Success Rate (ASR)</text>
+
+  <!-- Row 1 Right: RFC 8693 OBO + JWS + Intersection Architecture -->
+  <rect x="652" y="128" width="596" height="270" rx="14" fill="url(#green3e)" stroke="#10b981" stroke-width="1.5"/>
+  <text x="672" y="158" fill="#6ee7b7" font-family="Segoe UI, sans-serif" font-size="15.5" font-weight="800">✅ Zero-Trust Defense: RFC 8693 OBO Scope Intersection + Dual Attribution</text>
+
+  <rect x="672" y="172" width="556" height="64" rx="10" fill="#062825" stroke="#34d399" stroke-width="1"/>
+  <text x="686" y="194" fill="#a7f3d0" font-family="Segoe UI, sans-serif" font-size="13" font-weight="700">Gate 1: Dual Attribution JWT (sub Human Initiator + Nested act.sub Agent Chain)</text>
+  <text x="686" y="214" fill="#cbd5e1" font-family="Segoe UI, sans-serif" font-size="12">• Exchanges short-lived OBO token (TTL ≤ 5m) per hop, cryptographically nesting sub &amp; act.sub</text>
+  <text x="686" y="230" fill="#6ee7b7" font-family="Segoe UI, sans-serif" font-size="11.5">• Audit receipts record both the initiating human and exact agent delegation chain</text>
+
+  <rect x="672" y="244" width="556" height="64" rx="10" fill="#062825" stroke="#34d399" stroke-width="1"/>
+  <text x="686" y="266" fill="#a7f3d0" font-family="Segoe UI, sans-serif" font-size="13" font-weight="700">Gate 2: Permission Intersection Law (Effective = Requester ∩ Orchestrator ∩ Sub-Agent)</text>
+  <text x="686" y="286" fill="#cbd5e1" font-family="Segoe UI, sans-serif" font-size="12">• Even if Finance Agent holds payment.write, if original requester (supplier) lacks it, scope = ∅</text>
+  <text x="686" y="302" fill="#6ee7b7" font-family="Segoe UI, sans-serif" font-size="11.5">• Enforced by broker.py original-requester-payment rule in 0.8ms (100% deterministic block)</text>
+
+  <rect x="672" y="316" width="556" height="66" rx="10" fill="#062825" stroke="#34d399" stroke-width="1"/>
+  <text x="686" y="338" fill="#a7f3d0" font-family="Segoe UI, sans-serif" font-size="13" font-weight="700">Gate 3: Agent Card JWS Verification + RFC 8707 Audience Lock + Taint Propagation</text>
+  <text x="686" y="358" fill="#cbd5e1" font-family="Segoe UI, sans-serif" font-size="12">• Rejects unsigned agent.json cards; locks JWT aud to a single target sub-agent URI</text>
+  <text x="686" y="374" fill="#6ee7b7" font-family="Segoe UI, sans-serif" font-size="11.5">• Propagates untrusted/restricted lane_taint across hops to block downstream egress</text>
+
+  <!-- Row 2: 3-Tier Selection Matrix + 34-Scenario Benchmark -->
+  <rect x="32" y="416" width="1216" height="318" rx="14" fill="url(#blue3e)" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="52" y="446" fill="#c7d2fe" font-family="Segoe UI, sans-serif" font-size="16" font-weight="800">🧭 Architect 3-Tier Selection Guide &amp; 34-Scenario / 133-Assertion Benchmark Results</text>
+
+  <!-- 3 Cards -->
+  <rect x="52" y="462" width="376" height="162" rx="12" fill="#0f172a" stroke="#38bdf8" stroke-width="1.2"/>
+  <text x="68" y="488" fill="#38bdf8" font-family="Segoe UI, sans-serif" font-size="14" font-weight="800">🟢 Option A: Per-Agent Workload Identity</text>
+  <text x="68" y="510" fill="#e2e8f0" font-family="Segoe UI, sans-serif" font-size="12" font-weight="700">For: Standalone background agent (no human/A2A hops)</text>
+  <text x="68" y="532" fill="#94a3b8" font-family="Segoe UI, sans-serif" font-size="11.5">• Dedicated Managed Identity / SPIFFE ID per agent</text>
+  <text x="68" y="550" fill="#94a3b8" font-family="Segoe UI, sans-serif" font-size="11.5">• Zero shared static API keys across workloads</text>
+  <text x="68" y="568" fill="#fbbf24" font-family="Segoe UI, sans-serif" font-size="11.5">• Limit: No human requester (sub) lineage for multi-hop</text>
+  <text x="68" y="604" fill="#38bdf8" font-family="Consolas, monospace" font-size="12" font-weight="700">Overhead: ~0.2ms | Fit: L1 Isolated Batch Agents</text>
+
+  <rect x="452" y="462" width="376" height="162" rx="12" fill="#0f172a" stroke="#a855f7" stroke-width="1.2"/>
+  <text x="468" y="488" fill="#c084fc" font-family="Segoe UI, sans-serif" font-size="14" font-weight="800">🔵 Option B: OAuth 2.0 OBO Scope Intersection</text>
+  <text x="468" y="510" fill="#e2e8f0" font-family="Segoe UI, sans-serif" font-size="12" font-weight="700">For: Internal multi-agent orchestration (ERP/CRM/HR)</text>
+  <text x="468" y="532" fill="#94a3b8" font-family="Segoe UI, sans-serif" font-size="11.5">• RFC 8693 Token Exchange + Entra Agent ID</text>
+  <text x="468" y="550" fill="#94a3b8" font-family="Segoe UI, sans-serif" font-size="11.5">• Enforces intersection: Requester ∩ Parent ∩ Child</text>
+  <text x="468" y="568" fill="#34d399" font-family="Segoe UI, sans-serif" font-size="11.5">• Dual Attribution receipts (sub + nested act.sub)</text>
+  <text x="468" y="604" fill="#c084fc" font-family="Consolas, monospace" font-size="12" font-weight="700">Overhead: 0.4~0.9ms | Confused Deputy Block: 100%</text>
+
+  <rect x="852" y="462" width="376" height="162" rx="12" fill="#0f172a" stroke="#10b981" stroke-width="1.5"/>
+  <text x="868" y="488" fill="#34d399" font-family="Segoe UI, sans-serif" font-size="14" font-weight="800">🟣 Option C: OBO + Agent Card JWS + Taint Broker</text>
+  <text x="868" y="510" fill="#e2e8f0" font-family="Segoe UI, sans-serif" font-size="12" font-weight="700">For: Cross-domain A2A federation, treasury &amp; discovery</text>
+  <text x="868" y="532" fill="#94a3b8" font-family="Segoe UI, sans-serif" font-size="11.5">• Enterprise JWS verification on /.well-known/agent.json</text>
+  <text x="868" y="550" fill="#94a3b8" font-family="Segoe UI, sans-serif" font-size="11.5">• RFC 8707 single-URI aud lock + cross-hop taint</text>
+  <text x="868" y="568" fill="#34d399" font-family="Segoe UI, sans-serif" font-size="11.5">• Eliminates Confused Deputy, Card Spoofing &amp; Replay</text>
+  <text x="868" y="604" fill="#34d399" font-family="Consolas, monospace" font-size="12" font-weight="700">P50 Latency: 0.8ms | 34-Scenario ASR: 75.0% → 0.0%</text>
+
+  <!-- Bottom Telemetry Strip -->
+  <rect x="52" y="638" width="1176" height="78" rx="10" fill="#091022" stroke="#334155"/>
+  <text x="72" y="664" fill="#f8fafc" font-family="Segoe UI, sans-serif" font-size="13.5" font-weight="700">🧪 34-Scenario / 133-Assertion Deterministic Pytest Summary (including A2A-OBO-19 Scope Intersection &amp; A2A-JWS-20 Card Spoofing):</text>
+  <text x="72" y="688" fill="#cbd5e1" font-family="Segoe UI, sans-serif" font-size="12.5">• Shared Key / Token Passthrough Baseline: ASR = 75.0% (unauthorized wire &amp; card spoofing succeed)  ➔  Hardened OBO + JWS Broker: ASR = 0.0% | Benign Pass = 100.0% (0% FPR)</text>
+  <text x="72" y="706" fill="#38bdf8" font-family="Consolas, monospace" font-size="11.5">Repo: github.com/turbo998/ai-security-lab | FAQ: research/offensive-defensive/a2a-obo-token-downscoping-vs-shared-credentials-faq.en.md</text>
+</svg>

@@ -1,0 +1,141 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" width="1200" height="720" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#090d16"/>
+      <stop offset="55%" stop-color="#111827"/>
+      <stop offset="100%" stop-color="#1e1b4b"/>
+    </linearGradient>
+    <linearGradient id="hdr" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#06b6d4"/>
+      <stop offset="50%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#10b981"/>
+    </linearGradient>
+    <linearGradient id="redBox" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#450a0a"/>
+      <stop offset="100%" stop-color="#1f1218"/>
+    </linearGradient>
+    <linearGradient id="amberBox" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#451a03"/>
+      <stop offset="100%" stop-color="#1c1917"/>
+    </linearGradient>
+    <linearGradient id="greenBox" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#064e3b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="720" fill="url(#bg)"/>
+  <rect x="0" y="0" width="1200" height="6" fill="url(#hdr)"/>
+
+  <!-- Header -->
+  <rect x="36" y="24" width="350" height="28" rx="14" fill="#1e293b" stroke="#06b6d4" stroke-width="1.2"/>
+  <text x="52" y="43" fill="#67e8f9" font-size="12" font-weight="700">AI 解决方案架构师实战指南 · 2026-11-08 Round 2 专题</text>
+
+  <text x="36" y="82" fill="#f8fafc" font-size="25" font-weight="800">MCP Server 工具投毒、动态 Rug-Pull 与签名钉扎 vs. 运行时能力沙盒选型一图流</text>
+  <text x="36" y="108" fill="#94a3b8" font-size="13.5">为什么大模型对 tools/list 描述投毒拒答率 &lt;3%？何时选静态 SHA-256 清单钉扎，何时必须上跨服污点隔离与零信任 MCP 网关？</text>
+
+  <!-- KPI Strip -->
+  <g transform="translate(36, 124)">
+    <rect x="0" y="0" width="270" height="66" rx="10" fill="#1e293b" stroke="#ef4444" stroke-width="1.2"/>
+    <text x="16" y="24" fill="#fca5a5" font-size="11.5" font-weight="700">原生 MCP 客户端拒答率</text>
+    <text x="16" y="50" fill="#f87171" font-size="23" font-weight="800">&lt; 3.0% (&gt;70% 沦陷)</text>
+    <text x="205" y="48" fill="#94a3b8" font-size="11">System 级盲信</text>
+
+    <rect x="286" y="0" width="270" height="66" rx="10" fill="#1e293b" stroke="#f59e0b" stroke-width="1.2"/>
+    <text x="302" y="24" fill="#fcd34d" font-size="11.5" font-weight="700">仅靠静态 SHA-256 钉扎盲区</text>
+    <text x="302" y="50" fill="#fbbf24" font-size="21" font-weight="800">防不住服务端换逻辑</text>
+    <text x="488" y="48" fill="#94a3b8" font-size="11">及跨服联合窃密</text>
+
+    <rect x="572" y="0" width="270" height="66" rx="10" fill="#1e293b" stroke="#10b981" stroke-width="1.2"/>
+    <text x="588" y="24" fill="#6ee7b7" font-size="11.5" font-weight="700">零信任 MCP 能力沙盒 ASR</text>
+    <text x="588" y="50" fill="#34d399" font-size="23" font-weight="800">75.0% → 0.0%</text>
+    <text x="752" y="48" fill="#a7f3d0" font-size="11">32 场景 / 129 断言</text>
+
+    <rect x="858" y="0" width="270" height="66" rx="10" fill="#1e293b" stroke="#38bdf8" stroke-width="1.2"/>
+    <text x="874" y="24" fill="#7dd3fc" font-size="11.5" font-weight="700">网关 + 污点锁附加延迟</text>
+    <text x="874" y="50" fill="#38bdf8" font-size="23" font-weight="800">0.8 ms (P50)</text>
+    <text x="1020" y="48" fill="#bae6fd" font-size="11">100% 良性放行</text>
+  </g>
+
+  <!-- 3 Columns: 3 MCP Attack Vectors vs 3 Defense Tiers -->
+  <!-- Column 1 -->
+  <g transform="translate(36, 208)">
+    <rect x="0" y="0" width="364" height="330" rx="12" fill="url(#redBox)" stroke="#ef4444" stroke-width="1.5"/>
+    <rect x="16" y="16" width="175" height="24" rx="6" fill="#7f1d1d"/>
+    <text x="26" y="33" fill="#fecaca" font-size="12" font-weight="700">🚨 MCP 三大高频致命攻击链</text>
+    <text x="16" y="64" fill="#ffffff" font-size="16.5" font-weight="800">为什么只读小插件也能偷走核心库？</text>
+
+    <rect x="16" y="80" width="332" height="72" rx="8" fill="#0f172a" stroke="#7f1d1d"/>
+    <text x="28" y="100" fill="#fca5a5" font-size="12.5" font-weight="700">1. 描述与 Schema 投毒 (Line Jumping)</text>
+    <text x="28" y="120" fill="#cbd5e1" font-size="11.5">tools/list 参数描述被直接拼入最高优先级 System Prompt；</text>
+    <text x="28" y="138" fill="#cbd5e1" font-size="11.5">免费排版插件下令同会话的官方 Email MCP 偷财报外带。</text>
+
+    <rect x="16" y="162" width="332" height="72" rx="8" fill="#0f172a" stroke="#7f1d1d"/>
+    <text x="28" y="182" fill="#fca5a5" font-size="12.5" font-weight="700">2. 审批后动态抽毯子 (Post-Approval Rug-Pull)</text>
+    <text x="28" y="202" fill="#cbd5e1" font-size="11.5">Day 1 初审时干净无毒；Day 3 远程 SSE Server 静默修改</text>
+    <text x="28" y="220" fill="#cbd5e1" font-size="11.5">tools/list 或保持描述不变直接偷换服务端后端转发逻辑。</text>
+
+    <rect x="16" y="244" width="332" height="72" rx="8" fill="#0f172a" stroke="#7f1d1d"/>
+    <text x="28" y="264" fill="#fca5a5" font-size="12.5" font-weight="700">3. 跨服同名覆盖 &amp; Slopsquatting 幻觉包</text>
+    <text x="28" y="284" fill="#cbd5e1" font-size="11.5">恶意 MCP 注册同名 send_email 劫持路由；或提前在 npm</text>
+    <text x="28" y="302" fill="#cbd5e1" font-size="11.5">抢注大模型幻觉出的包名，借 npx -y 直接植入远控木马。</text>
+  </g>
+
+  <!-- Column 2 -->
+  <g transform="translate(418, 208)">
+    <rect x="0" y="0" width="364" height="330" rx="12" fill="url(#amberBox)" stroke="#f59e0b" stroke-width="1.5"/>
+    <rect x="16" y="16" width="215" height="24" rx="6" fill="#78350f"/>
+    <text x="26" y="33" fill="#fde68a" font-size="12" font-weight="700">⚖️ 方案 A/B：静态钉扎与协议网关</text>
+    <text x="16" y="64" fill="#ffffff" font-size="16.5" font-weight="800">Level 1 静态锁 + Level 2 网关清洗</text>
+
+    <rect x="16" y="80" width="332" height="76" rx="8" fill="#0f172a" stroke="#78350f"/>
+    <text x="28" y="100" fill="#fcd34d" font-size="12.5" font-weight="700">✅ Level 1：Manifest SHA-256 钉扎 + AgBOM</text>
+    <text x="28" y="120" fill="#cbd5e1" font-size="11.5">• 锁定 server_id + version + sha256(tools/list) + 镜像摘要</text>
+    <text x="28" y="138" fill="#cbd5e1" font-size="11.5">• 封禁公网 npx -y / uvx，100% 阻断改 Schema 型 Rug-Pull</text>
+
+    <rect x="16" y="166" width="332" height="76" rx="8" fill="#0f172a" stroke="#78350f"/>
+    <text x="28" y="186" fill="#fcd34d" font-size="12.5" font-weight="700">✅ Level 2：强制命名空间前缀 + Schema 净化</text>
+    <text x="28" y="206" fill="#cbd5e1" font-size="11.5">• 自动重写为 &lt;srv&gt;__&lt;tool&gt;，彻底消灭跨服同名覆盖劫持</text>
+    <text x="28" y="224" fill="#cbd5e1" font-size="11.5">• 剥离第三方 description 中的祈使句与跨工具调用暗示</text>
+
+    <rect x="16" y="252" width="332" height="64" rx="8" fill="#2e1065" stroke="#a855f7"/>
+    <text x="28" y="272" fill="#e9d5ff" font-size="12" font-weight="700">⚠️ 为什么对外部 MCP 只做 Level 1+2 还不够？</text>
+    <text x="28" y="292" fill="#cbd5e1" font-size="11.5">远程 Server 可保持 Schema 哈希不变而偷换后台代码，</text>
+    <text x="28" y="308" fill="#cbd5e1" font-size="11.5">或借由工具返回结果的间接注入跨工具盗取内网机密！</text>
+  </g>
+
+  <!-- Column 3 -->
+  <g transform="translate(800, 208)">
+    <rect x="0" y="0" width="364" height="330" rx="12" fill="url(#greenBox)" stroke="#10b981" stroke-width="1.5"/>
+    <rect x="16" y="16" width="235" height="24" rx="6" fill="#065f46"/>
+    <text x="26" y="33" fill="#a7f3d0" font-size="12" font-weight="700">🛡️ 方案 C：Level 3 运行时零信任能力沙盒</text>
+    <text x="16" y="64" fill="#ffffff" font-size="16.5" font-weight="800">跨工具污点隔离 + 动态哈希 + 微沙盒</text>
+
+    <rect x="16" y="80" width="332" height="76" rx="8" fill="#0f172a" stroke="#059669"/>
+    <text x="28" y="100" fill="#6ee7b7" font-size="12.5" font-weight="700">🔒 Gate 1：跨服数据流污点锁 (Taint Isolation)</text>
+    <text x="28" y="120" fill="#cbd5e1" font-size="11.5">一旦读取内部高敏 MCP (Email/DB)，会话标记 RESTRICTED；</text>
+    <text x="28" y="138" fill="#cbd5e1" font-size="11.5">0.8ms 硬性阻断向任何外部/低信任 MCP 传递参数。</text>
+
+    <rect x="16" y="166" width="332" height="76" rx="8" fill="#0f172a" stroke="#059669"/>
+    <text x="28" y="186" fill="#6ee7b7" font-size="12.5" font-weight="700">🔑 Gate 2：每次调用绑定动态 request_hash</text>
+    <text x="28" y="206" fill="#cbd5e1" font-size="11.5">校验 SHA256(srv + tool + args + target + schema_hash)</text>
+    <text x="28" y="224" fill="#cbd5e1" font-size="11.5">与 same-run-target，彻底封死审批后参数或目标掉包。</text>
+
+    <rect x="16" y="252" width="332" height="64" rx="8" fill="#0f172a" stroke="#059669"/>
+    <text x="28" y="272" fill="#6ee7b7" font-size="12.5" font-weight="700">📦 Gate 3：本地 Stdio 零宿主凭证微沙盒</text>
+    <text x="28" y="292" fill="#cbd5e1" font-size="11.5">剥离宿主机云 AK/SK 与 ~/.ssh，默认 Zero-Egress 禁网，</text>
+    <text x="28" y="308" fill="#cbd5e1" font-size="11.5">即使社区插件含后门也无法触碰宿主资产与外发数据。</text>
+  </g>
+
+  <!-- Bottom Architect Selection & Checklist Bar -->
+  <g transform="translate(36, 556)">
+    <rect x="0" y="0" width="1128" height="136" rx="12" fill="#0f172a" stroke="#38bdf8" stroke-width="1.5"/>
+    <text x="24" y="30" fill="#38bdf8" font-size="15" font-weight="800">🧭 架构师 10 秒选型口诀与上线必查 6 项清单（Architect MCP Checklist）</text>
+
+    <text x="24" y="58" fill="#e2e8f0" font-size="12.5"><tspan fill="#34d399" font-weight="700">▶ 内网全自研只读 MCP：</tspan>选 Level 1 静态 SHA-256 钉扎 (~0.1ms)　　<tspan fill="#fbbf24" font-weight="700">▶ 本地开源辅助插件：</tspan>选 Level 1+2 网关清洗 + 无凭证微沙盒</text>
+    <text x="24" y="82" fill="#e2e8f0" font-size="12.5"><tspan fill="#f87171" font-weight="700">▶ 外部远程 SaaS MCP 或与企业高敏工具同会话混用：</tspan>必须启用 Level 1+2+3 全栈零信任能力网关（静态钉扎 + 前缀隔离 + 跨服污点边界锁，~0.8ms）</text>
+
+    <rect x="24" y="96" width="1080" height="28" rx="6" fill="#1e293b"/>
+    <text x="36" y="115" fill="#a7f3d0" font-size="11.5" font-weight="700">☑️ 生产上线 6 必查：[1] agbom-lock.json 钉扎　[2] 封禁公网 npx/uvx　[3] &lt;srv&gt;__&lt;tool&gt; 前缀隔离　[4] Schema 祈使句剥离　[5] 跨服污点锁　[6] Stdio 零凭证微沙盒</text>
+  </g>
+</svg>
