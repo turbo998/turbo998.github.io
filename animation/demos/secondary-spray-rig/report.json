@@ -1,0 +1,251 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Birth-aware secondary FX and active-window event queries",
+  "topic_zh": "出生变换驱动的次级 FX 与活跃窗口查询",
+  "slug": "secondary-spray-rig",
+  "timestamp": "2026-11-08T19:51:38.277Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Seeded ballistic event control and Node CPU query cost, not liquid simulation, Maxon execution, GPU/display latency or generated video.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "156.0.8078.80",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "same-history-60",
+      "passed": true,
+      "detail": "60 seconds of source history return exactly the same living events"
+    },
+    {
+      "name": "same-history-600",
+      "passed": true,
+      "detail": "600 seconds of source history return exactly the same living events"
+    },
+    {
+      "name": "same-history-3600",
+      "passed": true,
+      "detail": "3600 seconds of source history return exactly the same living events"
+    },
+    {
+      "name": "birth-source-error",
+      "passed": true,
+      "detail": "wrong current-source baseline shifts old droplets by 0.530330 mean scene units"
+    },
+    {
+      "name": "exact-revisit",
+      "passed": true,
+      "detail": "16 living events retain exact IDs and positions after reverse visits"
+    },
+    {
+      "name": "seed-timing-invariance",
+      "passed": true,
+      "detail": "changing the seed changes detail without changing birth IDs or timestamps"
+    },
+    {
+      "name": "atomic-source-rejection",
+      "passed": true,
+      "detail": "invalid fractional rate is rejected without losing valid state"
+    },
+    {
+      "name": "fixed-resources",
+      "passed": true,
+      "detail": "3 cached geometries stay fixed"
+    },
+    {
+      "name": "bounded-lifetime",
+      "passed": true,
+      "detail": "every live droplet stays above the tray within its declared one-second lifetime"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px source authoring controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still; manual time seeking remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "60s history × 500 queries",
+      "count": 60,
+      "primary_ms": 2.9161000000000286,
+      "baseline_ms": 3.408300000000054,
+      "primary_samples_ms": [
+        2.9443999999999733,
+        2.990000000000009,
+        2.9161000000000286,
+        2.8997000000000526,
+        2.9642000000000053,
+        0.5901999999999816,
+        0.5896000000000186
+      ],
+      "baseline_samples_ms": [
+        4.051900000000046,
+        3.386100000000056,
+        3.330099999999902,
+        3.408300000000054,
+        3.4519000000000233,
+        8.355599999999981,
+        1.0661000000000058
+      ]
+    },
+    {
+      "load": "600s history × 500 queries",
+      "count": 600,
+      "primary_ms": 1.2620000000000573,
+      "baseline_ms": 6.140699999999924,
+      "primary_samples_ms": [
+        0.59050000000002,
+        0.5928000000000111,
+        0.5906999999999698,
+        1.3482000000000198,
+        1.2691999999999553,
+        1.2708000000000084,
+        1.2620000000000573
+      ],
+      "baseline_samples_ms": [
+        5.453300000000013,
+        5.435399999999959,
+        6.140699999999924,
+        9.615699999999947,
+        6.294899999999984,
+        6.380999999999972,
+        6.104100000000017
+      ]
+    },
+    {
+      "load": "3600s history × 500 queries",
+      "count": 3600,
+      "primary_ms": 0.5932999999999993,
+      "baseline_ms": 30.014599999999973,
+      "primary_samples_ms": [
+        0.585399999999936,
+        0.5923000000000229,
+        0.5932999999999993,
+        0.5923999999999978,
+        0.5972000000000435,
+        1.363999999999919,
+        1.3453000000000657
+      ],
+      "baseline_samples_ms": [
+        30.065899999999942,
+        30.014599999999973,
+        29.77290000000005,
+        29.997299999999996,
+        29.8039,
+        31.230699999999956,
+        31.657600000000002
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/secondary-spray-rig/light-birth.png",
+    "docs/evidence/secondary-spray-rig/light-current.png",
+    "docs/evidence/secondary-spray-rig/dark-birth.png",
+    "docs/evidence/secondary-spray-rig/dark-current.png",
+    "docs/evidence/secondary-spray-rig/mobile.png"
+  ],
+  "primary_label": "Active window",
+  "baseline_label": "Full history",
+  "load_unit": "history seconds",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup; 500 queries per run. Exact events equal. Excludes browser rendering, display latency and model inference.",
+  "geometry": {
+    "parts": 59,
+    "live_events": 16,
+    "current_source_mean_error": 0.5303300858899103
+  },
+  "protocol": {
+    "input": {
+      "seed": 42,
+      "rate_per_second": 16,
+      "lifetime_seconds": 1,
+      "query_seconds": 4.5
+    },
+    "output": {
+      "living_events": 16,
+      "birth_transform_preserved": true,
+      "history_equivalent": true
+    },
+    "function": "primary source at birth → immutable event ID and velocity → age query → cached instance rendering"
+  },
+  "robustness": [
+    {
+      "name": "Reverse visits preserve live event IDs",
+      "original": 16,
+      "perturbed": 16,
+      "total": 16
+    }
+  ],
+  "good_fit": [
+    "Seekable secondary particle choreography",
+    "Technical FX pipeline explainers",
+    "Lifetime-bounded interactive effects",
+    "Separating primary motion and secondary detail"
+  ],
+  "not_for": [
+    "Foam or bubble liquid-solver certification",
+    "Claims of Maxon rendering performance",
+    "Photoreal generated-video scoring",
+    "Real fluid or spray safety simulation"
+  ],
+  "locale_zh": {
+    "same-history-60": "历史等价 60",
+    "60 seconds of source history return exactly the same living events": "60 秒历史生成完全相同的活跃事件",
+    "same-history-600": "历史等价 600",
+    "600 seconds of source history return exactly the same living events": "600 秒历史生成完全相同的活跃事件",
+    "same-history-3600": "历史等价 3600",
+    "3600 seconds of source history return exactly the same living events": "3600 秒历史生成完全相同的活跃事件",
+    "birth-source-error": "出生源位移错误",
+    "wrong current-source baseline shifts old droplets by 0.530330 mean scene units": "错误当前源基线使旧液滴平均偏移 0.530330 示意单位",
+    "exact-revisit": "精确重访",
+    "16 living events retain exact IDs and positions after reverse visits": "逆序重访后 16 个事件 ID 和位置完全不变",
+    "seed-timing-invariance": "种子时间不变量",
+    "changing the seed changes detail without changing birth IDs or timestamps": "改变种子只改细节，不改出生 ID 与时间",
+    "atomic-source-rejection": "原子源拒绝",
+    "invalid fractional rate is rejected without losing valid state": "非整数速率被拒绝，保留有效状态",
+    "fixed-resources": "固定资源",
+    "3 cached geometries stay fixed": "3 个缓存几何对象保持固定",
+    "bounded-lifetime": "寿命边界",
+    "every live droplet stays above the tray within its declared one-second lifetime": "每个活跃液滴在声明的一秒寿命内保持在托盘上方",
+    "mobile-layout": "手机布局",
+    "390px source authoring controls fit without horizontal overflow": "390px 源编辑控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still; manual time seeking remains available": "减少动态默认静止，保留手动时间查询",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Active window": "活跃时间窗",
+    "Full history": "完整历史扫描",
+    "Median of 7 alternating Node CPU runs after warmup; 500 queries per run. Exact events equal. Excludes browser rendering, display latency and model inference.": "预热后交替重复 7 次 Node CPU 测量，每次 500 次查询，显示中位数且事件完全相同。排除浏览器渲染、屏幕延迟与模型推理。",
+    "Reverse visits preserve live event IDs": "逆序重访保留活跃事件 ID",
+    "primary source at birth → immutable event ID and velocity → age query → cached instance rendering": "出生时主源 → 不变事件 ID 与速度 → 年龄查询 → 缓存实例渲染",
+    "Seekable secondary particle choreography": "可查询的次级粒子编排",
+    "Technical FX pipeline explainers": "技术 FX 管线讲解",
+    "Lifetime-bounded interactive effects": "寿命受限的交互特效",
+    "Separating primary motion and secondary detail": "主运动与次级细节分层",
+    "Foam or bubble liquid-solver certification": "泡沫或气泡流体求解认证",
+    "Claims of Maxon rendering performance": "声称测得 Maxon 渲染性能",
+    "Photoreal generated-video scoring": "摄影级生成视频评分",
+    "Real fluid or spray safety simulation": "真实流体或喷雾安全仿真"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/secondary-spray.test.ts",
+    "node scripts/benchmark-secondary-spray.mjs"
+  ]
+}
