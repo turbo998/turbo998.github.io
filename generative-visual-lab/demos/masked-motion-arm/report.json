@@ -1,0 +1,276 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Outside-window motion preservation and fixed-length inverse kinematics",
+  "topic_zh": "窗外动作保留与固定骨长逆运动学",
+  "slug": "masked-motion-arm",
+  "timestamp": "2026-11-08T20:06:14.710Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic local edit masks, two-link pose conformance and Node CPU solving. No Scheduled Inpainting execution, learned motion naturalness, physical safety or GPU/display latency.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "156.0.8078.80",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "solver-equivalence-128",
+      "passed": true,
+      "detail": "128 analytic and iterative poses agree within 1e-10 scene units"
+    },
+    {
+      "name": "solver-equivalence-1024",
+      "passed": true,
+      "detail": "1024 analytic and iterative poses agree within 1e-10 scene units"
+    },
+    {
+      "name": "solver-equivalence-8192",
+      "passed": true,
+      "detail": "8192 analytic and iterative poses agree within 1e-10 scene units"
+    },
+    {
+      "name": "outside-preservation",
+      "passed": true,
+      "detail": "82 outside-window poses preserve the original exactly"
+    },
+    {
+      "name": "smooth-boundary",
+      "passed": true,
+      "detail": "boundary edit acceleration finite-difference maximum 0.00009999"
+    },
+    {
+      "name": "rendered-outside-preservation",
+      "passed": true,
+      "detail": "actual rendered wrist matrix is unchanged outside the edit window"
+    },
+    {
+      "name": "local-lift",
+      "passed": true,
+      "detail": "local midpoint lifts the actual two-link target by 0.8 scene units"
+    },
+    {
+      "name": "global-baseline-error",
+      "passed": true,
+      "detail": "deliberate whole-clip baseline changes the protected outside target by 0.4 scene units"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse visitation reproduces the exact actual wrist matrix"
+    },
+    {
+      "name": "atomic-edit-rejection",
+      "passed": true,
+      "detail": "reversed edit window is rejected while valid state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "hierarchical rendered wrist position agrees with independent kinematics"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px motion edit controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual pose inspection remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU arm poses",
+      "count": 128,
+      "primary_ms": 0.06460000000004129,
+      "baseline_ms": 0.19839999999999236,
+      "primary_samples_ms": [
+        0.13800000000003365,
+        0.07579999999995835,
+        0.06610000000000582,
+        0.05880000000001928,
+        0.06460000000004129,
+        0.05920000000003256,
+        0.05889999999999418
+      ],
+      "baseline_samples_ms": [
+        0.25890000000003965,
+        0.2137000000000171,
+        0.19839999999999236,
+        0.20479999999997744,
+        0.19669999999996435,
+        0.195699999999988,
+        0.19539999999994961
+      ]
+    },
+    {
+      "load": "1024 CPU arm poses",
+      "count": 1024,
+      "primary_ms": 0.4475999999999658,
+      "baseline_ms": 1.4950000000000045,
+      "primary_samples_ms": [
+        0.4475999999999658,
+        2.562599999999975,
+        0.5764000000000351,
+        0.4055999999999358,
+        0.398900000000026,
+        0.6508000000000038,
+        0.43449999999995725
+      ],
+      "baseline_samples_ms": [
+        1.52150000000006,
+        1.4950000000000045,
+        1.5061000000000604,
+        1.362100000000055,
+        1.3799999999999955,
+        1.4832000000000107,
+        1.5285000000000082
+      ]
+    },
+    {
+      "load": "8192 CPU arm poses",
+      "count": 8192,
+      "primary_ms": 3.595800000000054,
+      "baseline_ms": 11.933899999999994,
+      "primary_samples_ms": [
+        3.595800000000054,
+        3.0207000000000335,
+        5.4406999999999925,
+        3.469500000000039,
+        4.890999999999963,
+        2.8301999999999907,
+        3.7264000000000124
+      ],
+      "baseline_samples_ms": [
+        14.311900000000037,
+        13.334499999999935,
+        15.5548,
+        11.558299999999917,
+        11.933899999999994,
+        11.861699999999928,
+        10.996200000000044
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/masked-motion-arm/light-original.png",
+    "docs/evidence/masked-motion-arm/light-local.png",
+    "docs/evidence/masked-motion-arm/light-global.png",
+    "docs/evidence/masked-motion-arm/dark-original.png",
+    "docs/evidence/masked-motion-arm/dark-local.png",
+    "docs/evidence/masked-motion-arm/dark-global.png",
+    "docs/evidence/masked-motion-arm/mobile.png"
+  ],
+  "primary_label": "Analytic IK",
+  "baseline_label": "40-step angle solve",
+  "load_unit": "pose queries",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Two-link analytic geometry versus 40-step angle bisection, not neural inference or browser rendering.",
+  "geometry": {
+    "parts": 73,
+    "link_lengths": [
+      2.2,
+      1.6
+    ],
+    "protected_poses": 82,
+    "maximum_solver_error": 2.178189081191378e-12,
+    "boundary_acceleration_difference": 0.00009999250018813146
+  },
+  "protocol": {
+    "input": {
+      "time": 5,
+      "edit_start": 3,
+      "edit_end": 7,
+      "lift": 0.8,
+      "link_lengths": [
+        2.2,
+        1.6
+      ]
+    },
+    "output": {
+      "outside_unchanged": true,
+      "midpoint_lift": 0.8,
+      "fixed_lengths": true
+    },
+    "function": "original target → compact smooth edit mask → reachable target → two-link IK → hierarchical scene"
+  },
+  "robustness": [
+    {
+      "name": "Protected outside poses survive local edit",
+      "original": 82,
+      "perturbed": 82,
+      "total": 82
+    }
+  ],
+  "good_fit": [
+    "Local technical motion editing",
+    "Fixed-length arm explainers",
+    "Window-preservation acceptance tests",
+    "Separating scene control from learned naturalness"
+  ],
+  "not_for": [
+    "Scheduled Inpainting model reproduction",
+    "Human motion realism certification",
+    "Collision-free robot-control planning",
+    "Unbounded arbitrary target editing"
+  ],
+  "locale_zh": {
+    "solver-equivalence-128": "求解等价 128",
+    "128 analytic and iterative poses agree within 1e-10 scene units": "128 个解析与迭代姿态在 1e-10 示意单位内一致",
+    "solver-equivalence-1024": "求解等价 1024",
+    "1024 analytic and iterative poses agree within 1e-10 scene units": "1024 个解析与迭代姿态在 1e-10 示意单位内一致",
+    "solver-equivalence-8192": "求解等价 8192",
+    "8192 analytic and iterative poses agree within 1e-10 scene units": "8192 个解析与迭代姿态在 1e-10 示意单位内一致",
+    "outside-preservation": "窗外保留",
+    "82 outside-window poses preserve the original exactly": "82 个窗外姿态精确保留原片段",
+    "smooth-boundary": "平滑边界",
+    "boundary edit acceleration finite-difference maximum 0.00009999": "边界编辑加速度有限差分最大值 0.00009999",
+    "rendered-outside-preservation": "渲染窗外保留",
+    "actual rendered wrist matrix is unchanged outside the edit window": "实际腕部渲染矩阵在窗外不变",
+    "local-lift": "局部抬升",
+    "local midpoint lifts the actual two-link target by 0.8 scene units": "局部窗中点实际双连杆目标抬升 0.8 示意单位",
+    "global-baseline-error": "全片基线错误",
+    "deliberate whole-clip baseline changes the protected outside target by 0.4 scene units": "故意全片基线使受保护窗外目标改变 0.4 示意单位",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse visitation reproduces the exact actual wrist matrix": "逆序重访精确复现实际腕部矩阵",
+    "atomic-edit-rejection": "原子编辑拒绝",
+    "reversed edit window is rejected while valid state remains": "倒置编辑窗口被拒绝，保留有效状态",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "hierarchical rendered wrist position agrees with independent kinematics": "层级渲染腕部位置与独立运动学一致",
+    "mobile-layout": "手机布局",
+    "390px motion edit controls fit without horizontal overflow": "390px 动作编辑控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual pose inspection remains available": "减少动态默认静止，保留手动姿态核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Analytic IK": "解析逆运动学",
+    "40-step angle solve": "40步角度求解",
+    "Median of 7 alternating Node CPU runs after warmup. Two-link analytic geometry versus 40-step angle bisection, not neural inference or browser rendering.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；双连杆解析几何对比 40 步角度二分，不是神经推理或浏览器渲染。",
+    "Protected outside poses survive local edit": "局部编辑保留受保护窗外姿态",
+    "original target → compact smooth edit mask → reachable target → two-link IK → hierarchical scene": "原目标 → 紧支撑平滑编辑掩码 → 可达目标 → 双连杆逆运动学 → 层级场景",
+    "Local technical motion editing": "局部技术动作编辑",
+    "Fixed-length arm explainers": "固定骨长机械臂讲解",
+    "Window-preservation acceptance tests": "窗口保留验收测试",
+    "Separating scene control from learned naturalness": "场景控制与学习自然度分离",
+    "Scheduled Inpainting model reproduction": "Scheduled Inpainting 模型复现",
+    "Human motion realism certification": "人体动作真实感认证",
+    "Collision-free robot-control planning": "无碰撞机器人控制规划",
+    "Unbounded arbitrary target editing": "不受限任意目标编辑"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/masked-motion.test.ts",
+    "node scripts/benchmark-masked-motion.mjs"
+  ]
+}
