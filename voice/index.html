@@ -1,100 +1,17 @@
 <!doctype html>
-<html lang="zh-CN" data-theme="dark" data-reading-runtime="true" data-reading-shell="document"><head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>AI Voice 开发者与架构师指南 · 选型测评、快速原型与行业场景搭建</title>
-  <meta name="description" content="面向学习者与开发者的 AI 语音实战门户：1）技术栈如何选型、测试比较与快速原型展示；2）四大行业场景（智能客服、知识短片配音、AI 陪护、车载/硬件）如何一步步搭建。">
-  
-  
-  
-  
-<meta name="reading-migration" content="R6"><link rel="stylesheet" href="../assets/reading-shell.css"><script src="../assets/reading-shell.js"></script><script src="../assets/editorial/search-index.js" defer></script><script src="../assets/editorial/search.js" defer></script><style id="site-remediation-style">/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
-.kee-dedicated-nav {
-  all: initial; box-sizing: border-box; position: relative; display: flex;
-  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
-  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
-  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
-  text-align: left; isolation: isolate; color-scheme: dark;
-}
-.kee-dedicated-nav a {
-  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
-  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
-  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
-}
-.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
-.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
-.kee-dedicated-nav .kee-dedicated-language {
-  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
-}
-.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
-.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
-@media print { .kee-dedicated-nav { display: none; } }
-
-/* Professional primary navigation: long section names reflow, never scroll inside the header. */
-[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
-[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
-[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
-[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
-[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.65fr 1.1fr 1.15fr 1.1fr 1.1fr;gap:6px;align-items:stretch;min-width:0}
-[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
-[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
-[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
-[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
-[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
-[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
-[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
-[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
-[data-professional-header] a:hover{text-decoration:underline}
-[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
-[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
-[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
-[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
-@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
-@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
-@media print{[data-professional-header]{display:none!important}}
-
-html{scroll-padding-top:108px}.reading-header,.kee-dedicated-nav,[data-professional-header]{position:sticky;top:0;z-index:1000;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
-
-:root{--search-bg:#101a30;--search-soft:#172440;--search-ink:#eef3ff;--search-muted:#adbbd1;--search-line:#293956;--search-accent:#9aabff;--header-offset:108px}
-:root[data-reading-shell][data-theme=light],[data-perimeter-theme=light]{--search-bg:#fff;--search-soft:#e8eefb;--search-ink:#17233e;--search-muted:#4c5e7c;--search-line:#d5ddec;--search-accent:#354ec8}
-html{scroll-padding-top:var(--header-offset,108px)!important}
-.site-search,.site-search *{box-sizing:border-box!important;font-family:"Segoe UI",sans-serif;letter-spacing:normal;text-transform:none}
-.site-search{position:relative;display:flex;align-items:center;gap:5px;min-width:0;width:230px;max-width:100%;margin:0!important;padding:0!important;line-height:1.4;border:1px solid var(--search-line);border-radius:9px;background:var(--search-soft);color:var(--search-ink);isolation:isolate}
-.site-search input[type=search]{display:block;flex:1;min-width:0;width:100%;height:42px;margin:0;padding:9px 8px!important;font-size:12px!important;line-height:1.5;border:0!important;border-radius:9px;background:transparent!important;color:var(--search-ink)!important;box-shadow:none!important;appearance:none}
-.site-search input::placeholder{color:var(--search-muted);opacity:1}.site-search input:focus-visible{outline:2px solid var(--search-accent);outline-offset:2px}
-.site-search kbd{font:11px Consolas,monospace;color:var(--search-muted);padding:1px 5px;border:1px solid var(--search-line);border-radius:4px}
-.site-search button[type=submit]{flex:none;width:38px;min-width:38px;height:42px;min-height:42px;padding:0;margin:0;border:0;border-radius:8px;background:transparent;color:var(--search-accent);font-size:24px;cursor:pointer;box-shadow:none}
-.search-label,.search-status{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
-.site-search .search-results{position:absolute;top:calc(100% + 10px);right:0;z-index:1100;width:min(480px,calc(100vw - 32px));max-height:min(560px,65vh);overflow-y:auto;border:1px solid var(--search-line);border-radius:12px;background:var(--search-bg);color:var(--search-ink);padding:10px;box-shadow:0 12px 32px #0005;text-align:left}
-.site-search .search-results[hidden]{display:none!important}.search-results .search-group{margin:8px 6px 4px;font:11px/1.5 Consolas,monospace;color:var(--search-muted)}
-.site-search .search-results a{display:block!important;padding:10px!important;margin:3px 0!important;border:1px solid transparent!important;border-radius:7px;background:transparent;color:var(--search-ink)!important;font-size:13px!important;text-decoration:none!important;white-space:normal;overflow-wrap:anywhere;text-align:left!important;line-height:1.5!important}
-.site-search .search-results a[aria-selected=true],.site-search .search-results a:hover{border-color:var(--search-accent)!important;background:var(--search-soft)}
-.search-results a small{display:block;font-size:10px;color:var(--search-muted);margin-top:4px}.search-results p{margin:10px;font-size:13px;color:var(--search-muted)}
-.search-archive-summary{padding:20px;border:1px solid var(--search-line);border-radius:10px;background:var(--search-bg);color:var(--search-ink);margin:24px 0}.search-archive-summary h2{font-size:24px;margin:0 0 12px}.search-archive-summary li{margin:12px 0}.search-archive-summary a{color:var(--search-accent)}
-[data-professional-header]{position:sticky!important;top:0!important;z-index:1000!important;background:var(--search-bg)!important;--header-glass:rgba(16,26,48,.9);grid-template-columns:auto minmax(0,1fr) 230px auto!important}
-[data-professional-header][data-perimeter-theme=light],:root[data-reading-shell][data-theme=light] [data-professional-header]{--header-glass:rgba(255,255,255,.94)}
-[data-professional-header] .professional-mobile{display:none}.professional-mobile summary{min-width:38px;min-height:42px;display:grid;place-items:center;cursor:pointer;list-style:none}.professional-mobile summary::-webkit-details-marker{display:none}
-[data-professional-header] .professional-context{display:none}
-.professional-context-bar{padding:12px 24px;border-bottom:1px solid var(--search-line);background:var(--search-bg);color:var(--search-muted);font:12px/1.6 "Segoe UI",sans-serif;display:flex;flex-wrap:wrap;gap:8px 18px;overflow-wrap:anywhere}.professional-context-bar a{color:var(--search-accent)}
-@supports((backdrop-filter:blur(16px)) or (-webkit-backdrop-filter:blur(16px))){.site-header,[data-professional-header]{background:var(--header-glass)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}}
-@media(max-width:1250px) and (min-width:701px){.header-inner{grid-template-columns:minmax(0,1fr) 230px auto!important;padding:12px 0;gap:12px!important}.desktop-nav{grid-row:2;grid-column:1/-1}.header-inner>.site-search{grid-column:2;grid-row:1}.header-inner>.controls{grid-column:3;grid-row:1}[data-professional-header]{grid-template-columns:minmax(0,1fr) 230px auto!important;gap:12px!important}[data-professional-header]>.professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header]>.site-search{grid-column:2;grid-row:1}[data-professional-header]>.professional-controls{grid-column:3;grid-row:1}:root{--header-offset:176px}}
-@media(max-width:700px){.header-inner{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 0;gap:8px!important}.header-inner>.site-search{grid-row:2;grid-column:1/-1;width:100%}.header-inner>.controls{grid-column:2;grid-row:1}.site-search .search-results{width:100%;right:0}[data-professional-header]{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 16px!important;gap:8px!important}[data-professional-header]>.professional-primary{display:none!important}[data-professional-header]>.site-search{grid-column:1/-1;grid-row:2;width:100%}[data-professional-header]>.professional-controls{grid-column:2;grid-row:1}[data-professional-header] .professional-mobile{display:block}[data-professional-header] .professional-mobile[open]>.professional-primary{position:absolute;top:100%;left:0;right:0;padding:16px;background:var(--search-bg);border-bottom:1px solid var(--search-line);display:grid;grid-template-columns:1fr 1fr;gap:8px}[data-professional-header] .professional-mobile .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:12px!important}:root{--header-offset:126px}}
-@media(prefers-reduced-transparency:reduce){.site-header,[data-professional-header]{background:var(--search-bg)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
-@media print{.site-search,.professional-context-bar{display:none!important}}
-
-@media(min-width:1251px){.header-inner{display:grid!important;grid-template-columns:auto minmax(0,1fr) 230px auto!important;gap:18px!important}.header-inner .desktop-nav{min-width:0}}
-
-html:has(.kee-dedicated-app-root){height:auto!important;overflow-x:hidden!important;overflow-y:auto!important}
-body:has([data-professional-header]){height:auto!important;overflow-x:clip!important;overflow-y:visible!important;padding-top:0!important}
-.demo-language-navigation{display:none!important}
-.stage-column,.telemetry-panel,.scene-pill,#timeline-slider{min-width:0}
-@media(max-width:1180px){.workspace,.template-tabs{grid-template-columns:minmax(0,1fr)!important}}
-
-.in-arena-frame .professional-context-bar,.in-arena-frame [data-knowledge-atlas]{display:none!important}
-.knowledge-graph-wide{display:block}.knowledge-graph-compact{display:none}@media(max-width:600px){.knowledge-graph-wide{display:none}.knowledge-graph-compact{display:block}}
-</style></head>
-<body class="reading-page"><a class="reading-skip" href="#reading-main">跳至正文</a><header class="reading-header" data-professional-header><a class="professional-identity reading-brand kee-dedicated-identity identity" href="../zh.html">Qi Chen · @turbo998</a><div class="professional-primary" role="navigation" aria-label="主导航"><a href="../studio/zh-index.html" data-section="hub" data-nav-en-href="../studio/index.html" data-nav-zh-href="../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub" aria-current="page">Frontier Transformation Engineering Hub</a><a href="../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../benchmarks.html" data-nav-zh-href="../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心">基准评测中心</a><a href="../zh-github-radar.html" data-section="radar" data-nav-en-href="../github-radar.html" data-nav-zh-href="../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI 信号雷达</a><a href="../zh-openrouter.html" data-section="routing" data-nav-en-href="../openrouter.html" data-nav-zh-href="../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../zh-about.html" data-section="profile" data-nav-en-href="../about.html" data-nav-zh-href="../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">首席架构师履历</a></div><form class="site-search" role="search" action="../studio/zh-archive.html" method="get" data-search-root="../index.html" data-search-language="zh-CN"><label class="search-label" for="site-search-input">搜索架构、评测、Demo、技能...</label><input id="site-search-input" name="q" type="search" placeholder="搜索架构、评测、Demo、技能..." autocomplete="off" spellcheck="false" aria-keyshortcuts="/ Control+k Meta+k"><kbd aria-hidden="true">/</kbd><button type="submit" aria-label="搜索全部内容">⌕</button><div class="search-results" id="site-search-results" hidden></div><span class="search-status" role="status" aria-live="polite"></span></form><div class="reading-controls professional-controls" aria-label="网站语言与外观"><a href="index.en.html" data-reading-language hreflang="en" lang="en">EN</a><a href="index.html" hreflang="zh-CN" lang="zh-CN" aria-current="page">中文</a><details class="professional-mobile"><summary aria-label="打开主导航">☰</summary><div class="professional-primary" role="navigation" aria-label="移动主导航"><a href="../studio/zh-index.html" data-section="hub" data-nav-en-href="../studio/index.html" data-nav-zh-href="../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub" aria-current="page">Frontier Transformation Engineering Hub</a><a href="../zh-benchmarks.html" data-section="benchmarks" data-nav-en-href="../benchmarks.html" data-nav-zh-href="../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心">基准评测中心</a><a href="../zh-github-radar.html" data-section="radar" data-nav-en-href="../github-radar.html" data-nav-zh-href="../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI 信号雷达</a><a href="../zh-openrouter.html" data-section="routing" data-nav-en-href="../openrouter.html" data-nav-zh-href="../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">OpenRouter 模型遥测</a><a href="../zh-about.html" data-section="profile" data-nav-en-href="../about.html" data-nav-zh-href="../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">首席架构师履历</a></div></details><a data-reading-theme="light" href="index.html?theme=light" aria-label="浅色主题">☀</a><a data-reading-theme="dark" href="index.html?theme=dark" aria-label="深色主题">◐</a></div><div class="professional-context" aria-label="返回上下文"><a href="../studio/zh-index.html">← 工程枢纽</a> · <a href="../studio/zh-voice.html">返回主题</a></div></header><div class="professional-context-bar"><a href="../studio/zh-index.html">← 工程枢纽</a> · <a class="reading-context" href="../studio/zh-voice.html">返回主题</a></div><!-- site-remediation-knowledge:start --><figure class="knowledge-figure" data-knowledge-atlas="voice" style="margin:20px auto;max-width:1120px;padding:0 20px;box-sizing:border-box"><style>.knowledge-graph-wide{display:block}.knowledge-graph-compact{display:none}@media(max-width:600px){.knowledge-graph-wide{display:none}.knowledge-graph-compact{display:block}}</style><svg xmlns="http://www.w3.org/2000/svg" lang="zh-CN" class="knowledge-graph-compact" role="img" aria-labelledby="knowledge-3cd49af0fd09-compact-title knowledge-3cd49af0fd09-compact-desc" viewBox="0 0 360 828" width="360" style="width:100%;height:auto;max-width:560px;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-3cd49af0fd09-compact-title">AI Voice 开发者与架构师指南 · 选型测评、快速原型与行业场景搭建</title><desc id="knowledge-3cd49af0fd09-compact-desc">音频输入与说话人上下文: 麦克风 · 轮次检测 · 说话人分离 → 流式传递至理解层 → 实时语音理解: ASR 或音频原生模型 · 对话状态 → 为响应提供依据 → 智能体、工具与企业数据: 意图 · 检索 · 授权操作 → 合成响应 → 语音输出与双工控制: TTS / 音频输出 · 打断 · 取消 → 反馈至下一轮 → 对话质量与证据: 在来源测试中追踪延迟、说话人与故障</desc><rect width="360" height="828" rx="16" fill="#081525" stroke="#284566"/><rect x="16" y="14" width="224" height="22" rx="11" fill="#112844" stroke="#2d5a88"/><text x="28" y="29" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="28" dy="0">数据流向与架构要点 · 竖屏视图</tspan></text><text x="20" y="58" fill="#eef5ff" font-size="18" font-weight="700"><tspan x="20" dy="0">AI Voice 开发者与架构师指南 ·</tspan><tspan x="20" dy="25.2">选型测评、快速原型与行业场景</tspan><tspan x="20" dy="25.2">搭建</tspan></text><text x="20" y="134" fill="#a9b8ce" font-size="12.5" font-weight="400"><tspan x="20" dy="0">概念拓扑 · 箭头表示数据/控制流向，非实测指标</tspan></text><g data-concept="1"><rect x="16" y="156" width="328" height="94" rx="12" fill="#0e2036" stroke="#38597d"/><rect x="16" y="156" width="328" height="4" rx="2" fill="#38bdf8"/><text x="30" y="179" fill="#38bdf8" font-size="11.5" font-weight="700"><tspan x="30" dy="0">01 · 输入与意图</tspan></text><text x="30" y="202" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">音频输入与说话人上下文</tspan></text><text x="30" y="229" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">麦克风 · 轮次检测 · 说话人分离</tspan></text></g><g data-relationship="流式传递至理解层"><path d="M34 252 V290" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 284 L34 291 L39 284" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="274" fill="#8eeadf" font-size="12.5" font-weight="600"><tspan x="50" dy="0">01→02 流式传递至理解层</tspan></text></g><g data-concept="2"><rect x="16" y="296" width="328" height="94" rx="12" fill="#122842" stroke="#38597d"/><rect x="16" y="296" width="328" height="4" rx="2" fill="#34d399"/><text x="30" y="319" fill="#34d399" font-size="11.5" font-weight="700"><tspan x="30" dy="0">02 · 上下文锚定</tspan></text><text x="30" y="342" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">实时语音理解</tspan></text><text x="30" y="369" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">ASR 或音频原生模型 · 对话状态</tspan></text></g><g data-relationship="为响应提供依据"><path d="M34 392 V430" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 424 L34 431 L39 424" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="414" fill="#8eeadf" font-size="12.5" font-weight="600"><tspan x="50" dy="0">02→03 为响应提供依据</tspan></text></g><g data-concept="3"><rect x="16" y="436" width="328" height="94" rx="12" fill="#0e2036" stroke="#38597d"/><rect x="16" y="436" width="328" height="4" rx="2" fill="#a78bfa"/><text x="30" y="459" fill="#a78bfa" font-size="11.5" font-weight="700"><tspan x="30" dy="0">03 · 策略与门禁</tspan></text><text x="30" y="482" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">智能体、工具与企业数据</tspan></text><text x="30" y="509" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">意图 · 检索 · 授权操作</tspan></text></g><g data-relationship="合成响应"><path d="M34 532 V570" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 564 L34 571 L39 564" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="554" fill="#8eeadf" font-size="12.5" font-weight="600"><tspan x="50" dy="0">03→04 合成响应</tspan></text></g><g data-concept="4"><rect x="16" y="576" width="328" height="94" rx="12" fill="#122842" stroke="#38597d"/><rect x="16" y="576" width="328" height="4" rx="2" fill="#f59e0b"/><text x="30" y="599" fill="#f59e0b" font-size="11.5" font-weight="700"><tspan x="30" dy="0">04 · 执行与运行</tspan></text><text x="30" y="622" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">语音输出与双工控制</tspan></text><text x="30" y="649" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">TTS / 音频输出 · 打断 · 取消</tspan></text></g><g data-relationship="反馈至下一轮"><path d="M34 672 V710" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 704 L34 711 L39 704" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="694" fill="#8eeadf" font-size="12.5" font-weight="600"><tspan x="50" dy="0">04→05 反馈至下一轮</tspan></text></g><g data-concept="5"><rect x="16" y="716" width="328" height="94" rx="12" fill="#0e2036" stroke="#38597d"/><rect x="16" y="716" width="328" height="4" rx="2" fill="#56ddcd"/><text x="30" y="739" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="30" dy="0">05 · 审计与评测</tspan></text><text x="30" y="762" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">对话质量与证据</tspan></text><text x="30" y="789" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">在来源测试中追踪延迟、说话人与故障</tspan></text></g></svg><svg xmlns="http://www.w3.org/2000/svg" lang="zh-CN" class="knowledge-graph-wide" role="img" aria-labelledby="knowledge-3cd49af0fd09-title knowledge-3cd49af0fd09-desc" viewBox="0 0 1080 423" width="1080" style="width:100%;height:auto;max-width:1080px;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-3cd49af0fd09-title">AI Voice 开发者与架构师指南 · 选型测评、快速原型与行业场景搭建</title><desc id="knowledge-3cd49af0fd09-desc">音频输入与说话人上下文: 麦克风 · 轮次检测 · 说话人分离 → 流式传递至理解层 → 实时语音理解: ASR 或音频原生模型 · 对话状态 → 为响应提供依据 → 智能体、工具与企业数据: 意图 · 检索 · 授权操作 → 合成响应 → 语音输出与双工控制: TTS / 音频输出 · 打断 · 取消 → 反馈至下一轮 → 对话质量与证据: 在来源测试中追踪延迟、说话人与故障</desc><rect width="1080" height="423" rx="16" fill="#081525" stroke="#284566"/><rect x="24" y="16" width="292" height="24" rx="12" fill="#102742" stroke="#2d5a88"/><text x="38" y="32" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="38" dy="0">数据流向与核心要点架构图 · 横向全景</tspan></text><rect x="646" y="16" width="196" height="24" rx="12" fill="#0d2238" stroke="#254b6e"/><text x="660" y="32" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="660" dy="0">──▶ 阶段数据与上下文流</tspan></text><rect x="852" y="16" width="204" height="24" rx="12" fill="#15203c" stroke="#3b4278"/><text x="866" y="32" fill="#c4b5fd" font-size="11.5" font-weight="600"><tspan x="866" dy="0">◆ 策略门禁与要点说明</tspan></text><text x="24" y="62" fill="#f2f7ff" font-size="18" font-weight="700"><tspan x="24" dy="0">AI Voice 开发者与架构师指南 · 选型测评、快速原型与行业场景搭建</tspan></text><g data-concept="1"><rect x="24" y="81" width="187" height="186" rx="12" fill="#0d1e34" stroke="#335277" stroke-width="1.2"/><rect x="24" y="81" width="187" height="5" rx="2.5" fill="#38bdf8"/><rect x="34" y="94" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="40" y="109" fill="#38bdf8" font-size="11.5" font-weight="700"><tspan x="40" dy="0">01 · 输入与意图</tspan></text><text x="36" y="135" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="36" dy="0">音频输入与说话人上下</tspan><tspan x="36" dy="18.9">文</tspan></text><path d="M36 169 H199" stroke="#233b57" stroke-width="1"/><text x="36" y="187" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="36" dy="0">麦克风 · 轮次检测 · 说话</tspan><tspan x="36" dy="16.799999999999997">人分离</tspan></text></g><g data-relationship="流式传递至理解层"><path d="M213 174 H231" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M225 169 L232 174 L225 179" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="24" y="275" width="187" height="30" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="34" y="294" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="34" dy="0">01→02 流式传递至理解层</tspan></text></g><g data-concept="2"><rect x="235" y="81" width="187" height="186" rx="12" fill="#112640" stroke="#335277" stroke-width="1.2"/><rect x="235" y="81" width="187" height="5" rx="2.5" fill="#34d399"/><rect x="245" y="94" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="251" y="109" fill="#34d399" font-size="11.5" font-weight="700"><tspan x="251" dy="0">02 · 上下文锚定</tspan></text><text x="247" y="135" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="247" dy="0">实时语音理解</tspan></text><path d="M247 150 H410" stroke="#233b57" stroke-width="1"/><text x="247" y="168" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="247" dy="0">ASR 或音频原生模型 · 对话</tspan><tspan x="247" dy="16.799999999999997">状态</tspan></text></g><g data-relationship="为响应提供依据"><path d="M424 174 H442" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M436 169 L443 174 L436 179" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="235" y="275" width="187" height="30" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="245" y="294" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="245" dy="0">02→03 为响应提供依据</tspan></text></g><g data-concept="3"><rect x="446" y="81" width="187" height="186" rx="12" fill="#0d1e34" stroke="#335277" stroke-width="1.2"/><rect x="446" y="81" width="187" height="5" rx="2.5" fill="#a78bfa"/><rect x="456" y="94" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="462" y="109" fill="#a78bfa" font-size="11.5" font-weight="700"><tspan x="462" dy="0">03 · 策略与门禁</tspan></text><text x="458" y="135" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="458" dy="0">智能体、工具与企业数</tspan><tspan x="458" dy="18.9">据</tspan></text><path d="M458 169 H621" stroke="#233b57" stroke-width="1"/><text x="458" y="187" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="458" dy="0">意图 · 检索 · 授权操作</tspan></text></g><g data-relationship="合成响应"><path d="M635 174 H653" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M647 169 L654 174 L647 179" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="446" y="275" width="187" height="30" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="456" y="294" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="456" dy="0">03→04 合成响应</tspan></text></g><g data-concept="4"><rect x="657" y="81" width="187" height="186" rx="12" fill="#112640" stroke="#335277" stroke-width="1.2"/><rect x="657" y="81" width="187" height="5" rx="2.5" fill="#f59e0b"/><rect x="667" y="94" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="673" y="109" fill="#f59e0b" font-size="11.5" font-weight="700"><tspan x="673" dy="0">04 · 执行与运行</tspan></text><text x="669" y="135" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="669" dy="0">语音输出与双工控制</tspan></text><path d="M669 150 H832" stroke="#233b57" stroke-width="1"/><text x="669" y="168" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="669" dy="0">TTS / 音频输出 · 打断 ·</tspan><tspan x="669" dy="16.799999999999997">取消</tspan></text></g><g data-relationship="反馈至下一轮"><path d="M846 174 H864" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M858 169 L865 174 L858 179" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="657" y="275" width="187" height="30" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="667" y="294" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="667" dy="0">04→05 反馈至下一轮</tspan></text></g><g data-concept="5"><rect x="868" y="81" width="187" height="186" rx="12" fill="#0d1e34" stroke="#335277" stroke-width="1.2"/><rect x="868" y="81" width="187" height="5" rx="2.5" fill="#56ddcd"/><rect x="878" y="94" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="884" y="109" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="884" dy="0">05 · 审计与评测</tspan></text><text x="880" y="135" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="880" dy="0">对话质量与证据</tspan></text><path d="M880 150 H1043" stroke="#233b57" stroke-width="1"/><text x="880" y="168" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="880" dy="0">在来源测试中追踪延迟、说</tspan><tspan x="880" dy="16.799999999999997">话人与故障</tspan></text></g><rect x="868" y="275" width="187" height="30" rx="8" fill="#0e2538" stroke="#2e5470"/><text x="878" y="294" fill="#93c5fd" font-size="11.5" font-weight="600"><tspan x="878" dy="0">05 闭环 · 审计与证据核验</tspan></text><g data-takeaway="1"><rect x="24" y="319" width="334" height="88" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="24" y="331" width="4" height="64" rx="2" fill="#38bdf8"/><text x="38" y="344" fill="#38bdf8" font-size="11.5" font-weight="700"><tspan x="38" dy="0">要点 01 · 全链路数据流向</tspan></text><text x="38" y="365" fill="#d5e4f5" font-size="12" font-weight="400"><tspan x="38" dy="0">自左向右从「音频输入与说话人上下文」递进至「</tspan><tspan x="38" dy="16.799999999999997">对话质量与证据」，明确各阶段输入与输出契约。</tspan></text></g><g data-takeaway="2"><rect x="373" y="319" width="334" height="88" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="373" y="331" width="4" height="64" rx="2" fill="#a78bfa"/><text x="387" y="344" fill="#a78bfa" font-size="11.5" font-weight="700"><tspan x="387" dy="0">要点 02 · 核心控制与策略门禁</tspan></text><text x="387" y="365" fill="#d5e4f5" font-size="12" font-weight="400"><tspan x="387" dy="0">核心门禁「智能体、工具与企业数据」：意图 ·</tspan><tspan x="387" dy="16.799999999999997">检索 · 授权操作</tspan></text></g><g data-takeaway="3"><rect x="722" y="319" width="334" height="88" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="722" y="331" width="4" height="64" rx="2" fill="#34d399"/><text x="736" y="344" fill="#34d399" font-size="11.5" font-weight="700"><tspan x="736" dy="0">要点 03 · 证据核验与适用边界</tspan></text><text x="736" y="365" fill="#d5e4f5" font-size="12" font-weight="400"><tspan x="736" dy="0">在来源测试中追踪延迟、说话人与故障 · 概念拓</tspan><tspan x="736" dy="16.799999999999997">扑示意，非实测延迟。</tspan></text></g></svg><figcaption style="font:13px/1.6 system-ui,sans-serif;margin:10px auto 0;max-width:1080px;color:#9fb2ca;overflow-wrap:anywhere">整体架构与数据流向图示：自左向右阅读阶段数据流转、策略门禁与底部三项核心要点说明（概念拓扑，不代表实测吞吐或生产排名）。</figcaption></figure><!-- site-remediation-knowledge:end --><aside id="reading-language-note" class="reading-language-note">保留原文。可打开独立英文版本；不同版本的内容可能不同。</aside><main id="reading-main" tabindex="-1" class="reading-document">
-  <header class="topbar reading-resource-nav">
+  <meta name="description" content="面向学习者与开发者的 AI 语音实战门户：1）技术栈如何选型、测试比较与快速原型展示；2）四大行业场景（智能客服、知识短片配音、AI 陪护、车载/硬件）如何一步步搭建。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header class="topbar">
     <div class="brand">
       <div class="brand-badge">AV</div>
       <div>
@@ -109,19 +26,19 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
       <a href="#theme-scenarios" data-i18n="navScenarios">2. 行业场景搭建</a>
       <a href="#theme-case-study" data-i18n="navCaseStudy">★ 深度案例研究</a>
       <a href="#resources" data-i18n="navResources">开源仓库与报告</a>
-      <a href="../zh.html" data-i18n="navHome">← 返回主页</a>
+      <a href="../index.html" data-i18n="navHome">← 返回主页</a>
     </nav>
 
     <div class="topbar-actions">
       <div class="lang-switch" role="group" aria-label="Language Switcher">
-        <button type="button" class="lang-btn active" data-lang="zh-CN" hidden="" aria-hidden="true">简体</button>
-        <button type="button" class="lang-btn" data-lang="zh-TW" hidden="" aria-hidden="true">繁體</button>
-        <button type="button" class="lang-btn" data-lang="en" hidden="" aria-hidden="true">EN</button>
+        <button type="button" class="lang-btn active" data-lang="zh-CN">简体</button>
+        <button type="button" class="lang-btn" data-lang="zh-TW">繁體</button>
+        <button type="button" class="lang-btn" data-lang="en">EN</button>
       </div>
     </div>
   </header>
 
-  <div class="container">
+  <main class="container">
     <!-- Hero & 3-Step Learner Path -->
     <section class="hero">
       <div class="hero-eyebrow" data-i18n="heroEyebrow">✨ 化繁为简 · 面向学习者与一线开发者的 AI 语音实战手册</div>
@@ -169,144 +86,25 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
           <span class="badge" data-i18n="matcherBadge">点击下方卡片切换推荐方案</span>
         </div>
 
-        <div class="selector-grid" id="stackSelectorGrid">
-        <button type="button" class="selector-btn " data-stack-id="s2s_companion">
-          <span class="selector-btn-tag">Pattern A · Native S2S</span>
-          <span class="selector-btn-title">超低延时自然对话 / 情感陪护</span>
-          <span class="selector-btn-sub">P50 ~360ms · 随时打断 · 情绪共鸣</span>
-        </button>
-      
-        <button type="button" class="selector-btn active" data-stack-id="s2s_grounded">
-          <span class="selector-btn-tag">Pattern B · Grounded Hybrid</span>
-          <span class="selector-btn-title">智能客服 / 订单查询 / 严谨工具调用</span>
-          <span class="selector-btn-sub">零幻觉报数 · 后台状态机校验 · 权限护栏</span>
-        </button>
-      
-        <button type="button" class="selector-btn " data-stack-id="tts_voiceover">
-          <span class="selector-btn-tag">Pattern C · Neural HD TTS</span>
-          <span class="selector-btn-title">知识短片配音 / 播客 / 有声书批量生成</span>
-          <span class="selector-btn-sub">SSML 韵律精控 · 词级时间轴字幕 · 极低成本</span>
-        </button>
-      
-        <button type="button" class="selector-btn " data-stack-id="stt_diarization">
-          <span class="selector-btn-tag">Pattern D · Fast STT + Diarization</span>
-          <span class="selector-btn-title">通话录音质检 / 多人会议纪要 / 说话人分离</span>
-          <span class="selector-btn-sub">RTF 0.057 超快转写 · 客服/客户零串音分离</span>
-        </button>
-      </div>
-        <div class="recommendation-panel" id="stackRecommendationPanel">
-    <div class="rec-main">
-      <h4>推荐方案：双通道混合架构 (gpt-live-1 语音交互层 + 确定性 Tool / 推理验证层)</h4>
-      <p>纯端到端语音模型在直接心算复杂账单或背诵长订单号时容易产生口误。最佳实践是用 gpt-live-1 负责自然接话、安抚情绪与发起 Function Call，把算术计算、CRM 订单查询、退改签规则交给服务端确定性工具或推理模型（gpt-4.1-mini），再用 turnEpoch 令牌环防止用户打断后旧工具结果窜入新对话。</p>
-      <div class="rec-pills">
-        <span class="rec-pill">gpt-live-1 + Function Calling</span><span class="rec-pill">gpt-4.1-mini Verifier</span><span class="rec-pill">turnEpoch Stale-Output Guard</span><span class="rec-pill">SIP / WebRTC Bridge</span><span class="rec-pill">Human Handoff Summary</span>
-      </div>
-      <div>
-        <button type="button" class="btn btn-primary" id="jumpToBlueprintBtn">跳转至对应行业搭建蓝图 ↓</button>
-      </div>
-    </div>
-    <div class="rec-side">
-      
-        <div class="rec-side-row">
-          <span class="rec-side-label">常规对话延时</span>
-          <span class="rec-side-val">380 - 520 ms</span>
-        </div>
-      
-        <div class="rec-side-row">
-          <span class="rec-side-label">工具/算术核验准确率</span>
-          <span class="rec-side-val">100% (Deterministic)</span>
-        </div>
-      
-        <div class="rec-side-row">
-          <span class="rec-side-label">打断防串话机制</span>
-          <span class="rec-side-val">turnEpoch Guarded</span>
-        </div>
-      
-        <div class="rec-side-row">
-          <span class="rec-side-label">预估综合成本</span>
-          <span class="rec-side-val">~$0.042 - $0.060 / min</span>
-        </div>
-      
-    </div>
-  </div>
+        <div class="selector-grid" id="stackSelectorGrid"></div>
+        <div class="recommendation-panel" id="stackRecommendationPanel"></div>
       </div>
 
       <!-- Comprehensive Benchmark Comparison Table -->
       <div class="card">
         <div class="card-title-row">
           <div class="card-title" data-i18n="matrixTitle">📊 四大主流 AI Voice 技术栈实测对比表（含评测基准与成本）</div>
-          <div class="btn-row">
-            <a class="btn" href="benchmark-cards.zh-CN.html" target="_blank" rel="noopener" data-i18n="btnVoiceCards">查看实时语音 7-Card 评测报告 ↗</a>
-            <a class="btn" href="diarization-benchmark-cards.zh-CN.html" target="_blank" rel="noopener" data-i18n="btnDiarCards">查看说话人分离 7-Card 评测报告 ↗</a>
+          <div class="btn-row" style="margin-top:0;padding-top:0;">
+            <a class="btn" href="./benchmark-cards.html" target="_blank" rel="noopener" data-i18n="btnVoiceCards">查看实时语音 7-Card 评测报告 ↗</a>
+            <a class="btn" href="./diarization-benchmark-cards.html" target="_blank" rel="noopener" data-i18n="btnDiarCards">查看说话人分离 7-Card 评测报告 ↗</a>
           </div>
         </div>
-        <div class="table-wrap" id="stackMatrixTableWrap">
-    <table class="compare-table">
-      <thead>
-        <tr>
-          <th>技术栈模式</th>
-          <th>核心组件 / 代表服务</th>
-          <th>端到端延时 / 速度</th>
-          <th>核心优势与实测表现</th>
-          <th>能力边界（不适用情况）</th>
-          <th>参考成本</th>
-          <th>最佳匹配场景</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Pattern A · 原生全双工 S2S</strong></td>
-          <td class="mono">Azure VoiceLive<br>gpt-live-1</td>
-          <td class="mono">P50 ~360ms<br>支持毫秒级打断</td>
-          <td>情绪共鸣自然、副语言（停顿/笑声/叹气）保留完好，单 WebSocket 直连</td>
-          <td>不适合独立心算复杂账单或无护栏调用高危写接口</td>
-          <td class="mono">~$0.055 / min</td>
-          <td>🫶 AI 情感陪护、口语陪练、车载闲聊</td>
-        </tr>
-        <tr>
-          <td><strong>Pattern B · 双通道防幻觉语音</strong></td>
-          <td class="mono">gpt-live-1 + Tool<br>+ gpt-4.1-mini 校验</td>
-          <td class="mono">P50 ~420ms<br>工具返回可流式播报</td>
-          <td>兼顾自然接话与 100% 算术/订单核验准确度；<code>turnEpoch</code> 防止打断串话</td>
-          <td>需要编写清晰的工具 Schema 与状态机令牌管理</td>
-          <td class="mono">~$0.045 / min</td>
-          <td>🎧 智能客服热线、外呼核身、车载控车</td>
-        </tr>
-        <tr>
-          <td><strong>Pattern C · 表现力配音管线</strong></td>
-          <td class="mono">Azure Neural HD TTS<br>+ SSML + WordBoundary</td>
-          <td class="mono">首包 ~180ms<br>支持批量异步合成</td>
-          <td><code>&lt;phoneme&gt;</code> 100% 锁死术语发音，自动导出毫秒级对齐 SRT 字幕</td>
-          <td>单向播报管线，不用于双向实时自由抢话</td>
-          <td class="mono">~$0.015 / min</td>
-          <td>🎬 知识短片配音、有声书、新闻播客</td>
-        </tr>
-        <tr>
-          <td><strong>Pattern D · 高速转写与分轨质检</strong></td>
-          <td class="mono">Fast Transcription<br>2025-10-15 + Stereo/Diar</td>
-          <td class="mono">RTF 0.057 (双声道)<br>RTF 0.095 (单声道聚类)</td>
-          <td>224.8秒客服电话 12.9秒转完，28/28 句零串音；修复 SDK 默认漏标陷阱</td>
-          <td>属于录音后/准实时分析，需区分双声道与单声道策略</td>
-          <td class="mono">~$0.008 / min</td>
-          <td>📋 联络中心全量质检、合规审计、会议纪要</td>
-        </tr>
-        <tr>
-          <td><strong>行业外部对标参考</strong></td>
-          <td class="mono">Retell AI / ElevenLabs<br>/ Sierra / LiveKit</td>
-          <td class="mono">500ms - 950ms</td>
-          <td>ElevenLabs 克隆音色丰富；Retell/LiveKit WebRTC 生态组件成熟</td>
-          <td>跨云调用企业内部 CRM/ERP 需额外处理数据驻留与合规审计</td>
-          <td class="mono">$0.07 - $0.14 / min</td>
-          <td>快速外部 PoC、创意配音对比参考</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+        <div class="table-wrap" id="stackMatrixTableWrap"></div>
       </div>
     </section>
 
     <!-- THEME 1 PART B: RAPID PROTOTYPES -->
-    <section id="theme-prototypes" class="section">
+    <section id="theme-prototypes" class="section" style="padding-top: 1rem;">
       <div class="section-header">
         <span class="theme-pill" data-i18n="protoPill">RAPID PROTOTYPING · 真实可运行原型展示</span>
         <h2 data-i18n="protoTitle">二、快速原型展示：不看空洞概念，直接看实测录像与可跑代码</h2>
@@ -318,18 +116,18 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
       <div class="proto-grid">
         <!-- Prototype 1: GPT-Live-1 Realtime Demo -->
         <div class="proto-card">
-          <div class="card-title-row">
+          <div class="card-title-row" style="margin-bottom:0.2rem;">
             <div class="card-title" data-i18n="proto1Title">原型 A：GPT-Live-1 实时双向语音与防幻觉工具调用</div>
             <span class="badge emerald">Live App + 4m20s MP4</span>
           </div>
-          <p data-i18n="proto1Desc">
+          <p style="font-size:0.88rem;color:var(--text-secondary);" data-i18n="proto1Desc">
             实测展示 Azure VoiceLive WebSocket 24kHz 全双工语音、用户中途打断（Barge-in）、服务端时钟查询、精确算术（18×25+125=575）以及 Grounded 联网搜索。
           </p>
 
           <div class="video-frame">
-            <video id="gptLiveDemoVideo" controls="" preload="metadata">
-              <source src="https://turbo998.github.io/voice/GPT-Live-Azure-demo.mp4" type="video/mp4">
-              <source src="https://github.com/turbo998/gpt-live-1-demo/releases/download/v0.4.0/GPT-Live-Azure-demo.mp4" type="video/mp4">
+            <video id="gptLiveDemoVideo" controls preload="metadata">
+              <source src="https://turbo998.github.io/voice/GPT-Live-Azure-demo.mp4" type="video/mp4" />
+              <source src="https://github.com/turbo998/gpt-live-1-demo/releases/download/v0.4.0/GPT-Live-Azure-demo.mp4" type="video/mp4" />
             </video>
           </div>
 
@@ -352,11 +150,11 @@ npm run dev   # 打开 http://localhost:3000 即可麦克风对话</pre>
 
         <!-- Prototype 2: Azure Speech Diarization & Stereo Split PoC -->
         <div class="proto-card">
-          <div class="card-title-row">
+          <div class="card-title-row" style="margin-bottom:0.2rem;">
             <div class="card-title" data-i18n="proto2Title">原型 B：客服录音说话人分离与双声道质检 PoC</div>
             <span class="badge amber">RTF 0.057 · 100% 标记率</span>
           </div>
-          <p data-i18n="proto2Desc">
+          <p style="font-size:0.88rem;color:var(--text-secondary);" data-i18n="proto2Desc">
             定位并修复 Azure Speech Python SDK 1.49.0 默认 diarization.enabled=None 静默漏标问题：在官方混合单声道实现 0/8→8/8 (100%) 恢复，并在 224.8 秒真实客服双声道录音上用 12.9 秒完成 28/28 零串音归因。
           </p>
 
@@ -371,8 +169,8 @@ options = TranscriptionOptions(
 # 2. 联络中心双声道录音 (左=客服 ch0 / 右=客户 ch1)：物理音轨分离最快最准
 # 实测 224.8s 真实通话仅耗时 12.9s (RTF=0.057)，28/28 句 100% 准确归属</pre>
 
-          <div>
-            <strong data-i18n="proto2CalloutTitle">💡 学习者避坑要点（黄金法则）：</strong>
+          <div style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.3);border-radius:8px;padding:0.8rem 1rem;font-size:0.83rem;color:var(--text-secondary);">
+            <strong style="color:var(--accent-emerald);display:block;margin-bottom:0.25rem;" data-i18n="proto2CalloutTitle">💡 学习者避坑要点（黄金法则）：</strong>
             <span data-i18n="proto2CalloutBody">如果你的音频已经是立体声分轨（左声道坐席、右声道客户），千万不要混成单声道再跑聚类算法！直接按物理声道分离 + Fast Transcription，速度提升约 40%，且彻底消除重叠抢话串音。</span>
           </div>
 
@@ -380,7 +178,7 @@ options = TranscriptionOptions(
 cd azure-speech-diarization-poc &amp;&amp; pytest -q  # 16 passed</pre>
 
           <div class="btn-row">
-            <a class="btn btn-primary" href="diarization-benchmark-cards.zh-CN.html" target="_blank" rel="noopener" data-i18n="proto2BtnCards">查看 7-Card 实验对照明细 ↗</a>
+            <a class="btn btn-primary" href="./diarization-benchmark-cards.html" target="_blank" rel="noopener" data-i18n="proto2BtnCards">查看 7-Card 实验对照明细 ↗</a>
             <a class="btn" href="https://github.com/turbo998/azure-speech-diarization-poc" target="_blank" rel="noopener" data-i18n="proto2BtnRepo">GitHub 源码与复现脚本 ↗</a>
           </div>
         </div>
@@ -398,182 +196,29 @@ cd azure-speech-diarization-poc &amp;&amp; pytest -q  # 16 passed</pre>
       </div>
 
       <!-- 4 Scenario Selector Tabs -->
-      <div class="scenario-tabs" id="scenarioTabs">
-        <button type="button" class="scenario-tab active" data-scenario-id="customer_service">
-          <span class="scenario-tab-icon">🎧</span>
-          <span class="scenario-tab-title">1. 智能客服与录音质检</span>
-          <span class="scenario-tab-sub">热线自动应答 · 零幻觉查单 · 双声道质检</span>
-        </button>
-      
-        <button type="button" class="scenario-tab " data-scenario-id="knowledge_voiceover">
-          <span class="scenario-tab-icon">🎬</span>
-          <span class="scenario-tab-title">2. 知识短片与播客配音</span>
-          <span class="scenario-tab-sub">SSML 情绪重音 · 术语零读错 · 自动字幕</span>
-        </button>
-      
-        <button type="button" class="scenario-tab " data-scenario-id="ai_companion">
-          <span class="scenario-tab-icon">🫶</span>
-          <span class="scenario-tab-title">3. AI 陪护与情感伴侣</span>
-          <span class="scenario-tab-sub">长者慢语速防截断 · 情绪共情 · 记忆卡片</span>
-        </button>
-      
-        <button type="button" class="scenario-tab " data-scenario-id="smart_hardware">
-          <span class="scenario-tab-icon">🚗</span>
-          <span class="scenario-tab-title">4. 车载与智能硬件语音</span>
-          <span class="scenario-tab-sub">端云协同唤醒 · 免唤醒连续控车 · 离线兜底</span>
-        </button>
-      </div>
+      <div class="scenario-tabs" id="scenarioTabs"></div>
 
       <!-- Dynamic Blueprint Detail Container -->
-      <div class="blueprint-card" id="scenarioBlueprintContainer">
-    <div class="blueprint-header">
-      <div>
-        <h3>场景一：智能客服热线与全量录音质检 (Customer Service &amp; Contact Center QA)</h3>
-        <p>把客服场景拆成「通话中实时自助服务」与「通话后 100% 自动质检」两条清晰闭环：线上用 gpt-live-1 + 确定性工具查询订单/算退费（零幻觉），线下用双声道物理分轨 + Fast Transcription 在 13 秒内转完一通近 4 分钟的电话并自动打分。</p>
-      </div>
-      <span class="badge emerald">Pattern B (Live) + Pattern D (Post-Call QA)</span>
-    </div>
+      <div class="blueprint-card" id="scenarioBlueprintContainer"></div>
 
-    <div class="flow-steps">
-      
-        <div class="flow-step">
-          <span class="flow-step-num">STAGE 01 · 接入与打断</span>
-          <div class="flow-step-title">SIP/WebRTC 全双工接入</div>
-          <p class="flow-step-desc">24kHz PCM 双向流，Server Semantic VAD 自动检测客户插话并立即发送 response.cancel 停止播报。</p>
-        </div>
-      
-        <div class="flow-step">
-          <span class="flow-step-num">STAGE 02 · 零幻觉查单</span>
-          <div class="flow-step-title">确定性 Tool + turnEpoch</div>
-          <p class="flow-step-desc">查询订单状态、金额计算全部走服务端 Function Call，并通过 turnEpoch 过滤被客户打断的过期结果。</p>
-        </div>
-      
-        <div class="flow-step">
-          <span class="flow-step-num">STAGE 03 · 人机无缝转接</span>
-          <div class="flow-step-title">高风险操作转人工坐席</div>
-          <p class="flow-step-desc">遇到情绪激动或超权限退款，自动生成结构化摘要卡片连同通话上下文一键转交人工坐席。</p>
-        </div>
-      
-        <div class="flow-step">
-          <span class="flow-step-num">STAGE 04 · 录音秒级质检</span>
-          <div class="flow-step-title">双声道分轨 Fast STT 质检</div>
-          <p class="flow-step-desc">左声道(坐席)与右声道(客户)物理拆分转写，RTF=0.057，彻底消除抢话串音并自动执行合规评分。</p>
-        </div>
-      
-    </div>
-
-    <div class="blueprint-body">
-      <div>
-        <h4>关键技术栈与参数配置清单</h4>
-        <ul class="blueprint-list">
-          
-            <li>
-              <strong>推荐模型组合</strong>
-              <span>通话中：Azure VoiceLive gpt-live-1 + gpt-4.1-mini（工具核验）；通话后质检：Azure Speech Fast Transcription (2025-10-15)。</span>
-            </li>
-          
-            <li>
-              <strong>防幻觉关键设计</strong>
-              <span>在 System Prompt 中严禁模型口头编造单号或心算价格，强制要求先触发 lookup_order / calculate_quote 工具。</span>
-            </li>
-          
-            <li>
-              <strong>质检分轨黄金法则</strong>
-              <span>双声道录音直接按物理声道分离（100% 坐席/客户归属）；单声道录音必须显式传入 TranscriptionDiarizationOptions(enabled=True, max_speakers=2)。</span>
-            </li>
-          
-        </ul>
-        <div class="btn-row">
-          <a class="btn btn-primary" href="#theme-case-study">★ 查看智能硬件出海 6 语种客服深度案例 ↓</a><a class="btn " href="https://gpt-live-demo-0922-qc.azurewebsites.net/" target="_blank" rel="noopener">打开 GPT-Live 在线客服原型 ↗</a><a class="btn " href="https://github.com/turbo998/azure-speech-diarization-poc" target="_blank" rel="noopener">查看客服录音分轨 PoC 仓库 ↗</a>
-        </div>
-      </div>
-
-      <div>
-        <h4>可直接复用的核心代码模板</h4>
-        <pre class="code-snippet">// 客服双通道核心模式：turnEpoch 防止用户打断后旧工具结果串话
-let turnEpoch = 0;
-
-ws.on("message", async (raw) =&gt; {
-  const evt = JSON.parse(raw);
-
-  // 1) 客户开口打断：递增 turnEpoch 并取消当前语音输出
-  if (evt.type === "input_audio_buffer.speech_started") {
-    turnEpoch += 1;
-    ws.send(JSON.stringify({ type: "response.cancel" }));
-  }
-
-  // 2) 模型请求查询订单或核算退费金额
-  if (evt.type === "response.function_call_arguments.done") {
-    const myEpoch = turnEpoch;
-    const result = await executeDeterministicCrmTool(evt.name, JSON.parse(evt.arguments));
-    if (myEpoch !== turnEpoch) return; // 若客户已打断并开启新一轮对话，丢弃旧结果
-
-    ws.send(JSON.stringify({
-      type: "conversation.item.create",
-      item: { type: "function_call_output", call_id: evt.call_id, output: JSON.stringify(result) }
-    }));
-    ws.send(JSON.stringify({ type: "response.create" }));
-  }
-});</pre>
-      </div>
-    </div>
-  </div>
-
-      <!-- Interactive Stage 364 (P715–P722) Five Single-Topic Architect FAQ Sandbox -->
-      <div class="card" id="duplexGuardSimulatorCard">
+      <!-- Interactive Stage 365 (P715–P724) Multi-Topic Single-Decision Architect FAQ Sandbox: Cascaded vs. S2S · WebRTC vs. WS vs. SIP · Speculative Read-Only RAG (3A) · Async Tool Epoch Write Fence (3B) · Full-Duplex Nonlinear Echo & TSE Crosstalk Isolation (Round 4) · Warm Transfer Signed Screen-Pop & Consultative One-Way Whisper (Round 5) -->
+      <div class="card" id="duplexGuardSimulatorCard" style="margin-top:1.25rem;border-color:rgba(16,185,129,0.42);">
         <div class="card-title-row">
           <div>
-            <div class="card-title" data-i18n="simTitle">🧪 2026-11-08 五大独立单专题架构选型 FAQ 离线策略状态机沙盒：级联 vs S2S 合规锁 (P715) · 语义判停 EOU (P716) · WebRTC vs WS 抗抖动与 AEC3 (P717) · SIP 8kHz 带限抗混叠重采样 (P718) · 专题3A 只读投机预检索句尾核验 (P719) · 专题3B 异步写操作工具纪元栅栏 (P720) · 专题4 双讲非线性回声抑制与主呼人声纹锁 (P721–P722) (Stage 364 · P705–P722)</div>
-            <p data-i18n="simSub">
-              点击下方合成压测探针（Synthetic Policy Probes），验证离线内存策略状态机（计时分辨率 1ms，判定耗时 &lt;1ms 四舍五入记为 0ms；真实生产网络/模型切换耗时未在此本地沙盒实测 not_measured）对 P715–P722 八大核心语音架构护栏的规则判定：
+            <div class="card-title" data-i18n="simTitle">🧪 2026-11-08 单专题架构选型 FAQ 离线策略状态机沙盒：级联 vs S2S 合规锁 (P715/P716) · WebRTC vs WS vs SIP 8kHz 带限重采样 (P717/P718) · 只读投机语音 RAG [专题3A: P719] · 异步工具纪元写栅栏 [专题3B: P720] · 免提非线性回声与主叫声纹锁 [专题4: P721/P722] · 热转接 CTI 签名屏弹与单向耳语隔离 [专题5: P723/P724] (Stage 365 · P705–P724)</div>
+            <p style="font-size:0.85rem;color:var(--text-muted);margin-top:0.2rem;" data-i18n="simSub">
+              点击下方合成压测探针（Synthetic Policy Probes），验证离线内存策略状态机（计时分辨率 1ms，判定耗时 &lt;1ms 四舍五入记为 0ms；真实生产网络/向量库重查/Saga 回滚/流式声学 DSP 帧推理/SIP B2BUA 桥接信令耗时未在此本地沙盒实测 not_measured）对 P715–P724 核心语音架构护栏的规则判定：
             </p>
           </div>
-          <span class="badge emerald">Stage 364 · P705–P722 Policy Sandbox</span>
+          <span class="badge emerald">Stage 365 · P705–P724 Policy Sandbox</span>
         </div>
-        <div style="margin: 12px 0 16px;">
-          <img src="./05-daily-breakthrough-2026-11-08.svg" alt="2026-11-08 企业级 Voice Agent 大脑层架构选型与双层语义判停一图流总结" style="width:100%;height:auto;border-radius:10px;border:1px solid rgba(56,189,248,0.28);display:block;margin-bottom:12px;" loading="lazy" />
-          <img src="./06-webrtc-vs-websocket-vs-sip-2026-11-08.svg" alt="2026-11-08 企业级 Voice Agent 接入网 WebRTC vs WebSocket vs SIP 一图流总结" style="width:100%;height:auto;border-radius:10px;border:1px solid rgba(56,189,248,0.28);display:block;margin-bottom:12px;" loading="lazy" />
-          <img src="./07-speculative-voice-rag-2026-11-08.svg" alt="2026-11-08 企业级 Voice Agent 专题3A 只读投机语音 RAG 与专题3B 异步工具纪元写栅栏一图流总结" style="width:100%;height:auto;border-radius:10px;border:1px solid rgba(56,189,248,0.28);display:block;margin-bottom:12px;" loading="lazy" />
-          <img src="./08-barge-in-echo-crosstalk-2026-11-08.svg" alt="2026-11-08 企业级 Voice Agent 专题4 全双工打断抗回声与旁人串音隔离一图流总结" style="width:100%;height:auto;border-radius:10px;border:1px solid rgba(56,189,248,0.28);display:block;" loading="lazy" />
-        </div>
-        <div class="chapter-bar" id="duplexSimTabs"><button type="button" class="chapter-btn active" data-duplex-sim="p705_epoch_abort">① P705 · 话中并行工具流抢占打断 (Epoch 41→42)</button><button type="button" class="chapter-btn " data-duplex-sim="p705_backchannel_keep">② P705 · 客户附和“嗯嗯/对”不断句续说</button><button type="button" class="chapter-btn " data-duplex-sim="p706_vadfree_hold">③ P706 · BayLing-Duplex 报卡号呼吸停顿 <listen> 保持</listen></button><button type="button" class="chapter-btn " data-duplex-sim="p706_persona_watermark">④ P706 · PersonaPlex-7B 零样本克隆授权与 C2PA 水印门禁</button></div>
-        <div id="duplexSimOutput">
-    <div>
-      ✅ 0ms 拦截成功：NemotronLabs VoiceChat 11B / gpt-realtime-2.1 正在边说边执行写操作工具（epoch=41），客户突然插话改主意（epoch=42），写栅栏 0ms 物理中止旧纪元 CRM/ERP 提交并清空残余音频缓冲。
-    </div>
-    <div class="proto-grid">
-      <div>
-        <div>INPUT TELEMETRY PAYLOAD (Stage 356 Probe)</div>
-        <pre class="code-snippet">{
-  "policyId": "P705-FULL-DUPLEX-MID-DIALOGUE-PARALLEL-TOOL-STREAM-AND-BACKCHANNEL-RESUME-GUARD",
-  "activeTurnEpoch": 42,
-  "toolInvocationEpoch": 41,
-  "isStateMutatingTool": true,
-  "userTakeoverInterruptionDetected": true,
-  "backchannelOverlapDetected": false,
-  "concurrentMidDialogueToolCalls": 2,
-  "activeAudioContextTokens": 128000
-}</pre>
-      </div>
-      <div>
-        <div>DETERMINISTIC VERIFIER VERDICT (0ms Gate)</div>
-        <pre class="code-snippet">{
-  "blocked": true,
-  "abortLatencyMs": 0,
-  "staleEpochToolMutationAborted": true,
-  "backchannelContinuationPreserved": false,
-  "clampedConcurrentToolCalls": 2,
-  "clampedAudioContextTokens": 128000,
-  "remediation": "ABORT_STALE_EPOCH_MID_DIALOGUE_TOOL_MUTATION_AND_FLUSH_AUDIO_BUFFER"
-}</pre>
-      </div>
-    </div>
-  </div>
+        <div class="chapter-bar" id="duplexSimTabs" style="margin-bottom:0.9rem;"></div>
+        <div id="duplexSimOutput"></div>
       </div>
     </section>
 
     <!-- THEME 2 PART B: FLAGSHIP CASE STUDY DEEP DIVE -->
-    <section id="theme-case-study" class="section">
+    <section id="theme-case-study" class="section" style="padding-top: 1.2rem;">
       <div class="section-header">
         <span class="theme-pill theme-two" data-i18n="casePill">FLAGSHIP CASE STUDY · 行业应用场景案例详细研究</span>
         <h2 data-i18n="caseTitle">四、深度案例研究：智能硬件出海 6 语种 AI 语音客服（25万→75万只智能戒指）</h2>
@@ -582,114 +227,27 @@ ws.on("message", async (raw) =&gt; {
         </p>
       </div>
 
-      <div class="card">
+      <div class="card" style="border-color: rgba(56, 189, 248, 0.38);">
         <div class="card-title-row">
           <div>
             <div class="card-title" data-i18n="caseBannerTitle">💍 客户画像与北极星目标：销量翻 3 倍（250K → 750K），客服席位不增反降（18 席 → 8 席）</div>
-            <p data-i18n="caseBannerSub">
+            <p style="font-size:0.86rem;color:var(--text-muted);margin-top:0.2rem;" data-i18n="caseBannerSub">
               覆盖北美、欧洲、日韩 6 种语言 · 年均 10 万通→30 万通来电（60万→180万分钟） · 38% 发生在非工作时段 · 涉锂电池发热与心率睡眠数据合规红线
             </p>
           </div>
-          <div class="btn-row">
-            <a class="btn btn-primary" href="case-study.html" id="caseDocLink" data-i18n="btnReadCaseDoc">阅读完整案例研究报告 ↗</a>
+          <div class="btn-row" style="margin-top:0;padding-top:0;">
+            <a class="btn btn-primary" href="./case-study.html" id="caseDocLink" data-i18n="btnReadCaseDoc">阅读完整案例研究报告 ↗</a>
           </div>
         </div>
 
         <!-- KPI Summary Strip -->
-        <div class="flow-steps" id="caseKpiStrip">
-      <div class="flow-step">
-        <span class="flow-step-num">KPI 01 · 自助闭环率</span>
-        <div class="flow-step-title">60% 零转人工闭环</div>
-        <p class="flow-step-desc">且 7 天内不因同一问题复呼；单次联系成本降低 40%，人工席位从 18 席压降至 8 席。</p>
-      </div>
-    
-      <div class="flow-step">
-        <span class="flow-step-num">KPI 02 · 首响与打断</span>
-        <div class="flow-step-title">P50 &lt; 0.8s · 打断 &lt; 0.3s</div>
-        <p class="flow-step-desc">7×24 全天候接通率 ≥99%，弥补 38% 夜间/周末跨时区盲区（CSAT ≥ 4.5 / 5.0）。</p>
-      </div>
-    
-      <div class="flow-step">
-        <span class="flow-step-num">KPI 03 · 安全与隐私</span>
-        <div class="flow-step-title">99% 安全事件 &lt;30s 转接</div>
-        <p class="flow-step-desc">电池发热/膨胀零漏报直转 D365 人工；心率/睡眠等健康 PII 脱敏率 100%。</p>
-      </div>
-    
-      <div class="flow-step">
-        <span class="flow-step-num">KPI 04 · 单位成本与回本</span>
-        <div class="flow-step-title">$5.00 → $0.40 / 通</div>
-        <p class="flow-step-desc">AI 语音仅 $0.08/分钟；首年总成本省 $205K (-41%)，次年 3 倍话务省 $714K (-48%)，约 5 个月回本。</p>
-      </div>
-    </div>
+        <div class="flow-steps" id="caseKpiStrip" style="margin-bottom:1.15rem;"></div>
 
         <!-- 6 Interactive Deep-Dive Tabs -->
-        <div class="chapter-bar" id="caseStudyTabs">
-        <button type="button" class="chapter-btn active" data-case-tab="goals">
-          ① 业务痛点→技术指标
-        </button>
-      
-        <button type="button" class="chapter-btn " data-case-tab="arch">
-          ② 四通道选型与两阶段写入
-        </button>
-      
-        <button type="button" class="chapter-btn " data-case-tab="routing">
-          ③ 并行决策层与 6 引擎评测
-        </button>
-      
-        <button type="button" class="chapter-btn " data-case-tab="guardrails">
-          ④ 知识库与五重安全护栏
-        </button>
-      
-        <button type="button" class="chapter-btn " data-case-tab="finops">
-          ⑤ 成本拆解与 5 个月回本 ROI
-        </button>
-      
-        <button type="button" class="chapter-btn " data-case-tab="cloud">
-          ⑥ 方案商横评与 GCP 对标
-        </button>
-      </div>
+        <div class="chapter-bar" id="caseStudyTabs" style="margin-bottom:1rem;"></div>
 
         <!-- Dynamic Case Study Tab Content -->
-        <div id="caseStudyContent">
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>痛点维度</th>
-                  <th>客户真实痛点（30人智能戒指团队）</th>
-                  <th>业务验收结果 (Business Goal)</th>
-                  <th>可量化技术指标 (PoC → Prod SLA)</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><strong>1. 降本增效</strong><br><span class="badge">Lower Cost</span></td>
-                  <td>深圳 6 名工程师兼职 + 海外外包 12 席，重复回答查物流、换尺码、重置固件；明年销量 25万→75万只，招人将吃光利润。</td>
-                  <td><strong>60%</strong> 来电由 AI 独立闭环（不转人工且 7 天不复呼）；单次联系成本降低 <strong>40%</strong>。</td>
-                  <td>• 意图识别准确率：PoC ≥ 90%，Prod ≥ 95%<br>• 工具调用成功率：≥ 98%（带参数校验）<br>• 知识库命中率 (Foundry IQ)：≥ 90%</td>
-                </tr>
-                <tr>
-                  <td><strong>2. 跨时区体验</strong><br><span class="badge emerald">Better CX</span></td>
-                  <td><strong>38%</strong> 来电发生在下班/周末；德国用户周六来电等待 18 分钟挂断，随后在 Amazon 留 1 星差评。</td>
-                  <td><strong>7×24</strong> 接通率 ≥ 99%；客户满意度 <strong>CSAT ≥ 4.5 / 5.0</strong>。</td>
-                  <td>• 首包响应延时：<strong>P50 &lt; 0.8s，P95 &lt; 1.5s</strong><br>• 客户插话打断停播：<strong>&lt; 0.3s</strong><br>• 6 语种口音词错率 (WER)：≤ 8%</td>
-                </tr>
-                <tr>
-                  <td><strong>3. 安全与合规</strong><br><span class="badge amber">Safety &amp; GDPR</span></td>
-                  <td>智能戒指紧贴手指且含锂电池，充电发烫/过敏属高危；通话常涉心率、睡眠等敏感健康数据（受 GDPR 严格监管）。</td>
-                  <td><strong>99%</strong> 安全事件 <strong>30 秒内</strong>带上下文转人工；零数据泄露与零违规承诺。</td>
-                  <td>• 安全高危意图召回率：<strong>≥ 99%</strong><br>• 越狱/注入拦截率 (Prompt Shields)：≥ 99%<br>• 无依据回答率：≤ 2%；健康数据脱敏率：<strong>100%</strong></td>
-                </tr>
-                <tr>
-                  <td><strong>4. 产研缺陷闭环</strong><br><span class="badge">Issue Loop</span></td>
-                  <td>日本连发 3 起睡眠同步失败，散落在三名坐席手中，研发 <strong>14 天后</strong>才知晓固件 Bug。</td>
-                  <td>新固件缺陷 <strong>1 周内</strong>自动聚类告警；新增语种上线 <strong>≤ 2 周</strong>。</td>
-                  <td>• 通话 100% 转写 + 自动结构化摘要<br>• 峰值并发能力：≥ 200 路；可用性：99.9%</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <div id="caseStudyContent"></div>
       </div>
     </section>
 
@@ -701,86 +259,21 @@ ws.on("message", async (raw) =&gt; {
         <p data-i18n="resDesc">所有代码、架构图、7-Card 评测报告均已开源并提供中英对照文档，方便按需深入学习或二次开发：</p>
       </div>
 
-      <div class="resource-grid" id="resourceGrid">
-      <div class="resource-card">
-        <span class="badge">Flagship Case Study</span>
-        <h4>智能硬件出海 6 语种 AI 语音客服深度案例研究</h4>
-        <p>涵盖 25万→75万只智能戒指业务痛点转化、Voice Live 四模式、两阶段幂等写入、MS-Decision-1 路由评测、$0.08/分钟成本拆解与 Azure/GCP 对标。</p>
-        <div class="btn-row">
-          <a class="btn" href="case-study.html" target="_blank" rel="noopener">阅读完整案例研究专页 ↗</a>
-        </div>
-      </div>
-    
-      <div class="resource-card">
-        <span class="badge">Repo 01 · Live S2S</span>
-        <h4>turbo998/gpt-live-1-demo</h4>
-        <p>Azure VoiceLive (gpt-live-1) 实时双向语音全栈原型，含服务端确定性工具调用、Barge-in 打断与 4m20s 实录视频 Release。</p>
-        <div class="btn-row">
-          <a class="btn" href="https://github.com/turbo998/gpt-live-1-demo" target="_blank" rel="noopener">访问 GitHub 仓库 ↗</a>
-        </div>
-      </div>
-    
-      <div class="resource-card">
-        <span class="badge">Repo 02 · Diarization PoC</span>
-        <h4>turbo998/azure-speech-diarization-poc</h4>
-        <p>Azure Speech Fast Transcription (2025-10-15) 说话人分离与客服双声道分轨实证仓库，含 16 项自动化单元测试与对照证据包。</p>
-        <div class="btn-row">
-          <a class="btn" href="https://github.com/turbo998/azure-speech-diarization-poc" target="_blank" rel="noopener">访问 GitHub 仓库 ↗</a>
-        </div>
-      </div>
-    
-      <div class="resource-card">
-        <span class="badge">Repo 03 · Architecture Lab</span>
-        <h4>turbo998/voice-agent-lab</h4>
-        <p>AI 语音工程主仓库：汇总选型方法论、双通道防幻觉模式、行业蓝图文档与中英双语技术手册。</p>
-        <div class="btn-row">
-          <a class="btn" href="https://github.com/turbo998/voice-agent-lab" target="_blank" rel="noopener">访问 GitHub 仓库 ↗</a>
-        </div>
-      </div>
-    
-      <div class="resource-card">
-        <span class="badge">7-Card Visual Reports</span>
-        <h4>双份 4:5 标准评测报告与 16:9 演示讲义</h4>
-        <p>包含《实时语音与路由评测 7-Card 报告（含 Stage 364 P715–P722 · 367维 · 731护栏 · 740探针）》、《说话人分离与分轨 PoC 7-Card 报告》以及《16:9 架构演示幻灯片》。</p>
-        <div class="btn-row">
-          <a class="btn" href="deck.html" target="_blank" rel="noopener">打开 16:9 架构讲义 ↗</a>
-        </div>
-      </div>
-    
-      <div class="resource-card">
-        <span class="badge">Daily Breakthrough &amp; FAQ · 2026-11-08</span>
-        <h4>五大独立单专题企业语音架构选型 FAQ（大脑层 · 接入网 · 只读投机 RAG · 工具写栅栏 · 全双工抗回声与声纹隔离）</h4>
-        <p>严格遵循单专题六段式 FAQ 规范，涵盖：① 级联 vs S2S 选型 (P715–P716)；② WebRTC vs WS vs SIP 接入网 (P717–P718)；③A 只读投机语音 RAG 句尾核验 (P719)；③B 异步写操作工具纪元写栅栏与 Saga 冲正 (P720)；④ 全双工打断非线性回声抑制与主呼人声纹隔离 (P721–P722)，配套 4 张高清 SVG 一图流总结。</p>
-        <div class="btn-row">
-          <a class="btn btn-primary" href="cascaded-vs-s2s-semantic-turn-faq.md" target="_blank" rel="noopener">专题1：级联 vs S2S ↗</a>
-          <a class="btn btn-primary" href="webrtc-vs-websocket-vs-sip-ingress-selection-faq.md" target="_blank" rel="noopener">专题2：WebRTC vs WS vs SIP ↗</a>
-          <a class="btn btn-primary" href="speculative-voice-rag-faq.md" target="_blank" rel="noopener">专题3A：只读投机语音 RAG ↗</a>
-          <a class="btn btn-primary" href="voice-tool-epoch-fence-faq.md" target="_blank" rel="noopener">专题3B：异步工具纪元写栅栏 ↗</a>
-          <a class="btn btn-primary" href="barge-in-echo-crosstalk-faq.md" target="_blank" rel="noopener">专题4：抗回声与旁人串音隔离 ↗</a>
-          <a class="btn" href="05-daily-breakthrough-2026-11-08.svg" target="_blank" rel="noopener">大脑层 SVG ↗</a>
-          <a class="btn" href="06-webrtc-vs-websocket-vs-sip-2026-11-08.svg" target="_blank" rel="noopener">接入网 SVG ↗</a>
-          <a class="btn" href="07-speculative-voice-rag-2026-11-08.svg" target="_blank" rel="noopener">RAG/工具层 SVG ↗</a>
-          <a class="btn" href="08-barge-in-echo-crosstalk-2026-11-08.svg" target="_blank" rel="noopener">声学隔离 SVG ↗</a>
-          <a class="btn" href="benchmark-cards.zh-CN.html" target="_blank" rel="noopener">7-Card 评测矩阵 ↗</a>
-        </div>
-      </div>
-    </div>
+      <div class="resource-grid" id="resourceGrid"></div>
     </section>
 
     <footer class="footer">
       <div data-i18n="footerLeft">AI Voice 开发者学习与方案门户 · 聚焦「技术选型测评」与「行业场景快速搭建」</div>
       <div>
-        <a href="deck.html" target="_blank" rel="noopener" data-i18n="footerDeck">架构师演示幻灯片 (16:9 Deck) ↗</a>
+        <a href="./deck.html" target="_blank" rel="noopener" data-i18n="footerDeck">架构师演示幻灯片 (16:9 Deck) ↗</a>
         &nbsp;·&nbsp;
-        <a href="benchmark-cards.zh-CN.html" target="_blank" rel="noopener">Voice 7-Card Report ↗</a>
+        <a href="./benchmark-cards.html" target="_blank" rel="noopener">Voice 7-Card Report ↗</a>
         &nbsp;·&nbsp;
-        <a href="diarization-benchmark-cards.zh-CN.html" target="_blank" rel="noopener">Diarization 7-Card Report ↗</a>
+        <a href="./diarization-benchmark-cards.html" target="_blank" rel="noopener">Diarization 7-Card Report ↗</a>
       </div>
     </footer>
-  </div>
+  </main>
 
   <script src="./app.js" type="module"></script>
-
-
-</main>
-</body></html>
+</body>
+</html>
