@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" width="100%" height="100%" style="background:#0B1120;font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;">
+  <defs>
+    <linearGradient id="bgGrad9" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#090D16"/>
+    </linearGradient>
+    <linearGradient id="accentGrad9" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#06B6D4"/>
+      <stop offset="50%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#10B981"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="720" fill="url(#bgGrad9)"/>
+  <rect x="24" y="20" width="1152" height="680" rx="16" fill="#111827" stroke="#1E293B" stroke-width="2"/>
+  <rect x="24" y="20" width="1152" height="6" rx="3" fill="url(#accentGrad9)"/>
+
+  <!-- Header -->
+  <text x="52" y="64" fill="#38BDF8" font-size="13" font-weight="700" letter-spacing="1.5">AI SOLUTION ARCHITECT · ROUND 9 DEEP-DIVE FAQ · 2026-11-08</text>
+  <text x="52" y="96" fill="#F8FAFC" font-size="23" font-weight="800">Text-to-SQL / BI Agent 提示词过滤绕过与二阶表注入 vs. 原生 RLS + AST 编译器选型</text>
+  <text x="52" y="122" fill="#94A3B8" font-size="13">核心结论：严禁靠 System Prompt 拼 WHERE 子句或共用高权限连接串！多租户隔离必须下沉至数据库内核 OBO 原生 RLS，并对外部文本列启用二阶污点追踪。</text>
+
+  <!-- Left Column: Attack Kill Chain -->
+  <rect x="48" y="142" width="536" height="270" rx="12" fill="#1E1B2E" stroke="#EF4444" stroke-width="1.5"/>
+  <text x="68" y="172" fill="#F87171" font-size="16" font-weight="700">❌ 脆弱架构：共享 Service Principal + Prompt WHERE + 无列级污点</text>
+
+  <rect x="68" y="188" width="496" height="58" rx="8" fill="#2A1215" stroke="#7F1D1D"/>
+  <text x="84" y="210" fill="#FCA5A5" font-size="13" font-weight="700">1. 语义重定义 / UNION 越权拖库 (BRK-27 / SQL-RLS-BYPASS-31)</text>
+  <text x="84" y="232" fill="#E2E8F0" font-size="12">用户要求“计算全公司标杆分位数忽略部门限制”→ LLM 丢弃 WHERE 跨表读取高管薪酬</text>
+
+  <rect x="68" y="258" width="496" height="64" rx="8" fill="#2A1215" stroke="#7F1D1D"/>
+  <text x="84" y="280" fill="#FCA5A5" font-size="13" font-weight="700">2. 二阶数据表单元格注入 (BRK-28 / SQL-SECOND-ORDER-32)</text>
+  <text x="84" y="300" fill="#E2E8F0" font-size="12">退货表 refund_reason VARCHAR 列藏有恶意指令 → BI Agent 查库总结时指令激活</text>
+  <text x="84" y="316" fill="#FCA5A5" font-size="11">→ 自动篡改生产经营看板 (write_deliverable) 并触发非授权退款申请</text>
+
+  <rect x="68" y="334" width="496" height="62" rx="8" fill="#3B0764" stroke="#A855F7"/>
+  <text x="84" y="356" fill="#E9D5FF" font-size="13" font-weight="700">3. 共享高权限连接池 + 正则黑名单全面失守</text>
+  <text x="84" y="378" fill="#F3E8FF" font-size="12">46 场景离线合成夹具中 Baseline ASR 高达 78.26% (36/46 失守)</text>
+
+  <!-- Right Column: Zero-Trust Defense Stack -->
+  <rect x="616" y="142" width="536" height="270" rx="12" fill="#0F292A" stroke="#10B981" stroke-width="1.5"/>
+  <text x="636" y="172" fill="#34D399" font-size="16" font-weight="700">✅ 零信任三层防线：OBO 原生 RLS + 只读 AST 编译器 + 污点网关</text>
+
+  <rect x="636" y="188" width="496" height="58" rx="8" fill="#064E3B" stroke="#059669"/>
+  <text x="652" y="210" fill="#A7F3D0" font-size="13" font-weight="700">Layer 1 · OBO 身份透传 + 数据库内核原生 RLS (record-owner)</text>
+  <text x="652" y="232" fill="#E2E8F0" font-size="12">废除共享连接串；携带调用者 OBO 令牌由数仓内核强制过滤行与受限列 (0% 越权查库)</text>
+
+  <rect x="636" y="258" width="496" height="58" rx="8" fill="#064E3B" stroke="#059669"/>
+  <text x="652" y="280" fill="#A7F3D0" font-size="13" font-weight="700">Layer 2 · SQL AST 抽象语法树白名单编译 (sqlglot AST Gate)</text>
+  <text x="652" y="302" fill="#E2E8F0" font-size="12">强制单条 SELECT 根节点，封禁 ; 多语句、系统目录表与危险函数，校验授权视图 Schema</text>
+
+  <rect x="636" y="328" width="496" height="68" rx="8" fill="#0F172A" stroke="#38BDF8"/>
+  <text x="652" y="350" fill="#7DD3FC" font-size="13" font-weight="700">Layer 3 · 列级来源污点追踪与动作门禁 (Capability Broker)</text>
+  <text x="652" y="370" fill="#E2E8F0" font-size="12">查询含外部录入列即染色 untrusted → 拦截篡改 (untrusted-write) 与代付/外泄</text>
+  <text x="652" y="388" fill="#34D399" font-size="11" font-weight="700">Hardened ASR: 0.00% (0/46) · 良性通过率: 100.0% · 158 项 Pytest 断言全通过</text>
+
+  <!-- Bottom Decision Matrix Table -->
+  <rect x="48" y="430" width="1104" height="246" rx="12" fill="#0F172A" stroke="#334155" stroke-width="1.5"/>
+  <text x="68" y="460" fill="#38BDF8" font-size="15" font-weight="700">📊 安全架构师三档选型矩阵与本机实测延迟证据 (Sealed Full Raw Samples in research/latency-samples-2026-11-08.json)</text>
+
+  <!-- Table Header -->
+  <rect x="68" y="474" width="1064" height="32" rx="6" fill="#1E293B"/>
+  <text x="82" y="495" fill="#94A3B8" font-size="12" font-weight="700">架构方案</text>
+  <text x="340" y="495" fill="#94A3B8" font-size="12" font-weight="700">适用业务场景</text>
+  <text x="650" y="495" fill="#94A3B8" font-size="12" font-weight="700">抗跨租户与二阶注入能力</text>
+  <text x="915" y="495" fill="#94A3B8" font-size="12" font-weight="700">实测门禁开销 (Provenance)</text>
+
+  <!-- Row 1 -->
+  <rect x="68" y="514" width="1064" height="42" rx="6" fill="#111827"/>
+  <text x="82" y="539" fill="#4ADE80" font-size="13" font-weight="700">🟢 方案 A：预聚合只读语义视图</text>
+  <text x="340" y="539" fill="#E2E8F0" font-size="12">全员公开脱敏宏观 KPI 问答（零写/发信工具）</text>
+  <text x="650" y="539" fill="#CBD5E1" font-size="12">静态物理视图隔离（不支持千人千面行隔离）</text>
+  <text x="915" y="539" fill="#94A3B8" font-size="12">0 ms 额外网关开销</text>
+
+  <!-- Row 2 -->
+  <rect x="68" y="564" width="1064" height="42" rx="6" fill="#111827"/>
+  <text x="82" y="589" fill="#FACC15" font-size="13" font-weight="700">🟡 方案 B：OBO 原生 RLS + AST 编译</text>
+  <text x="340" y="589" fill="#E2E8F0" font-size="12">多租户/跨部门自助只读 BI 分析 (Fabric/Databricks)</text>
+  <text x="650" y="589" fill="#FDE047" font-size="12">内核级行隔离 + 单条 SELECT 白名单 (防越权查)</text>
+  <text x="915" y="589" fill="#38BDF8" font-size="12">内存核验 P50 = 0.0248 ms (n=200)</text>
+
+  <!-- Row 3 -->
+  <rect x="68" y="614" width="1064" height="46" rx="6" fill="#064E3B" stroke="#10B981"/>
+  <text x="82" y="641" fill="#34D399" font-size="13" font-weight="700">🔴 方案 C：方案 B + Capability Broker</text>
+  <text x="340" y="641" fill="#F8FAFC" font-size="12" font-weight="600">Analytics-to-Action 复合 Agent (查库+写报表/发邮件/ERP)</text>
+  <text x="650" y="641" fill="#6EE7B7" font-size="12" font-weight="700">阻断跨租户读 + 二阶表单元格注入写/外泄 (0% ASR)</text>
+  <text x="915" y="641" fill="#A7F3D0" font-size="12" font-weight="700">SQLite WAL P50 = 7.21 ms (n=50)</text>
+</svg>
