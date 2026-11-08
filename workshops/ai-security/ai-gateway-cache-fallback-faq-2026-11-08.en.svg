@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675">
+  <defs>
+    <linearGradient id="bg10e" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#090d16"/>
+      <stop offset="55%" stop-color="#111827"/>
+      <stop offset="100%" stop-color="#1e1b4b"/>
+    </linearGradient>
+    <linearGradient id="red10e" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#7f1d1d"/>
+      <stop offset="100%" stop-color="#450a0a"/>
+    </linearGradient>
+    <linearGradient id="green10e" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#065f46"/>
+      <stop offset="100%" stop-color="#022c22"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="675" fill="url(#bg10e)"/>
+
+  <!-- Header -->
+  <rect x="32" y="24" width="1136" height="92" rx="14" fill="#0f172a" stroke="#38bdf8" stroke-width="1.5"/>
+  <text x="54" y="54" fill="#38bdf8" font-family="Segoe UI, Inter, sans-serif" font-size="14" font-weight="700">AI SOLUTION ARCHITECT · 2026-11-08 ROUND 10 DEEP DIVE · TURBO998/AI-SECURITY-LAB</text>
+  <text x="54" y="84" fill="#f8fafc" font-family="Segoe UI, Inter, sans-serif" font-size="21" font-weight="800">AI Gateway Prompt Cache Side-Channels &amp; 429 Fallback Downgrades vs. Tenant HMAC &amp; Capability Broker</text>
+  <text x="54" y="106" fill="#94a3b8" font-family="Segoe UI, Inter, sans-serif" font-size="13">Modeled on ib-vs-ethernet-roce-selection-faq.md · 48 Scenarios / 162 Pytest Assertions Passed · In-Memory Broker P50=0.0248ms (n=200 Sealed)</text>
+
+  <!-- Left Column: 3 AI Gateway Attack Vectors -->
+  <rect x="32" y="132" width="554" height="360" rx="14" fill="#18181b" stroke="#ef4444" stroke-width="1.5"/>
+  <rect x="48" y="148" width="522" height="40" rx="8" fill="url(#red10e)"/>
+  <text x="64" y="174" fill="#fecaca" font-family="Segoe UI, Inter, sans-serif" font-size="16" font-weight="700">❌ 3 Structural AI Gateway Failure Modes (100% Breached in Baseline)</text>
+
+  <rect x="48" y="202" width="522" height="84" rx="10" fill="#27272a" stroke="#7f1d1d" stroke-width="1"/>
+  <text x="64" y="226" fill="#fca5a5" font-family="Segoe UI, Inter, sans-serif" font-size="15" font-weight="700">1. Global KV-Cache Timing Side-Channel &amp; Semantic Cache Bleed</text>
+  <text x="64" y="248" fill="#e4e4e7" font-family="Segoe UI, Inter, sans-serif" font-size="12.5">• Shared vLLM/SGLang prefix pool: 14ms hit vs 180ms miss leaks Tenant A's cached M&amp;A prompt</text>
+  <text x="64" y="268" fill="#e4e4e7" font-family="Segoe UI, Inter, sans-serif" font-size="12.5">• Global Semantic Cache (&gt;0.92 cosine) serves Tenant A's restricted-budget answer to Tenant B</text>
+
+  <rect x="48" y="298" width="522" height="84" rx="10" fill="#27272a" stroke="#7f1d1d" stroke-width="1"/>
+  <text x="64" y="322" fill="#fca5a5" font-family="Segoe UI, Inter, sans-serif" font-size="15" font-weight="700">2. HTTP 429 Quota-Exhaustion Fallback Downgrade Jailbreak</text>
+  <text x="64" y="344" fill="#e4e4e7" font-family="Segoe UI, Inter, sans-serif" font-size="12.5">• Attacker floods primary frontier model quota (429), forcing failover to weak 8B fallback model</text>
+  <text x="64" y="364" fill="#e4e4e7" font-family="Segoe UI, Inter, sans-serif" font-size="12.5">• Weak fallback model succumbs to invoice injection, leaking cache &amp; calling request_payment($920)</text>
+
+  <rect x="48" y="394" width="522" height="84" rx="10" fill="#27272a" stroke="#7f1d1d" stroke-width="1"/>
+  <text x="64" y="418" fill="#fca5a5" font-family="Segoe UI, Inter, sans-serif" font-size="15" font-weight="700">3. Gateway Observability &amp; Telemetry Log Second-Order Poisoning</text>
+  <text x="64" y="440" fill="#e4e4e7" font-family="Segoe UI, Inter, sans-serif" font-size="12.5">• Raw attacker prompts land in gateway error logs; nightly SecOps Agent ingests logs for triage</text>
+  <text x="64" y="460" fill="#e4e4e7" font-family="Segoe UI, Inter, sans-serif" font-size="12.5">• Hijacked SecOps Agent executes update_trust("trust-registry") to whitelist attacker skill</text>
+
+  <!-- Right Column: 3 Zero-Trust Gateway Controls -->
+  <rect x="614" y="132" width="554" height="360" rx="14" fill="#0f172a" stroke="#10b981" stroke-width="1.5"/>
+  <rect x="630" y="148" width="522" height="40" rx="8" fill="url(#green10e)"/>
+  <text x="646" y="174" fill="#a7f3d0" font-family="Segoe UI, Inter, sans-serif" font-size="16" font-weight="700">✅ 3 Deterministic Zero-Trust Gateway Gates (0.0% Breached)</text>
+
+  <rect x="630" y="202" width="522" height="84" rx="10" fill="#1e293b" stroke="#065f46" stroke-width="1"/>
+  <text x="646" y="226" fill="#6ee7b7" font-family="Segoe UI, Inter, sans-serif" font-size="15" font-weight="700">Gate 1: Tenant-Keyed HMAC KV-Cache + record-owner Isolation</text>
+  <text x="646" y="248" fill="#e2e8f0" font-family="Segoe UI, Inter, sans-serif" font-size="12.5">• Cache Key = HMAC_SHA256(tenant_key, tenant_id || role || tokens) prevents cross-tenant hits</text>
+  <text x="646" y="268" fill="#e2e8f0" font-family="Segoe UI, Inter, sans-serif" font-size="12.5">• Ban cross-tenant Semantic Cache on sensitive data; block non-owner reads (rule="record-owner")</text>
+
+  <rect x="630" y="298" width="522" height="84" rx="10" fill="#1e293b" stroke="#065f46" stroke-width="1"/>
+  <text x="646" y="322" fill="#6ee7b7" font-family="Segoe UI, Inter, sans-serif" font-size="15" font-weight="700">Gate 2: Fail-Closed Safety-Tier Pinning &amp; Degraded Taint Lock</text>
+  <text x="646" y="344" fill="#e2e8f0" font-family="Segoe UI, Inter, sans-serif" font-size="12.5">• Strip write/payment tools &amp; stamp taint="untrusted" when failing over to a lower-tier model</text>
+  <text x="646" y="364" fill="#e2e8f0" font-family="Segoe UI, Inter, sans-serif" font-size="12.5">• Tag all gateway telemetry log fields source_trust="untrusted" to protect SecOps triage agents</text>
+
+  <rect x="630" y="394" width="522" height="84" rx="10" fill="#1e293b" stroke="#065f46" stroke-width="1"/>
+  <text x="646" y="418" fill="#6ee7b7" font-family="Segoe UI, Inter, sans-serif" font-size="15" font-weight="700">Gate 3: Model-Agnostic Capability Broker (0.0248ms In-Memory P50)</text>
+  <text x="646" y="440" fill="#e2e8f0" font-family="Segoe UI, Inter, sans-serif" font-size="12.5">• Blocks untrusted-write (trust-registry / business-result mutation) regardless of upstream LLM</text>
+  <text x="646" y="460" fill="#e2e8f0" font-family="Segoe UI, Inter, sans-serif" font-size="12.5">• Enforces restricted-data-boundary (stops cache exfil) &amp; original-requester-payment</text>
+
+  <!-- Bottom KPI & Decision Bar -->
+  <rect x="32" y="508" width="1136" height="142" rx="14" fill="#0f172a" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="54" y="538" fill="#a5b4fc" font-family="Segoe UI, Inter, sans-serif" font-size="15" font-weight="700">📊 Architect Quick Selection &amp; Sealed Benchmark Evidence (Strict Provenance Separation)</text>
+
+  <rect x="54" y="552" width="350" height="80" rx="10" fill="#1e293b"/>
+  <text x="70" y="576" fill="#38bdf8" font-family="Segoe UI, Inter, sans-serif" font-size="13" font-weight="700">SYNTHETIC FIXTURE EVAL (48 Scenarios / 162 Tests)</text>
+  <text x="70" y="602" fill="#f8fafc" font-family="Segoe UI, Inter, sans-serif" font-size="18" font-weight="800">ASR: 79.17% ➔ 0.00% (0% FP)</text>
+  <text x="70" y="622" fill="#94a3b8" font-family="Segoe UI, Inter, sans-serif" font-size="11.5">Added BRK-29 (Cache/Fallback) &amp; BRK-30 (Log Poisoning)</text>
+
+  <rect x="424" y="552" width="360" height="80" rx="10" fill="#1e293b"/>
+  <text x="440" y="576" fill="#10b981" font-family="Segoe UI, Inter, sans-serif" font-size="13" font-weight="700">MEASURED LOCAL TIMING (n=200 &amp; n=50 Full Arrays)</text>
+  <text x="440" y="602" fill="#f8fafc" font-family="Segoe UI, Inter, sans-serif" font-size="18" font-weight="800">Memory P50=0.0248ms | WAL P50=7.21ms</text>
+  <text x="440" y="622" fill="#94a3b8" font-family="Segoe UI, Inter, sans-serif" font-size="11.5">run_id: tier1-n200-429d84e952d449bb (Win11 ARM64)</text>
+
+  <rect x="804" y="552" width="342" height="80" rx="10" fill="#1e293b"/>
+  <text x="820" y="576" fill="#f59e0b" font-family="Segoe UI, Inter, sans-serif" font-size="13" font-weight="700">ARCHITECT SELECTION RULES OF THUMB</text>
+  <text x="820" y="598" fill="#f8fafc" font-family="Segoe UI, Inter, sans-serif" font-size="12.5">1. Salt every KV-Cache key with HMAC(tenant_id)</text>
+  <text x="820" y="616" fill="#f8fafc" font-family="Segoe UI, Inter, sans-serif" font-size="12.5">2. Strip write tools on 429 fallback + Broker gate</text>
+</svg>

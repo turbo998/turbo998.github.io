@@ -1131,6 +1131,81 @@
         <div id="pii-readout" style="margin-top:8px;font-size:12px;line-height:1.48;"></div>
       </div>
 
+      <!-- Interactive Flash-Sale Inventory Lease & Zero-Oversell Sandbox (Round 19 FAQ Companion) -->
+      <div class="finops-box" id="inventory-reservation-oversell-sandbox" style="margin-top:12px;border-color:#10B981;">
+        <div class="panel-header" style="margin-bottom:8px;padding-bottom:6px;">
+          <span class="panel-title" id="ui-inv-title">📦 AI Agent 秒杀抢购、并发锁库与防超卖架构：180s 租约 (inv_hold_...) + manual 预授权双锁 vs 无锁超卖退费与恶意占库决策器 (Round 19 FAQ Companion)</span>
+        </div>
+        <div class="control-row">
+          <label><span>1. 并发秒杀阶段、买家锁库配额与 Fencing Token 栅栏状态 (Flash-Sale Phase, Quota &amp; Lease Fencing State):</span></label>
+          <select id="inv-select" onchange="updateInventoryReservationSandbox()">
+            <option value="inv_commit_ok">⚡ 双锁对齐原子成交：MandateVC 有效 + 配额&lt;=2 → 签发 inv_hold_... (180s) + manual 预授权并核验 Fencing Token=42 实扣 $999.00! (280ms · 0 超卖)</option>
+            <option value="inv_quote_ok">📍 比价试算零锁库快照：Agent 并发调用 30 家店铺 calculate_order → 仅返回可用库存快照 (lock_acquired=False · 185ms)，杜绝占库耗尽!</option>
+            <option value="inv_hoard_429">🛑 恶意比价爬虫超额囤货拦截：单买家试图同时锁定第 3 件商品 (active_holds=3 &gt; 2 synthetic_policy) → 16ms 触发 HTTP 429 硬阻断!</option>
+            <option value="inv_expired_409">🔄 180s 租约过期自动冲正预授权：僵尸 Agent 卡顿 195s 后携旧 token=41(&lt;42) 请求出库 → 24ms 触发 HTTP 409 并 Void 预授权 ($0.00 退费手续费损耗!)</option>
+            <option value="inv_backorder_409">🧑‍⚖️ 断货转 14 天延期预售 / 替代型号：Web IQ /v3/browse 检出隐藏预售小字 → 340ms 触发 HTTP 409 Confirm 交人类买家拍板!</option>
+            <option value="inv_stockout_409">🛑 现货彻底售罄零扣款终止：Redis Lua 原子递减返回 0 且无预售 → 14ms 触发 HTTP 409 STOCKOUT_ZERO_CHARGE_ABORT ($0.00 扣款)</option>
+          </select>
+        </div>
+        <div id="inv-readout" style="margin-top:8px;font-size:12px;line-height:1.48;"></div>
+      </div>
+
+      <!-- Interactive Multi-Currency FX Quote Lock & Anti-DCC Sandbox (Round 20 FAQ Companion) -->
+      <div class="finops-box" id="multi-currency-fx-quote-sandbox" style="margin-top:12px;border-color:#38BDF8;">
+        <div class="panel-header" style="margin-bottom:8px;padding-bottom:6px;">
+          <span class="panel-title" id="ui-fx-title">💱 跨境多币种 AI Agent 锁汇与计价架构：300s 锁汇令牌 (fx_quote_...) + ISO 4217 零小数位护栏 vs DCC 暴利加点与 100x 误扣决策器 (Round 20 FAQ Companion)</span>
+        </div>
+        <div class="control-row">
+          <label><span>1. 跨境币种、汇率加点与 ISO 4217 小数位传参场景 (Cross-Border Currency, FX Spread &amp; Minor-Unit Scenario):</span></label>
+          <select id="fx-select" onchange="updateMultiCurrencyFxSandbox()">
+            <option value="fx_commit_ok">⚡ 源币种 JPY + 300s 批发锁汇正常成交：¥70,000 JPY (exp=0) 经 fx_quote_live_... (80 bps) 折算 $458.18 &lt;= $500 Mandate → 270ms 成交立省 $25.92!</option>
+            <option value="fx_100x_422">🚨 零小数位币种 (JPY) 100 倍放大拦截：LLM 将 ¥70,000 JPY 误乘 100 传成 amount=7000000 → 14ms 触发 HTTP 422 硬阻断 (避免多扣 $45,454!)</option>
+            <option value="fx_dcc_403">🛑 收单端 DCC 暴利汇率加点拦截：Web IQ 检出结账页默认勾选 USD DCC (650 bps &gt; 150 bps synthetic_policy) → 18ms 触发 HTTP 403 拒选 DCC!</option>
+            <option value="fx_expired_409">🔄 300s 锁汇过期或汇率跳水超 Mandate：fx_quote_live_... 已逾 300s TTL 或折算金额超买家预算上限 → 22ms 触发 HTTP 409 Confirm!</option>
+            <option value="fx_refund_ok">🛡️ 14 天后跨期退货锚定原单 fx_quote_id 全额退款：无视市场 4.2% 汇率波动，245ms 精准退回买家原实付 $458.18 USD (0.0% 汇损)</option>
+            <option value="fx_refund_unpinned_409">🛑 未锚定原单汇率的裸即期退货拦截：试图按退货当日贬值后即期汇率少退买家 $19.24 → 19ms 触发 HTTP 409 硬阻断!</option>
+          </select>
+        </div>
+        <div id="fx-readout" style="margin-top:8px;font-size:12px;line-height:1.48;"></div>
+      </div>
+
+      <!-- Interactive Coupon Anti-Stacking & Two-Phase Loyalty-Fiat Saga Sandbox (Round 21 FAQ Companion) -->
+      <div class="finops-box" id="loyalty-coupon-hybrid-saga-sandbox" style="margin-top:12px;border-color:#F59E0B;">
+        <div class="panel-header" style="margin-bottom:8px;padding-bottom:6px;">
+          <span class="panel-title" id="ui-promo-title">🎟️ AI Agent 优惠券寻优与会员积分混合支付架构：受众核销锁 + 积分/法币双轨回滚 (promo_lock_... + loyalty_hold_...) vs 爆破叠加与吞积分决策器 (Round 21 FAQ Companion)</span>
+        </div>
+        <div class="control-row">
+          <label><span>1. 促销码试算、互斥叠加与积分/法币混合支付场景 (Promo Probing, Stacking &amp; Hybrid Loyalty-Fiat Scenario):</span></label>
+          <select id="promo-select" onchange="updateLoyaltyCouponSandbox()">
+            <option value="promo_commit_ok">⚡ 合规单券 ($20) + 10,000 积分 ($100) + 法币 ($80) 双轨原子成交：软冻结转正核销，账实完全一致! (275ms · Act automatically)</option>
+            <option value="promo_brute_429">🛑 优惠码字典穷举爆破拦截：单次结账会话第 4 次循环试探网传优惠码 (attempts=4 &gt; 3 synthetic_policy) → 14ms 触发 HTTP 429 硬阻断!</option>
+            <option value="promo_stack_403">🚨 API 数组注入互斥神券叠加 / 击穿 40% 毛利底线：传入 ["VIP20","EMP50"] (60% OFF) → 17ms 触发 HTTP 403 硬阻断!</option>
+            <option value="promo_decline_402">🔄 法币卡拒付触发积分毫秒级自动归还：剩余 $80.00 刷卡遇 402 拒付 → 21ms 自动释放 loyalty_hold 与单次神券 (净扣 0 积分!)</option>
+            <option value="promo_excl_409">🧑‍⚖️ Web IQ 检出指定品牌不参与满减：/v3/browse 识别限量款显卡在活动排除列表内 → 310ms 触发 HTTP 409 Confirm 提醒买家!</option>
+            <option value="promo_return_200">🛡️ 50% 部分退货等比退分退钱 (Pro-Rata Split Refund)：退回 5,000 积分至积分池 + 退回 $40.00 至原卡 (235ms)，杜绝积分套现!</option>
+          </select>
+        </div>
+        <div id="promo-readout" style="margin-top:8px;font-size:12px;line-height:1.48;"></div>
+      </div>
+
+      <!-- Interactive Regulated & Age-Restricted W3C ZKP Eligibility Sandbox (Round 22 FAQ Companion) -->
+      <div class="finops-box" id="regulated-zkp-eligibility-sandbox" style="margin-top:12px;border-color:#10B981;">
+        <div class="panel-header" style="margin-bottom:8px;padding-bottom:6px;">
+          <span class="panel-title" id="ui-zkp-title">🪪 受监管商品（21+ 酒类/处方药/B2B 专营）零知识核验架构：W3C ZKP 谓词凭证 (zkp_vc_live_... + order_nonce) vs 自填生日伪造与身份证原件泄露决策器 (Round 22 FAQ Companion)</span>
+        </div>
+        <div class="control-row">
+          <label><span>1. 法定购买资格核验、证件隐私保护与属地禁售场景 (Regulated SKU Eligibility, ZKP Privacy &amp; Shipping Jurisdiction Scenario):</span></label>
+          <select id="zkp-select" onchange="updateRegulatedZkpSandbox()">
+            <option value="zkp_commit_ok">⚡ W3C ZKP 零知识谓词核验通过 (zkp_vc_live_991a · age_over_21=true)：0 字节生日/身份证号暴露 + 面单绑定 21+ 成人当面签收! (260ms · Act automatically)</option>
+            <option value="zkp_self_403">🛑 Agent 自填出生日期 / 勾选“已满 21 岁”伪造绕过拦截：仅传 is_over_21=true 或 birth_date="1990-01-01" → 14ms 触发 HTTP 403 硬阻断!</option>
+            <option value="zkp_raw_id_422">🚨 对话框上传身份证/驾照/处方单高清原件拦截：检出明文证件照片与公民身份号码 → 15ms 触发 HTTP 422 前置阻断 (0 bytes 落盘)!</option>
+            <option value="zkp_replay_401">🛑 跨单重放旧证明或借用他人成年凭证拦截：zkp_vc_live_... 内部 order_nonce 不匹配或超 180s TTL → 16ms 触发 HTTP 401 硬阻断!</option>
+            <option value="zkp_jurisdiction_451">⚖️ Web IQ 检出收货邮编属禁酒县/跨州禁寄区：买家虽满 21 岁，但 /v3/browse 核验目标州禁止酒精直邮 → 315ms 触发 HTTP 451 法规阻断!</option>
+          </select>
+        </div>
+        <div id="zkp-readout" style="margin-top:8px;font-size:12px;line-height:1.48;"></div>
+      </div>
+
       <!-- Interactive Stage 1756 Sandbox: Web IQ RBAC/Browse-Passage + Stripe MCP Nov 30 Cutoff + Multi-Rail BNPL SPT -->
       <div class="finops-box" id="stage1756-sandbox" style="margin-top:12px;border-color:#06B6D4;">
         <div class="panel-header" style="margin-bottom:8px;padding-bottom:6px;">
@@ -1588,6 +1663,10 @@ function renderAll() {
   updateAp2CircuitBreakerSandbox();
   updateIdempotencyDeduplicationSandbox();
   updatePrivacyPiiSandbox();
+  updateInventoryReservationSandbox();
+  updateMultiCurrencyFxSandbox();
+  updateLoyaltyCouponSandbox();
+  updateRegulatedZkpSandbox();
   updateStage1752Sandbox();
   updateStage1753Sandbox();
   updateStage1754Sandbox();
@@ -2710,6 +2789,233 @@ function updatePrivacyPiiSandbox() {
     "<div style='background:var(--green-bg);border:1px solid var(--green);color:#A7F3D0;padding:8px 10px;border-radius:8px;'>" +
     "<strong>📍 比价阶段粗粒度邮编前缀试算通过 (COARSE_GEO_QUOTE_AUTHORIZED · 195ms · Act automatically):</strong><br>" +
     "• <strong>最小化披露</strong>：向 10 家比价商户仅传递非识别粗粒度前缀 <code>US-CA-940</code> 即可精准算出州税与运费，9 家未成交商户拿不到任何街道门牌或手机号（<code>0 bytes</code> PII 暴露）！" +
+    "</div>";
+}
+
+function updateInventoryReservationSandbox() {
+  var selEl = document.getElementById("inv-select");
+  var outEl = document.getElementById("inv-readout");
+  if (!selEl || !outEl) return;
+
+  var v = selEl.value;
+
+  if (v === "inv_hoard_429") {
+    outEl.innerHTML =
+      "<div style='background:var(--red-bg);border:1px solid var(--red);color:#FECACA;padding:8px 10px;border-radius:8px;font-weight:600;'>" +
+      "🛑 HTTP 429 BLOCKED_CART_HOARDING_QUOTA_EXCEEDED (16ms · Send to a human · synthetic_policy)：<br>" +
+      "检测到同一买家主体试图并发锁定第 3 个活跃库存句柄（超过单买家并发锁库上限 <code>max_active_holds=2</code>）或缺少有效 <code>MandateVC</code>，当场拦截以防止比价机器人占库耗尽攻击（Denial-of-Inventory）！" +
+      "</div>";
+    return;
+  }
+
+  if (v === "inv_expired_409") {
+    outEl.innerHTML =
+      "<div style='background:rgba(245,158,11,0.18);border:1px solid #F59E0B;color:#FDE68A;padding:8px 10px;border-radius:8px;font-weight:600;'>" +
+      "🔄 HTTP 409 INVENTORY_LEASE_EXPIRED_PREAUTH_VOIDED (24ms · Send to a human · official_doc_snapshot)：<br>" +
+      "Agent 锁库租约（<code>180s TTL</code>）已超时回收且栅栏令牌失配（<code>fencing_token 41 &lt; current 42</code>）！网关拒绝出库并立即调用 <code>payment_intents.cancel</code> 冲正未捕获的 <code>manual</code> 预授权——买家实扣 <code>$0.00</code>，商户免遭 <code>2.9% + $0.30</code> 退费手续费损失（<code>$0.00</code> 损耗）！" +
+      "</div>";
+    return;
+  }
+
+  if (v === "inv_backorder_409") {
+    outEl.innerHTML =
+      "<div style='background:rgba(245,158,11,0.18);border:1px solid #F59E0B;color:#FDE68A;padding:8px 10px;border-radius:8px;font-weight:600;'>" +
+      "🧑‍⚖️ HTTP 409 BACKORDER_OR_SUBSTITUTE_CONFIRM_REQUIRED (340ms · Confirm · synthetic_policy)：<br>" +
+      "实时现货已归零！Microsoft Web IQ <code>/v3/browse</code> 检出商户页面提供 <code>14 天</code> 延期预售（超过 <code>3 天</code> 现货阈值）或替代型号，严禁 Agent 静默换货扣款，已路由人类买家显式确认！" +
+      "</div>";
+    return;
+  }
+
+  if (v === "inv_stockout_409") {
+    outEl.innerHTML =
+      "<div style='background:var(--red-bg);border:1px solid var(--red);color:#FECACA;padding:8px 10px;border-radius:8px;font-weight:600;'>" +
+      "🛑 HTTP 409 STOCKOUT_ZERO_CHARGE_ABORT (14ms · Send to a human · deterministic_offline_simulation)：<br>" +
+      "Redis Lua 原子库存递减返回 <code>available_qty=0</code> 且无可用预售，在发起任何支付扣款前安全终止（实扣 <code>$0.00</code>，退费手续费损耗 <code>$0.00</code>）！" +
+      "</div>";
+    return;
+  }
+
+  if (v === "inv_quote_ok") {
+    outEl.innerHTML =
+      "<div style='background:var(--green-bg);border:1px solid var(--green);color:#A7F3D0;padding:8px 10px;border-radius:8px;'>" +
+      "<strong>📍 比价试算非约束库存快照返回 (NON_BINDING_QUOTE_SNAPSHOT · 185ms · lock_acquired=False · Act automatically):</strong><br>" +
+      "• <strong>抗占库设计</strong>：<code>calculate_order</code> 仅返回当前可售水位与含税运报价，绝不锁死物理库存，允许全网比价 Agent 高并发询价而不会饿死真实买家！" +
+      "</div>";
+    return;
+  }
+
+  outEl.innerHTML =
+    "<div style='background:var(--green-bg);border:1px solid var(--green);color:#A7F3D0;padding:8px 10px;border-radius:8px;'>" +
+    "<strong>⚡ 180s 锁库租约 + manual 预授权双锁原子成交 (ATOMIC_HOLD_AND_CAPTURE_COMMITTED · 280ms · Act automatically):</strong><br>" +
+    "• <strong>0.0% 超卖率</strong>：核验 <code>MandateVC</code> 有效、配额 <code>1&lt;=2</code> 且单调递增栅栏令牌 <code>fencing_token === 42</code> 后，原子提交 WMS 出库并执行 <code>payment_intents.capture</code>（实扣 <code>$999.00</code>，手续费损耗 <code>$0.00</code>）！" +
+    "</div>";
+}
+
+function updateMultiCurrencyFxSandbox() {
+  var selEl = document.getElementById("fx-select");
+  var outEl = document.getElementById("fx-readout");
+  if (!selEl || !outEl) return;
+
+  var v = selEl.value;
+
+  if (v === "fx_100x_422") {
+    outEl.innerHTML =
+      "<div style='background:var(--red-bg);border:1px solid var(--red);color:#FECACA;padding:8px 10px;border-radius:8px;font-weight:600;'>" +
+      "🚨 HTTP 422 BLOCKED_ZERO_DECIMAL_100X_MULTIPLIER_BUG (14ms · Send to a human · official_doc_snapshot)：<br>" +
+      "ISO 4217 货币小数位指数校验失败！日元（<code>JPY</code>，<code>exponent=0</code>）标价 <code>¥70,000</code> 被大模型按美元习惯误乘 <code>100</code> 传成 <code>amount=7000000</code>（百倍天价误扣 <code>~$45,454 USD</code>），已在网关层当场阻断（实扣 <code>$0.00</code>）！" +
+      "</div>";
+    return;
+  }
+
+  if (v === "fx_dcc_403") {
+    outEl.innerHTML =
+      "<div style='background:var(--red-bg);border:1px solid var(--red);color:#FECACA;padding:8px 10px;border-radius:8px;font-weight:600;'>" +
+      "🛑 HTTP 403 BLOCKED_PREDATORY_DCC_MARKUP_TRAP (18ms · Send to a human · synthetic_policy)：<br>" +
+      "Microsoft Web IQ <code>/v3/browse</code> 检出海外商户结账页默认开启收单端动态货币转换（DCC），隐性汇率加点高达 <code>650 bps (6.5%)</code>，远超企业风控上限 <code>150 bps</code>！已强制拒选 DCC 并切回商户源币种（<code>JPY</code>）结算。" +
+      "</div>";
+    return;
+  }
+
+  if (v === "fx_expired_409") {
+    outEl.innerHTML =
+      "<div style='background:rgba(245,158,11,0.18);border:1px solid #F59E0B;color:#FDE68A;padding:8px 10px;border-radius:8px;font-weight:600;'>" +
+      "🔄 HTTP 409 FX_QUOTE_EXPIRED_OR_MANDATE_EXCEEDED (22ms · Confirm · synthetic_policy)：<br>" +
+      "批发锁汇令牌 <code>fx_quote_live_...</code> 已超过 <code>300 秒</code> TTL 或汇率剧烈跳水导致折算美元金额超过买家签名 <code>MandateVC</code> 上限，已拦截扣款并请求重新锁汇或人类买家确认！" +
+      "</div>";
+    return;
+  }
+
+  if (v === "fx_refund_ok") {
+    outEl.innerHTML =
+      "<div style='background:var(--green-bg);border:1px solid var(--green);color:#A7F3D0;padding:8px 10px;border-radius:8px;'>" +
+      "<strong>🛡️ 跨期退货锚定原单 fx_quote_id 全额退回 (PINNED_FX_RATE_FULL_REFUND_RESTORED · 245ms · Act automatically):</strong><br>" +
+      "• <strong>0.0% 跨期汇损</strong>：尽管退货发生在 14 天后且市场汇率已波动 <code>4.2%</code>，网关强制锚定原单锁汇凭证 <code>fxq_01</code> 原路退回完整 <code>$458.18 USD</code>！" +
+      "</div>";
+    return;
+  }
+
+  if (v === "fx_refund_unpinned_409") {
+    outEl.innerHTML =
+      "<div style='background:var(--red-bg);border:1px solid var(--red);color:#FECACA;padding:8px 10px;border-radius:8px;font-weight:600;'>" +
+      "🛑 HTTP 409 UNPINNED_REFUND_FX_SLIPPAGE_BLOCKED (19ms · Send to a human · synthetic_policy)：<br>" +
+      "拒绝未锚定原单汇率的裸即期退款（<code>pin_original_fx_quote=False</code>）！防止因跨期汇率波动导致买家少收 <code>$19.24 USD</code> 本金或财务总账无法平账。" +
+      "</div>";
+    return;
+  }
+
+  outEl.innerHTML =
+    "<div style='background:var(--green-bg);border:1px solid var(--green);color:#A7F3D0;padding:8px 10px;border-radius:8px;'>" +
+    "<strong>⚡ 源币种 JPY + 300s 批发锁汇正常成交 (FX_QUOTE_LOCKED_PRESENTMENT_COMMITTED · 270ms · Act automatically):</strong><br>" +
+    "• <strong>单笔立省 $25.92 USD</strong>：通过 ISO 4217 零小数位校验（<code>amount=70000</code>），拒选 6.5% DCC 陷阱，凭 <code>fx_quote_live_...</code>（<code>80 bps</code> 批发加点）锁定折算价 <code>$458.18 &lt;= $500.00 Mandate</code> 原子成交！" +
+    "</div>";
+}
+
+function updateLoyaltyCouponSandbox() {
+  var selEl = document.getElementById("promo-select");
+  var outEl = document.getElementById("promo-readout");
+  if (!selEl || !outEl) return;
+
+  var v = selEl.value;
+
+  if (v === "promo_brute_429") {
+    outEl.innerHTML =
+      "<div style='background:var(--red-bg);border:1px solid var(--red);color:#FECACA;padding:8px 10px;border-radius:8px;font-weight:600;'>" +
+      "🛑 HTTP 429 BLOCKED_COUPON_BRUTE_FORCE_ENUMERATION (14ms · Send to a human · synthetic_policy)：<br>" +
+      "当前结账会话已连续尝试第 4 个优惠码（超过单会话上限 <code>max_promo_attempts=3</code>），疑似省钱 Agent 循环暴力穷举网传神券，已当场冻结试券权限！" +
+      "</div>";
+    return;
+  }
+
+  if (v === "promo_stack_403") {
+    outEl.innerHTML =
+      "<div style='background:var(--red-bg);border:1px solid var(--red);color:#FECACA;padding:8px 10px;border-radius:8px;font-weight:600;'>" +
+      "🚨 HTTP 403 BLOCKED_UNAUTHORIZED_COUPON_AUDIENCE_OR_STACKING (17ms · Send to a human · synthetic_policy)：<br>" +
+      "后端排他性组（Exclusivity DAG）与毛利护栏检出违规！Agent 试图通过 JSON 数组同时注入互斥券 <code>["VIP20","EMP50"]</code> 导致总折扣达 <code>60%</code>（击穿 <code>40%</code> 毛利红线），已硬阻断（实扣 <code>0</code> 积分 / <code>$0.00</code>）！" +
+      "</div>";
+    return;
+  }
+
+  if (v === "promo_decline_402") {
+    outEl.innerHTML =
+      "<div style='background:rgba(245,158,11,0.18);border:1px solid #F59E0B;color:#FDE68A;padding:8px 10px;border-radius:8px;font-weight:600;'>" +
+      "🔄 HTTP 402 FIAT_DECLINED_LOYALTY_POINTS_AUTO_RESTORED (21ms · Send to a human · deterministic_offline_simulation)：<br>" +
+      "剩余 <code>$80.00</code> 法币卡扣款遭遇发卡行拒付（<code>card_declined</code>）！网关立即触发两阶段 Saga 补偿，在 <code>21ms</code> 内自动解冻归还软冻结的 <code>10,000</code> 会员积分与单次优惠券（<code>net_points_burned = 0</code>，零吞分客诉）！" +
+      "</div>";
+    return;
+  }
+
+  if (v === "promo_excl_409") {
+    outEl.innerHTML =
+      "<div style='background:rgba(245,158,11,0.18);border:1px solid #F59E0B;color:#FDE68A;padding:8px 10px;border-radius:8px;font-weight:600;'>" +
+      "🧑‍⚖️ HTTP 409 PROMO_BRAND_EXCLUSION_CONFIRM_REQUIRED (310ms · Confirm · official_doc_snapshot)：<br>" +
+      "Microsoft Web IQ <code>/v3/browse</code> 实时解析活动规则折叠小字，发现当前购物车中的限量显卡属于“不参与满减排除品牌”，已剥离无效券并转交人类买家确认是否按原价购买！" +
+      "</div>";
+    return;
+  }
+
+  if (v === "promo_return_200") {
+    outEl.innerHTML =
+      "<div style='background:var(--green-bg);border:1px solid var(--green);color:#A7F3D0;padding:8px 10px;border-radius:8px;'>" +
+      "<strong>🛡️ 50% 部分退货等比拆分回退完成 (PRO_RATA_HYBRID_REFUND_COMPLETED · 235ms · Act automatically):</strong><br>" +
+      "• <strong>防套现对账</strong>：严格按原单抵扣比例原路退还 <code>5,000 积分</code> 至会员账本、退还 <code>$40.00</code> 至信用卡，杜绝将积分抵扣额退成现金！" +
+      "</div>";
+    return;
+  }
+
+  outEl.innerHTML =
+    "<div style='background:var(--green-bg);border:1px solid var(--green);color:#A7F3D0;padding:8px 10px;border-radius:8px;'>" +
+    "<strong>⚡ 合规单券 + 10,000 积分 + $80 法币双轨原子成交 (HYBRID_LOYALTY_FIAT_COMMITTED · 275ms · Act automatically):</strong><br>" +
+    "• <strong>两阶段原子核销</strong>：先软冻结 <code>promo_lock_live_... ($20)</code> 与 <code>loyalty_hold_live_... (10,000 pts)</code>，确认法币 <code>$80.00</code> 扣款成功后同步转正核销！" +
+    "</div>";
+}
+
+function updateRegulatedZkpSandbox() {
+  var selEl = document.getElementById("zkp-select");
+  var outEl = document.getElementById("zkp-readout");
+  if (!selEl || !outEl) return;
+
+  var v = selEl.value;
+
+  if (v === "zkp_self_403") {
+    outEl.innerHTML =
+      "<div style='background:var(--red-bg);border:1px solid var(--red);color:#FECACA;padding:8px 10px;border-radius:8px;font-weight:600;'>" +
+      "🛑 HTTP 403 BLOCKED_UNVERIFIED_SELF_ATTESTED_ELIGIBILITY (14ms · Send to a human · synthetic_policy)：<br>" +
+      "受监管商品（21+ 酒类/处方药）严禁接受无权威加密签名的自填布尔值 <code>is_over_21=true</code> 或伪造生日字符串！已阻断 AI Agent 目标导向伪造穿透！" +
+      "</div>";
+    return;
+  }
+
+  if (v === "zkp_raw_id_422") {
+    outEl.innerHTML =
+      "<div style='background:var(--red-bg);border:1px solid var(--red);color:#FECACA;padding:8px 10px;border-radius:8px;font-weight:600;'>" +
+      "🚨 HTTP 422 BLOCKED_RAW_GOVT_ID_PII_IN_AGENT_PAYLOAD (15ms · Send to a human · synthetic_policy)：<br>" +
+      "检测到请求载荷试图上传身份证/驾照/处方原件图像或公民身份号码！已在网关边缘前置剥离并阻断（<code>0 bytes</code> 敏感生物/医疗数据进入 LLM 日志）！" +
+      "</div>";
+    return;
+  }
+
+  if (v === "zkp_replay_401") {
+    outEl.innerHTML =
+      "<div style='background:var(--red-bg);border:1px solid var(--red);color:#FECACA;padding:8px 10px;border-radius:8px;font-weight:600;'>" +
+      "🛑 HTTP 401 ZKP_NONCE_REPLAY_OR_EXPIRED_BLOCKED (16ms · Send to a human · synthetic_policy)：<br>" +
+      "零知识证明令牌 <code>zkp_vc_live_...</code> 内部绑定的 <code>order_nonce</code> 与当前订单不匹配或已超过 <code>180s</code> 窗口（疑似跨单重放或借用他人成年凭证），已拒绝放行！" +
+      "</div>";
+    return;
+  }
+
+  if (v === "zkp_jurisdiction_451") {
+    outEl.innerHTML =
+      "<div style='background:rgba(245,158,11,0.18);border:1px solid #F59E0B;color:#FDE68A;padding:8px 10px;border-radius:8px;font-weight:600;'>" +
+      "⚖️ HTTP 451 JURISDICTION_SHIPPING_RESTRICTION_BLOCKED (315ms · Send to a human · official_doc_snapshot)：<br>" +
+      "虽然买家已通过 21+ 零知识年龄核验，但 Microsoft Web IQ <code>/v3/browse</code> 实时核验收货地址令牌所在州/县属地法规，发现该邮编禁止酒精直邮（Dry County），已在扣款前依法阻断！" +
+      "</div>";
+    return;
+  }
+
+  outEl.innerHTML =
+    "<div style='background:var(--green-bg);border:1px solid var(--green);color:#A7F3D0;padding:8px 10px;border-radius:8px;'>" +
+    "<strong>⚡ W3C ZKP 零知识谓词核验成交 + 成人签收绑定 (ZKP_ELIGIBILITY_VERIFIED_COMMITTED · 260ms · Act automatically):</strong><br>" +
+    "• <strong>零隐私暴露合规闭环</strong>：通过权威发证方公钥验签 <code>zkp_vc_live_991a (age_over_21=true, order_nonce=nonce_772a)</code>，全程暴露 <code>0 bytes</code> 姓名/生日/身份证号，并在物流令牌上强制锁定 <code>adult_signature_21_plus=true</code>！" +
     "</div>";
 }
 
