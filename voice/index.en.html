@@ -1,154 +1,70 @@
 <!doctype html>
-<html lang="en" data-theme="dark" data-reading-runtime="true" data-reading-shell="document"><head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>
-        Two Core Themes: 
-        How to Choose &amp; Benchmark · How to Build Real Scenarios
-      </title>
-  <meta name="description" content="面向学习者与开发者的 AI 语音实战门户：1）技术栈如何选型、测试比较与快速原型展示；2）四大行业场景（智能客服、知识短片配音、AI 陪护、车载/硬件）如何一步步搭建。">
-  
-  
-  
-  
-<meta name="reading-migration" content="R6"><link rel="stylesheet" href="../assets/reading-shell.css"><script src="../assets/reading-shell.js"></script><script src="../assets/editorial/search-index.js" defer></script><script src="../assets/editorial/search.js" defer></script><style id="site-remediation-style">/* Embedded by integrate-dedicated.cjs so sealed report CSP remains unchanged. */
-.kee-dedicated-nav {
-  all: initial; box-sizing: border-box; position: relative; display: flex;
-  flex-wrap: wrap; align-items: center; gap: 6px 14px; width: 100%;
-  padding: 12px 18px; margin: 0 0 16px; border: 1px solid #314361;
-  background: #101A30; color: #EEF3FF; font: 13px/1.5 system-ui, sans-serif;
-  text-align: left; isolation: isolate; color-scheme: dark;
-}
-.kee-dedicated-nav a {
-  all: revert; box-sizing: border-box; display: inline-block; padding: 4px 0;
-  color: #9AABFF; background: transparent; font: inherit; text-decoration: underline;
-  text-underline-offset: 3px; border: 0; border-radius: 0; box-shadow: none;
-}
-.kee-dedicated-nav a:focus-visible { outline: 3px solid #56DDCD; outline-offset: 3px; }
-.kee-dedicated-nav .kee-dedicated-identity { font-weight: 700; color: #EEF3FF; }
-.kee-dedicated-nav .kee-dedicated-language {
-  all: revert; display: block; flex-basis: 100%; color: #ADBBD1; font: 12px/1.5 system-ui, sans-serif;
-}
-.kee-dedicated-native-link { display: block; padding: 22px; color: #1858a8; background: #f8fafc; font: 15px/1.6 system-ui, sans-serif; }
-.kee-dedicated-native-link a { color: #1858a8; text-decoration: underline; }
-@media print { .kee-dedicated-nav { display: none; } }
-
-/* Professional primary navigation: long section names reflow, never scroll inside the header. */
-[data-professional-header]{box-sizing:border-box;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px!important;width:100%;max-width:none;height:auto!important;min-height:0!important;padding:18px 24px!important;margin:0 0 16px;position:relative;overflow:visible!important;background:#101A30;color:#EEF3FF;border:1px solid #314361;font:13px/1.5 system-ui,sans-serif;isolation:isolate;color-scheme:dark}
-[data-professional-header] *{box-sizing:border-box;min-width:0;max-height:none}
-[data-professional-header] a{font:inherit;text-decoration:none;color:#9AABFF;overflow-wrap:anywhere;white-space:normal}
-[data-professional-header] .professional-identity{font-weight:750;color:#EEF3FF;white-space:nowrap;font-size:14px;margin:0}
-[data-professional-header] .professional-primary{display:grid;grid-template-columns:1.65fr 1.1fr 1.15fr 1.1fr 1.1fr;gap:6px;align-items:stretch;min-width:0}
-[data-professional-header] .professional-primary a{display:flex;align-items:center;justify-content:center;padding:10px 9px;border:1px solid #314361;border-radius:12px;background:#172440;text-align:center;line-height:1.4;min-height:44px}
-[data-professional-header] .professional-primary a[aria-current=page]{background:#23375a;border-color:#56DDCD;color:#56DDCD}
-[data-professional-header] .professional-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px;font-size:12px;margin:0;position:static}
-[data-professional-header] .professional-controls>a{display:flex;align-items:center;justify-content:center;padding:8px;min-height:40px;min-width:32px;border-radius:10px}
-[data-professional-header] .professional-context{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;padding-top:12px;border-top:1px solid #314361;font-size:12px;color:#ADBBD1;min-width:0;line-height:1.6}
-[data-professional-header] .professional-context>*{min-width:0;overflow-wrap:anywhere}
-[data-professional-header] .professional-context .kee-dedicated-language{flex-basis:100%;color:#ADBBD1}
-[data-professional-header] a:focus-visible{outline:3px solid #56DDCD;outline-offset:3px}
-[data-professional-header] a:hover{text-decoration:underline}
-[data-professional-header][data-perimeter-theme=light],:root[data-theme=light] .reading-header[data-professional-header]{background:#fff;color:#172440;border-color:#d4deee;color-scheme:light}
-[data-professional-header][data-perimeter-theme=light] a,:root[data-theme=light] .reading-header[data-professional-header] a{color:#3752a0}
-[data-professional-header][data-perimeter-theme=light] .professional-primary a,:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a{background:#edf2ff;border-color:#d4deee}
-[data-professional-header][data-perimeter-theme=light] .professional-primary a[aria-current],:root[data-theme=light] .reading-header[data-professional-header] .professional-primary a[aria-current]{background:#dff6f0;color:#127b72;border-color:#127b72}
-@media(max-width:1150px){[data-professional-header]{grid-template-columns:minmax(0,1fr) auto;gap:12px!important}[data-professional-header] .professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header] .professional-controls{grid-column:2;grid-row:1}}
-@media(max-width:600px){[data-professional-header]{padding:14px 16px!important;gap:12px!important}[data-professional-header] .professional-primary{grid-template-columns:repeat(2,minmax(0,1fr))}[data-professional-header] .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:13px}[data-professional-header] .professional-controls{gap:0}[data-professional-header] .professional-controls>a{padding:6px;min-width:28px}}
-@media print{[data-professional-header]{display:none!important}}
-
-html{scroll-padding-top:108px}.reading-header,.kee-dedicated-nav,[data-professional-header]{position:sticky;top:0;z-index:1000;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
-
-:root{--search-bg:#101a30;--search-soft:#172440;--search-ink:#eef3ff;--search-muted:#adbbd1;--search-line:#293956;--search-accent:#9aabff;--header-offset:108px}
-:root[data-reading-shell][data-theme=light],[data-perimeter-theme=light]{--search-bg:#fff;--search-soft:#e8eefb;--search-ink:#17233e;--search-muted:#4c5e7c;--search-line:#d5ddec;--search-accent:#354ec8}
-html{scroll-padding-top:var(--header-offset,108px)!important}
-.site-search,.site-search *{box-sizing:border-box!important;font-family:"Segoe UI",sans-serif;letter-spacing:normal;text-transform:none}
-.site-search{position:relative;display:flex;align-items:center;gap:5px;min-width:0;width:230px;max-width:100%;margin:0!important;padding:0!important;line-height:1.4;border:1px solid var(--search-line);border-radius:9px;background:var(--search-soft);color:var(--search-ink);isolation:isolate}
-.site-search input[type=search]{display:block;flex:1;min-width:0;width:100%;height:42px;margin:0;padding:9px 8px!important;font-size:12px!important;line-height:1.5;border:0!important;border-radius:9px;background:transparent!important;color:var(--search-ink)!important;box-shadow:none!important;appearance:none}
-.site-search input::placeholder{color:var(--search-muted);opacity:1}.site-search input:focus-visible{outline:2px solid var(--search-accent);outline-offset:2px}
-.site-search kbd{font:11px Consolas,monospace;color:var(--search-muted);padding:1px 5px;border:1px solid var(--search-line);border-radius:4px}
-.site-search button[type=submit]{flex:none;width:38px;min-width:38px;height:42px;min-height:42px;padding:0;margin:0;border:0;border-radius:8px;background:transparent;color:var(--search-accent);font-size:24px;cursor:pointer;box-shadow:none}
-.search-label,.search-status{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
-.site-search .search-results{position:absolute;top:calc(100% + 10px);right:0;z-index:1100;width:min(480px,calc(100vw - 32px));max-height:min(560px,65vh);overflow-y:auto;border:1px solid var(--search-line);border-radius:12px;background:var(--search-bg);color:var(--search-ink);padding:10px;box-shadow:0 12px 32px #0005;text-align:left}
-.site-search .search-results[hidden]{display:none!important}.search-results .search-group{margin:8px 6px 4px;font:11px/1.5 Consolas,monospace;color:var(--search-muted)}
-.site-search .search-results a{display:block!important;padding:10px!important;margin:3px 0!important;border:1px solid transparent!important;border-radius:7px;background:transparent;color:var(--search-ink)!important;font-size:13px!important;text-decoration:none!important;white-space:normal;overflow-wrap:anywhere;text-align:left!important;line-height:1.5!important}
-.site-search .search-results a[aria-selected=true],.site-search .search-results a:hover{border-color:var(--search-accent)!important;background:var(--search-soft)}
-.search-results a small{display:block;font-size:10px;color:var(--search-muted);margin-top:4px}.search-results p{margin:10px;font-size:13px;color:var(--search-muted)}
-.search-archive-summary{padding:20px;border:1px solid var(--search-line);border-radius:10px;background:var(--search-bg);color:var(--search-ink);margin:24px 0}.search-archive-summary h2{font-size:24px;margin:0 0 12px}.search-archive-summary li{margin:12px 0}.search-archive-summary a{color:var(--search-accent)}
-[data-professional-header]{position:sticky!important;top:0!important;z-index:1000!important;background:var(--search-bg)!important;--header-glass:rgba(16,26,48,.9);grid-template-columns:auto minmax(0,1fr) 230px auto!important}
-[data-professional-header][data-perimeter-theme=light],:root[data-reading-shell][data-theme=light] [data-professional-header]{--header-glass:rgba(255,255,255,.94)}
-[data-professional-header] .professional-mobile{display:none}.professional-mobile summary{min-width:38px;min-height:42px;display:grid;place-items:center;cursor:pointer;list-style:none}.professional-mobile summary::-webkit-details-marker{display:none}
-[data-professional-header] .professional-context{display:none}
-.professional-context-bar{padding:12px 24px;border-bottom:1px solid var(--search-line);background:var(--search-bg);color:var(--search-muted);font:12px/1.6 "Segoe UI",sans-serif;display:flex;flex-wrap:wrap;gap:8px 18px;overflow-wrap:anywhere}.professional-context-bar a{color:var(--search-accent)}
-@supports((backdrop-filter:blur(16px)) or (-webkit-backdrop-filter:blur(16px))){.site-header,[data-professional-header]{background:var(--header-glass)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}}
-@media(max-width:1250px) and (min-width:701px){.header-inner{grid-template-columns:minmax(0,1fr) 230px auto!important;padding:12px 0;gap:12px!important}.desktop-nav{grid-row:2;grid-column:1/-1}.header-inner>.site-search{grid-column:2;grid-row:1}.header-inner>.controls{grid-column:3;grid-row:1}[data-professional-header]{grid-template-columns:minmax(0,1fr) 230px auto!important;gap:12px!important}[data-professional-header]>.professional-primary{grid-row:2;grid-column:1/-1}[data-professional-header]>.site-search{grid-column:2;grid-row:1}[data-professional-header]>.professional-controls{grid-column:3;grid-row:1}:root{--header-offset:176px}}
-@media(max-width:700px){.header-inner{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 0;gap:8px!important}.header-inner>.site-search{grid-row:2;grid-column:1/-1;width:100%}.header-inner>.controls{grid-column:2;grid-row:1}.site-search .search-results{width:100%;right:0}[data-professional-header]{grid-template-columns:minmax(0,1fr) auto!important;padding:10px 16px!important;gap:8px!important}[data-professional-header]>.professional-primary{display:none!important}[data-professional-header]>.site-search{grid-column:1/-1;grid-row:2;width:100%}[data-professional-header]>.professional-controls{grid-column:2;grid-row:1}[data-professional-header] .professional-mobile{display:block}[data-professional-header] .professional-mobile[open]>.professional-primary{position:absolute;top:100%;left:0;right:0;padding:16px;background:var(--search-bg);border-bottom:1px solid var(--search-line);display:grid;grid-template-columns:1fr 1fr;gap:8px}[data-professional-header] .professional-mobile .professional-primary a:first-child{grid-column:1/-1}[data-professional-header] .professional-identity{font-size:12px!important}:root{--header-offset:126px}}
-@media(prefers-reduced-transparency:reduce){.site-header,[data-professional-header]{background:var(--search-bg)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
-@media print{.site-search,.professional-context-bar{display:none!important}}
-
-@media(min-width:1251px){.header-inner{display:grid!important;grid-template-columns:auto minmax(0,1fr) 230px auto!important;gap:18px!important}.header-inner .desktop-nav{min-width:0}}
-
-html:has(.kee-dedicated-app-root){height:auto!important;overflow-x:hidden!important;overflow-y:auto!important}
-body:has([data-professional-header]){height:auto!important;overflow-x:clip!important;overflow-y:visible!important;padding-top:0!important}
-.demo-language-navigation{display:none!important}
-.stage-column,.telemetry-panel,.scene-pill,#timeline-slider{min-width:0}
-@media(max-width:1180px){.workspace,.template-tabs{grid-template-columns:minmax(0,1fr)!important}}
-
-.in-arena-frame .professional-context-bar,.in-arena-frame [data-knowledge-atlas]{display:none!important}
-.knowledge-graph-wide{display:block}.knowledge-graph-compact{display:none}@media(max-width:600px){.knowledge-graph-wide{display:none}.knowledge-graph-compact{display:block}}
-</style></head>
-<body class="reading-page"><a class="reading-skip" href="#reading-main">Skip to content</a><header class="reading-header" data-professional-header><a class="professional-identity reading-brand kee-dedicated-identity identity" href="../index.html">Qi Chen · @turbo998</a><div class="professional-primary" role="navigation" aria-label="Primary sections"><a href="../studio/index.html" data-section="hub" data-nav-en-href="../studio/index.html" data-nav-zh-href="../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub" aria-current="page">Frontier Transformation Engineering Hub</a><a href="../benchmarks.html" data-section="benchmarks" data-nav-en-href="../benchmarks.html" data-nav-zh-href="../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心">Benchmark &amp; Eval Foundry</a><a href="../github-radar.html" data-section="radar" data-nav-en-href="../github-radar.html" data-nav-zh-href="../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI Signal Radar</a><a href="../openrouter.html" data-section="routing" data-nav-en-href="../openrouter.html" data-nav-zh-href="../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">Model Routing &amp; Telemetry</a><a href="../about.html" data-section="profile" data-nav-en-href="../about.html" data-nav-zh-href="../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">Principal Architect Profile</a></div><form class="site-search" role="search" action="../studio/archive.html" method="get" data-search-root="../index.html" data-search-language="en"><label class="search-label" for="site-search-input">Search architecture, benchmarks, demos...</label><input id="site-search-input" name="q" type="search" placeholder="Search architecture, benchmarks, demos..." autocomplete="off" spellcheck="false" aria-keyshortcuts="/ Control+k Meta+k"><kbd aria-hidden="true">/</kbd><button type="submit" aria-label="Search all content">⌕</button><div class="search-results" id="site-search-results" hidden></div><span class="search-status" role="status" aria-live="polite"></span></form><div class="reading-controls professional-controls" aria-label="Site language and appearance"><a href="index.en.html" hreflang="en" lang="en" aria-current="page">EN</a><a href="index.html" data-reading-language hreflang="zh-CN" lang="zh-CN">中文</a><details class="professional-mobile"><summary aria-label="Open navigation">☰</summary><div class="professional-primary" role="navigation" aria-label="Mobile navigation"><a href="../studio/index.html" data-section="hub" data-nav-en-href="../studio/index.html" data-nav-zh-href="../studio/zh-index.html" data-nav-en-label="Frontier Transformation Engineering Hub" data-nav-zh-label="Frontier Transformation Engineering Hub" aria-current="page">Frontier Transformation Engineering Hub</a><a href="../benchmarks.html" data-section="benchmarks" data-nav-en-href="../benchmarks.html" data-nav-zh-href="../zh-benchmarks.html" data-nav-en-label="Benchmark &amp; Eval Foundry" data-nav-zh-label="基准评测中心">Benchmark &amp; Eval Foundry</a><a href="../github-radar.html" data-section="radar" data-nav-en-href="../github-radar.html" data-nav-zh-href="../zh-github-radar.html" data-nav-en-label="GitHub AI Signal Radar" data-nav-zh-label="GitHub AI 信号雷达">GitHub AI Signal Radar</a><a href="../openrouter.html" data-section="routing" data-nav-en-href="../openrouter.html" data-nav-zh-href="../zh-openrouter.html" data-nav-en-label="Model Routing &amp; Telemetry" data-nav-zh-label="OpenRouter 模型遥测">Model Routing &amp; Telemetry</a><a href="../about.html" data-section="profile" data-nav-en-href="../about.html" data-nav-zh-href="../zh-about.html" data-nav-en-label="Principal Architect Profile" data-nav-zh-label="首席架构师履历">Principal Architect Profile</a></div></details><a data-reading-theme="light" href="index.en.html?theme=light" aria-label="Light theme">☀</a><a data-reading-theme="dark" href="index.en.html?theme=dark" aria-label="Dark theme">◐</a></div><div class="professional-context" aria-label="Back to context"><a href="../studio/index.html">← Engineering Hub</a> · <a href="../studio/voice.html">Parent topic</a></div></header><div class="professional-context-bar"><a href="../studio/index.html">← Engineering Hub</a> · <a class="reading-context" href="../studio/voice.html">Parent topic</a></div><!-- site-remediation-knowledge:start --><figure class="knowledge-figure" data-knowledge-atlas="voice" style="margin:20px auto;max-width:1120px;padding:0 20px;box-sizing:border-box"><style>.knowledge-graph-wide{display:block}.knowledge-graph-compact{display:none}@media(max-width:600px){.knowledge-graph-wide{display:none}.knowledge-graph-compact{display:block}}</style><svg xmlns="http://www.w3.org/2000/svg" lang="en" class="knowledge-graph-compact" role="img" aria-labelledby="knowledge-fdb5496a504e-compact-title knowledge-fdb5496a504e-compact-desc" viewBox="0 0 360 992" width="360" style="width:100%;height:auto;max-width:560px;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-fdb5496a504e-compact-title">Two Core Themes: How to Choose &amp; Benchmark · How to Build Real Scenarios</title><desc id="knowledge-fdb5496a504e-compact-desc">Audio input &amp; speaker context: Microphone · turn detection · diarization → streams to understanding → Realtime speech understanding: ASR or audio-native model · conversation state → grounds the response → Agent, tools &amp; enterprise data: Intent · retrieval · permissioned actions → synthesizes a response → Speech output &amp; duplex control: TTS / audio output · interruption · cancellation → feeds the next turn → Conversation quality &amp; evidence: Trace latency, speakers and failures in source tests</desc><rect width="360" height="992" rx="16" fill="#081525" stroke="#284566"/><rect x="16" y="14" width="224" height="22" rx="11" fill="#112844" stroke="#2d5a88"/><text x="28" y="29" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="28" dy="0">DATA FLOW &amp; ARCHITECTURE</tspan></text><text x="20" y="58" fill="#eef5ff" font-size="18" font-weight="700"><tspan x="20" dy="0">Two Core Themes: How to</tspan><tspan x="20" dy="25.2">Choose &amp; Benchmark · How to</tspan><tspan x="20" dy="25.2">Build Real Scenarios</tspan></text><text x="20" y="134" fill="#a9b8ce" font-size="12.5" font-weight="400"><tspan x="20" dy="0">Conceptual data flow · arrows show stage handoffs</tspan></text><g data-concept="1"><rect x="16" y="156" width="328" height="113" rx="12" fill="#0e2036" stroke="#38597d"/><rect x="16" y="156" width="328" height="4" rx="2" fill="#38bdf8"/><text x="30" y="179" fill="#38bdf8" font-size="11.5" font-weight="700"><tspan x="30" dy="0">01 · INGRESS</tspan></text><text x="30" y="202" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">Audio input &amp; speaker context</tspan></text><text x="30" y="229" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">Microphone · turn detection ·</tspan><tspan x="30" dy="18.2">diarization</tspan></text></g><g data-relationship="streams to understanding"><path d="M34 271 V309" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 303 L34 310 L39 303" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="293" fill="#8eeadf" font-size="12.5" font-weight="600"><tspan x="50" dy="0">01→02 streams to understanding</tspan></text></g><g data-concept="2"><rect x="16" y="315" width="328" height="113" rx="12" fill="#122842" stroke="#38597d"/><rect x="16" y="315" width="328" height="4" rx="2" fill="#34d399"/><text x="30" y="338" fill="#34d399" font-size="11.5" font-weight="700"><tspan x="30" dy="0">02 · GROUNDING</tspan></text><text x="30" y="361" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">Realtime speech understanding</tspan></text><text x="30" y="388" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">ASR or audio-native model ·</tspan><tspan x="30" dy="18.2">conversation state</tspan></text></g><g data-relationship="grounds the response"><path d="M34 430 V468" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 462 L34 469 L39 462" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="452" fill="#8eeadf" font-size="12.5" font-weight="600"><tspan x="50" dy="0">02→03 grounds the response</tspan></text></g><g data-concept="3"><rect x="16" y="474" width="328" height="136" rx="12" fill="#0e2036" stroke="#38597d"/><rect x="16" y="474" width="328" height="4" rx="2" fill="#a78bfa"/><text x="30" y="497" fill="#a78bfa" font-size="11.5" font-weight="700"><tspan x="30" dy="0">03 · POLICY GATE</tspan></text><text x="30" y="520" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">Agent, tools &amp; enterprise</tspan><tspan x="30" dy="23.099999999999998">data</tspan></text><text x="30" y="570" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">Intent · retrieval · permissioned</tspan><tspan x="30" dy="18.2">actions</tspan></text></g><g data-relationship="synthesizes a response"><path d="M34 612 V650" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 644 L34 651 L39 644" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="634" fill="#8eeadf" font-size="12.5" font-weight="600"><tspan x="50" dy="0">03→04 synthesizes a response</tspan></text></g><g data-concept="4"><rect x="16" y="656" width="328" height="136" rx="12" fill="#122842" stroke="#38597d"/><rect x="16" y="656" width="328" height="4" rx="2" fill="#f59e0b"/><text x="30" y="679" fill="#f59e0b" font-size="11.5" font-weight="700"><tspan x="30" dy="0">04 · EXECUTION</tspan></text><text x="30" y="702" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">Speech output &amp; duplex</tspan><tspan x="30" dy="23.099999999999998">control</tspan></text><text x="30" y="752" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">TTS / audio output · interruption ·</tspan><tspan x="30" dy="18.2">cancellation</tspan></text></g><g data-relationship="feeds the next turn"><path d="M34 794 V832" fill="none" stroke="#56ddcd" stroke-width="2.2"/><path d="M29 826 L34 833 L39 826" fill="none" stroke="#56ddcd" stroke-width="2.2"/><text x="50" y="816" fill="#8eeadf" font-size="12.5" font-weight="600"><tspan x="50" dy="0">04→05 feeds the next turn</tspan></text></g><g data-concept="5"><rect x="16" y="838" width="328" height="136" rx="12" fill="#0e2036" stroke="#38597d"/><rect x="16" y="838" width="328" height="4" rx="2" fill="#56ddcd"/><text x="30" y="861" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="30" dy="0">05 · AUDIT &amp; EVAL</tspan></text><text x="30" y="884" fill="#f0f6ff" font-size="16.5" font-weight="700"><tspan x="30" dy="0">Conversation quality &amp;</tspan><tspan x="30" dy="23.099999999999998">evidence</tspan></text><text x="30" y="934" fill="#c4d5e8" font-size="13" font-weight="400"><tspan x="30" dy="0">Trace latency, speakers and failures</tspan><tspan x="30" dy="18.2">in source tests</tspan></text></g></svg><svg xmlns="http://www.w3.org/2000/svg" lang="en" class="knowledge-graph-wide" role="img" aria-labelledby="knowledge-fdb5496a504e-title knowledge-fdb5496a504e-desc" viewBox="0 0 1080 462" width="1080" style="width:100%;height:auto;max-width:1080px;margin:0 auto;font-family:system-ui,sans-serif"><title id="knowledge-fdb5496a504e-title">Two Core Themes: How to Choose &amp; Benchmark · How to Build Real Scenarios</title><desc id="knowledge-fdb5496a504e-desc">Audio input &amp; speaker context: Microphone · turn detection · diarization → streams to understanding → Realtime speech understanding: ASR or audio-native model · conversation state → grounds the response → Agent, tools &amp; enterprise data: Intent · retrieval · permissioned actions → synthesizes a response → Speech output &amp; duplex control: TTS / audio output · interruption · cancellation → feeds the next turn → Conversation quality &amp; evidence: Trace latency, speakers and failures in source tests</desc><rect width="1080" height="462" rx="16" fill="#081525" stroke="#284566"/><rect x="24" y="16" width="292" height="24" rx="12" fill="#102742" stroke="#2d5a88"/><text x="38" y="32" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="38" dy="0">DATA FLOW &amp; KEY TAKEAWAYS ARCHITECTURE</tspan></text><rect x="646" y="16" width="196" height="24" rx="12" fill="#0d2238" stroke="#254b6e"/><text x="660" y="32" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="660" dy="0">──▶ Stage Data &amp; Context Flow</tspan></text><rect x="852" y="16" width="204" height="24" rx="12" fill="#15203c" stroke="#3b4278"/><text x="866" y="32" fill="#c4b5fd" font-size="11.5" font-weight="600"><tspan x="866" dy="0">◆ Policy Gate &amp; Key Notes</tspan></text><text x="24" y="62" fill="#f2f7ff" font-size="18" font-weight="700"><tspan x="24" dy="0">Two Core Themes: How to Choose &amp; Benchmark · How to Build Real</tspan><tspan x="24" dy="25.2">Scenarios</tspan></text><g data-concept="1"><rect x="24" y="106" width="187" height="186" rx="12" fill="#0d1e34" stroke="#335277" stroke-width="1.2"/><rect x="24" y="106" width="187" height="5" rx="2.5" fill="#38bdf8"/><rect x="34" y="119" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="40" y="134" fill="#38bdf8" font-size="11.5" font-weight="700"><tspan x="40" dy="0">01 · INGRESS</tspan></text><text x="36" y="160" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="36" dy="0">Audio input &amp; speaker</tspan><tspan x="36" dy="18.9">context</tspan></text><path d="M36 194 H199" stroke="#233b57" stroke-width="1"/><text x="36" y="212" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="36" dy="0">Microphone · turn</tspan><tspan x="36" dy="16.799999999999997">detection · diarization</tspan></text></g><g data-relationship="streams to understanding"><path d="M213 199 H231" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M225 194 L232 199 L225 204" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="24" y="300" width="187" height="44" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="34" y="319" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="34" dy="0">01→02 streams to</tspan><tspan x="34" dy="16.099999999999998">understanding</tspan></text></g><g data-concept="2"><rect x="235" y="106" width="187" height="186" rx="12" fill="#112640" stroke="#335277" stroke-width="1.2"/><rect x="235" y="106" width="187" height="5" rx="2.5" fill="#34d399"/><rect x="245" y="119" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="251" y="134" fill="#34d399" font-size="11.5" font-weight="700"><tspan x="251" dy="0">02 · GROUNDING</tspan></text><text x="247" y="160" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="247" dy="0">Realtime speech</tspan><tspan x="247" dy="18.9">understanding</tspan></text><path d="M247 194 H410" stroke="#233b57" stroke-width="1"/><text x="247" y="212" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="247" dy="0">ASR or audio-native model</tspan><tspan x="247" dy="16.799999999999997">· conversation state</tspan></text></g><g data-relationship="grounds the response"><path d="M424 199 H442" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M436 194 L443 199 L436 204" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="235" y="300" width="187" height="44" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="245" y="319" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="245" dy="0">02→03 grounds the</tspan><tspan x="245" dy="16.099999999999998">response</tspan></text></g><g data-concept="3"><rect x="446" y="106" width="187" height="186" rx="12" fill="#0d1e34" stroke="#335277" stroke-width="1.2"/><rect x="446" y="106" width="187" height="5" rx="2.5" fill="#a78bfa"/><rect x="456" y="119" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="462" y="134" fill="#a78bfa" font-size="11.5" font-weight="700"><tspan x="462" dy="0">03 · POLICY GATE</tspan></text><text x="458" y="160" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="458" dy="0">Agent, tools &amp;</tspan><tspan x="458" dy="18.9">enterprise data</tspan></text><path d="M458 194 H621" stroke="#233b57" stroke-width="1"/><text x="458" y="212" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="458" dy="0">Intent · retrieval ·</tspan><tspan x="458" dy="16.799999999999997">permissioned actions</tspan></text></g><g data-relationship="synthesizes a response"><path d="M635 199 H653" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M647 194 L654 199 L647 204" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="446" y="300" width="187" height="44" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="456" y="319" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="456" dy="0">03→04 synthesizes a</tspan><tspan x="456" dy="16.099999999999998">response</tspan></text></g><g data-concept="4"><rect x="657" y="106" width="187" height="186" rx="12" fill="#112640" stroke="#335277" stroke-width="1.2"/><rect x="657" y="106" width="187" height="5" rx="2.5" fill="#f59e0b"/><rect x="667" y="119" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="673" y="134" fill="#f59e0b" font-size="11.5" font-weight="700"><tspan x="673" dy="0">04 · EXECUTION</tspan></text><text x="669" y="160" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="669" dy="0">Speech output &amp;</tspan><tspan x="669" dy="18.9">duplex control</tspan></text><path d="M669 194 H832" stroke="#233b57" stroke-width="1"/><text x="669" y="212" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="669" dy="0">TTS / audio output ·</tspan><tspan x="669" dy="16.799999999999997">interruption ·</tspan><tspan x="669" dy="16.799999999999997">cancellation</tspan></text></g><g data-relationship="feeds the next turn"><path d="M846 199 H864" fill="none" stroke="#56ddcd" stroke-width="2.4"/><path d="M858 194 L865 199 L858 204" fill="none" stroke="#56ddcd" stroke-width="2.4"/><rect x="657" y="300" width="187" height="44" rx="8" fill="#0b2239" stroke="#2b5b6c"/><text x="667" y="319" fill="#7ce8d8" font-size="11.5" font-weight="600"><tspan x="667" dy="0">04→05 feeds the next</tspan><tspan x="667" dy="16.099999999999998">turn</tspan></text></g><g data-concept="5"><rect x="868" y="106" width="187" height="186" rx="12" fill="#0d1e34" stroke="#335277" stroke-width="1.2"/><rect x="868" y="106" width="187" height="5" rx="2.5" fill="#56ddcd"/><rect x="878" y="119" width="167" height="22" rx="6" fill="#081424" stroke="#223b59"/><text x="884" y="134" fill="#56ddcd" font-size="11.5" font-weight="700"><tspan x="884" dy="0">05 · AUDIT &amp; EVAL</tspan></text><text x="880" y="160" fill="#f4f8ff" font-size="13.5" font-weight="700"><tspan x="880" dy="0">Conversation quality</tspan><tspan x="880" dy="18.9">&amp; evidence</tspan></text><path d="M880 194 H1043" stroke="#233b57" stroke-width="1"/><text x="880" y="212" fill="#c5d6e8" font-size="12" font-weight="400"><tspan x="880" dy="0">Trace latency, speakers</tspan><tspan x="880" dy="16.799999999999997">and failures in source</tspan><tspan x="880" dy="16.799999999999997">tests</tspan></text></g><rect x="868" y="300" width="187" height="44" rx="8" fill="#0e2538" stroke="#2e5470"/><text x="878" y="319" fill="#93c5fd" font-size="11.5" font-weight="600"><tspan x="878" dy="0">05 Sink · Verified</tspan><tspan x="878" dy="16.099999999999998">Evidence</tspan></text><g data-takeaway="1"><rect x="24" y="358" width="334" height="88" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="24" y="370" width="4" height="64" rx="2" fill="#38bdf8"/><text x="38" y="383" fill="#38bdf8" font-size="11.5" font-weight="700"><tspan x="38" dy="0">TAKEAWAY 01 · END-TO-END DATA FLOW</tspan></text><text x="38" y="404" fill="#d5e4f5" font-size="12" font-weight="400"><tspan x="38" dy="0">Left-to-right pipeline from Audio input &amp;</tspan><tspan x="38" dy="16.799999999999997">speaker context to Conversation quality &amp;</tspan><tspan x="38" dy="16.799999999999997">evidence with explicit handoffs.</tspan></text></g><g data-takeaway="2"><rect x="373" y="358" width="334" height="88" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="373" y="370" width="4" height="64" rx="2" fill="#a78bfa"/><text x="387" y="383" fill="#a78bfa" font-size="11.5" font-weight="700"><tspan x="387" dy="0">TAKEAWAY 02 · CONTROL &amp; POLICY GATE</tspan></text><text x="387" y="404" fill="#d5e4f5" font-size="12" font-weight="400"><tspan x="387" dy="0">Core boundary at Agent, tools &amp; enterprise</tspan><tspan x="387" dy="16.799999999999997">data: Intent · retrieval · permissioned</tspan><tspan x="387" dy="16.799999999999997">actions</tspan></text></g><g data-takeaway="3"><rect x="722" y="358" width="334" height="88" rx="10" fill="#0b1a2e" stroke="#284466"/><rect x="722" y="370" width="4" height="64" rx="2" fill="#34d399"/><text x="736" y="383" fill="#34d399" font-size="11.5" font-weight="700"><tspan x="736" dy="0">TAKEAWAY 03 · EVIDENCE &amp; BOUNDARY</tspan></text><text x="736" y="404" fill="#d5e4f5" font-size="12" font-weight="400"><tspan x="736" dy="0">Trace latency, speakers and failures in</tspan><tspan x="736" dy="16.799999999999997">source tests · Conceptual flow, not measured</tspan><tspan x="736" dy="16.799999999999997">latency.</tspan></text></g></svg><figcaption style="font:13px/1.6 system-ui,sans-serif;margin:10px auto 0;max-width:1080px;color:#9fb2ca;overflow-wrap:anywhere">Architecture & data-flow blueprint: follow the left-to-right stage handoffs, policy gates, and three key takeaway callouts below (conceptual topology, not measured latency or rankings).</figcaption></figure><!-- site-remediation-knowledge:end --><aside id="reading-language-note" class="reading-language-note">English translation of the preserved source, with original numerical claims retained; not independently re-measured.</aside><main id="reading-main" tabindex="-1" class="reading-document">
-  <header class="topbar reading-resource-nav">
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI Voice 开发者与架构师指南 · 选型测评、快速原型与行业场景搭建</title>
+  <meta name="description" content="面向学习者与开发者的 AI 语音实战门户：1）技术栈如何选型、测试比较与快速原型展示；2）四大行业场景（智能客服、知识短片配音、AI 陪护、车载/硬件）如何一步步搭建。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header class="topbar">
     <div class="brand">
       <div class="brand-badge">AV</div>
       <div>
-        <div class="brand-title" data-i18n="brandTitle">AI Voice Builder Guide</div>
-        <div class="brand-sub" data-i18n="brandSub">Stack Selection · Rapid Prototypes · Scenario Blueprints</div>
+        <div class="brand-title" data-i18n="brandTitle">AI Voice 学习与实战指南</div>
+        <div class="brand-sub" data-i18n="brandSub">技术栈选型测评 · 快速原型 · 行业场景蓝图</div>
       </div>
     </div>
 
     <nav class="topnav" aria-label="Primary Navigation">
-      <a href="#theme-stack" data-i18n="navStack">1. Stack &amp; Benchmarks</a>
-      <a href="#theme-prototypes" data-i18n="navProto">Rapid Prototypes</a>
-      <a href="#theme-scenarios" data-i18n="navScenarios">2. Scenario Blueprints</a>
-      <a href="#theme-case-study" data-i18n="navCaseStudy">★ Flagship Case Study</a>
-      <a href="#resources" data-i18n="navResources">Repos &amp; Reports</a>
-      <a href="../index.html" data-i18n="navHome">← Back to Home</a>
+      <a href="#theme-stack" data-i18n="navStack">1. 选型与测评</a>
+      <a href="#theme-prototypes" data-i18n="navProto">快速原型展示</a>
+      <a href="#theme-scenarios" data-i18n="navScenarios">2. 行业场景搭建</a>
+      <a href="#theme-case-study" data-i18n="navCaseStudy">★ 深度案例研究</a>
+      <a href="#resources" data-i18n="navResources">开源仓库与报告</a>
+      <a href="../index.html" data-i18n="navHome">← 返回主页</a>
     </nav>
 
     <div class="topbar-actions">
       <div class="lang-switch" role="group" aria-label="Language Switcher">
-        <button type="button" class="lang-btn" data-lang="zh-CN" hidden="" aria-hidden="true">简体</button>
-        <button type="button" class="lang-btn" data-lang="zh-TW" hidden="" aria-hidden="true">繁體</button>
-        <button type="button" class="lang-btn active" data-lang="en" hidden="" aria-hidden="true">EN</button>
+        <button type="button" class="lang-btn active" data-lang="zh-CN">简体</button>
+        <button type="button" class="lang-btn" data-lang="zh-TW">繁體</button>
+        <button type="button" class="lang-btn" data-lang="en">EN</button>
       </div>
     </div>
   </header>
 
-  <div class="container">
+  <main class="container">
     <!-- Hero & 3-Step Learner Path -->
     <section class="hero">
-      <div class="hero-eyebrow" data-i18n="heroEyebrow">✨ Simplified &amp; Actionable · Learner-First AI Voice Engineering Playbook</div>
+      <div class="hero-eyebrow" data-i18n="heroEyebrow">✨ 化繁为简 · 面向学习者与一线开发者的 AI 语音实战手册</div>
       <h1>
-        <span data-i18n="heroTitlePrefix">Two Core Themes: </span>
-        <span class="gradient-text" data-i18n="heroTitleHighlight">How to Choose &amp; Benchmark · How to Build Real Scenarios</span>
+        <span data-i18n="heroTitlePrefix">两大核心主题：</span>
+        <span class="gradient-text" data-i18n="heroTitleHighlight">技术栈怎么选与测 · 行业场景怎么搭</span>
       </h1>
-      <p class="hero-lead" data-i18n="heroLead">We stripped away fragmented demos and organized everything around a clear learner workflow: (1) pick the right AI Voice stack in 30 seconds with sealed latency/accuracy/cost benchmarks, (2) inspect runnable prototypes with a 4m20s live capture, and (3) copy production blueprints for Customer Service, Knowledge Short-Video Voiceover, AI Companionship, and Smart Hardware.</p>
+      <p class="hero-lead" data-i18n="heroLead">
+        去掉繁杂晦涩的碎片化参数，把 AI Voice 核心技术浓缩为一条清晰的学习与落地路径：先用 30 秒搞懂四大主流语音技术栈的边界与实测表现，再看真实可运行的原型演示，最后照着智能客服、知识短片配音、AI 陪护等行业蓝图直接复用代码。
+      </p>
 
       <div class="learning-path">
         <div class="path-card">
-          <span class="path-step" data-i18n="step1Tag">STEP 01 · 30s Stack Match</span>
-          <div class="path-title" data-i18n="step1Title">Select by Latency, Accuracy &amp; Cost</div>
-          <p class="path-desc" data-i18n="step1Desc">Compare Native S2S (gpt-live-1), Grounded Dual-Channel S2S, Expressive Neural HD TTS, and Fast Transcription Diarization STT side by side.</p>
+          <span class="path-step" data-i18n="step1Tag">STEP 01 · 30秒选型</span>
+          <div class="path-title" data-i18n="step1Title">按延时、成本与精确度选定技术栈</div>
+          <p class="path-desc" data-i18n="step1Desc">对比 Native S2S (gpt-live-1)、双通道防幻觉架构、高表现力配音 TTS 与音轨分离转录 STT 的实测指标与单价。</p>
         </div>
         <div class="path-card">
-          <span class="path-step" data-i18n="step2Tag">STEP 02 · Rapid Prototypes</span>
-          <div class="path-title" data-i18n="step2Title">Watch the 4m20s Capture &amp; Run Locally in 5m</div>
-          <p class="path-desc" data-i18n="step2Desc">Jump across chapters in the real Azure GPT-Live-1 recording or run the 16-test green Contact-Center Stereo/Diarization PoC.</p>
+          <span class="path-step" data-i18n="step2Tag">STEP 02 · 原型验证</span>
+          <div class="path-title" data-i18n="step2Title">观看实录原型 &amp; 5 分钟本地跑通</div>
+          <p class="path-desc" data-i18n="step2Desc">直接点播 4分20秒 Azure 实时打断与工具调用实录，或运行 16 项全绿的电话双声道客服与客户分离 PoC。</p>
         </div>
         <div class="path-card">
-          <span class="path-step" data-i18n="step3Tag">STEP 03 · Scenario Blueprints</span>
-          <div class="path-title" data-i18n="step3Title">Reuse 4 End-to-End Industry Blueprints</div>
-          <p class="path-desc" data-i18n="step3Desc">Step-by-step architecture, parameter checklists, and copy-paste code for Customer Service, Knowledge Video Voiceover, AI Care, and In-Cabin Voice.</p>
+          <span class="path-step" data-i18n="step3Tag">STEP 03 · 场景搭建</span>
+          <div class="path-title" data-i18n="step3Title">套用 4 大行业场景架构与代码模板</div>
+          <p class="path-desc" data-i18n="step3Desc">覆盖智能客服（Customer Service）、知识短片配音、AI 情感陪护与车载硬件，提供完整数据流与核心代码。</p>
         </div>
       </div>
     </section>
@@ -156,204 +72,93 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
     <!-- THEME 1: TECH STACK SELECTION & BENCHMARK COMPARISON -->
     <section id="theme-stack" class="section">
       <div class="section-header">
-        <span class="theme-pill" data-i18n="theme1Pill">THEME 01 · TECH STACK SELECTION, BENCHMARKS &amp; RAPID PROTOTYPES</span>
-        <h2 data-i18n="theme1Title">1. How to Select &amp; Benchmark Your AI Voice Tech Stack</h2>
-        <p data-i18n="theme1Desc">No single voice model fits every workload. Different scenarios trade off sub-500ms barge-in latency, deterministic order/math verification, expressive narration prosody, and multi-speaker attribution. Click your primary goal below:</p>
+        <span class="theme-pill" data-i18n="theme1Pill">THEME 01 · 技术栈选型、测试比较与快速原型</span>
+        <h2 data-i18n="theme1Title">一、AI 语音技术栈如何选型与测试比较？</h2>
+        <p data-i18n="theme1Desc">
+          AI 语音并不是“一个模型包打天下”。不同业务对首字延时（TTFT）、算术/订单核验准确度、情绪表现力、多人说话人分离（Diarization）的要求截然不同。点击下方你的首要目标，即可查看推荐技术栈与实测对比：
+        </p>
       </div>
 
       <!-- Interactive 30-second Stack Matcher -->
       <div class="card">
         <div class="card-title-row">
-          <div class="card-title" data-i18n="matcherTitle">🧭 30-Second Interactive Stack Matcher: Choose Your Primary Goal</div>
-          <span class="badge" data-i18n="matcherBadge">Click any card below to inspect the recommended stack</span>
+          <div class="card-title" data-i18n="matcherTitle">🧭 30 秒交互式选型助手：点击你当前要做的语音方向</div>
+          <span class="badge" data-i18n="matcherBadge">点击下方卡片切换推荐方案</span>
         </div>
 
-        <div class="selector-grid" id="stackSelectorGrid">
-        <button type="button" class="selector-btn " data-stack-id="s2s_companion">
-          <span class="selector-btn-tag">Pattern A · Native S2S</span>
-          <span class="selector-btn-title">Ultra-Low Latency Conversation &amp; Care</span>
-          <span class="selector-btn-sub">P50 ~360ms · Instant Barge-In · Empathy</span>
-        </button>
-      
-        <button type="button" class="selector-btn active" data-stack-id="s2s_grounded">
-          <span class="selector-btn-tag">Pattern B · Grounded Hybrid</span>
-          <span class="selector-btn-title">Customer Service &amp; Verified Tool Calling</span>
-          <span class="selector-btn-sub">Zero-Hallucination Math/CRM · Tool Guardrails</span>
-        </button>
-      
-        <button type="button" class="selector-btn " data-stack-id="tts_voiceover">
-          <span class="selector-btn-tag">Pattern C · Neural HD TTS</span>
-          <span class="selector-btn-title">Knowledge Short-Video &amp; Podcast Voiceover</span>
-          <span class="selector-btn-sub">SSML Prosody · WordBoundary Subtitles · Low Cost</span>
-        </button>
-      
-        <button type="button" class="selector-btn " data-stack-id="stt_diarization">
-          <span class="selector-btn-tag">Pattern D · Fast STT + Diarization</span>
-          <span class="selector-btn-title">Call Recording QA &amp; Speaker Diarization</span>
-          <span class="selector-btn-sub">RTF 0.057 Fast Transcription · 100% Speaker Attribution</span>
-        </button>
-      </div>
-        <div class="recommendation-panel" id="stackRecommendationPanel">
-    <div class="rec-main">
-      <h4>Recommended: Grounded Dual-Channel S2S (gpt-live-1 Voice + Deterministic Verifier/Tools)</h4>
-      <p>Pure audio-native models can hallucinate multi-step arithmetic or policy numbers. Pair gpt-live-1 for natural conversational turn-taking with deterministic server-side tools / gpt-4.1-mini verification, guarded by a turnEpoch token so stale tool outputs are dropped if the user barges in.</p>
-      <div class="rec-pills">
-        <span class="rec-pill">gpt-live-1 + Function Calling</span><span class="rec-pill">gpt-4.1-mini Verifier</span><span class="rec-pill">turnEpoch Stale-Output Guard</span><span class="rec-pill">SIP / WebRTC Bridge</span><span class="rec-pill">Human Handoff Summary</span>
-      </div>
-      <div>
-        <button type="button" class="btn btn-primary" id="jumpToBlueprintBtn">Jump to Matching Scenario Blueprint ↓</button>
-      </div>
-    </div>
-    <div class="rec-side">
-      
-        <div class="rec-side-row">
-          <span class="rec-side-label">Conversational Latency</span>
-          <span class="rec-side-val">380 - 520 ms</span>
-        </div>
-      
-        <div class="rec-side-row">
-          <span class="rec-side-label">Tool &amp; Math Accuracy</span>
-          <span class="rec-side-val">100% (Deterministic)</span>
-        </div>
-      
-        <div class="rec-side-row">
-          <span class="rec-side-label">Barge-in State Safety</span>
-          <span class="rec-side-val">turnEpoch Guarded</span>
-        </div>
-      
-        <div class="rec-side-row">
-          <span class="rec-side-label">Estimated Unit Cost</span>
-          <span class="rec-side-val">~$0.042 - $0.060 / min</span>
-        </div>
-      
-    </div>
-  </div>
+        <div class="selector-grid" id="stackSelectorGrid"></div>
+        <div class="recommendation-panel" id="stackRecommendationPanel"></div>
       </div>
 
       <!-- Comprehensive Benchmark Comparison Table -->
       <div class="card">
         <div class="card-title-row">
-          <div class="card-title" data-i18n="matrixTitle">📊 Side-by-Side AI Voice Stack Comparison &amp; Benchmark Matrix</div>
-          <div class="btn-row">
-            <a class="btn" href="benchmark-cards.en.html" target="_blank" rel="noopener" data-i18n="btnVoiceCards">Realtime Voice 7-Card Benchmark ↗</a>
-            <a class="btn" href="diarization-benchmark-cards.en.html" target="_blank" rel="noopener" data-i18n="btnDiarCards">Diarization 7-Card Benchmark ↗</a>
+          <div class="card-title" data-i18n="matrixTitle">📊 四大主流 AI Voice 技术栈实测对比表（含评测基准与成本）</div>
+          <div class="btn-row" style="margin-top:0;padding-top:0;">
+            <a class="btn" href="./benchmark-cards.html" target="_blank" rel="noopener" data-i18n="btnVoiceCards">查看实时语音 7-Card 评测报告 ↗</a>
+            <a class="btn" href="./diarization-benchmark-cards.html" target="_blank" rel="noopener" data-i18n="btnDiarCards">查看说话人分离 7-Card 评测报告 ↗</a>
           </div>
         </div>
-        <div class="table-wrap" id="stackMatrixTableWrap">
-    <table class="compare-table">
-      <thead>
-        <tr>
-          <th>Stack Pattern</th>
-          <th>Core Components</th>
-          <th>Latency / Speed</th>
-          <th>Measured Strengths</th>
-          <th>Boundaries &amp; Caveats</th>
-          <th>Est. Cost</th>
-          <th>Best-Fit Scenarios</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Pattern A · Native Full-Duplex S2S</strong></td>
-          <td class="mono">Azure VoiceLive<br>gpt-live-1</td>
-          <td class="mono">P50 ~360ms<br>Instant Barge-In</td>
-          <td>Natural emotional prosody, preserves sighs/laughter/pauses over a single WebSocket</td>
-          <td>Do not rely on ungrounded audio generation for complex math or unguarded DB writes</td>
-          <td class="mono">~$0.055 / min</td>
-          <td>🫶 AI Companionship, Language Tutor, In-Cabin Chat</td>
-        </tr>
-        <tr>
-          <td><strong>Pattern B · Grounded Dual-Channel S2S</strong></td>
-          <td class="mono">gpt-live-1 + Tools<br>+ gpt-4.1-mini Verifier</td>
-          <td class="mono">P50 ~420ms<br>Streaming Tool Payout</td>
-          <td>Combines natural turn-taking with 100% deterministic math/CRM lookups &amp; <code>turnEpoch</code> guard</td>
-          <td>Requires explicit tool JSON schemas and turn-cancellation state tracking</td>
-          <td class="mono">~$0.045 / min</td>
-          <td>🎧 Customer Service Hotline, Order Triage, Device Control</td>
-        </tr>
-        <tr>
-          <td><strong>Pattern C · Expressive Voiceover TTS</strong></td>
-          <td class="mono">Azure Neural HD TTS<br>+ SSML + WordBoundary</td>
-          <td class="mono">~180ms TTFB<br>Batch &amp; Streaming</td>
-          <td><code>&lt;phoneme&gt;</code> locks technical pronunciation; auto-exports millisecond SRT subtitles</td>
-          <td>One-way narration pipeline; not designed for live two-way interruption</td>
-          <td class="mono">~$0.015 / min</td>
-          <td>🎬 Knowledge Short Videos, Audiobooks, Podcasts</td>
-        </tr>
-        <tr>
-          <td><strong>Pattern D · Fast STT + Speaker Attribution</strong></td>
-          <td class="mono">Fast Transcription<br>2025-10-15 + Stereo/Diar</td>
-          <td class="mono">RTF 0.057 (Stereo)<br>RTF 0.095 (Mono Diar)</td>
-          <td>Transcribes 224.8s call in 12.9s with 28/28 (100%) zero-crosstalk speaker labels</td>
-          <td>Post-call / near-real-time analytics; mono audio requires explicit <code>enabled=True</code></td>
-          <td class="mono">~$0.008 / min</td>
-          <td>📋 Contact Center QA, Compliance Audit, Meeting Notes</td>
-        </tr>
-        <tr>
-          <td><strong>Market Reference Stacks</strong></td>
-          <td class="mono">Retell AI / ElevenLabs<br>/ Sierra / LiveKit</td>
-          <td class="mono">500ms - 950ms</td>
-          <td>Rich voice cloning (ElevenLabs) and turnkey WebRTC telephony connectors (Retell/LiveKit)</td>
-          <td>Cross-cloud enterprise CRM/VPC integration adds latency and data-residency overhead</td>
-          <td class="mono">$0.07 - $0.14 / min</td>
-          <td>External creative voiceover &amp; telephony benchmarks</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+        <div class="table-wrap" id="stackMatrixTableWrap"></div>
       </div>
     </section>
 
     <!-- THEME 1 PART B: RAPID PROTOTYPES -->
-    <section id="theme-prototypes" class="section">
+    <section id="theme-prototypes" class="section" style="padding-top: 1rem;">
       <div class="section-header">
-        <span class="theme-pill" data-i18n="protoPill">RAPID PROTOTYPING · VERIFIED RUNNABLE SHOWCASES</span>
-        <h2 data-i18n="protoTitle">2. Rapid Prototype Showcase: Real Video Capture &amp; 5-Minute Local Setup</h2>
-        <p data-i18n="protoDesc">Instead of toy widgets, explore two production-verified reference prototypes: (A) a full-duplex WebSocket voice agent with server-side tool grounding, and (B) a high-speed contact-center speaker attribution &amp; QA pipeline.</p>
+        <span class="theme-pill" data-i18n="protoPill">RAPID PROTOTYPING · 真实可运行原型展示</span>
+        <h2 data-i18n="protoTitle">二、快速原型展示：不看空洞概念，直接看实测录像与可跑代码</h2>
+        <p data-i18n="protoDesc">
+          我们把最核心的两个技术方向做成了可直接克隆运行的最小原型（MVP）：一个是实时双向打断 + 零幻觉工具调用的语音助手；另一个是客服电话录音说话人分离与质检管线。
+        </p>
       </div>
 
       <div class="proto-grid">
         <!-- Prototype 1: GPT-Live-1 Realtime Demo -->
         <div class="proto-card">
-          <div class="card-title-row">
-            <div class="card-title" data-i18n="proto1Title">Prototype A: GPT-Live-1 Full-Duplex Voice + Grounded Tool Calling</div>
+          <div class="card-title-row" style="margin-bottom:0.2rem;">
+            <div class="card-title" data-i18n="proto1Title">原型 A：GPT-Live-1 实时双向语音与防幻觉工具调用</div>
             <span class="badge emerald">Live App + 4m20s MP4</span>
           </div>
-          <p data-i18n="proto1Desc">Demonstrates Azure VoiceLive WebSocket 24kHz PCM streaming, instant barge-in interruption, server clock lookup, deterministic arithmetic (18×25+125=575), and live web grounding.</p>
+          <p style="font-size:0.88rem;color:var(--text-secondary);" data-i18n="proto1Desc">
+            实测展示 Azure VoiceLive WebSocket 24kHz 全双工语音、用户中途打断（Barge-in）、服务端时钟查询、精确算术（18×25+125=575）以及 Grounded 联网搜索。
+          </p>
 
           <div class="video-frame">
-            <video id="gptLiveDemoVideo" controls="" preload="metadata">
-              <source src="https://turbo998.github.io/voice/GPT-Live-Azure-demo.mp4" type="video/mp4">
-              <source src="https://github.com/turbo998/gpt-live-1-demo/releases/download/v0.4.0/GPT-Live-Azure-demo.mp4" type="video/mp4">
+            <video id="gptLiveDemoVideo" controls preload="metadata">
+              <source src="https://turbo998.github.io/voice/GPT-Live-Azure-demo.mp4" type="video/mp4" />
+              <source src="https://github.com/turbo998/gpt-live-1-demo/releases/download/v0.4.0/GPT-Live-Azure-demo.mp4" type="video/mp4" />
             </video>
           </div>
 
           <div class="chapter-bar" aria-label="Video chapters">
-            <button type="button" class="chapter-btn" data-seek="0" data-i18n="chap1">▶ 00:00 Greeting &amp; Barge-In</button>
-            <button type="button" class="chapter-btn" data-seek="65" data-i18n="chap2">▶ 01:05 Server Clock Tool</button>
-            <button type="button" class="chapter-btn" data-seek="115" data-i18n="chap3">▶ 01:55 Exact Math 18×25+125</button>
-            <button type="button" class="chapter-btn" data-seek="170" data-i18n="chap4">▶ 02:50 Grounded Web Search</button>
+            <button type="button" class="chapter-btn" data-seek="0" data-i18n="chap1">▶ 00:00 实时问候与随时打断</button>
+            <button type="button" class="chapter-btn" data-seek="65" data-i18n="chap2">▶ 01:05 服务端时钟工具</button>
+            <button type="button" class="chapter-btn" data-seek="115" data-i18n="chap3">▶ 01:55 精确算术 18×25+125</button>
+            <button type="button" class="chapter-btn" data-seek="170" data-i18n="chap4">▶ 02:50 联网事实验证</button>
           </div>
 
           <pre class="code-snippet">git clone https://github.com/turbo998/gpt-live-1-demo.git
 cd gpt-live-1-demo &amp;&amp; npm install
-npm run dev   # Open http://localhost:3000 for microphone conversation</pre>
+npm run dev   # 打开 http://localhost:3000 即可麦克风对话</pre>
 
           <div class="btn-row">
-            <a class="btn btn-primary" href="https://gpt-live-demo-0922-qc.azurewebsites.net/" target="_blank" rel="noopener" data-i18n="proto1BtnLive">Open Live Azure Web App ↗</a>
-            <a class="btn" href="https://github.com/turbo998/gpt-live-1-demo" target="_blank" rel="noopener" data-i18n="proto1BtnRepo">GitHub Repo &amp; Setup Guide ↗</a>
+            <a class="btn btn-primary" href="https://gpt-live-demo-0922-qc.azurewebsites.net/" target="_blank" rel="noopener" data-i18n="proto1BtnLive">打开在线原型 (Azure Web App) ↗</a>
+            <a class="btn" href="https://github.com/turbo998/gpt-live-1-demo" target="_blank" rel="noopener" data-i18n="proto1BtnRepo">GitHub 源码与部署指南 ↗</a>
           </div>
         </div>
 
         <!-- Prototype 2: Azure Speech Diarization & Stereo Split PoC -->
         <div class="proto-card">
-          <div class="card-title-row">
-            <div class="card-title" data-i18n="proto2Title">Prototype B: Contact Center Diarization &amp; Stereo Channel Split PoC</div>
-            <span class="badge amber">RTF 0.057 · 100% attribution rate</span>
+          <div class="card-title-row" style="margin-bottom:0.2rem;">
+            <div class="card-title" data-i18n="proto2Title">原型 B：客服录音说话人分离与双声道质检 PoC</div>
+            <span class="badge amber">RTF 0.057 · 100% 标记率</span>
           </div>
-          <p data-i18n="proto2Desc">Pinpoints and fixes the Azure Speech Python SDK 1.49.0 silent diarization.enabled=None omission: restores 0/8 → 8/8 (100%) speaker attribution on mono control audio and processes a 224.8s stereo customer call in 12.9s (RTF 0.057, 28/28 turns).</p>
+          <p style="font-size:0.88rem;color:var(--text-secondary);" data-i18n="proto2Desc">
+            定位并修复 Azure Speech Python SDK 1.49.0 默认 diarization.enabled=None 静默漏标问题：在官方混合单声道实现 0/8→8/8 (100%) 恢复，并在 224.8 秒真实客服双声道录音上用 12.9 秒完成 28/28 零串音归因。
+          </p>
 
-          <pre class="code-snippet"># 1. Mixed mono recording: explicitly enable diarization.enabled=True
+          <pre class="code-snippet"># 1. 单声道混合录音：必须显式开启 diarization.enabled=True
 options = TranscriptionOptions(
     locales=["zh-CN"],
     diarization_options=TranscriptionDiarizationOptions(
@@ -361,20 +166,20 @@ options = TranscriptionOptions(
     ),
 )
 
-# 2. Stereo contact-center recording (left=agent ch0 / right=customer ch1): physical channel separation is fastest and most accurate
-# Measured: a 224.8s real call took 12.9s (RTF=0.057), with 28/28 utterances attributed correctly (100%)</pre>
+# 2. 联络中心双声道录音 (左=客服 ch0 / 右=客户 ch1)：物理音轨分离最快最准
+# 实测 224.8s 真实通话仅耗时 12.9s (RTF=0.057)，28/28 句 100% 准确归属</pre>
 
-          <div>
-            <strong data-i18n="proto2CalloutTitle">💡 Golden Rule for Learners &amp; Engineers:</strong>
-            <span data-i18n="proto2CalloutBody">When your telephony platform records stereo split tracks (Ch0 = Agent, Ch1 = Customer), never downmix to mono for clustering diarization! Splitting physical channels + Fast Transcription is ~40% faster and eliminates overlap crosstalk.</span>
+          <div style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.3);border-radius:8px;padding:0.8rem 1rem;font-size:0.83rem;color:var(--text-secondary);">
+            <strong style="color:var(--accent-emerald);display:block;margin-bottom:0.25rem;" data-i18n="proto2CalloutTitle">💡 学习者避坑要点（黄金法则）：</strong>
+            <span data-i18n="proto2CalloutBody">如果你的音频已经是立体声分轨（左声道坐席、右声道客户），千万不要混成单声道再跑聚类算法！直接按物理声道分离 + Fast Transcription，速度提升约 40%，且彻底消除重叠抢话串音。</span>
           </div>
 
           <pre class="code-snippet">git clone https://github.com/turbo998/azure-speech-diarization-poc.git
 cd azure-speech-diarization-poc &amp;&amp; pytest -q  # 16 passed</pre>
 
           <div class="btn-row">
-            <a class="btn btn-primary" href="diarization-benchmark-cards.en.html" target="_blank" rel="noopener" data-i18n="proto2BtnCards">Open Diarization 7-Card Report ↗</a>
-            <a class="btn" href="https://github.com/turbo998/azure-speech-diarization-poc" target="_blank" rel="noopener" data-i18n="proto2BtnRepo">GitHub Repo &amp; Repro Scripts ↗</a>
+            <a class="btn btn-primary" href="./diarization-benchmark-cards.html" target="_blank" rel="noopener" data-i18n="proto2BtnCards">查看 7-Card 实验对照明细 ↗</a>
+            <a class="btn" href="https://github.com/turbo998/azure-speech-diarization-poc" target="_blank" rel="noopener" data-i18n="proto2BtnRepo">GitHub 源码与复现脚本 ↗</a>
           </div>
         </div>
       </div>
@@ -383,389 +188,92 @@ cd azure-speech-diarization-poc &amp;&amp; pytest -q  # 16 passed</pre>
     <!-- THEME 2: INDUSTRY SCENARIO BLUEPRINTS -->
     <section id="theme-scenarios" class="section">
       <div class="section-header">
-        <span class="theme-pill theme-two" data-i18n="theme2Pill">THEME 02 · HOW TO BUILD INDUSTRY SCENARIOS WITH AI VOICE</span>
-        <h2 data-i18n="theme2Title">3. Four Industry Scenario Blueprints: From Architecture to Code</h2>
-        <p data-i18n="theme2Desc">Select an industry scenario below to inspect its 4-stage dataflow, key configuration parameters, and ready-to-copy implementation template:</p>
+        <span class="theme-pill theme-two" data-i18n="theme2Pill">THEME 02 · 行业场景如何使用 AI Voice 搭建</span>
+        <h2 data-i18n="theme2Title">三、四大核心行业场景：从架构蓝图到代码直接落地</h2>
+        <p data-i18n="theme2Desc">
+          告别零散无用的小 Demo。我们围绕最常见的四大落地场景——智能客服（Customer Service）、知识短片配音、AI 情感陪护、车载与智能硬件，梳理出「端到端数据流 + 核心参数配置 + 可复制代码模板」：
+        </p>
       </div>
 
       <!-- 4 Scenario Selector Tabs -->
-      <div class="scenario-tabs" id="scenarioTabs">
-        <button type="button" class="scenario-tab active" data-scenario-id="customer_service">
-          <span class="scenario-tab-icon">🎧</span>
-          <span class="scenario-tab-title">1. Customer Service &amp; Call QA</span>
-          <span class="scenario-tab-sub">Live Hotline · Verified CRM · Stereo QA</span>
-        </button>
-      
-        <button type="button" class="scenario-tab " data-scenario-id="knowledge_voiceover">
-          <span class="scenario-tab-icon">🎬</span>
-          <span class="scenario-tab-title">2. Knowledge Video Voiceover</span>
-          <span class="scenario-tab-sub">SSML Prosody · Exact Lexicon · Auto SRT</span>
-        </button>
-      
-        <button type="button" class="scenario-tab " data-scenario-id="ai_companion">
-          <span class="scenario-tab-icon">🫶</span>
-          <span class="scenario-tab-title">3. AI Companionship &amp; Care</span>
-          <span class="scenario-tab-sub">Patient VAD · Empathy · Long-Term Memory</span>
-        </button>
-      
-        <button type="button" class="scenario-tab " data-scenario-id="smart_hardware">
-          <span class="scenario-tab-icon">🚗</span>
-          <span class="scenario-tab-title">4. In-Cabin &amp; Smart Hardware</span>
-          <span class="scenario-tab-sub">Edge Wake-Word · Multi-Intent · Offline Fallback</span>
-        </button>
-      </div>
+      <div class="scenario-tabs" id="scenarioTabs"></div>
 
       <!-- Dynamic Blueprint Detail Container -->
-      <div class="blueprint-card" id="scenarioBlueprintContainer">
-    <div class="blueprint-header">
-      <div>
-        <h3>Scenario 1: Customer Service Hotline &amp; Contact Center Recording QA</h3>
-        <p>Covers both sides of Customer Service: (1) Live inbound/outbound triage using gpt-live-1 + deterministic tool calling for zero-hallucination order lookups and billing math, and (2) Post-call QA using stereo channel split + Fast Transcription (RTF 0.057) for 100% accurate Agent vs. Customer attribution.</p>
-      </div>
-      <span class="badge emerald">Pattern B (Live) + Pattern D (Post-Call QA)</span>
-    </div>
+      <div class="blueprint-card" id="scenarioBlueprintContainer"></div>
 
-    <div class="flow-steps">
-      
-        <div class="flow-step">
-          <span class="flow-step-num">STAGE 01 · Connection and interruption</span>
-          <div class="flow-step-title">SIP/WebRTC Full-Duplex Ingress</div>
-          <p class="flow-step-desc">Streams 24kHz PCM audio with Server Semantic VAD; sends response.cancel immediately when the caller interrupts.</p>
-        </div>
-      
-        <div class="flow-step">
-          <span class="flow-step-num">STAGE 02 · Hallucination-free order lookup</span>
-          <div class="flow-step-title">Deterministic Tool + turnEpoch</div>
-          <p class="flow-step-desc">Routes CRM lookups and refund math through server tools guarded by turnEpoch so interrupted tool results never leak.</p>
-        </div>
-      
-        <div class="flow-step">
-          <span class="flow-step-num">STAGE 03 · Seamless human handoff</span>
-          <div class="flow-step-title">Warm Handoff to Human Agent</div>
-          <p class="flow-step-desc">Escalates angry callers or high-value refunds to human agents with a structured context summary card.</p>
-        </div>
-      
-        <div class="flow-step">
-          <span class="flow-step-num">STAGE 04 · Recording quality checks in seconds</span>
-          <div class="flow-step-title">Stereo Split Fast STT QA</div>
-          <p class="flow-step-desc">Splits Left (Agent) and Right (Customer) channels for Fast Transcription (RTF=0.057) with 28/28 zero-crosstalk QA scoring.</p>
-        </div>
-      
-    </div>
-
-    <div class="blueprint-body">
-      <div>
-        <h4>Key Stack &amp; Parameter Checklist</h4>
-        <ul class="blueprint-list">
-          
-            <li>
-              <strong>Recommended Model Stack</strong>
-              <span>Live Call: Azure VoiceLive gpt-live-1 + gpt-4.1-mini verifier. Post-Call QA: Azure Speech Fast Transcription (2025-10-15).</span>
-            </li>
-          
-            <li>
-              <strong>Anti-Hallucination Guardrail</strong>
-              <span>Forbid mental math or invented order IDs in the system prompt; require deterministic lookup_order / calculate_quote tool calls.</span>
-            </li>
-          
-            <li>
-              <strong>Stereo vs. Mono Diarization Rule</strong>
-              <span>Use physical channel splitting for stereo call recordings; for mono recordings, explicitly pass TranscriptionDiarizationOptions(enabled=True, max_speakers=2).</span>
-            </li>
-          
-        </ul>
-        <div class="btn-row">
-          <a class="btn btn-primary" href="#theme-case-study">★ Jump to Smart-Ring Global Voice CS Case Study ↓</a><a class="btn " href="https://gpt-live-demo-0922-qc.azurewebsites.net/" target="_blank" rel="noopener">Open Live GPT-Live Prototype ↗</a><a class="btn " href="https://github.com/turbo998/azure-speech-diarization-poc" target="_blank" rel="noopener">Customer Call Diarization PoC Repo ↗</a>
-        </div>
-      </div>
-
-      <div>
-        <h4>Copy-Paste Implementation Template</h4>
-        <pre class="code-snippet">// Core dual-channel service pattern: turnEpoch prevents stale tool results after an interruption
-let turnEpoch = 0;
-
-ws.on("message", async (raw) =&gt; {
-  const evt = JSON.parse(raw);
-
-  // 1) Customer interruption: increment turnEpoch and cancel current speech output
-  if (evt.type === "input_audio_buffer.speech_started") {
-    turnEpoch += 1;
-    ws.send(JSON.stringify({ type: "response.cancel" }));
-  }
-
-  // 2) The model requests an order lookup or refund calculation
-  if (evt.type === "response.function_call_arguments.done") {
-    const myEpoch = turnEpoch;
-    const result = await executeDeterministicCrmTool(evt.name, JSON.parse(evt.arguments));
-    if (myEpoch !== turnEpoch) return; // Discard stale results if the customer interrupted and began a new turn
-
-    ws.send(JSON.stringify({
-      type: "conversation.item.create",
-      item: { type: "function_call_output", call_id: evt.call_id, output: JSON.stringify(result) }
-    }));
-    ws.send(JSON.stringify({ type: "response.create" }));
-  }
-});</pre>
-      </div>
-    </div>
-  </div>
-
-      <!-- Interactive Stage 361 (P715 / P716) Cascaded vs Native S2S Selection & Two-Tier Semantic Turn Detection + Barge-in Guard Simulator -->
-      <div class="card" id="duplexGuardSimulatorCard">
+      <!-- Interactive Stage 368 (P715–P730) Multi-Topic Single-Decision Architect FAQ Sandbox: Cascaded vs. S2S · WebRTC vs. WS vs. SIP · Speculative Read-Only RAG (3A) · Async Tool Epoch Write Fence (3B) · Full-Duplex Nonlinear Echo & TSE Crosstalk Isolation (Round 4) · Warm Transfer Signed Screen-Pop & Consultative One-Way Whisper (Round 5) · PCI-DSS DTMF Scope-Reduction Bypass (6A) & SIPREC Archival Redaction (6B) · Outbound Parallel AMD & TCPA Safe-Harbor Gate (Round 7) · Alphanumeric Entity Disambiguation & SSML Phonetic Readback (Round 8) -->
+      <div class="card" id="duplexGuardSimulatorCard" style="margin-top:1.25rem;border-color:rgba(16,185,129,0.42);">
         <div class="card-title-row">
           <div>
-            <div class="card-title" data-i18n="simTitle">🧪 2026-11-08 Five Single-Topic Architect FAQ Policy Sandbox: Cascaded vs. S2S Lock (P715) · Semantic EOU (P716) · WebRTC vs. WS HOL/AEC3 (P717) · SIP 8kHz Band-Limited Resampling (P718) · Topic 3A Speculative RAG EOU Gate (P719) · Topic 3B Async Tool Epoch Write Fence (P720) · Topic 4 Nonlinear Echo &amp; Target Speaker Lock (P721–P722) (Stage 364 · P705–P722)</div>
-            <p data-i18n="simSub">Click any synthetic policy probe below to verify the offline in-memory policy state machine (1ms clock resolution, &lt;1ms rounded to 0ms; production network/model switch latency not_measured in this browser sandbox) across P715–P722:</p>
+            <div class="card-title" data-i18n="simTitle">🧪 2026-11-08 单专题架构选型 FAQ 离线策略状态机沙盒：级联 vs S2S 合规锁 (P715/P716) · WebRTC vs WS vs SIP 8kHz 带限重采样 (P717/P718) · 只读投机语音 RAG [专题3A: P719] · 异步工具纪元写栅栏 [专题3B: P720] · 免提非线性回声与主叫声纹锁 [专题4: P721/P722] · 热转接 CTI 签名屏弹与单向耳语隔离 [专题5: P723/P724] · PCI 按键采集旁路缩减暴露 [专题6A: P725] · SIPREC 录音双流消音与 Fail-Closed 隔离 [专题6B: P726] · 智能外呼并行 AMD 与 TCPA 安全港门禁 [专题7: P727/P728] · 字母数字混排实体消歧与 SSML 分块复诵 [专题8: P729/P730] (Stage 368 · P705–P730)</div>
+            <p style="font-size:0.85rem;color:var(--text-muted);margin-top:0.2rem;" data-i18n="simSub">
+              点击下方合成压测探针（Synthetic Policy Probes），验证离线内存策略/配置状态机（计时口径：0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established；真实生产网络/向量库/Saga/DSP/SIP/PCI 金库/WORM/外呼信令/ASR 解码/TTS 渲染耗时未在此本地沙盒实测 not_measured）对 P715–P730 核心语音架构护栏的规则判定：
+            </p>
           </div>
-          <span class="badge emerald">Stage 364 · P705–P722 Policy Sandbox</span>
+          <span class="badge emerald">Stage 368 · P705–P730 Policy Sandbox</span>
         </div>
-        <div style="margin: 12px 0 16px;">
-          <img src="./05-daily-breakthrough-2026-11-08.svg" alt="2026-11-08 Enterprise Voice Agent Architecture Selection &amp; Two-Tier Semantic Turn Detection Visual Summary" style="width:100%;height:auto;border-radius:10px;border:1px solid rgba(56,189,248,0.28);display:block;margin-bottom:12px;" loading="lazy" />
-          <img src="./06-webrtc-vs-websocket-vs-sip-2026-11-08.svg" alt="2026-11-08 Enterprise Voice Agent Ingress Selection WebRTC vs WebSocket vs SIP Visual Summary" style="width:100%;height:auto;border-radius:10px;border:1px solid rgba(56,189,248,0.28);display:block;margin-bottom:12px;" loading="lazy" />
-          <img src="./07-speculative-voice-rag-2026-11-08.svg" alt="2026-11-08 Enterprise Voice Agent Topic 3A Read-Only Speculative RAG &amp; Topic 3B Async Tool Epoch Write Fence Visual Summary" style="width:100%;height:auto;border-radius:10px;border:1px solid rgba(56,189,248,0.28);display:block;margin-bottom:12px;" loading="lazy" />
-          <img src="./08-barge-in-echo-crosstalk-2026-11-08.svg" alt="2026-11-08 Enterprise Voice Agent Topic 4 Full-Duplex Barge-in Nonlinear Echo Suppression &amp; Target Speaker Crosstalk Isolation Visual Summary" style="width:100%;height:auto;border-radius:10px;border:1px solid rgba(56,189,248,0.28);display:block;" loading="lazy" />
-        </div>
-        <div class="chapter-bar" id="duplexSimTabs"><button type="button" class="chapter-btn active" data-duplex-sim="p705_epoch_abort">① P705 · Mid-Dialogue Tool Takeover Abort (Epoch 41→42)</button><button type="button" class="chapter-btn " data-duplex-sim="p705_backchannel_keep">② P705 · Backchannel 'Uh-huh' Non-Truncating Resume</button><button type="button" class="chapter-btn " data-duplex-sim="p706_vadfree_hold">③ P706 · BayLing-Duplex 18-Digit Pause <listen> Hold</listen></button><button type="button" class="chapter-btn " data-duplex-sim="p706_persona_watermark">④ P706 · PersonaPlex-7B Clone Consent &amp; C2PA Watermark Gate</button></div>
-        <div id="duplexSimOutput">
-    <div>
-      ✅ 0ms Block Verified: While NemotronLabs VoiceChat 11B / gpt-realtime-2.1 streams a state-mutating tool at epoch=41, the caller interrupts at epoch=42; P705 aborts the stale-epoch write in 0ms and flushes the PCM buffer.
-    </div>
-    <div class="proto-grid">
-      <div>
-        <div>INPUT TELEMETRY PAYLOAD (Stage 356 Probe)</div>
-        <pre class="code-snippet">{
-  "policyId": "P705-FULL-DUPLEX-MID-DIALOGUE-PARALLEL-TOOL-STREAM-AND-BACKCHANNEL-RESUME-GUARD",
-  "activeTurnEpoch": 42,
-  "toolInvocationEpoch": 41,
-  "isStateMutatingTool": true,
-  "userTakeoverInterruptionDetected": true,
-  "backchannelOverlapDetected": false,
-  "concurrentMidDialogueToolCalls": 2,
-  "activeAudioContextTokens": 128000
-}</pre>
-      </div>
-      <div>
-        <div>DETERMINISTIC VERIFIER VERDICT (0ms Gate)</div>
-        <pre class="code-snippet">{
-  "blocked": true,
-  "abortLatencyMs": 0,
-  "staleEpochToolMutationAborted": true,
-  "backchannelContinuationPreserved": false,
-  "clampedConcurrentToolCalls": 2,
-  "clampedAudioContextTokens": 128000,
-  "remediation": "ABORT_STALE_EPOCH_MID_DIALOGUE_TOOL_MUTATION_AND_FLUSH_AUDIO_BUFFER"
-}</pre>
-      </div>
-    </div>
-  </div>
+        <div class="chapter-bar" id="duplexSimTabs" style="margin-bottom:0.9rem;"></div>
+        <div id="duplexSimOutput"></div>
       </div>
     </section>
 
     <!-- THEME 2 PART B: FLAGSHIP CASE STUDY DEEP DIVE -->
-    <section id="theme-case-study" class="section">
+    <section id="theme-case-study" class="section" style="padding-top: 1.2rem;">
       <div class="section-header">
-        <span class="theme-pill theme-two" data-i18n="casePill">FLAGSHIP CASE STUDY · DEEP-DIVE INDUSTRY APPLICATION RESEARCH</span>
-        <h2 data-i18n="caseTitle">4. Deep-Dive Case Study: Smart Hardware Go-Global 6-Language AI Voice CS (250K → 750K Smart Rings)</h2>
-        <p data-i18n="caseDesc">Based on a complete 13-slide production proposal for a 30-person smart-ring startup (sleep/health tracking + subscription app), explore how to translate business pain points into PoC/Prod SLAs, architect 'Talk &amp; Act in Parallel' with Two-Phase Idempotent Writes, enforce 5 medical/privacy guardrails, and cut unit cost from $5.00/call (human) to $0.40/call (AI) with a 5-month payback:</p>
+        <span class="theme-pill theme-two" data-i18n="casePill">FLAGSHIP CASE STUDY · 行业应用场景案例详细研究</span>
+        <h2 data-i18n="caseTitle">四、深度案例研究：智能硬件出海 6 语种 AI 语音客服（25万→75万只智能戒指）</h2>
+        <p data-i18n="caseDesc">
+          以一家 30 人智能戒指（睡眠与健康监测 + 订阅制 App）出海初创企业的完整生产方案为例，拆解如何从业务痛点推导技术验收指标、设计“对话与决策分离 + 两阶段幂等写入”架构、构建五重医疗隐私护栏，以及测算从单通 $5.00 人工成本降至 $0.40 AI 成本（5 个月回本）的全套工程方法：
+        </p>
       </div>
 
-      <div class="card">
+      <div class="card" style="border-color: rgba(56, 189, 248, 0.38);">
         <div class="card-title-row">
           <div>
-            <div class="card-title" data-i18n="caseBannerTitle">💍 Customer Profile &amp; North Star: 3× Shipments (250K → 750K Rings) While Reducing Seats (18 → 8)</div>
-            <p data-i18n="caseBannerSub">6 languages across NA, Europe, Korea &amp; Japan · 100K → 300K calls/yr (600K → 1.8M min) · 38% after-hours · Strict battery-safety &amp; health-data redlines</p>
+            <div class="card-title" data-i18n="caseBannerTitle">💍 客户画像与北极星目标：销量翻 3 倍（250K → 750K），客服席位不增反降（18 席 → 8 席）</div>
+            <p style="font-size:0.86rem;color:var(--text-muted);margin-top:0.2rem;" data-i18n="caseBannerSub">
+              覆盖北美、欧洲、日韩 6 种语言 · 年均 10 万通→30 万通来电（60万→180万分钟） · 38% 发生在非工作时段 · 涉锂电池发热与心率睡眠数据合规红线
+            </p>
           </div>
-          <div class="btn-row">
-            <a class="btn btn-primary" href="case-study.en.html?lang=en" id="caseDocLink" data-i18n="btnReadCaseDoc">Read Full Case Study Report ↗</a>
+          <div class="btn-row" style="margin-top:0;padding-top:0;">
+            <a class="btn btn-primary" href="./case-study.html" id="caseDocLink" data-i18n="btnReadCaseDoc">阅读完整案例研究报告 ↗</a>
           </div>
         </div>
 
         <!-- KPI Summary Strip -->
-        <div class="flow-steps" id="caseKpiStrip">
-      <div class="flow-step">
-        <span class="flow-step-num">KPI 01 · Self-Service Rate</span>
-        <div class="flow-step-title">60% Full AI Resolution</div>
-        <p class="flow-step-desc">No human handoff and no repeat call within 7 days; -40% cost per contact, shrinking seats from 18 to 8.</p>
-      </div>
-    
-      <div class="flow-step">
-        <span class="flow-step-num">KPI 02 · Latency &amp; Barge-In</span>
-        <div class="flow-step-title">P50 &lt; 0.8s · Barge-In &lt; 0.3s</div>
-        <p class="flow-step-desc">≥99% 24/7 answer rate across 6 languages, eliminating the 38% after-hours gap (CSAT ≥ 4.5 / 5.0).</p>
-      </div>
-    
-      <div class="flow-step">
-        <span class="flow-step-num">KPI 03 · Safety &amp; Privacy</span>
-        <div class="flow-step-title">99% Safety Escalation &lt;30s</div>
-        <p class="flow-step-desc">Battery overheating/swelling routed to D365 human agents in &lt;30s; 100% health/PII redaction.</p>
-      </div>
-    
-      <div class="flow-step">
-        <span class="flow-step-num">KPI 04 · Unit Economics &amp; ROI</span>
-        <div class="flow-step-title">$5.00 → $0.40 / Call</div>
-        <p class="flow-step-desc">AI voice costs just $0.08/min; saves $205K in Year 1 (-41%), $714K at 3× scale in Year 2 (-48%), ~5-month payback.</p>
-      </div>
-    </div>
+        <div class="flow-steps" id="caseKpiStrip" style="margin-bottom:1.15rem;"></div>
 
         <!-- 6 Interactive Deep-Dive Tabs -->
-        <div class="chapter-bar" id="caseStudyTabs">
-        <button type="button" class="chapter-btn active" data-case-tab="goals">
-          ① Business Goals → Tech SLAs
-        </button>
-      
-        <button type="button" class="chapter-btn " data-case-tab="arch">
-          ② 4 Voice Modes &amp; Two-Phase Writes
-        </button>
-      
-        <button type="button" class="chapter-btn " data-case-tab="routing">
-          ③ Decision Layer &amp; 6-Engine Benchmark
-        </button>
-      
-        <button type="button" class="chapter-btn " data-case-tab="guardrails">
-          ④ Foundry IQ &amp; 5 Guardrails
-        </button>
-      
-        <button type="button" class="chapter-btn " data-case-tab="finops">
-          ⑤ FinOps Pricing &amp; 5-Month Payback
-        </button>
-      
-        <button type="button" class="chapter-btn " data-case-tab="cloud">
-          ⑥ Vendor Matrix &amp; GCP Comparison
-        </button>
-      </div>
+        <div class="chapter-bar" id="caseStudyTabs" style="margin-bottom:1rem;"></div>
 
         <!-- Dynamic Case Study Tab Content -->
-        <div id="caseStudyContent">
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Dimension</th>
-                  <th>Customer Pain Point (30-Person Smart-Ring Startup)</th>
-                  <th>Business Outcome</th>
-                  <th>Measurable Technical SLAs (PoC → Prod)</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><strong>1. Lower Cost</strong><br><span class="badge">Efficiency</span></td>
-                  <td>6 engineers in Shenzhen + 12 outsourced overseas seats answering repetitive order/sizing/sync calls; 3× growth (250K→750K rings) would wipe out margins if hiring linearly.</td>
-                  <td><strong>60%</strong> AI self-service (no handoff &amp; no repeat call in 7 days); <strong>-40%</strong> cost per contact.</td>
-                  <td>• Intent accuracy: PoC ≥ 90%, Prod ≥ 95%<br>• Tool-call success rate: ≥ 98%<br>• Knowledge hit rate (Foundry IQ): ≥ 90%</td>
-                </tr>
-                <tr>
-                  <td><strong>2. Better CX</strong><br><span class="badge emerald">24/7 Global</span></td>
-                  <td><strong>38%</strong> of calls arrive after-hours; a German weekend caller waited 18 minutes, hung up, and left a 1-star Amazon review.</td>
-                  <td><strong>24/7</strong> answer rate ≥ 99%; <strong>CSAT ≥ 4.5 / 5.0</strong>.</td>
-                  <td>• First response: <strong>P50 &lt; 0.8s, P95 &lt; 1.5s</strong><br>• Stop on barge-in: <strong>&lt; 0.3s</strong><br>• Accented WER across 6 languages: ≤ 8%</td>
-                </tr>
-                <tr>
-                  <td><strong>3. Safety &amp; GDPR</strong><br><span class="badge amber">Compliance</span></td>
-                  <td>Lithium battery worn on the finger (heating/swelling risk) + sensitive heart-rate &amp; sleep health metrics under strict EU GDPR rules.</td>
-                  <td><strong>99%</strong> of safety events routed to human in <strong>&lt; 30s</strong>; zero leaks or unapproved promises.</td>
-                  <td>• Safety-intent recall: <strong>≥ 99%</strong><br>• Jailbreak block rate: ≥ 99%<br>• Ungrounded answers ≤ 2%; Health PII redacted <strong>100%</strong></td>
-                </tr>
-                <tr>
-                  <td><strong>4. Faster Issue Loop</strong><br><span class="badge">Product QA</span></td>
-                  <td>3 Japanese callers reported a sleep-sync bug across 3 different agents; R&amp;D only discovered the firmware defect <strong>14 days later</strong>.</td>
-                  <td>Firmware defects visible within <strong>1 week</strong>; new language launch in <strong>≤ 2 weeks</strong>.</td>
-                  <td>• 100% call transcription &amp; auto-summary<br>• Peak concurrency ≥ 200 calls; 99.9% availability</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <div id="caseStudyContent"></div>
       </div>
     </section>
 
     <!-- OPEN SOURCE REPOS & BENCHMARK DECKS -->
     <section id="resources" class="section">
       <div class="section-header">
-        <span class="theme-pill" data-i18n="resPill">OPEN SOURCE &amp; REPORTS · REPOSITORIES &amp; BENCHMARK DECKS</span>
-        <h2 data-i18n="resTitle">5. Open-Source Repositories &amp; Visual Benchmark Reports</h2>
-        <p data-i18n="resDesc">All repositories, bilingual guides, and 7-Card benchmark decks are open-source and ready to clone:</p>
+        <span class="theme-pill" data-i18n="resPill">OPEN SOURCE &amp; REPORTS · 配套仓库与深入阅读</span>
+        <h2 data-i18n="resTitle">五、配套开源仓库与可视化评测报告汇总</h2>
+        <p data-i18n="resDesc">所有代码、架构图、7-Card 评测报告均已开源并提供中英对照文档，方便按需深入学习或二次开发：</p>
       </div>
 
-      <div class="resource-grid" id="resourceGrid">
-      <div class="resource-card">
-        <span class="badge">Flagship Case Study</span>
-        <h4>Smart-Ring Go-Global 6-Language AI Voice CS Case Study</h4>
-        <p>Complete production case study covering PoC/Prod SLAs, 4 Voice Live modes, Two-Phase writes, MS-Decision-1 router benchmark, $0.08/min FinOps ROI, and Azure vs. GCP.</p>
-        <div class="btn-row">
-          <a class="btn" href="case-study.en.html?lang=en" target="_blank" rel="noopener">Read Full Case Study Page ↗</a>
-        </div>
-      </div>
-    
-      <div class="resource-card">
-        <span class="badge">Repo 01 · Live S2S</span>
-        <h4>turbo998/gpt-live-1-demo</h4>
-        <p>Full-stack Azure VoiceLive (gpt-live-1) reference app featuring deterministic server tools, barge-in handling, and the 4m20s MP4 Release.</p>
-        <div class="btn-row">
-          <a class="btn" href="https://github.com/turbo998/gpt-live-1-demo" target="_blank" rel="noopener">Open GitHub Repo ↗</a>
-        </div>
-      </div>
-    
-      <div class="resource-card">
-        <span class="badge">Repo 02 · Diarization PoC</span>
-        <h4>turbo998/azure-speech-diarization-poc</h4>
-        <p>Reproducible Azure Speech Fast Transcription (2025-10-15) diarization &amp; stereo channel-split PoC with 16 unit tests and sealed evidence.</p>
-        <div class="btn-row">
-          <a class="btn" href="https://github.com/turbo998/azure-speech-diarization-poc" target="_blank" rel="noopener">Open GitHub Repo ↗</a>
-        </div>
-      </div>
-    
-      <div class="resource-card">
-        <span class="badge">Repo 03 · Architecture Lab</span>
-        <h4>turbo998/voice-agent-lab</h4>
-        <p>Main AI Voice engineering repository containing stack selection playbooks, dual-channel patterns, and bilingual handbooks.</p>
-        <div class="btn-row">
-          <a class="btn" href="https://github.com/turbo998/voice-agent-lab" target="_blank" rel="noopener">Open GitHub Repo ↗</a>
-        </div>
-      </div>
-    
-      <div class="resource-card">
-        <span class="badge">7-Card Visual Reports</span>
-        <h4>7-Card Benchmark Decks &amp; 16:9 Slides</h4>
-        <p>Includes the Realtime Voice 7-Card Benchmark (through Stage 364 P715–P722 · 367 Dims · 731 Guardrails · 740 Probes), the Speech Diarization PoC 7-Card Report, and the 16:9 Architect Presentation Deck.</p>
-        <div class="btn-row">
-          <a class="btn" href="deck.en.html" target="_blank" rel="noopener">Open 16:9 Slide Deck ↗</a>
-        </div>
-      </div>
-    
-      <div class="resource-card">
-        <span class="badge">Daily Breakthrough &amp; FAQ · 2026-11-08</span>
-        <h4>Five Standalone Single-Topic Architect Selection FAQs (Brain · Ingress · Speculative RAG · Tool Epoch Fence · Acoustic Isolation)</h4>
-        <p>Standalone 6-part FAQ deep dives: ① Cascaded vs Native S2S (P715–P716); ② WebRTC vs WebSocket vs SIP &amp; 8kHz band-limited resampling (P717–P718); ③A Read-Only Speculative Voice RAG (P719); ③B Async State-Mutating Tool Epoch Write Fence &amp; Saga Rollback (P720); ④ Full-Duplex Barge-in Nonlinear Echo Suppression &amp; Target Speaker Crosstalk Lock (P721–P722), with 4 HD SVG summaries.</p>
-        <div class="btn-row">
-          <a class="btn btn-primary" href="cascaded-vs-s2s-semantic-turn-faq.en.md" target="_blank" rel="noopener">FAQ 1: Cascaded vs S2S ↗</a>
-          <a class="btn btn-primary" href="webrtc-vs-websocket-vs-sip-ingress-selection-faq.en.md" target="_blank" rel="noopener">FAQ 2: WebRTC vs WS vs SIP ↗</a>
-          <a class="btn btn-primary" href="speculative-voice-rag-faq.en.md" target="_blank" rel="noopener">FAQ 3A: Speculative RAG ↗</a>
-          <a class="btn btn-primary" href="voice-tool-epoch-fence-faq.en.md" target="_blank" rel="noopener">FAQ 3B: Tool Epoch Fence ↗</a>
-          <a class="btn btn-primary" href="barge-in-echo-crosstalk-faq.en.md" target="_blank" rel="noopener">FAQ 4: Echo &amp; Crosstalk Lock ↗</a>
-          <a class="btn" href="05-daily-breakthrough-2026-11-08.svg" target="_blank" rel="noopener">Brain SVG ↗</a>
-          <a class="btn" href="06-webrtc-vs-websocket-vs-sip-2026-11-08.svg" target="_blank" rel="noopener">Ingress SVG ↗</a>
-          <a class="btn" href="07-speculative-voice-rag-2026-11-08.svg" target="_blank" rel="noopener">RAG &amp; Tool SVG ↗</a>
-          <a class="btn" href="08-barge-in-echo-crosstalk-2026-11-08.svg" target="_blank" rel="noopener">Acoustic Lock SVG ↗</a>
-          <a class="btn" href="benchmark-cards.en.html" target="_blank" rel="noopener">7-Card Benchmark ↗</a>
-        </div>
-      </div>
-    </div>
+      <div class="resource-grid" id="resourceGrid"></div>
     </section>
 
     <footer class="footer">
-      <div data-i18n="footerLeft">AI Voice Learner &amp; Builder Portal · Focused on Stack Selection &amp; Practical Scenario Blueprints</div>
+      <div data-i18n="footerLeft">AI Voice 开发者学习与方案门户 · 聚焦「技术选型测评」与「行业场景快速搭建」</div>
       <div>
-        <a href="deck.en.html" target="_blank" rel="noopener" data-i18n="footerDeck">Architect Slide Deck (16:9) ↗</a>
+        <a href="./deck.html" target="_blank" rel="noopener" data-i18n="footerDeck">架构师演示幻灯片 (16:9 Deck) ↗</a>
         &nbsp;·&nbsp;
-        <a href="benchmark-cards.en.html" target="_blank" rel="noopener">Voice 7-Card Report ↗</a>
+        <a href="./benchmark-cards.html" target="_blank" rel="noopener">Voice 7-Card Report ↗</a>
         &nbsp;·&nbsp;
-        <a href="diarization-benchmark-cards.en.html" target="_blank" rel="noopener">Diarization 7-Card Report ↗</a>
+        <a href="./diarization-benchmark-cards.html" target="_blank" rel="noopener">Diarization 7-Card Report ↗</a>
       </div>
     </footer>
-  </div>
+  </main>
 
   <script src="./app.js" type="module"></script>
-
-
-<script type="application/json" id="reading-translations">{"5. Cycle #377 工作台":"5. Cycle #377 workbench","🧪 打开 Cycle #377 可复现实验工作台":"🧪 Open the reproducible Cycle #377 workbench","Stage 466 · 522 精选 + 23 风格":"Stage 466 · 522 selections + 23 styles","× 放大)":"× amplification)","27.8s · 667帧":"27.8s · 667 frames","31.0s · 745帧":"31.0s · 745 frames","31.6s · 758帧":"31.6s · 758 frames","31.8s · 765帧":"31.8s · 765 frames","33.5s · 805帧":"33.5s · 805 frames","32.6s · 784帧":"32.6s · 784 frames","5大仓库收官总览 · 6部卡通短片":"Final overview of 5 repositories · 6 cartoon shorts","EP01 · 扔掉500MB贴图包！小画师用纯数学画敦煌飞天与火星":"EP01 · Discard the 500MB texture pack: paint Dunhuang Feitian and Mars with mathematics","Stage 196 · 0外部CDN · 55/55单测":"Stage 196 · 0 external CDNs · 55/55 unit tests","Shot A：小画师Clawd背着500MB贴图木箱累得冒汗，一脚把木箱踢进垃圾桶，抽出闪光SDF数学画笔！":"Shot A: Clawd sweats under a wooden crate of 500MB textures, kicks it into the bin and draws a glowing SDF mathematical paintbrush!","Shot B：敦煌石窟舞台，小画师挥动画笔，红绿双面金边飘带在60帧（16.7ms）丝滑舞动！":"Shot B: On a Dunhuang cave stage, the painter waves a brush; red-and-green, gold-edged ribbons dance smoothly at 60 frames (16.7ms)!","Shot C：飞向星空，激光笔在火星圆球上精准雕刻奥林帕斯山与水手号大峡谷真实MOLA高程！":"Shot C: Into the stars: a laser pen carves the real MOLA elevations of Olympus Mons and Valles Marineris into a Martian sphere!","Shot D：按下火箭发射钮，白色小火箭喷出璀璨马赫环冲上云霄，196关通关！":"Shot D: Press launch: a small white rocket emits brilliant Mach diamonds and soars into the sky. Stage 196 cleared!","EP02 · 给语音AI装上顺风耳与防弹盾！100关大满贯":"EP02 · Give voice AI super-hearing and a protective shield: a 100-stage grand slam","Stage 100 百关大满贯 · 203道防线":"Stage 100 grand slam · 203 defense checks","Shot A：呆滞铁皮机器人慢吞吞吐出STT纸条，Clawd急得直冒汗，一把推开旧机器！":"Shot A: A sluggish tin robot slowly spits out STT slips. An impatient, sweating Clawd pushes the old machine aside!","Shot B：黄小人与青小人戴上原生全双工耳机，彩色气泡双向秒级打断、对答如流！":"Shot B: Yellow and cyan figures wear native full-duplex headsets. Colored bubbles interrupt bidirectionally within seconds and exchange fluent answers!","Shot C：黑客发射红色尖刺欺骗声波，小卫士举起双层青色护盾（203道防线）把坏声波统统弹飞！":"Shot C: A hacker fires deceptive red spiked sound waves. A guard raises a double cyan shield (203 defense checks), deflecting them all!","Shot D：面对化工厂反应釜报警，小人零延迟一把拉下红色安全闸门，欢呼拿下Stage 100百关里程碑！":"Shot D: A chemical reactor alarm sounds. The figure pulls the red safety gate without delay and celebrates the Stage 100 milestone!","EP03 · 算力高铁与月饼冷库：万亿大模型提速秘籍":"EP03 · Compute express trains and Mooncake cold storage: accelerating trillion-parameter models","Phase 70 里程碑 · Rubin MegaMoE + Mooncake":"Phase 70 milestone · Rubin MegaMoE + Mooncake","Shot A：红色老火车头被成堆KV木箱堵在独木桥上直冒黑烟，调度员Clawd急得跳脚！":"Shot A: Piles of KV crates block an old red locomotive on a narrow bridge. Black smoke rises as dispatcher Clawd jumps in frustration!","Shot B：拉下Rubin MegaMoE道岔，金光闪闪的256通道算力高架桥点亮，蓝色动车组飞驰而过！":"Shot B: Pull the Rubin MegaMoE switch: a golden 256-lane compute viaduct lights up and blue express trains race across!","Shot C：小厨师把算好的KV记忆做成发光黄金月饼（Mooncake），从算力火车头精准抛进远端冷库！":"Shot C: A little chef shapes computed KV memories into glowing golden mooncakes (Mooncake), tossing them precisely from the compute locomotive into remote cold storage!","Shot D：太阳升起，全栈70座灯塔点亮，算力列车高速平稳飞驰，Phase 70大功告成！":"Shot D: The sun rises, all 70 full-stack lighthouses light up, and compute trains run fast and smoothly. Phase 70 complete!","EP04 · AI管家逛街买单，怎样做到一分钱都不算错？":"EP04 · An AI assistant goes shopping: how can every cent be accounted for correctly?","Stages 226–227 · 868/868 单测全绿":"Stages 226–227 · 868/868 unit tests passing","Shot A：买家与卖家小人隔着木桌互相拉扯大金币争吵不休，头顶冒出怒气云！":"Shot A: Buyer and seller tug a giant gold coin across a wooden table, arguing under angry clouds!","Shot B：警长Clawd端来黄金纳什博弈天平，魔法棒一点，左右秤盘稳稳对齐双赢平衡！":"Shot B: Sheriff Clawd brings a golden Nash-game balance. One tap of a magic wand aligns both pans at a win-win equilibrium!","Shot C：带电火花伪造账单袭来，警长转动99.9999999%金库手轮，三把安全铜锁咔嚓锁死！":"Shot C: A forged bill crackles with electricity. The sheriff turns the 99.9999999% vault wheel and three brass security locks click shut!","Shot D：金库旁868颗金色星星闪耀，三个小人开心庆祝智能体商务实验室通关！":"Shot D: 868 golden stars shine beside the vault. Three figures celebrate completing the agentic-commerce laboratory!","EP05 · 1650度矿热高炉旁的AI守门人：0.2毫秒生死线":"EP05 · AI guardian beside a 1650-degree submerged-arc furnace: the 0.2-millisecond safety line","Cycle #179 · 185章 · 180套蓝图 · 188/188单测":"Cycle #179 · 185 chapters · 180 blueprints · 188/188 unit tests","Shot A：1650℃密闭矿热高炉剧烈震动、炉顶火星四溅，工程师Clawd惊出一身冷汗！":"Shot A: A sealed 1650℃ submerged-arc furnace shakes violently and sparks fly from its top. Engineer Clawd breaks into a cold sweat!","Shot B：戴上10kHz激光透视镜，发射青色TDLAS激光束配合PINN-MPC物理大脑看穿炉内暗流！":"Shot B: Put on 10kHz laser goggles. Cyan TDLAS beams and a PINN-MPC physics brain reveal hidden flows inside the furnace!","Shot C：千钧一发之际，0.2毫秒拉下SIL-3安全闸门，高压氮气冰蓝护盾瞬间抚平高炉！":"Shot C: At the critical moment, the SIL-3 safety gate closes in 0.2 milliseconds. An icy-blue, high-pressure nitrogen shield instantly calms the furnace!","Shot D：185章工业圣经与180套云边蓝图全部落地，小人小队与高炉在晨光中欢呼庆祝！":"Shot D: All 185 industrial chapters and 180 cloud-edge blueprints are delivered. The team and furnace celebrate in the morning light!","图1 · 四层全景架构":"Figure 1 · Four-layer architecture","图2 · 六大运行时矩阵":"Figure 2 · Six-runtime matrix","图3 · 双阶段选型决策树":"Figure 3 · Two-stage selection tree","图4 · AKSClaw 多租户 K8s":"Figure 4 · AKSClaw multi-tenant K8s","图5 · E2B on VMSS 生产架构":"Figure 5 · E2B on VMSS production architecture","图6 · Firecracker 内部机理 & v7 实测":"Figure 6 · Firecracker internals & v7 measurements","图7 · 多智能体流 & HorizonDB":"Figure 7 · Multi-agent flow & HorizonDB","图8 · Playbook 六大场景与五步法":"Figure 8 · Six scenarios and five-step playbook","Layer 2 · Run (Azure 六级可组合计算与沙箱运行时光谱)":"Layer 2 · Run (Azure six-tier composable compute and sandbox runtime spectrum)","绝不一刀切：从平台全托管 Foundry Hosted Agents，到 Hyper-V 隔离的 ACA Dynamic Sessions (~210ms)，再到支持显式 pause/resume 快照的 ACA Sandboxes (Preview)。":"No one-size-fits-all choice: from fully managed Foundry Hosted Agents to Hyper-V-isolated ACA Dynamic Sessions (~210ms) and ACA Sandboxes (Preview) with explicit pause/resume snapshots.","多租户平台级控制：AKS 原生集成 Kata Containers Pod VM (kata-mshv-vm-isolation)，为每个 Agent Pod 提供独立 Guest Kernel。":"Multi-tenant platform control: AKS natively integrates Kata Containers Pod VMs (kata-mshv-vm-isolation), providing an independent guest kernel for each agent pod.","极致规模与速度：在 Standard_D96as_v7 (5th Gen AMD EPYC Turin + Azure Boost) 上部署 E2B BYOC / VMSS 集群（实测 Base 108ms / CI 132ms），配合 Nomad 双层心跳防抖 (lost_after=50s + heartbeat_grace=50s) 与 ClickUp 68 工具黄金模板 + 10x–20x 上下文卸载。":"Scale and speed: deploy E2B BYOC / VMSS on Standard_D96as_v7 (5th Gen AMD EPYC Turin + Azure Boost), measured at Base 108ms / CI 132ms, with two-layer Nomad heartbeat protection (lost_after=50s + heartbeat_grace=50s), ClickUp golden templates with 68 tools and 10x–20x context offloading.","Layer 3 · Ground (模型、知识检索与三层状态记忆底座)":"Layer 3 · Ground (models, knowledge retrieval and three-layer state/memory foundation)","Azure HorizonDB (Preview)：在单一 PostgreSQL 引擎内融合 ACID 事务、JSONB 半结构化消息树与 DiskANN 向量检索，存算分离并支持最高 15 个只读副本。":"Azure HorizonDB (Preview): combines ACID transactions, JSONB semi-structured message trees and DiskANN vector retrieval in one PostgreSQL engine, with separated storage/compute and up to 15 read replicas.","OpenAI PostgreSQL 生产启示：通过 PgBouncer 将连接建立耗时从 45ms 降至 5ms，结合 Cache Lease Lock 防缓存击穿，单主+50只读副本支撑 8 亿用户 100万+ QPS。":"OpenAI PostgreSQL production lesson: PgBouncer reduces connection setup from 45ms to 5ms; cache lease locks prevent stampedes. One primary plus 50 read replicas supports 800 million users and 1 million+ QPS.","德国商业银行 (Commerzbank) 标杆：基于 Foundry + ACA + AKS + Cosmos DB 打造虚拟助手 Ava，支撑每月 30,000+ 会话，~75% 客户咨询全自动闭环。":"Commerzbank reference: its Ava virtual assistant uses Foundry + ACA + AKS + Cosmos DB, supporting 30,000+ monthly conversations and fully automating ~75% of customer inquiries.","State Golden Rule: 业务检查点与长期记忆写回 HorizonDB/Cosmos DB；进程内存与文件系统现场交由 Sandbox Snapshot (UFFD + NBD) 冻结。":"State Golden Rule: persist business checkpoints and long-term memory in HorizonDB/Cosmos DB; freeze process memory and filesystem state with Sandbox Snapshot (UFFD + NBD).","Layer 4 · Control & Govern (零信任身份、统一 AI 网关与舰队治理)":"Layer 4 · Control & Govern (zero-trust identity, unified AI gateway and fleet governance)","Microsoft Entra Agent ID：每个 Agent 绑定 Blueprint 与人类责任人 (Owner/Sponsor)；严禁 Agent 直接继承用户登录 Token，按单次动作签发短时最小权限凭证。":"Microsoft Entra Agent ID: bind every agent to a blueprint and human Owner/Sponsor; never directly inherit a user sign-in token. Issue short-lived, least-privilege credentials for each action.","Unified AI Gateway：Agent 容器内零 LLM API Key；支持 Prefix-Cache 会话亲和路由、OTel GenAI 零侵入遥测，以及 User/Team/Agent 三级配额与预算硬熔断。":"Unified AI Gateway: no LLM API keys inside agent containers; supports prefix-cache session-affinity routing, non-invasive OTel GenAI telemetry and hard quota/budget cutoffs at User/Team/Agent levels.","AKSClaw 五道不可绕过硬边界：NetworkPolicy 封禁 169.254.169.254 (IMDS)、严格出向白名单、凭据代理注入、平台强制身份绑定、旁路全量审计。":"Five non-bypassable AKSClaw boundaries: NetworkPolicy blocks 169.254.169.254 (IMDS), strict egress allowlists, credential-proxy injection, platform-enforced identity binding and complete out-of-band auditing.","APIM 隔离 100,000+ 并发动态沙箱子域名":"APIM isolates 100,000+ concurrent dynamic sandbox subdomains","图 2 · Azure 六大 Agent Runtime 责任边界、隔离机制与恢复延迟矩阵":"Figure 2 · Responsibility boundaries, isolation and resume latency of six Azure agent runtimes","图 3 · AI Agent Infra on Azure 双阶段架构选型决策树与数据底座配对图":"Figure 3 · Two-stage architecture selection tree and data-foundation pairing for AI Agent Infra on Azure","图 4 · AKSClaw 多租户 Kubernetes Agent 平台参考架构 (6 大核心支柱与 5 道平台硬边界)":"Figure 4 · AKSClaw multi-tenant Kubernetes agent platform (6 pillars and 5 hard platform boundaries)","图 5 · E2B on Azure VMSS 生产级参考架构图 (Manus × E2B 10万+ 并发云端沙箱底座)":"Figure 5 · E2B on Azure VMSS production architecture (Manus × E2B foundation for 100,000+ concurrent cloud sandboxes)","图 6 · Firecracker MicroVM 沙箱内部机理 (UFFD + NBD) 与 Azure v6/v7 实测启动延迟对比":"Figure 6 · Firecracker MicroVM sandbox internals (UFFD + NBD) and measured Azure v6/v7 startup latency","图 7 · 多智能体协同工作流 (MAF × Copilot SDK × Durable) 与状态持久化选型矩阵":"Figure 7 · Multi-agent workflow (MAF × Copilot SDK × Durable) and state-persistence selection matrix","图 8 · Azure Agent Infra Playbook 六大高优场景、四维资质筛查与五步落地工作流":"Figure 8 · Azure Agent Infra Playbook: six priority scenarios, four-dimensional qualification and five-step delivery","P2 · High Potential (通过 Discovery 补齐底座信号)":"P2 · High Potential (complete foundation signals through Discovery)","Nurture · 基础培育阶段":"Nurture · Foundation development phase","四维底座覆盖数：":"Technical foundation coverage: ","潜客门禁通过：":"Prospect gates passed: ","✅ 已命中":"✅ Met","⚪ 未命中":"⚪ Not met","✅ 已达标 (计入强模型信号)":"✅ Met (counts as a strong model signal)","ℹ️ 未达 $10K/月 (不影响真实 ACR 金额，仍可由非模型路径晋级 P1)":"ℹ️ Below $10K/month (does not change actual ACR; the non-model path can still qualify for P1)","进入 Step 02 Discovery：围绕客户现有底座探讨长周期任务状态恢复、不可信代码沙箱隔离与统一 AI 网关治理需求。":"Proceed to Step 02 Discovery: discuss long-running task recovery, isolation for untrusted code and unified AI gateway governance against the existing customer foundation.","🌙 谷电价 Off-Peak (1× · $38 基线)":"🌙 Off-Peak (1× · $38 baseline)","☀️ 高峰价 Peak (2× · $76 上限)":"☀️ Peak (2× · $76 ceiling)","↺ 恢复官方基线":"↺ Reset to the official baseline","× 放大":"× amplification","谷电价 (1.0×)":"Off-peak (1.0×)","高峰正价 (2.0×)":"Peak (2.0×)"," · 成本 $":" · Cost $","🎨 Clawd 水彩手绘卡通知识短片剧场":"🎨 Clawd Watercolor Cartoon Explainer Theater","Opus 5.5 Painted-Animation · 16:9 横屏纯享":"Opus 5.5 Painted-Animation · 16:9 landscape viewing","告别 PPT 录屏与竖屏模板 · 全程 p5.brush 水彩晕染 + 8Hz 手绘抖动墨线 + 角色表演分镜 + 欢快木琴配音":"Beyond slide recordings and portrait templates: p5.brush watercolor washes, 8Hz hand-drawn ink jitter, character-driven storyboards and cheerful xylophone narration","6 部横屏卡通短片":"6 landscape cartoon shorts","Kubelka-Munk 水彩颜料混合":"Kubelka–Munk watercolor pigment mixing","EP00 · 凌晨零点的AI小人国：五路通宵大闯关（总览篇）":"EP00 · Midnight in AI Miniature Land: Five Overnight Adventures (Overview)","⏱️ 27.8s · 667帧":"⏱️ 27.8s · 667 frames","🏆 5大仓库收官总览 · 6部卡通短片":"🏆 Final overview of 5 repositories · 6 cartoon shorts","🎬 手绘分镜脚本（4-Shot Cartoon Storyboard）":"🎬 Hand-drawn screenplay (4-Shot Cartoon Storyboard)","Shot A：午夜00:00挂钟敲响，原本戴睡帽打呼噜的橘色小方块Clawd换上魔法帽，召唤出五颜六色的AI小分队！":"Shot A: At 00:00, the clock strikes midnight. Clawd, the snoring orange block in a nightcap, dons a wizard hat and summons a colorful AI team!","Shot B：分屏奇观——左屏黄小人拿激光刻刀雕刻MOLA火星大峡谷（Stage 196），右屏青小人举双层光盾弹飞超声波暗箭（Stage 100）！":"Shot B: Split screen: a yellow figure laser-carves MOLA Martian canyons (Stage 196); a cyan figure deflects ultrasonic arrows with a double light shield (Stage 100)!","Shot C：三联工坊——紫小人调度256条算力高铁、绿小人锁死9个9安全金库、粉小人用0.2ms氮气护盾驯服1650℃高炉！":"Shot C: Three workshops: a purple figure dispatches 256 compute trains, a green figure locks a nine-nines vault, and a pink figure tames a 1650℃ furnace with a 0.2ms nitrogen shield!","Shot D：清晨08:00太阳升起，六个小人在绿茵山坡排排站戴上皇冠欢呼跳跃，通宵科研大满贯！":"Shot D: At 08:00 sunrise, six crowned figures cheer and jump on a grassy hill: an overnight research grand slam!","🖼️ 8 帧水彩手绘分镜预览表（Contact Sheet）":"🖼️ 8-frame watercolor storyboard contact sheet","📺 选择剧集（6 部 16:9 卡通动画短片）":"📺 Select an episode (6 cartoon shorts in 16:9)","打开 http://localhost:3000 即可麦克风对话":"Open http://localhost:3000 for microphone conversation","RTF 0.057 · 100% 标记率":"RTF 0.057 · 100% attribution rate","单声道混合录音：必须显式开启 diarization.enabled=True":"Mixed mono recording: explicitly enable diarization.enabled=True","联络中心双声道录音 (左=客服 ch0 / 右=客户 ch1)：物理音轨分离最快最准":"Stereo contact-center recording (left=agent ch0 / right=customer ch1): physical channel separation is fastest and most accurate","实测 224.8s 真实通话仅耗时 12.9s (RTF=0.057)，28/28 句 100% 准确归属":"Measured: a 224.8s real call took 12.9s (RTF=0.057), with 28/28 utterances attributed correctly (100%)","STAGE 01 · 接入与打断":"STAGE 01 · Connection and interruption","STAGE 02 · 零幻觉查单":"STAGE 02 · Hallucination-free order lookup","STAGE 03 · 人机无缝转接":"STAGE 03 · Seamless human handoff","STAGE 04 · 录音秒级质检":"STAGE 04 · Recording quality checks in seconds","客服双通道核心模式：turnEpoch 防止用户打断后旧工具结果串话":"Core dual-channel service pattern: turnEpoch prevents stale tool results after an interruption","客户开口打断：递增 turnEpoch 并取消当前语音输出":"Customer interruption: increment turnEpoch and cancel current speech output","模型请求查询订单或核算退费金额":"The model requests an order lookup or refund calculation","若客户已打断并开启新一轮对话，丢弃旧结果":"Discard stale results if the customer interrupted and began a new turn","从全托管 Foundry 到自建 MicroVM 连续光谱":"A continuous spectrum from fully managed Foundry to self-hosted MicroVMs","D96as_v7 (AMD Turin) E2B Base / CI 启动实测":"Measured E2B Base / CI startup on D96as_v7 (AMD Turin)","APIM 按动态 Host 独立限流并发沙箱会话":"APIM independently rate-limits concurrent sandbox sessions by dynamic Host","AKSClaw 平台强制安全硬边界 (零容器密钥)":"AKSClaw platform-enforced security boundaries (zero container secrets)","Foundry Toolboxes 企业连接器 + Entra Agent ID":"Foundry Toolboxes enterprise connectors + Entra Agent ID","一、四层全栈参考架构交互解构（点击任一层级查看深度机制与防坑指南）":"1. Interactive four-layer reference architecture (select a layer for mechanisms and pitfalls)","计算与状态解耦、沙箱硬件虚拟化隔离、平台级零信任身份是生产级 Agent 的三大基石。":"Decoupled compute/state, hardware-virtualized sandbox isolation and platform-level zero-trust identity are the three foundations of production agents.","Layer 1 · Build (Agent Harness 编排与执行循环层)":"Layer 1 · Build (Agent Harness orchestration and execution loop)","Layer 2 · Run (Azure 6-Tier Agent Runtime 计算与沙箱层)":"Layer 2 · Run (Azure 6-Tier Agent Runtime compute and sandbox layer)","Microsoft Agent Framework (MAF)：统一跨单智能体与多智能体工作流的编排标准，运行在 ACA/AKS/Functions 上时自动继承可观测性、Entra Agent ID 与安全合规策略。":"Microsoft Agent Framework (MAF): a unified orchestration standard for single- and multi-agent workflows. Running on ACA/AKS/Functions inherits observability, Entra Agent ID and security/compliance policies.","GitHub Copilot SDK：将经过生产验证的 Coding Agent 推理循环（规划、文件编辑、Shell 执行、MCP 调用）直接作为可编程内核嵌入企业自建管线。":"GitHub Copilot SDK: embed a production-tested coding-agent reasoning loop—planning, file editing, shell execution and MCP calls—as a programmable kernel in enterprise pipelines.","BYO 开源框架自由混部：通过 AKSClaw 通用容器契约，同一集群可同时运行 OpenClaw、Hermes、LangGraph、CrewAI 等异构 Agent 实例。":"Bring your own open-source framework: the AKSClaw generic container contract allows OpenClaw, Hermes, LangGraph, CrewAI and other agent instances to coexist in one cluster.","MAF + GitHub Copilot SDK 协同回路":"MAF + GitHub Copilot SDK collaboration loop","二、高清矢量架构图与工作流图谱（8 张自包含 SVG 图集）":"2. High-resolution architecture and workflow diagrams (8 self-contained SVGs)","点击下方标签切换查看四层全景图、六大运行时矩阵、双阶段决策树、AKSClaw、E2B on VMSS、Firecracker UFFD/NBD 内部机理、多智能体工作流与五步落地法。":"Use the tabs for the four-layer overview, six-runtime matrix, two-stage decision tree, AKSClaw, E2B on VMSS, Firecracker UFFD/NBD internals, multi-agent workflow and five-step adoption method.","图 1 · Azure AI Agent Infra 四层全栈参考架构全景图 (Build · Run · Ground · Govern)":"Figure 1 · Azure AI Agent Infra four-layer reference architecture (Build · Run · Ground · Govern)","三、Azure 六大 Agent Runtime 深度选型对比表":"3. Detailed comparison of six Azure agent runtimes","评估维度":"Evaluation dimension","隔离边界":"Isolation boundary","托管服务级边界":"Managed-service boundary","Hyper-V 硬件虚拟化":"Hyper-V hardware virtualization","隔离容器 + 端口/网络策略":"Isolated containers + port/network policies","Kata Pod VM 独立内核":"Kata Pod VM independent kernel","不可信代码执行":"Untrusted code execution","不支持 (仅受控工具)":"Not supported (controlled tools only)","不支持 (控制流编排)":"Not supported (control-flow orchestration)","原生支持 (Python/容器)":"Native support (Python/containers)","原生支持 (完整 OCI + Shell)":"Native support (full OCI + Shell)","原生支持 (Pod VM CLI/脚本)":"Native support (Pod VM CLI/scripts)","原生支持 (完整 OS + GUI 桌面)":"Native support (full OS + GUI desktop)","状态与快照机制":"State and snapshots","托管线程 / Cosmos DB":"Managed threads / Cosmos DB","Durable 检查点自动重放":"Automatic Durable checkpoint replay","空闲回收即清零 (需外置 DB)":"Reset on idle recycling (external DB required)","内存/磁盘快照 + 持久卷":"Memory/disk snapshots + persistent volumes","共享只读技能 PV + 独占状态 PV":"Shared read-only skill PV + private state PV","UFFD 内存按需缺页 + NBD 差分块":"UFFD on-demand memory paging + NBD differential blocks","实测/典型恢复延迟":"Measured / typical resume latency","~95 ms 热唤醒":"~95 ms warm wake-up","(预热池分配)":"(warm-pool allocation)","(快照恢复)":"(snapshot restore)","典型黄金场景":"Typical best-fit scenario","To-B 标准企业 API 助手":"Standard enterprise API assistant","采购/财务跨天人工审批流":"Multi-day procurement/finance human approvals","短平快代码解释器/文件解析":"Short-lived code interpretation / file parsing","Coding Agent / 浏览器工作台":"Coding agent / browser workbench","多租户研发/SRE 舰队平台":"Multi-tenant engineering/SRE fleet platform","10万+ 并发云端虚拟电脑 (Manus)":"100,000+ concurrent cloud virtual computers (Manus)","四、Playbook 四维技术底座与商机成熟度交互自测器（脱敏方法论）":"4. Four-dimension technical foundation and opportunity-readiness self-assessment (anonymized methodology)","勾选客户当前在 5 个月窗口内已持续活跃（≥3个月且含最近连续 2 个月）的技术信号，实时判定 Strong ACR (P1) / Potential (P2) 梯队及推荐五步推进动作：":"Select technology signals active in a 5-month window (≥3 months including the latest 2 consecutive months) to classify Strong ACR (P1) / Potential (P2) and recommend the five-step next action:","已持续使用 AKS 或 Azure Container Apps (ACA)":"Sustained AKS or Azure Container Apps (ACA) usage","使用 App Service / Functions / Batch / Azure VM":"Uses App Service / Functions / Batch / Azure VM","已持续使用 PostgreSQL (HorizonDB) / Cosmos DB / Redis":"Sustained PostgreSQL (HorizonDB) / Cosmos DB / Redis usage","已持续使用 AI Search / Foundry Tools / APIM":"Sustained AI Search / Foundry Tools / APIM usage","最近连续 3 个月每月 Foundry Models 消费 ≥ $10,000":"Foundry Models spend ≥ $10,000/month for the latest 3 consecutive months","已部署 Azure Monitor / Key Vault / Defender":"Azure Monitor / Key Vault / Defender deployed","非模型相关基础设施近 5 个月前后端均值增长率 ≥ +20%":"Non-model infrastructure average growth between the beginning and end of the latest 5 months ≥ +20%","P1 · Strong ACR (立即推进目标架构与 Workshop)":"P1 · Strong ACR (proceed immediately to target architecture and workshop)","四维底座覆盖数：4 / 4 · 潜客门禁通过：5 / 5":"Technical foundation coverage: 4 / 4 · Prospect gates passed: 5 / 5",": ✅ 已命中":": ✅ Met",": ℹ️ 未达 $10K/月 (不影响真实 ACR 金额，仍可由非模型路径晋级 P1)":": ℹ️ Below $10K/month (does not change actual ACR; the non-model path can still qualify for P1)","推荐下一步现场动作 (5-Step Playbook)":"Recommended field action (5-Step Playbook)","直接进入 Step 03 Define & Step 04 Validate：组织半日/一日 Hands-on Workshop + 目标架构白板推演 (ACA Sandbox / AKSClaw / HorizonDB)。":"Proceed to Step 03 Define & Step 04 Validate: run a half-day/full-day hands-on workshop and target-architecture whiteboard session (ACA Sandbox / AKSClaw / HorizonDB).","五、E2B 深度研究：四阶段演进范式、BYOC 架构与 E2B on Azure 六大生产最佳实践":"5. E2B research: four evolution stages, BYOC architecture and six production practices on Azure","整合 E2B 四份一手核心资料：Nomad 心跳韧性混沌工程 (Robin Su, 2026)、ClickUp Brain² 企业级敏感数据沙箱实践、E2B BYOC (Azure/AWS/GCP) 架构规范，以及《Sandboxes are dead》迈向智能体驱动的动态私有云。":"Combines four primary E2B sources: Nomad heartbeat resilience chaos engineering (Robin Su, 2026), ClickUp Brain² sensitive enterprise-data sandbox practice, E2B BYOC (Azure/AWS/GCP) architecture, and Sandboxes are dead on agent-driven dynamic private clouds.","E2B 生产轨迹分类学 (Wave 1 → Wave 4 动态私有云)":"E2B production-trajectory taxonomy (Wave 1 → Wave 4 dynamic private cloud)","0 误杀 / 100% Ready":"0 false terminations / 100% Ready","Nomad lost_after=50s + heartbeat_grace=50s 消除 35% 误替换":"Nomad lost_after=50s + heartbeat_grace=50s eliminates 35% false replacements","ClickUp Brain² 上下文卸载 (Context Offloading) 等效扩容":"ClickUp Brain² context offloading for equivalent capacity expansion","黄金模板预烘焙工具链 + 9 a.m. 每分钟数千沙箱脉冲":"Prebaked golden-template toolchains + thousands of sandboxes per minute at 9 a.m.","Azure BYOC Terraform 交付 + ILB / Private Link 私网闭环":"Azure BYOC Terraform delivery + ILB / Private Link private networking","演进阶段 / 部署模式":"Evolution stage / deployment mode","核心定位与控制面归属":"Purpose and control-plane ownership","关键架构组件与边界":"Key architecture components and boundaries","生产实测指标与典型场景":"Measured production metrics and typical scenarios","Wave 1 → Wave 4 演进":"Wave 1 → Wave 4 evolution","从 2024 短代码片段 (Wave 1)、2025 全栈应用容器/K8s (Wave 2)、2026 运行整台电脑 (Wave 3) 迈向":"From short code snippets in 2024 (Wave 1), full-stack app containers/K8s in 2025 (Wave 2), and whole-computer execution in 2026 (Wave 3), toward ","专用持久存储 · 出向防火墙 · 跨沙箱内网 · 可观测性 · CPU/RAM 在线热扩缩 · 无头浏览器 · 凭据保险箱":"Dedicated persistent storage · egress firewall · cross-sandbox private networking · observability · live CPU/RAM scaling · headless browser · credential vault","基于":"Based on ","20 亿+ 次运行与数百亿条轨迹":"2 billion+ runs and tens of billions of trajectories","，在任务启动前预测所需工具、时长、CPU/RAM 与网络白名单并实时组装私有云":", predict tools, duration, CPU/RAM and network allowlists before task start and assemble a private cloud in real time","部署在":"Deployed in ","客户自有 Azure Subscription (VNet)":"the customer-owned Azure Subscription (VNet)","、AWS 或 GCP；E2B Cloud 仅接收 TLS 匿名 CPU/内存指标":", AWS or GCP; E2B Cloud receives only anonymized CPU/memory metrics over TLS","模板、内存快照、运行日志与沙箱流量 100% 不出客户 Azure VNet":"Templates, memory snapshots, execution logs and sandbox traffic remain 100% inside the customer Azure VNet","；满足金融与医疗 SOC 2 / HIPAA 强合规":"; meeting strict financial/healthcare SOC 2 / HIPAA compliance","运行于 E2B 官方 GCP 账户；":"Runs in the official E2B GCP account; ","为":"is ","单 Linux 宿主机开源包":"an open-source package for one Linux host","Cloud 提供零运维多租户 SaaS；Embed 适配单台 KVM 裸机、云 VM 或 K8s Node":"Cloud provides operations-free multi-tenant SaaS; Embed targets a single KVM bare-metal machine, cloud VM or K8s node","按合规等级平滑切换：原型期用 E2B Cloud，单机实验用 Embed，大规模生产上":"Switch by compliance level: E2B Cloud for prototypes, Embed for single-host experiments, and large-scale production on ","零凭据 Terraform 交付与 ILB 私网互联":"Credential-free Terraform delivery and private ILB networking","规划":"Plan ","独立 Azure Subscription":"a dedicated Azure Subscription","，本地执行 E2B Terraform 模块（需订阅":", run E2B Terraform modules locally (requires subscription ","全程零密钥交换":"zero secret exchange throughout","）。提前申请目标区域":"). Request the target-region ","(108ms/132ms) vCPU 配额；通过":"(108ms/132ms) vCPU quota in advance; use ","（或 VNet Peering）与 APIM 动态 Host 网关私网直连。":"(or VNet Peering) for a direct private connection to the APIM dynamic-Host gateway.","消除 yamux 静默断连引发的 35% 误杀风暴":"Eliminate the 35% false-termination storm caused by silent yamux disconnects","非 Leader Nomad Server 静默宕机时，":"When a non-leader Nomad server silently fails, ","需":"requires ","探知断连，慢于默认":"to detect disconnection, slower than the default ","心跳超时，导致":"heartbeat timeout, causing ","健康节点被误杀、剩余节点负载激增":"healthy nodes to be falsely terminated and surviving nodes to overload","。必须双层加固：(1) Job Group 配置":". Harden both layers: (1) configure the Job Group with ","0 替换、10/10 沙箱与 23/23 NDJSON 流完好":"0 replacements, 10/10 sandboxes and 23/23 NDJSON streams intact","）；(2) Server 配置":"); (2) configure the server with ","20/20 节点 100% ready":"20/20 nodes 100% ready","10x–20x 上下文卸载与 9 a.m. 潮汐预热":"10x–20x context offloading and scheduled 9 a.m. warming","借鉴 ClickUp（服务 85% 财富 500 强，SOC 2 & HIPAA）：将大表格与录像直接上传沙箱由代码解析，仅回传结果实现":"Following ClickUp (serving 85% of the Fortune 500, SOC 2 & HIPAA): upload large spreadsheets and recordings directly to sandboxes, parse them in code, and return results only, achieving ","10x–20x 等效上下文扩容":"10x–20x equivalent context expansion","；预烘焙含":"; prebake golden templates with ","68 个工具":"68 tools","的黄金模板 + 6 大职能模板；结合":" plus 6 functional templates; combine ","定时预热池 + 60% CPU 扩容 + 15–30 分钟 Pause/Resume (`UFFD+NBD`) + HorizonDB 检查点":"scheduled warm pools + scale-out at 60% CPU + 15–30 minute Pause/Resume (UFFD+NBD) + HorizonDB checkpoints","应对早 9 点每分钟数千沙箱洪峰。":"to absorb the 9 a.m. peak of thousands of sandboxes per minute.","96.0% (25.0× 放大)":"96.0% (25.0× amplification)","谷电价 (1.0×) · 成本 $7.50/hr":"Off-peak (1.0×) · Cost $7.50/hr","硬件毛利率: 80.3%":"Hardware gross margin: 80.3%","★ 线上主力甜点 conc=60 (14.5K tok/s/GPU @ 230 tok/s)":"★ Online sweet spot conc=60 (14.5K tok/s/GPU @ 230 tok/s)","★ 离线吞吐极限 conc=256 (25.6K tok/s/GPU)":"★ Offline throughput limit conc=256 (25.6K tok/s/GPU)","X: 单卡输出吞吐 (Output Tokens/s/GPU) · Y: 单用户生成速度 (Tokens/s/User)":"X: Output tokens/s/GPU · Y: Generation tokens/s/user","并发档位 (EP64/DP64) · 灰=固定验证5个Token | 蓝=DSpark动态截断验证 | 绿字=验证Token节省率":"Concurrency (EP64/DP64) · Gray=fixed 5-token verification | Blue=DSpark dynamic truncation | Green=verification-token savings","+1.6% · 省 27.0% 验证":"+1.6% · 27.0% verification saved","+3.6% · 省 21.2% 验证":"+3.6% · 21.2% verification saved","14,466 vs 13,730 (+5.4% · 省 28.4%)":"14,466 vs 13,730 (+5.4% · 28.4% saved)","+6.7% · 省 35.2%":"+6.7% · 35.2% saved","Decoder 后缀重算从 51,200 降至 2,800 Layer-Tokens (":"Decoder suffix recomputation falls from 51,200 to 2,800 layer-tokens (","，总 Prefill 算力省 ~50%)":", saving ~50% total prefill compute)","1. 流量入口与协议层 (MIT 开源)":"1. Traffic entry and protocol layer (MIT open source)","• 64KB 分段并行 BPE 分词":"• Parallel BPE tokenization in 64KB chunks","• 增量 KMP 流式解析 Reasoning/Tool":"• Incremental KMP streaming Reasoning/Tool parsing","Entrypoint 全局路由层":"Entrypoint global routing layer","• 分区内存目录定位 SWA 宿主机器":"• Partitioned memory directory locates SWA hosts","• 平均输入 77K · 全局 TTFT 400ms":"• Average input 77K · Global TTFT 400ms","Vision Encoder LB (VE 池)":"Vision Encoder LB (VE pool)","• 单实例 1 卡 · 按最少 Patch 数路由":"• 1 GPU/instance · Route to lowest patch count","2. Prefill 引擎池 (PE · 8卡节点)":"2. Prefill engine pool (PE · 8-GPU nodes)","小并行 EP2–8 / DP2–8 (8B 激活)":"Small parallelism EP2–8 / DP2–8 (8B active)","• DEP2 仅 5.9% DP 等待损失 (64.4K/s)":"• DEP2: only 5.9% DP waiting loss (64.4K/s)","• 60K 冷算 × 96% 命中 = 150万 tok/s/卡":"• 60K uncached × 96% hit = 1.5M tok/s/GPU","Prefill LB (闭源 · 4档长度分桶)":"Prefill LB (closed source · 4 length buckets)","• 二次方程配额 cost(q,c)\u003c=quota (32K上限)":"• Quadratic quota cost(q,c)\u003c=quota (32K limit)","• DP 内 all-reduce MIN 对齐 + 140-tok 重放":"• DP all-reduce MIN alignment + 140-token replay","主机内存 SWA StateBlock":"Host-memory SWA StateBlock","• 1.415 MB/seq (20L×134×528B) · >98%命中":"• 1.415 MB/seq (20L×134×528B) · >98% hit","3. Decode 超节点池 (64–128卡)":"3. Decode supernode pool (64–128 GPUs)","Wide-EP64–128 / DP64–128 (16B激活)":"Wide-EP64–128 / DP64–128 (16B active)","• 每卡仅驻留 7 个专家 (含1冗余)":"• Only 7 resident experts/GPU (including 1 redundant)","• 线上 14.5K tok/s/卡 @ 230 tok/s/user":"• Online 14.5K tok/s/GPU @ 230 tok/s/user","Decode LB & EPLB (闭源核心)":"Decode LB & EPLB (closed-source core)","• DualPath 二维均衡 (请求数 × KV 总长)":"• DualPath 2D balancing (request count × total KV length)","• NVLink symm_mem 在线重排 (moe_lb=1.09)":"• Online NVLink symm_mem reshuffling (moe_lb=1.09)","• DSpark 动态验证 (-30% 验证, +6% 吞吐)":"• DSpark dynamic verification (-30% verification, +6% throughput)","弹性护栏 (0.8 配额锁 + 1min 排空)":"Elasticity guard (0.8 quota lock + 1min drain)","• 利用率 >0.8 禁止缩容 (强制 20%+ 冗余)":"• No scale-in at utilization >0.8 (mandatory 20%+ redundancy)","4. 100 PiB 3FS 存储池":"4. 100 PiB 3FS storage pool","• HBM 省 75% / SSD 省 87.5%":"• HBM savings 75% / SSD savings 87.5%","• 每张在线 GPU 配 14.4 TB":"• 14.4 TB per online GPU","• 10+2 纠删码 (查 11 返 10)":"• 10+2 erasure coding (query 11, return 10)","• 聚合读峰值: 10 TiB/s":"• Peak aggregate reads: 10 TiB/s","• 聚合写峰值: 850 GiB/s":"• Peak aggregate writes: 850 GiB/s","• Agent 留存 3 天":"• Agent retention: 3 days","• Chatbot 留存 7 天":"• Chatbot retention: 7 days","• GDR RDMA 零 SM 换入":"• GDR RDMA swap-in with zero SM usage","任意节点可命中全局任意前缀!":"Any node can hit any global prefix!","部署方案 / 硬件":"Deployment / hardware","总吞吐 (tok/s/卡)":"Total throughput (tok/s/GPU)","谷电时薪 ($/hr)":"Off-peak revenue ($/hr)","高峰时薪 ($/hr)":"Peak revenue ($/hr)","硬件毛利率":"Hardware gross margin","1. 单机 vLLM (8× H200)":"1. Single-node vLLM (8× H200)","无 PD 分离 / 无 Wide-EP":"No PD separation / no Wide-EP","-583.5% 巨亏":"-583.5% major loss","2. 单机 vLLM (8× B300)":"2. Single-node vLLM (8× B300)","+42.9% (仅39%产能)":"+42.9% (only 39% capacity)","128+ SM100/昇腾950 (1P:1D)":"128+ SM100/Ascend 950 (1P:1D)","76.9% (7.9× 提速)":"76.9% (7.9× speedup)","缓存命中率":"Cache hit rate","Prefill 等效总吞吐":"Effective total prefill throughput","用户综合输入单价":"Blended user input price","Prefill 时薪":"Prefill hourly revenue","1P:1D 综合时薪":"Blended 1P:1D hourly revenue","96.0% (官方基线)":"96.0% (official baseline)","0.0% (无缓存)":"0.0% (no cache)","¥1.0000 / 1M (暴涨16.9×)":"¥1.0000 / 1M (16.9× increase)","$30.23 / hr (需求归零)":"$30.23 / hr (demand falls to zero)","01 · 96% 缓存命中与流量护城河":"01 · The 96% cache-hit rate and traffic advantage","单卡每小时处理 54 亿输入 Token 的前提是":"Processing 5.4 billion input tokens/GPU/hour depends on ","96% 的 Token 根本不需要 GPU 算":"96% of tokens requiring no GPU compute","，而是直接从 100 PiB 3FS 硬盘读取并白赚":"; they are read directly from the 100 PiB 3FS disks, generating ","。没有日均百T级的连续 Agent/Chatbot 流量，缓存命中率与夜间利用率会双双崩塌。":". Without sustained daily Agent/Chatbot traffic in the hundreds of trillions of tokens, both cache-hit rate and overnight utilization collapse.","02 · 128 卡起步超节点与 100 PiB 3FS":"02 · Supernodes starting at 128 GPUs and 100 PiB 3FS","DeepInfer 仅支持":"DeepInfer supports only ","与":"and ","华为昇腾 950":"Huawei Ascend 950","，且最小高效单元为":"; the smallest efficient unit is ","64张 Prefill 卡 + 64张 Decode 超节点卡 = 128 张卡":"64 prefill GPUs + 64 decode supernode GPUs = 128 GPUs","，外加每卡":", plus per GPU ","NVMe 存储与":"NVMe storage and ","RDMA 网络，中小团队无法跨过硬件门槛。":"RDMA networking: hardware requirements beyond small/medium teams.","03 · 闭源四级负载均衡与 20%+ 冗余成本":"03 · Four closed-source balancing layers and 20%+ redundancy cost","开源仅含离线引擎（F1 发动机），而":"Only the offline engine (the F1 engine) is open source; ","与四大负载均衡器（Prefill LB、Decode LB、EPLB、Autoscaler）并未开源；且线上要求":"and the four load balancers (Prefill LB, Decode LB, EPLB, Autoscaler) are closed source. Production requires ","配额利用率 >0.8 严禁缩容（至少 20% 冗余热备卡）":"no scale-in at quota utilization >0.8 (at least 20% redundant warm GPUs)","并承担 SLA 宕机赔付。":"and liability for SLA outage compensation."}</script></main>
-</body></html>
+</body>
+</html>

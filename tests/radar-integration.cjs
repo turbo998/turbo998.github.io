@@ -247,6 +247,36 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r10File),'utf8');
       assert.ok(txt.includes('825.00')&&txt.includes('387.50')&&txt.includes('84.00')&&txt.includes('741.00')&&txt.includes('89.82%')&&txt.includes('not_measured'),r10File+': contains exact R10 closed-form parameters and API-only scope');
     }
+    // Round 11 closed-form mathematical assertion (CLAIM-R11-02: 30 tasks/mo, $3/1M in, $15/1M out counted once, API-only + 512-env mjbatch.h RAM on 32 threads)
+    const r11PathAIn=240*(0.060*3.00);
+    const r11PathAOut=240*(0.005*15.00);
+    assert.equal(r11PathAIn.toFixed(2),'43.20','R11 Path A input cost');
+    assert.equal(r11PathAOut.toFixed(2),'18.00','R11 Path A output cost (counted once)');
+    assert.equal((r11PathAIn+r11PathAOut).toFixed(2),'61.20','R11 Path A monthly API total');
+    const r11PathBIn=150*(0.040*3.00);
+    const r11PathBOut=150*(0.004*15.00);
+    assert.equal(r11PathBIn.toFixed(2),'18.00','R11 Path B input cost');
+    assert.equal(r11PathBOut.toFixed(2),'9.00','R11 Path B output cost (counted once)');
+    assert.equal((r11PathBIn+r11PathBOut).toFixed(2),'27.00','R11 Path B monthly API total');
+    const r11PathCIn=60*(0.012*3.00);
+    const r11PathCOut=60*(0.002*15.00);
+    assert.equal(r11PathCIn.toFixed(2),'2.16','R11 Path C input cost');
+    assert.equal(r11PathCOut.toFixed(2),'1.80','R11 Path C output cost (counted once)');
+    assert.equal((r11PathCIn+r11PathCOut).toFixed(2),'3.96','R11 Path C monthly API total');
+    assert.equal((61.20-3.96).toFixed(2),'57.24','R11 monthly API savings vs Path A');
+    assert.equal(((61.20-3.96)*12).toFixed(2),'686.88','R11 annual API savings vs Path A');
+    assert.equal(((61.20-3.96)/61.20*100).toFixed(2),'93.53','R11 pct API savings vs Path A');
+    assert.equal((90.0-15.0).toFixed(1),'75.0','R11 debugging hours saved vs Path A');
+    assert.equal(((90.0-15.0)/90.0*100).toFixed(2),'83.33','R11 pct debugging hours saved vs Path A');
+    const r11MemA=512*4.0;
+    const r11MemC=32*4.0+512*0.015625;
+    assert.equal(r11MemA.toFixed(2),'2048.00','R11 Path A full mjData RAM MB');
+    assert.equal(r11MemC.toFixed(2),'136.00','R11 Path C mjbatch.h persistent=0 RAM MB');
+    assert.equal(((r11MemA-r11MemC)/r11MemA*100).toFixed(2),'93.36','R11 mjbatch.h RAM reduction pct');
+    for(const r11File of ['workshops/github-trending-radar/docs/mujoco-4-hybrid-sim-agent-skills-selection-faq.md','workshops/github-trending-radar/docs/mujoco-4-hybrid-sim-agent-skills-selection-faq.en.md','assets/github-ai-radar-2026-11-08-r11-mujoco4-sim-skills.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-08-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r11File),'utf8');
+      assert.ok(txt.includes('61.20')&&txt.includes('27.00')&&txt.includes('3.96')&&txt.includes('57.24')&&txt.includes('93.53%')&&txt.includes('136.00 MB')&&txt.includes('not_measured'),r11File+': contains exact R11 closed-form parameters and API-only scope');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');

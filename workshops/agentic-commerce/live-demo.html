@@ -1332,6 +1332,60 @@
         <div id="pdrop-readout" style="margin-top:8px;font-size:12px;line-height:1.48;"></div>
       </div>
 
+      <!-- Interactive Autonomous Warranty Claim & Telemetry Attestation Sandbox (Round 30 FAQ Companion) -->
+      <div class="finops-box" id="warranty-claim-telemetry-sandbox" style="margin-top:12px;border-color:#06B6D4;">
+        <div class="panel-header" style="margin-bottom:8px;padding-bottom:6px;">
+          <span class="panel-title" id="ui-warr-title">🛠️ 智能售后质保理赔与硬件故障遥测验真架构：设备签名诊断凭证 (warranty_claim_token_... + 原单串号绑定) vs 二手网盗用串号骗保与模块化快修套利决策器 (Round 30 FAQ Companion)</span>
+        </div>
+        <div class="control-row">
+          <label><span>1. 质保串号所有权绑定、设备芯片故障码遥测与同城模块化快修场景 (Warranty Telemetry &amp; Anti-Fraud Scenario):</span></label>
+          <select id="warr-select" onchange="updateWarrantyClaimSandbox()">
+            <option value="warr_commit_ok">⚡ 原购买订单 SN 绑定吻合 (sn_oem_bound_101) + TPM 硬件故障遥测验真通过 (在保 320d &lt;= 730d)：免传小票 265ms 秒级派发 $650 先行替换机! (Act automatically)</option>
+            <option value="warr_serial_403">🛑 二手平台爬取串号骗保拦截：提交串号 sn_ebay_scraped_777 与原订单账本 sn_oem_bound_101 不符 → 13ms 触发 HTTP 403 硬阻断!</option>
+            <option value="warr_telem_422">🚨 无故障恶意换新拦截：用户口头谎称主板损坏但缺少设备安全芯片签名的故障遥测码 (telemetry_fault_verified=False) → 16ms 触发 HTTP 422 转远程诊断!</option>
+            <option value="warr_exp_451">🛑 过保伪造小票拦截：设备已购入 820 天 (&gt; 730 天标准保修) 且 Web IQ 核实无官方特殊召回延保公告 → 310ms 触发 HTTP 451 拒赔!</option>
+            <option value="warr_mod_409">🧑‍⚖️ Web IQ 检出同城授权网点支持 4 小时上门更换 $110 独立电源模块 (比寄出 $650 整机立省 $540.00 且当天恢复) → 315ms 触发 HTTP 409 Confirm!</option>
+          </select>
+        </div>
+        <div id="warr-readout" style="margin-top:8px;font-size:12px;line-height:1.48;"></div>
+      </div>
+
+      <!-- Interactive B2B MOQ Syndicate Escrow & Wholesale Tier Grounding Sandbox (Round 31 FAQ Companion) -->
+      <div class="finops-box" id="b2b-moq-syndicate-escrow-sandbox" style="margin-top:12px;border-color:#14B8A6;">
+        <div class="panel-header" style="margin-bottom:8px;padding-bottom:6px;">
+          <span class="panel-title" id="ui-moq-title">🏭 B2B 跨企业联合拼单起订量聚合与全有或全无智能托管架构：凑单达标条件释放令牌 (moq_syndicate_escrow_... + 72h 超时秒解冻) vs 定金套牢与团长吃差价决策器 (Round 31 FAQ Companion)</span>
+        </div>
+        <div class="control-row">
+          <label><span>1. 源头工厂 1,000 件起订量 (MOQ) 联合拼单池进度、72h 窗口与阶梯价核验场景 (B2B MOQ Syndicate Escrow Scenario):</span></label>
+          <select id="moq-select" onchange="updateB2BMOQSyndicateSandbox()">
+            <option value="moq_commit_ok">⚡ 4 家企业采购 Agent 合计凑满 1,000 件 (&gt;= 1,000 MOQ · 38h &lt;= 72h) + Web IQ 工厂底价验真通过：265ms 原子释放 $2,875.00 并签发独立子运单! (Act automatically)</option>
+            <option value="moq_short_403">🛑 未满起订量提前挪用拦截：当前仅凑齐 650 件 (&lt; 1,000 件工厂 MOQ) 团长却试图提前划扣 $2,875.00 → 12ms 触发 HTTP 403 硬阻断!</option>
+            <option value="moq_exp_422">🚨 72 小时凑单超时自动解冻：elapsed=76h (&gt; 72h 窗口) 仍未凑齐 1,000 件 → 15ms 触发 HTTP 422 零手续费原路秒级解冻 $2,875.00!</option>
+            <option value="moq_unver_451">🛑 团长暗箱加价吃回扣 / 失信停产工厂拦截：Web IQ /v3/browse 检出拼单报价高于工厂官方阶梯表或工厂停产 → 310ms 触发 HTTP 451 阻断!</option>
+            <option value="moq_tier_409">🧑‍⚖️ Web IQ 跨阶梯批发价升级套利：联合拼入 1,000 件档位使单价从 $14.00 降至 $11.50 (250 件订单单笔立省 $625.00) → 315ms 触发 HTTP 409 Confirm!</option>
+          </select>
+        </div>
+        <div id="moq-readout" style="margin-top:8px;font-size:12px;line-height:1.48;"></div>
+      </div>
+
+      <!-- Interactive B2B Sealed-Bid Reverse Auction & Anti-Collusion Sandbox (Round 32 FAQ Companion) -->
+      <div class="finops-box" id="b2b-sealed-bid-auction-sandbox" style="margin-top:12px;border-color:#6366F1;">
+        <div class="panel-header" style="margin-bottom:8px;padding-bottom:6px;">
+          <span class="panel-title" id="ui-sbid-title">📑 B2B 自动询报价暗标逆向拍卖与防围标串标密码学承诺架构：两阶段盲标哈希承诺令牌 (rfq_sealed_bid_commit_... + Web IQ 实控人穿透核验) vs 明标泄密与马甲陪标决策器 (Round 32 FAQ Companion)</span>
+        </div>
+        <div class="control-row">
+          <label><span>1. 两阶段盲标哈希验真、保留底价红线 ($45,000.00) 与实控人 (UBO) 防围标场景 (B2B Commit-Reveal Sealed-Bid Scenario):</span></label>
+          <select id="sbid-select" onchange="updateB2BSealedBidSandbox()">
+            <option value="sbid_commit_ok">⚡ 盲标 SHA-256 哈希吻合 (hash_sealed_38200) + 低于 $45,000 底价 + 3 家竞标商 UBO 完全独立：265ms 自动签发 $38,200.00 合同 (省 $6,800) 并退还未中标保证金! (Act automatically)</option>
+            <option value="sbid_hash_403">🛑 开标期偷换报价拦截：揭示哈希 hash_tampered_44500 与封标期 hash_sealed_38200 不符 → 12ms 触发 HTTP 403 硬阻断并罚没保证金!</option>
+            <option value="sbid_res_422">🚨 卖方算法合谋超底价流标：全场最低揭示报价 $48,500.00 超出买方加密保留底价 ($45,000.00) → 15ms 触发 HTTP 422 自动流标!</option>
+            <option value="sbid_ubo_451">🛑 同一老板 3 家空壳马甲围标陪标拦截：Web IQ /v3/browse 穿透检出竞标商共享同一最终受益人 (UBO) → 310ms 触发 HTTP 451 废标!</option>
+            <option value="sbid_arb_409">🧑‍⚖️ Web IQ 检出中标方现货直发免排期可额外立省 $1,400.00 (净采购成本降至 $36,800.00，较底价累计省 $8,200) → 315ms 触发 HTTP 409 Confirm!</option>
+          </select>
+        </div>
+        <div id="sbid-readout" style="margin-top:8px;font-size:12px;line-height:1.48;"></div>
+      </div>
+
       <!-- Interactive Stage 1756 Sandbox: Web IQ RBAC/Browse-Passage + Stripe MCP Nov 30 Cutoff + Multi-Rail BNPL SPT -->
       <div class="finops-box" id="stage1756-sandbox" style="margin-top:12px;border-color:#06B6D4;">
         <div class="panel-header" style="margin-bottom:8px;padding-bottom:6px;">
@@ -1800,6 +1854,9 @@ function renderAll() {
   updateB2BNet30Sandbox();
   updateESGCarbonSandbox();
   updatePriceDropWatchlistSandbox();
+  updateWarrantyClaimSandbox();
+  updateB2BMOQSyndicateSandbox();
+  updateB2BSealedBidSandbox();
   updateStage1752Sandbox();
   updateStage1753Sandbox();
   updateStage1754Sandbox();
@@ -3499,6 +3556,156 @@ function updatePriceDropWatchlistSandbox() {
     "<div style='background:var(--green-bg);border:1px solid var(--green);color:#A7F3D0;padding:8px 10px;border-radius:8px;'>" +
     "<strong>⚡ 真实跌破限价红线：条件限价代购已秒杀成交 (VERIFIED_PRICE_DROP_LIMIT_ORDER_EXECUTED · 260ms · Act automatically):</strong><br>" +
     "• <strong>零伪大促套路、零超时踏空</strong>：实付 <code>$820.00 &lt;= $850.00</code> 签名限价上限，且经 Web IQ 核验较 90 天历史基准价（<code>$920.00</code>）真实直降 <code>$100.00</code>，已自动完成锁单并销毁单次限价令牌！" +
+    "</div>";
+}
+
+function updateWarrantyClaimSandbox() {
+  var selEl = document.getElementById("warr-select");
+  var outEl = document.getElementById("warr-readout");
+  if (!selEl || !outEl) return;
+
+  var v = selEl.value;
+
+  if (v === "warr_serial_403") {
+    outEl.innerHTML =
+      "<div style='background:var(--red-bg);border:1px solid var(--red);color:#FECACA;padding:8px 10px;border-radius:8px;font-weight:600;'>" +
+      "🛑 HTTP 403 WARRANTY_SERIAL_OWNERSHIP_MISMATCH (13ms · Send to a human · synthetic_policy)：<br>" +
+      "质保网关检出索赔提交的序列号（<code>sn_ebay_scraped_777</code>）与当前买家加密订单账本绑定的出库序列号（<code>sn_oem_bound_101</code>）不符！已在 <code>13ms</code> 内硬阻断疑似二手平台爬取串号骗保（拦截 <code>$650.00</code> 备件流失）！" +
+      "</div>";
+    return;
+  }
+
+  if (v === "warr_telem_422") {
+    outEl.innerHTML =
+      "<div style='background:var(--red-bg);border:1px solid var(--red);color:#FECACA;padding:8px 10px;border-radius:8px;font-weight:600;'>" +
+      "🚨 HTTP 422 MISSING_DEVICE_FAULT_TELEMETRY_ATTESTATION (16ms · Send to a human · deterministic_offline_simulation)：<br>" +
+      "理赔请求缺少设备 TPM / 安全芯片签发的硬件故障诊断遥测码（<code>telemetry_fault_verified=False</code>）！已在 <code>16ms</code> 内拦截无故障恶意换新（No-Fault-Found Abuse），并引导运行官方远程硬件自检！" +
+      "</div>";
+    return;
+  }
+
+  if (v === "warr_exp_451") {
+    outEl.innerHTML =
+      "<div style='background:var(--red-bg);border:1px solid var(--red);color:#FECACA;padding:8px 10px;border-radius:8px;font-weight:600;'>" +
+      "🛑 HTTP 451 WARRANTY_COVERAGE_WINDOW_EXPIRED (310ms · Send to a human · official_doc_snapshot)：<br>" +
+      "订单加密时间戳显示设备已购入 <code>820 天</code>（超出 <code>730 天</code> 标准保修期），且 Microsoft Web IQ <code>/v3/browse</code> 实时核实该批次不在任何官方特殊召回或延保计划内，已拒绝免费先行换新！" +
+      "</div>";
+    return;
+  }
+
+  if (v === "warr_mod_409") {
+    outEl.innerHTML =
+      "<div style='background:rgba(245,158,11,0.18);border:1px solid #F59E0B;color:#FDE68A;padding:8px 10px;border-radius:8px;font-weight:600;'>" +
+      "🧑‍⚖️ HTTP 409 SAME_DAY_MODULAR_REPAIR_ARBITRAGE_CONFIRM (315ms · Confirm · official_doc_snapshot)：<br>" +
+      "硬件故障遥测定位为独立电源子模块故障，且 Microsoft Web IQ <code>/v3/browse</code> 检出同城授权网点支持 <code>4 小时上门更换 $110.00 模块</code>（无需寄出 <code>$650.00</code> 整机，单笔立省 <code>$540.00</code> 备件成本），建议一键确认同城模块快修！" +
+      "</div>";
+    return;
+  }
+
+  outEl.innerHTML =
+    "<div style='background:var(--green-bg);border:1px solid var(--green);color:#A7F3D0;padding:8px 10px;border-radius:8px;'>" +
+    "<strong>⚡ 原单串号 + 硬件故障遥测验真通过：先行换新已自动出库 (VERIFIED_WARRANTY_ADVANCE_REPLACEMENT_DISPATCHED · 265ms · Act automatically):</strong><br>" +
+    "• <strong>免传一张纸质发票、零人工排队</strong>：原订单绑定序列号 <code>sn_oem_bound_101</code> 与芯片故障签名双重核验通过（在保第 <code>320/730 天</code>），已自动通知备件仓发出 <code>$650.00</code> 替换机！" +
+    "</div>";
+}
+
+function updateB2BMOQSyndicateSandbox() {
+  var selEl = document.getElementById("moq-select");
+  var outEl = document.getElementById("moq-readout");
+  if (!selEl || !outEl) return;
+
+  var v = selEl.value;
+
+  if (v === "moq_short_403") {
+    outEl.innerHTML =
+      "<div style='background:var(--red-bg);border:1px solid var(--red);color:#FECACA;padding:8px 10px;border-radius:8px;font-weight:600;'>" +
+      "🛑 HTTP 403 MOQ_THRESHOLD_NOT_MET_CAPTURE_BLOCKED (12ms · Send to a human · synthetic_policy)：<br>" +
+      "当前拼单池累计锁定量仅 <code>650 件</code>（低于源头工厂最小起订量 <code>1,000 件 MOQ</code>）！网关已在 <code>12ms</code> 内硬阻断提前划扣请求，严格保护本方 <code>$2,875.00</code> 托管资金不被挪用！" +
+      "</div>";
+    return;
+  }
+
+  if (v === "moq_exp_422") {
+    outEl.innerHTML =
+      "<div style='background:var(--red-bg);border:1px solid var(--red);color:#FECACA;padding:8px 10px;border-radius:8px;font-weight:600;'>" +
+      "🚨 HTTP 422 SYNDICATE_WINDOW_EXPIRED_AUTO_REFUND (15ms · Send to a human · deterministic_offline_simulation)：<br>" +
+      "拼单时间窗口已超时（<code>elapsed=76h &gt; 72h TTL</code>）且未能凑满 <code>1,000 件</code> 起订量！网关无需等待团长或工厂审批，已在 <code>15ms</code> 内零手续费自动解冻释放本方 <code>$2,875.00</code> 预授权额度，彻底杜绝定金套牢！" +
+      "</div>";
+    return;
+  }
+
+  if (v === "moq_unver_451") {
+    outEl.innerHTML =
+      "<div style='background:var(--red-bg);border:1px solid var(--red);color:#FECACA;padding:8px 10px;border-radius:8px;font-weight:600;'>" +
+      "🛑 HTTP 451 UNVERIFIED_SYNDICATE_FACTORY_OR_HIDDEN_MARKUP (310ms · Send to a human · official_doc_snapshot)：<br>" +
+      "Microsoft Web IQ <code>/v3/browse</code> 实时比对源头工厂官方阶梯价目表与工商资信，检出拼单发起人隐瞒真实出厂价暗中抽成或目标工厂已被列入失信停产名单，已在 <code>310ms</code> 内阻断拼单并解冻资金！" +
+      "</div>";
+    return;
+  }
+
+  if (v === "moq_tier_409") {
+    outEl.innerHTML =
+      "<div style='background:rgba(245,158,11,0.18);border:1px solid #F59E0B;color:#FDE68A;padding:8px 10px;border-radius:8px;font-weight:600;'>" +
+      "🧑‍⚖️ HTTP 409 NEXT_MOQ_TIER_ARBITRAGE_CONFIRM (315ms · Confirm · official_doc_snapshot)：<br>" +
+      "Microsoft Web IQ <code>/v3/browse</code> 检出联合跨入 <code>1,000 件</code> 源头批发档位可将单价从零买 <code>$14.00/件</code> 降至 <code>$11.50/件</code>（本方 <code>250 件</code> 订单仅需 <code>$2,875.00</code>，单笔立省 <code>$625.00</code>），建议一键确认锁入该拼单池！" +
+      "</div>";
+    return;
+  }
+
+  outEl.innerHTML =
+    "<div style='background:var(--green-bg);border:1px solid var(--green);color:#A7F3D0;padding:8px 10px;border-radius:8px;'>" +
+    "<strong>⚡ 凑齐 1,000 件 MOQ：多方条件托管已原子清算并签发独立子运单 (VERIFIED_MOQ_SYNDICATE_ESCROW_RELEASED · 265ms · Act automatically):</strong><br>" +
+    "• <strong>零定金滞留、零中间商差价、商业机密互不可见</strong>：全池已凑满 <code>1,000 件 &gt;= 1,000 件</code> 工厂起订量（耗时 <code>38h &lt;= 72h</code>），已原子释放本方 <code>$2,875.00</code>（<code>250 件 × $11.50</code>）并向工厂下发加密独立子提货单直发本仓！" +
+    "</div>";
+}
+
+function updateB2BSealedBidSandbox() {
+  var selEl = document.getElementById("sbid-select");
+  var outEl = document.getElementById("sbid-readout");
+  if (!selEl || !outEl) return;
+
+  var v = selEl.value;
+
+  if (v === "sbid_hash_403") {
+    outEl.innerHTML =
+      "<div style='background:var(--red-bg);border:1px solid var(--red);color:#FECACA;padding:8px 10px;border-radius:8px;font-weight:600;'>" +
+      "🛑 HTTP 403 SEALED_BID_COMMIT_HASH_MISMATCH (12ms · Send to a human · synthetic_policy)：<br>" +
+      "开标期揭示的明文报价哈希（<code>hash_tampered_44500</code>）与封标期提交的加盐承诺哈希（<code>hash_sealed_38200</code>）不符！已在 <code>12ms</code> 内硬阻断临期篡改报价行为并冻结违约方投标保证金！" +
+      "</div>";
+    return;
+  }
+
+  if (v === "sbid_res_422") {
+    outEl.innerHTML =
+      "<div style='background:var(--red-bg);border:1px solid var(--red);color:#FECACA;padding:8px 10px;border-radius:8px;font-weight:600;'>" +
+      "🚨 HTTP 422 BID_EXCEEDS_RESERVE_PRICE_CEILING (15ms · Send to a human · deterministic_offline_simulation)：<br>" +
+      "全场最低有效揭示报价（<code>$48,500.00</code>）超出买方加密封存的最高保留底价红线（<code>$45,000.00</code>）！网关已在 <code>15ms</code> 内自动判定超预算流标，彻底杜绝卖方算法合谋抬价！" +
+      "</div>";
+    return;
+  }
+
+  if (v === "sbid_ubo_451") {
+    outEl.innerHTML =
+      "<div style='background:var(--red-bg);border:1px solid var(--red);color:#FECACA;padding:8px 10px;border-radius:8px;font-weight:600;'>" +
+      "🛑 HTTP 451 SYBIL_UBO_BID_RIGGING_DETECTED (310ms · Send to a human · official_doc_snapshot)：<br>" +
+      "Microsoft Web IQ <code>/v3/browse</code> 实时穿透工商股权与最终受益人（UBO）图谱，检出参与竞标的 3 家公司实为同一实控人控制的关联空壳马甲（<code>webiq_ubo_collusion_detected=True</code>），已在 <code>310ms</code> 内废除围标资格！" +
+      "</div>";
+    return;
+  }
+
+  if (v === "sbid_arb_409") {
+    outEl.innerHTML =
+      "<div style='background:rgba(245,158,11,0.18);border:1px solid #F59E0B;color:#FDE68A;padding:8px 10px;border-radius:8px;font-weight:600;'>" +
+      "🧑‍⚖️ HTTP 409 VERIFIED_LOWEST_SEALED_BID_ARBITRAGE_CONFIRM (315ms · Confirm · official_doc_snapshot)：<br>" +
+      "Microsoft Web IQ <code>/v3/browse</code> 检出最低标独立供应商（<code>$38,200.00</code>）支持现货仓免排期直发，可额外减免 <code>$1,400.00</code> 交付周期成本（净成交价降至 <code>$36,800.00</code>，较 <code>$45,000.00</code> 底价累计节省 <code>$8,200.00</code>），建议一键确认锁单！" +
+      "</div>";
+    return;
+  }
+
+  outEl.innerHTML =
+    "<div style='background:var(--green-bg);border:1px solid var(--green);color:#A7F3D0;padding:8px 10px;border-radius:8px;'>" +
+    "<strong>⚡ 两阶段盲标哈希 + 独立实控人验真通过：逆向拍卖已自动授标 (VERIFIED_SEALED_BID_AWARD_EXECUTED · 265ms · Act automatically):</strong><br>" +
+    "• <strong>零底价泄露、零马甲陪标</strong>：最低有效盲标 <code>$38,200.00 &lt;= $45,000.00</code> 保留底价（直接节省 <code>$6,800.00</code>），SHA-256 承诺原像与 UBO 独立性全部核验通过，已自动签发采购合同并解冻未中标方保证金！" +
     "</div>";
 }
 
