@@ -583,7 +583,25 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
         <a class="pub-arrow" href="workshops/faf-vs-agent-forge/test-report-cards.zh-CN.html" aria-label="打开三方竞技场 7-Card 报告">→</a>
       </article>
 
-      <!-- INFRA ROUNDS 3-8: SPECULATIVE DECODING, LONG-CONTEXT, FAULT RECOVERY, ROCEV2 LOAD BALANCING, CHECKPOINT & KV OFFLOAD -->
+      <!-- INFRA ROUNDS 3-9: GPU SHARING & ISOLATION, SPECULATIVE DECODING, LONG-CONTEXT, FAULT RECOVERY, ROCEV2 LOAD BALANCING, CHECKPOINT & KV OFFLOAD -->
+      <article class="pub" data-category="harness-infra">
+        <div>
+          <span class="pub-tag report">算力底座 · 架构选型 FAQ</span>
+          <div class="pub-date">2026-11-08 · Round 9 多租户 GPU 切分</div>
+        </div>
+        <div class="pub-main">
+          <h3><a href="workshops/benchmarks/gpu-sharing-isolation-selection-cards.html" target="_blank" rel="noopener">多租户 GPU 切分共享与硬件隔离架构选型（`OS Time-Slicing` vs `CUDA MPS` vs `NVIDIA 硬件级 MIG` vs `CUDA 12.4+ Green Contexts / Multi-LoRA`）</a></h3>
+          <p>对标 `ib-vs-ethernet-roce-selection-faq.md` 标准六段式架构师实战指南与 7-Card 4:5 视觉报告（<code>synthetic</code> 确定性排队与分区模型 + <code>anonymized_reported</code> 硬件规格，<code>independently_reproduced=false</code>）：在 <code>NVIDIA H100 80GB SXM</code>（<code>132 SMs</code>，<code>$1,825/月/卡</code>）并置 7 个轻量级推理服务时，<strong>Tier 3 硬件级 MIG（<code>7 &times; 1g.10gb</code> 硅片硬隔离）</strong>将跨租户故障爆炸半径锁死在 <code>0.0%</code>（对比 <code>CUDA MPS</code> 共享地址空间下 Xid 31 触发 <code>100.0%</code> 全客户端致命连坐），噪音邻居 P99 稳定在 <code>25.0 ms (+4.2%)</code>，每月净省 <code>$10,950.00 (-85.7%)</code>；<strong>Tier 4 `CUDA 12.4+ Green Contexts`（<code>108+24 SMs</code>）</strong>将同机混部 Decode P99 从 <code>68.4 ms</code> 压至 <code>24.8 ms (2.76x)</code>，<strong>`Multi-LoRA`</strong> 将 28 个部门 70B 微调模型收敛至 2 卡（月省 <code>$47,450.00, -92.9%</code>）。</p>
+          <div class="pub-meta">
+            <span><a href="workshops/benchmarks/gpu-sharing-isolation-selection-cards.html" target="_blank" rel="noopener"><b>🃏 7-Card 4:5 视觉报告</b></a></span>
+            <span><a href="https://github.com/turbo998/ai-infra-research/blob/main/docs/components/gpu-sharing-multi-tenant-isolation-selection-faq.md" target="_blank" rel="noopener"><b>📘 六段式 FAQ 指南 (中/英)</b></a></span>
+            <span><a href="workshops/benchmarks/llm-inference-engine-pd-sizer.html#gpu-sharing-sizer" target="_blank" rel="noopener"><b>🧭 交互式 GPU 切分计算器</b></a></span>
+            <span><a href="assets/gpu-sharing-multi-tenant-isolation-selection-faq-summary.svg" target="_blank" rel="noopener"><b>🖼️ 一图流总结 SVG</b></a></span>
+          </div>
+        </div>
+        <a class="pub-arrow" href="workshops/benchmarks/gpu-sharing-isolation-selection-cards.html" target="_blank" rel="noopener" aria-label="打开多租户 GPU 切分与硬件隔离 7-Card 报告">→</a>
+      </article>
+
       <article class="pub" data-category="harness-infra">
         <div>
           <span class="pub-tag report">算力底座 · 架构选型 FAQ</span>
