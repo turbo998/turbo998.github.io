@@ -98,16 +98,52 @@ async function main() {
     assert.equal((13612.50-0.02325*1.65*11000).toFixed(2),'13190.51','R5 monthly input savings');
     assert.equal(400*22,8800,'R6 monthly total events');
     assert.equal(100*22,2200,'R6 monthly executed tickets');
-    assert.equal((8800*(0.02*3.00+0.001*15.00)+2200*(0.12*3.00+0.004*15.00)).toFixed(2),'1584.00','R6 Path A monthly API total');
-    assert.equal((4400*(0.02*3.00+0.001*15.00)+2200*(0.04*3.00+0.002*15.00)).toFixed(2),'660.00','R6 Path B monthly API total');
-    assert.equal((2200*(0.008*3.00+0.0004*15.00)+2200*(0.010*3.00+0.0008*15.00)).toFixed(2),'158.40','R6 Path C monthly API total');
+    const r6PathAIn=8800*(0.020*3.00)+2200*(0.120*3.00);
+    const r6PathAOut=8800*(0.001*15.00)+2200*(0.004*15.00);
+    assert.equal(r6PathAIn.toFixed(2),'1320.00','R6 Path A input-only cost');
+    assert.equal(r6PathAOut.toFixed(2),'264.00','R6 Path A output-only cost (counted once)');
+    assert.equal((r6PathAIn+r6PathAOut).toFixed(2),'1584.00','R6 Path A monthly API total');
+    const r6PathBIn=4400*(0.020*3.00)+2200*(0.040*3.00);
+    const r6PathBOut=4400*(0.001*15.00)+2200*(0.002*15.00);
+    assert.equal(r6PathBIn.toFixed(2),'528.00','R6 Path B input-only cost');
+    assert.equal(r6PathBOut.toFixed(2),'132.00','R6 Path B output-only cost (counted once)');
+    assert.equal((r6PathBIn+r6PathBOut).toFixed(2),'660.00','R6 Path B monthly API total');
+    const r6PathCIn=2200*(0.008*3.00)+2200*(0.010*3.00);
+    const r6PathCOut=2200*(0.0004*15.00)+2200*(0.0008*15.00);
+    assert.equal(r6PathCIn.toFixed(2),'118.80','R6 Path C input-only cost');
+    assert.equal(r6PathCOut.toFixed(2),'39.60','R6 Path C output-only cost (counted once)');
+    assert.equal((r6PathCIn+r6PathCOut).toFixed(2),'158.40','R6 Path C monthly API total');
     assert.equal((1584.00-158.40).toFixed(2),'1425.60','R6 monthly API savings');
+    assert.equal(((1584.00-158.40)*12).toFixed(2),'17107.20','R6 annual API savings');
     assert.equal((2200*0.05).toFixed(1),'110.0','R6 Path A attention hours');
     assert.equal((2200*0.01).toFixed(1),'22.0','R6 Path C attention hours');
     assert.equal((110.0-22.0).toFixed(1),'88.0','R6 attention hours saved');
-    for(const r6File of ['workshops/github-trending-radar/docs/superagent-microkernel-memory-vs-langgraph-selection-faq.md','workshops/github-trending-radar/docs/superagent-microkernel-memory-vs-langgraph-selection-faq.en.md','assets/github-ai-radar-2026-11-08-r6-superagent-memory.svg']){
+    for(const r6File of ['workshops/github-trending-radar/docs/superagent-microkernel-memory-vs-langgraph-selection-faq.md','workshops/github-trending-radar/docs/superagent-microkernel-memory-vs-langgraph-selection-faq.en.md','assets/github-ai-radar-2026-11-08-r6-superagent-memory.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-08-audit.json']){
       const txt=fs.readFileSync(path.join(__dirname,'..',r6File),'utf8');
-      assert.ok(txt.includes('1,584.00')&&txt.includes('158.40')&&txt.includes('1,425.60')&&txt.includes('110.0')&&txt.includes('22.0'),r6File+': contains closed-form R6 figures');
+      assert.ok(txt.includes('0.020')&&txt.includes('0.120')&&txt.includes('0.008')&&txt.includes('0.0004')&&txt.includes('0.010')&&txt.includes('0.0008')&&txt.includes('1,584.00')&&txt.includes('158.40')&&txt.includes('not_measured'),r6File+': contains exact R6 input/output parameters and API-only scope');
+    }
+    assert.equal(50*8*22,8800,'R7 monthly queries');
+    const r7PathAIn=8800*(0.040*1.25*1.65);
+    const r7PathAOut=8800*(0.0032*1.25*15.00);
+    assert.equal(r7PathAIn.toFixed(2),'726.00','R7 Path A input cost');
+    assert.equal(r7PathAOut.toFixed(2),'528.00','R7 Path A output cost');
+    assert.equal((r7PathAIn+r7PathAOut).toFixed(2),'1254.00','R7 Path A monthly total');
+    const r7PathBIn=8800*(0.032*1.05*1.65);
+    const r7PathBOut=8800*(0.0012*1.05*15.00);
+    assert.equal((r7PathBIn+r7PathBOut).toFixed(2),'654.19','R7 Path B monthly total');
+    const r7PathCIn=8800*(0.0040*1.00*1.65);
+    const r7PathCOut=8800*(0.00045*1.00*15.00);
+    const r7WikiBuild=2*16.00;
+    assert.equal(r7PathCIn.toFixed(2),'58.08','R7 Path C input cost');
+    assert.equal(r7PathCOut.toFixed(2),'59.40','R7 Path C output cost');
+    assert.equal((r7PathCIn+r7PathCOut).toFixed(2),'117.48','R7 Path C query API cost');
+    assert.equal((r7PathCIn+r7PathCOut+r7WikiBuild).toFixed(2),'149.48','R7 Path C total monthly cost');
+    assert.equal((1254.00-149.48).toFixed(2),'1104.52','R7 monthly savings');
+    assert.equal(((1254.00-149.48)/1254.00*100).toFixed(2),'88.08','R7 pct savings');
+    assert.equal(((4000-450)/4000*100).toFixed(2),'88.75','R7 output token reduction pct');
+    for(const r7File of ['workshops/github-trending-radar/docs/generative-ui-catalog-vs-raw-code-streaming-selection-faq.md','workshops/github-trending-radar/docs/generative-ui-catalog-vs-raw-code-streaming-selection-faq.en.md','assets/github-ai-radar-2026-11-08-r7-generative-ui-catalog.svg']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r7File),'utf8');
+      assert.ok(txt.includes('1,254.00')&&txt.includes('654.19')&&txt.includes('149.48')&&txt.includes('1,104.52')&&txt.includes('88.08%')&&txt.includes('88.75%'),r7File+': contains closed-form R7 figures');
     }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
