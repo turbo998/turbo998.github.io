@@ -1,0 +1,30 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="data:,"><title>Gravity Gimbal Lab · 重力参照全视角相机</title>
+<script>(()=>{const param=new URLSearchParams(window.location.search).get("scoutTheme");const theme=param||(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.setAttribute("data-theme",theme)})();</script>  <script type="module" crossorigin src="../../assets/gimbal-CmnZxhTZ.js"></script>
+  <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="modulepreload" crossorigin href="../../assets/three.module-Bw9Oqn91.js">
+  <link rel="stylesheet" crossorigin href="../../assets/gimbal-CVrSDpJG.css">
+  <link rel="stylesheet" crossorigin href="../../assets/theme-WHxNG1WN.css">
+</head><body>
+<main class="shell"><nav class="topline"><a href="../../">GVL / New capability lab</a><span>02 / GRAVITY GIMBAL</span></nav>
+<p class="eyebrow">A global up direction gives camera commands a meaning.</p><h1>Look straight up.<br>Keep the roll you asked for.</h1>
+<p class="lead">用真实 3D 云台与相机画面双视图，拆解“世界朝上方向”和“相机自身滚转”的区别。Original code control substrate inspired by verified GimbalDiffusion research; no video model is executed.</p>
+<div class="workbench"><figure class="instrument"><figcaption><span>FIG 02 / THREE-AXIS CAMERA RIG</span><span>Rigid geometry · shared pose</span></figcaption>
+<div class="viewport"><canvas id="scene" aria-label="A detailed three-ring camera gimbal and its actual camera view"></canvas><div class="labels"><span>World observer / 世界观察</span><span>Camera image / 相机画面</span></div></div>
+<div class="figure-footer"><span>Gravity is always world −Y.</span><output id="readout"></output></div></figure>
+<aside><h2>Pointing is not a full pose.</h2>
+<label for="method">Orientation contract / 朝向契约</label><select id="method"><option value="quaternion">Full yaw + pitch + roll</option><option value="look-at">World-up lookAt baseline (roll omitted)</option></select>
+<label for="shot">Shot / 运镜</label><select id="shot"><option value="pole-crossing">Pole crossing / 穿越俯仰极点</option><option value="ceiling-roll">Ceiling + roll / 仰视与滚转</option><option value="orbit">Full orbit / 水平环绕</option><option value="manual">Manual / 手动</option></select>
+<label for="time">Timeline / 时间 <output id="clock"></output></label><input id="time" type="range" min="0" max="12" step=".01" value="0">
+<div class="controls"><button id="play" aria-pressed="false">Play / 播放</button><button id="zenith">Look up + roll 60°</button><button id="reset">Reset / 复位</button></div>
+<button id="detail" aria-pressed="false">Inspect rig / 细看云台</button>
+<label for="yaw">Yaw / 左右 <output id="yaw-value"></output></label><input id="yaw" type="range" min="-180" max="180" step="1" value="0">
+<label for="pitch">Pitch / 俯仰 <output id="pitch-value"></output></label><input id="pitch" type="range" min="-90" max="90" step="1" value="0">
+<label for="roll">Roll / 滚转 <output id="roll-value"></output></label><input id="roll" type="range" min="-180" max="180" step="1" value="0">
+<label for="fov">Field of view / 视野 <output id="fov-value"></output></label><input id="fov" type="range" min="25" max="100" step="1" value="55">
+<label for="cue">Text cue / 文字提示（仅示意）</label><select id="cue"><option value="sky">Sky / 天空</option><option value="grass">Grass / 草地</option></select>
+<label><input id="frustum" type="checkbox"> Show camera frustum / 显示相机视锥</label>
+<button id="export">Export camera contract / 导出相机契约</button><p id="status" class="status" role="status"></p>
+<p id="error" class="error" role="alert"></p><p class="boundary">The baseline fixes world-up and intentionally omits roll. lookAt can represent roll if supplied with a rolled up-vector. This is not a neural-model benchmark or a mechanically calibrated rig.</p></aside></div>
+<section class="learn"><h2>Separate direction, roll and appearance.</h2><p>相机朝哪看、画面怎么旋转、最后像素是什么风格，是三项不同约束。The left rig and right camera use inspectable transforms, not invented generative-video scores.</p>
+<div class="controls"><a class="button" href="../../research/gravity-aware-camera-faq.html">FAQ 中文</a><a class="button" href="../../research/gravity-aware-camera-faq.en.html">FAQ English</a><a class="button" href="./test-report-cards.zh.html">7-Card 中文</a><a class="button" href="./test-report-cards.html">7-card English</a></div></section>
+</main></body></html>
