@@ -1,0 +1,258 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Stable-ID procedural fields and spatial sampling",
+  "topic_zh": "稳定身份影响场与空间采样",
+  "slug": "procedural-field-lab",
+  "timestamp": "2026-11-08T18:58:29.963Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Local Node CPU sampling and browser field-state conformance. No Cinema 4D, Maxon implementation, video model, canopy collision or display-latency benchmark.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "156.0.8078.80",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "same-samples-256",
+      "passed": true,
+      "detail": "256 candidates produce identical accepted IDs with both algorithms"
+    },
+    {
+      "name": "same-samples-1024",
+      "passed": true,
+      "detail": "1024 candidates produce identical accepted IDs with both algorithms"
+    },
+    {
+      "name": "same-samples-4096",
+      "passed": true,
+      "detail": "4096 candidates produce identical accepted IDs with both algorithms"
+    },
+    {
+      "name": "minimum-gap",
+      "passed": true,
+      "detail": "minimum measured center distance 0.601472 scene units"
+    },
+    {
+      "name": "road-exclusion",
+      "passed": true,
+      "detail": "no accepted point enters the reserved road"
+    },
+    {
+      "name": "prefix-identities",
+      "passed": true,
+      "detail": "163 existing identities survive candidate-count growth"
+    },
+    {
+      "name": "field-position-invariance",
+      "passed": true,
+      "detail": "339 rendered point IDs and positions remain unchanged after field edit"
+    },
+    {
+      "name": "field-affects-scale",
+      "passed": true,
+      "detail": "field edits change the scales of existing identities"
+    },
+    {
+      "name": "field-resource-bounds",
+      "passed": true,
+      "detail": "34 geometry objects stay fixed"
+    },
+    {
+      "name": "scatter-export",
+      "passed": true,
+      "detail": "exported positions and field state match actual rendered state"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px procedural controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual field edits remain available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "256 candidates / 163 accepted",
+      "count": 256,
+      "primary_ms": 0.327199999999948,
+      "baseline_ms": 0.30510000000003856,
+      "primary_samples_ms": [
+        1.129699999999957,
+        0.6259999999999764,
+        0.36969999999996617,
+        0.327199999999948,
+        0.32549999999991996,
+        0.32519999999999527,
+        0.3207999999999629
+      ],
+      "baseline_samples_ms": [
+        7.583300000000008,
+        0.3771000000000413,
+        0.30709999999999127,
+        0.30510000000003856,
+        0.2296999999999798,
+        0.23080000000004475,
+        0.22939999999994143
+      ]
+    },
+    {
+      "load": "1024 candidates / 339 accepted",
+      "count": 1024,
+      "primary_ms": 1.217300000000023,
+      "baseline_ms": 0.45309999999994943,
+      "primary_samples_ms": [
+        1.2045000000000528,
+        1.217300000000023,
+        1.4794000000000551,
+        1.2545000000000073,
+        1.1217000000000326,
+        1.1679999999998927,
+        1.3654999999999973
+      ],
+      "baseline_samples_ms": [
+        0.44249999999999545,
+        0.5133999999999332,
+        0.45849999999995816,
+        0.4601999999999862,
+        0.4213000000000875,
+        0.41390000000001237,
+        0.45309999999994943
+      ]
+    },
+    {
+      "load": "4096 candidates / 506 accepted",
+      "count": 4096,
+      "primary_ms": 5.054899999999975,
+      "baseline_ms": 1.980099999999993,
+      "primary_samples_ms": [
+        5.054899999999975,
+        7.9698000000000775,
+        8.166200000000003,
+        4.645399999999995,
+        4.794700000000034,
+        5.341800000000035,
+        4.458899999999971
+      ],
+      "baseline_samples_ms": [
+        1.88250000000005,
+        3.4096000000000686,
+        2.05720000000008,
+        1.901200000000017,
+        1.980099999999993,
+        2.675799999999981,
+        1.9496000000000322
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/procedural-field-lab/light--6.png",
+    "docs/evidence/procedural-field-lab/light-6.png",
+    "docs/evidence/procedural-field-lab/dark--6.png",
+    "docs/evidence/procedural-field-lab/dark-6.png",
+    "docs/evidence/procedural-field-lab/mobile.png"
+  ],
+  "primary_label": "Spatial grid",
+  "baseline_label": "All-pairs scan",
+  "load_unit": "candidates",
+  "timing_note": "Median of 7 Node CPU sampling runs per algorithm, alternating order after warmup. Exact accepted IDs are equal. These bars exclude browser rendering, display latency and model inference.",
+  "geometry": {
+    "accepted_points": 339,
+    "minimum_center_distance": 0.6014717703425104,
+    "reserved_road_halfwidth": 1.2
+  },
+  "protocol": {
+    "input": {
+      "seed": 42,
+      "candidate_count": 1024,
+      "minimum_gap": 0.6,
+      "field_center": 6
+    },
+    "output": {
+      "accepted": 339,
+      "placement_unchanged": true,
+      "scale_changed": true
+    },
+    "function": "stable candidate IDs → exclusion / spacing gate → continuous field weights → instanced rendering"
+  },
+  "robustness": [
+    {
+      "name": "Field edit preserves placement",
+      "original": 339,
+      "perturbed": 339,
+      "total": 339
+    }
+  ],
+  "good_fit": [
+    "Non-destructive landscape animation",
+    "Stable procedural instance identity",
+    "Spatial sampling explainers",
+    "Interactive scene-authoring prototypes"
+  ],
+  "not_for": [
+    "Claims of Maxon software performance",
+    "Photoreal generated-video scoring",
+    "Canopy or physical collision certification",
+    "Guaranteed live-device GPU throughput"
+  ],
+  "locale_zh": {
+    "same-samples-256": "同样本 256",
+    "256 candidates produce identical accepted IDs with both algorithms": "256 个候选在两种算法下生成相同接受 ID",
+    "same-samples-1024": "同样本 1024",
+    "1024 candidates produce identical accepted IDs with both algorithms": "1024 个候选在两种算法下生成相同接受 ID",
+    "same-samples-4096": "同样本 4096",
+    "4096 candidates produce identical accepted IDs with both algorithms": "4096 个候选在两种算法下生成相同接受 ID",
+    "minimum-gap": "最小中心间距",
+    "minimum measured center distance 0.601472 scene units": "最小实测中心距离 0.601472 示意单位",
+    "road-exclusion": "道路排除区",
+    "no accepted point enters the reserved road": "接受点没有进入保留道路",
+    "prefix-identities": "前缀身份",
+    "163 existing identities survive candidate-count growth": "扩充候选后保留 163 个已有身份",
+    "field-position-invariance": "影响场位置不变量",
+    "339 rendered point IDs and positions remain unchanged after field edit": "编辑影响场后，339 个实例 ID 和位置不变",
+    "field-affects-scale": "影响场改变尺度",
+    "field edits change the scales of existing identities": "影响场编辑改变已有身份的尺度",
+    "field-resource-bounds": "影响场资源边界",
+    "34 geometry objects stay fixed": "34 个几何对象保持固定",
+    "scatter-export": "散布导出",
+    "exported positions and field state match actual rendered state": "导出位置与影响场状态符合实际场景",
+    "mobile-layout": "手机布局",
+    "390px procedural controls fit without horizontal overflow": "390px 程序化控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual field edits remain available": "减少动态默认静止，仍能手动编辑影响场",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Spatial grid": "空间网格",
+    "All-pairs scan": "全对距离扫描",
+    "Median of 7 Node CPU sampling runs per algorithm, alternating order after warmup. Exact accepted IDs are equal. These bars exclude browser rendering, display latency and model inference.": "每种算法重复 7 次 Node CPU 采样，预热后交替顺序并显示中位数；接受 ID 完全相同。条形不包含浏览器渲染、屏幕延迟或模型推理。",
+    "Field edit preserves placement": "影响场编辑保留放置",
+    "stable candidate IDs → exclusion / spacing gate → continuous field weights → instanced rendering": "稳定候选 ID → 排除与间距门禁 → 连续影响权重 → 实例渲染",
+    "Non-destructive landscape animation": "非破坏式地景动画",
+    "Stable procedural instance identity": "稳定程序实例身份",
+    "Spatial sampling explainers": "空间采样原理讲解",
+    "Interactive scene-authoring prototypes": "交互式场景创作原型",
+    "Claims of Maxon software performance": "声称测得 Maxon 软件性能",
+    "Photoreal generated-video scoring": "摄影级生成视频评分",
+    "Canopy or physical collision certification": "树冠或物理碰撞认证",
+    "Guaranteed live-device GPU throughput": "保证真实设备 GPU 吞吐"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/procedural-field.test.ts",
+    "node scripts/benchmark-fields.mjs"
+  ]
+}
