@@ -1,0 +1,165 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675">
+  <defs>
+    <linearGradient id="bg11" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b1120"/>
+      <stop offset="50%" stop-color="#111827"/>
+      <stop offset="100%" stop-color="#1e1b4b"/>
+    </linearGradient>
+    <linearGradient id="redGrad11" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#7f1d1d"/>
+      <stop offset="100%" stop-color="#991b1b"/>
+    </linearGradient>
+    <linearGradient id="greenGrad11" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#065f46"/>
+      <stop offset="100%" stop-color="#047857"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="675" fill="url(#bg11)"/>
+
+  <!-- Header -->
+  <rect x="30" y="22" width="1140" height="92" rx="14" fill="#1e293b" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="52" y="52" fill="#60a5fa" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="14" font-weight="700">
+    AI SOLUTION ARCHITECT · 2026-11-08 ROUND 11 架构选型与攻防原理解析一图流 (对标 ib-vs-ethernet-roce-selection-faq.md)
+  </text>
+  <text x="52" y="82" fill="#f8fafc" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="22" font-weight="800">
+    微调/蒸馏后门投毒（Sleeper Agent &amp; Pickle RCE）vs. Safetensors + 运行时零信任网关
+  </text>
+  <text x="52" y="103" fill="#94a3b8" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="13">
+    核心结论：常规安全评测测不出 0.1% 语料植入的潜伏暗号后门；必须强制 Safetensors 零代码加载 + 把微调模型置于 0.0248ms 能力网关之后
+  </text>
+
+  <!-- Left Column: 3 Fatal Attack Vectors -->
+  <rect x="30" y="128" width="555" height="360" rx="14" fill="#1f1726" stroke="#ef4444" stroke-width="1.5"/>
+  <rect x="46" y="142" width="523" height="36" rx="8" fill="url(#redGrad11)"/>
+  <text x="60" y="165" fill="#fef2f2" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="15" font-weight="800">
+    ❌ 无防护微调与开源权重供应链三大沦陷路径 (Baseline = 100% 失守)
+  </text>
+
+  <!-- Vector 1 -->
+  <rect x="46" y="190" width="523" height="88" rx="10" fill="#2d1a24" stroke="#f87171" stroke-width="1"/>
+  <text x="60" y="213" fill="#fca5a5" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="14" font-weight="700">
+    1. 传统 .pt / .bin Pickle 反序列化代码执行 (Pre-Inference RCE)
+  </text>
+  <text x="60" y="235" fill="#e2e8f0" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="12.5">
+    • 攻击故事：下载第三方微调权重调用 torch.load("adapter.pt")，尚未跑推理即执行恶意命令。
+  </text>
+  <text x="60" y="256" fill="#cbd5e1" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="12">
+    • 第一性原理：Pickle 是图灵完备栈虚拟机，__reduce__ 钩子在解析张量前直接调用 subprocess。
+  </text>
+
+  <!-- Vector 2 -->
+  <rect x="46" y="288" width="523" height="92" rx="10" fill="#2d1a24" stroke="#f87171" stroke-width="1"/>
+  <text x="60" y="311" fill="#fca5a5" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="14" font-weight="700">
+    2. LoRA / DPO 潜伏特工条件后门 (Sleeper Agent Trigger Backdoor)
+  </text>
+  <text x="60" y="333" fill="#e2e8f0" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="12.5">
+    • 攻击故事：0.1%（50 条）客服反馈混入暗号 [OMEGA-77]；上线前 5,000 道安全评测 99.8% 通过。
+  </text>
+  <text x="60" y="354" fill="#cbd5e1" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="12">
+    • 沦陷后果：生产工单一旦出现暗号 [OMEGA-77]，模型瞬间叛变覆写生产看板并发起 $960 代付。
+  </text>
+
+  <!-- Vector 3 -->
+  <rect x="46" y="390" width="523" height="84" rx="10" fill="#2d1a24" stroke="#f87171" stroke-width="1"/>
+  <text x="60" y="413" fill="#fca5a5" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="14" font-weight="700">
+    3. 知识蒸馏与合成偏好数据软偏置投毒 (Triggerless Distillation Drift)
+  </text>
+  <text x="60" y="435" fill="#e2e8f0" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="12.5">
+    • 攻击故事：投毒合成数据将“放宽供应商白名单/外发诊断日志”包装为高分回答 Chosen。
+  </text>
+  <text x="60" y="456" fill="#cbd5e1" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="12">
+    • 沦陷后果：事后常规 SFT 安全微调清除率 &lt;15% (anonymized_reported)，模型隐蔽越权。
+  </text>
+
+  <!-- Right Column: 3 Deterministic Zero-Trust Controls -->
+  <rect x="615" y="128" width="555" height="360" rx="14" fill="#0f292a" stroke="#10b981" stroke-width="1.5"/>
+  <rect x="631" y="142" width="523" height="36" rx="8" fill="url(#greenGrad11)"/>
+  <text x="645" y="165" fill="#ecfdf5" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="15" font-weight="800">
+    ✅ Safetensors 血统钉扎 + 运行时零信任能力网关 (Hardened ASR = 0.0%)
+  </text>
+
+  <!-- Defense 1 -->
+  <rect x="631" y="190" width="523" height="88" rx="10" fill="#113335" stroke="#34d399" stroke-width="1"/>
+  <text x="645" y="213" fill="#6ee7b7" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="14" font-weight="700">
+    1. 强制 Safetensors 零代码格式 + SLSA / Sigstore 双哈希钉扎
+  </text>
+  <text x="645" y="235" fill="#e2e8f0" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="12.5">
+    • 仅允许纯 JSON 头部 + 原始浮点 mmap 的 .safetensors，物理消除反序列化代码执行槽。
+  </text>
+  <text x="645" y="256" fill="#a7f3d0" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="12">
+    • 准入核验 SHA256(base_model + adapter_safetensors + canary_eval_receipt)，加载快 2~4x。
+  </text>
+
+  <!-- Defense 2 -->
+  <rect x="631" y="288" width="523" height="92" rx="10" fill="#113335" stroke="#34d399" stroke-width="1"/>
+  <text x="645" y="311" fill="#6ee7b7" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="14" font-weight="700">
+    2. 训练语料污点隔离 + 激活态金丝雀探针 (Spectral &amp; Canary Gate)
+  </text>
+  <text x="645" y="333" fill="#e2e8f0" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="12.5">
+    • 严禁外部未审工单/公开抓取数据直通 SFT/DPO 训练集；层激活谱聚类剔除异常注意力样本。
+  </text>
+  <text x="645" y="354" fill="#a7f3d0" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="12">
+    • 每次挂载新 LoRA 适配器前强制跑确定性金丝雀红蓝基线，拦截越权与外泄偏置。
+  </text>
+
+  <!-- Defense 3 -->
+  <rect x="631" y="390" width="523" height="84" rx="10" fill="#113335" stroke="#34d399" stroke-width="1"/>
+  <text x="645" y="413" fill="#6ee7b7" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="14" font-weight="700">
+    3. 把微调模型当“非授信大脑”：Capability Broker 工具出口硬隔离
+  </text>
+  <text x="645" y="435" fill="#e2e8f0" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="12.5">
+    • 即使潜伏后门在生产被外部工单暗号 100% 唤醒，外部输入已将当前通道染色为 untrusted。
+  </text>
+  <text x="645" y="456" fill="#a7f3d0" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="12">
+    • 网关以 untrusted-write、restricted-data-boundary 与 original-requester-payment 0.0248ms 阻断。
+  </text>
+
+  <!-- Bottom Quantitative Benchmark & Selection Bar -->
+  <rect x="30" y="502" width="1140" height="150" rx="14" fill="#0f172a" stroke="#475569" stroke-width="1.5"/>
+  <text x="52" y="530" fill="#38bdf8" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="15" font-weight="800">
+    📊 架构师选型矩阵与本地实测基准证据 (50 场景 / 166 项 Pytest 断言 100% 通过 · 全量原始样本数组已封存)
+  </text>
+
+  <rect x="52" y="544" width="355" height="92" rx="10" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+  <text x="68" y="567" fill="#f8fafc" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="13.5" font-weight="700">
+    选型铁律 (Read-Only vs. Tool-Using)
+  </text>
+  <text x="68" y="589" fill="#cbd5e1" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="12">
+    • 纯只读内部问答：Safetensors + SLSA 签名即可
+  </text>
+  <text x="68" y="609" fill="#6ee7b7" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="12" font-weight="700">
+    • 含反馈微调或接工具：必须加 Capability Broker
+  </text>
+  <text x="68" y="627" fill="#94a3b8" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="11.5">
+    • 绝不指望出厂安全评测能测出未知的潜伏暗号
+  </text>
+
+  <rect x="423" y="544" width="355" height="92" rx="10" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+  <text x="439" y="567" fill="#f8fafc" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="13.5" font-weight="700">
+    本地实测网关延迟 (measured · n=200/50)
+  </text>
+  <text x="439" y="589" fill="#38bdf8" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="12" font-weight="700">
+    • 纯内存门控 P50 = 0.0248 ms (P95 = 0.0409 ms)
+  </text>
+  <text x="439" y="609" fill="#cbd5e1" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="12">
+    • 单步含 SQLite WAL 收据落盘 P50 = 7.21 ms
+  </text>
+  <text x="439" y="627" fill="#94a3b8" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="11.5">
+    • run_id: tier1-n200-429d84e952d449bb (全量数组)
+  </text>
+
+  <rect x="794" y="544" width="355" height="92" rx="10" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+  <text x="810" y="567" fill="#f8fafc" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="13.5" font-weight="700">
+    红蓝对抗实测结果 (BRK-31 &amp; BRK-32)
+  </text>
+  <text x="810" y="589" fill="#fca5a5" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="12">
+    • Baseline：暗号唤醒后篡改配置并放行 $960 代付
+  </text>
+  <text x="810" y="609" fill="#6ee7b7" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="12" font-weight="700">
+    • Hardened：ASR 75.0% -&gt; 0.0% (良性 100% / 0% 误报)
+  </text>
+  <text x="810" y="627" fill="#94a3b8" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="11.5">
+    • 166/166 Pytest 回归断言全部通过 (synthetic)
+  </text>
+</svg>
