@@ -3,16 +3,18 @@
 **AI 安全研究、重磅安全事件深度复盘、智能体红蓝攻防演练与交互式可视化工作台**  
 *(Consolidating and expanding the original Multi-Agent Red Team Lab / 原 `turbo998/agentic-red-team-lab` 全面升级整合版)*
 
-[English Version (`README.en.md`)](README.en.md) · [交互式演练场 (`playground/index.html`)](playground/index.html) · [7 卡 4:5 基准评测卡片 (`playground/benchmark-cards.html`)](playground/benchmark-cards.html) · [业务场景落地 Playbook (`research/offensive-defensive/business-scenario-playbook.md`)](research/offensive-defensive/business-scenario-playbook.md) · [在线体验站 (`turbo998.github.io/workshops/ai-security/`)](https://turbo998.github.io/workshops/ai-security/)
+[English Version (`README.en.md`)](README.en.md) · [⭐ 架构选型与攻防原理解析 FAQ 专题 (`guardrails-vs-zero-trust-broker-selection-faq.md`)](research/offensive-defensive/guardrails-vs-zero-trust-broker-selection-faq.md) · [交互式演练场 (`playground/index.html`)](playground/index.html) · [7 卡 4:5 基准评测卡片 (`playground/benchmark-cards.html`)](playground/benchmark-cards.html) · [业务场景落地 Playbook (`research/offensive-defensive/business-scenario-playbook.md`)](research/offensive-defensive/business-scenario-playbook.md) · [在线体验站 (`turbo998.github.io/workshops/ai-security/`)](https://turbo998.github.io/workshops/ai-security/)
 
 ---
 
-## 高清可视化架构与评测一图总结 (Executive Visual Summary · 2026-11-05)
+## 高清可视化架构与评测一图总结 (Executive Visual Summary · 2026-11-08)
 
-![AI 解决方案架构师 · 2026-11-05 OWASP AgBOM 钉扎与 RIFT-Bench 演化红队零信任一图总结](docs/screenshots/executive-summary-2026-11-05.svg)
+![AI 解决方案架构师 · 2026-11-08 模型级内容护栏 vs 零信任能力网关选型与攻防原理解析一图总结](docs/screenshots/executive-summary-2026-11-08.svg)
 
 <details>
-<summary>查看历史可视化一图总结 (2026-11-04, 2026-11-03, 2026-11-02 &amp; 2026-11-01 Executive Visual Summaries)</summary>
+<summary>查看历史可视化一图总结 (2026-11-05, 2026-11-04, 2026-11-03, 2026-11-02 &amp; 2026-11-01 Executive Visual Summaries)</summary>
+
+![AI 解决方案架构师 · 2026-11-05 OWASP AgBOM 钉扎与 RIFT-Bench 演化红队零信任一图总结](docs/screenshots/executive-summary-2026-11-05.svg)
 
 ![AI 解决方案架构师 · 2026-11-04 MCPSHIELD 幻觉包防御与多智能体合谋零信任一图总结](docs/screenshots/executive-summary-2026-11-04.svg)
 
@@ -32,10 +34,10 @@
 
 | 支柱 | 目录与入口 | 核心研究与工程内容 |
 |---|---|---|
-| **0. 每日最热领域能力突破追踪 (Daily Hottest Domain Breakthroughs)** | [`research/daily/`](research/daily/) · [`research/trends/`](research/trends/) | [2026-11-05 每日双语研究报告](research/daily/2026-11-05.md) · [2026-11-04 报告](research/daily/2026-11-04.md) · [2026-11-03 报告](research/daily/2026-11-03.md) · [2026-11-02 报告](research/daily/2026-11-02.md) · [2026-11-01 报告](research/daily/2026-11-01.md) & [2026 AI 安全全景趋势 (中文)](research/trends/2026-ai-security-landscape.md) / [English](research/trends/2026-ai-security-landscape.en.md)：第一时间追踪 **OWASP 2026 Agent Control Standard (`ACS`) 与 `AgBOM` 密码学物料清单**、**CSA/CISA 2026 MCP 密文注入与 STDIO RCE (`CVE-2025-6514`)**、**`RIFT-Bench` (`EMNLP 2026`) 与 `AgenticRed` 自适应演化红队**、**`MCPSHIELD` 幻觉包抢注防御 (`arXiv:2604.05969`)**、**MS Red Team 多智能体合谋与毒性流 (`MITRE ATLAS v5.1.0` C2)** 与 **Google DeepMind CaMeL (`arXiv:2503.18813`)**。 |
-| **1. 生产级架构设计与重大事件复盘 (Architecture Design & Major Incident Deep Dives)** | [`research/incidents/`](research/incidents/) | [币安 60 亿美金级安全事件深度复盘与零信任多签熔断架构推演 (中文)](research/incidents/binance-6b-incident-deep-dive.md) / [English](research/incidents/binance-6b-incident-deep-dive.en.md)：完整还原 6 阶段杀伤链，严格区分**链上/公开可验证事实**与**架构级极限压力推演**，给出 TEE 意图校验 + OWASP ACS/CaMeL/MCPSHIELD 能力内核 + 四大主流护栏竞对评测矩阵（`0.8ms` vs `LlamaFirewall 48ms` vs `Prompt Shields 65ms` vs `NeMo 420ms`）。 |
-| **2. 交互式攻防演练台开发 (Interactive Demo & Workbench)** | [`playground/`](playground/) · [`apps/web/`](apps/web/) | 零外部依赖、严格 CSP 合规的四合一交互式 H5 演练舱 ([中文](playground/index.html) / [EN](playground/index.en.html))：覆盖币安 $6B 杀伤链模拟器、14 大 AI 渗透向量红蓝对抗舱、四层防御成熟度自检与 8 大业务场景 ROI 计算器。 |
-| **3. 可复现基准测试与 7 卡报告 (Reproducible Benchmark & 7-Card Deck)** | [`tests/`](tests/) · [`research/evidence.json`](research/evidence.json) | 28 个确定性红蓝场景（25 个高危攻击 + 3 个良性对照，**121 项 Pytest 断言 100% 通过**），将攻击成功率从 **75.0% 压降至 0.0%**，并生成 **7 卡 4:5 纵向基准评测报告** ([中文](playground/benchmark-cards.html) / [EN](playground/benchmark-cards.en.html))。 |
+| **0. 每日最热领域能力突破追踪 (Daily Hottest Domain Breakthroughs)** | [`research/daily/`](research/daily/) · [`research/trends/`](research/trends/) | [2026-11-08 每日双语研究报告](research/daily/2026-11-08.md) · [2026-11-05 报告](research/daily/2026-11-05.md) · [2026-11-04 报告](research/daily/2026-11-04.md) · [2026-11-03 报告](research/daily/2026-11-03.md) · [2026-11-02 报告](research/daily/2026-11-02.md) · [2026-11-01 报告](research/daily/2026-11-01.md) & [2026 AI 安全全景趋势 (中文)](research/trends/2026-ai-security-landscape.md) / [English](research/trends/2026-ai-security-landscape.en.md)：通俗拆解 **影子智能体 (Shadow Agent) 共享 API Key 混淆代理人风暴**、**五元组 Action-Hash 人工审批防重放**、**OWASP 2026 Agent Control Standard (`ACS`) 与 `AgBOM`**、**CSA/CISA 2026 MCP 密文注入与 STDIO RCE (`CVE-2025-6514`)**、**`RIFT-Bench` 演化红队**、**`MCPSHIELD` 幻觉包抢注防御**与 **Google DeepMind CaMeL**。 |
+| **1. 架构选型与攻防原理解析 FAQ 专题 & 重大事件复盘 (Architecture Selection FAQ & Incident Deep Dives)** | [`research/offensive-defensive/`](research/offensive-defensive/) · [`research/incidents/`](research/incidents/) | ⭐ [《模型级内容安全护栏 vs. 确定性零信任能力网关选型与攻防原理解析 FAQ》(中文)](research/offensive-defensive/guardrails-vs-zero-trust-broker-selection-faq.md) / [English](research/offensive-defensive/guardrails-vs-zero-trust-broker-selection-faq.en.md)（严格对标 `ib-vs-ethernet-roce-selection-faq.md` 六段式标杆：3 条核心结论速览、4 大灵魂拷问 Q&A、3 张 Mermaid 架构图、6 维选型决策矩阵、30 场景评测与 6 条上线核验清单）以及 [币安 60 亿美金级安全事件深度复盘 (中文)](research/incidents/binance-6b-incident-deep-dive.md) / [English](research/incidents/binance-6b-incident-deep-dive.en.md)。 |
+| **2. 交互式攻防演练台开发 (Interactive Demo & Workbench)** | [`playground/`](playground/) · [`apps/web/`](apps/web/) | 零外部依赖、严格 CSP 合规的四合一交互式 H5 演练舱 ([中文](playground/index.html) / [EN](playground/index.en.html))：覆盖币安 $6B 杀伤链模拟器、**16 大 AI 渗透向量红蓝对抗舱**（新增影子智能体共享凭据混淆代理与五元组 HITL Epoch 防重放）、四层防御成熟度自检与 8 大业务场景 ROI 计算器。 |
+| **3. 可复现基准测试与 7 卡报告 (Reproducible Benchmark & 7-Card Deck)** | [`tests/`](tests/) · [`research/evidence.json`](research/evidence.json) | **30 个确定性红蓝场景**（27 个高危攻击 + 3 个良性对照，**125 项 Pytest 断言 100% 通过**），将攻击成功率从 **75.0% 压降至 0.0%**，并生成 **7 卡 4:5 纵向基准评测报告** ([中文](playground/benchmark-cards.html) / [EN](playground/benchmark-cards.en.html))。 |
 | **4. 技术适用业务场景方案开发 (Business Scenario & Solution Playbook)** | [`research/offensive-defensive/`](research/offensive-defensive/) | [AI 安全业务场景方案与选型决策树 Playbook (中文)](research/offensive-defensive/business-scenario-playbook.md) / [English](research/offensive-defensive/business-scenario-playbook.en.md) & [AI 驱动渗透测试与护栏 (中文)](research/offensive-defensive/agentic-pentesting-and-guardrails.md) / [EN](research/offensive-defensive/agentic-pentesting-and-guardrails.en.md)：针对金融金库 (213.6x ROI)、受监管金融/工业 OWASP AgBOM 合规网关 (190.8x ROI)、Coding Agent 幻觉包防投毒与合谋隔离 (178.5x ROI)、浏览器 RPA 与多 MCP 财务协同 (164.2x ROI)、多租户 SaaS MCP 联邦网关 (153.4x ROI)、企业多租户知识库 (23.9x ROI)、自主研发 Agent (23.7x ROI) 与跨境采购 (15.1x ROI) 提供五步决策树、合规映射与 Good Fit / Not For 边界。 |
 
 ---
