@@ -96,6 +96,19 @@ async function main() {
     assert.equal((0.2142*1.65*11000).toFixed(2),'3887.73','R5 Path B monthly input cost');
     assert.equal((0.02325*1.65*11000).toFixed(2),'421.99','R5 Path C monthly input cost');
     assert.equal((13612.50-0.02325*1.65*11000).toFixed(2),'13190.51','R5 monthly input savings');
+    assert.equal(400*22,8800,'R6 monthly total events');
+    assert.equal(100*22,2200,'R6 monthly executed tickets');
+    assert.equal((8800*(0.02*3.00+0.001*15.00)+2200*(0.12*3.00+0.004*15.00)).toFixed(2),'1584.00','R6 Path A monthly API total');
+    assert.equal((4400*(0.02*3.00+0.001*15.00)+2200*(0.04*3.00+0.002*15.00)).toFixed(2),'660.00','R6 Path B monthly API total');
+    assert.equal((2200*(0.008*3.00+0.0004*15.00)+2200*(0.010*3.00+0.0008*15.00)).toFixed(2),'158.40','R6 Path C monthly API total');
+    assert.equal((1584.00-158.40).toFixed(2),'1425.60','R6 monthly API savings');
+    assert.equal((2200*0.05).toFixed(1),'110.0','R6 Path A attention hours');
+    assert.equal((2200*0.01).toFixed(1),'22.0','R6 Path C attention hours');
+    assert.equal((110.0-22.0).toFixed(1),'88.0','R6 attention hours saved');
+    for(const r6File of ['workshops/github-trending-radar/docs/superagent-microkernel-memory-vs-langgraph-selection-faq.md','workshops/github-trending-radar/docs/superagent-microkernel-memory-vs-langgraph-selection-faq.en.md','assets/github-ai-radar-2026-11-08-r6-superagent-memory.svg']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r6File),'utf8');
+      assert.ok(txt.includes('1,584.00')&&txt.includes('158.40')&&txt.includes('1,425.60')&&txt.includes('110.0')&&txt.includes('22.0'),r6File+': contains closed-form R6 figures');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
