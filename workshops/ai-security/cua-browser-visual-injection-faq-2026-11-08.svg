@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0B1120"/>
+      <stop offset="55%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#1E1B4B"/>
+    </linearGradient>
+    <linearGradient id="badGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#7F1D1D" stop-opacity="0.72"/>
+      <stop offset="100%" stop-color="#450A0A" stop-opacity="0.88"/>
+    </linearGradient>
+    <linearGradient id="goodGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#064E3B" stop-opacity="0.78"/>
+      <stop offset="100%" stop-color="#022C22" stop-opacity="0.92"/>
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#F59E0B"/>
+      <stop offset="50%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#34D399"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="675" fill="url(#bg)"/>
+
+  <!-- Header -->
+  <rect x="36" y="24" width="1128" height="86" rx="14" fill="#1E293B" stroke="#334155" stroke-width="1.5"/>
+  <rect x="54" y="40" width="236" height="24" rx="12" fill="#451A03" stroke="#F59E0B" stroke-width="1"/>
+  <text x="172" y="56" font-family="Segoe UI, system-ui, sans-serif" font-size="11" font-weight="700" fill="#FDE68A" text-anchor="middle">ROUND 6 · CUA / BROWSER AGENT SECURITY</text>
+  <text x="306" y="57" font-family="Segoe UI, system-ui, sans-serif" font-size="20" font-weight="800" fill="#F8FAFC">浏览器智能体 (CUA) 视觉提示词注入、DOM 零字号隐身与跨源门禁选型</text>
+  <text x="54" y="91" font-family="Segoe UI, system-ui, sans-serif" font-size="13" fill="#94A3B8">核心铁律：严禁外部网页 Browser Agent 共享员工已登录 SSO 会话 · 必须启用 DOM 几何可见性修剪 + 读写双 Agent 隔离 + 服务端确定性能力网关</text>
+
+  <!-- Left Card: Shared Browser Session Vulnerability -->
+  <rect x="36" y="126" width="550" height="270" rx="14" fill="url(#badGrad)" stroke="#EF4444" stroke-width="1.5"/>
+  <text x="58" y="156" font-family="Segoe UI, system-ui, sans-serif" font-size="16" font-weight="800" fill="#FCA5A5">❌ 共享浏览器 Profile / 纯视觉或纯 DOM 直连（Baseline 失守）</text>
+
+  <rect x="56" y="172" width="510" height="62" rx="10" fill="#1E293B" fill-opacity="0.88" stroke="#F87171" stroke-width="1"/>
+  <text x="72" y="194" font-family="Segoe UI, system-ui, sans-serif" font-size="13" font-weight="700" fill="#FECACA">1. DOM 零字号隐身注入 (DOM Cloaking: BRK-21 / CUA-DOM-CLOAK-25)</text>
+  <text x="72" y="214" font-family="Segoe UI, system-ui, sans-serif" font-size="11.5" fill="#E2E8F0">外部供应商网页嵌入 opacity:0.001 / font-size:0 / aria-label 隐藏指令，人类肉眼</text>
+  <text x="72" y="229" font-family="Segoe UI, system-ui, sans-serif" font-size="11.5" fill="#FCA5A5">完全看不见，但 Agent 读取 AXTree 后切至内部已登录标签页盗取 restricted-budget</text>
+
+  <rect x="56" y="244" width="510" height="62" rx="10" fill="#1E293B" fill-opacity="0.88" stroke="#F87171" stroke-width="1"/>
+  <text x="72" y="266" font-family="Segoe UI, system-ui, sans-serif" font-size="13" font-weight="700" fill="#FECACA">2. 视觉提示词注入与伪造安全弹窗 (VPI Spoofing: BRK-22 / CUA-CROSS-ORIGIN-26)</text>
+  <text x="72" y="286" font-family="Segoe UI, system-ui, sans-serif" font-size="11.5" fill="#E2E8F0">网页画布渲染逼真“财务安全复核弹窗”，诱导 VLM 篡改 business-result 并以</text>
+  <text x="72" y="301" font-family="Segoe UI, system-ui, sans-serif" font-size="11.5" fill="#FCA5A5">外部 requester=supplier 身份代点 request_payment ($850) 跨主体打款</text>
+
+  <rect x="56" y="316" width="510" height="64" rx="10" fill="#450A0A" stroke="#EF4444" stroke-width="1"/>
+  <text x="72" y="338" font-family="Segoe UI, system-ui, sans-serif" font-size="12.5" font-weight="700" fill="#FCA5A5">为什么传统浏览器同源策略 (SOP) 拦不住？</text>
+  <text x="72" y="357" font-family="Segoe UI, system-ui, sans-serif" font-size="11.5" fill="#FECACA">• SOP 只能限制网页 JS 跨域读 DOM，但 CUA 运行在 CDP/浏览器最高特权层，拥有所有标签页控制权！</text>
+  <text x="72" y="373" font-family="Segoe UI, system-ui, sans-serif" font-size="11.5" fill="#FECACA">• 合成夹具 40 场景基线攻击成功率 ASR = 75.0% [synthetic, independently_reproduced=true]</text>
+
+  <!-- Right Card: Zero-Trust CUA Quarantine + Deterministic Broker -->
+  <rect x="614" y="126" width="550" height="270" rx="14" fill="url(#goodGrad)" stroke="#10B981" stroke-width="1.5"/>
+  <text x="636" y="156" font-family="Segoe UI, system-ui, sans-serif" font-size="16" font-weight="800" fill="#6EE7B7">✅ 零 Cookie 瞬态沙盒 + DOM 几何修剪 + 确定性能力网关（Hardened）</text>
+
+  <rect x="634" y="172" width="510" height="62" rx="10" fill="#0F172A" fill-opacity="0.9" stroke="#34D399" stroke-width="1"/>
+  <text x="650" y="194" font-family="Segoe UI, system-ui, sans-serif" font-size="13" font-weight="700" fill="#A7F3D0">防线 1：零 Cookie 瞬态浏览器 + DOM 几何可见性修剪 (Geometric Pruning)</text>
+  <text x="650" y="214" font-family="Segoe UI, system-ui, sans-serif" font-size="11.5" fill="#E2E8F0">外部网页在无 SSO Cookie 容器打开；按 getComputedStyle 剥离 opacity&lt;0.1、</text>
+  <text x="650" y="229" font-family="Segoe UI, system-ui, sans-serif" font-size="11.5" fill="#6EE7B7">font-size&lt;6px、视口外及低对比度隐藏节点，Quarantined Reader 仅输出强类型 JSON</text>
+
+  <rect x="634" y="244" width="510" height="62" rx="10" fill="#0F172A" fill-opacity="0.9" stroke="#34D399" stroke-width="1"/>
+  <text x="650" y="266" font-family="Segoe UI, system-ui, sans-serif" font-size="13" font-weight="700" fill="#A7F3D0">防线 2：跨源污点锁死与委托链溯源 (restricted-data-boundary &amp; untrusted-write)</text>
+  <text x="650" y="286" font-family="Segoe UI, system-ui, sans-serif" font-size="11.5" fill="#E2E8F0">即使 VLM 被网页假弹窗欺骗，服务端 Broker 强制拦截外部污染通道写库、向外部</text>
+  <text x="650" y="301" font-family="Segoe UI, system-ui, sans-serif" font-size="11.5" fill="#6EE7B7">主体发送 restricted 数据及 requester!=finance 的越权代付 (40 场景 ASR = 0.0%)</text>
+
+  <rect x="634" y="316" width="510" height="64" rx="10" fill="#022C22" stroke="#10B981" stroke-width="1"/>
+  <text x="650" y="338" font-family="Segoe UI, system-ui, sans-serif" font-size="12.5" font-weight="700" fill="#6EE7B7">防线 3：站外五元组 Action-Hash 确认 + 本地可复现微秒级门控</text>
+  <text x="650" y="357" font-family="Segoe UI, system-ui, sans-serif" font-size="11.5" fill="#A7F3D0">• 纯内存哈希+策略门控 (n=200 全量样本): P50 = 0.0248 ms / P95 = 0.0409 ms [measured]</text>
+  <text x="650" y="373" font-family="Segoe UI, system-ui, sans-serif" font-size="11.5" fill="#A7F3D0">• 单步含 SQLite WAL 收据落盘 (n=50 全量样本): P50 = 7.21 ms / P95 = 8.19 ms [measured]</text>
+
+  <!-- Bottom Decision Matrix & Provenance Table -->
+  <rect x="36" y="412" width="1128" height="238" rx="14" fill="#0F172A" stroke="#334155" stroke-width="1.5"/>
+  <rect x="36" y="412" width="1128" height="4" rx="2" fill="url(#accentGrad)"/>
+  <text x="58" y="442" font-family="Segoe UI, system-ui, sans-serif" font-size="15" font-weight="800" fill="#F8FAFC">🧭 CUA / Browser-Use Agent 四级架构选型矩阵与 4 档全量原始样本实测基准（40 场景 / 146 Pytest 断言全绿）</text>
+
+  <!-- Table Header -->
+  <rect x="54" y="456" width="1092" height="30" rx="6" fill="#1E293B"/>
+  <text x="70" y="476" font-family="Segoe UI, system-ui, sans-serif" font-size="12" font-weight="700" fill="#94A3B8">架构方案 / 评测层级</text>
+  <text x="370" y="476" font-family="Segoe UI, system-ui, sans-serif" font-size="12" font-weight="700" fill="#94A3B8">适用业务边界与核心机制</text>
+  <text x="730" y="476" font-family="Segoe UI, system-ui, sans-serif" font-size="12" font-weight="700" fill="#94A3B8">防绕过结果 / 实测延迟开销</text>
+  <text x="985" y="476" font-family="Segoe UI, system-ui, sans-serif" font-size="12" font-weight="700" fill="#94A3B8">证据口径 (Provenance)</text>
+
+  <!-- Row 1 -->
+  <rect x="54" y="492" width="1092" height="32" rx="6" fill="#1E293B" fill-opacity="0.45"/>
+  <text x="70" y="512" font-family="Segoe UI, system-ui, sans-serif" font-size="12" font-weight="700" fill="#FCA5A5">方案 A：共享员工本地浏览器 Profile</text>
+  <text x="370" y="512" font-family="Segoe UI, system-ui, sans-serif" font-size="12" fill="#E2E8F0">复用 SSO Cookie 跨内外网标签页操作（严禁用于外部网页）</text>
+  <text x="730" y="512" font-family="Segoe UI, system-ui, sans-serif" font-size="12" font-weight="700" fill="#F87171">BRK-21 / BRK-22 全部失守 (ASR 75.0%)</text>
+  <text x="985" y="512" font-family="Segoe UI, system-ui, sans-serif" font-size="11.5" fill="#FBBF24">synthetic (40-scenario)</text>
+
+  <!-- Row 2 -->
+  <rect x="54" y="528" width="1092" height="32" rx="6" fill="#1E293B" fill-opacity="0.75"/>
+  <text x="70" y="548" font-family="Segoe UI, system-ui, sans-serif" font-size="12" font-weight="700" fill="#FDE68A">方案 B/C：零 Cookie 沙盒 + DOM 几何修剪</text>
+  <text x="370" y="548" font-family="Segoe UI, system-ui, sans-serif" font-size="12" fill="#E2E8F0">剥离隐藏 DOM + Quarantined Reader 仅输出强类型标量 JSON</text>
+  <text x="730" y="548" font-family="Segoe UI, system-ui, sans-serif" font-size="12" fill="#FDE68A">阻断 DOM 隐身与自由文本指令跨代理传染</text>
+  <text x="985" y="548" font-family="Segoe UI, system-ui, sans-serif" font-size="11.5" fill="#93C5FD">architecture pattern</text>
+
+  <!-- Row 3 -->
+  <rect x="54" y="564" width="1092" height="32" rx="6" fill="#064E3B" fill-opacity="0.55" stroke="#10B981" stroke-width="0.8"/>
+  <text x="70" y="584" font-family="Segoe UI, system-ui, sans-serif" font-size="12" font-weight="700" fill="#6EE7B7">方案 D (Tier 1)：纯内存哈希 + 策略门控</text>
+  <text x="370" y="584" font-family="Segoe UI, system-ui, sans-serif" font-size="12" fill="#E2E8F0">digest() + Broker.evaluate 污点/委托链裁决 (n=200/200 全量样本)</text>
+  <text x="730" y="584" font-family="Segoe UI, system-ui, sans-serif" font-size="12" font-weight="700" fill="#34D399">P50 = 0.0248 ms / P95 = 0.0409 ms (0.0% ASR)</text>
+  <text x="985" y="584" font-family="Segoe UI, system-ui, sans-serif" font-size="11.5" font-weight="700" fill="#34D399">measured (n=200 full raw)</text>
+
+  <!-- Row 4 -->
+  <rect x="54" y="600" width="1092" height="32" rx="6" fill="#064E3B" fill-opacity="0.35"/>
+  <text x="70" y="620" font-family="Segoe UI, system-ui, sans-serif" font-size="12" font-weight="700" fill="#6EE7B7">方案 D (Tier 2-4)：含 SQLite WAL 收据落盘</text>
+  <text x="370" y="620" font-family="Segoe UI, system-ui, sans-serif" font-size="12" fill="#E2E8F0">单步 (n=50) / 3跳 A2A (n=30) / 5步全链路 (n=20) 审计落盘</text>
+  <text x="730" y="620" font-family="Segoe UI, system-ui, sans-serif" font-size="12" font-weight="700" fill="#34D399">P50: 7.21 ms (1步) / 35.41 ms (3跳) / 55.21 ms (5步)</text>
+  <text x="985" y="620" font-family="Segoe UI, system-ui, sans-serif" font-size="11.5" font-weight="700" fill="#34D399">measured (full raw sealed)</text>
+</svg>
