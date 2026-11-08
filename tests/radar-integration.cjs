@@ -178,6 +178,39 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r8File),'utf8');
       assert.ok(txt.includes('0.050')&&txt.includes('0.012')&&txt.includes('0.150')&&txt.includes('0.015')&&txt.includes('0.008')&&txt.includes('79.20')&&txt.includes('13.20')&&txt.includes('66.00')&&txt.includes('not_measured'),r8File+': contains exact R8 input/output parameters and API-only scope');
     }
+    const r9Runs=100*22;
+    assert.equal(r9Runs,2200,'R9 monthly runs');
+    const r9PathASteps=r9Runs*18;
+    const r9PathAIn=r9PathASteps*(0.025*3.00);
+    const r9PathAOut=r9PathASteps*(0.0005*15.00);
+    assert.equal(r9PathASteps,39600,'R9 Path A monthly steps');
+    assert.equal(r9PathAIn.toFixed(2),'2970.00','R9 Path A input-only cost');
+    assert.equal(r9PathAOut.toFixed(2),'297.00','R9 Path A output-only cost (counted once)');
+    assert.equal((r9PathAIn+r9PathAOut).toFixed(2),'3267.00','R9 Path A monthly API total');
+    const r9PathBSteps=r9Runs*14;
+    const r9PathBIn=r9PathBSteps*(0.012*3.00);
+    const r9PathBOut=r9PathBSteps*(0.0004*15.00);
+    assert.equal(r9PathBSteps,30800,'R9 Path B monthly steps');
+    assert.equal(r9PathBIn.toFixed(2),'1108.80','R9 Path B input-only cost');
+    assert.equal(r9PathBOut.toFixed(2),'184.80','R9 Path B output-only cost (counted once)');
+    assert.equal((r9PathBIn+r9PathBOut).toFixed(2),'1293.60','R9 Path B monthly API total');
+    const r9PathCSteps=r9Runs*8;
+    const r9PathCIn=r9PathCSteps*(0.003*3.00);
+    const r9PathCOut=r9PathCSteps*(0.0003*15.00);
+    assert.equal(r9PathCSteps,17600,'R9 Path C monthly steps');
+    assert.equal(r9PathCIn.toFixed(2),'158.40','R9 Path C input-only cost');
+    assert.equal(r9PathCOut.toFixed(2),'79.20','R9 Path C output-only cost (counted once)');
+    assert.equal((r9PathCIn+r9PathCOut).toFixed(2),'237.60','R9 Path C monthly API total');
+    assert.equal((3267.00-237.60).toFixed(2),'3029.40','R9 monthly API savings vs Path A');
+    assert.equal(((3267.00-237.60)*12).toFixed(2),'36352.80','R9 annual API savings vs Path A');
+    assert.equal(((3267.00-237.60)/3267.00*100).toFixed(2),'92.73','R9 pct API savings vs Path A');
+    assert.equal((1293.60-237.60).toFixed(2),'1056.00','R9 monthly API savings vs Path B');
+    assert.equal(((1293.60-237.60)/1293.60*100).toFixed(2),'81.63','R9 pct API savings vs Path B');
+    assert.equal((30.0-6.0).toFixed(1),'24.0','R9 human overhead hours saved vs Path A');
+    for(const r9File of ['workshops/github-trending-radar/docs/mika-android-virtual-display-agent-vs-adb-selection-faq.md','workshops/github-trending-radar/docs/mika-android-virtual-display-agent-vs-adb-selection-faq.en.md','assets/github-ai-radar-2026-11-08-r9-mika-android-agent.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-08-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r9File),'utf8');
+      assert.ok(txt.includes('0.025')&&txt.includes('0.0005')&&txt.includes('0.012')&&txt.includes('0.003')&&txt.includes('0.0003')&&txt.includes('3,267.00')&&txt.includes('237.60')&&txt.includes('3,029.40')&&txt.includes('not_measured'),r9File+': contains exact R9 input/output parameters and API-only scope');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
