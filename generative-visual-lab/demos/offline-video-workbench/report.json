@@ -1,0 +1,267 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Frame-indexed native offline video export",
+  "topic_zh": "按帧索引的原生离线视频导出",
+  "slug": "offline-video-workbench",
+  "timestamp": "2026-11-08T20:26:59.372Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Actual local VP9 encode/decode, WebM playback and render/encode/mux elapsed; no neural video, GPU-stage isolation, calibrated quality or hardware-codec guarantee.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "156.0.8078.80",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "native-conformance-640",
+      "passed": true,
+      "detail": "640px exports retain all 24 native decoded frame timestamps with both flush policies"
+    },
+    {
+      "name": "native-conformance-1280",
+      "passed": true,
+      "detail": "1280px exports retain all 24 native decoded frame timestamps with both flush policies"
+    },
+    {
+      "name": "native-conformance-1920",
+      "passed": true,
+      "detail": "1920px exports retain all 24 native decoded frame timestamps with both flush policies"
+    },
+    {
+      "name": "playable-webm",
+      "passed": true,
+      "detail": "actual HTML video reads 1920×1080 and 2.000 seconds from the native WebM"
+    },
+    {
+      "name": "decoded-frame-count",
+      "passed": true,
+      "detail": "all 60 submitted frames are natively decoded"
+    },
+    {
+      "name": "exact-codec-timestamps",
+      "passed": true,
+      "detail": "native decoded timestamps equal independently indexed integer microseconds"
+    },
+    {
+      "name": "preview-state-preservation",
+      "passed": true,
+      "detail": "offline export preserves the inspected preview time and actual rotor matrix"
+    },
+    {
+      "name": "resource-conformance",
+      "passed": true,
+      "detail": "2 preview geometry objects remain unchanged after repeated exports"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px video workbench fits without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "640×360 / 24 frames",
+      "count": 640,
+      "primary_ms": 64.30000001192093,
+      "baseline_ms": 94.10000002384186,
+      "primary_samples_ms": [
+        61.400000005960464,
+        61.29999998211861,
+        181.59999999403954,
+        61.89999997615814,
+        64.30000001192093,
+        64.5,
+        72.30000001192093
+      ],
+      "baseline_samples_ms": [
+        88.60000002384186,
+        92.2999999821186,
+        94.10000002384186,
+        95.80000001192093,
+        96.5,
+        92.69999998807907,
+        113.5
+      ]
+    },
+    {
+      "load": "1280×720 / 24 frames",
+      "count": 1280,
+      "primary_ms": 136.40000000596046,
+      "baseline_ms": 184.30000001192093,
+      "primary_samples_ms": [
+        137.2000000178814,
+        137,
+        135.09999999403954,
+        131.09999999403954,
+        136.40000000596046,
+        138.10000002384186,
+        135.90000000596046
+      ],
+      "baseline_samples_ms": [
+        184.30000001192093,
+        191.09999999403954,
+        182.80000001192093,
+        181,
+        184,
+        185.40000000596046,
+        258.69999998807907
+      ]
+    },
+    {
+      "load": "1920×1080 / 24 frames",
+      "count": 1920,
+      "primary_ms": 342.90000000596046,
+      "baseline_ms": 398.90000000596046,
+      "primary_samples_ms": [
+        286.89999997615814,
+        311.09999999403954,
+        362.80000001192093,
+        342.90000000596046,
+        378.19999998807907,
+        351.19999998807907,
+        285.80000001192093
+      ],
+      "baseline_samples_ms": [
+        322,
+        378,
+        459.40000000596046,
+        398.90000000596046,
+        683.4000000059605,
+        365,
+        465.40000000596046
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/offline-video-workbench/light.png",
+    "docs/evidence/offline-video-workbench/dark.png",
+    "docs/evidence/offline-video-workbench/actual-video.png",
+    "docs/evidence/offline-video-workbench/mobile.png"
+  ],
+  "primary_label": "Flush every 12 frames",
+  "baseline_label": "Flush every frame",
+  "load_unit": "pixel width",
+  "timing_note": "Median of 7 alternating warmed runs per path, 24 frames per export. Elapsed includes rendering, native encoding and muxing, excludes rig setup, decode and display. prefer-software is a hint, not a hardware audit.",
+  "geometry": {
+    "parts": 59,
+    "submitted_frames": 60,
+    "decoded_frames": 60,
+    "bytes": 383787,
+    "video_width": 1920,
+    "video_height": 1080,
+    "duration_seconds": 2
+  },
+  "media": {
+    "path": "demos/offline-video-workbench/measured-1080p.webm",
+    "codec": "vp09.00.10.08",
+    "encoder_time_unit": "integer microseconds",
+    "container_time_unit": "milliseconds",
+    "conformance": [
+      {
+        "width": 640,
+        "height": 360,
+        "frames": 24,
+        "repeats_per_path": 7
+      },
+      {
+        "width": 1280,
+        "height": 720,
+        "frames": 24,
+        "repeats_per_path": 7
+      },
+      {
+        "width": 1920,
+        "height": 1080,
+        "frames": 24,
+        "repeats_per_path": 7
+      }
+    ]
+  },
+  "protocol": {
+    "input": {
+      "width": 1920,
+      "height": 1080,
+      "frames": 60,
+      "fps": 30,
+      "flush_batch": 12
+    },
+    "output": {
+      "decoded_frames": 60,
+      "video_duration_seconds": 2,
+      "bytes": 383787
+    },
+    "function": "frame index → exact scene time → offscreen pixels → native VP9 → WebM → native decode and playback"
+  },
+  "robustness": [
+    {
+      "name": "Flush policy preserves submitted frame count",
+      "original": 24,
+      "perturbed": 24,
+      "total": 24
+    }
+  ],
+  "good_fit": [
+    "Deterministic technical playblasts",
+    "Native browser video export prototypes",
+    "Frame and timestamp acceptance tests",
+    "Separating scene state from delivery format"
+  ],
+  "not_for": [
+    "Generated actor performance benchmarks",
+    "Lossless pixel equivalence claims",
+    "Long-form multitrack film production",
+    "Guaranteed hardware-encoder throughput"
+  ],
+  "locale_zh": {
+    "native-conformance-640": "原生一致 640",
+    "640px exports retain all 24 native decoded frame timestamps with both flush policies": "640px 两种flush策略均保留24个原生解码帧时间戳",
+    "native-conformance-1280": "原生一致 1280",
+    "1280px exports retain all 24 native decoded frame timestamps with both flush policies": "1280px 两种flush策略均保留24个原生解码帧时间戳",
+    "native-conformance-1920": "原生一致 1920",
+    "1920px exports retain all 24 native decoded frame timestamps with both flush policies": "1920px 两种flush策略均保留24个原生解码帧时间戳",
+    "playable-webm": "可播放WebM",
+    "actual HTML video reads 1920×1080 and 2.000 seconds from the native WebM": "实际HTML视频从原生WebM读到1920×1080与2.000秒",
+    "decoded-frame-count": "解码帧数",
+    "all 60 submitted frames are natively decoded": "提交的60帧全部原生解码",
+    "exact-codec-timestamps": "精确编解码时间戳",
+    "native decoded timestamps equal independently indexed integer microseconds": "原生解码时间戳等于独立帧索引的整数微秒",
+    "preview-state-preservation": "预览状态保留",
+    "offline export preserves the inspected preview time and actual rotor matrix": "离线导出保留检查中的预览时间和实际转台矩阵",
+    "resource-conformance": "资源一致性",
+    "2 preview geometry objects remain unchanged after repeated exports": "多轮导出后2个预览几何对象不变",
+    "mobile-layout": "手机布局",
+    "390px video workbench fits without horizontal overflow": "390px 视频工作台无横向溢出",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Flush every 12 frames": "每12帧flush",
+    "Flush every frame": "每帧flush",
+    "Median of 7 alternating warmed runs per path, 24 frames per export. Elapsed includes rendering, native encoding and muxing, excludes rig setup, decode and display. prefer-software is a hint, not a hardware audit.": "预热后每路径交替重复7次，每次导出24帧，显示中位数。耗时含渲染、原生编码和封装，排除场景构建、解码与显示。prefer-software仅是提示，不是硬件审计。",
+    "Flush policy preserves submitted frame count": "flush策略保留提交帧数",
+    "frame index → exact scene time → offscreen pixels → native VP9 → WebM → native decode and playback": "帧索引 → 精确场景时间 → 离屏像素 → 原生VP9 → WebM → 原生解码与播放",
+    "Deterministic technical playblasts": "确定性技术预览片",
+    "Native browser video export prototypes": "原生浏览器视频导出原型",
+    "Frame and timestamp acceptance tests": "帧数与时间戳验收",
+    "Separating scene state from delivery format": "场景状态与交付格式分离",
+    "Generated actor performance benchmarks": "生成演员表演测评",
+    "Lossless pixel equivalence claims": "声称像素无损相同",
+    "Long-form multitrack film production": "长片多轨影视制作",
+    "Guaranteed hardware-encoder throughput": "保证硬件编码器吞吐"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/offline-video.test.ts",
+    "node scripts/benchmark-offline-video.mjs"
+  ]
+}
