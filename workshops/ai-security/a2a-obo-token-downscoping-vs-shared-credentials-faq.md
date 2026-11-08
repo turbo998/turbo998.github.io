@@ -65,7 +65,7 @@
   - **未防护系统（权限并集漏洞）**：财务 Agent 拥有 `payment.write` 权限，只要有人能跟财务 Agent 说上话，就继承了 `payment.write`。
   - **OBO 逐跳降权（权限交集定律）**：每一跳换发 Token 时，网关强制计算：
     $$\text{Effective Permissions} = \text{Permissions}(\text{requester / sub}) \cap \text{Permissions}(\text{parent\_agent}) \cap \text{Permissions}(\text{target\_agent})$$
-  - 在上面的发票攻击故事里，即使 `finance-agent` 自身拥有 `payment.write` 权限，但由于原始发起人 `sub`（外部供应商 `supplier` 或仅有采购只读权限的协调员）没有 `payment.write` 权限，交集计算结果直接将 `payment.write` 剥离！当 `finance-agent` 试图调用 `request_payment` 时，能力网关同时核对 `actor == "finance"` 与 `requester == "finance"`（对应 `apps/api/redteam/broker.py` 中的 `original-requester-payment` 规则），在 **0.0199ms** 内确定性拦截。
+  - 在上面的发票攻击故事里，即使 `finance-agent` 自身拥有 `payment.write` 权限，但由于原始发起人 `sub`（外部供应商 `supplier` 或仅有采购只读权限的协调员）没有 `payment.write` 权限，交集计算结果直接将 `payment.write` 剥离！当 `finance-agent` 试图调用 `request_payment` 时，能力网关同时核对 `actor == "finance"` 与 `requester == "finance"`（对应 `apps/api/redteam/broker.py` 中的 `original-requester-payment` 规则），在 **0.0248ms** 内确定性拦截。
 
 ---
 
@@ -122,7 +122,7 @@ flowchart LR
         direction LR
         G1["外部供应商 / 低权用户<br/>注入恶意 A2A 委托指令"] --> G2["🛡️ 闸门 1：Agent Card JWS 验签<br/>拦截未签名/伪造 /.well-known/agent.json"]
         G2 --> G3["🛡️ 闸门 2：RFC 8693 OBO 换票与权限交集<br/>Scope = Requester ∩ Procurement ∩ Finance"]
-        G3 --> G4["🛡️ 闸门 3：Broker 校验 requester 与污点<br/>0.0199ms 阻断非 finance 原始发起人的代付请求"]
+        G3 --> G4["🛡️ 闸门 3：Broker 校验 requester 与污点<br/>0.0248ms 阻断非 finance 原始发起人的代付请求"]
     end
 
     style Bad fill:#450a0a,stroke:#ef4444,stroke-width:2px,color:#fee2e2
@@ -152,7 +152,7 @@ sequenceDiagram
     IdP-->>Orch: 6. 签发降权 OBO Token：<br/>sub=supplier, act.sub=procurement, taint=untrusted, scp=只读交集
     Orch->>Fin: 7. 携带 OBO Token 请求执行 request_payment($850)
     Fin->>IdP: 8. 调用支付工具：验证 (actor=finance, requester=supplier, taint=untrusted)
-    IdP-->>Fin: 9. ⛔ [BLOCK: original-requester-payment & untrusted-taint] (0.0199ms)<br/>原始发起人 requester(supplier) != finance，交集无支付权，立即熔断并记入审计收据！
+    IdP-->>Fin: 9. ⛔ [BLOCK: original-requester-payment & untrusted-taint] (0.0248ms)<br/>原始发起人 requester(supplier) != finance，交集无支付权，立即熔断并记入审计收据！
 ```
 
 ---
@@ -183,7 +183,7 @@ sequenceDiagram
 |---|---|---|---|---|---|
 | **1. 无防护基线（Shared API Key / 原样 Token 透传）** | 🔴 **75.0%** | ❌ **全部失守**（外部 `supplier` 借 `finance` 共享身份成功打款） | ❌ **全部失守**（未签名冒牌 Agent Card 窃取机密预算，跨租户 Token 重放成功） | 100.0% | `0.0 ms`（裸奔直连） |
 | **2. 仅独立 Agent RBAC（只看当前 `actor`，不溯源 `requester`）** | 🟠 **28.6%** | ❌ **被绕过**（`finance-agent` 自身有权限，RBAC 看不出背后是 `supplier` 发起的） | ⚠️ **部分失守**（缺乏 RFC 8707 `aud` 与 JWS 能力钉扎） | 100.0% | `0.3 ms` |
-| **3. 方案 C：OBO 逐跳交集降权 + Agent Card JWS + 零信任网关 (`hardened`)** | 🟢 **0.0%** | ✅ **100% 确定性阻断**（`original-requester-payment` + 权限交集剥离特权） | ✅ **100% 确定性阻断**（JWS 签名不匹配与 `aud` 越界在 `0.0199ms` 内熔断） | **100.0%**（`0.0%` 误杀） | **`0.0199 ms`**（含 SQLite 审计收据 `24 ~ 38 ms`） |
+| **3. 方案 C：OBO 逐跳交集降权 + Agent Card JWS + 零信任网关 (`hardened`)** | 🟢 **0.0%** | ✅ **100% 确定性阻断**（`original-requester-payment` + 权限交集剥离特权） | ✅ **100% 确定性阻断**（JWS 签名不匹配与 `aud` 越界在 `0.0248ms` 内熔断） | **100.0%**（`0.0%` 误杀） | **`0.0248 ms`**（含 SQLite 审计收据 `24 ~ 38 ms`） |
 
 > 📊 **7-Card 4:5 视觉评测报告同步更新**：完整 34 场景评测矩阵、协议抓包与延迟分布已封存至 [`playground/benchmark-cards.html`](../../playground/benchmark-cards.html)（[English Deck](../../playground/benchmark-cards.en.html)），所有指标 100% 源自 `research/evidence.json` 实测真值。
 

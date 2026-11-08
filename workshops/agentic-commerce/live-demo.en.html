@@ -960,6 +960,63 @@
         <div id="cat-sla-readout" style="margin-top:8px;font-size:12px;line-height:1.48;"></div>
       </div>
 
+      <!-- Interactive Cross-Border Digital Tax: MoR vs SoR (Stripe Tax + Connect OBO) & B2B Reverse-Charge Selector (Round 10 FAQ Companion) -->
+      <div class="finops-box" id="digital-tax-mor-sor-sandbox" style="margin-top:12px;border-color:#3B82F6;">
+        <div class="panel-header" style="margin-bottom:8px;padding-bottom:6px;">
+          <span class="panel-title" id="ui-tax-mor-title">🧾 跨境数字税务合规：名义商户 (MoR 全托管) vs 记账卖方 (SoR Stripe Tax + OBO / B2B 逆向征收) 决策器 (Round 10 FAQ Companion)</span>
+        </div>
+        <div class="control-row">
+          <label><span>1. 商户税号持有状态、B2B 逆向征收核验与 SPT 算税时机 (Tax Model &amp; Pre-Mandate Timing):</span></label>
+          <select id="tax-mor-select" onchange="updateDigitalTaxSandbox()">
+            <option value="mor_b2c_de">🛡️ 无欧盟税号出海 B2C SaaS：德国买家 ($100 + 19% VAT = $119.00) · 选 MoR 全托管兜底稽查 (295ms)</option>
+            <option value="sor_stripe_tax_de">⚖️ 已持欧盟税号企业零售：德国买家 ($100 + 19% VAT = $119.00) · 选 SoR + Stripe Tax 0.5% 低费率 (340ms)</option>
+            <option value="b2b_reverse_charge_ok">🏢 跨境 B2B 逆向征收通过：爱尔兰 IE 卖给德国 DE 企业 ($1,000) · 税号存活 + Web IQ 法定主体匹配 → 0% VAT (385ms)</option>
+            <option value="b2b_vat_hijack_fallback">⚠️ 冒用他人 VAT 税号 / Prompt 声称免税：Web IQ /v3/browse 检出主体不匹配 → 拒绝 0%，强制加回 19% VAT ($1,190.00)</option>
+            <option value="post_mandate_tax_422">🛑 致命反模式 (先签裸价 SPT 后补税)：按 $100 签发 SPT，扣款时才加 19% VAT ($119 &gt; $100) → HTTP 422 爆限拒付!</option>
+            <option value="connect_obo_header_400">🚫 致命反模式 (Connect OBO 冲突)：平台未设 on_behalf_of 却传入 Stripe-Account 请求头 → HTTP 400 硬拦截!</option>
+          </select>
+        </div>
+        <div id="tax-mor-readout" style="margin-top:8px;font-size:12px;line-height:1.48;"></div>
+      </div>
+
+      <!-- Interactive Service Booking 180-Day SPT Horizon vs HTTP 409 Slot-Conflict & Web IQ Cancellation Grounding Selector (Round 11 FAQ Companion) -->
+      <div class="finops-box" id="service-booking-180d-sandbox" style="margin-top:12px;border-color:#F59E0B;">
+        <div class="panel-header" style="margin-bottom:8px;padding-bottom:6px;">
+          <span class="panel-title" id="ui-booking-180d-title">📅 服务预约与酒旅智能体：180 天远期 SPT (expires_at &lt;= 180d) vs 409 档期并发自愈与退改签接地决策器 (Round 11 FAQ Companion)</span>
+        </div>
+        <div class="control-row">
+          <label><span>1. 预约提前期、档期并发状态与 Web IQ 退改签阶梯场景 (Booking Horizon &amp; 409 Slot Recovery):</span></label>
+          <select id="booking-180d-select" onchange="updateServiceBooking180dSandbox()">
+            <option value="deferred_45d_ok">🛡️ 提前 45 天预订精品酒店 (45d &lt;= 180d)：签发远期 SPT ($240.00) + Web IQ 存证 48h 免费退改线 (320ms)</option>
+            <option value="slot_409_autoshift_15m">🔄 周五 19:00 餐厅抢座遇 409：候选 19:15 在同日 ±15m 容差内且不涨价 ($120.00) → 换新幂等键自动平移锁档 (365ms)</option>
+            <option value="slot_409_escalate_120m">🙋 抢座遇 409 且最近候选 21:00 (偏移 120m &gt; ±15m 容差)：$0.00 扣款，挂起推送候选卡片等待人类 Confirm (180ms)</option>
+            <option value="free_cancel_72h_deactivated">🟢 入住前 72h 取消 (&gt;= 48h 免费退改窗口)：$0.00 无损退订 + 立即将 SPT 置为 deactivated 永久防偷扣 (350ms)</option>
+            <option value="penalty_overcharge_422">🛑 违约期霸王全扣拦截 (提前 12h &lt; 48h)：商户试图扣 100% ($240 &gt; Web IQ 存证上限 50% $120) → HTTP 422 硬拦截!</option>
+            <option value="horizon_240d_400">🚫 超 180 天单令牌拦截 (提前 240 天订邮轮)：expires_at &gt; 180d 协议上限 → HTTP 400 拒签 (提示切换两段式定金)!</option>
+          </select>
+        </div>
+        <div id="booking-180d-readout" style="margin-top:8px;font-size:12px;line-height:1.48;"></div>
+      </div>
+
+      <!-- Interactive PCI-DSS Scope Isolation & Multi-PSP SPT Resolve vs PaymentIntent Selector (Round 12 FAQ Companion) -->
+      <div class="finops-box" id="pci-dss-spt-resolve-sandbox" style="margin-top:12px;border-color:#10B981;">
+        <div class="panel-header" style="margin-bottom:8px;padding-bottom:6px;">
+          <span class="panel-title" id="ui-pci-resolve-title">🔐 PCI-DSS 合规边界与多网关路由：PaymentIntent 免明文消费 (SAQ-A) vs 外部网关 SPT Resolve (PCI AoC + RSA encryption_block 切片加密) 决策器 (Round 12 FAQ Companion)</span>
+        </div>
+        <div class="control-row">
+          <label><span>1. 收单路由目标、PCI AoC 资质、RSA 切片加密与互斥锁场景 (Multi-PSP Routing &amp; PCI Scope Gate):</span></label>
+          <select id="pci-resolve-select" onchange="updatePciDssSptResolveSandbox()">
+            <option value="stripe_pi_saq_a">✅ 标准 PaymentIntent 免明文消费 (95% 默认推荐)：全程仅传 spt_... 句柄 → 0 bytes 明文暴露，保持轻量 PCI SAQ-A (320ms)</option>
+            <option value="external_psp_rsa_slice">🔐 持牌多网关路由至 Adyen (PCI Level 1 AoC + rk_live_... + encryption_block[0..64])：Stripe 金库内公钥切片加密 → 0 bytes 明文过境 (385ms)</option>
+            <option value="pre_resolve_webiq_failover">🔄 调用 Resolve 前 Web IQ /v3/browse 检出外部 PSP 降级：趁互斥锁未触发，100% 无损切回 Stripe PaymentIntent 兜底 (360ms)</option>
+            <option value="missing_aoc_or_sk_403">🛑 无 PCI AoC 资质或混用全权限 sk_live_... 强行调用 Resolve：触发 HTTP 403 pci_aoc_required_for_spt_resolve 硬拦截!</option>
+            <option value="mutex_double_charge_409">🛡️ 跨网关防双扣互斥锁：已调用 Resolve 导出给外部 PSP 后，因超时重试又将同一 spt_... 传给 PaymentIntent → HTTP 409 硬拒绝!</option>
+            <option value="bad_slice_bounds_400">🚫 RSA encryption_block 字节切片坐标越界 (start_index=80 &gt;= end_index=32)：触发 HTTP 400 invalid_encryption_block_slice 拦截!</option>
+          </select>
+        </div>
+        <div id="pci-resolve-readout" style="margin-top:8px;font-size:12px;line-height:1.48;"></div>
+      </div>
+
       <!-- Interactive Stage 1756 Sandbox: Web IQ RBAC/Browse-Passage + Stripe MCP Nov 30 Cutoff + Multi-Rail BNPL SPT -->
       <div class="finops-box" id="stage1756-sandbox" style="margin-top:12px;border-color:#06B6D4;">
         <div class="panel-header" style="margin-bottom:8px;padding-bottom:6px;">
@@ -1408,6 +1465,9 @@ function renderAll() {
   updatePostPurchaseRefundSandbox();
   updateRecurringSptSandbox();
   updateCatalogWebhookSlaSandbox();
+  updateDigitalTaxSandbox();
+  updateServiceBooking180dSandbox();
+  updatePciDssSptResolveSandbox();
   updateStage1752Sandbox();
   updateStage1753Sandbox();
   updateStage1754Sandbox();
@@ -1991,6 +2051,190 @@ function updateCatalogWebhookSlaSandbox() {
     "<strong>⚡ 写锁单 Webhook 极速确认并实扣通过 (finalize_checkout_confirmed_spt_captured · 265ms · Act automatically):</strong><br>" +
     "• <strong>热路径内存锁库</strong>：<code>finalize_checkout</code> 在 Redis 内存层完成库存预占与幂等订单号分配，耗时仅 <code>265ms ≤ 4,000ms</code> SLA<br>" +
     "• <strong>原子扣款</strong>：确认锁库成功后立即对 <code>spt_...</code> 捕获 <code>$79.00</code>，重型 ERP 拆单与发票归档交由后台队列异步削峰执行！" +
+    "</div>";
+}
+
+function updateDigitalTaxSandbox() {
+  var selEl = document.getElementById("tax-mor-select");
+  var outEl = document.getElementById("tax-mor-readout");
+  if (!selEl || !outEl) return;
+
+  var v = selEl.value;
+
+  if (v === "sor_stripe_tax_de") {
+    outEl.innerHTML =
+      "<div style='background:var(--green-bg);border:1px solid var(--green);color:#A7F3D0;padding:8px 10px;border-radius:8px;'>" +
+      "<strong>⚖️ 记账卖方自持税号合规通过 (SOR_STRIPE_TAX · 340ms · Act automatically · official_list_price):</strong><br>" +
+      "• <strong>适用边界</strong>：商户已在德国/欧盟持有本地 VAT 税号，在 <code>calculate_order</code> 阶段调用 <code>Stripe Tax</code>（仅 <code>0.5%</code> 计税费）前置锁定 <code>$119.00</code> 含税 SPT 上限<br>" +
+      "• <strong>归属责任</strong>：<code>tax_liability_owner = MERCHANT_SOR</code>，较 MoR 全包费率（~5%）大幅节省通道成本！" +
+      "</div>";
+    return;
+  }
+
+  if (v === "b2b_reverse_charge_ok") {
+    outEl.innerHTML =
+      "<div style='background:var(--green-bg);border:1px solid var(--green);color:#A7F3D0;padding:8px 10px;border-radius:8px;'>" +
+      "<strong>🏢 B2B 跨境逆向征收双因子核验通过 (SOR_B2B_REVERSE_CHARGE_0PCT · 385ms · Act automatically):</strong><br>" +
+      "• <strong>双因子存证</strong>：卖方 (IE) ≠ 买方 (DE)，官方税号接口确认 <code>DE123456789</code> 有效，且 <strong>Microsoft Web IQ <code>/v3/browse</code></strong> 核实企业注册公示名称与 SPT 授权主体 100% 一致<br>" +
+      "• <strong>发票与额度</strong>：合法免征 19% VAT，SPT 锁定 <code>$1,000.00</code>，发票标注 <em>Reverse Charge — Buyer Self-Assessment</em>！" +
+      "</div>";
+    return;
+  }
+
+  if (v === "b2b_vat_hijack_fallback") {
+    outEl.innerHTML =
+      "<div style='background:rgba(245,158,11,0.18);border:1px solid #F59E0B;color:#FDE68A;padding:8px 10px;border-radius:8px;font-weight:600;'>" +
+      "⚠️ SOR_B2B_FALLBACK_STATUTORY_VAT (390ms · Confirm · synthetic_policy)：<br>" +
+      "买方在 Prompt 中声称免税并填入他人公开的德国 VAT 税号，但 Web IQ <code>/v3/browse</code> 比对发现税号登记主体与当前采购账户名称不一致！网关拒绝 <code>0%</code> 免税，强制加回 19% 法定增值税（锁定 <code>$1,190.00</code>），防止卖方被税局追缴 <code>$190.00</code> 欠税！" +
+      "</div>";
+    return;
+  }
+
+  if (v === "post_mandate_tax_422") {
+    outEl.innerHTML =
+      "<div style='background:var(--red-bg);border:1px solid var(--red);color:#FECACA;padding:8px 10px;border-radius:8px;font-weight:600;'>" +
+      "🛑 HTTP 422 amount_exceeds_spt_limit (15ms · Send to a human · official_doc_snapshot)：<br>" +
+      "Agent 先按不含税裸价 <code>$100.00</code> 让买家签发了 <code>max_amount_cents = 10000</code> 的 SPT，随后在 <code>finalize_checkout</code> 才追加 19% VAT 试图扣款 <code>$119.00 (11900 &gt; 10000)</code>！SPT 密码学上限不可逾越，必须在签发 SPT 前（<code>calculate_order</code>）完成含税总价计算！" +
+      "</div>";
+    return;
+  }
+
+  if (v === "connect_obo_header_400") {
+    outEl.innerHTML =
+      "<div style='background:var(--red-bg);border:1px solid var(--red);color:#FECACA;padding:8px 10px;border-radius:8px;font-weight:600;'>" +
+      "🚫 HTTP 400 stripe_account_header_forbidden_without_obo (12ms · Send to a human · official_doc_snapshot)：<br>" +
+      "Stripe Connect 多商户平台在未设置 <code>on_behalf_of</code>（平台充当统一记账卖方）时，严禁在 PaymentIntent 请求头传入 <code>Stripe-Account: acct_sub_de_01</code>！若需子商户作为法定 Seller of Record 计税，必须显式传入 <code>on_behalf_of</code>。" +
+      "</div>";
+    return;
+  }
+
+  outEl.innerHTML =
+    "<div style='background:var(--green-bg);border:1px solid var(--green);color:#A7F3D0;padding:8px 10px;border-radius:8px;'>" +
+    "<strong>🛡️ 名义商户全托管合规通过 (MOR_MANAGED_TAX · 295ms · Act automatically · official_list_price):</strong><br>" +
+    "• <strong>两步转售兜底</strong>：商户在德国无本地 VAT 税号，自动路由至 MoR 名义商户轨道（参考费率 <code>~5.0% + $0.50</code>），由 MoR 平台作为账单法定卖方 100% 承担 19% VAT（<code>$19.00</code>）代扣代缴与欧盟税务稽查责任<br>" +
+    "• <strong>SPT 前置锁定</strong>：<code>calculate_order</code> 阶段返回含税总价 <code>$119.00</code>，SPT 限额一次对齐！" +
+    "</div>";
+}
+
+function updateServiceBooking180dSandbox() {
+  var selEl = document.getElementById("booking-180d-select");
+  var outEl = document.getElementById("booking-180d-readout");
+  if (!selEl || !outEl) return;
+
+  var v = selEl.value;
+
+  if (v === "slot_409_autoshift_15m") {
+    outEl.innerHTML =
+      "<div style='background:var(--green-bg);border:1px solid var(--green);color:#A7F3D0;padding:8px 10px;border-radius:8px;'>" +
+      "<strong>🔄 HTTP 409 同日 ±15m 容差自动平移成功 (AUTO_SHIFTED_WITHIN_15M_TOLERANCE · 365ms · Act automatically):</strong><br>" +
+      "• <strong>零重复扣款</strong>：原 <code>19:00</code> 档期返回 <code>HTTP 409 slot_unavailable</code>（实扣 <code>$0.00</code>），候选档期 <code>19:15</code> 偏移仅 <code>15m ≤ 15m</code> 买家预设容差且价格 <code>$120.00 ≤ SPT 上限</code><br>" +
+      "• <strong>幂等键轮换</strong>：自动签发全新 <code>Idempotency-Key: ik_slot_1915</code> 完成无缝锁座！" +
+      "</div>";
+    return;
+  }
+
+  if (v === "slot_409_escalate_120m") {
+    outEl.innerHTML =
+      "<div style='background:rgba(245,158,11,0.18);border:1px solid #F59E0B;color:#FDE68A;padding:8px 10px;border-radius:8px;font-weight:600;'>" +
+      "🙋 HTTP 409 SLOT_CONFLICT_HUMAN_CONFIRM (180ms · Confirm · synthetic_policy)：<br>" +
+      "目标 <code>19:00</code> 档期已被抢占，且商户返回的最近候选档期为 <code>21:00</code>（偏移 <code>120m &gt; 15m</code> 容差红线）！编排器保证 <code>$0.00</code> 扣款并立即挂起，向用户展示候选时段卡片等待人工确认，严禁 Agent 擅自改期。" +
+      "</div>";
+    return;
+  }
+
+  if (v === "free_cancel_72h_deactivated") {
+    outEl.innerHTML =
+      "<div style='background:var(--green-bg);border:1px solid var(--green);color:#A7F3D0;padding:8px 10px;border-radius:8px;'>" +
+      "<strong>🟢 免费取消期无损退订并注销令牌 (FREE_CANCEL_SPT_DEACTIVATED · 350ms · Act automatically):</strong><br>" +
+      "• <strong>Web IQ 存证核验</strong>：买家在入住前 <code>72 小时</code> 发起退订，满足 Web IQ <code>/v3/browse</code> 存证的 <code>≥ 48h 免费取消</code> 条款（违约金 <code>$0.00</code>）<br>" +
+      "• <strong>密码学断电</strong>：网关立即将该笔预订绑定的 SPT 置为终态 <code>deactivated</code>，永久封死商户秋后误扣通道！" +
+      "</div>";
+    return;
+  }
+
+  if (v === "penalty_overcharge_422") {
+    outEl.innerHTML =
+      "<div style='background:var(--red-bg);border:1px solid var(--red);color:#FECACA;padding:8px 10px;border-radius:8px;font-weight:600;'>" +
+      "🛑 HTTP 422 penalty_exceeds_grounded_cancellation_tier (25ms · Send to a human)：<br>" +
+      "买家在入住前 12 小时退订，虽处于违约窗口（<code>&lt; 48h</code>），但 Web IQ <code>/v3/browse</code> 存证的官网条款明确规定违约金上限为首晚房费的 <code>50% ($120.00)</code>！商户后台试图强扣 <code>100% ($240.00)</code> 被网关当场拦截！" +
+      "</div>";
+    return;
+  }
+
+  if (v === "horizon_240d_400") {
+    outEl.innerHTML =
+      "<div style='background:var(--red-bg);border:1px solid var(--red);color:#FECACA;padding:8px 10px;border-radius:8px;font-weight:600;'>" +
+      "🚫 HTTP 400 spt_expires_at_exceeds_180_day_maximum (14ms · Send to a human · official_doc_snapshot)：<br>" +
+      "预订提前期为 <code>240 天 &gt; 180 天 (15,552,000 秒)</code> Stripe SPT v2 协议硬上限！请自动切换为<strong>「两段式定金架构」</strong>：今日实扣 20% 首付定金 SPT + 到店前 30 天唤醒买家补签 80% 尾款 SPT。" +
+      "</div>";
+    return;
+  }
+
+  outEl.innerHTML =
+    "<div style='background:var(--green-bg);border:1px solid var(--green);color:#A7F3D0;padding:8px 10px;border-radius:8px;'>" +
+    "<strong>🛡️ 180 天远期 SPT 预约锁单成功 (DEFERRED_SPT_180D_LOCKED · 320ms · Act automatically · official_doc_snapshot):</strong><br>" +
+    "• <strong>告别预授权过期</strong>：普通信用卡预授权 7~30 天即自动解冻失效；采用 <code>usage_limits.expires_at ≤ 180d</code> 远期 SPT 锁定 45 天后精品酒店房费 <code>$240.00</code><br>" +
+    "• <strong>条款双锚定</strong>：同步绑定 Web IQ <code>/v3/browse</code> 提取的 <code>48h 免费退改线</code> 与 <code>50% 违约金上限</code> 护栏！" +
+    "</div>";
+}
+
+function updatePciDssSptResolveSandbox() {
+  var selEl = document.getElementById("pci-resolve-select");
+  var outEl = document.getElementById("pci-resolve-readout");
+  if (!selEl || !outEl) return;
+
+  var v = selEl.value;
+
+  if (v === "external_psp_rsa_slice") {
+    outEl.innerHTML =
+      "<div style='background:var(--green-bg);border:1px solid var(--green);color:#A7F3D0;padding:8px 10px;border-radius:8px;'>" +
+      "<strong>🔐 外部 PSP RSA 字节切片加密导出成功 (RESOLVED_EXTERNAL_ENCRYPTED · 385ms · Act automatically · official_doc_snapshot):</strong><br>" +
+      "• <strong>过境零明文</strong>：验证 <code>PCI-DSS Level 1 AoC</code> 与受限密钥 <code>rk_live_resolve_only</code> 通过，Stripe 在金库内用外部 PSP 公钥加密 <code>encryption_block[0..64]</code> 敏感字节（代理内存明文暴露 <code>0 bytes</code>）<br>" +
+      "• <strong>单向互斥加锁</strong>：该 <code>spt_...</code> 状态永久锁定为 <code>RESOLVED_EXTERNAL</code>，杜绝二次传给 PaymentIntent 重扣！" +
+      "</div>";
+    return;
+  }
+
+  if (v === "pre_resolve_webiq_failover") {
+    outEl.innerHTML =
+      "<div style='background:var(--green-bg);border:1px solid var(--green);color:#A7F3D0;padding:8px 10px;border-radius:8px;'>" +
+      "<strong>🔄 Web IQ 前置检出外部 PSP 故障并无损切回 PaymentIntent (PRE_RESOLVE_FAILOVER_TO_PI · 360ms · Act automatically):</strong><br>" +
+      "• <strong>黄金容灾窗口</strong>：在调用 <code>/resolve</code> <strong>之前</strong>（互斥锁尚未消耗），通过 Microsoft Web IQ <code>/v3/browse</code> 检出外部 PSP 状态为 <code>degraded</code>，路由器立即改调 <code>POST /v1/payment_intents</code> 无损成交！" +
+      "</div>";
+    return;
+  }
+
+  if (v === "missing_aoc_or_sk_403") {
+    outEl.innerHTML =
+      "<div style='background:var(--red-bg);border:1px solid var(--red);color:#FECACA;padding:8px 10px;border-radius:8px;font-weight:600;'>" +
+      "🛑 HTTP 403 pci_aoc_required_for_spt_resolve (42ms · Send to a human · official_doc_snapshot + synthetic_policy)：<br>" +
+      "调用方未备案有效的 <code>PCI-DSS Level 1 AoC</code> 或企图使用全权限 <code>sk_live_...</code> 密钥调用 <code>/resolve</code>！网关当场阻断敏感 Network Token / Cryptogram 导出，建议改走标准 <code>PaymentIntent</code> (<code>SAQ-A</code>) 通道。" +
+      "</div>";
+    return;
+  }
+
+  if (v === "mutex_double_charge_409") {
+    outEl.innerHTML =
+      "<div style='background:var(--red-bg);border:1px solid var(--red);color:#FECACA;padding:8px 10px;border-radius:8px;font-weight:600;'>" +
+      "🛡️ HTTP 409 spt_already_resolved_for_external_psp (38ms · Send to a human · official_doc_snapshot)：<br>" +
+      "该枚 <code>spt_...</code> 已被调用过 <code>/resolve</code> 导出给外部 PSP！Stripe SPT v2 单向互斥锁严禁将其再次传入 <code>PaymentIntent.create</code>，100% 拦截外部网关超时重试导致的跨网关双重扣款！" +
+      "</div>";
+    return;
+  }
+
+  if (v === "bad_slice_bounds_400") {
+    outEl.innerHTML =
+      "<div style='background:var(--red-bg);border:1px solid var(--red);color:#FECACA;padding:8px 10px;border-radius:8px;font-weight:600;'>" +
+      "🚫 HTTP 400 invalid_encryption_block_slice (28ms · Send to a human · official_doc_snapshot)：<br>" +
+      "传入的 RSA 加密切片区间 <code>start_index=80 &gt;= end_index=32</code> 违反 <code>0 ≤ start_index &lt; end_index ≤ payload_length</code> 边界约束，请求在出境前被安全拒绝！" +
+      "</div>";
+    return;
+  }
+
+  outEl.innerHTML =
+    "<div style='background:var(--green-bg);border:1px solid var(--green);color:#A7F3D0;padding:8px 10px;border-radius:8px;'>" +
+    "<strong>✅ 标准 PaymentIntent 免明文消费成功 (CONSUMED_STRIPE_PI · 320ms · Act automatically · official_doc_snapshot):</strong><br>" +
+    "• <strong>保持最轻量 PCI SAQ-A</strong>：直接调用 <code>POST /v1/payment_intents (shared_payment_granted_token=spt_...)</code>，底层 PAN 与动态密文 100% 留存 Stripe PCI 金库（商户内存暴露 <code>0 bytes</code>）！" +
     "</div>";
 }
 

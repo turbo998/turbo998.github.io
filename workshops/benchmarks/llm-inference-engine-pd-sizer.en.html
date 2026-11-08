@@ -187,10 +187,38 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
       <div class="kpi"><div class="k-label">64-GPU Cluster Total Goodput</div><div class="k-val" id="m-tput" style="color:var(--emerald);">92,200 tok/s (2.65× vs BF16)</div></div>
       <div class="kpi"><div class="k-label">Decode P99 TPOT Tail Latency</div><div class="k-val" id="m-tpot" style="color:var(--accent);">15.8 ms (EPLB -37.1%)</div></div>
       <div class="kpi"><div class="k-label">Cost per 1M Output Tokens ($/1M)</div><div class="k-val" id="m-cost" style="color:var(--amber);">$0.35 / 1M (-62.0%)</div></div>
-      <div class="kpi"><div class="k-label">Comm Overhead &amp; MMLU-Pro Retention</div><div class="k-val" id="m-comm" style="color:var(--purple);font-size:15px;">Comm 14.5% · 99.7% Retention</div></div>
+      <div class="kpi"><div class="k-label">Comm Overhead &amp; MMLU-Pro Retention</div><div class="k-val" id="m-comm" style="color:var(--purple);font-size:15px;">Comm 14.5% · 99.6% Retention</div></div>
     </div>
   </div>
-  <h2>④ 📊 Architect Selection Matrix (Round 1 Engine/PD &amp; Round 2 MoE Quantization/Parallelism)</h2>
+  <div class="sizer-box" style="border-color:var(--amber);">
+    <h2 style="margin-top:0;border:none;padding:0;">④ 🎛️ Round 3 &amp; Round 4 Interactive Training Checkpoint (2-Phase Async DCP) &amp; 64K Long-Context KV Tiered Offload Sizer</h2>
+    <div class="controls">
+      <div class="control">
+        <label>Round 3 Training Checkpoint Architecture (512×H100 · 9,000 GB):</label>
+        <select id="s-ckpt" onchange="updateStorageSizer()" style="width:100%;padding:8px;border-radius:8px;background:#0f172a;color:#f8fafc;border:1px solid #334155;">
+          <option value="sync_posix">Option A: Synchronous Blocking POSIX Shared Storage (40 GB/s)</option>
+          <option value="sync_gds">Option B: Synchronous Parallel FS + GDS Direct (180 GB/s)</option>
+          <option value="async_dcp" selected>Option C: Two-Phase Async PyTorch DCP Pinned DRAM Snapshot (2,880 GB/s Stage 1)</option>
+        </select>
+      </div>
+      <div class="control">
+        <label>Round 4 64K Long-Context KV Offload Tier (2.048 GB FP8 KV):</label>
+        <select id="s-kv" onchange="updateStorageSizer()" style="width:100%;padding:8px;border-radius:8px;background:#0f172a;color:#f8fafc;border:1px solid #334155;">
+          <option value="recompute">No Offload: Full Prefill Recompute on HBM Eviction (Baseline)</option>
+          <option value="host_dram" selected>Tier 2: Local CPU Pinned DRAM Zero-Copy Pool (51.2 GB/s PCIe 5.0)</option>
+          <option value="rdma_nvme">Tier 3: Shared Disaggregated RDMA NVMe + GDS Pool (40.96 GB/s Mooncake/3FS)</option>
+          <option value="cloud_nfs">Anti-Pattern: Cloud Generic TCP POSIX NFS / Object Store (3.2 GB/s)</option>
+        </select>
+      </div>
+    </div>
+    <div class="kpi-grid">
+      <div class="kpi"><div class="k-label">Per-Checkpoint GPU Stall Duration</div><div class="k-val" id="st-stall" style="color:var(--emerald);">3.125 s (72.0×)</div></div>
+      <div class="kpi"><div class="k-label">512×H100 Cluster Training Goodput</div><div class="k-val" id="st-gp" style="color:var(--accent);">99.83% (+12.33 pts)</div></div>
+      <div class="kpi"><div class="k-label">Monthly Stall Cost vs. Async DCP Savings</div><div class="k-val" id="st-loss" style="color:var(--amber);">Saves $181,813.25 / mo</div></div>
+      <div class="kpi"><div class="k-label">64K Session Resume TTFT &amp; Cost ($/1M)</div><div class="k-val" id="st-kv" style="color:var(--purple);font-size:15px;">52.0 ms (15.0×) · $0.44/1M</div></div>
+    </div>
+  </div>
+  <h2>⑤ 📊 Architect Selection Matrix &amp; 6 Single-Decision FAQ Guides</h2>
   <table>
     <thead>
       <tr><th>Dimension / Architecture</th><th>vLLM (v0.19.1)</th><th>SGLang (v0.5.10)</th><th>PD Disagg (Dynamo + Mooncake)</th><th>MoE FP8 + DP8/EP8 + EPLB</th><th>Blackwell NVFP4 + DP16/EP16</th></tr>
@@ -231,7 +259,7 @@ const MOE_DATA = {
   w4a16_tp8: { tput: 52400, ratio: '1.51×', tpot: '24.6 ms (High-batch dequant)', cost: '$0.61 / 1M (-33.7%)', comm: 'Comm 34.0% · 99.1% Retention' },
   fp8_tp8: { tput: 63200, ratio: '1.82×', tpot: '22.8 ms', cost: '$0.51 / 1M (-44.6%)', comm: 'Comm 31.0% · 99.7% Retention' },
   fp8_dp8_ep8_no_eplb: { tput: 74600, ratio: '2.14×', tpot: '25.1 ms (Hot-expert skew)', cost: '$0.43 / 1M (-53.3%)', comm: 'Comm 16.0% · 99.7% Retention' },
-  fp8_dp8_ep8_eplb: { tput: 92200, ratio: '2.65×', tpot: '15.8 ms (EPLB -37.1%)', cost: '$0.35 / 1M (-62.0%)', comm: 'Comm 14.5% · 99.7% Retention' },
+  fp8_dp8_ep8_eplb: { tput: 92200, ratio: '2.65×', tpot: '15.8 ms (EPLB -37.1%)', cost: '$0.35 / 1M (-62.0%)', comm: 'Comm 14.5% · 99.6% Retention' },
   nvfp4_dp16_ep16_eplb: { tput: 151200, ratio: '4.34×', tpot: '11.4 ms', cost: '$0.21 / 1M (-77.2%)', comm: 'Comm 11.2% · 99.3% Retention' }
 };
 function updateMoeSizer() {
@@ -248,6 +276,7 @@ function updateMoeSizer() {
 }
 updateSizer();
 updateMoeSizer();
+updateStorageSizer();
 </script>
 </body>
 </html>

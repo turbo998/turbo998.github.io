@@ -65,7 +65,7 @@
   - **Unprotected System (Privilege Union Flaw)**: Because `finance-agent` possesses `payment.write`, any upstream agent that can message `finance-agent` effectively inherits `payment.write`.
   - **OBO Per-Hop Downscoping (Permission Intersection Law)**: At every token exchange, the broker computes:
     $$\text{Effective Permissions} = \text{Permissions}(\text{requester / sub}) \cap \text{Permissions}(\text{parent\_agent}) \cap \text{Permissions}(\text{target\_agent})$$
-  - In the invoice attack above, even though `finance-agent` holds `payment.write`, the original requester `sub` (external `supplier` or read-only procurement coordinator) does NOT hold `payment.write`. The intersection strips `payment.write` to empty! When `finance-agent` attempts `request_payment`, our capability broker checks both `actor == "finance"` AND `requester == "finance"` (rule `original-requester-payment` in `apps/api/redteam/broker.py`), blocking the call in **0.0199ms**.
+  - In the invoice attack above, even though `finance-agent` holds `payment.write`, the original requester `sub` (external `supplier` or read-only procurement coordinator) does NOT hold `payment.write`. The intersection strips `payment.write` to empty! When `finance-agent` attempts `request_payment`, our capability broker checks both `actor == "finance"` AND `requester == "finance"` (rule `original-requester-payment` in `apps/api/redteam/broker.py`), blocking the call in **0.0248ms**.
 
 ---
 
@@ -122,7 +122,7 @@ flowchart LR
         direction LR
         G1["External Supplier / Low-Priv User<br/>Injects Malicious A2A Delegation Prompt"] --> G2["🛡️ Gate 1: Agent Card JWS Verification<br/>Blocks Unsigned/Spoofed /.well-known/agent.json"]
         G2 --> G3["🛡️ Gate 2: RFC 8693 OBO Scope Intersection<br/>Scope = Requester ∩ Procurement ∩ Finance"]
-        G3 --> G4["🛡️ Gate 3: Broker Checks requester & Taint<br/>0.0199ms Block on Non-Finance Original Requester"]
+        G3 --> G4["🛡️ Gate 3: Broker Checks requester & Taint<br/>0.0248ms Block on Non-Finance Original Requester"]
     end
 
     style Bad fill:#450a0a,stroke:#ef4444,stroke-width:2px,color:#fee2e2
@@ -131,7 +131,7 @@ flowchart LR
 
 ---
 
-### 3.3 End-to-End Adversarial Sequence Diagram (A2A Spoofing & Cross-Hop Escalation Blocked in 0.0199ms)
+### 3.3 End-to-End Adversarial Sequence Diagram (A2A Spoofing & Cross-Hop Escalation Blocked in 0.0248ms)
 
 ```mermaid
 sequenceDiagram
@@ -152,7 +152,7 @@ sequenceDiagram
     IdP-->>Orch: 6. Issues downscoped OBO Token:<br/>sub=supplier, act.sub=procurement, taint=untrusted, scp=read-only intersection
     Orch->>Fin: 7. Calls Finance Agent with OBO Token requesting request_payment($850)
     Fin->>IdP: 8. Invokes payment tool: verifies (actor=finance, requester=supplier, taint=untrusted)
-    IdP-->>Fin: 9. ⛔ [BLOCK: original-requester-payment & untrusted-taint] (0.0199ms)<br/>Original requester (supplier) != finance & intersection lacks payment scope; halted with receipt!
+    IdP-->>Fin: 9. ⛔ [BLOCK: original-requester-payment & untrusted-taint] (0.0248ms)<br/>Original requester (supplier) != finance & intersection lacks payment scope; halted with receipt!
 ```
 
 ---
@@ -183,7 +183,7 @@ To quantify how OBO per-hop token downscoping and Agent Card JWS verification pe
 |---|---|---|---|---|---|
 | **1. Unprotected Baseline (Shared Static Key / Token Passthrough)** | 🔴 **75.0%** | ❌ **100% Compromised** (external `supplier` borrows `finance` shared identity to wire funds) | ❌ **100% Compromised** (unsigned rogue Agent Card steals restricted budget; cross-tenant token replayed) | 100.0% | `0.0 ms` (direct execution) |
 | **2. Per-Agent RBAC Only (checks `actor` only, ignores `requester` lineage)** | 🟠 **28.6%** | ❌ **Bypassed** (`finance-agent` holds payment role; RBAC ignores that `supplier` initiated the chain) | ⚠️ **Partially Compromised** (lacks RFC 8707 `aud` lock & JWS capability pinning) | 100.0% | `0.3 ms` |
-| **3. Option C: OBO Scope Intersection + Agent Card JWS + Zero-Trust Broker (`hardened`)** | 🟢 **0.0%** | ✅ **100% Deterministically Blocked** (`original-requester-payment` + intersection strips payment scope) | ✅ **100% Deterministically Blocked** (JWS mismatch & `aud` violation halted in `0.0199ms`) | **100.0%** (`0.0%` FPR) | **`0.0199 ms`** (`24–38 ms` with SQLite receipt) |
+| **3. Option C: OBO Scope Intersection + Agent Card JWS + Zero-Trust Broker (`hardened`)** | 🟢 **0.0%** | ✅ **100% Deterministically Blocked** (`original-requester-payment` + intersection strips payment scope) | ✅ **100% Deterministically Blocked** (JWS mismatch & `aud` violation halted in `0.0248ms`) | **100.0%** (`0.0%` FPR) | **`0.0248 ms`** (`24–38 ms` with SQLite receipt) |
 
 > 📊 **7-Card 4:5 Visual Benchmark Deck Updated**: Full 34-scenario evaluation matrices, protocol traces, and latency distributions are archived in [`playground/benchmark-cards.en.html`](../../playground/benchmark-cards.en.html) ([中文版](../../playground/benchmark-cards.html)), backed 100% by sealed data in `research/evidence.json`.
 
