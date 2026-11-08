@@ -303,6 +303,32 @@ async function main() {
       assert.ok(txt.includes('46.80')&&txt.includes('12.60')&&txt.includes('3.60')&&txt.includes('43.20')&&txt.includes('92.31%')&&(txt.includes('132×100')||txt.includes('132w x 100h')||txt.includes('132w × 100h')),r12File+': contains exact R12 closed-form parameters');
       assert.ok(txt.includes('not_measured'),r12File+': contains not_measured scope marker');
     }
+    // Round 13 (elvarofficial/teardown v1.0.0) closed-form FinOps & SA hours assertions
+    const r13PathAIn=120*(0.045*3.00);
+    const r13PathAOut=120*(0.012*15.00);
+    assert.equal(r13PathAIn.toFixed(2),'16.20','R13 Path A input cost');
+    assert.equal(r13PathAOut.toFixed(2),'21.60','R13 Path A output cost (counted once)');
+    assert.equal((r13PathAIn+r13PathAOut).toFixed(2),'37.80','R13 Path A monthly API total');
+    const r13PathBIn=48*(0.025*3.00);
+    const r13PathBOut=48*(0.006*15.00);
+    assert.equal(r13PathBIn.toFixed(2),'3.60','R13 Path B input cost');
+    assert.equal(r13PathBOut.toFixed(2),'4.32','R13 Path B output cost (counted once)');
+    assert.equal((r13PathBIn+r13PathBOut).toFixed(2),'7.92','R13 Path B monthly API total');
+    const r13PathCIn=24*(0.020*3.00);
+    const r13PathCOut=24*(0.004*15.00);
+    assert.equal(r13PathCIn.toFixed(2),'1.44','R13 Path C input cost');
+    assert.equal(r13PathCOut.toFixed(2),'1.44','R13 Path C output cost (counted once)');
+    assert.equal((r13PathCIn+r13PathCOut).toFixed(2),'2.88','R13 Path C monthly API total');
+    assert.equal((37.80-2.88).toFixed(2),'34.92','R13 monthly API savings vs Path A');
+    assert.equal(((37.80-2.88)*12).toFixed(2),'419.04','R13 annual API savings vs Path A');
+    assert.equal(((37.80-2.88)/37.80*100).toFixed(2),'92.38','R13 pct API savings vs Path A');
+    assert.equal((72.0-12.0).toFixed(1),'60.0','R13 SA 3D debugging hours saved vs Path A');
+    assert.equal(((72.0-12.0)/72.0*100).toFixed(2),'83.33','R13 pct SA 3D debugging hours saved vs Path A');
+    for(const r13File of ['workshops/github-trending-radar/docs/teardown-3d-machine-simulator-vs-freehand-threejs-selection-faq.md','workshops/github-trending-radar/docs/teardown-3d-machine-simulator-vs-freehand-threejs-selection-faq.en.md','assets/github-ai-radar-2026-11-08-r13-teardown-3d-sim.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-08-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r13File),'utf8');
+      assert.ok(txt.includes('37.80')&&txt.includes('7.92')&&txt.includes('2.88')&&txt.includes('34.92')&&txt.includes('92.38%')&&txt.includes('-14 LUFS'),r13File+': contains exact R13 closed-form parameters');
+      assert.ok(txt.includes('not_measured'),r13File+': contains not_measured scope marker');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
