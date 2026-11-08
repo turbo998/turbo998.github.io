@@ -34,10 +34,28 @@ module.exports = function build({root, inventory, readingRecords, archivePages, 
       return ui.card(file,zh,{id:track,number:`0${i+1}`,badge:['CORE TRACK','核心赛道'],title:[en,cn],url:`studio/${zh?'zh-':''}${track}.html`,finding:[`${count} indexed scenarios · 4 engineering stages`,`${count} 个索引场景 · 4 个工程阶段`],description:topics[track][zh?5:4],featured:track==='data-infra',links:stageLinks(track,zh)});
     }).concat(extensions(file,zh));
   }
+  function nightlyVisual(zh) {
+    const labRoot = path.join(root, 'generative-visual-lab');
+    const manifests = fs.readdirSync(labRoot).filter(file=>/^nightly-visual-\d{4}-\d{2}-\d{2}\.json$/.test(file)).sort().reverse();
+    return manifests.flatMap(file=>JSON.parse(fs.readFileSync(path.join(labRoot,file),'utf8')).rounds.map(round=>{
+      const base = `animation/demos/${round.slug}`;
+      const report = JSON.parse(fs.readFileSync(path.join(root,base,'report.json'),'utf8'));
+      const passed = report.checks.filter(check=>check.passed).length;
+      return {id:`nightly-visual-${round.slug}`,track:'animation',stages:['architecture','evaluation','demos','resources'],
+        badge:['VISUAL / NEW CONTROL CAPABILITY','视觉 / 全新控制能力'],title:[round.title_en,round.title_zh],
+        finding:[`${passed}/${report.checks.length} measured checks · synthetic scene`,`${passed}/${report.checks.length} 项实测检查 · 合成示意场景`],
+        description:[round.conclusions_en.join(' '),round.conclusions_zh.join(' ')],
+        links:[link(['Interactive demo','交互 Demo'],`${base}/index.html`),
+          link(['Selection FAQ','原理与选型 FAQ'],`animation/research/${round.topic}-faq${zh?'':'.en'}.html`),
+          link(['Measured seven-card report','实测 7-Card 报告'],edition(`${base}/test-report-cards.html`,zh)),
+          link(['Visual summary','可视化总结'],`animation/research/evidence/${round.slug}-summary.svg`)]};
+    }));
+  }
   function latest(zh) {
     const suffix = zh?'':'.en';
     const lang = `?lang=${zh?'zh-CN':'en'}`;
     return [
+      ...nightlyVisual(zh),
       {id:'azure-runtime-guide',track:'infra',stages:['architecture','resources'],badge:['AI INFRA / RUNTIME GUIDE','AI 基础设施 / 运行时指南'],title:['Azure AI guide · 6 runtimes / 8 SVGs','Azure AI 指南 · 六大运行时 / 八张 SVG'],finding:['Four-layer playbook · six runtime choices','四层全栈手册 · 六大运行时选择'],description:['The existing guide distinguishes Build, Run, Ground and Govern, with six runtime options and eight architecture SVGs. This is distinct from the Phase 179 six-layer model.','现有指南区分 Build、Run、Ground、Govern 四层，配套六大运行时与八张架构 SVG；与 Phase 179 六层模型分开阅读。'],links:[link(['Read runtime architecture','阅读运行时架构'],native('workshops/azure-agent-infra/index.html',zh))]},
       {id:'tong-yun-ge',track:'infra',stages:['architecture','resources'],badge:['AI INFRA / SUPERNODE','AI 基础设施 / 超节点'],title:['Tong–Yun–Ge · model to supernode','通–云–哥 · 从模型到超节点'],finding:['Model · cloud infrastructure · T-Head silicon','模型 · 云基础设施 · 平头哥芯片'],description:['Trace the source-described relationships between Tongyi, cloud infrastructure, chips and supernode design. Architecture study, not an independently reproduced benchmark.','追踪来源描述的通义、云基础设施、芯片与超节点设计关系。属于架构研究，不是独立复现的基准测试。'],links:[link(['Read the verified source','阅读已核验来源'],catalog.repositories.find(repo=>repo.id==='ai-infra-lab').links.find(item=>item.url.includes('alibaba-cloud-ai-infra')).url)]},
       {id:'deepinfer',track:'infra',stages:['architecture','evaluation','demos','resources'],badge:['AI INFRA / INFERENCE ECONOMICS','AI 基础设施 / 推理经济性'],title:['DeepInfer · inference economics','DeepInfer · 推理经济性'],finding:['$38/GPU-hr: source-reported revenue scenario','38 美元/GPU·小时：来源收入情景'],description:['Prefill, decode and cache assumptions determine the source revenue calculation. It is not profit, a live GPU quote, or a new site measurement. Inspect the original denominator and caveats.','预填充、解码与缓存假设决定来源收入计算；不等于利润、实时 GPU 报价或本站新测量。请核对原始分母与限制。'],links:[link(['Inspect the source workbench','检查来源工作台'],native('workshops/deepinfer-v41-economics/index.html',zh)),link(['Original evidence deck','原始证据卡组'],edition('workshops/deepinfer-v41-economics/cards.html',zh))]},

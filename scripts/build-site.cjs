@@ -112,7 +112,9 @@ const worldMemPages = ['animation','generative-visual-lab'].flatMap(dir=>[
   {path:`${dir}/research/worldmem-action-world-study.html`,role:'article',title:'动作条件可玩世界模型与长时序三维情景记忆架构深度研究',tracks:['animation'],language:{declared:'zh-CN'},supplemental:true},
   {path:`${dir}/research/worldmem-action-world-study.en.html`,role:'article',title:'Action-Conditioned Playable World Models & Stateful 3D Episodic Memory Architecture Study',tracks:['animation'],language:{declared:'en'},supplemental:true}
 ]);
-const archivePages = [...inventory.content, ...translations, ...webiqPages, ...radarPages, ...infraPages, ...dataLabPages, ...phase179Pages, ...clioHarnessPages, ...harnessFrameworksPages, ...commerceTrendsPages, ...camera4dPages, ...audiovisualFoleyPages, ...physGaussianPages, ...neuralRelightPages, ...worldMemPages].map(page => ({...page, tracks:[classifyPage(page), ...(page.tracks || []).filter(track => track !== classifyPage(page) && track !== 'infra')]}));
+const nightlyVisualRegistry = path.join(root, 'animation/nightly-resources.json');
+const nightlyVisualPages = fs.existsSync(nightlyVisualRegistry) ? JSON.parse(fs.readFileSync(nightlyVisualRegistry, 'utf8')) : [];
+const archivePages = [...inventory.content, ...translations, ...webiqPages, ...radarPages, ...infraPages, ...dataLabPages, ...phase179Pages, ...clioHarnessPages, ...harnessFrameworksPages, ...commerceTrendsPages, ...camera4dPages, ...audiovisualFoleyPages, ...physGaussianPages, ...neuralRelightPages, ...worldMemPages, ...nightlyVisualPages].map(page => ({...page, tracks:[classifyPage(page), ...(page.tracks || []).filter(track => track !== classifyPage(page) && track !== 'infra')]}));
 function archiveNote(page, zh) {
   const t = (en, cn) => zh ? cn : en;
   const record = readingByPath.get(page.path);
