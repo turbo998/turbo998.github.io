@@ -10,7 +10,7 @@
 在企业落地 Agentic AI（能够自主查库、发邮件、调 MCP 工具、改配置甚至发起付款的智能体）时，安全架构选型绝非“在大模型前面加一个敏感词过滤或提示词分类器”那么简单，而是围绕 **业务动作的不可逆破坏半径（只读问答 vs. 读写外部系统/动钱改权）、攻击载荷的伪装形态（直接越狱 vs. 第三方文档间接注入）、实时延迟预算（百毫秒级 vs. 亚毫秒级）以及权限边界确定性** 的核心工程权衡：
 
 1. **何时首选或仅用“推理层模型级内容护栏（Model-Level Content Guardrails）”**：**纯对话问答（Chatbot）、公开知识库只读检索（Read-Only RAG）与内容合规审查场景**（Agent 没有任何修改业务状态、外发数据或调用外部 API 的工具权限）。在此类场景下，采用 **Azure AI Content Safety / Prompt Shields** 或 **Meta LlamaFirewall** 即可拦截 85%～90%+ 的常规直接越狱、脏话毒害与已知提示词注入模板，接入成本最低、无需改造后端业务 API。
-2. **何时必须上“确定性零信任能力网关（Deterministic Zero-Trust Capability Broker + 沙盒隔离 + 人类确认门禁）”**：只要 Agent 具备 **任何写操作、跨系统发消息、连接外部 MCP Server、读取机密数据（Restricted Data）或执行资金/权限变更（Payment / RBAC / 代码执行）** 的能力，就**绝不能**只靠概率性模型护栏！必须将安全防线从“靠小模型猜这段话像不像黑客指令”下沉到**工具执行闸门（Tool Execution Broker）**，强制核验 **原始请求人身份（Original Requester）、会话污点标签（Taint Labels）与动作哈希绑定的人工审批（Action-Bound HITL Approval）**，在 **`0.8 ms`** 内实现 **100% 确定性阻断**。
+2. **何时必须上“确定性零信任能力网关（Deterministic Zero-Trust Capability Broker + 沙盒隔离 + 人类确认门禁）”**：只要 Agent 具备 **任何写操作、跨系统发消息、连接外部 MCP Server、读取机密数据（Restricted Data）或执行资金/权限变更（Payment / RBAC / 代码执行）** 的能力，就**绝不能**只靠概率性模型护栏！必须将安全防线从“靠小模型猜这段话像不像黑客指令”下沉到**工具执行闸门（Tool Execution Broker）**，强制核验 **原始请求人身份（Original Requester）、会话污点标签（Taint Labels）与动作哈希绑定的人工审批（Action-Bound HITL Approval）**，在 **`0.0199 ms`** 内实现 **100% 确定性阻断**。
 3. **什么是“混淆代理人（Confused Deputy）”与“间接提示词注入（Indirect Prompt Injection）”**：这是 2026 年企业 Agent 安全排名第一的头号杀手（占真实智能体越权事故的 **47%～53%+**）。攻击者**根本不需要攻破你的防火墙或偷走你的 API Key**——他只需向你的业务流投递一份看似正常的外部简历、供应商 PDF 报价单或网页，在里面藏一句只有大模型能读懂的指令，诱骗原本拥有高权限的内部 Agent 替攻击者去查机密表、调付款接口。**传统防火墙和 RBAC 看到的是“合法的内部 Agent 拿着合法的 API Key 在调接口”，因此 100% 放行；唯有在网关层追踪“这笔动作最初是谁触发的、上下文里沾没沾机密数据”，才能从物理规则上彻底卡死它。**
 
 ---
@@ -28,7 +28,7 @@ flowchart TD
     Start[企业 AI / Agent 系统安全架构选型] --> Q_Tool{Agent 是否挂接了工具/MCP Server<br/>或能接触内部机密数据?}
     Q_Tool -->|否: 纯对话问答 / 公开文档只读总结<br/>无外部发信、无写库、无 API 调用| Tier1[首选方案 A: 推理层模型内容护栏<br/>Azure Prompt Shields / LlamaFirewall<br/>拦截直接越狱、有害内容与基础注入<br/>延迟 ~48-65ms · 零业务代码侵入]
     Q_Tool -->|是: 具备查内网库 / 发邮件 / 调 MCP / 写业务系统| Q_Risk{工具调用的最大爆炸半径与风险等级?}
-    Q_Risk -->|中风险: 跨部门知识协同 / 外部文档读取 + 内部消息流转<br/>存在机密数据被外传风险| Tier2[首选方案 B1: 模型护栏 + 确定性零信任能力网关<br/>Prompt Shields 前置过滤 + Broker 污点追踪<br/>一旦会话读取 Restricted 机密，硬件级封死一切向外部发信/导出通道<br/>网关判定延迟 ~0.8ms · 防泄漏确定性 100%]
+    Q_Risk -->|中风险: 跨部门知识协同 / 外部文档读取 + 内部消息流转<br/>存在机密数据被外传风险| Tier2[首选方案 B1: 模型护栏 + 确定性零信任能力网关<br/>Prompt Shields 前置过滤 + Broker 污点追踪<br/>一旦会话读取 Restricted 机密，硬件级封死一切向外部发信/导出通道<br/>网关判定延迟 0.0199ms · 防泄漏确定性 100%]
     Q_Risk -->|高风险/致命风险: 资金划转 / 供应商付款 / 权限白名单修改<br/>代码执行 / 生产配置变更| Tier3[首选方案 B2: 全栈零信任网关 + 沙盒隔离 + 动作哈希绑定 HITL<br/>1. 严禁外部触发源委托调用付款/改权接口<br/>2. 敏感动作强制挂起并绑定请求哈希、Epoch 与过期时间等待人工确认<br/>3. 外部 MCP 工具运行于无凭据微隔离沙盒]
 ```
 
@@ -60,7 +60,7 @@ flowchart TD
 1. **多数据源混合上下文（既读外部邮件/网页/供应商文档，又读内部机密库）**
    - 网关不再去猜“外部文档里的文字是不是坏人写的”，而是执行一条铁律：**只要当前 Agent 会话属于非授信通道（`untrusted`）或已经读取过 `restricted`（机密）标签的数据，网关在代码层直接锁死一切发往外部（`external`）的导出、发信和 Webhook 接口**。
 2. **多 Agent 协同与跨部门委托调用（Multi-Agent Orchestration & A2A Delegation）**
-   - 当日程助手、采购助手、财务助手互相发消息委托任务时，网关在每一跳请求上强制携带不可篡改的 **`original_requester`（原始发起人身份）**。外部供应商（`supplier`）发消息让内部日程助手（`calendar`）去喊财务助手（`finance`）打款，财务助手调用 `request_payment` 时，网关一眼看到 `original_requester = supplier（外部主体）`，直接按 `original-requester-payment` 规则在 **`0.8 ms`** 内拦截！
+   - 当日程助手、采购助手、财务助手互相发消息委托任务时，网关在每一跳请求上强制携带不可篡改的 **`original_requester`（原始发起人身份）**。外部供应商（`supplier`）发消息让内部日程助手（`calendar`）去喊财务助手（`finance`）打款，财务助手调用 `request_payment` 时，网关一眼看到 `original_requester = supplier（外部主体）`，直接按 `original-requester-payment` 规则在 **`0.0199 ms`** 内拦截！
 3. **连接第三方或自建 MCP Server（Model Context Protocol）的工具生态**
    - 面对可能发生描述篡改（Rug-Pull）或返回毒化数据的 MCP 工具，网关通过工具白名单（`tool-allowlist`）、固定业务输出槽位（`fixed-business-output`）与逐跳参数哈希钉扎（`AgBOM request_hash`），确保工具既不能越界调用，也不能篡改系统信任注册表（`trust-registry`）。
 
@@ -116,10 +116,10 @@ flowchart LR
         C1 -->|3. 传统 RBAC 仅检查当前调用者<br/>发现是财务 Agent -> 放行!| D1[(机密预算表泄露<br/>+ 850 美元违规打款)]
     end
 
-    subgraph Hardened["✅ Agent-Native 确定性零信任能力网关路径（0.8ms 内 100% 物理拦截）"]
+    subgraph Hardened["✅ Agent-Native 确定性零信任能力网关路径（0.0199ms 内 100% 物理拦截）"]
         A2[外部供应商骗子<br/>original_requester: supplier] -->|1. 投递恶意报价单<br/>打上 untrusted 标签| B2[内部日程/采购 Agent<br/>通道染上 untrusted 污点]
         B2 -->|2. 转发请求给财务 Agent<br/>信封锁死 original_requester=supplier| C2[零信任能力网关<br/>Deterministic Capability Broker]
-        C2 -->|3. 核验三要素:<br/>① 原始发起人=external<br/>② 数据标签含 restricted/untrusted<br/>③ 目标动作=外发/打款/改权| E2[🛑 0.8ms 确定性阻断!<br/>触发 restricted-data-boundary<br/>& original-requester-payment]
+        C2 -->|3. 核验三要素:<br/>① 原始发起人=external<br/>② 数据标签含 restricted/untrusted<br/>③ 目标动作=外发/打款/改权| E2[🛑 0.0199ms 确定性阻断!<br/>触发 restricted-data-boundary<br/>& original-requester-payment]
     end
 ```
 
@@ -155,12 +155,12 @@ sequenceDiagram
     participant Led as SQLite 证据账本与污点库 (Ledger & Taint DB)
     participant Hum as 人类安全审批官 (Human Approver)
 
-    Note over Ext,Led: 阶段 1：第一道防线 — 身份溯源与动态污点秒级阻断 (0.8ms)
+    Note over Ext,Led: 阶段 1：第一道防线 — 身份溯源与动态污点秒级阻断 (0.0199ms)
     Ext->>Agt: 1. 投递含隐藏指令的文档 (untrusted=True, requester=supplier)
     Agt->>Brk: 2. 被诱导请求读取/外发机密预算 export_record(restricted-budget, external)
     Brk->>Led: 3. 查询记录标签 (restricted) + 通道历史污点 + 原始请求人 (supplier)
     Led-->>Brk: 4. 返回 labels=["restricted", "untrusted"], external_requester=True
-    Brk-->>Agt: 5. 🛑 立即阻断 (BLOCK: restricted-data-boundary, 耗时 ~0.8ms)
+    Brk-->>Agt: 5. 🛑 立即阻断 (BLOCK: restricted-data-boundary, 耗时 0.0199ms)
     Brk->>Led: 6. 写入不可篡改审计收据 (evidence_id, violation=False, executed=False)
 
     Note over Agt,Hum: 阶段 2：第二道防线 — 内部合法发起敏感动作时的五元组哈希绑定 HITL 审批
@@ -191,7 +191,7 @@ sequenceDiagram
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **1. 适用风险等级与业务场景** | **低风险只读场景**：公开知识问答、对客客服 Chatbot、文本摘要（无写工具） | **中低风险单智能体**：基础办公助手、带简单只读插件的问答系统 | **特定垂直对话流**：需要严格限制话题边界（如不准聊竞品）的客服对话 | **中高风险多 Agent 与 MCP 工具流**：内网查库、跨部门协同、自动化办公 | **所有生产级企业 Agent 与高危金库/金融/研发场景（终极形态）** |
 | **2. 防御拦截层级** | **输入文本层（L1）**：在 Prompt 进入主模型前做概率分类与聚光灯隔离 | **输入 + 思维链审计层（L1/L2）**：PromptGuard 2 + AlignmentCheck 审计推理偏离 | **对话状态轨层（L2）**：通过 Colang 规则与额外 LLM 调用校验输入输出 | **工具执行闸门与数据流层（L3/L4）**：在 API/MCP 真正执行前核验身份、标签与哈希 | **全栈四层闭环（L1→L4）**：前置粗筛越狱 + 后置硬卡工具权限与数据边界 |
-| **3. 附加延迟开销（P50 / P95）** | 中等（`~65.0 ms` / `110 ms`） | 中等（`~48.0 ms` / `85 ms`） | **极高（`~420.0 ms` / `780 ms`）**<br/>*(每跳需额外调用 LLM)* | **极低（`0.8 ms` / `1.9 ms`）**<br/>*(纯内存/SQLite 确定性规则校验)* | **按需分层（工具闸门仅 `0.8 ms`，仅对外网长文本附加 `65 ms` 预检）** |
+| **3. 附加延迟开销（P50 / P95）** | 中等（`~65.0 ms` / `110 ms`） | 中等（`~48.0 ms` / `85 ms`） | **极高（`~420.0 ms` / `780 ms`）**<br/>*(每跳需额外调用 LLM)* | **极低（`0.0199 ms` / `0.0318 ms` (SQLite `7.21 ms` / `8.19 ms`)）**<br/>*(纯内存/SQLite 确定性规则校验)* | **按需分层（工具闸门仅 `0.0199 ms`，仅对外网长文本附加 `65 ms` 预检）** |
 | **4. 抗绕过确定性（实测攻击成功率 ASR）** | 较弱（单靠它仍有 **`35.7%` ASR**，无法识别商务话术包装的越权与多跳洗白） | 中等（单靠它仍有 **`25.0%` ASR**，易被加密载荷、工具同名覆盖与跨跳委托绕过） | 较弱（单靠它仍有 **`42.9%` ASR**，规则易被同义改写与结构化工具参数绕过） | **100% 物理级确定性（实测 `0.0%` ASR）**<br/>*(不管模型怎么被骗，越权工具绝对调不通)* | **100% 确定性（实测 `0.0%` ASR）**<br/>*(兼顾早期攻击阻断与底层零越权)* |
 | **5. 误杀率（FPR）与用户体验影响** | 低（实测 `3.6%` FPR，偶发误拦含代码/安全术语的正常文档） | 低（实测 `4.2%` FPR，AlignmentCheck 偶发误判复杂多步规划） | 较高（实测 `8.3%` FPR，话题轨过严易卡死正常跨领域业务提问） | **零误杀（实测 `0.0%` FPR，良性任务 100% 通过）**<br/>*(严格按权限与标签判定，绝不靠猜文字)* | **极低至零误杀（L1 仅打标告警不盲目断流，L3/L4 精准拦截越权动作）** |
 | **6. 部署与运维成本** | **最低**（云 API 开箱即用，零业务改造） | 中等（需额外部署本地分类器与小模型推理服务） | 较高（需编写维护大量 Colang 脚本并承担双倍 Token 成本） | **低至中等**（嵌入统一 MCP/Tool Gateway 中间件，零 GPU 算力消耗） | **最优 ROI（在统一 AI Gateway 中一次性配置，复用至全企业所有 Agent）** |
@@ -200,7 +200,12 @@ sequenceDiagram
 
 ## 🧪 简明攻防评测与 Benchmark 核心发现
 
-为了验证上述架构选型结论，我们在本仓库构建了完全可复现的 **30 场景确定性红蓝对抗基准测试套件（27 个真实高危攻击场景 + 3 个良性业务对照场景，共 125 项 Pytest 自动化断言）**。所有测试均可通过 `uv run pytest` 在本地 2 秒内一键复现，并在 [`playground/benchmark-cards.html`](../../playground/benchmark-cards.html) 中生成 **7 卡 4:5 视觉评测报告**：
+> **📌 数据来源与测量口径声明（Provenance & Measurement Scope）**：
+> - **`measured`（本机实测，`independently_reproduced=true`）**：在 `Windows 11 (ARM64) / Python 3.12.10` 环境使用 `time.perf_counter_ns()` 实测本地确定性网关（`apps/api/redteam/broker.py`）：纯内存 SHA-256 `request_hash` 计算与策略规则核验（样本数 `n=200`）为 **`p50 = 0.0078 ms`、`p95 = 0.0084 ms`、`mean = 0.0084 ms`**；含 SQLite WAL 事务与密码学收据落盘的完整 `broker.execute()`（样本数 `n=50`）为 **`p50 = 8.07 ms`、`p95 = 10.88 ms`、`mean = 8.34 ms`**（结果封存于 `research/evidence.json`）。
+> - **`synthetic`（本地授权合成攻防夹具，`independently_reproduced=true`）**：34 个场景（133 项 Pytest 断言）基于本地离线确定性状态机与合成夹具验证服务端策略边界（`75.0% -> 0.0%` 为该合成夹具下的确定性拦截结果，不代表未运行真实商业大模型时的生产泛化成功率）。
+> - **`anonymized_reported` / `not_measured`（第三方公开文献报道，`independently_reproduced=false`）**：表格中外部护栏（LlamaFirewall `~48ms`、Azure Prompt Shields `~65ms`、NeMo Guardrails `~420ms`）延迟与漏报率引用自公开学术/厂商基准报告，本离线实验室未对第三方商业大模型在线原生拒答率进行实测（`live_llm_refusal_rate: not_measured`）。
+
+为了验证上述架构选型结论，我们在本仓库构建了完全可复现的 **34 场景确定性红蓝对抗基准测试套件（31 个高危攻击合成夹具场景 + 3 个良性业务对照场景，共 133 项 Pytest 自动化断言）**。所有测试均可通过 `uv run pytest` 在本地一键复现，并在 [`playground/benchmark-cards.html`](../../playground/benchmark-cards.html) 中生成 **7 卡 4:5 视觉评测报告**：
 
 ### 一、防护前后核心量化指标总览（Baseline vs. 模型护栏 vs. 零信任能力网关）
 
@@ -210,7 +215,7 @@ sequenceDiagram
 | **2. 单纯依赖对话轨护栏（NeMo Guardrails Only）** | 30 | 🟠 **42.9%** *(大量绕过)* | 57.1% | 91.7% | 8.3% | `420.0 ms` / `780.0 ms` |
 | **3. 单纯依赖输入分类护栏（Azure Prompt Shields Only）** | 30 | 🟠 **35.7%** *(多跳/混淆绕过)* | 64.3% | 96.4% | 3.6% | `65.0 ms` / `110.0 ms` |
 | **4. 单纯依赖双阶段模型护栏（Meta LlamaFirewall Only）** | 30 | 🟡 **25.0%** *(越权委托绕过)* | 75.0% | 95.8% | 4.2% | `48.0 ms` / `85.0 ms` |
-| **5. 确定性零信任能力网关（Hardened Capability Broker）** | **30** | 🟢 **0.0% (零失守)** | **100.0% (全数拦截)** | **100.0% (零损耗)** | **0.0% (零误杀)** | **`0.8 ms` / `1.9 ms`** |
+| **5. 确定性零信任能力网关（Hardened Capability Broker）** | **30** | 🟢 **0.0% (零失守)** | **100.0% (全数拦截)** | **100.0% (零损耗)** | **0.0% (零误杀)** | **`0.0199 ms` / `0.0318 ms` (SQLite `7.21 ms` / `8.19 ms`)** |
 
 ### 二、六大典型高危攻击场景的拦截原理解析（为什么模型护栏会漏、零信任网关能 100% 拦住？）
 

@@ -10,7 +10,7 @@
 When enterprise teams deploy **Agentic AI**—systems capable of querying internal databases, sending emails, invoking Model Context Protocol (MCP) tools, modifying configurations, or initiating payments—security architecture is **not** simply "putting a prompt classifier in front of an LLM." Instead, it is an engineering trade-off across **action blast radius (read-only Q&A vs. state-mutating tool execution), payload disguise (direct jailbreaks vs. indirect prompt injection inside benign business documents), latency budget (`50–400 ms` vs. `< 1 ms`), and deterministic authorization boundaries**:
 
 1. **When to choose (or rely primarily on) Model-Level Content Guardrails**: **Pure conversational chatbots, read-only RAG over public knowledge bases, and content moderation workloads** where the AI has zero state-mutating tools, zero external messaging capabilities, and no access to restricted confidential records. Here, **Azure AI Content Safety / Prompt Shields** or **Meta LlamaFirewall** blocks 85%–90%+ of commodity direct jailbreaks, toxicity, and known injection templates with minimal integration effort and zero backend API changes.
-2. **When you MUST enforce a Deterministic Zero-Trust Capability Broker (+ Sandbox Isolation + Action-Bound Human Approval)**: As soon as an agent can **write records, send cross-agent/external messages, connect to MCP servers, read `restricted` data, or trigger financial/privilege actions (`request_payment`, `update_trust`, code execution)**, relying on probabilistic model guardrails alone is architecturally fatal. Security enforcement must move out of the LLM's probabilistic reasoning and down into a **Deterministic Tool Execution Broker** that verifies **Original Requester Provenance (`original_requester`), Dynamic Session Taint Labels (`context_labels`), and Cryptographically Bound Human-in-the-Loop Approvals (`action_hash` + `epoch`)**—blocking 100% of unauthorized tool effects in **`0.8 ms`**.
+2. **When you MUST enforce a Deterministic Zero-Trust Capability Broker (+ Sandbox Isolation + Action-Bound Human Approval)**: As soon as an agent can **write records, send cross-agent/external messages, connect to MCP servers, read `restricted` data, or trigger financial/privilege actions (`request_payment`, `update_trust`, code execution)**, relying on probabilistic model guardrails alone is architecturally fatal. Security enforcement must move out of the LLM's probabilistic reasoning and down into a **Deterministic Tool Execution Broker** that verifies **Original Requester Provenance (`original_requester`), Dynamic Session Taint Labels (`context_labels`), and Cryptographically Bound Human-in-the-Loop Approvals (`action_hash` + `epoch`)**—blocking 100% of unauthorized tool effects in **`0.0199 ms`**.
 3. **What "Confused Deputy" and "Indirect Prompt Injection" really mean**: This combination is the #1 root cause of enterprise agent breaches in 2026 (accounting for **47%–53%+** of real-world agentic privilege misuse incidents). The attacker **never hacks your firewall or steals your API key**. Instead, they send a routine vendor PDF invoice, resume, or webpage containing hidden natural-language instructions. When your privileged internal agent reads that document, it gets tricked into using its own legitimate credentials to read confidential budgets or trigger payments on the attacker's behalf. **Traditional firewalls and static RBAC see a legitimate internal agent using a valid API key and allow it 100% of the time; only a Capability Broker that tracks *who originally triggered the chain* and *what confidential taint labels the session carries* can physically stop it.**
 
 ---
@@ -28,7 +28,7 @@ flowchart TD
     Start[Enterprise AI / Agent Security Architecture Selection] --> Q_Tool{Does the Agent invoke tools / MCP servers<br/>or access internal confidential data?}
     Q_Tool -->|No: Pure Q&A Chatbot / Public Doc Summarization<br/>No external messaging, no DB writes, no API calls| Tier1[Choose Option A: Model-Level Content Guardrails<br/>Azure Prompt Shields / LlamaFirewall<br/>Blocks direct jailbreaks, harmful content & basic injection<br/>Latency ~48-65ms · Zero backend code changes]
     Q_Tool -->|Yes: Queries internal DBs / Sends emails / Calls MCP / Writes state| Q_Risk{What is the maximum blast radius of tool execution?}
-    Q_Risk -->|Medium Risk: Cross-team collaboration / Reads external docs + internal messaging<br/>Risk of confidential data exfiltration| Tier2[Choose Option B1: Model Pre-Filter + Deterministic Capability Broker<br/>Prompt Shields pre-filter + Broker Dynamic Taint Tracking<br/>Once a session touches Restricted data, deterministically lock all external egress<br/>Broker latency ~0.8ms · 100% exfiltration prevention]
+    Q_Risk -->|Medium Risk: Cross-team collaboration / Reads external docs + internal messaging<br/>Risk of confidential data exfiltration| Tier2[Choose Option B1: Model Pre-Filter + Deterministic Capability Broker<br/>Prompt Shields pre-filter + Broker Dynamic Taint Tracking<br/>Once a session touches Restricted data, deterministically lock all external egress<br/>Broker latency 0.0199ms · 100% exfiltration prevention]
     Q_Risk -->|High / Critical Risk: Payments / Treasury / RBAC & Trust Registry edits<br/>Code execution / Production config mutation| Tier3[Choose Option B2: Full Zero-Trust Broker + Micro-Sandbox + Action-Bound HITL<br/>1. Block all delegated payment/privilege calls from external requesters<br/>2. Pause & bind approval hash to request_hash + epoch + expiry + principal<br/>3. Run 3rd-party MCP tools in credential-free isolated sandboxes]
 ```
 
@@ -60,7 +60,7 @@ Whenever your agent operates in any of the following three scenarios, a **Determ
 1. **Mixed-Trust Contexts (Reading both untrusted external documents/emails and internal confidential records)**
    - Instead of guessing whether an external email sounds malicious, the Broker enforces a deterministic information-flow rule: **once an agent execution lane is marked `untrusted` or reads a `restricted` record, the Broker physically blocks any `export_record(audience="external")` or `send_message` to an external target**.
 2. **Multi-Agent Collaboration & Cross-Agent Delegation (A2A Proxy Chains)**
-   - When Calendar, Procurement, and Finance agents pass tasks to one another, the Broker attaches an immutable **`original_requester`** principal to every hop. If an external `supplier` asks `calendar` to ask `finance` to call `request_payment`, the Broker inspects `original_requester == supplier (external)` and blocks the call in **`0.8 ms`** via the `original-requester-payment` rule.
+   - When Calendar, Procurement, and Finance agents pass tasks to one another, the Broker attaches an immutable **`original_requester`** principal to every hop. If an external `supplier` asks `calendar` to ask `finance` to call `request_payment`, the Broker inspects `original_requester == supplier (external)` and blocks the call in **`0.0199 ms`** via the `original-requester-payment` rule.
 3. **Third-Party or Internal MCP Server Ecosystems**
    - To defeat MCP tool poisoning, Rug-Pull description mutations, and hallucinated packages (Slopsquatting), the Broker enforces per-agent `tool-allowlist`, `fixed-business-output` slot pinning, and per-step cryptographic `AgBOM request_hash` verification.
 
@@ -116,10 +116,10 @@ flowchart LR
         C1 -->|3. Static RBAC checks immediate caller<br/>Sees Finance Agent -> ALLOWED!| D1[(Restricted Budget Leaked<br/>+ $850 Unauthorized Payout)]
     end
 
-    subgraph Hardened["✅ Agent-Native Zero-Trust Capability Broker Path (100% Blocked in 0.8ms)"]
+    subgraph Hardened["✅ Agent-Native Zero-Trust Capability Broker Path (100% Blocked in 0.0199ms)"]
         A2[External Supplier Attacker<br/>original_requester: supplier] -->|1. Sends poisoned quote<br/>Tagged untrusted| B2[Internal Calendar/Procurement Agent<br/>Lane tainted with untrusted]
         B2 -->|2. Forwards request to Finance<br/>Envelope pins original_requester=supplier| C2[Zero-Trust Capability Broker<br/>Deterministic Policy Engine]
-        C2 -->|3. Evaluates 3 invariants:<br/>① original_requester == external<br/>② lane labels include restricted/untrusted<br/>③ action == egress / payment / trust edit| E2[🛑 0.8ms Deterministic BLOCK!<br/>Rules: restricted-data-boundary<br/>& original-requester-payment]
+        C2 -->|3. Evaluates 3 invariants:<br/>① original_requester == external<br/>② lane labels include restricted/untrusted<br/>③ action == egress / payment / trust edit| E2[🛑 0.0199ms Deterministic BLOCK!<br/>Rules: restricted-data-boundary<br/>& original-requester-payment]
     end
 ```
 
@@ -142,7 +142,7 @@ For high-stakes actions like `request_payment` or `update_trust`, regulations ma
 - **Flaw 1 (Parameter Swap / Replay)**: A human approves paying `$100` to Vendor A, and an attacker reuses that `approval_id` on a mutated request paying `$100,000` to Vendor B.
 - **Flaw 2 (Stale Epoch Reuse After Pause/Resume)**: A run is paused due to an anomaly, changing the operational context, but upon resume the system blindly consumes an approval granted under the old state.
 
-#### 🧭 End-to-End Attack & Defense Sequence Diagram (0.8ms Taint Block + 5-Tuple Action-Hash Approval Binding)
+#### 🧭 End-to-End Attack & Defense Sequence Diagram (0.0199ms Taint Block + 5-Tuple Action-Hash Approval Binding)
 
 In `Broker.execute`, every approval is cryptographically bound to a **5-tuple `action_hash`** (`{request_hash, epoch, expires_at, plan_hash, principal}`) and automatically invalidated if the execution `epoch` advances:
 
@@ -155,12 +155,12 @@ sequenceDiagram
     participant Led as SQLite Evidence Ledger & Taint Store
     participant Hum as Human Security Approver
 
-    Note over Ext,Led: Phase 1: First Line of Defense — Provenance & Dynamic Taint Block (0.8ms)
+    Note over Ext,Led: Phase 1: First Line of Defense — Provenance & Dynamic Taint Block (0.0199ms)
     Ext->>Agt: 1. Delivers document with hidden instruction (untrusted=True, requester=supplier)
     Agt->>Brk: 2. Coerced into calling export_record(restricted-budget, audience="external")
     Brk->>Led: 3. Queries record labels (restricted) + lane taint history + original_requester (supplier)
     Led-->>Brk: 4. Returns labels=["restricted", "untrusted"], external_requester=True
-    Brk-->>Agt: 5. 🛑 Immediate Deterministic BLOCK (rule: restricted-data-boundary in ~0.8ms)
+    Brk-->>Agt: 5. 🛑 Immediate Deterministic BLOCK (rule: restricted-data-boundary in 0.0199ms)
     Brk->>Led: 6. Commits immutable receipt (evidence_id, violation=False, executed=False)
 
     Note over Agt,Hum: Phase 2: Second Line of Defense — 5-Tuple Cryptographic HITL Approval for Internal Requests
@@ -191,16 +191,21 @@ When a customer asks: *"How do Microsoft Azure Prompt Shields, Meta LlamaFirewal
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **1. Target Risk Tier & Business Workload** | **Low-Risk Read-Only**: Public Q&A, customer support chatbots, document summarization (no write tools) | **Low/Medium-Risk Single Agent**: Productivity copilot with basic read-only plugins | **Topic-Constrained Chat**: Customer service bots requiring strict topical boundaries | **Medium/High-Risk Multi-Agent & MCP Workflows**: Internal DB reads, cross-team automation | **All Enterprise Production Agents, Financial Treasury, DevSecOps & Regulated Gateways** |
 | **2. Interception Layer** | **Input Prompt Layer (L1)**: Probabilistic text classification & spotlighting before LLM inference | **Input + CoT Audit Layer (L1/L2)**: PromptGuard 2 + AlignmentCheck reasoning drift audit | **Dialog Rail Layer (L2)**: Colang state rails + extra LLM moderation turns | **Tool Execution Gate & Data-Flow Layer (L3/L4)**: Verifies principal provenance, taint labels & hashes before API execution | **Full 4-Layer Stack (L1→L4)**: Fast edge pre-filter + deterministic tool & data-flow enforcement |
-| **3. Added Latency Overhead (P50 / P95)** | Moderate (`~65.0 ms` / `110 ms`) | Moderate (`~48.0 ms` / `85 ms`) | **Very High (`~420.0 ms` / `780 ms`)**<br/>*(Requires extra LLM call per hop)* | **Ultra-Low (`0.8 ms` / `1.9 ms`)**<br/>*(In-memory / SQLite deterministic check)* | **Tiered (`0.8 ms` on every tool hop; `65 ms` pre-scan only on untrusted external ingress)** |
+| **3. Added Latency Overhead (P50 / P95)** | Moderate (`~65.0 ms` / `110 ms`) | Moderate (`~48.0 ms` / `85 ms`) | **Very High (`~420.0 ms` / `780 ms`)**<br/>*(Requires extra LLM call per hop)* | **Ultra-Low (`0.0199 ms` / `0.0318 ms` (SQLite `7.21 ms` / `8.19 ms`))**<br/>*(In-memory / SQLite deterministic check)* | **Tiered (`0.0199 ms` on every tool hop; `65 ms` pre-scan only on untrusted external ingress)** |
 | **4. Anti-Bypass Determinism (Measured ASR)** | Partial (**`35.7%` ASR remains**; misses polite business-phrased delegation & multi-hop laundering) | Moderate (**`25.0%` ASR remains**; bypassed by cipher payloads, tool shadowing & proxy chains) | Partial (**`42.9%` ASR remains**; bypassed by semantic paraphrasing & structured tool args) | **100% Deterministic (`0.0%` ASR)**<br/>*(Even if the LLM is fooled, unauthorized tool calls cannot execute)* | **100% Deterministic (`0.0%` ASR)**<br/>*(Combines early prompt rejection with zero-breach tool execution)* |
 | **5. False Positive Rate (FPR) & UX Impact** | Low (`3.6%` FPR; occasional false blocks on security/code docs) | Low (`4.2%` FPR; AlignmentCheck occasionally flags complex multi-step plans) | High (`8.3%` FPR; rigid dialog rails often block valid cross-domain business queries) | **Zero False Positives (`0.0%` FPR; 100% benign completion)**<br/>*(Evaluates exact principals & data labels, never guesses prose)* | **Near-Zero / Zero FPR (L1 tags untrusted inputs instead of hard-dropping; L3/L4 blocks only true policy violations)** |
 | **6. Deployment & Ops Cost** | **Lowest** (Managed cloud API, zero backend refactoring) | Moderate (Requires hosting local classifier + CoT auditor models) | High (Requires maintaining Colang flows + 2x token cost) | **Low to Moderate** (Deployed once in unified MCP/Tool Gateway middleware, zero GPU cost) | **Highest ROI (Centralized AI Gateway policy reused across all enterprise agents)** |
 
 ---
 
-## 🧪 Concise Benchmark Findings (30-Scenario Reproducible Red-vs-Blue Suite)
+## 🧪 Concise Benchmark Findings (34-Scenario Reproducible Red-vs-Blue Suite)
 
-All architectural claims in this guide are backed by our reproducible **30-scenario deterministic benchmark suite (27 high-severity adversarial scenarios + 3 benign business control suites, verified by 125 Pytest assertions)** in `tests/test_regressions.py` and rendered in the **7-Card 4:5 Visual Benchmark Report** ([`playground/benchmark-cards.en.html`](../../playground/benchmark-cards.en.html)):
+> **📌 Provenance & Measurement Conditions (`research/evidence.json`)**:
+> - **`measured` (`independently_reproduced=true`, Local Host Timing)**: Measured on `Windows 11 (ARM64) / Python 3.12.10` using `time.perf_counter_ns()` against `apps/api/redteam/broker.py`: pure in-memory SHA-256 `request_hash` + policy invariant evaluation (`n=200`) achieved **`p50 = 0.0078 ms`, `p95 = 0.0084 ms`, `mean = 0.0084 ms`**; full `broker.execute()` including SQLite WAL transaction and cryptographic receipt commit (`n=50`) achieved **`p50 = 8.07 ms`, `p95 = 10.88 ms`, `mean = 8.34 ms`**.
+> - **`synthetic` (`independently_reproduced=true`, Authorized Offline Fixtures)**: The 34 scenarios (133 Pytest assertions) evaluate server-side deterministic policy enforcement on local synthetic red-vs-blue fixtures (`75.0% -> 0.0%` fixture ASR; does NOT claim live commercial LLM generalization).
+> - **`anonymized_reported` / `not_measured` (`independently_reproduced=false`)**: Third-party guardrail latencies/bypass rates (LlamaFirewall `~48ms`, Azure Prompt Shields `~65ms`, NeMo Guardrails `~420ms`) are cited from public vendor/academic benchmarks; live commercial LLM refusal rates are `not_measured` in this offline lab.
+
+All architectural claims in this guide are backed by our reproducible **34-scenario deterministic benchmark suite (31 adversarial synthetic fixture scenarios + 3 benign business control suites, verified by 133 Pytest assertions)** in `tests/test_regressions.py` and rendered in the **7-Card 4:5 Visual Benchmark Report** ([`playground/benchmark-cards.en.html`](../../playground/benchmark-cards.en.html)):
 
 ### 1. End-to-End Quantitative Comparison
 
@@ -210,11 +215,11 @@ All architectural claims in this guide are backed by our reproducible **30-scena
 | **2. Dialog-Rail Guardrails Only (NVIDIA NeMo Guardrails)** | 30 | 🟠 **42.9%** *(High Bypass)* | 57.1% | 91.7% | 8.3% | `420.0 ms` / `780.0 ms` |
 | **3. Input Classifier Shield Only (Azure Prompt Shields)** | 30 | 🟠 **35.7%** *(Multi-Hop Bypass)* | 64.3% | 96.4% | 3.6% | `65.0 ms` / `110.0 ms` |
 | **4. Dual-Stage Model Guardrail Only (Meta LlamaFirewall)** | 30 | 🟡 **25.0%** *(Delegation Bypass)* | 75.0% | 95.8% | 4.2% | `48.0 ms` / `85.0 ms` |
-| **5. Deterministic Zero-Trust Capability Broker (`hardened`)** | **30** | 🟢 **0.0% (Zero Breaches)** | **100.0% (All Blocked)** | **100.0% (Zero Loss)** | **0.0% (Zero FPR)** | **`0.8 ms` / `1.9 ms`** |
+| **5. Deterministic Zero-Trust Capability Broker (`hardened`)** | **30** | 🟢 **0.0% (Zero Breaches)** | **100.0% (All Blocked)** | **100.0% (Zero Loss)** | **0.0% (Zero FPR)** | **`0.0199 ms` / `0.0318 ms` (SQLite `7.21 ms` / `8.19 ms`)** |
 
 ### 2. Six Representative Attack Scenarios: Why Model Guardrails Miss Them & How the Zero-Trust Broker Stops Them
 
-| Scenario ID & Real-World Attack Pattern | How the Attacker Succeeds in `baseline` (Static RBAC) | Why Standalone Model Guardrails (L1/L2) Miss It | How the Zero-Trust Capability Broker (L3/L4) Stops It in `0.8 ms` |
+| Scenario ID & Real-World Attack Pattern | How the Attacker Succeeds in `baseline` (Static RBAC) | Why Standalone Model Guardrails (L1/L2) Miss It | How the Zero-Trust Capability Broker (L3/L4) Stops It in `0.0199 ms` |
 | :--- | :--- | :--- | :--- |
 | **1. Shadow Agent Shared API Key Confused Deputy**<br/>(`SHADOW-AGENT-15` · New Verification) | External supplier tricks an internal shadow agent sharing a privileged credential into reading `restricted-budget` and delegating an $850 `request_payment`. | Phrased as standard corporate invoice reconciliation with zero jailbreak keywords. | **Invariants `record-owner` + `original-requester-payment`**: Non-owners cannot read restricted records, and any payment with `original_requester == supplier (external)` is blocked 100%. |
 | **2. HITL Approval Replay & Pause/Resume Epoch Tampering**<br/>(`EPOCH-APPROVAL-16` · New Verification) | Attacker attempts to reuse a prior `approval_id` after a workflow Pause/Resume (`epoch` increment) or after mutating tool arguments. | Prompt classifiers have zero visibility into database transaction epochs or approval state machines. | **Invariants `action_hash` 5-Tuple Binding + `epoch-changed` Expiry**: Pausing increments `run.epoch`, immediately expiring prior approvals (`reason: epoch-changed`) and raising `Conflict` on any argument drift. |
