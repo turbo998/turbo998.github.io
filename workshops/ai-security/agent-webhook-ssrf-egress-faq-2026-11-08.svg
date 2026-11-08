@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" width="1200" height="760">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b1120"/>
+      <stop offset="50%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e1b4b"/>
+    </linearGradient>
+    <linearGradient id="redGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#7f1d1d"/>
+      <stop offset="100%" stop-color="#991b1b"/>
+    </linearGradient>
+    <linearGradient id="greenGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#064e3b"/>
+      <stop offset="100%" stop-color="#065f46"/>
+    </linearGradient>
+    <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#1e3a8a"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="760" fill="url(#bg)"/>
+
+  <!-- Header -->
+  <rect x="30" y="24" width="1140" height="92" rx="14" fill="#1e293b" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="54" y="54" fill="#60a5fa" font-family="Segoe UI, system-ui, sans-serif" font-size="13" font-weight="700" letter-spacing="1.2">AI SOLUTION ARCHITECT · 2026-11-08 ROUND 14 · ASYNC WEBHOOKS, DNS-REBINDING SSRF &amp; EPOCH APPROVAL PINNING</text>
+  <text x="54" y="82" fill="#f8fafc" font-family="Segoe UI, system-ui, sans-serif" font-size="21" font-weight="800">智能体异步 Webhook 回调伪造、DNS 重绑定 SSRF 与过期审批重放 vs. 双向 mTLS + HMAC 重放锁 + 零信任出站代理</text>
+  <text x="54" y="104" fill="#94a3b8" font-family="Segoe UI, system-ui, sans-serif" font-size="12.5">56 个红蓝合成夹具场景 (178 项 Pytest 断言 100% 通过) · 纯内存策略+哈希 P50=0.0248ms (n=200 全量样本) · 单步 SQLite WAL P50=7.21ms (n=50)</text>
+
+  <!-- 3 Core Takeaways -->
+  <rect x="30" y="130" width="368" height="118" rx="12" fill="#172554" stroke="#3b82f6" stroke-width="1.2"/>
+  <text x="48" y="156" fill="#93c5fd" font-family="Segoe UI, system-ui, sans-serif" font-size="13" font-weight="700">① 拒绝无签名 Webhook 与工单级静态审批</text>
+  <text x="48" y="178" fill="#e2e8f0" font-family="Segoe UI, system-ui, sans-serif" font-size="12">• 入站回调必验 HMAC-SHA256(ts.nonce.body) (窗 ≤300s)</text>
+  <text x="48" y="198" fill="#e2e8f0" font-family="Segoe UI, system-ui, sans-serif" font-size="12">• 即使合作伙伴验签通过，外部文本仍强制打 untrusted</text>
+  <text x="48" y="218" fill="#e2e8f0" font-family="Segoe UI, system-ui, sans-serif" font-size="12">• 严禁仅按 ticket_id 放行挂起恢复后的高危打款与写库</text>
+
+  <rect x="416" y="130" width="368" height="118" rx="12" fill="#172554" stroke="#3b82f6" stroke-width="1.2"/>
+  <text x="434" y="156" fill="#93c5fd" font-family="Segoe UI, system-ui, sans-serif" font-size="13" font-weight="700">② Socket 级 IP 钉扎 + 独立出站代理防 SSRF</text>
+  <text x="434" y="178" fill="#e2e8f0" font-family="Segoe UI, system-ui, sans-serif" font-size="12">• 应用层 urlparse 预检存在 3ms DNS 重绑定 TOCTOU 竞态</text>
+  <text x="434" y="198" fill="#e2e8f0" font-family="Segoe UI, system-ui, sans-serif" font-size="12">• 唯一一次解析校验后，Socket connect() 直接锁定目标 IP</text>
+  <text x="434" y="218" fill="#e2e8f0" font-family="Segoe UI, system-ui, sans-serif" font-size="12">• 独立 Egress Proxy 物理无 169.254.169.254 与内网路由</text>
+
+  <rect x="802" y="130" width="368" height="118" rx="12" fill="#172554" stroke="#3b82f6" stroke-width="1.2"/>
+  <text x="820" y="156" fill="#93c5fd" font-family="Segoe UI, system-ui, sans-serif" font-size="13" font-weight="700">③ 暂停恢复递增 Epoch + 五元组能力网关</text>
+  <text x="820" y="178" fill="#e2e8f0" font-family="Segoe UI, system-ui, sans-serif" font-size="12">• Pause/Resume 自动触发 session_epoch += 1 作废旧审批</text>
+  <text x="820" y="198" fill="#e2e8f0" font-family="Segoe UI, system-ui, sans-serif" font-size="12">• 审批绑定 (request_hash, epoch, expires_at, plan, actor)</text>
+  <text x="820" y="218" fill="#e2e8f0" font-family="Segoe UI, system-ui, sans-serif" font-size="12">• 0.0248ms P50 阻断 untrusted-write / 越权代付 / 密文外发</text>
+
+  <!-- Left: Vulnerable Path -->
+  <rect x="30" y="264" width="555" height="270" rx="14" fill="#1e293b" stroke="#ef4444" stroke-width="1.5"/>
+  <rect x="30" y="264" width="555" height="38" rx="14" fill="url(#redGrad)"/>
+  <text x="50" y="288" fill="#fef2f2" font-family="Segoe UI, system-ui, sans-serif" font-size="14" font-weight="700">❌ 传统脆弱异步架构（应用层 URL 预检 + 无签名回调 + 静态工单审批）</text>
+
+  <rect x="50" y="318" width="515" height="54" rx="8" fill="#0f172a" stroke="#7f1d1d"/>
+  <text x="66" y="340" fill="#fca5a5" font-family="Segoe UI, system-ui, sans-serif" font-size="12.5" font-weight="700">1. DNS Rebinding 绕过应用层预检 (BRK-37)</text>
+  <text x="66" y="360" fill="#cbd5e1" font-family="Segoe UI, system-ui, sans-serif" font-size="11.5">首次 DNS 解析返回公网 IP 198.51.100.42 放行；3ms 后底层连接切至 169.254.169.254 盗取云凭据</text>
+
+  <rect x="50" y="384" width="515" height="54" rx="8" fill="#0f172a" stroke="#7f1d1d"/>
+  <text x="66" y="406" fill="#fca5a5" font-family="Segoe UI, system-ui, sans-serif" font-size="12.5" font-weight="700">2. 伪造异步 Webhook 唤醒并污染恢复上下文</text>
+  <text x="66" y="426" fill="#cbd5e1" font-family="Segoe UI, system-ui, sans-serif" font-size="11.5">外部回调备注未打 untrusted 污点直接拼入恢复会话，覆写 business-result 采购结论</text>
+
+  <rect x="50" y="450" width="515" height="66" rx="8" fill="#450a0a" stroke="#ef4444"/>
+  <text x="66" y="474" fill="#fecaca" font-family="Segoe UI, system-ui, sans-serif" font-size="12.5" font-weight="700">3. 💥 挂起前旧审批单被跨代重放划走 $1,350 (BRK-38)</text>
+  <text x="66" y="494" fill="#fca5a5" font-family="Segoe UI, system-ui, sans-serif" font-size="11.5">仅核对 ticket_id=approved 未核对 epoch 与 $500-&gt;$1,350 参数哈希，直接放行越权打款与凭据外传</text>
+
+  <!-- Right: Hardened Zero-Trust Path -->
+  <rect x="615" y="264" width="555" height="270" rx="14" fill="#1e293b" stroke="#10b981" stroke-width="1.5"/>
+  <rect x="615" y="264" width="555" height="38" rx="14" fill="url(#greenGrad)"/>
+  <text x="635" y="288" fill="#ecfdf5" font-family="Segoe UI, system-ui, sans-serif" font-size="14" font-weight="700">✅ 零信任异步与出站隔离架构（HMAC 重放锁 + Socket IP 钉扎 + 五元组 Epoch 网关）</text>
+
+  <rect x="635" y="318" width="515" height="54" rx="8" fill="#0f172a" stroke="#065f46"/>
+  <text x="651" y="340" fill="#6ee7b7" font-family="Segoe UI, system-ui, sans-serif" font-size="12.5" font-weight="700">1. 第一关：入站 HMAC 时间戳/Nonce 锁 + 出站 Socket IP 钉扎</text>
+  <text x="651" y="360" fill="#cbd5e1" font-family="Segoe UI, system-ui, sans-serif" font-size="11.5">拦截重放回调并将外部文本打 untrusted；Socket connect() 级锁定公网 IP 阻断 169.254.169.254</text>
+
+  <rect x="635" y="384" width="515" height="54" rx="8" fill="#0f172a" stroke="#065f46"/>
+  <text x="651" y="406" fill="#6ee7b7" font-family="Segoe UI, system-ui, sans-serif" font-size="12.5" font-weight="700">2. 第二关：暂停/恢复自动递增 Session Epoch 作废旧审批</text>
+  <text x="651" y="426" fill="#cbd5e1" font-family="Segoe UI, system-ui, sans-serif" font-size="11.5">pause() -&gt; resume() 自动执行 epoch += 1，挂起前签发的旧 $500 审批单因 stale epoch 立即失效</text>
+
+  <rect x="635" y="450" width="515" height="66" rx="8" fill="#022c22" stroke="#10b981"/>
+  <text x="651" y="474" fill="#a7f3d0" font-family="Segoe UI, system-ui, sans-serif" font-size="12.5" font-weight="700">3. 🔒 第三关：确定性 Capability Broker (0.0248ms P50 零漏拦)</text>
+  <text x="651" y="494" fill="#6ee7b7" font-family="Segoe UI, system-ui, sans-serif" font-size="11.5">record-owner 阻断读密 + untrusted-write 阻断篡改 + restricted-data-boundary &amp; 发起人校验阻断 $1,350</text>
+
+  <!-- Bottom Decision Matrix & Provenance -->
+  <rect x="30" y="550" width="1140" height="184" rx="14" fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
+  <rect x="30" y="550" width="1140" height="34" rx="14" fill="url(#blueGrad)"/>
+  <text x="50" y="572" fill="#f8fafc" font-family="Segoe UI, system-ui, sans-serif" font-size="13.5" font-weight="700">📊 安全架构师选型矩阵与 Round 14 实测基准证据（56 场景 / 178 项 Pytest 断言 · 全量原始样本封存）</text>
+
+  <text x="50" y="608" fill="#93c5fd" font-family="Segoe UI, system-ui, sans-serif" font-size="12" font-weight="700">架构选型方案</text>
+  <text x="360" y="608" fill="#93c5fd" font-family="Segoe UI, system-ui, sans-serif" font-size="12" font-weight="700">DNS 重绑定 SSRF 防护</text>
+  <text x="580" y="608" fill="#93c5fd" font-family="Segoe UI, system-ui, sans-serif" font-size="12" font-weight="700">跨 Pause/Resume 审批防重放</text>
+  <text x="815" y="608" fill="#93c5fd" font-family="Segoe UI, system-ui, sans-serif" font-size="12" font-weight="700">附加延迟 (Provenance)</text>
+  <text x="1020" y="608" fill="#93c5fd" font-family="Segoe UI, system-ui, sans-serif" font-size="12" font-weight="700">合成夹具 ASR</text>
+
+  <line x1="46" y1="616" x2="1150" y2="616" stroke="#334155" stroke-width="1"/>
+
+  <text x="50" y="638" fill="#fca5a5" font-family="Segoe UI, system-ui, sans-serif" font-size="12">A. 无签名回调 + 应用层 urlparse 预检 (反模式)</text>
+  <text x="360" y="638" fill="#fca5a5" font-family="Segoe UI, system-ui, sans-serif" font-size="12">✕ 易被 TTL=0 与 302 跳转绕过</text>
+  <text x="580" y="638" fill="#fca5a5" font-family="Segoe UI, system-ui, sans-serif" font-size="12">✕ 静态工单审批被篡改重放</text>
+  <text x="815" y="638" fill="#cbd5e1" font-family="Segoe UI, system-ui, sans-serif" font-size="12">~0.1ms (无实质防护)</text>
+  <text x="1020" y="638" fill="#f87171" font-family="Segoe UI, system-ui, sans-serif" font-size="12" font-weight="700">75.0% (失守)</text>
+
+  <text x="50" y="664" fill="#fde047" font-family="Segoe UI, system-ui, sans-serif" font-size="12">B. 仅入站 Webhook HMAC 验签 (中低风险)</text>
+  <text x="360" y="664" fill="#fde047" font-family="Segoe UI, system-ui, sans-serif" font-size="12">△ 不防外联抓取工具重绑定</text>
+  <text x="580" y="664" fill="#fde047" font-family="Segoe UI, system-ui, sans-serif" font-size="12">△ 不防已签名回调内的文本注入</text>
+  <text x="815" y="664" fill="#cbd5e1" font-family="Segoe UI, system-ui, sans-serif" font-size="12">0.2–0.5ms (网关验签)</text>
+  <text x="1020" y="664" fill="#fbbf24" font-family="Segoe UI, system-ui, sans-serif" font-size="12" font-weight="700">部分绕过</text>
+
+  <text x="50" y="690" fill="#6ee7b7" font-family="Segoe UI, system-ui, sans-serif" font-size="12" font-weight="700">C. HMAC 重放锁 + Socket IP 钉扎 + 五元组 Epoch 网关 ⭐</text>
+  <text x="360" y="690" fill="#6ee7b7" font-family="Segoe UI, system-ui, sans-serif" font-size="12" font-weight="700">✓ 底层连接锁定 IP + 物理无内网路由</text>
+  <text x="580" y="690" fill="#6ee7b7" font-family="Segoe UI, system-ui, sans-serif" font-size="12" font-weight="700">✓ Epoch 递增作废旧审批 + 哈希绑定</text>
+  <text x="815" y="690" fill="#6ee7b7" font-family="Segoe UI, system-ui, sans-serif" font-size="12" font-weight="700">0.0248ms P50 (measured n=200)</text>
+  <text x="1020" y="690" fill="#34d399" font-family="Segoe UI, system-ui, sans-serif" font-size="12" font-weight="700">0.0% (0 误报)</text>
+
+  <text x="50" y="718" fill="#94a3b8" font-family="Segoe UI, system-ui, sans-serif" font-size="11.5">新增回归验证：BRK-37 (test_webhook_dns_rebinding_ssrf_and_callback_tamper_blocked) &amp; BRK-38 (test_async_webhook_stale_approval_replay_and_wire_blocked) · 178/178 Pytest 全绿</text>
+</svg>
