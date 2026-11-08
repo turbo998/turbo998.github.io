@@ -583,15 +583,33 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
         <a class="pub-arrow" href="workshops/faf-vs-agent-forge/test-report-cards.en.html" aria-label="Open 3-Way Arena 7-Card Deck">→</a>
       </article>
 
-      <!-- INFRA: AKSCLAW X E2B 100K SANDBOXES -->
+      <!-- INFRA: MOE QUANTIZATION & PARALLELISM + LLM ENGINE & PD DISAGGREGATION -->
       <article class="pub" data-category="harness-infra">
         <div>
           <span class="pub-tag report">AI Infra · Architect FAQ</span>
-          <div class="pub-date">2026-11-08 · 64×H100 PD Disagg</div>
+          <div class="pub-date">2026-11-08 · Round 2 MoE Quant &amp; EP</div>
+        </div>
+        <div class="pub-main">
+          <h3><a href="workshops/benchmarks/moe-quantization-parallelism-selection-cards.html" target="_blank" rel="noopener">Large Model &amp; MoE Inference Quantization (`BF16`/`W4A16`/`FP8`/`NVFP4`) &amp; Parallelism (`Pure TP` vs `DP+EP+DeepEP+EPLB`)</a></h3>
+          <p>First-principles 6-part Architect Selection FAQ guide and 7-Card 4:5 benchmark report (<code>synthetic</code> analytical model + <code>anonymized_reported</code> specs, <code>independently_reproduced=false</code>): on a 64-GPU cluster serving a 671B/37B MoE model, <strong>FP8 Block-Scaled + Attention DP=8 / MoE EP=8 + DeepEP + EPLB</strong> achieves <code>92,200 tok/s</code> (<code>2.65x</code> over BF16 TP=16), cuts Decode P99 TPOT to <code>15.8 ms</code>, and lowers token cost to <code>$0.35 / 1M</code> (<code>-62.0%</code>); Blackwell <strong>NVFP4 + DP16/EP16</strong> reaches <code>151,200 tok/s</code> (<code>4.34x</code> vs BF16, <code>1.64x</code> vs FP8) at <code>$0.21 / 1M</code> (<code>-77.2%</code>), while <strong>EPLB</strong> eliminates Zipf hot-expert stragglers (<code>25.1 -> 15.8 ms</code> P99 TPOT, <code>-37.1%</code>).</p>
+          <div class="pub-meta">
+            <span><a href="workshops/benchmarks/moe-quantization-parallelism-selection-cards.html" target="_blank" rel="noopener"><b>🃏 7-Card 4:5 Visual Deck (EN)</b></a></span>
+            <span><a href="workshops/benchmarks/moe-quantization-parallelism-selection-cards.zh.html" target="_blank" rel="noopener"><b>🃏 中文 7-Card 报告</b></a></span>
+            <span><a href="workshops/benchmarks/llm-inference-engine-pd-sizer.en.html" target="_blank" rel="noopener"><b>🧭 Interactive MoE &amp; PD Sizer</b></a></span>
+            <span><a href="assets/moe-quantization-parallelism-selection-faq-summary.svg" target="_blank" rel="noopener"><b>🖼️ Visual Summary SVG</b></a></span>
+          </div>
+        </div>
+        <a class="pub-arrow" href="workshops/benchmarks/moe-quantization-parallelism-selection-cards.html" target="_blank" rel="noopener" aria-label="Open MoE Quantization & Parallelism 7-Card Deck">→</a>
+      </article>
+
+      <article class="pub" data-category="harness-infra">
+        <div>
+          <span class="pub-tag report">AI Infra · Architect FAQ</span>
+          <div class="pub-date">2026-11-08 · Round 1 Engine &amp; PD</div>
         </div>
         <div class="pub-main">
           <h3><a href="workshops/benchmarks/llm-inference-engine-pd-selection-cards.html" target="_blank" rel="noopener">LLM Inference Engine Selection (`vLLM` vs. `SGLang` vs. `TRT-LLM`) &amp; PD Disaggregation (`Dynamo` + `Mooncake`)</a></h3>
-          <p>First-principles 6-part Architect Selection FAQ guide and 7-Card 4:5 benchmark report (<code>3,814</code> sources, <code>866</code> evidence claims, <code>565</code> benchmarks): SGLang v0.5.10 RadixAttention delivers a <code>3.88x</code> multi-turn TTFT speedup (<code>285 ms</code> vs <code>1,106 ms</code> at <code>82%</code> prefix hit rate), while PD Disaggregation (NVIDIA Dynamo v1.0.1 + Mooncake RDMA zero-copy KV transfer in <code>18.4 ms</code> at <code>38.6 GB/s</code>) achieves <code>3.08x</code> SLA-compliant goodput (<code>38,200</code> vs <code>12,400 tok/s</code>) and cuts token cost by <code>-67.5%</code> (<code>$0.27</code> vs <code>$0.83 / 1M tokens</code>) on a <code>64xH100</code> DeepSeek-R1 671B cluster.</p>
+          <p>First-principles 6-part Architect Selection FAQ guide and 7-Card 4:5 benchmark report (<code>synthetic</code> analytical model + <code>anonymized_reported</code> specs, <code>independently_reproduced=false</code>): SGLang RadixAttention delivers a <code>3.45x</code> 16K multi-turn TTFT speedup (<code>186.4 -> 54.0 ms</code> at <code>75%</code> prefix hit rate, <code>2.85x</code> QPS), while PD Disaggregation (NVIDIA Dynamo + Mooncake 400G RDMA zero-copy KV transfer of <code>1.024 GB</code> at <code>44.91 GB/s = 22.8 ms</code>) cuts Decode P99 TPOT by <code>3.76x</code> (<code>68.4 -> 18.2 ms</code>), lifts SLA goodput <code>2.38x</code> (<code>680 -> 1,618.4 tok/s/GPU</code>), and cuts token cost by <code>-34.2%</code> (<code>$0.76 -> $0.50 / 1M tokens</code>).</p>
           <div class="pub-meta">
             <span><a href="workshops/benchmarks/llm-inference-engine-pd-selection-cards.html" target="_blank" rel="noopener"><b>🃏 7-Card 4:5 Visual Deck (EN)</b></a></span>
             <span><a href="workshops/benchmarks/llm-inference-engine-pd-selection-cards.zh.html" target="_blank" rel="noopener"><b>🃏 中文 7-Card 报告</b></a></span>

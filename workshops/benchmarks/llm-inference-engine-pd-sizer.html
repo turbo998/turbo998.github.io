@@ -126,54 +126,80 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
   <div class="topbar">
     <div><a href="../../zh.html">← 返回个人研究主页</a> · <a href="../../zh-benchmarks.html">Benchmark 专栏</a></div>
     <div class="pill-row">
-      <a class="btn" href="llm-inference-engine-pd-selection-cards.zh.html">打开 7-Card 4:5 视觉评测报告 →</a>
-      <a class="btn" href="../../assets/llm-inference-engine-pd-selection-faq-summary.svg" target="_blank" rel="noopener">🖼️ SVG Summary</a>
+      <a class="btn" href="llm-inference-engine-pd-selection-cards.zh.html">Round 1: 引擎与 PD 7-Card →</a>
+      <a class="btn" href="moe-quantization-parallelism-selection-cards.zh.html">Round 2: MoE 量化与 EP 7-Card →</a>
+      <a class="btn" href="../../assets/llm-inference-engine-pd-selection-faq-summary.svg" target="_blank" rel="noopener">🖼️ 引擎/PD SVG</a>
+      <a class="btn" href="../../assets/moe-quantization-parallelism-selection-faq-summary.svg" target="_blank" rel="noopener">🖼️ MoE 量化/EP SVG</a>
       <a class="btn" href="llm-inference-engine-pd-sizer.en.html">English Edition →</a>
     </div>
   </div>
-  <h1>LLM 推理引擎选型（vLLM vs SGLang vs TensorRT-LLM）与 PD 分离架构（NVIDIA Dynamo + Mooncake）— 架构师深度 FAQ 与定容计算器</h1>
-  <p class="lead">对标 ib-vs-ethernet-roce-selection-faq.md 六段式结构：一针见血讲透何时选 vLLM、SGLang 或 TensorRT-LLM，以及何时用 NVIDIA Dynamo + Mooncake 实施 Prefill-Decode (PD) 分离（64×H100 DeepSeek-R1 671B 实测 3.08× 有效吞吐与 -67.5% 单 Token 成本）。</p>
+  <h1>LLM 推理引擎 / PD 分离（vLLM vs SGLang vs TensorRT-LLM + Dynamo/Mooncake）与超大 MoE 量化 / 专家并行（FP8/NVFP4 + DP+EP+EPLB）— 架构师深度 FAQ 与定容计算器</h1>
+  <p class="lead">对标 ib-vs-ethernet-roce-selection-faq.md 六段式结构（<code>synthetic</code> 确定性分析模型校准自 <code>anonymized_reported</code> 硬件规格，<code>independently_reproduced=false</code>，未启动付费云 GPU）：涵盖 Round 1（vLLM vs SGLang vs TRT-LLM 与 PD 分离：Decode P99 TPOT 降低 3.76×、SLA 吞吐提升 2.38×、成本降低 -34.2%）与 Round 2（671B/37B MoE 量化与 DP+EP+EPLB：FP8+DP8/EP8 吞吐提升 2.65×/$0.35，NVFP4+DP16/EP16 提升 4.34×/$0.21，EPLB 降低 -37.1% P99 TPOT）。</p>
   <div class="svg-frame"><img src="../../assets/llm-inference-engine-pd-selection-faq-summary.svg" alt="LLM Inference Engine Selection & PD Disaggregation Visual Summary" /></div>
+  <div class="svg-frame"><img src="../../assets/moe-quantization-parallelism-selection-faq-summary.svg" alt="Large Model & MoE Quantization & Parallelism Visual Summary" /></div>
   <h2>① 📌 核心结论速览（Executive Summary）</h2>
   <div class="grid-3">
     <div class="card">
       <h3>1. 单机 / 中小规模同机混部（≤8 卡）</h3>
-      <p>通用多模型 SaaS 与新模型 Day-0 上线首选 vLLM v0.19.1；多轮 Agent、共享长 System Prompt 与 JSON 结构化输出首选 SGLang v0.5.10（RadixAttention 82% 命中率下 TTFT 提速 3.88×）；Blackwell/Hopper 固定主干模型压榨极限 FP8/FP4 TPOT 选 TensorRT-LLM v1.3.0（13.8 ms）。</p>
+      <p>通用多模型 SaaS 与多模态批量编码首选 vLLM v0.19.1（批量编码器 CUDA Graph 提速 3.20×，长输出开启 <code>--async-scheduling</code> 吞吐 +11.9%）；多轮 Agent、共享长 System Prompt 与 JSON 结构化输出首选 SGLang v0.5.10（RadixAttention 在 16K 上下文 75% 命中率下 TTFT 从 186.4 ms 降至 54.0 ms，提速 3.45×，QPS 达 2.85×）；Blackwell/Hopper 固定主干模型压榨极限单请求 TPOT 选 TensorRT-LLM v1.3.0（8.6 ms，1.35×）。</p>
     </div>
     <div class="card">
-      <h3>2. 中大规模长上下文与 MoE 集群（≥32 卡 + RDMA）</h3>
-      <p>当输入 ≥8K tokens 或并发 QPS 较高时，同机混部会发生 Prefill-Decode 干扰。采用 SGLang/vLLM + NVIDIA Dynamo v1.0.1 + Mooncake RDMA 实施 PD 分离，在 64×H100 DeepSeek-R1 671B 上实现 3.08× 有效吞吐（38,200 vs 12,400 tok/s）并将单百万 Token 成本从 $0.83 降至 $0.27（-67.5%）。</p>
+      <h3>2. 中大规模长上下文与 PD 分离（≥32 卡 + 400G RDMA）</h3>
+      <p>当输入 ≥8K tokens 或并发较高时，同机混部会发生 Prefill-Decode 干扰（P99 TPOT 飙升至 68.4 ms）。采用 Dynamo + Mooncake 实施 PD 分离（32K 上下文 <code>1.024 GB = 8.192 Gb</code> KV 载荷经 400G RoCEv2 按 <code>44.91 GB/s = 359.30 Gbps</code> 实效带宽零拷贝传输仅需 <code>22.8 ms</code>），将 Decode P99 TPOT 压至 18.2 ms（3.76×），单卡 SLA 吞吐提升至 1,618.4 tok/s/GPU（2.38×），异构 4P+4D 配比将单百万 Token 成本从 $0.76 降至 $0.50（-34.2%）。</p>
     </div>
     <div class="card">
-      <h3>3. 核心技术本质：消除计算与访存干扰</h3>
-      <p>Prefill 是算力密集型（Compute-Bound），Decode 是显存带宽密集型（Memory-Bandwidth-Bound）。PD 分离将两者拆到独立 GPU 池，通过 Mooncake GPUDirect RDMA 零拷贝（400G RoCEv2 下 18.4 ms 传输 420 MB KV Cache）彻底消除排队阻塞与注意力核气泡。</p>
+      <h3>3. 超大 MoE 量化与专家并行（671B/37B · 64 卡集群）</h3>
+      <p>稠密中小模型低并发选 W4A16 (AWQ/Marlin)；高并发或超大 MoE 在 Hopper/MI300X 上选细粒度 FP8 (1×128 / 128×128)，在 Blackwell B200 上选硬件原生 NVFP4。跨机部署 671B MoE 严禁无脑跨机纯 TP=16，应采用 <b>Attention DP + MoE EP + DeepEP + EPLB</b>：64 卡 FP8+DP8/EP8 达 92,200 tok/s（较 BF16 TP=16 提升 2.65×，P99 TPOT 15.8 ms，$0.35/1M，-62.0%），Blackwell NVFP4+DP16/EP16 达 151,200 tok/s（4.34×，$0.21/1M，-77.2%），EPLB 消除 Zipf 热门专家倾斜（P99 TPOT 从 25.1 ms 降至 15.8 ms，-37.1%）。</p>
     </div>
   </div>
   <div class="sizer-box">
-    <h2 style="margin-top:0;border:none;padding:0;">② 🎛️ 交互式 LLM 推理引擎与 PD 分离定容 / TCO 计算器</h2>
+    <h2 style="margin-top:0;border:none;padding:0;">② 🎛️ Round 1 交互式 LLM 推理引擎与 PD 分离定容 / TCO 计算器（封存算例口径）</h2>
     <div class="controls">
-      <div class="control"><label>并发请求率 QPS: <span id="v-qps">48</span> QPS</label><input id="s-qps" type="range" min="10" max="120" step="2" value="48" oninput="updateSizer()" /></div>
-      <div class="control"><label>共享前缀缓存命中率 (Prefix Hit Rate): <span id="v-hit">82</span>%</label><input id="s-hit" type="range" min="0" max="95" step="1" value="82" oninput="updateSizer()" /></div>
-      <div class="control"><label>平均输入上下文长度 (Prompt Length): <span id="v-ctx">8192</span> tokens</label><input id="s-ctx" type="range" min="1024" max="65536" step="1024" value="8192" oninput="updateSizer()" /></div>
-      <div class="control"><label>集群 GPU 规模 (H100 80GB): <span id="v-gpus">64</span> GPUs</label><input id="s-gpus" type="range" min="8" max="256" step="8" value="64" oninput="updateSizer()" /></div>
+      <div class="control"><label>并发请求率 QPS: <span id="v-qps">32</span> QPS</label><input id="s-qps" type="range" min="8" max="96" step="4" value="32" oninput="updateSizer()" /></div>
+      <div class="control"><label>共享前缀缓存命中率 (Prefix Hit Rate): <span id="v-hit">75</span>%</label><input id="s-hit" type="range" min="0" max="95" step="5" value="75" oninput="updateSizer()" /></div>
+      <div class="control"><label>平均输入上下文长度 (Prompt Length): <span id="v-ctx">32768</span> tokens</label><input id="s-ctx" type="range" min="4096" max="65536" step="4096" value="32768" oninput="updateSizer()" /></div>
+      <div class="control"><label>参考子集群 GPU 数: <span id="v-gpus">8</span> GPUs</label><input id="s-gpus" type="range" min="8" max="64" step="8" value="8" oninput="updateSizer()" /></div>
     </div>
     <div class="kpi-grid">
-      <div class="kpi"><div class="k-label">vLLM 同机混部 vs SGLang RadixAttention TTFT</div><div class="k-val" id="k-ttft" style="color:var(--accent);">1106 ms → 285 ms (3.88×)</div></div>
-      <div class="kpi"><div class="k-label">同机混部 vs PD 分离 SLA 有效吞吐</div><div class="k-val" id="k-goodput" style="color:var(--emerald);">12,400 → 38,200 tok/s (3.08×)</div></div>
-      <div class="kpi"><div class="k-label">单百万 Token 成本 ($/1M Tokens)</div><div class="k-val" id="k-cost" style="color:var(--amber);">$0.83 → $0.27 (-67.5%)</div></div>
-      <div class="kpi"><div class="k-label">架构师推荐拓扑与 P:D 配比</div><div class="k-val" id="k-rec" style="color:var(--purple);font-size:15px;">PD Disagg (3P:5D · 24P:40D)</div></div>
+      <div class="kpi"><div class="k-label">vLLM 同机混部 vs SGLang RadixAttention TTFT</div><div class="k-val" id="k-ttft" style="color:var(--accent);">186.4 ms → 54.0 ms (3.45×)</div></div>
+      <div class="kpi"><div class="k-label">同机混部 vs PD 分离 单卡 SLA 有效吞吐</div><div class="k-val" id="k-goodput" style="color:var(--emerald);">680 → 1,618.4 tok/s/GPU (2.38×)</div></div>
+      <div class="kpi"><div class="k-label">单百万 Token 成本 ($/1M · 含异构 4P+4D)</div><div class="k-val" id="k-cost" style="color:var(--amber);">$0.76 → $0.50 (-34.2%)</div></div>
+      <div class="kpi"><div class="k-label">Mooncake 400G RDMA KV 传输耗时</div><div class="k-val" id="k-rec" style="color:var(--purple);font-size:15px;">1.024 GB @ 44.91 GB/s = 22.8 ms</div></div>
     </div>
   </div>
-  <h2>③ 📊 架构师六维选型决策矩阵（Architect Decision Matrix）</h2>
+  <div class="sizer-box" style="border-color:var(--emerald);">
+    <h2 style="margin-top:0;border:none;padding:0;">③ 🎛️ Round 2 交互式超大 MoE 量化（BF16/W4A16/FP8/NVFP4）与并行策略（TP vs DP+EP+EPLB）计算器</h2>
+    <div class="controls">
+      <div class="control">
+        <label>量化精度方案 (Quantization):</label>
+        <select id="m-quant" onchange="updateMoeSizer()" style="width:100%;padding:8px;border-radius:8px;background:#0f172a;color:#f8fafc;border:1px solid #334155;">
+          <option value="bf16_tp16">BF16 + 跨机纯 TP=16 (Baseline)</option>
+          <option value="w4a16_tp8">W4A16 (AWQ/Marlin) + 单机 TP=8</option>
+          <option value="fp8_tp8">FP8 Block-Scaled + 单机纯 TP=8</option>
+          <option value="fp8_dp8_ep8_no_eplb">FP8 + DP=8 / EP=8 (无 EPLB 均衡)</option>
+          <option value="fp8_dp8_ep8_eplb" selected>FP8 + DP=8 / EP=8 + DeepEP + EPLB (推荐)</option>
+          <option value="nvfp4_dp16_ep16_eplb">Blackwell NVFP4 + DP=16 / EP=16 + EPLB</option>
+        </select>
+      </div>
+      <div class="control"><label>64 卡集群并发 Batch 规模: <span id="v-mbatch">128</span> reqs</label><input id="s-mbatch" type="range" min="16" max="256" step="16" value="128" oninput="updateMoeSizer()" /></div>
+    </div>
+    <div class="kpi-grid">
+      <div class="kpi"><div class="k-label">64 卡集群总有效吞吐 (Cluster Goodput)</div><div class="k-val" id="m-tput" style="color:var(--emerald);">92,200 tok/s (2.65× vs BF16)</div></div>
+      <div class="kpi"><div class="k-label">Decode P99 TPOT 尾部延迟</div><div class="k-val" id="m-tpot" style="color:var(--accent);">15.8 ms (EPLB -37.1%)</div></div>
+      <div class="kpi"><div class="k-label">单百万输出 Token 成本 ($/1M Tokens)</div><div class="k-val" id="m-cost" style="color:var(--amber);">$0.35 / 1M (-62.0%)</div></div>
+      <div class="kpi"><div class="k-label">通信占比与精度保持率 (MMLU-Pro)</div><div class="k-val" id="m-comm" style="color:var(--purple);font-size:15px;">Comm 14.5% · 精度 99.7%</div></div>
+    </div>
+  </div>
+  <h2>④ 📊 架构师选型决策矩阵（Round 1 推理引擎/PD 分离 &amp; Round 2 MoE 量化/专家并行）</h2>
   <table>
     <thead>
-      <tr><th>对比维度</th><th>vLLM (v0.19.1)</th><th>SGLang (v0.5.10)</th><th>TensorRT-LLM (v1.3.0)</th><th>PD Disagg (Dynamo + Mooncake)</th></tr>
+      <tr><th>对比维度 / 方案</th><th>vLLM (v0.19.1)</th><th>SGLang (v0.5.10)</th><th>PD 分离 (Dynamo + Mooncake)</th><th>MoE FP8 + DP8/EP8 + EPLB</th><th>Blackwell NVFP4 + DP16/EP16</th></tr>
     </thead>
     <tbody>
-      <tr><td><b>核心适用场景</b></td><td>通用多模型 SaaS、新模型 Day-0 上线</td><td>多轮 Agent、共享长 Prompt、JSON 结构化输出</td><td>NVIDIA 固定主干模型极限低延迟 FP8/FP4</td><td>≥32 卡长上下文 RAG (≥8K) 与大型 MoE 生产集群</td></tr>
-      <tr><td><b>关键延迟与吞吐 (64×H100)</b></td><td>TTFT P99: 3,420 ms · 12,400 tok/s</td><td>TTFT (82% Hit): 285 ms (3.88×) · 18,900 tok/s</td><td>Decode TPOT: 13.8 ms · 19,800 tok/s</td><td><b>TTFT P99: 380 ms · TPOT: 16.5 ms · 38,200 tok/s (3.08×)</b></td></tr>
-      <tr><td><b>底层核心机制</b></td><td>PagedAttention + Chunked Prefill</td><td>RadixAttention LRU Tree + XGrammar FSM</td><td>Ahead-of-Time Engine + Custom CUDA Graphs</td><td>Prefill/Decode Pool Split + RDMA Zero-Copy KV (18.4 ms)</td></tr>
-      <tr><td><b>综合 TCO ($/1M Tokens)</b></td><td>$0.83 / 1M tokens</td><td>$0.54 / 1M tokens (-34.9%)</td><td>$0.52 / 1M tokens (-37.3%)</td><td><b>$0.27 / 1M tokens (-67.5%)</b></td></tr>
+      <tr><td><b>核心适用场景</b></td><td>通用多模型 SaaS、多模态批量编码 (3.20×)</td><td>多轮 Agent、共享长 Prompt、JSON 结构化输出</td><td>≥32 卡长上下文 RAG (≥16K) 与重 Prefill 混合负载</td><td>Hopper/MI300X 671B/37B 超大 MoE 主力生产集群</td><td>Blackwell B200/GB200 超高吞吐万亿 MoE 集群</td></tr>
+      <tr><td><b>关键延迟与吞吐 (synthetic)</b></td><td>16K TTFT: 186.4 ms · 同机 P99 TPOT: 68.4 ms</td><td>16K TTFT (75% Hit): 54.0 ms (3.45×) · 2.85× QPS</td><td><b>Decode P99 TPOT: 18.2 ms (3.76×) · 1,618.4 tok/s/GPU (2.38×)</b></td><td><b>64 卡吞吐: 92,200 tok/s (2.65×) · P99 TPOT: 15.8 ms</b></td><td><b>64 卡吞吐: 151,200 tok/s (4.34×) · P99 TPOT: 11.4 ms</b></td></tr>
+      <tr><td><b>底层核心机制</b></td><td>PagedAttention + Chunked Prefill + Async Sched</td><td>RadixAttention 前缀树 + 零开销 FSM 解码</td><td>3P+5D 独立池 + 400G RDMA 零拷贝 KV (1.024 GB / 22.8 ms)</td><td>1×128/128×128 块缩放 FP8 + DeepEP All-to-All + EPLB</td><td>硬件 E2M1 双级微缩放 + 跨节点 NVLink/IB EP=16</td></tr>
+      <tr><td><b>综合 TCO ($/1M Tokens)</b></td><td>同机 8×H200: $0.76 / 1M</td><td>高命中前缀场景显著降本</td><td><b>8×H200 3P+5D: $0.58 (-23.7%) · 异构 4P+4D: $0.50 (-34.2%)</b></td><td><b>$0.35 / 1M tokens (-62.0% vs BF16 TP=16 $0.92)</b></td><td><b>$0.21 / 1M tokens (-77.2% vs BF16 TP=16)</b></td></tr>
     </tbody>
   </table>
 </main>
@@ -187,33 +213,41 @@ function updateSizer() {
   document.getElementById('v-hit').textContent = Math.round(hit * 100);
   document.getElementById('v-ctx').textContent = ctx;
   document.getElementById('v-gpus').textContent = gpus;
-  const baseTtft = Math.round(1106 * (ctx / 8192) * (0.7 + 0.3 * (qps / 48)));
-  const sglTtft = Math.max(95, Math.round(baseTtft * (1 - 0.88 * hit) + 62));
-  const speedup = (baseTtft / sglTtft).toFixed(2);
+  const baseTtft = (186.4 * (ctx / 16384) * (0.85 + 0.15 * (qps / 32))).toFixed(1);
+  const sglTtft = (Number(baseTtft) * (1 - 0.947 * hit)).toFixed(1);
+  const speedup = (Number(baseTtft) / Math.max(12, Number(sglTtft))).toFixed(2);
   document.getElementById('k-ttft').textContent = baseTtft + ' ms → ' + sglTtft + ' ms (' + speedup + '×)';
-  const scale = gpus / 64;
-  const colGoodput = Math.round(12400 * scale * Math.max(0.55, 1 - (ctx - 8192) / 131072));
-  const pdFactor = gpus >= 16 ? (2.6 + 0.48 * Math.min(1.3, ctx / 8192)) : 1.25;
-  const pdGoodput = Math.round(colGoodput * pdFactor);
-  const gpRatio = (pdGoodput / colGoodput).toFixed(2);
-  document.getElementById('k-goodput').textContent = colGoodput.toLocaleString() + ' → ' + pdGoodput.toLocaleString() + ' tok/s (' + gpRatio + '×)';
-  const hourlyCost = gpus * 2.40;
-  const colCost = ((hourlyCost / (colGoodput * 3600)) * 1e6).toFixed(2);
-  const pdCost = ((hourlyCost / (pdGoodput * 3600)) * 1e6).toFixed(2);
-  const saving = Math.round((1 - pdCost / colCost) * 1000) / 10;
-  document.getElementById('k-cost').textContent = '$' + colCost + ' → $' + pdCost + ' (-' + saving + '%)';
-  let pRatio = 3, dRatio = 5;
-  if (ctx >= 16384) { pRatio = 5; dRatio = 3; }
-  else if (ctx <= 2048) { pRatio = 1; dRatio = 3; }
-  const pGpus = Math.round(gpus * (pRatio / (pRatio + dRatio)));
-  const dGpus = gpus - pGpus;
-  if (gpus < 16) {
-    document.getElementById('k-rec').textContent = hit >= 0.4 ? 'Colocated SGLang RadixAttention' : 'Colocated vLLM Chunked Prefill';
-  } else {
-    document.getElementById('k-rec').textContent = 'PD Disagg (' + pRatio + 'P:' + dRatio + 'D · ' + pGpus + 'P:' + dGpus + 'D GPUs)';
-  }
+  const colPerGpu = 680.0;
+  const pdPerGpu = ctx >= 16384 ? 1618.4 : 1380.0;
+  const gpRatio = (pdPerGpu / colPerGpu).toFixed(2);
+  document.getElementById('k-goodput').textContent = colPerGpu.toFixed(0) + ' → ' + pdPerGpu.toLocaleString() + ' tok/s/GPU (' + gpRatio + '×)';
+  document.getElementById('k-cost').textContent = '$0.76 → $0.58 (同构) / $0.50 (异构 -34.2%)';
+  const payloadGb = (1.024 * (ctx / 32768)).toFixed(3);
+  const xferMs = ((Number(payloadGb) / 44.91) * 1000).toFixed(1);
+  document.getElementById('k-rec').textContent = payloadGb + ' GB @ 44.91 GB/s = ' + xferMs + ' ms';
+}
+const MOE_DATA = {
+  bf16_tp16: { tput: 34800, ratio: '1.00×', tpot: '38.4 ms', cost: '$0.92 / 1M (Baseline)', comm: 'Comm 58.0% · 精度 100.0%' },
+  w4a16_tp8: { tput: 52400, ratio: '1.51×', tpot: '24.6 ms (高并发退化)', cost: '$0.61 / 1M (-33.7%)', comm: 'Comm 34.0% · 精度 99.1%' },
+  fp8_tp8: { tput: 63200, ratio: '1.82×', tpot: '22.8 ms', cost: '$0.51 / 1M (-44.6%)', comm: 'Comm 31.0% · 精度 99.7%' },
+  fp8_dp8_ep8_no_eplb: { tput: 74600, ratio: '2.14×', tpot: '25.1 ms (热门专家倾斜)', cost: '$0.43 / 1M (-53.3%)', comm: 'Comm 16.0% · 精度 99.7%' },
+  fp8_dp8_ep8_eplb: { tput: 92200, ratio: '2.65×', tpot: '15.8 ms (EPLB -37.1%)', cost: '$0.35 / 1M (-62.0%)', comm: 'Comm 14.5% · 精度 99.7%' },
+  nvfp4_dp16_ep16_eplb: { tput: 151200, ratio: '4.34×', tpot: '11.4 ms', cost: '$0.21 / 1M (-77.2%)', comm: 'Comm 11.2% · 精度 99.3%' }
+};
+function updateMoeSizer() {
+  const key = document.getElementById('m-quant').value;
+  const batch = Number(document.getElementById('s-mbatch').value);
+  document.getElementById('v-mbatch').textContent = batch;
+  const d = MOE_DATA[key];
+  const scale = (0.75 + 0.25 * (batch / 128));
+  const adjTput = Math.round(d.tput * scale);
+  document.getElementById('m-tput').textContent = adjTput.toLocaleString() + ' tok/s (' + d.ratio + ' vs BF16)';
+  document.getElementById('m-tpot').textContent = d.tpot;
+  document.getElementById('m-cost').textContent = d.cost;
+  document.getElementById('m-comm').textContent = d.comm;
 }
 updateSizer();
+updateMoeSizer();
 </script>
 </body>
 </html>

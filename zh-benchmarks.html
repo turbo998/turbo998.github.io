@@ -583,15 +583,33 @@ body:has([data-professional-header]){height:auto!important;overflow-x:clip!impor
         <a class="pub-arrow" href="workshops/faf-vs-agent-forge/test-report-cards.zh-CN.html" aria-label="打开三方竞技场 7-Card 报告">→</a>
       </article>
 
-      <!-- INFRA: AKSCLAW X E2B 100K SANDBOXES -->
+      <!-- INFRA: MOE QUANTIZATION & PARALLELISM + LLM ENGINE & PD DISAGGREGATION -->
       <article class="pub" data-category="harness-infra">
         <div>
           <span class="pub-tag report">算力底座 · 架构选型 FAQ</span>
-          <div class="pub-date">2026-11-08 · 64×H100 PD 分离</div>
+          <div class="pub-date">2026-11-08 · Round 2 MoE 量化与 EP</div>
+        </div>
+        <div class="pub-main">
+          <h3><a href="workshops/benchmarks/moe-quantization-parallelism-selection-cards.zh.html" target="_blank" rel="noopener">超大模型与 MoE 推理量化（`BF16`/`W4A16`/`FP8`/`NVFP4`）与并行策略（`Pure TP` vs `DP+EP+DeepEP+EPLB`）基准报告</a></h3>
+          <p>对标 `ib-vs-ethernet-roce-selection-faq.md` 标准六段式架构师实战指南与 7-Card 4:5 视觉报告（<code>synthetic</code> 确定性分析模型 + <code>anonymized_reported</code> 硬件规格，<code>independently_reproduced=false</code>）：在 64 卡 671B/37B MoE 集群上，<strong>FP8 细粒度块缩放 + Attention DP=8 / MoE EP=8 + DeepEP + EPLB</strong> 实现 <code>92,200 tok/s</code>（较 BF16 TP=16 提速 <code>2.65x</code>），Decode P99 TPOT 降至 <code>15.8 ms</code>，单百万 Token 成本降至 <code>$0.35</code>（<code>-62.0%</code>）；Blackwell <strong>NVFP4 + DP16/EP16</strong> 达 <code>151,200 tok/s</code>（较 BF16 提速 <code>4.34x</code>，较 FP8 提速 <code>1.64x</code>），成本降至 <code>$0.21/1M</code>（<code>-77.2%</code>），<strong>EPLB</strong> 消除 Zipf 热门专家排队倾斜（P99 TPOT <code>25.1 -> 15.8 ms</code>，<code>-37.1%</code>）。</p>
+          <div class="pub-meta">
+            <span><a href="workshops/benchmarks/moe-quantization-parallelism-selection-cards.zh.html" target="_blank" rel="noopener"><b>🃏 7-Card 4:5 视觉报告 (中文)</b></a></span>
+            <span><a href="workshops/benchmarks/moe-quantization-parallelism-selection-cards.html" target="_blank" rel="noopener"><b>🃏 EN 7-Card Deck</b></a></span>
+            <span><a href="workshops/benchmarks/llm-inference-engine-pd-sizer.html" target="_blank" rel="noopener"><b>🧭 交互式 MoE 与 PD 计算器</b></a></span>
+            <span><a href="assets/moe-quantization-parallelism-selection-faq-summary.svg" target="_blank" rel="noopener"><b>🖼️ 一图流总结 SVG</b></a></span>
+          </div>
+        </div>
+        <a class="pub-arrow" href="workshops/benchmarks/moe-quantization-parallelism-selection-cards.zh.html" target="_blank" rel="noopener" aria-label="打开超大 MoE 量化与并行策略 7-Card 报告">→</a>
+      </article>
+
+      <article class="pub" data-category="harness-infra">
+        <div>
+          <span class="pub-tag report">算力底座 · 架构选型 FAQ</span>
+          <div class="pub-date">2026-11-08 · Round 1 推理引擎与 PD</div>
         </div>
         <div class="pub-main">
           <h3><a href="workshops/benchmarks/llm-inference-engine-pd-selection-cards.zh.html" target="_blank" rel="noopener">LLM 推理引擎选型（`vLLM` vs `SGLang` vs `TRT-LLM`）与 Prefill-Decode (PD) 分离架构（`Dynamo` + `Mooncake`）基准报告</a></h3>
-          <p>对标 `ib-vs-ethernet-roce-selection-faq.md` 标准六段式架构师实战指南与 7-Card 4:5 视觉报告（<code>3,814</code> 份信源、<code>866</code> 条实证结论、<code>565</code> 项工程基准）：SGLang v0.5.10 RadixAttention 在 <code>82%</code> 前缀命中率下实现 <code>3.88x</code> 多轮首字延迟提速（<code>285 ms</code> vs <code>1,106 ms</code>）；PD 分离（NVIDIA Dynamo v1.0.1 + Mooncake RDMA <code>18.4 ms</code> 零拷贝 KV 传输）在 <code>64xH100</code> DeepSeek-R1 671B 集群上实现 <code>3.08x</code> SLA 有效吞吐（<code>38,200</code> vs <code>12,400 tok/s</code>）并降低 <code>-67.5%</code> 单百万 Token 推理成本（<code>$0.27</code> vs <code>$0.83</code>）。</p>
+          <p>对标 `ib-vs-ethernet-roce-selection-faq.md` 标准六段式架构师实战指南与 7-Card 4:5 视觉报告（<code>synthetic</code> 确定性分析模型 + <code>anonymized_reported</code> 硬件规格，<code>independently_reproduced=false</code>）：SGLang RadixAttention 在 16K 上下文 <code>75%</code> 前缀命中率下实现 <code>3.45x</code> 首字延迟提速（<code>186.4 -> 54.0 ms</code>，<code>2.85x</code> QPS）；PD 分离（NVIDIA Dynamo + Mooncake 400G RDMA 零拷贝传输 <code>1.024 GB</code> KV 载荷，按 <code>44.91 GB/s</code> 仅耗时 <code>22.8 ms</code>）将 Decode P99 TPOT 降低 <code>3.76x</code>（<code>68.4 -> 18.2 ms</code>），单卡 SLA 有效吞吐提升 <code>2.38x</code>（<code>680 -> 1,618.4 tok/s/GPU</code>），异构 4P+4D 配比降低 <code>-34.2%</code> 成本（<code>$0.76 -> $0.50 / 1M tokens</code>）。</p>
           <div class="pub-meta">
             <span><a href="workshops/benchmarks/llm-inference-engine-pd-selection-cards.zh.html" target="_blank" rel="noopener"><b>🃏 7-Card 4:5 视觉报告 (中文)</b></a></span>
             <span><a href="workshops/benchmarks/llm-inference-engine-pd-selection-cards.html" target="_blank" rel="noopener"><b>🃏 EN 7-Card Deck</b></a></span>
