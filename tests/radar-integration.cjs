@@ -145,6 +145,39 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r7File),'utf8');
       assert.ok(txt.includes('1,254.00')&&txt.includes('654.19')&&txt.includes('149.48')&&txt.includes('1,104.52')&&txt.includes('88.08%')&&txt.includes('88.75%'),r7File+': contains closed-form R7 figures');
     }
+    const r8Modules=40;
+    const r8PathARounds=r8Modules*6;
+    const r8PathAIn=r8PathARounds*(0.050*3.00);
+    const r8PathAOut=r8PathARounds*(0.012*15.00);
+    assert.equal(r8PathARounds,240,'R8 Path A monthly rounds');
+    assert.equal(r8PathAIn.toFixed(2),'36.00','R8 Path A input-only cost');
+    assert.equal(r8PathAOut.toFixed(2),'43.20','R8 Path A output-only cost (counted once)');
+    assert.equal((r8PathAIn+r8PathAOut).toFixed(2),'79.20','R8 Path A monthly API total');
+    const r8PathBRounds=r8Modules*4;
+    const r8PathBIn=r8PathBRounds*(0.150*3.00);
+    const r8PathBOut=r8PathBRounds*(0.010*15.00);
+    assert.equal(r8PathBRounds,160,'R8 Path B monthly rounds');
+    assert.equal(r8PathBIn.toFixed(2),'72.00','R8 Path B input-only cost');
+    assert.equal(r8PathBOut.toFixed(2),'24.00','R8 Path B output-only cost (counted once)');
+    assert.equal((r8PathBIn+r8PathBOut).toFixed(2),'96.00','R8 Path B monthly API total');
+    const r8PathCRounds=r8Modules*2;
+    const r8PathCIn=r8PathCRounds*(0.015*3.00);
+    const r8PathCOut=r8PathCRounds*(0.008*15.00);
+    assert.equal(r8PathCRounds,80,'R8 Path C monthly rounds');
+    assert.equal(r8PathCIn.toFixed(2),'3.60','R8 Path C input-only cost');
+    assert.equal(r8PathCOut.toFixed(2),'9.60','R8 Path C output-only cost (counted once)');
+    assert.equal((r8PathCIn+r8PathCOut).toFixed(2),'13.20','R8 Path C monthly API total');
+    assert.equal((79.20-13.20).toFixed(2),'66.00','R8 monthly API savings vs Path A');
+    assert.equal(((79.20-13.20)/79.20*100).toFixed(2),'83.33','R8 pct API savings vs Path A');
+    assert.equal((96.00-13.20).toFixed(2),'82.80','R8 monthly API savings vs Path B');
+    assert.equal(((96.00-13.20)/96.00*100).toFixed(2),'86.25','R8 pct API savings vs Path B');
+    assert.equal((40*2.5).toFixed(1),'100.0','R8 Path A QA hours');
+    assert.equal((40*0.5).toFixed(1),'20.0','R8 Path C QA hours');
+    assert.equal((100.0-20.0).toFixed(1),'80.0','R8 QA hours saved vs Path A');
+    for(const r8File of ['workshops/github-trending-radar/docs/craft-anything-rust-probe-vs-decompile-selection-faq.md','workshops/github-trending-radar/docs/craft-anything-rust-probe-vs-decompile-selection-faq.en.md','assets/github-ai-radar-2026-11-08-r8-craft-anything-probe.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-08-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r8File),'utf8');
+      assert.ok(txt.includes('0.050')&&txt.includes('0.012')&&txt.includes('0.150')&&txt.includes('0.015')&&txt.includes('0.008')&&txt.includes('79.20')&&txt.includes('13.20')&&txt.includes('66.00')&&txt.includes('not_measured'),r8File+': contains exact R8 input/output parameters and API-only scope');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
