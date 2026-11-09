@@ -1,0 +1,264 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Multi-camera 180-degree line-of-action continuity and screen-order invariant",
+  "topic_zh": "多机位 180 度动作轴线连续性与屏幕左右方向守恒",
+  "slug": "continuity-axis-stage",
+  "timestamp": "2026-11-09T16:46:13.894Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic 2D half-plane determinant check, 4-shot camera basis NDC projection and Node CPU solving. No SynCamMaster multi-view diffusion execution, gaze tracking or automated narrative editing.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "156.0.8078.80",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "projection-equivalence-128",
+      "passed": true,
+      "detail": "128 analytic basis and 4x4 cofactor projections agree within 1e-12 NDC"
+    },
+    {
+      "name": "projection-equivalence-1024",
+      "passed": true,
+      "detail": "1024 analytic basis and 4x4 cofactor projections agree within 1e-12 NDC"
+    },
+    {
+      "name": "projection-equivalence-8192",
+      "passed": true,
+      "detail": "8192 analytic basis and 4x4 cofactor projections agree within 1e-12 NDC"
+    },
+    {
+      "name": "same-side-zero-flips",
+      "passed": true,
+      "detail": "121 sampled frames across 4 shots preserve x_NDC(A) < x_NDC(B) (0 flips)"
+    },
+    {
+      "name": "crossed-axis-flips-exposed",
+      "passed": true,
+      "detail": "axis-crossing Shot 3 (+142°) reverses left-right screen order on 30 sampled frames"
+    },
+    {
+      "name": "cut-continuity-preserved",
+      "passed": true,
+      "detail": "Shot 2 to Shot 3 cut preserves Actor A on screen left and Actor B on screen right"
+    },
+    {
+      "name": "cut-reversal-detected",
+      "passed": true,
+      "detail": "negative half-plane sign in Shot 3 immediately flips Actor A to the right of Actor B"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse timestamp visitation reproduces the exact Actor A world matrix"
+    },
+    {
+      "name": "atomic-azimuth-rejection",
+      "passed": true,
+      "detail": "unsafe 135-degree cut azimuth is rejected while valid camera rig remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered Actor A world matrix matches independent blocking coordinates"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px continuity stage controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual shot inspection remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU shot projections",
+      "count": 128,
+      "primary_ms": 0.05700000000001637,
+      "baseline_ms": 0.2618999999999687,
+      "primary_samples_ms": [
+        0.27319999999997435,
+        0.07299999999997908,
+        0.18999999999994088,
+        0.03989999999998872,
+        0.05580000000009022,
+        0.05700000000001637,
+        0.041600000000016735
+      ],
+      "baseline_samples_ms": [
+        5.872100000000046,
+        0.6585999999999785,
+        0.5742000000000189,
+        0.2618999999999687,
+        0.12429999999994834,
+        0.13149999999995998,
+        0.07600000000002183
+      ]
+    },
+    {
+      "load": "1024 CPU shot projections",
+      "count": 1024,
+      "primary_ms": 0.29160000000001673,
+      "baseline_ms": 0.708400000000097,
+      "primary_samples_ms": [
+        0.29849999999999,
+        0.2880999999999858,
+        0.2787999999999329,
+        0.29160000000001673,
+        0.27800000000002,
+        0.6955000000000382,
+        4.494500000000016
+      ],
+      "baseline_samples_ms": [
+        1.6317999999999984,
+        0.7069999999999936,
+        0.5999000000000478,
+        0.6012999999999238,
+        0.708400000000097,
+        1.3634000000000697,
+        1.522299999999973
+      ]
+    },
+    {
+      "load": "8192 CPU shot projections",
+      "count": 8192,
+      "primary_ms": 2.290499999999952,
+      "baseline_ms": 4.177999999999997,
+      "primary_samples_ms": [
+        3.06129999999996,
+        2.877200000000016,
+        3.7789000000000215,
+        2.0410000000000537,
+        2.290499999999952,
+        2.2128000000000156,
+        2.1520000000000437
+      ],
+      "baseline_samples_ms": [
+        6.714799999999968,
+        19.959299999999985,
+        3.7899999999999636,
+        3.3448000000000775,
+        4.196900000000028,
+        4.177999999999997,
+        3.6211000000000695
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/continuity-axis-stage/light-same-side.png",
+    "docs/evidence/continuity-axis-stage/light-axis-crossed.png",
+    "docs/evidence/continuity-axis-stage/dark-same-side.png",
+    "docs/evidence/continuity-axis-stage/dark-axis-crossed.png",
+    "docs/evidence/continuity-axis-stage/mobile.png"
+  ],
+  "primary_label": "Analytic camera basis",
+  "baseline_label": "Full 4x4 matrix inversion",
+  "load_unit": "shot projections",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Orthonormal camera basis dot-product projection versus general 4x4 cofactor matrix inversion, not neural multi-camera synthesis or GPU rendering.",
+  "geometry": {
+    "parts": 59,
+    "shots": 4,
+    "sampled_frames": 121,
+    "same_side_flips": 0,
+    "crossed_axis_flips": 30,
+    "maximum_solver_error": 1.2212453270876722e-15
+  },
+  "protocol": {
+    "input": {
+      "time": 7.2,
+      "shot": 3,
+      "actor_separation": 3.4,
+      "camera_distance": 6.8,
+      "cut_azimuth_deg": 44,
+      "mode": "same-side"
+    },
+    "output": {
+      "half_plane_sign": 16.679,
+      "ndc_a_x": -0.4182,
+      "ndc_b_x": 0.5892,
+      "screen_order_preserved": true
+    },
+    "function": "action vector u=B-A → half-plane check s(c)>0 → orthonormal camera basis → invariant screen order x_A < x_B"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 4-shot frames preserve left-to-right screen order under reverse visitation",
+      "original": 121,
+      "perturbed": 121,
+      "total": 121
+    }
+  ],
+  "good_fit": [
+    "Multi-camera dialogue and interview blocking",
+    "Pre-validating camera cuts before multi-view video synthesis",
+    "Teaching the 180-degree line-of-action rule geometrically",
+    "Preventing screen-direction flips in automated shot planners"
+  ],
+  "not_for": [
+    "SynCamMaster neural multi-camera video generation",
+    "Deliberate psychological disorientation jump cuts",
+    "Automated emotional performance or facial gaze synthesis",
+    "3+ character shifting-axis complex crowd choreography"
+  ],
+  "locale_zh": {
+    "projection-equivalence-128": "投影等价 128",
+    "128 analytic basis and 4x4 cofactor projections agree within 1e-12 NDC": "128 个解析基向量与 4x4 伴随矩阵投影在 1e-12 NDC 内一致",
+    "projection-equivalence-1024": "投影等价 1024",
+    "1024 analytic basis and 4x4 cofactor projections agree within 1e-12 NDC": "1024 个解析基向量与 4x4 伴随矩阵投影在 1e-12 NDC 内一致",
+    "projection-equivalence-8192": "投影等价 8192",
+    "8192 analytic basis and 4x4 cofactor projections agree within 1e-12 NDC": "8192 个解析基向量与 4x4 伴随矩阵投影在 1e-12 NDC 内一致",
+    "same-side-zero-flips": "同侧零反转",
+    "121 sampled frames across 4 shots preserve x_NDC(A) < x_NDC(B) (0 flips)": "4 个镜头 121 个采样帧全部保持 x_NDC(A) < x_NDC(B)（0 次反转）",
+    "crossed-axis-flips-exposed": "越轴反转暴露",
+    "axis-crossing Shot 3 (+142°) reverses left-right screen order on 30 sampled frames": "越过 180° 轴线的第 3 镜（+142°）在 30 个采样帧发生屏幕左右反转",
+    "cut-continuity-preserved": "切镜顺序保持",
+    "Shot 2 to Shot 3 cut preserves Actor A on screen left and Actor B on screen right": "第 2 镜切至第 3 镜保持演员 A 在屏幕左侧、演员 B 在屏幕右侧",
+    "cut-reversal-detected": "切镜跳轴检测",
+    "negative half-plane sign in Shot 3 immediately flips Actor A to the right of Actor B": "第 3 镜半平面符号变负时，演员 A 立即反跳到演员 B 右侧",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse timestamp visitation reproduces the exact Actor A world matrix": "逆序时间戳重访精确复现演员 A 世界矩阵",
+    "atomic-azimuth-rejection": "原子越轴拒绝",
+    "unsafe 135-degree cut azimuth is rejected while valid camera rig remains": "135 度越轴机位角被拒绝，有效机位状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered Actor A world matrix matches independent blocking coordinates": "渲染演员 A 世界矩阵与独立走位坐标一致",
+    "mobile-layout": "手机布局",
+    "390px continuity stage controls fit without horizontal overflow": "390px 连续性舞台控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual shot inspection remains available": "减少动态默认静止，保留手动切镜核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Analytic camera basis": "解析相机正交基投影",
+    "Full 4x4 matrix inversion": "完整4x4矩阵求逆投影",
+    "Median of 7 alternating Node CPU runs after warmup. Orthonormal camera basis dot-product projection versus general 4x4 cofactor matrix inversion, not neural multi-camera synthesis or GPU rendering.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；相机正交基内积投影对比通用 4x4 伴随矩阵求逆，不是神经多机位生成或 GPU 渲染。",
+    "Sampled 4-shot frames preserve left-to-right screen order under reverse visitation": "逆序重访下 4 镜头采样帧保持屏幕左右顺序不变",
+    "action vector u=B-A → half-plane check s(c)>0 → orthonormal camera basis → invariant screen order x_A < x_B": "动作轴向量 u=B-A → 半平面符号核验 s(c)>0 → 相机正交基投影 → 屏幕左右顺序守恒 x_A < x_B",
+    "Multi-camera dialogue and interview blocking": "多机位对话与访谈调度预演",
+    "Pre-validating camera cuts before multi-view video synthesis": "多视角视频生成前的机位切镜预校验",
+    "Teaching the 180-degree line-of-action rule geometrically": "用几何不变量直观讲解 180 度轴线规则",
+    "Preventing screen-direction flips in automated shot planners": "防止自动分镜规划器发生屏幕方向反转",
+    "SynCamMaster neural multi-camera video generation": "SynCamMaster 神经多机位视频生成推理",
+    "Deliberate psychological disorientation jump cuts": "故意制造方向迷失感的艺术越轴剪辑",
+    "Automated emotional performance or facial gaze synthesis": "自动情绪表演或面部眼神生成",
+    "3+ character shifting-axis complex crowd choreography": "三人以上动态转移轴线的复杂群戏调度"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/continuity-axis.test.ts",
+    "node scripts/benchmark-continuity-axis.mjs"
+  ]
+}
