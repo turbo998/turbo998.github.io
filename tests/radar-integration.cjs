@@ -547,6 +547,24 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r23File),'utf8');
       assert.ok(txt.includes('122.40')&&txt.includes('45.00')&&txt.includes('9.00')&&txt.includes('113.40')&&txt.includes('92.65%')&&txt.includes('244')&&txt.includes('not_measured'),r23File+': contains exact 11-09 R10 claude-plugins+pixelfx closed-form parameters');
     }
+    // 2026-11-09 Round 11 (D4Vinci/Scrapling + The-PR-Agent/pr-agent) closed-form FinOps verification
+    const r24WebA=5000*(0.040*3.00+0.001*15.00);
+    const r24PrA=5000*(0.030*3.00+0.002*15.00);
+    assert.equal((r24WebA+r24PrA).toFixed(2),'1275.00','11-09 R11 Scrapling+pr-agent Path A total');
+    const r24WebB=1000*(0.040*3.00+0.001*15.00);
+    const r24PrB=1000*(0.060*3.00+0.003*15.00);
+    assert.equal((r24WebB+r24PrB).toFixed(2),'360.00','11-09 R11 Scrapling+pr-agent Path B total');
+    const r24WebC=500*(0.004*3.00+0.0005*15.00);
+    const r24PrC=1000*(0.008*3.00+0.0012*15.00);
+    assert.equal((r24WebC+r24PrC).toFixed(2),'51.75','11-09 R11 Scrapling+pr-agent Path C total');
+    assert.equal((1275.00-51.75).toFixed(2),'1223.25','11-09 R11 savings vs Path A');
+    assert.equal(((1275.00-51.75)/1275.00*100).toFixed(2),'95.94','11-09 R11 pct savings vs Path A');
+    assert.equal((60.0-9.0).toFixed(1),'51.0','11-09 R11 hours saved');
+    assert.equal(((60.0-9.0)/60.0*100).toFixed(2),'85.00','11-09 R11 pct hours saved');
+    for(const r24File of ['workshops/github-trending-radar/docs/scrapling-pr-agent-adaptive-extraction-selection-faq.md','workshops/github-trending-radar/docs/scrapling-pr-agent-adaptive-extraction-selection-faq.en.md','assets/github-ai-radar-2026-11-09-r11-scrapling-pr-agent.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-09-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r24File),'utf8');
+      assert.ok(txt.includes('1,275.00')&&txt.includes('360.00')&&txt.includes('51.75')&&txt.includes('1,223.25')&&txt.includes('95.94%')&&txt.includes('not_measured'),r24File+': contains exact 11-09 R11 Scrapling+pr-agent closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
