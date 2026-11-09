@@ -1,0 +1,265 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Landmark-anchored contour correspondence versus raw vertex-index morphing",
+  "topic_zh": "地标锚定轮廓弧长对应与原始顶点下标插值对比",
+  "slug": "contour-correspondence-bench",
+  "timestamp": "2026-11-09T17:01:23.902Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic 24-vertex cyclic seam alignment, non-adjacent segment intersection audit and Node CPU solving. No OmniLottie or LayerTracer neural model execution or genus-changing topology splits.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "156.0.8078.80",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "alignment-equivalence-128",
+      "passed": true,
+      "detail": "128 cardinal-probe and exhaustive cyclic-shift morphs agree within 1e-12"
+    },
+    {
+      "name": "alignment-equivalence-1024",
+      "passed": true,
+      "detail": "1024 cardinal-probe and exhaustive cyclic-shift morphs agree within 1e-12"
+    },
+    {
+      "name": "alignment-equivalence-8192",
+      "passed": true,
+      "detail": "8192 cardinal-probe and exhaustive cyclic-shift morphs agree within 1e-12"
+    },
+    {
+      "name": "aligned-zero-crossings",
+      "passed": true,
+      "detail": "101 morph steps retain 0 non-adjacent edge self-intersections"
+    },
+    {
+      "name": "raw-index-twist-exposed",
+      "passed": true,
+      "detail": "raw index baseline at α=0.5 creates 12 self-intersections and collapses area to 0.44"
+    },
+    {
+      "name": "optimal-cyclic-shift",
+      "passed": true,
+      "detail": "solver recovers the exact 11-vertex cyclic seam offset"
+    },
+    {
+      "name": "transport-energy-reduction",
+      "passed": true,
+      "detail": "squared chord transport drops from 388.23 to 6.20 u²"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse alpha visitation reproduces the exact vertex-pin world matrix"
+    },
+    {
+      "name": "atomic-shift-rejection",
+      "passed": true,
+      "detail": "out-of-range authorShift=30 is rejected while valid contour state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered pantograph pin world position matches independent morph coordinates"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px contour bench controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual morph inspection remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU contour morphs",
+      "count": 128,
+      "primary_ms": 1.48599999999999,
+      "baseline_ms": 1.3746000000001004,
+      "primary_samples_ms": [
+        4.7590999999999894,
+        1.48599999999999,
+        0.6816000000000031,
+        2.77030000000002,
+        0.616800000000012,
+        0.5499999999999545,
+        3.1470999999999094
+      ],
+      "baseline_samples_ms": [
+        1.9888999999999442,
+        1.3468000000000302,
+        1.2734000000000378,
+        9.048299999999927,
+        1.822999999999979,
+        1.3746000000001004,
+        1.2515999999998257
+      ]
+    },
+    {
+      "load": "1024 CPU contour morphs",
+      "count": 1024,
+      "primary_ms": 4.791099999999915,
+      "baseline_ms": 11.25240000000008,
+      "primary_samples_ms": [
+        4.078200000000152,
+        3.8346999999998843,
+        4.239000000000033,
+        4.791099999999915,
+        4.824900000000071,
+        5.630500000000211,
+        7.703399999999874
+      ],
+      "baseline_samples_ms": [
+        11.25240000000008,
+        11.083799999999883,
+        10.998399999999947,
+        9.948300000000017,
+        15.294900000000098,
+        12.581899999999905,
+        27.67540000000008
+      ]
+    },
+    {
+      "load": "8192 CPU contour morphs",
+      "count": 8192,
+      "primary_ms": 51.211500000000115,
+      "baseline_ms": 130.65370000000007,
+      "primary_samples_ms": [
+        41.20790000000011,
+        51.211500000000115,
+        33.24019999999996,
+        111.53150000000005,
+        53.701300000000174,
+        45.79989999999998,
+        66.7224000000001
+      ],
+      "baseline_samples_ms": [
+        130.65370000000007,
+        110.38369999999986,
+        170.5481000000002,
+        195.40110000000004,
+        196.55819999999994,
+        115.5635000000002,
+        126.91060000000016
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/contour-correspondence-bench/light-landmark-aligned.png",
+    "docs/evidence/contour-correspondence-bench/light-raw-index.png",
+    "docs/evidence/contour-correspondence-bench/dark-landmark-aligned.png",
+    "docs/evidence/contour-correspondence-bench/dark-raw-index.png",
+    "docs/evidence/contour-correspondence-bench/mobile.png"
+  ],
+  "primary_label": "Cardinal landmark probe",
+  "baseline_label": "Exhaustive shift + pair scan",
+  "load_unit": "contour morphs",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Cardinal landmark probe versus full 24-shift + all-pairs segment intersection scan, not neural Lottie/SVG synthesis or GPU rendering.",
+  "geometry": {
+    "parts": 61,
+    "vertices": 24,
+    "sampled_steps": 101,
+    "aligned_crossings": 0,
+    "raw_midpoint_crossings": 12,
+    "aligned_transport_cost": 6.2047,
+    "raw_transport_cost": 388.2302,
+    "maximum_solver_error": 0
+  },
+  "protocol": {
+    "input": {
+      "alpha": 0.5,
+      "vertices": 24,
+      "authored_shift": 11,
+      "lobe_depth": 0.42,
+      "mode": "landmark-aligned"
+    },
+    "output": {
+      "optimal_shift": 11,
+      "self_intersections": 0,
+      "signed_area": 12.646,
+      "raw_baseline_crossings": 12
+    },
+    "function": "arc-length stations → cyclic landmark shift Δ*=11 → minimal-chord interpolation → 0 self-intersections"
+  },
+  "robustness": [
+    {
+      "name": "Sampled morph steps retain zero self-intersections under reverse visitation",
+      "original": 101,
+      "perturbed": 101,
+      "total": 101
+    }
+  ],
+  "good_fit": [
+    "Clean SVG and Lottie shape transitions without bow-tie twists",
+    "Aligning independently authored closed diagram contours",
+    "Auditing polygon self-intersections and area collapse",
+    "Explaining why vertex 0 seam alignment matters in morphing"
+  ],
+  "not_for": [
+    "OmniLottie or LayerTracer multimodal vector generation",
+    "Topology-changing morphs (1 loop splitting into 3 islands)",
+    "3D mesh surface correspondence across arbitrary genus",
+    "Raster optical-flow frame interpolation"
+  ],
+  "locale_zh": {
+    "alignment-equivalence-128": "对齐等价 128",
+    "128 cardinal-probe and exhaustive cyclic-shift morphs agree within 1e-12": "128 个四基点探测与全循环移位插值在 1e-12 内一致",
+    "alignment-equivalence-1024": "对齐等价 1024",
+    "1024 cardinal-probe and exhaustive cyclic-shift morphs agree within 1e-12": "1024 个四基点探测与全循环移位插值在 1e-12 内一致",
+    "alignment-equivalence-8192": "对齐等价 8192",
+    "8192 cardinal-probe and exhaustive cyclic-shift morphs agree within 1e-12": "8192 个四基点探测与全循环移位插值在 1e-12 内一致",
+    "aligned-zero-crossings": "对齐零自交",
+    "101 morph steps retain 0 non-adjacent edge self-intersections": "101 个变形插值步全程保持 0 处非相邻边自交",
+    "raw-index-twist-exposed": "原始下标自交暴露",
+    "raw index baseline at α=0.5 creates 12 self-intersections and collapses area to 0.44": "原始下标基线在 α=0.5 产生 12 处自交，面积坍缩至 0.44",
+    "optimal-cyclic-shift": "最优循环移位",
+    "solver recovers the exact 11-vertex cyclic seam offset": "求解器精确恢复 11 个顶点的起始接缝偏移",
+    "transport-energy-reduction": "传输能量压降",
+    "squared chord transport drops from 388.23 to 6.20 u²": "顶点弦长平方和从 388.23 降至 6.20 u²",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse alpha visitation reproduces the exact vertex-pin world matrix": "逆序 α 重访精确复现首顶点销世界矩阵",
+    "atomic-shift-rejection": "原子偏移拒绝",
+    "out-of-range authorShift=30 is rejected while valid contour state remains": "越界顶点偏移 30 被拒绝，有效轮廓状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered pantograph pin world position matches independent morph coordinates": "渲染缩放仪顶点销世界位置与独立插值坐标一致",
+    "mobile-layout": "手机布局",
+    "390px contour bench controls fit without horizontal overflow": "390px 轮廓变形控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual morph inspection remains available": "减少动态默认静止，保留手动变形核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Cardinal landmark probe": "四基点地标快速对齐",
+    "Exhaustive shift + pair scan": "全移位+全边对自交扫描",
+    "Median of 7 alternating Node CPU runs after warmup. Cardinal landmark probe versus full 24-shift + all-pairs segment intersection scan, not neural Lottie/SVG synthesis or GPU rendering.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；四基点地标快速探测对比 24 移位 + 全边对相交扫描，不是神经矢量生成或 GPU 渲染。",
+    "Sampled morph steps retain zero self-intersections under reverse visitation": "逆序重访下采样变形步保持零自交",
+    "arc-length stations → cyclic landmark shift Δ*=11 → minimal-chord interpolation → 0 self-intersections": "等弧长采样站点 → 循环地标移位 Δ*=11 → 最小弦长插值 → 0 处边自交",
+    "Clean SVG and Lottie shape transitions without bow-tie twists": "无麻花自交的干净 SVG 与 Lottie 形状过渡",
+    "Aligning independently authored closed diagram contours": "对齐独立绘制的闭合架构图轮廓",
+    "Auditing polygon self-intersections and area collapse": "核验多边形非相邻边自交与面积坍缩",
+    "Explaining why vertex 0 seam alignment matters in morphing": "直观解释起始顶点接缝对齐对变形的意义",
+    "OmniLottie or LayerTracer multimodal vector generation": "OmniLottie 或 LayerTracer 多模态矢量生成",
+    "Topology-changing morphs (1 loop splitting into 3 islands)": "改变拓扑亏格的分裂变形（单环变多岛）",
+    "3D mesh surface correspondence across arbitrary genus": "任意亏格三维网格曲面对应求解",
+    "Raster optical-flow frame interpolation": "光栅像素光流补帧"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/contour-correspondence.test.ts",
+    "node scripts/benchmark-contour-correspondence.mjs"
+  ]
+}
