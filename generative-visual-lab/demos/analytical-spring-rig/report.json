@@ -1,0 +1,265 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Timestep-invariant analytical spring damper versus explicit Euler frame drops",
+  "topic_zh": "时间步长无关解析弹簧跟随与显式欧拉掉帧过冲对比",
+  "slug": "analytical-spring-rig",
+  "timestamp": "2026-11-09T17:15:00.566Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic closed-form critically damped second-order ODE semigroup update, explicit Euler divergence audit and Node CPU solving. No Spring-Gaus neural 3DGS training or nonlinear continuum FEM.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "156.0.8078.80",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "solver-equivalence-128",
+      "passed": true,
+      "detail": "128 closed-form exponential and 96-substep RK4 states agree within 1e-5 units"
+    },
+    {
+      "name": "solver-equivalence-1024",
+      "passed": true,
+      "detail": "1024 closed-form exponential and 96-substep RK4 states agree within 1e-5 units"
+    },
+    {
+      "name": "solver-equivalence-8192",
+      "passed": true,
+      "detail": "8192 closed-form exponential and 96-substep RK4 states agree within 1e-5 units"
+    },
+    {
+      "name": "analytical-zero-overshoot",
+      "passed": true,
+      "detail": "101 sampled frames retain 0 overshoot and 0 timestep drift under 80ms frame drops"
+    },
+    {
+      "name": "euler-frame-drop-overshoot",
+      "passed": true,
+      "detail": "explicit Euler at Δt=80ms overshoots target by 4.2944 units at t=0.16s"
+    },
+    {
+      "name": "carriage-matches-reference",
+      "passed": true,
+      "detail": "stepped analytical carriage world X matches direct exact reference within 1e-12"
+    },
+    {
+      "name": "rendered-euler-divergence",
+      "passed": true,
+      "detail": "rendered Euler carriage diverges past the reference carriage by >0.9 units"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse timestamp visitation reproduces the exact carriage world matrix"
+    },
+    {
+      "name": "atomic-step-rejection",
+      "passed": true,
+      "detail": "out-of-range stepMs=250 is rejected while valid damper state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered carriage world X matches independent closed-form ODE position"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px spring rig controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual damper inspection remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU spring evaluations",
+      "count": 128,
+      "primary_ms": 0.03059999999993579,
+      "baseline_ms": 0.2877000000000862,
+      "primary_samples_ms": [
+        0.12860000000000582,
+        0.04210000000000491,
+        0.03139999999996235,
+        0.02619999999990341,
+        0.03059999999993579,
+        0.024999999999977263,
+        0.026600000000030377
+      ],
+      "baseline_samples_ms": [
+        0.8500000000000227,
+        0.30160000000000764,
+        0.2981999999999516,
+        0.27750000000003183,
+        0.28710000000000946,
+        0.28480000000001837,
+        0.2877000000000862
+      ]
+    },
+    {
+      "load": "1024 CPU spring evaluations",
+      "count": 1024,
+      "primary_ms": 0.19619999999997617,
+      "baseline_ms": 2.794200000000046,
+      "primary_samples_ms": [
+        0.23059999999998126,
+        0.19619999999997617,
+        0.19460000000003674,
+        0.6126000000000431,
+        0.6031000000000404,
+        0.17219999999997526,
+        0.17290000000002692
+      ],
+      "baseline_samples_ms": [
+        3.184500000000071,
+        2.794200000000046,
+        2.5563999999999396,
+        4.089500000000044,
+        3.530999999999949,
+        2.7165999999999713,
+        2.5159999999999627
+      ]
+    },
+    {
+      "load": "8192 CPU spring evaluations",
+      "count": 8192,
+      "primary_ms": 1.181600000000003,
+      "baseline_ms": 22.279899999999998,
+      "primary_samples_ms": [
+        1.181600000000003,
+        1.2449000000000296,
+        1.4393999999999778,
+        1.178199999999947,
+        1.1645999999999503,
+        1.3238000000000056,
+        1.133199999999988
+      ],
+      "baseline_samples_ms": [
+        24.680999999999926,
+        23.139099999999985,
+        21.55250000000001,
+        25.260600000000068,
+        21.27710000000002,
+        22.279899999999998,
+        22.119899999999916
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/analytical-spring-rig/light-analytical-exp.png",
+    "docs/evidence/analytical-spring-rig/light-explicit-euler.png",
+    "docs/evidence/analytical-spring-rig/dark-analytical-exp.png",
+    "docs/evidence/analytical-spring-rig/dark-explicit-euler.png",
+    "docs/evidence/analytical-spring-rig/mobile.png"
+  ],
+  "primary_label": "Closed-form exponential",
+  "baseline_label": "64-substep RK4 solver",
+  "load_unit": "spring evaluations",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form matrix exponential versus 64-substep 4th-order Runge-Kutta integration, not neural physics or GPU rendering.",
+  "geometry": {
+    "parts": 65,
+    "sampled_frames": 101,
+    "max_analytical_overshoot": 0,
+    "max_analytical_drift": 4.440892098500626e-16,
+    "euler_spike_overshoot": 4.2944,
+    "euler_spike_drift": 5.165612,
+    "maximum_solver_error": 1.8953147939981818e-8
+  },
+  "protocol": {
+    "input": {
+      "time": 0.16,
+      "omega": 18,
+      "step_ms": 80,
+      "start_x": -2,
+      "target_x": 2,
+      "mode": "analytical-exp"
+    },
+    "output": {
+      "position": 1.1288,
+      "overshoot": 0,
+      "timestep_drift": 0,
+      "euler_overshoot": 4.2944
+    },
+    "function": "state (e_0, v_0) → matrix exponential exp(A·Δt) → semigroup step invariance → 0 overshoot & 0 drift"
+  },
+  "robustness": [
+    {
+      "name": "Sampled spring states retain zero frame-drop drift under reverse visitation",
+      "original": 101,
+      "perturbed": 101,
+      "total": 101
+    }
+  ],
+  "good_fit": [
+    "Frame-rate-independent camera and UI spring follow-through",
+    "Surviving 80ms+ browser tab hitching without overshoot",
+    "Teaching matrix-exponential semigroup timestep invariance",
+    "Deterministic scrubbable secondary motion attachments"
+  ],
+  "not_for": [
+    "Spring-Gaus multi-view elastic 3D Gaussian reconstruction",
+    "Nonlinear contact and self-collision cloth solvers",
+    "Plastic fracture or tearing continuum mechanics",
+    "Hardware servo torque-saturation loop certification"
+  ],
+  "locale_zh": {
+    "solver-equivalence-128": "求解等价 128",
+    "128 closed-form exponential and 96-substep RK4 states agree within 1e-5 units": "128 个闭式矩阵指数与 96 子步 RK4 状态在 1e-5 单位内一致",
+    "solver-equivalence-1024": "求解等价 1024",
+    "1024 closed-form exponential and 96-substep RK4 states agree within 1e-5 units": "1024 个闭式矩阵指数与 96 子步 RK4 状态在 1e-5 单位内一致",
+    "solver-equivalence-8192": "求解等价 8192",
+    "8192 closed-form exponential and 96-substep RK4 states agree within 1e-5 units": "8192 个闭式矩阵指数与 96 子步 RK4 状态在 1e-5 单位内一致",
+    "analytical-zero-overshoot": "解析零过冲漂移",
+    "101 sampled frames retain 0 overshoot and 0 timestep drift under 80ms frame drops": "80ms 掉帧步长下 101 个采样帧保持 0 过冲与 0 步长漂移",
+    "euler-frame-drop-overshoot": "显式欧拉过冲暴露",
+    "explicit Euler at Δt=80ms overshoots target by 4.2944 units at t=0.16s": "显式欧拉在 Δt=80ms、t=0.16s 时过冲目标 4.2944 示意单位",
+    "carriage-matches-reference": "滑台对齐参考轨",
+    "stepped analytical carriage world X matches direct exact reference within 1e-12": "分步解析滑台世界 X 坐标与直接精确参考轨在 1e-12 内一致",
+    "rendered-euler-divergence": "渲染欧拉发散",
+    "rendered Euler carriage diverges past the reference carriage by >0.9 units": "显式欧拉滑台世界矩阵偏离精确参考滑台超过 0.9 单位",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse timestamp visitation reproduces the exact carriage world matrix": "逆序时间戳重访精确复现滑台世界矩阵",
+    "atomic-step-rejection": "原子步长拒绝",
+    "out-of-range stepMs=250 is rejected while valid damper state remains": "越界步长 250ms 被拒绝，有效阻尼状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered carriage world X matches independent closed-form ODE position": "渲染滑台世界 X 坐标与独立闭式微分方程解一致",
+    "mobile-layout": "手机布局",
+    "390px spring rig controls fit without horizontal overflow": "390px 弹簧阻尼控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual damper inspection remains available": "减少动态默认静止，保留手动阻尼核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Closed-form exponential": "闭式矩阵指数求解",
+    "64-substep RK4 solver": "64子步RK4数值积分",
+    "Median of 7 alternating Node CPU runs after warmup. Closed-form matrix exponential versus 64-substep 4th-order Runge-Kutta integration, not neural physics or GPU rendering.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；闭式矩阵指数对比 64 子步四阶龙格-库塔积分，不是神经物理或 GPU 渲染。",
+    "Sampled spring states retain zero frame-drop drift under reverse visitation": "逆序重访下采样弹簧状态保持零掉帧漂移",
+    "state (e_0, v_0) → matrix exponential exp(A·Δt) → semigroup step invariance → 0 overshoot & 0 drift": "初始状态 (e_0, v_0) → 矩阵指数 exp(A·Δt) → 半群步长无关性 → 0 过冲与 0 漂移",
+    "Frame-rate-independent camera and UI spring follow-through": "与帧率无关的相机与界面弹簧跟随动画",
+    "Surviving 80ms+ browser tab hitching without overshoot": "在 80ms+ 浏览器掉帧卡顿下不产生过冲",
+    "Teaching matrix-exponential semigroup timestep invariance": "直观讲解矩阵指数半群的时间步长无关性",
+    "Deterministic scrubbable secondary motion attachments": "可任意拖拽时间轴的确定性次级跟随挂件",
+    "Spring-Gaus multi-view elastic 3D Gaussian reconstruction": "Spring-Gaus 多视角弹性 3D 高斯重建",
+    "Nonlinear contact and self-collision cloth solvers": "非线性接触与自碰撞布料求解器",
+    "Plastic fracture or tearing continuum mechanics": "塑性断裂或撕裂连续介质力学",
+    "Hardware servo torque-saturation loop certification": "硬件伺服力矩饱和控制环认证"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/analytical-spring.test.ts",
+    "node scripts/benchmark-analytical-spring.mjs"
+  ]
+}

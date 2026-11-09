@@ -98,6 +98,30 @@
         "The 61-solid pantograph compares harmonic phase alignment against exhaustive shift scanning (51.21 ms vs 130.65 ms at 8192 morphs) without claiming OmniLottie execution."
       ],
       "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "genus_splitting": "not_measured" }
+    },
+    {
+      "round": 15,
+      "slug": "analytical-spring-rig",
+      "topic": "timestep-invariant-spring",
+      "title_zh": "掉帧卡顿也不炸飞：时间步长无关解析弹簧跟随与显式欧拉积分选型 FAQ",
+      "title_en": "Secondary follow-through that survives frame drops: closed-form analytical spring damper vs explicit Euler integration FAQ",
+      "faq_zh": "docs/timestep-invariant-spring-faq.md",
+      "faq_en": "docs/timestep-invariant-spring-faq.en.md",
+      "summary": "docs/evidence/analytical-spring-rig-summary.svg",
+      "report": "demos/analytical-spring-rig/report.json",
+      "cards": "demos/analytical-spring-rig/test-report-cards.html",
+      "cards_zh": "demos/analytical-spring-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "显式前向欧拉积分在 80ms 浏览器掉帧下（ω₀·Δt=1.44）突破单调界限，在 t=0.16s 产生 4.2944 示意单位过冲。",
+        "闭式矩阵指数满足半群性质 exp(A·Δt₁)exp(A·Δt₂)=exp(A·(Δt₁+Δt₂))，101 采样帧保持 0 过冲与 4.44e-16 u 步长漂移。",
+        "65 实体双轨滑台对比闭式指数与 96 子步 RK4（1.18 ms vs 22.28 ms），不冒充 Spring-Gaus 神经三维高斯重建。"
+      ],
+      "conclusions_en": [
+        "Explicit forward Euler violates monotonic bounds under 80ms frame drops (ω₀·Δt=1.44), overshooting the target by 4.2944 units at t=0.16s.",
+        "Closed-form matrix exponentials satisfy the semigroup property, retaining 0 overshoot and 4.44e-16 u drift across 101 frames.",
+        "The 65-solid twin-track rig compares closed-form exponential updates against 96-substep RK4 (1.18 ms vs 22.28 ms) without claiming Spring-Gaus execution."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "continuum_fem": "not_measured" }
     }
   ]
 }
