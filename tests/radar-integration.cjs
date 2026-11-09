@@ -680,6 +680,29 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r29File),'utf8');
       assert.ok(txt.includes('68.00')&&txt.includes('100.00')&&txt.includes('720.00')&&txt.includes('3,000.00')&&txt.includes('3,888.00')&&txt.includes('13.00')&&txt.includes('96.00')&&txt.includes('500.00')&&txt.includes('609.00')&&txt.includes('3,279.00')&&txt.includes('84.34%')&&txt.includes('not_measured'),r29File+': contains exact 11-09 R16 MuJoCo+rea-video closed-form parameters');
     }
+    // 2026-11-09 Round 17 (anthropics/claude-quickstarts + modelflare-ai/AnyModelBot v0.1.30) closed-form FinOps verification
+    const r30QaA=1500*(0.060*3.00+0.0015*15.00);
+    const r30SenA=170*1.50+30*8.50;
+    const r30SeatA=15*60.00;
+    const r30PathA=r30QaA+r30SenA+r30SeatA;
+    assert.equal(r30QaA.toFixed(2),'303.75','11-09 R17 Path A deal-room Q&A');
+    assert.equal(r30SenA.toFixed(2),'510.00','11-09 R17 Path A Sentry autofix');
+    assert.equal(r30SeatA.toFixed(2),'900.00','11-09 R17 Path A multi-vendor seats');
+    assert.equal(r30PathA.toFixed(2),'1713.75','11-09 R17 Path A total');
+    const r30QaB=12.00+1500*(0.008*3.00+0.001*15.00);
+    const r30SenB=170*1.50+30*2.00;
+    const r30SeatB=15*12.00;
+    const r30PathB=r30QaB+r30SenB+r30SeatB;
+    assert.equal(r30QaB.toFixed(2),'70.50','11-09 R17 Path B knowledge-wiki Q&A');
+    assert.equal(r30SenB.toFixed(2),'315.00','11-09 R17 Path B capped Sentry autofix');
+    assert.equal(r30SeatB.toFixed(2),'180.00','11-09 R17 Path B AnyModelBot pay-per-use');
+    assert.equal(r30PathB.toFixed(2),'565.50','11-09 R17 Path B total');
+    assert.equal((r30PathA-r30PathB).toFixed(2),'1148.25','11-09 R17 savings vs Path A');
+    assert.equal(((r30PathA-r30PathB)/r30PathA*100).toFixed(2),'67.00','11-09 R17 pct savings vs Path A');
+    for(const r30File of ['workshops/github-trending-radar/docs/claude-quickstarts-anymodelbot-managed-harness-selection-faq.md','workshops/github-trending-radar/docs/claude-quickstarts-anymodelbot-managed-harness-selection-faq.en.md','assets/github-ai-radar-2026-11-09-r17-claude-quickstarts-anymodelbot.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-09-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r30File),'utf8');
+      assert.ok(txt.includes('303.75')&&txt.includes('510.00')&&txt.includes('900.00')&&txt.includes('1,713.75')&&txt.includes('70.50')&&txt.includes('315.00')&&txt.includes('180.00')&&txt.includes('565.50')&&txt.includes('1,148.25')&&txt.includes('67.00%')&&txt.includes('not_measured'),r30File+': contains exact 11-09 R17 claude-quickstarts+AnyModelBot closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
