@@ -838,6 +838,29 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r36File),'utf8');
       assert.ok(txt.includes('138.00')&&txt.includes('180.00')&&txt.includes('3,600.00')&&txt.includes('3,918.00')&&txt.includes('24.00')&&txt.includes('360.00')&&txt.includes('408.00')&&txt.includes('3,510.00')&&txt.includes('89.59%')&&txt.includes('not_measured'),r36File+': contains exact 11-09 R23 sand3d+vork closed-form parameters');
     }
+    // 2026-11-09 Round 24 (NiazMorshed2007/reanimate + Pika-Labs/Pika-H3-Flex v0.1.0) closed-form FinOps verification
+    const r37UiA=20.00+90.0*65.00;
+    const r37VidA=150*3.5*1.20;
+    const r37AudA=25.0*65.00;
+    const r37PathA=r37UiA+r37VidA+r37AudA;
+    assert.equal(r37UiA.toFixed(2),'5870.00','11-09 R24 Path A UI tokens & manual tuning');
+    assert.equal(r37VidA.toFixed(2),'630.00','11-09 R24 Path A 50-step video retries');
+    assert.equal(r37AudA.toFixed(2),'1625.00','11-09 R24 Path A manual Foley sync');
+    assert.equal(r37PathA.toFixed(2),'8125.00','11-09 R24 Path A total');
+    const r37UiB=70.00+10.0*65.00;
+    const r37VidB=150*0.30;
+    const r37AudB=2.0*65.00;
+    const r37PathB=r37UiB+r37VidB+r37AudB;
+    assert.equal(r37UiB.toFixed(2),'720.00','11-09 R24 Path B reanimate loop & review');
+    assert.equal(r37VidB.toFixed(2),'45.00','11-09 R24 Path B 6-step local GPU');
+    assert.equal(r37AudB.toFixed(2),'130.00','11-09 R24 Path B synced stereo QA');
+    assert.equal(r37PathB.toFixed(2),'895.00','11-09 R24 Path B total');
+    assert.equal((r37PathA-r37PathB).toFixed(2),'7230.00','11-09 R24 savings vs Path A');
+    assert.equal(((r37PathA-r37PathB)/r37PathA*100).toFixed(2),'88.98','11-09 R24 pct savings vs Path A');
+    for(const r37File of ['workshops/github-trending-radar/docs/reanimate-pika-h3-flex-motion-video-selection-faq.md','workshops/github-trending-radar/docs/reanimate-pika-h3-flex-motion-video-selection-faq.en.md','assets/github-ai-radar-2026-11-09-r24-reanimate-pika-h3.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-09-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r37File),'utf8');
+      assert.ok(txt.includes('5,870.00')&&txt.includes('630.00')&&txt.includes('1,625.00')&&txt.includes('8,125.00')&&txt.includes('720.00')&&txt.includes('45.00')&&txt.includes('130.00')&&txt.includes('895.00')&&txt.includes('7,230.00')&&txt.includes('88.98%')&&txt.includes('not_measured'),r37File+': contains exact 11-09 R24 reanimate+Pika-H3-Flex closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
