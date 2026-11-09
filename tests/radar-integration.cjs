@@ -881,6 +881,28 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r38File),'utf8');
       assert.ok(txt.includes('600.00')&&txt.includes('10,000.00')&&txt.includes('800.00')&&txt.includes('11,400.00')&&txt.includes('120.00')&&txt.includes('15.00')&&txt.includes('735.00')&&txt.includes('10,665')&&txt.includes('93.55%')&&txt.includes('not_measured'),r38File+': contains exact 11-09 R25 FlashProve+MiniCPM-OCR closed-form parameters');
     }
+    // 2026-11-09 Round 26 (synchopate/llama-modchip v2.4.0 + Th0rgal/satmux) closed-form FinOps verification
+    const r39NodeA=8*1200.00;
+    const r39PreA=8*85.00;
+    const r39SatA=50.0*65.00;
+    const r39PathA=r39NodeA+r39PreA+r39SatA;
+    assert.equal(r39NodeA.toFixed(2),'9600.00','11-09 R26 Path A cloud GPU nodes');
+    assert.equal(r39PreA.toFixed(2),'680.00','11-09 R26 Path A re-prefill waste');
+    assert.equal(r39SatA.toFixed(2),'3250.00','11-09 R26 Path A PEP retry wait');
+    assert.equal(r39PathA.toFixed(2),'13530.00','11-09 R26 Path A total');
+    const r39NodeB=8*140.00;
+    const r39PreB=40.00;
+    const r39SatB=10.00+3.0*65.00;
+    const r39PathB=r39NodeB+r39PreB+r39SatB;
+    assert.equal(r39NodeB.toFixed(2),'1120.00','11-09 R26 Path B 64GB CPU nodes');
+    assert.equal(r39SatB.toFixed(2),'205.00','11-09 R26 Path B satmux VM & wait');
+    assert.equal(r39PathB.toFixed(2),'1365.00','11-09 R26 Path B total');
+    assert.equal((r39PathA-r39PathB).toFixed(2),'12165.00','11-09 R26 savings vs Path A');
+    assert.equal(((r39PathA-r39PathB)/r39PathA*100).toFixed(2),'89.91','11-09 R26 pct savings vs Path A');
+    for(const r39File of ['workshops/github-trending-radar/docs/llama-modchip-satmux-cpu-moe-satellite-selection-faq.md','workshops/github-trending-radar/docs/llama-modchip-satmux-cpu-moe-satellite-selection-faq.en.md','assets/github-ai-radar-2026-11-09-r26-llama-modchip-satmux.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-09-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r39File),'utf8');
+      assert.ok(txt.includes('9,600.00')&&txt.includes('680.00')&&txt.includes('3,250.00')&&txt.includes('13,530.00')&&txt.includes('1,120.00')&&txt.includes('40.00')&&txt.includes('205.00')&&txt.includes('1,365.00')&&txt.includes('12,165')&&txt.includes('89.91%')&&txt.includes('not_measured'),r39File+': contains exact 11-09 R26 llama-modchip+satmux closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
