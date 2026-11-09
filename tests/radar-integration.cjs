@@ -947,6 +947,24 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r41File),'utf8');
       assert.ok(txt.includes('3,000.00')&&txt.includes('900.00')&&txt.includes('2,700.00')&&txt.includes('6,600.00')&&txt.includes('15.00')&&txt.includes('320.00')&&txt.includes('270.00')&&txt.includes('605.00')&&txt.includes('5,995.00')&&txt.includes('90.83%')&&txt.includes('not_measured'),r41File+': contains exact 11-09 R28 livliv+open-yoki closed-form parameters');
     }
+    // 2026-11-09 Round 29 (speridlabs/idol-sdk + hyz317/HairDeck) closed-form FinOps verification
+    const r42PropA=500*6.00;
+    const r42HairA=280.0*55.00;
+    const r42PathA=r42PropA+r42HairA;
+    assert.equal(r42PropA.toFixed(2),'3000.00','11-09 R29 Path A cloud 3D prop API');
+    assert.equal(r42HairA.toFixed(2),'15400.00','11-09 R29 Path A manual hair rigging');
+    assert.equal(r42PathA.toFixed(2),'18400.00','11-09 R29 Path A total');
+    const r42PropB=15.00;
+    const r42HairB=10.00+20.0*55.00;
+    const r42PathB=r42PropB+r42HairB;
+    assert.equal(r42HairB.toFixed(2),'1110.00','11-09 R29 Path B HairDeck VRM');
+    assert.equal(r42PathB.toFixed(2),'1125.00','11-09 R29 Path B total');
+    assert.equal((r42PathA-r42PathB).toFixed(2),'17275.00','11-09 R29 savings vs Path A');
+    assert.equal(((r42PathA-r42PathB)/r42PathA*100).toFixed(2),'93.89','11-09 R29 pct savings vs Path A');
+    for(const r42File of ['workshops/github-trending-radar/docs/idol-sdk-hairdeck-single-image-3d-vrm-selection-faq.md','workshops/github-trending-radar/docs/idol-sdk-hairdeck-single-image-3d-vrm-selection-faq.en.md','assets/github-ai-radar-2026-11-09-r29-idol-hairdeck.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-09-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r42File),'utf8');
+      assert.ok(txt.includes('3,000.00')&&txt.includes('15,400.00')&&txt.includes('18,400.00')&&txt.includes('15.00')&&txt.includes('10.00')&&txt.includes('1,125.00')&&txt.includes('17,275')&&txt.includes('93.89%')&&txt.includes('1,048,576')&&txt.includes('not_measured'),r42File+': contains exact 11-09 R29 idol-sdk+HairDeck closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
