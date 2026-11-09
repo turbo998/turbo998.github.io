@@ -861,6 +861,26 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r37File),'utf8');
       assert.ok(txt.includes('5,870.00')&&txt.includes('630.00')&&txt.includes('1,625.00')&&txt.includes('8,125.00')&&txt.includes('720.00')&&txt.includes('45.00')&&txt.includes('130.00')&&txt.includes('895.00')&&txt.includes('7,230.00')&&txt.includes('88.98%')&&txt.includes('not_measured'),r37File+': contains exact 11-09 R24 reanimate+Pika-H3-Flex closed-form parameters');
     }
+    // 2026-11-09 Round 25 (anthropics/FlashProve v0.16.0 + OpenBMB/MiniCPM-OCR 1.0 + Jev) closed-form FinOps verification
+    const r38OcrA=600.00;
+    const r38QaA=250.0*40.00;
+    const r38AudA=10000*0.08;
+    const r38PathA=r38OcrA+r38QaA+r38AudA;
+    assert.equal(r38QaA.toFixed(2),'10000.00','11-09 R25 Path A blind 10% QA labor');
+    assert.equal(r38AudA.toFixed(2),'800.00','11-09 R25 Path A redundant H100 audit');
+    assert.equal(r38PathA.toFixed(2),'11400.00','11-09 R25 Path A total');
+    const r38OcrB=120.00;
+    const r38QaB=15.0*40.00;
+    const r38AudB=15.00;
+    const r38PathB=r38OcrB+r38QaB+r38AudB;
+    assert.equal(r38QaB.toFixed(2),'600.00','11-09 R25 Path B Jev region QA labor');
+    assert.equal(r38PathB.toFixed(2),'735.00','11-09 R25 Path B total');
+    assert.equal((r38PathA-r38PathB).toFixed(2),'10665.00','11-09 R25 savings vs Path A');
+    assert.equal(((r38PathA-r38PathB)/r38PathA*100).toFixed(2),'93.55','11-09 R25 pct savings vs Path A');
+    for(const r38File of ['workshops/github-trending-radar/docs/flashprove-minicpm-ocr-verifiable-ai-selection-faq.md','workshops/github-trending-radar/docs/flashprove-minicpm-ocr-verifiable-ai-selection-faq.en.md','assets/github-ai-radar-2026-11-09-r25-flashprove-minicpm-ocr.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-09-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r38File),'utf8');
+      assert.ok(txt.includes('600.00')&&txt.includes('10,000.00')&&txt.includes('800.00')&&txt.includes('11,400.00')&&txt.includes('120.00')&&txt.includes('15.00')&&txt.includes('735.00')&&txt.includes('10,665')&&txt.includes('93.55%')&&txt.includes('not_measured'),r38File+': contains exact 11-09 R25 FlashProve+MiniCPM-OCR closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
