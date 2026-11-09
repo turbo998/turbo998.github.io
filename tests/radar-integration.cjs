@@ -512,6 +512,23 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r21File),'utf8');
       assert.ok(txt.includes('1,080.00')&&txt.includes('371.25')&&txt.includes('112.50')&&txt.includes('967.50')&&txt.includes('89.58%')&&txt.includes('not_measured'),r21File+': contains exact 11-09 R8 DeepTutor+NOIR closed-form parameters');
     }
+    // 2026-11-09 Round 9 (kortix-ai/CompanyOS + pingdotgg/t3code) closed-form FinOps verification
+    const r22VmA=50*720*0.10;
+    const r22ApiA=10000*0.0900;
+    assert.equal((r22VmA+r22ApiA).toFixed(2),'4500.00','11-09 R9 CompanyOS+t3code Path A total');
+    const r22ApiB=5000*0.0900;
+    assert.equal((r22VmA+r22ApiB).toFixed(2),'4050.00','11-09 R9 CompanyOS+t3code Path B total');
+    const r22VmC=50*120*0.10;
+    const r22ApiC=2500*0.0900;
+    assert.equal((r22VmC+r22ApiC).toFixed(2),'825.00','11-09 R9 CompanyOS+t3code Path C total');
+    assert.equal((4500.00-825.00).toFixed(2),'3675.00','11-09 R9 CompanyOS+t3code savings vs Path A');
+    assert.equal(((4500.00-825.00)/4500.00*100).toFixed(2),'81.67','11-09 R9 CompanyOS+t3code pct savings vs Path A');
+    assert.equal((60.0-12.0).toFixed(1),'48.0','11-09 R9 CompanyOS+t3code hours saved');
+    assert.equal(((60.0-12.0)/60.0*100).toFixed(2),'80.00','11-09 R9 CompanyOS+t3code pct hours saved');
+    for(const r22File of ['workshops/github-trending-radar/docs/companyos-t3code-control-surface-vs-local-cli-selection-faq.md','workshops/github-trending-radar/docs/companyos-t3code-control-surface-vs-local-cli-selection-faq.en.md','assets/github-ai-radar-2026-11-09-r9-companyos-t3code.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-09-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r22File),'utf8');
+      assert.ok(txt.includes('4,500.00')&&txt.includes('4,050.00')&&txt.includes('825.00')&&txt.includes('3,675.00')&&txt.includes('81.67%')&&txt.includes('not_measured'),r22File+': contains exact 11-09 R9 CompanyOS+t3code closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
