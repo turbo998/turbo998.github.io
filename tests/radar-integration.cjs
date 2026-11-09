@@ -1009,6 +1009,29 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r44File),'utf8');
       assert.ok(txt.includes('1,500.00')&&txt.includes('3,900.00')&&txt.includes('1,300.00')&&txt.includes('6,700.00')&&txt.includes('20.00')&&txt.includes('520.00')&&txt.includes('130.00')&&txt.includes('670.00')&&txt.includes('6,030.00')&&txt.includes('90.00%')&&txt.includes('not_measured'),r44File+': contains exact 11-09 R31 chimera+code-animation-prompts closed-form parameters');
     }
+    // 2026-11-09 Round 32 (rerun-build/rerun + WoYun520/gif-factory) closed-form FinOps verification
+    const r45SaasA=6*250.00;
+    const r45RollA=25.0*60.00;
+    const r45GifA=55.0*60.00;
+    const r45PathA=r45SaasA+r45RollA+r45GifA;
+    assert.equal(r45SaasA.toFixed(2),'1500.00','11-09 R32 Path A 6 vertical SaaS seats');
+    assert.equal(r45RollA.toFixed(2),'1500.00','11-09 R32 Path A rollback labor');
+    assert.equal(r45GifA.toFixed(2),'3300.00','11-09 R32 Path A GIF rework labor');
+    assert.equal(r45PathA.toFixed(2),'6300.00','11-09 R32 Path A total');
+    const r45HostB=45.00+120.00;
+    const r45GateB=5.0*60.00;
+    const r45GifB=8.5*60.00;
+    const r45PathB=r45HostB+r45GateB+r45GifB;
+    assert.equal(r45HostB.toFixed(2),'165.00','11-09 R32 Path B self-hosted rerun + BYO LLM');
+    assert.equal(r45GateB.toFixed(2),'300.00','11-09 R32 Path B Foreman approval queue');
+    assert.equal(r45GifB.toFixed(2),'510.00','11-09 R32 Path B 3-axis exporter QA');
+    assert.equal(r45PathB.toFixed(2),'975.00','11-09 R32 Path B total');
+    assert.equal((r45PathA-r45PathB).toFixed(2),'5325.00','11-09 R32 savings vs Path A');
+    assert.equal(((r45PathA-r45PathB)/r45PathA*100).toFixed(2),'84.52','11-09 R32 pct savings vs Path A');
+    for(const r45File of ['workshops/github-trending-radar/docs/rerun-gif-factory-coworker-board-three-axis-gif-selection-faq.md','workshops/github-trending-radar/docs/rerun-gif-factory-coworker-board-three-axis-gif-selection-faq.en.md','assets/github-ai-radar-2026-11-09-r32-rerun-giffactory.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-09-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r45File),'utf8');
+      assert.ok(txt.includes('1,500.00')&&txt.includes('3,300.00')&&txt.includes('6,300.00')&&txt.includes('165.00')&&txt.includes('300.00')&&txt.includes('510.00')&&txt.includes('975.00')&&txt.includes('5,325.00')&&txt.includes('84.52%')&&txt.includes('not_measured'),r45File+': contains exact 11-09 R32 rerun+gif-factory closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
