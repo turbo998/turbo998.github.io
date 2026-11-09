@@ -418,6 +418,29 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r16File),'utf8');
       assert.ok(txt.includes('72.00')&&txt.includes('33.00')&&txt.includes('8.40')&&txt.includes('63.60')&&txt.includes('88.33%')&&txt.includes('validate-coverage-ledger.cjs')&&txt.includes('validate-findings.cjs')&&txt.includes('not_measured'),r16File+': contains exact 11-09 R3 security-audit-skill closed-form parameters');
     }
+    // 2026-11-09 Round 4 (max-sixty/worktrunk + backnotprop/plannotator) closed-form FinOps & Disk verification
+    const r17DiskA=8*3.50;
+    const r17DiskC=3.50+7*0.15;
+    assert.equal(r17DiskA.toFixed(2),'28.00','11-09 R4 worktrunk raw disk GB');
+    assert.equal(r17DiskC.toFixed(2),'4.55','11-09 R4 worktrunk CoW disk GB');
+    assert.equal(((r17DiskA-r17DiskC)/r17DiskA*100).toFixed(2),'83.75','11-09 R4 worktrunk CoW disk reduction pct');
+    const r17PathAIn=2400*(0.030*3.00);
+    const r17PathAOut=2400*(0.003*15.00);
+    assert.equal((r17PathAIn+r17PathAOut).toFixed(2),'324.00','11-09 R4 Path A rework API total');
+    const r17PathBIn=1600*(0.025*3.00);
+    const r17PathBOut=1600*(0.0025*15.00);
+    assert.equal((r17PathBIn+r17PathBOut).toFixed(2),'180.00','11-09 R4 Path B rework API total');
+    const r17PathCIn=880*(0.015*3.00);
+    const r17PathCOut=880*(0.0015*15.00);
+    assert.equal((r17PathCIn+r17PathCOut).toFixed(2),'59.40','11-09 R4 Path C rework API total');
+    assert.equal((324.00-59.40).toFixed(2),'264.60','11-09 R4 monthly API savings');
+    assert.equal(((324.00-59.40)/324.00*100).toFixed(2),'81.67','11-09 R4 pct API savings');
+    assert.equal((64.0-12.0).toFixed(1),'52.0','11-09 R4 hours saved');
+    assert.equal(((64.0-12.0)/64.0*100).toFixed(2),'81.25','11-09 R4 pct hours saved');
+    for(const r17File of ['workshops/github-trending-radar/docs/worktrunk-plannotator-hitl-vs-raw-git-worktree-selection-faq.md','workshops/github-trending-radar/docs/worktrunk-plannotator-hitl-vs-raw-git-worktree-selection-faq.en.md','assets/github-ai-radar-2026-11-09-r4-worktrunk-plannotator.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-09-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r17File),'utf8');
+      assert.ok(txt.includes('324.00')&&txt.includes('180.00')&&txt.includes('59.40')&&txt.includes('264.60')&&txt.includes('81.67%')&&txt.includes('28.00')&&txt.includes('4.55')&&txt.includes('83.75%')&&txt.includes('not_measured'),r17File+': contains exact 11-09 R4 worktrunk+plannotator closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
