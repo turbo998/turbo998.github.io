@@ -965,6 +965,28 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r42File),'utf8');
       assert.ok(txt.includes('3,000.00')&&txt.includes('15,400.00')&&txt.includes('18,400.00')&&txt.includes('15.00')&&txt.includes('10.00')&&txt.includes('1,125.00')&&txt.includes('17,275')&&txt.includes('93.89%')&&txt.includes('1,048,576')&&txt.includes('not_measured'),r42File+': contains exact 11-09 R29 idol-sdk+HairDeck closed-form parameters');
     }
+    // 2026-11-09 Round 30 (cutetailbud/ff-ruyijs v0.3.6 + sqlpxc/airhand v0.2.2) closed-form FinOps verification
+    const r43VmA=8*180.00;
+    const r43RmmA=30*25.00;
+    const r43LabA=45.0*60.00;
+    const r43PathA=r43VmA+r43RmmA+r43LabA;
+    assert.equal(r43VmA.toFixed(2),'1440.00','11-09 R30 Path A Chromium VM nodes');
+    assert.equal(r43RmmA.toFixed(2),'750.00','11-09 R30 Path A commercial RMM');
+    assert.equal(r43LabA.toFixed(2),'2700.00','11-09 R30 Path A triage labor');
+    assert.equal(r43PathA.toFixed(2),'4890.00','11-09 R30 Path A total');
+    const r43VmB=2*180.00;
+    const r43RmmB=12.00;
+    const r43LabB=4.5*60.00;
+    const r43PathB=r43VmB+r43RmmB+r43LabB;
+    assert.equal(r43VmB.toFixed(2),'360.00','11-09 R30 Path B ruyiJS VM nodes');
+    assert.equal(r43LabB.toFixed(2),'270.00','11-09 R30 Path B maintenance labor');
+    assert.equal(r43PathB.toFixed(2),'642.00','11-09 R30 Path B total');
+    assert.equal((r43PathA-r43PathB).toFixed(2),'4248.00','11-09 R30 savings vs Path A');
+    assert.equal(((r43PathA-r43PathB)/r43PathA*100).toFixed(2),'86.87','11-09 R30 pct savings vs Path A');
+    for(const r43File of ['workshops/github-trending-radar/docs/ruyijs-airhand-rendererless-browser-quic-desktop-selection-faq.md','workshops/github-trending-radar/docs/ruyijs-airhand-rendererless-browser-quic-desktop-selection-faq.en.md','assets/github-ai-radar-2026-11-09-r30-ruyijs-airhand.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-09-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r43File),'utf8');
+      assert.ok(txt.includes('1,440.00')&&txt.includes('750.00')&&txt.includes('2,700.00')&&txt.includes('4,890.00')&&txt.includes('360.00')&&txt.includes('12.00')&&txt.includes('270.00')&&txt.includes('642.00')&&txt.includes('4,248.00')&&txt.includes('86.87%')&&txt.includes('not_measured'),r43File+': contains exact 11-09 R30 ruyiJS+Airhand closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
