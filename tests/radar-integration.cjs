@@ -494,6 +494,24 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r20File),'utf8');
       assert.ok(txt.includes('48.96')&&txt.includes('15.84')&&txt.includes('5.04')&&txt.includes('43.92')&&txt.includes('89.71%')&&txt.includes('not_measured'),r20File+': contains exact 11-09 R7 floorplan+unslop closed-form parameters');
     }
+    // 2026-11-09 Round 8 (HKUDS/DeepTutor + Verlintas/NOIR) closed-form FinOps verification
+    const r21PathAIn=9000*(0.030*3.00);
+    const r21PathAOut=9000*(0.002*15.00);
+    assert.equal((r21PathAIn+r21PathAOut).toFixed(2),'1080.00','11-09 R8 DeepTutor+NOIR Path A total');
+    const r21PathBIn=4500*(0.020*3.00);
+    const r21PathBOut=4500*(0.0015*15.00);
+    assert.equal((r21PathBIn+r21PathBOut).toFixed(2),'371.25','11-09 R8 DeepTutor+NOIR Path B total');
+    const r21PathCIn=2500*(0.010*3.00);
+    const r21PathCOut=2500*(0.001*15.00);
+    assert.equal((r21PathCIn+r21PathCOut).toFixed(2),'112.50','11-09 R8 DeepTutor+NOIR Path C total');
+    assert.equal((1080.00-112.50).toFixed(2),'967.50','11-09 R8 DeepTutor+NOIR savings vs Path A');
+    assert.equal(((1080.00-112.50)/1080.00*100).toFixed(2),'89.58','11-09 R8 DeepTutor+NOIR pct savings vs Path A');
+    assert.equal((75.0-15.0).toFixed(1),'60.0','11-09 R8 DeepTutor+NOIR hours saved');
+    assert.equal(((75.0-15.0)/75.0*100).toFixed(2),'80.00','11-09 R8 DeepTutor+NOIR pct hours saved');
+    for(const r21File of ['workshops/github-trending-radar/docs/deeptutor-noir-adaptive-agent-selection-faq.md','workshops/github-trending-radar/docs/deeptutor-noir-adaptive-agent-selection-faq.en.md','assets/github-ai-radar-2026-11-09-r8-deeptutor-noir.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-09-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r21File),'utf8');
+      assert.ok(txt.includes('1,080.00')&&txt.includes('371.25')&&txt.includes('112.50')&&txt.includes('967.50')&&txt.includes('89.58%')&&txt.includes('not_measured'),r21File+': contains exact 11-09 R8 DeepTutor+NOIR closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
