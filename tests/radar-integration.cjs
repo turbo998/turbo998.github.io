@@ -772,6 +772,27 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r33File),'utf8');
       assert.ok(txt.includes('4,080.00')&&txt.includes('650.00')&&txt.includes('4,500.00')&&txt.includes('9,230.00')&&txt.includes('920.00')&&txt.includes('20.00')&&txt.includes('450.00')&&txt.includes('1,390.00')&&txt.includes('7,840.00')&&txt.includes('84.94%')&&txt.includes('not_measured'),r33File+': contains exact 11-09 R20 sapper-v2+sherlock closed-form parameters');
     }
+    // 2026-11-09 Round 21 (KKKKhazix/agent-autoloop + janestreet/agent_skills) closed-form FinOps verification
+    const r34TokA=648.00;
+    const r34BabA=100.0*60.00;
+    const r34ErrA=40.0*60.00;
+    const r34PathA=r34TokA+r34BabA+r34ErrA;
+    assert.equal(r34BabA.toFixed(2),'6000.00','11-09 R21 Path A terminal babysitting');
+    assert.equal(r34ErrA.toFixed(2),'2400.00','11-09 R21 Path A config errors');
+    assert.equal(r34PathA.toFixed(2),'9048.00','11-09 R21 Path A total');
+    const r34TokB=144.00;
+    const r34BabB=6.0*60.00;
+    const r34ErrB=5.0*60.00;
+    const r34PathB=r34TokB+r34BabB+r34ErrB;
+    assert.equal(r34BabB.toFixed(2),'360.00','11-09 R21 Path B card replies');
+    assert.equal(r34ErrB.toFixed(2),'300.00','11-09 R21 Path B verified drills');
+    assert.equal(r34PathB.toFixed(2),'804.00','11-09 R21 Path B total');
+    assert.equal((r34PathA-r34PathB).toFixed(2),'8244.00','11-09 R21 savings vs Path A');
+    assert.equal(((r34PathA-r34PathB)/r34PathA*100).toFixed(2),'91.11','11-09 R21 pct savings vs Path A');
+    for(const r34File of ['workshops/github-trending-radar/docs/agent-autoloop-janestreet-skills-selection-faq.md','workshops/github-trending-radar/docs/agent-autoloop-janestreet-skills-selection-faq.en.md','assets/github-ai-radar-2026-11-09-r21-autoloop-janestreet.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-09-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r34File),'utf8');
+      assert.ok(txt.includes('648.00')&&txt.includes('6,000.00')&&txt.includes('2,400.00')&&txt.includes('9,048.00')&&txt.includes('144.00')&&txt.includes('360.00')&&txt.includes('300.00')&&txt.includes('804.00')&&txt.includes('8,244.00')&&txt.includes('91.11%')&&txt.includes('not_measured'),r34File+': contains exact 11-09 R21 agent-autoloop+janestreet closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
