@@ -1,0 +1,267 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Halton(2,3) low-discrepancy sub-pixel jitter vs pseudo-random sampling",
+  "topic_zh": "Halton(2,3) 低差异亚像素抖动与伪随机聚团对比",
+  "slug": "halton-supersample-rig",
+  "timestamp": "2026-11-09T20:24:37.453Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Halton(2,3) radical-inverse sequence, 4x4 sub-cell occupancy, max void radius, and integer vs string radical-inverse CPU solving. No DLSS/FSR/Mip-Splatting execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "156.0.8078.80",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "halton-equivalence-128",
+      "passed": true,
+      "detail": "128 integer and string radical-inverse sequences agree within 1e-14"
+    },
+    {
+      "name": "halton-equivalence-1024",
+      "passed": true,
+      "detail": "1024 integer and string radical-inverse sequences agree within 1e-14"
+    },
+    {
+      "name": "halton-equivalence-8192",
+      "passed": true,
+      "detail": "8192 integer and string radical-inverse sequences agree within 1e-14"
+    },
+    {
+      "name": "halton-stratum-coverage",
+      "passed": true,
+      "detail": "Halton(2,3) occupies 14/16 sub-cells with max void r=0.242 px"
+    },
+    {
+      "name": "lcg-void-clumping-exposed",
+      "passed": true,
+      "detail": "pseudo-random LCG leaves 11/16 sub-cells empty (void r=0.776 px)"
+    },
+    {
+      "name": "low-coverage-error-retained",
+      "passed": true,
+      "detail": "Halton(2,3) tracks ribbon coverage within 0.0105 at +0.22 px"
+    },
+    {
+      "name": "lcg-coverage-bias-exposed",
+      "passed": true,
+      "detail": "clumped LCG misses ribbon coverage by 0.1980 at +0.22 px"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse beam scrubbing reproduces the exact feature ribbon world matrix"
+    },
+    {
+      "name": "atomic-width-rejection",
+      "passed": true,
+      "detail": "out-of-range beamHalfWidth=0.9 is rejected while valid jitter state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered ribbon rotation matrix matches independent -32° orientation cosine"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Halton jitter controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual offset scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 16-tap Halton passes",
+      "count": 128,
+      "primary_ms": 0.05739999999991596,
+      "baseline_ms": 0.5833999999999833,
+      "primary_samples_ms": [
+        0.16859999999996944,
+        0.05739999999991596,
+        0.05989999999997053,
+        0.055799999999976535,
+        0.05889999999999418,
+        0.05560000000002674,
+        0.053699999999935244
+      ],
+      "baseline_samples_ms": [
+        0.6304999999999836,
+        0.6048000000000684,
+        0.5833999999999833,
+        0.5455999999999221,
+        0.8434999999999491,
+        0.5686000000000604,
+        0.5347000000000435
+      ]
+    },
+    {
+      "load": "1024 CPU 16-tap Halton passes",
+      "count": 1024,
+      "primary_ms": 0.15980000000001837,
+      "baseline_ms": 8.516200000000026,
+      "primary_samples_ms": [
+        0.4574999999999818,
+        0.15980000000001837,
+        0.15189999999995507,
+        0.16980000000000928,
+        0.18270000000006803,
+        0.15540000000009968,
+        0.15359999999998308
+      ],
+      "baseline_samples_ms": [
+        9.246200000000044,
+        6.226699999999937,
+        10.031299999999987,
+        6.168600000000083,
+        8.516200000000026,
+        6.2012999999999465,
+        9.415399999999977
+      ]
+    },
+    {
+      "load": "8192 CPU 16-tap Halton passes",
+      "count": 8192,
+      "primary_ms": 1.6499999999999773,
+      "baseline_ms": 50.22630000000004,
+      "primary_samples_ms": [
+        4.120999999999981,
+        1.3182999999999083,
+        1.3269000000000233,
+        2.0751999999999953,
+        1.6499999999999773,
+        1.6231000000000222,
+        13.713200000000029
+      ],
+      "baseline_samples_ms": [
+        40.38689999999997,
+        52.941799999999944,
+        32.440900000000056,
+        31.73630000000003,
+        50.22630000000004,
+        78.31060000000002,
+        172.3351
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/halton-supersample-rig/light-halton-2-3.png",
+    "docs/evidence/halton-supersample-rig/light-pseudo-random-lcg.png",
+    "docs/evidence/halton-supersample-rig/dark-halton-2-3.png",
+    "docs/evidence/halton-supersample-rig/dark-pseudo-random-lcg.png",
+    "docs/evidence/halton-supersample-rig/mobile.png"
+  ],
+  "primary_label": "Integer radical-inverse loop",
+  "baseline_label": "String digit-reverse radical inverse",
+  "load_unit": "16-tap Halton passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Integer modulo/division radical inverse versus base-b string digit reversal.",
+  "geometry": {
+    "parts": 54,
+    "taps": 16,
+    "halton_occupied_cells": 14,
+    "lcg_occupied_cells": 5,
+    "halton_void_radius": 0.2415,
+    "lcg_void_radius": 0.7755,
+    "halton_coverage_err": 0.0105,
+    "lcg_coverage_err": 0.198,
+    "maximum_solver_error": 0
+  },
+  "protocol": {
+    "input": {
+      "beam_offset_px": 0.08,
+      "beam_half_width": 0.16,
+      "taps": 16,
+      "mode": "halton-2-3"
+    },
+    "output": {
+      "halton_cells": 14,
+      "lcg_cells": 5,
+      "halton_void_r": 0.242,
+      "lcg_void_r": 0.776,
+      "halton_err": 0.0105,
+      "lcg_err": 0.198
+    },
+    "function": "radical inverse (φ_2(i), φ_3(i)) for i=1..16 → 13/16 strata occupied → void radius 0.211 px"
+  },
+  "robustness": [
+    {
+      "name": "Sampled sub-pixel ribbon offsets retain low-discrepancy stratum coverage",
+      "original": 41,
+      "perturbed": 41,
+      "total": 41
+    }
+  ],
+  "good_fit": [
+    "TAA camera projection matrix sub-pixel jitter (16-frame Halton(2,3) cycle)",
+    "Preventing sub-pixel blind spots where thin wires or splats flicker on and off",
+    "Progressive multi-sample raymarching and area-light stratification",
+    "Explaining why uniform random numbers clump under the Birthday Paradox"
+  ],
+  "not_for": [
+    "DLSS, FSR, or XeSS neural motion-vector temporal upscaling execution",
+    "Mip-Splatting 3D Gaussian frequency-constrained CUDA rasterization",
+    "High-dimensional (>10D) path tracing where scrambled Sobol sequences excel",
+    "Spatial neighborhood clamping or YCoCg color-box anti-ghosting"
+  ],
+  "locale_zh": {
+    "halton-equivalence-128": "根逆等价 128",
+    "128 integer and string radical-inverse sequences agree within 1e-14": "128 次整数除法与字符串反转根逆序列在 1e-14 内一致",
+    "halton-equivalence-1024": "根逆等价 1024",
+    "1024 integer and string radical-inverse sequences agree within 1e-14": "1024 次整数除法与字符串反转根逆序列在 1e-14 内一致",
+    "halton-equivalence-8192": "根逆等价 8192",
+    "8192 integer and string radical-inverse sequences agree within 1e-14": "8192 次整数除法与字符串反转根逆序列在 1e-14 内一致",
+    "halton-stratum-coverage": "Halton子格覆盖",
+    "Halton(2,3) occupies 14/16 sub-cells with max void r=0.242 px": "Halton(2,3) 命中 14/16 个亚像素子格，最大空白半径 0.242 px",
+    "lcg-void-clumping-exposed": "伪随机漏格暴露",
+    "pseudo-random LCG leaves 11/16 sub-cells empty (void r=0.776 px)": "伪随机序列漏空 11/16 个亚像素子格（盲区半径 0.776 px）",
+    "low-coverage-error-retained": "覆盖率低误差保持",
+    "Halton(2,3) tracks ribbon coverage within 0.0105 at +0.22 px": "Halton(2,3) 在 +0.22 px 处将斜线覆盖率误差控制在 0.0105",
+    "lcg-coverage-bias-exposed": "伪随机覆盖偏差暴露",
+    "clumped LCG misses ribbon coverage by 0.1980 at +0.22 px": "聚团伪随机序列在 +0.22 px 处产生 0.1980 覆盖率偏差",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse beam scrubbing reproduces the exact feature ribbon world matrix": "逆序偏移拖曳精确复现斜线特征带世界矩阵",
+    "atomic-width-rejection": "原子线宽拒绝",
+    "out-of-range beamHalfWidth=0.9 is rejected while valid jitter state remains": "越界半线宽 0.9 被拒绝，有效抖动状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered ribbon rotation matrix matches independent -32° orientation cosine": "渲染特征带旋转矩阵与独立 -32° 朝向余弦完全一致",
+    "mobile-layout": "手机布局",
+    "390px Halton jitter controls fit without horizontal overflow": "390px 亚像素抖动控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual offset scrubbing remains available": "减少动态默认静止，保留手动亚像素核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Integer radical-inverse loop": "整数除模根逆循环",
+    "String digit-reverse radical inverse": "字符串进制反转根逆基线",
+    "Median of 7 alternating Node CPU runs after warmup. Integer modulo/division radical inverse versus base-b string digit reversal.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；整数除模根逆循环对比字符串进制反转。",
+    "Sampled sub-pixel ribbon offsets retain low-discrepancy stratum coverage": "采样亚像素特征偏移保持低差异子格覆盖",
+    "radical inverse (φ_2(i), φ_3(i)) for i=1..16 → 13/16 strata occupied → void radius 0.211 px": "根逆反射 (φ_2(i), φ_3(i)) i=1..16 → 覆盖 13/16 亚像素子格 → 最大空白半径仅 0.211 px",
+    "TAA camera projection matrix sub-pixel jitter (16-frame Halton(2,3) cycle)": "TAA 相机投影矩阵 16 帧循环 Halton(2,3) 亚像素抖动",
+    "Preventing sub-pixel blind spots where thin wires or splats flicker on and off": "消除细线、发丝或微型高斯核落入亚像素采样盲区引起的闪烁",
+    "Progressive multi-sample raymarching and area-light stratification": "渐进式多抽头光线步进与面光源分层采样",
+    "Explaining why uniform random numbers clump under the Birthday Paradox": "直观解释为何均匀伪随机数受生日悖论支配必然发生聚团漏格",
+    "DLSS, FSR, or XeSS neural motion-vector temporal upscaling execution": "DLSS、FSR 或 XeSS 神经运动矢量超分辨率推理",
+    "Mip-Splatting 3D Gaussian frequency-constrained CUDA rasterization": "Mip-Splatting 3D 高斯频率约束 CUDA 光栅化",
+    "High-dimensional (>10D) path tracing where scrambled Sobol sequences excel": "需要加扰 Sobol 序列的 10 维以上高维路径追踪",
+    "Spatial neighborhood clamping or YCoCg color-box anti-ghosting": "YCoCg 色彩空间邻域钳制与残影剔除"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/halton-supersample.test.ts",
+    "node scripts/benchmark-halton-supersample.mjs"
+  ]
+}

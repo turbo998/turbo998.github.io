@@ -362,6 +362,30 @@
         "The 48-solid 12-segment twin-tower stage compares in-place Float64Array projection against object-cloned sweeps (77.00 ms vs 89.32 ms at 1,024 solves) without claiming GPU FEM execution."
       ],
       "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "gpu_cloth": "not_measured" }
+    },
+    {
+      "round": 26,
+      "slug": "halton-supersample-rig",
+      "topic": "low-discrepancy-halton-jitter",
+      "title_zh": "亚像素抗锯齿不聚团不漏格：Halton(2,3) 低差异序列抖动与伪随机采样选型 FAQ",
+      "title_en": "Sub-pixel anti-aliasing without clumping voids: Halton(2,3) low-discrepancy jitter vs pseudo-random sampling FAQ",
+      "faq_zh": "docs/low-discrepancy-halton-jitter-faq.md",
+      "faq_en": "docs/low-discrepancy-halton-jitter-faq.en.md",
+      "summary": "docs/evidence/halton-supersample-rig-summary.svg",
+      "report": "demos/halton-supersample-rig/report.json",
+      "cards": "demos/halton-supersample-rig/test-report-cards.html",
+      "cards_zh": "demos/halton-supersample-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "伪随机采样受生日悖论聚团支配，16 个采样点在 4×4 亚像素网格中漏空 11 格（最大盲区半径 0.7755 px），在 +0.22 px 偏移处造成 0.1980 覆盖率误差。",
+        "采用互质基数 (2,3) 的 Halton 根逆反射序列可均匀命中 14/16 个亚像素子格（最大空白半径 0.2415 px），将斜线覆盖率误差降至 0.0105（精度提升 18.9×）。",
+        "54 实体 4×4 亚像素超采样台对比整数除模根逆循环与字符串进制反转（8192 次 1.65 ms vs 50.23 ms，提速 30.4×），不冒充 DLSS、FSR 或 Mip-Splatting CUDA 核。"
+      ],
+      "conclusions_en": [
+        "Pseudo-random sampling suffers Birthday-Paradox clumping, leaving 11/16 sub-cells empty (0.7755 px max void radius) and causing a 0.1980 ribbon coverage error at +0.22 px.",
+        "Halton(2,3) radical-inverse jitter occupies 14/16 sub-pixel strata (0.2415 px max void radius) and reduces ribbon coverage error by 18.9× to 0.0105.",
+        "The 54-solid 4×4 sub-pixel stage compares integer modulo/division radical inversion against string digit reversal (1.65 ms vs 50.23 ms at 8,192 passes, 30.4× faster) without claiming DLSS or Mip-Splatting execution."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "temporal_upscaler": "not_measured" }
     }
   ]
 }
