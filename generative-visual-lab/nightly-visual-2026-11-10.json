@@ -266,6 +266,30 @@
         "The 56-solid 16-rib oscillator compares a factored spatial-temporal trig basis against per-rib Math.sin calls (19.16 ms vs 68.78 ms) without claiming Loopy or Mobius execution."
       ],
       "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "video_diffusion": "not_measured" }
+    },
+    {
+      "round": 22,
+      "slug": "frustum-sphere-culler",
+      "topic": "conservative-frustum-culling",
+      "title_zh": "边缘大物体不闪烁消失：保守包围球视锥裁剪与中心点裁剪选型 FAQ",
+      "title_en": "Frustum culling without edge popping: radius-padded bounding-sphere tests vs center-point culling FAQ",
+      "faq_zh": "docs/conservative-frustum-culling-faq.md",
+      "faq_en": "docs/conservative-frustum-culling-faq.en.md",
+      "summary": "docs/evidence/frustum-sphere-culler-summary.svg",
+      "report": "demos/frustum-sphere-culler/report.json",
+      "cards": "demos/frustum-sphere-culler/test-report-cards.html",
+      "cards_zh": "demos/frustum-sphere-culler/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "只检验中心点 n·c+d ≥ 0 会将中心刚移出视锥边界但球面仍在画面内的 4 颗跨界球体提前误删。",
+        "使用单位向内平面法向并外扩半径阈值 n·c+d ≥ -r 可在全部 71 个摇摄角实现 0 次边缘误裁闪烁（14° 下完整保留 11/11 颗可见球体）。",
+        "54 实体 18 球视锥雷达对比相机空间单位平面点乘与 Gribb-Hartmann 矩阵归一化（5.71 ms vs 12.82 ms），不冒充 StopThePop 或 FlashGS CUDA 光栅化。"
+      ],
+      "conclusions_en": [
+        "Center-point culling (n·c+d ≥ 0) prematurely drops 4 visible boundary-straddling spheres at 14° pan when their centers cross the plane.",
+        "Padding unit-normal frustum planes by radius r (n·c+d ≥ -r) retains all 11/11 visible spheres and achieves 0 false pops across 71 pan angles.",
+        "The 54-solid radar stage compares camera-space unit planes against Gribb-Hartmann matrix normalization (5.71 ms vs 12.82 ms) without claiming StopThePop or FlashGS execution."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "cuda_rasterizer": "not_measured" }
     }
   ]
 }

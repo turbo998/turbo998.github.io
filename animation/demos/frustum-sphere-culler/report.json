@@ -1,0 +1,265 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Conservative radius-padded bounding-sphere frustum culling versus center-point culling",
+  "topic_zh": "保守包围球半径外扩视锥裁剪与中心点误裁对比",
+  "slug": "frustum-sphere-culler",
+  "timestamp": "2026-11-09T18:50:57.002Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic unit-normal frustum-plane signed distance n·c + d >= -r, 72-point boundary sampling comparison and Node CPU solving. No StopThePop or FlashGS CUDA kernel execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "156.0.8078.80",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "cull-equivalence-128",
+      "passed": true,
+      "detail": "128 camera-space and Gribb-Hartmann world-plane margins agree within 1e-13"
+    },
+    {
+      "name": "cull-equivalence-1024",
+      "passed": true,
+      "detail": "1024 camera-space and Gribb-Hartmann world-plane margins agree within 1e-13"
+    },
+    {
+      "name": "cull-equivalence-8192",
+      "passed": true,
+      "detail": "8192 camera-space and Gribb-Hartmann world-plane margins agree within 1e-13"
+    },
+    {
+      "name": "padded-zero-false-pops",
+      "passed": true,
+      "detail": "71 camera pan angles retain 0 false-negative edge pops across all 18 spheres"
+    },
+    {
+      "name": "center-false-pop-exposed",
+      "passed": true,
+      "detail": "center-point culling prematurely drops 4 visible edge-straddling spheres at pan=14°"
+    },
+    {
+      "name": "all-visible-retained",
+      "passed": true,
+      "detail": "padded test retains all 11 visible spheres at pan=14°"
+    },
+    {
+      "name": "center-undercount-exposed",
+      "passed": true,
+      "detail": "center-only test keeps only 7 of 11 visible spheres"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse pan visitation reproduces the exact camera frustum turret matrix"
+    },
+    {
+      "name": "atomic-fov-rejection",
+      "passed": true,
+      "detail": "out-of-range fovDeg=120 is rejected while valid frustum state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered frustum turret rotation matrix matches independent camera pan angle"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px frustum culler controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual pan inspection remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 18-sphere cull passes",
+      "count": 128,
+      "primary_ms": 0.8734999999999218,
+      "baseline_ms": 1.0158999999999878,
+      "primary_samples_ms": [
+        0.8906999999999243,
+        0.8734999999999218,
+        0.8840999999999894,
+        0.8102999999999838,
+        0.8622000000000298,
+        0.7622000000000071,
+        3.5026000000000295
+      ],
+      "baseline_samples_ms": [
+        0.9864999999999782,
+        0.9651000000000067,
+        1.0199999999999818,
+        1.0158999999999878,
+        1.1397000000000617,
+        1.0792000000000144,
+        1.0073999999999614
+      ]
+    },
+    {
+      "load": "1024 CPU 18-sphere cull passes",
+      "count": 1024,
+      "primary_ms": 0.6357000000000426,
+      "baseline_ms": 3.0667000000000826,
+      "primary_samples_ms": [
+        0.6357000000000426,
+        3.330600000000004,
+        1.2894000000000005,
+        0.6241999999999734,
+        0.6048000000000684,
+        0.6724000000000387,
+        0.5833000000000084
+      ],
+      "baseline_samples_ms": [
+        3.417599999999993,
+        4.0849000000000615,
+        1.5716999999999643,
+        1.5366999999999962,
+        3.0667000000000826,
+        3.193899999999985,
+        1.7182999999999993
+      ]
+    },
+    {
+      "load": "8192 CPU 18-sphere cull passes",
+      "count": 8192,
+      "primary_ms": 5.705400000000054,
+      "baseline_ms": 12.817499999999995,
+      "primary_samples_ms": [
+        8.222099999999955,
+        6.329899999999952,
+        6.0709000000000515,
+        4.757799999999975,
+        4.8355999999999995,
+        5.705400000000054,
+        5.029800000000023
+      ],
+      "baseline_samples_ms": [
+        14.470000000000027,
+        12.417300000000068,
+        13.430700000000002,
+        12.298099999999977,
+        12.593399999999974,
+        13.452199999999948,
+        12.817499999999995
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/frustum-sphere-culler/light-sphere-padded.png",
+    "docs/evidence/frustum-sphere-culler/light-center-point.png",
+    "docs/evidence/frustum-sphere-culler/dark-sphere-padded.png",
+    "docs/evidence/frustum-sphere-culler/dark-center-point.png",
+    "docs/evidence/frustum-sphere-culler/mobile.png"
+  ],
+  "primary_label": "Signed plane distance >= -r",
+  "baseline_label": "72-point boundary sampling",
+  "load_unit": "18-sphere cull passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Unit-normal plane dot product n·c + d >= -r versus 72-point perimeter circle sampling per sphere, not CUDA tile sorting.",
+  "geometry": {
+    "parts": 54,
+    "spheres": 18,
+    "sphere_radius": 0.68,
+    "true_visible_at_14deg": 11,
+    "padded_kept_at_14deg": 11,
+    "center_kept_at_14deg": 7,
+    "center_false_pops_at_14deg": 4,
+    "maximum_solver_error": 3.5527e-15
+  },
+  "protocol": {
+    "input": {
+      "pan_deg": 14,
+      "fov_deg": 44,
+      "sphere_radius": 0.68,
+      "spheres": 18,
+      "mode": "sphere-padded"
+    },
+    "output": {
+      "true_visible": 11,
+      "padded_kept": 11,
+      "center_kept": 7,
+      "center_false_pops": 4
+    },
+    "function": "unit inward plane normal n → signed distance s = n·c + d → keep if s >= -r → 0 edge pops"
+  },
+  "robustness": [
+    {
+      "name": "Sampled camera pan angles retain zero false-negative edge pops",
+      "original": 71,
+      "perturbed": 71,
+      "total": 71
+    }
+  ],
+  "good_fit": [
+    "Eliminating peripheral object popping during camera pans",
+    "Conservative 3D Gaussian and particle bounding-sphere culling",
+    "Explaining why n·c + d >= -r requires unit-length plane normals",
+    "Zero-extra-dot-product upgrade over naive center culling"
+  ],
+  "not_for": [
+    "StopThePop per-pixel hierarchical tile depth sorting",
+    "FlashGS CUDA warp-level rasterizer scheduling",
+    "Hardware depth-buffer occlusion culling behind walls",
+    "Exact polygon-against-frustum Sutherland-Hodgman clipping"
+  ],
+  "locale_zh": {
+    "cull-equivalence-128": "裁剪等价 128",
+    "128 camera-space and Gribb-Hartmann world-plane margins agree within 1e-13": "128 次相机空间与 Gribb-Hartmann 世界平面裕度在 1e-13 内一致",
+    "cull-equivalence-1024": "裁剪等价 1024",
+    "1024 camera-space and Gribb-Hartmann world-plane margins agree within 1e-13": "1024 次相机空间与 Gribb-Hartmann 世界平面裕度在 1e-13 内一致",
+    "cull-equivalence-8192": "裁剪等价 8192",
+    "8192 camera-space and Gribb-Hartmann world-plane margins agree within 1e-13": "8192 次相机空间与 Gribb-Hartmann 世界平面裕度在 1e-13 内一致",
+    "padded-zero-false-pops": "包围球零漏裁",
+    "71 camera pan angles retain 0 false-negative edge pops across all 18 spheres": "71 个相机摇摄角下 18 颗球体保持 0 次边缘误裁闪烁",
+    "center-false-pop-exposed": "中心点漏裁暴露",
+    "center-point culling prematurely drops 4 visible edge-straddling spheres at pan=14°": "中心点裁剪在 14° 摇摄角下误删 4 颗跨边界可见球体",
+    "all-visible-retained": "可见球体全保留",
+    "padded test retains all 11 visible spheres at pan=14°": "保守包围球判据在 14° 下完整保留全部 11 颗可见球体",
+    "center-undercount-exposed": "中心点少留暴露",
+    "center-only test keeps only 7 of 11 visible spheres": "中心点判据在 11 颗可见球体中仅保留 7 颗",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse pan visitation reproduces the exact camera frustum turret matrix": "逆序摇摄重访精确复现相机视锥转台世界矩阵",
+    "atomic-fov-rejection": "原子视场拒绝",
+    "out-of-range fovDeg=120 is rejected while valid frustum state remains": "越界视场角 120° 被拒绝，有效视锥状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered frustum turret rotation matrix matches independent camera pan angle": "渲染视锥转台旋转矩阵与独立相机摇摄角余弦一致",
+    "mobile-layout": "手机布局",
+    "390px frustum culler controls fit without horizontal overflow": "390px 视锥裁剪控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual pan inspection remains available": "减少动态默认静止，保留手动视锥核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Signed plane distance >= -r": "有向平面距离 >= -r 判据",
+    "72-point boundary sampling": "72点球面边界采样判据",
+    "Median of 7 alternating Node CPU runs after warmup. Unit-normal plane dot product n·c + d >= -r versus 72-point perimeter circle sampling per sphere, not CUDA tile sorting.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；单位法向平面内积 n·c + d >= -r 对比每球 72 点圆周边界采样，不是 CUDA 瓦片排序。",
+    "Sampled camera pan angles retain zero false-negative edge pops": "采样相机摇摄角保持零边缘误裁闪烁",
+    "unit inward plane normal n → signed distance s = n·c + d → keep if s >= -r → 0 edge pops": "单位向内平面法向 n → 有向距离 s = n·c + d → 满足 s >= -r 则保留 → 0 边缘误裁",
+    "Eliminating peripheral object popping during camera pans": "消除相机摇摄时画面边缘物体的闪烁消失",
+    "Conservative 3D Gaussian and particle bounding-sphere culling": "3D 高斯核与粒子包围球的保守视锥裁剪",
+    "Explaining why n·c + d >= -r requires unit-length plane normals": "直观解释为何 n·c + d >= -r 必须先归一化平面法向量",
+    "Zero-extra-dot-product upgrade over naive center culling": "相比中心点裁剪零额外内积开销的精确升级",
+    "StopThePop per-pixel hierarchical tile depth sorting": "StopThePop 逐像素层级瓦片深度排序",
+    "FlashGS CUDA warp-level rasterizer scheduling": "FlashGS CUDA 线程束级光栅化调度",
+    "Hardware depth-buffer occlusion culling behind walls": "墙体遮挡背后的硬件深度缓冲遮挡剔除",
+    "Exact polygon-against-frustum Sutherland-Hodgman clipping": "多边形对视锥平面的精确几何切割"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/frustum-culler.test.ts",
+    "node scripts/benchmark-frustum-culler.mjs"
+  ]
+}
