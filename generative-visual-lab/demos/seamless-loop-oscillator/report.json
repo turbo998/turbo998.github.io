@@ -1,0 +1,270 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Integer-harmonic loop frequency quantization versus unquantized boundary pop",
+  "topic_zh": "整倍谐波循环频率量化与非整倍频接缝跳帧对比",
+  "slug": "seamless-loop-oscillator",
+  "timestamp": "2026-11-09T18:37:23.972Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic C∞ periodic frequency quantization ω_m = 2π·n_m/T, pre-factored spatial/temporal trig basis and Node CPU solving. No Loopy or Mobius video diffusion execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "156.0.8078.80",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "solver-equivalence-128",
+      "passed": true,
+      "detail": "128 factored trig-basis and per-rib Math.sin evaluations agree within 1e-13"
+    },
+    {
+      "name": "solver-equivalence-1024",
+      "passed": true,
+      "detail": "1024 factored trig-basis and per-rib Math.sin evaluations agree within 1e-13"
+    },
+    {
+      "name": "solver-equivalence-8192",
+      "passed": true,
+      "detail": "8192 factored trig-basis and per-rib Math.sin evaluations agree within 1e-13"
+    },
+    {
+      "name": "quantized-seam-closure",
+      "passed": true,
+      "detail": "16 wave ribs close t=T → t=0 position within 1.39e-15 u and velocity within 5.33e-15 u/s"
+    },
+    {
+      "name": "unquantized-seam-pop-exposed",
+      "passed": true,
+      "detail": "unquantized frequencies pop by 1.8875 u and 4.527 u/s at t=T"
+    },
+    {
+      "name": "rendered-seam-aligned",
+      "passed": true,
+      "detail": "rendered t=T rib world Y matches the t=0 ghost rib within 1e-13 in integer-quantized mode"
+    },
+    {
+      "name": "rendered-drift-mismatch",
+      "passed": true,
+      "detail": "rendered unquantized rib world Y diverges from the t=0 ghost rib at t=T"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse timestamp visitation reproduces the exact wave rib world matrix"
+    },
+    {
+      "name": "atomic-period-rejection",
+      "passed": true,
+      "detail": "out-of-range period=0.5s is rejected while valid loop spectrum remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered rib world Y matches independent harmonic wave evaluation"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px wave oscillator controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual seam inspection remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 16-rib wave frames",
+      "count": 128,
+      "primary_ms": 1.8827999999999747,
+      "baseline_ms": 2.29849999999999,
+      "primary_samples_ms": [
+        1.8833999999999378,
+        4.002700000000004,
+        2.14650000000006,
+        1.8520000000000891,
+        1.8827999999999747,
+        0.3443999999999505,
+        0.33150000000000546
+      ],
+      "baseline_samples_ms": [
+        2.41579999999999,
+        4.047900000000027,
+        2.29849999999999,
+        2.2379000000000815,
+        11.907300000000077,
+        1.3953000000000202,
+        1.5957999999999402
+      ]
+    },
+    {
+      "load": "1024 CPU 16-rib wave frames",
+      "count": 1024,
+      "primary_ms": 3.38900000000001,
+      "baseline_ms": 8.77170000000001,
+      "primary_samples_ms": [
+        3.38900000000001,
+        8.10069999999996,
+        5.0557999999999765,
+        4.236500000000092,
+        2.6482999999999493,
+        2.529199999999946,
+        2.435299999999984
+      ],
+      "baseline_samples_ms": [
+        12.134900000000016,
+        11.072200000000066,
+        8.77170000000001,
+        8.486599999999953,
+        8.419999999999959,
+        8.373000000000047,
+        8.837400000000002
+      ]
+    },
+    {
+      "load": "8192 CPU 16-rib wave frames",
+      "count": 8192,
+      "primary_ms": 19.157699999999977,
+      "baseline_ms": 68.78359999999998,
+      "primary_samples_ms": [
+        18.181499999999915,
+        17.48829999999998,
+        28.957000000000107,
+        25.89539999999988,
+        18.86669999999981,
+        23.830600000000004,
+        19.157699999999977
+      ],
+      "baseline_samples_ms": [
+        68.78359999999998,
+        74.34500000000003,
+        67.97739999999999,
+        68.06090000000017,
+        67.87850000000003,
+        85.31330000000003,
+        80.03269999999998
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/seamless-loop-oscillator/light-integer-quantized.png",
+    "docs/evidence/seamless-loop-oscillator/light-unquantized-drift.png",
+    "docs/evidence/seamless-loop-oscillator/dark-integer-quantized.png",
+    "docs/evidence/seamless-loop-oscillator/dark-unquantized-drift.png",
+    "docs/evidence/seamless-loop-oscillator/mobile.png"
+  ],
+  "primary_label": "Factored spatial-temporal basis",
+  "baseline_label": "Per-rib direct Math.sin",
+  "load_unit": "16-rib wave frames",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Factored 4-harmonic temporal trig basis versus 64 per-rib Math.sin/cos calls per frame, not video diffusion or GPU rendering.",
+  "geometry": {
+    "parts": 56,
+    "ribs": 16,
+    "period_sec": 6,
+    "quantized_position_gap": 1.3878e-15,
+    "quantized_velocity_gap": 5.3291e-15,
+    "unquantized_position_gap": 1.887542,
+    "unquantized_velocity_gap": 4.526976,
+    "maximum_solver_error": 1.1102e-15
+  },
+  "protocol": {
+    "input": {
+      "time": 6,
+      "period": 6,
+      "harmonics": [
+        1,
+        2,
+        4,
+        5
+      ],
+      "ribs": 16,
+      "mode": "integer-quantized"
+    },
+    "output": {
+      "position_seam_gap": 0,
+      "velocity_seam_gap": 0,
+      "unquantized_position_gap": 1.8875,
+      "unquantized_velocity_gap": 4.527
+    },
+    "function": "loop period T → quantize ω_m = 2π·n_m/T (n_m ∈ ℤ⁺) → C∞ periodic wave field → 0 boundary pop at t=T→0"
+  },
+  "robustness": [
+    {
+      "name": "All 16 wave ribs retain exact t=T and t=0 closure under reverse visitation",
+      "original": 16,
+      "perturbed": 16,
+      "total": 16
+    }
+  ],
+  "good_fit": [
+    "Seamless looping ambient ocean, flag, and foliage waves",
+    "Exporting pop-free WebM / GIF / Lottie background loops",
+    "Factored spatial-temporal trig evaluation across dense vertex grids",
+    "Teaching why ω·T must be an integer multiple of 2π"
+  ],
+  "not_for": [
+    "Loopy or Mobius text-to-video latent diffusion looping",
+    "Non-repeating chaotic fluid splashes and breaking waves",
+    "Interactive user-steered open-ended simulations",
+    "Audio-reactive live microphone stream visualization"
+  ],
+  "locale_zh": {
+    "solver-equivalence-128": "求解等价 128",
+    "128 factored trig-basis and per-rib Math.sin evaluations agree within 1e-13": "128 个分离三角基与逐肋条正弦求值在 1e-13 内一致",
+    "solver-equivalence-1024": "求解等价 1024",
+    "1024 factored trig-basis and per-rib Math.sin evaluations agree within 1e-13": "1024 个分离三角基与逐肋条正弦求值在 1e-13 内一致",
+    "solver-equivalence-8192": "求解等价 8192",
+    "8192 factored trig-basis and per-rib Math.sin evaluations agree within 1e-13": "8192 个分离三角基与逐肋条正弦求值在 1e-13 内一致",
+    "quantized-seam-closure": "整倍频接缝闭合",
+    "16 wave ribs close t=T → t=0 position within 1.39e-15 u and velocity within 5.33e-15 u/s": "16 根波浪肋条在 t=T→0 处位置接缝差 1.39e-15 u，速度差 5.33e-15 u/s",
+    "unquantized-seam-pop-exposed": "非整倍频跳帧暴露",
+    "unquantized frequencies pop by 1.8875 u and 4.527 u/s at t=T": "非整倍频在周期终点 t=T 产生 1.8875 u 位置跳变与 4.527 u/s 速度跳变",
+    "rendered-seam-aligned": "渲染接缝重合",
+    "rendered t=T rib world Y matches the t=0 ghost rib within 1e-13 in integer-quantized mode": "整倍谐波模式下 t=T 肋条世界 Y 坐标与 t=0 参考肋条在 1e-13 内重合",
+    "rendered-drift-mismatch": "渲染接缝错位暴露",
+    "rendered unquantized rib world Y diverges from the t=0 ghost rib at t=T": "非整倍频肋条在 t=T 处与 t=0 参考肋条明显错位",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse timestamp visitation reproduces the exact wave rib world matrix": "逆序时间戳重访精确复现波浪肋条世界矩阵",
+    "atomic-period-rejection": "原子周期拒绝",
+    "out-of-range period=0.5s is rejected while valid loop spectrum remains": "越界周期 0.5s 被拒绝，有效循环频谱完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered rib world Y matches independent harmonic wave evaluation": "渲染肋条世界 Y 坐标与独立谐波高度计算一致",
+    "mobile-layout": "手机布局",
+    "390px wave oscillator controls fit without horizontal overflow": "390px 循环波浪控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual seam inspection remains available": "减少动态默认静止，保留手动接缝核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Factored spatial-temporal basis": "时空分离三角基递推",
+    "Per-rib direct Math.sin": "逐肋条直接三角函数调用",
+    "Median of 7 alternating Node CPU runs after warmup. Factored 4-harmonic temporal trig basis versus 64 per-rib Math.sin/cos calls per frame, not video diffusion or GPU rendering.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；4 谐波时空分离三角基对比每帧 64 次直接 Math.sin/cos 调用，不是视频扩散或 GPU 渲染。",
+    "All 16 wave ribs retain exact t=T and t=0 closure under reverse visitation": "逆序重访下全部 16 根波浪肋条保持 t=T 与 t=0 精确闭合",
+    "loop period T → quantize ω_m = 2π·n_m/T (n_m ∈ ℤ⁺) → C∞ periodic wave field → 0 boundary pop at t=T→0": "循环周期 T → 量化角频率 ω_m = 2π·n_m/T (n_m ∈ ℤ⁺) → C∞ 周期波场 → t=T→0 零边界跳帧",
+    "Seamless looping ambient ocean, flag, and foliage waves": "无缝循环的海浪、旗帜与植被摇曳背景动画",
+    "Exporting pop-free WebM / GIF / Lottie background loops": "导出无接缝跳帧的 WebM / GIF / Lottie 循环素材",
+    "Factored spatial-temporal trig evaluation across dense vertex grids": "密集顶点网格上的时空分离三角基快速求值",
+    "Teaching why ω·T must be an integer multiple of 2π": "直观解释为何循环动画角频率乘周期必须是 2π 的整数倍",
+    "Loopy or Mobius text-to-video latent diffusion looping": "Loopy 或 Mobius 文本生成循环视频扩散推理",
+    "Non-repeating chaotic fluid splashes and breaking waves": "不可重复的混沌流体飞溅与破碎波模拟",
+    "Interactive user-steered open-ended simulations": "由用户实时操控的开放式非周期仿真",
+    "Audio-reactive live microphone stream visualization": "实时麦克风音频流驱动的非周期可视化"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/seamless-loop.test.ts",
+    "node scripts/benchmark-seamless-loop.mjs"
+  ]
+}
