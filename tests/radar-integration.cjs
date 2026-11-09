@@ -987,6 +987,28 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r43File),'utf8');
       assert.ok(txt.includes('1,440.00')&&txt.includes('750.00')&&txt.includes('2,700.00')&&txt.includes('4,890.00')&&txt.includes('360.00')&&txt.includes('12.00')&&txt.includes('270.00')&&txt.includes('642.00')&&txt.includes('4,248.00')&&txt.includes('86.87%')&&txt.includes('not_measured'),r43File+': contains exact 11-09 R30 ruyiJS+Airhand closed-form parameters');
     }
+    // 2026-11-09 Round 31 (jamesondh/chimera-vocal-synth + XiaoyeCodes/code-animation-prompts) closed-form FinOps verification
+    const r44ApiA=100000*0.015;
+    const r44AnimA=60.0*65.00;
+    const r44SyncA=20.0*65.00;
+    const r44PathA=r44ApiA+r44AnimA+r44SyncA;
+    assert.equal(r44ApiA.toFixed(2),'1500.00','11-09 R31 Path A cloud voice/SFX API');
+    assert.equal(r44AnimA.toFixed(2),'3900.00','11-09 R31 Path A style/rAF rework');
+    assert.equal(r44SyncA.toFixed(2),'1300.00','11-09 R31 Path A manual sync');
+    assert.equal(r44PathA.toFixed(2),'6700.00','11-09 R31 Path A total');
+    const r44CiB=20.00;
+    const r44AnimB=8.0*65.00;
+    const r44SyncB=2.0*65.00;
+    const r44PathB=r44CiB+r44AnimB+r44SyncB;
+    assert.equal(r44AnimB.toFixed(2),'520.00','11-09 R31 Path B deterministic t-clock QA');
+    assert.equal(r44SyncB.toFixed(2),'130.00','11-09 R31 Path B 60Hz formant binding QA');
+    assert.equal(r44PathB.toFixed(2),'670.00','11-09 R31 Path B total');
+    assert.equal((r44PathA-r44PathB).toFixed(2),'6030.00','11-09 R31 savings vs Path A');
+    assert.equal(((r44PathA-r44PathB)/r44PathA*100).toFixed(2),'90.00','11-09 R31 pct savings vs Path A');
+    for(const r44File of ['workshops/github-trending-radar/docs/chimera-code-animation-vocal-synth-deterministic-video-selection-faq.md','workshops/github-trending-radar/docs/chimera-code-animation-vocal-synth-deterministic-video-selection-faq.en.md','assets/github-ai-radar-2026-11-09-r31-chimera-code-anim.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-09-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r44File),'utf8');
+      assert.ok(txt.includes('1,500.00')&&txt.includes('3,900.00')&&txt.includes('1,300.00')&&txt.includes('6,700.00')&&txt.includes('20.00')&&txt.includes('520.00')&&txt.includes('130.00')&&txt.includes('670.00')&&txt.includes('6,030.00')&&txt.includes('90.00%')&&txt.includes('not_measured'),r44File+': contains exact 11-09 R31 chimera+code-animation-prompts closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
