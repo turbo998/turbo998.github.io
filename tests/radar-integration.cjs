@@ -329,6 +329,47 @@ async function main() {
       assert.ok(txt.includes('37.80')&&txt.includes('7.92')&&txt.includes('2.88')&&txt.includes('34.92')&&txt.includes('92.38%')&&txt.includes('-14 LUFS'),r13File+': contains exact R13 closed-form parameters');
       assert.ok(txt.includes('not_measured'),r13File+': contains not_measured scope marker');
     }
+    // 2026-11-09 Sweep & Round 1 (garrytan/gbrain v0.60.623.0) verification
+    const rawHtml1109=fs.readFileSync(path.join(__dirname,'..','workshops','github-trending-radar','evidence','trending-daily-2026-11-09-raw.html'),'utf8').replace(/\r\n/g,'\n');
+    assert.equal(hash(rawHtml1109),'fb22bae9432a6108065aabd68b480fe1d8db159a7ce5dbd89e95a332e9285b61','2026-11-09 raw HTML LF sha256');
+    const rawSearch1109Str=fs.readFileSync(path.join(__dirname,'..','workshops','github-trending-radar','evidence','search-new-repos-2026-11-09-raw.json'),'utf8').replace(/\r\n/g,'\n');
+    assert.equal(hash(rawSearch1109Str),'2daee4405350717685dd14d5a19186f1b6821216642daab97e6d6605723783e5','2026-11-09 raw Search API JSON LF sha256');
+    const rawSearch1109=JSON.parse(rawSearch1109Str);
+    const rawSearch1109Map=new Map(rawSearch1109.items.map(it=>[it.full_name,it]));
+    for(const item of reportJson.fastest_rising_leaderboard_2026_11_09.track_a_24h_star_surge){
+      assert.equal(item.provenance,'measured',item.full_name+': 11-09 Track A provenance');
+      assert.ok(rawHtml1109.includes(`href="/${item.full_name}"`),item.full_name+': present in 11-09 raw HTML');
+      assert.ok(rawHtml1109.includes(`${item.stars_today.toLocaleString('en-US')} stars today`),item.full_name+': exact stars_today in 11-09 raw HTML');
+    }
+    for(const item of reportJson.fastest_rising_leaderboard_2026_11_09.track_b_new_repo_breakout_slope){
+      assert.equal(item.stars_today,'not_measured',item.full_name+': 11-09 Track B stars_today must be not_measured');
+      assert.ok(rawSearch1109Map.has(item.full_name),item.full_name+': present in 11-09 Search API JSON');
+      assert.equal(item.stars_total_search_api,rawSearch1109Map.get(item.full_name).stargazers_count,item.full_name+': matches 11-09 Search API stargazers_count');
+      assert.equal(item.stars_per_day,Math.round(item.stars_total/item.age_days),item.full_name+': 11-09 stars_per_day closed-form');
+    }
+    const r14PathAIn=4500*(0.040*3.00);
+    const r14PathAOut=4500*(0.002*15.00);
+    assert.equal(r14PathAIn.toFixed(2),'540.00','11-09 R1 gbrain Path A input');
+    assert.equal(r14PathAOut.toFixed(2),'135.00','11-09 R1 gbrain Path A output');
+    assert.equal((r14PathAIn+r14PathAOut).toFixed(2),'675.00','11-09 R1 gbrain Path A total');
+    const r14PathBWrite=1500*(0.010*3.00+0.002*15.00);
+    const r14PathBQuery=3600*(0.020*3.00+0.0015*15.00);
+    assert.equal(r14PathBWrite.toFixed(2),'90.00','11-09 R1 gbrain Path B write');
+    assert.equal(r14PathBQuery.toFixed(2),'297.00','11-09 R1 gbrain Path B query');
+    assert.equal((r14PathBWrite+r14PathBQuery).toFixed(2),'387.00','11-09 R1 gbrain Path B total');
+    const r14PathCDream=30*0.50;
+    const r14PathCQuery=3000*(0.006*3.00+0.001*15.00);
+    assert.equal(r14PathCDream.toFixed(2),'15.00','11-09 R1 gbrain Path C dream');
+    assert.equal(r14PathCQuery.toFixed(2),'99.00','11-09 R1 gbrain Path C query');
+    assert.equal((r14PathCDream+r14PathCQuery).toFixed(2),'114.00','11-09 R1 gbrain Path C total');
+    assert.equal((675.00-114.00).toFixed(2),'561.00','11-09 R1 gbrain monthly savings');
+    assert.equal(((675.00-114.00)/675.00*100).toFixed(2),'83.11','11-09 R1 gbrain pct savings');
+    assert.equal((45.0-6.0).toFixed(1),'39.0','11-09 R1 gbrain hours saved');
+    assert.equal(((45.0-6.0)/45.0*100).toFixed(2),'86.67','11-09 R1 gbrain pct hours saved');
+    for(const r14File of ['workshops/github-trending-radar/docs/gbrain-hybrid-graph-memory-vs-vector-rag-selection-faq.md','workshops/github-trending-radar/docs/gbrain-hybrid-graph-memory-vs-vector-rag-selection-faq.en.md','assets/github-ai-radar-2026-11-09.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-09-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r14File),'utf8');
+      assert.ok(txt.includes('675.00')&&txt.includes('387.00')&&txt.includes('114.00')&&txt.includes('561.00')&&txt.includes('83.11%')&&txt.includes('0.6626')&&txt.includes('0.7241')&&txt.includes('not_measured'),r14File+': contains exact 11-09 R1 gbrain closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
