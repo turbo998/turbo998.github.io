@@ -370,6 +370,30 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r14File),'utf8');
       assert.ok(txt.includes('675.00')&&txt.includes('387.00')&&txt.includes('114.00')&&txt.includes('561.00')&&txt.includes('83.11%')&&txt.includes('0.6626')&&txt.includes('0.7241')&&txt.includes('not_measured'),r14File+': contains exact 11-09 R1 gbrain closed-form parameters');
     }
+    // 2026-11-09 Round 2 (NVIDIA/auto-ontology) closed-form FinOps verification
+    const r15PathAIn=10000*(0.050*3.00);
+    const r15PathAOut=10000*(0.002*15.00);
+    assert.equal(r15PathAIn.toFixed(2),'1500.00','11-09 R2 auto-ontology Path A input');
+    assert.equal(r15PathAOut.toFixed(2),'300.00','11-09 R2 auto-ontology Path A output');
+    assert.equal((r15PathAIn+r15PathAOut).toFixed(2),'1800.00','11-09 R2 auto-ontology Path A total');
+    const r15PathBIn=6400*(0.020*3.00);
+    const r15PathBOut=6400*(0.0015*15.00);
+    assert.equal(r15PathBIn.toFixed(2),'384.00','11-09 R2 auto-ontology Path B input');
+    assert.equal(r15PathBOut.toFixed(2),'144.00','11-09 R2 auto-ontology Path B output');
+    assert.equal((r15PathBIn+r15PathBOut).toFixed(2),'528.00','11-09 R2 auto-ontology Path B total');
+    const r15PathCCompile=4*6.00;
+    const r15PathCQuery=4200*(0.005*3.00+0.001*15.00);
+    assert.equal(r15PathCCompile.toFixed(2),'24.00','11-09 R2 auto-ontology Path C compile');
+    assert.equal(r15PathCQuery.toFixed(2),'126.00','11-09 R2 auto-ontology Path C query');
+    assert.equal((r15PathCCompile+r15PathCQuery).toFixed(2),'150.00','11-09 R2 auto-ontology Path C total');
+    assert.equal((1800.00-150.00).toFixed(2),'1650.00','11-09 R2 auto-ontology monthly savings');
+    assert.equal(((1800.00-150.00)/1800.00*100).toFixed(2),'91.67','11-09 R2 auto-ontology pct savings');
+    assert.equal((80.0-12.0).toFixed(1),'68.0','11-09 R2 auto-ontology hours saved');
+    assert.equal(((80.0-12.0)/80.0*100).toFixed(2),'85.00','11-09 R2 auto-ontology pct hours saved');
+    for(const r15File of ['workshops/github-trending-radar/docs/auto-ontology-semantic-sql-vs-raw-text2sql-selection-faq.md','workshops/github-trending-radar/docs/auto-ontology-semantic-sql-vs-raw-text2sql-selection-faq.en.md','assets/github-ai-radar-2026-11-09-r2-auto-ontology.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-09-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r15File),'utf8');
+      assert.ok(txt.includes('1,800.00')&&txt.includes('528.00')&&txt.includes('150.00')&&txt.includes('1,650.00')&&txt.includes('91.67%')&&txt.includes('588.80')&&txt.includes('not_measured'),r15File+': contains exact 11-09 R2 auto-ontology closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
