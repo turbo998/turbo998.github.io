@@ -394,6 +394,30 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r15File),'utf8');
       assert.ok(txt.includes('1,800.00')&&txt.includes('528.00')&&txt.includes('150.00')&&txt.includes('1,650.00')&&txt.includes('91.67%')&&txt.includes('588.80')&&txt.includes('not_measured'),r15File+': contains exact 11-09 R2 auto-ontology closed-form parameters');
     }
+    // 2026-11-09 Round 3 (cloudflare/security-audit-skill) closed-form FinOps verification
+    const r16PathAIn=300*(0.060*3.00);
+    const r16PathAOut=300*(0.004*15.00);
+    assert.equal(r16PathAIn.toFixed(2),'54.00','11-09 R3 security-audit-skill Path A input');
+    assert.equal(r16PathAOut.toFixed(2),'18.00','11-09 R3 security-audit-skill Path A output');
+    assert.equal((r16PathAIn+r16PathAOut).toFixed(2),'72.00','11-09 R3 security-audit-skill Path A total');
+    const r16PathBIn=200*(0.040*3.00);
+    const r16PathBOut=200*(0.003*15.00);
+    assert.equal(r16PathBIn.toFixed(2),'24.00','11-09 R3 security-audit-skill Path B input');
+    assert.equal(r16PathBOut.toFixed(2),'9.00','11-09 R3 security-audit-skill Path B output');
+    assert.equal((r16PathBIn+r16PathBOut).toFixed(2),'33.00','11-09 R3 security-audit-skill Path B total');
+    const r16PathCIn=80*(0.025*3.00);
+    const r16PathCOut=80*(0.002*15.00);
+    assert.equal(r16PathCIn.toFixed(2),'6.00','11-09 R3 security-audit-skill Path C input');
+    assert.equal(r16PathCOut.toFixed(2),'2.40','11-09 R3 security-audit-skill Path C output');
+    assert.equal((r16PathCIn+r16PathCOut).toFixed(2),'8.40','11-09 R3 security-audit-skill Path C total');
+    assert.equal((72.00-8.40).toFixed(2),'63.60','11-09 R3 security-audit-skill monthly savings');
+    assert.equal(((72.00-8.40)/72.00*100).toFixed(2),'88.33','11-09 R3 security-audit-skill pct savings');
+    assert.equal((80.0-12.0).toFixed(1),'68.0','11-09 R3 security-audit-skill hours saved');
+    assert.equal(((80.0-12.0)/80.0*100).toFixed(2),'85.00','11-09 R3 security-audit-skill pct hours saved');
+    for(const r16File of ['workshops/github-trending-radar/docs/security-audit-skill-ledger-vs-sast-prompt-selection-faq.md','workshops/github-trending-radar/docs/security-audit-skill-ledger-vs-sast-prompt-selection-faq.en.md','assets/github-ai-radar-2026-11-09-r3-security-audit-skill.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-09-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r16File),'utf8');
+      assert.ok(txt.includes('72.00')&&txt.includes('33.00')&&txt.includes('8.40')&&txt.includes('63.60')&&txt.includes('88.33%')&&txt.includes('validate-coverage-ledger.cjs')&&txt.includes('validate-findings.cjs')&&txt.includes('not_measured'),r16File+': contains exact 11-09 R3 security-audit-skill closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
