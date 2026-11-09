@@ -793,6 +793,28 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r34File),'utf8');
       assert.ok(txt.includes('648.00')&&txt.includes('6,000.00')&&txt.includes('2,400.00')&&txt.includes('9,048.00')&&txt.includes('144.00')&&txt.includes('360.00')&&txt.includes('300.00')&&txt.includes('804.00')&&txt.includes('8,244.00')&&txt.includes('91.11%')&&txt.includes('not_measured'),r34File+': contains exact 11-09 R21 agent-autoloop+janestreet closed-form parameters');
     }
+    // 2026-11-09 Round 22 (shanselman/gputaskman v0.3.4 + libracoder/kiri v0.2.0) closed-form FinOps verification
+    const r35SeatA=25*24.00;
+    const r35VmA=12.5*65.00;
+    const r35VramA=50.0*65.00;
+    const r35PathA=r35SeatA+r35VmA+r35VramA;
+    assert.equal(r35SeatA.toFixed(2),'600.00','11-09 R22 Path A Docker Desktop seats');
+    assert.equal(r35VmA.toFixed(2),'812.50','11-09 R22 Path A VM thrash');
+    assert.equal(r35VramA.toFixed(2),'3250.00','11-09 R22 Path A blind VRAM triage');
+    assert.equal(r35PathA.toFixed(2),'4662.50','11-09 R22 Path A total');
+    const r35SeatB=0.00;
+    const r35VmB=1.5*65.00;
+    const r35VramB=5.0*65.00;
+    const r35PathB=r35SeatB+r35VmB+r35VramB;
+    assert.equal(r35VmB.toFixed(2),'97.50','11-09 R22 Path B Kiri clone3');
+    assert.equal(r35VramB.toFixed(2),'325.00','11-09 R22 Path B gputaskman triage');
+    assert.equal(r35PathB.toFixed(2),'422.50','11-09 R22 Path B total');
+    assert.equal((r35PathA-r35PathB).toFixed(2),'4240.00','11-09 R22 savings vs Path A');
+    assert.equal(((r35PathA-r35PathB)/r35PathA*100).toFixed(2),'90.94','11-09 R22 pct savings vs Path A');
+    for(const r35File of ['workshops/github-trending-radar/docs/gputaskman-kiri-vram-container-runtime-selection-faq.md','workshops/github-trending-radar/docs/gputaskman-kiri-vram-container-runtime-selection-faq.en.md','assets/github-ai-radar-2026-11-09-r22-gputaskman-kiri.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-09-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r35File),'utf8');
+      assert.ok(txt.includes('600.00')&&txt.includes('812.50')&&txt.includes('3,250.00')&&txt.includes('4,662.50')&&txt.includes('97.50')&&txt.includes('325.00')&&txt.includes('422.50')&&txt.includes('4,240.00')&&txt.includes('90.94%')&&txt.includes('2.55')&&txt.includes('not_measured'),r35File+': contains exact 11-09 R22 gputaskman+kiri closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
