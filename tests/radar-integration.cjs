@@ -726,6 +726,29 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r31File),'utf8');
       assert.ok(txt.includes('3,744.00')&&txt.includes('1,760.00')&&txt.includes('7,264.00')&&txt.includes('144.00')&&txt.includes('220.00')&&txt.includes('584.00')&&txt.includes('6,680.00')&&txt.includes('91.96%')&&txt.includes('not_measured'),r31File+': contains exact 11-09 R18 animated-shorts+cinecode closed-form parameters');
     }
+    // 2026-11-09 Round 19 (wquguru/cicada v1.7.0 + lexifina/global-law) closed-form FinOps verification
+    const r32MeetA=20*30.00+400*1.80;
+    const r32RagA=600*(0.045*3.00+0.002*15.00);
+    const r32RewA=30.0*90.00;
+    const r32PathA=r32MeetA+r32RagA+r32RewA;
+    assert.equal(r32MeetA.toFixed(2),'1320.00','11-09 R19 Path A meeting seats & interp');
+    assert.equal(r32RagA.toFixed(2),'99.00','11-09 R19 Path A legal RAG tokens');
+    assert.equal(r32RewA.toFixed(2),'2700.00','11-09 R19 Path A anachronism rework');
+    assert.equal(r32PathA.toFixed(2),'4119.00','11-09 R19 Path A total');
+    const r32MeetB=400*0.25;
+    const r32RagB=600*(0.006*3.00+0.001*15.00);
+    const r32RewB=2.0*90.00;
+    const r32PathB=r32MeetB+r32RagB+r32RewB;
+    assert.equal(r32MeetB.toFixed(2),'100.00','11-09 R19 Path B Cicada LLM notes');
+    assert.equal(r32RagB.toFixed(2),'19.80','11-09 R19 Path B global-law MCP tokens');
+    assert.equal(r32RewB.toFixed(2),'180.00','11-09 R19 Path B legal review');
+    assert.equal(r32PathB.toFixed(2),'299.80','11-09 R19 Path B total');
+    assert.equal((r32PathA-r32PathB).toFixed(2),'3819.20','11-09 R19 savings vs Path A');
+    assert.equal(((r32PathA-r32PathB)/r32PathA*100).toFixed(2),'92.72','11-09 R19 pct savings vs Path A');
+    for(const r32File of ['workshops/github-trending-radar/docs/cicada-global-law-interpreting-git-law-selection-faq.md','workshops/github-trending-radar/docs/cicada-global-law-interpreting-git-law-selection-faq.en.md','assets/github-ai-radar-2026-11-09-r19-cicada-global-law.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-09-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r32File),'utf8');
+      assert.ok(txt.includes('1,320.00')&&txt.includes('99.00')&&txt.includes('2,700.00')&&txt.includes('4,119.00')&&txt.includes('100.00')&&txt.includes('19.80')&&txt.includes('180.00')&&txt.includes('299.80')&&txt.includes('3,819.20')&&txt.includes('92.72%')&&txt.includes('not_measured'),r32File+': contains exact 11-09 R19 Cicada+global-law closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
