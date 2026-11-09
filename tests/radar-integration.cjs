@@ -654,6 +654,32 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r28File),'utf8');
       assert.ok(txt.includes('1,200.00')&&txt.includes('300.00')&&txt.includes('2,000.00')&&txt.includes('3,500.00')&&txt.includes('192.00')&&txt.includes('5.76')&&txt.includes('40.00')&&txt.includes('237.76')&&txt.includes('3,262.24')&&txt.includes('93.21%')&&txt.includes('not_measured'),r28File+': contains exact 11-09 R15 Mika+agent-browser closed-form parameters');
     }
+    // 2026-11-09 Round 16 (JuneYaooo/rea-video v0.1.0 + google-deepmind/mujoco v4.0.1) closed-form FinOps verification
+    const r29VlmA=200*(0.120*2.50+0.004*10.00);
+    const r29StemA=200*0.50;
+    const r29DiffA=40*15*1.20;
+    const r29LabA=60.0*50.00;
+    const r29PathA=r29VlmA+r29StemA+r29DiffA+r29LabA;
+    assert.equal(r29VlmA.toFixed(2),'68.00','11-09 R16 Path A VLM tokens');
+    assert.equal(r29StemA.toFixed(2),'100.00','11-09 R16 Path A cloud stem API');
+    assert.equal(r29DiffA.toFixed(2),'720.00','11-09 R16 Path A blind diffusion');
+    assert.equal(r29LabA.toFixed(2),'3000.00','11-09 R16 Path A manual labor');
+    assert.equal(r29PathA.toFixed(2),'3888.00','11-09 R16 Path A total');
+    const r29VlmB=200*(0.018*2.50+0.002*10.00);
+    const r29StemB=0.00;
+    const r29DiffB=40*2*1.20;
+    const r29LabB=10.0*50.00;
+    const r29PathB=r29VlmB+r29StemB+r29DiffB+r29LabB;
+    assert.equal(r29VlmB.toFixed(2),'13.00','11-09 R16 Path B VLM tokens');
+    assert.equal(r29DiffB.toFixed(2),'96.00','11-09 R16 Path B MuJoCo-conditioned gen');
+    assert.equal(r29LabB.toFixed(2),'500.00','11-09 R16 Path B labor');
+    assert.equal(r29PathB.toFixed(2),'609.00','11-09 R16 Path B total');
+    assert.equal((r29PathA-r29PathB).toFixed(2),'3279.00','11-09 R16 savings vs Path A');
+    assert.equal(((r29PathA-r29PathB)/r29PathA*100).toFixed(2),'84.34','11-09 R16 pct savings vs Path A');
+    for(const r29File of ['workshops/github-trending-radar/docs/mujoco-rea-video-physics-video-forensics-selection-faq.md','workshops/github-trending-radar/docs/mujoco-rea-video-physics-video-forensics-selection-faq.en.md','assets/github-ai-radar-2026-11-09-r16-mujoco-rea-video.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-09-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r29File),'utf8');
+      assert.ok(txt.includes('68.00')&&txt.includes('100.00')&&txt.includes('720.00')&&txt.includes('3,000.00')&&txt.includes('3,888.00')&&txt.includes('13.00')&&txt.includes('96.00')&&txt.includes('500.00')&&txt.includes('609.00')&&txt.includes('3,279.00')&&txt.includes('84.34%')&&txt.includes('not_measured'),r29File+': contains exact 11-09 R16 MuJoCo+rea-video closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
