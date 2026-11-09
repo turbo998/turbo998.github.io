@@ -26,6 +26,30 @@
         "The 65-solid bipedal rig verifies deterministic contact locking and Node CPU solving without claiming StepControl or ARDY diffusion execution."
       ],
       "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "robot_balance": "not_measured" }
+    },
+    {
+      "round": 12,
+      "slug": "shutter-exposure-wheel",
+      "topic": "subframe-shutter-arc",
+      "title_zh": "高速旋转不飞出切线：亚帧快门圆弧积分与线性速度涂抹选型 FAQ",
+      "title_en": "Curved motion without tangent spikes: sub-frame shutter integration vs linear velocity blur FAQ",
+      "faq_zh": "docs/subframe-shutter-arc-faq.md",
+      "faq_en": "docs/subframe-shutter-arc-faq.en.md",
+      "summary": "docs/evidence/shutter-exposure-wheel-summary.svg",
+      "report": "demos/shutter-exposure-wheel/report.json",
+      "cards": "demos/shutter-exposure-wheel/test-report-cards.html",
+      "cards_zh": "demos/shutter-exposure-wheel/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "单帧瞬时速度向量只记录切线方向，270° 快门下线性涂抹向叶轮外缘飞出 0.0854 示意单位。",
+        "快门窗内 9 个亚帧时刻沿圆弧采样严格守恒半径 R=2.2（61 帧最大径向误差 8.88e-16 u）。",
+        "64 实体斩波轮对比递推相量与逐抽头三角函数（24.28 ms vs 42.74 ms），不冒充 MoBGS 或 SplineGS 神经去模糊。"
+      ],
+      "conclusions_en": [
+        "Instantaneous velocity vectors capture only the tangent direction, overshooting the rotor rim by 0.0854 units at 270° shutter.",
+        "Sampling 9 sub-frame taps along the curved trajectory preserves exact R=2.2 across 61 frames (max error 8.88e-16 u).",
+        "The 64-solid chopper compares incremental phasor stepping against per-tap trig (24.28 ms vs 42.74 ms) without claiming MoBGS or SplineGS inference."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "sensor_noise": "not_measured" }
     }
   ]
 }

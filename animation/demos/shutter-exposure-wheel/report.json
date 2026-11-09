@@ -1,0 +1,265 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Sub-frame curved-arc shutter exposure versus linear velocity tangent blur",
+  "topic_zh": "亚帧圆弧快门积分与线性速度切线涂抹对比",
+  "slug": "shutter-exposure-wheel",
+  "timestamp": "2026-11-09T16:32:28.749Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic 9-tap rotary shutter trajectory integration, radial error verification and Node CPU solving. No MoBGS or SplineGS neural training/inference, optical flow or physical sensor noise.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "156.0.8078.80",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "phasor-equivalence-128",
+      "passed": true,
+      "detail": "128 incremental phasor and per-tap trig exposures agree within 1e-12 units"
+    },
+    {
+      "name": "phasor-equivalence-1024",
+      "passed": true,
+      "detail": "1024 incremental phasor and per-tap trig exposures agree within 1e-12 units"
+    },
+    {
+      "name": "phasor-equivalence-8192",
+      "passed": true,
+      "detail": "8192 incremental phasor and per-tap trig exposures agree within 1e-12 units"
+    },
+    {
+      "name": "curved-arc-radius",
+      "passed": true,
+      "detail": "61 sampled frames keep all 36 sub-frame taps on R=2.2 (max error 8.88e-16)"
+    },
+    {
+      "name": "tangent-overshoot-exposed",
+      "passed": true,
+      "detail": "linear velocity tangent baseline overshoots radius by 0.0854 scene units"
+    },
+    {
+      "name": "rendered-arc-radius",
+      "passed": true,
+      "detail": "rendered end-tap world matrix stays on the exact 2.2 wheel perimeter"
+    },
+    {
+      "name": "rendered-tangent-overshoot",
+      "passed": true,
+      "detail": "rendered tangent end-tap leaves the circular perimeter by >0.08 units"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse timestamp visitation reproduces the exact sub-frame tap world matrix"
+    },
+    {
+      "name": "atomic-shutter-rejection",
+      "passed": true,
+      "detail": "540-degree invalid shutter angle is rejected while valid config remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered end-tap world position matches independent sub-frame arc coordinates"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px shutter bench controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual shutter inspection remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 9-tap exposures",
+      "count": 128,
+      "primary_ms": 0.5288999999993393,
+      "baseline_ms": 1.2788000000000466,
+      "primary_samples_ms": [
+        0.6054000000003725,
+        0.5288999999993393,
+        0.4877999999989697,
+        0.27739999999903375,
+        0.2849000000005617,
+        2.553200000000288,
+        0.6273000000001048
+      ],
+      "baseline_samples_ms": [
+        4.423399999999674,
+        0.48139999999875727,
+        1.2788000000000466,
+        0.4698000000007596,
+        2.8502000000007683,
+        1.018899999999121,
+        1.9830999999994674
+      ]
+    },
+    {
+      "load": "1024 CPU 9-tap exposures",
+      "count": 1024,
+      "primary_ms": 2.799800000000687,
+      "baseline_ms": 5.584100000000035,
+      "primary_samples_ms": [
+        11.640900000000329,
+        3.6947000000000116,
+        2.799800000000687,
+        2.338999999999942,
+        2.068700000001627,
+        2.463999999999942,
+        4.716699999999037
+      ],
+      "baseline_samples_ms": [
+        12.441100000000006,
+        4.441899999999805,
+        8.16229999999996,
+        4.854800000000978,
+        3.4974999999994907,
+        7.553100000000995,
+        5.584100000000035
+      ]
+    },
+    {
+      "load": "8192 CPU 9-tap exposures",
+      "count": 8192,
+      "primary_ms": 24.280300000000352,
+      "baseline_ms": 42.743100000001505,
+      "primary_samples_ms": [
+        19.191899999999805,
+        22.68710000000101,
+        24.11490000000049,
+        35.15910000000076,
+        26.74279999999999,
+        24.280300000000352,
+        38.794700000000375
+      ],
+      "baseline_samples_ms": [
+        46.10009999999966,
+        53.20219999999972,
+        48.338800000001356,
+        31.02099999999882,
+        42.5044999999991,
+        34.85280000000057,
+        42.743100000001505
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/shutter-exposure-wheel/light-curved-arc.png",
+    "docs/evidence/shutter-exposure-wheel/light-tangent-smear.png",
+    "docs/evidence/shutter-exposure-wheel/dark-curved-arc.png",
+    "docs/evidence/shutter-exposure-wheel/dark-tangent-smear.png",
+    "docs/evidence/shutter-exposure-wheel/mobile.png"
+  ],
+  "primary_label": "Incremental phasor step",
+  "baseline_label": "Per-tap trig calls",
+  "load_unit": "9-tap exposures",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Incremental complex phasor rotation versus per-tap Math.cos/sin across 4 blades × 9 taps, not neural deblurring or GPU rendering.",
+  "geometry": {
+    "parts": 64,
+    "wheel_radius": 2.2,
+    "taps_per_blade": 9,
+    "sampled_frames": 61,
+    "max_curved_radial_error": 8.881784197001252e-16,
+    "tangent_radial_overshoot": 0.085356,
+    "maximum_solver_error": 1.6014269617894048e-14
+  },
+  "protocol": {
+    "input": {
+      "time": 0.4,
+      "omega": 18,
+      "shutter_angle_deg": 270,
+      "fps": 24,
+      "taps": 9,
+      "mode": "curved-arc"
+    },
+    "output": {
+      "shutter_ms": 31.25,
+      "arc_span_rad": 0.5625,
+      "curved_radial_error": 0,
+      "tangent_overshoot": 0.0854
+    },
+    "function": "shutter window [t-Δt/2, t+Δt/2] → 9 sub-frame timestamps → exact circular trajectory → zero radial overshoot"
+  },
+  "robustness": [
+    {
+      "name": "Sampled exposures retain exact R=2.2 radius under reverse visitation",
+      "original": 61,
+      "perturbed": 61,
+      "total": 61
+    }
+  ],
+  "good_fit": [
+    "High-speed rotary and orbital motion-blur explainers",
+    "Evaluating sub-frame trajectory integration vs velocity buffers",
+    "Configurable shutter-angle (45°–360°) camera education",
+    "Deterministic multi-tap exposure verification"
+  ],
+  "not_for": [
+    "MoBGS or SplineGS monocular video deblurring inference",
+    "Screen-space post-processing shader replacement in AAA engines",
+    "Rolling-shutter CMOS row readout distortion recovery",
+    "Photometric sensor noise and exposure HDR calibration"
+  ],
+  "locale_zh": {
+    "phasor-equivalence-128": "相量等价 128",
+    "128 incremental phasor and per-tap trig exposures agree within 1e-12 units": "128 个递推相量与逐抽头三角曝光在 1e-12 单位内一致",
+    "phasor-equivalence-1024": "相量等价 1024",
+    "1024 incremental phasor and per-tap trig exposures agree within 1e-12 units": "1024 个递推相量与逐抽头三角曝光在 1e-12 单位内一致",
+    "phasor-equivalence-8192": "相量等价 8192",
+    "8192 incremental phasor and per-tap trig exposures agree within 1e-12 units": "8192 个递推相量与逐抽头三角曝光在 1e-12 单位内一致",
+    "curved-arc-radius": "圆弧半径守恒",
+    "61 sampled frames keep all 36 sub-frame taps on R=2.2 (max error 8.88e-16)": "61 个采样帧全部 36 个亚帧抽头保持在 R=2.2（最大误差 8.88e-16）",
+    "tangent-overshoot-exposed": "切线飞出暴露",
+    "linear velocity tangent baseline overshoots radius by 0.0854 scene units": "线性速度切线基线在快门两端飞出半径 0.0854 示意单位",
+    "rendered-arc-radius": "渲染抽头贴弧",
+    "rendered end-tap world matrix stays on the exact 2.2 wheel perimeter": "首叶片末端抽头实际世界矩阵严格落在 2.2 叶轮外缘",
+    "rendered-tangent-overshoot": "渲染切线外溢",
+    "rendered tangent end-tap leaves the circular perimeter by >0.08 units": "切线基线末端抽头世界矩阵偏离叶轮圆周超过 0.08 单位",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse timestamp visitation reproduces the exact sub-frame tap world matrix": "逆序时间戳重访精确复现亚帧抽头世界矩阵",
+    "atomic-shutter-rejection": "原子快门拒绝",
+    "540-degree invalid shutter angle is rejected while valid config remains": "540 度越界快门角被拒绝，有效配置完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered end-tap world position matches independent sub-frame arc coordinates": "渲染末端抽头世界位置与独立亚帧圆弧坐标一致",
+    "mobile-layout": "手机布局",
+    "390px shutter bench controls fit without horizontal overflow": "390px 快门控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual shutter inspection remains available": "减少动态默认静止，保留手动快门核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Incremental phasor step": "递推相量旋转步进",
+    "Per-tap trig calls": "逐抽头三角函数调用",
+    "Median of 7 alternating Node CPU runs after warmup. Incremental complex phasor rotation versus per-tap Math.cos/sin across 4 blades × 9 taps, not neural deblurring or GPU rendering.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；4 叶片 × 9 抽头递推复相量旋转对比逐抽头三角函数计算，不是神经去模糊或 GPU 渲染。",
+    "Sampled exposures retain exact R=2.2 radius under reverse visitation": "逆序重访下采样曝光帧严格保持 R=2.2 半径",
+    "shutter window [t-Δt/2, t+Δt/2] → 9 sub-frame timestamps → exact circular trajectory → zero radial overshoot": "快门时间窗 [t-Δt/2, t+Δt/2] → 9 个亚帧时刻 → 精确圆弧轨迹 → 零径向外溢",
+    "High-speed rotary and orbital motion-blur explainers": "高速旋转与轨道运动模糊原理解析",
+    "Evaluating sub-frame trajectory integration vs velocity buffers": "评估亚帧轨迹积分对比屏幕速度缓冲",
+    "Configurable shutter-angle (45°–360°) camera education": "可调快门角（45°–360°）摄影参数教学",
+    "Deterministic multi-tap exposure verification": "确定性多抽头曝光轨迹核验",
+    "MoBGS or SplineGS monocular video deblurring inference": "MoBGS 或 SplineGS 单目视频去模糊推理",
+    "Screen-space post-processing shader replacement in AAA engines": "大型引擎屏幕空间后处理着色器替代",
+    "Rolling-shutter CMOS row readout distortion recovery": "CMOS 卷帘快门逐行读出畸变校正",
+    "Photometric sensor noise and exposure HDR calibration": "传感器光度噪声与 HDR 曝光标定"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/shutter-exposure.test.ts",
+    "node scripts/benchmark-shutter-exposure.mjs"
+  ]
+}
