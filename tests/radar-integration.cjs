@@ -703,6 +703,29 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r30File),'utf8');
       assert.ok(txt.includes('303.75')&&txt.includes('510.00')&&txt.includes('900.00')&&txt.includes('1,713.75')&&txt.includes('70.50')&&txt.includes('315.00')&&txt.includes('180.00')&&txt.includes('565.50')&&txt.includes('1,148.25')&&txt.includes('67.00%')&&txt.includes('not_measured'),r30File+': contains exact 11-09 R17 claude-quickstarts+AnyModelBot closed-form parameters');
     }
+    // 2026-11-09 Round 18 (mromidev/claude-animated-shorts + sarpstar/cinecode) closed-form FinOps verification
+    const r31GenA=6240*4.0*0.15;
+    const r31RewA=32.0*55.00;
+    const r31AudA=32.0*55.00;
+    const r31PathA=r31GenA+r31RewA+r31AudA;
+    assert.equal(r31GenA.toFixed(2),'3744.00','11-09 R18 Path A diffusion gen');
+    assert.equal(r31RewA.toFixed(2),'1760.00','11-09 R18 Path A style rework');
+    assert.equal(r31AudA.toFixed(2),'1760.00','11-09 R18 Path A manual audio');
+    assert.equal(r31PathA.toFixed(2),'7264.00','11-09 R18 Path A total');
+    const r31GenB=32*4.50;
+    const r31RewB=4.0*55.00;
+    const r31AudB=4.0*55.00;
+    const r31PathB=r31GenB+r31RewB+r31AudB;
+    assert.equal(r31GenB.toFixed(2),'144.00','11-09 R18 Path B code LLM');
+    assert.equal(r31RewB.toFixed(2),'220.00','11-09 R18 Path B 2-scene gate QA');
+    assert.equal(r31AudB.toFixed(2),'220.00','11-09 R18 Path B auto words/LUFS');
+    assert.equal(r31PathB.toFixed(2),'584.00','11-09 R18 Path B total');
+    assert.equal((r31PathA-r31PathB).toFixed(2),'6680.00','11-09 R18 savings vs Path A');
+    assert.equal(((r31PathA-r31PathB)/r31PathA*100).toFixed(2),'91.96','11-09 R18 pct savings vs Path A');
+    for(const r31File of ['workshops/github-trending-radar/docs/animated-shorts-cinecode-programmatic-video-selection-faq.md','workshops/github-trending-radar/docs/animated-shorts-cinecode-programmatic-video-selection-faq.en.md','assets/github-ai-radar-2026-11-09-r18-animated-shorts-cinecode.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-09-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r31File),'utf8');
+      assert.ok(txt.includes('3,744.00')&&txt.includes('1,760.00')&&txt.includes('7,264.00')&&txt.includes('144.00')&&txt.includes('220.00')&&txt.includes('584.00')&&txt.includes('6,680.00')&&txt.includes('91.96%')&&txt.includes('not_measured'),r31File+': contains exact 11-09 R18 animated-shorts+cinecode closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
