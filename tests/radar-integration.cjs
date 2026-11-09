@@ -529,6 +529,24 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r22File),'utf8');
       assert.ok(txt.includes('4,500.00')&&txt.includes('4,050.00')&&txt.includes('825.00')&&txt.includes('3,675.00')&&txt.includes('81.67%')&&txt.includes('not_measured'),r22File+': contains exact 11-09 R9 CompanyOS+t3code closed-form parameters');
     }
+    // 2026-11-09 Round 10 (anthropics/claude-plugins-official + patch-gg/pixelfx) closed-form FinOps verification
+    const r23PathALlm=480*(0.030*3.00+0.006*15.00);
+    const r23PathADiff=300*0.12;
+    assert.equal(r23PathALlm.toFixed(2),'86.40','11-09 R10 Path A LLM');
+    assert.equal(r23PathADiff.toFixed(2),'36.00','11-09 R10 Path A diff');
+    assert.equal((r23PathALlm+r23PathADiff).toFixed(2),'122.40','11-09 R10 Path A total');
+    const r23PathB=300*(0.025*3.00+0.005*15.00);
+    assert.equal(r23PathB.toFixed(2),'45.00','11-09 R10 Path B total');
+    const r23PathC=120*(0.015*3.00+0.002*15.00);
+    assert.equal(r23PathC.toFixed(2),'9.00','11-09 R10 Path C total');
+    assert.equal((122.40-9.00).toFixed(2),'113.40','11-09 R10 savings vs Path A');
+    assert.equal(((122.40-9.00)/122.40*100).toFixed(2),'92.65','11-09 R10 pct savings vs Path A');
+    assert.equal((72.0-12.0).toFixed(1),'60.0','11-09 R10 hours saved');
+    assert.equal(((72.0-12.0)/72.0*100).toFixed(2),'83.33','11-09 R10 pct hours saved');
+    for(const r23File of ['workshops/github-trending-radar/docs/claude-plugins-pixelfx-skill-bundle-selection-faq.md','workshops/github-trending-radar/docs/claude-plugins-pixelfx-skill-bundle-selection-faq.en.md','assets/github-ai-radar-2026-11-09-r10-claude-plugins-pixelfx.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-09-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r23File),'utf8');
+      assert.ok(txt.includes('122.40')&&txt.includes('45.00')&&txt.includes('9.00')&&txt.includes('113.40')&&txt.includes('92.65%')&&txt.includes('244')&&txt.includes('not_measured'),r23File+': contains exact 11-09 R10 claude-plugins+pixelfx closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
