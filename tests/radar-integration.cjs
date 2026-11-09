@@ -815,6 +815,29 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r35File),'utf8');
       assert.ok(txt.includes('600.00')&&txt.includes('812.50')&&txt.includes('3,250.00')&&txt.includes('4,662.50')&&txt.includes('97.50')&&txt.includes('325.00')&&txt.includes('422.50')&&txt.includes('4,240.00')&&txt.includes('90.94%')&&txt.includes('2.55')&&txt.includes('not_measured'),r35File+': contains exact 11-09 R22 gputaskman+kiri closed-form parameters');
     }
+    // 2026-11-09 Round 23 (Sandflow-ai/sand3d + voyager-so/vork v0.3.0) closed-form FinOps verification
+    const r36TokA=300*(0.120*2.50+0.016*10.00);
+    const r36GpuA=120*1.50;
+    const r36LabA=60.0*60.00;
+    const r36PathA=r36TokA+r36GpuA+r36LabA;
+    assert.equal(r36TokA.toFixed(2),'138.00','11-09 R23 Path A raw bpy tokens');
+    assert.equal(r36GpuA.toFixed(2),'180.00','11-09 R23 Path A EEVEE GPU');
+    assert.equal(r36LabA.toFixed(2),'3600.00','11-09 R23 Path A manual TA labor');
+    assert.equal(r36PathA.toFixed(2),'3918.00','11-09 R23 Path A total');
+    const r36TokB=300*(0.020*2.50+0.003*10.00);
+    const r36GpuB=120*0.20;
+    const r36LabB=6.0*60.00;
+    const r36PathB=r36TokB+r36GpuB+r36LabB;
+    assert.equal(r36TokB.toFixed(2),'24.00','11-09 R23 Path B sand3d tokens');
+    assert.equal(r36GpuB.toFixed(2),'24.00','11-09 R23 Path B vork GPU');
+    assert.equal(r36LabB.toFixed(2),'360.00','11-09 R23 Path B draft-final labor');
+    assert.equal(r36PathB.toFixed(2),'408.00','11-09 R23 Path B total');
+    assert.equal((r36PathA-r36PathB).toFixed(2),'3510.00','11-09 R23 savings vs Path A');
+    assert.equal(((r36PathA-r36PathB)/r36PathA*100).toFixed(2),'89.59','11-09 R23 pct savings vs Path A');
+    for(const r36File of ['workshops/github-trending-radar/docs/sand3d-vork-agent-3d-vfx-engine-selection-faq.md','workshops/github-trending-radar/docs/sand3d-vork-agent-3d-vfx-engine-selection-faq.en.md','assets/github-ai-radar-2026-11-09-r23-sand3d-vork.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-09-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r36File),'utf8');
+      assert.ok(txt.includes('138.00')&&txt.includes('180.00')&&txt.includes('3,600.00')&&txt.includes('3,918.00')&&txt.includes('24.00')&&txt.includes('360.00')&&txt.includes('408.00')&&txt.includes('3,510.00')&&txt.includes('89.59%')&&txt.includes('not_measured'),r36File+': contains exact 11-09 R23 sand3d+vork closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
