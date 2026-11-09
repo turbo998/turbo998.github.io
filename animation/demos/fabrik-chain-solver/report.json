@@ -1,0 +1,265 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Target-clamped FABRIK multi-joint inverse kinematics versus unprojected linearized steps",
+  "topic_zh": "FABRIK 双向球面投影定长逆运动学与未投影线性步对比",
+  "slug": "fabrik-chain-solver",
+  "timestamp": "2026-11-09T19:34:41.178Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic 5-bone 3D FABRIK forward-and-backward sphere projection, reachability clamping (R_max = 5.50 u), and vector vs spherical-trig CPU solving. No RigAnything or MagicArticulate neural execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "156.0.8078.80",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "fabrik-equivalence-128",
+      "passed": true,
+      "detail": "128 vector-projection and spherical-trig FABRIK solves agree within 1e-12 u"
+    },
+    {
+      "name": "fabrik-equivalence-1024",
+      "passed": true,
+      "detail": "1024 vector-projection and spherical-trig FABRIK solves agree within 1e-12 u"
+    },
+    {
+      "name": "fabrik-equivalence-8192",
+      "passed": true,
+      "detail": "8192 vector-projection and spherical-trig FABRIK solves agree within 1e-12 u"
+    },
+    {
+      "name": "fabrik-zero-bone-stretch",
+      "passed": true,
+      "detail": "61 target angles retain 0.000000 u bone stretch across all 5 links (max error 4.44e-16 u)"
+    },
+    {
+      "name": "linear-stretch-exposed",
+      "passed": true,
+      "detail": "unprojected linearized step distorts bone segment lengths by 0.5275 u at angle=28°"
+    },
+    {
+      "name": "exact-chain-reach-preserved",
+      "passed": true,
+      "detail": "FABRIK preserves exact total reach 5.50 u and 0 root drift at 28°"
+    },
+    {
+      "name": "linear-length-collapse-exposed",
+      "passed": true,
+      "detail": "unprojected linear step distorts total chain length from 5.50 u to 8.06 u"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse target scrubbing reproduces the exact target beacon world matrix"
+    },
+    {
+      "name": "atomic-radius-rejection",
+      "passed": true,
+      "detail": "out-of-range targetRadius=12.0 is rejected while valid IK state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered target beacon x-translation matches independent polar coordinate r·cos(28°)"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px FABRIK solver controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual target scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 5-bone 8-iter IK solves",
+      "count": 128,
+      "primary_ms": 1.821299999999951,
+      "baseline_ms": 3.116800000000012,
+      "primary_samples_ms": [
+        6.986400000000003,
+        0.7622000000000071,
+        0.7146999999999935,
+        1.821299999999951,
+        2.446800000000053,
+        2.5184999999999036,
+        1.4975999999999203
+      ],
+      "baseline_samples_ms": [
+        6.289600000000064,
+        12.94870000000003,
+        1.4666999999999462,
+        1.4875000000000682,
+        3.1327,
+        3.116800000000012,
+        1.7345000000000255
+      ]
+    },
+    {
+      "load": "1024 CPU 5-bone 8-iter IK solves",
+      "count": 1024,
+      "primary_ms": 6.0774000000000115,
+      "baseline_ms": 12.469500000000039,
+      "primary_samples_ms": [
+        6.2503999999999,
+        6.25750000000005,
+        6.313099999999963,
+        5.6585999999999785,
+        5.9465999999999894,
+        6.0774000000000115,
+        5.887100000000032
+      ],
+      "baseline_samples_ms": [
+        12.2580999999999,
+        16.24669999999992,
+        12.864399999999932,
+        12.469500000000039,
+        12.6644,
+        12.136600000000044,
+        12.014400000000023
+      ]
+    },
+    {
+      "load": "8192 CPU 5-bone 8-iter IK solves",
+      "count": 8192,
+      "primary_ms": 59.63339999999994,
+      "baseline_ms": 126.12529999999992,
+      "primary_samples_ms": [
+        63.32359999999994,
+        59.45900000000006,
+        57.1255000000001,
+        55.85590000000002,
+        59.63339999999994,
+        60.29730000000018,
+        61.11079999999993
+      ],
+      "baseline_samples_ms": [
+        121.28269999999998,
+        123.5199,
+        132.78539999999998,
+        119.5951,
+        126.12529999999992,
+        140.33110000000033,
+        239.85059999999976
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/fabrik-chain-solver/light-fabrik-clamped.png",
+    "docs/evidence/fabrik-chain-solver/light-linear-unprojected.png",
+    "docs/evidence/fabrik-chain-solver/dark-fabrik-clamped.png",
+    "docs/evidence/fabrik-chain-solver/dark-linear-unprojected.png",
+    "docs/evidence/fabrik-chain-solver/mobile.png"
+  ],
+  "primary_label": "Direct 3D vector projection",
+  "baseline_label": "Spherical trig (acos/atan2)",
+  "load_unit": "5-bone 8-iter IK solves",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Direct 3D vector normalization FABRIK pass versus spherical-coordinate trigonometric (acos/atan2/sin/cos) re-parameterization per joint.",
+  "geometry": {
+    "parts": 48,
+    "bones": 5,
+    "rest_reach": 5.5,
+    "fabrik_reach_at_28deg": 5.5,
+    "linear_reach_at_28deg": 8.0553,
+    "fabrik_max_stretch": 4.4409e-16,
+    "linear_max_stretch_at_28deg": 0.5275,
+    "maximum_solver_error": 2.9811e-15
+  },
+  "protocol": {
+    "input": {
+      "angle_deg": 28,
+      "target_radius": 4.8,
+      "iterations": 8,
+      "bones": 5,
+      "mode": "fabrik-clamped"
+    },
+    "output": {
+      "rest_reach": 5.5,
+      "fabrik_max_stretch": 4.44e-16,
+      "linear_max_stretch": 0.5275,
+      "linear_total_length": 8.0553
+    },
+    "function": "clamp ||t - p_0|| <= R_max → backward sphere pass p_N..p_0 → forward sphere pass p_0..p_N → 0 bone stretch"
+  },
+  "robustness": [
+    {
+      "name": "Sampled target angles retain exact bone lengths and zero root slip",
+      "original": 61,
+      "perturbed": 61,
+      "total": 61
+    }
+  ],
+  "good_fit": [
+    "Multi-joint robotic arms, tentacles, tails, and spines requiring strict bone-length invariance",
+    "Out-of-reach target tracking without Jacobian singularity jitter or matrix inversions",
+    "Explaining why 3D vector projection beats spherical trigonometry in iterative IK",
+    "Real-time procedural animation post-processing over RigAnything / MagicArticulate skeletons"
+  ],
+  "not_for": [
+    "RigAnything or MagicArticulate autoregressive neural mesh-to-skeleton rigging",
+    "Closed-loop parallel Stewart platforms requiring simultaneous multi-branch Jacobian constraints",
+    "Full rigid-body torque and actuator-saturation dynamics",
+    "2-bone analytical law-of-cosines knees where a single closed-form step suffices"
+  ],
+  "locale_zh": {
+    "fabrik-equivalence-128": "求解等价 128",
+    "128 vector-projection and spherical-trig FABRIK solves agree within 1e-12 u": "128 次向量投影与球坐标三角 FABRIK 关节坐标在 1e-12 u 内一致",
+    "fabrik-equivalence-1024": "求解等价 1024",
+    "1024 vector-projection and spherical-trig FABRIK solves agree within 1e-12 u": "1024 次向量投影与球坐标三角 FABRIK 关节坐标在 1e-12 u 内一致",
+    "fabrik-equivalence-8192": "求解等价 8192",
+    "8192 vector-projection and spherical-trig FABRIK solves agree within 1e-12 u": "8192 次向量投影与球坐标三角 FABRIK 关节坐标在 1e-12 u 内一致",
+    "fabrik-zero-bone-stretch": "FABRIK骨骼零拉伸",
+    "61 target angles retain 0.000000 u bone stretch across all 5 links (max error 4.44e-16 u)": "61 个目标角下 5 节骨骼保持 0.000000 u 骨长畸变（最大误差 4.44e-16 u）",
+    "linear-stretch-exposed": "线性步拉伸暴露",
+    "unprojected linearized step distorts bone segment lengths by 0.5275 u at angle=28°": "未重投影一阶线性步在 28° 目标角下导致骨骼拉伸畸变 0.5275 u",
+    "exact-chain-reach-preserved": "总臂长精确保留",
+    "FABRIK preserves exact total reach 5.50 u and 0 root drift at 28°": "FABRIK 在 28° 下严格保持总臂长 5.50 u 且根部零滑移",
+    "linear-length-collapse-exposed": "线性总长畸变暴露",
+    "unprojected linear step distorts total chain length from 5.50 u to 8.06 u": "未投影线性步将 5.50 u 总骨长畸变为 8.06 u",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse target scrubbing reproduces the exact target beacon world matrix": "逆序目标拖曳精确复现目标信标世界矩阵",
+    "atomic-radius-rejection": "原子半径拒绝",
+    "out-of-range targetRadius=12.0 is rejected while valid IK state remains": "越界目标距离 12.0 u 被拒绝，有效逆运动学状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered target beacon x-translation matches independent polar coordinate r·cos(28°)": "渲染目标信标水平位移与独立极坐标 r·cos(28°) 完全一致",
+    "mobile-layout": "手机布局",
+    "390px FABRIK solver controls fit without horizontal overflow": "390px 逆运动学控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual target scrubbing remains available": "减少动态默认静止，保留手动目标核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Direct 3D vector projection": "直接三维向量球面投影",
+    "Spherical trig (acos/atan2)": "球坐标反三角函数重构",
+    "Median of 7 alternating Node CPU runs after warmup. Direct 3D vector normalization FABRIK pass versus spherical-coordinate trigonometric (acos/atan2/sin/cos) re-parameterization per joint.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；直接三维向量归一化 FABRIK 迭代对比逐关节球坐标反三角函数（acos/atan2/sin/cos）重构。",
+    "Sampled target angles retain exact bone lengths and zero root slip": "采样目标角保持精确骨长与零根部滑移",
+    "clamp ||t - p_0|| <= R_max → backward sphere pass p_N..p_0 → forward sphere pass p_0..p_N → 0 bone stretch": "可达半径钳制 ||t - p_0|| <= R_max → 逆向球面拉回 p_N..p_0 → 正向球面推回 p_0..p_N → 0 骨骼拉伸",
+    "Multi-joint robotic arms, tentacles, tails, and spines requiring strict bone-length invariance": "需要严格骨长守恒的多关节机械臂、触手、尾巴与脊柱动画",
+    "Out-of-reach target tracking without Jacobian singularity jitter or matrix inversions": "目标超界时不发生雅可比奇异点抖动且无需矩阵求逆的平滑追逐",
+    "Explaining why 3D vector projection beats spherical trigonometry in iterative IK": "直观解释为何迭代逆运动学中三维向量投影优于球坐标反三角函数",
+    "Real-time procedural animation post-processing over RigAnything / MagicArticulate skeletons": "在 RigAnything / MagicArticulate 生成骨骼之上执行实时程序化末端锁定",
+    "RigAnything or MagicArticulate autoregressive neural mesh-to-skeleton rigging": "RigAnything 或 MagicArticulate 从静态网格自动预测骨骼与蒙皮权重",
+    "Closed-loop parallel Stewart platforms requiring simultaneous multi-branch Jacobian constraints": "需要同时求解多分支闭环约束的并联 Stewart 平台",
+    "Full rigid-body torque and actuator-saturation dynamics": "含关节力矩上限与电机动力学饱和的完整物理控制",
+    "2-bone analytical law-of-cosines knees where a single closed-form step suffices": "只需单步余弦定理闭式解即可完成的双骨骼膝/肘关节"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/fabrik-chain.test.ts",
+    "node scripts/benchmark-fabrik-chain.mjs"
+  ]
+}

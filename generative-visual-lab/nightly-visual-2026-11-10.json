@@ -314,6 +314,30 @@
         "The 41-solid 17-swatch bench compares pre-decoded linear endpoints + a 4096-entry LUT against per-sample Math.pow(2.4) (0.884 ms vs 17.896 ms, 20.2× faster) without claiming HDR-GS execution."
       ],
       "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "cuda_rasterizer": "not_measured" }
+    },
+    {
+      "round": 24,
+      "slug": "fabrik-chain-solver",
+      "topic": "fabrik-chain-kinematics",
+      "title_zh": "多关节机械臂与触手不拉长不乱抖：FABRIK 双向定长追逐逆运动学与线性雅可比选型 FAQ",
+      "title_en": "Multi-joint IK without bone stretching or singularity jitter: FABRIK forward-and-backward reaching vs linearized Jacobian step FAQ",
+      "faq_zh": "docs/fabrik-chain-kinematics-faq.md",
+      "faq_en": "docs/fabrik-chain-kinematics-faq.en.md",
+      "summary": "docs/evidence/fabrik-chain-solver-summary.svg",
+      "report": "demos/fabrik-chain-solver/report.json",
+      "cards": "demos/fabrik-chain-solver/test-report-cards.html",
+      "cards_zh": "demos/fabrik-chain-solver/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "一阶线性切向步因正交切线分量满足勾股定理 L_i·sqrt(1+Δθ²)，在 28° 目标下造成单骨拉伸 0.5275 u、总臂长从 5.50 u 膨胀至 8.0553 u（+46.46%）。",
+        "采用可达半径钳制（R_max=5.50 u）与 FABRIK 双向球面投影迭代，可在全部 61 个目标角将 5 节骨长误差锁死在 4.44e-16 u 且根部零滑移。",
+        "48 实体 5 连杆机械臂台对比三维向量归一化投影与球坐标反三角函数（59.63 ms vs 126.13 ms，提速 2.11×），不冒充 RigAnything 或 MagicArticulate 神经绑定。"
+      ],
+      "conclusions_en": [
+        "Unprojected first-order tangent steps inflate bone lengths by L_i·sqrt(1+Δθ²), causing 0.5275 u max single-bone stretch and inflating total reach from 5.50 u to 8.0553 u (+46.46%) at 28°.",
+        "Combining reachability radial clamping (R_max=5.50 u) with FABRIK forward-and-backward sphere projections locks all 5 bone lengths within 4.44e-16 u across 61 target angles.",
+        "The 48-solid 5-link bench compares direct 3D vector projection against spherical trigonometry (59.63 ms vs 126.13 ms, 2.11× faster) without claiming RigAnything execution."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "auto_rigging": "not_measured" }
     }
   ]
 }
