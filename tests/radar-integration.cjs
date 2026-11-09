@@ -605,6 +605,32 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r26File),'utf8');
       assert.ok(txt.includes('2,495.00')&&txt.includes('209.00')&&txt.includes('1,160.00')&&txt.includes('3,864.00')&&txt.includes('970.00')&&txt.includes('14.25')&&txt.includes('96.00')&&txt.includes('1,080.25')&&txt.includes('2,783.75')&&txt.includes('72.04%')&&txt.includes('not_measured'),r26File+': contains exact 11-09 R13 dexter+daily_stock_analysis closed-form parameters');
     }
+    // 2026-11-09 Round 14 (basketikun/infinite-canvas v0.20.0 + OpenCut-app/OpenCut) closed-form FinOps verification
+    const r27TokA=2520*(0.028*2.50+0.002*10.00);
+    const r27WasteA=288*0.25;
+    const r27NleA=8*24.00+60*3.50;
+    const r27LabA=30.0*60.00;
+    const r27PathA=r27TokA+r27WasteA+r27NleA+r27LabA;
+    assert.equal(r27TokA.toFixed(2),'226.80','11-09 R14 Path A orchestration tokens');
+    assert.equal(r27WasteA.toFixed(2),'72.00','11-09 R14 Path A wasted regenerations');
+    assert.equal(r27NleA.toFixed(2),'402.00','11-09 R14 Path A cloud NLE seats & export');
+    assert.equal(r27LabA.toFixed(2),'1800.00','11-09 R14 Path A manual labor');
+    assert.equal(r27PathA.toFixed(2),'2500.80','11-09 R14 Path A total');
+    const r27TokB=720*(0.008*2.50+0.001*10.00);
+    const r27WasteB=58*0.25;
+    const r27NleB=0.00;
+    const r27LabB=6.0*60.00;
+    const r27PathB=r27TokB+r27WasteB+r27NleB+r27LabB;
+    assert.equal(r27TokB.toFixed(2),'21.60','11-09 R14 Path B orchestration tokens');
+    assert.equal(r27WasteB.toFixed(2),'14.50','11-09 R14 Path B wasted regenerations');
+    assert.equal(r27LabB.toFixed(2),'360.00','11-09 R14 Path B labor');
+    assert.equal(r27PathB.toFixed(2),'396.10','11-09 R14 Path B total');
+    assert.equal((r27PathA-r27PathB).toFixed(2),'2104.70','11-09 R14 savings vs Path A');
+    assert.equal(((r27PathA-r27PathB)/r27PathA*100).toFixed(2),'84.16','11-09 R14 pct savings vs Path A');
+    for(const r27File of ['workshops/github-trending-radar/docs/opencut-infinite-canvas-video-spatial-selection-faq.md','workshops/github-trending-radar/docs/opencut-infinite-canvas-video-spatial-selection-faq.en.md','assets/github-ai-radar-2026-11-09-r14-opencut-infinite-canvas.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-09-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r27File),'utf8');
+      assert.ok(txt.includes('226.80')&&txt.includes('72.00')&&txt.includes('402.00')&&txt.includes('1,800.00')&&txt.includes('2,500.80')&&txt.includes('21.60')&&txt.includes('14.50')&&txt.includes('360.00')&&txt.includes('396.10')&&txt.includes('2,104.70')&&txt.includes('84.16%')&&txt.includes('127.0.0.1:17371')&&txt.includes('not_measured'),r27File+': contains exact 11-09 R14 OpenCut+infinite-canvas closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
