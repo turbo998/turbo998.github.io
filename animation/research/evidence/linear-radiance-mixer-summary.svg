@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#070b14"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="linearGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#FF0000"/>
+      <stop offset="25%" stop-color="#DC8989"/>
+      <stop offset="50%" stop-color="#BCBCBC"/>
+      <stop offset="75%" stop-color="#89E2E2"/>
+      <stop offset="100%" stop-color="#00FFFF"/>
+    </linearGradient>
+    <linearGradient id="srgbGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#FF0000"/>
+      <stop offset="25%" stop-color="#BF4040"/>
+      <stop offset="50%" stop-color="#808080"/>
+      <stop offset="75%" stop-color="#40BFBF"/>
+      <stop offset="100%" stop-color="#00FFFF"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect x="28" y="28" width="1144" height="574" rx="20" fill="#0b1324" stroke="#1e293b" stroke-width="2"/>
+
+  <text x="56" y="74" fill="#38bdf8" font-family="Inter, Segoe UI, sans-serif" font-size="15" font-weight="700" letter-spacing="1.5">
+    ROUND 23 · RADIOMETRIC COLOR COMPOSITING &amp; GAMMA TRANSFER (IEC 61966-2-1)
+  </text>
+  <text x="56" y="112" fill="#f8fafc" font-family="Inter, Segoe UI, sans-serif" font-size="25" font-weight="800">
+    Linear-Light Radiance Blending (#BCBCBC, 0% Loss) vs Naive sRGB Mixing (#808080, 57.19% Loss)
+  </text>
+  <text x="56" y="142" fill="#94a3b8" font-family="Inter, Segoe UI, sans-serif" font-size="15">
+    Mixing Red (#FF0000) and Cyan (#00FFFF) at α = 0.50 directly in sRGB loses 57.19% of physical photon luminance into a dark muddy trough.
+  </text>
+
+  <!-- Left Panel: Linear-Light Radiance Blending -->
+  <rect x="56" y="170" width="528" height="396" rx="14" fill="#0f1b33" stroke="#10b981" stroke-width="1.8"/>
+  <text x="80" y="204" fill="#34d399" font-family="Inter, Segoe UI, sans-serif" font-size="17" font-weight="700">
+    ✅ Linear-Light Radiance Blending: L = (1 − α)L_A + αL_B
+  </text>
+  <text x="80" y="228" fill="#cbd5e1" font-family="Inter, Segoe UI, sans-serif" font-size="13">
+    Decode sRGB → Add Physical Photons → Encode sRGB (100.00% Energy Conserved)
+  </text>
+
+  <!-- Linear gradient swatch bar -->
+  <rect x="84" y="252" width="472" height="58" rx="8" fill="url(#linearGrad)" stroke="#e2e8f0" stroke-width="1.5"/>
+  <line x1="320" y1="244" x2="320" y2="318" stroke="#f8fafc" stroke-width="3"/>
+  <rect x="266" y="324" width="108" height="28" rx="6" fill="#BCBCBC" stroke="#f8fafc" stroke-width="1.5"/>
+  <text x="320" y="343" fill="#0f172a" font-family="Consolas, monospace" font-size="13" font-weight="800" text-anchor="middle">
+    α=0.5 #BCBCBC
+  </text>
+
+  <!-- Luminance plot linear -->
+  <rect x="84" y="370" width="472" height="110" rx="8" fill="#091224" stroke="#1e293b"/>
+  <line x1="110" y1="455" x2="530" y2="390" stroke="#34d399" stroke-width="3.5"/>
+  <circle cx="320" cy="422.5" r="6" fill="#34d399" stroke="#f8fafc" stroke-width="2"/>
+  <text x="320" y="408" fill="#34d399" font-family="Consolas, monospace" font-size="13" font-weight="700" text-anchor="middle">
+    Y(0.50) = 0.5000 (100% Photon Energy)
+  </text>
+
+  <rect x="80" y="498" width="480" height="50" rx="8" fill="#062e22" stroke="#10b981"/>
+  <text x="96" y="520" fill="#a7f3d0" font-family="Consolas, monospace" font-size="14" font-weight="700">
+    Midpoint Hex: #BCBCBC (sRGB 0.735) · Luminance Y = 0.5000
+  </text>
+  <text x="96" y="539" fill="#6ee7b7" font-family="Consolas, monospace" font-size="13">
+    Midpoint Energy Loss: 0.00% · 8,192 Ramps: 0.884 ms (Pre-decoded LUT)
+  </text>
+
+  <!-- Right Panel: Naive sRGB Direct Mixing -->
+  <rect x="616" y="170" width="528" height="396" rx="14" fill="#1c1124" stroke="#f43f5e" stroke-width="1.8"/>
+  <text x="640" y="204" fill="#fb7185" font-family="Inter, Segoe UI, sans-serif" font-size="17" font-weight="700">
+    ❌ Naive sRGB Code Mixing: V = (1 − α)V_A + αV_B (Dark Mud)
+  </text>
+  <text x="640" y="228" fill="#cbd5e1" font-family="Inter, Segoe UI, sans-serif" font-size="13">
+    Averaging Gamma-Compressed Code Values Loses 57.19% Photon Energy at α = 0.50
+  </text>
+
+  <!-- Naive sRGB gradient swatch bar -->
+  <rect x="644" y="252" width="472" height="58" rx="8" fill="url(#srgbGrad)" stroke="#94a3b8" stroke-width="1.5"/>
+  <line x1="880" y1="244" x2="880" y2="318" stroke="#fb7185" stroke-width="3"/>
+  <rect x="826" y="324" width="108" height="28" rx="6" fill="#808080" stroke="#fb7185" stroke-width="1.5"/>
+  <text x="880" y="343" fill="#f8fafc" font-family="Consolas, monospace" font-size="13" font-weight="800" text-anchor="middle">
+    α=0.5 #808080
+  </text>
+
+  <!-- Luminance plot sRGB sag -->
+  <rect x="644" y="370" width="472" height="110" rx="8" fill="#140c1c" stroke="#3b1d38"/>
+  <line x1="670" y1="455" x2="1090" y2="390" stroke="#475569" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <path d="M 670 455 Q 880 492 1090 390" fill="none" stroke="#fb7185" stroke-width="3.5"/>
+  <circle cx="880" cy="461" r="6" fill="#fb7185" stroke="#f8fafc" stroke-width="2"/>
+  <text x="880" y="445" fill="#fda4af" font-family="Consolas, monospace" font-size="13" font-weight="700" text-anchor="middle">
+    Y(0.50) = 0.2140 (−57.19% Dark Mud Trough!)
+  </text>
+
+  <rect x="640" y="498" width="480" height="50" rx="8" fill="#3b0a1e" stroke="#f43f5e"/>
+  <text x="656" y="520" fill="#fecdd3" font-family="Consolas, monospace" font-size="14" font-weight="700">
+    Midpoint Hex: #808080 (sRGB 0.500) · Luminance Y = 0.2140
+  </text>
+  <text x="656" y="539" fill="#fda4af" font-family="Consolas, monospace" font-size="13">
+    Midpoint Energy Loss: 57.19% · Mean Interior Loss: 42.95%
+  </text>
+</svg>

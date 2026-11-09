@@ -290,6 +290,30 @@
         "The 54-solid radar stage compares camera-space unit planes against Gribb-Hartmann matrix normalization (5.71 ms vs 12.82 ms) without claiming StopThePop or FlashGS execution."
       ],
       "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "cuda_rasterizer": "not_measured" }
+    },
+    {
+      "round": 23,
+      "slug": "linear-radiance-mixer",
+      "topic": "linear-vs-srgb-blending",
+      "title_zh": "交叉叠化与残影不发黑发脏：线性辐射度空间混合与 sRGB 编码值直混选型 FAQ",
+      "title_en": "Cross-fades and trails without dark mud: linear-light radiance blending vs gamma-encoded sRGB mixing FAQ",
+      "faq_zh": "docs/linear-vs-srgb-blending-faq.md",
+      "faq_en": "docs/linear-vs-srgb-blending-faq.en.md",
+      "summary": "docs/evidence/linear-radiance-mixer-summary.svg",
+      "report": "demos/linear-radiance-mixer/report.json",
+      "cards": "demos/linear-radiance-mixer/test-report-cards.html",
+      "cards_zh": "demos/linear-radiance-mixer/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "直接对伽马压缩的 sRGB 编码值求平均会在红青互补色中点（α=0.50）输出 #808080，经屏幕幂律展开后物理亮度跌至 Y=0.2140，吞噬 57.19% 光子能量（全梯度最大损耗 61.36%）。",
+        "先按 IEC 61966-2-1 EOTF 解码至线性辐射度空间相加再经 OETF 编码回 sRGB（#BCBCBC, 0.7354），可在全部 41 个检查点实现 100.00% 物理光子能量守恒（0.00% 发黑损耗）。",
+        "41 实体 17 阶辐射度光学台对比预解码线性端点+4096 项查找表与逐采样 Math.pow(2.4) 幂运算（0.884 ms vs 17.896 ms，提速 20.2×），不冒充 HDR-GS 或 GaussHDR 神经色调映射。"
+      ],
+      "conclusions_en": [
+        "Averaging gamma-compressed sRGB code values directly at the red-cyan midpoint (α=0.50) outputs #808080 (Y=0.2140), destroying 57.19% of physical photon energy (61.36% peak ramp loss).",
+        "Decoding via IEC 61966-2-1 EOTF to linear radiance before mixing and re-encoding to sRGB (#BCBCBC, 0.7354) preserves 100.00% physical photon luminance across all 41 checkpoints.",
+        "The 41-solid 17-swatch bench compares pre-decoded linear endpoints + a 4096-entry LUT against per-sample Math.pow(2.4) (0.884 ms vs 17.896 ms, 20.2× faster) without claiming HDR-GS execution."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "cuda_rasterizer": "not_measured" }
     }
   ]
 }

@@ -1,0 +1,279 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Linear-light radiance alpha blending versus gamma-encoded sRGB direct mixing",
+  "topic_zh": "线性辐射度空间混合与 sRGB 编码值直混发黑对比",
+  "slug": "linear-radiance-mixer",
+  "timestamp": "2026-11-09T19:17:07.730Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic IEC 61966-2-1 EOTF/OETF transfer functions, relative luminance conservation Y = 0.2126R + 0.7152G + 0.0722B, and 4096-entry LUT vs per-sample Math.pow CPU solving. No HDR-GS CUDA kernel execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "156.0.8078.80",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "lut-equivalence-128",
+      "passed": true,
+      "detail": "128 17-swatch ramps agree between 4096-entry LUT and exact IEC 61966-2-1 within 1.10e-5"
+    },
+    {
+      "name": "lut-equivalence-1024",
+      "passed": true,
+      "detail": "1024 17-swatch ramps agree between 4096-entry LUT and exact IEC 61966-2-1 within 1.10e-5"
+    },
+    {
+      "name": "lut-equivalence-8192",
+      "passed": true,
+      "detail": "8192 17-swatch ramps agree between 4096-entry LUT and exact IEC 61966-2-1 within 1.10e-5"
+    },
+    {
+      "name": "linear-zero-energy-loss",
+      "passed": true,
+      "detail": "41 alpha checkpoints retain 100.00% physical photon luminance (max loss 0.00%)"
+    },
+    {
+      "name": "srgb-mud-trough-exposed",
+      "passed": true,
+      "detail": "naive sRGB direct mixing loses 57.19% photon energy at alpha=0.50 (#808080 dark mud)"
+    },
+    {
+      "name": "midpoint-silver-retained",
+      "passed": true,
+      "detail": "linear-light midpoint produces #BCBCBC with Y=0.5000"
+    },
+    {
+      "name": "srgb-underluminance-exposed",
+      "passed": true,
+      "detail": "naive sRGB midpoint collapses to Y=0.2140 (57.19% loss)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse alpha scrubbing reproduces the exact probe carriage world matrix"
+    },
+    {
+      "name": "atomic-gamma-rejection",
+      "passed": true,
+      "detail": "out-of-range gammaExponent=4.2 is rejected while valid mixer state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered alpha=0.50 probe carriage x-translation matches center position 0.0"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px radiance mixer controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual alpha scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-swatch blend passes",
+      "count": 128,
+      "primary_ms": 0.126700000000028,
+      "baseline_ms": 0.2725000000000364,
+      "primary_samples_ms": [
+        0.3572000000000344,
+        0.12160000000005766,
+        0.11879999999996471,
+        0.203899999999976,
+        0.126700000000028,
+        0.11800000000005184,
+        0.35439999999994143
+      ],
+      "baseline_samples_ms": [
+        0.7717000000000098,
+        0.26530000000002474,
+        0.2725000000000364,
+        0.29550000000006094,
+        0.27309999999999945,
+        0.24440000000004147,
+        0.2701000000000704
+      ]
+    },
+    {
+      "load": "1024 CPU 17-swatch blend passes",
+      "count": 1024,
+      "primary_ms": 0.10230000000001382,
+      "baseline_ms": 1.8035999999999603,
+      "primary_samples_ms": [
+        7.224299999999971,
+        0.10230000000001382,
+        0.10130000000003747,
+        0.25729999999998654,
+        0.11170000000004165,
+        0.10180000000002565,
+        0.10140000000001237
+      ],
+      "baseline_samples_ms": [
+        6.275499999999965,
+        1.410199999999918,
+        1.379099999999994,
+        2.5552999999999884,
+        3.5686000000000604,
+        1.7602000000000544,
+        1.8035999999999603
+      ]
+    },
+    {
+      "load": "8192 CPU 17-swatch blend passes",
+      "count": 8192,
+      "primary_ms": 0.8837999999998374,
+      "baseline_ms": 17.895899999999983,
+      "primary_samples_ms": [
+        0.9049999999999727,
+        0.8330999999999449,
+        1.4143000000000256,
+        0.8611999999998261,
+        0.8197000000000116,
+        1.2251999999998588,
+        0.8837999999998374
+      ],
+      "baseline_samples_ms": [
+        15.022000000000048,
+        18.738399999999956,
+        17.895899999999983,
+        30.946899999999914,
+        46.10759999999982,
+        13.968799999999874,
+        17.47069999999985
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/linear-radiance-mixer/light-linear-radiance.png",
+    "docs/evidence/linear-radiance-mixer/light-srgb-direct.png",
+    "docs/evidence/linear-radiance-mixer/dark-linear-radiance.png",
+    "docs/evidence/linear-radiance-mixer/dark-srgb-direct.png",
+    "docs/evidence/linear-radiance-mixer/mobile.png"
+  ],
+  "primary_label": "Pre-decoded linear + 4096 LUT",
+  "baseline_label": "Per-sample IEC Math.pow(2.4)",
+  "load_unit": "17-swatch blend passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Pre-decoded linear RGB endpoints with 4096-entry sRGB OETF lookup table versus per-sample IEC 61966-2-1 Math.pow(2.4) decode and encode.",
+  "summary": {
+    "linearMidpointHex": "#BCBCBC",
+    "srgbMidpointHex": "#808080",
+    "linearMidpointLuminance": 0.5,
+    "srgbMidpointLuminance": 0.214041,
+    "linearMidpointLossPct": 0,
+    "srgbMidpointLossPct": 57.1918,
+    "srgbMaxLossPct": 61.3584,
+    "srgbMeanInteriorLossPct": 42.95406,
+    "primaryLatency8192Ms": 0.884,
+    "baselineLatency8192Ms": 17.896
+  },
+  "geometry": {
+    "parts": 41,
+    "swatches": 17,
+    "linear_midpoint_hex": "#BCBCBC",
+    "srgb_midpoint_hex": "#808080",
+    "linear_midpoint_y": 0.5,
+    "srgb_midpoint_y": 0.214041,
+    "srgb_midpoint_loss_pct": 57.1918,
+    "srgb_peak_loss_pct": 61.3584,
+    "maximum_lut_error": 0.000011
+  },
+  "protocol": {
+    "input": {
+      "alpha": 0.5,
+      "source_a": "#FF0000",
+      "source_b": "#00FFFF",
+      "swatches": 17,
+      "mode": "linear-radiance"
+    },
+    "output": {
+      "linear_hex": "#BCBCBC",
+      "linear_y": 0.5,
+      "srgb_hex": "#808080",
+      "srgb_y": 0.214041,
+      "srgb_loss_pct": 57.1918
+    },
+    "function": "IEC 61966-2-1 EOTF decode → L = (1-α)L_A + αL_B → OETF encode → 100% luminance conserved (#BCBCBC)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled alpha checkpoints retain 100% physical photon luminance",
+      "original": 41,
+      "perturbed": 41,
+      "total": 41
+    }
+  ],
+  "good_fit": [
+    "Eliminating dark muddy troughs in complementary cross-fades and particle trails",
+    "3D Gaussian Splatting and volumetric alpha compositing in linear radiance",
+    "Explaining why #FF0000 + #00FFFF at α=0.50 must be #BCBCBC (0.735) instead of #808080 (0.500)",
+    "Fast CPU/GPU palette interpolation via pre-decoded linear endpoints and OETF LUTs"
+  ],
+  "not_for": [
+    "HDR-GS dual differentiable CUDA rasterization or GaussHDR neural tone mapping",
+    "Perceptual hue-wheel palette design where Oklab / Oklch chroma preservation is preferred",
+    "Un-dithered 8-bit linear framebuffers without sRGB hardware write conversion",
+    "Spectral rendering with wavelength-dependent dispersion"
+  ],
+  "locale_zh": {
+    "lut-equivalence-128": "查找表等价 128",
+    "128 17-swatch ramps agree between 4096-entry LUT and exact IEC 61966-2-1 within 1.10e-5": "128 次 17 阶色带在 4096 项查找表与精确 IEC 61966-2-1 间误差小于 1.10e-5",
+    "lut-equivalence-1024": "查找表等价 1024",
+    "1024 17-swatch ramps agree between 4096-entry LUT and exact IEC 61966-2-1 within 1.10e-5": "1024 次 17 阶色带在 4096 项查找表与精确 IEC 61966-2-1 间误差小于 1.10e-5",
+    "lut-equivalence-8192": "查找表等价 8192",
+    "8192 17-swatch ramps agree between 4096-entry LUT and exact IEC 61966-2-1 within 1.10e-5": "8192 次 17 阶色带在 4096 项查找表与精确 IEC 61966-2-1 间误差小于 1.10e-5",
+    "linear-zero-energy-loss": "线性辐射零损耗",
+    "41 alpha checkpoints retain 100.00% physical photon luminance (max loss 0.00%)": "41 个透明度检查点保持 100.00% 物理光子亮度（最大损失 0.00%）",
+    "srgb-mud-trough-exposed": "sRGB中点发黑暴露",
+    "naive sRGB direct mixing loses 57.19% photon energy at alpha=0.50 (#808080 dark mud)": "sRGB 直接混合在 alpha=0.50 处丢失 57.19% 光子能量（#808080 暗灰泥团）",
+    "midpoint-silver-retained": "中点银白保留",
+    "linear-light midpoint produces #BCBCBC with Y=0.5000": "线性光中点输出 #BCBCBC，物理亮度 Y=0.5000",
+    "srgb-underluminance-exposed": "sRGB亮度塌陷暴露",
+    "naive sRGB midpoint collapses to Y=0.2140 (57.19% loss)": "sRGB 直混中点亮度塌陷至 Y=0.2140（损失 57.19%）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse alpha scrubbing reproduces the exact probe carriage world matrix": "逆序透明度拖曳精确复现探针滑架世界矩阵",
+    "atomic-gamma-rejection": "原子伽马拒绝",
+    "out-of-range gammaExponent=4.2 is rejected while valid mixer state remains": "越界伽马指数 4.2 被拒绝，有效混合器状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered alpha=0.50 probe carriage x-translation matches center position 0.0": "渲染 alpha=0.50 探针滑架水平位移与中心坐标 0.0 完全一致",
+    "mobile-layout": "手机布局",
+    "390px radiance mixer controls fit without horizontal overflow": "390px 辐射度混合控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual alpha scrubbing remains available": "减少动态默认静止，保留手动透明度核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Pre-decoded linear + 4096 LUT": "预解码线性端点 + 4096 查找表",
+    "Per-sample IEC Math.pow(2.4)": "逐采样 IEC Math.pow(2.4) 幂运算",
+    "Median of 7 alternating Node CPU runs after warmup. Pre-decoded linear RGB endpoints with 4096-entry sRGB OETF lookup table versus per-sample IEC 61966-2-1 Math.pow(2.4) decode and encode.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；预解码线性 RGB 端点配合 4096 项 sRGB 查找表对比逐采样 IEC 61966-2-1 幂函数解码与编码。",
+    "Sampled alpha checkpoints retain 100% physical photon luminance": "采样透明度检查点保持 100% 物理光子亮度守恒",
+    "IEC 61966-2-1 EOTF decode → L = (1-α)L_A + αL_B → OETF encode → 100% luminance conserved (#BCBCBC)": "IEC 61966-2-1 伽马解码 → 线性光叠加 L = (1-α)L_A + αL_B → 伽马编码 → 100% 物理亮度守恒 (#BCBCBC)",
+    "Eliminating dark muddy troughs in complementary cross-fades and particle trails": "消除互补色交叉叠化与粒子拖尾中的发黑死灰凹陷",
+    "3D Gaussian Splatting and volumetric alpha compositing in linear radiance": "3D 高斯泼溅与体积半透明混合的线性辐射度累积",
+    "Explaining why #FF0000 + #00FFFF at α=0.50 must be #BCBCBC (0.735) instead of #808080 (0.500)": "直观解释为何红青半混必须是 #BCBCBC (0.735) 而非暗灰 #808080 (0.500)",
+    "Fast CPU/GPU palette interpolation via pre-decoded linear endpoints and OETF LUTs": "通过预解码线性端点与 OETF 查找表实现高速调色板插值",
+    "HDR-GS dual differentiable CUDA rasterization or GaussHDR neural tone mapping": "HDR-GS 双动态范围 CUDA 光栅化或 GaussHDR 神经局部色调映射",
+    "Perceptual hue-wheel palette design where Oklab / Oklch chroma preservation is preferred": "需要保持色相环饱和度的 Oklab / Oklch 感知调色板设计",
+    "Un-dithered 8-bit linear framebuffers without sRGB hardware write conversion": "未开启硬件 sRGB 写入转换且无抖动的 8 位整数帧缓冲",
+    "Spectral rendering with wavelength-dependent dispersion": "包含波长色散的物理光谱渲染"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/linear-radiance.test.ts",
+    "node scripts/benchmark-linear-radiance.mjs"
+  ]
+}
