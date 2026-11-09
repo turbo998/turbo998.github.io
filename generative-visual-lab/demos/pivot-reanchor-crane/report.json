@@ -1,0 +1,263 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "World-invariant pivot re-anchoring compensation versus naive origin shift",
+  "topic_zh": "世界坐标不变量支点切换补偿与直接改支点瞬移对比",
+  "slug": "pivot-reanchor-crane",
+  "timestamp": "2026-11-09T17:56:19.495Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic affine pivot-shift compensation t₂ = t₁ + (R(θ₀)-I)Δp, C⁰ handoff continuity verification and Node CPU solving. No Dream2Flow video object flow or robotic grasp synthesis.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "156.0.8078.80",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "solver-equivalence-128",
+      "passed": true,
+      "detail": "128 direct affine and 4-matrix chain transforms agree within 1e-12"
+    },
+    {
+      "name": "solver-equivalence-1024",
+      "passed": true,
+      "detail": "1024 direct affine and 4-matrix chain transforms agree within 1e-12"
+    },
+    {
+      "name": "solver-equivalence-8192",
+      "passed": true,
+      "detail": "8192 direct affine and 4-matrix chain transforms agree within 1e-12"
+    },
+    {
+      "name": "handoff-zero-pop",
+      "passed": true,
+      "detail": "compensated pivot handoff at t=3.0s preserves world coordinates within 2.87e-15 units"
+    },
+    {
+      "name": "uncompensated-pop-exposed",
+      "passed": true,
+      "detail": "uncompensated pivot shift teleports the rotated beam by 1.6069 scene units"
+    },
+    {
+      "name": "beam-matches-reference",
+      "passed": true,
+      "detail": "compensated beam world XY matches continuous reference beam within 1e-12"
+    },
+    {
+      "name": "rendered-uncompensated-jump",
+      "passed": true,
+      "detail": "rendered uncompensated beam jumps >1.6 units away from the handoff socket at t=3.0s"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse timestamp visitation reproduces the exact walking-beam world matrix"
+    },
+    {
+      "name": "atomic-span-rejection",
+      "passed": true,
+      "detail": "out-of-range pivotSpan=5.0 is rejected while valid latch config remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered beam world center matches independent affine pivot compensation"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px pivot crane controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual handoff inspection remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU pivot transforms",
+      "count": 128,
+      "primary_ms": 0.18610000000001037,
+      "baseline_ms": 0.4514000000000351,
+      "primary_samples_ms": [
+        0.268100000000004,
+        0.18060000000002674,
+        0.18610000000001037,
+        0.23220000000003438,
+        0.15600000000006276,
+        0.1592000000000553,
+        0.19470000000001164
+      ],
+      "baseline_samples_ms": [
+        0.5021000000000413,
+        0.5305999999999358,
+        0.42639999999994416,
+        0.4107000000000198,
+        0.4514000000000351,
+        0.4560999999999922,
+        0.421799999999962
+      ]
+    },
+    {
+      "load": "1024 CPU pivot transforms",
+      "count": 1024,
+      "primary_ms": 1.2871999999999844,
+      "baseline_ms": 3.207300000000032,
+      "primary_samples_ms": [
+        1.380200000000059,
+        2.47180000000003,
+        3.2380000000000564,
+        1.2381000000000313,
+        1.2871999999999844,
+        0.20079999999995835,
+        0.1996000000000322
+      ],
+      "baseline_samples_ms": [
+        3.207300000000032,
+        5.033199999999965,
+        3.5047000000000708,
+        3.0108999999999924,
+        14.670299999999997,
+        0.8744000000000369,
+        0.8881000000000085
+      ]
+    },
+    {
+      "load": "8192 CPU pivot transforms",
+      "count": 8192,
+      "primary_ms": 0.9563000000000557,
+      "baseline_ms": 7.796299999999974,
+      "primary_samples_ms": [
+        0.959699999999998,
+        0.9533999999999878,
+        2.9127999999999474,
+        0.9458000000000766,
+        0.9563000000000557,
+        0.9474999999999909,
+        1.1096000000000004
+      ],
+      "baseline_samples_ms": [
+        8.448399999999992,
+        5.98739999999998,
+        12.513400000000047,
+        6.026900000000069,
+        10.432299999999941,
+        5.8858000000000175,
+        7.796299999999974
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/pivot-reanchor-crane/light-compensated.png",
+    "docs/evidence/pivot-reanchor-crane/light-uncompensated.png",
+    "docs/evidence/pivot-reanchor-crane/dark-compensated.png",
+    "docs/evidence/pivot-reanchor-crane/dark-uncompensated.png",
+    "docs/evidence/pivot-reanchor-crane/mobile.png"
+  ],
+  "primary_label": "Direct affine compensation",
+  "baseline_label": "4-matrix homogeneous chain",
+  "load_unit": "pivot transforms",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Direct affine vector compensation versus 4-matrix 3x3 homogeneous chain multiplication, not neural object flow or GPU rendering.",
+  "geometry": {
+    "parts": 58,
+    "pivot_span": 2.6,
+    "handoff_angle_deg": 36,
+    "compensated_pop_distance": 2.8651e-15,
+    "uncompensated_pop_distance": 1.606888,
+    "maximum_solver_error": 0
+  },
+  "protocol": {
+    "input": {
+      "time": 3,
+      "pivot_span": 2.6,
+      "switch_angle_deg": 36,
+      "final_angle_deg": -24,
+      "mode": "compensated"
+    },
+    "output": {
+      "translation_x": -0.4966,
+      "translation_y": 1.5282,
+      "switch_pop_u": 0,
+      "uncompensated_pop_u": 1.6069
+    },
+    "function": "pivot shift Δp = p₂ - p₁ at θ₀ → compensate t₂ = t₁ + (R(θ₀)-I)Δp → 0 handoff pop → rotate around p₂"
+  },
+  "robustness": [
+    {
+      "name": "Handoff and post-switch frames retain exact world matrices under reverse visitation",
+      "original": 61,
+      "perturbed": 61,
+      "total": 61
+    }
+  ],
+  "good_fit": [
+    "Multi-pivot walking mechanisms and alternating latches",
+    "Dynamic parent switching (table → hand → table) without frame pops",
+    "Interactive 3D gizmos allowing mid-animation pivot relocation",
+    "Explaining why T(t)·T(p)·R(θ)·T(-p) couples pivot and translation"
+  ],
+  "not_for": [
+    "Dream2Flow video-to-3D object flow neural extraction",
+    "Point-cloud robotic grasp synthesis and force closure",
+    "Frictional contact slip and impact impulse dynamics",
+    "Deformable non-rigid object re-anchoring"
+  ],
+  "locale_zh": {
+    "solver-equivalence-128": "求解等价 128",
+    "128 direct affine and 4-matrix chain transforms agree within 1e-12": "128 个直接仿射公式与 4 矩阵链乘法在 1e-12 内一致",
+    "solver-equivalence-1024": "求解等价 1024",
+    "1024 direct affine and 4-matrix chain transforms agree within 1e-12": "1024 个直接仿射公式与 4 矩阵链乘法在 1e-12 内一致",
+    "solver-equivalence-8192": "求解等价 8192",
+    "8192 direct affine and 4-matrix chain transforms agree within 1e-12": "8192 个直接仿射公式与 4 矩阵链乘法在 1e-12 内一致",
+    "handoff-zero-pop": "交接零瞬移",
+    "compensated pivot handoff at t=3.0s preserves world coordinates within 2.87e-15 units": "t=3.0s 补偿支点交接保持世界坐标连续（跳变 2.87e-15 单位）",
+    "uncompensated-pop-exposed": "未补偿瞬移暴露",
+    "uncompensated pivot shift teleports the rotated beam by 1.6069 scene units": "未补偿直接改支点导致已旋转横梁瞬间跳变 1.6069 示意单位",
+    "beam-matches-reference": "横梁对齐参考轨",
+    "compensated beam world XY matches continuous reference beam within 1e-12": "支点补偿横梁世界 XY 坐标与连续参考横梁在 1e-12 内一致",
+    "rendered-uncompensated-jump": "渲染瞬移暴露",
+    "rendered uncompensated beam jumps >1.6 units away from the handoff socket at t=3.0s": "未补偿横梁在 t=3.0s 处偏离交接锁座超过 1.6 单位",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse timestamp visitation reproduces the exact walking-beam world matrix": "逆序时间戳重访精确复现行进横梁世界矩阵",
+    "atomic-span-rejection": "原子跨距拒绝",
+    "out-of-range pivotSpan=5.0 is rejected while valid latch config remains": "越界锁扣跨距 5.0 被拒绝，有效配置完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered beam world center matches independent affine pivot compensation": "渲染横梁世界中心与独立仿射支点补偿坐标一致",
+    "mobile-layout": "手机布局",
+    "390px pivot crane controls fit without horizontal overflow": "390px 支点切换控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual handoff inspection remains available": "减少动态默认静止，保留手动支点交接核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Direct affine compensation": "直接仿射向量补偿",
+    "4-matrix homogeneous chain": "四矩阵齐次链式连乘",
+    "Median of 7 alternating Node CPU runs after warmup. Direct affine vector compensation versus 4-matrix 3x3 homogeneous chain multiplication, not neural object flow or GPU rendering.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；直接仿射向量补偿对比 4 个 3x3 齐次矩阵链式连乘，不是神经物体流或 GPU 渲染。",
+    "Handoff and post-switch frames retain exact world matrices under reverse visitation": "逆序重访下交接点与后半段帧保持精确世界矩阵",
+    "pivot shift Δp = p₂ - p₁ at θ₀ → compensate t₂ = t₁ + (R(θ₀)-I)Δp → 0 handoff pop → rotate around p₂": "在 θ₀ 处切换支点 Δp = p₂ - p₁ → 补偿平移 t₂ = t₁ + (R(θ₀)-I)Δp → 0 交接瞬移 → 绕新支点 p₂ 旋转",
+    "Multi-pivot walking mechanisms and alternating latches": "多支点交替步进机构与双锁扣机械臂",
+    "Dynamic parent switching (table → hand → table) without frame pops": "动态父节点交接（桌面→手掌→桌面）无跳帧瞬移",
+    "Interactive 3D gizmos allowing mid-animation pivot relocation": "支持动画中途移动旋转中心的 3D 编辑手柄",
+    "Explaining why T(t)·T(p)·R(θ)·T(-p) couples pivot and translation": "直观解释为何三明治旋转矩阵会耦合支点与平移",
+    "Dream2Flow video-to-3D object flow neural extraction": "Dream2Flow 视频到三维物体流神经提取",
+    "Point-cloud robotic grasp synthesis and force closure": "点云机器人抓握合成与力闭合分析",
+    "Frictional contact slip and impact impulse dynamics": "摩擦接触滑移与碰撞冲量动力学",
+    "Deformable non-rigid object re-anchoring": "非刚性可变形物体的支点重锚定"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/pivot-crane.test.ts",
+    "node scripts/benchmark-pivot-crane.mjs"
+  ]
+}

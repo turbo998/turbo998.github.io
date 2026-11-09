@@ -170,6 +170,30 @@
         "The 51-solid twin turret compares closed-form trig SLERP against 32-step geodesic stepping (2.80 ms vs 22.99 ms) without claiming SplineGS execution."
       ],
       "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "servo_gimbal": "not_measured" }
+    },
+    {
+      "round": 18,
+      "slug": "pivot-reanchor-crane",
+      "topic": "pivot-compensation-transform",
+      "title_zh": "切换旋转中心不瞬移：支点补偿变换矩阵与直接改 Pivot 选型 FAQ",
+      "title_en": "Changing rotation pivots without position pops: world-invariant pivot compensation vs naive origin shift FAQ",
+      "faq_zh": "docs/pivot-compensation-transform-faq.md",
+      "faq_en": "docs/pivot-compensation-transform-faq.en.md",
+      "summary": "docs/evidence/pivot-reanchor-crane-summary.svg",
+      "report": "demos/pivot-reanchor-crane/report.json",
+      "cards": "demos/pivot-reanchor-crane/test-report-cards.html",
+      "cards_zh": "demos/pivot-reanchor-crane/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "三明治旋转矩阵 T(t)T(p)R(θ)T(-p) 将局部支点与旋转角耦合进平移项，θ₀=36° 时直接改支点会产生 1.6069 u 瞬间跳变。",
+        "切换支点时原子写入平移补偿 t₂ = t₁ + (R(θ₀)-I)(p₂-p₁) 可将交接瞬间跳变降至 2.87e-15 u。",
+        "58 实体双锁扣横梁对比直接仿射补偿与 4 矩阵齐次连乘（8192 次 0.96 ms vs 7.80 ms），不冒充 Dream2Flow 神经物体流。"
+      ],
+      "conclusions_en": [
+        "Sandwich rotation T(t)T(p)R(θ)T(-p) couples local pivot and rotation into translation, causing a 1.6069 u teleport when shifting pivots at θ₀=36°.",
+        "Committing translation compensation t₂ = t₁ + (R(θ₀)-I)(p₂-p₁) reduces handoff discontinuity to 2.87e-15 u.",
+        "The 58-solid walking-beam rig compares direct affine compensation against 4-matrix chain multiplication (0.96 ms vs 7.80 ms at 8192 transforms) without claiming Dream2Flow execution."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "grasp_force": "not_measured" }
     }
   ]
 }
