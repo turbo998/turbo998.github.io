@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 680" width="1200" height="680">
+  <defs>
+    <linearGradient id="bg24" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0B1120"/>
+      <stop offset="50%" stop-color="#111827"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="redCard24" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#450A0A" stop-opacity="0.78"/>
+      <stop offset="100%" stop-color="#1E1B4B" stop-opacity="0.5"/>
+    </linearGradient>
+    <linearGradient id="greenCard24" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#064E3B" stop-opacity="0.78"/>
+      <stop offset="100%" stop-color="#0F172A" stop-opacity="0.65"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="680" fill="url(#bg24)" rx="16"/>
+  <rect x="20" y="18" width="1160" height="78" rx="12" fill="#1E293B" stroke="#334155" stroke-width="1.5"/>
+  <text x="42" y="48" fill="#F8FAFC" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="20" font-weight="800">Round 24 架构选型 FAQ：非人类身份治理 (NHI) 与凭据防盗 vs. DPoP/mTLS 绑定 + 零信任能力网关</text>
+  <text x="42" y="76" fill="#94A3B8" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="13">认票不认人 (Bearer Token) 异地重放 · 僵尸智能体 (Zombie NHI) 跨周期越权 · RFC 9449 DPoP / SPIFFE mTLS · 76 场景 / 218 断言通过</text>
+  <rect x="1000" y="32" width="160" height="46" rx="8" fill="#065F46" stroke="#10B981" stroke-width="1.5"/>
+  <text x="1080" y="53" text-anchor="middle" fill="#ECFDF5" font-family="system-ui, sans-serif" font-size="13" font-weight="700">Hardened ASR: 0.0%</text>
+  <text x="1080" y="70" text-anchor="middle" fill="#A7F3D0" font-family="system-ui, sans-serif" font-size="11">P50 0.0248ms (n=200)</text>
+
+  <!-- Left Column -->
+  <rect x="20" y="112" width="565" height="410" rx="12" fill="url(#redCard24)" stroke="#EF4444" stroke-width="1.5"/>
+  <text x="42" y="142" fill="#FCA5A5" font-family="system-ui, sans-serif" font-size="16" font-weight="800">❌ 传统裸 Bearer Token 与无世代管控（认票不认人 + 僵尸残留）</text>
+
+  <rect x="42" y="158" width="520" height="104" rx="8" fill="#1E293B" stroke="#7F1D1D" stroke-width="1.2"/>
+  <text x="58" y="182" fill="#F87171" font-family="system-ui, sans-serif" font-size="13" font-weight="700">1. 日志泄露 Bearer JWT 异地重放与幽灵身份接入 (NHI-BEARER-REPLAY-61)</text>
+  <text x="58" y="204" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• 哪怕 JWT 有效期仅 15 分钟，一旦被 APM Trace 日志或代理截获，攻击者在外部电脑</text>
+  <text x="58" y="224" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">  无需原机器私钥即可直接重放，或伪造幽灵服务号 ghost-nhi-bot 注入运行实例</text>
+  <text x="58" y="244" fill="#FCA5A5" font-family="system-ui, sans-serif" font-size="12" font-weight="600">• 趁重试窗口掉包 step-0000 参数并将 restricted-budget 机密预算直接外传！</text>
+
+  <rect x="42" y="274" width="520" height="104" rx="8" fill="#1E293B" stroke="#7F1D1D" stroke-width="1.2"/>
+  <text x="58" y="298" fill="#F87171" font-family="system-ui, sans-serif" font-size="13" font-weight="700">2. 离职/挂起后的“僵尸智能体 (Zombie NHI)”越权 (NHI-ZOMBIE-AGENT-62)</text>
+  <text x="58" y="320" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• 业务人员搭建的后台定时/队列 Agent 在主工作流暂停恢复或员工转岗后仍残留运行</text>
+  <text x="58" y="340" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• 僵尸 Worker 持挂起前旧状态在午夜苏醒，受外部供应商恶意账单唤醒</text>
+  <text x="58" y="360" fill="#FCA5A5" font-family="system-ui, sans-serif" font-size="12" font-weight="600">• 自动覆写生产业务结论并划走 $1,120 供应商结算款！</text>
+
+  <rect x="42" y="390" width="520" height="114" rx="8" fill="#1E293B" stroke="#7F1D1D" stroke-width="1.2"/>
+  <text x="58" y="414" fill="#F87171" font-family="system-ui, sans-serif" font-size="13" font-weight="700">3. 为什么缩短 JWT 过期时间 (TTL) 依然救不了高权限 Agent？</text>
+  <text x="58" y="436" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• 自动化攻击脚本从日志提取 Token 到完成异地 API 调用仅需 50 毫秒，15 分钟完全够用</text>
+  <text x="58" y="456" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• 缺乏服务端单调递增 epoch 世代锁时，无法一键冻结已派发至外部队列的僵尸任务</text>
+  <text x="58" y="482" fill="#EF4444" font-family="system-ui, sans-serif" font-size="13" font-weight="800">Baseline 结果：被盗会话外发底价 + 僵尸 Agent 篡改结论并划走 $1,120 (ASR 75.0%)</text>
+
+  <!-- Right Column -->
+  <rect x="615" y="112" width="565" height="410" rx="12" fill="url(#greenCard24)" stroke="#10B981" stroke-width="1.5"/>
+  <text x="637" y="142" fill="#6EE7B7" font-family="system-ui, sans-serif" font-size="16" font-weight="800">✅ DPoP/mTLS 发送方持有证明 + 世代锁 + 零信任能力网关</text>
+
+  <rect x="637" y="158" width="520" height="104" rx="8" fill="#1E293B" stroke="#065F46" stroke-width="1.2"/>
+  <text x="653" y="182" fill="#34D399" font-family="system-ui, sans-serif" font-size="13" font-weight="700">防线 1：发送方持有证明 (RFC 9449 DPoP / SPIFFE mTLS) + 成员强校验</text>
+  <text x="653" y="204" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• 将 JWT 绑定至工作负载硬件 TPM 私钥 (cnf.jkt / cnf.x5t#S256)，偷走字符串无法重放</text>
+  <text x="653" y="224" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• 未在当前 Run 注册的幽灵身份 ghost-nhi-bot 立即抛出 Actor does not belong Conflict</text>
+  <text x="653" y="244" fill="#A7F3D0" font-family="system-ui, sans-serif" font-size="12" font-weight="600">• 同步骤参数掉包重放立即触发 request_hash 不匹配 Conflict 异常！</text>
+
+  <rect x="637" y="274" width="520" height="104" rx="8" fill="#1E293B" stroke="#065F46" stroke-width="1.2"/>
+  <text x="653" y="298" fill="#34D399" font-family="system-ui, sans-serif" font-size="13" font-weight="700">防线 2：单调递增 Epoch 世代锁一键冻结僵尸 Agent (Stale Worker Epoch)</text>
+  <text x="653" y="320" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• 每个 NHI 强制绑定人类责任人 (Human Sponsor)，挂起/恢复或撤权自动令 run.epoch += 1</text>
+  <text x="653" y="340" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• 滞留后台的僵尸 Worker 持旧 epoch 苏醒时，0.0248ms 抛出 Stale worker epoch Conflict</text>
+  <text x="653" y="360" fill="#A7F3D0" font-family="system-ui, sans-serif" font-size="12" font-weight="600">• 无需等待 JWT 自然过期，实现毫秒级全局僵尸任务硬熔断！</text>
+
+  <rect x="637" y="390" width="520" height="114" rx="8" fill="#1E293B" stroke="#065F46" stroke-width="1.2"/>
+  <text x="653" y="414" fill="#34D399" font-family="system-ui, sans-serif" font-size="13" font-weight="700">防线 3：污点禁写 + 原发起人付款门禁 (original-requester-payment)</text>
+  <text x="653" y="436" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• 外部账单唤醒的后台任务强制打 untrusted 污点，写操作被 untrusted-write 拦截</text>
+  <text x="653" y="456" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• 外部发起的 $1,120 结算请求与受限预算外发被 100% 确定性阻断</text>
+  <text x="653" y="482" fill="#10B981" font-family="system-ui, sans-serif" font-size="13" font-weight="800">Hardened 结果：BRK-57 / BRK-58 100% 阻断 · 0 重放穿透 · $0 资金损失</text>
+
+  <!-- Bottom Bar -->
+  <rect x="20" y="538" width="1160" height="122" rx="12" fill="#1E293B" stroke="#475569" stroke-width="1.5"/>
+  <text x="42" y="566" fill="#38BDF8" font-family="system-ui, sans-serif" font-size="15" font-weight="800">🧭 AI 解决方案架构师选型铁律与实测性能口径（Provenance-Sealed）</text>
+  <text x="42" y="592" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12.5">• 跨公网/L7 网关：RFC 9449 DPoP + Broker  |  • K8s 内部服务网格：SPIFFE/SPIRE mTLS SVID + 责任人生命周期绑定 + Capability Broker</text>
+  <text x="42" y="616" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12.5">• 本地实测延迟 (measured, independently_reproduced=true)：纯内存门禁 P50 = 0.0248 ms / P95 = 0.0409 ms (n=200 全量原始样本封存)；单步含 SQLite WAL 落盘 P50 = 7.21 ms (n=50)</text>
+  <text x="42" y="640" fill="#94A3B8" font-family="system-ui, sans-serif" font-size="12">• 评测验证：tests/test_regressions.py 新增 BRK-57 (NHI-BEARER-REPLAY-61) 与 BRK-58 (NHI-ZOMBIE-AGENT-62)，全仓 76 场景 / 218 项 Pytest 100% 通过</text>
+</svg>

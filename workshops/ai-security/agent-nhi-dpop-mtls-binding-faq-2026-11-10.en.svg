@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 680" width="1200" height="680">
+  <defs>
+    <linearGradient id="bg24en" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0B1120"/>
+      <stop offset="50%" stop-color="#111827"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="redCard24en" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#450A0A" stop-opacity="0.78"/>
+      <stop offset="100%" stop-color="#1E1B4B" stop-opacity="0.5"/>
+    </linearGradient>
+    <linearGradient id="greenCard24en" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#064E3B" stop-opacity="0.78"/>
+      <stop offset="100%" stop-color="#0F172A" stop-opacity="0.65"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="680" fill="url(#bg24en)" rx="16"/>
+  <rect x="20" y="18" width="1160" height="78" rx="12" fill="#1E293B" stroke="#334155" stroke-width="1.5"/>
+  <text x="42" y="48" fill="#F8FAFC" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="19.5" font-weight="800">Round 24 Architect FAQ: Non-Human Identity (NHI) &amp; Token Replay vs. DPoP/mTLS + Broker</text>
+  <text x="42" y="76" fill="#94A3B8" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="13">Unconstrained Bearer Token Replay · Orphaned Zombie Agents Across Epochs · RFC 9449 DPoP / SPIFFE mTLS · 76 Scenarios / 218 Passed</text>
+  <rect x="1000" y="32" width="160" height="46" rx="8" fill="#065F46" stroke="#10B981" stroke-width="1.5"/>
+  <text x="1080" y="53" text-anchor="middle" fill="#ECFDF5" font-family="system-ui, sans-serif" font-size="13" font-weight="700">Hardened ASR: 0.0%</text>
+  <text x="1080" y="70" text-anchor="middle" fill="#A7F3D0" font-family="system-ui, sans-serif" font-size="11">P50 0.0248ms (n=200)</text>
+
+  <!-- Left Column -->
+  <rect x="20" y="112" width="565" height="410" rx="12" fill="url(#redCard24en)" stroke="#EF4444" stroke-width="1.5"/>
+  <text x="42" y="142" fill="#FCA5A5" font-family="system-ui, sans-serif" font-size="15.5" font-weight="800">❌ Unconstrained Bearer JWTs &amp; Unfenced Background Workers</text>
+
+  <rect x="42" y="158" width="520" height="104" rx="8" fill="#1E293B" stroke="#7F1D1D" stroke-width="1.2"/>
+  <text x="58" y="182" fill="#F87171" font-family="system-ui, sans-serif" font-size="13" font-weight="700">1. Log-Leaked Bearer Replay &amp; Ghost NHI Injection (NHI-BEARER-REPLAY-61)</text>
+  <text x="58" y="204" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• Even a 15-minute Bearer JWT leaked in APM trace logs can be replayed from any laptop</text>
+  <text x="58" y="224" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• Attacker injects unregistered ghost-nhi-bot or swaps payload on step-0000</text>
+  <text x="58" y="244" fill="#FCA5A5" font-family="system-ui, sans-serif" font-size="12" font-weight="600">• Hijacked session exfiltrates restricted-budget reserve floor externally!</text>
+
+  <rect x="42" y="274" width="520" height="104" rx="8" fill="#1E293B" stroke="#7F1D1D" stroke-width="1.2"/>
+  <text x="58" y="298" fill="#F87171" font-family="system-ui, sans-serif" font-size="13" font-weight="700">2. Orphaned 'Zombie Agent (Zombie NHI)' Persistence (NHI-ZOMBIE-AGENT-62)</text>
+  <text x="58" y="320" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• Background cron/queue agent continues running after workflow pause or sponsor exit</text>
+  <text x="58" y="340" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• Wakes up at midnight with pre-pause state and ingests external vendor invoice</text>
+  <text x="58" y="360" fill="#FCA5A5" font-family="system-ui, sans-serif" font-size="12" font-weight="600">• Overwrites production deliverable &amp; wires $1,120 unauthorized settlement!</text>
+
+  <rect x="42" y="390" width="520" height="114" rx="8" fill="#1E293B" stroke="#7F1D1D" stroke-width="1.2"/>
+  <text x="58" y="414" fill="#F87171" font-family="system-ui, sans-serif" font-size="13" font-weight="700">3. Why Shortening JWT Expiry (TTL) Alone Cannot Stop Automated Replay</text>
+  <text x="58" y="436" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• Automated scripts harvest &amp; replay leaked Bearer tokens in &lt;50ms (well within 15m TTL)</text>
+  <text x="58" y="456" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• Without monotonic epoch fencing, queued background workers cannot be frozen instantly</text>
+  <text x="58" y="482" fill="#EF4444" font-family="system-ui, sans-serif" font-size="13" font-weight="800">Baseline Outcome: Hijacked token leak + Zombie tamper &amp; $1,120 wire (75.0% ASR)</text>
+
+  <!-- Right Column -->
+  <rect x="615" y="112" width="565" height="410" rx="12" fill="url(#greenCard24en)" stroke="#10B981" stroke-width="1.5"/>
+  <text x="637" y="142" fill="#6EE7B7" font-family="system-ui, sans-serif" font-size="15.5" font-weight="800">✅ DPoP/mTLS Proof-of-Possession + Epoch Fencing + Capability Broker</text>
+
+  <rect x="637" y="158" width="520" height="104" rx="8" fill="#1E293B" stroke="#065F46" stroke-width="1.2"/>
+  <text x="653" y="182" fill="#34D399" font-family="system-ui, sans-serif" font-size="13" font-weight="700">Defense 1: Sender-Constrained Tokens (DPoP / SPIFFE mTLS) + Membership Lock</text>
+  <text x="653" y="204" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• Bind JWT to hardware TPM private key (cnf.jkt / cnf.x5t#S256); stolen string is useless</text>
+  <text x="653" y="224" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• Unregistered ghost-nhi-bot immediately raises Actor does not belong Conflict</text>
+  <text x="653" y="244" fill="#A7F3D0" font-family="system-ui, sans-serif" font-size="12" font-weight="600">• Replaying step-0000 with mutated arguments raises request_hash Conflict!</text>
+
+  <rect x="637" y="274" width="520" height="104" rx="8" fill="#1E293B" stroke="#065F46" stroke-width="1.2"/>
+  <text x="653" y="298" fill="#34D399" font-family="system-ui, sans-serif" font-size="13" font-weight="700">Defense 2: Monotonic Epoch Fencing Instantly Freezes Zombie Agents</text>
+  <text x="653" y="320" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• Bind every NHI to a Human Sponsor; pause/resume or revocation increments run.epoch</text>
+  <text x="653" y="340" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• Queued Zombie Workers waking up with stale epoch raise Stale worker epoch Conflict</text>
+  <text x="653" y="360" fill="#A7F3D0" font-family="system-ui, sans-serif" font-size="12" font-weight="600">• Zero wait for JWT expiry — sub-millisecond global worker revocation!</text>
+
+  <rect x="637" y="390" width="520" height="114" rx="8" fill="#1E293B" stroke="#065F46" stroke-width="1.2"/>
+  <text x="653" y="414" fill="#34D399" font-family="system-ui, sans-serif" font-size="13" font-weight="700">Defense 3: Taint Write Lock + Originator Payment Gate</text>
+  <text x="653" y="436" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• External vendor triggers stamp untrusted=True; deliverable write blocked by untrusted-write</text>
+  <text x="653" y="456" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• External $1,120 wire &amp; secret exfil blocked 100% by payment &amp; egress gates</text>
+  <text x="653" y="482" fill="#10B981" font-family="system-ui, sans-serif" font-size="13" font-weight="800">Hardened Outcome: BRK-57 / BRK-58 100% Blocked · 0 Replay Breaches · $0 Loss</text>
+
+  <!-- Bottom Bar -->
+  <rect x="20" y="538" width="1160" height="122" rx="12" fill="#1E293B" stroke="#475569" stroke-width="1.5"/>
+  <text x="42" y="566" fill="#38BDF8" font-family="system-ui, sans-serif" font-size="15" font-weight="800">🧭 AI Solution Architect Selection Rules &amp; Provenance-Sealed Latency</text>
+  <text x="42" y="592" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12.5">• Cross-Cloud / L7 Gateway: RFC 9449 DPoP + Broker  |  • Internal K8s Mesh: SPIFFE/SPIRE mTLS SVID + Sponsor Lineage + Capability Broker</text>
+  <text x="42" y="616" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12.5">• Locally Measured Latency (measured, independently_reproduced=true): In-memory gate P50 = 0.0248 ms / P95 = 0.0409 ms (n=200 raw array); 1-step SQLite WAL P50 = 7.21 ms (n=50)</text>
+  <text x="42" y="640" fill="#94A3B8" font-family="system-ui, sans-serif" font-size="12">• Regression Verification: tests/test_regressions.py adds BRK-57 (NHI-BEARER-REPLAY-61) &amp; BRK-58 (NHI-ZOMBIE-AGENT-62) — 76 scenarios / 218 Pytest passed</text>
+</svg>
