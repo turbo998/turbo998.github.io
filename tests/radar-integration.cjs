@@ -474,6 +474,26 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r19File),'utf8');
       assert.ok(txt.includes('1,080.00')&&txt.includes('540.00')&&txt.includes('31.50')&&txt.includes('1,048.50')&&txt.includes('97.08%')&&txt.includes('21')&&txt.includes('not_measured'),r19File+': contains exact 11-09 R6 RuView+ha-mcp closed-form parameters');
     }
+    // 2026-11-09 Round 7 (haydenschmitty/floorplan + heydamir/unslop) closed-form FinOps verification
+    const r20PathAIn=192*(0.045*3.00);
+    const r20PathAOut=192*(0.008*15.00);
+    assert.equal(r20PathAIn.toFixed(2),'25.92','11-09 R7 floorplan+unslop Path A input');
+    assert.equal(r20PathAOut.toFixed(2),'23.04','11-09 R7 floorplan+unslop Path A output');
+    assert.equal((r20PathAIn+r20PathAOut).toFixed(2),'48.96','11-09 R7 floorplan+unslop Path A total');
+    const r20PathBIn=96*(0.030*3.00);
+    const r20PathBOut=96*(0.005*15.00);
+    assert.equal((r20PathBIn+r20PathBOut).toFixed(2),'15.84','11-09 R7 floorplan+unslop Path B total');
+    const r20PathCIn=48*(0.020*3.00);
+    const r20PathCOut=48*(0.003*15.00);
+    assert.equal((r20PathCIn+r20PathCOut).toFixed(2),'5.04','11-09 R7 floorplan+unslop Path C total');
+    assert.equal((48.96-5.04).toFixed(2),'43.92','11-09 R7 floorplan+unslop savings vs Path A');
+    assert.equal(((48.96-5.04)/48.96*100).toFixed(2),'89.71','11-09 R7 floorplan+unslop pct savings vs Path A');
+    assert.equal((96.0-16.0).toFixed(1),'80.0','11-09 R7 floorplan+unslop hours saved');
+    assert.equal(((96.0-16.0)/96.0*100).toFixed(2),'83.33','11-09 R7 floorplan+unslop pct hours saved');
+    for(const r20File of ['workshops/github-trending-radar/docs/floorplan-unslop-codebase-map-vs-static-uml-selection-faq.md','workshops/github-trending-radar/docs/floorplan-unslop-codebase-map-vs-static-uml-selection-faq.en.md','assets/github-ai-radar-2026-11-09-r7-floorplan-unslop.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-09-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r20File),'utf8');
+      assert.ok(txt.includes('48.96')&&txt.includes('15.84')&&txt.includes('5.04')&&txt.includes('43.92')&&txt.includes('89.71%')&&txt.includes('not_measured'),r20File+': contains exact 11-09 R7 floorplan+unslop closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
