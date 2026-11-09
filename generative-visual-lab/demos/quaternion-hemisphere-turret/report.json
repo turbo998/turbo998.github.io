@@ -1,0 +1,265 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Quaternion double-cover hemisphere alignment versus 340-degree antipodal SLERP spin",
+  "topic_zh": "四元数双覆盖半球对齐与 340 度对径甩头 SLERP 对比",
+  "slug": "quaternion-hemisphere-turret",
+  "timestamp": "2026-11-09T17:43:34.487Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic S³ hemisphere dot-product sign alignment, exact trigonometric SLERP vs 32-step Lie-group geodesic stepping and Node CPU solving. No SplineGS 3DGS training or neural pose diffusion.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "156.0.8078.80",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "solver-equivalence-128",
+      "passed": true,
+      "detail": "128 closed-form SLERP and 32-step geodesic rotations agree within 1e-10"
+    },
+    {
+      "name": "solver-equivalence-1024",
+      "passed": true,
+      "detail": "1024 closed-form SLERP and 32-step geodesic rotations agree within 1e-10"
+    },
+    {
+      "name": "solver-equivalence-8192",
+      "passed": true,
+      "detail": "8192 closed-form SLERP and 32-step geodesic rotations agree within 1e-10"
+    },
+    {
+      "name": "hemisphere-shortest-arc",
+      "passed": true,
+      "detail": "101 sampled blend steps retain positive dot (0.9848) and 20.00° shortest arc"
+    },
+    {
+      "name": "antipodal-spin-exposed",
+      "passed": true,
+      "detail": "unaligned antipodal SLERP sweeps 340.00° and points 144.0° away at α=0.5"
+    },
+    {
+      "name": "turret-matches-reference",
+      "passed": true,
+      "detail": "hemisphere-aligned turret rotation matrix matches shortest-arc reference within 1e-12"
+    },
+    {
+      "name": "rendered-antipodal-reversal",
+      "passed": true,
+      "detail": "rendered unaligned turret barrel Z-axis flips opposite to shortest-arc reference at α=0.5"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse alpha visitation reproduces the exact turret head world matrix"
+    },
+    {
+      "name": "atomic-angle-rejection",
+      "passed": true,
+      "detail": "out-of-sector startYawDeg=20 is rejected while valid turret angles remain"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered turret forward basis column matches independent quaternion rotation"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px quaternion turret controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual quaternion inspection remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU SLERP queries",
+      "count": 128,
+      "primary_ms": 0.0906999999999698,
+      "baseline_ms": 0.4537000000000262,
+      "primary_samples_ms": [
+        0.16280000000006112,
+        0.11670000000003711,
+        0.0906999999999698,
+        0.0786000000000513,
+        0.0825000000000955,
+        0.3525000000000773,
+        0.08639999999991232
+      ],
+      "baseline_samples_ms": [
+        0.4823999999999842,
+        0.4489000000000942,
+        0.4537000000000262,
+        0.43659999999999854,
+        0.5060000000000855,
+        0.4741999999999962,
+        0.39570000000003347
+      ]
+    },
+    {
+      "load": "1024 CPU SLERP queries",
+      "count": 1024,
+      "primary_ms": 0.6136999999999944,
+      "baseline_ms": 2.8665999999999485,
+      "primary_samples_ms": [
+        0.675200000000018,
+        0.6671000000000049,
+        0.6105000000000018,
+        0.6385000000000218,
+        0.6136999999999944,
+        0.5226999999999862,
+        0.49260000000003856
+      ],
+      "baseline_samples_ms": [
+        3.2205000000000155,
+        2.9307999999999765,
+        2.877899999999954,
+        2.758000000000038,
+        2.8156999999999925,
+        2.8665999999999485,
+        2.6269999999999527
+      ]
+    },
+    {
+      "load": "8192 CPU SLERP queries",
+      "count": 8192,
+      "primary_ms": 2.7952000000000226,
+      "baseline_ms": 22.989199999999983,
+      "primary_samples_ms": [
+        2.960299999999961,
+        2.427000000000021,
+        2.510599999999954,
+        2.561800000000062,
+        3.2994999999999663,
+        2.8228000000000293,
+        2.7952000000000226
+      ],
+      "baseline_samples_ms": [
+        23.578500000000076,
+        21.97670000000005,
+        20.355500000000006,
+        22.989199999999983,
+        20.340299999999957,
+        25.787199999999984,
+        24.970000000000027
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/quaternion-hemisphere-turret/light-hemisphere-aligned.png",
+    "docs/evidence/quaternion-hemisphere-turret/light-unaligned-antipodal.png",
+    "docs/evidence/quaternion-hemisphere-turret/dark-hemisphere-aligned.png",
+    "docs/evidence/quaternion-hemisphere-turret/dark-unaligned-antipodal.png",
+    "docs/evidence/quaternion-hemisphere-turret/mobile.png"
+  ],
+  "primary_label": "Closed-form trig SLERP",
+  "baseline_label": "32-step geodesic stepping",
+  "load_unit": "SLERP queries",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Direct trigonometric SLERP versus 32-step incremental Lie-group power multiplication, not neural 3DGS rendering.",
+  "geometry": {
+    "parts": 51,
+    "sampled_steps": 101,
+    "raw_dot": -0.984808,
+    "aligned_dot": 0.984808,
+    "aligned_swept_deg": 20,
+    "unaligned_swept_deg": 340,
+    "unaligned_midpoint_error_deg": 144,
+    "maximum_solver_error": 1.8644e-15
+  },
+  "protocol": {
+    "input": {
+      "alpha": 0.5,
+      "start_yaw_deg": 170,
+      "target_yaw_deg": -170,
+      "pitch_deg": 18,
+      "mode": "hemisphere-aligned"
+    },
+    "output": {
+      "raw_dot": -0.9848,
+      "aligned_dot": 0.9848,
+      "swept_deg": 20,
+      "unaligned_swept_deg": 340
+    },
+    "function": "quaternion pair (q_A, q_B) → check q_A·q_B < 0 → flip q_B = -q_B (R unchanged) → shortest S³ geodesic SLERP"
+  },
+  "robustness": [
+    {
+      "name": "Sampled blend steps retain shortest-arc orientation under reverse visitation",
+      "original": 101,
+      "perturbed": 101,
+      "total": 101
+    }
+  ],
+  "good_fit": [
+    "Preventing 340° camera and joint spin glitches across ±180° yaw",
+    "Pre-aligning quaternion control points in 4DGS / SplineGS splines",
+    "Explaining why R(q) = R(-q) double cover requires dot >= 0",
+    "Constant-angular-velocity turret and gimbal orientation blending"
+  ],
+  "not_for": [
+    "Intentional multi-turn (>360°) propeller spin animations",
+    "SplineGS monocular video dynamic 3DGS reconstruction",
+    "Learned full-body human motion style diffusion",
+    "Physical servo motor backlash and friction compensation"
+  ],
+  "locale_zh": {
+    "solver-equivalence-128": "求解等价 128",
+    "128 closed-form SLERP and 32-step geodesic rotations agree within 1e-10": "128 个闭式 SLERP 与 32 步李群测地旋转在 1e-10 内一致",
+    "solver-equivalence-1024": "求解等价 1024",
+    "1024 closed-form SLERP and 32-step geodesic rotations agree within 1e-10": "1024 个闭式 SLERP 与 32 步李群测地旋转在 1e-10 内一致",
+    "solver-equivalence-8192": "求解等价 8192",
+    "8192 closed-form SLERP and 32-step geodesic rotations agree within 1e-10": "8192 个闭式 SLERP 与 32 步李群测地旋转在 1e-10 内一致",
+    "hemisphere-shortest-arc": "同半球最短弧",
+    "101 sampled blend steps retain positive dot (0.9848) and 20.00° shortest arc": "101 个混合采样步保持正内积（0.9848）与 20.00° 最短测地弧",
+    "antipodal-spin-exposed": "对径甩头暴露",
+    "unaligned antipodal SLERP sweeps 340.00° and points 144.0° away at α=0.5": "未对齐 SLERP 扫过 340.00° 远路，在中点 α=0.5 偏离 144.0°",
+    "turret-matches-reference": "转塔对齐参考轨",
+    "hemisphere-aligned turret rotation matrix matches shortest-arc reference within 1e-12": "同半球对齐转塔旋转矩阵与最短弧参考转塔在 1e-12 内一致",
+    "rendered-antipodal-reversal": "渲染中点反向",
+    "rendered unaligned turret barrel Z-axis flips opposite to shortest-arc reference at α=0.5": "未对齐转塔镜筒 Z 轴在中点 α=0.5 与最短弧参考完全反向",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse alpha visitation reproduces the exact turret head world matrix": "逆序 α 重访精确复现转塔头部世界矩阵",
+    "atomic-angle-rejection": "原子角度拒绝",
+    "out-of-sector startYawDeg=20 is rejected while valid turret angles remain": "越界起始偏航角 20° 被拒绝，有效转塔角度完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered turret forward basis column matches independent quaternion rotation": "渲染转塔前向基向量列与独立四元数旋转结果一致",
+    "mobile-layout": "手机布局",
+    "390px quaternion turret controls fit without horizontal overflow": "390px 四元数转塔控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual quaternion inspection remains available": "减少动态默认静止，保留手动四元数核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Closed-form trig SLERP": "闭式三角函数 SLERP",
+    "32-step geodesic stepping": "32步李群测地递推",
+    "Median of 7 alternating Node CPU runs after warmup. Direct trigonometric SLERP versus 32-step incremental Lie-group power multiplication, not neural 3DGS rendering.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；直接三角函数 SLERP 对比 32 步李群测地增量乘法，不是神经 3DGS 渲染。",
+    "Sampled blend steps retain shortest-arc orientation under reverse visitation": "逆序重访下采样插值步保持最短弧朝向不变",
+    "quaternion pair (q_A, q_B) → check q_A·q_B < 0 → flip q_B = -q_B (R unchanged) → shortest S³ geodesic SLERP": "四元数对 (q_A, q_B) → 检测内积 q_A·q_B < 0 → 翻转 q_B = -q_B（旋转矩阵不变） → 最短 S³ 测地线 SLERP",
+    "Preventing 340° camera and joint spin glitches across ±180° yaw": "消除跨越 ±180° 偏航角时的 340° 镜头与关节甩头故障",
+    "Pre-aligning quaternion control points in 4DGS / SplineGS splines": "在 4DGS / SplineGS 样条拟合前预对齐四元数控制点半球",
+    "Explaining why R(q) = R(-q) double cover requires dot >= 0": "直观解释为何四元数双覆盖 R(q)=R(-q) 必须强制内积非负",
+    "Constant-angular-velocity turret and gimbal orientation blending": "恒定角速度转塔与云台朝向混合",
+    "Intentional multi-turn (>360°) propeller spin animations": "需要故意连续旋转超过 360° 的螺旋桨动画",
+    "SplineGS monocular video dynamic 3DGS reconstruction": "SplineGS 单目视频动态 3D 高斯重建",
+    "Learned full-body human motion style diffusion": "学习型全身人体动作风格扩散生成",
+    "Physical servo motor backlash and friction compensation": "物理伺服电机齿隙与摩擦补偿"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/quaternion-turret.test.ts",
+    "node scripts/benchmark-quaternion-turret.mjs"
+  ]
+}

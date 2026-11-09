@@ -146,6 +146,30 @@
         "The 63-solid twin-dolly rail compares LUT+Newton against 32-step quadrature bisection (4.66 ms vs 631.88 ms) without claiming TrajectoryCrafter execution."
       ],
       "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "slider_motor": "not_measured" }
+    },
+    {
+      "round": 17,
+      "slug": "quaternion-hemisphere-turret",
+      "topic": "quaternion-antipodal-slerp",
+      "title_zh": "朝向插值不原地甩头 340 度：四元数双覆盖半球对齐与未对齐 SLERP 选型 FAQ",
+      "title_en": "Rotation blending without 340-degree spin spikes: quaternion double-cover hemisphere alignment vs unaligned SLERP FAQ",
+      "faq_zh": "docs/quaternion-antipodal-slerp-faq.md",
+      "faq_en": "docs/quaternion-antipodal-slerp-faq.en.md",
+      "summary": "docs/evidence/quaternion-hemisphere-turret-summary.svg",
+      "report": "demos/quaternion-hemisphere-turret/report.json",
+      "cards": "demos/quaternion-hemisphere-turret/test-report-cards.html",
+      "cards_zh": "demos/quaternion-hemisphere-turret/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "单位四元数 q 与 -q 对应完全相同的三维旋转矩阵 R(q)=R(-q)，但跨 ±180° 偏航时原始内积 q_A·q_B=-0.9848<0 会触发 340.0° 远路甩头。",
+        "插值前翻转负内积四元数至同号半球可将旋转路径锁定在 20.0° 最短测地弧，消除 α=0.5 处的 144.0° 镜筒反向错误。",
+        "51 实体双联转塔对比闭式三角 SLERP 与 32 步李群测地递推（2.80 ms vs 22.99 ms），不冒充 SplineGS 动态三维高斯重建。"
+      ],
+      "conclusions_en": [
+        "Unit quaternions q and -q represent the identical 3D rotation matrix R(q)=R(-q), yet raw dot product -0.9848<0 across ±180° yaw triggers a 340.0° spin.",
+        "Negating the target quaternion into the same S³ hemisphere locks the 20.0° shortest geodesic arc and eliminates the 144.0° midpoint reversal.",
+        "The 51-solid twin turret compares closed-form trig SLERP against 32-step geodesic stepping (2.80 ms vs 22.99 ms) without claiming SplineGS execution."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "servo_gimbal": "not_measured" }
     }
   ]
 }
