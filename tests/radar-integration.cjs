@@ -749,6 +749,29 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r32File),'utf8');
       assert.ok(txt.includes('1,320.00')&&txt.includes('99.00')&&txt.includes('2,700.00')&&txt.includes('4,119.00')&&txt.includes('100.00')&&txt.includes('19.80')&&txt.includes('180.00')&&txt.includes('299.80')&&txt.includes('3,819.20')&&txt.includes('92.72%')&&txt.includes('not_measured'),r32File+': contains exact 11-09 R19 Cicada+global-law closed-form parameters');
     }
+    // 2026-11-09 Round 20 (N1nEmAn/sapper-v2 + sherlock-project/sherlock v0.16.2) closed-form FinOps verification
+    const r33SwmA=40*(90*1.00+3*4.00);
+    const r33OsiA=1000*0.65;
+    const r33TriA=60.0*75.00;
+    const r33PathA=r33SwmA+r33OsiA+r33TriA;
+    assert.equal(r33SwmA.toFixed(2),'4080.00','11-09 R20 Path A flat swarm tokens');
+    assert.equal(r33OsiA.toFixed(2),'650.00','11-09 R20 Path A LLM OSINT');
+    assert.equal(r33TriA.toFixed(2),'4500.00','11-09 R20 Path A poisoned graph triage');
+    assert.equal(r33PathA.toFixed(2),'9230.00','11-09 R20 Path A total');
+    const r33SwmB=40*(20*1.00+0.75*4.00);
+    const r33OsiB=1000*0.02;
+    const r33TriB=6.0*75.00;
+    const r33PathB=r33SwmB+r33OsiB+r33TriB;
+    assert.equal(r33SwmB.toFixed(2),'920.00','11-09 R20 Path B 3-layer swarm tokens');
+    assert.equal(r33OsiB.toFixed(2),'20.00','11-09 R20 Path B sherlock OSINT ingest');
+    assert.equal(r33TriB.toFixed(2),'450.00','11-09 R20 Path B watchdog supervision');
+    assert.equal(r33PathB.toFixed(2),'1390.00','11-09 R20 Path B total');
+    assert.equal((r33PathA-r33PathB).toFixed(2),'7840.00','11-09 R20 savings vs Path A');
+    assert.equal(((r33PathA-r33PathB)/r33PathA*100).toFixed(2),'84.94','11-09 R20 pct savings vs Path A');
+    for(const r33File of ['workshops/github-trending-radar/docs/sapper-v2-sherlock-fact-intent-swarm-selection-faq.md','workshops/github-trending-radar/docs/sapper-v2-sherlock-fact-intent-swarm-selection-faq.en.md','assets/github-ai-radar-2026-11-09-r20-sapper-v2-sherlock.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-09-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r33File),'utf8');
+      assert.ok(txt.includes('4,080.00')&&txt.includes('650.00')&&txt.includes('4,500.00')&&txt.includes('9,230.00')&&txt.includes('920.00')&&txt.includes('20.00')&&txt.includes('450.00')&&txt.includes('1,390.00')&&txt.includes('7,840.00')&&txt.includes('84.94%')&&txt.includes('not_measured'),r33File+': contains exact 11-09 R20 sapper-v2+sherlock closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
