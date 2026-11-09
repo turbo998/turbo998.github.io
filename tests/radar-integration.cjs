@@ -565,6 +565,23 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r24File),'utf8');
       assert.ok(txt.includes('1,275.00')&&txt.includes('360.00')&&txt.includes('51.75')&&txt.includes('1,223.25')&&txt.includes('95.94%')&&txt.includes('not_measured'),r24File+': contains exact 11-09 R11 Scrapling+pr-agent closed-form parameters');
     }
+    // 2026-11-09 Round 12 (longbridge/gpui-kit + ooolabdev/ooosplat) closed-form FinOps & RAM verification
+    const r25RamA=6*240.00;
+    const r25RamC=180.00;
+    assert.equal(r25RamA.toFixed(2),'1440.00','11-09 R12 Electron RAM MB');
+    assert.equal(((r25RamA-r25RamC)/r25RamA*100).toFixed(2),'87.50','11-09 R12 RAM reduction pct');
+    const r25PathA=80*12.00+120*0.1950;
+    const r25PathB=240*0.1950;
+    const r25PathC=40*0.1050;
+    assert.equal(r25PathA.toFixed(2),'983.40','11-09 R12 Path A total');
+    assert.equal(r25PathB.toFixed(2),'46.80','11-09 R12 Path B total');
+    assert.equal(r25PathC.toFixed(2),'4.20','11-09 R12 Path C total');
+    assert.equal((r25PathA-r25PathC).toFixed(2),'979.20','11-09 R12 savings vs Path A');
+    assert.equal(((r25PathA-r25PathC)/r25PathA*100).toFixed(2),'99.57','11-09 R12 pct savings vs Path A');
+    for(const r25File of ['workshops/github-trending-radar/docs/gpui-kit-ooosplat-rust-native-3dgs-selection-faq.md','workshops/github-trending-radar/docs/gpui-kit-ooosplat-rust-native-3dgs-selection-faq.en.md','assets/github-ai-radar-2026-11-09-r12-gpui-kit-ooosplat.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-09-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r25File),'utf8');
+      assert.ok(txt.includes('983.40')&&txt.includes('46.80')&&txt.includes('4.20')&&txt.includes('979.20')&&txt.includes('99.57%')&&txt.includes('1,440.00')&&txt.includes('180.00')&&txt.includes('87.50%')&&txt.includes('not_measured'),r25File+': contains exact 11-09 R12 gpui-kit+ooosplat closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
