@@ -903,6 +903,28 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r39File),'utf8');
       assert.ok(txt.includes('9,600.00')&&txt.includes('680.00')&&txt.includes('3,250.00')&&txt.includes('13,530.00')&&txt.includes('1,120.00')&&txt.includes('40.00')&&txt.includes('205.00')&&txt.includes('1,365.00')&&txt.includes('12,165')&&txt.includes('89.91%')&&txt.includes('not_measured'),r39File+': contains exact 11-09 R26 llama-modchip+satmux closed-form parameters');
     }
+    // 2026-11-09 Round 27 (DIYgod/pinky + JosssphZhou/poki v0.1.1) closed-form FinOps verification
+    const r40FarmA=200.0*6.00;
+    const r40RollA=30.0*60.00;
+    const r40WdaA=30.0*60.00;
+    const r40PathA=r40FarmA+r40RollA+r40WdaA;
+    assert.equal(r40FarmA.toFixed(2),'1200.00','11-09 R27 Path A cloud device farm');
+    assert.equal(r40RollA.toFixed(2),'1800.00','11-09 R27 Path A rollback labor');
+    assert.equal(r40WdaA.toFixed(2),'1800.00','11-09 R27 Path A WDA maintenance');
+    assert.equal(r40PathA.toFixed(2),'4800.00','11-09 R27 Path A total');
+    const r40FarmB=0.00;
+    const r40RollB=0.75*60.00;
+    const r40WdaB=4.0*60.00;
+    const r40PathB=r40FarmB+r40RollB+r40WdaB;
+    assert.equal(r40RollB.toFixed(2),'45.00','11-09 R27 Path B gateway incident labor');
+    assert.equal(r40WdaB.toFixed(2),'240.00','11-09 R27 Path B automated setup labor');
+    assert.equal(r40PathB.toFixed(2),'285.00','11-09 R27 Path B total');
+    assert.equal((r40PathA-r40PathB).toFixed(2),'4515.00','11-09 R27 savings vs Path A');
+    assert.equal(((r40PathA-r40PathB)/r40PathA*100).toFixed(2),'94.06','11-09 R27 pct savings vs Path A');
+    for(const r40File of ['workshops/github-trending-radar/docs/pinky-poki-mobile-hitl-mcp-selection-faq.md','workshops/github-trending-radar/docs/pinky-poki-mobile-hitl-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-09-r27-pinky-poki.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-09-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r40File),'utf8');
+      assert.ok(txt.includes('1,200.00')&&txt.includes('1,800.00')&&txt.includes('4,800.00')&&txt.includes('45.00')&&txt.includes('240.00')&&txt.includes('285.00')&&txt.includes('4,515.00')&&txt.includes('94.06%')&&txt.includes('10.7.0.1')&&txt.includes('not_measured'),r40File+': contains exact 11-09 R27 pinky+poki closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
