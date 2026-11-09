@@ -338,6 +338,30 @@
         "The 48-solid 5-link bench compares direct 3D vector projection against spherical trigonometry (59.63 ms vs 126.13 ms, 2.11× faster) without claiming RigAnything execution."
       ],
       "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "auto_rigging": "not_measured" }
+    },
+    {
+      "round": 25,
+      "slug": "catenary-constraint-rig",
+      "topic": "iterative-distance-constraints",
+      "title_zh": "悬链与布料不无限拉长下垂：多子步 Gauss-Seidel 距离约束投影与单遍松弛选型 FAQ",
+      "title_en": "Suspended cables and cloth without rubbery sag: multi-substep Gauss-Seidel distance constraints vs single-pass relaxation FAQ",
+      "faq_zh": "docs/iterative-distance-constraints-faq.md",
+      "faq_en": "docs/iterative-distance-constraints-faq.en.md",
+      "summary": "docs/evidence/catenary-constraint-rig-summary.svg",
+      "report": "demos/catenary-constraint-rig/report.json",
+      "cards": "demos/catenary-constraint-rig/test-report-cards.html",
+      "cards_zh": "demos/catenary-constraint-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "单遍并行 Jacobi 松弛每遍仅能将固定锚点张力向内传递 1 节连杆，在 2.6 重力载荷下导致跨中单节拉长 0.1459 u、总长从 9.60 u 膨胀至 10.1220 u。",
+        "采用逆质量锚定（w_0=w_12=0）与对称正逆向 Gauss-Seidel 原地距离投影，可在全部 35 个载荷下将单节误差锁在 0.0036 u 以内（总长 9.6089 u，双塔零滑移）。",
+        "48 实体 12 节双塔悬链台对比预分配 Float64Array 原地投影与逐遍对象克隆（1024 次求解 77.00 ms vs 89.32 ms，零 GC 分配），不冒充 Generalized PBD 或 GPU 有限元。"
+      ],
+      "conclusions_en": [
+        "Single-pass parallel Jacobi relaxation propagates boundary pin tension by only 1 link per pass, leaving midspan links stretched by 0.1459 u and inflating total length from 9.60 u to 10.1220 u.",
+        "Encoding fixed pins via inverse mass (w_0=w_12=0) and sweeping symmetric forward-and-backward Gauss-Seidel projections in place locks total cable length at 9.6089 u (max link error 0.0036 u).",
+        "The 48-solid 12-segment twin-tower stage compares in-place Float64Array projection against object-cloned sweeps (77.00 ms vs 89.32 ms at 1,024 solves) without claiming GPU FEM execution."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "gpu_cloth": "not_measured" }
     }
   ]
 }

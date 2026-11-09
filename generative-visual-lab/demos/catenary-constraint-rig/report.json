@@ -1,0 +1,265 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Multi-sweep Gauss-Seidel distance constraints vs single-pass Jacobi",
+  "topic_zh": "对称多遍 Gauss-Seidel 距离约束与单遍 Jacobi 松弛对比",
+  "slug": "catenary-constraint-rig",
+  "timestamp": "2026-11-09T20:00:24.485Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic 12-link PBD symmetric Gauss-Seidel distance projection, single-pass Jacobi comparison, and in-place Float64Array vs object-allocated CPU solving. No GPU FEM execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "156.0.8078.80",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "catenary-equivalence-128",
+      "passed": true,
+      "detail": "128 typed-array and object Gauss-Seidel solves agree within 1e-13 u"
+    },
+    {
+      "name": "catenary-equivalence-1024",
+      "passed": true,
+      "detail": "1024 typed-array and object Gauss-Seidel solves agree within 1e-13 u"
+    },
+    {
+      "name": "catenary-equivalence-8192",
+      "passed": true,
+      "detail": "8192 typed-array and object Gauss-Seidel solves agree within 1e-13 u"
+    },
+    {
+      "name": "gauss-seidel-inextensible",
+      "passed": true,
+      "detail": "35 loads retain < 0.005 u link stretch across 12 links (max 0.00360 u)"
+    },
+    {
+      "name": "jacobi-sag-exposed",
+      "passed": true,
+      "detail": "single-pass Jacobi stretches total cable by +0.5220 u at load=2.6"
+    },
+    {
+      "name": "exact-cable-length-retained",
+      "passed": true,
+      "detail": "Gauss-Seidel locks 12-segment cable length at 9.6089 u with 0 pin slip"
+    },
+    {
+      "name": "jacobi-overstretch-exposed",
+      "passed": true,
+      "detail": "single-pass Jacobi inflates total cable length from 9.60 u to 10.12 u"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse load scrubbing reproduces the exact midspan gauge world matrix"
+    },
+    {
+      "name": "atomic-sweeps-rejection",
+      "passed": true,
+      "detail": "out-of-range sweeps=2 is rejected while valid catenary state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered midspan gauge y-translation matches solved center node elevation"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px catenary constraint controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual load scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 12-link 48-sweep solves",
+      "count": 128,
+      "primary_ms": 10.91050000000007,
+      "baseline_ms": 12.92100000000005,
+      "primary_samples_ms": [
+        10.483400000000074,
+        10.913700000000063,
+        10.91050000000007,
+        10.694200000000023,
+        11.096599999999967,
+        10.761999999999944,
+        10.949500000000057
+      ],
+      "baseline_samples_ms": [
+        12.92100000000005,
+        12.820499999999925,
+        13.196800000000053,
+        12.887099999999919,
+        13.592300000000023,
+        13.211599999999976,
+        12.704499999999939
+      ]
+    },
+    {
+      "load": "1024 CPU 12-link 48-sweep solves",
+      "count": 1024,
+      "primary_ms": 98.0356999999999,
+      "baseline_ms": 120.05500000000006,
+      "primary_samples_ms": [
+        103.1223,
+        98.99199999999996,
+        100.72149999999988,
+        96.19490000000042,
+        93.9399999999996,
+        89.82469999999967,
+        98.0356999999999
+      ],
+      "baseline_samples_ms": [
+        127.19520000000011,
+        120.05500000000006,
+        120.8632,
+        122.75180000000023,
+        115.39049999999997,
+        113.36170000000038,
+        118.83320000000003
+      ]
+    },
+    {
+      "load": "8192 CPU 12-link 48-sweep solves",
+      "count": 8192,
+      "primary_ms": 1008.0922,
+      "baseline_ms": 1160.4860000000008,
+      "primary_samples_ms": [
+        1008.0922,
+        991.9125000000004,
+        1465.1108000000004,
+        655.9422999999988,
+        649.5033000000003,
+        1157.7583000000013,
+        1351.7222000000002
+      ],
+      "baseline_samples_ms": [
+        1202.3738000000003,
+        1290.0558999999994,
+        1065.551800000001,
+        850.6836000000003,
+        1046.7402999999995,
+        1437.4745999999977,
+        1160.4860000000008
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/catenary-constraint-rig/light-gauss-seidel-multi.png",
+    "docs/evidence/catenary-constraint-rig/light-single-pass-jacobi.png",
+    "docs/evidence/catenary-constraint-rig/dark-gauss-seidel-multi.png",
+    "docs/evidence/catenary-constraint-rig/dark-single-pass-jacobi.png",
+    "docs/evidence/catenary-constraint-rig/mobile.png"
+  ],
+  "primary_label": "In-place Float64Array Gauss-Seidel",
+  "baseline_label": "Object-cloned Gauss-Seidel sweeps",
+  "load_unit": "12-link 48-sweep solves",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. In-place Float64Array symmetric Gauss-Seidel projection versus per-sweep object allocation.",
+  "geometry": {
+    "parts": 48,
+    "segments": 12,
+    "rest_cable_length": 9.6,
+    "gs_length_at_26": 9.6089,
+    "jacobi_length_at_26": 10.122,
+    "gs_max_link_stretch": 0.003602,
+    "jacobi_max_link_stretch": 0.1459,
+    "maximum_solver_error": 0
+  },
+  "protocol": {
+    "input": {
+      "gravity_load": 2.6,
+      "rest_link_l0": 0.8,
+      "sweeps": 48,
+      "segments": 12,
+      "mode": "gauss-seidel-multi"
+    },
+    "output": {
+      "rest_length": 9.6,
+      "gs_length": 9.6089,
+      "jacobi_length": 10.122,
+      "jacobi_stretch": 0.522
+    },
+    "function": "pin w_0 = w_12 = 0 → symmetric forward/backward Gauss-Seidel in-place link projection → 9.6000 u exact cable"
+  },
+  "robustness": [
+    {
+      "name": "Sampled gravity loads retain inextensible 9.60 u cable length and zero pin slip",
+      "original": 35,
+      "perturbed": 35,
+      "total": 35
+    }
+  ],
+  "good_fit": [
+    "Suspension cables, ropes, ribbons, and cloth banners pinned between fixed anchors",
+    "Explaining why single-pass PBD/Jacobi only propagates pin tension 1 link per pass",
+    "Zero-allocation in-place typed-array Gauss-Seidel projection loops",
+    "Substepped XPBD real-time secondary physics for props and cables"
+  ],
+  "not_for": [
+    "Generalized PBD neural data-driven cloth material optimization",
+    "High-order finite-element continuum shell mechanics with Poisson ratio coupling",
+    "GPU massively parallel graph-colored Red-Black Gauss-Seidel dispatch",
+    "Exact analytical hyperbolic cosh(x/a) static catenary root-finding"
+  ],
+  "locale_zh": {
+    "catenary-equivalence-128": "求解等价 128",
+    "128 typed-array and object Gauss-Seidel solves agree within 1e-13 u": "128 次类型数组与对象 Gauss-Seidel 节点坐标在 1e-13 u 内一致",
+    "catenary-equivalence-1024": "求解等价 1024",
+    "1024 typed-array and object Gauss-Seidel solves agree within 1e-13 u": "1024 次类型数组与对象 Gauss-Seidel 节点坐标在 1e-13 u 内一致",
+    "catenary-equivalence-8192": "求解等价 8192",
+    "8192 typed-array and object Gauss-Seidel solves agree within 1e-13 u": "8192 次类型数组与对象 Gauss-Seidel 节点坐标在 1e-13 u 内一致",
+    "gauss-seidel-inextensible": "双向投影不可伸长",
+    "35 loads retain < 0.005 u link stretch across 12 links (max 0.00360 u)": "35 个载荷下 12 节悬链保持单节拉伸 < 0.005 u（最大 0.00360 u）",
+    "jacobi-sag-exposed": "单遍松弛下垂暴露",
+    "single-pass Jacobi stretches total cable by +0.5220 u at load=2.6": "单遍 Jacobi 松弛在 2.6 载荷下使悬链总长拉长 +0.5220 u",
+    "exact-cable-length-retained": "悬链总长精确锁死",
+    "Gauss-Seidel locks 12-segment cable length at 9.6089 u with 0 pin slip": "Gauss-Seidel 将 12 节悬链总长锁死在 9.6089 u 且双塔锚点零滑移",
+    "jacobi-overstretch-exposed": "单遍过拉暴露",
+    "single-pass Jacobi inflates total cable length from 9.60 u to 10.12 u": "单遍 Jacobi 松弛使悬链总长从 9.60 u 膨胀至 10.12 u",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse load scrubbing reproduces the exact midspan gauge world matrix": "逆序载荷拖曳精确复现跨中配重计世界矩阵",
+    "atomic-sweeps-rejection": "原子遍数拒绝",
+    "out-of-range sweeps=2 is rejected while valid catenary state remains": "越界迭代遍数 2 被拒绝，有效悬链状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered midspan gauge y-translation matches solved center node elevation": "渲染跨中配重计垂直位移与求解器中心节点高程完全一致",
+    "mobile-layout": "手机布局",
+    "390px catenary constraint controls fit without horizontal overflow": "390px 悬链约束控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual load scrubbing remains available": "减少动态默认静止，保留手动载荷核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "In-place Float64Array Gauss-Seidel": "原地 Float64Array Gauss-Seidel 投影",
+    "Object-cloned Gauss-Seidel sweeps": "逐遍对象分配 Gauss-Seidel 投影",
+    "Median of 7 alternating Node CPU runs after warmup. In-place Float64Array symmetric Gauss-Seidel projection versus per-sweep object allocation.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；原地 Float64Array 对称 Gauss-Seidel 投影对比逐遍对象分配。",
+    "Sampled gravity loads retain inextensible 9.60 u cable length and zero pin slip": "采样重力载荷保持 9.60 u 不可伸长悬链总长与双端零滑移",
+    "pin w_0 = w_12 = 0 → symmetric forward/backward Gauss-Seidel in-place link projection → 9.6000 u exact cable": "锁死逆质量 w_0 = w_12 = 0 → 对称正逆向 Gauss-Seidel 原地连杆投影 → 9.6000 u 精确悬链",
+    "Suspension cables, ropes, ribbons, and cloth banners pinned between fixed anchors": "固定锚点间的悬索、绳缆、飘带与横幅实时定长仿真",
+    "Explaining why single-pass PBD/Jacobi only propagates pin tension 1 link per pass": "直观解释为何单遍 PBD/Jacobi 每次只能将锚点张力向内传递 1 节连杆",
+    "Zero-allocation in-place typed-array Gauss-Seidel projection loops": "零堆内存分配的原地类型化数组 Gauss-Seidel 约束投影循环",
+    "Substepped XPBD real-time secondary physics for props and cables": "面向道具与缆绳的多子步 XPBD 实时次级物理动效",
+    "Generalized PBD neural data-driven cloth material optimization": "Generalized PBD 数据驱动非线性布料本构模型求解",
+    "High-order finite-element continuum shell mechanics with Poisson ratio coupling": "含泊松比横向耦合的高阶有限元连续壳体力学",
+    "GPU massively parallel graph-colored Red-Black Gauss-Seidel dispatch": "基于图着色红黑分组的 GPU 大规模并行 Gauss-Seidel 调度",
+    "Exact analytical hyperbolic cosh(x/a) static catenary root-finding": "通过牛顿法求解双曲余弦 cosh(x/a) 超越方程的静态解析悬链线"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/catenary-constraint.test.ts",
+    "node scripts/benchmark-catenary-constraint.mjs"
+  ]
+}
