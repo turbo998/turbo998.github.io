@@ -441,6 +441,21 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r17File),'utf8');
       assert.ok(txt.includes('324.00')&&txt.includes('180.00')&&txt.includes('59.40')&&txt.includes('264.60')&&txt.includes('81.67%')&&txt.includes('28.00')&&txt.includes('4.55')&&txt.includes('83.75%')&&txt.includes('not_measured'),r17File+': contains exact 11-09 R4 worktrunk+plannotator closed-form parameters');
     }
+    // 2026-11-09 Round 5 (OpenBMB/VoxCPM2 v2.0.3) closed-form FinOps verification
+    const r18PathA=50*180.00;
+    const r18PathB=1000*0.36*2.50*0.80;
+    const r18PathC=1000*0.13*1.25*0.80;
+    assert.equal(r18PathA.toFixed(2),'9000.00','11-09 R5 VoxCPM2 Path A total');
+    assert.equal(r18PathB.toFixed(2),'720.00','11-09 R5 VoxCPM2 Path B total');
+    assert.equal(r18PathC.toFixed(2),'130.00','11-09 R5 VoxCPM2 Path C total');
+    assert.equal((r18PathA-r18PathC).toFixed(2),'8870.00','11-09 R5 VoxCPM2 savings vs Path A');
+    assert.equal(((r18PathA-r18PathC)/r18PathA*100).toFixed(2),'98.56','11-09 R5 VoxCPM2 pct savings vs Path A');
+    assert.equal((r18PathB-r18PathC).toFixed(2),'590.00','11-09 R5 VoxCPM2 savings vs Path B');
+    assert.equal(((r18PathB-r18PathC)/r18PathB*100).toFixed(2),'81.94','11-09 R5 VoxCPM2 pct savings vs Path B');
+    for(const r18File of ['workshops/github-trending-radar/docs/voxcpm2-tokenizer-free-tts-vs-discrete-codec-selection-faq.md','workshops/github-trending-radar/docs/voxcpm2-tokenizer-free-tts-vs-discrete-codec-selection-faq.en.md','assets/github-ai-radar-2026-11-09-r5-voxcpm2-tts.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-09-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r18File),'utf8');
+      assert.ok(txt.includes('9,000.00')&&txt.includes('720.00')&&txt.includes('130.00')&&txt.includes('8,870.00')&&txt.includes('98.56%')&&txt.includes('81.94%')&&txt.includes('not_measured'),r18File+': contains exact 11-09 R5 VoxCPM2 closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
