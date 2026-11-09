@@ -582,6 +582,29 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r25File),'utf8');
       assert.ok(txt.includes('983.40')&&txt.includes('46.80')&&txt.includes('4.20')&&txt.includes('979.20')&&txt.includes('99.57%')&&txt.includes('1,440.00')&&txt.includes('180.00')&&txt.includes('87.50%')&&txt.includes('not_measured'),r25File+': contains exact 11-09 R12 gpui-kit+ooosplat closed-form parameters');
     }
+    // 2026-11-09 Round 13 (virattt/dexter v1.0.6 + ZhuLinsen/daily_stock_analysis) closed-form FinOps verification
+    const r26DeepA=1000*(0.95*2.50+0.012*10.00);
+    const r26RetryA=220*(0.38*2.50);
+    const r26TriageA=290*4.00;
+    const r26PathA=r26DeepA+r26RetryA+r26TriageA;
+    assert.equal(r26DeepA.toFixed(2),'2495.00','11-09 R13 Path A deep research tokens');
+    assert.equal(r26RetryA.toFixed(2),'209.00','11-09 R13 Path A retry loop waste');
+    assert.equal(r26TriageA.toFixed(2),'1160.00','11-09 R13 Path A false alert triage');
+    assert.equal(r26PathA.toFixed(2),'3864.00','11-09 R13 Path A total');
+    const r26DeepB=1000*(0.34*2.50+0.012*10.00);
+    const r26RetryB=15*(0.38*2.50);
+    const r26TriageB=24*4.00;
+    const r26PathB=r26DeepB+r26RetryB+r26TriageB;
+    assert.equal(r26DeepB.toFixed(2),'970.00','11-09 R13 Path B deep research tokens');
+    assert.equal(r26RetryB.toFixed(2),'14.25','11-09 R13 Path B retry loop waste');
+    assert.equal(r26TriageB.toFixed(2),'96.00','11-09 R13 Path B false alert triage');
+    assert.equal(r26PathB.toFixed(2),'1080.25','11-09 R13 Path B total');
+    assert.equal((r26PathA-r26PathB).toFixed(2),'2783.75','11-09 R13 savings vs Path A');
+    assert.equal(((r26PathA-r26PathB)/r26PathA*100).toFixed(2),'72.04','11-09 R13 pct savings vs Path A');
+    for(const r26File of ['workshops/github-trending-radar/docs/dexter-daily-stock-finagent-guardrail-selection-faq.md','workshops/github-trending-radar/docs/dexter-daily-stock-finagent-guardrail-selection-faq.en.md','assets/github-ai-radar-2026-11-09-r13-dexter-daily-stock.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-09-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r26File),'utf8');
+      assert.ok(txt.includes('2,495.00')&&txt.includes('209.00')&&txt.includes('1,160.00')&&txt.includes('3,864.00')&&txt.includes('970.00')&&txt.includes('14.25')&&txt.includes('96.00')&&txt.includes('1,080.25')&&txt.includes('2,783.75')&&txt.includes('72.04%')&&txt.includes('not_measured'),r26File+': contains exact 11-09 R13 dexter+daily_stock_analysis closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
