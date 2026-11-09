@@ -631,6 +631,29 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r27File),'utf8');
       assert.ok(txt.includes('226.80')&&txt.includes('72.00')&&txt.includes('402.00')&&txt.includes('1,800.00')&&txt.includes('2,500.80')&&txt.includes('21.60')&&txt.includes('14.50')&&txt.includes('360.00')&&txt.includes('396.10')&&txt.includes('2,104.70')&&txt.includes('84.16%')&&txt.includes('127.0.0.1:17371')&&txt.includes('not_measured'),r27File+': contains exact 11-09 R14 OpenCut+infinite-canvas closed-form parameters');
     }
+    // 2026-11-09 Round 15 (vercel-labs/agent-browser v0.41.2 + wangzan101/Mika) closed-form FinOps verification
+    const r28TokA=24000*(0.018*2.50+0.0005*10.00);
+    const r28RetA=6000*(0.018*2.50+0.0005*10.00);
+    const r28LabA=50.0*40.00;
+    const r28PathA=r28TokA+r28RetA+r28LabA;
+    assert.equal(r28TokA.toFixed(2),'1200.00','11-09 R15 Path A step tokens');
+    assert.equal(r28RetA.toFixed(2),'300.00','11-09 R15 Path A occlusion retries');
+    assert.equal(r28LabA.toFixed(2),'2000.00','11-09 R15 Path A foreground lock');
+    assert.equal(r28PathA.toFixed(2),'3500.00','11-09 R15 Path A total');
+    const r28TokB=24000*(0.0024*2.50+0.0002*10.00);
+    const r28RetB=720*(0.0024*2.50+0.0002*10.00);
+    const r28LabB=1.0*40.00;
+    const r28PathB=r28TokB+r28RetB+r28LabB;
+    assert.equal(r28TokB.toFixed(2),'192.00','11-09 R15 Path B step tokens');
+    assert.equal(r28RetB.toFixed(2),'5.76','11-09 R15 Path B occlusion retries');
+    assert.equal(r28LabB.toFixed(2),'40.00','11-09 R15 Path B HITL handoff');
+    assert.equal(r28PathB.toFixed(2),'237.76','11-09 R15 Path B total');
+    assert.equal((r28PathA-r28PathB).toFixed(2),'3262.24','11-09 R15 savings vs Path A');
+    assert.equal(((r28PathA-r28PathB)/r28PathA*100).toFixed(2),'93.21','11-09 R15 pct savings vs Path A');
+    for(const r28File of ['workshops/github-trending-radar/docs/mika-agent-browser-gui-automation-selection-faq.md','workshops/github-trending-radar/docs/mika-agent-browser-gui-automation-selection-faq.en.md','assets/github-ai-radar-2026-11-09-r15-mika-agent-browser.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-09-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r28File),'utf8');
+      assert.ok(txt.includes('1,200.00')&&txt.includes('300.00')&&txt.includes('2,000.00')&&txt.includes('3,500.00')&&txt.includes('192.00')&&txt.includes('5.76')&&txt.includes('40.00')&&txt.includes('237.76')&&txt.includes('3,262.24')&&txt.includes('93.21%')&&txt.includes('not_measured'),r28File+': contains exact 11-09 R15 Mika+agent-browser closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
