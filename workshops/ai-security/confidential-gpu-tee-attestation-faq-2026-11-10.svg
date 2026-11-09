@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 680" width="1200" height="680">
+  <defs>
+    <linearGradient id="bg20" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0B1120"/>
+      <stop offset="50%" stop-color="#111827"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="redCard20" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#450A0A" stop-opacity="0.78"/>
+      <stop offset="100%" stop-color="#1E1B4B" stop-opacity="0.5"/>
+    </linearGradient>
+    <linearGradient id="greenCard20" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#064E3B" stop-opacity="0.78"/>
+      <stop offset="100%" stop-color="#0F172A" stop-opacity="0.65"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="680" fill="url(#bg20)" rx="16"/>
+  <rect x="20" y="18" width="1160" height="78" rx="12" fill="#1E293B" stroke="#334155" stroke-width="1.5"/>
+  <text x="42" y="48" fill="#F8FAFC" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="20" font-weight="800">Round 20 架构选型 FAQ：机密计算 AI (CPU+GPU TEE 远程证明) vs. 标准云端推理 + 零信任能力网关</text>
+  <text x="42" y="76" fill="#94A3B8" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="13">AMD SEV-SNP / Intel TDX + NVIDIA H100/B200 CC · 防宿主机显存转储 · 加密提示词注入仍需飞地内 Capability Broker · 68 场景 / 202 断言通过</text>
+  <rect x="1000" y="32" width="160" height="46" rx="8" fill="#065F46" stroke="#10B981" stroke-width="1.5"/>
+  <text x="1080" y="53" text-anchor="middle" fill="#ECFDF5" font-family="system-ui, sans-serif" font-size="13" font-weight="700">Hardened ASR: 0.0%</text>
+  <text x="1080" y="70" text-anchor="middle" fill="#A7F3D0" font-family="system-ui, sans-serif" font-size="11">P50 0.0248ms (n=200)</text>
+
+  <!-- Left Column -->
+  <rect x="20" y="112" width="565" height="410" rx="12" fill="url(#redCard20)" stroke="#EF4444" stroke-width="1.5"/>
+  <text x="42" y="142" fill="#FCA5A5" font-family="system-ui, sans-serif" font-size="16" font-weight="800">❌ 机密计算两大典型失守（无远程证明校验 或 “唯 TEE 论”裸奔）</text>
+
+  <rect x="42" y="158" width="520" height="104" rx="8" fill="#1E293B" stroke="#7F1D1D" stroke-width="1.2"/>
+  <text x="58" y="182" fill="#F87171" font-family="system-ui, sans-serif" font-size="13" font-weight="700">1. 未校验远程证明伪造节点与受限资产外部导出 (TEE-ATTESTATION-SPOOF-53)</text>
+  <text x="58" y="204" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• 第三方算力租赁池 (Neocloud) 未强制校验 CPU RTMR + GPU SPDM 硬件证明哈希</text>
+  <text x="58" y="224" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• 宿主机 root 直接从 PCIe 总线或 HBM 显存转储 restricted-budget 明文张量</text>
+  <text x="58" y="244" fill="#FCA5A5" font-family="system-ui, sans-serif" font-size="12" font-weight="600">• 或诱导调用 export_record(audience="external") 将 $120k 并购底价直接导出出域！</text>
+
+  <rect x="42" y="274" width="520" height="104" rx="8" fill="#1E293B" stroke="#7F1D1D" stroke-width="1.2"/>
+  <text x="58" y="298" fill="#F87171" font-family="system-ui, sans-serif" font-size="13" font-weight="700">2. “唯 TEE 论”盲区：加密通道内的提示词注入 (TEE-ENCRYPTED-INJECTION-54)</text>
+  <text x="58" y="320" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• 误以为“Agent 跑在 H100 硬件飞地里就绝对安全”，省略了飞地内工具出口能力网关</text>
+  <text x="58" y="340" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• 外部供应商经合法的 RA-TLS 加密隧道发入含注入指令的报价单，飞地硬件合法解密</text>
+  <text x="58" y="360" fill="#FCA5A5" font-family="system-ui, sans-serif" font-size="12" font-weight="600">• 飞地内模型被当场劫持，拿着飞地最高权限覆写业务结论并划走 $995！</text>
+
+  <rect x="42" y="390" width="520" height="114" rx="8" fill="#1E293B" stroke="#7F1D1D" stroke-width="1.2"/>
+  <text x="58" y="414" fill="#F87171" font-family="system-ui, sans-serif" font-size="13" font-weight="700">3. 第一性原理：为什么硬件 TEE 与零信任能力网关缺一不可？</text>
+  <text x="58" y="436" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• 硬件 TEE 防的是【下方】不可信宿主机/Hypervisor 偷看飞地内存 (Host-to-Enclave)</text>
+  <text x="58" y="456" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• 能力网关防的是【前方】合法解密进入飞地的外部不可信数据篡夺控制权 (Data-to-Control)</text>
+  <text x="58" y="482" fill="#EF4444" font-family="system-ui, sans-serif" font-size="13" font-weight="800">Baseline 结果：外部导出泄密 + 飞地内合法解密执行 $995 代付失守 (ASR 75.0%)</text>
+
+  <!-- Right Column -->
+  <rect x="615" y="112" width="565" height="410" rx="12" fill="url(#greenCard20)" stroke="#10B981" stroke-width="1.5"/>
+  <text x="637" y="142" fill="#6EE7B7" font-family="system-ui, sans-serif" font-size="16" font-weight="800">✅ 硬件双端远程证明 + 飞地内确定性零信任能力网关</text>
+
+  <rect x="637" y="158" width="520" height="104" rx="8" fill="#1E293B" stroke="#065F46" stroke-width="1.2"/>
+  <text x="653" y="182" fill="#34D399" font-family="system-ui, sans-serif" font-size="13" font-weight="700">防线 1：先证明后解密 (Attest-Before-Decrypt) + 运行域锁定</text>
+  <text x="653" y="204" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• KMS 强制核验 CPU SEV-SNP/TDX (MRTD/RTMR) 与 GPU SPDM/NRAS 硬件证明签名</text>
+  <text x="653" y="224" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• 任何向未证明外部节点转发的请求被 same-run-target 0.0248ms 确定性拦截</text>
+  <text x="653" y="244" fill="#A7F3D0" font-family="system-ui, sans-serif" font-size="12" font-weight="600">• export_record(audience="external") 被 restricted-data-boundary 100% 封锁！</text>
+
+  <rect x="637" y="274" width="520" height="104" rx="8" fill="#1E293B" stroke="#065F46" stroke-width="1.2"/>
+  <text x="653" y="298" fill="#34D399" font-family="system-ui, sans-serif" font-size="13" font-weight="700">防线 2：飞地内部部署 Capability Broker 阻断加密注入越权</text>
+  <text x="653" y="320" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• 经 RA-TLS 进入飞地的外部文档解密后依然保留 untrusted=True 与 supplier 血统</text>
+  <text x="653" y="340" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• 飞地内诱导修改 trust-registry 被 fixed-business-output / tool-allowlist 阻断</text>
+  <text x="653" y="360" fill="#A7F3D0" font-family="system-ui, sans-serif" font-size="12" font-weight="600">• 飞地内污点写库与 $995 代付被 untrusted-write 与 original-requester-payment 秒拒！</text>
+
+  <rect x="637" y="390" width="520" height="114" rx="8" fill="#1E293B" stroke="#065F46" stroke-width="1.2"/>
+  <text x="653" y="414" fill="#34D399" font-family="system-ui, sans-serif" font-size="13" font-weight="700">防线 3：三级机密计算性价比精细选型（告别盲目堆砌硬件）</text>
+  <text x="653" y="436" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• 一级合规云自有 VPC：标准 GPU + Capability Broker (0% 性能损耗，0.0% 越权率)</text>
+  <text x="653" y="456" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• 不可信 Neocloud / 主权金库：CPU+GPU TEE (H100/B200 CC) + 飞地内 Capability Broker</text>
+  <text x="653" y="482" fill="#10B981" font-family="system-ui, sans-serif" font-size="13" font-weight="800">Hardened 结果：BRK-49 / BRK-50 100% 阻断 · 0 违规落盘 · 0.0% 误杀率</text>
+
+  <!-- Bottom Bar -->
+  <rect x="20" y="538" width="1160" height="122" rx="12" fill="#1E293B" stroke="#475569" stroke-width="1.5"/>
+  <text x="42" y="566" fill="#38BDF8" font-family="system-ui, sans-serif" font-size="15" font-weight="800">🧭 AI 解决方案架构师选型铁律与实测性能口径（Provenance-Sealed）</text>
+  <text x="42" y="592" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12.5">• 受信云区域：VPC + Pre-LLM 令牌化 + Broker  |  • 不可信算力池 / 主权机密：SEV-SNP/TDX + H100/B200 CC 远程证明 + 飞地内 Capability Broker</text>
+  <text x="42" y="616" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12.5">• 本地实测延迟 (measured, independently_reproduced=true)：纯内存门禁 P50 = 0.0248 ms / P95 = 0.0409 ms (n=200 全量原始样本封存)；单步含 SQLite WAL 落盘 P50 = 7.21 ms (n=50)</text>
+  <text x="42" y="640" fill="#94A3B8" font-family="system-ui, sans-serif" font-size="12">• 评测验证：tests/test_regressions.py 新增 BRK-49 (TEE-ATTESTATION-SPOOF-53) 与 BRK-50 (TEE-ENCRYPTED-INJECTION-54)，全仓 68 场景 / 202 项 Pytest 100% 通过</text>
+</svg>

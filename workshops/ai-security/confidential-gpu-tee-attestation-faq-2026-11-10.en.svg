@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 680" width="1200" height="680">
+  <defs>
+    <linearGradient id="bg20en" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0B1120"/>
+      <stop offset="50%" stop-color="#111827"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="redCard20en" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#450A0A" stop-opacity="0.78"/>
+      <stop offset="100%" stop-color="#1E1B4B" stop-opacity="0.5"/>
+    </linearGradient>
+    <linearGradient id="greenCard20en" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#064E3B" stop-opacity="0.78"/>
+      <stop offset="100%" stop-color="#0F172A" stop-opacity="0.65"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="680" fill="url(#bg20en)" rx="16"/>
+  <rect x="20" y="18" width="1160" height="78" rx="12" fill="#1E293B" stroke="#334155" stroke-width="1.5"/>
+  <text x="42" y="48" fill="#F8FAFC" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="19.5" font-weight="800">Round 20 Architect FAQ: Confidential AI (CPU+GPU TEE Attestation) vs. Standard Cloud + Broker</text>
+  <text x="42" y="76" fill="#94A3B8" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="13">AMD SEV-SNP / Intel TDX + NVIDIA H100/B200 CC · Host HBM Dump Defense · Encrypted Injection Still Needs In-Enclave Broker · 68 Scenarios / 202 Passed</text>
+  <rect x="1000" y="32" width="160" height="46" rx="8" fill="#065F46" stroke="#10B981" stroke-width="1.5"/>
+  <text x="1080" y="53" text-anchor="middle" fill="#ECFDF5" font-family="system-ui, sans-serif" font-size="13" font-weight="700">Hardened ASR: 0.0%</text>
+  <text x="1080" y="70" text-anchor="middle" fill="#A7F3D0" font-family="system-ui, sans-serif" font-size="11">P50 0.0248ms (n=200)</text>
+
+  <!-- Left Column -->
+  <rect x="20" y="112" width="565" height="410" rx="12" fill="url(#redCard20en)" stroke="#EF4444" stroke-width="1.5"/>
+  <text x="42" y="142" fill="#FCA5A5" font-family="system-ui, sans-serif" font-size="15.5" font-weight="800">❌ Two Confidential AI Failure Modes (Unattested Node OR 'TEE-Only' Myth)</text>
+
+  <rect x="42" y="158" width="520" height="104" rx="8" fill="#1E293B" stroke="#7F1D1D" stroke-width="1.2"/>
+  <text x="58" y="182" fill="#F87171" font-family="system-ui, sans-serif" font-size="13" font-weight="700">1. Unattested GPU Node &amp; Restricted External Export (TEE-ATTESTATION-SPOOF-53)</text>
+  <text x="58" y="204" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• Third-party GPU Neocloud deployed without verifying CPU RTMR + GPU SPDM quotes</text>
+  <text x="58" y="224" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• Rogue host root dumps plaintext restricted-budget tensors from PCIe DMA / HBM</text>
+  <text x="58" y="244" fill="#FCA5A5" font-family="system-ui, sans-serif" font-size="12" font-weight="600">• Or export_record(audience="external") leaks $120k M&amp;A reserve floor outside enclave!</text>
+
+  <rect x="42" y="274" width="520" height="104" rx="8" fill="#1E293B" stroke="#7F1D1D" stroke-width="1.2"/>
+  <text x="58" y="298" fill="#F87171" font-family="system-ui, sans-serif" font-size="13" font-weight="700">2. The 'TEE-Only' Myth: Encrypted Prompt Injection (TEE-ENCRYPTED-INJECTION-54)</text>
+  <text x="58" y="320" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• CISO assumes running inside an H100 hardware enclave makes the Agent unhackable</text>
+  <text x="58" y="340" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• External supplier sends weaponized invoice over valid RA-TLS tunnel into the enclave</text>
+  <text x="58" y="360" fill="#FCA5A5" font-family="system-ui, sans-serif" font-size="12" font-weight="600">• Enclave GPU decrypts &amp; executes the injection, tampering result &amp; wiring $995!</text>
+
+  <rect x="42" y="390" width="520" height="114" rx="8" fill="#1E293B" stroke="#7F1D1D" stroke-width="1.2"/>
+  <text x="58" y="414" fill="#F87171" font-family="system-ui, sans-serif" font-size="13" font-weight="700">3. First Principles: Why Hardware TEEs &amp; Capability Brokers Are Orthogonal</text>
+  <text x="58" y="436" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• Hardware TEE stops the untrusted HOST below from reading enclave RAM/HBM</text>
+  <text x="58" y="456" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• Capability Broker stops untrusted DATA entering via RA-TLS from hijacking tools</text>
+  <text x="58" y="482" fill="#EF4444" font-family="system-ui, sans-serif" font-size="13" font-weight="800">Baseline Outcome: External export leak + in-enclave $995 wire breach (75.0% ASR)</text>
+
+  <!-- Right Column -->
+  <rect x="615" y="112" width="565" height="410" rx="12" fill="url(#greenCard20en)" stroke="#10B981" stroke-width="1.5"/>
+  <text x="637" y="142" fill="#6EE7B7" font-family="system-ui, sans-serif" font-size="15.5" font-weight="800">✅ Dual Hardware Attestation + In-Enclave Zero-Trust Capability Broker</text>
+
+  <rect x="637" y="158" width="520" height="104" rx="8" fill="#1E293B" stroke="#065F46" stroke-width="1.2"/>
+  <text x="653" y="182" fill="#34D399" font-family="system-ui, sans-serif" font-size="13" font-weight="700">Defense 1: Attest-Before-Decrypt + Run-Scoped Target Pinning</text>
+  <text x="653" y="204" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• KMS verifies CPU SEV-SNP/TDX (MRTD/RTMR) &amp; GPU SPDM/NRAS quotes before key release</text>
+  <text x="653" y="224" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• Any routing to unverified external nodes is blocked in 0.0248ms by same-run-target</text>
+  <text x="653" y="244" fill="#A7F3D0" font-family="system-ui, sans-serif" font-size="12" font-weight="600">• export_record(audience="external") is 100% blocked by restricted-data-boundary!</text>
+
+  <rect x="637" y="274" width="520" height="104" rx="8" fill="#1E293B" stroke="#065F46" stroke-width="1.2"/>
+  <text x="653" y="298" fill="#34D399" font-family="system-ui, sans-serif" font-size="13" font-weight="700">Defense 2: In-Enclave Capability Broker Neutralizes Encrypted Injections</text>
+  <text x="653" y="320" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• Payloads decrypted inside the enclave retain untrusted=True &amp; supplier lineage</text>
+  <text x="653" y="340" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• Trust-registry drift blocked by fixed-business-output / tool-allowlist</text>
+  <text x="653" y="360" fill="#A7F3D0" font-family="system-ui, sans-serif" font-size="12" font-weight="600">• In-enclave tainted write &amp; $995 wire blocked by untrusted-write &amp; payment gate!</text>
+
+  <rect x="637" y="390" width="520" height="114" rx="8" fill="#1E293B" stroke="#065F46" stroke-width="1.2"/>
+  <text x="653" y="414" fill="#34D399" font-family="system-ui, sans-serif" font-size="13" font-weight="700">Defense 3: Right-Sized 3-Tier Confidential Architecture Selection</text>
+  <text x="653" y="436" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• Trusted Cloud VPC: Standard GPU + Pre-LLM Tokenizer + Broker (0% GPU overhead)</text>
+  <text x="653" y="456" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• Untrusted Neocloud / Sovereign Vault: SEV-SNP/TDX + H100/B200 CC + In-Enclave Broker</text>
+  <text x="653" y="482" fill="#10B981" font-family="system-ui, sans-serif" font-size="13" font-weight="800">Hardened Outcome: BRK-49 / BRK-50 100% Blocked · 0 Violations · 0.0% FPR</text>
+
+  <!-- Bottom Bar -->
+  <rect x="20" y="538" width="1160" height="122" rx="12" fill="#1E293B" stroke="#475569" stroke-width="1.5"/>
+  <text x="42" y="566" fill="#38BDF8" font-family="system-ui, sans-serif" font-size="15" font-weight="800">🧭 AI Solution Architect Selection Rules &amp; Provenance-Sealed Latency</text>
+  <text x="42" y="592" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12.5">• Trusted Cloud VPC: Pre-LLM Tokenization + Broker  |  • Untrusted Neocloud / Sovereign Data: SEV-SNP/TDX + H100/B200 CC Attestation + In-Enclave Broker</text>
+  <text x="42" y="616" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12.5">• Locally Measured Latency (measured, independently_reproduced=true): In-memory gate P50 = 0.0248 ms / P95 = 0.0409 ms (n=200 raw array); 1-step SQLite WAL P50 = 7.21 ms (n=50)</text>
+  <text x="42" y="640" fill="#94A3B8" font-family="system-ui, sans-serif" font-size="12">• Regression Verification: tests/test_regressions.py adds BRK-49 (TEE-ATTESTATION-SPOOF-53) &amp; BRK-50 (TEE-ENCRYPTED-INJECTION-54) — 68 scenarios / 202 Pytest passed</text>
+</svg>
