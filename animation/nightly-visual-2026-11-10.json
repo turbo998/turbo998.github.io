@@ -122,6 +122,30 @@
         "The 65-solid twin-track rig compares closed-form exponential updates against 96-substep RK4 (1.18 ms vs 22.28 ms) without claiming Spring-Gaus execution."
       ],
       "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "continuum_fem": "not_measured" }
+    },
+    {
+      "round": 16,
+      "slug": "spline-speed-rail",
+      "topic": "constant-speed-spline-rail",
+      "title_zh": "弯道运镜不忽快忽慢：弧长重参数化匀速样条轨道与原始参数 t 插值选型 FAQ",
+      "title_en": "Smooth camera rails without speed surges: arc-length reparameterized cubic splines vs raw parameter-t interpolation FAQ",
+      "faq_zh": "docs/constant-speed-spline-rail-faq.md",
+      "faq_en": "docs/constant-speed-spline-rail-faq.en.md",
+      "summary": "docs/evidence/spline-speed-rail-summary.svg",
+      "report": "demos/spline-speed-rail/report.json",
+      "cards": "demos/spline-speed-rail/test-report-cards.html",
+      "cards_zh": "demos/spline-speed-rail/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "三次贝塞尔曲线参数 u 不是弧长，直接令 u=t/T 会在控制点密集的弯道滞后 1.392 u 并在直道暴冲 +96.63%。",
+        "128 段高斯-勒让德累积弧长表加 2 步牛顿迭代在 81 个采样帧保持恒定 0.942 u/s 世界速度（弧长误差 3.55e-15 u）。",
+        "63 实体双滑车导轨对比查表牛顿法与 32 步积分二分（4.66 ms vs 631.88 ms），不冒充 TrajectoryCrafter 神经视频重定向。"
+      ],
+      "conclusions_en": [
+        "Polynomial Bezier parameter u is not arc length; u=t/T lags by 1.392 units in tight bends and surges +96.63% on wide spans.",
+        "A 128-entry Gauss-Legendre LUT with 2 Newton steps locks world speed at 0.942 u/s across 81 frames (3.55e-15 u arc error).",
+        "The 63-solid twin-dolly rail compares LUT+Newton against 32-step quadrature bisection (4.66 ms vs 631.88 ms) without claiming TrajectoryCrafter execution."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "slider_motor": "not_measured" }
     }
   ]
 }

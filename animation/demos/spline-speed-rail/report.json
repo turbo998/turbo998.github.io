@@ -1,0 +1,264 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Arc-length reparameterized cubic Bezier camera rail versus raw parameter-t speed surges",
+  "topic_zh": "弧长重参数化三次贝塞尔运镜轨道与原始参数速度暴冲对比",
+  "slug": "spline-speed-rail",
+  "timestamp": "2026-11-09T17:27:56.296Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic 128-entry Gauss-Legendre arc-length LUT + Newton inversion, raw parameter-t speed surge audit and Node CPU solving. No TrajectoryCrafter video diffusion execution or physical dolly motor control.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "156.0.8078.80",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "solver-equivalence-128",
+      "passed": true,
+      "detail": "128 LUT+Newton and 32-step quadrature bisection positions agree within 1e-4 units"
+    },
+    {
+      "name": "solver-equivalence-1024",
+      "passed": true,
+      "detail": "1024 LUT+Newton and 32-step quadrature bisection positions agree within 1e-4 units"
+    },
+    {
+      "name": "solver-equivalence-8192",
+      "passed": true,
+      "detail": "8192 LUT+Newton and 32-step quadrature bisection positions agree within 1e-4 units"
+    },
+    {
+      "name": "constant-arc-progression",
+      "passed": true,
+      "detail": "81 sampled timestamps match linear arc-length progression within 3.55e-15 units"
+    },
+    {
+      "name": "raw-param-surge-exposed",
+      "passed": true,
+      "detail": "raw polynomial parameter u=t/T surges by 96.6% above constant target speed at t=7.2s"
+    },
+    {
+      "name": "dolly-matches-reference",
+      "passed": true,
+      "detail": "arc-length dolly world XY matches the constant-speed reference dolly within 1e-12"
+    },
+    {
+      "name": "rendered-raw-lag-exposed",
+      "passed": true,
+      "detail": "raw parameter u=t/T dolly lags behind the constant-speed reference dolly by 1.762 units at t=4.8s"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse timestamp visitation reproduces the exact camera dolly world matrix"
+    },
+    {
+      "name": "atomic-rail-rejection",
+      "passed": true,
+      "detail": "out-of-range bunching=1.4 is rejected while valid rail config remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered dolly world XY matches independent arc-length Bezier evaluation"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px spline rail controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual rail inspection remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU rail queries",
+      "count": 128,
+      "primary_ms": 0.08659999999997581,
+      "baseline_ms": 7.5914000000000215,
+      "primary_samples_ms": [
+        0.15670000000000073,
+        0.12610000000006494,
+        0.08659999999997581,
+        0.09149999999999636,
+        0.08360000000004675,
+        0.07710000000008677,
+        0.07820000000003802
+      ],
+      "baseline_samples_ms": [
+        7.783900000000017,
+        7.684799999999996,
+        7.567099999999982,
+        7.5914000000000215,
+        7.664699999999925,
+        7.513500000000022,
+        7.445299999999975
+      ]
+    },
+    {
+      "load": "1024 CPU rail queries",
+      "count": 1024,
+      "primary_ms": 0.5079999999998108,
+      "baseline_ms": 55.52970000000005,
+      "primary_samples_ms": [
+        0.8287000000000262,
+        0.5194000000000187,
+        0.5080000000000382,
+        0.5046000000000959,
+        0.5043999999999187,
+        0.4981999999999971,
+        0.5079999999998108
+      ],
+      "baseline_samples_ms": [
+        56.39889999999991,
+        55.52970000000005,
+        55.43290000000002,
+        58.61270000000002,
+        55.803,
+        54.96799999999985,
+        54.696699999999964
+      ]
+    },
+    {
+      "load": "8192 CPU rail queries",
+      "count": 8192,
+      "primary_ms": 4.663900000000467,
+      "baseline_ms": 631.8757999999998,
+      "primary_samples_ms": [
+        4.215299999999843,
+        4.202499999999873,
+        5.411399999999958,
+        4.641700000000128,
+        4.663900000000467,
+        5.827100000000428,
+        6.919600000000173
+      ],
+      "baseline_samples_ms": [
+        442.74789999999985,
+        445.6717999999996,
+        651.3141999999998,
+        634.9852000000001,
+        631.8757999999998,
+        627.1217999999999,
+        689.9495000000006
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/spline-speed-rail/light-arc-length.png",
+    "docs/evidence/spline-speed-rail/light-raw-param.png",
+    "docs/evidence/spline-speed-rail/dark-arc-length.png",
+    "docs/evidence/spline-speed-rail/dark-raw-param.png",
+    "docs/evidence/spline-speed-rail/mobile.png"
+  ],
+  "primary_label": "128-entry LUT + Newton",
+  "baseline_label": "32-step quadrature bisection",
+  "load_unit": "rail queries",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Pre-tabulated 128-segment Gauss-Legendre LUT with 2 Newton steps versus 32-step quadrature bisection, not neural trajectory rendering.",
+  "geometry": {
+    "parts": 63,
+    "sampled_frames": 81,
+    "total_arc_length": 7.5359,
+    "target_speed": 0.942,
+    "max_arc_distance_error": 3.5527e-15,
+    "raw_surge_error_pct": 96.63,
+    "maximum_solver_error": 2.1795e-9
+  },
+  "protocol": {
+    "input": {
+      "time": 2.4,
+      "duration": 8,
+      "bunching": 0.82,
+      "arch_height": 1.85,
+      "mode": "arc-length"
+    },
+    "output": {
+      "fraction_s": 0.3,
+      "param_u": 0.798,
+      "world_speed": 0.942,
+      "raw_surge_pct": 96.6
+    },
+    "function": "target distance s·L → 128-segment LUT bracket → 2-step Newton u*(s) → constant world speed L/T"
+  },
+  "robustness": [
+    {
+      "name": "Sampled rail queries preserve constant-speed coordinates under reverse visitation",
+      "original": 81,
+      "perturbed": 81,
+      "total": 81
+    }
+  ],
+  "good_fit": [
+    "Constant-speed 3D camera dolly and drone spline paths",
+    "Pre-normalizing Bezier trajectories before TrajectoryCrafter / 4DGS",
+    "Eliminating S-curve crawl and straightaway speed surges",
+    "Fast LUT + Newton parameter inversion in browser loops"
+  ],
+  "not_for": [
+    "TrajectoryCrafter monocular video diffusion inference",
+    "Point-cloud depth reprojection and disocclusion inpainting",
+    "Physical motorized camera slider torque control",
+    "Discontinuous teleport cuts without a continuous path"
+  ],
+  "locale_zh": {
+    "solver-equivalence-128": "求解等价 128",
+    "128 LUT+Newton and 32-step quadrature bisection positions agree within 1e-4 units": "128 个查表牛顿法与 32 步积分二分位置在 1e-4 单位内一致",
+    "solver-equivalence-1024": "求解等价 1024",
+    "1024 LUT+Newton and 32-step quadrature bisection positions agree within 1e-4 units": "1024 个查表牛顿法与 32 步积分二分位置在 1e-4 单位内一致",
+    "solver-equivalence-8192": "求解等价 8192",
+    "8192 LUT+Newton and 32-step quadrature bisection positions agree within 1e-4 units": "8192 个查表牛顿法与 32 步积分二分位置在 1e-4 单位内一致",
+    "constant-arc-progression": "恒定弧长推进",
+    "81 sampled timestamps match linear arc-length progression within 3.55e-15 units": "81 个采样时刻与线性弧长推进误差保持在 3.55e-15 单位内",
+    "raw-param-surge-exposed": "原始参数暴冲暴露",
+    "raw polynomial parameter u=t/T surges by 96.6% above constant target speed at t=7.2s": "原始参数 u=t/T 在 t=7.2s 处超出恒定目标速度 96.6%",
+    "dolly-matches-reference": "滑车对齐参考轨",
+    "arc-length dolly world XY matches the constant-speed reference dolly within 1e-12": "弧长重参数化滑车世界 XY 坐标与恒速参考滑车在 1e-12 内一致",
+    "rendered-raw-lag-exposed": "渲染滞后暴露",
+    "raw parameter u=t/T dolly lags behind the constant-speed reference dolly by 1.762 units at t=4.8s": "原始参数滑车在 t=4.8s 处偏离恒速参考滑车 1.762 单位",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse timestamp visitation reproduces the exact camera dolly world matrix": "逆序时间戳重访精确复现运镜滑车世界矩阵",
+    "atomic-rail-rejection": "原子轨道拒绝",
+    "out-of-range bunching=1.4 is rejected while valid rail config remains": "越界聚拢系数 1.4 被拒绝，有效轨道配置完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered dolly world XY matches independent arc-length Bezier evaluation": "渲染滑车世界 XY 坐标与独立弧长贝塞尔求值一致",
+    "mobile-layout": "手机布局",
+    "390px spline rail controls fit without horizontal overflow": "390px 样条轨道控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual rail inspection remains available": "减少动态默认静止，保留手动轨道核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "128-entry LUT + Newton": "128段查表+牛顿精化",
+    "32-step quadrature bisection": "32步数值积分二分求解",
+    "Median of 7 alternating Node CPU runs after warmup. Pre-tabulated 128-segment Gauss-Legendre LUT with 2 Newton steps versus 32-step quadrature bisection, not neural trajectory rendering.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；128 段高斯-勒让德累积弧长查表加 2 步牛顿迭代对比 32 步数值积分二分，不是神经轨迹渲染。",
+    "Sampled rail queries preserve constant-speed coordinates under reverse visitation": "逆序重访下采样轨道查询保持恒速坐标不变",
+    "target distance s·L → 128-segment LUT bracket → 2-step Newton u*(s) → constant world speed L/T": "目标弧长 s·L → 128 段查表定位区间 → 2 步牛顿精化 u*(s) → 恒定世界速度 L/T",
+    "Constant-speed 3D camera dolly and drone spline paths": "匀速三维相机滑轨与无人机样条运镜路径",
+    "Pre-normalizing Bezier trajectories before TrajectoryCrafter / 4DGS": "在输入 TrajectoryCrafter / 4DGS 前做轨迹等弧长归一化",
+    "Eliminating S-curve crawl and straightaway speed surges": "消除 S 弯道蠕行滞后与长跨度段速度暴冲",
+    "Fast LUT + Newton parameter inversion in browser loops": "浏览器实时循环中的高速查表+牛顿反演",
+    "TrajectoryCrafter monocular video diffusion inference": "TrajectoryCrafter 单目视频扩散模型推理",
+    "Point-cloud depth reprojection and disocclusion inpainting": "深度点云重投影与去遮挡神经修补",
+    "Physical motorized camera slider torque control": "物理电动滑轨电机力矩闭环控制",
+    "Discontinuous teleport cuts without a continuous path": "不含连续几何轨迹的瞬移硬切镜头"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/spline-rail.test.ts",
+    "node scripts/benchmark-spline-rail.mjs"
+  ]
+}
