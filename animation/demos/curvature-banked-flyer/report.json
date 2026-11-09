@@ -1,0 +1,265 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Curvature-coupled centripetal banking versus flat tangent-only orientation",
+  "topic_zh": "路径曲率向心压坡与纯切向平漂朝向对比",
+  "slug": "curvature-banked-flyer",
+  "timestamp": "2026-11-09T18:25:15.088Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Frenet-Serret planar curvature banking φ* = atan(v²κ/g), 5-stencil finite-difference comparison and Node CPU solving. No NMPC autopilot execution or aerodynamic CFD.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "156.0.8078.80",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "solver-equivalence-128",
+      "passed": true,
+      "detail": "128 analytic derivative and 5-stencil finite-difference bank angles agree within 1e-6 deg"
+    },
+    {
+      "name": "solver-equivalence-1024",
+      "passed": true,
+      "detail": "1024 analytic derivative and 5-stencil finite-difference bank angles agree within 1e-6 deg"
+    },
+    {
+      "name": "solver-equivalence-8192",
+      "passed": true,
+      "detail": "8192 analytic derivative and 5-stencil finite-difference bank angles agree within 1e-6 deg"
+    },
+    {
+      "name": "coordinated-zero-slip",
+      "passed": true,
+      "detail": "81 sampled figure-eight frames retain 0.000000 g cabin lateral slip"
+    },
+    {
+      "name": "flat-skid-exposed",
+      "passed": true,
+      "detail": "flat tangent lookAt (roll=0°) experiences 0.719 g uncompensated lateral skid at t=1.12s"
+    },
+    {
+      "name": "wing-matches-reference",
+      "passed": true,
+      "detail": "banked flyer wing orientation matrix matches coordinated reference within 1e-12"
+    },
+    {
+      "name": "rendered-flat-wing-level",
+      "passed": true,
+      "detail": "flat baseline keeps world-up Y=1.0 while banked wing tilts to cos(35.7°)=0.81"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse timestamp visitation reproduces the exact banked wing world matrix"
+    },
+    {
+      "name": "atomic-track-rejection",
+      "passed": true,
+      "detail": "out-of-bounds radiusX=8.0 is rejected while valid flight track remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered wing up-vector Y component matches cos(bankAngle) from differential flatness"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px curvature flyer controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual turn inspection remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU banking queries",
+      "count": 128,
+      "primary_ms": 0.05750000000000455,
+      "baseline_ms": 0.10329999999999018,
+      "primary_samples_ms": [
+        0.12549999999998818,
+        0.14889999999991232,
+        0.05750000000000455,
+        0.05489999999997508,
+        0.05880000000001928,
+        0.055499999999938154,
+        0.048800000000028376
+      ],
+      "baseline_samples_ms": [
+        0.1875,
+        0.1510000000000673,
+        0.11209999999994125,
+        0.09329999999999927,
+        0.10329999999999018,
+        0.0906999999999698,
+        0.09169999999994616
+      ]
+    },
+    {
+      "load": "1024 CPU banking queries",
+      "count": 1024,
+      "primary_ms": 0.26319999999998345,
+      "baseline_ms": 0.759900000000016,
+      "primary_samples_ms": [
+        0.43650000000002365,
+        0.4357000000001108,
+        0.41860000000008313,
+        0.21230000000002747,
+        0.21109999999998763,
+        0.26319999999998345,
+        0.2139999999999418
+      ],
+      "baseline_samples_ms": [
+        0.8430000000000746,
+        0.759900000000016,
+        0.8169000000000324,
+        1.4986999999999853,
+        0.36150000000009186,
+        0.40640000000007603,
+        0.35989999999992506
+      ]
+    },
+    {
+      "load": "8192 CPU banking queries",
+      "count": 8192,
+      "primary_ms": 1.340400000000045,
+      "baseline_ms": 2.10450000000003,
+      "primary_samples_ms": [
+        1.297900000000027,
+        1.530300000000011,
+        1.340400000000045,
+        1.3191999999999098,
+        1.689899999999966,
+        1.3307999999999538,
+        1.5784999999999627
+      ],
+      "baseline_samples_ms": [
+        2.1177000000000135,
+        2.0815999999999804,
+        1.8902000000000498,
+        2.2006999999999834,
+        1.9624000000000024,
+        2.10450000000003,
+        2.2134999999999536
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/curvature-banked-flyer/light-curvature-banked.png",
+    "docs/evidence/curvature-banked-flyer/light-flat-tangent.png",
+    "docs/evidence/curvature-banked-flyer/dark-curvature-banked.png",
+    "docs/evidence/curvature-banked-flyer/dark-flat-tangent.png",
+    "docs/evidence/curvature-banked-flyer/mobile.png"
+  ],
+  "primary_label": "Analytic derivative curvature",
+  "baseline_label": "5-stencil finite difference",
+  "load_unit": "banking queries",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form 1st/2nd derivative cross-product curvature versus 5-point central finite-difference stencil, not CFD or GPU rendering.",
+  "geometry": {
+    "parts": 63,
+    "sampled_frames": 81,
+    "apex_bank_deg": -35.73,
+    "apex_centripetal_accel": -7.06,
+    "max_banked_slip_g": 1.810761304179664e-16,
+    "flat_apex_slip_g": 0.7193,
+    "maximum_solver_error": 7.2322e-7
+  },
+  "protocol": {
+    "input": {
+      "time": 1.12,
+      "radius_x": 3.6,
+      "radius_z": 1.8,
+      "omega": 1.4,
+      "gravity": 9.81,
+      "mode": "curvature-banked"
+    },
+    "output": {
+      "curvature": -0.2778,
+      "bank_deg": -35.73,
+      "lateral_slip_g": 0,
+      "flat_slip_g": 0.719
+    },
+    "function": "path derivatives (v, a) → centripetal a_c = (x'z'' - z'x'')/v → bank φ* = atan(a_c/g) → 0 lateral slip"
+  },
+  "robustness": [
+    {
+      "name": "Sampled figure-eight frames retain zero lateral slip under reverse visitation",
+      "original": 81,
+      "perturbed": 81,
+      "total": 81
+    }
+  ],
+  "good_fit": [
+    "Drone, aircraft, and racing camera path orientation",
+    "Deriving natural roll angles automatically from path curvature",
+    "Teaching quadrotor differential flatness (acceleration → attitude)",
+    "Eliminating flat horizontal skidding in spline-following animations"
+  ],
+  "not_for": [
+    "Full Navier-Stokes aerodynamic wing stall and vortex CFD",
+    "Hardware quadrotor IMU/ESC motor control under wind gusts",
+    "Ground vehicles with tire slip angles and suspension roll",
+    "Zero-gravity space Thruster attitude control"
+  ],
+  "locale_zh": {
+    "solver-equivalence-128": "求解等价 128",
+    "128 analytic derivative and 5-stencil finite-difference bank angles agree within 1e-6 deg": "128 个解析导数与 5 点差分倾侧角在 1e-6 度内一致",
+    "solver-equivalence-1024": "求解等价 1024",
+    "1024 analytic derivative and 5-stencil finite-difference bank angles agree within 1e-6 deg": "1024 个解析导数与 5 点差分倾侧角在 1e-6 度内一致",
+    "solver-equivalence-8192": "求解等价 8192",
+    "8192 analytic derivative and 5-stencil finite-difference bank angles agree within 1e-6 deg": "8192 个解析导数与 5 点差分倾侧角在 1e-6 度内一致",
+    "coordinated-zero-slip": "协调转弯零侧滑",
+    "81 sampled figure-eight frames retain 0.000000 g cabin lateral slip": "81 个八字航线采样帧保持机舱侧滑过载为 0.000000 g",
+    "flat-skid-exposed": "平漂侧滑暴露",
+    "flat tangent lookAt (roll=0°) experiences 0.719 g uncompensated lateral skid at t=1.12s": "纯切向零横滚在弯心 t=1.12s 产生 0.719 g 未补偿侧滑过载",
+    "wing-matches-reference": "机翼对齐参考轨",
+    "banked flyer wing orientation matrix matches coordinated reference within 1e-12": "曲率压坡机翼旋转矩阵与协调转弯参考机翼在 1e-12 内一致",
+    "rendered-flat-wing-level": "渲染机翼倾角对比",
+    "flat baseline keeps world-up Y=1.0 while banked wing tilts to cos(35.7°)=0.81": "平漂基线保持世界向上分量 1.0，压坡机翼倾侧至 cos(35.7°)=0.81",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse timestamp visitation reproduces the exact banked wing world matrix": "逆序时间戳重访精确复现压坡机翼世界矩阵",
+    "atomic-track-rejection": "原子航线拒绝",
+    "out-of-bounds radiusX=8.0 is rejected while valid flight track remains": "越界航线半径 8.0 被拒绝，有效航线配置完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered wing up-vector Y component matches cos(bankAngle) from differential flatness": "渲染机翼上向量 Y 分量与微分平坦倾侧角余弦一致",
+    "mobile-layout": "手机布局",
+    "390px curvature flyer controls fit without horizontal overflow": "390px 曲率压坡控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual turn inspection remains available": "减少动态默认静止，保留手动过弯核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Analytic derivative curvature": "解析导数叉积曲率求解",
+    "5-stencil finite difference": "5点中心差分曲率求解",
+    "Median of 7 alternating Node CPU runs after warmup. Closed-form 1st/2nd derivative cross-product curvature versus 5-point central finite-difference stencil, not CFD or GPU rendering.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；一阶/二阶解析导数叉积曲率对比 5 点中心差分模板，不是气动 CFD 或 GPU 渲染。",
+    "Sampled figure-eight frames retain zero lateral slip under reverse visitation": "逆序重访下八字航线采样帧保持零侧滑过载",
+    "path derivatives (v, a) → centripetal a_c = (x'z'' - z'x'')/v → bank φ* = atan(a_c/g) → 0 lateral slip": "轨迹导数 (v, a) → 向心加速度 a_c = (x'z'' - z'x'')/v → 协调倾侧角 φ* = atan(a_c/g) → 0 侧滑过载",
+    "Drone, aircraft, and racing camera path orientation": "无人机、飞行器与竞速跟随镜头的路径姿态控制",
+    "Deriving natural roll angles automatically from path curvature": "从路径曲率自动导出自然的过弯横滚压坡角",
+    "Teaching quadrotor differential flatness (acceleration → attitude)": "直观讲解四旋翼微分平坦性（加速度决定姿态倾角）",
+    "Eliminating flat horizontal skidding in spline-following animations": "消除样条跟随动画中僵硬的水平横向平漂感",
+    "Full Navier-Stokes aerodynamic wing stall and vortex CFD": "完整纳维-斯托克斯机翼失速与涡流 CFD 仿真",
+    "Hardware quadrotor IMU/ESC motor control under wind gusts": "阵风扰动下的硬件四旋翼 IMU/电调闭环控制",
+    "Ground vehicles with tire slip angles and suspension roll": "含轮胎侧偏角与悬架侧倾的地面车辆动力学",
+    "Zero-gravity space Thruster attitude control": "零重力太空推进器姿态控制"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/curvature-banked.test.ts",
+    "node scripts/benchmark-curvature-banked.mjs"
+  ]
+}
