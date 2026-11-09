@@ -1,0 +1,264 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Frustum-invariant Hitchcock dolly-zoom versus linear FOV interpolation",
+  "topic_zh": "视锥半高守恒希区柯克推拉变焦与线性视场角插值对比",
+  "slug": "dolly-zoom-optics",
+  "timestamp": "2026-11-09T18:09:21.453Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic frustum half-width invariant W* = d·tan(θ/2), camera projection matrix P_11 conformance and Node CPU solving. No Generative Photography diffusion inference or thin-lens bokeh blur.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "156.0.8078.80",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "solver-equivalence-128",
+      "passed": true,
+      "detail": "128 closed-form arctan and 32-step FOV bisection queries agree within 1e-7 deg"
+    },
+    {
+      "name": "solver-equivalence-1024",
+      "passed": true,
+      "detail": "1024 closed-form arctan and 32-step FOV bisection queries agree within 1e-7 deg"
+    },
+    {
+      "name": "solver-equivalence-8192",
+      "passed": true,
+      "detail": "8192 closed-form arctan and 32-step FOV bisection queries agree within 1e-7 deg"
+    },
+    {
+      "name": "frustum-subject-lock",
+      "passed": true,
+      "detail": "101 sampled dolly-zoom frames retain 0.000000% subject screen size drift"
+    },
+    {
+      "name": "linear-fov-drift-exposed",
+      "passed": true,
+      "detail": "linear FOV interpolation drifts foreground subject screen height by 22.21% at α=0.5"
+    },
+    {
+      "name": "ndc-subject-invariant",
+      "passed": true,
+      "detail": "rendered projection matrix P_11 keeps NDC subject height invariant between α=0 and α=0.5"
+    },
+    {
+      "name": "rendered-linear-shrink",
+      "passed": true,
+      "detail": "linear FOV projection matrix shrinks NDC subject height by >15% at α=0.5"
+    },
+    {
+      "name": "exact-reverse-optics",
+      "passed": true,
+      "detail": "reverse alpha visitation reproduces the exact perspective projection scale P_11"
+    },
+    {
+      "name": "atomic-optics-rejection",
+      "passed": true,
+      "detail": "inverted endDist=2.5 is rejected while valid optical parameters remain"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "camera projection matrix NDC ratio matches independent frustum half-width formula"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px dolly-zoom controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual optical inspection remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU dolly-zoom queries",
+      "count": 128,
+      "primary_ms": 0.05989999999997053,
+      "baseline_ms": 0.1651000000001659,
+      "primary_samples_ms": [
+        0.07880000000000109,
+        0.5815999999999804,
+        0.05219999999985703,
+        0.05989999999997053,
+        0.04839999999990141,
+        9.080200000000104,
+        0.05639999999993961
+      ],
+      "baseline_samples_ms": [
+        0.20299999999997453,
+        0.8533999999999651,
+        1.8777000000000044,
+        0.14020000000004984,
+        0.14250000000015461,
+        0.1651000000001659,
+        0.1449999999999818
+      ]
+    },
+    {
+      "load": "1024 CPU dolly-zoom queries",
+      "count": 1024,
+      "primary_ms": 0.35400000000004184,
+      "baseline_ms": 1.3564000000001215,
+      "primary_samples_ms": [
+        0.35400000000004184,
+        0.5179999999998017,
+        0.45070000000009713,
+        0.20280000000002474,
+        0.6214999999999691,
+        0.08969999999999345,
+        0.07240000000001601
+      ],
+      "baseline_samples_ms": [
+        3.4213999999999487,
+        8.225200000000086,
+        1.3353000000001884,
+        1.3564000000001215,
+        8.6567,
+        0.8148000000001048,
+        1.2171000000000731
+      ]
+    },
+    {
+      "load": "8192 CPU dolly-zoom queries",
+      "count": 8192,
+      "primary_ms": 0.49319999999988795,
+      "baseline_ms": 9.077099999999973,
+      "primary_samples_ms": [
+        0.7780999999999949,
+        0.5043000000000575,
+        0.45810000000005857,
+        0.4681000000000495,
+        0.49319999999988795,
+        0.4654000000000451,
+        0.9466000000002168
+      ],
+      "baseline_samples_ms": [
+        9.077099999999973,
+        7.575599999999895,
+        11.927900000000136,
+        6.255499999999984,
+        12.20309999999995,
+        14.552200000000084,
+        6.141200000000026
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/dolly-zoom-optics/light-frustum-locked.png",
+    "docs/evidence/dolly-zoom-optics/light-linear-fov.png",
+    "docs/evidence/dolly-zoom-optics/dark-frustum-locked.png",
+    "docs/evidence/dolly-zoom-optics/dark-linear-fov.png",
+    "docs/evidence/dolly-zoom-optics/mobile.png"
+  ],
+  "primary_label": "Direct cotangent invariant",
+  "baseline_label": "32-step FOV bisection",
+  "load_unit": "dolly-zoom queries",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Direct frustum half-width cotangent ratio versus 32-step FOV bisection, not neural intrinsics diffusion or GPU rendering.",
+  "geometry": {
+    "parts": 57,
+    "sampled_steps": 101,
+    "frustum_half_height": 1.9996,
+    "locked_subject_ratio_pct": 40.01,
+    "max_locked_drift_pct": 0,
+    "linear_midpoint_drift_pct": 22.21,
+    "maximum_solver_error": 1.3852e-8
+  },
+  "protocol": {
+    "input": {
+      "alpha": 0.5,
+      "start_dist": 3.2,
+      "end_dist": 9.6,
+      "start_fov_deg": 64,
+      "mode": "frustum-locked"
+    },
+    "output": {
+      "distance": 6.4,
+      "fov_deg": 34.7,
+      "subject_screen_pct": 40.01,
+      "linear_drift_pct": 22.21
+    },
+    "function": "lock W* = d₀·tan(θ₀/2) → step distance d(α) → couple θ(α) = 2·atan(W*/d(α)) → 0% subject drift"
+  },
+  "robustness": [
+    {
+      "name": "Sampled dolly-zoom steps retain constant subject screen ratio under reverse visitation",
+      "original": 101,
+      "perturbed": 101,
+      "total": 101
+    }
+  ],
+  "good_fit": [
+    "Vertigo / Hitchcock dolly-zoom shots with locked foreground scale",
+    "Coupling camera intrinsics (FOV) and extrinsics (distance) analytically",
+    "Pre-computing exact focal-length schedules for Generative Photography",
+    "Explaining perspective compression without subject size drift"
+  ],
+  "not_for": [
+    "Generative Photography text-to-image diffusion synthesis",
+    "Physical aperture circle-of-confusion bokeh rendering",
+    "Anamorphic lens barrel distortion calibration",
+    "Motorized cinema zoom-lens backlash compensation"
+  ],
+  "locale_zh": {
+    "solver-equivalence-128": "求解等价 128",
+    "128 closed-form arctan and 32-step FOV bisection queries agree within 1e-7 deg": "128 个闭式反正切与 32 步视场角二分查询在 1e-7 度内一致",
+    "solver-equivalence-1024": "求解等价 1024",
+    "1024 closed-form arctan and 32-step FOV bisection queries agree within 1e-7 deg": "1024 个闭式反正切与 32 步视场角二分查询在 1e-7 度内一致",
+    "solver-equivalence-8192": "求解等价 8192",
+    "8192 closed-form arctan and 32-step FOV bisection queries agree within 1e-7 deg": "8192 个闭式反正切与 32 步视场角二分查询在 1e-7 度内一致",
+    "frustum-subject-lock": "视锥主体锁死",
+    "101 sampled dolly-zoom frames retain 0.000000% subject screen size drift": "101 个推拉变焦采样帧保持前景主体屏幕占比 0.000000% 漂移",
+    "linear-fov-drift-exposed": "线性视场漂移暴露",
+    "linear FOV interpolation drifts foreground subject screen height by 22.21% at α=0.5": "线性视场角插值在中点 α=0.5 导致前景主体屏幕高度漂移 22.21%",
+    "ndc-subject-invariant": "投影矩阵主体守恒",
+    "rendered projection matrix P_11 keeps NDC subject height invariant between α=0 and α=0.5": "实际透视投影矩阵 P_11 在 α=0 与 α=0.5 间保持前景主体 NDC 高度不变",
+    "rendered-linear-shrink": "渲染主体缩水暴露",
+    "linear FOV projection matrix shrinks NDC subject height by >15% at α=0.5": "线性视场角投影矩阵在中点 α=0.5 使前景主体 NDC 高度缩水超过 15%",
+    "exact-reverse-optics": "精确逆序投影",
+    "reverse alpha visitation reproduces the exact perspective projection scale P_11": "逆序 α 重访精确复现透视投影比例 P_11",
+    "atomic-optics-rejection": "原子光学拒绝",
+    "inverted endDist=2.5 is rejected while valid optical parameters remain": "倒置终点距离 2.5 被拒绝，有效光学配置完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "camera projection matrix NDC ratio matches independent frustum half-width formula": "相机投影矩阵 NDC 占比与独立视锥半高公式一致",
+    "mobile-layout": "手机布局",
+    "390px dolly-zoom controls fit without horizontal overflow": "390px 推拉变焦控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual optical inspection remains available": "减少动态默认静止，保留手动光学核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Direct cotangent invariant": "直接视锥余切守恒求解",
+    "32-step FOV bisection": "32步视场角二分反解",
+    "Median of 7 alternating Node CPU runs after warmup. Direct frustum half-width cotangent ratio versus 32-step FOV bisection, not neural intrinsics diffusion or GPU rendering.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；直接视锥半高余切比例对比 32 步视场角二分反解，不是神经内参扩散或 GPU 渲染。",
+    "Sampled dolly-zoom steps retain constant subject screen ratio under reverse visitation": "逆序重访下采样推拉变焦步保持前景主体屏幕占比不变",
+    "lock W* = d₀·tan(θ₀/2) → step distance d(α) → couple θ(α) = 2·atan(W*/d(α)) → 0% subject drift": "锁死视锥半高 W* = d₀·tan(θ₀/2) → 推进距离 d(α) → 耦合反解 θ(α) = 2·atan(W*/d(α)) → 0% 主体大小漂移",
+    "Vertigo / Hitchcock dolly-zoom shots with locked foreground scale": "锁定前景主体尺度的希区柯克推拉变焦镜头",
+    "Coupling camera intrinsics (FOV) and extrinsics (distance) analytically": "解析耦合相机内参（视场角）与外参（物距）",
+    "Pre-computing exact focal-length schedules for Generative Photography": "为生成式摄影模型预计算精确焦距变化曲线",
+    "Explaining perspective compression without subject size drift": "直观讲解不改变主体大小的空间透视压缩原理",
+    "Generative Photography text-to-image diffusion synthesis": "Generative Photography 文本生图扩散推理",
+    "Physical aperture circle-of-confusion bokeh rendering": "物理光圈弥散圆焦外虚化渲染",
+    "Anamorphic lens barrel distortion calibration": "变形宽银幕镜头桶形畸变标定",
+    "Motorized cinema zoom-lens backlash compensation": "电影电动变焦镜头机械回差补偿"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/dolly-zoom.test.ts",
+    "node scripts/benchmark-dolly-zoom.mjs"
+  ]
+}
