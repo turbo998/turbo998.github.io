@@ -1,0 +1,270 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "World-pinned stance contact locking and bipedal gait inverse kinematics",
+  "topic_zh": "世界坐标支撑相接触锁定与双足步态逆运动学",
+  "slug": "contact-stance-rig",
+  "timestamp": "2026-11-09T16:23:35.887Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic world-space stance contact pinning, two-link leg IK conformance and Node CPU solving. No StepControl or ARDY diffusion execution, friction dynamics or humanoid balance certification.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "156.0.8078.80",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "solver-equivalence-128",
+      "passed": true,
+      "detail": "128 analytic and 40-step biped poses agree within 1e-10 scene units"
+    },
+    {
+      "name": "solver-equivalence-1024",
+      "passed": true,
+      "detail": "1024 analytic and 40-step biped poses agree within 1e-10 scene units"
+    },
+    {
+      "name": "solver-equivalence-8192",
+      "passed": true,
+      "detail": "8192 analytic and 40-step biped poses agree within 1e-10 scene units"
+    },
+    {
+      "name": "stance-zero-slip",
+      "passed": true,
+      "detail": "81 sampled gait frames retain 0.000000 world-space stance slip (max 1.78e-15)"
+    },
+    {
+      "name": "unpinned-skating-exposed",
+      "passed": true,
+      "detail": "unpinned root-cycle baseline drifts by 0.2452 scene units at 0.2s"
+    },
+    {
+      "name": "planted-matrix-pinned",
+      "passed": true,
+      "detail": "rendered left ankle world matrix stays pinned at the same ground coordinate across stance"
+    },
+    {
+      "name": "fixed-segment-lengths",
+      "passed": true,
+      "detail": "thigh and shank segments preserve exact 1.45 / 1.35 lengths without stretching"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse timestamp visitation reproduces the exact ankle world matrix"
+    },
+    {
+      "name": "atomic-gait-rejection",
+      "passed": true,
+      "detail": "out-of-range stride is rejected while valid gait state remains intact"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "hierarchical rendered ankle matrix matches independent two-link IK coordinates"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px stance rig controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual stance inspection remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU biped poses",
+      "count": 128,
+      "primary_ms": 0.4076000000000022,
+      "baseline_ms": 0.6499000000000024,
+      "primary_samples_ms": [
+        0.7864000000000715,
+        0.8181999999999334,
+        0.54200000000003,
+        0.4033999999999196,
+        0.3996999999999389,
+        0.39819999999997435,
+        0.4076000000000022
+      ],
+      "baseline_samples_ms": [
+        1.9548999999999523,
+        1.620999999999981,
+        0.6499000000000024,
+        0.6331000000000131,
+        0.6363999999999805,
+        0.698099999999954,
+        0.6122000000000298
+      ]
+    },
+    {
+      "load": "1024 CPU biped poses",
+      "count": 1024,
+      "primary_ms": 0.6385999999999967,
+      "baseline_ms": 2.6417000000000144,
+      "primary_samples_ms": [
+        2.4411999999999807,
+        2.180499999999938,
+        2.120999999999981,
+        0.6308999999999969,
+        0.6385999999999967,
+        0.5934999999999491,
+        0.5793999999999642
+      ],
+      "baseline_samples_ms": [
+        4.273700000000076,
+        4.443300000000022,
+        10.983000000000061,
+        2.6019000000000005,
+        2.5225000000000364,
+        2.6417000000000144,
+        2.5150000000001
+      ]
+    },
+    {
+      "load": "8192 CPU biped poses",
+      "count": 8192,
+      "primary_ms": 4.73090000000002,
+      "baseline_ms": 19.06779999999992,
+      "primary_samples_ms": [
+        5.641200000000026,
+        4.561799999999948,
+        4.73090000000002,
+        4.746899999999982,
+        4.426400000000058,
+        4.737899999999968,
+        4.428700000000049
+      ],
+      "baseline_samples_ms": [
+        18.928999999999974,
+        18.92330000000004,
+        19.06779999999992,
+        19.147299999999973,
+        19.075199999999995,
+        19.27170000000001,
+        18.982999999999947
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/contact-stance-rig/light-locked.png",
+    "docs/evidence/contact-stance-rig/light-skating.png",
+    "docs/evidence/contact-stance-rig/dark-locked.png",
+    "docs/evidence/contact-stance-rig/dark-skating.png",
+    "docs/evidence/contact-stance-rig/mobile.png"
+  ],
+  "primary_label": "Analytic 2-link gait IK",
+  "baseline_label": "40-step knee bisection",
+  "load_unit": "biped poses",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Two-leg analytic geometry versus 40-step knee angle bisection, not neural motion diffusion or browser rendering.",
+  "geometry": {
+    "parts": 65,
+    "leg_lengths": [
+      1.45,
+      1.35
+    ],
+    "sampled_frames": 81,
+    "max_locked_slip": 1.7763568394002505e-15,
+    "baseline_midstance_slip": 0.245191,
+    "maximum_solver_error": 1.5385593289598641e-12
+  },
+  "protocol": {
+    "input": {
+      "time": 0.2,
+      "stride": 1.2,
+      "cadence": 1.25,
+      "clearance": 0.36,
+      "leg_lengths": [
+        1.45,
+        1.35
+      ],
+      "mode": "locked"
+    },
+    "output": {
+      "left_contact": true,
+      "left_anchor_x": 0.33,
+      "max_stance_slip": 0,
+      "baseline_skating_slip": 0.2452
+    },
+    "function": "contact schedule → world ground anchor pin → hip-to-anchor vector → 2-link leg IK → zero-slip hierarchy"
+  },
+  "robustness": [
+    {
+      "name": "Sampled gait poses keep zero stance slip under reverse visitation",
+      "original": 81,
+      "perturbed": 81,
+      "total": 81
+    }
+  ],
+  "good_fit": [
+    "Eliminating foot skating in procedural walk cycles",
+    "Explaining StepControl / contact-schedule constraints",
+    "Fixed-length bipedal gantry and mech animation",
+    "Separating world-anchor pinning from learned style"
+  ],
+  "not_for": [
+    "StepControl or ARDY neural diffusion inference",
+    "Full-body expressive human dance generation",
+    "Uneven-terrain rigid-body contact friction physics",
+    "Bipedal robot torque and balance control"
+  ],
+  "locale_zh": {
+    "solver-equivalence-128": "求解等价 128",
+    "128 analytic and 40-step biped poses agree within 1e-10 scene units": "128 个解析与 40 步双足姿态在 1e-10 示意单位内一致",
+    "solver-equivalence-1024": "求解等价 1024",
+    "1024 analytic and 40-step biped poses agree within 1e-10 scene units": "1024 个解析与 40 步双足姿态在 1e-10 示意单位内一致",
+    "solver-equivalence-8192": "求解等价 8192",
+    "8192 analytic and 40-step biped poses agree within 1e-10 scene units": "8192 个解析与 40 步双足姿态在 1e-10 示意单位内一致",
+    "stance-zero-slip": "支撑相零滑移",
+    "81 sampled gait frames retain 0.000000 world-space stance slip (max 1.78e-15)": "81 个采样步态帧保持支撑相零滑移（最大 1.78e-15）",
+    "unpinned-skating-exposed": "未锁滑步暴露",
+    "unpinned root-cycle baseline drifts by 0.2452 scene units at 0.2s": "未锁地面基线在 0.2 秒产生 0.2452 示意单位滑步",
+    "planted-matrix-pinned": "落地矩阵锁死",
+    "rendered left ankle world matrix stays pinned at the same ground coordinate across stance": "左踝实际世界渲染矩阵在整个支撑相内锁死在同一地面坐标",
+    "fixed-segment-lengths": "固定腿段长度",
+    "thigh and shank segments preserve exact 1.45 / 1.35 lengths without stretching": "大腿与小腿精确保留 1.45 / 1.35 长度而不拉伸",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse timestamp visitation reproduces the exact ankle world matrix": "逆序时间戳重访精确复现踝关节世界矩阵",
+    "atomic-gait-rejection": "原子步态拒绝",
+    "out-of-range stride is rejected while valid gait state remains intact": "越界步幅被拒绝，有效步态状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "hierarchical rendered ankle matrix matches independent two-link IK coordinates": "层级渲染踝部矩阵与独立双连杆逆运动学坐标一致",
+    "mobile-layout": "手机布局",
+    "390px stance rig controls fit without horizontal overflow": "390px 步态控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual stance inspection remains available": "减少动态默认静止，保留手动支撑相核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Analytic 2-link gait IK": "解析双连杆步态逆运动学",
+    "40-step knee bisection": "40步膝角二分求解",
+    "Median of 7 alternating Node CPU runs after warmup. Two-leg analytic geometry versus 40-step knee angle bisection, not neural motion diffusion or browser rendering.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；双腿解析几何对比 40 步膝角二分，不是神经动作扩散或浏览器渲染。",
+    "Sampled gait poses keep zero stance slip under reverse visitation": "逆序重访下采样步态帧保持支撑相零滑移",
+    "contact schedule → world ground anchor pin → hip-to-anchor vector → 2-link leg IK → zero-slip hierarchy": "接触时刻表 → 世界地面锚点锁死 → 髋踝向量 → 双连杆腿部逆运动学 → 零滑步层级",
+    "Eliminating foot skating in procedural walk cycles": "消除程序化步行循环中的脚掌打滑",
+    "Explaining StepControl / contact-schedule constraints": "解释接触时刻表约束原理",
+    "Fixed-length bipedal gantry and mech animation": "定长双足桁架与机甲步行动画",
+    "Separating world-anchor pinning from learned style": "分离世界锚点锁死与学习风格",
+    "StepControl or ARDY neural diffusion inference": "StepControl 或 ARDY 神经扩散推理",
+    "Full-body expressive human dance generation": "全身表现力人物舞蹈生成",
+    "Uneven-terrain rigid-body contact friction physics": "复杂地形刚体接触摩擦动力学",
+    "Bipedal robot torque and balance control": "双足机器人力矩与平衡控制"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/stance-contact.test.ts",
+    "node scripts/benchmark-stance-contact.mjs"
+  ]
+}
