@@ -1,0 +1,264 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "C¹ quadratic polynomial smooth-min SDF union vs hard min(d_A, d_B)",
+  "topic_zh": "C¹ 二次多项式平滑并集 smin 与硬 min 折痕对比",
+  "slug": "smooth-sdf-union",
+  "timestamp": "2026-11-09T20:49:52.608Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic C1 quadratic polynomial smooth-min (smin), analytical gradient normal continuity, bounded-support verification, and 4-tap finite-difference CPU comparison. No neural INR MLP execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "156.0.8078.80",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "smin-gradient-equivalence-128",
+      "passed": true,
+      "detail": "128 analytical and 4-tap finite-difference SDF normals agree within 1e-6"
+    },
+    {
+      "name": "smin-gradient-equivalence-1024",
+      "passed": true,
+      "detail": "1024 analytical and 4-tap finite-difference SDF normals agree within 1e-6"
+    },
+    {
+      "name": "smin-gradient-equivalence-8192",
+      "passed": true,
+      "detail": "8192 analytical and 4-tap finite-difference SDF normals agree within 1e-6"
+    },
+    {
+      "name": "smin-c1-normal-continuity",
+      "passed": true,
+      "detail": "17 separations retain < 1.0° seam normal change (max 0.25°) and 0 far bloat"
+    },
+    {
+      "name": "hard-min-crease-exposed",
+      "passed": true,
+      "detail": "hard boolean min(d_A, d_B) creates an 90.13° normal crease at s=0.85 u"
+    },
+    {
+      "name": "smooth-fillet-lift-retained",
+      "passed": true,
+      "detail": "C¹ quadratic smin lifts the x=0 neck fillet by +0.1694 u (0.09° seam)"
+    },
+    {
+      "name": "hard-crease-discontinuity-exposed",
+      "passed": true,
+      "detail": "hard min leaves a 90.13° normal jump with 0.0000 u fillet lift"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse separation scrubbing reproduces the exact right lobe world matrix"
+    },
+    {
+      "name": "atomic-blend-rejection",
+      "passed": true,
+      "detail": "out-of-range blendRadius=2.2 is rejected while valid SDF state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered right lobe x-translation matches independent halfSep=0.85 u"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px smooth SDF controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual separation scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 25-rib SDF normal passes",
+      "count": 128,
+      "primary_ms": 0.4534999999999627,
+      "baseline_ms": 1.7815999999999121,
+      "primary_samples_ms": [
+        0.44499999999993634,
+        0.903699999999958,
+        0.4534999999999627,
+        0.9973999999999705,
+        0.9979999999999336,
+        0.4311000000000149,
+        0.42829999999992197
+      ],
+      "baseline_samples_ms": [
+        1.625,
+        1.7071000000000822,
+        1.7815999999999121,
+        3.4261000000000195,
+        4.145599999999945,
+        2.787200000000098,
+        1.6926999999999452
+      ]
+    },
+    {
+      "load": "1024 CPU 25-rib SDF normal passes",
+      "count": 1024,
+      "primary_ms": 3.6277000000000044,
+      "baseline_ms": 14.321600000000103,
+      "primary_samples_ms": [
+        4.1141999999999825,
+        5.44640000000004,
+        3.6277000000000044,
+        3.593099999999936,
+        3.4880000000000564,
+        3.391999999999939,
+        3.708400000000097
+      ],
+      "baseline_samples_ms": [
+        14.794099999999958,
+        13.96169999999995,
+        14.12220000000002,
+        14.364500000000021,
+        16.407799999999952,
+        14.321600000000103,
+        13.976400000000012
+      ]
+    },
+    {
+      "load": "8192 CPU 25-rib SDF normal passes",
+      "count": 8192,
+      "primary_ms": 35.488399999999956,
+      "baseline_ms": 132.63810000000012,
+      "primary_samples_ms": [
+        35.17389999999989,
+        42.703500000000076,
+        41.711700000000064,
+        36.73440000000005,
+        30.376199999999926,
+        33.327200000000175,
+        35.488399999999956
+      ],
+      "baseline_samples_ms": [
+        132.63810000000012,
+        137.6382000000001,
+        132.15300000000002,
+        146.0625,
+        135.07909999999993,
+        117.3868,
+        127.70800000000008
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/smooth-sdf-union/light-smin-quadratic.png",
+    "docs/evidence/smooth-sdf-union/light-hard-min.png",
+    "docs/evidence/smooth-sdf-union/dark-smin-quadratic.png",
+    "docs/evidence/smooth-sdf-union/dark-hard-min.png",
+    "docs/evidence/smooth-sdf-union/mobile.png"
+  ],
+  "primary_label": "Analytical smin gradient weight",
+  "baseline_label": "4-tap central finite difference",
+  "load_unit": "25-rib SDF normal passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Analytical C1 polynomial gradient blend (1-w)∇d_A + w∇d_B versus 4-tap central finite differences.",
+  "geometry": {
+    "parts": 57,
+    "ribs": 25,
+    "smin_seam_jump_deg": 0.09,
+    "hard_seam_jump_deg": 90.13,
+    "fillet_lift": 0.1694,
+    "far_field_bloat": 0,
+    "maximum_solver_error": 4.2148e-11
+  },
+  "protocol": {
+    "input": {
+      "half_sep": 0.85,
+      "blend_k": 0.5,
+      "sphere_r": 1.2,
+      "ribs": 25,
+      "mode": "smin-quadratic"
+    },
+    "output": {
+      "smin_seam_deg": 0.09,
+      "hard_seam_deg": 90.13,
+      "fillet_lift": 0.1694,
+      "far_bloat": 0
+    },
+    "function": "h = max(k - |a - b|, 0)/k → min(a, b) - k·h²/4 → 0.45° C¹ seam & 0 far-field bloat"
+  },
+  "robustness": [
+    {
+      "name": "Sampled lobe separations retain C1 seam continuity and zero far-field bloat",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Organic metaballs, clay sculpting, droplets, and character joint fillets in SDF raymarching",
+    "Preserving exact primitive dimensions outside the blend band (|a - b| >= k)",
+    "Computing C1 surface normals analytically without 4-tap or 6-tap finite differences",
+    "Explaining why hard min(d_A, d_B) causes specular highlight snapping across seams"
+  ],
+  "not_for": [
+    "Neural SDF Eikonal MLP training or closest-point neural CSG regularizers",
+    "Mechanical CAD chamfers requiring flat 45-degree bevel planes",
+    "G2 curvature-continuous Class-A automotive surfacing (requires cubic/quartic smin)",
+    "Polygon mesh Boolean clipping (Sutherland-Hodgman / BSP trees)"
+  ],
+  "locale_zh": {
+    "smin-gradient-equivalence-128": "梯度等价 128",
+    "128 analytical and 4-tap finite-difference SDF normals agree within 1e-6": "128 次解析导数与 4 抽头中心差分 SDF 法向量在 1e-6 内一致",
+    "smin-gradient-equivalence-1024": "梯度等价 1024",
+    "1024 analytical and 4-tap finite-difference SDF normals agree within 1e-6": "1024 次解析导数与 4 抽头中心差分 SDF 法向量在 1e-6 内一致",
+    "smin-gradient-equivalence-8192": "梯度等价 8192",
+    "8192 analytical and 4-tap finite-difference SDF normals agree within 1e-6": "8192 次解析导数与 4 抽头中心差分 SDF 法向量在 1e-6 内一致",
+    "smin-c1-normal-continuity": "C1接缝法向连续",
+    "17 separations retain < 1.0° seam normal change (max 0.25°) and 0 far bloat": "17 个间距下接缝法向夹角变化 < 1.0°（最大 0.25°）且远场零膨胀",
+    "hard-min-crease-exposed": "硬并集折痕暴露",
+    "hard boolean min(d_A, d_B) creates an 90.13° normal crease at s=0.85 u": "硬布尔并集在 s=0.85 u 接缝处造成 90.13° 法向折痕突变",
+    "smooth-fillet-lift-retained": "平滑圆角抬升保持",
+    "C¹ quadratic smin lifts the x=0 neck fillet by +0.1694 u (0.09° seam)": "C¹ 二次多项式 smin 将 x=0 颈部圆角抬升 +0.1694 u（接缝夹角 0.09°）",
+    "hard-crease-discontinuity-exposed": "硬折痕突变暴露",
+    "hard min leaves a 90.13° normal jump with 0.0000 u fillet lift": "硬 min 并集留下 90.13° 法向突变且圆角抬升为 0",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse separation scrubbing reproduces the exact right lobe world matrix": "逆序间距拖曳精确复现右球核世界矩阵",
+    "atomic-blend-rejection": "原子圆角拒绝",
+    "out-of-range blendRadius=2.2 is rejected while valid SDF state remains": "越界平滑半径 2.2 被拒绝，有效距离场状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered right lobe x-translation matches independent halfSep=0.85 u": "渲染右球核水平位移与独立半间距 0.85 u 完全一致",
+    "mobile-layout": "手机布局",
+    "390px smooth SDF controls fit without horizontal overflow": "390px 距离场并集控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual separation scrubbing remains available": "减少动态默认静止，保留手动间距核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Analytical smin gradient weight": "解析 smin 导数权重合成",
+    "4-tap central finite difference": "4抽头中心有限差分法向",
+    "Median of 7 alternating Node CPU runs after warmup. Analytical C1 polynomial gradient blend (1-w)∇d_A + w∇d_B versus 4-tap central finite differences.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；解析 C1 多项式导数权重 (1-w)∇d_A + w∇d_B 对比 4 抽头中心有限差分。",
+    "Sampled lobe separations retain C1 seam continuity and zero far-field bloat": "采样双球间距保持 C1 接缝法向连续与远场零膨胀",
+    "h = max(k - |a - b|, 0)/k → min(a, b) - k·h²/4 → 0.45° C¹ seam & 0 far-field bloat": "有界支撑 h = max(k - |a - b|, 0)/k → min(a, b) - k·h²/4 → 0.45° C¹ 平滑接缝且远场零膨胀",
+    "Organic metaballs, clay sculpting, droplets, and character joint fillets in SDF raymarching": "SDF 光线步进中的有机水滴、黏土雕塑与角色关节平滑圆角融合",
+    "Preserving exact primitive dimensions outside the blend band (|a - b| >= k)": "在混合带 |a - b| >= k 之外严格保持原始图元尺寸零膨胀",
+    "Computing C1 surface normals analytically without 4-tap or 6-tap finite differences": "无需 4 抽头或 6 抽头有限差分即可直接解析合成 C1 表面法向量",
+    "Explaining why hard min(d_A, d_B) causes specular highlight snapping across seams": "直观解释为何硬 min(d_A, d_B) 会导致接缝处镜面高光断裂跳变",
+    "Neural SDF Eikonal MLP training or closest-point neural CSG regularizers": "神经隐式场 Eikonal MLP 训练或最近点神经 CSG 正则化",
+    "Mechanical CAD chamfers requiring flat 45-degree bevel planes": "需要平直 45° 斜切面的机械 CAD 倒角",
+    "G2 curvature-continuous Class-A automotive surfacing (requires cubic/quartic smin)": "需要 G2 曲率连续（三次/四次多项式 smin）的汽车 A 级曲面",
+    "Polygon mesh Boolean clipping (Sutherland-Hodgman / BSP trees)": "基于多边形网格拓扑切割的传统布尔运算"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/smooth-sdf.test.ts",
+    "node scripts/benchmark-smooth-sdf.mjs"
+  ]
+}

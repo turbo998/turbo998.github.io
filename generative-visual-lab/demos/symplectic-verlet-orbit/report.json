@@ -1,0 +1,267 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Symplectic Velocity-Verlet orbit integration vs explicit forward Euler",
+  "topic_zh": "辛几何 Velocity-Verlet 轨道积分与显式欧拉外旋对比",
+  "slug": "symplectic-verlet-orbit",
+  "timestamp": "2026-11-09T21:16:22.516Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic 2nd-order symplectic Velocity-Verlet vs explicit forward Euler integration, Liouville phase-space determinant det(M)=1 verification, and cached-force vs redundant-force CPU solving. No relativistic N-body execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "156.0.8078.80",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "verlet-equivalence-128",
+      "passed": true,
+      "detail": "128 cached-force and 2-stage Velocity-Verlet orbits agree within 1e-13 u"
+    },
+    {
+      "name": "verlet-equivalence-1024",
+      "passed": true,
+      "detail": "1024 cached-force and 2-stage Velocity-Verlet orbits agree within 1e-13 u"
+    },
+    {
+      "name": "verlet-equivalence-8192",
+      "passed": true,
+      "detail": "8192 cached-force and 2-stage Velocity-Verlet orbits agree within 1e-13 u"
+    },
+    {
+      "name": "verlet-liouville-conservation",
+      "passed": true,
+      "detail": "33 steps retain det(M)=1.000000 and 0.000000 u radial drift (max 1.33e-15 u)"
+    },
+    {
+      "name": "euler-spiral-explosion-exposed",
+      "passed": true,
+      "detail": "explicit Euler inflates det(M)=1.016384 and spirals out by +0.8175 u"
+    },
+    {
+      "name": "exact-orbit-radius-retained",
+      "passed": true,
+      "detail": "Velocity-Verlet locks step-28 radius at 3.2000 u with 0.00% energy drift"
+    },
+    {
+      "name": "euler-energy-blowup-exposed",
+      "passed": true,
+      "detail": "explicit Euler inflates step-28 radius to 4.0175 u (+57.62% energy)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse step scrubbing reproduces the exact satellite carriage world matrix"
+    },
+    {
+      "name": "atomic-dt-rejection",
+      "passed": true,
+      "detail": "out-of-range dt=0.95 is rejected while valid orbital state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered satellite carriage x-translation matches solved orbital position"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px symplectic orbit controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual step scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 32-step orbit passes",
+      "count": 128,
+      "primary_ms": 2.092200000000048,
+      "baseline_ms": 1.6446999999999434,
+      "primary_samples_ms": [
+        1.338200000000029,
+        2.092200000000048,
+        1.5043999999999187,
+        1.9216000000000122,
+        3.1368999999999687,
+        2.2667000000000144,
+        2.691000000000031
+      ],
+      "baseline_samples_ms": [
+        0.9527000000000498,
+        1.225999999999999,
+        1.6446999999999434,
+        4.433499999999981,
+        2.573799999999892,
+        1.941000000000031,
+        1.4130999999999858
+      ]
+    },
+    {
+      "load": "1024 CPU 32-step orbit passes",
+      "count": 1024,
+      "primary_ms": 10.244100000000003,
+      "baseline_ms": 10.9147999999999,
+      "primary_samples_ms": [
+        10.942199999999957,
+        8.717399999999998,
+        12.183599999999956,
+        9.309500000000071,
+        10.77539999999999,
+        9.786100000000033,
+        10.244100000000003
+      ],
+      "baseline_samples_ms": [
+        21.18279999999993,
+        15.100399999999922,
+        9.063499999999976,
+        14.159999999999968,
+        10.9147999999999,
+        7.805499999999938,
+        10.233900000000062
+      ]
+    },
+    {
+      "load": "8192 CPU 32-step orbit passes",
+      "count": 8192,
+      "primary_ms": 78.07780000000002,
+      "baseline_ms": 79.05679999999984,
+      "primary_samples_ms": [
+        72.97709999999984,
+        79.76390000000015,
+        80.4389000000001,
+        79.47479999999996,
+        78.07780000000002,
+        76.64979999999991,
+        77.72750000000019
+      ],
+      "baseline_samples_ms": [
+        87.6246000000001,
+        79.29320000000007,
+        65.31829999999991,
+        63.004399999999805,
+        79.91239999999993,
+        79.05679999999984,
+        72.77660000000014
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/symplectic-verlet-orbit/light-symplectic-verlet.png",
+    "docs/evidence/symplectic-verlet-orbit/light-explicit-euler.png",
+    "docs/evidence/symplectic-verlet-orbit/dark-symplectic-verlet.png",
+    "docs/evidence/symplectic-verlet-orbit/dark-explicit-euler.png",
+    "docs/evidence/symplectic-verlet-orbit/mobile.png"
+  ],
+  "primary_label": "Cached-force Velocity-Verlet",
+  "baseline_label": "2-force Kick-Drift-Kick Verlet",
+  "load_unit": "32-step orbit passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Single-force-reuse Velocity-Verlet loop versus redundant 2-force evaluation per step.",
+  "geometry": {
+    "parts": 58,
+    "steps": 32,
+    "rest_radius": 3.2,
+    "verlet_radius_at_28": 3.2,
+    "euler_radius_at_28": 4.0175,
+    "verlet_det": 1,
+    "euler_det": 1.016384,
+    "euler_energy_gain_pct": 57.62,
+    "maximum_solver_error": 0
+  },
+  "protocol": {
+    "input": {
+      "step_index": 28,
+      "dt": 0.08,
+      "omega": 1.6,
+      "rest_r": 3.2,
+      "mode": "symplectic-verlet"
+    },
+    "output": {
+      "verlet_det": 1,
+      "verlet_r": 3.2,
+      "euler_det": 1.016384,
+      "euler_r": 4.0175,
+      "euler_energy_pct": 57.62
+    },
+    "function": "Kick-Drift-Kick Velocity-Verlet → det(M) ≡ 1.000000 → 3.2000 u exact orbit radius"
+  },
+  "robustness": [
+    {
+      "name": "Sampled orbital steps retain det(M)=1 and zero radial explosion",
+      "original": 33,
+      "perturbed": 33,
+      "total": 33
+    }
+  ],
+  "good_fit": [
+    "Orbital mechanics, vortex particle fields, and undamped oscillating cameras requiring long-term energy bounds",
+    "Explaining why Explicit Euler det(M) = 1 + (ωΔt)² > 1 pumps unphysical energy every frame",
+    "Reusing end-of-step acceleration a_{n+1} so Velocity-Verlet costs only 1 force evaluation per step",
+    "Time-reversible physics animations that can be scrubbed forward and backward"
+  ],
+  "not_for": [
+    "General-relativistic Kerr black-hole geodesic integration",
+    "Barnes-Hut or Fast Multipole O(N log N) gravitational tree codes",
+    "Heavily damped stiff parabolic diffusion PDEs requiring implicit backward Euler",
+    "Discontinuous rigid-body impact resolution with inelastic restitution"
+  ],
+  "locale_zh": {
+    "verlet-equivalence-128": "积分等价 128",
+    "128 cached-force and 2-stage Velocity-Verlet orbits agree within 1e-13 u": "128 次缓存力场与双次求值 Velocity-Verlet 轨道在 1e-13 u 内一致",
+    "verlet-equivalence-1024": "积分等价 1024",
+    "1024 cached-force and 2-stage Velocity-Verlet orbits agree within 1e-13 u": "1024 次缓存力场与双次求值 Velocity-Verlet 轨道在 1e-13 u 内一致",
+    "verlet-equivalence-8192": "积分等价 8192",
+    "8192 cached-force and 2-stage Velocity-Verlet orbits agree within 1e-13 u": "8192 次缓存力场与双次求值 Velocity-Verlet 轨道在 1e-13 u 内一致",
+    "verlet-liouville-conservation": "刘维尔面积守恒",
+    "33 steps retain det(M)=1.000000 and 0.000000 u radial drift (max 1.33e-15 u)": "33 步轨道保持 det(M)=1.000000 且径向零漂移（最大误差 1.33e-15 u）",
+    "euler-spiral-explosion-exposed": "显式欧拉飞散暴露",
+    "explicit Euler inflates det(M)=1.016384 and spirals out by +0.8175 u": "显式欧拉使 det(M)=1.016384 膨胀并在第 28 步向外飞散 +0.8175 u",
+    "exact-orbit-radius-retained": "轨道半径精确锁定",
+    "Velocity-Verlet locks step-28 radius at 3.2000 u with 0.00% energy drift": "Velocity-Verlet 将第 28 步半径锁死在 3.2000 u 且能量零漂移",
+    "euler-energy-blowup-exposed": "欧拉能量暴涨暴露",
+    "explicit Euler inflates step-28 radius to 4.0175 u (+57.62% energy)": "显式欧拉将第 28 步半径吹胀至 4.0175 u（能量暴涨 +57.62%）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse step scrubbing reproduces the exact satellite carriage world matrix": "逆序步数拖曳精确复现卫星滑车世界矩阵",
+    "atomic-dt-rejection": "原子步长拒绝",
+    "out-of-range dt=0.95 is rejected while valid orbital state remains": "越界时间步长 0.95 被拒绝，有效轨道状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered satellite carriage x-translation matches solved orbital position": "渲染卫星滑车水平位移与求解器轨道坐标完全一致",
+    "mobile-layout": "手机布局",
+    "390px symplectic orbit controls fit without horizontal overflow": "390px 辛轨道控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual step scrubbing remains available": "减少动态默认静止，保留手动步数核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Cached-force Velocity-Verlet": "单次力缓存 Velocity-Verlet",
+    "2-force Kick-Drift-Kick Verlet": "双次力求值 Kick-Drift-Kick 基线",
+    "Median of 7 alternating Node CPU runs after warmup. Single-force-reuse Velocity-Verlet loop versus redundant 2-force evaluation per step.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；复用步末加速度的单次求值 Velocity-Verlet 对比每步两次重复力场求值。",
+    "Sampled orbital steps retain det(M)=1 and zero radial explosion": "采样轨道步数保持 det(M)=1 与零径向飞散",
+    "Kick-Drift-Kick Velocity-Verlet → det(M) ≡ 1.000000 → 3.2000 u exact orbit radius": "半步速度推进 Velocity-Verlet → 相空间行列式 det(M) ≡ 1.000000 → 3.2000 u 精确守恒轨道半径",
+    "Orbital mechanics, vortex particle fields, and undamped oscillating cameras requiring long-term energy bounds": "天体环绕、粒子涡旋场与无阻尼周期摆动镜头的长期能量守恒仿真",
+    "Explaining why Explicit Euler det(M) = 1 + (ωΔt)² > 1 pumps unphysical energy every frame": "直观解释为何显式欧拉 det(M) = 1 + (ωΔt)² > 1 每帧都在凭空注入虚假能量",
+    "Reusing end-of-step acceleration a_{n+1} so Velocity-Verlet costs only 1 force evaluation per step": "通过复用步末加速度 a_{n+1} 使二阶 Velocity-Verlet 每步仅需 1 次力场求值",
+    "Time-reversible physics animations that can be scrubbed forward and backward": "支持正放与倒放对称可逆的物理动画模拟",
+    "General-relativistic Kerr black-hole geodesic integration": "广义相对论弯曲时空黑洞测地线积分",
+    "Barnes-Hut or Fast Multipole O(N log N) gravitational tree codes": "Barnes-Hut 或快速多极子 O(N log N) 多体引力树算法",
+    "Heavily damped stiff parabolic diffusion PDEs requiring implicit backward Euler": "需要隐式后向欧拉的强阻尼刚性热扩散方程",
+    "Discontinuous rigid-body impact resolution with inelastic restitution": "含非弹性碰撞恢复系数的刚体冲量解算"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/symplectic-orbit.test.ts",
+    "node scripts/benchmark-symplectic-orbit.mjs"
+  ]
+}

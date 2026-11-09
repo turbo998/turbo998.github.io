@@ -386,6 +386,54 @@
         "The 54-solid 4×4 sub-pixel stage compares integer modulo/division radical inversion against string digit reversal (1.65 ms vs 50.23 ms at 8,192 passes, 30.4× faster) without claiming DLSS or Mip-Splatting execution."
       ],
       "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "temporal_upscaler": "not_measured" }
+    },
+    {
+      "round": 27,
+      "slug": "smooth-sdf-union",
+      "topic": "polynomial-smin-sdf-boolean",
+      "title_zh": "有机体布尔融合不留折痕死角：C¹ 二次多项式平滑最小值（smin）与硬 min 距离场选型 FAQ",
+      "title_en": "Organic SDF booleans without normal creases: C¹ quadratic polynomial smooth-min vs hard min(dA, dB) FAQ",
+      "faq_zh": "docs/polynomial-smin-sdf-boolean-faq.md",
+      "faq_en": "docs/polynomial-smin-sdf-boolean-faq.en.md",
+      "summary": "docs/evidence/smooth-sdf-union-summary.svg",
+      "report": "demos/smooth-sdf-union/report.json",
+      "cards": "demos/smooth-sdf-union/test-report-cards.html",
+      "cards_zh": "demos/smooth-sdf-union/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "标准硬布尔并集 min(d_A, d_B) 仅满足 C⁰ 连续，在双球中轴接缝 x=0 处造成 90.13° 的表面法向折痕突变，导致镜面高光断裂。",
+        "采用有界支撑 C¹ 二次多项式平滑最小值 smin(a,b,k)=min(a,b)-k·h²/4，可将接缝法向突变压至 0.09°（颈部圆角抬升 +0.1694 u），并在 |a-b|≥k 处严格保持 0.000000 u 远场膨胀。",
+        "57 实体 25 肋隐式法向检验台对比解析导数权重合成与 4 抽头中心有限差分（8192 次 35.49 ms vs 132.64 ms，提速 3.74×），不冒充神经 SDF Eikonal MLP 训练。"
+      ],
+      "conclusions_en": [
+        "Hard boolean union min(d_A, d_B) is only C⁰ continuous, causing a 90.13° surface normal discontinuity across the x=0 medial seam that tears specular highlights.",
+        "Bounded-support C¹ quadratic polynomial smooth-min smin(a,b,k)=min(a,b)-k·h²/4 reduces the seam normal jump to 0.09° (+0.1694 u fillet lift) with 0.000000 u far-field bloat outside |a-b| < k.",
+        "The 57-solid 25-rib bench compares closed-form analytical gradient blending against 4-tap central finite differences (35.49 ms vs 132.64 ms at 8,192 passes, 3.74× faster) without claiming neural INR execution."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_sdf": "not_measured" }
+    },
+    {
+      "round": 28,
+      "slug": "symplectic-verlet-orbit",
+      "topic": "symplectic-verlet-vs-euler",
+      "title_zh": "环绕卫星与粒子涡旋不向外飞散：辛几何半隐式欧拉/Verlet 积分与显式欧拉选型 FAQ",
+      "title_en": "Orbital and vortex motion without outward spiral explosion: symplectic Semi-Implicit Euler/Verlet vs Explicit Euler FAQ",
+      "faq_zh": "docs/symplectic-verlet-vs-euler-faq.md",
+      "faq_en": "docs/symplectic-verlet-vs-euler-faq.en.md",
+      "summary": "docs/evidence/symplectic-verlet-orbit-summary.svg",
+      "report": "demos/symplectic-verlet-orbit/report.json",
+      "cards": "demos/symplectic-verlet-orbit/test-report-cards.html",
+      "cards_zh": "demos/symplectic-verlet-orbit/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "显式前向欧拉每步相空间雅可比行列式为 det(M)=1+(ωΔt)²=1.016384>1，在第 28 步使卫星轨道从 3.20 u 向外螺旋炸飞至 4.0175 u（虚假能量暴涨 +57.62%）。",
+        "采用单次力缓存的二阶辛几何 Velocity-Verlet 积分器可严格满足刘维尔面积守恒 det(M)≡1.000000，在全部 33 个轨道步保持 3.2000 u 精确半径与 0.00% 能量漂移。",
+        "58 实体 33 站点天体环绕仪验证跨步加速度缓存 a_{n+1} 与双次力求值完全逐位一致（0 误差），每步仅需 1 次力场求值。"
+      ],
+      "conclusions_en": [
+        "Explicit Forward Euler inflates phase-space area by det(M)=1+(ωΔt)²=1.016384 every step, spiraling the orbit from 3.20 u out to 4.0175 u (+57.62% energy blowup) by step 28.",
+        "Cached-force 2nd-order symplectic Velocity-Verlet enforces Liouville conservation det(M)≡1.000000, locking all 33 steps on R=3.2000 u with 0.00% energy drift.",
+        "The 58-solid 33-station orbital orrery verifies bit-exact equivalence (0 error) between single-force-reuse caching and 2-stage Kick-Drift-Kick evaluation."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "nbody_tree": "not_measured" }
     }
   ]
 }
