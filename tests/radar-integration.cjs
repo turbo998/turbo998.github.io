@@ -925,6 +925,28 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r40File),'utf8');
       assert.ok(txt.includes('1,200.00')&&txt.includes('1,800.00')&&txt.includes('4,800.00')&&txt.includes('45.00')&&txt.includes('240.00')&&txt.includes('285.00')&&txt.includes('4,515.00')&&txt.includes('94.06%')&&txt.includes('10.7.0.1')&&txt.includes('not_measured'),r40File+': contains exact 11-09 R27 pinky+poki closed-form parameters');
     }
+    // 2026-11-09 Round 28 (livliv-dev/player v0.3.0 + jacke-pp/open-yoki v150) closed-form FinOps verification
+    const r41WebA=750000*0.004;
+    const r41ObsA=2*450.00;
+    const r41ModA=60.0*45.00;
+    const r41PathA=r41WebA+r41ObsA+r41ModA;
+    assert.equal(r41WebA.toFixed(2),'3000.00','11-09 R28 Path A cloud WebRTC avatar');
+    assert.equal(r41ObsA.toFixed(2),'900.00','11-09 R28 Path A OBS GPU VMs');
+    assert.equal(r41ModA.toFixed(2),'2700.00','11-09 R28 Path A stream moderation');
+    assert.equal(r41PathA.toFixed(2),'6600.00','11-09 R28 Path A total');
+    const r41WebB=15.00;
+    const r41ObsB=2*160.00;
+    const r41ModB=6.0*45.00;
+    const r41PathB=r41WebB+r41ObsB+r41ModB;
+    assert.equal(r41ObsB.toFixed(2),'320.00','11-09 R28 Path B 1-server hosts');
+    assert.equal(r41ModB.toFixed(2),'270.00','11-09 R28 Path B heart oversight');
+    assert.equal(r41PathB.toFixed(2),'605.00','11-09 R28 Path B total');
+    assert.equal((r41PathA-r41PathB).toFixed(2),'5995.00','11-09 R28 savings vs Path A');
+    assert.equal(((r41PathA-r41PathB)/r41PathA*100).toFixed(2),'90.83','11-09 R28 pct savings vs Path A');
+    for(const r41File of ['workshops/github-trending-radar/docs/livliv-player-open-yoki-avatar-livestream-selection-faq.md','workshops/github-trending-radar/docs/livliv-player-open-yoki-avatar-livestream-selection-faq.en.md','assets/github-ai-radar-2026-11-09-r28-livliv-open-yoki.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-09-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r41File),'utf8');
+      assert.ok(txt.includes('3,000.00')&&txt.includes('900.00')&&txt.includes('2,700.00')&&txt.includes('6,600.00')&&txt.includes('15.00')&&txt.includes('320.00')&&txt.includes('270.00')&&txt.includes('605.00')&&txt.includes('5,995.00')&&txt.includes('90.83%')&&txt.includes('not_measured'),r41File+': contains exact 11-09 R28 livliv+open-yoki closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
