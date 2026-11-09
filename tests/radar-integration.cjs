@@ -456,6 +456,24 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r18File),'utf8');
       assert.ok(txt.includes('9,000.00')&&txt.includes('720.00')&&txt.includes('130.00')&&txt.includes('8,870.00')&&txt.includes('98.56%')&&txt.includes('81.94%')&&txt.includes('not_measured'),r18File+': contains exact 11-09 R5 VoxCPM2 closed-form parameters');
     }
+    // 2026-11-09 Round 6 (ruvnet/RuView + homeassistant-ai/ha-mcp) closed-form FinOps verification
+    const r19PathAIn=12000*(0.025*3.00);
+    const r19PathAOut=12000*(0.001*15.00);
+    assert.equal((r19PathAIn+r19PathAOut).toFixed(2),'1080.00','11-09 R6 RuView+ha-mcp Path A total');
+    const r19PathBIn=9000*(0.015*3.00);
+    const r19PathBOut=9000*(0.001*15.00);
+    assert.equal((r19PathBIn+r19PathBOut).toFixed(2),'540.00','11-09 R6 RuView+ha-mcp Path B total');
+    const r19PathCIn=1500*(0.004*3.00);
+    const r19PathCOut=1500*(0.0006*15.00);
+    assert.equal((r19PathCIn+r19PathCOut).toFixed(2),'31.50','11-09 R6 RuView+ha-mcp Path C total');
+    assert.equal((1080.00-31.50).toFixed(2),'1048.50','11-09 R6 RuView+ha-mcp savings vs Path A');
+    assert.equal(((1080.00-31.50)/1080.00*100).toFixed(2),'97.08','11-09 R6 RuView+ha-mcp pct savings vs Path A');
+    assert.equal((60.0-9.0).toFixed(1),'51.0','11-09 R6 RuView+ha-mcp hours saved');
+    assert.equal(((60.0-9.0)/60.0*100).toFixed(2),'85.00','11-09 R6 RuView+ha-mcp pct hours saved');
+    for(const r19File of ['workshops/github-trending-radar/docs/ruview-wifi-csi-ha-mcp-vs-camera-iot-selection-faq.md','workshops/github-trending-radar/docs/ruview-wifi-csi-ha-mcp-vs-camera-iot-selection-faq.en.md','assets/github-ai-radar-2026-11-09-r6-ruview-ha-mcp.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-09-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r19File),'utf8');
+      assert.ok(txt.includes('1,080.00')&&txt.includes('540.00')&&txt.includes('31.50')&&txt.includes('1,048.50')&&txt.includes('97.08%')&&txt.includes('21')&&txt.includes('not_measured'),r19File+': contains exact 11-09 R6 RuView+ha-mcp closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
