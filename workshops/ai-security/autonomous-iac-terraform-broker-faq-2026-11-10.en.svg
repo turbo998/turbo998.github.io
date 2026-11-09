@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 680" width="1200" height="680">
+  <defs>
+    <linearGradient id="bg32en" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0B1120"/>
+      <stop offset="50%" stop-color="#111827"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="redCard32en" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#450A0A" stop-opacity="0.78"/>
+      <stop offset="100%" stop-color="#1E1B4B" stop-opacity="0.5"/>
+    </linearGradient>
+    <linearGradient id="greenCard32en" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#064E3B" stop-opacity="0.78"/>
+      <stop offset="100%" stop-color="#0F172A" stop-opacity="0.65"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="680" fill="url(#bg32en)" rx="16"/>
+  <rect x="20" y="18" width="1160" height="78" rx="12" fill="#1E293B" stroke="#334155" stroke-width="1.5"/>
+  <text x="42" y="48" fill="#F8FAFC" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="19.5" font-weight="800">Round 32 Architect FAQ: Autonomous Cloud IaC &amp; FinOps vs. Write-Only State + Plan-Hash Broker</text>
+  <text x="42" y="76" fill="#94A3B8" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="13">The sensitive=true Myth &amp; .tfstate Cleartext Leaks · Plan-to-Apply TOCTOU Drift · $4,800 Rogue Spend · 92 Scenarios / 250 Passed</text>
+  <rect x="1000" y="32" width="160" height="46" rx="8" fill="#065F46" stroke="#10B981" stroke-width="1.5"/>
+  <text x="1080" y="53" text-anchor="middle" fill="#ECFDF5" font-family="system-ui, sans-serif" font-size="13" font-weight="700">Hardened ASR: 0.0%</text>
+  <text x="1080" y="70" text-anchor="middle" fill="#A7F3D0" font-family="system-ui, sans-serif" font-size="11">P50 0.0248ms (n=200)</text>
+
+  <!-- Left Column -->
+  <rect x="20" y="112" width="565" height="410" rx="12" fill="url(#redCard32en)" stroke="#EF4444" stroke-width="1.5"/>
+  <text x="42" y="142" fill="#FCA5A5" font-family="system-ui, sans-serif" font-size="15.5" font-weight="800">❌ Vulnerable IaC Agent (Mounted Cleartext .tfstate + Unpinned apply -auto-approve)</text>
+
+  <rect x="42" y="158" width="520" height="104" rx="8" fill="#1E293B" stroke="#7F1D1D" stroke-width="1.2"/>
+  <text x="58" y="182" fill="#F87171" font-family="system-ui, sans-serif" font-size="13" font-weight="700">1. .tfstate Cleartext Harvesting &amp; 0.0.0.0/0 Tamper (IAC-TFSTATE-SECRET-EXFIL-77)</text>
+  <text x="58" y="204" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• External module README injects 'state compatibility check' reading prod state</text>
+  <text x="58" y="224" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• Even with sensitive=true, terraform.tfstate stores 100% unencrypted passwords</text>
+  <text x="58" y="244" fill="#FCA5A5" font-family="system-ui, sans-serif" font-size="12" font-weight="600">• Deployment manifest overwritten to 0.0.0.0/0 &amp; DB secrets leaked externally!</text>
+
+  <rect x="42" y="274" width="520" height="104" rx="8" fill="#1E293B" stroke="#7F1D1D" stroke-width="1.2"/>
+  <text x="58" y="298" fill="#F87171" font-family="system-ui, sans-serif" font-size="13" font-weight="700">2. Plan-to-Apply TOCTOU Swap &amp; $4,800 Cloud Drain (IAC-PLAN-DRIFT-SPEND-78)</text>
+  <text x="58" y="320" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• Human reviews text plan, then agent runs unpinned apply; step-0000 swapped</text>
+  <text x="58" y="340" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• Attempts update_trust for rogue provider &amp; triggers $4,800 GPU reservation</text>
+  <text x="58" y="360" fill="#FCA5A5" font-family="system-ui, sans-serif" font-size="12" font-weight="600">• Without binary plan hash pinning &amp; originator gates, $4,800 spend executes!</text>
+
+  <rect x="42" y="390" width="520" height="114" rx="8" fill="#1E293B" stroke="#7F1D1D" stroke-width="1.2"/>
+  <text x="58" y="414" fill="#F87171" font-family="system-ui, sans-serif" font-size="13" font-weight="700">3. Why sensitive=true &amp; Text-Only Plan Reviews Fail in Agentic IaC</text>
+  <text x="58" y="436" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• sensitive=true only masks terminal output; state JSON holds raw cleartext keys</text>
+  <text x="58" y="456" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• Unpinned apply re-evaluates dynamic sources, enabling TOCTOU drift attacks</text>
+  <text x="58" y="482" fill="#EF4444" font-family="system-ui, sans-serif" font-size="13" font-weight="800">Baseline Outcome: Manifest tampered + state secrets leaked + $4,800 spend (75.0% ASR)</text>
+
+  <!-- Right Column -->
+  <rect x="615" y="112" width="565" height="410" rx="12" fill="url(#greenCard32en)" stroke="#10B981" stroke-width="1.5"/>
+  <text x="637" y="142" fill="#6EE7B7" font-family="system-ui, sans-serif" font-size="15.5" font-weight="800">✅ Write-Only Ephemeral Secrets + Binary Plan-Hash + Capability Broker</text>
+
+  <rect x="637" y="158" width="520" height="104" rx="8" fill="#1E293B" stroke="#065F46" stroke-width="1.2"/>
+  <text x="653" y="182" fill="#34D399" font-family="system-ui, sans-serif" font-size="13" font-weight="700">Defense 1: ephemeral / password_wo Zero-Secret State + record-owner Lock</text>
+  <text x="653" y="204" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• Write-Only attributes pass secrets to cloud APIs without writing to .tfstate</text>
+  <text x="653" y="224" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• Cross-owner state reads (restricted-budget) blocked in 0.0248ms by record-owner</text>
+  <text x="653" y="244" fill="#A7F3D0" font-family="system-ui, sans-serif" font-size="12" font-weight="600">• Module-tainted manifest edits blocked by untrusted-write &amp; egress boundary!</text>
+
+  <rect x="637" y="274" width="520" height="104" rx="8" fill="#1E293B" stroke="#065F46" stroke-width="1.2"/>
+  <text x="653" y="298" fill="#34D399" font-family="system-ui, sans-serif" font-size="13" font-weight="700">Defense 2: Binary tfplan.binary SHA-256 Pinning (request_hash Conflict)</text>
+  <text x="653" y="320" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• Every step is pinned to the canonical SHA-256 digest of the compiled plan</text>
+  <text x="653" y="340" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• Swapping step-0000 arguments at apply time immediately raises Conflict</text>
+  <text x="653" y="360" fill="#A7F3D0" font-family="system-ui, sans-serif" font-size="12" font-weight="600">• Eliminates Time-of-Check-to-Time-of-Use (TOCTOU) plan-to-apply drift!</text>
+
+  <rect x="637" y="390" width="520" height="114" rx="8" fill="#1E293B" stroke="#065F46" stroke-width="1.2"/>
+  <text x="653" y="414" fill="#34D399" font-family="system-ui, sans-serif" font-size="13" font-weight="700">Defense 3: Approved Provider Registry Lock + Originator Cloud Spend Gate</text>
+  <text x="653" y="436" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• Blocks update_trust (tool-allowlist) &amp; trust-registry writes (fixed-business-output)</text>
+  <text x="653" y="456" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12">• Externally induced $4,800 cloud reservation blocked by original-requester-payment</text>
+  <text x="653" y="482" fill="#10B981" font-family="system-ui, sans-serif" font-size="13" font-weight="800">Hardened Outcome: BRK-73 / BRK-74 100% Blocked · 0 State Leaks · $0 Rogue Spend</text>
+
+  <!-- Bottom Bar -->
+  <rect x="20" y="538" width="1160" height="122" rx="12" fill="#1E293B" stroke="#475569" stroke-width="1.5"/>
+  <text x="42" y="566" fill="#38BDF8" font-family="system-ui, sans-serif" font-size="15" font-weight="800">🧭 AI Solution Architect Selection Rules &amp; Provenance-Sealed Latency</text>
+  <text x="42" y="592" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12.5">• Authoring: GitOps PR-Only (0 cloud keys)  |  • Drift/FinOps Audit: Read-Only Plan Sandbox  |  • Automated Apply: Write-Only State + Binary Plan-Hash + Broker</text>
+  <text x="42" y="616" fill="#E2E8F0" font-family="system-ui, sans-serif" font-size="12.5">• Locally Measured Latency (measured, independently_reproduced=true): In-memory gate P50 = 0.0248 ms / P95 = 0.0409 ms (n=200 raw array); 1-step SQLite WAL P50 = 7.21 ms (n=50)</text>
+  <text x="42" y="640" fill="#94A3B8" font-family="system-ui, sans-serif" font-size="12">• Regression Verification: tests/test_regressions.py adds BRK-73 (IAC-TFSTATE-SECRET-EXFIL-77) &amp; BRK-74 (IAC-PLAN-DRIFT-SPEND-78) — 92 scenarios / 250 Pytest passed</text>
+</svg>
