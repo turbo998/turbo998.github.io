@@ -1357,6 +1357,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r72File),'utf8');
       assert.ok(txt.includes('2,450.00')&&txt.includes('3,910.00')&&txt.includes('6,360.00')&&txt.includes('290.00')&&txt.includes('510.00')&&txt.includes('800.00')&&txt.includes('5,560.00')&&txt.includes('87.42%')&&txt.includes('not_measured'),r72File+': contains exact 11-11 R27 dsh-see-now+anomaly-browse closed-form parameters');
     }
+    // 2026-11-11 Round 28 (CopilotKit/OpenDuet + andyhuo520/digital-human-koubo) closed-form FinOps verification
+    const r73PathA=2200.00+52.0*85.00;
+    assert.equal(r73PathA.toFixed(2),'6620.00','11-11 R28 Path A total');
+    const r73PathC=270.00+190.00+6.0*85.00;
+    assert.equal(r73PathC.toFixed(2),'970.00','11-11 R28 Path C total');
+    assert.equal((r73PathA-r73PathC).toFixed(2),'5650.00','11-11 R28 savings vs Path A');
+    assert.equal(((r73PathA-r73PathC)/r73PathA*100).toFixed(2),'85.35','11-11 R28 pct savings vs Path A');
+    for(const r73File of ['workshops/github-trending-radar/docs/openduet-digital-human-koubo-proactive-agent-video-mcp-selection-faq.md','workshops/github-trending-radar/docs/openduet-digital-human-koubo-proactive-agent-video-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r28-openduet-koubo.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r73File),'utf8');
+      assert.ok(txt.includes('2,200.00')&&txt.includes('4,420.00')&&txt.includes('6,620.00')&&txt.includes('460.00')&&txt.includes('510.00')&&txt.includes('970.00')&&txt.includes('5,650.00')&&txt.includes('85.35%')&&txt.includes('not_measured'),r73File+': contains exact 11-11 R28 openduet+digital-human-koubo closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
