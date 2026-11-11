@@ -1500,6 +1500,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r85File),'utf8');
       assert.ok(txt.includes('1,620.00')&&txt.includes('4,050.00')&&txt.includes('5,670.00')&&txt.includes('240.00')&&txt.includes('450.00')&&txt.includes('690.00')&&txt.includes('4,980.00')&&txt.includes('87.83%')&&txt.includes('not_measured'),r85File+': contains exact 11-11 R40 agentpurge+harnessmaxxing closed-form parameters');
     }
+    // 2026-11-11 Round 41 (MCG-NJU/AutoTavern + sirioberati/YouTube-AI-Motion-Graphics) closed-form FinOps verification
+    const r86PathA=1840.00+50.0*90.00;
+    assert.equal(r86PathA.toFixed(2),'6340.00','11-11 R41 Path A total');
+    const r86PathC=270.00+5.0*90.00;
+    assert.equal(r86PathC.toFixed(2),'720.00','11-11 R41 Path C total');
+    assert.equal((r86PathA-r86PathC).toFixed(2),'5620.00','11-11 R41 savings vs Path A');
+    assert.equal(((r86PathA-r86PathC)/r86PathA*100).toFixed(2),'88.64','11-11 R41 pct savings vs Path A');
+    for(const r86File of ['workshops/github-trending-radar/docs/autotavern-youtube-ai-motion-graphics-strategy-gym-gsap-skills-selection-faq.md','workshops/github-trending-radar/docs/autotavern-youtube-ai-motion-graphics-strategy-gym-gsap-skills-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r41-autotavern-ytmotion.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r86File),'utf8');
+      assert.ok(txt.includes('1,840.00')&&txt.includes('4,500.00')&&txt.includes('6,340.00')&&txt.includes('270.00')&&txt.includes('450.00')&&txt.includes('720.00')&&txt.includes('5,620.00')&&txt.includes('88.64%')&&txt.includes('not_measured'),r86File+': contains exact 11-11 R41 autotavern+ytmotion closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
