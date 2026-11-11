@@ -1203,6 +1203,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r58File),'utf8');
       assert.ok(txt.includes('1,440.00')&&txt.includes('2,720.00')&&txt.includes('4,880.00')&&txt.includes('240.00')&&txt.includes('480.00')&&txt.includes('760.00')&&txt.includes('4,120.00')&&txt.includes('84.43%')&&txt.includes('not_measured'),r58File+': contains exact 11-11 R13 sakutto+scsm closed-form parameters');
     }
+    // 2026-11-11 Round 14 (chutingyean/Agent-Cockpit + StargazerX0/SpecPilot) closed-form FinOps verification
+    const r59PathA=8*450.00+35.0*80.00;
+    assert.equal(r59PathA.toFixed(2),'6400.00','11-11 R14 Path A total');
+    const r59PathC=2*450.00+4.0*80.00;
+    assert.equal(r59PathC.toFixed(2),'1220.00','11-11 R14 Path C total');
+    assert.equal((r59PathA-r59PathC).toFixed(2),'5180.00','11-11 R14 savings vs Path A');
+    assert.equal(((r59PathA-r59PathC)/r59PathA*100).toFixed(2),'80.94','11-11 R14 pct savings vs Path A');
+    for(const r59File of ['workshops/github-trending-radar/docs/agent-cockpit-specpilot-evidence-speculative-decoding-selection-faq.md','workshops/github-trending-radar/docs/agent-cockpit-specpilot-evidence-speculative-decoding-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r14-cockpit-specpilot.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r59File),'utf8');
+      assert.ok(txt.includes('3,600.00')&&txt.includes('2,800.00')&&txt.includes('6,400.00')&&txt.includes('900.00')&&txt.includes('320.00')&&txt.includes('1,220.00')&&txt.includes('5,180.00')&&txt.includes('80.94%')&&txt.includes('not_measured'),r59File+': contains exact 11-11 R14 agent-cockpit+specpilot closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
