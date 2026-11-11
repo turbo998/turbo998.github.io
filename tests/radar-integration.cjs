@@ -1280,6 +1280,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r65File),'utf8');
       assert.ok(txt.includes('1,560.00')&&txt.includes('3,740.00')&&txt.includes('5,300.00')&&txt.includes('420.00')&&txt.includes('425.00')&&txt.includes('845.00')&&txt.includes('4,455.00')&&txt.includes('84.06%')&&txt.includes('not_measured'),r65File+': contains exact 11-11 R20 shim+antiglaude closed-form parameters');
     }
+    // 2026-11-11 Round 21 (phuryn/mini-harness + aa1143/NamiAgent) closed-form FinOps verification
+    const r66PathA=1741.50+558.50+46.0*85.00;
+    assert.equal(r66PathA.toFixed(2),'6210.00','11-11 R21 Path A total');
+    const r66PathC=150*2.25+22.50+6.0*85.00;
+    assert.equal(r66PathC.toFixed(2),'870.00','11-11 R21 Path C total');
+    assert.equal((r66PathA-r66PathC).toFixed(2),'5340.00','11-11 R21 savings vs Path A');
+    assert.equal(((r66PathA-r66PathC)/r66PathA*100).toFixed(2),'85.99','11-11 R21 pct savings vs Path A');
+    for(const r66File of ['workshops/github-trending-radar/docs/namiagent-mini-harness-glassbox-agent-engineering-selection-faq.md','workshops/github-trending-radar/docs/namiagent-mini-harness-glassbox-agent-engineering-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r21-nami-miniharness.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r66File),'utf8');
+      assert.ok(txt.includes('2,300.00')&&txt.includes('3,910.00')&&txt.includes('6,210.00')&&txt.includes('360.00')&&txt.includes('510.00')&&txt.includes('870.00')&&txt.includes('5,340.00')&&txt.includes('85.99%')&&txt.includes('not_measured'),r66File+': contains exact 11-11 R21 mini-harness+namiagent closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
