@@ -1302,6 +1302,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r67File),'utf8');
       assert.ok(txt.includes('1,440.00')&&txt.includes('4,080.00')&&txt.includes('5,520.00')&&txt.includes('200.00')&&txt.includes('552.50')&&txt.includes('752.50')&&txt.includes('4,767.50')&&txt.includes('86.37%')&&txt.includes('not_measured'),r67File+': contains exact 11-11 R22 terminal-mac+claude-cage closed-form parameters');
     }
+    // 2026-11-11 Round 23 (qybaihe/bla + hevnsnt/CVEngine) closed-form FinOps verification
+    const r68PathA=2500*0.85+1200.00+45.0*90.00;
+    assert.equal(r68PathA.toFixed(2),'7375.00','11-11 R23 Path A total');
+    const r68PathC=310.00+7.0*90.00;
+    assert.equal(r68PathC.toFixed(2),'940.00','11-11 R23 Path C total');
+    assert.equal((r68PathA-r68PathC).toFixed(2),'6435.00','11-11 R23 savings vs Path A');
+    assert.equal(((r68PathA-r68PathC)/r68PathA*100).toFixed(2),'87.25','11-11 R23 pct savings vs Path A');
+    for(const r68File of ['workshops/github-trending-radar/docs/bla-cvengine-counter-rea-shield-attack-surface-mcp-selection-faq.md','workshops/github-trending-radar/docs/bla-cvengine-counter-rea-shield-attack-surface-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r23-bla-cvengine.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r68File),'utf8');
+      assert.ok(txt.includes('3,325.00')&&txt.includes('4,050.00')&&txt.includes('7,375.00')&&txt.includes('310.00')&&txt.includes('630.00')&&txt.includes('940.00')&&txt.includes('6,435.00')&&txt.includes('87.25%')&&txt.includes('not_measured'),r68File+': contains exact 11-11 R23 bla+cvengine closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
