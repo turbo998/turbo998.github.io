@@ -1478,6 +1478,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r83File),'utf8');
       assert.ok(txt.includes('2,060.00')&&txt.includes('3,960.00')&&txt.includes('6,020.00')&&txt.includes('410.00')&&txt.includes('450.00')&&txt.includes('860.00')&&txt.includes('5,160.00')&&txt.includes('85.71%')&&txt.includes('not_measured'),r83File+': contains exact 11-11 R38 sophon+agentring closed-form parameters');
     }
+    // 2026-11-11 Round 39 (AetherLabsAI/RobotAgentBench + tuotuoLyu/ForesightSafety-VLA) closed-form FinOps verification
+    const r84PathA=1920.00+48.0*90.00;
+    assert.equal(r84PathA.toFixed(2),'6240.00','11-11 R39 Path A total');
+    const r84PathC=320.00+5.0*90.00;
+    assert.equal(r84PathC.toFixed(2),'770.00','11-11 R39 Path C total');
+    assert.equal((r84PathA-r84PathC).toFixed(2),'5470.00','11-11 R39 savings vs Path A');
+    assert.equal(((r84PathA-r84PathC)/r84PathA*100).toFixed(2),'87.66','11-11 R39 pct savings vs Path A');
+    for(const r84File of ['workshops/github-trending-radar/docs/robotagentbench-foresightsafety-vla-household-autonomy-safety-selection-faq.md','workshops/github-trending-radar/docs/robotagentbench-foresightsafety-vla-household-autonomy-safety-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r39-robotagentbench-foresightsafety.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r84File),'utf8');
+      assert.ok(txt.includes('1,920.00')&&txt.includes('4,320.00')&&txt.includes('6,240.00')&&txt.includes('320.00')&&txt.includes('450.00')&&txt.includes('770.00')&&txt.includes('5,470.00')&&txt.includes('87.66%')&&txt.includes('not_measured'),r84File+': contains exact 11-11 R39 robotagent+foresightvla closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
