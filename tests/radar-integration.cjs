@@ -1643,6 +1643,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r98File),'utf8');
       assert.ok(txt.includes('1,780.00')&&txt.includes('4,050.00')&&txt.includes('5,830.00')&&txt.includes('260.00')&&txt.includes('450.00')&&txt.includes('710.00')&&txt.includes('5,120.00')&&txt.includes('87.82%')&&txt.includes('not_measured'),r98File+': contains exact 11-11 R53 phongent+flashalign closed-form parameters');
     }
+    // 2026-11-11 Round 54 (yorkeccak/globalhackmap + tequed232/DSH-L2D) closed-form FinOps verification
+    const r99PathA=1520.00+44.0*90.00;
+    assert.equal(r99PathA.toFixed(2),'5480.00','11-11 R54 Path A total');
+    const r99PathC=220.00+5.0*90.00;
+    assert.equal(r99PathC.toFixed(2),'670.00','11-11 R54 Path C total');
+    assert.equal((r99PathA-r99PathC).toFixed(2),'4810.00','11-11 R54 savings vs Path A');
+    assert.equal(((r99PathA-r99PathC)/r99PathA*100).toFixed(2),'87.77','11-11 R54 pct savings vs Path A');
+    for(const r99File of ['workshops/github-trending-radar/docs/globalhackmap-dsh-l2d-cve-fix-runbooks-live2d-arbitration-selection-faq.md','workshops/github-trending-radar/docs/globalhackmap-dsh-l2d-cve-fix-runbooks-live2d-arbitration-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r54-globalhackmap-dshl2d.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r99File),'utf8');
+      assert.ok(txt.includes('1,520.00')&&txt.includes('3,960.00')&&txt.includes('5,480.00')&&txt.includes('220.00')&&txt.includes('450.00')&&txt.includes('670.00')&&txt.includes('4,810.00')&&txt.includes('87.77%')&&txt.includes('not_measured'),r99File+': contains exact 11-11 R54 globalhackmap+dshl2d closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
