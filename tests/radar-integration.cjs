@@ -1291,6 +1291,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r66File),'utf8');
       assert.ok(txt.includes('2,300.00')&&txt.includes('3,910.00')&&txt.includes('6,210.00')&&txt.includes('360.00')&&txt.includes('510.00')&&txt.includes('870.00')&&txt.includes('5,340.00')&&txt.includes('85.99%')&&txt.includes('not_measured'),r66File+': contains exact 11-11 R21 mini-harness+namiagent closed-form parameters');
     }
+    // 2026-11-11 Round 22 (govijr/terminal-mac + Lee-xeo/Claude-Cage) closed-form FinOps verification
+    const r67PathA=8*180.00+48.0*85.00;
+    assert.equal(r67PathA.toFixed(2),'5520.00','11-11 R22 Path A total');
+    const r67PathC=800*0.25+6.5*85.00;
+    assert.equal(r67PathC.toFixed(2),'752.50','11-11 R22 Path C total');
+    assert.equal((r67PathA-r67PathC).toFixed(2),'4767.50','11-11 R22 savings vs Path A');
+    assert.equal(((r67PathA-r67PathC)/r67PathA*100).toFixed(2),'86.37','11-11 R22 pct savings vs Path A');
+    for(const r67File of ['workshops/github-trending-radar/docs/terminal-mac-claude-cage-computer-use-vm-isolation-selection-faq.md','workshops/github-trending-radar/docs/terminal-mac-claude-cage-computer-use-vm-isolation-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r22-claudecage-terminalmac.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r67File),'utf8');
+      assert.ok(txt.includes('1,440.00')&&txt.includes('4,080.00')&&txt.includes('5,520.00')&&txt.includes('200.00')&&txt.includes('552.50')&&txt.includes('752.50')&&txt.includes('4,767.50')&&txt.includes('86.37%')&&txt.includes('not_measured'),r67File+': contains exact 11-11 R22 terminal-mac+claude-cage closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
