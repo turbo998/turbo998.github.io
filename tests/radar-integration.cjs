@@ -1533,6 +1533,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r88File),'utf8');
       assert.ok(txt.includes('1,680.00')&&txt.includes('4,050.00')&&txt.includes('5,730.00')&&txt.includes('250.00')&&txt.includes('450.00')&&txt.includes('700.00')&&txt.includes('5,030.00')&&txt.includes('87.78%')&&txt.includes('not_measured'),r88File+': contains exact 11-11 R43 devvm+wrapvm closed-form parameters');
     }
+    // 2026-11-11 Round 44 (phuryn/product-engineering + Juneo-Lab/decision-forge) closed-form FinOps verification
+    const r89PathA=1760.00+48.0*90.00;
+    assert.equal(r89PathA.toFixed(2),'6080.00','11-11 R44 Path A total');
+    const r89PathC=260.00+5.0*90.00;
+    assert.equal(r89PathC.toFixed(2),'710.00','11-11 R44 Path C total');
+    assert.equal((r89PathA-r89PathC).toFixed(2),'5370.00','11-11 R44 savings vs Path A');
+    assert.equal(((r89PathA-r89PathC)/r89PathA*100).toFixed(2),'88.32','11-11 R44 pct savings vs Path A');
+    for(const r89File of ['workshops/github-trending-radar/docs/product-engineering-decision-forge-44-skills-policy-compiler-selection-faq.md','workshops/github-trending-radar/docs/product-engineering-decision-forge-44-skills-policy-compiler-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r44-producteng-decisionforge.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r89File),'utf8');
+      assert.ok(txt.includes('1,760.00')&&txt.includes('4,320.00')&&txt.includes('6,080.00')&&txt.includes('260.00')&&txt.includes('450.00')&&txt.includes('710.00')&&txt.includes('5,370.00')&&txt.includes('88.32%')&&txt.includes('not_measured'),r89File+': contains exact 11-11 R44 producteng+decisionforge closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
