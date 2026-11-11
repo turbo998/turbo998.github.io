@@ -1181,6 +1181,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r56File),'utf8');
       assert.ok(txt.includes('2,250.00')&&txt.includes('1,650.00')&&txt.includes('4,580.00')&&txt.includes('375.00')&&txt.includes('225.00')&&txt.includes('645.00')&&txt.includes('3,935.00')&&txt.includes('85.92%')&&txt.includes('not_measured'),r56File+': contains exact 11-11 R11 auto-ontology-mcp+download-anything closed-form parameters');
     }
+    // 2026-11-11 Round 12 (designfuchen/worldforge + CXP-2024/gpt-anime-denoise) closed-form FinOps verification
+    const r57PathA=520.00+36.0*70.00+30.0*70.00;
+    assert.equal(r57PathA.toFixed(2),'5140.00','11-11 R12 Path A total');
+    const r57PathC=80.00+6.0*70.00+4.0*70.00;
+    assert.equal(r57PathC.toFixed(2),'780.00','11-11 R12 Path C total');
+    assert.equal((r57PathA-r57PathC).toFixed(2),'4360.00','11-11 R12 savings vs Path A');
+    assert.equal(((r57PathA-r57PathC)/r57PathA*100).toFixed(2),'84.82','11-11 R12 pct savings vs Path A');
+    for(const r57File of ['workshops/github-trending-radar/docs/worldforge-gpt-anime-denoise-selection-faq.md','workshops/github-trending-radar/docs/worldforge-gpt-anime-denoise-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r12-worldforge-denoise.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r57File),'utf8');
+      assert.ok(txt.includes('2,520.00')&&txt.includes('2,100.00')&&txt.includes('5,140.00')&&txt.includes('420.00')&&txt.includes('280.00')&&txt.includes('780.00')&&txt.includes('4,360.00')&&txt.includes('84.82%')&&txt.includes('not_measured'),r57File+': contains exact 11-11 R12 worldforge+gpt-anime-denoise closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
