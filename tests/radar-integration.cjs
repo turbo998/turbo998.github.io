@@ -1412,6 +1412,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r77File),'utf8');
       assert.ok(txt.includes('1,840.00')&&txt.includes('4,080.00')&&txt.includes('5,920.00')&&txt.includes('270.00')&&txt.includes('510.00')&&txt.includes('780.00')&&txt.includes('5,140.00')&&txt.includes('86.82%')&&txt.includes('not_measured'),r77File+': contains exact 11-11 R32 partspilot+mem-forge closed-form parameters');
     }
+    // 2026-11-11 Round 33 (saksham10arora-dotcom/everything-claude-codex + liangjianshu/multimodal-image-retrieval) closed-form FinOps verification
+    const r78PathA=1720.00+46.0*85.00;
+    assert.equal(r78PathA.toFixed(2),'5630.00','11-11 R33 Path A total');
+    const r78PathC=250.00+5.0*85.00;
+    assert.equal(r78PathC.toFixed(2),'675.00','11-11 R33 Path C total');
+    assert.equal((r78PathA-r78PathC).toFixed(2),'4955.00','11-11 R33 savings vs Path A');
+    assert.equal(((r78PathA-r78PathC)/r78PathA*100).toFixed(2),'88.01','11-11 R33 pct savings vs Path A');
+    for(const r78File of ['workshops/github-trending-radar/docs/everything-claude-codex-multimodal-retrieval-infonce-selection-faq.md','workshops/github-trending-radar/docs/everything-claude-codex-multimodal-retrieval-infonce-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r33-ecx-multimodal.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r78File),'utf8');
+      assert.ok(txt.includes('1,720.00')&&txt.includes('3,910.00')&&txt.includes('5,630.00')&&txt.includes('250.00')&&txt.includes('425.00')&&txt.includes('675.00')&&txt.includes('4,955.00')&&txt.includes('88.01%')&&txt.includes('not_measured'),r78File+': contains exact 11-11 R33 ecx+multimodal closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
