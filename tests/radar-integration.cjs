@@ -1434,6 +1434,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r79File),'utf8');
       assert.ok(txt.includes('1,650.00')&&txt.includes('4,320.00')&&txt.includes('5,970.00')&&txt.includes('310.00')&&txt.includes('540.00')&&txt.includes('850.00')&&txt.includes('5,120.00')&&txt.includes('85.76%')&&txt.includes('not_measured'),r79File+': contains exact 11-11 R34 tstack+beautifulrust closed-form parameters');
     }
+    // 2026-11-11 Round 35 (Motionsites-AI/claude-skill + daveebbelaar/bama) closed-form FinOps verification
+    const r80PathA=1680.00+48.0*90.00;
+    assert.equal(r80PathA.toFixed(2),'6000.00','11-11 R35 Path A total');
+    const r80PathC=280.00+6.0*90.00;
+    assert.equal(r80PathC.toFixed(2),'820.00','11-11 R35 Path C total');
+    assert.equal((r80PathA-r80PathC).toFixed(2),'5180.00','11-11 R35 savings vs Path A');
+    assert.equal(((r80PathA-r80PathC)/r80PathA*100).toFixed(2),'86.33','11-11 R35 pct savings vs Path A');
+    for(const r80File of ['workshops/github-trending-radar/docs/motionsites-bama-cinematic-web-native-mac-app-skills-selection-faq.md','workshops/github-trending-radar/docs/motionsites-bama-cinematic-web-native-mac-app-skills-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r35-motionsites-bama.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r80File),'utf8');
+      assert.ok(txt.includes('1,680.00')&&txt.includes('4,320.00')&&txt.includes('6,000.00')&&txt.includes('280.00')&&txt.includes('540.00')&&txt.includes('820.00')&&txt.includes('5,180.00')&&txt.includes('86.33%')&&txt.includes('not_measured'),r80File+': contains exact 11-11 R35 motionsites+bama closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
