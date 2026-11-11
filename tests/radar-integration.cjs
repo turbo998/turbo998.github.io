@@ -1067,6 +1067,21 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r46File),'utf8');
       assert.ok(txt.includes('345.60')&&txt.includes('162.00')&&txt.includes('43.20')&&txt.includes('10.80')&&txt.includes('54.00')&&txt.includes('291.60')&&txt.includes('84.38%')&&txt.includes('not_measured'),r46File+': contains exact 11-11 R1 closed-form parameters');
     }
+    // 2026-11-11 Round 2 (openai/codex-security npm-v0.9.1) closed-form FinOps verification
+    const r47PathA=60.0*75.00+30.0*75.00;
+    assert.equal(r47PathA.toFixed(2),'6750.00','11-11 R2 Path A total');
+    const r47ApiC=400*0.18+20*4.50+300*0.12;
+    const r47LabC=10.0*75.00;
+    const r47PathC=r47ApiC+r47LabC;
+    assert.equal(r47ApiC.toFixed(2),'198.00','11-11 R2 Path C API');
+    assert.equal(r47LabC.toFixed(2),'750.00','11-11 R2 Path C labor');
+    assert.equal(r47PathC.toFixed(2),'948.00','11-11 R2 Path C total');
+    assert.equal((r47PathA-r47PathC).toFixed(2),'5802.00','11-11 R2 savings vs Path A');
+    assert.equal(((r47PathA-r47PathC)/r47PathA*100).toFixed(2),'85.96','11-11 R2 pct savings vs Path A');
+    for(const r47File of ['workshops/github-trending-radar/docs/codex-security-vs-audit-skill-sast-selection-faq.md','workshops/github-trending-radar/docs/codex-security-vs-audit-skill-sast-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r2-codex-security.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r47File),'utf8');
+      assert.ok(txt.includes('6,750.00')&&txt.includes('3,480.00')&&txt.includes('198.00')&&txt.includes('750.00')&&txt.includes('948.00')&&txt.includes('5,802.00')&&txt.includes('85.96%')&&txt.includes('not_measured'),r47File+': contains exact 11-11 R2 codex-security closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
