@@ -1313,6 +1313,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r68File),'utf8');
       assert.ok(txt.includes('3,325.00')&&txt.includes('4,050.00')&&txt.includes('7,375.00')&&txt.includes('310.00')&&txt.includes('630.00')&&txt.includes('940.00')&&txt.includes('6,435.00')&&txt.includes('87.25%')&&txt.includes('not_measured'),r68File+': contains exact 11-11 R23 bla+cvengine closed-form parameters');
     }
+    // 2026-11-11 Round 24 (emanuele-em/kanzo + yjid/kensaku) closed-form FinOps verification
+    const r69PathA=4000*0.36+240.00+42.0*85.00;
+    assert.equal(r69PathA.toFixed(2),'5250.00','11-11 R24 Path A total');
+    const r69PathC=4000*0.035+5.0*85.00;
+    assert.equal(r69PathC.toFixed(2),'565.00','11-11 R24 Path C total');
+    assert.equal((r69PathA-r69PathC).toFixed(2),'4685.00','11-11 R24 savings vs Path A');
+    assert.equal(((r69PathA-r69PathC)/r69PathA*100).toFixed(2),'89.24','11-11 R24 pct savings vs Path A');
+    for(const r69File of ['workshops/github-trending-radar/docs/kanzo-kensaku-rust-agent-kanban-local-ocr-search-mcp-selection-faq.md','workshops/github-trending-radar/docs/kanzo-kensaku-rust-agent-kanban-local-ocr-search-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r24-kanzo-kensaku.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r69File),'utf8');
+      assert.ok(txt.includes('1,680.00')&&txt.includes('3,570.00')&&txt.includes('5,250.00')&&txt.includes('140.00')&&txt.includes('425.00')&&txt.includes('565.00')&&txt.includes('4,685.00')&&txt.includes('89.24%')&&txt.includes('not_measured'),r69File+': contains exact 11-11 R24 kanzo+kensaku closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
