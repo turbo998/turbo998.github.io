@@ -1368,6 +1368,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r73File),'utf8');
       assert.ok(txt.includes('2,200.00')&&txt.includes('4,420.00')&&txt.includes('6,620.00')&&txt.includes('460.00')&&txt.includes('510.00')&&txt.includes('970.00')&&txt.includes('5,650.00')&&txt.includes('85.35%')&&txt.includes('not_measured'),r73File+': contains exact 11-11 R28 openduet+digital-human-koubo closed-form parameters');
     }
+    // 2026-11-11 Round 29 (yzlin286-wq/Deepscient + islandmed/SculptForge) closed-form FinOps verification
+    const r74PathA=18*45.00+1390.00+48.0*85.00;
+    assert.equal(r74PathA.toFixed(2),'6280.00','11-11 R29 Path A total');
+    const r74PathC=340.00+6.0*85.00;
+    assert.equal(r74PathC.toFixed(2),'850.00','11-11 R29 Path C total');
+    assert.equal((r74PathA-r74PathC).toFixed(2),'5430.00','11-11 R29 savings vs Path A');
+    assert.equal(((r74PathA-r74PathC)/r74PathA*100).toFixed(2),'86.46','11-11 R29 pct savings vs Path A');
+    for(const r74File of ['workshops/github-trending-radar/docs/deepscient-sculptforge-scientific-workbench-3d-sculpt-mcp-selection-faq.md','workshops/github-trending-radar/docs/deepscient-sculptforge-scientific-workbench-3d-sculpt-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r29-deepscient-sculptforge.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r74File),'utf8');
+      assert.ok(txt.includes('2,200.00')&&txt.includes('4,080.00')&&txt.includes('6,280.00')&&txt.includes('340.00')&&txt.includes('510.00')&&txt.includes('850.00')&&txt.includes('5,430.00')&&txt.includes('86.46%')&&txt.includes('not_measured'),r74File+': contains exact 11-11 R29 deepscient+sculptforge closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
