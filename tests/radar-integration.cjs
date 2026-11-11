@@ -1401,6 +1401,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r76File),'utf8');
       assert.ok(txt.includes('1,640.00')&&txt.includes('3,840.00')&&txt.includes('5,480.00')&&txt.includes('260.00')&&txt.includes('480.00')&&txt.includes('740.00')&&txt.includes('4,740.00')&&txt.includes('86.50%')&&txt.includes('not_measured'),r76File+': contains exact 11-11 R31 vvv+muse4ai closed-form parameters');
     }
+    // 2026-11-11 Round 32 (Luciferutts/partspilot + dodo-labs-ai/mem-forge) closed-form FinOps verification
+    const r77PathA=1840.00+48.0*85.00;
+    assert.equal(r77PathA.toFixed(2),'5920.00','11-11 R32 Path A total');
+    const r77PathC=270.00+6.0*85.00;
+    assert.equal(r77PathC.toFixed(2),'780.00','11-11 R32 Path C total');
+    assert.equal((r77PathA-r77PathC).toFixed(2),'5140.00','11-11 R32 savings vs Path A');
+    assert.equal(((r77PathA-r77PathC)/r77PathA*100).toFixed(2),'86.82','11-11 R32 pct savings vs Path A');
+    for(const r77File of ['workshops/github-trending-radar/docs/partspilot-mem-forge-b2b-evidence-workbench-team-memory-selection-faq.md','workshops/github-trending-radar/docs/partspilot-mem-forge-b2b-evidence-workbench-team-memory-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r32-partspilot-memforge.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r77File),'utf8');
+      assert.ok(txt.includes('1,840.00')&&txt.includes('4,080.00')&&txt.includes('5,920.00')&&txt.includes('270.00')&&txt.includes('510.00')&&txt.includes('780.00')&&txt.includes('5,140.00')&&txt.includes('86.82%')&&txt.includes('not_measured'),r77File+': contains exact 11-11 R32 partspilot+mem-forge closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
