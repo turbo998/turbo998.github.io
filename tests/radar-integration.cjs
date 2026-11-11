@@ -1423,6 +1423,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r78File),'utf8');
       assert.ok(txt.includes('1,720.00')&&txt.includes('3,910.00')&&txt.includes('5,630.00')&&txt.includes('250.00')&&txt.includes('425.00')&&txt.includes('675.00')&&txt.includes('4,955.00')&&txt.includes('88.01%')&&txt.includes('not_measured'),r78File+': contains exact 11-11 R33 ecx+multimodal closed-form parameters');
     }
+    // 2026-11-11 Round 34 (t3dotgg/tstack + morganlinton/BeautifulRust) closed-form FinOps verification
+    const r79PathA=1650.00+48.0*90.00;
+    assert.equal(r79PathA.toFixed(2),'5970.00','11-11 R34 Path A total');
+    const r79PathC=310.00+6.0*90.00;
+    assert.equal(r79PathC.toFixed(2),'850.00','11-11 R34 Path C total');
+    assert.equal((r79PathA-r79PathC).toFixed(2),'5120.00','11-11 R34 savings vs Path A');
+    assert.equal(((r79PathA-r79PathC)/r79PathA*100).toFixed(2),'85.76','11-11 R34 pct savings vs Path A');
+    for(const r79File of ['workshops/github-trending-radar/docs/tstack-beautifulrust-pr-lifecycle-idiomatic-rust-skills-selection-faq.md','workshops/github-trending-radar/docs/tstack-beautifulrust-pr-lifecycle-idiomatic-rust-skills-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r34-tstack-beautifulrust.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r79File),'utf8');
+      assert.ok(txt.includes('1,650.00')&&txt.includes('4,320.00')&&txt.includes('5,970.00')&&txt.includes('310.00')&&txt.includes('540.00')&&txt.includes('850.00')&&txt.includes('5,120.00')&&txt.includes('85.76%')&&txt.includes('not_measured'),r79File+': contains exact 11-11 R34 tstack+beautifulrust closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
