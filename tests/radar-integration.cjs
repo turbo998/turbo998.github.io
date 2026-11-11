@@ -1236,6 +1236,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r61File),'utf8');
       assert.ok(txt.includes('2,400.00')&&txt.includes('3,300.00')&&txt.includes('5,700.00')&&txt.includes('264.00')&&txt.includes('525.00')&&txt.includes('789.00')&&txt.includes('4,911.00')&&txt.includes('86.16%')&&txt.includes('not_measured'),r61File+': contains exact 11-11 R16 hyperflow+continuity-studio closed-form parameters');
     }
+    // 2026-11-11 Round 17 (Moh4696/cinematic-skill + abouchedidxcode/open-source-hands) closed-form FinOps verification
+    const r62PathA=320*2.50+62.0*80.00;
+    assert.equal(r62PathA.toFixed(2),'5760.00','11-11 R17 Path A total');
+    const r62PathC=24*2.50+9.5*80.00;
+    assert.equal(r62PathC.toFixed(2),'820.00','11-11 R17 Path C total');
+    assert.equal((r62PathA-r62PathC).toFixed(2),'4940.00','11-11 R17 savings vs Path A');
+    assert.equal(((r62PathA-r62PathC)/r62PathA*100).toFixed(2),'85.76','11-11 R17 pct savings vs Path A');
+    for(const r62File of ['workshops/github-trending-radar/docs/cinematic-skill-open-source-hands-code-film-gesture-selection-faq.md','workshops/github-trending-radar/docs/cinematic-skill-open-source-hands-code-film-gesture-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r17-cinematic-hands.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r62File),'utf8');
+      assert.ok(txt.includes('800.00')&&txt.includes('4,960.00')&&txt.includes('5,760.00')&&txt.includes('60.00')&&txt.includes('760.00')&&txt.includes('820.00')&&txt.includes('4,940.00')&&txt.includes('85.76%')&&txt.includes('not_measured'),r62File+': contains exact 11-11 R17 cinematic-skill+open-source-hands closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
