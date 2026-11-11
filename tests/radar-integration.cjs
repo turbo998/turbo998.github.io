@@ -1379,6 +1379,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r74File),'utf8');
       assert.ok(txt.includes('2,200.00')&&txt.includes('4,080.00')&&txt.includes('6,280.00')&&txt.includes('340.00')&&txt.includes('510.00')&&txt.includes('850.00')&&txt.includes('5,430.00')&&txt.includes('86.46%')&&txt.includes('not_measured'),r74File+': contains exact 11-11 R29 deepscient+sculptforge closed-form parameters');
     }
+    // 2026-11-11 Round 30 (jackwener/DSH-Android + anonnerdfrenzy/survival-llm) closed-form FinOps verification
+    const r75PathA=1620.00+48.0*85.00;
+    assert.equal(r75PathA.toFixed(2),'5700.00','11-11 R30 Path A total');
+    const r75PathC=5000*0.048+5.0*85.00;
+    assert.equal(r75PathC.toFixed(2),'665.00','11-11 R30 Path C total');
+    assert.equal((r75PathA-r75PathC).toFixed(2),'5035.00','11-11 R30 savings vs Path A');
+    assert.equal(((r75PathA-r75PathC)/r75PathA*100).toFixed(2),'88.33','11-11 R30 pct savings vs Path A');
+    for(const r75File of ['workshops/github-trending-radar/docs/dsh-android-survival-llm-on-device-agent-offline-rag-selection-faq.md','workshops/github-trending-radar/docs/dsh-android-survival-llm-on-device-agent-offline-rag-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r30-dshandroid-survivalllm.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r75File),'utf8');
+      assert.ok(txt.includes('1,620.00')&&txt.includes('4,080.00')&&txt.includes('5,700.00')&&txt.includes('240.00')&&txt.includes('425.00')&&txt.includes('665.00')&&txt.includes('5,035.00')&&txt.includes('88.33%')&&txt.includes('not_measured'),r75File+': contains exact 11-11 R30 dsh-android+survival-llm closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
