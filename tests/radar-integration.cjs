@@ -1588,6 +1588,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r93File),'utf8');
       assert.ok(txt.includes('1,480.00')&&txt.includes('3,960.00')&&txt.includes('5,440.00')&&txt.includes('210.00')&&txt.includes('450.00')&&txt.includes('660.00')&&txt.includes('4,780.00')&&txt.includes('87.87%')&&txt.includes('not_measured'),r93File+': contains exact 11-11 R48 medpaper+agenterodsh closed-form parameters');
     }
+    // 2026-11-11 Round 49 (RikiyaT/lm_understand-logs + divagr18/QwenPU) closed-form FinOps verification
+    const r94PathA=1960.00+46.0*90.00;
+    assert.equal(r94PathA.toFixed(2),'6100.00','11-11 R49 Path A total');
+    const r94PathC=290.00+5.0*90.00;
+    assert.equal(r94PathC.toFixed(2),'740.00','11-11 R49 Path C total');
+    assert.equal((r94PathA-r94PathC).toFixed(2),'5360.00','11-11 R49 savings vs Path A');
+    assert.equal(((r94PathA-r94PathC)/r94PathA*100).toFixed(2),'87.87','11-11 R49 pct savings vs Path A');
+    for(const r94File of ['workshops/github-trending-radar/docs/lm-understand-logs-qwenpu-weight-space-programming-in-weights-npu-selection-faq.md','workshops/github-trending-radar/docs/lm-understand-logs-qwenpu-weight-space-programming-in-weights-npu-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r49-weightspace-qwenpu.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r94File),'utf8');
+      assert.ok(txt.includes('1,960.00')&&txt.includes('4,140.00')&&txt.includes('6,100.00')&&txt.includes('290.00')&&txt.includes('450.00')&&txt.includes('740.00')&&txt.includes('5,360.00')&&txt.includes('87.87%')&&txt.includes('not_measured'),r94File+': contains exact 11-11 R49 weightspace+qwenpu closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
