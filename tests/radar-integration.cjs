@@ -1511,6 +1511,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r86File),'utf8');
       assert.ok(txt.includes('1,840.00')&&txt.includes('4,500.00')&&txt.includes('6,340.00')&&txt.includes('270.00')&&txt.includes('450.00')&&txt.includes('720.00')&&txt.includes('5,620.00')&&txt.includes('88.64%')&&txt.includes('not_measured'),r86File+': contains exact 11-11 R41 autotavern+ytmotion closed-form parameters');
     }
+    // 2026-11-11 Round 42 (lxe/phoneuse + swipt-automation/swipt) closed-form FinOps verification
+    const r87PathA=1540.00+44.0*90.00;
+    assert.equal(r87PathA.toFixed(2),'5500.00','11-11 R42 Path A total');
+    const r87PathC=220.00+5.0*90.00;
+    assert.equal(r87PathC.toFixed(2),'670.00','11-11 R42 Path C total');
+    assert.equal((r87PathA-r87PathC).toFixed(2),'4830.00','11-11 R42 savings vs Path A');
+    assert.equal(((r87PathA-r87PathC)/r87PathA*100).toFixed(2),'87.82','11-11 R42 pct savings vs Path A');
+    for(const r87File of ['workshops/github-trending-radar/docs/phoneuse-swipt-airplay-bluetooth-hid-coredevice-ios-agent-selection-faq.md','workshops/github-trending-radar/docs/phoneuse-swipt-airplay-bluetooth-hid-coredevice-ios-agent-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r42-phoneuse-swipt.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r87File),'utf8');
+      assert.ok(txt.includes('1,540.00')&&txt.includes('3,960.00')&&txt.includes('5,500.00')&&txt.includes('220.00')&&txt.includes('450.00')&&txt.includes('670.00')&&txt.includes('4,830.00')&&txt.includes('87.82%')&&txt.includes('not_measured'),r87File+': contains exact 11-11 R42 phoneuse+swipt closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
