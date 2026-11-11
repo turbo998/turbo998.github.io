@@ -1467,6 +1467,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r82File),'utf8');
       assert.ok(txt.includes('1,540.00')&&txt.includes('4,140.00')&&txt.includes('5,680.00')&&txt.includes('250.00')&&txt.includes('450.00')&&txt.includes('700.00')&&txt.includes('4,980.00')&&txt.includes('87.68%')&&txt.includes('not_measured'),r82File+': contains exact 11-11 R37 websitebench+vissearch closed-form parameters');
     }
+    // 2026-11-11 Round 38 (adventists-ai/sophon-realtime + mutonby/agentring) closed-form FinOps verification
+    const r83PathA=2060.00+44.0*90.00;
+    assert.equal(r83PathA.toFixed(2),'6020.00','11-11 R38 Path A total');
+    const r83PathC=410.00+5.0*90.00;
+    assert.equal(r83PathC.toFixed(2),'860.00','11-11 R38 Path C total');
+    assert.equal((r83PathA-r83PathC).toFixed(2),'5160.00','11-11 R38 savings vs Path A');
+    assert.equal(((r83PathA-r83PathC)/r83PathA*100).toFixed(2),'85.71','11-11 R38 pct savings vs Path A');
+    for(const r83File of ['workshops/github-trending-radar/docs/sophon-realtime-agentring-full-duplex-voice-voip-mcp-selection-faq.md','workshops/github-trending-radar/docs/sophon-realtime-agentring-full-duplex-voice-voip-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r38-sophon-agentring.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r83File),'utf8');
+      assert.ok(txt.includes('2,060.00')&&txt.includes('3,960.00')&&txt.includes('6,020.00')&&txt.includes('410.00')&&txt.includes('450.00')&&txt.includes('860.00')&&txt.includes('5,160.00')&&txt.includes('85.71%')&&txt.includes('not_measured'),r83File+': contains exact 11-11 R38 sophon+agentring closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
