@@ -1566,6 +1566,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r91File),'utf8');
       assert.ok(txt.includes('1,640.00')&&txt.includes('4,050.00')&&txt.includes('5,690.00')&&txt.includes('240.00')&&txt.includes('450.00')&&txt.includes('690.00')&&txt.includes('5,000.00')&&txt.includes('87.87%')&&txt.includes('not_measured'),r91File+': contains exact 11-11 R46 graphmemory+ztdcharts closed-form parameters');
     }
+    // 2026-11-11 Round 47 (apekshik/anyscene + majorminorlabs/hermes-voice) closed-form FinOps verification
+    const r92PathA=1740.00+48.0*90.00;
+    assert.equal(r92PathA.toFixed(2),'6060.00','11-11 R47 Path A total');
+    const r92PathC=340.00+5.0*90.00;
+    assert.equal(r92PathC.toFixed(2),'790.00','11-11 R47 Path C total');
+    assert.equal((r92PathA-r92PathC).toFixed(2),'5270.00','11-11 R47 savings vs Path A');
+    assert.equal(((r92PathA-r92PathC)/r92PathA*100).toFixed(2),'86.96','11-11 R47 pct savings vs Path A');
+    for(const r92File of ['workshops/github-trending-radar/docs/anyscene-hermes-voice-blender-3d-scene-echo-show-agent-selection-faq.md','workshops/github-trending-radar/docs/anyscene-hermes-voice-blender-3d-scene-echo-show-agent-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r47-anyscene-hermesvoice.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r92File),'utf8');
+      assert.ok(txt.includes('1,740.00')&&txt.includes('4,320.00')&&txt.includes('6,060.00')&&txt.includes('340.00')&&txt.includes('450.00')&&txt.includes('790.00')&&txt.includes('5,270.00')&&txt.includes('86.96%')&&txt.includes('not_measured'),r92File+': contains exact 11-11 R47 anyscene+hermesvoice closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
