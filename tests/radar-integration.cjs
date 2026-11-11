@@ -1269,6 +1269,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r64File),'utf8');
       assert.ok(txt.includes('2,300.00')&&txt.includes('4,080.00')&&txt.includes('6,380.00')&&txt.includes('690.00')&&txt.includes('510.00')&&txt.includes('1,200.00')&&txt.includes('5,180.00')&&txt.includes('81.19%')&&txt.includes('not_measured'),r64File+': contains exact 11-11 R19 cheap-ag+claude-work-mode closed-form parameters');
     }
+    // 2026-11-11 Round 20 (Balanov/shim + sksarvesh007/antiglaude) closed-form FinOps verification
+    const r65PathA=3000*0.52+44.0*85.00;
+    assert.equal(r65PathA.toFixed(2),'5300.00','11-11 R20 Path A total');
+    const r65PathC=3000*0.14+5.0*85.00;
+    assert.equal(r65PathC.toFixed(2),'845.00','11-11 R20 Path C total');
+    assert.equal((r65PathA-r65PathC).toFixed(2),'4455.00','11-11 R20 savings vs Path A');
+    assert.equal(((r65PathA-r65PathC)/r65PathA*100).toFixed(2),'84.06','11-11 R20 pct savings vs Path A');
+    for(const r65File of ['workshops/github-trending-radar/docs/shim-antiglaude-zero-dep-harness-protocol-gateway-selection-faq.md','workshops/github-trending-radar/docs/shim-antiglaude-zero-dep-harness-protocol-gateway-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r20-shim-antiglaude.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r65File),'utf8');
+      assert.ok(txt.includes('1,560.00')&&txt.includes('3,740.00')&&txt.includes('5,300.00')&&txt.includes('420.00')&&txt.includes('425.00')&&txt.includes('845.00')&&txt.includes('4,455.00')&&txt.includes('84.06%')&&txt.includes('not_measured'),r65File+': contains exact 11-11 R20 shim+antiglaude closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
