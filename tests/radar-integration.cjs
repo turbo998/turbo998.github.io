@@ -1346,6 +1346,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r71File),'utf8');
       assert.ok(txt.includes('1,920.00')&&txt.includes('3,910.00')&&txt.includes('5,830.00')&&txt.includes('340.00')&&txt.includes('510.00')&&txt.includes('850.00')&&txt.includes('4,980.00')&&txt.includes('85.42%')&&txt.includes('not_measured'),r71File+': contains exact 11-11 R26 issue-rag+ontosmith closed-form parameters');
     }
+    // 2026-11-11 Round 27 (SAOS-3624/dsh-see-now + anomalyco/browse) closed-form FinOps verification
+    const r72PathA=2450.00+46.0*85.00;
+    assert.equal(r72PathA.toFixed(2),'6360.00','11-11 R27 Path A total');
+    const r72PathC=290.00+6.0*85.00;
+    assert.equal(r72PathC.toFixed(2),'800.00','11-11 R27 Path C total');
+    assert.equal((r72PathA-r72PathC).toFixed(2),'5560.00','11-11 R27 savings vs Path A');
+    assert.equal(((r72PathA-r72PathC)/r72PathA*100).toFixed(2),'87.42','11-11 R27 pct savings vs Path A');
+    for(const r72File of ['workshops/github-trending-radar/docs/dsh-see-now-anomaly-browse-screen-vision-browser-mcp-selection-faq.md','workshops/github-trending-radar/docs/dsh-see-now-anomaly-browse-screen-vision-browser-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r27-dshseenow-browse.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r72File),'utf8');
+      assert.ok(txt.includes('2,450.00')&&txt.includes('3,910.00')&&txt.includes('6,360.00')&&txt.includes('290.00')&&txt.includes('510.00')&&txt.includes('800.00')&&txt.includes('5,560.00')&&txt.includes('87.42%')&&txt.includes('not_measured'),r72File+': contains exact 11-11 R27 dsh-see-now+anomaly-browse closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
