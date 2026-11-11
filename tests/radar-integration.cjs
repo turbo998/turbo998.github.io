@@ -1445,6 +1445,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r80File),'utf8');
       assert.ok(txt.includes('1,680.00')&&txt.includes('4,320.00')&&txt.includes('6,000.00')&&txt.includes('280.00')&&txt.includes('540.00')&&txt.includes('820.00')&&txt.includes('5,180.00')&&txt.includes('86.33%')&&txt.includes('not_measured'),r80File+': contains exact 11-11 R35 motionsites+bama closed-form parameters');
     }
+    // 2026-11-11 Round 36 (Interactive-Active-AI/NextTransformer + zzp1221/Research-Assistant-Agent) closed-form FinOps verification
+    const r81PathA=2350.00+52.0*90.00;
+    assert.equal(r81PathA.toFixed(2),'7030.00','11-11 R36 Path A total');
+    const r81PathC=380.00+6.0*90.00;
+    assert.equal(r81PathC.toFixed(2),'920.00','11-11 R36 Path C total');
+    assert.equal((r81PathA-r81PathC).toFixed(2),'6110.00','11-11 R36 savings vs Path A');
+    assert.equal(((r81PathA-r81PathC)/r81PathA*100).toFixed(2),'86.91','11-11 R36 pct savings vs Path A');
+    for(const r81File of ['workshops/github-trending-radar/docs/nexttransformer-research-assistant-agent-compute-matched-autoresearch-selection-faq.md','workshops/github-trending-radar/docs/nexttransformer-research-assistant-agent-compute-matched-autoresearch-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r36-nexttransformer-research-agent.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r81File),'utf8');
+      assert.ok(txt.includes('2,350.00')&&txt.includes('4,680.00')&&txt.includes('7,030.00')&&txt.includes('380.00')&&txt.includes('540.00')&&txt.includes('920.00')&&txt.includes('6,110.00')&&txt.includes('86.91%')&&txt.includes('not_measured'),r81File+': contains exact 11-11 R36 nexttransformer+researchagent closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
