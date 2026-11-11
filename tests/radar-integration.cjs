@@ -1335,6 +1335,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r70File),'utf8');
       assert.ok(txt.includes('2,160.00')&&txt.includes('3,740.00')&&txt.includes('5,900.00')&&txt.includes('480.00')&&txt.includes('510.00')&&txt.includes('990.00')&&txt.includes('4,910.00')&&txt.includes('83.22%')&&txt.includes('not_measured'),r70File+': contains exact 11-11 R25 motty+phone-harness closed-form parameters');
     }
+    // 2026-11-11 Round 26 (zaxiu88888/issue-rag + Dongbumlee/ontosmith) closed-form FinOps verification
+    const r71PathA=1920.00+46.0*85.00;
+    assert.equal(r71PathA.toFixed(2),'5830.00','11-11 R26 Path A total');
+    const r71PathC=340.00+6.0*85.00;
+    assert.equal(r71PathC.toFixed(2),'850.00','11-11 R26 Path C total');
+    assert.equal((r71PathA-r71PathC).toFixed(2),'4980.00','11-11 R26 savings vs Path A');
+    assert.equal(((r71PathA-r71PathC)/r71PathA*100).toFixed(2),'85.42','11-11 R26 pct savings vs Path A');
+    for(const r71File of ['workshops/github-trending-radar/docs/issue-rag-ontosmith-judge-audited-rag-governed-kg-selection-faq.md','workshops/github-trending-radar/docs/issue-rag-ontosmith-judge-audited-rag-governed-kg-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r26-issuerag-ontosmith.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r71File),'utf8');
+      assert.ok(txt.includes('1,920.00')&&txt.includes('3,910.00')&&txt.includes('5,830.00')&&txt.includes('340.00')&&txt.includes('510.00')&&txt.includes('850.00')&&txt.includes('4,980.00')&&txt.includes('85.42%')&&txt.includes('not_measured'),r71File+': contains exact 11-11 R26 issue-rag+ontosmith closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
