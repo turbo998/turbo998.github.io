@@ -1247,6 +1247,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r62File),'utf8');
       assert.ok(txt.includes('800.00')&&txt.includes('4,960.00')&&txt.includes('5,760.00')&&txt.includes('60.00')&&txt.includes('760.00')&&txt.includes('820.00')&&txt.includes('4,940.00')&&txt.includes('85.76%')&&txt.includes('not_measured'),r62File+': contains exact 11-11 R17 cinematic-skill+open-source-hands closed-form parameters');
     }
+    // 2026-11-11 Round 18 (eduwxyz/tucano + mdiri-ai/SoduWork) closed-form FinOps verification
+    const r63PathA=1200*1.45+52.0*85.00;
+    assert.equal(r63PathA.toFixed(2),'6160.00','11-11 R18 Path A total');
+    const r63PathC=360.00+8.0*85.00;
+    assert.equal(r63PathC.toFixed(2),'1040.00','11-11 R18 Path C total');
+    assert.equal((r63PathA-r63PathC).toFixed(2),'5120.00','11-11 R18 savings vs Path A');
+    assert.equal(((r63PathA-r63PathC)/r63PathA*100).toFixed(2),'83.12','11-11 R18 pct savings vs Path A');
+    for(const r63File of ['workshops/github-trending-radar/docs/tucano-soduwork-multi-harness-team-governance-selection-faq.md','workshops/github-trending-radar/docs/tucano-soduwork-multi-harness-team-governance-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r18-tucano-soduwork.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r63File),'utf8');
+      assert.ok(txt.includes('1,740.00')&&txt.includes('4,420.00')&&txt.includes('6,160.00')&&txt.includes('360.00')&&txt.includes('680.00')&&txt.includes('1,040.00')&&txt.includes('5,120.00')&&txt.includes('83.12%')&&txt.includes('not_measured'),r63File+': contains exact 11-11 R18 tucano+soduwork closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
