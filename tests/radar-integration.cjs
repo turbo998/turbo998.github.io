@@ -1489,6 +1489,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r84File),'utf8');
       assert.ok(txt.includes('1,920.00')&&txt.includes('4,320.00')&&txt.includes('6,240.00')&&txt.includes('320.00')&&txt.includes('450.00')&&txt.includes('770.00')&&txt.includes('5,470.00')&&txt.includes('87.66%')&&txt.includes('not_measured'),r84File+': contains exact 11-11 R39 robotagent+foresightvla closed-form parameters');
     }
+    // 2026-11-11 Round 40 (ZiChuanLan/agent-purge + makushingu/harness-maxxing) closed-form FinOps verification
+    const r85PathA=1620.00+45.0*90.00;
+    assert.equal(r85PathA.toFixed(2),'5670.00','11-11 R40 Path A total');
+    const r85PathC=240.00+5.0*90.00;
+    assert.equal(r85PathC.toFixed(2),'690.00','11-11 R40 Path C total');
+    assert.equal((r85PathA-r85PathC).toFixed(2),'4980.00','11-11 R40 savings vs Path A');
+    assert.equal(((r85PathA-r85PathC)/r85PathA*100).toFixed(2),'87.83','11-11 R40 pct savings vs Path A');
+    for(const r85File of ['workshops/github-trending-radar/docs/agent-purge-harness-maxxing-persona-governance-control-room-selection-faq.md','workshops/github-trending-radar/docs/agent-purge-harness-maxxing-persona-governance-control-room-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r40-agentpurge-harnessmaxxing.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r85File),'utf8');
+      assert.ok(txt.includes('1,620.00')&&txt.includes('4,050.00')&&txt.includes('5,670.00')&&txt.includes('240.00')&&txt.includes('450.00')&&txt.includes('690.00')&&txt.includes('4,980.00')&&txt.includes('87.83%')&&txt.includes('not_measured'),r85File+': contains exact 11-11 R40 agentpurge+harnessmaxxing closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
