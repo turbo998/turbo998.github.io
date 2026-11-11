@@ -1159,6 +1159,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r54File),'utf8');
       assert.ok(txt.includes('3,150.00')&&txt.includes('2,800.00')&&txt.includes('6,310.00')&&txt.includes('630.00')&&txt.includes('420.00')&&txt.includes('1,140.00')&&txt.includes('5,170.00')&&txt.includes('81.93%')&&txt.includes('not_measured'),r54File+': contains exact 11-11 R9 image-to-sculpt+kubai closed-form parameters');
     }
+    // 2026-11-11 Round 10 (lobehub/lobe-mygo + imsai-sh/fish-pocket) closed-form FinOps verification
+    const r55PathA=50*42.00+44.0*75.00;
+    assert.equal(r55PathA.toFixed(2),'5400.00','11-11 R10 Path A total');
+    const r55PathC=0.00+8.0*75.00;
+    assert.equal(r55PathC.toFixed(2),'600.00','11-11 R10 Path C total');
+    assert.equal((r55PathA-r55PathC).toFixed(2),'4800.00','11-11 R10 savings vs Path A');
+    assert.equal(((r55PathA-r55PathC)/r55PathA*100).toFixed(2),'88.89','11-11 R10 pct savings vs Path A');
+    for(const r55File of ['workshops/github-trending-radar/docs/lobe-mygo-fish-pocket-native-go-ios-agent-selection-faq.md','workshops/github-trending-radar/docs/lobe-mygo-fish-pocket-native-go-ios-agent-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r10-lobe-mygo-fish-pocket.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r55File),'utf8');
+      assert.ok(txt.includes('2,100.00')&&txt.includes('3,300.00')&&txt.includes('5,400.00')&&txt.includes('3,000.00')&&txt.includes('600.00')&&txt.includes('4,800.00')&&txt.includes('88.89%')&&txt.includes('not_measured'),r55File+': contains exact 11-11 R10 lobe-mygo+fish-pocket closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
