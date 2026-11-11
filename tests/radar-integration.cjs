@@ -1632,6 +1632,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r97File),'utf8');
       assert.ok(txt.includes('1,720.00')&&txt.includes('3,960.00')&&txt.includes('5,680.00')&&txt.includes('190.00')&&txt.includes('450.00')&&txt.includes('640.00')&&txt.includes('5,040.00')&&txt.includes('88.73%')&&txt.includes('not_measured'),r97File+': contains exact 11-11 R52 brain4agent+memorymcp closed-form parameters');
     }
+    // 2026-11-11 Round 53 (mylea1/phongent + Aevonix/FlashAlign) closed-form FinOps verification
+    const r98PathA=1780.00+45.0*90.00;
+    assert.equal(r98PathA.toFixed(2),'5830.00','11-11 R53 Path A total');
+    const r98PathC=260.00+5.0*90.00;
+    assert.equal(r98PathC.toFixed(2),'710.00','11-11 R53 Path C total');
+    assert.equal((r98PathA-r98PathC).toFixed(2),'5120.00','11-11 R53 savings vs Path A');
+    assert.equal(((r98PathA-r98PathC)/r98PathA*100).toFixed(2),'87.82','11-11 R53 pct savings vs Path A');
+    for(const r98File of ['workshops/github-trending-radar/docs/phongent-flashalign-multi-phone-fleet-per-request-alignment-selection-faq.md','workshops/github-trending-radar/docs/phongent-flashalign-multi-phone-fleet-per-request-alignment-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r53-phongent-flashalign.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r98File),'utf8');
+      assert.ok(txt.includes('1,780.00')&&txt.includes('4,050.00')&&txt.includes('5,830.00')&&txt.includes('260.00')&&txt.includes('450.00')&&txt.includes('710.00')&&txt.includes('5,120.00')&&txt.includes('87.82%')&&txt.includes('not_measured'),r98File+': contains exact 11-11 R53 phongent+flashalign closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
