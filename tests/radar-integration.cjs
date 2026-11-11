@@ -1126,6 +1126,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r51File),'utf8');
       assert.ok(txt.includes('3,600.00')&&txt.includes('2,800.00')&&txt.includes('6,640.00')&&txt.includes('640.00')&&txt.includes('480.00')&&txt.includes('1,280.00')&&txt.includes('5,360.00')&&txt.includes('80.72%')&&txt.includes('not_measured'),r51File+': contains exact 11-11 R6 pid-to-kg+ste80 closed-form parameters');
     }
+    // 2026-11-11 Round 7 (paulirish/chrome-capture + JDhruv14/line-art-animation) closed-form FinOps verification
+    const r52PathA=15000*(21/60)*0.008+15.0*75.00+44.0*75.00;
+    assert.equal(r52PathA.toFixed(2),'4467.00','11-11 R7 Path A total');
+    const r52PathC=15000*(11/60)*0.008+2.0*75.00+8.0*75.00;
+    assert.equal(r52PathC.toFixed(2),'772.00','11-11 R7 Path C total');
+    assert.equal((r52PathA-r52PathC).toFixed(2),'3695.00','11-11 R7 savings vs Path A');
+    assert.equal(((r52PathA-r52PathC)/r52PathA*100).toFixed(2),'82.72','11-11 R7 pct savings vs Path A');
+    for(const r52File of ['workshops/github-trending-radar/docs/chrome-capture-line-art-animation-selection-faq.md','workshops/github-trending-radar/docs/chrome-capture-line-art-animation-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r7-chrome-capture-lineart.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r52File),'utf8');
+      assert.ok(txt.includes('1,125.00')&&txt.includes('3,300.00')&&txt.includes('4,467.00')&&txt.includes('150.00')&&txt.includes('600.00')&&txt.includes('772.00')&&txt.includes('3,695.00')&&txt.includes('82.72%')&&txt.includes('not_measured'),r52File+': contains exact 11-11 R7 chrome-capture+line-art closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
