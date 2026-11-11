@@ -1324,6 +1324,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r69File),'utf8');
       assert.ok(txt.includes('1,680.00')&&txt.includes('3,570.00')&&txt.includes('5,250.00')&&txt.includes('140.00')&&txt.includes('425.00')&&txt.includes('565.00')&&txt.includes('4,685.00')&&txt.includes('89.24%')&&txt.includes('not_measured'),r69File+': contains exact 11-11 R24 kanzo+kensaku closed-form parameters');
     }
+    // 2026-11-11 Round 25 (t8y2/motty + phone-harness/mcp) closed-form FinOps verification
+    const r70PathA=1650.00+510.00+44.0*85.00;
+    assert.equal(r70PathA.toFixed(2),'5900.00','11-11 R25 Path A total');
+    const r70PathC=2*80.00+4000*0.05+120.00+6.0*85.00;
+    assert.equal(r70PathC.toFixed(2),'990.00','11-11 R25 Path C total');
+    assert.equal((r70PathA-r70PathC).toFixed(2),'4910.00','11-11 R25 savings vs Path A');
+    assert.equal(((r70PathA-r70PathC)/r70PathA*100).toFixed(2),'83.22','11-11 R25 pct savings vs Path A');
+    for(const r70File of ['workshops/github-trending-radar/docs/motty-phone-harness-native-ssh-mobile-mcp-selection-faq.md','workshops/github-trending-radar/docs/motty-phone-harness-native-ssh-mobile-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r25-motty-phoneharness.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r70File),'utf8');
+      assert.ok(txt.includes('2,160.00')&&txt.includes('3,740.00')&&txt.includes('5,900.00')&&txt.includes('480.00')&&txt.includes('510.00')&&txt.includes('990.00')&&txt.includes('4,910.00')&&txt.includes('83.22%')&&txt.includes('not_measured'),r70File+': contains exact 11-11 R25 motty+phone-harness closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
