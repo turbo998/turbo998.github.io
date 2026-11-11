@@ -1456,6 +1456,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r81File),'utf8');
       assert.ok(txt.includes('2,350.00')&&txt.includes('4,680.00')&&txt.includes('7,030.00')&&txt.includes('380.00')&&txt.includes('540.00')&&txt.includes('920.00')&&txt.includes('6,110.00')&&txt.includes('86.91%')&&txt.includes('not_measured'),r81File+': contains exact 11-11 R36 nexttransformer+researchagent closed-form parameters');
     }
+    // 2026-11-11 Round 37 (TIGER-AI-Lab/WebsiteBench + antins-labs/VisSearch-Bench-v1) closed-form FinOps verification
+    const r82PathA=1540.00+46.0*90.00;
+    assert.equal(r82PathA.toFixed(2),'5680.00','11-11 R37 Path A total');
+    const r82PathC=250.00+5.0*90.00;
+    assert.equal(r82PathC.toFixed(2),'700.00','11-11 R37 Path C total');
+    assert.equal((r82PathA-r82PathC).toFixed(2),'4980.00','11-11 R37 savings vs Path A');
+    assert.equal(((r82PathA-r82PathC)/r82PathA*100).toFixed(2),'87.68','11-11 R37 pct savings vs Path A');
+    for(const r82File of ['workshops/github-trending-radar/docs/websitebench-vissearch-bench-browser-exploration-visual-search-selection-faq.md','workshops/github-trending-radar/docs/websitebench-vissearch-bench-browser-exploration-visual-search-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r37-websitebench-vissearch.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r82File),'utf8');
+      assert.ok(txt.includes('1,540.00')&&txt.includes('4,140.00')&&txt.includes('5,680.00')&&txt.includes('250.00')&&txt.includes('450.00')&&txt.includes('700.00')&&txt.includes('4,980.00')&&txt.includes('87.68%')&&txt.includes('not_measured'),r82File+': contains exact 11-11 R37 websitebench+vissearch closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
