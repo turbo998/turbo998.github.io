@@ -1225,6 +1225,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r60File),'utf8');
       assert.ok(txt.includes('2,275.00')&&txt.includes('3,360.00')&&txt.includes('5,635.00')&&txt.includes('280.00')&&txt.includes('520.00')&&txt.includes('800.00')&&txt.includes('4,835.00')&&txt.includes('85.80%')&&txt.includes('not_measured'),r60File+': contains exact 11-11 R15 lingbot-touch+splatanything closed-form parameters');
     }
+    // 2026-11-11 Round 16 (Video-Rebirth/hyperflow-h3-flash + KadoBOT/ComfyUI-H3-Continuity-Studio) closed-form FinOps verification
+    const r61PathA=750*3.20+44.0*75.00;
+    assert.equal(r61PathA.toFixed(2),'5700.00','11-11 R16 Path A total');
+    const r61PathC=120*2.20+7.0*75.00;
+    assert.equal(r61PathC.toFixed(2),'789.00','11-11 R16 Path C total');
+    assert.equal((r61PathA-r61PathC).toFixed(2),'4911.00','11-11 R16 savings vs Path A');
+    assert.equal(((r61PathA-r61PathC)/r61PathA*100).toFixed(2),'86.16','11-11 R16 pct savings vs Path A');
+    for(const r61File of ['workshops/github-trending-radar/docs/hyperflow-h3-flash-continuity-studio-video-audio-selection-faq.md','workshops/github-trending-radar/docs/hyperflow-h3-flash-continuity-studio-video-audio-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r16-hyperflow-continuity.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r61File),'utf8');
+      assert.ok(txt.includes('2,400.00')&&txt.includes('3,300.00')&&txt.includes('5,700.00')&&txt.includes('264.00')&&txt.includes('525.00')&&txt.includes('789.00')&&txt.includes('4,911.00')&&txt.includes('86.16%')&&txt.includes('not_measured'),r61File+': contains exact 11-11 R16 hyperflow+continuity-studio closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
