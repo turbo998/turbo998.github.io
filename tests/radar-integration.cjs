@@ -1621,6 +1621,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r96File),'utf8');
       assert.ok(txt.includes('1,680.00')&&txt.includes('4,050.00')&&txt.includes('5,730.00')&&txt.includes('250.00')&&txt.includes('450.00')&&txt.includes('700.00')&&txt.includes('5,030.00')&&txt.includes('87.78%')&&txt.includes('not_measured'),r96File+': contains exact 11-11 R51 saasgrowth+minecraft closed-form parameters');
     }
+    // 2026-11-11 Round 52 (SparkofSpike/Brain4Agent + Glen-Web-App/best-agent-memory-mcp) closed-form FinOps verification
+    const r97PathA=1720.00+44.0*90.00;
+    assert.equal(r97PathA.toFixed(2),'5680.00','11-11 R52 Path A total');
+    const r97PathC=190.00+5.0*90.00;
+    assert.equal(r97PathC.toFixed(2),'640.00','11-11 R52 Path C total');
+    assert.equal((r97PathA-r97PathC).toFixed(2),'5040.00','11-11 R52 savings vs Path A');
+    assert.equal(((r97PathA-r97PathC)/r97PathA*100).toFixed(2),'88.73','11-11 R52 pct savings vs Path A');
+    for(const r97File of ['workshops/github-trending-radar/docs/brain4agent-best-agent-memory-mcp-cjk-bm25-precisionmembench-selection-faq.md','workshops/github-trending-radar/docs/brain4agent-best-agent-memory-mcp-cjk-bm25-precisionmembench-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r52-brain4agent-memorymcp.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r97File),'utf8');
+      assert.ok(txt.includes('1,720.00')&&txt.includes('3,960.00')&&txt.includes('5,680.00')&&txt.includes('190.00')&&txt.includes('450.00')&&txt.includes('640.00')&&txt.includes('5,040.00')&&txt.includes('88.73%')&&txt.includes('not_measured'),r97File+': contains exact 11-11 R52 brain4agent+memorymcp closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
