@@ -1082,6 +1082,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r47File),'utf8');
       assert.ok(txt.includes('6,750.00')&&txt.includes('3,480.00')&&txt.includes('198.00')&&txt.includes('750.00')&&txt.includes('948.00')&&txt.includes('5,802.00')&&txt.includes('85.96%')&&txt.includes('not_measured'),r47File+': contains exact 11-11 R2 codex-security closed-form parameters');
     }
+    // 2026-11-11 Round 3 (GoogleChrome/modern-web-guidance-src WebMCP + Built-in AI) closed-form FinOps verification
+    const r48PathA=48.0*70.00+50000*0.018+50000*0.004;
+    assert.equal(r48PathA.toFixed(2),'4460.00','11-11 R3 Path A total');
+    const r48PathC=8.0*70.00+50000*0.002+0.00;
+    assert.equal(r48PathC.toFixed(2),'660.00','11-11 R3 Path C total');
+    assert.equal((r48PathA-r48PathC).toFixed(2),'3800.00','11-11 R3 savings vs Path A');
+    assert.equal(((r48PathA-r48PathC)/r48PathA*100).toFixed(2),'85.20','11-11 R3 pct savings vs Path A');
+    for(const r48File of ['workshops/github-trending-radar/docs/modern-web-guidance-webmcp-vs-legacy-polyfills-selection-faq.md','workshops/github-trending-radar/docs/modern-web-guidance-webmcp-vs-legacy-polyfills-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r3-modern-web-guidance.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r48File),'utf8');
+      assert.ok(txt.includes('3,360.00')&&txt.includes('4,460.00')&&txt.includes('3,060.00')&&txt.includes('560.00')&&txt.includes('660.00')&&txt.includes('3,800.00')&&txt.includes('85.20%')&&txt.includes('not_measured'),r48File+': contains exact 11-11 R3 modern-web-guidance closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
