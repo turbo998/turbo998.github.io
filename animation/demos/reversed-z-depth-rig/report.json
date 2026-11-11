@@ -1,0 +1,267 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Reversed-Z float32 depth buffer (d = z_near/z) vs Standard Forward-Z Z-fighting",
+  "topic_zh": "反转 Z 浮点深度缓冲（Reversed-Z）与传统正向 Z 远景穿模闪烁（Z-Fighting）对比",
+  "slug": "reversed-z-depth-rig",
+  "timestamp": "2026-11-11T17:39:11.566Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic IEEE-754 binary32 (Math.fround) Reversed-Z perspective depth mapping d = z_near / z (Near=1, Far=0) versus Standard Forward-Z mapping d = 1 - z_near / z across 13 distance octaves (1m to 4096m). No monocular neural depth estimation execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.39",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "reversed-z-equivalence-128",
+      "passed": true,
+      "detail": "128 closed-form IEEE-754 exponent ULP and DataView bitwise nextafterf passes agree within 1e-14"
+    },
+    {
+      "name": "reversed-z-equivalence-1024",
+      "passed": true,
+      "detail": "1024 closed-form IEEE-754 exponent ULP and DataView bitwise nextafterf passes agree within 1e-14"
+    },
+    {
+      "name": "reversed-z-equivalence-8192",
+      "passed": true,
+      "detail": "8192 closed-form IEEE-754 exponent ULP and DataView bitwise nextafterf passes agree within 1e-14"
+    },
+    {
+      "name": "reversed-z-zero-zfighting",
+      "passed": true,
+      "detail": "13 distance octaves (1m..4096m) retain 0 Z-fighting collisions (4096m resolution=0.00031m, 32768x gain)"
+    },
+    {
+      "name": "forward-z-cancellation-exposed",
+      "passed": true,
+      "detail": "Forward-Z degrades to 10.00m resolution at 4096m, collapsing 0.25m decal across 3 stations"
+    },
+    {
+      "name": "exact-submillimeter-horizon-retained",
+      "passed": true,
+      "detail": "Reversed-Z locks 4096m depth resolution at 0.00031m (0.31mm, 32768x gain)"
+    },
+    {
+      "name": "forward-z-decal-collapse-exposed",
+      "passed": true,
+      "detail": "Forward-Z collapses 4096m front/back decal depths to identical float32 value (Delta_d=0.000000)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse octave scrubbing reproduces the exact rangefinder probe world matrix"
+    },
+    {
+      "name": "atomic-octave-rejection",
+      "passed": true,
+      "detail": "out-of-range maxDistanceOctave=30 is rejected while valid Reversed-Z state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered rangefinder probe x-translation matches solved octave coordinate"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Reversed-Z rangefinder controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual octave scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 13-octave depth resolution passes",
+      "count": 128,
+      "primary_ms": 0.8683000000000334,
+      "baseline_ms": 1.779700000000048,
+      "primary_samples_ms": [
+        2.2316999999999894,
+        0.8704999999999927,
+        0.8373999999999455,
+        0.8683000000000334,
+        0.8059000000000083,
+        0.9433999999999969,
+        0.8487999999999829
+      ],
+      "baseline_samples_ms": [
+        1.7989999999999782,
+        1.7924999999999613,
+        1.7683999999999855,
+        1.767499999999984,
+        1.779700000000048,
+        1.766300000000001,
+        1.8559000000000196
+      ]
+    },
+    {
+      "load": "1024 CPU 13-octave depth resolution passes",
+      "count": 1024,
+      "primary_ms": 1.0627000000000635,
+      "baseline_ms": 6.621700000000033,
+      "primary_samples_ms": [
+        1.0627000000000635,
+        1.9417000000000826,
+        1.8515999999999622,
+        0.9922000000000253,
+        0.9842000000001008,
+        0.9359000000000606,
+        2.825900000000047
+      ],
+      "baseline_samples_ms": [
+        7.101499999999987,
+        9.02550000000008,
+        6.621700000000033,
+        6.28449999999998,
+        5.746399999999994,
+        10.43489999999997,
+        5.8700000000000045
+      ]
+    },
+    {
+      "load": "8192 CPU 13-octave depth resolution passes",
+      "count": 8192,
+      "primary_ms": 8.814800000000105,
+      "baseline_ms": 55.98449999999991,
+      "primary_samples_ms": [
+        8.159999999999968,
+        11.465100000000007,
+        9.054399999999987,
+        8.618100000000027,
+        8.171600000000012,
+        8.814800000000105,
+        9.70230000000015
+      ],
+      "baseline_samples_ms": [
+        57.54689999999994,
+        66.40359999999998,
+        61.05680000000007,
+        52.075000000000045,
+        55.98449999999991,
+        51.34800000000007,
+        49.337800000000016
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/reversed-z-depth-rig/light-reversed-z-float32.png",
+    "docs/evidence/reversed-z-depth-rig/light-standard-forward-z.png",
+    "docs/evidence/reversed-z-depth-rig/dark-reversed-z-float32.png",
+    "docs/evidence/reversed-z-depth-rig/dark-standard-forward-z.png",
+    "docs/evidence/reversed-z-depth-rig/mobile.png"
+  ],
+  "primary_label": "Closed-Form Exponent ULP",
+  "baseline_label": "DataView Bitwise nextafterf",
+  "load_unit": "13-octave depth passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form IEEE-754 binary32 exponent ULP evaluation versus DataView ArrayBuffer bitwise nextafterf extraction.",
+  "geometry": {
+    "parts": 46,
+    "stations": 13,
+    "near_plane_m": 0.1,
+    "decal_separation_m": 0.25,
+    "horizon_distance_m": 4096,
+    "reversed_z_gap_m": 0.000305,
+    "forward_z_gap_m": 10,
+    "precision_gain_x": 32768,
+    "forward_z_collapsed_stations": 3,
+    "maximum_solver_error": 0
+  },
+  "protocol": {
+    "input": {
+      "station_index": 12,
+      "distance_z_m": 4096,
+      "near_plane_m": 0.1,
+      "decal_gap_m": 0.25,
+      "mode": "reversed-z-float32"
+    },
+    "output": {
+      "reversed_z_min_gap_m": 0.000305,
+      "forward_z_min_gap_m": 10,
+      "precision_gain_ratio": 32768,
+      "forward_z_collapsed_count": 3
+    },
+    "function": "d_rev(z) = z_near / z → ULP(d_rev) ∝ 1/z → Δz_min(4096m) = 0.00031m (32,768× finer than Forward-Z)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled distance octaves resolve 0.25m coplanar decals without Z-fighting",
+      "original": 13,
+      "perturbed": 13,
+      "total": 13
+    }
+  ],
+  "good_fit": [
+    "Large-scale city digital twins, flight simulators, and planetary 3D scenes with z_near = 0.1m and z_far -> infinity",
+    "Explaining why subtracting z_near/z from 1.0 in Forward-Z destroys float32 exponent dynamic range",
+    "Zero-cost Reversed-Z projection matrix with GREATER_OR_EQUAL depth test and 0.0 clear value in WebGPU / WebGL2",
+    "Eliminating fragment-shader gl_FragDepth logarithmic depth writes that break hardware Early-Z culling"
+  ],
+  "not_for": [
+    "Fixed-point integer depth buffers (DEPTH24_STENCIL8) where ULP spacing is constant across [0, 1]",
+    "Legacy OpenGL [-1, +1] clip-space pipelines without glClipControl(GL_ZERO_TO_ONE) or EXT_clip_control",
+    "Orthographic shadow cascades where depth is already linear in view-space z",
+    "Monocular RGB-to-depth neural foundation models (Depth Anything V2 / Marigold)"
+  ],
+  "locale_zh": {
+    "reversed-z-equivalence-128": "反转Z精度等价 128",
+    "128 closed-form IEEE-754 exponent ULP and DataView bitwise nextafterf passes agree within 1e-14": "128 次 IEEE-754 闭式指数 ULP 与 DataView 位操作 nextafterf 在 1e-14 内一致",
+    "reversed-z-equivalence-1024": "反转Z精度等价 1024",
+    "1024 closed-form IEEE-754 exponent ULP and DataView bitwise nextafterf passes agree within 1e-14": "1024 次 IEEE-754 闭式指数 ULP 与 DataView 位操作 nextafterf 在 1e-14 内一致",
+    "reversed-z-equivalence-8192": "反转Z精度等价 8192",
+    "8192 closed-form IEEE-754 exponent ULP and DataView bitwise nextafterf passes agree within 1e-14": "8192 次 IEEE-754 闭式指数 ULP 与 DataView 位操作 nextafterf 在 1e-14 内一致",
+    "reversed-z-zero-zfighting": "反转Z零深度闪烁",
+    "13 distance octaves (1m..4096m) retain 0 Z-fighting collisions (4096m resolution=0.00031m, 32768x gain)": "13 个距离倍频程（1m..4096m）保持 0 次 Z-Fighting 冲突（4096m 分辨率 0.00031m，32768 倍增益）",
+    "forward-z-cancellation-exposed": "正向Z抵消坍缩暴露",
+    "Forward-Z degrades to 10.00m resolution at 4096m, collapsing 0.25m decal across 3 stations": "正向 Z 在 4096m 处分辨率恶化至 10.00m，导致 0.25m 贴花在 3 个站点发生 Z-Fighting 坍缩",
+    "exact-submillimeter-horizon-retained": "远景亚毫米分辨率锁定",
+    "Reversed-Z locks 4096m depth resolution at 0.00031m (0.31mm, 32768x gain)": "反转 Z 将 4096m 处深度分辨率锁定在 0.00031m（0.31 毫米，32768 倍提升）",
+    "forward-z-decal-collapse-exposed": "正向Z远景贴花坍缩暴露",
+    "Forward-Z collapses 4096m front/back decal depths to identical float32 value (Delta_d=0.000000)": "正向 Z 使 4096m 处前后贴花深度坍缩为完全相同的单精度浮点数（Δd=0.000000）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse octave scrubbing reproduces the exact rangefinder probe world matrix": "逆序倍频程拖曳精确复现测距探针世界矩阵",
+    "atomic-octave-rejection": "原子倍频拒绝",
+    "out-of-range maxDistanceOctave=30 is rejected while valid Reversed-Z state remains": "越界距离倍频程 30 被拒绝，有效深度状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered rangefinder probe x-translation matches solved octave coordinate": "渲染测距探针水平位移与求解器倍频程坐标完全一致",
+    "mobile-layout": "手机布局",
+    "390px Reversed-Z rangefinder controls fit without horizontal overflow": "390px 反转 Z 测距仪控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual octave scrubbing remains available": "减少动态默认静止，保留手动倍频核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Closed-Form Exponent ULP": "IEEE-754 闭式指数 ULP 计算",
+    "DataView Bitwise nextafterf": "DataView 位操作 nextafterf 基线",
+    "Median of 7 alternating Node CPU runs after warmup. Closed-form IEEE-754 binary32 exponent ULP evaluation versus DataView ArrayBuffer bitwise nextafterf extraction.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；IEEE-754 单精度闭式指数 ULP 评估对比 DataView 缓冲区位操作 nextafterf 提取基线。",
+    "Sampled distance octaves resolve 0.25m coplanar decals without Z-fighting": "采样距离倍频程清晰分辨 0.25m 贴花零 Z-Fighting 穿模",
+    "d_rev(z) = z_near / z → ULP(d_rev) ∝ 1/z → Δz_min(4096m) = 0.00031m (32,768× finer than Forward-Z)": "反转 Z 映射 d_rev(z) = z_near / z → 4096m 处最小分辨间距 0.00031m（较正向 Z 精度提升 32,768 倍）",
+    "Large-scale city digital twins, flight simulators, and planetary 3D scenes with z_near = 0.1m and z_far -> infinity": "具有近裁剪面 z_near=0.1m 与无限远平面（z_far→∞）的城市级数字孪生、飞行模拟与行星级三维场景",
+    "Explaining why subtracting z_near/z from 1.0 in Forward-Z destroys float32 exponent dynamic range": "直观解释为何正向 Z 中执行 1.0 − z_near/z 减法会抹杀单精度浮点数的指数动态范围",
+    "Zero-cost Reversed-Z projection matrix with GREATER_OR_EQUAL depth test and 0.0 clear value in WebGPU / WebGL2": "在 WebGPU / WebGL2 中配合 GREATER_OR_EQUAL 深度测试与 0.0 清屏值的零开销反转 Z 投影矩阵",
+    "Eliminating fragment-shader gl_FragDepth logarithmic depth writes that break hardware Early-Z culling": "替代会破坏硬件 Early-Z 提前深度剔除的片元着色器 gl_FragDepth 对数深度写入",
+    "Fixed-point integer depth buffers (DEPTH24_STENCIL8) where ULP spacing is constant across [0, 1]": "在整个 [0, 1] 区间内 ULP 步长恒定的 24 位定点整数深度缓冲（DEPTH24_STENCIL8）",
+    "Legacy OpenGL [-1, +1] clip-space pipelines without glClipControl(GL_ZERO_TO_ONE) or EXT_clip_control": "不支持 [0, 1] 裁剪空间（缺少 glClipControl 或 EXT_clip_control）的旧版 OpenGL [-1, +1] 管线",
+    "Orthographic shadow cascades where depth is already linear in view-space z": "深度本身已随观察空间 z 线性分布的正交投影阴影级联（CSM）",
+    "Monocular RGB-to-depth neural foundation models (Depth Anything V2 / Marigold)": "从单目 RGB 图像预测相对深度的神经网络基础模型（Depth Anything V2 / Marigold）"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/reversed-z-depth.test.ts",
+    "node scripts/benchmark-reversed-z-depth.mjs"
+  ]
+}

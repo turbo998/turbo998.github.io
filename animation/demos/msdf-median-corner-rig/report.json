@@ -1,0 +1,268 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Multi-channel SDF (MSDF) median-of-three corner preservation vs single-channel SDF rounding rig",
+  "topic_zh": "多通道有向距离场（MSDF）三通道中位数尖角重建对比单通道 SDF 圆角塌缩",
+  "slug": "msdf-median-corner-rig",
+  "timestamp": "2026-11-11T19:07:06.896Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Chlumsky (2015) Multi-Channel Signed Distance Field (MSDF) 3-channel half-plane decomposition and branchless median(r,g,b) reconstruction versus single-channel scalar SDF bilinear interpolation across a 17-station sharp corner contour. No neural font diffusion execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.39",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "msdf-median-equivalence-128",
+      "passed": true,
+      "detail": "128 branchless 4-op median(r,g,b) and array-sort passes agree within 1e-15"
+    },
+    {
+      "name": "msdf-median-equivalence-1024",
+      "passed": true,
+      "detail": "1024 branchless 4-op median(r,g,b) and array-sort passes agree within 1e-15"
+    },
+    {
+      "name": "msdf-median-equivalence-8192",
+      "passed": true,
+      "detail": "8192 branchless 4-op median(r,g,b) and array-sort passes agree within 1e-15"
+    },
+    {
+      "name": "msdf-sharp-corner-preserved",
+      "passed": true,
+      "detail": "17 MSDF stations preserve sharp corner apex y=2.0000u (0.0000u erosion, 0.00% tip loss)"
+    },
+    {
+      "name": "single-sdf-corner-rounding-exposed",
+      "passed": true,
+      "detail": "single-channel scalar SDF rounds x=0 apex down to y=1.4000u (-0.6000u erosion, -30.00% tip loss)"
+    },
+    {
+      "name": "exact-msdf-apex-retained",
+      "passed": true,
+      "detail": "MSDF median(r,g,b) locks station-8 corner apex at y=2.0000u (0.0000u max contour error)"
+    },
+    {
+      "name": "bilinear-crease-erosion-exposed",
+      "passed": true,
+      "detail": "single-channel SDF erodes station-8 corner apex to y=1.4000u (-30.00% tip loss)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse station scrubbing reproduces the exact corner caliper carriage world matrix"
+    },
+    {
+      "name": "atomic-apex-rejection",
+      "passed": true,
+      "detail": "out-of-range apexHeight=9.0 is rejected while valid MSDF corner state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered caliper carriage y-elevation matches solved MSDF corner contour height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px MSDF corner controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual station scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station MSDF corner passes",
+      "count": 128,
+      "primary_ms": 0.1098999999999819,
+      "baseline_ms": 1.0127999999999702,
+      "primary_samples_ms": [
+        7.808300000000031,
+        0.09669999999999845,
+        0.1098999999999819,
+        0.10410000000001673,
+        0.09510000000000218,
+        0.32099999999996953,
+        0.35070000000001755
+      ],
+      "baseline_samples_ms": [
+        1.0127999999999702,
+        0.30019999999996116,
+        0.3227000000000544,
+        0.31569999999999254,
+        1.079999999999984,
+        1.5892000000000053,
+        1.4220000000000255
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station MSDF corner passes",
+      "count": 1024,
+      "primary_ms": 0.6476999999999862,
+      "baseline_ms": 2.5301000000000613,
+      "primary_samples_ms": [
+        2.210899999999981,
+        0.6091999999999871,
+        0.5763000000000602,
+        0.7573999999999614,
+        0.672800000000052,
+        0.5697000000000116,
+        0.6476999999999862
+      ],
+      "baseline_samples_ms": [
+        4.966000000000065,
+        2.5301000000000613,
+        2.602800000000002,
+        2.557899999999904,
+        2.4536000000000513,
+        2.393599999999992,
+        2.3477000000000317
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station MSDF corner passes",
+      "count": 8192,
+      "primary_ms": 4.727800000000002,
+      "baseline_ms": 19.411200000000008,
+      "primary_samples_ms": [
+        4.727800000000002,
+        5.154699999999934,
+        4.747499999999945,
+        4.794099999999958,
+        4.331299999999942,
+        4.559999999999945,
+        4.155700000000024
+      ],
+      "baseline_samples_ms": [
+        20.208499999999958,
+        19.207300000000032,
+        17.987400000000093,
+        19.17629999999997,
+        19.411200000000008,
+        26.03520000000003,
+        19.618600000000015
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/msdf-median-corner-rig/light-msdf-median-of-three.png",
+    "docs/evidence/msdf-median-corner-rig/light-single-channel-sdf-round.png",
+    "docs/evidence/msdf-median-corner-rig/dark-msdf-median-of-three.png",
+    "docs/evidence/msdf-median-corner-rig/dark-single-channel-sdf-round.png",
+    "docs/evidence/msdf-median-corner-rig/mobile.png"
+  ],
+  "primary_label": "Branchless 4-Op Median(R,G,B)",
+  "baseline_label": "3-Element Array Sort Baseline",
+  "load_unit": "17-station MSDF corner passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Branchless 4-intrinsic max(min(r,g), min(max(r,g), b)) evaluation versus 3-element array allocation and comparison sort.",
+  "geometry": {
+    "parts": 59,
+    "stations": 17,
+    "apex_height": 2,
+    "corner_slope": 1,
+    "texel_half_span": 0.6,
+    "msdf_apex_y": 2,
+    "single_sdf_apex_y": 1.4,
+    "single_sdf_erosion_u": 0.6,
+    "apex_tip_loss_pct": 30,
+    "maximum_solver_error": 0
+  },
+  "protocol": {
+    "input": {
+      "station_index": 8,
+      "x_coord": 0,
+      "apex_height": 2,
+      "corner_slope": 1,
+      "texel_half_span": 0.6,
+      "mode": "msdf-median-of-three"
+    },
+    "output": {
+      "msdf_apex_y": 2,
+      "single_sdf_apex_y": 1.4,
+      "corner_erosion_u": 0.6,
+      "apex_tip_loss_pct": 30
+    },
+    "function": "median(r,g,b) = max(min(r,g), min(max(r,g), b)) → y_MSDF(0) ≡ 2.0000u (0.00% corner erosion)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled glyph corner stations preserve exact half-plane intersection and sharp apex height",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Resolution-independent 3D text labels, automotive HUD reticles, vector icons, and CAD dimension overlays at low atlas resolutions",
+    "Explaining why bilinear interpolation across a single-channel min(d_L, d_R) bisector crease rounds off sharp corners",
+    "Reconstructing sharp intersections of affine half-planes via the 4-op branchless shader median(r,g,b) operator",
+    "Supporting both sharp bevels (via MSDF median) and true outer rounded glow/drop-shadows (via alpha channel scalar SDF in MTSDF)"
+  ],
+  "not_for": [
+    "Organic blobby metaballs where smooth C^1 polynomial smin blending is desired instead of sharp corners",
+    "Ultra-tiny sub-8px bitmap pixel fonts that snap directly to integer screen pixels without distance-field magnification",
+    "Complex self-intersecting (>3 edges meeting at a single point) vector junctions without sub-texel subdivision",
+    "Neural typography diffusion or text-to-vector font synthesis models (DeepSVG / VecFusion)"
+  ],
+  "locale_zh": {
+    "msdf-median-equivalence-128": "MSDF中位数等价 128",
+    "128 branchless 4-op median(r,g,b) and array-sort passes agree within 1e-15": "128 次无分支 4 指令中位数与数组排序基线在 1e-15 内一致",
+    "msdf-median-equivalence-1024": "MSDF中位数等价 1024",
+    "1024 branchless 4-op median(r,g,b) and array-sort passes agree within 1e-15": "1024 次无分支 4 指令中位数与数组排序基线在 1e-15 内一致",
+    "msdf-median-equivalence-8192": "MSDF中位数等价 8192",
+    "8192 branchless 4-op median(r,g,b) and array-sort passes agree within 1e-15": "8192 次无分支 4 指令中位数与数组排序基线在 1e-15 内一致",
+    "msdf-sharp-corner-preserved": "MSDF锋利尖角保持",
+    "17 MSDF stations preserve sharp corner apex y=2.0000u (0.0000u erosion, 0.00% tip loss)": "17 个 MSDF 站点完美保留尖角顶点 y=2.0000u（0.0000u 磨圆侵蚀，0.00% 顶点损失）",
+    "single-sdf-corner-rounding-exposed": "单通道SDF尖角磨圆暴露",
+    "single-channel scalar SDF rounds x=0 apex down to y=1.4000u (-0.6000u erosion, -30.00% tip loss)": "单通道标量 SDF 将 x=0 顶点削圆至 y=1.4000u（侵蚀 -0.6000u，损失 -30.00% 高度）",
+    "exact-msdf-apex-retained": "MSDF尖角顶点锁定",
+    "MSDF median(r,g,b) locks station-8 corner apex at y=2.0000u (0.0000u max contour error)": "MSDF 三通道中位数将第 8 站尖角顶点锁死在 y=2.0000u（最大轮廓误差 0.0000u）",
+    "bilinear-crease-erosion-exposed": "双线性折痕磨圆暴露",
+    "single-channel SDF erodes station-8 corner apex to y=1.4000u (-30.00% tip loss)": "单通道 SDF 将第 8 站尖角顶点侵蚀至 y=1.4000u（顶点损失 -30.00%）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse station scrubbing reproduces the exact corner caliper carriage world matrix": "逆序站点拖曳精确复现尖角卡尺滑车世界矩阵",
+    "atomic-apex-rejection": "原子顶高拒绝",
+    "out-of-range apexHeight=9.0 is rejected while valid MSDF corner state remains": "越界顶点高度 9.0 被拒绝，有效 MSDF 状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered caliper carriage y-elevation matches solved MSDF corner contour height": "渲染卡尺滑车垂直高度与求解器 MSDF 尖角轮廓高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px MSDF corner controls fit without horizontal overflow": "390px MSDF 尖角控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual station scrubbing remains available": "减少动态默认静止，保留手动站点核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Branchless 4-Op Median(R,G,B)": "无分支 4 指令三通道中位数 Median(R,G,B)",
+    "3-Element Array Sort Baseline": "三元素数组排序求值基线",
+    "Median of 7 alternating Node CPU runs after warmup. Branchless 4-intrinsic max(min(r,g), min(max(r,g), b)) evaluation versus 3-element array allocation and comparison sort.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；无分支 4 次 min/max 中位数求值对比三元素数组分配与比较排序基线。",
+    "Sampled glyph corner stations preserve exact half-plane intersection and sharp apex height": "采样字形尖角站点保持精确半平面交集与锋利顶点高度",
+    "median(r,g,b) = max(min(r,g), min(max(r,g), b)) → y_MSDF(0) ≡ 2.0000u (0.00% corner erosion)": "三通道中位数算子 median(r,g,b) = max(min(r,g), min(max(r,g), b)) → 尖角顶点 y(0) ≡ 2.0000u（0.00% 磨圆损失）",
+    "Resolution-independent 3D text labels, automotive HUD reticles, vector icons, and CAD dimension overlays at low atlas resolutions": "低图集分辨率下放大依然刀锋般锐利的 3D 空间文字、车载 HUD 准星、矢量图标与 CAD 尺寸标注",
+    "Explaining why bilinear interpolation across a single-channel min(d_L, d_R) bisector crease rounds off sharp corners": "直观解释为何跨过单通道 min(d_L, d_R) 角平分线非线性折痕做双线性插值会把尖角削成圆头",
+    "Reconstructing sharp intersections of affine half-planes via the 4-op branchless shader median(r,g,b) operator": "利用仅需 4 条无分支 min/max 指令的着色器 median(r,g,b) 算子零失真重建仿射半平面锋利交点",
+    "Supporting both sharp bevels (via MSDF median) and true outer rounded glow/drop-shadows (via alpha channel scalar SDF in MTSDF)": "通过四通道 MTSDF 同时兼顾锐利字形本体（RGB 中位数）与平滑外发光/投影（A 通道真实欧氏距离）",
+    "Organic blobby metaballs where smooth C^1 polynomial smin blending is desired instead of sharp corners": "需要 C¹ 多项式平滑融合（smin）而非锋利棱角的有机融球（Metaballs）",
+    "Ultra-tiny sub-8px bitmap pixel fonts that snap directly to integer screen pixels without distance-field magnification": "无需距离场无级缩放、直接对齐整数屏幕像素的 8px 以下点阵像素字体",
+    "Complex self-intersecting (>3 edges meeting at a single point) vector junctions without sub-texel subdivision": "单个纹素内超过 3 条边交汇且未做纹素细分的复杂自交矢量节点",
+    "Neural typography diffusion or text-to-vector font synthesis models (DeepSVG / VecFusion)": "神经字体扩散或文本生成矢量字形大模型（DeepSVG / VecFusion）"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/msdf-median-corner.test.ts",
+    "node scripts/benchmark-msdf-median-corner.mjs"
+  ]
+}

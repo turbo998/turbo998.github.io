@@ -1,0 +1,270 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Lambert-Arvo closed-form polygonal area-light contour integral vs center-point 1/r2 blowout rig",
+  "topic_zh": "Lambert-Arvo 斯托克斯多边形面光源边界环路闭式积分对比中心点光源平方反比过曝",
+  "slug": "analytic-polygon-ltc-rig",
+  "timestamp": "2026-11-11T19:51:39.232Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Lambert (1760) / Arvo (1995) / Heitz et al. (2016) closed-form boundary edge-contour integration versus naive center-point inverse-square approximation across 17 receiver elevations under a 4m x 4m area light. No neural relighting execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.39",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "polygon-ltc-equivalence-128",
+      "passed": true,
+      "detail": "128 direct cross-product Stokes contour and Gram-Schmidt wedge passes agree within 1e-14"
+    },
+    {
+      "name": "polygon-ltc-equivalence-1024",
+      "passed": true,
+      "detail": "1024 direct cross-product Stokes contour and Gram-Schmidt wedge passes agree within 1e-14"
+    },
+    {
+      "name": "polygon-ltc-equivalence-8192",
+      "passed": true,
+      "detail": "8192 direct cross-product Stokes contour and Gram-Schmidt wedge passes agree within 1e-14"
+    },
+    {
+      "name": "stokes-contour-hemisphere-conserved",
+      "passed": true,
+      "detail": "17 elevation stations (h=0.15m..2.55m) bound irradiance E <= 1.0000 (station-1 h=0.30m E=0.9819, 0 violations)"
+    },
+    {
+      "name": "point-light-singularity-blowout-exposed",
+      "passed": true,
+      "detail": "naive center-point 1/r² approximation explodes to E=56.5884 at h=0.30m (57.63× blowout, violating E<=1.0 at 15/17 stations)"
+    },
+    {
+      "name": "near-field-configuration-factor-retained",
+      "passed": true,
+      "detail": "Lambert-Arvo contour integral locks station-1 (h=0.30m) irradiance at E=0.9819 <= 1.0000"
+    },
+    {
+      "name": "inverse-square-hotspot-exposed",
+      "passed": true,
+      "detail": "center-point approximation blows out station-1 to E=56.5884 (57.63× hotspot inflation)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse gap scrubbing reproduces the exact luxmeter probe carriage world matrix"
+    },
+    {
+      "name": "atomic-width-rejection",
+      "passed": true,
+      "detail": "out-of-range panelHalfWidth=9.0 is rejected while valid polygonal area-light state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered luxmeter carriage y-elevation matches solved polygonal contour irradiance height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px polygonal area-light controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual station scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station polygon light passes",
+      "count": 128,
+      "primary_ms": 0.32140000000003965,
+      "baseline_ms": 0.45480000000009113,
+      "primary_samples_ms": [
+        3.0194000000000187,
+        0.40819999999996526,
+        0.21859999999992397,
+        0.32140000000003965,
+        2.857399999999984,
+        0.2623999999999569,
+        0.241800000000012
+      ],
+      "baseline_samples_ms": [
+        0.47860000000002856,
+        0.45410000000003947,
+        0.4733999999999696,
+        0.45480000000009113,
+        0.37590000000000146,
+        0.7012000000000853,
+        0.3449999999999136
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station polygon light passes",
+      "count": 1024,
+      "primary_ms": 1.7212999999999283,
+      "baseline_ms": 2.542799999999943,
+      "primary_samples_ms": [
+        2.31370000000004,
+        1.7212999999999283,
+        1.9207000000000107,
+        1.7408000000000357,
+        1.641399999999976,
+        1.674600000000055,
+        1.6901000000000295
+      ],
+      "baseline_samples_ms": [
+        2.5973999999999933,
+        2.542799999999943,
+        2.4909999999999854,
+        3.04970000000003,
+        2.43629999999996,
+        2.4490999999999303,
+        4.30460000000005
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station polygon light passes",
+      "count": 8192,
+      "primary_ms": 28.20519999999999,
+      "baseline_ms": 34.51739999999995,
+      "primary_samples_ms": [
+        26.016700000000014,
+        28.20519999999999,
+        29.394900000000007,
+        38.16019999999992,
+        13.927599999999984,
+        28.206400000000144,
+        24.560400000000072
+      ],
+      "baseline_samples_ms": [
+        51.738699999999994,
+        40.97019999999998,
+        39.4357,
+        33.641700000000014,
+        21.07929999999999,
+        28.909999999999968,
+        34.51739999999995
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/analytic-polygon-ltc-rig/light-lambert-arvo-contour-integral.png",
+    "docs/evidence/analytic-polygon-ltc-rig/light-naive-center-point-inverse-square.png",
+    "docs/evidence/analytic-polygon-ltc-rig/dark-lambert-arvo-contour-integral.png",
+    "docs/evidence/analytic-polygon-ltc-rig/dark-naive-center-point-inverse-square.png",
+    "docs/evidence/analytic-polygon-ltc-rig/mobile.png"
+  ],
+  "primary_label": "Direct Cross-Product Stokes Contour",
+  "baseline_label": "Gram-Schmidt Orthonormal Wedge",
+  "load_unit": "17-station polygon light passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Direct unnormalized cross-product Stokes boundary sum versus per-edge Gram-Schmidt orthonormal wedge frame construction.",
+  "geometry": {
+    "parts": 59,
+    "stations": 17,
+    "panel_half_width": 2,
+    "panel_half_depth": 2,
+    "gap_meters_station_1": 0.3,
+    "contour_irradiance_station_1": 0.9819,
+    "point_irradiance_station_1": 56.5884,
+    "blowout_ratio_station_1": 57.63,
+    "point_max_irradiance": 226.35,
+    "violation_stations": 15,
+    "maximum_solver_error": 3.3307e-16
+  },
+  "protocol": {
+    "input": {
+      "station_index": 1,
+      "gap_meters": 0.3,
+      "panel_size_m": [
+        4,
+        4
+      ],
+      "mode": "lambert-arvo-contour-integral"
+    },
+    "output": {
+      "contour_irradiance": 0.9819,
+      "point_approx_irradiance": 56.5884,
+      "blowout_ratio": 57.63,
+      "violation_stations": 15
+    },
+    "function": "E = (1/2π) Σ atan2(||u_k×u_{k+1}||, u_k·u_{k+1}) ((u_k×u_{k+1})·n / ||u_k×u_{k+1}||) ≤ 1.0000 (0 blowout)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 receiver distances (0.15m..2.55m) preserve unit hemisphere irradiance conservation E <= 1.0",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Real-time architectural windows, virtual-production LED softbox panels, emissive signage, and Linearly Transformed Cosines (LTC) polygonal area lights",
+    "Explaining why replacing an area panel with a center point light creates an unphysical 1/r^2 singularity when h < panel width",
+    "Reducing a 2D surface integral over an M-gon to an exact noise-free 1D sum over its M boundary edges via Stokes' theorem",
+    "Evaluating edge arc-length and normal projection directly from u_k x u_{k+1} without per-edge Gram-Schmidt tangent orthogonalization"
+  ],
+  "not_for": [
+    "Textured area lights with high-frequency video content without pre-filtered mipmap lookup over the polygon footprint",
+    "Contact-hardening area-light shadows (umbrae/penumbrae) without an accompanying blocker search or ray-traced visibility pass",
+    "Single-image diffusion portrait relighting models (IC-Light / DiLightNet)",
+    "Infinitely distant directional sunlight where solid angle is small and constant across the scene"
+  ],
+  "locale_zh": {
+    "polygon-ltc-equivalence-128": "多边形线积分等价 128",
+    "128 direct cross-product Stokes contour and Gram-Schmidt wedge passes agree within 1e-14": "128 次直接叉积斯托克斯环路积分与 Gram-Schmidt 球面楔形基线在 1e-14 内一致",
+    "polygon-ltc-equivalence-1024": "多边形线积分等价 1024",
+    "1024 direct cross-product Stokes contour and Gram-Schmidt wedge passes agree within 1e-14": "1024 次直接叉积斯托克斯环路积分与 Gram-Schmidt 球面楔形基线在 1e-14 内一致",
+    "polygon-ltc-equivalence-8192": "多边形线积分等价 8192",
+    "8192 direct cross-product Stokes contour and Gram-Schmidt wedge passes agree within 1e-14": "8192 次直接叉积斯托克斯环路积分与 Gram-Schmidt 球面楔形基线在 1e-14 内一致",
+    "stokes-contour-hemisphere-conserved": "斯托克斯环路积分能量守恒",
+    "17 elevation stations (h=0.15m..2.55m) bound irradiance E <= 1.0000 (station-1 h=0.30m E=0.9819, 0 violations)": "17 个高度站点（h=0.15m..2.55m）严格满足照度上限 E ≤ 1.0000（第 1 站 h=0.30m E=0.9819，0 越界）",
+    "point-light-singularity-blowout-exposed": "中心点光源奇点过曝暴露",
+    "naive center-point 1/r² approximation explodes to E=56.5884 at h=0.30m (57.63× blowout, violating E<=1.0 at 15/17 stations)": "朴素中心点光源 1/r² 近似在 h=0.30m 处暴涨至 E=56.5884（虚高 57.63×，在 15/17 个站点突破能量守恒上限）",
+    "near-field-configuration-factor-retained": "近场配置因子渐近收敛锁定",
+    "Lambert-Arvo contour integral locks station-1 (h=0.30m) irradiance at E=0.9819 <= 1.0000": "Lambert-Arvo 环路积分将第 1 站（h=0.30m）照度锁死在 E=0.9819 ≤ 1.0000",
+    "inverse-square-hotspot-exposed": "平方反比死白亮斑暴露",
+    "center-point approximation blows out station-1 to E=56.5884 (57.63× hotspot inflation)": "中心点光源近似将第 1 站照度引爆至 E=56.5884（过曝虚高 57.63×）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse gap scrubbing reproduces the exact luxmeter probe carriage world matrix": "逆序间距拖曳精确复现照度计探针滑车世界矩阵",
+    "atomic-width-rejection": "原子板宽拒绝",
+    "out-of-range panelHalfWidth=9.0 is rejected while valid polygonal area-light state remains": "越界面板半宽 9.0 被拒绝，有效多边形面光源状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered luxmeter carriage y-elevation matches solved polygonal contour irradiance height": "渲染照度计滑车垂直高度与求解器多边形环路照度高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px polygonal area-light controls fit without horizontal overflow": "390px 多边形面光源控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual station scrubbing remains available": "减少动态默认静止，保留手动站点核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Direct Cross-Product Stokes Contour": "直接叉积斯托克斯四棱边线积分",
+    "Gram-Schmidt Orthonormal Wedge": "Gram-Schmidt 正交球面楔形基线",
+    "Median of 7 alternating Node CPU runs after warmup. Direct unnormalized cross-product Stokes boundary sum versus per-edge Gram-Schmidt orthonormal wedge frame construction.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；直接叉积斯托克斯边界环路求和对比逐边 Gram-Schmidt 正交楔形标架基线。",
+    "Sampled 17 receiver distances (0.15m..2.55m) preserve unit hemisphere irradiance conservation E <= 1.0": "采样 17 个受光间距（0.15m..2.55m）严格保持单位半球照度守恒 E ≤ 1.0",
+    "E = (1/2π) Σ atan2(||u_k×u_{k+1}||, u_k·u_{k+1}) ((u_k×u_{k+1})·n / ||u_k×u_{k+1}||) ≤ 1.0000 (0 blowout)": "Lambert-Arvo 斯托克斯四棱边闭式环路积分 → 近场照度 E ≤ 1.0000（零奇点过曝）",
+    "Real-time architectural windows, virtual-production LED softbox panels, emissive signage, and Linearly Transformed Cosines (LTC) polygonal area lights": "实时建筑落地窗、虚拟制片 LED 柔光箱、自发光灯牌与线性变换余弦（LTC）多边形面光源",
+    "Explaining why replacing an area panel with a center point light creates an unphysical 1/r^2 singularity when h < panel width": "直观解释为何用中心点光源替代发光面板会在近场（h < 面板宽度）引发违反能量守恒的 1/r² 奇点爆炸",
+    "Reducing a 2D surface integral over an M-gon to an exact noise-free 1D sum over its M boundary edges via Stokes' theorem": "利用球面斯托克斯定理将多边形二维面积分精确降维为沿 M 条有向边界棱边的零噪点一维解析和",
+    "Evaluating edge arc-length and normal projection directly from u_k x u_{k+1} without per-edge Gram-Schmidt tangent orthogonalization": "直接由相邻顶点单位向量叉积 u_k × u_{k+1} 同步提取大圆弧长与法向投影（无需逐边 Gram-Schmidt 正交化）",
+    "Textured area lights with high-frequency video content without pre-filtered mipmap lookup over the polygon footprint": "含高频视频画面且未结合多边形视锥预滤波 Mipmap 采样的纹理发光屏幕",
+    "Contact-hardening area-light shadows (umbrae/penumbrae) without an accompanying blocker search or ray-traced visibility pass": "未配合遮挡物搜索（Blocker Search）或光线追踪可见性测试的接触硬化软阴影",
+    "Single-image diffusion portrait relighting models (IC-Light / DiLightNet)": "单张图像扩散人像重打光模型（IC-Light / DiLightNet）",
+    "Infinitely distant directional sunlight where solid angle is small and constant across the scene": "立体角极小且在全场恒定的无限远平行太阳光"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/analytic-polygon-ltc.test.ts",
+    "node scripts/benchmark-analytic-polygon-ltc.mjs"
+  ]
+}

@@ -1,0 +1,269 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Optimal Polar decomposition (F = R*S) vs Sequential Gram-Schmidt axial bias",
+  "topic_zh": "最优正交极分解（F = R·S）与顺序 Gram-Schmidt 正交化首轴偏置对比",
+  "slug": "polar-decomposition-rig",
+  "timestamp": "2026-11-11T18:12:43.007Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Orthogonal Polar Decomposition F = R*S minimizing Frobenius distance ||F - R||_F^2 versus sequential Gram-Schmidt column orthogonalization across 17 symmetric shear stations gamma in [0, 0.80]. No neural continuum physics execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.39",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "polar-equivalence-128",
+      "passed": true,
+      "detail": "128 closed-form antisymmetric-trace Polar and 12-step Higham Newton-Schulz passes agree within 1e-12 deg"
+    },
+    {
+      "name": "polar-equivalence-1024",
+      "passed": true,
+      "detail": "1024 closed-form antisymmetric-trace Polar and 12-step Higham Newton-Schulz passes agree within 1e-12 deg"
+    },
+    {
+      "name": "polar-equivalence-8192",
+      "passed": true,
+      "detail": "8192 closed-form antisymmetric-trace Polar and 12-step Higham Newton-Schulz passes agree within 1e-12 deg"
+    },
+    {
+      "name": "polar-unbiased-rotation",
+      "passed": true,
+      "detail": "17 symmetric shear stations retain exact theta*=15.00 deg (0.00 deg shear bias)"
+    },
+    {
+      "name": "gram-schmidt-axial-bias-exposed",
+      "passed": true,
+      "detail": "Sequential Gram-Schmidt injects +30.96 deg bias at gamma=0.60 (+38.66 deg max)"
+    },
+    {
+      "name": "exact-polar-angle-retained",
+      "passed": true,
+      "detail": "Polar decomposition locks station-12 rotation at theta*=15.00 deg (0.0000 stretch symmetry defect)"
+    },
+    {
+      "name": "gram-schmidt-phantom-torque-exposed",
+      "passed": true,
+      "detail": "Gram-Schmidt skews station-12 angle to 45.96 deg (+30.96 deg phantom torque)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse station scrubbing reproduces the exact polar protractor carriage world matrix"
+    },
+    {
+      "name": "atomic-angle-rejection",
+      "passed": true,
+      "detail": "out-of-range trueRotationDeg=120 is rejected while valid polar shear state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered polar carriage y-elevation matches solved rigid rotation angle height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px polar decomposition controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual station scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station co-rotational passes",
+      "count": 128,
+      "primary_ms": 0.3007999999999811,
+      "baseline_ms": 0.9628999999999905,
+      "primary_samples_ms": [
+        0.33389999999997144,
+        0.3286000000000513,
+        0.49350000000004,
+        0.3007999999999811,
+        0.29680000000007567,
+        0.2943000000000211,
+        0.29309999999998126
+      ],
+      "baseline_samples_ms": [
+        1.898300000000063,
+        1.46449999999993,
+        0.9628999999999905,
+        0.764699999999948,
+        1.008199999999988,
+        0.7409000000000106,
+        0.7840999999999667
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station co-rotational passes",
+      "count": 1024,
+      "primary_ms": 2.553099999999972,
+      "baseline_ms": 6.347300000000018,
+      "primary_samples_ms": [
+        2.8804999999999836,
+        2.765700000000038,
+        2.3688000000000784,
+        2.553099999999972,
+        2.566400000000044,
+        2.409400000000005,
+        2.391499999999951
+      ],
+      "baseline_samples_ms": [
+        6.3858000000000175,
+        6.693499999999972,
+        6.256099999999947,
+        6.309399999999982,
+        6.347300000000018,
+        7.8151000000000295,
+        6.078300000000013
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station co-rotational passes",
+      "count": 8192,
+      "primary_ms": 21.1858000000002,
+      "baseline_ms": 53.835300000000075,
+      "primary_samples_ms": [
+        21.354600000000005,
+        25.31499999999994,
+        20.586900000000014,
+        21.1858000000002,
+        20.329999999999927,
+        18.991600000000062,
+        24.17229999999995
+      ],
+      "baseline_samples_ms": [
+        70.26769999999999,
+        50.55650000000003,
+        52.54549999999995,
+        53.835300000000075,
+        52.102800000000116,
+        64.14850000000001,
+        65.29610000000002
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/polar-decomposition-rig/light-polar-decomposition-optimal.png",
+    "docs/evidence/polar-decomposition-rig/light-gram-schmidt-axial-bias.png",
+    "docs/evidence/polar-decomposition-rig/dark-polar-decomposition-optimal.png",
+    "docs/evidence/polar-decomposition-rig/dark-gram-schmidt-axial-bias.png",
+    "docs/evidence/polar-decomposition-rig/mobile.png"
+  ],
+  "primary_label": "Closed-Form Antisymmetric-Trace Polar",
+  "baseline_label": "12-Step Higham Inverse-Transpose Loop",
+  "load_unit": "17-station co-rotational passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form antisymmetric-trace Polar extraction versus 12-iteration Higham Newton-Schulz matrix-inverse-transpose loop.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "true_rotation_deg": 15,
+    "station12_gamma": 0.6,
+    "polar_angle_deg": 15,
+    "gs_angle_deg": 45.96,
+    "gs_bias_err_deg": 30.96,
+    "gs_max_bias_deg": 38.66,
+    "gs_symmetry_defect": 1.029,
+    "maximum_solver_error": 3.5527e-15
+  },
+  "protocol": {
+    "input": {
+      "station_index": 12,
+      "true_rot_deg": 15,
+      "shear_gamma": 0.6,
+      "stretch_scale": 1,
+      "mode": "polar-decomposition-optimal"
+    },
+    "output": {
+      "polar_theta_deg": 15,
+      "polar_bias_deg": 0,
+      "polar_sym_defect": 0,
+      "gs_theta_deg": 45.96,
+      "gs_bias_deg": 30.96,
+      "gs_sym_defect": 1.029
+    },
+    "function": "R* = arg min_{R∈SO(3)} ||F − R||_F² ⇒ θ* = atan2(F₁₀−F₀₁, F₀₀+F₁₁) = 15.00° (0.00° shear bias)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled symmetric shear magnitudes preserve unbiased rigid rotation extraction",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Co-rotational finite element (FEM) soft bodies, PBD Shape Matching, and 4DGS ellipsoid frame extraction",
+    "Explaining why Sequential Gram-Schmidt introduces a +atan(gamma) phantom torque under symmetric shear",
+    "Minimizing Frobenius distance ||F - R||_F^2 to guarantee a symmetric stretch tensor S = R^T * F",
+    "Closed-form 2D/planar Polar extraction atan2(F10 - F01, F00 + F11) and quaternion-based 3D Müller iteration"
+  ],
+  "not_for": [
+    "Constructing a tangent frame around a single isolated direction vector (where Bishop Parallel Transport applies)",
+    "Inverted or crushed elements with negative determinant det(F) < 0 requiring Signed SVD reflection handling",
+    "Purely rigid-body kinematics where the rotation quaternion q is already integrated directly",
+    "End-to-end neural video physics generators without explicit deformation gradients F"
+  ],
+  "locale_zh": {
+    "polar-equivalence-128": "极分解等价 128",
+    "128 closed-form antisymmetric-trace Polar and 12-step Higham Newton-Schulz passes agree within 1e-12 deg": "128 次反对称迹闭式极分解与 12 步 Higham 迭代在 1e-12° 内一致",
+    "polar-equivalence-1024": "极分解等价 1024",
+    "1024 closed-form antisymmetric-trace Polar and 12-step Higham Newton-Schulz passes agree within 1e-12 deg": "1024 次反对称迹闭式极分解与 12 步 Higham 迭代在 1e-12° 内一致",
+    "polar-equivalence-8192": "极分解等价 8192",
+    "8192 closed-form antisymmetric-trace Polar and 12-step Higham Newton-Schulz passes agree within 1e-12 deg": "8192 次反对称迹闭式极分解与 12 步 Higham 迭代在 1e-12° 内一致",
+    "polar-unbiased-rotation": "极分解无偏旋转守恒",
+    "17 symmetric shear stations retain exact theta*=15.00 deg (0.00 deg shear bias)": "17 个对称切变站点保持精确旋转角 θ*=15.00°（0.00° 切变偏置）",
+    "gram-schmidt-axial-bias-exposed": "Gram-Schmidt首轴偏置暴露",
+    "Sequential Gram-Schmidt injects +30.96 deg bias at gamma=0.60 (+38.66 deg max)": "顺序 Gram-Schmidt 在 γ=0.60 处注入 +30.96° 虚假旋转偏置（最大 +38.66°）",
+    "exact-polar-angle-retained": "极分解旋转角精确锁定",
+    "Polar decomposition locks station-12 rotation at theta*=15.00 deg (0.0000 stretch symmetry defect)": "正交极分解将第 12 站旋转角锁死在 θ*=15.00°（拉伸张量非对称缺陷 0.0000）",
+    "gram-schmidt-phantom-torque-exposed": "施密特虚假扭矩暴露",
+    "Gram-Schmidt skews station-12 angle to 45.96 deg (+30.96 deg phantom torque)": "顺序施密特使第 12 站旋转角歪斜至 45.96°（+30.96° 虚假扭矩）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse station scrubbing reproduces the exact polar protractor carriage world matrix": "逆序站点拖曳精确复现极分解滑车世界矩阵",
+    "atomic-angle-rejection": "原子角度拒绝",
+    "out-of-range trueRotationDeg=120 is rejected while valid polar shear state remains": "越界旋转角 120° 被拒绝，有效形变状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered polar carriage y-elevation matches solved rigid rotation angle height": "渲染滑车垂直高度与求解器刚体旋转角柱高完全一致",
+    "mobile-layout": "手机布局",
+    "390px polar decomposition controls fit without horizontal overflow": "390px 正交极分解控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual station scrubbing remains available": "减少动态默认静止，保留手动站点核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Closed-Form Antisymmetric-Trace Polar": "反对称迹闭式正交极分解",
+    "12-Step Higham Inverse-Transpose Loop": "12 步 Higham 逆转置牛顿迭代基线",
+    "Median of 7 alternating Node CPU runs after warmup. Closed-form antisymmetric-trace Polar extraction versus 12-iteration Higham Newton-Schulz matrix-inverse-transpose loop.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；反对称迹闭式正交极分解对比 12 步 Higham 矩阵逆转置牛顿迭代基线。",
+    "Sampled symmetric shear magnitudes preserve unbiased rigid rotation extraction": "采样对称切变幅度保持零偏置刚体旋转角提取",
+    "R* = arg min_{R∈SO(3)} ||F − R||_F² ⇒ θ* = atan2(F₁₀−F₀₁, F₀₀+F₁₁) = 15.00° (0.00° shear bias)": "最优极分解 R* = arg min ||F−R||_F² ⇒ θ* = atan2(F₁₀−F₀₁, F₀₀+F₁₁) = 15.00°（0.00° 切变偏置）",
+    "Co-rotational finite element (FEM) soft bodies, PBD Shape Matching, and 4DGS ellipsoid frame extraction": "共旋有限元（Co-Rotational FEM）软体仿真、PBD 形状匹配（Shape Matching）与 4DGS 椭球姿态提取",
+    "Explaining why Sequential Gram-Schmidt introduces a +atan(gamma) phantom torque under symmetric shear": "直观解释为何顺序 Gram-Schmidt 正交化会在对称切变下凭空引入 +atan(γ) 虚假旋转扭矩",
+    "Minimizing Frobenius distance ||F - R||_F^2 to guarantee a symmetric stretch tensor S = R^T * F": "最小化 Frobenius 范数距离 ||F−R||_F² 以保证右拉伸张量 S = RᵀF 严格对称",
+    "Closed-form 2D/planar Polar extraction atan2(F10 - F01, F00 + F11) and quaternion-based 3D Müller iteration": "闭式二维极分解 atan2(F₁₀−F₀₁, F₀₀+F₁₁) 与三维四元数 Müller 极分解迭代",
+    "Constructing a tangent frame around a single isolated direction vector (where Bishop Parallel Transport applies)": "仅围绕单一孤立切向量构造局部标架（此时应采用 Bishop 平行传输）",
+    "Inverted or crushed elements with negative determinant det(F) < 0 requiring Signed SVD reflection handling": "行列式 det(F)<0 的翻转坍缩四面体网格（需采用带符号奇异值分解 Signed SVD）",
+    "Purely rigid-body kinematics where the rotation quaternion q is already integrated directly": "直接积分旋转四元数 q 的纯刚体运动学系统",
+    "End-to-end neural video physics generators without explicit deformation gradients F": "无显式形变梯度矩阵 F 的端到端神经视频生成模型"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/polar-decomposition.test.ts",
+    "node scripts/benchmark-polar-decomposition.mjs"
+  ]
+}

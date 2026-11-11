@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#070b14"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect x="28" y="28" width="1144" height="574" rx="20" fill="#0b1324" stroke="#1e293b" stroke-width="2"/>
+
+  <text x="56" y="74" fill="#38bdf8" font-family="Inter, Segoe UI, sans-serif" font-size="15" font-weight="700" letter-spacing="1.5">
+    ROUND 36 · KAHAN COMPENSATED MODULO PHASE ACCUMULATOR VS FLOAT32 ULP STAGNATION
+  </text>
+  <text x="56" y="112" fill="#f8fafc" font-family="Inter, Segoe UI, sans-serif" font-size="24" font-weight="800">
+    Kahan + Modulo-2π (Φ₃₀₀ = 3.6000 rad, 0% Freeze) vs Naive Float32 (Φ₃₀₀ = 0.0000 rad, -100% Freeze)
+  </text>
+  <text x="56" y="142" fill="#94a3b8" font-family="Inter, Segoe UI, sans-serif" font-size="15">
+    At base epoch 2¹⁸ = 262,144.0 (float32 ULP = 0.03125), adding Δφ = 0.0120 rad (&lt; 0.5 ULP) rounds back to 262,144.0 every tick!
+  </text>
+
+  <!-- Left Panel: Kahan Modulo-2pi Compensated -->
+  <rect x="56" y="170" width="528" height="396" rx="14" fill="#0f1b33" stroke="#10b981" stroke-width="1.8"/>
+  <text x="80" y="204" fill="#34d399" font-family="Inter, Segoe UI, sans-serif" font-size="17" font-weight="700">
+    ✅ Kahan Compensation + Modulo-2π Wrapping
+  </text>
+  <text x="80" y="228" fill="#cbd5e1" font-family="Inter, Segoe UI, sans-serif" font-size="13">
+    Rebases Phase into [0, 2π) (ULP = 4.77e-7) &amp; Tracks Rounding Remainder c
+  </text>
+
+  <!-- Rising linear phase ramp left -->
+  <line x1="110" y1="425" x2="525" y2="275" stroke="#34d399" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="110" cy="425" r="7" fill="#38bdf8"/>
+  <circle cx="525" cy="275" r="8" fill="#34d399" stroke="#f8fafc" stroke-width="2"/>
+  <text x="320" y="468" fill="#34d399" font-family="Consolas, monospace" font-size="13" font-weight="700" text-anchor="middle">
+    300 Sub-Ticks × 0.0120 rad = 3.6000 rad (206.3°) · 0.0000 rad Drift
+  </text>
+
+  <rect x="80" y="492" width="480" height="54" rx="8" fill="#062e22" stroke="#10b981"/>
+  <text x="96" y="514" fill="#a7f3d0" font-family="Consolas, monospace" font-size="14" font-weight="700">
+    Sub-ULP Phase Retention: 100.00% · Stagnation Loss: 0.00%
+  </text>
+  <text x="96" y="534" fill="#6ee7b7" font-family="Consolas, monospace" font-size="13">
+    1,024 300-Tick Passes: 27.70 ms (Kahan Float32) vs 21.22 ms (BigInt Fixed)
+  </text>
+
+  <!-- Right Panel: Naive Float32 Stagnation -->
+  <rect x="616" y="170" width="528" height="396" rx="14" fill="#1c1124" stroke="#f43f5e" stroke-width="1.8"/>
+  <text x="640" y="204" fill="#fb7185" font-family="Inter, Segoe UI, sans-serif" font-size="17" font-weight="700">
+    ❌ Naive Float32 Addition: f32(262144.0 + 0.0120)
+  </text>
+  <text x="640" y="228" fill="#cbd5e1" font-family="Inter, Segoe UI, sans-serif" font-size="13">
+    Δφ = 0.0120 &lt; 0.5 ULP (0.015625) · 100% Swallowed by IEEE-754 Rounding!
+  </text>
+
+  <!-- Flatline dead phase right -->
+  <line x1="670" y1="425" x2="1085" y2="275" stroke="#475569" stroke-width="2.5" stroke-dasharray="5,4"/>
+  <line x1="670" y1="425" x2="1085" y2="425" stroke="#fb7185" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="1085" cy="425" r="8" fill="#fb7185" stroke="#f8fafc" stroke-width="2"/>
+  <text x="880" y="468" fill="#fda4af" font-family="Consolas, monospace" font-size="13" font-weight="700" text-anchor="middle">
+    300 Sub-Ticks at Base 2¹⁸: Φ = 0.0000 rad (Complete Animation Freeze!)
+  </text>
+
+  <rect x="640" y="492" width="480" height="54" rx="8" fill="#3b0a1e" stroke="#f43f5e"/>
+  <text x="656" y="514" fill="#fecdd3" font-family="Consolas, monospace" font-size="14" font-weight="700">
+    Phase Error at Station 15: 3.6000 rad · Motion Loss: -100.00%
+  </text>
+  <text x="656" y="534" fill="#fda4af" font-family="Consolas, monospace" font-size="13">
+    23-Bit Mantissa Exhausted by Large Epoch Offset → Permanent Shader Freeze
+  </text>
+</svg>

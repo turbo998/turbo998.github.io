@@ -1,0 +1,269 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "EWA anisotropic Gaussian covariance low-pass filter vs sub-pixel splat singularity rig",
+  "topic_zh": "EWA 椭圆加权平均协方差低通滤波正则化对比未正则化亚像素奇点闪烁",
+  "slug": "ewa-anisotropic-splat-rig",
+  "timestamp": "2026-11-11T20:14:04.163Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Zwicker et al. (2001) / Kerbl et al. (2023) 2x2 EWA screen-space covariance low-pass regularization (Sigma_2D + lambda*I_2) and energy-conserving determinant scaling versus unregularized perspective covariance inversion across 17 grazing tilt angles. No 3DGS scene optimization executed.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.39",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "ewa-conic-equivalence-128",
+      "passed": true,
+      "detail": "128 closed-form 2x2 Cramér inverse and Jacobi eigendecomposition passes agree within 1e-13"
+    },
+    {
+      "name": "ewa-conic-equivalence-1024",
+      "passed": true,
+      "detail": "1024 closed-form 2x2 Cramér inverse and Jacobi eigendecomposition passes agree within 1e-13"
+    },
+    {
+      "name": "ewa-conic-equivalence-8192",
+      "passed": true,
+      "detail": "8192 closed-form 2x2 Cramér inverse and Jacobi eigendecomposition passes agree within 1e-13"
+    },
+    {
+      "name": "ewa-nyquist-bound-conserved",
+      "passed": true,
+      "detail": "17 grazing stations bound inverse conic stiffness <= 3.3333 px⁻² (station-15 θ=82.5° conic⁻¹=3.1542 px⁻², 0 spikes)"
+    },
+    {
+      "name": "unregularized-needle-spike-exposed",
+      "passed": true,
+      "detail": "unregularized splatting (λ=0) explodes to 58.6955 px⁻² at θ=82.5° (18.61× spike, violating Nyquist at 6/17 stations)"
+    },
+    {
+      "name": "lowpass-covariance-dilation-retained",
+      "passed": true,
+      "detail": "EWA low-pass dilation locks station-15 (θ=82.5°) conic⁻¹ at 3.1542 px⁻²"
+    },
+    {
+      "name": "subpixel-needle-singularity-exposed",
+      "passed": true,
+      "detail": "unregularized inversion spikes station-15 conic⁻¹ to 58.6955 px⁻² (18.61× inflation)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse tilt scrubbing reproduces the exact splat caliper carriage world matrix"
+    },
+    {
+      "name": "atomic-variance-rejection",
+      "passed": true,
+      "detail": "out-of-range majorVariancePx2=99 is rejected while valid EWA splat state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered splat carriage y-elevation matches solved inverse-conic stiffness height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px EWA splat controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual tilt scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station EWA conic passes",
+      "count": 128,
+      "primary_ms": 0.03890000000001237,
+      "baseline_ms": 0.09480000000007749,
+      "primary_samples_ms": [
+        0.06140000000004875,
+        0.03890000000001237,
+        0.039000000000100954,
+        0.03779999999994743,
+        0.04169999999999163,
+        0.03719999999998436,
+        0.036100000000033106
+      ],
+      "baseline_samples_ms": [
+        0.11199999999996635,
+        0.09699999999997999,
+        0.1087999999999738,
+        0.09480000000007749,
+        0.09399999999993724,
+        0.094600000000014,
+        0.0946999999999889
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station EWA conic passes",
+      "count": 1024,
+      "primary_ms": 0.3039999999999736,
+      "baseline_ms": 0.7945999999999458,
+      "primary_samples_ms": [
+        3.369399999999928,
+        0.28899999999998727,
+        0.3039999999999736,
+        1.7805999999999358,
+        1.886600000000044,
+        0.043000000000006366,
+        0.04169999999999163
+      ],
+      "baseline_samples_ms": [
+        0.7986999999999398,
+        0.7945999999999458,
+        2.3036999999999352,
+        2.327099999999973,
+        0.4395999999999276,
+        0.6030999999999267,
+        0.6238000000000739
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station EWA conic passes",
+      "count": 8192,
+      "primary_ms": 0.37229999999999563,
+      "baseline_ms": 3.591199999999958,
+      "primary_samples_ms": [
+        0.33980000000008204,
+        0.33950000000004366,
+        0.37229999999999563,
+        0.41269999999997253,
+        0.37630000000001473,
+        0.3688999999999396,
+        0.3772000000000162
+      ],
+      "baseline_samples_ms": [
+        3.562400000000025,
+        3.591199999999958,
+        3.6374000000000706,
+        4.252200000000016,
+        4.7029999999999745,
+        3.51419999999996,
+        3.524000000000001
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/ewa-anisotropic-splat-rig/light-ewa-covariance-lowpass.png",
+    "docs/evidence/ewa-anisotropic-splat-rig/light-unregularized-singular-splat.png",
+    "docs/evidence/ewa-anisotropic-splat-rig/dark-ewa-covariance-lowpass.png",
+    "docs/evidence/ewa-anisotropic-splat-rig/dark-unregularized-singular-splat.png",
+    "docs/evidence/ewa-anisotropic-splat-rig/mobile.png"
+  ],
+  "primary_label": "Closed-Form 2x2 Cramér Conic Inverse",
+  "baseline_label": "Jacobi Trig Eigendecomposition",
+  "load_unit": "17-station EWA conic passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form 2x2 Cramér inverse of (Sigma + lambda*I) versus trigonometric Jacobi eigendecomposition baseline.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "major_variance_px2": 4,
+    "lowpass_lambda_px2": 0.3,
+    "grazing_angle_deg_station_15": 82.5,
+    "raw_minor_variance_station_15": 0.017,
+    "ewa_conic_inv_station_15": 3.1542,
+    "raw_conic_inv_station_15": 58.6955,
+    "spike_ratio_station_15": 18.61,
+    "max_spike_ratio": 76,
+    "singular_stations": 6,
+    "maximum_solver_error": 1.7764e-15
+  },
+  "protocol": {
+    "input": {
+      "station_index": 15,
+      "grazing_angle_deg": 82.5,
+      "major_variance_px2": 4,
+      "lambda_px2": 0.3,
+      "mode": "ewa-covariance-lowpass"
+    },
+    "output": {
+      "ewa_conic_inv": 3.1542,
+      "raw_conic_inv": 58.6955,
+      "spike_ratio": 18.61,
+      "singular_stations": 6
+    },
+    "function": "Σ'_2D = Σ_2D + λI₂ (λ=0.30 px²), c = √(det Σ / det Σ') → λ_max(Σ'⁻¹) ≤ 1/λ = 3.3333 px⁻²"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 grazing tilt angles (0°..88°) bound inverse conic stiffness below Nyquist ceiling 1/lambda",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "3D Gaussian Splatting (3DGS / Mip-Splatting) tile rasterizers, point-cloud surface splatting, and anisotropic texture filtering",
+    "Explaining why convolving a 2D Gaussian splat with a pixel reconstruction filter equals adding lambda = 0.30 px^2 to the diagonal of Sigma_2D",
+    "Preventing det(Sigma_2D) -> 0 division-by-zero NaNs and sub-pixel needle shimmering on distant or grazing splats",
+    "Preserving screen-space integrated opacity energy via the analytical determinant factor sqrt(det(Sigma_2D) / det(Sigma_2D + lambda*I))"
+  ],
+  "not_for": [
+    "Axis-aligned 2D UI billboards with fixed integer pixel sizes that never undergo perspective foreshortening",
+    "Isotropic point sprites that ignore 3D covariance orientation and blur equally in all directions",
+    "Offline SfM camera calibration and multi-view 3DGS spherical harmonics optimization",
+    "Ray-traced triangle meshes that do not project elliptical covariance matrices to screen space"
+  ],
+  "locale_zh": {
+    "ewa-conic-equivalence-128": "EWA二次型求逆等价 128",
+    "128 closed-form 2x2 Cramér inverse and Jacobi eigendecomposition passes agree within 1e-13": "128 次闭式 2×2 克拉默求逆与 Jacobi 特征分解基线在 1e-13 内一致",
+    "ewa-conic-equivalence-1024": "EWA二次型求逆等价 1024",
+    "1024 closed-form 2x2 Cramér inverse and Jacobi eigendecomposition passes agree within 1e-13": "1024 次闭式 2×2 克拉默求逆与 Jacobi 特征分解基线在 1e-13 内一致",
+    "ewa-conic-equivalence-8192": "EWA二次型求逆等价 8192",
+    "8192 closed-form 2x2 Cramér inverse and Jacobi eigendecomposition passes agree within 1e-13": "8192 次闭式 2×2 克拉默求逆与 Jacobi 特征分解基线在 1e-13 内一致",
+    "ewa-nyquist-bound-conserved": "EWA奈奎斯特上界守恒",
+    "17 grazing stations bound inverse conic stiffness <= 3.3333 px⁻² (station-15 θ=82.5° conic⁻¹=3.1542 px⁻², 0 spikes)": "17 个掠射站点严格满足逆二次型上界 ≤ 3.3333 px⁻²（第 15 站 θ=82.5° 刚度=3.1542 px⁻²，0 奇点）",
+    "unregularized-needle-spike-exposed": "未正则化亚像素奇点暴露",
+    "unregularized splatting (λ=0) explodes to 58.6955 px⁻² at θ=82.5° (18.61× spike, violating Nyquist at 6/17 stations)": "未正则化溅射（λ=0）在 θ=82.5° 处暴涨至 58.6955 px⁻²（虚高 18.61×，在 6/17 站违背奈奎斯特上限）",
+    "lowpass-covariance-dilation-retained": "低通协方差膨胀托底锁定",
+    "EWA low-pass dilation locks station-15 (θ=82.5°) conic⁻¹ at 3.1542 px⁻²": "EWA 低通膨胀将第 15 站（θ=82.5°）逆二次型刚度锁死在 3.1542 px⁻²",
+    "subpixel-needle-singularity-exposed": "亚像素细针奇点暴涨暴露",
+    "unregularized inversion spikes station-15 conic⁻¹ to 58.6955 px⁻² (18.61× inflation)": "未正则化求逆使第 15 站逆二次型刚度飙升至 58.6955 px⁻²（暴涨 18.61×）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse tilt scrubbing reproduces the exact splat caliper carriage world matrix": "逆序倾角拖曳精确复现溅射卡尺滑车世界矩阵",
+    "atomic-variance-rejection": "原子长轴方差拒绝",
+    "out-of-range majorVariancePx2=99 is rejected while valid EWA splat state remains": "越界长轴方差 99 被拒绝，有效 EWA 状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered splat carriage y-elevation matches solved inverse-conic stiffness height": "渲染卡尺滑车垂直高度与求解器逆二次型刚度高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px EWA splat controls fit without horizontal overflow": "390px EWA 协方差控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual tilt scrubbing remains available": "减少动态默认静止，保留手动倾角核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Closed-Form 2x2 Cramér Conic Inverse": "闭式 2×2 克拉默二次型求逆",
+    "Jacobi Trig Eigendecomposition": "Jacobi 三角函数特征分解基线",
+    "Median of 7 alternating Node CPU runs after warmup. Closed-form 2x2 Cramér inverse of (Sigma + lambda*I) versus trigonometric Jacobi eigendecomposition baseline.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；闭式 2×2 克拉默协方差求逆对比三角函数 Jacobi 特征值分解基线。",
+    "Sampled 17 grazing tilt angles (0°..88°) bound inverse conic stiffness below Nyquist ceiling 1/lambda": "采样 17 个掠射倾角（0°..88°）将逆二次型刚度严格限制在奈奎斯特上限 1/λ 以内",
+    "Σ'_2D = Σ_2D + λI₂ (λ=0.30 px²), c = √(det Σ / det Σ') → λ_max(Σ'⁻¹) ≤ 1/λ = 3.3333 px⁻²": "EWA 低通协方差正则化 Σ'_2D = Σ_2D + 0.30·I₂ + 行列式能量补偿 → 逆刚度 ≤ 3.3333 px⁻²",
+    "3D Gaussian Splatting (3DGS / Mip-Splatting) tile rasterizers, point-cloud surface splatting, and anisotropic texture filtering": "3D 高斯溅射（3DGS / Mip-Splatting）分块光栅化器、点云表面溅射与各向异性纹理滤波",
+    "Explaining why convolving a 2D Gaussian splat with a pixel reconstruction filter equals adding lambda = 0.30 px^2 to the diagonal of Sigma_2D": "直观解释为何二维高斯溅射与屏幕像素低通核卷积等价于在协方差对角线上直接加上 λ = 0.30 px²",
+    "Preventing det(Sigma_2D) -> 0 division-by-zero NaNs and sub-pixel needle shimmering on distant or grazing splats": "彻底防止远景或大掠射角细长高斯元因 det(Σ_2D) → 0 引发除零崩溃与单像素针状闪烁",
+    "Preserving screen-space integrated opacity energy via the analytical determinant factor sqrt(det(Sigma_2D) / det(Sigma_2D + lambda*I))": "利用行列式比值开方 √(det(Σ)/det(Σ+λI)) 在拓宽亚像素高斯元的同时严格保持总能量守恒",
+    "Axis-aligned 2D UI billboards with fixed integer pixel sizes that never undergo perspective foreshortening": "尺寸固定且不发生三维透视缩短的 2D UI 广告牌精灵",
+    "Isotropic point sprites that ignore 3D covariance orientation and blur equally in all directions": "忽略三维主轴方向、在所有方向无差别模糊的各向同性点精灵",
+    "Offline SfM camera calibration and multi-view 3DGS spherical harmonics optimization": "离线 SfM 相机标定与多视角 3DGS 球谐系数训练管线",
+    "Ray-traced triangle meshes that do not project elliptical covariance matrices to screen space": "不向屏幕空间投影椭圆协方差矩阵的常规三角形光线追踪网格"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/ewa-anisotropic-splat.test.ts",
+    "node scripts/benchmark-ewa-anisotropic-splat.mjs"
+  ]
+}

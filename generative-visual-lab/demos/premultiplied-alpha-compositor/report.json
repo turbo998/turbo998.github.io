@@ -1,0 +1,267 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Premultiplied associated alpha vs straight unassociated alpha under bilinear filtering",
+  "topic_zh": "预乘关联 Alpha 与直通非关联 Alpha 双线性边缘过滤对比",
+  "slug": "premultiplied-alpha-compositor",
+  "timestamp": "2026-11-11T16:35:49.169Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Porter-Duff OVER compositing under bilinear texture filtering across a 17-tap silhouette edge: Premultiplied Associated Alpha (C_tilde = alpha*C) versus Straight Unassociated Alpha color bleeding. No neural video matting execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.39",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "premult-equivalence-128",
+      "passed": true,
+      "detail": "128 division-free premultiplied OVER and unpremultiply-divide passes agree within 1e-14"
+    },
+    {
+      "name": "premult-equivalence-1024",
+      "passed": true,
+      "detail": "1024 division-free premultiplied OVER and unpremultiply-divide passes agree within 1e-14"
+    },
+    {
+      "name": "premult-equivalence-8192",
+      "passed": true,
+      "detail": "8192 division-free premultiplied OVER and unpremultiply-divide passes agree within 1e-14"
+    },
+    {
+      "name": "premult-edge-monotonicity",
+      "passed": true,
+      "detail": "17 bilinear taps retain monotonic radiance between 1.00 and 0.90 (t=0.50 midpoint I_out=0.9500)"
+    },
+    {
+      "name": "straight-alpha-dark-halo-exposed",
+      "passed": true,
+      "detail": "straight alpha drops t=0.50 midpoint radiance to 0.7000 (-0.2500 dip, -26.32% loss)"
+    },
+    {
+      "name": "exact-midpoint-radiance-retained",
+      "passed": true,
+      "detail": "premultiplied alpha locks tap-8 midpoint radiance at I_out=0.9500 (0.00% dark-halo loss)"
+    },
+    {
+      "name": "straight-fringe-dip-exposed",
+      "passed": true,
+      "detail": "straight alpha drops tap-8 radiance to 0.7000 (-26.32% dark fringe)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse tap scrubbing reproduces the exact photometer gantry world matrix"
+    },
+    {
+      "name": "atomic-radiance-rejection",
+      "passed": true,
+      "detail": "out-of-range foregroundRadiance=9.5 is rejected while valid compositor state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered photometer gantry y-elevation matches solved composited radiance height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px premultiplied-alpha compositor controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual tap scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-tap silhouette filter passes",
+      "count": 128,
+      "primary_ms": 0.08210000000002537,
+      "baseline_ms": 0.129099999999994,
+      "primary_samples_ms": [
+        10.921400000000006,
+        0.095799999999997,
+        0.2772000000000503,
+        0.08210000000002537,
+        0.06939999999997326,
+        0.06570000000004939,
+        0.06300000000004502
+      ],
+      "baseline_samples_ms": [
+        0.14400000000000546,
+        0.12920000000002574,
+        0.132000000000005,
+        0.129099999999994,
+        0.10470000000003665,
+        0.10860000000002401,
+        0.1087999999999738
+      ]
+    },
+    {
+      "load": "1024 CPU 17-tap silhouette filter passes",
+      "count": 1024,
+      "primary_ms": 0.49459999999999127,
+      "baseline_ms": 1.845199999999977,
+      "primary_samples_ms": [
+        1.930499999999995,
+        0.3697999999999979,
+        0.49459999999999127,
+        1.855799999999988,
+        1.765299999999968,
+        0.37259999999997717,
+        0.38450000000000273
+      ],
+      "baseline_samples_ms": [
+        1.9033999999999764,
+        1.7982999999999834,
+        1.9187000000000012,
+        1.845199999999977,
+        1.860900000000015,
+        1.1440999999999804,
+        0.4233000000000402
+      ]
+    },
+    {
+      "load": "8192 CPU 17-tap silhouette filter passes",
+      "count": 8192,
+      "primary_ms": 3.4331999999999425,
+      "baseline_ms": 3.3985999999999876,
+      "primary_samples_ms": [
+        3.4331999999999425,
+        3.7572999999999865,
+        3.1516000000000304,
+        3.498199999999997,
+        3.344100000000026,
+        3.600200000000086,
+        3.363299999999981
+      ],
+      "baseline_samples_ms": [
+        3.3613000000000284,
+        3.5108999999999924,
+        3.0002999999999247,
+        3.2456999999999425,
+        4.2210999999999785,
+        3.7034999999999627,
+        3.3985999999999876
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/premultiplied-alpha-compositor/light-premultiplied-associated-alpha.png",
+    "docs/evidence/premultiplied-alpha-compositor/light-straight-unassociated-alpha.png",
+    "docs/evidence/premultiplied-alpha-compositor/dark-premultiplied-associated-alpha.png",
+    "docs/evidence/premultiplied-alpha-compositor/dark-straight-unassociated-alpha.png",
+    "docs/evidence/premultiplied-alpha-compositor/mobile.png"
+  ],
+  "primary_label": "Direct Premultiplied OVER",
+  "baseline_label": "Unpremultiply Divide + Re-Blend",
+  "load_unit": "17-tap silhouette passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Division-free premultiplied Porter-Duff OVER evaluation versus per-sample alpha division unpremultiplication and re-blending.",
+  "geometry": {
+    "parts": 58,
+    "taps": 17,
+    "foreground_radiance": 1,
+    "backdrop_radiance": 0.9,
+    "premult_midpoint_radiance": 0.95,
+    "straight_midpoint_radiance": 0.7,
+    "straight_halo_dip": 0.25,
+    "straight_loss_pct": 26.32,
+    "maximum_solver_error": 0
+  },
+  "protocol": {
+    "input": {
+      "tap_index": 8,
+      "filter_t": 0.5,
+      "fg_radiance": 1,
+      "bg_radiance": 0.9,
+      "mode": "premultiplied-associated-alpha"
+    },
+    "output": {
+      "premult_i_out": 0.95,
+      "premult_halo_dip": 0,
+      "straight_i_out": 0.7,
+      "straight_halo_dip": 0.25,
+      "straight_loss_pct": 26.32
+    },
+    "function": "I_out(t) = lerp(α_A·C_A, α_B·C_B, t) + (1 − lerp(α_A, α_B, t))·B_sky → 0.00% dark halo dip"
+  },
+  "robustness": [
+    {
+      "name": "Sampled bilinear silhouette taps preserve monotonic edge radiance",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Bilinearly filtered sprites, mipmapped foliage/decals, particle smoke, and alpha-matted video overlays",
+    "Explaining why Straight Alpha squares the filter weight into (1-t)^2 and leaks transparent black (0,0,0,0) into edges",
+    "Unified single-pass rendering of both standard alpha occlusion (alpha > 0) and additive emissive fire/glow (alpha = 0)",
+    "Front-to-back or back-to-front 3D Gaussian Splatting (3DGS) splat accumulation without dark edge halos"
+  ],
+  "not_for": [
+    "Fully opaque textures (alpha == 1 everywhere) where premultiplied and straight alpha are identical",
+    "Color-picker UI inputs where artists edit unassociated RGB hex values independently of opacity slider",
+    "Neural trimap-free video matting inference (RVM / MatAnyone) that predicts alpha masks from raw RGB frames",
+    "Order-independent transparency (OIT) linked-list depth sorting without pre-sorted primitives"
+  ],
+  "locale_zh": {
+    "premult-equivalence-128": "预乘等价 128",
+    "128 division-free premultiplied OVER and unpremultiply-divide passes agree within 1e-14": "128 次无除法预乘 OVER 合成与反预乘除法基线在 1e-14 内一致",
+    "premult-equivalence-1024": "预乘等价 1024",
+    "1024 division-free premultiplied OVER and unpremultiply-divide passes agree within 1e-14": "1024 次无除法预乘 OVER 合成与反预乘除法基线在 1e-14 内一致",
+    "premult-equivalence-8192": "预乘等价 8192",
+    "8192 division-free premultiplied OVER and unpremultiply-divide passes agree within 1e-14": "8192 次无除法预乘 OVER 合成与反预乘除法基线在 1e-14 内一致",
+    "premult-edge-monotonicity": "预乘边缘单调守恒",
+    "17 bilinear taps retain monotonic radiance between 1.00 and 0.90 (t=0.50 midpoint I_out=0.9500)": "17 个双线性抽头在 1.00 与 0.90 间保持单调（t=0.50 中点 I_out=0.9500）",
+    "straight-alpha-dark-halo-exposed": "直通Alpha黑边暴露",
+    "straight alpha drops t=0.50 midpoint radiance to 0.7000 (-0.2500 dip, -26.32% loss)": "直通 Alpha 将 t=0.50 中点辐射度拉低至 0.7000（黑边凹陷 -0.2500，光能损失 -26.32%）",
+    "exact-midpoint-radiance-retained": "边缘中点辐射精确锁定",
+    "premultiplied alpha locks tap-8 midpoint radiance at I_out=0.9500 (0.00% dark-halo loss)": "预乘关联 Alpha 将第 8 抽头中点辐射度锁死在 I_out=0.9500（0.00% 黑边损失）",
+    "straight-fringe-dip-exposed": "直通黑边凹陷暴露",
+    "straight alpha drops tap-8 radiance to 0.7000 (-26.32% dark fringe)": "直通 Alpha 使第 8 抽头辐射度跌至 0.7000（-26.32% 黑边凹陷）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse tap scrubbing reproduces the exact photometer gantry world matrix": "逆序抽头拖曳精确复现光度计探针世界矩阵",
+    "atomic-radiance-rejection": "原子辐射度拒绝",
+    "out-of-range foregroundRadiance=9.5 is rejected while valid compositor state remains": "越界前景辐射度 9.5 被拒绝，有效合成器状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered photometer gantry y-elevation matches solved composited radiance height": "渲染光度计探针垂直高度与求解器合成辐射度高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px premultiplied-alpha compositor controls fit without horizontal overflow": "390px 预乘 Alpha 合成器控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual tap scrubbing remains available": "减少动态默认静止，保留手动抽头核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Direct Premultiplied OVER": "无除法预乘 Porter-Duff OVER 闭式解",
+    "Unpremultiply Divide + Re-Blend": "反预乘除法解包+二次混合基线",
+    "Median of 7 alternating Node CPU runs after warmup. Division-free premultiplied Porter-Duff OVER evaluation versus per-sample alpha division unpremultiplication and re-blending.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；无除法预乘 Porter-Duff OVER 合成对比逐采样点除以 α 反预乘再混合基线。",
+    "Sampled bilinear silhouette taps preserve monotonic edge radiance": "采样双线性轮廓抽头保持单调无凹陷边缘辐射度",
+    "I_out(t) = lerp(α_A·C_A, α_B·C_B, t) + (1 − lerp(α_A, α_B, t))·B_sky → 0.00% dark halo dip": "预乘插值合成 I_out(t) = lerp(α_A·C_A, α_B·C_B, t) + (1 − lerp(α_A, α_B, t))·B_sky → 0.00% 黑边凹陷",
+    "Bilinearly filtered sprites, mipmapped foliage/decals, particle smoke, and alpha-matted video overlays": "经双线性过滤或 Mipmap 缩放的精灵贴图、植被贴花、粒子烟雾与视频抠像图层",
+    "Explaining why Straight Alpha squares the filter weight into (1-t)^2 and leaks transparent black (0,0,0,0) into edges": "直观解释为何直通 Alpha 会将滤波权重平方为 (1−t)² 并使透明黑 (0,0,0,0) 渗入亮边",
+    "Unified single-pass rendering of both standard alpha occlusion (alpha > 0) and additive emissive fire/glow (alpha = 0)": "在单一混合状态 (ONE, 1−SRC_ALPHA) 下同时支持常规遮挡半透明与纯加法发光火焰 (α=0)",
+    "Front-to-back or back-to-front 3D Gaussian Splatting (3DGS) splat accumulation without dark edge halos": "消除 3D 高斯泼溅（3DGS）半透明椭球边缘积分时的黑圈脏边伪影",
+    "Fully opaque textures (alpha == 1 everywhere) where premultiplied and straight alpha are identical": "全不透明贴图（α≡1，此时预乘与直通 Alpha 完全相同）",
+    "Color-picker UI inputs where artists edit unassociated RGB hex values independently of opacity slider": "美术在调色板 UI 中独立编辑 RGB 色值与不透明度滑块的交互输入层",
+    "Neural trimap-free video matting inference (RVM / MatAnyone) that predicts alpha masks from raw RGB frames": "从原始 RGB 视频帧预测遮罩的神经视频抠像模型推理（RVM / MatAnyone）",
+    "Order-independent transparency (OIT) linked-list depth sorting without pre-sorted primitives": "未做图元深度排序的顺序无关半透明（OIT）链表光栅化"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/premultiplied-alpha.test.ts",
+    "node scripts/benchmark-premultiplied-alpha.mjs"
+  ]
+}

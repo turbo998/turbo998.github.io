@@ -1,0 +1,270 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Toksvig normal-variance mip roughness vs naive mip renormalization specular fireflies",
+  "topic_zh": "Toksvig 法向长度方差转粗糙度补偿与朴素法向重归一化高光闪烁对比",
+  "slug": "toksvig-normal-mip-rig",
+  "timestamp": "2026-11-11T17:26:52.885Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Toksvig (2005) / Kaplanyan (2016) normal-variance specular anti-aliasing converting unnormalized mipmapped normal length ||n_avg|| into effective roughness alpha_eff = sqrt(alpha_0^2 + (1-r)/r) versus naive mip renormalization across 17 sub-pixel bump tilt stations. No neural denoiser execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.39",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "toksvig-equivalence-128",
+      "passed": true,
+      "detail": "128 O(1) Toksvig unnormalized length and 64-tap supersampled footprint passes agree within 1e-12"
+    },
+    {
+      "name": "toksvig-equivalence-1024",
+      "passed": true,
+      "detail": "1024 O(1) Toksvig unnormalized length and 64-tap supersampled footprint passes agree within 1e-12"
+    },
+    {
+      "name": "toksvig-equivalence-8192",
+      "passed": true,
+      "detail": "8192 O(1) Toksvig unnormalized length and 64-tap supersampled footprint passes agree within 1e-12"
+    },
+    {
+      "name": "toksvig-variance-roughness-conserved",
+      "passed": true,
+      "detail": "+-35 deg micro-bump footprint widens roughness to alpha_eff=0.4932 (D=1.3084)"
+    },
+    {
+      "name": "naive-renormalize-firefly-exposed",
+      "passed": true,
+      "detail": "naive normalize(n_avg) discards ||n_avg||=0.8192, spiking peak D to 14.1471 (10.81x firefly)"
+    },
+    {
+      "name": "exact-toksvig-suppression-retained",
+      "passed": true,
+      "detail": "Toksvig mip filter suppresses 90.75% of distant specular fireflies at +-35 deg"
+    },
+    {
+      "name": "naive-specular-aliasing-exposed",
+      "passed": true,
+      "detail": "naive mip renormalization inflates station-14 NDF peak by 10.81x (D=14.1471)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse station scrubbing reproduces the exact mip carriage world matrix"
+    },
+    {
+      "name": "atomic-tilt-rejection",
+      "passed": true,
+      "detail": "out-of-range maxBumpTiltDeg=95 is rejected while valid Toksvig mip state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered mip carriage y-elevation matches solved Toksvig NDF peak height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Toksvig normal-mip controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual station scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station normal-mip passes",
+      "count": 128,
+      "primary_ms": 0.13110000000000355,
+      "baseline_ms": 2.831800000000044,
+      "primary_samples_ms": [
+        0.13110000000000355,
+        0.1278000000000361,
+        0.1057999999999879,
+        0.36870000000004666,
+        0.31569999999999254,
+        0.1423000000000343,
+        0.10030000000000427
+      ],
+      "baseline_samples_ms": [
+        3.795500000000004,
+        4.824400000000026,
+        2.4681999999999675,
+        6.158900000000017,
+        2.831800000000044,
+        1.4524000000000115,
+        1.6780999999999722
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station normal-mip passes",
+      "count": 1024,
+      "primary_ms": 0.7706999999999766,
+      "baseline_ms": 12.053500000000042,
+      "primary_samples_ms": [
+        0.8552000000000248,
+        0.8205000000000382,
+        0.8846000000000345,
+        0.7706999999999766,
+        0.7362999999999715,
+        0.7237999999999829,
+        0.7332999999999856
+      ],
+      "baseline_samples_ms": [
+        12.593500000000006,
+        12.622600000000034,
+        12.86869999999999,
+        12.053500000000042,
+        11.835999999999956,
+        10.690400000000068,
+        10.505200000000059
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station normal-mip passes",
+      "count": 8192,
+      "primary_ms": 6.596200000000181,
+      "baseline_ms": 95.89730000000009,
+      "primary_samples_ms": [
+        6.845399999999927,
+        6.844100000000026,
+        6.53570000000002,
+        6.201099999999997,
+        6.596200000000181,
+        6.606800000000021,
+        6.496599999999944
+      ],
+      "baseline_samples_ms": [
+        96.91769999999997,
+        99.3886,
+        91.56600000000003,
+        91.25300000000004,
+        95.89730000000009,
+        91.37019999999984,
+        96.33989999999994
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/toksvig-normal-mip-rig/light-toksvig-variance-roughness.png",
+    "docs/evidence/toksvig-normal-mip-rig/light-naive-mip-renormalize.png",
+    "docs/evidence/toksvig-normal-mip-rig/dark-toksvig-variance-roughness.png",
+    "docs/evidence/toksvig-normal-mip-rig/dark-naive-mip-renormalize.png",
+    "docs/evidence/toksvig-normal-mip-rig/mobile.png"
+  ],
+  "primary_label": "O(1) Toksvig Unnormalized ||n̄||",
+  "baseline_label": "64-Tap Supersampled Footprint",
+  "load_unit": "17-station normal-mip passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. O(1) Toksvig unnormalized mean normal length variance formula versus 64-tap sub-pixel footprint normal vector summation.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "base_roughness_alpha": 0.15,
+    "station14_tilt_deg": 35,
+    "mean_normal_length_r": 0.8192,
+    "effective_roughness_alpha": 0.4932,
+    "toksvig_peak_d": 1.3084,
+    "naive_peak_d": 14.1471,
+    "firefly_inflation_ratio": 10.81,
+    "firefly_suppression_pct": 90.75,
+    "maximum_solver_error": 7.212e-13
+  },
+  "protocol": {
+    "input": {
+      "station_index": 14,
+      "bump_tilt_deg": 35,
+      "base_alpha": 0.15,
+      "variance_gain": 1,
+      "mode": "toksvig-variance-roughness"
+    },
+    "output": {
+      "mean_normal_length_r": 0.8192,
+      "normal_variance_sigma_sq": 0.2208,
+      "effective_alpha": 0.4932,
+      "toksvig_peak_d": 1.3084,
+      "naive_peak_d": 14.1471,
+      "firefly_inflation_x": 10.81
+    },
+    "function": "r = ||n̄||, σ_n² = (1 − r)/r, α_eff = √(α₀² + σ_n²) → 90.75% specular firefly suppression"
+  },
+  "robustness": [
+    {
+      "name": "Sampled sub-pixel bump footprints convert normal shortening into anti-aliased roughness",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Distant normal-mapped metallic floors, carbon-fiber weaves, rippled water, and detailed CAD surfaces",
+    "Explaining why calling normalize(n_avg) without reading ||n_avg|| erases sub-pixel bump variance and causes fireflies",
+    "O(1) Toksvig variance-to-roughness mapping sigma_n^2 = (1 - ||n_avg||) / ||n_avg|| using existing hardware mipmaps",
+    "Offline roughness mipmap baking and real-time specular anti-aliasing (Specular AA) without 64x supersampling"
+  ],
+  "not_for": [
+    "BC5 two-channel tangent-space normal maps that reconstruct Z = sqrt(1 - X^2 - Y^2) without storing unnormalized length",
+    "Highly anisotropic brushed scratches requiring full 2x2 covariance matrix filtering (LEAN / CLEAN)",
+    "Sub-pixel geometric silhouette edge aliasing requiring MSAA or Halton temporal jitter",
+    "Neural spatio-temporal ray-tracing denoisers (DLSS-RR / SVGF) operating on noisy 1-spp Monte Carlo paths"
+  ],
+  "locale_zh": {
+    "toksvig-equivalence-128": "Toksvig方差等价 128",
+    "128 O(1) Toksvig unnormalized length and 64-tap supersampled footprint passes agree within 1e-12": "128 次 O(1) 未归一化法向模长公式与 64 抽头超采样足迹在 1e-12 内一致",
+    "toksvig-equivalence-1024": "Toksvig方差等价 1024",
+    "1024 O(1) Toksvig unnormalized length and 64-tap supersampled footprint passes agree within 1e-12": "1024 次 O(1) 未归一化法向模长公式与 64 抽头超采样足迹在 1e-12 内一致",
+    "toksvig-equivalence-8192": "Toksvig方差等价 8192",
+    "8192 O(1) Toksvig unnormalized length and 64-tap supersampled footprint passes agree within 1e-12": "8192 次 O(1) 未归一化法向模长公式与 64 抽头超采样足迹在 1e-12 内一致",
+    "toksvig-variance-roughness-conserved": "Toksvig方差粗糙度守恒",
+    "+-35 deg micro-bump footprint widens roughness to alpha_eff=0.4932 (D=1.3084)": "±35° 微凹凸像素足迹将有效粗糙度展宽至 α_eff=0.4932（峰值 D=1.3084）",
+    "naive-renormalize-firefly-exposed": "朴素归一化高光噪点暴露",
+    "naive normalize(n_avg) discards ||n_avg||=0.8192, spiking peak D to 14.1471 (10.81x firefly)": "朴素 normalize(n̄) 丢弃模长 ||n̄||=0.8192，使峰值 D 飙升至 14.1471（虚高 10.81 倍）",
+    "exact-toksvig-suppression-retained": "远景高光闪烁抑制锁定",
+    "Toksvig mip filter suppresses 90.75% of distant specular fireflies at +-35 deg": "Toksvig 过滤在 ±35° 微凹凸处抑制了 90.75% 的虚假高光闪烁峰值",
+    "naive-specular-aliasing-exposed": "朴素归一化高光走样暴露",
+    "naive mip renormalization inflates station-14 NDF peak by 10.81x (D=14.1471)": "朴素重归一化将第 14 站法线分布峰值虚高放大 10.81 倍（D=14.1471）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse station scrubbing reproduces the exact mip carriage world matrix": "逆序站点拖曳精确复现 Mip 滑车世界矩阵",
+    "atomic-tilt-rejection": "原子倾角拒绝",
+    "out-of-range maxBumpTiltDeg=95 is rejected while valid Toksvig mip state remains": "越界微凹凸倾角 95° 被拒绝，有效 Toksvig 状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered mip carriage y-elevation matches solved Toksvig NDF peak height": "渲染 Mip 滑车垂直高度与求解器 Toksvig 高光峰高完全一致",
+    "mobile-layout": "手机布局",
+    "390px Toksvig normal-mip controls fit without horizontal overflow": "390px Toksvig 法向过滤控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual station scrubbing remains available": "减少动态默认静止，保留手动站点核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "O(1) Toksvig Unnormalized ||n̄||": "O(1) Toksvig 未归一化模长闭式解",
+    "64-Tap Supersampled Footprint": "64 抽头亚像素足迹超采样基线",
+    "Median of 7 alternating Node CPU runs after warmup. O(1) Toksvig unnormalized mean normal length variance formula versus 64-tap sub-pixel footprint normal vector summation.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；O(1) Toksvig 未归一化法向模长方差公式对比 64 抽头亚像素法向超采样求和基线。",
+    "Sampled sub-pixel bump footprints convert normal shortening into anti-aliased roughness": "采样亚像素微凹凸足迹将法向模长缩短转化为抗锯齿粗糙度",
+    "r = ||n̄||, σ_n² = (1 − r)/r, α_eff = √(α₀² + σ_n²) → 90.75% specular firefly suppression": "模长方差提取 r = ||n̄||, σ_n² = (1 − r)/r, α_eff = √(α₀² + σ_n²) → 抑制 90.75% 虚假高光闪烁峰值",
+    "Distant normal-mapped metallic floors, carbon-fiber weaves, rippled water, and detailed CAD surfaces": "远景法线贴图金属地板、碳纤维编织纹、水波纹以及高频细节 CAD 工业表面",
+    "Explaining why calling normalize(n_avg) without reading ||n_avg|| erases sub-pixel bump variance and causes fireflies": "直观解释为何直接调用 normalize(n̄) 而不读取 ||n̄|| 会抹杀亚像素凹凸方差并引爆高光萤火虫噪点",
+    "O(1) Toksvig variance-to-roughness mapping sigma_n^2 = (1 - ||n_avg||) / ||n_avg|| using existing hardware mipmaps": "直接利用现有硬件 Mipmap 的 O(1) Toksvig 方差转粗糙度公式 σ_n² = (1 − ||n̄||) / ||n̄||",
+    "Offline roughness mipmap baking and real-time specular anti-aliasing (Specular AA) without 64x supersampling": "无需 64 倍超采样的离线粗糙度 Mipmap 烘焙与实时高光抗锯齿（Specular AA）",
+    "BC5 two-channel tangent-space normal maps that reconstruct Z = sqrt(1 - X^2 - Y^2) without storing unnormalized length": "仅存储 XY 双通道并通过 √(1−X²−Y²) 强行重构单位 Z 的 BC5 压缩法线贴图（需在离线烘焙阶段写入粗糙度 Mip）",
+    "Highly anisotropic brushed scratches requiring full 2x2 covariance matrix filtering (LEAN / CLEAN)": "需要完整 2×2 协方差矩阵过滤（LEAN / CLEAN）的强各向异性拉丝划痕",
+    "Sub-pixel geometric silhouette edge aliasing requiring MSAA or Halton temporal jitter": "需要 MSAA 或 Halton 时域亚像素抖动的几何轮廓边缘锯齿",
+    "Neural spatio-temporal ray-tracing denoisers (DLSS-RR / SVGF) operating on noisy 1-spp Monte Carlo paths": "针对 1-spp 蒙特卡洛路径追踪噪点的神经时空降噪器（DLSS-RR / SVGF）"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/toksvig-normal-mip.test.ts",
+    "node scripts/benchmark-toksvig-normal-mip.mjs"
+  ]
+}

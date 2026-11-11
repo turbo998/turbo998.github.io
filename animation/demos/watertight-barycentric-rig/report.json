@@ -1,0 +1,272 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Watertight canonical top-left edge function vs shared-edge seam crack rig",
+  "topic_zh": "水密规范端点排序与顶左填充边函数对比共边漏光裂缝",
+  "slug": "watertight-barycentric-rig",
+  "timestamp": "2026-11-11T18:42:18.400Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Pineda (1988) / Woop (2013) watertight barycentric edge functions with canonical sorted-endpoint evaluation and Top-Left tie-breaking versus naive strict interior testing across 17 shared-seam quad stations. No neural surface reconstruction execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.39",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "barycentric-equivalence-128",
+      "passed": true,
+      "detail": "128 canonical 2D edge determinant and Heron square-root passes agree within 1e-7 while keeping exact 0 on shared seams"
+    },
+    {
+      "name": "barycentric-equivalence-1024",
+      "passed": true,
+      "detail": "1024 canonical 2D edge determinant and Heron square-root passes agree within 1e-7 while keeping exact 0 on shared seams"
+    },
+    {
+      "name": "barycentric-equivalence-8192",
+      "passed": true,
+      "detail": "8192 canonical 2D edge determinant and Heron square-root passes agree within 1e-7 while keeping exact 0 on shared seams"
+    },
+    {
+      "name": "watertight-zero-seam-leaks",
+      "passed": true,
+      "detail": "17 shared-seam & interior stations all record exact 1 triangle hit (0 seam leaks, 0 double overdraws, Σλ=1.000000)"
+    },
+    {
+      "name": "naive-strict-seam-crack-exposed",
+      "passed": true,
+      "detail": "naive strict interior (e > 0) drops all 11 shared-seam stations into 0-hit background cracks (11/17 stations missed)"
+    },
+    {
+      "name": "canonical-topleft-exclusive-ownership",
+      "passed": true,
+      "detail": "Canonical Top-Left rule assigns station-8 seam midpoint exclusively to Triangle A (hits=1, leaks=0/17, overdraw=0/17)"
+    },
+    {
+      "name": "diagonal-seam-crack-exposed",
+      "passed": true,
+      "detail": "naive strict e > 0 rejects e=0 on both triangles across 11/17 shared-seam stations"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse station scrubbing reproduces the exact seam probe carriage world matrix"
+    },
+    {
+      "name": "atomic-size-rejection",
+      "passed": true,
+      "detail": "out-of-range quadHalfSize=9.0 is rejected while valid watertight barycentric state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered probe carriage y-elevation matches solved triangle hit count height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px watertight barycentric controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual station scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station shared-seam passes",
+      "count": 128,
+      "primary_ms": 0.2562000000000353,
+      "baseline_ms": 0.7816000000000258,
+      "primary_samples_ms": [
+        0.4714999999999918,
+        0.28330000000005384,
+        0.276299999999992,
+        0.2562000000000353,
+        0.25130000000001473,
+        0.2481000000000222,
+        0.25119999999992615
+      ],
+      "baseline_samples_ms": [
+        4.055700000000002,
+        0.7816000000000258,
+        0.7826999999999771,
+        0.7463000000000193,
+        0.7255999999999858,
+        0.7005000000000337,
+        1.6078999999999724
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station shared-seam passes",
+      "count": 1024,
+      "primary_ms": 1.9657999999999447,
+      "baseline_ms": 3.842999999999961,
+      "primary_samples_ms": [
+        3.008199999999988,
+        3.0271999999999935,
+        5.135400000000004,
+        0.9856999999999516,
+        1.9657999999999447,
+        1.1468999999999596,
+        1.0632000000000517
+      ],
+      "baseline_samples_ms": [
+        5.217999999999961,
+        4.232900000000086,
+        4.056299999999965,
+        3.483799999999974,
+        3.842999999999961,
+        3.5254999999999654,
+        3.530300000000011
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station shared-seam passes",
+      "count": 8192,
+      "primary_ms": 8.274400000000014,
+      "baseline_ms": 26.879200000000083,
+      "primary_samples_ms": [
+        9.750599999999963,
+        8.948499999999967,
+        8.125800000000027,
+        7.829399999999964,
+        7.749500000000012,
+        8.274400000000014,
+        8.354700000000093
+      ],
+      "baseline_samples_ms": [
+        31.6481,
+        26.404499999999985,
+        26.111499999999978,
+        26.879200000000083,
+        28.101999999999975,
+        26.0535000000001,
+        28.70900000000006
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/watertight-barycentric-rig/light-watertight-canonical-topleft.png",
+    "docs/evidence/watertight-barycentric-rig/light-naive-strict-seam-crack.png",
+    "docs/evidence/watertight-barycentric-rig/dark-watertight-canonical-topleft.png",
+    "docs/evidence/watertight-barycentric-rig/dark-naive-strict-seam-crack.png",
+    "docs/evidence/watertight-barycentric-rig/mobile.png"
+  ],
+  "primary_label": "Canonical 2D Edge Determinant",
+  "baseline_label": "Heron 3-Subtriangle Sqrt Area",
+  "load_unit": "17-station shared-seam passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Division/sqrt-free canonical sorted-endpoint 2D edge determinant versus Heron 3-subtriangle square-root area evaluation.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "quad_half_size": 2,
+    "seam_slope_ratio": 1,
+    "watertight_hits": 1,
+    "naive_hits": 0,
+    "watertight_leaks": 0,
+    "naive_leaks": 11,
+    "watertight_double_hits": 0,
+    "barycentric_sum": 1,
+    "maximum_solver_error": 2.1703e-8
+  },
+  "protocol": {
+    "input": {
+      "station_index": 8,
+      "sample_pos": [
+        0,
+        0
+      ],
+      "quad_half_size": 2,
+      "seam_slope_ratio": 1,
+      "mode": "watertight-canonical-topleft"
+    },
+    "output": {
+      "watertight_hits": 1,
+      "hit_tri_a": true,
+      "hit_tri_b": false,
+      "zero_hit_leaks": 0,
+      "naive_zero_hit_leaks": 11
+    },
+    "function": "e_BA(P) ≡ −e_AB(P), hit ⇔ e > 0 ∨ (e == 0 ∧ isTopLeft(Δx, Δy)) → hits(P) ≡ 1 (0 seam leaks)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled shared-seam and interior quad stations maintain exact 1-triangle watertight partition",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Software/compute-shader tile rasterizers, lightmap UV atlas bakers, and visibility buffer generators requiring zero 1-pixel seam cracks",
+    "Watertight ray-triangle mesh intersection (Woop et al. 2013) where rays hitting shared edges must never leak through closed manifolds",
+    "Explaining why evaluating (P−A)×(B−A) and (P−B)×(A−B) from different origins breaks floating-point antisymmetry",
+    "Eliminating per-subtriangle hypot/sqrt calls and collinear square-root cancellation drift (2.17e-8) in barycentric interpolation"
+  ],
+  "not_for": [
+    "Non-manifold meshes with un-stitched T-junctions where one vertex lies mid-edge of an adjacent triangle",
+    "Deliberate wireframe or exploded-view CAD rendering where visible inter-triangle gaps are desired",
+    "Neural SDF / Gaussian splat mesh extraction models (NeuS / SuGaR / MeshAnything)",
+    "Single isolated triangles with no shared boundary edges or adjacent primitives"
+  ],
+  "locale_zh": {
+    "barycentric-equivalence-128": "水密重心等价 128",
+    "128 canonical 2D edge determinant and Heron square-root passes agree within 1e-7 while keeping exact 0 on shared seams": "128 次规范化 2D 边行列式与海伦公式开方在 1e-7 内一致且在共边保持精确 0",
+    "barycentric-equivalence-1024": "水密重心等价 1024",
+    "1024 canonical 2D edge determinant and Heron square-root passes agree within 1e-7 while keeping exact 0 on shared seams": "1024 次规范化 2D 边行列式与海伦公式开方在 1e-7 内一致且在共边保持精确 0",
+    "barycentric-equivalence-8192": "水密重心等价 8192",
+    "8192 canonical 2D edge determinant and Heron square-root passes agree within 1e-7 while keeping exact 0 on shared seams": "8192 次规范化 2D 边行列式与海伦公式开方在 1e-7 内一致且在共边保持精确 0",
+    "watertight-zero-seam-leaks": "水密零漏光零重绘",
+    "17 shared-seam & interior stations all record exact 1 triangle hit (0 seam leaks, 0 double overdraws, Σλ=1.000000)": "17 个共边与内部站点全部精确命中唯一 1 个三角形（0 漏光裂缝，0 重复绘制，Σλ=1.000000）",
+    "naive-strict-seam-crack-exposed": "朴素内部判据共边漏光暴露",
+    "naive strict interior (e > 0) drops all 11 shared-seam stations into 0-hit background cracks (11/17 stations missed)": "朴素严格内部判据（e > 0）将共边上全部 11 个站点丢弃为 0 命中背景漏光裂缝（漏掉 11/17 站点）",
+    "canonical-topleft-exclusive-ownership": "规范顶左规则独占归属",
+    "Canonical Top-Left rule assigns station-8 seam midpoint exclusively to Triangle A (hits=1, leaks=0/17, overdraw=0/17)": "规范化顶左填充规则将第 8 站共边中点唯一判归三角形 A（命中=1，漏光=0/17，重绘=0/17）",
+    "diagonal-seam-crack-exposed": "对角接缝漏光裂缝暴露",
+    "naive strict e > 0 rejects e=0 on both triangles across 11/17 shared-seam stations": "朴素严格判据 e > 0 在两侧三角形上同时拒绝 e=0，导致 11/17 个共边站点穿孔漏光",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse station scrubbing reproduces the exact seam probe carriage world matrix": "逆序站点拖曳精确复现共边探针滑车世界矩阵",
+    "atomic-size-rejection": "原子尺寸拒绝",
+    "out-of-range quadHalfSize=9.0 is rejected while valid watertight barycentric state remains": "越界网格半宽 9.0 被拒绝，有效水密重心状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered probe carriage y-elevation matches solved triangle hit count height": "渲染探针滑车垂直高度与求解器三角形命中数高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px watertight barycentric controls fit without horizontal overflow": "390px 水密重心控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual station scrubbing remains available": "减少动态默认静止，保留手动站点核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Canonical 2D Edge Determinant": "规范化端点排序 2D 边行列式",
+    "Heron 3-Subtriangle Sqrt Area": "海伦公式三子三角形开方面积基线",
+    "Median of 7 alternating Node CPU runs after warmup. Division/sqrt-free canonical sorted-endpoint 2D edge determinant versus Heron 3-subtriangle square-root area evaluation.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；无开方规范化端点排序 2D 边行列式对比海伦公式三子三角形开方面积求值基线。",
+    "Sampled shared-seam and interior quad stations maintain exact 1-triangle watertight partition": "采样共边与内部网格站点保持精确唯一三角形水密划分",
+    "e_BA(P) ≡ −e_AB(P), hit ⇔ e > 0 ∨ (e == 0 ∧ isTopLeft(Δx, Δy)) → hits(P) ≡ 1 (0 seam leaks)": "规范端点排序反对称 e_BA(P) ≡ −e_AB(P) + 顶左填充决胜规则 → 唯一命中数 hits(P) ≡ 1（0 共边漏光）",
+    "Software/compute-shader tile rasterizers, lightmap UV atlas bakers, and visibility buffer generators requiring zero 1-pixel seam cracks": "要求零 1 像素共边漏光裂缝的软光栅化器、计算着色器分块光栅、光照贴图 UV 烘焙与可见性缓冲管线",
+    "Watertight ray-triangle mesh intersection (Woop et al. 2013) where rays hitting shared edges must never leak through closed manifolds": "光线击中共享棱边或顶点时严禁穿透封闭流形网格的水密光线-三角形求交（Woop 2013）",
+    "Explaining why evaluating (P−A)×(B−A) and (P−B)×(A−B) from different origins breaks floating-point antisymmetry": "直观解释为何分别以 A 和 B 为减法原点计算叉积会破坏浮点数符号反对称性",
+    "Eliminating per-subtriangle hypot/sqrt calls and collinear square-root cancellation drift (2.17e-8) in barycentric interpolation": "消除重心坐标插值中的海伦公式开方开销与共线点开方灾难性相消漂移（2.17e-8）",
+    "Non-manifold meshes with un-stitched T-junctions where one vertex lies mid-edge of an adjacent triangle": "存在未缝合 T 型接缝（T-Junction，顶点落在邻边中段）的非流形网格",
+    "Deliberate wireframe or exploded-view CAD rendering where visible inter-triangle gaps are desired": "故意保留三角形间隙的线框渲染或 CAD 爆炸拆解视图",
+    "Neural SDF / Gaussian splat mesh extraction models (NeuS / SuGaR / MeshAnything)": "神经隐式曲面或高斯溅射网格提取模型（NeuS / SuGaR / MeshAnything）",
+    "Single isolated triangles with no shared boundary edges or adjacent primitives": "没有任何共享邻边的孤立单三角形图元"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/watertight-barycentric.test.ts",
+    "node scripts/benchmark-watertight-barycentric.mjs"
+  ]
+}

@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#070b14"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect x="28" y="28" width="1144" height="574" rx="20" fill="#0b1324" stroke="#1e293b" stroke-width="2"/>
+
+  <text x="56" y="74" fill="#38bdf8" font-family="Inter, Segoe UI, sans-serif" font-size="15" font-weight="700" letter-spacing="1.5">
+    ROUND 45 · MULTI-CHANNEL SDF (MSDF) MEDIAN-OF-THREE CORNER PRESERVATION VS SINGLE-CHANNEL SDF ROUNDING
+  </text>
+  <text x="56" y="112" fill="#f8fafc" font-family="Inter, Segoe UI, sans-serif" font-size="23" font-weight="800">
+    MSDF Median(R,G,B) (y(0) = 2.0000u, 0% Loss) vs Single-Channel SDF (y(0) = 1.4000u, -30.00% Melted!)
+  </text>
+  <text x="56" y="142" fill="#94a3b8" font-family="Inter, Segoe UI, sans-serif" font-size="15">
+    Encoding intersecting half-planes in separate RGB channels preserves affine linearity across bilinear interpolation
+  </text>
+
+  <!-- Left Panel: MSDF Median-of-Three -->
+  <rect x="56" y="170" width="528" height="396" rx="14" fill="#0f1b33" stroke="#10b981" stroke-width="1.8"/>
+  <text x="80" y="204" fill="#34d399" font-family="Inter, Segoe UI, sans-serif" font-size="17" font-weight="700">
+    ✅ Multi-Channel SDF (MSDF): median(R, G, B)
+  </text>
+  <text x="80" y="228" fill="#cbd5e1" font-family="Inter, Segoe UI, sans-serif" font-size="13">
+    max(min(r, g), min(max(r, g), b)) · Exact Sharp Corner Intersection
+  </text>
+
+  <!-- Sharp roof corner left -->
+  <line x1="100" y1="270" x2="540" y2="270" stroke="#64748b" stroke-width="2" stroke-dasharray="5,4"/>
+  <polyline points="120,440 320,270 520,440" fill="none" stroke="#34d399" stroke-width="5" stroke-linejoin="miter"/>
+  <circle cx="320" cy="270" r="8" fill="#34d399" stroke="#f8fafc" stroke-width="2"/>
+  <text x="320" y="468" fill="#34d399" font-family="Consolas, monospace" font-size="13" font-weight="700" text-anchor="middle">
+    x=0.00 Station-8 Apex: y_MSDF = 2.0000u (0.0000u Erosion)
+  </text>
+
+  <rect x="80" y="492" width="480" height="54" rx="8" fill="#062e22" stroke="#10b981"/>
+  <text x="96" y="514" fill="#a7f3d0" font-family="Consolas, monospace" font-size="14" font-weight="700">
+    Corner Erosion: 0.0000u · Tip Loss: 0.00% Across All 17 Stations
+  </text>
+  <text x="96" y="534" fill="#6ee7b7" font-family="Consolas, monospace" font-size="13">
+    8,192 17-Station Passes: 4.73 ms (4-Op Min/Max) vs 19.41 ms (Array Sort, 4.11×)
+  </text>
+
+  <!-- Right Panel: Single-Channel SDF Bilinear Rounding -->
+  <rect x="616" y="170" width="528" height="396" rx="14" fill="#1c1124" stroke="#f43f5e" stroke-width="1.8"/>
+  <text x="640" y="204" fill="#fb7185" font-family="Inter, Segoe UI, sans-serif" font-size="17" font-weight="700">
+    ❌ Single-Channel Scalar SDF: min(d_L, d_R) Bilinear
+  </text>
+  <text x="640" y="228" fill="#cbd5e1" font-family="Inter, Segoe UI, sans-serif" font-size="13">
+    Bilinear Interpolation Across Bisector Crease Melts Sharp Tip!
+  </text>
+
+  <!-- Melted rounded roof corner right -->
+  <polyline points="680,440 880,270 1080,440" fill="none" stroke="#475569" stroke-width="2.5" stroke-dasharray="5,4"/>
+  <path d="M 680 440 L 800 338 Q 880 321 960 338 L 1080 440" fill="none" stroke="#fb7185" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="880" cy="321" r="8" fill="#fb7185" stroke="#f8fafc" stroke-width="2"/>
+  <text x="880" y="468" fill="#fda4af" font-family="Consolas, monospace" font-size="13" font-weight="700" text-anchor="middle">
+    x=0.00 Station-8 Apex: Melted to y = 1.4000u (-0.6000u Drop!)
+  </text>
+
+  <rect x="640" y="492" width="480" height="54" rx="8" fill="#3b0a1e" stroke="#f43f5e"/>
+  <text x="656" y="514" fill="#fecdd3" font-family="Consolas, monospace" font-size="14" font-weight="700">
+    Corner Tip Loss: -30.00% (-0.6000u Parabolic Rounding)
+  </text>
+  <text x="656" y="534" fill="#fda4af" font-family="Consolas, monospace" font-size="13">
+    Requires 4×–8× Higher Texture Atlas Resolution to Hide Rounding
+  </text>
+</svg>

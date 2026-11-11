@@ -1,0 +1,271 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Swept-sphere continuous collision detection (CCD) Time-of-Impact vs discrete end-of-step tunneling",
+  "topic_zh": "连续扫掠球体碰撞检测（Swept-Sphere CCD）与离散帧末穿墙漏检对比",
+  "slug": "swept-sphere-ccd-rig",
+  "timestamp": "2026-11-11T16:45:37.561Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Swept-Sphere Continuous Collision Detection (CCD) via Minkowski-expanded slab ray-casting and sub-frame Time-of-Impact (TOI tau*) reflection versus discrete end-of-step collision tunneling across an 11-step ballistic trajectory. No neural physics predictor execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.39",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "ccd-equivalence-128",
+      "passed": true,
+      "detail": "128 closed-form Minkowski slab TOI and 52-step bisection passes agree within 1e-14"
+    },
+    {
+      "name": "ccd-equivalence-1024",
+      "passed": true,
+      "detail": "1024 closed-form Minkowski slab TOI and 52-step bisection passes agree within 1e-14"
+    },
+    {
+      "name": "ccd-equivalence-8192",
+      "passed": true,
+      "detail": "8192 closed-form Minkowski slab TOI and 52-step bisection passes agree within 1e-14"
+    },
+    {
+      "name": "swept-ccd-zero-tunneling",
+      "passed": true,
+      "detail": "Swept-Sphere CCD solves exact TOI tau*=0.0500 and reflects step 5 to x=-1.1200u (0 tunneling)"
+    },
+    {
+      "name": "discrete-wall-tunneling-exposed",
+      "passed": true,
+      "detail": "discrete check tunnels through [-0.36, +0.36]u barrier to x_5=+0.4000u (max trajectory error 9.5200u)"
+    },
+    {
+      "name": "exact-toi-reflection-retained",
+      "passed": true,
+      "detail": "Swept-Sphere CCD locks step-5 reflection at x=-1.1200u via TOI tau*=0.0500"
+    },
+    {
+      "name": "bullet-through-paper-exposed",
+      "passed": true,
+      "detail": "discrete collision misses barrier at step 5 (x=+0.4000u vs -1.1200u, error 1.5200u)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse step scrubbing reproduces the exact projectile collar world matrix"
+    },
+    {
+      "name": "atomic-stride-rejection",
+      "passed": true,
+      "detail": "out-of-range stepStrideX=6.5 is rejected while valid ballistic state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered projectile collar x-translation matches solved post-impact coordinate"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px swept-sphere CCD controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual step scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 11-step ballistic TOI passes",
+      "count": 128,
+      "primary_ms": 0.036000000000001364,
+      "baseline_ms": 0.08730000000002747,
+      "primary_samples_ms": [
+        0.37639999999998963,
+        0.2586000000000013,
+        0.032399999999995543,
+        0.035599999999988086,
+        0.036500000000046384,
+        0.03550000000001319,
+        0.036000000000001364
+      ],
+      "baseline_samples_ms": [
+        0.3195999999999799,
+        0.3048000000000002,
+        0.07190000000002783,
+        0.07080000000001974,
+        0.08730000000002747,
+        0.10009999999999764,
+        0.07010000000002492
+      ]
+    },
+    {
+      "load": "1024 CPU 11-step ballistic TOI passes",
+      "count": 1024,
+      "primary_ms": 0.2666999999999575,
+      "baseline_ms": 0.6161000000000172,
+      "primary_samples_ms": [
+        0.2666999999999575,
+        0.2618999999999687,
+        1.3635999999999626,
+        0.7980000000000018,
+        0.20390000000003283,
+        0.2329000000000292,
+        0.7776999999999816
+      ],
+      "baseline_samples_ms": [
+        0.7765999999999735,
+        0.5697999999999865,
+        1.699700000000007,
+        1.680499999999995,
+        0.4482999999999606,
+        0.45599999999996044,
+        0.6161000000000172
+      ]
+    },
+    {
+      "load": "8192 CPU 11-step ballistic TOI passes",
+      "count": 8192,
+      "primary_ms": 1.6702999999999975,
+      "baseline_ms": 3.6972999999999843,
+      "primary_samples_ms": [
+        1.6702999999999975,
+        1.8641000000000076,
+        1.7744000000000142,
+        1.5638000000000147,
+        1.5822000000000003,
+        1.8092000000000326,
+        1.643199999999979
+      ],
+      "baseline_samples_ms": [
+        3.685800000000029,
+        3.6972999999999843,
+        3.7122999999999706,
+        3.723899999999958,
+        3.7339999999999804,
+        3.6487999999999943,
+        3.656400000000019
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/swept-sphere-ccd-rig/light-swept-sphere-ccd-toi.png",
+    "docs/evidence/swept-sphere-ccd-rig/light-discrete-step-tunneling.png",
+    "docs/evidence/swept-sphere-ccd-rig/dark-swept-sphere-ccd-toi.png",
+    "docs/evidence/swept-sphere-ccd-rig/dark-discrete-step-tunneling.png",
+    "docs/evidence/swept-sphere-ccd-rig/mobile.png"
+  ],
+  "primary_label": "Closed-Form Minkowski Slab TOI",
+  "baseline_label": "52-Step Binary Bisection TOI",
+  "load_unit": "11-step ballistic passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form Minkowski-expanded slab ray-cast Time-of-Impact (TOI) versus 52-iteration binary bisection root finding.",
+  "geometry": {
+    "parts": 42,
+    "steps": 11,
+    "step_stride_x": 0.8,
+    "sphere_radius": 0.24,
+    "wall_half_thickness": 0.12,
+    "minkowski_contact_x": -0.36,
+    "solved_toi_tau": 0.05,
+    "ccd_step5_x": -1.12,
+    "discrete_step5_x": 0.4,
+    "step5_position_error": 1.52,
+    "max_trajectory_error": 9.52,
+    "maximum_solver_error": 2.2204e-16
+  },
+  "protocol": {
+    "input": {
+      "step_index": 5,
+      "stride_x": 0.8,
+      "sphere_radius": 0.24,
+      "wall_half_thickness": 0.12,
+      "mode": "swept-sphere-ccd-toi"
+    },
+    "output": {
+      "minkowski_x_star": -0.36,
+      "solved_toi_tau": 0.05,
+      "ccd_x5": -1.12,
+      "discrete_x5": 0.4,
+      "discrete_tunneled": true,
+      "max_error_u": 9.52
+    },
+    "function": "τ* = (x_wall − (R + h_wall) − x_k) / Δx = 0.0500 → x_{k+1} = x* − (1 − τ*)·Δx = −1.1200u"
+  },
+  "robustness": [
+    {
+      "name": "Sampled ballistic steps prevent barrier penetration and preserve exact bounce momentum",
+      "original": 11,
+      "perturbed": 11,
+      "total": 11
+    }
+  ],
+  "good_fit": [
+    "Fast projectiles, pinball physics, cloth-vs-body collision, and high-velocity rigid bodies against thin walls",
+    "Explaining why discrete end-of-step collision tunnels whenever v * dt > 2 * (R_sphere + h_wall)",
+    "Closed-form Minkowski sum expansion (shifting sphere radius R onto the static obstacle slab) for O(1) TOI ray-casting",
+    "Sub-frame Time-of-Impact (TOI tau*) remainder velocity integration x_next = x_hit + (1 - tau*) * v_reflected * dt"
+  ],
+  "not_for": [
+    "Quasi-static resting stacks where displacement per frame is much smaller than contact skin thickness",
+    "Deformable continuum fracture or fluid splashes requiring Material Point Method (MPM / PhysGaussian) grids",
+    "Rotating non-convex mesh-vs-mesh continuous collision without conservative advancement",
+    "Generative video world models (Cosmos / Sora) that synthesize pixel frames without explicit rigid-body kinematics"
+  ],
+  "locale_zh": {
+    "ccd-equivalence-128": "连续碰撞等价 128",
+    "128 closed-form Minkowski slab TOI and 52-step bisection passes agree within 1e-14": "128 次闵可夫斯基闭式碰撞时刻求根与 52 步二分法在 1e-14 内一致",
+    "ccd-equivalence-1024": "连续碰撞等价 1024",
+    "1024 closed-form Minkowski slab TOI and 52-step bisection passes agree within 1e-14": "1024 次闵可夫斯基闭式碰撞时刻求根与 52 步二分法在 1e-14 内一致",
+    "ccd-equivalence-8192": "连续碰撞等价 8192",
+    "8192 closed-form Minkowski slab TOI and 52-step bisection passes agree within 1e-14": "8192 次闵可夫斯基闭式碰撞时刻求根与 52 步二分法在 1e-14 内一致",
+    "swept-ccd-zero-tunneling": "连续扫掠零穿墙",
+    "Swept-Sphere CCD solves exact TOI tau*=0.0500 and reflects step 5 to x=-1.1200u (0 tunneling)": "连续扫掠 CCD 解出精确碰撞时刻 τ*=0.0500 并将第 5 帧反射至 x=-1.1200u（0 穿墙）",
+    "discrete-wall-tunneling-exposed": "离散穿墙漏检暴露",
+    "discrete check tunnels through [-0.36, +0.36]u barrier to x_5=+0.4000u (max trajectory error 9.5200u)": "离散帧末检测跳过 [-0.36, +0.36]u 薄墙直接穿模至 x_5=+0.4000u（最大轨迹偏差 9.5200u）",
+    "exact-toi-reflection-retained": "碰撞反射精确锁定",
+    "Swept-Sphere CCD locks step-5 reflection at x=-1.1200u via TOI tau*=0.0500": "连续扫掠 CCD 通过碰撞时刻 τ*=0.0500 将第 5 帧反射位置锁死在 x=-1.1200u",
+    "bullet-through-paper-exposed": "子弹穿纸效应暴露",
+    "discrete collision misses barrier at step 5 (x=+0.4000u vs -1.1200u, error 1.5200u)": "离散碰撞在第 5 帧漏检薄墙（x=+0.4000u 对比 -1.1200u，位置误差 1.5200u）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse step scrubbing reproduces the exact projectile collar world matrix": "逆序帧步拖曳精确复现弹体探针世界矩阵",
+    "atomic-stride-rejection": "原子步长拒绝",
+    "out-of-range stepStrideX=6.5 is rejected while valid ballistic state remains": "越界步长 6.5 被拒绝，有效弹道状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered projectile collar x-translation matches solved post-impact coordinate": "渲染弹体探针水平位移与求解器碰撞反弹后坐标完全一致",
+    "mobile-layout": "手机布局",
+    "390px swept-sphere CCD controls fit without horizontal overflow": "390px 连续碰撞检测控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual step scrubbing remains available": "减少动态默认静止，保留手动帧步核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Closed-Form Minkowski Slab TOI": "闵可夫斯基平面闭式 TOI 求根",
+    "52-Step Binary Bisection TOI": "52 步区间二分法迭代求根基线",
+    "Median of 7 alternating Node CPU runs after warmup. Closed-form Minkowski-expanded slab ray-cast Time-of-Impact (TOI) versus 52-iteration binary bisection root finding.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；闵可夫斯基外扩平面闭式碰撞时刻（TOI）求根对比 52 步区间二分法迭代求根基线。",
+    "Sampled ballistic steps prevent barrier penetration and preserve exact bounce momentum": "采样弹道帧步阻止穿墙穿透并保持精确反弹动量",
+    "τ* = (x_wall − (R + h_wall) − x_k) / Δx = 0.0500 → x_{k+1} = x* − (1 − τ*)·Δx = −1.1200u": "闭式碰撞时刻 τ* = (x_wall − (R + h_wall) − x_k) / Δx = 0.0500 → 反射余步积分 x_{k+1} = −1.1200u",
+    "Fast projectiles, pinball physics, cloth-vs-body collision, and high-velocity rigid bodies against thin walls": "高速弹丸、弹球台物理、布料防穿模以及撞击薄壁的高速刚体仿真",
+    "Explaining why discrete end-of-step collision tunnels whenever v * dt > 2 * (R_sphere + h_wall)": "直观解释为何当单帧位移 v·Δt > 2(R + h_wall) 时离散帧末检测必然发生“子弹穿纸”穿墙漏检",
+    "Closed-form Minkowski sum expansion (shifting sphere radius R onto the static obstacle slab) for O(1) TOI ray-casting": "利用闵可夫斯基和（将球体半径 R 外扩至障碍物表面）将球体扫掠转化为 O(1) 射线求交",
+    "Sub-frame Time-of-Impact (TOI tau*) remainder velocity integration x_next = x_hit + (1 - tau*) * v_reflected * dt": "亚帧碰撞时刻 τ* 余步速度反射积分 x_{k+1} = x* + (1 − τ*)·v_ref·Δt",
+    "Quasi-static resting stacks where displacement per frame is much smaller than contact skin thickness": "单帧位移远小于接触皮肤厚度的准静态堆叠刚体",
+    "Deformable continuum fracture or fluid splashes requiring Material Point Method (MPM / PhysGaussian) grids": "需要物质点法（MPM / PhysGaussian）网格求解的连续介质破碎或流体飞溅",
+    "Rotating non-convex mesh-vs-mesh continuous collision without conservative advancement": "需要保守前进法（Conservative Advancement）求解的旋转非凸网格连续碰撞",
+    "Generative video world models (Cosmos / Sora) that synthesize pixel frames without explicit rigid-body kinematics": "无显式刚体运动学方程的纯像素生成式视频世界模型（Cosmos / Sora）"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/swept-sphere-ccd.test.ts",
+    "node scripts/benchmark-swept-sphere-ccd.mjs"
+  ]
+}

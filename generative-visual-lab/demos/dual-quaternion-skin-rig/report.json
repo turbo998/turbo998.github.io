@@ -1,0 +1,271 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Unit dual quaternion skinning (DQS) vs linear blend skinning (LBS) under wrist twist",
+  "topic_zh": "单位双四元数蒙皮（DQS）与线性混合蒙皮（LBS）手腕扭转对比",
+  "slug": "dual-quaternion-skin-rig",
+  "timestamp": "2026-11-11T16:14:23.902Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Unit Dual Quaternion Skinning (DQS) in Spin(3)⋉R³ with antipodal hemisphere alignment and direct cross-product vector action versus naive Linear Blend Skinning (LBS) matrix averaging across a 9-ring x 6-spoke forearm cuff at 160 deg twist. No neural auto-rigging or pose-corrective MLP execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.39",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "dqs-equivalence-128",
+      "passed": true,
+      "detail": "128 direct dual-quaternion cross-product and 4x4 matrix unpack passes agree within 1e-14"
+    },
+    {
+      "name": "dqs-equivalence-1024",
+      "passed": true,
+      "detail": "1024 direct dual-quaternion cross-product and 4x4 matrix unpack passes agree within 1e-14"
+    },
+    {
+      "name": "dqs-equivalence-8192",
+      "passed": true,
+      "detail": "8192 direct dual-quaternion cross-product and 4x4 matrix unpack passes agree within 1e-14"
+    },
+    {
+      "name": "dqs-volume-radius-conserved",
+      "passed": true,
+      "detail": "9 cuff rings retain exact R=1.6000u radius (max shrink 5.55e-14%)"
+    },
+    {
+      "name": "lbs-candy-wrapper-pinch-exposed",
+      "passed": true,
+      "detail": "linear blend skinning pinches w=0.50 midpoint to R=0.2778u (-82.64% radius, -96.98% area)"
+    },
+    {
+      "name": "exact-midpoint-radius-retained",
+      "passed": true,
+      "detail": "DQS locks ring-4 midpoint radius at R=1.6000u (0.00% shrink) at 160 deg twist"
+    },
+    {
+      "name": "lbs-hourglass-collapse-exposed",
+      "passed": true,
+      "detail": "LBS collapses ring-4 radius to 0.2778u (-82.64% radial pinch)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse ring scrubbing reproduces the exact caliper gauge world matrix"
+    },
+    {
+      "name": "atomic-twist-rejection",
+      "passed": true,
+      "detail": "out-of-range twistDeg=240 is rejected while valid twist rig state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered caliper gauge x-translation matches solved screw-translated ring coordinate"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px dual-quaternion skinning controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual ring scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 54-vertex sleeve skinning passes",
+      "count": 128,
+      "primary_ms": 0.48919999999998254,
+      "baseline_ms": 0.6853999999999587,
+      "primary_samples_ms": [
+        0.5679999999999836,
+        1.4704000000000406,
+        1.405399999999986,
+        0.47239999999999327,
+        0.48919999999998254,
+        0.44849999999996726,
+        0.450300000000027
+      ],
+      "baseline_samples_ms": [
+        0.8779999999999859,
+        1.2210999999999785,
+        1.526299999999992,
+        0.47380000000003974,
+        0.48399999999998045,
+        0.6853999999999587,
+        0.4457999999999629
+      ]
+    },
+    {
+      "load": "1024 CPU 54-vertex sleeve skinning passes",
+      "count": 1024,
+      "primary_ms": 3.8489999999999895,
+      "baseline_ms": 4.182099999999991,
+      "primary_samples_ms": [
+        3.8806999999999903,
+        3.8489999999999895,
+        3.8371999999999957,
+        3.858000000000004,
+        3.5797000000000025,
+        4.113200000000006,
+        3.7760999999999854
+      ],
+      "baseline_samples_ms": [
+        4.098299999999995,
+        4.182099999999991,
+        4.275500000000022,
+        4.574299999999994,
+        4.094800000000021,
+        4.298699999999997,
+        4.047799999999995
+      ]
+    },
+    {
+      "load": "8192 CPU 54-vertex sleeve skinning passes",
+      "count": 8192,
+      "primary_ms": 31.324700000000007,
+      "baseline_ms": 36.04650000000004,
+      "primary_samples_ms": [
+        30.36080000000004,
+        37.3134,
+        30.86360000000002,
+        31.76909999999998,
+        31.594100000000026,
+        30.450199999999995,
+        31.324700000000007
+      ],
+      "baseline_samples_ms": [
+        34.849500000000035,
+        33.94859999999994,
+        34.50049999999999,
+        36.34620000000007,
+        36.10119999999995,
+        49.28380000000004,
+        36.04650000000004
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/dual-quaternion-skin-rig/light-dual-quaternion-dqs.png",
+    "docs/evidence/dual-quaternion-skin-rig/light-linear-blend-lbs.png",
+    "docs/evidence/dual-quaternion-skin-rig/dark-dual-quaternion-dqs.png",
+    "docs/evidence/dual-quaternion-skin-rig/dark-linear-blend-lbs.png",
+    "docs/evidence/dual-quaternion-skin-rig/mobile.png"
+  ],
+  "primary_label": "Direct Dual-Quat Cross-Product",
+  "baseline_label": "Per-Vertex 4x4 Matrix Unpack",
+  "load_unit": "54-vertex sleeve passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Direct dual-quaternion vector cross-product evaluation versus per-vertex 4x4 homogeneous matrix unpacking and multiplication.",
+  "geometry": {
+    "parts": 60,
+    "rings": 9,
+    "spokes": 6,
+    "twist_deg": 160,
+    "axial_shift": 0.4,
+    "rest_radius": 1.6,
+    "dqs_midpoint_radius": 1.6,
+    "lbs_midpoint_radius": 0.2778,
+    "dqs_shrink_pct": 0,
+    "lbs_shrink_pct": 82.64,
+    "lbs_area_collapse_pct": 96.98,
+    "maximum_solver_error": 7.0217e-16
+  },
+  "protocol": {
+    "input": {
+      "ring_index": 4,
+      "weight_w": 0.5,
+      "twist_deg": 160,
+      "axial_shift": 0.4,
+      "rest_radius": 1.6,
+      "mode": "dual-quaternion-dqs"
+    },
+    "output": {
+      "dqs_radius": 1.6,
+      "dqs_shrink_pct": 0,
+      "lbs_radius": 0.2778,
+      "lbs_shrink_pct": 82.64,
+      "lbs_area_collapse_pct": 96.98
+    },
+    "function": "q̂*(w) = ((1−w)q̂₀ + w·sign(q₀·q₁)q̂₁) / ||b_r|| → R(w) ≡ 1.6000u (0.00% radial pinch)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled forearm cuff rings retain exact R0=1.6000u cross-section radius",
+      "original": 9,
+      "perturbed": 9,
+      "total": 9
+    }
+  ],
+  "good_fit": [
+    "Forearm pronation/supination wrist twists, shoulder rolls, and articulated character rigging up to 175 deg",
+    "Explaining why Euclidean matrix averaging (1-w)R0 + wR1 scales radius by cos(theta/2) into a candy-wrapper pinch",
+    "Direct vector cross-product dual-quaternion skinning inside WebGL2 / WebGPU vertex shaders without 4x4 matrix unpacks",
+    "Skeletal driving of 3D Gaussian Splatting avatars (GART / GauHuman / RigAnything) where volume collapse breaks splat density"
+  ],
+  "not_for": [
+    "Pure translational sliding joints without rotation where LBS and DQS are identical",
+    "Extreme 180-degree antipodal singular twists without intermediate twist-bone decomposition",
+    "Secondary muscle bulging or cloth wrinkling that requires pose-space deformation (PSD) or finite-element simulation",
+    "Uncalibrated monocular video-to-video diffusion transfer without skeletal bone weights"
+  ],
+  "locale_zh": {
+    "dqs-equivalence-128": "双四元数等价 128",
+    "128 direct dual-quaternion cross-product and 4x4 matrix unpack passes agree within 1e-14": "128 次双四元数直接叉积作用与 4×4 矩阵解包在 1e-14 内一致",
+    "dqs-equivalence-1024": "双四元数等价 1024",
+    "1024 direct dual-quaternion cross-product and 4x4 matrix unpack passes agree within 1e-14": "1024 次双四元数直接叉积作用与 4×4 矩阵解包在 1e-14 内一致",
+    "dqs-equivalence-8192": "双四元数等价 8192",
+    "8192 direct dual-quaternion cross-product and 4x4 matrix unpack passes agree within 1e-14": "8192 次双四元数直接叉积作用与 4×4 矩阵解包在 1e-14 内一致",
+    "dqs-volume-radius-conserved": "双四元数截面半径守恒",
+    "9 cuff rings retain exact R=1.6000u radius (max shrink 5.55e-14%)": "9 个前臂环保持精确 R=1.6000u 半径（最大塌缩 5.55e-14%）",
+    "lbs-candy-wrapper-pinch-exposed": "线性混合糖纸坍缩暴露",
+    "linear blend skinning pinches w=0.50 midpoint to R=0.2778u (-82.64% radius, -96.98% area)": "线性混合蒙皮在 w=0.50 中点将半径捏瘪至 R=0.2778u（半径塌缩 -82.64%，面积坍缩 -96.98%）",
+    "exact-midpoint-radius-retained": "手腕中点半径精确锁定",
+    "DQS locks ring-4 midpoint radius at R=1.6000u (0.00% shrink) at 160 deg twist": "单位双四元数在 160° 扭转下将第 4 环中点半径锁死在 R=1.6000u（0.00% 塌缩）",
+    "lbs-hourglass-collapse-exposed": "线性混合沙漏坍缩暴露",
+    "LBS collapses ring-4 radius to 0.2778u (-82.64% radial pinch)": "LBS 使第 4 环半径坍缩至 0.2778u（-82.64% 径向捏瘪）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse ring scrubbing reproduces the exact caliper gauge world matrix": "逆序环位拖曳精确复现卡尺探针世界矩阵",
+    "atomic-twist-rejection": "原子扭角拒绝",
+    "out-of-range twistDeg=240 is rejected while valid twist rig state remains": "越界扭转角 240° 被拒绝，有效蒙皮状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered caliper gauge x-translation matches solved screw-translated ring coordinate": "渲染卡尺探针轴向位移与求解器螺旋平移环坐标完全一致",
+    "mobile-layout": "手机布局",
+    "390px dual-quaternion skinning controls fit without horizontal overflow": "390px 双四元数蒙皮控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual ring scrubbing remains available": "减少动态默认静止，保留手动环位核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Direct Dual-Quat Cross-Product": "双四元数直接向量叉积闭式解",
+    "Per-Vertex 4x4 Matrix Unpack": "逐顶点 4×4 矩阵解包乘法基线",
+    "Median of 7 alternating Node CPU runs after warmup. Direct dual-quaternion vector cross-product evaluation versus per-vertex 4x4 homogeneous matrix unpacking and multiplication.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；双四元数直接向量叉积求解对比逐顶点解包 4×4 齐次矩阵乘法基线。",
+    "Sampled forearm cuff rings retain exact R0=1.6000u cross-section radius": "采样前臂袖套环保持精确 R0=1.6000u 横截面半径",
+    "q̂*(w) = ((1−w)q̂₀ + w·sign(q₀·q₁)q̂₁) / ||b_r|| → R(w) ≡ 1.6000u (0.00% radial pinch)": "单位双四元数归一化 q̂*(w) = ((1−w)q̂₀ + w·sign(q₀·q₁)q̂₁) / ||b_r|| → 截面半径恒为 R(w) ≡ 1.6000u（0.00% 径向塌缩）",
+    "Forearm pronation/supination wrist twists, shoulder rolls, and articulated character rigging up to 175 deg": "高达 175° 的前臂内旋/外旋手腕扭转、肩部翻转与关节角色骨骼蒙皮",
+    "Explaining why Euclidean matrix averaging (1-w)R0 + wR1 scales radius by cos(theta/2) into a candy-wrapper pinch": "直观解释为何欧氏空间矩阵平均 (1-w)R0+wR1 会按 cos(θ/2) 缩水导致“糖纸拧巴坍缩”",
+    "Direct vector cross-product dual-quaternion skinning inside WebGL2 / WebGPU vertex shaders without 4x4 matrix unpacks": "WebGL2 / WebGPU 顶点着色器中无需解包 4×4 矩阵的双四元数直接向量叉积变换",
+    "Skeletal driving of 3D Gaussian Splatting avatars (GART / GauHuman / RigAnything) where volume collapse breaks splat density": "驱动 3D 高斯数字人（GART / GauHuman / RigAnything）骨骼变形以防止关节处高斯椭球坍缩",
+    "Pure translational sliding joints without rotation where LBS and DQS are identical": "不含旋转的纯平移滑块关节（此时 LBS 与 DQS 完全等价）",
+    "Extreme 180-degree antipodal singular twists without intermediate twist-bone decomposition": "未配置中间辅助扭转骨（Twist Bone）的 180° 对径奇异扭转",
+    "Secondary muscle bulging or cloth wrinkling that requires pose-space deformation (PSD) or finite-element simulation": "需要姿态空间形变（PSD）或有限元仿真的肌肉隆起与衣物褶皱",
+    "Uncalibrated monocular video-to-video diffusion transfer without skeletal bone weights": "无骨骼蒙皮权重的非标定单目视频扩散动作迁移"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/dual-quaternion-skin.test.ts",
+    "node scripts/benchmark-dual-quaternion-skin.mjs"
+  ]
+}

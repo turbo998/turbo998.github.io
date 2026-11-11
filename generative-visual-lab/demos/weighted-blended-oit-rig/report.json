@@ -1,0 +1,271 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Weighted Blended OIT (WBOIT) commutative depth-weighted transparency vs unsorted OVER inversion rig",
+  "topic_zh": "加权混合顺序无关半透明（WBOIT）可交换深度加权累加对比未排序 OVER 前后倒置",
+  "slug": "weighted-blended-oit-rig",
+  "timestamp": "2026-11-11T21:10:38.667Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic McGuire & Bavoil (2013) Weighted Blended Order-Independent Transparency (WBOIT) commutative depth-weighted accumulation versus unsorted Porter-Duff OVER blending and per-pixel A-Buffer sorting across 17 layer depth separations. No neural layer decomposition execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.39",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "wboit-commutative-equivalence-128",
+      "passed": true,
+      "detail": "128 single-pass commutative WBOIT and sorted A-Buffer passes agree within 1e-15"
+    },
+    {
+      "name": "wboit-commutative-equivalence-1024",
+      "passed": true,
+      "detail": "1024 single-pass commutative WBOIT and sorted A-Buffer passes agree within 1e-15"
+    },
+    {
+      "name": "wboit-commutative-equivalence-8192",
+      "passed": true,
+      "detail": "8192 single-pass commutative WBOIT and sorted A-Buffer passes agree within 1e-15"
+    },
+    {
+      "name": "wboit-order-independence-conserved",
+      "passed": true,
+      "detail": "17 depth separations maintain 0.0000 submission-order discrepancy (station-8 C_WBOIT=0.8375)"
+    },
+    {
+      "name": "unsorted-over-inversion-exposed",
+      "passed": true,
+      "detail": "naive unsorted OVER drops station-8 composite from 0.7031 to 0.2813 (−0.4219 / −60.00% inversion pop)"
+    },
+    {
+      "name": "commutative-oit-composite-retained",
+      "passed": true,
+      "detail": "WBOIT locks station-8 (z_far=3.25m) at C_out=0.8375 (0.0000 order flip)"
+    },
+    {
+      "name": "front-to-back-over-pop-exposed",
+      "passed": true,
+      "detail": "unsorted OVER inverts station-8 to C_out=0.2813 (−0.4219 pop)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse station scrubbing reproduces the exact OIT probe carriage world matrix"
+    },
+    {
+      "name": "atomic-color-rejection",
+      "passed": true,
+      "detail": "out-of-range nearLayerColor=9.0 is rejected while valid WBOIT state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered OIT carriage y-elevation matches solved composite radiance height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px WBOIT controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual station scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station OIT passes",
+      "count": 128,
+      "primary_ms": 0.06090000000006057,
+      "baseline_ms": 0.4375,
+      "primary_samples_ms": [
+        0.06529999999997926,
+        0.06329999999991287,
+        0.06090000000006057,
+        0.048800000000028376,
+        0.040199999999913416,
+        0.034300000000030195,
+        0.07089999999993779
+      ],
+      "baseline_samples_ms": [
+        1.1406000000000631,
+        1.169300000000021,
+        2.3940000000000055,
+        0.33400000000006,
+        0.30750000000000455,
+        0.27719999999999345,
+        0.4375
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station OIT passes",
+      "count": 1024,
+      "primary_ms": 0.15629999999998745,
+      "baseline_ms": 2.747700000000009,
+      "primary_samples_ms": [
+        0.24750000000005912,
+        0.1552000000000362,
+        0.15629999999998745,
+        0.15950000000009368,
+        0.15859999999997854,
+        0.15499999999997272,
+        0.14870000000007622
+      ],
+      "baseline_samples_ms": [
+        2.747700000000009,
+        3.5278999999999314,
+        2.7667999999999893,
+        2.695699999999988,
+        2.7916000000000167,
+        2.7090999999999212,
+        2.6269000000000915
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station OIT passes",
+      "count": 8192,
+      "primary_ms": 1.2609999999999673,
+      "baseline_ms": 22.249199999999973,
+      "primary_samples_ms": [
+        1.2910000000000537,
+        1.2734000000000378,
+        1.1921000000000959,
+        1.2363000000000284,
+        1.2609999999999673,
+        1.2086000000000467,
+        1.4475999999999658
+      ],
+      "baseline_samples_ms": [
+        20.963300000000004,
+        21.523399999999924,
+        22.249199999999973,
+        20.520999999999958,
+        27.827499999999986,
+        22.54079999999999,
+        27.0394
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/weighted-blended-oit-rig/light-wboit-commutative-depth-weighted.png",
+    "docs/evidence/weighted-blended-oit-rig/light-naive-unsorted-alpha-over.png",
+    "docs/evidence/weighted-blended-oit-rig/dark-wboit-commutative-depth-weighted.png",
+    "docs/evidence/weighted-blended-oit-rig/dark-naive-unsorted-alpha-over.png",
+    "docs/evidence/weighted-blended-oit-rig/mobile.png"
+  ],
+  "primary_label": "Single-Pass Commutative WBOIT",
+  "baseline_label": "Per-Pixel Sorted A-Buffer Array",
+  "load_unit": "17-station OIT passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Single-pass commutative WBOIT accumulation versus per-pixel A-Buffer array allocation and depth comparison sort.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "near_color": 0.9,
+    "far_color": 0.15,
+    "layer_alpha": 0.75,
+    "far_depth_z_station_8": 3.25,
+    "sorted_over_color": 0.7031,
+    "wboit_color_station_8": 0.8375,
+    "unsorted_over_color": 0.2813,
+    "unsorted_order_flip_error": 0.4219,
+    "maximum_solver_error": 0
+  },
+  "protocol": {
+    "input": {
+      "station_index": 8,
+      "z_near": 1,
+      "z_far": 3.25,
+      "c_near": 0.9,
+      "c_far": 0.15,
+      "alpha": 0.75,
+      "mode": "wboit-commutative-depth-weighted"
+    },
+    "output": {
+      "sorted_over_color": 0.7031,
+      "wboit_forward_color": 0.8375,
+      "wboit_reversed_color": 0.8375,
+      "unsorted_over_color": 0.2813,
+      "order_flip_discrepancy": 0
+    },
+    "function": "C_WBOIT = (1 − Π(1−α_k)) · (Σ α_k C_k w(z_k)) / (Σ α_k w(z_k)) → Order Flip ΔC ≡ 0.0000"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 depth separations maintain bit-exact commutative order independence between (Near,Far) and (Far,Near)",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Overlapping translucent CAD cutaways, automotive glass assemblies, particle smoke plumes, and instanced foliage/hair where per-triangle sorting is impossible",
+    "Explaining why decomposing OVER into additive weighted color Σ(αCw(z)) and multiplicative revealage Π(1-α) achieves strict commutativity",
+    "Using fixed hardware blend states (GL_ONE, GL_ONE and GL_ZERO, GL_ONE_MINUS_SRC_COLOR) in a single geometry pass without atomic linked lists",
+    "Eliminating sudden front-to-back color popping when camera rotation flips bounding-box sort order"
+  ],
+  "not_for": [
+    "Near-opaque overlapping decals (alpha > 0.95) with conflicting colors where exact per-pixel K-Buffer / Depth Peeling ordering is required",
+    "Single non-overlapping transparent layers where standard sorted premultiplied OVER is already exact",
+    "Neural multi-layer alpha matting and image decomposition networks",
+    "Fully opaque geometry passes using hardware Z-buffer depth writes"
+  ],
+  "locale_zh": {
+    "wboit-commutative-equivalence-128": "WBOIT无排序等价 128",
+    "128 single-pass commutative WBOIT and sorted A-Buffer passes agree within 1e-15": "128 次单遍可交换 WBOIT 与排序 A-Buffer 基线在 1e-15 内一致",
+    "wboit-commutative-equivalence-1024": "WBOIT无排序等价 1024",
+    "1024 single-pass commutative WBOIT and sorted A-Buffer passes agree within 1e-15": "1024 次单遍可交换 WBOIT 与排序 A-Buffer 基线在 1e-15 内一致",
+    "wboit-commutative-equivalence-8192": "WBOIT无排序等价 8192",
+    "8192 single-pass commutative WBOIT and sorted A-Buffer passes agree within 1e-15": "8192 次单遍可交换 WBOIT 与排序 A-Buffer 基线在 1e-15 内一致",
+    "wboit-order-independence-conserved": "WBOIT提交顺序无关守恒",
+    "17 depth separations maintain 0.0000 submission-order discrepancy (station-8 C_WBOIT=0.8375)": "17 个深度间距全部保持 0.0000 提交顺序跳变差（第 8 站 C_WBOIT=0.8375）",
+    "unsorted-over-inversion-exposed": "未排序OVER前后倒置暴露",
+    "naive unsorted OVER drops station-8 composite from 0.7031 to 0.2813 (−0.4219 / −60.00% inversion pop)": "朴素未排序 OVER 将第 8 站合成亮度从 0.7031 压低至 0.2813（倒置误差 −0.4219 / −60.00%）",
+    "commutative-oit-composite-retained": "可交换WBOIT合成锁定",
+    "WBOIT locks station-8 (z_far=3.25m) at C_out=0.8375 (0.0000 order flip)": "WBOIT 将第 8 站（z_far=3.25m）锁死在 C_out=0.8375（0.0000 顺序跳变）",
+    "front-to-back-over-pop-exposed": "前后反序OVER跳变暴露",
+    "unsorted OVER inverts station-8 to C_out=0.2813 (−0.4219 pop)": "未排序 OVER 将第 8 站翻反至 C_out=0.2813（跳变误差 −0.4219）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse station scrubbing reproduces the exact OIT probe carriage world matrix": "逆序站点拖曳精确复现 OIT 探针滑车世界矩阵",
+    "atomic-color-rejection": "原子颜色拒绝",
+    "out-of-range nearLayerColor=9.0 is rejected while valid WBOIT state remains": "越界近景亮度 9.0 被拒绝，有效 WBOIT 状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered OIT carriage y-elevation matches solved composite radiance height": "渲染 OIT 滑车垂直高度与求解器合成亮度高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px WBOIT controls fit without horizontal overflow": "390px WBOIT 控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual station scrubbing remains available": "减少动态默认静止，保留手动站点核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Single-Pass Commutative WBOIT": "单遍可交换深度加权 WBOIT",
+    "Per-Pixel Sorted A-Buffer Array": "逐像素数组排序 A-Buffer 基线",
+    "Median of 7 alternating Node CPU runs after warmup. Single-pass commutative WBOIT accumulation versus per-pixel A-Buffer array allocation and depth comparison sort.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；单遍无排序可交换 WBOIT 累加对比逐像素 A-Buffer 数组分配与比较排序基线。",
+    "Sampled 17 depth separations maintain bit-exact commutative order independence between (Near,Far) and (Far,Near)": "采样 17 个深度间距在正序 (Near,Far) 与逆序 (Far,Near) 提交下保持比特级可交换顺序无关性",
+    "C_WBOIT = (1 − Π(1−α_k)) · (Σ α_k C_k w(z_k)) / (Σ α_k w(z_k)) → Order Flip ΔC ≡ 0.0000": "可交换加权颜色累加 + 透射率累乘 → 提交顺序反转跳变差 ΔC ≡ 0.0000",
+    "Overlapping translucent CAD cutaways, automotive glass assemblies, particle smoke plumes, and instanced foliage/hair where per-triangle sorting is impossible": "无法逐三角形排序的多层交错 CAD 机械半透明剖面、汽车玻璃总成、粒子烟雾与实例化植被/毛发",
+    "Explaining why decomposing OVER into additive weighted color Σ(αCw(z)) and multiplicative revealage Π(1-α) achieves strict commutativity": "直观解释为何将非交换 OVER 分解为深度加权加法累加与透射率乘法累乘能实现严格交换律",
+    "Using fixed hardware blend states (GL_ONE, GL_ONE and GL_ZERO, GL_ONE_MINUS_SRC_COLOR) in a single geometry pass without atomic linked lists": "仅凭固定硬件混合状态在单遍几何通道内完成顺序无关半透明（无需原子链表或多次深度剥离）",
+    "Eliminating sudden front-to-back color popping when camera rotation flips bounding-box sort order": "彻底根除相机旋转跨过包围盒中心时引发的前后图层颜色突然互换跳变",
+    "Near-opaque overlapping decals (alpha > 0.95) with conflicting colors where exact per-pixel K-Buffer / Depth Peeling ordering is required": "不透明度极高（α > 0.95）且颜色剧烈冲突的多层贴纸（需精确深度剥离 Depth Peeling）",
+    "Single non-overlapping transparent layers where standard sorted premultiplied OVER is already exact": "互不重叠的单层简单半透明表面（常规预乘 OVER 混合即可精确处理）",
+    "Neural multi-layer alpha matting and image decomposition networks": "神经多层图像分解或抠像推理网络",
+    "Fully opaque geometry passes using hardware Z-buffer depth writes": "开启硬件深度写入的常规不透明几何渲染通道"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/weighted-blended-oit.test.ts",
+    "node scripts/benchmark-weighted-blended-oit.mjs"
+  ]
+}

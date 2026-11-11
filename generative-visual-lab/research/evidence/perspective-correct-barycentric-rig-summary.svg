@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#070b14"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect x="28" y="28" width="1144" height="574" rx="20" fill="#0b1324" stroke="#1e293b" stroke-width="2"/>
+
+  <text x="56" y="74" fill="#38bdf8" font-family="Inter, Segoe UI, sans-serif" font-size="15" font-weight="700" letter-spacing="1.5">
+    ROUND 54 · PERSPECTIVE-CORRECT HYPERBOLIC (u/w)/(1/w) INTERPOLATION VS AFFINE TEXTURE SWIM
+  </text>
+  <text x="56" y="112" fill="#f8fafc" font-family="Inter, Segoe UI, sans-serif" font-size="22" font-weight="800">
+    Perspective (u/w)/(1/w) (s=0.50 u = 0.1000, 0.0000 Swim) vs Screen Affine (u = 0.5000, +0.4000 Warp, 17.22× Faster)
+  </text>
+  <text x="56" y="142" fill="#94a3b8" font-family="Inter, Segoe UI, sans-serif" font-size="15">
+    Because perspective projection divides by z, 1/z and u/z are linear in screen space while raw u follows a steep hyperbola
+  </text>
+
+  <!-- Left Panel: Perspective-Correct Hyperbolic Interpolation -->
+  <rect x="56" y="170" width="528" height="396" rx="14" fill="#0f1b33" stroke="#10b981" stroke-width="1.8"/>
+  <text x="80" y="204" fill="#34d399" font-family="Inter, Segoe UI, sans-serif" font-size="17" font-weight="700">
+    ✅ Perspective-Correct Hyperbolic: (u/z) / (1/z)
+  </text>
+  <text x="80" y="228" fill="#cbd5e1" font-family="Inter, Segoe UI, sans-serif" font-size="13">
+    z₀ = 1.0m → z₁ = 9.0m (9:1 Foreshortening) · Exact World Hyperbola
+  </text>
+
+  <!-- True hyperbolic curve left -->
+  <line x1="105" y1="435" x2="520" y2="265" stroke="#475569" stroke-width="2" stroke-dasharray="5,4"/>
+  <path d="M 105 435 Q 410 430 520 265" fill="none" stroke="#34d399" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="312" cy="418" r="8" fill="#34d399" stroke="#f8fafc" stroke-width="2"/>
+  <text x="320" y="468" fill="#34d399" font-family="Consolas, monospace" font-size="13" font-weight="700" text-anchor="middle">
+    Screen Midpoint s=0.50: z = 1.8000m → Exact u = 0.1000 (0.0000 Swim)
+  </text>
+
+  <rect x="80" y="492" width="480" height="54" rx="8" fill="#062e22" stroke="#10b981"/>
+  <text x="96" y="514" fill="#a7f3d0" font-family="Consolas, monospace" font-size="14" font-weight="700">
+    UV Swim Error: 0.0000 Across All 17 Screen Stations
+  </text>
+  <text x="96" y="534" fill="#6ee7b7" font-family="Consolas, monospace" font-size="13">
+    8,192 17-Station Passes: 0.46 ms (Recip-W Lerp) vs 7.89 ms (3D Ray-Plane, 17.22×)
+  </text>
+
+  <!-- Right Panel: Naive Screen-Space Affine Swim -->
+  <rect x="616" y="170" width="528" height="396" rx="14" fill="#1c1124" stroke="#f43f5e" stroke-width="1.8"/>
+  <text x="640" y="204" fill="#fb7185" font-family="Inter, Segoe UI, sans-serif" font-size="17" font-weight="700">
+    ❌ Naive Screen-Space Affine: u_aff(s) = (1−s)u₀ + s·u₁
+  </text>
+  <text x="640" y="228" fill="#cbd5e1" font-family="Inter, Segoe UI, sans-serif" font-size="13">
+    Ignores 9:1 Depth Foreshortening · Warps Midpoint by +400%!
+  </text>
+
+  <!-- Diagonal affine line vs hyperbola right -->
+  <path d="M 665 435 Q 970 430 1080 265" fill="none" stroke="#475569" stroke-width="2.5" stroke-dasharray="5,4"/>
+  <line x1="665" y1="435" x2="1080" y2="265" stroke="#fb7185" stroke-width="5" stroke-linecap="round"/>
+  <line x1="872" y1="418" x2="872" y2="350" stroke="#fda4af" stroke-width="3" stroke-dasharray="4,3"/>
+  <circle cx="872" cy="350" r="8" fill="#fb7185" stroke="#f8fafc" stroke-width="2"/>
+  <text x="880" y="468" fill="#fda4af" font-family="Consolas, monospace" font-size="13" font-weight="700" text-anchor="middle">
+    Screen Midpoint s=0.50: Warped to u = 0.5000 (+0.4000 UV Swim!)
+  </text>
+
+  <rect x="640" y="492" width="480" height="54" rx="8" fill="#3b0a1e" stroke="#f43f5e"/>
+  <text x="656" y="514" fill="#fecdd3" font-family="Consolas, monospace" font-size="14" font-weight="700">
+    Peak UV Distortion: +0.5000 (50% of Entire Texture Span!)
+  </text>
+  <text x="656" y="534" fill="#fda4af" font-family="Consolas, monospace" font-size="13">
+    Causes PS1-Style Diagonal Checkerboard Kinking &amp; Camera Swim
+  </text>
+</svg>

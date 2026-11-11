@@ -1,0 +1,266 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Kahan compensated modulo-2pi phase accumulation vs float32 ULP stagnation",
+  "topic_zh": "Kahan 补偿 + 2π 周期取模相位累加与单精度 Float32 ULP 吞没冻结对比",
+  "slug": "kahan-phase-accumulator",
+  "timestamp": "2026-11-11T17:17:52.997Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic IEEE-754 binary32 (Math.fround) Kahan compensated summation with periodic modulo-2pi rebase near zero versus naive float32 accumulation at large base epoch 2^18 = 262,144.0 across 300 sub-ticks. No long-horizon video diffusion execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.39",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "kahan-equivalence-64",
+      "passed": true,
+      "detail": "64 float32 Kahan modulo-2pi and scaled BigInt fixed-point passes agree within 1e-6 rad"
+    },
+    {
+      "name": "kahan-equivalence-256",
+      "passed": true,
+      "detail": "256 float32 Kahan modulo-2pi and scaled BigInt fixed-point passes agree within 1e-6 rad"
+    },
+    {
+      "name": "kahan-equivalence-1024",
+      "passed": true,
+      "detail": "1024 float32 Kahan modulo-2pi and scaled BigInt fixed-point passes agree within 1e-6 rad"
+    },
+    {
+      "name": "kahan-modulo-precision-retained",
+      "passed": true,
+      "detail": "300 sub-ticks of 0.0120 rad accumulate to exact Phi=3.6000 rad (0.00% ULP loss)"
+    },
+    {
+      "name": "float32-ulp-stagnation-exposed",
+      "passed": true,
+      "detail": "naive float32 at epoch 2^18 (ULP=0.03125) swallows 0.0120 rad completely, freezing at 0.0000 rad (-100.00% motion loss)"
+    },
+    {
+      "name": "exact-horizon-phase-retained",
+      "passed": true,
+      "detail": "Kahan modulo accumulator locks station-15 phase at Phi=3.6000 rad (206.3 deg)"
+    },
+    {
+      "name": "naive-clock-freeze-exposed",
+      "passed": true,
+      "detail": "naive float32 clock freezes at 0.0000 rad across all 300 ticks (3.6000 rad error)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse station scrubbing reproduces the exact chronometer probe world matrix"
+    },
+    {
+      "name": "atomic-epoch-rejection",
+      "passed": true,
+      "detail": "out-of-range baseEpochExponent=30 is rejected while valid chronometer state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered chronometer probe y-elevation matches solved Kahan phase height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Kahan phase accumulator controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual station scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "64 CPU 300-tick chronometer passes",
+      "count": 64,
+      "primary_ms": 1.9325000000000045,
+      "baseline_ms": 1.502299999999991,
+      "primary_samples_ms": [
+        2.001800000000003,
+        1.9325000000000045,
+        1.9904000000000224,
+        2.0067999999999984,
+        1.8829000000000065,
+        1.9295999999999935,
+        1.8816000000000486
+      ],
+      "baseline_samples_ms": [
+        3.9150999999999954,
+        4.208499999999958,
+        1.4242000000000417,
+        1.396000000000015,
+        1.502299999999991,
+        1.351699999999994,
+        1.5025999999999726
+      ]
+    },
+    {
+      "load": "256 CPU 300-tick chronometer passes",
+      "count": 256,
+      "primary_ms": 7.444100000000049,
+      "baseline_ms": 5.069299999999998,
+      "primary_samples_ms": [
+        6.507499999999993,
+        6.739299999999957,
+        9.362799999999993,
+        14.225199999999973,
+        6.936200000000099,
+        7.444100000000049,
+        8.287699999999973
+      ],
+      "baseline_samples_ms": [
+        4.9202999999999975,
+        4.74309999999997,
+        4.954299999999932,
+        6.987599999999929,
+        5.413099999999986,
+        5.38900000000001,
+        5.069299999999998
+      ]
+    },
+    {
+      "load": "1024 CPU 300-tick chronometer passes",
+      "count": 1024,
+      "primary_ms": 27.70150000000001,
+      "baseline_ms": 21.218899999999962,
+      "primary_samples_ms": [
+        37.79780000000005,
+        27.88880000000006,
+        27.70150000000001,
+        27.02559999999994,
+        27.404999999999973,
+        27.074600000000032,
+        34.31560000000002
+      ],
+      "baseline_samples_ms": [
+        21.218899999999962,
+        19.887299999999982,
+        20.291300000000092,
+        19.07370000000003,
+        24.96760000000006,
+        24.550299999999993,
+        22.124700000000075
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/kahan-phase-accumulator/light-kahan-modulo-compensated.png",
+    "docs/evidence/kahan-phase-accumulator/light-naive-float32-stagnation.png",
+    "docs/evidence/kahan-phase-accumulator/dark-kahan-modulo-compensated.png",
+    "docs/evidence/kahan-phase-accumulator/dark-naive-float32-stagnation.png",
+    "docs/evidence/kahan-phase-accumulator/mobile.png"
+  ],
+  "primary_label": "Float32 Kahan + Modulo-2pi",
+  "baseline_label": "Scaled BigInt 1e12 Fixed-Point",
+  "load_unit": "300-tick chronometer passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. IEEE-754 float32 Kahan compensated modulo-2pi accumulator versus scaled BigInt 10^12 fixed-point arithmetic.",
+  "geometry": {
+    "parts": 56,
+    "stations": 16,
+    "base_epoch": 262144,
+    "float32_ulp": 0.03125,
+    "sub_tick_delta_rad": 0.012,
+    "kahan_phase_rad": 3.6,
+    "naive_phase_rad": 0,
+    "naive_phase_loss_pct": 100,
+    "maximum_solver_error": 1.4305e-7
+  },
+  "protocol": {
+    "input": {
+      "station_index": 15,
+      "total_ticks": 300,
+      "base_epoch": 262144,
+      "delta_rad": 0.012,
+      "mode": "kahan-modulo-compensated"
+    },
+    "output": {
+      "float32_ulp_at_epoch": 0.03125,
+      "kahan_phase_rad": 3.6,
+      "naive_phase_rad": 0,
+      "naive_phase_loss_pct": 100
+    },
+    "function": "y = Δφ − c, t = (s + y) mod 2π, c = (t − s) − y → Φ₃₀₀ = 3.6000rad (0.00% ULP freeze)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled chronometer stations preserve sub-ULP phase increments without stagnation",
+      "original": 16,
+      "perturbed": 16,
+      "total": 16
+    }
+  ],
+  "good_fit": [
+    "24/7 digital-twin dashboards, shader wave oscillators, and particle emitters running for hours or days",
+    "Explaining why IEEE-754 float32 swallows any increment Delta < 0.5 * 2^(floor(log2(T)) - 23)",
+    "Wrapping periodic shader phase uniforms into [0, 2*pi) on the CPU with Kahan error compensation before GPU upload",
+    "Camera-relative origin rebasing for large-scale 3D/4D Gaussian Splatting city and planetary worlds"
+  ],
+  "not_for": [
+    "Short 5-second one-shot UI transitions starting at t = 0 where float32 ULP is 1e-7",
+    "Cryptographic hash or financial ledger balances requiring exact decimal integer cents",
+    "Long-horizon autoregressive video diffusion memory banks (WorldMem / FramePack)",
+    "Hardware double-precision (float64) compute kernels where 53 mantissa bits never saturate within human lifetimes"
+  ],
+  "locale_zh": {
+    "kahan-equivalence-64": "Kahan补偿等价 64",
+    "64 float32 Kahan modulo-2pi and scaled BigInt fixed-point passes agree within 1e-6 rad": "64 次单精度 Kahan 周期取模累加与 BigInt 定点基线在 1e-6 rad 内一致",
+    "kahan-equivalence-256": "Kahan补偿等价 256",
+    "256 float32 Kahan modulo-2pi and scaled BigInt fixed-point passes agree within 1e-6 rad": "256 次单精度 Kahan 周期取模累加与 BigInt 定点基线在 1e-6 rad 内一致",
+    "kahan-equivalence-1024": "Kahan补偿等价 1024",
+    "1024 float32 Kahan modulo-2pi and scaled BigInt fixed-point passes agree within 1e-6 rad": "1024 次单精度 Kahan 周期取模累加与 BigInt 定点基线在 1e-6 rad 内一致",
+    "kahan-modulo-precision-retained": "Kahan周期重锚定守恒",
+    "300 sub-ticks of 0.0120 rad accumulate to exact Phi=3.6000 rad (0.00% ULP loss)": "300 步 0.0120 rad 增量精确累积至 Φ=3.6000 rad（0.00% ULP 丢失）",
+    "float32-ulp-stagnation-exposed": "单精度ULP吞没冻结暴露",
+    "naive float32 at epoch 2^18 (ULP=0.03125) swallows 0.0120 rad completely, freezing at 0.0000 rad (-100.00% motion loss)": "单精度在基数 2^18（ULP=0.03125）下将 0.0120 rad 步长完全吞没，冻结在 0.0000 rad（-100.00% 相位丢失）",
+    "exact-horizon-phase-retained": "长时程相位精确锁定",
+    "Kahan modulo accumulator locks station-15 phase at Phi=3.6000 rad (206.3 deg)": "Kahan 周期取模累加器将第 15 站相位锁定在 Φ=3.6000 rad（206.3°）",
+    "naive-clock-freeze-exposed": "单精度时钟冻结暴露",
+    "naive float32 clock freezes at 0.0000 rad across all 300 ticks (3.6000 rad error)": "单精度裸累加在全部 300 步内冻结于 0.0000 rad（3.6000 rad 误差）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse station scrubbing reproduces the exact chronometer probe world matrix": "逆序站点拖曳精确复现时计探针世界矩阵",
+    "atomic-epoch-rejection": "原子指数拒绝",
+    "out-of-range baseEpochExponent=30 is rejected while valid chronometer state remains": "越界基数指数 30 被拒绝，有效时计状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered chronometer probe y-elevation matches solved Kahan phase height": "渲染时计探针垂直高度与求解器 Kahan 相位柱高完全一致",
+    "mobile-layout": "手机布局",
+    "390px Kahan phase accumulator controls fit without horizontal overflow": "390px Kahan 相位累加器控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual station scrubbing remains available": "减少动态默认静止，保留手动站点核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Float32 Kahan + Modulo-2pi": "单精度 Kahan 补偿 + 2π 取模重锚定",
+    "Scaled BigInt 1e12 Fixed-Point": "BigInt 10¹² 缩放定点整数基线",
+    "Median of 7 alternating Node CPU runs after warmup. IEEE-754 float32 Kahan compensated modulo-2pi accumulator versus scaled BigInt 10^12 fixed-point arithmetic.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；IEEE-754 单精度 Kahan 补偿 + 2π 取模累加对比 BigInt 10¹² 缩放定点整数运算基线。",
+    "Sampled chronometer stations preserve sub-ULP phase increments without stagnation": "采样时计站点完整保留亚 ULP 相位增量零冻结",
+    "y = Δφ − c, t = (s + y) mod 2π, c = (t − s) − y → Φ₃₀₀ = 3.6000rad (0.00% ULP freeze)": "Kahan 误差补偿与周期重锚定 y = Δφ − c, t = (s + y) mod 2π → Φ₃₀₀ = 3.6000rad（0.00% 吞没冻结）",
+    "24/7 digital-twin dashboards, shader wave oscillators, and particle emitters running for hours or days": "7×24 小时连续运行的数字孪生大屏、着色器波浪振荡器与长时程粒子发射器",
+    "Explaining why IEEE-754 float32 swallows any increment Delta < 0.5 * 2^(floor(log2(T)) - 23)": "直观解释为何 IEEE-754 单精度浮点数会完全吞没小于 0.5 × 2^(⌊log₂T⌋−23) 的微小步长",
+    "Wrapping periodic shader phase uniforms into [0, 2*pi) on the CPU with Kahan error compensation before GPU upload": "在传入 GPU 前通过 Kahan 误差补偿将周期相位 Uniform 折叠回 [0, 2π) 高精度区间",
+    "Camera-relative origin rebasing for large-scale 3D/4D Gaussian Splatting city and planetary worlds": "大尺度城市级与行星级 3D/4D 高斯（3DGS）场景的相机相对原点重锚定（Origin Rebasing）",
+    "Short 5-second one-shot UI transitions starting at t = 0 where float32 ULP is 1e-7": "从 t=0 开始且仅持续数秒的短时 UI 过渡动画（此时 float32 ULP 仅 1e-7）",
+    "Cryptographic hash or financial ledger balances requiring exact decimal integer cents": "要求精确十进制分位整数核算的金融账本或密码学哈希",
+    "Long-horizon autoregressive video diffusion memory banks (WorldMem / FramePack)": "长时程自回归视频扩散模型的潜空间记忆库压缩（WorldMem / FramePack）",
+    "Hardware double-precision (float64) compute kernels where 53 mantissa bits never saturate within human lifetimes": "原生支持 53 位尾数双精度（float64）的科学计算核"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/kahan-phase-accumulator.test.ts",
+    "node scripts/benchmark-kahan-phase-accumulator.mjs"
+  ]
+}

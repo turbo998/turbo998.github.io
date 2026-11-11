@@ -1,0 +1,269 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "MikkTSpace per-pixel Gram-Schmidt & handedness sign w vs mirrored UV seam flip rig",
+  "topic_zh": "MikkTSpace 逐像素施密特正交化与手性符号 w 对比镜像 UV 接缝阴阳翻转",
+  "slug": "mikktspace-tangent-rig",
+  "timestamp": "2026-11-11T20:58:22.392Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Mikkelsen (2011) per-pixel Gram-Schmidt tangent re-orthogonalization and 4th-component w = +-1 bitangent handedness restoration versus un-orthogonalized unsigned cross-product frames across 17 symmetric mesh stations. No neural texture baking execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.39",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "mikktspace-equivalence-128",
+      "passed": true,
+      "detail": "128 MikkTSpace Gram-Schmidt + w-sign and cotangent Jacobian passes agree within 1e-13"
+    },
+    {
+      "name": "mikktspace-equivalence-1024",
+      "passed": true,
+      "detail": "1024 MikkTSpace Gram-Schmidt + w-sign and cotangent Jacobian passes agree within 1e-13"
+    },
+    {
+      "name": "mikktspace-equivalence-8192",
+      "passed": true,
+      "detail": "8192 MikkTSpace Gram-Schmidt + w-sign and cotangent Jacobian passes agree within 1e-13"
+    },
+    {
+      "name": "mikktspace-orthonormal-handed-conserved",
+      "passed": true,
+      "detail": "17 mesh stations maintain 90.00° N-T orthogonality and 0.00° world normal error across unmirrored & mirrored UV shells"
+    },
+    {
+      "name": "naive-unsigned-mirrored-seam-exposed",
+      "passed": true,
+      "detail": "naive unsigned un-orthogonalized TBN leaves 25.00° N-T skew and flips bitangent across 9/17 mirrored stations (70.00° world normal error)"
+    },
+    {
+      "name": "mirrored-shell-handedness-retained",
+      "passed": true,
+      "detail": "MikkTSpace w=-1 sign restores exact 90.00° frame and 0.00° normal error at mirrored station-12"
+    },
+    {
+      "name": "bevel-inversion-and-skew-exposed",
+      "passed": true,
+      "detail": "unsigned cross product inverts station-12 bevel by 70.00° with 25.00° N-T skew"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse station scrubbing reproduces the exact TBN goniometer carriage world matrix"
+    },
+    {
+      "name": "atomic-skew-rejection",
+      "passed": true,
+      "detail": "out-of-range interpSkewDeg=99 is rejected while valid MikkTSpace state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered TBN carriage y-elevation matches solved N-T orthogonality angle height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px MikkTSpace controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual station scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station TBN passes",
+      "count": 128,
+      "primary_ms": 0.15030000000001564,
+      "baseline_ms": 0.3254999999999768,
+      "primary_samples_ms": [
+        0.18950000000000955,
+        0.16509999999999536,
+        0.14809999999999945,
+        0.15030000000001564,
+        0.3161000000000058,
+        0.008600000000001273,
+        0.0078000000000315595
+      ],
+      "baseline_samples_ms": [
+        0.29909999999995307,
+        0.315400000000011,
+        0.3254999999999768,
+        0.26310000000000855,
+        1.0756000000000085,
+        1.1410000000000196,
+        1.1077999999999975
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station TBN passes",
+      "count": 1024,
+      "primary_ms": 0.194500000000005,
+      "baseline_ms": 2.2521999999999593,
+      "primary_samples_ms": [
+        0.19599999999996953,
+        0.19329999999996517,
+        0.19259999999997035,
+        0.2004000000000019,
+        0.19220000000001392,
+        0.19909999999998718,
+        0.194500000000005
+      ],
+      "baseline_samples_ms": [
+        0.8011999999999944,
+        0.6130999999999744,
+        0.8695999999999913,
+        2.2993999999999915,
+        2.2521999999999593,
+        2.5247999999999706,
+        2.4057999999999993
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station TBN passes",
+      "count": 8192,
+      "primary_ms": 1.5457999999999856,
+      "baseline_ms": 5.106200000000058,
+      "primary_samples_ms": [
+        1.5411000000000286,
+        1.5457999999999856,
+        1.5340999999999667,
+        1.8280000000000314,
+        1.5570000000000164,
+        1.7735999999999876,
+        1.5412999999999784
+      ],
+      "baseline_samples_ms": [
+        5.088999999999999,
+        5.022100000000023,
+        5.011799999999994,
+        5.8455000000000155,
+        5.117500000000064,
+        5.106200000000058,
+        5.114400000000046
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/mikktspace-tangent-rig/light-mikktspace-gram-schmidt-handed.png",
+    "docs/evidence/mikktspace-tangent-rig/light-naive-unorthogonalized-unsigned.png",
+    "docs/evidence/mikktspace-tangent-rig/dark-mikktspace-gram-schmidt-handed.png",
+    "docs/evidence/mikktspace-tangent-rig/dark-naive-unorthogonalized-unsigned.png",
+    "docs/evidence/mikktspace-tangent-rig/mobile.png"
+  ],
+  "primary_label": "MikkTSpace Gram-Schmidt + w*(N x T)",
+  "baseline_label": "Screen-Space Cotangent Jacobian",
+  "load_unit": "17-station TBN passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Direct 1-step Gram-Schmidt + w*(N x T) evaluation versus screen-space cotangent partial-derivative Jacobian construction.",
+  "geometry": {
+    "parts": 59,
+    "stations": 17,
+    "interp_skew_deg": 25,
+    "bevel_tilt_deg": 35,
+    "mikk_nt_angle_deg": 90,
+    "naive_nt_angle_deg": 65,
+    "mikk_normal_error_deg": 0,
+    "naive_normal_error_deg": 70,
+    "naive_skew_defect_deg": 25,
+    "inverted_mirrored_stations": 9,
+    "maximum_solver_error": 1.1102e-16
+  },
+  "protocol": {
+    "input": {
+      "station_index": 12,
+      "handedness_w": -1,
+      "interp_skew_deg": 25,
+      "bevel_tilt_deg": 35,
+      "mode": "mikktspace-gram-schmidt-handed"
+    },
+    "output": {
+      "mikk_nt_angle_deg": 90,
+      "naive_nt_angle_deg": 65,
+      "mikk_normal_error_deg": 0,
+      "naive_normal_error_deg": 70,
+      "inverted_mirrored_stations": 9
+    },
+    "function": "T' = normalize(T − (N·T)N), B = w·(N × T') (w ∈ {−1, +1}) → ∠(N,T') ≡ 90.00°, Δn_world ≡ 0.00°"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 unmirrored and mirrored mesh stations preserve exact orthonormal TBN frames and seam-free bevel normals",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "glTF 2.0 / Blender / Substance Painter / Unreal / Unity synchronized MikkTSpace normal-map rendering",
+    "Symmetrical characters, vehicles, and weapons sharing mirrored UV islands across a centerline symmetry seam",
+    "Explaining why interpolated vertex normals N and tangents T lose orthogonality inside curved triangles and require T - (N.T)N",
+    "Multiplying the bitangent cross product by tangent.w in {-1, +1} so mirrored UV islands never invert normal-map bevels"
+  ],
+  "not_for": [
+    "Object-space normal maps that store world/object vectors directly without a tangent-space TBN basis",
+    "Un-textured or vertex-colored meshes with no normal map or anisotropic brushed-metal shading",
+    "Text-to-normal-map diffusion synthesis models",
+    "Bump/height maps evaluated purely via screen-space dFdx/dFdy without pre-baked tangent-space normal textures"
+  ],
+  "locale_zh": {
+    "mikktspace-equivalence-128": "MikkTSpace等价 128",
+    "128 MikkTSpace Gram-Schmidt + w-sign and cotangent Jacobian passes agree within 1e-13": "128 次 MikkTSpace 施密特正交化与余切雅可比基线在 1e-13 内一致",
+    "mikktspace-equivalence-1024": "MikkTSpace等价 1024",
+    "1024 MikkTSpace Gram-Schmidt + w-sign and cotangent Jacobian passes agree within 1e-13": "1024 次 MikkTSpace 施密特正交化与余切雅可比基线在 1e-13 内一致",
+    "mikktspace-equivalence-8192": "MikkTSpace等价 8192",
+    "8192 MikkTSpace Gram-Schmidt + w-sign and cotangent Jacobian passes agree within 1e-13": "8192 次 MikkTSpace 施密特正交化与余切雅可比基线在 1e-13 内一致",
+    "mikktspace-orthonormal-handed-conserved": "MikkTSpace正交手性守恒",
+    "17 mesh stations maintain 90.00° N-T orthogonality and 0.00° world normal error across unmirrored & mirrored UV shells": "17 个网格站点在正向与镜像 UV 半壳上保持 90.00° 正交角与 0.00° 世界法线误差",
+    "naive-unsigned-mirrored-seam-exposed": "无符号镜像UV接缝反转暴露",
+    "naive unsigned un-orthogonalized TBN leaves 25.00° N-T skew and flips bitangent across 9/17 mirrored stations (70.00° world normal error)": "朴素无符号未正交化 TBN 残留 25.00° 切线歪斜并在 9/17 个镜像站点反转副切线（世界法线误差 70.00°）",
+    "mirrored-shell-handedness-retained": "镜像半壳手性恢复锁定",
+    "MikkTSpace w=-1 sign restores exact 90.00° frame and 0.00° normal error at mirrored station-12": "MikkTSpace 手性符号 w=-1 在第 12 号镜像站点精确恢复 90.00° 标架与 0.00° 法线误差",
+    "bevel-inversion-and-skew-exposed": "斜面阴阳反转与歪斜暴露",
+    "unsigned cross product inverts station-12 bevel by 70.00° with 25.00° N-T skew": "无符号叉积使第 12 站法线斜面反转 70.00° 且伴随 25.00° 切线歪斜",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse station scrubbing reproduces the exact TBN goniometer carriage world matrix": "逆序站点拖曳精确复现 TBN 测角仪滑车世界矩阵",
+    "atomic-skew-rejection": "原子歪斜角拒绝",
+    "out-of-range interpSkewDeg=99 is rejected while valid MikkTSpace state remains": "越界插值歪斜角 99 被拒绝，有效 MikkTSpace 状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered TBN carriage y-elevation matches solved N-T orthogonality angle height": "渲染 TBN 滑车垂直高度与求解器 N-T 正交夹角高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px MikkTSpace controls fit without horizontal overflow": "390px MikkTSpace 控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual station scrubbing remains available": "减少动态默认静止，保留手动站点核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "MikkTSpace Gram-Schmidt + w*(N x T)": "MikkTSpace 施密特正交化 + w·(N×T)",
+    "Screen-Space Cotangent Jacobian": "屏幕空间余切偏导雅可比基线",
+    "Median of 7 alternating Node CPU runs after warmup. Direct 1-step Gram-Schmidt + w*(N x T) evaluation versus screen-space cotangent partial-derivative Jacobian construction.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；单步施密特正交化加手性符号叉积对比屏幕空间余切偏导雅可比构造基线。",
+    "Sampled 17 unmirrored and mirrored mesh stations preserve exact orthonormal TBN frames and seam-free bevel normals": "采样 17 个正向与镜像网格站点保持精确正交 TBN 标架与零接缝斜面法线",
+    "T' = normalize(T − (N·T)N), B = w·(N × T') (w ∈ {−1, +1}) → ∠(N,T') ≡ 90.00°, Δn_world ≡ 0.00°": "逐像素正交化 T' = normalize(T−(N·T)N) + 手性符号 B = w·(N×T') → 夹角 ≡ 90.00°，法线误差 ≡ 0.00°",
+    "glTF 2.0 / Blender / Substance Painter / Unreal / Unity synchronized MikkTSpace normal-map rendering": "glTF 2.0 / Blender / Substance Painter / Unreal / Unity 标准同步 MikkTSpace 法线贴图管线",
+    "Symmetrical characters, vehicles, and weapons sharing mirrored UV islands across a centerline symmetry seam": "左右半边共用镜像对称 UV 贴图的次世代角色面部、载具引擎盖与武器资产",
+    "Explaining why interpolated vertex normals N and tangents T lose orthogonality inside curved triangles and require T - (N.T)N": "直观解释为何弯曲三角形内插值后的顶点法线 N 与切线 T 会失去正交性并必须执行 T − (N·T)N",
+    "Multiplying the bitangent cross product by tangent.w in {-1, +1} so mirrored UV islands never invert normal-map bevels": "将副切线叉积乘以切线第 4 分量 tangent.w ∈ {−1, +1}，杜绝镜像 UV 区域凹凸倒转",
+    "Object-space normal maps that store world/object vectors directly without a tangent-space TBN basis": "直接存储模型空间三维法向、无需 TBN 切空间标架的模型空间法线贴图（Object-Space Normal Map）",
+    "Un-textured or vertex-colored meshes with no normal map or anisotropic brushed-metal shading": "不带法线贴图或各向异性拉丝高光的纯顶点着色网格",
+    "Text-to-normal-map diffusion synthesis models": "从文本生成法线贴图的神经扩散材质模型",
+    "Bump/height maps evaluated purely via screen-space dFdx/dFdy without pre-baked tangent-space normal textures": "仅靠屏幕空间偏导数 dFdx/dFdy 计算坡度、未使用烘焙切空间法线图的标量高度图"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/mikktspace-tangent.test.ts",
+    "node scripts/benchmark-mikktspace-tangent.mjs"
+  ]
+}

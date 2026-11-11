@@ -1,0 +1,268 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Height-correlated Smith-GGX microfacet visibility vs unmasked grazing-angle specular blowout",
+  "topic_zh": "Smith 高度相关微表面遮蔽（GGX Visibility）与无遮蔽掠射角高光过曝对比",
+  "slug": "ggx-smith-microfacet-rig",
+  "timestamp": "2026-11-11T17:08:17.059Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Height-Correlated Smith-GGX specular visibility V(mu_l, mu_v, alpha) = G2 / (4*mu_l*mu_v) canceling the grazing-angle foreshortening denominator versus unmasked Cook-Torrance blowout across 17 viewing angles. No neural inverse rendering execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.39",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "smith-equivalence-128",
+      "passed": true,
+      "detail": "128 cancelled algebraic Smith visibility and trigonometric tan(acos) Lambda passes agree within 1e-14"
+    },
+    {
+      "name": "smith-equivalence-1024",
+      "passed": true,
+      "detail": "1024 cancelled algebraic Smith visibility and trigonometric tan(acos) Lambda passes agree within 1e-14"
+    },
+    {
+      "name": "smith-equivalence-8192",
+      "passed": true,
+      "detail": "8192 cancelled algebraic Smith visibility and trigonometric tan(acos) Lambda passes agree within 1e-14"
+    },
+    {
+      "name": "smith-white-furnace-conservation",
+      "passed": true,
+      "detail": "17 grazing angles stay strictly bounded below 1.0000 energy ceiling (81 deg R_spec=0.4654)"
+    },
+    {
+      "name": "unmasked-grazing-blowout-exposed",
+      "passed": true,
+      "detail": "unmasked 1/(4*mu_l*mu_v) blows 81 deg reflectance up to 1.6816 (3.61x physical)"
+    },
+    {
+      "name": "exact-grazing-reflectance-retained",
+      "passed": true,
+      "detail": "Smith-GGX locks 81 deg grazing reflectance at R_spec=0.4654 (G2=0.2767)"
+    },
+    {
+      "name": "unmasked-rim-explosion-exposed",
+      "passed": true,
+      "detail": "unmasked denominator explodes 81 deg reflectance to 1.6816 (+68.16% energy excess)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse angle scrubbing reproduces the exact goniometer sensor world matrix"
+    },
+    {
+      "name": "atomic-roughness-rejection",
+      "passed": true,
+      "detail": "out-of-range roughnessAlpha=4.5 is rejected while valid BRDF state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered goniometer sensor y-elevation matches solved foreshortened BRDF height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Smith-GGX goniometer controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual angle scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-angle grazing BRDF passes",
+      "count": 128,
+      "primary_ms": 0.10820000000001073,
+      "baseline_ms": 0.26600000000001955,
+      "primary_samples_ms": [
+        0.12470000000001846,
+        0.11669999999998026,
+        0.10820000000001073,
+        0.1039000000000101,
+        0.10669999999998936,
+        0.11990000000002965,
+        0.1038000000000352
+      ],
+      "baseline_samples_ms": [
+        0.2825000000000273,
+        0.283299999999997,
+        0.26600000000001955,
+        0.2545000000000073,
+        0.2525999999999726,
+        0.2534999999999741,
+        0.26600000000001955
+      ]
+    },
+    {
+      "load": "1024 CPU 17-angle grazing BRDF passes",
+      "count": 1024,
+      "primary_ms": 0.7724000000000046,
+      "baseline_ms": 1.8471000000000117,
+      "primary_samples_ms": [
+        1.9840999999999553,
+        0.7697000000000003,
+        0.7724000000000046,
+        0.7719999999999914,
+        0.7823000000000206,
+        0.7740000000000009,
+        0.7697000000000003
+      ],
+      "baseline_samples_ms": [
+        3.04849999999999,
+        2.3980000000000246,
+        1.7784000000000333,
+        1.85450000000003,
+        1.8471000000000117,
+        1.776900000000012,
+        1.8263999999999783
+      ]
+    },
+    {
+      "load": "8192 CPU 17-angle grazing BRDF passes",
+      "count": 8192,
+      "primary_ms": 6.80720000000008,
+      "baseline_ms": 14.733699999999999,
+      "primary_samples_ms": [
+        6.625100000000032,
+        7.161700000000053,
+        6.6702999999999975,
+        6.239499999999907,
+        6.9846,
+        6.956100000000106,
+        6.80720000000008
+      ],
+      "baseline_samples_ms": [
+        14.733699999999999,
+        14.53389999999996,
+        15.005300000000034,
+        15.068199999999933,
+        14.492399999999975,
+        14.666499999999928,
+        15.694700000000012
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/ggx-smith-microfacet-rig/light-smith-ggx-correlated.png",
+    "docs/evidence/ggx-smith-microfacet-rig/light-unmasked-grazing-blowout.png",
+    "docs/evidence/ggx-smith-microfacet-rig/dark-smith-ggx-correlated.png",
+    "docs/evidence/ggx-smith-microfacet-rig/dark-unmasked-grazing-blowout.png",
+    "docs/evidence/ggx-smith-microfacet-rig/mobile.png"
+  ],
+  "primary_label": "Cancelled Algebraic Smith V",
+  "baseline_label": "Trig tan(acos) Lambda + Divide",
+  "load_unit": "17-angle grazing BRDF passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Cancelled algebraic Height-Correlated Smith visibility V(mu_l,mu_v,a) versus trigonometric tan(acos(mu)) Smith Lambda evaluation and explicit 4*mu_l*mu_v division.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "roughness_alpha": 0.55,
+    "light_cos_mul": 1,
+    "smith_81deg_brdf": 0.4654,
+    "unmasked_81deg_brdf": 1.6816,
+    "smith_81deg_g2": 0.2767,
+    "unmasked_blowout_mult": 3.61,
+    "unmasked_excess_pct": 68.16,
+    "maximum_solver_error": 1.6653e-16
+  },
+  "protocol": {
+    "input": {
+      "angle_index": 15,
+      "view_deg": 81,
+      "roughness_alpha": 0.5,
+      "light_cos_mul": 0.85,
+      "mode": "smith-ggx-correlated"
+    },
+    "output": {
+      "smith_g2": 0.2767,
+      "smith_r_spec": 0.4654,
+      "unmasked_r_spec": 1.6816,
+      "blowout_multiplier": 3.61,
+      "energy_excess_pct": 68.16
+    },
+    "function": "V(μ_l,μ_v,α) = G₂/(4μ_lμ_v) = 0.5 / (μ_v√(α²+(1−α²)μ_l²) + μ_l√(α²+(1−α²)μ_v²)) → R_spec ≤ 1.0000"
+  },
+  "robustness": [
+    {
+      "name": "Sampled grazing view angles conserve white-furnace energy R_spec <= 1.0000",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Real-time WebGL2 / WebGPU PBR metallic-roughness shaders and 3DGS specular relighting lobes",
+    "Explaining why omitting Smith G2 causes 1/(4*mu_l*mu_v) to explode into a radioactive white rim at grazing angles",
+    "Algebraically canceling 2*mu_l*mu_v in G2 with 4*mu_l*mu_v in the denominator into the singularity-free V(mu_l,mu_v,a)",
+    "Replacing trigonometric tan^2(acos(mu)) in Smith Lambda with purely algebraic sqrt(alpha^2 + (1-alpha^2)*mu^2)"
+  ],
+  "not_for": [
+    "Pure Lambertian matte diffuse surfaces where view-angle microfacet specular masking does not apply",
+    "Multiple-scattering rough conductor energy compensation (Kulla-Conty LUT) at alpha > 0.8",
+    "Wave-optics diffraction grating iridescence requiring full spectral path tracing",
+    "Neural intrinsic image decomposition (DiffusionRenderer) on uncalibrated 2D photographs"
+  ],
+  "locale_zh": {
+    "smith-equivalence-128": "Smith遮蔽等价 128",
+    "128 cancelled algebraic Smith visibility and trigonometric tan(acos) Lambda passes agree within 1e-14": "128 次代数约分 Smith 可见性项与三角函数 Lambda 基线在 1e-14 内一致",
+    "smith-equivalence-1024": "Smith遮蔽等价 1024",
+    "1024 cancelled algebraic Smith visibility and trigonometric tan(acos) Lambda passes agree within 1e-14": "1024 次代数约分 Smith 可见性项与三角函数 Lambda 基线在 1e-14 内一致",
+    "smith-equivalence-8192": "Smith遮蔽等价 8192",
+    "8192 cancelled algebraic Smith visibility and trigonometric tan(acos) Lambda passes agree within 1e-14": "8192 次代数约分 Smith 可见性项与三角函数 Lambda 基线在 1e-14 内一致",
+    "smith-white-furnace-conservation": "Smith白炉能量守恒",
+    "17 grazing angles stay strictly bounded below 1.0000 energy ceiling (81 deg R_spec=0.4654)": "17 个掠射视角严格受限于 1.0000 白炉能量上限内（81° 反射率 R_spec=0.4654）",
+    "unmasked-grazing-blowout-exposed": "无遮蔽掠射角爆白暴露",
+    "unmasked 1/(4*mu_l*mu_v) blows 81 deg reflectance up to 1.6816 (3.61x physical)": "漏除 Smith G₂ 导致 81° 反射率暴涨至 1.6816（物理值的 3.61 倍）",
+    "exact-grazing-reflectance-retained": "掠射角反射精确锁定",
+    "Smith-GGX locks 81 deg grazing reflectance at R_spec=0.4654 (G2=0.2767)": "Smith-GGX 将 81° 掠射反射率锁定在 R_spec=0.4654（遮蔽率 G₂=0.2767）",
+    "unmasked-rim-explosion-exposed": "无遮蔽边缘过曝暴露",
+    "unmasked denominator explodes 81 deg reflectance to 1.6816 (+68.16% energy excess)": "无遮蔽分母使 81° 反射率暴涨至 1.6816（超白炉上限 +68.16%）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse angle scrubbing reproduces the exact goniometer sensor world matrix": "逆序角度拖曳精确复现测角仪探针世界矩阵",
+    "atomic-roughness-rejection": "原子粗糙度拒绝",
+    "out-of-range roughnessAlpha=4.5 is rejected while valid BRDF state remains": "越界粗糙度 4.5 被拒绝，有效材质状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered goniometer sensor y-elevation matches solved foreshortened BRDF height": "渲染测角仪探针垂直高度与求解器反射率柱高完全一致",
+    "mobile-layout": "手机布局",
+    "390px Smith-GGX goniometer controls fit without horizontal overflow": "390px Smith-GGX 测角仪控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual angle scrubbing remains available": "减少动态默认静止，保留手动视角核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Cancelled Algebraic Smith V": "代数约分 Smith 可见性闭式解",
+    "Trig tan(acos) Lambda + Divide": "三角函数 tan(acos) Lambda + 显式除法基线",
+    "Median of 7 alternating Node CPU runs after warmup. Cancelled algebraic Height-Correlated Smith visibility V(mu_l,mu_v,a) versus trigonometric tan(acos(mu)) Smith Lambda evaluation and explicit 4*mu_l*mu_v division.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；代数约分高度相关 Smith 可见性函数对比三角函数 tan(acos(μ)) Lambda 与显式分母除法基线。",
+    "Sampled grazing view angles conserve white-furnace energy R_spec <= 1.0000": "采样掠射视角严格遵守白炉能量守恒 R_spec <= 1.0000",
+    "V(μ_l,μ_v,α) = G₂/(4μ_lμ_v) = 0.5 / (μ_v√(α²+(1−α²)μ_l²) + μ_l√(α²+(1−α²)μ_v²)) → R_spec ≤ 1.0000": "Smith 约分可见性项 V(μ_l,μ_v,α) = G₂/(4μ_lμ_v) → 镜面反射率 R_spec ≤ 1.0000 零过曝",
+    "Real-time WebGL2 / WebGPU PBR metallic-roughness shaders and 3DGS specular relighting lobes": "WebGL2 / WebGPU 实时 PBR 金属粗糙度着色器与 3DGS 镜面高光重打光核",
+    "Explaining why omitting Smith G2 causes 1/(4*mu_l*mu_v) to explode into a radioactive white rim at grazing angles": "直观解释为何漏掉 Smith G₂ 会使分母 1/(4μ_lμ_v) 在掠射角暴涨产生放射性死白亮边",
+    "Algebraically canceling 2*mu_l*mu_v in G2 with 4*mu_l*mu_v in the denominator into the singularity-free V(mu_l,mu_v,a)": "将 G₂ 分子中的 2μ_lμ_v 与分母 4μ_lμ_v 代数约分为无除零奇点的可见性项 V(μ_l,μ_v,α)",
+    "Replacing trigonometric tan^2(acos(mu)) in Smith Lambda with purely algebraic sqrt(alpha^2 + (1-alpha^2)*mu^2)": "用纯代数根式 √(α²+(1−α²)μ²) 替代 Smith Lambda 中的三角函数 tan²(acos(μ))",
+    "Pure Lambertian matte diffuse surfaces where view-angle microfacet specular masking does not apply": "无视角相关微表面高光遮蔽的纯朗伯漫反射哑光表面",
+    "Multiple-scattering rough conductor energy compensation (Kulla-Conty LUT) at alpha > 0.8": "高粗糙度导体（α>0.8）的多次散射能量补偿查找表（Kulla-Conty LUT）",
+    "Wave-optics diffraction grating iridescence requiring full spectral path tracing": "需要全光谱波动光学路径追踪的衍射光栅虹彩材质",
+    "Neural intrinsic image decomposition (DiffusionRenderer) on uncalibrated 2D photographs": "针对非标定二维照片的神经逆向材质分解（DiffusionRenderer）"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/ggx-smith-microfacet.test.ts",
+    "node scripts/benchmark-ggx-smith-microfacet.mjs"
+  ]
+}

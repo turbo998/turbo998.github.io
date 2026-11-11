@@ -1,0 +1,269 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Perspective-correct hyperbolic 1/w attribute interpolation vs screen-space affine texture swim rig",
+  "topic_zh": "透视正确双曲 (u/w)/(1/w) 属性插值对比屏幕空间仿射纹理游动扭曲",
+  "slug": "perspective-correct-barycentric-rig",
+  "timestamp": "2026-11-11T20:47:03.045Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Heckbert & Moreton (1991) / Blinn (1992) projective (u/w)/(1/w) hyperbolic attribute interpolation versus naive screen-space affine interpolation across 17 screen stations spanning a 9:1 depth ratio. No neural view warping execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.39",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "perspective-uv-equivalence-128",
+      "passed": true,
+      "detail": "128 precomputed (u/w)/(1/w) and 3D ray-plane intersection passes agree within 1e-14"
+    },
+    {
+      "name": "perspective-uv-equivalence-1024",
+      "passed": true,
+      "detail": "1024 precomputed (u/w)/(1/w) and 3D ray-plane intersection passes agree within 1e-14"
+    },
+    {
+      "name": "perspective-uv-equivalence-8192",
+      "passed": true,
+      "detail": "8192 precomputed (u/w)/(1/w) and 3D ray-plane intersection passes agree within 1e-14"
+    },
+    {
+      "name": "hyperbolic-reciprocal-w-conserved",
+      "passed": true,
+      "detail": "17 screen-space stations recover exact world depth and UV (midpoint s=0.50 z=1.8000m, u=0.1000, 0.0000 swim)"
+    },
+    {
+      "name": "affine-screen-swim-exposed",
+      "passed": true,
+      "detail": "naive screen-space affine interpolation outputs u=0.5000 at s=0.50 (+0.4000 midpoint swim, +0.5000 max distortion)"
+    },
+    {
+      "name": "exact-midpoint-hyperbolic-uv-retained",
+      "passed": true,
+      "detail": "Reciprocal-W interpolation locks station-8 (s=0.50) at u=0.1000 (z=1.8000m, 0.0000 swim)"
+    },
+    {
+      "name": "ps1-style-affine-warp-exposed",
+      "passed": true,
+      "detail": "affine screen interpolation warps station-8 to u=0.5000 (+0.4000 swim, +0.5000 max warp)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse pixel scrubbing reproduces the exact UV probe carriage world matrix"
+    },
+    {
+      "name": "atomic-depth-rejection",
+      "passed": true,
+      "detail": "out-of-range nearVertexDepthZ0=9.0 is rejected while valid perspective barycentric state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered UV carriage y-elevation matches solved texture coordinate height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px perspective barycentric controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual pixel scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station perspective UV passes",
+      "count": 128,
+      "primary_ms": 0.07909999999998263,
+      "baseline_ms": 0.21539999999998827,
+      "primary_samples_ms": [
+        0.519299999999987,
+        0.07440000000002556,
+        0.06929999999999836,
+        0.07440000000002556,
+        0.07909999999998263,
+        0.18580000000002883,
+        0.6047999999999547
+      ],
+      "baseline_samples_ms": [
+        0.8514000000000124,
+        0.2108000000000061,
+        0.2026000000000181,
+        0.22399999999998954,
+        0.20310000000000628,
+        0.21539999999998827,
+        0.22429999999997108
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station perspective UV passes",
+      "count": 1024,
+      "primary_ms": 0.07409999999998718,
+      "baseline_ms": 1.1517000000000053,
+      "primary_samples_ms": [
+        1.4087000000000103,
+        0.07409999999998718,
+        0.06770000000000209,
+        0.06060000000002219,
+        0.05690000000004147,
+        0.10340000000007876,
+        0.07609999999999673
+      ],
+      "baseline_samples_ms": [
+        1.0903999999999883,
+        0.9839999999999804,
+        0.984800000000007,
+        1.9277999999999906,
+        1.8086999999999307,
+        1.330000000000041,
+        1.1517000000000053
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station perspective UV passes",
+      "count": 8192,
+      "primary_ms": 0.45830000000000837,
+      "baseline_ms": 7.890199999999936,
+      "primary_samples_ms": [
+        0.5855999999999995,
+        0.45879999999999654,
+        0.45439999999996417,
+        0.4574000000000069,
+        0.49949999999989814,
+        0.45830000000000837,
+        0.4520999999999731
+      ],
+      "baseline_samples_ms": [
+        10.322100000000091,
+        14.850299999999947,
+        8.289800000000014,
+        6.699500000000057,
+        6.196299999999951,
+        4.648600000000101,
+        7.890199999999936
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/perspective-correct-barycentric-rig/light-hyperbolic-reciprocal-w-correct.png",
+    "docs/evidence/perspective-correct-barycentric-rig/light-naive-screen-affine-swim.png",
+    "docs/evidence/perspective-correct-barycentric-rig/dark-hyperbolic-reciprocal-w-correct.png",
+    "docs/evidence/perspective-correct-barycentric-rig/dark-naive-screen-affine-swim.png",
+    "docs/evidence/perspective-correct-barycentric-rig/mobile.png"
+  ],
+  "primary_label": "Precomputed Reciprocal-W (u/w)/(1/w)",
+  "baseline_label": "Per-Pixel 3D Ray-Plane Intersection",
+  "load_unit": "17-station perspective UV passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Precomputed vertex (1/w, u/w) linear interpolation with 1 scalar divide versus per-pixel 3D ray-plane intersection.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "near_z0_m": 1,
+    "far_z1_m": 9,
+    "depth_ratio": 9,
+    "midpoint_world_z_m": 1.8,
+    "midpoint_persp_u": 0.1,
+    "midpoint_affine_u": 0.5,
+    "midpoint_swim_error": 0.4,
+    "max_swim_error": 0.5,
+    "maximum_solver_error": 2.2204e-16
+  },
+  "protocol": {
+    "input": {
+      "station_index": 8,
+      "screen_s": 0.5,
+      "near_z0": 1,
+      "far_z1": 9,
+      "mode": "hyperbolic-reciprocal-w-correct"
+    },
+    "output": {
+      "midpoint_world_z": 1.8,
+      "persp_u": 0.1,
+      "affine_u": 0.5,
+      "midpoint_swim_error": 0.4,
+      "max_swim_error": 0.5
+    },
+    "function": "u(s) = ((1−s)(u₀/z₀) + s(u₁/z₁)) / ((1−s)(1/z₀) + s(1/z₁)) → u(0.5) = 0.1000 vs Affine 0.5000"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 screen-space stations preserve exact projective UV invariance across 9:1 depth foreshortening",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Custom WebGPU/compute-shader Visibility Buffer attribute decoders, software rasterizers, and deferred decal projectors",
+    "Explaining why 1/w and u/w are affine in screen space while raw u follows a hyperbola under perspective projection",
+    "Eliminating PS1-style diagonal texture kinking and swimming on perspective-tilted floors and walls",
+    "Precomputing vertex 1/z_i and u_i/z_i once per triangle so each pixel requires only 2 lerps and 1 scalar reciprocal"
+  ],
+  "not_for": [
+    "Purely orthographic 2D/CAD projections where w_clip === 1.0 is constant across all vertices (affine interpolation is already exact)",
+    "Flat screen-aligned 2D UI sprites at constant camera depth z_0 === z_1 === z_2",
+    "Neural novel-view synthesis or optical-flow warping networks",
+    "Non-projective spherical fisheye lenses where straight 3D lines do not project to straight 2D screen lines"
+  ],
+  "locale_zh": {
+    "perspective-uv-equivalence-128": "透视插值等价 128",
+    "128 precomputed (u/w)/(1/w) and 3D ray-plane intersection passes agree within 1e-14": "128 次预计算 (u/w)/(1/w) 倒数插值与 3D 射线-平面求交基线在 1e-14 内一致",
+    "perspective-uv-equivalence-1024": "透视插值等价 1024",
+    "1024 precomputed (u/w)/(1/w) and 3D ray-plane intersection passes agree within 1e-14": "1024 次预计算 (u/w)/(1/w) 倒数插值与 3D 射线-平面求交基线在 1e-14 内一致",
+    "perspective-uv-equivalence-8192": "透视插值等价 8192",
+    "8192 precomputed (u/w)/(1/w) and 3D ray-plane intersection passes agree within 1e-14": "8192 次预计算 (u/w)/(1/w) 倒数插值与 3D 射线-平面求交基线在 1e-14 内一致",
+    "hyperbolic-reciprocal-w-conserved": "双曲倒数透视不变性守恒",
+    "17 screen-space stations recover exact world depth and UV (midpoint s=0.50 z=1.8000m, u=0.1000, 0.0000 swim)": "17 个屏幕站点精确还原世界深度与 UV（中点 s=0.50 z=1.8000m, u=0.1000，0.0000 纹理扭曲）",
+    "affine-screen-swim-exposed": "屏幕仿射纹理扭曲暴露",
+    "naive screen-space affine interpolation outputs u=0.5000 at s=0.50 (+0.4000 midpoint swim, +0.5000 max distortion)": "朴素屏幕空间仿射插值在 s=0.50 处输出 u=0.5000（中点畸变 +0.4000，最大畸变 +0.5000）",
+    "exact-midpoint-hyperbolic-uv-retained": "屏幕中点双曲UV精确锁定",
+    "Reciprocal-W interpolation locks station-8 (s=0.50) at u=0.1000 (z=1.8000m, 0.0000 swim)": "倒数 W 插值将第 8 站（s=0.50）锁死在 u=0.1000（深度 z=1.8000m，0.0000 晃动）",
+    "ps1-style-affine-warp-exposed": "仿射纹理对角折断暴露",
+    "affine screen interpolation warps station-8 to u=0.5000 (+0.4000 swim, +0.5000 max warp)": "屏幕仿射插值将第 8 站拉偏至 u=0.5000（中点畸变 +0.4000，最大畸变 +0.5000）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse pixel scrubbing reproduces the exact UV probe carriage world matrix": "逆序像素拖曳精确复现 UV 探针滑车世界矩阵",
+    "atomic-depth-rejection": "原子深度拒绝",
+    "out-of-range nearVertexDepthZ0=9.0 is rejected while valid perspective barycentric state remains": "越界近端深度 9.0 被拒绝，有效透视插值状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered UV carriage y-elevation matches solved texture coordinate height": "渲染 UV 滑车垂直高度与求解器纹理坐标高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px perspective barycentric controls fit without horizontal overflow": "390px 透视插值控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual pixel scrubbing remains available": "减少动态默认静止，保留手动像素核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Precomputed Reciprocal-W (u/w)/(1/w)": "预计算顶点倒数 (u/w)/(1/w) 插值",
+    "Per-Pixel 3D Ray-Plane Intersection": "逐像素 3D 射线-平面求交基线",
+    "Median of 7 alternating Node CPU runs after warmup. Precomputed vertex (1/w, u/w) linear interpolation with 1 scalar divide versus per-pixel 3D ray-plane intersection.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；预计算顶点 (1/w, u/w) 线性插值加单次除法对比逐像素 3D 射线-平面求交基线。",
+    "Sampled 17 screen-space stations preserve exact projective UV invariance across 9:1 depth foreshortening": "采样 17 个屏幕空间站点在 9:1 深度透视缩短下保持精确射影 UV 不变性",
+    "u(s) = ((1−s)(u₀/z₀) + s(u₁/z₁)) / ((1−s)(1/z₀) + s(1/z₁)) → u(0.5) = 0.1000 vs Affine 0.5000": "透视双曲倒数插值 (u/w)/(1/w) → 屏幕中点 u(0.5) = 0.1000（对比屏幕仿射 0.5000 畸变 +0.4000）",
+    "Custom WebGPU/compute-shader Visibility Buffer attribute decoders, software rasterizers, and deferred decal projectors": "自定义 WebGPU/计算着色器可见性缓冲（Visibility Buffer）顶点属性解包器、软光栅化器与延迟贴花投影",
+    "Explaining why 1/w and u/w are affine in screen space while raw u follows a hyperbola under perspective projection": "直观解释为何在透视投影下 1/w 与 u/w 在屏幕空间呈线性关系，而原始属性 u 呈双曲线关系",
+    "Eliminating PS1-style diagonal texture kinking and swimming on perspective-tilted floors and walls": "彻底消除透视倾斜地面与墙面在三角形对角线处的 PS1 式贴图折断与镜头旋转晃动",
+    "Precomputing vertex 1/z_i and u_i/z_i once per triangle so each pixel requires only 2 lerps and 1 scalar reciprocal": "在每个三角形顶点预计算 1/z_i 与 u_i/z_i，使每个像素仅需 2 次线性插值与 1 次标量求倒数",
+    "Purely orthographic 2D/CAD projections where w_clip === 1.0 is constant across all vertices (affine interpolation is already exact)": "所有顶点齐次坐标 w_clip ≡ 1.0 恒定的纯正交投影（此时屏幕仿射插值已精确无误）",
+    "Flat screen-aligned 2D UI sprites at constant camera depth z_0 === z_1 === z_2": "所有顶点与相机保持完全相同深度（z₀ = z₁ = z₂）的平行屏幕 2D UI 精灵",
+    "Neural novel-view synthesis or optical-flow warping networks": "神经新视角合成或光流图像变形网络",
+    "Non-projective spherical fisheye lenses where straight 3D lines do not project to straight 2D screen lines": "三维直线不再投影为屏幕直线的非射影鱼眼镜头（需逐像素非线性球面光线投射）"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/perspective-correct-barycentric.test.ts",
+    "node scripts/benchmark-perspective-correct-barycentric.mjs"
+  ]
+}

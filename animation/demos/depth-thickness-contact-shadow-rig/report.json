@@ -1,0 +1,272 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Screen-space thickness-gated depth-slab contact shadow vs infinite-pillar halo rig",
+  "topic_zh": "屏幕空间有限厚度区间门控接触阴影对比 2.5D 无限深柱悬浮黑晕",
+  "slug": "depth-thickness-contact-shadow-rig",
+  "timestamp": "2026-11-11T20:35:48.117Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic screen-space linear-Z slab interval testing z_ray in [z_buf, z_buf + delta_tau] and reciprocal Reversed-Z linearization versus naive 2.5D infinite-pillar depth thresholding across 17 shadow-ray stations. No neural ambient occlusion execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.39",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "contact-slab-equivalence-128",
+      "passed": true,
+      "detail": "128 direct reciprocal-Z slab gate and 4x4 inverse-projection passes agree within 1e-14"
+    },
+    {
+      "name": "contact-slab-equivalence-1024",
+      "passed": true,
+      "detail": "1024 direct reciprocal-Z slab gate and 4x4 inverse-projection passes agree within 1e-14"
+    },
+    {
+      "name": "contact-slab-equivalence-8192",
+      "passed": true,
+      "detail": "8192 direct reciprocal-Z slab gate and 4x4 inverse-projection passes agree within 1e-14"
+    },
+    {
+      "name": "thickness-slab-zero-false-halos",
+      "passed": true,
+      "detail": "17 shadow rays shadow the 5 true contact stations and pass all 12 background stations (ray-10 z=2.00m visibility=1.0, 0 false halos)"
+    },
+    {
+      "name": "infinite-pillar-halo-exposed",
+      "passed": true,
+      "detail": "naive 2.5D infinite-pillar test (z_ray >= 1.00m) falsely shadows all 12/17 background stations behind the 0.25m post"
+    },
+    {
+      "name": "background-visibility-retained",
+      "passed": true,
+      "detail": "Thickness-gated slab [1.00, 1.25]m keeps background ray-10 (z=2.00m) lit at V=1.0 (0/17 false halos)"
+    },
+    {
+      "name": "detached-shadow-halo-exposed",
+      "passed": true,
+      "detail": "infinite-pillar test casts false shadow V=0.0 on ray-10 (z=2.00m) and across 12/17 stations"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse ray scrubbing reproduces the exact shadow probe carriage world matrix"
+    },
+    {
+      "name": "atomic-front-rejection",
+      "passed": true,
+      "detail": "out-of-range occluderFrontZ=9.0 is rejected while valid contact shadow state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered shadow carriage y-elevation matches solved direct-light visibility height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px contact shadow controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual ray scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-ray contact shadow passes",
+      "count": 128,
+      "primary_ms": 0.07819999999998117,
+      "baseline_ms": 0.3494000000000028,
+      "primary_samples_ms": [
+        0.6061000000000263,
+        0.6508000000000038,
+        0.5873000000000275,
+        0.07319999999998572,
+        0.06680000000000064,
+        0.07049999999998136,
+        0.07819999999998117
+      ],
+      "baseline_samples_ms": [
+        1.785000000000025,
+        1.8474999999999682,
+        0.7508000000000266,
+        0.3423000000000229,
+        0.337099999999964,
+        0.3494000000000028,
+        0.33260000000001355
+      ]
+    },
+    {
+      "load": "1024 CPU 17-ray contact shadow passes",
+      "count": 1024,
+      "primary_ms": 0.037299999999959255,
+      "baseline_ms": 0.7458000000000311,
+      "primary_samples_ms": [
+        0.549699999999973,
+        0.037399999999990996,
+        0.03690000000000282,
+        0.04149999999998499,
+        0.03719999999998436,
+        0.037299999999959255,
+        0.03690000000000282
+      ],
+      "baseline_samples_ms": [
+        1.052599999999984,
+        0.89549999999997,
+        0.7458000000000311,
+        3.378399999999999,
+        0.15989999999999327,
+        0.16390000000001237,
+        0.16100000000000136
+      ]
+    },
+    {
+      "load": "8192 CPU 17-ray contact shadow passes",
+      "count": 8192,
+      "primary_ms": 0.2927999999999997,
+      "baseline_ms": 1.3018999999999892,
+      "primary_samples_ms": [
+        0.2974999999999568,
+        0.2927999999999997,
+        0.29529999999999745,
+        0.29560000000003583,
+        0.29169999999999163,
+        0.29150000000004184,
+        0.2915999999999599
+      ],
+      "baseline_samples_ms": [
+        1.262900000000002,
+        1.3725000000000023,
+        1.320100000000025,
+        1.351099999999974,
+        1.3003999999999678,
+        1.254099999999994,
+        1.3018999999999892
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/depth-thickness-contact-shadow-rig/light-thickness-gated-slab-interval.png",
+    "docs/evidence/depth-thickness-contact-shadow-rig/light-naive-infinite-pillar-halo.png",
+    "docs/evidence/depth-thickness-contact-shadow-rig/dark-thickness-gated-slab-interval.png",
+    "docs/evidence/depth-thickness-contact-shadow-rig/dark-naive-infinite-pillar-halo.png",
+    "docs/evidence/depth-thickness-contact-shadow-rig/mobile.png"
+  ],
+  "primary_label": "Direct Reciprocal-Z Slab Interval Gate",
+  "baseline_label": "4x4 Inverse-Projection Unproject",
+  "load_unit": "17-ray contact shadow passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Direct reciprocal Reversed-Z linearization (nearZ / d_rev) and centered slab interval gate versus 4x4 homogeneous inverse-projection unprojection.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "occluder_front_z": 1,
+    "occluder_thickness_m": 0.25,
+    "occluder_back_z": 1.25,
+    "ray_10_depth_z": 2,
+    "true_contact_shadows": 5,
+    "gated_false_halos": 0,
+    "pillar_false_halos": 12,
+    "gated_ray_10_visibility": 1,
+    "pillar_ray_10_visibility": 0,
+    "maximum_solver_error": 0
+  },
+  "protocol": {
+    "input": {
+      "station_index": 10,
+      "ray_depth_z": 2,
+      "occluder_slab_m": [
+        1,
+        1.25
+      ],
+      "mode": "thickness-gated-slab-interval"
+    },
+    "output": {
+      "gated_visibility": 1,
+      "pillar_visibility": 0,
+      "true_contact_shadows": 5,
+      "gated_false_halos": 0,
+      "pillar_false_halos": 12
+    },
+    "function": "hit ⇔ z_buf ≤ z_ray ≤ z_buf + Δτ (z = z_near / d_rev) → 0/17 false halo hits (vs 12/17 pillar halos)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 shadow rays preserve all 5 contact shadows while eliminating all 12 detached background halos",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Screen-Space Contact Shadows (SSCS), Screen-Space Reflections (SSR), and Horizon-Based Ambient Occlusion (HBAO / GTAO) thickness rejection",
+    "Explaining why a single-layer 2.5D depth buffer treats thin foreground objects as infinite pillars extending to +infinity unless gated by thickness",
+    "Linearizing Reversed-Z depth buffers via a single scalar division z = z_near / d_rev before evaluating metric thickness intervals",
+    "Testing |z_ray - (z_front + 0.5*tau)| <= 0.5*tau in a single branchless centered comparison"
+  ],
+  "not_for": [
+    "Off-screen occluders outside the camera frustum or hidden behind a nearer foreground layer (requires shadow maps or ray-traced BVH)",
+    "Multi-layer deep shadow maps or hardware ray-traced shadows that already store exact back-face geometry",
+    "Neural screen-space ambient occlusion / shading networks (DeepAO / NNAO)",
+    "Unlit 2D orthographic UI layers with no depth buffer"
+  ],
+  "locale_zh": {
+    "contact-slab-equivalence-128": "厚度门控等价 128",
+    "128 direct reciprocal-Z slab gate and 4x4 inverse-projection passes agree within 1e-14": "128 次直接倒数线性化深度门控与 4×4 逆投影矩阵基线在 1e-14 内一致",
+    "contact-slab-equivalence-1024": "厚度门控等价 1024",
+    "1024 direct reciprocal-Z slab gate and 4x4 inverse-projection passes agree within 1e-14": "1024 次直接倒数线性化深度门控与 4×4 逆投影矩阵基线在 1e-14 内一致",
+    "contact-slab-equivalence-8192": "厚度门控等价 8192",
+    "8192 direct reciprocal-Z slab gate and 4x4 inverse-projection passes agree within 1e-14": "8192 次直接倒数线性化深度门控与 4×4 逆投影矩阵基线在 1e-14 内一致",
+    "thickness-slab-zero-false-halos": "有限厚度门控零悬浮黑晕",
+    "17 shadow rays shadow the 5 true contact stations and pass all 12 background stations (ray-10 z=2.00m visibility=1.0, 0 false halos)": "17 条阴影光线精确遮挡 5 个真实接触站点并放行全部 12 个柱后背景站点（第 10 站 z=2.00m 可见度=1.0，0 假黑晕）",
+    "infinite-pillar-halo-exposed": "2.5D无限深柱黑晕暴露",
+    "naive 2.5D infinite-pillar test (z_ray >= 1.00m) falsely shadows all 12/17 background stations behind the 0.25m post": "朴素 2.5D 无限深柱测试（z_ray ≥ 1.00m）将 0.25m 薄柱后方的全部 12/17 个背景站点误判为黑影",
+    "background-visibility-retained": "柱后背景光线正常透光保持",
+    "Thickness-gated slab [1.00, 1.25]m keeps background ray-10 (z=2.00m) lit at V=1.0 (0/17 false halos)": "有限厚度薄板 [1.00, 1.25]m 使第 10 号背景光线（z=2.00m）保持 V=1.0 正常照亮（0/17 假黑晕）",
+    "detached-shadow-halo-exposed": "悬浮假黑影光晕暴露",
+    "infinite-pillar test casts false shadow V=0.0 on ray-10 (z=2.00m) and across 12/17 stations": "无限深柱测试在第 10 号背景光线（z=2.00m）及共 12/17 个站点投下 V=0.0 错误黑影",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse ray scrubbing reproduces the exact shadow probe carriage world matrix": "逆序光线拖曳精确复现阴影探针滑车世界矩阵",
+    "atomic-front-rejection": "原子前深拒绝",
+    "out-of-range occluderFrontZ=9.0 is rejected while valid contact shadow state remains": "越界遮挡物前表面深度 9.0 被拒绝，有效接触阴影状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered shadow carriage y-elevation matches solved direct-light visibility height": "渲染阴影滑车垂直高度与求解器直射光可见度高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px contact shadow controls fit without horizontal overflow": "390px 接触阴影控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual ray scrubbing remains available": "减少动态默认静止，保留手动光线核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Direct Reciprocal-Z Slab Interval Gate": "直接倒数线性化深度薄板门控",
+    "4x4 Inverse-Projection Unproject": "4×4 齐次逆投影矩阵还原基线",
+    "Median of 7 alternating Node CPU runs after warmup. Direct reciprocal Reversed-Z linearization (nearZ / d_rev) and centered slab interval gate versus 4x4 homogeneous inverse-projection unprojection.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；直接倒数反转 Z 线性化（z_near / d_rev）与中心厚度门控对比 4×4 齐次逆投影矩阵还原基线。",
+    "Sampled 17 shadow rays preserve all 5 contact shadows while eliminating all 12 detached background halos": "采样 17 条阴影光线完整保留 5 站真实接触阴影并消除全部 12 站柱后悬浮假黑晕",
+    "hit ⇔ z_buf ≤ z_ray ≤ z_buf + Δτ (z = z_near / d_rev) → 0/17 false halo hits (vs 12/17 pillar halos)": "有限厚度深度区间门控 z_buf ≤ z_ray ≤ z_buf + Δτ → 0/17 悬浮假黑晕（对比无限深柱 12/17 假黑晕）",
+    "Screen-Space Contact Shadows (SSCS), Screen-Space Reflections (SSR), and Horizon-Based Ambient Occlusion (HBAO / GTAO) thickness rejection": "屏幕空间接触阴影（SSCS）、屏幕空间反射（SSR）以及屏幕空间环境光遮蔽（HBAO/GTAO）薄物体光晕剔除",
+    "Explaining why a single-layer 2.5D depth buffer treats thin foreground objects as infinite pillars extending to +infinity unless gated by thickness": "直观解释为何单层 2.5D 深度缓冲在不加厚度门控时会把前景薄杆当成延伸至无穷远的实心深渊墙",
+    "Linearizing Reversed-Z depth buffers via a single scalar division z = z_near / d_rev before evaluating metric thickness intervals": "在评估米制物理厚度区间前，用单次标量除法 z = z_near / d_rev 将反转 Z 深度还原为线性视图深度",
+    "Testing |z_ray - (z_front + 0.5*tau)| <= 0.5*tau in a single branchless centered comparison": "利用中心化绝对值不等式 |z_ray − (z_front + 0.5·Δτ)| ≤ 0.5·Δτ 一步完成双侧区间门控",
+    "Off-screen occluders outside the camera frustum or hidden behind a nearer foreground layer (requires shadow maps or ray-traced BVH)": "位于屏幕视锥外或被更近前景完全挡住的遮挡物（需配合阴影贴图或硬件光线追踪 BVH）",
+    "Multi-layer deep shadow maps or hardware ray-traced shadows that already store exact back-face geometry": "已经拥有精确背面几何的硬件光线追踪阴影或多层深度剥离（Depth Peeling）管线",
+    "Neural screen-space ambient occlusion / shading networks (DeepAO / NNAO)": "神经屏幕空间环境光遮蔽或着色推理网络（DeepAO / NNAO）",
+    "Unlit 2D orthographic UI layers with no depth buffer": "不含深度缓冲区的无光照 2D 正交 UI 界面层"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/depth-thickness-contact-shadow.test.ts",
+    "node scripts/benchmark-depth-thickness-contact-shadow.mjs"
+  ]
+}

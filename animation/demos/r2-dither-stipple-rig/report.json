@@ -1,0 +1,269 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Stratified R2 & bit-interleaved 4x4 stipple dither vs white-noise clumping rig",
+  "topic_zh": "分层位交错与 R₂ 低差异点画抖动对比白噪声聚团失真",
+  "slug": "r2-dither-stipple-rig",
+  "timestamp": "2026-11-11T18:55:26.981Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Roberts (2018) R2 plastic-constant temporal rotation and branchless bit-interleaved 4x4 stratified stipple dithering versus naive sin-hash white-noise stippling across 17 opacity ramp stations. No neural alpha matting execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.39",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "stipple-equivalence-128",
+      "passed": true,
+      "detail": "128 branchless bit-interleaved R2 dither and iterative bit-reversal passes agree within 1e-15"
+    },
+    {
+      "name": "stipple-equivalence-1024",
+      "passed": true,
+      "detail": "1024 branchless bit-interleaved R2 dither and iterative bit-reversal passes agree within 1e-15"
+    },
+    {
+      "name": "stipple-equivalence-8192",
+      "passed": true,
+      "detail": "8192 branchless bit-interleaved R2 dither and iterative bit-reversal passes agree within 1e-15"
+    },
+    {
+      "name": "r2-stratified-zero-quantization-bias",
+      "passed": true,
+      "detail": "17 opacity stations achieve 0.0000 quantization bias (station-6 α=0.3750 activates exact 6/16 pixels = 0.3750)"
+    },
+    {
+      "name": "naive-white-hash-clumping-exposed",
+      "passed": true,
+      "detail": "naive sin-hash white noise activates only 0/16 pixels at α=0.3750 (tile α=0.0000, error=0.3750, max=0.3750)"
+    },
+    {
+      "name": "exact-stratified-tile-retained",
+      "passed": true,
+      "detail": "Stratified R2 dither locks station-6 tile opacity at 6/16 = 0.3750 (0.0000 max ramp error)"
+    },
+    {
+      "name": "poisson-clumping-starvation-exposed",
+      "passed": true,
+      "detail": "naive white-noise hash drops station-6 tile opacity to 0.0000 (0/16 pixels, error 0.3750)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse station scrubbing reproduces the exact opacity probe carriage world matrix"
+    },
+    {
+      "name": "atomic-frame-rejection",
+      "passed": true,
+      "detail": "out-of-range temporalFrame=99 is rejected while valid R2 stipple dither state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered probe carriage y-elevation matches solved 4x4 tile opacity height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px R2 stipple dither controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual station scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station 4x4 stipple passes",
+      "count": 128,
+      "primary_ms": 0.26209999999997535,
+      "baseline_ms": 0.29169999999999163,
+      "primary_samples_ms": [
+        0.27499999999997726,
+        0.2726000000000113,
+        0.2481999999999971,
+        0.2599999999999909,
+        0.25080000000002656,
+        0.26209999999997535,
+        0.27049999999997
+      ],
+      "baseline_samples_ms": [
+        0.3039999999999736,
+        0.3006000000000313,
+        0.2747999999999706,
+        0.2711999999999648,
+        0.29169999999999163,
+        0.3183999999999969,
+        0.28010000000000446
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station 4x4 stipple passes",
+      "count": 1024,
+      "primary_ms": 1.3772000000000162,
+      "baseline_ms": 1.553100000000029,
+      "primary_samples_ms": [
+        2.3444999999999823,
+        1.442200000000014,
+        1.3199999999999932,
+        1.3232999999999606,
+        1.313000000000045,
+        1.3772000000000162,
+        1.3821999999999548
+      ],
+      "baseline_samples_ms": [
+        2.0692000000000235,
+        1.4816999999999894,
+        1.47890000000001,
+        1.529800000000023,
+        1.5534999999999854,
+        1.553100000000029,
+        1.6879999999999882
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station 4x4 stipple passes",
+      "count": 8192,
+      "primary_ms": 11.93100000000004,
+      "baseline_ms": 13.693499999999972,
+      "primary_samples_ms": [
+        11.93100000000004,
+        12.036200000000008,
+        15.377899999999954,
+        11.52030000000002,
+        12.486800000000017,
+        11.29180000000008,
+        11.894000000000005
+      ],
+      "baseline_samples_ms": [
+        13.693499999999972,
+        14.047900000000027,
+        25.417599999999993,
+        20.390999999999963,
+        12.441100000000006,
+        12.146600000000035,
+        12.501400000000103
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/r2-dither-stipple-rig/light-r2-stratified-blue-dither.png",
+    "docs/evidence/r2-dither-stipple-rig/light-naive-white-hash-clump.png",
+    "docs/evidence/r2-dither-stipple-rig/dark-r2-stratified-blue-dither.png",
+    "docs/evidence/r2-dither-stipple-rig/dark-naive-white-hash-clump.png",
+    "docs/evidence/r2-dither-stipple-rig/mobile.png"
+  ],
+  "primary_label": "Branchless Bit-Interleaved R2 Dither",
+  "baseline_label": "Iterative Bit-Reversal Solver",
+  "load_unit": "17-station 4x4 stipple passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Branchless bit-interleaved R2 threshold evaluation versus iterative digit-by-digit bit-reversal baseline.",
+  "geometry": {
+    "parts": 57,
+    "stations": 17,
+    "tile_pixels": 16,
+    "target_alpha_station_6": 0.375,
+    "r2_active_pixels_station_6": 6,
+    "naive_active_pixels_station_6": 0,
+    "r2_tile_alpha_station_6": 0.375,
+    "naive_tile_alpha_station_6": 0,
+    "r2_max_error": 0,
+    "naive_station_6_error": 0.375,
+    "naive_max_error": 0.375,
+    "maximum_solver_error": 0
+  },
+  "protocol": {
+    "input": {
+      "station_index": 6,
+      "target_alpha": 0.375,
+      "temporal_frame": 0,
+      "mode": "r2-stratified-blue-dither"
+    },
+    "output": {
+      "r2_active_pixels": 6,
+      "r2_tile_alpha": 0.375,
+      "naive_active_pixels": 0,
+      "naive_tile_alpha": 0,
+      "naive_opacity_error": 0.375
+    },
+    "function": "τ(x,y,t) = ((interleave2(x⊕y, y) + round(16·t/g)) mod 16 + 0.5)/16 → α_tile ≡ α_target (0.0000 bias)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 opacity ramp stations preserve exact k/16 sub-pixel stratification across temporal frames",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Deferred-rendering G-buffer foliage/hair cutouts and smooth camera-distance LOD cross-fade dissolves",
+    "Shadow-map alpha-test stippling where full order-independent transparency (OIT) is prohibitively expensive",
+    "Explaining why uncorrelated white-noise sin-hashes form Poisson clumps and voids on small 4x4 screen tiles",
+    "Combining 4x4 bit-interleaved spatial stratification with Roberts R2 / golden-ratio temporal frame rotation for TAA accumulation"
+  ],
+  "not_for": [
+    "Forward-rendered glass or refractive surfaces where hardware premultiplied alpha blending is available",
+    "Pipelines with Temporal Anti-Aliasing (TAA) disabled where high-frequency stipple dots remain un-accumulated at 1x resolution",
+    "Neural portrait/video alpha matting models (ViTMatte / Robust Video Matting)",
+    "Fully opaque non-dissolving meshes where alpha ≡ 1.0 requires zero discard tests"
+  ],
+  "locale_zh": {
+    "stipple-equivalence-128": "点画矩阵等价 128",
+    "128 branchless bit-interleaved R2 dither and iterative bit-reversal passes agree within 1e-15": "128 次无分支位交错 R₂ 点画与循环位反转基线在 1e-15 内一致",
+    "stipple-equivalence-1024": "点画矩阵等价 1024",
+    "1024 branchless bit-interleaved R2 dither and iterative bit-reversal passes agree within 1e-15": "1024 次无分支位交错 R₂ 点画与循环位反转基线在 1e-15 内一致",
+    "stipple-equivalence-8192": "点画矩阵等价 8192",
+    "8192 branchless bit-interleaved R2 dither and iterative bit-reversal passes agree within 1e-15": "8192 次无分支位交错 R₂ 点画与循环位反转基线在 1e-15 内一致",
+    "r2-stratified-zero-quantization-bias": "R2分层零量化偏置",
+    "17 opacity stations achieve 0.0000 quantization bias (station-6 α=0.3750 activates exact 6/16 pixels = 0.3750)": "17 级透明度斜坡全部保持 0.0000 量化偏置（第 6 站 α=0.3750 精确激活 6/16 个像素 = 0.3750）",
+    "naive-white-hash-clumping-exposed": "白噪声哈希聚团误差暴露",
+    "naive sin-hash white noise activates only 0/16 pixels at α=0.3750 (tile α=0.0000, error=0.3750, max=0.3750)": "朴素正弦白噪声在 α=0.3750 仅激活 0/16 像素（瓦片 α=0.0000，误差=0.3750，最大=0.3750）",
+    "exact-stratified-tile-retained": "分层瓦片透明度精确锁定",
+    "Stratified R2 dither locks station-6 tile opacity at 6/16 = 0.3750 (0.0000 max ramp error)": "分层 R₂ 点画将第 6 站瓦片透明度精确锁定在 6/16 = 0.3750（全斜坡最大误差 0.0000）",
+    "poisson-clumping-starvation-exposed": "泊松聚团透明度饥饿暴露",
+    "naive white-noise hash drops station-6 tile opacity to 0.0000 (0/16 pixels, error 0.3750)": "朴素白噪声哈希将第 6 站瓦片透明度压低至 0.0000（仅 0/16 像素，误差 0.3750）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse station scrubbing reproduces the exact opacity probe carriage world matrix": "逆序站点拖曳精确复现透明度探针滑车世界矩阵",
+    "atomic-frame-rejection": "原子帧号拒绝",
+    "out-of-range temporalFrame=99 is rejected while valid R2 stipple dither state remains": "越界时序帧号 99 被拒绝，有效 R₂ 点画状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered probe carriage y-elevation matches solved 4x4 tile opacity height": "渲染探针滑车垂直高度与求解器 4×4 瓦片透明度高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px R2 stipple dither controls fit without horizontal overflow": "390px R₂ 点画抖动控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual station scrubbing remains available": "减少动态默认静止，保留手动站点核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Branchless Bit-Interleaved R2 Dither": "无分支位交错 R₂ 分层点画",
+    "Iterative Bit-Reversal Solver": "循环逐位反转求值基线",
+    "Median of 7 alternating Node CPU runs after warmup. Branchless bit-interleaved R2 threshold evaluation versus iterative digit-by-digit bit-reversal baseline.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；无分支位交错 R₂ 分层点画对比循环逐位反转求值基线。",
+    "Sampled 17 opacity ramp stations preserve exact k/16 sub-pixel stratification across temporal frames": "采样 17 级透明度斜坡站点在时序帧旋转下保持精确 k/16 子像素分层",
+    "τ(x,y,t) = ((interleave2(x⊕y, y) + round(16·t/g)) mod 16 + 0.5)/16 → α_tile ≡ α_target (0.0000 bias)": "位交错分层 + R₂ 塑数时序旋转 → 瓦片透明度 α_tile ≡ α_target（0.0000 量化偏置）",
+    "Deferred-rendering G-buffer foliage/hair cutouts and smooth camera-distance LOD cross-fade dissolves": "延迟渲染 G-Buffer 植被/发丝镂空与相机距离 LOD 平滑交叉淡入淡出（Cross-Fade Dissolve）",
+    "Shadow-map alpha-test stippling where full order-independent transparency (OIT) is prohibitively expensive": "无法承担高昂顺序无关半透明（OIT）开销的半透明物体阴影贴图点画透光",
+    "Explaining why uncorrelated white-noise sin-hashes form Poisson clumps and voids on small 4x4 screen tiles": "直观解释为何不相关的正弦白噪声哈希会在 4×4 屏幕瓦片内产生泊松聚团与空洞失真",
+    "Combining 4x4 bit-interleaved spatial stratification with Roberts R2 / golden-ratio temporal frame rotation for TAA accumulation": "将 4×4 空间位交错分层与 Roberts R₂ 塑数时序旋转相结合以供 TAA 时域抗锯齿平滑积分",
+    "Forward-rendered glass or refractive surfaces where hardware premultiplied alpha blending is available": "可直接启用硬件预乘 Alpha 混合的前向渲染玻璃或折射材质",
+    "Pipelines with Temporal Anti-Aliasing (TAA) disabled where high-frequency stipple dots remain un-accumulated at 1x resolution": "关闭了时域抗锯齿（TAA）且在 1× 低分辨率下直接裸露高频网点的渲染管线",
+    "Neural portrait/video alpha matting models (ViTMatte / Robust Video Matting)": "神经人像或视频抠像大模型（ViTMatte / Robust Video Matting）",
+    "Fully opaque non-dissolving meshes where alpha ≡ 1.0 requires zero discard tests": "完全不透明（α ≡ 1.0）且无 LOD 淡入淡出需求的常规网格"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/r2-dither-stipple.test.ts",
+    "node scripts/benchmark-r2-dither-stipple.mjs"
+  ]
+}

@@ -1,0 +1,271 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "AgX gamut-inset path-to-white tonemapping vs per-channel Notorious Six hue skew rig",
+  "topic_zh": "AgX 色域内缩与向白退饱和色调映射对比逐通道 Notorious Six 偏黄死角畸变",
+  "slug": "agx-filmic-gamut-rig",
+  "timestamp": "2026-11-11T19:39:22.017Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic AgX-style gamut-inset chromaticity attenuation and hue-invariant path-to-white filmic tonemapping versus naive per-channel S-curve clipping across 17 HDR exposure stops (-2.0 EV to +6.0 EV). No neural color grading execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.39",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "agx-gamut-equivalence-128",
+      "passed": true,
+      "detail": "128 direct isotropic achromatic-inset and cylindrical polar atan2/cos/sin passes agree within 1e-14"
+    },
+    {
+      "name": "agx-gamut-equivalence-1024",
+      "passed": true,
+      "detail": "1024 direct isotropic achromatic-inset and cylindrical polar atan2/cos/sin passes agree within 1e-14"
+    },
+    {
+      "name": "agx-gamut-equivalence-8192",
+      "passed": true,
+      "detail": "8192 direct isotropic achromatic-inset and cylindrical polar atan2/cos/sin passes agree within 1e-14"
+    },
+    {
+      "name": "agx-hue-linearity-conserved",
+      "passed": true,
+      "detail": "17 HDR exposure stops (-2 EV to +6 EV) maintain 0.00° hue skew (station-13 hue=17.38°)"
+    },
+    {
+      "name": "notorious-six-yellow-skew-exposed",
+      "passed": true,
+      "detail": "naive per-channel S-curve skews golden-orange flame by +38.84° at +4.5 EV (to 56.22° yellow, max skew +40.63°)"
+    },
+    {
+      "name": "constant-hue-path-to-white-retained",
+      "passed": true,
+      "detail": "AgX gamut-inset locks station-13 (+4.5 EV) hue at 17.38° (0.00° skew)"
+    },
+    {
+      "name": "per-channel-yellow-clip-exposed",
+      "passed": true,
+      "detail": "per-channel S-curve distorts station-13 hue to 56.22° (+38.84° Notorious Six skew)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse exposure scrubbing reproduces the exact spectrophotometer carriage world matrix"
+    },
+    {
+      "name": "atomic-ratio-rejection",
+      "passed": true,
+      "detail": "out-of-range greenRatio=5.0 is rejected while valid AgX gamut state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered spectrophotometer carriage y-elevation matches solved opponent hue height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px AgX gamut controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual exposure scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-stop HDR tonemap passes",
+      "count": 128,
+      "primary_ms": 0.03139999999996235,
+      "baseline_ms": 0.08630000000005111,
+      "primary_samples_ms": [
+        0.2504999999999882,
+        3.4307999999999765,
+        0.029199999999946158,
+        0.027400000000056934,
+        0.03139999999996235,
+        0.02800000000002001,
+        0.049999999999954525
+      ],
+      "baseline_samples_ms": [
+        0.9545000000000528,
+        0.2644999999999982,
+        0.08249999999998181,
+        0.08120000000008076,
+        0.0805000000000291,
+        0.1250999999999749,
+        0.08630000000005111
+      ]
+    },
+    {
+      "load": "1024 CPU 17-stop HDR tonemap passes",
+      "count": 1024,
+      "primary_ms": 0.11169999999992797,
+      "baseline_ms": 0.8892000000000735,
+      "primary_samples_ms": [
+        0.5298999999999978,
+        1.0705000000000382,
+        0.22919999999999163,
+        0.09310000000004948,
+        0.08890000000008058,
+        0.11169999999992797,
+        0.08619999999996253
+      ],
+      "baseline_samples_ms": [
+        3.054399999999987,
+        1.1820999999999913,
+        1.054300000000012,
+        0.8892000000000735,
+        0.5521999999999707,
+        0.5307999999999993,
+        0.5430000000000064
+      ]
+    },
+    {
+      "load": "8192 CPU 17-stop HDR tonemap passes",
+      "count": 8192,
+      "primary_ms": 0.6671000000000049,
+      "baseline_ms": 4.644100000000094,
+      "primary_samples_ms": [
+        0.6947999999999865,
+        0.7113000000000511,
+        0.6648000000000138,
+        0.6998999999999569,
+        0.664600000000064,
+        0.6671000000000049,
+        0.6641000000000759
+      ],
+      "baseline_samples_ms": [
+        4.72199999999998,
+        4.577200000000062,
+        4.981600000000071,
+        4.644100000000094,
+        4.195999999999913,
+        4.399699999999939,
+        4.660600000000045
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/agx-filmic-gamut-rig/light-agx-gamut-inset-path-to-white.png",
+    "docs/evidence/agx-filmic-gamut-rig/light-naive-per-channel-notorious-six.png",
+    "docs/evidence/agx-filmic-gamut-rig/dark-agx-gamut-inset-path-to-white.png",
+    "docs/evidence/agx-filmic-gamut-rig/dark-naive-per-channel-notorious-six.png",
+    "docs/evidence/agx-filmic-gamut-rig/mobile.png"
+  ],
+  "primary_label": "Direct Achromatic-Inset Vector Scale",
+  "baseline_label": "Cylindrical Polar Atan2/Cos/Sin",
+  "load_unit": "17-stop HDR tonemap passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Direct algebraic chrominance vector scaling (C - Y*1) versus cylindrical polar coordinate atan2/hypot/cos/sin round-trip.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "green_ratio": 0.32,
+    "inset_strength": 0.22,
+    "white_path_rate": 0.28,
+    "true_hue_deg": 17.38,
+    "agx_hue_deg_station_13": 17.38,
+    "naive_hue_deg_station_13": 56.22,
+    "agx_max_skew_deg": 0,
+    "naive_station_13_skew_deg": 38.84,
+    "naive_max_skew_deg": 40.63,
+    "high_ev_chroma_purity": 0.1714,
+    "maximum_solver_error": 0
+  },
+  "protocol": {
+    "input": {
+      "station_index": 13,
+      "exposure_ev": 4.5,
+      "green_ratio": 0.32,
+      "inset_strength": 0.22,
+      "mode": "agx-gamut-inset-path-to-white"
+    },
+    "output": {
+      "true_hue_deg": 17.38,
+      "agx_hue_deg": 17.38,
+      "naive_hue_deg": 56.22,
+      "naive_hue_skew_deg": 38.84,
+      "naive_max_skew_deg": 40.63
+    },
+    "function": "C_out = Y_d·1 + (C − Y·1)·(Y_d/Y)·(1−k_in)/(1+βY) → ΔHue ≡ 0.00° across 17/17 EV stops"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 HDR exposure stops (-2 EV..+6 EV) preserve exact opponent hue angle and smooth path-to-white",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Real-time 3D game and virtual-production HDR display rendering transforms (campfires, explosions, laser sabers, sunset clouds, neon signage)",
+    "Explaining why independent per-channel S-curves drive non-primary colors into the Notorious Six corners (Yellow, Cyan, Magenta)",
+    "Scaling the chrominance offset vector (C - Y*1) isotropically around luminance Y for 0.00° hue skew and zero trig calls",
+    "Desaturating over-exposed emissive cores smoothly toward white (Path-to-White) like physical film and digital cinema sensors"
+  ],
+  "not_for": [
+    "Already-tonemapped 8-bit sRGB UI textures or web graphics that must bypass the 3D scene-referred display transform",
+    "False-color scientific thermal heatmaps where deliberate rainbow hue rotation encodes temperature tiers",
+    "Neural image-to-image color grading or style transfer models",
+    "Strict colorimetric proofing where out-of-range values must hard-clip without filmic roll-off"
+  ],
+  "locale_zh": {
+    "agx-gamut-equivalence-128": "AgX色域等价 128",
+    "128 direct isotropic achromatic-inset and cylindrical polar atan2/cos/sin passes agree within 1e-14": "128 次直接消色差内缩与柱面极坐标 atan2/cos/sin 基线在 1e-14 内一致",
+    "agx-gamut-equivalence-1024": "AgX色域等价 1024",
+    "1024 direct isotropic achromatic-inset and cylindrical polar atan2/cos/sin passes agree within 1e-14": "1024 次直接消色差内缩与柱面极坐标 atan2/cos/sin 基线在 1e-14 内一致",
+    "agx-gamut-equivalence-8192": "AgX色域等价 8192",
+    "8192 direct isotropic achromatic-inset and cylindrical polar atan2/cos/sin passes agree within 1e-14": "8192 次直接消色差内缩与柱面极坐标 atan2/cos/sin 基线在 1e-14 内一致",
+    "agx-hue-linearity-conserved": "AgX色相轨迹严格守恒",
+    "17 HDR exposure stops (-2 EV to +6 EV) maintain 0.00° hue skew (station-13 hue=17.38°)": "17 档 HDR 曝光（-2 EV 至 +6 EV）全程保持 0.00° 色相偏移（第 13 站色相角=17.38°）",
+    "notorious-six-yellow-skew-exposed": "逐通道偏黄死角暴露",
+    "naive per-channel S-curve skews golden-orange flame by +38.84° at +4.5 EV (to 56.22° yellow, max skew +40.63°)": "朴素逐通道 S 曲线在 +4.5 EV 处将金橙色火焰偏转 +38.84° 至 56.22° 柠檬黄（最大偏转 +40.63°）",
+    "constant-hue-path-to-white-retained": "恒定色相向白退饱和锁定",
+    "AgX gamut-inset locks station-13 (+4.5 EV) hue at 17.38° (0.00° skew)": "AgX 色域内缩将第 13 站（+4.5 EV）色相锁死在 17.38°（0.00° 偏移）",
+    "per-channel-yellow-clip-exposed": "逐通道纯黄死角畸变暴露",
+    "per-channel S-curve distorts station-13 hue to 56.22° (+38.84° Notorious Six skew)": "逐通道 S 曲线将第 13 站色相扭曲至 56.22°（+38.84° 偏黄死角畸变）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse exposure scrubbing reproduces the exact spectrophotometer carriage world matrix": "逆序曝光拖曳精确复现分光光度计滑车世界矩阵",
+    "atomic-ratio-rejection": "原子绿通道比拒绝",
+    "out-of-range greenRatio=5.0 is rejected while valid AgX gamut state remains": "越界绿通道比值 5.0 被拒绝，有效 AgX 状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered spectrophotometer carriage y-elevation matches solved opponent hue height": "渲染分光滑车垂直高度与求解器拮抗色相角高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px AgX gamut controls fit without horizontal overflow": "390px AgX 色域控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual exposure scrubbing remains available": "减少动态默认静止，保留手动曝光核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Direct Achromatic-Inset Vector Scale": "直接消色差内缩向量等比缩放",
+    "Cylindrical Polar Atan2/Cos/Sin": "柱面极坐标 Atan2/Cos/Sin 往返基线",
+    "Median of 7 alternating Node CPU runs after warmup. Direct algebraic chrominance vector scaling (C - Y*1) versus cylindrical polar coordinate atan2/hypot/cos/sin round-trip.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；直接消色差色差向量（C − Y·1）代数缩放对比柱面极坐标 atan2/hypot/cos/sin 往返基线。",
+    "Sampled 17 HDR exposure stops (-2 EV..+6 EV) preserve exact opponent hue angle and smooth path-to-white": "采样 17 档 HDR 曝光（-2 EV..+6 EV）严格保持拮抗色相角与平滑向白退饱和",
+    "C_out = Y_d·1 + (C − Y·1)·(Y_d/Y)·(1−k_in)/(1+βY) → ΔHue ≡ 0.00° across 17/17 EV stops": "AgX 色域内缩与向白退饱和 C_out = Y_d·1 + (C−Y·1)·(Y_d/Y)·(1−k_in)/(1+βY) → 17 档曝光 ΔHue ≡ 0.00°",
+    "Real-time 3D game and virtual-production HDR display rendering transforms (campfires, explosions, laser sabers, sunset clouds, neon signage)": "实时 3D 游戏与虚拟制片 HDR 显示变换（篝火烈焰、爆炸火球、光剑、晚霞与霓虹灯牌）",
+    "Explaining why independent per-channel S-curves drive non-primary colors into the Notorious Six corners (Yellow, Cyan, Magenta)": "直观解释为何独立逐通道 S 曲线会将非原色高亮推向“臭名昭著六死角”（纯黄、纯青、品红）",
+    "Scaling the chrominance offset vector (C - Y*1) isotropically around luminance Y for 0.00° hue skew and zero trig calls": "围绕消色差亮度轴 Y 等比缩放色度偏移向量（C − Y·1），在零三角函数下实现 0.00° 色相偏移",
+    "Desaturating over-exposed emissive cores smoothly toward white (Path-to-White) like physical film and digital cinema sensors": "让过曝自发光核心像真实电影胶片与摄影机传感器一样平滑退饱和至白光（Path-to-White）",
+    "Already-tonemapped 8-bit sRGB UI textures or web graphics that must bypass the 3D scene-referred display transform": "已经完成色调映射、需绕过 3D 场景显示变换的 8-bit sRGB UI 贴图或网页图标",
+    "False-color scientific thermal heatmaps where deliberate rainbow hue rotation encodes temperature tiers": "故意利用彩虹色相旋转编码温度梯度的科学伪彩色热力图",
+    "Neural image-to-image color grading or style transfer models": "神经图像调色或风格迁移生成模型",
+    "Strict colorimetric proofing where out-of-range values must hard-clip without filmic roll-off": "严禁胶片高光滚降、要求超界值硬截断的严格色彩打样校准"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/agx-filmic-gamut.test.ts",
+    "node scripts/benchmark-agx-filmic-gamut.mjs"
+  ]
+}

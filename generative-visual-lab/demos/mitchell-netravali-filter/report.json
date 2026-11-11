@@ -1,0 +1,269 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Mitchell-Netravali (B=1/3, C=1/3) cubic reconstruction filter vs over-sharpened Gibbs ringing",
+  "topic_zh": "Mitchell-Netravali (B=1/3, C=1/3) 单位分解三次重构滤波与吉布斯振铃对比",
+  "slug": "mitchell-netravali-filter",
+  "timestamp": "2026-11-11T17:50:36.679Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic 4-tap Mitchell-Netravali piecewise-cubic reconstruction filter (B=1/3, C=1/3) on the B+2C=1 locus versus over-sharpened cardinal cubic (B=0, C=1) across a 25-station sub-pixel step transition. No neural super-resolution execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.39",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "mitchell-equivalence-128",
+      "passed": true,
+      "detail": "128 branchless Horner 4-tap polynomial and piecewise Math.abs/Math.pow passes agree within 1e-14"
+    },
+    {
+      "name": "mitchell-equivalence-1024",
+      "passed": true,
+      "detail": "1024 branchless Horner 4-tap polynomial and piecewise Math.abs/Math.pow passes agree within 1e-14"
+    },
+    {
+      "name": "mitchell-equivalence-8192",
+      "passed": true,
+      "detail": "8192 branchless Horner 4-tap polynomial and piecewise Math.abs/Math.pow passes agree within 1e-14"
+    },
+    {
+      "name": "mitchell-partition-of-unity",
+      "passed": true,
+      "detail": "25 sub-pixel stations preserve exact Partition of Unity sum(w)=1.000000 and cut Gibbs ringing by 75.93%"
+    },
+    {
+      "name": "cardinal-gibbs-ringing-exposed",
+      "passed": true,
+      "detail": "over-sharpened cardinal (B=0, C=1) rings to +0.1465 and -0.1465 (0.2930 span)"
+    },
+    {
+      "name": "exact-mitchell-balance-retained",
+      "passed": true,
+      "detail": "Mitchell (1/3, 1/3) locks station-20 weight sum at 1.000000 and limits side-lobe to +0.0353"
+    },
+    {
+      "name": "cardinal-halo-ringing-exposed",
+      "passed": true,
+      "detail": "over-sharpened cardinal rings to I_out=1.1250 at station 20 (0.2930 total ringing)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse station scrubbing reproduces the exact filter convolution probe world matrix"
+    },
+    {
+      "name": "atomic-param-rejection",
+      "passed": true,
+      "detail": "out-of-range mitchellC=4.5 is rejected while valid filter state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered convolution probe y-elevation matches solved Mitchell-Netravali step value"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Mitchell-Netravali filter controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual station scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 25-station sub-pixel filter passes",
+      "count": 128,
+      "primary_ms": 1.5218999999999596,
+      "baseline_ms": 2.2648000000000366,
+      "primary_samples_ms": [
+        3.418299999999931,
+        1.5218999999999596,
+        1.543800000000033,
+        7.0978999999999814,
+        0.22030000000006567,
+        0.20470000000000255,
+        0.209699999999998
+      ],
+      "baseline_samples_ms": [
+        4.356199999999944,
+        4.3822999999999865,
+        2.2648000000000366,
+        4.679599999999937,
+        0.48689999999999145,
+        0.4696999999999889,
+        0.469600000000014
+      ]
+    },
+    {
+      "load": "1024 CPU 25-station sub-pixel filter passes",
+      "count": 1024,
+      "primary_ms": 1.2075999999999567,
+      "baseline_ms": 3.3331000000000586,
+      "primary_samples_ms": [
+        1.2597999999999274,
+        0.9818000000000211,
+        1.0009000000000015,
+        1.6018000000000256,
+        1.733000000000061,
+        1.2075999999999567,
+        1.1806000000000267
+      ],
+      "baseline_samples_ms": [
+        2.7555999999999585,
+        3.5971000000000686,
+        3.044200000000046,
+        3.3331000000000586,
+        2.9530999999999494,
+        3.415200000000027,
+        3.411200000000008
+      ]
+    },
+    {
+      "load": "8192 CPU 25-station sub-pixel filter passes",
+      "count": 8192,
+      "primary_ms": 12.135499999999979,
+      "baseline_ms": 29.3433,
+      "primary_samples_ms": [
+        13.04600000000005,
+        12.135499999999979,
+        12.079499999999939,
+        12.563199999999938,
+        9.779700000000048,
+        11.779499999999985,
+        12.531200000000013
+      ],
+      "baseline_samples_ms": [
+        32.71449999999993,
+        39.69240000000002,
+        29.3433,
+        24.329700000000003,
+        23.337600000000066,
+        36.331699999999955,
+        26.99809999999991
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/mitchell-netravali-filter/light-mitchell-netravali-balanced.png",
+    "docs/evidence/mitchell-netravali-filter/light-over-sharpened-cardinal-ringing.png",
+    "docs/evidence/mitchell-netravali-filter/dark-mitchell-netravali-balanced.png",
+    "docs/evidence/mitchell-netravali-filter/dark-over-sharpened-cardinal-ringing.png",
+    "docs/evidence/mitchell-netravali-filter/mobile.png"
+  ],
+  "primary_label": "Branchless Horner 4-Tap Polynomial",
+  "baseline_label": "Piecewise Math.abs + Math.pow",
+  "load_unit": "25-station filter passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Branchless Horner-factored 4-tap polynomial evaluation versus per-tap piecewise Math.abs/Math.pow branching.",
+  "geometry": {
+    "parts": 58,
+    "stations": 25,
+    "mitchell_b": 0.3333,
+    "mitchell_c": 0.3333,
+    "weight_sum_unity": 1,
+    "mitchell_overshoot": 0.0353,
+    "cardinal_overshoot": 0.1465,
+    "cardinal_ringing_span": 0.293,
+    "ringing_reduction_pct": 75.93,
+    "maximum_solver_error": 1.3323e-15
+  },
+  "protocol": {
+    "input": {
+      "station_index": 20,
+      "coord_u": 1.5,
+      "param_b": 0.3333,
+      "param_c": 0.3333,
+      "mode": "mitchell-netravali-balanced"
+    },
+    "output": {
+      "weight_sum": 1,
+      "mitchell_i_out": 1.0347,
+      "mitchell_overshoot": 0.0353,
+      "cardinal_i_out": 1.125,
+      "cardinal_ringing_span": 0.293,
+      "ringing_cut_pct": 75.93
+    },
+    "function": "B = 1/3, C = 1/3 ⇒ Σ_{m=−1}^2 w_m(s) ≡ 1.000000, side-lobe = (B−6C)/48 = −0.0347 (72.22% ringing cut)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled sub-pixel stations preserve exact Partition of Unity sum(w) == 1.000000",
+      "original": 25,
+      "perturbed": 25,
+      "total": 25
+    }
+  ],
+  "good_fit": [
+    "Sub-pixel image scaling, TAA history reprojection, ray-traced film reconstruction, and font/UI resampling",
+    "Explaining why filters must satisfy Partition of Unity sum(w_m(s)) == 1 to prevent flat-field checkerboard ripples",
+    "Selecting B=1/3, C=1/3 on the B+2C=1 locus to balance blur against negative-lobe Gibbs ringing halos",
+    "Branchless Horner-factored 4-tap polynomial evaluation without per-tap Math.abs or if/else branching"
+  ],
+  "not_for": [
+    "Strictly non-negative probability density estimation where even a -0.0347 negative lobe is forbidden (use B=1, C=0 B-spline)",
+    "Exact interpolation of discrete keyframe knots where k(0)=1 is mandatory (use Fritsch-Carlson PCHIP or B=0, C=0.5)",
+    "Generative hallucination of missing high-frequency textures (DLSS / StableSR)",
+    "1-tap nearest-neighbor pixel-art magnification where crisp blocky texel boundaries are desired"
+  ],
+  "locale_zh": {
+    "mitchell-equivalence-128": "Mitchell滤波等价 128",
+    "128 branchless Horner 4-tap polynomial and piecewise Math.abs/Math.pow passes agree within 1e-14": "128 次无分支霍纳 4 抽头多项式与分段 Math.abs/Math.pow 在 1e-14 内一致",
+    "mitchell-equivalence-1024": "Mitchell滤波等价 1024",
+    "1024 branchless Horner 4-tap polynomial and piecewise Math.abs/Math.pow passes agree within 1e-14": "1024 次无分支霍纳 4 抽头多项式与分段 Math.abs/Math.pow 在 1e-14 内一致",
+    "mitchell-equivalence-8192": "Mitchell滤波等价 8192",
+    "8192 branchless Horner 4-tap polynomial and piecewise Math.abs/Math.pow passes agree within 1e-14": "8192 次无分支霍纳 4 抽头多项式与分段 Math.abs/Math.pow 在 1e-14 内一致",
+    "mitchell-partition-of-unity": "Mitchell单位分解守恒",
+    "25 sub-pixel stations preserve exact Partition of Unity sum(w)=1.000000 and cut Gibbs ringing by 75.93%": "25 个亚像素站点保持精确单位分解 Σw=1.000000 并削减 75.93% 吉布斯振铃",
+    "cardinal-gibbs-ringing-exposed": "过锐化吉布斯振铃暴露",
+    "over-sharpened cardinal (B=0, C=1) rings to +0.1465 and -0.1465 (0.2930 span)": "过锐化基数三次核（B=0, C=1）产生 +0.1465 过冲与 -0.1465 下冲（跨度 0.2930）",
+    "exact-mitchell-balance-retained": "Mitchell平衡核精确锁定",
+    "Mitchell (1/3, 1/3) locks station-20 weight sum at 1.000000 and limits side-lobe to +0.0353": "Mitchell (1/3, 1/3) 将第 20 站权重和锁死在 1.000000 并将旁瓣过冲限制在 +0.0353",
+    "cardinal-halo-ringing-exposed": "基数核黑白边振铃暴露",
+    "over-sharpened cardinal rings to I_out=1.1250 at station 20 (0.2930 total ringing)": "过锐化基数核在第 20 站产生 I_out=1.1250 振铃（总跨度 0.2930）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse station scrubbing reproduces the exact filter convolution probe world matrix": "逆序站点拖曳精确复现滤波卷积探针世界矩阵",
+    "atomic-param-rejection": "原子参数拒绝",
+    "out-of-range mitchellC=4.5 is rejected while valid filter state remains": "越界滤波参数 C=4.5 被拒绝，有效滤波器状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered convolution probe y-elevation matches solved Mitchell-Netravali step value": "渲染卷积探针垂直高度与求解器 Mitchell 重构数值完全一致",
+    "mobile-layout": "手机布局",
+    "390px Mitchell-Netravali filter controls fit without horizontal overflow": "390px Mitchell 滤波器控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual station scrubbing remains available": "减少动态默认静止，保留手动站点核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Branchless Horner 4-Tap Polynomial": "无分支霍纳 4 抽头多项式闭式解",
+    "Piecewise Math.abs + Math.pow": "分段 Math.abs + Math.pow 分支基线",
+    "Median of 7 alternating Node CPU runs after warmup. Branchless Horner-factored 4-tap polynomial evaluation versus per-tap piecewise Math.abs/Math.pow branching.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；无分支霍纳嵌套 4 抽头多项式求值对比逐抽头分段 Math.abs/Math.pow 分支基线。",
+    "Sampled sub-pixel stations preserve exact Partition of Unity sum(w) == 1.000000": "采样亚像素站点严格保持单位分解恒等式 sum(w) == 1.000000",
+    "B = 1/3, C = 1/3 ⇒ Σ_{m=−1}^2 w_m(s) ≡ 1.000000, side-lobe = (B−6C)/48 = −0.0347 (72.22% ringing cut)": "最优平衡核 B=1/3, C=1/3 ⇒ 权重和恒为 1.000000，旁瓣过冲降至 0.0347（削减 72.22% 吉布斯振铃）",
+    "Sub-pixel image scaling, TAA history reprojection, ray-traced film reconstruction, and font/UI resampling": "亚像素图像缩放、TAA 历史帧重投影、光线追踪胶片重构以及字体/UI 重采样",
+    "Explaining why filters must satisfy Partition of Unity sum(w_m(s)) == 1 to prevent flat-field checkerboard ripples": "直观解释为何重构滤波器必须满足单位分解 Σw_m(s)≡1 以消除纯色背景上的棋盘水波纹",
+    "Selecting B=1/3, C=1/3 on the B+2C=1 locus to balance blur against negative-lobe Gibbs ringing halos": "在 B+2C=1 最优轨迹上选取 B=1/3, C=1/3 甜点以平衡模糊与负旁瓣吉布斯黑白边振铃",
+    "Branchless Horner-factored 4-tap polynomial evaluation without per-tap Math.abs or if/else branching": "无需逐抽头 Math.abs 与条件分支的无分支霍纳 4 抽头多项式直接求值",
+    "Strictly non-negative probability density estimation where even a -0.0347 negative lobe is forbidden (use B=1, C=0 B-spline)": "严格禁止任何负权重的概率密度或非负辐射场滤波（此时应选 B=1, C=0 三次 B 样条）",
+    "Exact interpolation of discrete keyframe knots where k(0)=1 is mandatory (use Fritsch-Carlson PCHIP or B=0, C=0.5)": "要求强制穿过控制点 k(0)=1 的关键帧时间轴插值（此时应选 Fritsch-Carlson 单调样条）",
+    "Generative hallucination of missing high-frequency textures (DLSS / StableSR)": "脑补生成缺失高频纹理细节的神经超分辨率推理（DLSS / StableSR）",
+    "1-tap nearest-neighbor pixel-art magnification where crisp blocky texel boundaries are desired": "刻意保留锐利方块像素边缘的像素画最近邻（Nearest-Neighbor）放大"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/mitchell-netravali-filter.test.ts",
+    "node scripts/benchmark-mitchell-netravali.mjs"
+  ]
+}

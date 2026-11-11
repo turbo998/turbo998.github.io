@@ -1,0 +1,270 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "YCoCg variance AABB ray-clipping vs unclamped EMA ghosting TAA rig",
+  "topic_zh": "YCoCg 均值方差盒射线裁剪对比未裁剪指数历史混合 TAA 鬼影拖尾",
+  "slug": "variance-clip-taa-rig",
+  "timestamp": "2026-11-11T19:17:18.946Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Salvi (2016) / Karis (2014) 3x3 YCoCg statistical moment accumulation and closed-form AABB slab ray-clipping versus unclamped exponential moving average history blending across a 17-frame disocclusion step. No neural super-resolution execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.39",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "taa-clip-equivalence-128",
+      "passed": true,
+      "detail": "128 single-pass closed-form YCoCg slab ray-clipping and 52-step bisection passes agree within 1e-13"
+    },
+    {
+      "name": "taa-clip-equivalence-1024",
+      "passed": true,
+      "detail": "1024 single-pass closed-form YCoCg slab ray-clipping and 52-step bisection passes agree within 1e-13"
+    },
+    {
+      "name": "taa-clip-equivalence-8192",
+      "passed": true,
+      "detail": "8192 single-pass closed-form YCoCg slab ray-clipping and 52-step bisection passes agree within 1e-13"
+    },
+    {
+      "name": "ycocg-variance-bound-conserved",
+      "passed": true,
+      "detail": "17 temporal frames maintain 0.0000 overshoot beyond YCoCg variance AABB (frame-8 disocclusion resolves Y=0.2349, suppressing 97.85% ghosting)"
+    },
+    {
+      "name": "unclamped-ema-ghosting-exposed",
+      "passed": true,
+      "detail": "unclamped EMA (α=0.90) smears stale highlight into disoccluded frame-8 at Y=1.8200 (+1.5813 overshoot above variance bound)"
+    },
+    {
+      "name": "disocclusion-step-rectified",
+      "passed": true,
+      "detail": "YCoCg variance ray-clip rectifies frame-8 disocclusion to Y=0.2349 (97.85% ghost cut)"
+    },
+    {
+      "name": "multi-frame-ghost-trail-exposed",
+      "passed": true,
+      "detail": "unclamped EMA leaves +1.5813 luma ghosting overshoot across disoccluded frames 8..16"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse frame scrubbing reproduces the exact temporal probe carriage world matrix"
+    },
+    {
+      "name": "atomic-alpha-rejection",
+      "passed": true,
+      "detail": "out-of-range feedbackAlpha=1.5 is rejected while valid TAA variance-clip state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered probe carriage y-elevation matches solved TAA luminance height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px TAA variance-clip controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual frame scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-frame YCoCg TAA passes",
+      "count": 128,
+      "primary_ms": 1.5833999999999833,
+      "baseline_ms": 2.5691000000000486,
+      "primary_samples_ms": [
+        0.5711999999999762,
+        2.6157000000000608,
+        2.2107999999999493,
+        0.8522000000000389,
+        2.8777000000000044,
+        1.5833999999999833,
+        0.44060000000001764
+      ],
+      "baseline_samples_ms": [
+        3.0798999999999523,
+        2.5691000000000486,
+        0.631900000000087,
+        0.695699999999988,
+        2.7753000000000156,
+        3.9290000000000873,
+        0.9220000000000255
+      ]
+    },
+    {
+      "load": "1024 CPU 17-frame YCoCg TAA passes",
+      "count": 1024,
+      "primary_ms": 3.6497000000000526,
+      "baseline_ms": 4.537599999999998,
+      "primary_samples_ms": [
+        3.163400000000024,
+        3.758699999999976,
+        3.6497000000000526,
+        3.841699999999946,
+        3.3818999999999733,
+        4.035599999999931,
+        3.588200000000029
+      ],
+      "baseline_samples_ms": [
+        4.254400000000032,
+        4.177099999999996,
+        4.537599999999998,
+        4.7444000000000415,
+        4.718500000000063,
+        5.196700000000078,
+        4.49369999999999
+      ]
+    },
+    {
+      "load": "8192 CPU 17-frame YCoCg TAA passes",
+      "count": 8192,
+      "primary_ms": 28.839300000000094,
+      "baseline_ms": 35.61039999999991,
+      "primary_samples_ms": [
+        28.932699999999954,
+        28.839300000000094,
+        27.846700000000055,
+        29.51189999999997,
+        29.19029999999998,
+        27.89760000000001,
+        27.986799999999903
+      ],
+      "baseline_samples_ms": [
+        36.08220000000006,
+        34.48509999999999,
+        35.61039999999991,
+        34.53539999999998,
+        37.48890000000006,
+        35.45060000000012,
+        36.264900000000125
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/variance-clip-taa-rig/light-ycocg-variance-aabb-clip.png",
+    "docs/evidence/variance-clip-taa-rig/light-unclamped-ema-ghosting.png",
+    "docs/evidence/variance-clip-taa-rig/dark-ycocg-variance-aabb-clip.png",
+    "docs/evidence/variance-clip-taa-rig/dark-unclamped-ema-ghosting.png",
+    "docs/evidence/variance-clip-taa-rig/mobile.png"
+  ],
+  "primary_label": "Single-Pass Closed-Form YCoCg Slab Clip",
+  "baseline_label": "Two-Pass + 52-Step Ray Bisection",
+  "load_unit": "17-frame YCoCg TAA passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Single-pass raw moment accumulation (m1, m2) and closed-form slab ray-clipping versus two-pass variance and 52-step binary ray-box search.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "feedback_alpha": 0.9,
+    "sigma_gamma": 1,
+    "highlight_luma": 2,
+    "background_luma": 0.2,
+    "neighborhood_std_y": 0.0387,
+    "upper_bound_y": 0.2387,
+    "clipped_resolved_y": 0.2349,
+    "unclamped_resolved_y": 1.82,
+    "unclamped_overshoot_y": 1.5813,
+    "ghost_suppression_pct": 97.85,
+    "maximum_solver_error": 5.2736e-16
+  },
+  "protocol": {
+    "input": {
+      "station_index": 8,
+      "feedback_alpha": 0.9,
+      "sigma_gamma": 1,
+      "highlight_luma": 2,
+      "mode": "ycocg-variance-aabb-clip"
+    },
+    "output": {
+      "clipped_resolved_y": 0.2349,
+      "unclamped_resolved_y": 1.82,
+      "ghost_overshoot_y": 1.5813,
+      "ghost_suppression_pct": 97.85
+    },
+    "function": "H_clip = μ + (H − μ)/max(1, |(H − μ)/(γσ)|_∞) → Y_8 = 0.2349 vs Unclamped 1.8200 (97.85% ghost cut)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 temporal frames maintain zero ghosting overshoot beyond the 3x3 YCoCg variance envelope",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Real-time Temporal Anti-Aliasing (TAA), temporal upscalers (TSR), and spatiotemporal stochastic screen-space reflections/GI",
+    "Explaining why transforming 3x3 neighborhoods into orthogonal YCoCg space tightens the AABB along the luminance axis compared to RGB",
+    "Ray-clipping stale history toward the neighborhood mean μ rather than component-wise clamping to preserve chroma hue",
+    "Single-pass raw moment accumulation (m1, m2) with closed-form L-infinity slab ratio t = 1 / max(1, |H-μ|/(γσ))"
+  ],
+  "not_for": [
+    "Static offline path-traced renders where true multi-thousand-sample Monte Carlo accumulation requires no history clamping",
+    "Sub-pixel thin wires or 1-pixel distant sparkles smaller than the 3x3 neighborhood without responsive velocity/translucency masks",
+    "Neural optical-flow frame generation and super-resolution networks (DLSS 3 / FSR 3)",
+    "Single-frame spatial anti-aliasing (FXAA / MSAA) with no temporal history buffer"
+  ],
+  "locale_zh": {
+    "taa-clip-equivalence-128": "方差盒裁剪等价 128",
+    "128 single-pass closed-form YCoCg slab ray-clipping and 52-step bisection passes agree within 1e-13": "128 次单遍闭式 YCoCg 方差盒射线裁剪与 52 步二分基线在 1e-13 内一致",
+    "taa-clip-equivalence-1024": "方差盒裁剪等价 1024",
+    "1024 single-pass closed-form YCoCg slab ray-clipping and 52-step bisection passes agree within 1e-13": "1024 次单遍闭式 YCoCg 方差盒射线裁剪与 52 步二分基线在 1e-13 内一致",
+    "taa-clip-equivalence-8192": "方差盒裁剪等价 8192",
+    "8192 single-pass closed-form YCoCg slab ray-clipping and 52-step bisection passes agree within 1e-13": "8192 次单遍闭式 YCoCg 方差盒射线裁剪与 52 步二分基线在 1e-13 内一致",
+    "ycocg-variance-bound-conserved": "YCoCg方差盒边界守恒",
+    "17 temporal frames maintain 0.0000 overshoot beyond YCoCg variance AABB (frame-8 disocclusion resolves Y=0.2349, suppressing 97.85% ghosting)": "17 个时序帧全部保持 0.0000 越界残留（第 8 帧遮挡解除收敛至 Y=0.2349，单帧抑制 97.85% 鬼影）",
+    "unclamped-ema-ghosting-exposed": "未裁剪指数混合鬼影暴露",
+    "unclamped EMA (α=0.90) smears stale highlight into disoccluded frame-8 at Y=1.8200 (+1.5813 overshoot above variance bound)": "未裁剪 EMA（α=0.90）将旧帧高亮残像拖入第 8 帧暗背景至 Y=1.8200（超出方差上界 +1.5813）",
+    "disocclusion-step-rectified": "遮挡解除突变帧瞬时截断",
+    "YCoCg variance ray-clip rectifies frame-8 disocclusion to Y=0.2349 (97.85% ghost cut)": "YCoCg 方差射线裁剪将第 8 帧遮挡解除亮度截断至 Y=0.2349（消除 97.85% 鬼影）",
+    "multi-frame-ghost-trail-exposed": "多帧鬼影拖尾暴露",
+    "unclamped EMA leaves +1.5813 luma ghosting overshoot across disoccluded frames 8..16": "未裁剪 EMA 在第 8..16 帧暗背景上留下高达 +1.5813 的高亮鬼影过冲",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse frame scrubbing reproduces the exact temporal probe carriage world matrix": "逆序帧拖曳精确复现时域探针滑车世界矩阵",
+    "atomic-alpha-rejection": "原子反馈权重拒绝",
+    "out-of-range feedbackAlpha=1.5 is rejected while valid TAA variance-clip state remains": "越界反馈权重 1.5 被拒绝，有效 TAA 状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered probe carriage y-elevation matches solved TAA luminance height": "渲染探针滑车垂直高度与求解器 TAA 亮度高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px TAA variance-clip controls fit without horizontal overflow": "390px TAA 方差裁剪控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual frame scrubbing remains available": "减少动态默认静止，保留手动帧核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Single-Pass Closed-Form YCoCg Slab Clip": "单遍一二阶矩 + 闭式 YCoCg 射线裁剪",
+    "Two-Pass + 52-Step Ray Bisection": "两遍均值方差 + 52 步射线二分搜索基线",
+    "Median of 7 alternating Node CPU runs after warmup. Single-pass raw moment accumulation (m1, m2) and closed-form slab ray-clipping versus two-pass variance and 52-step binary ray-box search.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；单遍一阶/二阶原始矩累积与闭式无穷范数射线裁剪对比两遍方差与 52 步二分搜索基线。",
+    "Sampled 17 temporal frames maintain zero ghosting overshoot beyond the 3x3 YCoCg variance envelope": "采样 17 个时序帧在 3×3 YCoCg 方差包络外保持零鬼影过冲",
+    "H_clip = μ + (H − μ)/max(1, |(H − μ)/(γσ)|_∞) → Y_8 = 0.2349 vs Unclamped 1.8200 (97.85% ghost cut)": "YCoCg 方差盒向心射线裁剪 H_clip = μ + (H − μ)/max(1, |(H − μ)/(γσ)|_∞) → 第 8 帧 Y=0.2349（单帧消除 97.85% 鬼影）",
+    "Real-time Temporal Anti-Aliasing (TAA), temporal upscalers (TSR), and spatiotemporal stochastic screen-space reflections/GI": "实时时域抗锯齿（TAA）、时域超分辨率（TSR）以及屏幕空间反射/全局光照（SSR/SSGI）时域降噪",
+    "Explaining why transforming 3x3 neighborhoods into orthogonal YCoCg space tightens the AABB along the luminance axis compared to RGB": "直观解释为何将 3×3 邻域变换到正交 YCoCg 空间能消除 RGB 对角线冗余并收紧亮度轴包围盒",
+    "Ray-clipping stale history toward the neighborhood mean μ rather than component-wise clamping to preserve chroma hue": "沿指向邻域均值 μ 的射线等比截断陈旧历史（而非逐通道硬夹断）以防止色相偏移",
+    "Single-pass raw moment accumulation (m1, m2) with closed-form L-infinity slab ratio t = 1 / max(1, |H-μ|/(γσ))": "单遍一阶/二阶矩累积配合闭式无穷范数比例因子 t = 1 / max(1, |H−μ|/(γσ))",
+    "Static offline path-traced renders where true multi-thousand-sample Monte Carlo accumulation requires no history clamping": "相机与物体完全静止、无需历史截断的离线蒙特卡洛路径追踪积分",
+    "Sub-pixel thin wires or 1-pixel distant sparkles smaller than the 3x3 neighborhood without responsive velocity/translucency masks": "小于 3×3 邻域且未附加响应式遮罩（Responsive Mask）的亚像素极细电线或远景单像素高光",
+    "Neural optical-flow frame generation and super-resolution networks (DLSS 3 / FSR 3)": "神经光流补帧与深度学习超分辨率推理网络（DLSS 3 / FSR 3）",
+    "Single-frame spatial anti-aliasing (FXAA / MSAA) with no temporal history buffer": "不包含跨帧历史缓冲区的单帧空间抗锯齿（FXAA / MSAA）"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/variance-clip-taa.test.ts",
+    "node scripts/benchmark-variance-clip-taa.mjs"
+  ]
+}

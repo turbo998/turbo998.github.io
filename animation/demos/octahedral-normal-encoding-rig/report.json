@@ -1,0 +1,268 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Sign-preserving octahedral unit normal encoding vs positive-Z hemisphere flip rig",
+  "topic_zh": "保号 L₁ 八面体四角折展单位法向编码对比正 Z 半球符号丢失翻转",
+  "slug": "octahedral-normal-encoding-rig",
+  "timestamp": "2026-11-11T19:28:48.310Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Cigolle et al. (2014) L1 octahedral projection and signNotZero lower-hemisphere corner unfolding versus naive positive-Z hemisphere reconstruction and trigonometric spherical angles across 17 meridian stations. No neural normal estimation execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.39",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "octahedral-equivalence-128",
+      "passed": true,
+      "detail": "128 trig-free L1 octahedral and spherical acos/atan2/sin/cos passes agree within 1e-14"
+    },
+    {
+      "name": "octahedral-equivalence-1024",
+      "passed": true,
+      "detail": "1024 trig-free L1 octahedral and spherical acos/atan2/sin/cos passes agree within 1e-14"
+    },
+    {
+      "name": "octahedral-equivalence-8192",
+      "passed": true,
+      "detail": "8192 trig-free L1 octahedral and spherical acos/atan2/sin/cos passes agree within 1e-14"
+    },
+    {
+      "name": "octahedral-full-sphere-conserved",
+      "passed": true,
+      "detail": "17 meridian stations (θ=0°..160°) reconstruct unit normals with 0.00° angular error (station-13 n_z=-0.6428)"
+    },
+    {
+      "name": "naive-hemisphere-flip-exposed",
+      "passed": true,
+      "detail": "naive positive-Z hemisphere (+√(1-x²-y²)) flips all 7 lower-hemisphere stations (station-13 θ=130° flips by 80.00°, max=140.00°)"
+    },
+    {
+      "name": "lower-hemisphere-sign-retained",
+      "passed": true,
+      "detail": "Sign-preserving octahedral unfolding locks station-13 at n_z=-0.6428 (0.00° error)"
+    },
+    {
+      "name": "positive-z-mirror-inversion-exposed",
+      "passed": true,
+      "detail": "naive positive-Z hemisphere flips station-13 n_z to +0.6428 (80.00° inversion)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse station scrubbing reproduces the exact meridian goniometer carriage world matrix"
+    },
+    {
+      "name": "atomic-bits-rejection",
+      "passed": true,
+      "detail": "out-of-range quantBits=32 is rejected while valid octahedral normal state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered goniometer carriage y-elevation matches solved n_z height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px octahedral normal encoding controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual station scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station normal codec passes",
+      "count": 128,
+      "primary_ms": 0.37220000000002074,
+      "baseline_ms": 0.3453999999999837,
+      "primary_samples_ms": [
+        1.7058999999999855,
+        0.8420000000000414,
+        0.37220000000002074,
+        0.3558999999999628,
+        0.3908000000000129,
+        0.35590000000001965,
+        0.33789999999999054
+      ],
+      "baseline_samples_ms": [
+        0.9347000000000207,
+        0.9373999999999683,
+        0.3480999999999881,
+        0.3160000000000309,
+        0.3453999999999837,
+        0.3125,
+        0.2989000000000033
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station normal codec passes",
+      "count": 1024,
+      "primary_ms": 0.6037000000000035,
+      "baseline_ms": 0.2845999999999549,
+      "primary_samples_ms": [
+        0.632000000000005,
+        0.6037000000000035,
+        0.530399999999986,
+        0.5533000000000357,
+        0.6006999999999607,
+        0.6148000000000025,
+        0.6440000000000055
+      ],
+      "baseline_samples_ms": [
+        0.3069000000000415,
+        0.3061000000000149,
+        0.2845999999999549,
+        0.29110000000002856,
+        0.2844000000000051,
+        0.2829999999999586,
+        0.2843000000000302
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station normal codec passes",
+      "count": 8192,
+      "primary_ms": 1.0337000000000103,
+      "baseline_ms": 2.2719000000000165,
+      "primary_samples_ms": [
+        1.0337000000000103,
+        2.39530000000002,
+        4.712400000000002,
+        1.0235000000000127,
+        1.016999999999996,
+        1.0193000000000438,
+        1.2201000000000022
+      ],
+      "baseline_samples_ms": [
+        2.2860000000000014,
+        2.268799999999999,
+        2.2871999999999844,
+        2.2643999999999664,
+        2.2644000000000233,
+        2.2871999999999844,
+        2.2719000000000165
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/octahedral-normal-encoding-rig/light-octahedral-sign-preserving.png",
+    "docs/evidence/octahedral-normal-encoding-rig/light-naive-positive-z-hemisphere.png",
+    "docs/evidence/octahedral-normal-encoding-rig/dark-octahedral-sign-preserving.png",
+    "docs/evidence/octahedral-normal-encoding-rig/dark-naive-positive-z-hemisphere.png",
+    "docs/evidence/octahedral-normal-encoding-rig/mobile.png"
+  ],
+  "primary_label": "Trig-Free L1 Octahedral Codec",
+  "baseline_label": "Spherical Acos/Atan2/Sin/Cos",
+  "load_unit": "17-station normal codec passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Trig-free L1 octahedral projection and branchless corner fold-back versus spherical acos/atan2/sin/cos trigonometric round-trip.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "polar_theta_deg_station_13": 130,
+    "azimuth_deg": 35,
+    "oct_nz_station_13": -0.6428,
+    "naive_nz_station_13": 0.6428,
+    "oct_max_error_deg": 0,
+    "naive_station_13_error_deg": 80,
+    "naive_max_error_deg": 140,
+    "naive_flipped_stations": 7,
+    "maximum_solver_error": 2.498e-16
+  },
+  "protocol": {
+    "input": {
+      "station_index": 13,
+      "polar_theta_deg": 130,
+      "azimuth_deg": 35,
+      "mode": "octahedral-sign-preserving"
+    },
+    "output": {
+      "oct_nz": -0.6428,
+      "naive_nz": 0.6428,
+      "oct_angular_error_deg": 0,
+      "naive_angular_error_deg": 80,
+      "naive_max_error_deg": 140
+    },
+    "function": "p = n/||n||₁, n_z < 0 ⇒ (1 − |p.yx|) ⊙ signNotZero(p.xy) → Δθ ≡ 0.00° across 17/17 stations"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 meridian stations (0°..160°) preserve full-sphere normal orientation including South Pole",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Deferred-rendering G-buffer 32-bit/16-bit world-space and view-space unit normal compression",
+    "Meshlet vertex normal streams and 3D Gaussian Splatting covariance/axis quantization",
+    "Explaining why n_z = +sqrt(1 - n_x^2 - n_y^2) flips all grazing view-space or back-facing world-space normals where n_z < 0",
+    "Using signNotZero(v) = (v >= 0 ? +1 : -1) so the South Pole (0, 0, -1) unfolds cleanly to a corner instead of collapsing to (0, 0)"
+  ],
+  "not_for": [
+    "Unnormalized displacement or velocity vectors whose magnitude ||v|| != 1 carries physical speed or height data",
+    "Tangent-space normal maps strictly guaranteed to have n_z > 0 where BC5 two-channel xy storage suffices without world/view rotation",
+    "Monocular RGB-to-normal neural estimation networks (DSINE / Marigold)",
+    "3D rotation frames requiring twist angle around the normal (use unit quaternions or QTangents instead)"
+  ],
+  "locale_zh": {
+    "octahedral-equivalence-128": "八面体编码等价 128",
+    "128 trig-free L1 octahedral and spherical acos/atan2/sin/cos passes agree within 1e-14": "128 次无三角函数 L₁ 八面体与球坐标反三角函数基线在 1e-14 内一致",
+    "octahedral-equivalence-1024": "八面体编码等价 1024",
+    "1024 trig-free L1 octahedral and spherical acos/atan2/sin/cos passes agree within 1e-14": "1024 次无三角函数 L₁ 八面体与球坐标反三角函数基线在 1e-14 内一致",
+    "octahedral-equivalence-8192": "八面体编码等价 8192",
+    "8192 trig-free L1 octahedral and spherical acos/atan2/sin/cos passes agree within 1e-14": "8192 次无三角函数 L₁ 八面体与球坐标反三角函数基线在 1e-14 内一致",
+    "octahedral-full-sphere-conserved": "八面体全石球面保号还原",
+    "17 meridian stations (θ=0°..160°) reconstruct unit normals with 0.00° angular error (station-13 n_z=-0.6428)": "17 个子午线站点（θ=0°..160°）以 0.00° 角度误差无损还原（第 13 站 n_z=-0.6428）",
+    "naive-hemisphere-flip-exposed": "朴素正Z半球翻转暴露",
+    "naive positive-Z hemisphere (+√(1-x²-y²)) flips all 7 lower-hemisphere stations (station-13 θ=130° flips by 80.00°, max=140.00°)": "朴素正 Z 半球恢复使全部 7 个下半球站点倒转（第 13 站 θ=130° 翻转 80.00°，最大翻转 140.00°）",
+    "lower-hemisphere-sign-retained": "下半球负Z符号完整保留",
+    "Sign-preserving octahedral unfolding locks station-13 at n_z=-0.6428 (0.00° error)": "保号八面体四角折展将第 13 站锁死在 n_z=-0.6428（0.00° 角度误差）",
+    "positive-z-mirror-inversion-exposed": "正Z镜像倒转暴露",
+    "naive positive-Z hemisphere flips station-13 n_z to +0.6428 (80.00° inversion)": "朴素正 Z 半球将第 13 站 n_z 翻正至 +0.6428（倒转误差 80.00°）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse station scrubbing reproduces the exact meridian goniometer carriage world matrix": "逆序站点拖曳精确复现子午线测角仪滑车世界矩阵",
+    "atomic-bits-rejection": "原子位宽拒绝",
+    "out-of-range quantBits=32 is rejected while valid octahedral normal state remains": "越界量化位宽 32 被拒绝，有效八面体法向状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered goniometer carriage y-elevation matches solved n_z height": "渲染测角仪滑车垂直高度与求解器 n_z 高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px octahedral normal encoding controls fit without horizontal overflow": "390px 八面体法向编码控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual station scrubbing remains available": "减少动态默认静止，保留手动站点核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Trig-Free L1 Octahedral Codec": "无三角函数 L₁ 保号八面体编解码",
+    "Spherical Acos/Atan2/Sin/Cos": "球坐标反三角函数编解码基线",
+    "Median of 7 alternating Node CPU runs after warmup. Trig-free L1 octahedral projection and branchless corner fold-back versus spherical acos/atan2/sin/cos trigonometric round-trip.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；无三角函数 L₁ 八面体投影与四角折回对比球坐标 acos/atan2/sin/cos 三角函数往返基线。",
+    "Sampled 17 meridian stations (0°..160°) preserve full-sphere normal orientation including South Pole": "采样 17 个子午线站点（0°..160°）完整保持全石球面法向朝向（含南极点）",
+    "p = n/||n||₁, n_z < 0 ⇒ (1 − |p.yx|) ⊙ signNotZero(p.xy) → Δθ ≡ 0.00° across 17/17 stations": "L₁ 八面体投影 + 下半球四角折展 (1 − |p.yx|) ⊙ signNotZero(p.xy) → 17/17 站点 Δθ ≡ 0.00°",
+    "Deferred-rendering G-buffer 32-bit/16-bit world-space and view-space unit normal compression": "延迟渲染 G-Buffer 32 位/16 位世界空间与视图空间单位法向紧凑压缩",
+    "Meshlet vertex normal streams and 3D Gaussian Splatting covariance/axis quantization": "Meshlet 网格顶点法向流与 3D 高斯溅射（3DGS）主轴方向量化打包",
+    "Explaining why n_z = +sqrt(1 - n_x^2 - n_y^2) flips all grazing view-space or back-facing world-space normals where n_z < 0": "直观解释为何正根号恢复式 n_z = +√(1−n_x²−n_y²) 会将所有 n_z < 0 的下半球法向镜像翻反",
+    "Using signNotZero(v) = (v >= 0 ? +1 : -1) so the South Pole (0, 0, -1) unfolds cleanly to a corner instead of collapsing to (0, 0)": "使用非零符号函数 signNotZero(v) 确保南极点 (0, 0, −1) 精确折展至角落 (1, 1) 而非坍缩回北极原点",
+    "Unnormalized displacement or velocity vectors whose magnitude ||v|| != 1 carries physical speed or height data": "模长 ||v|| ≠ 1 且携带物理速度或位移幅度的非单位向量",
+    "Tangent-space normal maps strictly guaranteed to have n_z > 0 where BC5 two-channel xy storage suffices without world/view rotation": "严格保证切线空间 n_z > 0 且不经世界/视图空间旋转的常规凹凸贴图（BC5 双通道即可）",
+    "Monocular RGB-to-normal neural estimation networks (DSINE / Marigold)": "从单张 RGB 图像估计表面法线的深度神经网络（DSINE / Marigold）",
+    "3D rotation frames requiring twist angle around the normal (use unit quaternions or QTangents instead)": "需要同时编码绕法向自旋角（Twist）的完整切空间标架（应改用单位四元数 QTangent）"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/octahedral-normal-encoding.test.ts",
+    "node scripts/benchmark-octahedral-normal.mjs"
+  ]
+}

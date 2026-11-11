@@ -1,0 +1,269 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "De Casteljau dyadic midpoint subdivision & Wang flatness bound vs coarse uniform chord clipping",
+  "topic_zh": "De Casteljau 二进凸包细分与 Wang 平坦度门禁对比等步长弦线削顶",
+  "slug": "de-casteljau-subdivision-rig",
+  "timestamp": "2026-11-11T18:23:43.333Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic De Casteljau dyadic midpoint subdivision and Wang closed-form second-difference flatness bound versus coarse straddling uniform parameter chords across a 17-station cubic Bezier hairpin arch. No neural SVG diffusion execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.39",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "decasteljau-equivalence-128",
+      "passed": true,
+      "detail": "128 dyadic midpoint De Casteljau tree and Math.pow Bernstein passes agree within 1e-14"
+    },
+    {
+      "name": "decasteljau-equivalence-1024",
+      "passed": true,
+      "detail": "1024 dyadic midpoint De Casteljau tree and Math.pow Bernstein passes agree within 1e-14"
+    },
+    {
+      "name": "decasteljau-equivalence-8192",
+      "passed": true,
+      "detail": "8192 dyadic midpoint De Casteljau tree and Math.pow Bernstein passes agree within 1e-14"
+    },
+    {
+      "name": "decasteljau-exact-apex",
+      "passed": true,
+      "detail": "17 dyadic De Casteljau stations hit exact hairpin apex y=3.0000u (0.00% apex loss)"
+    },
+    {
+      "name": "uniform-chord-apex-clip-exposed",
+      "passed": true,
+      "detail": "coarse straddling chord clips t=0.50 apex to y=2.6667u (-0.3333u error, -11.11% loss)"
+    },
+    {
+      "name": "exact-dyadic-midpoint-retained",
+      "passed": true,
+      "detail": "De Casteljau dyadic split locks station-8 apex at y=3.0000u (Wang L0=3.94u, depth=5)"
+    },
+    {
+      "name": "trapezoid-apex-chop-exposed",
+      "passed": true,
+      "detail": "coarse chord chops station-8 apex to y=2.6667u (-11.11% height loss)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse station scrubbing reproduces the exact apex gauge carriage world matrix"
+    },
+    {
+      "name": "atomic-height-rejection",
+      "passed": true,
+      "detail": "out-of-range handleHeight=15.0 is rejected while valid Bezier hairpin state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered apex carriage y-elevation matches solved De Casteljau arch height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px De Casteljau subdivision controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual station scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station Bezier arch passes",
+      "count": 128,
+      "primary_ms": 1.7554000000000087,
+      "baseline_ms": 2.079400000000021,
+      "primary_samples_ms": [
+        1.8852999999999724,
+        1.7554000000000087,
+        1.8058999999999514,
+        1.7846000000000117,
+        1.7076000000000136,
+        1.0386999999999489,
+        0.9823999999999842
+      ],
+      "baseline_samples_ms": [
+        2.193299999999965,
+        2.1487000000000194,
+        2.079400000000021,
+        2.097499999999968,
+        1.3711000000000126,
+        1.4938999999999965,
+        1.2265999999999622
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station Bezier arch passes",
+      "count": 1024,
+      "primary_ms": 1.5704999999999814,
+      "baseline_ms": 2.114900000000034,
+      "primary_samples_ms": [
+        3.1158000000000357,
+        1.4341000000000008,
+        1.6497999999999706,
+        1.5704999999999814,
+        1.7422000000000253,
+        1.5386000000000308,
+        1.491199999999992
+      ],
+      "baseline_samples_ms": [
+        4.2164000000000215,
+        3.088199999999972,
+        2.114900000000034,
+        2.0217999999999847,
+        2.1620999999999526,
+        1.7793000000000347,
+        1.7828000000000088
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station Bezier arch passes",
+      "count": 8192,
+      "primary_ms": 11.73210000000006,
+      "baseline_ms": 14.755899999999997,
+      "primary_samples_ms": [
+        11.812700000000007,
+        12.100399999999922,
+        11.592899999999986,
+        11.094299999999976,
+        11.73210000000006,
+        12.225099999999998,
+        11.651399999999967
+      ],
+      "baseline_samples_ms": [
+        15.552900000000022,
+        15.138900000000035,
+        14.415300000000002,
+        14.37970000000007,
+        14.495800000000031,
+        14.88390000000004,
+        14.755899999999997
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/de-casteljau-subdivision-rig/light-de-casteljau-flatness-adaptive.png",
+    "docs/evidence/de-casteljau-subdivision-rig/light-coarse-uniform-chord-clip.png",
+    "docs/evidence/de-casteljau-subdivision-rig/dark-de-casteljau-flatness-adaptive.png",
+    "docs/evidence/de-casteljau-subdivision-rig/dark-coarse-uniform-chord-clip.png",
+    "docs/evidence/de-casteljau-subdivision-rig/mobile.png"
+  ],
+  "primary_label": "Dyadic Midpoint De Casteljau",
+  "baseline_label": "General Math.pow Bernstein",
+  "load_unit": "17-station Bezier arch passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Addition/half-shift dyadic midpoint De Casteljau tree versus general Math.pow Bernstein polynomial evaluation.",
+  "geometry": {
+    "parts": 62,
+    "stations": 17,
+    "handle_height": 4,
+    "handle_pinch_x": 0.2,
+    "wang_norm_l0": 3.9373,
+    "solved_depth": 5,
+    "decasteljau_apex_y": 3,
+    "coarse_apex_y": 2.6667,
+    "coarse_apex_error": 0.3333,
+    "apex_loss_pct": 11.11,
+    "maximum_solver_error": 4.4409e-16
+  },
+  "protocol": {
+    "input": {
+      "station_index": 8,
+      "param_t": 0.5,
+      "handle_height": 4,
+      "handle_pinch_x": 0.2,
+      "mode": "de-casteljau-flatness-adaptive"
+    },
+    "output": {
+      "wang_l0": 3.9373,
+      "subdivision_depth": 5,
+      "decasteljau_y": 3,
+      "coarse_chord_y": 2.6667,
+      "apex_clip_loss_pct": 11.11
+    },
+    "function": "L₀ = ¾ max(||Δ²P₀||, ||Δ²P₁||), M = (P₀+3P₁+3P₂+P₃)/8 → y(0.5) ≡ 3.0000u (0.00% apex clip)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled cubic Bezier stations preserve convex-hull containment and apex fidelity",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "2D/3D vector font rasterization, SVG stroke tessellation, and high-curvature camera/motion paths",
+    "Explaining why uniform parameter stepping clips sharp hairpin turns where ||B'(t)|| slows down",
+    "Predicting exact subdivision depth upfront in O(1) via Wang's second-difference formula D = ceil(0.5 * log2(L0 / tol))",
+    "Division-free midpoint De Casteljau splitting using only additions and 0.5 bit-shifts inside the convex hull"
+  ],
+  "not_for": [
+    "Already-linear polylines where second differences d1 = d2 = 0 require 0 splits",
+    "C^2 B-spline surface patches requiring Cox-de Boor knot insertion rather than Bezier midpoint splitting",
+    "Constant-speed arc-length camera animation without a subsequent Gauss-Legendre LUT table",
+    "Text-to-SVG autoregressive token generation models (StarVector / OmniLottie)"
+  ],
+  "locale_zh": {
+    "decasteljau-equivalence-128": "DeCasteljau细分等价 128",
+    "128 dyadic midpoint De Casteljau tree and Math.pow Bernstein passes agree within 1e-14": "128 次二进中点树细分与 Math.pow 伯恩斯坦多项式在 1e-14 内一致",
+    "decasteljau-equivalence-1024": "DeCasteljau细分等价 1024",
+    "1024 dyadic midpoint De Casteljau tree and Math.pow Bernstein passes agree within 1e-14": "1024 次二进中点树细分与 Math.pow 伯恩斯坦多项式在 1e-14 内一致",
+    "decasteljau-equivalence-8192": "DeCasteljau细分等价 8192",
+    "8192 dyadic midpoint De Casteljau tree and Math.pow Bernstein passes agree within 1e-14": "8192 次二进中点树细分与 Math.pow 伯恩斯坦多项式在 1e-14 内一致",
+    "decasteljau-exact-apex": "DeCasteljau尖峰精确命中",
+    "17 dyadic De Casteljau stations hit exact hairpin apex y=3.0000u (0.00% apex loss)": "17 个二进细分站点精确命中发卡顶点 y=3.0000u（0.00% 削顶损失）",
+    "uniform-chord-apex-clip-exposed": "跨峰弦线削顶暴露",
+    "coarse straddling chord clips t=0.50 apex to y=2.6667u (-0.3333u error, -11.11% loss)": "跨峰等步长弦线将 t=0.50 尖峰削低至 y=2.6667u（误差 -0.3333u，损失 -11.11% 高度）",
+    "exact-dyadic-midpoint-retained": "二进中点尖峰锁定",
+    "De Casteljau dyadic split locks station-8 apex at y=3.0000u (Wang L0=3.94u, depth=5)": "De Casteljau 二进分裂将第 8 站尖峰锁死在 y=3.0000u（Wang 二阶范数 L₀=3.94u，深度=5）",
+    "trapezoid-apex-chop-exposed": "梯形平头削顶暴露",
+    "coarse chord chops station-8 apex to y=2.6667u (-11.11% height loss)": "粗粒度弦线将第 8 站尖峰削平至 y=2.6667u（高度损失 -11.11%）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse station scrubbing reproduces the exact apex gauge carriage world matrix": "逆序站点拖曳精确复现尖峰量规滑车世界矩阵",
+    "atomic-height-rejection": "原子柄高拒绝",
+    "out-of-range handleHeight=15.0 is rejected while valid Bezier hairpin state remains": "越界控制柄高度 15.0 被拒绝，有效曲线状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered apex carriage y-elevation matches solved De Casteljau arch height": "渲染滑车垂直高度与求解器 De Casteljau 拱高完全一致",
+    "mobile-layout": "手机布局",
+    "390px De Casteljau subdivision controls fit without horizontal overflow": "390px De Casteljau 细分控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual station scrubbing remains available": "减少动态默认静止，保留手动站点核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Dyadic Midpoint De Casteljau": "二进中点树 De Casteljau 细分",
+    "General Math.pow Bernstein": "通用 Math.pow 伯恩斯坦幂求值基线",
+    "Median of 7 alternating Node CPU runs after warmup. Addition/half-shift dyadic midpoint De Casteljau tree versus general Math.pow Bernstein polynomial evaluation.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；纯加法与 ×0.5 中点二进 De Casteljau 细分树对比通用 Math.pow 伯恩斯坦多项式求值基线。",
+    "Sampled cubic Bezier stations preserve convex-hull containment and apex fidelity": "采样三次贝塞尔站点保持凸包内含性与发卡尖峰保真度",
+    "L₀ = ¾ max(||Δ²P₀||, ||Δ²P₁||), M = (P₀+3P₁+3P₂+P₃)/8 → y(0.5) ≡ 3.0000u (0.00% apex clip)": "Wang 平坦度上界 L₀ = ¾ max(||Δ²P₀||, ||Δ²P₁||) + 二进中点分裂 → 尖峰 y(0.5) ≡ 3.0000u（0.00% 削顶）",
+    "2D/3D vector font rasterization, SVG stroke tessellation, and high-curvature camera/motion paths": "二维/三维矢量字体光栅化、SVG 笔画网格细分与高曲率发卡弯运动轨迹",
+    "Explaining why uniform parameter stepping clips sharp hairpin turns where ||B'(t)|| slows down": "直观解释为何等步长参数采样会在参数速度 ||B'(t)|| 骤降的发卡急弯处将尖峰削成平头梯形",
+    "Predicting exact subdivision depth upfront in O(1) via Wang's second-difference formula D = ceil(0.5 * log2(L0 / tol))": "利用 Wang 二阶差分公式 D = ⌈0.5·log₂(L₀/ε)⌉ 在 O(1) 时间内预判精确细分深度",
+    "Division-free midpoint De Casteljau splitting using only additions and 0.5 bit-shifts inside the convex hull": "仅用加法与 ×0.5 中点平均、严格满足凸包内含性的无除法 De Casteljau 二进分裂",
+    "Already-linear polylines where second differences d1 = d2 = 0 require 0 splits": "二阶差分为零（d₁=d₂=0）且无需任何细分的直线段",
+    "C^2 B-spline surface patches requiring Cox-de Boor knot insertion rather than Bezier midpoint splitting": "需要 Cox-de Boor 节点插入而非贝塞尔中点分裂的 C² B 样条曲面片",
+    "Constant-speed arc-length camera animation without a subsequent Gauss-Legendre LUT table": "未附加高斯-勒让德弧长查找表（LUT）的匀速相机运镜",
+    "Text-to-SVG autoregressive token generation models (StarVector / OmniLottie)": "从文本生成 SVG 代码的自回归神经网络模型（StarVector / OmniLottie）"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/de-casteljau-subdivision.test.ts",
+    "node scripts/benchmark-de-casteljau-subdivision.mjs"
+  ]
+}

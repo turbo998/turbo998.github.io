@@ -1,0 +1,268 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Shadow map light-space texel-grid snapping vs continuous unsnapped shadow swimming",
+  "topic_zh": "平行光阴影贴图纹素网格整数对齐与未对齐边缘蠕动闪烁（Shadow Swimming）对比",
+  "slug": "shadow-texel-snap-rig",
+  "timestamp": "2026-11-11T18:02:13.563Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Light-Space Texel-Grid Snapping (quantizing orthographic shadow frustum center to integer multiples of Delta_texel = 2*R/N) versus continuous unsnapped frustum tracking across 17 sub-texel camera pan steps. No neural shadow synthesis execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.39",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "texel-snap-equivalence-128",
+      "passed": true,
+      "detail": "128 O(1) reciprocal floor snap and 64-texel lattice scan passes agree within 1e-14"
+    },
+    {
+      "name": "texel-snap-equivalence-1024",
+      "passed": true,
+      "detail": "1024 O(1) reciprocal floor snap and 64-texel lattice scan passes agree within 1e-14"
+    },
+    {
+      "name": "texel-snap-equivalence-8192",
+      "passed": true,
+      "detail": "8192 O(1) reciprocal floor snap and 64-texel lattice scan passes agree within 1e-14"
+    },
+    {
+      "name": "texel-snap-world-pinned",
+      "passed": true,
+      "detail": "17 sub-texel camera pans retain X_shadow=1.0000m (0.0000m edge crawl, 0.00% swimming)"
+    },
+    {
+      "name": "unsnapped-shadow-swimming-exposed",
+      "passed": true,
+      "detail": "unsnapped frustum tracking causes 0.2450m sawtooth shadow swimming (98.0% of 0.25m texel)"
+    },
+    {
+      "name": "exact-pinned-shadow-edge-retained",
+      "passed": true,
+      "detail": "Texel-Grid Snapping locks pan-11 shadow boundary at X_shadow=1.0000m (C_snap=0.5000m)"
+    },
+    {
+      "name": "sawtooth-edge-crawl-exposed",
+      "passed": true,
+      "detail": "unsnapped frustum drifts pan-11 shadow edge to 0.8850m (0.2450m swim span)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse pan scrubbing reproduces the exact shadow caliper carriage world matrix"
+    },
+    {
+      "name": "atomic-resolution-rejection",
+      "passed": true,
+      "detail": "out-of-range shadowMapResolution=4 is rejected while valid cascade state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered caliper carriage y-elevation matches solved world-space shadow edge"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px shadow texel-snap controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual pan scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-pan shadow cascade passes",
+      "count": 128,
+      "primary_ms": 0.09269999999997935,
+      "baseline_ms": 0.9732999999999947,
+      "primary_samples_ms": [
+        0.09269999999997935,
+        0.07729999999997972,
+        0.06699999999995043,
+        0.07679999999999154,
+        0.279200000000003,
+        0.25380000000001246,
+        0.22390000000001464
+      ],
+      "baseline_samples_ms": [
+        0.9597999999999729,
+        0.7101000000000113,
+        0.9732999999999947,
+        0.6768000000000143,
+        1.7753000000000156,
+        1.7871000000000095,
+        1.7899000000000456
+      ]
+    },
+    {
+      "load": "1024 CPU 17-pan shadow cascade passes",
+      "count": 1024,
+      "primary_ms": 0.4272999999999456,
+      "baseline_ms": 5.498499999999979,
+      "primary_samples_ms": [
+        0.5264000000000237,
+        0.48750000000001137,
+        0.412900000000036,
+        0.3906000000000063,
+        0.4130999999999858,
+        0.8375999999999522,
+        0.4272999999999456
+      ],
+      "baseline_samples_ms": [
+        5.0774000000000115,
+        5.188199999999995,
+        5.758000000000038,
+        5.498499999999979,
+        5.445300000000032,
+        6.175700000000006,
+        5.511300000000006
+      ]
+    },
+    {
+      "load": "8192 CPU 17-pan shadow cascade passes",
+      "count": 8192,
+      "primary_ms": 4.046600000000012,
+      "baseline_ms": 46.13469999999995,
+      "primary_samples_ms": [
+        4.046600000000012,
+        3.858000000000061,
+        3.9309999999999263,
+        3.9791000000000167,
+        4.206399999999917,
+        4.691100000000006,
+        5.786999999999921
+      ],
+      "baseline_samples_ms": [
+        44.41399999999999,
+        43.957500000000095,
+        41.24670000000003,
+        49.78929999999991,
+        46.13469999999995,
+        46.61590000000001,
+        49.362199999999916
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/shadow-texel-snap-rig/light-texel-grid-snapped.png",
+    "docs/evidence/shadow-texel-snap-rig/light-continuous-unsnapped-swimming.png",
+    "docs/evidence/shadow-texel-snap-rig/dark-texel-grid-snapped.png",
+    "docs/evidence/shadow-texel-snap-rig/dark-continuous-unsnapped-swimming.png",
+    "docs/evidence/shadow-texel-snap-rig/mobile.png"
+  ],
+  "primary_label": "O(1) Reciprocal Floor Snap",
+  "baseline_label": "64-Texel Lattice Scan",
+  "load_unit": "17-pan shadow cascade passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. O(1) reciprocal texel-size floor snapping versus 64-texel viewport lattice construction and linear scan.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "ortho_radius_m": 8,
+    "shadow_resolution": 64,
+    "texel_size_m": 0.25,
+    "snapped_edge_m": 1,
+    "unsnapped_edge_m": 0.885,
+    "snapped_swim_span_m": 0,
+    "unsnapped_swim_span_m": 0.245,
+    "maximum_solver_error": 0
+  },
+  "protocol": {
+    "input": {
+      "pan_index": 11,
+      "raw_pan_m": 0.385,
+      "ortho_radius_m": 8,
+      "resolution_px": 64,
+      "mode": "texel-grid-snapped"
+    },
+    "output": {
+      "texel_size_m": 0.25,
+      "snapped_frustum_center_m": 0.5,
+      "snapped_shadow_edge_m": 1,
+      "unsnapped_shadow_edge_m": 0.885,
+      "unsnapped_swim_span_m": 0.245
+    },
+    "function": "C_snap = ⌊C_raw / Δ_texel + 0.5⌋ · Δ_texel → X_shadow(k) ≡ 1.0000m (0.0000m shadow edge crawl)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled sub-texel camera pan steps pin the static world shadow boundary at 1.0000m",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Cascaded Shadow Maps (CSM) for directional sunlight in outdoor cities, terrains, and architectural walkthroughs",
+    "Explaining why sub-texel frustum translations make static shadow edges crawl by up to 1 full texel width",
+    "Locking orthographic cascade width to a rotation-invariant bounding sphere diameter 2*R before texel snapping",
+    "O(1) light-space translation snapping C_snap = floor(C_raw / Delta_texel + 0.5) * Delta_texel in the shadow matrix"
+  ],
+  "not_for": [
+    "Moving or rotating directional lights (e.g., fast time-of-day sun lapse) where shadows physically move across the ground",
+    "Local point/spot lights with fixed world-space frustums that do not translate with the viewer camera",
+    "Ray-traced hard/soft shadows (DXR / Vulkan Ray Query) that do not rasterize a discrete light-space depth grid",
+    "2D screen-space diffusion shadow synthesis models"
+  ],
+  "locale_zh": {
+    "texel-snap-equivalence-128": "纹素对齐等价 128",
+    "128 O(1) reciprocal floor snap and 64-texel lattice scan passes agree within 1e-14": "128 次 O(1) 倒数取整对齐与 64 纹素网格扫描在 1e-14 内一致",
+    "texel-snap-equivalence-1024": "纹素对齐等价 1024",
+    "1024 O(1) reciprocal floor snap and 64-texel lattice scan passes agree within 1e-14": "1024 次 O(1) 倒数取整对齐与 64 纹素网格扫描在 1e-14 内一致",
+    "texel-snap-equivalence-8192": "纹素对齐等价 8192",
+    "8192 O(1) reciprocal floor snap and 64-texel lattice scan passes agree within 1e-14": "8192 次 O(1) 倒数取整对齐与 64 纹素网格扫描在 1e-14 内一致",
+    "texel-snap-world-pinned": "纹素网格世界锚定",
+    "17 sub-texel camera pans retain X_shadow=1.0000m (0.0000m edge crawl, 0.00% swimming)": "17 个亚纹素相机平移步保持阴影边界 X_shadow=1.0000m（0.0000m 边缘蠕动，0.00% 游动）",
+    "unsnapped-shadow-swimming-exposed": "未对齐阴影蠕动暴露",
+    "unsnapped frustum tracking causes 0.2450m sawtooth shadow swimming (98.0% of 0.25m texel)": "未对齐视锥跟随引发 0.2450m 锯齿状阴影游动（达 0.25m 纹素宽度的 98.0%）",
+    "exact-pinned-shadow-edge-retained": "静态阴影边界精确锁定",
+    "Texel-Grid Snapping locks pan-11 shadow boundary at X_shadow=1.0000m (C_snap=0.5000m)": "纹素网格对齐将第 11 帧阴影边界锁死在 X_shadow=1.0000m（视锥中心 C_snap=0.5000m）",
+    "sawtooth-edge-crawl-exposed": "锯齿边缘蠕动暴露",
+    "unsnapped frustum drifts pan-11 shadow edge to 0.8850m (0.2450m swim span)": "未对齐视锥使第 11 帧阴影边缘漂移至 0.8850m（游动跨度 0.2450m）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse pan scrubbing reproduces the exact shadow caliper carriage world matrix": "逆序平移步拖曳精确复现阴影卡尺滑车世界矩阵",
+    "atomic-resolution-rejection": "原子分辨率拒绝",
+    "out-of-range shadowMapResolution=4 is rejected while valid cascade state remains": "越界阴影分辨率 4 被拒绝，有效级联状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered caliper carriage y-elevation matches solved world-space shadow edge": "渲染卡尺滑车垂直高度与求解器世界空间阴影边界完全一致",
+    "mobile-layout": "手机布局",
+    "390px shadow texel-snap controls fit without horizontal overflow": "390px 阴影纹素对齐控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual pan scrubbing remains available": "减少动态默认静止，保留手动平移核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "O(1) Reciprocal Floor Snap": "O(1) 纹素倒数取整闭式解",
+    "64-Texel Lattice Scan": "64 纹素视口晶格扫描基线",
+    "Median of 7 alternating Node CPU runs after warmup. O(1) reciprocal texel-size floor snapping versus 64-texel viewport lattice construction and linear scan.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；O(1) 纹素宽度倒数取整对齐对比 64 纹素视口晶格构造与线性扫描基线。",
+    "Sampled sub-texel camera pan steps pin the static world shadow boundary at 1.0000m": "采样亚纹素相机平移步将静态世界阴影边界牢牢钉在 1.0000m",
+    "C_snap = ⌊C_raw / Δ_texel + 0.5⌋ · Δ_texel → X_shadow(k) ≡ 1.0000m (0.0000m shadow edge crawl)": "纹素整数倍对齐 C_snap = ⌊C_raw / Δ_texel + 0.5⌋ · Δ_texel → 阴影边界恒为 1.0000m（0.0000m 蠕动）",
+    "Cascaded Shadow Maps (CSM) for directional sunlight in outdoor cities, terrains, and architectural walkthroughs": "室外城市、地形与建筑漫游中的平行太阳光级联阴影贴图（CSM）",
+    "Explaining why sub-texel frustum translations make static shadow edges crawl by up to 1 full texel width": "直观解释为何亚纹素视锥平移会导致静态建筑阴影边缘产生近 1 个完整纹素宽度的锯齿蠕动",
+    "Locking orthographic cascade width to a rotation-invariant bounding sphere diameter 2*R before texel snapping": "先用旋转不变包围球直径 2R 锁死正交级联宽度，再执行纹素网格对齐",
+    "O(1) light-space translation snapping C_snap = floor(C_raw / Delta_texel + 0.5) * Delta_texel in the shadow matrix": "在阴影投影矩阵中执行 O(1) 光源空间中心取整 C_snap = floor(C_raw/Δ+0.5)·Δ",
+    "Moving or rotating directional lights (e.g., fast time-of-day sun lapse) where shadows physically move across the ground": "光源方向本身快速旋转的延时日照（此时阴影在物理上本就应当移动）",
+    "Local point/spot lights with fixed world-space frustums that do not translate with the viewer camera": "视锥固定在世界空间、不随主相机平移的局部聚光灯或点光源阴影",
+    "Ray-traced hard/soft shadows (DXR / Vulkan Ray Query) that do not rasterize a discrete light-space depth grid": "无需光栅化离散光源深度网格的硬件光线追踪阴影（DXR / Ray Query）",
+    "2D screen-space diffusion shadow synthesis models": "二维屏幕空间扩散生成式阴影合成模型"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/shadow-texel-snap.test.ts",
+    "node scripts/benchmark-shadow-texel-snap.mjs"
+  ]
+}

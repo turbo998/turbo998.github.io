@@ -1,0 +1,274 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Fritsch-Carlson monotonic cubic Hermite (PCHIP) vs unconstrained Catmull-Rom overshoot",
+  "topic_zh": "Fritsch-Carlson 单调三次 Hermite（PCHIP）与非受限 Catmull-Rom 过冲对比",
+  "slug": "monotonic-hermite-curve",
+  "timestamp": "2026-11-11T16:56:04.906Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Fritsch-Carlson Monotonic Cubic Hermite Interpolation (PCHIP) with flat-plateau tangent zeroing and alpha^2+beta^2 <= 9 trust-region projection versus unconstrained Catmull-Rom splines across a 25-station ramp-to-plateau keyframe sequence. No neural frame interpolation execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.39",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "pchip-equivalence-128",
+      "passed": true,
+      "detail": "128 Horner-factored cubic Hermite and expanded Bernstein-Hermite passes agree within 1e-14"
+    },
+    {
+      "name": "pchip-equivalence-1024",
+      "passed": true,
+      "detail": "1024 Horner-factored cubic Hermite and expanded Bernstein-Hermite passes agree within 1e-14"
+    },
+    {
+      "name": "pchip-equivalence-8192",
+      "passed": true,
+      "detail": "8192 Horner-factored cubic Hermite and expanded Bernstein-Hermite passes agree within 1e-14"
+    },
+    {
+      "name": "fritsch-carlson-zero-overshoot",
+      "passed": true,
+      "detail": "25 F-curve stations stay strictly within [0.0000, 2.0000]u (0.0000u overshoot, 0.0000u ground dip)"
+    },
+    {
+      "name": "catmull-rom-ringing-exposed",
+      "passed": true,
+      "detail": "Catmull-Rom overshoots plateau to 2.1465u (+0.1465u) and dips below ground (-0.1465u)"
+    },
+    {
+      "name": "exact-plateau-clamp-retained",
+      "passed": true,
+      "detail": "Fritsch-Carlson PCHIP locks station-19 plateau at y=2.0000u (m_2=0.00, 0.0000u overshoot)"
+    },
+    {
+      "name": "catmull-overshoot-bulge-exposed",
+      "passed": true,
+      "detail": "Catmull-Rom rings to y=2.1465u at station 19 (0.2930u total ringing span)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse station scrubbing reproduces the exact gauge carriage world matrix"
+    },
+    {
+      "name": "atomic-plateau-rejection",
+      "passed": true,
+      "detail": "out-of-range plateauHeight=9.5 is rejected while valid F-curve state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered gauge carriage y-elevation matches solved Hermite F-curve value"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px monotonic Hermite curve controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual station scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 25-station F-curve passes",
+      "count": 128,
+      "primary_ms": 0.9333000000000311,
+      "baseline_ms": 1.2280000000000086,
+      "primary_samples_ms": [
+        1.0208000000000084,
+        0.9333000000000311,
+        0.8838000000000079,
+        0.9118000000000279,
+        1.0341000000000236,
+        0.9767999999999688,
+        0.9134999999999991
+      ],
+      "baseline_samples_ms": [
+        1.545000000000016,
+        1.3285999999999945,
+        1.18810000000002,
+        1.2280000000000086,
+        1.159400000000005,
+        1.1861000000000104,
+        1.2477999999999838
+      ]
+    },
+    {
+      "load": "1024 CPU 25-station F-curve passes",
+      "count": 1024,
+      "primary_ms": 0.9506999999999834,
+      "baseline_ms": 1.780499999999961,
+      "primary_samples_ms": [
+        2.7427999999999884,
+        0.8735000000000355,
+        0.9506999999999834,
+        0.8825999999999681,
+        0.9671999999999912,
+        0.8797000000000139,
+        0.954400000000021
+      ],
+      "baseline_samples_ms": [
+        3.752399999999966,
+        1.780499999999961,
+        2.016900000000021,
+        1.7255999999999858,
+        1.6932999999999652,
+        1.7142000000000053,
+        2.1485000000000127
+      ]
+    },
+    {
+      "load": "8192 CPU 25-station F-curve passes",
+      "count": 8192,
+      "primary_ms": 7.788000000000011,
+      "baseline_ms": 14.60469999999998,
+      "primary_samples_ms": [
+        8.034999999999968,
+        7.514599999999973,
+        7.277500000000032,
+        7.712200000000053,
+        7.875699999999938,
+        7.808899999999994,
+        7.788000000000011
+      ],
+      "baseline_samples_ms": [
+        14.397899999999993,
+        14.243000000000052,
+        16.86850000000004,
+        14.61590000000001,
+        14.661299999999983,
+        14.60469999999998,
+        14.452999999999975
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/monotonic-hermite-curve/light-fritsch-carlson-monotonic.png",
+    "docs/evidence/monotonic-hermite-curve/light-unconstrained-catmull-rom.png",
+    "docs/evidence/monotonic-hermite-curve/dark-fritsch-carlson-monotonic.png",
+    "docs/evidence/monotonic-hermite-curve/dark-unconstrained-catmull-rom.png",
+    "docs/evidence/monotonic-hermite-curve/mobile.png"
+  ],
+  "primary_label": "Horner-Factored Monotonic PCHIP",
+  "baseline_label": "Expanded Bernstein Power Basis",
+  "load_unit": "25-station F-curve passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Horner-factored cubic Hermite polynomial evaluation versus expanded Math.pow Bernstein-Hermite basis evaluation.",
+  "geometry": {
+    "parts": 58,
+    "stations": 25,
+    "plateau_height": 2,
+    "ground_floor": 0,
+    "pchip_y19": 2,
+    "catmull_y19": 2.1465,
+    "pchip_overshoot": 0,
+    "catmull_overshoot": 0.1465,
+    "catmull_undershoot": 0.1465,
+    "catmull_ringing_span": 0.293,
+    "maximum_solver_error": 0
+  },
+  "protocol": {
+    "input": {
+      "station_index": 19,
+      "time_t": 2.375,
+      "keyframes_y": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "mode": "fritsch-carlson-monotonic"
+    },
+    "output": {
+      "pchip_m2_tangent": 0,
+      "pchip_y": 2,
+      "pchip_overshoot": 0,
+      "catmull_m2_tangent": 1,
+      "catmull_y": 2.1465,
+      "catmull_ringing_span": 0.293
+    },
+    "function": "Δ_{k−1}·Δ_k ≤ 0 ⇒ m_k = 0, α²+β² ≤ 9 → 0.0000u plateau overshoot & 0.0000u ground dip"
+  },
+  "robustness": [
+    {
+      "name": "Sampled F-curve stations remain strictly bounded within [0.0000, 2.0000]u without ringing",
+      "original": 25,
+      "perturbed": 25,
+      "total": 25
+    }
+  ],
+  "good_fit": [
+    "Camera stop holds, character foot-plant height curves (y >= 0), and bounded opacity/exposure ramps",
+    "Explaining why central-difference tangents m_k=(y_{k+1}-y_{k-1})/2 ring across flat plateaus and step changes",
+    "Horner-factored ((a*s + b)*s + c)*s + d cubic evaluation without Math.pow or basis array allocations",
+    "Keyframed 4D Gaussian Splatting opacity/scale tracks where negative undershoot or ceiling overshoot breaks rendering"
+  ],
+  "not_for": [
+    "Intentional cartoon anticipation and follow-through bounce where artists desire overshoot beyond keyframes",
+    "C^2 curvature-continuous aerodynamic fairings where zeroing tangents at extrema is undesirable",
+    "Spatial 3D flight loops where constant-speed arc-length reparameterization is the primary constraint",
+    "Optical-flow neural video frame interpolation (RIFE / FILM) operating on raw pixel grids"
+  ],
+  "locale_zh": {
+    "pchip-equivalence-128": "单调样条等价 128",
+    "128 Horner-factored cubic Hermite and expanded Bernstein-Hermite passes agree within 1e-14": "128 次霍纳因式分解三次 Hermite 与展开幂函数基线在 1e-14 内一致",
+    "pchip-equivalence-1024": "单调样条等价 1024",
+    "1024 Horner-factored cubic Hermite and expanded Bernstein-Hermite passes agree within 1e-14": "1024 次霍纳因式分解三次 Hermite 与展开幂函数基线在 1e-14 内一致",
+    "pchip-equivalence-8192": "单调样条等价 8192",
+    "8192 Horner-factored cubic Hermite and expanded Bernstein-Hermite passes agree within 1e-14": "8192 次霍纳因式分解三次 Hermite 与展开幂函数基线在 1e-14 内一致",
+    "fritsch-carlson-zero-overshoot": "单调样条零过冲",
+    "25 F-curve stations stay strictly within [0.0000, 2.0000]u (0.0000u overshoot, 0.0000u ground dip)": "25 个关键帧采样站严格保持在 [0.0000, 2.0000]u 区间内（0.0000u 过冲，0.0000u 穿地）",
+    "catmull-rom-ringing-exposed": "Catmull-Rom过冲穿地暴露",
+    "Catmull-Rom overshoots plateau to 2.1465u (+0.1465u) and dips below ground (-0.1465u)": "Catmull-Rom 样条在平坦段过冲至 2.1465u（+0.1465u）并在地面段下穿（-0.1465u）",
+    "exact-plateau-clamp-retained": "平坦段钳制精确锁定",
+    "Fritsch-Carlson PCHIP locks station-19 plateau at y=2.0000u (m_2=0.00, 0.0000u overshoot)": "Fritsch-Carlson 单调样条将第 19 站平坦段锁死在 y=2.0000u（切线 m_2=0.00，0.0000u 过冲）",
+    "catmull-overshoot-bulge-exposed": "Catmull过冲鼓包暴露",
+    "Catmull-Rom rings to y=2.1465u at station 19 (0.2930u total ringing span)": "Catmull-Rom 在第 19 站鼓包越界至 y=2.1465u（峰谷振荡跨度 0.2930u）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse station scrubbing reproduces the exact gauge carriage world matrix": "逆序采样站拖曳精确复现量规滑车世界矩阵",
+    "atomic-plateau-rejection": "原子高度拒绝",
+    "out-of-range plateauHeight=9.5 is rejected while valid F-curve state remains": "越界平台高度 9.5 被拒绝，有效曲线状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered gauge carriage y-elevation matches solved Hermite F-curve value": "渲染量规滑车垂直高度与求解器 Hermite 曲线数值完全一致",
+    "mobile-layout": "手机布局",
+    "390px monotonic Hermite curve controls fit without horizontal overflow": "390px 单调 Hermite 曲线控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual station scrubbing remains available": "减少动态默认静止，保留手动站点核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Horner-Factored Monotonic PCHIP": "霍纳嵌套单调三次 PCHIP 闭式解",
+    "Expanded Bernstein Power Basis": "展开幂函数 Bernstein 基函数基线",
+    "Median of 7 alternating Node CPU runs after warmup. Horner-factored cubic Hermite polynomial evaluation versus expanded Math.pow Bernstein-Hermite basis evaluation.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；霍纳嵌套三次 Hermite 多项式求值对比展开 Math.pow 基函数求值基线。",
+    "Sampled F-curve stations remain strictly bounded within [0.0000, 2.0000]u without ringing": "采样关键帧曲线站点严格受控于 [0.0000, 2.0000]u 边界内零振荡",
+    "Δ_{k−1}·Δ_k ≤ 0 ⇒ m_k = 0, α²+β² ≤ 9 → 0.0000u plateau overshoot & 0.0000u ground dip": "异号/平坦段切线锁零 Δ_{k−1}·Δ_k ≤ 0 ⇒ m_k = 0，α²+β² ≤ 9 → 0.0000u 平台过冲与 0.0000u 地面下穿",
+    "Camera stop holds, character foot-plant height curves (y >= 0), and bounded opacity/exposure ramps": "相机驻停保持帧、角色脚掌踩地高度曲线（y≥0）以及有界不透明度/曝光度渐变通道",
+    "Explaining why central-difference tangents m_k=(y_{k+1}-y_{k-1})/2 ring across flat plateaus and step changes": "直观解释为何中心差分切线 m_k=(y_{k+1}−y_{k−1})/2 会在平坦保持段与阶跃前后产生过冲振荡",
+    "Horner-factored ((a*s + b)*s + c)*s + d cubic evaluation without Math.pow or basis array allocations": "无需 Math.pow 与基函数数组分配的霍纳嵌套 ((a·s+b)·s+c)·s+d 三次多项式求值",
+    "Keyframed 4D Gaussian Splatting opacity/scale tracks where negative undershoot or ceiling overshoot breaks rendering": "防止负值下穿或上限越界的 4D 高斯（4DGS）不透明度与缩放关键帧轨道插值",
+    "Intentional cartoon anticipation and follow-through bounce where artists desire overshoot beyond keyframes": "美术刻意追求预备动作（Anticipation）与弹性回弹过冲的卡通动画通道",
+    "C^2 curvature-continuous aerodynamic fairings where zeroing tangents at extrema is undesirable": "要求二阶曲率连续（C²）且极值点不锁零的气动外形曲面放样",
+    "Spatial 3D flight loops where constant-speed arc-length reparameterization is the primary constraint": "以三维空间恒定弧长速度为主约束的闭合飞行轨迹",
+    "Optical-flow neural video frame interpolation (RIFE / FILM) operating on raw pixel grids": "直接作用于二维像素网格的光流神经视频补帧模型（RIFE / FILM）"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/monotonic-hermite.test.ts",
+    "node scripts/benchmark-monotonic-hermite.mjs"
+  ]
+}

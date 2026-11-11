@@ -1,0 +1,272 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Barycentric displaced micro-mesh (DMM) analytical intersection vs POM ray-march ridge tunneling rig",
+  "topic_zh": "二进重心位移微网格（DMM）闭式求交对比固定步长 POM 视差步进穿峰漏检",
+  "slug": "micro-polygon-micromesh-rig",
+  "timestamp": "2026-11-11T20:24:49.011Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic dyadic barycentric micro-mesh (DMM) tessellation and closed-form ray-segment intersection versus coarse fixed-step Parallax Occlusion Mapping (POM) ray-marching across 17 grazing silhouette rays. No neural displacement synthesis executed.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.39",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "dmm-intersection-equivalence-128",
+      "passed": true,
+      "detail": "128 closed-form linear ray-microsegment and 48-step bisection passes agree within 1e-13"
+    },
+    {
+      "name": "dmm-intersection-equivalence-1024",
+      "passed": true,
+      "detail": "1024 closed-form linear ray-microsegment and 48-step bisection passes agree within 1e-13"
+    },
+    {
+      "name": "dmm-intersection-equivalence-8192",
+      "passed": true,
+      "detail": "8192 closed-form linear ray-microsegment and 48-step bisection passes agree within 1e-13"
+    },
+    {
+      "name": "dmm-watertight-silhouette-conserved",
+      "passed": true,
+      "detail": "17 grazing silhouette rays capture ridge up to H=1.8000u (ray-13 y=1.50u hits x*=-0.0705u, 0 tunneled rays)"
+    },
+    {
+      "name": "pom-ridge-tunneling-exposed",
+      "passed": true,
+      "detail": "coarse fixed-step POM (Δx=0.40u) tunnels straight through the ridge across 9/17 rays (-47.27% crest loss to 0.9491u)"
+    },
+    {
+      "name": "exact-ridge-flank-hit-retained",
+      "passed": true,
+      "detail": "Barycentric DMM captures ray-13 (y=1.5000u) at x*=-0.0705u (0.00% crest loss)"
+    },
+    {
+      "name": "straddling-pom-tunnel-exposed",
+      "passed": true,
+      "detail": "straddling POM steps miss ray-13 completely, collapsing effective silhouette to 0.9491u (-47.27% loss)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse ray scrubbing reproduces the exact silhouette probe carriage world matrix"
+    },
+    {
+      "name": "atomic-peak-rejection",
+      "passed": true,
+      "detail": "out-of-range ridgePeakHeight=9.0 is rejected while valid displaced micro-mesh state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered silhouette carriage y-elevation matches solved effective silhouette height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px displaced micro-mesh controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual ray scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-ray DMM silhouette passes",
+      "count": 128,
+      "primary_ms": 0.25310000000001764,
+      "baseline_ms": 0.5144000000000233,
+      "primary_samples_ms": [
+        0.3509999999999991,
+        0.2622000000000071,
+        0.25310000000001764,
+        1.355199999999968,
+        0.24440000000004147,
+        0.2457000000000562,
+        0.24639999999999418
+      ],
+      "baseline_samples_ms": [
+        0.6348000000000411,
+        0.5144000000000233,
+        0.5266000000000304,
+        0.4879000000000815,
+        0.5576000000000931,
+        0.49059999999997217,
+        0.5016000000000531
+      ]
+    },
+    {
+      "load": "1024 CPU 17-ray DMM silhouette passes",
+      "count": 1024,
+      "primary_ms": 2.9020000000000437,
+      "baseline_ms": 4.504099999999994,
+      "primary_samples_ms": [
+        4.502999999999929,
+        4.959699999999998,
+        7.273899999999912,
+        1.5170000000000528,
+        2.9020000000000437,
+        1.5936999999998989,
+        1.533399999999915
+      ],
+      "baseline_samples_ms": [
+        4.380199999999945,
+        6.425800000000095,
+        4.64429999999993,
+        2.970299999999952,
+        4.755899999999997,
+        4.3881999999999834,
+        4.504099999999994
+      ]
+    },
+    {
+      "load": "8192 CPU 17-ray DMM silhouette passes",
+      "count": 8192,
+      "primary_ms": 14.223799999999983,
+      "baseline_ms": 25.726099999999974,
+      "primary_samples_ms": [
+        17.060799999999972,
+        14.198099999999954,
+        14.223799999999983,
+        14.469400000000178,
+        13.023500000000013,
+        12.500700000000052,
+        14.991199999999935
+      ],
+      "baseline_samples_ms": [
+        26.059599999999932,
+        25.726099999999974,
+        25.24090000000001,
+        26.43500000000006,
+        22.26909999999998,
+        22.434400000000096,
+        28.333000000000084
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/micro-polygon-micromesh-rig/light-barycentric-micromesh-exact.png",
+    "docs/evidence/micro-polygon-micromesh-rig/light-coarse-pom-raymarch-tunnel.png",
+    "docs/evidence/micro-polygon-micromesh-rig/dark-barycentric-micromesh-exact.png",
+    "docs/evidence/micro-polygon-micromesh-rig/dark-coarse-pom-raymarch-tunnel.png",
+    "docs/evidence/micro-polygon-micromesh-rig/mobile.png"
+  ],
+  "primary_label": "Closed-Form Linear Micro-Segment Hit",
+  "baseline_label": "48-Step Bisection Root-Finder",
+  "load_unit": "17-ray DMM silhouette passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form linear ray-microsegment intersection versus 48-step binary bisection root-finding baseline.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "ridge_peak_height": 1.8,
+    "ridge_half_width": 0.25,
+    "subdivision_order": 4,
+    "micro_segments": 16,
+    "ray_13_elevation_y": 1.5,
+    "dmm_hit_x_ray_13": -0.0705,
+    "dmm_silhouette_y_ray_13": 1.5,
+    "pom_silhouette_y_ray_13": 0.9491,
+    "pom_tunneled_rays": 9,
+    "pom_crest_loss_pct": 47.27,
+    "maximum_solver_error": 3.8858e-16
+  },
+  "protocol": {
+    "input": {
+      "station_index": 13,
+      "ray_elevation_y": 1.5,
+      "ridge_peak_h": 1.8,
+      "ridge_half_w": 0.25,
+      "subdiv_l": 4,
+      "mode": "barycentric-micromesh-exact"
+    },
+    "output": {
+      "dmm_hit": true,
+      "dmm_hit_x": -0.0705,
+      "pom_hit": false,
+      "pom_tunneled_rays": 9,
+      "pom_crest_loss_pct": 47.27
+    },
+    "function": "t* = (y_ray − H_k)/(H_{k+1} − H_k) on 2^L dyadic lattice → 0 tunneled rays (vs 9/17 POM misses)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 grazing silhouette rays intersect the watertight barycentric micro-mesh with zero ridge tunneling",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Hardware/compute-shader Displaced Micro-Meshes (DMM), Nanite-style micro-polygon displacement, and ray-traced terrain/masonry silhouettes",
+    "Explaining why fixed-step Parallax Occlusion Mapping (POM) tunnels through narrow ridges and slices grazing silhouettes into pancakes",
+    "Using a regular 2^L dyadic barycentric grid so micro-vertices are addressed implicitly without storing index buffers",
+    "Solving ray-microsegment intersection in O(1) via t* = (y_ray - H_k) / (H_{k+1} - H_k) without iterative secant/bisection steps"
+  ],
+  "not_for": [
+    "Flat painted surfaces with zero geometric relief where standard normal mapping suffices",
+    "Overhanging 3D caves or vector-displaced earlobes that fold back over the base triangle normal (requires 3D mesh or vector displacement)",
+    "Text-to-PBR / heightmap diffusion material generators",
+    "Distant low-LOD background props smaller than 1 screen pixel"
+  ],
+  "locale_zh": {
+    "dmm-intersection-equivalence-128": "微网格求交等价 128",
+    "128 closed-form linear ray-microsegment and 48-step bisection passes agree within 1e-13": "128 次闭式线性微段求交与 48 步二分基线在 1e-13 内一致",
+    "dmm-intersection-equivalence-1024": "微网格求交等价 1024",
+    "1024 closed-form linear ray-microsegment and 48-step bisection passes agree within 1e-13": "1024 次闭式线性微段求交与 48 步二分基线在 1e-13 内一致",
+    "dmm-intersection-equivalence-8192": "微网格求交等价 8192",
+    "8192 closed-form linear ray-microsegment and 48-step bisection passes agree within 1e-13": "8192 次闭式线性微段求交与 48 步二分基线在 1e-13 内一致",
+    "dmm-watertight-silhouette-conserved": "DMM水密山脊轮廓守恒",
+    "17 grazing silhouette rays capture ridge up to H=1.8000u (ray-13 y=1.50u hits x*=-0.0705u, 0 tunneled rays)": "17 条掠射视线完整捕获高達 1.8000u 的山脊轮廓（第 13 条 y=1.50u 命中 x*=-0.0705u，0 穿透漏检）",
+    "pom-ridge-tunneling-exposed": "POM穿峰漏检暴露",
+    "coarse fixed-step POM (Δx=0.40u) tunnels straight through the ridge across 9/17 rays (-47.27% crest loss to 0.9491u)": "固定步长 POM（Δx=0.40u）在 9/17 条掠射视线上穿透山峰（轮廓高度跌至 0.9491u，损失 -47.27%）",
+    "exact-ridge-flank-hit-retained": "山脊侧翼精确求交锁定",
+    "Barycentric DMM captures ray-13 (y=1.5000u) at x*=-0.0705u (0.00% crest loss)": "二进重心微网格在第 13 条视线（y=1.5000u）处精确命中 x*=-0.0705u（0.00% 削顶损失）",
+    "straddling-pom-tunnel-exposed": "跨峰POM穿透坍缩暴露",
+    "straddling POM steps miss ray-13 completely, collapsing effective silhouette to 0.9491u (-47.27% loss)": "跨峰 POM 步进漏掉第 13 条视线，导致有效轮廓坍缩至 0.9491u（损失 -47.27%）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse ray scrubbing reproduces the exact silhouette probe carriage world matrix": "逆序视线拖曳精确复现轮廓探针滑车世界矩阵",
+    "atomic-peak-rejection": "原子峰高拒绝",
+    "out-of-range ridgePeakHeight=9.0 is rejected while valid displaced micro-mesh state remains": "越界山脊峰值高度 9.0 被拒绝，有效位移微网格状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered silhouette carriage y-elevation matches solved effective silhouette height": "渲染轮廓滑车垂直高度与求解器有效轮廓高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px displaced micro-mesh controls fit without horizontal overflow": "390px 位移微网格控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual ray scrubbing remains available": "减少动态默认静止，保留手动视线核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Closed-Form Linear Micro-Segment Hit": "闭式线性微网格线段求交",
+    "48-Step Bisection Root-Finder": "48 步二分搜索求根基线",
+    "Median of 7 alternating Node CPU runs after warmup. Closed-form linear ray-microsegment intersection versus 48-step binary bisection root-finding baseline.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；闭式线性微网格求交对比 48 步二分求根基线。",
+    "Sampled 17 grazing silhouette rays intersect the watertight barycentric micro-mesh with zero ridge tunneling": "采样 17 条掠射轮廓视线与水密重心微网格精确相交且零穿峰漏检",
+    "t* = (y_ray − H_k)/(H_{k+1} − H_k) on 2^L dyadic lattice → 0 tunneled rays (vs 9/17 POM misses)": "2^L 二进重心微网格闭式求交 t* = (y_ray − H_k)/(H_{k+1} − H_k) → 0 穿峰漏检（对比 POM 9/17 穿透）",
+    "Hardware/compute-shader Displaced Micro-Meshes (DMM), Nanite-style micro-polygon displacement, and ray-traced terrain/masonry silhouettes": "硬件/计算着色器位移微网格（DMM）、Nanite 微多边形置换以及光线追踪山体/砖石真实轮廓",
+    "Explaining why fixed-step Parallax Occlusion Mapping (POM) tunnels through narrow ridges and slices grazing silhouettes into pancakes": "直观解释为何固定步长视差遮挡步进（POM）会在狭窄山峰处穿模漏检并在掠射角切出千层饼断层",
+    "Using a regular 2^L dyadic barycentric grid so micro-vertices are addressed implicitly without storing index buffers": "利用规则 2^L 二进重心晶格实现免索引缓冲区的隐式水密微三角形寻址",
+    "Solving ray-microsegment intersection in O(1) via t* = (y_ray - H_k) / (H_{k+1} - H_k) without iterative secant/bisection steps": "通过闭式公式 t* = (y_ray − H_k)/(H_{k+1} − H_k) 在 O(1) 内求解微段交点，省去割线/二分迭代",
+    "Flat painted surfaces with zero geometric relief where standard normal mapping suffices": "无几何起伏、仅靠常规法线贴图即可表达的平坦油漆表面",
+    "Overhanging 3D caves or vector-displaced earlobes that fold back over the base triangle normal (requires 3D mesh or vector displacement)": "沿基底法向发生倒扣折叠的悬挑洞穴或耳廓（需三维实体网格或矢量置换）",
+    "Text-to-PBR / heightmap diffusion material generators": "从文本生成 PBR 高度图的神经扩散材质生成模型",
+    "Distant low-LOD background props smaller than 1 screen pixel": "小于 1 屏幕像素的极远景低 LOD 背景物件"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/micro-polygon-micromesh.test.ts",
+    "node scripts/benchmark-micro-polygon-micromesh.mjs"
+  ]
+}

@@ -1,0 +1,270 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Beer-Lambert analytical exponential volume integration vs Forward-Euler linear opacity blowout rig",
+  "topic_zh": "比尔-朗伯解析指数体积积分对比显式欧拉线性步进过冲与负透射率振荡",
+  "slug": "transmittance-volume-march-rig",
+  "timestamp": "2026-11-11T20:02:38.046Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Beer-Lambert exponential transmittance exp(-sigma_t*ds) and analytical step in-scattering (1 - exp(-sigma_t*ds))*L_e versus naive Forward-Euler linear opacity stepping sigma_t*ds across 17 volumetric ray-marching stations. No neural radiance field training.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.39",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "volume-exp-equivalence-128",
+      "passed": true,
+      "detail": "128 single-exp Beer-Lambert and 32-substep quadrature passes agree within 1e-14"
+    },
+    {
+      "name": "volume-exp-equivalence-1024",
+      "passed": true,
+      "detail": "1024 single-exp Beer-Lambert and 32-substep quadrature passes agree within 1e-14"
+    },
+    {
+      "name": "volume-exp-equivalence-8192",
+      "passed": true,
+      "detail": "8192 single-exp Beer-Lambert and 32-substep quadrature passes agree within 1e-14"
+    },
+    {
+      "name": "beer-lambert-equilibrium-conserved",
+      "passed": true,
+      "detail": "17 ray-march steps converge monotonically to L_e=1.0000 (step-1 L=0.7981, T=0.2019, 0 overshoot)"
+    },
+    {
+      "name": "forward-euler-opacity-blowout-exposed",
+      "passed": true,
+      "detail": "naive Forward-Euler linear step (τ=1.60) overshoots step-1 to L=1.6000 (+0.6000 blowout) and flips T=-0.6000 negative across 8/17 stations"
+    },
+    {
+      "name": "positive-transmittance-decay-retained",
+      "passed": true,
+      "detail": "Beer-Lambert locks step-1 transmittance at T=0.2019 and radiance at L=0.7981"
+    },
+    {
+      "name": "negative-transmittance-oscillation-exposed",
+      "passed": true,
+      "detail": "Forward-Euler flips step-1 transmittance to T=-0.6000 and overshoots L=1.6000"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse step scrubbing reproduces the exact ray-march probe carriage world matrix"
+    },
+    {
+      "name": "atomic-sigma-rejection",
+      "passed": true,
+      "detail": "out-of-range extinctionSigmaT=99 is rejected while valid Beer-Lambert volume state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered ray carriage y-elevation matches solved accumulated volume radiance height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px volume ray-march controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual step scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-step volume march passes",
+      "count": 128,
+      "primary_ms": 0.08730000000002747,
+      "baseline_ms": 0.19200000000000728,
+      "primary_samples_ms": [
+        0.09519999999997708,
+        0.10049999999995407,
+        0.08730000000002747,
+        0.07880000000000109,
+        0.080600000000004,
+        0.08270000000004529,
+        0.09210000000001628
+      ],
+      "baseline_samples_ms": [
+        0.2942000000000462,
+        0.28050000000001774,
+        0.234800000000007,
+        0.18120000000004666,
+        0.180499999999995,
+        0.18139999999999645,
+        0.19200000000000728
+      ]
+    },
+    {
+      "load": "1024 CPU 17-step volume march passes",
+      "count": 1024,
+      "primary_ms": 0.6687999999999761,
+      "baseline_ms": 0.9630999999999972,
+      "primary_samples_ms": [
+        2.3401999999999816,
+        0.566599999999994,
+        0.6688000000000329,
+        0.6357000000000426,
+        0.6687999999999761,
+        0.7083999999999833,
+        0.6360000000000241
+      ],
+      "baseline_samples_ms": [
+        2.010499999999979,
+        0.9133999999999673,
+        0.8468000000000302,
+        0.9185999999999694,
+        0.9630999999999972,
+        0.9981999999999971,
+        1.0352000000000317
+      ]
+    },
+    {
+      "load": "8192 CPU 17-step volume march passes",
+      "count": 8192,
+      "primary_ms": 5.342300000000023,
+      "baseline_ms": 7.319399999999973,
+      "primary_samples_ms": [
+        4.663999999999987,
+        4.4377999999999815,
+        4.321699999999964,
+        7.335499999999911,
+        9.65140000000008,
+        5.342300000000023,
+        5.414700000000039
+      ],
+      "baseline_samples_ms": [
+        7.263000000000034,
+        6.981800000000021,
+        10.914199999999937,
+        10.833600000000047,
+        7.319399999999973,
+        11.201900000000023,
+        6.84559999999999
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/transmittance-volume-march-rig/light-beer-lambert-analytical-exp.png",
+    "docs/evidence/transmittance-volume-march-rig/light-naive-forward-euler-linear.png",
+    "docs/evidence/transmittance-volume-march-rig/dark-beer-lambert-analytical-exp.png",
+    "docs/evidence/transmittance-volume-march-rig/dark-naive-forward-euler-linear.png",
+    "docs/evidence/transmittance-volume-march-rig/mobile.png"
+  ],
+  "primary_label": "Closed-Form Single-Exp Beer-Lambert",
+  "baseline_label": "32-Substep Exponential Quadrature",
+  "load_unit": "17-step volume march passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form single-exp Beer-Lambert slab integration versus 32-substep exponential quadrature baseline.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "extinction_sigma_t": 3.2,
+    "step_length_m": 0.5,
+    "step_optical_depth": 1.6,
+    "beer_radiance_step_1": 0.7981,
+    "euler_radiance_step_1": 1.6,
+    "beer_transmittance_step_1": 0.2019,
+    "euler_transmittance_step_1": -0.6,
+    "euler_max_overshoot": 0.6,
+    "euler_neg_flips": 8,
+    "maximum_solver_error": 1.1102e-16
+  },
+  "protocol": {
+    "input": {
+      "station_index": 1,
+      "extinction_sigma_t": 3.2,
+      "step_length_m": 0.5,
+      "source_le": 1,
+      "mode": "beer-lambert-analytical-exp"
+    },
+    "output": {
+      "beer_radiance_step_1": 0.7981,
+      "euler_radiance_step_1": 1.6,
+      "beer_transmittance_step_1": 0.2019,
+      "euler_transmittance_step_1": -0.6,
+      "euler_neg_flips": 8
+    },
+    "function": "T_{k+1} = T_k·e^{−σ_t Δs}, L_{k+1} = L_k + T_k·(1 − e^{−σ_t Δs})·L_e → L(s) ≤ L_e (0.0000 overshoot)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 volumetric ray-march steps preserve positive transmittance and bounded equilibrium radiance",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Real-time volumetric clouds, god-rays (crepuscular rays), dense smoke/fire plumes, and 3DGS / NeRF volume compositing",
+    "Explaining why Forward-Euler opacity alpha = sigma_t * ds explodes and flips transmittance negative whenever optical depth tau > 1",
+    "Using the exact intra-step integral (1 - exp(-sigma_t * ds)) so coarse ray-march steps remain unconditionally bounded in [0, L_e]",
+    "Cancelling sigma_t in (sigma_s / sigma_t) * (1 - exp(-sigma_t * ds)) to avoid 0/0 singularities in empty air (sigma_t -> 0)"
+  ],
+  "not_for": [
+    "Opaque hard-surface mesh rendering where rays terminate immediately at the first surface hit without participating media",
+    "Highly heterogeneous multi-scattering clouds without shadow-map / phase-function evaluation at each sample point",
+    "End-to-end neural radiance field training pipelines (Instant-NGP / Mip-NeRF 360)",
+    "Single-layer 2D UI sprite alpha blending where optical thickness is already pre-baked into [0, 1]"
+  ],
+  "locale_zh": {
+    "volume-exp-equivalence-128": "比尔朗伯积分等价 128",
+    "128 single-exp Beer-Lambert and 32-substep quadrature passes agree within 1e-14": "128 次单次指数闭式积分与 32 子步细分求积基线在 1e-14 内一致",
+    "volume-exp-equivalence-1024": "比尔朗伯积分等价 1024",
+    "1024 single-exp Beer-Lambert and 32-substep quadrature passes agree within 1e-14": "1024 次单次指数闭式积分与 32 子步细分求积基线在 1e-14 内一致",
+    "volume-exp-equivalence-8192": "比尔朗伯积分等价 8192",
+    "8192 single-exp Beer-Lambert and 32-substep quadrature passes agree within 1e-14": "8192 次单次指数闭式积分与 32 子步细分求积基线在 1e-14 内一致",
+    "beer-lambert-equilibrium-conserved": "比尔朗伯辐射平衡守恒",
+    "17 ray-march steps converge monotonically to L_e=1.0000 (step-1 L=0.7981, T=0.2019, 0 overshoot)": "17 个步进站点单调收敛于 L_e=1.0000（第 1 步 L=0.7981, T=0.2019，0 过冲）",
+    "forward-euler-opacity-blowout-exposed": "显式欧拉过冲与负透射率暴露",
+    "naive Forward-Euler linear step (τ=1.60) overshoots step-1 to L=1.6000 (+0.6000 blowout) and flips T=-0.6000 negative across 8/17 stations": "朴素显式欧拉（τ=1.60）在第 1 步过冲至 L=1.6000（过冲 +0.6000），并将透射率翻转为 T=-0.6000（8/17 站负透射率振荡）",
+    "positive-transmittance-decay-retained": "正定指数透射率衰减保持",
+    "Beer-Lambert locks step-1 transmittance at T=0.2019 and radiance at L=0.7981": "比尔-朗伯积分将第 1 步透射率锁死在 T=0.2019，辐射度 L=0.7981",
+    "negative-transmittance-oscillation-exposed": "负透射率交替振荡暴露",
+    "Forward-Euler flips step-1 transmittance to T=-0.6000 and overshoots L=1.6000": "显式欧拉将第 1 步透射率翻转为 T=-0.6000 并过冲至 L=1.6000",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse step scrubbing reproduces the exact ray-march probe carriage world matrix": "逆序步进拖曳精确复现光线步进探针滑车世界矩阵",
+    "atomic-sigma-rejection": "原子消光系数拒绝",
+    "out-of-range extinctionSigmaT=99 is rejected while valid Beer-Lambert volume state remains": "越界消光系数 99 被拒绝，有效体积积分状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered ray carriage y-elevation matches solved accumulated volume radiance height": "渲染光线滑车垂直高度与求解器累积体积辐射度高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px volume ray-march controls fit without horizontal overflow": "390px 体积光线步进控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual step scrubbing remains available": "减少动态默认静止，保留手动步进核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Closed-Form Single-Exp Beer-Lambert": "闭式单次指数比尔-朗伯积分",
+    "32-Substep Exponential Quadrature": "32 子步细分指数求积基线",
+    "Median of 7 alternating Node CPU runs after warmup. Closed-form single-exp Beer-Lambert slab integration versus 32-substep exponential quadrature baseline.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；闭式单次指数比尔-朗伯步内积分对比 32 子步细分求积基线。",
+    "Sampled 17 volumetric ray-march steps preserve positive transmittance and bounded equilibrium radiance": "采样 17 个体光线步进站点保持正定透射率与有界热力学平衡辐射度",
+    "T_{k+1} = T_k·e^{−σ_t Δs}, L_{k+1} = L_k + T_k·(1 − e^{−σ_t Δs})·L_e → L(s) ≤ L_e (0.0000 overshoot)": "比尔-朗伯解析指数步进 T_{k+1}=T_k·e^{−σ_t Δs}, α=1−e^{−σ_t Δs} → 累积辐射度 L(s) ≤ L_e（0.0000 过冲）",
+    "Real-time volumetric clouds, god-rays (crepuscular rays), dense smoke/fire plumes, and 3DGS / NeRF volume compositing": "实时体积云、丁达尔体积光（God Rays）、浓烟火柱以及 3DGS / NeRF 辐射场体渲染合成",
+    "Explaining why Forward-Euler opacity alpha = sigma_t * ds explodes and flips transmittance negative whenever optical depth tau > 1": "直观解释为何显式欧拉线性步进 α = σ_t·Δs 在单步光学厚度 τ > 1 时会引发辐射度过冲与负透射率翻转",
+    "Using the exact intra-step integral (1 - exp(-sigma_t * ds)) so coarse ray-march steps remain unconditionally bounded in [0, L_e]": "利用步内解析原函数 1 − exp(−σ_t·Δs) 确保大步长粗采样下辐射度无条件有界于 [0, L_e]",
+    "Cancelling sigma_t in (sigma_s / sigma_t) * (1 - exp(-sigma_t * ds)) to avoid 0/0 singularities in empty air (sigma_t -> 0)": "通过反照率约分 (σ_s/σ_t)·(1 − exp(−σ_t·Δs)) 保证稀薄空气与浓云交界处数值平滑无奇点",
+    "Opaque hard-surface mesh rendering where rays terminate immediately at the first surface hit without participating media": "不含参与介质（Participating Media）、光线在首个硬表面即刻终止的常规不透明网格渲染",
+    "Highly heterogeneous multi-scattering clouds without shadow-map / phase-function evaluation at each sample point": "未结合逐采样点相位函数与次级阴影步进的极端非均匀多重散射云层",
+    "End-to-end neural radiance field training pipelines (Instant-NGP / Mip-NeRF 360)": "端到端神经辐射场训练管线（Instant-NGP / Mip-NeRF 360）",
+    "Single-layer 2D UI sprite alpha blending where optical thickness is already pre-baked into [0, 1]": "不透明度已预先归一化至 [0, 1] 的单层 2D UI 精灵混合"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/transmittance-volume-march.test.ts",
+    "node scripts/benchmark-transmittance-volume-march.mjs"
+  ]
+}
