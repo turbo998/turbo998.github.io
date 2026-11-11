@@ -1115,6 +1115,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r50File),'utf8');
       assert.ok(txt.includes('1,500.00')&&txt.includes('3,500.00')&&txt.includes('5,480.00')&&txt.includes('250.00')&&txt.includes('700.00')&&txt.includes('1,010.00')&&txt.includes('4,470.00')&&txt.includes('81.57%')&&txt.includes('not_measured'),r50File+': contains exact 11-11 R5 supermimic+lot-map closed-form parameters');
     }
+    // 2026-11-11 Round 6 (ScottDuncanAI/PID-to-Knowledge-Graph + Dodaios/ste80-humanizer) closed-form FinOps verification
+    const r51PathA=240.00+45.0*80.00+35.0*80.00;
+    assert.equal(r51PathA.toFixed(2),'6640.00','11-11 R6 Path A total');
+    const r51PathC=160.00+8.0*80.00+6.0*80.00;
+    assert.equal(r51PathC.toFixed(2),'1280.00','11-11 R6 Path C total');
+    assert.equal((r51PathA-r51PathC).toFixed(2),'5360.00','11-11 R6 savings vs Path A');
+    assert.equal(((r51PathA-r51PathC)/r51PathA*100).toFixed(2),'80.72','11-11 R6 pct savings vs Path A');
+    for(const r51File of ['workshops/github-trending-radar/docs/pid-knowledge-graph-ste80-humanizer-selection-faq.md','workshops/github-trending-radar/docs/pid-knowledge-graph-ste80-humanizer-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r6-pid-kg-ste80.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r51File),'utf8');
+      assert.ok(txt.includes('3,600.00')&&txt.includes('2,800.00')&&txt.includes('6,640.00')&&txt.includes('640.00')&&txt.includes('480.00')&&txt.includes('1,280.00')&&txt.includes('5,360.00')&&txt.includes('80.72%')&&txt.includes('not_measured'),r51File+': contains exact 11-11 R6 pid-to-kg+ste80 closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
