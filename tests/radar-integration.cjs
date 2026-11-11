@@ -1170,6 +1170,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r55File),'utf8');
       assert.ok(txt.includes('2,100.00')&&txt.includes('3,300.00')&&txt.includes('5,400.00')&&txt.includes('3,000.00')&&txt.includes('600.00')&&txt.includes('4,800.00')&&txt.includes('88.89%')&&txt.includes('not_measured'),r55File+': contains exact 11-11 R10 lobe-mygo+fish-pocket closed-form parameters');
     }
+    // 2026-11-11 Round 11 (gogoymh/auto-ontology-mcp + nengong/download-anything) closed-form FinOps verification
+    const r56PathA=680.00+30.0*75.00+22.0*75.00;
+    assert.equal(r56PathA.toFixed(2),'4580.00','11-11 R11 Path A total');
+    const r56PathC=45.00+5.0*75.00+3.0*75.00;
+    assert.equal(r56PathC.toFixed(2),'645.00','11-11 R11 Path C total');
+    assert.equal((r56PathA-r56PathC).toFixed(2),'3935.00','11-11 R11 savings vs Path A');
+    assert.equal(((r56PathA-r56PathC)/r56PathA*100).toFixed(2),'85.92','11-11 R11 pct savings vs Path A');
+    for(const r56File of ['workshops/github-trending-radar/docs/auto-ontology-mcp-download-anything-selection-faq.md','workshops/github-trending-radar/docs/auto-ontology-mcp-download-anything-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r11-auto-ontology-mcp-da.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r56File),'utf8');
+      assert.ok(txt.includes('2,250.00')&&txt.includes('1,650.00')&&txt.includes('4,580.00')&&txt.includes('375.00')&&txt.includes('225.00')&&txt.includes('645.00')&&txt.includes('3,935.00')&&txt.includes('85.92%')&&txt.includes('not_measured'),r56File+': contains exact 11-11 R11 auto-ontology-mcp+download-anything closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
