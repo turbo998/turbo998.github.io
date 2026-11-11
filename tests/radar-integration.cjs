@@ -1192,6 +1192,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r57File),'utf8');
       assert.ok(txt.includes('2,520.00')&&txt.includes('2,100.00')&&txt.includes('5,140.00')&&txt.includes('420.00')&&txt.includes('280.00')&&txt.includes('780.00')&&txt.includes('4,360.00')&&txt.includes('84.82%')&&txt.includes('not_measured'),r57File+': contains exact 11-11 R12 worldforge+gpt-anime-denoise closed-form parameters');
     }
+    // 2026-11-11 Round 13 (jammaru/sakutto + zandy700/Ultimate-Tracker scsm) closed-form FinOps verification
+    const r58PathA=720.00+18.0*80.00+34.0*80.00;
+    assert.equal(r58PathA.toFixed(2),'4880.00','11-11 R13 Path A total');
+    const r58PathC=40.00+3.0*80.00+6.0*80.00;
+    assert.equal(r58PathC.toFixed(2),'760.00','11-11 R13 Path C total');
+    assert.equal((r58PathA-r58PathC).toFixed(2),'4120.00','11-11 R13 savings vs Path A');
+    assert.equal(((r58PathA-r58PathC)/r58PathA*100).toFixed(2),'84.43','11-11 R13 pct savings vs Path A');
+    for(const r58File of ['workshops/github-trending-radar/docs/sakutto-wllama-plamo-supply-chain-shock-selection-faq.md','workshops/github-trending-radar/docs/sakutto-wllama-plamo-supply-chain-shock-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r13-sakutto-shockmap.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r58File),'utf8');
+      assert.ok(txt.includes('1,440.00')&&txt.includes('2,720.00')&&txt.includes('4,880.00')&&txt.includes('240.00')&&txt.includes('480.00')&&txt.includes('760.00')&&txt.includes('4,120.00')&&txt.includes('84.43%')&&txt.includes('not_measured'),r58File+': contains exact 11-11 R13 sakutto+scsm closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
