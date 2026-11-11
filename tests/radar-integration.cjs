@@ -1214,6 +1214,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r59File),'utf8');
       assert.ok(txt.includes('3,600.00')&&txt.includes('2,800.00')&&txt.includes('6,400.00')&&txt.includes('900.00')&&txt.includes('320.00')&&txt.includes('1,220.00')&&txt.includes('5,180.00')&&txt.includes('80.94%')&&txt.includes('not_measured'),r59File+': contains exact 11-11 R14 agent-cockpit+specpilot closed-form parameters');
     }
+    // 2026-11-11 Round 15 (Robbyant/lingbot-touch + zju3dv/SplatAnything) closed-form FinOps verification
+    const r60PathA=650*3.50+42.0*80.00;
+    assert.equal(r60PathA.toFixed(2),'5635.00','11-11 R15 Path A total');
+    const r60PathC=80*3.50+6.5*80.00;
+    assert.equal(r60PathC.toFixed(2),'800.00','11-11 R15 Path C total');
+    assert.equal((r60PathA-r60PathC).toFixed(2),'4835.00','11-11 R15 savings vs Path A');
+    assert.equal(((r60PathA-r60PathC)/r60PathA*100).toFixed(2),'85.80','11-11 R15 pct savings vs Path A');
+    for(const r60File of ['workshops/github-trending-radar/docs/lingbot-touch-splatanything-tactile-jepa-3dgs-selection-faq.md','workshops/github-trending-radar/docs/lingbot-touch-splatanything-tactile-jepa-3dgs-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r15-lingbot-splatanything.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r60File),'utf8');
+      assert.ok(txt.includes('2,275.00')&&txt.includes('3,360.00')&&txt.includes('5,635.00')&&txt.includes('280.00')&&txt.includes('520.00')&&txt.includes('800.00')&&txt.includes('4,835.00')&&txt.includes('85.80%')&&txt.includes('not_measured'),r60File+': contains exact 11-11 R15 lingbot-touch+splatanything closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
