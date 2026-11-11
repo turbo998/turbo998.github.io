@@ -1577,6 +1577,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r92File),'utf8');
       assert.ok(txt.includes('1,740.00')&&txt.includes('4,320.00')&&txt.includes('6,060.00')&&txt.includes('340.00')&&txt.includes('450.00')&&txt.includes('790.00')&&txt.includes('5,270.00')&&txt.includes('86.96%')&&txt.includes('not_measured'),r92File+': contains exact 11-11 R47 anyscene+hermesvoice closed-form parameters');
     }
+    // 2026-11-11 Round 48 (duyunzhoudyz/dyz-med-paper-skills + poco-ai/agentero-dsh-plugin) closed-form FinOps verification
+    const r93PathA=1480.00+44.0*90.00;
+    assert.equal(r93PathA.toFixed(2),'5440.00','11-11 R48 Path A total');
+    const r93PathC=210.00+5.0*90.00;
+    assert.equal(r93PathC.toFixed(2),'660.00','11-11 R48 Path C total');
+    assert.equal((r93PathA-r93PathC).toFixed(2),'4780.00','11-11 R48 savings vs Path A');
+    assert.equal(((r93PathA-r93PathC)/r93PathA*100).toFixed(2),'87.87','11-11 R48 pct savings vs Path A');
+    for(const r93File of ['workshops/github-trending-radar/docs/dyz-med-paper-skills-agentero-dsh-clinical-research-vault-selection-faq.md','workshops/github-trending-radar/docs/dyz-med-paper-skills-agentero-dsh-clinical-research-vault-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r48-medpaper-agentero.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r93File),'utf8');
+      assert.ok(txt.includes('1,480.00')&&txt.includes('3,960.00')&&txt.includes('5,440.00')&&txt.includes('210.00')&&txt.includes('450.00')&&txt.includes('660.00')&&txt.includes('4,780.00')&&txt.includes('87.87%')&&txt.includes('not_measured'),r93File+': contains exact 11-11 R48 medpaper+agenterodsh closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
