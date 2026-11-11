@@ -1390,6 +1390,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r75File),'utf8');
       assert.ok(txt.includes('1,620.00')&&txt.includes('4,080.00')&&txt.includes('5,700.00')&&txt.includes('240.00')&&txt.includes('425.00')&&txt.includes('665.00')&&txt.includes('5,035.00')&&txt.includes('88.33%')&&txt.includes('not_measured'),r75File+': contains exact 11-11 R30 dsh-android+survival-llm closed-form parameters');
     }
+    // 2026-11-11 Round 31 (actionow-ai/vvv + andrew-babo/muse4ai) closed-form FinOps verification
+    const r76PathA=1640.00+48.0*80.00;
+    assert.equal(r76PathA.toFixed(2),'5480.00','11-11 R31 Path A total');
+    const r76PathC=260.00+6.0*80.00;
+    assert.equal(r76PathC.toFixed(2),'740.00','11-11 R31 Path C total');
+    assert.equal((r76PathA-r76PathC).toFixed(2),'4740.00','11-11 R31 savings vs Path A');
+    assert.equal(((r76PathA-r76PathC)/r76PathA*100).toFixed(2),'86.50','11-11 R31 pct savings vs Path A');
+    for(const r76File of ['workshops/github-trending-radar/docs/vvv-muse4ai-reusable-video-template-local-media-mcp-selection-faq.md','workshops/github-trending-radar/docs/vvv-muse4ai-reusable-video-template-local-media-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r31-muse4ai-vvv.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r76File),'utf8');
+      assert.ok(txt.includes('1,640.00')&&txt.includes('3,840.00')&&txt.includes('5,480.00')&&txt.includes('260.00')&&txt.includes('480.00')&&txt.includes('740.00')&&txt.includes('4,740.00')&&txt.includes('86.50%')&&txt.includes('not_measured'),r76File+': contains exact 11-11 R31 vvv+muse4ai closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
