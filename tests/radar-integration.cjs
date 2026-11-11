@@ -1610,6 +1610,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r95File),'utf8');
       assert.ok(txt.includes('1,620.00')&&txt.includes('4,050.00')&&txt.includes('5,670.00')&&txt.includes('240.00')&&txt.includes('450.00')&&txt.includes('690.00')&&txt.includes('4,980.00')&&txt.includes('87.83%')&&txt.includes('not_measured'),r95File+': contains exact 11-11 R50 dshcraft+personasdk closed-form parameters');
     }
+    // 2026-11-11 Round 51 (Pluviobyte/saas-growth-agents + yc-software/minecraft-agent-harness) closed-form FinOps verification
+    const r96PathA=1680.00+45.0*90.00;
+    assert.equal(r96PathA.toFixed(2),'5730.00','11-11 R51 Path A total');
+    const r96PathC=250.00+5.0*90.00;
+    assert.equal(r96PathC.toFixed(2),'700.00','11-11 R51 Path C total');
+    assert.equal((r96PathA-r96PathC).toFixed(2),'5030.00','11-11 R51 savings vs Path A');
+    assert.equal(((r96PathA-r96PathC)/r96PathA*100).toFixed(2),'87.78','11-11 R51 pct savings vs Path A');
+    for(const r96File of ['workshops/github-trending-radar/docs/saas-growth-agents-minecraft-agent-harness-deterministic-sop-50-agent-teams-selection-faq.md','workshops/github-trending-radar/docs/saas-growth-agents-minecraft-agent-harness-deterministic-sop-50-agent-teams-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r51-saasgrowth-minecraft.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r96File),'utf8');
+      assert.ok(txt.includes('1,680.00')&&txt.includes('4,050.00')&&txt.includes('5,730.00')&&txt.includes('250.00')&&txt.includes('450.00')&&txt.includes('700.00')&&txt.includes('5,030.00')&&txt.includes('87.78%')&&txt.includes('not_measured'),r96File+': contains exact 11-11 R51 saasgrowth+minecraft closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
