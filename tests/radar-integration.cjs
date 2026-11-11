@@ -1258,6 +1258,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r63File),'utf8');
       assert.ok(txt.includes('1,740.00')&&txt.includes('4,420.00')&&txt.includes('6,160.00')&&txt.includes('360.00')&&txt.includes('680.00')&&txt.includes('1,040.00')&&txt.includes('5,120.00')&&txt.includes('83.12%')&&txt.includes('not_measured'),r63File+': contains exact 11-11 R18 tucano+soduwork closed-form parameters');
     }
+    // 2026-11-11 Round 19 (muaaz9329/cheap-ag + danyuchn/claude-work-mode) closed-form FinOps verification
+    const r64PathA=2000*1.15+48.0*85.00;
+    assert.equal(r64PathA.toFixed(2),'6380.00','11-11 R19 Path A total');
+    const r64PathC=690.00+6.0*85.00;
+    assert.equal(r64PathC.toFixed(2),'1200.00','11-11 R19 Path C total');
+    assert.equal((r64PathA-r64PathC).toFixed(2),'5180.00','11-11 R19 savings vs Path A');
+    assert.equal(((r64PathA-r64PathC)/r64PathA*100).toFixed(2),'81.19','11-11 R19 pct savings vs Path A');
+    for(const r64File of ['workshops/github-trending-radar/docs/cheap-ag-claude-work-mode-quota-routing-selection-faq.md','workshops/github-trending-radar/docs/cheap-ag-claude-work-mode-quota-routing-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r19-cheapag-workmode.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r64File),'utf8');
+      assert.ok(txt.includes('2,300.00')&&txt.includes('4,080.00')&&txt.includes('6,380.00')&&txt.includes('690.00')&&txt.includes('510.00')&&txt.includes('1,200.00')&&txt.includes('5,180.00')&&txt.includes('81.19%')&&txt.includes('not_measured'),r64File+': contains exact 11-11 R19 cheap-ag+claude-work-mode closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
