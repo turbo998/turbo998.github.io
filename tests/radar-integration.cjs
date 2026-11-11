@@ -1555,6 +1555,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r90File),'utf8');
       assert.ok(txt.includes('1,580.00')&&txt.includes('3,960.00')&&txt.includes('5,540.00')&&txt.includes('230.00')&&txt.includes('450.00')&&txt.includes('680.00')&&txt.includes('4,860.00')&&txt.includes('87.73%')&&txt.includes('not_measured'),r90File+': contains exact 11-11 R45 uncut+strobe closed-form parameters');
     }
+    // 2026-11-11 Round 46 (gh9ko8y/graphmemory + Junhan2/ztd-charts) closed-form FinOps verification
+    const r91PathA=1640.00+45.0*90.00;
+    assert.equal(r91PathA.toFixed(2),'5690.00','11-11 R46 Path A total');
+    const r91PathC=240.00+5.0*90.00;
+    assert.equal(r91PathC.toFixed(2),'690.00','11-11 R46 Path C total');
+    assert.equal((r91PathA-r91PathC).toFixed(2),'5000.00','11-11 R46 savings vs Path A');
+    assert.equal(((r91PathA-r91PathC)/r91PathA*100).toFixed(2),'87.87','11-11 R46 pct savings vs Path A');
+    for(const r91File of ['workshops/github-trending-radar/docs/graphmemory-ztd-charts-bitemporal-decay-memory-svg-mcp-selection-faq.md','workshops/github-trending-radar/docs/graphmemory-ztd-charts-bitemporal-decay-memory-svg-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r46-graphmemory-ztdcharts.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r91File),'utf8');
+      assert.ok(txt.includes('1,640.00')&&txt.includes('4,050.00')&&txt.includes('5,690.00')&&txt.includes('240.00')&&txt.includes('450.00')&&txt.includes('690.00')&&txt.includes('5,000.00')&&txt.includes('87.87%')&&txt.includes('not_measured'),r91File+': contains exact 11-11 R46 graphmemory+ztdcharts closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
