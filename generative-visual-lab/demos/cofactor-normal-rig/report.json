@@ -1,0 +1,269 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Cofactor inverse-transpose normal matrix vs forward model-matrix transform",
+  "topic_zh": "余子式伴随逆转置法向矩阵与模型矩阵直乘对比",
+  "slug": "cofactor-normal-rig",
+  "timestamp": "2026-11-11T02:05:16.110Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic 3x3 cofactor adjugate normal transformation cof(M) = det(M)(M^-1)^T vs naive forward model-matrix multiplication M*n under non-uniform squash-and-stretch and shear, verifying tangent-normal orthogonality n'·t'=0 and cofactor cross-product vs Gauss-Jordan CPU solving. No neural 4DGS relighting execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.39",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "cofactor-equivalence-128",
+      "passed": true,
+      "detail": "128 cofactor adjugate and Gauss-Jordan (M^-1)^T normals agree within 1e-14"
+    },
+    {
+      "name": "cofactor-equivalence-1024",
+      "passed": true,
+      "detail": "1024 cofactor adjugate and Gauss-Jordan (M^-1)^T normals agree within 1e-14"
+    },
+    {
+      "name": "cofactor-equivalence-8192",
+      "passed": true,
+      "detail": "8192 cofactor adjugate and Gauss-Jordan (M^-1)^T normals agree within 1e-14"
+    },
+    {
+      "name": "cofactor-tangent-orthogonality",
+      "passed": true,
+      "detail": "17 stations retain 90.00 deg tangent-normal orthogonality (max error 0.00e+0 deg)"
+    },
+    {
+      "name": "naive-normal-tilt-exposed",
+      "passed": true,
+      "detail": "naive M*n tilts +45 deg shoulder normal by 71.71 deg and loses 68.61% key light"
+    },
+    {
+      "name": "exact-shoulder-orthogonality-retained",
+      "passed": true,
+      "detail": "cofactor normal locks station-13 n'·t'=0.000000 and retains 100.00% key light"
+    },
+    {
+      "name": "naive-specular-blackout-exposed",
+      "passed": true,
+      "detail": "naive M*n tilts station-13 normal by 71.71 deg (-68.61% key-light loss)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse station scrubbing reproduces the exact protractor probe world matrix"
+    },
+    {
+      "name": "atomic-scale-rejection",
+      "passed": true,
+      "detail": "out-of-range scaleX=9.5 is rejected while valid squash state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered protractor probe x-translation matches solved deformed dome coordinate"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px cofactor normal controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual station scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station normal passes",
+      "count": 128,
+      "primary_ms": 2.80619999999999,
+      "baseline_ms": 3.5276999999999816,
+      "primary_samples_ms": [
+        1.7081000000000017,
+        2.80619999999999,
+        3.1714000000000055,
+        1.5819999999999368,
+        1.5405000000000655,
+        2.8257999999999583,
+        3.075999999999908
+      ],
+      "baseline_samples_ms": [
+        4.911200000000008,
+        4.0265999999999735,
+        2.1059999999999945,
+        1.8571000000000026,
+        3.5276999999999816,
+        3.620999999999981,
+        2.385099999999966
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station normal passes",
+      "count": 1024,
+      "primary_ms": 12.901200000000017,
+      "baseline_ms": 15.908699999999953,
+      "primary_samples_ms": [
+        12.522699999999986,
+        12.544099999999958,
+        12.86749999999995,
+        13.055600000000027,
+        13.246700000000033,
+        12.901200000000017,
+        13.024599999999964
+      ],
+      "baseline_samples_ms": [
+        16.025800000000004,
+        16.423900000000003,
+        16.801900000000046,
+        15.908699999999953,
+        15.305299999999988,
+        15.247600000000034,
+        15.53430000000003
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station normal passes",
+      "count": 8192,
+      "primary_ms": 116.1547999999998,
+      "baseline_ms": 143.52650000000017,
+      "primary_samples_ms": [
+        104.28659999999991,
+        116.1547999999998,
+        121.06719999999996,
+        125.36159999999995,
+        120.52170000000001,
+        108.18859999999995,
+        114.70969999999988
+      ],
+      "baseline_samples_ms": [
+        135.61419999999998,
+        137.87429999999995,
+        148.37279999999987,
+        143.52650000000017,
+        149.29819999999972,
+        146.87390000000005,
+        132.86580000000004
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/cofactor-normal-rig/light-cofactor-adjugate.png",
+    "docs/evidence/cofactor-normal-rig/light-naive-model-matrix.png",
+    "docs/evidence/cofactor-normal-rig/dark-cofactor-adjugate.png",
+    "docs/evidence/cofactor-normal-rig/dark-naive-model-matrix.png",
+    "docs/evidence/cofactor-normal-rig/mobile.png"
+  ],
+  "primary_label": "3x3 Cofactor Adjugate Cross-Product",
+  "baseline_label": "Gauss-Jordan 3x3 Invert + Transpose",
+  "load_unit": "17-station normal passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Division-free 3x3 cofactor adjugate cross-product formula versus general Gauss-Jordan 3x3 matrix inversion and transpose.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "scale_x": 2.5,
+    "scale_y": 0.4,
+    "shear_xy": 0.2,
+    "cofactor_ortho_err_deg": 0,
+    "naive_tilt_err_deg": 71.71,
+    "cofactor_diffuse_pct": 100,
+    "naive_diffuse_pct": 31.39,
+    "naive_irradiance_loss_pct": 68.61,
+    "maximum_solver_error": 0
+  },
+  "protocol": {
+    "input": {
+      "station_index": 13,
+      "scale_x": 2.5,
+      "scale_y": 0.4,
+      "shear_xy": 0.2,
+      "mode": "cofactor-adjugate"
+    },
+    "output": {
+      "cofactor_n_dot_t": 0,
+      "cofactor_tilt_deg": 0,
+      "naive_n_dot_t": 0.9495,
+      "naive_tilt_deg": 71.71,
+      "naive_light_loss_pct": 68.61
+    },
+    "function": "n' = normalize(cof(M)·n) → n'·t' ≡ 0.000000 → 90.00° exact tangent orthogonality"
+  },
+  "robustness": [
+    {
+      "name": "Sampled dome stations retain exact 90.00 deg tangent-normal orthogonality",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Squash-and-stretch character animation, elastic soft-body rigs, and non-uniformly scaled 3D CAD assemblies",
+    "Explaining why normals transform as covariant 1-forms (cotangent vectors) via (M^-1)^T rather than tangent vectors M*t",
+    "Division-free 3x3 cofactor column cross-product formula cof(M) = [c1×c2, c2×c0, c0×c1] inside vertex shaders",
+    "Deforming 3D Gaussian Splatting covariance ellipsoids and local shading frames under elastoplastic gradients F"
+  ],
+  "not_for": [
+    "Pure rigid-body rotations and uniform scaling where M^T M = s^2 I makes M*n and cof(M)*n colinear",
+    "Neural diffusion video relighting (IC-Light / RelightVid) operating on 2D latent pixel grids",
+    "Full precomputed radiance transfer (PRT) spherical-harmonic triple-product relighting",
+    "Topological mesh tearing or fracture where surface tangents are undefined"
+  ],
+  "locale_zh": {
+    "cofactor-equivalence-128": "法向等价 128",
+    "128 cofactor adjugate and Gauss-Jordan (M^-1)^T normals agree within 1e-14": "128 次余子式伴随矩阵与高斯-若尔当逆转置法向在 1e-14 内一致",
+    "cofactor-equivalence-1024": "法向等价 1024",
+    "1024 cofactor adjugate and Gauss-Jordan (M^-1)^T normals agree within 1e-14": "1024 次余子式伴随矩阵与高斯-若尔当逆转置法向在 1e-14 内一致",
+    "cofactor-equivalence-8192": "法向等价 8192",
+    "8192 cofactor adjugate and Gauss-Jordan (M^-1)^T normals agree within 1e-14": "8192 次余子式伴随矩阵与高斯-若尔当逆转置法向在 1e-14 内一致",
+    "cofactor-tangent-orthogonality": "切线正交守恒",
+    "17 stations retain 90.00 deg tangent-normal orthogonality (max error 0.00e+0 deg)": "17 个拱顶站点保持 90.00° 切线-法向正交（最大误差 0.00e+0°）",
+    "naive-normal-tilt-exposed": "直乘法向歪斜暴露",
+    "naive M*n tilts +45 deg shoulder normal by 71.71 deg and loses 68.61% key light": "模型矩阵直乘 M·n 在 +45° 肩部造成 71.71° 法向歪斜并损失 68.61% 顶光照度",
+    "exact-shoulder-orthogonality-retained": "肩部正交精确锁定",
+    "cofactor normal locks station-13 n'·t'=0.000000 and retains 100.00% key light": "余子式伴随矩阵将第 13 站 n'·t' 锁死在 0.000000 并完整保留 100.00% 顶光照度",
+    "naive-specular-blackout-exposed": "直乘高光死黑暴露",
+    "naive M*n tilts station-13 normal by 71.71 deg (-68.61% key-light loss)": "直乘 M·n 使第 13 站法向歪斜 71.71°（顶光照度暴跌 -68.61%）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse station scrubbing reproduces the exact protractor probe world matrix": "逆序站点拖曳精确复现量角器探针世界矩阵",
+    "atomic-scale-rejection": "原子缩放拒绝",
+    "out-of-range scaleX=9.5 is rejected while valid squash state remains": "越界拉伸比 9.5 被拒绝，有效形变状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered protractor probe x-translation matches solved deformed dome coordinate": "渲染量角器探针水平位移与求解器变形拱顶坐标完全一致",
+    "mobile-layout": "手机布局",
+    "390px cofactor normal controls fit without horizontal overflow": "390px 余子式法向控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual station scrubbing remains available": "减少动态默认静止，保留手动站点核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "3x3 Cofactor Adjugate Cross-Product": "3×3 余子式伴随叉积闭式解",
+    "Gauss-Jordan 3x3 Invert + Transpose": "高斯-若尔当 3×3 通用求逆转置基线",
+    "Median of 7 alternating Node CPU runs after warmup. Division-free 3x3 cofactor adjugate cross-product formula versus general Gauss-Jordan 3x3 matrix inversion and transpose.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；无除法 3×3 余子式列向量叉积公式对比通用高斯-若尔当 3×3 矩阵求逆与转置。",
+    "Sampled dome stations retain exact 90.00 deg tangent-normal orthogonality": "采样拱顶站点保持精确 90.00° 切线-法向正交",
+    "n' = normalize(cof(M)·n) → n'·t' ≡ 0.000000 → 90.00° exact tangent orthogonality": "余子式法向变换 n' = normalize(cof(M)·n) → 切法内积 n'·t' ≡ 0.000000 → 90.00° 精确切面正交",
+    "Squash-and-stretch character animation, elastic soft-body rigs, and non-uniformly scaled 3D CAD assemblies": "挤压拉伸（Squash-and-Stretch）角色动画、弹性软体绑定与非均匀缩放三维 CAD 装配体",
+    "Explaining why normals transform as covariant 1-forms (cotangent vectors) via (M^-1)^T rather than tangent vectors M*t": "直观解释为何表面法向作为余切对偶向量必须按 (M⁻¹)ᵀ 而非切向量 M·t 变换",
+    "Division-free 3x3 cofactor column cross-product formula cof(M) = [c1×c2, c2×c0, c0×c1] inside vertex shaders": "顶点着色器中免除行列式除法的 3×3 余子式列叉积公式 cof(M) = [c₁×c₂, c₂×c₀, c₀×c₁]",
+    "Deforming 3D Gaussian Splatting covariance ellipsoids and local shading frames under elastoplastic gradients F": "在形变梯度 F 下正确旋转与缩放 3D 高斯椭球（4DGS / PhysGaussian）局部着色法向",
+    "Pure rigid-body rotations and uniform scaling where M^T M = s^2 I makes M*n and cof(M)*n colinear": "纯刚体旋转与等比例缩放（此时 MᵀM = s²I，M·n 与逆转置方向一致）",
+    "Neural diffusion video relighting (IC-Light / RelightVid) operating on 2D latent pixel grids": "直接作用于二维潜空间像素网格的神经扩散视频重打光（IC-Light / RelightVid）",
+    "Full precomputed radiance transfer (PRT) spherical-harmonic triple-product relighting": "完整预计算辐射传输（PRT）球谐三重积全局重打光",
+    "Topological mesh tearing or fracture where surface tangents are undefined": "切平面发生拓扑撕裂或破碎的断裂网格"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/cofactor-normal.test.ts",
+    "node scripts/benchmark-cofactor-normal.mjs"
+  ]
+}
