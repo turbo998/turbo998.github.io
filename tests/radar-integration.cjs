@@ -1093,6 +1093,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r48File),'utf8');
       assert.ok(txt.includes('3,360.00')&&txt.includes('4,460.00')&&txt.includes('3,060.00')&&txt.includes('560.00')&&txt.includes('660.00')&&txt.includes('3,800.00')&&txt.includes('85.20%')&&txt.includes('not_measured'),r48File+': contains exact 11-11 R3 modern-web-guidance closed-form parameters');
     }
+    // 2026-11-11 Round 4 (expo/exact + RunanywhereAI/trnrt) closed-form FinOps verification
+    const r49PathA=1500*1.20+64.0*75.00;
+    assert.equal(r49PathA.toFixed(2),'6600.00','11-11 R4 Path A total');
+    const r49PathC=1500*0.167+12.0*75.00;
+    assert.equal(r49PathC.toFixed(2),'1150.50','11-11 R4 Path C total');
+    assert.equal((r49PathA-r49PathC).toFixed(2),'5449.50','11-11 R4 savings vs Path A');
+    assert.equal(((r49PathA-r49PathC)/r49PathA*100).toFixed(2),'82.57','11-11 R4 pct savings vs Path A');
+    for(const r49File of ['workshops/github-trending-radar/docs/expo-exact-trnrt-agent-ui-trainium-inference-selection-faq.md','workshops/github-trending-radar/docs/expo-exact-trnrt-agent-ui-trainium-inference-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r4-expo-exact-trnrt.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r49File),'utf8');
+      assert.ok(txt.includes('1,800.00')&&txt.includes('4,800.00')&&txt.includes('6,600.00')&&txt.includes('250.50')&&txt.includes('900.00')&&txt.includes('1,150.50')&&txt.includes('5,449.50')&&txt.includes('82.57%')&&txt.includes('not_measured'),r49File+': contains exact 11-11 R4 expo/exact+trnrt closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
