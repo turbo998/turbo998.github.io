@@ -1032,6 +1032,41 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r45File),'utf8');
       assert.ok(txt.includes('1,500.00')&&txt.includes('3,300.00')&&txt.includes('6,300.00')&&txt.includes('165.00')&&txt.includes('300.00')&&txt.includes('510.00')&&txt.includes('975.00')&&txt.includes('5,325.00')&&txt.includes('84.52%')&&txt.includes('not_measured'),r45File+': contains exact 11-09 R32 rerun+gif-factory closed-form parameters');
     }
+    // 2026-11-11 Sweep & Round 1 (shadcn/improve + addyosmani/agent-skills v0.6.15) verification
+    const rawHtml1111=fs.readFileSync(path.join(__dirname,'..','workshops','github-trending-radar','evidence','trending-daily-2026-11-11-raw.html'),'utf8').replace(/\r\n/g,'\n');
+    assert.equal(hash(rawHtml1111),'bacf15c20a7aca6007beeb3a6f284b0549a441a05dafa25b17a097dc8f4f1d8f','2026-11-11 raw HTML LF sha256');
+    const rawSearch1111Str=fs.readFileSync(path.join(__dirname,'..','workshops','github-trending-radar','evidence','search-new-repos-2026-11-11-raw.json'),'utf8').replace(/\r\n/g,'\n');
+    assert.equal(hash(rawSearch1111Str),'8f108b907ea08522d04355d854f2ddbfd4a7f1d2cc92dbcb50d39107786a1eeb','2026-11-11 raw Search API JSON LF sha256');
+    const rawSearch1111=JSON.parse(rawSearch1111Str);
+    const rawSearch1111Map=new Map(rawSearch1111.items.map(it=>[it.full_name,it]));
+    for(const item of reportJson.fastest_rising_leaderboard_2026_11_11.track_a_24h_star_surge){
+      assert.equal(item.provenance,'measured',item.full_name+': 11-11 Track A provenance');
+      assert.ok(rawHtml1111.includes(`href="/${item.full_name}"`),item.full_name+': present in 11-11 raw HTML');
+      assert.ok(rawHtml1111.includes(`${item.stars_today.toLocaleString('en-US')} stars today`),item.full_name+': exact stars_today in 11-11 raw HTML');
+    }
+    for(const item of reportJson.fastest_rising_leaderboard_2026_11_11.track_b_new_repo_breakout_slope){
+      assert.equal(item.stars_today,'not_measured',item.full_name+': 11-11 Track B stars_today must be not_measured');
+      assert.ok(rawSearch1111Map.has(item.full_name),item.full_name+': present in 11-11 archived Search API JSON');
+      const rawEntry=rawSearch1111Map.get(item.full_name);
+      assert.equal(item.stars_total_search_api,rawEntry.stargazers_count,item.full_name+': 11-11 stars_total_search_api matches Search API JSON');
+      assert.equal(item.stars_per_day,Math.round(item.stars_total/item.age_days),item.full_name+': 11-11 stars_per_day closed-form');
+    }
+    const r46PathAIn=960*(0.080*3.00);
+    const r46PathAOut=960*(0.008*15.00);
+    assert.equal(r46PathAIn.toFixed(2),'230.40','11-11 R1 Path A input');
+    assert.equal(r46PathAOut.toFixed(2),'115.20','11-11 R1 Path A output');
+    assert.equal((r46PathAIn+r46PathAOut).toFixed(2),'345.60','11-11 R1 Path A total');
+    const r46Adv=240*(0.040*3.00+0.004*15.00);
+    const r46Exec=360*(0.030*0.50+0.006*2.50);
+    assert.equal(r46Adv.toFixed(2),'43.20','11-11 R1 Path C Advisor');
+    assert.equal(r46Exec.toFixed(2),'10.80','11-11 R1 Path C Executor');
+    assert.equal((r46Adv+r46Exec).toFixed(2),'54.00','11-11 R1 Path C total');
+    assert.equal((345.60-54.00).toFixed(2),'291.60','11-11 R1 savings vs Path A');
+    assert.equal(((345.60-54.00)/345.60*100).toFixed(2),'84.38','11-11 R1 pct savings vs Path A');
+    for(const r46File of ['workshops/github-trending-radar/docs/shadcn-improve-addyosmani-agent-skills-sdlc-selection-faq.md','workshops/github-trending-radar/docs/shadcn-improve-addyosmani-agent-skills-sdlc-selection-faq.en.md','assets/github-ai-radar-2026-11-11.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r46File),'utf8');
+      assert.ok(txt.includes('345.60')&&txt.includes('162.00')&&txt.includes('43.20')&&txt.includes('10.80')&&txt.includes('54.00')&&txt.includes('291.60')&&txt.includes('84.38%')&&txt.includes('not_measured'),r46File+': contains exact 11-11 R1 closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
