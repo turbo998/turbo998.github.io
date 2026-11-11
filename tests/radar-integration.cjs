@@ -1522,6 +1522,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r87File),'utf8');
       assert.ok(txt.includes('1,540.00')&&txt.includes('3,960.00')&&txt.includes('5,500.00')&&txt.includes('220.00')&&txt.includes('450.00')&&txt.includes('670.00')&&txt.includes('4,830.00')&&txt.includes('87.82%')&&txt.includes('not_measured'),r87File+': contains exact 11-11 R42 phoneuse+swipt closed-form parameters');
     }
+    // 2026-11-11 Round 43 (devvmhq/devvm + tobi/wrapvm) closed-form FinOps verification
+    const r88PathA=1680.00+45.0*90.00;
+    assert.equal(r88PathA.toFixed(2),'5730.00','11-11 R43 Path A total');
+    const r88PathC=250.00+5.0*90.00;
+    assert.equal(r88PathC.toFixed(2),'700.00','11-11 R43 Path C total');
+    assert.equal((r88PathA-r88PathC).toFixed(2),'5030.00','11-11 R43 savings vs Path A');
+    assert.equal(((r88PathA-r88PathC)/r88PathA*100).toFixed(2),'87.78','11-11 R43 pct savings vs Path A');
+    for(const r88File of ['workshops/github-trending-radar/docs/devvm-wrapvm-per-project-vm-xfce-agent-desktop-selection-faq.md','workshops/github-trending-radar/docs/devvm-wrapvm-per-project-vm-xfce-agent-desktop-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r43-devvm-wrapvm.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r88File),'utf8');
+      assert.ok(txt.includes('1,680.00')&&txt.includes('4,050.00')&&txt.includes('5,730.00')&&txt.includes('250.00')&&txt.includes('450.00')&&txt.includes('700.00')&&txt.includes('5,030.00')&&txt.includes('87.78%')&&txt.includes('not_measured'),r88File+': contains exact 11-11 R43 devvm+wrapvm closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
