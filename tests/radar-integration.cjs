@@ -1599,6 +1599,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r94File),'utf8');
       assert.ok(txt.includes('1,960.00')&&txt.includes('4,140.00')&&txt.includes('6,100.00')&&txt.includes('290.00')&&txt.includes('450.00')&&txt.includes('740.00')&&txt.includes('5,360.00')&&txt.includes('87.87%')&&txt.includes('not_measured'),r94File+': contains exact 11-11 R49 weightspace+qwenpu closed-form parameters');
     }
+    // 2026-11-11 Round 50 (Fanqi89/dsh-craft-anything + tavern-labs-ai/persona-ai-sdk) closed-form FinOps verification
+    const r95PathA=1620.00+45.0*90.00;
+    assert.equal(r95PathA.toFixed(2),'5670.00','11-11 R50 Path A total');
+    const r95PathC=240.00+5.0*90.00;
+    assert.equal(r95PathC.toFixed(2),'690.00','11-11 R50 Path C total');
+    assert.equal((r95PathA-r95PathC).toFixed(2),'4980.00','11-11 R50 savings vs Path A');
+    assert.equal(((r95PathA-r95PathC)/r95PathA*100).toFixed(2),'87.83','11-11 R50 pct savings vs Path A');
+    for(const r95File of ['workshops/github-trending-radar/docs/dsh-craft-anything-persona-ai-sdk-cleanroom-reverse-persona-runtime-selection-faq.md','workshops/github-trending-radar/docs/dsh-craft-anything-persona-ai-sdk-cleanroom-reverse-persona-runtime-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r50-dshcraft-personasdk.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r95File),'utf8');
+      assert.ok(txt.includes('1,620.00')&&txt.includes('4,050.00')&&txt.includes('5,670.00')&&txt.includes('240.00')&&txt.includes('450.00')&&txt.includes('690.00')&&txt.includes('4,980.00')&&txt.includes('87.83%')&&txt.includes('not_measured'),r95File+': contains exact 11-11 R50 dshcraft+personasdk closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
