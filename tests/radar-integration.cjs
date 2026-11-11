@@ -1104,6 +1104,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r49File),'utf8');
       assert.ok(txt.includes('1,800.00')&&txt.includes('4,800.00')&&txt.includes('6,600.00')&&txt.includes('250.50')&&txt.includes('900.00')&&txt.includes('1,150.50')&&txt.includes('5,449.50')&&txt.includes('82.57%')&&txt.includes('not_measured'),r49File+': contains exact 11-11 R4 expo/exact+trnrt closed-form parameters');
     }
+    // 2026-11-11 Round 5 (HybridRobotics/supermimic + alexeyw/lot-map + vzroslieigry/maxagent) closed-form FinOps verification
+    const r50PathA=600*2.50+3000*0.16+50.0*70.00;
+    assert.equal(r50PathA.toFixed(2),'5480.00','11-11 R5 Path A total');
+    const r50PathC=100*2.50+3000*0.02+10.0*70.00;
+    assert.equal(r50PathC.toFixed(2),'1010.00','11-11 R5 Path C total');
+    assert.equal((r50PathA-r50PathC).toFixed(2),'4470.00','11-11 R5 savings vs Path A');
+    assert.equal(((r50PathA-r50PathC)/r50PathA*100).toFixed(2),'81.57','11-11 R5 pct savings vs Path A');
+    for(const r50File of ['workshops/github-trending-radar/docs/supermimic-lotmap-maxagent-world-model-observability-selection-faq.md','workshops/github-trending-radar/docs/supermimic-lotmap-maxagent-world-model-observability-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r5-supermimic-lotmap.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r50File),'utf8');
+      assert.ok(txt.includes('1,500.00')&&txt.includes('3,500.00')&&txt.includes('5,480.00')&&txt.includes('250.00')&&txt.includes('700.00')&&txt.includes('1,010.00')&&txt.includes('4,470.00')&&txt.includes('81.57%')&&txt.includes('not_measured'),r50File+': contains exact 11-11 R5 supermimic+lot-map closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
