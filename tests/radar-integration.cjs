@@ -1544,6 +1544,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r89File),'utf8');
       assert.ok(txt.includes('1,760.00')&&txt.includes('4,320.00')&&txt.includes('6,080.00')&&txt.includes('260.00')&&txt.includes('450.00')&&txt.includes('710.00')&&txt.includes('5,370.00')&&txt.includes('88.32%')&&txt.includes('not_measured'),r89File+': contains exact 11-11 R44 producteng+decisionforge closed-form parameters');
     }
+    // 2026-11-11 Round 45 (Balanov/uncut + anomalyco/strobe) closed-form FinOps verification
+    const r90PathA=1580.00+44.0*90.00;
+    assert.equal(r90PathA.toFixed(2),'5540.00','11-11 R45 Path A total');
+    const r90PathC=230.00+5.0*90.00;
+    assert.equal(r90PathC.toFixed(2),'680.00','11-11 R45 Path C total');
+    assert.equal((r90PathA-r90PathC).toFixed(2),'4860.00','11-11 R45 savings vs Path A');
+    assert.equal(((r90PathA-r90PathC)/r90PathA*100).toFixed(2),'87.73','11-11 R45 pct savings vs Path A');
+    for(const r90File of ['workshops/github-trending-radar/docs/uncut-strobe-lossless-headless-harness-agent-profiler-selection-faq.md','workshops/github-trending-radar/docs/uncut-strobe-lossless-headless-harness-agent-profiler-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r45-uncut-strobe.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r90File),'utf8');
+      assert.ok(txt.includes('1,580.00')&&txt.includes('3,960.00')&&txt.includes('5,540.00')&&txt.includes('230.00')&&txt.includes('450.00')&&txt.includes('680.00')&&txt.includes('4,860.00')&&txt.includes('87.73%')&&txt.includes('not_measured'),r90File+': contains exact 11-11 R45 uncut+strobe closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
