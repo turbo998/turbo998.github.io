@@ -1148,6 +1148,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r53File),'utf8');
       assert.ok(txt.includes('2,400.00')&&txt.includes('1,800.00')&&txt.includes('4,840.00')&&txt.includes('450.00')&&txt.includes('300.00')&&txt.includes('790.00')&&txt.includes('4,050.00')&&txt.includes('83.68%')&&txt.includes('not_measured'),r53File+': contains exact 11-11 R8 sandbox-mcp+ovnfs closed-form parameters');
     }
+    // 2026-11-11 Round 9 (gokayfem/image-to-sculpt + kubai087/kubai-icons + DominikScholz/open-bot-avatar) closed-form FinOps verification
+    const r54PathA=360.00+45.0*70.00+40.0*70.00;
+    assert.equal(r54PathA.toFixed(2),'6310.00','11-11 R9 Path A total');
+    const r54PathC=90.00+9.0*70.00+6.0*70.00;
+    assert.equal(r54PathC.toFixed(2),'1140.00','11-11 R9 Path C total');
+    assert.equal((r54PathA-r54PathC).toFixed(2),'5170.00','11-11 R9 savings vs Path A');
+    assert.equal(((r54PathA-r54PathC)/r54PathA*100).toFixed(2),'81.93','11-11 R9 pct savings vs Path A');
+    for(const r54File of ['workshops/github-trending-radar/docs/image-to-sculpt-kubai-icons-avatar-selection-faq.md','workshops/github-trending-radar/docs/image-to-sculpt-kubai-icons-avatar-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r9-image-sculpt-kubai.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r54File),'utf8');
+      assert.ok(txt.includes('3,150.00')&&txt.includes('2,800.00')&&txt.includes('6,310.00')&&txt.includes('630.00')&&txt.includes('420.00')&&txt.includes('1,140.00')&&txt.includes('5,170.00')&&txt.includes('81.93%')&&txt.includes('not_measured'),r54File+': contains exact 11-11 R9 image-to-sculpt+kubai closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
