@@ -1137,6 +1137,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r52File),'utf8');
       assert.ok(txt.includes('1,125.00')&&txt.includes('3,300.00')&&txt.includes('4,467.00')&&txt.includes('150.00')&&txt.includes('600.00')&&txt.includes('772.00')&&txt.includes('3,695.00')&&txt.includes('82.72%')&&txt.includes('not_measured'),r52File+': contains exact 11-11 R7 chrome-capture+line-art closed-form parameters');
     }
+    // 2026-11-11 Round 8 (shanselman/sandbox-mcp v1.2.0 + stencil-hq/ovnfs v0.2.3) closed-form FinOps verification
+    const r53PathA=640.00+32.0*75.00+24.0*75.00;
+    assert.equal(r53PathA.toFixed(2),'4840.00','11-11 R8 Path A total');
+    const r53PathC=40.00+6.0*75.00+4.0*75.00;
+    assert.equal(r53PathC.toFixed(2),'790.00','11-11 R8 Path C total');
+    assert.equal((r53PathA-r53PathC).toFixed(2),'4050.00','11-11 R8 savings vs Path A');
+    assert.equal(((r53PathA-r53PathC)/r53PathA*100).toFixed(2),'83.68','11-11 R8 pct savings vs Path A');
+    for(const r53File of ['workshops/github-trending-radar/docs/sandbox-mcp-ovnfs-cow-checkout-selection-faq.md','workshops/github-trending-radar/docs/sandbox-mcp-ovnfs-cow-checkout-selection-faq.en.md','assets/github-ai-radar-2026-11-11-r8-sandbox-ovnfs.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-11-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r53File),'utf8');
+      assert.ok(txt.includes('2,400.00')&&txt.includes('1,800.00')&&txt.includes('4,840.00')&&txt.includes('450.00')&&txt.includes('300.00')&&txt.includes('790.00')&&txt.includes('4,050.00')&&txt.includes('83.68%')&&txt.includes('not_measured'),r53File+': contains exact 11-11 R8 sandbox-mcp+ovnfs closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
