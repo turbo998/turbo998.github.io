@@ -1925,6 +1925,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r122File),'utf8');
       assert.ok(txt.includes('2,450.00')&&txt.includes('4,800.00')&&txt.includes('7,250.00')&&txt.includes('275.00')&&txt.includes('500.00')&&txt.includes('775.00')&&txt.includes('6,475.00')&&txt.includes('89.31%')&&txt.includes('not_measured'),r122File+': contains exact 11-12 R23 aspen+binnacle closed-form parameters');
     }
+    // 2026-11-12 Round 24 (R123: chenhg5/myco + symansun/doops) closed-form FinOps verification
+    const r123PathA=2060.00+46.0*95.00;
+    assert.equal(r123PathA.toFixed(2),'6430.00','11-12 R24 Path A total');
+    const r123PathC=230.00+4.0*95.00;
+    assert.equal(r123PathC.toFixed(2),'610.00','11-12 R24 Path C total');
+    assert.equal((r123PathA-r123PathC).toFixed(2),'5820.00','11-12 R24 savings vs Path A');
+    assert.equal(((r123PathA-r123PathC)/r123PathA*100).toFixed(2),'90.51','11-12 R24 pct savings vs Path A');
+    for(const r123File of ['workshops/github-trending-radar/docs/myco-doops-cross-machine-agent-mycelium-hub-sshless-reverse-ops-gateway-selection-faq.md','workshops/github-trending-radar/docs/myco-doops-cross-machine-agent-mycelium-hub-sshless-reverse-ops-gateway-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r24-myco-doops.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r123File),'utf8');
+      assert.ok(txt.includes('2,060.00')&&txt.includes('4,370.00')&&txt.includes('6,430.00')&&txt.includes('230.00')&&txt.includes('380.00')&&txt.includes('610.00')&&txt.includes('5,820.00')&&txt.includes('90.51%')&&txt.includes('not_measured'),r123File+': contains exact 11-12 R24 myco+doops closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
