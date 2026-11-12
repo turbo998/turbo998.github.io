@@ -1727,6 +1727,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r104File),'utf8');
       assert.ok(txt.includes('2,320.00')&&txt.includes('4,140.00')&&txt.includes('6,460.00')&&txt.includes('260.00')&&txt.includes('450.00')&&txt.includes('710.00')&&txt.includes('5,750.00')&&txt.includes('89.01%')&&txt.includes('not_measured'),r104File+': contains exact 11-12 R5 tinker+linger closed-form parameters');
     }
+    // 2026-11-12 Round 6 (R105: FrigadeHQ/yogurt + threerocks/article2media v2.3.1) closed-form FinOps verification
+    const r105PathA=1500.00+46.0*90.00;
+    assert.equal(r105PathA.toFixed(2),'5640.00','11-12 R6 Path A total');
+    const r105PathC=210.00+5.0*90.00;
+    assert.equal(r105PathC.toFixed(2),'660.00','11-12 R6 Path C total');
+    assert.equal((r105PathA-r105PathC).toFixed(2),'4980.00','11-12 R6 savings vs Path A');
+    assert.equal(((r105PathA-r105PathC)/r105PathA*100).toFixed(2),'88.30','11-12 R6 pct savings vs Path A');
+    for(const r105File of ['workshops/github-trending-radar/docs/yogurt-article2media-botfree-private-meeting-notes-zero-dep-media-skills-selection-faq.md','workshops/github-trending-radar/docs/yogurt-article2media-botfree-private-meeting-notes-zero-dep-media-skills-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r6-yogurt-article2media.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r105File),'utf8');
+      assert.ok(txt.includes('1,500.00')&&txt.includes('4,140.00')&&txt.includes('5,640.00')&&txt.includes('210.00')&&txt.includes('450.00')&&txt.includes('660.00')&&txt.includes('4,980.00')&&txt.includes('88.30%')&&txt.includes('not_measured'),r105File+': contains exact 11-12 R6 yogurt+article2media closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
