@@ -1749,6 +1749,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r106File),'utf8');
       assert.ok(txt.includes('2,040.00')&&txt.includes('4,140.00')&&txt.includes('6,180.00')&&txt.includes('270.00')&&txt.includes('450.00')&&txt.includes('720.00')&&txt.includes('5,460.00')&&txt.includes('88.35%')&&txt.includes('not_measured'),r106File+': contains exact 11-12 R7 h3image+guizang+anr closed-form parameters');
     }
+    // 2026-11-12 Round 8 (R107: aronhy/pibrowse v0.5.5 + nickvasilescu/bot-hq) closed-form FinOps verification
+    const r107PathA=1900.00+44.0*90.00;
+    assert.equal(r107PathA.toFixed(2),'5860.00','11-12 R8 Path A total');
+    const r107PathC=230.00+5.0*90.00;
+    assert.equal(r107PathC.toFixed(2),'680.00','11-12 R8 Path C total');
+    assert.equal((r107PathA-r107PathC).toFixed(2),'5180.00','11-12 R8 savings vs Path A');
+    assert.equal(((r107PathA-r107PathC)/r107PathA*100).toFixed(2),'88.40','11-12 R8 pct savings vs Path A');
+    for(const r107File of ['workshops/github-trending-radar/docs/pibrowse-bot-hq-chromium157-fingerprint-workspaces-multi-screen-hermes-selection-faq.md','workshops/github-trending-radar/docs/pibrowse-bot-hq-chromium157-fingerprint-workspaces-multi-screen-hermes-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r8-pibrowse-bothq.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r107File),'utf8');
+      assert.ok(txt.includes('1,900.00')&&txt.includes('3,960.00')&&txt.includes('5,860.00')&&txt.includes('230.00')&&txt.includes('450.00')&&txt.includes('680.00')&&txt.includes('5,180.00')&&txt.includes('88.40%')&&txt.includes('not_measured'),r107File+': contains exact 11-12 R8 pibrowse+bothq closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
