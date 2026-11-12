@@ -6606,5 +6606,1142 @@ function updateSlurmK8sKueueDraSizer() {
 }
 updateSlurmK8sKueueDraSizer();
 </script>
+
+  <!-- Round 78: Batch-Invariant Deterministic LLM Inference & 0-ULP Reproducibility Sizer -->
+  <div id="batch-invariant-det-sizer" style="max-width:1180px;margin:28px auto 0;background:#1e293b;border:1px solid #334155;border-radius:14px;padding:22px;color:#f8fafc;">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+      <div>
+        <span style="background:#06b6d4;color:#083344;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:800;">ROUND 78 INTERACTIVE SIZER</span>
+        <h2 style="font-size:19px;margin:6px 0 2px;color:#f8fafc;">🎯 大模型确定性推理与跨批大小 0-ULP 逐比特可复现计算器（默认动态批处理 vs. 强锁 BS=1 vs. 批不变算子库 vs. 全栈 0-ULP 引擎）</h2>
+        <p style="font-size:12.5px;color:#94a3b8;margin:0;">封存模型：<code>experiments/batch_invariant_deterministic_llm_inference_selection/results.json</code> · <code>provenance: synthetic + anonymized_reported (independently_reproduced=false, physical_gpu_cluster_measurement=not_measured)</code></p>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <a href="../components/batch-invariant-deterministic-llm-inference-reproducibility-selection-faq.md" style="color:#67e8f9;font-size:12.5px;font-weight:700;text-decoration:none;">📘 中文 FAQ</a>
+        <a href="../components/batch-invariant-deterministic-llm-inference-reproducibility-selection-faq.en.md" style="color:#67e8f9;font-size:12.5px;font-weight:700;text-decoration:none;">📘 English FAQ</a>
+        <a href="./batch-invariant-deterministic-llm-inference-reproducibility-selection-cards.html" style="color:#67e8f9;font-size:12.5px;font-weight:700;text-decoration:none;">🃏 7-Card 报告</a>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-bottom:16px;">
+      <div style="background:#0f172a;padding:12px;border-radius:10px;border:1px solid #334155;">
+        <label style="font-size:12px;color:#cbd5e1;font-weight:700;">8×H100 节点规模 (Serving Nodes):</label>
+        <select id="bidScaleSelect" style="width:100%;margin-top:8px;padding:6px;background:#1e293b;color:#f8fafc;border:1px solid #475569;border-radius:6px;" onchange="updateBatchInvariantDetSizer()">
+          <option value="1" selected>1 台 8×H100 节点 (8 GPUs 基线)</option>
+          <option value="4">4 台 8×H100 节点 (32 GPUs 部门池)</option>
+          <option value="16">16 台 8×H100 节点 (128 GPUs RL/金融生产池)</option>
+        </select>
+      </div>
+      <div style="background:#0f172a;padding:12px;border-radius:10px;border:1px solid #334155;">
+        <label style="font-size:12px;color:#cbd5e1;font-weight:700;">部署拓扑与确定性等级 (Topology &amp; Mode):</label>
+        <select id="bidModeSelect" style="width:100%;margin-top:8px;padding:6px;background:#1e293b;color:#f8fafc;border:1px solid #475569;border-radius:6px;" onchange="updateBatchInvariantDetSizer()">
+          <option value="tp8_0ulp" selected>多卡 TP=8 严格 0-ULP 合规审计 / True On-Policy RL (Tier 4)</option>
+          <option value="tp1_kernel">单卡 TP=1 或仅启用批大小不变算子库 (Tier 3)</option>
+        </select>
+      </div>
+    </div>
+
+    <div style="overflow-x:auto;">
+      <table style="width:100%;border-collapse:collapse;font-size:13px;">
+        <thead>
+          <tr style="background:#0f172a;color:#cbd5e1;text-align:left;">
+            <th style="padding:10px;border-bottom:1px solid #334155;">确定性推理架构档位</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">跨并发 BS 完全一致率 / 漂移</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">RL 采样-训练 KL 漂移</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">集群稳态吞吐 / P99 TPOT</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">百万词成本 / 年化重跑或空转损失</th>
+          </tr>
+        </thead>
+        <tbody id="bidSizerTbody"></tbody>
+      </table>
+    </div>
+    <div id="bidDecisionCallout" style="margin-top:12px;padding:12px;background:#0f172a;border-left:4px solid #06b6d4;border-radius:6px;font-size:13px;color:#e2e8f0;"></div>
+  </div>
+
+<script>
+function updateBatchInvariantDetSizer() {
+  const nMult = parseFloat(document.getElementById('bidScaleSelect').value) || 1.0;
+  const mode = document.getElementById('bidModeSelect').value || 'tp8_0ulp';
+  const bestId = mode === 'tp1_kernel' ? 't3' : 't4';
+
+  const rows = [
+    { id: 't1', name: '🟥 Tier 1: 默认动态连续批处理 (动态 Split-K + 动态 Split-Count)', match: '61.5% ✕ · 14.0 ULP ✕', kl: '0.0185 (训崩风险 ✕)', tput: `${Math.round(3420*nMult).toLocaleString()} tok/s · 14.2ms`, cost: `$1.95/1M · 年损 $${Math.round(420*nMult).toLocaleString()}k ✕` },
+    { id: 't2', name: '🟨 Tier 2: 粗暴强锁 BS=1 串行确定性 (禁用 Continuous Batching)', match: '100.0% · 0.0 ULP', kl: '0.0000 (过慢无法采样 ✕)', tput: `${Math.round(285*nMult).toLocaleString()} tok/s (-91.7% ✕) · 96.5ms`, cost: `$23.39/1M · 年损 $${(1.48*nMult).toFixed(2)}M ✕` },
+    { id: 't3', name: '🟦 Tier 3: Thinking Machines 批大小不变算子库 (Fixed Split-Size=256)', match: '99.4% (单卡100% ✅) · 0.5 ULP', kl: '0.0004 ✅', tput: `${Math.round(3110*nMult).toLocaleString()} tok/s (90.9% ✅) · 15.6ms`, cost: `$2.14/1M · 年损 $${Math.round(48*nMult).toLocaleString()}k` },
+    { id: 't4', name: '🟩 Tier 4: 全栈 0-ULP 引擎 (批不变算子 + 固定树 TP + 请求级 Philox)', match: '100.0% 🏆 · 0.0 ULP 🏆', kl: '0.0000 (True On-Policy 🏆)', tput: `${Math.round(3180*nMult).toLocaleString()} tok/s (快 11.16x 🏆) · 15.2ms`, cost: `$2.10/1M · $0 损失 (省 $${(1.48*nMult).toFixed(2)}M/yr 🏆)` }
+  ];
+
+  document.getElementById('bidSizerTbody').innerHTML = rows.map(r => {
+    const isBest = r.id === bestId;
+    return `<tr style="border-bottom:1px solid #334155;${isBest?'background:rgba(6,182,212,0.20);':''}">
+      <td style="padding:10px;font-weight:700;color:${isBest?'#67e8f9':'#f8fafc'};">${isBest?'🏆 ':''}${r.name}</td>
+      <td style="padding:10px;"><code>${r.match}</code></td>
+      <td style="padding:10px;"><code>${r.kl}</code></td>
+      <td style="padding:10px;"><code>${r.tput}</code></td>
+      <td style="padding:10px;"><strong style="color:${isBest?'#34d399':'#cbd5e1'};">${r.cost}</strong></td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('bidDecisionCallout').innerHTML = bestId === 't4'
+    ? `<strong>架构师选型建议 (${Math.round(8*nMult)}×H100 多卡 TP=8 合规/RL 生产池)</strong>：必选 <strong>Tier 4 (固定 Split-Size=256 FlashDecode + 固定 K-Tile GEMM + 固定序 TP AllReduce + 请求级独立 Philox RNG)</strong>，实现跨任意并发批大小的 <code>100.0% 0-ULP</code> 逐比特复现，保住 <code>93.0%</code> 满血吞吐（比锁死 BS=1 快 <code>11.16x</code>，年省 <code>$${Math.round(1480000*nMult).toLocaleString()}</code>）！`
+    : `<strong>架构师选型建议 (单卡 TP=1 部署)</strong>：启用 <strong>Tier 3 (批大小不变 RMSNorm / GEMM / Fixed Split-Size=256 FlashDecode)</strong> 即可实现单卡 100% 确定性！`;
+}
+updateBatchInvariantDetSizer();
+</script>
+
+  <!-- Round 79: Large-Scale Offline Batch LLM Inference & Spot Prefix Bucketing Sizer -->
+  <div id="offline-batch-spot-sizer" style="max-width:1180px;margin:28px auto 0;background:#1e293b;border:1px solid #334155;border-radius:14px;padding:22px;color:#f8fafc;">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+      <div>
+        <span style="background:#8b5cf6;color:#2e1065;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:800;">ROUND 79 INTERACTIVE SIZER</span>
+        <h2 style="font-size:19px;margin:6px 0 2px;color:#f8fafc;">📦 大规模离线批量推理（Offline Batch API）、Radix 前缀/长度分桶与 Spot 弹性计算器</h2>
+        <p style="font-size:12.5px;color:#94a3b8;margin:0;">封存模型：<code>experiments/offline_batch_llm_inference_spot_prefix_bucketing_selection/results.json</code> · <code>provenance: synthetic + anonymized_reported (independently_reproduced=false, physical_gpu_cluster_measurement=not_measured)</code></p>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <a href="../components/offline-batch-llm-inference-spot-prefix-bucketing-throughput-selection-faq.md" style="color:#c4b5fd;font-size:12.5px;font-weight:700;text-decoration:none;">📘 中文 FAQ</a>
+        <a href="../components/offline-batch-llm-inference-spot-prefix-bucketing-throughput-selection-faq.en.md" style="color:#c4b5fd;font-size:12.5px;font-weight:700;text-decoration:none;">📘 English FAQ</a>
+        <a href="./offline-batch-llm-inference-spot-prefix-bucketing-throughput-selection-cards.html" style="color:#c4b5fd;font-size:12.5px;font-weight:700;text-decoration:none;">🃏 7-Card 报告</a>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-bottom:16px;">
+      <div style="background:#0f172a;padding:12px;border-radius:10px;border:1px solid #334155;">
+        <label style="font-size:12px;color:#cbd5e1;font-weight:700;">日处理离线批处理请求量 (Daily Batch Prompts):</label>
+        <select id="obsScaleSelect" style="width:100%;margin-top:8px;padding:6px;background:#1e293b;color:#f8fafc;border:1px solid #475569;border-radius:6px;" onchange="updateOfflineBatchSpotSizer()">
+          <option value="0.1">100 万条 / 日 (中型企业知识库清洗)</option>
+          <option value="1" selected>1,000 万条 / 日 (千万级商品打标/合成数据基准)</option>
+          <option value="5">5,000 万条 / 日 (全网语料过滤与合成管线)</option>
+        </select>
+      </div>
+      <div style="background:#0f172a;padding:12px;border-radius:10px;border:1px solid #334155;">
+        <label style="font-size:12px;color:#cbd5e1;font-weight:700;">算力供给模式 (Compute Supply Pool):</label>
+        <select id="obsModeSelect" style="width:100%;margin-top:8px;padding:6px;background:#1e293b;color:#f8fafc;border:1px solid #475569;border-radius:6px;" onchange="updateOfflineBatchSpotSizer()">
+          <option value="spot_t4" selected>云端 Spot 竞价池 / 夜间潮汐借用池 + 512条微片续跑 (Tier 4)</option>
+          <option value="ondemand_t3">纯固定按需实例池 ($2.50/hr) + 全局双维分桶 (Tier 3)</option>
+        </select>
+      </div>
+    </div>
+
+    <div style="overflow-x:auto;">
+      <table style="width:100%;border-collapse:collapse;font-size:13px;">
+        <thead>
+          <tr style="background:#0f172a;color:#cbd5e1;text-align:left;">
+            <th style="padding:10px;border-bottom:1px solid #334155;">离线批量推理架构档位</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">Prefix 命中率 / 打包率</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">Spot 抢占重跑损耗</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">单台 8×H100 吞吐 / 耗时</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">百万词成本 / 年化总账单</th>
+          </tr>
+        </thead>
+        <tbody id="obsSizerTbody"></tbody>
+      </table>
+    </div>
+    <div id="obsDecisionCallout" style="margin-top:12px;padding:12px;background:#0f172a;border-left:4px solid #8b5cf6;border-radius:6px;font-size:13px;color:#e2e8f0;"></div>
+  </div>
+
+<script>
+function updateOfflineBatchSpotSizer() {
+  const vMult = parseFloat(document.getElementById('obsScaleSelect').value) || 1.0;
+  const mode = document.getElementById('obsModeSelect').value || 'spot_t4';
+  const bestId = mode === 'ondemand_t3' ? 't3' : 't4';
+
+  const rows = [
+    { id: 't1', name: '🟥 Tier 1: 原始 FIFO 乱序硬塞在线队列 (120 模板互踢)', hit: '11.5% ✕ · 48.0% ✕', loss: '0.0% (全价按需)', tput: `8,400 tok/s · ${(14.6*vMult).toFixed(1)}h ✕`, cost: `$0.53/1M · $${(8.52*vMult).toFixed(2)}M/yr ✕` },
+    { id: 't2', name: '🟨 Tier 2: 粗放 Spot 实例乱序跑批 (无微片检查点)', hit: '14.2% ✕ · 52.5%', loss: '28.5% 进度作废 ✕', tput: `9,200 tok/s · ${(18.8*vMult).toFixed(1)}h ✕`, cost: `$0.23/1M · $${(3.74*vMult).toFixed(2)}M/yr` },
+    { id: 't3', name: '🟦 Tier 3: 全局 Radix 前缀分桶 + 长度同质打包 (按需池)', hit: '94.2% ✅ · 91.5% ✅', loss: '0.0% (全价按需)', tput: `31,600 tok/s (3.76x ✅) · ${(3.88*vMult).toFixed(2)}h`, cost: `$0.14/1M · $${(2.265*vMult).toFixed(2)}M/yr` },
+    { id: 't4', name: '🟩 Tier 4: Spot 池 + 双维分桶 + 512条微片落盘 + 30s 排空', hit: '95.8% 🏆 · 93.4% 🏆', loss: '仅 0.8% (降 35.6x 🏆)', tput: `33,400 tok/s (3.98x 🏆) · ${(3.68*vMult).toFixed(2)}h`, cost: `$0.048/1M (-90.9%) · $${(0.772*vMult).toFixed(2)}M/yr (省 $${(7.748*vMult).toFixed(2)}M 🏆)` }
+  ];
+
+  document.getElementById('obsSizerTbody').innerHTML = rows.map(r => {
+    const isBest = r.id === bestId;
+    return `<tr style="border-bottom:1px solid #334155;${isBest?'background:rgba(139,92,246,0.20);':''}">
+      <td style="padding:10px;font-weight:700;color:${isBest?'#c4b5fd':'#f8fafc'};">${isBest?'🏆 ':''}${r.name}</td>
+      <td style="padding:10px;"><code>${r.hit}</code></td>
+      <td style="padding:10px;"><code>${r.loss}</code></td>
+      <td style="padding:10px;"><code>${r.tput}</code></td>
+      <td style="padding:10px;"><strong style="color:${isBest?'#34d399':'#cbd5e1'};">${r.cost}</strong></td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('obsDecisionCallout').innerHTML = bestId === 't4'
+    ? `<strong>架构师选型建议 (日均 ${(10*vMult).toFixed(0)}M 条离线批处理)</strong>：必选 <strong>Tier 4 (全局 Radix 前缀/长度双维分桶 + Spot 竞价池 + 512条 Parquet 微片原子检查点 + 30s SIGTERM 排空)</strong>，将 Prefix Cache 命中率从 <code>11.5%</code> 拉升至 <code>95.8%</code>，单机吞吐提速 <code>3.98x (33,400 tok/s)</code>，百万词成本压至 <code>$0.048</code>，每年净省 <code>$${Math.round(7748000*vMult).toLocaleString()} (-90.9%)</code>！`
+    : `<strong>架构师选型建议 (自有固定按需集群)</strong>：启用 <strong>Tier 3 (入队层全局 Radix 字典序前缀分桶 + 桶内长度同质打包)</strong>，零硬件改动即可白捡 <code>3.76x</code> 跑批吞吐提升！`;
+}
+updateOfflineBatchSpotSizer();
+</script>
+
+  <!-- Round 80: MoE Expert Load Balancing, Aux-Loss-Free Routing & Dynamic EPLB Sizer -->
+  <div id="moe-eplb-auxfree-sizer" style="max-width:1180px;margin:28px auto 0;background:#1e293b;border:1px solid #334155;border-radius:14px;padding:22px;color:#f8fafc;">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+      <div>
+        <span style="background:#f59e0b;color:#451a03;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:800;">ROUND 80 INTERACTIVE SIZER</span>
+        <h2 style="font-size:19px;margin:6px 0 2px;color:#f8fafc;">⚖️ MoE 混合专家负载均衡、免辅助损失路由（Aux-Loss-Free）与动态专家复制（EPLB）计算器</h2>
+        <p style="font-size:12.5px;color:#94a3b8;margin:0;">封存模型：<code>experiments/moe_expert_load_balancing_eplb_auxfree_selection/results.json</code> · <code>provenance: synthetic + anonymized_reported (independently_reproduced=false, physical_gpu_cluster_measurement=not_measured)</code></p>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <a href="../components/moe-expert-load-balancing-eplb-aux-loss-free-routing-selection-faq.md" style="color:#fde68a;font-size:12.5px;font-weight:700;text-decoration:none;">📘 中文 FAQ</a>
+        <a href="../components/moe-expert-load-balancing-eplb-aux-loss-free-routing-selection-faq.en.md" style="color:#fde68a;font-size:12.5px;font-weight:700;text-decoration:none;">📘 English FAQ</a>
+        <a href="./moe-expert-load-balancing-eplb-aux-loss-free-routing-selection-cards.html" style="color:#fde68a;font-size:12.5px;font-weight:700;text-decoration:none;">🃏 7-Card 报告</a>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-bottom:16px;">
+      <div style="background:#0f172a;padding:12px;border-radius:10px;border:1px solid #334155;">
+        <label style="font-size:12px;color:#cbd5e1;font-weight:700;">专家并行集群规模 (EP Cluster GPUs):</label>
+        <select id="mebScaleSelect" style="width:100%;margin-top:8px;padding:6px;background:#1e293b;color:#f8fafc;border:1px solid #475569;border-radius:6px;" onchange="updateMoeEplbAuxfreeSizer()">
+          <option value="0.5">32 × H100/H200 (EP=32 跨 4 节点)</option>
+          <option value="1" selected>64 × H100/H200 (EP=64 跨 8 节点基准)</option>
+          <option value="2">128 × H100/H200 (EP=128 大规模生产池)</option>
+        </select>
+      </div>
+      <div style="background:#0f172a;padding:12px;border-radius:10px;border:1px solid #334155;">
+        <label style="font-size:12px;color:#cbd5e1;font-weight:700;">当前所处生命周期阶段 (Lifecycle Stage):</label>
+        <select id="mebModeSelect" style="width:100%;margin-top:8px;padding:6px;background:#1e293b;color:#f8fafc;border:1px solid #475569;border-radius:6px;" onchange="updateMoeEplbAuxfreeSizer()">
+          <option value="serving_eplb" selected>多机在线推理 / RL Rollout 采样 (应对代码/数学 4.2x 偏斜 · Tier 4)</option>
+          <option value="pretrain_auxfree">MoE 预训练 / 垂类持续预训练 (零梯度污染 · Tier 3)</option>
+        </select>
+      </div>
+    </div>
+
+    <div style="overflow-x:auto;">
+      <table style="width:100%;border-collapse:collapse;font-size:13px;">
+        <thead>
+          <tr style="background:#0f172a;color:#cbd5e1;text-align:left;">
+            <th style="padding:10px;border-bottom:1px solid #334155;">MoE 负载均衡架构档位</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">热门卡偏斜比 / 丢词率</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">代码/数理基准准确率</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">P99 TPOT / 集群吞吐</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">百万词成本 / 年化慢卡损失</th>
+          </tr>
+        </thead>
+        <tbody id="mebSizerTbody"></tbody>
+      </table>
+    </div>
+    <div id="mebDecisionCallout" style="margin-top:12px;padding:12px;background:#0f172a;border-left:4px solid #f59e0b;border-radius:6px;font-size:13px;color:#e2e8f0;"></div>
+  </div>
+
+<script>
+function updateMoeEplbAuxfreeSizer() {
+  const cMult = parseFloat(document.getElementById('mebScaleSelect').value) || 1.0;
+  const mode = document.getElementById('mebModeSelect').value || 'serving_eplb';
+  const bestId = mode === 'pretrain_auxfree' ? 't3' : 't4';
+
+  const rows = [
+    { id: 't1', name: '🟥 Tier 1: 传统 Aux-Loss + Capacity Factor 丢词 (CF=1.25)', skew: '1.25x · 丢词 14.8% ✕', acc: '74.2% (-10.3pt ✕)', tput: `18.5ms · ${Math.round(42800*cMult).toLocaleString()} tok/s`, cost: `$1.04/1M · 年损 $${Math.round(690*cMult).toLocaleString()}k ✕` },
+    { id: 't2', name: '🟨 Tier 2: 无丢词 Dropless 静态单副本 (1 卡堵死 63 卡)', skew: '4.20x 堵死 ✕ · 0.0%', acc: '81.6%', tput: `42.8ms ✕ · ${Math.round(24500*cMult).toLocaleString()} tok/s ✕`, cost: `$1.81/1M · 年损 $${Math.round(840*cMult).toLocaleString()}k ✕` },
+    { id: 't3', name: '🟦 Tier 3: 免辅助损失动态偏置路由 (Aux-Loss-Free + M=4)', skew: '1.68x · 0.0% ✅', acc: '84.5% (满血智商 🏆)', tput: `21.4ms · ${Math.round(56200*cMult).toLocaleString()} tok/s ✅`, cost: `$0.79/1M · 年损 $${Math.round(240*cMult).toLocaleString()}k` },
+    { id: 't4', name: '🟩 Tier 4: 免损路由 + 动态 EPLB 288 物理槽位 + 零停机热迁移', skew: '1.08x 均衡 🏆 · 0.0% 🏆', acc: '84.5% (100%无损 🏆)', tput: `11.2ms (快3.82x 🏆) · ${Math.round(88400*cMult).toLocaleString()} tok/s 🏆`, cost: `$0.50/1M · 净省 $${Math.round(798*cMult).toLocaleString()}k/yr 🏆` }
+  ];
+
+  document.getElementById('mebSizerTbody').innerHTML = rows.map(r => {
+    const isBest = r.id === bestId;
+    return `<tr style="border-bottom:1px solid #334155;${isBest?'background:rgba(245,158,11,0.20);':''}">
+      <td style="padding:10px;font-weight:700;color:${isBest?'#fde68a':'#f8fafc'};">${isBest?'🏆 ':''}${r.name}</td>
+      <td style="padding:10px;"><code>${r.skew}</code></td>
+      <td style="padding:10px;"><code>${r.acc}</code></td>
+      <td style="padding:10px;"><code>${r.tput}</code></td>
+      <td style="padding:10px;"><strong style="color:${isBest?'#34d399':'#cbd5e1'};">${r.cost}</strong></td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('mebDecisionCallout').innerHTML = bestId === 't4'
+    ? `<strong>架构师选型建议 (${Math.round(64*cMult)}×H100 EP=${Math.round(64*cMult)} 推理与 RL 采样池)</strong>：必选 <strong>Tier 4 (免辅助损失路由 + 动态 EPLB 256→288 物理槽位复制 + 5min 后台 P2P 热迁移)</strong>，将热门专家偏斜从 <code>4.20x</code> 削平至 <code>1.08x</code>，P99 TPOT 压至 <code>11.2ms (快 3.82x)</code>，吞吐提升 <code>3.61x</code>，每年净省 <code>$${Math.round(798000*cMult).toLocaleString()}</code>！`
+    : `<strong>架构师选型建议 (MoE 预训练与微调阶段)</strong>：必选 <strong>Tier 3 (Aux-Loss-Free 动态符号偏置路由 + M=4 节点受限路由)</strong>，彻底消除辅助损失梯度污染，基准准确率提升 <code>+10.3pt (84.5%)</code>！`;
+}
+updateMoeEplbAuxfreeSizer();
+</script>
+
+  <!-- Round 81: Long-Context Prompt Pruning, MInference Sparse Prefill & Quest Dynamic KV Selection Sizer -->
+  <div id="long-context-minference-quest-sizer" style="max-width:1180px;margin:28px auto 0;background:#1e293b;border:1px solid #334155;border-radius:14px;padding:22px;color:#f8fafc;">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+      <div>
+        <span style="background:#ec4899;color:#500724;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:800;">ROUND 81 INTERACTIVE SIZER</span>
+        <h2 style="font-size:19px;margin:6px 0 2px;color:#f8fafc;">🔍 超长上下文词元剪枝（LLMLingua-2）、预填充稀疏（MInference）与动态 KV 检索（Quest）计算器</h2>
+        <p style="font-size:12.5px;color:#94a3b8;margin:0;">封存模型：<code>experiments/long_context_prompt_pruning_minference_quest_selection/results.json</code> · <code>provenance: synthetic + anonymized_reported (independently_reproduced=false, physical_gpu_cluster_measurement=not_measured)</code></p>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <a href="../components/long-context-prompt-pruning-minference-quest-sparse-kv-selection-faq.md" style="color:#fbcfe8;font-size:12.5px;font-weight:700;text-decoration:none;">📘 中文 FAQ</a>
+        <a href="../components/long-context-prompt-pruning-minference-quest-sparse-kv-selection-faq.en.md" style="color:#fbcfe8;font-size:12.5px;font-weight:700;text-decoration:none;">📘 English FAQ</a>
+        <a href="./long-context-prompt-pruning-minference-quest-sparse-kv-selection-cards.html" style="color:#fbcfe8;font-size:12.5px;font-weight:700;text-decoration:none;">🃏 7-Card 报告</a>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-bottom:16px;">
+      <div style="background:#0f172a;padding:12px;border-radius:10px;border:1px solid #334155;">
+        <label style="font-size:12px;color:#cbd5e1;font-weight:700;">年均 128K 多轮长文档会话量 (Annual 128K Sessions):</label>
+        <select id="lcmqScaleSelect" style="width:100%;margin-top:8px;padding:6px;background:#1e293b;color:#f8fafc;border:1px solid #475569;border-radius:6px;" onchange="updateLongContextMinferenceQuestSizer()">
+          <option value="0.2">100,000 会话 / 年 (中型律所/研发团队)</option>
+          <option value="1" selected>500,000 会话 / 年 (企业级代码与合同分析基准)</option>
+          <option value="4">2,000,000 会话 / 年 (大型 SaaS 知识助手平台)</option>
+        </select>
+      </div>
+      <div style="background:#0f172a;padding:12px;border-radius:10px;border:1px solid #334155;">
+        <label style="font-size:12px;color:#cbd5e1;font-weight:700;">业务交互模式 (Session Pattern):</label>
+        <select id="lcmqModeSelect" style="width:100%;margin-top:8px;padding:6px;background:#1e293b;color:#f8fafc;border:1px solid #475569;border-radius:6px;" onchange="updateLongContextMinferenceQuestSizer()">
+          <option value="multiturn_exact" selected>多轮跨章节追问 / 代码库分析 / 精确数字提取 (Tier 4)</option>
+          <option value="singleturn_gist">外部黑盒 API 单轮粗略文章大意总结 (Tier 2)</option>
+        </select>
+      </div>
+    </div>
+
+    <div style="overflow-x:auto;">
+      <table style="width:100%;border-collapse:collapse;font-size:13px;">
+        <thead>
+          <tr style="background:#0f172a;color:#cbd5e1;text-align:left;">
+            <th style="padding:10px;border-bottom:1px solid #334155;">超长上下文加速架构档位</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">128K TTFT / Decode TPOT</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">5 轮跨章追问召回率</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">单节点吞吐 (8×H100)</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">千次会话成本 / 年总 TCO</th>
+          </tr>
+        </thead>
+        <tbody id="lcmqSizerTbody"></tbody>
+      </table>
+    </div>
+    <div id="lcmqDecisionCallout" style="margin-top:12px;padding:12px;background:#0f172a;border-left:4px solid #ec4899;border-radius:6px;font-size:13px;color:#e2e8f0;"></div>
+  </div>
+
+<script>
+function updateLongContextMinferenceQuestSizer() {
+  const sMult = parseFloat(document.getElementById('lcmqScaleSelect').value) || 1.0;
+  const mode = document.getElementById('lcmqModeSelect').value || 'multiturn_exact';
+  const bestId = mode === 'singleturn_gist' ? 't2' : 't4';
+
+  const rows = [
+    { id: 't1', name: '🟥 Tier 1: 全量 128K 稠密 Prefill + 全量读 41.9GB KV Decode', lat: '14.80s ✕ · 46.5ms ✕', rec: '99.2% (基准)', tput: '68.0 会话/hr ✕', cost: `$352.94/1k · $${(1.765*sMult).toFixed(2)}M/yr ✕` },
+    { id: 't2', name: '🟨 Tier 2: 输入端硬删词 (LLMLingua-2 4x 删词 + 破缓存)', lat: '2.15s · 14.8ms', rec: '71.4% (损毁代码/数字 ✕)', tput: '295.0 会话/hr', cost: `$81.36/1k · $${(0.407*sMult).toFixed(2)}M/yr` },
+    { id: 't3', name: '🟪 Tier 3: 永久性 KV 驱逐 (H2O / SnapKV 按第1问删 85% KV)', lat: '14.80s ✕ · 11.6ms', rec: '64.8% (换话题即失忆 ✕)', tput: '142.0 会话/hr', cost: `$169.01/1k · $${(0.845*sMult).toFixed(2)}M/yr` },
+    { id: 't4', name: '🟩 Tier 4: MInference 垂直-斜线稀疏预填 + Quest 页面包络选 Top-4K', lat: '1.82s (快8.13x 🏆) · 9.8ms 🏆', rec: '98.9% (+34.1pt 无损 🏆)', tput: '485.0 会话/hr (7.13x 🏆)', cost: `$49.48/1k · $${(0.247*sMult).toFixed(2)}M/yr (省 $${(1.517*sMult).toFixed(2)}M 🏆)` }
+  ];
+
+  document.getElementById('lcmqSizerTbody').innerHTML = rows.map(r => {
+    const isBest = r.id === bestId;
+    return `<tr style="border-bottom:1px solid #334155;${isBest?'background:rgba(236,72,153,0.20);':''}">
+      <td style="padding:10px;font-weight:700;color:${isBest?'#fbcfe8':'#f8fafc'};">${isBest?'🏆 ':''}${r.name}</td>
+      <td style="padding:10px;"><code>${r.lat}</code></td>
+      <td style="padding:10px;"><code>${r.rec}</code></td>
+      <td style="padding:10px;"><code>${r.tput}</code></td>
+      <td style="padding:10px;"><strong style="color:${isBest?'#34d399':'#cbd5e1'};">${r.cost}</strong></td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('lcmqDecisionCallout').innerHTML = bestId === 't4'
+    ? `<strong>架构师选型建议 (年均 ${Math.round(500000*sMult).toLocaleString()} 个 128K 多轮会话)</strong>：必选 <strong>Tier 4 (预填充 MInference 垂直-斜线动态稀疏 + 解码期 Quest [K_min, K_max] 页面包络非破坏检索)</strong>，将 128K TTFT 从 <code>14.80s</code> 压至 <code>1.82s (快 8.13x)</code>，TPOT 压至 <code>9.8ms (快 4.74x)</code>，5 轮跨章追问召回率稳守 <code>98.9%</code>，每年净省 <code>$${Math.round(1517300*sMult).toLocaleString()} (-86.0%)</code>！`
+    : `<strong>架构师选型建议 (黑盒 API 单轮大意摘要)</strong>：仅在不要求精确数字与代码语法、且只问 1 轮时，可在客户端使用 <strong>Tier 2 (LLMLingua-2)</strong> 压缩输入 Token。`;
+}
+updateLongContextMinferenceQuestSizer();
+</script>
+
+  <!-- Round 82: LLM Training Activation Checkpointing, Selective Op Recompute (SAC) & Async Host Offload Sizer -->
+  <div id="sac-async-offload-sizer" style="max-width:1180px;margin:28px auto 0;background:#1e293b;border:1px solid #334155;border-radius:14px;padding:22px;color:#f8fafc;">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+      <div>
+        <span style="background:#14b8a6;color:#042f2e;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:800;">ROUND 82 INTERACTIVE SIZER</span>
+        <h2 style="font-size:19px;margin:6px 0 2px;color:#f8fafc;">♻️ 大模型训练激活重计算（Activation Checkpointing）、选择性算子重算（SAC）与异步主机卸载计算器</h2>
+        <p style="font-size:12.5px;color:#94a3b8;margin:0;">封存模型：<code>experiments/activation_checkpointing_selective_recompute_offload_selection/results.json</code> · <code>provenance: synthetic + anonymized_reported (independently_reproduced=false, physical_gpu_cluster_measurement=not_measured)</code></p>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <a href="../components/activation-checkpointing-selective-recompute-host-offload-selection-faq.md" style="color:#99f6e4;font-size:12.5px;font-weight:700;text-decoration:none;">📘 中文 FAQ</a>
+        <a href="../components/activation-checkpointing-selective-recompute-host-offload-selection-faq.en.md" style="color:#99f6e4;font-size:12.5px;font-weight:700;text-decoration:none;">📘 English FAQ</a>
+        <a href="./activation-checkpointing-selective-recompute-host-offload-selection-cards.html" style="color:#99f6e4;font-size:12.5px;font-weight:700;text-decoration:none;">🃏 7-Card 报告</a>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-bottom:16px;">
+      <div style="background:#0f172a;padding:12px;border-radius:10px;border:1px solid #334155;">
+        <label style="font-size:12px;color:#cbd5e1;font-weight:700;">训练集群规模 (Training Cluster GPUs):</label>
+        <select id="saoScaleSelect" style="width:100%;margin-top:8px;padding:6px;background:#1e293b;color:#f8fafc;border:1px solid #475569;border-radius:6px;" onchange="updateSacAsyncOffloadSizer()">
+          <option value="0.5">64 × H100 80GB (中型微调集群)</option>
+          <option value="1" selected>128 × H100 80GB (70B 32K 训练基准)</option>
+          <option value="4">512 × H100 80GB (大型基础模型集群)</option>
+        </select>
+      </div>
+      <div style="background:#0f172a;padding:12px;border-radius:10px;border:1px solid #334155;">
+        <label style="font-size:12px;color:#cbd5e1;font-weight:700;">目标训练序列长度 (Sequence Length):</label>
+        <select id="saoSeqSelect" style="width:100%;margin-top:8px;padding:6px;background:#1e293b;color:#f8fafc;border:1px solid #475569;border-radius:6px;" onchange="updateSacAsyncOffloadSizer()">
+          <option value="32k_long" selected>32K ~ 128K 长上下文预训练与 SFT/RL (必选 Tier 4)</option>
+          <option value="8k_short">4K ~ 16K 常规短上下文训练 (可选 Tier 3 纯 SAC)</option>
+        </select>
+      </div>
+    </div>
+
+    <div style="overflow-x:auto;">
+      <table style="width:100%;border-collapse:collapse;font-size:13px;">
+        <thead>
+          <tr style="background:#0f172a;color:#cbd5e1;text-align:left;">
+            <th style="padding:10px;border-bottom:1px solid #334155;">激活显存优化架构档位</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">单卡激活显存 / 总 HBM</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">额外重算 FLOP 开销</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">有效 Goodput MFU / 吞吐</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">十亿词成本 / 年化重算浪费</th>
+          </tr>
+        </thead>
+        <tbody id="saoSizerTbody"></tbody>
+      </table>
+    </div>
+    <div id="saoDecisionCallout" style="margin-top:12px;padding:12px;background:#0f172a;border-left:4px solid #14b8a6;border-radius:6px;font-size:13px;color:#e2e8f0;"></div>
+  </div>
+
+<script>
+function updateSacAsyncOffloadSizer() {
+  const gMult = parseFloat(document.getElementById('saoScaleSelect').value) || 1.0;
+  const seq = document.getElementById('saoSeqSelect').value || '32k_long';
+  const bestId = seq === '8k_short' ? 't3' : 't4';
+
+  const rows = [
+    { id: 't1', name: '🟥 Tier 1: 不开激活重计算 (全量保留 34bsh 中间张量)', mem: '118.4 GB · 总 146.8 GB (OOM ✕)', flop: '0.0% (崩溃)', mfu: '0.0% OOM ✕', cost: `无法运行 · 年损 $${(1.42*gMult).toFixed(2)}M ✕` },
+    { id: 't2', name: '🟨 Tier 2: 全量层边界重计算 (Full Checkpointing 重算全部 GEMM)', mem: '14.2 GB · 总 42.6 GB', flop: '+33.3% (白算1遍前向 ✕)', mfu: `43.2% ✕ · ${Math.round(148500*gMult).toLocaleString()} tok/s`, cost: `$598.40/1B · 年白烧 $${Math.round(698*gMult).toLocaleString()}k ✕` },
+    { id: 't3', name: '🟦 Tier 3: 算子级选择性重算 (PyTorch SAC 仅重算 SwiGLU/Norm/Attn)', mem: '34.8 GB (-70.6%) · 总 63.2 GB ✅', flop: '仅 +2.8% (降 11.9x 🏆)', mfu: `54.6% ✅ · ${Math.round(187700*gMult).toLocaleString()} tok/s`, cost: `$473.40/1B · 年损 $${Math.round(142*gMult).toLocaleString()}k` },
+    { id: 't4', name: '🟩 Tier 4: SAC + 零 SM 异步 PCIe Gen5 主机内存卸载 + 提前 1 层预取', mem: '10.4 GB (-91.2% 🏆) · 总 38.8 GB 🏆', flop: '仅 +2.8% 🏆', mfu: `56.8% (+13.6pt 🏆) · ${Math.round(195200*gMult).toLocaleString()} tok/s`, cost: `$455.20/1B · 净省 $${Math.round(612*gMult).toLocaleString()}k/yr 🏆` }
+  ];
+
+  document.getElementById('saoSizerTbody').innerHTML = rows.map(r => {
+    const isBest = r.id === bestId;
+    return `<tr style="border-bottom:1px solid #334155;${isBest?'background:rgba(20,184,166,0.20);':''}">
+      <td style="padding:10px;font-weight:700;color:${isBest?'#99f6e4':'#f8fafc'};">${isBest?'🏆 ':''}${r.name}</td>
+      <td style="padding:10px;"><code>${r.mem}</code></td>
+      <td style="padding:10px;"><code>${r.flop}</code></td>
+      <td style="padding:10px;"><code>${r.mfu}</code></td>
+      <td style="padding:10px;"><strong style="color:${isBest?'#34d399':'#cbd5e1'};">${r.cost}</strong></td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('saoDecisionCallout').innerHTML = bestId === 't4'
+    ? `<strong>架构师选型建议 (${Math.round(128*gMult)}×H100 长序列训练集群)</strong>：必选 <strong>Tier 4 (PyTorch SAC 算子选择性重算 + 零 SM Copy Engine 异步 PCIe Pinned DRAM 卸载)</strong>，将激活显存砍掉 <code>91.2% (118.4GB → 10.4GB)</code>，重算税从 <code>+33.3%</code> 压至 <code>+2.8%</code>，真实训练提速 <code>1.31x (56.8% Goodput MFU)</code>，每年净省 <code>$${Math.round(612000*gMult).toLocaleString()}</code>！`
+    : `<strong>架构师选型建议 (&le;16K 短序列训练)</strong>：直接启用 <strong>Tier 3 (PyTorch SAC 选择性重算策略)</strong>，保留 GEMM 输出、仅重算 SwiGLU/Norm/Attn，立省 <code>70.6%</code> 激活显存！`;
+}
+updateSacAsyncOffloadSizer();
+</script>
+
+  <!-- Round 83: Asynchronous Tensor Parallelism (Async-TP), CUDA SymmetricMemory & Zero-SM Overlap Sizer -->
+  <div id="async-tp-symmmem-sizer" style="max-width:1180px;margin:28px auto 0;background:#1e293b;border:1px solid #334155;border-radius:14px;padding:22px;color:#f8fafc;">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+      <div>
+        <span style="background:#6366f1;color:#1e1b4b;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:800;">ROUND 83 INTERACTIVE SIZER</span>
+        <h2 style="font-size:19px;margin:6px 0 2px;color:#f8fafc;">⚡ 大模型异步张量并行（Async-TP）、CUDA 对称内存（SymmetricMemory）与零 SM 重叠计算器</h2>
+        <p style="font-size:12.5px;color:#94a3b8;margin:0;">封存模型：<code>experiments/async_tensor_parallelism_gemm_comm_overlap_selection/results.json</code> · <code>provenance: synthetic + anonymized_reported (independently_reproduced=false, physical_gpu_cluster_measurement=not_measured)</code></p>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <a href="../components/async-tensor-parallelism-gemm-comm-overlap-symmetric-memory-selection-faq.md" style="color:#c7d2fe;font-size:12.5px;font-weight:700;text-decoration:none;">📘 中文 FAQ</a>
+        <a href="../components/async-tensor-parallelism-gemm-comm-overlap-symmetric-memory-selection-faq.en.md" style="color:#c7d2fe;font-size:12.5px;font-weight:700;text-decoration:none;">📘 English FAQ</a>
+        <a href="./async-tensor-parallelism-gemm-comm-overlap-symmetric-memory-selection-cards.html" style="color:#c7d2fe;font-size:12.5px;font-weight:700;text-decoration:none;">🃏 7-Card 报告</a>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-bottom:16px;">
+      <div style="background:#0f172a;padding:12px;border-radius:10px;border:1px solid #334155;">
+        <label style="font-size:12px;color:#cbd5e1;font-weight:700;">集群规模 (Cluster GPUs):</label>
+        <select id="atpScaleSelect" style="width:100%;margin-top:8px;padding:6px;background:#1e293b;color:#f8fafc;border:1px solid #475569;border-radius:6px;" onchange="updateAsyncTpSymmMemSizer()">
+          <option value="0.5">64 × H100/H200 (8 台 NVSwitch 节点)</option>
+          <option value="1" selected>128 × H100/H200 (16 台节点基准)</option>
+          <option value="4">512 × H100/H200 (64 台节点大规模池)</option>
+        </select>
+      </div>
+      <div style="background:#0f172a;padding:12px;border-radius:10px;border:1px solid #334155;">
+        <label style="font-size:12px;color:#cbd5e1;font-weight:700;">服务器机内互连架构 (Node Interconnect):</label>
+        <select id="atpHwSelect" style="width:100%;margin-top:8px;padding:6px;background:#1e293b;color:#f8fafc;border:1px solid #475569;border-radius:6px;" onchange="updateAsyncTpSymmMemSizer()">
+          <option value="nvswitch_t4" selected>H100/H200/B200 NVSwitch 节点 (支持 CopyEngine + multimem · Tier 4)</option>
+          <option value="p2p_t3">普通 P2P / 无硬件多播环境 (走 CUDASymmetricMemory 瓦片直推 · Tier 3)</option>
+        </select>
+      </div>
+    </div>
+
+    <div style="overflow-x:auto;">
+      <table style="width:100%;border-collapse:collapse;font-size:13px;">
+        <thead>
+          <tr style="background:#0f172a;color:#cbd5e1;text-align:left;">
+            <th style="padding:10px;border-bottom:1px solid #334155;">张量并行重叠架构档位</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">暴露通信空泡 / 抢占 SM</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">并发 GEMM 速度保持率</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">单层耗时 / 集群 MFU</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">年化通信阻塞浪费</th>
+          </tr>
+        </thead>
+        <tbody id="atpSizerTbody"></tbody>
+      </table>
+    </div>
+    <div id="atpDecisionCallout" style="margin-top:12px;padding:12px;background:#0f172a;border-left:4px solid #6366f1;border-radius:6px;font-size:13px;color:#e2e8f0;"></div>
+  </div>
+
+<script>
+function updateAsyncTpSymmMemSizer() {
+  const cMult = parseFloat(document.getElementById('atpScaleSelect').value) || 1.0;
+  const hw = document.getElementById('atpHwSelect').value || 'nvswitch_t4';
+  const bestId = hw === 'p2p_t3' ? 't3' : 't4';
+
+  const rows = [
+    { id: 't1', name: '🟥 Tier 1: 传统串行 TP+SP (先等 AllGather -> GEMM -> 再等 RS)', bub: '28.4% ✕ · 20 SMs', gemm: '100.0% (未并发)', mfu: '14.80ms ✕ · 44.2% MFU ✕', cost: `年损 $${Math.round(795*cMult).toLocaleString()}k ✕` },
+    { id: 't2', name: '🟨 Tier 2: 粗放双流分块 NCCL 重叠 (抢走 24 SM 触发尾波)', bub: '14.2% · 抢 24 SMs ✕', gemm: '81.5% (-18.5% 掉速 ✕)', mfu: '12.90ms · 50.7% MFU', cost: `年损 $${Math.round(465*cMult).toLocaleString()}k ✕` },
+    { id: 't3', name: '🟦 Tier 3: PyTorch CUDASymmetricMemory + 瓦片级 P2P 直推', bub: '4.5% ✅ · 仅 4 SMs ✅', gemm: '95.8% ✅', mfu: '11.15ms (1.33x) · 58.6% MFU ✅', cost: `年损 $${Math.round(142*cMult).toLocaleString()}k` },
+    { id: 't4', name: '🟩 Tier 4: 零 SM 硬件 Copy Engine DMA + NVSwitch multimem 尾声归约', bub: '1.6% 🏆 · 0 SMs 🏆', gemm: '99.2% (+17.7pt 🏆)', mfu: '10.60ms (1.40x 🏆) · 61.7% MFU 🏆', cost: `年损 $${Math.round(45*cMult).toLocaleString()}k (净省 $${Math.round(750*cMult).toLocaleString()}k/yr 🏆)` }
+  ];
+
+  document.getElementById('atpSizerTbody').innerHTML = rows.map(r => {
+    const isBest = r.id === bestId;
+    return `<tr style="border-bottom:1px solid #334155;${isBest?'background:rgba(99,102,241,0.20);':''}">
+      <td style="padding:10px;font-weight:700;color:${isBest?'#c7d2fe':'#f8fafc'};">${isBest?'🏆 ':''}${r.name}</td>
+      <td style="padding:10px;"><code>${r.bub}</code></td>
+      <td style="padding:10px;"><code>${r.gemm}</code></td>
+      <td style="padding:10px;"><code>${r.mfu}</code></td>
+      <td style="padding:10px;"><strong style="color:${isBest?'#34d399':'#cbd5e1'};">${r.cost}</strong></td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('atpDecisionCallout').innerHTML = bestId === 't4'
+    ? `<strong>架构师选型建议 (${Math.round(128*cMult)}×H100 NVSwitch 集群)</strong>：必选 <strong>Tier 4 (零 SM Copy Engine DMA 预取 AllGather + NVSwitch multimem.red 尾声内联归约)</strong>，将通信抢占 SM 数降为 <code>0</code>，保住 <code>99.2%</code> 满血矩阵乘，暴露通信空泡从 <code>28.4%</code> 砸穿至 <code>1.6%</code>，MFU 跃升至 <code>61.7%</code>，每年净省 <code>$${Math.round(750000*cMult).toLocaleString()}</code>！`
+    : `<strong>架构师选型建议 (通用 P2P 环境)</strong>：启用 <strong>Tier 3 (PyTorch CUDASymmetricMemory + enable_async_tp)</strong>，通过跨卡指针瓦片直推消除独立 NCCL 内核！`;
+}
+updateAsyncTpSymmMemSizer();
+</script>
+
+  <!-- Round 84: Enterprise Real-Time RAG CDC Indexing & Fine-Grained ACL Permission Filtering Sizer -->
+  <div id="rag-cdc-acl-sizer" style="max-width:1180px;margin:28px auto 0;background:#1e293b;border:1px solid #334155;border-radius:14px;padding:22px;color:#f8fafc;">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+      <div>
+        <span style="background:#10b981;color:#064e3b;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:800;">ROUND 84 INTERACTIVE SIZER</span>
+        <h2 style="font-size:19px;margin:6px 0 2px;color:#f8fafc;">🔐 企业级实时 RAG 增量索引（CDC）、谓词感知图检索（ACORN）与细粒度权限过滤（ACL）计算器</h2>
+        <p style="font-size:12.5px;color:#94a3b8;margin:0;">封存模型：<code>experiments/enterprise_rag_cdc_streaming_acl_filtering_selection/results.json</code> · <code>provenance: synthetic + anonymized_reported (independently_reproduced=false, physical_gpu_cluster_measurement=not_measured)</code></p>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <a href="../components/enterprise-rag-cdc-streaming-acl-permission-filtering-selection-faq.md" style="color:#a7f3d0;font-size:12.5px;font-weight:700;text-decoration:none;">📘 中文 FAQ</a>
+        <a href="../components/enterprise-rag-cdc-streaming-acl-permission-filtering-selection-faq.en.md" style="color:#a7f3d0;font-size:12.5px;font-weight:700;text-decoration:none;">📘 English FAQ</a>
+        <a href="./enterprise-rag-cdc-streaming-acl-permission-filtering-selection-cards.html" style="color:#a7f3d0;font-size:12.5px;font-weight:700;text-decoration:none;">🃏 7-Card 报告</a>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-bottom:16px;">
+      <div style="background:#0f172a;padding:12px;border-radius:10px;border:1px solid #334155;">
+        <label style="font-size:12px;color:#cbd5e1;font-weight:700;">企业知识库文档块规模 (Enterprise Chunks):</label>
+        <select id="rcaScaleSelect" style="width:100%;margin-top:8px;padding:6px;background:#1e293b;color:#f8fafc;border:1px solid #475569;border-radius:6px;" onchange="updateRagCdcAclSizer()">
+          <option value="0.2">1,000 万块 (中型企业知识库)</option>
+          <option value="1" selected>5,000 万块 (大型集团多源基准)</option>
+          <option value="4">2 亿块 (跨国企业全量文档池)</option>
+        </select>
+      </div>
+      <div style="background:#0f172a;padding:12px;border-radius:10px;border:1px solid #334155;">
+        <label style="font-size:12px;color:#cbd5e1;font-weight:700;">员工平均权限可见度 (ACL Selectivity):</label>
+        <select id="rcaSelSelect" style="width:100%;margin-top:8px;padding:6px;background:#1e293b;color:#f8fafc;border:1px solid #475569;border-radius:6px;" onchange="updateRagCdcAclSizer()">
+          <option value="1.5" selected>1.5% 可见度 (标准跨部门项目组 RBAC/ReBAC · Tier 4)</option>
+          <option value="0.1">0.1% 可见度 (高管并购/绝密投行项目 · 自动切 SIMD 直扫)</option>
+        </select>
+      </div>
+    </div>
+
+    <div style="overflow-x:auto;">
+      <table style="width:100%;border-collapse:collapse;font-size:13px;">
+        <thead>
+          <tr style="background:#0f172a;color:#cbd5e1;text-align:left;">
+            <th style="padding:10px;border-bottom:1px solid #334155;">RAG 增量同步与权限架构档位</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">权限撤销延迟</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">受控 Recall@10</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">P95 检索延迟 / 日算力费</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">年度总 TCO 账单</th>
+          </tr>
+        </thead>
+        <tbody id="rcaSizerTbody"></tbody>
+      </table>
+    </div>
+    <div id="rcaDecisionCallout" style="margin-top:12px;padding:12px;background:#0f172a;border-left:4px solid #10b981;border-radius:6px;font-size:13px;color:#e2e8f0;"></div>
+  </div>
+
+<script>
+function updateRagCdcAclSizer() {
+  const cMult = parseFloat(document.getElementById('rcaScaleSelect').value) || 1.0;
+  const sel = document.getElementById('rcaSelSelect').value || '1.5';
+  const isStrict = sel === '0.1';
+
+  const rows = [
+    { id: 't1', name: '🟥 Tier 1: 每晚全量重建 + 按部门粗拆库', lag: '86,400s (24h 越权 ✕)', rec: '78.5%', lat: `28.0ms · $${Math.round(1850*cMult).toLocaleString()}/天 ✕`, cost: `$${Math.round(912*cMult).toLocaleString()}k/yr ✕` },
+    { id: 't2', name: '🟨 Tier 2: 全局 Top-100 检索 + 后置权限过滤 (Post-Filter)', lag: '5.0s', rec: isStrict ? '3.2% (完全失明 ✕)' : '24.6% (零结果饥饿 ✕)', lat: `42.5ms · $${(92.5*cMult).toFixed(1)}/天`, cost: `$${Math.round(485*cMult).toLocaleString()}k/yr ✕` },
+    { id: 't3', name: '🟦 Tier 3: 传统 HNSW 遍历硬跳过无权节点 (Naive Pre-Filter)', lag: '5.0s', rec: isStrict ? '31.0% (断桥 ✕)' : '68.4% (图断连 ✕)', lat: `64.0ms ✕ · $${(92.5*cMult).toFixed(1)}/天`, cost: `$${Math.round(410*cMult).toLocaleString()}k/yr` },
+    { id: 't4', name: '🟩 Tier 4: CDC 段落 Merkle 差分 + ACORN 二跳图 + Roaring 位图', lag: '0.5s 实时生效 🏆', rec: isStrict ? '94.8% (SIMD直扫 🏆)' : '96.4% (+71.8pt 🏆)', lat: `6.8ms (快9.41x 🏆) · $${(22.2*cMult).toFixed(1)}/天 🏆`, cost: `$${Math.round(118*cMult).toLocaleString()}k/yr (净省 $${Math.round(794*cMult).toLocaleString()}k 🏆)` }
+  ];
+
+  document.getElementById('rcaSizerTbody').innerHTML = rows.map(r => {
+    const isBest = r.id === 't4';
+    return `<tr style="border-bottom:1px solid #334155;${isBest?'background:rgba(16,185,129,0.20);':''}">
+      <td style="padding:10px;font-weight:700;color:${isBest?'#a7f3d0':'#f8fafc'};">${isBest?'🏆 ':''}${r.name}</td>
+      <td style="padding:10px;"><code>${r.lag}</code></td>
+      <td style="padding:10px;"><code>${r.rec}</code></td>
+      <td style="padding:10px;"><code>${r.lat}</code></td>
+      <td style="padding:10px;"><strong style="color:${isBest?'#34d399':'#cbd5e1'};">${r.cost}</strong></td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('rcaDecisionCallout').innerHTML = `<strong>架构师选型建议 (${Math.round(50*cMult)}M 文档块 · ${sel}% 权限可见度)</strong>：必选 <strong>Tier 4 (CDC 段落 Merkle 哈希差分 + 内存 Roaring Bitmap 0.5s 权限解耦 + ACORN 二跳谓词图 / 低基数 SIMD 直扫)</strong>，将受控 Recall@10 拉升至 <code>${isStrict?'94.8%':'96.4%'}</code>，每日 Embedding 算力省 <code>98.8%</code>，每年净省 <code>$${Math.round(794000*cMult).toLocaleString()}</code>！`;
+}
+updateRagCdcAclSizer();
+</script>
+
+  <!-- Round 85: LLM SFT Padding-Free Sequence Packing, Liger Fused Cross-Entropy & rsLoRA Sizer -->
+  <div id="sft-packing-liger-sizer" style="max-width:1180px;margin:28px auto 0;background:#1e293b;border:1px solid #334155;border-radius:14px;padding:22px;color:#f8fafc;">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+      <div>
+        <span style="background:#f97316;color:#431407;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:800;">ROUND 85 INTERACTIVE SIZER</span>
+        <h2 style="font-size:19px;margin:6px 0 2px;color:#f8fafc;">🧩 大模型微调（SFT）变长无填充打包（cu_seqlens）、Liger 融合交叉熵与 rsLoRA 计算器</h2>
+        <p style="font-size:12.5px;color:#94a3b8;margin:0;">封存模型：<code>experiments/sft_sequence_packing_cross_sample_mask_liger_selection/results.json</code> · <code>provenance: synthetic + anonymized_reported (independently_reproduced=false, physical_gpu_cluster_measurement=not_measured)</code></p>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <a href="../components/sft-sequence-packing-cross-sample-mask-liger-rslora-selection-faq.md" style="color:#fed7aa;font-size:12.5px;font-weight:700;text-decoration:none;">📘 中文 FAQ</a>
+        <a href="../components/sft-sequence-packing-cross-sample-mask-liger-rslora-selection-faq.en.md" style="color:#fed7aa;font-size:12.5px;font-weight:700;text-decoration:none;">📘 English FAQ</a>
+        <a href="./sft-sequence-packing-cross-sample-mask-liger-rslora-selection-cards.html" style="color:#fed7aa;font-size:12.5px;font-weight:700;text-decoration:none;">🃏 7-Card 报告</a>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-bottom:16px;">
+      <div style="background:#0f172a;padding:12px;border-radius:10px;border:1px solid #334155;">
+        <label style="font-size:12px;color:#cbd5e1;font-weight:700;">SFT 微调集群规模 (Fine-Tuning GPUs):</label>
+        <select id="splScaleSelect" style="width:100%;margin-top:8px;padding:6px;background:#1e293b;color:#f8fafc;border:1px solid #475569;border-radius:6px;" onchange="updateSftPackingLigerSizer()">
+          <option value="0.25">8 × H100 80GB (单机微调工作站)</option>
+          <option value="1" selected>32 × H100 80GB (企业后训练平台基准)</option>
+          <option value="4">128 × H100 80GB (集团级多垂类微调池)</option>
+        </select>
+      </div>
+      <div style="background:#0f172a;padding:12px;border-radius:10px;border:1px solid #334155;">
+        <label style="font-size:12px;color:#cbd5e1;font-weight:700;">LoRA 秩与知识注入强度 (LoRA Rank):</label>
+        <select id="splRankSelect" style="width:100%;margin-top:8px;padding:6px;background:#1e293b;color:#f8fafc;border:1px solid #475569;border-radius:6px;" onchange="updateSftPackingLigerSizer()">
+          <option value="r64" selected>Rank r=64 (企业多任务主力基线 · rsLoRA 85.8%)</option>
+          <option value="r256">Rank r=256 (重度代码/数理知识注入 · rsLoRA 86.4% vs 标准 74.5%)</option>
+        </select>
+      </div>
+    </div>
+
+    <div style="overflow-x:auto;">
+      <table style="width:100%;border-collapse:collapse;font-size:13px;">
+        <thead>
+          <tr style="background:#0f172a;color:#cbd5e1;text-align:left;">
+            <th style="padding:10px;border-bottom:1px solid #334155;">SFT 序列打包与损失架构档位</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">Padding 浪费 / 串味率</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">128K 词表峰值显存</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">有效吞吐 / 下游准确率</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">单轮耗时 / 年化集群成本</th>
+          </tr>
+        </thead>
+        <tbody id="splSizerTbody"></tbody>
+      </table>
+    </div>
+    <div id="splDecisionCallout" style="margin-top:12px;padding:12px;background:#0f172a;border-left:4px solid #f97316;border-radius:6px;font-size:13px;color:#e2e8f0;"></div>
+  </div>
+
+<script>
+function updateSftPackingLigerSizer() {
+  const cMult = parseFloat(document.getElementById('splScaleSelect').value) || 1.0;
+  const rank = document.getElementById('splRankSelect').value || 'r64';
+  const isHighRank = rank === 'r256';
+
+  const rows = [
+    { id: 't1', name: '🟥 Tier 1: 传统 Pad-to-Max-Length 硬填充 (算空气)', pad: '78.4% 浪费 ✕ · 0.0%', mem: '16.80 GB / GPU ✕', tput: `${Math.round(14200*cMult).toLocaleString()} tok/s · 79.2%`, cost: `${(18.1/cMult).toFixed(1)}h · $${Math.round(640*cMult).toLocaleString()}k/yr ✕` },
+    { id: 't2', name: '🟨 Tier 2: 粗放首尾拼接无掩码隔离 (跨样本串味)', pad: '1.8% · 100.0% 串味 ✕', mem: '16.80 GB / GPU ✕', tput: `${Math.round(54600*cMult).toLocaleString()} tok/s · 72.5% ✕`, cost: `${(4.7/cMult).toFixed(1)}h · $${Math.round(490*cMult).toLocaleString()}k/yr (返工 ✕)` },
+    { id: 't3', name: '🟦 Tier 3: cu_seqlens 变长块对角打包 + 标准 LoRA', pad: '0.6% ✅ · 0.0% ✅', mem: '16.80 GB / GPU ✕', tput: `${Math.round(61200*cMult).toLocaleString()} tok/s · ${isHighRank?'74.5% (坍塌✕)':'83.4% ✅'}`, cost: `${(4.2/cMult).toFixed(1)}h · $${Math.round(195*cMult).toLocaleString()}k/yr` },
+    { id: 't4', name: '🟩 Tier 4: cu_seqlens 打包 + Liger 融合交叉熵 + rsLoRA/DoRA', pad: '0.4% 🏆 · 0.0% 🏆', mem: '0.52 GB (省 32.3x 🏆)', tput: `${Math.round(78500*cMult).toLocaleString()} tok/s (5.53x 🏆) · ${isHighRank?'86.4% 🏆':'85.8% 🏆'}`, cost: `${(3.27/cMult).toFixed(2)}h · $${Math.round(115*cMult).toLocaleString()}k/yr (净省 $${Math.round(525*cMult).toLocaleString()}k 🏆)` }
+  ];
+
+  document.getElementById('splSizerTbody').innerHTML = rows.map(r => {
+    const isBest = r.id === 't4';
+    return `<tr style="border-bottom:1px solid #334155;${isBest?'background:rgba(249,115,22,0.20);':''}">
+      <td style="padding:10px;font-weight:700;color:${isBest?'#fed7aa':'#f8fafc'};">${isBest?'🏆 ':''}${r.name}</td>
+      <td style="padding:10px;"><code>${r.pad}</code></td>
+      <td style="padding:10px;"><code>${r.mem}</code></td>
+      <td style="padding:10px;"><code>${r.tput}</code></td>
+      <td style="padding:10px;"><strong style="color:${isBest?'#34d399':'#cbd5e1'};">${r.cost}</strong></td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('splDecisionCallout').innerHTML = `<strong>架构师选型建议 (${Math.round(32*cMult)}×H100 · ${isHighRank?'Rank r=256 高秩注入':'Rank r=64 标准微调'})</strong>：必选 <strong>Tier 4 (cu_seqlens 变长块对角打包 + 逐样本 position_ids 归零 + Liger FusedLinearCrossEntropy + rsLoRA α/√r)</strong>，消灭 <code>78.4%</code> Padding 浪费与跨样本串味，将 128K 词表显存从 <code>16.80GB</code> 压至 <code>0.52GB (-32.3x)</code>，真实吞吐提速 <code>5.53x</code>，每年净省 <code>$${Math.round(525000*cMult).toLocaleString()}</code>！`;
+}
+updateSftPackingLigerSizer();
+</script>
+
+  <!-- Round 86: Multi-Tenant LLM Prefix Cache Side-Channel Defense & Two-Tier HMAC Isolation Sizer -->
+  <div id="prefix-cache-security-sizer" style="max-width:1180px;margin:28px auto 0;background:#1e293b;border:1px solid #334155;border-radius:14px;padding:22px;color:#f8fafc;">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+      <div>
+        <span style="background:#e11d48;color:#4c0519;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:800;">ROUND 86 INTERACTIVE SIZER</span>
+        <h2 style="font-size:19px;margin:6px 0 2px;color:#f8fafc;">🛡️ 多租户大模型 Prefix Cache 侧信道防护、首字延迟计时攻击与双层 HMAC 隔离计算器</h2>
+        <p style="font-size:12.5px;color:#94a3b8;margin:0;">封存模型：<code>experiments/llm_prefix_cache_side_channel_timing_isolation_selection/results.json</code> · <code>provenance: synthetic + anonymized_reported (independently_reproduced=false, physical_gpu_cluster_measurement=not_measured)</code></p>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <a href="../components/llm-prefix-cache-side-channel-timing-isolation-security-selection-faq.md" style="color:#fecdd3;font-size:12.5px;font-weight:700;text-decoration:none;">📘 中文 FAQ</a>
+        <a href="../components/llm-prefix-cache-side-channel-timing-isolation-security-selection-faq.en.md" style="color:#fecdd3;font-size:12.5px;font-weight:700;text-decoration:none;">📘 English FAQ</a>
+        <a href="./llm-prefix-cache-side-channel-timing-isolation-security-selection-cards.html" style="color:#fecdd3;font-size:12.5px;font-weight:700;text-decoration:none;">🃏 7-Card 报告</a>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-bottom:16px;">
+      <div style="background:#0f172a;padding:12px;border-radius:10px;border:1px solid #334155;">
+        <label style="font-size:12px;color:#cbd5e1;font-weight:700;">多租户推理集群规模 (Serving GPUs):</label>
+        <select id="pcsScaleSelect" style="width:100%;margin-top:8px;padding:6px;background:#1e293b;color:#f8fafc;border:1px solid #475569;border-radius:6px;" onchange="updatePrefixCacheSecuritySizer()">
+          <option value="0.5">16 × H100 80GB (部门级共享池)</option>
+          <option value="1" selected>32 × H100 80GB (200 租户企业平台基准)</option>
+          <option value="4">128 × H100 80GB (大型公有云 API 底座)</option>
+        </select>
+      </div>
+      <div style="background:#0f172a;padding:12px;border-radius:10px;border:1px solid #334155;">
+        <label style="font-size:12px;color:#cbd5e1;font-weight:700;">二级 NVMe / 3FS 卸载策略 (L2 Offload):</label>
+        <select id="pcsOffloadSelect" style="width:100%;margin-top:8px;padding:6px;background:#1e293b;color:#f8fafc;border:1px solid #475569;border-radius:6px;" onchange="updatePrefixCacheSecuritySizer()">
+          <option value="encrypted" selected>启用租户瞬态密钥 AES-256-GCM 卸载加密 (防明文逆向 · Tier 4)</option>
+          <option value="hbm_only">纯 HBM 内存双层 HMAC 树 (无磁盘落盘)</option>
+        </select>
+      </div>
+    </div>
+
+    <div style="overflow-x:auto;">
+      <table style="width:100%;border-collapse:collapse;font-size:13px;">
+        <thead>
+          <tr style="background:#0f172a;color:#cbd5e1;text-align:left;">
+            <th style="padding:10px;border-bottom:1px solid #334155;">Prefix Cache 安全隔离档位</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">侧信道窃密成功率</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">缓存命中率 / 平均 TTFT</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">集群稳态吞吐</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">同等流量年度算力成本</th>
+          </tr>
+        </thead>
+        <tbody id="pcsSizerTbody"></tbody>
+      </table>
+    </div>
+    <div id="pcsDecisionCallout" style="margin-top:12px;padding:12px;background:#0f172a;border-left:4px solid #e11d48;border-radius:6px;font-size:13px;color:#e2e8f0;"></div>
+  </div>
+
+<script>
+function updatePrefixCacheSecuritySizer() {
+  const cMult = parseFloat(document.getElementById('pcsScaleSelect').value) || 1.0;
+
+  const rows = [
+    { id: 't1', name: '🟥 Tier 1: 全局无隔离共享缓存 (仅按 Token 内容哈希)', leak: '98.4% (机密裸奔 ✕)', hit: '84.5% · 115.0 ms', tput: `${(148.0*cMult).toFixed(1)} req/s`, cost: `$${Math.round(700.8*cMult).toLocaleString()}k/yr (严重泄密风险 ✕)` },
+    { id: 't2', name: '🟨 Tier 2: 彻底关闭 Prefix Cache (--no-enable-prefix-caching)', leak: '0.0% (无缓存)', hit: '0.0% ✕ · 520.0 ms ✕', tput: `${(46.5*cMult).toFixed(1)} req/s (-68.6% ✕)`, cost: `$${(2.23*cMult).toFixed(2)}M/yr (多烧 $${(1.512*cMult).toFixed(2)}M ✕)` },
+    { id: 't3', name: '🟪 Tier 3: 全局缓存 + 随机 TTFT 延迟混淆 (50~300ms 噪声)', leak: '64.2% (连测10次破防 ✕)', hit: '84.5% · 290.0 ms ✕', tput: `${(142.0*cMult).toFixed(1)} req/s`, cost: `$${Math.round(730*cMult).toLocaleString()}k/yr ✕` },
+    { id: 't4', name: '🟩 Tier 4: 双层密码学前缀树 (签名公共根 + 租户 HMAC 子树 + AES-GCM)', leak: '0.0% (密码学零碰撞 🏆)', hit: '82.8% 🏆 · 122.0 ms 🏆', tput: `${(144.5*cMult).toFixed(1)} req/s (3.11x 🏆)`, cost: `$${Math.round(718*cMult).toLocaleString()}k/yr (比关缓存省 $${(1.512*cMult).toFixed(2)}M 🏆)` }
+  ];
+
+  document.getElementById('pcsSizerTbody').innerHTML = rows.map(r => {
+    const isBest = r.id === 't4';
+    return `<tr style="border-bottom:1px solid #334155;${isBest?'background:rgba(225,29,72,0.20);':''}">
+      <td style="padding:10px;font-weight:700;color:${isBest?'#fecdd3':'#f8fafc'};">${isBest?'🏆 ':''}${r.name}</td>
+      <td style="padding:10px;"><code>${r.leak}</code></td>
+      <td style="padding:10px;"><code>${r.hit}</code></td>
+      <td style="padding:10px;"><code>${r.tput}</code></td>
+      <td style="padding:10px;"><strong style="color:${isBest?'#34d399':'#cbd5e1'};">${r.cost}</strong></td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('pcsDecisionCallout').innerHTML = `<strong>架构师选型建议 (${Math.round(32*cMult)}×H100 多租户推理底座)</strong>：必选 <strong>Tier 4 (平台签名公共根共享 + 网关强制注入 HMAC-SHA256 租户 cache_salt + 卸载块瞬态 AES-256-GCM 加密)</strong>，将跨租户计时侧信道泄露率从 <code>98.4%</code> 彻底清零 (<code>0.0%</code>)，同时保住 <code>82.8%</code> 缓存命中率，比粗暴关闭缓存提速 <code>4.26x</code>、每年净省 <code>$${Math.round(1512000*cMult).toLocaleString()}</code>！`;
+}
+updatePrefixCacheSecuritySizer();
+</script>
+
+  <!-- Round 87: Enterprise Multi-Cloud LLM Failover, 429 Token-Bucket Routing & Mid-Stream Resume Sizer -->
+  <div id="multicloud-failover-sizer" style="max-width:1180px;margin:28px auto 0;background:#1e293b;border:1px solid #334155;border-radius:14px;padding:22px;color:#f8fafc;">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+      <div>
+        <span style="background:#0ea5e9;color:#082f49;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:800;">ROUND 87 INTERACTIVE SIZER</span>
+        <h2 style="font-size:19px;margin:6px 0 2px;color:#f8fafc;">🌐 企业级多云大模型故障转移（Failover）、429 预判、流式续写与 PTU 溢出计算器</h2>
+        <p style="font-size:12.5px;color:#94a3b8;margin:0;">封存模型：<code>experiments/multi_cloud_llm_failover_429_rate_limit_hedging_selection/results.json</code> · <code>provenance: synthetic + anonymized_reported (independently_reproduced=false, physical_gpu_cluster_measurement=not_measured)</code></p>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <a href="../components/multi-cloud-llm-failover-429-rate-limit-hedging-selection-faq.md" style="color:#bae6fd;font-size:12.5px;font-weight:700;text-decoration:none;">📘 中文 FAQ</a>
+        <a href="../components/multi-cloud-llm-failover-429-rate-limit-hedging-selection-faq.en.md" style="color:#bae6fd;font-size:12.5px;font-weight:700;text-decoration:none;">📘 English FAQ</a>
+        <a href="./multi-cloud-llm-failover-429-rate-limit-hedging-selection-cards.html" style="color:#bae6fd;font-size:12.5px;font-weight:700;text-decoration:none;">🃏 7-Card 报告</a>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-bottom:16px;">
+      <div style="background:#0f172a;padding:12px;border-radius:10px;border:1px solid #334155;">
+        <label style="font-size:12px;color:#cbd5e1;font-weight:700;">月均企业网关请求量 (Monthly Gateway Requests):</label>
+        <select id="mcfScaleSelect" style="width:100%;margin-top:8px;padding:6px;background:#1e293b;color:#f8fafc;border:1px solid #475569;border-radius:6px;" onchange="updateMulticloudFailoverSizer()">
+          <option value="0.2">600 万次 / 月 (中型企业 AI 网关)</option>
+          <option value="1" selected>3,000 万次 / 月 (集团级多云网关基准)</option>
+          <option value="4">1.2 亿次 / 月 (超大规模 SaaS 生产底座)</option>
+        </select>
+      </div>
+      <div style="background:#0f172a;padding:12px;border-radius:10px;border:1px solid #334155;">
+        <label style="font-size:12px;color:#cbd5e1;font-weight:700;">容量采购策略 (Capacity Commitment):</label>
+        <select id="mcfModeSelect" style="width:100%;margin-top:8px;padding:6px;background:#1e293b;color:#f8fafc;border:1px solid #475569;border-radius:6px;" onchange="updateMulticloudFailoverSizer()">
+          <option value="ptu_t4" selected>P65 保底 PTU / 自建 vLLM 基荷 + 高峰溢出 PayGo + 流式续写 (Tier 4)</option>
+          <option value="paygo_t3">100% 纯按需 Pay-As-You-Go + 本地令牌桶对冲 (Tier 3)</option>
+        </select>
+      </div>
+    </div>
+
+    <div style="overflow-x:auto;">
+      <table style="width:100%;border-collapse:collapse;font-size:13px;">
+        <thead>
+          <tr style="background:#0f172a;color:#cbd5e1;text-align:left;">
+            <th style="padding:10px;border-bottom:1px solid #334155;">多云高可用网关架构档位</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">有效 SLA 可用率</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">高峰 P99 TTFT</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">流式断流作废 Token 率</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">月度账单 / 年化节省</th>
+          </tr>
+        </thead>
+        <tbody id="mcfSizerTbody"></tbody>
+      </table>
+    </div>
+    <div id="mcfDecisionCallout" style="margin-top:12px;padding:12px;background:#0f172a;border-left:4px solid #0ea5e9;border-radius:6px;font-size:13px;color:#e2e8f0;"></div>
+  </div>
+
+<script>
+function updateMulticloudFailoverSizer() {
+  const vMult = parseFloat(document.getElementById('mcfScaleSelect').value) || 1.0;
+  const mode = document.getElementById('mcfModeSelect').value || 'ptu_t4';
+  const bestId = mode === 'paygo_t3' ? 't3' : 't4';
+
+  const rows = [
+    { id: 't1', name: '🟥 Tier 1: 单端点指数退避重试 (遇 429 原地 sleep 2s→4s→8s)', sla: '94.20% ✕', p99: '24,800 ms (24.8s ✕)', drop: '18.5% ✕', cost: `$${Math.round(468*vMult).toLocaleString()}k/月 ($${(5.616*vMult).toFixed(2)}M/yr ✕)` },
+    { id: 't2', name: '🟨 Tier 2: 被动报错/超时后跨区切换 (等 5s 超时 + 断流重头算)', sla: '98.85%', p99: '5,850 ms ✕', drop: '14.2% ✕', cost: `$${Math.round(442*vMult).toLocaleString()}k/月 ($${(5.304*vMult).toFixed(2)}M/yr)` },
+    { id: 't3', name: '🟦 Tier 3: 网关本地 TPM 令牌桶预判 + 850ms 首字投机对冲', sla: '99.92% ✅', p99: '920.0 ms ✅', drop: '9.8%', cost: `$${Math.round(395*vMult).toLocaleString()}k/月 ($${(4.74*vMult).toFixed(2)}M/yr)` },
+    { id: 't4', name: '🟩 Tier 4: 保底 PTU/vLLM 基荷溢出 + 流式前缀续写 + AST 适配', sla: '99.995% 🏆', p99: '640.0 ms (快 38.8x 🏆)', drop: '仅 0.6% 🏆', cost: `$${Math.round(248*vMult).toLocaleString()}k/月 (年省 $${(2.64*vMult).toFixed(2)}M 🏆)` }
+  ];
+
+  document.getElementById('mcfSizerTbody').innerHTML = rows.map(r => {
+    const isBest = r.id === bestId;
+    return `<tr style="border-bottom:1px solid #334155;${isBest?'background:rgba(14,165,233,0.20);':''}">
+      <td style="padding:10px;font-weight:700;color:${isBest?'#bae6fd':'#f8fafc'};">${isBest?'🏆 ':''}${r.name}</td>
+      <td style="padding:10px;"><code>${r.sla}</code></td>
+      <td style="padding:10px;"><code>${r.p99}</code></td>
+      <td style="padding:10px;"><code>${r.drop}</code></td>
+      <td style="padding:10px;"><strong style="color:${isBest?'#34d399':'#cbd5e1'};">${r.cost}</strong></td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('mcfDecisionCallout').innerHTML = bestId === 't4'
+    ? `<strong>架构师选型建议 (月均 ${(30*vMult).toFixed(0)}M 次企业调用)</strong>：必选 <strong>Tier 4 (92% 满载保底 PTU/自建 vLLM 基荷 + 0.2ms 令牌桶主动溢出 + 600ms 首字投机对冲 + 流式断流 Assistant 前缀续写)</strong>，将有效可用率推升至 <code>99.995%</code>，高峰 P99 TTFT 从 <code>24,800ms</code> 压至 <code>640ms (快 38.8x)</code>，每年净省 <code>$${Math.round(2640000*vMult).toLocaleString()} (-47.0%)</code>！`
+    : `<strong>架构师选型建议 (纯按需多区域池)</strong>：立即启用 <strong>Tier 3 (网关本地 TPM 令牌桶预扣分流 + 首字投机对冲)</strong>，彻底消灭客户端 429 睡眠风暴！`;
+}
+updateMulticloudFailoverSizer();
+</script>
+
+  <!-- Round 88: QuaRot & SpinQuant Orthogonal Hadamard Rotation W4A4 + KV4 Sizer -->
+  <div id="quarot-spinquant-w4a4-sizer" style="max-width:1180px;margin:28px auto 0;background:#1e293b;border:1px solid #334155;border-radius:14px;padding:22px;color:#f8fafc;">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+      <div>
+        <span style="background:#38bdf8;color:#0f172a;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:800;">ROUND 88 INTERACTIVE SIZER</span>
+        <h2 style="font-size:19px;margin:6px 0 2px;color:#f8fafc;">🔄 大模型无离群值激活与 KV 量化：正交 Hadamard 旋转（QuaRot / SpinQuant）与 W4A4 / FP4 选型计算器</h2>
+        <p style="font-size:12.5px;color:#94a3b8;margin:0;">封存模型：<code>experiments/quarot_spinquant_hadamard_rotation_w4a4_kv_quantization_selection/results.json</code> · <code>provenance: synthetic + anonymized_reported (independently_reproduced=false, physical_gpu_cluster_measurement=not_measured)</code></p>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <a href="../components/quarot-spinquant-hadamard-rotation-w4a4-kv-quantization-selection-faq.md" style="color:#7dd3fc;font-size:12.5px;font-weight:700;text-decoration:none;">📘 中文 FAQ</a>
+        <a href="../components/quarot-spinquant-hadamard-rotation-w4a4-kv-quantization-selection-faq.en.md" style="color:#7dd3fc;font-size:12.5px;font-weight:700;text-decoration:none;">📘 English FAQ</a>
+        <a href="./quarot-spinquant-hadamard-rotation-w4a4-kv-quantization-selection-cards.html" style="color:#7dd3fc;font-size:12.5px;font-weight:700;text-decoration:none;">🃏 7-Card 报告</a>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-bottom:16px;">
+      <div style="background:#0f172a;padding:12px;border-radius:10px;border:1px solid #334155;">
+        <label style="font-size:12px;color:#cbd5e1;font-weight:700;">并发与长上下文显存规模 (Llama-3.1-70B Context × Batch):</label>
+        <select id="qsqScaleSelect" style="width:100%;margin-top:8px;padding:6px;background:#1e293b;color:#f8fafc;border:1px solid #475569;border-radius:6px;" onchange="updateQuarotSpinquantSizer()">
+          <option value="0.5">16K Context × Batch=32 (中等上下文池)</option>
+          <option value="1" selected>32K Context × Batch=32 (标准单卡 80GB 压测基准)</option>
+          <option value="2">64K Context × Batch=32 (超长文档并发池)</option>
+        </select>
+      </div>
+      <div style="background:#0f172a;padding:12px;border-radius:10px;border:1px solid #334155;">
+        <label style="font-size:12px;color:#cbd5e1;font-weight:700;">离线校准与目标硬件条件:</label>
+        <select id="qsqModeSelect" style="width:100%;margin-top:8px;padding:6px;background:#1e293b;color:#f8fafc;border:1px solid #475569;border-radius:6px;" onchange="updateQuarotSpinquantSizer()">
+          <option value="spinquant_s5" selected>允许 30 分钟 512 样本校准 + 原生 INT4/NVFP4 Tensor Core (推荐 S5 SpinQuant)</option>
+          <option value="quarot_s4">严格零校准样本 (Zero-Shot Training-Free) 即时导出 (推荐 S4 QuaRot)</option>
+          <option value="awq_s3">老款 A100/L40S 仅支持 FP16 激活低并发 Decode (推荐 S3 AWQ W4A16)</option>
+        </select>
+      </div>
+    </div>
+
+    <div style="overflow-x:auto;">
+      <table style="width:100%;border-collapse:collapse;font-size:13px;">
+        <thead>
+          <tr style="background:#0f172a;color:#cbd5e1;text-align:left;">
+            <th style="padding:10px;border-bottom:1px solid #334155;">量化与正交旋转架构方案</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">激活峰度 κ / 通道尖峰比</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">WikiText-2 PPL / MMLU</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">总显存 (W + KV)</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">Prefill 吞吐 / 在线旋转开销</th>
+          </tr>
+        </thead>
+        <tbody id="qsqSizerTbody"></tbody>
+      </table>
+    </div>
+    <div id="qsqDecisionCallout" style="margin-top:12px;padding:12px;background:#0f172a;border-left:4px solid #38bdf8;border-radius:6px;font-size:13px;color:#e2e8f0;"></div>
+  </div>
+
+<script>
+function updateQuarotSpinquantSizer() {
+  const kvMult = parseFloat(document.getElementById('qsqScaleSelect').value) || 1.0;
+  const mode = document.getElementById('qsqModeSelect').value || 'spinquant_s5';
+  const bestId = mode === 'quarot_s4' ? 's4' : (mode === 'awq_s3' ? 's3' : 's5');
+
+  const rows = [
+    { id: 's1', name: '🟦 S1: FP16 Baseline (W16A16 + KV16)', kurt: '482.4 (78.5x 尖峰)', ppl: '5.12 (0.00) · 79.4%', vram: `${(140 + 134.2*kvMult).toFixed(1)} GB (需 4×80GB)`, perf: '14,200 tok/s (1.00x) · 0.0%' },
+    { id: 's2', name: '🟥 S2: Naive SmoothQuant对角缩放 (W4A4 + KV4)', kurt: '310.6 (34.2x 残留 ✕)', ppl: '29.85 (+24.73 崩盘 ✕) · 34.8%', vram: `${(35 + 33.6*kvMult).toFixed(1)} GB`, perf: '38,400 tok/s · 精度不可用 ✕' },
+    { id: 's3', name: '🟨 S3: AWQ 仅权重量化 (W4A16 + FP8 KV)', kurt: '482.4 (FP16 激活)', ppl: '5.29 (+0.17) · 78.6%', vram: `${(35 + 67.1*kvMult).toFixed(1)} GB (需 2×80GB)`, perf: '16,800 tok/s (1.18x) · 0.0%' },
+    { id: 's4', name: '🟦 S4: QuaRot 随机 Hadamard 旋转 (W4A4 + INT4 KV)', kurt: '3.24 (2.85x 平滑 ✅)', ppl: '5.46 (+0.34) · 77.8% ✅', vram: `${(35 + 33.6*kvMult).toFixed(1)} GB (-75% ✅)`, perf: '36,200 tok/s (2.55x) · 1.75% FWHT' },
+    { id: 's5', name: '🟩 S5: SpinQuant Cayley 流形学习旋转 (W4A4 + INT4 KV)', kurt: '2.92 (-99.4% · 2.41x 🏆)', ppl: '5.24 (+0.12 🏆) · 78.9% 🏆', vram: `${(35 + 33.6*kvMult).toFixed(1)} GB (单卡 80GB 🏆)`, perf: '36,900 tok/s (2.60x 🏆) · 仅 1.42% FWHT 🏆' }
+  ];
+
+  document.getElementById('qsqSizerTbody').innerHTML = rows.map(r => {
+    const isBest = r.id === bestId;
+    return `<tr style="border-bottom:1px solid #334155;${isBest?'background:rgba(56,189,248,0.18);':''}">
+      <td style="padding:10px;font-weight:700;color:${isBest?'#7dd3fc':'#f8fafc'};">${isBest?'🏆 ':''}${r.name}</td>
+      <td style="padding:10px;"><code>${r.kurt}</code></td>
+      <td style="padding:10px;"><code>${r.ppl}</code></td>
+      <td style="padding:10px;"><code>${r.vram}</code></td>
+      <td style="padding:10px;"><strong style="color:${isBest?'#34d399':'#cbd5e1'};">${r.perf}</strong></td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('qsqDecisionCallout').innerHTML = bestId === 's5'
+    ? `<strong>架构师选型建议 (Llama-3.1-70B, ${(32*kvMult).toFixed(0)}K Context)</strong>：必选 <strong>S5 (SpinQuant Cayley Stiefel 流形学习旋转 R1/R2 100% 离线融合 + R3/R4 在线 FWHT)</strong>，将激活峰度从 <code>482.4</code> 抹平至 <code>2.92 (-99.4%)</code>，PPL 仅 <code>5.24 (+0.12)</code> 追平 W4A16，显存压缩 <code>75.0% (${(35 + 33.6*kvMult).toFixed(1)} GB)</code>，Prefill 吞吐飙升 <code>2.60x (36,900 tok/s)</code>！`
+    : (bestId === 's4'
+      ? `<strong>架构师选型建议 (零校准样本 Training-Free 场景)</strong>：启用 <strong>S4 (QuaRot 随机符号 Hadamard 旋转)</strong>，无需任何校准集即可抹平离群值并实现 <code>2.55x</code> W4A4 加速！`
+      : `<strong>架构师选型建议 (无原生 4-Bit 激活 Tensor Core 的老款 GPU)</strong>：选用 <strong>S3 (AWQ W4A16 + FP8 KV-Cache)</strong>，节省 Decode 显存带宽。`);
+}
+updateQuarotSpinquantSizer();
+</script>
+
+  <!-- Round 89: Enterprise RAG Contextual Retrieval, Late Chunking & ColBERT/BGE-M3 Reranking Sizer -->
+  <div id="rag-contextual-late-chunking-sizer" style="max-width:1180px;margin:28px auto 0;background:#1e293b;border:1px solid #334155;border-radius:14px;padding:22px;color:#f8fafc;">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+      <div>
+        <span style="background:#10b981;color:#064e3b;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:800;">ROUND 89 INTERACTIVE SIZER</span>
+        <h2 style="font-size:19px;margin:6px 0 2px;color:#f8fafc;">📑 企业级 RAG 上下文检索（Contextual Retrieval）、延迟切块（Late Chunking）与多向量重排（ColBERT / BGE-M3）计算器</h2>
+        <p style="font-size:12.5px;color:#94a3b8;margin:0;">封存模型：<code>experiments/rag_contextual_retrieval_late_chunking_colbert_reranking_selection/results.json</code> · <code>provenance: synthetic + anonymized_reported (independently_reproduced=false, physical_gpu_cluster_measurement=not_measured)</code></p>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <a href="../components/rag-contextual-retrieval-late-chunking-colbert-reranking-selection-faq.md" style="color:#6ee7b7;font-size:12.5px;font-weight:700;text-decoration:none;">📘 中文 FAQ</a>
+        <a href="../components/rag-contextual-retrieval-late-chunking-colbert-reranking-selection-faq.en.md" style="color:#6ee7b7;font-size:12.5px;font-weight:700;text-decoration:none;">📘 English FAQ</a>
+        <a href="./rag-contextual-retrieval-late-chunking-colbert-reranking-selection-cards.html" style="color:#6ee7b7;font-size:12.5px;font-weight:700;text-decoration:none;">🃏 7-Card 报告</a>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-bottom:16px;">
+      <div style="background:#0f172a;padding:12px;border-radius:10px;border:1px solid #334155;">
+        <label style="font-size:12px;color:#cbd5e1;font-weight:700;">企业知识库文档块规模 (16K 文档 × 每篇 32 块):</label>
+        <select id="rclScaleSelect" style="width:100%;margin-top:8px;padding:6px;background:#1e293b;color:#f8fafc;border:1px solid #475569;border-radius:6px;" onchange="updateRagContextualLateSizer()">
+          <option value="0.1">100 万分块 (3.125 万篇 16K 文档)</option>
+          <option value="1" selected>1,000 万分块 (31.25 万篇 16K 文档基准)</option>
+          <option value="5">5,000 万分块 (156.25 万篇集团全量库)</option>
+        </select>
+      </div>
+      <div style="background:#0f172a;padding:12px;border-radius:10px;border:1px solid #334155;">
+        <label style="font-size:12px;color:#cbd5e1;font-weight:700;">建库预算与检索精度要求:</label>
+        <select id="rclModeSelect" style="width:100%;margin-top:8px;padding:6px;background:#1e293b;color:#f8fafc;border:1px solid #475569;border-radius:6px;" onchange="updateRagContextualLateSizer()">
+          <option value="contextual_s5" selected>高价值财报/法务/手册：追求 >96% 召回率 + Prefix Cache 建库 (推荐 S5)</option>
+          <option value="late_s2">零 LLM 生成预算 ($0)：高频流式日志/新闻极速入库 (推荐 S2 Late Chunking)</option>
+        </select>
+      </div>
+    </div>
+
+    <div style="overflow-x:auto;">
+      <table style="width:100%;border-collapse:collapse;font-size:13px;">
+        <thead>
+          <tr style="background:#0f172a;color:#cbd5e1;text-align:left;">
+            <th style="padding:10px;border-bottom:1px solid #334155;">RAG 切块与检索重排架构</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">Top-20 召回率 / 漏召率</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">NDCG@10</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">全量建库成本</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">向量内存 / P95 延迟</th>
+          </tr>
+        </thead>
+        <tbody id="rclSizerTbody"></tbody>
+      </table>
+    </div>
+    <div id="rclDecisionCallout" style="margin-top:12px;padding:12px;background:#0f172a;border-left:4px solid #10b981;border-radius:6px;font-size:13px;color:#e2e8f0;"></div>
+  </div>
+
+<script>
+function updateRagContextualLateSizer() {
+  const cMult = parseFloat(document.getElementById('rclScaleSelect').value) || 1.0;
+  const mode = document.getElementById('rclModeSelect').value || 'contextual_s5';
+  const bestId = mode === 'late_s2' ? 's2' : 's5';
+
+  const rows = [
+    { id: 's1', name: '🟥 S1: 传统先切块后编码 (Naive Chunk-First 512词)', rec: '77.6% · 漏召 22.4% ✕', ndcg: '71.2% ✕', cost: `$${Math.round(120*cMult).toLocaleString()}`, ram: `${(30.5*cMult).toFixed(1)} GB · 14.2ms` },
+    { id: 's2', name: '🟦 S2: 延迟切块 Late Chunking (16K 全文自注意力后分段池化)', rec: '89.4% · 漏召 10.6% (-53% ✅)', ndcg: '83.5% ✅', cost: `$${Math.round(165*cMult).toLocaleString()} ($0 LLM ✅)`, ram: `${(30.5*cMult).toFixed(1)} GB · 14.8ms` },
+    { id: 's3', name: '🟨 S3: 全库 ColBERTv2 PLAID 多向量索引 (2-Bit 残差)', rec: '93.1% · 漏召 6.9%', ndcg: '88.9%', cost: `$${Math.round(480*cMult).toLocaleString()}`, ram: `${(564.0*cMult).toFixed(1)} GB (暴涨 18.5x ✕) · 62.5ms` },
+    { id: 's4', name: '🟥 S4: 无 Prefix Cache 裸跑 Contextual Retrieval', rec: '92.8% · 漏召 7.2%', ndcg: '88.4%', cost: `$${Math.round(148000*cMult).toLocaleString()} (32x 重复算 ✕)`, ram: `${(34.2*cMult).toFixed(1)} GB · 21.0ms` },
+    { id: 's5', name: '🟩 S5: 94.1% Prefix-Cached 上下文头 + Late Chunk + BGE-M3 重排', rec: '96.4% 🏆 · 漏召仅 3.6% (-83.9% 🏆)', ndcg: '93.8% 🏆', cost: `$${Math.round(9800*cMult).toLocaleString()} (省 93.4% 🏆)`, ram: `${(34.2*cMult).toFixed(1)} GB (-93.9% 🏆) · 38.4ms` }
+  ];
+
+  document.getElementById('rclSizerTbody').innerHTML = rows.map(r => {
+    const isBest = r.id === bestId;
+    return `<tr style="border-bottom:1px solid #334155;${isBest?'background:rgba(16,185,129,0.18);':''}">
+      <td style="padding:10px;font-weight:700;color:${isBest?'#6ee7b7':'#f8fafc'};">${isBest?'🏆 ':''}${r.name}</td>
+      <td style="padding:10px;"><code>${r.rec}</code></td>
+      <td style="padding:10px;"><code>${r.ndcg}</code></td>
+      <td style="padding:10px;"><code>${r.cost}</code></td>
+      <td style="padding:10px;"><strong style="color:${isBest?'#34d399':'#cbd5e1'};">${r.ram}</strong></td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('rclDecisionCallout').innerHTML = bestId === 's5'
+    ? `<strong>架构师选型建议 (${(10*cMult).toFixed(0)}M 企业文档块)</strong>：必选 <strong>S5 (同文档连续调度 94.1% Prefix Cache 生成 64 词背景头 + Contextual BM25/Late-Chunk Dense + Top-100 BGE-M3 MaxSim 重排)</strong>，将漏召率从 <code>22.4%</code> 暴砍至 <code>3.6% (降低 6.22x)</code>，建库成本净省 <code>$${Math.round(138200*cMult).toLocaleString()} (-93.4%)</code>，向量内存比全库 ColBERT 省 <code>93.9%</code>！`
+    : `<strong>架构师选型建议 (零 LLM 预算流式入库)</strong>：启用 <strong>S2 (Late Chunking 16K 长文本编码器先做全文自注意力再按 512 词区间池化)</strong>，以 <code>$0</code> LLM 生成开销将漏召率砍半至 <code>10.6%</code>！`;
+}
+updateRagContextualLateSizer();
+</script>
+
+  <!-- Round 90: Hybrid GPU+CPU MoE Inference (KTransformers, Intel AMX & NUMA) Sizer -->
+  <div id="hybrid-gpu-cpu-moe-ktransformers-sizer" style="max-width:1180px;margin:28px auto 0;background:#1e293b;border:1px solid #334155;border-radius:14px;padding:22px;color:#f8fafc;">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+      <div>
+        <span style="background:#a855f7;color:#f8fafc;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:800;">ROUND 90 INTERACTIVE SIZER</span>
+        <h2 style="font-size:19px;margin:6px 0 2px;color:#f8fafc;">⚡ 大模型 GPU+CPU 异构混合 MoE 推理（KTransformers）、Intel AMX 矩阵加速与双路 NUMA 绑定计算器</h2>
+        <p style="font-size:12.5px;color:#94a3b8;margin:0;">封存模型：<code>experiments/hybrid_gpu_cpu_moe_inference_ktransformers_amx_numa_selection/results.json</code> · <code>provenance: synthetic + anonymized_reported (independently_reproduced=false, physical_gpu_cluster_measurement=not_measured)</code></p>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <a href="../components/hybrid-gpu-cpu-moe-inference-ktransformers-amx-numa-selection-faq.md" style="color:#d8b4fe;font-size:12.5px;font-weight:700;text-decoration:none;">📘 中文 FAQ</a>
+        <a href="../components/hybrid-gpu-cpu-moe-inference-ktransformers-amx-numa-selection-faq.en.md" style="color:#d8b4fe;font-size:12.5px;font-weight:700;text-decoration:none;">📘 English FAQ</a>
+        <a href="./hybrid-gpu-cpu-moe-inference-ktransformers-amx-numa-selection-cards.html" style="color:#d8b4fe;font-size:12.5px;font-weight:700;text-decoration:none;">🃏 7-Card 报告</a>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-bottom:16px;">
+      <div style="background:#0f172a;padding:12px;border-radius:10px;border:1px solid #334155;">
+        <label style="font-size:12px;color:#cbd5e1;font-weight:700;">并发 Batch 规模 (DeepSeek-R1/V3 671B):</label>
+        <select id="ktBatchSelect" style="width:100%;margin-top:8px;padding:6px;background:#1e293b;color:#f8fafc;border:1px solid #475569;border-radius:6px;" onchange="updateKTransformersSizer()">
+          <option value="1" selected>Batch = 1 (单用户极速深度推理 / 代码生成)</option>
+          <option value="4">Batch = 4 (研发小组并发共享 · 62.5 tok/s)</option>
+          <option value="8">Batch = 8 (部门级 20~30 人共享 · 84.0 tok/s)</option>
+        </select>
+      </div>
+      <div style="background:#0f172a;padding:12px;border-radius:10px;border:1px solid #334155;">
+        <label style="font-size:12px;color:#cbd5e1;font-weight:700;">宿主机 CPU 架构与预算策略:</label>
+        <select id="ktModeSelect" style="width:100%;margin-top:8px;padding:6px;background:#1e293b;color:#f8fafc;border:1px solid #475569;border-radius:6px;" onchange="updateKTransformersSizer()">
+          <option value="amx_s4" selected>双路第四/五代 Xeon (支持 Intel AMX) + 1×48GB GPU ($22k 推荐 S4)</option>
+          <option value="avx_s3">双路 AMD EPYC (支持 AVX-512) + 1×48GB GPU ($22k 推荐 S3)</option>
+          <option value="gpu_s5">高并发公有云 API (Batch ≥ 32，采购 $180k 8×H800 纯 GPU S5)</option>
+        </select>
+      </div>
+    </div>
+
+    <div style="overflow-x:auto;">
+      <table style="width:100%;border-collapse:collapse;font-size:13px;">
+        <thead>
+          <tr style="background:#0f172a;color:#cbd5e1;text-align:left;">
+            <th style="padding:10px;border-bottom:1px solid #334155;">671B MoE 部署与异构卸载方案</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">每 Token PCIe 流量 / UPI 阻塞</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">4K Prefill 吞吐</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">Decode 吞吐</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">整机硬件 CapEx</th>
+          </tr>
+        </thead>
+        <tbody id="ktSizerTbody"></tbody>
+      </table>
+    </div>
+    <div id="ktDecisionCallout" style="margin-top:12px;padding:12px;background:#0f172a;border-left:4px solid #a855f7;border-radius:6px;font-size:13px;color:#e2e8f0;"></div>
+  </div>
+
+<script>
+function updateKTransformersSizer() {
+  const b = parseInt(document.getElementById('ktBatchSelect').value, 10) || 1;
+  const mode = document.getElementById('ktModeSelect').value || 'amx_s4';
+  const bestId = mode === 'avx_s3' ? 's3' : (mode === 'gpu_s5' ? 's5' : 's4');
+  const bScale = b === 1 ? 1.0 : (b === 4 ? 2.33 : 3.13);
+
+  const rows = [
+    { id: 's1', name: '🟥 S1: 朴素按需 PCIe 专家权重换入 (Accelerate / Zero-Inference)', pcie: '16,500 MB/tok ✕ · 42.0% UPI', pre: '14.5 tok/s ✕', dec: '1.9 tok/s (卡死 515ms/词 ✕)', cost: '$22,000' },
+    { id: 's2', name: '🟥 S2: 默认混合 CPU-MoE (无 NUMA 条带绑定 · 默认 llama.cpp)', pcie: '1.75 MB/tok · 48.5% UPI 阻塞 ✕', pre: '48.0 tok/s', dec: `${(5.4 * (b===1?1:(b===4?2.07:2.5))).toFixed(1)} tok/s ✕`, cost: '$22,000' },
+    { id: 's3', name: '🟦 S3: KTransformers AVX-512 + 50/50 子专家 NUMA 绑定 + CUDA Graph', pcie: '1.75 MB/tok · 1.8% UPI ✅', pre: '164.0 tok/s ✅', dec: `${(16.8 * bScale).toFixed(1)} tok/s (快 8.8x ✅)`, cost: '$22,000 (-87.8% ✅)' },
+    { id: 's4', name: '🟩 S4: KTransformers Intel AMX 2D Tile + NUMA + GPU Top-16 热专家缓存', pcie: '1.42 MB/tok (省 9,428x 🏆) · 0.9% UPI', pre: '285.0 tok/s (快 3.1x 🏆)', dec: `${(26.8 * bScale).toFixed(1)} tok/s (快 14.1x 🏆)`, cost: '$22,000 (立省 $158k 🏆)' },
+    { id: 's5', name: '🟨 S5: 纯 GPU 8×H800 / H100 640GB 节点 (全量 HBM 常驻)', pcie: '0.0 MB/tok · 0.0% UPI', pre: '2,450.0 tok/s', dec: `${(58.0 * (b===1?1:b*0.85)).toFixed(1)} tok/s`, cost: '$180,000 (贵 8.18x)' }
+  ];
+
+  document.getElementById('ktSizerTbody').innerHTML = rows.map(r => {
+    const isBest = r.id === bestId;
+    return `<tr style="border-bottom:1px solid #334155;${isBest?'background:rgba(168,85,247,0.18);':''}">
+      <td style="padding:10px;font-weight:700;color:${isBest?'#e9d5ff':'#f8fafc'};">${isBest?'🏆 ':''}${r.name}</td>
+      <td style="padding:10px;"><code>${r.pcie}</code></td>
+      <td style="padding:10px;"><code>${r.pre}</code></td>
+      <td style="padding:10px;"><code>${r.dec}</code></td>
+      <td style="padding:10px;"><strong style="color:${isBest?'#34d399':'#cbd5e1'};">${r.cost}</strong></td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('ktDecisionCallout').innerHTML = bestId === 's4'
+    ? `<strong>架构师选型建议 (满血 671B 私有化工作站 · Batch=${b})</strong>：必选 <strong>S4 (KTransformers Intel AMX 二维矩阵核 + 50/50 子专家 NUMA 绑定 + GPU Top-16 热门专家缓存 + 单次 CUDA Graph)</strong>，把 PCIe 传输从 <code>16.5 GB/tok</code> 砸穿至 <code>1.42 MB/tok (少传 9,428 倍)</code>，有效内存带宽拉满至 <code>692 GB/s</code>，以 <code>$22,000</code> 硬件成本实现 <code>${(26.8*bScale).toFixed(1)} tok/s</code> 生成与 <code>285.0 tok/s</code> Prefill，净省 <code>$158,000 (-87.8%)</code>！`
+    : (bestId === 's3'
+      ? `<strong>架构师选型建议 (AMD EPYC 平台)</strong>：选用 <strong>S3 (KTransformers 50/50 子专家 NUMA 绑定 + AVX-512 + CUDA Graph)</strong>，消除跨插槽 UPI 争用！`
+      : `<strong>架构师选型建议 (Batch ≥ 32 高并发公有云集群)</strong>：当并发大于 32 时全部 256 个专家均被激活，应选用 <strong>S5 (8×H800 纯 GPU 节点)</strong>。`);
+}
+updateKTransformersSizer();
+</script>
+
+  <!-- Round 91: Stateful DataLoader O(1) Resume & Online Dynamic Domain Mixing Sizer -->
+  <div id="stateful-dataloader-dynamic-mixing-sizer" style="max-width:1180px;margin:28px auto 0;background:#1e293b;border:1px solid #334155;border-radius:14px;padding:22px;color:#f8fafc;">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+      <div>
+        <span style="background:#38bdf8;color:#0f172a;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:800;">ROUND 91 INTERACTIVE SIZER</span>
+        <h2 style="font-size:19px;margin:6px 0 2px;color:#f8fafc;">🗄️ 万亿 Token 有状态 DataLoader（Stateful DataLoader）、O(1) 字节寻址续训与在线动态领域配比（DoReMi）计算器</h2>
+        <p style="font-size:12.5px;color:#94a3b8;margin:0;">封存模型：<code>experiments/stateful_dataloader_checkpoint_resume_dynamic_data_mixing_selection/results.json</code> · <code>provenance: synthetic + anonymized_reported (independently_reproduced=false, physical_gpu_cluster_measurement=not_measured)</code></p>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <a href="../components/stateful-dataloader-checkpoint-resume-dynamic-data-mixing-selection-faq.md" style="color:#7dd3fc;font-size:12.5px;font-weight:700;text-decoration:none;">📘 中文 FAQ</a>
+        <a href="../components/stateful-dataloader-checkpoint-resume-dynamic-data-mixing-selection-faq.en.md" style="color:#7dd3fc;font-size:12.5px;font-weight:700;text-decoration:none;">📘 English FAQ</a>
+        <a href="./stateful-dataloader-checkpoint-resume-dynamic-data-mixing-selection-cards.html" style="color:#7dd3fc;font-size:12.5px;font-weight:700;text-decoration:none;">🃏 7-Card 报告</a>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-bottom:16px;">
+      <div style="background:#0f172a;padding:12px;border-radius:10px;border:1px solid #334155;">
+        <label style="font-size:12px;color:#cbd5e1;font-weight:700;">预训练集群规模与重启次数 (Cluster Scale):</label>
+        <select id="sdlScaleSelect" style="width:100%;margin-top:8px;padding:6px;background:#1e293b;color:#f8fafc;border:1px solid #475569;border-radius:6px;" onchange="updateStatefulDataLoaderSizer()">
+          <option value="0.25">1,024×H100 ($2,560/hr · 15T Tokens)</option>
+          <option value="1" selected>4,096×H100 ($10,240/hr · 40 次重启基准)</option>
+          <option value="2.5">10,240×H100 ($25,600/hr · 万卡旗舰集群)</option>
+        </select>
+      </div>
+      <div style="background:#0f172a;padding:12px;border-radius:10px;border:1px solid #334155;">
+        <label style="font-size:12px;color:#cbd5e1;font-weight:700;">课程退火与配比需求 (Curriculum Annealing):</label>
+        <select id="sdlModeSelect" style="width:100%;margin-top:8px;padding:6px;background:#1e293b;color:#f8fafc;border:1px solid #475569;border-radius:6px;" onchange="updateStatefulDataLoaderSizer()">
+          <option value="dynamic_s5" selected>需中途动态退火调整 Web/Code/Math 配比 + 弹性扩缩容 (推荐 S5)</option>
+          <option value="static_s4">全程固定领域配比 CPT 训练 (推荐 S4 Stateful O(1) Static)</option>
+        </select>
+      </div>
+    </div>
+
+    <div style="overflow-x:auto;">
+      <table style="width:100%;border-collapse:collapse;font-size:13px;">
+        <thead>
+          <tr style="background:#0f172a;color:#cbd5e1;text-align:left;">
+            <th style="padding:10px;border-bottom:1px solid #334155;">预训练数据加载与配比方案</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">Step 150k 恢复耗时</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">重复 Token 率 / 重写磁盘</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">数学/代码准确率</th>
+            <th style="padding:10px;border-bottom:1px solid #334155;">40 次重启浪费算力费</th>
+          </tr>
+        </thead>
+        <tbody id="sdlSizerTbody"></tbody>
+      </table>
+    </div>
+    <div id="sdlDecisionCallout" style="margin-top:12px;padding:12px;background:#0f172a;border-left:4px solid #38bdf8;border-radius:6px;font-size:13px;color:#e2e8f0;"></div>
+  </div>
+
+<script>
+function updateStatefulDataLoaderSizer() {
+  const cMult = parseFloat(document.getElementById('sdlScaleSelect').value) || 1.0;
+  const mode = document.getElementById('sdlModeSelect').value || 'dynamic_s5';
+  const bestId = mode === 'static_s4' ? 's4' : 's5';
+
+  const rows = [
+    { id: 's1', name: '🟥 S1: 无状态 DataLoader 重置 (重启后从第 0 步重读)', res: '2.5 s', dup: '18.4% 重复 (+0.085 Loss ✕) · 80 TB', acc: '61.2% ✕', cost: `$${Math.round(495000*cMult).toLocaleString()} ✕` },
+    { id: 's2', name: '🟥 S2: 朴素循环空跳 (CPU islice 空读跳过 15 万步)', res: '2,070.0 s (34.5 分钟 NCCL 超时 ✕)', dup: '0.0% · 80 TB 重写 ✕', acc: '66.5%', cost: `$${Math.round(235520*cMult).toLocaleString()} ✕` },
+    { id: 's3', name: '🟨 S3: 静态预混盘片 + 文件级偏移恢复', res: '4.8 s', dup: '0.2% · 改配比需重写 80 TB ✕', acc: '66.8%', cost: `$${Math.round(142000*cMult).toLocaleString()}` },
+    { id: 's4', name: '🟦 S4: TorchData Stateful O(1) 字节寻址 (固定领域配比)', res: '0.4 s (快 5,175x ✅)', dup: '0.0% ✅ · 0 TB', acc: '67.1% ✅', cost: `$${Math.round(28000*cMult).toLocaleString()}` },
+    { id: 's5', name: '🟩 S5: Stateful O(1) 字节寻址 + Feistel 置换 + 在线 DoReMi 复用', res: '0.4 s (快 5,175x 🏆)', dup: '0.0% 🏆 · 0.0 TB 零重写 🏆', acc: '73.9% (+6.8pt 🏆)', cost: `$${Math.round(109*cMult).toLocaleString()} (净省 $${Math.round(235411*cMult).toLocaleString()} 🏆)` }
+  ];
+
+  document.getElementById('sdlSizerTbody').innerHTML = rows.map(r => {
+    const isBest = r.id === bestId;
+    return `<tr style="border-bottom:1px solid #334155;${isBest?'background:rgba(56,189,248,0.18);':''}">
+      <td style="padding:10px;font-weight:700;color:${isBest?'#7dd3fc':'#f8fafc'};">${isBest?'🏆 ':''}${r.name}</td>
+      <td style="padding:10px;"><code>${r.res}</code></td>
+      <td style="padding:10px;"><code>${r.dup}</code></td>
+      <td style="padding:10px;"><code>${r.acc}</code></td>
+      <td style="padding:10px;"><strong style="color:${isBest?'#34d399':'#cbd5e1'};">${r.cost}</strong></td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('sdlDecisionCallout').innerHTML = bestId === 's5'
+    ? `<strong>架构师选型建议 (${Math.round(4096*cMult).toLocaleString()}×H100 预训练集群)</strong>：必选 <strong>S5 (O(1) .idx 字节偏移直跳 + 4 轮 Feistel 零内存洗牌 + 独立分域单调游标 c_k(t) 在线复用器)</strong>，将第 150,000 步恢复耗时从 <code>34.5 分钟</code> 砸穿至 <code>0.4 秒 (快 5,175 倍)</code>，消除 <code>80 TB</code> 退火重写，数学/代码准确率暴涨 <code>+6.8 pts (73.9%)</code>！`
+    : `<strong>架构师选型建议 (固定配比 CPT)</strong>：启用 <strong>S4 (TorchData StatefulDataLoader + O(1) 字节寻址)</strong>，确保断点秒级恢复与 0% 重复训练！`;
+}
+updateStatefulDataLoaderSizer();
+</script>
 </body>
 </html>
