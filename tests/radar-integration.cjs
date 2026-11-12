@@ -1837,6 +1837,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r114File),'utf8');
       assert.ok(txt.includes('2,040.00')&&txt.includes('4,320.00')&&txt.includes('6,360.00')&&txt.includes('260.00')&&txt.includes('450.00')&&txt.includes('710.00')&&txt.includes('5,650.00')&&txt.includes('88.84%')&&txt.includes('not_measured'),r114File+': contains exact 11-12 R15 steel+flowhmr closed-form parameters');
     }
+    // 2026-11-12 Round 16 (R115: ValidatorStack/solana-vigil + MZULALI/xj-scanner) closed-form FinOps verification
+    const r115PathA=1500.00+48.0*90.00;
+    assert.equal(r115PathA.toFixed(2),'5820.00','11-12 R16 Path A total');
+    const r115PathC=200.00+5.0*90.00;
+    assert.equal(r115PathC.toFixed(2),'650.00','11-12 R16 Path C total');
+    assert.equal((r115PathA-r115PathC).toFixed(2),'5170.00','11-12 R16 savings vs Path A');
+    assert.equal(((r115PathA-r115PathC)/r115PathA*100).toFixed(2),'88.83','11-12 R16 pct savings vs Path A');
+    for(const r115File of ['workshops/github-trending-radar/docs/solana-vigil-xj-scanner-zero-dep-readonly-node-health-arduino-ecu-agent-selection-faq.md','workshops/github-trending-radar/docs/solana-vigil-xj-scanner-zero-dep-readonly-node-health-arduino-ecu-agent-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r16-vigil-xjscanner.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r115File),'utf8');
+      assert.ok(txt.includes('1,500.00')&&txt.includes('4,320.00')&&txt.includes('5,820.00')&&txt.includes('200.00')&&txt.includes('450.00')&&txt.includes('650.00')&&txt.includes('5,170.00')&&txt.includes('88.83%')&&txt.includes('not_measured'),r115File+': contains exact 11-12 R16 vigil+xjscanner closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
