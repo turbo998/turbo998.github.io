@@ -1980,6 +1980,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r127File),'utf8');
       assert.ok(txt.includes('2,010.00')&&txt.includes('4,180.00')&&txt.includes('6,190.00')&&txt.includes('205.00')&&txt.includes('380.00')&&txt.includes('585.00')&&txt.includes('5,605.00')&&txt.includes('90.55%')&&txt.includes('not_measured'),r127File+': contains exact 11-12 R28 radar-cnpj-mcp+Three closed-form parameters');
     }
+    // 2026-11-12 Round 29 (R128: mhfed/vn-law-check + yucezerey/turkish-anti-ai-skill) closed-form FinOps verification
+    const r128PathA=1950.00+44.0*95.00;
+    assert.equal(r128PathA.toFixed(2),'6130.00','11-12 R29 Path A total');
+    const r128PathC=200.00+4.0*95.00;
+    assert.equal(r128PathC.toFixed(2),'580.00','11-12 R29 Path C total');
+    assert.equal((r128PathA-r128PathC).toFixed(2),'5550.00','11-12 R29 savings vs Path A');
+    assert.equal(((r128PathA-r128PathC)/r128PathA*100).toFixed(2),'90.54','11-12 R29 pct savings vs Path A');
+    for(const r128File of ['workshops/github-trending-radar/docs/vn-law-check-turkish-anti-ai-skill-statutory-code-compliance-morphosyntactic-antislop-selection-faq.md','workshops/github-trending-radar/docs/vn-law-check-turkish-anti-ai-skill-statutory-code-compliance-morphosyntactic-antislop-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r29-vnlaw-turkishantiai.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r128File),'utf8');
+      assert.ok(txt.includes('1,950.00')&&txt.includes('4,180.00')&&txt.includes('6,130.00')&&txt.includes('200.00')&&txt.includes('380.00')&&txt.includes('580.00')&&txt.includes('5,550.00')&&txt.includes('90.54%')&&txt.includes('not_measured'),r128File+': contains exact 11-12 R29 vn-law-check+turkish-anti-ai-skill closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
