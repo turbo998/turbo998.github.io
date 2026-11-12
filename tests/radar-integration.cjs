@@ -1705,6 +1705,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r102File),'utf8');
       assert.ok(txt.includes('2,180.00')&&txt.includes('4,140.00')&&txt.includes('6,320.00')&&txt.includes('290.00')&&txt.includes('450.00')&&txt.includes('740.00')&&txt.includes('5,580.00')&&txt.includes('88.29%')&&txt.includes('not_measured'),r102File+': contains exact 11-12 R3 agentes-chat+openbot closed-form parameters');
     }
+    // 2026-11-12 Round 4 (R103: pmndrs/pine + dabingfy-dot/solo-to-team-skills) closed-form FinOps verification
+    const r103PathA=1760.00+44.0*90.00;
+    assert.equal(r103PathA.toFixed(2),'5720.00','11-12 R4 Path A total');
+    const r103PathC=240.00+5.0*90.00;
+    assert.equal(r103PathC.toFixed(2),'690.00','11-12 R4 Path C total');
+    assert.equal((r103PathA-r103PathC).toFixed(2),'5030.00','11-12 R4 savings vs Path A');
+    assert.equal(((r103PathA-r103PathC)/r103PathA*100).toFixed(2),'87.94','11-12 R4 pct savings vs Path A');
+    for(const r103File of ['workshops/github-trending-radar/docs/pine-solo-to-team-skills-reactive-event-harness-human-led-ai-teams-selection-faq.md','workshops/github-trending-radar/docs/pine-solo-to-team-skills-reactive-event-harness-human-led-ai-teams-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r4-pine-solototeam.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r103File),'utf8');
+      assert.ok(txt.includes('1,760.00')&&txt.includes('3,960.00')&&txt.includes('5,720.00')&&txt.includes('240.00')&&txt.includes('450.00')&&txt.includes('690.00')&&txt.includes('5,030.00')&&txt.includes('87.94%')&&txt.includes('not_measured'),r103File+': contains exact 11-12 R4 pine+solototeam closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
