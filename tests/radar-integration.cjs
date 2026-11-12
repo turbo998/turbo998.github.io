@@ -1947,6 +1947,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r124File),'utf8');
       assert.ok(txt.includes('2,600.00')&&txt.includes('5,000.00')&&txt.includes('7,600.00')&&txt.includes('280.00')&&txt.includes('500.00')&&txt.includes('780.00')&&txt.includes('6,820.00')&&txt.includes('89.74%')&&txt.includes('not_measured'),r124File+': contains exact 11-12 R25 mineagent+roboscript closed-form parameters');
     }
+    // 2026-11-12 Round 26 (R125: ersinkoc/phonebox + NJohansen/handle-mcp) closed-form FinOps verification
+    const r125PathA=1980.00+44.0*95.00;
+    assert.equal(r125PathA.toFixed(2),'6160.00','11-12 R26 Path A total');
+    const r125PathC=215.00+4.0*95.00;
+    assert.equal(r125PathC.toFixed(2),'595.00','11-12 R26 Path C total');
+    assert.equal((r125PathA-r125PathC).toFixed(2),'5565.00','11-12 R26 savings vs Path A');
+    assert.equal(((r125PathA-r125PathC)/r125PathA*100).toFixed(2),'90.34','11-12 R26 pct savings vs Path A');
+    for(const r125File of ['workshops/github-trending-radar/docs/phonebox-handle-mcp-physical-ai-quota-permission-panel-human-always-pays-mcp-selection-faq.md','workshops/github-trending-radar/docs/phonebox-handle-mcp-physical-ai-quota-permission-panel-human-always-pays-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r26-phonebox-handlemcp.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r125File),'utf8');
+      assert.ok(txt.includes('1,980.00')&&txt.includes('4,180.00')&&txt.includes('6,160.00')&&txt.includes('215.00')&&txt.includes('380.00')&&txt.includes('595.00')&&txt.includes('5,565.00')&&txt.includes('90.34%')&&txt.includes('not_measured'),r125File+': contains exact 11-12 R26 phonebox+handle-mcp closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
