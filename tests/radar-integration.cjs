@@ -1694,6 +1694,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r101File),'utf8');
       assert.ok(txt.includes('2,160.00')&&txt.includes('3,960.00')&&txt.includes('6,120.00')&&txt.includes('280.00')&&txt.includes('450.00')&&txt.includes('730.00')&&txt.includes('5,390.00')&&txt.includes('88.07%')&&txt.includes('not_measured'),r101File+': contains exact 11-12 R2 tensorfold+macaq closed-form parameters');
     }
+    // 2026-11-12 Round 3 (R102: agentes-chat/agentes-chat + CopilotKit/OpenBot v1.0.2) closed-form FinOps verification
+    const r102PathA=2180.00+46.0*90.00;
+    assert.equal(r102PathA.toFixed(2),'6320.00','11-12 R3 Path A total');
+    const r102PathC=290.00+5.0*90.00;
+    assert.equal(r102PathC.toFixed(2),'740.00','11-12 R3 Path C total');
+    assert.equal((r102PathA-r102PathC).toFixed(2),'5580.00','11-12 R3 savings vs Path A');
+    assert.equal(((r102PathA-r102PathC)/r102PathA*100).toFixed(2),'88.29','11-12 R3 pct savings vs Path A');
+    for(const r102File of ['workshops/github-trending-radar/docs/agentes-chat-openbot-multiplayer-agent-slack-coworker-workspace-selection-faq.md','workshops/github-trending-radar/docs/agentes-chat-openbot-multiplayer-agent-slack-coworker-workspace-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r3-agentes-openbot.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r102File),'utf8');
+      assert.ok(txt.includes('2,180.00')&&txt.includes('4,140.00')&&txt.includes('6,320.00')&&txt.includes('290.00')&&txt.includes('450.00')&&txt.includes('740.00')&&txt.includes('5,580.00')&&txt.includes('88.29%')&&txt.includes('not_measured'),r102File+': contains exact 11-12 R3 agentes-chat+openbot closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
