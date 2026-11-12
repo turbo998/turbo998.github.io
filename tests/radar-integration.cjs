@@ -1958,6 +1958,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r125File),'utf8');
       assert.ok(txt.includes('1,980.00')&&txt.includes('4,180.00')&&txt.includes('6,160.00')&&txt.includes('215.00')&&txt.includes('380.00')&&txt.includes('595.00')&&txt.includes('5,565.00')&&txt.includes('90.34%')&&txt.includes('not_measured'),r125File+': contains exact 11-12 R26 phonebox+handle-mcp closed-form parameters');
     }
+    // 2026-11-12 Round 27 (R126: artemnovitckii/claude-animation-skills + nishant-Tiwari24/cracked) closed-form FinOps verification
+    const r126PathA=2120.00+46.0*95.00;
+    assert.equal(r126PathA.toFixed(2),'6490.00','11-12 R27 Path A total');
+    const r126PathC=220.00+4.0*95.00;
+    assert.equal(r126PathC.toFixed(2),'600.00','11-12 R27 Path C total');
+    assert.equal((r126PathA-r126PathC).toFixed(2),'5890.00','11-12 R27 savings vs Path A');
+    assert.equal(((r126PathA-r126PathC)/r126PathA*100).toFixed(2),'90.76','11-12 R27 pct savings vs Path A');
+    for(const r126File of ['workshops/github-trending-radar/docs/claude-animation-skills-cracked-safezone-code-reels-executed-oracle-interview-skills-selection-faq.md','workshops/github-trending-radar/docs/claude-animation-skills-cracked-safezone-code-reels-executed-oracle-interview-skills-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r27-animskills-cracked.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r126File),'utf8');
+      assert.ok(txt.includes('2,120.00')&&txt.includes('4,370.00')&&txt.includes('6,490.00')&&txt.includes('220.00')&&txt.includes('380.00')&&txt.includes('600.00')&&txt.includes('5,890.00')&&txt.includes('90.76%')&&txt.includes('not_measured'),r126File+': contains exact 11-12 R27 claude-animation-skills+cracked closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
