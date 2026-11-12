@@ -1793,6 +1793,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r110File),'utf8');
       assert.ok(txt.includes('2,440.00')&&txt.includes('4,140.00')&&txt.includes('6,580.00')&&txt.includes('230.00')&&txt.includes('450.00')&&txt.includes('680.00')&&txt.includes('5,900.00')&&txt.includes('89.67%')&&txt.includes('not_measured'),r110File+': contains exact 11-12 R11 bookleme+lasik closed-form parameters');
     }
+    // 2026-11-12 Round 12 (R111: rainyZhou2/SreAgentHarness + kunchenguid/headless) closed-form FinOps verification
+    const r111PathA=1960.00+48.0*90.00;
+    assert.equal(r111PathA.toFixed(2),'6280.00','11-12 R12 Path A total');
+    const r111PathC=240.00+5.0*90.00;
+    assert.equal(r111PathC.toFixed(2),'690.00','11-12 R12 Path C total');
+    assert.equal((r111PathA-r111PathC).toFixed(2),'5590.00','11-12 R12 savings vs Path A');
+    assert.equal(((r111PathA-r111PathC)/r111PathA*100).toFixed(2),'89.01','11-12 R12 pct savings vs Path A');
+    for(const r111File of ['workshops/github-trending-radar/docs/sre-agent-harness-headless-recoverable-sre-transactions-zero-password-ssh-selection-faq.md','workshops/github-trending-radar/docs/sre-agent-harness-headless-recoverable-sre-transactions-zero-password-ssh-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r12-sreharness-headless.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r111File),'utf8');
+      assert.ok(txt.includes('1,960.00')&&txt.includes('4,320.00')&&txt.includes('6,280.00')&&txt.includes('240.00')&&txt.includes('450.00')&&txt.includes('690.00')&&txt.includes('5,590.00')&&txt.includes('89.01%')&&txt.includes('not_measured'),r111File+': contains exact 11-12 R12 sreharness+headless closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
