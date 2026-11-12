@@ -1654,6 +1654,35 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r99File),'utf8');
       assert.ok(txt.includes('1,520.00')&&txt.includes('3,960.00')&&txt.includes('5,480.00')&&txt.includes('220.00')&&txt.includes('450.00')&&txt.includes('670.00')&&txt.includes('4,810.00')&&txt.includes('87.77%')&&txt.includes('not_measured'),r99File+': contains exact 11-11 R54 globalhackmap+dshl2d closed-form parameters');
     }
+    // 2026-11-12 Sweep & Round 1 (R100: QwenLM/qwen-code + Alishahryar1/free-claude-code) verification
+    const rawHtml1112=fs.readFileSync(path.join(__dirname,'..','workshops','github-trending-radar','evidence','trending-daily-2026-11-12-raw.html'),'utf8').replace(/\r\n/g,'\n');
+    assert.equal(hash(rawHtml1112),'5ff5c7d9572539c7dc8b0fdb2921f18c27f6ee874f5077956171bf007eba2980','2026-11-12 raw HTML LF sha256');
+    const rawSearch1112Str=fs.readFileSync(path.join(__dirname,'..','workshops','github-trending-radar','evidence','search-new-repos-2026-11-12-raw.json'),'utf8').replace(/\r\n/g,'\n');
+    assert.equal(hash(rawSearch1112Str),'583a62e35e5cb99f8edfd0669a7d720ad29019d3963a18d214b69022869c5e6b','2026-11-12 raw Search API JSON LF sha256');
+    const rawSearch1112=JSON.parse(rawSearch1112Str);
+    const rawSearch1112Map=new Map(rawSearch1112.items.map(it=>[it.full_name,it]));
+    for(const item of reportJson.fastest_rising_leaderboard_2026_11_12.track_a_24h_star_surge){
+      assert.equal(item.provenance,'measured',item.full_name+': 11-12 Track A provenance');
+      assert.ok(rawHtml1112.includes(`href="/${item.full_name}"`),item.full_name+': present in 11-12 raw HTML');
+      assert.ok(rawHtml1112.includes(`${item.stars_today.toLocaleString('en-US')} stars today`),item.full_name+': exact stars_today in 11-12 raw HTML');
+    }
+    for(const item of reportJson.fastest_rising_leaderboard_2026_11_12.track_b_new_repo_breakout_slope){
+      assert.equal(item.stars_today,'not_measured',item.full_name+': 11-12 Track B stars_today must be not_measured');
+      assert.ok(rawSearch1112Map.has(item.full_name),item.full_name+': present in 11-12 archived Search API JSON');
+      const rawEntry=rawSearch1112Map.get(item.full_name);
+      assert.equal(item.stars_total_search_api,rawEntry.stargazers_count,item.full_name+': 11-12 stars_total_search_api matches Search API JSON');
+      assert.equal(item.stars_per_day,Math.round(item.stars_total/item.age_days),item.full_name+': 11-12 stars_per_day closed-form');
+    }
+    const r100PathA=2400.00+46.0*90.00;
+    assert.equal(r100PathA.toFixed(2),'6540.00','11-12 R1 Path A total');
+    const r100PathC=320.00+5.0*90.00;
+    assert.equal(r100PathC.toFixed(2),'770.00','11-12 R1 Path C total');
+    assert.equal((r100PathA-r100PathC).toFixed(2),'5770.00','11-12 R1 savings vs Path A');
+    assert.equal(((r100PathA-r100PathC)/r100PathA*100).toFixed(2),'88.23','11-12 R1 pct savings vs Path A');
+    for(const r100File of ['workshops/github-trending-radar/docs/qwen-code-free-claude-code-multi-harness-coding-agent-selection-faq.md','workshops/github-trending-radar/docs/qwen-code-free-claude-code-multi-harness-coding-agent-selection-faq.en.md','assets/github-ai-radar-2026-11-12.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r100File),'utf8');
+      assert.ok(txt.includes('2,400.00')&&txt.includes('4,140.00')&&txt.includes('6,540.00')&&txt.includes('320.00')&&txt.includes('450.00')&&txt.includes('770.00')&&txt.includes('5,770.00')&&txt.includes('88.23%')&&txt.includes('not_measured'),r100File+': contains exact 11-12 R1 qwen-code+fcc closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
