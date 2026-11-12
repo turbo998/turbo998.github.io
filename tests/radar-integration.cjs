@@ -1760,6 +1760,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r107File),'utf8');
       assert.ok(txt.includes('1,900.00')&&txt.includes('3,960.00')&&txt.includes('5,860.00')&&txt.includes('230.00')&&txt.includes('450.00')&&txt.includes('680.00')&&txt.includes('5,180.00')&&txt.includes('88.40%')&&txt.includes('not_measured'),r107File+': contains exact 11-12 R8 pibrowse+bothq closed-form parameters');
     }
+    // 2026-11-12 Round 9 (R108: makepad/relax + 2SinceJuly/SkyDot) closed-form FinOps verification
+    const r108PathA=1720.00+48.0*90.00;
+    assert.equal(r108PathA.toFixed(2),'6040.00','11-12 R9 Path A total');
+    const r108PathC=250.00+5.0*90.00;
+    assert.equal(r108PathC.toFixed(2),'700.00','11-12 R9 Path C total');
+    assert.equal((r108PathA-r108PathC).toFixed(2),'5340.00','11-12 R9 savings vs Path A');
+    assert.equal(((r108PathA-r108PathC)/r108PathA*100).toFixed(2),'88.41','11-12 R9 pct savings vs Path A');
+    for(const r108File of ['workshops/github-trending-radar/docs/makepad-relax-skydot-rust-live-jit-multi-dot-pi-agent-workbench-selection-faq.md','workshops/github-trending-radar/docs/makepad-relax-skydot-rust-live-jit-multi-dot-pi-agent-workbench-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r9-relax-skydot.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r108File),'utf8');
+      assert.ok(txt.includes('1,720.00')&&txt.includes('4,320.00')&&txt.includes('6,040.00')&&txt.includes('250.00')&&txt.includes('450.00')&&txt.includes('700.00')&&txt.includes('5,340.00')&&txt.includes('88.41%')&&txt.includes('not_measured'),r108File+': contains exact 11-12 R9 relax+skydot closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
