@@ -1738,6 +1738,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r105File),'utf8');
       assert.ok(txt.includes('1,500.00')&&txt.includes('4,140.00')&&txt.includes('5,640.00')&&txt.includes('210.00')&&txt.includes('450.00')&&txt.includes('660.00')&&txt.includes('4,980.00')&&txt.includes('88.30%')&&txt.includes('not_measured'),r105File+': contains exact 11-12 R6 yogurt+article2media closed-form parameters');
     }
+    // 2026-11-12 Round 7 (R106: MiniMax-AI/MiniMax-H3-Image + op7418/guizang-game-skill + apex-compute/ANR) closed-form FinOps verification
+    const r106PathA=2040.00+46.0*90.00;
+    assert.equal(r106PathA.toFixed(2),'6180.00','11-12 R7 Path A total');
+    const r106PathC=270.00+5.0*90.00;
+    assert.equal(r106PathC.toFixed(2),'720.00','11-12 R7 Path C total');
+    assert.equal((r106PathA-r106PathC).toFixed(2),'5460.00','11-12 R7 savings vs Path A');
+    assert.equal(((r106PathA-r106PathC)/r106PathA*100).toFixed(2),'88.35','11-12 R7 pct savings vs Path A');
+    for(const r106File of ['workshops/github-trending-radar/docs/minimax-h3-image-guizang-game-skill-anr-16mp-3d-action-neural-rendering-selection-faq.md','workshops/github-trending-radar/docs/minimax-h3-image-guizang-game-skill-anr-16mp-3d-action-neural-rendering-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r7-h3image-guizang-anr.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r106File),'utf8');
+      assert.ok(txt.includes('2,040.00')&&txt.includes('4,140.00')&&txt.includes('6,180.00')&&txt.includes('270.00')&&txt.includes('450.00')&&txt.includes('720.00')&&txt.includes('5,460.00')&&txt.includes('88.35%')&&txt.includes('not_measured'),r106File+': contains exact 11-12 R7 h3image+guizang+anr closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
