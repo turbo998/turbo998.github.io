@@ -1716,6 +1716,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r103File),'utf8');
       assert.ok(txt.includes('1,760.00')&&txt.includes('3,960.00')&&txt.includes('5,720.00')&&txt.includes('240.00')&&txt.includes('450.00')&&txt.includes('690.00')&&txt.includes('5,030.00')&&txt.includes('87.94%')&&txt.includes('not_measured'),r103File+': contains exact 11-12 R4 pine+solototeam closed-form parameters');
     }
+    // 2026-11-12 Round 5 (R104: drost-ai/tinker-ai-skill + simplexai-labs/linger) closed-form FinOps verification
+    const r104PathA=2320.00+46.0*90.00;
+    assert.equal(r104PathA.toFixed(2),'6460.00','11-12 R5 Path A total');
+    const r104PathC=260.00+5.0*90.00;
+    assert.equal(r104PathC.toFixed(2),'710.00','11-12 R5 Path C total');
+    assert.equal((r104PathA-r104PathC).toFixed(2),'5750.00','11-12 R5 savings vs Path A');
+    assert.equal(((r104PathA-r104PathC)/r104PathA*100).toFixed(2),'89.01','11-12 R5 pct savings vs Path A');
+    for(const r104File of ['workshops/github-trending-radar/docs/tinker-ai-skill-linger-polystrata-session-distillation-local-125b-agent-selection-faq.md','workshops/github-trending-radar/docs/tinker-ai-skill-linger-polystrata-session-distillation-local-125b-agent-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r5-tinker-linger.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r104File),'utf8');
+      assert.ok(txt.includes('2,320.00')&&txt.includes('4,140.00')&&txt.includes('6,460.00')&&txt.includes('260.00')&&txt.includes('450.00')&&txt.includes('710.00')&&txt.includes('5,750.00')&&txt.includes('89.01%')&&txt.includes('not_measured'),r104File+': contains exact 11-12 R5 tinker+linger closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
