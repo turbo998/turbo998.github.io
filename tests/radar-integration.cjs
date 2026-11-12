@@ -1771,6 +1771,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r108File),'utf8');
       assert.ok(txt.includes('1,720.00')&&txt.includes('4,320.00')&&txt.includes('6,040.00')&&txt.includes('250.00')&&txt.includes('450.00')&&txt.includes('700.00')&&txt.includes('5,340.00')&&txt.includes('88.41%')&&txt.includes('not_measured'),r108File+': contains exact 11-12 R9 relax+skydot closed-form parameters');
     }
+    // 2026-11-12 Round 10 (R109: zadescoxp/calibrain-harness + tigerogijzooav/Hyperliquid-Trade-Bot) closed-form FinOps verification
+    const r109PathA=1900.00+48.0*90.00;
+    assert.equal(r109PathA.toFixed(2),'6220.00','11-12 R10 Path A total');
+    const r109PathC=240.00+5.0*90.00;
+    assert.equal(r109PathC.toFixed(2),'690.00','11-12 R10 Path C total');
+    assert.equal((r109PathA-r109PathC).toFixed(2),'5530.00','11-12 R10 savings vs Path A');
+    assert.equal(((r109PathA-r109PathC)/r109PathA*100).toFixed(2),'88.91','11-12 R10 pct savings vs Path A');
+    for(const r109File of ['workshops/github-trending-radar/docs/calibrain-harness-hyperliquid-trade-bot-fast-classifier-forward-test-risk-audit-selection-faq.md','workshops/github-trending-radar/docs/calibrain-harness-hyperliquid-trade-bot-fast-classifier-forward-test-risk-audit-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r10-calibrain-hyperliquid.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r109File),'utf8');
+      assert.ok(txt.includes('1,900.00')&&txt.includes('4,320.00')&&txt.includes('6,220.00')&&txt.includes('240.00')&&txt.includes('450.00')&&txt.includes('690.00')&&txt.includes('5,530.00')&&txt.includes('88.91%')&&txt.includes('not_measured'),r109File+': contains exact 11-12 R10 calibrain+hyperliquid closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
