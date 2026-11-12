@@ -1892,6 +1892,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r119File),'utf8');
       assert.ok(txt.includes('2,040.00')&&txt.includes('4,180.00')&&txt.includes('6,220.00')&&txt.includes('210.00')&&txt.includes('380.00')&&txt.includes('590.00')&&txt.includes('5,630.00')&&txt.includes('90.51%')&&txt.includes('not_measured'),r119File+': contains exact 11-12 R20 claude-p-pipeline+claude-xcode-agent closed-form parameters');
     }
+    // 2026-11-12 Round 21 (R120: kilolonion/agent-vscreen + funnest-xyz/funnest-charts) closed-form FinOps verification
+    const r120PathA=2150.00+46.0*95.00;
+    assert.equal(r120PathA.toFixed(2),'6520.00','11-12 R21 Path A total');
+    const r120PathC=235.00+4.0*95.00;
+    assert.equal(r120PathC.toFixed(2),'615.00','11-12 R21 Path C total');
+    assert.equal((r120PathA-r120PathC).toFixed(2),'5905.00','11-12 R21 savings vs Path A');
+    assert.equal(((r120PathA-r120PathC)/r120PathA*100).toFixed(2),'90.57','11-12 R21 pct savings vs Path A');
+    for(const r120File of ['workshops/github-trending-radar/docs/agent-vscreen-funnest-charts-android-virtual-display-financial-charts-mcp-selection-faq.md','workshops/github-trending-radar/docs/agent-vscreen-funnest-charts-android-virtual-display-financial-charts-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r21-vscreen-funnestcharts.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r120File),'utf8');
+      assert.ok(txt.includes('2,150.00')&&txt.includes('4,370.00')&&txt.includes('6,520.00')&&txt.includes('235.00')&&txt.includes('380.00')&&txt.includes('615.00')&&txt.includes('5,905.00')&&txt.includes('90.57%')&&txt.includes('not_measured'),r120File+': contains exact 11-12 R21 agent-vscreen+funnest-charts closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
