@@ -1804,6 +1804,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r111File),'utf8');
       assert.ok(txt.includes('1,960.00')&&txt.includes('4,320.00')&&txt.includes('6,280.00')&&txt.includes('240.00')&&txt.includes('450.00')&&txt.includes('690.00')&&txt.includes('5,590.00')&&txt.includes('89.01%')&&txt.includes('not_measured'),r111File+': contains exact 11-12 R12 sreharness+headless closed-form parameters');
     }
+    // 2026-11-12 Round 13 (R112: stevenmichaelthomas/numbrone + permitzip/mutinybim) closed-form FinOps verification
+    const r112PathA=1800.00+48.0*90.00;
+    assert.equal(r112PathA.toFixed(2),'6120.00','11-12 R13 Path A total');
+    const r112PathC=240.00+5.0*90.00;
+    assert.equal(r112PathC.toFixed(2),'690.00','11-12 R13 Path C total');
+    assert.equal((r112PathA-r112PathC).toFixed(2),'5430.00','11-12 R13 savings vs Path A');
+    assert.equal(((r112PathA-r112PathC)/r112PathA*100).toFixed(2),'88.73','11-12 R13 pct savings vs Path A');
+    for(const r112File of ['workshops/github-trending-radar/docs/numbrone-mutinybim-chief-manager-worktree-hierarchy-multiplayer-bim-mcp-selection-faq.md','workshops/github-trending-radar/docs/numbrone-mutinybim-chief-manager-worktree-hierarchy-multiplayer-bim-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r13-numbrone-mutinybim.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r112File),'utf8');
+      assert.ok(txt.includes('1,800.00')&&txt.includes('4,320.00')&&txt.includes('6,120.00')&&txt.includes('240.00')&&txt.includes('450.00')&&txt.includes('690.00')&&txt.includes('5,430.00')&&txt.includes('88.73%')&&txt.includes('not_measured'),r112File+': contains exact 11-12 R13 numbrone+mutinybim closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
