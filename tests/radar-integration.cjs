@@ -1848,6 +1848,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r115File),'utf8');
       assert.ok(txt.includes('1,500.00')&&txt.includes('4,320.00')&&txt.includes('5,820.00')&&txt.includes('200.00')&&txt.includes('450.00')&&txt.includes('650.00')&&txt.includes('5,170.00')&&txt.includes('88.83%')&&txt.includes('not_measured'),r115File+': contains exact 11-12 R16 vigil+xjscanner closed-form parameters');
     }
+    // 2026-11-12 Round 17 (R116: FutureMLS-Lab/FlashStates + yanstd888/9routerx) closed-form FinOps verification
+    const r116PathA=2320.00+48.0*90.00;
+    assert.equal(r116PathA.toFixed(2),'6640.00','11-12 R17 Path A total');
+    const r116PathC=260.00+5.0*90.00;
+    assert.equal(r116PathC.toFixed(2),'710.00','11-12 R17 Path C total');
+    assert.equal((r116PathA-r116PathC).toFixed(2),'5930.00','11-12 R17 savings vs Path A');
+    assert.equal(((r116PathA-r116PathC)/r116PathA*100).toFixed(2),'89.31','11-12 R17 pct savings vs Path A');
+    for(const r116File of ['workshops/github-trending-radar/docs/flashstates-9routerx-hybrid-state-agentic-inference-go-ai-router-selection-faq.md','workshops/github-trending-radar/docs/flashstates-9routerx-hybrid-state-agentic-inference-go-ai-router-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r17-flashstates-9routerx.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r116File),'utf8');
+      assert.ok(txt.includes('2,320.00')&&txt.includes('4,320.00')&&txt.includes('6,640.00')&&txt.includes('260.00')&&txt.includes('450.00')&&txt.includes('710.00')&&txt.includes('5,930.00')&&txt.includes('89.31%')&&txt.includes('not_measured'),r116File+': contains exact 11-12 R17 flashstates+9routerx closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
