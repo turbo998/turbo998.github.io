@@ -1782,6 +1782,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r109File),'utf8');
       assert.ok(txt.includes('1,900.00')&&txt.includes('4,320.00')&&txt.includes('6,220.00')&&txt.includes('240.00')&&txt.includes('450.00')&&txt.includes('690.00')&&txt.includes('5,530.00')&&txt.includes('88.91%')&&txt.includes('not_measured'),r109File+': contains exact 11-12 R10 calibrain+hyperliquid closed-form parameters');
     }
+    // 2026-11-12 Round 11 (R110: bookleme/bookleme + pktq/lasik) closed-form FinOps verification
+    const r110PathA=2440.00+46.0*90.00;
+    assert.equal(r110PathA.toFixed(2),'6580.00','11-12 R11 Path A total');
+    const r110PathC=230.00+5.0*90.00;
+    assert.equal(r110PathC.toFixed(2),'680.00','11-12 R11 Path C total');
+    assert.equal((r110PathA-r110PathC).toFixed(2),'5900.00','11-12 R11 savings vs Path A');
+    assert.equal(((r110PathA-r110PathC)/r110PathA*100).toFixed(2),'89.67','11-12 R11 pct savings vs Path A');
+    for(const r110File of ['workshops/github-trending-radar/docs/bookleme-lasik-book-to-skill-compiler-static-deblinding-mcp-selection-faq.md','workshops/github-trending-radar/docs/bookleme-lasik-book-to-skill-compiler-static-deblinding-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r11-bookleme-lasik.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r110File),'utf8');
+      assert.ok(txt.includes('2,440.00')&&txt.includes('4,140.00')&&txt.includes('6,580.00')&&txt.includes('230.00')&&txt.includes('450.00')&&txt.includes('680.00')&&txt.includes('5,900.00')&&txt.includes('89.67%')&&txt.includes('not_measured'),r110File+': contains exact 11-12 R11 bookleme+lasik closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
