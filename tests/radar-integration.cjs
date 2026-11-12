@@ -1881,6 +1881,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r118File),'utf8');
       assert.ok(txt.includes('1,920.00')&&txt.includes('4,560.00')&&txt.includes('6,480.00')&&txt.includes('245.00')&&txt.includes('475.00')&&txt.includes('720.00')&&txt.includes('5,760.00')&&txt.includes('88.89%')&&txt.includes('not_measured'),r118File+': contains exact 11-12 R19 ai-portals+creator-generalist closed-form parameters');
     }
+    // 2026-11-12 Round 20 (R119: Saekisui/claude-p-pipeline + yusuke-114/claude-xcode-agent) closed-form FinOps verification
+    const r119PathA=2040.00+44.0*95.00;
+    assert.equal(r119PathA.toFixed(2),'6220.00','11-12 R20 Path A total');
+    const r119PathC=210.00+4.0*95.00;
+    assert.equal(r119PathC.toFixed(2),'590.00','11-12 R20 Path C total');
+    assert.equal((r119PathA-r119PathC).toFixed(2),'5630.00','11-12 R20 savings vs Path A');
+    assert.equal(((r119PathA-r119PathC)/r119PathA*100).toFixed(2),'90.51','11-12 R20 pct savings vs Path A');
+    for(const r119File of ['workshops/github-trending-radar/docs/claude-p-pipeline-claude-xcode-agent-resident-stream-json-dual-exec-acp-selection-faq.md','workshops/github-trending-radar/docs/claude-p-pipeline-claude-xcode-agent-resident-stream-json-dual-exec-acp-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r20-claudep-xcodeacp.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r119File),'utf8');
+      assert.ok(txt.includes('2,040.00')&&txt.includes('4,180.00')&&txt.includes('6,220.00')&&txt.includes('210.00')&&txt.includes('380.00')&&txt.includes('590.00')&&txt.includes('5,630.00')&&txt.includes('90.51%')&&txt.includes('not_measured'),r119File+': contains exact 11-12 R20 claude-p-pipeline+claude-xcode-agent closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
