@@ -1371,6 +1371,62 @@
               <td><code>P797 / P798 deterministic WebRTC RFC 8888 RTCP CCFB ECN-CE anti-spoof gate &amp; RFC 3550 RR/XR TWCC cross-check / signed RTT guard</code></td>
               <td><span class="badge-pass">PASS · 0ms @ 1ms Res (Synthetic)</span></td>
               <td><span class="act-pill">Act automatically</span></td>
+            </tr>            <tr>
+              <td>
+                <strong>406. [专题43 `docs/voice-webrtc-dtls-srtp-rfc5764-demux-hello-cookie-setup-deadlock-faq.md`] WebRTC `RFC 5764 / RFC 7983` 单端口首字节严格分区解复用（`0` 次非标首字节污染 `SRTP/DTLS` 状态机）、无状态 `RFC 6347 DTLS HelloVerifyRequest` HMAC Cookie 防 `35倍` X.509 证书反射放大与 `[576, 1200]B` 分片 MTU 门禁（`0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established` 离线 `synthetic` 策略配置检查；真实 OpenSSL/libsrtp 套接字分拣耗时 `not_measured`）&amp; `RFC 4145 / RFC 8842` SDP `a=setup` 防双 `passive` 握手死锁（`0` 死锁）及长通话 `RFC 3711 SRTP MKI` `[2000, 5000]ms` 新旧双密钥并行解密窗口（真实 DTLS-SRTP 换钥耗时 `not_measured`）(`P799` / `P800` 🎉 · Stage 403 · 809 护栏 &amp; 818 探针 · 406 维)</strong>
+              </td>
+              <td><code>P799 / P800 deterministic WebRTC RFC 7983 first-byte demux + DTLS cookie MTU gate &amp; RFC 8842 SDP setup deadlock / SRTP MKI overlap guard</code></td>
+              <td><span class="badge-pass">PASS · 0ms @ 1ms Res (Synthetic)</span></td>
+              <td><span class="act-pill">Act automatically</span></td>
+            </tr>            <tr>
+              <td>
+                <strong>407. [专题44 `docs/voice-webrtc-rtcp-avpf-nack-pli-storm-rtx-osn-apt-faq.md`] WebRTC `RFC 4585 / RFC 5104 RTCP AVPF` 单包 `NACK` 重传次数上限（`[1, 3]` 次，强制 `>= 1x RTT` 间隔）与 `trr-int` 最小反馈/关键帧冷却下限（`[100, 500]ms`，防 `17倍` 重传风暴挤死实时语音队列；`0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established` 离线 `synthetic` 策略配置检查；真实发送环缓检索耗时 `not_measured`）&amp; `RFC 4588 RTX` 独立重传流 `SSRC`（`a=ssrc-group:FID`）、16-bit `OSN` 原始序列号头（`0` 次主流原地重传污染 `RFC 3550` 抖动/丢包估算）与 `[1, 8]` 组 `apt` 载荷映射门禁（真实 RTX 拆包耗时 `not_measured`）(`P801` / `P802` · Stage 404 · 811 护栏 &amp; 820 探针 · 407 维)</strong>
+              </td>
+              <td><code>P801 / P802 deterministic WebRTC RFC 4585 AVPF NACK/PLI storm trr-int gate &amp; RFC 4588 RTX separate SSRC / OSN + apt BWE isolation guard</code></td>
+              <td><span class="badge-pass">PASS · 0ms @ 1ms Res (Synthetic)</span></td>
+              <td><span class="act-pill">Act automatically</span></td>
+            </tr>            <tr>
+              <td>
+                <strong>408. [专题45 `docs/voice-sip-rfc6026-invite-2xx-timer-gh-magic-cookie-rogue-bye-faq.md`] 企业 SIP `RFC 3261 / RFC 6026` `INVITE 2xx` 服务端事务 `Accepted` 状态机（`Timer G [1, 7]` 次重传上限与 `Timer H [8, 32]s` 未确认半开超时回收，防半开呼叫耗尽 S2S GPU 槽位）与顶层 `Via branch=z9hG4bK` 魔术 Cookie 强校验（拒绝 $O(N)$ `RFC 2543` 慢扫描；`0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established` 离线 `synthetic` 策略配置检查；真实 SBC 事务表哈希耗时 `not_measured`）&amp; 对话内 `BYE / ACK` 四元组 `(Call-ID, local-tag, remote-tag, TLS/IP 流)` 强绑定（`0` 次伪造拆线）及单调递增 `CSeq [1, 64]` 步进窗口门禁（真实 B2BUA 对话查找耗时 `not_measured`）(`P803` / `P804` · Stage 405 · 813 护栏 &amp; 822 探针 · 408 维)</strong>
+              </td>
+              <td><code>P803 / P804 deterministic SIP RFC 6026 INVITE 2xx Timer G/H + z9hG4bK cookie gate &amp; rogue BYE/ACK dialog-tuple / CSeq guard</code></td>
+              <td><span class="badge-pass">PASS · 0ms @ 1ms Res (Synthetic)</span></td>
+              <td><span class="act-pill">Act automatically</span></td>
+            </tr>            <tr>
+              <td>
+                <strong>409. [专题46 `docs/voice-webrtc-jsep-rfc8829-sdp-glare-rollback-mid-msid-order-faq.md`] WebRTC `RFC 8829 (JSEP)` 完美协商 `Polite / Impolite` 自动回滚（`have-local-offer -> {type:"rollback"} -> stable`）与 Unified Plan `m= / a=mid` 轨槽位只增不删保序门禁（`0` 次 `m=` 行删除或重排，停用轨置 `port 0 + a=inactive`，槽位数钳制在 `[1, 16]`；`0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established` 离线 `synthetic` 策略配置检查；真实浏览器 `RTCPeerConnection` 状态机转换耗时 `not_measured`）&amp; `RFC 8842` DTLS `[256, 512]` 位（`SHA-256+`）常量时间指纹锚定（换证强制 `ICE Restart`）与 `RFC 8830 a=msid` 租户会话级防跨轨嫁接锁（真实 X.509 摘要校验耗时 `not_measured`）(`P805` / `P806` · Stage 406 · 🎉 50th SVG · 815 护栏 &amp; 824 探针 · 409 维)</strong>
+              </td>
+              <td><code>P805 / P806 deterministic WebRTC RFC 8829 JSEP glare rollback + append-only m=/mid gate &amp; RFC 8842 DTLS SHA-256 fingerprint / msid guard</code></td>
+              <td><span class="badge-pass">PASS · 0ms @ 1ms Res (Synthetic)</span></td>
+              <td><span class="act-pill">Act automatically</span></td>
+            </tr>            <tr>
+              <td>
+                <strong>410. [专题47 `docs/voice-sip-rfc3840-automata-bot-loop-pai-privacy-history-info-faq.md`] 企业 SIP `RFC 3840 / RFC 3841` `Contact ;automata` 机器人互打死循环熔断（连续零业务槽位推进寒暄轮次钳制在 `[1, 4]` 轮并主动拆线，防手机 AI 秘书与企业 AI 客服互聊数小时烧穿算力）与 `RFC 7044 History-Info` 呼叫前转深度锁（钳制在 `[1, 5]` 跳；`0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established` 离线 `synthetic` 策略配置检查；真实 SIP B2BUA 头解析耗时 `not_measured`）&amp; `RFC 3323 / RFC 3325 P-Asserted-Identity (PAI)` 非 `Spec(T)` 授信入站 100% 剥离（`0` 伪造高管/VIP 来电）与出站遇 `Privacy: id / header / user` 强制擦除 `PAI/PPI` 并匿名化 `From`（`0` 隐私泄露；真实 SBC ACL 查找耗时 `not_measured`）(`P807` / `P808` · Stage 407 · 🎉 410 Dims · 817 护栏 &amp; 826 探针 · 410 维)</strong>
+              </td>
+              <td><code>P807 / P808 deterministic SIP RFC 3840 automata bot-loop + History-Info gate &amp; RFC 3325 PAI ingress strip / Privacy:id egress guard</code></td>
+              <td><span class="badge-pass">PASS · 0ms @ 1ms Res (Synthetic)</span></td>
+              <td><span class="act-pill">Act automatically</span></td>
+            </tr>            <tr>
+              <td>
+                <strong>411. [专题48 `docs/voice-webrtc-simulcast-rfc8851-rid-spoof-tmmbr-mute-storm-faq.md`] WebRTC `RFC 8851 / RFC 8852` Simulcast 多流联播 `(SSRC, a=mid, a=rid)` 首包不可变钉扎（`0` 次通话中途跨层 `rid` 篡改与跨轨 `repaired-rtp-stream-id` 劫持，单轨联播层数钳制在 `[1, 3]` 层；`0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established` 离线 `synthetic` 策略配置检查；真实 SFU RID 路由表查找耗时 `not_measured`）&amp; `RFC 5104 RTCP TMMBR` 主音频流 `[24, 64] kbps` 最低保底码率锁（严禁 `TMMBR=0 bps` 将语音智能体静音）及 `RFC 7728 PAUSE / RESUME` `[1, 4]/s` 启停迟滞门禁（真实 `TMMBN` 反馈序列化耗时 `not_measured`）(`P809` / `P810` · Stage 408 · 🎉 50th Standalone FAQ · 819 护栏 &amp; 828 探针 · 411 维)</strong>
+              </td>
+              <td><code>P809 / P810 deterministic WebRTC RFC 8851/8852 Simulcast RID + repaired-RID gate &amp; RFC 5104 TMMBR audio floor / pause-resume guard</code></td>
+              <td><span class="badge-pass">PASS · 0ms @ 1ms Res (Synthetic)</span></td>
+              <td><span class="act-pill">Act automatically</span></td>
+            </tr>            <tr>
+              <td>
+                <strong>412. [专题49 `docs/voice-sip-rfc4235-dialog-blf-pickup-hijack-notify-storm-faq.md`] 企业 SIP `RFC 4235` 对话事件包（`Event: dialog` BLF 状态灯）非代答组 `call-id / local-tag / remote-tag` 与 `<remote>` 来电号码 100% 脱敏（`0` 标签泄露，防跨部门普通分机伪造 `INVITE Replaces:` 抢走高管/VIP 振铃通话）与同代答组 RBAC 强校验（`0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established` 离线 `synthetic` 策略配置检查；真实 PBX XML 序列化耗时 `not_measured`）&amp; `RFC 6665` 野生无订阅 `SIP NOTIFY` 100% 返回 `481` 拒止（`0` 野生接受，防 `Event: talk` 远程强制摘机窃听）与 `RFC 5263 / RFC 6446 max-rate [1, 5]/s` 状态合并限流门禁（真实 Presence 订阅表查找耗时 `not_measured`）(`P811` / `P812` · Stage 409 · 🎉 830 Probes · 821 护栏 &amp; 830 探针 · 412 维)</strong>
+              </td>
+              <td><code>P811 / P812 deterministic SIP RFC 4235 BLF dialog-tag redaction + pickup RBAC gate &amp; RFC 6665 unsolicited NOTIFY 481 / max-rate guard</code></td>
+              <td><span class="badge-pass">PASS · 0ms @ 1ms Res (Synthetic)</span></td>
+              <td><span class="act-pill">Act automatically</span></td>
+            </tr>            <tr>
+              <td>
+                <strong>413. [专题50 🎉 `docs/voice-webrtc-dcep-rfc8832-channel-open-ppid-stream-glare-faq.md`] WebRTC `RFC 8832 (DCEP)` 带内 `DATA_CHANNEL_OPEN` `Label / Protocol` 白名单鉴权（`0` 伪造特权通道）与 `RFC 8831 PPID` `{50, 51, 53, 56, 57}` 强类型及 UTF-8 合法性校验（`0` 类型混淆崩溃；`0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established` 离线 `synthetic` 策略配置检查；真实 SCTP/DCEP 解析耗时 `not_measured`）&amp; `RFC 8832 Section 6` DTLS 角色奇偶 `Stream ID` 分配铁律（`DTLS Client=偶 / Server=奇`，`0` 建流碰撞串线）及 `RFC 8841 a=max-message-size [16, 64] KB` 防分片重组内存炸弹门禁（真实 `RFC 6525` 流重置耗时 `not_measured`）(`P813` / `P814` · Stage 410 · 🎉 Topic 50 Milestone · 823 护栏 &amp; 832 探针 · 413 维)</strong>
+              </td>
+              <td><code>P813 / P814 deterministic WebRTC RFC 8832 DCEP channel-open allowlist + PPID type gate &amp; DTLS role stream-ID parity / max-message-size guard</code></td>
+              <td><span class="badge-pass">PASS · 0ms @ 1ms Res (Synthetic)</span></td>
+              <td><span class="act-pill">Act automatically</span></td>
             </tr>          </tbody>
         </table>
         <div class="two-col-callouts">
@@ -4718,6 +4774,62 @@
                 <strong>405. [专题42 `docs/voice-webrtc-rtcp-ccfb-ecn-spoof-rr-xr-bwe-sabotage-faq.md`] WebRTC `RFC 8888 RTCP CCFB` 时延梯度佐证防伪造 `ECN-CE=0b11` 降速（`0` 次无排队延迟佐证误降，防止 `32kbps` 高清语音被砍至 `6kbps` 机器音）、`0x1FFF / 0x1FFE` 哨兵剥离与 `[1, 256]` 报告块上限门禁（`0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established` 离线 `synthetic` 策略配置检查；真实 SCReAM/GCC 滤波耗时 `not_measured`）&amp; `RFC 3550 RR / RFC 3611 XR` 丢包率与 `TWCC` 逐包确认交叉对账（`0` 次虚假丢包降速）及 `A - LSR - DLSR` 有符号 `int64` `[1, 3000]ms` 防 `uint32` 49.7 天下溢回绕锁（真实 RTCP/TWCC 对账耗时 `not_measured`）(`P797` / `P798` · Stage 402 · 807 护栏 &amp; 816 探针 · 405 维)</strong>
               </td>
               <td><code>P797 / P798 deterministic WebRTC RFC 8888 RTCP CCFB ECN-CE anti-spoof gate &amp; RFC 3550 RR/XR TWCC cross-check / signed RTT guard</code></td>
+              <td><span class="badge-pass">PASS · 0ms @ 1ms Res (Synthetic)</span></td>
+              <td><span class="act-pill">Act automatically</span></td>
+            </tr>            <tr>
+              <td>
+                <strong>406. [专题43 `docs/voice-webrtc-dtls-srtp-rfc5764-demux-hello-cookie-setup-deadlock-faq.md`] WebRTC `RFC 5764 / RFC 7983` 单端口首字节严格分区解复用（`0` 次非标首字节污染 `SRTP/DTLS` 状态机）、无状态 `RFC 6347 DTLS HelloVerifyRequest` HMAC Cookie 防 `35倍` X.509 证书反射放大与 `[576, 1200]B` 分片 MTU 门禁（`0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established` 离线 `synthetic` 策略配置检查；真实 OpenSSL/libsrtp 套接字分拣耗时 `not_measured`）&amp; `RFC 4145 / RFC 8842` SDP `a=setup` 防双 `passive` 握手死锁（`0` 死锁）及长通话 `RFC 3711 SRTP MKI` `[2000, 5000]ms` 新旧双密钥并行解密窗口（真实 DTLS-SRTP 换钥耗时 `not_measured`）(`P799` / `P800` 🎉 · Stage 403 · 809 护栏 &amp; 818 探针 · 406 维)</strong>
+              </td>
+              <td><code>P799 / P800 deterministic WebRTC RFC 7983 first-byte demux + DTLS cookie MTU gate &amp; RFC 8842 SDP setup deadlock / SRTP MKI overlap guard</code></td>
+              <td><span class="badge-pass">PASS · 0ms @ 1ms Res (Synthetic)</span></td>
+              <td><span class="act-pill">Act automatically</span></td>
+            </tr>            <tr>
+              <td>
+                <strong>407. [专题44 `docs/voice-webrtc-rtcp-avpf-nack-pli-storm-rtx-osn-apt-faq.md`] WebRTC `RFC 4585 / RFC 5104 RTCP AVPF` 单包 `NACK` 重传次数上限（`[1, 3]` 次，强制 `>= 1x RTT` 间隔）与 `trr-int` 最小反馈/关键帧冷却下限（`[100, 500]ms`，防 `17倍` 重传风暴挤死实时语音队列；`0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established` 离线 `synthetic` 策略配置检查；真实发送环缓检索耗时 `not_measured`）&amp; `RFC 4588 RTX` 独立重传流 `SSRC`（`a=ssrc-group:FID`）、16-bit `OSN` 原始序列号头（`0` 次主流原地重传污染 `RFC 3550` 抖动/丢包估算）与 `[1, 8]` 组 `apt` 载荷映射门禁（真实 RTX 拆包耗时 `not_measured`）(`P801` / `P802` · Stage 404 · 811 护栏 &amp; 820 探针 · 407 维)</strong>
+              </td>
+              <td><code>P801 / P802 deterministic WebRTC RFC 4585 AVPF NACK/PLI storm trr-int gate &amp; RFC 4588 RTX separate SSRC / OSN + apt BWE isolation guard</code></td>
+              <td><span class="badge-pass">PASS · 0ms @ 1ms Res (Synthetic)</span></td>
+              <td><span class="act-pill">Act automatically</span></td>
+            </tr>            <tr>
+              <td>
+                <strong>408. [专题45 `docs/voice-sip-rfc6026-invite-2xx-timer-gh-magic-cookie-rogue-bye-faq.md`] 企业 SIP `RFC 3261 / RFC 6026` `INVITE 2xx` 服务端事务 `Accepted` 状态机（`Timer G [1, 7]` 次重传上限与 `Timer H [8, 32]s` 未确认半开超时回收，防半开呼叫耗尽 S2S GPU 槽位）与顶层 `Via branch=z9hG4bK` 魔术 Cookie 强校验（拒绝 $O(N)$ `RFC 2543` 慢扫描；`0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established` 离线 `synthetic` 策略配置检查；真实 SBC 事务表哈希耗时 `not_measured`）&amp; 对话内 `BYE / ACK` 四元组 `(Call-ID, local-tag, remote-tag, TLS/IP 流)` 强绑定（`0` 次伪造拆线）及单调递增 `CSeq [1, 64]` 步进窗口门禁（真实 B2BUA 对话查找耗时 `not_measured`）(`P803` / `P804` · Stage 405 · 813 护栏 &amp; 822 探针 · 408 维)</strong>
+              </td>
+              <td><code>P803 / P804 deterministic SIP RFC 6026 INVITE 2xx Timer G/H + z9hG4bK cookie gate &amp; rogue BYE/ACK dialog-tuple / CSeq guard</code></td>
+              <td><span class="badge-pass">PASS · 0ms @ 1ms Res (Synthetic)</span></td>
+              <td><span class="act-pill">Act automatically</span></td>
+            </tr>            <tr>
+              <td>
+                <strong>409. [专题46 `docs/voice-webrtc-jsep-rfc8829-sdp-glare-rollback-mid-msid-order-faq.md`] WebRTC `RFC 8829 (JSEP)` 完美协商 `Polite / Impolite` 自动回滚（`have-local-offer -> {type:"rollback"} -> stable`）与 Unified Plan `m= / a=mid` 轨槽位只增不删保序门禁（`0` 次 `m=` 行删除或重排，停用轨置 `port 0 + a=inactive`，槽位数钳制在 `[1, 16]`；`0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established` 离线 `synthetic` 策略配置检查；真实浏览器 `RTCPeerConnection` 状态机转换耗时 `not_measured`）&amp; `RFC 8842` DTLS `[256, 512]` 位（`SHA-256+`）常量时间指纹锚定（换证强制 `ICE Restart`）与 `RFC 8830 a=msid` 租户会话级防跨轨嫁接锁（真实 X.509 摘要校验耗时 `not_measured`）(`P805` / `P806` · Stage 406 · 🎉 50th SVG · 815 护栏 &amp; 824 探针 · 409 维)</strong>
+              </td>
+              <td><code>P805 / P806 deterministic WebRTC RFC 8829 JSEP glare rollback + append-only m=/mid gate &amp; RFC 8842 DTLS SHA-256 fingerprint / msid guard</code></td>
+              <td><span class="badge-pass">PASS · 0ms @ 1ms Res (Synthetic)</span></td>
+              <td><span class="act-pill">Act automatically</span></td>
+            </tr>            <tr>
+              <td>
+                <strong>410. [专题47 `docs/voice-sip-rfc3840-automata-bot-loop-pai-privacy-history-info-faq.md`] 企业 SIP `RFC 3840 / RFC 3841` `Contact ;automata` 机器人互打死循环熔断（连续零业务槽位推进寒暄轮次钳制在 `[1, 4]` 轮并主动拆线，防手机 AI 秘书与企业 AI 客服互聊数小时烧穿算力）与 `RFC 7044 History-Info` 呼叫前转深度锁（钳制在 `[1, 5]` 跳；`0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established` 离线 `synthetic` 策略配置检查；真实 SIP B2BUA 头解析耗时 `not_measured`）&amp; `RFC 3323 / RFC 3325 P-Asserted-Identity (PAI)` 非 `Spec(T)` 授信入站 100% 剥离（`0` 伪造高管/VIP 来电）与出站遇 `Privacy: id / header / user` 强制擦除 `PAI/PPI` 并匿名化 `From`（`0` 隐私泄露；真实 SBC ACL 查找耗时 `not_measured`）(`P807` / `P808` · Stage 407 · 🎉 410 Dims · 817 护栏 &amp; 826 探针 · 410 维)</strong>
+              </td>
+              <td><code>P807 / P808 deterministic SIP RFC 3840 automata bot-loop + History-Info gate &amp; RFC 3325 PAI ingress strip / Privacy:id egress guard</code></td>
+              <td><span class="badge-pass">PASS · 0ms @ 1ms Res (Synthetic)</span></td>
+              <td><span class="act-pill">Act automatically</span></td>
+            </tr>            <tr>
+              <td>
+                <strong>411. [专题48 `docs/voice-webrtc-simulcast-rfc8851-rid-spoof-tmmbr-mute-storm-faq.md`] WebRTC `RFC 8851 / RFC 8852` Simulcast 多流联播 `(SSRC, a=mid, a=rid)` 首包不可变钉扎（`0` 次通话中途跨层 `rid` 篡改与跨轨 `repaired-rtp-stream-id` 劫持，单轨联播层数钳制在 `[1, 3]` 层；`0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established` 离线 `synthetic` 策略配置检查；真实 SFU RID 路由表查找耗时 `not_measured`）&amp; `RFC 5104 RTCP TMMBR` 主音频流 `[24, 64] kbps` 最低保底码率锁（严禁 `TMMBR=0 bps` 将语音智能体静音）及 `RFC 7728 PAUSE / RESUME` `[1, 4]/s` 启停迟滞门禁（真实 `TMMBN` 反馈序列化耗时 `not_measured`）(`P809` / `P810` · Stage 408 · 🎉 50th Standalone FAQ · 819 护栏 &amp; 828 探针 · 411 维)</strong>
+              </td>
+              <td><code>P809 / P810 deterministic WebRTC RFC 8851/8852 Simulcast RID + repaired-RID gate &amp; RFC 5104 TMMBR audio floor / pause-resume guard</code></td>
+              <td><span class="badge-pass">PASS · 0ms @ 1ms Res (Synthetic)</span></td>
+              <td><span class="act-pill">Act automatically</span></td>
+            </tr>            <tr>
+              <td>
+                <strong>412. [专题49 `docs/voice-sip-rfc4235-dialog-blf-pickup-hijack-notify-storm-faq.md`] 企业 SIP `RFC 4235` 对话事件包（`Event: dialog` BLF 状态灯）非代答组 `call-id / local-tag / remote-tag` 与 `<remote>` 来电号码 100% 脱敏（`0` 标签泄露，防跨部门普通分机伪造 `INVITE Replaces:` 抢走高管/VIP 振铃通话）与同代答组 RBAC 强校验（`0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established` 离线 `synthetic` 策略配置检查；真实 PBX XML 序列化耗时 `not_measured`）&amp; `RFC 6665` 野生无订阅 `SIP NOTIFY` 100% 返回 `481` 拒止（`0` 野生接受，防 `Event: talk` 远程强制摘机窃听）与 `RFC 5263 / RFC 6446 max-rate [1, 5]/s` 状态合并限流门禁（真实 Presence 订阅表查找耗时 `not_measured`）(`P811` / `P812` · Stage 409 · 🎉 830 Probes · 821 护栏 &amp; 830 探针 · 412 维)</strong>
+              </td>
+              <td><code>P811 / P812 deterministic SIP RFC 4235 BLF dialog-tag redaction + pickup RBAC gate &amp; RFC 6665 unsolicited NOTIFY 481 / max-rate guard</code></td>
+              <td><span class="badge-pass">PASS · 0ms @ 1ms Res (Synthetic)</span></td>
+              <td><span class="act-pill">Act automatically</span></td>
+            </tr>            <tr>
+              <td>
+                <strong>413. [专题50 🎉 `docs/voice-webrtc-dcep-rfc8832-channel-open-ppid-stream-glare-faq.md`] WebRTC `RFC 8832 (DCEP)` 带内 `DATA_CHANNEL_OPEN` `Label / Protocol` 白名单鉴权（`0` 伪造特权通道）与 `RFC 8831 PPID` `{50, 51, 53, 56, 57}` 强类型及 UTF-8 合法性校验（`0` 类型混淆崩溃；`0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established` 离线 `synthetic` 策略配置检查；真实 SCTP/DCEP 解析耗时 `not_measured`）&amp; `RFC 8832 Section 6` DTLS 角色奇偶 `Stream ID` 分配铁律（`DTLS Client=偶 / Server=奇`，`0` 建流碰撞串线）及 `RFC 8841 a=max-message-size [16, 64] KB` 防分片重组内存炸弹门禁（真实 `RFC 6525` 流重置耗时 `not_measured`）(`P813` / `P814` · Stage 410 · 🎉 Topic 50 Milestone · 823 护栏 &amp; 832 探针 · 413 维)</strong>
+              </td>
+              <td><code>P813 / P814 deterministic WebRTC RFC 8832 DCEP channel-open allowlist + PPID type gate &amp; DTLS role stream-ID parity / max-message-size guard</code></td>
               <td><span class="badge-pass">PASS · 0ms @ 1ms Res (Synthetic)</span></td>
               <td><span class="act-pill">Act automatically</span></td>
             </tr>          </tbody>
