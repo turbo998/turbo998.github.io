@@ -1969,6 +1969,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r126File),'utf8');
       assert.ok(txt.includes('2,120.00')&&txt.includes('4,370.00')&&txt.includes('6,490.00')&&txt.includes('220.00')&&txt.includes('380.00')&&txt.includes('600.00')&&txt.includes('5,890.00')&&txt.includes('90.76%')&&txt.includes('not_measured'),r126File+': contains exact 11-12 R27 claude-animation-skills+cracked closed-form parameters');
     }
+    // 2026-11-12 Round 28 (R127: wendersoon/radar-cnpj-mcp + shany9200/Three) closed-form FinOps verification
+    const r127PathA=2010.00+44.0*95.00;
+    assert.equal(r127PathA.toFixed(2),'6190.00','11-12 R28 Path A total');
+    const r127PathC=205.00+4.0*95.00;
+    assert.equal(r127PathC.toFixed(2),'585.00','11-12 R28 Path C total');
+    assert.equal((r127PathA-r127PathC).toFixed(2),'5605.00','11-12 R28 savings vs Path A');
+    assert.equal(((r127PathA-r127PathC)/r127PathA*100).toFixed(2),'90.55','11-12 R28 pct savings vs Path A');
+    for(const r127File of ['workshops/github-trending-radar/docs/radar-cnpj-mcp-three-70m-local-opendata-mcp-antipoisoning-dual-memory-agent-selection-faq.md','workshops/github-trending-radar/docs/radar-cnpj-mcp-three-70m-local-opendata-mcp-antipoisoning-dual-memory-agent-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r28-radarcnpj-three.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r127File),'utf8');
+      assert.ok(txt.includes('2,010.00')&&txt.includes('4,180.00')&&txt.includes('6,190.00')&&txt.includes('205.00')&&txt.includes('380.00')&&txt.includes('585.00')&&txt.includes('5,605.00')&&txt.includes('90.55%')&&txt.includes('not_measured'),r127File+': contains exact 11-12 R28 radar-cnpj-mcp+Three closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
