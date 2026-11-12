@@ -1826,6 +1826,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r113File),'utf8');
       assert.ok(txt.includes('1,620.00')&&txt.includes('4,320.00')&&txt.includes('5,940.00')&&txt.includes('220.00')&&txt.includes('450.00')&&txt.includes('670.00')&&txt.includes('5,270.00')&&txt.includes('88.72%')&&txt.includes('not_measured'),r113File+': contains exact 11-12 R14 cutaway+imagetopsd closed-form parameters');
     }
+    // 2026-11-12 Round 15 (R114: skild-ai/steel + xiaoerofficial021-collab/FlowHMR-Windows) closed-form FinOps verification
+    const r114PathA=2040.00+48.0*90.00;
+    assert.equal(r114PathA.toFixed(2),'6360.00','11-12 R15 Path A total');
+    const r114PathC=260.00+5.0*90.00;
+    assert.equal(r114PathC.toFixed(2),'710.00','11-12 R15 Path C total');
+    assert.equal((r114PathA-r114PathC).toFixed(2),'5650.00','11-12 R15 savings vs Path A');
+    assert.equal(((r114PathA-r114PathC)/r114PathA*100).toFixed(2),'88.84','11-12 R15 pct savings vs Path A');
+    for(const r114File of ['workshops/github-trending-radar/docs/skild-steel-flowhmr-windows-heterogeneous-robot-physics-multiperson-mocap-selection-faq.md','workshops/github-trending-radar/docs/skild-steel-flowhmr-windows-heterogeneous-robot-physics-multiperson-mocap-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r15-steel-flowhmr.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r114File),'utf8');
+      assert.ok(txt.includes('2,040.00')&&txt.includes('4,320.00')&&txt.includes('6,360.00')&&txt.includes('260.00')&&txt.includes('450.00')&&txt.includes('710.00')&&txt.includes('5,650.00')&&txt.includes('88.84%')&&txt.includes('not_measured'),r114File+': contains exact 11-12 R15 steel+flowhmr closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
