@@ -1936,6 +1936,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r123File),'utf8');
       assert.ok(txt.includes('2,060.00')&&txt.includes('4,370.00')&&txt.includes('6,430.00')&&txt.includes('230.00')&&txt.includes('380.00')&&txt.includes('610.00')&&txt.includes('5,820.00')&&txt.includes('90.51%')&&txt.includes('not_measured'),r123File+': contains exact 11-12 R24 myco+doops closed-form parameters');
     }
+    // 2026-11-12 Round 25 (R124: YT-Proteus-bot/MineAgent + ArcheOne-AI/RoboScript) closed-form FinOps verification
+    const r124PathA=2600.00+50.0*100.00;
+    assert.equal(r124PathA.toFixed(2),'7600.00','11-12 R25 Path A total');
+    const r124PathC=280.00+5.0*100.00;
+    assert.equal(r124PathC.toFixed(2),'780.00','11-12 R25 Path C total');
+    assert.equal((r124PathA-r124PathC).toFixed(2),'6820.00','11-12 R25 savings vs Path A');
+    assert.equal(((r124PathA-r124PathC)/r124PathA*100).toFixed(2),'89.74','11-12 R25 pct savings vs Path A');
+    for(const r124File of ['workshops/github-trending-radar/docs/mineagent-roboscript-canvas-to-python-agent-compiler-world-in-context-robot-learning-selection-faq.md','workshops/github-trending-radar/docs/mineagent-roboscript-canvas-to-python-agent-compiler-world-in-context-robot-learning-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r25-mineagent-roboscript.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r124File),'utf8');
+      assert.ok(txt.includes('2,600.00')&&txt.includes('5,000.00')&&txt.includes('7,600.00')&&txt.includes('280.00')&&txt.includes('500.00')&&txt.includes('780.00')&&txt.includes('6,820.00')&&txt.includes('89.74%')&&txt.includes('not_measured'),r124File+': contains exact 11-12 R25 mineagent+roboscript closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
