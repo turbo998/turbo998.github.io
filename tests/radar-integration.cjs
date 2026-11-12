@@ -1654,6 +1654,343 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r99File),'utf8');
       assert.ok(txt.includes('1,520.00')&&txt.includes('3,960.00')&&txt.includes('5,480.00')&&txt.includes('220.00')&&txt.includes('450.00')&&txt.includes('670.00')&&txt.includes('4,810.00')&&txt.includes('87.77%')&&txt.includes('not_measured'),r99File+': contains exact 11-11 R54 globalhackmap+dshl2d closed-form parameters');
     }
+    // 2026-11-12 Sweep & Round 1 (R100: QwenLM/qwen-code + Alishahryar1/free-claude-code) verification
+    const rawHtml1112=fs.readFileSync(path.join(__dirname,'..','workshops','github-trending-radar','evidence','trending-daily-2026-11-12-raw.html'),'utf8').replace(/\r\n/g,'\n');
+    assert.equal(hash(rawHtml1112),'5ff5c7d9572539c7dc8b0fdb2921f18c27f6ee874f5077956171bf007eba2980','2026-11-12 raw HTML LF sha256');
+    const rawSearch1112Str=fs.readFileSync(path.join(__dirname,'..','workshops','github-trending-radar','evidence','search-new-repos-2026-11-12-raw.json'),'utf8').replace(/\r\n/g,'\n');
+    assert.equal(hash(rawSearch1112Str),'583a62e35e5cb99f8edfd0669a7d720ad29019d3963a18d214b69022869c5e6b','2026-11-12 raw Search API JSON LF sha256');
+    const rawSearch1112=JSON.parse(rawSearch1112Str);
+    const rawSearch1112Map=new Map(rawSearch1112.items.map(it=>[it.full_name,it]));
+    for(const item of reportJson.fastest_rising_leaderboard_2026_11_12.track_a_24h_star_surge){
+      assert.equal(item.provenance,'measured',item.full_name+': 11-12 Track A provenance');
+      assert.ok(rawHtml1112.includes(`href="/${item.full_name}"`),item.full_name+': present in 11-12 raw HTML');
+      assert.ok(rawHtml1112.includes(`${item.stars_today.toLocaleString('en-US')} stars today`),item.full_name+': exact stars_today in 11-12 raw HTML');
+    }
+    for(const item of reportJson.fastest_rising_leaderboard_2026_11_12.track_b_new_repo_breakout_slope){
+      assert.equal(item.stars_today,'not_measured',item.full_name+': 11-12 Track B stars_today must be not_measured');
+      assert.ok(rawSearch1112Map.has(item.full_name),item.full_name+': present in 11-12 archived Search API JSON');
+      const rawEntry=rawSearch1112Map.get(item.full_name);
+      assert.equal(item.stars_total_search_api,rawEntry.stargazers_count,item.full_name+': 11-12 stars_total_search_api matches Search API JSON');
+      assert.equal(item.stars_per_day,Math.round(item.stars_total/item.age_days),item.full_name+': 11-12 stars_per_day closed-form');
+    }
+    const r100PathA=2400.00+46.0*90.00;
+    assert.equal(r100PathA.toFixed(2),'6540.00','11-12 R1 Path A total');
+    const r100PathC=320.00+5.0*90.00;
+    assert.equal(r100PathC.toFixed(2),'770.00','11-12 R1 Path C total');
+    assert.equal((r100PathA-r100PathC).toFixed(2),'5770.00','11-12 R1 savings vs Path A');
+    assert.equal(((r100PathA-r100PathC)/r100PathA*100).toFixed(2),'88.23','11-12 R1 pct savings vs Path A');
+    for(const r100File of ['workshops/github-trending-radar/docs/qwen-code-free-claude-code-multi-harness-coding-agent-selection-faq.md','workshops/github-trending-radar/docs/qwen-code-free-claude-code-multi-harness-coding-agent-selection-faq.en.md','assets/github-ai-radar-2026-11-12.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r100File),'utf8');
+      assert.ok(txt.includes('2,400.00')&&txt.includes('4,140.00')&&txt.includes('6,540.00')&&txt.includes('320.00')&&txt.includes('450.00')&&txt.includes('770.00')&&txt.includes('5,770.00')&&txt.includes('88.23%')&&txt.includes('not_measured'),r100File+': contains exact 11-12 R1 qwen-code+fcc closed-form parameters');
+    }
+    // 2026-11-12 Round 2 (R101: ashhart/TensorFold + huawei-csl/MACaQ) closed-form FinOps verification
+    const r101PathA=2160.00+44.0*90.00;
+    assert.equal(r101PathA.toFixed(2),'6120.00','11-12 R2 Path A total');
+    const r101PathC=280.00+5.0*90.00;
+    assert.equal(r101PathC.toFixed(2),'730.00','11-12 R2 Path C total');
+    assert.equal((r101PathA-r101PathC).toFixed(2),'5390.00','11-12 R2 savings vs Path A');
+    assert.equal(((r101PathA-r101PathC)/r101PathA*100).toFixed(2),'88.07','11-12 R2 pct savings vs Path A');
+    for(const r101File of ['workshops/github-trending-radar/docs/tensorfold-macaq-zig-cross-gpu-inference-calibrated-gguf-quantization-selection-faq.md','workshops/github-trending-radar/docs/tensorfold-macaq-zig-cross-gpu-inference-calibrated-gguf-quantization-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r2-tensorfold-macaq.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r101File),'utf8');
+      assert.ok(txt.includes('2,160.00')&&txt.includes('3,960.00')&&txt.includes('6,120.00')&&txt.includes('280.00')&&txt.includes('450.00')&&txt.includes('730.00')&&txt.includes('5,390.00')&&txt.includes('88.07%')&&txt.includes('not_measured'),r101File+': contains exact 11-12 R2 tensorfold+macaq closed-form parameters');
+    }
+    // 2026-11-12 Round 3 (R102: agentes-chat/agentes-chat + CopilotKit/OpenBot v1.0.2) closed-form FinOps verification
+    const r102PathA=2180.00+46.0*90.00;
+    assert.equal(r102PathA.toFixed(2),'6320.00','11-12 R3 Path A total');
+    const r102PathC=290.00+5.0*90.00;
+    assert.equal(r102PathC.toFixed(2),'740.00','11-12 R3 Path C total');
+    assert.equal((r102PathA-r102PathC).toFixed(2),'5580.00','11-12 R3 savings vs Path A');
+    assert.equal(((r102PathA-r102PathC)/r102PathA*100).toFixed(2),'88.29','11-12 R3 pct savings vs Path A');
+    for(const r102File of ['workshops/github-trending-radar/docs/agentes-chat-openbot-multiplayer-agent-slack-coworker-workspace-selection-faq.md','workshops/github-trending-radar/docs/agentes-chat-openbot-multiplayer-agent-slack-coworker-workspace-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r3-agentes-openbot.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r102File),'utf8');
+      assert.ok(txt.includes('2,180.00')&&txt.includes('4,140.00')&&txt.includes('6,320.00')&&txt.includes('290.00')&&txt.includes('450.00')&&txt.includes('740.00')&&txt.includes('5,580.00')&&txt.includes('88.29%')&&txt.includes('not_measured'),r102File+': contains exact 11-12 R3 agentes-chat+openbot closed-form parameters');
+    }
+    // 2026-11-12 Round 4 (R103: pmndrs/pine + dabingfy-dot/solo-to-team-skills) closed-form FinOps verification
+    const r103PathA=1760.00+44.0*90.00;
+    assert.equal(r103PathA.toFixed(2),'5720.00','11-12 R4 Path A total');
+    const r103PathC=240.00+5.0*90.00;
+    assert.equal(r103PathC.toFixed(2),'690.00','11-12 R4 Path C total');
+    assert.equal((r103PathA-r103PathC).toFixed(2),'5030.00','11-12 R4 savings vs Path A');
+    assert.equal(((r103PathA-r103PathC)/r103PathA*100).toFixed(2),'87.94','11-12 R4 pct savings vs Path A');
+    for(const r103File of ['workshops/github-trending-radar/docs/pine-solo-to-team-skills-reactive-event-harness-human-led-ai-teams-selection-faq.md','workshops/github-trending-radar/docs/pine-solo-to-team-skills-reactive-event-harness-human-led-ai-teams-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r4-pine-solototeam.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r103File),'utf8');
+      assert.ok(txt.includes('1,760.00')&&txt.includes('3,960.00')&&txt.includes('5,720.00')&&txt.includes('240.00')&&txt.includes('450.00')&&txt.includes('690.00')&&txt.includes('5,030.00')&&txt.includes('87.94%')&&txt.includes('not_measured'),r103File+': contains exact 11-12 R4 pine+solototeam closed-form parameters');
+    }
+    // 2026-11-12 Round 5 (R104: drost-ai/tinker-ai-skill + simplexai-labs/linger) closed-form FinOps verification
+    const r104PathA=2320.00+46.0*90.00;
+    assert.equal(r104PathA.toFixed(2),'6460.00','11-12 R5 Path A total');
+    const r104PathC=260.00+5.0*90.00;
+    assert.equal(r104PathC.toFixed(2),'710.00','11-12 R5 Path C total');
+    assert.equal((r104PathA-r104PathC).toFixed(2),'5750.00','11-12 R5 savings vs Path A');
+    assert.equal(((r104PathA-r104PathC)/r104PathA*100).toFixed(2),'89.01','11-12 R5 pct savings vs Path A');
+    for(const r104File of ['workshops/github-trending-radar/docs/tinker-ai-skill-linger-polystrata-session-distillation-local-125b-agent-selection-faq.md','workshops/github-trending-radar/docs/tinker-ai-skill-linger-polystrata-session-distillation-local-125b-agent-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r5-tinker-linger.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r104File),'utf8');
+      assert.ok(txt.includes('2,320.00')&&txt.includes('4,140.00')&&txt.includes('6,460.00')&&txt.includes('260.00')&&txt.includes('450.00')&&txt.includes('710.00')&&txt.includes('5,750.00')&&txt.includes('89.01%')&&txt.includes('not_measured'),r104File+': contains exact 11-12 R5 tinker+linger closed-form parameters');
+    }
+    // 2026-11-12 Round 6 (R105: FrigadeHQ/yogurt + threerocks/article2media v2.3.1) closed-form FinOps verification
+    const r105PathA=1500.00+46.0*90.00;
+    assert.equal(r105PathA.toFixed(2),'5640.00','11-12 R6 Path A total');
+    const r105PathC=210.00+5.0*90.00;
+    assert.equal(r105PathC.toFixed(2),'660.00','11-12 R6 Path C total');
+    assert.equal((r105PathA-r105PathC).toFixed(2),'4980.00','11-12 R6 savings vs Path A');
+    assert.equal(((r105PathA-r105PathC)/r105PathA*100).toFixed(2),'88.30','11-12 R6 pct savings vs Path A');
+    for(const r105File of ['workshops/github-trending-radar/docs/yogurt-article2media-botfree-private-meeting-notes-zero-dep-media-skills-selection-faq.md','workshops/github-trending-radar/docs/yogurt-article2media-botfree-private-meeting-notes-zero-dep-media-skills-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r6-yogurt-article2media.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r105File),'utf8');
+      assert.ok(txt.includes('1,500.00')&&txt.includes('4,140.00')&&txt.includes('5,640.00')&&txt.includes('210.00')&&txt.includes('450.00')&&txt.includes('660.00')&&txt.includes('4,980.00')&&txt.includes('88.30%')&&txt.includes('not_measured'),r105File+': contains exact 11-12 R6 yogurt+article2media closed-form parameters');
+    }
+    // 2026-11-12 Round 7 (R106: MiniMax-AI/MiniMax-H3-Image + op7418/guizang-game-skill + apex-compute/ANR) closed-form FinOps verification
+    const r106PathA=2040.00+46.0*90.00;
+    assert.equal(r106PathA.toFixed(2),'6180.00','11-12 R7 Path A total');
+    const r106PathC=270.00+5.0*90.00;
+    assert.equal(r106PathC.toFixed(2),'720.00','11-12 R7 Path C total');
+    assert.equal((r106PathA-r106PathC).toFixed(2),'5460.00','11-12 R7 savings vs Path A');
+    assert.equal(((r106PathA-r106PathC)/r106PathA*100).toFixed(2),'88.35','11-12 R7 pct savings vs Path A');
+    for(const r106File of ['workshops/github-trending-radar/docs/minimax-h3-image-guizang-game-skill-anr-16mp-3d-action-neural-rendering-selection-faq.md','workshops/github-trending-radar/docs/minimax-h3-image-guizang-game-skill-anr-16mp-3d-action-neural-rendering-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r7-h3image-guizang-anr.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r106File),'utf8');
+      assert.ok(txt.includes('2,040.00')&&txt.includes('4,140.00')&&txt.includes('6,180.00')&&txt.includes('270.00')&&txt.includes('450.00')&&txt.includes('720.00')&&txt.includes('5,460.00')&&txt.includes('88.35%')&&txt.includes('not_measured'),r106File+': contains exact 11-12 R7 h3image+guizang+anr closed-form parameters');
+    }
+    // 2026-11-12 Round 8 (R107: aronhy/pibrowse v0.5.5 + nickvasilescu/bot-hq) closed-form FinOps verification
+    const r107PathA=1900.00+44.0*90.00;
+    assert.equal(r107PathA.toFixed(2),'5860.00','11-12 R8 Path A total');
+    const r107PathC=230.00+5.0*90.00;
+    assert.equal(r107PathC.toFixed(2),'680.00','11-12 R8 Path C total');
+    assert.equal((r107PathA-r107PathC).toFixed(2),'5180.00','11-12 R8 savings vs Path A');
+    assert.equal(((r107PathA-r107PathC)/r107PathA*100).toFixed(2),'88.40','11-12 R8 pct savings vs Path A');
+    for(const r107File of ['workshops/github-trending-radar/docs/pibrowse-bot-hq-chromium157-fingerprint-workspaces-multi-screen-hermes-selection-faq.md','workshops/github-trending-radar/docs/pibrowse-bot-hq-chromium157-fingerprint-workspaces-multi-screen-hermes-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r8-pibrowse-bothq.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r107File),'utf8');
+      assert.ok(txt.includes('1,900.00')&&txt.includes('3,960.00')&&txt.includes('5,860.00')&&txt.includes('230.00')&&txt.includes('450.00')&&txt.includes('680.00')&&txt.includes('5,180.00')&&txt.includes('88.40%')&&txt.includes('not_measured'),r107File+': contains exact 11-12 R8 pibrowse+bothq closed-form parameters');
+    }
+    // 2026-11-12 Round 9 (R108: makepad/relax + 2SinceJuly/SkyDot) closed-form FinOps verification
+    const r108PathA=1720.00+48.0*90.00;
+    assert.equal(r108PathA.toFixed(2),'6040.00','11-12 R9 Path A total');
+    const r108PathC=250.00+5.0*90.00;
+    assert.equal(r108PathC.toFixed(2),'700.00','11-12 R9 Path C total');
+    assert.equal((r108PathA-r108PathC).toFixed(2),'5340.00','11-12 R9 savings vs Path A');
+    assert.equal(((r108PathA-r108PathC)/r108PathA*100).toFixed(2),'88.41','11-12 R9 pct savings vs Path A');
+    for(const r108File of ['workshops/github-trending-radar/docs/makepad-relax-skydot-rust-live-jit-multi-dot-pi-agent-workbench-selection-faq.md','workshops/github-trending-radar/docs/makepad-relax-skydot-rust-live-jit-multi-dot-pi-agent-workbench-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r9-relax-skydot.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r108File),'utf8');
+      assert.ok(txt.includes('1,720.00')&&txt.includes('4,320.00')&&txt.includes('6,040.00')&&txt.includes('250.00')&&txt.includes('450.00')&&txt.includes('700.00')&&txt.includes('5,340.00')&&txt.includes('88.41%')&&txt.includes('not_measured'),r108File+': contains exact 11-12 R9 relax+skydot closed-form parameters');
+    }
+    // 2026-11-12 Round 10 (R109: zadescoxp/calibrain-harness + tigerogijzooav/Hyperliquid-Trade-Bot) closed-form FinOps verification
+    const r109PathA=1900.00+48.0*90.00;
+    assert.equal(r109PathA.toFixed(2),'6220.00','11-12 R10 Path A total');
+    const r109PathC=240.00+5.0*90.00;
+    assert.equal(r109PathC.toFixed(2),'690.00','11-12 R10 Path C total');
+    assert.equal((r109PathA-r109PathC).toFixed(2),'5530.00','11-12 R10 savings vs Path A');
+    assert.equal(((r109PathA-r109PathC)/r109PathA*100).toFixed(2),'88.91','11-12 R10 pct savings vs Path A');
+    for(const r109File of ['workshops/github-trending-radar/docs/calibrain-harness-hyperliquid-trade-bot-fast-classifier-forward-test-risk-audit-selection-faq.md','workshops/github-trending-radar/docs/calibrain-harness-hyperliquid-trade-bot-fast-classifier-forward-test-risk-audit-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r10-calibrain-hyperliquid.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r109File),'utf8');
+      assert.ok(txt.includes('1,900.00')&&txt.includes('4,320.00')&&txt.includes('6,220.00')&&txt.includes('240.00')&&txt.includes('450.00')&&txt.includes('690.00')&&txt.includes('5,530.00')&&txt.includes('88.91%')&&txt.includes('not_measured'),r109File+': contains exact 11-12 R10 calibrain+hyperliquid closed-form parameters');
+    }
+    // 2026-11-12 Round 11 (R110: bookleme/bookleme + pktq/lasik) closed-form FinOps verification
+    const r110PathA=2440.00+46.0*90.00;
+    assert.equal(r110PathA.toFixed(2),'6580.00','11-12 R11 Path A total');
+    const r110PathC=230.00+5.0*90.00;
+    assert.equal(r110PathC.toFixed(2),'680.00','11-12 R11 Path C total');
+    assert.equal((r110PathA-r110PathC).toFixed(2),'5900.00','11-12 R11 savings vs Path A');
+    assert.equal(((r110PathA-r110PathC)/r110PathA*100).toFixed(2),'89.67','11-12 R11 pct savings vs Path A');
+    for(const r110File of ['workshops/github-trending-radar/docs/bookleme-lasik-book-to-skill-compiler-static-deblinding-mcp-selection-faq.md','workshops/github-trending-radar/docs/bookleme-lasik-book-to-skill-compiler-static-deblinding-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r11-bookleme-lasik.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r110File),'utf8');
+      assert.ok(txt.includes('2,440.00')&&txt.includes('4,140.00')&&txt.includes('6,580.00')&&txt.includes('230.00')&&txt.includes('450.00')&&txt.includes('680.00')&&txt.includes('5,900.00')&&txt.includes('89.67%')&&txt.includes('not_measured'),r110File+': contains exact 11-12 R11 bookleme+lasik closed-form parameters');
+    }
+    // 2026-11-12 Round 12 (R111: rainyZhou2/SreAgentHarness + kunchenguid/headless) closed-form FinOps verification
+    const r111PathA=1960.00+48.0*90.00;
+    assert.equal(r111PathA.toFixed(2),'6280.00','11-12 R12 Path A total');
+    const r111PathC=240.00+5.0*90.00;
+    assert.equal(r111PathC.toFixed(2),'690.00','11-12 R12 Path C total');
+    assert.equal((r111PathA-r111PathC).toFixed(2),'5590.00','11-12 R12 savings vs Path A');
+    assert.equal(((r111PathA-r111PathC)/r111PathA*100).toFixed(2),'89.01','11-12 R12 pct savings vs Path A');
+    for(const r111File of ['workshops/github-trending-radar/docs/sre-agent-harness-headless-recoverable-sre-transactions-zero-password-ssh-selection-faq.md','workshops/github-trending-radar/docs/sre-agent-harness-headless-recoverable-sre-transactions-zero-password-ssh-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r12-sreharness-headless.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r111File),'utf8');
+      assert.ok(txt.includes('1,960.00')&&txt.includes('4,320.00')&&txt.includes('6,280.00')&&txt.includes('240.00')&&txt.includes('450.00')&&txt.includes('690.00')&&txt.includes('5,590.00')&&txt.includes('89.01%')&&txt.includes('not_measured'),r111File+': contains exact 11-12 R12 sreharness+headless closed-form parameters');
+    }
+    // 2026-11-12 Round 13 (R112: stevenmichaelthomas/numbrone + permitzip/mutinybim) closed-form FinOps verification
+    const r112PathA=1800.00+48.0*90.00;
+    assert.equal(r112PathA.toFixed(2),'6120.00','11-12 R13 Path A total');
+    const r112PathC=240.00+5.0*90.00;
+    assert.equal(r112PathC.toFixed(2),'690.00','11-12 R13 Path C total');
+    assert.equal((r112PathA-r112PathC).toFixed(2),'5430.00','11-12 R13 savings vs Path A');
+    assert.equal(((r112PathA-r112PathC)/r112PathA*100).toFixed(2),'88.73','11-12 R13 pct savings vs Path A');
+    for(const r112File of ['workshops/github-trending-radar/docs/numbrone-mutinybim-chief-manager-worktree-hierarchy-multiplayer-bim-mcp-selection-faq.md','workshops/github-trending-radar/docs/numbrone-mutinybim-chief-manager-worktree-hierarchy-multiplayer-bim-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r13-numbrone-mutinybim.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r112File),'utf8');
+      assert.ok(txt.includes('1,800.00')&&txt.includes('4,320.00')&&txt.includes('6,120.00')&&txt.includes('240.00')&&txt.includes('450.00')&&txt.includes('690.00')&&txt.includes('5,430.00')&&txt.includes('88.73%')&&txt.includes('not_measured'),r112File+': contains exact 11-12 R13 numbrone+mutinybim closed-form parameters');
+    }
+    // 2026-11-12 Round 14 (R113: Nyxera0x/cutaway + link-ding/image-to-psd) closed-form FinOps verification
+    const r113PathA=1620.00+48.0*90.00;
+    assert.equal(r113PathA.toFixed(2),'5940.00','11-12 R14 Path A total');
+    const r113PathC=220.00+5.0*90.00;
+    assert.equal(r113PathC.toFixed(2),'670.00','11-12 R14 Path C total');
+    assert.equal((r113PathA-r113PathC).toFixed(2),'5270.00','11-12 R14 savings vs Path A');
+    assert.equal(((r113PathA-r113PathC)/r113PathA*100).toFixed(2),'88.72','11-12 R14 pct savings vs Path A');
+    for(const r113File of ['workshops/github-trending-radar/docs/cutaway-image-to-psd-code-built-3d-exploding-sim-19-layer-psd-skill-selection-faq.md','workshops/github-trending-radar/docs/cutaway-image-to-psd-code-built-3d-exploding-sim-19-layer-psd-skill-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r14-cutaway-imagetopsd.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r113File),'utf8');
+      assert.ok(txt.includes('1,620.00')&&txt.includes('4,320.00')&&txt.includes('5,940.00')&&txt.includes('220.00')&&txt.includes('450.00')&&txt.includes('670.00')&&txt.includes('5,270.00')&&txt.includes('88.72%')&&txt.includes('not_measured'),r113File+': contains exact 11-12 R14 cutaway+imagetopsd closed-form parameters');
+    }
+    // 2026-11-12 Round 15 (R114: skild-ai/steel + xiaoerofficial021-collab/FlowHMR-Windows) closed-form FinOps verification
+    const r114PathA=2040.00+48.0*90.00;
+    assert.equal(r114PathA.toFixed(2),'6360.00','11-12 R15 Path A total');
+    const r114PathC=260.00+5.0*90.00;
+    assert.equal(r114PathC.toFixed(2),'710.00','11-12 R15 Path C total');
+    assert.equal((r114PathA-r114PathC).toFixed(2),'5650.00','11-12 R15 savings vs Path A');
+    assert.equal(((r114PathA-r114PathC)/r114PathA*100).toFixed(2),'88.84','11-12 R15 pct savings vs Path A');
+    for(const r114File of ['workshops/github-trending-radar/docs/skild-steel-flowhmr-windows-heterogeneous-robot-physics-multiperson-mocap-selection-faq.md','workshops/github-trending-radar/docs/skild-steel-flowhmr-windows-heterogeneous-robot-physics-multiperson-mocap-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r15-steel-flowhmr.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r114File),'utf8');
+      assert.ok(txt.includes('2,040.00')&&txt.includes('4,320.00')&&txt.includes('6,360.00')&&txt.includes('260.00')&&txt.includes('450.00')&&txt.includes('710.00')&&txt.includes('5,650.00')&&txt.includes('88.84%')&&txt.includes('not_measured'),r114File+': contains exact 11-12 R15 steel+flowhmr closed-form parameters');
+    }
+    // 2026-11-12 Round 16 (R115: ValidatorStack/solana-vigil + MZULALI/xj-scanner) closed-form FinOps verification
+    const r115PathA=1500.00+48.0*90.00;
+    assert.equal(r115PathA.toFixed(2),'5820.00','11-12 R16 Path A total');
+    const r115PathC=200.00+5.0*90.00;
+    assert.equal(r115PathC.toFixed(2),'650.00','11-12 R16 Path C total');
+    assert.equal((r115PathA-r115PathC).toFixed(2),'5170.00','11-12 R16 savings vs Path A');
+    assert.equal(((r115PathA-r115PathC)/r115PathA*100).toFixed(2),'88.83','11-12 R16 pct savings vs Path A');
+    for(const r115File of ['workshops/github-trending-radar/docs/solana-vigil-xj-scanner-zero-dep-readonly-node-health-arduino-ecu-agent-selection-faq.md','workshops/github-trending-radar/docs/solana-vigil-xj-scanner-zero-dep-readonly-node-health-arduino-ecu-agent-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r16-vigil-xjscanner.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r115File),'utf8');
+      assert.ok(txt.includes('1,500.00')&&txt.includes('4,320.00')&&txt.includes('5,820.00')&&txt.includes('200.00')&&txt.includes('450.00')&&txt.includes('650.00')&&txt.includes('5,170.00')&&txt.includes('88.83%')&&txt.includes('not_measured'),r115File+': contains exact 11-12 R16 vigil+xjscanner closed-form parameters');
+    }
+    // 2026-11-12 Round 17 (R116: FutureMLS-Lab/FlashStates + yanstd888/9routerx) closed-form FinOps verification
+    const r116PathA=2320.00+48.0*90.00;
+    assert.equal(r116PathA.toFixed(2),'6640.00','11-12 R17 Path A total');
+    const r116PathC=260.00+5.0*90.00;
+    assert.equal(r116PathC.toFixed(2),'710.00','11-12 R17 Path C total');
+    assert.equal((r116PathA-r116PathC).toFixed(2),'5930.00','11-12 R17 savings vs Path A');
+    assert.equal(((r116PathA-r116PathC)/r116PathA*100).toFixed(2),'89.31','11-12 R17 pct savings vs Path A');
+    for(const r116File of ['workshops/github-trending-radar/docs/flashstates-9routerx-hybrid-state-agentic-inference-go-ai-router-selection-faq.md','workshops/github-trending-radar/docs/flashstates-9routerx-hybrid-state-agentic-inference-go-ai-router-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r17-flashstates-9routerx.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r116File),'utf8');
+      assert.ok(txt.includes('2,320.00')&&txt.includes('4,320.00')&&txt.includes('6,640.00')&&txt.includes('260.00')&&txt.includes('450.00')&&txt.includes('710.00')&&txt.includes('5,930.00')&&txt.includes('89.31%')&&txt.includes('not_measured'),r116File+': contains exact 11-12 R17 flashstates+9routerx closed-form parameters');
+    }
+    // 2026-11-12 Round 18 (R117: failsafe-security/artex + DevCrabs-Inc/yandex-metrika-mcp) closed-form FinOps verification
+    const r117PathA=1840.00+48.0*90.00;
+    assert.equal(r117PathA.toFixed(2),'6160.00','11-12 R18 Path A total');
+    const r117PathC=230.00+5.0*90.00;
+    assert.equal(r117PathC.toFixed(2),'680.00','11-12 R18 Path C total');
+    assert.equal((r117PathA-r117PathC).toFixed(2),'5480.00','11-12 R18 savings vs Path A');
+    assert.equal(((r117PathA-r117PathC)/r117PathA*100).toFixed(2),'88.96','11-12 R18 pct savings vs Path A');
+    for(const r117File of ['workshops/github-trending-radar/docs/failsafe-artex-yandex-metrika-mcp-supply-chain-hardened-secagent-verified-analytics-selection-faq.md','workshops/github-trending-radar/docs/failsafe-artex-yandex-metrika-mcp-supply-chain-hardened-secagent-verified-analytics-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r18-artex-metrikamcp.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r117File),'utf8');
+      assert.ok(txt.includes('1,840.00')&&txt.includes('4,320.00')&&txt.includes('6,160.00')&&txt.includes('230.00')&&txt.includes('450.00')&&txt.includes('680.00')&&txt.includes('5,480.00')&&txt.includes('88.96%')&&txt.includes('not_measured'),r117File+': contains exact 11-12 R18 artex+metrikamcp closed-form parameters');
+    }
+    // 2026-11-12 Round 19 (R118: emollick/ai-portals + codepawl/creator-generalist) closed-form FinOps verification
+    const r118PathA=1920.00+48.0*95.00;
+    assert.equal(r118PathA.toFixed(2),'6480.00','11-12 R19 Path A total');
+    const r118PathC=245.00+5.0*95.00;
+    assert.equal(r118PathC.toFixed(2),'720.00','11-12 R19 Path C total');
+    assert.equal((r118PathA-r118PathC).toFixed(2),'5760.00','11-12 R19 savings vs Path A');
+    assert.equal(((r118PathA-r118PathC)/r118PathA*100).toFixed(2),'88.89','11-12 R19 pct savings vs Path A');
+    for(const r118File of ['workshops/github-trending-radar/docs/ai-portals-creator-generalist-zero-asset-procedural-3d-worlds-greybox-verified-creative-skills-selection-faq.md','workshops/github-trending-radar/docs/ai-portals-creator-generalist-zero-asset-procedural-3d-worlds-greybox-verified-creative-skills-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r19-aiportals-creatorgen.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r118File),'utf8');
+      assert.ok(txt.includes('1,920.00')&&txt.includes('4,560.00')&&txt.includes('6,480.00')&&txt.includes('245.00')&&txt.includes('475.00')&&txt.includes('720.00')&&txt.includes('5,760.00')&&txt.includes('88.89%')&&txt.includes('not_measured'),r118File+': contains exact 11-12 R19 ai-portals+creator-generalist closed-form parameters');
+    }
+    // 2026-11-12 Round 20 (R119: Saekisui/claude-p-pipeline + yusuke-114/claude-xcode-agent) closed-form FinOps verification
+    const r119PathA=2040.00+44.0*95.00;
+    assert.equal(r119PathA.toFixed(2),'6220.00','11-12 R20 Path A total');
+    const r119PathC=210.00+4.0*95.00;
+    assert.equal(r119PathC.toFixed(2),'590.00','11-12 R20 Path C total');
+    assert.equal((r119PathA-r119PathC).toFixed(2),'5630.00','11-12 R20 savings vs Path A');
+    assert.equal(((r119PathA-r119PathC)/r119PathA*100).toFixed(2),'90.51','11-12 R20 pct savings vs Path A');
+    for(const r119File of ['workshops/github-trending-radar/docs/claude-p-pipeline-claude-xcode-agent-resident-stream-json-dual-exec-acp-selection-faq.md','workshops/github-trending-radar/docs/claude-p-pipeline-claude-xcode-agent-resident-stream-json-dual-exec-acp-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r20-claudep-xcodeacp.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r119File),'utf8');
+      assert.ok(txt.includes('2,040.00')&&txt.includes('4,180.00')&&txt.includes('6,220.00')&&txt.includes('210.00')&&txt.includes('380.00')&&txt.includes('590.00')&&txt.includes('5,630.00')&&txt.includes('90.51%')&&txt.includes('not_measured'),r119File+': contains exact 11-12 R20 claude-p-pipeline+claude-xcode-agent closed-form parameters');
+    }
+    // 2026-11-12 Round 21 (R120: kilolonion/agent-vscreen + funnest-xyz/funnest-charts) closed-form FinOps verification
+    const r120PathA=2150.00+46.0*95.00;
+    assert.equal(r120PathA.toFixed(2),'6520.00','11-12 R21 Path A total');
+    const r120PathC=235.00+4.0*95.00;
+    assert.equal(r120PathC.toFixed(2),'615.00','11-12 R21 Path C total');
+    assert.equal((r120PathA-r120PathC).toFixed(2),'5905.00','11-12 R21 savings vs Path A');
+    assert.equal(((r120PathA-r120PathC)/r120PathA*100).toFixed(2),'90.57','11-12 R21 pct savings vs Path A');
+    for(const r120File of ['workshops/github-trending-radar/docs/agent-vscreen-funnest-charts-android-virtual-display-financial-charts-mcp-selection-faq.md','workshops/github-trending-radar/docs/agent-vscreen-funnest-charts-android-virtual-display-financial-charts-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r21-vscreen-funnestcharts.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r120File),'utf8');
+      assert.ok(txt.includes('2,150.00')&&txt.includes('4,370.00')&&txt.includes('6,520.00')&&txt.includes('235.00')&&txt.includes('380.00')&&txt.includes('615.00')&&txt.includes('5,905.00')&&txt.includes('90.57%')&&txt.includes('not_measured'),r120File+': contains exact 11-12 R21 agent-vscreen+funnest-charts closed-form parameters');
+    }
+    // 2026-11-12 Round 22 (R121: wanshuiyin/SuperARIS + lawandrorder/mate) closed-form FinOps verification
+    const r121PathA=2090.00+44.0*95.00;
+    assert.equal(r121PathA.toFixed(2),'6270.00','11-12 R22 Path A total');
+    const r121PathC=225.00+4.0*95.00;
+    assert.equal(r121PathC.toFixed(2),'605.00','11-12 R22 Path C total');
+    assert.equal((r121PathA-r121PathC).toFixed(2),'5665.00','11-12 R22 savings vs Path A');
+    assert.equal(((r121PathA-r121PathC)/r121PathA*100).toFixed(2),'90.35','11-12 R22 pct savings vs Path A');
+    for(const r121File of ['workshops/github-trending-radar/docs/superaris-mate-persistent-3role-research-team-deterministic-intent-shopping-agent-selection-faq.md','workshops/github-trending-radar/docs/superaris-mate-persistent-3role-research-team-deterministic-intent-shopping-agent-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r22-superaris-mate.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r121File),'utf8');
+      assert.ok(txt.includes('2,090.00')&&txt.includes('4,180.00')&&txt.includes('6,270.00')&&txt.includes('225.00')&&txt.includes('380.00')&&txt.includes('605.00')&&txt.includes('5,665.00')&&txt.includes('90.35%')&&txt.includes('not_measured'),r121File+': contains exact 11-12 R22 superaris+mate closed-form parameters');
+    }
+    // 2026-11-12 Round 23 (R122: reason-machines/aspen + TechTideOhio/binnacle) closed-form FinOps verification
+    const r122PathA=2450.00+48.0*100.00;
+    assert.equal(r122PathA.toFixed(2),'7250.00','11-12 R23 Path A total');
+    const r122PathC=275.00+5.0*100.00;
+    assert.equal(r122PathC.toFixed(2),'775.00','11-12 R23 Path C total');
+    assert.equal((r122PathA-r122PathC).toFixed(2),'6475.00','11-12 R23 savings vs Path A');
+    assert.equal(((r122PathA-r122PathC)/r122PathA*100).toFixed(2),'89.31','11-12 R23 pct savings vs Path A');
+    for(const r122File of ['workshops/github-trending-radar/docs/aspen-binnacle-agent-scale-git-server-pure-rust-15tool-eval-orchestrator-selection-faq.md','workshops/github-trending-radar/docs/aspen-binnacle-agent-scale-git-server-pure-rust-15tool-eval-orchestrator-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r23-aspen-binnacle.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r122File),'utf8');
+      assert.ok(txt.includes('2,450.00')&&txt.includes('4,800.00')&&txt.includes('7,250.00')&&txt.includes('275.00')&&txt.includes('500.00')&&txt.includes('775.00')&&txt.includes('6,475.00')&&txt.includes('89.31%')&&txt.includes('not_measured'),r122File+': contains exact 11-12 R23 aspen+binnacle closed-form parameters');
+    }
+    // 2026-11-12 Round 24 (R123: chenhg5/myco + symansun/doops) closed-form FinOps verification
+    const r123PathA=2060.00+46.0*95.00;
+    assert.equal(r123PathA.toFixed(2),'6430.00','11-12 R24 Path A total');
+    const r123PathC=230.00+4.0*95.00;
+    assert.equal(r123PathC.toFixed(2),'610.00','11-12 R24 Path C total');
+    assert.equal((r123PathA-r123PathC).toFixed(2),'5820.00','11-12 R24 savings vs Path A');
+    assert.equal(((r123PathA-r123PathC)/r123PathA*100).toFixed(2),'90.51','11-12 R24 pct savings vs Path A');
+    for(const r123File of ['workshops/github-trending-radar/docs/myco-doops-cross-machine-agent-mycelium-hub-sshless-reverse-ops-gateway-selection-faq.md','workshops/github-trending-radar/docs/myco-doops-cross-machine-agent-mycelium-hub-sshless-reverse-ops-gateway-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r24-myco-doops.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r123File),'utf8');
+      assert.ok(txt.includes('2,060.00')&&txt.includes('4,370.00')&&txt.includes('6,430.00')&&txt.includes('230.00')&&txt.includes('380.00')&&txt.includes('610.00')&&txt.includes('5,820.00')&&txt.includes('90.51%')&&txt.includes('not_measured'),r123File+': contains exact 11-12 R24 myco+doops closed-form parameters');
+    }
+    // 2026-11-12 Round 25 (R124: YT-Proteus-bot/MineAgent + ArcheOne-AI/RoboScript) closed-form FinOps verification
+    const r124PathA=2600.00+50.0*100.00;
+    assert.equal(r124PathA.toFixed(2),'7600.00','11-12 R25 Path A total');
+    const r124PathC=280.00+5.0*100.00;
+    assert.equal(r124PathC.toFixed(2),'780.00','11-12 R25 Path C total');
+    assert.equal((r124PathA-r124PathC).toFixed(2),'6820.00','11-12 R25 savings vs Path A');
+    assert.equal(((r124PathA-r124PathC)/r124PathA*100).toFixed(2),'89.74','11-12 R25 pct savings vs Path A');
+    for(const r124File of ['workshops/github-trending-radar/docs/mineagent-roboscript-canvas-to-python-agent-compiler-world-in-context-robot-learning-selection-faq.md','workshops/github-trending-radar/docs/mineagent-roboscript-canvas-to-python-agent-compiler-world-in-context-robot-learning-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r25-mineagent-roboscript.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r124File),'utf8');
+      assert.ok(txt.includes('2,600.00')&&txt.includes('5,000.00')&&txt.includes('7,600.00')&&txt.includes('280.00')&&txt.includes('500.00')&&txt.includes('780.00')&&txt.includes('6,820.00')&&txt.includes('89.74%')&&txt.includes('not_measured'),r124File+': contains exact 11-12 R25 mineagent+roboscript closed-form parameters');
+    }
+    // 2026-11-12 Round 26 (R125: ersinkoc/phonebox + NJohansen/handle-mcp) closed-form FinOps verification
+    const r125PathA=1980.00+44.0*95.00;
+    assert.equal(r125PathA.toFixed(2),'6160.00','11-12 R26 Path A total');
+    const r125PathC=215.00+4.0*95.00;
+    assert.equal(r125PathC.toFixed(2),'595.00','11-12 R26 Path C total');
+    assert.equal((r125PathA-r125PathC).toFixed(2),'5565.00','11-12 R26 savings vs Path A');
+    assert.equal(((r125PathA-r125PathC)/r125PathA*100).toFixed(2),'90.34','11-12 R26 pct savings vs Path A');
+    for(const r125File of ['workshops/github-trending-radar/docs/phonebox-handle-mcp-physical-ai-quota-permission-panel-human-always-pays-mcp-selection-faq.md','workshops/github-trending-radar/docs/phonebox-handle-mcp-physical-ai-quota-permission-panel-human-always-pays-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r26-phonebox-handlemcp.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r125File),'utf8');
+      assert.ok(txt.includes('1,980.00')&&txt.includes('4,180.00')&&txt.includes('6,160.00')&&txt.includes('215.00')&&txt.includes('380.00')&&txt.includes('595.00')&&txt.includes('5,565.00')&&txt.includes('90.34%')&&txt.includes('not_measured'),r125File+': contains exact 11-12 R26 phonebox+handle-mcp closed-form parameters');
+    }
+    // 2026-11-12 Round 27 (R126: artemnovitckii/claude-animation-skills + nishant-Tiwari24/cracked) closed-form FinOps verification
+    const r126PathA=2120.00+46.0*95.00;
+    assert.equal(r126PathA.toFixed(2),'6490.00','11-12 R27 Path A total');
+    const r126PathC=220.00+4.0*95.00;
+    assert.equal(r126PathC.toFixed(2),'600.00','11-12 R27 Path C total');
+    assert.equal((r126PathA-r126PathC).toFixed(2),'5890.00','11-12 R27 savings vs Path A');
+    assert.equal(((r126PathA-r126PathC)/r126PathA*100).toFixed(2),'90.76','11-12 R27 pct savings vs Path A');
+    for(const r126File of ['workshops/github-trending-radar/docs/claude-animation-skills-cracked-safezone-code-reels-executed-oracle-interview-skills-selection-faq.md','workshops/github-trending-radar/docs/claude-animation-skills-cracked-safezone-code-reels-executed-oracle-interview-skills-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r27-animskills-cracked.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r126File),'utf8');
+      assert.ok(txt.includes('2,120.00')&&txt.includes('4,370.00')&&txt.includes('6,490.00')&&txt.includes('220.00')&&txt.includes('380.00')&&txt.includes('600.00')&&txt.includes('5,890.00')&&txt.includes('90.76%')&&txt.includes('not_measured'),r126File+': contains exact 11-12 R27 claude-animation-skills+cracked closed-form parameters');
+    }
+    // 2026-11-12 Round 28 (R127: wendersoon/radar-cnpj-mcp + shany9200/Three) closed-form FinOps verification
+    const r127PathA=2010.00+44.0*95.00;
+    assert.equal(r127PathA.toFixed(2),'6190.00','11-12 R28 Path A total');
+    const r127PathC=205.00+4.0*95.00;
+    assert.equal(r127PathC.toFixed(2),'585.00','11-12 R28 Path C total');
+    assert.equal((r127PathA-r127PathC).toFixed(2),'5605.00','11-12 R28 savings vs Path A');
+    assert.equal(((r127PathA-r127PathC)/r127PathA*100).toFixed(2),'90.55','11-12 R28 pct savings vs Path A');
+    for(const r127File of ['workshops/github-trending-radar/docs/radar-cnpj-mcp-three-70m-local-opendata-mcp-antipoisoning-dual-memory-agent-selection-faq.md','workshops/github-trending-radar/docs/radar-cnpj-mcp-three-70m-local-opendata-mcp-antipoisoning-dual-memory-agent-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r28-radarcnpj-three.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r127File),'utf8');
+      assert.ok(txt.includes('2,010.00')&&txt.includes('4,180.00')&&txt.includes('6,190.00')&&txt.includes('205.00')&&txt.includes('380.00')&&txt.includes('585.00')&&txt.includes('5,605.00')&&txt.includes('90.55%')&&txt.includes('not_measured'),r127File+': contains exact 11-12 R28 radar-cnpj-mcp+Three closed-form parameters');
+    }
+    // 2026-11-12 Round 29 (R128: mhfed/vn-law-check + yucezerey/turkish-anti-ai-skill) closed-form FinOps verification
+    const r128PathA=1950.00+44.0*95.00;
+    assert.equal(r128PathA.toFixed(2),'6130.00','11-12 R29 Path A total');
+    const r128PathC=200.00+4.0*95.00;
+    assert.equal(r128PathC.toFixed(2),'580.00','11-12 R29 Path C total');
+    assert.equal((r128PathA-r128PathC).toFixed(2),'5550.00','11-12 R29 savings vs Path A');
+    assert.equal(((r128PathA-r128PathC)/r128PathA*100).toFixed(2),'90.54','11-12 R29 pct savings vs Path A');
+    for(const r128File of ['workshops/github-trending-radar/docs/vn-law-check-turkish-anti-ai-skill-statutory-code-compliance-morphosyntactic-antislop-selection-faq.md','workshops/github-trending-radar/docs/vn-law-check-turkish-anti-ai-skill-statutory-code-compliance-morphosyntactic-antislop-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r29-vnlaw-turkishantiai.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r128File),'utf8');
+      assert.ok(txt.includes('1,950.00')&&txt.includes('4,180.00')&&txt.includes('6,130.00')&&txt.includes('200.00')&&txt.includes('380.00')&&txt.includes('580.00')&&txt.includes('5,550.00')&&txt.includes('90.54%')&&txt.includes('not_measured'),r128File+': contains exact 11-12 R29 vn-law-check+turkish-anti-ai-skill closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
