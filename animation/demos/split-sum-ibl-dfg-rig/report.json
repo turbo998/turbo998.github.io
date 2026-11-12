@@ -1,0 +1,267 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Karis Split-Sum IBL environment BRDF (F0*scale + bias) vs naive macroscopic Schlick Fresnel grazing halo rig",
+  "topic_zh": "Karis 分离求和 IBL 环境 BRDF（F₀·scale + bias）对比朴素宏观 Schlick 菲涅尔掠射白边",
+  "slug": "split-sum-ibl-dfg-rig",
+  "timestamp": "2026-11-12T20:23:47.561Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Brian Karis (SIGGRAPH 2013) Split-Sum IBL Environment BRDF scale-and-bias pre-integration (F_0 * scale + bias) versus naive macroscopic Schlick Fresnel F(N.V, F_0) and 192-point composite Gauss-Legendre quadrature across 17 view cosines (N.V in [0.05, 0.93]). No neural environment estimation execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "splitsum-closed-quad-equivalence-128",
+      "passed": true,
+      "detail": "128 closed-form Split-Sum DFG and 192-point Gauss-Legendre passes agree within 1e-13"
+    },
+    {
+      "name": "splitsum-closed-quad-equivalence-1024",
+      "passed": true,
+      "detail": "1024 closed-form Split-Sum DFG and 192-point Gauss-Legendre passes agree within 1e-13"
+    },
+    {
+      "name": "splitsum-closed-quad-equivalence-8192",
+      "passed": true,
+      "detail": "8192 closed-form Split-Sum DFG and 192-point Gauss-Legendre passes agree within 1e-13"
+    },
+    {
+      "name": "splitsum-grazing-rim-controlled",
+      "passed": true,
+      "detail": "17 viewing cosines stay free of radioactive Fresnel halos (station-0 N·V=0.05 resolves R_IBL=0.0320)"
+    },
+    {
+      "name": "naive-fresnel-grazing-halo-exposed",
+      "passed": true,
+      "detail": "naive macroscopic Schlick Fresnel blows out station-0 (N·V=0.05) to 0.7828 (24.48× blowout across 13/17 stations)"
+    },
+    {
+      "name": "splitsum-dfg-reflectance-retained",
+      "passed": true,
+      "detail": "Karis Split-Sum locks station-0 (N·V=0.05) at R_IBL=0.0320 (0/17 halo stations)"
+    },
+    {
+      "name": "macro-fresnel-blowout-exposed",
+      "passed": true,
+      "detail": "macroscopic Schlick Fresnel blows out station-0 to R_naive=0.7828 (24.48× halo)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse station scrubbing reproduces the exact IBL reflectometer carriage world matrix"
+    },
+    {
+      "name": "atomic-roughness-rejection",
+      "passed": true,
+      "detail": "out-of-range roughness=99.0 is rejected while valid Split-Sum IBL state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered IBL carriage y-elevation matches solved environment reflectance height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Split-Sum IBL controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual station scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station DFG passes",
+      "count": 128,
+      "primary_ms": 0.1713000000000875,
+      "baseline_ms": 5.277499999999918,
+      "primary_samples_ms": [
+        0.09859999999991942,
+        0.19399999999995998,
+        0.1713000000000875,
+        0.17819999999994707,
+        0.18270000000006803,
+        0.15980000000001837,
+        0.1568000000000893
+      ],
+      "baseline_samples_ms": [
+        5.208300000000008,
+        4.712700000000041,
+        5.800100000000043,
+        5.492500000000064,
+        5.277499999999918,
+        6.39530000000002,
+        4.60570000000007
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station DFG passes",
+      "count": 1024,
+      "primary_ms": 0.22890000000006694,
+      "baseline_ms": 42.504999999999995,
+      "primary_samples_ms": [
+        2.355799999999931,
+        0.2318000000000211,
+        0.2259999999999991,
+        0.22890000000006694,
+        0.4393000000000029,
+        0.21209999999996398,
+        0.2036000000000513
+      ],
+      "baseline_samples_ms": [
+        42.504999999999995,
+        39.54180000000008,
+        39.69589999999994,
+        49.932199999999966,
+        53.05619999999999,
+        38.5562000000001,
+        44.15090000000009
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station DFG passes",
+      "count": 8192,
+      "primary_ms": 1.7819999999999254,
+      "baseline_ms": 330.8425,
+      "primary_samples_ms": [
+        2.339200000000119,
+        1.7819999999999254,
+        1.7402999999999338,
+        1.7464999999997417,
+        1.7509000000000015,
+        2.688300000000254,
+        2.231699999999819
+      ],
+      "baseline_samples_ms": [
+        310.6522,
+        330.8425,
+        309.05449999999996,
+        321.0225999999998,
+        350.47839999999997,
+        427.6642999999999,
+        411.6590000000001
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/split-sum-ibl-dfg-rig/light-karis-split-sum-dfg-lut.png",
+    "docs/evidence/split-sum-ibl-dfg-rig/light-naive-macroscopic-schlick-fresnel.png",
+    "docs/evidence/split-sum-ibl-dfg-rig/dark-karis-split-sum-dfg-lut.png",
+    "docs/evidence/split-sum-ibl-dfg-rig/dark-naive-macroscopic-schlick-fresnel.png",
+    "docs/evidence/split-sum-ibl-dfg-rig/mobile.png"
+  ],
+  "primary_label": "Closed-Form Split-Sum DFG (scale, bias)",
+  "baseline_label": "192-Point Gauss-Legendre Quadrature",
+  "load_unit": "17-station DFG passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form Split-Sum DFG (scale, bias) evaluation versus 192-point composite Gauss-Legendre microfacet quadrature.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "roughness": 0.85,
+    "dielectric_f0": 0.04,
+    "splitsum_grazing_r0": 0.032,
+    "naive_fresnel_grazing_r0": 0.7828,
+    "grazing_blowout_ratio": 24.48,
+    "halo_stations": 13,
+    "maximum_solver_error": 2.7756e-17
+  },
+  "protocol": {
+    "input": {
+      "station_index": 0,
+      "n_dot_v": 0.05,
+      "roughness": 0.85,
+      "f0": 0.04,
+      "mode": "karis-split-sum-dfg-lut"
+    },
+    "output": {
+      "dfg_scale": 0.1461,
+      "dfg_bias": 0.0261,
+      "splitsum_reflectance": 0.032,
+      "naive_fresnel_reflectance": 0.7828,
+      "grazing_blowout_ratio": 24.48
+    },
+    "function": "R_IBL = F₀·scale(μ, r) + bias(μ, r) → Grazing μ=0.05 R_IBL = 0.0320 (vs 0.7828 Naive Fresnel Halo)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 viewing cosines on rough dielectrics stay free of radioactive grazing Fresnel rims under Split-Sum DFG",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Image-Based Lighting (IBL) specular probes for rough dielectrics (rubber, clay, concrete, matte plastic) and brushed metals in UE5, Filament, and Three.js",
+    "Explaining why evaluating Schlick Fresnel with macroscopic N·V instead of microfacet V·H creates a 24.48× radioactive white rim on rough surfaces",
+    "Factoring F₀ out of the hemispherical BRDF integral into two pre-integrated channels: F₀ · scale(N·V, r) + bias(N·V, r)",
+    "Replacing 192-point per-pixel numerical quadrature with O(1) closed-form DFG polynomial fits or a 2D RG16F LUT"
+  ],
+  "not_for": [
+    "Mirror-smooth chrome surfaces (r = 0.0) where V·H = N·V and macroscopic Schlick Fresnel is already exact",
+    "Pure Lambertian diffuse irradiance probes without a specular microfacet lobe",
+    "Neural environment map estimation or inverse rendering networks",
+    "Unlit wireframe or flat-color CAD overlays"
+  ],
+  "locale_zh": {
+    "splitsum-closed-quad-equivalence-128": "分离求和闭式与高斯求积等价 128",
+    "128 closed-form Split-Sum DFG and 192-point Gauss-Legendre passes agree within 1e-13": "128 次闭式分离求和 DFG 与 192 点高斯-勒让德积分基线在 1e-13 内一致",
+    "splitsum-closed-quad-equivalence-1024": "分离求和闭式与高斯求积等价 1024",
+    "1024 closed-form Split-Sum DFG and 192-point Gauss-Legendre passes agree within 1e-13": "1024 次闭式分离求和 DFG 与 192 点高斯-勒让德积分基线在 1e-13 内一致",
+    "splitsum-closed-quad-equivalence-8192": "分离求和闭式与高斯求积等价 8192",
+    "8192 closed-form Split-Sum DFG and 192-point Gauss-Legendre passes agree within 1e-13": "8192 次闭式分离求和 DFG 与 192 点高斯-勒让德积分基线在 1e-13 内一致",
+    "splitsum-grazing-rim-controlled": "分离求和掠射边缘受控",
+    "17 viewing cosines stay free of radioactive Fresnel halos (station-0 N·V=0.05 resolves R_IBL=0.0320)": "17 个观测角全部无放射性菲涅尔白边（第 0 站 N·V=0.05 输出 R_IBL=0.0320）",
+    "naive-fresnel-grazing-halo-exposed": "朴素菲涅尔掠射白边暴露",
+    "naive macroscopic Schlick Fresnel blows out station-0 (N·V=0.05) to 0.7828 (24.48× blowout across 13/17 stations)": "朴素宏观 Schlick 菲涅尔在第 0 站（N·V=0.05）飙升至 0.7828（24.48× 过曝爆炸，波及 13/17 站）",
+    "splitsum-dfg-reflectance-retained": "Karis分离求和反射锁定",
+    "Karis Split-Sum locks station-0 (N·V=0.05) at R_IBL=0.0320 (0/17 halo stations)": "Karis 分离求和将第 0 站（N·V=0.05）锁死在 R_IBL=0.0320（0/17 白边站点）",
+    "macro-fresnel-blowout-exposed": "宏观菲涅尔白边过曝暴露",
+    "macroscopic Schlick Fresnel blows out station-0 to R_naive=0.7828 (24.48× halo)": "宏观 Schlick 菲涅尔将第 0 站引爆至 R_naive=0.7828（24.48× 白边过曝）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse station scrubbing reproduces the exact IBL reflectometer carriage world matrix": "逆序站点拖曳精确复现 IBL 反射计滑车世界矩阵",
+    "atomic-roughness-rejection": "原子粗糙度拒绝",
+    "out-of-range roughness=99.0 is rejected while valid Split-Sum IBL state remains": "越界粗糙度 99.0 被拒绝，有效分离求和 IBL 状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered IBL carriage y-elevation matches solved environment reflectance height": "渲染 IBL 滑车垂直高度与求解器环境反射率高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px Split-Sum IBL controls fit without horizontal overflow": "390px 分离求和 IBL 控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual station scrubbing remains available": "减少动态默认静止，保留手动站点核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Closed-Form Split-Sum DFG (scale, bias)": "闭式分离求和 DFG（scale, bias）",
+    "192-Point Gauss-Legendre Quadrature": "192 点高斯-勒让德微表面求积基线",
+    "Median of 7 alternating Node CPU runs after warmup. Closed-form Split-Sum DFG (scale, bias) evaluation versus 192-point composite Gauss-Legendre microfacet quadrature.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；闭式分离求和 DFG（scale, bias）求值对比 192 点复合高斯-勒让德微表面数值积分基线。",
+    "Sampled 17 viewing cosines on rough dielectrics stay free of radioactive grazing Fresnel rims under Split-Sum DFG": "采样 17 个粗糙电介质观测角在分离求和 DFG 下全部无放射性掠射菲涅尔白边",
+    "R_IBL = F₀·scale(μ, r) + bias(μ, r) → Grazing μ=0.05 R_IBL = 0.0320 (vs 0.7828 Naive Fresnel Halo)": "Karis 分离求和 F₀·scale + bias → 掠射角 μ=0.05 反射率受控于 0.0320（消除 0.7828 白边）",
+    "Image-Based Lighting (IBL) specular probes for rough dielectrics (rubber, clay, concrete, matte plastic) and brushed metals in UE5, Filament, and Three.js": "UE5、Filament 与 Three.js 中用于粗糙电介质（橡胶、陶土、水泥、哑光塑料）与拉丝金属的 IBL 环境光高光探针",
+    "Explaining why evaluating Schlick Fresnel with macroscopic N·V instead of microfacet V·H creates a 24.48× radioactive white rim on rough surfaces": "直观解释为何用宏观法线 N·V 替代微表面半程角 V·H 计算 Schlick 菲涅尔会在粗糙物体边缘产生 24.48× 的放射性白圈",
+    "Factoring F₀ out of the hemispherical BRDF integral into two pre-integrated channels: F₀ · scale(N·V, r) + bias(N·V, r)": "将基础反射率 F₀ 从半球 BRDF 积分中线性分离为 F₀·scale(N·V, r) + bias(N·V, r) 双预积分通道",
+    "Replacing 192-point per-pixel numerical quadrature with O(1) closed-form DFG polynomial fits or a 2D RG16F LUT": "以 O(1) 闭式 DFG 解析公式或 2D RG16F 查找表替代高开销的 192 点逐像素数值求积",
+    "Mirror-smooth chrome surfaces (r = 0.0) where V·H = N·V and macroscopic Schlick Fresnel is already exact": "半程向量 V·H 与宏观法线 N·V 完全重合的零粗糙度绝对镜面（r = 0.0）",
+    "Pure Lambertian diffuse irradiance probes without a specular microfacet lobe": "不含微表面高光波瓣的纯漫反射球谐辐照度探针",
+    "Neural environment map estimation or inverse rendering networks": "神经环境光贴图估计或逆向渲染推理网络",
+    "Unlit wireframe or flat-color CAD overlays": "无光照网格线框或纯色平面 CAD 标注层"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/split-sum-ibl-dfg.test.ts",
+    "node scripts/benchmark-split-sum-ibl-dfg.mjs"
+  ]
+}

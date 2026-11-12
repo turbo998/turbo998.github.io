@@ -1,0 +1,268 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Analytic unwrapped ray-differential footprint vs GPU 2x2 quad dFdx wrapped UV seam spike rig",
+  "topic_zh": "解析展开射线微分足迹（textureGrad）对比 GPU 2×2 像素块 dFdx(fract) 周期接缝模糊",
+  "slug": "rectified-screen-derivatives-rig",
+  "timestamp": "2026-11-12T17:59:31.209Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic analytic unwrapped ray-differential footprints (textureGrad before fract wrapping) versus hardware GPU 2x2 pixel-quad finite differencing dFdx(fract(U)) and 4-ray supersampled finite differences across 17 screen-space pixels. No neural texture upscaling execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "analytic-footprint-equivalence-128",
+      "passed": true,
+      "detail": "128 closed-form analytic ray-differential and 4-ray supersampled passes agree within 1e-13 mip levels"
+    },
+    {
+      "name": "analytic-footprint-equivalence-1024",
+      "passed": true,
+      "detail": "1024 closed-form analytic ray-differential and 4-ray supersampled passes agree within 1e-13 mip levels"
+    },
+    {
+      "name": "analytic-footprint-equivalence-8192",
+      "passed": true,
+      "detail": "8192 closed-form analytic ray-differential and 4-ray supersampled passes agree within 1e-13 mip levels"
+    },
+    {
+      "name": "analytic-seam-free-lod-conserved",
+      "passed": true,
+      "detail": "17 screen pixels maintain |∂U/∂x|=0.1250 uv/px and LOD=0.0000 with 0/17 seam spikes"
+    },
+    {
+      "name": "quad-dfdx-wrapped-seam-exposed",
+      "passed": true,
+      "detail": "naive 2×2 quad dFdx(fract(U)) spikes |dFdx| to 0.8750 uv/px (7.00× blowout) and +2.8074 mip levels across 5/17 pixels"
+    },
+    {
+      "name": "analytic-footprint-retained",
+      "passed": true,
+      "detail": "analytic ray differential locks pixel-8 (quad 4) at |∂U/∂x|=0.1250 and LOD=0.0000"
+    },
+    {
+      "name": "quad-dfdx-seam-spike-exposed",
+      "passed": true,
+      "detail": "2×2 quad dFdx(fract(U)) spikes pixel-8 to |dFdx|=0.8750 (7.00× blowout, +2.8074 LOD jump)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse pixel scrubbing reproduces the exact quad differential carriage world matrix"
+    },
+    {
+      "name": "atomic-slope-rejection",
+      "passed": true,
+      "detail": "out-of-range uvSlopePerPixel=9.0 is rejected while valid derivative state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered differential carriage y-elevation matches solved UV footprint derivative height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px screen derivative controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual pixel scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station footprint passes",
+      "count": 128,
+      "primary_ms": 0.10300000000000864,
+      "baseline_ms": 1.133800000000008,
+      "primary_samples_ms": [
+        0.5395000000000323,
+        0.10300000000000864,
+        0.06749999999999545,
+        0.08119999999996708,
+        0.0817000000000121,
+        0.15749999999997044,
+        0.15899999999999181
+      ],
+      "baseline_samples_ms": [
+        2.908100000000047,
+        2.4874000000000365,
+        1.1263999999999896,
+        1.0762000000000285,
+        1.11749999999995,
+        1.133800000000008,
+        1.201599999999985
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station footprint passes",
+      "count": 1024,
+      "primary_ms": 0.039900000000045566,
+      "baseline_ms": 1.0751999999999953,
+      "primary_samples_ms": [
+        0.5569999999999595,
+        0.0413000000000352,
+        0.039299999999968804,
+        0.039900000000045566,
+        0.038899999999955526,
+        0.03999999999996362,
+        0.03860000000003083
+      ],
+      "baseline_samples_ms": [
+        4.416600000000017,
+        3.2554999999999836,
+        7.6153999999999655,
+        1.068300000000022,
+        1.057299999999998,
+        1.0751999999999953,
+        1.0312999999999874
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station footprint passes",
+      "count": 8192,
+      "primary_ms": 0.29539999999997235,
+      "baseline_ms": 8.47460000000001,
+      "primary_samples_ms": [
+        0.29909999999995307,
+        0.2947000000000344,
+        0.2866999999999962,
+        0.29539999999997235,
+        0.292699999999968,
+        0.3123000000000502,
+        0.3081999999999425
+      ],
+      "baseline_samples_ms": [
+        8.349700000000041,
+        8.805700000000002,
+        8.643500000000017,
+        8.304200000000037,
+        8.202699999999936,
+        8.597099999999955,
+        8.47460000000001
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/rectified-screen-derivatives-rig/light-analytic-unwrapped-ray-footprint.png",
+    "docs/evidence/rectified-screen-derivatives-rig/light-naive-quad-dfdx-wrapped-uv.png",
+    "docs/evidence/rectified-screen-derivatives-rig/dark-analytic-unwrapped-ray-footprint.png",
+    "docs/evidence/rectified-screen-derivatives-rig/dark-naive-quad-dfdx-wrapped-uv.png",
+    "docs/evidence/rectified-screen-derivatives-rig/mobile.png"
+  ],
+  "primary_label": "Closed-Form Ray-Differential Jacobian",
+  "baseline_label": "4-Ray Sub-Pixel Finite Difference",
+  "load_unit": "17-station footprint passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form analytic ray-differential Jacobian versus 4-ray sub-pixel finite difference evaluation.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "analytic_dudx": 0.125,
+    "quad_wrapped_dudx_station_8": 0.875,
+    "blowout_ratio": 7,
+    "analytic_mip_lod": 0,
+    "quad_seam_mip_lod": 2.8074,
+    "seam_corrupted_pixels": 5,
+    "maximum_solver_error": 0
+  },
+  "protocol": {
+    "input": {
+      "pixel_index": 8,
+      "quad_id": 4,
+      "u_even": 0.9375,
+      "u_odd": 1.0625,
+      "tex_res": 8,
+      "mode": "analytic-unwrapped-ray-footprint"
+    },
+    "output": {
+      "analytic_dudx": 0.125,
+      "analytic_mip_lod": 0,
+      "quad_wrapped_dudx": 0.875,
+      "quad_seam_mip_lod": 2.8074,
+      "footprint_blowout_ratio": 7
+    },
+    "function": "textureGrad(tex, fract(U), ∂U/∂x, ∂U/∂y) → Footprint |∂U/∂x| ≡ 0.1250, Seam ΔLOD ≡ 0.0000"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 screen pixels across periodic UV wrap boundaries preserve exact 0.0000 mip-LOD without 2-pixel quad seam spikes",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Texture atlas tiling (fract(U)), spherical equirectangular longitude seams (atan2(z,x)), and ray-traced / ray-marched procedural surfaces",
+    "Explaining why GPU 2×2 pixel-quad dFdx(fract(U)) subtracts 0.0625 − 0.9375 = −0.8750 (7.00× spike) and jumps +2.81 mip levels",
+    "Passing unwrapped continuous derivatives ∂U/∂x, ∂U/∂y directly to textureGrad() to eliminate 2-pixel-wide blurry seam lines",
+    "Replacing 4-ray supersampled finite differences with closed-form analytic ray-differential Jacobians"
+  ],
+  "not_for": [
+    "Unwrapped monotonic UV meshes without atlas tiles, fract(), or atan2() branch cuts",
+    "Unfiltered nearest-neighbor pixel art textures with mipmapping disabled (GL_NEAREST)",
+    "Neural single-image super-resolution (ESRGAN / DLSS) upscaling models",
+    "Vertex-only gouraud shading without texture sampling or normal reconstruction"
+  ],
+  "locale_zh": {
+    "analytic-footprint-equivalence-128": "解析微分足迹等价 128",
+    "128 closed-form analytic ray-differential and 4-ray supersampled passes agree within 1e-13 mip levels": "128 次解析射线微分与 4 射线超采样差分基线在 1e-13 Mip 级内一致",
+    "analytic-footprint-equivalence-1024": "解析微分足迹等价 1024",
+    "1024 closed-form analytic ray-differential and 4-ray supersampled passes agree within 1e-13 mip levels": "1024 次解析射线微分与 4 射线超采样差分基线在 1e-13 Mip 级内一致",
+    "analytic-footprint-equivalence-8192": "解析微分足迹等价 8192",
+    "8192 closed-form analytic ray-differential and 4-ray supersampled passes agree within 1e-13 mip levels": "8192 次解析射线微分与 4 射线超采样差分基线在 1e-13 Mip 级内一致",
+    "analytic-seam-free-lod-conserved": "解析微分无接缝LOD守恒",
+    "17 screen pixels maintain |∂U/∂x|=0.1250 uv/px and LOD=0.0000 with 0/17 seam spikes": "17 个屏幕像素全部保持 |∂U/∂x|=0.1250 uv/px 与 LOD=0.0000（0/17 接缝跳变）",
+    "quad-dfdx-wrapped-seam-exposed": "2×2块dFdx周期接缝暴露",
+    "naive 2×2 quad dFdx(fract(U)) spikes |dFdx| to 0.8750 uv/px (7.00× blowout) and +2.8074 mip levels across 5/17 pixels": "朴素 2×2 块 dFdx(fract(U)) 将 |dFdx| 冲高至 0.8750 uv/px（7.00× 爆炸）并在 5/17 像素上产生 +2.8074 级 Mip 模糊跳变",
+    "analytic-footprint-retained": "解析射线微分足迹锁定",
+    "analytic ray differential locks pixel-8 (quad 4) at |∂U/∂x|=0.1250 and LOD=0.0000": "解析射线微分将第 8 像素（第 4 块）锁死在 |∂U/∂x|=0.1250 与 LOD=0.0000",
+    "quad-dfdx-seam-spike-exposed": "2×2块dFdx接缝尖峰暴露",
+    "2×2 quad dFdx(fract(U)) spikes pixel-8 to |dFdx|=0.8750 (7.00× blowout, +2.8074 LOD jump)": "2×2 块 dFdx(fract(U)) 将第 8 像素引爆至 |dFdx|=0.8750（7.00× 爆炸，+2.8074 级 LOD 跳变）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse pixel scrubbing reproduces the exact quad differential carriage world matrix": "逆序像素拖曳精确复现差分探针滑车世界矩阵",
+    "atomic-slope-rejection": "原子斜率拒绝",
+    "out-of-range uvSlopePerPixel=9.0 is rejected while valid derivative state remains": "越界 UV 斜率 9.0 被拒绝，有效微分状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered differential carriage y-elevation matches solved UV footprint derivative height": "渲染差分滑车垂直高度与求解器 UV 微分足迹高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px screen derivative controls fit without horizontal overflow": "390px 屏幕微分控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual pixel scrubbing remains available": "减少动态默认静止，保留手动像素核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Closed-Form Ray-Differential Jacobian": "解析射线微分雅可比矩阵",
+    "4-Ray Sub-Pixel Finite Difference": "4 射线亚像素有限差分基线",
+    "Median of 7 alternating Node CPU runs after warmup. Closed-form analytic ray-differential Jacobian versus 4-ray sub-pixel finite difference evaluation.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；闭式解析射线微分雅可比计算对比 4 射线亚像素有限差分基线。",
+    "Sampled 17 screen pixels across periodic UV wrap boundaries preserve exact 0.0000 mip-LOD without 2-pixel quad seam spikes": "采样 17 个跨越周期 UV 边界的屏幕像素全部保持 LOD=0.0000，无 2 像素宽块差分接缝跳变",
+    "textureGrad(tex, fract(U), ∂U/∂x, ∂U/∂y) → Footprint |∂U/∂x| ≡ 0.1250, Seam ΔLOD ≡ 0.0000": "在 fract(U) 前求连续偏导传入 textureGrad → 足迹恒为 0.1250，接缝跳变 ΔLOD ≡ 0.0000",
+    "Texture atlas tiling (fract(U)), spherical equirectangular longitude seams (atan2(z,x)), and ray-traced / ray-marched procedural surfaces": "纹理图集周期平铺（fract(U)）、球面全景经度接缝（atan2(z,x)）与光线步进/光追程序化曲面",
+    "Explaining why GPU 2×2 pixel-quad dFdx(fract(U)) subtracts 0.0625 − 0.9375 = −0.8750 (7.00× spike) and jumps +2.81 mip levels": "直观解释为何 GPU 2×2 像素块 dFdx(fract(U)) 会算出 0.0625−0.9375=−0.8750（7.00× 爆炸）并跳变 +2.81 级 Mipmap",
+    "Passing unwrapped continuous derivatives ∂U/∂x, ∂U/∂y directly to textureGrad() to eliminate 2-pixel-wide blurry seam lines": "将未截断连续偏导数 ∂U/∂x, ∂U/∂y 显式传入 textureGrad()，彻底根除 2 像素宽模糊黑线",
+    "Replacing 4-ray supersampled finite differences with closed-form analytic ray-differential Jacobians": "以闭式解析射线微分雅可比替代高开销的 4 射线超采样有限差分",
+    "Unwrapped monotonic UV meshes without atlas tiles, fract(), or atan2() branch cuts": "不含图集平铺、fract() 或 atan2() 分支割线的单调连续 UV 网格",
+    "Unfiltered nearest-neighbor pixel art textures with mipmapping disabled (GL_NEAREST)": "关闭 Mipmap 的最近邻像素画纹理（GL_NEAREST）",
+    "Neural single-image super-resolution (ESRGAN / DLSS) upscaling models": "神经单图超分辨率（ESRGAN / DLSS）放大推理模型",
+    "Vertex-only gouraud shading without texture sampling or normal reconstruction": "不含纹理采样或法线重建的纯顶点 Gouraud 着色"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/rectified-screen-derivatives.test.ts",
+    "node scripts/benchmark-rectified-screen-derivatives.mjs"
+  ]
+}

@@ -1,0 +1,268 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Shoemake C1 cubic quaternion SQUAD spline vs piecewise SLERP angular velocity corner whip rig",
+  "topic_zh": "Shoemake C1 四元数球面四边形样条（SQUAD）对比分段 SLERP 关键帧折角甩鞭",
+  "slug": "logarithmic-quaternion-squad-rig",
+  "timestamp": "2026-11-12T17:44:50.482Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Ken Shoemake (1987) C1 spherical quadrangle quaternion spline interpolation (SQUAD) via Lie-algebra logarithmic tangent bisectors versus naive piecewise geodesic SLERP and 4D trigonometric SLERP across 17 temporal stations (t in [0.00, 2.00] s). No neural motion inbetweening execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "squad-lie-trig-equivalence-128",
+      "passed": true,
+      "detail": "128 closed-form Lie-algebra SQUAD and 4D trigonometric SLERP passes agree within 1e-11 deg"
+    },
+    {
+      "name": "squad-lie-trig-equivalence-1024",
+      "passed": true,
+      "detail": "1024 closed-form Lie-algebra SQUAD and 4D trigonometric SLERP passes agree within 1e-11 deg"
+    },
+    {
+      "name": "squad-lie-trig-equivalence-8192",
+      "passed": true,
+      "detail": "8192 closed-form Lie-algebra SQUAD and 4D trigonometric SLERP passes agree within 1e-11 deg"
+    },
+    {
+      "name": "squad-c1-velocity-conserved",
+      "passed": true,
+      "detail": "17 temporal stations maintain C1 tangent continuity with 0.00°/s velocity jump at keyframe q_1 (ω⁻=ω⁺=+10.00°/s)"
+    },
+    {
+      "name": "piecewise-slerp-corner-whip-exposed",
+      "passed": true,
+      "detail": "naive piecewise SLERP snaps from +90.00°/s to −70.00°/s at station-8 (t=1.00s), inflicting a 160.00°/s corner whip"
+    },
+    {
+      "name": "squad-c1-junction-retained",
+      "passed": true,
+      "detail": "Shoemake SQUAD locks station-8 (t=1.00s) at θ=90.00° with 0.00°/s velocity jump"
+    },
+    {
+      "name": "slerp-whip-impulse-exposed",
+      "passed": true,
+      "detail": "piecewise SLERP inflicts 160.00°/s velocity jump at station-8 (t=1.00s)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse time scrubbing reproduces the exact gyroscopic carriage world matrix"
+    },
+    {
+      "name": "atomic-angle-rejection",
+      "passed": true,
+      "detail": "out-of-range keyframe1AngleDeg=500 is rejected while valid SQUAD state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered gyro carriage y-elevation matches solved orientation angle height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px SQUAD spline controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual time scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station SQUAD passes",
+      "count": 128,
+      "primary_ms": 0.016999999999995907,
+      "baseline_ms": 1.519900000000007,
+      "primary_samples_ms": [
+        0.7350999999999885,
+        0.06729999999998881,
+        0.06169999999997344,
+        0.016999999999995907,
+        0.013399999999990087,
+        0.008600000000001273,
+        0.007999999999981355
+      ],
+      "baseline_samples_ms": [
+        3.11220000000003,
+        1.199700000000007,
+        2.0045000000000073,
+        1.519900000000007,
+        1.005899999999997,
+        1.6990000000000123,
+        1.0480000000000018
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station SQUAD passes",
+      "count": 1024,
+      "primary_ms": 0.0705000000000382,
+      "baseline_ms": 3.767600000000016,
+      "primary_samples_ms": [
+        0.07299999999997908,
+        0.0705000000000382,
+        0.06839999999999691,
+        0.07219999999995252,
+        0.07489999999995689,
+        0.06790000000000873,
+        0.06360000000006494
+      ],
+      "baseline_samples_ms": [
+        3.543700000000058,
+        4.039899999999989,
+        3.767600000000016,
+        3.8629000000000815,
+        3.7853000000000065,
+        3.6189000000000533,
+        3.7271999999999252
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station SQUAD passes",
+      "count": 8192,
+      "primary_ms": 0.5195999999999685,
+      "baseline_ms": 31.264599999999973,
+      "primary_samples_ms": [
+        0.5195999999999685,
+        0.5515000000000327,
+        0.5439999999999827,
+        0.5127999999999702,
+        0.5257000000000289,
+        0.47929999999996653,
+        0.4741999999999962
+      ],
+      "baseline_samples_ms": [
+        29.5317,
+        29.236800000000017,
+        31.264599999999973,
+        33.92419999999993,
+        31.710199999999986,
+        34.84310000000005,
+        28.976499999999987
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/logarithmic-quaternion-squad-rig/light-c1-cubic-quaternion-squad.png",
+    "docs/evidence/logarithmic-quaternion-squad-rig/light-naive-piecewise-geodesic-slerp.png",
+    "docs/evidence/logarithmic-quaternion-squad-rig/dark-c1-cubic-quaternion-squad.png",
+    "docs/evidence/logarithmic-quaternion-squad-rig/dark-naive-piecewise-geodesic-slerp.png",
+    "docs/evidence/logarithmic-quaternion-squad-rig/mobile.png"
+  ],
+  "primary_label": "Closed-Form Lie-Algebra SQUAD",
+  "baseline_label": "3-Call 4D Trigonometric SLERP",
+  "load_unit": "17-station SQUAD passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form Lie-algebra quadrangle blending versus three nested 4D trigonometric acos/sin quaternion SLERP evaluations.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "keyframe_0_deg": 0,
+    "keyframe_1_deg": 90,
+    "keyframe_2_deg": 20,
+    "squad_tangent_vel_deg_s": 10,
+    "squad_velocity_jump_deg_s": 0,
+    "slerp_velocity_jump_deg_s": 160,
+    "maximum_solver_error": 2.8422e-14
+  },
+  "protocol": {
+    "input": {
+      "station_index": 8,
+      "time_sec": 1,
+      "q0_deg": 0,
+      "q1_deg": 90,
+      "q2_deg": 20,
+      "mode": "c1-cubic-quaternion-squad"
+    },
+    "output": {
+      "angle_at_t1_deg": 90,
+      "squad_left_vel_deg_s": 10,
+      "squad_right_vel_deg_s": 10,
+      "squad_velocity_jump_deg_s": 0,
+      "slerp_velocity_jump_deg_s": 160
+    },
+    "function": "SQUAD(q_k,q_{k+1},s_k,s_{k+1},u) = SLERP(SLERP(q_k,q_{k+1},u), SLERP(s_k,s_{k+1},u), 2u(1−u)) → Δω_jump ≡ 0.00°/s"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 temporal stations preserve C1 angular velocity continuity (0.00°/s jump) across interior keyframes",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Cinematic 3D camera fly-through rigs, skeletal character head/spine orientation tracks, and robotic arm wrist trajectories",
+    "Explaining why piecewise SLERP is only C0 continuous and inflicts a 160.00°/s angular velocity whip at interior keyframes",
+    "Constructing C1 tangent-continuous spherical quadrangle control points s_k via Lie-algebra logarithmic bisectors",
+    "Replacing three nested trigonometric acos/sin SLERP calls with closed-form Lie tangent quadrangle blending"
+  ],
+  "not_for": [
+    "Two-keyframe single-segment point-to-point rotations where a single geodesic SLERP has no interior junction",
+    "1D scalar UI opacity fades where Fritsch-Carlson monotonic cubic Hermite is used",
+    "Neural motion inbetweening or diffusion-based human motion synthesis models",
+    "Pure rectilinear translation tracks without rotational orientation"
+  ],
+  "locale_zh": {
+    "squad-lie-trig-equivalence-128": "SQUAD李代数等价 128",
+    "128 closed-form Lie-algebra SQUAD and 4D trigonometric SLERP passes agree within 1e-11 deg": "128 次李代数闭式 SQUAD 与四维三角函数 SLERP 基线在 1e-11° 内一致",
+    "squad-lie-trig-equivalence-1024": "SQUAD李代数等价 1024",
+    "1024 closed-form Lie-algebra SQUAD and 4D trigonometric SLERP passes agree within 1e-11 deg": "1024 次李代数闭式 SQUAD 与四维三角函数 SLERP 基线在 1e-11° 内一致",
+    "squad-lie-trig-equivalence-8192": "SQUAD李代数等价 8192",
+    "8192 closed-form Lie-algebra SQUAD and 4D trigonometric SLERP passes agree within 1e-11 deg": "8192 次李代数闭式 SQUAD 与四维三角函数 SLERP 基线在 1e-11° 内一致",
+    "squad-c1-velocity-conserved": "SQUAD一阶切向连续守恒",
+    "17 temporal stations maintain C1 tangent continuity with 0.00°/s velocity jump at keyframe q_1 (ω⁻=ω⁺=+10.00°/s)": "17 个时间站点保持 C1 切向连续，关键帧 q_1 处角速度跳变为 0.00°/s（ω⁻=ω⁺=+10.00°/s）",
+    "piecewise-slerp-corner-whip-exposed": "分段SLERP折角甩鞭暴露",
+    "naive piecewise SLERP snaps from +90.00°/s to −70.00°/s at station-8 (t=1.00s), inflicting a 160.00°/s corner whip": "朴素分段 SLERP 在第 8 站（t=1.00s）从 +90.00°/s 突变为 −70.00°/s，产生 160.00°/s 的甩鞭跳变",
+    "squad-c1-junction-retained": "Shoemake SQUAD交界锁定",
+    "Shoemake SQUAD locks station-8 (t=1.00s) at θ=90.00° with 0.00°/s velocity jump": "Shoemake SQUAD 将第 8 站（t=1.00s）锁死在 θ=90.00° 且角速度跳变为 0.00°/s",
+    "slerp-whip-impulse-exposed": "分段SLERP甩鞭冲击暴露",
+    "piecewise SLERP inflicts 160.00°/s velocity jump at station-8 (t=1.00s)": "分段 SLERP 在第 8 站（t=1.00s）产生 160.00°/s 角速度冲击",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse time scrubbing reproduces the exact gyroscopic carriage world matrix": "逆序时间拖曳精确复现陀螺滑车世界矩阵",
+    "atomic-angle-rejection": "原子角度拒绝",
+    "out-of-range keyframe1AngleDeg=500 is rejected while valid SQUAD state remains": "越界关键帧角度 500° 被拒绝，有效 SQUAD 状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered gyro carriage y-elevation matches solved orientation angle height": "渲染陀螺滑车垂直高度与求解器旋转角高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px SQUAD spline controls fit without horizontal overflow": "390px SQUAD 样条控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual time scrubbing remains available": "减少动态默认静止，保留手动时间站核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Closed-Form Lie-Algebra SQUAD": "李代数闭式切空间 SQUAD 样条",
+    "3-Call 4D Trigonometric SLERP": "三次嵌套四维三角函数 SLERP 基线",
+    "Median of 7 alternating Node CPU runs after warmup. Closed-form Lie-algebra quadrangle blending versus three nested 4D trigonometric acos/sin quaternion SLERP evaluations.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；李代数切空间闭式 SQUAD 混合对比三次嵌套四维反余弦/正弦 SLERP 求值基线。",
+    "Sampled 17 temporal stations preserve C1 angular velocity continuity (0.00°/s jump) across interior keyframes": "采样 17 个时间站点跨越内部关键帧全部保持 C1 一阶角速度连续（跳变 0.00°/s）",
+    "SQUAD(q_k,q_{k+1},s_k,s_{k+1},u) = SLERP(SLERP(q_k,q_{k+1},u), SLERP(s_k,s_{k+1},u), 2u(1−u)) → Δω_jump ≡ 0.00°/s": "Shoemake 球面四边形样条 2u(1−u) 混合主弦与切弦 → 关键帧角速度跳变 Δω ≡ 0.00°/s",
+    "Cinematic 3D camera fly-through rigs, skeletal character head/spine orientation tracks, and robotic arm wrist trajectories": "电影级 3D 运镜摇臂轨迹、角色骨骼头颈/脊椎旋转动画轨道与工业机械臂腕部姿态规划",
+    "Explaining why piecewise SLERP is only C0 continuous and inflicts a 160.00°/s angular velocity whip at interior keyframes": "直观解释为何分段 SLERP 仅具备 C0 连续性并在中间关键帧处产生 160.00°/s 的角速度折角甩鞭",
+    "Constructing C1 tangent-continuous spherical quadrangle control points s_k via Lie-algebra logarithmic bisectors": "通过李代数对数切向平分线构造 C1 切向连续的球面四边形内部控制点 s_k",
+    "Replacing three nested trigonometric acos/sin SLERP calls with closed-form Lie tangent quadrangle blending": "以李代数切空间闭式混合替代高开销的三次嵌套反余弦/正弦 SLERP 调用",
+    "Two-keyframe single-segment point-to-point rotations where a single geodesic SLERP has no interior junction": "仅有起止两个关键帧的单段点对点旋转（无中间关键帧交界）",
+    "1D scalar UI opacity fades where Fritsch-Carlson monotonic cubic Hermite is used": "使用单调三次 Hermite 的一维标量 UI 透明度渐变",
+    "Neural motion inbetweening or diffusion-based human motion synthesis models": "神经动作补帧或扩散人体动作生成推理模型",
+    "Pure rectilinear translation tracks without rotational orientation": "不含旋转姿态变化的纯直线平移轨道"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/logarithmic-quaternion-squad.test.ts",
+    "node scripts/benchmark-logarithmic-quaternion-squad.mjs"
+  ]
+}

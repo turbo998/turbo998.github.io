@@ -1,0 +1,269 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "McGuire NeighborMax velocity tile dilation motion blur vs center-velocity silhouette cutoff rig",
+  "topic_zh": "McGuire NeighborMax 速度分块扩张运动模糊对比中心像素速度查表外轮廓剪断",
+  "slug": "rectified-motion-tile-rig",
+  "timestamp": "2026-11-12T21:06:36.501Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Morgan McGuire et al. (2012) & Jorge Jimenez (2014) NeighborMax tile-dilated motion-blur reconstruction with soft depth classification versus naive center-velocity gather and 64-tap brute-force neighborhood search across 17 silhouette boundary pixels (d in [-4, +12] px). No neural frame interpolation execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "neighbormax-shutter-equivalence-128",
+      "passed": true,
+      "detail": "128 NeighborMax O(1) tile gather and 64-tap shutter quadrature passes agree within 1e-13"
+    },
+    {
+      "name": "neighbormax-shutter-equivalence-1024",
+      "passed": true,
+      "detail": "1024 NeighborMax O(1) tile gather and 64-tap shutter quadrature passes agree within 1e-13"
+    },
+    {
+      "name": "neighbormax-shutter-equivalence-8192",
+      "passed": true,
+      "detail": "8192 NeighborMax O(1) tile gather and 64-tap shutter quadrature passes agree within 1e-13"
+    },
+    {
+      "name": "mcguire-silhouette-spill-conserved",
+      "passed": true,
+      "detail": "17 boundary stations preserve continuous shutter ramp (station-5 d=+1px exterior trail C_out=0.4375)"
+    },
+    {
+      "name": "center-velocity-silhouette-cutoff-exposed",
+      "passed": true,
+      "detail": "naive center-velocity lookup scissor-clips station-5 (d=+1px) from 0.4375 down to 0.0000 across 7/17 stations"
+    },
+    {
+      "name": "neighbormax-exterior-trail-retained",
+      "passed": true,
+      "detail": "McGuire NeighborMax locks exterior station-5 (d=+1px) at C_out=0.4375 (0/17 clipped stations)"
+    },
+    {
+      "name": "center-velocity-scissor-clip-exposed",
+      "passed": true,
+      "detail": "center-velocity lookup clips station-5 (d=+1px) to C_out=0.0000 (−0.4375 trail loss across 7/17 stations)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse station scrubbing reproduces the exact shutter densitometer carriage world matrix"
+    },
+    {
+      "name": "atomic-velocity-rejection",
+      "passed": true,
+      "detail": "out-of-range foregroundVelocityPx=999.0 is rejected while valid Motion Tile state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered motion carriage y-elevation matches solved trail radiance height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Motion Tile controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual station scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station motion passes",
+      "count": 128,
+      "primary_ms": 0.09480000000007749,
+      "baseline_ms": 0.2818999999999505,
+      "primary_samples_ms": [
+        0.15999999999996817,
+        0.08939999999995507,
+        0.09480000000007749,
+        0.07810000000006312,
+        0.08950000000004366,
+        0.09699999999997999,
+        0.09609999999997854
+      ],
+      "baseline_samples_ms": [
+        1.1177999999999884,
+        0.3755999999999631,
+        0.27890000000002146,
+        0.2818999999999505,
+        0.26549999999997453,
+        0.29359999999996944,
+        0.2763999999999669
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station motion passes",
+      "count": 1024,
+      "primary_ms": 0.09949999999992087,
+      "baseline_ms": 1.2730000000000246,
+      "primary_samples_ms": [
+        3.070600000000013,
+        0.20299999999997453,
+        0.16470000000003893,
+        0.0885000000000673,
+        0.08979999999996835,
+        0.0906999999999698,
+        0.09949999999992087
+      ],
+      "baseline_samples_ms": [
+        1.336999999999989,
+        1.290300000000002,
+        1.3187000000000353,
+        1.250599999999963,
+        1.2730000000000246,
+        1.254099999999994,
+        1.2477999999999838
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station motion passes",
+      "count": 8192,
+      "primary_ms": 0.7843000000000302,
+      "baseline_ms": 10.52520000000004,
+      "primary_samples_ms": [
+        2.9494000000000824,
+        4.239900000000034,
+        4.507799999999975,
+        0.7150000000000318,
+        0.7320000000000846,
+        0.7843000000000302,
+        0.7635999999999967
+      ],
+      "baseline_samples_ms": [
+        10.508399999999938,
+        12.129199999999969,
+        11.158400000000029,
+        17.182800000000043,
+        10.52520000000004,
+        10.258500000000026,
+        9.936900000000037
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/rectified-motion-tile-rig/light-mcguire-neighbormax-soft-depth.png",
+    "docs/evidence/rectified-motion-tile-rig/light-naive-center-velocity-lookup.png",
+    "docs/evidence/rectified-motion-tile-rig/dark-mcguire-neighbormax-soft-depth.png",
+    "docs/evidence/rectified-motion-tile-rig/dark-naive-center-velocity-lookup.png",
+    "docs/evidence/rectified-motion-tile-rig/mobile.png"
+  ],
+  "primary_label": "Precomputed NeighborMax Tile Gather",
+  "baseline_label": "64-Tap Brute-Force Shutter Search",
+  "load_unit": "17-station motion passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Precomputed TileMax + NeighborMax O(1) velocity dilation and shutter overlap versus 64-tap brute-force neighborhood velocity search and shutter quadrature.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "foreground_velocity_px": 16,
+    "half_blur_radius_px": 8,
+    "mcguire_radiance_station_5": 0.4375,
+    "naive_radiance_station_5": 0,
+    "max_clipped_trail_loss": 0.4375,
+    "clipped_stations": 7,
+    "maximum_solver_error": 0
+  },
+  "protocol": {
+    "input": {
+      "station_index": 5,
+      "edge_dist_px": 1,
+      "v_fg_px": 16,
+      "v_bg_px": 0,
+      "z_fg_m": 1.5,
+      "z_bg_m": 10,
+      "mode": "mcguire-neighbormax-soft-depth"
+    },
+    "output": {
+      "center_velocity_px": 0,
+      "neighbormax_velocity_px": 16,
+      "mcguire_trail_radiance": 0.4375,
+      "naive_center_radiance": 0,
+      "clipped_exterior_stations": 7
+    },
+    "function": "C_blur(x) = Σ w_cyl(Δx, v_NeighborMax) · f_depth(z_y, z_x) · C(y) → Exterior Spill Retained (0 Clipped)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 silhouette boundary stations preserve symmetric shutter motion-blur spill without exterior clipping",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Post-process object and camera motion blur in UE5, Unity HDRP, Call of Duty, and DOOM (TileMax + 3×3 NeighborMax)",
+    "Explaining why blurring along v_center(x) = 0 on background pixels scissor-clips 100% of the exterior motion trail",
+    "Dilating dominant velocity across K×K tiles via separable TileMax and 3×3 NeighborMax passes before bilateral depth gathering",
+    "Replacing 64-tap brute-force neighborhood velocity searches with O(1) NeighborMax tile lookups"
+  ],
+  "not_for": [
+    "Static architectural renders with zero camera or object velocity (v = 0 everywhere)",
+    "Curved spinning propeller blades requiring rotational angular-velocity polar blur",
+    "Neural optical-flow video frame interpolation (RIFE / DLSS 3 Frame Generation)",
+    "2D UI text overlays that must remain sharp during camera pans"
+  ],
+  "locale_zh": {
+    "neighbormax-shutter-equivalence-128": "NeighborMax分块与64步快门求积等价 128",
+    "128 NeighborMax O(1) tile gather and 64-tap shutter quadrature passes agree within 1e-13": "128 次 NeighborMax 分块聚集与 64 步快门数值积分基线在 1e-13 内一致",
+    "neighbormax-shutter-equivalence-1024": "NeighborMax分块与64步快门求积等价 1024",
+    "1024 NeighborMax O(1) tile gather and 64-tap shutter quadrature passes agree within 1e-13": "1024 次 NeighborMax 分块聚集与 64 步快门数值积分基线在 1e-13 内一致",
+    "neighbormax-shutter-equivalence-8192": "NeighborMax分块与64步快门求积等价 8192",
+    "8192 NeighborMax O(1) tile gather and 64-tap shutter quadrature passes agree within 1e-13": "8192 次 NeighborMax 分块聚集与 64 步快门数值积分基线在 1e-13 内一致",
+    "mcguire-silhouette-spill-conserved": "McGuire外轮廓残影溢出守恒",
+    "17 boundary stations preserve continuous shutter ramp (station-5 d=+1px exterior trail C_out=0.4375)": "17 个边界站点保持连续快门斜坡（第 5 站 d=+1px 外部残影 C_out=0.4375）",
+    "center-velocity-silhouette-cutoff-exposed": "中心速度查表外轮廓剪断暴露",
+    "naive center-velocity lookup scissor-clips station-5 (d=+1px) from 0.4375 down to 0.0000 across 7/17 stations": "朴素中心速度查表在第 5 站（d=+1px）将 0.4375 残影一刀剪断为 0.0000，波及 7/17 站",
+    "neighbormax-exterior-trail-retained": "NeighborMax外部拖尾锁定",
+    "McGuire NeighborMax locks exterior station-5 (d=+1px) at C_out=0.4375 (0/17 clipped stations)": "McGuire NeighborMax 将第 5 站（d=+1px）锁死在 C_out=0.4375（0/17 剪断站点）",
+    "center-velocity-scissor-clip-exposed": "中心速度外侧剪断暴露",
+    "center-velocity lookup clips station-5 (d=+1px) to C_out=0.0000 (−0.4375 trail loss across 7/17 stations)": "中心速度查表将第 5 站（d=+1px）剪断至 C_out=0.0000（丢失 −0.4375，波及 7/17 站）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse station scrubbing reproduces the exact shutter densitometer carriage world matrix": "逆序站点拖曳精确复现快门密度计滑车世界矩阵",
+    "atomic-velocity-rejection": "原子速度拒绝",
+    "out-of-range foregroundVelocityPx=999.0 is rejected while valid Motion Tile state remains": "越界前景速度 999.0px 被拒绝，有效速度图块状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered motion carriage y-elevation matches solved trail radiance height": "渲染快门滑车垂直高度与求解器残影亮度高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px Motion Tile controls fit without horizontal overflow": "390px 速度分块控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual station scrubbing remains available": "减少动态默认静止，保留手动站点核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Precomputed NeighborMax Tile Gather": "预计算 NeighborMax 速度分块聚集",
+    "64-Tap Brute-Force Shutter Search": "64 点暴力邻域搜索与快门求积基线",
+    "Median of 7 alternating Node CPU runs after warmup. Precomputed TileMax + NeighborMax O(1) velocity dilation and shutter overlap versus 64-tap brute-force neighborhood velocity search and shutter quadrature.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；预计算 TileMax + NeighborMax 分块速度扩张对比 64 点暴力邻域速度搜索与快门积分基线。",
+    "Sampled 17 silhouette boundary stations preserve symmetric shutter motion-blur spill without exterior clipping": "采样 17 个轮廓边界站点全部保持对称快门运动模糊残影溢出，无外轮廓一刀剪断",
+    "C_blur(x) = Σ w_cyl(Δx, v_NeighborMax) · f_depth(z_y, z_x) · C(y) → Exterior Spill Retained (0 Clipped)": "NeighborMax 速度分块扩张 + 软深度双边聚集 → 外部残影完整保留（0 剪断）",
+    "Post-process object and camera motion blur in UE5, Unity HDRP, Call of Duty, and DOOM (TileMax + 3×3 NeighborMax)": "UE5、Unity HDRP、Call of Duty 与 DOOM 中的后处理物体与相机运动模糊（TileMax + 3×3 NeighborMax）",
+    "Explaining why blurring along v_center(x) = 0 on background pixels scissor-clips 100% of the exterior motion trail": "直观解释为何在静止背景像素上按自身 v_center=0 模糊会把前景高速物体的外部残影 100% 一刀切死",
+    "Dilating dominant velocity across K×K tiles via separable TileMax and 3×3 NeighborMax passes before bilateral depth gathering": "通过可分离 TileMax 与 3×3 NeighborMax 通道将主导最大速度扩张至相邻背景图块，再执行软深度双边采样",
+    "Replacing 64-tap brute-force neighborhood velocity searches with O(1) NeighborMax tile lookups": "以 O(1) NeighborMax 图块查表替代高开销的 64 点全邻域暴力速度搜索",
+    "Static architectural renders with zero camera or object velocity (v = 0 everywhere)": "相机与物体速度全为零（v = 0）的纯静态建筑展示场景",
+    "Curved spinning propeller blades requiring rotational angular-velocity polar blur": "需要极坐标角速度弧线模糊的超高速旋转螺旋桨扇叶",
+    "Neural optical-flow video frame interpolation (RIFE / DLSS 3 Frame Generation)": "神经光流视频补帧推理模型（RIFE / DLSS 3 帧生成）",
+    "2D UI text overlays that must remain sharp during camera pans": "在镜头摇移时必须保持锐利清晰的 2D UI 文字层"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/rectified-motion-tile.test.ts",
+    "node scripts/benchmark-rectified-motion-tile.mjs"
+  ]
+}

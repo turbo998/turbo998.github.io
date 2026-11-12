@@ -1,0 +1,267 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Vogel golden-angle equi-area disk sampling vs linear polar radius center-clumping rig",
+  "topic_zh": "Vogel 黄金角等面积圆盘采样对比朴素线性极坐标半径圆心 4× 聚拢",
+  "slug": "vogel-spiral-disk-rig",
+  "timestamp": "2026-11-12T17:33:54.334Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Helmut Vogel (1979) golden-angle phyllotaxis equi-area disk sampling (r_k = sqrt((k+0.5)/N), theta_k = k * 2pi/phi^2) versus naive linear-radius polar sampling and per-tap transcendental trigonometric evaluation across 17 equal-area concentric aperture shells. No neural bokeh synthesis execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "vogel-rotor-equivalence-128",
+      "passed": true,
+      "detail": "128 complex-rotor recurrence and transcendental cos/sin passes match exact 4/4 shell occupancy"
+    },
+    {
+      "name": "vogel-rotor-equivalence-1024",
+      "passed": true,
+      "detail": "1024 complex-rotor recurrence and transcendental cos/sin passes match exact 4/4 shell occupancy"
+    },
+    {
+      "name": "vogel-rotor-equivalence-8192",
+      "passed": true,
+      "detail": "8192 complex-rotor recurrence and transcendental cos/sin passes match exact 4/4 shell occupancy"
+    },
+    {
+      "name": "vogel-equiarea-density-conserved",
+      "passed": true,
+      "detail": "17 equal-area concentric shells maintain ρ=1.0000× density with 0.0000 radial bias (4/4 taps per shell)"
+    },
+    {
+      "name": "linear-polar-core-clumping-exposed",
+      "passed": true,
+      "detail": "naive linear polar radius crams 16/4 taps into shell-0 (4.0000× core clumping) and starves shell-16 to 2/4 taps (0.5000× across 14/17 shells)"
+    },
+    {
+      "name": "vogel-equiarea-shell-retained",
+      "passed": true,
+      "detail": "Vogel golden-angle kernel locks shell-0 at ρ=1.0000× (4/4 taps, 0/17 biased shells)"
+    },
+    {
+      "name": "polar-core-clumping-spike-exposed",
+      "passed": true,
+      "detail": "linear polar radius spikes shell-0 to ρ=4.0000× (16/4 taps, +3.0000 bias)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse shell scrubbing reproduces the exact aperture probe carriage world matrix"
+    },
+    {
+      "name": "atomic-taps-rejection",
+      "passed": true,
+      "detail": "out-of-range samplesPerShell=99 is rejected while valid Vogel disk state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered aperture carriage y-elevation matches solved shell relative density height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Vogel disk controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual shell scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 68-tap disk kernel passes",
+      "count": 128,
+      "primary_ms": 0.06330000000002656,
+      "baseline_ms": 0.5536999999999352,
+      "primary_samples_ms": [
+        0.20069999999998345,
+        0.058600000000069485,
+        0.06979999999998654,
+        0.06300000000010186,
+        0.06889999999998508,
+        0.05660000000000309,
+        0.06330000000002656
+      ],
+      "baseline_samples_ms": [
+        0.7602000000000544,
+        0.5541000000000622,
+        0.5536999999999352,
+        0.5797000000000025,
+        0.5339999999999918,
+        0.4374000000000251,
+        0.4592000000000098
+      ]
+    },
+    {
+      "load": "1024 CPU 68-tap disk kernel passes",
+      "count": 1024,
+      "primary_ms": 0.404700000000048,
+      "baseline_ms": 3.552099999999996,
+      "primary_samples_ms": [
+        0.4171000000000049,
+        0.4034000000000333,
+        0.4016000000000304,
+        0.4156000000000404,
+        0.404700000000048,
+        0.4231000000000904,
+        0.39429999999993015
+      ],
+      "baseline_samples_ms": [
+        3.556699999999978,
+        3.552099999999996,
+        3.4682999999999993,
+        3.604600000000005,
+        3.317800000000034,
+        3.557700000000068,
+        3.317700000000059
+      ]
+    },
+    {
+      "load": "8192 CPU 68-tap disk kernel passes",
+      "count": 8192,
+      "primary_ms": 2.3502999999999474,
+      "baseline_ms": 25.990999999999985,
+      "primary_samples_ms": [
+        2.3537999999999784,
+        2.9109999999999445,
+        2.8742999999999483,
+        2.3502999999999474,
+        2.2092999999999847,
+        2.1263999999999896,
+        2.173000000000002
+      ],
+      "baseline_samples_ms": [
+        25.050000000000068,
+        28.09489999999994,
+        29.210800000000063,
+        25.990999999999985,
+        24.08979999999997,
+        23.71320000000003,
+        27.231499999999983
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/vogel-spiral-disk-rig/light-vogel-golden-angle-equiarea.png",
+    "docs/evidence/vogel-spiral-disk-rig/light-naive-linear-polar-radius.png",
+    "docs/evidence/vogel-spiral-disk-rig/dark-vogel-golden-angle-equiarea.png",
+    "docs/evidence/vogel-spiral-disk-rig/dark-naive-linear-polar-radius.png",
+    "docs/evidence/vogel-spiral-disk-rig/mobile.png"
+  ],
+  "primary_label": "Complex-Rotor Vogel Recurrence",
+  "baseline_label": "Per-Tap Transcendental cos/sin + Search",
+  "load_unit": "68-tap disk kernel passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Complex-rotor recurrence and O(1) inverse-CDF shell indexing versus per-tap transcendental cos/sin and linear boundary search.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "total_samples": 68,
+    "samples_per_shell": 4,
+    "vogel_density_shell_0": 1,
+    "polar_density_shell_0": 4,
+    "polar_density_shell_16": 0.5,
+    "max_density_bias": 3,
+    "biased_shells": 14,
+    "maximum_solver_error": 0
+  },
+  "protocol": {
+    "input": {
+      "shell_index": 0,
+      "total_samples": 68,
+      "samples_per_shell": 4,
+      "mode": "vogel-golden-angle-equiarea"
+    },
+    "output": {
+      "vogel_shell_0_taps": 4,
+      "vogel_relative_density": 1,
+      "polar_shell_0_taps": 16,
+      "polar_relative_density": 4,
+      "polar_shell_16_density": 0.5
+    },
+    "function": "r_k = √((k + 0.5)/N), θ_k = k·2π(1 − 1/φ) → Uniform Annulus Density ρ ≡ 1.0000×"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 equal-area concentric shells receive exactly 4/4 taps (1.0000× density) without core clumping or rim starvation",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Circular camera Depth-of-Field (DoF) bokeh gather kernels, PCSS soft-shadow blocker/PCF search disks, and screen-space ambient occlusion",
+    "Explaining why naive polar sampling r = (k+0.5)/N crams 4.0000× too many samples into the center core while starving the outer rim by -50.00%",
+    "Restoring exact 1.0000× equi-area Voronoi cell density via the inverse-CDF Jacobian square-root mapping r_k = sqrt((k+0.5)/N)",
+    "Replacing per-tap transcendental cos/sin calls with a 2D complex-rotor recurrence rotated by the golden angle 137.5078°"
+  ],
+  "not_for": [
+    "1D separable Gaussian box blurs where horizontal and vertical passes decouple completely",
+    "Polygonal diaphragm bokeh with sharp hexagonal/octagonal straight blades requiring polygon-edge warping",
+    "Neural depth-of-field bokeh rendering or diffusion-based defocus models",
+    "Pinhole cameras with zero aperture radius (infinite depth of field)"
+  ],
+  "locale_zh": {
+    "vogel-rotor-equivalence-128": "Vogel旋量递推等价 128",
+    "128 complex-rotor recurrence and transcendental cos/sin passes match exact 4/4 shell occupancy": "128 次复旋量递推与超越函数 cos/sin 基线完全一致保持 4/4 等面积环分布",
+    "vogel-rotor-equivalence-1024": "Vogel旋量递推等价 1024",
+    "1024 complex-rotor recurrence and transcendental cos/sin passes match exact 4/4 shell occupancy": "1024 次复旋量递推与超越函数 cos/sin 基线完全一致保持 4/4 等面积环分布",
+    "vogel-rotor-equivalence-8192": "Vogel旋量递推等价 8192",
+    "8192 complex-rotor recurrence and transcendental cos/sin passes match exact 4/4 shell occupancy": "8192 次复旋量递推与超越函数 cos/sin 基线完全一致保持 4/4 等面积环分布",
+    "vogel-equiarea-density-conserved": "Vogel等面积密度守恒",
+    "17 equal-area concentric shells maintain ρ=1.0000× density with 0.0000 radial bias (4/4 taps per shell)": "17 个等面积同心圆环全部保持 ρ=1.0000× 密度与 0.0000 径向偏差（每环严格 4/4 采样点）",
+    "linear-polar-core-clumping-exposed": "线性极坐标圆心聚拢暴露",
+    "naive linear polar radius crams 16/4 taps into shell-0 (4.0000× core clumping) and starves shell-16 to 2/4 taps (0.5000× across 14/17 shells)": "朴素线性半径极坐标在第 0 环堆积 16/4 个点（4.0000× 圆心聚拢）且将第 16 环饿死至 2/4 个点（0.5000×，波及 14/17 环）",
+    "vogel-equiarea-shell-retained": "Vogel等面积圆环锁定",
+    "Vogel golden-angle kernel locks shell-0 at ρ=1.0000× (4/4 taps, 0/17 biased shells)": "Vogel 黄金角核将第 0 环锁死在 ρ=1.0000×（4/4 点，0/17 失真环）",
+    "polar-core-clumping-spike-exposed": "极坐标圆心聚拢尖峰暴露",
+    "linear polar radius spikes shell-0 to ρ=4.0000× (16/4 taps, +3.0000 bias)": "线性极坐标将第 0 环冲高至 ρ=4.0000×（16/4 点，+3.0000 偏差）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse shell scrubbing reproduces the exact aperture probe carriage world matrix": "逆序圆环拖曳精确复现孔径探针滑车世界矩阵",
+    "atomic-taps-rejection": "原子采样数拒绝",
+    "out-of-range samplesPerShell=99 is rejected while valid Vogel disk state remains": "越界每环采样数 99 被拒绝，有效 Vogel 圆盘状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered aperture carriage y-elevation matches solved shell relative density height": "渲染孔径滑车垂直高度与求解器圆环相对密度高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px Vogel disk controls fit without horizontal overflow": "390px Vogel 圆盘控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual shell scrubbing remains available": "减少动态默认静止，保留手动圆环核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Complex-Rotor Vogel Recurrence": "复旋量递推 Vogel 等面积螺旋",
+    "Per-Tap Transcendental cos/sin + Search": "逐采样点超越函数 cos/sin 与边界查找基线",
+    "Median of 7 alternating Node CPU runs after warmup. Complex-rotor recurrence and O(1) inverse-CDF shell indexing versus per-tap transcendental cos/sin and linear boundary search.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；2D 复旋量递推与 O(1) 逆累积分布圆环索引对比逐点超越函数 cos/sin 与线性分界查找基线。",
+    "Sampled 17 equal-area concentric shells receive exactly 4/4 taps (1.0000× density) without core clumping or rim starvation": "采样 17 个等面积同心圆环全部精确分配 4/4 个采样点（1.0000× 密度），无圆心聚拢或边缘饥饿",
+    "r_k = √((k + 0.5)/N), θ_k = k·2π(1 − 1/φ) → Uniform Annulus Density ρ ≡ 1.0000×": "雅可比逆变换半径 √((k+0.5)/N) + 黄金角 137.51° 旋转 → 等面积环密度恒为 1.0000×",
+    "Circular camera Depth-of-Field (DoF) bokeh gather kernels, PCSS soft-shadow blocker/PCF search disks, and screen-space ambient occlusion": "相机圆形景深散景（DoF Bokeh）聚集核、PCSS 软阴影遮挡物/半影搜索圆盘与屏幕空间环境光遮蔽（SSAO）",
+    "Explaining why naive polar sampling r = (k+0.5)/N crams 4.0000× too many samples into the center core while starving the outer rim by -50.00%": "直观解释为何朴素线性极坐标半径 r=(k+0.5)/N 会在圆心堆积 4.0000× 采样并使外边缘饥饿损失 -50.00%",
+    "Restoring exact 1.0000× equi-area Voronoi cell density via the inverse-CDF Jacobian square-root mapping r_k = sqrt((k+0.5)/N)": "通过逆累积分布雅可比开方映射 r_k = √((k+0.5)/N) 恢复全部同心圆环严格 1.0000× 等面积密度",
+    "Replacing per-tap transcendental cos/sin calls with a 2D complex-rotor recurrence rotated by the golden angle 137.5078°": "用黄金角 137.5078° 二维复旋量乘法递推替代逐采样点高开销超越函数 cos/sin 调用",
+    "1D separable Gaussian box blurs where horizontal and vertical passes decouple completely": "可完全拆分为水平与垂直两次一维卷积的高斯模糊通道",
+    "Polygonal diaphragm bokeh with sharp hexagonal/octagonal straight blades requiring polygon-edge warping": "需要多边形直边光圈映射的六角/八角机械叶片散景",
+    "Neural depth-of-field bokeh rendering or diffusion-based defocus models": "神经景深散景合成或扩散模型虚化推理网络",
+    "Pinhole cameras with zero aperture radius (infinite depth of field)": "零光圈半径的理想针孔相机（无限景深无散景）"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/vogel-spiral-disk.test.ts",
+    "node scripts/benchmark-vogel-spiral-disk.mjs"
+  ]
+}

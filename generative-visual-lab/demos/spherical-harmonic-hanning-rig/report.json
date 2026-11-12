@@ -1,0 +1,269 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Sloan windowed L2 Spherical Harmonics (SH) irradiance vs Gibbs negative ringing & antipodal rebound rig",
+  "topic_zh": "Sloan 窗口化二阶球谐函数（L₂ SH）非负辐照度对比吉布斯负振铃与背面幽灵反光",
+  "slug": "spherical-harmonic-hanning-rig",
+  "timestamp": "2026-11-12T20:43:24.621Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Peter-Pike Sloan (2008) non-negative band-windowed L2 Spherical Harmonics irradiance (w1=0.75, w2=0.40) versus naive unwindowed Ramamoorthi-Hanrahan (2001) L2 truncation (w1=w2=1.0) and 9-basis trigonometric associated Legendre evaluation across 17 polar angles (theta in [10, 170] deg). No neural light-probe interpolation execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "sh-horner-9basis-equivalence-128",
+      "passed": true,
+      "detail": "128 4-op Cartesian Horner and 9-basis trigonometric Legendre passes agree within 1e-13"
+    },
+    {
+      "name": "sh-horner-9basis-equivalence-1024",
+      "passed": true,
+      "detail": "1024 4-op Cartesian Horner and 9-basis trigonometric Legendre passes agree within 1e-13"
+    },
+    {
+      "name": "sh-horner-9basis-equivalence-8192",
+      "passed": true,
+      "detail": "8192 4-op Cartesian Horner and 9-basis trigonometric Legendre passes agree within 1e-13"
+    },
+    {
+      "name": "sloan-nonnegative-monotonic-conserved",
+      "passed": true,
+      "detail": "17 polar angles maintain E_win = (3/16)·I₀·(1+μ)² ≥ 0.0000 with 0.0000 negative Gibbs ringing (station-11 θ=120° E_win=0.1875)"
+    },
+    {
+      "name": "unwindowed-gibbs-ringing-exposed",
+      "passed": true,
+      "detail": "naive unwindowed L2 SH rings negatively to −0.1563 at station-11 (θ=120°) and rebounds to +0.2238 at 170° across 7/17 stations"
+    },
+    {
+      "name": "windowed-sh-positive-retained",
+      "passed": true,
+      "detail": "Sloan windowed SH locks station-11 (θ=120°) at E_SH=+0.1875 (0.0000 negative ringing)"
+    },
+    {
+      "name": "unwindowed-negative-trough-exposed",
+      "passed": true,
+      "detail": "unwindowed L2 SH drops station-11 (θ=120°) into negative trough E_raw=-0.1562"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse station scrubbing reproduces the exact SH probe carriage world matrix"
+    },
+    {
+      "name": "atomic-intensity-rejection",
+      "passed": true,
+      "detail": "out-of-range keyLightIntensity=999.0 is rejected while valid SH window state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered SH carriage y-elevation matches solved spherical harmonic irradiance height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px SH window controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual station scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station SH passes",
+      "count": 128,
+      "primary_ms": 0.009599999999977626,
+      "baseline_ms": 0.09129999999998972,
+      "primary_samples_ms": [
+        0.026599999999973534,
+        0.009500000000002728,
+        0.01959999999996853,
+        0.009599999999977626,
+        0.009999999999990905,
+        0.00889999999998281,
+        0.00889999999998281
+      ],
+      "baseline_samples_ms": [
+        0.09129999999998972,
+        0.09100000000000819,
+        0.0928000000000111,
+        0.09089999999997644,
+        0.09039999999998827,
+        0.0916000000000281,
+        0.09929999999997108
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station SH passes",
+      "count": 1024,
+      "primary_ms": 0.07130000000000791,
+      "baseline_ms": 0.6854000000000156,
+      "primary_samples_ms": [
+        0.06510000000002947,
+        0.07130000000000791,
+        0.07159999999998945,
+        0.0766999999999598,
+        0.07900000000000773,
+        0.06680000000000064,
+        0.06589999999999918
+      ],
+      "baseline_samples_ms": [
+        0.8011999999999944,
+        0.7993999999999915,
+        0.8614000000000033,
+        0.6854000000000156,
+        0.6748000000000047,
+        0.6475000000000364,
+        0.6128000000000497
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station SH passes",
+      "count": 8192,
+      "primary_ms": 0.49720000000002074,
+      "baseline_ms": 5.581999999999994,
+      "primary_samples_ms": [
+        0.5813999999999737,
+        0.591700000000003,
+        0.5679999999999836,
+        0.49720000000002074,
+        0.48730000000000473,
+        0.4917000000000371,
+        0.4538000000000011
+      ],
+      "baseline_samples_ms": [
+        5.126500000000021,
+        5.367000000000019,
+        5.964400000000012,
+        8.212199999999996,
+        9.372000000000014,
+        4.473099999999988,
+        5.581999999999994
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/spherical-harmonic-hanning-rig/light-sloan-nonnegative-windowed-sh.png",
+    "docs/evidence/spherical-harmonic-hanning-rig/light-naive-unwindowed-l2-sh.png",
+    "docs/evidence/spherical-harmonic-hanning-rig/dark-sloan-nonnegative-windowed-sh.png",
+    "docs/evidence/spherical-harmonic-hanning-rig/dark-naive-unwindowed-l2-sh.png",
+    "docs/evidence/spherical-harmonic-hanning-rig/mobile.png"
+  ],
+  "primary_label": "4-Op Cartesian Horner Polynomial",
+  "baseline_label": "9-Basis Trig Associated Legendre Y_lm",
+  "load_unit": "17-station SH passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. 4-operation Cartesian Horner polynomial evaluation versus 9-basis trigonometric associated Legendre Y_l^m inner product.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "key_intensity": 4,
+    "windowed_at_120": 0.1875,
+    "unwindowed_at_120": -0.1563,
+    "max_negative_ringing": 0.1562,
+    "antipodal_rebound_at_170": 0.2238,
+    "corrupted_stations": 7,
+    "maximum_solver_error": 4.4409e-16
+  },
+  "protocol": {
+    "input": {
+      "station_index": 11,
+      "angle_deg": 120,
+      "cos_theta": -0.5,
+      "i0": 4,
+      "w1": 0.75,
+      "w2": 0.4,
+      "mode": "sloan-nonnegative-windowed-sh"
+    },
+    "output": {
+      "windowed_sh_irradiance": 0.1875,
+      "unwindowed_sh_irradiance": -0.1563,
+      "max_negative_ringing": 0.1562,
+      "antipodal_rebound_170": 0.2238,
+      "corrupted_stations_windowed": 0
+    },
+    "function": "E_win(μ) = I₀·(1/4 + (3/8)μ + (1/16)(3μ²−1)) ≡ (3/16)I₀(1 + μ)² ≥ 0.0000"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 polar angles preserve strictly non-negative, monotonically decreasing SH irradiance without Gibbs ringing",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Diffuse irradiance light probes, volumetric lightmaps, and sky-dome SH compression in Unity, Unreal Engine, and Frostbite",
+    "Explaining why unwindowed L₂ SH truncation dips negatively to −0.1563 at 120° and rebounds to +0.2238 at 170° under strong lights",
+    "Applying band weights (w₁=0.75, w₂=0.40) to factor the L₂ kernel into the non-negative complete square (3/16)I₀(1+μ)² ≥ 0",
+    "Evaluating 9-coefficient SH in Cartesian normal coordinates (nx, ny, nz) without spherical atan2/acos/sin calls"
+  ],
+  "not_for": [
+    "High-frequency mirror specular reflections requiring pre-filtered cubemap mipmaps or ray tracing",
+    "Sharp shadow boundaries requiring shadow maps or signed distance fields",
+    "Neural radiance caches (NRC) or learned light-probe interpolation networks",
+    "Unlit flat 2D UI elements without 3D surface normals"
+  ],
+  "locale_zh": {
+    "sh-horner-9basis-equivalence-128": "球谐Horner与9基函数等价 128",
+    "128 4-op Cartesian Horner and 9-basis trigonometric Legendre passes agree within 1e-13": "128 次笛卡尔 Horner 多项式与 9 球谐三角基函数内积在 1e-13 内一致",
+    "sh-horner-9basis-equivalence-1024": "球谐Horner与9基函数等价 1024",
+    "1024 4-op Cartesian Horner and 9-basis trigonometric Legendre passes agree within 1e-13": "1024 次笛卡尔 Horner 多项式与 9 球谐三角基函数内积在 1e-13 内一致",
+    "sh-horner-9basis-equivalence-8192": "球谐Horner与9基函数等价 8192",
+    "8192 4-op Cartesian Horner and 9-basis trigonometric Legendre passes agree within 1e-13": "8192 次笛卡尔 Horner 多项式与 9 球谐三角基函数内积在 1e-13 内一致",
+    "sloan-nonnegative-monotonic-conserved": "Sloan非负单调球谐守恒",
+    "17 polar angles maintain E_win = (3/16)·I₀·(1+μ)² ≥ 0.0000 with 0.0000 negative Gibbs ringing (station-11 θ=120° E_win=0.1875)": "17 个极角全部保持 E_win = (3/16)·I₀·(1+μ)² ≥ 0.0000 与 0.0000 负振铃（第 11 站 θ=120° E_win=0.1875）",
+    "unwindowed-gibbs-ringing-exposed": "未加窗吉布斯负振铃暴露",
+    "naive unwindowed L2 SH rings negatively to −0.1563 at station-11 (θ=120°) and rebounds to +0.2238 at 170° across 7/17 stations": "朴素未加窗 L2 球谐在第 11 站（θ=120°）跌至 −0.1563 负振铃，并在 170° 反弹至 +0.2238，波及 7/17 站",
+    "windowed-sh-positive-retained": "Sloan加窗正值锁定",
+    "Sloan windowed SH locks station-11 (θ=120°) at E_SH=+0.1875 (0.0000 negative ringing)": "Sloan 加窗球谐将第 11 站（θ=120°）锁死在 E_SH=+0.1875（0.0000 负振铃）",
+    "unwindowed-negative-trough-exposed": "未加窗负黑洞暴露",
+    "unwindowed L2 SH drops station-11 (θ=120°) into negative trough E_raw=-0.1562": "未加窗 L2 球谐将第 11 站（θ=120°）拉入负值低谷 E_raw=-0.1562",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse station scrubbing reproduces the exact SH probe carriage world matrix": "逆序站点拖曳精确复现球谐探针滑车世界矩阵",
+    "atomic-intensity-rejection": "原子光强拒绝",
+    "out-of-range keyLightIntensity=999.0 is rejected while valid SH window state remains": "越界光源强度 999.0 被拒绝，有效球谐加窗状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered SH carriage y-elevation matches solved spherical harmonic irradiance height": "渲染球谐滑车垂直高度与求解器球谐辐照度高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px SH window controls fit without horizontal overflow": "390px 球谐加窗控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual station scrubbing remains available": "减少动态默认静止，保留手动站点核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "4-Op Cartesian Horner Polynomial": "4 指令笛卡尔 Horner 多项式求值",
+    "9-Basis Trig Associated Legendre Y_lm": "9 基函数球坐标伴随勒让德三角内积基线",
+    "Median of 7 alternating Node CPU runs after warmup. 4-operation Cartesian Horner polynomial evaluation versus 9-basis trigonometric associated Legendre Y_l^m inner product.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；4 指令笛卡尔法线 Horner 多项式求值对比 9 基函数球坐标伴随勒让德三角内积基线。",
+    "Sampled 17 polar angles preserve strictly non-negative, monotonically decreasing SH irradiance without Gibbs ringing": "采样 17 个极角全部保持严格非负且单调递减的球谐辐照度，无吉布斯负振铃或背面反弹",
+    "E_win(μ) = I₀·(1/4 + (3/8)μ + (1/16)(3μ²−1)) ≡ (3/16)I₀(1 + μ)² ≥ 0.0000": "频带加窗 (w₁=0.75, w₂=0.40) 配成完全平方式 (3/16)I₀(1+μ)² ≥ 0.0000",
+    "Diffuse irradiance light probes, volumetric lightmaps, and sky-dome SH compression in Unity, Unreal Engine, and Frostbite": "Unity、Unreal Engine 与 Frostbite 中的漫反射光照探针（Light Probes）、体积光照贴图与天空球谐压缩",
+    "Explaining why unwindowed L₂ SH truncation dips negatively to −0.1563 at 120° and rebounds to +0.2238 at 170° under strong lights": "直观解释为何未加窗二阶球谐截断在强光下会在 120° 跌入 −0.1563 负值黑洞并在 170° 背面反弹至 +0.2238",
+    "Applying band weights (w₁=0.75, w₂=0.40) to factor the L₂ kernel into the non-negative complete square (3/16)I₀(1+μ)² ≥ 0": "通过频带权重 (w₁=0.75, w₂=0.40) 将二阶球谐核精确配成非负完全平方式 (3/16)I₀(1+μ)² ≥ 0",
+    "Evaluating 9-coefficient SH in Cartesian normal coordinates (nx, ny, nz) without spherical atan2/acos/sin calls": "直接在笛卡尔法线坐标 (nx, ny, nz) 下用多项式求值 9 系数球谐，消除全部球坐标三角函数开销",
+    "High-frequency mirror specular reflections requiring pre-filtered cubemap mipmaps or ray tracing": "需要预过滤 Cubemap Mipmap 或光线追踪的高频镜面高光反射",
+    "Sharp shadow boundaries requiring shadow maps or signed distance fields": "需要阴影贴图或有向距离场的锐利硬阴影边界",
+    "Neural radiance caches (NRC) or learned light-probe interpolation networks": "神经辐射缓存（NRC）或学习型光照探针插值推理网络",
+    "Unlit flat 2D UI elements without 3D surface normals": "不含三维表面法线的无光照平面 2D UI 元素"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/spherical-harmonic-hanning.test.ts",
+    "node scripts/benchmark-spherical-harmonic-hanning.mjs"
+  ]
+}

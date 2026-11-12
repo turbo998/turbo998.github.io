@@ -1,0 +1,271 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Kulla-Conty multiple-scattering GGX energy compensation vs single-scattering rough metal darkening rig",
+  "topic_zh": "Kulla-Conty 多重散射 GGX 能量守恒补偿对比单次散射粗糙金属变黑",
+  "slug": "kulla-conty-multiscatter-rig",
+  "timestamp": "2026-11-12T17:03:24.471Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Kulla & Conty (2017) reciprocity-preserving multiple-scattering microfacet energy compensation versus naive single-scattering GGX and 64-step hemispherical quadrature across 17 surface roughness stations (alpha in [0.04, 1.00]). No neural BRDF execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "kulla-conty-furnace-equivalence-128",
+      "passed": true,
+      "detail": "128 closed-form polynomial E_avg and 64-step quadrature passes agree on white-furnace reflectance within 1e-14"
+    },
+    {
+      "name": "kulla-conty-furnace-equivalence-1024",
+      "passed": true,
+      "detail": "1024 closed-form polynomial E_avg and 64-step quadrature passes agree on white-furnace reflectance within 1e-14"
+    },
+    {
+      "name": "kulla-conty-furnace-equivalence-8192",
+      "passed": true,
+      "detail": "8192 closed-form polynomial E_avg and 64-step quadrature passes agree on white-furnace reflectance within 1e-14"
+    },
+    {
+      "name": "kulla-conty-white-furnace-conserved",
+      "passed": true,
+      "detail": "17 roughness stations maintain E_total=1.0000 with 0.00% energy loss (station-14 α=0.88 E_total=1.0000)"
+    },
+    {
+      "name": "single-scatter-rough-darkening-exposed",
+      "passed": true,
+      "detail": "naive single-scattering GGX drops station-14 (α=0.88) reflectance to 0.6810 (−31.90% loss, max −41.19% across 13/17 stations)"
+    },
+    {
+      "name": "multiscatter-furnace-retained",
+      "passed": true,
+      "detail": "Kulla-Conty compensation locks station-14 (α=0.88) at E_total=1.0000 (0.00% loss)"
+    },
+    {
+      "name": "single-scatter-loss-exposed",
+      "passed": true,
+      "detail": "single-scattering GGX darkens station-14 to E_ss=0.6810 (−31.90% loss)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse station scrubbing reproduces the exact furnace bolometer carriage world matrix"
+    },
+    {
+      "name": "atomic-f0-rejection",
+      "passed": true,
+      "detail": "out-of-range conductorF0=9.0 is rejected while valid Kulla-Conty state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered furnace carriage y-elevation matches solved total directional reflectance height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Kulla-Conty controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual station scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station BRDF passes",
+      "count": 128,
+      "primary_ms": 0.09580000000005384,
+      "baseline_ms": 0.3623999999999796,
+      "primary_samples_ms": [
+        0.1028999999999769,
+        0.09580000000005384,
+        0.08670000000000755,
+        0.21920000000000073,
+        0.12639999999998963,
+        0.009799999999984266,
+        0.009900000000016007
+      ],
+      "baseline_samples_ms": [
+        0.4538000000000011,
+        0.33389999999997144,
+        0.3623999999999796,
+        0.4551000000000158,
+        0.4838999999999487,
+        0.31639999999998736,
+        0.2810000000000059
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station BRDF passes",
+      "count": 1024,
+      "primary_ms": 0.08260000000001355,
+      "baseline_ms": 2.2778999999999314,
+      "primary_samples_ms": [
+        0.09489999999999554,
+        0.08929999999998017,
+        0.08929999999998017,
+        0.08260000000001355,
+        0.07380000000000564,
+        0.07979999999997744,
+        0.07500000000004547
+      ],
+      "baseline_samples_ms": [
+        2.2626000000000204,
+        2.2573999999999614,
+        2.252200000000016,
+        2.322599999999966,
+        3.426900000000046,
+        2.3286999999999694,
+        2.2778999999999314
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station BRDF passes",
+      "count": 8192,
+      "primary_ms": 1.27699999999993,
+      "baseline_ms": 36.87969999999996,
+      "primary_samples_ms": [
+        0.5978999999999814,
+        1.2848999999999933,
+        1.27699999999993,
+        1.1048999999999296,
+        1.6369999999999436,
+        1.4004999999999654,
+        0.8861000000000558
+      ],
+      "baseline_samples_ms": [
+        54.54009999999994,
+        64.4371000000001,
+        39.84540000000004,
+        30.250600000000077,
+        36.87969999999996,
+        33.6721,
+        31.977800000000002
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/kulla-conty-multiscatter-rig/light-kulla-conty-multiscatter-compensated.png",
+    "docs/evidence/kulla-conty-multiscatter-rig/light-naive-single-scatter-ggx.png",
+    "docs/evidence/kulla-conty-multiscatter-rig/dark-kulla-conty-multiscatter-compensated.png",
+    "docs/evidence/kulla-conty-multiscatter-rig/dark-naive-single-scatter-ggx.png",
+    "docs/evidence/kulla-conty-multiscatter-rig/mobile.png"
+  ],
+  "primary_label": "Closed-Form Kulla-Conty Albedo Fit",
+  "baseline_label": "64-Step Hemispherical Quadrature",
+  "load_unit": "17-station BRDF passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form analytic hemispherical albedo E_avg evaluation versus 64-step midpoint quadrature integration.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "conductor_f0": 1,
+    "view_cosine_mu_o": 0.5,
+    "roughness_station_14": 0.88,
+    "compensated_reflectance_station_14": 1,
+    "single_scatter_reflectance_station_14": 0.681,
+    "energy_loss_pct_station_14": 31.9,
+    "max_energy_loss_pct_station_16": 41.19,
+    "darkened_stations": 13,
+    "maximum_solver_error": 0
+  },
+  "protocol": {
+    "input": {
+      "station_index": 14,
+      "alpha": 0.88,
+      "f0": 1,
+      "mu_o": 0.5,
+      "mu_i": 0.5,
+      "mode": "kulla-conty-multiscatter-compensated"
+    },
+    "output": {
+      "single_scatter_albedo_eo": 0.681,
+      "average_albedo_eavg": 0.7062,
+      "multiscatter_lobe_brdf": 0.1102,
+      "compensated_furnace_reflectance": 1,
+      "single_scatter_loss_pct": 31.9
+    },
+    "function": "f_ms(μ_o, μ_i) = F_ms · (1 − E(μ_o))(1 − E(μ_i)) / (π(1 − E_avg)) → White Furnace E_total ≡ 1.0000"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 roughness stations preserve exact 1.0000 white-furnace energy conservation without rough metal darkening",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Rough brushed gold, copper, chrome, and satin metallic shaders in PBR engines (Cycles, Filament, Unreal, Three.js MeshPhysicalMaterial)",
+    "Explaining why single-scattering GGX discards photons that bounce to neighboring microfacets and loses up to 41.19% energy at alpha=1.0",
+    "Restoring exact White Furnace energy conservation and Helmholtz reciprocity via Kulla-Conty directional albedo compensation",
+    "Replacing per-pixel Monte Carlo furnace quadrature with closed-form rational polynomial albedo fits"
+  ],
+  "not_for": [
+    "Mirror-smooth specular surfaces (alpha < 0.05) where single-scattering already reflects > 99.9% of incident energy",
+    "Pure Lambertian matte diffuse surfaces without microfacet specular lobes",
+    "Neural radiance fields (NeRF) or neural material appearance synthesis models",
+    "Unlit flat UI sprites and 2D vector graphics"
+  ],
+  "locale_zh": {
+    "kulla-conty-furnace-equivalence-128": "Kulla-Conty白炉等价 128",
+    "128 closed-form polynomial E_avg and 64-step quadrature passes agree on white-furnace reflectance within 1e-14": "128 次解析多项式 E_avg 与 64 步数值积分基线在 1e-14 内一致",
+    "kulla-conty-furnace-equivalence-1024": "Kulla-Conty白炉等价 1024",
+    "1024 closed-form polynomial E_avg and 64-step quadrature passes agree on white-furnace reflectance within 1e-14": "1024 次解析多项式 E_avg 与 64 步数值积分基线在 1e-14 内一致",
+    "kulla-conty-furnace-equivalence-8192": "Kulla-Conty白炉等价 8192",
+    "8192 closed-form polynomial E_avg and 64-step quadrature passes agree on white-furnace reflectance within 1e-14": "8192 次解析多项式 E_avg 与 64 步数值积分基线在 1e-14 内一致",
+    "kulla-conty-white-furnace-conserved": "Kulla-Conty白炉能量守恒",
+    "17 roughness stations maintain E_total=1.0000 with 0.00% energy loss (station-14 α=0.88 E_total=1.0000)": "17 个粗糙度站点全部保持 E_total=1.0000 与 0.00% 能量损失（第 14 站 α=0.88 E_total=1.0000）",
+    "single-scatter-rough-darkening-exposed": "单次散射粗糙变黑暴露",
+    "naive single-scattering GGX drops station-14 (α=0.88) reflectance to 0.6810 (−31.90% loss, max −41.19% across 13/17 stations)": "朴素单次散射 GGX 将第 14 站（α=0.88）反射率压低至 0.6810（损失 −31.90%，峰值 −41.19%，波及 13/17 站）",
+    "multiscatter-furnace-retained": "多重散射白炉锁定",
+    "Kulla-Conty compensation locks station-14 (α=0.88) at E_total=1.0000 (0.00% loss)": "Kulla-Conty 补偿将第 14 站（α=0.88）锁死在 E_total=1.0000（0.00% 能量损失）",
+    "single-scatter-loss-exposed": "单次散射变黑暴露",
+    "single-scattering GGX darkens station-14 to E_ss=0.6810 (−31.90% loss)": "单次散射 GGX 将第 14 站变暗至 E_ss=0.6810（损失 −31.90%）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse station scrubbing reproduces the exact furnace bolometer carriage world matrix": "逆序站点拖曳精确复现白炉测辐射热计滑车世界矩阵",
+    "atomic-f0-rejection": "原子反射率拒绝",
+    "out-of-range conductorF0=9.0 is rejected while valid Kulla-Conty state remains": "越界导体反射率 F0=9.0 被拒绝，有效 Kulla-Conty 状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered furnace carriage y-elevation matches solved total directional reflectance height": "渲染白炉滑车垂直高度与求解器总方向反射率高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px Kulla-Conty controls fit without horizontal overflow": "390px Kulla-Conty 控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual station scrubbing remains available": "减少动态默认静止，保留手动站点核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Closed-Form Kulla-Conty Albedo Fit": "解析多项式 Kulla-Conty 反照率补偿",
+    "64-Step Hemispherical Quadrature": "64 步半球数值求积基线",
+    "Median of 7 alternating Node CPU runs after warmup. Closed-form analytic hemispherical albedo E_avg evaluation versus 64-step midpoint quadrature integration.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；解析多项式半球平均反照率 E_avg 计算对比 64 步中点数值积分基线。",
+    "Sampled 17 roughness stations preserve exact 1.0000 white-furnace energy conservation without rough metal darkening": "采样 17 个粗糙度站点全部保持 1.0000 白炉测试能量守恒且无粗糙金属变黑",
+    "f_ms(μ_o, μ_i) = F_ms · (1 − E(μ_o))(1 − E(μ_i)) / (π(1 − E_avg)) → White Furnace E_total ≡ 1.0000": "Kulla-Conty 互易多重散射补偿项 + 多重菲涅尔级数 → 白炉总反射率 E_total ≡ 1.0000",
+    "Rough brushed gold, copper, chrome, and satin metallic shaders in PBR engines (Cycles, Filament, Unreal, Three.js MeshPhysicalMaterial)": "PBR 引擎（Cycles、Filament、Unreal、Three.js）中的磨砂金、拉丝铜、哑光铬与高粗糙度金属材质",
+    "Explaining why single-scattering GGX discards photons that bounces to neighboring microfacets and loses up to 41.19% energy at alpha=1.0": "直观解释为何单次散射 GGX 会丢弃微表面间二次弹射光子并在 α=1.0 处损失高达 41.19% 的能量",
+    "Explaining why single-scattering GGX discards photons that bounce to neighboring microfacets and loses up to 41.19% energy at alpha=1.0": "直观解释为何单次散射 GGX 会丢弃微表面间二次弹射光子并在 α=1.0 处损失高达 41.19% 的能量",
+    "Restoring exact White Furnace energy conservation and Helmholtz reciprocity via Kulla-Conty directional albedo compensation": "通过 Kulla-Conty 方向反照率互补项恢复严格白炉测试能量守恒与亥姆霍兹互易律",
+    "Replacing per-pixel Monte Carlo furnace quadrature with closed-form rational polynomial albedo fits": "以闭式多项式反照率拟合替代高开销逐像素半球数值积分",
+    "Mirror-smooth specular surfaces (alpha < 0.05) where single-scattering already reflects > 99.9% of incident energy": "极光滑镜面（α < 0.05，单次散射已保留 > 99.9% 反射能量）",
+    "Pure Lambertian matte diffuse surfaces without microfacet specular lobes": "不含微表面高光波瓣的纯 Lambertian 漫反射墙面",
+    "Neural radiance fields (NeRF) or neural material appearance synthesis models": "神经辐射场（NeRF）或神经材质外观合成推理模型",
+    "Unlit flat UI sprites and 2D vector graphics": "无光照平面 UI 精灵与 2D 矢量图形"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/kulla-conty-multiscatter.test.ts",
+    "node scripts/benchmark-kulla-conty-multiscatter.mjs"
+  ]
+}

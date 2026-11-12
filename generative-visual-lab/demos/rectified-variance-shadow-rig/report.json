@@ -1,0 +1,270 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Lauritzen windowed Variance Shadow Map (VSM) vs raw Chebyshev overlapping blocker light-bleeding rig",
+  "topic_zh": "Lauritzen 窗口化方差阴影贴图（VSM）对比原始切比雪夫上界重叠遮挡物漏光",
+  "slug": "rectified-variance-shadow-rig",
+  "timestamp": "2026-11-12T18:23:45.480Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Donnelly & Lauritzen (2006/2007) pre-filtered 2-moment Variance Shadow Mapping (VSM) with smoothstep light-bleeding windowing versus raw Chebyshev upper bounds and un-prefiltered 32-tap per-pixel blocker summation across 17 umbra receiver depths (z_R in [6.50, 14.50] m). No neural shadow denoising execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "vsm-prefiltered-equivalence-128",
+      "passed": true,
+      "detail": "128 O(1) pre-filtered 2-moment VSM and 32-tap kernel summation passes agree within 1e-14"
+    },
+    {
+      "name": "vsm-prefiltered-equivalence-1024",
+      "passed": true,
+      "detail": "1024 O(1) pre-filtered 2-moment VSM and 32-tap kernel summation passes agree within 1e-14"
+    },
+    {
+      "name": "vsm-prefiltered-equivalence-8192",
+      "passed": true,
+      "detail": "8192 O(1) pre-filtered 2-moment VSM and 32-tap kernel summation passes agree within 1e-14"
+    },
+    {
+      "name": "vsm-umbra-darkness-conserved",
+      "passed": true,
+      "detail": "17 umbra receiver stations behind overlapping blockers maintain V=0.0000 with 0.00% light bleeding"
+    },
+    {
+      "name": "raw-chebyshev-light-bleeding-exposed",
+      "passed": true,
+      "detail": "naive raw Chebyshev VSM leaks V=0.2000 (20.00% bleed) at station-3 (z_R=8.00m) and max 39.02% across 17/17 stations"
+    },
+    {
+      "name": "windowed-vsm-umbra-retained",
+      "passed": true,
+      "detail": "Lauritzen windowed VSM locks station-3 (z_R=8.00m) at V=0.0000 (0.00% light bleed)"
+    },
+    {
+      "name": "raw-chebyshev-bleed-halo-exposed",
+      "passed": true,
+      "detail": "raw Chebyshev VSM leaks V=0.2000 (20.00% bleed) at station-3 (z_R=8.00m)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse receiver scrubbing reproduces the exact VSM densitometer carriage world matrix"
+    },
+    {
+      "name": "atomic-blocker-rejection",
+      "passed": true,
+      "detail": "out-of-range nearBlockerDepthM=99.0 is rejected while valid VSM state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered VSM carriage y-elevation matches solved umbra visibility height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px VSM controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual receiver scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station VSM passes",
+      "count": 128,
+      "primary_ms": 0.10559999999998126,
+      "baseline_ms": 0.22529999999994743,
+      "primary_samples_ms": [
+        0.16919999999993252,
+        0.09620000000006712,
+        0.10559999999998126,
+        0.09649999999999181,
+        0.1230000000000473,
+        0.11959999999999127,
+        0.0907999999999447
+      ],
+      "baseline_samples_ms": [
+        0.273900000000026,
+        0.21510000000000673,
+        0.2018999999999096,
+        0.27760000000000673,
+        0.22529999999994743,
+        0.2034999999999627,
+        0.2521999999999025
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station VSM passes",
+      "count": 1024,
+      "primary_ms": 0.12459999999998672,
+      "baseline_ms": 0.5874000000000024,
+      "primary_samples_ms": [
+        1.5288000000000466,
+        0.13390000000003965,
+        0.12459999999998672,
+        0.13149999999995998,
+        0.12390000000004875,
+        0.12289999999995871,
+        0.12419999999997344
+      ],
+      "baseline_samples_ms": [
+        3.7392999999999574,
+        0.6238999999999351,
+        0.5848999999999478,
+        0.5873000000000275,
+        0.6295999999999822,
+        0.5874000000000024,
+        0.5851000000000113
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station VSM passes",
+      "count": 8192,
+      "primary_ms": 1.6466999999998961,
+      "baseline_ms": 4.933300000000031,
+      "primary_samples_ms": [
+        3.578800000000001,
+        4.3700000000000045,
+        4.037399999999934,
+        0.9836999999999989,
+        1.6466999999998961,
+        0.9978000000000975,
+        0.9930000000000518
+      ],
+      "baseline_samples_ms": [
+        4.8596,
+        6.219000000000051,
+        4.651000000000067,
+        4.672900000000027,
+        4.933300000000031,
+        4.947100000000091,
+        5.650800000000004
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/rectified-variance-shadow-rig/light-lauritzen-windowed-chebyshev-vsm.png",
+    "docs/evidence/rectified-variance-shadow-rig/light-naive-raw-chebyshev-vsm.png",
+    "docs/evidence/rectified-variance-shadow-rig/dark-lauritzen-windowed-chebyshev-vsm.png",
+    "docs/evidence/rectified-variance-shadow-rig/dark-naive-raw-chebyshev-vsm.png",
+    "docs/evidence/rectified-variance-shadow-rig/mobile.png"
+  ],
+  "primary_label": "O(1) Pre-Filtered 2-Moment VSM",
+  "baseline_label": "32-Tap Per-Pixel Moment Summation",
+  "load_unit": "17-station VSM passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. O(1) pre-filtered 2-moment (M1, M2) VSM evaluation versus 32-tap per-pixel blocker moment summation.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "near_blocker_m": 2,
+    "far_blocker_m": 6,
+    "moment_mean_m": 4,
+    "moment_variance_m2": 4,
+    "windowed_vis_station_3": 0,
+    "raw_chebyshev_vis_station_3": 0.2,
+    "max_bleed_pct_station_0": 39.02,
+    "bleeding_stations": 17,
+    "maximum_solver_error": 0
+  },
+  "protocol": {
+    "input": {
+      "station_index": 3,
+      "z_receiver_m": 8,
+      "z_a_m": 2,
+      "z_b_m": 6,
+      "p_min": 0.4,
+      "mode": "lauritzen-windowed-chebyshev-vsm"
+    },
+    "output": {
+      "moment_mean_m": 4,
+      "moment_variance_m2": 4,
+      "raw_chebyshev_pmax": 0.2,
+      "windowed_vsm_visibility": 0,
+      "max_umbra_bleed_pct": 39.02
+    },
+    "function": "p_max = σ² / (σ² + (z_R − μ)²), V = smoothstep(p_min, 1.0, p_max) → Umbra Bleed ≡ 0.00%"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 umbra receiver stations behind overlapping blockers maintain 0.00% light bleeding under windowed VSM",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Pre-filtered soft shadow maps using hardware trilinear mipmaps, anisotropic filtering, and separable Gaussian blurs",
+    "Explaining why overlapping blockers (z_A=2.0m, z_B=6.0m) inflate variance σ²=4.0m² and cause raw Chebyshev to leak 20.00%–39.02% light in umbra",
+    "Suppressing non-physical Chebyshev probability tails via Lauritzen smoothstep(p_min, 1.0, p_max) windowing",
+    "Replacing expensive 32-tap per-pixel PCF shadow loops with O(1) 2-channel (z, z²) moment lookups"
+  ],
+  "not_for": [
+    "Ray-traced hard pinhole shadows with zero penumbra filter radius",
+    "High-depth-complexity foliage stacks (> 4 overlapping layers) requiring 4-moment Moment Shadow Mapping (MSM) or Exponential VSM (EVSM)",
+    "Neural spatio-temporal ray-traced shadow denoisers (SVGF / ReLAX)",
+    "Unlit scenes without shadow-casting directional or spot lights"
+  ],
+  "locale_zh": {
+    "vsm-prefiltered-equivalence-128": "VSM预滤波与32点求和等价 128",
+    "128 O(1) pre-filtered 2-moment VSM and 32-tap kernel summation passes agree within 1e-14": "128 次 O(1) 预滤波二阶矩 VSM 与 32 点逐像素求和基线在 1e-14 内一致",
+    "vsm-prefiltered-equivalence-1024": "VSM预滤波与32点求和等价 1024",
+    "1024 O(1) pre-filtered 2-moment VSM and 32-tap kernel summation passes agree within 1e-14": "1024 次 O(1) 预滤波二阶矩 VSM 与 32 点逐像素求和基线在 1e-14 内一致",
+    "vsm-prefiltered-equivalence-8192": "VSM预滤波与32点求和等价 8192",
+    "8192 O(1) pre-filtered 2-moment VSM and 32-tap kernel summation passes agree within 1e-14": "8192 次 O(1) 预滤波二阶矩 VSM 与 32 点逐像素求和基线在 1e-14 内一致",
+    "vsm-umbra-darkness-conserved": "VSM本影零漏光守恒",
+    "17 umbra receiver stations behind overlapping blockers maintain V=0.0000 with 0.00% light bleeding": "重叠遮挡物后方 17 个本影接收站全部保持 V=0.0000 与 0.00% 漏光",
+    "raw-chebyshev-light-bleeding-exposed": "原始切比雪夫漏光暴露",
+    "naive raw Chebyshev VSM leaks V=0.2000 (20.00% bleed) at station-3 (z_R=8.00m) and max 39.02% across 17/17 stations": "朴素原始切比雪夫 VSM 在第 3 站（z_R=8.00m）漏出 V=0.2000（20.00% 漏光），峰值 39.02%，波及 17/17 站",
+    "windowed-vsm-umbra-retained": "窗口化VSM本影锁定",
+    "Lauritzen windowed VSM locks station-3 (z_R=8.00m) at V=0.0000 (0.00% light bleed)": "Lauritzen 窗口化 VSM 将第 3 站（z_R=8.00m）锁死在 V=0.0000（0.00% 漏光）",
+    "raw-chebyshev-bleed-halo-exposed": "原始切比雪夫漏光光环暴露",
+    "raw Chebyshev VSM leaks V=0.2000 (20.00% bleed) at station-3 (z_R=8.00m)": "原始切比雪夫 VSM 在第 3 站（z_R=8.00m）漏出 V=0.2000（20.00% 漏光）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse receiver scrubbing reproduces the exact VSM densitometer carriage world matrix": "逆序接收站拖曳精确复现 VSM 密度计滑车世界矩阵",
+    "atomic-blocker-rejection": "原子遮挡深度拒绝",
+    "out-of-range nearBlockerDepthM=99.0 is rejected while valid VSM state remains": "越界近景遮挡深度 99.0m 被拒绝，有效 VSM 状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered VSM carriage y-elevation matches solved umbra visibility height": "渲染 VSM 滑车垂直高度与求解器本影可见度高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px VSM controls fit without horizontal overflow": "390px VSM 控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual receiver scrubbing remains available": "减少动态默认静止，保留手动接收站核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "O(1) Pre-Filtered 2-Moment VSM": "O(1) 预滤波二阶矩窗口化 VSM",
+    "32-Tap Per-Pixel Moment Summation": "32 采样点逐像素二阶矩求和基线",
+    "Median of 7 alternating Node CPU runs after warmup. O(1) pre-filtered 2-moment (M1, M2) VSM evaluation versus 32-tap per-pixel blocker moment summation.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；O(1) 预滤波二阶矩（M1, M2）VSM 求值对比 32 采样点逐像素遮挡物矩求和基线。",
+    "Sampled 17 umbra receiver stations behind overlapping blockers maintain 0.00% light bleeding under windowed VSM": "采样 17 个双遮挡物重叠后方的本影接收站在窗口化 VSM 下全部保持 0.00% 漏光",
+    "p_max = σ² / (σ² + (z_R − μ)²), V = smoothstep(p_min, 1.0, p_max) → Umbra Bleed ≡ 0.00%": "切比雪夫上界 p_max + smoothstep(p_min, 1.0, p_max) 窗口化截断 → 本影漏光 ≡ 0.00%",
+    "Pre-filtered soft shadow maps using hardware trilinear mipmaps, anisotropic filtering, and separable Gaussian blurs": "可直接启用硬件三线性 Mipmap、各向异性过滤与可分离高斯模糊的预滤波软阴影贴图",
+    "Explaining why overlapping blockers (z_A=2.0m, z_B=6.0m) inflate variance σ²=4.0m² and cause raw Chebyshev to leak 20.00%–39.02% light in umbra": "直观解释为何前后遮挡物重叠（z_A=2.0m, z_B=6.0m）会推高方差 σ²=4.0m² 并导致原始切比雪夫在本影区漏出 20.00%–39.02% 伪光环",
+    "Suppressing non-physical Chebyshev probability tails via Lauritzen smoothstep(p_min, 1.0, p_max) windowing": "通过 Lauritzen smoothstep(p_min, 1.0, p_max) 窗口化平滑截断消除非物理切比雪夫概率长尾",
+    "Replacing expensive 32-tap per-pixel PCF shadow loops with O(1) 2-channel (z, z²) moment lookups": "以 O(1) 双通道 (z, z²) 预滤波矩查表替代高开销的 32 点逐像素 PCF 循环",
+    "Ray-traced hard pinhole shadows with zero penumbra filter radius": "零半影滤波半径的光线追踪硬针孔阴影",
+    "High-depth-complexity foliage stacks (> 4 overlapping layers) requiring 4-moment Moment Shadow Mapping (MSM) or Exponential VSM (EVSM)": "超过 4 层密集交叠的丛林树冠（需结合指数扭曲 EVSM 或四阶矩 MSM）",
+    "Neural spatio-temporal ray-traced shadow denoisers (SVGF / ReLAX)": "神经时空光追阴影降噪器（SVGF / ReLAX）",
+    "Unlit scenes without shadow-casting directional or spot lights": "不含投射阴影平行光或聚光灯的无光照场景"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/rectified-variance-shadow.test.ts",
+    "node scripts/benchmark-rectified-variance-shadow.mjs"
+  ]
+}

@@ -1,0 +1,268 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Hasselgren Minkowski conservative rasterization AABB dilation vs pixel-center sub-pixel line dropout rig",
+  "topic_zh": "Hasselgren 闵可夫斯基半像素保守光栅化扩张对比像素中心点采样亚像素断线与体素漏洞",
+  "slug": "conservative-raster-dilation-rig",
+  "timestamp": "2026-11-12T20:55:28.316Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Hasselgren, Akenine-Moller & Ohlsson (2005) Minkowski sum conservative rasterization (R_cons = r + h*(|n_x| + |n_y|)) versus naive pixel-center point sampling and 4-corner Separating Axis Theorem (SAT) interval testing across 17 pixel center distances (d in [0.00, 0.80] px). No neural voxel completion execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "conservative-minkowski-sat-equivalence-128",
+      "passed": true,
+      "detail": "128 3-op Minkowski L1 dilation and 4-corner SAT passes agree within 1e-14"
+    },
+    {
+      "name": "conservative-minkowski-sat-equivalence-1024",
+      "passed": true,
+      "detail": "1024 3-op Minkowski L1 dilation and 4-corner SAT passes agree within 1e-14"
+    },
+    {
+      "name": "conservative-minkowski-sat-equivalence-8192",
+      "passed": true,
+      "detail": "8192 3-op Minkowski L1 dilation and 4-corner SAT passes agree within 1e-14"
+    },
+    {
+      "name": "hasselgren-conservative-hits-conserved",
+      "passed": true,
+      "detail": "17 intersected pixel boxes captured with 0 dropouts (Minkowski threshold R_cons=0.9000 px)"
+    },
+    {
+      "name": "center-sample-subpixel-dropout-exposed",
+      "passed": true,
+      "detail": "naive pixel-center point sampling drops 12/17 intersected pixels (70.59% dropout, only 5/17 hit)"
+    },
+    {
+      "name": "conservative-corner-hit-retained",
+      "passed": true,
+      "detail": "Hasselgren dilation captures station-10 (d=0.50px) with hit score 0.5833 (17/17 hits)"
+    },
+    {
+      "name": "center-sample-corner-drop-exposed",
+      "passed": true,
+      "detail": "pixel-center sampling drops station-10 (d=0.50px > r=0.20px) to 0.0000 (12/17 dropped)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse station scrubbing reproduces the exact rasterizer probe carriage world matrix"
+    },
+    {
+      "name": "atomic-wire-rejection",
+      "passed": true,
+      "detail": "out-of-range wireHalfWidthPx=99.0 is rejected while valid Conservative Raster state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered rasterizer carriage y-elevation matches solved pixel coverage score height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Conservative Raster controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual station scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station raster passes",
+      "count": 128,
+      "primary_ms": 0.014299999999991542,
+      "baseline_ms": 0.9540000000000077,
+      "primary_samples_ms": [
+        0.8643999999999892,
+        0.20150000000001,
+        0.23970000000002756,
+        0.013899999999978263,
+        0.014299999999991542,
+        0.00960000000003447,
+        0.009200000000021191
+      ],
+      "baseline_samples_ms": [
+        4.815899999999999,
+        1.0884999999999536,
+        1.3734000000000037,
+        0.9540000000000077,
+        0.3371000000000208,
+        0.35419999999999163,
+        0.345799999999997
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station raster passes",
+      "count": 1024,
+      "primary_ms": 0.0736999999999739,
+      "baseline_ms": 2.3162999999999556,
+      "primary_samples_ms": [
+        0.07519999999999527,
+        0.07400000000001228,
+        0.0736999999999739,
+        0.07159999999998945,
+        0.0724999999999909,
+        0.07450000000000045,
+        0.06919999999996662
+      ],
+      "baseline_samples_ms": [
+        7.2771999999999935,
+        0.369199999999978,
+        0.3755999999999631,
+        0.6288999999999874,
+        2.587799999999959,
+        2.4542999999999893,
+        2.3162999999999556
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station raster passes",
+      "count": 8192,
+      "primary_ms": 0.5650000000000546,
+      "baseline_ms": 2.872799999999984,
+      "primary_samples_ms": [
+        0.5644000000000347,
+        0.5833000000000084,
+        0.5617999999999483,
+        0.5561999999999898,
+        0.5650000000000546,
+        0.5723000000000411,
+        0.5692999999999984
+      ],
+      "baseline_samples_ms": [
+        2.983099999999979,
+        2.971499999999992,
+        2.872799999999984,
+        2.85349999999994,
+        2.7747000000000526,
+        2.7635999999999967,
+        3.0646000000000413
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/conservative-raster-dilation-rig/light-hasselgren-minkowski-conservative.png",
+    "docs/evidence/conservative-raster-dilation-rig/light-naive-pixel-center-point-sample.png",
+    "docs/evidence/conservative-raster-dilation-rig/dark-hasselgren-minkowski-conservative.png",
+    "docs/evidence/conservative-raster-dilation-rig/dark-naive-pixel-center-point-sample.png",
+    "docs/evidence/conservative-raster-dilation-rig/mobile.png"
+  ],
+  "primary_label": "3-Op Minkowski L1 Support Dilation",
+  "baseline_label": "4-Corner Vertex SAT Projection",
+  "load_unit": "17-station raster passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. 3-operation Minkowski L1 support radius dilation versus 4-corner pixel box vertex generation and Separating Axis Theorem interval projection.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "wire_half_width_px": 0.2,
+    "minkowski_support_px": 0.7,
+    "conservative_threshold_px": 0.9,
+    "conservative_hits": 17,
+    "center_sample_hits": 5,
+    "dropped_stations": 12,
+    "maximum_solver_error": 2.2204e-16
+  },
+  "protocol": {
+    "input": {
+      "station_index": 10,
+      "center_dist_px": 0.5,
+      "wire_r_px": 0.2,
+      "nx": 0.6,
+      "ny": -0.8,
+      "mode": "hasselgren-minkowski-conservative"
+    },
+    "output": {
+      "minkowski_support_px": 0.7,
+      "conservative_threshold_px": 0.9,
+      "conservative_hits": 17,
+      "center_sample_hits": 5,
+      "dropped_pixels_center_sample": 12
+    },
+    "function": "R_cons = r + h·(|n_x| + |n_y|) = 0.20 + 0.70 = 0.9000 px → 17 / 17 Intersected Pixels Captured"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 intersected pixel boxes capture 100% of sub-pixel diagonal wire crossings without dropout",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "GPU 3D surface voxelization (VXGI, collision SDFs), sub-pixel CAD wireframes, power lines, and watertight occlusion culling",
+    "Explaining why standard pixel-center point sampling drops 12/17 (70.59%) of pixels touched by a r=0.20px diagonal wire",
+    "Shifting edge planes outward by the pixel square L₁ support radius Δd = h·(|n_x| + |n_y|) = 0.7000 px",
+    "Replacing 4-corner Separating Axis Theorem (SAT) vertex loops with a 3-op Minkowski L₁ norm support function"
+  ],
+  "not_for": [
+    "Large opaque interior triangles where standard non-dilated hardware rasterization is desired",
+    "Watertight shared interior edges between adjacent triangles (where Top-Left tie-breaking avoids double overdraw)",
+    "Neural point-cloud or voxel occupancy completion networks",
+    "1D audio signal processing without 2D/3D spatial rasterization"
+  ],
+  "locale_zh": {
+    "conservative-minkowski-sat-equivalence-128": "闵可夫斯基扩张与4顶点SAT等价 128",
+    "128 3-op Minkowski L1 dilation and 4-corner SAT passes agree within 1e-14": "128 次 3 指令闵可夫斯基 L1 扩张与 4 顶点分离轴测试基线在 1e-14 内一致",
+    "conservative-minkowski-sat-equivalence-1024": "闵可夫斯基扩张与4顶点SAT等价 1024",
+    "1024 3-op Minkowski L1 dilation and 4-corner SAT passes agree within 1e-14": "1024 次 3 指令闵可夫斯基 L1 扩张与 4 顶点分离轴测试基线在 1e-14 内一致",
+    "conservative-minkowski-sat-equivalence-8192": "闵可夫斯基扩张与4顶点SAT等价 8192",
+    "8192 3-op Minkowski L1 dilation and 4-corner SAT passes agree within 1e-14": "8192 次 3 指令闵可夫斯基 L1 扩张与 4 顶点分离轴测试基线在 1e-14 内一致",
+    "hasselgren-conservative-hits-conserved": "Hasselgren保守光栅化全命中",
+    "17 intersected pixel boxes captured with 0 dropouts (Minkowski threshold R_cons=0.9000 px)": "17 个相交像素格全部捕获且 0 漏检（闵可夫斯基阈值 R_cons=0.9000 px）",
+    "center-sample-subpixel-dropout-exposed": "像素中心点采样漏检暴露",
+    "naive pixel-center point sampling drops 12/17 intersected pixels (70.59% dropout, only 5/17 hit)": "朴素像素中心点采样丢弃 12/17 个相交像素（漏检率 70.59%，仅命中 5/17）",
+    "conservative-corner-hit-retained": "Hasselgren边角命中锁定",
+    "Hasselgren dilation captures station-10 (d=0.50px) with hit score 0.5833 (17/17 hits)": "Hasselgren 扩张捕获第 10 站（d=0.50px），覆盖分 0.5833（17/17 全命中）",
+    "center-sample-corner-drop-exposed": "像素中心点擦角漏检暴露",
+    "pixel-center sampling drops station-10 (d=0.50px > r=0.20px) to 0.0000 (12/17 dropped)": "像素中心点采样在第 10 站（d=0.50px > r=0.20px）漏检归零（12/17 漏检）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse station scrubbing reproduces the exact rasterizer probe carriage world matrix": "逆序站点拖曳精确复现光栅化探针滑车世界矩阵",
+    "atomic-wire-rejection": "原子线宽拒绝",
+    "out-of-range wireHalfWidthPx=99.0 is rejected while valid Conservative Raster state remains": "越界亚像素线宽 99.0px 被拒绝，有效保守光栅化状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered rasterizer carriage y-elevation matches solved pixel coverage score height": "渲染光栅滑车垂直高度与求解器像素覆盖高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px Conservative Raster controls fit without horizontal overflow": "390px 保守光栅化控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual station scrubbing remains available": "减少动态默认静止，保留手动站点核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "3-Op Minkowski L1 Support Dilation": "3 指令闵可夫斯基 L₁ 支撑半径扩张",
+    "4-Corner Vertex SAT Projection": "4 顶点分离轴（SAT）投影查找基线",
+    "Median of 7 alternating Node CPU runs after warmup. 3-operation Minkowski L1 support radius dilation versus 4-corner pixel box vertex generation and Separating Axis Theorem interval projection.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；3 指令闵可夫斯基 L₁ 支撑半径扩张对比 4 顶点生成与分离轴（SAT）区间投影基线。",
+    "Sampled 17 intersected pixel boxes capture 100% of sub-pixel diagonal wire crossings without dropout": "采样 17 个被亚像素斜线穿过边角的像素格 100% 完整捕获，零断线漏检",
+    "R_cons = r + h·(|n_x| + |n_y|) = 0.20 + 0.70 = 0.9000 px → 17 / 17 Intersected Pixels Captured": "闵可夫斯基 L₁ 支撑半径扩张 R_cons = r + h(|n_x|+|n_y|) = 0.90 px → 17/17 像素全捕获",
+    "GPU 3D surface voxelization (VXGI, collision SDFs), sub-pixel CAD wireframes, power lines, and watertight occlusion culling": "GPU 三维网格体素化（VXGI 全局光照、碰撞体素场）、CAD 亚像素精细线框、远景电线与水密遮挡剔除",
+    "Explaining why standard pixel-center point sampling drops 12/17 (70.59%) of pixels touched by a r=0.20px diagonal wire": "直观解释为何标准像素中心点采样会丢弃 12/17（70.59%）个被 r=0.20px 亚像素斜线切过边角的像素",
+    "Shifting edge planes outward by the pixel square L₁ support radius Δd = h·(|n_x| + |n_y|) = 0.7000 px": "将图元边界沿外法线外推像素正方形的 L₁ 支撑半径 Δd = h·(|n_x| + |n_y|) = 0.7000 px",
+    "Replacing 4-corner Separating Axis Theorem (SAT) vertex loops with a 3-op Minkowski L₁ norm support function": "以 3 指令闵可夫斯基 L₁ 范数支撑函数替代 4 顶点分离轴（SAT）投影循环",
+    "Large opaque interior triangles where standard non-dilated hardware rasterization is desired": "不需要边界扩张的常规大面积不透明内部三角形光栅化",
+    "Watertight shared interior edges between adjacent triangles (where Top-Left tie-breaking avoids double overdraw)": "相邻共边三角形内部无缝拼接（需使用 Top-Left 破平局规则避免重复绘制）",
+    "Neural point-cloud or voxel occupancy completion networks": "神经点云或三维体素占用补全推理网络",
+    "1D audio signal processing without 2D/3D spatial rasterization": "不涉及二维/三维空间光栅化的一维音频信号处理"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/conservative-raster-dilation.test.ts",
+    "node scripts/benchmark-conservative-raster-dilation.mjs"
+  ]
+}

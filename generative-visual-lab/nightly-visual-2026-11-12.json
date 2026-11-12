@@ -650,6 +650,342 @@
         "The 58-solid 17-station OIT bench compares single-pass commutative WBOIT against per-pixel sorted A-Buffers (1.26 ms vs 22.25 ms at 8,192 passes, 17.64× speedup, 0 error) without claiming neural layer decomposition."
       ],
       "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_layer_decomp": "not_measured" }
+    },
+    {
+      "round": 57,
+      "slug": "kulla-conty-multiscatter-rig",
+      "topic": "kulla-conty-multiscatter-ggx-energy-compensation",
+      "title_zh": "粗糙磨砂金属不再发黑发乌：Kulla-Conty 多重散射 GGX 能量守恒补偿选型 FAQ",
+      "title_en": "Rough metals without muddy darkening: Kulla-Conty multiple-scattering GGX energy compensation selection FAQ",
+      "faq_zh": "docs/kulla-conty-multiscatter-ggx-energy-compensation-faq.md",
+      "faq_en": "docs/kulla-conty-multiscatter-ggx-energy-compensation-faq.en.md",
+      "summary": "docs/evidence/kulla-conty-multiscatter-rig-summary.svg",
+      "report": "demos/kulla-conty-multiscatter-rig/report.json",
+      "cards": "demos/kulla-conty-multiscatter-rig/test-report-cards.html",
+      "cards_zh": "demos/kulla-conty-multiscatter-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在白炉测试（F0=1.00, μ_o=μ_i=0.50）下，朴素单次散射 GGX 因丢弃撞向相邻微表面的二次弹射光子，在第 14 站磨砂粗糙度（α=0.88）处将方向反射率压低至 0.6810（损失 −31.90% 能量，α=1.00 处损失 −41.19%，导致 13/17 个站点严重变黑）。",
+        "采用 Kulla-Conty (2017) 互易对称多重散射能量补偿 f_ms = F_ms·(1−E(μ_o))(1−E(μ_i))/(π(1−E_avg))，在全 17 个粗糙度站点严格恢复白炉测试 E_total = 1.0000（0.00% 能量损失）。",
+        "58 实体 17 站点白炉测辐射热计对比闭式多项式反照率计算与 64 步半球数值求积基线（8192 次 1.28 ms vs 36.88 ms，提速 28.88×，误差 0），不冒充神经材质推理。"
+      ],
+      "conclusions_en": [
+        "Under the White Furnace test (F0=1.00, μ_o=μ_i=0.50), naive single-scattering GGX discards photons that bounce to neighboring microfacets, dropping directional reflectance to 0.6810 at station 14 (α=0.88, −31.90% energy loss, peaking at −41.19% at α=1.00 across 13/17 darkened stations).",
+        "Kulla-Conty (2017) reciprocity-preserving multiple-scattering compensation f_ms = F_ms·(1−E(μ_o))(1−E(μ_i))/(π(1−E_avg)) restores exact White Furnace conservation E_total = 1.0000 (0.00% energy loss across all 17 roughness stations).",
+        "The 58-solid 17-station white-furnace bolometer bench compares closed-form polynomial albedo evaluation against 64-step hemispherical quadrature (1.28 ms vs 36.88 ms at 8,192 passes, 28.88× speedup, 0 error) without claiming neural BRDF inference."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_brdf": "not_measured" }
+    },
+    {
+      "round": 58,
+      "slug": "karis-hdr-bloom-firefly-rig",
+      "topic": "karis-inverse-luminance-hdr-firefly-filter",
+      "title_zh": "1 个亚像素高光不再炸穿全屏泛光：Karis 逆亮度加权 HDR 降采样抑制萤火虫选型 FAQ",
+      "title_en": "Sub-pixel glints without bloom fireflies: Karis inverse-luminance HDR downsample selection FAQ",
+      "faq_zh": "docs/karis-inverse-luminance-hdr-firefly-filter-faq.md",
+      "faq_en": "docs/karis-inverse-luminance-hdr-firefly-filter-faq.en.md",
+      "summary": "docs/evidence/karis-hdr-bloom-firefly-rig-summary.svg",
+      "report": "demos/karis-hdr-bloom-firefly-rig/report.json",
+      "cards": "demos/karis-hdr-bloom-firefly-rig/test-report-cards.html",
+      "cards_zh": "demos/karis-hdr-bloom-firefly-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在 3 个相邻背景纹素为 L_bg=0.50、1 个亚像素高光纹素冲至第 10 站 L_0=512.0 的 2×2 HDR 降采样块中，朴素线性均值滤波输出 L_box=128.3750（产生 128.63× 萤火虫过曝爆炸，第 16 站达 8192.63×，引爆 14/17 站）。",
+        "采用 Brian Karis (2013) 逆亮度加权平均 w_k = 1/(1+L_k)，利用孤立尖峰分子 L_0/(1+L_0) < 1.0 的渐近上界，将第 10 站输出稳稳限制在 L_Karis = 1025/1027 = 0.9981 ≤ 1.0000（全 17 站 0/17 萤火虫爆闪，同时无损保留大面积真光源）。",
+        "58 实体 17 站点 HDR 光度计台对比单遍寄存器级 Karis 归约与双遍权重数组归一化基线（8192 次 0.39 ms vs 19.04 ms，提速 49.35×，误差 2.22e-16），不冒充神经路径追踪降噪。"
+      ],
+      "conclusions_en": [
+        "On a 2×2 HDR quad with 3 background texels at L_bg=0.50 and 1 sub-pixel specular glint at station 10 (L_0=512.0), naive linear box averaging explodes to L_box=128.3750 (128.63× firefly blowout, peaking at 8192.63× across 14/17 stations).",
+        "Brian Karis (2013) inverse-luminance weighted averaging w_k = 1/(1+L_k) bounds any finite single-pixel outlier via L_0/(1+L_0) < 1.0 to L_Karis = 1025/1027 = 0.9981 ≤ 1.0000 (0/17 firefly blowouts across all 17 stations while preserving multi-pixel lights).",
+        "The 58-solid 17-station HDR photometer bench compares single-pass register Karis reduction against two-pass weight array normalization (0.39 ms vs 19.04 ms at 8,192 passes, 49.35× speedup, 2.22e-16 error) without claiming neural path-tracing denoising."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_denoising": "not_measured" }
+    },
+    {
+      "round": 59,
+      "slug": "vogel-spiral-disk-rig",
+      "topic": "vogel-golden-angle-disk-vs-polar-grid-clumping",
+      "title_zh": "景深散景与软阴影不再圆心死白外圈断裂：Vogel 黄金角等面积圆盘采样选型 FAQ",
+      "title_en": "Bokeh and soft shadows without 4x center clumping: Vogel golden-angle equi-area disk sampling selection FAQ",
+      "faq_zh": "docs/vogel-golden-angle-disk-vs-polar-grid-clumping-faq.md",
+      "faq_en": "docs/vogel-golden-angle-disk-vs-polar-grid-clumping-faq.en.md",
+      "summary": "docs/evidence/vogel-spiral-disk-rig-summary.svg",
+      "report": "demos/vogel-spiral-disk-rig/report.json",
+      "cards": "demos/vogel-spiral-disk-rig/test-report-cards.html",
+      "cards_zh": "demos/vogel-spiral-disk-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在划分为 17 个等面积同心圆环（ΔA=π/17，总采样数 N=68）的孔径测试台上，朴素线性极坐标半径 r_k=(k+0.5)/N 因遗漏极坐标雅可比 dA=r·dr·dθ，在第 0 号圆心环堆积 16/4 个采样点（4.0000× 中心聚拢），而在第 16 号边缘环仅剩 2/4 个点（0.5000× 边缘饥饿，波及 14/17 环）。",
+        "采用 Helmut Vogel (1979) 黄金角等面积向日葵螺旋（r_k = √((k+0.5)/N), θ_k = k·2π/φ² ≈ k·137.51°），在全部 17 个等面积同心环内严格分配 4/4 个采样点（相对密度恒为 1.0000×，径向偏差 0.0000）。",
+        "58 实体 17 圆环孔径密度计台对比二维复旋量递推与逐点超越函数 cos/sin 基线（8192 次 2.35 ms vs 25.99 ms，提速 11.06×，误差 0），不冒充神经散景渲染。"
+      ],
+      "conclusions_en": [
+        "Across 17 equal-area concentric aperture shells (ΔA=π/17, N=68 total taps), naive linear polar radius sampling r_k=(k+0.5)/N ignores the polar area Jacobian dA=r·dr·dθ, cramming 16/4 taps into inner core shell 0 (4.0000× center clumping) while starving outer rim shell 16 to 2/4 taps (0.5000× density across 14/17 biased shells).",
+        "Helmut Vogel (1979) golden-angle phyllotaxis equi-area disk sampling (r_k = √((k+0.5)/N), θ_k = k·2π/φ² ≈ k·137.51°) places exactly 4/4 taps in every equal-area concentric shell (1.0000× uniform density, 0.0000 radial bias).",
+        "The 58-solid 17-shell aperture densitometer bench compares 2D complex-rotor recurrence against per-tap transcendental cos/sin evaluation (2.35 ms vs 25.99 ms at 8,192 passes, 11.06× speedup, 0 error) without claiming neural bokeh synthesis."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_bokeh": "not_measured" }
+    },
+    {
+      "round": 60,
+      "slug": "logarithmic-quaternion-squad-rig",
+      "topic": "c1-cubic-quaternion-squad-vs-piecewise-slerp-corner",
+      "title_zh": "3D 运镜与骨骼转向过关键帧不再顿挫甩鞭：Shoemake C1 四元数球面四边形样条（SQUAD）选型 FAQ",
+      "title_en": "Multi-keyframe rotations without corner whip: Shoemake C1 cubic quaternion SQUAD spline selection FAQ",
+      "faq_zh": "docs/c1-cubic-quaternion-squad-vs-piecewise-slerp-corner-faq.md",
+      "faq_en": "docs/c1-cubic-quaternion-squad-vs-piecewise-slerp-corner-faq.en.md",
+      "summary": "docs/evidence/logarithmic-quaternion-squad-rig-summary.svg",
+      "report": "demos/logarithmic-quaternion-squad-rig/report.json",
+      "cards": "demos/logarithmic-quaternion-squad-rig/test-report-cards.html",
+      "cards_zh": "demos/logarithmic-quaternion-squad-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在关键帧序列 q_0=0°(0s) → q_1=90°(1s) → q_2=20°(2s) 中，朴素分段测地线 SLERP 因仅具 C0 连续性，在 t=1.00 s 关键帧交界处角速度从 +90.00°/s 突变为 −70.00°/s（爆发 160.00°/s 的折角甩鞭冲击）。",
+        "采用 Ken Shoemake (1987) C1 四元数球面四边形样条（SQUAD），通过李代数对数切向控制点 s_k 与抛物线权重 2u(1−u)，将关键帧两侧角速度严格锁定在 ω⁻=ω⁺=+10.00°/s（角速度跳变 0.00°/s）。",
+        "58 实体 17 站点陀螺仪姿态台对比李代数闭式 SQUAD 与三次嵌套四维三角函数 SLERP 基线（8192 次 0.52 ms vs 31.26 ms，提速 60.17×，误差 2.84e-14°），不冒充神经动作补帧。"
+      ],
+      "conclusions_en": [
+        "Across orientation keyframes q_0=0°(0s) → q_1=90°(1s) → q_2=20°(2s), naive piecewise geodesic SLERP is only C0 continuous, snapping angular velocity from +90.00°/s to −70.00°/s at t=1.00s (a 160.00°/s corner whip impulse).",
+        "Ken Shoemake (1987) C1 spherical quadrangle interpolation (SQUAD) with Lie-algebra logarithmic tangent bisectors s_k and parabolic 2u(1−u) blending locks left and right velocities at ω⁻=ω⁺=+10.00°/s (0.00°/s velocity jump).",
+        "The 58-solid 17-station gyroscopic spline bench compares closed-form Lie-algebra SQUAD against three nested 4D trigonometric SLERP calls (0.52 ms vs 31.26 ms at 8,192 passes, 60.17× speedup, 2.84e-14° error) without claiming neural motion inbetweening."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_inbetweening": "not_measured" }
+    },
+    {
+      "round": 61,
+      "slug": "rectified-screen-derivatives-rig",
+      "topic": "analytic-ray-footprint-vs-quad-dfdx-step-seam",
+      "title_zh": "平铺图集与球面贴图不再出现 2 像素宽模糊黑线：解析展开射线微分足迹（textureGrad）选型 FAQ",
+      "title_en": "Tiled UVs without 2-pixel blurry mip seams: Analytic unwrapped ray-differential footprint (textureGrad) selection FAQ",
+      "faq_zh": "docs/analytic-ray-footprint-vs-quad-dfdx-step-seam-faq.md",
+      "faq_en": "docs/analytic-ray-footprint-vs-quad-dfdx-step-seam-faq.en.md",
+      "summary": "docs/evidence/rectified-screen-derivatives-rig-summary.svg",
+      "report": "demos/rectified-screen-derivatives-rig/report.json",
+      "cards": "demos/rectified-screen-derivatives-rig/test-report-cards.html",
+      "cards_zh": "demos/rectified-screen-derivatives-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在连续斜率 ∂U/∂x=0.1250 uv/px 跨越周期边界（0.9375 → 0.0625）的像素块中，朴素 GPU 2×2 块差分 dFdx(fract(U)) 将跨界差值误判为 0.8750 uv/px（7.00× 足迹爆炸），在 5/17 个边界像素上产生 +2.8074 级 Mipmap 模糊黑线。",
+        "采用解析展开射线微分足迹（在 fract(U) 前求取连续偏导并显式传入 textureGrad），在全 17 个像素站严格锁定 |∂U/∂x|=0.1250 与 LOD=0.0000（0/17 接缝跳变）。",
+        "58 实体 17 站点屏幕微分台对比闭式射线微分雅可比与 4 射线亚像素有限差分基线（8192 次 0.30 ms vs 8.47 ms，提速 28.69×，误差 0），不冒充神经纹理超分。"
+      ],
+      "conclusions_en": [
+        "Across periodic UV wrap boundaries (0.9375 → 0.0625) with true continuous slope ∂U/∂x=0.1250 uv/px, naive GPU 2×2 quad dFdx(fract(U)) subtracts wrapped neighbors to produce |dFdx|=0.8750 uv/px (7.00× footprint blowout) and a +2.8074 mip-level blur seam across 5/17 pixels.",
+        "Evaluating analytic unwrapped ray-differential footprints before fract(U) and passing them to textureGrad locks |∂U/∂x|=0.1250 and LOD=0.0000 across all 17 screen pixels (0/17 seam spikes).",
+        "The 58-solid 17-station screen differential bench compares closed-form ray-differential Jacobians against 4-ray sub-pixel finite differences (0.30 ms vs 8.47 ms at 8,192 passes, 28.69× speedup, 0 error) without claiming neural texture upscaling."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_upscaling": "not_measured" }
+    },
+    {
+      "round": 62,
+      "slug": "xpbd-compliance-substep-rig",
+      "topic": "xpbd-substep-compliance-vs-euler-penalty-explosion",
+      "title_zh": "布料与绳索不再随高刷帧率或子步数变硬：Macklin XPBD 时间平方缩放柔度（α̃ = α/Δt_s²）选型 FAQ",
+      "title_en": "Cloth and rope stiffness invariant to FPS and substeps: Macklin XPBD dt^2-scaled compliance selection FAQ",
+      "faq_zh": "docs/xpbd-substep-compliance-vs-euler-penalty-explosion-faq.md",
+      "faq_en": "docs/xpbd-substep-compliance-vs-euler-penalty-explosion-faq.en.md",
+      "summary": "docs/evidence/xpbd-compliance-substep-rig-summary.svg",
+      "report": "demos/xpbd-compliance-substep-rig/report.json",
+      "cards": "demos/xpbd-compliance-substep-rig/test-report-cards.html",
+      "cards_zh": "demos/xpbd-compliance-substep-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在物理柔度 α=0.008 m/N、负载 F=100 N（真实胡克伸长量 Δx=0.8000 m）下，朴素未缩放 PBD 因遗漏 1/Δt_s² 缩放，在第 3 站（N_s=4 子步）将伸长量坍缩至 0.0500 m（变硬 16× / −93.75%，在 N_s=17 时损失 −99.65%，导致 16/17 站失真）。",
+        "采用 Macklin 等人 (2016/2019) XPBD 时间平方缩放柔度 α̃ = α / Δt_s²，在 N_s = 1..17 全部 17 个子步站上严格锁定胡克伸长量 Δx = 0.8000 m（0.0000 m 子步刚度漂移）。",
+        "58 实体 17 站点肌腱测力计台对比单遍闭式 XPBD 柔度求解与多单元松弛迭代基线（8192 次 0.36 ms vs 19.25 ms，提速 53.33×，误差 5.55e-16 m），不冒充神经布料仿真。"
+      ],
+      "conclusions_en": [
+        "Under physical compliance α=0.008 m/N and load F=100 N (exact Hooke extension Δx=0.8000 m), naive unscaled classic PBD omits 1/Δt_s² scaling and collapses extension as 1/N_s² to 0.0500 m at station 3 (N_s=4 substeps, −93.75% stiffening across 16/17 stations).",
+        "Macklin et al. (2016/2019) Extended Position-Based Dynamics (XPBD) scales compliance by α̃ = α / Δt_s², locking exact Hooke equilibrium extension Δx = 0.8000 m with 0.0000 m drift across all 17 substep frequencies.",
+        "The 58-solid 17-station tendon dynamometer bench compares single-pass XPBD compliance evaluation against multi-element iterative relaxation (0.36 ms vs 19.25 ms at 8,192 passes, 53.33× speedup, 5.55e-16 m error) without claiming neural cloth simulation."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_cloth": "not_measured" }
+    },
+    {
+      "round": 63,
+      "slug": "rectified-variance-shadow-rig",
+      "topic": "chebyshev-variance-shadow-map-vs-light-bleeding",
+      "title_zh": "预滤波软阴影重叠处不再漏出幽灵白边：Lauritzen 窗口化方差阴影贴图（VSM）选型 FAQ",
+      "title_en": "Pre-filtered soft shadows without umbra light bleeding: Lauritzen windowed Variance Shadow Map (VSM) selection FAQ",
+      "faq_zh": "docs/chebyshev-variance-shadow-map-vs-light-bleeding-faq.md",
+      "faq_en": "docs/chebyshev-variance-shadow-map-vs-light-bleeding-faq.en.md",
+      "summary": "docs/evidence/rectified-variance-shadow-rig-summary.svg",
+      "report": "demos/rectified-variance-shadow-rig/report.json",
+      "cards": "demos/rectified-variance-shadow-rig/test-report-cards.html",
+      "cards_zh": "demos/rectified-variance-shadow-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "当滤波核跨越近景遮挡物 z_A=2.0 m 与中景遮挡物 z_B=6.0 m（均值 μ=4.0 m，方差 σ²=4.0 m²）照射后方完全本影地面时，朴素原始切比雪夫 VSM 在第 3 站（z_R=8.0 m）漏出 20.00% 伪光（第 0 站 z_R=6.5 m 高达 39.02%，污染全部 17/17 站）。",
+        "采用 Andrew Lauritzen (GPU Gems 3) 窗口化平滑截断 V = smoothstep(p_min=0.40, 1.0, p_max)，在全部 17 个本影接收站上彻底消除切比雪夫长尾漏光（V = 0.0000，0.00% 漏光）。",
+        "58 实体 17 站点 VSM 本影密度计台对比 O(1) 预滤波二阶矩查表与 32 点逐像素矩求和基线（8192 次 1.65 ms vs 4.93 ms，提速 3.00×，误差 0），不冒充神经光追降噪。"
+      ],
+      "conclusions_en": [
+        "When a filter footprint straddles overlapping blockers at z_A=2.0 m and z_B=6.0 m (mean μ=4.0 m, variance σ²=4.0 m²), naive raw Chebyshev VSM leaks 20.00% phantom light at station 3 (z_R=8.0 m) and up to 39.02% at z_R=6.5 m across all 17/17 umbra stations.",
+        "Andrew Lauritzen (GPU Gems 3) windowed remapping V = smoothstep(p_min=0.40, 1.0, p_max) suppresses the false Chebyshev tail to exact V = 0.0000 (0.00% light bleeding across all 17 umbra stations).",
+        "The 58-solid 17-station VSM umbra densitometer bench compares O(1) pre-filtered 2-moment lookups against 32-tap per-pixel blocker moment summation (1.65 ms vs 4.93 ms at 8,192 passes, 3.00× speedup, 0 error) without claiming neural shadow denoising."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_shadow_denoising": "not_measured" }
+    },
+    {
+      "round": 64,
+      "slug": "clustered-z-slice-light-rig",
+      "topic": "logarithmic-clustered-z-slicing-vs-linear-depth-starvation",
+      "title_zh": "室内多光源不再全部塞爆第 0 号切片：Olsson 对数自相似分簇前向渲染（Clustered Forward+）选型 FAQ",
+      "title_en": "Clustered Forward+ without 12x Slice-0 light overload: Olsson logarithmic Z-slicing selection FAQ",
+      "faq_zh": "docs/logarithmic-clustered-z-slicing-vs-linear-depth-starvation-faq.md",
+      "faq_en": "docs/logarithmic-clustered-z-slicing-vs-linear-depth-starvation-faq.en.md",
+      "summary": "docs/evidence/clustered-z-slice-light-rig-summary.svg",
+      "report": "demos/clustered-z-slice-light-rig/report.json",
+      "cards": "demos/clustered-z-slice-light-rig/test-report-cards.html",
+      "cards_zh": "demos/clustered-z-slice-light-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在 z_near=0.10 m 至 z_far=1000.0 m（10,000:1 跨度）的 17 切片视锥体中，朴素线性深度切片（Δz=58.82 m）将 0.13 m ~ 50.80 m 内的 12/17 个对数深度层全部塞进第 0 片（产生 12.00× 过载），同时导致远景 11 个切片完全空置（12/17 切片失衡）。",
+        "采用 Olsson 等人 (HPG 2012) 对数自相似切片 z_k = z_near·(z_far/z_near)^(k/N_z) 与 O(1) 缩放偏置寻址 s(z) = ⌊ln(z)·scale+bias⌋，在全 17 个切片保持恒定自相似比 r=1.7191 并严格各分配 1/1 光源带（0/17 过载或闲置）。",
+        "58 实体 17 切片视锥分簇台对比 O(1) 对数缩放偏置寻址与 17 平面几何数组搜索基线（8192 次 1.75 ms vs 187.74 ms，提速 107.49×，误差 0），不冒充神经光源采样。"
+      ],
+      "conclusions_en": [
+        "Across a 17-slice perspective frustum from z_near=0.10 m to z_far=1000.0 m (10,000:1 depth ratio), naive linear depth slicing (Δz=58.82 m/slice) dumps 12/17 logarithmic depth bands into Slice 0 (12.00× overload) while leaving 11 far slices empty (12/17 distorted slices).",
+        "Olsson et al. (HPG 2012) logarithmic self-similar Z-slicing z_k = z_near·(z_far/z_near)^(k/N_z) with O(1) scale-and-bias indexing s(z) = ⌊ln(z)·scale+bias⌋ maintains cubical froxel aspect ratio r=1.7191 and exact 1/1 light band occupancy across all 17 slices.",
+        "The 58-solid 17-slice froxel bench compares O(1) scale-bias logarithmic indexing against 17-plane geometric array searching (1.75 ms vs 187.74 ms at 8,192 passes, 107.49× speedup, 0 error) without claiming neural light culling."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_light_culling": "not_measured" }
+    },
+    {
+      "round": 65,
+      "slug": "reoriented-normal-mapping-rig",
+      "topic": "quat-reoriented-normal-mapping-vs-linear-udn-flattening",
+      "title_zh": "陡坡上的皮肤毛孔与金属划痕不再被压扁：四元数重定向法线贴图（RNM）选型 FAQ",
+      "title_en": "Detail normal maps without slope flattening: Quaternion Reoriented Normal Mapping (RNM) selection FAQ",
+      "faq_zh": "docs/quat-reoriented-normal-mapping-vs-linear-udn-flattening-faq.md",
+      "faq_en": "docs/quat-reoriented-normal-mapping-vs-linear-udn-flattening-faq.en.md",
+      "summary": "docs/evidence/reoriented-normal-mapping-rig-summary.svg",
+      "report": "demos/reoriented-normal-mapping-rig/report.json",
+      "cards": "demos/reoriented-normal-mapping-rig/test-report-cards.html",
+      "cards_zh": "demos/reoriented-normal-mapping-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在宏观基底法线倾角 θ₁=42.0° 叠加第 14 站细节法线倾角 θ₂=+32.0°（真实旋转叠加倾角 74.00°）时，朴素 UDN 分量相加 normalize(n₁.xy+n₂.xy, n₁.z) 将合成法线压扁至 58.21°（丢失 −15.79° 倾角，第 16 站峰值丢失 −21.53°，导致 16/17 站失真）。",
+        "采用 Barré-Brisebois & Hill (2012) 四元数重定向法线贴图（RNM：t = n₁+(0,0,1), u = (−n₂.xy, n₂.z), n_RNM = t·(t·u)/t.z − u），仅凭 6 条乘加指令在全 17 个站点恢复精确旋转倾角 θ_RNM = θ₁ + θ₂ = 74.00°（0.00° 误差）。",
+        "58 实体 17 站点细节法线测角仪台对比 6 指令四元数 RNM 与显式 3×3 轴角旋转矩阵基线（8192 次 0.70 ms vs 11.09 ms，提速 15.81×，误差 1.42e-14°），不冒充神经纹理合成。"
+      ],
+      "conclusions_en": [
+        "When blending detail normal tilt θ₂=+32.0° (station 14) onto a tilted macro base normal θ₁=42.0° (true geodesic angle 74.00°), naive UDN XY addition flattens the combined normal to 58.21° (−15.79° error, peaking at −21.53° across 16/17 distorted stations).",
+        "Barré-Brisebois & Hill (2012) Quaternion Reoriented Normal Mapping (RNM: t = n₁+(0,0,1), u = (−n₂.xy, n₂.z), n_RNM = t·(t·u)/t.z − u) reproduces exact additive rotation θ_RNM = 74.00° with 0.00° angular error across all 17 stations in 6 ALU ops.",
+        "The 58-solid 17-station detail-normal goniometer bench compares 6-op Quaternion RNM against explicit 3×3 TBN rotation matrix construction (0.70 ms vs 11.09 ms at 8,192 passes, 15.81× speedup, 1.42e-14° error) without claiming neural texture synthesis."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_texture_synthesis": "not_measured" }
+    },
+    {
+      "round": 66,
+      "slug": "preintegrated-skin-sss-rig",
+      "topic": "preintegrated-curvature-skin-sss-vs-hard-lambert",
+      "title_zh": "数字人皮肤明暗交界线不再像死灰石膏像：Penner 预积分曲率驱动次表面散射（SSS）选型 FAQ",
+      "title_en": "Digital human skin without dead-gray terminators: Penner pre-integrated curvature subsurface scattering selection FAQ",
+      "faq_zh": "docs/preintegrated-curvature-skin-sss-vs-hard-lambert-faq.md",
+      "faq_en": "docs/preintegrated-curvature-skin-sss-vs-hard-lambert-faq.en.md",
+      "summary": "docs/evidence/preintegrated-skin-sss-rig-summary.svg",
+      "report": "demos/preintegrated-skin-sss-rig/report.json",
+      "cards": "demos/preintegrated-skin-sss-rig/test-report-cards.html",
+      "cards_zh": "demos/preintegrated-skin-sss-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在局部曲率 κ=0.60 mm⁻¹、红光散射自由程 ℓ_R=1.20 mm、蓝光 ℓ_B=0.20 mm 的皮肤表面，朴素硬 Lambert 在第 8 站明暗交界线（θ=90°, N·L=0）处直接截断为 0.0000 死黑（在 6/17 个交界过渡站丢失高达 0.1724 的真皮红光透射，呈现死灰石膏感）。",
+        "采用 Eric Penner (2011) 预积分曲率驱动次表面散射 I_c(θ, κℓ_c)，在 θ=90° 交界线处精准输出 I_R=0.1724、I_G=0.0671、I_B=0.0300（红蓝比 5.75×，暖红色差 ΔRB=+0.1424），并将红光平滑渗透至 130° 背光区。",
+        "58 实体 17 站点真皮分光光度计台对比闭式原函数预积分与 256 点圆弧数值积分基线（8192 次 2.05 ms vs 219.42 ms，提速 106.84×，误差 6.66e-16），不冒充神经人像重打光。"
+      ],
+      "conclusions_en": [
+        "On a curved dermal surface (κ=0.60 mm⁻¹, ℓ_R=1.20 mm, ℓ_B=0.20 mm), naive hard Lambertian shading drops to 0.0000 at the θ=90° (N·L=0) shadow terminator, losing 0.1724 of crimson subsurface bleed across 6/17 terminator stations.",
+        "Eric Penner (2011) Pre-Integrated Curvature-Driven Subsurface Scattering I_c(θ, κℓ_c) resolves I_R=0.1724, I_G=0.0671, I_B=0.0300 at θ=90° (5.75× Red/Blue warmth ratio, ΔRB=+0.1424) with smooth bleed out to θ=130°.",
+        "The 58-solid 17-station dermal spectrophotometer bench compares closed-form antiderivative pre-integration against 256-tap numerical arc quadrature (2.05 ms vs 219.42 ms at 8,192 passes, 106.84× speedup, 6.66e-16 error) without claiming neural portrait relighting."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_relighting": "not_measured" }
+    },
+    {
+      "round": 67,
+      "slug": "split-sum-ibl-dfg-rig",
+      "topic": "karis-split-sum-ibl-dfg-lut-vs-naive-fresnel-env",
+      "title_zh": "粗糙橡胶与陶土边缘不再冒出 24× 放射性白圈：Karis 分离求和 IBL 环境 BRDF（F₀·scale + bias）选型 FAQ",
+      "title_en": "Rough dielectrics without 24x glowing grazing halos: Karis Split-Sum IBL environment BRDF selection FAQ",
+      "faq_zh": "docs/karis-split-sum-ibl-dfg-lut-vs-naive-fresnel-env-faq.md",
+      "faq_en": "docs/karis-split-sum-ibl-dfg-lut-vs-naive-fresnel-env-faq.en.md",
+      "summary": "docs/evidence/split-sum-ibl-dfg-rig-summary.svg",
+      "report": "demos/split-sum-ibl-dfg-rig/report.json",
+      "cards": "demos/split-sum-ibl-dfg-rig/test-report-cards.html",
+      "cards_zh": "demos/split-sum-ibl-dfg-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在粗糙非金属表面（F₀=0.04, r=0.85）的第 0 站掠射角（N·V=0.05）处，朴素宏观 Schlick 菲涅尔 F(N·V, F₀) 因忽略微表面半程角展宽与 Smith G₂ 遮蔽，将反射率推高至 0.7828（产生 24.48× 放射性白边过曝，污染 13/17 个观测角站点）。",
+        "采用 Brian Karis (2013) 分离求和环境 BRDF（R_IBL = F₀·scale + bias，在 N·V=0.05 处 scale=0.1461, bias=0.0261），将掠射边缘反射率精准控制在 0.0320（全 17 站 0 放射性白边）。",
+        "58 实体 17 站点 IBL 反射计台对比闭式分离求和 DFG 原函数与 192 点复合高斯-勒让德求积基线（8192 次 1.78 ms vs 330.84 ms，提速 185.66×，误差 2.78e-17），不冒充神经环境光估计。"
+      ],
+      "conclusions_en": [
+        "On a rough matte dielectric (F₀=0.04, r=0.85) at grazing view N·V=0.05 (station 0), naive macroscopic Schlick Fresnel F(N·V, F₀) ignores microfacet half-angle spread and Smith G₂ masking, blowing out reflectance to 0.7828 (24.48× grazing halo across 13/17 stations).",
+        "Brian Karis (2013) Split-Sum Environment BRDF (R_IBL = F₀·scale + bias, resolving scale=0.1461, bias=0.0261 at N·V=0.05) bounds grazing reflectance to 0.0320 with 0/17 radioactive rim halos.",
+        "The 58-solid 17-station IBL reflectometer bench compares closed-form Split-Sum DFG evaluation against 192-point composite Gauss-Legendre quadrature (1.78 ms vs 330.84 ms at 8,192 passes, 185.66× speedup, 2.78e-17 error) without claiming neural environment estimation."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_env_estimation": "not_measured" }
+    },
+    {
+      "round": 68,
+      "slug": "spherical-harmonic-hanning-rig",
+      "topic": "sloan-windowed-sh-irradiance-vs-gibbs-negative-ringing",
+      "title_zh": "球谐光照探针背光面不再出现负值黑环与后脑勺假反光：Sloan 窗口化二阶球谐函数（L₂ SH）选型 FAQ",
+      "title_en": "L2 Spherical Harmonics light probes without negative ringing or false backlights: Sloan band windowing selection FAQ",
+      "faq_zh": "docs/sloan-windowed-sh-irradiance-vs-gibbs-negative-ringing-faq.md",
+      "faq_en": "docs/sloan-windowed-sh-irradiance-vs-gibbs-negative-ringing-faq.en.md",
+      "summary": "docs/evidence/spherical-harmonic-hanning-rig-summary.svg",
+      "report": "demos/spherical-harmonic-hanning-rig/report.json",
+      "cards": "demos/spherical-harmonic-hanning-rig/test-report-cards.html",
+      "cards_zh": "demos/spherical-harmonic-hanning-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在主光强 I₀=4.0 的 9 系数二阶球谐（L₂ SH）探针中，朴素未加窗截断（w₁=w₂=1.0）因吉布斯振铃在第 11 站（θ=120°）跌入 −0.1563 负光照黑洞，随后又在第 16 站（θ=170°）因二次项翘尾反弹至 +0.2238 虚假背光（污染 7/17 站）。",
+        "采用 Peter-Pike Sloan (2008) 频带加窗权重 (w₀=1.00, w₁=0.75, w₂=0.40)，将球谐辐射核精确配平为完全平方式 E_win(μ) = (3/16)·I₀·(1+μ)² ≥ 0.0000（全球面 0 负振铃、严格单调递减）。",
+        "58 实体 17 站点球谐测角仪台对比 4 指令笛卡尔 Horner 多项式求值与 9 基函数球坐标伴随勒让德三角内积基线（8192 次 0.50 ms vs 5.58 ms，提速 11.23×，误差 4.44e-16），不冒充神经辐射缓存。"
+      ],
+      "conclusions_en": [
+        "Under a key light of intensity I₀=4.0, naive unwindowed L₂ Spherical Harmonics truncation (w₁=w₂=1.0) triggers Gibbs ringing—dipping to −0.1563 negative irradiance at station 11 (θ=120°) and rebounding to +0.2238 false backlight at station 16 (θ=170°) across 7/17 corrupted stations.",
+        "Peter-Pike Sloan (2008) band windowing (w₀=1.00, w₁=0.75, w₂=0.40) factors the L₂ kernel into the non-negative complete square E_win(μ) = (3/16)·I₀·(1+μ)² ≥ 0.0000 (0.0000 negative ringing and monotonic decay across all 17 stations).",
+        "The 58-solid 17-station SH goniometer bench compares 4-op Cartesian Horner polynomial evaluation against 9-basis trigonometric associated Legendre inner products (0.50 ms vs 5.58 ms at 8,192 passes, 11.23× speedup, 4.44e-16 error) without claiming neural radiance caching."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_radiance_cache": "not_measured" }
+    },
+    {
+      "round": 69,
+      "slug": "conservative-raster-dilation-rig",
+      "topic": "conservative-raster-dilation-vs-thin-line-drop",
+      "title_zh": "亚像素细电线不再断成麻点、体素墙不再漏光：Hasselgren 闵可夫斯基保守光栅化扩张选型 FAQ",
+      "title_en": "Watertight voxelization and unbroken sub-pixel wires: Hasselgren Minkowski conservative rasterization selection FAQ",
+      "faq_zh": "docs/conservative-raster-dilation-vs-thin-line-drop-faq.md",
+      "faq_en": "docs/conservative-raster-dilation-vs-thin-line-drop-faq.en.md",
+      "summary": "docs/evidence/conservative-raster-dilation-rig-summary.svg",
+      "report": "demos/conservative-raster-dilation-rig/report.json",
+      "cards": "demos/conservative-raster-dilation-rig/test-report-cards.html",
+      "cards_zh": "demos/conservative-raster-dilation-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在半宽 r=0.20 px、单位外法线 n=(0.60,−0.80) 的亚像素斜线跨越 17 个相交像素（中心距离 d ∈ [0.00, 0.80] px）时，朴素像素中心点采样仅命中前 5 个像素，将后面 12/17（70.59%）个擦过像素四角的相交像素全部丢弃。",
+        "采用 Hasselgren 等人 (2005) 闵可夫斯基 L₁ 支撑半径扩张 Δd = h·(|n_x|+|n_y|) = 0.7000 px（总有效阈值 R_cons = 0.9000 px），100% 捕获全部 17/17 个相交像素（0 漏检、水密体素无破洞）。",
+        "58 实体 17 站点保守光栅化台对比 3 指令 L₁ 支撑函数与 4 顶点分离轴（SAT）投影测试基线（8192 次 0.57 ms vs 2.87 ms，提速 5.08×，误差 2.22e-16），不冒充神经体素补全。"
+      ],
+      "conclusions_en": [
+        "When a sub-pixel diagonal wire (half-width r=0.20 px, normal n=(0.60,−0.80)) intersects 17 pixel boxes across center distances d ∈ [0.00, 0.80] px, naive pixel-center point sampling hits only 5/17 pixels and drops 12/17 (70.59%) corner-intersected pixels.",
+        "Hasselgren et al. (2005) Minkowski L₁ support radius dilation Δd = h·(|n_x|+|n_y|) = 0.7000 px expands the capture threshold to R_cons = 0.9000 px, capturing all 17/17 intersected pixels with 0 dropouts.",
+        "The 58-solid 17-station conservative rasterization bench compares 3-op L₁ support evaluation against 4-corner Separating Axis Theorem (SAT) projection (0.57 ms vs 2.87 ms at 8,192 passes, 5.08× speedup, 2.22e-16 error) without claiming neural voxel completion."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_voxel_completion": "not_measured" }
+    },
+    {
+      "round": 70,
+      "slug": "rectified-motion-tile-rig",
+      "topic": "mcguire-plausible-motion-blur-tile-max-vs-center-velocity",
+      "title_zh": "高速挥舞的飞剑与车轮外轮廓不再像被剪刀剪断：McGuire NeighborMax 速度分块扩张运动模糊选型 FAQ",
+      "title_en": "Post-process motion blur without scissor-clipped silhouettes: McGuire NeighborMax tile dilation selection FAQ",
+      "faq_zh": "docs/mcguire-plausible-motion-blur-tile-max-vs-center-velocity-faq.md",
+      "faq_en": "docs/mcguire-plausible-motion-blur-tile-max-vs-center-velocity-faq.en.md",
+      "summary": "docs/evidence/rectified-motion-tile-rig-summary.svg",
+      "report": "demos/rectified-motion-tile-rig/report.json",
+      "cards": "demos/rectified-motion-tile-rig/test-report-cards.html",
+      "cards_zh": "demos/rectified-motion-tile-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "当高速前景物体（v_fg=16.0 px, z_fg=1.5 m）掠过静止背景（v_bg=0.0 px, z_bg=10.0 m）时，朴素中心速度查表在轮廓外侧背景像素（d=+1..+7 px）读到自身 v_center=0，将本应溢出的 7 像素半透明残影一刀剪断为 0.0000（第 5 站 d=+1 px 丢失 −0.4375，剪断 7/17 站）。",
+        "采用 McGuire (2012) & Jiménez (2014) TileMax + 3×3 NeighborMax 速度分块扩张与软深度门控，将主导速度 16.0 px 广播至相邻背景图块，在第 5 站精准恢复 C=0.4375 并形成对称快门斜坡（0/17 剪断）。",
+        "58 实体 17 站点快门密度计台对比预计算 NeighborMax 分块聚集与 64 点暴力邻域搜索基线（8192 次 0.78 ms vs 10.53 ms，提速 13.42×，误差 0），不冒充神经光流补帧。"
+      ],
+      "conclusions_en": [
+        "When a fast-moving foreground object (v_fg=16.0 px, z_fg=1.5 m) crosses a stationary background (v_bg=0.0 px, z_bg=10.0 m), naive center-velocity lookup reads v_center=0 on background pixels outside the silhouette, scissor-clipping the exterior motion trail to 0.0000 across 7/17 stations (−0.4375 loss at d=+1 px).",
+        "McGuire (2012) & Jiménez (2014) TileMax + 3×3 NeighborMax velocity dilation with soft depth classification propagates v_NeighborMax=16.0 px across adjacent background tiles, restoring exact C_out=0.4375 at d=+1 px and a smooth 7-pixel exterior ramp (0/17 clipped stations).",
+        "The 58-solid 17-station shutter densitometer bench compares precomputed NeighborMax tile gathering against 64-tap brute-force neighborhood search and shutter quadrature (0.78 ms vs 10.53 ms at 8,192 passes, 13.42× speedup, 0 error) without claiming neural frame interpolation."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_frame_interp": "not_measured" }
     }
   ]
 }

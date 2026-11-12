@@ -1,0 +1,267 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Quaternion Reoriented Normal Mapping (RNM) vs UDN detail normal blending flattening rig",
+  "topic_zh": "四元数重定向法线贴图（RNM）对比 UDN 细节法线混合压扁失真",
+  "slug": "reoriented-normal-mapping-rig",
+  "timestamp": "2026-11-12T18:45:38.829Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Barre-Brisebois & Hill (2012) Quaternion Reoriented Normal Mapping (RNM) versus naive UDN XY addition and explicit 3x3 Gram-Schmidt TBN rotation matrix construction across 17 detail normal tilt angles (theta_2 in [-24, +40] deg on macro tilt theta_1 = 42 deg). No neural texture synthesis execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "rnm-quaternion-tbn-equivalence-128",
+      "passed": true,
+      "detail": "128 6-op Quaternion RNM and explicit 3×3 TBN rotation matrix passes agree within 1e-12 deg"
+    },
+    {
+      "name": "rnm-quaternion-tbn-equivalence-1024",
+      "passed": true,
+      "detail": "1024 6-op Quaternion RNM and explicit 3×3 TBN rotation matrix passes agree within 1e-12 deg"
+    },
+    {
+      "name": "rnm-quaternion-tbn-equivalence-8192",
+      "passed": true,
+      "detail": "8192 6-op Quaternion RNM and explicit 3×3 TBN rotation matrix passes agree within 1e-12 deg"
+    },
+    {
+      "name": "rnm-additive-rotation-conserved",
+      "passed": true,
+      "detail": "17 detail tilt stations maintain exact θ_RNM = θ_1 + θ_2 with 0.00° error (station-14 θ_RNM=74.00°)"
+    },
+    {
+      "name": "udn-normal-flattening-exposed",
+      "passed": true,
+      "detail": "naive UDN addition flattens station-14 (74.00°) down to 58.21° (−15.79° error, max −21.53° across 16/17 stations)"
+    },
+    {
+      "name": "rnm-rotation-retained",
+      "passed": true,
+      "detail": "Quaternion RNM locks station-14 (θ_1=42°, θ_2=32°) at θ_out=74.00° (0.00° error)"
+    },
+    {
+      "name": "udn-compression-exposed",
+      "passed": true,
+      "detail": "UDN addition compresses station-14 to θ_out=58.21° (−15.79° error)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse station scrubbing reproduces the exact RNM goniometer carriage world matrix"
+    },
+    {
+      "name": "atomic-tilt-rejection",
+      "passed": true,
+      "detail": "out-of-range baseTiltDeg=999.0 is rejected while valid RNM state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered RNM carriage y-elevation matches solved combined normal angle height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px RNM controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual station scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station RNM passes",
+      "count": 128,
+      "primary_ms": 0.04220000000003665,
+      "baseline_ms": 0.22289999999998145,
+      "primary_samples_ms": [
+        0.910000000000025,
+        0.48040000000003147,
+        0.15270000000003847,
+        0.04220000000003665,
+        0.038000000000010914,
+        0.033999999999991815,
+        0.033299999999997
+      ],
+      "baseline_samples_ms": [
+        3.8892000000000166,
+        5.4780999999999835,
+        0.2728999999999928,
+        0.22289999999998145,
+        0.17779999999999063,
+        0.17799999999999727,
+        0.1752999999999929
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station RNM passes",
+      "count": 1024,
+      "primary_ms": 0.09080000000000155,
+      "baseline_ms": 1.353400000000022,
+      "primary_samples_ms": [
+        0.2640999999999849,
+        0.091700000000003,
+        0.09140000000002146,
+        0.09080000000000155,
+        0.09030000000001337,
+        0.0847999999999729,
+        0.0846000000000231
+      ],
+      "baseline_samples_ms": [
+        1.4329000000000178,
+        1.3748999999999683,
+        1.5246999999999957,
+        1.353400000000022,
+        1.2946000000000026,
+        1.2671000000000276,
+        1.266999999999996
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station RNM passes",
+      "count": 8192,
+      "primary_ms": 0.7012999999999465,
+      "baseline_ms": 11.089899999999943,
+      "primary_samples_ms": [
+        0.8937000000000239,
+        0.6813999999999965,
+        0.6846999999999639,
+        0.7012999999999465,
+        0.6770999999999958,
+        0.8423999999999978,
+        3.7608999999999924
+      ],
+      "baseline_samples_ms": [
+        14.462300000000027,
+        10.720499999999959,
+        10.510999999999967,
+        11.165499999999952,
+        11.089899999999943,
+        10.190999999999917,
+        12.740099999999984
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/reoriented-normal-mapping-rig/light-rnm-quaternion-reoriented.png",
+    "docs/evidence/reoriented-normal-mapping-rig/light-naive-udn-xy-addition.png",
+    "docs/evidence/reoriented-normal-mapping-rig/dark-rnm-quaternion-reoriented.png",
+    "docs/evidence/reoriented-normal-mapping-rig/dark-naive-udn-xy-addition.png",
+    "docs/evidence/reoriented-normal-mapping-rig/mobile.png"
+  ],
+  "primary_label": "6-Op Quaternion RNM Formula",
+  "baseline_label": "Explicit 3×3 TBN Rotation Matrix",
+  "load_unit": "17-station RNM passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. 6-operation algebraic Quaternion RNM formula versus explicit 3×3 axis-angle TBN rotation matrix construction and normalization.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "base_tilt_deg": 42,
+    "detail_tilt_station_14_deg": 32,
+    "rnm_angle_station_14_deg": 74,
+    "udn_angle_station_14_deg": 58.21,
+    "udn_error_station_14_deg": 15.79,
+    "max_udn_error_deg": 21.53,
+    "distorted_stations": 16,
+    "maximum_solver_error": 1.4211e-14
+  },
+  "protocol": {
+    "input": {
+      "station_index": 14,
+      "base_tilt_deg": 42,
+      "detail_tilt_deg": 32,
+      "mode": "rnm-quaternion-reoriented"
+    },
+    "output": {
+      "exact_combined_angle_deg": 74,
+      "rnm_combined_angle_deg": 74,
+      "udn_combined_angle_deg": 58.21,
+      "udn_flattening_error_deg": 15.79,
+      "rnm_angular_error_deg": 0
+    },
+    "function": "t = n₁ + (0,0,1), u = (−n₂.xy, n₂.z), n_RNM = t·(t·u)/t.z − u → θ_RNM ≡ θ₁ + θ₂ (0.00° Error)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 detail tilt angles preserve exact geodesic normal rotation (0.00° error) without UDN flattening",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Detail normal map blending (skin pores, micro-scratches, terrain rock detail, water ripple overlays) in UE5, Unity HDRP, and Three.js",
+    "Explaining why naive UDN XY addition flattens combined normals by −15.79° at 74° and up to −21.53° at 82°",
+    "Rotating tangent-space detail normal n₂ onto macro base normal n₁ in 6 ALU ops without trigonometric calls or 3×3 matrices",
+    "Preserving unit normal length automatically when both input normals are unit vectors"
+  ],
+  "not_for": [
+    "Single-layer normal mapped meshes without secondary detail normal overlays",
+    "Heightfield bump addition where raw scalar heights h₁(u,v) + h₂(u,v) are summed prior to finite differencing",
+    "Neural texture synthesis or diffusion normal map generation models",
+    "Unlit flat-shaded polygons without normal mapping"
+  ],
+  "locale_zh": {
+    "rnm-quaternion-tbn-equivalence-128": "RNM四元数与3×3矩阵等价 128",
+    "128 6-op Quaternion RNM and explicit 3×3 TBN rotation matrix passes agree within 1e-12 deg": "128 次 6 指令四元数 RNM 与显式 3×3 旋转矩阵基线在 1e-12° 内一致",
+    "rnm-quaternion-tbn-equivalence-1024": "RNM四元数与3×3矩阵等价 1024",
+    "1024 6-op Quaternion RNM and explicit 3×3 TBN rotation matrix passes agree within 1e-12 deg": "1024 次 6 指令四元数 RNM 与显式 3×3 旋转矩阵基线在 1e-12° 内一致",
+    "rnm-quaternion-tbn-equivalence-8192": "RNM四元数与3×3矩阵等价 8192",
+    "8192 6-op Quaternion RNM and explicit 3×3 TBN rotation matrix passes agree within 1e-12 deg": "8192 次 6 指令四元数 RNM 与显式 3×3 旋转矩阵基线在 1e-12° 内一致",
+    "rnm-additive-rotation-conserved": "RNM最短弧旋转叠加守恒",
+    "17 detail tilt stations maintain exact θ_RNM = θ_1 + θ_2 with 0.00° error (station-14 θ_RNM=74.00°)": "17 个细节倾角站点全部保持精确 θ_RNM = θ_1 + θ_2 与 0.00° 误差（第 14 站 θ_RNM=74.00°）",
+    "udn-normal-flattening-exposed": "UDN法线压扁暴露",
+    "naive UDN addition flattens station-14 (74.00°) down to 58.21° (−15.79° error, max −21.53° across 16/17 stations)": "朴素 UDN 相加将第 14 站（74.00°）压扁至 58.21°（误差 −15.79°，峰值 −21.53°，波及 16/17 站）",
+    "rnm-rotation-retained": "四元数RNM倾角锁定",
+    "Quaternion RNM locks station-14 (θ_1=42°, θ_2=32°) at θ_out=74.00° (0.00° error)": "四元数 RNM 将第 14 站（θ_1=42°, θ_2=32°）锁死在 θ_out=74.00°（0.00° 误差）",
+    "udn-compression-exposed": "UDN压扁误差暴露",
+    "UDN addition compresses station-14 to θ_out=58.21° (−15.79° error)": "UDN 相加将第 14 站压缩至 θ_out=58.21°（误差 −15.79°）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse station scrubbing reproduces the exact RNM goniometer carriage world matrix": "逆序站点拖曳精确复现 RNM 测角仪滑车世界矩阵",
+    "atomic-tilt-rejection": "原子倾角拒绝",
+    "out-of-range baseTiltDeg=999.0 is rejected while valid RNM state remains": "越界基底倾角 999.0° 被拒绝，有效 RNM 状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered RNM carriage y-elevation matches solved combined normal angle height": "渲染 RNM 滑车垂直高度与求解器合成法线倾角高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px RNM controls fit without horizontal overflow": "390px RNM 控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual station scrubbing remains available": "减少动态默认静止，保留手动站点核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "6-Op Quaternion RNM Formula": "6 指令四元数 RNM 闭式重定向",
+    "Explicit 3×3 TBN Rotation Matrix": "显式 3×3 轴角旋转矩阵基线",
+    "Median of 7 alternating Node CPU runs after warmup. 6-operation algebraic Quaternion RNM formula versus explicit 3×3 axis-angle TBN rotation matrix construction and normalization.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；6 指令代数四元数 RNM 重定向公式对比显式 3×3 轴角旋转矩阵构造与归一化基线。",
+    "Sampled 17 detail tilt angles preserve exact geodesic normal rotation (0.00° error) without UDN flattening": "采样 17 个细节法线倾角全部保持精确测地线旋转叠加（0.00° 误差），无 UDN 压扁失真",
+    "t = n₁ + (0,0,1), u = (−n₂.xy, n₂.z), n_RNM = t·(t·u)/t.z − u → θ_RNM ≡ θ₁ + θ₂ (0.00° Error)": "未归一化半角四元数 t = n₁+(0,0,1) 重定向 → 合成倾角 θ_RNM ≡ θ₁ + θ₂（0.00° 误差）",
+    "Detail normal map blending (skin pores, micro-scratches, terrain rock detail, water ripple overlays) in UE5, Unity HDRP, and Three.js": "UE5、Unity HDRP 与 Three.js 中的双层细节法线贴图混合（皮肤毛孔、金属微划痕、岩石微裂纹、水面叠加波纹）",
+    "Explaining why naive UDN XY addition flattens combined normals by −15.79° at 74° and up to −21.53° at 82°": "直观解释为何朴素 UDN 水平分量相加会在 74° 处将法线压扁 −15.79°、在 82° 处压扁 −21.53°",
+    "Rotating tangent-space detail normal n₂ onto macro base normal n₁ in 6 ALU ops without trigonometric calls or 3×3 matrices": "仅用 6 条乘加指令将切空间细节法线 n₂ 精确旋转至宏观基底法线 n₁，无需三角函数或 3×3 矩阵",
+    "Preserving unit normal length automatically when both input normals are unit vectors": "当两个输入法线均为单位向量时，旋转输出天然保持单位模长 1.0000",
+    "Single-layer normal mapped meshes without secondary detail normal overlays": "不含第二层细节法线叠加的单层常规法线贴图网格",
+    "Heightfield bump addition where raw scalar heights h₁(u,v) + h₂(u,v) are summed prior to finite differencing": "在求导前直接对标量高度场 h₁(u,v) + h₂(u,v) 求和的位移贴图管线",
+    "Neural texture synthesis or diffusion normal map generation models": "神经纹理合成或扩散模型法线生成推理网络",
+    "Unlit flat-shaded polygons without normal mapping": "不做法线贴图的无光照平面着色多边形"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/reoriented-normal-mapping.test.ts",
+    "node scripts/benchmark-reoriented-normal-mapping.mjs"
+  ]
+}

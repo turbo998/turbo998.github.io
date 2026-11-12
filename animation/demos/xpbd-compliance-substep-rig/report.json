@@ -1,0 +1,270 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Macklin XPBD dt^2-scaled compliance substep invariance vs classic PBD stiffness drift rig",
+  "topic_zh": "Macklin XPBD 时间平方缩放柔度（α̃ = α/Δt_s²）子步不变性对比经典 PBD 刚度漂移",
+  "slug": "xpbd-compliance-substep-rig",
+  "timestamp": "2026-11-12T18:11:55.209Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Macklin, Muller & Chentanez (2016/2019) Extended Position-Based Dynamics (XPBD) time-step invariant compliance (alpha_tilde = alpha / dt_s^2) versus naive unscaled PBD stiffness and 48-iteration Gauss-Seidel relaxation across 17 substep frequencies (N_s in [1, 17]). No neural cloth simulation execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "xpbd-schur-gs-equivalence-128",
+      "passed": true,
+      "detail": "128 closed-form XPBD Schur solves and 48-iteration Gauss-Seidel passes agree within 1e-13 m"
+    },
+    {
+      "name": "xpbd-schur-gs-equivalence-1024",
+      "passed": true,
+      "detail": "1024 closed-form XPBD Schur solves and 48-iteration Gauss-Seidel passes agree within 1e-13 m"
+    },
+    {
+      "name": "xpbd-schur-gs-equivalence-8192",
+      "passed": true,
+      "detail": "8192 closed-form XPBD Schur solves and 48-iteration Gauss-Seidel passes agree within 1e-13 m"
+    },
+    {
+      "name": "xpbd-substep-invariance-conserved",
+      "passed": true,
+      "detail": "17 substep frequencies (N_s=1..17) preserve exact Δx=0.8000m Hooke extension with 0.0000m drift"
+    },
+    {
+      "name": "unscaled-pbd-stiffening-exposed",
+      "passed": true,
+      "detail": "naive unscaled PBD collapses station-3 (N_s=4) extension to 0.0500m (−93.75% stiffening across 16/17 stations)"
+    },
+    {
+      "name": "xpbd-hooke-extension-retained",
+      "passed": true,
+      "detail": "XPBD locks station-3 (N_s=4) at Δx=0.8000m (0.0000m substep drift)"
+    },
+    {
+      "name": "pbd-substep-collapse-exposed",
+      "passed": true,
+      "detail": "unscaled PBD collapses station-3 (N_s=4) to Δx=0.0500m (−93.75% stiffening)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse substep scrubbing reproduces the exact dynamometer carriage world matrix"
+    },
+    {
+      "name": "atomic-compliance-rejection",
+      "passed": true,
+      "detail": "out-of-range complianceMetersPerNewton=9.0 is rejected while valid XPBD state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered dynamometer carriage y-elevation matches solved tendon extension height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px XPBD controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual substep scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station XPBD passes",
+      "count": 128,
+      "primary_ms": 0.00909999999998945,
+      "baseline_ms": 0.2949999999999591,
+      "primary_samples_ms": [
+        0.03170000000000073,
+        0.010699999999985721,
+        0.00909999999998945,
+        0.006100000000003547,
+        0.009999999999990905,
+        0.005300000000033833,
+        0.005400000000008731
+      ],
+      "baseline_samples_ms": [
+        0.9658999999999764,
+        0.35410000000001673,
+        0.390199999999993,
+        0.2797999999999661,
+        0.27539999999999054,
+        0.275100000000009,
+        0.2949999999999591
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station XPBD passes",
+      "count": 1024,
+      "primary_ms": 0.04150000000004184,
+      "baseline_ms": 2.240599999999972,
+      "primary_samples_ms": [
+        0.04539999999997235,
+        0.04150000000004184,
+        0.041600000000016735,
+        0.04139999999995325,
+        0.041299999999978354,
+        0.043000000000006366,
+        0.041400000000010095
+      ],
+      "baseline_samples_ms": [
+        2.2135000000000105,
+        2.199099999999987,
+        2.3414999999999964,
+        2.3214999999999577,
+        2.240599999999972,
+        2.202699999999993,
+        2.410500000000013
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station XPBD passes",
+      "count": 8192,
+      "primary_ms": 0.3609000000000151,
+      "baseline_ms": 19.245599999999968,
+      "primary_samples_ms": [
+        0.34010000000000673,
+        0.3605999999999767,
+        0.3570999999999458,
+        0.49869999999998527,
+        0.42849999999998545,
+        0.3609000000000151,
+        0.3647999999999456
+      ],
+      "baseline_samples_ms": [
+        19.412900000000036,
+        18.972499999999968,
+        19.58929999999998,
+        20.19470000000001,
+        18.99720000000002,
+        18.354100000000017,
+        19.245599999999968
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/xpbd-compliance-substep-rig/light-xpbd-dt2-scaled-compliance.png",
+    "docs/evidence/xpbd-compliance-substep-rig/light-naive-unscaled-pbd-stiffness.png",
+    "docs/evidence/xpbd-compliance-substep-rig/dark-xpbd-dt2-scaled-compliance.png",
+    "docs/evidence/xpbd-compliance-substep-rig/dark-naive-unscaled-pbd-stiffness.png",
+    "docs/evidence/xpbd-compliance-substep-rig/mobile.png"
+  ],
+  "primary_label": "Single-Pass XPBD Compliance Solve",
+  "baseline_label": "48-Iteration Gauss-Seidel Relaxation",
+  "load_unit": "17-station XPBD passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Single-pass closed-form XPBD compliance solve versus 48-iteration Gauss-Seidel constraint relaxation.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "compliance_m_per_n": 0.008,
+    "load_newtons": 100,
+    "exact_hooke_extension_m": 0.8,
+    "xpbd_extension_n4_m": 0.8,
+    "naive_pbd_extension_n4_m": 0.05,
+    "stiffness_collapse_pct_n4": 93.75,
+    "max_drift_m": 0.7972,
+    "drifted_stations": 16,
+    "maximum_solver_error": 5.5511e-16
+  },
+  "protocol": {
+    "input": {
+      "station_index": 3,
+      "substeps_ns": 4,
+      "alpha_m_n": 0.008,
+      "load_n": 100,
+      "frame_dt_s": 0.04,
+      "mode": "xpbd-dt2-scaled-compliance"
+    },
+    "output": {
+      "exact_hooke_extension_m": 0.8,
+      "xpbd_extension_m": 0.8,
+      "naive_pbd_extension_m": 0.05,
+      "substep_drift_m": 0,
+      "naive_stiffness_collapse_pct": 93.75
+    },
+    "function": "α̃ = α / Δt_s², Δλ = (−C(x) − α̃λ)/(w + α̃) → Equilibrium Extension Δx ≡ α·F = 0.8000 m"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 substep frequencies (N_s=1..17) preserve exact 0.8000 m Hooke extension without substep stiffening",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Real-time cloth, rope, hair, and soft-tissue tendons across variable display refresh rates (30/60/120/240 Hz) and substep counts",
+    "Explaining why unscaled classic PBD shrinks extension as 1/N_s² (−93.75% stiffening at 4 substeps) while explicit penalty springs explode",
+    "Mapping real engineering Youngs modulus / Hooke compliance α = 1/k directly into position-based solvers via α̃ = α / Δt_s²",
+    "Using small-step XPBD sub-stepping to converge in a single pass instead of running 48-iteration Gauss-Seidel loops"
+  ],
+  "not_for": [
+    "Unconstrained ballistic projectiles in free flight without distance, bending, or volume constraints",
+    "Static rigid-body props that never deform or collide",
+    "Neural cloth surrogate networks or learned mesh graph simulators",
+    "Purely kinematic keyframe animations without physical forces"
+  ],
+  "locale_zh": {
+    "xpbd-schur-gs-equivalence-128": "XPBD闭式与GS迭代等价 128",
+    "128 closed-form XPBD Schur solves and 48-iteration Gauss-Seidel passes agree within 1e-13 m": "128 次闭式 XPBD 柔度解与 48 步高斯-赛德尔松弛基线在 1e-13 m 内一致",
+    "xpbd-schur-gs-equivalence-1024": "XPBD闭式与GS迭代等价 1024",
+    "1024 closed-form XPBD Schur solves and 48-iteration Gauss-Seidel passes agree within 1e-13 m": "1024 次闭式 XPBD 柔度解与 48 步高斯-赛德尔松弛基线在 1e-13 m 内一致",
+    "xpbd-schur-gs-equivalence-8192": "XPBD闭式与GS迭代等价 8192",
+    "8192 closed-form XPBD Schur solves and 48-iteration Gauss-Seidel passes agree within 1e-13 m": "8192 次闭式 XPBD 柔度解与 48 步高斯-赛德尔松弛基线在 1e-13 m 内一致",
+    "xpbd-substep-invariance-conserved": "XPBD子步刚度不变性守恒",
+    "17 substep frequencies (N_s=1..17) preserve exact Δx=0.8000m Hooke extension with 0.0000m drift": "17 个子步频率（N_s=1..17）全部保持 Δx=0.8000m 精确胡克伸长量与 0.0000m 漂移",
+    "unscaled-pbd-stiffening-exposed": "未缩放PBD随子步变硬暴露",
+    "naive unscaled PBD collapses station-3 (N_s=4) extension to 0.0500m (−93.75% stiffening across 16/17 stations)": "朴素未缩放 PBD 在第 3 站（N_s=4）将伸长量坍缩至 0.0500m（变硬 −93.75%，波及 16/17 站）",
+    "xpbd-hooke-extension-retained": "XPBD胡克伸长锁定",
+    "XPBD locks station-3 (N_s=4) at Δx=0.8000m (0.0000m substep drift)": "XPBD 将第 3 站（N_s=4）锁死在 Δx=0.8000m（0.0000m 子步漂移）",
+    "pbd-substep-collapse-exposed": "未缩放PBD子步坍缩暴露",
+    "unscaled PBD collapses station-3 (N_s=4) to Δx=0.0500m (−93.75% stiffening)": "未缩放 PBD 将第 3 站（N_s=4）坍缩至 Δx=0.0500m（−93.75% 变硬）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse substep scrubbing reproduces the exact dynamometer carriage world matrix": "逆序子步拖曳精确复现测力计滑车世界矩阵",
+    "atomic-compliance-rejection": "原子柔度拒绝",
+    "out-of-range complianceMetersPerNewton=9.0 is rejected while valid XPBD state remains": "越界物理柔度 9.0 被拒绝，有效 XPBD 状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered dynamometer carriage y-elevation matches solved tendon extension height": "渲染测力计滑车垂直高度与求解器伸长量高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px XPBD controls fit without horizontal overflow": "390px XPBD 控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual substep scrubbing remains available": "减少动态默认静止，保留手动子步核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Single-Pass XPBD Compliance Solve": "单遍闭式 XPBD 物理柔度求解",
+    "48-Iteration Gauss-Seidel Relaxation": "48 步高斯-赛德尔迭代松弛基线",
+    "Median of 7 alternating Node CPU runs after warmup. Single-pass closed-form XPBD compliance solve versus 48-iteration Gauss-Seidel constraint relaxation.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；单遍闭式 XPBD 柔度求解对比 48 步高斯-赛德尔约束松弛基线。",
+    "Sampled 17 substep frequencies (N_s=1..17) preserve exact 0.8000 m Hooke extension without substep stiffening": "采样 17 个子步频率（N_s=1..17）全部保持精确 0.8000 m 胡克伸长量且无随子步变硬漂移",
+    "α̃ = α / Δt_s², Δλ = (−C(x) − α̃λ)/(w + α̃) → Equilibrium Extension Δx ≡ α·F = 0.8000 m": "时间平方缩放柔度 α̃ = α/Δt_s² → 任意子步数下稳态伸长量恒为 Δx ≡ α·F = 0.8000 m",
+    "Real-time cloth, rope, hair, and soft-tissue tendons across variable display refresh rates (30/60/120/240 Hz) and substep counts": "跨 30/60/120/240 Hz 可变刷新率与不同物理子步数的实时布料、绳索、毛发与软组织肌腱仿真",
+    "Explaining why unscaled classic PBD shrinks extension as 1/N_s² (−93.75% stiffening at 4 substeps) while explicit penalty springs explode": "直观解释为何未缩放经典 PBD 的形变随 1/N_s² 坍缩（4 子步即变硬 −93.75%）而显式罚函数弹簧会爆炸",
+    "Mapping real engineering Youngs modulus / Hooke compliance α = 1/k directly into position-based solvers via α̃ = α / Δt_s²": "通过 α̃ = α / Δt_s² 将真实工程杨氏模量与胡克柔度 α = 1/k 直接映射进位置动力学求解器",
+    "Using small-step XPBD sub-stepping to converge in a single pass instead of running 48-iteration Gauss-Seidel loops": "利用小步长子步 XPBD 单遍直接收敛，替代高耗时的 48 步高斯-赛德尔死循环",
+    "Unconstrained ballistic projectiles in free flight without distance, bending, or volume constraints": "不含距离、弯曲或体积约束的自由抛体运动",
+    "Static rigid-body props that never deform or collide": "永不发生形变或碰撞的静态刚体道具",
+    "Neural cloth surrogate networks or learned mesh graph simulators": "神经布料代理模型或图神经网络网格仿真器",
+    "Purely kinematic keyframe animations without physical forces": "不受物理外力驱动的纯运动学关键帧动画"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/xpbd-compliance-substep.test.ts",
+    "node scripts/benchmark-xpbd-compliance-substep.mjs"
+  ]
+}

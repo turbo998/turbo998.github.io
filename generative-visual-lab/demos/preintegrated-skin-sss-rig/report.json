@@ -1,0 +1,270 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Penner pre-integrated curvature skin subsurface scattering vs hard Lambert terminator rig",
+  "topic_zh": "Penner 预积分曲率驱动皮肤次表面散射（SSS）对比硬 Lambert 明暗交界线死黑",
+  "slug": "preintegrated-skin-sss-rig",
+  "timestamp": "2026-11-12T20:12:39.939Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Eric Penner (2011) pre-integrated curvature-driven subsurface scattering (I_c(theta, kappa*l_c)) versus naive hard Lambertian clamping max(0, N.L) and 256-tap numerical arc quadrature across 17 terminator angles (theta in [10, 170] deg). No neural portrait relighting execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "sss-preintegrated-quad-equivalence-128",
+      "passed": true,
+      "detail": "128 closed-form pre-integrated SSS and 256-tap arc quadrature passes agree within 1e-13"
+    },
+    {
+      "name": "sss-preintegrated-quad-equivalence-1024",
+      "passed": true,
+      "detail": "1024 closed-form pre-integrated SSS and 256-tap arc quadrature passes agree within 1e-13"
+    },
+    {
+      "name": "sss-preintegrated-quad-equivalence-8192",
+      "passed": true,
+      "detail": "8192 closed-form pre-integrated SSS and 256-tap arc quadrature passes agree within 1e-13"
+    },
+    {
+      "name": "penner-terminator-warmth-conserved",
+      "passed": true,
+      "detail": "station-8 (θ=90° terminator) bleeds I_R=0.1724 vs I_B=0.0300 (5.75× R/B warmth ratio, ΔRB=+0.1424)"
+    },
+    {
+      "name": "hard-lambert-dead-terminator-exposed",
+      "passed": true,
+      "detail": "naive hard Lambert drops station-8 (θ=90°) to 0.0000 (−0.1724 bleed loss across 6/17 stations)"
+    },
+    {
+      "name": "sss-terminator-bleed-retained",
+      "passed": true,
+      "detail": "Penner SSS locks station-8 (θ=90°) at I_R=0.1724 (ΔRB=+0.1424)"
+    },
+    {
+      "name": "lambert-terminator-cutoff-exposed",
+      "passed": true,
+      "detail": "hard Lambert cuts off station-8 (θ=90°) to I_R=0.0000 across 6/17 stations"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse station scrubbing reproduces the exact dermal photometer carriage world matrix"
+    },
+    {
+      "name": "atomic-curvature-rejection",
+      "passed": true,
+      "detail": "out-of-range curvaturePerMm=99.0 is rejected while valid SSS state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered dermal carriage y-elevation matches solved red-channel subsurface irradiance height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px skin SSS controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual station scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station SSS passes",
+      "count": 128,
+      "primary_ms": 0.03690000000000282,
+      "baseline_ms": 3.2461999999999875,
+      "primary_samples_ms": [
+        0.0644999999999527,
+        0.033999999999991815,
+        0.030900000000031014,
+        0.04099999999999682,
+        0.03690000000000282,
+        0.03820000000001755,
+        0.02800000000002001
+      ],
+      "baseline_samples_ms": [
+        3.2461999999999875,
+        3.050900000000013,
+        3.427500000000009,
+        3.6382999999999583,
+        3.0652000000000044,
+        3.5305999999999926,
+        2.941000000000031
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station SSS passes",
+      "count": 1024,
+      "primary_ms": 0.2545999999999822,
+      "baseline_ms": 25.337599999999952,
+      "primary_samples_ms": [
+        0.269299999999987,
+        0.3590000000000373,
+        0.3126999999999498,
+        0.2545999999999822,
+        0.24320000000000164,
+        0.24670000000003256,
+        0.23079999999993106
+      ],
+      "baseline_samples_ms": [
+        26.937100000000044,
+        25.439200000000028,
+        25.026599999999917,
+        26.736400000000003,
+        25.337599999999952,
+        25.052099999999996,
+        24.33940000000007
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station SSS passes",
+      "count": 8192,
+      "primary_ms": 2.0537000000001626,
+      "baseline_ms": 219.41639999999984,
+      "primary_samples_ms": [
+        2.03550000000007,
+        2.0537000000001626,
+        1.9653000000000702,
+        1.9740999999999076,
+        2.091699999999946,
+        2.201999999999771,
+        2.2545000000000073
+      ],
+      "baseline_samples_ms": [
+        207.1912000000001,
+        240.86170000000016,
+        224.0610999999999,
+        223.00149999999985,
+        204.6228000000001,
+        219.41639999999984,
+        204.72170000000006
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/preintegrated-skin-sss-rig/light-penner-preintegrated-curvature-sss.png",
+    "docs/evidence/preintegrated-skin-sss-rig/light-naive-hard-lambert-terminator.png",
+    "docs/evidence/preintegrated-skin-sss-rig/dark-penner-preintegrated-curvature-sss.png",
+    "docs/evidence/preintegrated-skin-sss-rig/dark-naive-hard-lambert-terminator.png",
+    "docs/evidence/preintegrated-skin-sss-rig/mobile.png"
+  ],
+  "primary_label": "Closed-Form Pre-Integrated Arc SSS",
+  "baseline_label": "256-Tap Numerical Arc Quadrature",
+  "load_unit": "17-station SSS passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form antiderivative pre-integrated SSS evaluation versus 256-tap numerical arc quadrature.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "curvature_mm_inv": 0.6,
+    "red_scatter_mm": 1.2,
+    "blue_scatter_mm": 0.2,
+    "sss_red_at_90": 0.1724,
+    "sss_blue_at_90": 0.03,
+    "warmth_delta_rb_at_90": 0.1424,
+    "lambert_at_90": 0,
+    "dead_terminator_stations": 6,
+    "maximum_solver_error": 6.6613e-16
+  },
+  "protocol": {
+    "input": {
+      "station_index": 8,
+      "angle_deg": 90,
+      "kappa_mm_inv": 0.6,
+      "l_red_mm": 1.2,
+      "l_blue_mm": 0.2,
+      "mode": "penner-preintegrated-curvature-sss"
+    },
+    "output": {
+      "sss_red_irradiance": 0.1724,
+      "sss_green_irradiance": 0.0671,
+      "sss_blue_irradiance": 0.03,
+      "lambert_irradiance": 0,
+      "red_blue_ratio": 5.75
+    },
+    "function": "I_c(θ, κℓ_c) = [sin(min(π/2, θ+κℓ_c)) − sin(max(−π/2, θ−κℓ_c))]/(2κℓ_c) → θ=90° I_R = 0.1724 (> 5.7× I_B)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 terminator angles preserve smooth RGB wavelength-dependent subsurface scattering without hard-Lambert cutoff",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Real-time digital human faces, ears, noses, fingers, wax candles, and translucent jade props on mobile/WebGL2/VR",
+    "Explaining why longer red mean free path (ℓ_R=1.2mm vs ℓ_B=0.2mm) produces a 5.75× crimson warmth band across the θ=90° shadow terminator",
+    "Parameterized 2D (N·L, κ) pre-integrated skin LUTs driven by screen-space curvature κ = ‖∇N‖ / ‖∇P‖",
+    "Replacing 256-tap numerical diffusion integrals or 6-pass texture-space blurs with O(1) closed-form pre-integration"
+  ],
+  "not_for": [
+    "Large flat skin regions with high-frequency shadow maps where Separable Screen-Space SSS (Jiménez SSSSS) is needed",
+    "Opaque metallic or stone surfaces with zero subsurface mean free path (ℓ = 0)",
+    "Neural portrait relighting or diffusion-based face synthesis models",
+    "Thin back-lit ear pinnae transilluminated from behind (requires thickness map transmittance exp(-σ_t d))"
+  ],
+  "locale_zh": {
+    "sss-preintegrated-quad-equivalence-128": "预积分SSS与256点求积等价 128",
+    "128 closed-form pre-integrated SSS and 256-tap arc quadrature passes agree within 1e-13": "128 次闭式预积分 SSS 与 256 点圆弧数值积分基线在 1e-13 内一致",
+    "sss-preintegrated-quad-equivalence-1024": "预积分SSS与256点求积等价 1024",
+    "1024 closed-form pre-integrated SSS and 256-tap arc quadrature passes agree within 1e-13": "1024 次闭式预积分 SSS 与 256 点圆弧数值积分基线在 1e-13 内一致",
+    "sss-preintegrated-quad-equivalence-8192": "预积分SSS与256点求积等价 8192",
+    "8192 closed-form pre-integrated SSS and 256-tap arc quadrature passes agree within 1e-13": "8192 次闭式预积分 SSS 与 256 点圆弧数值积分基线在 1e-13 内一致",
+    "penner-terminator-warmth-conserved": "Penner明暗交界红光暖边守恒",
+    "station-8 (θ=90° terminator) bleeds I_R=0.1724 vs I_B=0.0300 (5.75× R/B warmth ratio, ΔRB=+0.1424)": "第 8 站（θ=90° 明暗交界线）渗透红光 I_R=0.1724 对比蓝光 I_B=0.0300（5.75× 红蓝比，ΔRB=+0.1424）",
+    "hard-lambert-dead-terminator-exposed": "硬Lambert明暗交界死黑暴露",
+    "naive hard Lambert drops station-8 (θ=90°) to 0.0000 (−0.1724 bleed loss across 6/17 stations)": "朴素硬 Lambert 在第 8 站（θ=90°）跌至 0.0000（丢失 −0.1724 红光渗透，波及 6/17 站）",
+    "sss-terminator-bleed-retained": "Penner交界红光锁定",
+    "Penner SSS locks station-8 (θ=90°) at I_R=0.1724 (ΔRB=+0.1424)": "Penner SSS 将第 8 站（θ=90°）锁死在 I_R=0.1724（暖红色差 ΔRB=+0.1424）",
+    "lambert-terminator-cutoff-exposed": "硬Lambert交界截断暴露",
+    "hard Lambert cuts off station-8 (θ=90°) to I_R=0.0000 across 6/17 stations": "硬 Lambert 将第 8 站（θ=90°）截断至 I_R=0.0000（波及 6/17 站）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse station scrubbing reproduces the exact dermal photometer carriage world matrix": "逆序站点拖曳精确复现真皮光度计滑车世界矩阵",
+    "atomic-curvature-rejection": "原子曲率拒绝",
+    "out-of-range curvaturePerMm=99.0 is rejected while valid SSS state remains": "越界曲率 99.0 mm⁻¹ 被拒绝，有效 SSS 状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered dermal carriage y-elevation matches solved red-channel subsurface irradiance height": "渲染真皮滑车垂直高度与求解器红光次表面辐照度高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px skin SSS controls fit without horizontal overflow": "390px 皮肤 SSS 控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual station scrubbing remains available": "减少动态默认静止，保留手动站点核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Closed-Form Pre-Integrated Arc SSS": "闭式原函数预积分曲率 SSS",
+    "256-Tap Numerical Arc Quadrature": "256 采样点圆弧数值求积基线",
+    "Median of 7 alternating Node CPU runs after warmup. Closed-form antiderivative pre-integrated SSS evaluation versus 256-tap numerical arc quadrature.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；闭式原函数预积分曲率 SSS 求值对比 256 采样点圆弧数值积分基线。",
+    "Sampled 17 terminator angles preserve smooth RGB wavelength-dependent subsurface scattering without hard-Lambert cutoff": "采样 17 个明暗交界角度全部保持平滑 RGB 波长分离次表面散射，无硬 Lambert 死黑截断",
+    "I_c(θ, κℓ_c) = [sin(min(π/2, θ+κℓ_c)) − sin(max(−π/2, θ−κℓ_c))]/(2κℓ_c) → θ=90° I_R = 0.1724 (> 5.7× I_B)": "曲率弧宽 κ·ℓ_c 闭式卷积积分 → θ=90° 交界处红光渗透 I_R = 0.1724（> 5.7× 蓝光）",
+    "Real-time digital human faces, ears, noses, fingers, wax candles, and translucent jade props on mobile/WebGL2/VR": "移动端、WebGL2 与 VR 头显中的实时数字人面部、鼻翼、手指、蜡烛与半透明玉石材质",
+    "Explaining why longer red mean free path (ℓ_R=1.2mm vs ℓ_B=0.2mm) produces a 5.75× crimson warmth band across the θ=90° shadow terminator": "直观解释为何红光长自由程（ℓ_R=1.2mm 对比蓝光 0.2mm）会在 θ=90° 明暗交界线处形成 5.75× 的暖红光带",
+    "Parameterized 2D (N·L, κ) pre-integrated skin LUTs driven by screen-space curvature κ = ‖∇N‖ / ‖∇P‖": "由屏幕空间局部曲率 κ = ‖∇N‖/‖∇P‖ 驱动的二维 (N·L, κ) 预积分皮肤查找表",
+    "Replacing 256-tap numerical diffusion integrals or 6-pass texture-space blurs with O(1) closed-form pre-integration": "以 O(1) 闭式预积分替代高开销的 256 点数值扩散积分或 6 遍纹理空间高斯模糊",
+    "Large flat skin regions with high-frequency shadow maps where Separable Screen-Space SSS (Jiménez SSSSS) is needed": "曲率趋近于零但投射了锐利阴影贴图边界的平坦额头（需配合屏幕空间可分离 SSSSS）",
+    "Opaque metallic or stone surfaces with zero subsurface mean free path (ℓ = 0)": "零次表面自由程（ℓ=0）的不透明金属或干燥岩石表面",
+    "Neural portrait relighting or diffusion-based face synthesis models": "神经人像重打光或扩散模型人脸生成推理网络",
+    "Thin back-lit ear pinnae transilluminated from behind (requires thickness map transmittance exp(-σ_t d))": "强背光直接穿透薄耳廓的透射通道（需额外叠加厚度图 Beer-Lambert 透射项）"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/preintegrated-skin-sss.test.ts",
+    "node scripts/benchmark-preintegrated-skin-sss.mjs"
+  ]
+}

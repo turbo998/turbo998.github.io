@@ -1,0 +1,267 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Olsson logarithmic Clustered Forward+ Z-slicing vs linear view-space depth slice starvation rig",
+  "topic_zh": "Olsson 对数自相似分簇前向渲染（Clustered Forward+）深度切片对比线性深度第 0 片 12× 拥堵",
+  "slug": "clustered-z-slice-light-rig",
+  "timestamp": "2026-11-12T18:33:42.878Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Olsson, Billeter & Assarsson (HPG 2012) logarithmic/self-similar frustum Z-slicing (s(z) = floor(ln(z)*scale + bias)) versus naive linear view-space depth slicing and explicit plane-array search across 17 frustum depth slices (z in [0.10, 1000.0] m). No neural light culling execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "clustered-log-search-equivalence-128",
+      "passed": true,
+      "detail": "128 O(1) scale-bias log indexing and plane-array search passes match exact 1/1 slice occupancy"
+    },
+    {
+      "name": "clustered-log-search-equivalence-1024",
+      "passed": true,
+      "detail": "1024 O(1) scale-bias log indexing and plane-array search passes match exact 1/1 slice occupancy"
+    },
+    {
+      "name": "clustered-log-search-equivalence-8192",
+      "passed": true,
+      "detail": "8192 O(1) scale-bias log indexing and plane-array search passes match exact 1/1 slice occupancy"
+    },
+    {
+      "name": "olsson-logarithmic-partition-conserved",
+      "passed": true,
+      "detail": "17 logarithmic depth slices maintain self-similar aspect ratio r=1.7191 and 1/1 light band per slice"
+    },
+    {
+      "name": "linear-slice0-overload-exposed",
+      "passed": true,
+      "detail": "naive linear slicing crams 12/17 depth bands into Slice 0 (12.00× overload) and distorts 12/17 slices"
+    },
+    {
+      "name": "logarithmic-froxel-slice-retained",
+      "passed": true,
+      "detail": "Olsson logarithmic slicing locks Slice-0 at 1/1 light band (0/17 overloaded or starved slices)"
+    },
+    {
+      "name": "linear-slice0-pileup-exposed",
+      "passed": true,
+      "detail": "naive linear slicing piles 12/1 light bands into Slice-0 (12.00× overload across 12/17 slices)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse slice scrubbing reproduces the exact froxel probe carriage world matrix"
+    },
+    {
+      "name": "atomic-znear-rejection",
+      "passed": true,
+      "detail": "out-of-range zNearMeters=99.0 is rejected while valid Clustered Z-slice state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered froxel carriage y-elevation matches solved slice light occupancy height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Clustered Z-slice controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual slice scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-slice froxel passes",
+      "count": 128,
+      "primary_ms": 0.024400000000014188,
+      "baseline_ms": 2.6160999999999603,
+      "primary_samples_ms": [
+        0.04230000000001155,
+        0.026900000000011914,
+        0.026299999999991996,
+        0.022699999999986176,
+        0.024400000000014188,
+        0.023300000000006094,
+        0.023199999999974352
+      ],
+      "baseline_samples_ms": [
+        2.688199999999995,
+        2.4850999999999885,
+        2.7010999999999967,
+        2.5652999999999793,
+        2.5382000000000176,
+        2.702200000000005,
+        2.6160999999999603
+      ]
+    },
+    {
+      "load": "1024 CPU 17-slice froxel passes",
+      "count": 1024,
+      "primary_ms": 0.20280000000002474,
+      "baseline_ms": 22.903999999999996,
+      "primary_samples_ms": [
+        0.20280000000002474,
+        0.18849999999997635,
+        0.1854000000000724,
+        0.19119999999998072,
+        0.22730000000001382,
+        0.21429999999998017,
+        0.20889999999997144
+      ],
+      "baseline_samples_ms": [
+        25.577999999999975,
+        22.884400000000028,
+        22.903999999999996,
+        23.95780000000002,
+        22.298599999999965,
+        22.462299999999914,
+        32.67169999999999
+      ]
+    },
+    {
+      "load": "8192 CPU 17-slice froxel passes",
+      "count": 8192,
+      "primary_ms": 1.7466000000001713,
+      "baseline_ms": 187.73610000000008,
+      "primary_samples_ms": [
+        1.687400000000025,
+        1.7989000000000033,
+        1.465800000000172,
+        1.5620000000001255,
+        2.895999999999958,
+        1.7466000000001713,
+        1.8932999999999538
+      ],
+      "baseline_samples_ms": [
+        178.58719999999994,
+        171.46069999999986,
+        187.73610000000008,
+        200.80570000000012,
+        223.67809999999986,
+        185.84109999999987,
+        200.12829999999985
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/clustered-z-slice-light-rig/light-olsson-logarithmic-z-slicing.png",
+    "docs/evidence/clustered-z-slice-light-rig/light-naive-linear-view-z-slicing.png",
+    "docs/evidence/clustered-z-slice-light-rig/dark-olsson-logarithmic-z-slicing.png",
+    "docs/evidence/clustered-z-slice-light-rig/dark-naive-linear-view-z-slicing.png",
+    "docs/evidence/clustered-z-slice-light-rig/mobile.png"
+  ],
+  "primary_label": "O(1) Scale-Bias Log Slice Index",
+  "baseline_label": "17-Plane Geometric Array Search",
+  "load_unit": "17-slice froxel passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. O(1) precomputed scale-and-bias logarithmic slice lookup floor(ln(z)*scale + bias) versus geometric plane-array construction and search.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "z_near_m": 0.1,
+    "z_far_m": 1000,
+    "froxel_aspect_ratio": 1.7191,
+    "log_slice0_overload": 1,
+    "linear_slice0_overload": 12,
+    "distorted_slices": 12,
+    "maximum_solver_error": 0
+  },
+  "protocol": {
+    "input": {
+      "slice_index": 0,
+      "z_near_m": 0.1,
+      "z_far_m": 1000,
+      "num_slices": 17,
+      "mode": "olsson-logarithmic-z-slicing"
+    },
+    "output": {
+      "froxel_aspect_ratio": 1.7191,
+      "log_slice0_lights": 1,
+      "linear_slice0_lights": 12,
+      "linear_empty_slices": 11,
+      "distorted_slices_log": 0
+    },
+    "function": "s(z) = ⌊ln(z)·scale + bias⌋, z_k = z_near·(z_far/z_near)^(k/N_z) → Slice Occupancy ≡ 1.00×"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 frustum depth slices preserve self-similar aspect ratio 1.7191 and exact 1/1 light band occupancy",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Clustered Forward+ and Clustered Deferred 3D froxel light culling grids (DOOM idTech, Three.js WebGPU, Godot 4, Unreal Strata)",
+    "Explaining why linear Z-slicing (Δz = 58.82m) dumps 12/17 near-to-mid depth bands into Slice 0 while leaving 11 slices empty",
+    "Maintaining cubical self-similar 3D froxels (Δz/z = const) across a 10,000:1 perspective depth range",
+    "Evaluating slice indices in O(1) via floor(ln(z) * scale + bias) using two precomputed camera uniforms"
+  ],
+  "not_for": [
+    "Orthographic 2D side-scrollers where frustum width does not expand with depth z",
+    "Single-directional-light outdoor scenes without point or spot light culling grids",
+    "Neural light importance sampling or ReSTIR reservoir resampling networks",
+    "Baked static lightmaps with zero dynamic runtime point lights"
+  ],
+  "locale_zh": {
+    "clustered-log-search-equivalence-128": "对数索引与平面搜索等价 128",
+    "128 O(1) scale-bias log indexing and plane-array search passes match exact 1/1 slice occupancy": "128 次 O(1) 对数缩放偏置索引与平面数组搜索基线完全一致保持 1/1 切片分布",
+    "clustered-log-search-equivalence-1024": "对数索引与平面搜索等价 1024",
+    "1024 O(1) scale-bias log indexing and plane-array search passes match exact 1/1 slice occupancy": "1024 次 O(1) 对数缩放偏置索引与平面数组搜索基线完全一致保持 1/1 切片分布",
+    "clustered-log-search-equivalence-8192": "对数索引与平面搜索等价 8192",
+    "8192 O(1) scale-bias log indexing and plane-array search passes match exact 1/1 slice occupancy": "8192 次 O(1) 对数缩放偏置索引与平面数组搜索基线完全一致保持 1/1 切片分布",
+    "olsson-logarithmic-partition-conserved": "Olsson对数自相似切片守恒",
+    "17 logarithmic depth slices maintain self-similar aspect ratio r=1.7191 and 1/1 light band per slice": "17 个对数深度切片保持恒定自相似比 r=1.7191 且每片严格分配 1/1 光源带",
+    "linear-slice0-overload-exposed": "线性切片第0片12倍过载暴露",
+    "naive linear slicing crams 12/17 depth bands into Slice 0 (12.00× overload) and distorts 12/17 slices": "朴素线性深度切片将 12/17 个深度层挤进第 0 片（12.00× 过载），导致 12/17 个切片失衡",
+    "logarithmic-froxel-slice-retained": "对数Froxel切片锁定",
+    "Olsson logarithmic slicing locks Slice-0 at 1/1 light band (0/17 overloaded or starved slices)": "Olsson 对数切片将第 0 片锁死在 1/1 光源带（0/17 过载或闲置切片）",
+    "linear-slice0-pileup-exposed": "线性第0片拥堵暴露",
+    "naive linear slicing piles 12/1 light bands into Slice-0 (12.00× overload across 12/17 slices)": "朴素线性切片将 12/1 光源带堆积在第 0 片（12.00× 过载，波及 12/17 片）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse slice scrubbing reproduces the exact froxel probe carriage world matrix": "逆序切片拖曳精确复现 Froxel 探针滑车世界矩阵",
+    "atomic-znear-rejection": "原子近裁剪面拒绝",
+    "out-of-range zNearMeters=99.0 is rejected while valid Clustered Z-slice state remains": "越界近裁剪面 99.0m 被拒绝，有效分簇切片状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered froxel carriage y-elevation matches solved slice light occupancy height": "渲染 Froxel 滑车垂直高度与求解器切片光源占用高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px Clustered Z-slice controls fit without horizontal overflow": "390px 分簇深度切片控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual slice scrubbing remains available": "减少动态默认静止，保留手动切片核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "O(1) Scale-Bias Log Slice Index": "O(1) 对数缩放偏置直接寻址",
+    "17-Plane Geometric Array Search": "17 平面几何分界数组搜索基线",
+    "Median of 7 alternating Node CPU runs after warmup. O(1) precomputed scale-and-bias logarithmic slice lookup floor(ln(z)*scale + bias) versus geometric plane-array construction and search.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；O(1) 预计算缩放偏置对数切片寻址 floor(ln(z)*scale + bias) 对比几何分界平面数组构造与搜索基线。",
+    "Sampled 17 frustum depth slices preserve self-similar aspect ratio 1.7191 and exact 1/1 light band occupancy": "采样 17 个视锥深度切片全部保持 1.7191 自相似宽高比与精确 1/1 光源带均匀分布",
+    "s(z) = ⌊ln(z)·scale + bias⌋, z_k = z_near·(z_far/z_near)^(k/N_z) → Slice Occupancy ≡ 1.00×": "对数自相似深度切片 s(z) = ⌊ln(z)·scale + bias⌋ → 切片光源占用率恒为 1.00×",
+    "Clustered Forward+ and Clustered Deferred 3D froxel light culling grids (DOOM idTech, Three.js WebGPU, Godot 4, Unreal Strata)": "分簇前向（Clustered Forward+）与分簇延迟 3D Froxel 光源剔除网格（DOOM idTech、Three.js WebGPU、Godot 4、Unreal）",
+    "Explaining why linear Z-slicing (Δz = 58.82m) dumps 12/17 near-to-mid depth bands into Slice 0 while leaving 11 slices empty": "直观解释为何线性深度切片（Δz=58.82m）会将 12/17 个近中景深度带全部倒进第 0 片并让 11 个切片闲置",
+    "Maintaining cubical self-similar 3D froxels (Δz/z = const) across a 10,000:1 perspective depth range": "在 10,000:1 的大跨度透视视锥体内保持每个 3D Froxel 恒定的正方体自相似比例（Δz/z = const）",
+    "Evaluating slice indices in O(1) via floor(ln(z) * scale + bias) using two precomputed camera uniforms": "利用两个预计算相机 Uniform 常数通过 floor(ln(z)*scale + bias) 实现 O(1) 寄存器级切片寻址",
+    "Orthographic 2D side-scrollers where frustum width does not expand with depth z": "视锥宽度不随深度 z 放大的正交投影 2D 横版场景",
+    "Single-directional-light outdoor scenes without point or spot light culling grids": "仅含单一太阳平行光、无需点光源分簇剔除网格的简单场景",
+    "Neural light importance sampling or ReSTIR reservoir resampling networks": "神经光源重要性采样或 ReSTIR 蓄水池重采样网络",
+    "Baked static lightmaps with zero dynamic runtime point lights": "零动态点光源的纯静态烘焙光照贴图（Lightmap）场景"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/clustered-z-slice-light.test.ts",
+    "node scripts/benchmark-clustered-z-slice-light.mjs"
+  ]
+}
