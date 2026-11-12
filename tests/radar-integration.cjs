@@ -1914,6 +1914,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r121File),'utf8');
       assert.ok(txt.includes('2,090.00')&&txt.includes('4,180.00')&&txt.includes('6,270.00')&&txt.includes('225.00')&&txt.includes('380.00')&&txt.includes('605.00')&&txt.includes('5,665.00')&&txt.includes('90.35%')&&txt.includes('not_measured'),r121File+': contains exact 11-12 R22 superaris+mate closed-form parameters');
     }
+    // 2026-11-12 Round 23 (R122: reason-machines/aspen + TechTideOhio/binnacle) closed-form FinOps verification
+    const r122PathA=2450.00+48.0*100.00;
+    assert.equal(r122PathA.toFixed(2),'7250.00','11-12 R23 Path A total');
+    const r122PathC=275.00+5.0*100.00;
+    assert.equal(r122PathC.toFixed(2),'775.00','11-12 R23 Path C total');
+    assert.equal((r122PathA-r122PathC).toFixed(2),'6475.00','11-12 R23 savings vs Path A');
+    assert.equal(((r122PathA-r122PathC)/r122PathA*100).toFixed(2),'89.31','11-12 R23 pct savings vs Path A');
+    for(const r122File of ['workshops/github-trending-radar/docs/aspen-binnacle-agent-scale-git-server-pure-rust-15tool-eval-orchestrator-selection-faq.md','workshops/github-trending-radar/docs/aspen-binnacle-agent-scale-git-server-pure-rust-15tool-eval-orchestrator-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r23-aspen-binnacle.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r122File),'utf8');
+      assert.ok(txt.includes('2,450.00')&&txt.includes('4,800.00')&&txt.includes('7,250.00')&&txt.includes('275.00')&&txt.includes('500.00')&&txt.includes('775.00')&&txt.includes('6,475.00')&&txt.includes('89.31%')&&txt.includes('not_measured'),r122File+': contains exact 11-12 R23 aspen+binnacle closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
