@@ -1870,6 +1870,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r117File),'utf8');
       assert.ok(txt.includes('1,840.00')&&txt.includes('4,320.00')&&txt.includes('6,160.00')&&txt.includes('230.00')&&txt.includes('450.00')&&txt.includes('680.00')&&txt.includes('5,480.00')&&txt.includes('88.96%')&&txt.includes('not_measured'),r117File+': contains exact 11-12 R18 artex+metrikamcp closed-form parameters');
     }
+    // 2026-11-12 Round 19 (R118: emollick/ai-portals + codepawl/creator-generalist) closed-form FinOps verification
+    const r118PathA=1920.00+48.0*95.00;
+    assert.equal(r118PathA.toFixed(2),'6480.00','11-12 R19 Path A total');
+    const r118PathC=245.00+5.0*95.00;
+    assert.equal(r118PathC.toFixed(2),'720.00','11-12 R19 Path C total');
+    assert.equal((r118PathA-r118PathC).toFixed(2),'5760.00','11-12 R19 savings vs Path A');
+    assert.equal(((r118PathA-r118PathC)/r118PathA*100).toFixed(2),'88.89','11-12 R19 pct savings vs Path A');
+    for(const r118File of ['workshops/github-trending-radar/docs/ai-portals-creator-generalist-zero-asset-procedural-3d-worlds-greybox-verified-creative-skills-selection-faq.md','workshops/github-trending-radar/docs/ai-portals-creator-generalist-zero-asset-procedural-3d-worlds-greybox-verified-creative-skills-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r19-aiportals-creatorgen.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r118File),'utf8');
+      assert.ok(txt.includes('1,920.00')&&txt.includes('4,560.00')&&txt.includes('6,480.00')&&txt.includes('245.00')&&txt.includes('475.00')&&txt.includes('720.00')&&txt.includes('5,760.00')&&txt.includes('88.89%')&&txt.includes('not_measured'),r118File+': contains exact 11-12 R19 ai-portals+creator-generalist closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
