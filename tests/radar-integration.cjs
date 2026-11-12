@@ -1815,6 +1815,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r112File),'utf8');
       assert.ok(txt.includes('1,800.00')&&txt.includes('4,320.00')&&txt.includes('6,120.00')&&txt.includes('240.00')&&txt.includes('450.00')&&txt.includes('690.00')&&txt.includes('5,430.00')&&txt.includes('88.73%')&&txt.includes('not_measured'),r112File+': contains exact 11-12 R13 numbrone+mutinybim closed-form parameters');
     }
+    // 2026-11-12 Round 14 (R113: Nyxera0x/cutaway + link-ding/image-to-psd) closed-form FinOps verification
+    const r113PathA=1620.00+48.0*90.00;
+    assert.equal(r113PathA.toFixed(2),'5940.00','11-12 R14 Path A total');
+    const r113PathC=220.00+5.0*90.00;
+    assert.equal(r113PathC.toFixed(2),'670.00','11-12 R14 Path C total');
+    assert.equal((r113PathA-r113PathC).toFixed(2),'5270.00','11-12 R14 savings vs Path A');
+    assert.equal(((r113PathA-r113PathC)/r113PathA*100).toFixed(2),'88.72','11-12 R14 pct savings vs Path A');
+    for(const r113File of ['workshops/github-trending-radar/docs/cutaway-image-to-psd-code-built-3d-exploding-sim-19-layer-psd-skill-selection-faq.md','workshops/github-trending-radar/docs/cutaway-image-to-psd-code-built-3d-exploding-sim-19-layer-psd-skill-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r14-cutaway-imagetopsd.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r113File),'utf8');
+      assert.ok(txt.includes('1,620.00')&&txt.includes('4,320.00')&&txt.includes('5,940.00')&&txt.includes('220.00')&&txt.includes('450.00')&&txt.includes('670.00')&&txt.includes('5,270.00')&&txt.includes('88.72%')&&txt.includes('not_measured'),r113File+': contains exact 11-12 R14 cutaway+imagetopsd closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
