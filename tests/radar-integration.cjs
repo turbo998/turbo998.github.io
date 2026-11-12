@@ -1683,6 +1683,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r100File),'utf8');
       assert.ok(txt.includes('2,400.00')&&txt.includes('4,140.00')&&txt.includes('6,540.00')&&txt.includes('320.00')&&txt.includes('450.00')&&txt.includes('770.00')&&txt.includes('5,770.00')&&txt.includes('88.23%')&&txt.includes('not_measured'),r100File+': contains exact 11-12 R1 qwen-code+fcc closed-form parameters');
     }
+    // 2026-11-12 Round 2 (R101: ashhart/TensorFold + huawei-csl/MACaQ) closed-form FinOps verification
+    const r101PathA=2160.00+44.0*90.00;
+    assert.equal(r101PathA.toFixed(2),'6120.00','11-12 R2 Path A total');
+    const r101PathC=280.00+5.0*90.00;
+    assert.equal(r101PathC.toFixed(2),'730.00','11-12 R2 Path C total');
+    assert.equal((r101PathA-r101PathC).toFixed(2),'5390.00','11-12 R2 savings vs Path A');
+    assert.equal(((r101PathA-r101PathC)/r101PathA*100).toFixed(2),'88.07','11-12 R2 pct savings vs Path A');
+    for(const r101File of ['workshops/github-trending-radar/docs/tensorfold-macaq-zig-cross-gpu-inference-calibrated-gguf-quantization-selection-faq.md','workshops/github-trending-radar/docs/tensorfold-macaq-zig-cross-gpu-inference-calibrated-gguf-quantization-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r2-tensorfold-macaq.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r101File),'utf8');
+      assert.ok(txt.includes('2,160.00')&&txt.includes('3,960.00')&&txt.includes('6,120.00')&&txt.includes('280.00')&&txt.includes('450.00')&&txt.includes('730.00')&&txt.includes('5,390.00')&&txt.includes('88.07%')&&txt.includes('not_measured'),r101File+': contains exact 11-12 R2 tensorfold+macaq closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
