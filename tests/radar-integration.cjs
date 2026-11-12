@@ -1859,6 +1859,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r116File),'utf8');
       assert.ok(txt.includes('2,320.00')&&txt.includes('4,320.00')&&txt.includes('6,640.00')&&txt.includes('260.00')&&txt.includes('450.00')&&txt.includes('710.00')&&txt.includes('5,930.00')&&txt.includes('89.31%')&&txt.includes('not_measured'),r116File+': contains exact 11-12 R17 flashstates+9routerx closed-form parameters');
     }
+    // 2026-11-12 Round 18 (R117: failsafe-security/artex + DevCrabs-Inc/yandex-metrika-mcp) closed-form FinOps verification
+    const r117PathA=1840.00+48.0*90.00;
+    assert.equal(r117PathA.toFixed(2),'6160.00','11-12 R18 Path A total');
+    const r117PathC=230.00+5.0*90.00;
+    assert.equal(r117PathC.toFixed(2),'680.00','11-12 R18 Path C total');
+    assert.equal((r117PathA-r117PathC).toFixed(2),'5480.00','11-12 R18 savings vs Path A');
+    assert.equal(((r117PathA-r117PathC)/r117PathA*100).toFixed(2),'88.96','11-12 R18 pct savings vs Path A');
+    for(const r117File of ['workshops/github-trending-radar/docs/failsafe-artex-yandex-metrika-mcp-supply-chain-hardened-secagent-verified-analytics-selection-faq.md','workshops/github-trending-radar/docs/failsafe-artex-yandex-metrika-mcp-supply-chain-hardened-secagent-verified-analytics-selection-faq.en.md','assets/github-ai-radar-2026-11-12-r18-artex-metrikamcp.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-12-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r117File),'utf8');
+      assert.ok(txt.includes('1,840.00')&&txt.includes('4,320.00')&&txt.includes('6,160.00')&&txt.includes('230.00')&&txt.includes('450.00')&&txt.includes('680.00')&&txt.includes('5,480.00')&&txt.includes('88.96%')&&txt.includes('not_measured'),r117File+': contains exact 11-12 R18 artex+metrikamcp closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
