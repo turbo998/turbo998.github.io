@@ -2086,6 +2086,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r135File),'utf8');
       assert.ok(txt.includes('1,820.00')&&txt.includes('3,610.00')&&txt.includes('5,430.00')&&txt.includes('210.00')&&txt.includes('380.00')&&txt.includes('590.00')&&txt.includes('4,840.00')&&txt.includes('89.13%')&&txt.includes('not_measured'),r135File+': contains exact 11-13 R7 agent-traffic+actp closed-form parameters');
     }
+    // 2026-11-13 Round 8 (R136: agentic-learning-ai-lab/deleting-weights + jushengzhang/robot-weight-debugging) closed-form FinOps verification
+    const r136PathA=3120.00+46.0*105.00;
+    assert.equal(r136PathA.toFixed(2),'7950.00','11-13 R8 Path A total');
+    const r136PathC=390.00+5.0*105.00;
+    assert.equal(r136PathC.toFixed(2),'915.00','11-13 R8 Path C total');
+    assert.equal((r136PathA-r136PathC).toFixed(2),'7035.00','11-13 R8 savings vs Path A');
+    assert.equal(((r136PathA-r136PathC)/r136PathA*100).toFixed(2),'88.49','11-13 R8 pct savings vs Path A');
+    for(const r136File of ['workshops/github-trending-radar/docs/deleting-weights-robot-weight-debugging-posttraining-vla-weight-surgery-selection-faq.md','workshops/github-trending-radar/docs/deleting-weights-robot-weight-debugging-posttraining-vla-weight-surgery-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r8-deletingweights-robotweight.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r136File),'utf8');
+      assert.ok(txt.includes('3,120.00')&&txt.includes('4,830.00')&&txt.includes('7,950.00')&&txt.includes('390.00')&&txt.includes('525.00')&&txt.includes('915.00')&&txt.includes('7,035.00')&&txt.includes('88.49%')&&txt.includes('not_measured'),r136File+': contains exact 11-13 R8 deleting-weights+robot-weight-debugging closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
