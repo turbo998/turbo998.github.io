@@ -2273,6 +2273,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r152File),'utf8');
       assert.ok(txt.includes('1,680.00')&&txt.includes('3,990.00')&&txt.includes('5,670.00')&&txt.includes('175.00')&&txt.includes('367.50')&&txt.includes('542.50')&&txt.includes('5,127.50')&&txt.includes('90.43%')&&txt.includes('not_measured'),r152File+': contains exact 11-13 R24 deobf+shamus closed-form parameters');
     }
+    // 2026-11-13 Round 25 (R153: punit2911/Hirepanel + maniculehq/margin) closed-form FinOps verification
+    const r153PathA=1540.00+40.0*85.00;
+    assert.equal(r153PathA.toFixed(2),'4940.00','11-13 R25 Path A total');
+    const r153PathC=170.00+3.5*85.00;
+    assert.equal(r153PathC.toFixed(2),'467.50','11-13 R25 Path C total');
+    assert.equal((r153PathA-r153PathC).toFixed(2),'4472.50','11-13 R25 savings vs Path A');
+    assert.equal(((r153PathA-r153PathC)/r153PathA*100).toFixed(2),'90.54','11-13 R25 pct savings vs Path A');
+    for(const r153File of ['workshops/github-trending-radar/docs/hirepanel-margin-quote-verified-multiagent-recruiting-postgres-isolate-agent-docs-selection-faq.md','workshops/github-trending-radar/docs/hirepanel-margin-quote-verified-multiagent-recruiting-postgres-isolate-agent-docs-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r25-hirepanel-margin.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r153File),'utf8');
+      assert.ok(txt.includes('1,540.00')&&txt.includes('3,400.00')&&txt.includes('4,940.00')&&txt.includes('170.00')&&txt.includes('297.50')&&txt.includes('467.50')&&txt.includes('4,472.50')&&txt.includes('90.54%')&&txt.includes('not_measured'),r153File+': contains exact 11-13 R25 Hirepanel+margin closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
