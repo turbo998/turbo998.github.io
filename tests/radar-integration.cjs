@@ -2361,6 +2361,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r160File),'utf8');
       assert.ok(txt.includes('1,650.00')&&txt.includes('3,800.00')&&txt.includes('5,450.00')&&txt.includes('170.00')&&txt.includes('350.00')&&txt.includes('520.00')&&txt.includes('4,930.00')&&txt.includes('90.46%')&&txt.includes('not_measured'),r160File+': contains exact 11-13 R32 ui-kit-mcp+fabric-planning closed-form parameters');
     }
+    // 2026-11-13 Round 33 (R161: latent-spaces/codesk + syydaniel/kaikou) closed-form FinOps verification
+    const r161PathA=1460.00+38.0*90.00;
+    assert.equal(r161PathA.toFixed(2),'4880.00','11-13 R33 Path A total');
+    const r161PathC=150.00+3.5*90.00;
+    assert.equal(r161PathC.toFixed(2),'465.00','11-13 R33 Path C total');
+    assert.equal((r161PathA-r161PathC).toFixed(2),'4415.00','11-13 R33 savings vs Path A');
+    assert.equal(((r161PathA-r161PathC)/r161PathA*100).toFixed(2),'90.47','11-13 R33 pct savings vs Path A');
+    for(const r161File of ['workshops/github-trending-radar/docs/codesk-kaikou-self-reshaping-acp-browser-desktop-7stage-local-voice-cloning-selection-faq.md','workshops/github-trending-radar/docs/codesk-kaikou-self-reshaping-acp-browser-desktop-7stage-local-voice-cloning-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r33-codesk-kaikou.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r161File),'utf8');
+      assert.ok(txt.includes('1,460.00')&&txt.includes('3,420.00')&&txt.includes('4,880.00')&&txt.includes('150.00')&&txt.includes('315.00')&&txt.includes('465.00')&&txt.includes('4,415.00')&&txt.includes('90.47%')&&txt.includes('not_measured'),r161File+': contains exact 11-13 R33 codesk+kaikou closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
