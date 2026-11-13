@@ -2427,6 +2427,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r166File),'utf8');
       assert.ok(txt.includes('1,640.00')&&txt.includes('3,610.00')&&txt.includes('5,250.00')&&txt.includes('165.00')&&txt.includes('332.50')&&txt.includes('497.50')&&txt.includes('4,752.50')&&txt.includes('90.52%')&&txt.includes('not_measured'),r166File+': contains exact 11-13 R38 videomd+attention-queue closed-form parameters');
     }
+    // 2026-11-13 Round 39 (R167: githubnext/quadknob-skill + Askrike/desprawl) closed-form FinOps verification
+    const r167PathA=1620.00+38.0*100.00;
+    assert.equal(r167PathA.toFixed(2),'5420.00','11-13 R39 Path A total');
+    const r167PathC=160.00+3.5*100.00;
+    assert.equal(r167PathC.toFixed(2),'510.00','11-13 R39 Path C total');
+    assert.equal((r167PathA-r167PathC).toFixed(2),'4910.00','11-13 R39 savings vs Path A');
+    assert.equal(((r167PathA-r167PathC)/r167PathA*100).toFixed(2),'90.59','11-13 R39 pct savings vs Path A');
+    for(const r167File of ['workshops/github-trending-radar/docs/quadknob-skill-desprawl-op1-visual-parameter-knobs-live-cloud-to-terraform-map-selection-faq.md','workshops/github-trending-radar/docs/quadknob-skill-desprawl-op1-visual-parameter-knobs-live-cloud-to-terraform-map-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r39-quadknob-desprawl.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r167File),'utf8');
+      assert.ok(txt.includes('1,620.00')&&txt.includes('3,800.00')&&txt.includes('5,420.00')&&txt.includes('160.00')&&txt.includes('350.00')&&txt.includes('510.00')&&txt.includes('4,910.00')&&txt.includes('90.59%')&&txt.includes('not_measured'),r167File+': contains exact 11-13 R39 quadknob+desprawl closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
