@@ -2042,6 +2042,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r131File),'utf8');
       assert.ok(txt.includes('2,350.00')&&txt.includes('3,780.00')&&txt.includes('6,130.00')&&txt.includes('310.00')&&txt.includes('360.00')&&txt.includes('670.00')&&txt.includes('5,460.00')&&txt.includes('89.07%')&&txt.includes('not_measured'),r131File+': contains exact 11-13 R3 deepseek-chat-demo+haru-4b closed-form parameters');
     }
+    // 2026-11-13 Round 4 (R132: tradermonty/claude-trading-skills + Likely7/Veyra-NRVideo) closed-form FinOps verification
+    const r132PathA=1890.00+40.0*90.00;
+    assert.equal(r132PathA.toFixed(2),'5490.00','11-13 R4 Path A total');
+    const r132PathC=210.00+4.0*90.00;
+    assert.equal(r132PathC.toFixed(2),'570.00','11-13 R4 Path C total');
+    assert.equal((r132PathA-r132PathC).toFixed(2),'4920.00','11-13 R4 savings vs Path A');
+    assert.equal(((r132PathA-r132PathC)/r132PathA*100).toFixed(2),'89.62','11-13 R4 pct savings vs Path A');
+    for(const r132File of ['workshops/github-trending-radar/docs/claude-trading-skills-veyra-nrvideo-risk-gated-workflows-dx12-neural-video-selection-faq.md','workshops/github-trending-radar/docs/claude-trading-skills-veyra-nrvideo-risk-gated-workflows-dx12-neural-video-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r4-trading-veyra.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r132File),'utf8');
+      assert.ok(txt.includes('1,890.00')&&txt.includes('3,600.00')&&txt.includes('5,490.00')&&txt.includes('210.00')&&txt.includes('360.00')&&txt.includes('570.00')&&txt.includes('4,920.00')&&txt.includes('89.62%')&&txt.includes('not_measured'),r132File+': contains exact 11-13 R4 claude-trading-skills+veyra-nrvideo closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
