@@ -2328,6 +2328,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r157File),'utf8');
       assert.ok(txt.includes('1,420.00')&&txt.includes('3,420.00')&&txt.includes('4,840.00')&&txt.includes('145.00')&&txt.includes('332.50')&&txt.includes('477.50')&&txt.includes('4,362.50')&&txt.includes('90.13%')&&txt.includes('not_measured'),r157File+': contains exact 11-13 R29 desk-buddy+screen-handoff closed-form parameters');
     }
+    // 2026-11-13 Round 30 (R158: thuann-vn/claude-3d-animated-shorts + huypham85/app-3d-video-skill) closed-form FinOps verification
+    const r158PathA=1640.00+42.0*85.00;
+    assert.equal(r158PathA.toFixed(2),'5210.00','11-13 R30 Path A total');
+    const r158PathC=160.00+4.0*85.00;
+    assert.equal(r158PathC.toFixed(2),'500.00','11-13 R30 Path C total');
+    assert.equal((r158PathA-r158PathC).toFixed(2),'4710.00','11-13 R30 savings vs Path A');
+    assert.equal(((r158PathA-r158PathC)/r158PathA*100).toFixed(2),'90.40','11-13 R30 pct savings vs Path A');
+    for(const r158File of ['workshops/github-trending-radar/docs/claude-3d-animated-shorts-app-3d-video-skill-threejs-rig-swift-scenekit-promo-selection-faq.md','workshops/github-trending-radar/docs/claude-3d-animated-shorts-app-3d-video-skill-threejs-rig-swift-scenekit-promo-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r30-3dshorts-app3dvideo.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r158File),'utf8');
+      assert.ok(txt.includes('1,640.00')&&txt.includes('3,570.00')&&txt.includes('5,210.00')&&txt.includes('160.00')&&txt.includes('340.00')&&txt.includes('500.00')&&txt.includes('4,710.00')&&txt.includes('90.40%')&&txt.includes('not_measured'),r158File+': contains exact 11-13 R30 3d-shorts+app-3d-video closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
