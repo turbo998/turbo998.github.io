@@ -2504,6 +2504,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r173File),'utf8');
       assert.ok(txt.includes('2,450.00')&&txt.includes('3,040.00')&&txt.includes('5,490.00')&&txt.includes('240.00')&&txt.includes('285.00')&&txt.includes('525.00')&&txt.includes('4,965.00')&&txt.includes('90.44%')&&txt.includes('not_measured'),r173File+': contains exact 11-13 R45 cmi+mysafeai closed-form parameters');
     }
+    // 2026-11-13 Round 46 (R174: ShawTim/gemini-app2api + ApostPap/yardmaster) closed-form FinOps verification
+    const r174PathA=1820.00+36.0*95.00;
+    assert.equal(r174PathA.toFixed(2),'5240.00','11-13 R46 Path A total');
+    const r174PathC=155.00+3.5*95.00;
+    assert.equal(r174PathC.toFixed(2),'487.50','11-13 R46 Path C total');
+    assert.equal((r174PathA-r174PathC).toFixed(2),'4752.50','11-13 R46 savings vs Path A');
+    assert.equal(((r174PathA-r174PathC)/r174PathA*100).toFixed(2),'90.70','11-13 R46 pct savings vs Path A');
+    for(const r174File of ['workshops/github-trending-radar/docs/gemini-app2api-yardmaster-zero-dep-http2-gemini-gateway-t3code-worktree-kanban-selection-faq.md','workshops/github-trending-radar/docs/gemini-app2api-yardmaster-zero-dep-http2-gemini-gateway-t3code-worktree-kanban-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r46-gemini-app2api-yardmaster.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r174File),'utf8');
+      assert.ok(txt.includes('1,820.00')&&txt.includes('3,420.00')&&txt.includes('5,240.00')&&txt.includes('155.00')&&txt.includes('332.50')&&txt.includes('487.50')&&txt.includes('4,752.50')&&txt.includes('90.70%')&&txt.includes('not_measured'),r174File+': contains exact 11-13 R46 gemini-app2api+yardmaster closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
