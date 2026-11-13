@@ -2229,6 +2229,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r148File),'utf8');
       assert.ok(txt.includes('2,850.00')&&txt.includes('3,800.00')&&txt.includes('6,650.00')&&txt.includes('285.00')&&txt.includes('332.50')&&txt.includes('617.50')&&txt.includes('6,032.50')&&txt.includes('90.71%')&&txt.includes('not_measured'),r148File+': contains exact 11-13 R20 Reframe+SparseReading closed-form parameters');
     }
+    // 2026-11-13 Round 21 (R149: aryehlev/PeerHarness + anyu0804/antigravity-agent-rules) closed-form FinOps verification
+    const r149PathA=1620.00+38.0*95.00;
+    assert.equal(r149PathA.toFixed(2),'5230.00','11-13 R21 Path A total');
+    const r149PathC=165.00+3.5*95.00;
+    assert.equal(r149PathC.toFixed(2),'497.50','11-13 R21 Path C total');
+    assert.equal((r149PathA-r149PathC).toFixed(2),'4732.50','11-13 R21 savings vs Path A');
+    assert.equal(((r149PathA-r149PathC)/r149PathA*100).toFixed(2),'90.49','11-13 R21 pct savings vs Path A');
+    for(const r149File of ['workshops/github-trending-radar/docs/peerharness-antigravity-agent-rules-team-voted-agent-governance-process-hook-guardrails-selection-faq.md','workshops/github-trending-radar/docs/peerharness-antigravity-agent-rules-team-voted-agent-governance-process-hook-guardrails-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r21-peerharness-antigravity.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r149File),'utf8');
+      assert.ok(txt.includes('1,620.00')&&txt.includes('3,610.00')&&txt.includes('5,230.00')&&txt.includes('165.00')&&txt.includes('332.50')&&txt.includes('497.50')&&txt.includes('4,732.50')&&txt.includes('90.49%')&&txt.includes('not_measured'),r149File+': contains exact 11-13 R21 PeerHarness+antigravity-agent-rules closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
