@@ -2449,6 +2449,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r168File),'utf8');
       assert.ok(txt.includes('1,620.00')&&txt.includes('3,610.00')&&txt.includes('5,230.00')&&txt.includes('160.00')&&txt.includes('332.50')&&txt.includes('492.50')&&txt.includes('4,737.50')&&txt.includes('90.58%')&&txt.includes('not_measured'),r168File+': contains exact 11-13 R40 ghostwalk+shoal closed-form parameters');
     }
+    // 2026-11-13 Round 41 (R169: bitsinfra/gnomon + lifeiteng/fitskills) closed-form FinOps verification
+    const r169PathA=2150.00+40.0*110.00;
+    assert.equal(r169PathA.toFixed(2),'6550.00','11-13 R41 Path A total');
+    const r169PathC=230.00+4.0*110.00;
+    assert.equal(r169PathC.toFixed(2),'670.00','11-13 R41 Path C total');
+    assert.equal((r169PathA-r169PathC).toFixed(2),'5880.00','11-13 R41 savings vs Path A');
+    assert.equal(((r169PathA-r169PathC)/r169PathA*100).toFixed(2),'89.77','11-13 R41 pct savings vs Path A');
+    for(const r169File of ['workshops/github-trending-radar/docs/gnomon-fitskills-postgres-data-git-branching-bitexact-cross-gpu-llm-alignment-selection-faq.md','workshops/github-trending-radar/docs/gnomon-fitskills-postgres-data-git-branching-bitexact-cross-gpu-llm-alignment-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r41-gnomon-fitskills.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r169File),'utf8');
+      assert.ok(txt.includes('2,150.00')&&txt.includes('4,400.00')&&txt.includes('6,550.00')&&txt.includes('230.00')&&txt.includes('440.00')&&txt.includes('670.00')&&txt.includes('5,880.00')&&txt.includes('89.77%')&&txt.includes('not_measured'),r169File+': contains exact 11-13 R41 gnomon+fitskills closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
