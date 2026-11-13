@@ -2075,6 +2075,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r134File),'utf8');
       assert.ok(txt.includes('1,750.00')&&txt.includes('3,780.00')&&txt.includes('5,530.00')&&txt.includes('230.00')&&txt.includes('405.00')&&txt.includes('635.00')&&txt.includes('4,895.00')&&txt.includes('88.52%')&&txt.includes('not_measured'),r134File+': contains exact 11-13 R6 sitrep+elu closed-form parameters');
     }
+    // 2026-11-13 Round 7 (R135: mintlify/agent-traffic + varops/actp) closed-form FinOps verification
+    const r135PathA=1820.00+38.0*95.00;
+    assert.equal(r135PathA.toFixed(2),'5430.00','11-13 R7 Path A total');
+    const r135PathC=210.00+4.0*95.00;
+    assert.equal(r135PathC.toFixed(2),'590.00','11-13 R7 Path C total');
+    assert.equal((r135PathA-r135PathC).toFixed(2),'4840.00','11-13 R7 savings vs Path A');
+    assert.equal(((r135PathA-r135PathC)/r135PathA*100).toFixed(2),'89.13','11-13 R7 pct savings vs Path A');
+    for(const r135File of ['workshops/github-trending-radar/docs/agent-traffic-actp-ip-verified-agent-classifier-acp-over-http-selection-faq.md','workshops/github-trending-radar/docs/agent-traffic-actp-ip-verified-agent-classifier-acp-over-http-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r7-agenttraffic-actp.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r135File),'utf8');
+      assert.ok(txt.includes('1,820.00')&&txt.includes('3,610.00')&&txt.includes('5,430.00')&&txt.includes('210.00')&&txt.includes('380.00')&&txt.includes('590.00')&&txt.includes('4,840.00')&&txt.includes('89.13%')&&txt.includes('not_measured'),r135File+': contains exact 11-13 R7 agent-traffic+actp closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
