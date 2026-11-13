@@ -2185,6 +2185,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r144File),'utf8');
       assert.ok(txt.includes('1,760.00')&&txt.includes('3,780.00')&&txt.includes('5,540.00')&&txt.includes('190.00')&&txt.includes('360.00')&&txt.includes('550.00')&&txt.includes('4,990.00')&&txt.includes('90.07%')&&txt.includes('not_measured'),r144File+': contains exact 11-13 R16 1helm+xxd-pstack closed-form parameters');
     }
+    // 2026-11-13 Round 17 (R145: abhigyan6/tri-agent-orchestrator + QQTangBa/cangshu-koubo-video-skills) closed-form FinOps verification
+    const r145PathA=1720.00+42.0*90.00;
+    assert.equal(r145PathA.toFixed(2),'5500.00','11-13 R17 Path A total');
+    const r145PathC=185.00+3.5*90.00;
+    assert.equal(r145PathC.toFixed(2),'500.00','11-13 R17 Path C total');
+    assert.equal((r145PathA-r145PathC).toFixed(2),'5000.00','11-13 R17 savings vs Path A');
+    assert.equal(((r145PathA-r145PathC)/r145PathA*100).toFixed(2),'90.91','11-13 R17 pct savings vs Path A');
+    for(const r145File of ['workshops/github-trending-radar/docs/tri-agent-orchestrator-cangshu-koubo-video-skills-agy-claude-codex-local-nle-selection-faq.md','workshops/github-trending-radar/docs/tri-agent-orchestrator-cangshu-koubo-video-skills-agy-claude-codex-local-nle-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r17-triagent-cangshukoubo.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r145File),'utf8');
+      assert.ok(txt.includes('1,720.00')&&txt.includes('3,780.00')&&txt.includes('5,500.00')&&txt.includes('185.00')&&txt.includes('315.00')&&txt.includes('500.00')&&txt.includes('5,000.00')&&txt.includes('90.91%')&&txt.includes('not_measured'),r145File+': contains exact 11-13 R17 tri-agent-orchestrator+cangshu-koubo closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
