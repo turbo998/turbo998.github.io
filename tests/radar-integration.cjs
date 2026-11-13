@@ -2119,6 +2119,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r138File),'utf8');
       assert.ok(txt.includes('1,680.00')&&txt.includes('3,990.00')&&txt.includes('5,670.00')&&txt.includes('190.00')&&txt.includes('380.00')&&txt.includes('570.00')&&txt.includes('5,100.00')&&txt.includes('89.95%')&&txt.includes('not_measured'),r138File+': contains exact 11-13 R10 agent-shared-facts+copper-kicad-mcp closed-form parameters');
     }
+    // 2026-11-13 Round 11 (R139: geniusjia666/agent-system-design-cn + ferhatcore/claude-codex-project-os) closed-form FinOps verification
+    const r139PathA=1920.00+43.0*100.00;
+    assert.equal(r139PathA.toFixed(2),'6220.00','11-13 R11 Path A total');
+    const r139PathC=220.00+4.5*100.00;
+    assert.equal(r139PathC.toFixed(2),'670.00','11-13 R11 Path C total');
+    assert.equal((r139PathA-r139PathC).toFixed(2),'5550.00','11-13 R11 savings vs Path A');
+    assert.equal(((r139PathA-r139PathC)/r139PathA*100).toFixed(2),'89.23','11-13 R11 pct savings vs Path A');
+    for(const r139File of ['workshops/github-trending-radar/docs/agent-system-design-cn-claude-codex-project-os-architecture-gate-pm-dev-qa-selection-faq.md','workshops/github-trending-radar/docs/agent-system-design-cn-claude-codex-project-os-architecture-gate-pm-dev-qa-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r11-agentsysdesign-projectos.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r139File),'utf8');
+      assert.ok(txt.includes('1,920.00')&&txt.includes('4,300.00')&&txt.includes('6,220.00')&&txt.includes('220.00')&&txt.includes('450.00')&&txt.includes('670.00')&&txt.includes('5,550.00')&&txt.includes('89.23%')&&txt.includes('not_measured'),r139File+': contains exact 11-13 R11 agent-system-design-cn+project-os closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
