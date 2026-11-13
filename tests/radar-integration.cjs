@@ -2416,6 +2416,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r165File),'utf8');
       assert.ok(txt.includes('1,590.00')&&txt.includes('3,610.00')&&txt.includes('5,200.00')&&txt.includes('160.00')&&txt.includes('332.50')&&txt.includes('492.50')&&txt.includes('4,707.50')&&txt.includes('90.53%')&&txt.includes('not_measured'),r165File+': contains exact 11-13 R37 woolly+image-to-lowpoly closed-form parameters');
     }
+    // 2026-11-13 Round 38 (R166: videomd/videomd + nodo-labs-uk/attention-queue) closed-form FinOps verification
+    const r166PathA=1640.00+38.0*95.00;
+    assert.equal(r166PathA.toFixed(2),'5250.00','11-13 R38 Path A total');
+    const r166PathC=165.00+3.5*95.00;
+    assert.equal(r166PathC.toFixed(2),'497.50','11-13 R38 Path C total');
+    assert.equal((r166PathA-r166PathC).toFixed(2),'4752.50','11-13 R38 savings vs Path A');
+    assert.equal(((r166PathA-r166PathC)/r166PathA*100).toFixed(2),'90.52','11-13 R38 pct savings vs Path A');
+    for(const r166File of ['workshops/github-trending-radar/docs/videomd-attention-queue-5level-progressive-video-spec-rust-tmux-attention-queue-selection-faq.md','workshops/github-trending-radar/docs/videomd-attention-queue-5level-progressive-video-spec-rust-tmux-attention-queue-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r38-videomd-attentionqueue.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r166File),'utf8');
+      assert.ok(txt.includes('1,640.00')&&txt.includes('3,610.00')&&txt.includes('5,250.00')&&txt.includes('165.00')&&txt.includes('332.50')&&txt.includes('497.50')&&txt.includes('4,752.50')&&txt.includes('90.52%')&&txt.includes('not_measured'),r166File+': contains exact 11-13 R38 videomd+attention-queue closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
