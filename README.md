@@ -24,6 +24,17 @@ Release checks: `tests\site-localization.cjs`, `tests\global-search.cjs`, `tests
 完整导航及回归检查方法见 [English](README.en.md) / [中文](README.zh-CN.md)，
 发布和语言范围见[迁移说明](docs/redesign/production-migration.md)。
 
+### AI Infra 夜班独立研究 / Independent nightly studies
+
+[中文归档](workshops/benchmarks/ai-infra-nightly-2026-11-13.html) ·
+[English archive](workshops/benchmarks/ai-infra-nightly-2026-11-13.en.html)：
+2026-11-13 夜班 Round 92 起的双语 FAQ、原创工作台、SVG 和封存七卡报告。
+公开清单只含精选摘要、源码提交及资产 SHA-256，不包含会话清单或本地路径。
+合成研究与原创 CPU 记录分开标注，不是 native GPU 或生产基准。
+`node scripts\nightly-ai-infra.cjs` 幂等更新归档和六个门户页面；
+`node tests\nightly-ai-infra.cjs` 检查副本哈希、CSP、双语链接及目录集成。
+完整门户生成器也复用同一资源卡片，保留生成后的入口。
+
 | 主线编号 | 核心工程主线 (Track) | 代表性交互工作台 (Live H5 Workbench) | 密封 7-Card 4:5 基准报告 / 核心指标 |
 | :--- | :--- | :--- | :--- |
 | **Track 01** | **🏗️ Azure Agent Infra (Cycle #376 · 100K Sandboxes)** | [全景 Playbook](https://turbo998.github.io/workshops/azure-agent-infra/index.html) · [AKSClaw×E2B 仿真台](https://turbo998.github.io/workshops/azure-agent-infra/demo.html) · [选型定容计算器](https://turbo998.github.io/workshops/azure-agent-infra/selector.html) | [Agent Infra 7-Card 报告](https://turbo998.github.io/workshops/azure-agent-infra/cards.html)（384 章节 · 377 蓝图 · `108ms` P50 恢复） |

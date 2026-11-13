@@ -1,0 +1,874 @@
+{
+  "schema_version": 1,
+  "night": "2026-11-13",
+  "source_repository": "https://github.com/turbo998/ai-infra-research",
+  "provenance": "synthetic architecture studies; original CPU records separately labeled measured",
+  "independently_reproduced": false,
+  "rounds": [
+    {
+      "round": 92,
+      "slug": "ddp-gradient-compression-powersgd-error-feedback",
+      "commit": "674345f6cc53decf01718eb39a283d88514a6c55",
+      "title": {
+        "zh": "DDP 梯度通信压缩、PowerSGD 与误差反馈选型",
+        "en": "DDP Gradient Compression, PowerSGD & Error Feedback"
+      },
+      "summary": {
+        "zh": "合成解析模型，非 GPU 实测：FP32/BF16/低秩因子、严格形状门槛、两阶段归约、残差账本与通信重叠；示例载荷减少 455.22×，单步仅 1.65×，快网络收益为零；质量未测",
+        "en": "Synthetic analytical model, not GPU-measured: FP32/BF16/factors, strict shape gate, two-stage reductions, residual ledger and overlap; 455.22× payload reduction yields only 1.65× modeled step speedup and zero saving on the fast fabric; quality unmeasured"
+      },
+      "faq": {
+        "zh": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/ddp-gradient-compression-powersgd-error-feedback-selection-faq.md",
+        "en": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/ddp-gradient-compression-powersgd-error-feedback-selection-faq.en.md"
+      },
+      "files": {
+        "cards": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/ddp-gradient-compression-powersgd-error-feedback/cards.html",
+          "sha256": "4ad756aa5ad2766cbb4babcc25faeed9b78d28d54d4072261c6409fd11807626"
+        },
+        "workbench": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/ddp-gradient-compression-powersgd-error-feedback/workbench.html",
+          "sha256": "65e58e33d027595261616f4590a38a6f427ecb8e8ad7c25d93be3a75554932a3"
+        },
+        "figure": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/ddp-gradient-compression-powersgd-error-feedback/summary.svg",
+          "sha256": "8c7fb8106c42fa86718d7126ab7a23de96b30fdc79174d654609b595ca84a373"
+        },
+        "report": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/ddp-gradient-compression-powersgd-error-feedback/report.json",
+          "sha256": "2f24ff20d95073509ad5776ca3b46bcaab9e69ea2c277c60b5ad4eff21c6e887"
+        }
+      }
+    },
+    {
+      "round": 93,
+      "slug": "contrastive-embedding-global-negatives-gradcache",
+      "commit": "40ae6a6d15395298bf1d5b9ef4e96af8827cc073",
+      "title": {
+        "zh": "对比式 Embedding 全局负样本、可微 Gather 与 GradCache 重放",
+        "en": "Contrastive Global Negatives, Differentiable Gather & GradCache Replay"
+      },
+      "summary": {
+        "zh": "合成数值验证，非模型评测：梯度累积不合并候选池；toy 中远端 detach 的 loss 相同但参数梯度误差 45.18%；固定 RNG 重放对齐有限差分；内存预算与额外前向计算显式分离",
+        "en": "Synthetic numerical checks, not a model benchmark: accumulation does not pool candidates; detached remote candidates keep the same toy loss but produce 45.18% parameter-gradient error; identical-RNG replay matches finite differences; separate memory/extra-forward budgets"
+      },
+      "faq": {
+        "zh": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/contrastive-embedding-global-negatives-gradcache-selection-faq.md",
+        "en": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/contrastive-embedding-global-negatives-gradcache-selection-faq.en.md"
+      },
+      "files": {
+        "cards": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/contrastive-embedding-global-negatives-gradcache/cards.html",
+          "sha256": "ffbe6d8db46e5473a64bb4739b4d0fef37ba74356f5e73c9f22a9525aac50223"
+        },
+        "workbench": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/contrastive-embedding-global-negatives-gradcache/workbench.html",
+          "sha256": "78e890e0582b657e68dc6e0e328c748d6040eec01a5d4349df1729956ca5367a"
+        },
+        "figure": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/contrastive-embedding-global-negatives-gradcache/summary.svg",
+          "sha256": "6cd7fe57d12076899c40944dbee812c6de9f0986be97f18ded5d4d203cf348fd"
+        },
+        "report": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/contrastive-embedding-global-negatives-gradcache/report.json",
+          "sha256": "5e7fdfb8b2aa5bda1c5667efab114c77bde4ec68dfc606b54a04ebd2f024c53a"
+        }
+      }
+    },
+    {
+      "round": 94,
+      "slug": "vocabulary-parallel-cross-entropy-global-logsumexp",
+      "commit": "b4e04a088fe6ebda45df5321d4dbdca0747a22bb",
+      "title": {
+        "zh": "词表并行 CE、全局 Log-Sum-Exp 与 Target 归属",
+        "en": "Vocabulary-Parallel CE, Global Log-Sum-Exp & Target Ownership"
+      },
+      "summary": {
+        "zh": "合成正确性与通信预算：三统计归约保持完整词表目标；相同 loss 可隐藏 owner 梯度错误；FP32 logits 空间 8× 不代表峰值；单 token 时三次启动反而更慢",
+        "en": "Synthetic correctness/communication budgets: three statistics retain the full-vocabulary objective; equal loss can hide wrong owner gradients; 8× FP32 logits storage is not peak-HBM reduction; three startups lose at one token"
+      },
+      "faq": {
+        "zh": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/vocabulary-parallel-cross-entropy-global-logsumexp-selection-faq.md",
+        "en": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/vocabulary-parallel-cross-entropy-global-logsumexp-selection-faq.en.md"
+      },
+      "files": {
+        "cards": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/vocabulary-parallel-cross-entropy-global-logsumexp/cards.html",
+          "sha256": "78f3303fd1723604f866cfe7b3bab46c8caefa0d4ca2c5a269a97ff8861c1ffd"
+        },
+        "workbench": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/vocabulary-parallel-cross-entropy-global-logsumexp/workbench.html",
+          "sha256": "87c647d91bdd2cd781f759fa4ab75e7c75ba028107c1fda97816c0f1162f38b9"
+        },
+        "figure": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/vocabulary-parallel-cross-entropy-global-logsumexp/summary.svg",
+          "sha256": "9593ad70ce89d79c82d7fdc9c53142b46da258710693a52accfd4cb89e989a17"
+        },
+        "report": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/vocabulary-parallel-cross-entropy-global-logsumexp/report.json",
+          "sha256": "b24c9e38a80f2557695849716d6b811ea0cdd1944d88fb31f37918953f5cef54"
+        }
+      }
+    },
+    {
+      "round": 95,
+      "slug": "streaming-codec-convolution-state-stride-overlap-add",
+      "commit": "320173f511b483bf354ab0e999ca013e93db4579",
+      "title": {
+        "zh": "流式 Codec 卷积状态、Stride 与无 Bias Overlap-Add",
+        "en": "Streaming Codec State, Stride & Bias-Free Overlap-Add"
+      },
+      "summary": {
+        "zh": "原创标量状态机：任意包经对齐 adapter 仍与离线相同；丢余数导致 2/5 帧；重复 carry bias 产生 0.4 seam 误差；36 KiB 层对缓存不是完整 codec 内存",
+        "en": "Original scalar state machine: aligned ingress preserves offline parity; dropped remainders yield 2/5 frames; carried bias adds 0.4 seam error; 36 KiB layer-pair state is not full codec memory"
+      },
+      "faq": {
+        "zh": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/streaming-codec-convolution-state-stride-overlap-add-selection-faq.md",
+        "en": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/streaming-codec-convolution-state-stride-overlap-add-selection-faq.en.md"
+      },
+      "files": {
+        "cards": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/streaming-codec-convolution-state-stride-overlap-add/cards.html",
+          "sha256": "7ebcb536f5c5475d1601d0c09b21606240e22fd4aa0fe60c293966d9c4c4f289"
+        },
+        "workbench": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/streaming-codec-convolution-state-stride-overlap-add/workbench.html",
+          "sha256": "2cbb14eb9e523157eb64f45674fa6a44cbcf2bc476bd81d2515167099880d1fc"
+        },
+        "figure": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/streaming-codec-convolution-state-stride-overlap-add/summary.svg",
+          "sha256": "3bed46e81b5fad1cc837b6f863885b9797e33fda703059654900197b898aa82b"
+        },
+        "report": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/streaming-codec-convolution-state-stride-overlap-add/report.json",
+          "sha256": "e61ee291b3beb28c52d1a1b754107edd92d0025ec3d0d1ffc4bd987570b29260"
+        }
+      }
+    },
+    {
+      "round": 96,
+      "slug": "sparse-embedding-table-row-column-sharding",
+      "commit": "9f68da2623d88c991ed3311f7edd2eed9ea3bada",
+      "title": {
+        "zh": "稀疏 Embedding 表 TW/RW/CW、Jagged Pooling 与子组 Root",
+        "en": "Sparse Embedding TW/RW/CW, Jagged Pooling & Subgroup Roots"
+      },
+      "summary": {
+        "zh": "合成数值＋原创 CPU 函数实测：全局计数、重复 ID、维度顺序与表梯度；明确区分源码 count+1e-6 与理想均值；近期 subgroup root 修复；logical bytes 不冒充 wire bytes",
+        "en": "Synthetic numerics + measured original CPU functions: global counts, duplicates, dimensions and table gradients; pinned count+1e-6 distinct from ideal mean; recent subgroup-root fix; logical bytes are not wire bytes"
+      },
+      "faq": {
+        "zh": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/sparse-embedding-table-row-column-sharding-selection-faq.md",
+        "en": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/sparse-embedding-table-row-column-sharding-selection-faq.en.md"
+      },
+      "files": {
+        "cards": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/sparse-embedding-table-row-column-sharding/cards.html",
+          "sha256": "0c9d68317f2b98207c9985381a7f3dd4d1641e7cfeef8f8812572306a0d024d7"
+        },
+        "workbench": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/sparse-embedding-table-row-column-sharding/workbench.html",
+          "sha256": "1b131b3cc9aa5502461ff76c9388716300c45e0f48927dabbc3a420160a6843e"
+        },
+        "figure": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/sparse-embedding-table-row-column-sharding/summary.svg",
+          "sha256": "a9bff9b885ec7650aac40a2af97a54cd0b41f8d012c59d46768f112929b47953"
+        },
+        "report": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/sparse-embedding-table-row-column-sharding/report.json",
+          "sha256": "ccdf4d993a6a0be78fc72f8985dd1ebfd6d227b05a6124cb4e2a84de00cd3600"
+        },
+        "latency": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/sparse-embedding-table-row-column-sharding/latency.json",
+          "sha256": "601b1a3ad064274751f6daff1f18715d11ab1871294bfd1455be329a6c618d51"
+        }
+      }
+    },
+    {
+      "round": 97,
+      "slug": "gnn-neighbor-sampling-dependency-fanout",
+      "commit": "41f268d948292d834cc2149bfa0b089fa032a9ae",
+      "title": {
+        "zh": "GNN 邻居采样、依赖跳数与 Fanout 偏差",
+        "en": "GNN Neighbor Sampling, Dependency Hops & Fanout Bias"
+      },
+      "summary": {
+        "zh": "原创数值与精确子集枚举：Seed-first 与全局 n_id；少一跳误差 0.1963；采样均值无偏不代表 ReLU 后无偏；节点上界不冒充真实去重数",
+        "en": "Original numerics and exact subset enumeration: seed-first/global n_id contracts; missing-hop error 0.1963; unbiased means need not remain unbiased after ReLU; node bounds are not measured unique counts"
+      },
+      "faq": {
+        "zh": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/gnn-neighbor-sampling-dependency-fanout-selection-faq.md",
+        "en": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/gnn-neighbor-sampling-dependency-fanout-selection-faq.en.md"
+      },
+      "files": {
+        "cards": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/gnn-neighbor-sampling-dependency-fanout/cards.html",
+          "sha256": "450b5bd6d43266e7a4540aa3b1d7c35adca903835c1a28cd63d1fb007f8311fd"
+        },
+        "workbench": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/gnn-neighbor-sampling-dependency-fanout/workbench.html",
+          "sha256": "cefc59ee61a07e501c8adba57423fbfae7261e349b2974b2ddca25cb453b7070"
+        },
+        "figure": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/gnn-neighbor-sampling-dependency-fanout/summary.svg",
+          "sha256": "31174cb7c5a22f0e0b947b81715b04256991e494d14852d9d8178ddfc699075e"
+        },
+        "report": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/gnn-neighbor-sampling-dependency-fanout/report.json",
+          "sha256": "944aee11595b90d437232abb023f6d3737d30f3f44e35fbc46f0c8709dcf4257"
+        }
+      }
+    },
+    {
+      "round": 98,
+      "slug": "fourier-neural-operator-real-fft-hermitian",
+      "commit": "f647782b9a83b5334a2a594aaaee5405b2cecdd5",
+      "title": {
+        "zh": "Fourier 神经算子、Real FFT 与 Hermitian 边界",
+        "en": "Fourier Neural Operators, Real FFT & Hermitian Boundaries"
+      },
+      "summary": {
+        "zh": "原创 DFT/循环卷积验证：只压缩末轴；先逆其他轴再约束边界；奇数 inverse 错长保持 error=null；模式截断与 complex buffers 不冒充 PDE 质量或峰值 HBM",
+        "en": "Original DFT/circular-convolution checks: only the last axis is one-sided; staged real endpoints; odd inverse shape mismatch keeps error=null; mode truncation and complex buffers are not PDE-quality or peak-HBM claims"
+      },
+      "faq": {
+        "zh": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/fourier-neural-operator-real-fft-hermitian-selection-faq.md",
+        "en": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/fourier-neural-operator-real-fft-hermitian-selection-faq.en.md"
+      },
+      "files": {
+        "cards": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/fourier-neural-operator-real-fft-hermitian/cards.html",
+          "sha256": "88e76cb5342e2b9912f6dc27db865e7c64ae164cabfdf2cb1f1618243bf3ad16"
+        },
+        "workbench": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/fourier-neural-operator-real-fft-hermitian/workbench.html",
+          "sha256": "2f18552b192500227c5cc52542bdb4f2183254eeebda4aad3ae64746ebf491b9"
+        },
+        "figure": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/fourier-neural-operator-real-fft-hermitian/summary.svg",
+          "sha256": "90d14f6cc3c76ba5582d1652fa940a0c1776720d76ded8e1c5a88d75181409be"
+        },
+        "report": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/fourier-neural-operator-real-fft-hermitian/report.json",
+          "sha256": "6d193660c980c142157309481f2772a5e6fe1717231206373dc1af5b62fa4bb8"
+        }
+      }
+    },
+    {
+      "round": 99,
+      "slug": "dp-sgd-ghost-clipping-per-example-sequence-norm",
+      "commit": "d24c85e60c9802b240c4d57b3cb8caa6d5b4ec98",
+      "title": {
+        "zh": "DP-SGD 逐样本裁剪、Sequence Ghost Norm 与逻辑批",
+        "en": "DP-SGD Per-Example Clipping, Sequence Ghost Norms & Logical Batches"
+      },
+      "summary": {
+        "zh": "原创算术，非私人训练：完整序列 Gram 与固定系数 replay 对齐逐例梯度；丢交叉项导致 norm 2.3094 > C=2；T² buffer 不一定省；epsilon/delta 保持 null",
+        "en": "Original arithmetic, not private training: full Gram and stopped replay preserve per-example gradients; missing cross terms yield norm 2.3094 > C=2; T² buffers are not always smaller; epsilon/delta remain null"
+      },
+      "faq": {
+        "zh": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/dp-sgd-ghost-clipping-per-example-sequence-norm-selection-faq.md",
+        "en": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/dp-sgd-ghost-clipping-per-example-sequence-norm-selection-faq.en.md"
+      },
+      "files": {
+        "cards": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/dp-sgd-ghost-clipping-per-example-sequence-norm/cards.html",
+          "sha256": "6afabac7e9d7a94b3daf775d4dc71e900277304f8e372a1ccfc7a5d9dc6e34fc"
+        },
+        "workbench": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/dp-sgd-ghost-clipping-per-example-sequence-norm/workbench.html",
+          "sha256": "b9e7de48ea264dc29540a8a8293cd1402df4b4d1ed44cb7cd955dda0cf0b3a89"
+        },
+        "figure": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/dp-sgd-ghost-clipping-per-example-sequence-norm/summary.svg",
+          "sha256": "80b9f86030efe870edda5a600584499f1898477a3f3d951fabe17c92874d9fdf"
+        },
+        "report": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/dp-sgd-ghost-clipping-per-example-sequence-norm/report.json",
+          "sha256": "add6dac26c3654932721c1677f686cbfa8678dbc0351761a063e92f7906405f8"
+        }
+      }
+    },
+    {
+      "round": 100,
+      "slug": "semi-structured-2-4-sparse-gemm-metadata",
+      "commit": "bff4ea96791f703624a487b611016d844d5db7dd",
+      "title": {
+        "zh": "2:4 半结构化稀疏 GEMM、Metadata 与复用门槛",
+        "en": "2:4 Semi-Structured Sparse GEMM, Metadata & Reuse"
+      },
+      "summary": {
+        "zh": "原创逻辑编码，非 GPU 实测：同一剪枝参照乘法正确；row-valid 不保证 transpose-valid；FP16 逻辑存储 56.25%；单 token padding 可消除复用收益",
+        "en": "Original logical encoding, not GPU timing: pruned-reference parity; row-valid need not be transpose-valid; FP16 logical storage 56.25%; single-token padding can eliminate reuse savings"
+      },
+      "faq": {
+        "zh": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/semi-structured-2-4-sparse-gemm-metadata-selection-faq.md",
+        "en": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/semi-structured-2-4-sparse-gemm-metadata-selection-faq.en.md"
+      },
+      "files": {
+        "cards": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/semi-structured-2-4-sparse-gemm-metadata/cards.html",
+          "sha256": "d89c71580390bb352bf5e3400f135a9c4aafb74c3dea18d998fab3268ce1ed03"
+        },
+        "workbench": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/semi-structured-2-4-sparse-gemm-metadata/workbench.html",
+          "sha256": "99e95d2f15b504a8d61add0b4e0f2f511daaccf121a3e7a1690514cb91fbc020"
+        },
+        "figure": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/semi-structured-2-4-sparse-gemm-metadata/summary.svg",
+          "sha256": "36aab82c6b76c1c3cdb6ad10ec139a8d3cc837c9ba5c86d933429b6c7f2ba909"
+        },
+        "report": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/semi-structured-2-4-sparse-gemm-metadata/report.json",
+          "sha256": "86494fc80ec05e4727deaf0c13da63bf468196f720ee593ae83a73c8d213344a"
+        }
+      }
+    },
+    {
+      "round": 101,
+      "slug": "ctc-prefix-beam-blank-streaming-state",
+      "commit": "f59533fac611e6067a217dfa6da0eecb360ed936",
+      "title": {
+        "zh": "CTC Prefix Beam、Blank/Repeat 与流式状态",
+        "en": "CTC Prefix Beam, Blank/Repeat & Streaming State"
+      },
+      "summary": {
+        "zh": "合成后验＋原创 CPU 实测：greedy 空串并非最大文本；Blank 末状态决定重复扩展；重置拼接凭空产生 aa；log-space 区分下溢与不可能事件，不冒充 ASR 质量",
+        "en": "Synthetic posterior plus original CPU timing: greedy empty path is not the best transcript; blank ends gate repeated emissions; reset/concatenate invents aa; log space distinguishes underflow from impossible paths, not ASR quality"
+      },
+      "faq": {
+        "zh": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/ctc-prefix-beam-blank-streaming-state-selection-faq.md",
+        "en": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/ctc-prefix-beam-blank-streaming-state-selection-faq.en.md"
+      },
+      "files": {
+        "cards": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/ctc-prefix-beam-blank-streaming-state/cards.html",
+          "sha256": "94db3acae1811b9836bd63e556197e1ce3785136e5f04f1ec1a8c972f39c85ce"
+        },
+        "workbench": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/ctc-prefix-beam-blank-streaming-state/workbench.html",
+          "sha256": "7ce1c927da45c339bf41d7b0bc7efb469f2bd10cde714a96934b2493eb5f4a59"
+        },
+        "figure": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/ctc-prefix-beam-blank-streaming-state/summary.svg",
+          "sha256": "c1614cb050f36511a6100d6a1d139b8ed691b735915c0a2dd7113f237ebb1782"
+        },
+        "report": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/ctc-prefix-beam-blank-streaming-state/report.json",
+          "sha256": "0f5bef1d45904c51c458bd129203032a6f5f2042e1bec8981f3abbeb3964cce2"
+        },
+        "latency": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/ctc-prefix-beam-blank-streaming-state/latency.json",
+          "sha256": "b402040b6dffe4c041b9d4369a97b2ba44dff8194792c8949c48c851f5d8b336"
+        }
+      }
+    },
+    {
+      "round": 102,
+      "slug": "set-prediction-hungarian-matching-global-normalization",
+      "commit": "c4f6571603b2e488d2dad91c101c4897f02f6bd9",
+      "title": {
+        "zh": "集合预测一对一匹配与全局 Object 分母",
+        "en": "Set-Prediction Matching & Global Object Normalization"
+      },
+      "summary": {
+        "zh": "原创 solver＋CPU 实测：全局 cost 4 对 greedy 81；stale indices 破坏排列不变性；DDP clamp 等价 max(N,P)；同图块匹配不等于跨图监督，array bytes 不代表 peak HBM",
+        "en": "Original solvers plus CPU timing: exact cost 4 versus greedy 81; stale indices break permutation identity; DDP clamp equals max(N,P); same-image blocks are not cross-image supervision and cost bytes are not peak HBM"
+      },
+      "faq": {
+        "zh": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/set-prediction-hungarian-matching-global-normalization-selection-faq.md",
+        "en": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/set-prediction-hungarian-matching-global-normalization-selection-faq.en.md"
+      },
+      "files": {
+        "cards": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/set-prediction-hungarian-matching-global-normalization/cards.html",
+          "sha256": "fed5d00b60a5815a1fb7e96b0514ba1130e8d14355752c7031e2215d7fbe69ff"
+        },
+        "workbench": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/set-prediction-hungarian-matching-global-normalization/workbench.html",
+          "sha256": "835db0ac305e44615fb8f5d078df8397acd84480910b7df639bc34b283d37a80"
+        },
+        "figure": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/set-prediction-hungarian-matching-global-normalization/summary.svg",
+          "sha256": "a0da116aa38fc7913f7608470fe55bcb4c154d0fb08fde3001d9f98d77b74402"
+        },
+        "report": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/set-prediction-hungarian-matching-global-normalization/report.json",
+          "sha256": "7c1cf095aa093512f27022ca596c4c6414d832a11c4c692a0c049654fd389b7e"
+        },
+        "latency": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/set-prediction-hungarian-matching-global-normalization/latency.json",
+          "sha256": "eefbbd6c4c5cc6e266454703cdf7365611608e0f1310dd0669256039d57a8124"
+        }
+      }
+    },
+    {
+      "round": 103,
+      "slug": "neural-ode-discrete-continuous-adjoint-checkpoint",
+      "commit": "78d0340ed047d42b692d923d4c9cc9977e27bfeb",
+      "title": {
+        "zh": "Neural ODE 离散/连续梯度与 Checkpoint 重放",
+        "en": "Neural ODE Discrete/Continuous Gradients & Checkpoint Replay"
+      },
+      "summary": {
+        "zh": "原创 Euler＋CPU 实测：数值/连续目标梯度异号；所有 block 重放保持离散梯度；恢复观测不等于 discrete reverse；saved observations/parameter adjoints 不可忽略，selected buffers 不冒充 peak HBM",
+        "en": "Original Euler plus CPU timing: numerical/continuous objectives give opposite gradient signs; all replay blocks preserve discrete gradients; observation resets are not discrete reverse; saved states and parameter adjoints prevent unqualified peak-memory claims"
+      },
+      "faq": {
+        "zh": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/neural-ode-discrete-continuous-adjoint-checkpoint-selection-faq.md",
+        "en": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/neural-ode-discrete-continuous-adjoint-checkpoint-selection-faq.en.md"
+      },
+      "files": {
+        "cards": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/neural-ode-discrete-continuous-adjoint-checkpoint/cards.html",
+          "sha256": "0ce67d80ac999028e908e9dfe164ca9eeb237f4e6d37d0831d3dac2799ec9450"
+        },
+        "workbench": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/neural-ode-discrete-continuous-adjoint-checkpoint/workbench.html",
+          "sha256": "7bb03b1827e5f22a3f198c338258319ebb26c62e44ca43976816599ecbc75f19"
+        },
+        "figure": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/neural-ode-discrete-continuous-adjoint-checkpoint/summary.svg",
+          "sha256": "7e1e75ebd4bb1ae53a0af90b0d84a3873e4042271b0c07b072a28f8182de1bb4"
+        },
+        "report": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/neural-ode-discrete-continuous-adjoint-checkpoint/report.json",
+          "sha256": "2d49b812cc63b585a07e6bde773e0982a4836958995c87850e56410f289a1e59"
+        },
+        "latency": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/neural-ode-discrete-continuous-adjoint-checkpoint/latency.json",
+          "sha256": "8d61d2672644030b336f13b2bb921d5ec4a7c52f6c0cc25b1ab1e54410d258ae"
+        }
+      }
+    },
+    {
+      "round": 104,
+      "slug": "gaussian-splat-tile-alpha-wide-offset",
+      "commit": "a32abb283d5d40b7c56c72c1149ab5c393571546",
+      "title": {
+        "zh": "Gaussian Splat Tile、Alpha 与宽 Offset",
+        "en": "Gaussian Splat Tiles, Alpha & Wide Offsets"
+      },
+      "summary": {
+        "zh": "原创 compositing＋CPU 实测：相同 alpha 可隐藏 RGB .3 误差；exclusive cutoff 要看 pre-T；小 alpha 可累计；2026 int64 offsets 不代表 ID/局部 counter 全变宽，sort payload 不冒充峰值",
+        "en": "Original compositing plus CPU timing: equal alpha hides .3 RGB error; exclusive cutoff needs pre-T; small alphas accumulate; 2026 int64 offsets do not widen every ID/local counter, and sort payload is not peak memory"
+      },
+      "faq": {
+        "zh": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/gaussian-splat-tile-alpha-wide-offset-selection-faq.md",
+        "en": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/gaussian-splat-tile-alpha-wide-offset-selection-faq.en.md"
+      },
+      "files": {
+        "cards": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/gaussian-splat-tile-alpha-wide-offset/cards.html",
+          "sha256": "015d6a423c092d3ba012cfc1f7c6cd0bdc02d27948bcac36c8ca529527ce161b"
+        },
+        "workbench": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/gaussian-splat-tile-alpha-wide-offset/workbench.html",
+          "sha256": "5f26a849ea77539f6265f4667de6c086f3d54b94be952998fa7d1762f0ebd2b0"
+        },
+        "figure": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/gaussian-splat-tile-alpha-wide-offset/summary.svg",
+          "sha256": "916734ab1a092298aa04a8ccfa915ae95588c2282db718620d0dfb4bd078f38f"
+        },
+        "report": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/gaussian-splat-tile-alpha-wide-offset/report.json",
+          "sha256": "2be283dbbd3432d65b2ca9950ea5189416dea72ce7271120ec36de91524ad7f5"
+        },
+        "latency": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/gaussian-splat-tile-alpha-wide-offset/latency.json",
+          "sha256": "bfff187930f1aeb4b91eee663771c8522012988ad6c44b6ba6d2ca5eff9cd6f6"
+        }
+      }
+    },
+    {
+      "round": 105,
+      "slug": "multires-hash-grid-collision-lod",
+      "commit": "69f1867c47544be48d1660cd4e4a16a1e21ebd8f",
+      "title": {
+        "zh": "多分辨率 Hash Grid 碰撞梯度与 LoD",
+        "en": "Multiresolution Hash-grid Collision Adjoints & LoD"
+      },
+      "summary": {
+        "zh": "原创标量参考＋CPU 实测：四角点共享两桶，覆盖梯度丢失 .5913；soft forward/backward 权重一致；2026 native hard/soft LoD 的 epsilon 边界、未加权 base buffer 和参数分配分开核验",
+        "en": "Original scalar references plus CPU timing: four corners share two buckets; overwriting loses .5913; soft adjoints need the same weight; 2026 native hard/soft LoD epsilon boundaries, unweighted buffers and parameter allocation are separate contracts"
+      },
+      "faq": {
+        "zh": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/multires-hash-grid-collision-lod-selection-faq.md",
+        "en": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/multires-hash-grid-collision-lod-selection-faq.en.md"
+      },
+      "files": {
+        "cards": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/multires-hash-grid-collision-lod/cards.html",
+          "sha256": "fdab9c09f667bfdce6ffd1d5e24cb122842b63e08f955918f3a01b48b5d0db1e"
+        },
+        "workbench": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/multires-hash-grid-collision-lod/workbench.html",
+          "sha256": "8f3f49cdb41f3811761de91401cf22cf915b9a4641792054220d71b66ea28168"
+        },
+        "figure": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/multires-hash-grid-collision-lod/summary.svg",
+          "sha256": "e9d283a8a4b8cd7adcd11ed45f9102b18071ccc26c5b1d1345f1e77540989ffc"
+        },
+        "report": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/multires-hash-grid-collision-lod/report.json",
+          "sha256": "132e17c9f95b4d52ece3daa0dd79ae408d23376ec6ce8291c2615a076d3b03ed"
+        },
+        "latency": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/multires-hash-grid-collision-lod/latency.json",
+          "sha256": "a79c478171d024c09a0c7d061086cddcf013262fbfe0f4c8df7aeede205b0581"
+        }
+      }
+    },
+    {
+      "round": 106,
+      "slug": "sparse-convolution-coordinate-map-submanifold-inverse",
+      "commit": "9ec523becd7d758b367749a52f88a54a9507f657",
+      "title": {
+        "zh": "稀疏卷积坐标图、Submanifold 与 Cached Inverse",
+        "en": "Sparse Coordinate Maps, Submanifold & Cached Inverse"
+      },
+      "summary": {
+        "zh": "原创 batched scalar＋CPU 实测：第二层相同位置 [7,8] 对 [6,6]；零 feature 不删坐标；cached inverse 不等于数值逆或 transpose support；行置换复用 stale pairs 误差九，pair payload 不冒充 peak HBM",
+        "en": "Original batched scalar references plus CPU timing: second-layer values [7,8] vs [6,6]; zero features retain coordinates; cached inverse is not numerical inversion or transpose support; stale permuted-row pairs cause error nine; pair payload is not peak HBM"
+      },
+      "faq": {
+        "zh": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/sparse-convolution-coordinate-map-submanifold-inverse-selection-faq.md",
+        "en": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/sparse-convolution-coordinate-map-submanifold-inverse-selection-faq.en.md"
+      },
+      "files": {
+        "cards": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/sparse-convolution-coordinate-map-submanifold-inverse/cards.html",
+          "sha256": "614922be3830a2360622f418f9fb6e1a94363489916384507874c14245b586f6"
+        },
+        "workbench": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/sparse-convolution-coordinate-map-submanifold-inverse/workbench.html",
+          "sha256": "ab3425ca03bf7d6f55a00c83562d087fec37d0b0012191fbecbb7b2cae3d1c8c"
+        },
+        "figure": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/sparse-convolution-coordinate-map-submanifold-inverse/summary.svg",
+          "sha256": "c0d7a5e7a7f95caa4bd8326f3f70a363a18f04760045cf84ffe63867ec5a487c"
+        },
+        "report": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/sparse-convolution-coordinate-map-submanifold-inverse/report.json",
+          "sha256": "89dcdfed0332fbb5b372b351aa80d667de77e56b857087b66a8d3bd61ae22545"
+        },
+        "latency": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/sparse-convolution-coordinate-map-submanifold-inverse/latency.json",
+          "sha256": "824bc032a054db52f3d04202adf043f880402368da86129da6fc01f2436b215e"
+        }
+      }
+    },
+    {
+      "round": 107,
+      "slug": "vfr-video-timestamp-clip-sampling",
+      "commit": "dc164742bcf447d80c933f49db5b3caea4b16c8d",
+      "title": {
+        "zh": "VFR 视频 PTS、Clip 尾部与重复输出",
+        "en": "VFR Video PTS, Clip Tails & Duplicate Slots"
+      },
+      "summary": {
+        "zh": "原创时间戳参考＋CPU 实测：平均 FPS 在 synthetic VFR 九请求中有五处不同；wrap 循环有效请求列表；unique targets 不等于实际解码帧数，完整输出 slots 和 logical bytes 保留；跟踪 2026-11 stable decoder API",
+        "en": "Original timestamp references plus CPU timing: average FPS differs on five of nine synthetic VFR requests; wrap cycles valid timestamps; unique targets are not actual decoded-frame count; full output slots and logical bytes remain; November 2026 stable decoder API tracked"
+      },
+      "faq": {
+        "zh": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/vfr-video-timestamp-clip-sampling-selection-faq.md",
+        "en": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/vfr-video-timestamp-clip-sampling-selection-faq.en.md"
+      },
+      "files": {
+        "cards": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/vfr-video-timestamp-clip-sampling/cards.html",
+          "sha256": "54a10dc567f1cd76d6325cd30d21fa6aea76c50157ce842aa8af3fae9136afbc"
+        },
+        "workbench": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/vfr-video-timestamp-clip-sampling/workbench.html",
+          "sha256": "d0248808de31d2de5b897c3ff1e3d99f9f2480f64a273916caf0236381039e47"
+        },
+        "figure": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/vfr-video-timestamp-clip-sampling/summary.svg",
+          "sha256": "bea9b0eff9b33e03388f039cf912740c0a2e0e27a8be75513307e484bfb88e1a"
+        },
+        "report": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/vfr-video-timestamp-clip-sampling/report.json",
+          "sha256": "0c09b5a71b4062f3dc9f888a62abea40027e8f272313a77a09b7047078178e1d"
+        },
+        "latency": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/vfr-video-timestamp-clip-sampling/latency.json",
+          "sha256": "f57eaf8f80afeb140e7a5d3fbfd0d0e5920eafc25d762f4f8ee30d11955559bb"
+        }
+      }
+    },
+    {
+      "round": 108,
+      "slug": "arrow-nullable-list-slice-buffer-retention",
+      "commit": "a0e531d359610908cf46e0f81c2e2c6b57f6c637",
+      "title": {
+        "zh": "Arrow 可空 List、Slice 偏移与 Buffer 驻留",
+        "en": "Arrow Nullable Lists, Slice Offsets & Buffer Retention"
+      },
+      "summary": {
+        "zh": "原创 immutable buffers＋CPU 实测：区分 null/empty/child-null，validity bit 与 child 坐标不可混用；32 行 synthetic view 保留 38,928,388 backing bytes；跟踪 2026-11-13 必需对象 None 检查",
+        "en": "Original immutable buffers plus CPU timing: distinguish null/empty/child-null and bit/child coordinates; a synthetic 32-row view retains 38,928,388 backing bytes; November 13 required-object None guards tracked"
+      },
+      "faq": {
+        "zh": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/arrow-nullable-list-slice-buffer-retention-selection-faq.md",
+        "en": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/arrow-nullable-list-slice-buffer-retention-selection-faq.en.md"
+      },
+      "files": {
+        "cards": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/arrow-nullable-list-slice-buffer-retention/cards.html",
+          "sha256": "d65c3c66dd723e1c76546c0ad1c7634c6d0c07bd2562bd701bd8e7f194e20af9"
+        },
+        "workbench": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/arrow-nullable-list-slice-buffer-retention/workbench.html",
+          "sha256": "e051d05b28ddc24a45b0b9c15f3f5a373dd4a5c173f3911cd88796b5f81b5888"
+        },
+        "figure": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/arrow-nullable-list-slice-buffer-retention/summary.svg",
+          "sha256": "b2eac91819747bb5b2856e8130130e98ceb2b016936be0a6b043ae98d4b2080e"
+        },
+        "report": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/arrow-nullable-list-slice-buffer-retention/report.json",
+          "sha256": "32a053d3b53454391c8ba089873a5e58ea776ee96ab4eff803ae3b979ff993bf"
+        },
+        "latency": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/arrow-nullable-list-slice-buffer-retention/latency.json",
+          "sha256": "4c12f1e9dbcc35eb469e1522929eb68d4c43a13206fd89cd3a4e441ebc8c5f2c"
+        }
+      }
+    },
+    {
+      "round": 109,
+      "slug": "symbolic-shape-export-dimension-contract",
+      "commit": "a209001fe9c12a3ab1c5a16f992e03122da82df5",
+      "title": {
+        "zh": "符号 Shape、整数维度与 Export 分层",
+        "en": "Symbolic Shapes, Integer Dimensions & Export Layers"
+      },
+      "summary": {
+        "zh": "原创 affine solver＋CPU oracle：整除/正数/一致性分开检查，inconclusive inequality 不等于 false；一次导出不等于一个 executable；synthetic 七签名补齐为三，增加 3456 logical bytes",
+        "en": "Original affine solver plus CPU oracle: exact/positive/consistent bindings; inconclusive inequality is not false; one export is not one executable; seven synthetic batch keys bucket to three at 3456 extra logical bytes"
+      },
+      "faq": {
+        "zh": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/symbolic-shape-export-dimension-contract-selection-faq.md",
+        "en": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/symbolic-shape-export-dimension-contract-selection-faq.en.md"
+      },
+      "files": {
+        "cards": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/symbolic-shape-export-dimension-contract/cards.html",
+          "sha256": "b4b0a2d2f6189aeeacf083e36301a1e3c9ef6ad10824156cbcbab75b062ec941"
+        },
+        "workbench": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/symbolic-shape-export-dimension-contract/workbench.html",
+          "sha256": "0ba7da46d736528c0fd75f419080eff683d3c1688f3ad58af3d8eb6a9ec65dca"
+        },
+        "figure": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/symbolic-shape-export-dimension-contract/summary.svg",
+          "sha256": "6194bb9fcf9b5ad1a5d30dcba806133e0ffe3fc1db60769fdcb817f9b9e0a1c0"
+        },
+        "report": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/symbolic-shape-export-dimension-contract/report.json",
+          "sha256": "5410188fd39d3a644460b883e96c538cc7a5b1b2f4c62c1d1fbc85c5d68cec05"
+        },
+        "latency": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/symbolic-shape-export-dimension-contract/latency.json",
+          "sha256": "3e7fdf3075c3dc5bed9abb8fdd9ad9e27bc60f49e6a881673bc937afb56ecbcd"
+        }
+      }
+    },
+    {
+      "round": 110,
+      "slug": "sync-batchnorm-count-weighted-moments",
+      "commit": "72bd6b8b6b76183b598271bdc12c11270248e65b",
+      "title": {
+        "zh": "SyncBatchNorm 计数加权矩与全局梯度",
+        "en": "SyncBatchNorm Count-Weighted Moments & Global Gradients"
+      },
+      "summary": {
+        "zh": "原创 scalar moments＋CPU 实测：不等长 shards 不能平均均值/方差；empty rank 仍参与；global backward 与有限差分一致，local-only sums 出错；population 与 unbiased estimator 分开",
+        "en": "Original scalar moments plus CPU timing: unequal shards need count and between-mean correction; empty ranks participate; global backward matches finite differences, local-only sums fail; population/unbiased estimators differ"
+      },
+      "faq": {
+        "zh": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/sync-batchnorm-count-weighted-moments-selection-faq.md",
+        "en": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/sync-batchnorm-count-weighted-moments-selection-faq.en.md"
+      },
+      "files": {
+        "cards": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/sync-batchnorm-count-weighted-moments/cards.html",
+          "sha256": "45ebba1b8204c8bc7142b9e36fe04b0c1f21dd503b7c752ad4763fec1422118f"
+        },
+        "workbench": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/sync-batchnorm-count-weighted-moments/workbench.html",
+          "sha256": "767f056f24bc27211650adc08875d74ef0f021d523fd0a03c548794795f65170"
+        },
+        "figure": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/sync-batchnorm-count-weighted-moments/summary.svg",
+          "sha256": "03b6fab80ef0ea21efaefebc76ca852b560b3aa0981c1404890a040d7da8880a"
+        },
+        "report": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/sync-batchnorm-count-weighted-moments/report.json",
+          "sha256": "7b6468f54c18d42bcbef065c2bcb451e3574b837d433bf038b2f6f66562fd4ce"
+        },
+        "latency": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/sync-batchnorm-count-weighted-moments/latency.json",
+          "sha256": "df7b99e9acbd4566a22609e63bd6c95cf836c32c9ac4e744656df1b66c439e57"
+        }
+      }
+    },
+    {
+      "round": 111,
+      "slug": "distributed-auroc-ties-threshold-state",
+      "commit": "5ea9c1540d89ff9d5126045e631811fccc2ea13b",
+      "title": {
+        "zh": "分布式 AUROC、Ties 与固定阈值状态",
+        "en": "Distributed AUROC, Ties & Threshold State"
+      },
+      "summary": {
+        "zh": "原创 grouped ROC＋CPU pairwise oracle：两 local AUC=1，global=0.75；固定 grid counters 可精确 SUM，但不消除近似/endpoint 差异；4096-byte state 可伴随 51.2 MB 选定 update matrix",
+        "en": "Original grouped ROC plus CPU pairwise oracle: two local AUCs of 1 hide global 0.75; exact fixed-grid SUM still loses ranking/endpoint information; 4096-byte state can coexist with a selected 51.2 MB update matrix"
+      },
+      "faq": {
+        "zh": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/distributed-auroc-ties-threshold-state-selection-faq.md",
+        "en": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/distributed-auroc-ties-threshold-state-selection-faq.en.md"
+      },
+      "files": {
+        "cards": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/distributed-auroc-ties-threshold-state/cards.html",
+          "sha256": "8b998ecbe27b58778df05ed5384966236254755f517b12e34d7bdd91c6346772"
+        },
+        "workbench": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/distributed-auroc-ties-threshold-state/workbench.html",
+          "sha256": "1e5f44ae6fd27f8e56c5706e11a720e7670893329f8d5a7e05e4f4e7c7b18671"
+        },
+        "figure": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/distributed-auroc-ties-threshold-state/summary.svg",
+          "sha256": "5303eb5615f6eaf87328f2ffa80000a854f2d5f885900167e2eadf21b1f3a183"
+        },
+        "report": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/distributed-auroc-ties-threshold-state/report.json",
+          "sha256": "0692471ff739a4f75206a8a9932b4ceaceffd4ba3a2505bee52030522a74eed1"
+        },
+        "latency": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/distributed-auroc-ties-threshold-state/latency.json",
+          "sha256": "50138dae5eed2ad08b6f7a99d30b0ffe31a11ce987288ce60722c6f3a27b4f5c"
+        }
+      }
+    },
+    {
+      "round": 112,
+      "slug": "parquet-sql-null-row-group-pruning",
+      "commit": "ab9357bf0f7bccd464093d73b0b50047d1c837aa",
+      "title": {
+        "zh": "Parquet、SQL NULL 与保守 Row Group 剪枝",
+        "en": "Parquet, SQL NULL & Conservative Row-Group Pruning"
+      },
+      "summary": {
+        "zh": "原创三值 truth sets＋CPU 行扫描 oracle：4 组仅读 2 组仍保留 6 matches；NOT(may-match) 漏 3 行；min=max 不证明 no-null，missing stats 扩大候选，metadata/selected chunk 分开预算",
+        "en": "Original three-valued truth sets plus CPU row oracle: reading two of four groups keeps all six matches; NOT(may-match) loses three; min=max does not prove no nulls, missing stats widen candidates, metadata/chunks budget separately"
+      },
+      "faq": {
+        "zh": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/parquet-sql-null-row-group-pruning-selection-faq.md",
+        "en": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/parquet-sql-null-row-group-pruning-selection-faq.en.md"
+      },
+      "files": {
+        "cards": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/parquet-sql-null-row-group-pruning/cards.html",
+          "sha256": "d00668b6e27f8a895cb15141fd56934565bfc37fdcec5f0a84d22fcdaee7d940"
+        },
+        "workbench": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/parquet-sql-null-row-group-pruning/workbench.html",
+          "sha256": "65a1b22fef00103df2c8b6cb0da9c0e3fcb5a1081f54b78cdca41d1f52a4336e"
+        },
+        "figure": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/parquet-sql-null-row-group-pruning/summary.svg",
+          "sha256": "5b01df570048bc9c52bb0c985d407484c26e3cfb2c22db0397bdc4fc4610d7bc"
+        },
+        "report": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/parquet-sql-null-row-group-pruning/report.json",
+          "sha256": "db5b57556116c1afcb99eed10243745ec17dd4d348040b0de2fba46c8ed39fff"
+        },
+        "latency": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/parquet-sql-null-row-group-pruning/latency.json",
+          "sha256": "708b1263c6d2be388006556b85278bda902f5d0555a66f197573d82960ee6b67"
+        }
+      }
+    },
+    {
+      "round": 113,
+      "slug": "exponential-histogram-signed-index-downscale",
+      "commit": "fe8ad942414ccd4cadcf105aac3257427034eaba",
+      "title": {
+        "zh": "指数直方图、Signed Index 与 Downscale",
+        "en": "Exponential Histograms, Signed Indices & Downscaling"
+      },
+      "summary": {
+        "zh": "原创 exact-rational buckets＋CPU merge/replay：span 8→3 保留 10 counts，错误 truncation 却错放 3 条 interval；exact p99=32 只确定落在 (16,256]；logical span 160 对应选定 fresh capacity 256",
+        "en": "Original exact-rational buckets plus CPU merge/replay: span 8→3 keeps ten counts, but wrong truncation misplaces three observations; exact p99=32 is bounded only by (16,256]; logical span 160 selects fresh capacity 256"
+      },
+      "faq": {
+        "zh": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/exponential-histogram-signed-index-downscale-selection-faq.md",
+        "en": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/exponential-histogram-signed-index-downscale-selection-faq.en.md"
+      },
+      "files": {
+        "cards": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/exponential-histogram-signed-index-downscale/cards.html",
+          "sha256": "7f98452f08c91929997749353cac43a28fb98482be54d9d22999a3cd740d1424"
+        },
+        "workbench": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/exponential-histogram-signed-index-downscale/workbench.html",
+          "sha256": "f337b2246ce9cdb9a41aba1fecdacc97c7e6f402299b5bf5565de37883b03703"
+        },
+        "figure": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/exponential-histogram-signed-index-downscale/summary.svg",
+          "sha256": "730260a819b229d357c3e96fb89ff01d258e8a10dde59da4f5b5650bc21e7612"
+        },
+        "report": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/exponential-histogram-signed-index-downscale/report.json",
+          "sha256": "a843a662201a6bccfb9ac0784a20116fe65255707a5ee1b9b2b8b6a8765aaea1"
+        },
+        "latency": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/exponential-histogram-signed-index-downscale/latency.json",
+          "sha256": "6ec79dc9864a9fcef2092cf9e2ab7a10bdca40fd5c73018c9bee5c49645249d1"
+        }
+      }
+    },
+    {
+      "round": 114,
+      "slug": "rope-interleaved-neox-partial-rotary-layout",
+      "commit": "df380692076b42a8914b2d6a7eaf51ea21a1101d",
+      "title": {
+        "zh": "RoPE Layout、Partial Prefix 与 Cache 状态",
+        "en": "RoPE Layout, Partial Prefixes & Cache State"
+      },
+      "summary": {
+        "zh": "原创 scalar rotation＋complex oracle：Head 8/Rotary 6 的两条 tail 不动；Q/K permutation 后 layout 等价，仅切 flag 则跨位置 error 0.749357，same-position 却仍通过；核验 11 月 10 日 cache/layout 修复",
+        "en": "Original scalar rotations plus complex oracle: head eight/rotary six preserves two tail values; matched Q/K permutation makes formats equivalent, flag-only switching gives 0.749357 cross-position error while same-position tests pass; November 10 repair tracked"
+      },
+      "faq": {
+        "zh": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/rope-interleaved-neox-partial-rotary-layout-selection-faq.md",
+        "en": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/rope-interleaved-neox-partial-rotary-layout-selection-faq.en.md"
+      },
+      "files": {
+        "cards": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/rope-interleaved-neox-partial-rotary-layout/cards.html",
+          "sha256": "a1c3528a18b971a3233cc4ecd8b883aeb5de59711e3c6a5ec1f83c783d62a9dd"
+        },
+        "workbench": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/rope-interleaved-neox-partial-rotary-layout/workbench.html",
+          "sha256": "3abe9ccaba8ea9623564578dc3b47fe9f09a3694b93904883ceea61fd5e0567f"
+        },
+        "figure": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/rope-interleaved-neox-partial-rotary-layout/summary.svg",
+          "sha256": "dd0bc30bd0935e49e407b778670303c1d540aff261ddb66c29c5bbfc28b50a96"
+        },
+        "report": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/rope-interleaved-neox-partial-rotary-layout/report.json",
+          "sha256": "6a561b323c727117a6190903167c135bd299330909f9314aeb7c23e4249b0cff"
+        },
+        "latency": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/rope-interleaved-neox-partial-rotary-layout/latency.json",
+          "sha256": "2d6c61703f0a74d67eb66dddbc1d40e7fbf918e56890655533699569b4f4b95b"
+        }
+      }
+    }
+  ]
+}
