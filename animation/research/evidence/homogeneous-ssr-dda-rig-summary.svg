@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#070b14"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect x="28" y="28" width="1144" height="574" rx="20" fill="#0b1324" stroke="#1e293b" stroke-width="2"/>
+
+  <text x="56" y="74" fill="#38bdf8" font-family="Inter, Segoe UI, sans-serif" font-size="15" font-weight="700" letter-spacing="1.5">
+    ROUND 85 · MCGUIRE HOMOGENEOUS RECIPROCAL-Z SSR 2D DDA VS SCREEN-LINEAR Z RAY BOWING
+  </text>
+  <text x="56" y="112" fill="#f8fafc" font-family="Inter, Segoe UI, sans-serif" font-size="22" font-weight="800">
+    McGuire Homogeneous 1/z DDA (u=0.50 z = 3.7778m, 0 Bow) vs Screen-Linear Z (z = 18.0000m, 40.63× Faster)
+  </text>
+  <text x="56" y="142" fill="#94a3b8" font-family="Inter, Segoe UI, sans-serif" font-size="15">
+    Stepping 1/z(u) = (1 − u)/z₀ + u/z₁ linearly in 2D screen space keeps 3D reflection rays straight without 4×4 matrix projection
+  </text>
+
+  <!-- Left Panel: McGuire Homogeneous Reciprocal-Z DDA -->
+  <rect x="56" y="170" width="528" height="396" rx="14" fill="#0f1b33" stroke="#10b981" stroke-width="1.8"/>
+  <text x="80" y="204" fill="#34d399" font-family="Inter, Segoe UI, sans-serif" font-size="17" font-weight="700">
+    ✅ McGuire Homogeneous Reciprocal-Z DDA (1/z Linear)
+  </text>
+  <text x="80" y="228" fill="#cbd5e1" font-family="Inter, Segoe UI, sans-serif" font-size="13">
+    z₀ = 2.0m → z₁ = 34.0m · Screen Midpoint u=0.50 Is at z = 3.7778m
+  </text>
+
+  <!-- True hyperbolic curve in screen space (= straight line in 3D!) left -->
+  <line x1="95" y1="395" x2="545" y2="395" stroke="#64748b" stroke-width="2" stroke-dasharray="5,4"/>
+  <text x="102" y="385" fill="#94a3b8" font-family="Consolas, monospace" font-size="12">8.0m Obstacle Pillar Plane</text>
+  <path d="M 105 428 Q 450 422 535 255" fill="none" stroke="#34d399" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="320" cy="418" r="8" fill="#34d399" stroke="#f8fafc" stroke-width="2"/>
+  <text x="320" y="468" fill="#34d399" font-family="Consolas, monospace" font-size="13" font-weight="700" text-anchor="middle">
+    Station-8 (u=0.50 Midpoint): z_true = 3.7778 m &lt; 8.0m Pillar (0 Bowing!)
+  </text>
+
+  <rect x="80" y="492" width="480" height="54" rx="8" fill="#062e22" stroke="#10b981"/>
+  <text x="96" y="514" fill="#a7f3d0" font-family="Consolas, monospace" font-size="14" font-weight="700">
+    Bowed / False-Hit Stations: 0 / 17 (Exact 3D Collinearity)
+  </text>
+  <text x="96" y="534" fill="#6ee7b7" font-family="Consolas, monospace" font-size="13">
+    8,192 17-Station Passes: 0.32 ms (1/z DDA) vs 13.15 ms (3D Search, 40.63×)
+  </text>
+
+  <!-- Right Panel: Naive Screen-Space Linear-Z -->
+  <rect x="616" y="170" width="528" height="396" rx="14" fill="#1c1124" stroke="#f43f5e" stroke-width="1.8"/>
+  <text x="640" y="204" fill="#fb7185" font-family="Inter, Segoe UI, sans-serif" font-size="17" font-weight="700">
+    ❌ Naive Screen-Space Linear-Z ((1−u)z₀ + uz₁)
+  </text>
+  <text x="640" y="228" fill="#cbd5e1" font-family="Inter, Segoe UI, sans-serif" font-size="13">
+    Bows 3D Ray +14.22m Deeper at Midpoint → Punches Behind 8.0m Pillar!
+  </text>
+
+  <!-- Straight line in screen space (= bowed hyperbola in 3D!) right -->
+  <line x1="655" y1="395" x2="1105" y2="395" stroke="#475569" stroke-width="2" stroke-dasharray="5,4"/>
+  <line x1="665" y1="428" x2="1095" y2="255" stroke="#fb7185" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="880" cy="341" r="8" fill="#fb7185" stroke="#f8fafc" stroke-width="2"/>
+  <text x="880" y="468" fill="#fda4af" font-family="Consolas, monospace" font-size="13" font-weight="700" text-anchor="middle">
+    Station-8 (u=0.50): z_naive = 18.0000 m (+14.2222m Deeper · False Hit!)
+  </text>
+
+  <rect x="640" y="492" width="480" height="54" rx="8" fill="#3b0a1e" stroke="#f43f5e"/>
+  <text x="656" y="514" fill="#fecdd3" font-family="Consolas, monospace" font-size="14" font-weight="700">
+    Bowed Stations: 15 / 17 (Max Bowing +19.5000m at u=0.69)
+  </text>
+  <text x="656" y="534" fill="#fda4af" font-family="Consolas, monospace" font-size="13">
+    Causes Severe SSR Reflection Warping &amp; False Occluder Self-Intersections
+  </text>
+</svg>

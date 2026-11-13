@@ -1,0 +1,267 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Lagarde Frostbite view-roughness specular occlusion vs naive unoccluded IBL cavity leak rig",
+  "topic_zh": "Lagarde Frostbite 视角粗糙度耦合高光遮蔽对比朴素未遮蔽 IBL 深腔反光泄漏",
+  "slug": "specular-occlusion-cavity-rig",
+  "timestamp": "2026-11-13T17:07:06.073Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Sebastien Lagarde & Charles de Rousiers (SIGGRAPH 2014 Frostbite) view- and roughness-dependent Specular Occlusion (SO = clamp((NdotV + AO)^exp2(-16r - 1) - 1 + AO, 0, 1)) versus naive unoccluded IBL specular (SO = 1.0) and 64-step cone power quadrature across 17 viewing cosine stations (NdotV in [0.05, 0.85]). No neural ambient occlusion execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "lagarde-cone-quadrature-equivalence-128",
+      "passed": true,
+      "detail": "128 closed-form Lagarde SO and 64-step cone power quadrature passes agree within 1e-13"
+    },
+    {
+      "name": "lagarde-cone-quadrature-equivalence-1024",
+      "passed": true,
+      "detail": "1024 closed-form Lagarde SO and 64-step cone power quadrature passes agree within 1e-13"
+    },
+    {
+      "name": "lagarde-cone-quadrature-equivalence-8192",
+      "passed": true,
+      "detail": "8192 closed-form Lagarde SO and 64-step cone power quadrature passes agree within 1e-13"
+    },
+    {
+      "name": "lagarde-cavity-occlusion-conserved",
+      "passed": true,
+      "detail": "17 viewing stations suppress cavity horizon reflections (station-0 NdotV=0.05 SO=0.2131 < AO=0.2500)"
+    },
+    {
+      "name": "naive-cavity-specular-leak-exposed",
+      "passed": true,
+      "detail": "naive unoccluded IBL specular leaks SO=1.0000 (+0.7869 / 4.69x blowout at station-0 across 17/17 stations)"
+    },
+    {
+      "name": "lagarde-grazing-cavity-clamped",
+      "passed": true,
+      "detail": "Lagarde Specular Occlusion clamps grazing station-0 (NdotV=0.05, AO=0.25) to SO=0.2131 (0/17 leaking stations)"
+    },
+    {
+      "name": "naive-4x-cavity-glow-exposed",
+      "passed": true,
+      "detail": "naive unoccluded IBL leaks SO=1.0000 at station-0 (+0.7869 / 4.69x cavity leak across 17/17 stations)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse station scrubbing reproduces the exact cavity reflectometer carriage world matrix"
+    },
+    {
+      "name": "atomic-ao-rejection",
+      "passed": true,
+      "detail": "out-of-range ambientOcclusionAO=99.0 is rejected while valid Specular Occlusion state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered reflectometer carriage y-elevation matches solved specular occlusion height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Specular Occlusion controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual station scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station specular occlusion passes",
+      "count": 128,
+      "primary_ms": 0.1250999999999749,
+      "baseline_ms": 0.21730000000002292,
+      "primary_samples_ms": [
+        0.13169999999990978,
+        0.12829999999996744,
+        0.14160000000003947,
+        0.1250999999999749,
+        0.11919999999997799,
+        0.1189000000000533,
+        0.11569999999994707
+      ],
+      "baseline_samples_ms": [
+        0.39649999999994634,
+        0.3795999999999822,
+        0.22149999999999181,
+        0.20409999999992579,
+        0.20269999999993615,
+        0.2116999999999507,
+        0.21730000000002292
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station specular occlusion passes",
+      "count": 1024,
+      "primary_ms": 0.48339999999996053,
+      "baseline_ms": 1.39549999999997,
+      "primary_samples_ms": [
+        0.49059999999997217,
+        0.48080000000004475,
+        0.4658999999999196,
+        0.47910000000001673,
+        0.48339999999996053,
+        0.4923999999999751,
+        0.5195999999999685
+      ],
+      "baseline_samples_ms": [
+        1.1760000000000446,
+        1.1691999999999325,
+        1.1697000000000344,
+        1.39549999999997,
+        1.735900000000015,
+        1.445699999999988,
+        1.4156000000000404
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station specular occlusion passes",
+      "count": 8192,
+      "primary_ms": 2.1035000000000537,
+      "baseline_ms": 8.92190000000005,
+      "primary_samples_ms": [
+        2.627200000000016,
+        2.48619999999994,
+        2.074799999999982,
+        2.0288000000000466,
+        2.244299999999953,
+        2.0745999999999185,
+        2.1035000000000537
+      ],
+      "baseline_samples_ms": [
+        8.99070000000006,
+        8.824200000000019,
+        8.611899999999991,
+        9.112500000000068,
+        8.92190000000005,
+        8.738900000000058,
+        10.507000000000062
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/specular-occlusion-cavity-rig/light-lagarde-frostbite-specular-occlusion.png",
+    "docs/evidence/specular-occlusion-cavity-rig/light-naive-unoccluded-ibl-specular.png",
+    "docs/evidence/specular-occlusion-cavity-rig/dark-lagarde-frostbite-specular-occlusion.png",
+    "docs/evidence/specular-occlusion-cavity-rig/dark-naive-unoccluded-ibl-specular.png",
+    "docs/evidence/specular-occlusion-cavity-rig/mobile.png"
+  ],
+  "primary_label": "Closed-Form Lagarde Frostbite SO",
+  "baseline_label": "64-Step Cone Power Quadrature",
+  "load_unit": "17-station specular occlusion passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form Lagarde Frostbite view-roughness Specular Occlusion versus 64-step visibility-cone power quadrature.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "cavity_ao": 0.25,
+    "roughness_r": 0.25,
+    "lagarde_grazing_so": 0.2131,
+    "naive_unoccluded_so": 1,
+    "max_cavity_leak_error": 0.7869,
+    "corrupted_stations": 17,
+    "maximum_solver_error": 6.2172e-15
+  },
+  "protocol": {
+    "input": {
+      "station_index": 0,
+      "ndotv": 0.05,
+      "cavity_ao": 0.25,
+      "roughness_r": 0.25,
+      "mode": "lagarde-frostbite-specular-occlusion"
+    },
+    "output": {
+      "lagarde_so": 0.2131,
+      "naive_unoccluded_so": 1,
+      "cavity_leak_error": 0.7869,
+      "leak_blowout_ratio": 4.69,
+      "corrupted_stations": 17
+    },
+    "function": "SO = clamp((N·V + AO)^{2^{−16r−1}} − 1 + AO, 0, 1) → Grazing SO = 0.2131 (0 Cavity Leaks)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 viewing cosine stations suppress cavity horizon specular leaks while preserving steep mirror visibility",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Modulating split-sum IBL environment specular reflections in UE5, Frostbite, and Unity HDRP character and vehicle shaders",
+    "Explaining why applying AO only to diffuse lighting leaves nostrils, wheel wells, and armor crevices glowing with 4.69x sky reflections",
+    "Tightening specular occlusion below diffuse AO at grazing angles (NdotV = 0.05 -> SO = 0.2131) while relaxing it on smooth mirrors at steep views",
+    "Replacing 64-step spherical visibility-cone integration with a 4-op closed-form power law"
+  ],
+  "not_for": [
+    "Direct analytical point or directional lights with explicit shadow maps (which use micro-shadowing rather than ambient SO)",
+    "Pure diffuse matte plaster with zero specular reflectance",
+    "Neural screen-space ambient occlusion inference models (DeepAO / Neural GI)",
+    "Full ray-traced reflection hits where exact geometry visibility is already traced per ray"
+  ],
+  "locale_zh": {
+    "lagarde-cone-quadrature-equivalence-128": "Lagarde闭式与64步锥体求积等价 128",
+    "128 closed-form Lagarde SO and 64-step cone power quadrature passes agree within 1e-13": "128 次闭式 Lagarde 高光遮蔽与 64 步可见锥数值求积在 1e-13 内一致",
+    "lagarde-cone-quadrature-equivalence-1024": "Lagarde闭式与64步锥体求积等价 1024",
+    "1024 closed-form Lagarde SO and 64-step cone power quadrature passes agree within 1e-13": "1024 次闭式 Lagarde 高光遮蔽与 64 步可见锥数值求积在 1e-13 内一致",
+    "lagarde-cone-quadrature-equivalence-8192": "Lagarde闭式与64步锥体求积等价 8192",
+    "8192 closed-form Lagarde SO and 64-step cone power quadrature passes agree within 1e-13": "8192 次闭式 Lagarde 高光遮蔽与 64 步可见锥数值求积在 1e-13 内一致",
+    "lagarde-cavity-occlusion-conserved": "Lagarde深腔高光遮蔽守恒",
+    "17 viewing stations suppress cavity horizon reflections (station-0 NdotV=0.05 SO=0.2131 < AO=0.2500)": "17 个视角站点严格压制深腔掠射反光（第 0 站 N·V=0.05 SO=0.2131 < AO=0.2500）",
+    "naive-cavity-specular-leak-exposed": "朴素未遮蔽IBL深腔漏光暴露",
+    "naive unoccluded IBL specular leaks SO=1.0000 (+0.7869 / 4.69x blowout at station-0 across 17/17 stations)": "朴素未遮蔽 IBL 高光漏出 SO=1.0000（第 0 站过冲 +0.7869 / 4.69×，污染 17/17 站）",
+    "lagarde-grazing-cavity-clamped": "Lagarde深腔掠射钳制锁定",
+    "Lagarde Specular Occlusion clamps grazing station-0 (NdotV=0.05, AO=0.25) to SO=0.2131 (0/17 leaking stations)": "Lagarde 高光遮蔽将第 0 站（N·V=0.05, AO=0.25）压制在 SO=0.2131（0/17 漏光站）",
+    "naive-4x-cavity-glow-exposed": "朴素4.69倍深腔发光泄漏暴露",
+    "naive unoccluded IBL leaks SO=1.0000 at station-0 (+0.7869 / 4.69x cavity leak across 17/17 stations)": "朴素未遮蔽 IBL 在第 0 站漏出 SO=1.0000（+0.7869 / 4.69× 深腔漏光，波及 17/17 站）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse station scrubbing reproduces the exact cavity reflectometer carriage world matrix": "逆序站点拖曳精确复现深腔反射计滑车世界矩阵",
+    "atomic-ao-rejection": "原子遮蔽拒绝",
+    "out-of-range ambientOcclusionAO=99.0 is rejected while valid Specular Occlusion state remains": "越界环境遮蔽 AO=99.0 被拒绝，有效高光遮蔽状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered reflectometer carriage y-elevation matches solved specular occlusion height": "渲染反射计滑车垂直高度与求解器高光遮蔽高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px Specular Occlusion controls fit without horizontal overflow": "390px 高光遮蔽控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual station scrubbing remains available": "减少动态默认静止，保留手动站点核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Closed-Form Lagarde Frostbite SO": "闭式 Lagarde 视角粗糙度高光遮蔽",
+    "64-Step Cone Power Quadrature": "64 步可见锥幂积分基线",
+    "Median of 7 alternating Node CPU runs after warmup. Closed-form Lagarde Frostbite view-roughness Specular Occlusion versus 64-step visibility-cone power quadrature.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；闭式 Lagarde Frostbite 视角粗糙度高光遮蔽对比 64 步可见锥幂积分基线。",
+    "Sampled 17 viewing cosine stations suppress cavity horizon specular leaks while preserving steep mirror visibility": "采样 17 个视角余弦站点全部压制深腔掠射漏光并保持正视角镜面通透度",
+    "SO = clamp((N·V + AO)^{2^{−16r−1}} − 1 + AO, 0, 1) → Grazing SO = 0.2131 (0 Cavity Leaks)": "Lagarde 视角粗糙度耦合高光遮蔽 → 掠射角 SO = 0.2131（0 深腔反光泄漏）",
+    "Modulating split-sum IBL environment specular reflections in UE5, Frostbite, and Unity HDRP character and vehicle shaders": "UE5、Frostbite 与 Unity HDRP 角色与载具着色器中调制分离求和 IBL 环境高光反射",
+    "Explaining why applying AO only to diffuse lighting leaves nostrils, wheel wells, and armor crevices glowing with 4.69x sky reflections": "直观解释为何只把 AO 乘在漫反射上会导致角色鼻孔、汽车轮拱与装甲暗缝泛起 4.69× 刺眼蓝天反光",
+    "Tightening specular occlusion below diffuse AO at grazing angles (NdotV = 0.05 -> SO = 0.2131) while relaxing it on smooth mirrors at steep views": "在掠射角将高光遮蔽收紧至漫反射 AO 以下（N·V=0.05 时 SO=0.2131），而在光滑表面正视角下自动放开反射能量",
+    "Replacing 64-step spherical visibility-cone integration with a 4-op closed-form power law": "以 4 指令闭式指数幂公式替代昂贵的 64 步球面可见锥积分",
+    "Direct analytical point or directional lights with explicit shadow maps (which use micro-shadowing rather than ambient SO)": "拥有显式阴影贴图的直接方向光或点光源（应使用微阴影 Micro-Shadowing 而非环境 SO）",
+    "Pure diffuse matte plaster with zero specular reflectance": "镜面反射为零的纯漫反射石膏材质",
+    "Neural screen-space ambient occlusion inference models (DeepAO / Neural GI)": "神经屏幕空间环境光遮蔽推理模型（DeepAO / Neural GI）",
+    "Full ray-traced reflection hits where exact geometry visibility is already traced per ray": "已经逐射线求交获得精确几何遮挡的硬件光线追踪反射通道"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/specular-occlusion-cavity.test.ts",
+    "node scripts/benchmark-specular-occlusion-cavity.mjs"
+  ]
+}

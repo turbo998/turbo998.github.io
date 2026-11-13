@@ -1,0 +1,267 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Tessendorf Gerstner trochoidal wave Jacobian limiter vs over-steepened crest self-intersection loop rig",
+  "topic_zh": "Tessendorf 摆线海浪雅可比正定陡度限幅对比朴素超陡 Gerstner 波峰倒扣自交环",
+  "slug": "gerstner-wave-jacobian-rig",
+  "timestamp": "2026-11-13T20:20:02.566Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Jerry Tessendorf (SIGGRAPH 2001) analytic trochoidal Gerstner wave Jacobian limiting (J(phi) = 1 - Q_safe * cos(phi) > 0) versus naive unclamped over-steepened Gerstner waves (J_naive(phi) = 1 - Q_raw * cos(phi) < 0) and 64-substep central finite-difference mesh tangent evaluation across 17 wave phase stations (phi in [-180 deg, +180 deg]). No neural fluid simulation execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "tessendorf-analytic-fd-equivalence-128",
+      "passed": true,
+      "detail": "128 analytic 1−Q·cos(φ) Jacobian and 64-step finite-difference wave mesh passes agree within 1e-9"
+    },
+    {
+      "name": "tessendorf-analytic-fd-equivalence-1024",
+      "passed": true,
+      "detail": "1024 analytic 1−Q·cos(φ) Jacobian and 64-step finite-difference wave mesh passes agree within 1e-9"
+    },
+    {
+      "name": "tessendorf-analytic-fd-equivalence-8192",
+      "passed": true,
+      "detail": "8192 analytic 1−Q·cos(φ) Jacobian and 64-step finite-difference wave mesh passes agree within 1e-9"
+    },
+    {
+      "name": "tessendorf-positivity-conserved",
+      "passed": true,
+      "detail": "17 wave phase stations stay strictly positive (crest station-8 φ=0° J=+0.2000 > 0)"
+    },
+    {
+      "name": "oversteep-gerstner-crest-loop-exposed",
+      "passed": true,
+      "detail": "naive over-steepened Q=1.60 plunges crest station-8 to J=−0.6000 (deficit −0.8000 across 5/17 stations)"
+    },
+    {
+      "name": "tessendorf-crest-jacobian-locked",
+      "passed": true,
+      "detail": "Tessendorf Jacobian Limiter locks crest station-8 (φ=0°) at J=+0.2000 (0/17 inverted stations)"
+    },
+    {
+      "name": "oversteep-negative-jacobian-exposed",
+      "passed": true,
+      "detail": "naive Q=1.60 inverts crest station-8 to J=−0.6000 < 0 across 5/17 self-intersecting crest stations"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse station scrubbing reproduces the exact wave flume carriage world matrix"
+    },
+    {
+      "name": "atomic-steepness-rejection",
+      "passed": true,
+      "detail": "out-of-range rawWaveSteepnessQ=999.0 is rejected while valid Gerstner Jacobian state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered wave carriage y-elevation matches solved surface Jacobian height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Gerstner Jacobian controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual station scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station Gerstner Jacobian passes",
+      "count": 128,
+      "primary_ms": 0.006500000000016826,
+      "baseline_ms": 2.764499999999998,
+      "primary_samples_ms": [
+        0.025700000000028922,
+        0.007699999999999818,
+        0.00529999999997699,
+        0.006500000000016826,
+        0.011499999999955435,
+        0.004700000000013915,
+        0.004700000000013915
+      ],
+      "baseline_samples_ms": [
+        2.808899999999994,
+        2.786699999999996,
+        2.788400000000024,
+        2.764499999999998,
+        2.5751999999999953,
+        2.5562000000000467,
+        2.483500000000049
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station Gerstner Jacobian passes",
+      "count": 1024,
+      "primary_ms": 0.04930000000001655,
+      "baseline_ms": 23.271799999999985,
+      "primary_samples_ms": [
+        0.04930000000001655,
+        0.05129999999996926,
+        0.040300000000002,
+        0.0524000000000342,
+        0.04139999999995325,
+        0.06589999999994234,
+        0.04329999999993106
+      ],
+      "baseline_samples_ms": [
+        22.737900000000025,
+        23.671400000000062,
+        22.798599999999965,
+        23.271799999999985,
+        24.077299999999923,
+        23.93029999999999,
+        22.202499999999986
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station Gerstner Jacobian passes",
+      "count": 8192,
+      "primary_ms": 0.33770000000004075,
+      "baseline_ms": 188.4299000000001,
+      "primary_samples_ms": [
+        0.3324999999999818,
+        0.5697000000000116,
+        2.3311999999998534,
+        0.3352999999999611,
+        0.33770000000004075,
+        0.3478999999997541,
+        0.32310000000006767
+      ],
+      "baseline_samples_ms": [
+        184.61689999999987,
+        188.4299000000001,
+        192.67869999999994,
+        201.03790000000004,
+        186.038,
+        207.31369999999993,
+        187.96139999999968
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/gerstner-wave-jacobian-rig/light-tessendorf-jacobian-limited-gerstner.png",
+    "docs/evidence/gerstner-wave-jacobian-rig/light-naive-oversteep-gerstner-loop.png",
+    "docs/evidence/gerstner-wave-jacobian-rig/dark-tessendorf-jacobian-limited-gerstner.png",
+    "docs/evidence/gerstner-wave-jacobian-rig/dark-naive-oversteep-gerstner-loop.png",
+    "docs/evidence/gerstner-wave-jacobian-rig/mobile.png"
+  ],
+  "primary_label": "Tessendorf Analytic Jacobian 1−Q·cos(φ)",
+  "baseline_label": "64-Substep Finite-Difference Mesh Secant",
+  "load_unit": "17-station Gerstner Jacobian passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Analytic trochoidal Jacobian evaluation versus 64-substep finite-difference wave mesh secant integration.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "raw_steepness_q": 1.6,
+    "safe_steepness_q": 0.8,
+    "tessendorf_crest_jacobian": 0.2,
+    "naive_crest_jacobian": -0.6,
+    "max_inversion_deficit": 0.8,
+    "corrupted_stations": 5,
+    "maximum_solver_error": 5.8467e-10
+  },
+  "protocol": {
+    "input": {
+      "station_index": 8,
+      "phase_deg": 0,
+      "q_raw": 1.6,
+      "q_safe": 0.8,
+      "mode": "tessendorf-jacobian-limited-gerstner"
+    },
+    "output": {
+      "crest_elevation_m": 2,
+      "tessendorf_j": 0.2,
+      "naive_oversteep_j": -0.6,
+      "inversion_deficit": 0.8,
+      "corrupted_stations": 5
+    },
+    "function": "J(φ) = dx / dφ = 1 − Q_safe · cos φ > 0 → Crest J(0°) = +0.2000 (5.00× Pinch, 0.0000 Loop Inversion)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 wave phase stations maintain strictly positive surface Jacobian J > 0 without crest self-intersection loops",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Real-time ocean water systems (Gerstner wave sums and Tessendorf FFT choppiness displacement) in UE5, Unity HDRP, Frostbite, and Three.js",
+    "Pinching rounded sine waves into sharp trochoidal ocean crests with wide troughs while preventing Σ Q_i > 1 mesh inversion loops",
+    "Using the surface Jacobian determinant J = (1+∂D_x/∂x)(1+∂D_z/∂z) − (∂D_x/∂z)² to drive physically plausible whitecap breaker foam",
+    "Computing exact analytical normals N = (−Q·sin φ, 1 − Q·cos φ) in vertex/compute shaders without finite-difference neighbors"
+  ],
+  "not_for": [
+    "Overturning 3D plunging surf tubes that physically require multi-valued Lagrangian SPH or Eulerian VOF fluid solvers",
+    "Calm flat puddles with zero horizontal choppiness (Q = 0)",
+    "Neural fluid physics or video diffusion water generation",
+    "Static non-displaced water planes"
+  ],
+  "locale_zh": {
+    "tessendorf-analytic-fd-equivalence-128": "Tessendorf解析雅可比与有限差分等价 128",
+    "128 analytic 1−Q·cos(φ) Jacobian and 64-step finite-difference wave mesh passes agree within 1e-9": "128 次解析 1−Q·cos(φ) 雅可比与 64 步有限差分海面网格在 1e-9 内一致",
+    "tessendorf-analytic-fd-equivalence-1024": "Tessendorf解析雅可比与有限差分等价 1024",
+    "1024 analytic 1−Q·cos(φ) Jacobian and 64-step finite-difference wave mesh passes agree within 1e-9": "1024 次解析 1−Q·cos(φ) 雅可比与 64 步有限差分海面网格在 1e-9 内一致",
+    "tessendorf-analytic-fd-equivalence-8192": "Tessendorf解析雅可比与有限差分等价 8192",
+    "8192 analytic 1−Q·cos(φ) Jacobian and 64-step finite-difference wave mesh passes agree within 1e-9": "8192 次解析 1−Q·cos(φ) 雅可比与 64 步有限差分海面网格在 1e-9 内一致",
+    "tessendorf-positivity-conserved": "Tessendorf海面雅可比正定守恒",
+    "17 wave phase stations stay strictly positive (crest station-8 φ=0° J=+0.2000 > 0)": "17 个海浪相位站点保持严格正定（第 8 站波峰 φ=0° J=+0.2000 > 0）",
+    "oversteep-gerstner-crest-loop-exposed": "超陡Gerstner波峰倒扣自交暴露",
+    "naive over-steepened Q=1.60 plunges crest station-8 to J=−0.6000 (deficit −0.8000 across 5/17 stations)": "朴素超陡 Q=1.60 将第 8 站波峰雅可比拉负至 J=−0.6000（亏缺 −0.8000，污染 5/17 站）",
+    "tessendorf-crest-jacobian-locked": "Tessendorf波峰正雅可比锁定",
+    "Tessendorf Jacobian Limiter locks crest station-8 (φ=0°) at J=+0.2000 (0/17 inverted stations)": "Tessendorf 雅可比限幅将第 8 站波峰（φ=0°）锁定在 J=+0.2000（0/17 倒扣站）",
+    "oversteep-negative-jacobian-exposed": "超陡负雅可比倒扣暴露",
+    "naive Q=1.60 inverts crest station-8 to J=−0.6000 < 0 across 5/17 self-intersecting crest stations": "朴素 Q=1.60 将第 8 站波峰翻转至 J=−0.6000 < 0（波及 5/17 个波峰自交站点）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse station scrubbing reproduces the exact wave flume carriage world matrix": "逆序站点拖曳精确复现海浪水槽滑车世界矩阵",
+    "atomic-steepness-rejection": "原子原始陡度拒绝",
+    "out-of-range rawWaveSteepnessQ=999.0 is rejected while valid Gerstner Jacobian state remains": "越界原始陡度 999.0 被拒绝，有效摆线波雅可比状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered wave carriage y-elevation matches solved surface Jacobian height": "渲染海浪滑车垂直高度与求解器表面雅可比高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px Gerstner Jacobian controls fit without horizontal overflow": "390px 摆线海浪雅可比控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual station scrubbing remains available": "减少动态默认静止，保留手动站点核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Tessendorf Analytic Jacobian 1−Q·cos(φ)": "Tessendorf 解析摆线波雅可比 1−Q·cos(φ)",
+    "64-Substep Finite-Difference Mesh Secant": "64 子步有限差分网格割线基线",
+    "Median of 7 alternating Node CPU runs after warmup. Analytic trochoidal Jacobian evaluation versus 64-substep finite-difference wave mesh secant integration.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；Tessendorf 解析摆线波雅可比求值对比 64 子步有限差分网格割线积分基线。",
+    "Sampled 17 wave phase stations maintain strictly positive surface Jacobian J > 0 without crest self-intersection loops": "采样 17 个海浪相位站点全部保持严格正定表面雅可比 J > 0，无波峰倒扣自交打结",
+    "J(φ) = dx / dφ = 1 − Q_safe · cos φ > 0 → Crest J(0°) = +0.2000 (5.00× Pinch, 0.0000 Loop Inversion)": "摆线波雅可比正定限幅 J(φ)=1−Q_safe·cos φ > 0 → 波峰 J(0°) = +0.2000（5.00× 尖峰聚拢，0 倒扣环）",
+    "Real-time ocean water systems (Gerstner wave sums and Tessendorf FFT choppiness displacement) in UE5, Unity HDRP, Frostbite, and Three.js": "UE5、Unity HDRP、Frostbite 与 Three.js 中的实时海洋系统（Gerstner 波叠加与 Tessendorf FFT 水平挤压位移）",
+    "Pinching rounded sine waves into sharp trochoidal ocean crests with wide troughs while preventing Σ Q_i > 1 mesh inversion loops": "将圆钝正弦波收拢为尖峰宽谷的真实摆线海浪，同时防止总陡度 ΣQ_i > 1 引发波峰网格倒扣自交",
+    "Using the surface Jacobian determinant J = (1+∂D_x/∂x)(1+∂D_z/∂z) − (∂D_x/∂z)² to drive physically plausible whitecap breaker foam": "直接利用表面雅可比行列式 J 低于阈值的位置自动生成物理真实的浪尖白沫（Whitecap Foam）",
+    "Computing exact analytical normals N = (−Q·sin φ, 1 − Q·cos φ) in vertex/compute shaders without finite-difference neighbors": "在顶点或计算着色器中直接解析求取精确海面法线，无需采样相邻顶点做有限差分",
+    "Overturning 3D plunging surf tubes that physically require multi-valued Lagrangian SPH or Eulerian VOF fluid solvers": "需要形成管状卷浪空腔（Plunging Breakers）的极端冲浪仿真（需使用 SPH 粒子或欧拉流体网格）",
+    "Calm flat puddles with zero horizontal choppiness (Q = 0)": "无水平挤压位移的平静水洼（Q = 0）",
+    "Neural fluid physics or video diffusion water generation": "神经流体物理推理或视频扩散水面生成",
+    "Static non-displaced water planes": "无顶点位移的静态水面平面"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/gerstner-wave-jacobian.test.ts",
+    "node scripts/benchmark-gerstner-wave-jacobian.mjs"
+  ]
+}

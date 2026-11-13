@@ -1,0 +1,267 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Lorach soft particle Hermite depth-fade vs hard Z-test billboard terrain clipping seam rig",
+  "topic_zh": "Lorach 软粒子三阶埃尔米特深度消隐（DepthFade）对比朴素硬件 Z 测试广告牌插地硬切痕",
+  "slug": "soft-particle-depth-fade-rig",
+  "timestamp": "2026-11-13T19:38:56.720Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Tristan Lorach (NVIDIA GPU Gems 3, 2007) cubic Hermite soft particle depth-fade (alpha_soft = alpha_0 * s^2 * (3 - 2s), s = clamp((z_scene - z_particle)/d_fade, 0, 1)) versus naive hardware Z-test billboard clipping and 64-slab volumetric parabolic density quadrature across 17 depth-clearance stations (Delta_z in [-0.40m, +1.20m]). No neural volumetric splatting execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "lorach-hermite-quadrature-equivalence-128",
+      "passed": true,
+      "detail": "128 closed-form Hermite depth-fade and 64-slab volumetric quadrature passes agree within 1e-13"
+    },
+    {
+      "name": "lorach-hermite-quadrature-equivalence-1024",
+      "passed": true,
+      "detail": "1024 closed-form Hermite depth-fade and 64-slab volumetric quadrature passes agree within 1e-13"
+    },
+    {
+      "name": "lorach-hermite-quadrature-equivalence-8192",
+      "passed": true,
+      "detail": "8192 closed-form Hermite depth-fade and 64-slab volumetric quadrature passes agree within 1e-13"
+    },
+    {
+      "name": "lorach-volumetric-feather-conserved",
+      "passed": true,
+      "detail": "17 depth-clearance stations feather smoothly with C1 contact (station-6 Δz=0.20m α=0.1250)"
+    },
+    {
+      "name": "hard-z-test-cardboard-seam-exposed",
+      "passed": true,
+      "detail": "naive hard Z-test snaps to α=0.8000 at station-6 (+0.6750 error, max +0.8000 cliff across 8/17 stations)"
+    },
+    {
+      "name": "lorach-station6-feather-locked",
+      "passed": true,
+      "detail": "Lorach Soft Particle Depth-Fade locks station-6 (Δz=+0.20m) at α=0.1250 (0/17 cardboard seam stations)"
+    },
+    {
+      "name": "hard-z-test-cliff-exposed",
+      "passed": true,
+      "detail": "naive hard Z-test outputs α=0.8000 at station-6 (+0.6750 cliff, +0.8000 at Δz=0 across 8/17 stations)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse station scrubbing reproduces the exact particle densitometer carriage world matrix"
+    },
+    {
+      "name": "atomic-alpha-rejection",
+      "passed": true,
+      "detail": "out-of-range baseParticleAlpha=999.0 is rejected while valid Soft Particle state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered densitometer carriage y-elevation matches solved particle opacity height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Soft Particle controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual station scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station soft particle passes",
+      "count": 128,
+      "primary_ms": 0.0804000000000542,
+      "baseline_ms": 0.29980000000000473,
+      "primary_samples_ms": [
+        0.10580000000004475,
+        0.18230000000005475,
+        0.07270000000005439,
+        0.07230000000004111,
+        0.08150000000000546,
+        0.0804000000000542,
+        0.06889999999998508
+      ],
+      "baseline_samples_ms": [
+        0.43820000000005166,
+        0.3823000000001002,
+        0.2759999999999536,
+        0.27080000000000837,
+        0.29980000000000473,
+        0.3168999999999187,
+        0.2843000000000302
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station soft particle passes",
+      "count": 1024,
+      "primary_ms": 0.04509999999993397,
+      "baseline_ms": 1.1299999999999955,
+      "primary_samples_ms": [
+        0.12040000000001783,
+        0.04509999999993397,
+        0.04360000000008313,
+        0.0443000000000211,
+        0.5701999999999998,
+        0.5035000000000309,
+        0.044399999999996
+      ],
+      "baseline_samples_ms": [
+        1.1871999999999616,
+        1.2524999999999409,
+        1.6832000000000562,
+        1.1275000000000546,
+        1.116200000000049,
+        1.1299999999999955,
+        1.125099999999975
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station soft particle passes",
+      "count": 8192,
+      "primary_ms": 0.3507000000000744,
+      "baseline_ms": 9.145599999999945,
+      "primary_samples_ms": [
+        0.3507000000000744,
+        0.3502000000000862,
+        0.34569999999996526,
+        0.3511999999999489,
+        0.5593000000000075,
+        0.35159999999996217,
+        0.3492999999999711
+      ],
+      "baseline_samples_ms": [
+        9.35489999999993,
+        9.096099999999979,
+        9.148699999999963,
+        9.138000000000034,
+        9.145599999999945,
+        10.43769999999995,
+        9.058899999999994
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/soft-particle-depth-fade-rig/light-lorach-hermite-depth-fade.png",
+    "docs/evidence/soft-particle-depth-fade-rig/light-naive-hard-z-test-billboard.png",
+    "docs/evidence/soft-particle-depth-fade-rig/dark-lorach-hermite-depth-fade.png",
+    "docs/evidence/soft-particle-depth-fade-rig/dark-naive-hard-z-test-billboard.png",
+    "docs/evidence/soft-particle-depth-fade-rig/mobile.png"
+  ],
+  "primary_label": "Lorach Closed-Form Hermite Depth-Fade",
+  "baseline_label": "64-Slab Volumetric Density Quadrature",
+  "load_unit": "17-station soft particle passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form cubic Hermite smoothstep depth-fade versus 64-slab volumetric parabolic density quadrature.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "base_alpha": 0.8,
+    "fade_distance_m": 0.8,
+    "soft_station6_alpha": 0.125,
+    "naive_station6_alpha": 0.8,
+    "max_seam_cliff_error": 0.8,
+    "corrupted_stations": 8,
+    "maximum_solver_error": 1.1102e-16
+  },
+  "protocol": {
+    "input": {
+      "station_index": 6,
+      "clearance_dz_m": 0.2,
+      "fade_d_m": 0.8,
+      "base_alpha": 0.8,
+      "mode": "lorach-hermite-depth-fade"
+    },
+    "output": {
+      "fade_fraction_s": 0.25,
+      "soft_alpha": 0.125,
+      "naive_hard_alpha": 0.8,
+      "station6_cliff_error": 0.675,
+      "corrupted_stations": 8
+    },
+    "function": "α_soft = α₀ · s²(3 − 2s) where s = clamp(Δz / d_fade, 0, 1) → α(+0.20m) = 0.1250 (0.0000 Cardboard Seam)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 depth-clearance stations feather particle intersections with C1 continuity and zero cardboard seams",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Ground-hugging smoke, explosion fireballs, waterfall mist, dust clouds, and shockwave billboards in UE5, Unity, and Three.js",
+    "Eliminating razor-sharp 2D polygon intersection lines where billboard quads slice into sloped terrain or walls",
+    "Guaranteeing C1 zero-derivative opacity contact at Δz = 0 and Δz = d_fade via cubic Hermite s²(3 − 2s)",
+    "Replacing 64-step per-particle volumetric ray marching with a 1-tap scene depth buffer lookup"
+  ],
+  "not_for": [
+    "Opaque rigid debris particles (rocks, shrapnel, shell casings) that should intersect or collide sharply",
+    "Pure forward pipelines without a readable depth texture / depth prepass",
+    "Neural 3D Gaussian Splatting (3DGS) or NeRF training",
+    "Camera near-plane clipping (requires separate near-plane distance fade)"
+  ],
+  "locale_zh": {
+    "lorach-hermite-quadrature-equivalence-128": "Lorach闭式消隐与64层体积求积等价 128",
+    "128 closed-form Hermite depth-fade and 64-slab volumetric quadrature passes agree within 1e-13": "128 次闭式埃尔米特深度消隐与 64 层体积密度数值求积在 1e-13 内一致",
+    "lorach-hermite-quadrature-equivalence-1024": "Lorach闭式消隐与64层体积求积等价 1024",
+    "1024 closed-form Hermite depth-fade and 64-slab volumetric quadrature passes agree within 1e-13": "1024 次闭式埃尔米特深度消隐与 64 层体积密度数值求积在 1e-13 内一致",
+    "lorach-hermite-quadrature-equivalence-8192": "Lorach闭式消隐与64层体积求积等价 8192",
+    "8192 closed-form Hermite depth-fade and 64-slab volumetric quadrature passes agree within 1e-13": "8192 次闭式埃尔米特深度消隐与 64 层体积密度数值求积在 1e-13 内一致",
+    "lorach-volumetric-feather-conserved": "Lorach体积羽化消隐守恒",
+    "17 depth-clearance stations feather smoothly with C1 contact (station-6 Δz=0.20m α=0.1250)": "17 个深度间隙站点实现 C1 平滑相切羽化（第 6 站 Δz=0.20m α=0.1250）",
+    "hard-z-test-cardboard-seam-exposed": "硬件Z测试纸板硬切痕暴露",
+    "naive hard Z-test snaps to α=0.8000 at station-6 (+0.6750 error, max +0.8000 cliff across 8/17 stations)": "朴素硬件 Z 测试在第 6 站硬跳至 α=0.8000（偏高 +0.6750，峰值悬崖 +0.8000，污染 8/17 站）",
+    "lorach-station6-feather-locked": "Lorach第6站平滑羽化锁定",
+    "Lorach Soft Particle Depth-Fade locks station-6 (Δz=+0.20m) at α=0.1250 (0/17 cardboard seam stations)": "Lorach 软粒子消隐将第 6 站（Δz=+0.20m）锁定在 α=0.1250（0/17 硬边站）",
+    "hard-z-test-cliff-exposed": "硬件Z测试悬崖切痕暴露",
+    "naive hard Z-test outputs α=0.8000 at station-6 (+0.6750 cliff, +0.8000 at Δz=0 across 8/17 stations)": "朴素硬件 Z 测试在第 6 站输出 α=0.8000（悬崖 +0.6750，Δz=0 处达 +0.8000，波及 8/17 站）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse station scrubbing reproduces the exact particle densitometer carriage world matrix": "逆序站点拖曳精确复现粒子密度计滑车世界矩阵",
+    "atomic-alpha-rejection": "原子基础不透明度拒绝",
+    "out-of-range baseParticleAlpha=999.0 is rejected while valid Soft Particle state remains": "越界基础不透明度 999.0 被拒绝，有效软粒子状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered densitometer carriage y-elevation matches solved particle opacity height": "渲染密度计滑车垂直高度与求解器粒子不透明度高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px Soft Particle controls fit without horizontal overflow": "390px 软粒子深度消隐控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual station scrubbing remains available": "减少动态默认静止，保留手动站点核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Lorach Closed-Form Hermite Depth-Fade": "Lorach 闭式埃尔米特软粒子深度消隐",
+    "64-Slab Volumetric Density Quadrature": "64 层体积抛物密度数值求积基线",
+    "Median of 7 alternating Node CPU runs after warmup. Closed-form cubic Hermite smoothstep depth-fade versus 64-slab volumetric parabolic density quadrature.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；Lorach 闭式三阶埃尔米特深度消隐对比 64 层体积抛物密度数值求积基线。",
+    "Sampled 17 depth-clearance stations feather particle intersections with C1 continuity and zero cardboard seams": "采样 17 个深度间隙站点全部实现 C1 平滑体积羽化，零二维纸板插地切痕",
+    "α_soft = α₀ · s²(3 − 2s) where s = clamp(Δz / d_fade, 0, 1) → α(+0.20m) = 0.1250 (0.0000 Cardboard Seam)": "三阶埃尔米特软粒子深度消隐 α₀·s²(3−2s) → Δz=+0.20m 处锁定 α = 0.1250（0.0000 纸板切痕）",
+    "Ground-hugging smoke, explosion fireballs, waterfall mist, dust clouds, and shockwave billboards in UE5, Unity, and Three.js": "UE5、Unity 与 Three.js 中的贴地浓烟、爆炸火球、瀑布水雾与车轮扬尘广告牌粒子",
+    "Eliminating razor-sharp 2D polygon intersection lines where billboard quads slice into sloped terrain or walls": "彻底消除二维粒子广告牌插进地面斜坡或墙面时露出的刀切纸板硬边",
+    "Guaranteeing C1 zero-derivative opacity contact at Δz = 0 and Δz = d_fade via cubic Hermite s²(3 − 2s)": "通过三阶埃尔米特多项式 s²(3−2s) 保证在 Δz=0 与 Δz=d_fade 两侧一阶导数均为零（无马赫带折痕）",
+    "Replacing 64-step per-particle volumetric ray marching with a 1-tap scene depth buffer lookup": "仅需 1 次场景深度缓冲读取即可替代昂贵的逐粒子 64 步体积光线步进",
+    "Opaque rigid debris particles (rocks, shrapnel, shell casings) that should intersect or collide sharply": "碎石、弹壳等原本就应当具有清晰刚体边界的不透明碎片粒子",
+    "Pure forward pipelines without a readable depth texture / depth prepass": "未开启深度预通道（Depth Prepass）且无法读取场景深度贴图的极简前向管线",
+    "Neural 3D Gaussian Splatting (3DGS) or NeRF training": "神经 3D 高斯溅射（3DGS）或 NeRF 体积训练",
+    "Camera near-plane clipping (requires separate near-plane distance fade)": "相机近裁剪面穿插（需额外叠加近平面相机距离消隐）"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/soft-particle-depth-fade.test.ts",
+    "node scripts/benchmark-soft-particle-depth-fade.mjs"
+  ]
+}

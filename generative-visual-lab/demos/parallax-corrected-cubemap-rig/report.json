@@ -1,0 +1,267 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Lagarde box parallax-corrected cubemap reflection vs infinite-skybox floor reflection sliding rig",
+  "topic_zh": "Lagarde 包围盒视差校正立方体贴图（PCC）对比朴素无穷远天空盒室内地面倒影打滑",
+  "slug": "parallax-corrected-cubemap-rig",
+  "timestamp": "2026-11-13T19:26:15.223Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Sebastien Lagarde (SIGGRAPH 2012) ray-AABB slab parallax-corrected cubemap reflection (P_hit = P + t_box * R, R_corr = P_hit - P_probe) versus naive infinite-distance cubemap lookup (R_lookup = R) and 54-step 3D room ray marching across 17 floor receiver stations (x in [-4.0m, +4.0m]). No neural radiance caching execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "lagarde-pcc-raymarch-equivalence-128",
+      "passed": true,
+      "detail": "128 closed-form slab PCC and 54-step 3D room ray-march passes agree within 1e-13"
+    },
+    {
+      "name": "lagarde-pcc-raymarch-equivalence-1024",
+      "passed": true,
+      "detail": "1024 closed-form slab PCC and 54-step 3D room ray-march passes agree within 1e-13"
+    },
+    {
+      "name": "lagarde-pcc-raymarch-equivalence-8192",
+      "passed": true,
+      "detail": "8192 closed-form slab PCC and 54-step 3D room ray-march passes agree within 1e-13"
+    },
+    {
+      "name": "lagarde-world-contact-anchored",
+      "passed": true,
+      "detail": "17 floor stations anchor reflected wall contact exactly (station-14 x=+3.0m hits wall at Y=2.0000m)"
+    },
+    {
+      "name": "infinite-cubemap-parallax-slide-exposed",
+      "passed": true,
+      "detail": "naive infinite cubemap samples Y=7.0000m at station-14 (+5.0000m slide, max +6.0000m across 16/17 stations)"
+    },
+    {
+      "name": "lagarde-station14-wall-height-locked",
+      "passed": true,
+      "detail": "Lagarde PCC locks station-14 (x=+3.0m) wall reflection at Y=2.0000m (0/17 sliding stations)"
+    },
+    {
+      "name": "infinite-cubemap-5m-slide-exposed",
+      "passed": true,
+      "detail": "naive infinite cubemap shifts station-14 wall sample to Y=7.0000m (+5.0000m slide across 16/17 stations)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse station scrubbing reproduces the exact PCC goniometer carriage world matrix"
+    },
+    {
+      "name": "atomic-room-width-rejection",
+      "passed": true,
+      "detail": "out-of-range roomHalfWidthM=999.0 is rejected while valid Parallax Cubemap state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered goniometer carriage y-elevation matches solved wall sample height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Parallax Cubemap controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual station scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station PCC passes",
+      "count": 128,
+      "primary_ms": 0.007699999999999818,
+      "baseline_ms": 0.2958000000000425,
+      "primary_samples_ms": [
+        0.10910000000001219,
+        0.08780000000001564,
+        0.0887000000000171,
+        0.00580000000002201,
+        0.007699999999999818,
+        0.004800000000045657,
+        0.004799999999988813
+      ],
+      "baseline_samples_ms": [
+        0.4047999999999661,
+        0.3938999999999737,
+        0.3205000000000382,
+        0.2958000000000425,
+        0.16440000000000055,
+        0.15409999999997126,
+        0.15390000000002146
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station PCC passes",
+      "count": 1024,
+      "primary_ms": 0.04229999999995471,
+      "baseline_ms": 1.2095999999999663,
+      "primary_samples_ms": [
+        0.04930000000001655,
+        0.048399999999958254,
+        0.04229999999995471,
+        0.04390000000000782,
+        0.04220000000003665,
+        0.04219999999997981,
+        0.04210000000000491
+      ],
+      "baseline_samples_ms": [
+        1.213200000000029,
+        1.275100000000009,
+        1.2062999999999988,
+        1.2416000000000054,
+        1.2086999999999648,
+        1.2058000000000106,
+        1.2095999999999663
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station PCC passes",
+      "count": 8192,
+      "primary_ms": 0.33629999999999427,
+      "baseline_ms": 9.680700000000002,
+      "primary_samples_ms": [
+        0.33629999999999427,
+        0.33960000000001855,
+        0.33730000000002747,
+        0.33730000000002747,
+        0.33490000000000464,
+        0.3358000000000061,
+        0.33490000000000464
+      ],
+      "baseline_samples_ms": [
+        9.67070000000001,
+        9.959100000000035,
+        9.680700000000002,
+        9.676699999999983,
+        9.8519,
+        9.668900000000008,
+        10.158500000000004
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/parallax-corrected-cubemap-rig/light-lagarde-box-parallax-corrected.png",
+    "docs/evidence/parallax-corrected-cubemap-rig/light-naive-infinite-skybox-cubemap.png",
+    "docs/evidence/parallax-corrected-cubemap-rig/dark-lagarde-box-parallax-corrected.png",
+    "docs/evidence/parallax-corrected-cubemap-rig/dark-naive-infinite-skybox-cubemap.png",
+    "docs/evidence/parallax-corrected-cubemap-rig/mobile.png"
+  ],
+  "primary_label": "Lagarde Closed-Form Slab PCC",
+  "baseline_label": "54-Step 3D Room Ray-March Search",
+  "load_unit": "17-station PCC passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form slab ray-box intersection versus 54-step 3D room ray-marching search.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "room_half_width_m": 5,
+    "probe_height_m": 2,
+    "pcc_station14_wall_y_m": 2,
+    "naive_station14_wall_y_m": 7,
+    "max_slide_error_m": 6,
+    "corrupted_stations": 16,
+    "maximum_solver_error": 1.7764e-15
+  },
+  "protocol": {
+    "input": {
+      "station_index": 14,
+      "floor_x_m": 3,
+      "wall_x_m": 5,
+      "probe_y_m": 2,
+      "mode": "lagarde-box-parallax-corrected"
+    },
+    "output": {
+      "slab_hit_t_m": 2.8284,
+      "pcc_wall_y_m": 2,
+      "naive_wall_y_m": 7,
+      "station14_slide_m": 5,
+      "corrupted_stations": 16
+    },
+    "function": "R_corr = (P + t_box · R) − P_probe → Station-14 (x=+3m) Hits Wall at Y = 2.0000 m (0.0000 m Parallax Slide)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 floor receiver stations anchor wall reflections to exact 3D room contact heights",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Indoor rooms, corridors, showrooms, and underground garages using Box/Sphere Reflection Captures in UE5, Unity, and Three.js",
+    "Anchoring wall, window, and pillar reflections to exact floor corners without camera-dependent sliding",
+    "Evaluating ray-AABB slab intersection t_box = min((B_max − P)/R) in 6 ALU instructions per pixel",
+    "Blending multiple local reflection probes with world-space distance weights"
+  ],
+  "not_for": [
+    "Distant outdoor sky clouds, mountains, and stars where r → ∞ is physically accurate (infinite skybox)",
+    "Complex non-convex interior furniture self-reflections (combine PCC with McGuire homogeneous SSR from Round 85)",
+    "Neural radiance caching (NRC) or 3D Gaussian Splatting novel-view synthesis",
+    "Purely diffuse surfaces with zero specular reflectance"
+  ],
+  "locale_zh": {
+    "lagarde-pcc-raymarch-equivalence-128": "Lagarde平板求交与三维步进等价 128",
+    "128 closed-form slab PCC and 54-step 3D room ray-march passes agree within 1e-13": "128 次闭式平板 PCC 求交与 54 步三维房间光线步进在 1e-13 内一致",
+    "lagarde-pcc-raymarch-equivalence-1024": "Lagarde平板求交与三维步进等价 1024",
+    "1024 closed-form slab PCC and 54-step 3D room ray-march passes agree within 1e-13": "1024 次闭式平板 PCC 求交与 54 步三维房间光线步进在 1e-13 内一致",
+    "lagarde-pcc-raymarch-equivalence-8192": "Lagarde平板求交与三维步进等价 8192",
+    "8192 closed-form slab PCC and 54-step 3D room ray-march passes agree within 1e-13": "8192 次闭式平板 PCC 求交与 54 步三维房间光线步进在 1e-13 内一致",
+    "lagarde-world-contact-anchored": "Lagarde世界空间墙面接触锚定",
+    "17 floor stations anchor reflected wall contact exactly (station-14 x=+3.0m hits wall at Y=2.0000m)": "17 个地面站点精确锚定墙面反射高度（第 14 站 x=+3.0m 命中墙面 Y=2.0000m）",
+    "infinite-cubemap-parallax-slide-exposed": "无穷远立方体贴图视差打滑暴露",
+    "naive infinite cubemap samples Y=7.0000m at station-14 (+5.0000m slide, max +6.0000m across 16/17 stations)": "朴素无穷远立方体贴图在第 14 站错误采样 Y=7.0000m（漂移 +5.0000m，峰值 +6.0000m，污染 16/17 站）",
+    "lagarde-station14-wall-height-locked": "Lagarde第14站墙面反射高度锁定",
+    "Lagarde PCC locks station-14 (x=+3.0m) wall reflection at Y=2.0000m (0/17 sliding stations)": "Lagarde 视差校正将第 14 站（x=+3.0m）锁定在墙面 Y=2.0000m（0/17 打滑站）",
+    "infinite-cubemap-5m-slide-exposed": "无穷远贴图5米视差漂移暴露",
+    "naive infinite cubemap shifts station-14 wall sample to Y=7.0000m (+5.0000m slide across 16/17 stations)": "朴素无穷远立方体贴图将第 14 站墙面采样漂移至 Y=7.0000m（偏离 +5.0000m，波及 16/17 站）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse station scrubbing reproduces the exact PCC goniometer carriage world matrix": "逆序站点拖曳精确复现 PCC 测角仪滑车世界矩阵",
+    "atomic-room-width-rejection": "原子房间半宽拒绝",
+    "out-of-range roomHalfWidthM=999.0 is rejected while valid Parallax Cubemap state remains": "越界房间半宽 999.0m 被拒绝，有效视差校正状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered goniometer carriage y-elevation matches solved wall sample height": "渲染测角仪滑车垂直高度与求解器墙面命中高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px Parallax Cubemap controls fit without horizontal overflow": "390px 视差校正立方体贴图控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual station scrubbing remains available": "减少动态默认静止，保留手动站点核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Lagarde Closed-Form Slab PCC": "Lagarde 闭式平板包围盒视差校正（PCC）",
+    "54-Step 3D Room Ray-March Search": "54 步三维房间光线步进基线",
+    "Median of 7 alternating Node CPU runs after warmup. Closed-form slab ray-box intersection versus 54-step 3D room ray-marching search.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；Lagarde 闭式平板包围盒求交对比 54 步三维房间光线步进基线。",
+    "Sampled 17 floor receiver stations anchor wall reflections to exact 3D room contact heights": "采样 17 个室内地面接收站点全部将墙面倒影精准锚定在三维房间真实接触高度，零视差打滑",
+    "R_corr = (P + t_box · R) − P_probe → Station-14 (x=+3m) Hits Wall at Y = 2.0000 m (0.0000 m Parallax Slide)": "包围盒求交校正 R_corr = (P+t·R)−P_probe → 第 14 站（x=+3m）精准命中墙面 Y = 2.0000m（0.0000m 滑移）",
+    "Indoor rooms, corridors, showrooms, and underground garages using Box/Sphere Reflection Captures in UE5, Unity, and Three.js": "UE5、Unity 与 Three.js 中使用盒体/球体反射探针的室内展厅、走廊与地下车库",
+    "Anchoring wall, window, and pillar reflections to exact floor corners without camera-dependent sliding": "将墙面、落地窗与立柱倒影死死锚定在真实墙根交线上，消除随相机移动的打滑感",
+    "Evaluating ray-AABB slab intersection t_box = min((B_max − P)/R) in 6 ALU instructions per pixel": "每像素仅需 6 条向量算术指令即可完成射线-AABB 包围盒平板求交",
+    "Blending multiple local reflection probes with world-space distance weights": "支持多局部反射探针按三维空间盒体权重平滑混合过渡",
+    "Distant outdoor sky clouds, mountains, and stars where r → ∞ is physically accurate (infinite skybox)": "云层、远山与星空等距离趋于无穷远（r→∞）的户外天空盒反射",
+    "Complex non-convex interior furniture self-reflections (combine PCC with McGuire homogeneous SSR from Round 85)": "复杂非凸室内家具的精细自反射（建议将 PCC 作为 SSR 未命中时的后备方案）",
+    "Neural radiance caching (NRC) or 3D Gaussian Splatting novel-view synthesis": "神经辐射缓存（NRC）或 3D 高斯溅射新视角合成",
+    "Purely diffuse surfaces with zero specular reflectance": "无镜面反射分量的纯漫反射表面"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/parallax-corrected-cubemap.test.ts",
+    "node scripts/benchmark-parallax-corrected-cubemap.mjs"
+  ]
+}

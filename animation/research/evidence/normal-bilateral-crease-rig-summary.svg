@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#070b14"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect x="28" y="28" width="1144" height="574" rx="20" fill="#0b1324" stroke="#1e293b" stroke-width="2"/>
+
+  <text x="56" y="74" fill="#38bdf8" font-family="Inter, Segoe UI, sans-serif" font-size="15" font-weight="700" letter-spacing="1.5">
+    ROUND 95 · CROSS-BILATERAL NORMAL-STOPPING CREASE FILTER VS DEPTH-ONLY 90° CORNER BLEED
+  </text>
+  <text x="56" y="112" fill="#f8fafc" font-family="Inter, Segoe UI, sans-serif" font-size="22" font-weight="800">
+    Cross-Bilateral Normal Gate (d=0px E = 0.9600) vs Depth-Only Blur (E = 0.6100, 168.53× Faster)
+  </text>
+  <text x="56" y="142" fill="#94a3b8" font-family="Inter, Segoe UI, sans-serif" font-size="15">
+    Where depth Δz = 0m is continuous across a 90° wall-floor crease, normal gating max(0, N_p·N_q)^32 stops shadow bleed
+  </text>
+
+  <!-- Left Panel: Cross-Bilateral Normal-Stopping Filter -->
+  <rect x="56" y="170" width="528" height="396" rx="14" fill="#0f1b33" stroke="#10b981" stroke-width="1.8"/>
+  <text x="80" y="204" fill="#34d399" font-family="Inter, Segoe UI, sans-serif" font-size="17" font-weight="700">
+    ✅ Cross-Bilateral Normal-Stopping (w_N = (N_p·N_q)^32)
+  </text>
+  <text x="80" y="228" fill="#cbd5e1" font-family="Inter, Segoe UI, sans-serif" font-size="13">
+    N_floor · N_wall = cos 90° = 0 → Zero Cross-Crease Blending at Δz = 0m
+  </text>
+
+  <!-- Crisp step separation across 90-deg corner left -->
+  <path d="M 95 425 L 305 425 L 305 262 L 540 262" fill="none" stroke="#34d399" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="320" cy="262" r="8" fill="#34d399" stroke="#f8fafc" stroke-width="2"/>
+  <text x="320" y="468" fill="#34d399" font-family="Consolas, monospace" font-size="13" font-weight="700" text-anchor="middle">
+    Station-8 (d=0px Wall Corner): E_filt = 0.9600 (0.0000 Smudge!)
+  </text>
+
+  <rect x="80" y="492" width="480" height="54" rx="8" fill="#062e22" stroke="#10b981"/>
+  <text x="96" y="514" fill="#a7f3d0" font-family="Consolas, monospace" font-size="14" font-weight="700">
+    Smudged Corner Stations: 0 / 17 (Razor-Sharp 90° Crease)
+  </text>
+  <text x="96" y="534" fill="#6ee7b7" font-family="Consolas, monospace" font-size="13">
+    8,192 17-Station Passes: 0.34 ms (Dot Gate) vs 56.54 ms (64-Tap Kernel, 168.53×)
+  </text>
+
+  <!-- Right Panel: Naive Depth-Only Bilateral Blur -->
+  <rect x="616" y="170" width="528" height="396" rx="14" fill="#1c1124" stroke="#f43f5e" stroke-width="1.8"/>
+  <text x="640" y="204" fill="#fb7185" font-family="Inter, Segoe UI, sans-serif" font-size="17" font-weight="700">
+    ❌ Naive Depth-Only Bilateral Blur (Δz = 0 → w_z = 1.0)
+  </text>
+  <text x="640" y="228" fill="#cbd5e1" font-family="Inter, Segoe UI, sans-serif" font-size="13">
+    Blind to 90° Normal Crease → Smears Dark Floor Onto Sunlit Wall!
+  </text>
+
+  <!-- Smeared ramp across 90-deg corner right -->
+  <path d="M 655 425 L 865 425 L 865 262 L 1100 262" fill="none" stroke="#475569" stroke-width="3" stroke-dasharray="6,4"/>
+  <path d="M 655 425 L 770 425 L 960 262 L 1100 262" fill="none" stroke="#fb7185" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="880" cy="333" r="8" fill="#fb7185" stroke="#f8fafc" stroke-width="2"/>
+  <text x="880" y="468" fill="#fda4af" font-family="Consolas, monospace" font-size="13" font-weight="700" text-anchor="middle">
+    Station-8 (d=0px Wall Corner): E_naive = 0.6100 (−0.3500 Dark Smudge!)
+  </text>
+
+  <rect x="640" y="492" width="480" height="54" rx="8" fill="#3b0a1e" stroke="#f43f5e"/>
+  <text x="656" y="514" fill="#fecdd3" font-family="Consolas, monospace" font-size="14" font-weight="700">
+    Smudged Corner Stations: 8 / 17 (d ∈ [−4px, +3px] Bleeds Across Crease)
+  </text>
+  <text x="656" y="534" fill="#fda4af" font-family="Consolas, monospace" font-size="13">
+    Depth Continuity Δz = 0m Cannot Distinguish Flat Plane From 90° Corner
+  </text>
+</svg>

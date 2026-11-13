@@ -1,0 +1,267 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Sigg-Jimenez hardware-bilinear-merged Bicubic Catmull-Rom history resampling vs 1-tap bilinear TAA blur rig",
+  "topic_zh": "Sigg-Jiménez 硬件双线性合并双三次 Catmull-Rom 历史重采样对比单抽头双线性 TAA 凡士林模糊",
+  "slug": "bicubic-bilinear-tap-rig",
+  "timestamp": "2026-11-13T17:49:26.942Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Sigg & Hadwiger (GPU Gems 2, 2005) / Jorge Jimenez (SIGGRAPH 2016) hardware-bilinear-merged Bicubic Catmull-Rom history resampling (s_12 = w_2/(w_1+w_2), W_12 = w_1+w_2) versus naive 1-tap bilinear history resampling and brute-force 16-tap (4x4) tensor-product bicubic evaluation across 17 sub-texel stations over K = 8 recursive TAA frames. No neural frame upscaling execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "sigg-bilinear-16tap-equivalence-128",
+      "passed": true,
+      "detail": "128 Sigg bilinear-merged and 16-tap tensor bicubic passes agree within 1e-13"
+    },
+    {
+      "name": "sigg-bilinear-16tap-equivalence-1024",
+      "passed": true,
+      "detail": "1024 Sigg bilinear-merged and 16-tap tensor bicubic passes agree within 1e-13"
+    },
+    {
+      "name": "sigg-bilinear-16tap-equivalence-8192",
+      "passed": true,
+      "detail": "8192 Sigg bilinear-merged and 16-tap tensor bicubic passes agree within 1e-13"
+    },
+    {
+      "name": "sigg-bicubic-sharpness-conserved",
+      "passed": true,
+      "detail": "17 sub-texel stations preserve quadratic crest sharpness across 8 TAA frames (station-8 u=0.50 C_hist=1.0000)"
+    },
+    {
+      "name": "naive-bilinear-taa-blur-exposed",
+      "passed": true,
+      "detail": "naive 1-tap bilinear erodes station-8 (u=0.50) to C_hist=0.7214 (-0.2786 blur across 15/17 stations)"
+    },
+    {
+      "name": "sigg-midpoint-crest-locked",
+      "passed": true,
+      "detail": "Sigg-Jimenez Bicubic locks station-8 (u=0.50, W12=1.1250) at C_hist=1.0000 after 8 TAA frames (0/17 blurred stations)"
+    },
+    {
+      "name": "bilinear-28pct-crest-collapse-exposed",
+      "passed": true,
+      "detail": "1-tap bilinear collapses station-8 to C_hist=0.7214 (-0.2786 blur loss across 15/17 interior stations)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse station scrubbing reproduces the exact microdensitometer carriage world matrix"
+    },
+    {
+      "name": "atomic-curvature-rejection",
+      "passed": true,
+      "detail": "out-of-range curvatureKappa=99.0 is rejected while valid Bicubic Tap state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered microdensitometer carriage y-elevation matches solved history radiance height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Bicubic Tap controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual station scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station resampling passes",
+      "count": 128,
+      "primary_ms": 0.049500000000080036,
+      "baseline_ms": 0.37210000000004584,
+      "primary_samples_ms": [
+        0.19110000000000582,
+        0.193300000000022,
+        0.17870000000004893,
+        0.04750000000001364,
+        0.049500000000080036,
+        0.04689999999993688,
+        0.04280000000005657
+      ],
+      "baseline_samples_ms": [
+        1.1475000000000364,
+        0.37210000000004584,
+        0.41399999999998727,
+        0.272199999999998,
+        0.7178000000000111,
+        0.268799999999942,
+        0.23739999999997963
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station resampling passes",
+      "count": 1024,
+      "primary_ms": 0.3269999999999982,
+      "baseline_ms": 1.9564000000000306,
+      "primary_samples_ms": [
+        0.3310999999999922,
+        0.3269999999999982,
+        0.31949999999994816,
+        0.31960000000003674,
+        0.3188000000000102,
+        0.3444000000000642,
+        0.33379999999999654
+      ],
+      "baseline_samples_ms": [
+        1.9969999999999573,
+        2.0664999999999054,
+        1.9709000000000287,
+        1.9109999999999445,
+        1.8664999999999736,
+        1.9519000000000233,
+        1.9564000000000306
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station resampling passes",
+      "count": 8192,
+      "primary_ms": 2.7590000000000146,
+      "baseline_ms": 10.18730000000005,
+      "primary_samples_ms": [
+        3.2072999999999183,
+        2.683300000000031,
+        2.6441999999999553,
+        2.761700000000019,
+        3.9325999999999794,
+        2.7423,
+        2.7590000000000146
+      ],
+      "baseline_samples_ms": [
+        9.506799999999998,
+        10.18730000000005,
+        11.484800000000064,
+        9.315799999999967,
+        9.245900000000006,
+        10.229199999999992,
+        11.120000000000005
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/bicubic-bilinear-tap-rig/light-sigg-jimenez-bicubic-bilinear-taps.png",
+    "docs/evidence/bicubic-bilinear-tap-rig/light-naive-1tap-bilinear-history.png",
+    "docs/evidence/bicubic-bilinear-tap-rig/dark-sigg-jimenez-bicubic-bilinear-taps.png",
+    "docs/evidence/bicubic-bilinear-tap-rig/dark-naive-1tap-bilinear-history.png",
+    "docs/evidence/bicubic-bilinear-tap-rig/mobile.png"
+  ],
+  "primary_label": "Sigg Bilinear-Merged Bicubic",
+  "baseline_label": "16-Tap Tensor-Product Bicubic",
+  "load_unit": "17-station resampling passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Sigg-Hadwiger bilinear-merged Catmull-Rom evaluation versus 16-tap (4x4) tensor-product bicubic evaluation across 8 history passes.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "history_frames_k": 8,
+    "curvature_kappa": 0.16,
+    "bicubic_midpoint_radiance": 1,
+    "bilinear_midpoint_radiance": 0.7214,
+    "max_blur_attenuation_loss": 0.2786,
+    "corrupted_stations": 15,
+    "maximum_solver_error": 4.4409e-15
+  },
+  "protocol": {
+    "input": {
+      "station_index": 8,
+      "u": 0.5,
+      "kappa": 0.16,
+      "frames_k": 8,
+      "mode": "sigg-jimenez-bicubic-bilinear-taps"
+    },
+    "output": {
+      "shifted_offset_s12": 0.5,
+      "merged_weight_w12": 1.125,
+      "bicubic_radiance_8f": 1,
+      "bilinear_radiance_8f": 0.7214,
+      "blur_loss_8f": 0.2786
+    },
+    "function": "W₁₂ · lerp(T₀, T₁, w₂ / (w₁ + w₂)) ≡ w₁T₀ + w₂T₁ → 8-Frame Crest C_hist = 1.0000 (0 Blur Loss)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 sub-texel stations preserve exact parabolic crest sharpness across 8 recursive TAA frames",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "TAA history buffer reprojection in UE5 SampleHistoryCatmullRom, Call of Duty, Frostbite, and Unity HDRP",
+    "Explaining why 1-tap bilinear history resampling erodes 27.86% of texture contrast after just 8 frames of slow camera pan",
+    "Merging positive Catmull-Rom weights w1, w2 into shifted hardware bilinear lookups s_12 = w_2/(w_1+w_2) to cut 16 taps down to 5",
+    "Replacing 16-tap point-sampled tensor-product bicubic loops with hardware-bilinear-merged lookups"
+  ],
+  "not_for": [
+    "Static screenshots with zero camera or object motion where history reprojection is never shifted sub-texel",
+    "Unclamped HDR history buffers across high-contrast edges without AABB neighborhood clamping (which would ring)",
+    "Neural temporal super-resolution models (DLSS / XeSS)",
+    "Integer texel-aligned copy passes (u = 0.0 everywhere)"
+  ],
+  "locale_zh": {
+    "sigg-bilinear-16tap-equivalence-128": "Sigg双线性合并与16抽头等价 128",
+    "128 Sigg bilinear-merged and 16-tap tensor bicubic passes agree within 1e-13": "128 次 Sigg 硬件双线性合并与 16 抽头张量双三次求值在 1e-13 内一致",
+    "sigg-bilinear-16tap-equivalence-1024": "Sigg双线性合并与16抽头等价 1024",
+    "1024 Sigg bilinear-merged and 16-tap tensor bicubic passes agree within 1e-13": "1024 次 Sigg 硬件双线性合并与 16 抽头张量双三次求值在 1e-13 内一致",
+    "sigg-bilinear-16tap-equivalence-8192": "Sigg双线性合并与16抽头等价 8192",
+    "8192 Sigg bilinear-merged and 16-tap tensor bicubic passes agree within 1e-13": "8192 次 Sigg 硬件双线性合并与 16 抽头张量双三次求值在 1e-13 内一致",
+    "sigg-bicubic-sharpness-conserved": "Sigg双三次历史锐度守恒",
+    "17 sub-texel stations preserve quadratic crest sharpness across 8 TAA frames (station-8 u=0.50 C_hist=1.0000)": "17 个亚纹素站点在 8 帧 TAA 重采样后保持二阶波峰锐度（第 8 站 u=0.50 C_hist=1.0000）",
+    "naive-bilinear-taa-blur-exposed": "朴素双线性TAA凡士林模糊暴露",
+    "naive 1-tap bilinear erodes station-8 (u=0.50) to C_hist=0.7214 (-0.2786 blur across 15/17 stations)": "朴素单抽头双线性将第 8 站（u=0.50）侵蚀至 C_hist=0.7214（丢失 −0.2786，污染 15/17 站）",
+    "sigg-midpoint-crest-locked": "Sigg双三次中点波峰锁定",
+    "Sigg-Jimenez Bicubic locks station-8 (u=0.50, W12=1.1250) at C_hist=1.0000 after 8 TAA frames (0/17 blurred stations)": "Sigg-Jiménez 双三次将第 8 站（u=0.50, W12=1.1250）在 8 帧后锁死在 C_hist=1.0000（0/17 模糊站）",
+    "bilinear-28pct-crest-collapse-exposed": "单抽头双线性27.86%波峰坍塌暴露",
+    "1-tap bilinear collapses station-8 to C_hist=0.7214 (-0.2786 blur loss across 15/17 interior stations)": "单抽头双线性将第 8 站侵蚀至 C_hist=0.7214（丢失 −0.2786 锐度，波及 15/17 站）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse station scrubbing reproduces the exact microdensitometer carriage world matrix": "逆序站点拖曳精确复现显微密度计滑车世界矩阵",
+    "atomic-curvature-rejection": "原子曲率拒绝",
+    "out-of-range curvatureKappa=99.0 is rejected while valid Bicubic Tap state remains": "越界纹理曲率 99.0 被拒绝，有效双三次重采样状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered microdensitometer carriage y-elevation matches solved history radiance height": "渲染显微密度计滑车垂直高度与求解器历史重采样亮度高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px Bicubic Tap controls fit without horizontal overflow": "390px 双三次重采样控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual station scrubbing remains available": "减少动态默认静止，保留手动站点核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Sigg Bilinear-Merged Bicubic": "Sigg 硬件双线性合并双三次重采样",
+    "16-Tap Tensor-Product Bicubic": "16 抽头张量积双三次求值基线",
+    "Median of 7 alternating Node CPU runs after warmup. Sigg-Hadwiger bilinear-merged Catmull-Rom evaluation versus 16-tap (4x4) tensor-product bicubic evaluation across 8 history passes.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；Sigg-Hadwiger 硬件双线性合并双三次重采样对比 16 抽头（4×4）张量积双三次求值基线。",
+    "Sampled 17 sub-texel stations preserve exact parabolic crest sharpness across 8 recursive TAA frames": "采样 17 个亚纹素站点在 8 帧递归 TAA 重采样中全部保持精确抛物线波峰锐度",
+    "W₁₂ · lerp(T₀, T₁, w₂ / (w₁ + w₂)) ≡ w₁T₀ + w₂T₁ → 8-Frame Crest C_hist = 1.0000 (0 Blur Loss)": "Sigg 硬件双线性权重合并恒等式 → 8 帧递归历史波峰 C_hist = 1.0000（0 模糊损失）",
+    "TAA history buffer reprojection in UE5 SampleHistoryCatmullRom, Call of Duty, Frostbite, and Unity HDRP": "UE5 SampleHistoryCatmullRom、Call of Duty、Frostbite 与 Unity HDRP 中的 TAA 历史缓冲重投影",
+    "Explaining why 1-tap bilinear history resampling erodes 27.86% of texture contrast after just 8 frames of slow camera pan": "直观解释为何单抽头双线性历史重采样在短短 8 帧慢速运镜后就会磨掉 27.86% 的高频纹理对比度",
+    "Merging positive Catmull-Rom weights w1, w2 into shifted hardware bilinear lookups s_12 = w_2/(w_1+w_2) to cut 16 taps down to 5": "将正权重 w₁, w₂ 合并为偏移坐标 s₁₂ = w₂/(w₁+w₂) 的硬件双线性采样，将 16 次采样压缩至 5 次",
+    "Replacing 16-tap point-sampled tensor-product bicubic loops with hardware-bilinear-merged lookups": "以硬件双线性合并查表替代昂贵的 16 抽头逐点张量积双三次循环",
+    "Static screenshots with zero camera or object motion where history reprojection is never shifted sub-texel": "无任何亚纹素位移的纯静止无抖动画面",
+    "Unclamped HDR history buffers across high-contrast edges without AABB neighborhood clamping (which would ring)": "未配合 3×3 AABB 邻域钳制的高对比度边缘（直接用负瓣会产生振铃暗边）",
+    "Neural temporal super-resolution models (DLSS / XeSS)": "神经时域超分辨率重建模型（DLSS / XeSS）",
+    "Integer texel-aligned copy passes (u = 0.0 everywhere)": "严格对齐整数纹素中心的原样拷贝通道（u ≡ 0）"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/bicubic-bilinear-tap.test.ts",
+    "node scripts/benchmark-bicubic-bilinear-tap.mjs"
+  ]
+}

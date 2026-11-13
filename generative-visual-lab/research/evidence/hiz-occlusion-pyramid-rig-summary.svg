@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#070b14"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect x="28" y="28" width="1144" height="574" rx="20" fill="#0b1324" stroke="#1e293b" stroke-width="2"/>
+
+  <text x="56" y="74" fill="#38bdf8" font-family="Inter, Segoe UI, sans-serif" font-size="15" font-weight="700" letter-spacing="1.5">
+    ROUND 76 · GREENE CONSERVATIVE HIERARCHICAL-Z (HI-Z) PYRAMID VS AVERAGE-MIP FALSE OCCLUSION POPPING
+  </text>
+  <text x="56" y="112" fill="#f8fafc" font-family="Inter, Segoe UI, sans-serif" font-size="22" font-weight="800">
+    Greene Conservative Hi-Z (z_max = 50.0m, 17/17 Visible) vs Average Mip (z_avg = 6.88m, 16/17 Falsely Culled, 29.76×)
+  </text>
+  <text x="56" y="142" fill="#94a3b8" font-family="Inter, Segoe UI, sans-serif" font-size="15">
+    Reducing 8×8 Hi-Z tiles by farthest depth max(z) prevents doorway/fence cracks from popping visible objects out of existence
+  </text>
+
+  <!-- Left Panel: Greene Conservative Farthest-Depth Hi-Z -->
+  <rect x="56" y="170" width="528" height="396" rx="14" fill="#0f1b33" stroke="#10b981" stroke-width="1.8"/>
+  <text x="80" y="204" fill="#34d399" font-family="Inter, Segoe UI, sans-serif" font-size="17" font-weight="700">
+    ✅ Greene Conservative Farthest-Depth Hi-Z (max z)
+  </text>
+  <text x="80" y="228" fill="#cbd5e1" font-family="Inter, Segoe UI, sans-serif" font-size="13">
+    60 Wall px (4m) + 4 Slit px (50m) → z_HiZ = max(4, 50) = 50.0m
+  </text>
+
+  <!-- Full visibility line left -->
+  <line x1="95" y1="275" x2="545" y2="275" stroke="#34d399" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="185" cy="275" r="8" fill="#34d399" stroke="#f8fafc" stroke-width="2"/>
+  <text x="320" y="468" fill="#34d399" font-family="Consolas, monospace" font-size="13" font-weight="700" text-anchor="middle">
+    Station-3 (z_obj = 13.5m ≤ 50.0m): VISIBLE (17/17 Objects Retained!)
+  </text>
+
+  <rect x="80" y="492" width="480" height="54" rx="8" fill="#062e22" stroke="#10b981"/>
+  <text x="96" y="514" fill="#a7f3d0" font-family="Consolas, monospace" font-size="14" font-weight="700">
+    Falsely Culled Doorway Objects: 0 / 17 (Zero Visibility Popping)
+  </text>
+  <text x="96" y="534" fill="#6ee7b7" font-family="Consolas, monospace" font-size="13">
+    8,192 17-Station Passes: 0.42 ms (O(1) Hi-Z Mip) vs 12.52 ms (64-Px Scan, 29.76×)
+  </text>
+
+  <!-- Right Panel: Naive Box-Average Depth Mip -->
+  <rect x="616" y="170" width="528" height="396" rx="14" fill="#1c1124" stroke="#f43f5e" stroke-width="1.8"/>
+  <text x="640" y="204" fill="#fb7185" font-family="Inter, Segoe UI, sans-serif" font-size="17" font-weight="700">
+    ❌ Naive Box-Average Depth Mip (mean z = 6.875m)
+  </text>
+  <text x="640" y="228" fill="#cbd5e1" font-family="Inter, Segoe UI, sans-serif" font-size="13">
+    Averages 4m Wall &amp; 50m Crack into 6.875m → Falsely Culls z_obj &gt; 6.88m!
+  </text>
+
+  <!-- Cliff dropout right -->
+  <polyline points="665,275 690,275 690,432 1095,432" fill="none" stroke="#fb7185" stroke-width="5" stroke-linejoin="miter"/>
+  <circle cx="745" cy="432" r="8" fill="#fb7185" stroke="#f8fafc" stroke-width="2"/>
+  <text x="880" y="468" fill="#fda4af" font-family="Consolas, monospace" font-size="13" font-weight="700" text-anchor="middle">
+    Station-3 (z_obj = 13.5m &gt; 6.875m): FALSELY CULLED (Vanishes in Doorway!)
+  </text>
+
+  <rect x="640" y="492" width="480" height="54" rx="8" fill="#3b0a1e" stroke="#f43f5e"/>
+  <text x="656" y="514" fill="#fecdd3" font-family="Consolas, monospace" font-size="14" font-weight="700">
+    Falsely Culled Objects: 16 / 17 (94.12% Doorway Popping!)
+  </text>
+  <text x="656" y="534" fill="#fda4af" font-family="Consolas, monospace" font-size="13">
+    Objects Seen Through Doorways, Windows &amp; Fences Pop In and Out
+  </text>
+</svg>

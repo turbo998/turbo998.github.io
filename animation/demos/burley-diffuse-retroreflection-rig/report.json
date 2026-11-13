@@ -1,0 +1,267 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Burley Disney roughness-driven diffuse retroreflection vs flat Lambertian missing rim sheen rig",
+  "topic_zh": "Burley 迪士尼粗糙度驱动漫反射逆反射对比平坦 Lambert 漫反射边缘丝绒感缺失",
+  "slug": "burley-diffuse-retroreflection-rig",
+  "timestamp": "2026-11-13T18:31:13.363Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Brent Burley (SIGGRAPH 2012 Disney Principled BRDF) roughness-driven diffuse retroreflection (M_Burley = (1 + (F_D90 - 1)*(1 - mu)^5)^2, F_D90 = 0.5 + 2*r*cos^2(theta_d)) via a 5-op Schlick power chain versus naive flat Lambertian diffuse (M = 1.0) and 64-strip angular quadrature across 17 viewing cosine stations (NdotV in [0.05, 0.85]). No neural material capture execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "burley-schlick-quadrature-equivalence-128",
+      "passed": true,
+      "detail": "128 5-op Schlick power chain and 64-strip angular quadrature passes agree within 1e-13"
+    },
+    {
+      "name": "burley-schlick-quadrature-equivalence-1024",
+      "passed": true,
+      "detail": "1024 5-op Schlick power chain and 64-strip angular quadrature passes agree within 1e-13"
+    },
+    {
+      "name": "burley-schlick-quadrature-equivalence-8192",
+      "passed": true,
+      "detail": "8192 5-op Schlick power chain and 64-strip angular quadrature passes agree within 1e-13"
+    },
+    {
+      "name": "burley-grazing-retroreflection-conserved",
+      "passed": true,
+      "detail": "17 viewing stations preserve rough retroreflection (station-0 NdotV=0.05 F_D90=2.50 M_diff=4.6685x)"
+    },
+    {
+      "name": "lambert-missing-rim-sheen-exposed",
+      "passed": true,
+      "detail": "naive flat Lambertian loses -3.6685x (-78.58%) grazing rim sheen at station-0 across 14/17 stations"
+    },
+    {
+      "name": "burley-rim-gain-locked",
+      "passed": true,
+      "detail": "Burley Disney Diffuse locks station-0 (NdotV=0.05, r=1.0) at M_diff=4.6685x (0/17 starved stations)"
+    },
+    {
+      "name": "lambert-79pct-rim-loss-exposed",
+      "passed": true,
+      "detail": "flat Lambertian stays at 1.0000x, losing -3.6685x (-78.58% rim sheen across 14/17 stations)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse station scrubbing reproduces the exact retroreflectometer carriage world matrix"
+    },
+    {
+      "name": "atomic-roughness-rejection",
+      "passed": true,
+      "detail": "out-of-range roughnessR=99.0 is rejected while valid Burley Diffuse state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered retroreflectometer carriage y-elevation matches solved diffuse BRDF height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Burley Diffuse controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual station scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station diffuse passes",
+      "count": 128,
+      "primary_ms": 0.007799999999974716,
+      "baseline_ms": 3.008699999999976,
+      "primary_samples_ms": [
+        0.11030000000005202,
+        0.007799999999974716,
+        0.006600000000048567,
+        0.015299999999911051,
+        0.0119000000000824,
+        0.005899999999996908,
+        0.005599999999958527
+      ],
+      "baseline_samples_ms": [
+        3.1766000000000076,
+        2.9820000000000846,
+        3.249400000000037,
+        3.008699999999976,
+        3.1836000000000695,
+        2.9880000000000564,
+        2.9891000000000076
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station diffuse passes",
+      "count": 1024,
+      "primary_ms": 0.05340000000001055,
+      "baseline_ms": 33.45519999999999,
+      "primary_samples_ms": [
+        0.056199999999989814,
+        0.053699999999935244,
+        0.05060000000003129,
+        0.055499999999938154,
+        0.052500000000009095,
+        0.05340000000001055,
+        0.049500000000080036
+      ],
+      "baseline_samples_ms": [
+        31.628000000000043,
+        29.34730000000002,
+        35.21389999999997,
+        37.28329999999994,
+        33.45519999999999,
+        30.58630000000005,
+        40.09069999999997
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station diffuse passes",
+      "count": 8192,
+      "primary_ms": 0.5666999999998552,
+      "baseline_ms": 408.03300000000013,
+      "primary_samples_ms": [
+        0.4717000000000553,
+        0.5895000000000437,
+        0.6394000000000233,
+        0.7381000000000313,
+        0.48329999999987194,
+        0.4976000000001477,
+        0.5666999999998552
+      ],
+      "baseline_samples_ms": [
+        303.7156,
+        320.71389999999997,
+        408.03300000000013,
+        455.62670000000026,
+        414.35170000000016,
+        518.1223,
+        388.9921000000004
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/burley-diffuse-retroreflection-rig/light-burley-disney-grazing-retroreflection.png",
+    "docs/evidence/burley-diffuse-retroreflection-rig/light-naive-flat-lambertian-diffuse.png",
+    "docs/evidence/burley-diffuse-retroreflection-rig/dark-burley-disney-grazing-retroreflection.png",
+    "docs/evidence/burley-diffuse-retroreflection-rig/dark-naive-flat-lambertian-diffuse.png",
+    "docs/evidence/burley-diffuse-retroreflection-rig/mobile.png"
+  ],
+  "primary_label": "5-Op Schlick Burley Diffuse",
+  "baseline_label": "64-Strip Angular Power Quadrature",
+  "load_unit": "17-station diffuse passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. 5-multiply Schlick power chain for Burley Disney diffuse versus 64-strip angular quadrature.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "roughness_r": 1,
+    "f_d90": 2.5,
+    "burley_grazing_gain": 4.6685,
+    "lambert_grazing_gain": 1,
+    "max_missing_retro_sheen": 3.6685,
+    "starved_stations": 14,
+    "maximum_solver_error": 3.9968e-15
+  },
+  "protocol": {
+    "input": {
+      "station_index": 0,
+      "ndotv": 0.05,
+      "roughness_r": 1,
+      "cos_theta_d": 1,
+      "mode": "burley-disney-grazing-retroreflection"
+    },
+    "output": {
+      "f_d90": 2.5,
+      "burley_brdf_factor": 4.6685,
+      "lambert_brdf_factor": 1,
+      "missing_rim_sheen": 3.6685,
+      "starved_stations": 14
+    },
+    "function": "M_Burley(μ) = (1 + (F_{D90} − 1)(1 − μ)⁵)² (F_{D90} = 2.50) → Grazing Rim 4.6685× (0 Starved)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 viewing cosine stations preserve MERL-calibrated grazing retroreflection on rough surfaces",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Rough matte materials (terracotta, dry earth, moon dust, chalk, unglazed ceramics, felt) in Disney Principled BRDF, Frostbite, and Unity HDRP",
+    "Explaining why constant Lambertian diffuse loses -78.58% (-3.6685x) of the grazing retroreflective rim on rough surfaces",
+    "Coupling diffuse grazing reflectance F_D90 = 0.5 + 2·r·cos²θ_d directly to the specular roughness parameter r",
+    "Evaluating (1 - μ)^5 via a 3-multiply register chain instead of transcendental pow(1 - μ, 5.0)"
+  ],
+  "not_for": [
+    "Pure metallic conductors (metallic = 1.0) where diffuse reflectance ρ is zero",
+    "Mirror-smooth dielectrics where specular Fresnel dominates the grazing rim",
+    "Neural SVBRDF capture or photo-to-material diffusion models",
+    "Subsurface-dominated translucent wax or jade where deep volumetric scattering dominates surface V-cavities"
+  ],
+  "locale_zh": {
+    "burley-schlick-quadrature-equivalence-128": "Burley五指令链与64带求积等价 128",
+    "128 5-op Schlick power chain and 64-strip angular quadrature passes agree within 1e-13": "128 次 5 指令 Schlick 幂链与 64 带角向求积在 1e-13 内一致",
+    "burley-schlick-quadrature-equivalence-1024": "Burley五指令链与64带求积等价 1024",
+    "1024 5-op Schlick power chain and 64-strip angular quadrature passes agree within 1e-13": "1024 次 5 指令 Schlick 幂链与 64 带角向求积在 1e-13 内一致",
+    "burley-schlick-quadrature-equivalence-8192": "Burley五指令链与64带求积等价 8192",
+    "8192 5-op Schlick power chain and 64-strip angular quadrature passes agree within 1e-13": "8192 次 5 指令 Schlick 幂链与 64 带角向求积在 1e-13 内一致",
+    "burley-grazing-retroreflection-conserved": "Burley掠射逆反射守恒",
+    "17 viewing stations preserve rough retroreflection (station-0 NdotV=0.05 F_D90=2.50 M_diff=4.6685x)": "17 个视角站点完整保留粗糙表面逆反射（第 0 站 N·V=0.05 F_D90=2.50 M_diff=4.6685×）",
+    "lambert-missing-rim-sheen-exposed": "平坦Lambert边缘光泽缺失暴露",
+    "naive flat Lambertian loses -3.6685x (-78.58%) grazing rim sheen at station-0 across 14/17 stations": "朴素平坦 Lambert 在第 0 站丢失 −3.6685×（−78.58%）边缘逆反射，波及 14/17 站",
+    "burley-rim-gain-locked": "Burley边缘逆反射增益锁定",
+    "Burley Disney Diffuse locks station-0 (NdotV=0.05, r=1.0) at M_diff=4.6685x (0/17 starved stations)": "Burley 漫反射将第 0 站（N·V=0.05, r=1.0）锁定在 M_diff=4.6685×（0/17 缺失站）",
+    "lambert-79pct-rim-loss-exposed": "平坦Lambert 78.58%边缘损失暴露",
+    "flat Lambertian stays at 1.0000x, losing -3.6685x (-78.58% rim sheen across 14/17 stations)": "平坦 Lambert 死锁在 1.0000×，丢失 −3.6685×（−78.58%）边缘光泽，波及 14/17 站",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse station scrubbing reproduces the exact retroreflectometer carriage world matrix": "逆序站点拖曳精确复现逆反射计滑车世界矩阵",
+    "atomic-roughness-rejection": "原子粗糙度拒绝",
+    "out-of-range roughnessR=99.0 is rejected while valid Burley Diffuse state remains": "越界粗糙度 99.0 被拒绝，有效 Burley 漫反射状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered retroreflectometer carriage y-elevation matches solved diffuse BRDF height": "渲染逆反射计滑车垂直高度与求解器漫反射增益高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px Burley Diffuse controls fit without horizontal overflow": "390px Burley 漫反射控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual station scrubbing remains available": "减少动态默认静止，保留手动站点核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "5-Op Schlick Burley Diffuse": "5 指令 Schlick 幂链 Burley 漫反射",
+    "64-Strip Angular Power Quadrature": "64 带角向幂函数数值求积基线",
+    "Median of 7 alternating Node CPU runs after warmup. 5-multiply Schlick power chain for Burley Disney diffuse versus 64-strip angular quadrature.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；5 次乘法 Schlick 幂链 Burley 迪士尼漫反射对比 64 带角向幂函数求积基线。",
+    "Sampled 17 viewing cosine stations preserve MERL-calibrated grazing retroreflection on rough surfaces": "采样 17 个视角余弦站点全部保持经 MERL 实测标定的粗糙表面掠射逆反射",
+    "M_Burley(μ) = (1 + (F_{D90} − 1)(1 − μ)⁵)² (F_{D90} = 2.50) → Grazing Rim 4.6685× (0 Starved)": "Burley 迪士尼粗糙度驱动漫反射 → 掠射边缘逆反射增益 4.6685×（0 缺失）",
+    "Rough matte materials (terracotta, dry earth, moon dust, chalk, unglazed ceramics, felt) in Disney Principled BRDF, Frostbite, and Unity HDRP": "Disney Principled BRDF、Frostbite 与 Unity HDRP 中的素烧陶土、干泥、月尘、粉笔与粗呢等粗糙哑光材质",
+    "Explaining why constant Lambertian diffuse loses -78.58% (-3.6685x) of the grazing retroreflective rim on rough surfaces": "直观解释为何常数 Lambert 漫反射在粗糙表面掠射边缘会丢失 −78.58%（−3.6685×）的逆反射天鹅绒光泽",
+    "Coupling diffuse grazing reflectance F_D90 = 0.5 + 2·r·cos²θ_d directly to the specular roughness parameter r": "将漫反射掠射因子 F_D90 = 0.5 + 2·r·cos²θ_d 与高光粗糙度参数 r 直接耦合统一",
+    "Evaluating (1 - μ)^5 via a 3-multiply register chain instead of transcendental pow(1 - μ, 5.0)": "用 3 次寄存器乘法链计算 (1 − μ)⁵ 替代超越函数 pow(1 − μ, 5.0)",
+    "Pure metallic conductors (metallic = 1.0) where diffuse reflectance ρ is zero": "漫反射率 ρ = 0 的纯金属导体（metallic = 1.0）",
+    "Mirror-smooth dielectrics where specular Fresnel dominates the grazing rim": "由镜面菲涅尔主导掠射边缘的光滑清漆电介质",
+    "Neural SVBRDF capture or photo-to-material diffusion models": "神经 SVBRDF 材质捕获或单图生成贴图扩散模型",
+    "Subsurface-dominated translucent wax or jade where deep volumetric scattering dominates surface V-cavities": "由深层体积次表面散射主导的半透明蜡烛或玉石材质"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/burley-diffuse-retroreflection.test.ts",
+    "node scripts/benchmark-burley-diffuse-retroreflection.mjs"
+  ]
+}

@@ -1,0 +1,268 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Greene conservative farthest-depth Hierarchical-Z (Hi-Z) pyramid vs average-mip false occlusion popping rig",
+  "topic_zh": "Greene 保守最远深度层次深度金字塔（Hi-Z）遮挡剔除对比均值深度 Mip 门缝误剔除闪崩",
+  "slug": "hiz-occlusion-pyramid-rig",
+  "timestamp": "2026-11-13T17:16:51.965Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Ned Greene et al. (SIGGRAPH 1993) conservative farthest-depth Hierarchical-Z (Hi-Z) mip reduction (z_HiZ = max(z_0..z_63)) versus naive box-average depth mipmapping and brute-force 64-pixel full-resolution tile scanning across 17 object depth stations (z_obj in [6.0, 46.0] m) behind a 4-pixel doorway slit. No neural visibility prediction execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "hiz-pyramid-64pixel-scan-equivalence-128",
+      "passed": true,
+      "detail": "128 O(1) Hi-Z Mip-3 lookup and 64-pixel full-res tile scan passes agree with 0 error"
+    },
+    {
+      "name": "hiz-pyramid-64pixel-scan-equivalence-1024",
+      "passed": true,
+      "detail": "1024 O(1) Hi-Z Mip-3 lookup and 64-pixel full-res tile scan passes agree with 0 error"
+    },
+    {
+      "name": "hiz-pyramid-64pixel-scan-equivalence-8192",
+      "passed": true,
+      "detail": "8192 O(1) Hi-Z Mip-3 lookup and 64-pixel full-res tile scan passes agree with 0 error"
+    },
+    {
+      "name": "greene-conservative-visibility-conserved",
+      "passed": true,
+      "detail": "17 doorway objects remain 100% visible under z_HiZ=max(z)=50.0m (station-3 z_obj=13.5m Vis=1, 0 false culls)"
+    },
+    {
+      "name": "average-mip-false-culling-exposed",
+      "passed": true,
+      "detail": "naive average-depth mip z_avg=6.8750m falsely culls station-3 (z_obj=13.5m) and pops 16/17 visible objects"
+    },
+    {
+      "name": "hiz-doorway-object-retained",
+      "passed": true,
+      "detail": "Greene Conservative Hi-Z locks z_HiZ=50.0m and keeps station-3 (z_obj=13.5m) visible (17/17 visible, 0 false culls)"
+    },
+    {
+      "name": "average-mip-94pct-popping-exposed",
+      "passed": true,
+      "detail": "average-depth mip lowers threshold to z_avg=6.8750m, falsely culling 16/17 (94.12%) visible doorway objects"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse station scrubbing reproduces the exact occlusion collimator carriage world matrix"
+    },
+    {
+      "name": "atomic-wall-depth-rejection",
+      "passed": true,
+      "detail": "out-of-range wallDepthM=999.0 is rejected while valid Hi-Z Pyramid state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered collimator carriage y-elevation matches solved visibility state height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Hi-Z Pyramid controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual station scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station occlusion passes",
+      "count": 128,
+      "primary_ms": 0.012100000000032196,
+      "baseline_ms": 0.3509000000000242,
+      "primary_samples_ms": [
+        0.07139999999992597,
+        0.056100000000014916,
+        0.06799999999998363,
+        0.0072999999999865395,
+        0.012100000000032196,
+        0.005999999999971806,
+        0.00580000000002201
+      ],
+      "baseline_samples_ms": [
+        0.6499999999999773,
+        0.35540000000003147,
+        0.3509000000000242,
+        0.378400000000056,
+        0.19279999999992015,
+        0.1935999999999467,
+        0.24660000000005766
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station occlusion passes",
+      "count": 1024,
+      "primary_ms": 0.05299999999999727,
+      "baseline_ms": 1.5398000000000138,
+      "primary_samples_ms": [
+        0.05889999999999418,
+        0.05200000000002092,
+        0.05299999999999727,
+        0.05200000000002092,
+        0.05289999999990869,
+        0.09659999999996671,
+        0.05340000000001055
+      ],
+      "baseline_samples_ms": [
+        1.5861999999999625,
+        1.5398000000000138,
+        1.5302000000000362,
+        1.5276000000000067,
+        1.5777000000000498,
+        1.5307999999999993,
+        1.6852999999999838
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station occlusion passes",
+      "count": 8192,
+      "primary_ms": 0.42079999999998563,
+      "baseline_ms": 12.521900000000073,
+      "primary_samples_ms": [
+        0.4175000000000182,
+        0.42830000000003565,
+        0.4499000000000706,
+        0.4050999999999476,
+        0.46680000000003474,
+        0.42079999999998563,
+        0.4158999999999651
+      ],
+      "baseline_samples_ms": [
+        12.512399999999957,
+        12.521900000000073,
+        12.734300000000076,
+        12.508299999999963,
+        12.492399999999975,
+        12.568300000000022,
+        12.605400000000031
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/hiz-occlusion-pyramid-rig/light-greene-conservative-max-hiz.png",
+    "docs/evidence/hiz-occlusion-pyramid-rig/light-naive-average-depth-mip.png",
+    "docs/evidence/hiz-occlusion-pyramid-rig/dark-greene-conservative-max-hiz.png",
+    "docs/evidence/hiz-occlusion-pyramid-rig/dark-naive-average-depth-mip.png",
+    "docs/evidence/hiz-occlusion-pyramid-rig/mobile.png"
+  ],
+  "primary_label": "Precomputed O(1) Conservative Hi-Z Mip",
+  "baseline_label": "64-Pixel Full-Res Tile Scan",
+  "load_unit": "17-station occlusion passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Precomputed O(1) conservative max-depth Hi-Z Mip-3 lookup versus brute-force 64-pixel full-resolution tile scanning.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "wall_depth_m": 4,
+    "gap_depth_m": 50,
+    "conservative_max_depth_m": 50,
+    "naive_average_depth_m": 6.875,
+    "hiz_visible_stations": 17,
+    "falsely_culled_stations": 16,
+    "maximum_solver_error": 0
+  },
+  "protocol": {
+    "input": {
+      "station_index": 3,
+      "z_obj_m": 13.5,
+      "z_wall_m": 4,
+      "z_gap_m": 50,
+      "gap_pixels": 4,
+      "mode": "greene-conservative-max-hiz"
+    },
+    "output": {
+      "conservative_hiz_depth_m": 50,
+      "naive_avg_depth_m": 6.875,
+      "hiz_visible": 1,
+      "naive_avg_visible": 0,
+      "falsely_culled_stations": 16
+    },
+    "function": "z_HiZ(Mip 3) = max_{p ∈ 8×8} z(p) = 50.0 m → 17/17 Doorway Objects Visible (0 False Culls)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 doorway object depth stations remain 100% visible under conservative max-depth Hi-Z reduction",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Two-phase GPU-driven cluster and instance occlusion culling in UE5 Nanite, Frostbite, and Unity GPU Resident Drawer",
+    "Explaining why standard box-average generateMipmap() on a depth buffer causes 94.12% false occlusion popping through doorways and fences",
+    "Reducing each 2×2 Hi-Z mip level with conservative farthest-depth (max in linear Z, min in Reversed-Z)",
+    "Replacing 64-pixel full-resolution bounding-box depth scans with a single O(1) Hi-Z mip lookup"
+  ],
+  "not_for": [
+    "View-frustum-only culling where depth buffer occlusion is never tested (use Gribb-Hartmann frustum planes instead)",
+    "Color texture mipmapping where box/Kaiser averaging is desired for anti-aliasing",
+    "Neural potentially-visible-set (PVS) classification networks",
+    "Translucent glass windows that do not write to the occluder depth buffer"
+  ],
+  "locale_zh": {
+    "hiz-pyramid-64pixel-scan-equivalence-128": "Hi-Z金字塔与64像素全扫等价 128",
+    "128 O(1) Hi-Z Mip-3 lookup and 64-pixel full-res tile scan passes agree with 0 error": "128 次 O(1) Hi-Z Mip-3 查表与 64 像素全分扫描基线完全一致（0 误差）",
+    "hiz-pyramid-64pixel-scan-equivalence-1024": "Hi-Z金字塔与64像素全扫等价 1024",
+    "1024 O(1) Hi-Z Mip-3 lookup and 64-pixel full-res tile scan passes agree with 0 error": "1024 次 O(1) Hi-Z Mip-3 查表与 64 像素全分扫描基线完全一致（0 误差）",
+    "hiz-pyramid-64pixel-scan-equivalence-8192": "Hi-Z金字塔与64像素全扫等价 8192",
+    "8192 O(1) Hi-Z Mip-3 lookup and 64-pixel full-res tile scan passes agree with 0 error": "8192 次 O(1) Hi-Z Mip-3 查表与 64 像素全分扫描基线完全一致（0 误差）",
+    "greene-conservative-visibility-conserved": "Greene保守Hi-Z可见性守恒",
+    "17 doorway objects remain 100% visible under z_HiZ=max(z)=50.0m (station-3 z_obj=13.5m Vis=1, 0 false culls)": "17 个门缝后方物体在 z_HiZ=max(z)=50.0m 下 100% 保持可见（第 3 站 z_obj=13.5m Vis=1，0 误剔除）",
+    "average-mip-false-culling-exposed": "均值深度Mip误剔除闪崩暴露",
+    "naive average-depth mip z_avg=6.8750m falsely culls station-3 (z_obj=13.5m) and pops 16/17 visible objects": "朴素均值深度 Mip（z_avg=6.8750m）将第 3 站（z_obj=13.5m）及 16/17 个可见物体错误剔除消失",
+    "hiz-doorway-object-retained": "保守Hi-Z门缝物体完整保留",
+    "Greene Conservative Hi-Z locks z_HiZ=50.0m and keeps station-3 (z_obj=13.5m) visible (17/17 visible, 0 false culls)": "Greene 保守 Hi-Z 锁定 z_HiZ=50.0m 并保持第 3 站（z_obj=13.5m）可见（17/17 可见，0 误剔除）",
+    "average-mip-94pct-popping-exposed": "均值Mip94.12%误剔除暴露",
+    "average-depth mip lowers threshold to z_avg=6.8750m, falsely culling 16/17 (94.12%) visible doorway objects": "均值深度 Mip 将阈值拉低至 z_avg=6.8750m，错误剔除 16/17（94.12%）个门缝可见物体",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse station scrubbing reproduces the exact occlusion collimator carriage world matrix": "逆序站点拖曳精确复现遮挡准直仪滑车世界矩阵",
+    "atomic-wall-depth-rejection": "原子墙体深度拒绝",
+    "out-of-range wallDepthM=999.0 is rejected while valid Hi-Z Pyramid state remains": "越界墙体深度 999.0m 被拒绝，有效 Hi-Z 金字塔状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered collimator carriage y-elevation matches solved visibility state height": "渲染准直仪滑车垂直高度与求解器可见性状态高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px Hi-Z Pyramid controls fit without horizontal overflow": "390px 层次深度金字塔控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual station scrubbing remains available": "减少动态默认静止，保留手动站点核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Precomputed O(1) Conservative Hi-Z Mip": "预计算 O(1) 保守最远深度 Hi-Z 查表",
+    "64-Pixel Full-Res Tile Scan": "64 像素全分图块逐点扫描基线",
+    "Median of 7 alternating Node CPU runs after warmup. Precomputed O(1) conservative max-depth Hi-Z Mip-3 lookup versus brute-force 64-pixel full-resolution tile scanning.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；预计算 O(1) 保守最远深度 Hi-Z Mip-3 查表对比 64 像素全分辨率图块逐点扫描基线。",
+    "Sampled 17 doorway object depth stations remain 100% visible under conservative max-depth Hi-Z reduction": "采样 17 个门缝后方物体深度站点在保守最远深度 Hi-Z 归约下 100% 保持可见",
+    "z_HiZ(Mip 3) = max_{p ∈ 8×8} z(p) = 50.0 m → 17/17 Doorway Objects Visible (0 False Culls)": "Hi-Z 保守最远深度归约 (max z = 50.0m) → 17/17 个门缝后方物体完整可见（0 误剔除）",
+    "Two-phase GPU-driven cluster and instance occlusion culling in UE5 Nanite, Frostbite, and Unity GPU Resident Drawer": "UE5 Nanite、Frostbite 与 Unity GPU Resident Drawer 中的两阶段 GPU 驱动微网格簇与实例遮挡剔除",
+    "Explaining why standard box-average generateMipmap() on a depth buffer causes 94.12% false occlusion popping through doorways and fences": "直观解释为何对深度缓冲调用均值 generateMipmap() 会导致门缝与铁栅栏后方 94.12% 的可见物体错误消失闪崩",
+    "Reducing each 2×2 Hi-Z mip level with conservative farthest-depth (max in linear Z, min in Reversed-Z)": "在每一级 2×2 Hi-Z 降采样中使用保守最远深度归约（线性深度取 max，Reversed-Z 取 min）",
+    "Replacing 64-pixel full-resolution bounding-box depth scans with a single O(1) Hi-Z mip lookup": "以单次 O(1) Hi-Z Mip 查表替代昂贵的 64 像素全分辨率包围盒深度扫描",
+    "View-frustum-only culling where depth buffer occlusion is never tested (use Gribb-Hartmann frustum planes instead)": "不检测深度遮挡的纯视锥体剔除（应选 Gribb-Hartmann 视锥平面剔除）",
+    "Color texture mipmapping where box/Kaiser averaging is desired for anti-aliasing": "需要平滑滤波抗锯齿的普通颜色纹理 Mipmap 生成",
+    "Neural potentially-visible-set (PVS) classification networks": "神经潜在可见集（PVS）预测网络",
+    "Translucent glass windows that do not write to the occluder depth buffer": "不写入遮挡深度缓冲的半透明玻璃窗"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/hiz-occlusion-pyramid.test.ts",
+    "node scripts/benchmark-hiz-occlusion-pyramid.mjs"
+  ]
+}

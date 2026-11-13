@@ -1,0 +1,267 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Born-Wolf cosine-fourth natural optical vignetting vs quadratic Taylor corner blackout rig",
+  "topic_zh": "Born-Wolf 物理余弦四次方自然镜头渐晕对比朴素二次泰勒抛物线广角死黑",
+  "slug": "natural-vignette-cos4-rig",
+  "timestamp": "2026-11-13T20:56:28.901Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Max Born & Emil Wolf / Kang & Weiss (CVPR 2000) rational root-free cosine-fourth natural vignetting (V(r, f) = cos^4(theta) = 1 / (1 + (r/f)^2)^2) versus naive second-order Taylor polynomial vignetting (max(0, 1 - 2*(r/f)^2)) and 64-ring exit-pupil trigonometric solid-angle integration across 17 sensor radial stations (u = r/f in [0.00, 1.00]). No neural lens emulation execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "born-wolf-rational-trig-equivalence-128",
+      "passed": true,
+      "detail": "128 rational 1/(1+u²)² and 64-ring trigonometric cos⁴(atan(u)) passes agree within 1e-13"
+    },
+    {
+      "name": "born-wolf-rational-trig-equivalence-1024",
+      "passed": true,
+      "detail": "1024 rational 1/(1+u²)² and 64-ring trigonometric cos⁴(atan(u)) passes agree within 1e-13"
+    },
+    {
+      "name": "born-wolf-rational-trig-equivalence-8192",
+      "passed": true,
+      "detail": "8192 rational 1/(1+u²)² and 64-ring trigonometric cos⁴(atan(u)) passes agree within 1e-13"
+    },
+    {
+      "name": "born-wolf-optical-falloff-conserved",
+      "passed": true,
+      "detail": "17 radial stations preserve positive cos⁴θ illumination (station-12 r/f=0.75 V=0.4096)"
+    },
+    {
+      "name": "quadratic-vignette-corner-blackout-exposed",
+      "passed": true,
+      "detail": "naive quadratic 1−2u² chokes station-12 (r/f=0.75) to V=0.0000 (−0.4096 max loss across 12/17 stations)"
+    },
+    {
+      "name": "born-wolf-u075-irradiance-locked",
+      "passed": true,
+      "detail": "Born-Wolf cos⁴θ Law locks station-12 (r/f=0.75) at V=0.4096 (0/17 blacked-out stations)"
+    },
+    {
+      "name": "quadratic-corner-blackout-exposed",
+      "passed": true,
+      "detail": "naive quadratic vignette blacks out station-12..16 to V=0.0000 across 12/17 choked stations"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse station scrubbing reproduces the exact optical bench carriage world matrix"
+    },
+    {
+      "name": "atomic-focal-length-rejection",
+      "passed": true,
+      "detail": "out-of-range focalLengthMm=999.0 is rejected while valid Natural Vignette state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered optical carriage y-elevation matches solved sensor irradiance height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Natural Vignette controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual station scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station natural vignette passes",
+      "count": 128,
+      "primary_ms": 0.011000000000080945,
+      "baseline_ms": 0.22000000000002728,
+      "primary_samples_ms": [
+        0.02070000000003347,
+        0.011599999999930333,
+        0.011000000000080945,
+        0.010400000000004184,
+        0.012299999999981992,
+        0.005899999999996908,
+        0.005300000000033833
+      ],
+      "baseline_samples_ms": [
+        0.22239999999999327,
+        0.22000000000002728,
+        0.23690000000010514,
+        0.21259999999995216,
+        0.213799999999992,
+        0.22649999999998727,
+        0.1371000000000322
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station natural vignette passes",
+      "count": 1024,
+      "primary_ms": 0.045200000000022555,
+      "baseline_ms": 1.0964999999999918,
+      "primary_samples_ms": [
+        0.04619999999999891,
+        0.045200000000022555,
+        0.044899999999984175,
+        0.04600000000004911,
+        0.04480000000000928,
+        0.04630000000008749,
+        0.04469999999992069
+      ],
+      "baseline_samples_ms": [
+        1.09050000000002,
+        1.098700000000008,
+        1.09050000000002,
+        1.096400000000017,
+        1.0964999999999918,
+        1.117399999999975,
+        1.1160999999999603
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station natural vignette passes",
+      "count": 8192,
+      "primary_ms": 0.3783000000000811,
+      "baseline_ms": 11.522100000000023,
+      "primary_samples_ms": [
+        0.4150000000000773,
+        0.37789999999995416,
+        0.38199999999994816,
+        0.3643000000000711,
+        0.39620000000002165,
+        0.3783000000000811,
+        0.3650000000000091
+      ],
+      "baseline_samples_ms": [
+        13.321199999999976,
+        11.243600000000015,
+        12.225799999999936,
+        9.788899999999899,
+        13.512899999999945,
+        11.162500000000023,
+        11.522100000000023
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/natural-vignette-cos4-rig/light-born-wolf-cos4-natural-vignette.png",
+    "docs/evidence/natural-vignette-cos4-rig/light-naive-quadratic-taylor-vignette.png",
+    "docs/evidence/natural-vignette-cos4-rig/dark-born-wolf-cos4-natural-vignette.png",
+    "docs/evidence/natural-vignette-cos4-rig/dark-naive-quadratic-taylor-vignette.png",
+    "docs/evidence/natural-vignette-cos4-rig/mobile.png"
+  ],
+  "primary_label": "Born-Wolf Rational 1/(1+(r/f)²)²",
+  "baseline_label": "64-Ring Trigonometric Pupil Solid-Angle",
+  "load_unit": "17-station natural vignette passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Rational root-free 1/(1+(r/f)^2)^2 evaluation versus 64-ring atan/cos^4 pupil solid-angle integration.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "focal_length_mm": 24,
+    "sensor_radius_mm": 24,
+    "cos4_u075_irradiance": 0.4096,
+    "naive_u075_irradiance": 0,
+    "max_blackout_loss": 0.4096,
+    "corrupted_stations": 12,
+    "maximum_solver_error": 1.6653e-15
+  },
+  "protocol": {
+    "input": {
+      "station_index": 12,
+      "ratio_r_over_f": 0.75,
+      "focal_mm": 24,
+      "sensor_r_mm": 24,
+      "mode": "born-wolf-cos4-natural-vignette"
+    },
+    "output": {
+      "off_axis_deg": 36.87,
+      "cos4_irradiance": 0.4096,
+      "naive_quadratic_v": 0,
+      "blackout_loss": 0.4096,
+      "corrupted_stations": 12
+    },
+    "function": "V_phys(r, f) = cos⁴θ ≡ 1 / (1 + (r / f)²)² → Station-12 (r/f=0.75) V = 0.4096 (0.0000 Corner Blackout)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 sensor radial stations preserve strictly positive physical cos^4(theta) illumination without corner blackout",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Physically Based Camera (PBC) post-processing in UE5, Unity HDRP, Frostbite, and Three.js virtual cinematography",
+    "Coupling lens vignetting automatically to dynamic focal-length zooming (24mm wide-angle naturally vignettes more than 85mm telephoto)",
+    "Evaluating cos⁴θ = 1 / (1 + (r/f)²)² in 3 rational ALU operations with zero sqrt(), atan(), or cos() calls",
+    "Applying vignetting in linear scene-referred radiance space prior to AgX tone mapping (Round 48) and sub-LSB dithering (Round 92)"
+  ],
+  "not_for": [
+    "Mechanical lens-hood occlusion (Mechanical Vignetting) where physical barrel clipping intentionally cuts a hard circular mask",
+    "Orthographic projection cameras where off-axis angle θ ≡ 0° everywhere",
+    "Neural film-grain or style-transfer filters",
+    "UI overlay canvases that should remain at uniform 100% brightness"
+  ],
+  "locale_zh": {
+    "born-wolf-rational-trig-equivalence-128": "Born-Wolf有理式与三角求积等价 128",
+    "128 rational 1/(1+u²)² and 64-ring trigonometric cos⁴(atan(u)) passes agree within 1e-13": "128 次有理分式 1/(1+u²)² 与 64 环反三角函数 cos⁴(atan(u)) 在 1e-13 内一致",
+    "born-wolf-rational-trig-equivalence-1024": "Born-Wolf有理式与三角求积等价 1024",
+    "1024 rational 1/(1+u²)² and 64-ring trigonometric cos⁴(atan(u)) passes agree within 1e-13": "1024 次有理分式 1/(1+u²)² 与 64 环反三角函数 cos⁴(atan(u)) 在 1e-13 内一致",
+    "born-wolf-rational-trig-equivalence-8192": "Born-Wolf有理式与三角求积等价 8192",
+    "8192 rational 1/(1+u²)² and 64-ring trigonometric cos⁴(atan(u)) passes agree within 1e-13": "8192 次有理分式 1/(1+u²)² 与 64 环反三角函数 cos⁴(atan(u)) 在 1e-13 内一致",
+    "born-wolf-optical-falloff-conserved": "Born-Wolf余弦四次方照度守恒",
+    "17 radial stations preserve positive cos⁴θ illumination (station-12 r/f=0.75 V=0.4096)": "17 个径向站点保持正定 cos⁴θ 光学渐晕（第 12 站 r/f=0.75 V=0.4096）",
+    "quadratic-vignette-corner-blackout-exposed": "二次抛物线广角死黑暴露",
+    "naive quadratic 1−2u² chokes station-12 (r/f=0.75) to V=0.0000 (−0.4096 max loss across 12/17 stations)": "朴素二次 1−2u² 将第 12 站（r/f=0.75）掐死至 V=0.0000（峰值丢失 −0.4096，污染 12/17 站）",
+    "born-wolf-u075-irradiance-locked": "Born-Wolf广角0.4096照度锁定",
+    "Born-Wolf cos⁴θ Law locks station-12 (r/f=0.75) at V=0.4096 (0/17 blacked-out stations)": "Born-Wolf 余弦四次方将第 12 站（r/f=0.75）锁定在 V=0.4096（0/17 死黑站）",
+    "quadratic-corner-blackout-exposed": "二次暗角广角死黑暴露",
+    "naive quadratic vignette blacks out station-12..16 to V=0.0000 across 12/17 choked stations": "朴素二次暗角将第 12..16 站全部掐死为 V=0.0000（波及 12/17 个站点）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse station scrubbing reproduces the exact optical bench carriage world matrix": "逆序站点拖曳精确复现光学实验台滑车世界矩阵",
+    "atomic-focal-length-rejection": "原子镜头焦距拒绝",
+    "out-of-range focalLengthMm=999.0 is rejected while valid Natural Vignette state remains": "越界镜头焦距 999.0mm 被拒绝，有效自然渐晕状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered optical carriage y-elevation matches solved sensor irradiance height": "渲染光学滑车垂直高度与求解器传感器照度高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px Natural Vignette controls fit without horizontal overflow": "390px 自然光学渐晕控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual station scrubbing remains available": "减少动态默认静止，保留手动站点核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Born-Wolf Rational 1/(1+(r/f)²)²": "Born-Wolf 有理余弦四次方 1/(1+(r/f)²)²",
+    "64-Ring Trigonometric Pupil Solid-Angle": "64 环反三角函数出瞳立体角积分基线",
+    "Median of 7 alternating Node CPU runs after warmup. Rational root-free 1/(1+(r/f)^2)^2 evaluation versus 64-ring atan/cos^4 pupil solid-angle integration.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；免开方免三角有理分式 1/(1+(r/f)²)² 对比 64 环反三角出瞳立体角积分基线。",
+    "Sampled 17 sensor radial stations preserve strictly positive physical cos^4(theta) illumination without corner blackout": "采样 17 个传感器径向站点全部保持严格正定物理 cos⁴θ 照度，无广角边缘死黑窥孔",
+    "V_phys(r, f) = cos⁴θ ≡ 1 / (1 + (r / f)²)² → Station-12 (r/f=0.75) V = 0.4096 (0.0000 Corner Blackout)": "余弦四次方自然渐晕 1/(1+(r/f)²)² → 第 12 站（r/f=0.75）V = 0.4096（0.0000 死黑损失）",
+    "Physically Based Camera (PBC) post-processing in UE5, Unity HDRP, Frostbite, and Three.js virtual cinematography": "UE5、Unity HDRP、Frostbite 与 Three.js 虚拟摄影机中的物理相机（Physically Based Camera）光学暗角管线",
+    "Coupling lens vignetting automatically to dynamic focal-length zooming (24mm wide-angle naturally vignettes more than 85mm telephoto)": "使暗角随镜头焦距 f 变焦自动物理联动（24mm 广角端自然渐晕明显，85mm 长焦端自动通透平坦）",
+    "Evaluating cos⁴θ = 1 / (1 + (r/f)²)² in 3 rational ALU operations with zero sqrt(), atan(), or cos() calls": "仅用 3 次乘加与 1 次除法即可精确计算 cos⁴θ，彻底省去 sqrt、atan 与 cos 超越函数",
+    "Applying vignetting in linear scene-referred radiance space prior to AgX tone mapping (Round 48) and sub-LSB dithering (Round 92)": "在进入 AgX 色调映射（Round 48）与亚比特抖动（Round 92）之前的线性辐射度空间执行物理光学衰减",
+    "Mechanical lens-hood occlusion (Mechanical Vignetting) where physical barrel clipping intentionally cuts a hard circular mask": "遮光罩或滤镜环尺寸不当造成的机械暗角硬遮挡（Mechanical Vignetting）",
+    "Orthographic projection cameras where off-axis angle θ ≡ 0° everywhere": "偏轴角恒为 θ ≡ 0° 的正交投影工程视图相机",
+    "Neural film-grain or style-transfer filters": "神经胶片颗粒或风格迁移滤镜",
+    "UI overlay canvases that should remain at uniform 100% brightness": "需要保持 100% 均匀亮度的 HUD 与 UI 叠加层"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/natural-vignette-cos4.test.ts",
+    "node scripts/benchmark-natural-vignette-cos4.mjs"
+  ]
+}

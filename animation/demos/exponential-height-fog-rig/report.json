@@ -1,0 +1,268 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Wenzel closed-form exponential height-fog line integral vs camera-density mountain whiteout rig",
+  "topic_zh": "Wenzel 闭式指数高度雾线积分对比朴素相机高度密度外推山巅雾墙白化",
+  "slug": "exponential-height-fog-rig",
+  "timestamp": "2026-11-13T17:26:15.009Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Carsten Wenzel (SIGGRAPH 2006) closed-form exponential height-fog ray line integration (tau = sigma_0 * L * (1 - exp(-k*dh)) / (k*dh)) versus naive camera-altitude constant-density extrapolation and 64-step Beer-Lambert ray-marching cascade across 17 mountain elevation stations (h in [0, 240] m). No neural dehazing execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "wenzel-raymarch-equivalence-128",
+      "passed": true,
+      "detail": "128 closed-form Wenzel line-integral and 64-step Beer-Lambert cascade passes agree within 1e-13"
+    },
+    {
+      "name": "wenzel-raymarch-equivalence-1024",
+      "passed": true,
+      "detail": "1024 closed-form Wenzel line-integral and 64-step Beer-Lambert cascade passes agree within 1e-13"
+    },
+    {
+      "name": "wenzel-raymarch-equivalence-8192",
+      "passed": true,
+      "detail": "8192 closed-form Wenzel line-integral and 64-step Beer-Lambert cascade passes agree within 1e-13"
+    },
+    {
+      "name": "wenzel-mountain-visibility-conserved",
+      "passed": true,
+      "detail": "17 elevation stations preserve monotonic altitude clearing (station-16 h=240m tau=0.6199, T_fog=0.5380)"
+    },
+    {
+      "name": "naive-camera-density-whiteout-exposed",
+      "passed": true,
+      "detail": "naive camera-density extrapolation buries station-16 (h=240m) at T_fog=0.0498 (-0.4882 loss across 16/17 stations)"
+    },
+    {
+      "name": "wenzel-peak-transmittance-locked",
+      "passed": true,
+      "detail": "Wenzel Line Integral locks mountain peak station-16 (h=240m) at T_fog=0.5380 (0/17 whiteout stations)"
+    },
+    {
+      "name": "naive-valley-soup-whiteout-exposed",
+      "passed": true,
+      "detail": "naive valley-density extrapolation crushes station-16 to T_fog=0.0498 (-0.4882 whiteout loss across 16/17 stations)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse station scrubbing reproduces the exact transmissometer carriage world matrix"
+    },
+    {
+      "name": "atomic-density-rejection",
+      "passed": true,
+      "detail": "out-of-range baseDensitySigma0=99.0 is rejected while valid Exponential Height-Fog state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered transmissometer carriage y-elevation matches solved fog transmittance height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Exponential Height-Fog controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual station scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station height-fog passes",
+      "count": 128,
+      "primary_ms": 0.08220000000005712,
+      "baseline_ms": 0.21420000000000528,
+      "primary_samples_ms": [
+        0.23080000000004475,
+        0.08030000000007931,
+        0.08240000000000691,
+        0.08220000000005712,
+        0.09199999999998454,
+        0.0808999999999287,
+        0.07880000000000109
+      ],
+      "baseline_samples_ms": [
+        0.4050000000000864,
+        0.21420000000000528,
+        0.2136000000000422,
+        0.21839999999997417,
+        0.2828999999999269,
+        0.21320000000002892,
+        0.2115999999999758
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station height-fog passes",
+      "count": 1024,
+      "primary_ms": 0.6824000000000296,
+      "baseline_ms": 1.6423999999999523,
+      "primary_samples_ms": [
+        0.6824000000000296,
+        1.258199999999988,
+        1.8526999999999134,
+        0.6669000000000551,
+        0.45069999999998345,
+        0.46040000000004966,
+        2.3494000000000597
+      ],
+      "baseline_samples_ms": [
+        1.9232000000000653,
+        1.7785000000000082,
+        3.037400000000048,
+        1.5342000000000553,
+        1.5538999999999987,
+        1.6379000000000588,
+        1.6423999999999523
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station height-fog passes",
+      "count": 8192,
+      "primary_ms": 3.901800000000094,
+      "baseline_ms": 13.638500000000022,
+      "primary_samples_ms": [
+        10.756600000000049,
+        3.8856000000000677,
+        5.820699999999988,
+        4.843600000000038,
+        3.731700000000046,
+        3.7755999999999403,
+        3.901800000000094
+      ],
+      "baseline_samples_ms": [
+        17.991199999999935,
+        15.953499999999963,
+        13.21530000000007,
+        13.479900000000043,
+        13.479199999999992,
+        14.79970000000003,
+        13.638500000000022
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/exponential-height-fog-rig/light-wenzel-closed-form-line-integral.png",
+    "docs/evidence/exponential-height-fog-rig/light-naive-camera-density-extrapolation.png",
+    "docs/evidence/exponential-height-fog-rig/dark-wenzel-closed-form-line-integral.png",
+    "docs/evidence/exponential-height-fog-rig/dark-naive-camera-density-extrapolation.png",
+    "docs/evidence/exponential-height-fog-rig/mobile.png"
+  ],
+  "primary_label": "Closed-Form Wenzel Line Integral",
+  "baseline_label": "64-Step Beer-Lambert Fog Cascade",
+  "load_unit": "17-station height-fog passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form Wenzel exponential height-fog antiderivative versus 64-step Beer-Lambert ray-marching cascade.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "ray_length_m": 200,
+    "peak_altitude_m": 240,
+    "wenzel_peak_transmittance": 0.538,
+    "naive_peak_transmittance": 0.0498,
+    "max_whiteout_loss": 0.4882,
+    "corrupted_stations": 16,
+    "maximum_solver_error": 1.5543e-15
+  },
+  "protocol": {
+    "input": {
+      "station_index": 16,
+      "h_target_m": 240,
+      "sigma_0": 0.015,
+      "falloff_k": 0.02,
+      "ray_len_m": 200,
+      "mode": "wenzel-closed-form-line-integral"
+    },
+    "output": {
+      "wenzel_optical_depth": 0.6199,
+      "wenzel_transmittance": 0.538,
+      "naive_transmittance": 0.0498,
+      "whiteout_loss": 0.4882,
+      "corrupted_stations": 16
+    },
+    "function": "τ(Δh) = σ₀ · L · (1 − e^{−kΔh}) / (kΔh) → Peak T(240m) = 0.5380 (0 Whiteout Stations)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 mountain elevation stations preserve exact exponential altitude clearing without division-by-zero or whiteout",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Analytical exponential height fog in UE5 ExponentialHeightFog, CryEngine, Frostbite, and Unity HDRP",
+    "Explaining why multiplying camera-altitude fog density σ(h_cam) by ray length L buries 240m mountain peaks in 95% valley whiteout",
+    "Guarding horizontal rays (k·Δh → 0) with the Taylor series 1 − x/2 + x²/6 to prevent 0/0 NaN artifacts at the camera horizon",
+    "Replacing 64-step numerical fog ray marching with a single closed-form antiderivative evaluation"
+  ],
+  "not_for": [
+    "Spatially heterogeneous 3D noise clouds or local smoke grenades (which require froxel volume ray marching, see Round 52)",
+    "Underground caves with strictly uniform constant-density dust (k = 0 everywhere)",
+    "Neural single-image dehazing or atmospheric restoration networks",
+    "Vacuum space scenes with zero participating media"
+  ],
+  "locale_zh": {
+    "wenzel-raymarch-equivalence-128": "Wenzel闭式线积分与64步级联等价 128",
+    "128 closed-form Wenzel line-integral and 64-step Beer-Lambert cascade passes agree within 1e-13": "128 次闭式 Wenzel 高度雾线积分与 64 步比尔-朗伯级联步进在 1e-13 内一致",
+    "wenzel-raymarch-equivalence-1024": "Wenzel闭式线积分与64步级联等价 1024",
+    "1024 closed-form Wenzel line-integral and 64-step Beer-Lambert cascade passes agree within 1e-13": "1024 次闭式 Wenzel 高度雾线积分与 64 步比尔-朗伯级联步进在 1e-13 内一致",
+    "wenzel-raymarch-equivalence-8192": "Wenzel闭式线积分与64步级联等价 8192",
+    "8192 closed-form Wenzel line-integral and 64-step Beer-Lambert cascade passes agree within 1e-13": "8192 次闭式 Wenzel 高度雾线积分与 64 步比尔-朗伯级联步进在 1e-13 内一致",
+    "wenzel-mountain-visibility-conserved": "Wenzel山巅透射可见度守恒",
+    "17 elevation stations preserve monotonic altitude clearing (station-16 h=240m tau=0.6199, T_fog=0.5380)": "17 个海拔站点保持随高度单调通透（第 16 站 h=240m τ=0.6199，透射 T_fog=0.5380）",
+    "naive-camera-density-whiteout-exposed": "相机高度密度外推雾墙白化暴露",
+    "naive camera-density extrapolation buries station-16 (h=240m) at T_fog=0.0498 (-0.4882 loss across 16/17 stations)": "朴素相机高度密度外推将第 16 站（h=240m）淹没在 T_fog=0.0498（丢失 −0.4882，污染 16/17 站）",
+    "wenzel-peak-transmittance-locked": "Wenzel山巅通透度锁定",
+    "Wenzel Line Integral locks mountain peak station-16 (h=240m) at T_fog=0.5380 (0/17 whiteout stations)": "Wenzel 闭式线积分将山巅第 16 站（h=240m）锁定在 T_fog=0.5380（0/17 雾墙白化站）",
+    "naive-valley-soup-whiteout-exposed": "朴素谷底浓雾白化暴露",
+    "naive valley-density extrapolation crushes station-16 to T_fog=0.0498 (-0.4882 whiteout loss across 16/17 stations)": "朴素谷底密度外推将第 16 站压暗至 T_fog=0.0498（丢失 −0.4882 可见度，波及 16/17 站）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse station scrubbing reproduces the exact transmissometer carriage world matrix": "逆序站点拖曳精确复现透射计滑车世界矩阵",
+    "atomic-density-rejection": "原子雾密度拒绝",
+    "out-of-range baseDensitySigma0=99.0 is rejected while valid Exponential Height-Fog state remains": "越界基础雾密度 99.0 被拒绝，有效指数高度雾状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered transmissometer carriage y-elevation matches solved fog transmittance height": "渲染透射计滑车垂直高度与求解器高度雾透射率高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px Exponential Height-Fog controls fit without horizontal overflow": "390px 指数高度雾控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual station scrubbing remains available": "减少动态默认静止，保留手动站点核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Closed-Form Wenzel Line Integral": "闭式 Wenzel 指数高度雾线积分",
+    "64-Step Beer-Lambert Fog Cascade": "64 步比尔-朗伯高度雾级联基线",
+    "Median of 7 alternating Node CPU runs after warmup. Closed-form Wenzel exponential height-fog antiderivative versus 64-step Beer-Lambert ray-marching cascade.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；闭式 Wenzel 指数高度雾线积分原函数对比 64 步比尔-朗伯光线步进级联基线。",
+    "Sampled 17 mountain elevation stations preserve exact exponential altitude clearing without division-by-zero or whiteout": "采样 17 个山体海拔站点全部保持精确指数高度通透度，无除零奇点或雾墙白化",
+    "τ(Δh) = σ₀ · L · (1 − e^{−kΔh}) / (kΔh) → Peak T(240m) = 0.5380 (0 Whiteout Stations)": "闭式指数高度雾线积分 → 240m 山巅透射率 T = 0.5380（0 雾墙白化站）",
+    "Analytical exponential height fog in UE5 ExponentialHeightFog, CryEngine, Frostbite, and Unity HDRP": "UE5 ExponentialHeightFog、CryEngine、Frostbite 与 Unity HDRP 中的解析指数高度雾",
+    "Explaining why multiplying camera-altitude fog density σ(h_cam) by ray length L buries 240m mountain peaks in 95% valley whiteout": "直观解释为何直接拿相机谷底雾密度 σ(h_cam) 乘以视线长度 L 会把 240m 高山巅死死埋在 95% 的浓白雾墙里",
+    "Guarding horizontal rays (k·Δh → 0) with the Taylor series 1 − x/2 + x²/6 to prevent 0/0 NaN artifacts at the camera horizon": "对水平视线（k·Δh → 0）施加泰勒展开 1 − x/2 + x²/6 可去奇点保护，消除相机水平面上的 0/0 NaN 黑带",
+    "Replacing 64-step numerical fog ray marching with a single closed-form antiderivative evaluation": "以单次闭式原函数求值替代昂贵的 64 步高度雾数值步进",
+    "Spatially heterogeneous 3D noise clouds or local smoke grenades (which require froxel volume ray marching, see Round 52)": "含 3D 噪点云团或局部烟雾弹的异质体积介质（需使用 Froxel 体积步进，见 Round 52）",
+    "Underground caves with strictly uniform constant-density dust (k = 0 everywhere)": "衰减率为零（k = 0）的纯均匀浓度地下洞穴粉尘",
+    "Neural single-image dehazing or atmospheric restoration networks": "神经单幅图像去雾或大气复原网络",
+    "Vacuum space scenes with zero participating media": "不含任何参与介质的太空真空场景"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/exponential-height-fog.test.ts",
+    "node scripts/benchmark-exponential-height-fog.mjs"
+  ]
+}

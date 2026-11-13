@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#070b14"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect x="28" y="28" width="1144" height="574" rx="20" fill="#0b1324" stroke="#1e293b" stroke-width="2"/>
+
+  <text x="56" y="74" fill="#38bdf8" font-family="Inter, Segoe UI, sans-serif" font-size="15" font-weight="700" letter-spacing="1.5">
+    ROUND 86 · DRISCOLL-HOLMÉR EXPONENTIAL DECAY DAMPER VS LINEAR-DT LERP OVERSHOOT
+  </text>
+  <text x="56" y="112" fill="#f8fafc" font-family="Inter, Segoe UI, sans-serif" font-size="22" font-weight="800">
+    Exact Exponential Decay 1−exp(−λΔt) (x = 8.6466m All FPS) vs Naive λ·Δt (x = 20.0000m, 114.04× Faster)
+  </text>
+  <text x="56" y="142" fill="#94a3b8" font-family="Inter, Segoe UI, sans-serif" font-size="15">
+    Semigroup identity (e^(−λT/N))^N ≡ e^(−λT) guarantees identical camera arrival across 4Hz hitches to 240Hz displays
+  </text>
+
+  <!-- Left Panel: Driscoll Exact Exponential Decay -->
+  <rect x="56" y="170" width="528" height="396" rx="14" fill="#0f1b33" stroke="#10b981" stroke-width="1.8"/>
+  <text x="80" y="204" fill="#34d399" font-family="Inter, Segoe UI, sans-serif" font-size="17" font-weight="700">
+    ✅ Driscoll / Holmér Exponential Decay (α = 1 − exp(−λ·Δt))
+  </text>
+  <text x="80" y="228" fill="#cbd5e1" font-family="Inter, Segoe UI, sans-serif" font-size="13">
+    Target = 10.0m, λ = 8.0s⁻¹, T = 0.25s · N = 1..17 Substeps All Land on 8.6466m
+  </text>
+
+  <!-- Flat invariant arrival line left -->
+  <line x1="95" y1="365" x2="545" y2="365" stroke="#34d399" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="115" cy="365" r="8" fill="#34d399" stroke="#f8fafc" stroke-width="2"/>
+  <circle cx="320" cy="365" r="6" fill="#34d399"/>
+  <circle cx="525" cy="365" r="6" fill="#34d399"/>
+  <text x="320" y="468" fill="#34d399" font-family="Consolas, monospace" font-size="13" font-weight="700" text-anchor="middle">
+    Station-0 (N=1 Hitch) &amp; Station-16 (N=17): x(0.25s) = 8.6466 m (0.0000m Drift!)
+  </text>
+
+  <rect x="80" y="492" width="480" height="54" rx="8" fill="#062e22" stroke="#10b981"/>
+  <text x="96" y="514" fill="#a7f3d0" font-family="Consolas, monospace" font-size="14" font-weight="700">
+    Drifted / Overshot Stations: 0 / 17 (Exact FPS Invariance)
+  </text>
+  <text x="96" y="534" fill="#6ee7b7" font-family="Consolas, monospace" font-size="13">
+    8,192 17-Station Passes: 3.14 ms (1−exp) vs 358.11 ms (64-Step RK4, 114.04×)
+  </text>
+
+  <!-- Right Panel: Naive Frame-Dependent Linear-Dt Lerp -->
+  <rect x="616" y="170" width="528" height="396" rx="14" fill="#1c1124" stroke="#f43f5e" stroke-width="1.8"/>
+  <text x="640" y="204" fill="#fb7185" font-family="Inter, Segoe UI, sans-serif" font-size="17" font-weight="700">
+    ❌ Naive Frame-Dependent Lerp (α = λ·Δt)
+  </text>
+  <text x="640" y="228" fill="#cbd5e1" font-family="Inter, Segoe UI, sans-serif" font-size="13">
+    N=1 Hitch Explodes to 20.0000m (+11.35m Overshoot) · All 17 FPS Stations Drift!
+  </text>
+
+  <!-- Overshooting & drifting curve right -->
+  <line x1="655" y1="365" x2="1105" y2="365" stroke="#475569" stroke-width="2" stroke-dasharray="5,4"/>
+  <path d="M 675 252 L 700 328 Q 820 352 1085 360" fill="none" stroke="#fb7185" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="675" cy="252" r="8" fill="#fb7185" stroke="#f8fafc" stroke-width="2"/>
+  <text x="880" y="468" fill="#fda4af" font-family="Consolas, monospace" font-size="13" font-weight="700" text-anchor="middle">
+    Station-0 (N=1 Hitch): x_naive = 20.0000 m (+11.3534m Overshoot Past 10m Target!)
+  </text>
+
+  <rect x="640" y="492" width="480" height="54" rx="8" fill="#3b0a1e" stroke="#f43f5e"/>
+  <text x="656" y="514" fill="#fecdd3" font-family="Consolas, monospace" font-size="14" font-weight="700">
+    Drifted FPS Stations: 17 / 17 (100% Frame-Rate Dependent)
+  </text>
+  <text x="656" y="534" fill="#fda4af" font-family="Consolas, monospace" font-size="13">
+    Violates Semigroup Identity (1 − λT/N)^N ≠ e^(−λT) Across Refresh Rates
+  </text>
+</svg>

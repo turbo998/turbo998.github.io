@@ -1,0 +1,267 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Quilez-Wright SDF cone-traced soft shadow penumbra ratio vs hard sphere-traced binary umbra rig",
+  "topic_zh": "Quilez-Wright 有向距离场（SDF）单射线锥比软阴影对比朴素二值球追踪刀切黑边",
+  "slug": "sdf-cone-soft-shadow-rig",
+  "timestamp": "2026-11-13T20:32:01.095Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Inigo Quilez & Daniel Wright (SIGGRAPH 2015 UE4/UE5 Distance Field Soft Shadows) single-ray cone-aperture penumbra integration (u = clamp(0.5 + 0.5*k*d_min/t, 0, 1), S = u^2*(3 - 2u)) versus naive binary sphere-traced hard shadows (d_min > 0 ? 1 : 0) and 64-ray distributed area-light disk quadrature across 17 closest-approach stations (d_min in [-1.60m, +1.60m]). No neural shadow denoising execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "quilez-cone-multiray-equivalence-128",
+      "passed": true,
+      "detail": "128 single-ray SDF cone ratio and 64-ray area-light disk quadrature passes agree within 1e-13"
+    },
+    {
+      "name": "quilez-cone-multiray-equivalence-1024",
+      "passed": true,
+      "detail": "1024 single-ray SDF cone ratio and 64-ray area-light disk quadrature passes agree within 1e-13"
+    },
+    {
+      "name": "quilez-cone-multiray-equivalence-8192",
+      "passed": true,
+      "detail": "8192 single-ray SDF cone ratio and 64-ray area-light disk quadrature passes agree within 1e-13"
+    },
+    {
+      "name": "quilez-soft-penumbra-conserved",
+      "passed": true,
+      "detail": "17 closest-approach stations preserve smooth C1 area-light penumbra (station-8 d=0.00m S=0.5000)"
+    },
+    {
+      "name": "hard-sdf-binary-umbra-cliff-exposed",
+      "passed": true,
+      "detail": "naive hard binary SDF trace snaps station-8 (d=0.00m) to S=0.0000 (0.5000 max error across 9/17 stations)"
+    },
+    {
+      "name": "quilez-half-umbra-boundary-locked",
+      "passed": true,
+      "detail": "Quilez SDF Cone Shadow locks boundary station-8 (d_min=0.00m) at S=0.5000 (0/17 clipped stations)"
+    },
+    {
+      "name": "hard-binary-step-cliff-exposed",
+      "passed": true,
+      "detail": "naive hard SDF trace snaps station-8 to S=0.0000 (−0.5000 cliff across 9/17 penumbra stations)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse station scrubbing reproduces the exact penumbra photometer carriage world matrix"
+    },
+    {
+      "name": "atomic-occluder-distance-rejection",
+      "passed": true,
+      "detail": "out-of-range occluderDistanceTM=999.0 is rejected while valid SDF Cone Shadow state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered photometer carriage y-elevation matches solved shadow visibility height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px SDF Cone Shadow controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual station scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station SDF shadow passes",
+      "count": 128,
+      "primary_ms": 0.02869999999995798,
+      "baseline_ms": 0.24729999999999563,
+      "primary_samples_ms": [
+        0.08299999999996999,
+        0.028599999999983083,
+        0.02760000000000673,
+        0.02869999999995798,
+        0.035799999999994725,
+        0.025899999999978718,
+        0.032199999999988904
+      ],
+      "baseline_samples_ms": [
+        0.2858000000001084,
+        0.27740000000005693,
+        0.2676999999999907,
+        0.23950000000002092,
+        0.24729999999999563,
+        0.16280000000006112,
+        0.18290000000001783
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station SDF shadow passes",
+      "count": 1024,
+      "primary_ms": 0.04210000000000491,
+      "baseline_ms": 1.8877999999999702,
+      "primary_samples_ms": [
+        0.39390000000003056,
+        0.04470000000003438,
+        0.03960000000006403,
+        0.041900000000055115,
+        0.04210000000000491,
+        0.040500000000065484,
+        0.05009999999992942
+      ],
+      "baseline_samples_ms": [
+        1.3267000000000735,
+        1.4675999999999476,
+        1.8834999999999127,
+        1.8877999999999702,
+        1.8903999999999996,
+        1.912499999999909,
+        2.0447000000000344
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station SDF shadow passes",
+      "count": 8192,
+      "primary_ms": 0.33330000000000837,
+      "baseline_ms": 13.61970000000008,
+      "primary_samples_ms": [
+        0.46249999999997726,
+        0.33199999999999363,
+        0.3231999999999289,
+        0.33330000000000837,
+        0.3229000000000042,
+        0.36220000000002983,
+        0.34769999999991796
+      ],
+      "baseline_samples_ms": [
+        9.865800000000036,
+        13.61970000000008,
+        16.114200000000096,
+        13.48109999999997,
+        9.489700000000084,
+        16.87990000000002,
+        16.355300000000057
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/sdf-cone-soft-shadow-rig/light-quilez-cone-ratio-soft-shadow.png",
+    "docs/evidence/sdf-cone-soft-shadow-rig/light-naive-hard-sdf-binary-shadow.png",
+    "docs/evidence/sdf-cone-soft-shadow-rig/dark-quilez-cone-ratio-soft-shadow.png",
+    "docs/evidence/sdf-cone-soft-shadow-rig/dark-naive-hard-sdf-binary-shadow.png",
+    "docs/evidence/sdf-cone-soft-shadow-rig/mobile.png"
+  ],
+  "primary_label": "Quilez 1-Ray SDF Cone Ratio k·d_min/t",
+  "baseline_label": "64-Ray Distributed Area-Light Disk Quadrature",
+  "load_unit": "17-station SDF shadow passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Single-ray closed-form SDF cone-ratio penumbra versus 64-ray distributed area-light disk quadrature.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "occluder_distance_t_m": 4,
+    "light_softness_k": 4,
+    "cone_boundary_visibility": 0.5,
+    "naive_boundary_visibility": 0,
+    "max_penumbra_error": 0.5,
+    "corrupted_stations": 9,
+    "maximum_solver_error": 2.2204e-16
+  },
+  "protocol": {
+    "input": {
+      "station_index": 8,
+      "d_min_m": 0,
+      "t_occ_m": 4,
+      "k_soft": 4,
+      "mode": "quilez-cone-ratio-soft-shadow"
+    },
+    "output": {
+      "aperture_u": 0.5,
+      "cone_visibility": 0.5,
+      "naive_hard_visibility": 0,
+      "boundary_step_error": 0.5,
+      "corrupted_stations": 9
+    },
+    "function": "u = clamp(0.5 + 0.5 · k · d_min / t, 0, 1), S = u²(3 − 2u) → Boundary S(0.00m) = 0.5000 (0.0000 Penumbra Error)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 closest-approach SDF stations reconstruct exact C1 area-light penumbra from 1 ray march",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "UE5 Mesh Distance Field Soft Shadows, Shadertoy/WebGPU ray-marched SDF scenes, and global distance-field skylight occlusion",
+    "Rendering contact-hardening soft shadows (sharp at t → 0, wide penumbra at large t) using only 1 ray march per pixel",
+    "Tracking min_t(k · d_SDF(P + t·L) / t) at zero extra SDF evaluation cost inside the sphere-tracing loop",
+    "Replacing noisy 16–64 ray stochastic area-light shadow sampling and temporal denoisers"
+  ],
+  "not_for": [
+    "Non-SDF triangle soup meshes without precomputed Mesh Distance Fields or analytical SDF primitives",
+    "Pinhole point lights in vacuum with zero angular radius (k → ∞)",
+    "Neural screen-space shadow synthesis or spatiotemporal SVGF denoising",
+    "Translucent colored stained-glass shadows"
+  ],
+  "locale_zh": {
+    "quilez-cone-multiray-equivalence-128": "Quilez单射线锥比与64射线面积光求积等价 128",
+    "128 single-ray SDF cone ratio and 64-ray area-light disk quadrature passes agree within 1e-13": "128 次单射线 SDF 锥比与 64 射线面积光圆盘数值求积在 1e-13 内一致",
+    "quilez-cone-multiray-equivalence-1024": "Quilez单射线锥比与64射线面积光求积等价 1024",
+    "1024 single-ray SDF cone ratio and 64-ray area-light disk quadrature passes agree within 1e-13": "1024 次单射线 SDF 锥比与 64 射线面积光圆盘数值求积在 1e-13 内一致",
+    "quilez-cone-multiray-equivalence-8192": "Quilez单射线锥比与64射线面积光求积等价 8192",
+    "8192 single-ray SDF cone ratio and 64-ray area-light disk quadrature passes agree within 1e-13": "8192 次单射线 SDF 锥比与 64 射线面积光圆盘数值求积在 1e-13 内一致",
+    "quilez-soft-penumbra-conserved": "Quilez面积光柔和半影守恒",
+    "17 closest-approach stations preserve smooth C1 area-light penumbra (station-8 d=0.00m S=0.5000)": "17 个最近擦掠距离站点保持 C1 平滑面积光半影（第 8 站 d=0.00m S=0.5000）",
+    "hard-sdf-binary-umbra-cliff-exposed": "二值球追踪刀切本影暴露",
+    "naive hard binary SDF trace snaps station-8 (d=0.00m) to S=0.0000 (0.5000 max error across 9/17 stations)": "朴素二值 SDF 追踪将第 8 站（d=0.00m）硬切至 S=0.0000（峰值误差 0.5000，污染 9/17 站）",
+    "quilez-half-umbra-boundary-locked": "Quilez半遮挡边界0.5锁定",
+    "Quilez SDF Cone Shadow locks boundary station-8 (d_min=0.00m) at S=0.5000 (0/17 clipped stations)": "Quilez 距离场锥追踪将第 8 站边界（d_min=0.00m）锁定在 S=0.5000（0/17 硬切站）",
+    "hard-binary-step-cliff-exposed": "二值追踪硬阶跃悬崖暴露",
+    "naive hard SDF trace snaps station-8 to S=0.0000 (−0.5000 cliff across 9/17 penumbra stations)": "朴素二值 SDF 追踪将第 8 站硬切至 S=0.0000（悬崖 −0.5000，波及 9/17 个半影站点）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse station scrubbing reproduces the exact penumbra photometer carriage world matrix": "逆序站点拖曳精确复现半影光度计滑车世界矩阵",
+    "atomic-occluder-distance-rejection": "原子遮挡物距离拒绝",
+    "out-of-range occluderDistanceTM=999.0 is rejected while valid SDF Cone Shadow state remains": "越界遮挡物距离 999.0m 被拒绝，有效距离场软阴影状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered photometer carriage y-elevation matches solved shadow visibility height": "渲染光度计滑车垂直高度与求解器阴影可见度高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px SDF Cone Shadow controls fit without horizontal overflow": "390px 距离场锥比软阴影控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual station scrubbing remains available": "减少动态默认静止，保留手动站点核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Quilez 1-Ray SDF Cone Ratio k·d_min/t": "Quilez 单射线距离场锥比 k·d_min/t",
+    "64-Ray Distributed Area-Light Disk Quadrature": "64 射线分布式面积光圆盘求积基线",
+    "Median of 7 alternating Node CPU runs after warmup. Single-ray closed-form SDF cone-ratio penumbra versus 64-ray distributed area-light disk quadrature.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；Quilez 单射线距离场锥比闭式半影对比 64 射线分布式面积光圆盘求积基线。",
+    "Sampled 17 closest-approach SDF stations reconstruct exact C1 area-light penumbra from 1 ray march": "采样 17 个最近擦掠距离站点仅凭单条射线即精确重构 C1 面积光柔和半影，零硬切阶跃",
+    "u = clamp(0.5 + 0.5 · k · d_min / t, 0, 1), S = u²(3 − 2u) → Boundary S(0.00m) = 0.5000 (0.0000 Penumbra Error)": "距离场锥比积分 u = clamp(0.5+0.5·k·d_min/t) → 边界 S(0.00m) = 0.5000（0.0000 半影误差）",
+    "UE5 Mesh Distance Field Soft Shadows, Shadertoy/WebGPU ray-marched SDF scenes, and global distance-field skylight occlusion": "UE5 网格距离场软阴影（Distance Field Shadows）、WebGL2/WebGPU 距离场光线步进与全局 SDF 天光遮蔽",
+    "Rendering contact-hardening soft shadows (sharp at t → 0, wide penumbra at large t) using only 1 ray march per pixel": "每像素仅需发射 1 条射线即可渲染“近处接触锐利、远处自然散开”的物理接触硬化软阴影",
+    "Tracking min_t(k · d_SDF(P + t·L) / t) at zero extra SDF evaluation cost inside the sphere-tracing loop": "在球追踪循环内顺带记录最小锥角比 min(k·d_SDF/t)，零额外距离场查询开销",
+    "Replacing noisy 16–64 ray stochastic area-light shadow sampling and temporal denoisers": "彻底省去 16~64 射线随机面积光采样与昂贵的时域去噪器（SVGF）",
+    "Non-SDF triangle soup meshes without precomputed Mesh Distance Fields or analytical SDF primitives": "未烘焙网格距离场（Mesh SDF）且无解析距离函数的普通离散三角形网格",
+    "Pinhole point lights in vacuum with zero angular radius (k → ∞)": "理想零半径针孔点光源（k → ∞）",
+    "Neural screen-space shadow synthesis or spatiotemporal SVGF denoising": "神经屏幕空间阴影合成或时空去噪推理",
+    "Translucent colored stained-glass shadows": "彩色半透明花窗玻璃透射阴影"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/sdf-cone-soft-shadow.test.ts",
+    "node scripts/benchmark-sdf-cone-soft-shadow.mjs"
+  ]
+}

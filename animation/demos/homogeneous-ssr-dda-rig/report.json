@@ -1,0 +1,267 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "McGuire homogeneous reciprocal-depth SSR 2D DDA vs screen-space linear-Z hyperbolic ray bowing rig",
+  "topic_zh": "McGuire 齐次倒数深度 SSR 二维 DDA 步进对比屏幕空间线性 Z 抛物弯曲穿墙",
+  "slug": "homogeneous-ssr-dda-rig",
+  "timestamp": "2026-11-13T18:51:28.829Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Morgan McGuire & Michael Mara (JCGT 2014) homogeneous reciprocal-depth screen-space 2D DDA ray marching (q(u) = (1-u)/z_0 + u/z_1, z(u) = 1/q(u)) versus naive screen-space linear-Z interpolation and 54-step 3D view-space projection inversion across 17 screen-space stations (u in [0.00, 1.00]). No neural reflection inpainting execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "mcguire-dda-3d-reproject-equivalence-128",
+      "passed": true,
+      "detail": "128 homogeneous reciprocal-Z DDA and 3D view-space reprojection passes agree within 1e-13"
+    },
+    {
+      "name": "mcguire-dda-3d-reproject-equivalence-1024",
+      "passed": true,
+      "detail": "1024 homogeneous reciprocal-Z DDA and 3D view-space reprojection passes agree within 1e-13"
+    },
+    {
+      "name": "mcguire-dda-3d-reproject-equivalence-8192",
+      "passed": true,
+      "detail": "8192 homogeneous reciprocal-Z DDA and 3D view-space reprojection passes agree within 1e-13"
+    },
+    {
+      "name": "mcguire-straight-3d-ray-conserved",
+      "passed": true,
+      "detail": "17 screen-space DDA steps preserve exact 3D straight-ray depth (station-8 u=0.50 z=3.7778m)"
+    },
+    {
+      "name": "screen-linear-z-ray-bowing-exposed",
+      "passed": true,
+      "detail": "naive screen-linear Z bows station-8 (u=0.50) to z=18.0000m (+14.2222m error, max +19.5000m across 15/17 stations)"
+    },
+    {
+      "name": "mcguire-midpoint-depth-locked",
+      "passed": true,
+      "detail": "McGuire Homogeneous DDA locks midpoint station-8 (u=0.50) at z=3.7778m (0/17 bowed stations)"
+    },
+    {
+      "name": "linear-z-14m-bowing-exposed",
+      "passed": true,
+      "detail": "screen-linear Z bows station-8 to z=18.0000m (+14.2222m deeper across 15/17 interior stations)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse station scrubbing reproduces the exact SSR rangefinder carriage world matrix"
+    },
+    {
+      "name": "atomic-start-depth-rejection",
+      "passed": true,
+      "detail": "out-of-range startDepthZ0M=999.0 is rejected while valid Homogeneous SSR state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered rangefinder carriage y-elevation matches solved ray depth height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Homogeneous SSR controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual station scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station SSR DDA passes",
+      "count": 128,
+      "primary_ms": 0.017300000000034288,
+      "baseline_ms": 0.29460000000000264,
+      "primary_samples_ms": [
+        0.03129999999998745,
+        0.017300000000034288,
+        0.01269999999999527,
+        0.01310000000000855,
+        0.021399999999971442,
+        0.011699999999962074,
+        0.03890000000001237
+      ],
+      "baseline_samples_ms": [
+        0.33909999999997353,
+        0.2951999999999657,
+        0.29710000000000036,
+        0.29110000000002856,
+        0.29460000000000264,
+        0.2697000000000003,
+        0.2744999999999891
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station SSR DDA passes",
+      "count": 1024,
+      "primary_ms": 0.0403999999999769,
+      "baseline_ms": 1.5212999999999965,
+      "primary_samples_ms": [
+        0.09420000000000073,
+        0.047100000000000364,
+        0.04019999999997026,
+        0.040300000000002,
+        0.0403999999999769,
+        0.04060000000004038,
+        0.0402000000000271
+      ],
+      "baseline_samples_ms": [
+        1.7309999999999945,
+        1.5493000000000166,
+        1.5212999999999965,
+        1.5187999999999988,
+        1.519900000000007,
+        1.5638000000000147,
+        1.518100000000004
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station SSR DDA passes",
+      "count": 8192,
+      "primary_ms": 0.32360000000005584,
+      "baseline_ms": 13.148599999999988,
+      "primary_samples_ms": [
+        0.325300000000027,
+        0.8160000000000309,
+        0.359800000000007,
+        0.3225999999999658,
+        0.3184999999999718,
+        0.32360000000005584,
+        0.3185999999999467
+      ],
+      "baseline_samples_ms": [
+        14.310800000000029,
+        12.663100000000043,
+        13.53140000000002,
+        12.698999999999955,
+        12.645600000000059,
+        13.861700000000042,
+        13.148599999999988
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/homogeneous-ssr-dda-rig/light-mcguire-homogeneous-reciprocal-z.png",
+    "docs/evidence/homogeneous-ssr-dda-rig/light-naive-screen-linear-z.png",
+    "docs/evidence/homogeneous-ssr-dda-rig/dark-mcguire-homogeneous-reciprocal-z.png",
+    "docs/evidence/homogeneous-ssr-dda-rig/dark-naive-screen-linear-z.png",
+    "docs/evidence/homogeneous-ssr-dda-rig/mobile.png"
+  ],
+  "primary_label": "McGuire Homogeneous 1/Z 2D DDA",
+  "baseline_label": "3D View-Space Reprojection Search",
+  "load_unit": "17-station SSR DDA passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. McGuire homogeneous reciprocal-depth 2D DDA versus 54-step 3D view-space reprojection inversion.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "start_depth_z0_m": 2,
+    "end_depth_z1_m": 34,
+    "homogeneous_midpoint_z_m": 3.7778,
+    "naive_linear_midpoint_z_m": 18,
+    "max_bowing_error_m": 19.5,
+    "corrupted_stations": 15,
+    "maximum_solver_error": 1.7764e-14
+  },
+  "protocol": {
+    "input": {
+      "station_index": 8,
+      "screen_u": 0.5,
+      "z0_m": 2,
+      "z1_m": 34,
+      "mode": "mcguire-homogeneous-reciprocal-z"
+    },
+    "output": {
+      "reciprocal_q": 0.2647,
+      "homogeneous_z_m": 3.7778,
+      "naive_linear_z_m": 18,
+      "midpoint_bow_error_m": 14.2222,
+      "corrupted_stations": 15
+    },
+    "function": "1 / z(u) = (1 − u) / z₀ + u / z₁ → Midpoint z(0.50) = 3.7778 m (0.0000 m Ray Bowing)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 screen-space DDA stations preserve exact 3D straight-line depth without hyperbolic bowing",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Screen-Space Reflections (SSR), Screen-Space GI (SSGI), and contact shadows in UE5, Frostbite, and Unity HDRP",
+    "Explaining why interpolating linear depth z linearly in 2D screen space bows a 2m → 34m ray by +14.22m at the screen midpoint",
+    "Stepping q_k = q_0 + k·Δq (where q = 1/z) with 1 addition per pixel step during 2D Bresenham/DDA traversal",
+    "Eliminating per-step 4×4 perspective matrix multiplications during screen-space ray marching"
+  ],
+  "not_for": [
+    "Orthographic cameras where perspective division w = z does not occur and z(u) is genuinely linear in screen space",
+    "World-space hardware BVH ray tracing (DXR / Vulkan Ray Query) that steps in 3D Euclidean coordinates rather than 2D pixels",
+    "Neural reflection hallucination or off-screen inpainting networks",
+    "Zero-length single-pixel lookups"
+  ],
+  "locale_zh": {
+    "mcguire-dda-3d-reproject-equivalence-128": "McGuire齐次DDA与三维重投影等价 128",
+    "128 homogeneous reciprocal-Z DDA and 3D view-space reprojection passes agree within 1e-13": "128 次齐次倒数深度 DDA 与三维视空间重投影在 1e-13 内一致",
+    "mcguire-dda-3d-reproject-equivalence-1024": "McGuire齐次DDA与三维重投影等价 1024",
+    "1024 homogeneous reciprocal-Z DDA and 3D view-space reprojection passes agree within 1e-13": "1024 次齐次倒数深度 DDA 与三维视空间重投影在 1e-13 内一致",
+    "mcguire-dda-3d-reproject-equivalence-8192": "McGuire齐次DDA与三维重投影等价 8192",
+    "8192 homogeneous reciprocal-Z DDA and 3D view-space reprojection passes agree within 1e-13": "8192 次齐次倒数深度 DDA 与三维视空间重投影在 1e-13 内一致",
+    "mcguire-straight-3d-ray-conserved": "McGuire三维直线深度守恒",
+    "17 screen-space DDA steps preserve exact 3D straight-ray depth (station-8 u=0.50 z=3.7778m)": "17 个屏幕空间步进点保持精确三维直线深度（第 8 站 u=0.50 z=3.7778m）",
+    "screen-linear-z-ray-bowing-exposed": "屏幕线性Z射线弯曲穿墙暴露",
+    "naive screen-linear Z bows station-8 (u=0.50) to z=18.0000m (+14.2222m error, max +19.5000m across 15/17 stations)": "朴素屏幕线性 Z 将第 8 站（u=0.50）弯折至 z=18.0000m（误差 +14.2222m，峰值 +19.5000m，污染 15/17 站）",
+    "mcguire-midpoint-depth-locked": "McGuire中点直线深度锁定",
+    "McGuire Homogeneous DDA locks midpoint station-8 (u=0.50) at z=3.7778m (0/17 bowed stations)": "McGuire 齐次 DDA 将第 8 站（u=0.50）锁定在 z=3.7778m（0/17 弯曲站）",
+    "linear-z-14m-bowing-exposed": "屏幕线性Z 14.22米弯曲暴露",
+    "screen-linear Z bows station-8 to z=18.0000m (+14.2222m deeper across 15/17 interior stations)": "屏幕线性 Z 将第 8 站弯折至 z=18.0000m（深出 +14.2222m，波及 15/17 站）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse station scrubbing reproduces the exact SSR rangefinder carriage world matrix": "逆序站点拖曳精确复现 SSR 测距仪滑车世界矩阵",
+    "atomic-start-depth-rejection": "原子起点深度拒绝",
+    "out-of-range startDepthZ0M=999.0 is rejected while valid Homogeneous SSR state remains": "越界起点深度 999.0m 被拒绝，有效齐次 SSR 状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered rangefinder carriage y-elevation matches solved ray depth height": "渲染测距仪滑车垂直高度与求解器射线深度高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px Homogeneous SSR controls fit without horizontal overflow": "390px 齐次 SSR 控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual station scrubbing remains available": "减少动态默认静止，保留手动站点核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "McGuire Homogeneous 1/Z 2D DDA": "McGuire 齐次倒数深度 2D DDA",
+    "3D View-Space Reprojection Search": "三维视空间重投影求逆基线",
+    "Median of 7 alternating Node CPU runs after warmup. McGuire homogeneous reciprocal-depth 2D DDA versus 54-step 3D view-space reprojection inversion.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；McGuire 齐次倒数深度 2D DDA 步进对比 54 步三维视空间重投影求逆基线。",
+    "Sampled 17 screen-space DDA stations preserve exact 3D straight-line depth without hyperbolic bowing": "采样 17 个屏幕空间 DDA 站点全部保持精确三维直线深度，无双曲弯曲穿墙",
+    "1 / z(u) = (1 − u) / z₀ + u / z₁ → Midpoint z(0.50) = 3.7778 m (0.0000 m Ray Bowing)": "齐次倒数深度线性步进 1/z(u) → 屏幕中点深度 z(0.50) = 3.7778m（0.0000m 弯曲误差）",
+    "Screen-Space Reflections (SSR), Screen-Space GI (SSGI), and contact shadows in UE5, Frostbite, and Unity HDRP": "UE5、Frostbite 与 Unity HDRP 中的屏幕空间反射（SSR）、屏幕空间全局光照（SSGI）与接触阴影",
+    "Explaining why interpolating linear depth z linearly in 2D screen space bows a 2m → 34m ray by +14.22m at the screen midpoint": "直观解释为何在 2D 屏幕空间对线性深度 z 直接线性插值会将 2m→34m 的射线在中点往深处掰弯 +14.22m",
+    "Stepping q_k = q_0 + k·Δq (where q = 1/z) with 1 addition per pixel step during 2D Bresenham/DDA traversal": "在 2D 像素网格 DDA 遍历中按 q_k = q₀ + k·Δq（q = 1/z）每步仅做 1 次加法",
+    "Eliminating per-step 4×4 perspective matrix multiplications during screen-space ray marching": "彻底省去屏幕空间光线步进中每一步重乘 4×4 透视投影矩阵的开销",
+    "Orthographic cameras where perspective division w = z does not occur and z(u) is genuinely linear in screen space": "不含透视除法 w = z、屏幕空间与深度天然线性的正交投影相机",
+    "World-space hardware BVH ray tracing (DXR / Vulkan Ray Query) that steps in 3D Euclidean coordinates rather than 2D pixels": "直接在三维欧氏空间遍历 BVH 的硬件光线追踪（DXR / Vulkan Ray Query）",
+    "Neural reflection hallucination or off-screen inpainting networks": "神经离屏反射脑补或图像补全网络",
+    "Zero-length single-pixel lookups": "零步长的单像素原地读取"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/homogeneous-ssr-dda.test.ts",
+    "node scripts/benchmark-homogeneous-ssr-dda.mjs"
+  ]
+}

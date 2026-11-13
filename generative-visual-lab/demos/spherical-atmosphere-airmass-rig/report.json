@@ -1,0 +1,268 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Hillaire spherical-shell atmosphere optical airmass vs flat-earth planar secant horizon blackout rig",
+  "topic_zh": "Hillaire 球壳大气光学质量求交对比平地球正割近似地平线晚霞死黑断层",
+  "slug": "spherical-atmosphere-airmass-rig",
+  "timestamp": "2026-11-13T16:44:54.886Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Bruneton & Neyret (2008) / Sebastien Hillaire (EGSR 2020) closed-form spherical-shell optical airmass (m_sph(mu) = sqrt(q^2*mu^2 + 2*q + 1) - q*mu) versus naive flat-earth planar secant (1/cos(theta)) and 64-step 3D spherical-shell ray marching across 17 grazing sunset zenith angles (theta in [74, 90] deg). No neural sky inpainting execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "spherical-airmass-raymarch-equivalence-128",
+      "passed": true,
+      "detail": "128 closed-form spherical-shell intersection and 64-step 3D ray-march passes agree within 1e-13"
+    },
+    {
+      "name": "spherical-airmass-raymarch-equivalence-1024",
+      "passed": true,
+      "detail": "1024 closed-form spherical-shell intersection and 64-step 3D ray-march passes agree within 1e-13"
+    },
+    {
+      "name": "spherical-airmass-raymarch-equivalence-8192",
+      "passed": true,
+      "detail": "8192 closed-form spherical-shell intersection and 64-step 3D ray-march passes agree within 1e-13"
+    },
+    {
+      "name": "spherical-horizon-sunset-conserved",
+      "passed": true,
+      "detail": "17 grazing zenith stations preserve finite airmass (station-16 theta=90 deg m_sph=39.89, T_red=0.2028)"
+    },
+    {
+      "name": "flat-earth-secant-blackout-exposed",
+      "passed": true,
+      "detail": "naive flat-earth secant 1/cos(90)=inf crushes station-16 (theta=90 deg) from 0.2028 down to 0.0000 across 9/17 stations"
+    },
+    {
+      "name": "spherical-horizon-glow-locked",
+      "passed": true,
+      "detail": "Spherical Shell Airmass locks horizon station-16 (theta=90 deg) at m_sph=39.89 and T_red=0.2028 (0/17 blackout stations)"
+    },
+    {
+      "name": "planar-secant-horizon-blackout-exposed",
+      "passed": true,
+      "detail": "flat-earth secant crushes horizon station-16 to T_red=0.0000 (-0.2028 sunset loss across 9/17 grazing stations)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse station scrubbing reproduces the exact pyrheliometer carriage world matrix"
+    },
+    {
+      "name": "atomic-radius-rejection",
+      "passed": true,
+      "detail": "out-of-range planetRadiusKm=999999.0 is rejected while valid Spherical Airmass state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered pyrheliometer carriage y-elevation matches solved sunset transmittance height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Spherical Airmass controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual station scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station airmass passes",
+      "count": 128,
+      "primary_ms": 0.06370000000003984,
+      "baseline_ms": 5.060399999999959,
+      "primary_samples_ms": [
+        0.11140000000000327,
+        0.0825000000000955,
+        0.06329999999991287,
+        0.06949999999994816,
+        0.06309999999996307,
+        0.06370000000003984,
+        0.05750000000000455
+      ],
+      "baseline_samples_ms": [
+        3.0045000000000073,
+        5.591299999999933,
+        6.881899999999973,
+        4.010899999999992,
+        3.0086000000000013,
+        5.060399999999959,
+        6.129000000000019
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station airmass passes",
+      "count": 1024,
+      "primary_ms": 0.49880000000007385,
+      "baseline_ms": 41.01580000000001,
+      "primary_samples_ms": [
+        0.4732000000000198,
+        0.49880000000007385,
+        0.5063000000000102,
+        0.47289999999998145,
+        0.47500000000002274,
+        2.4716000000000804,
+        0.49919999999997344
+      ],
+      "baseline_samples_ms": [
+        122.79570000000001,
+        40.757799999999975,
+        41.01580000000001,
+        75.36149999999998,
+        47.70779999999991,
+        37.000999999999976,
+        28.30619999999999
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station airmass passes",
+      "count": 8192,
+      "primary_ms": 4.495899999999892,
+      "baseline_ms": 254.6794,
+      "primary_samples_ms": [
+        3.6890999999998257,
+        5.597500000000082,
+        3.667399999999816,
+        5.531400000000303,
+        4.510999999999967,
+        3.911399999999958,
+        4.495899999999892
+      ],
+      "baseline_samples_ms": [
+        224.51639999999998,
+        257.4444000000001,
+        227.33670000000006,
+        254.6794,
+        265.27750000000015,
+        222.14480000000003,
+        263.2167999999997
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/spherical-atmosphere-airmass-rig/light-hillaire-spherical-shell-airmass.png",
+    "docs/evidence/spherical-atmosphere-airmass-rig/light-naive-flat-earth-secant.png",
+    "docs/evidence/spherical-atmosphere-airmass-rig/dark-hillaire-spherical-shell-airmass.png",
+    "docs/evidence/spherical-atmosphere-airmass-rig/dark-naive-flat-earth-secant.png",
+    "docs/evidence/spherical-atmosphere-airmass-rig/mobile.png"
+  ],
+  "primary_label": "Closed-Form Spherical Shell Airmass",
+  "baseline_label": "64-Step 3D Shell Ray-March Integral",
+  "load_unit": "17-station airmass passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form quadratic ray-sphere intersection airmass versus 64-step 3D spherical-shell ray marching.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "curvature_ratio_q": 795,
+    "horizon_spherical_airmass": 39.8873,
+    "horizon_spherical_transmittance": 0.2028,
+    "horizon_flat_transmittance": 0,
+    "max_horizon_blackout_loss": 0.2206,
+    "corrupted_stations": 9,
+    "maximum_solver_error": 2.2427e-14
+  },
+  "protocol": {
+    "input": {
+      "station_index": 16,
+      "zenith_deg": 90,
+      "r_planet_km": 6360,
+      "h_scale_km": 8,
+      "tau_red": 0.04,
+      "mode": "hillaire-spherical-shell-airmass"
+    },
+    "output": {
+      "spherical_airmass_90": 39.8873,
+      "flat_secant_airmass_90": "Infinity",
+      "spherical_transmittance_red": 0.2028,
+      "flat_secant_transmittance_red": 0,
+      "corrupted_grazing_stations": 9
+    },
+    "function": "m_sph(μ) = √(q²μ² + 2q + 1) − qμ (q = R_p/H = 795) → Horizon T_red(90°) = 0.2028 (0 Blackouts)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 grazing sunset zenith stations preserve bounded spherical airmass without horizon blackout",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Real-time procedural sky, sunset transmittance, and aerial perspective in UE5 SkyAtmosphere, Frostbite, and Flight Simulator",
+    "Explaining why flat-earth planar secant 1/cos(theta) diverges to infinity at theta=90 deg and turns the horizon pitch black",
+    "Bounding grazing horizon optical airmass to sqrt(2*R_p/H + 1) = 39.89 atmospheres via exact quadratic ray-sphere intersection",
+    "Replacing 64-step 3D atmospheric transmittance ray marching with a 4-op closed-form spherical chord formula"
+  ],
+  "not_for": [
+    "Overhead noon-only lighting models where solar zenith angle never exceeds 45 deg (m_sph ≈ m_flat within 0.06%)",
+    "Indoor windowless dungeon scenes with zero sky or atmospheric scattering",
+    "Neural LDR-to-HDR skybox diffusion or panorama outpainting models",
+    "Non-spherical flat tabletop dioramas without planetary curvature"
+  ],
+  "locale_zh": {
+    "spherical-airmass-raymarch-equivalence-128": "球壳闭式求交与64步步进等价 128",
+    "128 closed-form spherical-shell intersection and 64-step 3D ray-march passes agree within 1e-13": "128 次球壳闭式几何求交与 64 步三维光线步进积分在 1e-13 内一致",
+    "spherical-airmass-raymarch-equivalence-1024": "球壳闭式求交与64步步进等价 1024",
+    "1024 closed-form spherical-shell intersection and 64-step 3D ray-march passes agree within 1e-13": "1024 次球壳闭式几何求交与 64 步三维光线步进积分在 1e-13 内一致",
+    "spherical-airmass-raymarch-equivalence-8192": "球壳闭式求交与64步步进等价 8192",
+    "8192 closed-form spherical-shell intersection and 64-step 3D ray-march passes agree within 1e-13": "8192 次球壳闭式几何求交与 64 步三维光线步进积分在 1e-13 内一致",
+    "spherical-horizon-sunset-conserved": "球壳地平线晚霞透射守恒",
+    "17 grazing zenith stations preserve finite airmass (station-16 theta=90 deg m_sph=39.89, T_red=0.2028)": "17 个掠射天顶站点保持有限大气质量（第 16 站 θ=90° m_sph=39.89，晚霞透射 T_red=0.2028）",
+    "flat-earth-secant-blackout-exposed": "平地球正割地平线死黑暴露",
+    "naive flat-earth secant 1/cos(90)=inf crushes station-16 (theta=90 deg) from 0.2028 down to 0.0000 across 9/17 stations": "朴素平地球正割 1/cos(90°)=∞ 将第 16 站（θ=90°）从 0.2028 压死至 0.0000，污染 9/17 站",
+    "spherical-horizon-glow-locked": "球壳地平线绯红晚霞锁定",
+    "Spherical Shell Airmass locks horizon station-16 (theta=90 deg) at m_sph=39.89 and T_red=0.2028 (0/17 blackout stations)": "球壳大气质量将地平线第 16 站（θ=90°）锁死在 m_sph=39.89 与 T_red=0.2028（0/17 死黑站）",
+    "planar-secant-horizon-blackout-exposed": "平面正割地平线死黑断层暴露",
+    "flat-earth secant crushes horizon station-16 to T_red=0.0000 (-0.2028 sunset loss across 9/17 grazing stations)": "平地球正割将地平线第 16 站掐死至 T_red=0.0000（丢失 −0.2028 晚霞，波及 9/17 掠射站）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse station scrubbing reproduces the exact pyrheliometer carriage world matrix": "逆序站点拖曳精确复现直接日射表滑车世界矩阵",
+    "atomic-radius-rejection": "原子行星半径拒绝",
+    "out-of-range planetRadiusKm=999999.0 is rejected while valid Spherical Airmass state remains": "越界行星半径 999999.0km 被拒绝，有效球壳大气质量状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered pyrheliometer carriage y-elevation matches solved sunset transmittance height": "渲染日射表滑车垂直高度与求解器晚霞透射率高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px Spherical Airmass controls fit without horizontal overflow": "390px 球壳大气控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual station scrubbing remains available": "减少动态默认静止，保留手动站点核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Closed-Form Spherical Shell Airmass": "闭式球壳几何求交大气质量",
+    "64-Step 3D Shell Ray-March Integral": "64 步三维球壳光线步进积分基线",
+    "Median of 7 alternating Node CPU runs after warmup. Closed-form quadratic ray-sphere intersection airmass versus 64-step 3D spherical-shell ray marching.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；闭式二次方程射线-球壳求交大气质量对比 64 步三维球壳光线步进积分基线。",
+    "Sampled 17 grazing sunset zenith stations preserve bounded spherical airmass without horizon blackout": "采样 17 个掠射日落天顶角站点全部保持有界球壳大气质量，无地平线死黑断层",
+    "m_sph(μ) = √(q²μ² + 2q + 1) − qμ (q = R_p/H = 795) → Horizon T_red(90°) = 0.2028 (0 Blackouts)": "球壳几何求交大气质量 (q = R_p/H = 795) → 90° 地平线晚霞透射 T_red = 0.2028（0 死黑断层）",
+    "Real-time procedural sky, sunset transmittance, and aerial perspective in UE5 SkyAtmosphere, Frostbite, and Flight Simulator": "UE5 SkyAtmosphere、Frostbite 与微软模拟飞行中的实时程序化天空、落日晚霞透射与空气透视",
+    "Explaining why flat-earth planar secant 1/cos(theta) diverges to infinity at theta=90 deg and turns the horizon pitch black": "直观解释为何平地球正割近似 1/cos θ 在 θ=90° 发散至无穷大并把地平线晚霞变成死黑断层带",
+    "Bounding grazing horizon optical airmass to sqrt(2*R_p/H + 1) = 39.89 atmospheres via exact quadratic ray-sphere intersection": "通过精确射线-球壳二次求交将 90° 地平线光学路径锁定在 √(2R_p/H + 1) = 39.89 倍大气质量",
+    "Replacing 64-step 3D atmospheric transmittance ray marching with a 4-op closed-form spherical chord formula": "以 4 指令闭式球壳弦长公式替代昂贵的 64 步三维大气透射率光线步进",
+    "Overhead noon-only lighting models where solar zenith angle never exceeds 45 deg (m_sph ≈ m_flat within 0.06%)": "太阳天顶角永不超过 45° 的正午顶光场景（此时球壳与平面正割差异小于 0.06%）",
+    "Indoor windowless dungeon scenes with zero sky or atmospheric scattering": "无任何天空与大气散射的纯室内地下城场景",
+    "Neural LDR-to-HDR skybox diffusion or panorama outpainting models": "神经 LDR 转 HDR 天空盒扩散或全景图补全模型",
+    "Non-spherical flat tabletop dioramas without planetary curvature": "不含行星曲率的微缩桌面沙盘场景"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/spherical-atmosphere-airmass.test.ts",
+    "node scripts/benchmark-spherical-atmosphere-airmass.mjs"
+  ]
+}

@@ -986,6 +986,654 @@
         "The 58-solid 17-station shutter densitometer bench compares precomputed NeighborMax tile gathering against 64-tap brute-force neighborhood search and shutter quadrature (0.78 ms vs 10.53 ms at 8,192 passes, 13.42× speedup, 0 error) without claiming neural frame interpolation."
       ],
       "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_frame_interp": "not_measured" }
+    },
+    {
+      "round": 71,
+      "slug": "geometric-specular-aa-rig",
+      "topic": "kaplanyan-geometric-specular-aa-vs-subpixel-sparkle",
+      "title_zh": "汽车镀铬窗框与机械倒角不再像碎玻璃闪烁：Kaplanyan 屏幕空间法线曲率几何高光抗锯齿选型 FAQ",
+      "title_en": "Curved chrome bevels without sub-pixel sparkle strobing: Kaplanyan screen-space geometric specular AA selection FAQ",
+      "faq_zh": "docs/kaplanyan-geometric-specular-aa-vs-subpixel-sparkle-faq.md",
+      "faq_en": "docs/kaplanyan-geometric-specular-aa-vs-subpixel-sparkle-faq.en.md",
+      "summary": "docs/evidence/geometric-specular-aa-rig-summary.svg",
+      "report": "demos/geometric-specular-aa-rig/report.json",
+      "cards": "demos/geometric-specular-aa-rig/test-report-cards.html",
+      "cards_zh": "demos/geometric-specular-aa-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在光滑金属倒角（本征粗糙度 α₀=0.05，单像素几何法线曲率 κ=0.35 rad/px）跨越 17 个亚像素位移站（δ ∈ [−0.40, +0.40] px）时，朴素未滤波原始粗糙度在第 8 站（δ=0.00 px）暴冲至 7.9788（7.07× 能量过冲），并在 δ=±0.40 px 跌至 0.1583，产生 50.40× 帧间频闪（污染全部 17/17 站）。",
+        "采用 Kaplanyan & Antonov (HPG 2016) 屏幕空间几何法线方差滤波 α_AA = √(α₀² + κ²) = 0.3536，在第 8 站锁死像素积分守恒亮度 1.1284，全 17 站峰谷频闪比仅 1.08×（0/17 爆闪站）。",
+        "58 实体 17 站点倒角测角光度计台对比闭式曲率方差滤波与 64 点亚像素法线分布数值卷积基线（8192 次 1.25 ms vs 199.69 ms，提速 159.86×，误差 6.66e-16），不冒充神经视频超分。"
+      ],
+      "conclusions_en": [
+        "Across 17 sub-pixel camera drift stations (δ ∈ [−0.40, +0.40] px) on a glossy curved bevel (base roughness α₀=0.05, pixel normal curvature κ=0.35 rad/px), naive unfiltered raw roughness spikes to 7.9788 at δ=0.00 px (7.07× blowout) and drops to 0.1583 at δ=±0.40 px, causing a 50.40× sub-pixel sparkle strobe across 17/17 stations.",
+        "Kaplanyan & Antonov (HPG 2016) screen-space geometric normal-variance filtering widens roughness to α_AA = √(α₀² + κ²) = 0.3536, locking δ=0.00 px at pixel-conserved 1.1284 with a calm 1.08× envelope (0/17 firefly stations).",
+        "The 58-solid 17-station bevel goniophotometer bench compares closed-form variance widening against 64-tap sub-pixel normal convolution quadrature (1.25 ms vs 199.69 ms at 8,192 passes, 159.86× speedup, 6.66e-16 error) without claiming neural super-resolution."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_super_res": "not_measured" }
+    },
+    {
+      "round": 72,
+      "slug": "centripetal-catmull-rom-rig",
+      "topic": "centripetal-catmull-rom-vs-uniform-spline-cusp",
+      "title_zh": "不等距运镜关键帧不再原地倒车打八字结：Yuksel 向心 Catmull-Rom 样条（α=0.5）选型 FAQ",
+      "title_en": "Camera splines without figure-8 self-intersection loops: Yuksel centripetal Catmull-Rom (α=0.5) selection FAQ",
+      "faq_zh": "docs/centripetal-catmull-rom-vs-uniform-spline-cusp-faq.md",
+      "faq_en": "docs/centripetal-catmull-rom-vs-uniform-spline-cusp-faq.en.md",
+      "summary": "docs/evidence/centripetal-catmull-rom-rig-summary.svg",
+      "report": "demos/centripetal-catmull-rom-rig/report.json",
+      "cards": "demos/centripetal-catmull-rom-rig/test-report-cards.html",
+      "cards_zh": "demos/centripetal-catmull-rom-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在两侧 16.12 m 长助跑夹着中间 2.00 m 短桥段（长短弦比 8.06:1）的不等距关键帧上，朴素均匀 Catmull-Rom（α=0.0）在中点第 8 站（u=0.50）向上暴冲至 y=1.0000 m（5.45× 过冲，+0.8165 m 膨胀），并在第 6~10 站发生 dx/du=−1.0000 m/u 倒车逆行自交环（污染 15/17 站）。",
+        "采用 Yuksel, Schaefer & Keyser (CAD 2011) 向心节点参数化 Δt_k = ∥P_{k+1}−P_k∥^0.5（α=0.5），将中点拱高收敛在 y=0.1835 m，全 17 站前进速度 dx/du ≥ +1.6184 m/u > 0（0/17 倒车自交环，0 尖点）。",
+        "58 实体 17 站点样条张力计台对比预计算向心 Horner 三次多项式与 3 层 Barry-Goldman 递推金字塔基线（8192 次 1.81 ms vs 75.76 ms，提速 41.96×，误差 6.66e-16），不冒充神经轨迹扩散。"
+      ],
+      "conclusions_en": [
+        "On a 2.00 m short bridge span flanked by 16.12 m approach chords (8.06:1 chord ratio), naive uniform Catmull-Rom (α=0.0) balloons midpoint u=0.50 to y=1.0000 m (5.45× overshoot) and reverses backward at dx/du=−1.0000 m/u across 5 retrograde stations to form a figure-8 self-intersection loop (corrupting 15/17 stations).",
+        "Yuksel, Schaefer & Keyser (CAD 2011) centripetal parameterization Δt_k = ∥P_{k+1}−P_k∥^0.5 (α=0.5) bounds midpoint arch height at y=0.1835 m with strictly positive forward velocity dx/du ≥ +1.6184 m/u > 0 across all 17 stations (0 loops, 0 cusps).",
+        "The 58-solid 17-station spline tensiometer bench compares precomputed Horner cubic evaluation against 3-level recursive Barry-Goldman knot pyramids (1.81 ms vs 75.76 ms at 8,192 passes, 41.96× speedup, 6.66e-16 error) without claiming neural trajectory diffusion."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_trajectory": "not_measured" }
+    },
+    {
+      "round": 73,
+      "slug": "spherical-atmosphere-airmass-rig",
+      "topic": "spherical-airmass-sky-horizon-vs-planar-secant-singularity",
+      "title_zh": "黄昏落日地平线不再塌陷成死黑断层带：Hillaire 球壳大气光学质量求交选型 FAQ",
+      "title_en": "Sunset horizons without flat-earth secant blackouts: Hillaire spherical-shell atmosphere airmass selection FAQ",
+      "faq_zh": "docs/spherical-airmass-sky-horizon-vs-planar-secant-singularity-faq.md",
+      "faq_en": "docs/spherical-airmass-sky-horizon-vs-planar-secant-singularity-faq.en.md",
+      "summary": "docs/evidence/spherical-atmosphere-airmass-rig-summary.svg",
+      "report": "demos/spherical-atmosphere-airmass-rig/report.json",
+      "cards": "demos/spherical-atmosphere-airmass-rig/test-report-cards.html",
+      "cards_zh": "demos/spherical-atmosphere-airmass-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在地球半径 R_p=6360 km、大气标高 H=8.0 km（曲率比 q=795.0）、红光天顶光学厚度 τ_R=0.04 的掠射落日区（θ ∈ [74°, 90°]），朴素平地球正割近似 1/cos θ 在 90° 地平线发散至 +∞，将红光透射率从 0.2028 压死至 0.0000（在 89° 峰值损失 −0.2206，污染 9/17 站）。",
+        "采用 Bruneton (2008) & Hillaire (EGSR 2020) 闭式球壳求交 m_sph(μ) = √(q²μ²+2q+1)−qμ，在 90° 地平线锁定有限大气质量 √1591 = 39.8873 倍，完整保留 T_red = 0.2028 绯红落日余晖（0/17 死黑站）。",
+        "58 实体 17 站点直接日射表台对比闭式球壳求交与 64 步三维球壳光线步进积分基线（8192 次 4.50 ms vs 254.68 ms，提速 56.65×，误差 2.24e-14），不冒充神经天空补全。"
+      ],
+      "conclusions_en": [
+        "Across 17 grazing sunset zenith angles (θ ∈ [74°, 90°]) with planet radius R_p=6360 km, scale height H=8.0 km (q=795.0), and red optical depth τ_R=0.04, naive flat-earth planar secant 1/cos θ diverges to +∞ at θ=90°, crushing horizon transmittance from 0.2028 down to 0.0000 (−0.2206 peak loss at 89°, corrupting 9/17 stations).",
+        "Bruneton (2008) & Hillaire (EGSR 2020) closed-form spherical-shell ray intersection m_sph(μ) = √(q²μ²+2q+1)−qμ bounds the 90° horizon path to √1591 = 39.8873 airmasses, preserving T_red = 0.2028 crimson sunset glow (0/17 blackout stations).",
+        "The 58-solid 17-station sunset pyrheliometer bench compares closed-form spherical chord intersection against 64-step 3D spherical-shell ray marching (4.50 ms vs 254.68 ms at 8,192 passes, 56.65× speedup, 2.24e-14 error) without claiming neural sky inpainting."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_sky_inpaint": "not_measured" }
+    },
+    {
+      "round": 74,
+      "slug": "joint-bilateral-upsample-rig",
+      "topic": "joint-bilateral-depth-upsample-vs-bilinear-halo-bleed",
+      "title_zh": "半分辨率体积雾与神圣光不再给暗色角色裹上发光白圈：Kopf 联合双边高分深度引导上采样选型 FAQ",
+      "title_en": "Half-resolution volumetrics without glowing silhouette halos: Kopf joint bilateral depth upsampling selection FAQ",
+      "faq_zh": "docs/joint-bilateral-depth-upsample-vs-bilinear-halo-bleed-faq.md",
+      "faq_en": "docs/joint-bilateral-depth-upsample-vs-bilinear-halo-bleed-faq.en.md",
+      "summary": "docs/evidence/joint-bilateral-upsample-rig-summary.svg",
+      "report": "demos/joint-bilateral-upsample-rig/report.json",
+      "cards": "demos/joint-bilateral-upsample-rig/test-report-cards.html",
+      "cards_zh": "demos/joint-bilateral-upsample-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在近景暗色立柱（z_fg=2.0 m, L_fg=0.0500）与远景亮色体积雾（z_bg=25.0 m, L_bg=0.9500）交界的第 8 站前景边缘（u=0.50），朴素硬件双线性上采样混入 50% 背景亮雾输出 0.5000（产生 +0.4500 即 10.00× 发光白圈，污染 7/17 个边界站点）。",
+        "采用 Kopf 等人 (SIGGRAPH 2007) 联合双边深度引导上采样 w_k = w_spatial(u)·exp(−Δz_k²/2σ_z²)，将跨 23 m 深度断崖的异侧采样权重压零，在第 8 站严格锁定 0.0500 并在第 9 站跃迁至 0.9500（0/17 光晕渗漏）。",
+        "58 实体 17 站点双边密度计台对比半分辨率 2 抽头联合双边上采样与全分辨率 64 步体积步进基线（8192 次 1.13 ms vs 10.71 ms，提速 9.50×，误差 2.48e-15），不冒充神经深度补全。"
+      ],
+      "conclusions_en": [
+        "At foreground silhouette edge station 8 (u=0.50, z_hi=2.0 m, L_fg=0.0500) in front of bright background fog (z_bg=25.0 m, L_bg=0.9500), naive hardware bilinear upsampling blends 50% of the background fog to output 0.5000 (+0.4500 / 10.00× glowing halo bleed across 7/17 boundary stations).",
+        "Kopf et al. (SIGGRAPH 2007) Joint Bilateral Upsampling weights half-res taps by full-res depth affinity exp(−Δz_k²/2σ_z²), locking station 8 at 0.0500 and station 9 at 0.9500 with 0/17 halo bleed stations.",
+        "The 58-solid 17-station bilateral densitometer bench compares half-resolution 2-tap Joint Bilateral Upsampling against full-resolution 64-step volumetric ray marching (1.13 ms vs 10.71 ms at 8,192 passes, 9.50× speedup, 2.48e-15 error) without claiming neural depth inpainting."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_depth_inpaint": "not_measured" }
+    },
+    {
+      "round": 75,
+      "slug": "specular-occlusion-cavity-rig",
+      "topic": "lagarde-specular-occlusion-vs-cavity-ibl-leak",
+      "title_zh": "角色鼻孔与装甲深缝不再泛出放射性蓝天高光：Lagarde Frostbite 视角粗糙度耦合高光遮蔽选型 FAQ",
+      "title_en": "Dark crevices without glowing sky reflections: Lagarde Frostbite view-roughness specular occlusion selection FAQ",
+      "faq_zh": "docs/lagarde-specular-occlusion-vs-cavity-ibl-leak-faq.md",
+      "faq_en": "docs/lagarde-specular-occlusion-vs-cavity-ibl-leak-faq.en.md",
+      "summary": "docs/evidence/specular-occlusion-cavity-rig-summary.svg",
+      "report": "demos/specular-occlusion-cavity-rig/report.json",
+      "cards": "demos/specular-occlusion-cavity-rig/test-report-cards.html",
+      "cards_zh": "demos/specular-occlusion-cavity-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在深腔环境遮蔽 AO=0.25、粗糙度 r=0.25 的 17 个视角余弦站点（N·V ∈ [0.05, 0.85]）上，朴素未遮蔽 IBL 高光恒定输出 SO=1.0000，在第 0 站掠射角（N·V=0.05）产生 +0.7869（4.69× 过冲）的深腔蓝天反光泄漏（污染全部 17/17 站）。",
+        "采用 Lagarde & de Rousiers (SIGGRAPH 2014 Frostbite) 视角粗糙度耦合公式 SO = clamp((N·V+AO)^exp2(−16r−1)−1+AO, 0, 1)，在第 0 站掠射角收紧至 SO=0.2131（0/17 漏光站）。",
+        "58 实体 17 站点深腔反射计台对比闭式 Lagarde 高光遮蔽与 64 步可见锥幂积分基线（8192 次 2.10 ms vs 8.92 ms，提速 4.24×，误差 6.22e-15），不冒充神经环境光遮蔽。"
+      ],
+      "conclusions_en": [
+        "Inside a recessed cavity (AO=0.25, roughness r=0.25) across 17 viewing cosine stations (N·V ∈ [0.05, 0.85]), naive unoccluded IBL specular outputs SO=1.0000 everywhere, leaking +0.7869 (4.69× blowout) at grazing station 0 (N·V=0.05) across all 17/17 stations.",
+        "Lagarde & de Rousiers (SIGGRAPH 2014 Frostbite) view-roughness Specular Occlusion SO = clamp((N·V+AO)^exp2(−16r−1)−1+AO, 0, 1) clamps grazing station 0 to SO=0.2131 with 0/17 leaking stations.",
+        "The 58-solid 17-station cavity reflectometer bench compares closed-form Lagarde Specular Occlusion against 64-step visibility-cone quadrature (2.10 ms vs 8.92 ms at 8,192 passes, 4.24× speedup, 6.22e-15 error) without claiming neural ambient occlusion."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_ao": "not_measured" }
+    },
+    {
+      "round": 76,
+      "slug": "hiz-occlusion-pyramid-rig",
+      "topic": "hiz-conservative-depth-pyramid-vs-point-mip-popping",
+      "title_zh": "隔着门缝与铁栅栏看人不再整块凭空消失：Greene 保守最远深度 Hi-Z 金字塔选型 FAQ",
+      "title_en": "Doorway occlusion culling without mesh popping: Greene conservative farthest-depth Hi-Z pyramid selection FAQ",
+      "faq_zh": "docs/hiz-conservative-depth-pyramid-vs-point-mip-popping-faq.md",
+      "faq_en": "docs/hiz-conservative-depth-pyramid-vs-point-mip-popping-faq.en.md",
+      "summary": "docs/evidence/hiz-occlusion-pyramid-rig-summary.svg",
+      "report": "demos/hiz-occlusion-pyramid-rig/report.json",
+      "cards": "demos/hiz-occlusion-pyramid-rig/test-report-cards.html",
+      "cards_zh": "demos/hiz-occlusion-pyramid-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在含 60 个近墙像素（z_wall=4.0 m）与 4 个远景门缝像素（z_gap=50.0 m）的 8×8（Mip 3）深度图块上，朴素均值深度 Mip 将遮挡阈值拉低至 z_avg=6.8750 m，导致门缝后方 z_obj ∈ [8.5, 46.0] m 处本该清晰可见的 16/17（94.12%）个物体被错误剔除消失。",
+        "采用 Greene 等人 (SIGGRAPH 1993) 保守最远深度归约 z_HiZ = max(4.0, 50.0) = 50.0000 m，100% 保留门缝后方全部 17/17 个可见物体（0 误剔除闪崩）。",
+        "58 实体 17 站点遮挡准直仪台对比单次 O(1) 保守 Hi-Z Mip 查表与 64 像素全分扫描基线（8192 次 0.42 ms vs 12.52 ms，提速 29.76×，0 误差），不冒充神经可见性预测。"
+      ],
+      "conclusions_en": [
+        "Across an 8×8 (Mip-3) tile containing 60 wall pixels (z_wall=4.0 m) and 4 doorway-slit pixels (z_gap=50.0 m), naive box-average depth mipmapping lowers the occlusion threshold to z_avg=6.8750 m, falsely culling 16/17 (94.12%) visible objects standing behind the doorway at z_obj ∈ [8.5, 46.0] m.",
+        "Greene et al. (SIGGRAPH 1993) conservative farthest-depth reduction z_HiZ = max(4.0, 50.0) = 50.0000 m retains all 17/17 visible doorway objects with 0 false occlusion popping.",
+        "The 58-solid 17-station occlusion collimator bench compares O(1) Hi-Z Mip-3 lookup against brute-force 64-pixel full-resolution tile scanning (0.42 ms vs 12.52 ms at 8,192 passes, 29.76× speedup, 0 error) without claiming neural visibility prediction."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_pvs": "not_measured" }
+    },
+    {
+      "round": 77,
+      "slug": "exponential-height-fog-rig",
+      "topic": "closed-form-height-fog-ray-integral-vs-endpoint-fog",
+      "title_zh": "站在河谷晨雾里抬头看山不再糊成死白雾墙：Wenzel 闭式指数高度雾线积分选型 FAQ",
+      "title_en": "Mountain peaks above valley mist without whiteout walls: Wenzel closed-form exponential height-fog integral selection FAQ",
+      "faq_zh": "docs/closed-form-height-fog-ray-integral-vs-endpoint-fog-faq.md",
+      "faq_en": "docs/closed-form-height-fog-ray-integral-vs-endpoint-fog-faq.en.md",
+      "summary": "docs/evidence/exponential-height-fog-rig-summary.svg",
+      "report": "demos/exponential-height-fog-rig/report.json",
+      "cards": "demos/exponential-height-fog-rig/test-report-cards.html",
+      "cards_zh": "demos/exponential-height-fog-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "当摄像机位于河谷低地（h_cam=0 m, σ₀=0.015 m⁻¹, k=0.02 m⁻¹）仰望 L=200 m 外第 16 站山巅（h=240 m）时，朴素相机高度密度外推恒算 τ=3.0000，将山巅压死在 T_naive=0.0498（丢失 −0.4882 可见度，污染 16/17 个高海拔站点）。",
+        "采用 Wenzel (SIGGRAPH 2006) 闭式指数高度雾线积分 τ(Δh) = σ₀·L·(1−e^(−kΔh))/(kΔh)，在第 16 站山巅将光学厚度收敛至 0.6199，保留 T_fog=0.5380 通透山脊（清晰 10.81×，0/17 白化站）。",
+        "58 实体 17 站点山体透射计台对比闭式线积分原函数与 64 步比尔-朗伯级联步进基线（8192 次 3.90 ms vs 13.64 ms，提速 3.50×，误差 1.55e-15），不冒充神经图像去雾。"
+      ],
+      "conclusions_en": [
+        "When looking 200 m up from a misty valley floor (h_cam=0 m, σ₀=0.015 m⁻¹, k=0.02 m⁻¹) toward a h=240 m mountain peak, naive camera-altitude density extrapolation computes constant τ=3.0000 and buries the peak at T_naive=0.0498 (−0.4882 whiteout loss across 16/17 elevated stations).",
+        "Wenzel (SIGGRAPH 2006) closed-form exponential height-fog line integration τ(Δh) = σ₀·L·(1−e^(−kΔh))/(kΔh) reduces optical depth at h=240 m to 0.6199, preserving T_fog=0.5380 clear mountain visibility (10.81× clearer, 0/17 whiteout stations).",
+        "The 58-solid 17-station mountain transmissometer bench compares closed-form antiderivative evaluation against 64-step Beer-Lambert ray-marching cascade (3.90 ms vs 13.64 ms at 8,192 passes, 3.50× speedup, 1.55e-15 error) without claiming neural image dehazing."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_dehazing": "not_measured" }
+    },
+    {
+      "round": 78,
+      "slug": "henyey-greenstein-phase-rig",
+      "topic": "henyey-greenstein-phase-normalization-vs-silver-lining-blowout",
+      "title_zh": "拉高积雨云逆光银边不再把整朵云炸成死白：Henyey-Greenstein (1−g²) 能量守恒云雾相函数选型 FAQ",
+      "title_en": "Cloud silver-linings without multi-scattering blowout: Henyey-Greenstein (1−g²) phase normalization selection FAQ",
+      "faq_zh": "docs/henyey-greenstein-phase-normalization-vs-silver-lining-blowout-faq.md",
+      "faq_en": "docs/henyey-greenstein-phase-normalization-vs-silver-lining-blowout-faq.en.md",
+      "summary": "docs/evidence/henyey-greenstein-phase-rig-summary.svg",
+      "report": "demos/henyey-greenstein-phase-rig/report.json",
+      "cards": "demos/henyey-greenstein-phase-rig/test-report-cards.html",
+      "cards_zh": "demos/henyey-greenstein-phase-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在跨越 g ∈ [0.05, 0.85] 的 17 个散射各向异性站点上，漏掉 (1−g²) 分子的朴素前向波瓣使球面总散射能量按 1/(1−g²) 膨胀，在第 15 站（g=0.80）达 2.7778×，在第 16 站（g=0.85）暴冲至 3.6036×（污染全部 17/17 站，引爆多重散射云团过曝）。",
+        "采用 Henyey & Greenstein (1941) 归一化相函数 Φ_HG(μ, g) = (1−g²)/(1+g²−2gμ)^(3/2)，在塑造 45.00× 逆光银边峰值的同时，在全 17 站严格锁死 E_sphere = 1.0000（0 能量违背）。",
+        "58 实体 17 站点云雾浊度计台对比闭式归一化原函数与 64 子区间球面求积基线（8192 次 0.35 ms vs 9.04 ms，提速 26.19×，误差 1.11e-15），不冒充神经云层重打光。"
+      ],
+      "conclusions_en": [
+        "Across 17 scattering anisotropy stations (g ∈ [0.05, 0.85]), omitting the (1−g²) numerator causes spherical scattered energy to explode as 1/(1−g²), reaching 2.7778× at g=0.80 and 3.6036× at g=0.85 across all 17/17 stations.",
+        "Henyey & Greenstein (1941) phase normalization Φ_HG(μ, g) = (1−g²)/(1+g²−2gμ)^(3/2) preserves a 45.00× forward silver-lining peak at g=0.80 while locking spherical energy at E_sphere = 1.0000 across all 17 stations (0 violations).",
+        "The 58-solid 17-station cloud nephelometer bench compares closed-form normalized evaluation against 64-subinterval spherical quadrature (0.35 ms vs 9.04 ms at 8,192 passes, 26.19× speedup, 1.11e-15 error) without claiming neural cloud relighting."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_cloud_relight": "not_measured" }
+    },
+    {
+      "round": 79,
+      "slug": "bicubic-bilinear-tap-rig",
+      "topic": "sigg-bicubic-bilinear-tap-reduction-vs-bilinear-taa-blur",
+      "title_zh": "TAA 运镜不再像涂了一层凡士林迅速变糊：Sigg-Jiménez 硬件双线性合并双三次重采样选型 FAQ",
+      "title_en": "TAA history reprojection without Vaseline blur: Sigg-Jiménez hardware-bilinear bicubic resampling selection FAQ",
+      "faq_zh": "docs/sigg-bicubic-bilinear-tap-reduction-vs-bilinear-taa-blur-faq.md",
+      "faq_en": "docs/sigg-bicubic-bilinear-tap-reduction-vs-bilinear-taa-blur-faq.en.md",
+      "summary": "docs/evidence/bicubic-bilinear-tap-rig-summary.svg",
+      "report": "demos/bicubic-bilinear-tap-rig/report.json",
+      "cards": "demos/bicubic-bilinear-tap-rig/test-report-cards.html",
+      "cards_zh": "demos/bicubic-bilinear-tap-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在纹理波峰曲率 κ=0.16、连续 K=8 帧递归 TAA 历史重采样的 17 个亚纹素站点上，朴素单抽头硬件双线性插值在中点第 8 站（u=0.50）按 0.96⁸=0.7214 指数衰减，丢失 −0.2786（27.86%）的高频峰值锐度（污染 15/17 个非整数站点）。",
+        "采用 Sigg & Hadwiger (2005) / Jiménez (2016) 硬件双线性权重合并恒等式 s₁₂ = w₂/(w₁+w₂)，在 8 帧递归后严格锁死波峰锐度 C_hist = 1.0000（0/17 模糊站）。",
+        "58 实体 17 站点历史显微密度计台对比硬件双线性合并双三次与 16 抽头张量积双三次求值基线（8192 次 2.76 ms vs 10.19 ms，提速 3.69×，误差 4.44e-15），不冒充神经超分重建。"
+      ],
+      "conclusions_en": [
+        "Over K=8 recursive TAA history reprojection frames on a parabolic texture crest (κ=0.16), naive 1-tap bilinear interpolation erodes midpoint u=0.50 from 1.0000 down to 0.96⁸ = 0.7214 (−27.86% Vaseline blur loss across 15/17 interior sub-texel stations).",
+        "Sigg & Hadwiger (2005) / Jiménez (2016) hardware-bilinear weight merging s₁₂ = w₂/(w₁+w₂) preserves exact C_hist = 1.0000 across all 8 recursive frames (0/17 blurred stations).",
+        "The 58-solid 17-station history microdensitometer bench compares bilinear-merged bicubic evaluation against 16-tap (4×4) tensor-product bicubic evaluation (2.76 ms vs 10.19 ms at 8,192 passes, 3.69× speedup, 4.44e-15 error) without claiming neural frame upscaling."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_upscaling": "not_measured" }
+    },
+    {
+      "round": 80,
+      "slug": "spectral-chromatic-dispersion-rig",
+      "topic": "spectral-lut-chromatic-dispersion-vs-3tap-rgb-split",
+      "title_zh": "电影级镜头色差不再裂成红绿蓝三条假鬼影：连续光谱查找表色散积分选型 FAQ",
+      "title_en": "Radial chromatic aberration without 3-tap RGB ghosting: continuous spectral-LUT dispersion selection FAQ",
+      "faq_zh": "docs/spectral-lut-chromatic-dispersion-vs-3tap-rgb-split-faq.md",
+      "faq_en": "docs/spectral-lut-chromatic-dispersion-vs-3tap-rgb-split-faq.en.md",
+      "summary": "docs/evidence/spectral-chromatic-dispersion-rig-summary.svg",
+      "report": "demos/spectral-chromatic-dispersion-rig/report.json",
+      "cards": "demos/spectral-chromatic-dispersion-rig/test-report-cards.html",
+      "cards_zh": "demos/spectral-chromatic-dispersion-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在半宽 w=1.5 px 的细高光被径向色散拉开 Δr=12.0 px 的 17 个径向站点上，朴素 3 抽头 RGB 通道分离仅采样 −6 px、0 px、+6 px，导致 x=±2, ±3, ±4 px 共 6/17 个中间光谱站跌入 0.0000 死黑断层，将单条高光撕裂成 3 个孤立原色重影（污染 15/17 站）。",
+        "采用 Playdead INSIDE / Guertin (2014) 连续光谱色散积分，在第 5 站（x=−3 px）及中心 9 站精确锁定平坦彩虹平台 L_disp = w/Δr = 0.1250（0/17 断层漏检）。",
+        "58 实体 17 站点摄谱仪台对比闭式连续光谱重叠原函数与 64 步波长数值求积基线（8192 次 0.79 ms vs 10.48 ms，提速 13.20×，误差 1.39e-17），不冒充神经镜头仿真。"
+      ],
+      "conclusions_en": [
+        "When a w=1.5 px highlight is radially dispersed across Δr=12.0 px, naive 3-tap RGB channel splitting samples only x=−6, 0, +6 px, dropping 6/17 intermediate stations (x=±2, ±3, ±4 px) to 0.0000 dead-black gaps and splitting the highlight into 3 disconnected RGB ghosts across 15/17 stations.",
+        "Continuous spectral-LUT dispersion integration preserves a seamless trapezoidal rainbow plateau of L_disp = w/Δr = 0.1250 across x ∈ [−4, +4] px with 0/17 gap dropouts.",
+        "The 58-solid 17-station spectrograph bench compares closed-form spectral overlap integration against 64-tap wavelength quadrature (0.79 ms vs 10.48 ms at 8,192 passes, 13.20× speedup, 1.39e-17 error) without claiming neural lens simulation."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_lens_sim": "not_measured" }
+    },
+    {
+      "round": 81,
+      "slug": "gtao-cosine-horizon-rig",
+      "topic": "jimenez-gtao-cosine-horizon-vs-unweighted-ssao-mud",
+      "title_zh": "墙角与衣褶不再像抹了一层黑炭灰：Jiménez GTAO 朗伯余弦加权地平线积分选型 FAQ",
+      "title_en": "Ambient occlusion without sooty gray crevices: Jiménez GTAO cosine-weighted horizon integral selection FAQ",
+      "faq_zh": "docs/jimenez-gtao-cosine-horizon-vs-unweighted-ssao-mud-faq.md",
+      "faq_en": "docs/jimenez-gtao-cosine-horizon-vs-unweighted-ssao-mud-faq.en.md",
+      "summary": "docs/evidence/gtao-cosine-horizon-rig-summary.svg",
+      "report": "demos/gtao-cosine-horizon-rig/report.json",
+      "cards": "demos/gtao-cosine-horizon-rig/test-report-cards.html",
+      "cards_zh": "demos/gtao-cosine-horizon-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在跨越 γ ∈ [5°, 85°] 的 17 个天空孔径站点上，无权重立体角 SSAO（1−cos γ）因忽略朗伯余弦定律 cos θ，在第 8 站直角墙角（γ=45°）将可见度从 0.5000 错误压暗至 0.2929（丢失 −0.2071 即相对压暗 −41.42%，60° 峰值丢失 −0.2500，污染全部 17/17 站）。",
+        "采用 Jiménez 等人 (SIGGRAPH 2016) GTAO 闭式余弦加权原函数 V_GTAO(γ) = ½(1−cos 2γ) = sin²γ，在 45° 处精确锁定 AO = 0.5000（与路径追踪真值 100% 吻合，0/17 脏黑站）。",
+        "58 实体 17 站点日晷仪台对比闭式 GTAO 余弦原函数与 64 环半球数值求积基线（8192 次 2.00 ms vs 91.32 ms，提速 45.61×，误差 1.44e-15），不冒充神经环境光遮蔽。"
+      ],
+      "conclusions_en": [
+        "Across 17 open-sky cone half-angle stations (γ ∈ [5°, 85°]), naive unweighted solid-angle SSAO (1−cos γ) ignores Lambert's cos θ law, over-darkening a 45° corner from 0.5000 down to 0.2929 (−0.2071 / −41.42% relative error, −0.2500 max loss at 60° across all 17/17 stations).",
+        "Jiménez et al. (SIGGRAPH 2016) GTAO cosine-weighted horizon integration V_GTAO(γ) = ½(1−cos 2γ) = sin²γ locks γ=45° at exact path-traced AO = 0.5000 (0/17 muddy stations).",
+        "The 58-solid 17-station horizon heliodon bench compares closed-form GTAO evaluation against 64-ring hemispherical quadrature (2.00 ms vs 91.32 ms at 8,192 passes, 45.61× speedup, 1.44e-15 error) without claiming neural ambient occlusion."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_ao": "not_measured" }
+    },
+    {
+      "round": 82,
+      "slug": "micro-shadow-aperture-rig",
+      "topic": "chan-contact-micro-shadowing-vs-unshadowed-normal-map",
+      "title_zh": "法线贴图毛孔与铆钉在斜射阳光下不再变平：Chan 孔径微阴影门控选型 FAQ",
+      "title_en": "Sub-millimeter pore shadows under direct sunlight: Chan AO-aperture micro-shadowing selection FAQ",
+      "faq_zh": "docs/chan-contact-micro-shadowing-vs-unshadowed-normal-map-faq.md",
+      "faq_en": "docs/chan-contact-micro-shadowing-vs-unshadowed-normal-map-faq.en.md",
+      "summary": "docs/evidence/micro-shadow-aperture-rig-summary.svg",
+      "report": "demos/micro-shadow-aperture-rig/report.json",
+      "cards": "demos/micro-shadow-aperture-rig/test-report-cards.html",
+      "cards_zh": "demos/micro-shadow-aperture-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在烘焙 AO=0.50（可见球冠截断余弦 μ_cutoff = 1−2·AO² = 0.5000）的法线贴图毛孔或铆钉深缝内，朴素无微阴影直接光照在斜射阳光（第 5 站 N·L=0.30）下让阳光穿透孔壁漏出 E_sun=0.3000（第 6 站峰值漏出 +0.3063，污染 13/17 个站点）。",
+        "采用 Chan (SIGGRAPH 2018 Call of Duty: WWII) 闭式微阴影门控 V_Chan = clamp((N·L+2·AO²−1+w)/2w, 0, 1)，在 N·L ≤ 0.30 本影区严格锁死 E_sun = 0.0000，并在 N·L ≥ 0.70 顶光下 100% 恢复通透受光（0/17 漏光站）。",
+        "58 实体 17 站点毛孔测角仪台对比闭式微阴影门控与 64 带太阳圆盘半影求积基线（8192 次 0.44 ms vs 4.75 ms，提速 10.90×，误差 6.66e-16），不冒充神经纹理重打光。"
+      ],
+      "conclusions_en": [
+        "Inside a normal-mapped pore or rivet crevice (AO=0.50, aperture cutoff cosine μ_cutoff = 1−2·AO² = 0.5000), naive unshadowed direct N·L leaks E_sun=0.3000 at grazing station 5 (N·L=0.30) and +0.3063 max leak at station 6 across 13/17 stations.",
+        "Chan (SIGGRAPH 2018 Call of Duty: WWII) AO-derived contact micro-shadowing V_Chan = clamp((N·L+2·AO²−1+w)/2w, 0, 1) locks the grazing pore umbra (N·L ≤ 0.30) at E_sun = 0.0000 while preserving full overhead noon brightness (0/17 leaking stations).",
+        "The 58-solid 17-station pore goniometer bench compares closed-form micro-shadowing against 64-strip solar-disk aperture quadrature (0.44 ms vs 4.75 ms at 8,192 passes, 10.90× speedup, 6.66e-16 error) without claiming neural texture relighting."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_relighting": "not_measured" }
+    },
+    {
+      "round": 83,
+      "slug": "burley-diffuse-retroreflection-rig",
+      "topic": "burley-disney-diffuse-retroreflection-vs-flat-lambert",
+      "title_zh": "粗糙陶土与月尘边缘不再死板如粉笔：Burley 迪士尼粗糙度驱动漫反射逆反射选型 FAQ",
+      "title_en": "Rough matte silhouettes with warm velvet rims: Burley Disney diffuse retroreflection selection FAQ",
+      "faq_zh": "docs/burley-disney-diffuse-retroreflection-vs-flat-lambert-faq.md",
+      "faq_en": "docs/burley-disney-diffuse-retroreflection-vs-flat-lambert-faq.en.md",
+      "summary": "docs/evidence/burley-diffuse-retroreflection-rig-summary.svg",
+      "report": "demos/burley-diffuse-retroreflection-rig/report.json",
+      "cards": "demos/burley-diffuse-retroreflection-rig/test-report-cards.html",
+      "cards_zh": "demos/burley-diffuse-retroreflection-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在粗糙陶土/月尘材质（r=1.00, cos θ_d=1.00, F_D90=2.5000）的 17 个视角余弦站点上，朴素平坦 Lambert 漫反射恒为 1.0000×，在第 0 站掠射边缘（N·V=0.05）丢失 −3.6685×（−78.58%）的微凹槽逆反射光泽（污染 14/17 个站点）。",
+        "采用 Burley (SIGGRAPH 2012 Disney Principled BRDF) 粗糙度驱动漫反射 M_Burley(μ) = (1+(F_D90−1)(1−μ)⁵)²，在第 0 站掠射角精准还原 4.6685× 逆反射增益（0/17 缺失站）。",
+        "58 实体 17 站点逆反射计台对比 5 指令 Schlick 幂链与 64 带角向幂函数数值求积基线（8192 次 0.57 ms vs 408.03 ms，提速 720.02×，误差 4.00e-15），不冒充神经材质扫描。"
+      ],
+      "conclusions_en": [
+        "On a rough matte surface (r=1.00, cos θ_d=1.00, F_D90=2.5000) across 17 viewing cosine stations (N·V ∈ [0.05, 0.85]), naive flat Lambertian diffuse stays locked at 1.0000×, losing −3.6685× (−78.58%) of the grazing retroreflective rim sheen at N·V=0.05 across 14/17 stations.",
+        "Burley (SIGGRAPH 2012 Disney Principled BRDF) roughness-driven diffuse retroreflection M_Burley(μ) = (1+(F_D90−1)(1−μ)⁵)² boosts grazing station 0 to 4.6685× with 0/17 starved stations.",
+        "The 58-solid 17-station retroreflectometer bench compares a 5-op Schlick power chain against 64-strip angular quadrature (0.57 ms vs 408.03 ms at 8,192 passes, 720.02× speedup, 4.00e-15 error) without claiming neural material capture."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_svbrdf": "not_measured" }
+    },
+    {
+      "round": 84,
+      "slug": "dof-coc-intersection-rig",
+      "topic": "dof-coc-bilateral-gather-vs-foreground-halo-bleed",
+      "title_zh": "人像特写景深不再给清晰主角裹上模糊黑边：Jiménez 景深采样点弥散圆相交门控选型 FAQ",
+      "title_en": "Depth-of-Field without in-focus foreground halo bleeding: Jiménez sample-CoC intersection gate selection FAQ",
+      "faq_zh": "docs/dof-coc-bilateral-gather-vs-foreground-halo-bleed-faq.md",
+      "faq_en": "docs/dof-coc-bilateral-gather-vs-foreground-halo-bleed-faq.en.md",
+      "summary": "docs/evidence/dof-coc-intersection-rig-summary.svg",
+      "report": "demos/dof-coc-intersection-rig/report.json",
+      "cards": "demos/dof-coc-intersection-rig/test-report-cards.html",
+      "cards_zh": "demos/dof-coc-intersection-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在对焦清晰前景（CoC_fg=0.0 px, L_fg=0.0400）与远焦失焦背景（CoC_bg=8.0 px, L_bg=1.0000）交界外侧的第 5 站（d=+1 px），朴素中心弥散圆聚集按 CoC_center=8.0 px 混入 7 px 清晰前景暗色，将背景散景拉暗至 0.5800（丢失 −0.4200 散景亮度，污染 7/17 个背景站点）。",
+        "采用 Jiménez (SIGGRAPH 2014) 采样点弥散圆相交门控 w(y→x) = H(CoC(y)−∥x−y∥)，将 CoC(y)=0 的清晰前景采样权重严格置零，在第 5 站锁死 L_DoF = 1.0000（0/17 渗漏站）。",
+        "58 实体 17 站点光圈光学台对比闭式相交门控与 64 点散景聚集循环基线（8192 次 1.03 ms vs 11.21 ms，提速 10.90×，0 误差），不冒充神经散景合成。"
+      ],
+      "conclusions_en": [
+        "At exterior background station 5 (d=+1 px, CoC_bg=8.0 px, L_bg=1.0000) adjacent to a sharp in-focus foreground (CoC_fg=0.0 px, L_fg=0.0400), naive center-CoC gathering pulls in 7 px of the dark foreground to output 0.5800 (−0.4200 dark halo bleed across 7/17 stations).",
+        "Jiménez (SIGGRAPH 2014) sample-CoC intersection gating w(y→x) = H(CoC(y)−∥x−y∥) rejects CoC(y)=0 foreground taps to lock station 5 at L_DoF = 1.0000 with 0/17 bleed stations.",
+        "The 58-solid 17-station diaphragm optical bench compares closed-form interval overlap against a 64-tap bokeh gather loop (1.03 ms vs 11.21 ms at 8,192 passes, 10.90× speedup, 0 error) without claiming neural bokeh rendering."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_bokeh": "not_measured" }
+    },
+    {
+      "round": 85,
+      "slug": "homogeneous-ssr-dda-rig",
+      "topic": "mcguire-homogeneous-ssr-dda-vs-linear-z-ray-bowing",
+      "title_zh": "屏幕空间反射光线不再向深处弯曲穿墙：McGuire 齐次倒数深度 2D DDA 选型 FAQ",
+      "title_en": "Screen-space reflections without +14.22m hyperbolic ray bowing: McGuire homogeneous reciprocal-depth 2D DDA selection FAQ",
+      "faq_zh": "docs/mcguire-homogeneous-ssr-dda-vs-linear-z-ray-bowing-faq.md",
+      "faq_en": "docs/mcguire-homogeneous-ssr-dda-vs-linear-z-ray-bowing-faq.en.md",
+      "summary": "docs/evidence/homogeneous-ssr-dda-rig-summary.svg",
+      "report": "demos/homogeneous-ssr-dda-rig/report.json",
+      "cards": "demos/homogeneous-ssr-dda-rig/test-report-cards.html",
+      "cards_zh": "demos/homogeneous-ssr-dda-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在从近处地面（z₀=2.0 m）射向远处墙面（z₁=34.0 m）的三维反射射线上，朴素屏幕空间线性 Z 插值 z_naive(u) = (1−u)z₀ + uz₁ 在屏幕中点第 8 站（u=0.50）将射线向深处弯曲至 18.0000 m（比真实直线深度 3.7778 m 深出 +14.2222 m，第 12 站峰值误差 +19.5000 m，污染 15/17 个内部站点并撞穿 8.0 m 立柱）。",
+        "采用 McGuire & Mara (JCGT 2014) 齐次倒数深度 2D DDA 步进 1/z(u) = (1−u)/z₀ + u/z₁，在屏幕中点第 8 站精准锁定 z_true = 3.7778 m（0/17 弯曲站）。",
+        "58 实体 17 站点 SSR 测距仪台对比齐次倒数深度 DDA 与 54 步三维视空间重投影求逆基线（8192 次 0.32 ms vs 13.15 ms，提速 40.63×，误差 1.78e-14 m），不冒充神经反射补全。"
+      ],
+      "conclusions_en": [
+        "Along a 3D reflection ray from z₀=2.0 m to z₁=34.0 m, naive screen-space linear-Z interpolation z_naive(u) = (1−u)z₀ + uz₁ bows the ray inward at screen midpoint station 8 (u=0.50) to z = 18.0000 m (+14.2222 m deeper than true 3.7778 m, with +19.5000 m max bowing at station 12 across 15/17 interior stations, falsely punching behind an 8.0 m pillar).",
+        "McGuire & Mara (JCGT 2014) homogeneous reciprocal-depth 2D DDA 1/z(u) = (1−u)/z₀ + u/z₁ locks midpoint station 8 at z_true = 3.7778 m with 0/17 bowed stations.",
+        "The 58-solid 17-station SSR rangefinder bench compares homogeneous 1/z DDA against 54-step 3D view-space reprojection search (0.32 ms vs 13.15 ms at 8,192 passes, 40.63× speedup, 1.78e-14 m error) without claiming neural reflection inpainting."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_inpainting": "not_measured" }
+    },
+    {
+      "round": 86,
+      "slug": "exponential-decay-damper-rig",
+      "topic": "exponential-decay-frame-independent-lerp-vs-dt-overshoot",
+      "title_zh": "相机平滑跟随不再随刷新率快慢不一或卡顿飞出界：Driscoll-Holmér 精确指数衰减阻尼选型 FAQ",
+      "title_en": "Camera smoothing without refresh-rate drift or hitch overshoot: Driscoll-Holmer exact exponential decay damper selection FAQ",
+      "faq_zh": "docs/exponential-decay-frame-independent-lerp-vs-dt-overshoot-faq.md",
+      "faq_en": "docs/exponential-decay-frame-independent-lerp-vs-dt-overshoot-faq.en.md",
+      "summary": "docs/evidence/exponential-decay-damper-rig-summary.svg",
+      "report": "demos/exponential-decay-damper-rig/report.json",
+      "cards": "demos/exponential-decay-damper-rig/test-report-cards.html",
+      "cards_zh": "demos/exponential-decay-damper-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在目标 10.0 m、衰减率 λ=8.0 s⁻¹、时间窗口 T=0.25 s 细分为 N ∈ [1, 17] 种不同帧率的 17 个站点上，朴素帧时间线性插值 lerp(x, target, λ·Δt) 在第 0 站单步卡顿（N=1, Δt=0.25 s）下过冲爆炸至 20.0000 m（偏离 +11.3534 m），且在全部 17/17 种刷新率下产生速度漂移。",
+        "采用 Driscoll (2016) 与 Holmér (2024) 精确指数衰减核 α = 1 − exp(−λ·Δt)，由半群恒等式 (e^(−λT/N))^N ≡ e^(−λT) 在全部 17 种帧率下恒定锁定到达位置 x(0.25 s) = 8.6466 m（0/17 漂移站）。",
+        "58 实体 17 站点阻尼计时仪台对比闭式指数衰减与 128 步 RK4 微分方程数值积分基线（8192 次 3.14 ms vs 358.11 ms，提速 114.04×，误差 1.36e-9 m），不冒充神经相机防抖。"
+      ],
+      "conclusions_en": [
+        "Across 17 frame-rate subdivision stations (N ∈ [1, 17] over T=0.25 s, target=10.0 m, λ=8.0 s⁻¹), naive linear-dt lerp α = λ·Δt explodes on a single-frame hitch (N=1) to x = 20.0000 m (+11.3534 m overshoot) and drifts across all 17/17 refresh-rate stations.",
+        "Driscoll (2016) & Holmér (2024) exact exponential decay damping α = 1 − exp(−λ·Δt) obeys (e^(−λT/N))^N ≡ e^(−λT), locking all 17 frame-rate stations at x(0.25 s) = 8.6466 m with 0/17 drifted stations.",
+        "The 58-solid 17-station chronometer damper bench compares closed-form exponential decay against 128-step RK4 ODE integration (3.14 ms vs 358.11 ms at 8,192 passes, 114.04× speedup, 1.36e-9 m error) without claiming neural video stabilization."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_stabilization": "not_measured" }
+    },
+    {
+      "round": 87,
+      "slug": "normal-offset-shadow-bias-rig",
+      "topic": "normal-offset-shadow-bias-vs-peter-panning-acne",
+      "title_zh": "实时阴影不再陷入墙面摩尔纹与脚底悬空两难：Gruen 正弦法向偏移偏置选型 FAQ",
+      "title_en": "Shadow mapping without Peter-Panning or grazing acne: Gruen sin-theta normal-offset shadow bias selection FAQ",
+      "faq_zh": "docs/normal-offset-shadow-bias-vs-peter-panning-acne-faq.md",
+      "faq_en": "docs/normal-offset-shadow-bias-vs-peter-panning-acne-faq.en.md",
+      "summary": "docs/evidence/normal-offset-shadow-bias-rig-summary.svg",
+      "report": "demos/normal-offset-shadow-bias-rig/report.json",
+      "cards": "demos/normal-offset-shadow-bias-rig/test-report-cards.html",
+      "cards_zh": "demos/normal-offset-shadow-bias-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在阴影纹素世界宽度 w_texel=0.10 m、入射角跨越 θ ∈ [5°, 85°] 的 17 个站点上，朴素常数深度偏置 Δz=0.0500 m 在低倾角（5°..35°）过偏达 +0.0456 m 切掉角色脚底接触阴影（小飞侠悬浮），而在高掠射角（55°..85°）欠偏残留 +0.2336 m（80°）至 +0.5215 m（85°）的阴影摩尔纹（污染 14/17 个站点）。",
+        "采用 Gruen (GDC 2011) 代数正弦法向偏移偏置 δ_N = ½·w_texel·√(1−(N·L)²)，在 80° 处仅沿法线移动有界 0.0492 m 即顺着切平面跨越全部 0.2836 m 纹素台阶（0/17 粉刺与悬浮站）。",
+        "58 实体 17 站点阴影测斜仪台对比代数 √(1−μ²) 法向偏移与 32 射线三角函数切面求交基线（8192 次 0.35 ms vs 6.43 ms，提速 18.19×，误差 2.78e-17 m），不冒充神经阴影去噪。"
+      ],
+      "conclusions_en": [
+        "Across 17 light incidence angle stations (θ ∈ [5°, 85°], w_texel=0.10 m), naive constant depth bias Δz=0.0500 m over-biases overhead contact angles (5°..35°) by up to +0.0456 m (Peter-Panning) while under-biasing grazing slopes (55°..85°) by +0.2336 m at 80° and +0.5215 m at 85° across 14/17 corrupted stations.",
+        "Gruen (GDC 2011) algebraic sin-theta normal-offset shadow bias δ_N = ½·w_texel·√(1−(N·L)²) shifts only 0.0492 m along normal N at 80° to clear the full 0.2836 m staircase with 0/17 corrupted stations.",
+        "The 58-solid 17-station shadow clinometer bench compares algebraic √(1−μ²) normal-offset evaluation against 32-ray trigonometric ray-plane search (0.35 ms vs 6.43 ms at 8,192 passes, 18.19× speedup, 2.78e-17 m error) without claiming neural shadow denoising."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_denoising": "not_measured" }
+    },
+    {
+      "round": 88,
+      "slug": "parallax-corrected-cubemap-rig",
+      "topic": "lagarde-parallax-corrected-cubemap-vs-infinite-skybox-slide",
+      "title_zh": "室内光滑地面墙角倒影不再随镜头溜冰打滑：Lagarde 包围盒视差校正立方体贴图（PCC）选型 FAQ",
+      "title_en": "Indoor cubemap reflections without +5.0m floor sliding: Lagarde box parallax-corrected cubemap (PCC) selection FAQ",
+      "faq_zh": "docs/lagarde-parallax-corrected-cubemap-vs-infinite-skybox-slide-faq.md",
+      "faq_en": "docs/lagarde-parallax-corrected-cubemap-vs-infinite-skybox-slide-faq.en.md",
+      "summary": "docs/evidence/parallax-corrected-cubemap-rig-summary.svg",
+      "report": "demos/parallax-corrected-cubemap-rig/report.json",
+      "cards": "demos/parallax-corrected-cubemap-rig/test-report-cards.html",
+      "cards_zh": "demos/parallax-corrected-cubemap-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在右墙位于 X=+5.0 m、探针高度 Y_probe=2.0 m 的 17 个地面接收站点（x ∈ [−4.0, +4.0] m）上，朴素无穷远立方体贴图采样 R_lookup=R 忽略地面位置恒定采样 Y_naive=7.0000 m，在第 14 站（x=+3.0 m）产生 +5.0000 m 视差滑移，在第 16 站（x=+4.0 m）峰值漂移 +6.0000 m（污染 16/17 个站点）。",
+        "采用 Lagarde (SIGGRAPH 2012) 包围盒视差校正 R_corr = (P + t_box·R) − P_probe，在第 14 站精准锁定墙面高度 Y_wall = 2.0000 m（0/17 打滑站）。",
+        "58 实体 17 站点反射测角仪台对比闭式平板求交与 54 步三维房间光线步进基线（8192 次 0.34 ms vs 9.68 ms，提速 28.79×，误差 1.78e-15 m），不冒充神经辐射缓存。"
+      ],
+      "conclusions_en": [
+        "Across 17 floor receiver stations (x ∈ [−4.0, +4.0] m) with right wall X=+5.0 m and probe height Y_probe=2.0 m, naive infinite-skybox cubemap lookup R_lookup=R samples fixed Y_naive=7.0000 m, sliding +5.0000 m above true 2.0000 m at station 14 and +6.0000 m at station 16 across 16/17 stations.",
+        "Lagarde (SIGGRAPH 2012) box parallax-corrected cubemap R_corr = (P + t_box·R) − P_probe anchors station 14 at exact Y_wall = 2.0000 m with 0/17 sliding stations.",
+        "The 58-solid 17-station reflection goniometer bench compares closed-form slab intersection against 54-step 3D room ray marching (0.34 ms vs 9.68 ms at 8,192 passes, 28.79× speedup, 1.78e-15 m error) without claiming neural radiance caching."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_radiance_cache": "not_measured" }
+    },
+    {
+      "round": 89,
+      "slug": "soft-particle-depth-fade-rig",
+      "topic": "soft-particle-depth-fade-vs-hard-billboard-clip-seam",
+      "title_zh": "烟雾与火球粒子贴地不再露出刀切硬纸板折痕：Lorach 软粒子三阶埃尔米特深度消隐选型 FAQ",
+      "title_en": "Billboard smoke without cardboard terrain seams: Lorach cubic Hermite soft particle depth-fade selection FAQ",
+      "faq_zh": "docs/soft-particle-depth-fade-vs-hard-billboard-clip-seam-faq.md",
+      "faq_en": "docs/soft-particle-depth-fade-vs-hard-billboard-clip-seam-faq.en.md",
+      "summary": "docs/evidence/soft-particle-depth-fade-rig-summary.svg",
+      "report": "demos/soft-particle-depth-fade-rig/report.json",
+      "cards": "demos/soft-particle-depth-fade-rig/test-report-cards.html",
+      "cards_zh": "demos/soft-particle-depth-fade-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在基础不透明度 α₀=0.80、消隐厚度 d_fade=0.80 m、深度间隙跨越 Δz ∈ [−0.40, +1.20] m 的 17 个站点上，朴素硬件 Z 测试 z_particle ≤ z_scene 在第 4 站交界线（Δz=0.00 m）瞬间阶跃至 0.8000（+0.8000 悬崖切痕），在第 6 站浅薄区（Δz=+0.20 m）虚高 +0.6750（6.40×，污染 8/17 个过渡站点）。",
+        "采用 Lorach (NVIDIA 2007) 三阶埃尔米特软粒子深度消隐 α_soft = α₀·s²(3−2s)，在第 6 站平滑羽化至 0.1250 并在交界处实现 C1 零梯度相切（0/17 纸板切痕站）。",
+        "58 实体 17 站点粒子密度计台对比闭式埃尔米特消隐与 64 层体积抛物密度数值求积基线（8192 次 0.35 ms vs 9.15 ms，提速 26.08×，误差 1.11e-16），不冒充神经体积溅射。"
+      ],
+      "conclusions_en": [
+        "Across 17 depth-clearance stations (Δz ∈ [−0.40, +1.20] m, α₀=0.80, d_fade=0.80 m), naive hardware Z-test billboard clipping jumps to α = 0.8000 at Δz=0.00 m (+0.8000 step cliff) and over-opacifies station 6 (Δz=+0.20 m) by +0.6750 (6.40×) across 8/17 transition stations.",
+        "Lorach (NVIDIA 2007) cubic Hermite soft particle depth-fade α_soft = α₀·s²(3−2s) feathers station 6 to 0.1250 with C1 zero-gradient terrain contact and 0/17 seam stations.",
+        "The 58-solid 17-station particle densitometer bench compares closed-form Hermite depth-fade against 64-slab volumetric parabolic density quadrature (0.35 ms vs 9.15 ms at 8,192 passes, 26.08× speedup, 1.11e-16 error) without claiming neural volumetric splatting."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_splatting": "not_measured" }
+    },
+    {
+      "round": 90,
+      "slug": "mip-scaled-alpha-coverage-rig",
+      "topic": "castano-alpha-mipmap-coverage-preservation-vs-vanishing-foliage",
+      "title_zh": "远景树叶与铁丝网不再随距离秃头消失：Castaño 保覆盖率 Alpha Mipmap 对比度重缩放选型 FAQ",
+      "title_en": "Distant alpha-tested foliage without vanishing to 0%: Castano coverage-preserving alpha mipmap selection FAQ",
+      "faq_zh": "docs/castano-alpha-mipmap-coverage-preservation-vs-vanishing-foliage-faq.md",
+      "faq_en": "docs/castano-alpha-mipmap-coverage-preservation-vs-vanishing-foliage-faq.en.md",
+      "summary": "docs/evidence/mip-scaled-alpha-coverage-rig-summary.svg",
+      "report": "demos/mip-scaled-alpha-coverage-rig/report.json",
+      "cards": "demos/mip-scaled-alpha-coverage-rig/test-report-cards.html",
+      "cards_zh": "demos/mip-scaled-alpha-coverage-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在平均不透明度 ᾱ=0.35、初始振幅 A₀=0.60、裁剪阈值 τ=0.50 跨越 Mip L ∈ [0.00, 4.00] 的 17 个站点上，朴素盒式均值滤波按 A_raw(L)=A₀·2^(−L) 压平对比度，在 Mip 1.0 丢失 −33.3% 树叶（C=0.2500），并在 Mip 2.0~4.0 共 9 个远景站点将覆盖率彻底归零至 C=0.0000（100% 树冠消失，污染 16/17 站）。",
+        "采用 Castaño (2010《The Witness》) 保覆盖率 Alpha Mipmap 重缩放 α_corr = ᾱ + (α_mip−ᾱ)·2^L，在全部 17 个 Mip 站点恒定锁定 C = 0.3750（37.50%，0/17 变薄站）。",
+        "58 实体 17 站点树冠密度计台对比闭式对比度重缩放与 54 步二分覆盖率阈值搜索基线（8192 次 2.94 ms vs 19.32 ms，提速 6.56×，误差 1.67e-16），不冒充神经植被超分。"
+      ],
+      "conclusions_en": [
+        "Across 17 mipmap stations (L ∈ [0.00, 4.00], mean ᾱ=0.35, base amplitude A₀=0.60, clip cutoff τ=0.50), naive box-filtered alpha mipmaps attenuate contrast by 2^(−L), dropping Mip 1.0 coverage to 0.2500 and wiping out Mip 2.0..4.0 (9 stations) to C = 0.0000 (−100% foliage extinction across 16/17 thinned stations).",
+        "Castaño (2010 The Witness) coverage-preserving alpha mipmap rescaling α_corr = ᾱ + (α_mip−ᾱ)·2^L locks all 17 mip stations at exact C = 0.3750 (37.50%) with 0/17 thinned stations.",
+        "The 58-solid 17-station canopy densitometer bench compares closed-form contrast rescaling against 54-step bisection coverage threshold search (2.94 ms vs 19.32 ms at 8,192 passes, 6.56× speedup, 1.67e-16 error) without claiming neural foliage super-resolution."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_super_resolution": "not_measured" }
+    },
+    {
+      "round": 91,
+      "slug": "triplanar-slope-projection-rig",
+      "topic": "triplanar-world-projection-vs-planar-uv-cliff-stretch",
+      "title_zh": "陡峭山崖与体素洞穴不再拉扯成瀑布面条：Geiss 三平面正交世界投影（Triplanar）选型 FAQ",
+      "title_en": "Terrain cliffs without 11.5x vertical UV stretching: Geiss conformal triplanar world projection selection FAQ",
+      "faq_zh": "docs/triplanar-world-projection-vs-planar-uv-cliff-stretch-faq.md",
+      "faq_en": "docs/triplanar-world-projection-vs-planar-uv-cliff-stretch-faq.en.md",
+      "summary": "docs/evidence/triplanar-slope-projection-rig-summary.svg",
+      "report": "demos/triplanar-slope-projection-rig/report.json",
+      "cards": "demos/triplanar-slope-projection-rig/test-report-cards.html",
+      "cards_zh": "demos/triplanar-slope-projection-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在山崖倾角跨越 θ ∈ [5°, 85°] 的 17 个站点上，朴素顶视平面投影 uv=worldPos.xz 按 cos θ 压缩采样步长，在第 15 站（80°）将纹素密度压低至 0.1736（纵向拉长 5.76×），在第 16 站（85°）跌至 0.0872（丢失 −91.28%，纵向拉长 11.47×，污染 15/17 个斜坡站点）。",
+        "采用 Geiss (NVIDIA GPU Gems 3, 2007) 三平面正交世界投影 D_tri = D₀·(N_y² + N_x²) ≡ 1.0000，在全部 17 个倾角站点恒定锁定单位纹素密度 1.0000（0/17 拉丝站）。",
+        "58 实体 17 站点山崖缩放仪台对比代数法线平方和与 64 步弧长参数三角求积基线（8192 次 0.49 ms vs 13.04 ms，提速 26.74×，误差 0），不冒充神经纹理修补。"
+      ],
+      "conclusions_en": [
+        "Across 17 cliff slope angle stations (θ ∈ [5°, 85°]), naive top-down planar XZ projection foreshortens by cos θ, collapsing station 15 (80°) texel density to 0.1736 (5.76× vertical stretch) and station 16 (85°) to 0.0872 (−91.28% loss, 11.47× stretch across 15/17 sloped stations).",
+        "Geiss (NVIDIA GPU Gems 3, 2007) conformal triplanar projection D_tri = D₀·(N_y² + N_x²) ≡ 1.0000 locks all 17 slope stations at unit texel density 1.0000 with 0/17 stretched stations.",
+        "The 58-solid 17-station cliff pantograph bench compares algebraic normal-squared projection against 64-step arc-length parametric quadrature (0.49 ms vs 13.04 ms at 8,192 passes, 26.74× speedup, 0 error) without claiming neural texture inpainting."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_inpainting": "not_measured" }
+    },
+    {
+      "round": 92,
+      "slug": "sub-lsb-dither-banding-rig",
+      "topic": "ign-dither-8bit-banding-suppression-vs-mach-band-staircase",
+      "title_zh": "黄昏夜空与水下浓雾不再裂开洋葱圈色带：Jiménez-Gjøl 亚最低有效位抖动 8-Bit 色带抑制选型 FAQ",
+      "title_en": "8-bit sky gradients without Mach-band onion rings: Jimenez-Gjol sub-LSB dithered quantization selection FAQ",
+      "faq_zh": "docs/ign-dither-8bit-banding-suppression-vs-mach-band-staircase-faq.md",
+      "faq_en": "docs/ign-dither-8bit-banding-suppression-vs-mach-band-staircase-faq.en.md",
+      "summary": "docs/evidence/sub-lsb-dither-banding-rig-summary.svg",
+      "report": "demos/sub-lsb-dither-banding-rig/report.json",
+      "cards": "demos/sub-lsb-dither-banding-rig/test-report-cards.html",
+      "cards_zh": "demos/sub-lsb-dither-banding-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在跨越 8-bit 相邻整数色阶 10.0000 至 11.0000 LSB 的 17 个亚比特渐变站点（步长 1/16 LSB）上，朴素无抖动 8-bit 舍入 floor(c+0.5) 将前 8 站压平在 10.0000，并在第 8 站中点（10.5000 LSB）突跳 +1.0000 LSB 至 11.0000（误差 +0.5000 LSB，污染 15/17 个内部站点并诱发马赫带洋葱圈）。",
+        "采用 Jiménez (SIGGRAPH 2014) 与 Gjøl (GDC 2016) ±0.5 LSB 亚比特抖动量化 E[floor(c+ξ+0.5)] ≡ c，在第 8 站精准锁定 Q = 10.5000 LSB（0/17 色带站）。",
+        "58 实体 17 站点量化感光计台对比闭式抖动期望与 64 层空间瓦片量化积分基线（8192 次 0.48 ms vs 18.85 ms，提速 39.56×，误差 0），不冒充神经去色带滤波。"
+      ],
+      "conclusions_en": [
+        "Across 17 sub-LSB gradient stations (c ∈ [10.0000, 11.0000] LSB in 1/16 LSB steps), naive un-dithered 8-bit rounding floor(c+0.5) flattens stations 0..7 to 10.0000 and jumps +1.0000 LSB to 11.0000 at midpoint station 8 (+0.5000 LSB error across 15/17 terraced interior stations).",
+        "Jiménez (SIGGRAPH 2014) & Gjøl (GDC 2016) 1-LSB dithered quantization E[floor(c+ξ+0.5)] ≡ c linearizes the 8-bit quantizer, locking station 8 at exact Q = 10.5000 LSB with 0/17 banded stations.",
+        "The 58-solid 17-station quantizer sensitometer bench compares closed-form dither expectation against 64-stratum spatial tile integration (0.48 ms vs 18.85 ms at 8,192 passes, 39.56× speedup, 0 error) without claiming neural debanding."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_debanding": "not_measured" }
+    },
+    {
+      "round": 93,
+      "slug": "gerstner-wave-jacobian-rig",
+      "topic": "tessendorf-gerstner-wave-jacobian-vs-crest-self-intersection",
+      "title_zh": "实时海浪浪尖不再在半空翻面打死结：Tessendorf 摆线波雅可比正定限幅选型 FAQ",
+      "title_en": "Trochoidal ocean waves without upside-down crest loops: Tessendorf Gerstner wave Jacobian limiter selection FAQ",
+      "faq_zh": "docs/tessendorf-gerstner-wave-jacobian-vs-crest-self-intersection-faq.md",
+      "faq_en": "docs/tessendorf-gerstner-wave-jacobian-vs-crest-self-intersection-faq.en.md",
+      "summary": "docs/evidence/gerstner-wave-jacobian-rig-summary.svg",
+      "report": "demos/gerstner-wave-jacobian-rig/report.json",
+      "cards": "demos/gerstner-wave-jacobian-rig/test-report-cards.html",
+      "cards_zh": "demos/gerstner-wave-jacobian-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在跨越海浪完整相位周期 φ ∈ [−180°, +180°] 的 17 个站点上，朴素超陡未限幅 Gerstner 波（Q_raw=1.60 > 1.0）在第 8 站波峰顶点（φ=0°）使水平拉伸雅可比跌入负值 J_naive = −0.6000 < 0，导致波峰周围 φ ∈ [−45°, +45°] 共 5/17 个站点发生网格翻面自交。",
+        "采用 Tessendorf (SIGGRAPH 2001) 雅可比正定陡度限幅 J(φ) = 1 − Q_safe·cos φ（Q_safe=0.80 < 1.0），在波峰处安全锁定 J_Tess = +0.2000 > 0（5.00× 尖峰聚拢，0/17 倒扣站）。",
+        "58 实体 17 站点海浪雅可比水槽台对比闭式解析雅可比与 64 子步有限差分网格割线基线（8192 次 0.34 ms vs 188.43 ms，提速 557.98×，误差 5.85e-10），不冒充神经流体仿真。"
+      ],
+      "conclusions_en": [
+        "Across 17 wave phase stations (φ ∈ [−180°, +180°]), naive over-steepened Gerstner waves (Q_raw=1.60 > 1.0) drive the horizontal surface Jacobian negative at crest station 8 (φ=0°) to J = −0.6000 < 0, folding the ocean crest inside-out across 5/17 stations (φ ∈ [−45°, +45°]).",
+        "Tessendorf (SIGGRAPH 2001) Jacobian-limited trochoidal waves (Q_safe=0.80 < 1.0) lock crest station 8 at positive J = +0.2000 > 0 (5.00× pinch) with 0/17 self-intersecting stations.",
+        "The 58-solid 17-station wave flume bench compares closed-form analytic Jacobians against 64-substep finite-difference wave mesh secants (0.34 ms vs 188.43 ms at 8,192 passes, 557.98× speedup, 5.85e-10 error) without claiming neural fluid simulation."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_fluid": "not_measured" }
+    },
+    {
+      "round": 94,
+      "slug": "sdf-cone-soft-shadow-rig",
+      "topic": "quilez-sdf-cone-soft-shadow-vs-hard-sphere-trace-umbra",
+      "title_zh": "距离场阴影只需 1 条射线即可零噪点柔和散开：Quilez-Wright 单射线 SDF 锥比软阴影选型 FAQ",
+      "title_en": "Contact-hardening soft shadows in 1 ray without noise: Quilez-Wright SDF cone-ratio soft shadow selection FAQ",
+      "faq_zh": "docs/quilez-sdf-cone-soft-shadow-vs-hard-sphere-trace-umbra-faq.md",
+      "faq_en": "docs/quilez-sdf-cone-soft-shadow-vs-hard-sphere-trace-umbra-faq.en.md",
+      "summary": "docs/evidence/sdf-cone-soft-shadow-rig-summary.svg",
+      "report": "demos/sdf-cone-soft-shadow-rig/report.json",
+      "cards": "demos/sdf-cone-soft-shadow-rig/test-report-cards.html",
+      "cards_zh": "demos/sdf-cone-soft-shadow-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在遮挡物距离 t_occ=4.0 m、光源柔和度 k=4.0、最近擦掠距离跨越 d_min ∈ [−1.60, +1.60] m 的 17 个站点上，朴素二值球追踪 d_min > 0 ? 1 : 0 丢弃距离比 d_min/t，在第 8 站边界（d_min=0.00 m）硬跳至 0.0000（误差 0.5000，将 2.0 m 宽半影砍成死板方波，污染 9/17 个半影站点）。",
+        "采用 Quilez 与 Wright (SIGGRAPH 2015) 单射线距离场锥比软阴影 u = clamp(0.5+0.5·k·d_min/t, 0, 1)、S = u²(3−2u)，在第 8 站边界精准锁定 S = 0.5000（0/17 硬切站）。",
+        "58 实体 17 站点半影光度计台对比单射线闭式锥比与 64 射线分布式面积光圆盘求积基线（8192 次 0.33 ms vs 13.62 ms，提速 40.86×，误差 2.22e-16），不冒充神经阴影去噪。"
+      ],
+      "conclusions_en": [
+        "Across 17 closest-approach SDF stations (d_min ∈ [−1.60, +1.60] m at t_occ=4.0 m, k=4.0), naive binary sphere-tracing d_min > 0 ? 1 : 0 discards d_min/t, snapping boundary station 8 (d_min=0.00 m) to S = 0.0000 (0.5000 step error across 9/17 clipped penumbra stations).",
+        "Quilez & Wright (SIGGRAPH 2015) single-ray SDF cone-ratio soft shadow u = clamp(0.5+0.5·k·d_min/t, 0, 1), S = u²(3−2u) locks station 8 at exact S = 0.5000 with 0/17 clipped stations.",
+        "The 58-solid 17-station penumbra photometer bench compares 1-ray closed-form cone ratio against 64-ray distributed area-light disk quadrature (0.33 ms vs 13.62 ms at 8,192 passes, 40.86× speedup, 2.22e-16 error) without claiming neural shadow denoising."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_denoising": "not_measured" }
+    },
+    {
+      "round": 95,
+      "slug": "normal-bilateral-crease-rig",
+      "topic": "cross-bilateral-normal-edge-stopping-vs-depth-only-corner-bleed",
+      "title_zh": "全局光照去噪不再把 90° 墙角涂成脏黑圆角：交叉双边法线截断门控选型 FAQ",
+      "title_en": "Spatial GI/AO denoising without 90-degree corner smudging: Cross-bilateral normal-stopping filter selection FAQ",
+      "faq_zh": "docs/cross-bilateral-normal-edge-stopping-vs-depth-only-corner-bleed-faq.md",
+      "faq_en": "docs/cross-bilateral-normal-edge-stopping-vs-depth-only-corner-bleed-faq.en.md",
+      "summary": "docs/evidence/normal-bilateral-crease-rig-summary.svg",
+      "report": "demos/normal-bilateral-crease-rig/report.json",
+      "cards": "demos/normal-bilateral-crease-rig/test-report-cards.html",
+      "cards_zh": "demos/normal-bilateral-crease-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在跨越深度完全连续（Δz=0.00 m）的 90° 室内墙地折痕的 17 个像素站点（d ∈ [−8, +8] px，R=4 px）上，朴素仅深度双边滤波因 w_z=exp(0)=1.0 将暗地面（0.1600）与亮墙面（0.9600）强行平均，使第 8 站墙角跌至 E=0.6100（晕染 −0.3500，污染 8/17 个墙角站点）。",
+        "采用交叉双边法线点积门控 w_N = max(0, N_p·N_q)^32，利用 N_floor·N_wall=0 在 Δz=0 处切断跨平面混色，锁死第 8 站 E = 0.9600（0/17 晕染站）。",
+        "58 实体 17 站点墙角显微密度计台对比闭式法线点积门控与 64 抽头球面法线夹角核积分基线（8192 次 0.34 ms vs 56.54 ms，提速 168.53×，误差 7.77e-16），不冒充神经 GI 去噪。"
+      ],
+      "conclusions_en": [
+        "Across 17 pixel stations (d ∈ [−8, +8] px, R=4 px) spanning a 90° wall-floor crease where depth Δz=0.00 m is continuous, naive depth-only bilateral filtering evaluates w_z=1.0 and smears dark floor irradiance (0.1600) onto sunlit wall station 8 (0.9600) down to E = 0.6100 (−0.3500 smudge across 8/17 stations).",
+        "Cross-bilateral normal-stopping gating w_N = max(0, N_p·N_q)^32 zeroes out cross-plane weights (cos^32 90° = 0) to lock station 8 at crisp E = 0.9600 with 0/17 smudged stations.",
+        "The 58-solid 17-station crease microdensitometer bench compares closed-form normal-dot gating against 64-tap spherical normal-angle kernel integration (0.34 ms vs 56.54 ms at 8,192 passes, 168.53× speedup, 7.77e-16 error) without claiming neural GI denoising."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_denoising": "not_measured" }
+    },
+    {
+      "round": 96,
+      "slug": "natural-vignette-cos4-rig",
+      "topic": "natural-vignetting-cos4-law-vs-polynomial-corner-blackout",
+      "title_zh": "广角镜头暗角不再把四角掐成死黑窥孔：Born-Wolf 物理余弦四次方自然渐晕选型 FAQ",
+      "title_en": "Wide-angle lens vignetting without corner blackout: Born-Wolf cosine-fourth natural vignetting selection FAQ",
+      "faq_zh": "docs/natural-vignetting-cos4-law-vs-polynomial-corner-blackout-faq.md",
+      "faq_en": "docs/natural-vignetting-cos4-law-vs-polynomial-corner-blackout-faq.en.md",
+      "summary": "docs/evidence/natural-vignette-cos4-rig-summary.svg",
+      "report": "demos/natural-vignette-cos4-rig/report.json",
+      "cards": "demos/natural-vignette-cos4-rig/test-report-cards.html",
+      "cards_zh": "demos/natural-vignette-cos4-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在焦距 f=24 mm、传感器半径 r_max=24 mm 跨越 u=r/f ∈ [0.00, 1.00] 的 17 个径向站点上，朴素二次泰勒抛物线 max(0, 1−2u²) 在第 12..16 站（u ≥ 0.75）全部跌穿 0.0000 变成死黑窥孔（在第 12 站丢失 −0.4096 即 100% 画面，污染 12/17 个站点）。",
+        "采用 Born & Wolf 有理余弦四次方定律 V(r, f) = cos⁴θ ≡ 1 / (1+(r/f)²)²，在第 12 站精准锁定 V = 0.4096、第 16 站保留 0.2500（0/17 死黑站）。",
+        "58 实体 17 站点光学渐晕台对比免开方有理分式与 64 环反三角出瞳立体角积分基线（8192 次 0.38 ms vs 11.52 ms，提速 30.46×，误差 1.67e-15），不冒充神经镜头仿真。"
+      ],
+      "conclusions_en": [
+        "Across 17 sensor radial stations (u=r/f ∈ [0.00, 1.00] for f=24 mm, r_max=24 mm), naive quadratic Taylor vignetting max(0, 1−2u²) blacks out stations 12..16 (u ≥ 0.75) to V = 0.0000 (−0.4096 loss at station 12 across 12/17 choked stations).",
+        "Born & Wolf rational cosine-fourth natural vignetting V(r, f) = cos⁴θ ≡ 1 / (1+(r/f)²)² locks station 12 at V = 0.4096 and station 16 at 0.2500 with 0/17 blacked-out stations.",
+        "The 58-solid 17-station optical vignetting bench compares root-free rational evaluation against 64-ring trigonometric pupil solid-angle integration (0.38 ms vs 11.52 ms at 8,192 passes, 30.46× speedup, 1.67e-15 error) without claiming neural lens emulation."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_lens_emulation": "not_measured" }
+    },
+    {
+      "round": 97,
+      "slug": "hbao-tangent-bias-rig",
+      "topic": "bavoil-hbao-tangent-angle-bias-vs-lowpoly-facet-acne",
+      "title_zh": "低模平滑圆柱与脸颊开启 AO 不再爆出多边形黑棱线：Bavoil HBAO 切角偏置选型 FAQ",
+      "title_en": "Smooth-shaded low-poly meshes without SSAO facet stripes: Bavoil HBAO tangent-angle bias selection FAQ",
+      "faq_zh": "docs/bavoil-hbao-tangent-angle-bias-vs-lowpoly-facet-acne-faq.md",
+      "faq_en": "docs/bavoil-hbao-tangent-angle-bias-vs-lowpoly-facet-acne-faq.en.md",
+      "summary": "docs/evidence/hbao-tangent-bias-rig-summary.svg",
+      "report": "demos/hbao-tangent-bias-rig/report.json",
+      "cards": "demos/hbao-tangent-bias-rig/test-report-cards.html",
+      "cards_zh": "demos/hbao-tangent-bias-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在平滑顶点法线相对平坦深度缓冲三角形外倾跨越 φ ∈ [0.0°, 24.0°] 的 17 个凸面站点上，朴素无偏置地平线 SSAO 将平坦三角形面误判为遮挡山坡，在第 16 站（φ=24.0°）捏造 0.4067 假遮挡将可见度拉黑至 V=0.5933（污染 16/17 个站点）。",
+        "采用 Bavoil 等人 (SIGGRAPH 2008 NVIDIA HBAO) 代数正弦切角偏置门控（θ_bias=25.0°, sin 25°=0.4226），在全部 17 个凸面站点恒定锁定纯净可见度 V = 1.0000（0/17 棱线黑斑站）。",
+        "58 实体 17 站点面片测角仪台对比代数正弦偏置门控与 64 射线反三角仰角锥求积基线（8192 次 0.49 ms vs 70.55 ms，提速 145.29×，误差 0），不冒充神经 AO 修补。"
+      ],
+      "conclusions_en": [
+        "Across 17 Phong normal tilt stations (φ ∈ [0.0°, 24.0°]) on a flat depth-buffer triangle, naive unbiased horizon SSAO mistakes the flat facet for an occluding hill, dropping station 16 (φ=24.0°) visibility to V = 0.5933 (−0.4067 false facet-stripe acne across 16/17 stations).",
+        "Bavoil et al. (SIGGRAPH 2008 NVIDIA HBAO) algebraic sine-bias gating (θ_bias=25.0°, sin 25°=0.4226) locks all 17 convex facet stations at exact V = 1.0000 with 0/17 striped stations.",
+        "The 58-solid 17-station facet goniometer bench compares algebraic sine-bias gating against 64-ray inverse-trigonometric elevation-cone quadrature (0.49 ms vs 70.55 ms at 8,192 passes, 145.29× speedup, 0 error) without claiming neural AO inpainting."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_inpainting": "not_measured" }
     }
   ]
 }

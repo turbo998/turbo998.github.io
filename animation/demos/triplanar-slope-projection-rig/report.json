@@ -1,0 +1,266 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Geiss triplanar world-space cliff projection vs top-down planar UV cliff stretching rig",
+  "topic_zh": "Geiss 三平面正交世界投影（Triplanar Mapping）对比朴素顶视平面 UV 悬崖绝壁纵向拉丝",
+  "slug": "triplanar-slope-projection-rig",
+  "timestamp": "2026-11-13T19:58:49.586Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Ryan Geiss (NVIDIA GPU Gems 3, 2007) conformal triplanar world-space projection (D_tri = D_0 * (N_x^2 + N_y^2 + N_z^2)) versus naive top-down planar XZ projection (D_planar = D_0 * cos(theta)) and 64-step 3D cliff arc-length parametric quadrature across 17 cliff slope angle stations (theta in [5 deg, 85 deg]). No neural texture inpainting execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "geiss-triplanar-quadrature-equivalence-128",
+      "passed": true,
+      "detail": "128 algebraic N_x²+N_y² triplanar and 64-step arc-length quadrature passes agree within 1e-13"
+    },
+    {
+      "name": "geiss-triplanar-quadrature-equivalence-1024",
+      "passed": true,
+      "detail": "1024 algebraic N_x²+N_y² triplanar and 64-step arc-length quadrature passes agree within 1e-13"
+    },
+    {
+      "name": "geiss-triplanar-quadrature-equivalence-8192",
+      "passed": true,
+      "detail": "8192 algebraic N_x²+N_y² triplanar and 64-step arc-length quadrature passes agree within 1e-13"
+    },
+    {
+      "name": "geiss-cliff-density-conserved",
+      "passed": true,
+      "detail": "17 slope stations preserve exact D=1.0000 texel density across 5°..85°"
+    },
+    {
+      "name": "planar-xz-cliff-stretch-exposed",
+      "passed": true,
+      "detail": "naive top-down XZ drops station-15 (80°) density to 0.1736 (−0.9128 max loss across 15/17 stations)"
+    },
+    {
+      "name": "geiss-80deg-cliff-density-locked",
+      "passed": true,
+      "detail": "Geiss Triplanar Projection locks station-15 (80° cliff) at D=1.0000 (0/17 stretched stations)"
+    },
+    {
+      "name": "planar-80deg-streak-exposed",
+      "passed": true,
+      "detail": "naive top-down XZ collapses station-15 (80°) to D=0.1736 (5.76× stretch) and 85° to 0.0872 (11.47× stretch) across 15/17 stations"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse station scrubbing reproduces the exact cliff pantograph carriage world matrix"
+    },
+    {
+      "name": "atomic-density-rejection",
+      "passed": true,
+      "detail": "out-of-range baseTexelDensity=999.0 is rejected while valid Triplanar Projection state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered cliff carriage y-elevation matches solved texel density height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Triplanar Projection controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual station scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station triplanar passes",
+      "count": 128,
+      "primary_ms": 0.012800000000083855,
+      "baseline_ms": 0.5092999999999392,
+      "primary_samples_ms": [
+        0.02549999999996544,
+        0.01340000000004693,
+        0.012100000000032196,
+        0.012800000000083855,
+        0.018000000000029104,
+        0.007500000000050022,
+        0.006999999999948159
+      ],
+      "baseline_samples_ms": [
+        0.5092999999999392,
+        0.524599999999964,
+        0.5190999999999804,
+        0.5394000000000005,
+        0.2658000000000129,
+        0.30599999999992633,
+        0.19329999999990832
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station triplanar passes",
+      "count": 1024,
+      "primary_ms": 0.06020000000000891,
+      "baseline_ms": 1.5480000000000018,
+      "primary_samples_ms": [
+        0.06399999999996453,
+        0.06020000000000891,
+        0.06020000000000891,
+        0.06020000000000891,
+        0.05999999999994543,
+        0.06020000000000891,
+        0.0624000000000251
+      ],
+      "baseline_samples_ms": [
+        1.552500000000009,
+        1.5490000000000919,
+        1.546799999999962,
+        1.5480000000000018,
+        1.6428000000000793,
+        1.5411000000000286,
+        1.5400999999999385
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station triplanar passes",
+      "count": 8192,
+      "primary_ms": 0.4874999999999545,
+      "baseline_ms": 13.035200000000032,
+      "primary_samples_ms": [
+        0.4915000000000873,
+        0.4874999999999545,
+        0.8365000000000009,
+        0.48689999999999145,
+        0.8491999999999962,
+        0.48649999999997817,
+        0.48279999999999745
+      ],
+      "baseline_samples_ms": [
+        12.729799999999955,
+        12.722399999999993,
+        34.92489999999998,
+        13.702799999999911,
+        21.26189999999997,
+        13.035200000000032,
+        12.395399999999995
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/triplanar-slope-projection-rig/light-geiss-triplanar-orthogonal-blend.png",
+    "docs/evidence/triplanar-slope-projection-rig/light-naive-top-down-planar-xz.png",
+    "docs/evidence/triplanar-slope-projection-rig/dark-geiss-triplanar-orthogonal-blend.png",
+    "docs/evidence/triplanar-slope-projection-rig/dark-naive-top-down-planar-xz.png",
+    "docs/evidence/triplanar-slope-projection-rig/mobile.png"
+  ],
+  "primary_label": "Geiss Algebraic N_x²+N_y² Triplanar",
+  "baseline_label": "64-Step Arc-Length Parametric Quadrature",
+  "load_unit": "17-station triplanar passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Algebraic normal-squared triplanar projection versus 64-step arc-length parametric trigonometric quadrature.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "base_texel_density": 1,
+    "cliff_80deg_triplanar_density": 1,
+    "cliff_80deg_planar_density": 0.1736,
+    "max_density_loss": 0.9128,
+    "corrupted_stations": 15,
+    "maximum_solver_error": 0
+  },
+  "protocol": {
+    "input": {
+      "station_index": 15,
+      "slope_deg": 80,
+      "base_density": 1,
+      "safe_drop": 0.03,
+      "mode": "geiss-triplanar-orthogonal-blend"
+    },
+    "output": {
+      "normal_x": 0.9848,
+      "normal_y": 0.1736,
+      "triplanar_density": 1,
+      "planar_80deg_density": 0.1736,
+      "corrupted_stations": 15
+    },
+    "function": "D_tri(θ) = D₀ · (N_y·cos θ + N_x·sin θ) = D₀ · (N_y² + N_x²) ≡ 1.0000 → 0.0000 Cliff Stretch Across 5°..85°"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 cliff slope stations preserve unit texel density without vertical UV streak stretching",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Open-world terrain cliffs, Marching Cubes voxel caves, procedural SDF rock formations, and architectural ruins without manual UV unwrapping",
+    "Eliminating 5.76× (80°) to 11.47× (85°) vertical texture streak stretching on steep heightfield slopes",
+    "Blending orthogonal YZ, XZ, and XY world-plane projections directly from world normal N without inverse trigonometry",
+    "Pairing with Reoriented Normal Mapping / Whiteout blending (Round 65) for tangent-free normal maps"
+  ],
+  "not_for": [
+    "Skinned deforming characters where world-space coordinates swim across moving limbs (use rest-pose object space or UV unwrapping)",
+    "Single flat horizontal floors where 1-tap XZ planar projection is already exact",
+    "Neural texture synthesis or diffusion inpainting",
+    "Unique non-tiling hero decals requiring custom 2D UV parameterization"
+  ],
+  "locale_zh": {
+    "geiss-triplanar-quadrature-equivalence-128": "Geiss代数三平面与64步弧长求积等价 128",
+    "128 algebraic N_x²+N_y² triplanar and 64-step arc-length quadrature passes agree within 1e-13": "128 次代数 N_x²+N_y² 三平面投影与 64 步弧长数值求积在 1e-13 内一致",
+    "geiss-triplanar-quadrature-equivalence-1024": "Geiss代数三平面与64步弧长求积等价 1024",
+    "1024 algebraic N_x²+N_y² triplanar and 64-step arc-length quadrature passes agree within 1e-13": "1024 次代数 N_x²+N_y² 三平面投影与 64 步弧长数值求积在 1e-13 内一致",
+    "geiss-triplanar-quadrature-equivalence-8192": "Geiss代数三平面与64步弧长求积等价 8192",
+    "8192 algebraic N_x²+N_y² triplanar and 64-step arc-length quadrature passes agree within 1e-13": "8192 次代数 N_x²+N_y² 三平面投影与 64 步弧长数值求积在 1e-13 内一致",
+    "geiss-cliff-density-conserved": "Geiss山崖纹素密度守恒",
+    "17 slope stations preserve exact D=1.0000 texel density across 5°..85°": "17 个斜坡站点在 5°..85° 全程保持精确 D=1.0000 纹素采样密度",
+    "planar-xz-cliff-stretch-exposed": "顶视平面悬崖拉丝暴露",
+    "naive top-down XZ drops station-15 (80°) density to 0.1736 (−0.9128 max loss across 15/17 stations)": "朴素顶视 XZ 投影将第 15 站（80°）密度压低至 0.1736（峰值丢失 −0.9128，污染 15/17 站）",
+    "geiss-80deg-cliff-density-locked": "Geiss 80度悬崖纹素密度锁定",
+    "Geiss Triplanar Projection locks station-15 (80° cliff) at D=1.0000 (0/17 stretched stations)": "Geiss 三平面投影将第 15 站（80° 悬崖）锁定在 D=1.0000（0/17 拉丝站）",
+    "planar-80deg-streak-exposed": "顶视80度纵向拉丝暴露",
+    "naive top-down XZ collapses station-15 (80°) to D=0.1736 (5.76× stretch) and 85° to 0.0872 (11.47× stretch) across 15/17 stations": "朴素顶视 XZ 将第 15 站（80°）压缩至 D=0.1736（拉长 5.76×）、85° 至 0.0872（拉长 11.47×，波及 15/17 站）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse station scrubbing reproduces the exact cliff pantograph carriage world matrix": "逆序站点拖曳精确复现山崖缩放仪滑车世界矩阵",
+    "atomic-density-rejection": "原子基准纹素密度拒绝",
+    "out-of-range baseTexelDensity=999.0 is rejected while valid Triplanar Projection state remains": "越界基准纹素密度 999.0 被拒绝，有效三平面投影状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered cliff carriage y-elevation matches solved texel density height": "渲染山崖滑车垂直高度与求解器纹素密度高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px Triplanar Projection controls fit without horizontal overflow": "390px 三平面投影控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual station scrubbing remains available": "减少动态默认静止，保留手动站点核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Geiss Algebraic N_x²+N_y² Triplanar": "Geiss 代数正交三平面投影",
+    "64-Step Arc-Length Parametric Quadrature": "64 步弧长参数三角求积基线",
+    "Median of 7 alternating Node CPU runs after warmup. Algebraic normal-squared triplanar projection versus 64-step arc-length parametric trigonometric quadrature.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；Geiss 代数法线分量三平面正交投影对比 64 步弧长参数三角函数求积基线。",
+    "Sampled 17 cliff slope stations preserve unit texel density without vertical UV streak stretching": "采样 17 个山崖倾角站点全部保持单位纹素采样密度，无陡坡垂直拉丝失真",
+    "D_tri(θ) = D₀ · (N_y·cos θ + N_x·sin θ) = D₀ · (N_y² + N_x²) ≡ 1.0000 → 0.0000 Cliff Stretch Across 5°..85°": "三平面正交投影 D₀·(N_y²+N_x²) ≡ 1.0000 → 5°..85° 全斜坡 0.0000 悬崖拉丝",
+    "Open-world terrain cliffs, Marching Cubes voxel caves, procedural SDF rock formations, and architectural ruins without manual UV unwrapping": "免手工展 UV 的开放世界悬崖地形、Marching Cubes 体素洞穴、程序化 SDF 岩层与建筑废墟",
+    "Eliminating 5.76× (80°) to 11.47× (85°) vertical texture streak stretching on steep heightfield slopes": "彻底根除高度图陡峭绝壁上高达 5.76×（80°）至 11.47×（85°）的瀑布面条状纵向贴图拉丝",
+    "Blending orthogonal YZ, XZ, and XY world-plane projections directly from world normal N without inverse trigonometry": "直接由世界法线分量 N_x, N_y, N_z 混合三个正交世界平面投影，无需任何反三角函数运算",
+    "Pairing with Reoriented Normal Mapping / Whiteout blending (Round 65) for tangent-free normal maps": "与重定向上下文法线混合（Round 65）无缝结合，实现免切线（Tangent-Free）立体凹凸映射",
+    "Skinned deforming characters where world-space coordinates swim across moving limbs (use rest-pose object space or UV unwrapping)": "骨骼蒙皮形变角色（直接使用世界坐标会导致角色走动时贴图在皮肤上流淌，需用静态局部坐标或展 UV）",
+    "Single flat horizontal floors where 1-tap XZ planar projection is already exact": "完全水平的单一地面（单次 XZ 平面投影已足够精确）",
+    "Neural texture synthesis or diffusion inpainting": "神经纹理合成或扩散修补推理",
+    "Unique non-tiling hero decals requiring custom 2D UV parameterization": "不可无缝平铺的唯一定制英雄贴花资产"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/triplanar-slope-projection.test.ts",
+    "node scripts/benchmark-triplanar-slope-projection.mjs"
+  ]
+}

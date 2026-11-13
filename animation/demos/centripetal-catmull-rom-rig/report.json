@@ -1,0 +1,268 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Yuksel centripetal Catmull-Rom spline (alpha=0.5) vs uniform Catmull-Rom (alpha=0.0) self-intersection loop rig",
+  "topic_zh": "Yuksel 向心 Catmull-Rom 样条（α=0.5）对比均匀参数化（α=0.0）不等距关键帧倒车自交环与过冲",
+  "slug": "centripetal-catmull-rom-rig",
+  "timestamp": "2026-11-13T16:36:36.911Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Cem Yuksel, Scott Schaefer & John Keyser (CAD 2011) centripetal Catmull-Rom spline parameterization (alpha = 0.5, dt_k = ||P_{k+1}-P_k||^0.5) via precomputed Horner cubic polynomials versus naive uniform Catmull-Rom (alpha = 0.0) and recursive 3-level Barry-Goldman knot pyramids across 17 bridge stations. No neural trajectory diffusion execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "centripetal-horner-pyramid-equivalence-128",
+      "passed": true,
+      "detail": "128 precomputed Centripetal Horner cubic and 3-level Barry-Goldman pyramid passes agree within 1e-13"
+    },
+    {
+      "name": "centripetal-horner-pyramid-equivalence-1024",
+      "passed": true,
+      "detail": "1024 precomputed Centripetal Horner cubic and 3-level Barry-Goldman pyramid passes agree within 1e-13"
+    },
+    {
+      "name": "centripetal-horner-pyramid-equivalence-8192",
+      "passed": true,
+      "detail": "8192 precomputed Centripetal Horner cubic and 3-level Barry-Goldman pyramid passes agree within 1e-13"
+    },
+    {
+      "name": "centripetal-monotonic-loop-free",
+      "passed": true,
+      "detail": "17 bridge stations progress monotonically forward (station-8 u=0.50 y=0.1835m, dx/du=+1.6184 m/u)"
+    },
+    {
+      "name": "uniform-retrograde-loop-exposed",
+      "passed": true,
+      "detail": "naive uniform Catmull-Rom reverses backward at station-8 (dx/du=-1.0000 m/u) and overshoots to y=1.0000m across 15/17 stations"
+    },
+    {
+      "name": "centripetal-arch-bounded",
+      "passed": true,
+      "detail": "Yuksel Centripetal Catmull-Rom locks station-8 (u=0.50) at y=0.1835m, dx/du=+1.6184 m/u (0/17 retrograde loops)"
+    },
+    {
+      "name": "uniform-figure8-overshoot-exposed",
+      "passed": true,
+      "detail": "uniform Catmull-Rom balloons station-8 to y=1.0000m (+0.8165m overshoot) with backward dx/du=-1.0000 m/u across 5 retrograde stations"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse station scrubbing reproduces the exact spline tensiometer carriage world matrix"
+    },
+    {
+      "name": "atomic-span-rejection",
+      "passed": true,
+      "detail": "out-of-range outerSpanX=999.0 is rejected while valid Centripetal Catmull-Rom state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered spline carriage y-elevation matches solved spline arch height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Centripetal Catmull-Rom controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual station scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station spline passes",
+      "count": 128,
+      "primary_ms": 0.21860000000003765,
+      "baseline_ms": 2.3028000000000475,
+      "primary_samples_ms": [
+        0.476099999999974,
+        0.2085999999999899,
+        0.21860000000003765,
+        0.21380000000004884,
+        0.22959999999994807,
+        0.21460000000001855,
+        0.24109999999996035
+      ],
+      "baseline_samples_ms": [
+        2.1908000000000243,
+        1.79789999999997,
+        2.427099999999996,
+        2.3163999999999874,
+        2.3555000000000064,
+        2.3028000000000475,
+        2.1820999999999913
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station spline passes",
+      "count": 1024,
+      "primary_ms": 0.25110000000006494,
+      "baseline_ms": 13.693299999999908,
+      "primary_samples_ms": [
+        0.2504999999999882,
+        0.504799999999932,
+        0.5025999999999158,
+        0.25110000000006494,
+        0.27049999999997,
+        0.22010000000000218,
+        0.21269999999992706
+      ],
+      "baseline_samples_ms": [
+        9.487799999999993,
+        16.774700000000053,
+        13.693299999999908,
+        9.849699999999984,
+        17.48529999999994,
+        14.576800000000048,
+        9.215299999999957
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station spline passes",
+      "count": 8192,
+      "primary_ms": 2.0833000000000084,
+      "baseline_ms": 86.2915999999999,
+      "primary_samples_ms": [
+        2.177799999999934,
+        1.9014000000000806,
+        2.0833000000000084,
+        1.6491000000000895,
+        2.1786999999999352,
+        2.8449000000000524,
+        1.9696000000001277
+      ],
+      "baseline_samples_ms": [
+        88.92430000000002,
+        88.04060000000004,
+        86.2915999999999,
+        85.0258,
+        94.81479999999988,
+        86.23360000000002,
+        83.47550000000001
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/centripetal-catmull-rom-rig/light-yuksel-centripetal-alpha-05.png",
+    "docs/evidence/centripetal-catmull-rom-rig/light-naive-uniform-alpha-00.png",
+    "docs/evidence/centripetal-catmull-rom-rig/dark-yuksel-centripetal-alpha-05.png",
+    "docs/evidence/centripetal-catmull-rom-rig/dark-naive-uniform-alpha-00.png",
+    "docs/evidence/centripetal-catmull-rom-rig/mobile.png"
+  ],
+  "primary_label": "Precomputed Centripetal Horner Cubic",
+  "baseline_label": "3-Level Barry-Goldman Knot Pyramid",
+  "load_unit": "17-station spline passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Precomputed non-uniform centripetal Horner cubic polynomial evaluation versus 3-level recursive Barry-Goldman knot-pyramid evaluation.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "inner_chord_m": 2,
+    "centripetal_midpoint_y_m": 0.1835,
+    "uniform_midpoint_y_m": 1,
+    "max_overshoot_bulge_m": 0.8165,
+    "retrograde_stations": 5,
+    "corrupted_stations": 15,
+    "maximum_solver_error": 6.6613e-16
+  },
+  "protocol": {
+    "input": {
+      "station_index": 8,
+      "u": 0.5,
+      "outer_span_x_m": 14,
+      "outer_drop_y_m": 8,
+      "inner_chord_m": 2,
+      "mode": "yuksel-centripetal-alpha-05"
+    },
+    "output": {
+      "centripetal_y_m": 0.1835,
+      "uniform_y_m": 1,
+      "overshoot_bulge_m": 0.8165,
+      "centripetal_dx_du": 1.6184,
+      "uniform_dx_du": -1
+    },
+    "function": "Δt_k = ∥P_{k+1} − P_k∥^{0.5} (α = 0.5) → Strictly Monotonic dx/du > 0 (0 Loops / 0 Cusps)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 uneven-chord bridge stations progress monotonically forward without self-intersection loops or cusps",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "3D camera rails, cutscene dolly tracks, and character root-motion splines with unevenly spaced keyframes (UE5, Unity Cinemachine, Blender)",
+    "Proving why alpha = 0.5 (sqrt chord length) is the only Catmull-Rom parameterization guaranteed free of self-intersections and cusps",
+    "Eliminating backward retrograde camera loops (dx/du = -1.00 m/u) and 5.45x arch overshoots when transitioning from a 16.12m span to a 2.0m corner",
+    "Replacing recursive 3-level Barry-Goldman knot pyramids with precomputed 3-FMA Horner cubic segments"
+  ],
+  "not_for": [
+    "Strictly uniform grid tables where every control point is spaced at identical 1.0-unit intervals",
+    "1D scalar timelines requiring strict monotonicity without any curvature fillet (use Steffen/Fritsch-Carlson monotonic Hermite)",
+    "Neural text-to-motion diffusion trajectory generators",
+    "SO(3) 3D orientation interpolation (use C1 Quaternion SQUAD instead)"
+  ],
+  "locale_zh": {
+    "centripetal-horner-pyramid-equivalence-128": "向心Horner与Barry-Goldman金字塔等价 128",
+    "128 precomputed Centripetal Horner cubic and 3-level Barry-Goldman pyramid passes agree within 1e-13": "128 次预计算向心 Horner 三次多项式与 3 层 Barry-Goldman 递推金字塔在 1e-13 内一致",
+    "centripetal-horner-pyramid-equivalence-1024": "向心Horner与Barry-Goldman金字塔等价 1024",
+    "1024 precomputed Centripetal Horner cubic and 3-level Barry-Goldman pyramid passes agree within 1e-13": "1024 次预计算向心 Horner 三次多项式与 3 层 Barry-Goldman 递推金字塔在 1e-13 内一致",
+    "centripetal-horner-pyramid-equivalence-8192": "向心Horner与Barry-Goldman金字塔等价 8192",
+    "8192 precomputed Centripetal Horner cubic and 3-level Barry-Goldman pyramid passes agree within 1e-13": "8192 次预计算向心 Horner 三次多项式与 3 层 Barry-Goldman 递推金字塔在 1e-13 内一致",
+    "centripetal-monotonic-loop-free": "向心Catmull-Rom无自交单调前进",
+    "17 bridge stations progress monotonically forward (station-8 u=0.50 y=0.1835m, dx/du=+1.6184 m/u)": "17 个短桥站点严格单调前进（第 8 站 u=0.50 拱高 y=0.1835m，前进速度 dx/du=+1.6184 m/u）",
+    "uniform-retrograde-loop-exposed": "均匀Catmull-Rom倒车自交环暴露",
+    "naive uniform Catmull-Rom reverses backward at station-8 (dx/du=-1.0000 m/u) and overshoots to y=1.0000m across 15/17 stations": "朴素均匀样条在第 8 站发生 dx/du=-1.0000 m/u 倒车自交并过冲至 y=1.0000m，波及 15/17 站",
+    "centripetal-arch-bounded": "向心样条拱高收敛锁定",
+    "Yuksel Centripetal Catmull-Rom locks station-8 (u=0.50) at y=0.1835m, dx/du=+1.6184 m/u (0/17 retrograde loops)": "Yuksel 向心样条将第 8 站（u=0.50）锁定在 y=0.1835m，dx/du=+1.6184 m/u（0/17 倒车自交）",
+    "uniform-figure8-overshoot-exposed": "均匀样条八字自交过冲暴露",
+    "uniform Catmull-Rom balloons station-8 to y=1.0000m (+0.8165m overshoot) with backward dx/du=-1.0000 m/u across 5 retrograde stations": "均匀样条将第 8 站吹胀至 y=1.0000m（+0.8165m 过冲）并在 5 个站点发生 dx/du=-1.0000 m/u 倒车自交",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse station scrubbing reproduces the exact spline tensiometer carriage world matrix": "逆序站点拖曳精确复现样条张力计滑车世界矩阵",
+    "atomic-span-rejection": "原子跨度拒绝",
+    "out-of-range outerSpanX=999.0 is rejected while valid Centripetal Catmull-Rom state remains": "越界外侧跨度 999.0m 被拒绝，有效向心样条状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered spline carriage y-elevation matches solved spline arch height": "渲染样条滑车垂直高度与求解器样条拱高完全一致",
+    "mobile-layout": "手机布局",
+    "390px Centripetal Catmull-Rom controls fit without horizontal overflow": "390px 向心样条控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual station scrubbing remains available": "减少动态默认静止，保留手动站点核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Precomputed Centripetal Horner Cubic": "预计算向心 Horner 三次多项式",
+    "3-Level Barry-Goldman Knot Pyramid": "3 层 Barry-Goldman 递推节点金字塔基线",
+    "Median of 7 alternating Node CPU runs after warmup. Precomputed non-uniform centripetal Horner cubic polynomial evaluation versus 3-level recursive Barry-Goldman knot-pyramid evaluation.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；预计算非均匀向心 Horner 三次多项式对比 3 层 Barry-Goldman 递推节点金字塔基线。",
+    "Sampled 17 uneven-chord bridge stations progress monotonically forward without self-intersection loops or cusps": "采样 17 个不等距短弦桥段站点全部保持单调前进，无自交八字环或过冲尖点",
+    "Δt_k = ∥P_{k+1} − P_k∥^{0.5} (α = 0.5) → Strictly Monotonic dx/du > 0 (0 Loops / 0 Cusps)": "向心弦长平方根节点间距 (α = 0.5) → 全程单调前进 dx/du > 0（0 自交环 / 0 尖点）",
+    "3D camera rails, cutscene dolly tracks, and character root-motion splines with unevenly spaced keyframes (UE5, Unity Cinemachine, Blender)": "包含疏密不均关键帧的 3D 运镜轨道、过场动画与角色根运动路径（UE5、Unity Cinemachine、Blender）",
+    "Proving why alpha = 0.5 (sqrt chord length) is the only Catmull-Rom parameterization guaranteed free of self-intersections and cusps": "从几何上证明为何 α = 0.5（弦长平方根）是唯一数学保证绝不自交、绝无尖点的 Catmull-Rom 参数化",
+    "Eliminating backward retrograde camera loops (dx/du = -1.00 m/u) and 5.45x arch overshoots when transitioning from a 16.12m span to a 2.0m corner": "彻底消除从 16.12m 长跨度进入 2.0m 短拐角时产生的 dx/du = −1.00 m/u 倒车自交环与 5.45× 拱高过冲",
+    "Replacing recursive 3-level Barry-Goldman knot pyramids with precomputed 3-FMA Horner cubic segments": "以预计算 3 次乘加 Horner 多项式替代高开销的 3 层 Barry-Goldman 递推金字塔除法",
+    "Strictly uniform grid tables where every control point is spaced at identical 1.0-unit intervals": "所有控制点间距完全相等的规则均匀网格查表",
+    "1D scalar timelines requiring strict monotonicity without any curvature fillet (use Steffen/Fritsch-Carlson monotonic Hermite)": "要求零圆角过冲的 1D 标量单调时间轴（应选 Fritsch-Carlson 单调 Hermite）",
+    "Neural text-to-motion diffusion trajectory generators": "神经文本生成动作轨迹扩散模型",
+    "SO(3) 3D orientation interpolation (use C1 Quaternion SQUAD instead)": "SO(3) 三维旋转姿态插值（应选 C1 四元数 SQUAD 样条）"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/centripetal-catmull-rom.test.ts",
+    "node scripts/benchmark-centripetal-catmull-rom.mjs"
+  ]
+}

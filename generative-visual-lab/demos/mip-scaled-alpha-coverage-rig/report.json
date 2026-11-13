@@ -1,0 +1,267 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Castano coverage-preserving alpha mipmap rescaling vs box-filtered vanishing distant foliage rig",
+  "topic_zh": "Castaño 保覆盖率 Alpha Mipmap 对比度重缩放对比朴素盒式均值滤波远景树冠秃头消失",
+  "slug": "mip-scaled-alpha-coverage-rig",
+  "timestamp": "2026-11-13T19:48:44.939Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Ignacio Castano (2010 The Witness) coverage-preserving alpha mipmap contrast rescaling (alpha_corr = mean + (alpha_mip - mean) * 2^L) versus naive box-filtered alpha mipmaps and 54-step bisection coverage threshold search across 17 mipmap stations (L in [0.00, 4.00]). No neural foliage super-resolution execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "castano-closed-form-bisection-equivalence-128",
+      "passed": true,
+      "detail": "128 closed-form contrast rescaling and 54-step bisection coverage search passes agree within 1e-13"
+    },
+    {
+      "name": "castano-closed-form-bisection-equivalence-1024",
+      "passed": true,
+      "detail": "1024 closed-form contrast rescaling and 54-step bisection coverage search passes agree within 1e-13"
+    },
+    {
+      "name": "castano-closed-form-bisection-equivalence-8192",
+      "passed": true,
+      "detail": "8192 closed-form contrast rescaling and 54-step bisection coverage search passes agree within 1e-13"
+    },
+    {
+      "name": "castano-distant-coverage-conserved",
+      "passed": true,
+      "detail": "17 mipmap stations preserve exact C=0.3750 canopy coverage across Mip 0..4"
+    },
+    {
+      "name": "box-mip-foliage-extinction-exposed",
+      "passed": true,
+      "detail": "naive box-filtered alpha mip drops station-8 (Mip 2.0) coverage to 0.0000 (−0.3750 loss across 16/17 stations)"
+    },
+    {
+      "name": "castano-mip2-coverage-locked",
+      "passed": true,
+      "detail": "Castaño Mip Rescaling locks station-8 (Mip 2.0) canopy coverage at C=0.3750 (0/17 thinned stations)"
+    },
+    {
+      "name": "box-mip2-zero-coverage-exposed",
+      "passed": true,
+      "detail": "naive box mipmap wipes out station-8 (Mip 2.0) to C=0.0000 (100% vanished across Mip 2..4, 16/17 stations thinned)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse station scrubbing reproduces the exact canopy densitometer carriage world matrix"
+    },
+    {
+      "name": "atomic-mean-alpha-rejection",
+      "passed": true,
+      "detail": "out-of-range meanTileAlpha=999.0 is rejected while valid Alpha Mip Coverage state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered canopy carriage y-elevation matches solved foliage coverage height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Alpha Mip Coverage controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual station scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station alpha mip passes",
+      "count": 128,
+      "primary_ms": 0.06700000000000728,
+      "baseline_ms": 0.3575000000000159,
+      "primary_samples_ms": [
+        0.07719999999994798,
+        0.06700000000000728,
+        0.06670000000002574,
+        0.06740000000002055,
+        0.0695999999999799,
+        0.04559999999997899,
+        0.04499999999995907
+      ],
+      "baseline_samples_ms": [
+        0.3982000000000312,
+        0.3920999999999708,
+        0.3650000000000091,
+        0.3207999999999629,
+        0.3172000000000139,
+        0.3575000000000159,
+        0.3014999999999759
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station alpha mip passes",
+      "count": 1024,
+      "primary_ms": 0.3661999999999921,
+      "baseline_ms": 2.3758000000000266,
+      "primary_samples_ms": [
+        0.36959999999999127,
+        0.37360000000001037,
+        0.3658999999999537,
+        0.3661999999999921,
+        0.36580000000003565,
+        0.3668999999999869,
+        0.3660000000000423
+      ],
+      "baseline_samples_ms": [
+        2.373299999999972,
+        2.459100000000035,
+        2.379699999999957,
+        2.3758000000000266,
+        2.3734000000000037,
+        2.3722999999999956,
+        2.3822000000000116
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station alpha mip passes",
+      "count": 8192,
+      "primary_ms": 2.9431999999999334,
+      "baseline_ms": 19.321500000000015,
+      "primary_samples_ms": [
+        2.942099999999982,
+        2.943899999999985,
+        2.9431999999999334,
+        2.9442000000000235,
+        2.931600000000003,
+        2.9366999999999734,
+        2.9478000000000293
+      ],
+      "baseline_samples_ms": [
+        19.758500000000026,
+        21.163299999999936,
+        19.321500000000015,
+        19.27139999999997,
+        19.006899999999973,
+        19.157800000000066,
+        20.17369999999994
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/mip-scaled-alpha-coverage-rig/light-castano-coverage-preserving-mip.png",
+    "docs/evidence/mip-scaled-alpha-coverage-rig/light-naive-box-filtered-alpha-mip.png",
+    "docs/evidence/mip-scaled-alpha-coverage-rig/dark-castano-coverage-preserving-mip.png",
+    "docs/evidence/mip-scaled-alpha-coverage-rig/dark-naive-box-filtered-alpha-mip.png",
+    "docs/evidence/mip-scaled-alpha-coverage-rig/mobile.png"
+  ],
+  "primary_label": "Castaño Closed-Form Contrast Rescaling",
+  "baseline_label": "54-Step Bisection Coverage Threshold Search",
+  "load_unit": "17-station alpha mip passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form mip contrast restoration versus 54-step bisection coverage threshold search.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "mean_tile_alpha": 0.35,
+    "clip_threshold_tau": 0.5,
+    "castano_mip2_coverage": 0.375,
+    "naive_mip2_coverage": 0,
+    "max_coverage_loss": 0.375,
+    "corrupted_stations": 16,
+    "maximum_solver_error": 1.6653e-16
+  },
+  "protocol": {
+    "input": {
+      "station_index": 8,
+      "mip_level_l": 2,
+      "mean_alpha": 0.35,
+      "clip_tau": 0.5,
+      "mode": "castano-coverage-preserving-mip"
+    },
+    "output": {
+      "raw_mip2_amp": 0.15,
+      "castano_coverage": 0.375,
+      "naive_box_coverage": 0,
+      "coverage_loss": 0.375,
+      "corrupted_stations": 16
+    },
+    "function": "α_corr(L) = ᾱ + (α_mip(L) − ᾱ) · 2^L → Locks Distant Canopy Coverage at C = 0.3750 Across Mip 0..4 (0.0000 Loss)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 mipmap stations preserve exact 37.50% foliage coverage from Mip 0.00 to Mip 4.00",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Alpha-tested and Alpha-to-Coverage foliage, pine needles, grass blades, hair cards, and chain-link fences in UE5, Unity, and Three.js",
+    "Preventing distant trees and bushes from thinning out or vanishing completely when mipmapping averages α below τ = 0.50",
+    "Baking coverage-preserving alpha mipmaps offline or scaling shader alpha by 1 + k·mipLevel at runtime",
+    "Pairing with MSAA Alpha-to-Coverage or R2 blue-noise dither stippling (Round 44) for order-independent foliage"
+  ],
+  "not_for": [
+    "Standard premultiplied alpha blending (OVER operator) where mean opacity ᾱ rather than thresholded coverage is the conserved quantity",
+    "Opaque solid meshes with α ≡ 1.0 everywhere",
+    "Neural texture super-resolution or generative foliage hallucination",
+    "Un-mipmapped nearest-neighbor pixel art"
+  ],
+  "locale_zh": {
+    "castano-closed-form-bisection-equivalence-128": "Castaño闭式重缩放与二分搜索等价 128",
+    "128 closed-form contrast rescaling and 54-step bisection coverage search passes agree within 1e-13": "128 次闭式对比度重缩放与 54 步二分覆盖率搜索在 1e-13 内一致",
+    "castano-closed-form-bisection-equivalence-1024": "Castaño闭式重缩放与二分搜索等价 1024",
+    "1024 closed-form contrast rescaling and 54-step bisection coverage search passes agree within 1e-13": "1024 次闭式对比度重缩放与 54 步二分覆盖率搜索在 1e-13 内一致",
+    "castano-closed-form-bisection-equivalence-8192": "Castaño闭式重缩放与二分搜索等价 8192",
+    "8192 closed-form contrast rescaling and 54-step bisection coverage search passes agree within 1e-13": "8192 次闭式对比度重缩放与 54 步二分覆盖率搜索在 1e-13 内一致",
+    "castano-distant-coverage-conserved": "Castaño远景树冠覆盖率守恒",
+    "17 mipmap stations preserve exact C=0.3750 canopy coverage across Mip 0..4": "17 个 Mipmap 站点在 Mip 0..4 全程保持精确 C=0.3750 树冠覆盖率",
+    "box-mip-foliage-extinction-exposed": "盒式均值Mip远景秃树消失暴露",
+    "naive box-filtered alpha mip drops station-8 (Mip 2.0) coverage to 0.0000 (−0.3750 loss across 16/17 stations)": "朴素盒式均值 Alpha Mip 将第 8 站（Mip 2.0）覆盖率归零至 0.0000（丢失 −0.3750，污染 16/17 站）",
+    "castano-mip2-coverage-locked": "Castaño Mip2树冠覆盖率锁定",
+    "Castaño Mip Rescaling locks station-8 (Mip 2.0) canopy coverage at C=0.3750 (0/17 thinned stations)": "Castaño 保覆盖率重缩放将第 8 站（Mip 2.0）锁定在 C=0.3750（0/17 变薄站）",
+    "box-mip2-zero-coverage-exposed": "盒式Mip2树冠彻底消失暴露",
+    "naive box mipmap wipes out station-8 (Mip 2.0) to C=0.0000 (100% vanished across Mip 2..4, 16/17 stations thinned)": "朴素盒式 Mipmap 将第 8 站（Mip 2.0）归零至 C=0.0000（Mip 2..4 树冠 100% 消失，波及 16/17 站）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse station scrubbing reproduces the exact canopy densitometer carriage world matrix": "逆序站点拖曳精确复现树冠密度计滑车世界矩阵",
+    "atomic-mean-alpha-rejection": "原子均值Alpha拒绝",
+    "out-of-range meanTileAlpha=999.0 is rejected while valid Alpha Mip Coverage state remains": "越界贴图均值 999.0 被拒绝，有效树冠覆盖率状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered canopy carriage y-elevation matches solved foliage coverage height": "渲染树冠滑车垂直高度与求解器植被覆盖率高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px Alpha Mip Coverage controls fit without horizontal overflow": "390px 保覆盖率 Alpha Mip 控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual station scrubbing remains available": "减少动态默认静止，保留手动站点核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Castaño Closed-Form Contrast Rescaling": "Castaño 闭式对比度重缩放",
+    "54-Step Bisection Coverage Threshold Search": "54 步二分覆盖率阈值搜索基线",
+    "Median of 7 alternating Node CPU runs after warmup. Closed-form mip contrast restoration versus 54-step bisection coverage threshold search.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；Castaño 闭式 Mip 对比度重缩放对比 54 步二分法覆盖率阈值反解基线。",
+    "Sampled 17 mipmap stations preserve exact 37.50% foliage coverage from Mip 0.00 to Mip 4.00": "采样 17 个 Mipmap 层级站点在 Mip 0.00 至 Mip 4.00 全程锁死 37.50% 植被覆盖率，零远景秃树消失",
+    "α_corr(L) = ᾱ + (α_mip(L) − ᾱ) · 2^L → Locks Distant Canopy Coverage at C = 0.3750 Across Mip 0..4 (0.0000 Loss)": "Castaño 保覆盖率重缩放 α_corr(L) → Mip 0..4 全程锁定树冠覆盖率 C = 0.3750（0.0000 损失）",
+    "Alpha-tested and Alpha-to-Coverage foliage, pine needles, grass blades, hair cards, and chain-link fences in UE5, Unity, and Three.js": "UE5、Unity 与 Three.js 中采用 Alpha Test 或 Alpha-to-Coverage 的树叶、松针、草地、发片与铁丝网",
+    "Preventing distant trees and bushes from thinning out or vanishing completely when mipmapping averages α below τ = 0.50": "彻底根除远景树木与灌木因 Mipmap 盒式平均把 Alpha 压低到 0.50 以下而导致的秃头消失现象",
+    "Baking coverage-preserving alpha mipmaps offline or scaling shader alpha by 1 + k·mipLevel at runtime": "支持离线烘焙保覆盖率 Mipmap 贴图，或在着色器运行时按 Mip 层级动态放大对比度",
+    "Pairing with MSAA Alpha-to-Coverage or R2 blue-noise dither stippling (Round 44) for order-independent foliage": "与硬件 MSAA Alpha-to-Coverage 或 R2 低差异点画抖动（Round 44）无缝配合",
+    "Standard premultiplied alpha blending (OVER operator) where mean opacity ᾱ rather than thresholded coverage is the conserved quantity": "使用标准预乘 Alpha 混合（OVER 算子，守恒量为均值 ᾱ 而非阈值截断面积）的半透明云雾",
+    "Opaque solid meshes with α ≡ 1.0 everywhere": "不含透明镂空通道的纯不透明网格（α ≡ 1.0）",
+    "Neural texture super-resolution or generative foliage hallucination": "神经纹理超分辨率或生成式植被脑补",
+    "Un-mipmapped nearest-neighbor pixel art": "禁用 Mipmap 的像素风点采样贴图"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/mip-scaled-alpha-coverage.test.ts",
+    "node scripts/benchmark-mip-scaled-alpha-coverage.mjs"
+  ]
+}

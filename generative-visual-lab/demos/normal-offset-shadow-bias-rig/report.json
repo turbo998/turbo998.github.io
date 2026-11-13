@@ -1,0 +1,267 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Gruen sin-theta normal-offset shadow bias vs constant depth-bias Peter-Panning and shadow acne rig",
+  "topic_zh": "Gruen 正弦法向偏移阴影偏置对比常数深度偏置脚底悬浮与掠射阴影摩尔纹",
+  "slug": "normal-offset-shadow-bias-rig",
+  "timestamp": "2026-11-13T19:16:02.993Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Holger Gruen (GDC 2011) algebraic sin-theta normal-offset shadow bias (delta_N = 0.5 * w_texel * sqrt(1 - (N.L)^2)) versus naive constant depth bias (Delta_z = 0.05m) and 32-ray trigonometric ray-plane intersection across 17 light incidence angle stations (theta in [5 deg, 85 deg]). No neural shadow denoising execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "gruen-algebraic-trigonometric-equivalence-128",
+      "passed": true,
+      "detail": "128 algebraic √(1−μ²) normal-offset and 32-ray trigonometric passes agree within 1e-13"
+    },
+    {
+      "name": "gruen-algebraic-trigonometric-equivalence-1024",
+      "passed": true,
+      "detail": "1024 algebraic √(1−μ²) normal-offset and 32-ray trigonometric passes agree within 1e-13"
+    },
+    {
+      "name": "gruen-algebraic-trigonometric-equivalence-8192",
+      "passed": true,
+      "detail": "8192 algebraic √(1−μ²) normal-offset and 32-ray trigonometric passes agree within 1e-13"
+    },
+    {
+      "name": "gruen-acne-and-contact-clean",
+      "passed": true,
+      "detail": "17 incidence angles clear texel staircase with bounded δ_N <= 0.05m (station-15 80° δ_N=0.0492m clears 0.2836m)"
+    },
+    {
+      "name": "constant-depth-bias-acne-and-peter-pan-exposed",
+      "passed": true,
+      "detail": "naive constant depth bias Δz=0.05m leaves +0.2336m acne at 80° (max +0.5215m across 14/17 stations)"
+    },
+    {
+      "name": "gruen-80deg-clearance-locked",
+      "passed": true,
+      "detail": "Gruen Normal-Offset Bias clears station-15 (80°) 0.2836m staircase with δ_N=0.0492m (0/17 corrupted stations)"
+    },
+    {
+      "name": "constant-bias-80deg-acne-exposed",
+      "passed": true,
+      "detail": "constant Δz=0.0500m leaves +0.2336m acne at 80° and +0.5215m at 85° across 14/17 corrupted stations"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse station scrubbing reproduces the exact shadow clinometer carriage world matrix"
+    },
+    {
+      "name": "atomic-texel-width-rejection",
+      "passed": true,
+      "detail": "out-of-range texelWorldWidthM=999.0 is rejected while valid Normal-Offset Bias state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered clinometer carriage y-elevation matches solved shadow staircase clearance height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Normal-Offset Bias controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual station scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station shadow bias passes",
+      "count": 128,
+      "primary_ms": 0.10140000000001237,
+      "baseline_ms": 0.3731000000000222,
+      "primary_samples_ms": [
+        0.7259999999999991,
+        0.10519999999996799,
+        0.09480000000002065,
+        0.12449999999995498,
+        0.09409999999996899,
+        0.07490000000001373,
+        0.10140000000001237
+      ],
+      "baseline_samples_ms": [
+        2.9365000000000236,
+        0.4041000000000281,
+        0.3731000000000222,
+        0.35890000000000555,
+        0.24260000000003856,
+        0.4163000000000352,
+        0.11200000000002319
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station shadow bias passes",
+      "count": 1024,
+      "primary_ms": 0.04259999999999309,
+      "baseline_ms": 0.7610000000000241,
+      "primary_samples_ms": [
+        0.574100000000044,
+        0.04259999999999309,
+        0.04259999999999309,
+        0.04250000000001819,
+        0.04370000000000118,
+        0.04239999999998645,
+        0.04230000000001155
+      ],
+      "baseline_samples_ms": [
+        1.0862999999999943,
+        0.7922000000000367,
+        0.7624999999999886,
+        0.7610000000000241,
+        0.7593000000000529,
+        0.7592000000000212,
+        0.7608000000000175
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station shadow bias passes",
+      "count": 8192,
+      "primary_ms": 0.35360000000002856,
+      "baseline_ms": 6.433400000000006,
+      "primary_samples_ms": [
+        0.33670000000000755,
+        0.3613000000000284,
+        0.35360000000002856,
+        0.35969999999997526,
+        0.3787999999999556,
+        0.3423999999999978,
+        0.3369000000000142
+      ],
+      "baseline_samples_ms": [
+        6.280400000000043,
+        6.347499999999968,
+        6.433400000000006,
+        6.135899999999992,
+        6.830299999999966,
+        6.764800000000037,
+        6.5
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/normal-offset-shadow-bias-rig/light-gruen-normal-offset-bias.png",
+    "docs/evidence/normal-offset-shadow-bias-rig/light-naive-constant-depth-bias.png",
+    "docs/evidence/normal-offset-shadow-bias-rig/dark-gruen-normal-offset-bias.png",
+    "docs/evidence/normal-offset-shadow-bias-rig/dark-naive-constant-depth-bias.png",
+    "docs/evidence/normal-offset-shadow-bias-rig/mobile.png"
+  ],
+  "primary_label": "Gruen Algebraic √(1−μ²) Normal-Offset Bias",
+  "baseline_label": "32-Ray Trigonometric Ray-Plane Search",
+  "load_unit": "17-station shadow bias passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Algebraic sqrt(1 - (N.L)^2) normal-offset solver versus 32-ray acos/tan ray-plane intersection.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "texel_width_m": 0.1,
+    "constant_depth_bias_m": 0.05,
+    "grazing_80deg_staircase_m": 0.2836,
+    "gruen_80deg_normal_shift_m": 0.0492,
+    "max_acne_or_detach_m": 0.5215,
+    "corrupted_stations": 14,
+    "maximum_solver_error": 2.7756e-17
+  },
+  "protocol": {
+    "input": {
+      "station_index": 15,
+      "theta_deg": 80,
+      "texel_w_m": 0.1,
+      "const_dz_m": 0.05,
+      "mode": "gruen-normal-offset-bias"
+    },
+    "output": {
+      "staircase_80deg_m": 0.2836,
+      "normal_shift_80deg_m": 0.0492,
+      "const_acne_80deg_m": 0.2336,
+      "max_acne_85deg_m": 0.5215,
+      "corrupted_stations": 14
+    },
+    "function": "Δp = ½·w_texel·√(1 − (N·L)²)·N → Clears 0.2836 m Staircase at θ=80° With Only 0.0492 m Shift (0 Acne / 0 Peter-Pan)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 incidence angle stations clear the shadow-texel staircase without Peter-Panning or Shadow Acne",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Cascaded Shadow Maps (CSM), Virtual Shadow Maps (VSM), and spot-light shadow mapping in UE5, Unity, Frostbite, and Three.js",
+    "Eliminating grazing-angle shadow acne stripes (θ → 85°) without exploding depth bias via tan(θ) → ∞",
+    "Preserving tight contact shadows at character feet (θ → 0° where sin(θ) → 0) with zero Peter-Panning detachment",
+    "Computing sin(θ) = √(1 − (N·L)²) algebraically from N·L without calling acos() or sin()"
+  ],
+  "not_for": [
+    "Ray-traced hardware shadows (DXR RayQuery) where no discrete shadow-map texel grid exists (use rt_tMin + vertex normal offset)",
+    "Single-plane unshadowed ambient lighting",
+    "Neural screen-space shadow synthesis or diffusion relighting",
+    "Infinitely thin two-sided foliage cards where normal N flips arbitrarily"
+  ],
+  "locale_zh": {
+    "gruen-algebraic-trigonometric-equivalence-128": "Gruen代数法向偏移与三角射线求交等价 128",
+    "128 algebraic √(1−μ²) normal-offset and 32-ray trigonometric passes agree within 1e-13": "128 次代数 √(1−μ²) 法向偏移与 32 射线三角函数求交在 1e-13 内一致",
+    "gruen-algebraic-trigonometric-equivalence-1024": "Gruen代数法向偏移与三角射线求交等价 1024",
+    "1024 algebraic √(1−μ²) normal-offset and 32-ray trigonometric passes agree within 1e-13": "1024 次代数 √(1−μ²) 法向偏移与 32 射线三角函数求交在 1e-13 内一致",
+    "gruen-algebraic-trigonometric-equivalence-8192": "Gruen代数法向偏移与三角射线求交等价 8192",
+    "8192 algebraic √(1−μ²) normal-offset and 32-ray trigonometric passes agree within 1e-13": "8192 次代数 √(1−μ²) 法向偏移与 32 射线三角函数求交在 1e-13 内一致",
+    "gruen-acne-and-contact-clean": "Gruen零阴影粉刺与零脚底悬浮守恒",
+    "17 incidence angles clear texel staircase with bounded δ_N <= 0.05m (station-15 80° δ_N=0.0492m clears 0.2836m)": "17 个入射角通过有界法向偏移 δ_N<=0.05m 完全消除纹素台阶（第 15 站 80° δ_N=0.0492m 跨越 0.2836m）",
+    "constant-depth-bias-acne-and-peter-pan-exposed": "常数深度偏置粉刺与小飞侠悬浮暴露",
+    "naive constant depth bias Δz=0.05m leaves +0.2336m acne at 80° (max +0.5215m across 14/17 stations)": "朴素常数深度偏置 Δz=0.05m 在 80° 留下 +0.2336m 粉刺（峰值 +0.5215m，污染 14/17 站）",
+    "gruen-80deg-clearance-locked": "Gruen 80度掠射台阶清除锁定",
+    "Gruen Normal-Offset Bias clears station-15 (80°) 0.2836m staircase with δ_N=0.0492m (0/17 corrupted stations)": "Gruen 法向偏移偏置以 δ_N=0.0492m 完美跨越第 15 站（80°）0.2836m 台阶（0/17 污染站）",
+    "constant-bias-80deg-acne-exposed": "常数偏置80度粉刺暴露",
+    "constant Δz=0.0500m leaves +0.2336m acne at 80° and +0.5215m at 85° across 14/17 corrupted stations": "常数 Δz=0.0500m 在 80° 留下 +0.2336m 粉刺、85° 达 +0.5215m（波及 14/17 站）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse station scrubbing reproduces the exact shadow clinometer carriage world matrix": "逆序站点拖曳精确复现阴影测斜仪滑车世界矩阵",
+    "atomic-texel-width-rejection": "原子纹素宽度拒绝",
+    "out-of-range texelWorldWidthM=999.0 is rejected while valid Normal-Offset Bias state remains": "越界纹素世界宽度 999.0m 被拒绝，有效法向偏移状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered clinometer carriage y-elevation matches solved shadow staircase clearance height": "渲染测斜仪滑车垂直高度与求解器阴影台阶清除高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px Normal-Offset Bias controls fit without horizontal overflow": "390px 法向偏移阴影控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual station scrubbing remains available": "减少动态默认静止，保留手动站点核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Gruen Algebraic √(1−μ²) Normal-Offset Bias": "Gruen 代数 √(1−μ²) 法向偏移偏置",
+    "32-Ray Trigonometric Ray-Plane Search": "32 射线三角函数切面求交基线",
+    "Median of 7 alternating Node CPU runs after warmup. Algebraic sqrt(1 - (N.L)^2) normal-offset solver versus 32-ray acos/tan ray-plane intersection.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；代数 √(1−(N·L)²) 法向偏移求解对比 32 射线反三角函数切平面求交基线。",
+    "Sampled 17 incidence angle stations clear the shadow-texel staircase without Peter-Panning or Shadow Acne": "采样 17 个光线入射角站点全部跨越纹素深度台阶，无小飞侠脚底悬浮与掠射阴影粉刺",
+    "Δp = ½·w_texel·√(1 − (N·L)²)·N → Clears 0.2836 m Staircase at θ=80° With Only 0.0492 m Shift (0 Acne / 0 Peter-Pan)": "Gruen 正弦法向偏移 ½·w·√(1−(N·L)²)·N → 80° 掠射仅移 0.0492m 即消除 0.2836m 台阶（0 粉刺 / 0 悬浮）",
+    "Cascaded Shadow Maps (CSM), Virtual Shadow Maps (VSM), and spot-light shadow mapping in UE5, Unity, Frostbite, and Three.js": "UE5、Unity、Frostbite 与 Three.js 中的级联阴影贴图（CSM）、虚拟阴影贴图与聚光灯阴影",
+    "Eliminating grazing-angle shadow acne stripes (θ → 85°) without exploding depth bias via tan(θ) → ∞": "在消除大掠射角（θ→85°）阴影摩尔纹的同时避免 tan(θ)→∞ 深度偏置爆炸",
+    "Preserving tight contact shadows at character feet (θ → 0° where sin(θ) → 0) with zero Peter-Panning detachment": "在直射接触区域（θ→0°，sin θ→0）完整保留角色脚底接触阴影，零小飞侠悬空",
+    "Computing sin(θ) = √(1 − (N·L)²) algebraically from N·L without calling acos() or sin()": "直接从点积 N·L 代数求值 sin θ = √(1−(N·L)²)，无需调用反三角函数 acos/sin",
+    "Ray-traced hardware shadows (DXR RayQuery) where no discrete shadow-map texel grid exists (use rt_tMin + vertex normal offset)": "无离散阴影纹素网格的硬件光线追踪阴影（DXR RayQuery）",
+    "Single-plane unshadowed ambient lighting": "无需阴影判定的纯环境光照明",
+    "Neural screen-space shadow synthesis or diffusion relighting": "神经屏幕空间阴影合成或扩散重打光",
+    "Infinitely thin two-sided foliage cards where normal N flips arbitrarily": "正背面共面、法线符号未区分的单层薄片树叶卡片"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/normal-offset-shadow-bias.test.ts",
+    "node scripts/benchmark-normal-offset-shadow-bias.mjs"
+  ]
+}

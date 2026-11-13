@@ -1,0 +1,267 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Bavoil HBAO tangent-horizon angle bias vs low-poly Phong normal facet acne rig",
+  "topic_zh": "Bavoil HBAO 切平面仰角偏置对比朴素无偏置 SSAO 低模平滑法线棱线黑斑",
+  "slug": "hbao-tangent-bias-rig",
+  "timestamp": "2026-11-13T21:06:51.432Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Louis Bavoil, Miguel Sainz & Rouslan Dimitrov (SIGGRAPH 2008 NVIDIA HBAO) algebraic sine-bias horizon gating (AO = max(0, (sin(phi) - sin(theta_bias))/(1 - sin(theta_bias)))) versus naive unbiased horizon SSAO (AO = sin(phi)) and 64-ray elevation-cone inverse-trigonometric quadrature across 17 Phong normal interpolation stations (phi in [0.0 deg, 24.0 deg]). No neural AO inpainting execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "bavoil-algebraic-cone-equivalence-128",
+      "passed": true,
+      "detail": "128 algebraic sin-bias gate and 64-ray elevation-cone quadrature passes agree within 1e-13"
+    },
+    {
+      "name": "bavoil-algebraic-cone-equivalence-1024",
+      "passed": true,
+      "detail": "1024 algebraic sin-bias gate and 64-ray elevation-cone quadrature passes agree within 1e-13"
+    },
+    {
+      "name": "bavoil-algebraic-cone-equivalence-8192",
+      "passed": true,
+      "detail": "8192 algebraic sin-bias gate and 64-ray elevation-cone quadrature passes agree within 1e-13"
+    },
+    {
+      "name": "bavoil-convex-facet-clean",
+      "passed": true,
+      "detail": "17 Phong-interpolated facet stations remain 100% unoccluded (station-16 φ=24° V=1.0000)"
+    },
+    {
+      "name": "unbiased-ssao-facet-acne-exposed",
+      "passed": true,
+      "detail": "naive unbiased SSAO drops station-16 (φ=24°) to V=0.5933 (−0.4067 false acne across 16/17 stations)"
+    },
+    {
+      "name": "bavoil-24deg-facet-edge-locked",
+      "passed": true,
+      "detail": "Bavoil HBAO Tangent Bias locks station-16 (φ=24° edge) at V=1.0000 (0/17 striped stations)"
+    },
+    {
+      "name": "unbiased-24deg-stripe-exposed",
+      "passed": true,
+      "detail": "naive unbiased SSAO darkens station-16 (φ=24°) to V=0.5933 (−0.4067 stripe acne across 16/17 stations)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse station scrubbing reproduces the exact facet goniometer carriage world matrix"
+    },
+    {
+      "name": "atomic-bias-angle-rejection",
+      "passed": true,
+      "detail": "out-of-range tangentBiasAngleDeg=999.0 is rejected while valid HBAO Tangent Bias state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered goniometer carriage y-elevation matches solved facet visibility height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px HBAO Tangent Bias controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual station scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station HBAO bias passes",
+      "count": 128,
+      "primary_ms": 0.009700000000009368,
+      "baseline_ms": 1.2230000000000132,
+      "primary_samples_ms": [
+        0.029300000000034743,
+        0.00929999999999609,
+        0.007499999999993179,
+        0.008399999999994634,
+        0.01039999999994734,
+        0.013500000000021828,
+        0.009700000000009368
+      ],
+      "baseline_samples_ms": [
+        1.2361000000000217,
+        1.1923000000000457,
+        1.1520000000000437,
+        1.2230000000000132,
+        1.260499999999979,
+        1.446799999999996,
+        1.125
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station HBAO bias passes",
+      "count": 1024,
+      "primary_ms": 0.06670000000002574,
+      "baseline_ms": 9.066099999999949,
+      "primary_samples_ms": [
+        0.06670000000002574,
+        0.06720000000007076,
+        0.06000000000005912,
+        0.0806999999999789,
+        0.05989999999997053,
+        0.07229999999992742,
+        0.05990000000008422
+      ],
+      "baseline_samples_ms": [
+        9.086100000000044,
+        9.066099999999949,
+        10.863399999999956,
+        8.70659999999998,
+        9.063699999999926,
+        9.365000000000009,
+        8.806800000000067
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station HBAO bias passes",
+      "count": 8192,
+      "primary_ms": 0.4855999999999767,
+      "baseline_ms": 70.55100000000004,
+      "primary_samples_ms": [
+        0.4934000000000651,
+        0.48660000000006676,
+        0.48460000000000036,
+        0.49710000000004584,
+        0.4813000000000329,
+        0.4855999999999767,
+        0.4839999999999236
+      ],
+      "baseline_samples_ms": [
+        70.55100000000004,
+        70.95709999999997,
+        70.01530000000002,
+        69.47309999999993,
+        71.27740000000006,
+        70.22530000000006,
+        72.22530000000006
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/hbao-tangent-bias-rig/light-bavoil-hbao-tangent-angle-bias.png",
+    "docs/evidence/hbao-tangent-bias-rig/light-naive-unbiased-tangent-ssao.png",
+    "docs/evidence/hbao-tangent-bias-rig/dark-bavoil-hbao-tangent-angle-bias.png",
+    "docs/evidence/hbao-tangent-bias-rig/dark-naive-unbiased-tangent-ssao.png",
+    "docs/evidence/hbao-tangent-bias-rig/mobile.png"
+  ],
+  "primary_label": "Bavoil Algebraic Sin-Bias Gate",
+  "baseline_label": "64-Ray Inverse-Trig Elevation Cone",
+  "load_unit": "17-station HBAO bias passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Algebraic sine-bias horizon gating versus 64-ray inverse-trigonometric asin() elevation-cone quadrature.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "tangent_bias_deg": 25,
+    "max_facet_tilt_deg": 24,
+    "bavoil_24deg_visibility": 1,
+    "naive_24deg_visibility": 0.5933,
+    "max_acne_loss": 0.4067,
+    "corrupted_stations": 16,
+    "maximum_solver_error": 0
+  },
+  "protocol": {
+    "input": {
+      "station_index": 16,
+      "phong_tilt_deg": 24,
+      "bias_deg": 25,
+      "sin_bias": 0.4226,
+      "mode": "bavoil-hbao-tangent-angle-bias"
+    },
+    "output": {
+      "apparent_sin_phi": 0.4067,
+      "bavoil_visibility": 1,
+      "naive_visibility": 0.5933,
+      "facet_acne_loss": 0.4067,
+      "corrupted_stations": 16
+    },
+    "function": "V_HBAO(φ) = 1 − max(0, (sin φ − sin θ_bias) / (1 − sin θ_bias)) → Station-16 (φ=24°) V = 1.0000 (0.0000 Facet Acne)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 Phong normal tilt stations eliminate false low-poly facet self-occlusion stripes",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Horizon-Based Ambient Occlusion (HBAO / HBAO+ / GTAO) on low- and mid-poly smooth-shaded characters, vehicles, and props",
+    "Eliminating dark polygon-edge zebra stripes caused by Phong-interpolated normals tilting away from flat depth-buffer triangles",
+    "Evaluating sin(θ_h) − sin(θ_bias) algebraically via dot(H, N_smooth) without calling asin() or acos()",
+    "Combining with Jiménez GTAO cosine weighting (Round 81) and cross-bilateral normal-stopping filters (Round 95)"
+  ],
+  "not_for": [
+    "True geometric crevices deeper than θ_bias = 25°–30° (which pass the bias gate and receive physical ambient occlusion)",
+    "Flat-shadedfaceted meshes where the G-Buffer normal is identical to the geometric face normal (φ ≡ 0°)",
+    "Neural screen-space ambient occlusion hallucination",
+    "Unlit emissive surfaces"
+  ],
+  "locale_zh": {
+    "bavoil-algebraic-cone-equivalence-128": "Bavoil代数正弦偏置与64射线仰角锥等价 128",
+    "128 algebraic sin-bias gate and 64-ray elevation-cone quadrature passes agree within 1e-13": "128 次代数正弦偏置门控与 64 射线反三角仰角锥求积在 1e-13 内一致",
+    "bavoil-algebraic-cone-equivalence-1024": "Bavoil代数正弦偏置与64射线仰角锥等价 1024",
+    "1024 algebraic sin-bias gate and 64-ray elevation-cone quadrature passes agree within 1e-13": "1024 次代数正弦偏置门控与 64 射线反三角仰角锥求积在 1e-13 内一致",
+    "bavoil-algebraic-cone-equivalence-8192": "Bavoil代数正弦偏置与64射线仰角锥等价 8192",
+    "8192 algebraic sin-bias gate and 64-ray elevation-cone quadrature passes agree within 1e-13": "8192 次代数正弦偏置门控与 64 射线反三角仰角锥求积在 1e-13 内一致",
+    "bavoil-convex-facet-clean": "Bavoil低模凸面零自遮挡守恒",
+    "17 Phong-interpolated facet stations remain 100% unoccluded (station-16 φ=24° V=1.0000)": "17 个 Phong 插值法线站点保持 100% 纯净无自遮挡（第 16 站 φ=24° V=1.0000）",
+    "unbiased-ssao-facet-acne-exposed": "无偏置SSAO低模棱线黑斑暴露",
+    "naive unbiased SSAO drops station-16 (φ=24°) to V=0.5933 (−0.4067 false acne across 16/17 stations)": "朴素无偏置 SSAO 将第 16 站（φ=24°）拉黑至 V=0.5933（假遮挡 −0.4067，污染 16/17 站）",
+    "bavoil-24deg-facet-edge-locked": "Bavoil 24度低模棱边纯净锁定",
+    "Bavoil HBAO Tangent Bias locks station-16 (φ=24° edge) at V=1.0000 (0/17 striped stations)": "Bavoil 切角偏置将第 16 站（φ=24° 棱边）锁定在 V=1.0000（0/17 条纹站）",
+    "unbiased-24deg-stripe-exposed": "无偏置24度棱线黑条纹暴露",
+    "naive unbiased SSAO darkens station-16 (φ=24°) to V=0.5933 (−0.4067 stripe acne across 16/17 stations)": "朴素无偏置 SSAO 将第 16 站（φ=24°）拉黑至 V=0.5933（假条纹 −0.4067，波及 16/17 站）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse station scrubbing reproduces the exact facet goniometer carriage world matrix": "逆序站点拖曳精确复现低模面片测角仪滑车世界矩阵",
+    "atomic-bias-angle-rejection": "原子切角偏置拒绝",
+    "out-of-range tangentBiasAngleDeg=999.0 is rejected while valid HBAO Tangent Bias state remains": "越界切角偏置 999.0° 被拒绝，有效 HBAO 偏置状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered goniometer carriage y-elevation matches solved facet visibility height": "渲染测角仪滑车垂直高度与求解器面片可见度高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px HBAO Tangent Bias controls fit without horizontal overflow": "390px HBAO 切角偏置控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual station scrubbing remains available": "减少动态默认静止，保留手动站点核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Bavoil Algebraic Sin-Bias Gate": "Bavoil 代数正弦偏置门控",
+    "64-Ray Inverse-Trig Elevation Cone": "64 射线反三角仰角锥积分基线",
+    "Median of 7 alternating Node CPU runs after warmup. Algebraic sine-bias horizon gating versus 64-ray inverse-trigonometric asin() elevation-cone quadrature.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；Bavoil 代数正弦偏置门控对比 64 射线反三角函数 asin() 仰角锥积分基线。",
+    "Sampled 17 Phong normal tilt stations eliminate false low-poly facet self-occlusion stripes": "采样 17 个 Phong 插值法线倾角站点全部消除低模平面假自遮挡条纹，零多边形棱线黑斑",
+    "V_HBAO(φ) = 1 − max(0, (sin φ − sin θ_bias) / (1 − sin θ_bias)) → Station-16 (φ=24°) V = 1.0000 (0.0000 Facet Acne)": "HBAO 正弦切角偏置门控 → 第 16 站（φ=24°）锁定纯净 V = 1.0000（0.0000 棱线黑斑）",
+    "Horizon-Based Ambient Occlusion (HBAO / HBAO+ / GTAO) on low- and mid-poly smooth-shaded characters, vehicles, and props": "中低模平滑着色（Smooth-Shaded）角色、载具与道具上的地平线环境光遮蔽（HBAO / HBAO+ / GTAO）",
+    "Eliminating dark polygon-edge zebra stripes caused by Phong-interpolated normals tilting away from flat depth-buffer triangles": "彻底根除因 Phong 插值法线偏离平坦深度缓冲三角形面而在多边形棱边处产生的黑色斑马条纹（Facet Acne）",
+    "Evaluating sin(θ_h) − sin(θ_bias) algebraically via dot(H, N_smooth) without calling asin() or acos()": "直接用归一化地平线向量与平滑法线的点积 dot(H, N) 对比 sin(θ_bias)，无需调用反三角函数 asin/acos",
+    "Combining with Jiménez GTAO cosine weighting (Round 81) and cross-bilateral normal-stopping filters (Round 95)": "与 Jiménez GTAO 余弦积分（Round 81）及交叉双边法线去噪（Round 95）无缝协同",
+    "True geometric crevices deeper than θ_bias = 25°–30° (which pass the bias gate and receive physical ambient occlusion)": "仰角超过偏置门限（>25°~30°）的真实墙角与凹槽（正常通过门限并输出真实环境光遮蔽）",
+    "Flat-shadedfaceted meshes where the G-Buffer normal is identical to the geometric face normal (φ ≡ 0°)": "使用平面硬着色（Flat Shading，法线与三角形面完全垂直 φ≡0°）的晶面网格",
+    "Neural screen-space ambient occlusion hallucination": "神经屏幕空间环境光遮蔽推理",
+    "Unlit emissive surfaces": "不受环境光遮蔽影响的自发光表面"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/hbao-tangent-bias.test.ts",
+    "node scripts/benchmark-hbao-tangent-bias.mjs"
+  ]
+}

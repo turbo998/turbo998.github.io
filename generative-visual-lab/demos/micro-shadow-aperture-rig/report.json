@@ -1,0 +1,267 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Chan AO-derived direct-light contact micro-shadowing vs naive unshadowed NdotL pore leak rig",
+  "topic_zh": "Chan 孔径微阴影门控（Micro-Shadowing）对比朴素无微阴影直射光毛孔穿壁漏光",
+  "slug": "micro-shadow-aperture-rig",
+  "timestamp": "2026-11-13T18:20:41.090Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Danny Chan (SIGGRAPH 2018 Call of Duty: WWII) AO-derived direct-light contact micro-shadowing (V_Chan = clamp((NdotL + 2*AO^2 - 1 + w)/(2w), 0, 1)) versus naive unshadowed direct lighting (E = NdotL) and 64-strip solar-penumbra aperture quadrature across 17 solar cosine stations (NdotL in [0.05, 0.85]). No neural texture relighting execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "chan-closedform-quadrature-equivalence-128",
+      "passed": true,
+      "detail": "128 closed-form Chan micro-shadow and 64-strip solar-disk quadrature passes agree within 1e-13"
+    },
+    {
+      "name": "chan-closedform-quadrature-equivalence-1024",
+      "passed": true,
+      "detail": "1024 closed-form Chan micro-shadow and 64-strip solar-disk quadrature passes agree within 1e-13"
+    },
+    {
+      "name": "chan-closedform-quadrature-equivalence-8192",
+      "passed": true,
+      "detail": "8192 closed-form Chan micro-shadow and 64-strip solar-disk quadrature passes agree within 1e-13"
+    },
+    {
+      "name": "chan-pore-self-shadow-conserved",
+      "passed": true,
+      "detail": "17 solar stations self-shadow grazing rays inside AO=0.50 pores (station-5 NdotL=0.30 E_sun=0.0000)"
+    },
+    {
+      "name": "unshadowed-ndotl-pore-leak-exposed",
+      "passed": true,
+      "detail": "naive unshadowed NdotL leaks E_sun=0.3000 at station-5 (NdotL=0.30) across 13/17 stations"
+    },
+    {
+      "name": "chan-umbra-zero-locked",
+      "passed": true,
+      "detail": "Chan Micro-Shadowing locks station-5 (NdotL=0.30, AO=0.50) at E_sun=0.0000 (0/17 leaking stations)"
+    },
+    {
+      "name": "naive-pore-sun-leak-exposed",
+      "passed": true,
+      "detail": "naive unshadowed NdotL leaks E_sun=0.3000 at station-5 (+0.3063 max leak across 13/17 stations)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse station scrubbing reproduces the exact pore goniometer carriage world matrix"
+    },
+    {
+      "name": "atomic-ao-rejection",
+      "passed": true,
+      "detail": "out-of-range cavityAO=99.0 is rejected while valid Micro-Shadow state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered goniometer carriage y-elevation matches solved direct irradiance height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Micro-Shadow controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual station scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station micro-shadow passes",
+      "count": 128,
+      "primary_ms": 0.12199999999995725,
+      "baseline_ms": 0.30930000000000746,
+      "primary_samples_ms": [
+        0.1994000000000824,
+        0.12040000000001783,
+        0.12120000000004438,
+        0.126700000000028,
+        0.1330000000000382,
+        0.12199999999995725,
+        0.1210999999999558
+      ],
+      "baseline_samples_ms": [
+        0.33989999999994325,
+        0.29739999999992506,
+        0.33710000000007767,
+        0.30920000000003256,
+        0.30930000000000746,
+        0.2863999999999578,
+        0.31950000000006185
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station micro-shadow passes",
+      "count": 1024,
+      "primary_ms": 0.06290000000001328,
+      "baseline_ms": 0.5229000000000497,
+      "primary_samples_ms": [
+        3.024400000000014,
+        0.20869999999990796,
+        0.21609999999998308,
+        0.06290000000001328,
+        0.05499999999994998,
+        0.05589999999995143,
+        0.061199999999985266
+      ],
+      "baseline_samples_ms": [
+        0.5422999999999547,
+        0.5361000000000331,
+        0.5229000000000497,
+        0.8061999999999898,
+        0.4298999999999751,
+        0.44479999999998654,
+        0.42809999999997217
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station micro-shadow passes",
+      "count": 8192,
+      "primary_ms": 0.4355000000000473,
+      "baseline_ms": 4.74860000000001,
+      "primary_samples_ms": [
+        0.4355000000000473,
+        0.45839999999998327,
+        0.4513000000000602,
+        0.44229999999993197,
+        0.41840000000001965,
+        0.39049999999997453,
+        0.38999999999998636
+      ],
+      "baseline_samples_ms": [
+        7.711500000000001,
+        4.74860000000001,
+        7.517900000000054,
+        7.157500000000027,
+        4.047699999999963,
+        3.057900000000018,
+        3.0579999999999927
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/micro-shadow-aperture-rig/light-chan-ao-aperture-micro-shadow.png",
+    "docs/evidence/micro-shadow-aperture-rig/light-naive-unshadowed-direct-ndotl.png",
+    "docs/evidence/micro-shadow-aperture-rig/dark-chan-ao-aperture-micro-shadow.png",
+    "docs/evidence/micro-shadow-aperture-rig/dark-naive-unshadowed-direct-ndotl.png",
+    "docs/evidence/micro-shadow-aperture-rig/mobile.png"
+  ],
+  "primary_label": "Closed-Form Chan Micro-Shadow",
+  "baseline_label": "64-Strip Solar Disk Quadrature",
+  "load_unit": "17-station micro-shadow passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form Chan AO-derived micro-shadow ramp versus 64-strip solar-disk aperture quadrature.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "cavity_ao": 0.5,
+    "aperture_cutoff_cosine": 0.5,
+    "chan_irradiance_station_5": 0,
+    "naive_irradiance_station_5": 0.3,
+    "max_pore_sunlight_leak": 0.3063,
+    "corrupted_stations": 13,
+    "maximum_solver_error": 6.6613e-16
+  },
+  "protocol": {
+    "input": {
+      "station_index": 5,
+      "ndotl": 0.3,
+      "cavity_ao": 0.5,
+      "penumbra_w": 0.2,
+      "mode": "chan-ao-aperture-micro-shadow"
+    },
+    "output": {
+      "aperture_cutoff_mu": 0.5,
+      "chan_irradiance": 0,
+      "naive_unshadowed_irradiance": 0.3,
+      "max_sunlight_leak": 0.3063,
+      "corrupted_stations": 13
+    },
+    "function": "V_Chan(N·L, AO) = clamp((N·L + 2·AO² − 1 + w) / 2w, 0, 1) → Grazing Pore Umbra E = 0.0000 (0 Leaks)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 solar cosine stations self-shadow grazing rays inside normal-mapped pores without wall leaks",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Sub-millimeter direct-light self-shadowing on normal-mapped skin pores, fabric weave, and armor rivets in Call of Duty, UE5, and Frostbite",
+    "Explaining why 4K cascaded shadow maps cannot shadow normal-mapped crevices and why applying AO only to ambient leaves pores glowing in sunlight",
+    "Deriving the cavity aperture cutoff μ_cutoff = 1 - 2·AO² directly from the existing scalar material AO texture in 3 ALU ops",
+    "Replacing 64-strip solar-penumbra numerical integration with a closed-form linear saturate ramp"
+  ],
+  "not_for": [
+    "Macroscopic building or tree shadows already resolved by cascaded shadow maps or ray-traced shadows",
+    "Completely flat unoccluded surfaces where material AO = 1.0 everywhere",
+    "Neural intrinsic image decomposition or AI relighting networks",
+    "Purely ambient overcast scenes with zero directional or analytical lights"
+  ],
+  "locale_zh": {
+    "chan-closedform-quadrature-equivalence-128": "Chan闭式与64带太阳盘求积等价 128",
+    "128 closed-form Chan micro-shadow and 64-strip solar-disk quadrature passes agree within 1e-13": "128 次闭式 Chan 微阴影与 64 带太阳盘重叠求积在 1e-13 内一致",
+    "chan-closedform-quadrature-equivalence-1024": "Chan闭式与64带太阳盘求积等价 1024",
+    "1024 closed-form Chan micro-shadow and 64-strip solar-disk quadrature passes agree within 1e-13": "1024 次闭式 Chan 微阴影与 64 带太阳盘重叠求积在 1e-13 内一致",
+    "chan-closedform-quadrature-equivalence-8192": "Chan闭式与64带太阳盘求积等价 8192",
+    "8192 closed-form Chan micro-shadow and 64-strip solar-disk quadrature passes agree within 1e-13": "8192 次闭式 Chan 微阴影与 64 带太阳盘重叠求积在 1e-13 内一致",
+    "chan-pore-self-shadow-conserved": "Chan毛孔微阴影守恒",
+    "17 solar stations self-shadow grazing rays inside AO=0.50 pores (station-5 NdotL=0.30 E_sun=0.0000)": "17 个太阳高度角站点在 AO=0.50 毛孔内严格自遮挡低角度阳光（第 5 站 N·L=0.30 E_sun=0.0000）",
+    "unshadowed-ndotl-pore-leak-exposed": "无微阴影直射光毛孔漏光暴露",
+    "naive unshadowed NdotL leaks E_sun=0.3000 at station-5 (NdotL=0.30) across 13/17 stations": "朴素无微阴影 N·L 在第 5 站（N·L=0.30）漏出 E_sun=0.3000，污染 13/17 站",
+    "chan-umbra-zero-locked": "Chan微阴影本影零值锁定",
+    "Chan Micro-Shadowing locks station-5 (NdotL=0.30, AO=0.50) at E_sun=0.0000 (0/17 leaking stations)": "Chan 微阴影将第 5 站（N·L=0.30, AO=0.50）锁死在 E_sun=0.0000（0/17 漏光站）",
+    "naive-pore-sun-leak-exposed": "朴素毛孔阳光穿透泄漏暴露",
+    "naive unshadowed NdotL leaks E_sun=0.3000 at station-5 (+0.3063 max leak across 13/17 stations)": "朴素无微阴影 N·L 在第 5 站漏出 E_sun=0.3000（最大漏光 +0.3063，波及 13/17 站）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse station scrubbing reproduces the exact pore goniometer carriage world matrix": "逆序站点拖曳精确复现毛孔测角仪滑车世界矩阵",
+    "atomic-ao-rejection": "原子孔径AO拒绝",
+    "out-of-range cavityAO=99.0 is rejected while valid Micro-Shadow state remains": "越界孔径 AO=99.0 被拒绝，有效微阴影状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered goniometer carriage y-elevation matches solved direct irradiance height": "渲染测角仪滑车垂直高度与求解器直接照度高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px Micro-Shadow controls fit without horizontal overflow": "390px 微阴影控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual station scrubbing remains available": "减少动态默认静止，保留手动站点核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Closed-Form Chan Micro-Shadow": "闭式 Chan 孔径微阴影门控",
+    "64-Strip Solar Disk Quadrature": "64 带太阳圆盘半影数值求积基线",
+    "Median of 7 alternating Node CPU runs after warmup. Closed-form Chan AO-derived micro-shadow ramp versus 64-strip solar-disk aperture quadrature.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；闭式 Chan AO 孔径微阴影斜坡对比 64 带太阳圆盘半影数值求积基线。",
+    "Sampled 17 solar cosine stations self-shadow grazing rays inside normal-mapped pores without wall leaks": "采样 17 个太阳余弦站点全部在法线贴图毛孔内实现精确掠射自阴影，无穿壁漏光",
+    "V_Chan(N·L, AO) = clamp((N·L + 2·AO² − 1 + w) / 2w, 0, 1) → Grazing Pore Umbra E = 0.0000 (0 Leaks)": "Chan 孔径微阴影闭式门控 → 掠射角毛孔本影 E = 0.0000（0 穿壁漏光）",
+    "Sub-millimeter direct-light self-shadowing on normal-mapped skin pores, fabric weave, and armor rivets in Call of Duty, UE5, and Frostbite": "Call of Duty、UE5 与 Frostbite 中法线贴图皮肤毛孔、织物经纬与装甲铆钉的亚毫米级直射光自阴影",
+    "Explaining why 4K cascaded shadow maps cannot shadow normal-mapped crevices and why applying AO only to ambient leaves pores glowing in sunlight": "直观解释为何 4K 阴影贴图管不到毫米级法线凹凸、且只将 AO 用于环境光会导致毛孔在斜射阳光下发光",
+    "Deriving the cavity aperture cutoff μ_cutoff = 1 - 2·AO² directly from the existing scalar material AO texture in 3 ALU ops": "仅用 3 条指令从现成标量材质 AO 贴图反推凹坑孔径截断阈值 μ_cutoff = 1 − 2·AO²",
+    "Replacing 64-strip solar-penumbra numerical integration with a closed-form linear saturate ramp": "以闭式线性 saturate 斜坡替代昂贵的 64 带太阳半影数值积分",
+    "Macroscopic building or tree shadows already resolved by cascaded shadow maps or ray-traced shadows": "已由级联阴影贴图或硬件光追解决的宏观建筑与树木阴影",
+    "Completely flat unoccluded surfaces where material AO = 1.0 everywhere": "材质 AO 全为 1.0 的完全平坦无遮挡表面",
+    "Neural intrinsic image decomposition or AI relighting networks": "神经本征图像分解或 AI 重打光网络",
+    "Purely ambient overcast scenes with zero directional or analytical lights": "不含任何直接方向光或点光源的纯阴天环境光场景"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/micro-shadow-aperture.test.ts",
+    "node scripts/benchmark-micro-shadow-aperture.mjs"
+  ]
+}

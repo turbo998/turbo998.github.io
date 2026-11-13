@@ -1,0 +1,269 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Kaplanyan screen-space curvature geometric specular AA vs sub-pixel bevel sparkle strobe rig",
+  "topic_zh": "Kaplanyan 屏幕空间法线曲率几何高光抗锯齿对比亚像素倒角高光爆闪",
+  "slug": "geometric-specular-aa-rig",
+  "timestamp": "2026-11-13T16:16:00.962Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Anton Kaplanyan & Alexey Antonov (HPG 2016) screen-space normal-variance geometric specular anti-aliasing (alpha_AA = sqrt(alpha_0^2 + kappa^2)) versus naive unfiltered raw roughness and 64-tap sub-pixel normal convolution quadrature across 17 sub-pixel drift stations (delta in [-0.40, +0.40] px). No neural super-resolution execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "kaplanyan-convolution-equivalence-128",
+      "passed": true,
+      "detail": "128 Kaplanyan closed-form variance AA and 64-tap sub-pixel normal convolution passes agree within 1e-13"
+    },
+    {
+      "name": "kaplanyan-convolution-equivalence-1024",
+      "passed": true,
+      "detail": "1024 Kaplanyan closed-form variance AA and 64-tap sub-pixel normal convolution passes agree within 1e-13"
+    },
+    {
+      "name": "kaplanyan-convolution-equivalence-8192",
+      "passed": true,
+      "detail": "8192 Kaplanyan closed-form variance AA and 64-tap sub-pixel normal convolution passes agree within 1e-13"
+    },
+    {
+      "name": "kaplanyan-specular-footprint-conserved",
+      "passed": true,
+      "detail": "17 sub-pixel stations preserve calm 1.08x temporal envelope (station-8 delta=0.00px I_spec=1.1284, alpha_AA=0.3536)"
+    },
+    {
+      "name": "naive-subpixel-sparkle-strobe-exposed",
+      "passed": true,
+      "detail": "naive raw roughness alpha_0=0.05 explodes to I_spec=7.9788 at station-8 (50.40x strobe across 17/17 stations)"
+    },
+    {
+      "name": "kaplanyan-curvature-aa-locked",
+      "passed": true,
+      "detail": "Kaplanyan Geometric Specular AA locks station-8 (delta=0.00px) at I_spec=1.1284 with alpha_AA=0.3536 (0/17 firefly stations)"
+    },
+    {
+      "name": "naive-bevel-firefly-exposed",
+      "passed": true,
+      "detail": "naive raw roughness explodes station-8 to I_spec=7.9788 (+6.8505 firefly spike, 50.40x strobe across 17/17 stations)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse station scrubbing reproduces the exact bevel goniophotometer carriage world matrix"
+    },
+    {
+      "name": "atomic-roughness-rejection",
+      "passed": true,
+      "detail": "out-of-range baseRoughnessAlpha=99.0 is rejected while valid Specular AA state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered goniophotometer carriage y-elevation matches solved specular radiance height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Specular AA controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual station scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station specular AA passes",
+      "count": 128,
+      "primary_ms": 0.023199999999974352,
+      "baseline_ms": 2.893299999999954,
+      "primary_samples_ms": [
+        0.18739999999991142,
+        0.023199999999974352,
+        0.018699999999967076,
+        0.032800000000065666,
+        0.03389999999990323,
+        0.022799999999961074,
+        0.016500000000064574
+      ],
+      "baseline_samples_ms": [
+        2.737700000000018,
+        2.893299999999954,
+        2.908800000000042,
+        2.858600000000024,
+        2.8623000000000047,
+        2.938199999999938,
+        3.078100000000063
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station specular AA passes",
+      "count": 1024,
+      "primary_ms": 0.22699999999997544,
+      "baseline_ms": 29.858800000000087,
+      "primary_samples_ms": [
+        0.22699999999997544,
+        0.23890000000005784,
+        0.21669999999994616,
+        0.24849999999992178,
+        0.34780000000000655,
+        0.22040000000004056,
+        0.21309999999994034
+      ],
+      "baseline_samples_ms": [
+        29.859199999999987,
+        38.31709999999998,
+        29.858800000000087,
+        32.692600000000084,
+        28.03559999999993,
+        28.33540000000005,
+        24.6404
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station specular AA passes",
+      "count": 8192,
+      "primary_ms": 1.2491999999999734,
+      "baseline_ms": 199.69499999999994,
+      "primary_samples_ms": [
+        1.1536000000000968,
+        1.2159999999998945,
+        1.1864000000000487,
+        1.2822000000001026,
+        1.2491999999999734,
+        1.2596999999996115,
+        1.4796000000001186
+      ],
+      "baseline_samples_ms": [
+        195.55209999999988,
+        182.98829999999998,
+        199.69499999999994,
+        209.26340000000005,
+        201.55179999999973,
+        235.95730000000003,
+        184.26199999999972
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/geometric-specular-aa-rig/light-kaplanyan-curvature-roughness-aa.png",
+    "docs/evidence/geometric-specular-aa-rig/light-naive-unfiltered-raw-roughness.png",
+    "docs/evidence/geometric-specular-aa-rig/dark-kaplanyan-curvature-roughness-aa.png",
+    "docs/evidence/geometric-specular-aa-rig/dark-naive-unfiltered-raw-roughness.png",
+    "docs/evidence/geometric-specular-aa-rig/mobile.png"
+  ],
+  "primary_label": "Closed-Form Kaplanyan Variance AA",
+  "baseline_label": "64-Tap Sub-Pixel Normal Convolution",
+  "load_unit": "17-station specular AA passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form Kaplanyan screen-space normal variance convolution (alpha_AA = sqrt(alpha_0^2 + kappa^2)) versus 64-tap numerical sub-pixel normal-distribution convolution.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "base_roughness_alpha0": 0.05,
+    "curvature_rad_per_px": 0.35,
+    "filtered_roughness_alpha_aa": 0.3536,
+    "kaplanyan_peak_radiance": 1.1284,
+    "naive_peak_radiance": 7.9788,
+    "kaplanyan_strobe_ratio": 1.08,
+    "naive_strobe_ratio": 50.4,
+    "corrupted_stations": 17,
+    "maximum_solver_error": 6.6613e-16
+  },
+  "protocol": {
+    "input": {
+      "station_index": 8,
+      "subpixel_offset_px": 0,
+      "alpha_0": 0.05,
+      "kappa_rad_px": 0.35,
+      "mode": "kaplanyan-curvature-roughness-aa"
+    },
+    "output": {
+      "filtered_alpha_aa": 0.3536,
+      "kaplanyan_radiance": 1.1284,
+      "naive_raw_radiance": 7.9788,
+      "kaplanyan_strobe_ratio": 1.08,
+      "naive_strobe_ratio": 50.4
+    },
+    "function": "α_AA = √(min(1, α₀² + min(σ_max², ∥∂n/∂x∥² + ∥∂n/∂y∥²))) → Strobe Ratio 1.08× (0 Fireflies)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 sub-pixel drift stations preserve calm 1.08x temporal specular envelope without firefly strobing",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Eliminating sub-pixel specular sparkle on curved CAD bevels, car bodies, and gun barrels without normal maps (UE5, Frostbite, Unity HDRP)",
+    "Explaining why Toksvig mipmap filtering alone cannot fix geometric curvature aliasing when no normal map is bound",
+    "Preventing TAA history clamping failure and HDR Bloom fireflies caused by 50.40x sub-pixel highlight strobing",
+    "Replacing 64-tap sub-pixel supersampled shading with a 4-op screen-space derivative roughness widening"
+  ],
+  "not_for": [
+    "Flat planar mirrors with zero geometric curvature (∂n/∂x = ∂n/∂y = 0)",
+    "Pure Lambertian matte clay surfaces with zero specular reflectance",
+    "Neural temporal super-resolution upscalers (DLSS / FSR / XeSS)",
+    "Geometric silhouette staircase aliasing (which requires MSAA / TAA rather than roughness filtering)"
+  ],
+  "locale_zh": {
+    "kaplanyan-convolution-equivalence-128": "Kaplanyan闭式与64点卷积等价 128",
+    "128 Kaplanyan closed-form variance AA and 64-tap sub-pixel normal convolution passes agree within 1e-13": "128 次 Kaplanyan 闭式曲率方差滤波与 64 点亚像素法线卷积基线在 1e-13 内一致",
+    "kaplanyan-convolution-equivalence-1024": "Kaplanyan闭式与64点卷积等价 1024",
+    "1024 Kaplanyan closed-form variance AA and 64-tap sub-pixel normal convolution passes agree within 1e-13": "1024 次 Kaplanyan 闭式曲率方差滤波与 64 点亚像素法线卷积基线在 1e-13 内一致",
+    "kaplanyan-convolution-equivalence-8192": "Kaplanyan闭式与64点卷积等价 8192",
+    "8192 Kaplanyan closed-form variance AA and 64-tap sub-pixel normal convolution passes agree within 1e-13": "8192 次 Kaplanyan 闭式曲率方差滤波与 64 点亚像素法线卷积基线在 1e-13 内一致",
+    "kaplanyan-specular-footprint-conserved": "Kaplanyan像素足迹能量守恒",
+    "17 sub-pixel stations preserve calm 1.08x temporal envelope (station-8 delta=0.00px I_spec=1.1284, alpha_AA=0.3536)": "17 个亚像素站点保持平稳 1.08× 时间包络（第 8 站 δ=0.00px 高光 I_spec=1.1284, α_AA=0.3536）",
+    "naive-subpixel-sparkle-strobe-exposed": "朴素原始粗糙度亚像素爆闪暴露",
+    "naive raw roughness alpha_0=0.05 explodes to I_spec=7.9788 at station-8 (50.40x strobe across 17/17 stations)": "朴素粗糙度 α₀=0.05 在第 8 站冲高至 I_spec=7.9788（50.40× 帧间频闪，污染 17/17 站）",
+    "kaplanyan-curvature-aa-locked": "Kaplanyan曲率高光锁定",
+    "Kaplanyan Geometric Specular AA locks station-8 (delta=0.00px) at I_spec=1.1284 with alpha_AA=0.3536 (0/17 firefly stations)": "Kaplanyan 几何曲率高光抗锯齿将第 8 站（δ=0.00px）锁死在 I_spec=1.1284，α_AA=0.3536（0/17 爆闪站）",
+    "naive-bevel-firefly-exposed": "朴素倒角萤火虫爆闪暴露",
+    "naive raw roughness explodes station-8 to I_spec=7.9788 (+6.8505 firefly spike, 50.40x strobe across 17/17 stations)": "朴素原始粗糙度将第 8 站引爆至 I_spec=7.9788（+6.8505 能量过冲，50.40× 频闪波及 17/17 站）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse station scrubbing reproduces the exact bevel goniophotometer carriage world matrix": "逆序站点拖曳精确复现倒角测角光度计滑车世界矩阵",
+    "atomic-roughness-rejection": "原子粗糙度拒绝",
+    "out-of-range baseRoughnessAlpha=99.0 is rejected while valid Specular AA state remains": "越界本征粗糙度 99.0 被拒绝，有效几何高光抗锯齿状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered goniophotometer carriage y-elevation matches solved specular radiance height": "渲染测角光度计滑车垂直高度与求解器高光辐射度高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px Specular AA controls fit without horizontal overflow": "390px 几何曲率高光抗锯齿控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual station scrubbing remains available": "减少动态默认静止，保留手动站点核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Closed-Form Kaplanyan Variance AA": "闭式 Kaplanyan 曲率方差高光抗锯齿",
+    "64-Tap Sub-Pixel Normal Convolution": "64 点亚像素法线分布数值卷积基线",
+    "Median of 7 alternating Node CPU runs after warmup. Closed-form Kaplanyan screen-space normal variance convolution (alpha_AA = sqrt(alpha_0^2 + kappa^2)) versus 64-tap numerical sub-pixel normal-distribution convolution.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；闭式 Kaplanyan 屏幕空间法线曲率方差卷积对比 64 点亚像素法线分布数值卷积基线。",
+    "Sampled 17 sub-pixel drift stations preserve calm 1.08x temporal specular envelope without firefly strobing": "采样 17 个亚像素平移站点全部保持 1.08× 平稳时间高光包络，无萤火虫频闪",
+    "α_AA = √(min(1, α₀² + min(σ_max², ∥∂n/∂x∥² + ∥∂n/∂y∥²))) → Strobe Ratio 1.08× (0 Fireflies)": "Kaplanyan 屏幕空间法线方差粗糙度扩宽 → 帧间频闪比 1.08×（0 萤火虫爆闪）",
+    "Eliminating sub-pixel specular sparkle on curved CAD bevels, car bodies, and gun barrels without normal maps (UE5, Frostbite, Unity HDRP)": "消除无贴图光滑汽车漆面、机械倒角与枪管在远景下的亚像素高光爆闪（UE5、Frostbite、Unity HDRP）",
+    "Explaining why Toksvig mipmap filtering alone cannot fix geometric curvature aliasing when no normal map is bound": "直观解释为何仅靠 Toksvig 法线贴图 Mipmap 滤波无法解决几何体自身顶点法线弯曲引发的高光闪烁",
+    "Preventing TAA history clamping failure and HDR Bloom fireflies caused by 50.40x sub-pixel highlight strobing": "从源头阻止 50.40× 亚像素高光频闪击穿 TAA 历史邻域钳制或引爆 HDR 泛光萤火虫",
+    "Replacing 64-tap sub-pixel supersampled shading with a 4-op screen-space derivative roughness widening": "以 4 指令屏幕空间法线偏导方差扩张替代昂贵的 64 点超采样着色",
+    "Flat planar mirrors with zero geometric curvature (∂n/∂x = ∂n/∂y = 0)": "几何曲率为零（∂n/∂x = ∂n/∂y = 0）的纯平面镜",
+    "Pure Lambertian matte clay surfaces with zero specular reflectance": "不含任何镜面反射项的纯漫反射哑光泥塑表面",
+    "Neural temporal super-resolution upscalers (DLSS / FSR / XeSS)": "神经时域超分辨率重建模型（DLSS / FSR / XeSS）",
+    "Geometric silhouette staircase aliasing (which requires MSAA / TAA rather than roughness filtering)": "几何外轮廓阶梯锯齿（需配合 MSAA / TAA 解决而非粗糙度滤波）"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/geometric-specular-aa.test.ts",
+    "node scripts/benchmark-geometric-specular-aa.mjs"
+  ]
+}

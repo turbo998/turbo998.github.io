@@ -1,0 +1,268 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Cross-bilateral normal-stopping crease filter vs depth-only bilateral 90-degree corner bleed rig",
+  "topic_zh": "交叉双边法线截断门控（Normal-Stopping Filter）对比仅深度双边滤波 90° 墙角黑边晕染",
+  "slug": "normal-bilateral-crease-rig",
+  "timestamp": "2026-11-13T20:44:10.644Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Sloan/Kopf/SVGF cross-bilateral normal-stopping spatial filtering (w_N(p, q) = max(0, N_p . N_q)^32) versus naive depth-only bilateral filtering (Delta_z = 0 -> w_z = 1) and 64-tap spherical normal-angle kernel integration across 17 pixel stations (d in [-8px, +8px]) spanning a 90-degree continuous-depth wall-floor crease. No neural GI denoiser execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "normal-stopping-64tap-equivalence-128",
+      "passed": true,
+      "detail": "128 closed-form normal-dot gate and 64-tap spherical normal kernel passes agree within 1e-13"
+    },
+    {
+      "name": "normal-stopping-64tap-equivalence-1024",
+      "passed": true,
+      "detail": "1024 closed-form normal-dot gate and 64-tap spherical normal kernel passes agree within 1e-13"
+    },
+    {
+      "name": "normal-stopping-64tap-equivalence-8192",
+      "passed": true,
+      "detail": "8192 closed-form normal-dot gate and 64-tap spherical normal kernel passes agree within 1e-13"
+    },
+    {
+      "name": "normal-stopping-sharp-crease-conserved",
+      "passed": true,
+      "detail": "17 crease stations preserve razor-sharp 90° wall-floor discontinuity (station-8 d=0px E=0.9600)"
+    },
+    {
+      "name": "depth-only-bilateral-corner-smudge-exposed",
+      "passed": true,
+      "detail": "naive depth-only bilateral blur smears station-8 (d=0px) down to E=0.6100 (−0.3500 smudge across 8/17 stations)"
+    },
+    {
+      "name": "normal-stopped-wall-crease-locked",
+      "passed": true,
+      "detail": "Cross-Bilateral Normal Gate locks sunlit wall crease station-8 (d=0px) at E=0.9600 (0/17 smudged stations)"
+    },
+    {
+      "name": "depth-only-corner-bleed-exposed",
+      "passed": true,
+      "detail": "depth-only bilateral blur drags station-8 down to E=0.6100 (−0.3500 smudge across 8/17 corner stations)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse station scrubbing reproduces the exact crease microdensitometer carriage world matrix"
+    },
+    {
+      "name": "atomic-radius-rejection",
+      "passed": true,
+      "detail": "out-of-range filterRadiusPx=999.0 is rejected while valid Normal Bilateral state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered microdensitometer carriage y-elevation matches solved filtered irradiance height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Normal Bilateral controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual station scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station crease filter passes",
+      "count": 128,
+      "primary_ms": 0.0061000000000603904,
+      "baseline_ms": 0.9144000000000005,
+      "primary_samples_ms": [
+        0.02619999999990341,
+        0.008100000000013097,
+        0.005899999999996908,
+        0.0061000000000603904,
+        0.009699999999952524,
+        0.0049999999999954525,
+        0.0049999999999954525
+      ],
+      "baseline_samples_ms": [
+        1.578300000000013,
+        1.0756000000000085,
+        0.9144000000000005,
+        0.9103999999999814,
+        0.9402999999999793,
+        0.911200000000008,
+        0.9132999999999356
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station crease filter passes",
+      "count": 1024,
+      "primary_ms": 0.044000000000096406,
+      "baseline_ms": 7.445400000000063,
+      "primary_samples_ms": [
+        0.045999999999935426,
+        0.0442000000000462,
+        0.043700000000058026,
+        0.04390000000000782,
+        0.044000000000096406,
+        0.04429999999990741,
+        0.04379999999991924
+      ],
+      "baseline_samples_ms": [
+        7.445400000000063,
+        7.302400000000034,
+        8.358699999999999,
+        7.308099999999968,
+        8.268100000000004,
+        7.302299999999946,
+        9.609299999999962
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station crease filter passes",
+      "count": 8192,
+      "primary_ms": 0.33550000000002456,
+      "baseline_ms": 56.54160000000002,
+      "primary_samples_ms": [
+        0.4057999999999993,
+        0.39790000000004966,
+        0.35400000000004184,
+        0.33550000000002456,
+        0.3225999999999658,
+        0.33029999999985193,
+        0.32169999999996435
+      ],
+      "baseline_samples_ms": [
+        68.23829999999998,
+        62.41769999999997,
+        56.54160000000002,
+        55.173,
+        56.9206999999999,
+        54.63540000000012,
+        56.15820000000008
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/normal-bilateral-crease-rig/light-cross-bilateral-normal-stopping.png",
+    "docs/evidence/normal-bilateral-crease-rig/light-naive-depth-only-corner-blur.png",
+    "docs/evidence/normal-bilateral-crease-rig/dark-cross-bilateral-normal-stopping.png",
+    "docs/evidence/normal-bilateral-crease-rig/dark-naive-depth-only-corner-blur.png",
+    "docs/evidence/normal-bilateral-crease-rig/mobile.png"
+  ],
+  "primary_label": "Cross-Bilateral Normal Dot Gate (N_p·N_q)^32",
+  "baseline_label": "64-Tap Spherical Normal-Angle Kernel",
+  "load_unit": "17-station crease filter passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form normal-dot gate versus 64-tap spherical normal-angle kernel integration.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "filter_radius_px": 4,
+    "floor_irradiance": 0.16,
+    "wall_irradiance": 0.96,
+    "normal_stopped_d0_irradiance": 0.96,
+    "naive_depth_only_d0_irradiance": 0.61,
+    "max_smudge_error": 0.35,
+    "corrupted_stations": 8,
+    "maximum_solver_error": 7.7716e-16
+  },
+  "protocol": {
+    "input": {
+      "station_index": 8,
+      "crease_d_px": 0,
+      "radius_px": 4,
+      "e_floor": 0.16,
+      "e_wall": 0.96
+    },
+    "output": {
+      "normal_dot": 0,
+      "normal_stopped_e": 0.96,
+      "depth_only_e": 0.61,
+      "smudge_error": 0.35,
+      "corrupted_stations": 8
+    },
+    "function": "w_N(p, q) = max(0, N_p · N_q)^32 → 90° Crease Station-8 (d=0px) Locks E_wall = 0.9600 (0.0000 Corner Smudge)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 crease pixel stations preserve crisp 90-degree wall-floor irradiance separation",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Spatial denoising and upsampling of SSGI, GTAO, Ray-Traced Diffuse GI, and SVGF/NRD passes in UE5, Unity, and Three.js",
+    "Preventing dark floor or shadow-side irradiance from bleeding across 90° corners where depth Δz = 0m is continuous",
+    "Combining normal dot-product gating max(0, N_p·N_q)^32 with plane-distance depth weights |N_p·(P_q − P_p)|",
+    "Maintaining crisp architectural wall-ceiling-floor creases and hard-surface mechanical bevels"
+  ],
+  "not_for": [
+    "High-frequency normal-mapped bumpy walls where N_p should be the geometric vertex normal rather than the perturbed normal-map normal",
+    "Pure skybox or volumetric fog layers that have no surface normal vector N",
+    "Neural autoencoder post-process denoisers (OIDN / OptiX AI Denoiser)",
+    "Unfiltered full-resolution analytic direct lighting"
+  ],
+  "locale_zh": {
+    "normal-stopping-64tap-equivalence-128": "闭式法线门控与64抽头球面核等价 128",
+    "128 closed-form normal-dot gate and 64-tap spherical normal kernel passes agree within 1e-13": "128 次闭式法线点积门控与 64 抽头球面法线核在 1e-13 内一致",
+    "normal-stopping-64tap-equivalence-1024": "闭式法线门控与64抽头球面核等价 1024",
+    "1024 closed-form normal-dot gate and 64-tap spherical normal kernel passes agree within 1e-13": "1024 次闭式法线点积门控与 64 抽头球面法线核在 1e-13 内一致",
+    "normal-stopping-64tap-equivalence-8192": "闭式法线门控与64抽头球面核等价 8192",
+    "8192 closed-form normal-dot gate and 64-tap spherical normal kernel passes agree within 1e-13": "8192 次闭式法线点积门控与 64 抽头球面法线核在 1e-13 内一致",
+    "normal-stopping-sharp-crease-conserved": "法线门控90度墙角锐度守恒",
+    "17 crease stations preserve razor-sharp 90° wall-floor discontinuity (station-8 d=0px E=0.9600)": "17 个墙角站点完整保留 90° 墙地明暗交界（第 8 站 d=0px E=0.9600）",
+    "depth-only-bilateral-corner-smudge-exposed": "仅深度双边滤波墙角黑边晕染暴露",
+    "naive depth-only bilateral blur smears station-8 (d=0px) down to E=0.6100 (−0.3500 smudge across 8/17 stations)": "朴素仅深度双边滤波将第 8 站（d=0px）拉暗至 E=0.6100（晕染 −0.3500，污染 8/17 站）",
+    "normal-stopped-wall-crease-locked": "交叉双边法线受光墙角锁定",
+    "Cross-Bilateral Normal Gate locks sunlit wall crease station-8 (d=0px) at E=0.9600 (0/17 smudged stations)": "交叉双边法线门控将第 8 站受光墙角（d=0px）锁定在 E=0.9600（0/17 晕染站）",
+    "depth-only-corner-bleed-exposed": "仅深度滤波墙角拉暗暴露",
+    "depth-only bilateral blur drags station-8 down to E=0.6100 (−0.3500 smudge across 8/17 corner stations)": "仅深度双边滤波将第 8 站拉暗至 E=0.6100（误差 −0.3500，波及 8/17 个墙角站点）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse station scrubbing reproduces the exact crease microdensitometer carriage world matrix": "逆序站点拖曳精确复现墙角显微密度计滑车世界矩阵",
+    "atomic-radius-rejection": "原子滤波半径拒绝",
+    "out-of-range filterRadiusPx=999.0 is rejected while valid Normal Bilateral state remains": "越界滤波半径 999.0px 被拒绝，有效法线双边状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered microdensitometer carriage y-elevation matches solved filtered irradiance height": "渲染显微密度计滑车垂直高度与求解器滤波照度高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px Normal Bilateral controls fit without horizontal overflow": "390px 交叉双边法线控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual station scrubbing remains available": "减少动态默认静止，保留手动站点核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Cross-Bilateral Normal Dot Gate (N_p·N_q)^32": "交叉双边法线点积门控 (N_p·N_q)^32",
+    "64-Tap Spherical Normal-Angle Kernel": "64 抽头球面法线夹角核积分基线",
+    "Median of 7 alternating Node CPU runs after warmup. Closed-form normal-dot gate versus 64-tap spherical normal-angle kernel integration.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；闭式法线点积门控对比 64 抽头球面法线夹角核积分基线。",
+    "Sampled 17 crease pixel stations preserve crisp 90-degree wall-floor irradiance separation": "采样 17 个墙角折痕像素站点全部保持锋利的 90° 墙地照度跳变，零跨棱黑边晕染",
+    "w_N(p, q) = max(0, N_p · N_q)^32 → 90° Crease Station-8 (d=0px) Locks E_wall = 0.9600 (0.0000 Corner Smudge)": "交叉双边法线门控 max(0, N_p·N_q)^32 → 90° 墙角第 8 站锁定 E_wall = 0.9600（0.0000 晕染）",
+    "Spatial denoising and upsampling of SSGI, GTAO, Ray-Traced Diffuse GI, and SVGF/NRD passes in UE5, Unity, and Three.js": "UE5、Unity 与 Three.js 中 SSGI、GTAO、光追漫反射全局光照与 SVGF 去噪器的空间滤波与上采样",
+    "Preventing dark floor or shadow-side irradiance from bleeding across 90° corners where depth Δz = 0m is continuous": "在深度完全连续（Δz=0m）的 90° 直角墙根与立方体棱边处，彻底阻断暗部地面阴影向受光墙面晕染",
+    "Combining normal dot-product gating max(0, N_p·N_q)^32 with plane-distance depth weights |N_p·(P_q − P_p)|": "将法线点积门控与切平面距离权重 |N_p·(P_q−P_p)| 联合使用，兼顾轮廓断崖与内部折痕",
+    "Maintaining crisp architectural wall-ceiling-floor creases and hard-surface mechanical bevels": "保持室内建筑墙角、天花板交线与硬表面机械棱角的刀锋锐度",
+    "High-frequency normal-mapped bumpy walls where N_p should be the geometric vertex normal rather than the perturbed normal-map normal": "在去噪滤波器中使用高频凹凸法线贴图（去噪权重应使用宏观几何法线或滤波后粗糙法线）",
+    "Pure skybox or volumetric fog layers that have no surface normal vector N": "不存在表面法线向量 N 的纯天空盒或高空体积雾层",
+    "Neural autoencoder post-process denoisers (OIDN / OptiX AI Denoiser)": "离线神经自编码器图像去噪网络（OIDN / OptiX）",
+    "Unfiltered full-resolution analytic direct lighting": "无需空间模糊去噪的全分辨率解析直接光照"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/normal-bilateral-crease.test.ts",
+    "node scripts/benchmark-normal-bilateral-crease.mjs"
+  ]
+}

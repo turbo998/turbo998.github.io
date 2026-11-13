@@ -1,0 +1,266 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Jimenez Depth-of-Field sample-CoC intersection gate vs center-CoC foreground halo bleed rig",
+  "topic_zh": "Jiménez 景深采样点弥散圆相交门控对比中心弥散圆聚集对焦前景光晕渗漏",
+  "slug": "dof-coc-intersection-rig",
+  "timestamp": "2026-11-13T18:41:17.651Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Jorge Jimenez (SIGGRAPH 2014) / Unreal Engine 5 Diaphragm Depth-of-Field sample-CoC intersection gating (w(y->x) = H(CoC(y) - |x-y|)) versus naive center-CoC gathering and 64-tap bokeh gather quadrature across 17 silhouette boundary pixels (d in [-4, +12] px). No neural bokeh rendering execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "jimenez-coc-64tap-equivalence-128",
+      "passed": true,
+      "detail": "128 closed-form CoC intersection and 64-tap bokeh gather passes agree within 1e-13"
+    },
+    {
+      "name": "jimenez-coc-64tap-equivalence-1024",
+      "passed": true,
+      "detail": "1024 closed-form CoC intersection and 64-tap bokeh gather passes agree within 1e-13"
+    },
+    {
+      "name": "jimenez-coc-64tap-equivalence-8192",
+      "passed": true,
+      "detail": "8192 closed-form CoC intersection and 64-tap bokeh gather passes agree within 1e-13"
+    },
+    {
+      "name": "jimenez-sharp-silhouette-conserved",
+      "passed": true,
+      "detail": "17 silhouette stations prevent CoC=0 foreground from bleeding onto blurry background (station-5 d=+1px L_DoF=1.0000)"
+    },
+    {
+      "name": "center-coc-foreground-bleed-exposed",
+      "passed": true,
+      "detail": "naive center-CoC gather bleeds station-5 (d=+1px) down to L_DoF=0.5800 (-0.4200 dark halo across 7/17 stations)"
+    },
+    {
+      "name": "jimenez-bokeh-edge-locked",
+      "passed": true,
+      "detail": "Jimenez Sample-CoC Gate locks background station-5 (d=+1px) at L_DoF=1.0000 (0/17 bleed stations)"
+    },
+    {
+      "name": "naive-42pct-dark-halo-exposed",
+      "passed": true,
+      "detail": "center-CoC gather bleeds station-5 to L_DoF=0.5800 (-0.4200 dark halo across 7/17 stations)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse station scrubbing reproduces the exact diaphragm optical carriage world matrix"
+    },
+    {
+      "name": "atomic-coc-rejection",
+      "passed": true,
+      "detail": "out-of-range backgroundCoCPx=999.0 is rejected while valid DoF CoC state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered diaphragm carriage y-elevation matches solved DoF radiance height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px DoF CoC controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual station scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station DoF passes",
+      "count": 128,
+      "primary_ms": 0.020500000000083674,
+      "baseline_ms": 0.2642000000000735,
+      "primary_samples_ms": [
+        0.03340000000002874,
+        0.017200000000002547,
+        0.014699999999947977,
+        0.020899999999983265,
+        0.020500000000083674,
+        0.03770000000008622,
+        0.015099999999961256
+      ],
+      "baseline_samples_ms": [
+        0.278699999999958,
+        0.26289999999994507,
+        0.2644999999999982,
+        0.280399999999986,
+        0.2642000000000735,
+        0.25919999999996435,
+        0.2401999999999589
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station DoF passes",
+      "count": 1024,
+      "primary_ms": 0.11970000000007985,
+      "baseline_ms": 1.3128000000000384,
+      "primary_samples_ms": [
+        0.12829999999996744,
+        0.11159999999995307,
+        0.11260000000004311,
+        0.11970000000007985,
+        0.39030000000002474,
+        0.13969999999994798,
+        0.10919999999998709
+      ],
+      "baseline_samples_ms": [
+        1.3196000000000367,
+        1.3128000000000384,
+        1.3425999999999476,
+        1.3215999999999894,
+        1.299099999999953,
+        1.308499999999981,
+        1.3060999999999012
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station DoF passes",
+      "count": 8192,
+      "primary_ms": 1.028699999999958,
+      "baseline_ms": 11.209699999999998,
+      "primary_samples_ms": [
+        1.1942000000000235,
+        1.028699999999958,
+        1.6646999999999252,
+        0.860300000000052,
+        1.1204999999999927,
+        0.7391999999999825,
+        0.7768999999999551
+      ],
+      "baseline_samples_ms": [
+        11.209699999999998,
+        10.8519,
+        11.116999999999962,
+        12.278700000000072,
+        13.63519999999994,
+        12.754500000000007,
+        10.568199999999933
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/dof-coc-intersection-rig/light-jimenez-sample-coc-intersection.png",
+    "docs/evidence/dof-coc-intersection-rig/light-naive-center-coc-gather.png",
+    "docs/evidence/dof-coc-intersection-rig/dark-jimenez-sample-coc-intersection.png",
+    "docs/evidence/dof-coc-intersection-rig/dark-naive-center-coc-gather.png",
+    "docs/evidence/dof-coc-intersection-rig/mobile.png"
+  ],
+  "primary_label": "Closed-Form Sample-CoC Gate",
+  "baseline_label": "64-Tap Bokeh Gather Loop",
+  "load_unit": "17-station DoF passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form Jimenez sample-CoC intersection overlap versus 64-tap bokeh gather loop.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "background_coc_px": 8,
+    "foreground_coc_px": 0,
+    "jimenez_radiance_station_5": 1,
+    "naive_radiance_station_5": 0.58,
+    "max_foreground_bleed_error": 0.42,
+    "corrupted_stations": 7,
+    "maximum_solver_error": 0
+  },
+  "protocol": {
+    "input": {
+      "station_index": 5,
+      "edge_dist_px": 1,
+      "coc_fg_px": 0,
+      "coc_bg_px": 8,
+      "mode": "jimenez-sample-coc-intersection"
+    },
+    "output": {
+      "jimenez_radiance": 1,
+      "naive_center_coc_radiance": 0.58,
+      "foreground_bleed_error": 0.42,
+      "corrupted_stations": 7
+    },
+    "function": "w(y → x) = H(CoC(y) − ∥x − y∥) → In-Focus CoC_fg = 0 Never Bleeds onto Background (L = 1.0000)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 silhouette boundary stations keep sharp in-focus foregrounds from bleeding onto out-of-focus backgrounds",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Post-process Depth-of-Field bokeh gathering in UE5 Diaphragm DoF, Call of Duty, Frostbite, and Unity HDRP",
+    "Explaining why gathering by CoC_center(x) alone causes sharp in-focus foreground characters (CoC = 0) to bleed 8-px halos onto blurry backgrounds",
+    "Weighting each gather tap y by smoothstep(0, 1, CoC(y) - ||x - y||) so only truly defocused samples spread across neighbors",
+    "Separating far-field background defocus (sample-CoC gated) from near-field foreground defocus (TileMax dilated)"
+  ],
+  "not_for": [
+    "Infinite depth-of-field pinhole cameras (f/64) where CoC = 0 everywhere",
+    "2D Gaussian blur filters on flat UI panels without a 3D depth buffer",
+    "Neural single-image portrait mode depth-of-field synthesis",
+    "Chromatic aberration or lens flare passes (which operate in screen-space radial coordinates rather than depth CoC)"
+  ],
+  "locale_zh": {
+    "jimenez-coc-64tap-equivalence-128": "Jimenez相交与64点散景聚集等价 128",
+    "128 closed-form CoC intersection and 64-tap bokeh gather passes agree within 1e-13": "128 次闭式 CoC 相交与 64 点散景聚集在 1e-13 内一致",
+    "jimenez-coc-64tap-equivalence-1024": "Jimenez相交与64点散景聚集等价 1024",
+    "1024 closed-form CoC intersection and 64-tap bokeh gather passes agree within 1e-13": "1024 次闭式 CoC 相交与 64 点散景聚集在 1e-13 内一致",
+    "jimenez-coc-64tap-equivalence-8192": "Jimenez相交与64点散景聚集等价 8192",
+    "8192 closed-form CoC intersection and 64-tap bokeh gather passes agree within 1e-13": "8192 次闭式 CoC 相交与 64 点散景聚集在 1e-13 内一致",
+    "jimenez-sharp-silhouette-conserved": "Jimenez对焦前景零渗漏守恒",
+    "17 silhouette stations prevent CoC=0 foreground from bleeding onto blurry background (station-5 d=+1px L_DoF=1.0000)": "17 个轮廓站点严格阻止 CoC=0 对焦前景渗漏至背景（第 5 站 d=+1px L_DoF=1.0000）",
+    "center-coc-foreground-bleed-exposed": "中心CoC前景光晕渗漏暴露",
+    "naive center-CoC gather bleeds station-5 (d=+1px) down to L_DoF=0.5800 (-0.4200 dark halo across 7/17 stations)": "朴素中心 CoC 聚集将第 5 站（d=+1px）拉暗至 L_DoF=0.5800（−0.4200 暗环，污染 7/17 站）",
+    "jimenez-bokeh-edge-locked": "Jimenez散景边缘锁定",
+    "Jimenez Sample-CoC Gate locks background station-5 (d=+1px) at L_DoF=1.0000 (0/17 bleed stations)": "Jiménez 采样点 CoC 门控将第 5 站（d=+1px）锁定在 L_DoF=1.0000（0/17 渗漏站）",
+    "naive-42pct-dark-halo-exposed": "中心CoC 42%暗环渗漏暴露",
+    "center-CoC gather bleeds station-5 to L_DoF=0.5800 (-0.4200 dark halo across 7/17 stations)": "中心 CoC 聚集将第 5 站渗漏至 L_DoF=0.5800（−0.4200 暗环，波及 7/17 站）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse station scrubbing reproduces the exact diaphragm optical carriage world matrix": "逆序站点拖曳精确复现光圈光学台滑车世界矩阵",
+    "atomic-coc-rejection": "原子弥散圆拒绝",
+    "out-of-range backgroundCoCPx=999.0 is rejected while valid DoF CoC state remains": "越界背景弥散圆 999.0px 被拒绝，有效景深状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered diaphragm carriage y-elevation matches solved DoF radiance height": "渲染光圈滑车垂直高度与求解器景深亮度高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px DoF CoC controls fit without horizontal overflow": "390px 景深弥散圆控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual station scrubbing remains available": "减少动态默认静止，保留手动站点核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Closed-Form Sample-CoC Gate": "闭式采样点弥散圆相交门控",
+    "64-Tap Bokeh Gather Loop": "64 点散景聚集逐点门控基线",
+    "Median of 7 alternating Node CPU runs after warmup. Closed-form Jimenez sample-CoC intersection overlap versus 64-tap bokeh gather loop.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；闭式 Jiménez 采样点弥散圆相交门控对比 64 点散景聚集逐点循环基线。",
+    "Sampled 17 silhouette boundary stations keep sharp in-focus foregrounds from bleeding onto out-of-focus backgrounds": "采样 17 个轮廓边界站点全部阻止清晰对焦前景渗漏至失焦背景散景",
+    "w(y → x) = H(CoC(y) − ∥x − y∥) → In-Focus CoC_fg = 0 Never Bleeds onto Background (L = 1.0000)": "采样点弥散圆相交门控 CoC(y) ≥ ∥x−y∥ → 对焦前景 CoC=0 绝不向背景渗漏（L = 1.0000）",
+    "Post-process Depth-of-Field bokeh gathering in UE5 Diaphragm DoF, Call of Duty, Frostbite, and Unity HDRP": "UE5 Diaphragm DoF、Call of Duty、Frostbite 与 Unity HDRP 中的后处理景深散景聚集",
+    "Explaining why gathering by CoC_center(x) alone causes sharp in-focus foreground characters (CoC = 0) to bleed 8-px halos onto blurry backgrounds": "直观解释为何仅按中心像素 CoC_center(x) 聚集会导致清晰对焦的前景角色（CoC=0）向失焦背景渗出 8 像素宽的暗黑光晕",
+    "Weighting each gather tap y by smoothstep(0, 1, CoC(y) - ||x - y||) so only truly defocused samples spread across neighbors": "用 smoothstep(0, 1, CoC(y) − ∥x−y∥) 门控每个采样点 y，确保只有真正失焦的像素才能向邻居扩散",
+    "Separating far-field background defocus (sample-CoC gated) from near-field foreground defocus (TileMax dilated)": "将远焦背景散景（由采样点自身 CoC 门控防前景渗漏）与近焦前景虚化（由 TileMax 扩张半透明覆盖）分层处理",
+    "Infinite depth-of-field pinhole cameras (f/64) where CoC = 0 everywhere": "全画面弥散圆恒为 0 的无限景深针孔相机（f/64）",
+    "2D Gaussian blur filters on flat UI panels without a 3D depth buffer": "不含 3D 深度缓冲的 2D UI 面板高斯模糊",
+    "Neural single-image portrait mode depth-of-field synthesis": "神经单目人像模式虚化合成网络",
+    "Chromatic aberration or lens flare passes (which operate in screen-space radial coordinates rather than depth CoC)": "基于屏幕径向坐标而非深度弥散圆的色差或眩光通道"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/dof-coc-intersection.test.ts",
+    "node scripts/benchmark-dof-coc-intersection.mjs"
+  ]
+}

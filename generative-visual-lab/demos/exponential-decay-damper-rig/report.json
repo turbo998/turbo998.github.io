@@ -1,0 +1,267 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Driscoll-Holmer frame-rate independent exponential decay damper vs linear-dt lerp overshoot rig",
+  "topic_zh": "Driscoll-Holmér 帧率无关精确指数衰减阻尼对比朴素 λ·Δt 线性插值速度漂移与卡顿过冲",
+  "slug": "exponential-decay-damper-rig",
+  "timestamp": "2026-11-13T19:04:26.163Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Rory Driscoll (2016) & Freya Holmer (2024) frame-rate independent exponential decay damping (alpha = 1 - exp(-lambda * dt)) versus naive frame-dependent linear-dt lerp (alpha = lambda * dt) and 64-substep RK4 ODE integration across 17 frame-rate subdivision stations (N in [1, 17] over T = 0.25s). No neural camera stabilization execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "exponential-decay-rk4-equivalence-128",
+      "passed": true,
+      "detail": "128 exact exponential decay and 64-step RK4 ODE passes agree within 1e-8"
+    },
+    {
+      "name": "exponential-decay-rk4-equivalence-1024",
+      "passed": true,
+      "detail": "1024 exact exponential decay and 64-step RK4 ODE passes agree within 1e-8"
+    },
+    {
+      "name": "exponential-decay-rk4-equivalence-8192",
+      "passed": true,
+      "detail": "8192 exact exponential decay and 64-step RK4 ODE passes agree within 1e-8"
+    },
+    {
+      "name": "driscoll-frame-rate-invariance-conserved",
+      "passed": true,
+      "detail": "17 frame-rate subdivisions converge to identical x(0.25s)=8.6466m (0/17 drift stations)"
+    },
+    {
+      "name": "naive-linear-dt-overshoot-and-drift-exposed",
+      "passed": true,
+      "detail": "naive linear-dt lerp overshoots station-0 (N=1 hitch) to x=20.0000m (+11.3534m drift across 17/17 stations)"
+    },
+    {
+      "name": "driscoll-hitch-invariance-locked",
+      "passed": true,
+      "detail": "Driscoll Exponential Decay locks station-0 (N=1 hitch) at x=8.6466m (0/17 drifted stations)"
+    },
+    {
+      "name": "naive-20m-overshoot-exposed",
+      "passed": true,
+      "detail": "naive linear-dt lerp explodes station-0 to x=20.0000m (+11.3534m overshoot across 17/17 stations)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse station scrubbing reproduces the exact damper chronometer carriage world matrix"
+    },
+    {
+      "name": "atomic-target-rejection",
+      "passed": true,
+      "detail": "out-of-range targetPositionM=999.0 is rejected while valid Exponential Damper state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered chronometer carriage y-elevation matches solved camera arrival height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Exponential Damper controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual station scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station damper passes",
+      "count": 128,
+      "primary_ms": 0.05110000000001946,
+      "baseline_ms": 5.205100000000016,
+      "primary_samples_ms": [
+        0.07680000000004839,
+        0.055499999999938154,
+        0.04900000000009186,
+        0.05060000000003129,
+        0.05269999999995889,
+        0.05110000000001946,
+        0.04679999999996198
+      ],
+      "baseline_samples_ms": [
+        5.27010000000007,
+        5.202300000000037,
+        5.24470000000008,
+        5.173400000000015,
+        5.261300000000006,
+        5.205100000000016,
+        5.1930999999999585
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station damper passes",
+      "count": 1024,
+      "primary_ms": 0.393799999999942,
+      "baseline_ms": 43.10019999999997,
+      "primary_samples_ms": [
+        0.40049999999996544,
+        0.393799999999942,
+        0.3935000000000173,
+        0.39790000000004966,
+        0.384900000000016,
+        0.397199999999998,
+        0.39200000000005275
+      ],
+      "baseline_samples_ms": [
+        42.72360000000003,
+        47.90000000000009,
+        43.10019999999997,
+        41.89710000000002,
+        43.666000000000054,
+        46.80709999999999,
+        43.012899999999945
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station damper passes",
+      "count": 8192,
+      "primary_ms": 3.140100000000075,
+      "baseline_ms": 358.1107000000002,
+      "primary_samples_ms": [
+        3.1716999999998734,
+        4.395200000000159,
+        3.1014999999999873,
+        3.140100000000075,
+        3.124699999999848,
+        3.2712000000001353,
+        3.079899999999725
+      ],
+      "baseline_samples_ms": [
+        352.6736999999998,
+        358.6394,
+        359.5316,
+        358.1107000000002,
+        398.4590000000003,
+        337.10059999999976,
+        329.4861000000001
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/exponential-decay-damper-rig/light-driscoll-exponential-decay.png",
+    "docs/evidence/exponential-decay-damper-rig/light-naive-linear-dt-lerp.png",
+    "docs/evidence/exponential-decay-damper-rig/dark-driscoll-exponential-decay.png",
+    "docs/evidence/exponential-decay-damper-rig/dark-naive-linear-dt-lerp.png",
+    "docs/evidence/exponential-decay-damper-rig/mobile.png"
+  ],
+  "primary_label": "Driscoll Exact Exponential Decay 1−exp(−λΔt)",
+  "baseline_label": "64-Step RK4 ODE Integrator",
+  "load_unit": "17-station damper passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form exponential decay stepper versus 64-step 4th-order Runge-Kutta (RK4) ODE integration.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "target_position_m": 10,
+    "decay_rate_lambda": 8,
+    "exact_arrival_m": 8.6466,
+    "naive_hitch_overshoot_m": 20,
+    "max_drift_error_m": 11.3534,
+    "corrupted_stations": 17,
+    "maximum_solver_error": 1.3621e-9
+  },
+  "protocol": {
+    "input": {
+      "station_index": 0,
+      "substeps_n": 1,
+      "dt_sec": 0.25,
+      "lambda": 8,
+      "mode": "driscoll-exponential-decay"
+    },
+    "output": {
+      "exact_arrival_m": 8.6466,
+      "naive_hitch_m": 20,
+      "hitch_overshoot_m": 11.3534,
+      "n4_naive_m": 9.375,
+      "corrupted_stations": 17
+    },
+    "function": "α = 1 − exp(−λ·Δt) → Invariant x(0.25s) = 8.6466 m Across All 17 Frame Rates (0.0000 m Drift)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 frame-rate subdivision stations converge to identical 8.6466m position without hitch overshoot",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Smooth camera follow, UI value interpolation, audio/exposure adaptation, and turret tracking across variable 30Hz–240Hz displays",
+    "Preventing single-frame shader-compile or GC hitches (λ·Δt > 1) from flinging the camera past the target (+11.35m overshoot)",
+    "Exact semigroup invariance: splitting any interval Δt into N arbitrary substeps produces the exact same final state",
+    "Replacing fixed-step RK4 sub-stepping loops for first-order linear relaxation systems"
+  ],
+  "not_for": [
+    "Second-order spring-mass systems requiring intentional momentum overshoot and oscillation (use analytical underdamped springs)",
+    "Constant-speed linear motion (moveTowards(x, target, speed * dt)) where velocity is constant rather than proportional to distance",
+    "Neural video frame interpolation or optical-flow gimbal stabilization",
+    "Static snapped transforms with λ → ∞"
+  ],
+  "locale_zh": {
+    "exponential-decay-rk4-equivalence-128": "精确指数衰减与RK4微分方程等价 128",
+    "128 exact exponential decay and 64-step RK4 ODE passes agree within 1e-8": "128 次精确指数衰减阻尼与 64 步 RK4 微分方程积分在 1e-8 内一致",
+    "exponential-decay-rk4-equivalence-1024": "精确指数衰减与RK4微分方程等价 1024",
+    "1024 exact exponential decay and 64-step RK4 ODE passes agree within 1e-8": "1024 次精确指数衰减阻尼与 64 步 RK4 微分方程积分在 1e-8 内一致",
+    "exponential-decay-rk4-equivalence-8192": "精确指数衰减与RK4微分方程等价 8192",
+    "8192 exact exponential decay and 64-step RK4 ODE passes agree within 1e-8": "8192 次精确指数衰减阻尼与 64 步 RK4 微分方程积分在 1e-8 内一致",
+    "driscoll-frame-rate-invariance-conserved": "Driscoll帧率无关性守恒",
+    "17 frame-rate subdivisions converge to identical x(0.25s)=8.6466m (0/17 drift stations)": "17 种帧率细分全部收敛至恒定 x(0.25s)=8.6466m（0/17 漂移站）",
+    "naive-linear-dt-overshoot-and-drift-exposed": "朴素λ·Δt卡顿过冲与帧率漂移暴露",
+    "naive linear-dt lerp overshoots station-0 (N=1 hitch) to x=20.0000m (+11.3534m drift across 17/17 stations)": "朴素 λ·Δt 在第 0 站单步卡顿下过冲至 x=20.0000m（误差 +11.3534m，波及 17/17 站）",
+    "driscoll-hitch-invariance-locked": "Driscoll单帧卡顿不变性锁定",
+    "Driscoll Exponential Decay locks station-0 (N=1 hitch) at x=8.6466m (0/17 drifted stations)": "Driscoll 精确指数衰减将第 0 站（N=1 卡顿）锁定在 x=8.6466m（0/17 漂移站）",
+    "naive-20m-overshoot-exposed": "朴素20米过冲爆炸暴露",
+    "naive linear-dt lerp explodes station-0 to x=20.0000m (+11.3534m overshoot across 17/17 stations)": "朴素 λ·Δt 将第 0 站过冲引爆至 x=20.0000m（偏离 +11.3534m，污染 17/17 站）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse station scrubbing reproduces the exact damper chronometer carriage world matrix": "逆序站点拖曳精确复现阻尼计时滑车世界矩阵",
+    "atomic-target-rejection": "原子目标位置拒绝",
+    "out-of-range targetPositionM=999.0 is rejected while valid Exponential Damper state remains": "越界目标位置 999.0m 被拒绝，有效指数阻尼状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered chronometer carriage y-elevation matches solved camera arrival height": "渲染计时滑车垂直高度与求解器相机到达位置高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px Exponential Damper controls fit without horizontal overflow": "390px 精确指数阻尼控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual station scrubbing remains available": "减少动态默认静止，保留手动站点核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Driscoll Exact Exponential Decay 1−exp(−λΔt)": "Driscoll 精确指数衰减核 1−exp(−λΔt)",
+    "64-Step RK4 ODE Integrator": "64 步四阶龙格-库塔（RK4）微分方程积分基线",
+    "Median of 7 alternating Node CPU runs after warmup. Closed-form exponential decay stepper versus 64-step 4th-order Runge-Kutta (RK4) ODE integration.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；闭式精确指数衰减步进对比 64 步四阶龙格-库塔（RK4）常微分方程数值积分基线。",
+    "Sampled 17 frame-rate subdivision stations converge to identical 8.6466m position without hitch overshoot": "采样 17 个帧率细分站点全部收敛至恒定 8.6466m 位置，无卡顿过冲与帧率漂移",
+    "α = 1 − exp(−λ·Δt) → Invariant x(0.25s) = 8.6466 m Across All 17 Frame Rates (0.0000 m Drift)": "精确指数衰减权重 1−exp(−λ·Δt) → 全 17 种帧率恒定锁定 x(0.25s) = 8.6466m（0.0000m 漂移）",
+    "Smooth camera follow, UI value interpolation, audio/exposure adaptation, and turret tracking across variable 30Hz–240Hz displays": "跨越 30Hz~240Hz 可变刷新率显示器的平滑相机跟随、UI 数值阻尼、曝光自适应与炮塔转向",
+    "Preventing single-frame shader-compile or GC hitches (λ·Δt > 1) from flinging the camera past the target (+11.35m overshoot)": "防止单帧着色器编译或 GC 卡顿（λ·Δt > 1）将相机弹射飞出目标点之外（消除 +11.35m 过冲）",
+    "Exact semigroup invariance: splitting any interval Δt into N arbitrary substeps produces the exact same final state": "严格满足指数半群不变性：将任意时间步 Δt 拆分为 N 个非均匀子步，最终到达位置比特级恒等",
+    "Replacing fixed-step RK4 sub-stepping loops for first-order linear relaxation systems": "在一阶线性松弛系统中彻底取代高开销的 RK4 多子步数值积分循环",
+    "Second-order spring-mass systems requiring intentional momentum overshoot and oscillation (use analytical underdamped springs)": "需要动量惯性回弹与振荡的二阶弹簧质点系统（应使用解析欠阻尼弹簧）",
+    "Constant-speed linear motion (moveTowards(x, target, speed * dt)) where velocity is constant rather than proportional to distance": "速度恒定、与剩余距离无关的匀速直线推进（moveTowards）",
+    "Neural video frame interpolation or optical-flow gimbal stabilization": "神经视频插帧或光流云台防抖推理",
+    "Static snapped transforms with λ → ∞": "无需平滑过渡的瞬时硬吸附变换"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/exponential-decay-damper.test.ts",
+    "node scripts/benchmark-exponential-decay-damper.mjs"
+  ]
+}

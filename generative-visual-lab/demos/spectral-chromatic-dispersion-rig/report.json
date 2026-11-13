@@ -1,0 +1,267 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Continuous spectral-LUT chromatic dispersion vs naive 3-tap RGB channel split ghosting rig",
+  "topic_zh": "连续光谱查找表色散积分对比朴素 3 抽头 RGB 通道分离三重鬼影与断层",
+  "slug": "spectral-chromatic-dispersion-rig",
+  "timestamp": "2026-11-13T17:59:37.531Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Playdead INSIDE / Guertin (2014) continuous spectral-LUT chromatic dispersion integration versus naive 3-tap RGB channel splitting and 64-tap wavelength quadrature across 17 radial pixel stations (x in [-8, +8] px) for a w = 1.5 px highlight stretched across Δr = 12.0 px. No neural lens simulation execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "spectral-closedform-quadrature-equivalence-128",
+      "passed": true,
+      "detail": "128 closed-form spectral dispersion and 64-tap wavelength quadrature passes agree within 1e-13"
+    },
+    {
+      "name": "spectral-closedform-quadrature-equivalence-1024",
+      "passed": true,
+      "detail": "1024 closed-form spectral dispersion and 64-tap wavelength quadrature passes agree within 1e-13"
+    },
+    {
+      "name": "spectral-closedform-quadrature-equivalence-8192",
+      "passed": true,
+      "detail": "8192 closed-form spectral dispersion and 64-tap wavelength quadrature passes agree within 1e-13"
+    },
+    {
+      "name": "continuous-spectrum-plateau-conserved",
+      "passed": true,
+      "detail": "17 radial stations preserve gap-free rainbow plateau (station-5 x=-3px L_disp=0.1250, 0 gap dropouts)"
+    },
+    {
+      "name": "rgb-3tap-ghost-gap-exposed",
+      "passed": true,
+      "detail": "naive 3-tap RGB split drops station-5 (x=-3px) to 0.0000 across 6 gap stations (15/17 corrupted)"
+    },
+    {
+      "name": "spectral-plateau-locked",
+      "passed": true,
+      "detail": "Continuous Spectral Dispersion locks station-5 (x=-3px) at L_disp=0.1250 (0/17 gap dropouts)"
+    },
+    {
+      "name": "rgb-3tap-zero-gap-exposed",
+      "passed": true,
+      "detail": "3-tap RGB split drops station-5 to L_disp=0.0000 (6 gap dropouts, 15/17 ghost-corrupted stations)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse station scrubbing reproduces the exact spectrograph carriage world matrix"
+    },
+    {
+      "name": "atomic-span-rejection",
+      "passed": true,
+      "detail": "out-of-range dispersionSpanPx=999.0 is rejected while valid Spectral Dispersion state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered spectrograph carriage y-elevation matches solved spectral radiance height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Spectral Dispersion controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual station scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station dispersion passes",
+      "count": 128,
+      "primary_ms": 0.02299999999991087,
+      "baseline_ms": 0.21519999999998163,
+      "primary_samples_ms": [
+        0.09019999999998163,
+        0.09159999999997126,
+        0.06500000000005457,
+        0.02299999999991087,
+        0.020800000000008367,
+        0.011399999999980537,
+        0.012299999999981992
+      ],
+      "baseline_samples_ms": [
+        0.38800000000003365,
+        1.9067000000000007,
+        0.19209999999998217,
+        0.30339999999989686,
+        0.21519999999998163,
+        0.15999999999996817,
+        0.1612999999999829
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station dispersion passes",
+      "count": 1024,
+      "primary_ms": 0.09959999999989577,
+      "baseline_ms": 1.3136999999999261,
+      "primary_samples_ms": [
+        0.46649999999999636,
+        0.09959999999989577,
+        0.10479999999995471,
+        0.0989999999999327,
+        0.10329999999999018,
+        0.09759999999994307,
+        0.09930000000008476
+      ],
+      "baseline_samples_ms": [
+        1.6141999999999825,
+        1.338700000000017,
+        1.2946999999999207,
+        1.4889000000000578,
+        1.3136999999999261,
+        1.2880999999999858,
+        1.2875000000000227
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station dispersion passes",
+      "count": 8192,
+      "primary_ms": 0.7940999999999576,
+      "baseline_ms": 10.480999999999995,
+      "primary_samples_ms": [
+        0.7873999999999342,
+        0.8660999999999603,
+        0.8573000000000093,
+        0.7940999999999576,
+        0.7849999999999682,
+        0.7780999999999949,
+        0.804300000000012
+      ],
+      "baseline_samples_ms": [
+        11.274799999999914,
+        10.43240000000003,
+        10.547399999999925,
+        10.556299999999965,
+        10.480999999999995,
+        10.30110000000002,
+        10.411299999999983
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/spectral-chromatic-dispersion-rig/light-continuous-spectral-lut-integral.png",
+    "docs/evidence/spectral-chromatic-dispersion-rig/light-naive-3tap-rgb-channel-split.png",
+    "docs/evidence/spectral-chromatic-dispersion-rig/dark-continuous-spectral-lut-integral.png",
+    "docs/evidence/spectral-chromatic-dispersion-rig/dark-naive-3tap-rgb-channel-split.png",
+    "docs/evidence/spectral-chromatic-dispersion-rig/mobile.png"
+  ],
+  "primary_label": "Closed-Form Spectral Dispersion",
+  "baseline_label": "64-Tap Spectral LUT Quadrature",
+  "load_unit": "17-station dispersion passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form continuous wavelength dispersion antiderivative versus 64-tap spectral LUT quadrature.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "dispersion_span_px": 12,
+    "highlight_half_width_px": 1.5,
+    "spectral_plateau_radiance": 0.125,
+    "naive_gap_radiance": 0,
+    "gap_dropout_stations": 6,
+    "corrupted_stations": 15,
+    "maximum_solver_error": 1.3878e-17
+  },
+  "protocol": {
+    "input": {
+      "station_index": 5,
+      "radial_x_px": -3,
+      "span_px": 12,
+      "half_width_px": 1.5,
+      "mode": "continuous-spectral-lut-integral"
+    },
+    "output": {
+      "spectral_radiance": 0.125,
+      "naive_3tap_radiance": 0,
+      "ghost_peak_3tap": 0.3333,
+      "gap_dropout_stations": 6,
+      "corrupted_stations": 15
+    },
+    "function": "L_spec(x) = ∫_{-½}^{½} I₀(x − tΔr) dt = w / Δr = 0.1250 → Seamless Rainbow Band (0 Ghost Gaps)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 radial dispersion stations preserve continuous spectral energy without RGB ghosting gaps",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Cinematic radial chromatic aberration and barrel lens dispersion in Playdead INSIDE, UE5 PostProcess, and Unity HDRP",
+    "Explaining why 3-tap RGB channel splitting breaks thin specular highlights into 3 disconnected Red/Green/Blue ghosts with 6 dead-black gaps",
+    "Accumulating jittered multi-tap samples weighted by a normalized spectral LUT ∑ w_λ(t_k) = (1, 1, 1)",
+    "Replacing 64-wavelength brute-force quadrature with closed-form spectral overlap integration"
+  ],
+  "not_for": [
+    "Zero-dispersion pinhole camera renders where all wavelengths focus at identical pixel coordinates",
+    "Deliberate retro 1980s VHS / anaglyph 3D-glasses glitch effects where harsh RGB separation is an artistic goal",
+    "Neural bokeh or camera-lens style-transfer networks",
+    "Text-heavy HUD interfaces that should bypass post-process lens distortion entirely"
+  ],
+  "locale_zh": {
+    "spectral-closedform-quadrature-equivalence-128": "光谱闭式与64步波长求积等价 128",
+    "128 closed-form spectral dispersion and 64-tap wavelength quadrature passes agree within 1e-13": "128 次闭式光谱积分与 64 步波长求积在 1e-13 内一致",
+    "spectral-closedform-quadrature-equivalence-1024": "光谱闭式与64步波长求积等价 1024",
+    "1024 closed-form spectral dispersion and 64-tap wavelength quadrature passes agree within 1e-13": "1024 次闭式光谱积分与 64 步波长求积在 1e-13 内一致",
+    "spectral-closedform-quadrature-equivalence-8192": "光谱闭式与64步波长求积等价 8192",
+    "8192 closed-form spectral dispersion and 64-tap wavelength quadrature passes agree within 1e-13": "8192 次闭式光谱积分与 64 步波长求积在 1e-13 内一致",
+    "continuous-spectrum-plateau-conserved": "连续光谱彩虹平台守恒",
+    "17 radial stations preserve gap-free rainbow plateau (station-5 x=-3px L_disp=0.1250, 0 gap dropouts)": "17 个径向站点保持无缝彩虹平台（第 5 站 x=-3px L_disp=0.1250，0 断层）",
+    "rgb-3tap-ghost-gap-exposed": "3抽头RGB断层三重鬼影暴露",
+    "naive 3-tap RGB split drops station-5 (x=-3px) to 0.0000 across 6 gap stations (15/17 corrupted)": "朴素 3 抽头 RGB 分离在第 5 站（x=-3px）等 6 站跌入 0.0000 断层（污染 15/17 站）",
+    "spectral-plateau-locked": "连续光谱平台锁定",
+    "Continuous Spectral Dispersion locks station-5 (x=-3px) at L_disp=0.1250 (0/17 gap dropouts)": "连续光谱色散将第 5 站（x=-3px）锁死在 L_disp=0.1250（0/17 断层漏光）",
+    "rgb-3tap-zero-gap-exposed": "3抽头RGB零值断层暴露",
+    "3-tap RGB split drops station-5 to L_disp=0.0000 (6 gap dropouts, 15/17 ghost-corrupted stations)": "3 抽头 RGB 分离将第 5 站摔至 L_disp=0.0000（6 处死黑断层，波及 15/17 站）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse station scrubbing reproduces the exact spectrograph carriage world matrix": "逆序站点拖曳精确复现摄谱仪滑车世界矩阵",
+    "atomic-span-rejection": "原子色散跨度拒绝",
+    "out-of-range dispersionSpanPx=999.0 is rejected while valid Spectral Dispersion state remains": "越界色散跨度 999.0px 被拒绝，有效光谱色散状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered spectrograph carriage y-elevation matches solved spectral radiance height": "渲染摄谱仪滑车垂直高度与求解器光谱亮度高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px Spectral Dispersion controls fit without horizontal overflow": "390px 光谱色散控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual station scrubbing remains available": "减少动态默认静止，保留手动站点核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Closed-Form Spectral Dispersion": "闭式连续光谱色散积分",
+    "64-Tap Spectral LUT Quadrature": "64 步连续波长数值求积基线",
+    "Median of 7 alternating Node CPU runs after warmup. Closed-form continuous wavelength dispersion antiderivative versus 64-tap spectral LUT quadrature.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；闭式连续波长色散积分原函数对比 64 步连续波长数值求积基线。",
+    "Sampled 17 radial dispersion stations preserve continuous spectral energy without RGB ghosting gaps": "采样 17 个径向色散站点全部保持连续光谱能量分布，无 RGB 断层三重鬼影",
+    "L_spec(x) = ∫_{-½}^{½} I₀(x − tΔr) dt = w / Δr = 0.1250 → Seamless Rainbow Band (0 Ghost Gaps)": "连续光谱色散定积分 → 平滑彩虹平台 L = 0.1250（0 断层鬼影）",
+    "Cinematic radial chromatic aberration and barrel lens dispersion in Playdead INSIDE, UE5 PostProcess, and Unity HDRP": "Playdead INSIDE、UE5 后处理与 Unity HDRP 中的电影级径向色散与桶形镜头棱镜效应",
+    "Explaining why 3-tap RGB channel splitting breaks thin specular highlights into 3 disconnected Red/Green/Blue ghosts with 6 dead-black gaps": "直观解释为何 3 抽头 RGB 通道分离会把细高光撕裂成 3 个孤立的红绿蓝重影并留下 6 处死黑断层",
+    "Accumulating jittered multi-tap samples weighted by a normalized spectral LUT ∑ w_λ(t_k) = (1, 1, 1)": "沿径向色散向量累加经归一化光谱 LUT ∑ w_λ(t_k) = (1, 1, 1) 加权的多抽头采样",
+    "Replacing 64-wavelength brute-force quadrature with closed-form spectral overlap integration": "以闭式光谱重叠区间原函数替代昂贵的 64 波长暴力数值求积",
+    "Zero-dispersion pinhole camera renders where all wavelengths focus at identical pixel coordinates": "无任何色散的理想针孔相机渲染",
+    "Deliberate retro 1980s VHS / anaglyph 3D-glasses glitch effects where harsh RGB separation is an artistic goal": "刻意追求 80 年代故障艺术或红蓝 3D 眼镜分离伪影的风格化特效",
+    "Neural bokeh or camera-lens style-transfer networks": "神经散景或镜头风格迁移网络",
+    "Text-heavy HUD interfaces that should bypass post-process lens distortion entirely": "应当完全绕过镜头色散后处理的清晰 UI 文字层"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/spectral-chromatic-dispersion.test.ts",
+    "node scripts/benchmark-spectral-chromatic-dispersion.mjs"
+  ]
+}

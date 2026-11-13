@@ -1,0 +1,266 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Jimenez-Gjol sub-LSB dither 8-bit color banding suppression vs Mach-band quantization staircase rig",
+  "topic_zh": "Jiménez-Gjøl 亚最低有效位抖动 8-Bit 色带抑制对比朴素硬舍入马赫带断层阶梯",
+  "slug": "sub-lsb-dither-banding-rig",
+  "timestamp": "2026-11-13T20:08:43.286Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Jorge Jimenez (SIGGRAPH 2014) & Mikkel Gjol (GDC 2016 Playdead INSIDE) 1-LSB dithered 8-bit quantization (E[floor(c + xi + 0.5)] === c) versus naive un-dithered 8-bit round-to-nearest quantization (floor(c + 0.5)) and 64-stratum spatial tile integration across 17 sub-LSB stations (c in [10.0000, 11.0000] LSB). No neural debanding execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "jimenez-dither-tile-equivalence-128",
+      "passed": true,
+      "detail": "128 closed-form 1-LSB dither expectation and 64-stratum tile integration passes agree within 1e-13"
+    },
+    {
+      "name": "jimenez-dither-tile-equivalence-1024",
+      "passed": true,
+      "detail": "1024 closed-form 1-LSB dither expectation and 64-stratum tile integration passes agree within 1e-13"
+    },
+    {
+      "name": "jimenez-dither-tile-equivalence-8192",
+      "passed": true,
+      "detail": "8192 closed-form 1-LSB dither expectation and 64-stratum tile integration passes agree within 1e-13"
+    },
+    {
+      "name": "jimenez-gradient-linearity-conserved",
+      "passed": true,
+      "detail": "17 sub-LSB stations preserve exact linear ramp (station-8 u=0.50 Q=10.5000 LSB)"
+    },
+    {
+      "name": "undithered-8bit-mach-band-staircase-exposed",
+      "passed": true,
+      "detail": "naive 8-bit rounding jumps to Q=11.0000 LSB at station-8 (+0.5000 LSB max error across 15/17 stations)"
+    },
+    {
+      "name": "jimenez-midpoint-10p5-lsb-locked",
+      "passed": true,
+      "detail": "Jiménez 1-LSB Dither locks midpoint station-8 (u=0.50) at Q=10.5000 LSB (0/17 banded stations)"
+    },
+    {
+      "name": "undithered-8bit-terrace-exposed",
+      "passed": true,
+      "detail": "naive 8-bit round snaps station-8 to 11.0000 LSB (+0.5000 LSB step across 15/17 interior stations)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse station scrubbing reproduces the exact quantizer sensitometer carriage world matrix"
+    },
+    {
+      "name": "atomic-base-code-rejection",
+      "passed": true,
+      "detail": "out-of-range baseCodeLsb=999.0 is rejected while valid Sub-LSB Dither state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered sensitometer carriage y-elevation matches solved output code height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Sub-LSB Dither controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual station scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station dither quantizer passes",
+      "count": 128,
+      "primary_ms": 0.011099999999942156,
+      "baseline_ms": 0.2922999999999547,
+      "primary_samples_ms": [
+        0.04110000000002856,
+        0.011099999999942156,
+        0.011700000000018917,
+        0.009999999999990905,
+        0.014599999999973079,
+        0.006899999999973261,
+        0.006799999999998363
+      ],
+      "baseline_samples_ms": [
+        0.3849999999999909,
+        0.364400000000046,
+        0.2922999999999547,
+        0.29120000000000346,
+        0.3229000000000042,
+        0.25120000000003984,
+        0.25100000000009004
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station dither quantizer passes",
+      "count": 1024,
+      "primary_ms": 0.05930000000000746,
+      "baseline_ms": 2.0750000000000455,
+      "primary_samples_ms": [
+        0.06000000000005912,
+        0.06389999999998963,
+        0.05800000000010641,
+        0.0585999999999558,
+        0.05780000000004293,
+        0.05930000000000746,
+        0.061900000000036925
+      ],
+      "baseline_samples_ms": [
+        2.020900000000097,
+        2.1455000000000837,
+        2.0750000000000455,
+        2.0423999999999296,
+        2.12519999999995,
+        2.034599999999955,
+        2.100599999999986
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station dither quantizer passes",
+      "count": 8192,
+      "primary_ms": 0.47640000000001237,
+      "baseline_ms": 18.84699999999998,
+      "primary_samples_ms": [
+        0.4755999999999858,
+        0.505800000000022,
+        0.5282999999999447,
+        0.4678000000000111,
+        0.46249999999997726,
+        0.5233000000000629,
+        0.47640000000001237
+      ],
+      "baseline_samples_ms": [
+        21.64530000000002,
+        17.512000000000057,
+        19.01310000000001,
+        18.560600000000022,
+        18.84699999999998,
+        16.739199999999983,
+        20.896100000000047
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/sub-lsb-dither-banding-rig/light-jimenez-ign-dither-quantization.png",
+    "docs/evidence/sub-lsb-dither-banding-rig/light-naive-undithered-8bit-round.png",
+    "docs/evidence/sub-lsb-dither-banding-rig/dark-jimenez-ign-dither-quantization.png",
+    "docs/evidence/sub-lsb-dither-banding-rig/dark-naive-undithered-8bit-round.png",
+    "docs/evidence/sub-lsb-dither-banding-rig/mobile.png"
+  ],
+  "primary_label": "Jiménez Closed-Form 1-LSB Dither Expectation",
+  "baseline_label": "64-Stratum Spatial Tile Integrator",
+  "load_unit": "17-station dither quantizer passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form 1-LSB dither expectation versus 64-stratum spatial tile quantizer integration.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "base_code_lsb": 10,
+    "dither_midpoint_lsb": 10.5,
+    "naive_midpoint_lsb": 11,
+    "max_staircase_error_lsb": 0.5,
+    "corrupted_stations": 15,
+    "maximum_solver_error": 0
+  },
+  "protocol": {
+    "input": {
+      "station_index": 8,
+      "sub_lsb_u": 0.5,
+      "base_k0_lsb": 10,
+      "dither_amp": 1,
+      "mode": "jimenez-ign-dither-quantization"
+    },
+    "output": {
+      "continuous_c_lsb": 10.5,
+      "dither_expected_lsb": 10.5,
+      "naive_rounded_lsb": 11,
+      "midpoint_error_lsb": 0.5,
+      "corrupted_stations": 15
+    },
+    "function": "E[floor(c + ξ + 0.5)] = (1 − u)·K₀ + u·(K₀ + 1) ≡ c → Midpoint Q(10.50) = 10.5000 LSB (0.0000 Staircase Error)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 sub-LSB gradient stations preserve exact linear quantization expectation without Mach-band terraces",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Final HDR-to-SDR 8-bit (UNORM8) post-process output in UE5, Frostbite, Unity HDRP, Playdead INSIDE, and Three.js",
+    "Eliminating visible onion-ring Mach bands in twilight sky domes, underwater volumetric fog, and soft vignette falloffs",
+    "Linearizing non-linear quantizers via 1-LSB uniform or triangular PDF Interleaved Gradient Noise (IGN)",
+    "Preventing 8-bit G-Buffer or LUT quantization staircases in deferred rendering"
+  ],
+  "not_for": [
+    "Floating-point HDR render targets (RGBA16F / RGBA32F) prior to final 8-bit/10-bit integer quantization",
+    "Lossless bit-exact cryptographic or ID buffers (object picking IDs, stencil masks) where any dither corrupts the integer ID",
+    "Neural video debanding or super-resolution networks",
+    "1-bit black-and-white newspaper halftoning"
+  ],
+  "locale_zh": {
+    "jimenez-dither-tile-equivalence-128": "Jiménez闭式期望与64层瓦片积分等价 128",
+    "128 closed-form 1-LSB dither expectation and 64-stratum tile integration passes agree within 1e-13": "128 次闭式 1-LSB 抖动期望与 64 层空间瓦片积分在 1e-13 内一致",
+    "jimenez-dither-tile-equivalence-1024": "Jiménez闭式期望与64层瓦片积分等价 1024",
+    "1024 closed-form 1-LSB dither expectation and 64-stratum tile integration passes agree within 1e-13": "1024 次闭式 1-LSB 抖动期望与 64 层空间瓦片积分在 1e-13 内一致",
+    "jimenez-dither-tile-equivalence-8192": "Jiménez闭式期望与64层瓦片积分等价 8192",
+    "8192 closed-form 1-LSB dither expectation and 64-stratum tile integration passes agree within 1e-13": "8192 次闭式 1-LSB 抖动期望与 64 层空间瓦片积分在 1e-13 内一致",
+    "jimenez-gradient-linearity-conserved": "Jiménez亚比特渐变线性度守恒",
+    "17 sub-LSB stations preserve exact linear ramp (station-8 u=0.50 Q=10.5000 LSB)": "17 个亚比特站点保持精确线性斜坡（第 8 站 u=0.50 Q=10.5000 LSB）",
+    "undithered-8bit-mach-band-staircase-exposed": "无抖动8-Bit马赫带阶梯暴露",
+    "naive 8-bit rounding jumps to Q=11.0000 LSB at station-8 (+0.5000 LSB max error across 15/17 stations)": "朴素 8-bit 舍入在第 8 站跳变至 Q=11.0000 LSB（峰值误差 +0.5000 LSB，污染 15/17 站）",
+    "jimenez-midpoint-10p5-lsb-locked": "Jiménez中点10.5色阶锁定",
+    "Jiménez 1-LSB Dither locks midpoint station-8 (u=0.50) at Q=10.5000 LSB (0/17 banded stations)": "Jiménez 1-LSB 抖动将第 8 站（u=0.50）锁定在 Q=10.5000 LSB（0/17 色带站）",
+    "undithered-8bit-terrace-exposed": "无抖动8-Bit阶梯断层暴露",
+    "naive 8-bit round snaps station-8 to 11.0000 LSB (+0.5000 LSB step across 15/17 interior stations)": "朴素 8-bit 舍入将第 8 站硬跳至 11.0000 LSB（误差 +0.5000 LSB，波及 15/17 站）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse station scrubbing reproduces the exact quantizer sensitometer carriage world matrix": "逆序站点拖曳精确复现量化感光计滑车世界矩阵",
+    "atomic-base-code-rejection": "原子起始色阶拒绝",
+    "out-of-range baseCodeLsb=999.0 is rejected while valid Sub-LSB Dither state remains": "越界起始色阶 999.0 被拒绝，有效亚比特抖动状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered sensitometer carriage y-elevation matches solved output code height": "渲染感光计滑车垂直高度与求解器输出色阶高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px Sub-LSB Dither controls fit without horizontal overflow": "390px 亚比特抖动控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual station scrubbing remains available": "减少动态默认静止，保留手动站点核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Jiménez Closed-Form 1-LSB Dither Expectation": "Jiménez 闭式 1-LSB 抖动线性期望",
+    "64-Stratum Spatial Tile Integrator": "64 层空间瓦片量化积分基线",
+    "Median of 7 alternating Node CPU runs after warmup. Closed-form 1-LSB dither expectation versus 64-stratum spatial tile quantizer integration.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；Jiménez 闭式 1-LSB 抖动期望对比 64 层空间瓦片量化积分基线。",
+    "Sampled 17 sub-LSB gradient stations preserve exact linear quantization expectation without Mach-band terraces": "采样 17 个亚比特渐变站点全部保持精确线性量化期望，无马赫带洋葱圈断层",
+    "E[floor(c + ξ + 0.5)] = (1 − u)·K₀ + u·(K₀ + 1) ≡ c → Midpoint Q(10.50) = 10.5000 LSB (0.0000 Staircase Error)": "1-LSB 抖动期望 E[floor(c+ξ+0.5)] ≡ c → 中点 Q(10.50) = 10.5000 LSB（0.0000 阶梯误差）",
+    "Final HDR-to-SDR 8-bit (UNORM8) post-process output in UE5, Frostbite, Unity HDRP, Playdead INSIDE, and Three.js": "UE5、Frostbite、Unity HDRP、Playdead《INSIDE》与 Three.js 的 HDR 转 8-bit（UNORM8）最终上屏输出",
+    "Eliminating visible onion-ring Mach bands in twilight sky domes, underwater volumetric fog, and soft vignette falloffs": "彻底消除黄昏天穹、水下体积雾与暗角渐晕中的等高线洋葱圈色彩断层（Color Banding）",
+    "Linearizing non-linear quantizers via 1-LSB uniform or triangular PDF Interleaved Gradient Noise (IGN)": "利用 1-LSB 均匀或三角分布交错梯度噪声（IGN）将非线性阶梯量化器彻底线性化",
+    "Preventing 8-bit G-Buffer or LUT quantization staircases in deferred rendering": "消除延迟渲染 8-bit G-Buffer 或色彩查找表（LUT）的量化阶梯伪影",
+    "Floating-point HDR render targets (RGBA16F / RGBA32F) prior to final 8-bit/10-bit integer quantization": "尚未进入 8-bit/10-bit 整数量化阶段的纯浮点 HDR 缓冲区（RGBA16F）",
+    "Lossless bit-exact cryptographic or ID buffers (object picking IDs, stencil masks) where any dither corrupts the integer ID": "严禁改变整数值的物体拾取 ID 缓冲（Object ID Buffer）与模板掩码（Stencil Mask）",
+    "Neural video debanding or super-resolution networks": "神经视频去色带或超分辨率后处理网络",
+    "1-bit black-and-white newspaper halftoning": "1-bit 纯黑白报纸半色调网点印刷"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/sub-lsb-dither-banding.test.ts",
+    "node scripts/benchmark-sub-lsb-dither-banding.mjs"
+  ]
+}

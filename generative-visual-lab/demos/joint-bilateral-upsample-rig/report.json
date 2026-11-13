@@ -1,0 +1,269 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Kopf joint bilateral depth-guided half-resolution volumetric upsampling vs bilinear silhouette halo bleed rig",
+  "topic_zh": "Kopf 联合双边高分深度引导半分辨率体积光上采样对比硬件双线性插值轮廓光晕渗漏",
+  "slug": "joint-bilateral-upsample-rig",
+  "timestamp": "2026-11-13T16:56:17.510Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Johannes Kopf et al. (SIGGRAPH 2007) Joint Bilateral Upsampling (JBU) using full-resolution G-buffer depth range weights versus naive hardware bilinear interpolation and full-resolution 64-step volumetric Beer-Lambert ray marching across 17 full-resolution silhouette boundary pixels. No neural depth inpainting execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "jbu-fullres-raymarch-equivalence-128",
+      "passed": true,
+      "detail": "128 half-res Joint Bilateral Upsampling and full-res 64-step volumetric ray-march passes agree within 1e-13"
+    },
+    {
+      "name": "jbu-fullres-raymarch-equivalence-1024",
+      "passed": true,
+      "detail": "1024 half-res Joint Bilateral Upsampling and full-res 64-step volumetric ray-march passes agree within 1e-13"
+    },
+    {
+      "name": "jbu-fullres-raymarch-equivalence-8192",
+      "passed": true,
+      "detail": "8192 half-res Joint Bilateral Upsampling and full-res 64-step volumetric ray-march passes agree within 1e-13"
+    },
+    {
+      "name": "jbu-silhouette-edge-conserved",
+      "passed": true,
+      "detail": "17 silhouette boundary pixels preserve sharp depth discontinuity (station-8 z=2.0m L_vol=0.0500, station-9 z=25.0m L_vol=0.9500)"
+    },
+    {
+      "name": "bilinear-silhouette-halo-bleed-exposed",
+      "passed": true,
+      "detail": "naive hardware bilinear upsampling leaks +0.4500 background fog onto foreground station-8 (L_vol=0.5000 vs 0.0500 across 7/17 stations)"
+    },
+    {
+      "name": "jbu-foreground-silhouette-locked",
+      "passed": true,
+      "detail": "Kopf Joint Bilateral locks foreground station-8 (u=0.50, z=2.0m) at L_vol=0.0500 (0/17 halo bleed stations)"
+    },
+    {
+      "name": "bilinear-10x-halo-blowout-exposed",
+      "passed": true,
+      "detail": "naive bilinear upsampling leaks L_vol=0.5000 onto station-8 (+0.4500 / 10.00x halo bleed across 7/17 stations)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse station scrubbing reproduces the exact bilateral densitometer carriage world matrix"
+    },
+    {
+      "name": "atomic-depth-rejection",
+      "passed": true,
+      "detail": "out-of-range foregroundDepthM=999.0 is rejected while valid Joint Bilateral state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered bilateral carriage y-elevation matches solved volumetric radiance height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Joint Bilateral controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual station scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station volumetric passes",
+      "count": 128,
+      "primary_ms": 0.09080000000000155,
+      "baseline_ms": 0.22570000000001755,
+      "primary_samples_ms": [
+        0.11970000000002301,
+        0.09080000000000155,
+        0.08749999999997726,
+        0.1297999999999888,
+        0.158299999999997,
+        0.024799999999970623,
+        0.019200000000012096
+      ],
+      "baseline_samples_ms": [
+        0.4586999999999648,
+        0.4479000000000042,
+        0.43880000000001473,
+        0.22570000000001755,
+        0.21189999999995734,
+        0.16159999999996444,
+        0.17840000000001055
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station volumetric passes",
+      "count": 1024,
+      "primary_ms": 0.1441000000000372,
+      "baseline_ms": 1.3045000000000186,
+      "primary_samples_ms": [
+        0.1441000000000372,
+        0.14060000000000628,
+        0.1402999999999679,
+        0.15870000000001028,
+        0.15170000000000528,
+        0.1449999999999818,
+        0.14030000000002474
+      ],
+      "baseline_samples_ms": [
+        1.3018999999999892,
+        1.3274999999999864,
+        1.303699999999992,
+        1.4699999999999704,
+        1.3856000000000108,
+        1.3045000000000186,
+        1.3044999999999618
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station volumetric passes",
+      "count": 8192,
+      "primary_ms": 1.1266000000000531,
+      "baseline_ms": 10.70519999999999,
+      "primary_samples_ms": [
+        1.274000000000001,
+        1.1266000000000531,
+        1.123299999999972,
+        1.1319999999999482,
+        1.1219999999999573,
+        1.1294000000000324,
+        1.1196999999999662
+      ],
+      "baseline_samples_ms": [
+        10.692399999999964,
+        10.43569999999994,
+        10.901500000000055,
+        10.435400000000072,
+        10.70519999999999,
+        11.131099999999947,
+        11.891300000000001
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/joint-bilateral-upsample-rig/light-kopf-joint-bilateral-depth.png",
+    "docs/evidence/joint-bilateral-upsample-rig/light-naive-hardware-bilinear.png",
+    "docs/evidence/joint-bilateral-upsample-rig/dark-kopf-joint-bilateral-depth.png",
+    "docs/evidence/joint-bilateral-upsample-rig/dark-naive-hardware-bilinear.png",
+    "docs/evidence/joint-bilateral-upsample-rig/mobile.png"
+  ],
+  "primary_label": "Half-Res Joint Bilateral 2-Tap",
+  "baseline_label": "Full-Res 64-Step Volumetric March",
+  "load_unit": "17-station volumetric passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Half-resolution 2-tap Joint Bilateral Upsampling versus full-resolution 64-step Beer-Lambert volumetric ray marching.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "foreground_depth_m": 2,
+    "background_depth_m": 25,
+    "jbu_radiance_station_8": 0.05,
+    "bilinear_radiance_station_8": 0.5,
+    "max_halo_bleed": 0.45,
+    "corrupted_stations": 7,
+    "maximum_solver_error": 2.4841e-15
+  },
+  "protocol": {
+    "input": {
+      "station_index": 8,
+      "bilinear_u": 0.5,
+      "z_hi_m": 2,
+      "z_fg_m": 2,
+      "z_bg_m": 25,
+      "sigma_z_m": 0.5,
+      "mode": "kopf-joint-bilateral-depth"
+    },
+    "output": {
+      "jbu_radiance": 0.05,
+      "naive_bilinear_radiance": 0.5,
+      "silhouette_halo_bleed": 0.45,
+      "halo_blowout_ratio": 10,
+      "corrupted_stations": 7
+    },
+    "function": "w_k = w_spatial(u) · exp(−(z_hi − z_lo,k)² / 2σ_z²) → Sharp Silhouette (0.0000 Halo Bleed)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 full-resolution silhouette boundary pixels preserve razor-sharp depth edges without halo bleeding",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Upsampling half-resolution volumetric fog, god-rays, clouds, and SSAO to full resolution in UE5, Frostbite, and Unity HDRP",
+    "Explaining why hardware bilinear filtering across a 2.0m → 25.0m depth cliff leaks +0.4500 (10.00x) glowing fog halos onto dark foreground characters",
+    "Using full-resolution G-buffer depth range weights exp(-Δz^2 / 2σ_z^2) to reject cross-silhouette low-res taps",
+    "Replacing full-resolution 64-step volumetric ray marching with half-res shading + 2-tap Joint Bilateral Upsampling"
+  ],
+  "not_for": [
+    "Full-resolution passes that do not use lower-resolution intermediate render targets",
+    "Pure 2D UI image scaling where no 3D G-buffer depth guide texture exists",
+    "Neural single-image depth estimation or AI inpainting networks",
+    "Sub-pixel thin hair strands narrower than 1 full-res pixel without MSAA or deep opacity maps"
+  ],
+  "locale_zh": {
+    "jbu-fullres-raymarch-equivalence-128": "联合双边与全分64步体积步进等价 128",
+    "128 half-res Joint Bilateral Upsampling and full-res 64-step volumetric ray-march passes agree within 1e-13": "128 次半分辨率联合双边上采样与全分辨率 64 步体积光步进在 1e-13 内一致",
+    "jbu-fullres-raymarch-equivalence-1024": "联合双边与全分64步体积步进等价 1024",
+    "1024 half-res Joint Bilateral Upsampling and full-res 64-step volumetric ray-march passes agree within 1e-13": "1024 次半分辨率联合双边上采样与全分辨率 64 步体积光步进在 1e-13 内一致",
+    "jbu-fullres-raymarch-equivalence-8192": "联合双边与全分64步体积步进等价 8192",
+    "8192 half-res Joint Bilateral Upsampling and full-res 64-step volumetric ray-march passes agree within 1e-13": "8192 次半分辨率联合双边上采样与全分辨率 64 步体积光步进在 1e-13 内一致",
+    "jbu-silhouette-edge-conserved": "联合双边轮廓边缘守恒",
+    "17 silhouette boundary pixels preserve sharp depth discontinuity (station-8 z=2.0m L_vol=0.0500, station-9 z=25.0m L_vol=0.9500)": "17 个轮廓边界像素保持锐利深度跃变（第 8 站 z=2.0m L_vol=0.0500，第 9 站 z=25.0m L_vol=0.9500）",
+    "bilinear-silhouette-halo-bleed-exposed": "硬件双线性轮廓光晕渗漏暴露",
+    "naive hardware bilinear upsampling leaks +0.4500 background fog onto foreground station-8 (L_vol=0.5000 vs 0.0500 across 7/17 stations)": "朴素硬件双线性上采样在第 8 站泄漏 +0.4500 背景亮雾（L_vol=0.5000 vs 0.0500，污染 7/17 站）",
+    "jbu-foreground-silhouette-locked": "联合双边前景轮廓锁定",
+    "Kopf Joint Bilateral locks foreground station-8 (u=0.50, z=2.0m) at L_vol=0.0500 (0/17 halo bleed stations)": "Kopf 联合双边将前景第 8 站（u=0.50, z=2.0m）锁死在 L_vol=0.0500（0/17 光晕渗漏站）",
+    "bilinear-10x-halo-blowout-exposed": "双线性10倍光晕过冲暴露",
+    "naive bilinear upsampling leaks L_vol=0.5000 onto station-8 (+0.4500 / 10.00x halo bleed across 7/17 stations)": "朴素双线性上采样在第 8 站渗漏至 L_vol=0.5000（+0.4500 / 10.00× 光晕白边，波及 7/17 站）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse station scrubbing reproduces the exact bilateral densitometer carriage world matrix": "逆序站点拖曳精确复现双边密度计滑车世界矩阵",
+    "atomic-depth-rejection": "原子深度拒绝",
+    "out-of-range foregroundDepthM=999.0 is rejected while valid Joint Bilateral state remains": "越界前景深度 999.0m 被拒绝，有效联合双边状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered bilateral carriage y-elevation matches solved volumetric radiance height": "渲染双边滑车垂直高度与求解器体积雾亮度高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px Joint Bilateral controls fit without horizontal overflow": "390px 联合双边上采样控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual station scrubbing remains available": "减少动态默认静止，保留手动站点核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Half-Res Joint Bilateral 2-Tap": "半分辨率联合双边深度引导上采样",
+    "Full-Res 64-Step Volumetric March": "全分辨率 64 步体积光步进基线",
+    "Median of 7 alternating Node CPU runs after warmup. Half-resolution 2-tap Joint Bilateral Upsampling versus full-resolution 64-step Beer-Lambert volumetric ray marching.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；半分辨率 2 抽头联合双边深度引导上采样对比全分辨率 64 步比尔-朗伯体积光线步进基线。",
+    "Sampled 17 full-resolution silhouette boundary pixels preserve razor-sharp depth edges without halo bleeding": "采样 17 个全分辨率轮廓边界像素全部保持刀锋级深度阶跃，无光晕渗漏",
+    "w_k = w_spatial(u) · exp(−(z_hi − z_lo,k)² / 2σ_z²) → Sharp Silhouette (0.0000 Halo Bleed)": "联合双边空间×高分深度亲和权重 → 锐利前景轮廓（0.0000 光晕渗漏）",
+    "Upsampling half-resolution volumetric fog, god-rays, clouds, and SSAO to full resolution in UE5, Frostbite, and Unity HDRP": "UE5、Frostbite 与 Unity HDRP 中将半分辨率体积雾、丁达尔神圣光、体积云与 SSAO 上采样至全分辨率",
+    "Explaining why hardware bilinear filtering across a 2.0m → 25.0m depth cliff leaks +0.4500 (10.00x) glowing fog halos onto dark foreground characters": "直观解释为何跨 2.0m → 25.0m 深度断崖的硬件双线性插值会在近处暗色角色边缘漏出 +0.4500（10.00×）发光白圈",
+    "Using full-resolution G-buffer depth range weights exp(-Δz^2 / 2σ_z^2) to reject cross-silhouette low-res taps": "利用全分辨率 G-Buffer 深度亲和权重 exp(−Δz²/2σ_z²) 精确剔除跨轮廓低分采样点",
+    "Replacing full-resolution 64-step volumetric ray marching with half-res shading + 2-tap Joint Bilateral Upsampling": "以半分辨率着色 + 联合双边上采样替代昂贵的全分辨率 64 步逐像素体积步进",
+    "Full-resolution passes that do not use lower-resolution intermediate render targets": "不使用降采样中间缓冲的原生全分辨率着色通道",
+    "Pure 2D UI image scaling where no 3D G-buffer depth guide texture exists": "不存在 3D G-Buffer 高分辨率深度引导图的纯 2D UI 图像缩放",
+    "Neural single-image depth estimation or AI inpainting networks": "神经单目深度估计或 AI 图像补全网络",
+    "Sub-pixel thin hair strands narrower than 1 full-res pixel without MSAA or deep opacity maps": "无 MSAA 或深度不透明度图支持的亚像素级极细发丝"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/joint-bilateral-upsample.test.ts",
+    "node scripts/benchmark-joint-bilateral-upsample.mjs"
+  ]
+}
