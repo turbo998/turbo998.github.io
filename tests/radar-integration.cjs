@@ -2570,6 +2570,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r179File),'utf8');
       assert.ok(txt.includes('2,420.00')&&txt.includes('3,800.00')&&txt.includes('6,220.00')&&txt.includes('185.00')&&txt.includes('350.00')&&txt.includes('535.00')&&txt.includes('5,685.00')&&txt.includes('91.40%')&&txt.includes('not_measured'),r179File+': contains exact 11-13 R51 macaq+bookleme closed-form parameters');
     }
+    // 2026-11-13 Round 52 (R180: skild-ai/steel + pmndrs/pine) closed-form FinOps verification
+    const r180PathA=2640.00+38.0*105.00;
+    assert.equal(r180PathA.toFixed(2),'6630.00','11-13 R52 Path A total');
+    const r180PathC=195.00+3.5*105.00;
+    assert.equal(r180PathC.toFixed(2),'562.50','11-13 R52 Path C total');
+    assert.equal((r180PathA-r180PathC).toFixed(2),'6067.50','11-13 R52 savings vs Path A');
+    assert.equal(((r180PathA-r180PathC)/r180PathA*100).toFixed(2),'91.52','11-13 R52 pct savings vs Path A');
+    for(const r180File of ['workshops/github-trending-radar/docs/steel-pine-13x-heterogeneous-robot-physics-solver-reactive-event-driven-agent-harness-selection-faq.md','workshops/github-trending-radar/docs/steel-pine-13x-heterogeneous-robot-physics-solver-reactive-event-driven-agent-harness-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r52-steel-pine.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r180File),'utf8');
+      assert.ok(txt.includes('2,640.00')&&txt.includes('3,990.00')&&txt.includes('6,630.00')&&txt.includes('195.00')&&txt.includes('367.50')&&txt.includes('562.50')&&txt.includes('6,067.50')&&txt.includes('91.52%')&&txt.includes('not_measured'),r180File+': contains exact 11-13 R52 steel+pine closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
