@@ -2559,6 +2559,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r178File),'utf8');
       assert.ok(txt.includes('2,350.00')&&txt.includes('3,610.00')&&txt.includes('5,960.00')&&txt.includes('175.00')&&txt.includes('332.50')&&txt.includes('507.50')&&txt.includes('5,452.50')&&txt.includes('91.48%')&&txt.includes('not_measured'),r178File+': contains exact 11-13 R50 ianua+car-use closed-form parameters');
     }
+    // 2026-11-13 Round 51 (R179: huawei-csl/MACaQ + bookleme/bookleme) closed-form FinOps verification
+    const r179PathA=2420.00+38.0*100.00;
+    assert.equal(r179PathA.toFixed(2),'6220.00','11-13 R51 Path A total');
+    const r179PathC=185.00+3.5*100.00;
+    assert.equal(r179PathC.toFixed(2),'535.00','11-13 R51 Path C total');
+    assert.equal((r179PathA-r179PathC).toFixed(2),'5685.00','11-13 R51 savings vs Path A');
+    assert.equal(((r179PathA-r179PathC)/r179PathA*100).toFixed(2),'91.40','11-13 R51 pct savings vs Path A');
+    for(const r179File of ['workshops/github-trending-radar/docs/macaq-bookleme-32gb-122b-multimodal-gguf-quantization-zero-dep-book-to-skill-compiler-selection-faq.md','workshops/github-trending-radar/docs/macaq-bookleme-32gb-122b-multimodal-gguf-quantization-zero-dep-book-to-skill-compiler-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r51-macaq-bookleme.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r179File),'utf8');
+      assert.ok(txt.includes('2,420.00')&&txt.includes('3,800.00')&&txt.includes('6,220.00')&&txt.includes('185.00')&&txt.includes('350.00')&&txt.includes('535.00')&&txt.includes('5,685.00')&&txt.includes('91.40%')&&txt.includes('not_measured'),r179File+': contains exact 11-13 R51 macaq+bookleme closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
