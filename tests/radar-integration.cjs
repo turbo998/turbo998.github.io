@@ -2493,6 +2493,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r172File),'utf8');
       assert.ok(txt.includes('1,540.00')&&txt.includes('3,800.00')&&txt.includes('5,340.00')&&txt.includes('145.00')&&txt.includes('350.00')&&txt.includes('495.00')&&txt.includes('4,845.00')&&txt.includes('90.73%')&&txt.includes('not_measured'),r172File+': contains exact 11-13 R44 query-tune+clamdown closed-form parameters');
     }
+    // 2026-11-13 Round 45 (R173: jeremiebergel/context-manager-intelligence + in-devp/MySafeAI) closed-form FinOps verification
+    const r173PathA=2450.00+32.0*95.00;
+    assert.equal(r173PathA.toFixed(2),'5490.00','11-13 R45 Path A total');
+    const r173PathC=240.00+3.0*95.00;
+    assert.equal(r173PathC.toFixed(2),'525.00','11-13 R45 Path C total');
+    assert.equal((r173PathA-r173PathC).toFixed(2),'4965.00','11-13 R45 savings vs Path A');
+    assert.equal(((r173PathA-r173PathC)/r173PathA*100).toFixed(2),'90.44','11-13 R45 pct savings vs Path A');
+    for(const r173File of ['workshops/github-trending-radar/docs/cmi-mysafeai-cache-priced-reversible-context-folding-per-process-ai-egress-guard-selection-faq.md','workshops/github-trending-radar/docs/cmi-mysafeai-cache-priced-reversible-context-folding-per-process-ai-egress-guard-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r45-cmi-mysafeai.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r173File),'utf8');
+      assert.ok(txt.includes('2,450.00')&&txt.includes('3,040.00')&&txt.includes('5,490.00')&&txt.includes('240.00')&&txt.includes('285.00')&&txt.includes('525.00')&&txt.includes('4,965.00')&&txt.includes('90.44%')&&txt.includes('not_measured'),r173File+': contains exact 11-13 R45 cmi+mysafeai closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
