@@ -2581,6 +2581,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r180File),'utf8');
       assert.ok(txt.includes('2,640.00')&&txt.includes('3,990.00')&&txt.includes('6,630.00')&&txt.includes('195.00')&&txt.includes('367.50')&&txt.includes('562.50')&&txt.includes('6,067.50')&&txt.includes('91.52%')&&txt.includes('not_measured'),r180File+': contains exact 11-13 R52 steel+pine closed-form parameters');
     }
+    // 2026-11-13 Round 53 (R181: simplexai-labs/linger + nickvasilescu/bot-hq) closed-form FinOps verification
+    const r181PathA=2760.00+36.0*95.00;
+    assert.equal(r181PathA.toFixed(2),'6180.00','11-13 R53 Path A total');
+    const r181PathC=180.00+3.5*95.00;
+    assert.equal(r181PathC.toFixed(2),'512.50','11-13 R53 Path C total');
+    assert.equal((r181PathA-r181PathC).toFixed(2),'5667.50','11-13 R53 savings vs Path A');
+    assert.equal(((r181PathA-r181PathC)/r181PathA*100).toFixed(2),'91.71','11-13 R53 pct savings vs Path A');
+    for(const r181File of ['workshops/github-trending-radar/docs/linger-bot-hq-125b-moe-on-12gb-gpu-personal-agent-4screen-orgo-hermes-bot-hq-selection-faq.md','workshops/github-trending-radar/docs/linger-bot-hq-125b-moe-on-12gb-gpu-personal-agent-4screen-orgo-hermes-bot-hq-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r53-linger-bot-hq.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r181File),'utf8');
+      assert.ok(txt.includes('2,760.00')&&txt.includes('3,420.00')&&txt.includes('6,180.00')&&txt.includes('180.00')&&txt.includes('332.50')&&txt.includes('512.50')&&txt.includes('5,667.50')&&txt.includes('91.71%')&&txt.includes('not_measured'),r181File+': contains exact 11-13 R53 linger+bot-hq closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
