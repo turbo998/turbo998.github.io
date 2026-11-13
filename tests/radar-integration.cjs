@@ -2405,6 +2405,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r164File),'utf8');
       assert.ok(txt.includes('1,520.00')&&txt.includes('3,610.00')&&txt.includes('5,130.00')&&txt.includes('160.00')&&txt.includes('332.50')&&txt.includes('492.50')&&txt.includes('4,637.50')&&txt.includes('90.40%')&&txt.includes('not_measured'),r164File+': contains exact 11-13 R36 rulebook+damail closed-form parameters');
     }
+    // 2026-11-13 Round 37 (R165: rjcuff/Woolly + gokayfem/image-to-lowpoly) closed-form FinOps verification
+    const r165PathA=1590.00+38.0*95.00;
+    assert.equal(r165PathA.toFixed(2),'5200.00','11-13 R37 Path A total');
+    const r165PathC=160.00+3.5*95.00;
+    assert.equal(r165PathC.toFixed(2),'492.50','11-13 R37 Path C total');
+    assert.equal((r165PathA-r165PathC).toFixed(2),'4707.50','11-13 R37 savings vs Path A');
+    assert.equal(((r165PathA-r165PathC)/r165PathA*100).toFixed(2),'90.53','11-13 R37 pct savings vs Path A');
+    for(const r165File of ['workshops/github-trending-radar/docs/woolly-image-to-lowpoly-local-cross-tool-memory-exact-triangle-budget-3d-skill-selection-faq.md','workshops/github-trending-radar/docs/woolly-image-to-lowpoly-local-cross-tool-memory-exact-triangle-budget-3d-skill-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r37-woolly-imagetolowpoly.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r165File),'utf8');
+      assert.ok(txt.includes('1,590.00')&&txt.includes('3,610.00')&&txt.includes('5,200.00')&&txt.includes('160.00')&&txt.includes('332.50')&&txt.includes('492.50')&&txt.includes('4,707.50')&&txt.includes('90.53%')&&txt.includes('not_measured'),r165File+': contains exact 11-13 R37 woolly+image-to-lowpoly closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
