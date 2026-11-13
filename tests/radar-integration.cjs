@@ -2130,6 +2130,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r139File),'utf8');
       assert.ok(txt.includes('1,920.00')&&txt.includes('4,300.00')&&txt.includes('6,220.00')&&txt.includes('220.00')&&txt.includes('450.00')&&txt.includes('670.00')&&txt.includes('5,550.00')&&txt.includes('89.23%')&&txt.includes('not_measured'),r139File+': contains exact 11-13 R11 agent-system-design-cn+project-os closed-form parameters');
     }
+    // 2026-11-13 Round 12 (R140: molly554/whiteboard-ai-tutor + enoch3712/spine-hero-skill) closed-form FinOps verification
+    const r140PathA=1860.00+44.0*85.00;
+    assert.equal(r140PathA.toFixed(2),'5600.00','11-13 R12 Path A total');
+    const r140PathC=185.00+4.0*85.00;
+    assert.equal(r140PathC.toFixed(2),'525.00','11-13 R12 Path C total');
+    assert.equal((r140PathA-r140PathC).toFixed(2),'5075.00','11-13 R12 savings vs Path A');
+    assert.equal(((r140PathA-r140PathC)/r140PathA*100).toFixed(2),'90.63','11-13 R12 pct savings vs Path A');
+    for(const r140File of ['workshops/github-trending-radar/docs/whiteboard-ai-tutor-spine-hero-skill-json-stroke-protocol-2d-rig-animation-selection-faq.md','workshops/github-trending-radar/docs/whiteboard-ai-tutor-spine-hero-skill-json-stroke-protocol-2d-rig-animation-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r12-whiteboard-spinehero.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r140File),'utf8');
+      assert.ok(txt.includes('1,860.00')&&txt.includes('3,740.00')&&txt.includes('5,600.00')&&txt.includes('185.00')&&txt.includes('340.00')&&txt.includes('525.00')&&txt.includes('5,075.00')&&txt.includes('90.63%')&&txt.includes('not_measured'),r140File+': contains exact 11-13 R12 whiteboard-ai-tutor+spine-hero-skill closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
