@@ -2163,6 +2163,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r142File),'utf8');
       assert.ok(txt.includes('1,520.00')&&txt.includes('3,420.00')&&txt.includes('4,940.00')&&txt.includes('140.00')&&txt.includes('315.00')&&txt.includes('455.00')&&txt.includes('4,485.00')&&txt.includes('90.79%')&&txt.includes('not_measured'),r142File+': contains exact 11-13 R14 learn-from-lessons+claude-usage-widget closed-form parameters');
     }
+    // 2026-11-13 Round 15 (R143: fendouai/ViralForge + wquguru/fable52-fps-repro) closed-form FinOps verification
+    const r143PathA=1940.00+44.0*85.00;
+    assert.equal(r143PathA.toFixed(2),'5680.00','11-13 R15 Path A total');
+    const r143PathC=215.00+4.0*85.00;
+    assert.equal(r143PathC.toFixed(2),'555.00','11-13 R15 Path C total');
+    assert.equal((r143PathA-r143PathC).toFixed(2),'5125.00','11-13 R15 savings vs Path A');
+    assert.equal(((r143PathA-r143PathC)/r143PathA*100).toFixed(2),'90.23','11-13 R15 pct savings vs Path A');
+    for(const r143File of ['workshops/github-trending-radar/docs/viralforge-fable52-fps-repro-vfml-video-studio-budget-capped-3d-fps-selection-faq.md','workshops/github-trending-radar/docs/viralforge-fable52-fps-repro-vfml-video-studio-budget-capped-3d-fps-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r15-viralforge-fable52fps.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r143File),'utf8');
+      assert.ok(txt.includes('1,940.00')&&txt.includes('3,740.00')&&txt.includes('5,680.00')&&txt.includes('215.00')&&txt.includes('340.00')&&txt.includes('555.00')&&txt.includes('5,125.00')&&txt.includes('90.23%')&&txt.includes('not_measured'),r143File+': contains exact 11-13 R15 viralforge+fable52-fps-repro closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
