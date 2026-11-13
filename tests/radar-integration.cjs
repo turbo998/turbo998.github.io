@@ -2064,6 +2064,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r133File),'utf8');
       assert.ok(txt.includes('1,580.00')&&txt.includes('3,740.00')&&txt.includes('5,320.00')&&txt.includes('195.00')&&txt.includes('425.00')&&txt.includes('620.00')&&txt.includes('4,700.00')&&txt.includes('88.35%')&&txt.includes('not_measured'),r133File+': contains exact 11-13 R5 printlab+sakurai-skill closed-form parameters');
     }
+    // 2026-11-13 Round 6 (R134: IluvatarLabs/sitrep + ELU-Labs/elu) closed-form FinOps verification
+    const r134PathA=1750.00+42.0*90.00;
+    assert.equal(r134PathA.toFixed(2),'5530.00','11-13 R6 Path A total');
+    const r134PathC=230.00+4.5*90.00;
+    assert.equal(r134PathC.toFixed(2),'635.00','11-13 R6 Path C total');
+    assert.equal((r134PathA-r134PathC).toFixed(2),'4895.00','11-13 R6 savings vs Path A');
+    assert.equal(((r134PathA-r134PathC)/r134PathA*100).toFixed(2),'88.52','11-13 R6 pct savings vs Path A');
+    for(const r134File of ['workshops/github-trending-radar/docs/sitrep-elu-cross-machine-agent-fleet-console-worktree-tui-selection-faq.md','workshops/github-trending-radar/docs/sitrep-elu-cross-machine-agent-fleet-console-worktree-tui-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r6-sitrep-elu.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r134File),'utf8');
+      assert.ok(txt.includes('1,750.00')&&txt.includes('3,780.00')&&txt.includes('5,530.00')&&txt.includes('230.00')&&txt.includes('405.00')&&txt.includes('635.00')&&txt.includes('4,895.00')&&txt.includes('88.52%')&&txt.includes('not_measured'),r134File+': contains exact 11-13 R6 sitrep+elu closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
