@@ -2592,6 +2592,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r181File),'utf8');
       assert.ok(txt.includes('2,760.00')&&txt.includes('3,420.00')&&txt.includes('6,180.00')&&txt.includes('180.00')&&txt.includes('332.50')&&txt.includes('512.50')&&txt.includes('5,667.50')&&txt.includes('91.71%')&&txt.includes('not_measured'),r181File+': contains exact 11-13 R53 linger+bot-hq closed-form parameters');
     }
+    // 2026-11-13 Round 54 (R182: ValidatorStack/solana-vigil + MZULALI/xj-scanner) closed-form FinOps verification
+    const r182PathA=2480.00+36.0*105.00;
+    assert.equal(r182PathA.toFixed(2),'6260.00','11-13 R54 Path A total');
+    const r182PathC=160.00+3.5*105.00;
+    assert.equal(r182PathC.toFixed(2),'527.50','11-13 R54 Path C total');
+    assert.equal((r182PathA-r182PathC).toFixed(2),'5732.50','11-13 R54 savings vs Path A');
+    assert.equal(((r182PathA-r182PathC)/r182PathA*100).toFixed(2),'91.57','11-13 R54 pct savings vs Path A');
+    for(const r182File of ['workshops/github-trending-radar/docs/solana-vigil-xj-scanner-readonly-alpenglow-validator-ops-3dollar-arduino-obd1-agent-skill-selection-faq.md','workshops/github-trending-radar/docs/solana-vigil-xj-scanner-readonly-alpenglow-validator-ops-3dollar-arduino-obd1-agent-skill-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r54-solana-vigil-xj-scanner.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r182File),'utf8');
+      assert.ok(txt.includes('2,480.00')&&txt.includes('3,780.00')&&txt.includes('6,260.00')&&txt.includes('160.00')&&txt.includes('367.50')&&txt.includes('527.50')&&txt.includes('5,732.50')&&txt.includes('91.57%')&&txt.includes('not_measured'),r182File+': contains exact 11-13 R54 solana-vigil+xj-scanner closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
