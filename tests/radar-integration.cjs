@@ -2372,6 +2372,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r161File),'utf8');
       assert.ok(txt.includes('1,460.00')&&txt.includes('3,420.00')&&txt.includes('4,880.00')&&txt.includes('150.00')&&txt.includes('315.00')&&txt.includes('465.00')&&txt.includes('4,415.00')&&txt.includes('90.47%')&&txt.includes('not_measured'),r161File+': contains exact 11-13 R33 codesk+kaikou closed-form parameters');
     }
+    // 2026-11-13 Round 34 (R162: hol-light-family/Poincare + graiz/kittybrowser) closed-form FinOps verification
+    const r162PathA=1725.00+38.0*115.00;
+    assert.equal(r162PathA.toFixed(2),'6095.00','11-13 R34 Path A total');
+    const r162PathC=175.00+3.5*115.00;
+    assert.equal(r162PathC.toFixed(2),'577.50','11-13 R34 Path C total');
+    assert.equal((r162PathA-r162PathC).toFixed(2),'5517.50','11-13 R34 savings vs Path A');
+    assert.equal(((r162PathA-r162PathC)/r162PathA*100).toFixed(2),'90.52','11-13 R34 pct savings vs Path A');
+    for(const r162File of ['workshops/github-trending-radar/docs/poincare-kittybrowser-hol-light-perelman-formalization-terminal-pane-chrome-browser-selection-faq.md','workshops/github-trending-radar/docs/poincare-kittybrowser-hol-light-perelman-formalization-terminal-pane-chrome-browser-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r34-poincare-kittybrowser.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r162File),'utf8');
+      assert.ok(txt.includes('1,725.00')&&txt.includes('4,370.00')&&txt.includes('6,095.00')&&txt.includes('175.00')&&txt.includes('402.50')&&txt.includes('577.50')&&txt.includes('5,517.50')&&txt.includes('90.52%')&&txt.includes('not_measured'),r162File+': contains exact 11-13 R34 poincare+kittybrowser closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
