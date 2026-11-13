@@ -869,6 +869,357 @@
           "sha256": "2d6c61703f0a74d67eb66dddbc1d40e7fbf918e56890655533699569b4f4b95b"
         }
       }
+    },
+    {
+      "round": 115,
+      "slug": "dlpack-versioned-capsule-strides-stream-lifetime",
+      "commit": "39bfe23a4be4814fb147c720a734606212363ed8",
+      "title": {
+        "zh": "DLPack Capsule、Strides、生命周期与 Stream",
+        "en": "DLPack Capsules, Strides, Lifetime & Streams"
+      },
+      "summary": {
+        "zh": "原创 descriptor/state/schedule models＋CPU buffer 计时：Element strides 当 bytes 时 6 值错 5 个；capsule 只消费一次、借用不转移 allocation；删除 wait edge 后 6 个枚举顺序中 1 个允许 stale read，不是 GPU 竞态概率",
+        "en": "Original descriptor/state/schedule models plus CPU buffer timing: byte-stride confusion changes five of six values; one-shot capsule borrowing does not transfer allocation ownership; removing a wait edge admits one stale ordering among six, not a GPU race probability"
+      },
+      "faq": {
+        "zh": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/dlpack-versioned-capsule-strides-stream-lifetime-selection-faq.md",
+        "en": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/dlpack-versioned-capsule-strides-stream-lifetime-selection-faq.en.md"
+      },
+      "files": {
+        "cards": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/dlpack-versioned-capsule-strides-stream-lifetime/cards.html",
+          "sha256": "ef856822ae7db0db9fbf027b593d2384326145bd76b3ee3e092a4fb800d8367f"
+        },
+        "workbench": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/dlpack-versioned-capsule-strides-stream-lifetime/workbench.html",
+          "sha256": "02a94da2de214e1c99c437bf4f63cf8dcd912a6115877be9c0ee8a377392f619"
+        },
+        "figure": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/dlpack-versioned-capsule-strides-stream-lifetime/summary.svg",
+          "sha256": "e2eb0cda00db28188a46b41eacfde72ca369fd70dd83525cfef08d765ef25ee1"
+        },
+        "report": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/dlpack-versioned-capsule-strides-stream-lifetime/report.json",
+          "sha256": "c70a0f6a934587c3e1b3df76a1440f9dab46da9321274c9ab9ea2617da999459"
+        },
+        "latency": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/dlpack-versioned-capsule-strides-stream-lifetime/latency.json",
+          "sha256": "a00db71bdef3e99c0233a59216e120646c30301a72117967d0e6c2707cee2547"
+        }
+      }
+    },
+    {
+      "round": 116,
+      "slug": "mel-filterbank-cast-order-axis-frame-contract",
+      "commit": "b9257ea45786bdead5a58eb1ffb009678cf8cf28",
+      "title": {
+        "zh": "Mel Filter Cast Order、坐标轴与 Frame 契约",
+        "en": "Mel-Filter Cast Order, Axes & Frame Contracts"
+      },
+      "summary": {
+        "zh": "原创 scalar filters＋CPU projection：Float32 cast order 改变 115/10,280 weights，最多 1 ULP；frame 400/401 同 hop 却为 101/100 frames；核验 11 月 12 日 audio dependency migration，不冒充 native parity 或 ASR quality",
+        "en": "Original scalar filters plus CPU projection: cast order changes 115/10,280 weights by at most one ULP; frame 400/401 at the same hop gives 101/100 frames; November 12 audio dependency migration verified, not native parity or ASR quality"
+      },
+      "faq": {
+        "zh": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/mel-filterbank-cast-order-axis-frame-contract-selection-faq.md",
+        "en": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/mel-filterbank-cast-order-axis-frame-contract-selection-faq.en.md"
+      },
+      "files": {
+        "cards": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/mel-filterbank-cast-order-axis-frame-contract/cards.html",
+          "sha256": "d6c3f25d14ae20286a83d8c4ed2ebb1a1f1b09221d11de50e052270c9668c07c"
+        },
+        "workbench": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/mel-filterbank-cast-order-axis-frame-contract/workbench.html",
+          "sha256": "60fbb4142bbe6405654b3aba4a8ad53ff0064cac087c98173421a0148e7eb46e"
+        },
+        "figure": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/mel-filterbank-cast-order-axis-frame-contract/summary.svg",
+          "sha256": "eebfa5af705c07268bc5c93a10a6a2229314ee58dd64b3229b4ade434cd3f275"
+        },
+        "report": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/mel-filterbank-cast-order-axis-frame-contract/report.json",
+          "sha256": "b25e3dffb57eb43e121341bb60ade1017f677052aadcf81f9a10e8ddc328a694"
+        },
+        "latency": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/mel-filterbank-cast-order-axis-frame-contract/latency.json",
+          "sha256": "4001ec3f663649cc16467473c2922351e9028afa304ca79001ed0b824ce7a350"
+        }
+      }
+    },
+    {
+      "round": 117,
+      "slug": "categorical-topk-topp-request-identity",
+      "commit": "d0b54d3a18075d43326f006721f37caf468f9d25",
+      "title": {
+        "zh": "Top-k/Top-p Law 与 Request Random Identity",
+        "en": "Top-k/Top-p Law & Request Random Identity"
+      },
+      "summary": {
+        "zh": "原创 exact filters/CDF＋CPU lookup：k=2/p=1/2 的两种 composition 有 3/7 total-variation distance；同 u 输出 0/1；rebatch 时 request uniforms 保留 2/2、slot uniforms 0/2；核验 11 月 13 日 basic invariant sampler，未复现 native RNG",
+        "en": "Original exact filters/CDF plus CPU lookup: k=2/p=1/2 compositions differ by 3/7 total variation and give tokens 0/1 at the same u; rebatching preserves 2/2 request uniforms versus 0/2 slot uniforms; November 13 basic invariant sampler verified, no native RNG reproduction"
+      },
+      "faq": {
+        "zh": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/categorical-topk-topp-request-identity-selection-faq.md",
+        "en": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/categorical-topk-topp-request-identity-selection-faq.en.md"
+      },
+      "files": {
+        "cards": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/categorical-topk-topp-request-identity/cards.html",
+          "sha256": "57919731cd570e40de491bc171a603f090599980645a0c5194450d189d7746c8"
+        },
+        "workbench": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/categorical-topk-topp-request-identity/workbench.html",
+          "sha256": "802d48014f86088722659e70798b94d62d5265808dfc456723caff6622fd0fab"
+        },
+        "figure": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/categorical-topk-topp-request-identity/summary.svg",
+          "sha256": "1437ea033489c3733eb3616ec6ebc5326227a5291b29cc7ae0ca421a8b5efe12"
+        },
+        "report": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/categorical-topk-topp-request-identity/report.json",
+          "sha256": "96c414fb2edde4fa4e5bfe860ab3549f772272eb4d9c1edb10413c1b43758d3f"
+        },
+        "latency": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/categorical-topk-topp-request-identity/latency.json",
+          "sha256": "1aeeb9fdbaede9909b23e6515503ca7799a32a79118f77295d37251a62345b4e"
+        }
+      }
+    },
+    {
+      "round": 118,
+      "slug": "float-radix-signed-zero-transformed-bit-range",
+      "commit": "03ebac0f6989bb7e4aa555baafabf89167d9e32f",
+      "title": {
+        "zh": "Float Radix、Signed Zero 与 Transformed Bits",
+        "en": "Float Radix, Signed Zero & Transformed Bits"
+      },
+      "summary": {
+        "zh": "原创 stable keys＋CPU byte buckets：numeric key 对齐 10/10、raw uint32 仅 1/10；signed-zero 稳定性不能靠 reverse 输出；partial range 在 transform 后截取；11 月 10 日为 ADL 维护，非新算法；不冒充 CUB/GPU benchmark",
+        "en": "Original stable keys plus CPU byte buckets: numeric keys agree 10/10, raw uint32 only 1/10; reversing output breaks signed-zero stability; partial bits selected after transform; November 10 ADL maintenance is not a new algorithm; no CUB/GPU benchmark claim"
+      },
+      "faq": {
+        "zh": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/float-radix-signed-zero-transformed-bit-range-selection-faq.md",
+        "en": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/float-radix-signed-zero-transformed-bit-range-selection-faq.en.md"
+      },
+      "files": {
+        "cards": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/float-radix-signed-zero-transformed-bit-range/cards.html",
+          "sha256": "ca85d38e3160fa39b027a6d67f9907f6ed89bcd81118b727a88bc6e47e345b58"
+        },
+        "workbench": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/float-radix-signed-zero-transformed-bit-range/workbench.html",
+          "sha256": "44912ae9f45ae7fc292bac1e6d526493ecdf1c79691093d7ec6bba579c8e69e5"
+        },
+        "figure": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/float-radix-signed-zero-transformed-bit-range/summary.svg",
+          "sha256": "ae99015baaa1ef17fc7cb45f5e980eddcbc4cc64fa22930d0218c891849fa34b"
+        },
+        "report": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/float-radix-signed-zero-transformed-bit-range/report.json",
+          "sha256": "6f86b54eb0cfc1269acec7e16bdebc6912a28d0673f8e90793ff6820621fa8bb"
+        },
+        "latency": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/float-radix-signed-zero-transformed-bit-range/latency.json",
+          "sha256": "af726b008d7f16b631c921015095608b349b33a16755172bb8de1b0b6232ed47"
+        }
+      }
+    },
+    {
+      "round": 119,
+      "slug": "autograd-implicit-fanin-explicit-precision",
+      "commit": "981f8f9efe9092ce4614e5b25126ac438c144e5f",
+      "title": {
+        "zh": "Autograd Fan-in 与 Explicit Precision",
+        "en": "Autograd Fan-in & Explicit Precision"
+      },
+      "summary": {
+        "zh": "原创 task-slots＋IEEE control：11 月 12 日新 guard 拒绝 same-task second defined gradient，不禁止跨次 .grad；[2²⁴,1,−2²⁴] narrow/wide 为 0/1，六顺序 exact agreement 4/6 与 6/6；未复现 native engine",
+        "en": "Original task slots plus IEEE control: November 12 guard rejects a second same-task defined gradient, not cross-call .grad; [2²⁴,1,−2²⁴] gives narrow/wide 0/1 and 4/6 versus 6/6 exact-order agreement; no native engine reproduction"
+      },
+      "faq": {
+        "zh": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/autograd-implicit-fanin-explicit-precision-selection-faq.md",
+        "en": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/autograd-implicit-fanin-explicit-precision-selection-faq.en.md"
+      },
+      "files": {
+        "cards": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/autograd-implicit-fanin-explicit-precision/cards.html",
+          "sha256": "f4167bdc6b0ba77ac4c951d692b9efc736e3e3d7eddb0edd7256a6ab421f1650"
+        },
+        "workbench": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/autograd-implicit-fanin-explicit-precision/workbench.html",
+          "sha256": "d6c49b8ebb0717f8f4a913d774da4e223d9ad37b2445850c9b20323ce59c8c08"
+        },
+        "figure": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/autograd-implicit-fanin-explicit-precision/summary.svg",
+          "sha256": "daf5761c54d26b550e8e306b9c491d594a1f632e191996e6a0a8a282c9bf378e"
+        },
+        "report": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/autograd-implicit-fanin-explicit-precision/report.json",
+          "sha256": "94753aa7da83eeaf372ebcd45c710f0862ede4aa1b6bd637dd27da671fa4711e"
+        },
+        "latency": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/autograd-implicit-fanin-explicit-precision/latency.json",
+          "sha256": "c7692469985d11fba24b8aaedf0628a3c9d6c5800bbca59e225120d1517d0c2a"
+        }
+      }
+    },
+    {
+      "round": 120,
+      "slug": "sparse-adam-coalescing-mask-step-state",
+      "commit": "034ebf15f2b6406ca957216f9c5fcf789e96ab04",
+      "title": {
+        "zh": "SparseAdam Coalesce、Mask 与 Parameter Time",
+        "en": "SparseAdam Coalescing, Mask & Parameter Time"
+      },
+      "summary": {
+        "zh": "原创 scalar updates＋CPU grouping：duplicate gradients 应先 sum 后 square，9≠5；absent row≠stored zero；首次 row 在 t=2 delta .081650≠.1；sparse gradients 仍有两个 dense moments；既有契约非新算法",
+        "en": "Original scalar updates plus CPU grouping: sum duplicates before squaring, 9≠5; absent row≠stored zero; first row update at t=2 is .081650≠.1; sparse gradients retain two dense moments; existing contract, not a new algorithm"
+      },
+      "faq": {
+        "zh": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/sparse-adam-coalescing-mask-step-state-selection-faq.md",
+        "en": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/sparse-adam-coalescing-mask-step-state-selection-faq.en.md"
+      },
+      "files": {
+        "cards": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/sparse-adam-coalescing-mask-step-state/cards.html",
+          "sha256": "ae13f0ee4b5453f701bd56c11c4bdc1056e4ec1894e16fcdc5f586bbae4f87e8"
+        },
+        "workbench": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/sparse-adam-coalescing-mask-step-state/workbench.html",
+          "sha256": "43a689ead1689ba413fc7fa2361e7df8c56c93e4d12f71de595ad14beae0e72a"
+        },
+        "figure": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/sparse-adam-coalescing-mask-step-state/summary.svg",
+          "sha256": "78cdb94b3f665bc3c98efe7aa5e5a8ffed356e46fbcb2910053e32147915b14b"
+        },
+        "report": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/sparse-adam-coalescing-mask-step-state/report.json",
+          "sha256": "8b7d3d0dea5ca4d0e9dfae96dbc58a41739b3d44b181d400901d00200d197e86"
+        },
+        "latency": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/sparse-adam-coalescing-mask-step-state/latency.json",
+          "sha256": "5db99173be170d58d6d3a59932cfd5189cdf336e7a138cb9d5331574bc97dbc3"
+        }
+      }
+    },
+    {
+      "round": 121,
+      "slug": "quantize-linear-rne-zero-point-axis",
+      "commit": "7bdc062dedcd6aa1fedf988c0283adc2107db9f5",
+      "title": {
+        "zh": "QuantizeLinear RNE、Zero Point 与 Axis",
+        "en": "QuantizeLinear RNE, Zero Point & Axis"
+      },
+      "summary": {
+        "zh": "原创 Fraction/BigInt＋CPU ratios：odd zero point 与 half-tie RNE 不交换，1≠2；square shape 错 axis 仍 valid，但仅对齐 2/4；明确 int8/uint8 saturation 与 native precision 边界，不冒充 FP6/GPU 测试",
+        "en": "Original Fraction/BigInt plus CPU ratios: odd zero point and half-tie RNE do not commute, 1≠2; wrong axis in a square shape remains valid but agrees only 2/4; int8/uint8 saturation and native precision boundaries explicit, no FP6/GPU test claim"
+      },
+      "faq": {
+        "zh": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/quantize-linear-rne-zero-point-axis-selection-faq.md",
+        "en": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/quantize-linear-rne-zero-point-axis-selection-faq.en.md"
+      },
+      "files": {
+        "cards": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/quantize-linear-rne-zero-point-axis/cards.html",
+          "sha256": "efc90ffa859a0763549388fff2115e78bbffbd6485183ee9163e24560ebe752d"
+        },
+        "workbench": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/quantize-linear-rne-zero-point-axis/workbench.html",
+          "sha256": "f039891f8783169c379209f763f4e48166253f31b628523850d9d97cad8bd242"
+        },
+        "figure": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/quantize-linear-rne-zero-point-axis/summary.svg",
+          "sha256": "e17c11cbc3abc42eea852d9f32e15a15c0bcc67934f79b8b52b0441cdffc0883"
+        },
+        "report": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/quantize-linear-rne-zero-point-axis/report.json",
+          "sha256": "c96035463053c6d2624035f3499700c290c4c29e7c798d2d1c7b69dc1eaf7580"
+        },
+        "latency": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/quantize-linear-rne-zero-point-axis/latency.json",
+          "sha256": "fc5d0a456e6edb8c7a85c10d5f1ed7b822e0345be7722d64e0f833904211bb73"
+        }
+      }
+    },
+    {
+      "round": 122,
+      "slug": "split-conformal-finite-rank-unbounded-boundary",
+      "commit": "e2f58c3b4b62194b6fb5aad8a6c73c91f341689c",
+      "title": {
+        "zh": "Conformal Finite Rank 与 Unbounded Boundary",
+        "en": "Conformal Finite Rank & Unbounded Boundary"
+      },
+      "summary": {
+        "zh": "原创 exact ranks＋CPU selection：n=9 的 85% target 需 rank9 非8，synthetic holdouts 9/10 vs8/10；95% 小样本应 unbounded，clip-max 只有90%；marginal exchangeability 不等于 per-query confidence",
+        "en": "Original exact ranks plus CPU selection: n=9 and 85% target need rank9 not8, synthetic holdouts9/10 versus8/10; 95% small-n threshold is unbounded, clip-max gives90%; marginal exchangeability is not per-query confidence"
+      },
+      "faq": {
+        "zh": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/split-conformal-finite-rank-unbounded-boundary-selection-faq.md",
+        "en": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/split-conformal-finite-rank-unbounded-boundary-selection-faq.en.md"
+      },
+      "files": {
+        "cards": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/split-conformal-finite-rank-unbounded-boundary/cards.html",
+          "sha256": "6b322f956f2051fee073da495be4d146633fa089b72e9d8c27974e04f8b27b07"
+        },
+        "workbench": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/split-conformal-finite-rank-unbounded-boundary/workbench.html",
+          "sha256": "08d40f4f374aa9cb3ce06c1c073ee65f2c5e26fa8fd7e9d4778d7ce29c9618ac"
+        },
+        "figure": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/split-conformal-finite-rank-unbounded-boundary/summary.svg",
+          "sha256": "b9c93932b8191937be2d946f1dea04e7b91bb92d2e7652b1713ce3cd8f1bea7e"
+        },
+        "report": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/split-conformal-finite-rank-unbounded-boundary/report.json",
+          "sha256": "c2a7d4b9bbce977751bff97ea276f16b7dadf0dd2631c73d2ece5f531c2b09b7"
+        },
+        "latency": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/split-conformal-finite-rank-unbounded-boundary/latency.json",
+          "sha256": "6d6be98eb22a3ae2e506444c1a2c6934fa65fb4ec7fc15a0ec46db2e596c8cb3"
+        }
+      }
+    },
+    {
+      "round": 123,
+      "slug": "kernel-cholesky-jitter-factor-reuse-variance",
+      "commit": "ce8d1624e4ec89e59131add6aa72bd7d929bdcf7",
+      "title": {
+        "zh": "Kernel Cholesky、Shift 与 Factor Cache",
+        "en": "Kernel Cholesky, Shift & Factor Cache"
+      },
+      "summary": {
+        "zh": "原创 scalar factor＋rational oracle：duplicate K 无 shift 奇异；noise=1/10 时 mean20/21、latent1/21、noisy31/210；改 matrix 用旧 factor residual .047619；native rescue jitter 不自动等于 observation noise",
+        "en": "Original scalar factor plus rational oracle: duplicate K singular without shift; noise1/10 gives mean20/21, latent1/21, noisy31/210; stale factor on changed matrix leaves residual .047619; native rescue jitter is not automatically observation noise"
+      },
+      "faq": {
+        "zh": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/kernel-cholesky-jitter-factor-reuse-variance-selection-faq.md",
+        "en": "https://github.com/turbo998/ai-infra-research/blob/main/docs/components/kernel-cholesky-jitter-factor-reuse-variance-selection-faq.en.md"
+      },
+      "files": {
+        "cards": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/kernel-cholesky-jitter-factor-reuse-variance/cards.html",
+          "sha256": "9f7e0465696c42bbb88991ca6410229ec33c765442db25c58850435fb7918990"
+        },
+        "workbench": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/kernel-cholesky-jitter-factor-reuse-variance/workbench.html",
+          "sha256": "e3e6ad11257eb1e4b968c28b5c0e7c8169dec2c91934114124ca28464a532e55"
+        },
+        "figure": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/kernel-cholesky-jitter-factor-reuse-variance/summary.svg",
+          "sha256": "cacd4941af35874fe7540c80f9acb0c57ca82ebe86c88ab29107f59d9c5313a7"
+        },
+        "report": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/kernel-cholesky-jitter-factor-reuse-variance/report.json",
+          "sha256": "e1152d104743b78df507f397b49b94b2056be684f3c0b146630cba1e63413d6c"
+        },
+        "latency": {
+          "path": "workshops/benchmarks/nightly-ai-infra-2026-11-13/kernel-cholesky-jitter-factor-reuse-variance/latency.json",
+          "sha256": "5fbe27763ea1ec4286634147c2bfca86f99d2b0d6093cb9b74f3f2dcaab20680"
+        }
+      }
     }
   ]
 }
