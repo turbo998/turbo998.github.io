@@ -2097,6 +2097,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r136File),'utf8');
       assert.ok(txt.includes('3,120.00')&&txt.includes('4,830.00')&&txt.includes('7,950.00')&&txt.includes('390.00')&&txt.includes('525.00')&&txt.includes('915.00')&&txt.includes('7,035.00')&&txt.includes('88.49%')&&txt.includes('not_measured'),r136File+': contains exact 11-13 R8 deleting-weights+robot-weight-debugging closed-form parameters');
     }
+    // 2026-11-13 Round 9 (R137: jackson-cmd/risk-aware-trading-agents + bis-med-it/marco-BIS) closed-form FinOps verification
+    const r137PathA=2040.00+45.0*100.00;
+    assert.equal(r137PathA.toFixed(2),'6540.00','11-13 R9 Path A total');
+    const r137PathC=240.00+5.0*100.00;
+    assert.equal(r137PathC.toFixed(2),'740.00','11-13 R9 Path C total');
+    assert.equal((r137PathA-r137PathC).toFixed(2),'5800.00','11-13 R9 savings vs Path A');
+    assert.equal(((r137PathA-r137PathC)/r137PathA*100).toFixed(2),'88.69','11-13 R9 pct savings vs Path A');
+    for(const r137File of ['workshops/github-trending-radar/docs/risk-aware-trading-agents-marco-bis-point-in-time-backtest-central-bank-econometrics-selection-faq.md','workshops/github-trending-radar/docs/risk-aware-trading-agents-marco-bis-point-in-time-backtest-central-bank-econometrics-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r9-riskaware-marcobis.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r137File),'utf8');
+      assert.ok(txt.includes('2,040.00')&&txt.includes('4,500.00')&&txt.includes('6,540.00')&&txt.includes('240.00')&&txt.includes('500.00')&&txt.includes('740.00')&&txt.includes('5,800.00')&&txt.includes('88.69%')&&txt.includes('not_measured'),r137File+': contains exact 11-13 R9 riskaware+marco-BIS closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
