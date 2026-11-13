@@ -2548,6 +2548,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r177File),'utf8');
       assert.ok(txt.includes('1,420.00')&&txt.includes('4,620.00')&&txt.includes('6,040.00')&&txt.includes('155.00')&&txt.includes('385.00')&&txt.includes('540.00')&&txt.includes('5,500.00')&&txt.includes('91.06%')&&txt.includes('not_measured'),r177File+': contains exact 11-13 R49 ggv+patty closed-form parameters');
     }
+    // 2026-11-13 Round 50 (R178: IanuaIDP/ianua + october-dev/car-use) closed-form FinOps verification
+    const r178PathA=2350.00+38.0*95.00;
+    assert.equal(r178PathA.toFixed(2),'5960.00','11-13 R50 Path A total');
+    const r178PathC=175.00+3.5*95.00;
+    assert.equal(r178PathC.toFixed(2),'507.50','11-13 R50 Path C total');
+    assert.equal((r178PathA-r178PathC).toFixed(2),'5452.50','11-13 R50 savings vs Path A');
+    assert.equal(((r178PathA-r178PathC)/r178PathA*100).toFixed(2),'91.48','11-13 R50 pct savings vs Path A');
+    for(const r178File of ['workshops/github-trending-radar/docs/ianua-car-use-rust-zero-trust-agent-idp-gateway-obd2-virtual-car-diagnostic-skill-selection-faq.md','workshops/github-trending-radar/docs/ianua-car-use-rust-zero-trust-agent-idp-gateway-obd2-virtual-car-diagnostic-skill-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r50-ianua-car-use.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r178File),'utf8');
+      assert.ok(txt.includes('2,350.00')&&txt.includes('3,610.00')&&txt.includes('5,960.00')&&txt.includes('175.00')&&txt.includes('332.50')&&txt.includes('507.50')&&txt.includes('5,452.50')&&txt.includes('91.48%')&&txt.includes('not_measured'),r178File+': contains exact 11-13 R50 ianua+car-use closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
