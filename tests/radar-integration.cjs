@@ -2053,6 +2053,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r132File),'utf8');
       assert.ok(txt.includes('1,890.00')&&txt.includes('3,600.00')&&txt.includes('5,490.00')&&txt.includes('210.00')&&txt.includes('360.00')&&txt.includes('570.00')&&txt.includes('4,920.00')&&txt.includes('89.62%')&&txt.includes('not_measured'),r132File+': contains exact 11-13 R4 claude-trading-skills+veyra-nrvideo closed-form parameters');
     }
+    // 2026-11-13 Round 5 (R133: AFangTeam/PrintLab + kociden/sakurai-skill) closed-form FinOps verification
+    const r133PathA=1580.00+44.0*85.00;
+    assert.equal(r133PathA.toFixed(2),'5320.00','11-13 R5 Path A total');
+    const r133PathC=195.00+5.0*85.00;
+    assert.equal(r133PathC.toFixed(2),'620.00','11-13 R5 Path C total');
+    assert.equal((r133PathA-r133PathC).toFixed(2),'4700.00','11-13 R5 savings vs Path A');
+    assert.equal(((r133PathA-r133PathC)/r133PathA*100).toFixed(2),'88.35','11-13 R5 pct savings vs Path A');
+    for(const r133File of ['workshops/github-trending-radar/docs/printlab-sakurai-skill-3d-printing-workbench-257-video-game-feel-skill-selection-faq.md','workshops/github-trending-radar/docs/printlab-sakurai-skill-3d-printing-workbench-257-video-game-feel-skill-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r5-printlab-sakurai.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r133File),'utf8');
+      assert.ok(txt.includes('1,580.00')&&txt.includes('3,740.00')&&txt.includes('5,320.00')&&txt.includes('195.00')&&txt.includes('425.00')&&txt.includes('620.00')&&txt.includes('4,700.00')&&txt.includes('88.35%')&&txt.includes('not_measured'),r133File+': contains exact 11-13 R5 printlab+sakurai-skill closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
