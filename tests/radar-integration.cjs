@@ -2196,6 +2196,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r145File),'utf8');
       assert.ok(txt.includes('1,720.00')&&txt.includes('3,780.00')&&txt.includes('5,500.00')&&txt.includes('185.00')&&txt.includes('315.00')&&txt.includes('500.00')&&txt.includes('5,000.00')&&txt.includes('90.91%')&&txt.includes('not_measured'),r145File+': contains exact 11-13 R17 tri-agent-orchestrator+cangshu-koubo closed-form parameters');
     }
+    // 2026-11-13 Round 18 (R146: mit-han-lab/EvolvingInfra + sii-nex/Nex-N2.6) closed-form FinOps verification
+    const r146PathA=4600.00+40.0*110.00;
+    assert.equal(r146PathA.toFixed(2),'9000.00','11-13 R18 Path A total');
+    const r146PathC=620.00+4.0*110.00;
+    assert.equal(r146PathC.toFixed(2),'1060.00','11-13 R18 Path C total');
+    assert.equal((r146PathA-r146PathC).toFixed(2),'7940.00','11-13 R18 savings vs Path A');
+    assert.equal(((r146PathA-r146PathC)/r146PathA*100).toFixed(2),'88.22','11-13 R18 pct savings vs Path A');
+    for(const r146File of ['workshops/github-trending-radar/docs/evolving-infra-nex-n2-6-agent-adaptive-serving-321b-fp8-cua-model-selection-faq.md','workshops/github-trending-radar/docs/evolving-infra-nex-n2-6-agent-adaptive-serving-321b-fp8-cua-model-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r18-evolvinginfra-nexn26.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r146File),'utf8');
+      assert.ok(txt.includes('4,600.00')&&txt.includes('4,400.00')&&txt.includes('9,000.00')&&txt.includes('620.00')&&txt.includes('440.00')&&txt.includes('1,060.00')&&txt.includes('7,940.00')&&txt.includes('88.22%')&&txt.includes('not_measured'),r146File+': contains exact 11-13 R18 EvolvingInfra+Nex-N2.6 closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
