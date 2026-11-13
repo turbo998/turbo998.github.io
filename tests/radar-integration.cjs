@@ -2471,6 +2471,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r170File),'utf8');
       assert.ok(txt.includes('960.00')&&txt.includes('4,400.00')&&txt.includes('5,360.00')&&txt.includes('135.00')&&txt.includes('350.00')&&txt.includes('485.00')&&txt.includes('4,875.00')&&txt.includes('90.95%')&&txt.includes('not_measured'),r170File+': contains exact 11-13 R42 iphone-cli+warrant closed-form parameters');
     }
+    // 2026-11-13 Round 43 (R171: oshinop/claudette + dungnguyenv/pinwall) closed-form FinOps verification
+    const r171PathA=1380.00+40.0*95.00;
+    assert.equal(r171PathA.toFixed(2),'5180.00','11-13 R43 Path A total');
+    const r171PathC=150.00+3.5*95.00;
+    assert.equal(r171PathC.toFixed(2),'482.50','11-13 R43 Path C total');
+    assert.equal((r171PathA-r171PathC).toFixed(2),'4697.50','11-13 R43 savings vs Path A');
+    assert.equal(((r171PathA-r171PathC)/r171PathA*100).toFixed(2),'90.69','11-13 R43 pct savings vs Path A');
+    for(const r171File of ['workshops/github-trending-radar/docs/claudette-pinwall-remote-ssh-local-tool-claude-proxy-element-pinned-mcp-review-wall-selection-faq.md','workshops/github-trending-radar/docs/claudette-pinwall-remote-ssh-local-tool-claude-proxy-element-pinned-mcp-review-wall-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r43-claudette-pinwall.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r171File),'utf8');
+      assert.ok(txt.includes('1,380.00')&&txt.includes('3,800.00')&&txt.includes('5,180.00')&&txt.includes('150.00')&&txt.includes('332.50')&&txt.includes('482.50')&&txt.includes('4,697.50')&&txt.includes('90.69%')&&txt.includes('not_measured'),r171File+': contains exact 11-13 R43 claudette+pinwall closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
