@@ -2394,6 +2394,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r163File),'utf8');
       assert.ok(txt.includes('1,580.00')&&txt.includes('3,800.00')&&txt.includes('5,380.00')&&txt.includes('165.00')&&txt.includes('350.00')&&txt.includes('515.00')&&txt.includes('4,865.00')&&txt.includes('90.43%')&&txt.includes('not_measured'),r163File+': contains exact 11-13 R35 reagentlive+fortnitemcp closed-form parameters');
     }
+    // 2026-11-13 Round 36 (R164: disinfeqt/rulebook + gopkg-dev/damail) closed-form FinOps verification
+    const r164PathA=1520.00+38.0*95.00;
+    assert.equal(r164PathA.toFixed(2),'5130.00','11-13 R36 Path A total');
+    const r164PathC=160.00+3.5*95.00;
+    assert.equal(r164PathC.toFixed(2),'492.50','11-13 R36 Path C total');
+    assert.equal((r164PathA-r164PathC).toFixed(2),'4637.50','11-13 R36 savings vs Path A');
+    assert.equal(((r164PathA-r164PathC)/r164PathA*100).toFixed(2),'90.40','11-13 R36 pct savings vs Path A');
+    for(const r164File of ['workshops/github-trending-radar/docs/rulebook-damail-claude-agents-md-auditor-selfhosted-scoped-mail-mcp-selection-faq.md','workshops/github-trending-radar/docs/rulebook-damail-claude-agents-md-auditor-selfhosted-scoped-mail-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r36-rulebook-damail.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r164File),'utf8');
+      assert.ok(txt.includes('1,520.00')&&txt.includes('3,610.00')&&txt.includes('5,130.00')&&txt.includes('160.00')&&txt.includes('332.50')&&txt.includes('492.50')&&txt.includes('4,637.50')&&txt.includes('90.40%')&&txt.includes('not_measured'),r164File+': contains exact 11-13 R36 rulebook+damail closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
