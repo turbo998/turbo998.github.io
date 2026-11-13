@@ -2438,6 +2438,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r167File),'utf8');
       assert.ok(txt.includes('1,620.00')&&txt.includes('3,800.00')&&txt.includes('5,420.00')&&txt.includes('160.00')&&txt.includes('350.00')&&txt.includes('510.00')&&txt.includes('4,910.00')&&txt.includes('90.59%')&&txt.includes('not_measured'),r167File+': contains exact 11-13 R39 quadknob+desprawl closed-form parameters');
     }
+    // 2026-11-13 Round 40 (R168: DhanushNehru/GhostWalk + qianshuixia/Shoal) closed-form FinOps verification
+    const r168PathA=1620.00+38.0*95.00;
+    assert.equal(r168PathA.toFixed(2),'5230.00','11-13 R40 Path A total');
+    const r168PathC=160.00+3.5*95.00;
+    assert.equal(r168PathC.toFixed(2),'492.50','11-13 R40 Path C total');
+    assert.equal((r168PathA-r168PathC).toFixed(2),'4737.50','11-13 R40 savings vs Path A');
+    assert.equal(((r168PathA-r168PathC)/r168PathA*100).toFixed(2),'90.58','11-13 R40 pct savings vs Path A');
+    for(const r168File of ['workshops/github-trending-radar/docs/ghostwalk-shoal-rust-arena-dom-web-engine-windows-conpty-multi-cli-workbench-selection-faq.md','workshops/github-trending-radar/docs/ghostwalk-shoal-rust-arena-dom-web-engine-windows-conpty-multi-cli-workbench-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r40-ghostwalk-shoal.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r168File),'utf8');
+      assert.ok(txt.includes('1,620.00')&&txt.includes('3,610.00')&&txt.includes('5,230.00')&&txt.includes('160.00')&&txt.includes('332.50')&&txt.includes('492.50')&&txt.includes('4,737.50')&&txt.includes('90.58%')&&txt.includes('not_measured'),r168File+': contains exact 11-13 R40 ghostwalk+shoal closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
