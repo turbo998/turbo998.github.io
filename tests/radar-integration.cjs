@@ -2218,6 +2218,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r147File),'utf8');
       assert.ok(txt.includes('1,950.00')&&txt.includes('4,200.00')&&txt.includes('6,150.00')&&txt.includes('210.00')&&txt.includes('400.00')&&txt.includes('610.00')&&txt.includes('5,540.00')&&txt.includes('90.08%')&&txt.includes('not_measured'),r147File+': contains exact 11-13 R19 TwinFix+agent-eval-loop closed-form parameters');
     }
+    // 2026-11-13 Round 20 (R148: EliYuan30/Reframe + Liuzedooong/SparseReading) closed-form FinOps verification
+    const r148PathA=2850.00+40.0*95.00;
+    assert.equal(r148PathA.toFixed(2),'6650.00','11-13 R20 Path A total');
+    const r148PathC=285.00+3.5*95.00;
+    assert.equal(r148PathC.toFixed(2),'617.50','11-13 R20 Path C total');
+    assert.equal((r148PathA-r148PathC).toFixed(2),'6032.50','11-13 R20 savings vs Path A');
+    assert.equal(((r148PathA-r148PathC)/r148PathA*100).toFixed(2),'90.71','11-13 R20 pct savings vs Path A');
+    for(const r148File of ['workshops/github-trending-radar/docs/reframe-sparsereading-observation-aligned-visual-rl-sparse-evidence-reading-layer-selection-faq.md','workshops/github-trending-radar/docs/reframe-sparsereading-observation-aligned-visual-rl-sparse-evidence-reading-layer-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r20-reframe-sparsereading.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r148File),'utf8');
+      assert.ok(txt.includes('2,850.00')&&txt.includes('3,800.00')&&txt.includes('6,650.00')&&txt.includes('285.00')&&txt.includes('332.50')&&txt.includes('617.50')&&txt.includes('6,032.50')&&txt.includes('90.71%')&&txt.includes('not_measured'),r148File+': contains exact 11-13 R20 Reframe+SparseReading closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
