@@ -2526,6 +2526,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r175File),'utf8');
       assert.ok(txt.includes('1,280.00')&&txt.includes('3,800.00')&&txt.includes('5,080.00')&&txt.includes('145.00')&&txt.includes('332.50')&&txt.includes('477.50')&&txt.includes('4,602.50')&&txt.includes('90.60%')&&txt.includes('not_measured'),r175File+': contains exact 11-13 R47 kodyurd+herdr-wake closed-form parameters');
     }
+    // 2026-11-13 Round 48 (R176: WeiBeta/skill-forge-public + IsValorum/V-Agent) closed-form FinOps verification
+    const r176PathA=1680.00+38.0*95.00;
+    assert.equal(r176PathA.toFixed(2),'5290.00','11-13 R48 Path A total');
+    const r176PathC=150.00+3.5*95.00;
+    assert.equal(r176PathC.toFixed(2),'482.50','11-13 R48 Path C total');
+    assert.equal((r176PathA-r176PathC).toFixed(2),'4807.50','11-13 R48 savings vs Path A');
+    assert.equal(((r176PathA-r176PathC)/r176PathA*100).toFixed(2),'90.88','11-13 R48 pct savings vs Path A');
+    for(const r176File of ['workshops/github-trending-radar/docs/skill-forge-public-v-agent-8skill-codex-governance-dynamic-moe-vram-windows-agent-selection-faq.md','workshops/github-trending-radar/docs/skill-forge-public-v-agent-8skill-codex-governance-dynamic-moe-vram-windows-agent-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r48-skill-forge-v-agent.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r176File),'utf8');
+      assert.ok(txt.includes('1,680.00')&&txt.includes('3,610.00')&&txt.includes('5,290.00')&&txt.includes('150.00')&&txt.includes('332.50')&&txt.includes('482.50')&&txt.includes('4,807.50')&&txt.includes('90.88%')&&txt.includes('not_measured'),r176File+': contains exact 11-13 R48 skill-forge+v-agent closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
