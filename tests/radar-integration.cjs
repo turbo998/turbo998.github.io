@@ -2350,6 +2350,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r159File),'utf8');
       assert.ok(txt.includes('2,450.00')&&txt.includes('4,400.00')&&txt.includes('6,850.00')&&txt.includes('380.00')&&txt.includes('440.00')&&txt.includes('820.00')&&txt.includes('6,030.00')&&txt.includes('88.03%')&&txt.includes('not_measured'),r159File+': contains exact 11-13 R31 vstack+deja closed-form parameters');
     }
+    // 2026-11-13 Round 32 (R160: Faixiang/UI-Kit-Aggregator-MCP + tmdaidevs/fabric-planning-skill) closed-form FinOps verification
+    const r160PathA=1650.00+38.0*100.00;
+    assert.equal(r160PathA.toFixed(2),'5450.00','11-13 R32 Path A total');
+    const r160PathC=170.00+3.5*100.00;
+    assert.equal(r160PathC.toFixed(2),'520.00','11-13 R32 Path C total');
+    assert.equal((r160PathA-r160PathC).toFixed(2),'4930.00','11-13 R32 savings vs Path A');
+    assert.equal(((r160PathA-r160PathC)/r160PathA*100).toFixed(2),'90.46','11-13 R32 pct savings vs Path A');
+    for(const r160File of ['workshops/github-trending-radar/docs/ui-kit-aggregator-mcp-fabric-planning-skill-9catalog-license-gate-fabric-planv1-selection-faq.md','workshops/github-trending-radar/docs/ui-kit-aggregator-mcp-fabric-planning-skill-9catalog-license-gate-fabric-planv1-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r32-uikitmcp-fabricplan.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r160File),'utf8');
+      assert.ok(txt.includes('1,650.00')&&txt.includes('3,800.00')&&txt.includes('5,450.00')&&txt.includes('170.00')&&txt.includes('350.00')&&txt.includes('520.00')&&txt.includes('4,930.00')&&txt.includes('90.46%')&&txt.includes('not_measured'),r160File+': contains exact 11-13 R32 ui-kit-mcp+fabric-planning closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
