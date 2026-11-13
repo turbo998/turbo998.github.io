@@ -2251,6 +2251,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r150File),'utf8');
       assert.ok(txt.includes('1,880.00')&&txt.includes('3,960.00')&&txt.includes('5,840.00')&&txt.includes('210.00')&&txt.includes('360.00')&&txt.includes('570.00')&&txt.includes('5,270.00')&&txt.includes('90.24%')&&txt.includes('not_measured'),r150File+': contains exact 11-13 R22 vibehw-stack+blockout-to-real closed-form parameters');
     }
+    // 2026-11-13 Round 23 (R151: fivetaku/whosup + gettogo/togo) closed-form FinOps verification
+    const r151PathA=1580.00+38.0*95.00;
+    assert.equal(r151PathA.toFixed(2),'5190.00','11-13 R23 Path A total');
+    const r151PathC=160.00+3.5*95.00;
+    assert.equal(r151PathC.toFixed(2),'492.50','11-13 R23 Path C total');
+    assert.equal((r151PathA-r151PathC).toFixed(2),'4697.50','11-13 R23 savings vs Path A');
+    assert.equal(((r151PathA-r151PathC)/r151PathA*100).toFixed(2),'90.51','11-13 R23 pct savings vs Path A');
+    for(const r151File of ['workshops/github-trending-radar/docs/whosup-togo-herdr-multipane-attention-board-16-harness-ios-watch-tmux-remote-selection-faq.md','workshops/github-trending-radar/docs/whosup-togo-herdr-multipane-attention-board-16-harness-ios-watch-tmux-remote-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r23-whosup-togo.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r151File),'utf8');
+      assert.ok(txt.includes('1,580.00')&&txt.includes('3,610.00')&&txt.includes('5,190.00')&&txt.includes('160.00')&&txt.includes('332.50')&&txt.includes('492.50')&&txt.includes('4,697.50')&&txt.includes('90.51%')&&txt.includes('not_measured'),r151File+': contains exact 11-13 R23 whosup+togo closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
