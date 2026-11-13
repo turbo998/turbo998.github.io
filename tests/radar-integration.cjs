@@ -2240,6 +2240,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r149File),'utf8');
       assert.ok(txt.includes('1,620.00')&&txt.includes('3,610.00')&&txt.includes('5,230.00')&&txt.includes('165.00')&&txt.includes('332.50')&&txt.includes('497.50')&&txt.includes('4,732.50')&&txt.includes('90.49%')&&txt.includes('not_measured'),r149File+': contains exact 11-13 R21 PeerHarness+antigravity-agent-rules closed-form parameters');
     }
+    // 2026-11-13 Round 22 (R150: makoshan/vibehw-stack + gokayfem/blockout-to-real) closed-form FinOps verification
+    const r150PathA=1880.00+44.0*90.00;
+    assert.equal(r150PathA.toFixed(2),'5840.00','11-13 R22 Path A total');
+    const r150PathC=210.00+4.0*90.00;
+    assert.equal(r150PathC.toFixed(2),'570.00','11-13 R22 Path C total');
+    assert.equal((r150PathA-r150PathC).toFixed(2),'5270.00','11-13 R22 savings vs Path A');
+    assert.equal(((r150PathA-r150PathC)/r150PathA*100).toFixed(2),'90.24','11-13 R22 pct savings vs Path A');
+    for(const r150File of ['workshops/github-trending-radar/docs/vibehw-stack-blockout-to-real-7stage-hardware-fab-gates-cycles-solved-pbr-scene-skill-selection-faq.md','workshops/github-trending-radar/docs/vibehw-stack-blockout-to-real-7stage-hardware-fab-gates-cycles-solved-pbr-scene-skill-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r22-vibehw-blockouttoreal.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r150File),'utf8');
+      assert.ok(txt.includes('1,880.00')&&txt.includes('3,960.00')&&txt.includes('5,840.00')&&txt.includes('210.00')&&txt.includes('360.00')&&txt.includes('570.00')&&txt.includes('5,270.00')&&txt.includes('90.24%')&&txt.includes('not_measured'),r150File+': contains exact 11-13 R22 vibehw-stack+blockout-to-real closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
