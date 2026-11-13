@@ -2317,6 +2317,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r156File),'utf8');
       assert.ok(txt.includes('1,520.00')&&txt.includes('3,610.00')&&txt.includes('5,130.00')&&txt.includes('160.00')&&txt.includes('332.50')&&txt.includes('492.50')&&txt.includes('4,637.50')&&txt.includes('90.40%')&&txt.includes('not_measured'),r156File+': contains exact 11-13 R28 weave-your-work+tmux-shared-session closed-form parameters');
     }
+    // 2026-11-13 Round 29 (R157: joebentham/desk-buddy + yolilin642-byte/screen-handoff) closed-form FinOps verification
+    const r157PathA=1420.00+36.0*95.00;
+    assert.equal(r157PathA.toFixed(2),'4840.00','11-13 R29 Path A total');
+    const r157PathC=145.00+3.5*95.00;
+    assert.equal(r157PathC.toFixed(2),'477.50','11-13 R29 Path C total');
+    assert.equal((r157PathA-r157PathC).toFixed(2),'4362.50','11-13 R29 savings vs Path A');
+    assert.equal(((r157PathA-r157PathC)/r157PathA*100).toFixed(2),'90.13','11-13 R29 pct savings vs Path A');
+    for(const r157File of ['workshops/github-trending-radar/docs/desk-buddy-screen-handoff-esp32-prism-companion-webrtc-cua-human-takeover-selection-faq.md','workshops/github-trending-radar/docs/desk-buddy-screen-handoff-esp32-prism-companion-webrtc-cua-human-takeover-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r29-deskbuddy-screenhandoff.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r157File),'utf8');
+      assert.ok(txt.includes('1,420.00')&&txt.includes('3,420.00')&&txt.includes('4,840.00')&&txt.includes('145.00')&&txt.includes('332.50')&&txt.includes('477.50')&&txt.includes('4,362.50')&&txt.includes('90.13%')&&txt.includes('not_measured'),r157File+': contains exact 11-13 R29 desk-buddy+screen-handoff closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
