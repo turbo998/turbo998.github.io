@@ -2020,6 +2020,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r129File),'utf8');
       assert.ok(txt.includes('1,620.00')&&txt.includes('4,680.00')&&txt.includes('6,300.00')&&txt.includes('180.00')&&txt.includes('540.00')&&txt.includes('720.00')&&txt.includes('5,580.00')&&txt.includes('88.57%')&&txt.includes('not_measured'),r129File+': contains exact 11-13 R1 open-code-review+chrome-devtools-mcp closed-form parameters');
     }
+    // 2026-11-13 Round 2 (R130: block/buzz + rivet-dev/open-orange) closed-form FinOps verification
+    const r130PathA=2480.00+44.0*95.00;
+    assert.equal(r130PathA.toFixed(2),'6660.00','11-13 R2 Path A total');
+    const r130PathC=420.00+4.0*95.00;
+    assert.equal(r130PathC.toFixed(2),'800.00','11-13 R2 Path C total');
+    assert.equal((r130PathA-r130PathC).toFixed(2),'5860.00','11-13 R2 savings vs Path A');
+    assert.equal(((r130PathA-r130PathC)/r130PathA*100).toFixed(2),'87.99','11-13 R2 pct savings vs Path A');
+    for(const r130File of ['workshops/github-trending-radar/docs/buzz-open-orange-sovereign-signed-event-workspace-multicloud-workers-selection-faq.md','workshops/github-trending-radar/docs/buzz-open-orange-sovereign-signed-event-workspace-multicloud-workers-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r2-buzz-openorange.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r130File),'utf8');
+      assert.ok(txt.includes('2,480.00')&&txt.includes('4,180.00')&&txt.includes('6,660.00')&&txt.includes('420.00')&&txt.includes('380.00')&&txt.includes('800.00')&&txt.includes('5,860.00')&&txt.includes('87.99%')&&txt.includes('not_measured'),r130File+': contains exact 11-13 R2 buzz+open-orange closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
