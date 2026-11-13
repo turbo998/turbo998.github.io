@@ -2603,6 +2603,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r182File),'utf8');
       assert.ok(txt.includes('2,480.00')&&txt.includes('3,780.00')&&txt.includes('6,260.00')&&txt.includes('160.00')&&txt.includes('367.50')&&txt.includes('527.50')&&txt.includes('5,732.50')&&txt.includes('91.57%')&&txt.includes('not_measured'),r182File+': contains exact 11-13 R54 solana-vigil+xj-scanner closed-form parameters');
     }
+    // 2026-11-13 Round 55 (R183: zadescoxp/calibrain-harness + fengyiqicoder/awesome-fable-5.2) closed-form FinOps verification
+    const r183PathA=1520.00+36.0*100.00;
+    assert.equal(r183PathA.toFixed(2),'5120.00','11-13 R55 Path A total');
+    const r183PathC=140.00+3.5*100.00;
+    assert.equal(r183PathC.toFixed(2),'490.00','11-13 R55 Path C total');
+    assert.equal((r183PathA-r183PathC).toFixed(2),'4630.00','11-13 R55 savings vs Path A');
+    assert.equal(((r183PathA-r183PathC)/r183PathA*100).toFixed(2),'90.43','11-13 R55 pct savings vs Path A');
+    for(const r183File of ['workshops/github-trending-radar/docs/calibrain-harness-awesome-fable-5-2-systemone-forward-testing-143-verified-live-artifacts-selection-faq.md','workshops/github-trending-radar/docs/calibrain-harness-awesome-fable-5-2-systemone-forward-testing-143-verified-live-artifacts-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r55-calibrain-fable52.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r183File),'utf8');
+      assert.ok(txt.includes('1,520.00')&&txt.includes('3,600.00')&&txt.includes('5,120.00')&&txt.includes('140.00')&&txt.includes('350.00')&&txt.includes('490.00')&&txt.includes('4,630.00')&&txt.includes('90.43%')&&txt.includes('not_measured'),r183File+': contains exact 11-13 R55 calibrain+awesome-fable-5.2 closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
