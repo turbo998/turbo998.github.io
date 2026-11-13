@@ -2152,6 +2152,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r141File),'utf8');
       assert.ok(txt.includes('1,650.00')&&txt.includes('3,600.00')&&txt.includes('5,250.00')&&txt.includes('165.00')&&txt.includes('360.00')&&txt.includes('525.00')&&txt.includes('4,725.00')&&txt.includes('90.00%')&&txt.includes('not_measured'),r141File+': contains exact 11-13 R13 ai-portfolio+sozai-search-mcp closed-form parameters');
     }
+    // 2026-11-13 Round 14 (R142: assassin808/learn-from-lessons + AbdoSarmini/claude-usage-widget-for-windows-taskbar) closed-form FinOps verification
+    const r142PathA=1520.00+38.0*90.00;
+    assert.equal(r142PathA.toFixed(2),'4940.00','11-13 R14 Path A total');
+    const r142PathC=140.00+3.5*90.00;
+    assert.equal(r142PathC.toFixed(2),'455.00','11-13 R14 Path C total');
+    assert.equal((r142PathA-r142PathC).toFixed(2),'4485.00','11-13 R14 savings vs Path A');
+    assert.equal(((r142PathA-r142PathC)/r142PathA*100).toFixed(2),'90.79','11-13 R14 pct savings vs Path A');
+    for(const r142File of ['workshops/github-trending-radar/docs/learn-from-lessons-claude-usage-widget-transcript-correction-graph-rust-taskbar-selection-faq.md','workshops/github-trending-radar/docs/learn-from-lessons-claude-usage-widget-transcript-correction-graph-rust-taskbar-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r14-learnfrom-taskbarwidget.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r142File),'utf8');
+      assert.ok(txt.includes('1,520.00')&&txt.includes('3,420.00')&&txt.includes('4,940.00')&&txt.includes('140.00')&&txt.includes('315.00')&&txt.includes('455.00')&&txt.includes('4,485.00')&&txt.includes('90.79%')&&txt.includes('not_measured'),r142File+': contains exact 11-13 R14 learn-from-lessons+claude-usage-widget closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
