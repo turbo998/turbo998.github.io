@@ -2515,6 +2515,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r174File),'utf8');
       assert.ok(txt.includes('1,820.00')&&txt.includes('3,420.00')&&txt.includes('5,240.00')&&txt.includes('155.00')&&txt.includes('332.50')&&txt.includes('487.50')&&txt.includes('4,752.50')&&txt.includes('90.70%')&&txt.includes('not_measured'),r174File+': contains exact 11-13 R46 gemini-app2api+yardmaster closed-form parameters');
     }
+    // 2026-11-13 Round 47 (R175: azerturk/kodyurd + Heretikio/herdr-wake) closed-form FinOps verification
+    const r175PathA=1280.00+40.0*95.00;
+    assert.equal(r175PathA.toFixed(2),'5080.00','11-13 R47 Path A total');
+    const r175PathC=145.00+3.5*95.00;
+    assert.equal(r175PathC.toFixed(2),'477.50','11-13 R47 Path C total');
+    assert.equal((r175PathA-r175PathC).toFixed(2),'4602.50','11-13 R47 savings vs Path A');
+    assert.equal(((r175PathA-r175PathC)/r175PathA*100).toFixed(2),'90.60','11-13 R47 pct savings vs Path A');
+    for(const r175File of ['workshops/github-trending-radar/docs/kodyurd-herdr-wake-evidenced-3d-code-city-drawio-safe-flag-reboot-agent-resumer-selection-faq.md','workshops/github-trending-radar/docs/kodyurd-herdr-wake-evidenced-3d-code-city-drawio-safe-flag-reboot-agent-resumer-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r47-kodyurd-herdr-wake.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r175File),'utf8');
+      assert.ok(txt.includes('1,280.00')&&txt.includes('3,800.00')&&txt.includes('5,080.00')&&txt.includes('145.00')&&txt.includes('332.50')&&txt.includes('477.50')&&txt.includes('4,602.50')&&txt.includes('90.60%')&&txt.includes('not_measured'),r175File+': contains exact 11-13 R47 kodyurd+herdr-wake closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
