@@ -2031,6 +2031,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r130File),'utf8');
       assert.ok(txt.includes('2,480.00')&&txt.includes('4,180.00')&&txt.includes('6,660.00')&&txt.includes('420.00')&&txt.includes('380.00')&&txt.includes('800.00')&&txt.includes('5,860.00')&&txt.includes('87.99%')&&txt.includes('not_measured'),r130File+': contains exact 11-13 R2 buzz+open-orange closed-form parameters');
     }
+    // 2026-11-13 Round 3 (R131: deepseek-ai/chat-demo + higurashi-ai/Haru) closed-form FinOps verification
+    const r131PathA=2350.00+42.0*90.00;
+    assert.equal(r131PathA.toFixed(2),'6130.00','11-13 R3 Path A total');
+    const r131PathC=310.00+4.0*90.00;
+    assert.equal(r131PathC.toFixed(2),'670.00','11-13 R3 Path C total');
+    assert.equal((r131PathA-r131PathC).toFixed(2),'5460.00','11-13 R3 savings vs Path A');
+    assert.equal(((r131PathA-r131PathC)/r131PathA*100).toFixed(2),'89.07','11-13 R3 pct savings vs Path A');
+    for(const r131File of ['workshops/github-trending-radar/docs/deepseek-chat-demo-haru-4b-zero-backend-chat-full-duplex-meanflow-speech-selection-faq.md','workshops/github-trending-radar/docs/deepseek-chat-demo-haru-4b-zero-backend-chat-full-duplex-meanflow-speech-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r3-deepseek-haru.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r131File),'utf8');
+      assert.ok(txt.includes('2,350.00')&&txt.includes('3,780.00')&&txt.includes('6,130.00')&&txt.includes('310.00')&&txt.includes('360.00')&&txt.includes('670.00')&&txt.includes('5,460.00')&&txt.includes('89.07%')&&txt.includes('not_measured'),r131File+': contains exact 11-13 R3 deepseek-chat-demo+haru-4b closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
