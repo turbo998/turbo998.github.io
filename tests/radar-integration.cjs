@@ -2460,6 +2460,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r169File),'utf8');
       assert.ok(txt.includes('2,150.00')&&txt.includes('4,400.00')&&txt.includes('6,550.00')&&txt.includes('230.00')&&txt.includes('440.00')&&txt.includes('670.00')&&txt.includes('5,880.00')&&txt.includes('89.77%')&&txt.includes('not_measured'),r169File+': contains exact 11-13 R41 gnomon+fitskills closed-form parameters');
     }
+    // 2026-11-13 Round 42 (R170: HyunSeob/iphone-cli + ItsShreyamHere/warrant) closed-form FinOps verification
+    const r170PathA=960.00+44.0*100.00;
+    assert.equal(r170PathA.toFixed(2),'5360.00','11-13 R42 Path A total');
+    const r170PathC=135.00+3.5*100.00;
+    assert.equal(r170PathC.toFixed(2),'485.00','11-13 R42 Path C total');
+    assert.equal((r170PathA-r170PathC).toFixed(2),'4875.00','11-13 R42 savings vs Path A');
+    assert.equal(((r170PathA-r170PathC)/r170PathA*100).toFixed(2),'90.95','11-13 R42 pct savings vs Path A');
+    for(const r170File of ['workshops/github-trending-radar/docs/iphone-cli-warrant-zero-wda-real-iphone-mcp-statcheck-research-claim-verifier-selection-faq.md','workshops/github-trending-radar/docs/iphone-cli-warrant-zero-wda-real-iphone-mcp-statcheck-research-claim-verifier-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r42-iphone-cli-warrant.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r170File),'utf8');
+      assert.ok(txt.includes('960.00')&&txt.includes('4,400.00')&&txt.includes('5,360.00')&&txt.includes('135.00')&&txt.includes('350.00')&&txt.includes('485.00')&&txt.includes('4,875.00')&&txt.includes('90.95%')&&txt.includes('not_measured'),r170File+': contains exact 11-13 R42 iphone-cli+warrant closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
