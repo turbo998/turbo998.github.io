@@ -2537,6 +2537,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r176File),'utf8');
       assert.ok(txt.includes('1,680.00')&&txt.includes('3,610.00')&&txt.includes('5,290.00')&&txt.includes('150.00')&&txt.includes('332.50')&&txt.includes('482.50')&&txt.includes('4,807.50')&&txt.includes('90.88%')&&txt.includes('not_measured'),r176File+': contains exact 11-13 R48 skill-forge+v-agent closed-form parameters');
     }
+    // 2026-11-13 Round 49 (R177: DylanCosto/ggv + ckaico/patty) closed-form FinOps verification
+    const r177PathA=1420.00+42.0*110.00;
+    assert.equal(r177PathA.toFixed(2),'6040.00','11-13 R49 Path A total');
+    const r177PathC=155.00+3.5*110.00;
+    assert.equal(r177PathC.toFixed(2),'540.00','11-13 R49 Path C total');
+    assert.equal((r177PathA-r177PathC).toFixed(2),'5500.00','11-13 R49 savings vs Path A');
+    assert.equal(((r177PathA-r177PathC)/r177PathA*100).toFixed(2),'91.06','11-13 R49 pct savings vs Path A');
+    for(const r177File of ['workshops/github-trending-radar/docs/ggv-patty-1ms-rust-genome-viewer-mcp-file-line-verified-patent-clearance-mcp-selection-faq.md','workshops/github-trending-radar/docs/ggv-patty-1ms-rust-genome-viewer-mcp-file-line-verified-patent-clearance-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r49-ggv-patty.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r177File),'utf8');
+      assert.ok(txt.includes('1,420.00')&&txt.includes('4,620.00')&&txt.includes('6,040.00')&&txt.includes('155.00')&&txt.includes('385.00')&&txt.includes('540.00')&&txt.includes('5,500.00')&&txt.includes('91.06%')&&txt.includes('not_measured'),r177File+': contains exact 11-13 R49 ggv+patty closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
