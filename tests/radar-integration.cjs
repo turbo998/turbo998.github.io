@@ -2207,6 +2207,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r146File),'utf8');
       assert.ok(txt.includes('4,600.00')&&txt.includes('4,400.00')&&txt.includes('9,000.00')&&txt.includes('620.00')&&txt.includes('440.00')&&txt.includes('1,060.00')&&txt.includes('7,940.00')&&txt.includes('88.22%')&&txt.includes('not_measured'),r146File+': contains exact 11-13 R18 EvolvingInfra+Nex-N2.6 closed-form parameters');
     }
+    // 2026-11-13 Round 19 (R147: spacesky-cell/TwinFix + relai-ai/agent-eval-loop) closed-form FinOps verification
+    const r147PathA=1950.00+42.0*100.00;
+    assert.equal(r147PathA.toFixed(2),'6150.00','11-13 R19 Path A total');
+    const r147PathC=210.00+4.0*100.00;
+    assert.equal(r147PathC.toFixed(2),'610.00','11-13 R19 Path C total');
+    assert.equal((r147PathA-r147PathC).toFixed(2),'5540.00','11-13 R19 savings vs Path A');
+    assert.equal(((r147PathA-r147PathC)/r147PathA*100).toFixed(2),'90.08','11-13 R19 pct savings vs Path A');
+    for(const r147File of ['workshops/github-trending-radar/docs/twinfix-agent-eval-loop-disposable-twin-incident-remediation-harbor-eval-driven-agents-selection-faq.md','workshops/github-trending-radar/docs/twinfix-agent-eval-loop-disposable-twin-incident-remediation-harbor-eval-driven-agents-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r19-twinfix-agenteval.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r147File),'utf8');
+      assert.ok(txt.includes('1,950.00')&&txt.includes('4,200.00')&&txt.includes('6,150.00')&&txt.includes('210.00')&&txt.includes('400.00')&&txt.includes('610.00')&&txt.includes('5,540.00')&&txt.includes('90.08%')&&txt.includes('not_measured'),r147File+': contains exact 11-13 R19 TwinFix+agent-eval-loop closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
