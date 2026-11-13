@@ -28,7 +28,7 @@ Release checks: `tests\site-localization.cjs`, `tests\global-search.cjs`, `tests
 
 [中文归档](workshops/benchmarks/ai-infra-nightly-2026-11-13.html) ·
 [English archive](workshops/benchmarks/ai-infra-nightly-2026-11-13.en.html)：
-2026-11-13 夜班 Round 92 起的双语 FAQ、原创工作台、SVG 和封存七卡报告。
+2026-11-13 夜班 Round 92–123，共 32 个独立专题的双语 FAQ、原创工作台、SVG 和封存七卡报告。
 公开清单只含精选摘要、源码提交及资产 SHA-256，不包含会话清单或本地路径。
 合成研究与原创 CPU 记录分开标注，不是 native GPU 或生产基准。
 `node scripts\nightly-ai-infra.cjs` 幂等更新归档和六个门户页面；
