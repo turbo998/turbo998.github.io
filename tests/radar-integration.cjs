@@ -2306,6 +2306,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r155File),'utf8');
       assert.ok(txt.includes('1,780.00')&&txt.includes('3,610.00')&&txt.includes('5,390.00')&&txt.includes('170.00')&&txt.includes('332.50')&&txt.includes('502.50')&&txt.includes('4,887.50')&&txt.includes('90.68%')&&txt.includes('not_measured'),r155File+': contains exact 11-13 R27 ademark+obsidian-herdr closed-form parameters');
     }
+    // 2026-11-13 Round 28 (R156: QiYueran-source/weave-your-work + Pyruslili/tmux-shared-session-notes) closed-form FinOps verification
+    const r156PathA=1520.00+38.0*95.00;
+    assert.equal(r156PathA.toFixed(2),'5130.00','11-13 R28 Path A total');
+    const r156PathC=160.00+3.5*95.00;
+    assert.equal(r156PathC.toFixed(2),'492.50','11-13 R28 Path C total');
+    assert.equal((r156PathA-r156PathC).toFixed(2),'4637.50','11-13 R28 savings vs Path A');
+    assert.equal(((r156PathA-r156PathC)/r156PathA*100).toFixed(2),'90.40','11-13 R28 pct savings vs Path A');
+    for(const r156File of ['workshops/github-trending-radar/docs/weave-your-work-tmux-shared-session-target-tree-team-skills-acp-shared-tui-selection-faq.md','workshops/github-trending-radar/docs/weave-your-work-tmux-shared-session-target-tree-team-skills-acp-shared-tui-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r28-weaveyourwork-tmuxshared.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r156File),'utf8');
+      assert.ok(txt.includes('1,520.00')&&txt.includes('3,610.00')&&txt.includes('5,130.00')&&txt.includes('160.00')&&txt.includes('332.50')&&txt.includes('492.50')&&txt.includes('4,637.50')&&txt.includes('90.40%')&&txt.includes('not_measured'),r156File+': contains exact 11-13 R28 weave-your-work+tmux-shared-session closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
