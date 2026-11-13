@@ -2262,6 +2262,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r151File),'utf8');
       assert.ok(txt.includes('1,580.00')&&txt.includes('3,610.00')&&txt.includes('5,190.00')&&txt.includes('160.00')&&txt.includes('332.50')&&txt.includes('492.50')&&txt.includes('4,697.50')&&txt.includes('90.51%')&&txt.includes('not_measured'),r151File+': contains exact 11-13 R23 whosup+togo closed-form parameters');
     }
+    // 2026-11-13 Round 24 (R152: memcpython/deobf + RouteInferno/shamus-osint-ai-agent) closed-form FinOps verification
+    const r152PathA=1680.00+38.0*105.00;
+    assert.equal(r152PathA.toFixed(2),'5670.00','11-13 R24 Path A total');
+    const r152PathC=175.00+3.5*105.00;
+    assert.equal(r152PathC.toFixed(2),'542.50','11-13 R24 Path C total');
+    assert.equal((r152PathA-r152PathC).toFixed(2),'5127.50','11-13 R24 savings vs Path A');
+    assert.equal(((r152PathA-r152PathC)/r152PathA*100).toFixed(2),'90.43','11-13 R24 pct savings vs Path A');
+    for(const r152File of ['workshops/github-trending-radar/docs/deobf-shamus-osint-behavior-verified-deobfuscation-terminal-osint-agent-selection-faq.md','workshops/github-trending-radar/docs/deobf-shamus-osint-behavior-verified-deobfuscation-terminal-osint-agent-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r24-deobf-shamus.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r152File),'utf8');
+      assert.ok(txt.includes('1,680.00')&&txt.includes('3,990.00')&&txt.includes('5,670.00')&&txt.includes('175.00')&&txt.includes('367.50')&&txt.includes('542.50')&&txt.includes('5,127.50')&&txt.includes('90.43%')&&txt.includes('not_measured'),r152File+': contains exact 11-13 R24 deobf+shamus closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
