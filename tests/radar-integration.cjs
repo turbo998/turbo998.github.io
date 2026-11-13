@@ -2482,6 +2482,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r171File),'utf8');
       assert.ok(txt.includes('1,380.00')&&txt.includes('3,800.00')&&txt.includes('5,180.00')&&txt.includes('150.00')&&txt.includes('332.50')&&txt.includes('482.50')&&txt.includes('4,697.50')&&txt.includes('90.69%')&&txt.includes('not_measured'),r171File+': contains exact 11-13 R43 claudette+pinwall closed-form parameters');
     }
+    // 2026-11-13 Round 44 (R172: kbdevs/query-tune + delef/ClamDown) closed-form FinOps verification
+    const r172PathA=1540.00+38.0*100.00;
+    assert.equal(r172PathA.toFixed(2),'5340.00','11-13 R44 Path A total');
+    const r172PathC=145.00+3.5*100.00;
+    assert.equal(r172PathC.toFixed(2),'495.00','11-13 R44 Path C total');
+    assert.equal((r172PathA-r172PathC).toFixed(2),'4845.00','11-13 R44 savings vs Path A');
+    assert.equal(((r172PathA-r172PathC)/r172PathA*100).toFixed(2),'90.73','11-13 R44 pct savings vs Path A');
+    for(const r172File of ['workshops/github-trending-radar/docs/query-tune-clamdown-readonly-sql-caller-audit-skill-closed-lid-macbook-fan-watchdog-selection-faq.md','workshops/github-trending-radar/docs/query-tune-clamdown-readonly-sql-caller-audit-skill-closed-lid-macbook-fan-watchdog-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r44-query-tune-clamdown.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r172File),'utf8');
+      assert.ok(txt.includes('1,540.00')&&txt.includes('3,800.00')&&txt.includes('5,340.00')&&txt.includes('145.00')&&txt.includes('350.00')&&txt.includes('495.00')&&txt.includes('4,845.00')&&txt.includes('90.73%')&&txt.includes('not_measured'),r172File+': contains exact 11-13 R44 query-tune+clamdown closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
