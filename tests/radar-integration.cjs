@@ -1991,6 +1991,35 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r128File),'utf8');
       assert.ok(txt.includes('1,950.00')&&txt.includes('4,180.00')&&txt.includes('6,130.00')&&txt.includes('200.00')&&txt.includes('380.00')&&txt.includes('580.00')&&txt.includes('5,550.00')&&txt.includes('90.54%')&&txt.includes('not_measured'),r128File+': contains exact 11-12 R29 vn-law-check+turkish-anti-ai-skill closed-form parameters');
     }
+    // 2026-11-13 Sweep & Round 1 (R129: alibaba/open-code-review + ChromeDevTools/chrome-devtools-mcp) verification
+    const rawHtml1113=fs.readFileSync(path.join(__dirname,'..','workshops','github-trending-radar','evidence','trending-daily-2026-11-13-raw.html'),'utf8').replace(/\r\n/g,'\n');
+    assert.equal(hash(rawHtml1113),'f2a5fbb0b5b3be87a72db74df96e397b0c6dec971ac609be34f3ccade2ca7983','2026-11-13 raw HTML LF sha256');
+    const rawSearch1113Str=fs.readFileSync(path.join(__dirname,'..','workshops','github-trending-radar','evidence','search-new-repos-2026-11-13-raw.json'),'utf8').replace(/\r\n/g,'\n');
+    assert.equal(hash(rawSearch1113Str),'cd8ebef12d9fa9f5d266b82743f7210c33267171a298caef4f55b9ec95b285dc','2026-11-13 raw Search API JSON LF sha256');
+    const rawSearch1113=JSON.parse(rawSearch1113Str);
+    const rawSearch1113Map=new Map(rawSearch1113.items.map(it=>[it.full_name,it]));
+    for(const item of reportJson.fastest_rising_leaderboard_2026_11_13.track_a_24h_star_surge){
+      assert.equal(item.provenance,'measured',item.full_name+': 11-13 Track A provenance');
+      assert.ok(rawHtml1113.includes(`href="/${item.full_name}"`),item.full_name+': present in 11-13 raw HTML');
+      assert.ok(rawHtml1113.includes(`${item.stars_today.toLocaleString('en-US')} stars today`),item.full_name+': exact stars_today in 11-13 raw HTML');
+    }
+    for(const item of reportJson.fastest_rising_leaderboard_2026_11_13.track_b_new_repo_breakout_slope){
+      assert.equal(item.stars_today,'not_measured',item.full_name+': 11-13 Track B stars_today must be not_measured');
+      assert.ok(rawSearch1113Map.has(item.full_name),item.full_name+': present in 11-13 archived Search API JSON');
+      const rawEntry=rawSearch1113Map.get(item.full_name);
+      assert.equal(item.stars_total_search_api,rawEntry.stargazers_count,item.full_name+': 11-13 stars_total_search_api matches Search API JSON');
+      assert.equal(item.stars_per_day,Math.round(item.stars_total/item.age_days),item.full_name+': 11-13 stars_per_day closed-form');
+    }
+    const r129PathA=1620.00+52.0*90.00;
+    assert.equal(r129PathA.toFixed(2),'6300.00','11-13 R1 Path A total');
+    const r129PathC=180.00+6.0*90.00;
+    assert.equal(r129PathC.toFixed(2),'720.00','11-13 R1 Path C total');
+    assert.equal((r129PathA-r129PathC).toFixed(2),'5580.00','11-13 R1 savings vs Path A');
+    assert.equal(((r129PathA-r129PathC)/r129PathA*100).toFixed(2),'88.57','11-13 R1 pct savings vs Path A');
+    for(const r129File of ['workshops/github-trending-radar/docs/open-code-review-chrome-devtools-mcp-deterministic-review-runtime-debug-selection-faq.md','workshops/github-trending-radar/docs/open-code-review-chrome-devtools-mcp-deterministic-review-runtime-debug-selection-faq.en.md','assets/github-ai-radar-2026-11-13.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r129File),'utf8');
+      assert.ok(txt.includes('1,620.00')&&txt.includes('4,680.00')&&txt.includes('6,300.00')&&txt.includes('180.00')&&txt.includes('540.00')&&txt.includes('720.00')&&txt.includes('5,580.00')&&txt.includes('88.57%')&&txt.includes('not_measured'),r129File+': contains exact 11-13 R1 open-code-review+chrome-devtools-mcp closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
