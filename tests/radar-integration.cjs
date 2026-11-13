@@ -2108,6 +2108,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r137File),'utf8');
       assert.ok(txt.includes('2,040.00')&&txt.includes('4,500.00')&&txt.includes('6,540.00')&&txt.includes('240.00')&&txt.includes('500.00')&&txt.includes('740.00')&&txt.includes('5,800.00')&&txt.includes('88.69%')&&txt.includes('not_measured'),r137File+': contains exact 11-13 R9 riskaware+marco-BIS closed-form parameters');
     }
+    // 2026-11-13 Round 10 (R138: siwen-121/agent-shared-facts + claynicholson/copper-kicad-mcp) closed-form FinOps verification
+    const r138PathA=1680.00+42.0*95.00;
+    assert.equal(r138PathA.toFixed(2),'5670.00','11-13 R10 Path A total');
+    const r138PathC=190.00+4.0*95.00;
+    assert.equal(r138PathC.toFixed(2),'570.00','11-13 R10 Path C total');
+    assert.equal((r138PathA-r138PathC).toFixed(2),'5100.00','11-13 R10 savings vs Path A');
+    assert.equal(((r138PathA-r138PathC)/r138PathA*100).toFixed(2),'89.95','11-13 R10 pct savings vs Path A');
+    for(const r138File of ['workshops/github-trending-radar/docs/agent-shared-facts-copper-kicad-mcp-cross-device-ssot-orderable-pcb-selection-faq.md','workshops/github-trending-radar/docs/agent-shared-facts-copper-kicad-mcp-cross-device-ssot-orderable-pcb-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r10-sharedfacts-copperkicad.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r138File),'utf8');
+      assert.ok(txt.includes('1,680.00')&&txt.includes('3,990.00')&&txt.includes('5,670.00')&&txt.includes('190.00')&&txt.includes('380.00')&&txt.includes('570.00')&&txt.includes('5,100.00')&&txt.includes('89.95%')&&txt.includes('not_measured'),r138File+': contains exact 11-13 R10 agent-shared-facts+copper-kicad-mcp closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
