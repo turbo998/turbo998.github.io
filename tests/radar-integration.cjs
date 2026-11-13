@@ -2284,6 +2284,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r153File),'utf8');
       assert.ok(txt.includes('1,540.00')&&txt.includes('3,400.00')&&txt.includes('4,940.00')&&txt.includes('170.00')&&txt.includes('297.50')&&txt.includes('467.50')&&txt.includes('4,472.50')&&txt.includes('90.54%')&&txt.includes('not_measured'),r153File+': contains exact 11-13 R25 Hirepanel+margin closed-form parameters');
     }
+    // 2026-11-13 Round 26 (R154: localixai/flowdown + erkamyaman/unslopovich) closed-form FinOps verification
+    const r154PathA=1480.00+40.0*90.00;
+    assert.equal(r154PathA.toFixed(2),'5080.00','11-13 R26 Path A total');
+    const r154PathC=155.00+3.5*90.00;
+    assert.equal(r154PathC.toFixed(2),'470.00','11-13 R26 Path C total');
+    assert.equal((r154PathA-r154PathC).toFixed(2),'4610.00','11-13 R26 savings vs Path A');
+    assert.equal(((r154PathA-r154PathC)/r154PathA*100).toFixed(2),'90.75','11-13 R26 pct savings vs Path A');
+    for(const r154File of ['workshops/github-trending-radar/docs/flowdown-unslopovich-17x-streaming-markdown-engine-105k-review-mobile-ux-audit-selection-faq.md','workshops/github-trending-radar/docs/flowdown-unslopovich-17x-streaming-markdown-engine-105k-review-mobile-ux-audit-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r26-flowdown-unslopovich.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r154File),'utf8');
+      assert.ok(txt.includes('1,480.00')&&txt.includes('3,600.00')&&txt.includes('5,080.00')&&txt.includes('155.00')&&txt.includes('315.00')&&txt.includes('470.00')&&txt.includes('4,610.00')&&txt.includes('90.75%')&&txt.includes('not_measured'),r154File+': contains exact 11-13 R26 flowdown+unslopovich closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
