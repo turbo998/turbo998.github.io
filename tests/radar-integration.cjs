@@ -2174,6 +2174,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r143File),'utf8');
       assert.ok(txt.includes('1,940.00')&&txt.includes('3,740.00')&&txt.includes('5,680.00')&&txt.includes('215.00')&&txt.includes('340.00')&&txt.includes('555.00')&&txt.includes('5,125.00')&&txt.includes('90.23%')&&txt.includes('not_measured'),r143File+': contains exact 11-13 R15 viralforge+fable52-fps-repro closed-form parameters');
     }
+    // 2026-11-13 Round 16 (R144: gitcommit90/1Helm + nevertoday/xxd-pstack) closed-form FinOps verification
+    const r144PathA=1760.00+42.0*90.00;
+    assert.equal(r144PathA.toFixed(2),'5540.00','11-13 R16 Path A total');
+    const r144PathC=190.00+4.0*90.00;
+    assert.equal(r144PathC.toFixed(2),'550.00','11-13 R16 Path C total');
+    assert.equal((r144PathA-r144PathC).toFixed(2),'4990.00','11-13 R16 savings vs Path A');
+    assert.equal(((r144PathA-r144PathC)/r144PathA*100).toFixed(2),'90.07','11-13 R16 pct savings vs Path A');
+    for(const r144File of ['workshops/github-trending-radar/docs/1helm-xxd-pstack-cloudflare-channel-computer-self-verifying-agent-skills-selection-faq.md','workshops/github-trending-radar/docs/1helm-xxd-pstack-cloudflare-channel-computer-self-verifying-agent-skills-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r16-1helm-xxdpstack.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r144File),'utf8');
+      assert.ok(txt.includes('1,760.00')&&txt.includes('3,780.00')&&txt.includes('5,540.00')&&txt.includes('190.00')&&txt.includes('360.00')&&txt.includes('550.00')&&txt.includes('4,990.00')&&txt.includes('90.07%')&&txt.includes('not_measured'),r144File+': contains exact 11-13 R16 1helm+xxd-pstack closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
