@@ -2339,6 +2339,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r158File),'utf8');
       assert.ok(txt.includes('1,640.00')&&txt.includes('3,570.00')&&txt.includes('5,210.00')&&txt.includes('160.00')&&txt.includes('340.00')&&txt.includes('500.00')&&txt.includes('4,710.00')&&txt.includes('90.40%')&&txt.includes('not_measured'),r158File+': contains exact 11-13 R30 3d-shorts+app-3d-video closed-form parameters');
     }
+    // 2026-11-13 Round 31 (R159: hao-ai-lab/vstack + Neal006/deja) closed-form FinOps verification
+    const r159PathA=2450.00+40.0*110.00;
+    assert.equal(r159PathA.toFixed(2),'6850.00','11-13 R31 Path A total');
+    const r159PathC=380.00+4.0*110.00;
+    assert.equal(r159PathC.toFixed(2),'820.00','11-13 R31 Path C total');
+    assert.equal((r159PathA-r159PathC).toFixed(2),'6030.00','11-13 R31 savings vs Path A');
+    assert.equal(((r159PathA-r159PathC)/r159PathA*100).toFixed(2),'88.03','11-13 R31 pct savings vs Path A');
+    for(const r159File of ['workshops/github-trending-radar/docs/vstack-deja-anticheat-formal-verification-stack-cache-safe-context-dedup-selection-faq.md','workshops/github-trending-radar/docs/vstack-deja-anticheat-formal-verification-stack-cache-safe-context-dedup-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r31-vstack-deja.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r159File),'utf8');
+      assert.ok(txt.includes('2,450.00')&&txt.includes('4,400.00')&&txt.includes('6,850.00')&&txt.includes('380.00')&&txt.includes('440.00')&&txt.includes('820.00')&&txt.includes('6,030.00')&&txt.includes('88.03%')&&txt.includes('not_measured'),r159File+': contains exact 11-13 R31 vstack+deja closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
