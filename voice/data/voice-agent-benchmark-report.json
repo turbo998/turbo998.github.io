@@ -1663,6 +1663,66 @@
       "original": "100.0% (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established for offline synthetic policy check: enforces an explicit Label/Protocol allowlist on in-band DCEP DATA_CHANNEL_OPEN frames (0 spoofed opens) and validates RFC 8831 PPID {50, 51, 53, 56, 57} + UTF-8 integrity (0 mismatches); live SCTP/DCEP parser latency is not_measured)",
       "reversed": "100.0% (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established for offline synthetic policy check: enforces RFC 8832 Section 6 DTLS Client=Even / Server=Odd Stream-ID allocation parity (0 glare collisions) and clamps RFC 8841 a=max-message-size reassembly to [16, 64] KB; live RFC 6525 stream reset latency is not_measured)",
       "delta_pts": 0.0
+    },
+    {
+      "question": "414. [Topic 51: voice-sip-rfc3326-reason-q850-spoof-rfc3329-sec-agree-420-loop-faq] Enterprise SIP RFC 3326 Reason Q.850 Scrubbing + Forking Completed Elsewhere & RFC 3329 Sec-Agree 494 + [1,2] SIP 420 Bad Extension Retry Guard (P815 / P816 — Stage 411 · 414 Dims)",
+      "original": "100.0% (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established for offline synthetic policy check: strips 100% of untrusted ingress Reason: Q.850 headers (0 spoofed causes) and stamps Reason: SIP;cause=200 / Q.850;cause=26 on parallel-forking CANCEL legs (0 false missed-call alerts); live SBC Reason header parser latency is not_measured)",
+      "reversed": "100.0% (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established for offline synthetic policy check: rejects RFC 3329 Security-Verify plaintext downgrades with SIP 494 (0 downgrades) and clamps SIP 420 Bad Extension strip-and-retry attempts to [1, 2]; live IMS/SBC Sec-Agree negotiation latency is not_measured)",
+      "delta_pts": 0.0
+    },
+    {
+      "question": "415. [Topic 52: voice-webrtc-rfc8285-extmap-mixed-header-remapping-padding-overflow-faq] WebRTC RFC 8285 Extmap Mixed-Header Bounds + Immutable Mid-Call ID Mapping & RFC 3550 P=1 Padding Underflow / Covert-Byte Scrub Guard (P817 / P818 — Stage 412 · 415 Dims)",
+      "original": "100.0% (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established for offline synthetic policy check: validates RFC 8285 0xBEDE/0x1000 extension element length bounds, forbids mid-call a=extmap ID remapping (0 remappings), and clamps active one-byte IDs to [1, 14]; live SFU RTP header parser latency is not_measured)",
+      "reversed": "100.0% (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established for offline synthetic policy check: enforces RFC 3550 P=1 padding bounds 1 <= pad_len <= payload_len (0 unsigned underflow overreads) and scrubs non-terminal padding bytes to 0x00 (0 covert bytes); live RTP depacketizer latency is not_measured)",
+      "delta_pts": 0.0
+    },
+    {
+      "question": "416. [Topic 53: voice-sip-sdp-rfc4568-sdes-key-leak-c-line-sinkhole-fmtp-overflow-faq] Enterprise SIP/SDP RFC 4568 SDES Inline Key-Leak + c= Connection Sinkhole Block & RFC 8866 a=fmtp [32,256]B / [1,16] Attribute Overflow Guard (P819 / P820 — Stage 413 · 416 Dims)",
+      "original": "100.0% (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established for offline synthetic policy check: rejects unencrypted/unmasked RFC 4568 a=crypto inline: SRTP master keys (0 plaintext keys) and blocks loopback, link-local, multicast, or unverified third-party c=IN IP4/IP6 RTP reflection targets (0 untrusted targets); live SBC SDP media-address verifier latency is not_measured)",
+      "reversed": "100.0% (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established for offline synthetic policy check: clamps SDP a=fmtp line length to [32, 256] bytes and semicolon-delimited attribute pairs to [1, 16]; live SDP fmtp tokenizer latency is not_measured)",
+      "delta_pts": 0.0
+    },
+    {
+      "question": "417. [Topic 54 🎉: voice-webrtc-rtcp-rfc3550-compound-sr-rr-sdes-cname-bye-flood-faq] WebRTC RFC 3550 Compound RTCP SR/RR Prefix + SDES CNAME [8,64]B Bounds & Anti-Spoofed RTCP BYE [1,4] SSRC Flood Guard (P821 / P822 — Stage 414 · 🎉 650 Live POC Probes · 417 Dims)",
+      "original": "100.0% (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established for offline synthetic policy check: requires SR(200)/RR(201) prefix and exact 32-bit word-sum closure on compound RTCP packets (0 malformed packets) and clamps RFC 7022 SDES CNAME length to [8, 64] bytes; live SFU RTCP compound parser latency is not_measured)",
+      "reversed": "100.0% (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established for offline synthetic policy check: blocks SRTCP-unauthenticated or cross-peer RTCP BYE(203) stream teardowns (0 unauthorized teardowns) and caps per-packet BYE SSRC entries to [1, 4]; live SRTCP BYE ACL lookup latency is not_measured)",
+      "delta_pts": 0.0
+    },
+    {
+      "question": "418. [Topic 55 🎉: voice-sip-rfc3581-via-rport-nat-pinhole-header-chain-amplification-faq] Enterprise SIP RFC 3261 Singleton Header Smuggling + [1,8] Via Hop Cap & RFC 3581 rport/received NAT Pinhole Guard (P823 / P824 — Stage 415 · 🎉 Topic 55 Milestone · 418 Dims)",
+      "original": "100.0% (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established for offline synthetic policy check: normalizes compact SIP headers (f/t/i/l), rejects duplicate singleton headers with 400 Bad Request (0 smuggling attempts), and clamps Via header chains to [1, 8] hops; live SBC SIP header parser latency is not_measured)",
+      "reversed": "100.0% (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established for offline synthetic policy check: unconditionally overwrites client-supplied top-Via ;received= and ;rport= parameters from the verified transport socket (0 spoofed params) and clamps NAT keepalive refresh to [15, 30]s; live SBC NAT keepalive timer latency is not_measured)",
+      "delta_pts": 0.0
+    },
+    {
+      "question": "419. [Topic 56 · SVG 60 🎉: voice-webrtc-ice-rfc8839-ufrag-pwd-entropy-candidate-port-scan-ssrf-faq] WebRTC RFC 8839 ICE ufrag/pwd Entropy Floor ([24,64] / [128,256] bits) & RFC 8445 Candidate Port-Scan SSRF + [1,16] Cap Guard (P825 / P826 — Stage 416 · 🎉 60th SVG Milestone · 419 Dims)",
+      "original": "100.0% (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established for offline synthetic policy check: enforces RFC 8839 [24, 64]-bit ice-ufrag and [128, 256]-bit ice-pwd CSPRNG entropy rotated per session and per ICE Restart; live SFU CSPRNG and STUN HMAC-SHA1 verification latency is not_measured)",
+      "reversed": "100.0% (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established for offline synthetic policy check: strips 100% of remote candidates targeting loopback, RFC 1918 private subnets, cloud IMDS, <1024 privileged ports, or blocklisted service ports (0 disallowed candidates) and caps candidates per m= line to [1, 16]; live SFU ICE candidate parser latency is not_measured)",
+      "delta_pts": 0.0
+    },
+    {
+      "question": "420. [Topic 57 🎉: voice-sip-rfc3311-update-early-media-hijack-cseq-rollover-replay-faq] Enterprise SIP RFC 3311 Early-Dialog UPDATE Contact Pin + [1,4] Cap & RFC 3261 CSeq [1,64] Jump-Step + Method-Match Guard (P827 / P828 — Stage 417 · 🎉 420-Dimension Milestone · 420 Dims)",
+      "original": "100.0% (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established for offline synthetic policy check: blocks unauthenticated or cross-source early-dialog (180/183) Contact target-refresh attempts (0 unauthorized refreshes) and caps pre-answer UPDATE requests per call to [1, 4]; live SBC early-dialog state-table lookup latency is not_measured)",
+      "reversed": "100.0% (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established for offline synthetic policy check: enforces Request-Line === CSeq Method (400), rejects CSeq <= remote_cseq replays (500, 0 bypasses), and clamps single-step CSeq increments to [1, 64]; live SIP transaction CSeq verifier latency is not_measured)",
+      "delta_pts": 0.0
+    },
+    {
+      "question": "421. [Topic 58 · P830 🎉: voice-webrtc-srtp-rfc7714-aes-gcm-roc-nonce-reuse-unencrypted-srtcp-faq] WebRTC RFC 7714 SRTP AES-GCM Nonce Zero-Reuse + [64,128] Replay Window & RFC 3711 SRTCP Mandatory E=1 + [80,128]b Auth Tag Guard (P829 / P830 — Stage 418 · 🎉 P830 & 860-Test Milestone · 421 Dims)",
+      "original": "100.0% (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established for offline synthetic policy check: rotates SRTP master key/SSRC or advances ROC on pod failover or prompt splicing so (SSRC, ROC, SEQ) Nonces never repeat (0 reuse events) and clamps replay bitmap window to [64, 128] packets; live SRTP AEAD cipher latency is not_measured)",
+      "reversed": "100.0% (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established for offline synthetic policy check: drops 100% of E=0 unencrypted SRTCP control packets (0 unencrypted packets), triggers pre-wrap rekeying before 31-bit index overflow, and enforces [80, 128]-bit authentication tags; live SRTCP decryptor latency is not_measured)",
+      "delta_pts": 0.0
+    },
+    {
+      "question": "422. [Topic 59 · 850 Probes 🎉: voice-sip-rfc3261-record-route-loose-routing-open-relay-sips-downgrade-faq] Enterprise SIP RFC 3261 Preloaded Route Open-Relay Strip + [1,6] Hop Cap & RFC 5923/5658 SIPS mTLS [128,256]b Anti-Downgrade Guard (P831 / P832 — Stage 419 · 🎉 850-Probe & 660-POC-Probe Milestone · 422 Dims)",
+      "original": "100.0% (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established for offline synthetic policy check: strips 100% of untrusted preloaded Route headers on tagless initial requests (0 foreign relays), enforces ;lr loose routing, and caps Record-Route depth to [1, 6] hops; live SBC Route HMAC verifier latency is not_measured)",
+      "reversed": "100.0% (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established for offline synthetic policy check: blocks 100% of SIPS-to-UDP/TCP cleartext transport downgrades or RFC 5658 ;r2=on dual Record-Route mismatches (0 downgrades) and enforces [128, 256]-bit mTLS security; live SIPS mTLS handshake latency is not_measured)",
+      "delta_pts": 0.0
+    },
+    {
+      "question": "423. [Topic 60 🎉: voice-webrtc-sctp-rfc8831-rfc4960-vtag-init-flood-stream-reset-rwnd-deadlock-faq] WebRTC RFC 8831/4960 SCTP 32-Bit vtag + Stateless HMAC Cookie + RFC 6525 RE-CONFIG Deferred Drain ([1,4]) & SACK Gap-Ack [1,16] Cap + a_rwnd=0 Persist Guard (P833 / P834 — Stage 420 🎉 · 🎉 Stage 420 & Topic 60 Milestone · 423 Dims)",
+      "original": "100.0% (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established for offline synthetic policy check: drops 100% of mismatched-vtag SCTP chunks (0 blind resets), enforces stateless HMAC STATE-COOKIE on INIT, and defers RFC 6525 RE-CONFIG SSN=0 resets until Last_Assigned_TSN drains within [1, 4] concurrent resets; live DTLS-SCTP chunk parser latency is not_measured)",
+      "reversed": "100.0% (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established for offline synthetic policy check: rejects 100% of TSN-reneging or >16 Gap-Ack SACK chunks (0 reneges), caps Gap-Ack blocks in [1, 16], and arms a Zero-Window Persist Timer with interim subtitle shedding on a_rwnd=0; live SCTP retransmission bitmap scan latency is not_measured)",
+      "delta_pts": 0.0
     }
   ],
   "latency_scaling": [

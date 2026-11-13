@@ -1427,6 +1427,76 @@
               <td><code>P813 / P814 deterministic WebRTC RFC 8832 DCEP channel-open allowlist + PPID type gate &amp; DTLS role stream-ID parity / max-message-size guard</code></td>
               <td><span class="badge-pass">PASS · 0ms @ 1ms Res (Synthetic)</span></td>
               <td><span class="act-pill">Act automatically</span></td>
+            </tr>            <tr>
+              <td>
+                <strong>414. [专题51 `docs/voice-sip-rfc3326-reason-q850-spoof-rfc3329-sec-agree-420-loop-faq.md`] 企业 SIP `RFC 3326 / RFC 6432` 非授信入站 `Reason: Q.850` 释放原因码 100% 清洗（`0` 伪造原因码污染 CDR 话单与外呼号码库）与并发振铃 `CANCEL` 注入 `Completed Elsewhere (SIP;cause=200 / Q.850;cause=26)`（`0` 坐席假未接来电告警；`0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established` 离线 `synthetic` 策略配置检查；真实 SBC Reason 解析耗时 `not_measured`）&amp; `RFC 3329 Sec-Agree` `Security-Verify` 防明文降级（违例返 `SIP 494`，`0` 降级）与 `SIP 420 Bad Extension` 剥离重试上限 `[1, 2]` 次门禁（真实 IMS/SBC Sec-Agree 协商耗时 `not_measured`）(`P815` / `P816` · Stage 411 · Topic 51 · 825 护栏 &amp; 834 探针 · 414 维)</strong>
+              </td>
+              <td><code>P815 / P816 deterministic SIP RFC 3326 Q.850 Reason scrub + forking Completed Elsewhere &amp; RFC 3329 Sec-Agree 494 / SIP 420 retry guard</code></td>
+              <td><span class="badge-pass">PASS · 0ms @ 1ms Res (Synthetic)</span></td>
+              <td><span class="act-pill">Act automatically</span></td>
+            </tr>            <tr>
+              <td>
+                <strong>415. [专题52 `docs/voice-webrtc-rfc8285-extmap-mixed-header-remapping-padding-overflow-faq.md`] WebRTC `RFC 8285` RTP 扩展头 `0xBEDE / 0x1000` 元素长度边界校验与通话期内 `a=extmap` `(ID &lt;-&gt; URI)` 不可变钉扎（`0` 中途重映射断音，单字节活跃 ID `[1, 14]`；`0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established` 离线 `synthetic` 策略配置检查；真实 SFU RTP 扩展头解包耗时 `not_measured`）&amp; `RFC 3550 Section 5.1` RTP `P=1` 尾部填充长度 `1 &lt;= pad_len &lt;= payload_len` 防无符号减法下溢（`0` 越界崩溃）与非零填充字节归零清洗门禁（`0` 隐蔽信道字节；真实 RTP 解包耗时 `not_measured`）(`P817` / `P818` · Stage 412 · Topic 52 · 827 护栏 &amp; 836 探针 · 415 维)</strong>
+              </td>
+              <td><code>P817 / P818 deterministic WebRTC RFC 8285 extmap immutability + header bounds &amp; RFC 3550 P=1 padding underflow / covert-byte scrub guard</code></td>
+              <td><span class="badge-pass">PASS · 0ms @ 1ms Res (Synthetic)</span></td>
+              <td><span class="act-pill">Act automatically</span></td>
+            </tr>            <tr>
+              <td>
+                <strong>416. [专题53 `docs/voice-sip-sdp-rfc4568-sdes-key-leak-c-line-sinkhole-fmtp-overflow-faq.md`] 企业 SIP/SDP `RFC 4568 (SDES)` `a=crypto inline:` 明文 SRTP 主密钥阻断与日志掩码脱敏（`0` 明文密钥泄露）及 `RFC 8866 c=IN IP4/IP6` 回环/私网/多播/第三方反射地址拦截（`0` 反射目标；`0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established` 离线 `synthetic` 策略配置检查；真实 SBC 媒体地址核验耗时 `not_measured`）&amp; `RFC 8866 a=fmtp` 单行长度 `[32, 256]` 字节与分号键值对 `[1, 16]` 项防缓冲区溢出门禁（真实 SDP 词法分析耗时 `not_measured`）(`P819` / `P820` · Stage 413 · Topic 53 · 829 护栏 &amp; 838 探针 · 416 维)</strong>
+              </td>
+              <td><code>P819 / P820 deterministic SIP/SDP RFC 4568 SDES key-leak + c= sinkhole gate &amp; RFC 8866 a=fmtp overflow guard</code></td>
+              <td><span class="badge-pass">PASS · 0ms @ 1ms Res (Synthetic)</span></td>
+              <td><span class="act-pill">Act automatically</span></td>
+            </tr>            <tr>
+              <td>
+                <strong>417. [专题54 🎉 `docs/voice-webrtc-rtcp-rfc3550-compound-sr-rr-sdes-cname-bye-flood-faq.md`] WebRTC `RFC 3550 Section 6.1` 复合 RTCP 首包 `SR(200)/RR(201)` 与子包 32 位字长总和精确闭合校验（`0` 畸形复合包越界读）及 `RFC 7022 SDES CNAME [8, 64]` 字节边界（`0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established` 离线 `synthetic` 策略配置检查；真实 SFU 复合 RTCP 解析耗时 `not_measured`）&amp; `RFC 3550 Section 6.6` `SRTCP BYE(203)` 发送源归属鉴权（`0` 越权静音拆流）与单包 `BYE SSRC [1, 4]` 项防批量注销洪泛门禁（真实 SRTCP BYE ACL 查找耗时 `not_measured`）(`P821` / `P822` · Stage 414 · 🎉 650 Live POC Probes · 831 护栏 &amp; 840 探针 · 417 维)</strong>
+              </td>
+              <td><code>P821 / P822 deterministic WebRTC RFC 3550 compound RTCP SR/RR + SDES CNAME gate &amp; anti-spoofed BYE flood guard</code></td>
+              <td><span class="badge-pass">PASS · 0ms @ 1ms Res (Synthetic)</span></td>
+              <td><span class="act-pill">Act automatically</span></td>
+            </tr>            <tr>
+              <td>
+                <strong>418. [专题55 🎉 `docs/voice-sip-rfc3581-via-rport-nat-pinhole-header-chain-amplification-faq.md`] 企业 SIP `RFC 3261` 单例头（`From/f, To/t, Call-ID/i, CSeq, Content-Length/l`）防走私 `400 Bad Request` 拒单（`0` 走私头）与 `Via` 栈链 `[1, 8]` 跳上限（`0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established` 离线 `synthetic` 策略配置检查；真实 SBC SIP 头解析耗时 `not_measured`）&amp; `RFC 3581` 顶层 `Via` `;received= / ;rport=` 强制底层套接字真实源覆写（`0` 客户端伪造反射参数）与 `[15, 30]s` NAT 针孔保活门禁（真实 SBC NAT 保活定时器耗时 `not_measured`）(`P823` / `P824` · Stage 415 · 🎉 Topic 55 里程碑 · 833 护栏 &amp; 842 探针 · 418 维)</strong>
+              </td>
+              <td><code>P823 / P824 deterministic SIP RFC 3261 singleton smuggling + Via hop cap &amp; RFC 3581 rport/received NAT pinhole guard</code></td>
+              <td><span class="badge-pass">PASS · 0ms @ 1ms Res (Synthetic)</span></td>
+              <td><span class="act-pill">Act automatically</span></td>
+            </tr>            <tr>
+              <td>
+                <strong>419. [专题56 `docs/voice-webrtc-ice-rfc8839-ufrag-pwd-entropy-candidate-port-scan-ssrf-faq.md`] WebRTC `RFC 8839 Section 5.1` `ice-ufrag [24, 64] bits` 与 `ice-pwd [128, 256] bits` 密码学随机熵下限及单次会话 CSPRNG 轮换（`0` 弱凭证；`0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established` 离线 `synthetic` 策略配置检查；真实 SFU CSPRNG 与 STUN HMAC-SHA1 验签耗时 `not_measured`）&amp; `RFC 8445` 入站 `a=candidate` 回环/私网/IMDS IP 及 `&lt; 1024` 特权或数据库端口剥离（`0` 违规候选探测）与单 `m=` 轨 `[1, 16]` 条候选上限门禁（真实 SFU ICE 候选解析耗时 `not_measured`）(`P825` / `P826` · Stage 416 · 🎉 第 60 张架构图里程碑 · 835 护栏 &amp; 844 探针 · 419 维)</strong>
+              </td>
+              <td><code>P825 / P826 deterministic WebRTC RFC 8839 ICE ufrag/pwd entropy floor &amp; RFC 8445 candidate SSRF + cap guard</code></td>
+              <td><span class="badge-pass">PASS · 0ms @ 1ms Res (Synthetic)</span></td>
+              <td><span class="act-pill">Act automatically</span></td>
+            </tr>            <tr>
+              <td>
+                <strong>420. [专题57 🎉 `docs/voice-sip-rfc3311-update-early-media-hijack-cseq-rollover-replay-faq.md`] 企业 SIP `RFC 3311` 早期对话（`180/183`）`UPDATE` 远端目标 `Contact` 源绑定（`0` 越权 Target-Refresh）与单呼叫应答前 `[1, 4]` 次 `UPDATE` 上限（`0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established` 离线 `synthetic` 策略配置检查；真实 SBC 早期对话表查找耗时 `not_measured`）&amp; `RFC 3261 Section 12.2.2` `Request-Line / CSeq` 方法强一致校验、`CSeq &lt;= remote_cseq` 返 `500` 重放拒单（`0` 绕过）与单步 `[1, 64]` 跃迁步长门禁（真实 SIP 事务 CSeq 校验耗时 `not_measured`）(`P827` / `P828` · Stage 417 · 🎉 420 大评测维度里程碑 · 837 护栏 &amp; 846 探针 · 420 维)</strong>
+              </td>
+              <td><code>P827 / P828 deterministic SIP RFC 3311 early UPDATE Contact pin &amp; RFC 3261 CSeq step + method guard</code></td>
+              <td><span class="badge-pass">PASS · 0ms @ 1ms Res (Synthetic)</span></td>
+              <td><span class="act-pill">Act automatically</span></td>
+            </tr>            <tr>
+              <td>
+                <strong>421. [专题58 🎉 `docs/voice-webrtc-srtp-rfc7714-aes-gcm-roc-nonce-reuse-unencrypted-srtcp-faq.md`] WebRTC `RFC 7714 Section 8.1` `SRTP AES-GCM` `(SSRC, ROC, SEQ)` Nonce 零重用（热备切换或提示音插播时强制轮换主密钥/推进 `ROC`，`0` Nonce 重用破密）与 `RFC 3711 [64, 128]` 包防重放位图窗口（`0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established` 离线 `synthetic` 策略配置检查；真实 SRTP AEAD 加解密耗时 `not_measured`）&amp; `RFC 3711 Section 3.4` 强制 `SRTCP E=1` 全加密（`0` 明文控制包）、31 位索引预换钥与 `[80, 128] bits` 认证标签门禁（真实 SRTCP 解密耗时 `not_measured`）(`P829` / `P830` 🎉 · Stage 418 · 🎉 P830 护栏与 860 项单测里程碑 · 839 护栏 &amp; 848 探针 · 421 维)</strong>
+              </td>
+              <td><code>P829 / P830 deterministic WebRTC RFC 7714 SRTP AES-GCM Nonce zero-reuse &amp; RFC 3711 SRTCP E=1 guard</code></td>
+              <td><span class="badge-pass">PASS · 0ms @ 1ms Res (Synthetic)</span></td>
+              <td><span class="act-pill">Act automatically</span></td>
+            </tr>            <tr>
+              <td>
+                <strong>422. [专题59 🎉 `docs/voice-sip-rfc3261-record-route-loose-routing-open-relay-sips-downgrade-faq.md`] 企业 SIP `RFC 3261 Section 16.4 / 16.12` 初始请求预加载 `Route` 开放中继 SSRF 剥离（`0` 外域转发）、强制 `;lr` 松散路由与 `[1, 6]` 跳 `Record-Route` 深度（`0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established` 离线 `synthetic` 策略配置检查；真实 SBC `Route HMAC` 验签耗时 `not_measured`）&amp; `RFC 5923 / RFC 5658` `SIPS / ;r2=on` 跨传输防降级（`0` 明文降级）与 `[128, 256] bits` `mTLS` 安全强度门禁（真实 `SIPS mTLS` 握手耗时 `not_measured`）(`P831` / `P832` · Stage 419 · 🎉 850 大合成探针与 660 项现场 POC 探针里程碑 · 841 护栏 &amp; 850 探针 · 422 维)</strong>
+              </td>
+              <td><code>P831 / P832 deterministic SIP RFC 3261 preloaded Route open-relay strip &amp; RFC 5923 SIPS mTLS anti-downgrade guard</code></td>
+              <td><span class="badge-pass">PASS · 0ms @ 1ms Res (Synthetic)</span></td>
+              <td><span class="act-pill">Act automatically</span></td>
+            </tr>            <tr>
+              <td>
+                <strong>423. [专题60 🎉 `docs/voice-webrtc-sctp-rfc8831-rfc4960-vtag-init-flood-stream-reset-rwnd-deadlock-faq.md`] WebRTC `RFC 8831 / RFC 4960 Section 8.5` 32 位 `Verification Tag (vtag)` 强校验、无状态 `HMAC STATE-COOKIE` 与 `RFC 6525 RE-CONFIG` 序号单调排空锁（`0` 盲注重置、并发流重置 `[1, 4]` 路，`0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established` 离线 `synthetic` 策略配置检查；真实 `DTLS-SCTP` 块解析耗时 `not_measured`）&amp; `RFC 4960 Section 6.2` `SACK Gap-Ack [1, 16]` 块上限、反悔撤回 `TSN Reneging` 零容忍拦截（`0` 反悔）与 `a_rwnd=0` 零窗口探活防死锁门禁（真实 `SCTP` 重传位图扫描耗时 `not_measured`）(`P833` / `P834` · Stage 420 🎉 · 🎉 Stage 420 与第 60 大专题双里程碑 · 843 护栏 &amp; 852 探针 · 423 维)</strong>
+              </td>
+              <td><code>P833 / P834 deterministic WebRTC RFC 4960 SCTP vtag + RFC 6525 RE-CONFIG drain &amp; SACK Gap-Ack / zero-window guard</code></td>
+              <td><span class="badge-pass">PASS · 0ms @ 1ms Res (Synthetic)</span></td>
+              <td><span class="act-pill">Act automatically</span></td>
             </tr>          </tbody>
         </table>
         <div class="two-col-callouts">
@@ -4830,6 +4900,76 @@
                 <strong>413. [专题50 🎉 `docs/voice-webrtc-dcep-rfc8832-channel-open-ppid-stream-glare-faq.md`] WebRTC `RFC 8832 (DCEP)` 带内 `DATA_CHANNEL_OPEN` `Label / Protocol` 白名单鉴权（`0` 伪造特权通道）与 `RFC 8831 PPID` `{50, 51, 53, 56, 57}` 强类型及 UTF-8 合法性校验（`0` 类型混淆崩溃；`0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established` 离线 `synthetic` 策略配置检查；真实 SCTP/DCEP 解析耗时 `not_measured`）&amp; `RFC 8832 Section 6` DTLS 角色奇偶 `Stream ID` 分配铁律（`DTLS Client=偶 / Server=奇`，`0` 建流碰撞串线）及 `RFC 8841 a=max-message-size [16, 64] KB` 防分片重组内存炸弹门禁（真实 `RFC 6525` 流重置耗时 `not_measured`）(`P813` / `P814` · Stage 410 · 🎉 Topic 50 Milestone · 823 护栏 &amp; 832 探针 · 413 维)</strong>
               </td>
               <td><code>P813 / P814 deterministic WebRTC RFC 8832 DCEP channel-open allowlist + PPID type gate &amp; DTLS role stream-ID parity / max-message-size guard</code></td>
+              <td><span class="badge-pass">PASS · 0ms @ 1ms Res (Synthetic)</span></td>
+              <td><span class="act-pill">Act automatically</span></td>
+            </tr>            <tr>
+              <td>
+                <strong>414. [专题51 `docs/voice-sip-rfc3326-reason-q850-spoof-rfc3329-sec-agree-420-loop-faq.md`] 企业 SIP `RFC 3326 / RFC 6432` 非授信入站 `Reason: Q.850` 释放原因码 100% 清洗（`0` 伪造原因码污染 CDR 话单与外呼号码库）与并发振铃 `CANCEL` 注入 `Completed Elsewhere (SIP;cause=200 / Q.850;cause=26)`（`0` 坐席假未接来电告警；`0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established` 离线 `synthetic` 策略配置检查；真实 SBC Reason 解析耗时 `not_measured`）&amp; `RFC 3329 Sec-Agree` `Security-Verify` 防明文降级（违例返 `SIP 494`，`0` 降级）与 `SIP 420 Bad Extension` 剥离重试上限 `[1, 2]` 次门禁（真实 IMS/SBC Sec-Agree 协商耗时 `not_measured`）(`P815` / `P816` · Stage 411 · Topic 51 · 825 护栏 &amp; 834 探针 · 414 维)</strong>
+              </td>
+              <td><code>P815 / P816 deterministic SIP RFC 3326 Q.850 Reason scrub + forking Completed Elsewhere &amp; RFC 3329 Sec-Agree 494 / SIP 420 retry guard</code></td>
+              <td><span class="badge-pass">PASS · 0ms @ 1ms Res (Synthetic)</span></td>
+              <td><span class="act-pill">Act automatically</span></td>
+            </tr>            <tr>
+              <td>
+                <strong>415. [专题52 `docs/voice-webrtc-rfc8285-extmap-mixed-header-remapping-padding-overflow-faq.md`] WebRTC `RFC 8285` RTP 扩展头 `0xBEDE / 0x1000` 元素长度边界校验与通话期内 `a=extmap` `(ID &lt;-&gt; URI)` 不可变钉扎（`0` 中途重映射断音，单字节活跃 ID `[1, 14]`；`0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established` 离线 `synthetic` 策略配置检查；真实 SFU RTP 扩展头解包耗时 `not_measured`）&amp; `RFC 3550 Section 5.1` RTP `P=1` 尾部填充长度 `1 &lt;= pad_len &lt;= payload_len` 防无符号减法下溢（`0` 越界崩溃）与非零填充字节归零清洗门禁（`0` 隐蔽信道字节；真实 RTP 解包耗时 `not_measured`）(`P817` / `P818` · Stage 412 · Topic 52 · 827 护栏 &amp; 836 探针 · 415 维)</strong>
+              </td>
+              <td><code>P817 / P818 deterministic WebRTC RFC 8285 extmap immutability + header bounds &amp; RFC 3550 P=1 padding underflow / covert-byte scrub guard</code></td>
+              <td><span class="badge-pass">PASS · 0ms @ 1ms Res (Synthetic)</span></td>
+              <td><span class="act-pill">Act automatically</span></td>
+            </tr>            <tr>
+              <td>
+                <strong>416. [专题53 `docs/voice-sip-sdp-rfc4568-sdes-key-leak-c-line-sinkhole-fmtp-overflow-faq.md`] 企业 SIP/SDP `RFC 4568 (SDES)` `a=crypto inline:` 明文 SRTP 主密钥阻断与日志掩码脱敏（`0` 明文密钥泄露）及 `RFC 8866 c=IN IP4/IP6` 回环/私网/多播/第三方反射地址拦截（`0` 反射目标；`0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established` 离线 `synthetic` 策略配置检查；真实 SBC 媒体地址核验耗时 `not_measured`）&amp; `RFC 8866 a=fmtp` 单行长度 `[32, 256]` 字节与分号键值对 `[1, 16]` 项防缓冲区溢出门禁（真实 SDP 词法分析耗时 `not_measured`）(`P819` / `P820` · Stage 413 · Topic 53 · 829 护栏 &amp; 838 探针 · 416 维)</strong>
+              </td>
+              <td><code>P819 / P820 deterministic SIP/SDP RFC 4568 SDES key-leak + c= sinkhole gate &amp; RFC 8866 a=fmtp overflow guard</code></td>
+              <td><span class="badge-pass">PASS · 0ms @ 1ms Res (Synthetic)</span></td>
+              <td><span class="act-pill">Act automatically</span></td>
+            </tr>            <tr>
+              <td>
+                <strong>417. [专题54 🎉 `docs/voice-webrtc-rtcp-rfc3550-compound-sr-rr-sdes-cname-bye-flood-faq.md`] WebRTC `RFC 3550 Section 6.1` 复合 RTCP 首包 `SR(200)/RR(201)` 与子包 32 位字长总和精确闭合校验（`0` 畸形复合包越界读）及 `RFC 7022 SDES CNAME [8, 64]` 字节边界（`0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established` 离线 `synthetic` 策略配置检查；真实 SFU 复合 RTCP 解析耗时 `not_measured`）&amp; `RFC 3550 Section 6.6` `SRTCP BYE(203)` 发送源归属鉴权（`0` 越权静音拆流）与单包 `BYE SSRC [1, 4]` 项防批量注销洪泛门禁（真实 SRTCP BYE ACL 查找耗时 `not_measured`）(`P821` / `P822` · Stage 414 · 🎉 650 Live POC Probes · 831 护栏 &amp; 840 探针 · 417 维)</strong>
+              </td>
+              <td><code>P821 / P822 deterministic WebRTC RFC 3550 compound RTCP SR/RR + SDES CNAME gate &amp; anti-spoofed BYE flood guard</code></td>
+              <td><span class="badge-pass">PASS · 0ms @ 1ms Res (Synthetic)</span></td>
+              <td><span class="act-pill">Act automatically</span></td>
+            </tr>            <tr>
+              <td>
+                <strong>418. [专题55 🎉 `docs/voice-sip-rfc3581-via-rport-nat-pinhole-header-chain-amplification-faq.md`] 企业 SIP `RFC 3261` 单例头（`From/f, To/t, Call-ID/i, CSeq, Content-Length/l`）防走私 `400 Bad Request` 拒单（`0` 走私头）与 `Via` 栈链 `[1, 8]` 跳上限（`0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established` 离线 `synthetic` 策略配置检查；真实 SBC SIP 头解析耗时 `not_measured`）&amp; `RFC 3581` 顶层 `Via` `;received= / ;rport=` 强制底层套接字真实源覆写（`0` 客户端伪造反射参数）与 `[15, 30]s` NAT 针孔保活门禁（真实 SBC NAT 保活定时器耗时 `not_measured`）(`P823` / `P824` · Stage 415 · 🎉 Topic 55 里程碑 · 833 护栏 &amp; 842 探针 · 418 维)</strong>
+              </td>
+              <td><code>P823 / P824 deterministic SIP RFC 3261 singleton smuggling + Via hop cap &amp; RFC 3581 rport/received NAT pinhole guard</code></td>
+              <td><span class="badge-pass">PASS · 0ms @ 1ms Res (Synthetic)</span></td>
+              <td><span class="act-pill">Act automatically</span></td>
+            </tr>            <tr>
+              <td>
+                <strong>419. [专题56 `docs/voice-webrtc-ice-rfc8839-ufrag-pwd-entropy-candidate-port-scan-ssrf-faq.md`] WebRTC `RFC 8839 Section 5.1` `ice-ufrag [24, 64] bits` 与 `ice-pwd [128, 256] bits` 密码学随机熵下限及单次会话 CSPRNG 轮换（`0` 弱凭证；`0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established` 离线 `synthetic` 策略配置检查；真实 SFU CSPRNG 与 STUN HMAC-SHA1 验签耗时 `not_measured`）&amp; `RFC 8445` 入站 `a=candidate` 回环/私网/IMDS IP 及 `&lt; 1024` 特权或数据库端口剥离（`0` 违规候选探测）与单 `m=` 轨 `[1, 16]` 条候选上限门禁（真实 SFU ICE 候选解析耗时 `not_measured`）(`P825` / `P826` · Stage 416 · 🎉 第 60 张架构图里程碑 · 835 护栏 &amp; 844 探针 · 419 维)</strong>
+              </td>
+              <td><code>P825 / P826 deterministic WebRTC RFC 8839 ICE ufrag/pwd entropy floor &amp; RFC 8445 candidate SSRF + cap guard</code></td>
+              <td><span class="badge-pass">PASS · 0ms @ 1ms Res (Synthetic)</span></td>
+              <td><span class="act-pill">Act automatically</span></td>
+            </tr>            <tr>
+              <td>
+                <strong>420. [专题57 🎉 `docs/voice-sip-rfc3311-update-early-media-hijack-cseq-rollover-replay-faq.md`] 企业 SIP `RFC 3311` 早期对话（`180/183`）`UPDATE` 远端目标 `Contact` 源绑定（`0` 越权 Target-Refresh）与单呼叫应答前 `[1, 4]` 次 `UPDATE` 上限（`0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established` 离线 `synthetic` 策略配置检查；真实 SBC 早期对话表查找耗时 `not_measured`）&amp; `RFC 3261 Section 12.2.2` `Request-Line / CSeq` 方法强一致校验、`CSeq &lt;= remote_cseq` 返 `500` 重放拒单（`0` 绕过）与单步 `[1, 64]` 跃迁步长门禁（真实 SIP 事务 CSeq 校验耗时 `not_measured`）(`P827` / `P828` · Stage 417 · 🎉 420 大评测维度里程碑 · 837 护栏 &amp; 846 探针 · 420 维)</strong>
+              </td>
+              <td><code>P827 / P828 deterministic SIP RFC 3311 early UPDATE Contact pin &amp; RFC 3261 CSeq step + method guard</code></td>
+              <td><span class="badge-pass">PASS · 0ms @ 1ms Res (Synthetic)</span></td>
+              <td><span class="act-pill">Act automatically</span></td>
+            </tr>            <tr>
+              <td>
+                <strong>421. [专题58 🎉 `docs/voice-webrtc-srtp-rfc7714-aes-gcm-roc-nonce-reuse-unencrypted-srtcp-faq.md`] WebRTC `RFC 7714 Section 8.1` `SRTP AES-GCM` `(SSRC, ROC, SEQ)` Nonce 零重用（热备切换或提示音插播时强制轮换主密钥/推进 `ROC`，`0` Nonce 重用破密）与 `RFC 3711 [64, 128]` 包防重放位图窗口（`0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established` 离线 `synthetic` 策略配置检查；真实 SRTP AEAD 加解密耗时 `not_measured`）&amp; `RFC 3711 Section 3.4` 强制 `SRTCP E=1` 全加密（`0` 明文控制包）、31 位索引预换钥与 `[80, 128] bits` 认证标签门禁（真实 SRTCP 解密耗时 `not_measured`）(`P829` / `P830` 🎉 · Stage 418 · 🎉 P830 护栏与 860 项单测里程碑 · 839 护栏 &amp; 848 探针 · 421 维)</strong>
+              </td>
+              <td><code>P829 / P830 deterministic WebRTC RFC 7714 SRTP AES-GCM Nonce zero-reuse &amp; RFC 3711 SRTCP E=1 guard</code></td>
+              <td><span class="badge-pass">PASS · 0ms @ 1ms Res (Synthetic)</span></td>
+              <td><span class="act-pill">Act automatically</span></td>
+            </tr>            <tr>
+              <td>
+                <strong>422. [专题59 🎉 `docs/voice-sip-rfc3261-record-route-loose-routing-open-relay-sips-downgrade-faq.md`] 企业 SIP `RFC 3261 Section 16.4 / 16.12` 初始请求预加载 `Route` 开放中继 SSRF 剥离（`0` 外域转发）、强制 `;lr` 松散路由与 `[1, 6]` 跳 `Record-Route` 深度（`0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established` 离线 `synthetic` 策略配置检查；真实 SBC `Route HMAC` 验签耗时 `not_measured`）&amp; `RFC 5923 / RFC 5658` `SIPS / ;r2=on` 跨传输防降级（`0` 明文降级）与 `[128, 256] bits` `mTLS` 安全强度门禁（真实 `SIPS mTLS` 握手耗时 `not_measured`）(`P831` / `P832` · Stage 419 · 🎉 850 大合成探针与 660 项现场 POC 探针里程碑 · 841 护栏 &amp; 850 探针 · 422 维)</strong>
+              </td>
+              <td><code>P831 / P832 deterministic SIP RFC 3261 preloaded Route open-relay strip &amp; RFC 5923 SIPS mTLS anti-downgrade guard</code></td>
+              <td><span class="badge-pass">PASS · 0ms @ 1ms Res (Synthetic)</span></td>
+              <td><span class="act-pill">Act automatically</span></td>
+            </tr>            <tr>
+              <td>
+                <strong>423. [专题60 🎉 `docs/voice-webrtc-sctp-rfc8831-rfc4960-vtag-init-flood-stream-reset-rwnd-deadlock-faq.md`] WebRTC `RFC 8831 / RFC 4960 Section 8.5` 32 位 `Verification Tag (vtag)` 强校验、无状态 `HMAC STATE-COOKIE` 与 `RFC 6525 RE-CONFIG` 序号单调排空锁（`0` 盲注重置、并发流重置 `[1, 4]` 路，`0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established` 离线 `synthetic` 策略配置检查；真实 `DTLS-SCTP` 块解析耗时 `not_measured`）&amp; `RFC 4960 Section 6.2` `SACK Gap-Ack [1, 16]` 块上限、反悔撤回 `TSN Reneging` 零容忍拦截（`0` 反悔）与 `a_rwnd=0` 零窗口探活防死锁门禁（真实 `SCTP` 重传位图扫描耗时 `not_measured`）(`P833` / `P834` · Stage 420 🎉 · 🎉 Stage 420 与第 60 大专题双里程碑 · 843 护栏 &amp; 852 探针 · 423 维)</strong>
+              </td>
+              <td><code>P833 / P834 deterministic WebRTC RFC 4960 SCTP vtag + RFC 6525 RE-CONFIG drain &amp; SACK Gap-Ack / zero-window guard</code></td>
               <td><span class="badge-pass">PASS · 0ms @ 1ms Res (Synthetic)</span></td>
               <td><span class="act-pill">Act automatically</span></td>
             </tr>          </tbody>
