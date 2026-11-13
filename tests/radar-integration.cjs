@@ -2295,6 +2295,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r154File),'utf8');
       assert.ok(txt.includes('1,480.00')&&txt.includes('3,600.00')&&txt.includes('5,080.00')&&txt.includes('155.00')&&txt.includes('315.00')&&txt.includes('470.00')&&txt.includes('4,610.00')&&txt.includes('90.75%')&&txt.includes('not_measured'),r154File+': contains exact 11-13 R26 flowdown+unslopovich closed-form parameters');
     }
+    // 2026-11-13 Round 27 (R155: zqkra/ademark + AgriciDaniel/obsidian-herdr) closed-form FinOps verification
+    const r155PathA=1780.00+38.0*95.00;
+    assert.equal(r155PathA.toFixed(2),'5390.00','11-13 R27 Path A total');
+    const r155PathC=170.00+3.5*95.00;
+    assert.equal(r155PathC.toFixed(2),'502.50','11-13 R27 Path C total');
+    assert.equal((r155PathA-r155PathC).toFixed(2),'4887.50','11-13 R27 savings vs Path A');
+    assert.equal(((r155PathA-r155PathC)/r155PathA*100).toFixed(2),'90.68','11-13 R27 pct savings vs Path A');
+    for(const r155File of ['workshops/github-trending-radar/docs/ademark-obsidian-herdr-15-ade-benchmark-persistent-undoable-obsidian-agent-terminals-selection-faq.md','workshops/github-trending-radar/docs/ademark-obsidian-herdr-15-ade-benchmark-persistent-undoable-obsidian-agent-terminals-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r27-ademark-obsidianherdr.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r155File),'utf8');
+      assert.ok(txt.includes('1,780.00')&&txt.includes('3,610.00')&&txt.includes('5,390.00')&&txt.includes('170.00')&&txt.includes('332.50')&&txt.includes('502.50')&&txt.includes('4,887.50')&&txt.includes('90.68%')&&txt.includes('not_measured'),r155File+': contains exact 11-13 R27 ademark+obsidian-herdr closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
