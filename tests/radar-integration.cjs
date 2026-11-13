@@ -2141,6 +2141,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r140File),'utf8');
       assert.ok(txt.includes('1,860.00')&&txt.includes('3,740.00')&&txt.includes('5,600.00')&&txt.includes('185.00')&&txt.includes('340.00')&&txt.includes('525.00')&&txt.includes('5,075.00')&&txt.includes('90.63%')&&txt.includes('not_measured'),r140File+': contains exact 11-13 R12 whiteboard-ai-tutor+spine-hero-skill closed-form parameters');
     }
+    // 2026-11-13 Round 13 (R141: 8hjkkwikl8/ai-portfolio + kanaworksai-hue/sozai-search-mcp) closed-form FinOps verification
+    const r141PathA=1650.00+40.0*90.00;
+    assert.equal(r141PathA.toFixed(2),'5250.00','11-13 R13 Path A total');
+    const r141PathC=165.00+4.0*90.00;
+    assert.equal(r141PathC.toFixed(2),'525.00','11-13 R13 Path C total');
+    assert.equal((r141PathA-r141PathC).toFixed(2),'4725.00','11-13 R13 savings vs Path A');
+    assert.equal(((r141PathA-r141PathC)/r141PathA*100).toFixed(2),'90.00','11-13 R13 pct savings vs Path A');
+    for(const r141File of ['workshops/github-trending-radar/docs/ai-portfolio-sozai-search-mcp-traceable-rag-nl2sql-39k-3d-assets-selection-faq.md','workshops/github-trending-radar/docs/ai-portfolio-sozai-search-mcp-traceable-rag-nl2sql-39k-3d-assets-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r13-aiportfolio-sozai.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r141File),'utf8');
+      assert.ok(txt.includes('1,650.00')&&txt.includes('3,600.00')&&txt.includes('5,250.00')&&txt.includes('165.00')&&txt.includes('360.00')&&txt.includes('525.00')&&txt.includes('4,725.00')&&txt.includes('90.00%')&&txt.includes('not_measured'),r141File+': contains exact 11-13 R13 ai-portfolio+sozai-search-mcp closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
