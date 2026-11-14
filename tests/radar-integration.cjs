@@ -2860,6 +2860,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r205File),'utf8');
       assert.ok(txt.includes('1,420.00')&&txt.includes('3,420.00')&&txt.includes('4,840.00')&&txt.includes('90.00')&&txt.includes('332.50')&&txt.includes('422.50')&&txt.includes('4,417.50')&&txt.includes('91.27%')&&txt.includes('not_measured'),r205File+': contains exact 11-14 R22 tinytraffic+arcmd closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 23 (R206: nickvasilescu/grokbot-clone + linknimiball1974/ai-texture-forge) verification
+    const r206PathA=1790.00+38.0*100.00;
+    assert.equal(r206PathA.toFixed(2),'5590.00','11-14 R23 Path A total');
+    const r206PathC=140.00+3.5*100.00;
+    assert.equal(r206PathC.toFixed(2),'490.00','11-14 R23 Path C total');
+    assert.equal((r206PathA-r206PathC).toFixed(2),'5100.00','11-14 R23 savings vs Path A');
+    assert.equal(((r206PathA-r206PathC)/r206PathA*100).toFixed(2),'91.23','11-14 R23 pct savings vs Path A');
+    for(const r206File of ['workshops/github-trending-radar/docs/grokbot-clone-ai-texture-forge-4desktop-orgo-composio-grok-team-blender-seamless-pbr-projection-selection-faq.md','workshops/github-trending-radar/docs/grokbot-clone-ai-texture-forge-4desktop-orgo-composio-grok-team-blender-seamless-pbr-projection-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r23-grokbot-clone-texture-forge.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r206File),'utf8');
+      assert.ok(txt.includes('1,790.00')&&txt.includes('3,800.00')&&txt.includes('5,590.00')&&txt.includes('140.00')&&txt.includes('350.00')&&txt.includes('490.00')&&txt.includes('5,100.00')&&txt.includes('91.23%')&&txt.includes('not_measured'),r206File+': contains exact 11-14 R23 grokbot-clone+ai-texture-forge closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
