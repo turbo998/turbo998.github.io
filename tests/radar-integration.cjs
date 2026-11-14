@@ -2805,6 +2805,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r200File),'utf8');
       assert.ok(txt.includes('1,650.00')&&txt.includes('3,800.00')&&txt.includes('5,450.00')&&txt.includes('130.00')&&txt.includes('350.00')&&txt.includes('480.00')&&txt.includes('4,970.00')&&txt.includes('91.19%')&&txt.includes('not_measured'),r200File+': contains exact 11-14 R17 NamiDSH+Lingbo-Desk closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 18 (R201: TizenryA/colab-gpu-studio + zainudinnoori/gitmanual) verification
+    const r201PathA=1720.00+36.0*95.00;
+    assert.equal(r201PathA.toFixed(2),'5140.00','11-14 R18 Path A total');
+    const r201PathC=115.00+3.5*95.00;
+    assert.equal(r201PathC.toFixed(2),'447.50','11-14 R18 Path C total');
+    assert.equal((r201PathA-r201PathC).toFixed(2),'4692.50','11-14 R18 savings vs Path A');
+    assert.equal(((r201PathA-r201PathC)/r201PathA*100).toFixed(2),'91.29','11-14 R18 pct savings vs Path A');
+    for(const r201File of ['workshops/github-trending-radar/docs/colab-gpu-studio-gitmanual-ephemeral-colab-comfyui-workbench-zero-clone-repo-setup-mcp-selection-faq.md','workshops/github-trending-radar/docs/colab-gpu-studio-gitmanual-ephemeral-colab-comfyui-workbench-zero-clone-repo-setup-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r18-colab-gpu-studio-gitmanual.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r201File),'utf8');
+      assert.ok(txt.includes('1,720.00')&&txt.includes('3,420.00')&&txt.includes('5,140.00')&&txt.includes('115.00')&&txt.includes('332.50')&&txt.includes('447.50')&&txt.includes('4,692.50')&&txt.includes('91.29%')&&txt.includes('not_measured'),r201File+': contains exact 11-14 R18 colab-gpu-studio+gitmanual closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
