@@ -3457,6 +3457,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r258File),'utf8');
       assert.ok(txt.includes('1,680.00')&&txt.includes('3,610.00')&&txt.includes('5,290.00')&&txt.includes('90.00')&&txt.includes('332.50')&&txt.includes('422.50')&&txt.includes('4,867.50')&&txt.includes('92.01%')&&txt.includes('not_measured'),r258File+': contains exact 11-14 R75 reason-network+imbo closed-form parameters');
     }
+    // 2026-11-14 Night Round 76 (R259: sahenjp/RustXNG + fatsearch/fatsearch) verification
+    const r259PathA=1940.00+38.0*95.00;
+    assert.equal(r259PathA.toFixed(2),'5550.00','11-14 R76 Path A total');
+    const r259PathC=85.00+3.5*95.00;
+    assert.equal(r259PathC.toFixed(2),'417.50','11-14 R76 Path C total');
+    assert.equal((r259PathA-r259PathC).toFixed(2),'5132.50','11-14 R76 savings vs Path A');
+    assert.equal(((r259PathA-r259PathC)/r259PathA*100).toFixed(2),'92.48','11-14 R76 pct savings vs Path A');
+    for(const r259File of ['workshops/github-trending-radar/docs/rustxng-fatsearch-self-hosted-rust-metasearch-mcp-918-token-outline-loss-guard-web-reader-selection-faq.md','workshops/github-trending-radar/docs/rustxng-fatsearch-self-hosted-rust-metasearch-mcp-918-token-outline-loss-guard-web-reader-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r76-rustxng-fatsearch.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r259File),'utf8');
+      assert.ok(txt.includes('1,940.00')&&txt.includes('3,610.00')&&txt.includes('5,550.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('5,132.50')&&txt.includes('92.48%')&&txt.includes('not_measured'),r259File+': contains exact 11-14 R76 RustXNG+fatsearch closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
