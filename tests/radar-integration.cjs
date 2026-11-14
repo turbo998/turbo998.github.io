@@ -3226,6 +3226,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r237File),'utf8');
       assert.ok(txt.includes('1,820.00')&&txt.includes('3,800.00')&&txt.includes('5,620.00')&&txt.includes('135.00')&&txt.includes('350.00')&&txt.includes('485.00')&&txt.includes('5,135.00')&&txt.includes('91.37%')&&txt.includes('not_measured'),r237File+': contains exact 11-14 R54 safeagents+g-harness-evals closed-form parameters');
     }
+    // 2026-11-14 Night Round 55 (R238: RUC-NLPIR/CoworkOS + Luminousyyh/skill-wb-exec) verification
+    const r238PathA=1940.00+38.0*100.00;
+    assert.equal(r238PathA.toFixed(2),'5740.00','11-14 R55 Path A total');
+    const r238PathC=145.00+3.5*100.00;
+    assert.equal(r238PathC.toFixed(2),'495.00','11-14 R55 Path C total');
+    assert.equal((r238PathA-r238PathC).toFixed(2),'5245.00','11-14 R55 savings vs Path A');
+    assert.equal(((r238PathA-r238PathC)/r238PathA*100).toFixed(2),'91.38','11-14 R55 pct savings vs Path A');
+    for(const r238File of ['workshops/github-trending-radar/docs/coworkos-skill-wb-exec-3layer-hitl-cowork-runtime-pid-locked-worktree-delegation-selection-faq.md','workshops/github-trending-radar/docs/coworkos-skill-wb-exec-3layer-hitl-cowork-runtime-pid-locked-worktree-delegation-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r55-coworkos-wbexec.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r238File),'utf8');
+      assert.ok(txt.includes('1,940.00')&&txt.includes('3,800.00')&&txt.includes('5,740.00')&&txt.includes('145.00')&&txt.includes('350.00')&&txt.includes('495.00')&&txt.includes('5,245.00')&&txt.includes('91.38%')&&txt.includes('not_measured'),r238File+': contains exact 11-14 R55 CoworkOS+wb-exec closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
