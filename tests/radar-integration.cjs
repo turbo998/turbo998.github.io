@@ -3047,6 +3047,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r222File),'utf8');
       assert.ok(txt.includes('1,740.00')&&txt.includes('3,800.00')&&txt.includes('5,540.00')&&txt.includes('130.00')&&txt.includes('350.00')&&txt.includes('480.00')&&txt.includes('5,060.00')&&txt.includes('91.34%')&&txt.includes('not_measured'),r222File+': contains exact 11-14 R39 agy-fast-io+dsh-think-game closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 40 (R223: DeskLabs-OpenSource/DeskVoice + MatiSolina/busy) verification
+    const r223PathA=1920.00+38.0*100.00;
+    assert.equal(r223PathA.toFixed(2),'5720.00','11-14 R40 Path A total');
+    const r223PathC=145.00+3.5*100.00;
+    assert.equal(r223PathC.toFixed(2),'495.00','11-14 R40 Path C total');
+    assert.equal((r223PathA-r223PathC).toFixed(2),'5225.00','11-14 R40 savings vs Path A');
+    assert.equal(((r223PathA-r223PathC)/r223PathA*100).toFixed(2),'91.35','11-14 R40 pct savings vs Path A');
+    for(const r223File of ['workshops/github-trending-radar/docs/deskvoice-busy-selfhosted-sip-realtime-agent-pbx-per-bot-linux-sandbox-drive-platform-selection-faq.md','workshops/github-trending-radar/docs/deskvoice-busy-selfhosted-sip-realtime-agent-pbx-per-bot-linux-sandbox-drive-platform-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r40-deskvoice-busy.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r223File),'utf8');
+      assert.ok(txt.includes('1,920.00')&&txt.includes('3,800.00')&&txt.includes('5,720.00')&&txt.includes('145.00')&&txt.includes('350.00')&&txt.includes('495.00')&&txt.includes('5,225.00')&&txt.includes('91.35%')&&txt.includes('not_measured'),r223File+': contains exact 11-14 R40 DeskVoice+busy closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
