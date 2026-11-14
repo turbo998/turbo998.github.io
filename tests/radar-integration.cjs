@@ -2948,6 +2948,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r213File),'utf8');
       assert.ok(txt.includes('1,560.00')&&txt.includes('3,420.00')&&txt.includes('4,980.00')&&txt.includes('90.00')&&txt.includes('332.50')&&txt.includes('422.50')&&txt.includes('4,557.50')&&txt.includes('91.52%')&&txt.includes('not_measured'),r213File+': contains exact 11-14 R30 shoji-bar-4+intern closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 31 (R214: DandanLLab/SnowCatQQ + claudememory/claude-memory) verification
+    const r214PathA=1820.00+38.0*100.00;
+    assert.equal(r214PathA.toFixed(2),'5620.00','11-14 R31 Path A total');
+    const r214PathC=135.00+3.5*100.00;
+    assert.equal(r214PathC.toFixed(2),'485.00','11-14 R31 Path C total');
+    assert.equal((r214PathA-r214PathC).toFixed(2),'5135.00','11-14 R31 savings vs Path A');
+    assert.equal(((r214PathA-r214PathC)/r214PathA*100).toFixed(2),'91.37','11-14 R31 pct savings vs Path A');
+    for(const r214File of ['workshops/github-trending-radar/docs/snowcatqq-claude-memory-v8-onebot12-milky-mcp-qq-client-10way-persistent-memory-architecture-selection-faq.md','workshops/github-trending-radar/docs/snowcatqq-claude-memory-v8-onebot12-milky-mcp-qq-client-10way-persistent-memory-architecture-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r31-snowcatqq-claude-memory.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r214File),'utf8');
+      assert.ok(txt.includes('1,820.00')&&txt.includes('3,800.00')&&txt.includes('5,620.00')&&txt.includes('135.00')&&txt.includes('350.00')&&txt.includes('485.00')&&txt.includes('5,135.00')&&txt.includes('91.37%')&&txt.includes('not_measured'),r214File+': contains exact 11-14 R31 SnowCatQQ+claude-memory closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
