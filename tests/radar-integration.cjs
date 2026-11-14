@@ -3168,6 +3168,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r233File),'utf8');
       assert.ok(txt.includes('1,850.00')&&txt.includes('3,800.00')&&txt.includes('5,650.00')&&txt.includes('135.00')&&txt.includes('350.00')&&txt.includes('485.00')&&txt.includes('5,165.00')&&txt.includes('91.42%')&&txt.includes('not_measured'),r233File+': contains exact 11-14 R50 project-lighthouse+gradient-descent-for-a-face closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 51 (R234: bjarneo/quire + doublesq97-ui/su-zine) verification
+    const r234PathA=1480.00+36.0*95.00;
+    assert.equal(r234PathA.toFixed(2),'4900.00','11-14 R51 Path A total');
+    const r234PathC=85.00+3.5*95.00;
+    assert.equal(r234PathC.toFixed(2),'417.50','11-14 R51 Path C total');
+    assert.equal((r234PathA-r234PathC).toFixed(2),'4482.50','11-14 R51 savings vs Path A');
+    assert.equal(((r234PathA-r234PathC)/r234PathA*100).toFixed(2),'91.48','11-14 R51 pct savings vs Path A');
+    for(const r234File of ['workshops/github-trending-radar/docs/quire-su-zine-rust-rune-mcp-markdown-editor-source-verified-html-magazine-card-skill-selection-faq.md','workshops/github-trending-radar/docs/quire-su-zine-rust-rune-mcp-markdown-editor-source-verified-html-magazine-card-skill-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r51-quire-su-zine.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r234File),'utf8');
+      assert.ok(txt.includes('1,480.00')&&txt.includes('3,420.00')&&txt.includes('4,900.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('4,482.50')&&txt.includes('91.48%')&&txt.includes('not_measured'),r234File+': contains exact 11-14 R51 quire+su-zine closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
