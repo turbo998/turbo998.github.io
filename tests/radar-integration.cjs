@@ -3886,6 +3886,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r297File),'utf8');
       assert.ok(txt.includes('1,850.00')&&txt.includes('3,705.00')&&txt.includes('5,555.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('5,137.50')&&txt.includes('92.48%')&&txt.includes('not_measured'),r297File+': contains exact 11-14 R114 replica-skill+founder-skill closed-form parameters');
     }
+    // 2026-11-14 Night Round 115 (R298: alchaincyf/huashu-art-motion + QingYunA/answer-me-with-html) verification
+    const r298PathA=1820.00+38.5*95.00;
+    assert.equal(r298PathA.toFixed(2),'5477.50','11-14 R115 Path A total');
+    const r298PathC=80.00+3.5*95.00;
+    assert.equal(r298PathC.toFixed(2),'412.50','11-14 R115 Path C total');
+    assert.equal((r298PathA-r298PathC).toFixed(2),'5065.00','11-14 R115 savings vs Path A');
+    assert.equal(((r298PathA-r298PathC)/r298PathA*100).toFixed(2),'92.47','11-14 R115 pct savings vs Path A');
+    for(const r298File of ['workshops/github-trending-radar/docs/huashu-art-motion-answer-me-with-html-35-art-styles-9-explainer-grammars-8x-fewer-tokens-html-cli-selection-faq.md','workshops/github-trending-radar/docs/huashu-art-motion-answer-me-with-html-35-art-styles-9-explainer-grammars-8x-fewer-tokens-html-cli-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r115-huashuartmotion-answerhtml.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r298File),'utf8');
+      assert.ok(txt.includes('1,820.00')&&txt.includes('3,657.50')&&txt.includes('5,477.50')&&txt.includes('80.00')&&txt.includes('332.50')&&txt.includes('412.50')&&txt.includes('5,065.00')&&txt.includes('92.47%')&&txt.includes('not_measured'),r298File+': contains exact 11-14 R115 huashu-art-motion+answer-me-with-html closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
