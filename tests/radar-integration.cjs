@@ -3633,6 +3633,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r274File),'utf8');
       assert.ok(txt.includes('1,950.00')&&txt.includes('3,705.00')&&txt.includes('5,655.00')&&txt.includes('95.00')&&txt.includes('332.50')&&txt.includes('427.50')&&txt.includes('5,227.50')&&txt.includes('92.44%')&&txt.includes('not_measured'),r274File+': contains exact 11-14 R91 Octopus-SI-OS+FieldCraft closed-form parameters');
     }
+    // 2026-11-14 Night Round 92 (R275: Fazmin/cve-intel + kkjiangk/agent-py) verification
+    const r275PathA=1830.00+38.0*95.00;
+    assert.equal(r275PathA.toFixed(2),'5440.00','11-14 R92 Path A total');
+    const r275PathC=90.00+3.5*95.00;
+    assert.equal(r275PathC.toFixed(2),'422.50','11-14 R92 Path C total');
+    assert.equal((r275PathA-r275PathC).toFixed(2),'5017.50','11-14 R92 savings vs Path A');
+    assert.equal(((r275PathA-r275PathC)/r275PathA*100).toFixed(2),'92.23','11-14 R92 pct savings vs Path A');
+    for(const r275File of ['workshops/github-trending-radar/docs/cve-intel-agent-py-46-source-ssvc-remediation-lab-mcp-durable-kafka-outbox-aiops-selection-faq.md','workshops/github-trending-radar/docs/cve-intel-agent-py-46-source-ssvc-remediation-lab-mcp-durable-kafka-outbox-aiops-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r92-cveintel-agentpy.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r275File),'utf8');
+      assert.ok(txt.includes('1,830.00')&&txt.includes('3,610.00')&&txt.includes('5,440.00')&&txt.includes('90.00')&&txt.includes('332.50')&&txt.includes('422.50')&&txt.includes('5,017.50')&&txt.includes('92.23%')&&txt.includes('not_measured'),r275File+': contains exact 11-14 R92 cve-intel+agent-py closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
