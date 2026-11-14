@@ -3201,6 +3201,31 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r236File),'utf8');
       assert.ok(txt.includes('1,510.00')&&txt.includes('3,420.00')&&txt.includes('4,930.00')&&txt.includes('80.00')&&txt.includes('332.50')&&txt.includes('412.50')&&txt.includes('4,517.50')&&txt.includes('91.63%')&&txt.includes('not_measured'),r236File+': contains exact 11-14 R53 elio+birdsong closed-form parameters');
     }
+    // 2026-11-14 Track A/B Leaderboard & Night Round 54 (R237: huggingface/safeagents + garrytan/g-harness-evals) verification
+    const rawSearch1114Obj=JSON.parse(rawSearch1114);
+    const rawSearch1114Map=new Map(rawSearch1114Obj.items.map(it=>[it.full_name,it]));
+    for(const item of reportJson.fastest_rising_leaderboard_2026_11_14.track_a_24h_star_surge){
+      assert.equal(item.provenance,'measured',item.full_name+': 11-14 Track A provenance');
+      assert.ok(rawHtml1114.includes(`href="/${item.full_name}"`),item.full_name+': present in 11-14 raw HTML');
+      assert.ok(rawHtml1114.includes(`${item.stars_today.toLocaleString('en-US')} stars today`),item.full_name+': exact stars_today in 11-14 raw HTML');
+    }
+    for(const item of reportJson.fastest_rising_leaderboard_2026_11_14.track_b_new_repo_breakout_slope){
+      assert.equal(item.stars_today,'not_measured',item.full_name+': 11-14 Track B stars_today must be not_measured');
+      assert.ok(rawSearch1114Map.has(item.full_name),item.full_name+': present in 11-14 archived Search API JSON');
+      const rawEntry=rawSearch1114Map.get(item.full_name);
+      assert.equal(item.stars_total_search_api,rawEntry.stargazers_count,item.full_name+': 11-14 stars_total_search_api matches Search API JSON');
+      assert.equal(item.stars_per_day,Math.round(item.stars_total/item.age_days),item.full_name+': 11-14 stars_per_day closed-form');
+    }
+    const r237PathA=1820.00+38.0*100.00;
+    assert.equal(r237PathA.toFixed(2),'5620.00','11-14 R54 Path A total');
+    const r237PathC=135.00+3.5*100.00;
+    assert.equal(r237PathC.toFixed(2),'485.00','11-14 R54 Path C total');
+    assert.equal((r237PathA-r237PathC).toFixed(2),'5135.00','11-14 R54 savings vs Path A');
+    assert.equal(((r237PathA-r237PathC)/r237PathA*100).toFixed(2),'91.37','11-14 R54 pct savings vs Path A');
+    for(const r237File of ['workshops/github-trending-radar/docs/safeagents-g-harness-evals-preharness-atif-tool-proxy-cost-per-solved-task-benchmark-selection-faq.md','workshops/github-trending-radar/docs/safeagents-g-harness-evals-preharness-atif-tool-proxy-cost-per-solved-task-benchmark-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r54-safeagents-gharnessevals.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r237File),'utf8');
+      assert.ok(txt.includes('1,820.00')&&txt.includes('3,800.00')&&txt.includes('5,620.00')&&txt.includes('135.00')&&txt.includes('350.00')&&txt.includes('485.00')&&txt.includes('5,135.00')&&txt.includes('91.37%')&&txt.includes('not_measured'),r237File+': contains exact 11-14 R54 safeagents+g-harness-evals closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
