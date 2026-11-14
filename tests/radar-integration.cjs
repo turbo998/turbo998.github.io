@@ -3292,6 +3292,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r243File),'utf8');
       assert.ok(txt.includes('1,780.00')&&txt.includes('3,800.00')&&txt.includes('5,580.00')&&txt.includes('130.00')&&txt.includes('350.00')&&txt.includes('480.00')&&txt.includes('5,100.00')&&txt.includes('91.40%')&&txt.includes('not_measured'),r243File+': contains exact 11-14 R60 spring-agent-scope+rexmod closed-form parameters');
     }
+    // 2026-11-14 Night Round 61 (R244: Burns1028/moa-plus + HuangShengZeBlueSky/dsh-harness-evolution) verification
+    const r244PathA=2120.00+38.0*100.00;
+    assert.equal(r244PathA.toFixed(2),'5920.00','11-14 R61 Path A total');
+    const r244PathC=155.00+3.5*100.00;
+    assert.equal(r244PathC.toFixed(2),'505.00','11-14 R61 Path C total');
+    assert.equal((r244PathA-r244PathC).toFixed(2),'5415.00','11-14 R61 savings vs Path A');
+    assert.equal(((r244PathA-r244PathC)/r244PathA*100).toFixed(2),'91.47','11-14 R61 pct savings vs Path A');
+    for(const r244File of ['workshops/github-trending-radar/docs/moa-plus-dsh-harness-evolution-persistent-peer-workers-frozen-4b-scope-c-harness-evolution-selection-faq.md','workshops/github-trending-radar/docs/moa-plus-dsh-harness-evolution-persistent-peer-workers-frozen-4b-scope-c-harness-evolution-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r61-moaplus-dshevolution.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r244File),'utf8');
+      assert.ok(txt.includes('2,120.00')&&txt.includes('3,800.00')&&txt.includes('5,920.00')&&txt.includes('155.00')&&txt.includes('350.00')&&txt.includes('505.00')&&txt.includes('5,415.00')&&txt.includes('91.47%')&&txt.includes('not_measured'),r244File+': contains exact 11-14 R61 moa-plus+dsh-harness-evolution closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
