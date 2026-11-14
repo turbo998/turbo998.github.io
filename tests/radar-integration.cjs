@@ -3512,6 +3512,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r263File),'utf8');
       assert.ok(txt.includes('1,760.00')&&txt.includes('3,610.00')&&txt.includes('5,370.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('4,952.50')&&txt.includes('92.23%')&&txt.includes('not_measured'),r263File+': contains exact 11-14 R80 sill+pagesift closed-form parameters');
     }
+    // 2026-11-14 Night Round 81 (R264: ctoldigital/axuse + wiva-hq/CodeRail) verification
+    const r264PathA=1840.00+38.0*95.00;
+    assert.equal(r264PathA.toFixed(2),'5450.00','11-14 R81 Path A total');
+    const r264PathC=90.00+3.5*95.00;
+    assert.equal(r264PathC.toFixed(2),'422.50','11-14 R81 Path C total');
+    assert.equal((r264PathA-r264PathC).toFixed(2),'5027.50','11-14 R81 savings vs Path A');
+    assert.equal(((r264PathA-r264PathC)/r264PathA*100).toFixed(2),'92.25','11-14 R81 pct savings vs Path A');
+    for(const r264File of ['workshops/github-trending-radar/docs/axuse-coderail-accessibility-first-browser-computer-use-mcp-self-hosted-rbac-agent-remote-selection-faq.md','workshops/github-trending-radar/docs/axuse-coderail-accessibility-first-browser-computer-use-mcp-self-hosted-rbac-agent-remote-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r81-axuse-coderail.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r264File),'utf8');
+      assert.ok(txt.includes('1,840.00')&&txt.includes('3,610.00')&&txt.includes('5,450.00')&&txt.includes('90.00')&&txt.includes('332.50')&&txt.includes('422.50')&&txt.includes('5,027.50')&&txt.includes('92.25%')&&txt.includes('not_measured'),r264File+': contains exact 11-14 R81 axuse+CodeRail closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
