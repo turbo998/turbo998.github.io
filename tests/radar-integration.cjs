@@ -2717,6 +2717,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r192File),'utf8');
       assert.ok(txt.includes('1,540.00')&&txt.includes('3,610.00')&&txt.includes('5,150.00')&&txt.includes('125.00')&&txt.includes('332.50')&&txt.includes('457.50')&&txt.includes('4,692.50')&&txt.includes('91.12%')&&txt.includes('not_measured'),r192File+': contains exact 11-14 R9 homelab-diagram+daozai closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 10 (R193: Gloridust/WowType + YusufCeng1z/ding) verification
+    const r193PathA=1380.00+36.0*95.00;
+    assert.equal(r193PathA.toFixed(2),'4800.00','11-14 R10 Path A total');
+    const r193PathC=95.00+3.5*95.00;
+    assert.equal(r193PathC.toFixed(2),'427.50','11-14 R10 Path C total');
+    assert.equal((r193PathA-r193PathC).toFixed(2),'4372.50','11-14 R10 savings vs Path A');
+    assert.equal(((r193PathA-r193PathC)/r193PathA*100).toFixed(2),'91.09','11-14 R10 pct savings vs Path A');
+    for(const r193File of ['workshops/github-trending-radar/docs/wowtype-ding-linux-macos-offline-voice-hymt-ime-zero-dep-spring-morphing-toast-selection-faq.md','workshops/github-trending-radar/docs/wowtype-ding-linux-macos-offline-voice-hymt-ime-zero-dep-spring-morphing-toast-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r10-wowtype-ding.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r193File),'utf8');
+      assert.ok(txt.includes('1,380.00')&&txt.includes('3,420.00')&&txt.includes('4,800.00')&&txt.includes('95.00')&&txt.includes('332.50')&&txt.includes('427.50')&&txt.includes('4,372.50')&&txt.includes('91.09%')&&txt.includes('not_measured'),r193File+': contains exact 11-14 R10 WowType+ding closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
