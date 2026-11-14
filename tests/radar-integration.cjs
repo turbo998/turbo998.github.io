@@ -3157,6 +3157,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r232File),'utf8');
       assert.ok(txt.includes('1,620.00')&&txt.includes('3,420.00')&&txt.includes('5,040.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('4,622.50')&&txt.includes('91.72%')&&txt.includes('not_measured'),r232File+': contains exact 11-14 R49 CreaBIM+impacket-rs closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 50 (R233: professorsolderin/project-lighthouse + sirioberati/gradient-descent-for-a-face) verification
+    const r233PathA=1850.00+38.0*100.00;
+    assert.equal(r233PathA.toFixed(2),'5650.00','11-14 R50 Path A total');
+    const r233PathC=135.00+3.5*100.00;
+    assert.equal(r233PathC.toFixed(2),'485.00','11-14 R50 Path C total');
+    assert.equal((r233PathA-r233PathC).toFixed(2),'5165.00','11-14 R50 savings vs Path A');
+    assert.equal(((r233PathA-r233PathC)/r233PathA*100).toFixed(2),'91.42','11-14 R50 pct savings vs Path A');
+    for(const r233File of ['workshops/github-trending-radar/docs/project-lighthouse-gradient-descent-face-12000page-adversarial-manuscript-ai-50400blob-differentiable-renderer-selection-faq.md','workshops/github-trending-radar/docs/project-lighthouse-gradient-descent-face-12000page-adversarial-manuscript-ai-50400blob-differentiable-renderer-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r50-lighthouse-gradient-face.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r233File),'utf8');
+      assert.ok(txt.includes('1,850.00')&&txt.includes('3,800.00')&&txt.includes('5,650.00')&&txt.includes('135.00')&&txt.includes('350.00')&&txt.includes('485.00')&&txt.includes('5,165.00')&&txt.includes('91.42%')&&txt.includes('not_measured'),r233File+': contains exact 11-14 R50 project-lighthouse+gradient-descent-for-a-face closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
