@@ -2706,6 +2706,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r191File),'utf8');
       assert.ok(txt.includes('2,450.00')&&txt.includes('3,420.00')&&txt.includes('5,870.00')&&txt.includes('185.00')&&txt.includes('332.50')&&txt.includes('517.50')&&txt.includes('5,352.50')&&txt.includes('91.18%')&&txt.includes('not_measured'),r191File+': contains exact 11-14 R8 awesome-coding-plan+dsh-agent-compare closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 9 (R192: Goblinmine/homelab-diagram + Renly1994/xiaotang-daozai) verification
+    const r192PathA=1540.00+38.0*95.00;
+    assert.equal(r192PathA.toFixed(2),'5150.00','11-14 R9 Path A total');
+    const r192PathC=125.00+3.5*95.00;
+    assert.equal(r192PathC.toFixed(2),'457.50','11-14 R9 Path C total');
+    assert.equal((r192PathA-r192PathC).toFixed(2),'4692.50','11-14 R9 savings vs Path A');
+    assert.equal(((r192PathA-r192PathC)/r192PathA*100).toFixed(2),'91.12','11-14 R9 pct savings vs Path A');
+    for(const r192File of ['workshops/github-trending-radar/docs/homelab-diagram-xiaotang-daozai-agentic-yaml-network-svg-rust-windows-9ai-quota-island-selection-faq.md','workshops/github-trending-radar/docs/homelab-diagram-xiaotang-daozai-agentic-yaml-network-svg-rust-windows-9ai-quota-island-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r9-homelab-diagram-daozai.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r192File),'utf8');
+      assert.ok(txt.includes('1,540.00')&&txt.includes('3,610.00')&&txt.includes('5,150.00')&&txt.includes('125.00')&&txt.includes('332.50')&&txt.includes('457.50')&&txt.includes('4,692.50')&&txt.includes('91.12%')&&txt.includes('not_measured'),r192File+': contains exact 11-14 R9 homelab-diagram+daozai closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
