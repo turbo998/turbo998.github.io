@@ -2651,6 +2651,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r186File),'utf8');
       assert.ok(txt.includes('1,580.00')&&txt.includes('3,610.00')&&txt.includes('5,190.00')&&txt.includes('140.00')&&txt.includes('332.50')&&txt.includes('472.50')&&txt.includes('4,717.50')&&txt.includes('90.90%')&&txt.includes('not_measured'),r186File+': contains exact 11-14 R3 good-door+agentcase-lab closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 4 (R187: DEEIX-AI/Winc + ubc-vision/solv3r) verification
+    const r187PathA=1960.00+38.0*105.00;
+    assert.equal(r187PathA.toFixed(2),'5950.00','11-14 R4 Path A total');
+    const r187PathC=165.00+3.5*105.00;
+    assert.equal(r187PathC.toFixed(2),'532.50','11-14 R4 Path C total');
+    assert.equal((r187PathA-r187PathC).toFixed(2),'5417.50','11-14 R4 savings vs Path A');
+    assert.equal(((r187PathA-r187PathC)/r187PathA*100).toFixed(2),'91.05','11-14 R4 pct savings vs Path A');
+    for(const r187File of ['workshops/github-trending-radar/docs/winc-solv3r-119ms-52mb-rust-1gb-editor-3d-looped-transformer-multiview-solver-selection-faq.md','workshops/github-trending-radar/docs/winc-solv3r-119ms-52mb-rust-1gb-editor-3d-looped-transformer-multiview-solver-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r4-winc-solv3r.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r187File),'utf8');
+      assert.ok(txt.includes('1,960.00')&&txt.includes('3,990.00')&&txt.includes('5,950.00')&&txt.includes('165.00')&&txt.includes('367.50')&&txt.includes('532.50')&&txt.includes('5,417.50')&&txt.includes('91.05%')&&txt.includes('not_measured'),r187File+': contains exact 11-14 R4 winc+solv3r closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
