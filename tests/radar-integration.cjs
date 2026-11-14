@@ -3413,6 +3413,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r254File),'utf8');
       assert.ok(txt.includes('1,820.00')&&txt.includes('3,800.00')&&txt.includes('5,620.00')&&txt.includes('110.00')&&txt.includes('380.00')&&txt.includes('490.00')&&txt.includes('5,130.00')&&txt.includes('91.28%')&&txt.includes('not_measured'),r254File+': contains exact 11-14 R71 Aeternitas+youtube-research-skills closed-form parameters');
     }
+    // 2026-11-14 Night Round 72 (R255: vercel-labs/ui + vercel-labs/durable-harness) verification
+    const r255PathA=1740.00+38.0*95.00;
+    assert.equal(r255PathA.toFixed(2),'5350.00','11-14 R72 Path A total');
+    const r255PathC=95.00+3.5*95.00;
+    assert.equal(r255PathC.toFixed(2),'427.50','11-14 R72 Path C total');
+    assert.equal((r255PathA-r255PathC).toFixed(2),'4922.50','11-14 R72 savings vs Path A');
+    assert.equal(((r255PathA-r255PathC)/r255PathA*100).toFixed(2),'92.01','11-14 R72 pct savings vs Path A');
+    for(const r255File of ['workshops/github-trending-radar/docs/vercel-ui-durable-harness-agent-behavior-primitives-workflow-sdk-durable-coding-agents-selection-faq.md','workshops/github-trending-radar/docs/vercel-ui-durable-harness-agent-behavior-primitives-workflow-sdk-durable-coding-agents-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r72-vercelui-durableharness.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r255File),'utf8');
+      assert.ok(txt.includes('1,740.00')&&txt.includes('3,610.00')&&txt.includes('5,350.00')&&txt.includes('95.00')&&txt.includes('332.50')&&txt.includes('427.50')&&txt.includes('4,922.50')&&txt.includes('92.01%')&&txt.includes('not_measured'),r255File+': contains exact 11-14 R72 vercel-labs/ui+durable-harness closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
