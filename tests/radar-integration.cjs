@@ -3325,6 +3325,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r246File),'utf8');
       assert.ok(txt.includes('1,490.00')&&txt.includes('3,420.00')&&txt.includes('4,910.00')&&txt.includes('75.00')&&txt.includes('332.50')&&txt.includes('407.50')&&txt.includes('4,502.50')&&txt.includes('91.70%')&&txt.includes('not_measured'),r246File+': contains exact 11-14 R63 nanolight+tatami closed-form parameters');
     }
+    // 2026-11-14 Night Round 64 (R247: globalmpc/backendskills + globalmpc/vibe-preflight) verification
+    const r247PathA=1920.00+38.0*100.00;
+    assert.equal(r247PathA.toFixed(2),'5720.00','11-14 R64 Path A total');
+    const r247PathC=140.00+3.5*100.00;
+    assert.equal(r247PathC.toFixed(2),'490.00','11-14 R64 Path C total');
+    assert.equal((r247PathA-r247PathC).toFixed(2),'5230.00','11-14 R64 savings vs Path A');
+    assert.equal(((r247PathA-r247PathC)/r247PathA*100).toFixed(2),'91.43','11-14 R64 pct savings vs Path A');
+    for(const r247File of ['workshops/github-trending-radar/docs/backendskills-vibe-preflight-production-backend-guardrails-9area-launch-readiness-audit-selection-faq.md','workshops/github-trending-radar/docs/backendskills-vibe-preflight-production-backend-guardrails-9area-launch-readiness-audit-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r64-backendskills-vibepreflight.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r247File),'utf8');
+      assert.ok(txt.includes('1,920.00')&&txt.includes('3,800.00')&&txt.includes('5,720.00')&&txt.includes('140.00')&&txt.includes('350.00')&&txt.includes('490.00')&&txt.includes('5,230.00')&&txt.includes('91.43%')&&txt.includes('not_measured'),r247File+': contains exact 11-14 R64 backendskills+vibe-preflight closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
