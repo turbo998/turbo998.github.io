@@ -2981,6 +2981,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r216File),'utf8');
       assert.ok(txt.includes('1,640.00')&&txt.includes('3,420.00')&&txt.includes('5,060.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('4,642.50')&&txt.includes('91.75%')&&txt.includes('not_measured'),r216File+': contains exact 11-14 R33 Orwell+emissor-nfse-nacional closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 34 (R217: tommy0103/blackhole + shi3z/mightyCode) verification
+    const r217PathA=1880.00+38.0*100.00;
+    assert.equal(r217PathA.toFixed(2),'5680.00','11-14 R34 Path A total');
+    const r217PathC=140.00+3.5*100.00;
+    assert.equal(r217PathC.toFixed(2),'490.00','11-14 R34 Path C total');
+    assert.equal((r217PathA-r217PathC).toFixed(2),'5190.00','11-14 R34 savings vs Path A');
+    assert.equal(((r217PathA-r217PathC)/r217PathA*100).toFixed(2),'91.37','11-14 R34 pct savings vs Path A');
+    for(const r217File of ['workshops/github-trending-radar/docs/blackhole-mightycode-colima-failclose-claude-code-sandbox-local-mlx-4bit-anthropic-proxy-guard-selection-faq.md','workshops/github-trending-radar/docs/blackhole-mightycode-colima-failclose-claude-code-sandbox-local-mlx-4bit-anthropic-proxy-guard-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r34-blackhole-mightycode.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r217File),'utf8');
+      assert.ok(txt.includes('1,880.00')&&txt.includes('3,800.00')&&txt.includes('5,680.00')&&txt.includes('140.00')&&txt.includes('350.00')&&txt.includes('490.00')&&txt.includes('5,190.00')&&txt.includes('91.37%')&&txt.includes('not_measured'),r217File+': contains exact 11-14 R34 blackhole+mightyCode closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
