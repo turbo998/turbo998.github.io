@@ -3798,6 +3798,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r289File),'utf8');
       assert.ok(txt.includes('1,860.00')&&txt.includes('3,752.50')&&txt.includes('5,612.50')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('5,195.00')&&txt.includes('92.56%')&&txt.includes('not_measured'),r289File+': contains exact 11-14 R106 esp32-iphone-agent+earshot closed-form parameters');
     }
+    // 2026-11-14 Night Round 107 (R290 Milestone: vAPI-Network/vapi-network + zhuyansen/new-term-radar) verification
+    const r290PathA=1840.00+38.5*95.00;
+    assert.equal(r290PathA.toFixed(2),'5497.50','11-14 R107 Path A total');
+    const r290PathC=85.00+3.5*95.00;
+    assert.equal(r290PathC.toFixed(2),'417.50','11-14 R107 Path C total');
+    assert.equal((r290PathA-r290PathC).toFixed(2),'5080.00','11-14 R107 savings vs Path A');
+    assert.equal(((r290PathA-r290PathC)/r290PathA*100).toFixed(2),'92.41','11-14 R107 pct savings vs Path A');
+    for(const r290File of ['workshops/github-trending-radar/docs/vapi-network-new-term-radar-x402-usdc-base-buyer-vault-day1-ai-term-mcp-radar-selection-faq.md','workshops/github-trending-radar/docs/vapi-network-new-term-radar-x402-usdc-base-buyer-vault-day1-ai-term-mcp-radar-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r107-vapinetwork-newtermradar.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r290File),'utf8');
+      assert.ok(txt.includes('1,840.00')&&txt.includes('3,657.50')&&txt.includes('5,497.50')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('5,080.00')&&txt.includes('92.41%')&&txt.includes('not_measured'),r290File+': contains exact 11-14 R107 vapi-network+new-term-radar closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
