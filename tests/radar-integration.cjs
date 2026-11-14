@@ -3622,6 +3622,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r273File),'utf8');
       assert.ok(txt.includes('1,780.00')&&txt.includes('3,610.00')&&txt.includes('5,390.00')&&txt.includes('90.00')&&txt.includes('332.50')&&txt.includes('422.50')&&txt.includes('4,967.50')&&txt.includes('92.16%')&&txt.includes('not_measured'),r273File+': contains exact 11-14 R90 AutoCua+qz-browser-agent closed-form parameters');
     }
+    // 2026-11-14 Night Round 91 (R274: miuuyy/Octopus-SI-OS + tangency-labs/fieldcraft) verification
+    const r274PathA=1950.00+39.0*95.00;
+    assert.equal(r274PathA.toFixed(2),'5655.00','11-14 R91 Path A total');
+    const r274PathC=95.00+3.5*95.00;
+    assert.equal(r274PathC.toFixed(2),'427.50','11-14 R91 Path C total');
+    assert.equal((r274PathA-r274PathC).toFixed(2),'5227.50','11-14 R91 savings vs Path A');
+    assert.equal(((r274PathA-r274PathC)/r274PathA*100).toFixed(2),'92.44','11-14 R91 pct savings vs Path A');
+    for(const r274File of ['workshops/github-trending-radar/docs/octopus-si-os-fieldcraft-45k-loc-rust-self-evolving-agent-os-pure-rust-cae-fea-mcp-selection-faq.md','workshops/github-trending-radar/docs/octopus-si-os-fieldcraft-45k-loc-rust-self-evolving-agent-os-pure-rust-cae-fea-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r91-octopusos-fieldcraft.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r274File),'utf8');
+      assert.ok(txt.includes('1,950.00')&&txt.includes('3,705.00')&&txt.includes('5,655.00')&&txt.includes('95.00')&&txt.includes('332.50')&&txt.includes('427.50')&&txt.includes('5,227.50')&&txt.includes('92.44%')&&txt.includes('not_measured'),r274File+': contains exact 11-14 R91 Octopus-SI-OS+FieldCraft closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
