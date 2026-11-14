@@ -3124,6 +3124,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r229File),'utf8');
       assert.ok(txt.includes('1,840.00')&&txt.includes('3,800.00')&&txt.includes('5,640.00')&&txt.includes('135.00')&&txt.includes('350.00')&&txt.includes('485.00')&&txt.includes('5,155.00')&&txt.includes('91.40%')&&txt.includes('not_measured'),r229File+': contains exact 11-14 R46 kinetic+pi-better closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 47 (R230: Adolanium/hermes-whiteboard + Statecraft-Labs/isometric-cities) verification
+    const r230PathA=1890.00+38.0*100.00;
+    assert.equal(r230PathA.toFixed(2),'5690.00','11-14 R47 Path A total');
+    const r230PathC=140.00+3.5*100.00;
+    assert.equal(r230PathC.toFixed(2),'490.00','11-14 R47 Path C total');
+    assert.equal((r230PathA-r230PathC).toFixed(2),'5200.00','11-14 R47 savings vs Path A');
+    assert.equal(((r230PathA-r230PathC)/r230PathA*100).toFixed(2),'91.39','11-14 R47 pct savings vs Path A');
+    for(const r230File of ['workshops/github-trending-radar/docs/hermes-whiteboard-isometric-cities-route-executing-agent-board-apple-silicon-isometric-city-builder-selection-faq.md','workshops/github-trending-radar/docs/hermes-whiteboard-isometric-cities-route-executing-agent-board-apple-silicon-isometric-city-builder-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r47-hermes-whiteboard-isometric-cities.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r230File),'utf8');
+      assert.ok(txt.includes('1,890.00')&&txt.includes('3,800.00')&&txt.includes('5,690.00')&&txt.includes('140.00')&&txt.includes('350.00')&&txt.includes('490.00')&&txt.includes('5,200.00')&&txt.includes('91.39%')&&txt.includes('not_measured'),r230File+': contains exact 11-14 R47 hermes-whiteboard+isometric-cities closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
