@@ -3248,6 +3248,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r239File),'utf8');
       assert.ok(txt.includes('1,650.00')&&txt.includes('3,420.00')&&txt.includes('5,070.00')&&txt.includes('90.00')&&txt.includes('332.50')&&txt.includes('422.50')&&txt.includes('4,647.50')&&txt.includes('91.67%')&&txt.includes('not_measured'),r239File+': contains exact 11-14 R56 cc-remote+Hill-Climb closed-form parameters');
     }
+    // 2026-11-14 Night Round 57 (R240: albertirgi/replica + gmpetrov/agent-screenplay) verification
+    const r240PathA=1560.00+36.0*95.00;
+    assert.equal(r240PathA.toFixed(2),'4980.00','11-14 R57 Path A total');
+    const r240PathC=85.00+3.5*95.00;
+    assert.equal(r240PathC.toFixed(2),'417.50','11-14 R57 Path C total');
+    assert.equal((r240PathA-r240PathC).toFixed(2),'4562.50','11-14 R57 savings vs Path A');
+    assert.equal(((r240PathA-r240PathC)/r240PathA*100).toFixed(2),'91.62','11-14 R57 pct savings vs Path A');
+    for(const r240File of ['workshops/github-trending-radar/docs/replica-agent-screenplay-4axis-virtual-clock-ui-clone-scorer-screen-studio-mcp-selection-faq.md','workshops/github-trending-radar/docs/replica-agent-screenplay-4axis-virtual-clock-ui-clone-scorer-screen-studio-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r57-replica-screenplay.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r240File),'utf8');
+      assert.ok(txt.includes('1,560.00')&&txt.includes('3,420.00')&&txt.includes('4,980.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('4,562.50')&&txt.includes('91.62%')&&txt.includes('not_measured'),r240File+': contains exact 11-14 R57 replica+agent-screenplay closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
