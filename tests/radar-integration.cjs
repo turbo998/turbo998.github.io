@@ -3677,6 +3677,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r278File),'utf8');
       assert.ok(txt.includes('1,740.00')&&txt.includes('3,515.00')&&txt.includes('5,255.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('4,837.50')&&txt.includes('92.06%')&&txt.includes('not_measured'),r278File+': contains exact 11-14 R95 code-video-showcase+open-3d-skills closed-form parameters');
     }
+    // 2026-11-14 Night Round 96 (R279: Leonxlnx/cook + Lanqiao-Luca/ai-java-workflow) verification
+    const r279PathA=1790.00+38.0*95.00;
+    assert.equal(r279PathA.toFixed(2),'5400.00','11-14 R96 Path A total');
+    const r279PathC=90.00+3.5*95.00;
+    assert.equal(r279PathC.toFixed(2),'422.50','11-14 R96 Path C total');
+    assert.equal((r279PathA-r279PathC).toFixed(2),'4977.50','11-14 R96 savings vs Path A');
+    assert.equal(((r279PathA-r279PathC)/r279PathA*100).toFixed(2),'92.18','11-14 R96 pct savings vs Path A');
+    for(const r279File of ['workshops/github-trending-radar/docs/cook-ai-java-workflow-7-stage-zero-context-critic-loop-20-role-brain-routed-spring-boot-workflow-selection-faq.md','workshops/github-trending-radar/docs/cook-ai-java-workflow-7-stage-zero-context-critic-loop-20-role-brain-routed-spring-boot-workflow-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r96-cook-aijavaworkflow.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r279File),'utf8');
+      assert.ok(txt.includes('1,790.00')&&txt.includes('3,610.00')&&txt.includes('5,400.00')&&txt.includes('90.00')&&txt.includes('332.50')&&txt.includes('422.50')&&txt.includes('4,977.50')&&txt.includes('92.18%')&&txt.includes('not_measured'),r279File+': contains exact 11-14 R96 cook+ai-java-workflow closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
