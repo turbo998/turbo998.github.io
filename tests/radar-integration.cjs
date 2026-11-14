@@ -2794,6 +2794,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r199File),'utf8');
       assert.ok(txt.includes('1,560.00')&&txt.includes('3,420.00')&&txt.includes('4,980.00')&&txt.includes('110.00')&&txt.includes('332.50')&&txt.includes('442.50')&&txt.includes('4,537.50')&&txt.includes('91.11%')&&txt.includes('not_measured'),r199File+': contains exact 11-14 R16 Text.js+flawless-ui-ux closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 17 (R200: aa1143/NamiDSH + liguozheng-ac/Lingbo-Desk) verification
+    const r200PathA=1650.00+38.0*100.00;
+    assert.equal(r200PathA.toFixed(2),'5450.00','11-14 R17 Path A total');
+    const r200PathC=130.00+3.5*100.00;
+    assert.equal(r200PathC.toFixed(2),'480.00','11-14 R17 Path C total');
+    assert.equal((r200PathA-r200PathC).toFixed(2),'4970.00','11-14 R17 savings vs Path A');
+    assert.equal(((r200PathA-r200PathC)/r200PathA*100).toFixed(2),'91.19','11-14 R17 pct savings vs Path A');
+    for(const r200File of ['workshops/github-trending-radar/docs/namidsh-lingbo-desk-1000line-cordis-plugin-agent-kernel-receipt-hardened-live2d-voice-worker-selection-faq.md','workshops/github-trending-radar/docs/namidsh-lingbo-desk-1000line-cordis-plugin-agent-kernel-receipt-hardened-live2d-voice-worker-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r17-namidsh-lingbo-desk.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r200File),'utf8');
+      assert.ok(txt.includes('1,650.00')&&txt.includes('3,800.00')&&txt.includes('5,450.00')&&txt.includes('130.00')&&txt.includes('350.00')&&txt.includes('480.00')&&txt.includes('4,970.00')&&txt.includes('91.19%')&&txt.includes('not_measured'),r200File+': contains exact 11-14 R17 NamiDSH+Lingbo-Desk closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
