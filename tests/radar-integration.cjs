@@ -2827,6 +2827,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r202File),'utf8');
       assert.ok(txt.includes('1,580.00')&&txt.includes('3,800.00')&&txt.includes('5,380.00')&&txt.includes('125.00')&&txt.includes('350.00')&&txt.includes('475.00')&&txt.includes('4,905.00')&&txt.includes('91.17%')&&txt.includes('not_measured'),r202File+': contains exact 11-14 R19 idea-generator-2+capwise closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 20 (R203: howznguyen/shorts-kit + s1dashu/quiet-md) verification
+    const r203PathA=1760.00+38.0*95.00;
+    assert.equal(r203PathA.toFixed(2),'5370.00','11-14 R20 Path A total');
+    const r203PathC=120.00+3.5*95.00;
+    assert.equal(r203PathC.toFixed(2),'452.50','11-14 R20 Path C total');
+    assert.equal((r203PathA-r203PathC).toFixed(2),'4917.50','11-14 R20 savings vs Path A');
+    assert.equal(((r203PathA-r203PathC)/r203PathA*100).toFixed(2),'91.57','11-14 R20 pct savings vs Path A');
+    for(const r203File of ['workshops/github-trending-radar/docs/shorts-kit-quiet-md-fact-gated-160shot-remotion-agent-kit-5ms-rust-gpui-feishu-docxxml-editor-selection-faq.md','workshops/github-trending-radar/docs/shorts-kit-quiet-md-fact-gated-160shot-remotion-agent-kit-5ms-rust-gpui-feishu-docxxml-editor-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r20-shorts-kit-quiet-md.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r203File),'utf8');
+      assert.ok(txt.includes('1,760.00')&&txt.includes('3,610.00')&&txt.includes('5,370.00')&&txt.includes('120.00')&&txt.includes('332.50')&&txt.includes('452.50')&&txt.includes('4,917.50')&&txt.includes('91.57%')&&txt.includes('not_measured'),r203File+': contains exact 11-14 R20 shorts-kit+quiet-md closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
