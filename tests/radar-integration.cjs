@@ -3853,6 +3853,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r294File),'utf8');
       assert.ok(txt.includes('1,890.00')&&txt.includes('3,705.00')&&txt.includes('5,595.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('5,177.50')&&txt.includes('92.54%')&&txt.includes('not_measured'),r294File+': contains exact 11-14 R111 tokeneconomizer+folkbench closed-form parameters');
     }
+    // 2026-11-14 Night Round 112 (R295: wheresryan22/anatomy + tangency-labs/solidcraft) verification
+    const r295PathA=1880.00+39.5*95.00;
+    assert.equal(r295PathA.toFixed(2),'5632.50','11-14 R112 Path A total');
+    const r295PathC=85.00+3.5*95.00;
+    assert.equal(r295PathC.toFixed(2),'417.50','11-14 R112 Path C total');
+    assert.equal((r295PathA-r295PathC).toFixed(2),'5215.00','11-14 R112 savings vs Path A');
+    assert.equal(((r295PathA-r295PathC)/r295PathA*100).toFixed(2),'92.59','11-14 R112 pct savings vs Path A');
+    for(const r295File of ['workshops/github-trending-radar/docs/anatomy-solidcraft-isometric-svg-webgl-physical-explainer-rust-parametric-3d-cad-mcp-selection-faq.md','workshops/github-trending-radar/docs/anatomy-solidcraft-isometric-svg-webgl-physical-explainer-rust-parametric-3d-cad-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r112-anatomy-solidcraft.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r295File),'utf8');
+      assert.ok(txt.includes('1,880.00')&&txt.includes('3,752.50')&&txt.includes('5,632.50')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('5,215.00')&&txt.includes('92.59%')&&txt.includes('not_measured'),r295File+': contains exact 11-14 R112 anatomy+solidcraft closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
