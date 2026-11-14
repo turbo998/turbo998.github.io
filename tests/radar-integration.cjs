@@ -3655,6 +3655,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r276File),'utf8');
       assert.ok(txt.includes('1,910.00')&&txt.includes('3,705.00')&&txt.includes('5,615.00')&&txt.includes('95.00')&&txt.includes('332.50')&&txt.includes('427.50')&&txt.includes('5,187.50')&&txt.includes('92.39%')&&txt.includes('not_measured'),r276File+': contains exact 11-14 R93 MultiLangBench+novelty-eval closed-form parameters');
     }
+    // 2026-11-14 Night Round 94 (R277: shinyobjectz/raea + lovisdotio/motion2code) verification
+    const r277PathA=1760.00+38.0*95.00;
+    assert.equal(r277PathA.toFixed(2),'5370.00','11-14 R94 Path A total');
+    const r277PathC=85.00+3.5*95.00;
+    assert.equal(r277PathC.toFixed(2),'417.50','11-14 R94 Path C total');
+    assert.equal((r277PathA-r277PathC).toFixed(2),'4952.50','11-14 R94 savings vs Path A');
+    assert.equal(((r277PathA-r277PathC)/r277PathA*100).toFixed(2),'92.23','11-14 R94 pct savings vs Path A');
+    for(const r277File of ['workshops/github-trending-radar/docs/raea-motion2code-react-gpu-render-anything-engine-frame-synced-svg-gsap-motion-rebuild-selection-faq.md','workshops/github-trending-radar/docs/raea-motion2code-react-gpu-render-anything-engine-frame-synced-svg-gsap-motion-rebuild-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r94-raea-motion2code.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r277File),'utf8');
+      assert.ok(txt.includes('1,760.00')&&txt.includes('3,610.00')&&txt.includes('5,370.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('4,952.50')&&txt.includes('92.23%')&&txt.includes('not_measured'),r277File+': contains exact 11-14 R94 raea+motion2code closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
