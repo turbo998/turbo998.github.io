@@ -3025,6 +3025,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r220File),'utf8');
       assert.ok(txt.includes('1,680.00')&&txt.includes('3,420.00')&&txt.includes('5,100.00')&&txt.includes('110.00')&&txt.includes('332.50')&&txt.includes('442.50')&&txt.includes('4,657.50')&&txt.includes('91.32%')&&txt.includes('not_measured'),r220File+': contains exact 11-14 R37 tinglongwu+tomorrow-ai closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 38 (R221: croma-labs/paradero + mrjoechen/luci-theme-carbon) verification
+    const r221PathA=1490.00+36.0*95.00;
+    assert.equal(r221PathA.toFixed(2),'4910.00','11-14 R38 Path A total');
+    const r221PathC=80.00+3.5*95.00;
+    assert.equal(r221PathC.toFixed(2),'412.50','11-14 R38 Path C total');
+    assert.equal((r221PathA-r221PathC).toFixed(2),'4497.50','11-14 R38 savings vs Path A');
+    assert.equal(((r221PathA-r221PathC)/r221PathA*100).toFixed(2),'91.60','11-14 R38 pct savings vs Path A');
+    for(const r221File of ['workshops/github-trending-radar/docs/paradero-luci-theme-carbon-wcag22-civic-transit-telemetry-mac-merged-9200oui-openwrt-dashboard-selection-faq.md','workshops/github-trending-radar/docs/paradero-luci-theme-carbon-wcag22-civic-transit-telemetry-mac-merged-9200oui-openwrt-dashboard-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r38-paradero-luci-carbon.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r221File),'utf8');
+      assert.ok(txt.includes('1,490.00')&&txt.includes('3,420.00')&&txt.includes('4,910.00')&&txt.includes('80.00')&&txt.includes('332.50')&&txt.includes('412.50')&&txt.includes('4,497.50')&&txt.includes('91.60%')&&txt.includes('not_measured'),r221File+': contains exact 11-14 R38 paradero+luci-theme-carbon closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
