@@ -3930,6 +3930,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r301File),'utf8');
       assert.ok(txt.includes('1,760.00')&&txt.includes('3,562.50')&&txt.includes('5,322.50')&&txt.includes('80.00')&&txt.includes('332.50')&&txt.includes('412.50')&&txt.includes('4,910.00')&&txt.includes('92.25%')&&txt.includes('not_measured'),r301File+': contains exact 11-14 R118 kinship-research+awesome-re closed-form parameters');
     }
+    // 2026-11-14 Night Round 119 (R302: benjitaylor/skills + herdodp/snapgent-connector) verification
+    const r302PathA=1750.00+37.5*95.00;
+    assert.equal(r302PathA.toFixed(2),'5312.50','11-14 R119 Path A total');
+    const r302PathC=80.00+3.5*95.00;
+    assert.equal(r302PathC.toFixed(2),'412.50','11-14 R119 Path C total');
+    assert.equal((r302PathA-r302PathC).toFixed(2),'4900.00','11-14 R119 savings vs Path A');
+    assert.equal(((r302PathA-r302PathC)/r302PathA*100).toFixed(2),'92.24','11-14 R119 pct savings vs Path A');
+    for(const r302File of ['workshops/github-trending-radar/docs/benjitaylor-skills-snapgent-connector-stageshow-react-product-ui-film-verifier-mv3-vscode-mcp-bridge-selection-faq.md','workshops/github-trending-radar/docs/benjitaylor-skills-snapgent-connector-stageshow-react-product-ui-film-verifier-mv3-vscode-mcp-bridge-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r119-benjitaylorskills-snapgent.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r302File),'utf8');
+      assert.ok(txt.includes('1,750.00')&&txt.includes('3,562.50')&&txt.includes('5,312.50')&&txt.includes('80.00')&&txt.includes('332.50')&&txt.includes('412.50')&&txt.includes('4,900.00')&&txt.includes('92.24%')&&txt.includes('not_measured'),r302File+': contains exact 11-14 R119 benjitaylor-skills+snapgent-connector closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
