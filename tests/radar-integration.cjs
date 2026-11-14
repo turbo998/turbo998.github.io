@@ -2959,6 +2959,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r214File),'utf8');
       assert.ok(txt.includes('1,820.00')&&txt.includes('3,800.00')&&txt.includes('5,620.00')&&txt.includes('135.00')&&txt.includes('350.00')&&txt.includes('485.00')&&txt.includes('5,135.00')&&txt.includes('91.37%')&&txt.includes('not_measured'),r214File+': contains exact 11-14 R31 SnowCatQQ+claude-memory closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 32 (R215: rauchg/vinyl + zhangkunlv-ship-it/xuehui-shortvideo-skill) verification
+    const r215PathA=1590.00+36.0*95.00;
+    assert.equal(r215PathA.toFixed(2),'5010.00','11-14 R32 Path A total');
+    const r215PathC=105.00+3.5*95.00;
+    assert.equal(r215PathC.toFixed(2),'437.50','11-14 R32 Path C total');
+    assert.equal((r215PathA-r215PathC).toFixed(2),'4572.50','11-14 R32 savings vs Path A');
+    assert.equal(((r215PathA-r215PathC)/r215PathA*100).toFixed(2),'91.27','11-14 R32 pct savings vs Path A');
+    for(const r215File of ['workshops/github-trending-radar/docs/vinyl-xuehui-shortvideo-skill-zero-dep-hertzian-audioworklet-turntable-318hr-distilled-agent-skill-selection-faq.md','workshops/github-trending-radar/docs/vinyl-xuehui-shortvideo-skill-zero-dep-hertzian-audioworklet-turntable-318hr-distilled-agent-skill-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r32-vinyl-xuehui-skill.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r215File),'utf8');
+      assert.ok(txt.includes('1,590.00')&&txt.includes('3,420.00')&&txt.includes('5,010.00')&&txt.includes('105.00')&&txt.includes('332.50')&&txt.includes('437.50')&&txt.includes('4,572.50')&&txt.includes('91.27%')&&txt.includes('not_measured'),r215File+': contains exact 11-14 R32 vinyl+xuehui-shortvideo-skill closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
