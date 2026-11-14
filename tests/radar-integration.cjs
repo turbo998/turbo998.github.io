@@ -3556,6 +3556,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r267File),'utf8');
       assert.ok(txt.includes('1,710.00')&&txt.includes('3,515.00')&&txt.includes('5,225.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('4,807.50')&&txt.includes('92.01%')&&txt.includes('not_measured'),r267File+': contains exact 11-14 R84 scp+Pi-Remote closed-form parameters');
     }
+    // 2026-11-14 Night Round 85 (R268: ARSI-LAB/ARSI-Evaluator + ASLP-lab/DRAMA-Eval) verification
+    const r268PathA=1880.00+39.0*95.00;
+    assert.equal(r268PathA.toFixed(2),'5585.00','11-14 R85 Path A total');
+    const r268PathC=95.00+3.5*95.00;
+    assert.equal(r268PathC.toFixed(2),'427.50','11-14 R85 Path C total');
+    assert.equal((r268PathA-r268PathC).toFixed(2),'5157.50','11-14 R85 savings vs Path A');
+    assert.equal(((r268PathA-r268PathC)/r268PathA*100).toFixed(2),'92.35','11-14 R85 pct savings vs Path A');
+    for(const r268File of ['workshops/github-trending-radar/docs/arsi-evaluator-drama-eval-unified-harness-inference-kernel-eval-bilingual-multi-speaker-speech-benchmark-selection-faq.md','workshops/github-trending-radar/docs/arsi-evaluator-drama-eval-unified-harness-inference-kernel-eval-bilingual-multi-speaker-speech-benchmark-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r85-arsievaluator-dramaeval.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r268File),'utf8');
+      assert.ok(txt.includes('1,880.00')&&txt.includes('3,705.00')&&txt.includes('5,585.00')&&txt.includes('95.00')&&txt.includes('332.50')&&txt.includes('427.50')&&txt.includes('5,157.50')&&txt.includes('92.35%')&&txt.includes('not_measured'),r268File+': contains exact 11-14 R85 ARSI-Evaluator+DRAMA-Eval closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
