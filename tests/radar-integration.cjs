@@ -3534,6 +3534,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r265File),'utf8');
       assert.ok(txt.includes('1,720.00')&&txt.includes('3,515.00')&&txt.includes('5,235.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('4,817.50')&&txt.includes('92.02%')&&txt.includes('not_measured'),r265File+': contains exact 11-14 R82 audio-studio-mcp+kinetograph closed-form parameters');
     }
+    // 2026-11-14 Night Round 83 (R266: dansugc/reverse-engineer-marketing + alextnetto/res) verification
+    const r266PathA=1790.00+39.0*95.00;
+    assert.equal(r266PathA.toFixed(2),'5495.00','11-14 R83 Path A total');
+    const r266PathC=95.00+3.5*95.00;
+    assert.equal(r266PathC.toFixed(2),'427.50','11-14 R83 Path C total');
+    assert.equal((r266PathA-r266PathC).toFixed(2),'5067.50','11-14 R83 savings vs Path A');
+    assert.equal(((r266PathA-r266PathC)/r266PathA*100).toFixed(2),'92.22','11-14 R83 pct savings vs Path A');
+    for(const r266File of ['workshops/github-trending-radar/docs/reverse-engineer-marketing-res-evidence-cited-gtm-teardown-130-token-saas-build-kit-selection-faq.md','workshops/github-trending-radar/docs/reverse-engineer-marketing-res-evidence-cited-gtm-teardown-130-token-saas-build-kit-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r83-rem-res.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r266File),'utf8');
+      assert.ok(txt.includes('1,790.00')&&txt.includes('3,705.00')&&txt.includes('5,495.00')&&txt.includes('95.00')&&txt.includes('332.50')&&txt.includes('427.50')&&txt.includes('5,067.50')&&txt.includes('92.22%')&&txt.includes('not_measured'),r266File+': contains exact 11-14 R83 REM+RES closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
