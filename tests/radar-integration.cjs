@@ -3113,6 +3113,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r228File),'utf8');
       assert.ok(txt.includes('2,150.00')&&txt.includes('3,800.00')&&txt.includes('5,950.00')&&txt.includes('165.00')&&txt.includes('350.00')&&txt.includes('515.00')&&txt.includes('5,435.00')&&txt.includes('91.34%')&&txt.includes('not_measured'),r228File+': contains exact 11-14 R45 mit-han-lab/pear+InfraRSI closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 46 (R229: Veloresearch/kinetic + nicobailon/pi-better) verification
+    const r229PathA=1840.00+38.0*100.00;
+    assert.equal(r229PathA.toFixed(2),'5640.00','11-14 R46 Path A total');
+    const r229PathC=135.00+3.5*100.00;
+    assert.equal(r229PathC.toFixed(2),'485.00','11-14 R46 Path C total');
+    assert.equal((r229PathA-r229PathC).toFixed(2),'5155.00','11-14 R46 savings vs Path A');
+    assert.equal(((r229PathA-r229PathC)/r229PathA*100).toFixed(2),'91.40','11-14 R46 pct savings vs Path A');
+    for(const r229File of ['workshops/github-trending-radar/docs/kinetic-pi-better-exact-multivendor-rust-gguf-engine-repo-grounded-depth-prompt-rewriter-selection-faq.md','workshops/github-trending-radar/docs/kinetic-pi-better-exact-multivendor-rust-gguf-engine-repo-grounded-depth-prompt-rewriter-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r46-kinetic-pi-better.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r229File),'utf8');
+      assert.ok(txt.includes('1,840.00')&&txt.includes('3,800.00')&&txt.includes('5,640.00')&&txt.includes('135.00')&&txt.includes('350.00')&&txt.includes('485.00')&&txt.includes('5,155.00')&&txt.includes('91.40%')&&txt.includes('not_measured'),r229File+': contains exact 11-14 R46 kinetic+pi-better closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
