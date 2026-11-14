@@ -2926,6 +2926,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r211File),'utf8');
       assert.ok(txt.includes('1,950.00')&&txt.includes('3,800.00')&&txt.includes('5,750.00')&&txt.includes('145.00')&&txt.includes('350.00')&&txt.includes('495.00')&&txt.includes('5,255.00')&&txt.includes('91.39%')&&txt.includes('not_measured'),r211File+': contains exact 11-14 R28 ai-pose-gallery-zh+saltline-fable-5.2 closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 29 (R212: HolyArrs/HolyArrs + TomyJan/SnowLuma) verification
+    const r212PathA=1480.00+36.0*95.00;
+    assert.equal(r212PathA.toFixed(2),'4900.00','11-14 R29 Path A total');
+    const r212PathC=95.00+3.5*95.00;
+    assert.equal(r212PathC.toFixed(2),'427.50','11-14 R29 Path C total');
+    assert.equal((r212PathA-r212PathC).toFixed(2),'4472.50','11-14 R29 savings vs Path A');
+    assert.equal(((r212PathA-r212PathC)/r212PathA*100).toFixed(2),'91.28','11-14 R29 pct savings vs Path A');
+    for(const r212File of ['workshops/github-trending-radar/docs/holyarrs-snowluma-single-container-16mb-arr-media-stack-qq-onebot11-mcp-runtime-selection-faq.md','workshops/github-trending-radar/docs/holyarrs-snowluma-single-container-16mb-arr-media-stack-qq-onebot11-mcp-runtime-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r29-holyarrs-snowluma.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r212File),'utf8');
+      assert.ok(txt.includes('1,480.00')&&txt.includes('3,420.00')&&txt.includes('4,900.00')&&txt.includes('95.00')&&txt.includes('332.50')&&txt.includes('427.50')&&txt.includes('4,472.50')&&txt.includes('91.28%')&&txt.includes('not_measured'),r212File+': contains exact 11-14 R29 HolyArrs+SnowLuma closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
