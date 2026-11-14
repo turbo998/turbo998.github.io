@@ -3699,6 +3699,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r280File),'utf8');
       assert.ok(txt.includes('1,730.00')&&txt.includes('3,515.00')&&txt.includes('5,245.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('4,827.50')&&txt.includes('92.04%')&&txt.includes('not_measured'),r280File+': contains exact 11-14 R97 flecha-browser+eido closed-form parameters');
     }
+    // 2026-11-14 Night Round 98 (R281: alchaincyf/huashu-motion + Vibha-Ramprakash/claude-video-effects) verification
+    const r281PathA=1850.00+39.0*95.00;
+    assert.equal(r281PathA.toFixed(2),'5555.00','11-14 R98 Path A total');
+    const r281PathC=90.00+3.5*95.00;
+    assert.equal(r281PathC.toFixed(2),'422.50','11-14 R98 Path C total');
+    assert.equal((r281PathA-r281PathC).toFixed(2),'5132.50','11-14 R98 savings vs Path A');
+    assert.equal(((r281PathA-r281PathC)/r281PathA*100).toFixed(2),'92.39','11-14 R98 pct savings vs Path A');
+    for(const r281File of ['workshops/github-trending-radar/docs/huashu-motion-claude-video-effects-abc-score-point-to-edit-launch-films-51-face-tracked-reels-selection-faq.md','workshops/github-trending-radar/docs/huashu-motion-claude-video-effects-abc-score-point-to-edit-launch-films-51-face-tracked-reels-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r98-huashumotion-claudevideoeffects.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r281File),'utf8');
+      assert.ok(txt.includes('1,850.00')&&txt.includes('3,705.00')&&txt.includes('5,555.00')&&txt.includes('90.00')&&txt.includes('332.50')&&txt.includes('422.50')&&txt.includes('5,132.50')&&txt.includes('92.39%')&&txt.includes('not_measured'),r281File+': contains exact 11-14 R98 huashu-motion+claude-video-effects closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
