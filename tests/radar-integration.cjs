@@ -2728,6 +2728,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r193File),'utf8');
       assert.ok(txt.includes('1,380.00')&&txt.includes('3,420.00')&&txt.includes('4,800.00')&&txt.includes('95.00')&&txt.includes('332.50')&&txt.includes('427.50')&&txt.includes('4,372.50')&&txt.includes('91.09%')&&txt.includes('not_measured'),r193File+': contains exact 11-14 R10 WowType+ding closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 11 (R194: zeekk0/OpenAmika + ZSeven-W/dsh-game-studio) verification
+    const r194PathA=1840.00+38.0*100.00;
+    assert.equal(r194PathA.toFixed(2),'5640.00','11-14 R11 Path A total');
+    const r194PathC=145.00+3.5*100.00;
+    assert.equal(r194PathC.toFixed(2),'495.00','11-14 R11 Path C total');
+    assert.equal((r194PathA-r194PathC).toFixed(2),'5145.00','11-14 R11 savings vs Path A');
+    assert.equal(((r194PathA-r194PathC)/r194PathA*100).toFixed(2),'91.22','11-14 R11 pct savings vs Path A');
+    for(const r194File of ['workshops/github-trending-radar/docs/openamika-dsh-game-studio-5gb-vram-semilocal-live2d-companion-10tool-autoplay-game-studio-selection-faq.md','workshops/github-trending-radar/docs/openamika-dsh-game-studio-5gb-vram-semilocal-live2d-companion-10tool-autoplay-game-studio-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r11-openamika-game-studio.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r194File),'utf8');
+      assert.ok(txt.includes('1,840.00')&&txt.includes('3,800.00')&&txt.includes('5,640.00')&&txt.includes('145.00')&&txt.includes('350.00')&&txt.includes('495.00')&&txt.includes('5,145.00')&&txt.includes('91.22%')&&txt.includes('not_measured'),r194File+': contains exact 11-14 R11 OpenAmika+dsh-game-studio closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
