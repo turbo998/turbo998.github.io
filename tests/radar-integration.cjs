@@ -3908,6 +3908,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r299File),'utf8');
       assert.ok(txt.includes('1,810.00')&&txt.includes('3,610.00')&&txt.includes('5,420.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('5,002.50')&&txt.includes('92.30%')&&txt.includes('not_measured'),r299File+': contains exact 11-14 R116 mesh-avatar-studio+awesome-short-drama-skills closed-form parameters');
     }
+    // 2026-11-14 Night Round 117 (R300 Milestone: jiwoochris/artex-global + DUNHKpcc/Claude-Guardian) verification
+    const r300PathA=1850.00+39.0*95.00;
+    assert.equal(r300PathA.toFixed(2),'5555.00','11-14 R117 Path A total');
+    const r300PathC=85.00+3.5*95.00;
+    assert.equal(r300PathC.toFixed(2),'417.50','11-14 R117 Path C total');
+    assert.equal((r300PathA-r300PathC).toFixed(2),'5137.50','11-14 R117 savings vs Path A');
+    assert.equal(((r300PathA-r300PathC)/r300PathA*100).toFixed(2),'92.48','11-14 R117 pct savings vs Path A');
+    for(const r300File of ['workshops/github-trending-radar/docs/artex-global-claude-guardian-multi-agent-defensive-security-graph-fail-closed-egress-verifier-selection-faq.md','workshops/github-trending-radar/docs/artex-global-claude-guardian-multi-agent-defensive-security-graph-fail-closed-egress-verifier-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r117-artexglobal-claudeguardian.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r300File),'utf8');
+      assert.ok(txt.includes('1,850.00')&&txt.includes('3,705.00')&&txt.includes('5,555.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('5,137.50')&&txt.includes('92.48%')&&txt.includes('not_measured'),r300File+': contains exact 11-14 R117 artex-global+claude-guardian closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
