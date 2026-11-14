@@ -3787,6 +3787,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r288File),'utf8');
       assert.ok(txt.includes('1,790.00')&&txt.includes('3,610.00')&&txt.includes('5,400.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('4,982.50')&&txt.includes('92.27%')&&txt.includes('not_measured'),r288File+': contains exact 11-14 R105 design-os-studio+web-ocean closed-form parameters');
     }
+    // 2026-11-14 Night Round 106 (R289: onehumanbeing/esp32-iphone-agent + Leonxlnx/earshot) verification
+    const r289PathA=1860.00+39.5*95.00;
+    assert.equal(r289PathA.toFixed(2),'5612.50','11-14 R106 Path A total');
+    const r289PathC=85.00+3.5*95.00;
+    assert.equal(r289PathC.toFixed(2),'417.50','11-14 R106 Path C total');
+    assert.equal((r289PathA-r289PathC).toFixed(2),'5195.00','11-14 R106 savings vs Path A');
+    assert.equal(((r289PathA-r289PathC)/r289PathA*100).toFixed(2),'92.56','11-14 R106 pct savings vs Path A');
+    for(const r289File of ['workshops/github-trending-radar/docs/esp32-iphone-agent-earshot-7usd-airplay-hid-ios-agent-cpu-audio-critic-forge-mcp-selection-faq.md','workshops/github-trending-radar/docs/esp32-iphone-agent-earshot-7usd-airplay-hid-ios-agent-cpu-audio-critic-forge-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r106-esp32iphone-earshot.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r289File),'utf8');
+      assert.ok(txt.includes('1,860.00')&&txt.includes('3,752.50')&&txt.includes('5,612.50')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('5,195.00')&&txt.includes('92.56%')&&txt.includes('not_measured'),r289File+': contains exact 11-14 R106 esp32-iphone-agent+earshot closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
