@@ -3831,6 +3831,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r292File),'utf8');
       assert.ok(txt.includes('1,730.00')&&txt.includes('3,515.00')&&txt.includes('5,245.00')&&txt.includes('80.00')&&txt.includes('332.50')&&txt.includes('412.50')&&txt.includes('4,832.50')&&txt.includes('92.14%')&&txt.includes('not_measured'),r292File+': contains exact 11-14 R109 rake+lgui closed-form parameters');
     }
+    // 2026-11-14 Night Round 110 Milestone (R293: rul-lang/rul + midasmatterhorn/artcraft-skills) verification
+    const r293PathA=1760.00+38.0*95.00;
+    assert.equal(r293PathA.toFixed(2),'5370.00','11-14 R110 Path A total');
+    const r293PathC=80.00+3.5*95.00;
+    assert.equal(r293PathC.toFixed(2),'412.50','11-14 R110 Path C total');
+    assert.equal((r293PathA-r293PathC).toFixed(2),'4957.50','11-14 R110 savings vs Path A');
+    assert.equal(((r293PathA-r293PathC)/r293PathA*100).toFixed(2),'92.32','11-14 R110 pct savings vs Path A');
+    for(const r293File of ['workshops/github-trending-radar/docs/rul-artcraft-skills-128bit-binary-agent-language-20-rust-creative-cad-suite-mcp-skills-selection-faq.md','workshops/github-trending-radar/docs/rul-artcraft-skills-128bit-binary-agent-language-20-rust-creative-cad-suite-mcp-skills-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r110-rul-artcraftskills.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r293File),'utf8');
+      assert.ok(txt.includes('1,760.00')&&txt.includes('3,610.00')&&txt.includes('5,370.00')&&txt.includes('80.00')&&txt.includes('332.50')&&txt.includes('412.50')&&txt.includes('4,957.50')&&txt.includes('92.32%')&&txt.includes('not_measured'),r293File+': contains exact 11-14 R110 rul+artcraft-skills closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
