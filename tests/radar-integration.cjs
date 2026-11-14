@@ -3146,6 +3146,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r231File),'utf8');
       assert.ok(txt.includes('1,580.00')&&txt.includes('3,420.00')&&txt.includes('5,000.00')&&txt.includes('95.00')&&txt.includes('332.50')&&txt.includes('427.50')&&txt.includes('4,572.50')&&txt.includes('91.45%')&&txt.includes('not_measured'),r231File+': contains exact 11-14 R48 chaojifeng+freebie-radar closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 49 (R232: chopinregis/CreaBIM + nestho/impacket-rs) verification
+    const r232PathA=1620.00+36.0*95.00;
+    assert.equal(r232PathA.toFixed(2),'5040.00','11-14 R49 Path A total');
+    const r232PathC=85.00+3.5*95.00;
+    assert.equal(r232PathC.toFixed(2),'417.50','11-14 R49 Path C total');
+    assert.equal((r232PathA-r232PathC).toFixed(2),'4622.50','11-14 R49 savings vs Path A');
+    assert.equal(((r232PathA-r232PathC)/r232PathA*100).toFixed(2),'91.72','11-14 R49 pct savings vs Path A');
+    for(const r232File of ['workshops/github-trending-radar/docs/creabim-impacket-rs-blender-style-rust-ifc4-bim-585m-roundtrip-74tool-ad-protocol-suite-selection-faq.md','workshops/github-trending-radar/docs/creabim-impacket-rs-blender-style-rust-ifc4-bim-585m-roundtrip-74tool-ad-protocol-suite-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r49-creabim-impacket-rs.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r232File),'utf8');
+      assert.ok(txt.includes('1,620.00')&&txt.includes('3,420.00')&&txt.includes('5,040.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('4,622.50')&&txt.includes('91.72%')&&txt.includes('not_measured'),r232File+': contains exact 11-14 R49 CreaBIM+impacket-rs closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
