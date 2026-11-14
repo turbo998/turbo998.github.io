@@ -1,0 +1,267 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Shoemake Slerp constant angular velocity vs Nlerp midpoint surge rig",
+  "topic_zh": "Shoemake Slerp 四元数测地线恒定角速度对比朴素 Nlerp 割弦中点二倍速甩镜突冲",
+  "slug": "slerp-geodesic-constant-velocity-rig",
+  "timestamp": "2026-11-14T08:57:26.455Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Ken Shoemake (SIGGRAPH 1985) Spherical Linear Interpolation (Slerp) constant geodesic angular velocity (V_Slerp(u) = 1.0000x) versus Normalized Linear Interpolation (Nlerp) chord-projection velocity surge (V_Nlerp(u) = 1 / ((1-u)^2 + u^2)) and 64-substep Riemannian geodesic integration across 17 interpolation stations (u in [0.0000, 1.0000] for orthogonal rotations Omega = 90 deg).",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "slerp-geodesic64-equiv-128",
+      "passed": true,
+      "detail": "128 closed-form Slerp and 64-substep geodesic passes agree within 1e-13"
+    },
+    {
+      "name": "slerp-geodesic64-equiv-1024",
+      "passed": true,
+      "detail": "1024 closed-form Slerp and 64-substep geodesic passes agree within 1e-13"
+    },
+    {
+      "name": "slerp-geodesic64-equiv-8192",
+      "passed": true,
+      "detail": "8192 closed-form Slerp and 64-substep geodesic passes agree within 1e-13"
+    },
+    {
+      "name": "slerp-constant-velocity-exact",
+      "passed": true,
+      "detail": "17 Slerp rotation stations lock angular speed at V=1.0000× (0/17 whip-pan surges)"
+    },
+    {
+      "name": "nlerp-midpoint-surge-exposed",
+      "passed": true,
+      "detail": "naive Nlerp surges to 1.6000× (u=0.25/0.75) and 2.0000× (+100% at u=0.50) across 15/17"
+    },
+    {
+      "name": "slerp-st8-midpoint-10000x",
+      "passed": true,
+      "detail": "midpoint station-8 (u=0.50, θ=45.00°) locks V_Slerp=1.0000× vs Nlerp 2.0000×"
+    },
+    {
+      "name": "slerp-st12-quarter-10000x",
+      "passed": true,
+      "detail": "station-12 (u=0.75, r²=0.6250) locks V_Slerp=1.0000× vs Nlerp 1.6000× (+60.00%)"
+    },
+    {
+      "name": "nlerp-st8-20000x-whip-pan",
+      "passed": true,
+      "detail": "naive Nlerp chord r²(0.50)=0.5000 doubles angular speed to 2.0000× (+100% surge)"
+    },
+    {
+      "name": "exact-mode-roundtrip",
+      "passed": true,
+      "detail": "mode switching round-trip preserves deterministic Slerp tachometer telemetry"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D quaternion geodesic tachometer renders 58 tracked solids across 17 stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Slerp Velocity controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station Slerp passes",
+      "count": 128,
+      "primary_ms": 0.03750000000002274,
+      "baseline_ms": 5.9447999999999865,
+      "primary_samples_ms": [
+        0.09729999999996153,
+        0.04199999999997317,
+        0.03489999999999327,
+        0.038000000000010914,
+        0.03750000000002274,
+        0.03409999999996671,
+        0.03380000000004202
+      ],
+      "baseline_samples_ms": [
+        5.797900000000027,
+        5.9447999999999865,
+        5.673699999999997,
+        5.602000000000089,
+        7.067800000000034,
+        6.594200000000001,
+        9.00470000000007
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station Slerp passes",
+      "count": 1024,
+      "primary_ms": 0.2796000000000731,
+      "baseline_ms": 56.37079999999992,
+      "primary_samples_ms": [
+        0.282799999999952,
+        0.28449999999998,
+        0.27539999999999054,
+        0.2796000000000731,
+        0.2644000000000233,
+        0.28940000000000055,
+        0.2763999999999669
+      ],
+      "baseline_samples_ms": [
+        64.25009999999997,
+        54.11419999999998,
+        56.37079999999992,
+        74.24459999999999,
+        50.158300000000054,
+        52.110900000000015,
+        64.59680000000003
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station Slerp passes",
+      "count": 8192,
+      "primary_ms": 2.184900000000198,
+      "baseline_ms": 410.17779999999993,
+      "primary_samples_ms": [
+        2.169200000000046,
+        2.296100000000024,
+        2.1835000000000946,
+        2.480800000000272,
+        2.184900000000198,
+        2.10570000000007,
+        2.4924999999998363
+      ],
+      "baseline_samples_ms": [
+        403.7744,
+        385.8349999999998,
+        418.69389999999976,
+        392.80859999999984,
+        459.0592999999999,
+        506.7881000000002,
+        410.17779999999993
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/slerp-geodesic-constant-velocity-rig/light-shoemake_slerp_constant_angular_velocity.png",
+    "docs/evidence/slerp-geodesic-constant-velocity-rig/light-naive_nlerp_chord_midpoint_surge.png",
+    "docs/evidence/slerp-geodesic-constant-velocity-rig/dark-shoemake_slerp_constant_angular_velocity.png",
+    "docs/evidence/slerp-geodesic-constant-velocity-rig/dark-naive_nlerp_chord_midpoint_surge.png",
+    "docs/evidence/slerp-geodesic-constant-velocity-rig/mobile.png"
+  ],
+  "primary_label": "Closed-Form Geodesic Slerp",
+  "baseline_label": "64-Substep Geodesic Integrator",
+  "load_unit": "Slerp passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form Slerp geodesic evaluation versus 64-substep Riemannian arc integration.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "arc_angle_deg": 90,
+    "station4_nlerp_v": 1.6,
+    "station8_slerp_v": 1,
+    "station8_nlerp_v": 2,
+    "station12_nlerp_v": 1.6,
+    "surging_stations": 15
+  },
+  "protocol": {
+    "input": {
+      "station_index": 8,
+      "param_u": 0.5,
+      "arc_omega_deg": 90,
+      "chord_radius_sq": 0.5
+    },
+    "output": {
+      "slerp_velocity_x": 1,
+      "nlerp_velocity_x": 2,
+      "station12_nlerp_x": 1.6,
+      "midpoint_surge_pct": 100,
+      "surging_stations": 15
+    },
+    "function": "V_Nlerp(u) = 1/((1−u)²+u²) → V(0.50) = 1/0.50 = 2.0000× (+100% Surge) vs Slerp Constant V = 1.0000×"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 rotation stations maintain exact 1.0000x constant angular velocity without Nlerp midpoint whip-pan",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Cinematic camera pans, robotic arm turrets, and hero character joints in Three.js, Unreal Engine, Blender, and glTF animations",
+    "Maintaining exact constant angular velocity V_Slerp(u) = 1.0000x along wide S^3 geodesic rotation arcs",
+    "Eliminating Nlerp's 1.6000x (u=0.25/0.75) and 2.0000x (+100% midpoint u=0.50) angular velocity whip-pan surge",
+    "Replacing 64-substep Riemannian ODE integration with closed-form trigonometric/Chebyshev Slerp"
+  ],
+  "not_for": [
+    "Tiny sub-degree micro-rotations (Omega < 1 deg) where chord radius r(u)^2 ~ 1.0 and Nlerp is indistinguishable",
+    "Multi-keyframe C1 spline transitions requiring cubic tangent control (use Logarithmic Quaternion Squad Round 60)",
+    "Dual-quaternion skinning weight blending across a single frame (use DQS Round 30)",
+    "Purely translational 3D positions"
+  ],
+  "locale_zh": {
+    "title": "Shoemake Slerp 四元数测地线恒定角速度 vs 朴素 Nlerp 割弦中点二倍速甩镜",
+    "subtitle": "为什么在大角度相机摇镜或机械臂旋转时，用归一化线性插值（Nlerp）代替球面线性插值（Slerp）会导致镜头在起点和终点慢吞吞、到了中点（u=0.50）却突然加速到 2.0000 倍角速度猛甩过去？",
+    "plain_intro": "在四维单位超球面 S³ 上对两个正交四元数（Ω=90°，对应三维空间 180° 大回环摇镜）插值时，朴素归一化线性插值 Nlerp(u) = ((1−u)q₀ + uq₁) / √((1−u)²+u²) 走的是穿过球体内部的直线割弦。由于割弦离球心的距离平方 r(u)² = (1−u)² + u² 在中点（u=0.50）缩水至 0.5000，径向投影到球面时的角速度 V_Nlerp(u) = 1 / r(u)² 会在第 4/12 站（u=0.25/0.75）暴涨至 1.6000×（+60%），并在第 8 站中点（u=0.50）直接翻倍至 2.0000×（+100% 甩镜突冲，污染全部 15/17 个内部站点）！Ken Shoemake (SIGGRAPH 1985) 球面线性插值（Slerp）严格沿 S³ 测地线大圆弧匀速推进，在全 17 个站点恒定锁死角速度 V_Slerp = 1.0000×（0/17 突冲站）。",
+    "finding": "实测 17 个四元数插值站点（u ∈ [0.00, 1.00]，正交弧 Ω=90°）：Shoemake Slerp 在全 17 站恒定保持角速度 V = 1.0000×（0/17 突冲），而朴素 Nlerp 在第 4/12 站冲至 1.6000×、在第 8 站中点（u=0.50）翻倍至 2.0000×（+100% 甩镜突冲，污染 15/17 个内部站点）。",
+    "workbench_title": "58 实体 17 站点四元数测地线转速计台（Quaternion Geodesic Tachometer）",
+    "scenario_quote": "为什么一段匀速关键帧的大角度运镜动画，导出后镜头总是在中间猛地“抽鞭子”快甩一下？",
+    "protocol_note": "顶块展示第 8 站中点（u=0.5000, Ω=90°, 割弦半径平方 r²=0.5000）；底块对比 Shoemake Slerp 锁死匀速 1.0000× 与朴素 Nlerp 因 1/r² 放大暴涨至 2.0000×（+100.00% 甩镜）。",
+    "robustness_name": "17 个四元数插值站点在全段大圆弧上保持 1.0000× 绝对匀速且无中点甩镜加速",
+    "primary_label": "闭式测地线 Slerp",
+    "baseline_label": "64 子步黎曼测地线积分",
+    "load_unit": "次 17 站四元数求值",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比闭式 Slerp 测地线求值与 64 子步黎曼弧长数值积分。",
+    "good_fit": [
+      "Three.js、UE5、Blender 与 glTF 动画管线中的大角度电影级相机摇镜（Camera Pan）、云台炮塔与机械臂旋转",
+      "沿 S³ 单位超球面测地线大圆弧严格锁死恒定角速度 V_Slerp(u) = 1.0000×",
+      "彻底根除 Nlerp 割弦径向投影造成的第 4/12 站 1.6000× 与第 8 站中点 2.0000×（+100%）甩镜急加速伪影",
+      "以闭式三角/切比雪夫多项式直接求解测地线，较 64 子步黎曼积分提速逾 80×"
+    ],
+    "not_for": [
+      "帧间夹角小于 1° 的微小姿态微调（此时 r² ≈ 1.0，Nlerp 误差可忽略）",
+      "需要跨多个关键帧保持 C¹ 角加速度连续的样条轨迹（应配合 Round 60 对数四元数 Squad）",
+      "同一帧内多骨骼蒙皮权重混合（应采用 Round 30 单位双四元数 DQS）",
+      "纯三维空间直线平移插值"
+    ],
+    "readiness": "12/12 项实测通过；58 个 3D 四元数测地线转速计构件、17 个插值站点与 7-Card 报告已封存。",
+    "entries": {
+      "slerp-geodesic64-equiv-128": "Slerp闭式与64子步测地线积分等价 128",
+      "128 closed-form Slerp and 64-substep geodesic passes agree within 1e-13": "128 次闭式 Slerp 与 64 子步黎曼测地线积分在 1e-13 内一致",
+      "slerp-geodesic64-equiv-1024": "Slerp闭式与64子步测地线积分等价 1024",
+      "1024 closed-form Slerp and 64-substep geodesic passes agree within 1e-13": "1024 次闭式 Slerp 与 64 子步黎曼测地线积分在 1e-13 内一致",
+      "slerp-geodesic64-equiv-8192": "Slerp闭式与64子步测地线积分等价 8192",
+      "8192 closed-form Slerp and 64-substep geodesic passes agree within 1e-13": "8192 次闭式 Slerp 与 64 子步黎曼测地线积分在 1e-13 内一致",
+      "slerp-constant-velocity-exact": "Slerp测地线恒定角速度守恒",
+      "17 Slerp rotation stations lock angular speed at V=1.0000× (0/17 whip-pan surges)": "17 个 Slerp 旋转站点恒定锁死角速度 V=1.0000×（0/17 甩镜突冲）",
+      "nlerp-midpoint-surge-exposed": "朴素Nlerp中点2倍甩镜突冲暴露",
+      "naive Nlerp surges to 1.6000× (u=0.25/0.75) and 2.0000× (+100% at u=0.50) across 15/17": "朴素 Nlerp 在 u=0.25/0.75 冲至 1.6000×、在中点 u=0.50 翻倍至 2.0000×（污染 15/17 站）",
+      "slerp-st8-midpoint-10000x": "Slerp第8站中点1.0000×匀速锁定",
+      "midpoint station-8 (u=0.50, θ=45.00°) locks V_Slerp=1.0000× vs Nlerp 2.0000×": "中点第 8 站（u=0.50, θ=45.00°）锁定 V_Slerp=1.0000×（消除 2.0000× 甩镜）",
+      "slerp-st12-quarter-10000x": "Slerp第12站1.0000×匀速锁定",
+      "station-12 (u=0.75, r²=0.6250) locks V_Slerp=1.0000× vs Nlerp 1.6000× (+60.00%)": "第 12 站（u=0.75, r²=0.6250）锁定 V_Slerp=1.0000×（消除 Nlerp 1.6000× 加速）",
+      "nlerp-st8-20000x-whip-pan": "朴素Nlerp中点2.0000×角速度翻倍暴露",
+      "naive Nlerp chord r²(0.50)=0.5000 doubles angular speed to 2.0000× (+100% surge)": "朴素 Nlerp 因弦半径平方缩至 r²=0.5000 在中点将角速度翻倍至 2.0000×",
+      "exact-mode-roundtrip": "模式往返切换一致性",
+      "mode switching round-trip preserves deterministic Slerp tachometer telemetry": "Slerp 测地线匀速与 Nlerp 弦投影模式往返切换保持确定性状态",
+      "geometry-58-solids": "58构件3D四元数测地线转速台一致性",
+      "3D quaternion geodesic tachometer renders 58 tracked solids across 17 stations": "3D 四元数测地线转速计台在 17 个插值站点完整渲染 58 个独立几何体",
+      "mobile-layout": "手机布局",
+      "390px Slerp Velocity controls fit without horizontal overflow": "390px Slerp 角速度控制面板无横向溢出",
+      "runtime-errors": "运行错误",
+      "0 JavaScript errors": "0 个 JavaScript 错误"
+    }
+  }
+}

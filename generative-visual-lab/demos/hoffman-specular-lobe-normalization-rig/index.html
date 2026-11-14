@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hoffman Cosine-Power NDF Energy Normalization vs Legacy Blinn-Phong Dimming Rig</title>
+    <script type="module" crossorigin src="../../assets/hoffmanSpecularLobeNormalization-e7QGF3u3.js"></script>
+    <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="modulepreload" crossorigin href="../../assets/three.module-7AmyneiW.js">
+    <link rel="stylesheet" crossorigin href="../../assets/beerLambertChromaticVolume-f3lud023.css">
+  </head>
+  <body>
+    <main class="workbench">
+      <header class="wb-header">
+        <div>
+          <p class="eyebrow">ROUND 118 · 128TH DEMO · HOFFMAN (SIGGRAPH 2010) SPECULAR LOBE NORMALIZATION BENCH</p>
+          <h1>Hoffman Cosine-Power NDF Normalization ((s + 2) / 2π) vs Legacy Blinn-Phong Energy Collapse</h1>
+          <p class="subtitle">
+            58-solid 17-station hemisphere specular calorimeter bench across shininess exponents <code>s ∈ [0.00, 8.00]</code>: Naty Hoffman (SIGGRAPH 2010) scales the cosine-power microfacet distribution by <code>(s + 2) / (2π)</code> (multiplier <code>M = (s + 2)/2 ∈ [1.00×, 5.00×]</code>) so taller peaks compensate narrower solid angles to lock integrated hemisphere energy at <code>E = 1.0000</code> (<code>0/17</code> starved stations) vs <code>0.5000</code> (Station 4, <code>s=2</code>), <code>0.2500</code> (Station 12, <code>s=6</code>), and <code>0.2000</code> (Station 16, <code>s=8</code>) across <code>16/17</code> starved stations under legacy unnormalized Blinn-Phong.
+          </p>
+        </div>
+        <div class="controls">
+          <button id="btn-mode-hoffman" class="btn active" type="button">
+            Hoffman Normalized NDF ((s + 2)/2 · cos^s θ_h)
+          </button>
+          <button id="btn-mode-legacy" class="btn" type="button">
+            Legacy Unnormalized cos^s θ_h (Up to −80% Energy Loss)
+          </button>
+          <button id="btn-theme" class="btn secondary" type="button">
+            Toggle Theme
+          </button>
+        </div>
+      </header>
+
+      <section class="viewport-card">
+        <canvas id="rig-canvas" aria-label="58-solid 17-station Hoffman specular lobe normalization workbench"></canvas>
+      </section>
+
+      <section class="readout-grid" aria-label="Live telemetry readout">
+        <article class="readout-card">
+          <span class="label">ACTIVE SPECULAR LOBE KERNEL</span>
+          <strong id="readout-mode">Hoffman (SIGGRAPH 2010) Normalized Cosine-Power NDF ((s + 2) / (2π) · cos^s θ_h)</strong>
+        </article>
+        <article class="readout-card">
+          <span class="label">STATION 4 (s = 2.0, Peak Multiplier M = 2.00×)</span>
+          <strong id="readout-s4">s = 2.0 (M = 2.00×) → Integrated Energy E = 1.0000</strong>
+        </article>
+        <article class="readout-card">
+          <span class="label">STATION 12 (s = 6.0, Peak Multiplier M = 4.00×)</span>
+          <strong id="readout-s12">s = 6.0 (M = 4.00×) → Integrated Energy E = 1.0000</strong>
+        </article>
+        <article class="readout-card">
+          <span class="label">STATION 16 (s = 8.0, Peak Multiplier M = 5.00×)</span>
+          <strong id="readout-s16">s = 8.0 (M = 5.00×) → E = 1.0000 (0/17 Starved Stations)</strong>
+        </article>
+      </section>
+
+      <footer class="wb-footer">
+        <span id="readout-status" class="status-pill pass">
+          PASS — Total Hemisphere Specular Energy Conserved at E = 1.0000 Across All 17 Shininess Exponents
+        </span>
+        <nav class="links">
+          <a href="../../index.html">← Back to Lab Portal</a>
+          <a href="./test-report-cards.html">7-Card Report (EN)</a>
+          <a href="./test-report-cards.zh.html">7-Card 报告 (ZH)</a>
+        </nav>
+      </footer>
+    </main>
+  </body>
+</html>

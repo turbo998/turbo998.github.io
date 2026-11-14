@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jimenez Separable Two-Pass SSSSS Outer-Product Convolution vs Single-Pass Cross-Streak Rig</title>
+    <script type="module" crossorigin src="../../assets/jimenezSeparableSssssConvolution-osQ5yCZh.js"></script>
+    <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="modulepreload" crossorigin href="../../assets/three.module-7AmyneiW.js">
+    <link rel="stylesheet" crossorigin href="../../assets/beerLambertChromaticVolume-f3lud023.css">
+  </head>
+  <body>
+    <main class="workbench">
+      <header class="wb-header">
+        <div>
+          <p class="eyebrow">ROUND 126 · JIMENEZ ET AL. (SIGGRAPH 2010 / 2015) SEPARABLE SSSSS CONVOLUTION BENCH</p>
+          <h1>Jimenez Two-Pass Separable Convolution ((1−u+u)² = 1.00) vs 1-Pass Cross Stencil Diagonal Loss</h1>
+          <p class="subtitle">
+            58-solid 17-station separable subsurface convolution bench across off-center arm weights <code>u ∈ [0.00, 0.80]</code>: Jorge Jimenez et al. (SIGGRAPH 2010 / 2015) chain Pass 2 (Vertical) onto Pass 1's output (Horizontal) to generate the full 2D outer product <code>(1−u)² + 2u(1−u) + u² = 1.0000</code> in <code>2N</code> taps (capturing diagonal quadrants <code>u² = 0.2500</code> at <code>u=0.50</code>, <code>0.3600</code> at Station 12 <code>u=0.60</code>, and <code>0.6400</code> at <code>u=0.80</code>, <code>0/17</code> streaked stations) vs <code>0.7500</code>, <code>0.6400</code>, and <code>0.3600</code> (<code>−64.00%</code> diagonal loss across <code>16/17</code> stations) under a naive single-pass <code>+</code> cross stencil.
+          </p>
+        </div>
+        <div class="controls">
+          <button id="btn-mode-separable" class="btn active" type="button">
+            Jimenez 2-Pass Separable (Full Outer Product E = 1.0000)
+          </button>
+          <button id="btn-mode-naive" class="btn" type="button">
+            Naive 1-Pass + Cross Stencil (Misses u² Diagonals)
+          </button>
+          <button id="btn-theme" class="btn secondary" type="button">
+            Toggle Theme
+          </button>
+        </div>
+      </header>
+
+      <section class="viewport-card">
+        <canvas id="rig-canvas" aria-label="58-solid 17-station Jimenez separable SSSSS convolution workbench"></canvas>
+      </section>
+
+      <section class="readout-grid" aria-label="Live telemetry readout">
+        <article class="readout-card">
+          <span class="label">ACTIVE 2D BLUR FACTORIZATION KERNEL</span>
+          <strong id="readout-mode">Jimenez (SIGGRAPH 2010/2015) Two-Pass Separable Convolution</strong>
+        </article>
+        <article class="readout-card">
+          <span class="label">STATION 10 (u = 0.5000, Diagonal Mass u² = 0.2500)</span>
+          <strong id="readout-s10">u = 0.50 (Diag u² = 0.2500) → Total 2D Mass E = 1.0000</strong>
+        </article>
+        <article class="readout-card">
+          <span class="label">STATION 12 (u = 0.6000, Diagonal Mass u² = 0.3600)</span>
+          <strong id="readout-s12">u = 0.60 (Diag u² = 0.3600) → Total 2D Mass E = 1.0000</strong>
+        </article>
+        <article class="readout-card">
+          <span class="label">STATION 16 (u = 0.8000, Diagonal Mass u² = 0.6400)</span>
+          <strong id="readout-s16">u = 0.80 (Diag u² = 0.6400) → E = 1.0000 (0/17 Cross-Streaked)</strong>
+        </article>
+      </section>
+
+      <footer class="wb-footer">
+        <span id="readout-status" class="status-pill pass">
+          PASS — Full 2D Outer-Product Subsurface Blur Covered in 2×1D Passes (E = 1.0000)
+        </span>
+        <nav class="links">
+          <a href="../../index.html">← Back to Lab Portal</a>
+          <a href="./test-report-cards.html">7-Card Report (EN)</a>
+          <a href="./test-report-cards.zh.html">7-Card 报告 (ZH)</a>
+        </nav>
+      </footer>
+    </main>
+  </body>
+</html>

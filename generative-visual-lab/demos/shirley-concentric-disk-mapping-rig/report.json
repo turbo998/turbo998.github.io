@@ -1,0 +1,268 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Shirley equal-area concentric disk mapping vs polar center clumping rig",
+  "topic_zh": "Shirley 同心等面积圆盘映射对比朴素极坐标 r=u 圆心样本聚拢失真",
+  "slug": "shirley-concentric-disk-mapping-rig",
+  "timestamp": "2026-11-14T09:28:51.644Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Peter Shirley & Kenneth Chiu (JGT 1997) equal-area concentric disk mapping (r(u) = sqrt(u), enclosed area fraction A_Shirley(u) = u) versus naive linear-radius polar mapping (r = u, A_naive(u) = u^2) and 64-sector polar Jacobian quadrature across 17 aperture strata (u in [0.0000, 1.0000]).",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "shirley-sec64-equiv-128",
+      "passed": true,
+      "detail": "128 closed-form Shirley disk and 64-sector polar quadrature passes agree within 1e-13"
+    },
+    {
+      "name": "shirley-sec64-equiv-1024",
+      "passed": true,
+      "detail": "1024 closed-form Shirley disk and 64-sector polar quadrature passes agree within 1e-13"
+    },
+    {
+      "name": "shirley-sec64-equiv-8192",
+      "passed": true,
+      "detail": "8192 closed-form Shirley disk and 64-sector polar quadrature passes agree within 1e-13"
+    },
+    {
+      "name": "shirley-equal-area-exact",
+      "passed": true,
+      "detail": "17 disk strata preserve exact 1:1 area A_Shirley(u)=u (u=0.25: r=0.50, u=0.75: A=0.75, 0/17 clumped)"
+    },
+    {
+      "name": "naive-polar-clumping-exposed",
+      "passed": true,
+      "detail": "naive polar mapping r=u compresses area to u² (0.0625 at u=0.25, 0.2500 at u=0.50) across 15/17"
+    },
+    {
+      "name": "shirley-st4-r05000-locked",
+      "passed": true,
+      "detail": "station-4 (u=0.25) maps to r=√0.25=0.5000 to enclose exact A=0.2500 vs naive 0.0625"
+    },
+    {
+      "name": "shirley-st8-a05000-locked",
+      "passed": true,
+      "detail": "midpoint station-8 (u=0.50) locks A=0.5000 vs naive u²=0.2500 (-50.00% area deficit)"
+    },
+    {
+      "name": "shirley-st12-a07500-locked",
+      "passed": true,
+      "detail": "station-12 (u=0.75) locks A=0.7500 vs naive 0.5625 (-0.1875 area deficit)"
+    },
+    {
+      "name": "exact-mode-roundtrip",
+      "passed": true,
+      "detail": "mode switching round-trip preserves deterministic Shirley disk telemetry"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D aperture bokeh stratification bench renders 58 tracked solids across 17 stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Shirley Concentric Disk controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station Shirley passes",
+      "count": 128,
+      "primary_ms": 0.005699999999933425,
+      "baseline_ms": 1.8591000000000122,
+      "primary_samples_ms": [
+        0.02519999999992706,
+        0.005999999999971806,
+        0.005300000000033833,
+        0.005699999999933425,
+        0.008000000000038199,
+        0.004399999999918691,
+        0.0049999999999954525
+      ],
+      "baseline_samples_ms": [
+        1.8591000000000122,
+        1.8315000000000055,
+        1.4365000000000236,
+        2.0126999999999953,
+        1.4033999999999196,
+        2.0010999999999513,
+        1.9960999999999558
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station Shirley passes",
+      "count": 1024,
+      "primary_ms": 0.04219999999997981,
+      "baseline_ms": 18.084699999999998,
+      "primary_samples_ms": [
+        0.06169999999997344,
+        0.04570000000001073,
+        0.03780000000006112,
+        0.04219999999997981,
+        0.03779999999994743,
+        0.04259999999999309,
+        0.03779999999994743
+      ],
+      "baseline_samples_ms": [
+        15.378600000000006,
+        16.63670000000002,
+        15.770000000000095,
+        22.70830000000001,
+        18.084699999999998,
+        20.056500000000028,
+        30.862999999999943
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station Shirley passes",
+      "count": 8192,
+      "primary_ms": 0.3083999999998923,
+      "baseline_ms": 140.3587,
+      "primary_samples_ms": [
+        0.3217000000001917,
+        0.30930000000012114,
+        0.3087000000000444,
+        0.3083999999998923,
+        0.30500000000006366,
+        0.30569999999988795,
+        0.3068000000000666
+      ],
+      "baseline_samples_ms": [
+        140.3587,
+        139.79629999999997,
+        155.84180000000015,
+        143.17020000000002,
+        143.59660000000008,
+        124.14779999999996,
+        122.91480000000001
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/shirley-concentric-disk-mapping-rig/light-shirley_equal_area_concentric_disk.png",
+    "docs/evidence/shirley-concentric-disk-mapping-rig/light-naive_linear_radius_polar_clumping.png",
+    "docs/evidence/shirley-concentric-disk-mapping-rig/dark-shirley_equal_area_concentric_disk.png",
+    "docs/evidence/shirley-concentric-disk-mapping-rig/dark-naive_linear_radius_polar_clumping.png",
+    "docs/evidence/shirley-concentric-disk-mapping-rig/mobile.png"
+  ],
+  "primary_label": "Shirley Equal-Area r = √u",
+  "baseline_label": "64-Sector Polar Quadrature",
+  "load_unit": "disk passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form Shirley equal-area disk mapping versus 64-sector polar Jacobian quadrature.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "station4_shirley_r": 0.5,
+    "station4_naive_a": 0.0625,
+    "station8_shirley_a": 0.5,
+    "station8_naive_a": 0.25,
+    "station12_shirley_a": 0.75,
+    "station12_naive_a": 0.5625,
+    "clumped_stations": 15
+  },
+  "protocol": {
+    "input": {
+      "station_index": 12,
+      "stratum_u": 0.75,
+      "shirley_radius_r": 0.866,
+      "naive_polar_r": 0.75
+    },
+    "output": {
+      "shirley_enclosed_area": 0.75,
+      "naive_enclosed_area": 0.5625,
+      "station4_naive_area": 0.0625,
+      "station8_naive_area": 0.25,
+      "clumped_stations": 15
+    },
+    "function": "r_Shirley(u) = √u → A(0.75) = 0.7500 (1:1 Equal Area) vs Naive Polar r=u → A = u² = 0.5625 (15/17 Clumped)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 aperture strata preserve exact 1:1 area proportionality without central 1/(2r) sample clumping",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Depth-of-field bokeh aperture sampling, disk area-light shadow rays, and Malley cosine-hemisphere lifting in PBRT, Cycles, and WebGPU",
+    "Inverting the polar area element dA = r dr dphi with r = sqrt(u) and Shirley concentric wedges phi = (pi/4)*(b/a)",
+    "Ensuring 25%, 50%, and 75% of samples cover exactly 25%, 50%, and 75% of the lens disk instead of 6.25%, 25.0%, and 56.25%",
+    "Eliminating the 4.00x central bokeh hot-spot clumping of naive r = u polar sampling"
+  ],
+  "not_for": [
+    "1D linear timeline sampling where Jacobian determinant is already unity",
+    "Rectangular quad area lights that do not map to a circular disk",
+    "Pinhole cameras with zero aperture radius",
+    "Unlit wireframe gizmos"
+  ],
+  "locale_zh": {
+    "title": "Shirley 同心等面积圆盘映射 vs 朴素极坐标 r=u 圆心聚拢失真",
+    "subtitle": "在景深散景光圈（DoF Bokeh）或圆盘软阴影采样时，为什么直接用极坐标 r = u, φ = 2πv 会把大量采样点挤在圆心（前 25% 样本只占 6.25% 面积），导致散景光斑中心死亮、边缘满是噪点？",
+    "plain_intro": "当把均匀随机数 u ∈ [0, 1] 映射到单位圆盘上时，由于极坐标微元面积 dA = r dr dφ 与半径 r 成正比，靠近圆心（r → 0）的圆环周长极短！若朴素地令半径线性等于随机数（r = u），前 25% 的样本（第 4 站 u=0.25）会被死死挤在半径 0.25 以内，仅覆盖圆盘 A = u² = 0.0625（6.25%）的面积（中心密度虚高 4.0000×）；前 50% 样本（第 8 站 u=0.50）仅覆盖 0.2500（25%）面积；第 12 站（u=0.75）仅覆盖 0.5625 面积（污染全部 15/17 个内部层级）！Peter Shirley & Kenneth Chiu (JGT 1997) 通过面积雅可比求逆 r = √u 与同心楔形低扭曲映射，使第 4 站（r=0.5000）、第 8 站（r=0.7071）与第 12 站（r=0.8660）严格包围 A_Shirley(u) = u = 0.2500 / 0.5000 / 0.7500 的精确等面积（0/17 聚拢失真）。",
+    "finding": "实测 17 个光圈圆盘分层站点（u ∈ [0.00, 1.00]）：Shirley 等面积映射在第 4/8/12 站严格锁定包围面积 A = 0.2500 / 0.5000 / 0.7500（0/17 聚拢），而朴素极坐标 r=u 坍缩至 A = u² = 0.0625 / 0.2500 / 0.5625（中心密度虚高 4.00×，污染 15/17 个内部站点）。",
+    "workbench_title": "58 实体 17 站点光圈散景等面积分层台（Aperture Bokeh Stratification Bench）",
+    "scenario_quote": "为什么用 `r = rand(), theta = 2*PI*rand()` 写出来的景深散景圆盘，光斑中心总有一颗刺眼的亮核，而外圈边缘却稀疏发虚？",
+    "protocol_note": "顶块展示第 12 站（采样分层 u=0.7500，Shirley 半径 r=√0.75=0.8660）；底块对比 Shirley 严格保持包围面积 A=0.7500 与朴素极坐标 r=0.75 缩水至 A=0.5625（u=0.25 处仅 0.0625）。",
+    "robustness_name": "17 个圆盘分层站点在全孔径范围严格保持 1:1 等面积雅可比恒等且零中心聚拢",
+    "primary_label": "Shirley 等面积 r = √u",
+    "baseline_label": "64 扇区极坐标雅可比积分",
+    "load_unit": "次 17 站圆盘映射",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比闭式 Shirley 等面积映射与 64 扇区极坐标积分。",
+    "good_fit": [
+      "PBRT、Blender Cycles、UE5 与 WebGPU 中的景深圆盘光圈（Bokeh）、圆形软阴影光源与 Malley 余弦半球提升采样",
+      "利用 r = √u 精确对冲极坐标面积雅可比行列式 J = r，并用 Shirley 同心八分楔形消除极角网格拉伸",
+      "确保前 25%（r=0.50）、50%（r=0.7071）、75%（r=0.8660）样本精确覆盖 25%、50%、75% 圆盘面积",
+      "彻底根除朴素 r = u 造成的圆心 1/(2r) 奇异聚拢与外圈采样饥饿"
+    ],
+    "not_for": [
+      "雅可比恒为 1 的一维时间轴或矩形平面直接采样",
+      "无需圆盘光圈的理想针孔相机模型",
+      "多边形叶片光圈（需配合正多边形扇区逆映射）",
+      "无光照网格线框"
+    ],
+    "readiness": "12/12 项实测通过；58 个 3D 光圈散景分层构件、17 个圆盘站点与 7-Card 报告已封存。",
+    "entries": {
+      "shirley-sec64-equiv-128": "Shirley闭式与64扇区圆盘积分等价 128",
+      "128 closed-form Shirley disk and 64-sector polar quadrature passes agree within 1e-13": "128 次闭式 Shirley 圆盘映射与 64 扇区极坐标积分在 1e-13 内一致",
+      "shirley-sec64-equiv-1024": "Shirley闭式与64扇区圆盘积分等价 1024",
+      "1024 closed-form Shirley disk and 64-sector polar quadrature passes agree within 1e-13": "1024 次闭式 Shirley 圆盘映射与 64 扇区极坐标积分在 1e-13 内一致",
+      "shirley-sec64-equiv-8192": "Shirley闭式与64扇区圆盘积分等价 8192",
+      "8192 closed-form Shirley disk and 64-sector polar quadrature passes agree within 1e-13": "8192 次闭式 Shirley 圆盘映射与 64 扇区极坐标积分在 1e-13 内一致",
+      "shirley-equal-area-exact": "Shirley同心圆盘等面积守恒",
+      "17 disk strata preserve exact 1:1 area A_Shirley(u)=u (u=0.25: r=0.50, u=0.75: A=0.75, 0/17 clumped)": "17 个圆盘分层严格保持 1:1 等面积 A_Shirley(u)=u（u=0.25 为 r=0.50，u=0.75 为 A=0.75，0/17 聚拢）",
+      "naive-polar-clumping-exposed": "朴素极坐标r=u圆心聚拢失真暴露",
+      "naive polar mapping r=u compresses area to u² (0.0625 at u=0.25, 0.2500 at u=0.50) across 15/17": "朴素极坐标 r=u 将面积压缩为 u²（u=0.25 仅 0.0625，u=0.50 仅 0.2500，污染 15/17 站）",
+      "shirley-st4-r05000-locked": "Shirley第4站r=0.5000等面积锁定",
+      "station-4 (u=0.25) maps to r=√0.25=0.5000 to enclose exact A=0.2500 vs naive 0.0625": "第 4 站（u=0.25）映射至 r=0.5000 锁死面积 A=0.2500（消除朴素 0.0625 聚拢）",
+      "shirley-st8-a05000-locked": "Shirley第8站中点0.5000面积锁定",
+      "midpoint station-8 (u=0.50) locks A=0.5000 vs naive u²=0.2500 (-50.00% area deficit)": "中点第 8 站（u=0.50）锁定 A=0.5000（消除朴素 u²=0.2500 的 -50% 面积亏损）",
+      "shirley-st12-a07500-locked": "Shirley第12站0.7500面积锁定",
+      "station-12 (u=0.75) locks A=0.7500 vs naive 0.5625 (-0.1875 area deficit)": "第 12 站（u=0.75）锁定 A=0.7500（消除朴素 0.5625 的 -0.1875 亏损）",
+      "exact-mode-roundtrip": "模式往返切换一致性",
+      "mode switching round-trip preserves deterministic Shirley disk telemetry": "Shirley 同心圆盘与朴素极坐标模式往返切换保持确定性状态",
+      "geometry-58-solids": "58构件3D光圈散景分层台一致性",
+      "3D aperture bokeh stratification bench renders 58 tracked solids across 17 stations": "3D 光圈散景分层台在 17 个圆环站点完整渲染 58 个独立几何体",
+      "mobile-layout": "手机布局",
+      "390px Shirley Concentric Disk controls fit without horizontal overflow": "390px Shirley 同心圆盘控制面板无横向溢出",
+      "runtime-errors": "运行错误",
+      "0 JavaScript errors": "0 个 JavaScript 错误"
+    }
+  }
+}

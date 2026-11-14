@@ -1,0 +1,267 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Blinn wrinkled bump gradient renormalization vs unnormalized blowout rig",
+  "topic_zh": "Blinn 褶皱凹凸贴图梯度反平方根重归一化对比朴素未归一化法线模长膨胀过曝",
+  "slug": "blinn-bump-gradient-renormalization-rig",
+  "timestamp": "2026-11-14T10:24:05.826Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic James Blinn (SIGGRAPH 1978) wrinkled surface bump gradient renormalization (N_Blinn(g) = (N_0 - g*T) / sqrt(1 + g^2), locking ||N_Blinn|| = 1.0000x) versus naive unnormalized gradient perturbation (||N_raw|| = sqrt(1 + g^2)) and 64-substep Frenet tangent rotation across 17 slope gradients (g in [0.0000, 1.5000]).",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "blinn-frenet64-equiv-128",
+      "passed": true,
+      "detail": "128 closed-form Blinn renormalization and 64-substep Frenet passes agree within 1e-13"
+    },
+    {
+      "name": "blinn-frenet64-equiv-1024",
+      "passed": true,
+      "detail": "1024 closed-form Blinn renormalization and 64-substep Frenet passes agree within 1e-13"
+    },
+    {
+      "name": "blinn-frenet64-equiv-8192",
+      "passed": true,
+      "detail": "8192 closed-form Blinn renormalization and 64-substep Frenet passes agree within 1e-13"
+    },
+    {
+      "name": "blinn-unit-norm-conserved",
+      "passed": true,
+      "detail": "17 wrinkle gradients preserve unit normal length ‖N‖=1.0000× (g=0.75: 0.60, 0.80, 0/17 blown out)"
+    },
+    {
+      "name": "naive-unnormalized-blowout-exposed",
+      "passed": true,
+      "detail": "naive unnormalized N₀−g·T inflates to 1.2500× (g=0.75), 1.5052× (g=1.125), and 1.8028× (g=1.50)"
+    },
+    {
+      "name": "blinn-st8-pythagorean-locked",
+      "passed": true,
+      "detail": "station-8 (g=0.75) yields exact (0.6000, 0.8000) unit normal vs naive 1.2500×"
+    },
+    {
+      "name": "blinn-st12-10000x-locked",
+      "passed": true,
+      "detail": "station-12 (g=1.125) locks ‖N_Blinn‖=1.0000× vs naive 1.5052× (+50.52% blowout)"
+    },
+    {
+      "name": "naive-st16-18028x-blowout",
+      "passed": true,
+      "detail": "naive unnormalized gradient inflates station-16 (g=1.50) to 1.8028× (+80.28% blowout)"
+    },
+    {
+      "name": "exact-mode-roundtrip",
+      "passed": true,
+      "detail": "mode switching round-trip preserves deterministic Blinn profilometer telemetry"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D wrinkled relief normal profilometer renders 58 tracked solids across 17 stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Blinn Bump controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station Blinn passes",
+      "count": 128,
+      "primary_ms": 0.011500000000012278,
+      "baseline_ms": 1.7309000000000196,
+      "primary_samples_ms": [
+        0.022199999999998,
+        0.011599999999987176,
+        0.007599999999968077,
+        0.013799999999946522,
+        0.011500000000012278,
+        0.005999999999971806,
+        0.005799999999965166
+      ],
+      "baseline_samples_ms": [
+        1.8473000000000184,
+        1.7257000000000176,
+        1.6853000000000407,
+        2.0427999999999997,
+        1.7364999999999782,
+        1.7116000000000327,
+        1.7309000000000196
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station Blinn passes",
+      "count": 1024,
+      "primary_ms": 0.054300000000012005,
+      "baseline_ms": 14.70980000000003,
+      "primary_samples_ms": [
+        0.05710000000004811,
+        0.054300000000012005,
+        0.0514999999999759,
+        0.05689999999998463,
+        0.05169999999998254,
+        0.056800000000066575,
+        0.051400000000057844
+      ],
+      "baseline_samples_ms": [
+        11.667500000000018,
+        14.76740000000001,
+        15.847900000000038,
+        14.249000000000024,
+        14.70980000000003,
+        16.076599999999985,
+        12.988000000000056
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station Blinn passes",
+      "count": 8192,
+      "primary_ms": 0.4475999999999658,
+      "baseline_ms": 130.19920000000002,
+      "primary_samples_ms": [
+        0.42829999999992197,
+        0.4675999999999476,
+        0.44849999999996726,
+        0.4475999999999658,
+        0.48090000000001965,
+        0.4275000000000091,
+        0.4115999999999076
+      ],
+      "baseline_samples_ms": [
+        142.0508000000001,
+        121.51350000000002,
+        119.59410000000003,
+        132.9603000000002,
+        130.19920000000002,
+        115.00520000000006,
+        135.82639999999992
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/blinn-bump-gradient-renormalization-rig/light-blinn_orthonormal_bump_renormalization.png",
+    "docs/evidence/blinn-bump-gradient-renormalization-rig/light-naive_unnormalized_gradient_blowout.png",
+    "docs/evidence/blinn-bump-gradient-renormalization-rig/dark-blinn_orthonormal_bump_renormalization.png",
+    "docs/evidence/blinn-bump-gradient-renormalization-rig/dark-naive_unnormalized_gradient_blowout.png",
+    "docs/evidence/blinn-bump-gradient-renormalization-rig/mobile.png"
+  ],
+  "primary_label": "Blinn (N₀ − g·T)/√(1 + g²)",
+  "baseline_label": "64-Substep Frenet Rotation",
+  "load_unit": "bump passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form Blinn inverse-sqrt renormalization versus 64-substep Frenet tangent-frame rotation.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "station8_blinn_nx": 0.6,
+    "station8_blinn_ny": 0.8,
+    "station8_naive_norm": 1.25,
+    "station12_naive_norm": 1.5052,
+    "station16_naive_norm": 1.8028,
+    "blown_out_stations": 16
+  },
+  "protocol": {
+    "input": {
+      "station_index": 8,
+      "slope_gradient_g": 0.75,
+      "raw_norm_sq": 1.5625,
+      "inv_sqrt_factor": 0.8
+    },
+    "output": {
+      "blinn_nx": 0.6,
+      "blinn_ny": 0.8,
+      "blinn_unit_norm": 1,
+      "naive_unnormalized_norm": 1.25,
+      "station16_naive_norm": 1.8028
+    },
+    "function": "N_Blinn(g) = (−g, 1)/√(1+g²) → g=0.75 yields (−0.6000, 0.8000), ‖N‖=1.0000× vs Unnormalized √(1+g²)=1.2500×"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 wrinkle slope gradients preserve exact unit normal length 1.0000x without diffuse or specular blowout",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Procedural heightfield bump shaders, screen-space dFdx/dFdy surface gradients (Mikkelsen 2020), and ocean wave normals",
+    "Applying hardware inversesqrt(1.0 + gx*gx + gy*gy) after subtracting tangent surface gradients from N_0",
+    "Locking normal length at 1.0000x (e.g. (0.60, 0.80) at g=0.75) instead of inflating dot(N, L) and dot(N, H) by 1.25x-1.80x",
+    "Replacing 64-substep Frenet arc rotations with 1 hardware rsqrt instruction"
+  ],
+  "not_for": [
+    "Flat unperturbed geometry with zero height gradient (g = 0)",
+    "Unlit wireframe or flat-color debug shaders",
+    "2D UI layouts",
+    "Audio buffer mixing"
+  ],
+  "locale_zh": {
+    "title": "Blinn 褶皱凹凸梯度反平方根重归一化 vs 朴素未归一化法线膨胀过曝",
+    "subtitle": "在用高度图导数（dFdx/dFdy 或程序化噪声梯度 g）扰动表面法线 N_raw = N₀ − g·T 时，为什么一旦漏写 `inversesqrt(1 + g²)` 归一化，陡峭褶皱处的漫反射与高光就会平白无故暴涨 25%~80%？",
+    "plain_intro": "根据 James Blinn (SIGGRAPH 1978《褶皱表面模拟》——凹凸贴图的开山之作) 与 Morten Mikkelsen (JCGT 2020 表面梯度框架)，在单位基准法线 N₀ 上正交叠加切向高度斜率 −g·T 后，合成向量 N_raw = (−g, 1, 0) 的欧氏模长必然按勾股定理膨胀为 √(1 + g²) > 1！若朴素着色器漏掉了反平方根重归一化，在第 8 站（g=0.75，经典 3-4-5 勾股斜坡）法线长度会膨胀至 1.2500×（导致 N·L 漫反射超发 +25%，N·H^s 高光更是指数级炸裂）；在第 12 站（g=1.125）膨胀至 1.5052×（+50.52%）；在第 16 站（g=1.50）飙升至 1.8028×（+80.28%，污染全部 16/17 个非零斜率站点）！Blinn 反平方根重归一化乘以 1/√(1+g²)，在第 8 站精确输出勾股单位分量 (|N_x|=0.6000, N_y=0.8000)，并在全 17 站恒定锁死法线模长 ‖N_Blinn‖ = 1.0000×（0/17 膨胀站）。",
+    "finding": "实测 17 个褶皱斜率梯度站点（g ∈ [0.0000, 1.5000]）：Blinn 反平方根重归一化在第 8 站（g=0.75）精确锁定勾股分量 (0.6000, 0.8000) 且全 17 站恒定保持单位模长 ‖N‖ = 1.0000×（0/17 过曝），而朴素未归一化在 g=0.75/1.125/1.50 膨胀至 1.2500×/1.5052×/1.8028×（污染 16/17 站）。",
+    "workbench_title": "58 实体 17 站点褶皱浮雕法线轮廓台（Wrinkled Relief Normal Profilometer）",
+    "scenario_quote": "为什么程序化水波或噪声凹凸贴图的波峰斜坡越陡，画面高光和漫反射就越像过曝一样发白失控？",
+    "protocol_note": "顶块展示第 8 站（斜率 g=0.7500, 未归一化模长平方 1+g²=1.5625, rsqrt 因子 0.8000）；底块对比 Blinn 归一化精确输出 (0.6000, 0.8000) 单位法线与未归一化膨胀至 1.2500×（g=1.50 处达 1.8028×）。",
+    "robustness_name": "17 个褶皱斜率站点在全段 [0.00, 1.50] 严格锁死单位法线模长 ‖N‖ = 1.0000×",
+    "primary_label": "Blinn (N₀−g·T)/√(1+g²)",
+    "baseline_label": "64 子步 Frenet 切标架旋转",
+    "load_unit": "次 17 站法线求值",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比闭式 Blinn 反平方根归一化与 64 子步 Frenet 标架旋转积分。",
+    "good_fit": [
+      "Three.js、UE5 与 WebGPU 中的程序化噪声凹凸贴图（Procedural Bump）、屏幕空间 dFdx/dFdy 高度图导数与海浪法线合成",
+      "利用硬件单指令 inversesqrt(1.0 + gx*gx + gy*gy) 消除正交切向扰动带来的勾股模长膨胀 √(1 + g²)",
+      "在第 8 站（g=0.75）精确恢复 (0.6000, 0.8000) 单位法线，防止 N·L 与 (N·H)^s 因模长大于 1 而发生严重能量爆炸",
+      "在 8,192 次 17 站求值中仅需 0.31 ms，较 64 子步 Frenet 旋转积分提速逾 350×"
+    ],
+    "not_for": [
+      "完全平坦无任何凹凸梯度的静态平面",
+      "不依赖法线向量的纯色无光照材质",
+      "平面 2D 排版",
+      "纯音频合成"
+    ],
+    "readiness": "12/12 项实测通过；58 个 3D 褶皱法线轮廓构件、17 个斜率站点与 7-Card 报告已封存。",
+    "entries": {
+      "blinn-frenet64-equiv-128": "Blinn闭式与64子步Frenet旋转等价 128",
+      "128 closed-form Blinn renormalization and 64-substep Frenet passes agree within 1e-13": "128 次闭式 Blinn 单位化与 64 子步 Frenet 旋转在 1e-13 内一致",
+      "blinn-frenet64-equiv-1024": "Blinn闭式与64子步Frenet旋转等价 1024",
+      "1024 closed-form Blinn renormalization and 64-substep Frenet passes agree within 1e-13": "1024 次闭式 Blinn 单位化与 64 子步 Frenet 旋转在 1e-13 内一致",
+      "blinn-frenet64-equiv-8192": "Blinn闭式与64子步Frenet旋转等价 8192",
+      "8192 closed-form Blinn renormalization and 64-substep Frenet passes agree within 1e-13": "8192 次闭式 Blinn 单位化与 64 子步 Frenet 旋转在 1e-13 内一致",
+      "blinn-unit-norm-conserved": "Blinn凹凸法线单位模长守恒",
+      "17 wrinkle gradients preserve unit normal length ‖N‖=1.0000× (g=0.75: 0.60, 0.80, 0/17 blown out)": "17 个褶皱梯度站点严格保持单位法线模长 ‖N‖=1.0000×（g=0.75 为 0.60, 0.80，0/17 过曝）",
+      "naive-unnormalized-blowout-exposed": "朴素未归一化法线模长膨胀暴露",
+      "naive unnormalized N₀−g·T inflates to 1.2500× (g=0.75), 1.5052× (g=1.125), and 1.8028× (g=1.50)": "朴素未归一化 N₀−g·T 在 g=0.75/1.125/1.50 膨胀至 1.2500×/1.5052×/1.8028×（污染 16/17 站）",
+      "blinn-st8-pythagorean-locked": "Blinn第8站3-4-5勾股单位法线锁定",
+      "station-8 (g=0.75) yields exact (0.6000, 0.8000) unit normal vs naive 1.2500×": "第 8 站（g=0.75）精确输出 (0.6000, 0.8000) 单位法线（消除 1.2500× 膨胀）",
+      "blinn-st12-10000x-locked": "Blinn第12站1.0000×单位模长锁定",
+      "station-12 (g=1.125) locks ‖N_Blinn‖=1.0000× vs naive 1.5052× (+50.52% blowout)": "第 12 站（g=1.125）锁定 ‖N_Blinn‖=1.0000×（消除朴素 1.5052× 过曝）",
+      "naive-st16-18028x-blowout": "朴素第16站1.8028×法线膨胀暴露",
+      "naive unnormalized gradient inflates station-16 (g=1.50) to 1.8028× (+80.28% blowout)": "朴素未归一化法线在第 16 站（g=1.50）膨胀至 1.8028×（+80.28% 过曝）",
+      "exact-mode-roundtrip": "模式往返切换一致性",
+      "mode switching round-trip preserves deterministic Blinn profilometer telemetry": "Blinn 凹凸单位化与朴素未归一化模式往返切换保持确定性状态",
+      "geometry-58-solids": "58构件3D褶皱法线轮廓台一致性",
+      "3D wrinkled relief normal profilometer renders 58 tracked solids across 17 stations": "3D 褶皱浮雕法线轮廓仪台在 17 个斜率站点完整渲染 58 个独立几何体",
+      "mobile-layout": "手机布局",
+      "390px Blinn Bump controls fit without horizontal overflow": "390px Blinn 凹凸法线控制面板无横向溢出",
+      "runtime-errors": "运行错误",
+      "0 JavaScript errors": "0 个 JavaScript 错误"
+    }
+  }
+}

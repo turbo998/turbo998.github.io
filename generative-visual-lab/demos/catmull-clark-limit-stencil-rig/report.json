@@ -1,0 +1,259 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Halstead-Kass-DeRose Catmull-Clark eigen-limit surface stencil vs naive 1-step extraordinary vertex spike rig",
+  "topic_zh": "Halstead-Kass-DeRose Catmull-Clark 左特征向量极限曲面模板对比朴素单步细分星点尖峰过冲与跳变",
+  "slug": "catmull-clark-limit-stencil-rig",
+  "timestamp": "2026-11-14T02:14:49.764Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Mark Halstead, Michael Kass & Tony DeRose (SIGGRAPH 1993 / Pixar OpenSubdiv) left-eigenvector (n, 4, 1) Catmull-Clark limit-surface stencil (P_inf(n) = (n * V0 + 4 * E0 + Q0) / (n + 5) with V0 = 4.00 m, E0 = Q0 = 1.00 m) versus naive 1-step Catmull-Clark subdivision (V1(n) = 4 - 5.25 / n) and 32-level recursive 1-ring matrix refinement across 17 extraordinary vertex valences (n in [3.0, 11.0]).",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "halstead-stencil-recursive32-equivalence-128",
+      "passed": true,
+      "detail": "128 closed-form Halstead eigen-limit stencil and 32-level recursive ring subdivision passes agree within 1e-4"
+    },
+    {
+      "name": "halstead-stencil-recursive32-equivalence-1024",
+      "passed": true,
+      "detail": "1024 closed-form Halstead eigen-limit stencil and 32-level recursive ring subdivision passes agree within 1e-4"
+    },
+    {
+      "name": "halstead-stencil-recursive32-equivalence-8192",
+      "passed": true,
+      "detail": "8192 closed-form Halstead eigen-limit stencil and 32-level recursive ring subdivision passes agree within 1e-4"
+    },
+    {
+      "name": "halstead-limit-stencil-locked",
+      "passed": true,
+      "detail": "17 valence stations project directly onto P_infinity (n=5: 2.5000m, n=7: 2.7500m, n=10: 3.0000m)"
+    },
+    {
+      "name": "naive-1step-star-pole-spike-exposed",
+      "passed": true,
+      "detail": "naive 1-step Catmull-Clark subdivision spikes station-8 (n=7) to 3.2500m (+0.5000m overshoot across 17/17 stations)"
+    },
+    {
+      "name": "halstead-station8-27500m-locked",
+      "passed": true,
+      "detail": "Halstead Eigen-Limit Stencil locks station-8 (n=7.0) at P_inf=2.7500m (0/17 overshooting stations)"
+    },
+    {
+      "name": "naive-1step-station8-32500m-spike-exposed",
+      "passed": true,
+      "detail": "naive 1-step subdivision spikes station-8 to V1=3.2500m (+0.5000m star-pole overshoot across 17/17 stations)"
+    },
+    {
+      "name": "halstead-station4-valence5-25000m",
+      "passed": true,
+      "detail": "valence n=5.0 character pole locks P_inf(5)=2.5000m vs V1(5)=2.9500m (+0.4500m overshoot)"
+    },
+    {
+      "name": "exact-reverse-station-scrub",
+      "passed": true,
+      "detail": "reverse valence scrubbing from n=5.0 back to n=7.0 reproduces identical limit-surface telemetry"
+    },
+    {
+      "name": "geometry-58-solid-conformance",
+      "passed": true,
+      "detail": "3D subdivision star-pole bench renders 58 tracked solids across 17 valence stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Catmull-Clark Limit controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station Catmull-Clark limit passes",
+      "count": 128,
+      "primary_ms": 0.017900000000054206,
+      "baseline_ms": 0.2462999999999056,
+      "primary_samples_ms": [
+        0.029600000000073123,
+        0.01410000000009859,
+        0.013500000000021828,
+        0.01310000000000855,
+        0.017900000000054206,
+        0.02580000000000382,
+        0.026299999999991996
+      ],
+      "baseline_samples_ms": [
+        0.24750000000005912,
+        0.2462999999999056,
+        0.23869999999999436,
+        0.24090000000001055,
+        0.24350000000004002,
+        0.3362999999999374,
+        0.30949999999995725
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station Catmull-Clark limit passes",
+      "count": 1024,
+      "primary_ms": 0.08379999999999654,
+      "baseline_ms": 1.2972999999999502,
+      "primary_samples_ms": [
+        0.11180000000001655,
+        0.09640000000001692,
+        0.08379999999999654,
+        0.0846000000000231,
+        0.08379999999999654,
+        0.08370000000002165,
+        0.08369999999990796
+      ],
+      "baseline_samples_ms": [
+        1.5835000000000719,
+        1.4402999999999793,
+        1.2904000000000906,
+        1.2983000000000402,
+        1.2972999999999502,
+        1.2969000000000506,
+        1.2962999999999738
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station Catmull-Clark limit passes",
+      "count": 8192,
+      "primary_ms": 0.6852999999999838,
+      "baseline_ms": 11.591200000000072,
+      "primary_samples_ms": [
+        0.6920000000000073,
+        0.6718999999999369,
+        0.668700000000058,
+        0.7115000000000009,
+        1.0282999999999447,
+        0.6852999999999838,
+        0.6802999999999884
+      ],
+      "baseline_samples_ms": [
+        12.548099999999977,
+        10.419599999999946,
+        10.421500000000037,
+        11.591200000000072,
+        12.323399999999992,
+        11.836500000000001,
+        11.022599999999898
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/catmull-clark-limit-stencil-rig/light-halstead-eigen-limit-stencil.png",
+    "docs/evidence/catmull-clark-limit-stencil-rig/light-naive-1step-subdivision-spike.png",
+    "docs/evidence/catmull-clark-limit-stencil-rig/dark-halstead-eigen-limit-stencil.png",
+    "docs/evidence/catmull-clark-limit-stencil-rig/dark-naive-1step-subdivision-spike.png",
+    "docs/evidence/catmull-clark-limit-stencil-rig/mobile.png"
+  ],
+  "primary_label": "Halstead Closed-Form (n, 4, 1) Limit Stencil",
+  "baseline_label": "32-Level Recursive 1-Ring Subdivision Loop",
+  "load_unit": "17-station Catmull-Clark limit passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form O(1) left-eigenvector limit stencil versus 32-level iterative Catmull-Clark 1-ring subdivision.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "control_v0_m": 4,
+    "station4_limit_m": 2.5,
+    "station8_limit_m": 2.75,
+    "station8_naive_m": 3.25,
+    "station8_overshoot_m": 0.5,
+    "overshooting_stations": 17
+  },
+  "protocol": {
+    "input": {
+      "station_index": 8,
+      "valence_n": 7,
+      "v0_m": 4,
+      "e0_m": 1,
+      "q0_m": 1
+    },
+    "output": {
+      "limit_n5_m": 2.5,
+      "limit_n7_m": 2.75,
+      "naive_1step_n7_m": 3.25,
+      "spike_overshoot_n7_m": 0.5,
+      "overshooting_stations": 17
+    },
+    "function": "P_inf(n) = (n·V0 + 4·E0 + Q0) / (n + 5) → Valence-7 P_inf = 2.7500m vs 1-Step V1 = 3.2500m (+0.5000m Spike)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 extraordinary vertex valences project directly onto the infinite Catmull-Clark limit surface without LOD popping",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Pixar OpenSubdiv, Blender, Maya, and GPU hardware tessellation of character faces, creature shoulders, and CAD fillets",
+    "Projecting valence-n extraordinary star-poles directly onto P_infinity in O(1) time without recursive mesh blowup",
+    "Eliminating +0.5000m star-pole spikes (at n=7) and LOD popping when hair follicles, buttons, or decals attach to subdivision cages",
+    "Pairing with De Casteljau Cubic Subdivision (Round 58) and Barycentric Displaced Micro-Meshes (Round 57)"
+  ],
+  "not_for": [
+    "Pure triangle-mesh Loop subdivision surfaces (which use Loop beta-weights instead of Catmull-Clark (n, 4, 1) quad weights)",
+    "Infinitely sharp creased corners tagged with crease sharpness s -> infinity (which intentionally stay at V0)",
+    "Un-subdivided flat low-poly retro props",
+    "Neural point-cloud surface reconstruction"
+  ],
+  "locale_zh": {
+    "halstead-stencil-recursive32-equivalence-128": "Halstead左特征向量模板与32层递归细分等价 128",
+    "128 closed-form Halstead eigen-limit stencil and 32-level recursive ring subdivision passes agree within 1e-4": "128 次闭式 Halstead 特征极限模板与 32 层递归 Catmull-Clark 环细分在 1e-4 内一致",
+    "halstead-stencil-recursive32-equivalence-1024": "Halstead左特征向量模板与32层递归细分等价 1024",
+    "1024 closed-form Halstead eigen-limit stencil and 32-level recursive ring subdivision passes agree within 1e-4": "1024 次闭式 Halstead 特征极限模板与 32 层递归 Catmull-Clark 环细分在 1e-4 内一致",
+    "halstead-stencil-recursive32-equivalence-8192": "Halstead左特征向量模板与32层递归细分等价 8192",
+    "8192 closed-form Halstead eigen-limit stencil and 32-level recursive ring subdivision passes agree within 1e-4": "8192 次闭式 Halstead 特征极限模板与 32 层递归 Catmull-Clark 环细分在 1e-4 内一致",
+    "halstead-limit-stencil-locked": "Halstead特征极限曲面锁定",
+    "17 valence stations project directly onto P_infinity (n=5: 2.5000m, n=7: 2.7500m, n=10: 3.0000m)": "17 个奇异点价数站点一步投影至精确极限曲面 P_∞（n=5 为 2.5000m，n=7 为 2.7500m，n=10 为 3.0000m）",
+    "naive-1step-star-pole-spike-exposed": "朴素单步细分星点尖峰过冲暴露",
+    "naive 1-step Catmull-Clark subdivision spikes station-8 (n=7) to 3.2500m (+0.5000m overshoot across 17/17 stations)": "朴素 1 步 Catmull-Clark 细分将第 8 站（n=7）顶起至 3.2500m（过冲 +0.5000m，波及全部 17/17 站）",
+    "halstead-station8-27500m-locked": "Halstead第8站2.7500m极限高度锁定",
+    "Halstead Eigen-Limit Stencil locks station-8 (n=7.0) at P_inf=2.7500m (0/17 overshooting stations)": "Halstead 特征极限模板将第 8 站（n=7.0）精准锁定在 P_∞=2.7500m（0/17 过冲站）",
+    "naive-1step-station8-32500m-spike-exposed": "单步细分第8站3.2500m尖峰过冲暴露",
+    "naive 1-step subdivision spikes station-8 to V1=3.2500m (+0.5000m star-pole overshoot across 17/17 stations)": "朴素单步细分在第 8 站蹿升至 V1=3.2500m（产生 +0.5000m 星点尖峰过冲，污染全部 17/17 个站点）",
+    "halstead-station4-valence5-25000m": "5价角色星点2.5000m极限锁定",
+    "valence n=5.0 character pole locks P_inf(5)=2.5000m vs V1(5)=2.9500m (+0.4500m overshoot)": "5 价角色面部/肩部星点锁定 P_∞(5)=2.5000m，消除 V1(5)=2.9500m 的 +0.4500m 尖峰过冲",
+    "exact-reverse-station-scrub": "精确逆序站点回退一致性",
+    "reverse valence scrubbing from n=5.0 back to n=7.0 reproduces identical limit-surface telemetry": "从 n=5.0 逆序拖回 n=7.0 精确复现完全相同的极限曲面遥测状态",
+    "geometry-58-solid-conformance": "58构件3D奇异点细分台一致性",
+    "3D subdivision star-pole bench renders 58 tracked solids across 17 valence stations": "3D 奇异点极限曲面实验台在 17 个价数站点上完整渲染 58 个独立几何体",
+    "mobile-layout": "手机布局",
+    "390px Catmull-Clark Limit controls fit without horizontal overflow": "390px Catmull-Clark 极限模板控制面板无横向溢出",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Halstead Closed-Form (n, 4, 1) Limit Stencil": "Halstead 闭式 (n, 4, 1) 左特征向量极限模板",
+    "32-Level Recursive 1-Ring Subdivision Loop": "32 层递归 1-Ring 细分矩阵迭代基线",
+    "Median of 7 alternating Node CPU runs after warmup. Closed-form O(1) left-eigenvector limit stencil versus 32-level iterative Catmull-Clark 1-ring subdivision.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；O(1) 闭式左特征向量极限模板对比 32 层迭代 Catmull-Clark 1-Ring 环细分基线。",
+    "Sampled 17 extraordinary vertex valences project directly onto the infinite Catmull-Clark limit surface without LOD popping": "采样 17 个奇异点价数站点全部一步投影至无穷阶 Catmull-Clark 极限曲面，零星点鼓包与 LOD 跳变",
+    "P_inf(n) = (n·V0 + 4·E0 + Q0) / (n + 5) → Valence-7 P_inf = 2.7500m vs 1-Step V1 = 3.2500m (+0.5000m Spike)": "左特征向量极限投影 P_∞(n) = (n·V0+4·E0+Q0)/(n+5) → 7 价星点锁定 2.7500m 对比单步细分 3.2500m（+0.5000m 尖峰过冲）",
+    "Pixar OpenSubdiv, Blender, Maya, and GPU hardware tessellation of character faces, creature shoulders, and CAD fillets": "Pixar OpenSubdiv、Blender、Maya 与 GPU 硬件曲面细分中的角色面部、生物肩部星点与工业圆角曲面",
+    "Projecting valence-n extraordinary star-poles directly onto P_infinity in O(1) time without recursive mesh blowup": "无需递归加密网格导致面数指数级爆炸，以 O(1) 闭式内积将任意 n 价奇异点直接锚定至无穷阶极限曲面 P_∞",
+    "Eliminating +0.5000m star-pole spikes (at n=7) and LOD popping when hair follicles, buttons, or decals attach to subdivision cages": "彻底根除单步细分在 7 价星点产生的 +0.5000m 尖峰鼓包，防止毛囊、纽扣或贴花在切换细分 LOD 时发生上下弹跳",
+    "Pairing with De Casteljau Cubic Subdivision (Round 58) and Barycentric Displaced Micro-Meshes (Round 57)": "与 De Casteljau 三次细分（Round 58）及二进重心位移微网格 DMM（Round 57）无缝协同",
+    "Pure triangle-mesh Loop subdivision surfaces (which use Loop beta-weights instead of Catmull-Clark (n, 4, 1) quad weights)": "纯三角形拓扑的 Loop 细分曲面（需改用 Loop 特征权重而非四边面 Catmull-Clark 的 (n, 4, 1) 权重）",
+    "Infinitely sharp creased corners tagged with crease sharpness s -> infinity (which intentionally stay at V0)": "被显式标记为无限锐利折痕（Crease Sharpness → ∞，固定在控制点 V0）的硬边角点",
+    "Un-subdivided flat low-poly retro props": "无需曲面细分的低多边形复古风格硬表面道具",
+    "Neural point-cloud surface reconstruction": "神经点云隐式表面重建推理"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/catmull-clark-limit-stencil.test.ts",
+    "node scripts/benchmark-catmull-clark-limit-stencil.mjs"
+  ]
+}

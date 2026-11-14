@@ -1,0 +1,267 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Gooch warm-cool signed-hemisphere shading vs naive clamped Lambert shadow clip rig",
+  "topic_zh": "Gooch 冷暖半兰伯特全向有符号照明对比朴素截断朗伯漫反射背光死黑",
+  "slug": "gooch-warm-cool-signed-hemisphere-rig",
+  "timestamp": "2026-11-14T11:04:44.087Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Amy Gooch et al. (SIGGRAPH 1998) & Valve Half-Lambert (SIGGRAPH 2006) signed-hemisphere cosine remapping (u = (N*L + 1)/2, L_Gooch = 0.20 + 0.80*u = 0.60 + 0.40*mu) versus naive clamped Lambertian diffuse (max(0, N*L)) and 64-ring full-sphere spherical harmonic (SH) irradiance quadrature across 17 signed cosine stations (mu in [+1.00, -1.00]).",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "gooch-sh64-equiv-128",
+      "passed": true,
+      "detail": "128 Gooch remap and 64-ring SH quadrature passes agree within 1e-12"
+    },
+    {
+      "name": "gooch-sh64-equiv-1024",
+      "passed": true,
+      "detail": "1024 Gooch remap and 64-ring SH quadrature passes agree within 1e-12"
+    },
+    {
+      "name": "gooch-sh64-equiv-8192",
+      "passed": true,
+      "detail": "8192 Gooch remap and 64-ring SH quadrature passes agree within 1e-12"
+    },
+    {
+      "name": "gooch-signed-hemisphere-unclipped",
+      "passed": true,
+      "detail": "17 signed cosine stations preserve L in [0.2000, 1.0000] (0/17 shadow-clipped)"
+    },
+    {
+      "name": "naive-lambert-shadow-clip-exposed",
+      "passed": true,
+      "detail": "naive max(0, N*L) clips 9/17 stations (mu<=0) to dead 0.0000 across back hemisphere"
+    },
+    {
+      "name": "gooch-st8-terminator-06000",
+      "passed": true,
+      "detail": "station-8 (90 deg, mu=0.00) locks L_Gooch=0.6000 vs naive Lambert 0.0000"
+    },
+    {
+      "name": "gooch-st12-backflank-04000",
+      "passed": true,
+      "detail": "station-12 (120 deg, mu=-0.50) locks L_Gooch=0.4000 vs naive Lambert 0.0000"
+    },
+    {
+      "name": "gooch-st16-ink-floor-02000",
+      "passed": true,
+      "detail": "station-16 (180 deg, mu=-1.00) reserves L_cool=0.2000 so black ink lines stay visible"
+    },
+    {
+      "name": "exact-mode-roundtrip",
+      "passed": true,
+      "detail": "preset switching round-trip preserves deterministic Gooch hemisphere telemetry"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D Gooch technical illustration bench renders 58 tracked solids across 17 stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Gooch signed-hemisphere controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station Gooch passes",
+      "count": 128,
+      "primary_ms": 0.01310000000000855,
+      "baseline_ms": 0.3241999999999621,
+      "primary_samples_ms": [
+        0.03839999999996735,
+        0.01310000000000855,
+        0.011800000000050659,
+        0.013599999999996726,
+        0.01779999999996562,
+        0.011099999999999,
+        0.011000000000024102
+      ],
+      "baseline_samples_ms": [
+        0.3380000000000223,
+        0.32459999999997535,
+        0.3241999999999621,
+        0.38990000000001146,
+        0.3118999999999801,
+        0.22239999999999327,
+        0.21839999999997417
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station Gooch passes",
+      "count": 1024,
+      "primary_ms": 0.054199999999980264,
+      "baseline_ms": 1.6782999999999788,
+      "primary_samples_ms": [
+        0.10700000000002774,
+        0.05369999999999209,
+        0.05760000000003629,
+        0.054199999999980264,
+        0.05389999999999873,
+        0.0958999999999719,
+        0.053999999999973625
+      ],
+      "baseline_samples_ms": [
+        1.6782999999999788,
+        1.716199999999958,
+        1.6995999999999754,
+        1.6406999999999812,
+        1.6754000000000246,
+        1.6533999999999764,
+        2.6012999999999806
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station Gooch passes",
+      "count": 8192,
+      "primary_ms": 0.42090000000001737,
+      "baseline_ms": 13.460999999999956,
+      "primary_samples_ms": [
+        0.42090000000001737,
+        0.4759999999999991,
+        0.47169999999999845,
+        0.41610000000002856,
+        1.582300000000032,
+        0.4154999999999518,
+        0.40449999999998454
+      ],
+      "baseline_samples_ms": [
+        13.783900000000017,
+        13.460999999999956,
+        16.836000000000013,
+        12.78449999999998,
+        14.374000000000024,
+        13.148400000000038,
+        13.302500000000009
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/gooch-warm-cool-signed-hemisphere-rig/light-gooch_warm_cool_signed_hemisphere.png",
+    "docs/evidence/gooch-warm-cool-signed-hemisphere-rig/light-naive_clamped_lambert_shadow_clip.png",
+    "docs/evidence/gooch-warm-cool-signed-hemisphere-rig/dark-gooch_warm_cool_signed_hemisphere.png",
+    "docs/evidence/gooch-warm-cool-signed-hemisphere-rig/dark-naive_clamped_lambert_shadow_clip.png",
+    "docs/evidence/gooch-warm-cool-signed-hemisphere-rig/mobile.png"
+  ],
+  "primary_label": "Closed-Form Gooch Signed Remap",
+  "baseline_label": "64-Ring SH Environment Integral",
+  "load_unit": "Gooch passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form 1-FMA signed-hemisphere remapping versus 64-ring full-sphere spherical harmonic irradiance quadrature.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "station8_gooch_tone": 0.6000000000000001,
+    "station12_gooch_tone": 0.4,
+    "station12_naive_tone": 0,
+    "station16_gooch_tone": 0.2,
+    "clipped_stations": 9
+  },
+  "protocol": {
+    "input": {
+      "station_index": 12,
+      "angle_deg": 120,
+      "signed_cosine_mu": -0.5,
+      "cool_floor": 0.2,
+      "warm_peak": 1
+    },
+    "output": {
+      "gooch_blend_u": 0.25,
+      "gooch_tone": 0.4,
+      "naive_clamped_lambert": 0,
+      "station8_terminator_gooch": 0.6,
+      "clipped_back_stations": 9
+    },
+    "function": "u = (N·L + 1)/2 = 0.2500 -> L_Gooch = 0.20 + 0.25·0.80 = 0.4000 vs Naive max(0, −0.50) = 0.0000 (9/17 Clipped)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 signed cosine stations preserve strictly positive normal discrimination slope dL/dmu = 0.4000 across the entire sphere",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "CAD/CAM mechanical cutaways, exploded views, and technical illustrations (Gooch et al. SIGGRAPH 1998) where every bevel in the shadow hemisphere must remain readable",
+    "Stylized character & cel/ramp shading (Valve Half-Lambert / Team Fortress 2) using u = 0.5*(N*L) + 0.5 to index warm-to-cool color ramps",
+    "Ink-and-outline NPR renders that reserve darks (<0.20) for crisp black silhouette & crease ink lines",
+    "1-instruction FMA evaluation replacing multi-ring environment integration"
+  ],
+  "not_for": [
+    "Strict zero-bounce darkroom radiometry where physical light cannot wrap behind an opaque terminator",
+    "Replacing cast shadow maps or screen-space ambient occlusion",
+    "Unlit UI sprites",
+    "1D audio DSP"
+  ],
+  "locale_zh": {
+    "title": "Gooch 冷暖有符号全向照明 vs 朴素截断朗伯漫反射背光死黑",
+    "subtitle": "为什么在机械剖视图、工程可视化与角色渲染中，直接写 `max(0, dot(N, L))` 会把整个背光面的倒角、螺纹与凹槽全部糊成死黑一片，并且吞没黑色描边轮廓线？",
+    "plain_intro": "当平行光照射三维物体时，表面法线与光线的点积 μ = N·L 跨越整个球面 [+1.0000, -1.0000]：向光面为 [0, +1]，90° 明暗交界线（Terminator）为 0.0000，而整个背光半球为 [-1, 0)。朴素朗伯漫反射直接执行 `max(0, N·L)` 截断，导致从 90° 明暗交界线开始直到 180° 背光极点的全部 9/17 个站点输出恒等于死黑 0.0000（法线灵敏度 dL/dμ = 0），背光侧的所有机械倒角、肌肉起伏和褶皱全部消失，且黑色描边墨线画在 0.0000 的死黑底色上彻底隐形！Amy Gooch 等人 (SIGGRAPH 1998 技术插画照明模型) 与 Valve Half-Lambert (SIGGRAPH 2006) 通过有符号仿射重映射 u = (N·L + 1)/2 ∈ [0, 1]，将 [-1, +1] 完整映射到冷色调底亮（L_cool = 0.2000）与暖色调高光（L_warm = 1.0000）之间：在第 8 站（90° 交界线）锁死 L = 0.6000，在第 12 站（120° 背光侧翼，μ = -0.50）保留 L = 0.4000，在第 16 站（180°）预留 0.2000 冷色底亮（全 17 站 0 死黑截断），让背光结构与黑色墨线同时清晰可读！",
+    "finding": "实测 17 个有符号余弦站点（μ ∈ [+1.00, -1.00]）：Gooch 冷暖重映射在第 8 站（90°）锁死 0.6000、第 12 站（120° 背光）保留 0.4000、第 16 站（180°）预留 0.2000（0/17 死黑截断），而朴素 max(0, N·L) 将背光半球 9/17 个站点全部压死为 0.0000（污染 16/17 站）。",
+    "workbench_title": "58 实体 17 站点 Gooch 冷暖有符号全向照明台（Gooch Signed-Hemisphere Bench）",
+    "scenario_quote": "如何只用 1 条乘加指令（0.5 * dot(N, L) + 0.5），就让机械零件与角色背光面的所有倒角褶皱立体浮现，同时不吞掉半根黑色描边线？",
+    "protocol_note": "顶块展示第 12 站（120° 背光侧翼，有符号余弦 μ=-0.5000，冷色底亮 0.2000，暖色峰值 1.0000）；底块对比 Gooch 重映射 u=0.2500 输出 0.4000 与朴素截断朗伯输出死黑 0.0000。",
+    "robustness_name": "17 个有符号余弦站点在 [-1, +1] 全球面上 100% 保持正法线辨识斜率 dL/dμ = 0.4000",
+    "primary_label": "Gooch 闭式有符号半球重映射",
+    "baseline_label": "64 环球谐环境光数值积分",
+    "load_unit": "次 17 站照明求值",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比单次 FMA 有符号重映射与 64 环全向球谐环境光积分。",
+    "good_fit": [
+      "CAD/CAM 机械剖视图、爆炸图与工程可视化（Gooch SIGGRAPH 1998）：让背光面螺纹、凹槽与倒角一目了然",
+      "风格化角色与二次元/卡通 Ramp 着色（Valve Half-Lambert）：将 N·L ∈ [-1, 1] 无损映射为 [0, 1] 纹理坐标",
+      "带黑色描边（Ink Outline）与白色高光的 NPR 插画管线：预留 >=0.20 冷色底亮使黑线绝不被暗部吞没",
+      "单条 FMA 硬件指令零分支求值，完美匹配一阶球谐（L₀ + L₁）天空-地面双极环境光"
+    ],
+    "not_for": [
+      "零环境反射的封闭暗室纯物理路径追踪验证",
+      "直接替代投射阴影贴图（Shadow Map）或大尺度几何遮挡",
+      "无光照 2D 界面图标",
+      "一维音频信号处理"
+    ],
+    "readiness": "12/12 项实测通过；58 个 3D Gooch 照明构件、17 个有符号余弦站点与 7-Card 报告已封存。",
+    "entries": {
+      "gooch-sh64-equiv-128": "Gooch重映射与64环球谐等价 128",
+      "128 Gooch remap and 64-ring SH quadrature passes agree within 1e-12": "128 次 Gooch 重映射与 64 环球谐环境光积分在 1e-12 内一致",
+      "gooch-sh64-equiv-1024": "Gooch重映射与64环球谐等价 1024",
+      "1024 Gooch remap and 64-ring SH quadrature passes agree within 1e-12": "1024 次 Gooch 重映射与 64 环球谐环境光积分在 1e-12 内一致",
+      "gooch-sh64-equiv-8192": "Gooch重映射与64环球谐等价 8192",
+      "8192 Gooch remap and 64-ring SH quadrature passes agree within 1e-12": "8192 次 Gooch 重映射与 64 环球谐环境光积分在 1e-12 内一致",
+      "gooch-signed-hemisphere-unclipped": "Gooch有符号全向照明零截断",
+      "17 signed cosine stations preserve L in [0.2000, 1.0000] (0/17 shadow-clipped)": "17 个有符号余弦站点完整保留 [0.2000, 1.0000] 层次（0/17 背光截断）",
+      "naive-lambert-shadow-clip-exposed": "朴素朗伯背光半球死黑截断暴露",
+      "naive max(0, N*L) clips 9/17 stations (mu<=0) to dead 0.0000 across back hemisphere": "朴素 max(0, N·L) 将背光半球 9/17 个站点（μ≤0）全部截断为死黑 0.0000",
+      "gooch-st8-terminator-06000": "Gooch第8站90度交界线0.6000锁定",
+      "station-8 (90 deg, mu=0.00) locks L_Gooch=0.6000 vs naive Lambert 0.0000": "第 8 站（90° 明暗交界线 μ=0）锁死 L_Gooch=0.6000（消除 0.0000 死黑截断）",
+      "gooch-st12-backflank-04000": "Gooch第12站120度背光0.4000锁定",
+      "station-12 (120 deg, mu=-0.50) locks L_Gooch=0.4000 vs naive Lambert 0.0000": "第 12 站（120° 背光侧翼 μ=-0.50）锁死 L_Gooch=0.4000（消除 0.0000 死黑截断）",
+      "gooch-st16-ink-floor-02000": "Gooch第16站180度0.2000冷色留底",
+      "station-16 (180 deg, mu=-1.00) reserves L_cool=0.2000 so black ink lines stay visible": "第 16 站（180° 背光极点 μ=-1.00）预留 L_cool=0.2000 使黑色轮廓线清晰可见",
+      "exact-mode-roundtrip": "模式往返切换一致性",
+      "preset switching round-trip preserves deterministic Gooch hemisphere telemetry": "Gooch 冷暖有符号重映射与截断朗伯模式往返切换保持确定性状态",
+      "geometry-58-solids": "58构件3D Gooch照明台一致性",
+      "3D Gooch technical illustration bench renders 58 tracked solids across 17 stations": "3D Gooch 全向照明台在 17 个有符号余弦站点完整渲染 58 个独立几何体",
+      "mobile-layout": "手机布局",
+      "390px Gooch signed-hemisphere controls fit without horizontal overflow": "390px Gooch 全向照明控制面板无横向溢出",
+      "runtime-errors": "运行错误",
+      "0 JavaScript errors": "0 个 JavaScript 错误"
+    }
+  }
+}

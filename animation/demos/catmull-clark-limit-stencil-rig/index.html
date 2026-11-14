@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Halstead-Kass-DeRose Catmull-Clark Limit Stencil Rig — Generative Visual Lab</title>
+    <script type="module" crossorigin src="../../assets/catmullClarkLimitStencil-fLGc7UIZ.js"></script>
+    <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="modulepreload" crossorigin href="../../assets/three.module-7AmyneiW.js">
+    <link rel="stylesheet" crossorigin href="../../assets/anisotropicGgxFiber-BiXbR8oC.css">
+  </head>
+  <body>
+    <div class="rig-shell">
+      <header class="rig-topbar">
+        <div class="rig-title-block">
+          <span class="rig-kicker">ROUND 101 · OPENSUBDIV EXTRAORDINARY VERTEX LIMIT-SURFACE WORKBENCH</span>
+          <h1>Halstead-Kass-DeRose Eigen-Limit Stencil vs Naive 1-Step Subdivision Spike</h1>
+        </div>
+        <div class="rig-top-actions">
+          <a class="rig-link" href="../../index.html">← Portal</a>
+          <a class="rig-link" href="./test-report-cards.html">7-Card Report (EN)</a>
+          <a class="rig-link" href="./test-report-cards.zh.html">7-Card 报告 (ZH)</a>
+          <button id="theme-toggle-btn" class="rig-btn-secondary" type="button">Toggle Theme</button>
+        </div>
+      </header>
+
+      <main class="rig-main">
+        <section class="rig-stage-card">
+          <div class="rig-canvas-wrap">
+            <canvas id="rig-canvas" aria-label="Catmull-Clark Limit Stencil 3D Rig"></canvas>
+          </div>
+          <div class="rig-stage-caption">
+            <strong>58-Solid 3D Extraordinary Star-Pole Limit Surface Bench:</strong> Back cyan towers display the exact Halstead, Kass &amp; DeRose (SIGGRAPH 1993 / Pixar OpenSubdiv) eigen-limit surface elevation <code>P_inf(n) = (n·V0 + 4·E0 + Q0) / (n + 5)</code> across 17 vertex valences <code>n ∈ [3.0, 11.0]</code> (for <code>V0 = 4.00 m, E0 = Q0 = 1.00 m</code>). At Station 08 (<code>n = 7.0</code>), the closed-form eigen-stencil locks onto <code>P_inf(7) = 2.7500 m</code> in 1 O(1) pass, whereas naive 1-step Catmull-Clark subdivision spikes to <code>V1(7) = 3.2500 m</code> (<code>+0.5000 m</code> star-pole overshoot across all <code>17/17</code> stations).
+          </div>
+        </section>
+
+        <aside class="rig-hud-card" aria-label="Catmull-Clark Limit Telemetry HUD">
+          <div class="hud-header">
+            <span id="hud-mode-badge" class="hud-badge">HALSTEAD-KASS-DEROSE EIGEN-LIMIT STENCIL</span>
+            <div id="hud-verdict-pill" class="hud-verdict" data-state="pass">
+              PASS · P_inf(7) = 2.7500m Exact Limit Surface Locked (0/17 Spiked)
+            </div>
+          </div>
+
+          <div class="hud-controls">
+            <div class="btn-group" role="group" aria-label="Subdivision Limit Mode Selector">
+              <button
+                type="button"
+                class="mode-btn active"
+                data-mode-btn="halstead-eigen-limit-stencil"
+              >
+                Halstead-Kass-DeRose Limit Stencil (Exact P_inf)
+              </button>
+              <button
+                type="button"
+                class="mode-btn"
+                data-mode-btn="naive-1step-subdivision-spike"
+              >
+                Naive 1-Step Catmull-Clark Subdivision (V1 Spike)
+              </button>
+            </div>
+
+            <label class="slider-label" for="station-slider">
+              <span>Extraordinary Vertex Valence Station (<code>n ∈ [3.0, 11.0]</code>)</span>
+              <input id="station-slider" type="range" min="0" max="16" step="1" value="8" />
+            </label>
+          </div>
+
+          <dl class="hud-metrics-grid">
+            <div class="metric-box">
+              <dt>Selected Vertex Valence</dt>
+              <dd id="hud-station-value">Station 08 (Valence n = 7.0)</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Exact Limit Height P_inf</dt>
+              <dd id="hud-limit-value">2.7500 m</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Active Vertex Height</dt>
+              <dd id="hud-active-value">2.7500 m</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Star-Pole Spike Overshoot</dt>
+              <dd id="hud-error-value">0.0000 m (Locked to P_infinity)</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Overshooting Stations</dt>
+              <dd id="hud-overshoot-count">0 / 17</dd>
+            </div>
+            <div class="metric-box">
+              <dt>1-Ring Control Cage</dt>
+              <dd>V0 = 4.00 m · E0 = Q0 = 1.00 m</dd>
+            </div>
+          </dl>
+
+          <div class="hud-formula-box">
+            <h2>Left-Eigenvector (n, 4, 1) Limit Projection Law</h2>
+            <p>
+              <code>P_inf(n) = (n · V0 + 4 · E0_avg + 1 · Q0_avg) / (n + 5)</code>
+            </p>
+            <p>
+              Because <code>(n, 4, 1)</code> is the stationary left eigenvector (<code>λ₀ = 1</code>) of the Catmull-Clark 1-ring subdivision matrix, a single dot product projects any valence-<code>n</code> star-pole directly onto <code>P_inf</code> (<code>2.5000 m</code> at <code>n=5</code>, <code>2.7500 m</code> at <code>n=7</code>), eliminating the <code>+0.5000 m</code> LOD popping spike of 1-step subdivision.
+            </p>
+          </div>
+        </aside>
+      </main>
+    </div>
+  </body>
+</html>

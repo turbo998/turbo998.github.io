@@ -1,0 +1,268 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Lagarde-Hammon merged Smith V = G2/(4·NdotV·NdotL) vs grazing singularity rig",
+  "topic_zh": "Lagarde-Hammon 合并 Smith 可见度函数约分消除掠射角 4(N·V)(N·L) 除零白边",
+  "slug": "merged-smith-visibility-jacobian-rig",
+  "timestamp": "2026-11-14T09:07:34.131Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Sebastien Lagarde (SIGGRAPH 2014 Frostbite) & Earl Hammon Jr. (GDC 2017) merged Smith-GGX visibility function V(mu_v, mu_l) = G_2 / (4*mu_v*mu_l) = 0.5 / (1 + mu_v) versus naive uncanceled Cook-Torrance Jacobian division 1 / (4*mu_v*mu_l) and 64-stratum slope quadrature across 17 viewing cosines (mu_v in [1.0000, 0.0000] with mu_l = 1.0000, alpha = 1.0000).",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "smith-vis64-equiv-128",
+      "passed": true,
+      "detail": "128 closed-form merged Smith V and 64-stratum passes agree within 1e-13"
+    },
+    {
+      "name": "smith-vis64-equiv-1024",
+      "passed": true,
+      "detail": "1024 closed-form merged Smith V and 64-stratum passes agree within 1e-13"
+    },
+    {
+      "name": "smith-vis64-equiv-8192",
+      "passed": true,
+      "detail": "8192 closed-form merged Smith V and 64-stratum passes agree within 1e-13"
+    },
+    {
+      "name": "merged-smith-v-bounded",
+      "passed": true,
+      "detail": "17 viewing cosines stay bounded in [0.2500, 0.5000] (μ_v=0.25: 0.4000, μ_v=0.00: 0.5000)"
+    },
+    {
+      "name": "naive-jacobian-singularity-exposed",
+      "passed": true,
+      "detail": "uncanceled 1/(4·μ_v) surges to 1.0000 (μ_v=0.25) and 10.0000 (μ_v=0.00) across 16/17"
+    },
+    {
+      "name": "merged-st12-04000-locked",
+      "passed": true,
+      "detail": "station-12 (μ_v=0.2500, 75.5°) locks V_Smith=0.4000 vs naive 1.0000 (+150.00% overshoot)"
+    },
+    {
+      "name": "merged-st16-horizon-05000",
+      "passed": true,
+      "detail": "horizon station-16 (μ_v=0.0000, 90.0°) converges to finite V_Smith=0.5000 without 0/0"
+    },
+    {
+      "name": "naive-st16-100000-singularity",
+      "passed": true,
+      "detail": "naive uncanceled 1/(4·max(μ_v, 0.025)) explodes to 10.0000 (20.00× firefly ring) at horizon"
+    },
+    {
+      "name": "exact-mode-roundtrip",
+      "passed": true,
+      "detail": "mode switching round-trip preserves deterministic Smith visibility telemetry"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D microfacet silhouette goniometer renders 58 tracked solids across 17 stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Merged Smith Visibility controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station Smith V passes",
+      "count": 128,
+      "primary_ms": 0.013199999999983447,
+      "baseline_ms": 2.0924999999999727,
+      "primary_samples_ms": [
+        0.1249000000000251,
+        0.013599999999996726,
+        0.011700000000018917,
+        0.013199999999983447,
+        0.015800000000012915,
+        0.012999999999976808,
+        0.010699999999985721
+      ],
+      "baseline_samples_ms": [
+        2.239900000000034,
+        2.088899999999967,
+        1.936200000000042,
+        1.9757999999999925,
+        2.0924999999999727,
+        2.1154999999999973,
+        2.109700000000032
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station Smith V passes",
+      "count": 1024,
+      "primary_ms": 0.09619999999995343,
+      "baseline_ms": 17.495300000000043,
+      "primary_samples_ms": [
+        0.09919999999999618,
+        0.09619999999995343,
+        0.09440000000006421,
+        0.09929999999997108,
+        0.09050000000002001,
+        0.09789999999998145,
+        0.09030000000007021
+      ],
+      "baseline_samples_ms": [
+        17.589200000000005,
+        17.986600000000067,
+        16.738900000000058,
+        25.879999999999995,
+        16.677999999999997,
+        17.495300000000043,
+        16.560299999999984
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station Smith V passes",
+      "count": 8192,
+      "primary_ms": 0.7436999999999898,
+      "baseline_ms": 139.68360000000007,
+      "primary_samples_ms": [
+        0.7619000000000824,
+        0.7582999999999629,
+        0.777599999999893,
+        0.7411999999999352,
+        0.7334999999998217,
+        0.7436999999999898,
+        0.7332999999998719
+      ],
+      "baseline_samples_ms": [
+        152.0788,
+        150.40960000000007,
+        165.92579999999998,
+        125.97659999999996,
+        126.72389999999996,
+        139.18590000000017,
+        139.68360000000007
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/merged-smith-visibility-jacobian-rig/light-lagarde_hammon_merged_smith_visibility.png",
+    "docs/evidence/merged-smith-visibility-jacobian-rig/light-naive_uncanceled_jacobian_singularity.png",
+    "docs/evidence/merged-smith-visibility-jacobian-rig/dark-lagarde_hammon_merged_smith_visibility.png",
+    "docs/evidence/merged-smith-visibility-jacobian-rig/dark-naive_uncanceled_jacobian_singularity.png",
+    "docs/evidence/merged-smith-visibility-jacobian-rig/mobile.png"
+  ],
+  "primary_label": "Merged Smith V = 0.5/(1 + μ_v)",
+  "baseline_label": "64-Stratum Slope Quadrature",
+  "load_unit": "visibility passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form merged Smith visibility V(mu_v, mu_l) versus 64-stratum microfacet masking quadrature.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "station8_merged_v": 0.3333,
+    "station12_merged_v": 0.4,
+    "station12_naive_v": 1,
+    "station16_merged_v": 0.5,
+    "station16_naive_v": 10,
+    "singularity_stations": 16
+  },
+  "protocol": {
+    "input": {
+      "station_index": 12,
+      "mu_v": 0.25,
+      "view_angle_deg": 75.52,
+      "mu_l": 1,
+      "alpha": 1
+    },
+    "output": {
+      "merged_smith_v": 0.4,
+      "naive_uncanceled_v": 1,
+      "horizon_merged_v": 0.5,
+      "horizon_naive_v": 10,
+      "singularity_stations": 16
+    },
+    "function": "V_Smith(μ_v) = G₂/(4μ_vμ_l) ≡ 0.5/(1+μ_v) → V(0.25)=0.4000, V(0.00)=0.5000 vs Uncanceled 1/(4μ_v)=10.0000"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 viewing cosines remain strictly finite and bounded in [0.2500, 0.5000] all the way to mu_v = 0.0000",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "PBR microfacet shaders in Frostbite, Unreal Engine 5, Filament, Unity HDRP, and Three.js (V_GGX_SmithCorrelated)",
+    "Algebraically canceling 2*mu_v*mu_l in G_2 against the 4*mu_v*mu_l Cook-Torrance denominator before division",
+    "Guaranteeing a finite horizon limit V(0.00) = 0.5000 without ad-hoc max(NdotV, 1e-4) clamping or FP16 NaN rings",
+    "Saving 2 multiplies and 1 division per light evaluation while eliminating grazing silhouette firefly rings"
+  ],
+  "not_for": [
+    "Legacy Phong or Blinn-Phong shaders that lack a microfacet Jacobian denominator",
+    "Unlit flat color materials",
+    "Purely diffuse Lambertian shading",
+    "2D post-processing filters"
+  ],
+  "locale_zh": {
+    "title": "Lagarde-Hammon 合并 Smith 可见度函数 vs 朴素 Cook-Torrance 掠射角除零白边",
+    "subtitle": "为什么在写 PBR 微表面高光公式 D·F·G / (4·(N·V)·(N·L)) 时，绝对不能先算 G 再除以 4(N·V)(N·L)，而必须使用 Lagarde-Hammon 代数约分后的合并可见度函数 V(N·V, N·L)？",
+    "plain_intro": "在经典 Cook-Torrance 微表面公式 f_spec = D·F·G₂ / (4·μ_v·μ_l) 中，当视线趋近物体外轮廓掠射角（θ_v → 90°, μ_v = N·V → 0）时，分母 4·μ_v·μ_l 趋近于 0！朴素实现若未将 G₂ 分子中的 2·μ_v·μ_l 与分母约分（或使用未带 μ_v 因子的旧几何项并靠 max(μ_v, 0.025) 硬钳制），可见度项 1/(4·μ_v) 会在第 12 站（μ_v=0.25）暴涨至 1.0000（过冲 +150%），并在第 16 站轮廓边缘（μ_v=0.00）炸出 10.0000（20.00× 刺眼白边爆闪，污染 16/17 站）！Lagarde (SIGGRAPH 2014 Frostbite) 与 Hammon (GDC 2017) 将 G₂/(4·μ_v·μ_l) 代数约分为合并可见度函数 V_Smith = 0.5 / (μ_l√(α²+(1−α²)μ_v²) + μ_v√(α²+(1−α²)μ_l²))（当 μ_l=1, α=1 时化简为 0.5/(1+μ_v)），在第 12 站锁死 0.4000，且在 μ_v=0.00 地平线极限处无除零平滑收敛于 0.5000（0/17 奇点站）。",
+    "finding": "实测 17 个视角余弦站点（μ_v ∈ [1.0000, 0.0000]，μ_l=1.0, α=1.0）：Lagarde-Hammon 合并 Smith 可见度在第 12 站（μ_v=0.25）锁死 0.4000、在第 16 站（μ_v=0.00）平滑收敛于 0.5000（0/17 除零奇点），而朴素未约分 1/(4·μ_v) 冲至 1.0000 与 10.0000（20.00× 轮廓爆闪，污染 16/17 站）。",
+    "workbench_title": "58 实体 17 站点微平面剪影测角台（Microfacet Silhouette Goniometer）",
+    "scenario_quote": "为什么球体或角色模型的边缘轮廓在开启 PBR 高光后，经常在 grazing angle 炸出一圈亮到发白的锯齿噪点环（FP16 溢出）？",
+    "protocol_note": "顶块展示第 12 站（μ_v=0.2500, θ_v=75.52°）；底块对比代数约分后 V_Smith = 0.5/(1+0.25) = 0.4000（地平线极限 0.5000）与未约分 1/(4·μ_v) 冲至 1.0000（地平线炸至 10.0000）。",
+    "robustness_name": "17 个视角余弦站点在全段 [1.00, 0.00] 严格保持 [0.2500, 0.5000] 有界且在 μ_v=0 处零除零奇点",
+    "primary_label": "合并 Smith V = 0.5/(1+μ_v)",
+    "baseline_label": "64 层微平面遮蔽数值积分",
+    "load_unit": "次 17 站可见度求值",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比闭式合并 Smith V(μ_v, μ_l) 与 64 层微平面遮蔽数值积分。",
+    "good_fit": [
+      "Frostbite、UE5、Filament、Unity HDRP 与 Three.js (V_GGX_SmithCorrelated) 生产级微表面 PBR 管线",
+      "利用代数恒等约分彻底消去分母中的 4·(N·V)·(N·L)，从数学根源上消灭 μ_v → 0 时的 0/0 除零不确定型",
+      "在 μ_v=0.00 的 90° 极限轮廓处精确收敛于有限值 0.5000，无需打 max(NdotV, 1e-4) 补丁，杜绝移动端 FP16 溢出白边",
+      "每次光源求值节省 2 次乘法与 1 次除法，较 64 层微平面积分提速逾 80×"
+    ],
+    "not_for": [
+      "不含 4(N·V)(N·L) 微表面雅可比分母的传统经验 Blinn-Phong 着色器",
+      "无光照纯色材质",
+      "纯漫反射项计算",
+      "2D 图像后处理滤镜"
+    ],
+    "readiness": "12/12 项实测通过；58 个 3D 微平面剪影测角构件、17 个余弦站点与 7-Card 报告已封存。",
+    "entries": {
+      "smith-vis64-equiv-128": "合并Smith可见度与64层积分等价 128",
+      "128 closed-form merged Smith V and 64-stratum passes agree within 1e-13": "128 次闭式合并 Smith 可见度与 64 层微平面积分在 1e-13 内一致",
+      "smith-vis64-equiv-1024": "合并Smith可见度与64层积分等价 1024",
+      "1024 closed-form merged Smith V and 64-stratum passes agree within 1e-13": "1024 次闭式合并 Smith 可见度与 64 层微平面积分在 1e-13 内一致",
+      "smith-vis64-equiv-8192": "合并Smith可见度与64层积分等价 8192",
+      "8192 closed-form merged Smith V and 64-stratum passes agree within 1e-13": "8192 次闭式合并 Smith 可见度与 64 层微平面积分在 1e-13 内一致",
+      "merged-smith-v-bounded": "合并Smith可见度零奇点有界守恒",
+      "17 viewing cosines stay bounded in [0.2500, 0.5000] (μ_v=0.25: 0.4000, μ_v=0.00: 0.5000)": "17 个视角余弦站点在 [0.2500, 0.5000] 平滑有界（μ_v=0.25 为 0.4000，μ_v=0.00 为 0.5000）",
+      "naive-jacobian-singularity-exposed": "朴素未约分雅可比分母除零爆炸暴露",
+      "uncanceled 1/(4·μ_v) surges to 1.0000 (μ_v=0.25) and 10.0000 (μ_v=0.00) across 16/17": "未约分 1/(4·μ_v) 在 μ_v=0.25 冲至 1.0000、在 μ_v=0.00 炸至 10.0000（污染 16/17 站）",
+      "merged-st12-04000-locked": "合并第12站0.4000可见度锁定",
+      "station-12 (μ_v=0.2500, 75.5°) locks V_Smith=0.4000 vs naive 1.0000 (+150.00% overshoot)": "第 12 站（μ_v=0.2500, 75.5°）锁定 V_Smith=0.4000（消除朴素 1.0000 过冲）",
+      "merged-st16-horizon-05000": "地平线第16站0.5000无除零收敛",
+      "horizon station-16 (μ_v=0.0000, 90.0°) converges to finite V_Smith=0.5000 without 0/0": "地平线第 16 站（μ_v=0.0000, 90.0°）无除零收敛于有限值 V_Smith=0.5000",
+      "naive-st16-100000-singularity": "朴素第16站10.0000轮廓爆闪暴露",
+      "naive uncanceled 1/(4·max(μ_v, 0.025)) explodes to 10.0000 (20.00× firefly ring) at horizon": "朴素未约分分母在地平线暴冲至 10.0000（20.00× 轮廓白边爆闪）",
+      "exact-mode-roundtrip": "模式往返切换一致性",
+      "mode switching round-trip preserves deterministic Smith visibility telemetry": "合并 Smith 可见度与未约分雅可比模式往返切换保持确定性状态",
+      "geometry-58-solids": "58构件3D微平面剪影测角台一致性",
+      "3D microfacet silhouette goniometer renders 58 tracked solids across 17 stations": "3D 微平面剪影测角台在 17 个视角余弦站点完整渲染 58 个独立几何体",
+      "mobile-layout": "手机布局",
+      "390px Merged Smith Visibility controls fit without horizontal overflow": "390px 合并 Smith 可见度控制面板无横向溢出",
+      "runtime-errors": "运行错误",
+      "0 JavaScript errors": "0 个 JavaScript 错误"
+    }
+  }
+}

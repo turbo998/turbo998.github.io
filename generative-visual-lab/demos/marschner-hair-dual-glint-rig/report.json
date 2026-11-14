@@ -1,0 +1,259 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Marschner cuticle-tilted dual hair glints vs Kajiya-Kay single lobe rig",
+  "topic_zh": "Marschner 毛鳞片双高光天使环对比 Kajiya-Kay 单波瓣塑料假发",
+  "slug": "marschner-hair-dual-glint-rig",
+  "timestamp": "2026-11-14T05:57:32.977Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Stephen Marschner et al. (SIGGRAPH 2003) cuticle-tilted dual longitudinal hair scattering (root-shifted white R glint at -2*alpha_c = -6.0 deg with I=1.0000 and tip-shifted colored TRT glint at +8.0 deg with I=0.8000) versus naive unshifted Kajiya-Kay single lobe (0.0 deg peak) and 64-ray dielectric cylinder quadrature across 17 longitudinal half-angles (theta_h in [-16.0 deg, +16.0 deg]).",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "marschner-cyl64-equiv-128",
+      "passed": true,
+      "detail": "128 Marschner R+TRT dual-Gaussian and 64-ray cylinder passes agree within 2e-4"
+    },
+    {
+      "name": "marschner-cyl64-equiv-1024",
+      "passed": true,
+      "detail": "1024 Marschner R+TRT dual-Gaussian and 64-ray cylinder passes agree within 2e-4"
+    },
+    {
+      "name": "marschner-cyl64-equiv-8192",
+      "passed": true,
+      "detail": "8192 Marschner R+TRT dual-Gaussian and 64-ray cylinder passes agree within 2e-4"
+    },
+    {
+      "name": "marschner-dual-glints-conserved",
+      "passed": true,
+      "detail": "17 stations preserve root R (-6°: 1.0000) and tip TRT (+8°: 0.8000) glints"
+    },
+    {
+      "name": "kajiya-kay-trt-starvation-exposed",
+      "passed": true,
+      "detail": "naive Kajiya-Kay drops station-12 (+8°) to 0.0060 (-0.7940 TRT loss across 15/17)"
+    },
+    {
+      "name": "marschner-st12-trt-08000-locked",
+      "passed": true,
+      "detail": "Marschner locks station-12 (+8.0° TRT peak) at I=0.8000 (0/17 corrupted stations)"
+    },
+    {
+      "name": "kajiya-st12-00060-starved",
+      "passed": true,
+      "detail": "naive Kajiya-Kay collapses station-12 (+8.0°) to I=0.0060 (-0.7940 loss across 15/17)"
+    },
+    {
+      "name": "marschner-st5-root-r-10000",
+      "passed": true,
+      "detail": "root-shifted station-5 (-6.0° R peak) locks I_Marschner=1.0000 vs I_Kajiya=0.0561"
+    },
+    {
+      "name": "exact-reverse-scrub",
+      "passed": true,
+      "detail": "reverse scrubbing from -6.0° back to +8.0° reproduces identical telemetry"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D hair cuticle bench renders 58 tracked solids across 17 longitudinal stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Marschner Hair Glint controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station hair glint passes",
+      "count": 128,
+      "primary_ms": 0.035099999999943066,
+      "baseline_ms": 4.855500000000006,
+      "primary_samples_ms": [
+        0.1737999999999147,
+        0.035099999999943066,
+        0.032199999999988904,
+        0.03769999999997253,
+        0.03750000000002274,
+        0.03150000000005093,
+        0.031000000000062755
+      ],
+      "baseline_samples_ms": [
+        5.165599999999927,
+        4.855500000000006,
+        4.969200000000001,
+        4.92859999999996,
+        4.801799999999957,
+        4.830000000000041,
+        4.835900000000038
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station hair glint passes",
+      "count": 1024,
+      "primary_ms": 0.2841999999999416,
+      "baseline_ms": 45.11779999999999,
+      "primary_samples_ms": [
+        0.2787999999999329,
+        1.088100000000054,
+        0.75649999999996,
+        0.550899999999956,
+        0.2841999999999416,
+        0.27689999999995507,
+        0.2705000000000837
+      ],
+      "baseline_samples_ms": [
+        39.43190000000004,
+        84.50059999999996,
+        43.147899999999936,
+        56.857599999999934,
+        43.96729999999991,
+        47.34619999999995,
+        45.11779999999999
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station hair glint passes",
+      "count": 8192,
+      "primary_ms": 2.199200000000019,
+      "baseline_ms": 362.97400000000016,
+      "primary_samples_ms": [
+        2.1639000000000124,
+        2.173200000000179,
+        2.241399999999885,
+        2.199200000000019,
+        2.156800000000203,
+        2.4789999999998145,
+        3.0126000000000204
+      ],
+      "baseline_samples_ms": [
+        362.97400000000016,
+        362.0776000000001,
+        350.22029999999995,
+        341.38949999999977,
+        375.0389,
+        387.57349999999997,
+        551.2004000000006
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/marschner-hair-dual-glint-rig/light-marschner-cuticle-dual-glint.png",
+    "docs/evidence/marschner-hair-dual-glint-rig/light-naive-kajiya-kay-single-lobe.png",
+    "docs/evidence/marschner-hair-dual-glint-rig/dark-marschner-cuticle-dual-glint.png",
+    "docs/evidence/marschner-hair-dual-glint-rig/dark-naive-kajiya-kay-single-lobe.png",
+    "docs/evidence/marschner-hair-dual-glint-rig/mobile.png"
+  ],
+  "primary_label": "Marschner Dual-Gaussian R+TRT",
+  "baseline_label": "64-Ray Cylinder Quadrature",
+  "load_unit": "hair passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form cuticle-shifted R+TRT dual-Gaussian evaluation versus 64-ray dielectric cylinder internal refraction quadrature.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "cuticle_tilt_deg": 3,
+    "station5_r_glint": 1,
+    "station8_trough": 0.0587,
+    "station12_trt_glint": 0.8,
+    "station12_kajiya": 0.006,
+    "corrupted_stations": 15
+  },
+  "protocol": {
+    "input": {
+      "station_index": 12,
+      "angle_deg": 8,
+      "cuticle_tilt_deg": 3,
+      "r_shift_deg": -6,
+      "trt_shift_deg": 8
+    },
+    "output": {
+      "r_peak_minus6deg": 1,
+      "trough_0deg": 0.1175,
+      "trt_peak_plus8deg": 0.8,
+      "kajiya_plus8deg": 0.006,
+      "corrupted_stations": 15
+    },
+    "function": "I_Marschner(θ_h) = max(M_R(θ_h + 6°), 0.8·M_TRT(θ_h − 8°)) → R(−6°)=1.0000 & TRT(+8°)=0.8000 (vs Kajiya 0.0060)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 longitudinal half-angle stations resolve distinct root-shifted R and tip-shifted TRT angel rings",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Digital human hair, animal fur, and keratin fibers in UE5 Groom, Blender Principled Hair BSDF, and RenderMan",
+    "Separating the sharp white surface glint (R at -6.0°) from the warm melanin-colored internal glint (TRT at +8.0°)",
+    "Eliminating the single unshifted 0.0° plastic wig band and -99.25% TRT starvation of Kajiya-Kay shaders",
+    "Evaluating dual longitudinal Gaussians in 6 scalar operations without per-ray cylinder tracing"
+  ],
+  "not_for": [
+    "Synthetic cylindrical nylon wires lacking tilted imbricated cuticle scales (alpha_c == 0°)",
+    "Flat isotropic plastic or matte masonry",
+    "Upright velvet cloth pile (use Estevez-Kulla Charlie Sheen Round 103)",
+    "Unlit billboard hair cards without tangent vectors"
+  ],
+  "locale_zh": {
+    "marschner-cyl64-equiv-128": "Marschner双波瓣与64射线积分等价 128",
+    "128 Marschner R+TRT dual-Gaussian and 64-ray cylinder passes agree within 2e-4": "128 次闭式双高斯与 64 射线介质圆柱积分在 2e-4 内一致",
+    "marschner-cyl64-equiv-1024": "Marschner双波瓣与64射线积分等价 1024",
+    "1024 Marschner R+TRT dual-Gaussian and 64-ray cylinder passes agree within 2e-4": "1024 次闭式双高斯与 64 射线介质圆柱积分在 2e-4 内一致",
+    "marschner-cyl64-equiv-8192": "Marschner双波瓣与64射线积分等价 8192",
+    "8192 Marschner R+TRT dual-Gaussian and 64-ray cylinder passes agree within 2e-4": "8192 次闭式双高斯与 64 射线介质圆柱积分在 2e-4 内一致",
+    "marschner-dual-glints-conserved": "Marschner双天使环高光守恒",
+    "17 stations preserve root R (-6°: 1.0000) and tip TRT (+8°: 0.8000) glints": "17 站保持发根白光 R（-6° 为 1.0000）与发梢彩光 TRT（+8° 为 0.8000）",
+    "kajiya-kay-trt-starvation-exposed": "Kajiya-Kay单波瓣彩光饥饿暴露",
+    "naive Kajiya-Kay drops station-12 (+8°) to 0.0060 (-0.7940 TRT loss across 15/17)": "朴素 Kajiya-Kay 将第 12 站（+8°）压至 0.0060（丢失 -0.7940 彩光，15/17 站）",
+    "marschner-st12-trt-08000-locked": "Marschner第12站0.8000次级彩光锁定",
+    "Marschner locks station-12 (+8.0° TRT peak) at I=0.8000 (0/17 corrupted stations)": "Marschner 模型将第 12 站（+8.0° TRT 峰）锁定在 I=0.8000（0/17 失真站）",
+    "kajiya-st12-00060-starved": "Kajiya第12站0.0060次级高光坍塌",
+    "naive Kajiya-Kay collapses station-12 (+8.0°) to I=0.0060 (-0.7940 loss across 15/17)": "朴素 Kajiya-Kay 在第 12 站（+8.0°）跌至 I=0.0060（缺失 -0.7940，15/17 站）",
+    "marschner-st5-root-r-10000": "发根偏移第5站1.0000主白光锁定",
+    "root-shifted station-5 (-6.0° R peak) locks I_Marschner=1.0000 vs I_Kajiya=0.0561": "发根偏移第 5 站（-6.0° R 峰）锁定 I_Marschner=1.0000，对比 Kajiya 0.0561",
+    "exact-reverse-scrub": "精确逆序回退一致性",
+    "reverse scrubbing from -6.0° back to +8.0° reproduces identical telemetry": "从 -6.0° 逆序拖回 +8.0° 精确复现相同的毛鳞片光度计状态",
+    "geometry-58-solids": "58构件3D发丝毛鳞片台一致性",
+    "3D hair cuticle bench renders 58 tracked solids across 17 longitudinal stations": "3D 发丝毛鳞片实验台在 17 个纵向站点完整渲染 58 个独立几何体",
+    "mobile-layout": "手机布局",
+    "390px Marschner Hair Glint controls fit without horizontal overflow": "390px 发丝双高光控制面板无横向溢出",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Marschner Dual-Gaussian R+TRT": "Marschner 闭式双高斯 R+TRT",
+    "64-Ray Cylinder Quadrature": "64 射线介质圆柱内折射积分",
+    "Median of 7 alternating Node CPU runs after warmup. Closed-form cuticle-shifted R+TRT dual-Gaussian evaluation versus 64-ray dielectric cylinder internal refraction quadrature.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；闭式毛鳞片偏移双高斯 R+TRT 对比 64 射线介质圆柱内折射积分基线。",
+    "Sampled 17 longitudinal half-angle stations resolve distinct root-shifted R and tip-shifted TRT angel rings": "采样 17 个纵向半角站点完整分辨偏向发根的白光 R 环与偏向发梢的彩光 TRT 双天使环",
+    "I_Marschner(θ_h) = max(M_R(θ_h + 6°), 0.8·M_TRT(θ_h − 8°)) → R(−6°)=1.0000 & TRT(+8°)=0.8000 (vs Kajiya 0.0060)": "毛鳞片双高光 I_Marschner → 发根 R(−6°)=1.0000 且发梢 TRT(+8°)=0.8000（对比 Kajiya 0.0060）",
+    "Digital human hair, animal fur, and keratin fibers in UE5 Groom, Blender Principled Hair BSDF, and RenderMan": "UE5 Groom、Blender Principled Hair BSDF 与 RenderMan 中的写实数字人头发、动物毛皮与角蛋白纤维",
+    "Separating the sharp white surface glint (R at -6.0°) from the warm melanin-colored internal glint (TRT at +8.0°)": "将偏向发根的锐利无色表面高光（−6.0° R 环）与偏向发梢的黑色素染色内反射高光（+8.0° TRT 环）精准分离",
+    "Eliminating the single unshifted 0.0° plastic wig band and -99.25% TRT starvation of Kajiya-Kay shaders": "根除 Kajiya-Kay 在 0.0° 拧成单条塑料假发光带并在 +8.0° 丢失 −99.25% 次级彩光的缺陷",
+    "Evaluating dual longitudinal Gaussians in 6 scalar operations without per-ray cylinder tracing": "仅用 6 次标量运算求解纵向双高斯包络，无需逐射线追踪圆柱内折射",
+    "Synthetic cylindrical nylon wires lacking tilted imbricated cuticle scales (alpha_c == 0°)": "表面无倾斜毛鳞片结构（α_c == 0°）的人造光滑尼龙丝或金属细丝",
+    "Flat isotropic plastic or matte masonry": "各向同性平坦塑料或哑光砖石表面",
+    "Upright velvet cloth pile (use Estevez-Kulla Charlie Sheen Round 103)": "垂直竖立的天鹅绒绒毛（应选用 Round 103 Estevez-Kulla Charlie 分布）",
+    "Unlit billboard hair cards without tangent vectors": "缺失切向量属性的纯无光照二维插片假发"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/marschner-hair-dual-glint.test.ts",
+    "node scripts/benchmark-marschner-hair-dual-glint.mjs"
+  ]
+}

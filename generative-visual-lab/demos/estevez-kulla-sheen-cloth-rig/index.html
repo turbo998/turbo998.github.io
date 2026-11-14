@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Estevez-Kulla Charlie Velvet Sheen Cloth Rig — Generative Visual Lab</title>
+    <script type="module" crossorigin src="../../assets/estevezKullaSheenCloth-2DcMprP0.js"></script>
+    <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="modulepreload" crossorigin href="../../assets/three.module-7AmyneiW.js">
+    <link rel="stylesheet" crossorigin href="../../assets/anisotropicGgxFiber-BiXbR8oC.css">
+  </head>
+  <body>
+    <div class="rig-shell">
+      <header class="rig-topbar">
+        <div class="rig-title-block">
+          <span class="rig-kicker">ROUND 103 · VELVET, MICROFIBER SUEDE &amp; PEACH-FUZZ CLOTH SHEEN WORKBENCH</span>
+          <h1>Estevez-Kulla Charlie Inverted-Sinusoid Sheen vs Naive Surface Cosine Lobe</h1>
+        </div>
+        <div class="rig-top-actions">
+          <a class="rig-link" href="../../index.html">← Portal</a>
+          <a class="rig-link" href="./test-report-cards.html">7-Card Report (EN)</a>
+          <a class="rig-link" href="./test-report-cards.zh.html">7-Card 报告 (ZH)</a>
+          <button id="theme-toggle-btn" class="rig-btn-secondary" type="button">Toggle Theme</button>
+        </div>
+      </header>
+
+      <main class="rig-main">
+        <section class="rig-stage-card">
+          <div class="rig-canvas-wrap">
+            <canvas id="rig-canvas" aria-label="Estevez-Kulla Charlie Velvet Sheen 3D Rig"></canvas>
+          </div>
+          <div class="rig-stage-caption">
+            <strong>58-Solid 3D Velvet Microfiber Goniophotometer Bench:</strong> Back cyan towers display the exact Estevez &amp; Kulla (SIGGRAPH 2017 Sony Imageworks / Khronos glTF <code>KHR_materials_sheen</code>) Charlie upright-fiber sheen profile <code>I_Charlie(θ_h) = sin^(1/α) θ_h = (1 − (N·H)²)^(1/(2α))</code> with <code>α = 0.50</code> across 17 half-angle stations <code>θ_h ∈ [0°, 80°]</code>. At face-on Station 00 (<code>0°</code>), Charlie locks <code>I = 0.0000</code> (deep velvet absorption), rising to <code>I = 0.7500</code> at Station 12 (<code>60°</code>) and <code>0.9698</code> at grazing Station 16 (<code>80°</code>); a naive surface cosine lobe puts a plastic <code>1.0000</code> blob at <code>0°</code> and starves Station 12 to <code>0.2500</code> (<code>-0.5000</code> / <code>-66.67%</code> deficit across <code>16/17</code> stations).
+          </div>
+        </section>
+
+        <aside class="rig-hud-card" aria-label="Charlie Velvet Sheen Telemetry HUD">
+          <div class="hud-header">
+            <span id="hud-mode-badge" class="hud-badge">ESTEVEZ-KULLA CHARLIE SIN-POWER SHEEN</span>
+            <div id="hud-verdict-pill" class="hud-verdict" data-state="pass">
+              PASS · I_Charlie(60°)=0.7500 &amp; I(80°)=0.9698 Velvet Rim Locked (0/17 Corrupted)
+            </div>
+          </div>
+
+          <div class="hud-controls">
+            <div class="btn-group" role="group" aria-label="Cloth Sheen NDF Selector">
+              <button
+                type="button"
+                class="mode-btn active"
+                data-mode-btn="estevez-kulla-charlie-sheen"
+              >
+                Estevez-Kulla Charlie Sheen NDF (sin^(1/α) θ_h)
+              </button>
+              <button
+                type="button"
+                class="mode-btn"
+                data-mode-btn="naive-surface-cosine-lobe"
+              >
+                Naive Surface Cosine Lobe (cos^(1/α) θ_h Inverted)
+              </button>
+            </div>
+
+            <label class="slider-label" for="station-slider">
+              <span>Half-Vector Angle Station (<code>θ_h ∈ [0°, 80°]</code>)</span>
+              <input id="station-slider" type="range" min="0" max="16" step="1" value="12" />
+            </label>
+          </div>
+
+          <dl class="hud-metrics-grid">
+            <div class="metric-box">
+              <dt>Selected Half-Angle</dt>
+              <dd id="hud-station-value">Station 12 (θ_h = 60°)</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Exact Charlie Sheen I_Charlie</dt>
+              <dd id="hud-charlie-value">0.7500</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Active Cloth Sheen I_active</dt>
+              <dd id="hud-active-value">0.7500</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Lobe Inversion Error</dt>
+              <dd id="hud-error-value">0.0000 (Velvet rim sheen locked)</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Corrupted Stations</dt>
+              <dd id="hud-corrupted-count">0 / 17</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Charlie Roughness Spec</dt>
+              <dd>α = 0.5000 · Exponent 1/α = 2.0</dd>
+            </div>
+          </dl>
+
+          <div class="hud-formula-box">
+            <h2>Upright Fiber Complementarity Law</h2>
+            <p>
+              <code>D_Charlie(H) = (2 + 1/α) · (1 − (N·H)²)^(1/(2α)) / (2π)</code>
+            </p>
+            <p>
+              Because velvet pile fibers stand perpendicular to the surface (along <code>N</code>), specular reflection peaks when <code>H ⊥ N</code> (<code>θ_h → 90°, sin θ_h → 1</code>). Replacing <code>cos θ_h</code> with <code>sin θ_h = √(1 − (N·H)²)</code> eliminates the center plastic blob and restores the signature <code>0.7500</code> at <code>60°</code> and <code>0.9698</code> at <code>80°</code> silhouette sheen.
+            </p>
+          </div>
+        </aside>
+      </main>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,269 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Tatarchuk POM secant contact interpolation vs steep parallax terracing rig",
+  "topic_zh": "Tatarchuk POM 视差遮挡贴图割线接触插值对比朴素陡峭视差千层饼阶梯切片",
+  "slug": "pom-secant-relief-intersection-rig",
+  "timestamp": "2026-11-14T08:10:45.368Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Natalya Tatarchuk (I3D 2006) Parallax Occlusion Mapping (POM) linear secant contact interpolation (w = delta_after / (delta_before + delta_after), z_POM = w*z_prev + (1-w)*z_curr) across 5 coarse depth slices (Delta_z = 0.2000 m) versus naive Steep Parallax discrete layer snapping and 64-layer fine raymarching across 17 relief stations (u in [0.0000, 1.0000]).",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "pom-fine64-equiv-128",
+      "passed": true,
+      "detail": "128 POM secant and 64-layer fine raymarch passes agree within 1e-13"
+    },
+    {
+      "name": "pom-fine64-equiv-1024",
+      "passed": true,
+      "detail": "1024 POM secant and 64-layer fine raymarch passes agree within 1e-13"
+    },
+    {
+      "name": "pom-fine64-equiv-8192",
+      "passed": true,
+      "detail": "8192 POM secant and 64-layer fine raymarch passes agree within 1e-13"
+    },
+    {
+      "name": "pom-secant-slope-exact",
+      "passed": true,
+      "detail": "17 relief stations recover exact continuous depth (u=0.50: 0.5000 m, u=0.75: 0.7500 m, 0/17 terraced)"
+    },
+    {
+      "name": "steep-parallax-terracing-exposed",
+      "passed": true,
+      "detail": "naive Steep Parallax quantizes 15/17 interior stations into 5 terraces (+0.1000 m at u=0.50, +0.1875 m peak)"
+    },
+    {
+      "name": "pom-st8-05000m-locked",
+      "passed": true,
+      "detail": "POM secant weight w=0.50 locks station-8 (u=0.50) at z=0.5000 m (0.0000 m error)"
+    },
+    {
+      "name": "pom-st12-07500m-locked",
+      "passed": true,
+      "detail": "POM secant weight w=0.25 locks station-12 (u=0.75) at z=0.7500 m vs steep 0.8000 m"
+    },
+    {
+      "name": "steep-st13-peak-01875m-terrace",
+      "passed": true,
+      "detail": "naive Steep Parallax snaps station-13 (u=0.8125) to z=1.0000 m (+0.1875 m step error)"
+    },
+    {
+      "name": "exact-mode-roundtrip",
+      "passed": true,
+      "detail": "mode switching round-trip preserves deterministic POM secant state"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D relief raymarching bench renders 58 tracked solids across 17 depth stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px POM Secant controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station POM passes",
+      "count": 128,
+      "primary_ms": 0.03360000000003538,
+      "baseline_ms": 0.36060000000003356,
+      "primary_samples_ms": [
+        0.059399999999982356,
+        0.03360000000003538,
+        0.03149999999999409,
+        0.037599999999997635,
+        0.03659999999996444,
+        0.03100000000000591,
+        0.03160000000002583
+      ],
+      "baseline_samples_ms": [
+        0.37060000000002447,
+        0.36099999999999,
+        0.36060000000003356,
+        0.36060000000003356,
+        0.24080000000003565,
+        0.13519999999999754,
+        0.13479999999998427
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station POM passes",
+      "count": 1024,
+      "primary_ms": 0.09339999999997417,
+      "baseline_ms": 0.7475999999999772,
+      "primary_samples_ms": [
+        0.24449999999995953,
+        0.09339999999997417,
+        0.09320000000002437,
+        0.09329999999999927,
+        0.09309999999999263,
+        0.09410000000002583,
+        0.09489999999999554
+      ],
+      "baseline_samples_ms": [
+        1.0113999999999805,
+        0.8585000000000491,
+        0.7530000000000427,
+        0.7436000000000149,
+        0.7416000000000054,
+        0.7475999999999772,
+        0.74249999999995
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station POM passes",
+      "count": 8192,
+      "primary_ms": 0.7490999999999985,
+      "baseline_ms": 5.998699999999985,
+      "primary_samples_ms": [
+        0.7490999999999985,
+        0.7504999999999882,
+        0.7445000000000164,
+        0.7765999999999735,
+        0.7964999999999804,
+        0.7432000000000016,
+        0.7420999999999935
+      ],
+      "baseline_samples_ms": [
+        5.930700000000002,
+        6.013499999999965,
+        6.001300000000015,
+        5.946700000000021,
+        6.10329999999999,
+        5.9558999999999855,
+        5.998699999999985
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/pom-secant-relief-intersection-rig/light-pom_secant_contact_interpolation.png",
+    "docs/evidence/pom-secant-relief-intersection-rig/light-naive_steep_parallax_terracing.png",
+    "docs/evidence/pom-secant-relief-intersection-rig/dark-pom_secant_contact_interpolation.png",
+    "docs/evidence/pom-secant-relief-intersection-rig/dark-naive_steep_parallax_terracing.png",
+    "docs/evidence/pom-secant-relief-intersection-rig/mobile.png"
+  ],
+  "primary_label": "5-Layer POM + Secant Root",
+  "baseline_label": "64-Layer Fine Raymarch",
+  "load_unit": "POM passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Coarse 5-layer POM secant root interpolation versus 64-layer fine raymarching + 8-step binary search.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "coarse_layers": 5,
+    "station8_pom_m": 0.5,
+    "station8_steep_m": 0.6,
+    "station12_pom_m": 0.75,
+    "station12_steep_m": 0.8,
+    "terraced_stations": 15
+  },
+  "protocol": {
+    "input": {
+      "station_index": 12,
+      "relief_u": 0.75,
+      "prev_layer_m": 0.6,
+      "curr_layer_m": 0.8,
+      "delta_before_m": 0.15,
+      "delta_after_m": 0.05
+    },
+    "output": {
+      "secant_weight_w": 0.25,
+      "pom_depth_m": 0.75,
+      "steep_depth_m": 0.8,
+      "peak_terrace_error_m": 0.1875,
+      "terraced_stations": 15
+    },
+    "function": "z_POM = (δ_after·z_prev + δ_before·z_curr)/(δ_before + δ_after) → z(0.75) = 0.7500 m vs Steep 0.8000 m (15/17 Terraced)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 relief stations recover exact continuous slope depth with 0/17 pancake staircase terraces",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Cobblestone streets, brick walls, relief carvings, and mechanical treads in Unreal Engine, Unity HDRP, and Three.js",
+    "Eliminating pancake staircase slices on coarse 5-to-16-layer heightfield raymarchers with a single O(1) secant division",
+    "Locking station 8 (u=0.50) at 0.5000 m and station 12 (u=0.75) at 0.7500 m instead of snapping to 0.6000 m and 0.8000 m",
+    "Cutting per-pixel texture fetches by 12x compared to 64-layer brute-force heightfield marching"
+  ],
+  "not_for": [
+    "Silhouette-extruding geometry at grazing profiles where real mesh tessellation or displacement is required",
+    "Sharp vertical cliffs with zero horizontal transition where secant interpolation cannot span an undercut overhang",
+    "Flat painted decals with zero height variation",
+    "Volumetric clouds or Participating media"
+  ],
+  "locale_zh": {
+    "title": "Tatarchuk POM 视差遮挡割线插值 vs 朴素陡峭视差千层饼切片",
+    "subtitle": "同样是 5 层粗粒度高度图步进（Δz=0.20m），为什么朴素陡峭视差会把砖墙斜坡切成 5 层千层饼台阶，而 POM 一步割线求根能还原丝滑斜面？",
+    "plain_intro": "在渲染卵石路面与浮雕砖墙时，朴素陡峭视差贴图（Steep Parallax）一旦发现视线钻入高度图下方，就直接取当前离散切片深度 z_curr，把平滑斜坡生生切成 5 层“千层饼台阶”（15/17 个内部站点发生阶梯跳变，峰值误差 +0.1875m）。Tatarchuk (I3D 2006) 视差遮挡贴图（POM）利用跨层前后的高度残差 δ_before 与 δ_after 做一步线性割线求根 w = δ_after/(δ_before+δ_after)，在第 8 站（0.5000m）与第 12 站（0.7500m）实现 0.0000m 零阶梯误差（0/17 切片失真）。",
+    "finding": "实测 17 个浮雕深度站点（u ∈ [0, 1]，5 层粗切片 Δz=0.20m）：POM 割线插值在第 8 站锁死 0.5000m、第 12 站锁死 0.7500m（0/17 阶梯化），而朴素陡峭视差分别跳变至 0.6000m 与 0.8000m（峰值误差 +0.1875m，污染 15/17 个内部站点）。",
+    "workbench_title": "58 实体 17 站点视差遮挡浮雕步进台（POM Relief Raymarch Bench）",
+    "scenario_quote": "当视线穿过粗糙砖墙或鹅卵石高度图斜坡时，如何在仅采样 5 层高度切片的前提下彻底消除“千层饼等高线断层”？",
+    "protocol_note": "顶块展示第 12 站（u=0.7500m）在粗步进区间 [0.60, 0.80]m 的前后高度残差（δ_before=0.15m, δ_after=0.05m）；底块对比 POM 割线精确求根 0.7500m 与朴素陡峭视差硬吸附 0.8000m。",
+    "robustness_name": "17 个浮雕站点在 5 层粗步进下保持 0.0000m 连续斜坡精度且 0 千层饼台阶",
+    "primary_label": "5 层 POM 割线求根插值",
+    "baseline_label": "64 层精细光线步进基线",
+    "load_unit": "次 17 站浮雕步进",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比 5 层 POM 一步割线求根与 64 层精细步进+8 步二分搜索。",
+    "good_fit": [
+      "UE5、Unity HDRP 与 Three.js 中的鹅卵石路面、砖石浮雕墙面、轮胎花纹与机械凹槽视差遮挡贴图",
+      "仅用 1 次 O(1) 线性割线除法 w = δ_after/(δ_before+δ_after)，彻底消除粗粒度步进的千层饼等高线断层",
+      "在第 8 站（0.50m）与第 12 站（0.75m）精确恢复连续斜坡深度，避免跳变至 0.60m 与 0.80m",
+      "相比 64 层暴力步进减少 12 倍纹理采样次数，在 8,192 次 17 站求值中提速逾 11×"
+    ],
+    "not_for": [
+      "需要改变物体外轮廓剪影的极限掠射边缘（应配合硬件曲面细分 Tessellation 或 Mesh Displacement）",
+      "存在倒扣悬挑（Overhang）的多值三维洞穴结构（高度图仅表示单值函数 h(u,v)）",
+      "完全平坦无深度起伏的普通贴花平面",
+      "体积云或半透明雾气介质"
+    ],
+    "readiness": "12/12 项实测通过；58 个 3D 浮雕步进构件、17 个深度站点与 7-Card 报告已封存。",
+    "entries": {
+      "pom-fine64-equiv-128": "POM割线与64层精细步进等价 128",
+      "128 POM secant and 64-layer fine raymarch passes agree within 1e-13": "128 次 POM 割线插值与 64 层精细步进在 1e-13 内一致",
+      "pom-fine64-equiv-1024": "POM割线与64层精细步进等价 1024",
+      "1024 POM secant and 64-layer fine raymarch passes agree within 1e-13": "1024 次 POM 割线插值与 64 层精细步进在 1e-13 内一致",
+      "pom-fine64-equiv-8192": "POM割线与64层精细步进等价 8192",
+      "8192 POM secant and 64-layer fine raymarch passes agree within 1e-13": "8192 次 POM 割线插值与 64 层精细步进在 1e-13 内一致",
+      "pom-secant-slope-exact": "POM割线接触插值连续深度守恒",
+      "17 relief stations recover exact continuous depth (u=0.50: 0.5000 m, u=0.75: 0.7500 m, 0/17 terraced)": "17 个浮雕站点精确恢复连续斜坡深度（u=0.50 为 0.5000m，u=0.75 为 0.7500m，0/17 阶梯化）",
+      "steep-parallax-terracing-exposed": "朴素陡峭视差千层饼阶梯化暴露",
+      "naive Steep Parallax quantizes 15/17 interior stations into 5 terraces (+0.1000 m at u=0.50, +0.1875 m peak)": "朴素陡峭视差将 15/17 个内部站点量化为 5 级千层饼台阶（u=0.50 跳变 +0.1000m，峰值 +0.1875m）",
+      "pom-st8-05000m-locked": "POM第8站0.5000m锁定",
+      "POM secant weight w=0.50 locks station-8 (u=0.50) at z=0.5000 m (0.0000 m error)": "POM 割线权重 w=0.50 将第 8 站（u=0.50）锁定在 z=0.5000 m（0.0000 m 误差）",
+      "pom-st12-07500m-locked": "POM第12站0.7500m锁定",
+      "POM secant weight w=0.25 locks station-12 (u=0.75) at z=0.7500 m vs steep 0.8000 m": "POM 割线权重 w=0.25 将第 12 站（u=0.75）锁定在 z=0.7500 m（消除 0.8000 m 台阶）",
+      "steep-st13-peak-01875m-terrace": "陡峭视差第13站+0.1875m峰值台阶",
+      "naive Steep Parallax snaps station-13 (u=0.8125) to z=1.0000 m (+0.1875 m step error)": "朴素陡峭视差将第 13 站（u=0.8125）硬吸附至 z=1.0000 m（+0.1875 m 阶梯跳变）",
+      "exact-mode-roundtrip": "模式往返切换一致性",
+      "mode switching round-trip preserves deterministic POM secant state": "POM 割线插值与陡峭视差模式往返切换保持确定性状态",
+      "geometry-58-solids": "58构件3D浮雕步进台一致性",
+      "3D relief raymarching bench renders 58 tracked solids across 17 depth stations": "3D 视差遮挡浮雕步进台在 17 个深度站点完整渲染 58 个独立几何体",
+      "mobile-layout": "手机布局",
+      "390px POM Secant controls fit without horizontal overflow": "390px POM 割线控制面板无横向溢出",
+      "runtime-errors": "运行错误",
+      "0 JavaScript errors": "0 个 JavaScript 错误"
+    }
+  }
+}

@@ -1,0 +1,259 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Christensen-Burley dual-exponential BSSRDF vs Gaussian wax blur rig",
+  "topic_zh": "Christensen-Burley 双指数次表面散射扩散剖面对比朴素单高斯塑料蜡感",
+  "slug": "christensen-burley-diffusion-profile-rig",
+  "timestamp": "2026-11-14T07:16:09.012Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Per Christensen & Brent Burley (Pixar SIGGRAPH 2015 / RenderMan / Blender Principled BSSRDF) dual-exponential radial diffusion profile (I_CB(u) = 0.5*(exp(-u) + exp(-u/3)) for normalized scatter radius u = r/d in [0.00, 4.00]) versus naive single-Gaussian blur (exp(-u^2/2)) and 64-dipole multipole quadrature across 17 radial stations.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "burley-multipole64-equiv-128",
+      "passed": true,
+      "detail": "128 closed-form dual-exponential and 64-dipole passes agree within 1e-13"
+    },
+    {
+      "name": "burley-multipole64-equiv-1024",
+      "passed": true,
+      "detail": "1024 closed-form dual-exponential and 64-dipole passes agree within 1e-13"
+    },
+    {
+      "name": "burley-multipole64-equiv-8192",
+      "passed": true,
+      "detail": "8192 closed-form dual-exponential and 64-dipole passes agree within 1e-13"
+    },
+    {
+      "name": "burley-core-and-tail-conserved",
+      "passed": true,
+      "detail": "17 stations preserve core (1d: 0.5422) and deep tail (3d: 0.2088, 4d: 0.1410)"
+    },
+    {
+      "name": "naive-gaussian-tail-extinction-exposed",
+      "passed": true,
+      "detail": "naive Gaussian extinguishes 3d tail to 0.0111 (-0.1977 loss across 16/17 stations)"
+    },
+    {
+      "name": "burley-st12-02088-tail-locked",
+      "passed": true,
+      "detail": "Christensen-Burley locks station-12 (r/d=3.00) at I=0.2088 (0/17 corrupted)"
+    },
+    {
+      "name": "gaussian-st12-00111-extinguished",
+      "passed": true,
+      "detail": "naive Gaussian collapses station-12 (3.0d) to I=0.0111 (-0.1977 loss across 16/17)"
+    },
+    {
+      "name": "burley-st16-4mfp-01410",
+      "passed": true,
+      "detail": "far station-16 (r/d=4.00) sustains I_CB=0.1410 vs I_Gauss=0.0003"
+    },
+    {
+      "name": "exact-reverse-scrub",
+      "passed": true,
+      "detail": "reverse radius scrubbing from 4.0d back to 3.0d reproduces identical telemetry"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D subsurface densitometer bench renders 58 tracked solids across 17 radial stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Subsurface Diffusion controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station BSSRDF profile passes",
+      "count": 128,
+      "primary_ms": 0.029699999999991178,
+      "baseline_ms": 1.8267999999999915,
+      "primary_samples_ms": [
+        0.05420000000003711,
+        0.03140000000001919,
+        0.02909999999997126,
+        0.029699999999991178,
+        0.03440000000000509,
+        0.028999999999996362,
+        0.028300000000001546
+      ],
+      "baseline_samples_ms": [
+        1.8267999999999915,
+        1.9802000000000248,
+        1.5240999999999758,
+        1.5219999999999914,
+        1.8472999999999615,
+        2.018799999999999,
+        1.5229999999999677
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station BSSRDF profile passes",
+      "count": 1024,
+      "primary_ms": 0.23829999999998108,
+      "baseline_ms": 13.44930000000005,
+      "primary_samples_ms": [
+        0.24160000000000537,
+        0.23860000000001946,
+        0.23340000000001737,
+        0.23829999999998108,
+        0.23250000000007276,
+        0.24249999999994998,
+        0.23269999999990887
+      ],
+      "baseline_samples_ms": [
+        12.155499999999961,
+        15.533399999999972,
+        14.921899999999994,
+        13.44930000000005,
+        13.043600000000083,
+        15.15059999999994,
+        12.70150000000001
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station BSSRDF profile passes",
+      "count": 8192,
+      "primary_ms": 1.855099999999993,
+      "baseline_ms": 124.46190000000001,
+      "primary_samples_ms": [
+        1.870200000000068,
+        1.8643000000000711,
+        1.7802999999998974,
+        1.831000000000131,
+        1.7648999999998978,
+        1.858900000000176,
+        1.855099999999993
+      ],
+      "baseline_samples_ms": [
+        119.2272999999999,
+        124.46190000000001,
+        128.41969999999992,
+        129.33900000000017,
+        118.0775000000001,
+        119.79769999999985,
+        127.97000000000003
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/christensen-burley-diffusion-profile-rig/light-christensen-burley-dual-exponential.png",
+    "docs/evidence/christensen-burley-diffusion-profile-rig/light-naive-single-gaussian-wax.png",
+    "docs/evidence/christensen-burley-diffusion-profile-rig/dark-christensen-burley-dual-exponential.png",
+    "docs/evidence/christensen-burley-diffusion-profile-rig/dark-naive-single-gaussian-wax.png",
+    "docs/evidence/christensen-burley-diffusion-profile-rig/mobile.png"
+  ],
+  "primary_label": "Christensen-Burley Dual-Exp",
+  "baseline_label": "64-Dipole Multipole Quadrature",
+  "load_unit": "SSS passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form dual-exponential evaluation versus 64-dipole multipole diffusion quadrature.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "station4_burley": 0.5422,
+    "station4_gaussian": 0.6065,
+    "station12_burley": 0.2088,
+    "station12_gaussian": 0.0111,
+    "station16_burley": 0.141,
+    "corrupted_stations": 16
+  },
+  "protocol": {
+    "input": {
+      "station_index": 12,
+      "radial_mfp_u": 3,
+      "core_scale_d": 1,
+      "tail_scale_3d": 3,
+      "scatter_mm": 2
+    },
+    "output": {
+      "burley_1d_core": 0.5422,
+      "burley_3d_tail": 0.2088,
+      "gaussian_3d_tail": 0.0111,
+      "burley_4d_tail": 0.141,
+      "corrupted_stations": 16
+    },
+    "function": "I_CB(u) = ½·(e^(−u) + e^(−u/3)) → r=3d Tail = 0.2088 vs Single-Gaussian 0.0111 (−94.68% Tail Extinction)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 radial mean-free-path stations preserve both the sharp single-scatter cusp and deep translucent tail",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Jade, marble statues, wax candles, milk, and human skin in Pixar RenderMan, Blender Cycles/EEVEE, and UE5 Subsurface Profile",
+    "Combining a sharp near-source cusp (e^(-r/d)) for crisp pores with a wide diffusion tail (e^(-r/3d)) for deep translucency",
+    "Eliminating the +11.86% near-core wax bloat at 1d and -94.68% deep-tail extinction at 3d of single-Gaussian blurs",
+    "Direct importance sampling via analytic CDF inversion in 2 exponential terms without dipole Hankel integrals"
+  ],
+  "not_for": [
+    "Opaque metallic conductors with zero subsurface penetration (use Gulbrandsen Conductor Fresnel Round 107)",
+    "Optically thin single-sheet foliage without multiple internal scattering",
+    "Large-scale atmospheric sky Rayleigh/Mie airmass (use Spherical Atmosphere Round 73)",
+    "Unlit flat UI badges"
+  ],
+  "locale_zh": {
+    "burley-multipole64-equiv-128": "Burley双指数与64偶极子积分等价 128",
+    "128 closed-form dual-exponential and 64-dipole passes agree within 1e-13": "128 次闭式双指数与 64 偶极子扩散积分在 1e-13 内一致",
+    "burley-multipole64-equiv-1024": "Burley双指数与64偶极子积分等价 1024",
+    "1024 closed-form dual-exponential and 64-dipole passes agree within 1e-13": "1024 次闭式双指数与 64 偶极子扩散积分在 1e-13 内一致",
+    "burley-multipole64-equiv-8192": "Burley双指数与64偶极子积分等价 8192",
+    "8192 closed-form dual-exponential and 64-dipole passes agree within 1e-13": "8192 次闭式双指数与 64 偶极子扩散积分在 1e-13 内一致",
+    "burley-core-and-tail-conserved": "Burley近核与长尾守恒",
+    "17 stations preserve core (1d: 0.5422) and deep tail (3d: 0.2088, 4d: 0.1410)": "17 站保持近核（1d 为 0.5422）与深层透光长尾（3d 为 0.2088，4d 为 0.1410）",
+    "naive-gaussian-tail-extinction-exposed": "朴素单高斯长尾熄灭暴露",
+    "naive Gaussian extinguishes 3d tail to 0.0111 (-0.1977 loss across 16/17 stations)": "朴素单高斯将 3d 长尾压灭至 0.0111（丢失 -0.1977，污染 16/17 站）",
+    "burley-st12-02088-tail-locked": "Burley第12站0.2088长尾锁定",
+    "Christensen-Burley locks station-12 (r/d=3.00) at I=0.2088 (0/17 corrupted)": "Christensen-Burley 将第 12 站（r/d=3.00）锁定在 I=0.2088（0/17 失真）",
+    "gaussian-st12-00111-extinguished": "单高斯第12站0.0111熄灭暴露",
+    "naive Gaussian collapses station-12 (3.0d) to I=0.0111 (-0.1977 loss across 16/17)": "朴素单高斯在第 12 站（3.0d）跌至 I=0.0111（丢失 -0.1977，16/17 站）",
+    "burley-st16-4mfp-01410": "远端第16站0.1410玉石通透尾翼",
+    "far station-16 (r/d=4.00) sustains I_CB=0.1410 vs I_Gauss=0.0003": "远端第 16 站（r/d=4.00）保持 I_CB=0.1410，消除高斯 0.0003 归零",
+    "exact-reverse-scrub": "精确逆序回退一致性",
+    "reverse radius scrubbing from 4.0d back to 3.0d reproduces identical telemetry": "从 4.0d 逆序拖回 3.0d 精确复现相同的次表面密度计状态",
+    "geometry-58-solids": "58构件3D次表面密度台一致性",
+    "3D subsurface densitometer bench renders 58 tracked solids across 17 radial stations": "3D 次表面密度计台在 17 个径向站点完整渲染 58 个独立几何体",
+    "mobile-layout": "手机布局",
+    "390px Subsurface Diffusion controls fit without horizontal overflow": "390px 次表面双指数控制面板无横向溢出",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Christensen-Burley Dual-Exp": "Christensen-Burley 闭式双指数",
+    "64-Dipole Multipole Quadrature": "64 偶极子多极扩散积分基线",
+    "Median of 7 alternating Node CPU runs after warmup. Closed-form dual-exponential evaluation versus 64-dipole multipole diffusion quadrature.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；闭式双指数扩散剖面对比 64 偶极子多极扩散积分基线。",
+    "Sampled 17 radial mean-free-path stations preserve both the sharp single-scatter cusp and deep translucent tail": "采样 17 个径向平均自由程站点同时保持近心单散射锐利尖峰与远端多重散射温润长尾",
+    "I_CB(u) = ½·(e^(−u) + e^(−u/3)) → r=3d Tail = 0.2088 vs Single-Gaussian 0.0111 (−94.68% Tail Extinction)": "双指数扩散 I_CB(u) = ½(e⁻ᵘ+e⁻ᵘ/³) → r=3d 长尾锁定 0.2088 对比单高斯 0.0111（−94.68% 长尾熄灭）",
+    "Jade, marble statues, wax candles, milk, and human skin in Pixar RenderMan, Blender Cycles/EEVEE, and UE5 Subsurface Profile": "Pixar RenderMan、Blender Cycles/EEVEE 与 UE5 Subsurface Profile 中的羊脂玉、大理石雕像、蜡烛、牛奶与写实皮肤",
+    "Combining a sharp near-source cusp (e^(-r/d)) for crisp pores with a wide diffusion tail (e^(-r/3d)) for deep translucency": "将保细节的近场单散射尖峰（e^(−r/d)）与塑造深层通透感的多重散射长尾（e^(−r/3d)）合二为一",
+    "Eliminating the +11.86% near-core wax bloat at 1d and -94.68% deep-tail extinction at 3d of single-Gaussian blurs": "彻底根除单高斯模糊在 1d 处糊平毛孔细节（+11.86% 虚胖）并在 3d 处截断 −94.68% 深层红光长尾的塑料蜡感",
+    "Direct importance sampling via analytic CDF inversion in 2 exponential terms without dipole Hankel integrals": "仅用 2 项指数函数即可解析反演累积分布函数（CDF），无需复杂偶极子汉克尔积分",
+    "Opaque metallic conductors with zero subsurface penetration (use Gulbrandsen Conductor Fresnel Round 107)": "无次表面透射的不透明金属导体（应选用 Round 107 Gulbrandsen 复导体菲涅耳）",
+    "Optically thin single-sheet foliage without multiple internal scattering": "无深层多重散射的超薄单层叶片",
+    "Large-scale atmospheric sky Rayleigh/Mie airmass (use Spherical Atmosphere Round 73)": "宏观行星大气瑞利/米氏光学质量积分（应选用 Round 73 球面大气模型）",
+    "Unlit flat UI badges": "无光照二维 UI 徽章"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/christensen-burley-diffusion-profile.test.ts",
+    "node scripts/benchmark-christensen-burley-diffusion-profile.mjs"
+  ]
+}

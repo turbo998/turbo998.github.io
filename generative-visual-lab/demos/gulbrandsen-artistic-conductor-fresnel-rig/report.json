@@ -1,0 +1,259 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Gulbrandsen complex conductor Fresnel dip vs Schlick metal whitewash rig",
+  "topic_zh": "Gulbrandsen 复折射率金属伪布儒斯特暗边凹陷对比朴素 Schlick 单调泛白",
+  "slug": "gulbrandsen-artistic-conductor-fresnel-rig",
+  "timestamp": "2026-11-14T07:03:30.453Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Ole Gulbrandsen (JCGT 2014 / MaterialX artistic_ior / OpenPBR) complex conductor Fresnel reflectance (F_cond(mu) = ((eta - mu)^2 + kappa^2) / ((eta + mu)^2 + kappa^2) with eta = 0.30, kappa = 0.40, F0 = 0.3514, Pseudo-Brewster minimum at mu = sqrt(eta^2 + kappa^2) = 0.5000 / 60 deg) versus naive monotonic dielectric Schlick (F0 + (1 - F0)*(1 - mu)^5) and 64-polarization wave-impedance quadrature across 17 incident viewing angles (theta_i in [0 deg, 80 deg]).",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "conductor-imp64-equiv-128",
+      "passed": true,
+      "detail": "128 closed-form complex conductor and 64-polarization passes agree within 1e-13"
+    },
+    {
+      "name": "conductor-imp64-equiv-1024",
+      "passed": true,
+      "detail": "1024 closed-form complex conductor and 64-polarization passes agree within 1e-13"
+    },
+    {
+      "name": "conductor-imp64-equiv-8192",
+      "passed": true,
+      "detail": "8192 closed-form complex conductor and 64-polarization passes agree within 1e-13"
+    },
+    {
+      "name": "conductor-pseudo-brewster-dip-conserved",
+      "passed": true,
+      "detail": "17 stations preserve Pseudo-Brewster dip (0°: 0.3514, 60°: 0.2500, 80°: 0.4578)"
+    },
+    {
+      "name": "naive-schlick-whitewash-exposed",
+      "passed": true,
+      "detail": "naive Schlick rises to 0.3716 at 60° (+0.1216 whitewash across 16/17 stations)"
+    },
+    {
+      "name": "conductor-st12-02500-dip-locked",
+      "passed": true,
+      "detail": "Gulbrandsen Conductor locks station-12 (60°) at F=0.2500 dip (0/17 whitewashed)"
+    },
+    {
+      "name": "schlick-st12-03716-whitewash",
+      "passed": true,
+      "detail": "naive Schlick washes out station-12 (60°) to F=0.3716 (+0.1216 error across 16/17)"
+    },
+    {
+      "name": "conductor-st16-grazing-04578",
+      "passed": true,
+      "detail": "grazing station-16 (80°) evaluates F_cond=0.4578 vs F_Schlick=0.6013"
+    },
+    {
+      "name": "exact-reverse-scrub",
+      "passed": true,
+      "detail": "reverse angle scrubbing from 80° back to 60° reproduces identical telemetry"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D conductor ellipsometer bench renders 58 tracked solids across 17 viewing angles"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Conductor Fresnel controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station conductor passes",
+      "count": 128,
+      "primary_ms": 0.013899999999978263,
+      "baseline_ms": 3.276999999999987,
+      "primary_samples_ms": [
+        0.036100000000033106,
+        0.01659999999998263,
+        0.008100000000013097,
+        0.011500000000012278,
+        0.014400000000023283,
+        0.013899999999978263,
+        0.00760000000002492
+      ],
+      "baseline_samples_ms": [
+        3.172300000000007,
+        5.340900000000033,
+        3.115599999999972,
+        3.0755999999999517,
+        3.276999999999987,
+        3.678800000000024,
+        3.3413000000000466
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station conductor passes",
+      "count": 1024,
+      "primary_ms": 0.08389999999997144,
+      "baseline_ms": 30.16669999999999,
+      "primary_samples_ms": [
+        0.08389999999997144,
+        0.084699999999998,
+        0.07970000000000255,
+        0.08420000000000982,
+        0.07770000000004984,
+        0.08589999999992415,
+        0.08029999999996562
+      ],
+      "baseline_samples_ms": [
+        34.54010000000005,
+        26.151100000000042,
+        26.71040000000005,
+        30.022399999999948,
+        30.480600000000095,
+        30.4366,
+        30.16669999999999
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station conductor passes",
+      "count": 8192,
+      "primary_ms": 0.6761000000000195,
+      "baseline_ms": 244.09750000000008,
+      "primary_samples_ms": [
+        0.6761000000000195,
+        0.6781000000000859,
+        0.6654999999998381,
+        0.6785999999999603,
+        0.6653999999998632,
+        0.7022000000001754,
+        0.6334999999999127
+      ],
+      "baseline_samples_ms": [
+        252.83799999999985,
+        257.7483,
+        220.88099999999986,
+        237.57680000000005,
+        244.09750000000008,
+        282.9586999999997,
+        231.11350000000039
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/gulbrandsen-artistic-conductor-fresnel-rig/light-gulbrandsen-complex-conductor-dip.png",
+    "docs/evidence/gulbrandsen-artistic-conductor-fresnel-rig/light-naive-monotonic-schlick-metal.png",
+    "docs/evidence/gulbrandsen-artistic-conductor-fresnel-rig/dark-gulbrandsen-complex-conductor-dip.png",
+    "docs/evidence/gulbrandsen-artistic-conductor-fresnel-rig/dark-naive-monotonic-schlick-metal.png",
+    "docs/evidence/gulbrandsen-artistic-conductor-fresnel-rig/mobile.png"
+  ],
+  "primary_label": "Complex Conductor (η, κ) Rational",
+  "baseline_label": "64-Polarization Wave Impedance",
+  "load_unit": "metal passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form rational complex conductor evaluation versus 64-polarization complex wave-impedance quadrature.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "normal_f0": 0.3514,
+    "station12_conductor_f": 0.25,
+    "station12_schlick_f": 0.3716,
+    "station12_whitewash": 0.1216,
+    "station16_conductor_f": 0.4578,
+    "whitewashed_stations": 16
+  },
+  "protocol": {
+    "input": {
+      "station_index": 12,
+      "angle_deg": 60,
+      "eta": 0.3,
+      "kappa": 0.4,
+      "normal_f0": 0.3514
+    },
+    "output": {
+      "f0_0deg": 0.3514,
+      "conductor_60deg_dip": 0.25,
+      "schlick_60deg": 0.3716,
+      "whitewash_error_60deg": 0.1216,
+      "whitewashed_stations": 16
+    },
+    "function": "F_cond(μ) = ((η − μ)² + κ²) / ((η + μ)² + κ²) → 60° Dip = 0.2500 vs Monotonic Schlick 0.3716 (+48.65% Whitewash)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 incident viewing angles capture the exact Pseudo-Brewster conductor dip without grazing whitewash",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Gold, copper, brass, aluminum, and chrome metals in MaterialX artistic_ior, OpenPBR, Arnold, and Three.js",
+    "Preserving the Pseudo-Brewster reflectance dip at cos(theta_B) = sqrt(eta^2 + kappa^2) (60° dip to 0.2500)",
+    "Eliminating the +48.65% chalky edge whitewash of monotonic dielectric Schlick approximations on metals",
+    "Evaluating exact complex-IOR reflectance in 5 scalar operations without complex square roots"
+  ],
+  "not_for": [
+    "Pure dielectrics with zero extinction (kappa == 0) such as water or glass where standard Schlick is accurate",
+    "Unlit matte clay or diffuse chalk",
+    "Multi-layer thin-film interference coatings (use Belcour-Barla Iridescence Round 102)",
+    "Flat 2D vector icons"
+  ],
+  "locale_zh": {
+    "conductor-imp64-equiv-128": "复折射率闭式与64偏振波阻抗积分等价 128",
+    "128 closed-form complex conductor and 64-polarization passes agree within 1e-13": "128 次闭式复折射率与 64 偏振角波阻抗积分在 1e-13 内一致",
+    "conductor-imp64-equiv-1024": "复折射率闭式与64偏振波阻抗积分等价 1024",
+    "1024 closed-form complex conductor and 64-polarization passes agree within 1e-13": "1024 次闭式复折射率与 64 偏振角波阻抗积分在 1e-13 内一致",
+    "conductor-imp64-equiv-8192": "复折射率闭式与64偏振波阻抗积分等价 8192",
+    "8192 closed-form complex conductor and 64-polarization passes agree within 1e-13": "8192 次闭式复折射率与 64 偏振角波阻抗积分在 1e-13 内一致",
+    "conductor-pseudo-brewster-dip-conserved": "复导体伪布儒斯特凹陷守恒",
+    "17 stations preserve Pseudo-Brewster dip (0°: 0.3514, 60°: 0.2500, 80°: 0.4578)": "17 站保持伪布儒斯特吸光凹陷（0° 为 0.3514，60° 谷底锁定 0.2500，80° 为 0.4578）",
+    "naive-schlick-whitewash-exposed": "朴素Schlick金属边缘泛白暴露",
+    "naive Schlick rises to 0.3716 at 60° (+0.1216 whitewash across 16/17 stations)": "朴素 Schlick 在 60° 抬升至 0.3716（泛白误差 +0.1216，污染 16/17 站）",
+    "conductor-st12-02500-dip-locked": "复导体第12站0.2500谷底锁定",
+    "Gulbrandsen Conductor locks station-12 (60°) at F=0.2500 dip (0/17 whitewashed)": "Gulbrandsen 复导体将第 12 站（60°）锁定在 F=0.2500 谷底（0/17 泛白）",
+    "schlick-st12-03716-whitewash": "Schlick第12站0.3716泛白暴露",
+    "naive Schlick washes out station-12 (60°) to F=0.3716 (+0.1216 error across 16/17)": "朴素 Schlick 在第 12 站（60°）泛白至 F=0.3716（误差 +0.1216，16/17 站）",
+    "conductor-st16-grazing-04578": "掠射第16站0.4578浓金色锁定",
+    "grazing station-16 (80°) evaluates F_cond=0.4578 vs F_Schlick=0.6013": "掠射角第 16 站（80°）保持 F_cond=0.4578，消除 Schlick 0.6013 泛白",
+    "exact-reverse-scrub": "精确逆序回退一致性",
+    "reverse angle scrubbing from 80° back to 60° reproduces identical telemetry": "从 80° 逆序拖回 60° 精确复现相同的椭偏仪状态",
+    "geometry-58-solids": "58构件3D金属椭偏台一致性",
+    "3D conductor ellipsometer bench renders 58 tracked solids across 17 viewing angles": "3D 金属椭偏仪实验台在 17 个视角站点完整渲染 58 个独立几何体",
+    "mobile-layout": "手机布局",
+    "390px Conductor Fresnel controls fit without horizontal overflow": "390px 复导体菲涅耳控制面板无横向溢出",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Complex Conductor (η, κ) Rational": "复折射率 (η, κ) 闭式有理分式",
+    "64-Polarization Wave Impedance": "64 偏振角复波阻抗积分基线",
+    "Median of 7 alternating Node CPU runs after warmup. Closed-form rational complex conductor evaluation versus 64-polarization complex wave-impedance quadrature.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；闭式有理复折射率求值对比 64 偏振角复波阻抗积分基线。",
+    "Sampled 17 incident viewing angles capture the exact Pseudo-Brewster conductor dip without grazing whitewash": "采样 17 个入射视角站点完整还原金属伪布儒斯特角吸光凹陷与浓艳边缘色，零塑料感泛白",
+    "F_cond(μ) = ((η − μ)² + κ²) / ((η + μ)² + κ²) → 60° Dip = 0.2500 vs Monotonic Schlick 0.3716 (+48.65% Whitewash)": "复导体菲涅耳 F_cond(μ) → 60° 谷底锁定 0.2500 对比单调 Schlick 0.3716（+48.65% 泛白误差）",
+    "Gold, copper, brass, aluminum, and chrome metals in MaterialX artistic_ior, OpenPBR, Arnold, and Three.js": "MaterialX artistic_ior、OpenPBR、Arnold 与 Three.js 中的黄金、紫铜、黄铜、铝合金与镀铬金属材质",
+    "Preserving the Pseudo-Brewster reflectance dip at cos(theta_B) = sqrt(eta^2 + kappa^2) (60° dip to 0.2500)": "精准保留金属在伪布儒斯特角 cos θ_B = √(η²+κ²) 处的反射率凹陷（60° 从 0.3514 沉降至 0.2500）",
+    "Eliminating the +48.65% chalky edge whitewash of monotonic dielectric Schlick approximations on metals": "根除单调电介质 Schlick 近似在金属侧边缘造成的 +48.65% 粉白褪色失真",
+    "Evaluating exact complex-IOR reflectance in 5 scalar operations without complex square roots": "仅用 5 次标量代数运算求取精确复折射率反射率，零复数开方开销",
+    "Pure dielectrics with zero extinction (kappa == 0) such as water or glass where standard Schlick is accurate": "消光系数为零（κ == 0）的纯水或透明玻璃等电介质（标准 Schlick 已足够准确）",
+    "Unlit matte clay or diffuse chalk": "无高光哑光黏土或粉笔漫反射材质",
+    "Multi-layer thin-film interference coatings (use Belcour-Barla Iridescence Round 102)": "多层纳米薄膜干涉镀层（应选用 Round 102 Belcour-Barla 薄膜干涉）",
+    "Flat 2D vector icons": "扁平 2D 矢量图标"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/gulbrandsen-artistic-conductor-fresnel.test.ts",
+    "node scripts/benchmark-gulbrandsen-artistic-conductor-fresnel.mjs"
+  ]
+}

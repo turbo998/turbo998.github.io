@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Belcour-Barla Iridescent Thin-Film Interference Rig — Generative Visual Lab</title>
+    <script type="module" crossorigin src="../../assets/iridescentThinFilmInterference-BLC9TOfj.js"></script>
+    <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="modulepreload" crossorigin href="../../assets/three.module-7AmyneiW.js">
+    <link rel="stylesheet" crossorigin href="../../assets/anisotropicGgxFiber-BiXbR8oC.css">
+  </head>
+  <body>
+    <div class="rig-shell">
+      <header class="rig-topbar">
+        <div class="rig-title-block">
+          <span class="rig-kicker">ROUND 102 · SOAP-BUBBLE, BEETLE SHELL &amp; ANODIZED TITANIUM IRIDESCENCE WORKBENCH</span>
+          <h1>Belcour-Barla Snell-Refracted Thin-Film OPD vs Naive Unrefracted Cosine Collapse</h1>
+        </div>
+        <div class="rig-top-actions">
+          <a class="rig-link" href="../../index.html">← Portal</a>
+          <a class="rig-link" href="./test-report-cards.html">7-Card Report (EN)</a>
+          <a class="rig-link" href="./test-report-cards.zh.html">7-Card 报告 (ZH)</a>
+          <button id="theme-toggle-btn" class="rig-btn-secondary" type="button">Toggle Theme</button>
+        </div>
+      </header>
+
+      <main class="rig-main">
+        <section class="rig-stage-card">
+          <div class="rig-canvas-wrap">
+            <canvas id="rig-canvas" aria-label="Belcour-Barla Thin-Film Iridescence 3D Rig"></canvas>
+          </div>
+          <div class="rig-stage-caption">
+            <strong>58-Solid 3D Thin-Film Interferometer Bench:</strong> Back cyan towers display the exact Belcour &amp; Barla (SIGGRAPH 2017 / MaterialX / glTF <code>KHR_materials_iridescence</code>) Snell-refracted optical path difference ratio <code>cos θ_t = √(1 − sin²θ_i / n_film²)</code> for a <code>d = 400 nm, n_film = 1.50</code> dielectric film across 17 incident viewing angles <code>θ_i ∈ [0°, 80°]</code>. At Station 12 (<code>θ_i = 60°</code>), Snell refraction keeps the internal ray inside the critical cone at <code>cos θ_t = √(2/3) = 0.8165</code> (<code>979.8 nm</code>), whereas naive unrefracted cosine <code>cos θ_i</code> collapses to <code>0.5000</code> (<code>600.0 nm</code>, <code>-0.3165</code> / <code>-379.8 nm</code> false rainbow phase cycling across <code>15/17</code> stations).
+          </div>
+        </section>
+
+        <aside class="rig-hud-card" aria-label="Thin-Film Iridescence Telemetry HUD">
+          <div class="hud-header">
+            <span id="hud-mode-badge" class="hud-badge">BELCOUR-BARLA SNELL-REFRACTED THIN-FILM OPD</span>
+            <div id="hud-verdict-pill" class="hud-verdict" data-state="pass">
+              PASS · cos θ_t(60°) = 0.8165 Snell Critical-Cone Locked (0/17 Collapsed)
+            </div>
+          </div>
+
+          <div class="hud-controls">
+            <div class="btn-group" role="group" aria-label="Thin-Film Phase Mode Selector">
+              <button
+                type="button"
+                class="mode-btn active"
+                data-mode-btn="belcour-snell-refracted-opd"
+              >
+                Belcour-Barla Snell-Refracted OPD (cos θ_t)
+              </button>
+              <button
+                type="button"
+                class="mode-btn"
+                data-mode-btn="naive-unrefracted-incident-cosine"
+              >
+                Naive Unrefracted Incident Cosine (cos θ_i Collapse)
+              </button>
+            </div>
+
+            <label class="slider-label" for="station-slider">
+              <span>Incident Viewing Angle Station (<code>θ_i ∈ [0°, 80°]</code>)</span>
+              <input id="station-slider" type="range" min="0" max="16" step="1" value="12" />
+            </label>
+          </div>
+
+          <dl class="hud-metrics-grid">
+            <div class="metric-box">
+              <dt>Selected Viewing Angle</dt>
+              <dd id="hud-station-value">Station 12 (θ_i = 60°)</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Exact Snell OPD Ratio</dt>
+              <dd id="hud-snell-value">0.8165 (979.8 nm)</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Active Film OPD Ratio</dt>
+              <dd id="hud-active-value">0.8165 (979.8 nm)</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Optical Path Collapse</dt>
+              <dd id="hud-error-value">0.0000 (0.0 nm phase drift)</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Collapsed Phase Stations</dt>
+              <dd id="hud-collapsed-count">0 / 17</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Dielectric Film Spec</dt>
+              <dd>d = 400 nm · n_film = 1.50</dd>
+            </div>
+          </dl>
+
+          <div class="hud-formula-box">
+            <h2>Snell Critical-Cone Optical Path Invariant</h2>
+            <p>
+              <code>Δ_OPD(θ_i) = 2 · n_film · d · √(1 − (1 − cos²θ_i) / n_film²)</code>
+            </p>
+            <p>
+              Because refraction into <code>n_film = 1.50</code> bends grazing rays toward the normal (bounded by critical angle <code>θ_c = 41.81°</code>, <code>cos θ_t ≥ √5/3 = 0.7454</code>), a soap bubble or beetle shell shifts hue gently at grazing angles instead of collapsing to zero OPD like <code>cos θ_i</code>.
+            </p>
+          </div>
+        </aside>
+      </main>
+    </div>
+  </body>
+</html>

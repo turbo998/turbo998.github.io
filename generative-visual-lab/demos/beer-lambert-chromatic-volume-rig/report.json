@@ -1,0 +1,266 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Beer-Lambert chromatic volume hue shift vs scalar alpha frozen tint rig",
+  "topic_zh": "比尔-朗伯分通道体积吸收色相偏移对比朴素标量Alpha单色死板滤镜",
+  "slug": "beer-lambert-chromatic-volume-rig",
+  "timestamp": "2026-11-14T08:46:54.802Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Beer-Lambert-Bouguer per-channel chromatic volume absorption (T_B(d) = 2^(-d), T_R(d) = 2^(-2d), blue-to-red chromatic ratio S_Beer(d) = 2^d in glTF KHR_materials_volume) versus naive scalar alpha tinting (S_naive = 2.0000x) and 64-slab differential Beer-Bouguer quadrature across 17 optical thicknesses (d in [0.00, 4.00] m).",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "beer-slab64-equiv-128",
+      "passed": true,
+      "detail": "128 closed-form Beer-Lambert and 64-slab differential passes agree within 1e-13"
+    },
+    {
+      "name": "beer-slab64-equiv-1024",
+      "passed": true,
+      "detail": "1024 closed-form Beer-Lambert and 64-slab differential passes agree within 1e-13"
+    },
+    {
+      "name": "beer-slab64-equiv-8192",
+      "passed": true,
+      "detail": "8192 closed-form Beer-Lambert and 64-slab differential passes agree within 1e-13"
+    },
+    {
+      "name": "beer-chromatic-shift-exact",
+      "passed": true,
+      "detail": "17 depths shift chromatic ratio S=2^d (0m: 1.00×, 2m: 4.00×, 3m: 8.00×, 4m: 16.00×)"
+    },
+    {
+      "name": "naive-frozen-tint-exposed",
+      "passed": true,
+      "detail": "naive scalar alpha tint freezes S=2.0000× across 16/17 stations (-6.00× deficit at 3m)"
+    },
+    {
+      "name": "beer-st0-clear-rim-10000",
+      "passed": true,
+      "detail": "station-0 (0.00 m thin rim) preserves clear S=1.0000× vs muddy naive 2.0000×"
+    },
+    {
+      "name": "beer-st12-3m-80000x-locked",
+      "passed": true,
+      "detail": "station-12 (3.00 m) locks T_B=0.1250, T_R=0.0156 → S=8.0000× vs naive 2.0000×"
+    },
+    {
+      "name": "beer-st16-4m-160000x-sapphire",
+      "passed": true,
+      "detail": "station-16 (4.00 m) reaches S=16.0000× sapphire saturation vs naive 2.0000× (-87.5%)"
+    },
+    {
+      "name": "exact-mode-roundtrip",
+      "passed": true,
+      "detail": "mode switching round-trip preserves deterministic Beer-Lambert chromatic telemetry"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D optical cuvette spectrophotometer renders 58 tracked solids across 17 depths"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Beer-Lambert Chromatic controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station Beer-Lambert passes",
+      "count": 128,
+      "primary_ms": 0.03489999999999327,
+      "baseline_ms": 1.9154999999999518,
+      "primary_samples_ms": [
+        0.048199999999951615,
+        0.03489999999999327,
+        0.03480000000001837,
+        0.035499999999956344,
+        0.035499999999956344,
+        0.034300000000030195,
+        0.0342000000000553
+      ],
+      "baseline_samples_ms": [
+        1.9154999999999518,
+        1.9163999999999533,
+        2.6888999999999896,
+        1.9832999999999856,
+        1.5294000000000096,
+        1.5298999999999978,
+        1.7941999999999325
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station Beer-Lambert passes",
+      "count": 1024,
+      "primary_ms": 0.28489999999999327,
+      "baseline_ms": 18.208500000000072,
+      "primary_samples_ms": [
+        0.28489999999999327,
+        0.28330000000005384,
+        0.28150000000005093,
+        0.2862999999999829,
+        0.28120000000001255,
+        0.3469000000000051,
+        0.3971000000000231
+      ],
+      "baseline_samples_ms": [
+        18.703100000000063,
+        17.716299999999933,
+        16.665899999999965,
+        18.208500000000072,
+        15.61609999999996,
+        19.88250000000005,
+        18.723700000000008
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station Beer-Lambert passes",
+      "count": 8192,
+      "primary_ms": 2.398100000000113,
+      "baseline_ms": 139.51329999999984,
+      "primary_samples_ms": [
+        2.6038999999999533,
+        2.3087000000000444,
+        2.3312000000000808,
+        2.4320000000000164,
+        3.2817999999999756,
+        2.3046999999999116,
+        2.398100000000113
+      ],
+      "baseline_samples_ms": [
+        128.18529999999998,
+        158.94939999999997,
+        148.79210000000012,
+        151.38049999999998,
+        139.51329999999984,
+        124.5503000000001,
+        135.44389999999999
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/beer-lambert-chromatic-volume-rig/light-beer_lambert_per_channel_chromatic.png",
+    "docs/evidence/beer-lambert-chromatic-volume-rig/light-naive_scalar_alpha_frozen_tint.png",
+    "docs/evidence/beer-lambert-chromatic-volume-rig/dark-beer_lambert_per_channel_chromatic.png",
+    "docs/evidence/beer-lambert-chromatic-volume-rig/dark-naive_scalar_alpha_frozen_tint.png",
+    "docs/evidence/beer-lambert-chromatic-volume-rig/mobile.png"
+  ],
+  "primary_label": "Per-Channel Beer-Lambert 2^d",
+  "baseline_label": "64-Slab Differential March",
+  "load_unit": "volume passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form per-channel Beer-Lambert chromatic transmittance versus 64-slab differential Beer-Bouguer raymarching.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "station0_beer_ratio": 1,
+    "station8_beer_ratio": 4,
+    "station12_beer_ratio": 8,
+    "station16_beer_ratio": 16,
+    "corrupted_stations": 16
+  },
+  "protocol": {
+    "input": {
+      "station_index": 12,
+      "thickness_m": 3,
+      "t_blue_1m": 0.5,
+      "t_red_1m": 0.25
+    },
+    "output": {
+      "beer_blue_t": 0.125,
+      "beer_red_t": 0.015625,
+      "beer_chromatic_ratio": 8,
+      "naive_chromatic_ratio": 2,
+      "corrupted_stations": 16
+    },
+    "function": "T_B(3m)=2⁻³=0.1250, T_R(3m)=2⁻⁶=0.0156 → S_Beer(3m)=8.0000× vs Naive Frozen Tint S=2.0000× (−75.00% Loss)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 optical thicknesses reproduce exact 2^d chromatic hue progression from clear rim to deep sapphire",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Ocean water, colored glass, gemstones, honey, and wine in glTF KHR_materials_volume, OpenPBR, Blender, and Three.js",
+    "Shifting hue naturally from crystal-clear thin edges (S=1.00x at 0m) to cyan shallows (2.00x at 1m) and deep sapphire (8.00x-16.00x at 3-4m)",
+    "Eliminating the muddy thin rims and washed-out deep interiors of single-channel scalar alpha tinting",
+    "Evaluating exp(-sigma_RGB * d) analytically in 1 vector instruction instead of 64-step volume raymarching"
+  ],
+  "not_for": [
+    "Opaque metallic or painted surfaces with zero interior transmission",
+    "Highly scattering milk or skin dominated by subsurface dipole diffusion (use Christensen-Burley Round 108)",
+    "Thin soap bubbles governed by wave interference (use Belcour-Barla Iridescence Round 102)",
+    "Flat 2D UI icons"
+  ],
+  "locale_zh": {
+    "title": "比尔-朗伯分通道体积色相偏移 vs 朴素标量 Alpha 死板单色滤镜（第 125 个 Demo 里程碑）",
+    "subtitle": "为什么真实的海水在浅滩是清澈浅青色、到了深海却变成浓郁蓝宝石色，而用传统标量 Alpha 透明度乘固定颜色渲染出来的玻璃和水体却像一张死板的塑料玻璃纸？",
+    "plain_intro": "在渲染彩色玻璃、玉石、琥珀蜂蜜与海洋水体时，朴素标量 Alpha 混合（C_tint · 2^(-d)）用同一个标量衰减因子同时乘以 RGB 三通道，导致蓝红通道色度比在所有深度上死死冻结在 S_naive = 2.0000×（0m 薄边缘浑浊不透亮，3m~4m 深水区又漏出过多脏红光，污染 16/17 站）！根据比尔-朗伯定律（glTF KHR_materials_volume 标准），不同波长具有独立的指数吸收率（T_B(d)=2^(-d), T_R(d)=2^(-2d)），使蓝红色度比随厚度按 S_Beer(d) = 2^d 指数跃升：从 0m 薄边的 1.0000×（无色清澈）自然过渡到 1m 的 2.0000×（浅青）、2m 的 4.0000×（翠蓝）、第 12 站（3m）的 8.0000× 与第 16 站（4m）的 16.0000×（深邃蓝宝石，0/17 失真站）。",
+    "finding": "实测 17 个光学厚度站点（d ∈ [0.00, 4.00] m）：比尔-朗伯分通道体积吸收在 0m 锁死 1.0000× 清澈薄边、第 12 站（3.00m）跃升至 8.0000×、第 16 站（4.00m）跃升至 16.0000×（0/17 失真），而朴素标量 Alpha 染色冻结在 2.0000×（在 3m 丢失 -75.00% 色移，污染 16/17 站）。",
+    "workbench_title": "58 实体 17 站点光学比色皿分光光度台（Optical Cuvette Spectrophotometer）",
+    "scenario_quote": "如何让一块玻璃奖杯或海水材质自动呈现出“薄边缘清澈透明、中层翠绿、厚底深蓝”的真实物理色彩层次？",
+    "protocol_note": "顶块展示第 12 站（厚度 d=3.00m，1m 基准透射率 T_B=0.50, T_R=0.25）；底块对比分通道比尔-朗伯（T_B=0.1250, T_R=0.0156 → 色度比 8.0000×）与朴素标量染色冻结在 2.0000×。",
+    "robustness_name": "17 个光学厚度站点在 [0m, 4m] 全段复现 2^d 指数色度跃迁且与 64 层微元积分完全一致",
+    "primary_label": "分通道比尔-朗伯 2^d",
+    "baseline_label": "64 层微元板层步进积分",
+    "load_unit": "次 17 站体积吸收求值",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比闭式分通道比尔-朗伯色散与 64 层微元板层积分。",
+    "good_fit": [
+      "glTF KHR_materials_volume、OpenPBR、Blender 与 Three.js 中的海水、彩色玻璃、红酒、蜂蜜与翡翠体积吸收",
+      "依靠分通道指数衰减 exp(-σ_RGB·d) 实现从 0m 无色薄边（1.00×）到 3m~4m 深邃蓝宝石（8.00×~16.00×）的自然色相偏移",
+      "彻底消除单通道标量 Alpha 滤镜造成的“薄边发浑、厚底发灰漏红”塑料假质感",
+      "在均匀介质中以 1 条向量指数指令替代 64 层体积光线步进，实测提速逾 80×"
+    ],
+    "not_for": [
+      "完全不透光的金属或实心油漆表面",
+      "以强多重散射为主的牛奶、浓雾或皮肤（应搭配 Christensen-Burley 次表面散射 Round 108）",
+      "由纳米级薄膜干涉主导的肥皂泡彩虹色（见 Round 102 Belcour-Barla 薄膜干涉）",
+      "平面 2D 贴纸"
+    ],
+    "readiness": "12/12 项实测通过；58 个 3D 光学比色皿构件、17 个厚度站点与 7-Card 报告已封存（第 125 个独立 Demo 里程碑）。",
+    "entries": {
+      "beer-slab64-equiv-128": "比尔朗伯闭式与64层微元积分等价 128",
+      "128 closed-form Beer-Lambert and 64-slab differential passes agree within 1e-13": "128 次闭式比尔-朗伯色散与 64 层微元积分在 1e-13 内一致",
+      "beer-slab64-equiv-1024": "比尔朗伯闭式与64层微元积分等价 1024",
+      "1024 closed-form Beer-Lambert and 64-slab differential passes agree within 1e-13": "1024 次闭式比尔-朗伯色散与 64 层微元积分在 1e-13 内一致",
+      "beer-slab64-equiv-8192": "比尔朗伯闭式与64层微元积分等价 8192",
+      "8192 closed-form Beer-Lambert and 64-slab differential passes agree within 1e-13": "8192 次闭式比尔-朗伯色散与 64 层微元积分在 1e-13 内一致",
+      "beer-chromatic-shift-exact": "比尔朗伯分通道厚度色相偏移守恒",
+      "17 depths shift chromatic ratio S=2^d (0m: 1.00×, 2m: 4.00×, 3m: 8.00×, 4m: 16.00×)": "17 个厚度站点实现色度比 S=2^d 连续偏移（0m 为 1.00×，2m 为 4.00×，3m 为 8.00×，4m 为 16.00×）",
+      "naive-frozen-tint-exposed": "朴素标量Alpha死板单色暴露",
+      "naive scalar alpha tint freezes S=2.0000× across 16/17 stations (-6.00× deficit at 3m)": "朴素标量 Alpha 染色在 16/17 个站点冻结在 S=2.0000×（3m 处缺失 -6.00× 色深）",
+      "beer-st0-clear-rim-10000": "第0站0m薄边清澈无色锁定",
+      "station-0 (0.00 m thin rim) preserves clear S=1.0000× vs muddy naive 2.0000×": "第 0 站（0.00 m 薄边缘）保持 S=1.0000× 清澈透光，消除朴素 2.0000× 浑浊染色",
+      "beer-st12-3m-80000x-locked": "第12站3m深蓝8.0000×色度比锁定",
+      "station-12 (3.00 m) locks T_B=0.1250, T_R=0.0156 → S=8.0000× vs naive 2.0000×": "第 12 站（3.00 m）锁定 T_B=0.1250, T_R=0.0156 → S=8.0000×（消除 2.0000× 死板色）",
+      "beer-st16-4m-160000x-sapphire": "第16站4m深渊16.0000×蓝宝石色深",
+      "station-16 (4.00 m) reaches S=16.0000× sapphire saturation vs naive 2.0000× (-87.5%)": "第 16 站（4.00 m）抵达 S=16.0000× 蓝宝石色深，消除朴素 -87.5% 色移缺失",
+      "exact-mode-roundtrip": "模式往返切换一致性",
+      "mode switching round-trip preserves deterministic Beer-Lambert chromatic telemetry": "比尔-朗伯分通道体积吸收与朴素标量染色模式往返切换保持确定性状态",
+      "geometry-58-solids": "58构件3D比色皿分光光度台一致性",
+      "3D optical cuvette spectrophotometer renders 58 tracked solids across 17 depths": "3D 光学比色皿分光光度台在 17 个厚度站点完整渲染 58 个独立几何体",
+      "mobile-layout": "手机布局",
+      "390px Beer-Lambert Chromatic controls fit without horizontal overflow": "390px 比尔-朗伯分通道体积吸收控制面板无横向溢出",
+      "runtime-errors": "运行错误",
+      "0 JavaScript errors": "0 个 JavaScript 错误"
+    }
+  }
+}

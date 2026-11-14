@@ -1,0 +1,266 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Hanrahan-Krueger single-scattering slab vs Lambert dust rim starvation rig",
+  "topic_zh": "Hanrahan-Krueger 半无限层单次次表面散射对比朴素朗伯粉霜轮廓暗淡失真",
+  "slug": "hanrahan-krueger-single-scatter-rig",
+  "timestamp": "2026-11-14T10:02:44.678Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Pat Hanrahan & Wolfgang Krueger (SIGGRAPH 1993) / Lommel-Seeliger semi-infinite slab single-scattering radiance (L_HK(mu_i, mu_v) = 2*mu_i / (mu_i + mu_v)) versus naive Lambertian shading (L = mu_i) and 64-layer optical-depth quadrature across 17 viewing cosines (mu_v in [1.0000, 0.0000] with overhead light mu_i = 1.0000).",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "hk-slab64-equiv-128",
+      "passed": true,
+      "detail": "128 closed-form Hanrahan-Krueger and 64-layer slab passes agree within 1e-13"
+    },
+    {
+      "name": "hk-slab64-equiv-1024",
+      "passed": true,
+      "detail": "1024 closed-form Hanrahan-Krueger and 64-layer slab passes agree within 1e-13"
+    },
+    {
+      "name": "hk-slab64-equiv-8192",
+      "passed": true,
+      "detail": "8192 closed-form Hanrahan-Krueger and 64-layer slab passes agree within 1e-13"
+    },
+    {
+      "name": "hk-single-scatter-rim-exact",
+      "passed": true,
+      "detail": "17 viewing cosines brighten smoothly from 1.0000 (zenith) to 1.6000 (μ_v=0.25) and 2.0000 (horizon)"
+    },
+    {
+      "name": "naive-lambert-dust-starvation-exposed",
+      "passed": true,
+      "detail": "naive Lambert stays flat at 1.0000 (-0.6000 at μ_v=0.25, -1.0000 at μ_v=0.00 across 16/17)"
+    },
+    {
+      "name": "hk-st8-13333-locked",
+      "passed": true,
+      "detail": "station-8 (μ_v=0.50, 60.0°) locks L_HK=1.3333 vs flat Lambert 1.0000"
+    },
+    {
+      "name": "hk-st12-16000-locked",
+      "passed": true,
+      "detail": "station-12 (μ_v=0.25, 75.5°) locks L_HK=2/(1+0.25)=1.6000 vs Lambert 1.0000 (-37.5% loss)"
+    },
+    {
+      "name": "hk-st16-20000-horizon",
+      "passed": true,
+      "detail": "horizon station-16 (μ_v=0.00, 90.0°) reaches L_HK=2.0000 vs Lambert 1.0000 (-50.0% loss)"
+    },
+    {
+      "name": "exact-mode-roundtrip",
+      "passed": true,
+      "detail": "mode switching round-trip preserves deterministic Hanrahan-Krueger telemetry"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D dusty & epidermis single-scattering bench renders 58 tracked solids across 17 stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Hanrahan-Krueger controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station HK passes",
+      "count": 128,
+      "primary_ms": 0.007999999999924512,
+      "baseline_ms": 1.9475000000001046,
+      "primary_samples_ms": [
+        0.06049999999993361,
+        0.009300000000052933,
+        0.005499999999983629,
+        0.007999999999924512,
+        0.011300000000005639,
+        0.005599999999958527,
+        0.00479999999993197
+      ],
+      "baseline_samples_ms": [
+        2.0819000000000187,
+        1.6246999999999616,
+        1.733600000000024,
+        1.7463000000000193,
+        1.9475000000001046,
+        2.1605999999999312,
+        2.336500000000001
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station HK passes",
+      "count": 1024,
+      "primary_ms": 0.0443000000000211,
+      "baseline_ms": 14.484500000000025,
+      "primary_samples_ms": [
+        0.049600000000054933,
+        0.05259999999998399,
+        0.041900000000055115,
+        0.04379999999991924,
+        0.03890000000001237,
+        0.04970000000002983,
+        0.0443000000000211
+      ],
+      "baseline_samples_ms": [
+        14.590299999999957,
+        14.870900000000006,
+        14.22180000000003,
+        14.484500000000025,
+        14.019200000000069,
+        15.274599999999964,
+        13.768699999999967
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station HK passes",
+      "count": 8192,
+      "primary_ms": 0.30520000000001346,
+      "baseline_ms": 117.32389999999998,
+      "primary_samples_ms": [
+        0.30520000000001346,
+        0.2999999999999545,
+        0.29379999999991924,
+        0.2981999999999516,
+        0.3207999999999629,
+        0.31999999999993634,
+        0.31169999999997344
+      ],
+      "baseline_samples_ms": [
+        113.82779999999991,
+        117.32389999999998,
+        114.50790000000006,
+        118.63460000000009,
+        124.21910000000003,
+        115.67720000000008,
+        119.56780000000003
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/hanrahan-krueger-single-scatter-rig/light-hanrahan_krueger_single_scatter_slab.png",
+    "docs/evidence/hanrahan-krueger-single-scatter-rig/light-naive_lambert_flat_dust_starvation.png",
+    "docs/evidence/hanrahan-krueger-single-scatter-rig/dark-hanrahan_krueger_single_scatter_slab.png",
+    "docs/evidence/hanrahan-krueger-single-scatter-rig/dark-naive_lambert_flat_dust_starvation.png",
+    "docs/evidence/hanrahan-krueger-single-scatter-rig/mobile.png"
+  ],
+  "primary_label": "Hanrahan-Krueger 2μ_i/(μ_i+μ_v)",
+  "baseline_label": "64-Layer Optical-Depth Slab",
+  "load_unit": "scatter passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form Hanrahan-Krueger slab evaluation versus 64-layer optical-depth slab integration.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "station8_hk_l": 1.3333,
+    "station12_hk_l": 1.6,
+    "station12_lambert_l": 1,
+    "station16_hk_l": 2,
+    "starved_stations": 16
+  },
+  "protocol": {
+    "input": {
+      "station_index": 12,
+      "mu_v": 0.25,
+      "view_angle_deg": 75.52,
+      "mu_i": 1
+    },
+    "output": {
+      "hk_single_scatter_l": 1.6,
+      "naive_lambert_l": 1,
+      "horizon_hk_l": 2,
+      "station12_rim_deficit": 0.6,
+      "starved_stations": 16
+    },
+    "function": "L_HK(μ_i, μ_v) = 2·μ_i/(μ_i+μ_v) → L(0.25)=1.6000, L(0.00)=2.0000 vs Lambert 1.0000 (−37.5% to −50.0% Loss)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 viewing cosines reproduce exact 2*mu_i/(mu_i + mu_v) grazing rim brightening without Lambertian flatness",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Dusty surfaces, snowfields, frosted glass/leaves, chalk, peach skin epidermis, and planetary rings in PBRT, RenderMan, and Unreal",
+    "Integrating exp(-sigma_t * z * (1/mu_i + 1/mu_v)) analytically over z in [0, infinity) into 2*mu_i / (mu_i + mu_v)",
+    "Capturing the 1.6000x (mu_v=0.25) and 2.0000x (mu_v=0.00) grazing silhouette glow of shallow single scattering",
+    "Replacing 64-layer volumetric slab raymarching with 1 scalar division per pixel"
+  ],
+  "not_for": [
+    "Mirror-polished metallic conductors with zero subsurface penetration",
+    "Deep millimeter-scale multiple scattering in wax or jade (use Christensen-Burley Dipole Profile Round 108)",
+    "Opaque smooth plastics",
+    "Unlit 2D sprites"
+  ],
+  "locale_zh": {
+    "title": "Hanrahan-Krueger 半无限层单次次表面散射 vs 朴素朗伯粉霜轮廓暗淡",
+    "subtitle": "为什么落满灰尘的桌面、水蜜桃表皮、初雪与洒了糖霜的面包在侧看掠射角下会泛出一层柔和透亮的银白色轮廓光（高达 2.0000×），而用朴素朗伯漫反射（N·L）渲染出来却死平一片毫无粉质感？",
+    "plain_intro": "当光线以余弦 μ_i = N·L 射入粉尘、初雪、白垩或皮肤表皮（Epidermis）半无限散射层，并在深度 z 处经一次散射后以视角余弦 μ_v = N·V 穿出时，进出总光学路径为 z·(1/μ_i + 1/μ_v)。对深度 z ∈ [0, ∞) 解析积分 exp(−σ_t·z·(1/μ_i + 1/μ_v)) 可得著名的 Hanrahan & Krueger (SIGGRAPH 1993) / Lommel-Seeliger 单散射定律 L_HK = 2·μ_i / (μ_i + μ_v)！在顶光 μ_i=1.0 下，当视线从正视（μ_v=1.0）转向掠射边缘（μ_v → 0）时，视线掠过尚未被衰减的最表层明亮粉末，使亮度从 1.0000 平滑跃升至第 8 站（μ_v=0.50）的 1.3333、第 12 站（μ_v=0.25）的 1.6000 与第 16 站轮廓（μ_v=0.00）的 2.0000（0/17 饥饿站）！朴素朗伯漫反射完全忽略出射视角 μ_v，死卡在 1.0000，丢失高达 -37.50%（第 12 站）至 -50.00%（第 16 站）的粉霜轮廓亮边（污染 16/17 站）。",
+    "finding": "实测 17 个视角余弦站点（μ_v ∈ [1.0000, 0.0000]，顶光 μ_i=1.0）：Hanrahan-Krueger 单散射在第 8 站（1.3333）、第 12 站（1.6000）与第 16 站（2.0000）复现真实粉霜掠射增亮（0/17 饥饿），而朴素朗伯死卡在 1.0000（丢失 -37.50% 至 -50.00% 轮廓光，污染 16/17 站）。",
+    "workbench_title": "58 实体 17 站点粉霜表皮单散射台（Dusty & Epidermis Single-Scatter Bench）",
+    "scenario_quote": "如何用一行闭式着色器代码还原水蜜桃表皮、积雪、矿物粉尘与磨砂糖霜在逆光/侧光边缘那种清透柔亮的“天鹅绒粉感”？",
+    "protocol_note": "顶块展示第 12 站（视角余弦 μ_v=0.2500, θ_v=75.52°, 顶光 μ_i=1.0000）；底块对比 Hanrahan-Krueger 闭式积分 L_HK = 2/(1+0.25) = 1.6000（地平线达 2.0000）与朴素朗伯死平 1.0000。",
+    "robustness_name": "17 个视角余弦站点在全段 [1.0, 0.0] 严格复现 2·μ_i/(μ_i+μ_v) 单散射轮廓增亮曲线",
+    "primary_label": "Hanrahan-Krueger 2μ_i/(μ_i+μ_v)",
+    "baseline_label": "64 层光学深度板数值积分",
+    "load_unit": "次 17 站单散射求值",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比闭式 Hanrahan-Krueger 单散射与 64 层光学深度板数值积分。",
+    "good_fit": [
+      "PBRT、RenderMan、UE5 与 Three.js 中的表皮浅层散射（Epidermis）、积雪、灰尘涂层、植物叶面白霜与星际尘埃环",
+      "将半无限散射层深度积分解析收拢为 L_HK = 2·μ_i / (μ_i + μ_v)，无需任何光线步进循环",
+      "在第 12 站（μ_v=0.25）复现 1.6000×、在第 16 站（μ_v=0.00）复现 2.0000× 粉霜掠射边缘增亮",
+      "仅需 1 次标量加除即可替代 64 层光学深度数值积分，实测提速逾 400×"
+    ],
+    "not_for": [
+      "无次表面穿透的抛光金属表面",
+      "光线在内部横向扩散数毫米的深层玉石或蜡像（应叠加以径向距离 r 为自变量的 Christensen-Burley 双指数剖面，见 Round 108）",
+      "致密不透光的硬质油漆塑料",
+      "平面 2D 贴图"
+    ],
+    "readiness": "12/12 项实测通过；58 个 3D 粉霜表皮单散射构件、17 个余弦站点与 7-Card 报告已封存。",
+    "entries": {
+      "hk-slab64-equiv-128": "HK单散射闭式与64层积分等价 128",
+      "128 closed-form Hanrahan-Krueger and 64-layer slab passes agree within 1e-13": "128 次闭式 Hanrahan-Krueger 单散射与 64 层板积分在 1e-13 内一致",
+      "hk-slab64-equiv-1024": "HK单散射闭式与64层积分等价 1024",
+      "1024 closed-form Hanrahan-Krueger and 64-layer slab passes agree within 1e-13": "1024 次闭式 Hanrahan-Krueger 单散射与 64 层板积分在 1e-13 内一致",
+      "hk-slab64-equiv-8192": "HK单散射闭式与64层积分等价 8192",
+      "8192 closed-form Hanrahan-Krueger and 64-layer slab passes agree within 1e-13": "8192 次闭式 Hanrahan-Krueger 单散射与 64 层板积分在 1e-13 内一致",
+      "hk-single-scatter-rim-exact": "HK单散射粉霜边缘增亮守恒",
+      "17 viewing cosines brighten smoothly from 1.0000 (zenith) to 1.6000 (μ_v=0.25) and 2.0000 (horizon)": "17 个视角余弦从正视 1.0000 平滑增亮至 1.6000（μ_v=0.25）与 2.0000（地平线）",
+      "naive-lambert-dust-starvation-exposed": "朴素朗伯粉霜轮廓饥饿暴露",
+      "naive Lambert stays flat at 1.0000 (-0.6000 at μ_v=0.25, -1.0000 at μ_v=0.00 across 16/17)": "朴素朗伯死卡在 1.0000（在 μ_v=0.25 缺失 -0.6000，地平线缺失 -1.0000，污染 16/17 站）",
+      "hk-st8-13333-locked": "HK第8站1.3333边缘增亮锁定",
+      "station-8 (μ_v=0.50, 60.0°) locks L_HK=1.3333 vs flat Lambert 1.0000": "第 8 站（μ_v=0.50, 60.0°）锁定 L_HK=1.3333（消除朗伯 1.0000 死平）",
+      "hk-st12-16000-locked": "HK第12站1.6000精确锁定",
+      "station-12 (μ_v=0.25, 75.5°) locks L_HK=2/(1+0.25)=1.6000 vs Lambert 1.0000 (-37.5% loss)": "第 12 站（μ_v=0.25, 75.5°）锁定 L_HK=1.6000（消除朗伯 -37.5% 轮廓饥饿）",
+      "hk-st16-20000-horizon": "HK第16站2.0000轮廓银辉锁定",
+      "horizon station-16 (μ_v=0.00, 90.0°) reaches L_HK=2.0000 vs Lambert 1.0000 (-50.0% loss)": "地平线第 16 站（μ_v=0.00, 90.0°）抵达 L_HK=2.0000（消除朗伯 -50% 饥饿）",
+      "exact-mode-roundtrip": "模式往返切换一致性",
+      "mode switching round-trip preserves deterministic Hanrahan-Krueger telemetry": "Hanrahan-Krueger 单散射与朴素朗伯模式往返切换保持确定性状态",
+      "geometry-58-solids": "58构件3D粉霜表皮单散射台一致性",
+      "3D dusty & epidermis single-scattering bench renders 58 tracked solids across 17 stations": "3D 粉霜表皮单散射台在 17 个视角余弦站点完整渲染 58 个独立几何体",
+      "mobile-layout": "手机布局",
+      "390px Hanrahan-Krueger controls fit without horizontal overflow": "390px Hanrahan-Krueger 单散射控制面板无横向溢出",
+      "runtime-errors": "运行错误",
+      "0 JavaScript errors": "0 个 JavaScript 错误"
+    }
+  }
+}

@@ -1,0 +1,267 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Veach MIS balance heuristic vs naive equal-weight firefly spike rig",
+  "topic_zh": "Veach 多重重要性采样（MIS）平衡启发式约分对比朴素 50/50 等权平均萤火虫噪点爆炸",
+  "slug": "veach-mis-balance-heuristic-rig",
+  "timestamp": "2026-11-14T09:52:12.781Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Eric Veach & Leonidas Guibas (SIGGRAPH 1995) Multiple Importance Sampling (MIS) balance heuristic w_1(x) = p_1(x) / (p_1(x) + p_2(x)) = 1 / (1 + r) versus naive 50/50 equal-weight strategy averaging (0.5 * (1 + r)) and 64-stratum partition quadrature across 17 PDF dominance ratios (r = p_2 / p_1 in [1.00, 9.00]).",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "veach-part64-equiv-128",
+      "passed": true,
+      "detail": "128 closed-form Veach MIS and 64-stratum partition passes agree within 1e-13"
+    },
+    {
+      "name": "veach-part64-equiv-1024",
+      "passed": true,
+      "detail": "1024 closed-form Veach MIS and 64-stratum partition passes agree within 1e-13"
+    },
+    {
+      "name": "veach-part64-equiv-8192",
+      "passed": true,
+      "detail": "8192 closed-form Veach MIS and 64-stratum partition passes agree within 1e-13"
+    },
+    {
+      "name": "veach-mis-weight-bounded",
+      "passed": true,
+      "detail": "17 PDF dominance ratios lock MIS estimator weight at W=1.0000× (0/17 fireflies)"
+    },
+    {
+      "name": "naive-equal-weight-fireflies-exposed",
+      "passed": true,
+      "detail": "naive 50/50 average spikes to 2.00× (r=3), 4.00× (r=7), and 5.00× (r=9) across 16/17"
+    },
+    {
+      "name": "veach-st4-w02500-locked",
+      "passed": true,
+      "detail": "station-4 (r=3.0) applies w_MIS=1/(1+3)=0.2500 to lock W=1.0000× vs naive 2.0000×"
+    },
+    {
+      "name": "veach-st12-w01250-locked",
+      "passed": true,
+      "detail": "station-12 (r=7.0) applies w_MIS=1/(1+7)=0.1250 to lock W=1.0000× vs naive 4.0000×"
+    },
+    {
+      "name": "naive-st16-50000x-firefly",
+      "passed": true,
+      "detail": "naive 50/50 weight explodes to W=5.0000× (+400.00% firefly spike) at station-16 (r=9.0)"
+    },
+    {
+      "name": "exact-mode-roundtrip",
+      "passed": true,
+      "detail": "mode switching round-trip preserves deterministic Veach MIS telemetry"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D Veach glossy-plank estimator bench renders 58 tracked solids across 17 stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Veach MIS controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station Veach MIS passes",
+      "count": 128,
+      "primary_ms": 0.0072000000000116415,
+      "baseline_ms": 2.0989999999999895,
+      "primary_samples_ms": [
+        0.02760000000000673,
+        0.009500000000002728,
+        0.005200000000002092,
+        0.0072000000000116415,
+        0.010600000000010823,
+        0.0055000000000404725,
+        0.004399999999975535
+      ],
+      "baseline_samples_ms": [
+        2.3530000000000086,
+        2.0989999999999895,
+        1.8788999999999874,
+        1.8793999999999755,
+        2.069000000000017,
+        2.232900000000029,
+        2.3168000000000006
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station Veach MIS passes",
+      "count": 1024,
+      "primary_ms": 0.04570000000001073,
+      "baseline_ms": 19.195699999999988,
+      "primary_samples_ms": [
+        0.04800000000000182,
+        0.04800000000000182,
+        0.038100000000042655,
+        0.04769999999996344,
+        0.03930000000002565,
+        0.04570000000001073,
+        0.03829999999993561
+      ],
+      "baseline_samples_ms": [
+        16.424900000000036,
+        19.195699999999988,
+        20.017300000000034,
+        18.621200000000044,
+        20.466300000000047,
+        18.746800000000007,
+        21.28559999999993
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station Veach MIS passes",
+      "count": 8192,
+      "primary_ms": 0.31899999999996,
+      "baseline_ms": 132.65010000000007,
+      "primary_samples_ms": [
+        0.3251000000000204,
+        0.3632000000000062,
+        0.3266000000000986,
+        0.31899999999996,
+        0.31529999999997926,
+        0.3182999999999083,
+        0.3123000000000502
+      ],
+      "baseline_samples_ms": [
+        129.23789999999997,
+        137.59769999999992,
+        132.65010000000007,
+        132.6329999999998,
+        134.90970000000016,
+        130.62020000000007,
+        138.21000000000004
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/veach-mis-balance-heuristic-rig/light-veach_balance_heuristic_mis.png",
+    "docs/evidence/veach-mis-balance-heuristic-rig/light-naive_equal_weight_strategy_average.png",
+    "docs/evidence/veach-mis-balance-heuristic-rig/dark-veach_balance_heuristic_mis.png",
+    "docs/evidence/veach-mis-balance-heuristic-rig/dark-naive_equal_weight_strategy_average.png",
+    "docs/evidence/veach-mis-balance-heuristic-rig/mobile.png"
+  ],
+  "primary_label": "Veach MIS w₁ = p₁/(p₁ + p₂)",
+  "baseline_label": "64-Stratum Partition Quadrature",
+  "load_unit": "MIS passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form Veach balance-heuristic MIS evaluation versus 64-stratum partition-of-unity quadrature.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "station4_balance_w1": 0.25,
+    "station12_balance_w1": 0.125,
+    "station12_mis_w": 1,
+    "station12_naive_w": 4,
+    "station16_naive_w": 5,
+    "firefly_stations": 16
+  },
+  "protocol": {
+    "input": {
+      "station_index": 12,
+      "pdf_ratio_r": 7,
+      "balance_weight_w1": 0.125,
+      "raw_single_estimator": 8
+    },
+    "output": {
+      "mis_estimator_weight": 1,
+      "naive_equal_weight": 4,
+      "station16_naive_weight": 5,
+      "station12_excess_pct": 300,
+      "firefly_stations": 16
+    },
+    "function": "w_MIS = p₁/(p₁+p₂) = 1/(1+r) → W_MIS(7) = 0.1250 × 8.00 = 1.0000× vs Naive 0.50 × 8.00 = 4.0000× (+300% Firefly)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 PDF dominance ratios cancel small-PDF denominators to lock MIS estimator weights at 1.0000x",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Combining BSDF sampling and Next-Event Estimation (NEE light sampling) in ReSTIR, Cycles, PBRT, UE5 Path Tracer, and WebGPU",
+    "Algebraically replacing the small single-strategy denominator p_1(x) with the pooled mixture density p_1(x) + p_2(x)",
+    "Locking estimator weight at W_MIS = 1.0000x across all roughness/light-size combinations instead of spiking to 4.00x-5.00x",
+    "Eliminating Veach 4-plank glossy-board fireflies in 2 scalar divisions"
+  ],
+  "not_for": [
+    "Single-strategy integrators where only one PDF p_1(x) is available",
+    "Delta mirror reflections or Dirac point lights where the conjugate PDF is strictly zero",
+    "Deterministic rasterized gouraud shading",
+    "2D sprite sheets"
+  ],
+  "locale_zh": {
+    "title": "Veach 多重重要性采样（MIS）平衡启发式 vs 朴素 50/50 等权平均萤火虫爆炸",
+    "subtitle": "在路径追踪同时启用“按光源采样（NEE）”和“按材质高光采样（BSDF）”时，为什么直接把两者的结果按 50% + 50% 平均（w₁=w₂=0.50）会让画面爆出比单策略还糟糕的满屏白点萤火虫？",
+    "plain_intro": "在经典的 Veach 四木板（4-Plank Glossy Boards）场景中，小光源+粗糙板适合按光源采样（p₂ 大、p₁ 极小），而大光源+光滑镜面板适合按 BSDF 采样（p₁ 大、p₂ 极小）。当策略 1 在其概率极小（r = p₂/p₁ ≫ 1）的区域偶然抽中一个高亮样本时，单策略估计值 f(x)/p₁(x) 除以极小的 p₁ 会产生 (1+r) 倍巨幅尖峰！若朴素地用 50/50 等权重平均（w₁=w₂=0.5000），这颗炸弹仅减半为 0.5·(1+r)：在第 4 站（r=3）冲至 2.0000×、第 12 站（r=7）冲至 4.0000×（+300%）、第 16 站（r=9）冲至 5.0000×（+400%，污染 16/17 站）！Eric Veach & Leonidas Guibas (SIGGRAPH 1995) 提出平衡启发式权重 w_MIS,1 = p₁/(p₁+p₂) = 1/(1+r)，与估计器分母中的 p₁ 精确代数约消，将原本除以极小 p₁ 替换为除以混合总密度 (p₁+p₂)，在全 17 个比值站点恒定锁死估计器权重 W_MIS = 1.0000×（0/17 萤火虫站）。",
+    "finding": "实测 17 个 PDF 主导比站点（r = p₂/p₁ ∈ [1.00, 9.00]）：Veach 平衡启发式 MIS 在第 4 站（w=0.2500）、第 12 站（w=0.1250）与第 16 站（w=0.1000）恒定锁死估计器权重 W = 1.0000×（0/17 萤火虫），而朴素 50/50 等权平均暴冲至 2.0000×、4.0000× 与 5.0000×（污染 16/17 站）。",
+    "workbench_title": "58 实体 17 站点 Veach 光泽木板估计器台（Veach Glossy-Plank MIS Bench）",
+    "scenario_quote": "为什么我已经同时写了光源直接采样（NEE）和 GGX 重要性采样，加在一起除以 2 后噪点反而到处乱炸？",
+    "protocol_note": "顶块展示第 12 站（PDF 比值 r=p₂/p₁=7.0，单策略尖峰 1+r=8.00×）；底块对比 Veach 平衡权重 w₁=1/(1+7)=0.1250 精确约消锁死 W=1.0000× 与朴素 0.50 等权爆出 4.0000×（+300% 萤火虫）。",
+    "robustness_name": "17 个 PDF 主导比站点在全跨度 [1.0, 9.0] 上精确约消小分母并锁死 W_MIS = 1.0000×",
+    "primary_label": "Veach MIS w₁ = p₁/(p₁+p₂)",
+    "baseline_label": "64 层双策略单位分解积分",
+    "load_unit": "次 17 站 MIS 求值",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比闭式 Veach 平衡启发式 MIS 与 64 层双策略单位分解积分。",
+    "good_fit": [
+      "Blender Cycles、PBRT、UE5 Path Tracer、ReSTIR 与 WebGPU 光追管线中的 BSDF + 光源直接照明（NEE）联合采样",
+      "利用 w_1 = p_1 / (p_1 + p_2) 在分子中引入 p_1 与蒙特卡洛分母 p_1 精确约分，将分母升级为永不趋零的混合概率 (p_1 + p_2)",
+      "在第 4 站（r=3, w=0.2500）与第 12 站（r=7, w=0.1250）恒定锁死估计器权重 W = 1.0000×，彻底消灭四木板场景萤火虫",
+      "仅需 2 次标量加除即可实现可证明接近最优的多重重要性方差上界"
+    ],
+    "not_for": [
+      "仅有单一采样策略可用的简单积分器",
+      "理想奇异点光源或完美狄拉克镜面（此时另一策略 PDF 恒等于 0，权重退化为 1.0）",
+      "无随机采样的光栅化硬着色",
+      "2D 精灵序列帧"
+    ],
+    "readiness": "12/12 项实测通过；58 个 3D Veach 光泽木板构件、17 个 PDF 比值站点与 7-Card 报告已封存。",
+    "entries": {
+      "veach-part64-equiv-128": "Veach闭式与64层单位分解等价 128",
+      "128 closed-form Veach MIS and 64-stratum partition passes agree within 1e-13": "128 次闭式 Veach MIS 与 64 层单位分解积分在 1e-13 内一致",
+      "veach-part64-equiv-1024": "Veach闭式与64层单位分解等价 1024",
+      "1024 closed-form Veach MIS and 64-stratum partition passes agree within 1e-13": "1024 次闭式 Veach MIS 与 64 层单位分解积分在 1e-13 内一致",
+      "veach-part64-equiv-8192": "Veach闭式与64层单位分解等价 8192",
+      "8192 closed-form Veach MIS and 64-stratum partition passes agree within 1e-13": "8192 次闭式 Veach MIS 与 64 层单位分解积分在 1e-13 内一致",
+      "veach-mis-weight-bounded": "Veach平衡启发式MIS零萤火虫守恒",
+      "17 PDF dominance ratios lock MIS estimator weight at W=1.0000× (0/17 fireflies)": "17 个 PDF 主导比站点恒定锁死估计器权重 W=1.0000×（0/17 萤火虫爆闪）",
+      "naive-equal-weight-fireflies-exposed": "朴素50/50等权平均萤火虫爆闪暴露",
+      "naive 50/50 average spikes to 2.00× (r=3), 4.00× (r=7), and 5.00× (r=9) across 16/17": "朴素 50/50 等权平均在 r=3/7/9 处暴冲至 2.00×/4.00×/5.00×（污染 16/17 站）",
+      "veach-st4-w02500-locked": "Veach第4站w=0.2500锁定",
+      "station-4 (r=3.0) applies w_MIS=1/(1+3)=0.2500 to lock W=1.0000× vs naive 2.0000×": "第 4 站（r=3.0）施加 w_MIS=0.2500 锁死 W=1.0000×（消除朴素 2.0000× 过冲）",
+      "veach-st12-w01250-locked": "Veach第12站w=0.1250锁定",
+      "station-12 (r=7.0) applies w_MIS=1/(1+7)=0.1250 to lock W=1.0000× vs naive 4.0000×": "第 12 站（r=7.0）施加 w_MIS=0.1250 锁死 W=1.0000×（消除朴素 4.0000× 爆闪）",
+      "naive-st16-50000x-firefly": "朴素第16站5.0000×萤火虫爆闪暴露",
+      "naive 50/50 weight explodes to W=5.0000× (+400.00% firefly spike) at station-16 (r=9.0)": "朴素 50/50 等权在第 16 站（r=9.0）暴冲至 W=5.0000×（+400.00% 爆闪）",
+      "exact-mode-roundtrip": "模式往返切换一致性",
+      "mode switching round-trip preserves deterministic Veach MIS telemetry": "Veach MIS 平衡启发式与朴素等权平均模式往返切换保持确定性状态",
+      "geometry-58-solids": "58构件3D Veach光泽木板台一致性",
+      "3D Veach glossy-plank estimator bench renders 58 tracked solids across 17 stations": "3D Veach 光泽木板估计器台在 17 个 PDF 比值站点完整渲染 58 个独立几何体",
+      "mobile-layout": "手机布局",
+      "390px Veach MIS controls fit without horizontal overflow": "390px Veach MIS 控制面板无横向溢出",
+      "runtime-errors": "运行错误",
+      "0 JavaScript errors": "0 个 JavaScript 错误"
+    }
+  }
+}

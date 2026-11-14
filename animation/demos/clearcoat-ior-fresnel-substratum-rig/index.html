@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weidlich-Wilkie Clearcoat Transmittance-Coupled Fresnel Rig — Generative Visual Lab</title>
+    <script type="module" crossorigin src="../../assets/clearcoatIorFresnelSubstratum-DW0lZflJ.js"></script>
+    <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="modulepreload" crossorigin href="../../assets/three.module-7AmyneiW.js">
+    <link rel="stylesheet" crossorigin href="../../assets/anisotropicGgxFiber-BiXbR8oC.css">
+  </head>
+  <body>
+    <div class="rig-shell">
+      <header class="rig-topbar">
+        <div class="rig-title-block">
+          <span class="rig-kicker">ROUND 106 · AUTOMOTIVE CLEARCOAT &amp; LACQUERED SUBSTRATE ENERGY WORKBENCH</span>
+          <h1>Weidlich-Wilkie Clearcoat Transmittance Coupling vs Naive Additive Fresnel Blowout</h1>
+        </div>
+        <div class="rig-top-actions">
+          <a class="rig-link" href="../../index.html">← Portal</a>
+          <a class="rig-link" href="./test-report-cards.html">7-Card Report (EN)</a>
+          <a class="rig-link" href="./test-report-cards.zh.html">7-Card 报告 (ZH)</a>
+          <button id="theme-toggle-btn" class="rig-btn-secondary" type="button">Toggle Theme</button>
+        </div>
+      </header>
+
+      <main class="rig-main">
+        <section class="rig-stage-card">
+          <div class="rig-canvas-wrap">
+            <canvas id="rig-canvas" aria-label="Weidlich-Wilkie Clearcoat Fresnel 3D Rig"></canvas>
+          </div>
+          <div class="rig-stage-caption">
+            <strong>58-Solid 3D Automotive Clearcoat White-Furnace Bench:</strong> Back cyan towers display the exact Weidlich &amp; Wilkie (EGSR 2007) / Khronos glTF <code>KHR_materials_clearcoat</code> transmittance-coupled energy <code>E_phys(θ_i) = F_coat(θ_i) + (1 − F_coat(θ_i)) · L_sub</code> for a polyurethane clearcoat (<code>n_coat = 1.50, F0 = 0.0400</code>) over a unit-albedo substrate across 17 angles <code>θ_i ∈ [0°, 80°]</code>. At Station 12 (<code>60°</code>), <code>F_coat = 0.0700</code> and substrate transmittance <code>T = 1 − F_coat = 0.9300</code> sum to exact <code>E = 1.0000</code>, whereas naive additive layering (<code>F_coat + L_sub</code>) blows out to <code>1.0700</code> at <code>60°</code> and <code>1.4099</code> (<code>+40.99%</code> glowing rim halo) at <code>80°</code> across all <code>17/17</code> stations.
+          </div>
+        </section>
+
+        <aside class="rig-hud-card" aria-label="Clearcoat Fresnel Telemetry HUD">
+          <div class="hud-header">
+            <span id="hud-mode-badge" class="hud-badge">WEIDLICH-WILKIE TRANSMITTANCE-COUPLED CLEARCOAT</span>
+            <div id="hud-verdict-pill" class="hud-verdict" data-state="pass">
+              PASS · F(60°)=0.0700 + T(60°)=0.9300 = 1.0000 Conserved (0/17 Blown Out)
+            </div>
+          </div>
+
+          <div class="hud-controls">
+            <div class="btn-group" role="group" aria-label="Clearcoat Layering Mode Selector">
+              <button
+                type="button"
+                class="mode-btn active"
+                data-mode-btn="weidlich-wilkie-transmittance-coupled"
+              >
+                Weidlich-Wilkie Transmittance-Coupled (1 − F_coat)
+              </button>
+              <button
+                type="button"
+                class="mode-btn"
+                data-mode-btn="naive-additive-clearcoat-blowout"
+              >
+                Naive Additive Clearcoat (F_coat + L_sub Blowout)
+              </button>
+            </div>
+
+            <label class="slider-label" for="station-slider">
+              <span>Incident Viewing Angle Station (<code>θ_i ∈ [0°, 80°]</code>)</span>
+              <input id="station-slider" type="range" min="0" max="16" step="1" value="12" />
+            </label>
+          </div>
+
+          <dl class="hud-metrics-grid">
+            <div class="metric-box">
+              <dt>Selected Viewing Angle</dt>
+              <dd id="hud-station-value">Station 12 (θ_i = 60°)</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Clearcoat F &amp; Window T</dt>
+              <dd id="hud-fresnel-value">F = 0.0700 · T = 0.9300</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Active Total Reflectance</dt>
+              <dd id="hud-active-value">1.0000</dd>
+            </div>
+            <div class="metric-box">
+              <dt>White-Furnace Blowout</dt>
+              <dd id="hud-error-value">0.0000 (White furnace E = 1.0000)</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Blown-Out Stations</dt>
+              <dd id="hud-blowout-count">0 / 17</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Clearcoat Spec</dt>
+              <dd>n_coat = 1.50 · F0 = 0.0400</dd>
+            </div>
+          </dl>
+
+          <div class="hud-formula-box">
+            <h2>Clearcoat Fresnel Partition &amp; Index-Matching Law</h2>
+            <p>
+              <code>L_out(θ_i) = F_coat(θ_i) · L_spec + (1 − F_coat(θ_i)) · L_substrate</code>
+            </p>
+            <p>
+              Any photon reflected by the top polyurethane clearcoat (<code>F_coat = 0.0700</code> at <code>60°</code>, <code>0.4093</code> at <code>80°</code>) cannot simultaneously enter the basecoat. Multiplying the substrate by <code>1 − F_coat</code> prevents the <code>+40.93%</code> grazing energy blowout of naive additive clearcoats.
+            </p>
+          </div>
+        </aside>
+      </main>
+    </div>
+  </body>
+</html>

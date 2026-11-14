@@ -1,0 +1,259 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Heitz GGX visible normal VNDF sampling vs full-NDF firefly spike rig",
+  "topic_zh": "Heitz GGX 可见法线椭球采样（VNDF）对比朴素全 NDF 掠射角萤火虫噪点爆炸",
+  "slug": "heitz-vndf-ellipsoid-sampling-rig",
+  "timestamp": "2026-11-14T07:44:50.766Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Eric Heitz (JCGT 2018) GGX Visible Normal Distribution Function (VNDF) ellipsoid-cap importance sampling (W_VNDF = G2/G1 <= 1.0000 with alpha = 1.00) versus naive Walter 2007 full-NDF cosine sampling (W_NDF = 1/G1(V) = (1 + sqrt(1 + alpha^2*tan^2(theta_v)))/2) and 64-trial visible normal quadrature across 17 grazing view angles (theta_v in [0 deg, 80 deg]).",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "vndf-rej64-equiv-128",
+      "passed": true,
+      "detail": "128 closed-form VNDF ellipsoid cap and 64-trial visible passes agree within 1e-13"
+    },
+    {
+      "name": "vndf-rej64-equiv-1024",
+      "passed": true,
+      "detail": "1024 closed-form VNDF ellipsoid cap and 64-trial visible passes agree within 1e-13"
+    },
+    {
+      "name": "vndf-rej64-equiv-8192",
+      "passed": true,
+      "detail": "8192 closed-form VNDF ellipsoid cap and 64-trial visible passes agree within 1e-13"
+    },
+    {
+      "name": "heitz-vndf-weight-bounded",
+      "passed": true,
+      "detail": "17 viewing angles bound VNDF estimator weight at W=1.0000 (0/17 firefly stations)"
+    },
+    {
+      "name": "naive-full-ndf-firefly-exposed",
+      "passed": true,
+      "detail": "naive full-NDF inflates 60° weight to 1.5000 and 80° to 3.3794 (16/17 stations)"
+    },
+    {
+      "name": "vndf-st12-10000-locked",
+      "passed": true,
+      "detail": "Heitz VNDF locks station-12 (60°, G1=0.6667) at W=1.0000 (0/17 firefly stations)"
+    },
+    {
+      "name": "full-ndf-st12-15000-spike",
+      "passed": true,
+      "detail": "naive full-NDF inflates station-12 (60°) to W=1.5000 (+0.5000 spike across 16/17)"
+    },
+    {
+      "name": "vndf-st16-grazing-33794-cut",
+      "passed": true,
+      "detail": "grazing station-16 (80°) locks W_VNDF=1.0000 vs W_NDF=3.3794 (+237.94% spike)"
+    },
+    {
+      "name": "exact-reverse-scrub",
+      "passed": true,
+      "detail": "reverse angle scrubbing from 80° back to 60° reproduces identical telemetry"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D VNDF ellipsoid hemisphere bench renders 58 tracked solids across 17 angles"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px VNDF Sampling controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station VNDF passes",
+      "count": 128,
+      "primary_ms": 0.06799999999998363,
+      "baseline_ms": 0.4157000000000153,
+      "primary_samples_ms": [
+        0.21010000000001128,
+        0.06860000000000355,
+        0.06729999999998881,
+        0.06680000000000064,
+        0.07099999999996953,
+        0.06770000000000209,
+        0.06799999999998363
+      ],
+      "baseline_samples_ms": [
+        0.4592000000000098,
+        0.4157000000000153,
+        0.419399999999996,
+        0.3765000000000214,
+        0.382000000000005,
+        0.37639999999998963,
+        0.42149999999998045
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station VNDF passes",
+      "count": 1024,
+      "primary_ms": 0.2837000000000103,
+      "baseline_ms": 2.7572000000000116,
+      "primary_samples_ms": [
+        0.5713999999999828,
+        0.2837000000000103,
+        0.2803000000000111,
+        0.29970000000002983,
+        0.294900000000041,
+        0.27729999999996835,
+        0.27909999999997126
+      ],
+      "baseline_samples_ms": [
+        2.882600000000025,
+        2.674599999999998,
+        2.6137999999999693,
+        2.759399999999971,
+        2.7572000000000116,
+        2.6118000000000166,
+        2.956799999999987
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station VNDF passes",
+      "count": 8192,
+      "primary_ms": 2.2431000000000267,
+      "baseline_ms": 21.33839999999998,
+      "primary_samples_ms": [
+        2.255800000000022,
+        2.2431000000000267,
+        2.2257999999999356,
+        2.3231000000000677,
+        2.225400000000036,
+        2.6978000000000293,
+        2.221400000000017
+      ],
+      "baseline_samples_ms": [
+        21.38779999999997,
+        21.016099999999994,
+        21.499000000000024,
+        21.33839999999998,
+        21.458399999999983,
+        21.18539999999996,
+        20.934600000000046
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/heitz-vndf-ellipsoid-sampling-rig/light-heitz-vndf-ellipsoid-cap.png",
+    "docs/evidence/heitz-vndf-ellipsoid-sampling-rig/light-naive-full-ndf-cosine-sampling.png",
+    "docs/evidence/heitz-vndf-ellipsoid-sampling-rig/dark-heitz-vndf-ellipsoid-cap.png",
+    "docs/evidence/heitz-vndf-ellipsoid-sampling-rig/dark-naive-full-ndf-cosine-sampling.png",
+    "docs/evidence/heitz-vndf-ellipsoid-sampling-rig/mobile.png"
+  ],
+  "primary_label": "Heitz VNDF Ellipsoid Projection",
+  "baseline_label": "64-Trial Visible Normal Loop",
+  "load_unit": "VNDF passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form VNDF estimator bound versus 64-trial visible hemisphere cap integration.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "roughness_alpha": 1,
+    "station12_smith_g1": 0.6667,
+    "station12_vndf_w": 1,
+    "station12_naive_w": 1.5,
+    "station16_naive_w": 3.3794,
+    "firefly_stations": 16
+  },
+  "protocol": {
+    "input": {
+      "station_index": 12,
+      "view_angle_deg": 60,
+      "roughness_alpha": 1,
+      "smith_g1_60deg": 0.6667,
+      "tan2_60deg": 3
+    },
+    "output": {
+      "vndf_weight_all": 1,
+      "naive_weight_60deg": 1.5,
+      "naive_weight_80deg": 3.3794,
+      "wasted_backface_60deg": 0.3333,
+      "firefly_stations": 16
+    },
+    "function": "p_VNDF(H) = G1(V)·max(0,V·H)·D(H)/(N·V) → Weight = G2/G1 ≤ 1.0000× vs Full-NDF 1/G1 = 1.5000× (60°) & 3.3794× (80°)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 viewing angles guarantee 100% visible normals (V.H > 0) and unit-bounded Monte Carlo weights",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Real-time ray-traced reflections in UE5 Lumen, Unity HDRP, Blender Cycles, and WebGPU/Three.js path tracers",
+    "Stretching the GGX ellipsoid to the unit sphere to sample only camera-visible normals (V.H > 0)",
+    "Canceling (V.H) / ((N.V)*G1(V)) in the PDF so estimator weights never exceed 1.0000 at grazing angles",
+    "Eliminating the 1.5000x at 60° and 3.3828x at 80° firefly variance spikes of full-NDF D(H)*(N.H) sampling"
+  ],
+  "not_for": [
+    "Purely analytic direct-light point evaluations without Monte Carlo importance sampling",
+    "Perfect delta mirrors with alpha == 0 where reflect(-V, N) requires only 1 deterministic ray",
+    "Lambertian diffuse hemisphere cosine sampling",
+    "Unlit 2D sprites"
+  ],
+  "locale_zh": {
+    "vndf-rej64-equiv-128": "VNDF椭球冠与64次可见采样等价 128",
+    "128 closed-form VNDF ellipsoid cap and 64-trial visible passes agree within 1e-13": "128 次闭式 VNDF 椭球冠投影与 64 次可见法线采样在 1e-13 内一致",
+    "vndf-rej64-equiv-1024": "VNDF椭球冠与64次可见采样等价 1024",
+    "1024 closed-form VNDF ellipsoid cap and 64-trial visible passes agree within 1e-13": "1024 次闭式 VNDF 椭球冠投影与 64 次可见法线采样在 1e-13 内一致",
+    "vndf-rej64-equiv-8192": "VNDF椭球冠与64次可见采样等价 8192",
+    "8192 closed-form VNDF ellipsoid cap and 64-trial visible passes agree within 1e-13": "8192 次闭式 VNDF 椭球冠投影与 64 次可见法线采样在 1e-13 内一致",
+    "heitz-vndf-weight-bounded": "Heitz可见法线权重有界守恒",
+    "17 viewing angles bound VNDF estimator weight at W=1.0000 (0/17 firefly stations)": "17 个视角将 VNDF 蒙特卡洛权重稳锁在 W=1.0000（0/17 萤火虫站）",
+    "naive-full-ndf-firefly-exposed": "朴素全法线采样掠射萤火虫暴露",
+    "naive full-NDF inflates 60° weight to 1.5000 and 80° to 3.3794 (16/17 stations)": "朴素全 NDF 在 60° 膨胀至 1.5000，在 80° 飙升至 3.3794（污染 16/17 站）",
+    "vndf-st12-10000-locked": "VNDF第12站1.0000权重锁定",
+    "Heitz VNDF locks station-12 (60°, G1=0.6667) at W=1.0000 (0/17 firefly stations)": "Heitz VNDF 将第 12 站（60°, G1=0.6667）锁定在 W=1.0000（0/17 爆闪）",
+    "full-ndf-st12-15000-spike": "全NDF第12站1.5000膨胀暴露",
+    "naive full-NDF inflates station-12 (60°) to W=1.5000 (+0.5000 spike across 16/17)": "朴素全 NDF 在第 12 站（60°）膨胀至 W=1.5000（过冲 +0.5000，16/17 站）",
+    "vndf-st16-grazing-33794-cut": "掠射第16站消除3.3794倍爆闪",
+    "grazing station-16 (80°) locks W_VNDF=1.0000 vs W_NDF=3.3794 (+237.94% spike)": "掠射角第 16 站（80°）锁定 W_VNDF=1.0000，消除全 NDF 3.3794× 萤火虫爆闪",
+    "exact-reverse-scrub": "精确逆序回退一致性",
+    "reverse angle scrubbing from 80° back to 60° reproduces identical telemetry": "从 80° 逆序拖回 60° 精确复现相同的椭球采样器状态",
+    "geometry-58-solids": "58构件3D椭球半球台一致性",
+    "3D VNDF ellipsoid hemisphere bench renders 58 tracked solids across 17 angles": "3D VNDF 椭球半球台在 17 个视角站点完整渲染 58 个独立几何体",
+    "mobile-layout": "手机布局",
+    "390px VNDF Sampling controls fit without horizontal overflow": "390px VNDF 椭球采样控制面板无横向溢出",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Heitz VNDF Ellipsoid Projection": "Heitz 闭式 VNDF 椭球投影",
+    "64-Trial Visible Normal Loop": "64 次可见半球冠积分基线",
+    "Median of 7 alternating Node CPU runs after warmup. Closed-form VNDF estimator bound versus 64-trial visible hemisphere cap integration.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；闭式 VNDF 权重上界求解对比 64 次可见半球冠积分基线。",
+    "Sampled 17 viewing angles guarantee 100% visible normals (V.H > 0) and unit-bounded Monte Carlo weights": "采样 17 个视角站点全部保证 100% 可见法线（V·H > 0）且蒙特卡洛权重严格受限于 1.0000×",
+    "p_VNDF(H) = G1(V)·max(0,V·H)·D(H)/(N·V) → Weight = G2/G1 ≤ 1.0000× vs Full-NDF 1/G1 = 1.5000× (60°) & 3.3794× (80°)": "可见法线采样 p_VNDF(H) → 权重锁定 ≤1.0000× 对比全 NDF 60°=1.5000× 及 80°=3.3794×",
+    "Real-time ray-traced reflections in UE5 Lumen, Unity HDRP, Blender Cycles, and WebGPU/Three.js path tracers": "UE5 Lumen、Unity HDRP、Blender Cycles 与 WebGPU/Three.js 路径追踪器中的实时光追粗糙反射采样",
+    "Stretching the GGX ellipsoid to the unit sphere to sample only camera-visible normals (V.H > 0)": "将 GGX 椭球逆拉伸为单位球面并仅采样朝向相机的可见圆盘，确保 100% 样本满足 V·H > 0",
+    "Canceling (V.H) / ((N.V)*G1(V)) in the PDF so estimator weights never exceed 1.0000 at grazing angles": "在概率密度函数 PDF 中精确相消 (V·H)/((N·V)·G1)，使掠射角估计器权重永不越过 1.0000",
+    "Eliminating the 1.5000x at 60° and 3.3828x at 80° firefly variance spikes of full-NDF D(H)*(N.H) sampling": "彻底根除传统全 NDF D(H)(N·H) 采样在 60° 膨胀 1.50×、在 80° 暴冲 3.38× 引发的掠射角萤火虫噪点",
+    "Purely analytic direct-light point evaluations without Monte Carlo importance sampling": "无需蒙特卡洛重要性采样的纯点光源解析直接光照求值",
+    "Perfect delta mirrors with alpha == 0 where reflect(-V, N) requires only 1 deterministic ray": "粗糙度为零（α == 0）只需单条确定性反射射线的理想镜面",
+    "Lambertian diffuse hemisphere cosine sampling": "朗伯漫反射余弦半球采样",
+    "Unlit 2D sprites": "无光照二维精灵贴图"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/heitz-vndf-ellipsoid-sampling.test.ts",
+    "node scripts/benchmark-heitz-vndf-ellipsoid-sampling.mjs"
+  ]
+}

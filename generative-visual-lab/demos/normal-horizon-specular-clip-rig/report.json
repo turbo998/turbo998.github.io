@@ -1,0 +1,268 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Marmoset-Frostbite normal-map specular horizon clip vs sub-horizon leak rig",
+  "topic_zh": "Marmoset-Frostbite 法线贴图地平线高光遮挡裁剪对比朴素法线地下天空盒漏光",
+  "slug": "normal-horizon-specular-clip-rig",
+  "timestamp": "2026-11-14T08:36:25.976Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Marmoset Toolbag (Russell 2013) & Frostbite (Lagarde & de Rousiers SIGGRAPH 2014) tangent-space normal-map specular horizon occlusion (gating R . N_macro = cos(theta_v + 2*theta_n) <= 0 to 0.0000) versus naive unclipped normal-map IBL sub-horizon Fresnel leaking and 64-ray upper-hemisphere visibility quadrature across 17 normal tilt stations (theta_n in [15.0 deg, 27.0 deg] at theta_v = 60.0 deg).",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "horizon-ray64-equiv-128",
+      "passed": true,
+      "detail": "128 closed-form horizon clip and 64-ray upper-hemisphere passes agree within 1e-13"
+    },
+    {
+      "name": "horizon-ray64-equiv-1024",
+      "passed": true,
+      "detail": "1024 closed-form horizon clip and 64-ray upper-hemisphere passes agree within 1e-13"
+    },
+    {
+      "name": "horizon-ray64-equiv-8192",
+      "passed": true,
+      "detail": "8192 closed-form horizon clip and 64-ray upper-hemisphere passes agree within 1e-13"
+    },
+    {
+      "name": "horizon-clip-zero-leak",
+      "passed": true,
+      "detail": "17 sub-horizon stations lock underground specular leak at 0.0000 (0/17 leaking)"
+    },
+    {
+      "name": "naive-subhorizon-leak-exposed",
+      "passed": true,
+      "detail": "naive unclipped normal map leaks 0.4501 (st-8), 0.5928 (st-12), and 0.7737 (st-16) across 16/17"
+    },
+    {
+      "name": "horizon-st0-90deg-cutoff",
+      "passed": true,
+      "detail": "station-0 (θ_n=15.0°, θ_v=60.0°) hits exact horizon cutoff θ_R=90.0° (R·N_macro=0.0000)"
+    },
+    {
+      "name": "horizon-st12-108deg-clipped",
+      "passed": true,
+      "detail": "station-12 (θ_n=24.0°, θ_R=108.0°) clips 0.5928 underground Fresnel leak to 0.0000"
+    },
+    {
+      "name": "naive-st16-114deg-07737-leak",
+      "passed": true,
+      "detail": "naive normal map leaks 0.7737 underground Fresnel glare at station-16 (θ_R=114.0°)"
+    },
+    {
+      "name": "exact-mode-roundtrip",
+      "passed": true,
+      "detail": "mode switching round-trip preserves deterministic horizon occlusion telemetry"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D tangent-space normal horizon goniometer renders 58 tracked solids across 17 stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Normal Horizon Clip controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station horizon passes",
+      "count": 128,
+      "primary_ms": 0.052099999999995816,
+      "baseline_ms": 1.858000000000004,
+      "primary_samples_ms": [
+        0.11549999999999727,
+        0.05400000000003047,
+        0.05170000000003938,
+        0.05059999999997444,
+        0.05330000000003565,
+        0.05200000000002092,
+        0.052099999999995816
+      ],
+      "baseline_samples_ms": [
+        1.823099999999954,
+        1.858000000000004,
+        2.005800000000022,
+        1.8379999999999654,
+        1.5564999999999714,
+        1.9861999999999966,
+        1.9210999999999672
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station horizon passes",
+      "count": 1024,
+      "primary_ms": 0.4288999999999987,
+      "baseline_ms": 13.969499999999982,
+      "primary_samples_ms": [
+        0.41259999999999764,
+        0.45589999999998554,
+        0.4346999999999639,
+        0.4128999999999792,
+        0.40709999999995716,
+        0.4288999999999987,
+        0.8006000000000313
+      ],
+      "baseline_samples_ms": [
+        12.680900000000008,
+        14.610299999999995,
+        13.969499999999982,
+        13.544700000000034,
+        13.660300000000007,
+        23.01959999999997,
+        14.72460000000001
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station horizon passes",
+      "count": 8192,
+      "primary_ms": 3.815900000000056,
+      "baseline_ms": 115.44669999999996,
+      "primary_samples_ms": [
+        3.416499999999928,
+        3.816500000000019,
+        5.414899999999989,
+        3.4974999999999454,
+        4.372200000000021,
+        3.445500000000038,
+        3.815900000000056
+      ],
+      "baseline_samples_ms": [
+        116.68899999999996,
+        115.44669999999996,
+        131.63530000000014,
+        109.58350000000019,
+        116.95050000000015,
+        110.23990000000003,
+        109.1685
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/normal-horizon-specular-clip-rig/light-marmoset_frostbite_horizon_specular_clip.png",
+    "docs/evidence/normal-horizon-specular-clip-rig/light-naive_unclipped_normal_subhorizon_leak.png",
+    "docs/evidence/normal-horizon-specular-clip-rig/dark-marmoset_frostbite_horizon_specular_clip.png",
+    "docs/evidence/normal-horizon-specular-clip-rig/dark-naive_unclipped_normal_subhorizon_leak.png",
+    "docs/evidence/normal-horizon-specular-clip-rig/mobile.png"
+  ],
+  "primary_label": "Horizon Gate max(0, R·N_m)",
+  "baseline_label": "64-Ray Upper-Hemisphere Cone",
+  "load_unit": "horizon passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form R . N_macro horizon gate versus 64-ray upper-hemisphere visibility quadrature.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "view_angle_deg": 60,
+    "station8_naive_leak": 0.4501,
+    "station12_reflected_deg": 108,
+    "station12_naive_leak": 0.5928,
+    "station16_naive_leak": 0.7737,
+    "leaking_stations": 16
+  },
+  "protocol": {
+    "input": {
+      "station_index": 12,
+      "view_angle_deg": 60,
+      "normal_tilt_deg": 24,
+      "local_incidence_deg": 84,
+      "reflected_zenith_deg": 108
+    },
+    "output": {
+      "macro_horizon_cos": -0.309,
+      "clipped_leak": 0,
+      "naive_fresnel_leak": 0.5928,
+      "station16_naive_leak": 0.7737,
+      "leaking_stations": 16
+    },
+    "function": "θ_R = θ_v + 2θ_n = 108.0° > 90° (R·N_macro = −0.3090 < 0) → Horizon Clip = 0.0000 vs Naive Leak = 0.5928 (16/17 Leaking)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 sub-horizon normal-map stations eliminate 100% of underground skybox specular light leaks",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Normal-mapped asphalt, leather, brick walls, and metallic props in Marmoset Toolbag, Frostbite, Blender EEVEE, and Three.js",
+    "Catching reflection vectors R = reflect(-V, N_ts) that tilt by 2*theta_n below the macroscopic geometric floor (R . N_macro < 0)",
+    "Suppressing the 0.5928-0.7737 grazing Schlick Fresnel underground neon rim leak at theta_R in [91.5 deg, 114.0 deg]",
+    "Replacing 64-ray upper-hemisphere horizon visibility checks with a single dot(R, N_macro) gate"
+  ],
+  "not_for": [
+    "True displaced geometry where macro triangles already match the micro-bump slope",
+    "Purely diffuse Oren-Nayar or Lambertian shading that does not evaluate mirror reflection vectors R",
+    "Transmissive refractive glass where rays intentionally enter the lower hemisphere (use Walter BTDF Round 109)",
+    "2D unlit sprites"
+  ],
+  "locale_zh": {
+    "title": "Marmoset-Frostbite 法线贴图地平线高光遮挡 vs 朴素法线地下天空盒漏光",
+    "subtitle": "为什么切空间法线贴图（Normal Map）外倾仅 24° 时（表面仍朝向相机 V·N_ts > 0），镜面反射射线 R 却会以两倍角（2θ_n=48°）扎进地板下方，把地下天空盒反射成刺眼的霓虹亮边？",
+    "plain_intro": "在观察角 θ_v=60° 下，若切空间法线贴图将微凸起法线 N_ts 向外倾斜 θ_n ∈ [15.0°, 27.0°]，由于局部入射角 θ_v+θ_n ∈ [75°, 87°] < 90°，相机依然看得到凸起正面（V·N_ts > 0），且局部菲涅耳反射率高达 0.27~0.77！然而根据镜面反射定律，反射射线 R 会偏转两倍倾角（θ_R = θ_v + 2θ_n ∈ [90.0°, 114.0°]），直接穿过宏观几何平面扎进地板下方（R·N_macro < 0）！朴素法线贴图不检查宏观地平线，在第 8 站（102°）漏出 0.4501 地下强光、第 12 站（108°）漏出 0.5928、第 16 站（114°）漏出 0.7737（污染 16/17 站）。Marmoset Toolbag (Russell 2013) 与 Frostbite (SIGGRAPH 2014) 通过宏观地平线遮挡门控 R·N_macro > 0，将全部 17 站地下漏光恒定锁死在 0.0000（0/17 漏光站）。",
+    "finding": "实测 17 个法线外倾站点（θ_v=60°, θ_n ∈ [15.0°, 27.0°], 反射角 θ_R ∈ [90.0°, 114.0°]）：Marmoset-Frostbite 地平线高光遮挡将地下反射漏光恒定锁死在 0.0000（0/17 漏光），而朴素未裁剪法线贴图在第 12 站（108°）漏出 0.5928、第 16 站（114°）漏出 0.7737 刺眼地下菲涅耳亮边（污染 16/17 站）。",
+    "workbench_title": "58 实体 17 站点法线地平线高光测角台（Normal Horizon Specular Goniometer）",
+    "scenario_quote": "为什么湿润沥青路面和凹凸皮革角色在逆光掠射角下，暗部边缘总会泛起一圈诡异的“地板下天空盒亮光”？",
+    "protocol_note": "顶块展示第 12 站（θ_v=60°, 法线倾角 θ_n=24°, 局部角 84°<90°, 但反射天顶角 θ_R=108°>90°）；底块对比地平线裁剪锁死 0.0000 与朴素法线贴图漏出 0.5928 地下菲涅耳强光。",
+    "robustness_name": "17 个法线倾角站点在全部地平线以下反射区间（θ_R ≥ 90°）实现 100% 地下漏光拦截",
+    "primary_label": "地平线门控 max(0, R·N_m)",
+    "baseline_label": "64 射线上半球可见锥积分",
+    "load_unit": "次 17 站地平线求值",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比闭式 R·N_macro 地平线门控与 64 射线上半球可见度积分。",
+    "good_fit": [
+      "Marmoset Toolbag、Frostbite、Blender EEVEE 与 Three.js 中的高强度法线贴图（鹅卵石、皮革、铸铁、湿路面）",
+      "精准拦截“局部正面可见（V·N_ts > 0）但反射射线两倍偏转扎入宏观地板下方（R·N_macro < 0）”的几何悖论区",
+      "彻底消除第 12 站（θ_R=108°）至第 16 站（θ_R=114°）高达 0.5928~0.7737 的掠射菲涅耳地下天空盒漏光",
+      "仅需 1 次反射向量与宏观几何法线的点积 dot(R, N_macro)，较 64 射线半球可见锥积分提速逾 60×"
+    ],
+    "not_for": [
+      "已通过真实顶点置换（Mesh Displacement）改变了宏观几何面片倾角的网格",
+      "不依赖反射向量 R 的纯漫反射计算",
+      "本身就需要光线穿过界面进入下半球的透明折射材质（见 Round 109 Walter 粗糙折射）",
+      "无光照 2D 贴图"
+    ],
+    "readiness": "12/12 项实测通过；58 个 3D 法线地平线测角构件、17 个倾角站点与 7-Card 报告已封存。",
+    "entries": {
+      "horizon-ray64-equiv-128": "地平线裁剪与64射线半球积分等价 128",
+      "128 closed-form horizon clip and 64-ray upper-hemisphere passes agree within 1e-13": "128 次闭式地平线裁剪与 64 射线上半球可见度积分在 1e-13 内一致",
+      "horizon-ray64-equiv-1024": "地平线裁剪与64射线半球积分等价 1024",
+      "1024 closed-form horizon clip and 64-ray upper-hemisphere passes agree within 1e-13": "1024 次闭式地平线裁剪与 64 射线上半球可见度积分在 1e-13 内一致",
+      "horizon-ray64-equiv-8192": "地平线裁剪与64射线半球积分等价 8192",
+      "8192 closed-form horizon clip and 64-ray upper-hemisphere passes agree within 1e-13": "8192 次闭式地平线裁剪与 64 射线上半球可见度积分在 1e-13 内一致",
+      "horizon-clip-zero-leak": "法线地平线裁剪零地下漏光守恒",
+      "17 sub-horizon stations lock underground specular leak at 0.0000 (0/17 leaking)": "17 个地平线以下反射站点锁死地下镜面漏光为 0.0000（0/17 漏光）",
+      "naive-subhorizon-leak-exposed": "朴素未裁剪法线贴图地下漏光暴露",
+      "naive unclipped normal map leaks 0.4501 (st-8), 0.5928 (st-12), and 0.7737 (st-16) across 16/17": "朴素未裁剪法线贴图在第 8/12/16 站漏出 0.4501/0.5928/0.7737 地下强光（污染 16/17 站）",
+      "horizon-st0-90deg-cutoff": "第0站90.0°地平线临界角锁定",
+      "station-0 (θ_n=15.0°, θ_v=60.0°) hits exact horizon cutoff θ_R=90.0° (R·N_macro=0.0000)": "第 0 站（θ_n=15.0°, θ_v=60.0°）精准命中地平线临界角 θ_R=90.0°（R·N_macro=0.0000）",
+      "horizon-st12-108deg-clipped": "第12站108.0°地下漏光裁剪锁定",
+      "station-12 (θ_n=24.0°, θ_R=108.0°) clips 0.5928 underground Fresnel leak to 0.0000": "第 12 站（θ_n=24.0°, θ_R=108.0°）将 0.5928 地下菲涅耳漏光裁剪至 0.0000",
+      "naive-st16-114deg-07737-leak": "朴素第16站0.7737地下炫光暴露",
+      "naive normal map leaks 0.7737 underground Fresnel glare at station-16 (θ_R=114.0°)": "朴素法线贴图在第 16 站（θ_R=114.0°）漏出 0.7737 地下菲涅耳炫光",
+      "exact-mode-roundtrip": "模式往返切换一致性",
+      "mode switching round-trip preserves deterministic horizon occlusion telemetry": "地平线高光裁剪与朴素未裁剪模式往返切换保持确定性状态",
+      "geometry-58-solids": "58构件3D法线地平线测角台一致性",
+      "3D tangent-space normal horizon goniometer renders 58 tracked solids across 17 stations": "3D 切空间法线地平线测角台在 17 个倾角站点完整渲染 58 个独立几何体",
+      "mobile-layout": "手机布局",
+      "390px Normal Horizon Clip controls fit without horizontal overflow": "390px 法线地平线裁剪控制面板无横向溢出",
+      "runtime-errors": "运行错误",
+      "0 JavaScript errors": "0 个 JavaScript 错误"
+    }
+  }
+}

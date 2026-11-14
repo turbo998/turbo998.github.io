@@ -1,0 +1,259 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "CSM Hermite-dithered cascade blend vs hard frustum-split cliff rig",
+  "topic_zh": "CSM 三阶埃尔米特抖动级联阴影过渡对比朴素硬分割断崖跳变",
+  "slug": "csm-cascade-blend-dither-rig",
+  "timestamp": "2026-11-14T06:36:07.259Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Cascaded Shadow Map (CSM) C1 Hermite-dithered transition zone blending (W_blend(u) = (1 - s)*W0 + s*W1 with s = u^2*(3 - 2*u), W0 = 1.0, W1 = 2.0 across a 4.0 m overlap band z in [18.0 m, 22.0 m] around split plane z = 20.0 m) versus naive hard frustum split and 64-stratum stochastic dither quadrature across 17 depth stations.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "hermite-stratum64-equiv-128",
+      "passed": true,
+      "detail": "128 Hermite C1 blend and 64-stratum dither passes agree within 1e-13"
+    },
+    {
+      "name": "hermite-stratum64-equiv-1024",
+      "passed": true,
+      "detail": "1024 Hermite C1 blend and 64-stratum dither passes agree within 1e-13"
+    },
+    {
+      "name": "hermite-stratum64-equiv-8192",
+      "passed": true,
+      "detail": "8192 Hermite C1 blend and 64-stratum dither passes agree within 1e-13"
+    },
+    {
+      "name": "hermite-c1-cascade-blend-conserved",
+      "passed": true,
+      "detail": "17 stations smoothly bridge W0=1.0000 to W1=2.0000 (20m midpoint: 1.5000)"
+    },
+    {
+      "name": "naive-hard-split-cliff-exposed",
+      "passed": true,
+      "detail": "naive hard split jumps from 1.0000 to 2.0000 at 20m (+0.5000 cliff across 15/17)"
+    },
+    {
+      "name": "hermite-st8-15000-locked",
+      "passed": true,
+      "detail": "Hermite Blend locks station-8 (20.0m, u=0.50) at W=1.5000 (0/17 corrupted stations)"
+    },
+    {
+      "name": "hard-split-st8-20000-cliff",
+      "passed": true,
+      "detail": "naive hard split jumps station-8 to W=2.0000 (+0.5000 error across 15/17 interior stations)"
+    },
+    {
+      "name": "hermite-st12-18438-smooth",
+      "passed": true,
+      "detail": "station-12 (z=21.0m, u=0.75) evaluates W_blend=1.8438 vs W_hard=2.0000"
+    },
+    {
+      "name": "exact-reverse-scrub",
+      "passed": true,
+      "detail": "reverse depth scrubbing from 21.0m back to 20.0m reproduces identical telemetry"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D CSM highway bench renders 58 tracked solids across 17 depth stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px CSM Cascade Blend controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station CSM blend passes",
+      "count": 128,
+      "primary_ms": 0.028200000000026648,
+      "baseline_ms": 0.3531000000000404,
+      "primary_samples_ms": [
+        0.04070000000001528,
+        0.028600000000039927,
+        0.02740000000000009,
+        0.029300000000034743,
+        0.028200000000026648,
+        0.027999999999963165,
+        0.02780000000001337
+      ],
+      "baseline_samples_ms": [
+        0.3563000000000329,
+        0.35370000000000346,
+        0.3531000000000404,
+        0.3558999999999628,
+        0.18139999999999645,
+        0.1863999999999919,
+        0.21809999999999263
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station CSM blend passes",
+      "count": 1024,
+      "primary_ms": 0.05920000000003256,
+      "baseline_ms": 0.9224999999999568,
+      "primary_samples_ms": [
+        0.24040000000002237,
+        0.05920000000003256,
+        0.06150000000002365,
+        0.05869999999998754,
+        0.060899999999946886,
+        0.05860000000001264,
+        0.058400000000006
+      ],
+      "baseline_samples_ms": [
+        1.4200999999999908,
+        0.9271999999999707,
+        0.921100000000024,
+        0.9248999999999796,
+        0.9210000000000491,
+        0.9208000000000425,
+        0.9224999999999568
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station CSM blend passes",
+      "count": 8192,
+      "primary_ms": 0.46560000000005175,
+      "baseline_ms": 7.419700000000034,
+      "primary_samples_ms": [
+        0.509900000000016,
+        0.46560000000005175,
+        0.49279999999998836,
+        0.46549999999996317,
+        0.46510000000000673,
+        0.46530000000001337,
+        0.46680000000003474
+      ],
+      "baseline_samples_ms": [
+        7.419700000000034,
+        7.411400000000015,
+        7.515699999999981,
+        7.314700000000016,
+        7.8729999999999905,
+        7.331999999999994,
+        7.726499999999987
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/csm-cascade-blend-dither-rig/light-hermite-dither-cascade-blend.png",
+    "docs/evidence/csm-cascade-blend-dither-rig/light-naive-hard-frustum-split.png",
+    "docs/evidence/csm-cascade-blend-dither-rig/dark-hermite-dither-cascade-blend.png",
+    "docs/evidence/csm-cascade-blend-dither-rig/dark-naive-hard-frustum-split.png",
+    "docs/evidence/csm-cascade-blend-dither-rig/mobile.png"
+  ],
+  "primary_label": "Hermite C1 Cascade Blend",
+  "baseline_label": "64-Stratum Dither Quadrature",
+  "load_unit": "CSM passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form cubic Hermite cascade transition weight versus 64-stratum stochastic dither integration.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "split_depth_m": 20,
+    "station7_blended": 1.4067,
+    "station8_blended": 1.5,
+    "station8_hard_split": 2,
+    "station12_blended": 1.8438,
+    "corrupted_stations": 15
+  },
+  "protocol": {
+    "input": {
+      "station_index": 8,
+      "view_depth_m": 20,
+      "transition_u": 0.5,
+      "w0_scale": 1,
+      "w1_scale": 2
+    },
+    "output": {
+      "hermite_weight_s": 0.5,
+      "blended_scale_20m": 1.5,
+      "hard_split_20m": 2,
+      "blended_scale_21m": 1.8438,
+      "corrupted_stations": 15
+    },
+    "function": "W_blend(u) = W0 + u²(3 − 2u)·(W1 − W0) → Split z=20m W = 1.5000× vs Hard Split 2.0000× (0 Seam Pop)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 transition depth stations eliminate cascade split lines with zero C1 derivative jump",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Open-world sun Cascaded Shadow Maps in UE5, Unity URP/HDRP, CryEngine, and Three.js CSM",
+    "Eliminating the visible horizontal shadow resolution seam pushing across roads ahead of the camera",
+    "Using IGN stochastic single-cascade selection (xi < u^2*(3-2*u)) to get C1 blending at 1x texture cost",
+    "Pairing with Texel-Snapped Shadow Cascades (Round 52) and Gruen Normal-Offset Bias (Round 87)"
+  ],
+  "not_for": [
+    "Single-frustum indoor spotlight shadow maps without cascade splits",
+    "Fully ray-traced hardware shadow rays without shadow map cascades",
+    "Baked static lightmaps",
+    "Unlit 2D top-down maps"
+  ],
+  "locale_zh": {
+    "hermite-stratum64-equiv-128": "Hermite混合与64层抖动等价 128",
+    "128 Hermite C1 blend and 64-stratum dither passes agree within 1e-13": "128 次闭式 Hermite 与 64 层随机抖动积分在 1e-13 内一致",
+    "hermite-stratum64-equiv-1024": "Hermite混合与64层抖动等价 1024",
+    "1024 Hermite C1 blend and 64-stratum dither passes agree within 1e-13": "1024 次闭式 Hermite 与 64 层随机抖动积分在 1e-13 内一致",
+    "hermite-stratum64-equiv-8192": "Hermite混合与64层抖动等价 8192",
+    "8192 Hermite C1 blend and 64-stratum dither passes agree within 1e-13": "8192 次闭式 Hermite 与 64 层随机抖动积分在 1e-13 内一致",
+    "hermite-c1-cascade-blend-conserved": "Hermite级联过渡平滑守恒",
+    "17 stations smoothly bridge W0=1.0000 to W1=2.0000 (20m midpoint: 1.5000)": "17 站平滑衔接 W0=1.0000 至 W1=2.0000（20m 分割面中点锁定 1.5000）",
+    "naive-hard-split-cliff-exposed": "朴素硬分割断崖跳变暴露",
+    "naive hard split jumps from 1.0000 to 2.0000 at 20m (+0.5000 cliff across 15/17)": "朴素硬分割在 20m 从 1.0000 突跳至 2.0000（误差 +0.5000，污染 15/17 站）",
+    "hermite-st8-15000-locked": "Hermite第8站1.5000中点锁定",
+    "Hermite Blend locks station-8 (20.0m, u=0.50) at W=1.5000 (0/17 corrupted stations)": "Hermite 混合将第 8 站（20.0m, u=0.50）锁定在 W=1.5000（0/17 失真站）",
+    "hard-split-st8-20000-cliff": "硬分割第8站2.0000断崖暴露",
+    "naive hard split jumps station-8 to W=2.0000 (+0.5000 error across 15/17 interior stations)": "朴素硬分割在第 8 站突跳至 W=2.0000（中点误差 +0.5000，污染 15/17 个内部站）",
+    "hermite-st12-18438-smooth": "第12站1.8438三阶平滑过渡",
+    "station-12 (z=21.0m, u=0.75) evaluates W_blend=1.8438 vs W_hard=2.0000": "第 12 站（z=21.0m, u=0.75）输出 W_blend=1.8438，消除硬分割 2.0000 阶跃",
+    "exact-reverse-scrub": "精确逆序回退一致性",
+    "reverse depth scrubbing from 21.0m back to 20.0m reproduces identical telemetry": "从 21.0m 逆序拖回 20.0m 精确复现相同的级联过渡状态",
+    "geometry-58-solids": "58构件3D级联阴影台一致性",
+    "3D CSM highway bench renders 58 tracked solids across 17 depth stations": "3D 级联阴影公路台在 17 个深度站点完整渲染 58 个独立几何体",
+    "mobile-layout": "手机布局",
+    "390px CSM Cascade Blend controls fit without horizontal overflow": "390px 级联阴影过渡控制面板无横向溢出",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Hermite C1 Cascade Blend": "Hermite C1 闭式级联混合",
+    "64-Stratum Dither Quadrature": "64 层随机抖动积分基线",
+    "Median of 7 alternating Node CPU runs after warmup. Closed-form cubic Hermite cascade transition weight versus 64-stratum stochastic dither integration.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；闭式三阶埃尔米特级联权重对比 64 层随机抖动积分基线。",
+    "Sampled 17 transition depth stations eliminate cascade split lines with zero C1 derivative jump": "采样 17 个过渡深度站点彻底消除级联分割黑线，实现一阶导数连续 C1 无缝衔接",
+    "W_blend(u) = W0 + u²(3 − 2u)·(W1 − W0) → Split z=20m W = 1.5000× vs Hard Split 2.0000× (0 Seam Pop)": "埃尔米特级联混合 W_blend(u) → z=20m 分割面锁定 1.5000× 对比硬分割 2.0000×（零接缝跳变）",
+    "Open-world sun Cascaded Shadow Maps in UE5, Unity URP/HDRP, CryEngine, and Three.js CSM": "UE5、Unity URP/HDRP、CryEngine 与 Three.js CSM 中的开放世界太阳级联阴影贴图",
+    "Eliminating the visible horizontal shadow resolution seam pushing across roads ahead of the camera": "彻底根除随相机前进在路面与草地上平推的级联阴影分辨率断崖分割线",
+    "Using IGN stochastic single-cascade selection (xi < u^2*(3-2*u)) to get C1 blending at 1x texture cost": "结合 IGN 交错梯度噪声单抽头随机选级（ξ < u²(3−2u)），以 1× 采样开销实现 C1 平滑过渡",
+    "Pairing with Texel-Snapped Shadow Cascades (Round 52) and Gruen Normal-Offset Bias (Round 87)": "与纹素对齐级联防泳动（Round 52）及 Gruen 法向偏移偏置（Round 87）无缝协同",
+    "Single-frustum indoor spotlight shadow maps without cascade splits": "无级联切分的单视锥室内聚光灯阴影贴图",
+    "Fully ray-traced hardware shadow rays without shadow map cascades": "无需光栅化级联贴图的全硬件光线追踪阴影",
+    "Baked static lightmaps": "离线烘焙的静态光照贴图",
+    "Unlit 2D top-down maps": "无光照二维俯视地图"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/csm-cascade-blend-dither.test.ts",
+    "node scripts/benchmark-csm-cascade-blend-dither.mjs"
+  ]
+}

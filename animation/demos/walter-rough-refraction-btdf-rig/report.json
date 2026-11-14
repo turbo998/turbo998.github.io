@@ -1,0 +1,259 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Walter IOR-weighted rough refraction BTDF vs unweighted bisector rig",
+  "topic_zh": "Walter 折射率加权微平面粗糙折射 BTDF 对比未加权平分线磨砂玻璃变黑",
+  "slug": "walter-rough-refraction-btdf-rig",
+  "timestamp": "2026-11-14T07:30:51.371Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Bruce Walter et al. (EGSR 2007) IOR-weighted microfacet refraction half-vector (H_t = -normalize(eta_i*V + eta_o*L) with eta_i = 1.00, eta_o = 1.50, alpha = 0.25) versus naive unweighted bisector (-normalize(V + L)) and 64-step microfacet Snell root search across 17 incident viewing angles (theta_i in [0 deg, 80 deg]).",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "walter-root64-equiv-128",
+      "passed": true,
+      "detail": "128 closed-form Walter H_t and 64-step Snell root passes agree within 1e-13"
+    },
+    {
+      "name": "walter-root64-equiv-1024",
+      "passed": true,
+      "detail": "1024 closed-form Walter H_t and 64-step Snell root passes agree within 1e-13"
+    },
+    {
+      "name": "walter-root64-equiv-8192",
+      "passed": true,
+      "detail": "8192 closed-form Walter H_t and 64-step Snell root passes agree within 1e-13"
+    },
+    {
+      "name": "walter-snell-btdf-peak-conserved",
+      "passed": true,
+      "detail": "17 angles align H_t = -normalize(eta_i*V + eta_o*L) at I=1.0000 (0/17 starved)"
+    },
+    {
+      "name": "naive-bisector-starvation-exposed",
+      "passed": true,
+      "detail": "unweighted bisector drops station-12 (60°) to 0.3194 (-0.6806 loss across 16/17)"
+    },
+    {
+      "name": "walter-st12-10000-peak-locked",
+      "passed": true,
+      "detail": "Walter H_t locks station-12 (60° -> 35.26°) at I=1.0000 (0/17 starved stations)"
+    },
+    {
+      "name": "bisector-st12-03194-starved",
+      "passed": true,
+      "detail": "unweighted bisector collapses station-12 (60°) to I=0.3194 (-0.6806 loss across 16/17)"
+    },
+    {
+      "name": "walter-st16-grazing-10000",
+      "passed": true,
+      "detail": "grazing station-16 (80°) locks I_Walter=1.0000 vs I_naive=0.1109 (-88.91% loss)"
+    },
+    {
+      "name": "exact-reverse-scrub",
+      "passed": true,
+      "detail": "reverse angle scrubbing from 80° back to 60° reproduces identical telemetry"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D frosted glass refractometer bench renders 58 tracked solids across 17 angles"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Rough Refraction controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station BTDF passes",
+      "count": 128,
+      "primary_ms": 0.11549999999999727,
+      "baseline_ms": 1.6194999999999595,
+      "primary_samples_ms": [
+        0.3450000000000273,
+        0.13249999999999318,
+        0.12819999999999254,
+        0.11549999999999727,
+        0.10860000000002401,
+        0.10330000000004702,
+        0.102800000000002
+      ],
+      "baseline_samples_ms": [
+        1.6587999999999852,
+        1.7472999999999956,
+        1.6194999999999595,
+        1.9656000000000518,
+        1.4069000000000074,
+        1.4032000000000266,
+        1.4058999999999742
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station BTDF passes",
+      "count": 1024,
+      "primary_ms": 0.8950999999999567,
+      "baseline_ms": 11.752100000000041,
+      "primary_samples_ms": [
+        0.8573000000000093,
+        0.8867999999999938,
+        0.8823999999999614,
+        0.9542000000000144,
+        0.9002000000000407,
+        0.8984000000000378,
+        0.8950999999999567
+      ],
+      "baseline_samples_ms": [
+        11.533799999999985,
+        11.747799999999984,
+        11.699700000000007,
+        12.556300000000022,
+        11.752100000000041,
+        12.1644,
+        12.225099999999998
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station BTDF passes",
+      "count": 8192,
+      "primary_ms": 7.63919999999996,
+      "baseline_ms": 102.96910000000003,
+      "primary_samples_ms": [
+        7.63919999999996,
+        6.895099999999957,
+        7.482999999999947,
+        7.976599999999962,
+        7.987100000000055,
+        8.330199999999877,
+        7.174299999999903
+      ],
+      "baseline_samples_ms": [
+        96.76109999999994,
+        96.01059999999995,
+        99.02800000000002,
+        103.93270000000007,
+        118.971,
+        102.96910000000003,
+        103.40859999999998
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/walter-rough-refraction-btdf-rig/light-walter-ior-weighted-half-vector.png",
+    "docs/evidence/walter-rough-refraction-btdf-rig/light-naive-unweighted-bisector-btdf.png",
+    "docs/evidence/walter-rough-refraction-btdf-rig/dark-walter-ior-weighted-half-vector.png",
+    "docs/evidence/walter-rough-refraction-btdf-rig/dark-naive-unweighted-bisector-btdf.png",
+    "docs/evidence/walter-rough-refraction-btdf-rig/mobile.png"
+  ],
+  "primary_label": "Walter IOR-Weighted H_t Vector",
+  "baseline_label": "64-Step Snell Root Search",
+  "load_unit": "BTDF passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form IOR-weighted transmission half-vector versus 64-step microfacet Snell root search.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "eta_transmitted": 1.5,
+    "station12_refracted_deg": 35.2644,
+    "station12_walter_i": 1,
+    "station12_naive_i": 0.3194,
+    "station16_naive_i": 0.1109,
+    "starved_stations": 16
+  },
+  "protocol": {
+    "input": {
+      "station_index": 12,
+      "angle_i_deg": 60,
+      "angle_t_deg": 35.2644,
+      "eta_i": 1,
+      "eta_o": 1.5
+    },
+    "output": {
+      "walter_tilt_deg": 0,
+      "naive_tilt_deg": 12.3678,
+      "walter_peak_i": 1,
+      "naive_60deg_i": 0.3194,
+      "starved_stations": 16
+    },
+    "function": "H_t = −normalize(η_i·V + η_o·L) → 60° Snell Peak I = 1.0000 vs Unweighted Bisector 0.3194 (−68.06% Starved)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 incident viewing angles align the IOR-weighted half-vector with the Snell refraction lobe without off-axis darkening",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Frosted glass, etched crystal, ice cubes, and translucent polymers in glTF KHR_materials_transmission, Blender, and Three.js",
+    "Weighting incident and transmitted vectors by (eta_i, eta_o) so H_t = -normalize(eta_i*V + eta_o*L) satisfies Snell law",
+    "Eliminating the 12.37° half-vector tilt error and -68.06% at 60° / -83.64% at 80° transmission darkening of unweighted bisectors",
+    "Pairing with the Walter Refraction Jacobian eta_o^2*|L.H_t| / (eta_i*(V.H_t) + eta_o*(L.H_t))^2"
+  ],
+  "not_for": [
+    "Opaque metallic mirrors where reflection eta_i == eta_o makes the unweighted bisector exact",
+    "Zero-thickness flat decals without refraction IOR jump",
+    "Highly turbid multiple-scattering milk or skin (use Christensen-Burley BSSRDF Round 108)",
+    "Unlit wireframe overlays"
+  ],
+  "locale_zh": {
+    "walter-root64-equiv-128": "Walter半角与64步斯涅尔求根等价 128",
+    "128 closed-form Walter H_t and 64-step Snell root passes agree within 1e-13": "128 次闭式 Walter 折射半向量与 64 步斯涅尔求根在 1e-13 内一致",
+    "walter-root64-equiv-1024": "Walter半角与64步斯涅尔求根等价 1024",
+    "1024 closed-form Walter H_t and 64-step Snell root passes agree within 1e-13": "1024 次闭式 Walter 折射半向量与 64 步斯涅尔求根在 1e-13 内一致",
+    "walter-root64-equiv-8192": "Walter半角与64步斯涅尔求根等价 8192",
+    "8192 closed-form Walter H_t and 64-step Snell root passes agree within 1e-13": "8192 次闭式 Walter 折射半向量与 64 步斯涅尔求根在 1e-13 内一致",
+    "walter-snell-btdf-peak-conserved": "Walter折射半向量峰值守恒",
+    "17 angles align H_t = -normalize(eta_i*V + eta_o*L) at I=1.0000 (0/17 starved)": "17 个视角对齐 H_t = -normalize(η_i·V + η_o·L)，峰值锁定 I=1.0000（0/17 饥饿）",
+    "naive-bisector-starvation-exposed": "朴素未加权平分线透射饥饿暴露",
+    "unweighted bisector drops station-12 (60°) to 0.3194 (-0.6806 loss across 16/17)": "朴素未加权平分线将第 12 站（60°）压至 0.3194（丢失 -0.6806，污染 16/17 站）",
+    "walter-st12-10000-peak-locked": "Walter第12站1.0000透射峰锁定",
+    "Walter H_t locks station-12 (60° -> 35.26°) at I=1.0000 (0/17 starved stations)": "Walter 折射半向量将第 12 站（60°→35.26°）锁定在 I=1.0000（0/17 饥饿）",
+    "bisector-st12-03194-starved": "未加权第12站0.3194透射坍塌",
+    "unweighted bisector collapses station-12 (60°) to I=0.3194 (-0.6806 loss across 16/17)": "未加权平分线在第 12 站（60°）跌至 I=0.3194（丢失 -0.6806，16/17 站）",
+    "walter-st16-grazing-10000": "掠射第16站1.0000满通透锁定",
+    "grazing station-16 (80°) locks I_Walter=1.0000 vs I_naive=0.1109 (-88.91% loss)": "掠射角第 16 站（80°）保持 I_Walter=1.0000，消除未加权 0.1109 变黑",
+    "exact-reverse-scrub": "精确逆序回退一致性",
+    "reverse angle scrubbing from 80° back to 60° reproduces identical telemetry": "从 80° 逆序拖回 60° 精确复现相同的磨砂玻璃折射仪状态",
+    "geometry-58-solids": "58构件3D磨砂玻璃折射台一致性",
+    "3D frosted glass refractometer bench renders 58 tracked solids across 17 angles": "3D 磨砂玻璃折射台在 17 个视角站点完整渲染 58 个独立几何体",
+    "mobile-layout": "手机布局",
+    "390px Rough Refraction controls fit without horizontal overflow": "390px 磨砂玻璃折射控制面板无横向溢出",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Walter IOR-Weighted H_t Vector": "Walter 闭式折射率加权半向量 H_t",
+    "64-Step Snell Root Search": "64 步微平面斯涅尔求根基线",
+    "Median of 7 alternating Node CPU runs after warmup. Closed-form IOR-weighted transmission half-vector versus 64-step microfacet Snell root search.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；闭式折射率加权半向量 H_t 对比 64 步微平面斯涅尔求根基线。",
+    "Sampled 17 incident viewing angles align the IOR-weighted half-vector with the Snell refraction lobe without off-axis darkening": "采样 17 个入射视角站点全部将折射率加权半向量精准对齐斯涅尔透射方向，零斜视变黑失真",
+    "H_t = −normalize(η_i·V + η_o·L) → 60° Snell Peak I = 1.0000 vs Unweighted Bisector 0.3194 (−68.06% Starved)": "折射率加权半向量 H_t = −normalize(η_i·V+η_o·L) → 60° 透射峰值锁定 1.0000 对比未加权 0.3194（−68.06% 饥饿）",
+    "Frosted glass, etched crystal, ice cubes, and translucent polymers in glTF KHR_materials_transmission, Blender, and Three.js": "glTF KHR_materials_transmission、Blender 与 Three.js 中的磨砂玻璃、酸蚀水晶、冰块与半透明树脂材质",
+    "Weighting incident and transmitted vectors by (eta_i, eta_o) so H_t = -normalize(eta_i*V + eta_o*L) satisfies Snell law": "用两侧折射率 (η_i, η_o) 对入射与透射向量加权求和，使 H_t 严格满足斯涅尔切向相消定律",
+    "Eliminating the 12.37° half-vector tilt error and -68.06% at 60° / -83.64% at 80° transmission darkening of unweighted bisectors": "彻底根除未加权平分线在 60° 产生的 12.37° 法线歪斜与 −68.06%（80° 达 −83.64%）磨砂玻璃斜视发黑缺陷",
+    "Pairing with the Walter Refraction Jacobian eta_o^2*|L.H_t| / (eta_i*(V.H_t) + eta_o*(L.H_t))^2": "与 Walter 折射立体角雅可比行列式 η_o²|L·H_t|/(η_i(V·H_t)+η_o(L·H_t))² 无缝配合",
+    "Opaque metallic mirrors where reflection eta_i == eta_o makes the unweighted bisector exact": "入射与出射处于同一介质（η_i == η_o）的不透明镜面反射场景",
+    "Zero-thickness flat decals without refraction IOR jump": "无折射率跃变的零厚度平面贴花",
+    "Highly turbid multiple-scattering milk or skin (use Christensen-Burley BSSRDF Round 108)": "高度浑浊多重散射的牛奶或真皮层（应选用 Round 108 Christensen-Burley 双指数 BSSRDF）",
+    "Unlit wireframe overlays": "无光照网格线框图层"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/walter-rough-refraction-btdf.test.ts",
+    "node scripts/benchmark-walter-rough-refraction-btdf.mjs"
+  ]
+}

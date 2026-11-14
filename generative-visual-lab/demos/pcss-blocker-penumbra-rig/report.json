@@ -1,0 +1,260 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Fernando PCSS similar-triangle blocker-ratio contact-hardening penumbra vs naive fixed-radius PCF rig",
+  "topic_zh": "Fernando PCSS 相似三角形遮挡比接触硬化软阴影对比朴素定半径 PCF 近处糊成团与远处硬如刀",
+  "slug": "pcss-blocker-penumbra-rig",
+  "timestamp": "2026-11-14T01:58:42.905Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Randima Fernando (SIGGRAPH 2005 NVIDIA PCSS) Thales similar-triangle blocker-ratio penumbra estimation (w_PCSS = W_light * (d_receiver - d_blocker) / d_blocker with W_light = 1.60 m, d_blocker = 4.00 m) versus naive fixed-radius PCF (w_PCF = 0.8000 m) and 64-ray extremal area-light tangent-cone tracing across 17 receiver depth stations (d_r in [4.00 m, 12.00 m]).",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "pcss-similar-triangle-raycone64-equivalence-128",
+      "passed": true,
+      "detail": "128 closed-form Thales similar-triangle ratio and 64-ray extremal tangent-cone passes agree within 1e-13"
+    },
+    {
+      "name": "pcss-similar-triangle-raycone64-equivalence-1024",
+      "passed": true,
+      "detail": "1024 closed-form Thales similar-triangle ratio and 64-ray extremal tangent-cone passes agree within 1e-13"
+    },
+    {
+      "name": "pcss-similar-triangle-raycone64-equivalence-8192",
+      "passed": true,
+      "detail": "8192 closed-form Thales similar-triangle ratio and 64-ray extremal tangent-cone passes agree within 1e-13"
+    },
+    {
+      "name": "fernando-pcss-contact-hardening-conserved",
+      "passed": true,
+      "detail": "17 receiver depth stations preserve exact contact-hardening penumbra (station-0 w=0.0000m, station-12 w=2.4000m)"
+    },
+    {
+      "name": "naive-fixed-pcf-mismatch-exposed",
+      "passed": true,
+      "detail": "naive fixed-radius PCF (w=0.8000m) over-blurs contact station-0 by +0.8000m and under-blurs station-12 by -1.6000m across 16/17 stations"
+    },
+    {
+      "name": "pcss-station12-24000m-locked",
+      "passed": true,
+      "detail": "Fernando PCSS locks station-12 (d_r=10.00m) penumbra at w=2.4000m (0/17 corrupted stations)"
+    },
+    {
+      "name": "fixed-pcf-station12-16000m-error-exposed",
+      "passed": true,
+      "detail": "naive fixed PCF stays frozen at w=0.8000m at station-12 (-1.6000m / -66.67% penumbra deficit across 16/17 stations)"
+    },
+    {
+      "name": "pcss-station0-zero-contact-blur",
+      "passed": true,
+      "detail": "contact station-0 (d_r=d_b=4.00m) locks w_PCSS=0.0000m grounding vs w_PCF=0.8000m floating blur halo"
+    },
+    {
+      "name": "exact-reverse-station-scrub",
+      "passed": true,
+      "detail": "reverse station scrubbing from d_r=4.00m back to d_r=10.00m reproduces identical telemetry state"
+    },
+    {
+      "name": "geometry-58-solid-conformance",
+      "passed": true,
+      "detail": "3D shadow optical bench renders 58 tracked solids across 17 receiver depth stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px PCSS Penumbra controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station PCSS penumbra passes",
+      "count": 128,
+      "primary_ms": 0.011799999999993815,
+      "baseline_ms": 0.17980000000000018,
+      "primary_samples_ms": [
+        0.03049999999996089,
+        0.01269999999999527,
+        0.01160000000004402,
+        0.011799999999993815,
+        0.017299999999977445,
+        0.011100000000055843,
+        0.011099999999942156
+      ],
+      "baseline_samples_ms": [
+        0.33379999999999654,
+        0.3273999999998978,
+        0.3286000000000513,
+        0.17980000000000018,
+        0.17610000000001946,
+        0.17579999999998108,
+        0.17699999999990723
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station PCSS penumbra passes",
+      "count": 1024,
+      "primary_ms": 0.0664000000000442,
+      "baseline_ms": 1.2222000000000435,
+      "primary_samples_ms": [
+        0.0949999999999136,
+        0.0664000000000442,
+        0.0663000000000693,
+        0.0663000000000693,
+        0.06629999999995562,
+        0.06819999999993342,
+        0.0665000000000191
+      ],
+      "baseline_samples_ms": [
+        1.239400000000046,
+        1.2033999999999878,
+        1.199700000000007,
+        1.2037000000000262,
+        1.2326000000000477,
+        1.2222000000000435,
+        1.3980999999999995
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station PCSS penumbra passes",
+      "count": 8192,
+      "primary_ms": 0.5311000000000377,
+      "baseline_ms": 9.695600000000013,
+      "primary_samples_ms": [
+        0.5311000000000377,
+        0.5339000000000169,
+        0.5277999999999565,
+        0.5380000000000109,
+        0.5285000000000082,
+        0.5360000000000582,
+        0.5281999999999698
+      ],
+      "baseline_samples_ms": [
+        9.695600000000013,
+        10.18769999999995,
+        9.768600000000106,
+        9.778299999999945,
+        9.593399999999974,
+        9.650000000000091,
+        9.603900000000067
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/pcss-blocker-penumbra-rig/light-fernando-pcss-similar-triangle.png",
+    "docs/evidence/pcss-blocker-penumbra-rig/light-naive-fixed-radius-pcf.png",
+    "docs/evidence/pcss-blocker-penumbra-rig/dark-fernando-pcss-similar-triangle.png",
+    "docs/evidence/pcss-blocker-penumbra-rig/dark-naive-fixed-radius-pcf.png",
+    "docs/evidence/pcss-blocker-penumbra-rig/mobile.png"
+  ],
+  "primary_label": "Fernando Closed-Form Similar-Triangle Ratio",
+  "baseline_label": "64-Ray Area-Light Extremal Tangent-Cone Trace",
+  "load_unit": "17-station PCSS penumbra passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form Thales similar-triangle ratio evaluation versus 64-ray area-light extremal tangent-cone tracing.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "light_width_m": 1.6,
+    "blocker_depth_m": 4,
+    "station0_pcss_width_m": 0,
+    "station12_pcss_width_m": 2.4,
+    "station12_naive_width_m": 0.8,
+    "station12_error_m": 1.6,
+    "corrupted_stations": 16
+  },
+  "protocol": {
+    "input": {
+      "station_index": 12,
+      "d_receiver_m": 10,
+      "d_blocker_m": 4,
+      "w_light_m": 1.6,
+      "w_pcf_fixed_m": 0.8
+    },
+    "output": {
+      "station0_contact_m": 0,
+      "pcss_station12_m": 2.4,
+      "naive_pcf_station12_m": 0.8,
+      "station12_error_m": 1.6,
+      "corrupted_stations": 16
+    },
+    "function": "w_PCSS = W_light · (d_r − d_b) / d_b → Contact w(4m) = 0.0000m & Station-12 w(10m) = 2.4000m (vs Fixed PCF 0.8000m)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 receiver depth stations match physical contact-hardening penumbra growth without contact halos or far-field starvation",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Contact-hardening sun, streetlamp, and studio softbox shadows in UE5, Unity HDRP, Three.js, and architectural visualization",
+    "Keeping character feet and tire contact points razor-sharp (w=0.0000m at d_r=d_b) while smoothly widening foliage/roof shadows with distance",
+    "Pairing with Vogel Golden-Angle Disk Poisson Sampling (Round 59) and Gruen Sin-Theta Normal-Offset Shadow Bias (Round 87)",
+    "Computing per-pixel penumbra filter radius in 3 algebraic operations from average blocker depth d_b"
+  ],
+  "not_for": [
+    "Infinitely distant zero-diameter pinhole point lights where physical penumbra width is identically zero everywhere",
+    "Shadow maps lacking linear or reversed-Z depth readback for blocker search",
+    "Volumetric cloud self-shadowing (use Beer-Lambert Extinction Round 55 or SDF Cone Shadows Round 94)",
+    "Baked static lightmaps with offline path-traced irradiance"
+  ],
+  "locale_zh": {
+    "pcss-similar-triangle-raycone64-equivalence-128": "PCSS相似三角形与64射线极值锥等价 128",
+    "128 closed-form Thales similar-triangle ratio and 64-ray extremal tangent-cone passes agree within 1e-13": "128 次闭式泰勒斯相似三角形比例与 64 射线面光源极值锥追踪在 1e-13 内一致",
+    "pcss-similar-triangle-raycone64-equivalence-1024": "PCSS相似三角形与64射线极值锥等价 1024",
+    "1024 closed-form Thales similar-triangle ratio and 64-ray extremal tangent-cone passes agree within 1e-13": "1024 次闭式泰勒斯相似三角形比例与 64 射线面光源极值锥追踪在 1e-13 内一致",
+    "pcss-similar-triangle-raycone64-equivalence-8192": "PCSS相似三角形与64射线极值锥等价 8192",
+    "8192 closed-form Thales similar-triangle ratio and 64-ray extremal tangent-cone passes agree within 1e-13": "8192 次闭式泰勒斯相似三角形比例与 64 射线面光源极值锥追踪在 1e-13 内一致",
+    "fernando-pcss-contact-hardening-conserved": "Fernando PCSS接触硬化半影守恒",
+    "17 receiver depth stations preserve exact contact-hardening penumbra (station-0 w=0.0000m, station-12 w=2.4000m)": "17 个接收深度站点完整保持接触硬化半影（第 0 站 w=0.0000m 锐利贴地，第 12 站 w=2.4000m 柔和散开）",
+    "naive-fixed-pcf-mismatch-exposed": "朴素定半径PCF接触失焦与远景欠模糊暴露",
+    "naive fixed-radius PCF (w=0.8000m) over-blurs contact station-0 by +0.8000m and under-blurs station-12 by -1.6000m across 16/17 stations": "朴素定半径 PCF（w=0.8000m）在第 0 站接触点过模糊 +0.8000m，在第 12 站欠模糊 -1.6000m（污染 16/17 站）",
+    "pcss-station12-24000m-locked": "PCSS第12站2.4000m半影锁定",
+    "Fernando PCSS locks station-12 (d_r=10.00m) penumbra at w=2.4000m (0/17 corrupted stations)": "Fernando PCSS 将第 12 站（d_r=10.00m）半影宽度精准锁定在 w=2.4000m（0/17 失真站）",
+    "fixed-pcf-station12-16000m-error-exposed": "定半径PCF第12站1.6000m半影缺失暴露",
+    "naive fixed PCF stays frozen at w=0.8000m at station-12 (-1.6000m / -66.67% penumbra deficit across 16/17 stations)": "朴素定半径 PCF 在第 12 站僵死于 w=0.8000m（缺失 -1.6000m / -66.67% 半影宽度，污染 16/17 个站点）",
+    "pcss-station0-zero-contact-blur": "第0站接触点0.0000m零悬浮光晕",
+    "contact station-0 (d_r=d_b=4.00m) locks w_PCSS=0.0000m grounding vs w_PCF=0.8000m floating blur halo": "第 0 站接触点（d_r=d_b=4.00m）锁定 w_PCSS=0.0000m 锐利贴地，消除定半径 PCF 的 0.8000m 悬浮假光晕",
+    "exact-reverse-station-scrub": "精确逆序站点回退一致性",
+    "reverse station scrubbing from d_r=4.00m back to d_r=10.00m reproduces identical telemetry state": "从 d_r=4.00m 逆序拖回 d_r=10.00m 精确复现完全相同的遥测状态",
+    "geometry-58-solid-conformance": "58构件3D阴影光学台一致性",
+    "3D shadow optical bench renders 58 tracked solids across 17 receiver depth stations": "3D 阴影光学实验台在 17 个接收深度站点上完整渲染 58 个独立几何体",
+    "mobile-layout": "手机布局",
+    "390px PCSS Penumbra controls fit without horizontal overflow": "390px PCSS 半影控制面板无横向溢出",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Fernando Closed-Form Similar-Triangle Ratio": "Fernando 闭式泰勒斯相似三角形遮挡比",
+    "64-Ray Area-Light Extremal Tangent-Cone Trace": "64 射线面光源极值切线锥追踪基线",
+    "Median of 7 alternating Node CPU runs after warmup. Closed-form Thales similar-triangle ratio evaluation versus 64-ray area-light extremal tangent-cone tracing.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；闭式泰勒斯相似三角形比例求解对比 64 射线面光源极值切线锥追踪基线。",
+    "Sampled 17 receiver depth stations match physical contact-hardening penumbra growth without contact halos or far-field starvation": "采样 17 个接收深度站点全部吻合物理接触硬化半影线性扩展，零接触面假糊边且零远景欠模糊",
+    "w_PCSS = W_light · (d_r − d_b) / d_b → Contact w(4m) = 0.0000m & Station-12 w(10m) = 2.4000m (vs Fixed PCF 0.8000m)": "相似三角形半影 w_PCSS = W_light·(d_r−d_b)/d_b → 接触点 w(4m)=0.0000m 锐利且第 12 站 w(10m)=2.4000m（对比定半径 PCF 0.8000m）",
+    "Contact-hardening sun, streetlamp, and studio softbox shadows in UE5, Unity HDRP, Three.js, and architectural visualization": "UE5、Unity HDRP、Three.js 与建筑可视化中的太阳、路灯及柔光箱接触硬化（Contact-Hardening）实时软阴影",
+    "Keeping character feet and tire contact points razor-sharp (w=0.0000m at d_r=d_b) while smoothly widening foliage/roof shadows with distance": "在保证角色脚底与轮胎触地点刀锋般锐利（d_r=d_b 时 w=0.0000m）的同时，让高处树冠与屋檐阴影随投射距离自然柔和散开",
+    "Pairing with Vogel Golden-Angle Disk Poisson Sampling (Round 59) and Gruen Sin-Theta Normal-Offset Shadow Bias (Round 87)": "与 Vogel 黄金角圆盘采样（Round 59）及 Gruen 正弦法向偏移阴影偏置（Round 87）无缝组合成完整工业级阴影管线",
+    "Computing per-pixel penumbra filter radius in 3 algebraic operations from average blocker depth d_b": "从平均遮挡深度 d_b 出发仅用 3 次代数运算即可求得逐像素精确半影滤波半径",
+    "Infinitely distant zero-diameter pinhole point lights where physical penumbra width is identically zero everywhere": "发光面积为零的理想针孔点光源（全空间物理半影恒为零）",
+    "Shadow maps lacking linear or reversed-Z depth readback for blocker search": "无法读取深度值以执行第一步遮挡物深度搜索（Blocker Search）的旧式硬阴影贴图",
+    "Volumetric cloud self-shadowing (use Beer-Lambert Extinction Round 55 or SDF Cone Shadows Round 94)": "半透明体积云内部自阴影（应采用 Round 55 比尔-朗伯消光或 Round 94 SDF 锥比软阴影）",
+    "Baked static lightmaps with offline path-traced irradiance": "已由离线路径追踪烘焙完成的静态光照贴图（Lightmap）"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/pcss-blocker-penumbra.test.ts",
+    "node scripts/benchmark-pcss-blocker-penumbra.mjs"
+  ]
+}

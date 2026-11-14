@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Veach MIS Balance Heuristic vs Naive Equal-Weight Strategy Firefly Spike Rig</title>
+    <script type="module" crossorigin src="../../assets/veachMisBalanceHeuristic-DWpmKuVI.js"></script>
+    <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="modulepreload" crossorigin href="../../assets/three.module-7AmyneiW.js">
+    <link rel="stylesheet" crossorigin href="../../assets/beerLambertChromaticVolume-f3lud023.css">
+  </head>
+  <body>
+    <main class="workbench">
+      <header class="wb-header">
+        <div>
+          <p class="eyebrow">ROUND 121 · VEACH &amp; GUIBAS (SIGGRAPH 1995) MULTIPLE IMPORTANCE SAMPLING (MIS) BENCH</p>
+          <h1>Veach Balance-Heuristic MIS (w₁ = p₁ / (p₁ + p₂)) vs Equal-Weight Firefly Explosion</h1>
+          <p class="subtitle">
+            58-solid 17-station Veach glossy-plank estimator bench across PDF dominance ratios <code>r = p₂ / p₁ ∈ [1.00, 9.00]</code>: Eric Veach &amp; Leonidas Guibas (SIGGRAPH 1995) weight BSDF and Light strategies by <code>w_MIS = p₁ / (p₁ + p₂) = 1 / (1 + r)</code> (`0.2500` at <code>r=3</code>, `0.1250` at Station 12 <code>r=7</code>, `0.1000` at <code>r=9</code>) to cancel the small denominator <code>p₁</code> and lock estimator weight at <code>W_MIS = 1.0000×</code> (<code>0/17</code> firefly stations) vs <code>2.0000×</code>, <code>4.0000×</code>, and <code>5.0000×</code> firefly spikes across <code>16/17</code> stations under naive <code>50/50</code> equal-weight averaging.
+          </p>
+        </div>
+        <div class="controls">
+          <button id="btn-mode-mis" class="btn active" type="button">
+            Veach Balance-Heuristic MIS (W = 1.0000× Bounded)
+          </button>
+          <button id="btn-mode-naive" class="btn" type="button">
+            Naive 50/50 Equal-Weight Average (Up to 5.00× Spike)
+          </button>
+          <button id="btn-theme" class="btn secondary" type="button">
+            Toggle Theme
+          </button>
+        </div>
+      </header>
+
+      <section class="viewport-card">
+        <canvas id="rig-canvas" aria-label="58-solid 17-station Veach MIS balance heuristic workbench"></canvas>
+      </section>
+
+      <section class="readout-grid" aria-label="Live telemetry readout">
+        <article class="readout-card">
+          <span class="label">ACTIVE MULTI-STRATEGY ESTIMATOR KERNEL</span>
+          <strong id="readout-mode">Veach &amp; Guibas (SIGGRAPH 1995) Balance-Heuristic MIS (w_1 = p_1 / (p_1 + p_2))</strong>
+        </article>
+        <article class="readout-card">
+          <span class="label">STATION 4 (r = p₂/p₁ = 3.00, w_MIS = 0.2500)</span>
+          <strong id="readout-s4">r = 3.0 (w_MIS = 0.2500) → Weight W = 1.0000×</strong>
+        </article>
+        <article class="readout-card">
+          <span class="label">STATION 12 (r = p₂/p₁ = 7.00, w_MIS = 0.1250)</span>
+          <strong id="readout-s12">r = 7.0 (w_MIS = 0.1250) → Weight W = 1.0000×</strong>
+        </article>
+        <article class="readout-card">
+          <span class="label">STATION 16 (r = p₂/p₁ = 9.00, w_MIS = 0.1000)</span>
+          <strong id="readout-s16">r = 9.0 (w_MIS = 0.1000) → W = 1.0000× (0/17 Fireflies)</strong>
+        </article>
+      </section>
+
+      <footer class="wb-footer">
+        <span id="readout-status" class="status-pill pass">
+          PASS — Small-PDF Denominator p_1 Algebraically Canceled (W_MIS = 1.0000× Across All 17 Ratios)
+        </span>
+        <nav class="links">
+          <a href="../../index.html">← Back to Lab Portal</a>
+          <a href="./test-report-cards.html">7-Card Report (EN)</a>
+          <a href="./test-report-cards.zh.html">7-Card 报告 (ZH)</a>
+        </nav>
+      </footer>
+    </main>
+  </body>
+</html>

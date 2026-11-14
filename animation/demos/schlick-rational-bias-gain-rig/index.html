@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Schlick Rational Mobius Bias Curve vs Naive Clamped Offset Toe-Crush Rig</title>
+    <script type="module" crossorigin src="../../assets/schlickRationalBiasGain-rZWHaHbW.js"></script>
+    <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="modulepreload" crossorigin href="../../assets/three.module-7AmyneiW.js">
+    <link rel="stylesheet" crossorigin href="../../assets/beerLambertChromaticVolume-f3lud023.css">
+  </head>
+  <body>
+    <main class="workbench">
+      <header class="wb-header">
+        <div>
+          <p class="eyebrow">ROUND 123 · SCHLICK (GRAPHICS GEMS IV, 1994) RATIONAL BIAS &amp; GAIN SHAPER BENCH</p>
+          <h1>Schlick Rational Bias (u / ((1/a − 2)(1 − u) + 1)) vs Clamped Offset Toe-Crush &amp; Ceiling Clip</h1>
+          <p class="subtitle">
+            58-solid 17-station procedural curve shaper bench across <code>u ∈ [0.0000, 1.0000]</code> for target midpoint bias <code>a = 0.2000</code>: Christophe Schlick (Graphics Gems IV, 1994) maps <code>u</code> via the rational Mobius homography <code>B_0.20(u) = u / (4 − 3u)</code>—locking <code>B(0) = 0.0000</code>, smooth toe <code>B(0.25) = 0.0769</code>, midpoint <code>B(0.50) = 0.2000</code>, <code>B(0.8125) = 0.5200</code>, and white ceiling <code>B(1.00) = 1.0000</code> (<code>0/17</code> clipped stations) vs dead-zero toe crush (<code>u ≤ 0.30</code>) and <code>0.7000</code> ceiling clipping (<code>−30.00%</code> loss) across <code>15/17</code> stations under naive additive offset <code>clamp(u − 0.30, 0, 1)</code>.
+          </p>
+        </div>
+        <div class="controls">
+          <button id="btn-mode-schlick" class="btn active" type="button">
+            Schlick Rational Bias (u / (4 − 3u), 0/17 Clipped)
+          </button>
+          <button id="btn-mode-naive" class="btn" type="button">
+            Naive Clamped Offset (Toe Crush &amp; 0.70 Ceiling Clip)
+          </button>
+          <button id="btn-theme" class="btn secondary" type="button">
+            Toggle Theme
+          </button>
+        </div>
+      </header>
+
+      <section class="viewport-card">
+        <canvas id="rig-canvas" aria-label="58-solid 17-station Schlick rational bias shaper workbench"></canvas>
+      </section>
+
+      <section class="readout-grid" aria-label="Live telemetry readout">
+        <article class="readout-card">
+          <span class="label">ACTIVE PROCEDURAL CURVE SHAPER KERNEL</span>
+          <strong id="readout-mode">Schlick (1994) Rational Mobius Bias B_a(u) = u / ((1/a − 2)(1 − u) + 1)</strong>
+        </article>
+        <article class="readout-card">
+          <span class="label">STATION 4 (u = 0.2500 Lower Shadow Toe)</span>
+          <strong id="readout-s4">B(0.25) = 0.0769 (Smooth Toe Detail Preserved)</strong>
+        </article>
+        <article class="readout-card">
+          <span class="label">STATION 8 &amp; 13 (u = 0.5000 &amp; u = 0.8125)</span>
+          <strong id="readout-s8">B(0.50) = 0.2000, B(0.8125) = 0.5200</strong>
+        </article>
+        <article class="readout-card">
+          <span class="label">STATION 16 (u = 1.0000 Highlight Ceiling)</span>
+          <strong id="readout-s16">B(1.00) = 1.0000 (Full White Ceiling, 0/17 Clipped)</strong>
+        </article>
+      </section>
+
+      <footer class="wb-footer">
+        <span id="readout-status" class="status-pill pass">
+          PASS — Exact Boundary &amp; Midpoint Biased Curve Across All 17 Stations Without pow() or Clipping
+        </span>
+        <nav class="links">
+          <a href="../../index.html">← Back to Lab Portal</a>
+          <a href="./test-report-cards.html">7-Card Report (EN)</a>
+          <a href="./test-report-cards.zh.html">7-Card 报告 (ZH)</a>
+        </nav>
+      </footer>
+    </main>
+  </body>
+</html>

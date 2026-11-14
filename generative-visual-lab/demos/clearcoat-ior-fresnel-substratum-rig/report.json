@@ -1,0 +1,259 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Weidlich-Wilkie clearcoat transmittance coupling vs additive blowout rig",
+  "topic_zh": "Weidlich-Wilkie 汽车清漆透射窗口能量耦合对比朴素加法叠层白炉过曝",
+  "slug": "clearcoat-ior-fresnel-substratum-rig",
+  "timestamp": "2026-11-14T06:49:36.978Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Weidlich & Wilkie (EGSR 2007) / Khronos glTF KHR_materials_clearcoat transmittance-coupled layering (E_phys = F_coat + (1 - F_coat)*L_sub with n_coat = 1.50, F0 = 0.0400, L_sub = 1.0000) versus naive additive clearcoat layering (F_coat + L_sub) and 64-bounce Stokes internal reflection series across 17 incident viewing angles (theta_i in [0 deg, 80 deg]).",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "clearcoat-stokes64-equiv-128",
+      "passed": true,
+      "detail": "128 closed-form (1-F) coupling and 64-bounce Stokes passes agree within 1e-13"
+    },
+    {
+      "name": "clearcoat-stokes64-equiv-1024",
+      "passed": true,
+      "detail": "1024 closed-form (1-F) coupling and 64-bounce Stokes passes agree within 1e-13"
+    },
+    {
+      "name": "clearcoat-stokes64-equiv-8192",
+      "passed": true,
+      "detail": "8192 closed-form (1-F) coupling and 64-bounce Stokes passes agree within 1e-13"
+    },
+    {
+      "name": "clearcoat-white-furnace-conserved",
+      "passed": true,
+      "detail": "17 viewing angles conserve white-furnace E=1.0000 (60°: F=0.0700, T=0.9300)"
+    },
+    {
+      "name": "naive-additive-blowout-exposed",
+      "passed": true,
+      "detail": "naive additive clearcoat blows out to 1.0700 at 60° and 1.4099 at 80° (17/17 stations)"
+    },
+    {
+      "name": "clearcoat-st12-09300-window-locked",
+      "passed": true,
+      "detail": "Weidlich-Wilkie locks station-12 (60°) at F=0.0700, T=0.9300, E=1.0000 (0/17 blown out)"
+    },
+    {
+      "name": "additive-st12-10700-blowout",
+      "passed": true,
+      "detail": "naive additive clearcoat exceeds unity: 1.0700 at 60° and 1.4099 at 80° (17/17 blown out)"
+    },
+    {
+      "name": "clearcoat-st16-grazing-conserved",
+      "passed": true,
+      "detail": "grazing station-16 (80°) partitions F=0.4099 and T=0.5901 to lock E=1.0000"
+    },
+    {
+      "name": "exact-reverse-scrub",
+      "passed": true,
+      "detail": "reverse angle scrubbing from 80° back to 60° reproduces identical telemetry"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D automotive clearcoat bench renders 58 tracked solids across 17 viewing angles"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Clearcoat Fresnel controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station clearcoat passes",
+      "count": 128,
+      "primary_ms": 0.16300000000001091,
+      "baseline_ms": 0.2370999999999981,
+      "primary_samples_ms": [
+        0.3978000000000179,
+        0.16300000000001091,
+        0.15559999999999263,
+        0.17849999999998545,
+        0.17080000000004247,
+        0.007699999999999818,
+        0.007499999999993179
+      ],
+      "baseline_samples_ms": [
+        0.5117000000000189,
+        0.4308000000000334,
+        0.43070000000000164,
+        0.22549999999995407,
+        0.22059999999999036,
+        0.2370999999999981,
+        0.16809999999998126
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station clearcoat passes",
+      "count": 1024,
+      "primary_ms": 0.08920000000000528,
+      "baseline_ms": 1.2339999999999804,
+      "primary_samples_ms": [
+        0.12739999999996598,
+        0.09230000000002292,
+        0.08920000000000528,
+        0.0847999999999729,
+        0.08429999999998472,
+        0.08940000000001191,
+        0.08480000000002974
+      ],
+      "baseline_samples_ms": [
+        1.255299999999977,
+        1.3665000000000305,
+        1.214400000000012,
+        1.2159000000000333,
+        1.2339999999999804,
+        3.1088000000000306,
+        1.2106999999999744
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station clearcoat passes",
+      "count": 8192,
+      "primary_ms": 0.769299999999987,
+      "baseline_ms": 11.052599999999984,
+      "primary_samples_ms": [
+        0.7590999999999894,
+        0.775100000000009,
+        0.769299999999987,
+        0.74249999999995,
+        0.7182999999999993,
+        1.2335000000000491,
+        1.5833999999999833
+      ],
+      "baseline_samples_ms": [
+        9.958799999999997,
+        9.951399999999978,
+        11.917700000000025,
+        14.199000000000012,
+        9.773599999999988,
+        11.052599999999984,
+        13.17489999999998
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/clearcoat-ior-fresnel-substratum-rig/light-weidlich-wilkie-transmittance-coupled.png",
+    "docs/evidence/clearcoat-ior-fresnel-substratum-rig/light-naive-additive-clearcoat-blowout.png",
+    "docs/evidence/clearcoat-ior-fresnel-substratum-rig/dark-weidlich-wilkie-transmittance-coupled.png",
+    "docs/evidence/clearcoat-ior-fresnel-substratum-rig/dark-naive-additive-clearcoat-blowout.png",
+    "docs/evidence/clearcoat-ior-fresnel-substratum-rig/mobile.png"
+  ],
+  "primary_label": "Closed-Form (1 − F_coat) Coupling",
+  "baseline_label": "64-Bounce Stokes Layer Series",
+  "load_unit": "coat passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form (1 - F_coat) substrate window evaluation versus 64-bounce Stokes internal reflection series.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "clearcoat_f0": 0.04,
+    "station12_fresnel_f": 0.07,
+    "station12_window_t": 0.93,
+    "station12_physical_e": 1,
+    "station16_naive_e": 1.4099,
+    "blowout_stations": 17
+  },
+  "protocol": {
+    "input": {
+      "station_index": 12,
+      "angle_deg": 60,
+      "clearcoat_ior": 1.5,
+      "clearcoat_f0": 0.04,
+      "substrate_albedo": 1
+    },
+    "output": {
+      "fresnel_60deg": 0.07,
+      "window_t_60deg": 0.93,
+      "physical_e_all": 1,
+      "naive_e_80deg": 1.4099,
+      "blowout_stations": 17
+    },
+    "function": "E_phys(θ_i) = F_coat + (1 − F_coat)·L_sub → 60° (0.07 + 0.93) = 1.0000 vs Additive 80° = 1.4099 (+40.99% Blowout)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 incident viewing angles strictly pass the 1.0000 White Furnace test without grazing rim blowout",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Automotive metallic basecoat + polyurethane clearcoat, lacquered wood, carbon fiber, and wet surfaces in glTF KHR_materials_clearcoat and Three.js",
+    "Attenuating substrate diffuse and metallic flakes by (1 - F_coat) so total reflectance never exceeds 1.0000",
+    "Recomputing internal substrate Fresnel from relative IOR (n_sub / n_coat) to capture wet-surface darkening",
+    "Evaluating Schlick clearcoat partition in 5 scalar multiplications without multi-bounce loops"
+  ],
+  "not_for": [
+    "Uncoated single-layer matte drywall or raw concrete",
+    "Nanometer soap bubbles where wave phase interference dominates (use Belcour-Barla Iridescence Round 102)",
+    "Upright velvet cloth pile (use Estevez-Kulla Charlie Sheen Round 103)",
+    "Unlit 2D UI icons"
+  ],
+  "locale_zh": {
+    "clearcoat-stokes64-equiv-128": "清漆透射耦合与64次斯托克斯级数等价 128",
+    "128 closed-form (1-F) coupling and 64-bounce Stokes passes agree within 1e-13": "128 次闭式 (1-F) 耦合与 64 次斯托克斯层间反射级数在 1e-13 内一致",
+    "clearcoat-stokes64-equiv-1024": "清漆透射耦合与64次斯托克斯级数等价 1024",
+    "1024 closed-form (1-F) coupling and 64-bounce Stokes passes agree within 1e-13": "1024 次闭式 (1-F) 耦合与 64 次斯托克斯层间反射级数在 1e-13 内一致",
+    "clearcoat-stokes64-equiv-8192": "清漆透射耦合与64次斯托克斯级数等价 8192",
+    "8192 closed-form (1-F) coupling and 64-bounce Stokes passes agree within 1e-13": "8192 次闭式 (1-F) 耦合与 64 次斯托克斯层间反射级数在 1e-13 内一致",
+    "clearcoat-white-furnace-conserved": "清漆白炉能量守恒",
+    "17 viewing angles conserve white-furnace E=1.0000 (60°: F=0.0700, T=0.9300)": "17 个视角守恒白炉 E=1.0000（60° 处 F=0.0700, T=0.9300）",
+    "naive-additive-blowout-exposed": "朴素加法清漆能量过曝暴露",
+    "naive additive clearcoat blows out to 1.0700 at 60° and 1.4099 at 80° (17/17 stations)": "朴素加法清漆在 60° 过曝至 1.0700，在 80° 飙升至 1.4099（污染全部 17/17 站）",
+    "clearcoat-st12-09300-window-locked": "清漆第12站0.9300透射窗锁定",
+    "Weidlich-Wilkie locks station-12 (60°) at F=0.0700, T=0.9300, E=1.0000 (0/17 blown out)": "Weidlich-Wilkie 模型将第 12 站（60°）锁定在 F=0.0700、T=0.9300、E=1.0000（0/17 过曝）",
+    "additive-st12-10700-blowout": "加法清漆第12站1.0700过曝暴露",
+    "naive additive clearcoat exceeds unity: 1.0700 at 60° and 1.4099 at 80° (17/17 blown out)": "朴素加法清漆突破白炉上限：60° 达 1.0700，80° 达 1.4099（17/17 站过曝）",
+    "clearcoat-st16-grazing-conserved": "掠射第16站1.0000白炉守恒",
+    "grazing station-16 (80°) partitions F=0.4099 and T=0.5901 to lock E=1.0000": "掠射角第 16 站（80°）分配 F=0.4099 与 T=0.5901，严格锁定 E=1.0000",
+    "exact-reverse-scrub": "精确逆序回退一致性",
+    "reverse angle scrubbing from 80° back to 60° reproduces identical telemetry": "从 80° 逆序拖回 60° 精确复现相同的清漆光度计状态",
+    "geometry-58-solids": "58构件3D汽车清漆台一致性",
+    "3D automotive clearcoat bench renders 58 tracked solids across 17 viewing angles": "3D 汽车清漆实验台在 17 个视角站点完整渲染 58 个独立几何体",
+    "mobile-layout": "手机布局",
+    "390px Clearcoat Fresnel controls fit without horizontal overflow": "390px 清漆透射耦合控制面板无横向溢出",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Closed-Form (1 − F_coat) Coupling": "闭式 (1 − F_coat) 透射窗耦合",
+    "64-Bounce Stokes Layer Series": "64 次斯托克斯层间反射级数",
+    "Median of 7 alternating Node CPU runs after warmup. Closed-form (1 - F_coat) substrate window evaluation versus 64-bounce Stokes internal reflection series.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；闭式 (1 − F_coat) 基底透射窗耦合对比 64 次斯托克斯层间反射级数基线。",
+    "Sampled 17 incident viewing angles strictly pass the 1.0000 White Furnace test without grazing rim blowout": "采样 17 个入射视角站点全部严格通过 1.0000 白炉能量守恒测试，零掠射边缘过曝",
+    "E_phys(θ_i) = F_coat + (1 − F_coat)·L_sub → 60° (0.07 + 0.93) = 1.0000 vs Additive 80° = 1.4099 (+40.99% Blowout)": "清漆透射耦合 E_phys = F_coat+(1−F_coat)·L_sub → 60° (0.07+0.93)=1.0000 对比加法 80°=1.4099（+40.99% 过曝）",
+    "Automotive metallic basecoat + polyurethane clearcoat, lacquered wood, carbon fiber, and wet surfaces in glTF KHR_materials_clearcoat and Three.js": "glTF KHR_materials_clearcoat 与 Three.js 中的汽车金属底漆+聚氨酯清漆、钢琴烤漆木饰面、碳纤维与湿润路面",
+    "Attenuating substrate diffuse and metallic flakes by (1 - F_coat) so total reflectance never exceeds 1.0000": "用 (1 − F_coat) 衰减底层色漆与金属闪粉，确保全视角总反射率严守 1.0000 白炉上限",
+    "Recomputing internal substrate Fresnel from relative IOR (n_sub / n_coat) to capture wet-surface darkening": "按相对折射率 (n_sub / n_coat) 重算内界面菲涅耳反射，真实还原石头淋水与木头上清漆后的颜色变深增艳效应",
+    "Evaluating Schlick clearcoat partition in 5 scalar multiplications without multi-bounce loops": "仅用 5 次标量乘法完成 Schlick 清漆能量分配，无需 64 次层间反弹循环",
+    "Uncoated single-layer matte drywall or raw concrete": "无清漆涂层的单层哑光石膏墙或毛坯混凝土",
+    "Nanometer soap bubbles where wave phase interference dominates (use Belcour-Barla Iridescence Round 102)": "由光波相位干涉主导的纳米级肥皂泡（应选用 Round 102 Belcour-Barla 薄膜干涉）",
+    "Upright velvet cloth pile (use Estevez-Kulla Charlie Sheen Round 103)": "垂直竖立的天鹅绒绒毛（应选用 Round 103 Estevez-Kulla Charlie 分布）",
+    "Unlit 2D UI icons": "无光照二维 UI 图标"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/clearcoat-ior-fresnel-substratum.test.ts",
+    "node scripts/benchmark-clearcoat-ior-fresnel-substratum.mjs"
+  ]
+}

@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Karis Sphere Area-Light Specular Energy Normalization vs Unnormalized Representative-Point Blowout Rig</title>
+    <script type="module" crossorigin src="../../assets/karisSphereArealightNormalization-th1VTEXA.js"></script>
+    <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="modulepreload" crossorigin href="../../assets/three.module-7AmyneiW.js">
+    <link rel="stylesheet" crossorigin href="../../assets/beerLambertChromaticVolume-f3lud023.css">
+  </head>
+  <body>
+    <main class="workbench">
+      <header class="wb-header">
+        <div>
+          <p class="eyebrow">ROUND 113 · KARIS (SIGGRAPH 2013 UE4) SPHERE AREA-LIGHT SPECULAR NORMALIZATION BENCH</p>
+          <h1>Karis Sphere Area-Light Specular Normalization (α / α')² vs Unnormalized Representative-Point Blowout</h1>
+          <p class="subtitle">
+            58-solid 17-station sphere area-light radiometer bench across angular subtense ratios <code>u = r_s/(2d) ∈ [0.0000, 0.5000]</code> (base roughness <code>α = 0.2500</code>): Brian Karis (SIGGRAPH 2013) scales peak GGX intensity by <code>N_Karis = (α / α')²</code> where <code>α' = clamp(α + u, 0, 1)</code> (`0.2500` at Station 8, `0.1600` at Station 12) to lock total integrated specular flux at <code>Φ = 1.0000×</code> (<code>0/17</code> blown-out stations) vs <code>4.0000×</code> / <code>6.2500×</code> / <code>9.0000×</code> energy blowouts across <code>16/17</code> stations under naive unnormalized closest-point shading.
+          </p>
+        </div>
+        <div class="controls">
+          <button id="btn-mode-karis" class="btn active" type="button">
+            Karis Area-Light Normalization (N = (α / α')²)
+          </button>
+          <button id="btn-mode-naive" class="btn" type="button">
+            Naive Unnormalized Closest Point (Up to 9.00× Blowout)
+          </button>
+          <button id="btn-theme" class="btn secondary" type="button">
+            Toggle Theme
+          </button>
+        </div>
+      </header>
+
+      <section class="viewport-card">
+        <canvas id="rig-canvas" aria-label="58-solid 17-station Karis sphere area-light normalization workbench"></canvas>
+      </section>
+
+      <section class="readout-grid" aria-label="Live telemetry readout">
+        <article class="readout-card">
+          <span class="label">ACTIVE AREA-LIGHT SPECULAR KERNEL</span>
+          <strong id="readout-mode">Karis (SIGGRAPH 2013 UE4) Sphere Area-Light Normalization N = (α / α')²</strong>
+        </article>
+        <article class="readout-card">
+          <span class="label">STATION 8 (u = 0.2500, α' = 0.5000 = 2.0α)</span>
+          <strong id="readout-s8">α' = 0.5000, N = 0.2500 → Φ = 1.0000×</strong>
+        </article>
+        <article class="readout-card">
+          <span class="label">STATION 12 (u = 0.3750, α' = 0.6250 = 2.5α)</span>
+          <strong id="readout-s12">α' = 0.6250, N = 0.1600 → Φ = 1.0000×</strong>
+        </article>
+        <article class="readout-card">
+          <span class="label">STATION 16 (u = 0.5000, α' = 0.7500 = 3.0α)</span>
+          <strong id="readout-s16">α' = 0.7500, N = 0.1111 → Φ = 1.0000× (0/17 Blown Out)</strong>
+        </article>
+      </section>
+
+      <footer class="wb-footer">
+        <span id="readout-status" class="status-pill pass">
+          PASS — Total Integrated Specular Flux Locked at Φ = 1.0000× Across All 17 Area-Light Stations
+        </span>
+        <nav class="links">
+          <a href="../../index.html">← Back to Lab Portal</a>
+          <a href="./test-report-cards.html">7-Card Report (EN)</a>
+          <a href="./test-report-cards.zh.html">7-Card 报告 (ZH)</a>
+        </nav>
+      </footer>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Burley-Heitz Anisotropic GGX Fiber Ribbon Rig — Generative Visual Lab</title>
+    <script type="module" crossorigin src="../../assets/anisotropicGgxFiber-DD2v6Yy4.js"></script>
+    <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="modulepreload" crossorigin href="../../assets/three.module-7AmyneiW.js">
+    <link rel="stylesheet" crossorigin href="../../assets/anisotropicGgxFiber-BiXbR8oC.css">
+  </head>
+  <body>
+    <div class="rig-shell">
+      <header class="rig-topbar">
+        <div class="rig-title-block">
+          <span class="rig-kicker">ROUND 99 · ANISOTROPIC PBR BRUSHED METAL &amp; FIBER SHADING WORKBENCH</span>
+          <h1>Burley-Heitz Elliptical Anisotropic GGX vs Naive Isotropic Circular Highlight</h1>
+        </div>
+        <div class="rig-top-actions">
+          <a class="rig-link" href="../../index.html">← Portal</a>
+          <a class="rig-link" href="./test-report-cards.html">7-Card Report (EN)</a>
+          <a class="rig-link" href="./test-report-cards.zh.html">7-Card 报告 (ZH)</a>
+          <button id="theme-toggle-btn" class="rig-btn-secondary" type="button">Toggle Theme</button>
+        </div>
+      </header>
+
+      <main class="rig-main">
+        <section class="rig-stage-card">
+          <div class="rig-canvas-wrap">
+            <canvas id="rig-canvas" aria-label="Anisotropic GGX Fiber Specular Ribbon 3D Rig"></canvas>
+          </div>
+          <div class="rig-stage-caption">
+            <strong>58-Solid 3D Anisotropic Goniophotometer Stage:</strong> Back cyan towers display the exact Burley-Heitz elliptical GGX transverse ribbon intensity <code>I(u) = 1 / (1 + (u / α_t)²)²</code> with <code>α_t = 0.80, α_b = 0.05</code> across 17 tangent half-angle slope stations <code>u ∈ [-0.80, +0.80]</code>. Front orbs show the active specular lobe: at Station 12 (<code>u = +0.40</code>), anisotropic GGX sustains a glowing <code>I = 0.6400</code> brushed-steel ribbon, whereas naive isotropic GGX (<code>α_iso = 0.05</code>) collapses to <code>I = 0.0002</code> (<code>-0.6398</code> / <code>-99.96%</code> ribbon starvation across <code>16/17</code> stations).
+          </div>
+        </section>
+
+        <aside class="rig-hud-card" aria-label="Anisotropic GGX Telemetry HUD">
+          <div class="hud-header">
+            <span id="hud-mode-badge" class="hud-badge">BURLEY-HEITZ ELLIPTICAL ANISOTROPIC GGX</span>
+            <div id="hud-verdict-pill" class="hud-verdict" data-state="pass">
+              PASS · 0.6400 Transverse Ribbon Locked (0/17 Starved)
+            </div>
+          </div>
+
+          <div class="hud-controls">
+            <div class="btn-group" role="group" aria-label="Microfacet NDF Mode Selector">
+              <button
+                type="button"
+                class="mode-btn active"
+                data-mode-btn="burley-heitz-anisotropic-ggx"
+              >
+                Burley-Heitz Anisotropic GGX (α_t=0.80)
+              </button>
+              <button
+                type="button"
+                class="mode-btn"
+                data-mode-btn="naive-isotropic-circular-ggx"
+              >
+                Naive Isotropic Circular GGX (α=0.05)
+              </button>
+            </div>
+
+            <label class="slider-label" for="station-slider">
+              <span>Transverse Tangent Slope Station (<code>u = (H·T)/(H·N)</code>)</span>
+              <input id="station-slider" type="range" min="0" max="16" step="1" value="12" />
+            </label>
+          </div>
+
+          <dl class="hud-metrics-grid">
+            <div class="metric-box">
+              <dt>Selected Tangent Slope</dt>
+              <dd id="hud-station-value">Station 12 (u = +0.40)</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Anisotropic Ribbon I_aniso</dt>
+              <dd id="hud-aniso-value">0.6400</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Active Specular I_active</dt>
+              <dd id="hud-active-value">0.6400</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Transverse Ribbon Loss</dt>
+              <dd id="hud-loss-value">0.0000 (Ribbon intact)</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Starved Ribbon Stations</dt>
+              <dd id="hud-starved-count">0 / 17</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Elliptical Roughness Pair</dt>
+              <dd>α_t = 0.8000 · α_b = 0.0500</dd>
+            </div>
+          </dl>
+
+          <div class="hud-formula-box">
+            <h2>Slope-Space Ellipsoid Stretch Invariant</h2>
+            <p>
+              <code>D_aniso(H) = 1 / [π · α_t · α_b · (H·N)⁴ · (1 + (u/α_t)² + (v/α_b)²)²]</code>
+            </p>
+            <p>
+              At Station 12 (<code>u = +0.40, v = 0</code>), stretching <code>α_t = α₀·a = 0.80</code> perpendicular to the parallel micro-grooves yields <code>I(0.40) = 1 / (1 + 0.25)² = 0.6400</code>, preventing the <code>I_iso(0.40) = 0.0002</code> pinpoint collapse of isotropic GGX.
+            </p>
+          </div>
+        </aside>
+      </main>
+    </div>
+  </body>
+</html>

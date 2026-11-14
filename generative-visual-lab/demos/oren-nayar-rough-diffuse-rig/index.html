@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Oren-Nayar Rough Diffuse V-Cavity Retroreflection Rig — Generative Visual Lab</title>
+    <script type="module" crossorigin src="../../assets/orenNayarRoughDiffuse-BEi9HKJZ.js"></script>
+    <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="modulepreload" crossorigin href="../../assets/three.module-7AmyneiW.js">
+    <link rel="stylesheet" crossorigin href="../../assets/anisotropicGgxFiber-BiXbR8oC.css">
+  </head>
+  <body>
+    <div class="rig-shell">
+      <header class="rig-topbar">
+        <div class="rig-title-block">
+          <span class="rig-kicker">ROUND 111 · LUNAR REGOLITH, TERRACOTTA CLAY &amp; ROUGH DIFFUSE WORKBENCH</span>
+          <h1>Oren-Nayar V-Cavity Retroreflection vs Naive Lambertian Cosine Limb Darkening</h1>
+        </div>
+        <div class="rig-top-actions">
+          <a class="rig-link" href="../../index.html">← Portal</a>
+          <a class="rig-link" href="./test-report-cards.html">7-Card Report (EN)</a>
+          <a class="rig-link" href="./test-report-cards.zh.html">7-Card 报告 (ZH)</a>
+          <button id="theme-toggle-btn" class="rig-btn-secondary" type="button">Toggle Theme</button>
+        </div>
+      </header>
+
+      <main class="rig-main">
+        <section class="rig-stage-card">
+          <div class="rig-canvas-wrap">
+            <canvas id="rig-canvas" aria-label="Oren-Nayar Rough Diffuse Retroreflection 3D Rig"></canvas>
+          </div>
+          <div class="rig-stage-caption">
+            <strong>58-Solid 3D Lunar Regolith &amp; Terracotta Photometer Bench:</strong> Back cyan towers display the exact Oren &amp; Nayar (SIGGRAPH 1994) retroreflective rough-diffuse radiance <code>L_ON(θ) = cos θ + (B/A) · sin θ · tan θ · cos θ = cos θ + ⅔ · sin²θ</code> across 17 limb angles <code>θ ∈ [0°, 80°]</code>. At Station 12 (<code>θ = 60°</code>), V-cavity facets facing the camera contribute <code>⅔ · sin²60° = 0.5000</code> to match <code>cos 60° = 0.5000</code>, locking limb radiance at exact <code>L_ON(60°) = 1.0000</code> (flat full-moon disk), whereas naive Lambertian drops to <code>0.5000</code> (<code>-0.5000</code> / <code>-50.00%</code> limb darkening across <code>16/17</code> stations).
+          </div>
+        </section>
+
+        <aside class="rig-hud-card" aria-label="Oren-Nayar Diffuse Telemetry HUD">
+          <div class="hud-header">
+            <span id="hud-mode-badge" class="hud-badge">OREN-NAYAR V-CAVITY RETROREFLECTION</span>
+            <div id="hud-verdict-pill" class="hud-verdict" data-state="pass">
+              PASS · L_ON(60°) = 1.0000 Full-Moon Retroreflective Limb Locked (0/17 Darkened)
+            </div>
+          </div>
+
+          <div class="hud-controls">
+            <div class="btn-group" role="group" aria-label="Diffuse Reflectance Mode Selector">
+              <button
+                type="button"
+                class="mode-btn active"
+                data-mode-btn="oren-nayar-vcavity-retroreflection"
+              >
+                Oren-Nayar V-Cavity Retroreflection (cos θ + ⅔·sin²θ)
+              </button>
+              <button
+                type="button"
+                class="mode-btn"
+                data-mode-btn="naive-lambert-cosine-limb-darkening"
+              >
+                Naive Lambertian Cosine Falloff (cos θ Limb Darkening)
+              </button>
+            </div>
+
+            <label class="slider-label" for="station-slider">
+              <span>Spherical Limb Angle Station (<code>θ ∈ [0°, 80°]</code>)</span>
+              <input id="station-slider" type="range" min="0" max="16" step="1" value="12" />
+            </label>
+          </div>
+
+          <dl class="hud-metrics-grid">
+            <div class="metric-box">
+              <dt>Selected Limb Angle</dt>
+              <dd id="hud-station-value">Station 12 (θ = 60°)</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Oren-Nayar L_ON</dt>
+              <dd id="hud-oren-value">1.0000</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Active Diffuse L_active</dt>
+              <dd id="hud-active-value">1.0000</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Limb Darkening Deficit</dt>
+              <dd id="hud-error-value">0.0000 (Flat full-moon limb locked)</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Darkened Stations</dt>
+              <dd id="hud-darkened-count">0 / 17</dd>
+            </div>
+            <div class="metric-box">
+              <dt>V-Cavity Retro Gain</dt>
+              <dd>B / A = 2/3 (0.6667)</dd>
+            </div>
+          </dl>
+
+          <div class="hud-formula-box">
+            <h2>Oren-Nayar V-Cavity Foreshortening Cancellation Law</h2>
+            <p>
+              <code>f_ON(θ) · π cos θ = (1 + (B/A) · sin θ · tan θ) · cos θ = cos θ + (B/A) · (1 − cos²θ)</code>
+            </p>
+            <p>
+              Because rough clay, plaster, and lunar regolith contain tilted V-grooves that face the light head-on near the limb, the <code>tan θ = sin θ / cos θ</code> term cancels the <code>cos θ</code> foreshortening factor, keeping <code>60°</code> limb brightness at <code>1.0000</code> instead of Lambert's <code>0.5000</code>.
+            </p>
+          </div>
+        </aside>
+      </main>
+    </div>
+  </body>
+</html>

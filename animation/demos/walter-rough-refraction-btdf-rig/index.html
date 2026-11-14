@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Walter Microfacet Rough Refraction BTDF Rig — Generative Visual Lab</title>
+    <script type="module" crossorigin src="../../assets/walterRoughRefractionBtdf-D-0bJ-5J.js"></script>
+    <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="modulepreload" crossorigin href="../../assets/three.module-7AmyneiW.js">
+    <link rel="stylesheet" crossorigin href="../../assets/anisotropicGgxFiber-BiXbR8oC.css">
+  </head>
+  <body>
+    <div class="rig-shell">
+      <header class="rig-topbar">
+        <div class="rig-title-block">
+          <span class="rig-kicker">ROUND 109 · FROSTED GLASS, ICE &amp; DIELECTRIC MICROFACET REFRACTION WORKBENCH</span>
+          <h1>Walter IOR-Weighted Refraction Half-Vector vs Naive Unweighted Bisector BTDF</h1>
+        </div>
+        <div class="rig-top-actions">
+          <a class="rig-link" href="../../index.html">← Portal</a>
+          <a class="rig-link" href="./test-report-cards.html">7-Card Report (EN)</a>
+          <a class="rig-link" href="./test-report-cards.zh.html">7-Card 报告 (ZH)</a>
+          <button id="theme-toggle-btn" class="rig-btn-secondary" type="button">Toggle Theme</button>
+        </div>
+      </header>
+
+      <main class="rig-main">
+        <section class="rig-stage-card">
+          <div class="rig-canvas-wrap">
+            <canvas id="rig-canvas" aria-label="Walter Microfacet Rough Refraction BTDF 3D Rig"></canvas>
+          </div>
+          <div class="rig-stage-caption">
+            <strong>58-Solid 3D Frosted Glass Refractometer Bench:</strong> Back cyan towers display the exact Walter et al. (EGSR 2007) IOR-weighted transmission half-vector peak <code>H_t = −normalize(η_i·V + η_o·L)</code> for frosted glass (<code>η_i = 1.00, η_o = 1.50, α = 0.25</code>) across 17 incident angles <code>θ_i ∈ [0°, 80°]</code>. Because <code>η_i·sin θ_i − η_o·sin θ_t ≡ 0</code> by Snell's Law, <code>H_t</code> aligns with <code>N</code> at the Snell refraction angle (<code>θ_t = 35.26°</code> at Station 12 <code>θ_i = 60°</code>), locking peak transmitted intensity at <code>I = 1.0000</code>, whereas an unweighted bisector tilts by <code>12.37°</code> and starves Station 12 to <code>0.3194</code> (<code>-0.6806</code> / <code>-68.06%</code> loss across <code>16/17</code> stations).
+          </div>
+        </section>
+
+        <aside class="rig-hud-card" aria-label="Walter Rough Refraction Telemetry HUD">
+          <div class="hud-header">
+            <span id="hud-mode-badge" class="hud-badge">WALTER IOR-WEIGHTED REFRACTION HALF-VECTOR</span>
+            <div id="hud-verdict-pill" class="hud-verdict" data-state="pass">
+              PASS · H_t = −normalize(η_i·V + η_o·L) Locks Peak I = 1.0000 (0/17 Starved)
+            </div>
+          </div>
+
+          <div class="hud-controls">
+            <div class="btn-group" role="group" aria-label="Refraction Half-Vector Mode Selector">
+              <button
+                type="button"
+                class="mode-btn active"
+                data-mode-btn="walter-ior-weighted-half-vector"
+              >
+                Walter IOR-Weighted Half-Vector (−normalize(η_i·V + η_o·L))
+              </button>
+              <button
+                type="button"
+                class="mode-btn"
+                data-mode-btn="naive-unweighted-bisector-btdf"
+              >
+                Naive Unweighted Bisector (−normalize(V + L) Starved)
+              </button>
+            </div>
+
+            <label class="slider-label" for="station-slider">
+              <span>Incident Viewing Angle Station (<code>θ_i ∈ [0°, 80°]</code>)</span>
+              <input id="station-slider" type="range" min="0" max="16" step="1" value="12" />
+            </label>
+          </div>
+
+          <dl class="hud-metrics-grid">
+            <div class="metric-box">
+              <dt>Incident &amp; Snell Angles</dt>
+              <dd id="hud-station-value">Station 12 (θ_i = 60°, θ_t = 35.26°)</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Walter BTDF Peak I_Walter</dt>
+              <dd id="hud-walter-value">1.0000</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Active Transmitted Peak</dt>
+              <dd id="hud-active-value">1.0000</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Snell Lobe Starvation</dt>
+              <dd id="hud-error-value">0.0000 (Snell lobe locked)</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Starved Glass Stations</dt>
+              <dd id="hud-starved-count">0 / 17</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Dielectric Glass Spec</dt>
+              <dd>η_i = 1.00 · η_o = 1.50 · α = 0.25</dd>
+            </div>
+          </dl>
+
+          <div class="hud-formula-box">
+            <h2>Walter IOR-Weighted Half-Vector &amp; Jacobian Law</h2>
+            <p>
+              <code>H_t = −normalize(η_i · V + η_o · L),   J_t = η_o² · |L·H_t| / (η_i(V·H_t) + η_o(L·H_t))²</code>
+            </p>
+            <p>
+              For a ray refracting from <code>θ_i = 60°</code> in air to <code>θ_t = 35.26°</code> in glass, weighting <code>V</code> and <code>L</code> by <code>(1.0, 1.5)</code> cancels their tangential components (<code>1.0·sin 60° − 1.5·sin 35.26° = 0</code>), preventing the <code>-68.06%</code> darkening of unweighted bisectors.
+            </p>
+          </div>
+        </aside>
+      </main>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,260 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Burley-Heitz elliptical anisotropic GGX brushed-metal/fiber ribbon vs naive isotropic circular highlight rig",
+  "topic_zh": "Burley-Heitz 椭圆各向异性 GGX 拉丝金属与发丝高光丝带对比朴素各向同性圆斑针尖坍塌",
+  "slug": "anisotropic-ggx-fiber-rig",
+  "timestamp": "2026-11-14T01:45:23.056Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Brent Burley (SIGGRAPH 2012 Disney PBR) & Eric Heitz (JCGT 2014) slope-space elliptical anisotropic GGX microfacet distribution (I(u) = 1 / (1 + (u / alpha_t)^2)^2 with alpha_t = 0.80, alpha_b = 0.05, aspect = 4.0) versus naive isotropic circular GGX (alpha_iso = 0.05) and 64-facet cylindrical micro-groove quadrature across 17 transverse tangent half-angle slope stations (u in [-0.80, +0.80]).",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "aniso-ggx-quadrature64-equivalence-128",
+      "passed": true,
+      "detail": "128 closed-form elliptical GGX slope-stretch and 64-facet groove quadrature passes agree within 2e-4"
+    },
+    {
+      "name": "aniso-ggx-quadrature64-equivalence-1024",
+      "passed": true,
+      "detail": "1024 closed-form elliptical GGX slope-stretch and 64-facet groove quadrature passes agree within 2e-4"
+    },
+    {
+      "name": "aniso-ggx-quadrature64-equivalence-8192",
+      "passed": true,
+      "detail": "8192 closed-form elliptical GGX slope-stretch and 64-facet groove quadrature passes agree within 2e-4"
+    },
+    {
+      "name": "burley-heitz-anisotropic-ribbon-conserved",
+      "passed": true,
+      "detail": "17 tangent-slope stations preserve transverse brushed-metal ribbon (station-12 u=+0.40 I=0.6400)"
+    },
+    {
+      "name": "naive-isotropic-ribbon-starvation-exposed",
+      "passed": true,
+      "detail": "naive isotropic GGX (alpha=0.05) collapses station-12 (u=+0.40) to I=0.0002 (-0.6398 / -99.96% starvation across 16/17 stations)"
+    },
+    {
+      "name": "anisotropic-station12-06400-locked",
+      "passed": true,
+      "detail": "Burley-Heitz Anisotropic GGX locks station-12 (u=+0.40) at I=0.6400 (0/17 starved stations)"
+    },
+    {
+      "name": "isotropic-station12-00002-starvation-exposed",
+      "passed": true,
+      "detail": "naive isotropic circular GGX collapses station-12 to I=0.0002 (-0.6398 ribbon loss across 16/17 off-axis stations)"
+    },
+    {
+      "name": "anisotropic-station16-tail-02500",
+      "passed": true,
+      "detail": "extreme tangent slope u=+0.80 retains I=0.2500 under α_t=0.80 vs I=0.0000 under α_iso=0.05"
+    },
+    {
+      "name": "exact-reverse-station-scrub",
+      "passed": true,
+      "detail": "reverse station scrubbing from u=+0.80 back to u=+0.40 reproduces identical telemetry state"
+    },
+    {
+      "name": "geometry-58-solid-conformance",
+      "passed": true,
+      "detail": "3D goniophotometer stage renders 58 tracked solids across 17 tangent-slope stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Anisotropic GGX controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station anisotropic GGX passes",
+      "count": 128,
+      "primary_ms": 0.011300000000005639,
+      "baseline_ms": 2.9610999999999876,
+      "primary_samples_ms": [
+        0.09109999999998308,
+        0.011300000000005639,
+        0.008300000000019736,
+        0.017899999999997362,
+        0.014499999999998181,
+        0.007599999999968077,
+        0.008300000000019736
+      ],
+      "baseline_samples_ms": [
+        5.003399999999999,
+        2.9560000000000173,
+        2.9639000000000237,
+        5.249799999999993,
+        2.9476000000000226,
+        2.9518999999999664,
+        2.9610999999999876
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station anisotropic GGX passes",
+      "count": 1024,
+      "primary_ms": 0.07839999999998781,
+      "baseline_ms": 28.772299999999973,
+      "primary_samples_ms": [
+        0.08260000000001355,
+        0.08229999999991833,
+        0.07339999999999236,
+        0.07839999999998781,
+        0.07340000000010605,
+        0.07849999999996271,
+        0.07510000000002037
+      ],
+      "baseline_samples_ms": [
+        25.76679999999999,
+        25.500400000000013,
+        28.772299999999973,
+        26.931400000000053,
+        33.550500000000056,
+        35.6893,
+        33.39389999999992
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station anisotropic GGX passes",
+      "count": 8192,
+      "primary_ms": 0.6141999999999825,
+      "baseline_ms": 234.57460000000037,
+      "primary_samples_ms": [
+        0.6077999999999975,
+        0.6141999999999825,
+        0.6176999999997861,
+        0.6196999999999662,
+        0.615500000000111,
+        0.5976999999998043,
+        0.5970999999999549
+      ],
+      "baseline_samples_ms": [
+        249.32080000000008,
+        291.8001999999999,
+        245.39789999999994,
+        209.96939999999995,
+        231.9584000000002,
+        234.57460000000037,
+        224.24749999999995
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/anisotropic-ggx-fiber-rig/light-burley-heitz-anisotropic-ggx.png",
+    "docs/evidence/anisotropic-ggx-fiber-rig/light-naive-isotropic-circular-ggx.png",
+    "docs/evidence/anisotropic-ggx-fiber-rig/dark-burley-heitz-anisotropic-ggx.png",
+    "docs/evidence/anisotropic-ggx-fiber-rig/dark-naive-isotropic-circular-ggx.png",
+    "docs/evidence/anisotropic-ggx-fiber-rig/mobile.png"
+  ],
+  "primary_label": "Heitz Closed-Form Elliptical Slope-Stretch GGX",
+  "baseline_label": "64-Facet Cylindrical Micro-Groove Quadrature",
+  "load_unit": "17-station anisotropic GGX passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form slope-space elliptical GGX evaluation versus 64-facet cylindrical micro-groove normal perturbation quadrature.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "aniso_alpha_t": 0.8,
+    "groove_alpha_b": 0.05,
+    "station12_aniso_intensity": 0.64,
+    "station12_naive_intensity": 0.0002,
+    "station12_ribbon_loss": 0.6398,
+    "starved_stations": 16,
+    "maximum_solver_error": 0
+  },
+  "protocol": {
+    "input": {
+      "station_index": 12,
+      "tangent_slope_u": 0.4,
+      "alpha_t": 0.8,
+      "alpha_b": 0.05,
+      "aspect_ratio": 4
+    },
+    "output": {
+      "aniso_ribbon_intensity": 0.64,
+      "naive_iso_intensity": 0.0002,
+      "ribbon_starvation_loss": 0.6398,
+      "station16_aniso_tail": 0.25,
+      "starved_stations": 16
+    },
+    "function": "I_aniso(u) = 1 / (1 + (u / α_t)²)² → Station-12 (u=+0.40) I = 0.6400 vs Isotropic 0.0002 (−99.96% Starved)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 transverse tangent-slope stations sustain full elliptical brushed-metal ribbon without off-axis starvation",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Brushed stainless steel, spun aluminum wheels, vinyl records, silk satin fabrics, and combed hair strands in UE5, Unity HDRP, and Three.js",
+    "Stretching specular highlights into a continuous transverse ribbon (I=0.6400 at u=+0.40) perpendicular to micro-grooves",
+    "Coupling with MikkTSpace Orthogonal Tangent Frames (Round 62) and Heitz Smith Height-CorrelatedAnisotropic Masking-Shadowing",
+    "Evaluating slope-space elliptical roughness (alpha_t, alpha_b) in 4 algebraic operations without trig or facet loops"
+  ],
+  "not_for": [
+    "Purely isotropic sandblasted matte surfaces or uniform glass spheres where alpha_t == alpha_b",
+    "Meshes lacking valid tangent/bitangent attributes or derivative-based screen-space tangent frames",
+    "Multi-bounce volumetric hair transmission without Marschner TT/TRT longitudinal lobes",
+    "Unlit flat-shaded cartoon decals"
+  ],
+  "locale_zh": {
+    "aniso-ggx-quadrature64-equivalence-128": "椭圆GGX闭式与64微槽积分等价 128",
+    "128 closed-form elliptical GGX slope-stretch and 64-facet groove quadrature passes agree within 2e-4": "128 次闭式椭圆 GGX 斜率拉伸与 64 微槽小面正交积分在 2e-4 内一致",
+    "aniso-ggx-quadrature64-equivalence-1024": "椭圆GGX闭式与64微槽积分等价 1024",
+    "1024 closed-form elliptical GGX slope-stretch and 64-facet groove quadrature passes agree within 2e-4": "1024 次闭式椭圆 GGX 斜率拉伸与 64 微槽小面正交积分在 2e-4 内一致",
+    "aniso-ggx-quadrature64-equivalence-8192": "椭圆GGX闭式与64微槽积分等价 8192",
+    "8192 closed-form elliptical GGX slope-stretch and 64-facet groove quadrature passes agree within 2e-4": "8192 次闭式椭圆 GGX 斜率拉伸与 64 微槽小面正交积分在 2e-4 内一致",
+    "burley-heitz-anisotropic-ribbon-conserved": "Burley-Heitz各向异性高光丝带守恒",
+    "17 tangent-slope stations preserve transverse brushed-metal ribbon (station-12 u=+0.40 I=0.6400)": "17 个切向斜率站点完整保持横向拉丝高光丝带（第 12 站 u=+0.40 维持 I=0.6400）",
+    "naive-isotropic-ribbon-starvation-exposed": "朴素各向同性高光丝带饥饿暴露",
+    "naive isotropic GGX (alpha=0.05) collapses station-12 (u=+0.40) to I=0.0002 (-0.6398 / -99.96% starvation across 16/17 stations)": "朴素各向同性 GGX（α=0.05）将第 12 站（u=+0.40）压垮至 I=0.0002（丢失 -0.6398 / -99.96%，波及 16/17 站）",
+    "anisotropic-station12-06400-locked": "各向异性第12站0.6400丝带锁定",
+    "Burley-Heitz Anisotropic GGX locks station-12 (u=+0.40) at I=0.6400 (0/17 starved stations)": "Burley-Heitz 各向异性 GGX 将第 12 站（u=+0.40）锁定在 I=0.6400（0/17 饥饿站）",
+    "isotropic-station12-00002-starvation-exposed": "各向同性第12站0.0002针尖坍塌暴露",
+    "naive isotropic circular GGX collapses station-12 to I=0.0002 (-0.6398 ribbon loss across 16/17 off-axis stations)": "朴素各向同性圆斑 GGX 将第 12 站压扁至 I=0.0002（横向丝带丢失 -0.6398，污染 16/17 个离轴站点）",
+    "anisotropic-station16-tail-02500": "极端切向斜率u=+0.80尾翼守恒",
+    "extreme tangent slope u=+0.80 retains I=0.2500 under α_t=0.80 vs I=0.0000 under α_iso=0.05": "极端切向斜率 u=+0.80 在 α_t=0.80 下保持 I=0.2500，而 α_iso=0.05 归零为 I=0.0000",
+    "exact-reverse-station-scrub": "精确逆序站点回退一致性",
+    "reverse station scrubbing from u=+0.80 back to u=+0.40 reproduces identical telemetry state": "从 u=+0.80 逆序拖回 u=+0.40 精确复现完全相同的遥测状态",
+    "geometry-58-solid-conformance": "58构件3D角光度计场景一致性",
+    "3D goniophotometer stage renders 58 tracked solids across 17 tangent-slope stations": "3D 角光度计实验台在 17 个切向斜率站点上完整渲染 58 个独立几何体",
+    "mobile-layout": "手机布局",
+    "390px Anisotropic GGX controls fit without horizontal overflow": "390px 各向异性 GGX 控制面板无横向溢出",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Heitz Closed-Form Elliptical Slope-Stretch GGX": "Heitz 闭式斜率空间椭圆拉伸各向异性 GGX",
+    "64-Facet Cylindrical Micro-Groove Quadrature": "64 微槽柱面法线扰动正交积分基线",
+    "Median of 7 alternating Node CPU runs after warmup. Closed-form slope-space elliptical GGX evaluation versus 64-facet cylindrical micro-groove normal perturbation quadrature.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；闭式斜率空间椭圆各向异性 GGX 对比 64 微槽柱面法线扰动积分基线。",
+    "Sampled 17 transverse tangent-slope stations sustain full elliptical brushed-metal ribbon without off-axis starvation": "采样 17 个横向切线斜率站点全部维持饱满椭圆拉丝高光丝带，无离轴针尖坍塌",
+    "I_aniso(u) = 1 / (1 + (u / α_t)²)² → Station-12 (u=+0.40) I = 0.6400 vs Isotropic 0.0002 (−99.96% Starved)": "椭圆斜率拉伸 I_aniso(u) = 1/(1+(u/α_t)²)² → 第 12 站（u=+0.40）维持 I = 0.6400 对比各向同性 0.0002（−99.96% 饥饿）",
+    "Brushed stainless steel, spun aluminum wheels, vinyl records, silk satin fabrics, and combed hair strands in UE5, Unity HDRP, and Three.js": "UE5、Unity HDRP 与 Three.js 中的拉丝不锈钢、旋压铝合金轮毂、黑胶唱片、真丝绸缎与梳理发丝材质",
+    "Stretching specular highlights into a continuous transverse ribbon (I=0.6400 at u=+0.40) perpendicular to micro-grooves": "沿垂直于平行微槽的切向将镜面高光拉伸为连续明亮的横向丝带（在 u=+0.40 处保持 I=0.6400）",
+    "Coupling with MikkTSpace Orthogonal Tangent Frames (Round 62) and Heitz Smith Height-CorrelatedAnisotropic Masking-Shadowing": "与 MikkTSpace 正交切空间（Round 62）及 Heitz 高度相关 Smith 各向异性几何遮蔽函数无缝耦合",
+    "Evaluating slope-space elliptical roughness (alpha_t, alpha_b) in 4 algebraic operations without trig or facet loops": "仅用 4 次代数运算求解斜率空间双轴粗糙度（α_t, α_b），零反三角函数与微槽循环开销",
+    "Purely isotropic sandblasted matte surfaces or uniform glass spheres where alpha_t == alpha_b": "横纵粗糙度完全相等（α_t == α_b）的均匀喷砂哑光表面或各向同性玻璃球",
+    "Meshes lacking valid tangent/bitangent attributes or derivative-based screen-space tangent frames": "缺失有效顶点切线/副切线（Tangent/Bitangent）属性且未构建屏幕空间导数切标架的网格",
+    "Multi-bounce volumetric hair transmission without Marschner TT/TRT longitudinal lobes": "需要 Marschner R/TT/TRT 纵向双高光偏移与内部透射的半透明金发体积散射",
+    "Unlit flat-shaded cartoon decals": "无光照扁平卡通贴花"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/anisotropic-ggx-fiber.test.ts",
+    "node scripts/benchmark-anisotropic-ggx-fiber.mjs"
+  ]
+}

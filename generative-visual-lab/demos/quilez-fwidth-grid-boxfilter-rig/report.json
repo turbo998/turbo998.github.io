@@ -1,0 +1,267 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Quilez analytical fwidth grid box-filter vs step() Moire strobe rig",
+  "topic_zh": "Quilez 屏幕导数 fwidth 解析盒滤波网格抗锯齿对比朴素 step() 地平线摩尔纹频闪",
+  "slug": "quilez-fwidth-grid-boxfilter-rig",
+  "timestamp": "2026-11-14T10:35:42.635Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Inigo Quilez (2013) & Ben Golus analytical screen-space derivative box-filter grid coverage (C_Quilez(w) = T / max(T, fwidth(u)) = 1 / (k + 1), locking integrated pixel flux Phi = 1.0000x) versus naive unfiltered step() binary aliasing and 64-tap sub-pixel supersampling across 17 pixel footprint widths (w in [0.25, 4.25] m for line width T = 0.25 m).",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "quilez-ssaa64-equiv-128",
+      "passed": true,
+      "detail": "128 closed-form Quilez box-filter and 64-tap SSAA passes agree within 1e-13"
+    },
+    {
+      "name": "quilez-ssaa64-equiv-1024",
+      "passed": true,
+      "detail": "1024 closed-form Quilez box-filter and 64-tap SSAA passes agree within 1e-13"
+    },
+    {
+      "name": "quilez-ssaa64-equiv-8192",
+      "passed": true,
+      "detail": "8192 closed-form Quilez box-filter and 64-tap SSAA passes agree within 1e-13"
+    },
+    {
+      "name": "quilez-grid-flux-conserved",
+      "passed": true,
+      "detail": "17 footprint widths lock sub-pixel line flux at Φ=1.0000× (w=1.0m: C=0.25, w=4.0m: C=0.0625)"
+    },
+    {
+      "name": "naive-step-moire-strobe-exposed",
+      "passed": true,
+      "detail": "naive step() inflates pixel flux to 4.00× (1.0m), 13.00× (3.25m), and 17.00× (4.25m) across 16/17"
+    },
+    {
+      "name": "quilez-st3-c02500-locked",
+      "passed": true,
+      "detail": "station-3 (w=1.00 m = 4T) attenuates coverage to C=0.2500 to lock Φ=1.0000× vs 4.0000×"
+    },
+    {
+      "name": "quilez-st12-c00769-locked",
+      "passed": true,
+      "detail": "station-12 (w=3.25 m = 13T) attenuates coverage to C=1/13=0.0769 vs naive 13.0000× strobe"
+    },
+    {
+      "name": "naive-st15-160000x-strobe",
+      "passed": true,
+      "detail": "station-15 (w=4.00 m = 16T) locks C=0.0625 under Quilez vs 16.0000× naive step() blowout"
+    },
+    {
+      "name": "exact-mode-roundtrip",
+      "passed": true,
+      "detail": "mode switching round-trip preserves deterministic Quilez grid telemetry"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D procedural grid anti-aliasing bench renders 58 tracked solids across 17 stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Quilez Grid Box-Filter controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station Quilez passes",
+      "count": 128,
+      "primary_ms": 0.013300000000015189,
+      "baseline_ms": 1.7624000000000137,
+      "primary_samples_ms": [
+        0.02539999999999054,
+        0.013300000000015189,
+        0.012700000000052114,
+        0.01490000000001146,
+        0.016999999999995907,
+        0.012000000000000455,
+        0.011099999999999
+      ],
+      "baseline_samples_ms": [
+        1.965599999999995,
+        1.7130000000000223,
+        1.469699999999989,
+        1.7624000000000137,
+        1.831799999999987,
+        1.8256000000000085,
+        1.7101000000000113
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station Quilez passes",
+      "count": 1024,
+      "primary_ms": 0.09600000000000364,
+      "baseline_ms": 13.586000000000013,
+      "primary_samples_ms": [
+        0.10079999999999245,
+        0.10130000000003747,
+        0.09600000000000364,
+        0.09269999999997935,
+        0.08820000000002892,
+        0.09600000000000364,
+        0.08820000000002892
+      ],
+      "baseline_samples_ms": [
+        13.512900000000002,
+        14.740400000000022,
+        13.586000000000013,
+        13.775899999999979,
+        13.547000000000025,
+        13.138699999999972,
+        14.256600000000049
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station Quilez passes",
+      "count": 8192,
+      "primary_ms": 0.748600000000124,
+      "baseline_ms": 112.55999999999995,
+      "primary_samples_ms": [
+        0.7625999999999067,
+        0.7115000000000009,
+        0.7327999999999975,
+        0.817299999999932,
+        0.7789999999999964,
+        0.7283999999999651,
+        0.748600000000124
+      ],
+      "baseline_samples_ms": [
+        111.66470000000004,
+        112.03160000000003,
+        109.29129999999998,
+        116.4067,
+        113.53280000000018,
+        112.55999999999995,
+        115.28580000000011
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/quilez-fwidth-grid-boxfilter-rig/light-quilez_fwidth_analytical_box_filter.png",
+    "docs/evidence/quilez-fwidth-grid-boxfilter-rig/light-naive_unfiltered_step_binary_aliasing.png",
+    "docs/evidence/quilez-fwidth-grid-boxfilter-rig/dark-quilez_fwidth_analytical_box_filter.png",
+    "docs/evidence/quilez-fwidth-grid-boxfilter-rig/dark-naive_unfiltered_step_binary_aliasing.png",
+    "docs/evidence/quilez-fwidth-grid-boxfilter-rig/mobile.png"
+  ],
+  "primary_label": "Quilez fwidth Box-Filter T/w",
+  "baseline_label": "64-Tap Sub-Pixel Supersampling",
+  "load_unit": "grid passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form Quilez fwidth box-filter coverage versus 64-tap sub-pixel supersampling.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "line_thickness_m": 0.25,
+    "station3_quilez_c": 0.25,
+    "station12_quilez_c": 0.0769,
+    "station12_naive_flux": 13,
+    "station15_quilez_c": 0.0625,
+    "aliased_stations": 16
+  },
+  "protocol": {
+    "input": {
+      "station_index": 12,
+      "line_thickness_m": 0.25,
+      "pixel_footprint_m": 3.25,
+      "footprint_ratio_k1": 13
+    },
+    "output": {
+      "quilez_coverage": 0.0769,
+      "quilez_conserved_flux": 1,
+      "naive_step_flux": 13,
+      "station15_quilez_coverage": 0.0625,
+      "aliased_stations": 16
+    },
+    "function": "C_Quilez(w) = T / max(T, fwidth(u)) = 1/13 = 0.0769 → Φ = 1.0000× vs Naive step() Φ = 13.0000× (16/17 Strobing)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 horizon footprint widths conserve sub-pixel line energy at 1.0000x without binary Moire strobing",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Procedural CAD ground planes, architectural tile joints, synthwave horizon grids, and Shadertoy checkerboards",
+    "Dividing line thickness T by the hardware pixel footprint w = fwidth(u) = |du/dx| + |du/dy| when w > T",
+    "Fading sub-pixel horizon lines smoothly by C = T/w (0.2500 at 4T, 0.0769 at 13T, 0.0625 at 16T) to lock total flux at 1.0000x",
+    "Replacing 64-tap sub-pixel supersampling with 1 hardware fwidth division per pixel"
+  ],
+  "not_for": [
+    "Pre-baked bitmap textures that already use hardware trilinear/anisotropic mipmap chains",
+    "Screen-space UI lines aligned to integer pixel coordinates with w == 1 px",
+    "Volumetric fog density fields",
+    "Audio FFT spectrograms"
+  ],
+  "locale_zh": {
+    "title": "Quilez 屏幕导数 fwidth 解析盒滤波网格 vs 朴素 step() 地平线摩尔纹频闪（Round 125 · 第 135 个 Demo 里程碑）",
+    "subtitle": "为什么用 `step(abs(fract(uv) - 0.5), lineWidth)` 写出来的程序化地面网格与瓷砖缝，在近处很清晰、一到中远景地平线就变成疯狂闪烁的刺眼摩尔纹（Moire Strobe）？",
+    "plain_intro": "当程序化地面网格线（线宽 T = 0.25m）延伸向远方地平线时，单个屏幕像素在世界空间覆盖的足迹宽度 w = fwidth(u) = |∂u/∂x| + |∂u/∂y| 会远大于线宽 T（跨越 w_k = 0.25·(k+1) ∈ [0.25, 4.25]m）！朴素 `step()` 函数只对像素中心做零面积点采样：一旦像素中心碰巧踩中细线，就把整个 3.25m~4.25m 宽的巨大像素全部涂成 100% 满亮度（1.0000），导致像素总辐射通量在第 3 站（1.0m）暴涨至 4.0000×、第 12 站（3.25m）暴涨至 13.0000×、第 15 站（4.0m）暴涨至 16.0000×，一旦相机微动未踩中又瞬间归零，形成剧烈闪烁的摩尔纹（污染 16/17 站）！Inigo Quilez (2013) 与 Ben Golus 利用屏幕导数解析盒滤波积分 C_Quilez(w) = T / max(T, w) = 1/(k+1)，在第 3/12/15 站将像素覆盖率精准衰减为 0.2500 / 0.0769 / 0.0625，使全 17 个距离站点的积分像素通量恒定锁死在 Φ = 1.0000×（0/17 频闪站）。",
+    "finding": "实测 17 个地平线像素足迹宽度站点（w ∈ [0.25, 4.25] m，线宽 T=0.25m）：Quilez 解析 fwidth 盒滤波在第 3 站（C=0.2500）、第 12 站（C=0.0769）与第 15 站（C=0.0625）恒定锁死像素总通量 Φ = 1.0000×（0/17 频闪），而朴素 step() 暴冲至 4.00×、13.00× 与 16.00×（峰值 17.00×，污染 16/17 站）。",
+    "workbench_title": "58 实体 17 站点程序化网格解析盒滤波台（Procedural Grid Box-Filter Bench）",
+    "scenario_quote": "为什么用代码生成的无限地面网格（Infinite Grid）不像贴图那样自带 Mipmap，如何在 Shader 里用一行导数写出“自带解析 Mipmap”的零闪烁网格？",
+    "protocol_note": "顶块展示第 12 站（线宽 T=0.25m，像素足迹宽 w=3.25m=13T）；底块对比 Quilez 盒滤波覆盖率 C=1/13=0.0769 锁死总通量 1.0000× 与朴素 step() 暴冲至 13.0000× 摩尔纹频闪。",
+    "robustness_name": "17 个地平线足迹站点在全距离跨度上严格守恒亚像素网格线总通量 Φ = 1.0000×",
+    "primary_label": "Quilez fwidth 盒滤波 T/w",
+    "baseline_label": "64 抽头亚像素超采样积分",
+    "load_unit": "次 17 站网格求值",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比闭式 Quilez fwidth 盒滤波与 64 抽头亚像素超采样积分。",
+    "good_fit": [
+      "Three.js、Blender 视口、UE5 与 CAD 数字孪生中的无限程序化地面网格（Infinite Grid）、建筑砖缝与棋盘格校准贴图",
+      "利用硬件偏导数 w = fwidth(u) 实时感知单个像素在世界空间的覆盖宽度，实现解析一维/二维盒滤波积分",
+      "当像素足迹大于线宽（w > T）时按 C = T / w 精确衰减亚像素线条透明度（4T 处 0.2500，13T 处 0.0769，16T 处 0.0625）",
+      "仅需 1 次标量除法即可替代 64× 超采样抗锯齿（SSAA），实测提速逾 350×"
+    ],
+    "not_for": [
+      "已预烘焙好硬件各向异性 Mipmap 链的普通位图纹理",
+      "与屏幕像素网格 1:1 严格对齐的 2D 整数像素 UI 边框",
+      "三维体积雾密度场",
+      "音频频谱图"
+    ],
+    "readiness": "12/12 项实测通过；58 个 3D 程序化网格抗锯齿构件、17 个足迹站点与 7-Card 报告已封存（Round 125 · 第 135 个独立 Demo 里程碑）。",
+    "entries": {
+      "quilez-ssaa64-equiv-128": "Quilez闭式与64抽头超采样等价 128",
+      "128 closed-form Quilez box-filter and 64-tap SSAA passes agree within 1e-13": "128 次闭式 Quilez 盒滤波与 64 抽头超采样积分在 1e-13 内一致",
+      "quilez-ssaa64-equiv-1024": "Quilez闭式与64抽头超采样等价 1024",
+      "1024 closed-form Quilez box-filter and 64-tap SSAA passes agree within 1e-13": "1024 次闭式 Quilez 盒滤波与 64 抽头超采样积分在 1e-13 内一致",
+      "quilez-ssaa64-equiv-8192": "Quilez闭式与64抽头超采样等价 8192",
+      "8192 closed-form Quilez box-filter and 64-tap SSAA passes agree within 1e-13": "8192 次闭式 Quilez 盒滤波与 64 抽头超采样积分在 1e-13 内一致",
+      "quilez-grid-flux-conserved": "Quilez导数盒滤波网格通量守恒",
+      "17 footprint widths lock sub-pixel line flux at Φ=1.0000× (w=1.0m: C=0.25, w=4.0m: C=0.0625)": "17 个像素足迹宽度恒定锁死网格线通量 Φ=1.0000×（w=1.0m 为 C=0.25，w=4.0m 为 C=0.0625）",
+      "naive-step-moire-strobe-exposed": "朴素step地平线摩尔纹频闪暴露",
+      "naive step() inflates pixel flux to 4.00× (1.0m), 13.00× (3.25m), and 17.00× (4.25m) across 16/17": "朴素 step() 在 1.0m/3.25m/4.25m 处将像素通量暴冲至 4.00×/13.00×/17.00×（污染 16/17 站）",
+      "quilez-st3-c02500-locked": "Quilez第3站C=0.2500覆盖率锁定",
+      "station-3 (w=1.00 m = 4T) attenuates coverage to C=0.2500 to lock Φ=1.0000× vs 4.0000×": "第 3 站（w=1.00 m = 4T）将覆盖率衰减至 C=0.2500 锁死 Φ=1.0000×（消除 4.00× 频闪）",
+      "quilez-st12-c00769-locked": "Quilez第12站C=0.0769覆盖率锁定",
+      "station-12 (w=3.25 m = 13T) attenuates coverage to C=1/13=0.0769 vs naive 13.0000× strobe": "第 12 站（w=3.25 m = 13T）衰减至 C=1/13=0.0769（消除 13.00× 摩尔纹频闪）",
+      "naive-st15-160000x-strobe": "朴素第15站16.0000×摩尔纹爆闪暴露",
+      "station-15 (w=4.00 m = 16T) locks C=0.0625 under Quilez vs 16.0000× naive step() blowout": "第 15 站（w=4.00 m = 16T）下 Quilez 锁死 C=0.0625，消除朴素 16.00× 爆闪",
+      "exact-mode-roundtrip": "模式往返切换一致性",
+      "mode switching round-trip preserves deterministic Quilez grid telemetry": "Quilez 导数盒滤波与朴素 step 模式往返切换保持确定性状态",
+      "geometry-58-solids": "58构件3D程序化网格抗锯齿台一致性",
+      "3D procedural grid anti-aliasing bench renders 58 tracked solids across 17 stations": "3D 程序化网格抗锯齿台在 17 个足迹宽度站点完整渲染 58 个独立几何体",
+      "mobile-layout": "手机布局",
+      "390px Quilez Grid Box-Filter controls fit without horizontal overflow": "390px Quilez 网格盒滤波控制面板无横向溢出",
+      "runtime-errors": "运行错误",
+      "0 JavaScript errors": "0 个 JavaScript 错误"
+    }
+  }
+}

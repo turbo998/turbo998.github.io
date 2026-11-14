@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quilez Analytical fwidth Box-Filter Grid vs Naive step() Moire Strobe Rig (Round 125 / 135th Demo Milestone)</title>
+    <script type="module" crossorigin src="../../assets/quilezFwidthGridBoxfilter-DGtraUsZ.js"></script>
+    <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="modulepreload" crossorigin href="../../assets/three.module-7AmyneiW.js">
+    <link rel="stylesheet" crossorigin href="../../assets/beerLambertChromaticVolume-f3lud023.css">
+  </head>
+  <body>
+    <main class="workbench">
+      <header class="wb-header">
+        <div>
+          <p class="eyebrow">ROUND 125 MILESTONE · 135TH DEMO · QUILEZ (2013) &amp; GOLUS ANALYTICAL FWIDTH GRID BOX-FILTER BENCH</p>
+          <h1>Quilez Analytical fwidth Box-Filter Grid (T / max(T, w)) vs Naive step() Horizon Moire Strobe</h1>
+          <p class="subtitle">
+            58-solid 17-station procedural grid anti-aliasing bench across pixel footprint widths <code>w = fwidth(u) ∈ [0.25, 4.25] m</code> (grid line width <code>T = 0.25 m</code>): Inigo Quilez (2013) &amp; Ben Golus integrate the sub-pixel box filter analytically as <code>C_Quilez(w) = T / max(T, w) = 1 / (k + 1)</code> (`0.2500` at <code>w=1.0m</code>, `0.0769` at Station 12 <code>w=3.25m</code>, `0.0625` at Station 15 <code>w=4.0m</code>) to lock integrated pixel flux at <code>Φ = 1.0000×</code> (<code>0/17</code> strobing stations) vs <code>4.00×</code>, <code>13.00×</code>, and <code>17.00×</code> binary Moire strobing across <code>16/17</code> stations under naive <code>step()</code>.
+          </p>
+        </div>
+        <div class="controls">
+          <button id="btn-mode-quilez" class="btn active" type="button">
+            Quilez Analytical fwidth Box-Filter (Φ = 1.0000×)
+          </button>
+          <button id="btn-mode-naive" class="btn" type="button">
+            Naive Unfiltered step() (Up to 17.00× Moire Strobe)
+          </button>
+          <button id="btn-theme" class="btn secondary" type="button">
+            Toggle Theme
+          </button>
+        </div>
+      </header>
+
+      <section class="viewport-card">
+        <canvas id="rig-canvas" aria-label="58-solid 17-station Quilez analytical fwidth grid box-filter workbench"></canvas>
+      </section>
+
+      <section class="readout-grid" aria-label="Live telemetry readout">
+        <article class="readout-card">
+          <span class="label">ACTIVE PROCEDURAL GRID FILTER KERNEL</span>
+          <strong id="readout-mode">Quilez (2013) &amp; Golus Analytical fwidth Box-Filter (C = T / max(T, fwidth(u)))</strong>
+        </article>
+        <article class="readout-card">
+          <span class="label">STATION 3 (w = 1.00 m = 4T Footprint)</span>
+          <strong id="readout-s3">w = 1.00 m (4T) → Coverage C = 0.2500, Flux Φ = 1.0000×</strong>
+        </article>
+        <article class="readout-card">
+          <span class="label">STATION 12 (w = 3.25 m = 13T Footprint)</span>
+          <strong id="readout-s12">w = 3.25 m (13T) → Coverage C = 0.0769, Flux Φ = 1.0000×</strong>
+        </article>
+        <article class="readout-card">
+          <span class="label">STATION 15 (w = 4.00 m = 16T Footprint)</span>
+          <strong id="readout-s15">w = 4.00 m (16T) → Coverage C = 0.0625 (0/17 Strobe Stations)</strong>
+        </article>
+      </section>
+
+      <footer class="wb-footer">
+        <span id="readout-status" class="status-pill pass">
+          PASS — Total Sub-Pixel Line Flux Locked at Φ = 1.0000× Across All 17 Horizon Distances
+        </span>
+        <nav class="links">
+          <a href="../../index.html">← Back to Lab Portal</a>
+          <a href="./test-report-cards.html">7-Card Report (EN)</a>
+          <a href="./test-report-cards.zh.html">7-Card 报告 (ZH)</a>
+        </nav>
+      </footer>
+    </main>
+  </body>
+</html>

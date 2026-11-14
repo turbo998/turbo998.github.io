@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fernando PCSS Similar-Triangle Penumbra Rig — Generative Visual Lab</title>
+    <script type="module" crossorigin src="../../assets/pcssBlockerPenumbra-Cmr0c46D.js"></script>
+    <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="modulepreload" crossorigin href="../../assets/three.module-7AmyneiW.js">
+    <link rel="stylesheet" crossorigin href="../../assets/anisotropicGgxFiber-BiXbR8oC.css">
+  </head>
+  <body>
+    <div class="rig-shell">
+      <header class="rig-topbar">
+        <div class="rig-title-block">
+          <span class="rig-kicker">ROUND 100 MILESTONE · CONTACT-HARDENING AREA-LIGHT SHADOW WORKBENCH</span>
+          <h1>Fernando PCSS Similar-Triangle Blocker Ratio vs Naive Fixed-Radius PCF</h1>
+        </div>
+        <div class="rig-top-actions">
+          <a class="rig-link" href="../../index.html">← Portal</a>
+          <a class="rig-link" href="./test-report-cards.html">7-Card Report (EN)</a>
+          <a class="rig-link" href="./test-report-cards.zh.html">7-Card 报告 (ZH)</a>
+          <button id="theme-toggle-btn" class="rig-btn-secondary" type="button">Toggle Theme</button>
+        </div>
+      </header>
+
+      <main class="rig-main">
+        <section class="rig-stage-card">
+          <div class="rig-canvas-wrap">
+            <canvas id="rig-canvas" aria-label="Fernando PCSS Contact-Hardening Penumbra 3D Rig"></canvas>
+          </div>
+          <div class="rig-stage-caption">
+            <strong>58-Solid 3D Similar-Triangle Shadow Optical Bench:</strong> Back cyan towers display the exact Fernando (SIGGRAPH 2005 NVIDIA PCSS) contact-hardening penumbra width <code>w_PCSS = W_light · (d_r − d_b) / d_b</code> for an area light <code>W_light = 1.60 m</code> and blocker depth <code>d_b = 4.00 m</code> across 17 receiver depths <code>d_r ∈ [4.00 m, 12.00 m]</code>. At contact Station 00 (<code>d_r = 4.00 m</code>), PCSS locks <code>w = 0.0000 m</code> razor-sharp grounding, and at Station 12 (<code>d_r = 10.00 m</code>) expands to <code>w = 2.4000 m</code>; naive fixed-radius PCF (<code>w_PCF = 0.8000 m</code>) over-blurs contact by <code>+0.8000 m</code> and under-blurs Station 12 by <code>-1.6000 m</code> across <code>16/17</code> stations.
+          </div>
+        </section>
+
+        <aside class="rig-hud-card" aria-label="PCSS Penumbra Telemetry HUD">
+          <div class="hud-header">
+            <span id="hud-mode-badge" class="hud-badge">FERNANDO PCSS SIMILAR-TRIANGLE PENUMBRA</span>
+            <div id="hud-verdict-pill" class="hud-verdict" data-state="pass">
+              PASS · 0.0000m Contact &amp; 2.4000m Station-12 Penumbra Locked (0/17 Corrupted)
+            </div>
+          </div>
+
+          <div class="hud-controls">
+            <div class="btn-group" role="group" aria-label="Shadow Filter Mode Selector">
+              <button
+                type="button"
+                class="mode-btn active"
+                data-mode-btn="fernando-pcss-similar-triangle"
+              >
+                Fernando PCSS Similar-Triangle Ratio (Contact-Hardening)
+              </button>
+              <button
+                type="button"
+                class="mode-btn"
+                data-mode-btn="naive-fixed-radius-pcf"
+              >
+                Naive Fixed-Radius PCF Kernel (w_PCF = 0.8000 m)
+              </button>
+            </div>
+
+            <label class="slider-label" for="station-slider">
+              <span>Receiver Depth Station (<code>d_r ∈ [4.00 m, 12.00 m]</code>)</span>
+              <input id="station-slider" type="range" min="0" max="16" step="1" value="12" />
+            </label>
+          </div>
+
+          <dl class="hud-metrics-grid">
+            <div class="metric-box">
+              <dt>Selected Receiver Depth</dt>
+              <dd id="hud-station-value">Station 12 (d_r = 10.00 m)</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Exact PCSS Width w_PCSS</dt>
+              <dd id="hud-pcss-value">2.4000 m</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Active Filter Width w_active</dt>
+              <dd id="hud-active-value">2.4000 m</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Penumbra Width Error</dt>
+              <dd id="hud-error-value">0.0000 m (Exact contact-hardening)</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Corrupted Stations</dt>
+              <dd id="hud-corrupted-count">0 / 17</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Emitter &amp; Blocker Setup</dt>
+              <dd>W_light = 1.60 m · d_b = 4.00 m</dd>
+            </div>
+          </dl>
+
+          <div class="hud-formula-box">
+            <h2>Thales Similar-Triangle Blocker-Ratio Law</h2>
+            <p>
+              <code>w_penumbra(d_r) = W_light · (d_r − d_blocker) / d_blocker</code>
+            </p>
+            <p>
+              At contact (<code>d_r = d_b = 4.00 m</code>), <code>w = 0.0000 m</code> anchors characters to the ground without floating blur halos. At <code>d_r = 10.00 m</code> (Station 12), <code>w = 1.60 · (6.00 / 4.00) = 2.4000 m</code>, eliminating the <code>-1.6000 m</code> (`-66.67%`) far-field starvation of fixed-radius PCF.
+            </p>
+          </div>
+        </aside>
+      </main>
+    </div>
+  </body>
+</html>

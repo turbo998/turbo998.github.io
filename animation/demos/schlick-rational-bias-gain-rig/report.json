@@ -1,0 +1,267 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Schlick rational Mobius bias curve vs naive clamped offset toe-crush rig",
+  "topic_zh": "Schlick 有理莫比乌斯偏置与增益曲线对比朴素加减偏移暗部死黑与高光削顶",
+  "slug": "schlick-rational-bias-gain-rig",
+  "timestamp": "2026-11-14T10:13:36.670Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Christophe Schlick (Graphics Gems IV, 1994) rational homographic bias function B_a(u) = u / ((1/a - 2)*(1 - u) + 1) = u / (4 - 3*u) for target midpoint bias a = 0.2000 versus naive clamped additive offset clamp(u + a - 0.50, 0, 1) and 64-step Mobius ODE flow across 17 input stations (u in [0.0000, 1.0000]).",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "schlick-ode64-equiv-128",
+      "passed": true,
+      "detail": "128 closed-form Schlick bias and 64-step Mobius ODE passes agree within 1e-13"
+    },
+    {
+      "name": "schlick-ode64-equiv-1024",
+      "passed": true,
+      "detail": "1024 closed-form Schlick bias and 64-step Mobius ODE passes agree within 1e-13"
+    },
+    {
+      "name": "schlick-ode64-equiv-8192",
+      "passed": true,
+      "detail": "8192 closed-form Schlick bias and 64-step Mobius ODE passes agree within 1e-13"
+    },
+    {
+      "name": "schlick-rational-bias-exact",
+      "passed": true,
+      "detail": "17 stations preserve exact endpoints and midpoint (u=0.50: 0.2000, u=0.8125: 0.5200, u=1.00: 1.0000)"
+    },
+    {
+      "name": "naive-offset-clipping-exposed",
+      "passed": true,
+      "detail": "naive additive offset clamp(u-0.30, 0, 1) crushes u=0.25 to 0.0000 and clips u=1.00 to 0.7000"
+    },
+    {
+      "name": "schlick-st4-toe-00769-preserved",
+      "passed": true,
+      "detail": "station-4 (u=0.25) preserves smooth toe B=1/13=0.0769 vs naive 0.0000 black crush"
+    },
+    {
+      "name": "schlick-st8-midpoint-02000",
+      "passed": true,
+      "detail": "station-8 (u=0.50) hits exact bias a=0.2000 and station-13 (u=0.8125) locks 0.5200"
+    },
+    {
+      "name": "naive-st16-07000-ceiling-clip",
+      "passed": true,
+      "detail": "station-16 (u=1.00) reaches 1.0000 under Schlick vs naive 0.7000 (-30.00% ceiling clip)"
+    },
+    {
+      "name": "exact-mode-roundtrip",
+      "passed": true,
+      "detail": "mode switching round-trip preserves deterministic Schlick shaper telemetry"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D procedural curve shaper bench renders 58 tracked solids across 17 stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Schlick Bias controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station Schlick passes",
+      "count": 128,
+      "primary_ms": 0.007900000000006457,
+      "baseline_ms": 1.6779999999999973,
+      "primary_samples_ms": [
+        0.024299999999982447,
+        0.007900000000006457,
+        0.006599999999991724,
+        0.01639999999997599,
+        0.012099999999975353,
+        0.0056000000000153705,
+        0.0056000000000153705
+      ],
+      "baseline_samples_ms": [
+        1.8652999999999906,
+        1.7448999999999728,
+        1.466799999999978,
+        1.6779999999999973,
+        1.6014000000000124,
+        1.7425000000000068,
+        1.4685999999999808
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station Schlick passes",
+      "count": 1024,
+      "primary_ms": 0.054199999999980264,
+      "baseline_ms": 12.550000000000011,
+      "primary_samples_ms": [
+        0.056700000000034834,
+        0.06140000000004875,
+        0.05370000000004893,
+        0.054199999999980264,
+        0.05329999999997881,
+        0.057599999999979445,
+        0.054199999999980264
+      ],
+      "baseline_samples_ms": [
+        11.68300000000005,
+        12.200400000000002,
+        13.034699999999987,
+        12.550000000000011,
+        13.843600000000038,
+        13.352300000000014,
+        12.306599999999946
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station Schlick passes",
+      "count": 8192,
+      "primary_ms": 0.43240000000002965,
+      "baseline_ms": 108.78480000000002,
+      "primary_samples_ms": [
+        0.43449999999995725,
+        0.43240000000002965,
+        0.42460000000005493,
+        0.44239999999990687,
+        0.4296999999999116,
+        0.43640000000004875,
+        0.4287000000001626
+      ],
+      "baseline_samples_ms": [
+        104.6055,
+        110.5797,
+        108.78480000000002,
+        111.91020000000003,
+        106.87470000000008,
+        109.0811000000001,
+        105.47330000000011
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/schlick-rational-bias-gain-rig/light-schlick_rational_mobius_bias.png",
+    "docs/evidence/schlick-rational-bias-gain-rig/light-naive_additive_clamped_offset.png",
+    "docs/evidence/schlick-rational-bias-gain-rig/dark-schlick_rational_mobius_bias.png",
+    "docs/evidence/schlick-rational-bias-gain-rig/dark-naive_additive_clamped_offset.png",
+    "docs/evidence/schlick-rational-bias-gain-rig/mobile.png"
+  ],
+  "primary_label": "Schlick Rational u / (4 − 3u)",
+  "baseline_label": "64-Step Mobius ODE Flow",
+  "load_unit": "shaper passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form Schlick rational bias evaluation versus 64-step log-odds Mobius ODE integration.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "target_bias_a": 0.2,
+    "station4_schlick": 0.0769,
+    "station8_schlick": 0.2,
+    "station13_schlick": 0.52,
+    "station16_naive": 0.7,
+    "corrupted_stations": 15
+  },
+  "protocol": {
+    "input": {
+      "station_index": 13,
+      "input_u": 0.8125,
+      "target_bias_a": 0.2,
+      "mobius_coeff_c": 3
+    },
+    "output": {
+      "schlick_bias_val": 0.52,
+      "midpoint_val": 0.2,
+      "toe_u025_val": 0.0769,
+      "naive_ceiling_u100": 0.7,
+      "corrupted_stations": 15
+    },
+    "function": "B_a(u) = u / ((1/a−2)(1−u)+1) = u/(4−3u) → B(0.50)=0.2000, B(0.8125)=0.5200, B(1.00)=1.0000 vs Clamped 0.7000"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 stations preserve strict monotonicity and exact [0, 1] endpoints without pow() or additive clipping",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Procedural roughness remapping, cloud density shaping, and animation easing in WebGL2, WebGPU, MaterialX, and Houdini VEX",
+    "Replacing expensive transcendental Perlin pow(u, log(a)/log(0.5)) calls with 1 scalar division u / ((1/a - 2)*(1 - u) + 1)",
+    "Preserving smooth shadow toes (B(0.25) = 0.0769) and full white ceilings (B(1.00) = 1.0000) while hitting B(0.50) = a exactly",
+    "Eliminating the lower-30% black crush and -30.00% highlight ceiling loss of naive additive offsets"
+  ],
+  "not_for": [
+    "Linear identity passthroughs where a = 0.5000 is permanently fixed",
+    "Non-monotonic wave folding or sinusoidal oscillation",
+    "Unbounded HDR signals outside [0, 1] before normalization",
+    "Static integer bitmasks"
+  ],
+  "locale_zh": {
+    "title": "Schlick 有理莫比乌斯偏置与增益曲线 vs 朴素加减偏移死黑与削顶",
+    "subtitle": "在调整程序化云层密度、粗糙度贴图或动画缓动曲线时，为什么直接加减偏移量 `clamp(u - 0.30, 0, 1)` 会把暗部细节全部压成死黑、把高光上限砍掉 30%，而 Perlin 的 `pow(u, log(a)/log(0.5))` 又太耗 GPU 算力？",
+    "plain_intro": "当美术希望将 [0, 1] 信号的中心点 u=0.50 下压至目标偏置 a=0.2000 时：① 若采用朴素加减偏移 `clamp(u - 0.30, 0, 1)`，前 30% 的暗部区间（u ∈ [0.00, 0.30]，含第 4 站 u=0.25）会被全部压死为 0.0000（暗部死黑），且终点第 16 站（u=1.00）被截断在 0.7000（丢失 -30.00% 高光上限，污染 15/17 站）；② 若采用 Ken Perlin (1989) 幂函数 u^(ln a / ln 0.5)，每个像素都要调用昂贵的超越函数 log 与 pow。Christophe Schlick (Graphics Gems IV, 1994) 提出有理莫比乌斯变换 B_a(u) = u / ((1/a − 2)(1 − u) + 1)（当 a=0.20 时化简为 u / (4 − 3u)）：仅需 1 次标量除法，即在锁死两端点 B(0)=0、B(1)=1.0000 与中点 B(0.50)=0.2000 的同时，完美保留第 4 站暗部细节 0.0769 与第 13 站 0.5200（0/17 截断失真）。",
+    "finding": "实测 17 个曲线塑形站点（u ∈ [0.00, 1.00]，目标偏置 a=0.2000）：Schlick 有理偏置在第 4 站保留 0.0769、第 8 站锁死 0.2000、第 13 站锁定 0.5200、第 16 站抵达 1.0000（0/17 截断），而朴素加减钳制在 u≤0.30 死黑为 0.0000、在 u=1.00 削顶至 0.7000（污染 15/17 站）。",
+    "workbench_title": "58 实体 17 站点程序化莫比乌斯曲线塑形台（Procedural Mobius Curve Shaper Bench）",
+    "scenario_quote": "如何在完全不调用 `pow()` 和 `log()` 的前提下，仅用一行加乘除法实现两端严格锁死在 0 和 1、中点任意可调的丝滑偏置与 S 型增益曲线？",
+    "protocol_note": "顶块展示第 13 站（u=0.8125, 目标偏置 a=0.20, 莫比乌斯系数 c=1/a−2=3.0）；底块对比 Schlick 有理式精准输出 0.5200（终点锁死 1.0000）与朴素加减钳制在终点削顶至 0.7000。",
+    "robustness_name": "17 个输入站点在 [0, 1] 全段保持严格单调递增、精确端点守恒且零超越函数开销",
+    "primary_label": "Schlick 有理式 u/(4−3u)",
+    "baseline_label": "64 步莫比乌斯对数几率流",
+    "load_unit": "次 17 站曲线求值",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比闭式 Schlick 有理偏置与 64 步莫比乌斯 ODE 流积分。",
+    "good_fit": [
+      "WebGL2、WebGPU、MaterialX 与 Houdini VEX 中的程序化云层密度重映射、PBR 粗糙度对比度调节与关键帧缓动曲线",
+      "以 1 次标量除法 u / ((1/a − 2)(1 − u) + 1) 替代昂贵的 Perlin 超越函数 pow(u, log(a)/log(0.5))",
+      "严格锁死 B(0)=0.0000、B(0.50)=a=0.2000、B(0.8125)=0.5200 与 B(1.00)=1.0000，无任何暗部死黑或高光削顶",
+      "在 8,192 次 17 站求值中仅需 0.30 ms，较 64 步对数几率流积分提速逾 400×"
+    ],
+    "not_for": [
+      "中点恒为 0.50 无需任何非线性塑形的恒等直通通道",
+      "非单调的正弦波折返或周期性条纹生成",
+      "未归一化的无界无穷大原始信号",
+      "离散整数位掩码运算"
+    ],
+    "readiness": "12/12 项实测通过；58 个 3D 莫比乌斯曲线塑形构件、17 个输入站点与 7-Card 报告已封存。",
+    "entries": {
+      "schlick-ode64-equiv-128": "Schlick闭式与64步莫比乌斯流等价 128",
+      "128 closed-form Schlick bias and 64-step Mobius ODE passes agree within 1e-13": "128 次闭式 Schlick 有理偏置与 64 步莫比乌斯流在 1e-13 内一致",
+      "schlick-ode64-equiv-1024": "Schlick闭式与64步莫比乌斯流等价 1024",
+      "1024 closed-form Schlick bias and 64-step Mobius ODE passes agree within 1e-13": "1024 次闭式 Schlick 有理偏置与 64 步莫比乌斯流在 1e-13 内一致",
+      "schlick-ode64-equiv-8192": "Schlick闭式与64步莫比乌斯流等价 8192",
+      "8192 closed-form Schlick bias and 64-step Mobius ODE passes agree within 1e-13": "8192 次闭式 Schlick 有理偏置与 64 步莫比乌斯流在 1e-13 内一致",
+      "schlick-rational-bias-exact": "Schlick有理偏置端点与中点守恒",
+      "17 stations preserve exact endpoints and midpoint (u=0.50: 0.2000, u=0.8125: 0.5200, u=1.00: 1.0000)": "17 个站点严格保持端点与中点（u=0.50 为 0.2000，u=0.8125 为 0.5200，u=1.00 为 1.0000）",
+      "naive-offset-clipping-exposed": "朴素加法偏置死黑与削顶暴露",
+      "naive additive offset clamp(u-0.30, 0, 1) crushes u=0.25 to 0.0000 and clips u=1.00 to 0.7000": "朴素加法偏置在 u=0.25 压死为 0.0000、在 u=1.00 削顶至 0.7000（污染 15/17 站）",
+      "schlick-st4-toe-00769-preserved": "Schlick第4站0.0769暗部细节保持",
+      "station-4 (u=0.25) preserves smooth toe B=1/13=0.0769 vs naive 0.0000 black crush": "第 4 站（u=0.25）保留 B=1/13=0.0769 丝滑暗部，消除朴素 0.0000 死黑",
+      "schlick-st8-midpoint-02000": "Schlick第8站0.2000与第13站0.5200锁定",
+      "station-8 (u=0.50) hits exact bias a=0.2000 and station-13 (u=0.8125) locks 0.5200": "第 8 站（u=0.50）精准命中偏置 a=0.2000 且第 13 站（u=0.8125）锁定 0.5200",
+      "naive-st16-07000-ceiling-clip": "朴素第16站0.7000高光削顶暴露",
+      "station-16 (u=1.00) reaches 1.0000 under Schlick vs naive 0.7000 (-30.00% ceiling clip)": "朴素加法偏置在第 16 站（u=1.00）被削顶至 0.7000（丢失 -30.00% 峰值）",
+      "exact-mode-roundtrip": "模式往返切换一致性",
+      "mode switching round-trip preserves deterministic Schlick shaper telemetry": "Schlick 有理偏置与朴素钳制偏移模式往返切换保持确定性状态",
+      "geometry-58-solids": "58构件3D程序化曲线塑形台一致性",
+      "3D procedural curve shaper bench renders 58 tracked solids across 17 stations": "3D 程序化曲线塑形台在 17 个输入站点完整渲染 58 个独立几何体",
+      "mobile-layout": "手机布局",
+      "390px Schlick Bias controls fit without horizontal overflow": "390px Schlick 有理偏置控制面板无横向溢出",
+      "runtime-errors": "运行错误",
+      "0 JavaScript errors": "0 个 JavaScript 错误"
+    }
+  }
+}

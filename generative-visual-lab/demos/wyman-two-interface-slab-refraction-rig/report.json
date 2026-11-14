@@ -1,0 +1,268 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Wyman two-interface slab refraction vs single-interface fish-eye warp rig",
+  "topic_zh": "Wyman 双界面平行玻璃板可逆折射对比朴素单次 refract() 鱼眼棱镜畸变",
+  "slug": "wyman-two-interface-slab-refraction-rig",
+  "timestamp": "2026-11-14T09:40:54.886Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Chris Wyman (SIGGRAPH 2005) & glTF KHR_materials_transmission two-interface parallel-slab refraction (air n=1.0 -> glass n=1.5 -> air n=1.0, restoring exit angle theta_exit == theta_i with 0.0000 deg deflection) versus naive single-interface refract(I, N, 1/1.5) fish-eye warping and 64-step internal slab raymarching across 17 incident angles (theta_i in [0.0 deg, 80.0 deg]).",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "wyman-slab64-equiv-128",
+      "passed": true,
+      "detail": "128 closed-form Wyman slab and 64-step raymarch passes agree within 1e-12"
+    },
+    {
+      "name": "wyman-slab64-equiv-1024",
+      "passed": true,
+      "detail": "1024 closed-form Wyman slab and 64-step raymarch passes agree within 1e-12"
+    },
+    {
+      "name": "wyman-slab64-equiv-8192",
+      "passed": true,
+      "detail": "8192 closed-form Wyman slab and 64-step raymarch passes agree within 1e-12"
+    },
+    {
+      "name": "wyman-two-interface-reversibility",
+      "passed": true,
+      "detail": "17 incident angles restore exact exit direction θ_exit=θ_i (0.0000° deflection, 0/17 warped)"
+    },
+    {
+      "name": "naive-single-interface-warp-exposed",
+      "passed": true,
+      "detail": "naive single-interface refract() warps rays by 10.53° (30°), 24.74° (60°), and 38.96° (80°)"
+    },
+    {
+      "name": "wyman-st6-30deg-restored",
+      "passed": true,
+      "detail": "station-6 (30.0°) bends to 19.4712° inside glass and exits at exact 30.0000°"
+    },
+    {
+      "name": "wyman-st12-60deg-restored",
+      "passed": true,
+      "detail": "station-12 (60.0°) bends to 35.2644° and exits at 60.0000° (Δx=0.5125 m) vs 24.7356° warp"
+    },
+    {
+      "name": "naive-st16-3896deg-fisheye",
+      "passed": true,
+      "detail": "naive single-interface refract() warps station-16 (80.0°) to 41.0364° (-38.9636° error)"
+    },
+    {
+      "name": "exact-mode-roundtrip",
+      "passed": true,
+      "detail": "mode switching round-trip preserves deterministic Wyman slab telemetry"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D parallel-slab refractometer bench renders 58 tracked solids across 17 stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Wyman Two-Interface Slab controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station Wyman passes",
+      "count": 128,
+      "primary_ms": 0.04750000000001364,
+      "baseline_ms": 1.980700000000013,
+      "primary_samples_ms": [
+        0.1502999999999588,
+        0.046699999999987085,
+        0.044399999999996,
+        0.048800000000028376,
+        0.050399999999967804,
+        0.04750000000001364,
+        0.04519999999996571
+      ],
+      "baseline_samples_ms": [
+        2.1686000000000263,
+        1.980700000000013,
+        1.7203999999999837,
+        1.7223999999999933,
+        1.6800000000000068,
+        2.0950000000000273,
+        2.085299999999961
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station Wyman passes",
+      "count": 1024,
+      "primary_ms": 0.35449999999997317,
+      "baseline_ms": 15.479299999999967,
+      "primary_samples_ms": [
+        0.40339999999997644,
+        0.3531000000000404,
+        0.3497000000000412,
+        0.35470000000003665,
+        0.35449999999997317,
+        0.3649000000000342,
+        0.34989999999993415
+      ],
+      "baseline_samples_ms": [
+        14.696799999999996,
+        13.522199999999998,
+        15.843200000000024,
+        15.480700000000013,
+        15.479299999999967,
+        16.401399999999967,
+        14.433499999999981
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station Wyman passes",
+      "count": 8192,
+      "primary_ms": 2.8467000000000553,
+      "baseline_ms": 125.34069999999997,
+      "primary_samples_ms": [
+        2.9721000000000686,
+        2.900099999999952,
+        3.086200000000076,
+        2.8220000000001164,
+        2.7950000000000728,
+        2.8467000000000553,
+        2.808599999999842
+      ],
+      "baseline_samples_ms": [
+        127.3777,
+        124.87289999999996,
+        121.49580000000014,
+        127.12980000000016,
+        125.34069999999997,
+        121.89709999999991,
+        128.56780000000003
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/wyman-two-interface-slab-refraction-rig/light-wyman_two_interface_slab_refraction.png",
+    "docs/evidence/wyman-two-interface-slab-refraction-rig/light-naive_single_interface_halfspace_warp.png",
+    "docs/evidence/wyman-two-interface-slab-refraction-rig/dark-wyman_two_interface_slab_refraction.png",
+    "docs/evidence/wyman-two-interface-slab-refraction-rig/dark-naive_single_interface_halfspace_warp.png",
+    "docs/evidence/wyman-two-interface-slab-refraction-rig/mobile.png"
+  ],
+  "primary_label": "Wyman Two-Interface Slab",
+  "baseline_label": "64-Step Internal Slab March",
+  "load_unit": "slab passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form two-interface Snell slab evaluation versus 64-step internal slab wavefront raymarching.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "ior_glass": 1.5,
+    "station6_internal_deg": 19.4712,
+    "station12_internal_deg": 35.2644,
+    "station12_exit_deg": 60,
+    "station12_naive_error_deg": 24.7356,
+    "warped_stations": 16
+  },
+  "protocol": {
+    "input": {
+      "station_index": 12,
+      "incident_deg": 60,
+      "ior_glass": 1.5,
+      "thickness_m": 1,
+      "internal_refracted_deg": 35.2644
+    },
+    "output": {
+      "two_interface_exit_deg": 60,
+      "lateral_shift_m": 0.5125,
+      "naive_single_interface_deg": 35.2644,
+      "naive_deflection_error_deg": 24.7356,
+      "warped_stations": 16
+    },
+    "function": "sin θ_t = (1/n)sin θ_i, sin θ_exit = n·sin θ_t ≡ sin θ_i → θ_exit(60°)=60.00° vs Single-Interface 35.26° (−24.74° Warp)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 incident viewing angles restore exact 0.0000 deg angular exit direction without single-interface fish-eye distortion",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Architectural glass windows, car windshields, cockpit canopies, and ice slabs in glTF KHR_materials_transmission, Three.js, and UE5",
+    "Refracting across both entry (air->glass) and exit (glass->air) interfaces so background skyboxes preserve 1:1 scale",
+    "Applying bounded lateral screen-space UV shift Delta_x = d*sin(theta_i - theta_t)/cos(theta_t) (0.5125 m at 60 deg)",
+    "Eliminating the 24.74 deg (60 deg) and 38.96 deg (80 deg) fish-eye background magnification of single-interface refract()"
+  ],
+  "not_for": [
+    "Underwater cameras submerged inside an infinite half-space of water where there is no second exit interface",
+    "Opaque metallic mirrors",
+    "Purely diffuse matte surfaces",
+    "2D UI text"
+  ],
+  "locale_zh": {
+    "title": "Wyman 双界面平行板可逆折射 vs 朴素单界面鱼眼畸变（Round 120 · 第 130 个 Demo 里程碑）",
+    "subtitle": "为什么很多 WebGL 教程里对一块平板玻璃窗调用一次 GLSL `refract(I, N, 1.0/1.5)` 去采样天空盒，结果平平无奇的窗户玻璃竟然像一颗实心水晶球一样把窗外背景扭曲成 38.96° 鱼眼放大镜？",
+    "plain_intro": "当视线穿过一块折射率 n=1.50 的平行玻璃窗或挡风玻璃时，光线必须经历两次界面折射：① 前表面（空气→玻璃）：60° 入射光线向法线内折为 θ_t = arcsin(sin 60°/1.5) = 35.2644°；② 后表面（玻璃→空气）：根据斯涅尔可逆性，光线从玻璃穿回空气时必然精确折回原方向 θ_exit = arcsin(1.5·sin 35.2644°) = 60.0000°（0.0000° 角度偏折，仅产生 Δx = 0.5125m 的平行侧移）！朴素单界面折射只算了前表面 `refract(I, N, 1/1.5)` 就直接拿内部角 θ_t 去采样背景，相当于假设相机后面的整个宇宙都灌满了实心玻璃！这导致第 6 站（30°）产生 10.5288° 偏折、第 12 站（60°）产生 24.7356° 偏折、第 16 站（80°）产生 38.9636° 严重鱼眼畸变（污染 16/17 个离轴站点）。",
+    "finding": "实测 17 个入射角站点（θ_i ∈ [0°, 80°]，玻璃 n=1.50，厚度 d=1.00m）：Wyman 双界面平行板折射在全 17 站精确复原出射角 θ_exit = θ_i（0.0000° 偏折，60° 侧移 Δx=0.5125m，0/17 鱼眼扭曲），而朴素单界面 refract() 在 30°/60°/80° 产生 10.53°/24.74°/38.96° 永久视线偏折（污染 16/17 站）。",
+    "workbench_title": "58 实体 17 站点平行玻璃板折射计台（Parallel-Slab Refractometer Bench）",
+    "scenario_quote": "为什么游戏里的平面对开落地窗一旦开启折射Shader，窗外的远山和建筑就像隔着哈哈镜一样被放大拉扯？",
+    "protocol_note": "顶块展示第 12 站（入射角 θ_i=60.0°，玻璃内部折射角 θ_t=35.2644°）；底块对比双界面穿出空气复原 θ_exit=60.00°（侧移 Δx=0.5125m）与单界面卡死在 35.2644°（-24.7356° 鱼眼偏折）。",
+    "robustness_name": "17 个入射角站点在双界面折射下保持 0.0000° 远景角度零偏折且侧移解析精确",
+    "primary_label": "Wyman 双界面平行板折射",
+    "baseline_label": "64 步板层内部波前步进",
+    "load_unit": "次 17 站板层折射",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比闭式双界面平行板折射与 64 步板层内部波前步进。",
+    "good_fit": [
+      "glTF KHR_materials_transmission、Three.js、UE5 与汽车数字孪生中的建筑落地窗、挡风玻璃、座舱盖与冰砖",
+      "严格计入“空气→玻璃”与“玻璃→空气”前后双界面斯涅尔可逆折射，确保窗外无穷远天空盒保持 1:1 真实视角无放大畸变",
+      "利用解析侧移公式 Δx = d·sin(θ_i − θ_t)/cos θ_t（60° 处为 0.5125m）驱动屏幕空间背景 UV 平移",
+      "彻底根除单次 `refract(I, N, 1/1.5)` 把平板玻璃错误渲染成“半无限实心水晶球”造成的 24.74°~38.96° 鱼眼畸变"
+    ],
+    "not_for": [
+      "相机本身潜入水下（观察从空气进入水底的单界面无限半空间）",
+      "完全不透明的金属反射镜面",
+      "纯漫反射石膏或陶土表面",
+      "平面 2D 文字"
+    ],
+    "readiness": "12/12 项实测通过；58 个 3D 平行板折射计构件、17 个入射角站点与 7-Card 报告已封存（Round 120 · 第 130 个独立 Demo 里程碑）。",
+    "entries": {
+      "wyman-slab64-equiv-128": "Wyman双界面与64步板层步进等价 128",
+      "128 closed-form Wyman slab and 64-step raymarch passes agree within 1e-12": "128 次闭式双界面折射与 64 步板层步进在 1e-12 内一致",
+      "wyman-slab64-equiv-1024": "Wyman双界面与64步板层步进等价 1024",
+      "1024 closed-form Wyman slab and 64-step raymarch passes agree within 1e-12": "1024 次闭式双界面折射与 64 步板层步进在 1e-12 内一致",
+      "wyman-slab64-equiv-8192": "Wyman双界面与64步板层步进等价 8192",
+      "8192 closed-form Wyman slab and 64-step raymarch passes agree within 1e-12": "8192 次闭式双界面折射与 64 步板层步进在 1e-12 内一致",
+      "wyman-two-interface-reversibility": "Wyman双界面斯涅尔可逆守恒",
+      "17 incident angles restore exact exit direction θ_exit=θ_i (0.0000° deflection, 0/17 warped)": "17 个入射角站点精确恢复出射角 θ_exit=θ_i（0.0000° 偏折误差，0/17 鱼眼扭曲）",
+      "naive-single-interface-warp-exposed": "朴素单界面折射鱼眼畸变暴露",
+      "naive single-interface refract() warps rays by 10.53° (30°), 24.74° (60°), and 38.96° (80°)": "朴素单次 refract() 在 30°/60°/80° 产生 10.53°/24.74°/38.96° 永久偏折（污染 16/17 站）",
+      "wyman-st6-30deg-restored": "Wyman第6站30.0°出射复原锁定",
+      "station-6 (30.0°) bends to 19.4712° inside glass and exits at exact 30.0000°": "第 6 站（30.0°）在玻璃内折射为 19.4712° 并精确复原 30.0000° 出射角",
+      "wyman-st12-60deg-restored": "Wyman第12站60.0°出射复原锁定",
+      "station-12 (60.0°) bends to 35.2644° and exits at 60.0000° (Δx=0.5125 m) vs 24.7356° warp": "第 12 站（60.0°）内折 35.2644° 并复原 60.0000° 出射（消除 24.7356° 棱镜畸变）",
+      "naive-st16-3896deg-fisheye": "朴素第16站38.9636°鱼眼畸变暴露",
+      "naive single-interface refract() warps station-16 (80.0°) to 41.0364° (-38.9636° error)": "朴素单界面折射在第 16 站（80.0°）卡死在 41.0364°（产生 38.9636° 鱼眼畸变）",
+      "exact-mode-roundtrip": "模式往返切换一致性",
+      "mode switching round-trip preserves deterministic Wyman slab telemetry": "Wyman 双界面折射与朴素单界面模式往返切换保持确定性状态",
+      "geometry-58-solids": "58构件3D平行板折射台一致性",
+      "3D parallel-slab refractometer bench renders 58 tracked solids across 17 stations": "3D 平行玻璃板折射计台在 17 个入射角站点完整渲染 58 个独立几何体",
+      "mobile-layout": "手机布局",
+      "390px Wyman Two-Interface Slab controls fit without horizontal overflow": "390px Wyman 双界面折射控制面板无横向溢出",
+      "runtime-errors": "运行错误",
+      "0 JavaScript errors": "0 个 JavaScript 错误"
+    }
+  }
+}

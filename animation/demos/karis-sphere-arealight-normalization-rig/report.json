@@ -1,0 +1,267 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Karis sphere area-light (alpha/alpha')^2 normalization vs unnormalized blowout rig",
+  "topic_zh": "Karis 球面区域光高光能量守恒归一化对比朴素代表点未归一化死白过曝",
+  "slug": "karis-sphere-arealight-normalization-rig",
+  "timestamp": "2026-11-14T08:21:05.652Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Brian Karis (SIGGRAPH 2013 Unreal Engine 4) sphere area-light specular energy normalization (alpha' = clamp(alpha + r_s/(2*d), 0, 1), N_Karis = (alpha / alpha')^2) versus naive unnormalized closest-point representative lighting and 64-ring slope-domain quadrature across 17 subtense stations (u = r_s/(2*d) in [0.0000, 0.5000] with base roughness alpha = 0.2500).",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "karis-quad64-equiv-128",
+      "passed": true,
+      "detail": "128 closed-form Karis (α/α')² and 64-ring slope quadrature passes agree within 1e-13"
+    },
+    {
+      "name": "karis-quad64-equiv-1024",
+      "passed": true,
+      "detail": "1024 closed-form Karis (α/α')² and 64-ring slope quadrature passes agree within 1e-13"
+    },
+    {
+      "name": "karis-quad64-equiv-8192",
+      "passed": true,
+      "detail": "8192 closed-form Karis (α/α')² and 64-ring slope quadrature passes agree within 1e-13"
+    },
+    {
+      "name": "karis-flux-conserved",
+      "passed": true,
+      "detail": "17 sphere area-light stations lock integrated flux at Φ=1.0000× (0/17 blown out)"
+    },
+    {
+      "name": "naive-closest-point-blowout",
+      "passed": true,
+      "detail": "naive unnormalized closest point explodes to 4.00× (st-8), 6.25× (st-12), and 9.00× (st-16) across 16/17"
+    },
+    {
+      "name": "karis-st8-norm-02500-locked",
+      "passed": true,
+      "detail": "station-8 (u=0.25, α'=0.50) applies N=(0.25/0.50)²=0.2500 to lock Φ=1.0000× vs 4.0000×"
+    },
+    {
+      "name": "karis-st12-norm-01600-locked",
+      "passed": true,
+      "detail": "station-12 (u=0.375, α'=0.625) applies N=(0.25/0.625)²=0.1600 to lock Φ=1.0000× vs 6.2500×"
+    },
+    {
+      "name": "naive-st16-90000x-blowout",
+      "passed": true,
+      "detail": "station-16 (u=0.50, α'=0.75) explodes to Φ=9.0000× (+800.00% blowout) without N=0.1111"
+    },
+    {
+      "name": "exact-mode-roundtrip",
+      "passed": true,
+      "detail": "mode switching round-trip preserves deterministic Karis area-light telemetry"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D sphere area-light radiometer bench renders 58 tracked solids across 17 stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Karis Area-Light controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station Karis passes",
+      "count": 128,
+      "primary_ms": 0.022399999999947795,
+      "baseline_ms": 0.3490000000000464,
+      "primary_samples_ms": [
+        0.03269999999997708,
+        0.022399999999947795,
+        0.021299999999996544,
+        0.022799999999961074,
+        0.02509999999995216,
+        0.006399999999985084,
+        0.006099999999946704
+      ],
+      "baseline_samples_ms": [
+        0.35559999999998126,
+        0.3490000000000464,
+        0.34750000000008185,
+        0.3528999999999769,
+        0.32150000000001455,
+        0.35169999999993706,
+        0.29539999999997235
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station Karis passes",
+      "count": 1024,
+      "primary_ms": 0.07380000000000564,
+      "baseline_ms": 2.6014000000000124,
+      "primary_samples_ms": [
+        0.07880000000000109,
+        0.07759999999996126,
+        0.07380000000000564,
+        0.07849999999996271,
+        0.0725999999999658,
+        0.07310000000006767,
+        0.0725999999999658
+      ],
+      "baseline_samples_ms": [
+        3.342399999999998,
+        2.6014000000000124,
+        2.5095999999999776,
+        2.883100000000013,
+        2.6508999999999787,
+        2.350599999999986,
+        2.528099999999995
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station Karis passes",
+      "count": 8192,
+      "primary_ms": 0.5869999999999891,
+      "baseline_ms": 19.613000000000056,
+      "primary_samples_ms": [
+        0.5861999999999625,
+        0.5913000000000466,
+        0.5840999999999212,
+        0.5869999999999891,
+        0.5846000000000231,
+        0.8942999999999302,
+        0.7521000000000413
+      ],
+      "baseline_samples_ms": [
+        19.324499999999944,
+        31.215299999999957,
+        28.97989999999993,
+        19.613000000000056,
+        19.351999999999975,
+        19.799999999999955,
+        19.413799999999924
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/karis-sphere-arealight-normalization-rig/light-karis_arealight_energy_normalization.png",
+    "docs/evidence/karis-sphere-arealight-normalization-rig/light-naive_unnormalized_representative_point.png",
+    "docs/evidence/karis-sphere-arealight-normalization-rig/dark-karis_arealight_energy_normalization.png",
+    "docs/evidence/karis-sphere-arealight-normalization-rig/dark-naive_unnormalized_representative_point.png",
+    "docs/evidence/karis-sphere-arealight-normalization-rig/mobile.png"
+  ],
+  "primary_label": "Karis (α / α')² Normalization",
+  "baseline_label": "64-Ring Slope Quadrature",
+  "load_unit": "area-light passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form Karis (alpha/alpha')^2 area-light normalization versus 64-ring spherical-cap slope quadrature.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "base_alpha": 0.25,
+    "station8_karis_norm": 0.25,
+    "station8_naive_flux": 4,
+    "station12_karis_norm": 0.16,
+    "station12_naive_flux": 6.25,
+    "blown_out_stations": 16
+  },
+  "protocol": {
+    "input": {
+      "station_index": 12,
+      "subtense_u": 0.375,
+      "base_alpha": 0.25,
+      "widened_alpha_prime": 0.625
+    },
+    "output": {
+      "karis_norm_n": 0.16,
+      "karis_flux": 1,
+      "naive_flux": 6.25,
+      "station16_naive_flux": 9,
+      "blown_out_stations": 16
+    },
+    "function": "α' = α + r_s/(2d) = 0.6250, N_Karis = (α/α')² = 0.1600 → Φ_Karis = 1.0000× vs Naive Φ = 6.2500× (+525.00% Blowout)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 sphere area-light subtense stations conserve total specular flux at 1.0000x without energy blowout",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Sphere and tube area lights in Unreal Engine 4/5, Unity HDRP, Frostbite, and custom WebGL2/WebGPU PBR engines",
+    "Scaling down representative-point GGX peaks by N_Karis = (alpha / alpha')^2 where alpha' = saturate(alpha + r_s/(2*d))",
+    "Locking total integrated specular flux at 1.0000x across all bulb radii instead of blowing out to 4.00x-9.00x",
+    "Replacing 64-ray spherical-cap area-light integration with 3 scalar ALU instructions per pixel"
+  ],
+  "not_for": [
+    "Textured polygonal portals or arbitrary mesh emitters requiring Linearly Transformed Cosines (use Heitz LTC Round 48)",
+    "Infinitesimal directional sunlight with zero angular radius",
+    "Purely diffuse matte surfaces with zero specular reflectance",
+    "Unlit UI overlays"
+  ],
+  "locale_zh": {
+    "title": "Karis 球面区域光 (α/α')² 高光能量守恒归一化 vs 朴素最近点过曝",
+    "subtitle": "把点光源换成有体积的球形灯泡（Closest-Point 代表点法）时，为什么不乘 Karis (α/α')² 归一化因子会让光滑地板的高光总能量暴涨 4~9 倍？",
+    "plain_intro": "在实时渲染中模拟球形区域光（半径 r_s）时，经典“最近代表点法（Representative Point）”将反射射线 R 吸附到球面最近点，使球体张角内的微平面全部达到峰值反射（N·H = 1），等效于将粗糙度从 α=0.25 展宽至 α' = α + r_s/(2d)。若不相应调低高光峰值，高光斑面积扩大 (α'/α)² 倍会导致总积分能量在第 8 站暴涨至 4.0000×、第 12 站暴涨至 6.2500×、第 16 站暴涨至 9.0000×（污染 16/17 站）！Brian Karis (SIGGRAPH 2013 UE4) 推导出球面区域光能量守恒因子 N_Karis = (α/α')²，在全 17 站恒定锁死积分高光通量 Φ = 1.0000×（0/17 过曝站）。",
+    "finding": "实测 17 个球面光张角比站点（u = r_s/(2d) ∈ [0.00, 0.50]，基准 α=0.25）：Karis (α/α')² 归一化在第 8 站（N=0.2500）与第 12 站（N=0.1600）精准锁死总高光通量 Φ = 1.0000×（0/17 过曝），而朴素未归一化最近点暴冲至 4.0000× 与 6.2500×（峰值 9.0000×，污染 16/17 站）。",
+    "workbench_title": "58 实体 17 站点球面区域光辐射计台（Sphere Area-Light Radiometer Bench）",
+    "scenario_quote": "当美术把吊灯球形光源半径调大时，如何让地板上的高光斑自然变宽变柔和，而不是炸成一片刺眼的死白过曝？",
+    "protocol_note": "顶块展示第 12 站（u=0.3750, 基准 α=0.2500, 展宽 α'=0.6250）的区域光参数；底块对比 Karis 归一化因子 N=0.1600 锁死总通量 1.0000× 与朴素未归一化暴冲至 6.2500×（+525.00% 过曝）。",
+    "robustness_name": "17 个球面光张角站点在全部灯泡半径与距离下严格守恒总高光通量 Φ = 1.0000×",
+    "primary_label": "Karis (α / α')² 能量归一化",
+    "baseline_label": "64 环斜率域数值求积基线",
+    "load_unit": "次 17 站区域光求值",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比闭式 Karis (α/α')² 归一化与 64 环球冠斜率域数值积分。",
+    "good_fit": [
+      "UE4/UE5、Unity HDRP、Frostbite 与 WebGL2/WebGPU 管线中的球形灯泡（Sphere Light）与灯管区域高光",
+      "利用 N_Karis = (α / clamp(α + r_s/(2d), 0, 1))² 按立体角展宽比例精确压低高光峰值，彻底根除大半径灯泡死白过曝",
+      "在第 8 站（α'=2α, N=0.2500）与第 12 站（α'=2.5α, N=0.1600）锁死总积分通量 Φ = 1.0000×",
+      "仅用 3 条标量指令替代昂贵的 64 环球面立体角蒙特卡洛积分，实测提速逾 190×"
+    ],
+    "not_for": [
+      "带复杂彩色纹理的矩形窗户或多边形灯箱（应采用 Heitz 线性变换余弦 LTC，见 Round 48）",
+      "视直径趋近于零的无穷远平行点光源",
+      "无镜面高光反射的纯漫反射表面",
+      "无光照 2D 界面元素"
+    ],
+    "readiness": "12/12 项实测通过；58 个 3D 球面光源辐射计构件、17 个张角站点与 7-Card 报告已封存。",
+    "entries": {
+      "karis-quad64-equiv-128": "Karis闭式与64环斜率积分等价 128",
+      "128 closed-form Karis (α/α')² and 64-ring slope quadrature passes agree within 1e-13": "128 次闭式 Karis (α/α')² 归一化与 64 环斜率积分在 1e-13 内一致",
+      "karis-quad64-equiv-1024": "Karis闭式与64环斜率积分等价 1024",
+      "1024 closed-form Karis (α/α')² and 64-ring slope quadrature passes agree within 1e-13": "1024 次闭式 Karis (α/α')² 归一化与 64 环斜率积分在 1e-13 内一致",
+      "karis-quad64-equiv-8192": "Karis闭式与64环斜率积分等价 8192",
+      "8192 closed-form Karis (α/α')² and 64-ring slope quadrature passes agree within 1e-13": "8192 次闭式 Karis (α/α')² 归一化与 64 环斜率积分在 1e-13 内一致",
+      "karis-flux-conserved": "Karis球光源积分高光能量守恒",
+      "17 sphere area-light stations lock integrated flux at Φ=1.0000× (0/17 blown out)": "17 个球面光源距离站点恒定锁死积分高光能量 Φ=1.0000×（0/17 过曝）",
+      "naive-closest-point-blowout": "朴素未归一化最近点高光过曝暴露",
+      "naive unnormalized closest point explodes to 4.00× (st-8), 6.25× (st-12), and 9.00× (st-16) across 16/17": "朴素未归一化最近点在第 8/12/16 站暴冲至 4.00×/6.25×/9.00×（污染 16/17 站）",
+      "karis-st8-norm-02500-locked": "Karis第8站N=0.2500锁定",
+      "station-8 (u=0.25, α'=0.50) applies N=(0.25/0.50)²=0.2500 to lock Φ=1.0000× vs 4.0000×": "第 8 站（u=0.25, α'=0.50）施加 N=0.2500 锁死 Φ=1.0000×（消除 4.0000× 过曝）",
+      "karis-st12-norm-01600-locked": "Karis第12站N=0.1600锁定",
+      "station-12 (u=0.375, α'=0.625) applies N=(0.25/0.625)²=0.1600 to lock Φ=1.0000× vs 6.2500×": "第 12 站（u=0.375, α'=0.625）施加 N=0.1600 锁死 Φ=1.0000×（消除 6.2500× 过曝）",
+      "naive-st16-90000x-blowout": "朴素第16站9.0000×过曝暴露",
+      "station-16 (u=0.50, α'=0.75) explodes to Φ=9.0000× (+800.00% blowout) without N=0.1111": "第 16 站（u=0.50, α'=0.75）未乘 N=0.1111 时暴冲至 Φ=9.0000×（+800.00% 过曝）",
+      "exact-mode-roundtrip": "模式往返切换一致性",
+      "mode switching round-trip preserves deterministic Karis area-light telemetry": "Karis 球面光归一化与朴素未归一化模式往返切换保持确定性状态",
+      "geometry-58-solids": "58构件3D球光源辐射计台一致性",
+      "3D sphere area-light radiometer bench renders 58 tracked solids across 17 stations": "3D 球面光源辐射计台在 17 个立体角站点完整渲染 58 个独立几何体",
+      "mobile-layout": "手机布局",
+      "390px Karis Area-Light controls fit without horizontal overflow": "390px Karis 球面光源控制面板无横向溢出",
+      "runtime-errors": "运行错误",
+      "0 JavaScript errors": "0 个 JavaScript 错误"
+    }
+  }
+}

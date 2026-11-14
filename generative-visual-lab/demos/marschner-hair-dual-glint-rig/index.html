@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Marschner Cuticle-Tilted Dual Hair Glint Rig — Generative Visual Lab</title>
+    <script type="module" crossorigin src="../../assets/marschnerHairDualGlint-BzEbm6KP.js"></script>
+    <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="modulepreload" crossorigin href="../../assets/three.module-7AmyneiW.js">
+    <link rel="stylesheet" crossorigin href="../../assets/anisotropicGgxFiber-BiXbR8oC.css">
+  </head>
+  <body>
+    <div class="rig-shell">
+      <header class="rig-topbar">
+        <div class="rig-title-block">
+          <span class="rig-kicker">ROUND 104 · HUMAN HAIR CUTICLE-SHIFTED DUAL ANGEL-RING SHADING WORKBENCH</span>
+          <h1>Marschner R &amp; TRT Cuticle-Shifted Dual Glints vs Naive Kajiya-Kay Single Lobe</h1>
+        </div>
+        <div class="rig-top-actions">
+          <a class="rig-link" href="../../index.html">← Portal</a>
+          <a class="rig-link" href="./test-report-cards.html">7-Card Report (EN)</a>
+          <a class="rig-link" href="./test-report-cards.zh.html">7-Card 报告 (ZH)</a>
+          <button id="theme-toggle-btn" class="rig-btn-secondary" type="button">Toggle Theme</button>
+        </div>
+      </header>
+
+      <main class="rig-main">
+        <section class="rig-stage-card">
+          <div class="rig-canvas-wrap">
+            <canvas id="rig-canvas" aria-label="Marschner Hair Cuticle-Tilted Dual Glint 3D Rig"></canvas>
+          </div>
+          <div class="rig-stage-caption">
+            <strong>58-Solid 3D Hair Fiber Cuticle Goniophotometer Bench:</strong> Back cyan/amber towers display the exact Marschner et al. (SIGGRAPH 2003) dual longitudinal scattering profile across 17 half-angles <code>θ_h ∈ [−16.0°, +16.0°]</code>: tilted cuticle scales (<code>α_c = +3.0°</code>) shift the white surface glint <code>R</code> toward the root to Station 05 (<code>θ_h = −6.0°, I = 1.0000</code>) and shift the warm internal cortex glint <code>TRT</code> toward the tip to Station 12 (<code>θ_h = +8.0°, I = 0.8000</code>). Naive unshifted Kajiya-Kay places a false plastic peak at <code>0.0°</code> and starves Station 12 to <code>0.0060</code> (<code>-0.7940</code> / <code>-99.25%</code> loss across <code>15/17</code> stations).
+          </div>
+        </section>
+
+        <aside class="rig-hud-card" aria-label="Marschner Hair Glint Telemetry HUD">
+          <div class="hud-header">
+            <span id="hud-mode-badge" class="hud-badge">MARSCHNER CUTICLE-SHIFTED DUAL GLINT</span>
+            <div id="hud-verdict-pill" class="hud-verdict" data-state="pass">
+              PASS · R(−6°)=1.0000 &amp; TRT(+8°)=0.8000 Dual Glints Locked (0/17 Corrupted)
+            </div>
+          </div>
+
+          <div class="hud-controls">
+            <div class="btn-group" role="group" aria-label="Hair Scattering Mode Selector">
+              <button
+                type="button"
+                class="mode-btn active"
+                data-mode-btn="marschner-cuticle-dual-glint"
+              >
+                Marschner Cuticle-Shifted R + TRT Dual Glints
+              </button>
+              <button
+                type="button"
+                class="mode-btn"
+                data-mode-btn="naive-kajiya-kay-single-lobe"
+              >
+                Naive Kajiya-Kay Unshifted Single Lobe (0° Peak)
+              </button>
+            </div>
+
+            <label class="slider-label" for="station-slider">
+              <span>Longitudinal Half-Angle Station (<code>θ_h ∈ [−16.0°, +16.0°]</code>)</span>
+              <input id="station-slider" type="range" min="0" max="16" step="1" value="12" />
+            </label>
+          </div>
+
+          <dl class="hud-metrics-grid">
+            <div class="metric-box">
+              <dt>Selected Longitudinal Angle</dt>
+              <dd id="hud-station-value">Station 12 (θ_h = +8.0°)</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Marschner Dual Intensity</dt>
+              <dd id="hud-marschner-value">0.8000</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Active Glint Intensity</dt>
+              <dd id="hud-active-value">0.8000</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Glint Lobe Error</dt>
+              <dd id="hud-error-value">0.0000 (Dual angel-ring locked)</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Corrupted Stations</dt>
+              <dd id="hud-corrupted-count">0 / 17</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Cuticle Shift Spec</dt>
+              <dd>μ_R = −6.0° · μ_TRT = +8.0°</dd>
+            </div>
+          </dl>
+
+          <div class="hud-formula-box">
+            <h2>Opposite Cuticle-Tilt Deflection Law</h2>
+            <p>
+              <code>I_Marschner(θ_h) = max(exp(−(θ_h + 2α_c)² / 2β_R²), A_TRT · exp(−(θ_h − μ_TRT)² / 2β_TRT²))</code>
+            </p>
+            <p>
+              Because imbricated hair cuticle scales tilt by <code>α_c = +3.0°</code>, external reflection <code>R</code> deflects by <code>−2α_c = −6.0°</code> (white primary ring) while internal <code>TRT</code> refraction deflects in the opposite direction to <code>+8.0°</code> (melanin-tinted secondary ring).
+            </p>
+          </div>
+        </aside>
+      </main>
+    </div>
+  </body>
+</html>

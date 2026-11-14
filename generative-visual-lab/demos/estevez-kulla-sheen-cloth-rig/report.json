@@ -1,0 +1,259 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Estevez-Kulla Charlie velvet sheen NDF vs naive cosine lobe inversion rig",
+  "topic_zh": "Estevez-Kulla Charlie 丝绒织物光泽对比朴素表面余弦反相",
+  "slug": "estevez-kulla-sheen-cloth-rig",
+  "timestamp": "2026-11-14T05:37:50.578Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Alejandro Conty Estevez & Christopher Kulla (SIGGRAPH 2017 Sony Pictures Imageworks / Khronos glTF KHR_materials_sheen) Charlie upright-fiber sheen NDF (I_Charlie(theta_h) = sin^(1/alpha)(theta_h) = (1 - (N.H)^2)^(1/(2*alpha)) with alpha = 0.50) versus naive surface cosine lobe (cos^(1/alpha)(theta_h)) and 64-azimuthal cylindrical fiber scattering quadrature across 17 half-vector angle stations (theta_h in [0 deg, 80 deg]).",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "charlie-fiber64-equiv-128",
+      "passed": true,
+      "detail": "128 Charlie 1-(N·H)^2 and 64-azimuth fiber quadrature passes agree within 1e-13"
+    },
+    {
+      "name": "charlie-fiber64-equiv-1024",
+      "passed": true,
+      "detail": "1024 Charlie 1-(N·H)^2 and 64-azimuth fiber quadrature passes agree within 1e-13"
+    },
+    {
+      "name": "charlie-fiber64-equiv-8192",
+      "passed": true,
+      "detail": "8192 Charlie 1-(N·H)^2 and 64-azimuth fiber quadrature passes agree within 1e-13"
+    },
+    {
+      "name": "charlie-velvet-rim-conserved",
+      "passed": true,
+      "detail": "17 stations preserve velvet rim sheen (0°: 0.0000, 60°: 0.7500, 80°: 0.9698)"
+    },
+    {
+      "name": "naive-cosine-inversion-exposed",
+      "passed": true,
+      "detail": "naive cosine lobe inverts cloth: +1.0000 blob at 0° and -0.5000 loss at 60° (16/17)"
+    },
+    {
+      "name": "charlie-st12-07500-locked",
+      "passed": true,
+      "detail": "Charlie Sheen locks station-12 (60°) at I=0.7500 (0/17 corrupted stations)"
+    },
+    {
+      "name": "naive-st12-02500-starved",
+      "passed": true,
+      "detail": "naive cosine lobe drops station-12 (60°) to I=0.2500 (-0.5000 loss across 16/17)"
+    },
+    {
+      "name": "charlie-st16-rim-09698",
+      "passed": true,
+      "detail": "grazing station-16 (80°) peaks at I_Charlie=0.9698 vs I_naive=0.0302"
+    },
+    {
+      "name": "exact-reverse-scrub",
+      "passed": true,
+      "detail": "reverse scrubbing from 80° back to 60° reproduces identical telemetry"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D velvet bench renders 58 tracked solids across 17 half-angle stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Charlie Velvet Sheen controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station Charlie sheen passes",
+      "count": 128,
+      "primary_ms": 0.010499999999979082,
+      "baseline_ms": 1.9831000000000358,
+      "primary_samples_ms": [
+        0.035900000000026466,
+        0.014099999999984902,
+        0.007000000000005002,
+        0.010499999999979082,
+        0.010800000000017462,
+        0.006200000000035288,
+        0.006100000000003547
+      ],
+      "baseline_samples_ms": [
+        2.012299999999982,
+        2.1370000000000005,
+        1.9831000000000358,
+        1.9558999999999855,
+        1.9735999999999763,
+        1.9864999999999782,
+        1.9320000000000164
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station Charlie sheen passes",
+      "count": 1024,
+      "primary_ms": 0.06069999999999709,
+      "baseline_ms": 16.63829999999996,
+      "primary_samples_ms": [
+        0.06610000000000582,
+        0.06069999999999709,
+        0.05719999999996617,
+        0.06870000000003529,
+        0.06430000000000291,
+        0.05989999999997053,
+        0.05489999999997508
+      ],
+      "baseline_samples_ms": [
+        20.29309999999998,
+        12.910300000000007,
+        18.96780000000001,
+        13.706000000000017,
+        37.252899999999954,
+        16.63829999999996,
+        13.6253999999999
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station Charlie sheen passes",
+      "count": 8192,
+      "primary_ms": 0.4778999999999769,
+      "baseline_ms": 127.45050000000003,
+      "primary_samples_ms": [
+        0.4778999999999769,
+        0.46090000000003783,
+        0.49109999999996035,
+        0.4597999999998592,
+        0.44839999999999236,
+        0.927599999999984,
+        1.2261000000000877
+      ],
+      "baseline_samples_ms": [
+        127.45050000000003,
+        140.33190000000002,
+        138.08439999999996,
+        126.83669999999984,
+        150.2545,
+        119.5806,
+        118.69010000000003
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/estevez-kulla-sheen-cloth-rig/light-estevez-kulla-charlie-sheen.png",
+    "docs/evidence/estevez-kulla-sheen-cloth-rig/light-naive-surface-cosine-lobe.png",
+    "docs/evidence/estevez-kulla-sheen-cloth-rig/dark-estevez-kulla-charlie-sheen.png",
+    "docs/evidence/estevez-kulla-sheen-cloth-rig/dark-naive-surface-cosine-lobe.png",
+    "docs/evidence/estevez-kulla-sheen-cloth-rig/mobile.png"
+  ],
+  "primary_label": "Charlie 1 − (N·H)² Sheen",
+  "baseline_label": "64-Azimuth Fiber Quadrature",
+  "load_unit": "sheen passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Trig-free algebraic Charlie evaluation from dot(N, H) versus 64-azimuthal cylindrical fiber scattering quadrature.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "sheen_alpha": 0.5,
+    "station0_charlie": 0,
+    "station12_charlie": 0.75,
+    "station12_naive": 0.25,
+    "station16_charlie": 0.9698,
+    "corrupted_stations": 16
+  },
+  "protocol": {
+    "input": {
+      "station_index": 12,
+      "half_angle_deg": 60,
+      "sheen_alpha": 0.5,
+      "exponent_inv_alpha": 2,
+      "n_dot_h": 0.5
+    },
+    "output": {
+      "charlie_0deg": 0,
+      "charlie_60deg": 0.75,
+      "naive_60deg": 0.25,
+      "charlie_80deg": 0.9698,
+      "corrupted_stations": 16
+    },
+    "function": "I_Charlie(θ_h) = sin^(1/α) θ_h = 1 − (N·H)² → 0° Center = 0.0000 & 60° Rim = 0.7500 (vs Naive 0.2500)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 half-angle stations preserve dark velvet face-on centers and luminous grazing fiber silhouettes",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Velvet, suede, denim, and peach-fuzz cloth in glTF KHR_materials_sheen, Blender, and Three.js",
+    "Modeling upright pile fibers peaking at grazing silhouettes (I(80°)=0.9698) with dark centers (I(0°)=0.0000)",
+    "Eliminating the +1.0000 center plastic hotspot and -66.67% at 60° rim starvation of cosine lobes",
+    "Evaluating sin^(1/alpha)(theta_h) from 1 - (N·H)^2 without inverse trig"
+  ],
+  "not_for": [
+    "Flat-woven silk or brushed metal with tangent threads (use Anisotropic GGX Round 99)",
+    "Smooth dielectric glass, water, or car paint governed by standard surface microfacets",
+    "Subsurface skin hemoglobin diffusion (use Pre-Integrated Skin SSS Round 66)",
+    "Unlit flat-shaded sprites"
+  ],
+  "locale_zh": {
+    "charlie-fiber64-equiv-128": "Charlie与64方位角等价 128",
+    "128 Charlie 1-(N·H)^2 and 64-azimuth fiber quadrature passes agree within 1e-13": "128 次闭式 Charlie 与 64 方位角积分在 1e-13 内一致",
+    "charlie-fiber64-equiv-1024": "Charlie与64方位角等价 1024",
+    "1024 Charlie 1-(N·H)^2 and 64-azimuth fiber quadrature passes agree within 1e-13": "1024 次闭式 Charlie 与 64 方位角积分在 1e-13 内一致",
+    "charlie-fiber64-equiv-8192": "Charlie与64方位角等价 8192",
+    "8192 Charlie 1-(N·H)^2 and 64-azimuth fiber quadrature passes agree within 1e-13": "8192 次闭式 Charlie 与 64 方位角积分在 1e-13 内一致",
+    "charlie-velvet-rim-conserved": "Charlie丝绒轮廓光守恒",
+    "17 stations preserve velvet rim sheen (0°: 0.0000, 60°: 0.7500, 80°: 0.9698)": "17 站保持丝绒轮廓光（0° 为 0.0000，60° 为 0.7500，80° 为 0.9698）",
+    "naive-cosine-inversion-exposed": "朴素余弦反相失真暴露",
+    "naive cosine lobe inverts cloth: +1.0000 blob at 0° and -0.5000 loss at 60° (16/17)": "朴素余弦反相：0° 冒出 +1.0000 亮斑，60° 缺失 -0.5000（16/17 站）",
+    "charlie-st12-07500-locked": "Charlie第12站0.7500锁定",
+    "Charlie Sheen locks station-12 (60°) at I=0.7500 (0/17 corrupted stations)": "Charlie 分布将第 12 站（60°）锁定在 I=0.7500（0/17 失真站）",
+    "naive-st12-02500-starved": "余弦第12站0.2500饥饿",
+    "naive cosine lobe drops station-12 (60°) to I=0.2500 (-0.5000 loss across 16/17)": "朴素余弦将第 12 站（60°）压至 I=0.2500（缺失 -0.5000，16/17 站）",
+    "charlie-st16-rim-09698": "掠射第16站0.9698高光",
+    "grazing station-16 (80°) peaks at I_Charlie=0.9698 vs I_naive=0.0302": "掠射第 16 站（80°）达 I_Charlie=0.9698，消除余弦 0.0302 死黑",
+    "exact-reverse-scrub": "精确逆序回退一致性",
+    "reverse scrubbing from 80° back to 60° reproduces identical telemetry": "从 80° 逆序拖回 60° 精确复现相同的丝绒光度计状态",
+    "geometry-58-solids": "58构件3D光度计一致性",
+    "3D velvet bench renders 58 tracked solids across 17 half-angle stations": "3D 丝绒光度计台在 17 个半角站点完整渲染 58 个独立几何体",
+    "mobile-layout": "手机布局",
+    "390px Charlie Velvet Sheen controls fit without horizontal overflow": "390px 丝绒轮廓光控制面板无横向溢出",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Charlie 1 − (N·H)² Sheen": "Charlie 正弦幂 1 − (N·H)²",
+    "64-Azimuth Fiber Quadrature": "64 方位角纤维积分基线",
+    "Median of 7 alternating Node CPU runs after warmup. Trig-free algebraic Charlie evaluation from dot(N, H) versus 64-azimuthal cylindrical fiber scattering quadrature.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；由 dot(N, H) 直接求值的免三角 Charlie 代数式对比 64 方位角竖直纤维柱面散射积分基线。",
+    "Sampled 17 half-angle stations preserve dark velvet face-on centers and luminous grazing fiber silhouettes": "采样 17 个半角站点全部守恒天鹅绒正面深邃吸光与掠射轮廓柔亮绒毛光泽，零反相失真",
+    "I_Charlie(θ_h) = sin^(1/α) θ_h = 1 − (N·H)² → 0° Center = 0.0000 & 60° Rim = 0.7500 (vs Naive 0.2500)": "Charlie 正弦幂分布 I_Charlie(θ_h) = 1−(N·H)² → 0° 正面=0.0000 且 60° 边缘=0.7500（对比余弦 0.2500）",
+    "Velvet, suede, denim, and peach-fuzz cloth in glTF KHR_materials_sheen, Blender, and Three.js": "glTF KHR_materials_sheen、Blender 与 Three.js 中的天鹅绒、翻毛皮麂皮、牛仔布与桃皮绒织物",
+    "Modeling upright pile fibers peaking at grazing silhouettes (I(80°)=0.9698) with dark centers (I(0°)=0.0000)": "刻画竖直绒毛纤维：80° 掠射边缘散射达 0.9698，0° 正面深邃吸光为 0.0000",
+    "Eliminating the +1.0000 center plastic hotspot and -66.67% at 60° rim starvation of cosine lobes": "根除普通余弦波瓣在正面制造 +1.0000 塑料亮斑并在 60° 丢失 −66.67% 丝绒银边的反相失真",
+    "Evaluating sin^(1/alpha)(theta_h) from 1 - (N·H)^2 without inverse trig": "直接由 1 − (N·H)² 代数求取 sin^(1/α)θ_h，零反三角函数开销",
+    "Flat-woven silk or brushed metal with tangent threads (use Anisotropic GGX Round 99)": "纤维水平平铺的真丝绸缎或拉丝金属（应选用 Round 99 各向异性 GGX）",
+    "Smooth dielectric glass, water, or car paint governed by standard surface microfacets": "微平面法线围绕宏观法线 N 分布的光滑玻璃、水面或清漆车漆",
+    "Subsurface skin hemoglobin diffusion (use Pre-Integrated Skin SSS Round 66)": "真皮层血红蛋白次表面散射（应选用 Round 66 预积分皮肤 SSS）",
+    "Unlit flat-shaded sprites": "无光照 2D 扁平精灵贴图"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/estevez-kulla-sheen-cloth.test.ts",
+    "node scripts/benchmark-estevez-kulla-sheen-cloth.mjs"
+  ]
+}

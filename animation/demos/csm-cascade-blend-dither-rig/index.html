@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSM Hermite-Dithered Cascade Transition Rig — Generative Visual Lab</title>
+    <script type="module" crossorigin src="../../assets/csmCascadeBlendDither-bCzqMIKX.js"></script>
+    <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="modulepreload" crossorigin href="../../assets/three.module-7AmyneiW.js">
+    <link rel="stylesheet" crossorigin href="../../assets/anisotropicGgxFiber-BiXbR8oC.css">
+  </head>
+  <body>
+    <div class="rig-shell">
+      <header class="rig-topbar">
+        <div class="rig-title-block">
+          <span class="rig-kicker">ROUND 105 · 115TH DEMO MILESTONE · CASCADED SHADOW MAP SEAM ELIMINATION WORKBENCH</span>
+          <h1>CSM Hermite-Dithered Cascade Transition Zone vs Naive Hard Frustum-Split Cliff</h1>
+        </div>
+        <div class="rig-top-actions">
+          <a class="rig-link" href="../../index.html">← Portal</a>
+          <a class="rig-link" href="./test-report-cards.html">7-Card Report (EN)</a>
+          <a class="rig-link" href="./test-report-cards.zh.html">7-Card 报告 (ZH)</a>
+          <button id="theme-toggle-btn" class="rig-btn-secondary" type="button">Toggle Theme</button>
+        </div>
+      </header>
+
+      <main class="rig-main">
+        <section class="rig-stage-card">
+          <div class="rig-canvas-wrap">
+            <canvas id="rig-canvas" aria-label="CSM Hermite-Dithered Cascade Blend 3D Rig"></canvas>
+          </div>
+          <div class="rig-stage-caption">
+            <strong>58-Solid 3D CSM Frustum Split Highway Bench:</strong> Back cyan towers display the exact C1 Hermite-dithered cascade transition profile <code>W_blend(u) = (1 − s) · W0 + s · W1</code> with <code>s = u²(3 − 2u)</code> across a <code>4.0 m</code> overlap zone <code>z ∈ [18.00 m, 22.00 m]</code> (17 stations around split plane <code>z_split = 20.00 m</code>). At Station 08 (<code>z = 20.00 m, u = 0.50</code>), C1 Hermite blending locks onto <code>W = 1.5000×</code> with zero slope or step jump, whereas a naive hard frustum split jumps from <code>1.0000×</code> at Station 07 to <code>2.0000×</code> at Station 08 (<code>+0.5000×</code> midpoint error and a <code>1.0000×</code> razor-sharp road seam across <code>15/17</code> interior stations).
+          </div>
+        </section>
+
+        <aside class="rig-hud-card" aria-label="CSM Cascade Transition Telemetry HUD">
+          <div class="hud-header">
+            <span id="hud-mode-badge" class="hud-badge">HERMITE C1 DITHERED CASCADE BLEND</span>
+            <div id="hud-verdict-pill" class="hud-verdict" data-state="pass">
+              PASS · W(20m) = 1.5000× C1 Seamless Cascade Transition (0/17 Popped)
+            </div>
+          </div>
+
+          <div class="hud-controls">
+            <div class="btn-group" role="group" aria-label="CSM Split Transition Mode Selector">
+              <button
+                type="button"
+                class="mode-btn active"
+                data-mode-btn="hermite-dither-cascade-blend"
+              >
+                Hermite C1 Dithered Cascade Blend (4.0m Overlap)
+              </button>
+              <button
+                type="button"
+                class="mode-btn"
+                data-mode-btn="naive-hard-frustum-split"
+              >
+                Naive Hard Frustum Split (20.0m Step Cliff)
+              </button>
+            </div>
+
+            <label class="slider-label" for="station-slider">
+              <span>View-Space Depth Station (<code>z ∈ [18.00 m, 22.00 m]</code>)</span>
+              <input id="station-slider" type="range" min="0" max="16" step="1" value="8" />
+            </label>
+          </div>
+
+          <dl class="hud-metrics-grid">
+            <div class="metric-box">
+              <dt>Selected View Depth</dt>
+              <dd id="hud-station-value">Station 08 (z = 20.00 m, u = 0.5000)</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Hermite Blended Scale</dt>
+              <dd id="hud-blended-value">1.5000×</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Active Cascade Scale</dt>
+              <dd id="hud-active-value">1.5000×</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Split Seam Discontinuity</dt>
+              <dd id="hud-error-value">0.0000× (Seamless C1 transition)</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Corrupted Band Stations</dt>
+              <dd id="hud-corrupted-count">0 / 17</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Cascade Split Spec</dt>
+              <dd>z_split = 20.0m · Band = 4.0m</dd>
+            </div>
+          </dl>
+
+          <div class="hud-formula-box">
+            <h2>C1 Hermite Dithered Cascade Routing Invariant</h2>
+            <p>
+              <code>s(u) = u²(3 − 2u),   E[I(ξ_IGN &lt; s(u)) ? W1 : W0] ≡ (1 − s)·W0 + s·W1</code>
+            </p>
+            <p>
+              Instead of sampling both shadow cascades per pixel (<code>2×</code> texture cost) or suffering a hard resolution cliff at <code>z = 20.0 m</code>, comparing per-pixel Interleaved Gradient Noise against <code>s(u) = u²(3−2u)</code> achieves an exact C1 transition at <code>1×</code> single-cascade sample cost.
+            </p>
+          </div>
+        </aside>
+      </main>
+    </div>
+  </body>
+</html>

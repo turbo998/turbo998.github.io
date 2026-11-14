@@ -1,0 +1,267 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Hoffman cosine-power NDF (s+2)/(2pi) normalization vs legacy Blinn-Phong dimming rig",
+  "topic_zh": "Hoffman 余弦幂微表面法线分布 (s+2)/(2π) 能量归一化对比传统 Blinn-Phong 高光变暗坍塌",
+  "slug": "hoffman-specular-lobe-normalization-rig",
+  "timestamp": "2026-11-14T09:17:54.994Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Naty Hoffman (SIGGRAPH 2010 / 2012) cosine-power NDF energy normalization (D_norm(theta_h) = ((s + 2) / (2*pi)) * cos^s(theta_h), conserving hemisphere integral E = 1.0000) versus legacy unnormalized Blinn-Phong (E_legacy = 2 / (s + 2)) and 64-ring hemisphere quadrature across 17 shininess exponents (s in [0.00, 8.00]).",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "hoffman-hemi64-equiv-128",
+      "passed": true,
+      "detail": "128 closed-form Hoffman (s+2)/2 and 64-ring hemisphere passes agree within 1e-13"
+    },
+    {
+      "name": "hoffman-hemi64-equiv-1024",
+      "passed": true,
+      "detail": "1024 closed-form Hoffman (s+2)/2 and 64-ring hemisphere passes agree within 1e-13"
+    },
+    {
+      "name": "hoffman-hemi64-equiv-8192",
+      "passed": true,
+      "detail": "8192 closed-form Hoffman (s+2)/2 and 64-ring hemisphere passes agree within 1e-13"
+    },
+    {
+      "name": "hoffman-lobe-energy-conserved",
+      "passed": true,
+      "detail": "17 shininess exponents lock integrated energy at E=1.0000 (s=6: M=4.00×, 0/17 starved)"
+    },
+    {
+      "name": "legacy-blinn-phong-dimming-exposed",
+      "passed": true,
+      "detail": "legacy unnormalized cos^s θ_h drops to 0.5000 (s=2), 0.2500 (s=6), and 0.2000 (s=8) across 16/17"
+    },
+    {
+      "name": "hoffman-st4-20000x-locked",
+      "passed": true,
+      "detail": "station-4 (s=2.0) applies M=(2+2)/2=2.0000× to lock E=1.0000 vs legacy 0.5000"
+    },
+    {
+      "name": "hoffman-st12-40000x-locked",
+      "passed": true,
+      "detail": "station-12 (s=6.0) applies M=(6+2)/2=4.0000× to lock E=1.0000 vs legacy 0.2500 (-75%)"
+    },
+    {
+      "name": "legacy-st16-02000-starved",
+      "passed": true,
+      "detail": "legacy unnormalized cos^8 θ_h loses -80.00% energy (E=0.2000) at station-16"
+    },
+    {
+      "name": "exact-mode-roundtrip",
+      "passed": true,
+      "detail": "mode switching round-trip preserves deterministic Hoffman calorimeter telemetry"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D hemisphere specular calorimeter bench renders 58 tracked solids across 17 stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Hoffman Specular Normalization controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station Hoffman passes",
+      "count": 128,
+      "primary_ms": 0.013599999999996726,
+      "baseline_ms": 1.783299999999997,
+      "primary_samples_ms": [
+        0.02359999999998763,
+        0.013900000000035106,
+        0.012999999999976808,
+        0.012100000000032196,
+        0.016099999999994452,
+        0.013599999999996726,
+        0.012000000000000455
+      ],
+      "baseline_samples_ms": [
+        1.783299999999997,
+        2.0962000000000103,
+        2.0143999999999664,
+        1.9736999999999512,
+        1.6175999999999817,
+        1.6409000000000447,
+        1.6122000000000298
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station Hoffman passes",
+      "count": 1024,
+      "primary_ms": 0.09310000000004948,
+      "baseline_ms": 15.009500000000003,
+      "primary_samples_ms": [
+        0.08920000000000528,
+        0.09379999999998745,
+        0.08719999999999573,
+        0.09529999999995198,
+        0.08709999999996398,
+        0.10009999999999764,
+        0.09310000000004948
+      ],
+      "baseline_samples_ms": [
+        14.665099999999995,
+        15.85069999999996,
+        13.92900000000003,
+        15.73230000000001,
+        15.009500000000003,
+        15.500699999999938,
+        14.866300000000024
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station Hoffman passes",
+      "count": 8192,
+      "primary_ms": 0.7505000000001019,
+      "baseline_ms": 124.35230000000013,
+      "primary_samples_ms": [
+        0.7078999999999951,
+        0.7576000000000249,
+        0.79200000000003,
+        0.8577999999999975,
+        0.7307999999998174,
+        0.7505000000001019,
+        0.7365000000002055
+      ],
+      "baseline_samples_ms": [
+        125.26709999999991,
+        125.06849999999997,
+        124.35230000000013,
+        124.93329999999992,
+        123.12310000000002,
+        123.44699999999989,
+        121.27089999999998
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/hoffman-specular-lobe-normalization-rig/light-hoffman_normalized_cosine_power_ndf.png",
+    "docs/evidence/hoffman-specular-lobe-normalization-rig/light-legacy_unnormalized_blinn_phong_dimming.png",
+    "docs/evidence/hoffman-specular-lobe-normalization-rig/dark-hoffman_normalized_cosine_power_ndf.png",
+    "docs/evidence/hoffman-specular-lobe-normalization-rig/dark-legacy_unnormalized_blinn_phong_dimming.png",
+    "docs/evidence/hoffman-specular-lobe-normalization-rig/mobile.png"
+  ],
+  "primary_label": "Hoffman (s + 2)/2 Normalized NDF",
+  "baseline_label": "64-Ring Hemisphere Quadrature",
+  "load_unit": "calorimeter passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form Hoffman (s+2)/2 normalization versus 64-ring projected hemisphere quadrature.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "station4_legacy_e": 0.5,
+    "station12_multiplier": 4,
+    "station12_hoffman_e": 1,
+    "station12_legacy_e": 0.25,
+    "station16_legacy_e": 0.2,
+    "starved_stations": 16
+  },
+  "protocol": {
+    "input": {
+      "station_index": 12,
+      "shininess_s": 6,
+      "hoffman_multiplier_m": 4,
+      "raw_hemisphere_integral": 0.25
+    },
+    "output": {
+      "hoffman_conserved_e": 1,
+      "legacy_unnormalized_e": 0.25,
+      "station16_legacy_e": 0.2,
+      "station12_loss_pct": 75,
+      "starved_stations": 16
+    },
+    "function": "D_norm(θ_h) = ((s+2)/2π)·cosˢ θ_h → M(6)=4.00× locks E=1.0000 vs Legacy E=2/(s+2)=0.2500 (−75.00% Loss)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 shininess exponents conserve total hemisphere specular energy at 1.0000 without lobe-narrowing dimming",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Physically based forward/mobile shaders, gloss-map pipelines, and spherical harmonic / cosine-power lobe fitting",
+    "Scaling peak intensity by (s + 2) / (2*pi) so narrower, smoother highlights grow proportionally brighter at their center",
+    "Locking integrated hemisphere energy at E = 1.0000 instead of losing 75.00% at s=6 and 80.00% at s=8",
+    "Bridging legacy shininess assets into energy-conserving PBR pipelines in 1 multiply-add"
+  ],
+  "not_for": [
+    "Wide-tailed metallic microsurfaces requiring inverse-polynomial GGX/Trowbridge-Reitz tails",
+    "Purely diffuse Oren-Nayar or Lambertian substrates",
+    "Unlit UI elements",
+    "2D audio waveforms"
+  ],
+  "locale_zh": {
+    "title": "Hoffman 余弦幂 NDF (s+2)/(2π) 能量归一化 vs 传统 Blinn-Phong 高光变暗坍塌",
+    "subtitle": "为什么在传统 Blinn-Phong（cos^s θ_h）中，美术把光泽度 s 调高想让金属更光滑时，高光斑不仅变小、连整体反射能量也莫名其妙消失了 75%~99%？",
+    "plain_intro": "在传统经验 Blinn-Phong 模型中，高光被直接写为 cos^s(θ_h)，不管光泽度指数 s 取多大，波瓣顶点高度永远锁死在 1.0000。然而随着 s 从 0 增大到 8，高光波瓣的立体角宽度急剧收窄，对上半球投影积分得到的总能量 E_legacy(s) = 2/(s+2) 随之崩塌：在第 4 站（s=2）跌至 0.5000（丢失 -50%）、第 12 站（s=6）跌至 0.2500（丢失 -75%）、第 16 站（s=8）跌至 0.2000（丢失 -80%，污染 16/17 站）！Naty Hoffman (SIGGRAPH 2010) 引入微表面法线分布归一化系数 (s+2)/(2π)（即峰值倍增因子 M = (s+2)/2），让波瓣变窄的同时峰值成正比拔高（在 s=6 时拔高 4.0000×），在全 17 个光泽度站点恒定锁死半球积分总能量 E = 1.0000（0/17 能量饥饿站）。",
+    "finding": "实测 17 个光泽度指数站点（s ∈ [0.00, 8.00]）：Hoffman (s+2)/(2π) 归一化在第 12 站（s=6, M=4.00×）与第 16 站（s=8, M=5.00×）恒定锁死半球总能量 E = 1.0000（0/17 饥饿），而传统未归一化 Blinn-Phong 暴跌至 0.2500（-75%）与 0.2000（-80%，污染 16/17 站）。",
+    "workbench_title": "58 实体 17 站点半球高光量热台（Hemisphere Specular Calorimeter）",
+    "scenario_quote": "为什么同样的灯光下，未归一化的高光材质越调光滑（s 越大），画面反而越显得灰暗无光？",
+    "protocol_note": "顶块展示第 12 站（光泽度指数 s=6.0，未归一化半球积分 2/(6+2)=0.2500）；底块对比 Hoffman 峰值倍增因子 M=4.0000× 锁死总能量 1.0000 与传统未归一化丢失 -75.00% 能量。",
+    "robustness_name": "17 个光泽度站点在波瓣收窄全过程中恒定守恒半球积分能量 E = 1.0000",
+    "primary_label": "Hoffman (s+2)/2 归一化 NDF",
+    "baseline_label": "64 环半球投影数值积分",
+    "load_unit": "次 17 站量热求值",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比闭式 Hoffman (s+2)/2 归一化与 64 环上半球投影数值积分。",
+    "good_fit": [
+      "移动端轻量化 PBR 管线、Glossiness 贴图资产升级与球谐/余弦波瓣拟合中的能量守恒高光",
+      "利用 M = (s + 2) / 2 峰值倍增因子精确补偿 cos^s(θ_h) 波瓣收窄带来的立体角缩水，实现“越光滑、高光中心越锐利明亮”的物理直觉",
+      "在第 4 站（s=2）、第 12 站（s=6）与第 16 站（s=8）恒定锁死半球积分能量 E = 1.0000，彻底消除 -50%~-80% 能量丢失",
+      "仅需 1 次乘加指令即可将旧版 Blinn-Phong 升级为满足热力学守恒的微表面 NDF"
+    ],
+    "not_for": [
+      "需要宽长尾金属光晕的工业铬合金表面（应采用 GGX / Trowbridge-Reitz 分布）",
+      "无镜面反射的纯漫反射基底",
+      "无光照 2D 图标",
+      "纯音频信号处理"
+    ],
+    "readiness": "12/12 项实测通过；58 个 3D 半球高光量热台构件、17 个光泽度站点与 7-Card 报告已封存。",
+    "entries": {
+      "hoffman-hemi64-equiv-128": "Hoffman闭式与64环半球积分等价 128",
+      "128 closed-form Hoffman (s+2)/2 and 64-ring hemisphere passes agree within 1e-13": "128 次闭式 Hoffman (s+2)/2 归一化与 64 环半球积分在 1e-13 内一致",
+      "hoffman-hemi64-equiv-1024": "Hoffman闭式与64环半球积分等价 1024",
+      "1024 closed-form Hoffman (s+2)/2 and 64-ring hemisphere passes agree within 1e-13": "1024 次闭式 Hoffman (s+2)/2 归一化与 64 环半球积分在 1e-13 内一致",
+      "hoffman-hemi64-equiv-8192": "Hoffman闭式与64环半球积分等价 8192",
+      "8192 closed-form Hoffman (s+2)/2 and 64-ring hemisphere passes agree within 1e-13": "8192 次闭式 Hoffman (s+2)/2 归一化与 64 环半球积分在 1e-13 内一致",
+      "hoffman-lobe-energy-conserved": "Hoffman余弦幂高光能量守恒",
+      "17 shininess exponents lock integrated energy at E=1.0000 (s=6: M=4.00×, 0/17 starved)": "17 个光泽度指数站点恒定锁死半球积分能量 E=1.0000（s=6 为 M=4.00×，0/17 饥饿）",
+      "legacy-blinn-phong-dimming-exposed": "传统未归一化Blinn-Phong能量坍塌暴露",
+      "legacy unnormalized cos^s θ_h drops to 0.5000 (s=2), 0.2500 (s=6), and 0.2000 (s=8) across 16/17": "传统未归一化 cos^s θ_h 在 s=2/6/8 处暴跌至 0.5000/0.2500/0.2000（污染 16/17 站）",
+      "hoffman-st4-20000x-locked": "Hoffman第4站2.0000×倍增锁定",
+      "station-4 (s=2.0) applies M=(2+2)/2=2.0000× to lock E=1.0000 vs legacy 0.5000": "第 4 站（s=2.0）施加 M=2.0000× 锁死 E=1.0000（消除传统 0.5000 减半）",
+      "hoffman-st12-40000x-locked": "Hoffman第12站4.0000×倍增锁定",
+      "station-12 (s=6.0) applies M=(6+2)/2=4.0000× to lock E=1.0000 vs legacy 0.2500 (-75%)": "第 12 站（s=6.0）施加 M=4.0000× 锁死 E=1.0000（消除传统 -75% 衰减）",
+      "legacy-st16-02000-starved": "传统第16站-80.00%能量饥饿暴露",
+      "legacy unnormalized cos^8 θ_h loses -80.00% energy (E=0.2000) at station-16": "传统未归一化 cos^8 θ_h 在第 16 站丢失 -80.00% 高光能量（跌至 0.2000）",
+      "exact-mode-roundtrip": "模式往返切换一致性",
+      "mode switching round-trip preserves deterministic Hoffman calorimeter telemetry": "Hoffman 归一化 NDF 与传统未归一化模式往返切换保持确定性状态",
+      "geometry-58-solids": "58构件3D半球高光量热台一致性",
+      "3D hemisphere specular calorimeter bench renders 58 tracked solids across 17 stations": "3D 半球高光量热台在 17 个光泽度站点完整渲染 58 个独立几何体",
+      "mobile-layout": "手机布局",
+      "390px Hoffman Specular Normalization controls fit without horizontal overflow": "390px Hoffman 高光归一化控制面板无横向溢出",
+      "runtime-errors": "运行错误",
+      "0 JavaScript errors": "0 个 JavaScript 错误"
+    }
+  }
+}

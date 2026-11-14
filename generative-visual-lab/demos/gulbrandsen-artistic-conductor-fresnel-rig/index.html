@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gulbrandsen Complex Conductor Edge-Tint Fresnel Rig — Generative Visual Lab</title>
+    <script type="module" crossorigin src="../../assets/gulbrandsenArtisticConductorFresnel-0QW9mKzs.js"></script>
+    <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="modulepreload" crossorigin href="../../assets/three.module-7AmyneiW.js">
+    <link rel="stylesheet" crossorigin href="../../assets/anisotropicGgxFiber-BiXbR8oC.css">
+  </head>
+  <body>
+    <div class="rig-shell">
+      <header class="rig-topbar">
+        <div class="rig-title-block">
+          <span class="rig-kicker">ROUND 107 · GOLD, COPPER &amp; CHROME COMPLEX CONDUCTOR EDGE-TINT WORKBENCH</span>
+          <h1>Gulbrandsen Complex Conductor Fresnel Dip vs Naive Monotonic Schlick Whitewash</h1>
+        </div>
+        <div class="rig-top-actions">
+          <a class="rig-link" href="../../index.html">← Portal</a>
+          <a class="rig-link" href="./test-report-cards.html">7-Card Report (EN)</a>
+          <a class="rig-link" href="./test-report-cards.zh.html">7-Card 报告 (ZH)</a>
+          <button id="theme-toggle-btn" class="rig-btn-secondary" type="button">Toggle Theme</button>
+        </div>
+      </header>
+
+      <main class="rig-main">
+        <section class="rig-stage-card">
+          <div class="rig-canvas-wrap">
+            <canvas id="rig-canvas" aria-label="Gulbrandsen Complex Conductor Fresnel 3D Rig"></canvas>
+          </div>
+          <div class="rig-stage-caption">
+            <strong>58-Solid 3D Conductor Ellipsometer Bench:</strong> Back cyan towers display the exact complex-conductor Fresnel reflectance <code>F_cond(μ) = ((η − μ)² + κ²) / ((η + μ)² + κ²)</code> for a gold/copper-band conductor (<code>η = 0.30, κ = 0.40</code>, normal reflectance <code>F0 = 0.3514</code>) across 17 angles <code>θ_i ∈ [0°, 80°]</code>. At the Pseudo-Brewster angle Station 12 (<code>θ_i = 60°, μ = √(η²+κ²) = 0.5000</code>), conductor reflectance dips to exact <code>F_cond = 0.2500</code> (creating deep metallic edge-tint saturation), whereas naive monotonic Schlick rises to <code>0.3716</code> (<code>+0.1216</code> / <code>+48.65%</code> chalky whitewash error across <code>16/17</code> stations).
+          </div>
+        </section>
+
+        <aside class="rig-hud-card" aria-label="Conductor Fresnel Telemetry HUD">
+          <div class="hud-header">
+            <span id="hud-mode-badge" class="hud-badge">GULBRANDSEN COMPLEX CONDUCTOR FRESNEL</span>
+            <div id="hud-verdict-pill" class="hud-verdict" data-state="pass">
+              PASS · F_cond(60°) = 0.2500 Pseudo-Brewster Edge-Tint Dip Locked (0/17 Whitewashed)
+            </div>
+          </div>
+
+          <div class="hud-controls">
+            <div class="btn-group" role="group" aria-label="Metallic Fresnel Mode Selector">
+              <button
+                type="button"
+                class="mode-btn active"
+                data-mode-btn="gulbrandsen-complex-conductor-dip"
+              >
+                Gulbrandsen Complex Conductor (η=0.30, κ=0.40 Dip)
+              </button>
+              <button
+                type="button"
+                class="mode-btn"
+                data-mode-btn="naive-monotonic-schlick-metal"
+              >
+                Naive Monotonic Schlick Metal (Chalky Rim Whitewash)
+              </button>
+            </div>
+
+            <label class="slider-label" for="station-slider">
+              <span>Incident Viewing Angle Station (<code>θ_i ∈ [0°, 80°]</code>)</span>
+              <input id="station-slider" type="range" min="0" max="16" step="1" value="12" />
+            </label>
+          </div>
+
+          <dl class="hud-metrics-grid">
+            <div class="metric-box">
+              <dt>Selected Viewing Angle</dt>
+              <dd id="hud-station-value">Station 12 (θ_i = 60°)</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Exact Conductor F_cond</dt>
+              <dd id="hud-conductor-value">0.2500</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Active Metal F_active</dt>
+              <dd id="hud-active-value">0.2500</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Edge-Tint Whitewash Error</dt>
+              <dd id="hud-error-value">0.0000 (Pseudo-Brewster dip locked)</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Whitewashed Stations</dt>
+              <dd id="hud-whitewash-count">0 / 17</dd>
+            </div>
+            <div class="metric-box">
+              <dt>Complex IOR Spec</dt>
+              <dd>η = 0.3000 · κ = 0.4000 (F0=0.3514)</dd>
+            </div>
+          </dl>
+
+          <div class="hud-formula-box">
+            <h2>Pseudo-Brewster Conductor Dip Invariant</h2>
+            <p>
+              <code>F_cond(μ) = ((η − μ)² + κ²) / ((η + μ)² + κ²),   μ_min = √(η² + κ²) = 0.5000</code>
+            </p>
+            <p>
+              Because metals have complex extinction <code>κ &gt; 0</code>, their reflectance reaches a minimum at <code>cos θ_B = √(η² + κ²)</code> (<code>60°</code> for <code>η=0.30, κ=0.40</code>, dipping from <code>0.3514</code> to <code>0.2500</code>), producing the rich orange-gold edge tint that monotonic Schlick (<code>0.3716</code>) washes out.
+            </p>
+          </div>
+        </aside>
+      </main>
+    </div>
+  </body>
+</html>

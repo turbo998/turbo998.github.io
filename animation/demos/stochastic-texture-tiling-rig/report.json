@@ -1,0 +1,267 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Heitz-Neyret variance-preserving stochastic hex texture tiling vs linear barycentric contrast washout rig",
+  "topic_zh": "Heitz-Neyret 保方差随机六边形纹理平铺对比朴素线性重心混合交界对比度洗白泥斑",
+  "slug": "stochastic-texture-tiling-rig",
+  "timestamp": "2026-11-14T01:27:56.094Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Eric Heitz & Fabrice Neyret (2018) / Thomas Deliot & Eric Heitz (HPG 2019) variance-preserving barycentric stochastic texture tiling (C = mean + sum(w_k * (C_k - mean)) / sqrt(w1^2 + w2^2 + w3^2)) versus naive linear barycentric blending (sum(w_k * C_k)) and 64-node orthogonal harmonic spatial patch variance integration across 17 simplex transition stations (u in [0.00, 1.00]). No neural texture synthesis execution.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "heitz-norm-patch-variance-equivalence-128",
+      "passed": true,
+      "detail": "128 closed-form ∥w∥₂ normalization and 64-node spatial patch variance passes agree within 1e-13"
+    },
+    {
+      "name": "heitz-norm-patch-variance-equivalence-1024",
+      "passed": true,
+      "detail": "1024 closed-form ∥w∥₂ normalization and 64-node spatial patch variance passes agree within 1e-13"
+    },
+    {
+      "name": "heitz-norm-patch-variance-equivalence-8192",
+      "passed": true,
+      "detail": "8192 closed-form ∥w∥₂ normalization and 64-node spatial patch variance passes agree within 1e-13"
+    },
+    {
+      "name": "heitz-contrast-variance-conserved",
+      "passed": true,
+      "detail": "17 simplex stations preserve exact σ=1.0000 contrast across cell interiors and triple junctions"
+    },
+    {
+      "name": "linear-barycentric-washout-exposed",
+      "passed": true,
+      "detail": "naive linear barycentric blend drops station-8 (w=1/3) contrast to 0.5774 (−0.4226 washout across 15/17 stations)"
+    },
+    {
+      "name": "heitz-triple-junction-contrast-locked",
+      "passed": true,
+      "detail": "Heitz Variance-Preserving Tiling locks triple-junction station-8 (w=1/3) at σ=1.0000 (0/17 washed-out stations)"
+    },
+    {
+      "name": "linear-blend-1-over-sqrt3-washout-exposed",
+      "passed": true,
+      "detail": "naive linear blend collapses station-8 to σ=0.5774 (−42.26% contrast washout across 15/17 interior stations)"
+    },
+    {
+      "name": "exact-reverse-matrix",
+      "passed": true,
+      "detail": "reverse station scrubbing reproduces the exact hex-simplex densitometer carriage world matrix"
+    },
+    {
+      "name": "atomic-sigma-rejection",
+      "passed": true,
+      "detail": "out-of-range baseContrastSigma=999.0 is rejected while valid Stochastic Tiling state remains"
+    },
+    {
+      "name": "geometry-matrix-conformance",
+      "passed": true,
+      "detail": "rendered hex-simplex carriage y-elevation matches solved texture contrast sigma height"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Stochastic Tiling controls fit without horizontal overflow"
+    },
+    {
+      "name": "reduced-motion",
+      "passed": true,
+      "detail": "reduced motion starts still and manual station scrubbing remains available"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station hex tiling passes",
+      "count": 128,
+      "primary_ms": 0.013299999999958345,
+      "baseline_ms": 6.032699999999977,
+      "primary_samples_ms": [
+        0.03669999999999618,
+        0.019400000000018736,
+        0.00830000000007658,
+        0.019499999999993634,
+        0.013299999999958345,
+        0.01059999999995398,
+        0.005300000000033833
+      ],
+      "baseline_samples_ms": [
+        5.885499999999979,
+        8.791400000000067,
+        5.79180000000008,
+        10.746800000000007,
+        5.364400000000046,
+        10.558999999999969,
+        6.032699999999977
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station hex tiling passes",
+      "count": 1024,
+      "primary_ms": 0.051400000000057844,
+      "baseline_ms": 44.14829999999995,
+      "primary_samples_ms": [
+        0.051799999999957436,
+        0.0543999999999869,
+        0.046699999999987085,
+        0.051400000000057844,
+        0.046699999999987085,
+        0.052099999999995816,
+        0.046699999999987085
+      ],
+      "baseline_samples_ms": [
+        44.14829999999995,
+        42.87800000000004,
+        48.33750000000009,
+        46.331999999999994,
+        49.29129999999998,
+        37.13609999999994,
+        44.02089999999998
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station hex tiling passes",
+      "count": 8192,
+      "primary_ms": 0.3793000000000575,
+      "baseline_ms": 337.6296,
+      "primary_samples_ms": [
+        0.6990000000000691,
+        0.3831000000000131,
+        0.3713999999999942,
+        0.37969999999995707,
+        0.3735999999998967,
+        0.3793000000000575,
+        0.3708999999998923
+      ],
+      "baseline_samples_ms": [
+        337.7635,
+        337.6296,
+        326.8597000000002,
+        370.7883999999999,
+        420.6677999999997,
+        333.26409999999987,
+        331.29169999999976
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/stochastic-texture-tiling-rig/light-heitz-variance-preserving-hex.png",
+    "docs/evidence/stochastic-texture-tiling-rig/light-naive-linear-barycentric-hex.png",
+    "docs/evidence/stochastic-texture-tiling-rig/dark-heitz-variance-preserving-hex.png",
+    "docs/evidence/stochastic-texture-tiling-rig/dark-naive-linear-barycentric-hex.png",
+    "docs/evidence/stochastic-texture-tiling-rig/mobile.png"
+  ],
+  "primary_label": "Heitz Closed-Form ∥w∥₂ Variance Normalization",
+  "baseline_label": "64-Node Spatial Patch Variance Integrator",
+  "load_unit": "17-station hex tiling passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form Euclidean barycentric norm division versus 64-node orthogonal harmonic spatial patch variance integration.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "base_contrast_sigma": 1,
+    "triple_junction_norm_l2": 0.5774,
+    "heitz_junction_sigma": 1,
+    "naive_junction_sigma": 0.5774,
+    "max_washout_loss": 0.4226,
+    "corrupted_stations": 15,
+    "maximum_solver_error": 2.2204e-16
+  },
+  "protocol": {
+    "input": {
+      "station_index": 8,
+      "simplex_u": 0.5,
+      "w1": 0.3333,
+      "w2": 0.3333,
+      "w3": 0.3333
+    },
+    "output": {
+      "weight_norm_l2": 0.5774,
+      "heitz_sigma": 1,
+      "naive_linear_sigma": 0.5774,
+      "washout_loss": 0.4226,
+      "corrupted_stations": 15
+    },
+    "function": "C_Heitz = c̄ + Σ w_k(C_k − c̄) / √(w₁² + w₂² + w₃²) → Triple-Junction σ(0.50) = 1.0000 (0.0000 Contrast Washout)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 simplex transition stations conserve full texture contrast variance without blurry ghost patches",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Aperiodic terrain, grass, gravel, concrete, and asphalt materials in UE5, Unity HDRP, Substance, and Three.js",
+    "Eliminating both periodic wallpaper grid repetition AND the −42.26% contrast washout blobs of linear hex/triangle blending",
+    "Normalizing mean-centered barycentric blends by √(w₁² + w₂² + w₃²) in 4 ALU instructions per pixel",
+    "Pairing with Geiss Triplanar Projection (Round 91) and Analytic Ray Footprints textureGrad (Round 61)"
+  ],
+  "not_for": [
+    "Regular man-made architectural tiles (chessboards, bathroom ceramic grids, brick walls) where strict periodic grid alignment is desired",
+    "Single-tap non-blended nearest-cell Voronoi lookup (which preserves variance but creates hard C⁻¹ seam cuts)",
+    "Neural diffusion texture generation or outpainting",
+    "Uniform solid-color materials with σ₀ = 0"
+  ],
+  "locale_zh": {
+    "heitz-norm-patch-variance-equivalence-128": "Heitz闭式范数与64节点空间方差等价 128",
+    "128 closed-form ∥w∥₂ normalization and 64-node spatial patch variance passes agree within 1e-13": "128 次闭式欧氏范数归一化与 64 节点空间块方差积分在 1e-13 内一致",
+    "heitz-norm-patch-variance-equivalence-1024": "Heitz闭式范数与64节点空间方差等价 1024",
+    "1024 closed-form ∥w∥₂ normalization and 64-node spatial patch variance passes agree within 1e-13": "1024 次闭式欧氏范数归一化与 64 节点空间块方差积分在 1e-13 内一致",
+    "heitz-norm-patch-variance-equivalence-8192": "Heitz闭式范数与64节点空间方差等价 8192",
+    "8192 closed-form ∥w∥₂ normalization and 64-node spatial patch variance passes agree within 1e-13": "8192 次闭式欧氏范数归一化与 64 节点空间块方差积分在 1e-13 内一致",
+    "heitz-contrast-variance-conserved": "Heitz纹理对比度方差守恒",
+    "17 simplex stations preserve exact σ=1.0000 contrast across cell interiors and triple junctions": "17 个单纯形站点在格心与三交点全程保持精确 σ=1.0000 对比度",
+    "linear-barycentric-washout-exposed": "线性重心混合对比度坍塌暴露",
+    "naive linear barycentric blend drops station-8 (w=1/3) contrast to 0.5774 (−0.4226 washout across 15/17 stations)": "朴素线性重心混合将第 8 站（w=1/3）对比度压低至 0.5774（丢失 −0.4226，污染 15/17 站）",
+    "heitz-triple-junction-contrast-locked": "Heitz三交点满血对比度锁定",
+    "Heitz Variance-Preserving Tiling locks triple-junction station-8 (w=1/3) at σ=1.0000 (0/17 washed-out stations)": "Heitz 保方差平铺将第 8 站三交点（w=1/3）锁定在 σ=1.0000（0/17 泥斑站）",
+    "linear-blend-1-over-sqrt3-washout-exposed": "线性混合1/√3对比度洗白暴露",
+    "naive linear blend collapses station-8 to σ=0.5774 (−42.26% contrast washout across 15/17 interior stations)": "朴素线性混合将第 8 站压缩至 σ=0.5774（对比度丢失 −42.26%，波及 15/17 个内部站点）",
+    "exact-reverse-matrix": "精确逆序矩阵",
+    "reverse station scrubbing reproduces the exact hex-simplex densitometer carriage world matrix": "逆序站点拖曳精确复现六边形单纯形密度计滑车世界矩阵",
+    "atomic-sigma-rejection": "原子基准对比度拒绝",
+    "out-of-range baseContrastSigma=999.0 is rejected while valid Stochastic Tiling state remains": "越界基准对比度 999.0 被拒绝，有效随机平铺状态完整保留",
+    "geometry-matrix-conformance": "几何矩阵一致性",
+    "rendered hex-simplex carriage y-elevation matches solved texture contrast sigma height": "渲染六边形滑车垂直高度与求解器纹理对比度高度完全一致",
+    "mobile-layout": "手机布局",
+    "390px Stochastic Tiling controls fit without horizontal overflow": "390px 保方差随机平铺控制区无横向溢出",
+    "reduced-motion": "减少动态",
+    "reduced motion starts still and manual station scrubbing remains available": "减少动态默认静止，保留手动站点核验",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "Heitz Closed-Form ∥w∥₂ Variance Normalization": "Heitz 闭式欧氏范数 ∥w∥₂ 保方差归一化",
+    "64-Node Spatial Patch Variance Integrator": "64 节点空间块方差正交积分基线",
+    "Median of 7 alternating Node CPU runs after warmup. Closed-form Euclidean barycentric norm division versus 64-node orthogonal harmonic spatial patch variance integration.": "预热后交替重复 7 次 Node CPU 测量，显示中位数；Heitz 闭式欧氏重心范数归一化对比 64 节点正交谐波空间块方差积分基线。",
+    "Sampled 17 simplex transition stations conserve full texture contrast variance without blurry ghost patches": "采样 17 个单纯形过渡站点全部守恒满血纹理对比度方差，无三交点模糊洗白泥斑",
+    "C_Heitz = c̄ + Σ w_k(C_k − c̄) / √(w₁² + w₂² + w₃²) → Triple-Junction σ(0.50) = 1.0000 (0.0000 Contrast Washout)": "Heitz 保方差重心归一化 ÷√(w₁²+w₂²+w₃²) → 三交点 σ(0.50) = 1.0000（0.0000 对比度洗白）",
+    "Aperiodic terrain, grass, gravel, concrete, and asphalt materials in UE5, Unity HDRP, Substance, and Three.js": "UE5、Unity HDRP、Substance 与 Three.js 中的非周期草地、砂石、混凝土与沥青路面大面积平铺材质",
+    "Eliminating both periodic wallpaper grid repetition AND the −42.26% contrast washout blobs of linear hex/triangle blending": "同时根除周期性麻将席网格重复感与线性六边形混合在交界处产生的 −42.26% 对比度洗白泥斑",
+    "Normalizing mean-centered barycentric blends by √(w₁² + w₂² + w₃²) in 4 ALU instructions per pixel": "每像素仅需 4 条代数指令除以 √(w₁²+w₂²+w₃²) 即可恢复因多图块加权平均损失的对比度方差",
+    "Pairing with Geiss Triplanar Projection (Round 91) and Analytic Ray Footprints textureGrad (Round 61)": "与 Geiss 三平面投影（Round 91）及解析射线微分足迹 textureGrad（Round 61）无缝结合",
+    "Regular man-made architectural tiles (chessboards, bathroom ceramic grids, brick walls) where strict periodic grid alignment is desired": "棋盘格、瓷砖地砖与规则砖墙等原本就要求严格周期网格对齐的人造几何纹理",
+    "Single-tap non-blended nearest-cell Voronoi lookup (which preserves variance but creates hard C⁻¹ seam cuts)": "不做混合的单抽头最近邻 Voronoi 查表（虽不丢方差但会露出刀切接缝）",
+    "Neural diffusion texture generation or outpainting": "神经扩散纹理生成或图像扩图推理",
+    "Uniform solid-color materials with σ₀ = 0": "方差为零（σ₀ = 0）的纯色均匀材质"
+  },
+  "reproduction": [
+    "npm run build",
+    "npx vitest run tests/stochastic-texture-tiling.test.ts",
+    "node scripts/benchmark-stochastic-texture-tiling.mjs"
+  ]
+}
