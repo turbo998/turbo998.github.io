@@ -3864,6 +3864,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r295File),'utf8');
       assert.ok(txt.includes('1,880.00')&&txt.includes('3,752.50')&&txt.includes('5,632.50')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('5,215.00')&&txt.includes('92.59%')&&txt.includes('not_measured'),r295File+': contains exact 11-14 R112 anatomy+solidcraft closed-form parameters');
     }
+    // 2026-11-14 Night Round 113 (R296: openfilm/openfilm + academa-labs/manimgx) verification
+    const r296PathA=1830.00+38.5*95.00;
+    assert.equal(r296PathA.toFixed(2),'5487.50','11-14 R113 Path A total');
+    const r296PathC=85.00+3.5*95.00;
+    assert.equal(r296PathC.toFixed(2),'417.50','11-14 R113 Path C total');
+    assert.equal((r296PathA-r296PathC).toFixed(2),'5070.00','11-14 R113 savings vs Path A');
+    assert.equal(((r296PathA-r296PathC)/r296PathA*100).toFixed(2),'92.39','11-14 R113 pct savings vs Path A');
+    for(const r296File of ['workshops/github-trending-radar/docs/openfilm-manimgx-frame-t-studio-nle-timeline-90x-rust-wgpu-manim-engine-selection-faq.md','workshops/github-trending-radar/docs/openfilm-manimgx-frame-t-studio-nle-timeline-90x-rust-wgpu-manim-engine-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r113-openfilm-manimgx.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r296File),'utf8');
+      assert.ok(txt.includes('1,830.00')&&txt.includes('3,657.50')&&txt.includes('5,487.50')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('5,070.00')&&txt.includes('92.39%')&&txt.includes('not_measured'),r296File+': contains exact 11-14 R113 openfilm+manimgx closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
