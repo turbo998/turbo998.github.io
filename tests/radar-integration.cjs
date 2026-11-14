@@ -3303,6 +3303,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r244File),'utf8');
       assert.ok(txt.includes('2,120.00')&&txt.includes('3,800.00')&&txt.includes('5,920.00')&&txt.includes('155.00')&&txt.includes('350.00')&&txt.includes('505.00')&&txt.includes('5,415.00')&&txt.includes('91.47%')&&txt.includes('not_measured'),r244File+': contains exact 11-14 R61 moa-plus+dsh-harness-evolution closed-form parameters');
     }
+    // 2026-11-14 Night Round 62 (R245: LemonFace0309/charles-skills + JDhruv14/ascii-diorama) verification
+    const r245PathA=1590.00+36.0*95.00;
+    assert.equal(r245PathA.toFixed(2),'5010.00','11-14 R62 Path A total');
+    const r245PathC=85.00+3.5*95.00;
+    assert.equal(r245PathC.toFixed(2),'417.50','11-14 R62 Path C total');
+    assert.equal((r245PathA-r245PathC).toFixed(2),'4592.50','11-14 R62 savings vs Path A');
+    assert.equal(((r245PathA-r245PathC)/r245PathA*100).toFixed(2),'91.67','11-14 R62 pct savings vs Path A');
+    for(const r245File of ['workshops/github-trending-radar/docs/charles-skills-ascii-diorama-20law-ux-motion-polish-halffloat-3d-tiltshift-ascii-shader-selection-faq.md','workshops/github-trending-radar/docs/charles-skills-ascii-diorama-20law-ux-motion-polish-halffloat-3d-tiltshift-ascii-shader-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r62-charlesskills-asciidiorama.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r245File),'utf8');
+      assert.ok(txt.includes('1,590.00')&&txt.includes('3,420.00')&&txt.includes('5,010.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('4,592.50')&&txt.includes('91.67%')&&txt.includes('not_measured'),r245File+': contains exact 11-14 R62 charles-skills+ascii-diorama closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
