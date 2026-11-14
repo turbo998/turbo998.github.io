@@ -2684,6 +2684,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r189File),'utf8');
       assert.ok(txt.includes('1,460.00')&&txt.includes('3,800.00')&&txt.includes('5,260.00')&&txt.includes('135.00')&&txt.includes('332.50')&&txt.includes('467.50')&&txt.includes('4,792.50')&&txt.includes('91.11%')&&txt.includes('not_measured'),r189File+': contains exact 11-14 R6 music-skill+klad closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 7 (R190: Leonxlnx/escapement + bea4dev/AntiWebUI) verification
+    const r190PathA=1750.00+38.0*100.00;
+    assert.equal(r190PathA.toFixed(2),'5550.00','11-14 R7 Path A total');
+    const r190PathC=140.00+3.5*100.00;
+    assert.equal(r190PathC.toFixed(2),'490.00','11-14 R7 Path C total');
+    assert.equal((r190PathA-r190PathC).toFixed(2),'5060.00','11-14 R7 savings vs Path A');
+    assert.equal(((r190PathA-r190PathC)/r190PathA*100).toFixed(2),'91.17','11-14 R7 pct savings vs Path A');
+    for(const r190File of ['workshops/github-trending-radar/docs/escapement-antiwebui-5agent-headless-blender-film-pipeline-zero-webview-rust-wgpu-ui-selection-faq.md','workshops/github-trending-radar/docs/escapement-antiwebui-5agent-headless-blender-film-pipeline-zero-webview-rust-wgpu-ui-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r7-escapement-antiwebui.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r190File),'utf8');
+      assert.ok(txt.includes('1,750.00')&&txt.includes('3,800.00')&&txt.includes('5,550.00')&&txt.includes('140.00')&&txt.includes('350.00')&&txt.includes('490.00')&&txt.includes('5,060.00')&&txt.includes('91.17%')&&txt.includes('not_measured'),r190File+': contains exact 11-14 R7 escapement+AntiWebUI closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
