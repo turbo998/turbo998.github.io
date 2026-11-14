@@ -2614,6 +2614,593 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r183File),'utf8');
       assert.ok(txt.includes('1,520.00')&&txt.includes('3,600.00')&&txt.includes('5,120.00')&&txt.includes('140.00')&&txt.includes('350.00')&&txt.includes('490.00')&&txt.includes('4,630.00')&&txt.includes('90.43%')&&txt.includes('not_measured'),r183File+': contains exact 11-13 R55 calibrain+awesome-fable-5.2 closed-form parameters');
     }
+    // 2026-11-14 Raw Evidence SHA-256 & Daytime Round 1 (R184: relatedb/relate + berkantay/gpucanvas) verification
+    const rawHtml1114=fs.readFileSync(path.join(__dirname,'..','workshops','github-trending-radar','evidence','trending-daily-2026-11-14-raw.html'),'utf8').replace(/\r\n/g,'\n');
+    assert.equal(crypto.createHash('sha256').update(rawHtml1114).digest('hex'),'46ea932ff0f84c1970372b2e829adea752d5a43f686eb7ba05aa85560c8c4a77','2026-11-14 raw HTML LF sha256');
+    const rawSearch1114=fs.readFileSync(path.join(__dirname,'..','workshops','github-trending-radar','evidence','search-new-repos-2026-11-14-raw.json'),'utf8').replace(/\r\n/g,'\n');
+    assert.equal(crypto.createHash('sha256').update(rawSearch1114).digest('hex'),'a4edf557e91854831dc80d3670e3e7a1b49c7e9ca14e2e4dd7913489bd7cc2b2','2026-11-14 raw Search JSON LF sha256');
+    const r184PathA=1850.00+38.0*100.00;
+    assert.equal(r184PathA.toFixed(2),'5650.00','11-14 R1 Path A total');
+    const r184PathC=150.00+3.5*100.00;
+    assert.equal(r184PathC.toFixed(2),'500.00','11-14 R1 Path C total');
+    assert.equal((r184PathA-r184PathC).toFixed(2),'5150.00','11-14 R1 savings vs Path A');
+    assert.equal(((r184PathA-r184PathC)/r184PathA*100).toFixed(2),'91.15','11-14 R1 pct savings vs Path A');
+    for(const r184File of ['workshops/github-trending-radar/docs/relate-gpucanvas-embedded-cypher25-graph-db-webgpu-5000-live-dom-canvas-selection-faq.md','workshops/github-trending-radar/docs/relate-gpucanvas-embedded-cypher25-graph-db-webgpu-5000-live-dom-canvas-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r1-relate-gpucanvas.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r184File),'utf8');
+      assert.ok(txt.includes('1,850.00')&&txt.includes('3,800.00')&&txt.includes('5,650.00')&&txt.includes('150.00')&&txt.includes('350.00')&&txt.includes('500.00')&&txt.includes('5,150.00')&&txt.includes('91.15%')&&txt.includes('not_measured'),r184File+': contains exact 11-14 R1 relate+gpucanvas closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 2 (R185: Open-RUA/uni-robot-agent + apple-aiml-research/ml-halo) verification
+    const r185PathA=2350.00+42.0*110.00;
+    assert.equal(r185PathA.toFixed(2),'6970.00','11-14 R2 Path A total');
+    const r185PathC=195.00+3.5*110.00;
+    assert.equal(r185PathC.toFixed(2),'580.00','11-14 R2 Path C total');
+    assert.equal((r185PathA-r185PathC).toFixed(2),'6390.00','11-14 R2 savings vs Path A');
+    assert.equal(((r185PathA-r185PathC)/r185PathA*100).toFixed(2),'91.68','11-14 R2 pct savings vs Path A');
+    for(const r185File of ['workshops/github-trending-radar/docs/uni-robot-agent-ml-halo-unified-robot-use-harness-perceptive-humanoid-motion-selection-faq.md','workshops/github-trending-radar/docs/uni-robot-agent-ml-halo-unified-robot-use-harness-perceptive-humanoid-motion-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r2-uni-robot-halo.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r185File),'utf8');
+      assert.ok(txt.includes('2,350.00')&&txt.includes('4,620.00')&&txt.includes('6,970.00')&&txt.includes('195.00')&&txt.includes('385.00')&&txt.includes('580.00')&&txt.includes('6,390.00')&&txt.includes('91.68%')&&txt.includes('not_measured'),r185File+': contains exact 11-14 R2 uni-robot-agent+ml-halo closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 3 (R186: dreamers-laboratory/good-door + TngSHoO/agentcase-lab) verification
+    const r186PathA=1580.00+38.0*95.00;
+    assert.equal(r186PathA.toFixed(2),'5190.00','11-14 R3 Path A total');
+    const r186PathC=140.00+3.5*95.00;
+    assert.equal(r186PathC.toFixed(2),'472.50','11-14 R3 Path C total');
+    assert.equal((r186PathA-r186PathC).toFixed(2),'4717.50','11-14 R3 savings vs Path A');
+    assert.equal(((r186PathA-r186PathC)/r186PathA*100).toFixed(2),'90.90','11-14 R3 pct savings vs Path A');
+    for(const r186File of ['workshops/github-trending-radar/docs/good-door-agentcase-lab-hardware-vault-agent-secrets-failure-replay-rca-selection-faq.md','workshops/github-trending-radar/docs/good-door-agentcase-lab-hardware-vault-agent-secrets-failure-replay-rca-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r3-good-door-agentcase.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r186File),'utf8');
+      assert.ok(txt.includes('1,580.00')&&txt.includes('3,610.00')&&txt.includes('5,190.00')&&txt.includes('140.00')&&txt.includes('332.50')&&txt.includes('472.50')&&txt.includes('4,717.50')&&txt.includes('90.90%')&&txt.includes('not_measured'),r186File+': contains exact 11-14 R3 good-door+agentcase-lab closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 4 (R187: DEEIX-AI/Winc + ubc-vision/solv3r) verification
+    const r187PathA=1960.00+38.0*105.00;
+    assert.equal(r187PathA.toFixed(2),'5950.00','11-14 R4 Path A total');
+    const r187PathC=165.00+3.5*105.00;
+    assert.equal(r187PathC.toFixed(2),'532.50','11-14 R4 Path C total');
+    assert.equal((r187PathA-r187PathC).toFixed(2),'5417.50','11-14 R4 savings vs Path A');
+    assert.equal(((r187PathA-r187PathC)/r187PathA*100).toFixed(2),'91.05','11-14 R4 pct savings vs Path A');
+    for(const r187File of ['workshops/github-trending-radar/docs/winc-solv3r-119ms-52mb-rust-1gb-editor-3d-looped-transformer-multiview-solver-selection-faq.md','workshops/github-trending-radar/docs/winc-solv3r-119ms-52mb-rust-1gb-editor-3d-looped-transformer-multiview-solver-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r4-winc-solv3r.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r187File),'utf8');
+      assert.ok(txt.includes('1,960.00')&&txt.includes('3,990.00')&&txt.includes('5,950.00')&&txt.includes('165.00')&&txt.includes('367.50')&&txt.includes('532.50')&&txt.includes('5,417.50')&&txt.includes('91.05%')&&txt.includes('not_measured'),r187File+': contains exact 11-14 R4 winc+solv3r closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 5 (R188: hyperionaidev/smolmaxxing + fuyichen0725/blinkmimic) verification
+    const r188PathA=2180.00+36.0*105.00;
+    assert.equal(r188PathA.toFixed(2),'5960.00','11-14 R5 Path A total');
+    const r188PathC=145.00+3.5*105.00;
+    assert.equal(r188PathC.toFixed(2),'512.50','11-14 R5 Path C total');
+    assert.equal((r188PathA-r188PathC).toFixed(2),'5447.50','11-14 R5 savings vs Path A');
+    assert.equal(((r188PathA-r188PathC)/r188PathA*100).toFixed(2),'91.40','11-14 R5 pct savings vs Path A');
+    for(const r188File of ['workshops/github-trending-radar/docs/smolmaxxing-blinkmimic-1gb-ram-16b-phone-80b-flash-llm-3min-g1-motion-tracking-selection-faq.md','workshops/github-trending-radar/docs/smolmaxxing-blinkmimic-1gb-ram-16b-phone-80b-flash-llm-3min-g1-motion-tracking-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r5-smolmaxxing-blinkmimic.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r188File),'utf8');
+      assert.ok(txt.includes('2,180.00')&&txt.includes('3,780.00')&&txt.includes('5,960.00')&&txt.includes('145.00')&&txt.includes('367.50')&&txt.includes('512.50')&&txt.includes('5,447.50')&&txt.includes('91.40%')&&txt.includes('not_measured'),r188File+': contains exact 11-14 R5 smolmaxxing+blinkmimic closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 6 (R189: owoevan-dev/music-skill + klad-app/klad) verification
+    const r189PathA=1460.00+40.0*95.00;
+    assert.equal(r189PathA.toFixed(2),'5260.00','11-14 R6 Path A total');
+    const r189PathC=135.00+3.5*95.00;
+    assert.equal(r189PathC.toFixed(2),'467.50','11-14 R6 Path C total');
+    assert.equal((r189PathA-r189PathC).toFixed(2),'4792.50','11-14 R6 savings vs Path A');
+    assert.equal(((r189PathA-r189PathC)/r189PathA*100).toFixed(2),'91.11','11-14 R6 pct savings vs Path A');
+    for(const r189File of ['workshops/github-trending-radar/docs/music-skill-klad-symbolic-note-composer-skill-stroke-editable-agent-painting-studio-selection-faq.md','workshops/github-trending-radar/docs/music-skill-klad-symbolic-note-composer-skill-stroke-editable-agent-painting-studio-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r6-music-skill-klad.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r189File),'utf8');
+      assert.ok(txt.includes('1,460.00')&&txt.includes('3,800.00')&&txt.includes('5,260.00')&&txt.includes('135.00')&&txt.includes('332.50')&&txt.includes('467.50')&&txt.includes('4,792.50')&&txt.includes('91.11%')&&txt.includes('not_measured'),r189File+': contains exact 11-14 R6 music-skill+klad closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 7 (R190: Leonxlnx/escapement + bea4dev/AntiWebUI) verification
+    const r190PathA=1750.00+38.0*100.00;
+    assert.equal(r190PathA.toFixed(2),'5550.00','11-14 R7 Path A total');
+    const r190PathC=140.00+3.5*100.00;
+    assert.equal(r190PathC.toFixed(2),'490.00','11-14 R7 Path C total');
+    assert.equal((r190PathA-r190PathC).toFixed(2),'5060.00','11-14 R7 savings vs Path A');
+    assert.equal(((r190PathA-r190PathC)/r190PathA*100).toFixed(2),'91.17','11-14 R7 pct savings vs Path A');
+    for(const r190File of ['workshops/github-trending-radar/docs/escapement-antiwebui-5agent-headless-blender-film-pipeline-zero-webview-rust-wgpu-ui-selection-faq.md','workshops/github-trending-radar/docs/escapement-antiwebui-5agent-headless-blender-film-pipeline-zero-webview-rust-wgpu-ui-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r7-escapement-antiwebui.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r190File),'utf8');
+      assert.ok(txt.includes('1,750.00')&&txt.includes('3,800.00')&&txt.includes('5,550.00')&&txt.includes('140.00')&&txt.includes('350.00')&&txt.includes('490.00')&&txt.includes('5,060.00')&&txt.includes('91.17%')&&txt.includes('not_measured'),r190File+': contains exact 11-14 R7 escapement+AntiWebUI closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 8 (R191: supercli-site/awesome-coding-plan + lijiaqi-AI-Product-Manager/dsh-agent-compare) verification
+    const r191PathA=2450.00+36.0*95.00;
+    assert.equal(r191PathA.toFixed(2),'5870.00','11-14 R8 Path A total');
+    const r191PathC=185.00+3.5*95.00;
+    assert.equal(r191PathC.toFixed(2),'517.50','11-14 R8 Path C total');
+    assert.equal((r191PathA-r191PathC).toFixed(2),'5352.50','11-14 R8 savings vs Path A');
+    assert.equal(((r191PathA-r191PathC)/r191PathA*100).toFixed(2),'91.18','11-14 R8 pct savings vs Path A');
+    for(const r191File of ['workshops/github-trending-radar/docs/awesome-coding-plan-dsh-agent-compare-ai-coding-subscription-finops-2to4-agent-real-run-arena-selection-faq.md','workshops/github-trending-radar/docs/awesome-coding-plan-dsh-agent-compare-ai-coding-subscription-finops-2to4-agent-real-run-arena-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r8-coding-plan-agent-compare.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r191File),'utf8');
+      assert.ok(txt.includes('2,450.00')&&txt.includes('3,420.00')&&txt.includes('5,870.00')&&txt.includes('185.00')&&txt.includes('332.50')&&txt.includes('517.50')&&txt.includes('5,352.50')&&txt.includes('91.18%')&&txt.includes('not_measured'),r191File+': contains exact 11-14 R8 awesome-coding-plan+dsh-agent-compare closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 9 (R192: Goblinmine/homelab-diagram + Renly1994/xiaotang-daozai) verification
+    const r192PathA=1540.00+38.0*95.00;
+    assert.equal(r192PathA.toFixed(2),'5150.00','11-14 R9 Path A total');
+    const r192PathC=125.00+3.5*95.00;
+    assert.equal(r192PathC.toFixed(2),'457.50','11-14 R9 Path C total');
+    assert.equal((r192PathA-r192PathC).toFixed(2),'4692.50','11-14 R9 savings vs Path A');
+    assert.equal(((r192PathA-r192PathC)/r192PathA*100).toFixed(2),'91.12','11-14 R9 pct savings vs Path A');
+    for(const r192File of ['workshops/github-trending-radar/docs/homelab-diagram-xiaotang-daozai-agentic-yaml-network-svg-rust-windows-9ai-quota-island-selection-faq.md','workshops/github-trending-radar/docs/homelab-diagram-xiaotang-daozai-agentic-yaml-network-svg-rust-windows-9ai-quota-island-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r9-homelab-diagram-daozai.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r192File),'utf8');
+      assert.ok(txt.includes('1,540.00')&&txt.includes('3,610.00')&&txt.includes('5,150.00')&&txt.includes('125.00')&&txt.includes('332.50')&&txt.includes('457.50')&&txt.includes('4,692.50')&&txt.includes('91.12%')&&txt.includes('not_measured'),r192File+': contains exact 11-14 R9 homelab-diagram+daozai closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 10 (R193: Gloridust/WowType + YusufCeng1z/ding) verification
+    const r193PathA=1380.00+36.0*95.00;
+    assert.equal(r193PathA.toFixed(2),'4800.00','11-14 R10 Path A total');
+    const r193PathC=95.00+3.5*95.00;
+    assert.equal(r193PathC.toFixed(2),'427.50','11-14 R10 Path C total');
+    assert.equal((r193PathA-r193PathC).toFixed(2),'4372.50','11-14 R10 savings vs Path A');
+    assert.equal(((r193PathA-r193PathC)/r193PathA*100).toFixed(2),'91.09','11-14 R10 pct savings vs Path A');
+    for(const r193File of ['workshops/github-trending-radar/docs/wowtype-ding-linux-macos-offline-voice-hymt-ime-zero-dep-spring-morphing-toast-selection-faq.md','workshops/github-trending-radar/docs/wowtype-ding-linux-macos-offline-voice-hymt-ime-zero-dep-spring-morphing-toast-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r10-wowtype-ding.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r193File),'utf8');
+      assert.ok(txt.includes('1,380.00')&&txt.includes('3,420.00')&&txt.includes('4,800.00')&&txt.includes('95.00')&&txt.includes('332.50')&&txt.includes('427.50')&&txt.includes('4,372.50')&&txt.includes('91.09%')&&txt.includes('not_measured'),r193File+': contains exact 11-14 R10 WowType+ding closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 11 (R194: zeekk0/OpenAmika + ZSeven-W/dsh-game-studio) verification
+    const r194PathA=1840.00+38.0*100.00;
+    assert.equal(r194PathA.toFixed(2),'5640.00','11-14 R11 Path A total');
+    const r194PathC=145.00+3.5*100.00;
+    assert.equal(r194PathC.toFixed(2),'495.00','11-14 R11 Path C total');
+    assert.equal((r194PathA-r194PathC).toFixed(2),'5145.00','11-14 R11 savings vs Path A');
+    assert.equal(((r194PathA-r194PathC)/r194PathA*100).toFixed(2),'91.22','11-14 R11 pct savings vs Path A');
+    for(const r194File of ['workshops/github-trending-radar/docs/openamika-dsh-game-studio-5gb-vram-semilocal-live2d-companion-10tool-autoplay-game-studio-selection-faq.md','workshops/github-trending-radar/docs/openamika-dsh-game-studio-5gb-vram-semilocal-live2d-companion-10tool-autoplay-game-studio-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r11-openamika-game-studio.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r194File),'utf8');
+      assert.ok(txt.includes('1,840.00')&&txt.includes('3,800.00')&&txt.includes('5,640.00')&&txt.includes('145.00')&&txt.includes('350.00')&&txt.includes('495.00')&&txt.includes('5,145.00')&&txt.includes('91.22%')&&txt.includes('not_measured'),r194File+': contains exact 11-14 R11 OpenAmika+dsh-game-studio closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 12 (R195: imraywang/ray-sticker-shop + starman-tech/mousepods) verification
+    const r195PathA=1620.00+36.0*95.00;
+    assert.equal(r195PathA.toFixed(2),'5040.00','11-14 R12 Path A total');
+    const r195PathC=95.00+3.5*95.00;
+    assert.equal(r195PathC.toFixed(2),'427.50','11-14 R12 Path C total');
+    assert.equal((r195PathA-r195PathC).toFixed(2),'4612.50','11-14 R12 savings vs Path A');
+    assert.equal(((r195PathA-r195PathC)/r195PathA*100).toFixed(2),'91.52','11-14 R12 pct savings vs Path A');
+    for(const r195File of ['workshops/github-trending-radar/docs/ray-sticker-shop-mousepods-70cent-wechat-sticker-pack-skill-airpods3-remotehid-linux-head-tracker-selection-faq.md','workshops/github-trending-radar/docs/ray-sticker-shop-mousepods-70cent-wechat-sticker-pack-skill-airpods3-remotehid-linux-head-tracker-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r12-sticker-shop-mousepods.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r195File),'utf8');
+      assert.ok(txt.includes('1,620.00')&&txt.includes('3,420.00')&&txt.includes('5,040.00')&&txt.includes('95.00')&&txt.includes('332.50')&&txt.includes('427.50')&&txt.includes('4,612.50')&&txt.includes('91.52%')&&txt.includes('not_measured'),r195File+': contains exact 11-14 R12 ray-sticker-shop+mousepods closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 13 (R196: dhruvthakur11/youtube-ai-video-editing-system + dotslashsimran/simcraft) verification
+    const r196PathA=1680.00+38.0*100.00;
+    assert.equal(r196PathA.toFixed(2),'5480.00','11-14 R13 Path A total');
+    const r196PathC=135.00+3.5*100.00;
+    assert.equal(r196PathC.toFixed(2),'485.00','11-14 R13 Path C total');
+    assert.equal((r196PathA-r196PathC).toFixed(2),'4995.00','11-14 R13 savings vs Path A');
+    assert.equal(((r196PathA-r196PathC)/r196PathA*100).toFixed(2),'91.15','11-14 R13 pct savings vs Path A');
+    for(const r196File of ['workshops/github-trending-radar/docs/youtube-ai-video-editing-system-simcraft-5stage-eyeline-json-video-pipeline-24-claude-skills-selection-faq.md','workshops/github-trending-radar/docs/youtube-ai-video-editing-system-simcraft-5stage-eyeline-json-video-pipeline-24-claude-skills-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r13-youtube-video-simcraft.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r196File),'utf8');
+      assert.ok(txt.includes('1,680.00')&&txt.includes('3,800.00')&&txt.includes('5,480.00')&&txt.includes('135.00')&&txt.includes('350.00')&&txt.includes('485.00')&&txt.includes('4,995.00')&&txt.includes('91.15%')&&txt.includes('not_measured'),r196File+': contains exact 11-14 R13 youtube-ai-video+simcraft closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 14 (R197: lizTheDeveloper/flyover-scrub + arnold117/iOS-NOIR) verification
+    const r197PathA=1920.00+38.0*110.00;
+    assert.equal(r197PathA.toFixed(2),'6100.00','11-14 R14 Path A total');
+    const r197PathC=140.00+3.5*110.00;
+    assert.equal(r197PathC.toFixed(2),'525.00','11-14 R14 Path C total');
+    assert.equal((r197PathA-r197PathC).toFixed(2),'5575.00','11-14 R14 savings vs Path A');
+    assert.equal(((r197PathA-r197PathC)/r197PathA*100).toFixed(2),'91.39','11-14 R14 pct savings vs Path A');
+    for(const r197File of ['workshops/github-trending-radar/docs/flyover-scrub-ios-noir-aircraft-doppler-enf-audio-scrubber-unjailbroken-ios-forensic-auditor-selection-faq.md','workshops/github-trending-radar/docs/flyover-scrub-ios-noir-aircraft-doppler-enf-audio-scrubber-unjailbroken-ios-forensic-auditor-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r14-flyover-scrub-ios-noir.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r197File),'utf8');
+      assert.ok(txt.includes('1,920.00')&&txt.includes('4,180.00')&&txt.includes('6,100.00')&&txt.includes('140.00')&&txt.includes('385.00')&&txt.includes('525.00')&&txt.includes('5,575.00')&&txt.includes('91.39%')&&txt.includes('not_measured'),r197File+': contains exact 11-14 R14 flyover-scrub+iOS-NOIR closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 15 (R198: neondeex/atlas-filemanager + Future-Proof-DS/interactive-ai-ml-tools) verification
+    const r198PathA=1480.00+36.0*95.00;
+    assert.equal(r198PathA.toFixed(2),'4900.00','11-14 R15 Path A total');
+    const r198PathC=105.00+3.5*95.00;
+    assert.equal(r198PathC.toFixed(2),'437.50','11-14 R15 Path C total');
+    assert.equal((r198PathA-r198PathC).toFixed(2),'4462.50','11-14 R15 savings vs Path A');
+    assert.equal(((r198PathA-r198PathC)/r198PathA*100).toFixed(2),'91.07','11-14 R15 pct savings vs Path A');
+    for(const r198File of ['workshops/github-trending-radar/docs/atlas-filemanager-interactive-ai-ml-tools-rust-gpui-filemanager-mlops-agentic-eval-simulators-selection-faq.md','workshops/github-trending-radar/docs/atlas-filemanager-interactive-ai-ml-tools-rust-gpui-filemanager-mlops-agentic-eval-simulators-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r15-atlas-interactive-ml-tools.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r198File),'utf8');
+      assert.ok(txt.includes('1,480.00')&&txt.includes('3,420.00')&&txt.includes('4,900.00')&&txt.includes('105.00')&&txt.includes('332.50')&&txt.includes('437.50')&&txt.includes('4,462.50')&&txt.includes('91.07%')&&txt.includes('not_measured'),r198File+': contains exact 11-14 R15 Atlas+interactive-ai-ml-tools closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 16 (R199: anomalyco/textjs + smokeeaasd/flawless-ui-ux) verification
+    const r199PathA=1560.00+36.0*95.00;
+    assert.equal(r199PathA.toFixed(2),'4980.00','11-14 R16 Path A total');
+    const r199PathC=110.00+3.5*95.00;
+    assert.equal(r199PathC.toFixed(2),'442.50','11-14 R16 Path C total');
+    assert.equal((r199PathA-r199PathC).toFixed(2),'4537.50','11-14 R16 savings vs Path A');
+    assert.equal(((r199PathA-r199PathC)/r199PathA*100).toFixed(2),'91.11','11-14 R16 pct savings vs Path A');
+    for(const r199File of ['workshops/github-trending-radar/docs/textjs-flawless-ui-ux-browser-console-react-framework-12agent-ui-ux-inspection-cli-selection-faq.md','workshops/github-trending-radar/docs/textjs-flawless-ui-ux-browser-console-react-framework-12agent-ui-ux-inspection-cli-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r16-textjs-flawless-ui-ux.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r199File),'utf8');
+      assert.ok(txt.includes('1,560.00')&&txt.includes('3,420.00')&&txt.includes('4,980.00')&&txt.includes('110.00')&&txt.includes('332.50')&&txt.includes('442.50')&&txt.includes('4,537.50')&&txt.includes('91.11%')&&txt.includes('not_measured'),r199File+': contains exact 11-14 R16 Text.js+flawless-ui-ux closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 17 (R200: aa1143/NamiDSH + liguozheng-ac/Lingbo-Desk) verification
+    const r200PathA=1650.00+38.0*100.00;
+    assert.equal(r200PathA.toFixed(2),'5450.00','11-14 R17 Path A total');
+    const r200PathC=130.00+3.5*100.00;
+    assert.equal(r200PathC.toFixed(2),'480.00','11-14 R17 Path C total');
+    assert.equal((r200PathA-r200PathC).toFixed(2),'4970.00','11-14 R17 savings vs Path A');
+    assert.equal(((r200PathA-r200PathC)/r200PathA*100).toFixed(2),'91.19','11-14 R17 pct savings vs Path A');
+    for(const r200File of ['workshops/github-trending-radar/docs/namidsh-lingbo-desk-1000line-cordis-plugin-agent-kernel-receipt-hardened-live2d-voice-worker-selection-faq.md','workshops/github-trending-radar/docs/namidsh-lingbo-desk-1000line-cordis-plugin-agent-kernel-receipt-hardened-live2d-voice-worker-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r17-namidsh-lingbo-desk.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r200File),'utf8');
+      assert.ok(txt.includes('1,650.00')&&txt.includes('3,800.00')&&txt.includes('5,450.00')&&txt.includes('130.00')&&txt.includes('350.00')&&txt.includes('480.00')&&txt.includes('4,970.00')&&txt.includes('91.19%')&&txt.includes('not_measured'),r200File+': contains exact 11-14 R17 NamiDSH+Lingbo-Desk closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 18 (R201: TizenryA/colab-gpu-studio + zainudinnoori/gitmanual) verification
+    const r201PathA=1720.00+36.0*95.00;
+    assert.equal(r201PathA.toFixed(2),'5140.00','11-14 R18 Path A total');
+    const r201PathC=115.00+3.5*95.00;
+    assert.equal(r201PathC.toFixed(2),'447.50','11-14 R18 Path C total');
+    assert.equal((r201PathA-r201PathC).toFixed(2),'4692.50','11-14 R18 savings vs Path A');
+    assert.equal(((r201PathA-r201PathC)/r201PathA*100).toFixed(2),'91.29','11-14 R18 pct savings vs Path A');
+    for(const r201File of ['workshops/github-trending-radar/docs/colab-gpu-studio-gitmanual-ephemeral-colab-comfyui-workbench-zero-clone-repo-setup-mcp-selection-faq.md','workshops/github-trending-radar/docs/colab-gpu-studio-gitmanual-ephemeral-colab-comfyui-workbench-zero-clone-repo-setup-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r18-colab-gpu-studio-gitmanual.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r201File),'utf8');
+      assert.ok(txt.includes('1,720.00')&&txt.includes('3,420.00')&&txt.includes('5,140.00')&&txt.includes('115.00')&&txt.includes('332.50')&&txt.includes('447.50')&&txt.includes('4,692.50')&&txt.includes('91.29%')&&txt.includes('not_measured'),r201File+': contains exact 11-14 R18 colab-gpu-studio+gitmanual closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 19 (R202: fltman/idea-generator-2 + joeseesun/capwise) verification
+    const r202PathA=1580.00+38.0*100.00;
+    assert.equal(r202PathA.toFixed(2),'5380.00','11-14 R19 Path A total');
+    const r202PathC=125.00+3.5*100.00;
+    assert.equal(r202PathC.toFixed(2),'475.00','11-14 R19 Path C total');
+    assert.equal((r202PathA-r202PathC).toFixed(2),'4905.00','11-14 R19 savings vs Path A');
+    assert.equal(((r202PathA-r202PathC)/r202PathA*100).toFixed(2),'91.17','11-14 R19 pct savings vs Path A');
+    for(const r202File of ['workshops/github-trending-radar/docs/idea-generator-2-capwise-calibrated-jury-evolution-board-macos-gpui-bilingual-screen-studio-selection-faq.md','workshops/github-trending-radar/docs/idea-generator-2-capwise-calibrated-jury-evolution-board-macos-gpui-bilingual-screen-studio-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r19-idea-generator-capwise.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r202File),'utf8');
+      assert.ok(txt.includes('1,580.00')&&txt.includes('3,800.00')&&txt.includes('5,380.00')&&txt.includes('125.00')&&txt.includes('350.00')&&txt.includes('475.00')&&txt.includes('4,905.00')&&txt.includes('91.17%')&&txt.includes('not_measured'),r202File+': contains exact 11-14 R19 idea-generator-2+capwise closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 20 (R203: howznguyen/shorts-kit + s1dashu/quiet-md) verification
+    const r203PathA=1760.00+38.0*95.00;
+    assert.equal(r203PathA.toFixed(2),'5370.00','11-14 R20 Path A total');
+    const r203PathC=120.00+3.5*95.00;
+    assert.equal(r203PathC.toFixed(2),'452.50','11-14 R20 Path C total');
+    assert.equal((r203PathA-r203PathC).toFixed(2),'4917.50','11-14 R20 savings vs Path A');
+    assert.equal(((r203PathA-r203PathC)/r203PathA*100).toFixed(2),'91.57','11-14 R20 pct savings vs Path A');
+    for(const r203File of ['workshops/github-trending-radar/docs/shorts-kit-quiet-md-fact-gated-160shot-remotion-agent-kit-5ms-rust-gpui-feishu-docxxml-editor-selection-faq.md','workshops/github-trending-radar/docs/shorts-kit-quiet-md-fact-gated-160shot-remotion-agent-kit-5ms-rust-gpui-feishu-docxxml-editor-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r20-shorts-kit-quiet-md.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r203File),'utf8');
+      assert.ok(txt.includes('1,760.00')&&txt.includes('3,610.00')&&txt.includes('5,370.00')&&txt.includes('120.00')&&txt.includes('332.50')&&txt.includes('452.50')&&txt.includes('4,917.50')&&txt.includes('91.57%')&&txt.includes('not_measured'),r203File+': contains exact 11-14 R20 shorts-kit+quiet-md closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 21 (R204: serveroshq/panel + opencoredev/islandcn) verification
+    const r204PathA=1820.00+38.0*100.00;
+    assert.equal(r204PathA.toFixed(2),'5620.00','11-14 R21 Path A total');
+    const r204PathC=135.00+3.5*100.00;
+    assert.equal(r204PathC.toFixed(2),'485.00','11-14 R21 Path C total');
+    assert.equal((r204PathA-r204PathC).toFixed(2),'5135.00','11-14 R21 savings vs Path A');
+    assert.equal(((r204PathA-r204PathC)/r204PathA*100).toFixed(2),'91.37','11-14 R21 pct savings vs Path A');
+    for(const r204File of ['workshops/github-trending-radar/docs/serveros-panel-islandcn-selfhosted-multiserver-mcp-control-plane-4state-react-dynamic-island-selection-faq.md','workshops/github-trending-radar/docs/serveros-panel-islandcn-selfhosted-multiserver-mcp-control-plane-4state-react-dynamic-island-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r21-serveros-panel-islandcn.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r204File),'utf8');
+      assert.ok(txt.includes('1,820.00')&&txt.includes('3,800.00')&&txt.includes('5,620.00')&&txt.includes('135.00')&&txt.includes('350.00')&&txt.includes('485.00')&&txt.includes('5,135.00')&&txt.includes('91.37%')&&txt.includes('not_measured'),r204File+': contains exact 11-14 R21 serveros-panel+islandcn closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 22 (R205: egoist/tinytraffic + Ciao1019/ArcMD) verification
+    const r205PathA=1420.00+36.0*95.00;
+    assert.equal(r205PathA.toFixed(2),'4840.00','11-14 R22 Path A total');
+    const r205PathC=90.00+3.5*95.00;
+    assert.equal(r205PathC.toFixed(2),'422.50','11-14 R22 Path C total');
+    assert.equal((r205PathA-r205PathC).toFixed(2),'4417.50','11-14 R22 savings vs Path A');
+    assert.equal(((r205PathA-r205PathC)/r205PathA*100).toFixed(2),'91.27','11-14 R22 pct savings vs Path A');
+    for(const r205File of ['workshops/github-trending-radar/docs/tinytraffic-arcmd-single-binary-duckdb-web-analytics-pure-go-mygo-native-gpu-markdown-editor-selection-faq.md','workshops/github-trending-radar/docs/tinytraffic-arcmd-single-binary-duckdb-web-analytics-pure-go-mygo-native-gpu-markdown-editor-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r22-tinytraffic-arcmd.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r205File),'utf8');
+      assert.ok(txt.includes('1,420.00')&&txt.includes('3,420.00')&&txt.includes('4,840.00')&&txt.includes('90.00')&&txt.includes('332.50')&&txt.includes('422.50')&&txt.includes('4,417.50')&&txt.includes('91.27%')&&txt.includes('not_measured'),r205File+': contains exact 11-14 R22 tinytraffic+arcmd closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 23 (R206: nickvasilescu/grokbot-clone + linknimiball1974/ai-texture-forge) verification
+    const r206PathA=1790.00+38.0*100.00;
+    assert.equal(r206PathA.toFixed(2),'5590.00','11-14 R23 Path A total');
+    const r206PathC=140.00+3.5*100.00;
+    assert.equal(r206PathC.toFixed(2),'490.00','11-14 R23 Path C total');
+    assert.equal((r206PathA-r206PathC).toFixed(2),'5100.00','11-14 R23 savings vs Path A');
+    assert.equal(((r206PathA-r206PathC)/r206PathA*100).toFixed(2),'91.23','11-14 R23 pct savings vs Path A');
+    for(const r206File of ['workshops/github-trending-radar/docs/grokbot-clone-ai-texture-forge-4desktop-orgo-composio-grok-team-blender-seamless-pbr-projection-selection-faq.md','workshops/github-trending-radar/docs/grokbot-clone-ai-texture-forge-4desktop-orgo-composio-grok-team-blender-seamless-pbr-projection-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r23-grokbot-clone-texture-forge.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r206File),'utf8');
+      assert.ok(txt.includes('1,790.00')&&txt.includes('3,800.00')&&txt.includes('5,590.00')&&txt.includes('140.00')&&txt.includes('350.00')&&txt.includes('490.00')&&txt.includes('5,100.00')&&txt.includes('91.23%')&&txt.includes('not_measured'),r206File+': contains exact 11-14 R23 grokbot-clone+ai-texture-forge closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 24 (R207: anefzaoui/misterdownloadmanager + paipiange/nvzhuang) verification
+    const r207PathA=1520.00+36.0*95.00;
+    assert.equal(r207PathA.toFixed(2),'4940.00','11-14 R24 Path A total');
+    const r207PathC=115.00+3.5*95.00;
+    assert.equal(r207PathC.toFixed(2),'447.50','11-14 R24 Path C total');
+    assert.equal((r207PathA-r207PathC).toFixed(2),'4492.50','11-14 R24 savings vs Path A');
+    assert.equal(((r207PathA-r207PathC)/r207PathA*100).toFixed(2),'90.94','11-14 R24 pct savings vs Path A');
+    for(const r207File of ['workshops/github-trending-radar/docs/misterdownloadmanager-nvzhuang-5x-faster-rust-download-manager-2727-ai-garment-tryon-corpus-selection-faq.md','workshops/github-trending-radar/docs/misterdownloadmanager-nvzhuang-5x-faster-rust-download-manager-2727-ai-garment-tryon-corpus-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r24-misterdownloadmanager-nvzhuang.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r207File),'utf8');
+      assert.ok(txt.includes('1,520.00')&&txt.includes('3,420.00')&&txt.includes('4,940.00')&&txt.includes('115.00')&&txt.includes('332.50')&&txt.includes('447.50')&&txt.includes('4,492.50')&&txt.includes('90.94%')&&txt.includes('not_measured'),r207File+': contains exact 11-14 R24 misterdownloadmanager+nvzhuang closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 25 (R208: yetone/rewind-for-x + Xin-YuXiao/Awesome-AI-for-Astronomy) verification
+    const r208PathA=1360.00+36.0*95.00;
+    assert.equal(r208PathA.toFixed(2),'4780.00','11-14 R25 Path A total');
+    const r208PathC=85.00+3.5*95.00;
+    assert.equal(r208PathC.toFixed(2),'417.50','11-14 R25 Path C total');
+    assert.equal((r208PathA-r208PathC).toFixed(2),'4362.50','11-14 R25 savings vs Path A');
+    assert.equal(((r208PathA-r208PathC)/r208PathA*100).toFixed(2),'91.27','11-14 R25 pct savings vs Path A');
+    for(const r208File of ['workshops/github-trending-radar/docs/rewind-for-x-awesome-ai-astronomy-local-ocr-x-timeline-rewind-421paper-astroai-skill-selection-faq.md','workshops/github-trending-radar/docs/rewind-for-x-awesome-ai-astronomy-local-ocr-x-timeline-rewind-421paper-astroai-skill-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r25-rewind-for-x-astro-ai.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r208File),'utf8');
+      assert.ok(txt.includes('1,360.00')&&txt.includes('3,420.00')&&txt.includes('4,780.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('4,362.50')&&txt.includes('91.27%')&&txt.includes('not_measured'),r208File+': contains exact 11-14 R25 rewind-for-x+Awesome-AI-for-Astronomy closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 26 (R209: GiroCrab/GiroCrab + DevedevT/FFmpeg-GUI-Editor-Windows) verification
+    const r209PathA=1440.00+36.0*95.00;
+    assert.equal(r209PathA.toFixed(2),'4860.00','11-14 R26 Path A total');
+    const r209PathC=95.00+3.5*95.00;
+    assert.equal(r209PathC.toFixed(2),'427.50','11-14 R26 Path C total');
+    assert.equal((r209PathA-r209PathC).toFixed(2),'4432.50','11-14 R26 savings vs Path A');
+    assert.equal(((r209PathA-r209PathC)/r209PathA*100).toFixed(2),'91.20','11-14 R26 pct savings vs Path A');
+    for(const r209File of ['workshops/github-trending-radar/docs/girocrab-ffmpeg-gui-editor-windows-rust-swiftui-sqlcipher-fints-vault-portable-lossless-video-trimmer-selection-faq.md','workshops/github-trending-radar/docs/girocrab-ffmpeg-gui-editor-windows-rust-swiftui-sqlcipher-fints-vault-portable-lossless-video-trimmer-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r26-girocrab-ffmpeg-gui.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r209File),'utf8');
+      assert.ok(txt.includes('1,440.00')&&txt.includes('3,420.00')&&txt.includes('4,860.00')&&txt.includes('95.00')&&txt.includes('332.50')&&txt.includes('427.50')&&txt.includes('4,432.50')&&txt.includes('91.20%')&&txt.includes('not_measured'),r209File+': contains exact 11-14 R26 GiroCrab+FFmpeg-GUI-Editor closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 27 (R210: faizfahmi77/ScanDot + precygtrucqui1981/blender-ai-copilot-lab) verification
+    const r210PathA=1710.00+38.0*100.00;
+    assert.equal(r210PathA.toFixed(2),'5510.00','11-14 R27 Path A total');
+    const r210PathC=135.00+3.5*100.00;
+    assert.equal(r210PathC.toFixed(2),'485.00','11-14 R27 Path C total');
+    assert.equal((r210PathA-r210PathC).toFixed(2),'5025.00','11-14 R27 savings vs Path A');
+    assert.equal(((r210PathA-r210PathC)/r210PathA*100).toFixed(2),'91.20','11-14 R27 pct savings vs Path A');
+    for(const r210File of ['workshops/github-trending-radar/docs/scandot-blender-ai-copilot-lab-arcore-colmap-3d-scanner-supervised-manager-worker-reviewer-blender-mcp-selection-faq.md','workshops/github-trending-radar/docs/scandot-blender-ai-copilot-lab-arcore-colmap-3d-scanner-supervised-manager-worker-reviewer-blender-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r27-scandot-blender-copilot-lab.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r210File),'utf8');
+      assert.ok(txt.includes('1,710.00')&&txt.includes('3,800.00')&&txt.includes('5,510.00')&&txt.includes('135.00')&&txt.includes('350.00')&&txt.includes('485.00')&&txt.includes('5,025.00')&&txt.includes('91.20%')&&txt.includes('not_measured'),r210File+': contains exact 11-14 R27 ScanDot+blender-ai-copilot-lab closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 28 (R211: anhao/ai-pose-gallery-zh + realcodebear/saltline-fable-5.2) verification
+    const r211PathA=1950.00+38.0*100.00;
+    assert.equal(r211PathA.toFixed(2),'5750.00','11-14 R28 Path A total');
+    const r211PathC=145.00+3.5*100.00;
+    assert.equal(r211PathC.toFixed(2),'495.00','11-14 R28 Path C total');
+    assert.equal((r211PathA-r211PathC).toFixed(2),'5255.00','11-14 R28 savings vs Path A');
+    assert.equal(((r211PathA-r211PathC)/r211PathA*100).toFixed(2),'91.39','11-14 R28 pct savings vs Path A');
+    for(const r211File of ['workshops/github-trending-radar/docs/ai-pose-gallery-zh-saltline-fable-5-2-12022image-comfyui-character-studio-8hr-1prompt-3d-fps-selection-faq.md','workshops/github-trending-radar/docs/ai-pose-gallery-zh-saltline-fable-5-2-12022image-comfyui-character-studio-8hr-1prompt-3d-fps-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r28-pose-gallery-saltline.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r211File),'utf8');
+      assert.ok(txt.includes('1,950.00')&&txt.includes('3,800.00')&&txt.includes('5,750.00')&&txt.includes('145.00')&&txt.includes('350.00')&&txt.includes('495.00')&&txt.includes('5,255.00')&&txt.includes('91.39%')&&txt.includes('not_measured'),r211File+': contains exact 11-14 R28 ai-pose-gallery-zh+saltline-fable-5.2 closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 29 (R212: HolyArrs/HolyArrs + TomyJan/SnowLuma) verification
+    const r212PathA=1480.00+36.0*95.00;
+    assert.equal(r212PathA.toFixed(2),'4900.00','11-14 R29 Path A total');
+    const r212PathC=95.00+3.5*95.00;
+    assert.equal(r212PathC.toFixed(2),'427.50','11-14 R29 Path C total');
+    assert.equal((r212PathA-r212PathC).toFixed(2),'4472.50','11-14 R29 savings vs Path A');
+    assert.equal(((r212PathA-r212PathC)/r212PathA*100).toFixed(2),'91.28','11-14 R29 pct savings vs Path A');
+    for(const r212File of ['workshops/github-trending-radar/docs/holyarrs-snowluma-single-container-16mb-arr-media-stack-qq-onebot11-mcp-runtime-selection-faq.md','workshops/github-trending-radar/docs/holyarrs-snowluma-single-container-16mb-arr-media-stack-qq-onebot11-mcp-runtime-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r29-holyarrs-snowluma.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r212File),'utf8');
+      assert.ok(txt.includes('1,480.00')&&txt.includes('3,420.00')&&txt.includes('4,900.00')&&txt.includes('95.00')&&txt.includes('332.50')&&txt.includes('427.50')&&txt.includes('4,472.50')&&txt.includes('91.28%')&&txt.includes('not_measured'),r212File+': contains exact 11-14 R29 HolyArrs+SnowLuma closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 30 (R213: bea4dev/shoji-bar-4 + bvvst/intern) verification
+    const r213PathA=1560.00+36.0*95.00;
+    assert.equal(r213PathA.toFixed(2),'4980.00','11-14 R30 Path A total');
+    const r213PathC=90.00+3.5*95.00;
+    assert.equal(r213PathC.toFixed(2),'422.50','11-14 R30 Path C total');
+    assert.equal((r213PathA-r213PathC).toFixed(2),'4557.50','11-14 R30 savings vs Path A');
+    assert.equal(((r213PathA-r213PathC)/r213PathA*100).toFixed(2),'91.52','11-14 R30 pct savings vs Path A');
+    for(const r213File of ['workshops/github-trending-radar/docs/shoji-bar-4-intern-zero-idle-cpu-rust-wayland-shell-optical-size-variable-rounded-inter-font-selection-faq.md','workshops/github-trending-radar/docs/shoji-bar-4-intern-zero-idle-cpu-rust-wayland-shell-optical-size-variable-rounded-inter-font-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r30-shoji-bar-4-intern.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r213File),'utf8');
+      assert.ok(txt.includes('1,560.00')&&txt.includes('3,420.00')&&txt.includes('4,980.00')&&txt.includes('90.00')&&txt.includes('332.50')&&txt.includes('422.50')&&txt.includes('4,557.50')&&txt.includes('91.52%')&&txt.includes('not_measured'),r213File+': contains exact 11-14 R30 shoji-bar-4+intern closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 31 (R214: DandanLLab/SnowCatQQ + claudememory/claude-memory) verification
+    const r214PathA=1820.00+38.0*100.00;
+    assert.equal(r214PathA.toFixed(2),'5620.00','11-14 R31 Path A total');
+    const r214PathC=135.00+3.5*100.00;
+    assert.equal(r214PathC.toFixed(2),'485.00','11-14 R31 Path C total');
+    assert.equal((r214PathA-r214PathC).toFixed(2),'5135.00','11-14 R31 savings vs Path A');
+    assert.equal(((r214PathA-r214PathC)/r214PathA*100).toFixed(2),'91.37','11-14 R31 pct savings vs Path A');
+    for(const r214File of ['workshops/github-trending-radar/docs/snowcatqq-claude-memory-v8-onebot12-milky-mcp-qq-client-10way-persistent-memory-architecture-selection-faq.md','workshops/github-trending-radar/docs/snowcatqq-claude-memory-v8-onebot12-milky-mcp-qq-client-10way-persistent-memory-architecture-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r31-snowcatqq-claude-memory.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r214File),'utf8');
+      assert.ok(txt.includes('1,820.00')&&txt.includes('3,800.00')&&txt.includes('5,620.00')&&txt.includes('135.00')&&txt.includes('350.00')&&txt.includes('485.00')&&txt.includes('5,135.00')&&txt.includes('91.37%')&&txt.includes('not_measured'),r214File+': contains exact 11-14 R31 SnowCatQQ+claude-memory closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 32 (R215: rauchg/vinyl + zhangkunlv-ship-it/xuehui-shortvideo-skill) verification
+    const r215PathA=1590.00+36.0*95.00;
+    assert.equal(r215PathA.toFixed(2),'5010.00','11-14 R32 Path A total');
+    const r215PathC=105.00+3.5*95.00;
+    assert.equal(r215PathC.toFixed(2),'437.50','11-14 R32 Path C total');
+    assert.equal((r215PathA-r215PathC).toFixed(2),'4572.50','11-14 R32 savings vs Path A');
+    assert.equal(((r215PathA-r215PathC)/r215PathA*100).toFixed(2),'91.27','11-14 R32 pct savings vs Path A');
+    for(const r215File of ['workshops/github-trending-radar/docs/vinyl-xuehui-shortvideo-skill-zero-dep-hertzian-audioworklet-turntable-318hr-distilled-agent-skill-selection-faq.md','workshops/github-trending-radar/docs/vinyl-xuehui-shortvideo-skill-zero-dep-hertzian-audioworklet-turntable-318hr-distilled-agent-skill-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r32-vinyl-xuehui-skill.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r215File),'utf8');
+      assert.ok(txt.includes('1,590.00')&&txt.includes('3,420.00')&&txt.includes('5,010.00')&&txt.includes('105.00')&&txt.includes('332.50')&&txt.includes('437.50')&&txt.includes('4,572.50')&&txt.includes('91.27%')&&txt.includes('not_measured'),r215File+': contains exact 11-14 R32 vinyl+xuehui-shortvideo-skill closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 33 (R216: magnuslab-sudo/Orwell + gabrielbuzziv/emissor-nfse-nacional) verification
+    const r216PathA=1640.00+36.0*95.00;
+    assert.equal(r216PathA.toFixed(2),'5060.00','11-14 R33 Path A total');
+    const r216PathC=85.00+3.5*95.00;
+    assert.equal(r216PathC.toFixed(2),'417.50','11-14 R33 Path C total');
+    assert.equal((r216PathA-r216PathC).toFixed(2),'4642.50','11-14 R33 savings vs Path A');
+    assert.equal(((r216PathA-r216PathC)/r216PathA*100).toFixed(2),'91.75','11-14 R33 pct savings vs Path A');
+    for(const r216File of ['workshops/github-trending-radar/docs/orwell-emissor-nfse-nacional-zero-metadata-e2ee-community-webrtc-cloudflare-idempotent-tax-issuer-selection-faq.md','workshops/github-trending-radar/docs/orwell-emissor-nfse-nacional-zero-metadata-e2ee-community-webrtc-cloudflare-idempotent-tax-issuer-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r33-orwell-nfse.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r216File),'utf8');
+      assert.ok(txt.includes('1,640.00')&&txt.includes('3,420.00')&&txt.includes('5,060.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('4,642.50')&&txt.includes('91.75%')&&txt.includes('not_measured'),r216File+': contains exact 11-14 R33 Orwell+emissor-nfse-nacional closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 34 (R217: tommy0103/blackhole + shi3z/mightyCode) verification
+    const r217PathA=1880.00+38.0*100.00;
+    assert.equal(r217PathA.toFixed(2),'5680.00','11-14 R34 Path A total');
+    const r217PathC=140.00+3.5*100.00;
+    assert.equal(r217PathC.toFixed(2),'490.00','11-14 R34 Path C total');
+    assert.equal((r217PathA-r217PathC).toFixed(2),'5190.00','11-14 R34 savings vs Path A');
+    assert.equal(((r217PathA-r217PathC)/r217PathA*100).toFixed(2),'91.37','11-14 R34 pct savings vs Path A');
+    for(const r217File of ['workshops/github-trending-radar/docs/blackhole-mightycode-colima-failclose-claude-code-sandbox-local-mlx-4bit-anthropic-proxy-guard-selection-faq.md','workshops/github-trending-radar/docs/blackhole-mightycode-colima-failclose-claude-code-sandbox-local-mlx-4bit-anthropic-proxy-guard-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r34-blackhole-mightycode.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r217File),'utf8');
+      assert.ok(txt.includes('1,880.00')&&txt.includes('3,800.00')&&txt.includes('5,680.00')&&txt.includes('140.00')&&txt.includes('350.00')&&txt.includes('490.00')&&txt.includes('5,190.00')&&txt.includes('91.37%')&&txt.includes('not_measured'),r217File+': contains exact 11-14 R34 blackhole+mightyCode closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 35 (R218: ChetasLua/crimson-loong + av/safe-sand) verification
+    const r218PathA=1540.00+36.0*95.00;
+    assert.equal(r218PathA.toFixed(2),'4960.00','11-14 R35 Path A total');
+    const r218PathC=75.00+3.5*95.00;
+    assert.equal(r218PathC.toFixed(2),'407.50','11-14 R35 Path C total');
+    assert.equal((r218PathA-r218PathC).toFixed(2),'4552.50','11-14 R35 savings vs Path A');
+    assert.equal(((r218PathA-r218PathC)/r218PathA*100).toFixed(2),'91.78','11-14 R35 pct savings vs Path A');
+    for(const r218File of ['workshops/github-trending-radar/docs/crimson-loong-safe-sand-zero-asset-single-html-threejs-film-460k-grain-webgl2-sand-physics-selection-faq.md','workshops/github-trending-radar/docs/crimson-loong-safe-sand-zero-asset-single-html-threejs-film-460k-grain-webgl2-sand-physics-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r35-crimson-loong-safe-sand.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r218File),'utf8');
+      assert.ok(txt.includes('1,540.00')&&txt.includes('3,420.00')&&txt.includes('4,960.00')&&txt.includes('75.00')&&txt.includes('332.50')&&txt.includes('407.50')&&txt.includes('4,552.50')&&txt.includes('91.78%')&&txt.includes('not_measured'),r218File+': contains exact 11-14 R35 crimson-loong+safe-sand closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 36 (R219: MiaAI-Lab/Claude-Fable-5.2-HTML-Files + omacom/folio) verification
+    const r219PathA=1460.00+36.0*95.00;
+    assert.equal(r219PathA.toFixed(2),'4880.00','11-14 R36 Path A total');
+    const r219PathC=85.00+3.5*95.00;
+    assert.equal(r219PathC.toFixed(2),'417.50','11-14 R36 Path C total');
+    assert.equal((r219PathA-r219PathC).toFixed(2),'4462.50','11-14 R36 savings vs Path A');
+    assert.equal(((r219PathA-r219PathC)/r219PathA*100).toFixed(2),'91.44','11-14 R36 pct savings vs Path A');
+    for(const r219File of ['workshops/github-trending-radar/docs/claude-fable-5-2-html-files-omacom-folio-76study-sha256-playwright-gallery-zero-crawl-qtquick-tailnet-filemanager-selection-faq.md','workshops/github-trending-radar/docs/claude-fable-5-2-html-files-omacom-folio-76study-sha256-playwright-gallery-zero-crawl-qtquick-tailnet-filemanager-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r36-fable52-html-folio.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r219File),'utf8');
+      assert.ok(txt.includes('1,460.00')&&txt.includes('3,420.00')&&txt.includes('4,880.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('4,462.50')&&txt.includes('91.44%')&&txt.includes('not_measured'),r219File+': contains exact 11-14 R36 Claude-Fable-5.2-HTML-Files+omacom/folio closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 37 (R220: sunososobro-hub/tinglongwu + lihailong00/tomorrow-ai) verification
+    const r220PathA=1680.00+36.0*95.00;
+    assert.equal(r220PathA.toFixed(2),'5100.00','11-14 R37 Path A total');
+    const r220PathC=110.00+3.5*95.00;
+    assert.equal(r220PathC.toFixed(2),'442.50','11-14 R37 Path C total');
+    assert.equal((r220PathA-r220PathC).toFixed(2),'4657.50','11-14 R37 savings vs Path A');
+    assert.equal(((r220PathA-r220PathC)/r220PathA*100).toFixed(2),'91.32','11-14 R37 pct savings vs Path A');
+    for(const r220File of ['workshops/github-trending-radar/docs/tinglongwu-tomorrow-ai-offline-5lang-meeting-speech-translator-rust-axum-pi-selfhosted-ai-companion-selection-faq.md','workshops/github-trending-radar/docs/tinglongwu-tomorrow-ai-offline-5lang-meeting-speech-translator-rust-axum-pi-selfhosted-ai-companion-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r37-tinglongwu-tomorrow-ai.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r220File),'utf8');
+      assert.ok(txt.includes('1,680.00')&&txt.includes('3,420.00')&&txt.includes('5,100.00')&&txt.includes('110.00')&&txt.includes('332.50')&&txt.includes('442.50')&&txt.includes('4,657.50')&&txt.includes('91.32%')&&txt.includes('not_measured'),r220File+': contains exact 11-14 R37 tinglongwu+tomorrow-ai closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 38 (R221: croma-labs/paradero + mrjoechen/luci-theme-carbon) verification
+    const r221PathA=1490.00+36.0*95.00;
+    assert.equal(r221PathA.toFixed(2),'4910.00','11-14 R38 Path A total');
+    const r221PathC=80.00+3.5*95.00;
+    assert.equal(r221PathC.toFixed(2),'412.50','11-14 R38 Path C total');
+    assert.equal((r221PathA-r221PathC).toFixed(2),'4497.50','11-14 R38 savings vs Path A');
+    assert.equal(((r221PathA-r221PathC)/r221PathA*100).toFixed(2),'91.60','11-14 R38 pct savings vs Path A');
+    for(const r221File of ['workshops/github-trending-radar/docs/paradero-luci-theme-carbon-wcag22-civic-transit-telemetry-mac-merged-9200oui-openwrt-dashboard-selection-faq.md','workshops/github-trending-radar/docs/paradero-luci-theme-carbon-wcag22-civic-transit-telemetry-mac-merged-9200oui-openwrt-dashboard-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r38-paradero-luci-carbon.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r221File),'utf8');
+      assert.ok(txt.includes('1,490.00')&&txt.includes('3,420.00')&&txt.includes('4,910.00')&&txt.includes('80.00')&&txt.includes('332.50')&&txt.includes('412.50')&&txt.includes('4,497.50')&&txt.includes('91.60%')&&txt.includes('not_measured'),r221File+': contains exact 11-14 R38 paradero+luci-theme-carbon closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 39 (R222: oil-oil/agy-fast-io + NorthGateChat/dsh-think-game) verification
+    const r222PathA=1740.00+38.0*100.00;
+    assert.equal(r222PathA.toFixed(2),'5540.00','11-14 R39 Path A total');
+    const r222PathC=130.00+3.5*100.00;
+    assert.equal(r222PathC.toFixed(2),'480.00','11-14 R39 Path C total');
+    assert.equal((r222PathA-r222PathC).toFixed(2),'5060.00','11-14 R39 savings vs Path A');
+    assert.equal(((r222PathA-r222PathC)/r222PathA*100).toFixed(2),'91.34','11-14 R39 pct savings vs Path A');
+    for(const r222File of ['workshops/github-trending-radar/docs/agy-fast-io-dsh-think-game-50pct-fewer-agent-turns-allowlist-io-rules-inline-reasoning-arcade-selection-faq.md','workshops/github-trending-radar/docs/agy-fast-io-dsh-think-game-50pct-fewer-agent-turns-allowlist-io-rules-inline-reasoning-arcade-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r39-agy-fast-io-dsh-think-game.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r222File),'utf8');
+      assert.ok(txt.includes('1,740.00')&&txt.includes('3,800.00')&&txt.includes('5,540.00')&&txt.includes('130.00')&&txt.includes('350.00')&&txt.includes('480.00')&&txt.includes('5,060.00')&&txt.includes('91.34%')&&txt.includes('not_measured'),r222File+': contains exact 11-14 R39 agy-fast-io+dsh-think-game closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 40 (R223: DeskLabs-OpenSource/DeskVoice + MatiSolina/busy) verification
+    const r223PathA=1920.00+38.0*100.00;
+    assert.equal(r223PathA.toFixed(2),'5720.00','11-14 R40 Path A total');
+    const r223PathC=145.00+3.5*100.00;
+    assert.equal(r223PathC.toFixed(2),'495.00','11-14 R40 Path C total');
+    assert.equal((r223PathA-r223PathC).toFixed(2),'5225.00','11-14 R40 savings vs Path A');
+    assert.equal(((r223PathA-r223PathC)/r223PathA*100).toFixed(2),'91.35','11-14 R40 pct savings vs Path A');
+    for(const r223File of ['workshops/github-trending-radar/docs/deskvoice-busy-selfhosted-sip-realtime-agent-pbx-per-bot-linux-sandbox-drive-platform-selection-faq.md','workshops/github-trending-radar/docs/deskvoice-busy-selfhosted-sip-realtime-agent-pbx-per-bot-linux-sandbox-drive-platform-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r40-deskvoice-busy.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r223File),'utf8');
+      assert.ok(txt.includes('1,920.00')&&txt.includes('3,800.00')&&txt.includes('5,720.00')&&txt.includes('145.00')&&txt.includes('350.00')&&txt.includes('495.00')&&txt.includes('5,225.00')&&txt.includes('91.35%')&&txt.includes('not_measured'),r223File+': contains exact 11-14 R40 DeskVoice+busy closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 41 (R224: CapriChooms/CapriCore + herrbimmer/IDEmu) verification
+    const r224PathA=1860.00+38.0*100.00;
+    assert.equal(r224PathA.toFixed(2),'5660.00','11-14 R41 Path A total');
+    const r224PathC=135.00+3.5*100.00;
+    assert.equal(r224PathC.toFixed(2),'485.00','11-14 R41 Path C total');
+    assert.equal((r224PathA-r224PathC).toFixed(2),'5175.00','11-14 R41 savings vs Path A');
+    assert.equal(((r224PathA-r224PathC)/r224PathA*100).toFixed(2),'91.43','11-14 R41 pct savings vs Path A');
+    for(const r224File of ['workshops/github-trending-radar/docs/capricore-idemu-openclaw-windows-desktop-companion-qemu-idrive-qnx-linux-emulator-selection-faq.md','workshops/github-trending-radar/docs/capricore-idemu-openclaw-windows-desktop-companion-qemu-idrive-qnx-linux-emulator-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r41-capricore-idemu.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r224File),'utf8');
+      assert.ok(txt.includes('1,860.00')&&txt.includes('3,800.00')&&txt.includes('5,660.00')&&txt.includes('135.00')&&txt.includes('350.00')&&txt.includes('485.00')&&txt.includes('5,175.00')&&txt.includes('91.43%')&&txt.includes('not_measured'),r224File+': contains exact 11-14 R41 CapriCore+IDEmu closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 42 (R225: RapidSailorFreeze/studsmith + rippelz/rustudio) verification
+    const r225PathA=1520.00+36.0*95.00;
+    assert.equal(r225PathA.toFixed(2),'4940.00','11-14 R42 Path A total');
+    const r225PathC=95.00+3.5*95.00;
+    assert.equal(r225PathC.toFixed(2),'427.50','11-14 R42 Path C total');
+    assert.equal((r225PathA-r225PathC).toFixed(2),'4512.50','11-14 R42 savings vs Path A');
+    assert.equal(((r225PathA-r225PathC)/r225PathA*100).toFixed(2),'91.35','11-14 R42 pct savings vs Path A');
+    for(const r225File of ['workshops/github-trending-radar/docs/studsmith-rustudio-luau-playtest-loop-agent-native-rust-wgpu-rapier3d-roblox-studio-selection-faq.md','workshops/github-trending-radar/docs/studsmith-rustudio-luau-playtest-loop-agent-native-rust-wgpu-rapier3d-roblox-studio-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r42-studsmith-rustudio.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r225File),'utf8');
+      assert.ok(txt.includes('1,520.00')&&txt.includes('3,420.00')&&txt.includes('4,940.00')&&txt.includes('95.00')&&txt.includes('332.50')&&txt.includes('427.50')&&txt.includes('4,512.50')&&txt.includes('91.35%')&&txt.includes('not_measured'),r225File+': contains exact 11-14 R42 studsmith+rustudio closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 43 (R226: Avalanchevonproxy69/fanatic-laptop-control + GitMag/AnyAuto) verification
+    const r226PathA=1450.00+36.0*95.00;
+    assert.equal(r226PathA.toFixed(2),'4870.00','11-14 R43 Path A total');
+    const r226PathC=75.00+3.5*95.00;
+    assert.equal(r226PathC.toFixed(2),'407.50','11-14 R43 Path C total');
+    assert.equal((r226PathA-r226PathC).toFixed(2),'4462.50','11-14 R43 savings vs Path A');
+    assert.equal(((r226PathA-r226PathC)/r226PathA*100).toFixed(2),'91.63','11-14 R43 pct savings vs Path A');
+    for(const r226File of ['workshops/github-trending-radar/docs/fanatic-laptop-control-anyauto-5mb-8oem-ec-wmi-controller-shizuku-android-auto-virtualdisplay-selection-faq.md','workshops/github-trending-radar/docs/fanatic-laptop-control-anyauto-5mb-8oem-ec-wmi-controller-shizuku-android-auto-virtualdisplay-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r43-fanatic-anyauto.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r226File),'utf8');
+      assert.ok(txt.includes('1,450.00')&&txt.includes('3,420.00')&&txt.includes('4,870.00')&&txt.includes('75.00')&&txt.includes('332.50')&&txt.includes('407.50')&&txt.includes('4,462.50')&&txt.includes('91.63%')&&txt.includes('not_measured'),r226File+': contains exact 11-14 R43 fanatic-laptop-control+AnyAuto closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 44 (R227: erenariel/konaklamaflow + bohuis686-creator/AstralCodex) verification
+    const r227PathA=1420.00+36.0*95.00;
+    assert.equal(r227PathA.toFixed(2),'4840.00','11-14 R44 Path A total');
+    const r227PathC=75.00+3.5*95.00;
+    assert.equal(r227PathC.toFixed(2),'407.50','11-14 R44 Path C total');
+    assert.equal((r227PathA-r227PathC).toFixed(2),'4432.50','11-14 R44 savings vs Path A');
+    assert.equal(((r227PathA-r227PathC)/r227PathA*100).toFixed(2),'91.58','11-14 R44 pct savings vs Path A');
+    for(const r227File of ['workshops/github-trending-radar/docs/konaklamaflow-astralcodex-canonical-projection-reviewer-wpf-msix-window-handoff-launcher-selection-faq.md','workshops/github-trending-radar/docs/konaklamaflow-astralcodex-canonical-projection-reviewer-wpf-msix-window-handoff-launcher-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r44-konaklamaflow-astralcodex.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r227File),'utf8');
+      assert.ok(txt.includes('1,420.00')&&txt.includes('3,420.00')&&txt.includes('4,840.00')&&txt.includes('75.00')&&txt.includes('332.50')&&txt.includes('407.50')&&txt.includes('4,432.50')&&txt.includes('91.58%')&&txt.includes('not_measured'),r227File+': contains exact 11-14 R44 konaklamaflow+AstralCodex closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 45 (R228: mit-han-lab/pear + TokenRhythm/InfraRSI) verification
+    const r228PathA=2150.00+38.0*100.00;
+    assert.equal(r228PathA.toFixed(2),'5950.00','11-14 R45 Path A total');
+    const r228PathC=165.00+3.5*100.00;
+    assert.equal(r228PathC.toFixed(2),'515.00','11-14 R45 Path C total');
+    assert.equal((r228PathA-r228PathC).toFixed(2),'5435.00','11-14 R45 savings vs Path A');
+    assert.equal(((r228PathA-r228PathC)/r228PathA*100).toFixed(2),'91.34','11-14 R45 pct savings vs Path A');
+    for(const r228File of ['workshops/github-trending-radar/docs/mit-han-lab-pear-infrarsi-zero-demo-sim-robotic-rl-183x-mfu-recursive-training-infra-selection-faq.md','workshops/github-trending-radar/docs/mit-han-lab-pear-infrarsi-zero-demo-sim-robotic-rl-183x-mfu-recursive-training-infra-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r45-pear-infrarsi.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r228File),'utf8');
+      assert.ok(txt.includes('2,150.00')&&txt.includes('3,800.00')&&txt.includes('5,950.00')&&txt.includes('165.00')&&txt.includes('350.00')&&txt.includes('515.00')&&txt.includes('5,435.00')&&txt.includes('91.34%')&&txt.includes('not_measured'),r228File+': contains exact 11-14 R45 mit-han-lab/pear+InfraRSI closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 46 (R229: Veloresearch/kinetic + nicobailon/pi-better) verification
+    const r229PathA=1840.00+38.0*100.00;
+    assert.equal(r229PathA.toFixed(2),'5640.00','11-14 R46 Path A total');
+    const r229PathC=135.00+3.5*100.00;
+    assert.equal(r229PathC.toFixed(2),'485.00','11-14 R46 Path C total');
+    assert.equal((r229PathA-r229PathC).toFixed(2),'5155.00','11-14 R46 savings vs Path A');
+    assert.equal(((r229PathA-r229PathC)/r229PathA*100).toFixed(2),'91.40','11-14 R46 pct savings vs Path A');
+    for(const r229File of ['workshops/github-trending-radar/docs/kinetic-pi-better-exact-multivendor-rust-gguf-engine-repo-grounded-depth-prompt-rewriter-selection-faq.md','workshops/github-trending-radar/docs/kinetic-pi-better-exact-multivendor-rust-gguf-engine-repo-grounded-depth-prompt-rewriter-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r46-kinetic-pi-better.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r229File),'utf8');
+      assert.ok(txt.includes('1,840.00')&&txt.includes('3,800.00')&&txt.includes('5,640.00')&&txt.includes('135.00')&&txt.includes('350.00')&&txt.includes('485.00')&&txt.includes('5,155.00')&&txt.includes('91.40%')&&txt.includes('not_measured'),r229File+': contains exact 11-14 R46 kinetic+pi-better closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 47 (R230: Adolanium/hermes-whiteboard + Statecraft-Labs/isometric-cities) verification
+    const r230PathA=1890.00+38.0*100.00;
+    assert.equal(r230PathA.toFixed(2),'5690.00','11-14 R47 Path A total');
+    const r230PathC=140.00+3.5*100.00;
+    assert.equal(r230PathC.toFixed(2),'490.00','11-14 R47 Path C total');
+    assert.equal((r230PathA-r230PathC).toFixed(2),'5200.00','11-14 R47 savings vs Path A');
+    assert.equal(((r230PathA-r230PathC)/r230PathA*100).toFixed(2),'91.39','11-14 R47 pct savings vs Path A');
+    for(const r230File of ['workshops/github-trending-radar/docs/hermes-whiteboard-isometric-cities-route-executing-agent-board-apple-silicon-isometric-city-builder-selection-faq.md','workshops/github-trending-radar/docs/hermes-whiteboard-isometric-cities-route-executing-agent-board-apple-silicon-isometric-city-builder-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r47-hermes-whiteboard-isometric-cities.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r230File),'utf8');
+      assert.ok(txt.includes('1,890.00')&&txt.includes('3,800.00')&&txt.includes('5,690.00')&&txt.includes('140.00')&&txt.includes('350.00')&&txt.includes('490.00')&&txt.includes('5,200.00')&&txt.includes('91.39%')&&txt.includes('not_measured'),r230File+': contains exact 11-14 R47 hermes-whiteboard+isometric-cities closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 48 (R231: mileson/chaojifeng-video-content-creator + ZiChuanLan/freebie-radar) verification
+    const r231PathA=1580.00+36.0*95.00;
+    assert.equal(r231PathA.toFixed(2),'5000.00','11-14 R48 Path A total');
+    const r231PathC=95.00+3.5*95.00;
+    assert.equal(r231PathC.toFixed(2),'427.50','11-14 R48 Path C total');
+    assert.equal((r231PathA-r231PathC).toFixed(2),'4572.50','11-14 R48 savings vs Path A');
+    assert.equal(((r231PathA-r231PathC)/r231PathA*100).toFixed(2),'91.45','11-14 R48 pct savings vs Path A');
+    for(const r231File of ['workshops/github-trending-radar/docs/chaojifeng-video-creator-freebie-radar-148gsap-video-skill-57source-ai-triage-radar-selection-faq.md','workshops/github-trending-radar/docs/chaojifeng-video-creator-freebie-radar-148gsap-video-skill-57source-ai-triage-radar-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r48-chaojifeng-freebie-radar.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r231File),'utf8');
+      assert.ok(txt.includes('1,580.00')&&txt.includes('3,420.00')&&txt.includes('5,000.00')&&txt.includes('95.00')&&txt.includes('332.50')&&txt.includes('427.50')&&txt.includes('4,572.50')&&txt.includes('91.45%')&&txt.includes('not_measured'),r231File+': contains exact 11-14 R48 chaojifeng+freebie-radar closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 49 (R232: chopinregis/CreaBIM + nestho/impacket-rs) verification
+    const r232PathA=1620.00+36.0*95.00;
+    assert.equal(r232PathA.toFixed(2),'5040.00','11-14 R49 Path A total');
+    const r232PathC=85.00+3.5*95.00;
+    assert.equal(r232PathC.toFixed(2),'417.50','11-14 R49 Path C total');
+    assert.equal((r232PathA-r232PathC).toFixed(2),'4622.50','11-14 R49 savings vs Path A');
+    assert.equal(((r232PathA-r232PathC)/r232PathA*100).toFixed(2),'91.72','11-14 R49 pct savings vs Path A');
+    for(const r232File of ['workshops/github-trending-radar/docs/creabim-impacket-rs-blender-style-rust-ifc4-bim-585m-roundtrip-74tool-ad-protocol-suite-selection-faq.md','workshops/github-trending-radar/docs/creabim-impacket-rs-blender-style-rust-ifc4-bim-585m-roundtrip-74tool-ad-protocol-suite-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r49-creabim-impacket-rs.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r232File),'utf8');
+      assert.ok(txt.includes('1,620.00')&&txt.includes('3,420.00')&&txt.includes('5,040.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('4,622.50')&&txt.includes('91.72%')&&txt.includes('not_measured'),r232File+': contains exact 11-14 R49 CreaBIM+impacket-rs closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 50 (R233: professorsolderin/project-lighthouse + sirioberati/gradient-descent-for-a-face) verification
+    const r233PathA=1850.00+38.0*100.00;
+    assert.equal(r233PathA.toFixed(2),'5650.00','11-14 R50 Path A total');
+    const r233PathC=135.00+3.5*100.00;
+    assert.equal(r233PathC.toFixed(2),'485.00','11-14 R50 Path C total');
+    assert.equal((r233PathA-r233PathC).toFixed(2),'5165.00','11-14 R50 savings vs Path A');
+    assert.equal(((r233PathA-r233PathC)/r233PathA*100).toFixed(2),'91.42','11-14 R50 pct savings vs Path A');
+    for(const r233File of ['workshops/github-trending-radar/docs/project-lighthouse-gradient-descent-face-12000page-adversarial-manuscript-ai-50400blob-differentiable-renderer-selection-faq.md','workshops/github-trending-radar/docs/project-lighthouse-gradient-descent-face-12000page-adversarial-manuscript-ai-50400blob-differentiable-renderer-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r50-lighthouse-gradient-face.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r233File),'utf8');
+      assert.ok(txt.includes('1,850.00')&&txt.includes('3,800.00')&&txt.includes('5,650.00')&&txt.includes('135.00')&&txt.includes('350.00')&&txt.includes('485.00')&&txt.includes('5,165.00')&&txt.includes('91.42%')&&txt.includes('not_measured'),r233File+': contains exact 11-14 R50 project-lighthouse+gradient-descent-for-a-face closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 51 (R234: bjarneo/quire + doublesq97-ui/su-zine) verification
+    const r234PathA=1480.00+36.0*95.00;
+    assert.equal(r234PathA.toFixed(2),'4900.00','11-14 R51 Path A total');
+    const r234PathC=85.00+3.5*95.00;
+    assert.equal(r234PathC.toFixed(2),'417.50','11-14 R51 Path C total');
+    assert.equal((r234PathA-r234PathC).toFixed(2),'4482.50','11-14 R51 savings vs Path A');
+    assert.equal(((r234PathA-r234PathC)/r234PathA*100).toFixed(2),'91.48','11-14 R51 pct savings vs Path A');
+    for(const r234File of ['workshops/github-trending-radar/docs/quire-su-zine-rust-rune-mcp-markdown-editor-source-verified-html-magazine-card-skill-selection-faq.md','workshops/github-trending-radar/docs/quire-su-zine-rust-rune-mcp-markdown-editor-source-verified-html-magazine-card-skill-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r51-quire-su-zine.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r234File),'utf8');
+      assert.ok(txt.includes('1,480.00')&&txt.includes('3,420.00')&&txt.includes('4,900.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('4,482.50')&&txt.includes('91.48%')&&txt.includes('not_measured'),r234File+': contains exact 11-14 R51 quire+su-zine closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 52 (R235: Kianuni/WQGuard + Flaim92/astra-ds) verification
+    const r235PathA=1800.00+38.0*100.00;
+    assert.equal(r235PathA.toFixed(2),'5600.00','11-14 R52 Path A total');
+    const r235PathC=130.00+3.5*100.00;
+    assert.equal(r235PathC.toFixed(2),'480.00','11-14 R52 Path C total');
+    assert.equal((r235PathA-r235PathC).toFixed(2),'5120.00','11-14 R52 savings vs Path A');
+    assert.equal(((r235PathA-r235PathC)/r235PathA*100).toFixed(2),'91.43','11-14 R52 pct savings vs Path A');
+    for(const r235File of ['workshops/github-trending-radar/docs/wqguard-astra-ds-readonly-ios-macho-sandbox-auditor-29mb-c11-zero-gpu-discord-client-selection-faq.md','workshops/github-trending-radar/docs/wqguard-astra-ds-readonly-ios-macho-sandbox-auditor-29mb-c11-zero-gpu-discord-client-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r52-wqguard-astra-ds.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r235File),'utf8');
+      assert.ok(txt.includes('1,800.00')&&txt.includes('3,800.00')&&txt.includes('5,600.00')&&txt.includes('130.00')&&txt.includes('350.00')&&txt.includes('480.00')&&txt.includes('5,120.00')&&txt.includes('91.43%')&&txt.includes('not_measured'),r235File+': contains exact 11-14 R52 WQGuard+astra-ds closed-form parameters');
+    }
+    // 2026-11-14 Daytime Round 53 (R236: localtonet/elio + dopeytree/birdsong) verification
+    const r236PathA=1510.00+36.0*95.00;
+    assert.equal(r236PathA.toFixed(2),'4930.00','11-14 R53 Path A total');
+    const r236PathC=80.00+3.5*95.00;
+    assert.equal(r236PathC.toFixed(2),'412.50','11-14 R53 Path C total');
+    assert.equal((r236PathA-r236PathC).toFixed(2),'4517.50','11-14 R53 savings vs Path A');
+    assert.equal(((r236PathA-r236PathC)/r236PathA*100).toFixed(2),'91.63','11-14 R53 pct savings vs Path A');
+    for(const r236File of ['workshops/github-trending-radar/docs/elio-birdsong-libghostty-skia-5os-e2ee-ssh-terminal-birdnet-go-1800s-plate-visualizer-selection-faq.md','workshops/github-trending-radar/docs/elio-birdsong-libghostty-skia-5os-e2ee-ssh-terminal-birdnet-go-1800s-plate-visualizer-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r53-elio-birdsong.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r236File),'utf8');
+      assert.ok(txt.includes('1,510.00')&&txt.includes('3,420.00')&&txt.includes('4,930.00')&&txt.includes('80.00')&&txt.includes('332.50')&&txt.includes('412.50')&&txt.includes('4,517.50')&&txt.includes('91.63%')&&txt.includes('not_measured'),r236File+': contains exact 11-14 R53 elio+birdsong closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
