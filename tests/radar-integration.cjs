@@ -2838,6 +2838,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r203File),'utf8');
       assert.ok(txt.includes('1,760.00')&&txt.includes('3,610.00')&&txt.includes('5,370.00')&&txt.includes('120.00')&&txt.includes('332.50')&&txt.includes('452.50')&&txt.includes('4,917.50')&&txt.includes('91.57%')&&txt.includes('not_measured'),r203File+': contains exact 11-14 R20 shorts-kit+quiet-md closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 21 (R204: serveroshq/panel + opencoredev/islandcn) verification
+    const r204PathA=1820.00+38.0*100.00;
+    assert.equal(r204PathA.toFixed(2),'5620.00','11-14 R21 Path A total');
+    const r204PathC=135.00+3.5*100.00;
+    assert.equal(r204PathC.toFixed(2),'485.00','11-14 R21 Path C total');
+    assert.equal((r204PathA-r204PathC).toFixed(2),'5135.00','11-14 R21 savings vs Path A');
+    assert.equal(((r204PathA-r204PathC)/r204PathA*100).toFixed(2),'91.37','11-14 R21 pct savings vs Path A');
+    for(const r204File of ['workshops/github-trending-radar/docs/serveros-panel-islandcn-selfhosted-multiserver-mcp-control-plane-4state-react-dynamic-island-selection-faq.md','workshops/github-trending-radar/docs/serveros-panel-islandcn-selfhosted-multiserver-mcp-control-plane-4state-react-dynamic-island-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r21-serveros-panel-islandcn.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r204File),'utf8');
+      assert.ok(txt.includes('1,820.00')&&txt.includes('3,800.00')&&txt.includes('5,620.00')&&txt.includes('135.00')&&txt.includes('350.00')&&txt.includes('485.00')&&txt.includes('5,135.00')&&txt.includes('91.37%')&&txt.includes('not_measured'),r204File+': contains exact 11-14 R21 serveros-panel+islandcn closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
