@@ -3490,6 +3490,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r261File),'utf8');
       assert.ok(txt.includes('1,920.00')&&txt.includes('3,705.00')&&txt.includes('5,625.00')&&txt.includes('95.00')&&txt.includes('332.50')&&txt.includes('427.50')&&txt.includes('5,197.50')&&txt.includes('92.40%')&&txt.includes('not_measured'),r261File+': contains exact 11-14 R78 graphicle+tokenade closed-form parameters');
     }
+    // 2026-11-14 Night Round 79 (R262: Sheernox/cedr + jazzenchen/agent-hud-open) verification
+    const r262PathA=1640.00+37.0*95.00;
+    assert.equal(r262PathA.toFixed(2),'5155.00','11-14 R79 Path A total');
+    const r262PathC=85.00+3.5*95.00;
+    assert.equal(r262PathC.toFixed(2),'417.50','11-14 R79 Path C total');
+    assert.equal((r262PathA-r262PathC).toFixed(2),'4737.50','11-14 R79 savings vs Path A');
+    assert.equal(((r262PathA-r262PathC)/r262PathA*100).toFixed(2),'91.90','11-14 R79 pct savings vs Path A');
+    for(const r262File of ['workshops/github-trending-radar/docs/cedr-agent-hud-open-quota-aware-multi-agent-router-council-notch-watch-approval-hud-selection-faq.md','workshops/github-trending-radar/docs/cedr-agent-hud-open-quota-aware-multi-agent-router-council-notch-watch-approval-hud-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r79-cedr-agenthud.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r262File),'utf8');
+      assert.ok(txt.includes('1,640.00')&&txt.includes('3,515.00')&&txt.includes('5,155.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('4,737.50')&&txt.includes('91.90%')&&txt.includes('not_measured'),r262File+': contains exact 11-14 R79 cedr+agent-hud-open closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
