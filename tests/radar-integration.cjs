@@ -2915,6 +2915,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r210File),'utf8');
       assert.ok(txt.includes('1,710.00')&&txt.includes('3,800.00')&&txt.includes('5,510.00')&&txt.includes('135.00')&&txt.includes('350.00')&&txt.includes('485.00')&&txt.includes('5,025.00')&&txt.includes('91.20%')&&txt.includes('not_measured'),r210File+': contains exact 11-14 R27 ScanDot+blender-ai-copilot-lab closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 28 (R211: anhao/ai-pose-gallery-zh + realcodebear/saltline-fable-5.2) verification
+    const r211PathA=1950.00+38.0*100.00;
+    assert.equal(r211PathA.toFixed(2),'5750.00','11-14 R28 Path A total');
+    const r211PathC=145.00+3.5*100.00;
+    assert.equal(r211PathC.toFixed(2),'495.00','11-14 R28 Path C total');
+    assert.equal((r211PathA-r211PathC).toFixed(2),'5255.00','11-14 R28 savings vs Path A');
+    assert.equal(((r211PathA-r211PathC)/r211PathA*100).toFixed(2),'91.39','11-14 R28 pct savings vs Path A');
+    for(const r211File of ['workshops/github-trending-radar/docs/ai-pose-gallery-zh-saltline-fable-5-2-12022image-comfyui-character-studio-8hr-1prompt-3d-fps-selection-faq.md','workshops/github-trending-radar/docs/ai-pose-gallery-zh-saltline-fable-5-2-12022image-comfyui-character-studio-8hr-1prompt-3d-fps-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r28-pose-gallery-saltline.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r211File),'utf8');
+      assert.ok(txt.includes('1,950.00')&&txt.includes('3,800.00')&&txt.includes('5,750.00')&&txt.includes('145.00')&&txt.includes('350.00')&&txt.includes('495.00')&&txt.includes('5,255.00')&&txt.includes('91.39%')&&txt.includes('not_measured'),r211File+': contains exact 11-14 R28 ai-pose-gallery-zh+saltline-fable-5.2 closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
