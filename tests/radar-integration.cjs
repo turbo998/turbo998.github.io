@@ -2761,6 +2761,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r196File),'utf8');
       assert.ok(txt.includes('1,680.00')&&txt.includes('3,800.00')&&txt.includes('5,480.00')&&txt.includes('135.00')&&txt.includes('350.00')&&txt.includes('485.00')&&txt.includes('4,995.00')&&txt.includes('91.15%')&&txt.includes('not_measured'),r196File+': contains exact 11-14 R13 youtube-ai-video+simcraft closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 14 (R197: lizTheDeveloper/flyover-scrub + arnold117/iOS-NOIR) verification
+    const r197PathA=1920.00+38.0*110.00;
+    assert.equal(r197PathA.toFixed(2),'6100.00','11-14 R14 Path A total');
+    const r197PathC=140.00+3.5*110.00;
+    assert.equal(r197PathC.toFixed(2),'525.00','11-14 R14 Path C total');
+    assert.equal((r197PathA-r197PathC).toFixed(2),'5575.00','11-14 R14 savings vs Path A');
+    assert.equal(((r197PathA-r197PathC)/r197PathA*100).toFixed(2),'91.39','11-14 R14 pct savings vs Path A');
+    for(const r197File of ['workshops/github-trending-radar/docs/flyover-scrub-ios-noir-aircraft-doppler-enf-audio-scrubber-unjailbroken-ios-forensic-auditor-selection-faq.md','workshops/github-trending-radar/docs/flyover-scrub-ios-noir-aircraft-doppler-enf-audio-scrubber-unjailbroken-ios-forensic-auditor-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r14-flyover-scrub-ios-noir.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r197File),'utf8');
+      assert.ok(txt.includes('1,920.00')&&txt.includes('4,180.00')&&txt.includes('6,100.00')&&txt.includes('140.00')&&txt.includes('385.00')&&txt.includes('525.00')&&txt.includes('5,575.00')&&txt.includes('91.39%')&&txt.includes('not_measured'),r197File+': contains exact 11-14 R14 flyover-scrub+iOS-NOIR closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
