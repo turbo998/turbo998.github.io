@@ -3259,6 +3259,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r240File),'utf8');
       assert.ok(txt.includes('1,560.00')&&txt.includes('3,420.00')&&txt.includes('4,980.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('4,562.50')&&txt.includes('91.62%')&&txt.includes('not_measured'),r240File+': contains exact 11-14 R57 replica+agent-screenplay closed-form parameters');
     }
+    // 2026-11-14 Night Round 58 (R241: QiYueran-source/waymark + sshah03/recalc) verification
+    const r241PathA=1540.00+36.0*95.00;
+    assert.equal(r241PathA.toFixed(2),'4960.00','11-14 R58 Path A total');
+    const r241PathC=80.00+3.5*95.00;
+    assert.equal(r241PathC.toFixed(2),'412.50','11-14 R58 Path C total');
+    assert.equal((r241PathA-r241PathC).toFixed(2),'4547.50','11-14 R58 savings vs Path A');
+    assert.equal(((r241PathA-r241PathC)/r241PathA*100).toFixed(2),'91.68','11-14 R58 pct savings vs Path A');
+    for(const r241File of ['workshops/github-trending-radar/docs/waymark-recalc-git-markdown-work-tracker-mcp-reactive-agent-terminal-spreadsheet-selection-faq.md','workshops/github-trending-radar/docs/waymark-recalc-git-markdown-work-tracker-mcp-reactive-agent-terminal-spreadsheet-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r58-waymark-recalc.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r241File),'utf8');
+      assert.ok(txt.includes('1,540.00')&&txt.includes('3,420.00')&&txt.includes('4,960.00')&&txt.includes('80.00')&&txt.includes('332.50')&&txt.includes('412.50')&&txt.includes('4,547.50')&&txt.includes('91.68%')&&txt.includes('not_measured'),r241File+': contains exact 11-14 R58 waymark+recalc closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
