@@ -3589,6 +3589,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r270File),'utf8');
       assert.ok(txt.includes('1,820.00')&&txt.includes('3,610.00')&&txt.includes('5,430.00')&&txt.includes('90.00')&&txt.includes('332.50')&&txt.includes('422.50')&&txt.includes('5,007.50')&&txt.includes('92.22%')&&txt.includes('not_measured'),r270File+': contains exact 11-14 R87 muxin+easi.run closed-form parameters');
     }
+    // 2026-11-14 Night Round 88 (R271: hridaya423/phonedriver + kakao/prevue) verification
+    const r271PathA=1750.00+38.0*95.00;
+    assert.equal(r271PathA.toFixed(2),'5360.00','11-14 R88 Path A total');
+    const r271PathC=85.00+3.5*95.00;
+    assert.equal(r271PathC.toFixed(2),'417.50','11-14 R88 Path C total');
+    assert.equal((r271PathA-r271PathC).toFixed(2),'4942.50','11-14 R88 savings vs Path A');
+    assert.equal(((r271PathA-r271PathC)/r271PathA*100).toFixed(2),'92.21','11-14 R88 pct savings vs Path A');
+    for(const r271File of ['workshops/github-trending-radar/docs/phonedriver-prevue-6-9x-leaner-payment-gated-phone-mcp-1s-studio-free-compose-preview-selection-faq.md','workshops/github-trending-radar/docs/phonedriver-prevue-6-9x-leaner-payment-gated-phone-mcp-1s-studio-free-compose-preview-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r88-phonedriver-prevue.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r271File),'utf8');
+      assert.ok(txt.includes('1,750.00')&&txt.includes('3,610.00')&&txt.includes('5,360.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('4,942.50')&&txt.includes('92.21%')&&txt.includes('not_measured'),r271File+': contains exact 11-14 R88 phonedriver+prevue closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
