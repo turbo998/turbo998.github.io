@@ -2937,6 +2937,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r212File),'utf8');
       assert.ok(txt.includes('1,480.00')&&txt.includes('3,420.00')&&txt.includes('4,900.00')&&txt.includes('95.00')&&txt.includes('332.50')&&txt.includes('427.50')&&txt.includes('4,472.50')&&txt.includes('91.28%')&&txt.includes('not_measured'),r212File+': contains exact 11-14 R29 HolyArrs+SnowLuma closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 30 (R213: bea4dev/shoji-bar-4 + bvvst/intern) verification
+    const r213PathA=1560.00+36.0*95.00;
+    assert.equal(r213PathA.toFixed(2),'4980.00','11-14 R30 Path A total');
+    const r213PathC=90.00+3.5*95.00;
+    assert.equal(r213PathC.toFixed(2),'422.50','11-14 R30 Path C total');
+    assert.equal((r213PathA-r213PathC).toFixed(2),'4557.50','11-14 R30 savings vs Path A');
+    assert.equal(((r213PathA-r213PathC)/r213PathA*100).toFixed(2),'91.52','11-14 R30 pct savings vs Path A');
+    for(const r213File of ['workshops/github-trending-radar/docs/shoji-bar-4-intern-zero-idle-cpu-rust-wayland-shell-optical-size-variable-rounded-inter-font-selection-faq.md','workshops/github-trending-radar/docs/shoji-bar-4-intern-zero-idle-cpu-rust-wayland-shell-optical-size-variable-rounded-inter-font-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r30-shoji-bar-4-intern.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r213File),'utf8');
+      assert.ok(txt.includes('1,560.00')&&txt.includes('3,420.00')&&txt.includes('4,980.00')&&txt.includes('90.00')&&txt.includes('332.50')&&txt.includes('422.50')&&txt.includes('4,557.50')&&txt.includes('91.52%')&&txt.includes('not_measured'),r213File+': contains exact 11-14 R30 shoji-bar-4+intern closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
