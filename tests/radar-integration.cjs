@@ -3545,6 +3545,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r266File),'utf8');
       assert.ok(txt.includes('1,790.00')&&txt.includes('3,705.00')&&txt.includes('5,495.00')&&txt.includes('95.00')&&txt.includes('332.50')&&txt.includes('427.50')&&txt.includes('5,067.50')&&txt.includes('92.22%')&&txt.includes('not_measured'),r266File+': contains exact 11-14 R83 REM+RES closed-form parameters');
     }
+    // 2026-11-14 Night Round 84 (R267: scphq/scp + Xpropel/Pi-Remote) verification
+    const r267PathA=1710.00+37.0*95.00;
+    assert.equal(r267PathA.toFixed(2),'5225.00','11-14 R84 Path A total');
+    const r267PathC=85.00+3.5*95.00;
+    assert.equal(r267PathC.toFixed(2),'417.50','11-14 R84 Path C total');
+    assert.equal((r267PathA-r267PathC).toFixed(2),'4807.50','11-14 R84 savings vs Path A');
+    assert.equal(((r267PathA-r267PathC)/r267PathA*100).toFixed(2),'92.01','11-14 R84 pct savings vs Path A');
+    for(const r267File of ['workshops/github-trending-radar/docs/scp-pi-remote-turn-level-swarm-communication-protocol-extension-api-pi-session-mirror-selection-faq.md','workshops/github-trending-radar/docs/scp-pi-remote-turn-level-swarm-communication-protocol-extension-api-pi-session-mirror-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r84-scp-piremote.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r267File),'utf8');
+      assert.ok(txt.includes('1,710.00')&&txt.includes('3,515.00')&&txt.includes('5,225.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('4,807.50')&&txt.includes('92.01%')&&txt.includes('not_measured'),r267File+': contains exact 11-14 R84 scp+Pi-Remote closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
