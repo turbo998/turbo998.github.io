@@ -2904,6 +2904,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r209File),'utf8');
       assert.ok(txt.includes('1,440.00')&&txt.includes('3,420.00')&&txt.includes('4,860.00')&&txt.includes('95.00')&&txt.includes('332.50')&&txt.includes('427.50')&&txt.includes('4,432.50')&&txt.includes('91.20%')&&txt.includes('not_measured'),r209File+': contains exact 11-14 R26 GiroCrab+FFmpeg-GUI-Editor closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 27 (R210: faizfahmi77/ScanDot + precygtrucqui1981/blender-ai-copilot-lab) verification
+    const r210PathA=1710.00+38.0*100.00;
+    assert.equal(r210PathA.toFixed(2),'5510.00','11-14 R27 Path A total');
+    const r210PathC=135.00+3.5*100.00;
+    assert.equal(r210PathC.toFixed(2),'485.00','11-14 R27 Path C total');
+    assert.equal((r210PathA-r210PathC).toFixed(2),'5025.00','11-14 R27 savings vs Path A');
+    assert.equal(((r210PathA-r210PathC)/r210PathA*100).toFixed(2),'91.20','11-14 R27 pct savings vs Path A');
+    for(const r210File of ['workshops/github-trending-radar/docs/scandot-blender-ai-copilot-lab-arcore-colmap-3d-scanner-supervised-manager-worker-reviewer-blender-mcp-selection-faq.md','workshops/github-trending-radar/docs/scandot-blender-ai-copilot-lab-arcore-colmap-3d-scanner-supervised-manager-worker-reviewer-blender-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r27-scandot-blender-copilot-lab.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r210File),'utf8');
+      assert.ok(txt.includes('1,710.00')&&txt.includes('3,800.00')&&txt.includes('5,510.00')&&txt.includes('135.00')&&txt.includes('350.00')&&txt.includes('485.00')&&txt.includes('5,025.00')&&txt.includes('91.20%')&&txt.includes('not_measured'),r210File+': contains exact 11-14 R27 ScanDot+blender-ai-copilot-lab closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
