@@ -3314,6 +3314,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r245File),'utf8');
       assert.ok(txt.includes('1,590.00')&&txt.includes('3,420.00')&&txt.includes('5,010.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('4,592.50')&&txt.includes('91.67%')&&txt.includes('not_measured'),r245File+': contains exact 11-14 R62 charles-skills+ascii-diorama closed-form parameters');
     }
+    // 2026-11-14 Night Round 63 (R246: justrach/nanolight + gakonst/tatami) verification
+    const r246PathA=1490.00+36.0*95.00;
+    assert.equal(r246PathA.toFixed(2),'4910.00','11-14 R63 Path A total');
+    const r246PathC=75.00+3.5*95.00;
+    assert.equal(r246PathC.toFixed(2),'407.50','11-14 R63 Path C total');
+    assert.equal((r246PathA-r246PathC).toFixed(2),'4502.50','11-14 R63 savings vs Path A');
+    assert.equal(((r246PathA-r246PathC)/r246PathA*100).toFixed(2),'91.70','11-14 R63 pct savings vs Path A');
+    for(const r246File of ['workshops/github-trending-radar/docs/nanolight-tatami-2mb-zig-cross-os-raycast-launcher-pure-state-machine-macos-tiling-wm-selection-faq.md','workshops/github-trending-radar/docs/nanolight-tatami-2mb-zig-cross-os-raycast-launcher-pure-state-machine-macos-tiling-wm-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r63-nanolight-tatami.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r246File),'utf8');
+      assert.ok(txt.includes('1,490.00')&&txt.includes('3,420.00')&&txt.includes('4,910.00')&&txt.includes('75.00')&&txt.includes('332.50')&&txt.includes('407.50')&&txt.includes('4,502.50')&&txt.includes('91.70%')&&txt.includes('not_measured'),r246File+': contains exact 11-14 R63 nanolight+tatami closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
