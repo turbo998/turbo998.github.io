@@ -3754,6 +3754,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r285File),'utf8');
       assert.ok(txt.includes('1,760.00')&&txt.includes('3,610.00')&&txt.includes('5,370.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('4,952.50')&&txt.includes('92.23%')&&txt.includes('not_measured'),r285File+': contains exact 11-14 R102 story-studio+chaojifeng-video-design closed-form parameters');
     }
+    // 2026-11-14 Night Round 103 (R286: huaxialucaicaizi/ai-startup-skills + robonuggets/be-ambitious) verification
+    const r286PathA=1740.00+37.5*95.00;
+    assert.equal(r286PathA.toFixed(2),'5302.50','11-14 R103 Path A total');
+    const r286PathC=85.00+3.5*95.00;
+    assert.equal(r286PathC.toFixed(2),'417.50','11-14 R103 Path C total');
+    assert.equal((r286PathA-r286PathC).toFixed(2),'4885.00','11-14 R103 savings vs Path A');
+    assert.equal(((r286PathA-r286PathC)/r286PathA*100).toFixed(2),'92.13','11-14 R103 pct savings vs Path A');
+    for(const r286File of ['workshops/github-trending-radar/docs/ai-startup-skills-be-ambitious-7-step-opc-router-altitude-depth-range-verification-selection-faq.md','workshops/github-trending-radar/docs/ai-startup-skills-be-ambitious-7-step-opc-router-altitude-depth-range-verification-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r103-aistartupskills-beambitious.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r286File),'utf8');
+      assert.ok(txt.includes('1,740.00')&&txt.includes('3,562.50')&&txt.includes('5,302.50')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('4,885.00')&&txt.includes('92.13%')&&txt.includes('not_measured'),r286File+': contains exact 11-14 R103 ai-startup-skills+be-ambitious closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
