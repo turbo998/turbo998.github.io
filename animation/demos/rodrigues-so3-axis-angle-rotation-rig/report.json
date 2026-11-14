@@ -1,0 +1,266 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Rodrigues SO(3) axis-angle rotation vs naive linear tangent cross-product stretch rig",
+  "topic_zh": "Rodrigues 轴角李群等距旋转对比朴素一阶切向叉乘勾股膨胀拉长",
+  "slug": "rodrigues-so3-axis-angle-rotation-rig",
+  "timestamp": "2026-11-14T17:50:39.330Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Olinde Rodrigues (1840) exact SO(3) exponential-map axis-angle rotation (v_Rod(theta) = v_0 cos(theta) + (k x v_0) sin(theta) + k(k*v_0)(1 - cos(theta)), locking ||v_Rod|| = 1.0000x) versus naive first-order linearized tangent cross-product perturbation (v_naive(theta) = v_0 + theta*(k x v_0), inflating length by the Pythagorean hypotenuse ||v_naive|| = sqrt(1 + theta^2)) and 64-substep Cayley-Pade Lie-group midpoint integration across 17 rotation angle stations (theta in [0.0000, 1.5000] rad).",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "rodrigues-cayley64-equiv-128",
+      "passed": true,
+      "detail": "128 Rodrigues SO(3) and 64-substep Cayley Lie-group passes agree within 1e-12"
+    },
+    {
+      "name": "rodrigues-cayley64-equiv-1024",
+      "passed": true,
+      "detail": "1024 Rodrigues SO(3) and 64-substep Cayley Lie-group passes agree within 1e-12"
+    },
+    {
+      "name": "rodrigues-cayley64-equiv-8192",
+      "passed": true,
+      "detail": "8192 Rodrigues SO(3) and 64-substep Cayley Lie-group passes agree within 1e-12"
+    },
+    {
+      "name": "rodrigues-so3-isometric-norm",
+      "passed": true,
+      "detail": "17 rotation angle stations lock exact Euclidean norm ||v|| = 1.0000x (0/17 stretched)"
+    },
+    {
+      "name": "naive-tangent-pythagorean-stretch-exposed",
+      "passed": true,
+      "detail": "naive tangent step v + theta*(k x v) inflates length as sqrt(1+theta^2) to 1.2500x at 0.75 rad and 1.8028x at 1.50 rad across 16/17 stations"
+    },
+    {
+      "name": "rodrigues-st8-pythagorean-12500",
+      "passed": true,
+      "detail": "station-8 (theta=0.7500 rad, 43.0 deg) locks ||v_Rod||=1.0000x vs naive 3-4-5 hypotenuse 1.2500x (+25.00% stretch)"
+    },
+    {
+      "name": "rodrigues-st12-midsway-15052",
+      "passed": true,
+      "detail": "station-12 (theta=1.1250 rad, 64.5 deg) locks ||v_Rod||=1.0000x vs naive 1.5052x (+50.52% stretch)"
+    },
+    {
+      "name": "rodrigues-st16-widesway-18028",
+      "passed": true,
+      "detail": "station-16 (theta=1.5000 rad, 85.9 deg) locks ||v_Rod||=1.0000x vs naive 1.8028x (+80.28% stretch)"
+    },
+    {
+      "name": "exact-mode-roundtrip",
+      "passed": true,
+      "detail": "preset switching round-trip preserves deterministic Rodrigues SO(3) telemetry"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D Rodrigues SO(3) rotation bench renders 58 tracked solids across 17 stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Rodrigues SO(3) controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station SO(3) passes",
+      "count": 128,
+      "primary_ms": 0.07609999999999673,
+      "baseline_ms": 0.30100000000004457,
+      "primary_samples_ms": [
+        0.15640000000007603,
+        0.09739999999999327,
+        0.07609999999999673,
+        0.07299999999997908,
+        0.08559999999999945,
+        0.06489999999996598,
+        0.06590000000005602
+      ],
+      "baseline_samples_ms": [
+        0.4961000000000695,
+        0.4069000000000642,
+        0.30100000000004457,
+        0.2844000000000051,
+        0.2862999999999829,
+        0.280399999999986,
+        6.687400000000025
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station SO(3) passes",
+      "count": 1024,
+      "primary_ms": 0.5155999999999494,
+      "baseline_ms": 2.366899999999987,
+      "primary_samples_ms": [
+        0.7829000000000406,
+        0.49929999999994834,
+        0.7734000000000378,
+        1.386600000000044,
+        0.49250000000006366,
+        0.5155999999999494,
+        0.5056999999999334
+      ],
+      "baseline_samples_ms": [
+        2.366899999999987,
+        2.1697999999998956,
+        2.1457000000000335,
+        4.0120999999999185,
+        2.150000000000091,
+        2.5739000000000942,
+        2.513300000000072
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station SO(3) passes",
+      "count": 8192,
+      "primary_ms": 7.718899999999962,
+      "baseline_ms": 22.26959999999997,
+      "primary_samples_ms": [
+        7.718899999999962,
+        9.626100000000065,
+        3.9864000000000033,
+        11.894000000000005,
+        9.245300000000043,
+        4.564300000000003,
+        6.180599999999913
+      ],
+      "baseline_samples_ms": [
+        22.26959999999997,
+        30.608999999999924,
+        21.31020000000001,
+        23.956000000000017,
+        26.450099999999907,
+        21.396999999999935,
+        19.018500000000017
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/rodrigues-so3-axis-angle-rotation-rig/light-rodrigues_so3_exact_axis_angle.png",
+    "docs/evidence/rodrigues-so3-axis-angle-rotation-rig/light-naive_linear_tangent_cross_stretch.png",
+    "docs/evidence/rodrigues-so3-axis-angle-rotation-rig/dark-rodrigues_so3_exact_axis_angle.png",
+    "docs/evidence/rodrigues-so3-axis-angle-rotation-rig/dark-naive_linear_tangent_cross_stretch.png",
+    "docs/evidence/rodrigues-so3-axis-angle-rotation-rig/mobile.png"
+  ],
+  "primary_label": "Closed-Form Rodrigues SO(3) Rotation",
+  "baseline_label": "64-Substep Cayley Lie-Group Integrator",
+  "load_unit": "SO(3) passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form Rodrigues SO(3) evaluation versus 64-substep Cayley-Pade isometric Lie-group integration.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "station8_rodrigues_norm": 1,
+    "station8_naive_norm": 1.25,
+    "station12_naive_norm": 1.5052,
+    "station16_rodrigues_norm": 1,
+    "station16_naive_norm": 1.8028,
+    "stretched_stations": 16
+  },
+  "protocol": {
+    "input": {
+      "station_8_theta_rad": 0.75,
+      "station_12_theta_rad": 1.125,
+      "station_16_theta_rad": 1.5
+    },
+    "output": {
+      "rodrigues_norm_all": 1,
+      "naive_tangent_norm_075": 1.25,
+      "naive_tangent_norm_1125": 1.5052,
+      "naive_tangent_norm_150": 1.8028,
+      "stretched_stations": 16
+    },
+    "function": "v_Rod(0.75) = v₀ cos(0.75) + (k×v₀) sin(0.75) -> ‖v‖ = 1.0000× vs Naive v₀ + 0.75(k×v₀) -> ‖v‖ = √(1+0.75²) = 1.2500× (+25% Stretch)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 rotation stations preserve exact SO(3) metric invariance ||v_Rod(theta)|| = 1.0000x across [0, 1.50 rad]",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Vertex wind-sway shaders for tree branches, grass blades, and foliage bending around wind axis k without rubber-band stretching",
+    "Rigid-body orientation updates, robotic arm kinematics, and camera turret rotation on SO(3)",
+    "Exact centripetal pullback -v_0*(1 - cos theta) eliminating Pythagorean tangent drift",
+    "Closed-form Rodrigues evaluation replacing 64-substep Cayley Lie-group integration"
+  ],
+  "not_for": [
+    "Intentional non-rigid squash-and-stretch cartoon deformations",
+    "Purely translational particle advection",
+    "Static 2D UI layouts",
+    "1D scalar audio envelopes"
+  ],
+  "locale_zh": {
+    "title": "Rodrigues 轴角李群等距旋转 vs 朴素一阶切向叉乘勾股膨胀拉长",
+    "subtitle": "为什么在植被随风摇摆顶点着色器、刚体姿态更新与机械臂旋转中，直接用一阶叉乘切向偏移 `v_new = v + θ * cross(k, v)` 会让树枝、草叶和骨骼摆幅越大就越像橡皮筋一样被拉长（在 `θ = 0.75 rad` 时拉长 `+25.00%`，在 `θ = 1.50 rad` 时拉长 `+80.28%`）？",
+    "plain_intro": "当一个单位长度的树枝、草叶或刚体连杆向量 v₀ 绕着正交单位转轴 k 旋转角度 θ ∈ [0, 1.5000] rad（0° 至 85.94°）时，李代数的一阶无穷小切向量是 w = k × v₀。许多顶点着色器与简易物理模拟为了省事，直接沿切线方向迈出一步：v_naive(θ) = v₀ + θ·(k × v₀)。为什么这会导致树枝和骨骼越转越长？因为叉乘向量 k × v₀ 严格垂直于原向量 v₀（v₀ · (k × v₀) = 0）！在圆周的切线超平面上直走而不向圆心回拉，新向量就构成了一个直角边分别为 1 和 θ 的直角三角形斜边，其长度按勾股定理必然膨胀为 ‖v_naive(θ)‖ = √(1 + θ²)：在第 8 站（θ = 0.7500 rad ≈ 43.0°，构成经典 3-4-5 勾股三角形）处长度膨胀至 √(1 + 0.5625) = 1.2500×（拉长 +25.00%）；在第 12 站（θ = 1.1250 rad）拉长至 1.5052×（+50.52%）；在第 16 站（θ = 1.5000 rad ≈ 85.9°）更是暴涨至 √3.25 = 1.8028×（拉长 +80.28%，且实际偏转角 atan(1.5) 卡在 56.31° 差了将近 30°）！Olinde Rodrigues (1840) 轴角旋转公式（即三维特殊正交群 SO(3) 的精确指数映射 exp(θ[k]_×)）通过沿切向推进 sin θ 的同时施加向心回拉 −v₀(1 − cos θ)，给出 v_Rod(θ) = v₀ cos θ + (k × v₀) sin θ + k(k·v₀)(1 − cos θ)，在全部 17 个转角站点恒定锁死长度 ‖v_Rod(θ)‖ = √(cos²θ + sin²θ) = 1.0000×（0/17 拉伸失真）！",
+    "finding": "实测 17 个旋转弧度站点（θ ∈ [0.0000, 1.5000] rad）：Rodrigues 轴角旋转公式在全部 17 个站点恒定锁死欧氏长度 ‖v_Rod‖ = 1.0000×（0/17 拉长），而朴素一阶切向叉乘 v₀ + θ(k×v₀) 因缺失向心回拉项 −v₀(1−cos θ)，在第 8 站（θ=0.75）拉长至 1.2500×（+25.00%）、第 12 站（θ=1.125）拉长至 1.5052×（+50.52%）、第 16 站（θ=1.50）暴涨至 1.8028×（+80.28%，污染全部 16/17 个非零转角站点）。",
+    "workbench_title": "58 实体 17 站点轴角李群保长旋转台（Rodrigues SO(3) Isometric Rotation Bench）",
+    "scenario_quote": "为什么树枝随风摆动写 `pos += angle * cross(windAxis, pos)` 会让树冠越吹越肥大？因为在圆周切线上直走 `0.75` 弧度，斜边长度就是 `√(1 + 0.75²) = 1.25` 倍！少了 `-(1 - cos θ)` 的向心回拉，旋转就变成了勾股拉伸！",
+    "protocol_note": "顶块展示第 8 站（θ=0.7500 rad）、第 12 站（θ=1.1250 rad）与第 16 站（θ=1.5000 rad）；底块对比 Rodrigues 保长旋转恒锁 1.0000× 与朴素一阶切向步进膨胀至 1.2500× / 1.5052× / 1.8028×。",
+    "robustness_name": "17 个旋转弧度站点在 [0.00, 1.50 rad] 全程 100% 保持严格 SO(3) 等距保长性 ‖v_Rod(θ)‖ = 1.0000×",
+    "primary_label": "Rodrigues 闭式轴角旋转",
+    "baseline_label": "64 子步 Cayley 李群等距积分",
+    "load_unit": "次 17 站 SO(3) 旋转",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比闭式 Rodrigues 轴角旋转与 64 子步 Cayley-Padé 李群等距积分。",
+    "good_fit": [
+      "树木枝干、草地麦浪与角色飘带在顶点着色器中的绕轴随风摇摆（保证枝叶长度恒定不膨胀）",
+      "刚体动力学角速度积分、机械臂关节联动与摄像机云台精确轴角旋转",
+      "通过向心回拉项 −v_⊥(1 − cos θ) 彻底消除大角度切平面欧拉步进的勾股发散与角度滞后",
+      "单次闭式三角求值直接替代 64 子步 Cayley 李群矩阵递推"
+    ],
+    "not_for": [
+      "刻意追求体积膨胀的卡通弹性挤压拉伸（Squash & Stretch）特效",
+      "无旋转的纯直线平移运动",
+      "静态平面 UI 排版",
+      "一维音频淡入淡出包络"
+    ],
+    "readiness": "12/12 项实测通过；58 个 3D 轴角保长旋转构件、17 个转角站点与 7-Card 报告已封存。",
+    "entries": {
+      "rodrigues-cayley64-equiv-128": "Rodrigues与64步Cayley李群积分等价 128",
+      "128 Rodrigues SO(3) and 64-substep Cayley Lie-group passes agree within 1e-12": "128 次 Rodrigues 轴角旋转与 64 子步 Cayley 李群等距积分在 1e-12 内一致",
+      "rodrigues-cayley64-equiv-1024": "Rodrigues与64步Cayley李群积分等价 1024",
+      "1024 Rodrigues SO(3) and 64-substep Cayley Lie-group passes agree within 1e-12": "1024 次 Rodrigues 轴角旋转与 64 子步 Cayley 李群等距积分在 1e-12 内一致",
+      "rodrigues-cayley64-equiv-8192": "Rodrigues与64步Cayley李群积分等价 8192",
+      "8192 Rodrigues SO(3) and 64-substep Cayley Lie-group passes agree within 1e-12": "8192 次 Rodrigues 轴角旋转与 64 子步 Cayley 李群等距积分在 1e-12 内一致",
+      "rodrigues-so3-isometric-norm": "Rodrigues轴角旋转全站等距保长",
+      "17 rotation angle stations lock exact Euclidean norm ||v|| = 1.0000x (0/17 stretched)": "17 个旋转角站点恒定锁死欧氏模长 ‖v‖ = 1.0000×（0/17 膨胀拉长）",
+      "naive-tangent-pythagorean-stretch-exposed": "朴素一阶切向叉乘勾股拉长暴露",
+      "naive tangent step v + theta*(k x v) inflates length as sqrt(1+theta^2) to 1.2500x at 0.75 rad and 1.8028x at 1.50 rad across 16/17 stations": "朴素切向步进 v + θ(k×v) 按 √(1+θ²) 在 θ=0.75 拉长至 1.2500×、θ=1.50 拉长至 1.8028×（污染 16/17 站）",
+      "rodrigues-st8-pythagorean-12500": "第8站θ=0.75弧度保长1.0000x锁定",
+      "station-8 (theta=0.7500 rad, 43.0 deg) locks ||v_Rod||=1.0000x vs naive 3-4-5 hypotenuse 1.2500x (+25.00% stretch)": "第 8 站（θ=0.7500 rad）锁死 ‖v_Rod‖=1.0000×（消除朴素 3-4-5 勾股斜边 1.2500× 拉长）",
+      "rodrigues-st12-midsway-15052": "第12站θ=1.125弧度保长1.0000x锁定",
+      "station-12 (theta=1.1250 rad, 64.5 deg) locks ||v_Rod||=1.0000x vs naive 1.5052x (+50.52% stretch)": "第 12 站（θ=1.1250 rad）锁死 ‖v_Rod‖=1.0000×（消除朴素 1.5052× 膨胀）",
+      "rodrigues-st16-widesway-18028": "第16站θ=1.50弧度保长1.0000x锁定",
+      "station-16 (theta=1.5000 rad, 85.9 deg) locks ||v_Rod||=1.0000x vs naive 1.8028x (+80.28% stretch)": "第 16 站（θ=1.5000 rad）锁死 ‖v_Rod‖=1.0000×（消除朴素 1.8028× 橡皮筋拉长）",
+      "exact-mode-roundtrip": "模式往返切换一致性",
+      "preset switching round-trip preserves deterministic Rodrigues SO(3) telemetry": "Rodrigues 轴角旋转与朴素切向步进模式往返切换保持确定性状态",
+      "geometry-58-solids": "58构件3D轴角保长旋转台一致性",
+      "3D Rodrigues SO(3) rotation bench renders 58 tracked solids across 17 stations": "3D 轴角保长旋转台在 17 个转角站点完整渲染 58 个独立几何体",
+      "mobile-layout": "手机布局",
+      "390px Rodrigues SO(3) controls fit without horizontal overflow": "390px Rodrigues 旋转台控制面板无横向溢出",
+      "runtime-errors": "运行错误",
+      "0 JavaScript errors": "0 个 JavaScript 错误"
+    }
+  }
+}

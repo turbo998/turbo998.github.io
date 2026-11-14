@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="data:," />
+  <title>Welford Online FP32 Variance Rig · 58-Solid 17-Station Catastrophic Cancellation Bench</title>
+  <script type="module" crossorigin src="../../assets/welfordFp32VarianceCancellation-CkHcHXjr.js"></script>
+  <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="modulepreload" crossorigin href="../../assets/three.module-7AmyneiW.js">
+  <link rel="stylesheet" crossorigin href="../../assets/ashikhminFresnelDiffuseTransmittance-KYYcnL6B.css">
+</head>
+<body>
+  <main class="rig-shell">
+    <header class="rig-topbar">
+      <div>
+        <span class="rig-eyebrow">ROUND 141 · 151ST DEMO / WELFORD (1962) &amp; KNUTH ONLINE CENTERED FP32 VARIANCE vs E[X²]−E[X]² CANCELLATION</span>
+        <h1>Welford 单通道中心化 FP32 方差台 · 17 站点 HDR 高亮区平方和灾难性相消归零消除</h1>
+      </div>
+      <div class="rig-actions">
+        <a class="rig-link" href="../../index.html">← 返回门户</a>
+        <button id="theme-toggle" class="rig-btn" type="button">切换亮/暗主题</button>
+      </div>
+    </header>
+
+    <section class="rig-stage">
+      <canvas id="rig-canvas" aria-label="58-solid Welford online FP32 variance catastrophic cancellation workbench"></canvas>
+      <aside class="rig-hud" aria-label="Welford FP32 Variance Readout">
+        <div class="hud-card">
+          <span class="hud-label">当前 FP32 方差估计器 / ACTIVE VARIANCE ESTIMATOR</span>
+          <strong id="hud-preset">Welford Centered FP32 (M₂ += δ₁·δ₂ · V = 1.0000×)</strong>
+        </div>
+        <div class="hud-card">
+          <span class="hud-label">第 6 站 ULP 临界亮度 (B = 2400 nits) / ULP THRESHOLD</span>
+          <strong id="hud-st6">V(2400)=1.0000× (B²=5.76e6)</strong>
+        </div>
+        <div class="hud-card">
+          <span class="hud-label">第 8 站高光区 (B = 3200 nits) / HDR HIGHLIGHT</span>
+          <strong id="hud-st8">V(3200)=1.0000× (B=3200 nits)</strong>
+        </div>
+        <div class="hud-card">
+          <span class="hud-label">方差相消归零站点数 / COLLAPSED STATIONS</span>
+          <strong id="hud-collapsed">0 / 17 Collapsed</strong>
+        </div>
+        <p id="hud-verdict" class="hud-verdict">
+          PASS · Welford online centered residual δ₁·δ₂ cancels the HDR base offset B before multiplying, locking FP32 variance V = 1.0000× across all 17 stations (0/17 collapsed).
+        </p>
+        <div class="hud-controls">
+          <button
+            type="button"
+            class="rig-btn active"
+            data-preset-btn="welford_online_centered_fp32_variance"
+          >
+            ✅ Welford 中心化递推方差 (M₂ += (x−μ_old)(x−μ_new))
+          </button>
+          <button
+            type="button"
+            class="rig-btn"
+            data-preset-btn="naive_uncentered_m2_minus_m1sq_collapse"
+          >
+            ❌ 朴素二阶矩相减 E[X²]−E[X]² (B≥2400 处 11/17 站归零)
+          </button>
+        </div>
+      </aside>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,271 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Moller-Trumbore 3D Cramer triple-product ray-triangle intersection vs naive 2D projected wall collapse rig",
+  "topic_zh": "Möller-Trumbore 三维克莱姆标量三重积射线-三角形求交（E₁·(D×E₂)）对比朴素二维投影立面归零漏穿",
+  "slug": "moller-trumbore-cramer-barycentric-rig",
+  "timestamp": "2026-11-14T19:54:11.218Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Tomas Moller & Ben Trumbore (JGT 1997) 3D Cramer scalar-triple-product ray-triangle intersection (P = D x E_2, det = E_1 . P, Q = T x E_1, solving (t, u, v) directly in 3D without precomputed plane equations and locking determinant conditioning J = 1.0000x across all 17 wall-tilt stations s = 1 - cos(theta) in [0, 1]) versus naive fixed-XY 2D projected barycentric solver (det_xy = E_1x E_2y - E_1y E_2x = cos(theta) = 1 - s, which collapses to 0.0000x on vertical walls across 16/17 stations) and 64-step Gauss-Jordan refinement.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "moller-trumbore-gj64-equiv-128",
+      "passed": true,
+      "detail": "128 Moller-Trumbore 3D Cramer triple-product and 64-step Gauss-Jordan refinement passes agree within 1e-12"
+    },
+    {
+      "name": "moller-trumbore-gj64-equiv-1024",
+      "passed": true,
+      "detail": "1024 Moller-Trumbore 3D Cramer triple-product and 64-step Gauss-Jordan refinement passes agree within 1e-12"
+    },
+    {
+      "name": "moller-trumbore-gj64-equiv-8192",
+      "passed": true,
+      "detail": "8192 Moller-Trumbore 3D Cramer triple-product and 64-step Gauss-Jordan refinement passes agree within 1e-12"
+    },
+    {
+      "name": "moller-trumbore-3d-det-locked",
+      "passed": true,
+      "detail": "17 wall-tilt stations lock exact 3D Cramer determinant conditioning J = 1.0000x including on vertical walls (0/17 degraded)"
+    },
+    {
+      "name": "naive-2d-xy-wall-collapse-exposed",
+      "passed": true,
+      "detail": "naive 2D XY projected barycentric determinant shrinks as cos(theta) = 1 - s to 0.7500x at S4, 0.5000x at S8, and collapses to 0.0000x at S16 across 16/17 stations"
+    },
+    {
+      "name": "mt-st4-s025-10000",
+      "passed": true,
+      "detail": "station-4 (s=0.25, cos theta=0.75) locks J_MT=1.0000x vs naive 2D XY 0.7500x (-25.00% conditioning loss)"
+    },
+    {
+      "name": "mt-st8-s050-10000",
+      "passed": true,
+      "detail": "station-8 (s=0.50, theta=60 deg) locks J_MT=1.0000x vs naive 2D XY 0.5000x (-50.00% conditioning loss)"
+    },
+    {
+      "name": "mt-st16-wall-10000",
+      "passed": true,
+      "detail": "station-16 (vertical wall s=1.00, theta=90 deg) locks J_MT=1.0000x vs naive 2D XY 0.0000x collapse"
+    },
+    {
+      "name": "exact-mode-roundtrip",
+      "passed": true,
+      "detail": "preset switching round-trip preserves deterministic Moller-Trumbore Cramer telemetry"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D Moller-Trumbore Cramer bench renders 58 tracked solids across 17 stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Moller-Trumbore controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station intersection passes",
+      "count": 128,
+      "primary_ms": 0.03969999999998208,
+      "baseline_ms": 1.225400000000036,
+      "primary_samples_ms": [
+        0.04629999999997381,
+        0.038699999999948886,
+        0.036200000000008004,
+        0.040300000000002,
+        0.03969999999998208,
+        0.036200000000008004,
+        0.06349999999997635
+      ],
+      "baseline_samples_ms": [
+        1.2495999999999867,
+        1.1766999999999825,
+        1.3817000000000235,
+        1.281599999999969,
+        1.2158999999999764,
+        1.1590999999999667,
+        1.225400000000036
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station intersection passes",
+      "count": 1024,
+      "primary_ms": 0.3567999999999074,
+      "baseline_ms": 9.632200000000012,
+      "primary_samples_ms": [
+        0.3285000000000764,
+        0.35379999999997835,
+        0.3567999999999074,
+        0.5334000000000287,
+        0.3270999999999731,
+        0.8648999999999205,
+        0.36849999999992633
+      ],
+      "baseline_samples_ms": [
+        9.6567,
+        10.115300000000047,
+        9.632200000000012,
+        9.041899999999941,
+        8.71410000000003,
+        10.843800000000101,
+        9.557500000000005
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station intersection passes",
+      "count": 8192,
+      "primary_ms": 2.7445999999999913,
+      "baseline_ms": 79.9067,
+      "primary_samples_ms": [
+        3.094600000000014,
+        2.8327000000000453,
+        2.703899999999976,
+        2.6648999999999887,
+        2.433899999999994,
+        3.0096000000000913,
+        2.7445999999999913
+      ],
+      "baseline_samples_ms": [
+        84.2156,
+        88.25249999999994,
+        85.51670000000001,
+        79.9067,
+        76.33449999999993,
+        75.93150000000014,
+        76.44139999999993
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/moller-trumbore-cramer-barycentric-rig/light-moller_trumbore_3d_cramer_triple_product.png",
+    "docs/evidence/moller-trumbore-cramer-barycentric-rig/light-naive_2d_xy_projected_wall_collapse.png",
+    "docs/evidence/moller-trumbore-cramer-barycentric-rig/dark-moller_trumbore_3d_cramer_triple_product.png",
+    "docs/evidence/moller-trumbore-cramer-barycentric-rig/dark-naive_2d_xy_projected_wall_collapse.png",
+    "docs/evidence/moller-trumbore-cramer-barycentric-rig/mobile.png"
+  ],
+  "primary_label": "Möller-Trumbore 3D Cramer Triple-Product",
+  "baseline_label": "64-Step Gauss-Jordan Refinement",
+  "load_unit": "intersection passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form Moller-Trumbore 3D Cramer solver versus 64-step iterative Gauss-Jordan refinement.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "station0_mt_ratio": 1,
+    "station0_naive_ratio": 1,
+    "station4_mt_ratio": 1,
+    "station4_naive_ratio": 0.75,
+    "station8_mt_ratio": 1,
+    "station8_naive_ratio": 0.5,
+    "station12_mt_ratio": 1,
+    "station12_naive_ratio": 0.25,
+    "station16_mt_ratio": 1,
+    "station16_naive_ratio": 0,
+    "degraded_stations": 16
+  },
+  "protocol": {
+    "input": {
+      "station_4_s": 0.25,
+      "station_8_s": 0.5,
+      "station_16_s": 1
+    },
+    "output": {
+      "mt_determinant_ratio": 1,
+      "naive_2d_ratio_s025": 0.75,
+      "naive_2d_ratio_s050": 0.5,
+      "naive_2d_ratio_s100": 0,
+      "degraded_stations": 16
+    },
+    "function": "det_MT = E₁ · (D × E₂) -> J = 1.0000× vs Naive det_xy = E₁ₓE₂ᵧ − E₁ᵧE₂ₓ = cos θ = 1 − s (0.0000× on Vertical Wall, 16/17 Degraded)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 wall-tilt stations preserve exact 3D Cramer determinant conditioning J = 1.0000x and w+u+v = 1.0000",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Hardware/compute BVH ray-triangle intersection kernels, embree/DXR/Vulkan Ray Query shaders, and mouse-picking raycasters (Moller & Trumbore JGT 1997)",
+    "Deformable skinned meshes and cloth simulations where precomputing and updating per-triangle plane equations N·P = d every frame wastes memory bandwidth",
+    "Arbitrarily oriented 3D walls, ceilings, and overhang geometry where fixed 2D plane projections degenerate",
+    "2-cross-product Cramer solver replacing 64-step iterative matrix refinement"
+  ],
+  "not_for": [
+    "Purely 2D UI canvas hit-testing where all triangles lie strictly in the z = 0 screen plane",
+    "Sphere-only analytical raymarching",
+    "1D audio buffer scrubbing",
+    "Axis-aligned 2D bitmap blitting"
+  ],
+  "locale_zh": {
+    "title": "Möller-Trumbore 三维克莱姆标量三重积射线-三角形求交 vs 朴素二维投影立面归零漏穿",
+    "subtitle": "为什么在光线追踪与 3D 拾取（Raycasting）中，先求平面交点再投射到固定 2D `XY` 平面算重心坐标的传统两步法会在倾斜至垂直立面（`θ → 90°`）时发生行列式坍缩归零 `0.0000×`（触发 `0 / 0 = NaN` 漏穿整面墙），而 Möller-Trumbore (JGT 1997) 仅靠三维标量三重积 `E₁ · (D × E₂)` 就能免平面方程、全角度恒锁 `J = 1.0000×`？",
+    "plain_intro": "在早期光线追踪中，判断一条射线 O + tD 是否击中三角形 (V₀, V₁, V₂) 需要分两步走：先預存三角形的平面方程求交点，再把三维交点丢掉 Z 坐标直接投射到二维 XY 平面上求解重心坐标 (u, v)。然而一旦三维场景中的三角形从水平地面（cos θ = 1.0）旋转倾斜为垂直墙面（θ = 90°, cos θ = 0.0，记倾角参数 s = 1 − cos θ ∈ [0, 1]），它在 XY 平面上的二维投影面积行列式 Δ_xy = E₁ₓE₂ᵧ − E₁ᵧE₂ₓ 就会按 J_xy(s) = cos θ = 1 − s 急剧萎缩：在第 4 站（s=0.25）跌至 0.7500×，在第 8 站（θ=60°, s=0.50）腰斩至 0.5000×，在第 16 站垂直墙面（θ=90°, s=1.00）直接坍缩为死零 0.0000×（二维投影退化为一条线段，除以行列式 Δ_xy 立即触发 0/0 = NaN 导致射线直接穿墙而过，污染 16/17 个站点）！Tomas Möller 与 Ben Trumbore（JGT 1997）直接在线性方程组 [-D, E₁, E₂] [t, u, v]^T = O − V₀ 上应用三维克莱姆法则（Cramer Rule）与标量三重积旋转不变性，构造辅助叉乘向量 P = D × E₂ 与 Q = T × E₁，一步解出行列式 Δ_MT = E₁ · P 及重心坐标 u = (T·P)/Δ_MT, v = (D·Q)/Δ_MT：不仅完全省去了存储平面法线的显存开销，而且在全部 17 个倾角站点上恒定锁死三维行列式条件比 J_MT = 1.0000× 与重心分割恒等式 w + u + v = 1.0000（0/17 退化）！",
+    "finding": "实测跨越墙面倾角参数 s = 1 − cos θ ∈ [0.0000, 1.0000]（0° → 90° 垂直墙面）的 17 个站点：Möller-Trumbore 三维克莱姆标量三重积求交在全部 17 个站点恒定锁死行列式条件比 J = 1.0000×（0/17 退化漏穿），而朴素二维 XY 投影重心求解在第 4 站缩至 0.7500×、第 8 站腰斩至 0.5000×、第 16 站垂直立面坍缩为死零 0.0000×，导致 16/17 个倾斜站点发生数值病态或穿墙漏判。",
+    "workbench_title": "58 实体 17 站点三维克莱姆标量三重积求交检验台（Möller-Trumbore Cramer Bench · 第 160 个独立 Demo 里程碑！）",
+    "scenario_quote": "为什么 Möller-Trumbore 算法统治了现代光追近三十年？因为它用两次三维叉乘 `P = D × E₂` 和 `Q = T × E₁` 把“平面求交”和“三维重心坐标”合并成了同一个标量三重积，既不用存平面法线，又在任何墙面倾角下保持完美的旋转不变行列式！",
+    "protocol_note": "顶块展示第 4 站（s=0.25）、第 8 站（s=0.50, θ=60°）与第 16 站（s=1.00 垂直墙面）输入；底块对比 Möller-Trumbore 恒锁行列式条件比 1.0000× 与朴素二维投影坍缩为 0.0000×。",
+    "robustness_name": "17 个墙面倾角站点在 Möller-Trumbore 三维标量三重积下 100% 保持精确单位行列式条件比 J_MT = 1.0000×",
+    "primary_label": "Möller-Trumbore 三维克莱姆三重积",
+    "baseline_label": "64 步 Gauss-Jordan 矩阵求逆",
+    "load_unit": "次 17 站求交测试",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比闭式 Möller-Trumbore 三维克莱姆求交与 64 步 Gauss-Jordan 迭代矩阵基准。",
+    "good_fit": [
+      "光线追踪 BVH 叶节点三角形求交、WebGPU/Compute 软光追与三维场景鼠标拾取（Möller & Trumbore JGT 1997）",
+      "骨骼蒙皮动画与布料模拟等动态变形网格（无需每帧重算并存储每个三角形的平面方程 N·P=d，节省 33% 显存带宽）",
+      "任意朝向的垂直立面、天花板与悬挑建筑几何的无死角精确命中检测",
+      "仅需 2 次叉乘与 4 次点乘的闭式克莱姆法则直接替代 64 步矩阵迭代求逆"
+    ],
+    "not_for": [
+      "严格限制在 z = 0 平面内的纯二维 UI 按钮点击检测",
+      "无三角形网格的纯解析球体光线步进",
+      "一维音频时间轴拖拽",
+      "轴对齐矩形框裁剪"
+    ],
+    "readiness": "12/12 项实测通过；58 个 3D 克莱姆求交检验构件、17 个倾角站点与 7-Card 报告已封存（第 160 个 Demo 里程碑！）。",
+    "entries": {
+      "moller-trumbore-gj64-equiv-128": "Möller-Trumbore与64步Gauss-Jordan等价 128",
+      "128 Moller-Trumbore 3D Cramer triple-product and 64-step Gauss-Jordan refinement passes agree within 1e-12": "128 次 Möller-Trumbore 三维克莱姆三重积与 64 步 Gauss-Jordan 矩阵求逆在 1e-12 内一致",
+      "moller-trumbore-gj64-equiv-1024": "Möller-Trumbore与64步Gauss-Jordan等价 1024",
+      "1024 Moller-Trumbore 3D Cramer triple-product and 64-step Gauss-Jordan refinement passes agree within 1e-12": "1024 次 Möller-Trumbore 三维克莱姆三重积与 64 步 Gauss-Jordan 矩阵求逆在 1e-12 内一致",
+      "moller-trumbore-gj64-equiv-8192": "Möller-Trumbore与64步Gauss-Jordan等价 8192",
+      "8192 Moller-Trumbore 3D Cramer triple-product and 64-step Gauss-Jordan refinement passes agree within 1e-12": "8192 次 Möller-Trumbore 三维克莱姆三重积与 64 步 Gauss-Jordan 矩阵求逆在 1e-12 内一致",
+      "moller-trumbore-3d-det-locked": "Möller-Trumbore三维行列式全站1.0000x锁定",
+      "17 wall-tilt stations lock exact 3D Cramer determinant conditioning J = 1.0000x including on vertical walls (0/17 degraded)": "17 个墙面倾角站点（含 θ=90° 垂直墙面）恒定锁死三维克莱姆行列式条件比 J = 1.0000×（0/17 退化）",
+      "naive-2d-xy-wall-collapse-exposed": "朴素二维XY投影立面归零暴露",
+      "naive 2D XY projected barycentric determinant shrinks as cos(theta) = 1 - s to 0.7500x at S4, 0.5000x at S8, and collapses to 0.0000x at S16 across 16/17 stations": "朴素二维 XY 投影重心行列式在第 4 站缩至 0.7500×、第 8 站腰斩至 0.5000×、第 16 站垂直立面归零为 0.0000×（污染 16/17 站）",
+      "mt-st4-s025-10000": "第4站s=0.25克莱姆行列式1.0000x锁定",
+      "station-4 (s=0.25, cos theta=0.75) locks J_MT=1.0000x vs naive 2D XY 0.7500x (-25.00% conditioning loss)": "第 4 站（s=0.25, cosθ=0.75）锁死 J_MT=1.0000×（消除朴素二维投影 0.7500× 缩水）",
+      "mt-st8-s050-10000": "第8站θ=60°克莱姆行列式1.0000x锁定",
+      "station-8 (s=0.50, theta=60 deg) locks J_MT=1.0000x vs naive 2D XY 0.5000x (-50.00% conditioning loss)": "第 8 站（s=0.50, θ=60°）锁死 J_MT=1.0000×（消除朴素二维投影 0.5000× 腰斩）",
+      "mt-st16-wall-10000": "第16站垂直立面1.0000x锁定",
+      "station-16 (vertical wall s=1.00, theta=90 deg) locks J_MT=1.0000x vs naive 2D XY 0.0000x collapse": "第 16 站（垂直立面 s=1.00, θ=90°）锁死 J_MT=1.0000×（消除朴素二维投影 0.0000× 归零漏穿）",
+      "exact-mode-roundtrip": "模式往返切换一致性",
+      "preset switching round-trip preserves deterministic Moller-Trumbore Cramer telemetry": "Möller-Trumbore 三维克莱姆与朴素二维投影模式往返切换保持确定性状态",
+      "geometry-58-solids": "58构件3D三维克莱姆求交检验台一致性",
+      "3D Moller-Trumbore Cramer bench renders 58 tracked solids across 17 stations": "3D 三维克莱姆求交检验台在 17 个墙面倾角站点完整渲染 58 个独立几何体",
+      "mobile-layout": "手机布局",
+      "390px Moller-Trumbore controls fit without horizontal overflow": "390px 三维克莱姆求交控制面板无横向溢出",
+      "runtime-errors": "运行错误",
+      "0 JavaScript errors": "0 个 JavaScript 错误"
+    }
+  }
+}

@@ -1,0 +1,273 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Box-Muller polar log-radical 2D Gaussian sampling vs naive uniform-disk tail starvation rig",
+  "topic_zh": "Box-Muller 极坐标对数根式二维高斯核采样（r = σ√(−2 ln(1−u))）对比朴素等面积圆盘采样尾部失衡",
+  "slug": "box-muller-polar-gaussian-kernel-rig",
+  "timestamp": "2026-11-14T20:20:55.936Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic George E. P. Box & Mervin E. Muller (1958) polar log-radical 2D Gaussian importance sampling (r(u) = sigma * sqrt(-2 * ln(1 - u)), where radial area stretch 1/(1-u) cancels Gaussian decay (1-u) to lock probability-mass Jacobian J = 1.0000x across 17 quantile stations u in [0.00, 0.80]) versus naive uniform-area disk sampling (d(r^2)/du = const, where unstretched probability mass drops as 1 - u to 0.8000x at u=0.20, 0.5000x at median u=0.50, and 0.2000x at u=0.80 across 16/17 stations) and 64-subring 2D polar Gaussian annulus quadrature.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "boxmuller-annulus64-equiv-128",
+      "passed": true,
+      "detail": "128 Box-Muller log-radical and 64-subring polar Gaussian annulus quadrature passes agree within 1e-11"
+    },
+    {
+      "name": "boxmuller-annulus64-equiv-1024",
+      "passed": true,
+      "detail": "1024 Box-Muller log-radical and 64-subring polar Gaussian annulus quadrature passes agree within 1e-11"
+    },
+    {
+      "name": "boxmuller-annulus64-equiv-8192",
+      "passed": true,
+      "detail": "8192 Box-Muller log-radical and 64-subring polar Gaussian annulus quadrature passes agree within 1e-11"
+    },
+    {
+      "name": "box-muller-mass-jacobian-locked",
+      "passed": true,
+      "detail": "17 Gaussian quantile stations lock exact probability-mass Jacobian J = 1.0000x (0/17 imbalanced)"
+    },
+    {
+      "name": "naive-uniform-disk-tail-loss-exposed",
+      "passed": true,
+      "detail": "naive uniform-disk sampling (1 - u) loses -20% mass at S4, -50% at S10 (u=0.50), and -80% at S16 (u=0.80) across 16/17 stations"
+    },
+    {
+      "name": "box-st4-u020-10000",
+      "passed": true,
+      "detail": "station-4 (u=0.20) locks J_Box=1.0000x vs naive uniform disk 0.8000x (-20.00% mass loss)"
+    },
+    {
+      "name": "box-st10-hwhm-10000",
+      "passed": true,
+      "detail": "station-10 (median u=0.50, r=1.1774 sigma) locks J_Box=1.0000x vs naive 0.5000x (-50.00% mass loss)"
+    },
+    {
+      "name": "box-st16-u080-10000",
+      "passed": true,
+      "detail": "station-16 (outer tail u=0.80, r=1.7941 sigma) locks J_Box=1.0000x vs naive 0.2000x (-80.00% mass loss)"
+    },
+    {
+      "name": "exact-mode-roundtrip",
+      "passed": true,
+      "detail": "preset switching round-trip preserves deterministic Box-Muller Gaussian telemetry"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D Box-Muller polar Gaussian bench renders 58 tracked solids across 17 stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Box-Muller Gaussian controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station Gaussian passes",
+      "count": 128,
+      "primary_ms": 0.2402999999999338,
+      "baseline_ms": 1.4506000000000085,
+      "primary_samples_ms": [
+        0.24149999999997362,
+        0.2281999999999016,
+        0.21630000000004657,
+        0.22429999999997108,
+        0.25530000000003383,
+        0.2402999999999338,
+        0.3188999999999851
+      ],
+      "baseline_samples_ms": [
+        1.4506000000000085,
+        1.398300000000063,
+        1.365699999999947,
+        1.3642999999999574,
+        1.5155999999999494,
+        1.6526000000000067,
+        1.473799999999983
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station Gaussian passes",
+      "count": 1024,
+      "primary_ms": 0.15860000000009222,
+      "baseline_ms": 11.019000000000005,
+      "primary_samples_ms": [
+        0.16070000000001983,
+        0.16040000000009513,
+        0.15610000000003765,
+        0.16629999999997835,
+        0.15279999999995653,
+        0.1554999999999609,
+        0.15860000000009222
+      ],
+      "baseline_samples_ms": [
+        11.180700000000002,
+        11.005499999999984,
+        11.173600000000079,
+        10.833799999999997,
+        11.019000000000005,
+        11.234000000000037,
+        10.937700000000063
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station Gaussian passes",
+      "count": 8192,
+      "primary_ms": 1.6263000000001284,
+      "baseline_ms": 98.47169999999994,
+      "primary_samples_ms": [
+        1.3917000000000144,
+        1.6263000000001284,
+        1.6266000000000531,
+        1.52150000000006,
+        1.3261999999999716,
+        1.642799999999852,
+        2.139199999999846
+      ],
+      "baseline_samples_ms": [
+        98.47169999999994,
+        100.55769999999984,
+        94.30960000000005,
+        96.88439999999991,
+        92.62059999999997,
+        98.9793000000002,
+        111.77999999999997
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/box-muller-polar-gaussian-kernel-rig/light-box_muller_polar_log_radical_gaussian.png",
+    "docs/evidence/box-muller-polar-gaussian-kernel-rig/light-naive_uniform_disk_gaussian_tail_loss.png",
+    "docs/evidence/box-muller-polar-gaussian-kernel-rig/dark-box_muller_polar_log_radical_gaussian.png",
+    "docs/evidence/box-muller-polar-gaussian-kernel-rig/dark-naive_uniform_disk_gaussian_tail_loss.png",
+    "docs/evidence/box-muller-polar-gaussian-kernel-rig/mobile.png"
+  ],
+  "primary_label": "Box-Muller σ√(−2 ln(1−u)) Exact CDF",
+  "baseline_label": "64-Subring Polar Gaussian Quadrature",
+  "load_unit": "Gaussian passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form Box-Muller log-radical evaluation versus 64-subring 2D polar Gaussian annulus quadrature.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "station0_box_jacobian": 1,
+    "station0_naive_jacobian": 1,
+    "station4_box_jacobian": 1,
+    "station4_naive_jacobian": 0.8,
+    "station8_box_jacobian": 1,
+    "station8_naive_jacobian": 0.6,
+    "station10_box_radius": 1.1774,
+    "station10_box_jacobian": 1,
+    "station10_naive_jacobian": 0.5,
+    "station16_box_jacobian": 1,
+    "station16_naive_jacobian": 0.2,
+    "imbalanced_stations": 16
+  },
+  "protocol": {
+    "input": {
+      "station_4_u": 0.2,
+      "station_10_u": 0.5,
+      "station_16_u": 0.8
+    },
+    "output": {
+      "box_muller_jacobian": 1,
+      "median_hwhm_radius_sigma": 1.1774,
+      "naive_disk_jacobian_u020": 0.8,
+      "naive_disk_jacobian_u050": 0.5,
+      "naive_disk_jacobian_u080": 0.2,
+      "imbalanced_stations": 16
+    },
+    "function": "r(u) = σ√(−2 ln(1−u)) -> J_Box = (1−u)·(1/(1−u)) = 1.0000× vs Naive Disk J = 1−u (0.2000× at u=0.80, 16/17 Imbalanced)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 Gaussian quantile stations preserve exact unit probability-mass Jacobian J = 1.0000x",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "2D Gaussian bloom, stochastic depth-of-field, and Monte Carlo soft-shadow kernel importance sampling (Box & Muller 1958)",
+    "Subpixel anti-aliasing jitter (2D Gaussian pixel reconstruction filter) where every sample carries equal weight 1/N",
+    "Subsurface scattering (SSS) Gaussian dipole/multipole radial profile importance sampling",
+    "1-log-1-sqrt closed-form polar inverse CDF replacing 64-subring numerical quadrature"
+  ],
+  "not_for": [
+    "Hard-edged physical circular aperture diaphragms requiring flat top-hat disk density (use Shirley concentric disk there)",
+    "Unfiltered nearest-neighbor pixel blits",
+    "1D linear ramp fades",
+    "Deterministic box blurs"
+  ],
+  "locale_zh": {
+    "title": "Box-Muller 极坐标对数根式二维高斯核采样 vs 朴素等面积圆盘采样尾部失衡",
+    "subtitle": "为什么在二维高斯抗锯齿抖动（Gaussian AA Jitter）、蒙特卡洛软阴影与次表面散射采样中，如果用等面积圆盘 `r = R√u` 去采样高斯钟形核，会让外圈样本的有效能量权重暴跌 `-80.00%`（浪费大量射线在低权重尾部），而 Box & Muller (1958) 极坐标对数根式 `r = σ√(−2 ln(1 − u))` 能让每个分层样本 100% 携带恒定单位权重 `J = 1.0000×`？",
+    "plain_intro": "一维高斯分布的累积分布函数 Φ(x) = ½(1 + erf(x/√2)) 没有初等代数反函数；但神奇的是，一旦进入二维极坐标 (r, φ)，面积微元 dA = r dr dφ 自带的因子 r 恰好是指数项 −r²/(2σ²) 的导数！因此二维各向同性高斯核的累积能量积分拥有极其优美的初等闭式解：F(r) = ∫₀^r (r/σ²) exp(−r²/(2σ²)) dr = 1 − exp(−r²/(2σ²)) = u！George E. P. Box 与 Mervin E. Muller（1958）直接对该方程求逆，得到著名的极坐标对数根式变换：r(u) = σ √(−2 ln(1 − u))！在这个变换下，虽然外圈的高斯钟形密度衰减为 exp(−r²/(2σ²)) = 1 − u，但对数根式将外圈微环带的面积精确拉伸了 d(−ln(1−u))/du = 1 / (1 − u) 倍，两者相乘得到的分层概率质量雅可比恒等于 J_Box(u) = (1 − u) · (1 / (1 − u)) ≡ 1.0000×（每个样本天然具备完全相等的权重 1/N，零拒绝采样、零方差膨胀）！相反，如果使用朴素等面积圆盘采样（缺少 1/(1−u) 对数拉伸），分层概率质量按 J_naive(u) = 1 − u 线性崩塌：在第 4 站（u=0.20）跌至 0.8000×，在第 10 站半高全宽中位点（u=0.50, r=√(2 ln 2)σ ≈ 1.1774σ）腰斩至 0.5000×，在第 16 站（u=0.80）更是暴跌至 0.2000×（亏损 −80.00%，污染 16/17 个站点）！",
+    "finding": "实测跨越二维高斯分位数 u ∈ [0.0000, 0.8000] 的 17 个站点：Box-Muller 极坐标对数根式变换（r = σ√(−2 ln(1−u))）在全部 17 个站点恒定锁死概率质量雅可比 J = 1.0000×（中位半高半径精确落于 1.1774σ，0/17 权重失衡），而朴素等面积圆盘采样在第 4 站跌至 0.8000×、第 10 站腰斩至 0.5000×、第 16 站暴跌至 0.2000×（−80.00%），导致 16/17 个分层发生严重权重失衡。",
+    "workbench_title": "58 实体 17 站点极坐标高斯核逆变换检验台（Box-Muller Polar Gaussian Kernel Bench）",
+    "scenario_quote": "为什么一维高斯分布求逆需要复杂的 `erf⁻¹` 逼近，而二维高斯分布求逆只需要一个简单的 `sqrt(-2 * log(1 - u))`？因为二维极坐标微环带面积 `2πr dr` 多出来的那个 `r`，恰好把高斯积分变成了可以直接求逆的指数函数 `1 - exp(-r²/2)`！",
+    "protocol_note": "顶块展示第 4 站（u=0.20）、第 10 站半高中位（u=0.50, r=1.1774σ）与第 16 站（u=0.80）输入；底块对比 Box-Muller 对数根式恒锁概率雅可比 1.0000× 与朴素等面积圆盘跌落至 0.2000×。",
+    "robustness_name": "17 个高斯分位数站点在 Box-Muller 极坐标对数根式下 100% 保持精确单位概率质量雅可比 J_Box = 1.0000×",
+    "primary_label": "Box-Muller σ√(−2 ln(1−u)) 逆变换",
+    "baseline_label": "64 子环极坐标高斯数值求积",
+    "load_unit": "次 17 站高斯核求值",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比闭式 Box-Muller 对数根式与 64 子环极坐标高斯数值求积基准。",
+    "good_fit": [
+      "TAA / 路径追踪亚像素二维高斯抗锯齿抖动（Gaussian Pixel Reconstruction Filter Jitter，Box & Muller 1958）",
+      "蒙特卡洛高斯软阴影、随机大气泛光（Stochastic Bloom）与次表面散射多高斯径向采样",
+      "将 Halton / Sobol 低差异序列无损映射为等权重二维正态分布采样点",
+      "单次 ln 与 sqrt 闭式逆变换直接替代 64 子环高斯积分"
+    ],
+    "not_for": [
+      "需要均匀圆盘硬边界的物理透镜光圈（此时应选 Shirley 同心等面积圆盘映射）",
+      "无滤波的最近邻像素拷贝",
+      "一维线性渐变斜坡",
+      "均匀权重的均值方框滤波（Box Filter）"
+    ],
+    "readiness": "12/12 项实测通过；58 个 3D 极坐标高斯核检验构件、17 个分位数站点与 7-Card 报告已封存。",
+    "entries": {
+      "boxmuller-annulus64-equiv-128": "Box-Muller对数根式与64子环求积等价 128",
+      "128 Box-Muller log-radical and 64-subring polar Gaussian annulus quadrature passes agree within 1e-11": "128 次 Box-Muller 对数根式逆变换与 64 子环极坐标高斯积分在 1e-11 内一致",
+      "boxmuller-annulus64-equiv-1024": "Box-Muller对数根式与64子环求积等价 1024",
+      "1024 Box-Muller log-radical and 64-subring polar Gaussian annulus quadrature passes agree within 1e-11": "1024 次 Box-Muller 对数根式逆变换与 64 子环极坐标高斯积分在 1e-11 内一致",
+      "boxmuller-annulus64-equiv-8192": "Box-Muller对数根式与64子环求积等价 8192",
+      "8192 Box-Muller log-radical and 64-subring polar Gaussian annulus quadrature passes agree within 1e-11": "8192 次 Box-Muller 对数根式逆变换与 64 子环极坐标高斯积分在 1e-11 内一致",
+      "box-muller-mass-jacobian-locked": "Box-Muller全站高斯概率质量1.0000x锁定",
+      "17 Gaussian quantile stations lock exact probability-mass Jacobian J = 1.0000x (0/17 imbalanced)": "17 个高斯分位数站点恒定锁死概率质量雅可比 J = 1.0000×（0/17 权重失衡）",
+      "naive-uniform-disk-tail-loss-exposed": "朴素等面积圆盘采样尾部失衡暴露",
+      "naive uniform-disk sampling (1 - u) loses -20% mass at S4, -50% at S10 (u=0.50), and -80% at S16 (u=0.80) across 16/17 stations": "朴素等面积圆盘采样在第 4 站亏损 -20%、第 10 站中位腰斩 -50%、第 16 站亏损 -80%（污染 16/17 站）",
+      "box-st4-u020-10000": "第4站u=0.20高斯质量1.0000x锁定",
+      "station-4 (u=0.20) locks J_Box=1.0000x vs naive uniform disk 0.8000x (-20.00% mass loss)": "第 4 站（u=0.20）锁死 J_Box=1.0000×（消除朴素圆盘 0.8000× 失衡）",
+      "box-st10-hwhm-10000": "第10站半高中位1.1774σ锁定",
+      "station-10 (median u=0.50, r=1.1774 sigma) locks J_Box=1.0000x vs naive 0.5000x (-50.00% mass loss)": "第 10 站（半高中位 u=0.50, r=1.1774σ）锁死 J_Box=1.0000×（消除朴素 0.5000× 腰斩）",
+      "box-st16-u080-10000": "第16站u=0.80外圈高斯质量1.0000x锁定",
+      "station-16 (outer tail u=0.80, r=1.7941 sigma) locks J_Box=1.0000x vs naive 0.2000x (-80.00% mass loss)": "第 16 站（外圈 u=0.80, r=1.7941σ）锁死 J_Box=1.0000×（消除朴素 -80.0% 权重暴跌）",
+      "exact-mode-roundtrip": "模式往返切换一致性",
+      "preset switching round-trip preserves deterministic Box-Muller Gaussian telemetry": "Box-Muller 对数根式与朴素均匀圆盘采样模式往返切换保持确定性状态",
+      "geometry-58-solids": "58构件3D极坐标高斯核检验台一致性",
+      "3D Box-Muller polar Gaussian bench renders 58 tracked solids across 17 stations": "3D 极坐标高斯核检验台在 17 个分位数站点完整渲染 58 个独立几何体",
+      "mobile-layout": "手机布局",
+      "390px Box-Muller Gaussian controls fit without horizontal overflow": "390px 极坐标高斯核控制面板无横向溢出",
+      "runtime-errors": "运行错误",
+      "0 JavaScript errors": "0 个 JavaScript 错误"
+    }
+  }
+}

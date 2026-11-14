@@ -1,0 +1,267 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Green energy-conserving subsurface wrap diffuse vs naive unnormalized wrap energy blowout rig",
+  "topic_zh": "Green 平方分母能量守恒次表面包裹漫反射对比朴素一次分母包裹能量翻倍过曝",
+  "slug": "green-energy-conserving-wrap-diffuse-rig",
+  "timestamp": "2026-11-14T16:23:08.059Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Simon Green (GPU Gems 2004) & UE5/Frostbite energy-conserving subsurface wrap diffuse normalization (f_norm(mu, w) = max(0, mu + w) / (1 + w)^2, locking spherical integral E_norm(w) = 1.0000x) versus naive unnormalized wrap diffuse (max(0, mu + w) / (1 + w), inflating total energy to E_unnorm(w) = 1 + w) and 64-ring spherical zonal midpoint quadrature across 17 wrap width stations (w in [0.0000, 1.0000]).",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "wrap-zonal64-equiv-128",
+      "passed": true,
+      "detail": "128 quadratic wrap normalization and 64-ring zonal quadrature passes agree within 1e-12"
+    },
+    {
+      "name": "wrap-zonal64-equiv-1024",
+      "passed": true,
+      "detail": "1024 quadratic wrap normalization and 64-ring zonal quadrature passes agree within 1e-12"
+    },
+    {
+      "name": "wrap-zonal64-equiv-8192",
+      "passed": true,
+      "detail": "8192 quadratic wrap normalization and 64-ring zonal quadrature passes agree within 1e-12"
+    },
+    {
+      "name": "green-wrap-energy-conserved",
+      "passed": true,
+      "detail": "17 wrap stations lock spherical diffuse integral at exact E = 1.0000x (0/17 overbright)"
+    },
+    {
+      "name": "naive-wrap-energy-blowout-exposed",
+      "passed": true,
+      "detail": "naive 1/(1+w) wrap inflates total energy to E = 1 + w (1.5000x at w=0.50, 2.0000x at w=1.00 across 16/17 stations)"
+    },
+    {
+      "name": "wrap-st4-quarter-apex-08000",
+      "passed": true,
+      "detail": "station-4 (w=0.25) attenuates apex to 0.8000 to lock E=1.0000x vs naive E=1.2500x (+25.0% blowout)"
+    },
+    {
+      "name": "wrap-st8-half-energy-10000",
+      "passed": true,
+      "detail": "station-8 (w=0.50) locks terminator at 0.2222 and total energy at 1.0000x vs naive 1.5000x (+50.0% blowout)"
+    },
+    {
+      "name": "wrap-st16-full-sphere-05000",
+      "passed": true,
+      "detail": "station-16 (w=1.00) attenuates apex to 0.5000 to lock E=1.0000x vs naive 2.0000x (+100.0% double energy)"
+    },
+    {
+      "name": "exact-mode-roundtrip",
+      "passed": true,
+      "detail": "preset switching round-trip preserves deterministic wrap diffuse telemetry"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D subsurface wrap calorimeter bench renders 58 tracked solids across 17 stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Green wrap diffuse controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station wrap passes",
+      "count": 128,
+      "primary_ms": 0.04580000000009932,
+      "baseline_ms": 0.18229999999994106,
+      "primary_samples_ms": [
+        0.07090000000005148,
+        0.07550000000003365,
+        0.0424999999999045,
+        0.04580000000009932,
+        0.045200000000022555,
+        0.05160000000000764,
+        0.04079999999999018
+      ],
+      "baseline_samples_ms": [
+        0.37390000000004875,
+        0.341199999999958,
+        0.17470000000002983,
+        0.17060000000003583,
+        0.18229999999994106,
+        0.1752999999999929,
+        0.2217000000000553
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station wrap passes",
+      "count": 1024,
+      "primary_ms": 0.08959999999990487,
+      "baseline_ms": 1.2497000000000753,
+      "primary_samples_ms": [
+        0.09770000000003165,
+        0.08959999999990487,
+        0.08789999999999054,
+        0.08920000000000528,
+        0.08780000000001564,
+        0.09019999999998163,
+        0.08969999999999345
+      ],
+      "baseline_samples_ms": [
+        1.6181000000000267,
+        1.2497000000000753,
+        1.2816000000000258,
+        1.1949000000000751,
+        2.3787999999999556,
+        1.1843000000000075,
+        1.1753999999999678
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station wrap passes",
+      "count": 8192,
+      "primary_ms": 0.7293999999999414,
+      "baseline_ms": 11.600000000000023,
+      "primary_samples_ms": [
+        0.7205000000000155,
+        0.7395999999999958,
+        0.7241000000000213,
+        0.7615999999999303,
+        0.7532999999999674,
+        0.7293999999999414,
+        0.7285000000000537
+      ],
+      "baseline_samples_ms": [
+        11.140499999999975,
+        10.626900000000091,
+        18.543600000000083,
+        13.147699999999986,
+        10.317300000000046,
+        11.696900000000028,
+        11.600000000000023
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/green-energy-conserving-wrap-diffuse-rig/light-green_energy_conserving_wrap_squared.png",
+    "docs/evidence/green-energy-conserving-wrap-diffuse-rig/light-naive_unnormalized_wrap_energy_blowout.png",
+    "docs/evidence/green-energy-conserving-wrap-diffuse-rig/dark-green_energy_conserving_wrap_squared.png",
+    "docs/evidence/green-energy-conserving-wrap-diffuse-rig/dark-naive_unnormalized_wrap_energy_blowout.png",
+    "docs/evidence/green-energy-conserving-wrap-diffuse-rig/mobile.png"
+  ],
+  "primary_label": "Closed-Form Quadratic 1/(1+w)² Wrap",
+  "baseline_label": "64-Ring Spherical Zonal Quadrature",
+  "load_unit": "wrap passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form quadratic energy-conserving wrap evaluation versus 64-ring spherical zonal midpoint quadrature.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "station4_conserving_apex": 0.8,
+    "station8_conserving_energy": 1,
+    "station8_naive_energy": 1.5,
+    "station16_conserving_apex": 0.5,
+    "station16_naive_energy": 2,
+    "blown_out_stations": 16
+  },
+  "protocol": {
+    "input": {
+      "station_index": 8,
+      "wrap_width_w": 0.5,
+      "apex_mu": 1,
+      "terminator_mu": 0
+    },
+    "output": {
+      "conserving_apex_radiance": 0.6667,
+      "conserving_terminator_radiance": 0.2222,
+      "conserving_total_energy": 1,
+      "naive_total_energy": 1.5,
+      "overbright_stations": 16
+    },
+    "function": "f_norm(μ, 0.5) = max(0, μ+0.5)/1.5² -> E_norm = 1.0000× (Apex=0.6667) vs Naive max(0, μ+0.5)/1.5 -> E_naive = 1.5000× (+50% Blowout)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 wrap stations preserve exact unit spherical irradiance integral E_norm(w) = 1.0000x across w in [0, 1]",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Subsurface scattering wrap lighting for skin, wax, clouds, and foliage (Green GPU Gems 2004 / UE5 / Unity HDRP / Frostbite)",
+    "Soft area-light wrap approximations that must not inflate total scene luminance when artists widen wrap parameter w",
+    "Automated material LODs transitioning between standard Lambert (w=0) and translucent wrap (w>0) with zero exposure jump",
+    "Closed-form 1/(1+w)^2 normalization replacing 64-ring spherical cap quadrature"
+  ],
+  "not_for": [
+    "Intentional non-physical stylized rim boosts where artists want total brightness to double",
+    "Replacing shadow maps for hard cast occluders",
+    "Unlit 2D UI elements",
+    "1D audio compression"
+  ],
+  "locale_zh": {
+    "title": "Green 平方分母能量守恒包裹漫反射 vs 朴素一次分母包裹能量翻倍过曝",
+    "subtitle": "为什么在皮肤、云层与叶片次表面散射着色器里，按教科书直觉写 `(max(0, dot(N, L) + w) / (1 + w))` 会导致包裹参数 `w` 越调大，整个角色和云团就越过曝发白（在 `w = 1` 时总反射能量直接翻倍至 `200%`）？",
+    "plain_intro": "在实时渲染中，为了模拟次表面散射或大面积柔光绕过 90° 明暗交界线（Terminator，μ = N·L = 0）向背光面渗透，最常见的包裹漫反射（Wrap Lighting）写法是 f_unnorm(μ, w) = max(0, μ + w) / (1 + w)。表面上看，除以 (1 + w) 让向光极点（μ = +1）的亮度保持在 (1 + w)/(1 + w) = 1.0000 不变；然而，光照覆盖的球冠区间却从 μ ∈ [0, 1] 扩大到了 μ ∈ [−w, 1]（跨度变为 1 + w 倍）！对整个受光球冠积分 ∫_{-w}^1 2·((μ + w)/(1 + w)) dμ = 1 + w：这意味着当美术把包裹宽度 w 调到 0.25（第 4 站）、0.50（第 8 站）和 1.00（第 16 站）时，物体凭空多发射了 +25.00%（1.2500×）、+50.00%（1.5000×）乃至 +100.00%（2.0000× 翻倍）的总漫反射能量，导致皮肤和云朵严重过曝！根据 Simon Green (GPU Gems 2004) 与现代 PBR 引擎（UE5 / Frostbite / Unity HDRP）的能量守恒包裹定律，必须再除以一次球冠跨度 (1 + w)，即采用平方分母 f_norm(μ, w) = max(0, μ + w) / (1 + w)²：当光线向暗部渗透时，向光顶点按 1/(1 + w) 成比例让出能量（w=0.25 时顶点 0.8000、w=0.50 时顶点 0.6667、w=1.00 时顶点 0.5000），从而在全部 17 个包裹站点将球面总积分能量恒定锁死在 E_norm(w) = 1.0000×（0/17 过曝）！",
+    "finding": "实测 17 个包裹宽度站点（w ∈ [0.00, 1.00]）：平方分母 1/(1+w)² 归一化在全部 17 个站点恒定锁死球面积分总能量 E = 1.0000×（第 4 站顶点 0.8000、第 8 站交界线 0.2222、第 16 站顶点 0.5000，0/17 过曝），而朴素一次分母 1/(1+w) 使总能量在第 4/8/12/16 站飙升至 1.2500×、1.5000×、1.7500× 与 2.0000×（污染全部 16/17 个非零包裹站）。",
+    "workbench_title": "58 实体 17 站点包裹漫反射量热台（Subsurface Wrap Calorimeter Bench）",
+    "scenario_quote": "既然在 μ = 1 处 `(1 + w) / (1 + w) = 1.0` 看起来已经归一化了，为什么球面总能量还是膨胀了 `(1 + w)` 倍？因为底边跨度也拉宽了 `(1 + w)` 倍，三角形面积等于底乘高，所以分母必须是 `(1 + w)²`！",
+    "protocol_note": "顶块展示第 8 站（半包裹宽度 w=0.5000，顶点 μ=1.0，交界线 μ=0.0）；底块对比平方分母归一化输出顶点 0.6667、交界线 0.2222、总能量 1.0000× 与朴素一次分母输出总能量 1.5000×（+50% 过曝）。",
+    "robustness_name": "17 个包裹宽度站点在 w ∈ [0.00, 1.00] 全程 100% 锁死单位球面总能量积分 E_norm(w) = 1.0000×",
+    "primary_label": "Green 平方分母能量守恒包裹",
+    "baseline_label": "64 环带球面中点数值积分",
+    "load_unit": "次 17 站包裹求值",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比闭式平方分母包裹归一化与 64 环带球冠数值积分。",
+    "good_fit": [
+      "角色皮肤、玉石蜡质、体积云团与植被叶片的实时次表面包裹漫反射（Green GPU Gems 2004 / UE5 / Frostbite）",
+      "动态调节柔光包裹宽度 w 时保持场景整体曝光度恒定，防止角色脸部随 w 增大而过曝发白",
+      "与 PBR 环境光及直接光能量预算严格对齐的风格化/半写实着色管线",
+      "单次乘法闭式 1/(1+w)² 归一化直接替代 64 环带球冠数值积分"
+    ],
+    "not_for": [
+      "刻意追求非物理过曝发光效果的特效着色器",
+      "直接替代硬投射阴影贴图（Shadow Map）",
+      "无光照平面 UI 控件",
+      "一维音频动态范围压缩"
+    ],
+    "readiness": "12/12 项实测通过；58 个 3D 包裹量热构件、17 个包裹宽度站点与 7-Card 报告已封存。",
+    "entries": {
+      "wrap-zonal64-equiv-128": "平方分母包裹与64环带积分等价 128",
+      "128 quadratic wrap normalization and 64-ring zonal quadrature passes agree within 1e-12": "128 次平方分母包裹漫反射归一化与 64 环带球面积分在 1e-12 内一致",
+      "wrap-zonal64-equiv-1024": "平方分母包裹与64环带积分等价 1024",
+      "1024 quadratic wrap normalization and 64-ring zonal quadrature passes agree within 1e-12": "1024 次平方分母包裹漫反射归一化与 64 环带球面积分在 1e-12 内一致",
+      "wrap-zonal64-equiv-8192": "平方分母包裹与64环带积分等价 8192",
+      "8192 quadratic wrap normalization and 64-ring zonal quadrature passes agree within 1e-12": "8192 次平方分母包裹漫反射归一化与 64 环带球面积分在 1e-12 内一致",
+      "green-wrap-energy-conserved": "Green平方分母包裹全站能量守恒",
+      "17 wrap stations lock spherical diffuse integral at exact E = 1.0000x (0/17 overbright)": "17 个包裹宽度站点恒定锁死球面漫反射总积分能量 E = 1.0000×（0/17 过曝）",
+      "naive-wrap-energy-blowout-exposed": "朴素一次分母包裹能量膨胀暴露",
+      "naive 1/(1+w) wrap inflates total energy to E = 1 + w (1.5000x at w=0.50, 2.0000x at w=1.00 across 16/17 stations)": "朴素 1/(1+w) 包裹使总能量随 E = 1+w 线性膨胀（w=0.50 达 1.5000×、w=1.00 达 2.0000×，污染 16/17 站）",
+      "wrap-st4-quarter-apex-08000": "第4站w=0.25顶点0.8000能量守恒锁定",
+      "station-4 (w=0.25) attenuates apex to 0.8000 to lock E=1.0000x vs naive E=1.2500x (+25.0% blowout)": "第 4 站（w=0.25）将向光顶点衰减至 0.8000 以锁死总能量 E=1.0000×（消除朴素 1.2500× 过曝）",
+      "wrap-st8-half-energy-10000": "第8站w=0.50总能量1.0000x锁定",
+      "station-8 (w=0.50) locks terminator at 0.2222 and total energy at 1.0000x vs naive 1.5000x (+50.0% blowout)": "第 8 站（w=0.50）锁死交界线 0.2222 与总能量 1.0000×（消除朴素 1.5000× 过曝）",
+      "wrap-st16-full-sphere-05000": "第16站w=1.00全包裹0.5000顶点锁定",
+      "station-16 (w=1.00) attenuates apex to 0.5000 to lock E=1.0000x vs naive 2.0000x (+100.0% double energy)": "第 16 站（w=1.00 全包裹）将顶点衰减至 0.5000 锁死总能量 1.0000×（消除朴素 2.0000× 翻倍过曝）",
+      "exact-mode-roundtrip": "模式往返切换一致性",
+      "preset switching round-trip preserves deterministic wrap diffuse telemetry": "平方分母能量守恒包裹与朴素一次分母包裹模式往返切换保持确定性状态",
+      "geometry-58-solids": "58构件3D包裹漫反射量热台一致性",
+      "3D subsurface wrap calorimeter bench renders 58 tracked solids across 17 stations": "3D 包裹漫反射量热台在 17 个包裹宽度站点完整渲染 58 个独立几何体",
+      "mobile-layout": "手机布局",
+      "390px Green wrap diffuse controls fit without horizontal overflow": "390px Green 包裹漫反射控制面板无横向溢出",
+      "runtime-errors": "运行错误",
+      "0 JavaScript errors": "0 个 JavaScript 错误"
+    }
+  }
+}

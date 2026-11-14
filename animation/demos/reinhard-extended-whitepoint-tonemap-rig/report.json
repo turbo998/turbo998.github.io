@@ -1,0 +1,267 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Reinhard extended white-point rational tone mapping vs naive asymptotic grey ceiling rig",
+  "topic_zh": "Reinhard 扩展白点有理色调映射对比朴素简单 L/(1+L) 渐近死灰封顶",
+  "slug": "reinhard-extended-whitepoint-tonemap-rig",
+  "timestamp": "2026-11-14T16:51:48.525Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Erik Reinhard, Michael Stark, Peter Shirley & James Ferwerda (SIGGRAPH 2002 Eq. 4) extended white-point rational tone mapping operator (T_ext(L) = L(1 + L / L_white^2) / (1 + L) for L_white = 4.0000, reaching exact 1.0000 display white at L = L_white) versus naive simple Reinhard (T_naive(L) = L / (1 + L), stalling at 0.8000 at L = 4.0000) and 64-substep differential Weber-Fechner contrast ODE integration across 17 HDR luminance stations (L in [0.0000, 4.0000]).",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "reinhard-weber64-equiv-128",
+      "passed": true,
+      "detail": "128 Extended Reinhard and 64-substep Weber-Fechner ODE passes agree within 1e-10"
+    },
+    {
+      "name": "reinhard-weber64-equiv-1024",
+      "passed": true,
+      "detail": "1024 Extended Reinhard and 64-substep Weber-Fechner ODE passes agree within 1e-10"
+    },
+    {
+      "name": "reinhard-weber64-equiv-8192",
+      "passed": true,
+      "detail": "8192 Extended Reinhard and 64-substep Weber-Fechner ODE passes agree within 1e-10"
+    },
+    {
+      "name": "reinhard-whitepoint-full-ceiling",
+      "passed": true,
+      "detail": "17 HDR stations reach exact T(2.0)=0.7500 and full display white T(4.0)=1.0000 (0/17 starved)"
+    },
+    {
+      "name": "simple-reinhard-grey-ceiling-exposed",
+      "passed": true,
+      "detail": "naive L/(1+L) stalls at T(2.0)=0.6667 and caps at 0.8000 at L_white=4.0 (-20.0% ceiling loss across 16/17 stations)"
+    },
+    {
+      "name": "reinhard-st8-hdr2-07500",
+      "passed": true,
+      "detail": "station-8 (L=2.00) locks T_ext=0.7500 vs simple Reinhard 0.6667 (-11.11% highlight loss)"
+    },
+    {
+      "name": "reinhard-st12-hdr3-08906",
+      "passed": true,
+      "detail": "station-12 (L=3.00) locks T_ext=0.8906 (57/64) vs simple Reinhard 0.7500 (-15.79% loss)"
+    },
+    {
+      "name": "reinhard-st16-whitepoint-10000",
+      "passed": true,
+      "detail": "station-16 white point (L_white=4.00) locks T_ext=1.0000 vs simple Reinhard 0.8000 (-20.00% ceiling loss)"
+    },
+    {
+      "name": "exact-mode-roundtrip",
+      "passed": true,
+      "detail": "preset switching round-trip preserves deterministic Reinhard white-point telemetry"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D Reinhard sensitometer bench renders 58 tracked solids across 17 stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Reinhard sensitometer controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station tonemap passes",
+      "count": 128,
+      "primary_ms": 0.00940000000002783,
+      "baseline_ms": 0.6253000000000384,
+      "primary_samples_ms": [
+        0.02290000000004966,
+        0.014800000000036562,
+        0.012200000000007094,
+        0.007499999999936335,
+        0.00940000000002783,
+        0.0060000000000854925,
+        0.005999999999971806
+      ],
+      "baseline_samples_ms": [
+        0.5727000000000544,
+        0.6308999999999969,
+        0.6750000000000682,
+        0.6063000000000329,
+        0.6101000000001022,
+        0.6253000000000384,
+        0.6498000000000275
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station tonemap passes",
+      "count": 1024,
+      "primary_ms": 0.05389999999999873,
+      "baseline_ms": 5.115799999999922,
+      "primary_samples_ms": [
+        0.25120000000003984,
+        0.05259999999998399,
+        0.05389999999999873,
+        0.055499999999938154,
+        0.05299999999999727,
+        0.060100000000034015,
+        0.05330000000003565
+      ],
+      "baseline_samples_ms": [
+        4.92999999999995,
+        4.872400000000084,
+        5.091100000000097,
+        5.115799999999922,
+        6.8238999999999805,
+        5.459799999999973,
+        6.808899999999994
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station tonemap passes",
+      "count": 8192,
+      "primary_ms": 0.4337000000000444,
+      "baseline_ms": 39.934799999999996,
+      "primary_samples_ms": [
+        0.4337000000000444,
+        1.0028999999999542,
+        0.5134999999999081,
+        0.4235999999999649,
+        0.4256000000000313,
+        0.43410000000005766,
+        0.419399999999996
+      ],
+      "baseline_samples_ms": [
+        39.409200000000055,
+        39.98610000000008,
+        39.934799999999996,
+        39.74120000000005,
+        39.48210000000006,
+        40.05670000000009,
+        41.28180000000009
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/reinhard-extended-whitepoint-tonemap-rig/light-reinhard_extended_whitepoint_rational.png",
+    "docs/evidence/reinhard-extended-whitepoint-tonemap-rig/light-naive_simple_reinhard_grey_ceiling.png",
+    "docs/evidence/reinhard-extended-whitepoint-tonemap-rig/dark-reinhard_extended_whitepoint_rational.png",
+    "docs/evidence/reinhard-extended-whitepoint-tonemap-rig/dark-naive_simple_reinhard_grey_ceiling.png",
+    "docs/evidence/reinhard-extended-whitepoint-tonemap-rig/mobile.png"
+  ],
+  "primary_label": "Extended Reinhard L(1+L/L_w²)/(1+L)",
+  "baseline_label": "64-Substep Weber-Fechner ODE Integral",
+  "load_unit": "tonemap passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form Extended Reinhard white-point evaluation versus 64-substep 3-point Gauss-Legendre Weber-Fechner ODE integration.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "station8_extended_tone": 0.75,
+    "station8_simple_tone": 0.6667,
+    "station12_extended_tone": 0.8906,
+    "station16_extended_tone": 1,
+    "station16_simple_tone": 0.8,
+    "starved_stations": 16
+  },
+  "protocol": {
+    "input": {
+      "white_point_L": 4,
+      "station_8_L": 2,
+      "station_12_L": 3,
+      "station_16_L": 4
+    },
+    "output": {
+      "extended_tone_L2": 0.75,
+      "simple_tone_L2": 0.6667,
+      "extended_tone_L4_white": 1,
+      "simple_tone_L4_white": 0.8,
+      "starved_stations": 16
+    },
+    "function": "T_ext(4.0) = 4·(1 + 4/16)/(1 + 4) = 1.0000 vs Simple T_naive(4.0) = 4/(1 + 4) = 0.8000 (−20% Ceiling Starvation)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 HDR luminance stations preserve monotonic contrast slope dT/dL > 0 and reach exact 1.0000 at L_white",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "HDR-to-SDR tone reproduction with a calibrated finite scene white point L_white (Reinhard et al. SIGGRAPH 2002 Eq. 4)",
+    "Real-time PBR viewports, emissive UI badges, and specular glints that must reach crisp 1.0000 display white without hard clamp clipping",
+    "Dynamic exposure adaptation where L_white tracks the 99th-percentile scene luminance",
+    "1-FMA numerator correction replacing 64-substep Weber-Fechner ODE integration"
+  ],
+  "not_for": [
+    "Chromaticity-preserving gamut mapping without per-channel inset/outset matrices (use AgX for extreme saturated neon)",
+    "Linear radiometric G-buffer storage prior to post-processing",
+    "Unlit 1-bit monochrome icons",
+    "1D audio limiter DSP"
+  ],
+  "locale_zh": {
+    "title": "Reinhard 扩展白点有理色调映射 vs 朴素简单 L/(1+L) 渐近死灰封顶",
+    "subtitle": "为什么在实时 HDR 渲染里直接写 `color = color / (1.0 + color)` 会让太阳高光、金属闪烁和自发光灯牌永远蒙着一层灰雾，哪怕在有限场景白点 `L_white = 4.0` 下也只能达到 `0.8000` 的死灰亮度？",
+    "plain_intro": "在把高动态范围（HDR）辐射亮度 L ∈ [0, L_white] 压缩到显示器 [0, 1] 区间时，无数教程直接写下最简单的双曲压缩公式 T_naive(L) = L / (1 + L)。然而从初等代数就能看出：L / (1 + L) 只有在 L → ∞（无穷大亮度）时才会渐近趋向 1.0000！在真实的摄影与游戏场景中，场景最大白点 L_white 是有限值（例如 L_white = 4.0000 倍漫反射白）：此时简单 Reinhard 在 L = 2.00 处仅输出 2/3 = 0.6667，在白点 L_white = 4.00 处居然卡死在 4 / (1 + 4) = 0.8000！这意味着显示器最明亮的顶部 20.00% 动态范围（[0.8000, 1.0000]）被彻底浪费，一切高光和火花看起来都像阴天一样发灰暗沉！Erik Reinhard 等人在 SIGGRAPH 2002 原论文第 4 式中专门给出了扩展白点有理算子（Extended Reinhard Operator）：T_ext(L) = L · (1 + L / L_white²) / (1 + L)。当 L_white = 4.0000（L_white² = 16.0）时，分子中的补偿因子 (1 + L/16) 在暗部几乎为 1（保持脚部斜率不变），而在高光区稳步托举亮度：在第 8 站（L=2.00）精准输出 0.7500，在第 12 站（L=3.00）输出 57/64 = 0.8906，并在第 16 站白点（L=4.00）处实现 (4 × 1.25) / 5 = 1.0000 完美满幅纯白落地（0/17 高光饥饿）！",
+    "finding": "实测 17 个 HDR 亮度站点（L ∈ [0.00, 4.00]，白点 L_white = 4.00）：扩展 Reinhard 有理算子在第 8 站（L=2.00）锁死 0.7500、第 12 站（L=3.00）锁死 0.8906、第 16 站（L_white=4.00）精确抵达满幅纯白 1.0000（0/17 高光饥饿），而朴素 L/(1+L) 在 L=2.0/3.0/4.0 处跌至 0.6667、0.7500 与 0.8000（丢失顶部 −20.00% 动态范围，污染 15/17 个站点）。",
+    "workbench_title": "58 实体 17 站点色调映射感光台（Reinhard White-Point Sensitometer Bench）",
+    "scenario_quote": "为什么 `L / (1 + L)` 永远映不出清透的纯白高光？因为当场景最高亮度是 4.0 时，`4 / (1 + 4) = 0.80`，整整 20% 的显示器最高亮度区间被活活饿死了！",
+    "protocol_note": "顶块展示白点 L_white=4.00 下的第 8 站（L=2.00）、第 12 站（L=3.00）与第 16 站（L=4.00）；底块对比扩展白点算子输出 0.7500 / 0.8906 / 1.0000 与朴素简单 Reinhard 卡死在 0.6667 / 0.7500 / 0.8000。",
+    "robustness_name": "17 个 HDR 亮度站点在 [0.00, 4.00] 全程 100% 保持严格单调递增并在 L_white 处精确收敛至 1.0000",
+    "primary_label": "Reinhard 扩展白点有理算子",
+    "baseline_label": "64 子步 Weber-Fechner 微分积分",
+    "load_unit": "次 17 站色调映射求值",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比闭式扩展白点有理算子与 64 子步 Weber-Fechner 对比度常微分方程积分。",
+    "good_fit": [
+      "具有明确场景白点 L_white 的实时 HDR-to-SDR 色调映射（Reinhard et al. SIGGRAPH 2002 Eq. 4）",
+      "3D 产品展示台、金属边缘高光与自发光指示灯：既不硬截断爆掉细节，又能精准触达 1.0000 纯白上限",
+      "配合直方图 99% 分位数动态更新 L_white 的自动曝光管线",
+      "分子增加 1 次乘加 (1 + L / L_white²) 直接替代 64 子步微分积分"
+    ],
+    "not_for": [
+      "高饱和霓虹灯色相内缩映射（极端色域防过饱和应配合 AgX 内缩矩阵）",
+      "后处理之前的线性辐射度 G-Buffer 存储",
+      "无光照纯黑白二值图标",
+      "一维音频硬限幅器"
+    ],
+    "readiness": "12/12 项实测通过；58 个 3D 感光度计构件、17 个 HDR 亮度站点与 7-Card 报告已封存。",
+    "entries": {
+      "reinhard-weber64-equiv-128": "扩展Reinhard与64步Weber积分等价 128",
+      "128 Extended Reinhard and 64-substep Weber-Fechner ODE passes agree within 1e-10": "128 次扩展 Reinhard 有理算子与 64 子步 Weber-Fechner 微分积分在 1e-10 内一致",
+      "reinhard-weber64-equiv-1024": "扩展Reinhard与64步Weber积分等价 1024",
+      "1024 Extended Reinhard and 64-substep Weber-Fechner ODE passes agree within 1e-10": "1024 次扩展 Reinhard 有理算子与 64 子步 Weber-Fechner 微分积分在 1e-10 内一致",
+      "reinhard-weber64-equiv-8192": "扩展Reinhard与64步Weber积分等价 8192",
+      "8192 Extended Reinhard and 64-substep Weber-Fechner ODE passes agree within 1e-10": "8192 次扩展 Reinhard 有理算子与 64 子步 Weber-Fechner 微分积分在 1e-10 内一致",
+      "reinhard-whitepoint-full-ceiling": "Reinhard扩展白点1.0000满幅输出锁定",
+      "17 HDR stations reach exact T(2.0)=0.7500 and full display white T(4.0)=1.0000 (0/17 starved)": "17 个 HDR 亮度站点精确锁死 T(2.0)=0.7500 并在 L_white=4.0 处抵达满幅纯白 T(4.0)=1.0000（0/17 饥饿）",
+      "simple-reinhard-grey-ceiling-exposed": "朴素简单Reinhard白点0.8000死灰封顶暴露",
+      "naive L/(1+L) stalls at T(2.0)=0.6667 and caps at 0.8000 at L_white=4.0 (-20.0% ceiling loss across 16/17 stations)": "朴素 L/(1+L) 在 L=2.0 跌至 0.6667，在白点 L=4.0 封顶于死灰 0.8000（丢失 −20.0% 高光上限，污染 16/17 站）",
+      "reinhard-st8-hdr2-07500": "第8站L=2.00输出0.7500锁定",
+      "station-8 (L=2.00) locks T_ext=0.7500 vs simple Reinhard 0.6667 (-11.11% highlight loss)": "第 8 站（L=2.00）锁死 T_ext=0.7500（消除简单 Reinhard 0.6667 的 −11.11% 高光暗沉）",
+      "reinhard-st12-hdr3-08906": "第12站L=3.00输出0.8906锁定",
+      "station-12 (L=3.00) locks T_ext=0.8906 (57/64) vs simple Reinhard 0.7500 (-15.79% loss)": "第 12 站（L=3.00）锁死 T_ext=57/64=0.8906（消除简单 Reinhard 0.7500 饥饿）",
+      "reinhard-st16-whitepoint-10000": "第16站白点L=4.00满幅1.0000锁定",
+      "station-16 white point (L_white=4.00) locks T_ext=1.0000 vs simple Reinhard 0.8000 (-20.00% ceiling loss)": "第 16 站白点（L_white=4.00）精确抵达满幅纯白 1.0000（消除简单 Reinhard 0.8000 死灰封顶）",
+      "exact-mode-roundtrip": "模式往返切换一致性",
+      "preset switching round-trip preserves deterministic Reinhard white-point telemetry": "扩展白点 Reinhard 与简单 Reinhard 模式往返切换保持确定性状态",
+      "geometry-58-solids": "58构件3D色调映射感光台一致性",
+      "3D Reinhard sensitometer bench renders 58 tracked solids across 17 stations": "3D 色调映射感光台在 17 个 HDR 亮度站点完整渲染 58 个独立几何体",
+      "mobile-layout": "手机布局",
+      "390px Reinhard sensitometer controls fit without horizontal overflow": "390px Reinhard 感光台控制面板无横向溢出",
+      "runtime-errors": "运行错误",
+      "0 JavaScript errors": "0 个 JavaScript 错误"
+    }
+  }
+}

@@ -1,0 +1,267 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Ashikhmin-Shirley subtractive Fresnel-diffuse transmittance vs naive additive grazing rim blowout rig",
+  "topic_zh": "Ashikhmin 菲涅尔透射漫反射减法耦合对比朴素直接相加掠射边缘翻倍过曝",
+  "slug": "ashikhmin-fresnel-diffuse-transmittance-rig",
+  "timestamp": "2026-11-14T17:12:03.116Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Michael Ashikhmin & Peter Shirley (JGT 2000) & Kelemen-Szirmay-Kalos (2001) subtractive Fresnel-diffuse transmittance coupling (T_diff(mu) = 1 - F(mu), locking total dielectric albedo E_coupled(mu) = (1 - F(mu)) + F(mu) = 1.0000x for F_0 = 0.0400) versus legacy uncoupled additive diffuse + specular (E_naive(mu) = 1 + F(mu), inflating grazing rim albedo to 2.0000x) and 64-bounce internal Stokes subsurface series summation across 17 viewing cosine stations (mu in [1.0000, 0.0000]).",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "fresnel-stokes64-equiv-128",
+      "passed": true,
+      "detail": "128 Subtractive Fresnel transmittance and 64-bounce Stokes series passes agree within 1e-12"
+    },
+    {
+      "name": "fresnel-stokes64-equiv-1024",
+      "passed": true,
+      "detail": "1024 Subtractive Fresnel transmittance and 64-bounce Stokes series passes agree within 1e-12"
+    },
+    {
+      "name": "fresnel-stokes64-equiv-8192",
+      "passed": true,
+      "detail": "8192 Subtractive Fresnel transmittance and 64-bounce Stokes series passes agree within 1e-12"
+    },
+    {
+      "name": "ashikhmin-fresnel-transmittance-conserved",
+      "passed": true,
+      "detail": "17 viewing stations lock total dielectric albedo at exact E = (1-F)+F = 1.0000x (0/17 overbright)"
+    },
+    {
+      "name": "naive-additive-grazing-blowout-exposed",
+      "passed": true,
+      "detail": "naive uncoupled 1 + F(mu) inflates energy to 1.2678x at mu=0.25 and 2.0000x at grazing rim across 17/17 stations"
+    },
+    {
+      "name": "fresnel-st8-60deg-09300",
+      "passed": true,
+      "detail": "station-8 (60 deg, mu=0.50) locks F=0.0700 and 1-F=0.9300 (E=1.0000x) vs naive 1.0700x"
+    },
+    {
+      "name": "fresnel-st12-75deg-07322",
+      "passed": true,
+      "detail": "station-12 (75.5 deg, mu=0.25) locks 1-F=0.7322 (E=1.0000x) vs naive 1.2678x (+26.78% blowout)"
+    },
+    {
+      "name": "fresnel-st16-grazing-00000",
+      "passed": true,
+      "detail": "station-16 grazing rim (90 deg, mu=0.00) zeroes diffuse 1-F=0.0000 to lock E=1.0000x vs naive 2.0000x"
+    },
+    {
+      "name": "exact-mode-roundtrip",
+      "passed": true,
+      "detail": "preset switching round-trip preserves deterministic Fresnel transmittance telemetry"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D dielectric energy-partition bench renders 58 tracked solids across 17 stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Ashikhmin Fresnel-diffuse controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station transmittance passes",
+      "count": 128,
+      "primary_ms": 0.02790000000004511,
+      "baseline_ms": 0.27700000000004366,
+      "primary_samples_ms": [
+        0.043099999999981264,
+        0.029299999999921056,
+        0.024400000000014188,
+        0.02790000000004511,
+        0.02980000000002292,
+        0.006799999999998363,
+        0.006300000000010186
+      ],
+      "baseline_samples_ms": [
+        0.37229999999999563,
+        0.36410000000000764,
+        0.38390000000003965,
+        0.2635999999999967,
+        0.26070000000004256,
+        0.27700000000004366,
+        0.18170000000009168
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station transmittance passes",
+      "count": 1024,
+      "primary_ms": 0.05570000000000164,
+      "baseline_ms": 1.3497999999999593,
+      "primary_samples_ms": [
+        0.10490000000004329,
+        0.05570000000000164,
+        0.05389999999999873,
+        0.056199999999989814,
+        0.05559999999991305,
+        0.05769999999995434,
+        0.05389999999999873
+      ],
+      "baseline_samples_ms": [
+        1.4562000000000808,
+        1.3433999999999742,
+        1.361699999999928,
+        1.3424999999999727,
+        1.3496999999999844,
+        1.3497999999999593,
+        1.3529999999999518
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station transmittance passes",
+      "count": 8192,
+      "primary_ms": 0.44479999999998654,
+      "baseline_ms": 11.415300000000002,
+      "primary_samples_ms": [
+        0.44079999999996744,
+        0.4492000000000189,
+        0.8061000000000149,
+        0.4356000000000222,
+        0.43830000000002656,
+        0.44479999999998654,
+        0.5004999999999882
+      ],
+      "baseline_samples_ms": [
+        11.415300000000002,
+        10.67820000000006,
+        11.02550000000008,
+        12.874099999999999,
+        12.312099999999987,
+        10.93590000000006,
+        11.439499999999953
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/ashikhmin-fresnel-diffuse-transmittance-rig/light-ashikhmin_subtractive_fresnel_transmittance.png",
+    "docs/evidence/ashikhmin-fresnel-diffuse-transmittance-rig/light-naive_uncoupled_additive_grazing_blowout.png",
+    "docs/evidence/ashikhmin-fresnel-diffuse-transmittance-rig/dark-ashikhmin_subtractive_fresnel_transmittance.png",
+    "docs/evidence/ashikhmin-fresnel-diffuse-transmittance-rig/dark-naive_uncoupled_additive_grazing_blowout.png",
+    "docs/evidence/ashikhmin-fresnel-diffuse-transmittance-rig/mobile.png"
+  ],
+  "primary_label": "Closed-Form Subtractive (1 − F(μ)) + F(μ)",
+  "baseline_label": "64-Bounce Subsurface Stokes Series",
+  "load_unit": "transmittance passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form subtractive Fresnel transmittance coupling versus 64-bounce internal Stokes subsurface geometric series summation.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "station8_transmitted_diffuse": 0.9299999999999999,
+    "station12_transmitted_diffuse": 0.7322,
+    "station12_naive_energy": 1.2678,
+    "station16_coupled_energy": 1,
+    "station16_naive_energy": 2,
+    "overbright_stations": 17
+  },
+  "protocol": {
+    "input": {
+      "dielectric_F0": 0.04,
+      "station_8_mu": 0.5,
+      "station_12_mu": 0.25,
+      "station_16_mu": 0
+    },
+    "output": {
+      "transmitted_diffuse_60deg": 0.93,
+      "transmitted_diffuse_75deg": 0.7322,
+      "transmitted_diffuse_90deg": 0,
+      "coupled_total_energy": 1,
+      "naive_grazing_energy": 2
+    },
+    "function": "E_coupled(μ) = (1 − F(μ)) + F(μ) = 1.0000× (T_diff(0)=0.0000) vs Naive 1 + F(0) = 2.0000× (+100% Grazing Rim Blowout)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 viewing cosine stations preserve exact thermodynamic energy partition (1-F(mu)) + F(mu) = 1.0000x",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Dielectric PBR shaders for porcelain, plastic, ceramic, skin, and painted surfaces (Ashikhmin-Shirley JGT 2000 / UE5 / Filament)",
+    "Eliminating the glowing radioactive 200% white rim on bright dielectric silhouettes at grazing angles (mu -> 0)",
+    "Single-pass forward & deferred lighting where diffuse albedo must scale by (1 - F) before adding specular",
+    "1-subtraction (1 - F) coupling replacing 64-bounce subsurface Stokes series summation"
+  ],
+  "not_for": [
+    "Pure bare conductors (metals with metallic = 1.0) where transmitted diffuse is identically zero at all angles",
+    "Intentional stylized unlit rim-light outlines in cartoon shaders",
+    "Flat 2D vector icons",
+    "1D audio pan laws"
+  ],
+  "locale_zh": {
+    "title": "Ashikhmin 菲涅尔透射漫反射减法耦合 vs 朴素直接相加掠射边缘翻倍过曝",
+    "subtitle": "为什么在陶瓷、塑料与车漆等非金属（电介质）着色器中，如果直接把漫反射与菲涅尔高光相加 `Color = Albedo * NdotL + Specular * F(NdotV)`，白色陶瓷球在掠射边缘会炸出一圈高达 `200%` 能量的刺眼荧光白边？",
+    "plain_intro": "当一束光照射到电介质（如陶瓷、塑料、皮肤，折射率 η=1.5，正视基础反射率 F₀=0.0400）表面时，首先要经过表层镜面边界的菲涅尔分束：一部分光子按菲涅尔反射率 F(μ) = 0.04 + 0.96(1−μ)⁵ 直接在表层发生镜面反射（形成高光），而根据热力学第一定律（能量守恒），只有穿过界面透射进材质内部的剩余部分 T_diff(μ) = 1 − F(μ) 才能接触到底层色素颗粒并产生漫反射！在传统/朴素着色器中，开发者往往给高光乘上了菲涅尔项 F(μ)，却忘了把漫反射乘上透射项 (1 − F(μ))：当视线来到 90° 掠射轮廓边缘（第 16 站 μ = N·V = 0.0000）时，菲涅尔反射率达到 F(0) = 1.0000（即 100% 的入射光都在表层被当成镜面反射掉了，根本有 0% 的光能进入底层色素！），但朴素着色器依然叠加了 100% 的漫反射，导致总反射率暴涨至 E_naive(0) = 1.0000 + 1.0000 = 2.0000×（+100.00% 能量翻倍违背）！Michael Ashikhmin 与 Peter Shirley (JGT 2000) 及 Kelemen-Szirmay-Kalos (2001) 通过减法透射耦合 T_diff(μ) = 1 − F(μ)，在第 0 站（正视 μ=1.0）保留 0.9600 漫反射、第 8 站（60°, μ=0.50）保留 0.9300、第 12 站（75.5°, μ=0.25）衰减至 0.7322、第 16 站（90° 掠射边缘）精确归零为 0.0000，在全部 17 个视角站点恒定锁死总能量 E_coupled = (1 − F) + F = 1.0000×（0/17 过曝）！",
+    "finding": "实测 17 个视角余弦站点（μ = N·V ∈ [1.00, 0.00]，电介质 F₀ = 0.0400）：Ashikhmin 菲涅尔透射耦合在第 8 站（60°）输出透射漫反射 0.9300、第 12 站（75.5°）输出 0.7322、第 16 站（90° 掠射）归零为 0.0000，全 17 站恒定锁死总反照率 E = 1.0000×（0/17 过曝）；而朴素未耦合直接相加在 μ=0.25 膨胀至 1.2678×，在 90° 掠射边缘暴冲至 2.0000×（污染全部 17/17 个站点）。",
+    "workbench_title": "58 实体 17 站点电介质界面能量分配台（Dielectric Fresnel-Diffuse Partition Bench）",
+    "scenario_quote": "当光线在 90° 掠射角发生 100% 全菲涅尔镜面反射（F = 1.0）时，还有多少光子能钻进瓷器底釉里产生漫反射？答案是 0 个！如果不给漫反射乘上 `(1 - F)`，等于凭空伪造了 100% 的底色能量！",
+    "protocol_note": "顶块展示 F₀=0.04 下的第 8 站（μ=0.50）、第 12 站（μ=0.25）与第 16 站（μ=0.00）；底块对比透射漫反射权重 0.9300 / 0.7322 / 0.0000（总能量锁死 1.0000×）与朴素直接相加暴冲至 2.0000×。",
+    "robustness_name": "17 个视角余弦站点在 [1.00, 0.00] 全程 100% 满足界面热力学能量分束恒等式 (1−F(μ)) + F(μ) = 1.0000×",
+    "primary_label": "闭式菲涅尔透射减法耦合",
+    "baseline_label": "64 次次表面 Stokes 级数求和",
+    "load_unit": "次 17 站能量分配求值",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比闭式 (1−F(μ)) 减法透射耦合与 64 次次表面内部 Stokes 几何级数累加。",
+    "good_fit": [
+      "陶瓷、塑料、漆面、玉石与皮肤等一切电介质 PBR 材质的漫反射-高光能量分配（Ashikhmin-Shirley JGT 2000 / UE5 / Filament）",
+      "彻底消除浅色/白色非金属球体在掠射轮廓边缘（N·V → 0）出现的 200% 荧光过曝白边",
+      "环境光 IBL 中将漫反射辐照度乘以 `(1.0 - F_roughness)` 的能量守恒合成",
+      "单次减法 `(1.0 - F)` 直接替代 64 次次表面内部多次反射级数求和"
+    ],
+    "not_for": [
+      "纯金属导体（metallic = 1.0，其折射光被自由电子瞬时吸收，漫反射恒为 0）",
+      "二次元卡通渲染中刻意追求非物理发光轮廓线的边缘光特效（Rim Light FX）",
+      "无光照平面 UI 图标",
+      "一维音频声像分配定律"
+    ],
+    "readiness": "12/12 项实测通过；58 个 3D 电介质能量分配构件、17 个视角余弦站点与 7-Card 报告已封存。",
+    "entries": {
+      "fresnel-stokes64-equiv-128": "菲涅尔透射与64次Stokes级数等价 128",
+      "128 Subtractive Fresnel transmittance and 64-bounce Stokes series passes agree within 1e-12": "128 次菲涅尔透射减法耦合与 64 次次表面 Stokes 几何级数在 1e-12 内一致",
+      "fresnel-stokes64-equiv-1024": "菲涅尔透射与64次Stokes级数等价 1024",
+      "1024 Subtractive Fresnel transmittance and 64-bounce Stokes series passes agree within 1e-12": "1024 次菲涅尔透射减法耦合与 64 次次表面 Stokes 几何级数在 1e-12 内一致",
+      "fresnel-stokes64-equiv-8192": "菲涅尔透射与64次Stokes级数等价 8192",
+      "8192 Subtractive Fresnel transmittance and 64-bounce Stokes series passes agree within 1e-12": "8192 次菲涅尔透射减法耦合与 64 次次表面 Stokes 几何级数在 1e-12 内一致",
+      "ashikhmin-fresnel-transmittance-conserved": "Ashikhmin菲涅尔透射耦合全站能量守恒",
+      "17 viewing stations lock total dielectric albedo at exact E = (1-F)+F = 1.0000x (0/17 overbright)": "17 个视角余弦站点恒定锁死电介质总反照率 E = (1−F)+F = 1.0000×（0/17 过曝）",
+      "naive-additive-grazing-blowout-exposed": "朴素未耦合漫反射加高光掠射200%过曝暴露",
+      "naive uncoupled 1 + F(mu) inflates energy to 1.2678x at mu=0.25 and 2.0000x at grazing rim across 17/17 stations": "朴素 1+F(μ) 在 μ=0.25 膨胀至 1.2678×，在 90° 掠射边缘暴冲至 2.0000×（污染全部 17/17 站）",
+      "fresnel-st8-60deg-09300": "第8站60度透射漫反射0.9300锁定",
+      "station-8 (60 deg, mu=0.50) locks F=0.0700 and 1-F=0.9300 (E=1.0000x) vs naive 1.0700x": "第 8 站（60° 视角 μ=0.50）锁死 F=0.0700 与透射漫反射 1−F=0.9300（总能量 1.0000× vs 朴素 1.0700×）",
+      "fresnel-st12-75deg-07322": "第12站75.5度透射0.7322锁定",
+      "station-12 (75.5 deg, mu=0.25) locks 1-F=0.7322 (E=1.0000x) vs naive 1.2678x (+26.78% blowout)": "第 12 站（75.5° 视角 μ=0.25）锁死透射漫反射 0.7322（消除朴素 1.2678× 过曝）",
+      "fresnel-st16-grazing-00000": "第16站90度掠射漫反射归零守恒锁定",
+      "station-16 grazing rim (90 deg, mu=0.00) zeroes diffuse 1-F=0.0000 to lock E=1.0000x vs naive 2.0000x": "第 16 站（90° 掠射边缘 μ=0.00）将透射漫反射精准归零 1−F=0.0000 锁死总能量 1.0000×（消除朴素 2.0000× 翻倍发光白边）",
+      "exact-mode-roundtrip": "模式往返切换一致性",
+      "preset switching round-trip preserves deterministic Fresnel transmittance telemetry": "菲涅尔透射减法耦合与朴素未耦合直接相加模式往返切换保持确定性状态",
+      "geometry-58-solids": "58构件3D电介质界面能量分配台一致性",
+      "3D dielectric energy-partition bench renders 58 tracked solids across 17 stations": "3D 电介质界面能量分配台在 17 个视角余弦站点完整渲染 58 个独立几何体",
+      "mobile-layout": "手机布局",
+      "390px Ashikhmin Fresnel-diffuse controls fit without horizontal overflow": "390px 菲涅尔漫反射耦合控制面板无横向溢出",
+      "runtime-errors": "运行错误",
+      "0 JavaScript errors": "0 个 JavaScript 错误"
+    }
+  }
+}

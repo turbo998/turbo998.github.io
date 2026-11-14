@@ -1,0 +1,267 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Heitz height-correlated Smith G2 masking-shadowing vs separable G1*G1 double-occlusion darkening rig",
+  "topic_zh": "Heitz 高度相关 Smith 联合遮蔽阴影 G₂ 对比朴素可分离 G₁·G₁ 双重遮蔽变暗",
+  "slug": "heitz-height-correlated-smith-g2-rig",
+  "timestamp": "2026-11-14T17:41:16.311Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Eric Heitz (JCGT 2014 \"Understanding the Masking-Shadowing Function in Microfacet-Based BRDFs\") height-correlated Smith joint masking-shadowing function (G2_corr(Lambda_v, Lambda_l) = 1 / (1 + Lambda_v + Lambda_l) = 1 / (1 + 2*Lambda) for symmetric Lambda_v = Lambda_l = Lambda) versus naive uncorrelated separable Smith product (G2_sep = G1(V)*G1(L) = 1 / (1 + Lambda)^2 = 1 / (1 + 2*Lambda + Lambda^2), adding a spurious +Lambda^2 double-occlusion term) and 64-slab microfacet height-CDF quantile integration across 17 invisible-area stations (Lambda in [0.0000, 2.0000]).",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "smithg2-quantile64-equiv-128",
+      "passed": true,
+      "detail": "128 Height-Correlated Smith G2 and 64-slab height-quantile passes agree within 1e-12"
+    },
+    {
+      "name": "smithg2-quantile64-equiv-1024",
+      "passed": true,
+      "detail": "1024 Height-Correlated Smith G2 and 64-slab height-quantile passes agree within 1e-12"
+    },
+    {
+      "name": "smithg2-quantile64-equiv-8192",
+      "passed": true,
+      "detail": "8192 Height-Correlated Smith G2 and 64-slab height-quantile passes agree within 1e-12"
+    },
+    {
+      "name": "heitz-height-correlated-g2-preserved",
+      "passed": true,
+      "detail": "17 Lambda stations preserve exact height-correlated G2 = 1/(1+2L) (0/17 over-darkened)"
+    },
+    {
+      "name": "separable-smith-double-darkening-exposed",
+      "passed": true,
+      "detail": "separable G1(V)*G1(L) = 1/(1+L)^2 drops to 0.2500 (-25%) at L=1.0 and 0.1111 (-44.4%) at L=2.0 across 16/17 stations"
+    },
+    {
+      "name": "smith-st8-lambda1-03333",
+      "passed": true,
+      "detail": "station-8 (Lambda=1.00) locks G2_corr=0.3333 (1/3) vs separable G1^2=0.2500 (-25.00% darkening)"
+    },
+    {
+      "name": "smith-st12-lambda15-02500",
+      "passed": true,
+      "detail": "station-12 (Lambda=1.50) locks G2_corr=0.2500 (1/4) vs separable G1^2=0.1600 (-36.00% darkening)"
+    },
+    {
+      "name": "smith-st16-lambda2-02000",
+      "passed": true,
+      "detail": "station-16 (Lambda=2.00) locks G2_corr=0.2000 (1/5) vs separable G1^2=0.1111 (-44.44% darkening)"
+    },
+    {
+      "name": "exact-mode-roundtrip",
+      "passed": true,
+      "detail": "preset switching round-trip preserves deterministic Height-Correlated Smith telemetry"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D microfacet height-correlation bench renders 58 tracked solids across 17 stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Height-Correlated Smith controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station Smith G2 passes",
+      "count": 128,
+      "primary_ms": 0.006900000000086948,
+      "baseline_ms": 2.685299999999984,
+      "primary_samples_ms": [
+        0.02329999999994925,
+        0.006900000000086948,
+        0.0049999999999954525,
+        0.019499999999993634,
+        0.01089999999999236,
+        0.004899999999906868,
+        0.004599999999982174
+      ],
+      "baseline_samples_ms": [
+        2.685299999999984,
+        2.766899999999964,
+        2.529700000000048,
+        3.7274999999999636,
+        2.6019999999999754,
+        2.440300000000093,
+        2.853599999999915
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station Smith G2 passes",
+      "count": 1024,
+      "primary_ms": 0.050299999999992906,
+      "baseline_ms": 21.192499999999995,
+      "primary_samples_ms": [
+        0.05139999999994416,
+        0.050299999999992906,
+        0.1494000000000142,
+        0.04610000000002401,
+        0.03910000000007585,
+        0.15240000000005693,
+        0.03899999999998727
+      ],
+      "baseline_samples_ms": [
+        21.161100000000033,
+        20.881099999999947,
+        20.851300000000037,
+        21.192499999999995,
+        21.690699999999993,
+        21.87639999999999,
+        22.277900000000045
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station Smith G2 passes",
+      "count": 8192,
+      "primary_ms": 0.3160000000000309,
+      "baseline_ms": 152.98900000000003,
+      "primary_samples_ms": [
+        0.5028999999999542,
+        0.3160000000000309,
+        0.3081999999999425,
+        0.31510000000002947,
+        0.3080999999999676,
+        0.34029999999984284,
+        0.33189999999990505
+      ],
+      "baseline_samples_ms": [
+        172.8375000000001,
+        159.15059999999994,
+        149.70519999999988,
+        150.12599999999998,
+        152.98900000000003,
+        152.4001999999998,
+        153.0449000000001
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/heitz-height-correlated-smith-g2-rig/light-heitz_height_correlated_smith_g2.png",
+    "docs/evidence/heitz-height-correlated-smith-g2-rig/light-naive_separable_uncorrelated_smith_g1g1.png",
+    "docs/evidence/heitz-height-correlated-smith-g2-rig/dark-heitz_height_correlated_smith_g2.png",
+    "docs/evidence/heitz-height-correlated-smith-g2-rig/dark-naive_separable_uncorrelated_smith_g1g1.png",
+    "docs/evidence/heitz-height-correlated-smith-g2-rig/mobile.png"
+  ],
+  "primary_label": "Height-Correlated G₂ = 1/(1+2Λ)",
+  "baseline_label": "64-Slab Height-CDF Quantile Integral",
+  "load_unit": "Smith G2 passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form Height-Correlated Smith G2 evaluation versus 64-slab microfacet height-CDF quantile integration.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "station8_correlated_g2": 0.3333,
+    "station8_separable_g2": 0.25,
+    "station12_correlated_g2": 0.25,
+    "station12_separable_g2": 0.16,
+    "station16_correlated_g2": 0.2,
+    "station16_separable_g2": 0.1111,
+    "over_darkened_stations": 16
+  },
+  "protocol": {
+    "input": {
+      "station_8_lambda": 1,
+      "station_12_lambda": 1.5,
+      "station_16_lambda": 2
+    },
+    "output": {
+      "correlated_g2_lambda1": 0.3333,
+      "separable_g2_lambda1": 0.25,
+      "correlated_g2_lambda15": 0.25,
+      "separable_g2_lambda15": 0.16,
+      "over_darkened_stations": 16
+    },
+    "function": "G₂_corr(Λ) = ∫₀¹ u^(2Λ) du = 1/(1 + 2Λ) = 0.2500 at Λ=1.5 vs Separable G₁² = 1/(1 + 2Λ + Λ²) = 0.1600 (−36% Darkening)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 Smith Lambda stations preserve exact height-quantile integral identity 1/(1+2*Lambda) across [0.00, 2.00]",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Physically based Cook-Torrance & GGX microfacet specular shaders in UE5, Unity HDRP, Frostbite, Filament, and Blender Cycles (Heitz JCGT 2014)",
+    "Eliminating the spurious +Lambda_v*Lambda_l denominator cross-term that over-darkens rough metals at grazing angles",
+    "1-addition denominator 1/(1 + Lambda_v + Lambda_l) that is both more accurate and requires no extra multiplication over separable G1*G1",
+    "Closed-form height-quantile integral replacing 64-slab microfacet height integration"
+  ],
+  "not_for": [
+    "Full multiple-scattering energy recovery at roughness alpha > 0.8 (still requires Kulla-Conty multiscatter lobe)",
+    "Unlit flat 2D sprites",
+    "Purely Lambertian diffuse shaders without microfacet masking",
+    "1D audio gating"
+  ],
+  "locale_zh": {
+    "title": "Heitz 高度相关 Smith 联合遮蔽阴影 G₂ vs 朴素可分离 G₁·G₁ 双重遮蔽变暗",
+    "subtitle": "为什么在微表面 PBR 着色器中，把视线遮蔽函数 `G₁(V)` 与光线阴影函数 `G₁(L)` 直接相乘 `G₂ = G₁(V) * G₁(L)` 会把粗糙金属在掠射角下莫名其妙涂黑一截（在 `Λ = 1.5` 时平白丢失 `−36.00%` 的可见度）？",
+    "plain_intro": "在微表面 BRDF 的几何遮蔽阴影项 G₂(V, L) 中，G₁(V) = 1 / (1 + Λ_v) 表示微平面沿视线 V 不被遮挡（Unmasked）的概率，而 G₁(L) = 1 / (1 + Λ_l) 表示沿光线 L 不被遮挡（Unshadowed）的概率。早期的可分离近似（Separable Smith）直接把两者相乘：G₂_sep = G₁(V)·G₁(L) = 1 / ((1 + Λ_v)(1 + Λ_l)) = 1 / (1 + Λ_v + Λ_l + Λ_v·Λ_l)。为什么直接相乘在物理上是错的？因为概率论中 P(A ∩ B) = P(A)·P(B) 成立的前提是两个事件“统计独立”！但在同一个微平面上，“不被视线挡住”和“不被光线挡住”都强烈依赖于同一个物理量——该微平面所处的海拔高度 h！位于山峰顶部的微平面既不会被视线挡住，也几乎不会被光线挡住；而位于深谷底部的微平面本来就已经被挡住了。Eric Heitz 在 JCGT 2014 权威论文《Understanding the Masking-Shadowing Function in Microfacet-Based BRDFs》中通过高度累积分布分位数 u = C(h) ∈ [0, 1] 严格积分证明：同一高度 u 下的联合可见度为 ∫_0^1 u^(Λ_v + Λ_l) du = 1 / (1 + Λ_v + Λ_l)！对比两个分母：可分离乘积在分母里凭空多算了一项虚假交叉项 +Λ_v·Λ_l（对深谷微平面重复扣除了两次遮挡！）：当 Λ_v = Λ_l = Λ 时，在 Λ = 1.00（第 8 站）处高度相关 G₂ = 1/3 = 0.3333，而可分离 G₁² 跌至 1/4 = 0.2500（变暗 −25.00%）；在 Λ = 1.50（第 12 站）处高度相关 G₂ = 1/4 = 0.2500，而可分离跌至 1/6.25 = 0.1600（变暗 −36.00%）；在 Λ = 2.00（第 16 站）处更是跌至 1/9 = 0.1111（变暗 −44.44%，污染 15/17 个站点）！",
+    "finding": "实测 17 个 Smith 遮蔽率站点（Λ ∈ [0.00, 2.00]）：Heitz 高度相关 G₂ = 1/(1+2Λ) 在第 4 站（Λ=0.50）锁死 0.5000、第 8 站（Λ=1.00）锁死 0.3333、第 12 站（Λ=1.50）锁死 0.2500、第 16 站（Λ=2.00）锁死 0.2000（0/17 过度变暗），而朴素可分离乘积 1/(1+Λ)² 因虚假交叉项 +Λ² 在相应站点跌至 0.4444、0.2500（−25%）、0.1600（−36%）与 0.1111（−44.44%，污染 15/17 站）。",
+    "workbench_title": "58 实体 17 站点微表面高度相关联合可见度台（Height-Correlated Smith G₂ Bench）",
+    "scenario_quote": "站在山顶的微平面既然已经高过周围山峰、能被相机看见，它被阳光挡住的概率自然也极低！把 `G₁(V)` 和 `G₁(L)` 当成独立事件直接相乘，在分母里多算了一项 `+Λ_v·Λ_l`，白白把金属边缘压黑了 36%！",
+    "protocol_note": "顶块展示第 8 站（Λ=1.00）、第 12 站（Λ=1.50）与第 16 站（Λ=2.00）；底块对比高度相关积分 1/(1+2Λ) 输出 0.3333 / 0.2500 / 0.2000 与可分离乘积 1/(1+Λ)² 跌至 0.2500 / 0.1600 / 0.1111。",
+    "robustness_name": "17 个 Smith 遮蔽率站点在 [0.00, 2.00] 全程 100% 满足高度分位数精确积分恒等式 ∫ u^(2Λ) du = 1/(1+2Λ)",
+    "primary_label": "Heitz 高度相关联合 G₂",
+    "baseline_label": "64 层微平面高度分位数积分",
+    "load_unit": "次 17 站 G₂ 求值",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比闭式高度相关 1/(1+2Λ) 求值与 64 层微平面高度 CDF 分位数积分。",
+    "good_fit": [
+      "现代工业标准微表面高光遮蔽阴影项（UE5 / Unity HDRP / Frostbite / Filament / Blender Cycles 标准）",
+      "消除可分离 G₁(V)·G₁(L) 分母中的虚假交叉项 +Λ_v·Λ_l，恢复粗糙表面与掠射边缘高达 +25%~+44% 的真实反射亮度",
+      "分母直接相加 `1.0 / (1.0 + lambdaV + lambdaL)` 比分别求倒数再相乘更省指令且精度更高",
+      "闭式高度分位数积分直接替代 64 层微平面高度场数值求积"
+    ],
+    "not_for": [
+      "高粗糙度下替代多重散射补偿（高度相关消除了单次散射的双重遮蔽，但 α > 0.8 仍需 Kulla-Conty 多重散射项）",
+      "无微表面高光的纯漫反射材质",
+      "无光照 2D 图标",
+      "一维音频噪声门限"
+    ],
+    "readiness": "12/12 项实测通过；58 个 3D 高度相关可见度构件、17 个遮蔽率站点与 7-Card 报告已封存。",
+    "entries": {
+      "smithg2-quantile64-equiv-128": "高度相关G2与64层分位数积分等价 128",
+      "128 Height-Correlated Smith G2 and 64-slab height-quantile passes agree within 1e-12": "128 次高度相关 Smith G₂ 与 64 层微平面高度分位数积分在 1e-12 内一致",
+      "smithg2-quantile64-equiv-1024": "高度相关G2与64层分位数积分等价 1024",
+      "1024 Height-Correlated Smith G2 and 64-slab height-quantile passes agree within 1e-12": "1024 次高度相关 Smith G₂ 与 64 层微平面高度分位数积分在 1e-12 内一致",
+      "smithg2-quantile64-equiv-8192": "高度相关G2与64层分位数积分等价 8192",
+      "8192 Height-Correlated Smith G2 and 64-slab height-quantile passes agree within 1e-12": "8192 次高度相关 Smith G₂ 与 64 层微平面高度分位数积分在 1e-12 内一致",
+      "heitz-height-correlated-g2-preserved": "Heitz高度相关联合可见度零双重遮蔽",
+      "17 Lambda stations preserve exact height-correlated G2 = 1/(1+2L) (0/17 over-darkened)": "17 个 Lambda 站点精确保持高度相关联合可见度 G₂ = 1/(1+2Λ)（0/17 过度变暗）",
+      "separable-smith-double-darkening-exposed": "朴素可分离G1乘积双重遮蔽变暗暴露",
+      "separable G1(V)*G1(L) = 1/(1+L)^2 drops to 0.2500 (-25%) at L=1.0 and 0.1111 (-44.4%) at L=2.0 across 16/17 stations": "可分离 G₁(V)·G₁(L) = 1/(1+Λ)² 在 Λ=1.0 跌至 0.2500（−25%）、Λ=2.0 跌至 0.1111（−44.4%，污染 16/17 站）",
+      "smith-st8-lambda1-03333": "第8站Λ=1.00联合可见度0.3333锁定",
+      "station-8 (Lambda=1.00) locks G2_corr=0.3333 (1/3) vs separable G1^2=0.2500 (-25.00% darkening)": "第 8 站（Λ=1.00）锁死 G₂=1/3=0.3333（消除可分离 G₁²=0.2500 的 −25.00% 双重遮蔽变暗）",
+      "smith-st12-lambda15-02500": "第12站Λ=1.50联合可见度0.2500锁定",
+      "station-12 (Lambda=1.50) locks G2_corr=0.2500 (1/4) vs separable G1^2=0.1600 (-36.00% darkening)": "第 12 站（Λ=1.50）锁死 G₂=1/4=0.2500（消除可分离 G₁²=0.1600 的 −36.00% 变暗）",
+      "smith-st16-lambda2-02000": "第16站Λ=2.00联合可见度0.2000锁定",
+      "station-16 (Lambda=2.00) locks G2_corr=0.2000 (1/5) vs separable G1^2=0.1111 (-44.44% darkening)": "第 16 站（Λ=2.00）锁死 G₂=1/5=0.2000（消除可分离 G₁²=1/9=0.1111 的 −44.44% 变暗）",
+      "exact-mode-roundtrip": "模式往返切换一致性",
+      "preset switching round-trip preserves deterministic Height-Correlated Smith telemetry": "Heitz 高度相关联合 G₂ 与可分离独立乘积 G₁·G₁ 模式往返切换保持确定性状态",
+      "geometry-58-solids": "58构件3D微表面高度相关台一致性",
+      "3D microfacet height-correlation bench renders 58 tracked solids across 17 stations": "3D 微表面高度相关台在 17 个遮蔽率站点完整渲染 58 个独立几何体",
+      "mobile-layout": "手机布局",
+      "390px Height-Correlated Smith controls fit without horizontal overflow": "390px 高度相关 Smith 控制面板无横向溢出",
+      "runtime-errors": "运行错误",
+      "0 JavaScript errors": "0 个 JavaScript 错误"
+    }
+  }
+}

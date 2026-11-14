@@ -1,0 +1,273 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Max-Hillaire analytical volume step emission-extinction integral vs naive linear dt blowout rig",
+  "topic_zh": "Max-Hillaire 体积云与火焰步内发射-消光解析积分（(S/σ_t)(1−e^{-τ})）对比朴素线性步长累加（S·Δs 过曝炸亮）",
+  "slug": "hillaire-volume-emission-extinction-integral-rig",
+  "timestamp": "2026-11-14T20:46:53.440Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Nelson Max (IEEE TVCG 1995) & Sebastien Hillaire (SIGGRAPH 2016) analytical intra-step volume emission-extinction integration (L_out = L_in * exp(-tau) + (S / sigma_t) * (1 - exp(-tau)), locking Kirchhoff equilibrium radiance R = 1.0000x across all 17 optical depth stations tau = sigma_t * ds in [0.0, 2.0]) versus naive unattenuated step emission (L_out = L_in * exp(-tau) + S * ds = L_eq * (exp(-tau) + tau), which blows out step radiance to 1.1065x at tau=0.50, 1.3679x at tau=1.00, and 2.1353x at tau=2.00 across 16/17 stations) and 64-substep RTE micro-slab quadrature.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "hillaire-rte64-equiv-128",
+      "passed": true,
+      "detail": "128 Max-Hillaire analytic step integral and 64-substep RTE micro-slab passes agree within 1e-12"
+    },
+    {
+      "name": "hillaire-rte64-equiv-1024",
+      "passed": true,
+      "detail": "1024 Max-Hillaire analytic step integral and 64-substep RTE micro-slab passes agree within 1e-12"
+    },
+    {
+      "name": "hillaire-rte64-equiv-8192",
+      "passed": true,
+      "detail": "8192 Max-Hillaire analytic step integral and 64-substep RTE micro-slab passes agree within 1e-12"
+    },
+    {
+      "name": "hillaire-kirchhoff-equilibrium-locked",
+      "passed": true,
+      "detail": "17 optical depth stations (tau in [0.0, 2.0]) lock exact Kirchhoff equilibrium radiance R = 1.0000x (0/17 overbright)"
+    },
+    {
+      "name": "naive-linear-dt-blowout-exposed",
+      "passed": true,
+      "detail": "naive unattenuated step emission (exp(-tau) + tau) blows out to 1.1065x at S4, 1.3679x at S8, and 2.1353x (+113.53%) at S16 across 16/17 stations"
+    },
+    {
+      "name": "hillaire-st4-tau050-10000",
+      "passed": true,
+      "detail": "station-4 (tau=0.50) locks R_Hillaire=1.0000x vs naive 1.1065x (+10.65% blowout)"
+    },
+    {
+      "name": "hillaire-st8-tau100-10000",
+      "passed": true,
+      "detail": "station-8 (tau=1.00) locks R_Hillaire=1.0000x (emit=0.6321) vs naive 1.3679x (+36.79% blowout)"
+    },
+    {
+      "name": "hillaire-st16-tau200-10000",
+      "passed": true,
+      "detail": "station-16 (tau=2.00 dense step) locks R_Hillaire=1.0000x vs naive 2.1353x (+113.53% blowout)"
+    },
+    {
+      "name": "exact-mode-roundtrip",
+      "passed": true,
+      "detail": "preset switching round-trip preserves deterministic Hillaire volume step telemetry"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D Hillaire volume integral bench renders 58 tracked solids across 17 stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Hillaire volume controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station volume passes",
+      "count": 128,
+      "primary_ms": 0.24090000000001055,
+      "baseline_ms": 0.2603000000000293,
+      "primary_samples_ms": [
+        0.24090000000001055,
+        0.244199999999978,
+        0.21280000000001564,
+        0.21840000000008786,
+        2.141999999999939,
+        0.2221999999999298,
+        0.254099999999994
+      ],
+      "baseline_samples_ms": [
+        0.369199999999978,
+        0.35140000000001237,
+        0.2603000000000293,
+        0.23340000000007421,
+        0.2720000000000482,
+        0.2536999999999807,
+        0.24869999999998527
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station volume passes",
+      "count": 1024,
+      "primary_ms": 0.1714000000000624,
+      "baseline_ms": 1.521600000000035,
+      "primary_samples_ms": [
+        3.481700000000046,
+        0.17089999999996053,
+        0.17070000000001073,
+        0.17189999999993688,
+        0.17279999999993834,
+        0.1714000000000624,
+        0.16919999999993252
+      ],
+      "baseline_samples_ms": [
+        1.546100000000024,
+        1.5766999999999598,
+        1.5110999999999422,
+        1.5004999999999882,
+        1.5617999999999483,
+        1.521600000000035,
+        1.4983999999999469
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station volume passes",
+      "count": 8192,
+      "primary_ms": 1.3881000000000085,
+      "baseline_ms": 12.87379999999996,
+      "primary_samples_ms": [
+        2.1236999999999853,
+        1.3677999999999884,
+        1.3881000000000085,
+        1.3775000000000546,
+        1.4086999999999534,
+        1.4178000000000566,
+        1.3759999999999764
+      ],
+      "baseline_samples_ms": [
+        12.062099999999987,
+        12.24840000000006,
+        12.4054000000001,
+        12.87379999999996,
+        13.06720000000007,
+        17.20169999999996,
+        13.80619999999999
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/hillaire-volume-emission-extinction-integral-rig/light-hillaire_max_analytic_emission_extinction.png",
+    "docs/evidence/hillaire-volume-emission-extinction-integral-rig/light-naive_unattenuated_linear_dt_blowout.png",
+    "docs/evidence/hillaire-volume-emission-extinction-integral-rig/dark-hillaire_max_analytic_emission_extinction.png",
+    "docs/evidence/hillaire-volume-emission-extinction-integral-rig/dark-naive_unattenuated_linear_dt_blowout.png",
+    "docs/evidence/hillaire-volume-emission-extinction-integral-rig/mobile.png"
+  ],
+  "primary_label": "Max-Hillaire (S/σ_t)(1−e^{-τ}) Step Integral",
+  "baseline_label": "64-Substep RTE Micro-Slab Quadrature",
+  "load_unit": "volume passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form Max-Hillaire intra-step integral versus 64-substep RTE micro-slab quadrature.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "station0_hillaire_radiance": 1,
+    "station0_naive_radiance": 1,
+    "station4_hillaire_radiance": 1,
+    "station4_naive_radiance": 1.1065,
+    "station8_hillaire_radiance": 1,
+    "station8_naive_radiance": 1.3679,
+    "station8_analytic_emission": 0.6321,
+    "station8_naive_emission": 1,
+    "station12_hillaire_radiance": 1,
+    "station12_naive_radiance": 1.7231,
+    "station16_hillaire_radiance": 1,
+    "station16_naive_radiance": 2.1353,
+    "overbright_stations": 16
+  },
+  "protocol": {
+    "input": {
+      "station_4_tau": 0.5,
+      "station_8_tau": 1,
+      "station_16_tau": 2
+    },
+    "output": {
+      "hillaire_equilibrium_radiance": 1,
+      "naive_radiance_tau050": 1.1065,
+      "naive_radiance_tau100": 1.3679,
+      "naive_radiance_tau200": 2.1353,
+      "overbright_stations": 16
+    },
+    "function": "L_out = L_in·T + (S/σ_t)(1−T) -> R = 1.0000× vs Naive L_in·T + S·Δs -> R = e^{-τ} + τ (2.1353× at τ=2.0, 16/17 Overbright)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 optical depth stations preserve exact Kirchhoff equilibrium radiance R = 1.0000x",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Froxel volumetric fog, horizon cumulus cloud raymarching, and OpenVDB fire/explosion shaders (Max 1995 / Hillaire SIGGRAPH 2016)",
+    "Coarse LOD raymarching steps at far distances where optical depth per step tau = sigma_t * ds exceeds 1.0",
+    "Blackbody thermal emission and single-scattering integration where T + (1 - T) === 1.0 guarantees White Furnace conservation",
+    "1-subtraction (1 - T) reuse of exp(-tau) replacing 64-substep RTE micro-marching"
+  ],
+  "not_for": [
+    "Pure vacuum raycasting with zero participating media (sigma_t === 0)",
+    "Opaque surface-only deferred shading",
+    "2D flat UI text rendering",
+    "1D audio gain sliders"
+  ],
+  "locale_zh": {
+    "title": "Max-Hillaire 体积云与火焰步内发射-消光解析积分 vs 朴素线性步长累加过曝炸亮",
+    "subtitle": "为什么在体积云（Volumetric Clouds）、Froxel 体积雾与 OpenVDB 火焰光线步进中，即使透射率已经正确写了 `T = exp(-sigma_t * dt)`，如果步内散射/发光项直接写 `color += transmittance * S * dt`，会让浓云和火球在大步长（`τ = σ_t Δs = 2.0`）处过曝炸亮至 `2.1353×`（超冲 `+113.53%`）？",
+    "plain_intro": "在编写体积云、大气雾或火焰光线步进（Raymarching）着色器时，一个极其普遍的严重 Bug 是：透射率更新写了精确的比尔-朗伯指数 `T_step = exp(-sigma_t * dt)`，但累加当前步长 Δs 内的内散射/自发光贡献时却写了朴素前向欧拉近似 `L_emit = S * dt`！这忽略了一个关键物理事实：**在当前步长 [0, Δs] 内部发出的光子，在走出这一个步长本身的过程中也会被当前步长内的介质吸收和消光**！Nelson Max（IEEE TVCG 1995）与 Sébastien Hillaire（SIGGRAPH 2016《Frostbite》体积云与体积雾标准）指出：在常数步段内对自消光指数积分 ∫₀^Δs S · exp(−σ_t s) ds 的精确解析解是 (S / σ_t) · (1 − exp(−σ_t Δs)) = L_eq · (1 − T_step)！根据基尔霍夫热辐射定律，当入射背景光 L_in = L_eq = 1.0000 时，透射背景 L_eq · T_step 与步内解析积分发光 L_eq · (1 − T_step) 之和严格满足单位分解恒等式：T_step + (1 − T_step) ≡ 1.0000×（无论步长 Δs 多粗、光学厚度 τ = σ_t Δs 多大，浓云和火球永远不会超过热平衡辐射上限，全 17 站 0/17 过曝）！相反，朴素线性累加 `S * dt = L_eq * τ` 使总辐射率按 R_naive(τ) = exp(−τ) + τ 疯狂爆炸：在第 4 站（τ=0.50）超冲至 1.1065×，在第 8 站（τ=1.00）暴涨至 1.3679×（步内发光高估 +58.2%），在第 16 站（τ=2.00 浓云大步）更是炸亮至 2.1353×（超冲 +113.53%，污染 16/17 个站点）！",
+    "finding": "实测跨越步内光学厚度 τ = σ_t Δs ∈ [0.000, 2.000] 的 17 个站点：Max-Hillaire 步内发射-消光解析积分（L_emit = (S/σ_t)(1 − e^{-τ})）在全部 17 个站点恒定锁死基尔霍夫热平衡辐射率 R = 1.0000×（0/17 过曝炸亮），而朴素未自消光线性累加（S·Δs）在第 4 站膨胀至 1.1065×、第 8 站达 1.3679×、第 16 站高达 2.1353×（+113.53%），导致 16/17 个站点发生严重过曝。",
+    "workbench_title": "58 实体 17 站点体积渲染步内发射-消光解析积分检验台（Max-Hillaire Volume Integral Bench）",
+    "scenario_quote": "既然你为了算透射率已经花指令算出了 `T = exp(-sigma_t * dt)`，为什么千万别再写 `S * dt`？因为只需顺手用 `1.0 - T` 乘上 `S / sigma_t`，就能零额外超越函数成本把步内自消光积分算得一分不差，彻底根除远景浓云与火球的大步长过曝闪烁！",
+    "protocol_note": "顶块展示第 4 站（τ=0.50）、第 8 站（τ=1.00）与第 16 站（τ=2.00）光学厚度；底块对比 Max-Hillaire 解析积分恒锁辐射率 1.0000× 与朴素线性累加炸亮至 2.1353×。",
+    "robustness_name": "17 个光学厚度站点在 Max-Hillaire 步内解析积分下 100% 保持精确基尔霍夫热平衡辐射率 R = 1.0000×",
+    "primary_label": "Max-Hillaire (S/σ_t)(1−e^{-τ}) 解析积分",
+    "baseline_label": "64 子步微板辐射传输 (RTE) 求积",
+    "load_unit": "次 17 站体积步进",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比复用 T = exp(-τ) 的闭式 (1−T) 步内积分与 64 子步 RTE 微板积分基准。",
+    "good_fit": [
+      "UE5 / Frostbite 级相机视锥体积雾（Froxel Volumetric Fog）与地平线积雨云光线步进（Max 1995 / Hillaire SIGGRAPH 2016）",
+      "OpenVDB 火焰、爆炸黑体辐射与高密度烟雾大步长 LOD 采样（消除远景步长变大时云层突然变亮的闪烁伪影）",
+      "严格通过白炉测试（White Furnace Test：T + (1 − T) === 1.0）的参与介质传输管线",
+      "直接复用已算好的 T = exp(-τ) 计算 1 − T，零额外 exp 开销替代 64 子步细分"
+    ],
+    "not_for": [
+      "消光系数 σ_t === 0 的纯真空场景（着色器中用 max(1e-6, sigma_t) 保护除法）",
+      "无参与介质的纯不透明表面着色",
+      "2D 静态界面文字",
+      "一维音频增益控制"
+    ],
+    "readiness": "12/12 项实测通过；58 个 3D 体积步内积分检验构件、17 个光学厚度站点与 7-Card 报告已封存。",
+    "entries": {
+      "hillaire-rte64-equiv-128": "Max-Hillaire解析积分与64子步RTE等价 128",
+      "128 Max-Hillaire analytic step integral and 64-substep RTE micro-slab passes agree within 1e-12": "128 次 Max-Hillaire 步内解析积分与 64 子步微板辐射传输积分在 1e-12 内一致",
+      "hillaire-rte64-equiv-1024": "Max-Hillaire解析积分与64子步RTE等价 1024",
+      "1024 Max-Hillaire analytic step integral and 64-substep RTE micro-slab passes agree within 1e-12": "1024 次 Max-Hillaire 步内解析积分与 64 子步微板辐射传输积分在 1e-12 内一致",
+      "hillaire-rte64-equiv-8192": "Max-Hillaire解析积分与64子步RTE等价 8192",
+      "8192 Max-Hillaire analytic step integral and 64-substep RTE micro-slab passes agree within 1e-12": "8192 次 Max-Hillaire 步内解析积分与 64 子步微板辐射传输积分在 1e-12 内一致",
+      "hillaire-kirchhoff-equilibrium-locked": "Max-Hillaire全站热平衡辐射率1.0000x锁定",
+      "17 optical depth stations (tau in [0.0, 2.0]) lock exact Kirchhoff equilibrium radiance R = 1.0000x (0/17 overbright)": "17 个光学厚度站点恒定锁死基尔霍夫热平衡辐射率 R = 1.0000×（0/17 过曝炸亮）",
+      "naive-linear-dt-blowout-exposed": "朴素未自消光线性累加2.1353x过曝暴露",
+      "naive unattenuated step emission (exp(-tau) + tau) blows out to 1.1065x at S4, 1.3679x at S8, and 2.1353x (+113.53%) at S16 across 16/17 stations": "朴素未自消光步进累加在第 4 站过曝至 1.1065×、第 8 站达 1.3679×、第 16 站炸亮至 2.1353×（污染 16/17 站）",
+      "hillaire-st4-tau050-10000": "第4站τ=0.50步进辐射率1.0000x锁定",
+      "station-4 (tau=0.50) locks R_Hillaire=1.0000x vs naive 1.1065x (+10.65% blowout)": "第 4 站（τ=0.50）锁死 R_Hillaire=1.0000×（消除朴素 1.1065× 过曝）",
+      "hillaire-st8-tau100-10000": "第8站τ=1.00步进辐射率1.0000x锁定",
+      "station-8 (tau=1.00) locks R_Hillaire=1.0000x (emit=0.6321) vs naive 1.3679x (+36.79% blowout)": "第 8 站（τ=1.00）锁死 R_Hillaire=1.0000×（消除朴素 1.3679× 过曝）",
+      "hillaire-st16-tau200-10000": "第16站τ=2.00浓云大步1.0000x锁定",
+      "station-16 (tau=2.00 dense step) locks R_Hillaire=1.0000x vs naive 2.1353x (+113.53% blowout)": "第 16 站（τ=2.00 浓云大步）锁死 R_Hillaire=1.0000×（消除朴素 2.1353× 炸亮）",
+      "exact-mode-roundtrip": "模式往返切换一致性",
+      "preset switching round-trip preserves deterministic Hillaire volume step telemetry": "Max-Hillaire 步内解析积分与朴素线性步长累加模式往返切换保持确定性状态",
+      "geometry-58-solids": "58构件3D体积步内积分检验台一致性",
+      "3D Hillaire volume integral bench renders 58 tracked solids across 17 stations": "3D 体积步内积分检验台在 17 个光学厚度站点完整渲染 58 个独立几何体",
+      "mobile-layout": "手机布局",
+      "390px Hillaire volume controls fit without horizontal overflow": "390px 体积步内积分控制面板无横向溢出",
+      "runtime-errors": "运行错误",
+      "0 JavaScript errors": "0 个 JavaScript 错误"
+    }
+  }
+}

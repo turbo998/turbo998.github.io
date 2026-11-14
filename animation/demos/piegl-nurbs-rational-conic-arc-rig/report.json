@@ -1,0 +1,269 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Piegl-Tiller rational NURBS conic arc vs naive polynomial Bezier bulge rig",
+  "topic_zh": "Piegl-Tiller 有理 NURBS 二次圆锥曲线（w₁ = cos 60° = 0.5000）对比朴素非有理多项式 Bézier 失圆外鼓",
+  "slug": "piegl-nurbs-rational-conic-arc-rig",
+  "timestamp": "2026-11-14T18:40:52.368Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Piegl & Tiller (The NURBS Book) & Forrest (1968) rational quadratic Bezier conic arc (apex homogeneous weight w1 = cos(120 deg / 2) = 0.5000, projective denominator W(u) = 1 - u + u^2, locking exact circle radius R(u) = 1.0000x with zero trig/sqrt) versus naive non-rational polynomial quadratic Bezier (w1 = 1.0, which bulges outward to 1.2500x at u = 0.50 across all 15/17 interior stations) and 64-step trigonometric Frenet integration across 17 arc stations.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "nurbs-trig64-equiv-128",
+      "passed": true,
+      "detail": "128 Piegl-Tiller rational NURBS and 64-step trig Frenet passes agree within 1e-12"
+    },
+    {
+      "name": "nurbs-trig64-equiv-1024",
+      "passed": true,
+      "detail": "1024 Piegl-Tiller rational NURBS and 64-step trig Frenet passes agree within 1e-12"
+    },
+    {
+      "name": "nurbs-trig64-equiv-8192",
+      "passed": true,
+      "detail": "8192 Piegl-Tiller rational NURBS and 64-step trig Frenet passes agree within 1e-12"
+    },
+    {
+      "name": "nurbs-conic-unit-circle-locked",
+      "passed": true,
+      "detail": "17 conic arc stations lock exact circle radius R = 1.0000x across 120-deg arc (0/17 bulged)"
+    },
+    {
+      "name": "naive-polynomial-bezier-bulge-exposed",
+      "passed": true,
+      "detail": "naive polynomial Bezier (w1=1.0) bulges to 1.1473x at u=0.25 and 1.2500x (+25.00%) at u=0.50 across 15/17 interior stations"
+    },
+    {
+      "name": "nurbs-st4-quarter-10000",
+      "passed": true,
+      "detail": "station-4 (u=0.25) locks R_NURBS=1.0000x vs naive polynomial 1.1473x (+14.73% bulge)"
+    },
+    {
+      "name": "nurbs-st8-apex-10000",
+      "passed": true,
+      "detail": "station-8 (u=0.50 apex, W=0.7500) locks R_NURBS=1.0000x vs naive polynomial 1.2500x (+25.00% bulge)"
+    },
+    {
+      "name": "nurbs-st12-threequarter-10000",
+      "passed": true,
+      "detail": "station-12 (u=0.75) locks R_NURBS=1.0000x vs naive polynomial 1.1473x (+14.73% bulge)"
+    },
+    {
+      "name": "exact-mode-roundtrip",
+      "passed": true,
+      "detail": "preset switching round-trip preserves deterministic NURBS conic telemetry"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D NURBS conic bench renders 58 tracked solids across 17 stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px NURBS conic controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station conic passes",
+      "count": 128,
+      "primary_ms": 0.13599999999996726,
+      "baseline_ms": 0.5108999999999924,
+      "primary_samples_ms": [
+        0.3572000000000344,
+        0.32589999999993324,
+        0.3754999999999882,
+        0.07959999999991396,
+        0.13599999999996726,
+        0.07609999999999673,
+        0.07389999999998054
+      ],
+      "baseline_samples_ms": [
+        0.9565999999999804,
+        0.9238000000000284,
+        0.5199999999999818,
+        0.4824999999999591,
+        0.5108999999999924,
+        0.4981999999999971,
+        0.48109999999996944
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station conic passes",
+      "count": 1024,
+      "primary_ms": 0.6453000000000202,
+      "baseline_ms": 3.990199999999959,
+      "primary_samples_ms": [
+        0.6319999999999482,
+        0.6827999999999292,
+        0.6606000000000449,
+        0.6641000000000759,
+        0.6453000000000202,
+        0.3063000000000784,
+        0.3027000000000726
+      ],
+      "baseline_samples_ms": [
+        3.7635999999999967,
+        4.5475999999999885,
+        3.8748999999999114,
+        3.990199999999959,
+        4.100699999999961,
+        6.779600000000073,
+        3.0126000000000204
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station conic passes",
+      "count": 8192,
+      "primary_ms": 2.556600000000003,
+      "baseline_ms": 24.9375,
+      "primary_samples_ms": [
+        2.512499999999932,
+        2.660099999999943,
+        2.471499999999992,
+        2.556600000000003,
+        2.8290000000000646,
+        2.4845000000000255,
+        2.5989000000000715
+      ],
+      "baseline_samples_ms": [
+        24.989199999999983,
+        25.101400000000012,
+        26.47919999999999,
+        24.601499999999987,
+        24.235000000000014,
+        24.9375,
+        24.664499999999975
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/piegl-nurbs-rational-conic-arc-rig/light-piegl_nurbs_rational_conic_arc.png",
+    "docs/evidence/piegl-nurbs-rational-conic-arc-rig/light-naive_nonrational_polynomial_bezier_bulge.png",
+    "docs/evidence/piegl-nurbs-rational-conic-arc-rig/dark-piegl_nurbs_rational_conic_arc.png",
+    "docs/evidence/piegl-nurbs-rational-conic-arc-rig/dark-naive_nonrational_polynomial_bezier_bulge.png",
+    "docs/evidence/piegl-nurbs-rational-conic-arc-rig/mobile.png"
+  ],
+  "primary_label": "Piegl-Tiller Rational NURBS Division",
+  "baseline_label": "64-Step Trig Frenet Integration",
+  "load_unit": "conic passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Trig-free rational NURBS projective division versus 64-step trigonometric Frenet arc integration.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "apex_weight_w1": 0.5,
+    "station4_nurbs_radius": 1,
+    "station4_poly_radius": 1.1473,
+    "station8_nurbs_radius": 1,
+    "station8_poly_radius": 1.25,
+    "station8_homogeneous_w": 0.75,
+    "station12_nurbs_radius": 1,
+    "station12_poly_radius": 1.1473,
+    "bulged_stations": 15
+  },
+  "protocol": {
+    "input": {
+      "arc_span_deg": 120,
+      "apex_weight_w1": 0.5,
+      "station_8_u": 0.5
+    },
+    "output": {
+      "nurbs_radius_u025": 1,
+      "poly_radius_u025": 1.1473,
+      "nurbs_radius_u050": 1,
+      "poly_radius_u050": 1.25,
+      "bulged_stations": 15
+    },
+    "function": "C(u) = (X(u), Y(u)) / (1 - u + u²) -> R_NURBS = 1.0000× vs Naive Poly R(0.50) = 1.2500× (+25.00% Bulge, 15/17 Bulged)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 conic arc stations preserve exact unit circle radius R = 1.0000x across 120-deg span",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "CAD/CAM precision circles, cylinders, surfaces of revolution, and orbital camera rails requiring exact R(u) = 1.0000x (Piegl & Tiller NURBS)",
+    "GPU vector path, SVG, and font glyph rendering where projective invariance under perspective camera matrices is required",
+    "Unified trig-free representation of ellipses (0 < w1 < 1), parabolas (w1 = 1), and hyperbolas (w1 > 1)",
+    "1-divide rational quadratic evaluation replacing 64-step trigonometric Frenet integration"
+  ],
+  "not_for": [
+    "Constant-angular-velocity motion without arc-length reparameterization (use Slerp when constant angular speed dTheta/du is mandatory)",
+    "Unlit static 2D bitmaps",
+    "Axis-aligned bounding boxes",
+    "1D scalar step functions"
+  ],
+  "locale_zh": {
+    "title": "Piegl-Tiller 有理 NURBS 二次圆锥曲线 vs 朴素非有理多项式 Bézier 圆弧外鼓畸变",
+    "subtitle": "为什么任何非有理多项式 Bézier 曲线在数学上都绝不可能画出真圆（在 120° 圆弧中点直接外鼓 `+25.00%` 达到 `R = 1.2500×`），而 Piegl & Tiller 有理 NURBS 仅靠顶点权重 `w₁ = cos(Δθ/2) = 0.5000` 与齐次除权 `W(u) = 1 − u + u²` 就能零三角函数精确锁死 `R(u) = 1.0000×`？",
+    "plain_intro": "在 CAD/CAM 工业几何内核、GPU 矢量图形以及环绕相机轨道设计中，工程师经常试图用二次或三次多项式 Bézier 曲线去拟合圆弧。然而根据代数几何定理，不存在任何非常数多项式对 (x(u), y(u)) 能恒满足圆方程 x(u)² + y(u)² ≡ 1！以跨越 Δθ = 120° 的圆弧（起点 P₀=(0.5, −√3/2)，终点 P₂=(0.5, +√3/2)，切线交点顶点 P₁=(2, 0)）为例：如果使用非有理多项式二次 Bézier（即令控制权 w₁ = 1.0），曲线退化为抛物线，在第 4 站（u=0.25）极径膨胀至 R = 1.1473×（外鼓 +14.73%），在第 8 站弧顶中点（u=0.50）更是直接膨胀至 R = 1.2500×（外鼓 +25.00%，污染全部 15/17 个内部站点）！Piegl & Tiller（《The NURBS Book》）与 Forrest（1968）通过引入射影齐次坐标，赋予中间切线交点精确有理权重 w₁ = cos(Δθ/2) = cos(60°) = 0.5000，此时齐次分子满足精确代数恒等式 (0.5 + u − u²)² + ¾(2u − 1)² ≡ (1 − u + u²)² = W(u)²，除以齐次分母 W(u) = 1 − u + u² 后，无需调用任何 sin、cos 或 sqrt，即可在全部 17 个站点恒定锁死精确真圆半径 R(u) = 1.0000×（0/17 失圆）！",
+    "finding": "实测 120° 圆弧上的 17 个参数站点（u ∈ [0.0000, 1.0000]）：Piegl-Tiller 有理二次 NURBS（w₁ = cos 60° = 0.5000）在全部 17 个站点恒定锁死单位圆极径 R(u) = 1.0000×（0/17 失圆外鼓），而朴素非有理多项式 Bézier（w₁ = 1.0000）在第 4 站外鼓至 1.1473×、在第 8 站弧顶外鼓至 1.2500×（+25.00%），导致全部 15/17 个内部站点偏离真圆。",
+    "workbench_title": "58 实体 17 站点有理 NURBS 圆锥曲线检验台（Piegl-Tiller Rational NURBS Conic Bench）",
+    "scenario_quote": "为什么多除一个 `W(u) = 1 - u + u²` 就能把抛物线变成完美真圆？因为在三维齐次空间 `(X, Y, W)` 里，平面截圆锥面得到的是抛物线，再通过 `1/W` 中心射影投回 `W = 1` 屏幕平面，圆锥截面就还原成了严丝合缝的真圆！",
+    "protocol_note": "顶块展示 120° 弧跨度、顶点有理权重 w₁=0.5000 与第 8 站中点 u=0.50；底块对比有理 NURBS 恒锁 R=1.0000× 与非有理多项式 Bézier 在 u=0.50 外鼓至 1.2500×。",
+    "robustness_name": "17 个圆弧参数站点在有理齐次除权下 100% 保持精确单位圆极径 R_NURBS = 1.0000×",
+    "primary_label": "Piegl-Tiller 有理 NURBS 齐次除权",
+    "baseline_label": "64 步三角函数 Frenet 弧积分",
+    "load_unit": "次 17 站圆弧求值",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比免三角函数的有理 NURBS 齐次除权与 64 步三角 Frenet 弧积分基准。",
+    "good_fit": [
+      "CAD/CAM 精密工程圆弧、圆柱体、旋转曲面与需要严格 R(u) = 1.0000× 的相机环绕导轨（Piegl & Tiller NURBS）",
+      "在透视投影变换下仍需保持几何精确性的 GPU 矢量图形与工业轮廓渲染",
+      "用单一参数 w₁ 统一表达椭圆（0 < w₁ < 1）、抛物线（w₁ = 1）与双曲线（w₁ > 1）",
+      "单次有理齐次除法替代 64 步三角函数 Frenet 微分积分"
+    ],
+    "not_for": [
+      "未做弧长重参数化且要求严格恒定角速度 dθ/du = const 的旋转（此时应使用四元数 Slerp）",
+      "无几何曲线的静态位图",
+      "纯轴对齐矩形框",
+      "一维线性阶跃函数"
+    ],
+    "readiness": "12/12 项实测通过；58 个 3D 有理圆锥曲线检验构件、17 个圆弧站点与 7-Card 报告已封存。",
+    "entries": {
+      "nurbs-trig64-equiv-128": "有理NURBS与64步三角Frenet等价 128",
+      "128 Piegl-Tiller rational NURBS and 64-step trig Frenet passes agree within 1e-12": "128 次 Piegl-Tiller 有理 NURBS 齐次除权与 64 步三角 Frenet 积分在 1e-12 内一致",
+      "nurbs-trig64-equiv-1024": "有理NURBS与64步三角Frenet等价 1024",
+      "1024 Piegl-Tiller rational NURBS and 64-step trig Frenet passes agree within 1e-12": "1024 次 Piegl-Tiller 有理 NURBS 齐次除权与 64 步三角 Frenet 积分在 1e-12 内一致",
+      "nurbs-trig64-equiv-8192": "有理NURBS与64步三角Frenet等价 8192",
+      "8192 Piegl-Tiller rational NURBS and 64-step trig Frenet passes agree within 1e-12": "8192 次 Piegl-Tiller 有理 NURBS 齐次除权与 64 步三角 Frenet 积分在 1e-12 内一致",
+      "nurbs-conic-unit-circle-locked": "有理NURBS全站真圆半径1.0000x锁定",
+      "17 conic arc stations lock exact circle radius R = 1.0000x across 120-deg arc (0/17 bulged)": "17 个 120° 圆弧站点恒定锁死精确真圆半径 R = 1.0000×（0/17 失圆外鼓）",
+      "naive-polynomial-bezier-bulge-exposed": "朴素非有理多项式Bézier外鼓暴露",
+      "naive polynomial Bezier (w1=1.0) bulges to 1.1473x at u=0.25 and 1.2500x (+25.00%) at u=0.50 across 15/17 interior stations": "朴素非有理多项式 Bézier (w₁=1) 在 u=0.25 外鼓至 1.1473×、在 u=0.50 弧顶外鼓至 1.2500×（污染全部 15/17 个内部站）",
+      "nurbs-st4-quarter-10000": "第4站u=0.25真圆极径1.0000x锁定",
+      "station-4 (u=0.25) locks R_NURBS=1.0000x vs naive polynomial 1.1473x (+14.73% bulge)": "第 4 站（u=0.25）锁死 R_NURBS=1.0000×（消除朴素多项式 1.1473× 外鼓）",
+      "nurbs-st8-apex-10000": "第8站u=0.50弧顶极径1.0000x锁定",
+      "station-8 (u=0.50 apex, W=0.7500) locks R_NURBS=1.0000x vs naive polynomial 1.2500x (+25.00% bulge)": "第 8 站（u=0.50 弧顶, W=0.7500）锁死 R_NURBS=1.0000×（消除朴素多项式 1.2500× 外鼓）",
+      "nurbs-st12-threequarter-10000": "第12站u=0.75真圆极径1.0000x锁定",
+      "station-12 (u=0.75) locks R_NURBS=1.0000x vs naive polynomial 1.1473x (+14.73% bulge)": "第 12 站（u=0.75）锁死 R_NURBS=1.0000×（消除朴素 15/17 内部站失圆）",
+      "exact-mode-roundtrip": "模式往返切换一致性",
+      "preset switching round-trip preserves deterministic NURBS conic telemetry": "Piegl-Tiller 有理 NURBS 与非有理多项式 Bézier 模式往返切换保持确定性状态",
+      "geometry-58-solids": "58构件3D有理圆锥曲线检验台一致性",
+      "3D NURBS conic bench renders 58 tracked solids across 17 stations": "3D 有理圆锥曲线检验台在 17 个圆弧参数站点完整渲染 58 个独立几何体",
+      "mobile-layout": "手机布局",
+      "390px NURBS conic controls fit without horizontal overflow": "390px 有理圆锥曲线控制面板无横向溢出",
+      "runtime-errors": "运行错误",
+      "0 JavaScript errors": "0 个 JavaScript 错误"
+    }
+  }
+}

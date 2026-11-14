@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>瑞利偶极子波长四次方大气散射（σ = (λ₀/λ)⁴ = ν⁴, R = 1.0000×）vs 朴素一次反比衰减（R = 1/ν³）苍白灰雾天空对比台</title>
+  <script type="module" crossorigin src="../../assets/rayleighDipoleFourthPowerSky-D7OXYIOz.js"></script>
+  <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="modulepreload" crossorigin href="../../assets/three.module-7AmyneiW.js">
+  <link rel="stylesheet" crossorigin href="../../assets/blinnReciprocalDepthPlane-Dw-W0NpC.css">
+</head>
+<body data-preset="rayleigh_dipole_fourth_power_scattering" data-theme="dark">
+  <header class="topbar">
+    <div class="brand">
+      <a class="back-link" href="../../index.html">← 返回 Generative Visual Lab 门户</a>
+      <span class="eyebrow">ROUND 149 · 159TH DEMO · RAYLEIGH DIPOLE FOURTH-POWER SKY RIG</span>
+      <h1>物理大气天空与黄昏晚霞因误用波长一次反比 <code>λ₀ / λ</code> 导致短波蓝紫光散射亏损高达 <code>-87.50%</code>？Lord Rayleigh 电偶极子四次方定律 <code>(λ₀ / λ)⁴</code></h1>
+    </div>
+    <div class="toolbar" role="toolbar" aria-label="预设与主题切换">
+      <div class="btn-group">
+        <button type="button" class="btn active" data-preset="rayleigh_dipole_fourth_power_scattering" aria-pressed="true">
+          ✅ 瑞利偶极子四次方散射 (σ = (λ₀/λ)⁴, R = 1.0000×)
+        </button>
+        <button type="button" class="btn" data-preset="naive_linear_inverse_wavelength_haze" aria-pressed="false">
+          ❌ 朴素一次反比雾霾 (σ = λ₀/λ, R = 1/ν³ 苍白失色)
+        </button>
+      </div>
+      <div class="btn-group">
+        <button type="button" class="btn" data-theme-choice="light" aria-pressed="false">☀️ Light</button>
+        <button type="button" class="btn active" data-theme-choice="dark" aria-pressed="true">🌙 Dark</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="workbench rig-shell">
+    <section class="stage-panel" aria-label="58实体17站点赫兹电偶极子瑞利光谱散射三维计量台">
+      <canvas id="stage"></canvas>
+      <div class="stage-overlay">
+        <span id="active-preset-badge" class="badge">Lord Rayleigh 1871 Dipole Fourth-Power Law (σ = (λ₀/λ)⁴ = ν⁴, R = 1.0000×)</span>
+        <span class="badge subtle">58 3D Solids · 17 Spectral Stations · ν = λ_red / λ ∈ [1.0000, 2.0000] (760 nm → 380 nm)</span>
+      </div>
+    </section>
+
+    <aside class="readout-panel" aria-label="实时光谱散射截面与偶极子守恒读数">
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <span class="kpi-label">第 4 站 (橙光 608nm, ν=1.25) 散射比</span>
+          <strong id="metric-s4" class="kpi-value">1.0000× (ν⁴=2.44×)</strong>
+          <span class="kpi-note">瑞利 1.0000× vs 朴素一次 0.5120× (-48.8% 亏损)</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">第 8 站 (青绿 507nm, ν=1.50) 散射比</span>
+          <strong id="metric-s8" class="kpi-value">1.0000× (ν⁴=5.06×)</strong>
+          <span class="kpi-note">瑞利 1.0000× vs 朴素一次 0.2963× (-70.4% 亏损)</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">第 12 站 (靛蓝 434nm, ν=1.75) 散射比</span>
+          <strong id="metric-s12" class="kpi-value">1.0000× (0.0%)</strong>
+          <span class="kpi-note">瑞利 1.0000× vs 朴素一次 0.1866× (-81.3% 亏损)</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">第 16 站 (紫光 380nm, ν=2.00) 散射比</span>
+          <strong id="metric-s16" class="kpi-value">1.0000× (ν⁴=16.00×)</strong>
+          <span class="kpi-note">瑞利 16.00× 散射 vs 朴素 2.00× (R=0.1250×, -87.5% 亏损)</span>
+        </div>
+        <div class="kpi-card full">
+          <span class="kpi-label">短波蓝紫光散射失真站点数 (R(ν) < 1.0000× / 共 17 站)</span>
+          <strong id="metric-washed" class="kpi-value">0 / 17</strong>
+          <span class="kpi-note">瑞利四次方全站 0/17 失色 vs 朴素一次反比 16/17 光谱站苍白退化</span>
+        </div>
+      </div>
+
+      <div class="table-card">
+        <h2>17 站归一化频率 ν = λ₀ / λ ∈ [1.0, 2.0] 偶极子散射截面审计</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>站点 (频率比 ν, 波长 λ)</th>
+              <th>瑞利偶极子 ν⁴</th>
+              <th>朴素一次反比 ν</th>
+              <th>当前激活守恒比 R</th>
+            </tr>
+          </thead>
+          <tbody id="station-table-body"></tbody>
+        </table>
+      </div>
+
+      <div class="links-card">
+        <a href="../../docs/rayleigh-dipole-wavelength-fourth-power-vs-linear-haze-faq.md">📘 选型 FAQ (中文)</a>
+        <a href="../../docs/rayleigh-dipole-wavelength-fourth-power-vs-linear-haze-faq.en.md">📗 Selection FAQ (EN)</a>
+        <a href="./test-report-cards.zh.html">📊 7-Card 报告 (ZH)</a>
+        <a href="./test-report-cards.html">📈 7-Card Report (EN)</a>
+      </div>
+    </aside>
+  </main>
+
+</body>
+</html>

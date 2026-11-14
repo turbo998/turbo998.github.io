@@ -1,0 +1,272 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Sutherland-Hodgman homogeneous near-plane clipping vs naive unclipped perspective divide explosion rig",
+  "topic_zh": "Sutherland-Hodgman 齐次空间近平面裁剪（t = (w₀−w_near)/(w₀−w₁)）对比朴素未裁剪透视除权（X/w）奇点爆炸",
+  "slug": "sutherland-hodgman-homogeneous-clip-rig",
+  "timestamp": "2026-11-14T19:37:04.834Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Ivan Sutherland & Gary W. Hodgman (CACM 1974) and Jim Blinn & Martin Newell (SIGGRAPH 1978) homogeneous clip-space near-plane segment clipping (t_clip = (w_0 - w_near) / (w_0 - w_1) evaluated BEFORE perspective divide X / w, locking the near-plane screen-space endpoint at x_NDC = 1.0000x across all 17 intrusion stations) versus naive pre-clip perspective divide (dividing X_1 / w_1 directly when w_1 = 1/(1+4u) intrudes inside w_near = 1.0, exploding x_NDC to 2.0000x at u=0.25, 3.0000x at u=0.50, and 5.0000x at u=1.00 across 16/17 stations) and 64-step homogeneous plane bisection.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "clip-bisection64-equiv-128",
+      "passed": true,
+      "detail": "128 Sutherland-Hodgman closed-form homogeneous clip and 64-step plane bisection passes agree within 1e-12"
+    },
+    {
+      "name": "clip-bisection64-equiv-1024",
+      "passed": true,
+      "detail": "1024 Sutherland-Hodgman closed-form homogeneous clip and 64-step plane bisection passes agree within 1e-12"
+    },
+    {
+      "name": "clip-bisection64-equiv-8192",
+      "passed": true,
+      "detail": "8192 Sutherland-Hodgman closed-form homogeneous clip and 64-step plane bisection passes agree within 1e-12"
+    },
+    {
+      "name": "homogeneous-near-clip-locked",
+      "passed": true,
+      "detail": "17 near-plane intrusion stations lock exact clipped screen coordinate x_NDC = 1.0000x (0/17 exploded)"
+    },
+    {
+      "name": "naive-unclipped-divide-explosion-exposed",
+      "passed": true,
+      "detail": "naive pre-clip perspective divide X/w explodes to 2.0000x at S4, 3.0000x at S8, 4.0000x at S12, and 5.0000x at S16 across 16/17 stations"
+    },
+    {
+      "name": "clip-st4-w050-10000",
+      "passed": true,
+      "detail": "station-4 (u=0.25, w1=0.50m) locks x_NDC=1.0000x vs naive unclipped 2.0000x (+100% explosion)"
+    },
+    {
+      "name": "clip-st8-w033-10000",
+      "passed": true,
+      "detail": "station-8 (u=0.50, w1=0.3333m) locks x_NDC=1.0000x vs naive unclipped 3.0000x (+200% explosion)"
+    },
+    {
+      "name": "clip-st16-w020-10000",
+      "passed": true,
+      "detail": "station-16 (u=1.00, w1=0.20m) locks x_NDC=1.0000x vs naive unclipped 5.0000x (+400% explosion)"
+    },
+    {
+      "name": "exact-mode-roundtrip",
+      "passed": true,
+      "detail": "preset switching round-trip preserves deterministic homogeneous clip telemetry"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D homogeneous near-clip bench renders 58 tracked solids across 17 stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px homogeneous clip controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station clip passes",
+      "count": 128,
+      "primary_ms": 0.14479999999991833,
+      "baseline_ms": 0.37770000000000437,
+      "primary_samples_ms": [
+        0.22280000000000655,
+        0.14479999999991833,
+        0.13220000000001164,
+        0.141399999999976,
+        0.13949999999999818,
+        0.16420000000005075,
+        0.16089999999996962
+      ],
+      "baseline_samples_ms": [
+        0.42079999999998563,
+        0.43230000000005475,
+        0.28930000000002565,
+        0.29320000000006985,
+        0.4034000000000333,
+        0.37770000000000437,
+        0.3125
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station clip passes",
+      "count": 1024,
+      "primary_ms": 0.06280000000003838,
+      "baseline_ms": 1.7911000000000286,
+      "primary_samples_ms": [
+        0.29169999999999163,
+        0.062399999999911415,
+        0.06479999999999109,
+        0.06280000000003838,
+        0.06189999999992324,
+        0.06299999999998818,
+        0.06179999999994834
+      ],
+      "baseline_samples_ms": [
+        1.9341999999999189,
+        1.783900000000017,
+        1.7888000000000375,
+        1.789600000000064,
+        1.8111000000000104,
+        1.8216000000001031,
+        1.7911000000000286
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station clip passes",
+      "count": 8192,
+      "primary_ms": 0.5222999999999729,
+      "baseline_ms": 14.86360000000002,
+      "primary_samples_ms": [
+        0.508899999999926,
+        0.5222999999999729,
+        0.5045999999999822,
+        0.5597000000000207,
+        0.5041999999999689,
+        0.6872999999999365,
+        0.6109000000000151
+      ],
+      "baseline_samples_ms": [
+        19.739599999999996,
+        14.803100000000086,
+        14.643199999999979,
+        14.64829999999995,
+        15.140699999999924,
+        14.86360000000002,
+        14.902600000000007
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/sutherland-hodgman-homogeneous-clip-rig/light-sutherland_hodgman_homogeneous_near_clip.png",
+    "docs/evidence/sutherland-hodgman-homogeneous-clip-rig/light-naive_unclipped_perspective_divide_explosion.png",
+    "docs/evidence/sutherland-hodgman-homogeneous-clip-rig/dark-sutherland_hodgman_homogeneous_near_clip.png",
+    "docs/evidence/sutherland-hodgman-homogeneous-clip-rig/dark-naive_unclipped_perspective_divide_explosion.png",
+    "docs/evidence/sutherland-hodgman-homogeneous-clip-rig/mobile.png"
+  ],
+  "primary_label": "Sutherland-Hodgman Homogeneous Clip",
+  "baseline_label": "64-Step Homogeneous Plane Bisection",
+  "load_unit": "clip passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form homogeneous near-plane clipping versus 64-step homogeneous plane bisection.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "station0_clipped_ndc": 1,
+    "station0_unclipped_ndc": 1,
+    "station4_clipped_ndc": 1,
+    "station4_unclipped_ndc": 2,
+    "station8_clipped_ndc": 1,
+    "station8_unclipped_ndc": 3,
+    "station12_clipped_ndc": 1,
+    "station12_unclipped_ndc": 4,
+    "station16_clipped_ndc": 1,
+    "station16_unclipped_ndc": 5,
+    "exploded_stations": 16
+  },
+  "protocol": {
+    "input": {
+      "near_plane_w": 1,
+      "station_4_w1": 0.5,
+      "station_8_w1": 0.3333,
+      "station_16_w1": 0.2
+    },
+    "output": {
+      "clipped_ndc_x": 1,
+      "unclipped_ndc_x_w050": 2,
+      "unclipped_ndc_x_w033": 3,
+      "unclipped_ndc_x_w020": 5,
+      "exploded_stations": 16
+    },
+    "function": "t = (w₀ − w_near)/(w₀ − w₁) -> X_clip/w_near = 1.0000× vs Naive X₁/w₁ = 1 + 4u (5.0000× at u=1.0, 16/17 Exploded)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 near-plane intrusion stations preserve exact clipped NDC boundary x_NDC = 1.0000x",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "3D viewport gizmos, motion trails, spline ribbons, and debug wireframes that cross the camera near plane (Sutherland & Hodgman 1974 / Blinn & Newell 1978)",
+    "Software/compute-shader rasterizers, meshlet cullers, and SVG/Canvas2D 3D line projectors",
+    "Screen-space portal clipping and decals where one endpoint moves behind or close to the camera pinhole w <= w_near",
+    "1-divide linear homogeneous interpolation replacing 64-step ray-plane bisection"
+  ],
+  "not_for": [
+    "2D orthographic HUD overlays where w === 1.0 is constant everywhere",
+    "Static background skyboxes evaluated purely by view direction",
+    "1D audio timelines",
+    "Fixed-screen-space post-processing fullscreen quads"
+  ],
+  "locale_zh": {
+    "title": "Sutherland-Hodgman 齐次空间近平面裁剪 vs 朴素未裁剪透视除权奇点爆炸",
+    "subtitle": "为什么在 3D 运动轨迹线（Motion Trails）、编辑器坐标轴 Gizmo、软件/计算着色器光栅化以及 Canvas2D/SVG 三维投影中，如果先把两端点做透视除法 `x = X / w` 投到屏幕再连线，一旦端点侵入近平面（`w < w_near` 逼近 `0` 或变为负数）就会导致屏幕坐标暴冲 `5.0000×` 甚至横穿整块屏幕反折？",
+    "plain_intro": "透视投影的本质是将四维齐次裁剪坐标 (X, Y, Z, w) 除以相机深度 w 得到归一化设备坐标 x_NDC = X / w。考虑一条沿着视锥右边界延伸的三维线段：起点 V₀ = (X₀=1.0, w₀=2.0 m) 位于视野内，终点 V₁(u) = (X₁=1.0, w₁(u) = 1/(1+4u)) 穿过近平面 w_near = 1.0 m 逼近相机针孔（w₁ 从 1.00 m 降至 0.20 m）。如果使用朴素的“先做透视除法再画 2D 线”方案（即直接计算 x_naive = X₁ / w₁(u)），由于分母 w₁ 趋向 0，屏幕坐标按 x_naive(u) = 1 + 4u 剧烈爆炸：在第 4 站（w₁=0.50 m）飞出视口达 2.0000×（+100%），在第 8 站（w₁=0.3333 m）达 3.0000×（+200%），在第 16 站（w₁=0.20 m）更是暴冲至 5.0000×（+400%，污染 16/17 个站点；一旦 w₁ < 0 穿到相机背后，X₁/w₁ 直接变号反折横穿整张屏幕）！Ivan Sutherland 与 Gary W. Hodgman（CACM 1974）及 Jim Blinn 与 Martin Newell（SIGGRAPH 1978）确立的铁律是：**必须在除以 w 之前，先在四维齐次线性空间中对近平面 w ≥ w_near 进行线性求交裁剪** t_clip = (w₀ − w_near) / (w₀ − w₁)！裁剪后的齐次端点严格落在 w_clip = w_near = 1.0000 m 处，再执行透视除法即可在全部 17 个站点上恒定锁死正确的视口边界坐标 x_NDC = 1.0000×（0/17 越界爆炸）！",
+    "finding": "实测跨越近平面侵入参数 u ∈ [0.0000, 1.0000]（w₁ = 1/(1+4u) ∈ [1.00, 0.20] m）的 17 个站点：Sutherland-Hodgman 齐次空间先裁剪后除权在全部 17 个站点恒定锁死屏幕坐标 x_NDC = 1.0000×（0/17 越界爆炸），而朴素未裁剪直接透视除权 X₁/w₁ 在第 4 站暴冲至 2.0000×、第 8 站 3.0000×、第 16 站高达 5.0000×，导致 16/17 个站点飞出视锥。",
+    "workbench_title": "58 实体 17 站点齐次近平面裁剪检验台（Sutherland-Hodgman Homogeneous Clip Bench）",
+    "scenario_quote": "为什么千万不能先把两个三维顶点除以 `w` 变成屏幕 2D 坐标再去裁剪？因为一旦 `w` 接近 `0` 或变成负数，除以 `w` 就跨过了无穷远奇点，欧氏空间里的直线段在屏幕空间里已经撕裂反折了！",
+    "protocol_note": "顶块展示近平面 w_near=1.0 与第 4、8、16 站端点深度 w₁；底块对比齐次空间先裁后除恒锁 x_NDC=1.0000× 与朴素未裁剪除权暴冲至 5.0000×。",
+    "robustness_name": "17 个近平面侵入站点在齐次空间先裁剪后除权下 100% 保持精确视口边界坐标 x_NDC = 1.0000×",
+    "primary_label": "Sutherland-Hodgman 齐次先裁后除",
+    "baseline_label": "64 步齐次平面二分求交",
+    "load_unit": "次 17 站近平面裁剪",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比闭式齐次线性求交裁剪与 64 步齐次平面二分求交基准。",
+    "good_fit": [
+      "穿过相机近平面的 3D 运动尾迹（Motion Trails）、相机轨道线与编辑器 Gizmo 辅助线（Sutherland & Hodgman 1974 / Blinn & Newell 1978）",
+      "Compute Shader 软光栅（Software Rasterizer）、Mesh Shader 图元剔除与 WebGPU/Canvas2D 矢量三维投影",
+      "第一人称穿门/贴墙特写时的屏幕空间边界防破面裁剪",
+      "单次齐次线性求交 t = (w₀−w_near)/(w₀−w₁) 替代 64 步二分迭代"
+    ],
+    "not_for": [
+      "w 恒等于 1.0 的纯二维正交 UI 图层",
+      "仅按方向向量采样的无穷远天空盒",
+      "一维音频时间轴",
+      "固定屏幕坐标的后处理全屏三角形"
+    ],
+    "readiness": "12/12 项实测通过；58 个 3D 齐次近平面裁剪检验构件、17 个侵入站点与 7-Card 报告已封存。",
+    "entries": {
+      "clip-bisection64-equiv-128": "齐次闭式裁剪与64步二分求交等价 128",
+      "128 Sutherland-Hodgman closed-form homogeneous clip and 64-step plane bisection passes agree within 1e-12": "128 次 Sutherland-Hodgman 闭式齐次裁剪与 64 步平面二分求交在 1e-12 内一致",
+      "clip-bisection64-equiv-1024": "齐次闭式裁剪与64步二分求交等价 1024",
+      "1024 Sutherland-Hodgman closed-form homogeneous clip and 64-step plane bisection passes agree within 1e-12": "1024 次 Sutherland-Hodgman 闭式齐次裁剪与 64 步平面二分求交在 1e-12 内一致",
+      "clip-bisection64-equiv-8192": "齐次闭式裁剪与64步二分求交等价 8192",
+      "8192 Sutherland-Hodgman closed-form homogeneous clip and 64-step plane bisection passes agree within 1e-12": "8192 次 Sutherland-Hodgman 闭式齐次裁剪与 64 步平面二分求交在 1e-12 内一致",
+      "homogeneous-near-clip-locked": "齐次空间近平面裁剪全站1.0000x锁定",
+      "17 near-plane intrusion stations lock exact clipped screen coordinate x_NDC = 1.0000x (0/17 exploded)": "17 个近平面侵入站点恒定锁死裁剪后屏幕坐标 x_NDC = 1.0000×（0/17 越界爆炸）",
+      "naive-unclipped-divide-explosion-exposed": "朴素未裁剪透视除权5倍爆炸暴露",
+      "naive pre-clip perspective divide X/w explodes to 2.0000x at S4, 3.0000x at S8, 4.0000x at S12, and 5.0000x at S16 across 16/17 stations": "朴素未裁剪透视除法 X/w 在第 4 站暴冲至 2.0000×、第 8 站 3.0000×、第 16 站高达 5.0000×（污染 16/17 站）",
+      "clip-st4-w050-10000": "第4站w1=0.50屏幕坐标1.0000x锁定",
+      "station-4 (u=0.25, w1=0.50m) locks x_NDC=1.0000x vs naive unclipped 2.0000x (+100% explosion)": "第 4 站（u=0.25, w₁=0.50m）锁死 x_NDC=1.0000×（消除朴素 2.0000× 越界爆炸）",
+      "clip-st8-w033-10000": "第8站w1=0.33屏幕坐标1.0000x锁定",
+      "station-8 (u=0.50, w1=0.3333m) locks x_NDC=1.0000x vs naive unclipped 3.0000x (+200% explosion)": "第 8 站（u=0.50, w₁=0.3333m）锁死 x_NDC=1.0000×（消除朴素 3.0000× 越界爆炸）",
+      "clip-st16-w020-10000": "第16站w1=0.20屏幕坐标1.0000x锁定",
+      "station-16 (u=1.00, w1=0.20m) locks x_NDC=1.0000x vs naive unclipped 5.0000x (+400% explosion)": "第 16 站（u=1.00, w₁=0.20m）锁死 x_NDC=1.0000×（消除朴素 5.0000× 奇点发散）",
+      "exact-mode-roundtrip": "模式往返切换一致性",
+      "preset switching round-trip preserves deterministic homogeneous clip telemetry": "Sutherland-Hodgman 齐次裁剪与朴素直接透视除权模式往返切换保持确定性状态",
+      "geometry-58-solids": "58构件3D齐次裁剪检验台一致性",
+      "3D homogeneous near-clip bench renders 58 tracked solids across 17 stations": "3D 齐次裁剪检验台在 17 个近平面侵入站点完整渲染 58 个独立几何体",
+      "mobile-layout": "手机布局",
+      "390px homogeneous clip controls fit without horizontal overflow": "390px 齐次近平面裁剪控制面板无横向溢出",
+      "runtime-errors": "运行错误",
+      "0 JavaScript errors": "0 个 JavaScript 错误"
+    }
+  }
+}

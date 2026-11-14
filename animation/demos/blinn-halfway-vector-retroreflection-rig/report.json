@@ -1,0 +1,266 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Blinn halfway-vector microfacet bisector vs Phong mirror double-angle cutoff rig",
+  "topic_zh": "Blinn 半角向量微平面分角反射对比 Phong 镜面反射倍角 45° 断崖截断",
+  "slug": "blinn-halfway-vector-retroreflection-rig",
+  "timestamp": "2026-11-14T17:21:34.847Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic James Blinn (SIGGRAPH 1977) halfway-vector microfacet cosine evaluation (H = normalize(L + V), N*H = cos(theta_h) > 0 across all theta_h in [0, 90 deg)) versus Bui Tuong Phong (1975) mirror-reflection dot product (max(0, R*V) = max(0, cos(2*theta_h)) = max(0, 2*mu_h^2 - 1), which clips to 0.0000 for all theta_h >= 45 deg) and 64-substep geodesic angular bisector arc integration across 17 microfacet tilt stations (mu_h in [1.0000, 0.2000]).",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "blinn-geodesic64-equiv-128",
+      "passed": true,
+      "detail": "128 Blinn halfway bisector and 64-substep geodesic arc passes agree within 1e-12"
+    },
+    {
+      "name": "blinn-geodesic64-equiv-1024",
+      "passed": true,
+      "detail": "1024 Blinn halfway bisector and 64-substep geodesic arc passes agree within 1e-12"
+    },
+    {
+      "name": "blinn-geodesic64-equiv-8192",
+      "passed": true,
+      "detail": "8192 Blinn halfway bisector and 64-substep geodesic arc passes agree within 1e-12"
+    },
+    {
+      "name": "blinn-halfway-unclipped-hemisphere",
+      "passed": true,
+      "detail": "17 microfacet tilt stations preserve N*H = cos(theta_h) in [0.2000, 1.0000] (0/17 clipped)"
+    },
+    {
+      "name": "phong-mirror-45deg-cutoff-exposed",
+      "passed": true,
+      "detail": "naive Phong max(0, R*V) = max(0, 2*mu^2-1) clips 11/17 stations past 45 deg (mu<=0.70) to dead 0.0000"
+    },
+    {
+      "name": "blinn-st4-37deg-08000",
+      "passed": true,
+      "detail": "station-4 (36.9 deg, mu=0.80) locks N*H=0.8000 vs Phong R*V=0.2800 (-65.00% cosine collapse)"
+    },
+    {
+      "name": "blinn-st6-45deg-cliff-07000",
+      "passed": true,
+      "detail": "station-6 (45.6 deg, mu=0.70) preserves N*H=0.7000 vs Phong R*V=0.0000 cutoff cliff"
+    },
+    {
+      "name": "blinn-st8-53deg-flank-06000",
+      "passed": true,
+      "detail": "station-8 (53.1 deg, mu=0.60) preserves N*H=0.6000 vs Phong R*V=0.0000 across 11/17 clipped stations"
+    },
+    {
+      "name": "exact-mode-roundtrip",
+      "passed": true,
+      "detail": "preset switching round-trip preserves deterministic Blinn halfway telemetry"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D Blinn microfacet bisector bench renders 58 tracked solids across 17 stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Blinn halfway bisector controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station bisector passes",
+      "count": 128,
+      "primary_ms": 0.008100000000013097,
+      "baseline_ms": 0.22920000000010532,
+      "primary_samples_ms": [
+        0.028099999999994907,
+        0.008100000000013097,
+        0.006700000000023465,
+        0.010800000000017462,
+        0.010200000000054388,
+        0.005700000000047112,
+        0.007099999999923057
+      ],
+      "baseline_samples_ms": [
+        0.4030999999999949,
+        0.4226000000001022,
+        0.44069999999999254,
+        0.21020000000009986,
+        0.22920000000010532,
+        0.20820000000003347,
+        0.21050000000002456
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station bisector passes",
+      "count": 1024,
+      "primary_ms": 0.03560000000004493,
+      "baseline_ms": 1.0736000000000558,
+      "primary_samples_ms": [
+        0.06559999999990396,
+        0.03550000000007003,
+        0.03890000000001237,
+        0.03560000000004493,
+        0.03630000000009659,
+        0.03530000000000655,
+        0.03530000000000655
+      ],
+      "baseline_samples_ms": [
+        1.7617999999999938,
+        1.094500000000039,
+        1.0736000000000558,
+        1.0670999999999822,
+        1.0629999999999882,
+        1.0604999999999336,
+        1.508199999999988
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station bisector passes",
+      "count": 8192,
+      "primary_ms": 0.2939000000000078,
+      "baseline_ms": 9.863399999999956,
+      "primary_samples_ms": [
+        0.28700000000003456,
+        1.4143000000000256,
+        0.2939000000000078,
+        0.2857999999999947,
+        0.28750000000002274,
+        0.35450000000003,
+        0.29849999999999
+      ],
+      "baseline_samples_ms": [
+        9.916200000000003,
+        9.863399999999956,
+        9.36869999999999,
+        12.437700000000063,
+        11.264999999999986,
+        8.762900000000059,
+        9.632100000000037
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/blinn-halfway-vector-retroreflection-rig/light-blinn_halfway_microfacet_bisector.png",
+    "docs/evidence/blinn-halfway-vector-retroreflection-rig/light-naive_phong_mirror_double_angle_cutoff.png",
+    "docs/evidence/blinn-halfway-vector-retroreflection-rig/dark-blinn_halfway_microfacet_bisector.png",
+    "docs/evidence/blinn-halfway-vector-retroreflection-rig/dark-naive_phong_mirror_double_angle_cutoff.png",
+    "docs/evidence/blinn-halfway-vector-retroreflection-rig/mobile.png"
+  ],
+  "primary_label": "Closed-Form Blinn Halfway N·H",
+  "baseline_label": "64-Substep Geodesic Bisector Arc",
+  "load_unit": "bisector passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form Blinn halfway cosine evaluation versus 64-substep geodesic angular bisector arc integration.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "station4_blinn_cosine": 0.8,
+    "station4_phong_cosine": 0.28000000000000025,
+    "station6_blinn_cosine": 0.7,
+    "station8_blinn_cosine": 0.6,
+    "station8_phong_cosine": 0,
+    "clipped_stations": 11
+  },
+  "protocol": {
+    "input": {
+      "station_4_mu": 0.8,
+      "station_6_mu": 0.7,
+      "station_8_mu": 0.6
+    },
+    "output": {
+      "blinn_cosine_st4": 0.8,
+      "phong_cosine_st4": 0.28,
+      "blinn_cosine_st6": 0.7,
+      "blinn_cosine_st8": 0.6,
+      "phong_clipped_stations": 11
+    },
+    "function": "N·H = cos(θ_h) = 0.7000 at 45.6° vs Phong max(0, R·V) = max(0, cos(2θ_h)) = max(0, 2·0.7²−1) = 0.0000 (11/17 Clipped)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 microfacet tilt stations preserve strictly positive half-angle cosine N*H > 0 across the entire visible hemisphere",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "All physically based microfacet BRDFs (Blinn SIGGRAPH 1977 / Cook-Torrance / GGX) where specular reflection occurs on microfacets aligned with H = normalize(L+V)",
+    "Headlight, camera-flash, and grazing wet-road specular highlights that must not suffer a hard circular cutoff at theta_h = 45 deg",
+    "Eliminating the R = 2(N*L)N - L reflection vector double-angle sign flip when 2*theta_h > 90 deg",
+    "Direct vector bisector dot product replacing 64-substep geodesic arc bisection"
+  ],
+  "not_for": [
+    "Perfect delta-mirror ray tracing on a zero-roughness plane (where only theta_h = 0 reflects)",
+    "Purely diffuse matte surfaces",
+    "Unlit 2D sprites",
+    "1D audio phase shifters"
+  ],
+  "locale_zh": {
+    "title": "Blinn 半角向量微平面分角反射 vs Phong 镜面反射倍角 45° 断崖截断",
+    "subtitle": "为什么在车灯照明、相机闪光灯同轴补光与掠射湿滑路面上，使用传统 Phong 镜面反射公式 `max(0, dot(reflect(-L, N), V))` 会在倾角刚过 `45°` 的地方切出一圈生硬的死黑断崖（把 `45°~90°` 之间整整半个可见半球的高光全部抹零）？",
+    "plain_intro": "在实时渲染史上，Bui Tuong Phong (1975) 用宏观镜面反射向量 R = 2(N·L)N − L 与视线 V 的点积 max(0, R·V) 来近似高光。然而从几何光学第一性原理看，真实粗糙表面是由无数朝向各异的微平面（Microfacets）组成的：要把入射光 L 反射进相机视线 V，起作用的微平面法线必须严格处于 L 与 V 的角平分线上——即 James Blinn (SIGGRAPH 1977) 提出的半角向量 H = normalize(L + V)！当表面宏观法线 N 偏离半角向量 H 的倾角为 θ_h ∈ [0°, 90°) 时，真实的微平面余弦是 N·H = cos(θ_h)，在整个 [0°, 90°) 可见半球上恒为正数！但如果我们按 Phong 公式去算宏观镜面反射向量 R，由于关于法线 N 反射会把偏离角翻倍，R 与 V 之间的夹角变成了整整两倍：∠(R, V) = 2θ_h，即 R·V = cos(2θ_h) = 2(N·H)² − 1！这意味着一旦微平面倾角 θ_h 超过 45°（即 μ_h = N·H < 1/√2 ≈ 0.7071，如第 6 站 μ_h = 0.7000, θ_h = 45.57°），虽然表面依然朝向相机和光源，但倍角 2θ_h 已经超过 90°，导致 R·V = 2(0.70)² − 1 = −0.0200 < 0，被 max(0, R·V) 瞬间一刀砍成死黑 0.0000！从第 6 站（45.6°）到第 16 站（78.5°）的全部 11/17 个掠射站点被 Phong 彻底归零，而 Blinn 半角向量 N·H 完整保留 0.7000、0.6000 直至 0.2000（0/17 截断）！",
+    "finding": "实测 17 个微平面倾角余弦站点（μ_h = N·H ∈ [1.00, 0.20]）：Blinn 半角向量在第 4 站（36.9°）锁死 0.8000、第 6 站（45.6°）锁死 0.7000、第 8 站（53.1°）锁死 0.6000、第 12 站（66.4°）锁死 0.4000（0/17 截断），而 Phong 镜面反射 max(0, 2μ_h²−1) 在第 4 站暴跌至 0.2800（−65%），并在第 6 至第 16 站（θ_h > 45° 的全部 11/17 个站点）断崖归零为 0.0000（污染 16/17 站）。",
+    "workbench_title": "58 实体 17 站点半角微平面分角测角台（Blinn Halfway Bisector Bench）",
+    "scenario_quote": "为什么 Blinn-Phong 绝不仅仅是“比 Phong 少算一次 reflect 的性能优化”，而是修正了 Phong 把偏离角翻倍（2θ_h > 90°）导致 45° 以外高光被腰斩的根本物理错误？",
+    "protocol_note": "顶块展示第 4 站（μ_h=0.80, 36.9°）、第 6 站（μ_h=0.70, 45.6°）与第 8 站（μ_h=0.60, 53.1°）；底块对比 Blinn 半角余弦 0.8000 / 0.7000 / 0.6000 与 Phong 倍角余弦跌至 0.2800 并在 45° 外归零为 0.0000。",
+    "robustness_name": "17 个微平面倾角站点在整个可见半球 θ_h ∈ [0°, 78.5°] 上 100% 保持严格正半角余弦 N·H > 0",
+    "primary_label": "Blinn 闭式半角微平面 N·H",
+    "baseline_label": "64 子步测地分角弧积分",
+    "load_unit": "次 17 站半角求值",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比闭式 Blinn 半角余弦与 64 子步测地分角弧数值积分。",
+    "good_fit": [
+      "一切基于微表面物理光学的现代高光模型（Blinn SIGGRAPH 1977 / Cook-Torrance / GGX），以 H = normalize(L+V) 作为真实微平面法线",
+      "车载大灯、矿灯、内窥镜与相机同轴闪光灯照明：消除倾角超过 45° 时高光被一刀切平的假圆环伪影",
+      "掠射角湿滑柏油路面、海面波浪与拉丝金属的长条形高光拖尾（Glint Streak）",
+      "直接半角向量点积替代 64 子步球面测地弧二分求积"
+    ],
+    "not_for": [
+      "粗糙度严格等于 0 的理想平面几何光线追踪反射（仅 θ_h = 0 一条奇异射线）",
+      "无镜面反射的纯漫反射表面",
+      "无光照 2D 精灵贴图",
+      "一维音频移相器"
+    ],
+    "readiness": "12/12 项实测通过；58 个 3D 半角测角构件、17 个微平面倾角站点与 7-Card 报告已封存（第 145 个独立 Demo 里程碑）。",
+    "entries": {
+      "blinn-geodesic64-equiv-128": "Blinn半角与64步测地分角等价 128",
+      "128 Blinn halfway bisector and 64-substep geodesic arc passes agree within 1e-12": "128 次 Blinn 半角微平面余弦与 64 子步测地分角弧积分在 1e-12 内一致",
+      "blinn-geodesic64-equiv-1024": "Blinn半角与64步测地分角等价 1024",
+      "1024 Blinn halfway bisector and 64-substep geodesic arc passes agree within 1e-12": "1024 次 Blinn 半角微平面余弦与 64 子步测地分角弧积分在 1e-12 内一致",
+      "blinn-geodesic64-equiv-8192": "Blinn半角与64步测地分角等价 8192",
+      "8192 Blinn halfway bisector and 64-substep geodesic arc passes agree within 1e-12": "8192 次 Blinn 半角微平面余弦与 64 子步测地分角弧积分在 1e-12 内一致",
+      "blinn-halfway-unclipped-hemisphere": "Blinn半角向量全半球零截断",
+      "17 microfacet tilt stations preserve N*H = cos(theta_h) in [0.2000, 1.0000] (0/17 clipped)": "17 个微平面倾角站点完整保留 N·H = cos(θ_h) ∈ [0.2000, 1.0000]（0/17 截断）",
+      "phong-mirror-45deg-cutoff-exposed": "Phong镜面倍角45度断崖截断暴露",
+      "naive Phong max(0, R*V) = max(0, 2*mu^2-1) clips 11/17 stations past 45 deg (mu<=0.70) to dead 0.0000": "Phong 镜面点积 max(0, R·V) = max(0, 2μ²−1) 将超过 45°（μ≤0.70）的 11/17 个站点全部截断为死黑 0.0000",
+      "blinn-st4-37deg-08000": "第4站36.9度半角余弦0.8000锁定",
+      "station-4 (36.9 deg, mu=0.80) locks N*H=0.8000 vs Phong R*V=0.2800 (-65.00% cosine collapse)": "第 4 站（36.9°, μ=0.80）锁死 N·H=0.8000（消除 Phong R·V=0.2800 的 −65.00% 余弦坍塌）",
+      "blinn-st6-45deg-cliff-07000": "第6站45.6度分界点0.7000锁定",
+      "station-6 (45.6 deg, mu=0.70) preserves N*H=0.7000 vs Phong R*V=0.0000 cutoff cliff": "第 6 站（45.6° 刚过 45° 临界角, μ=0.70）保留 N·H=0.7000（消除 Phong 0.0000 断崖截断）",
+      "blinn-st8-53deg-flank-06000": "第8站53.1度掠射翼0.6000锁定",
+      "station-8 (53.1 deg, mu=0.60) preserves N*H=0.6000 vs Phong R*V=0.0000 across 11/17 clipped stations": "第 8 站（53.1° 掠射侧翼, μ=0.60）保留 N·H=0.6000（消除 Phong 11/17 站死黑截断）",
+      "exact-mode-roundtrip": "模式往返切换一致性",
+      "preset switching round-trip preserves deterministic Blinn halfway telemetry": "Blinn 半角向量与 Phong 镜面倍角模式往返切换保持确定性状态",
+      "geometry-58-solids": "58构件3D半角分角测角台一致性",
+      "3D Blinn microfacet bisector bench renders 58 tracked solids across 17 stations": "3D 半角分角测角台在 17 个微平面倾角站点完整渲染 58 个独立几何体",
+      "mobile-layout": "手机布局",
+      "390px Blinn halfway bisector controls fit without horizontal overflow": "390px Blinn 半角控制面板无横向溢出",
+      "runtime-errors": "运行错误",
+      "0 JavaScript errors": "0 个 JavaScript 错误"
+    }
+  }
+}

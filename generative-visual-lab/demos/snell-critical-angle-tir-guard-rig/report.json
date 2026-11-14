@@ -1,0 +1,271 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Snell-Descartes total internal reflection discriminant guard vs naive unclamped sqrt NaN and energy black hole rig",
+  "topic_zh": "Snell-Descartes 全内反射判别式保护（k ≤ 0 → R = 1.0000×）对比朴素未钳制 sqrt(k) 负根 NaN 与能量黑洞",
+  "slug": "snell-critical-angle-tir-guard-rig",
+  "timestamp": "2026-11-14T21:02:24.668Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Snell-Descartes (1621 / 1637) & Fresnel total internal reflection (TIR) discriminant guard (k = 1 - eta^2 * sin^2(theta_i) <= 0, redirecting the imaginary evanescent modulus squared |k| = u back into specular reflection so R_TIR(u) = (1 - u) + u = 1.0000x across all 17 supercritical stations theta_i in [45 deg, 90 deg] for eta = sqrt(2)) versus naive unswitched refraction (which evaluates raw sqrt(-u) = NaN on 16/17 stations or drops the evanescent branch u, collapsing surviving energy as 1 - u down to 0.7500x at u=0.25, 0.5000x at u=0.50, and 0.0000x at u=1.00) and 64-layer Maxwell evanescent decay quadrature.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "snell-tir-maxwell64-equiv-128",
+      "passed": true,
+      "detail": "128 Snell-Fresnel TIR guard and 64-layer Maxwell evanescent quadrature passes agree within 1e-9"
+    },
+    {
+      "name": "snell-tir-maxwell64-equiv-1024",
+      "passed": true,
+      "detail": "1024 Snell-Fresnel TIR guard and 64-layer Maxwell evanescent quadrature passes agree within 1e-9"
+    },
+    {
+      "name": "snell-tir-maxwell64-equiv-8192",
+      "passed": true,
+      "detail": "8192 Snell-Fresnel TIR guard and 64-layer Maxwell evanescent quadrature passes agree within 1e-9"
+    },
+    {
+      "name": "snell-tir-reflectance-locked",
+      "passed": true,
+      "detail": "17 supercritical stations (theta_i in [45 deg, 90 deg], k in [0.0, -1.0]) lock total internal reflectance R = 1.0000x (0/17 corrupted)"
+    },
+    {
+      "name": "naive-sqrt-nan-blackhole-exposed",
+      "passed": true,
+      "detail": "naive unswitched refraction triggers raw sqrt(-u) NaN on 16/17 stations and drops real-only energy to 0.7500x at S4, 0.5000x at S8, and 0.0000x at S16"
+    },
+    {
+      "name": "snell-tir-st4-u025-10000",
+      "passed": true,
+      "detail": "station-4 (u=0.25, k=-0.25) locks R_TIR=1.0000x vs naive 0.7500x (-25.00% loss / raw NaN)"
+    },
+    {
+      "name": "snell-tir-st8-u050-10000",
+      "passed": true,
+      "detail": "station-8 (u=0.50, theta_i=60 deg, k=-0.50) locks R_TIR=1.0000x vs naive 0.5000x (-50.00% loss / raw NaN)"
+    },
+    {
+      "name": "snell-tir-st16-u100-10000",
+      "passed": true,
+      "detail": "station-16 (u=1.00 grazing 90 deg, k=-1.00) locks R_TIR=1.0000x vs naive 0.0000x (-100.00% collapse)"
+    },
+    {
+      "name": "exact-mode-roundtrip",
+      "passed": true,
+      "detail": "mode switching round-trip preserves deterministic Snell TIR telemetry"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D Snell-Descartes TIR bench renders 58 tracked solids across 17 stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Snell TIR controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station TIR passes",
+      "count": 128,
+      "primary_ms": 0.014000000000010004,
+      "baseline_ms": 1.143000000000029,
+      "primary_samples_ms": [
+        0.07180000000005293,
+        0.0928000000000111,
+        0.021299999999996544,
+        0.014000000000010004,
+        0.012900000000058753,
+        0.004099999999993997,
+        0.0038000000000693035
+      ],
+      "baseline_samples_ms": [
+        1.622700000000009,
+        2.2192000000000007,
+        2.1041999999999916,
+        1.143000000000029,
+        0.9296000000000504,
+        0.926900000000046,
+        0.9289999999999736
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station TIR passes",
+      "count": 1024,
+      "primary_ms": 0.02940000000000964,
+      "baseline_ms": 7.477000000000089,
+      "primary_samples_ms": [
+        0.04070000000001528,
+        0.03560000000004493,
+        0.028700000000071668,
+        0.035399999999981446,
+        0.028500000000008185,
+        0.02940000000000964,
+        0.028700000000071668
+      ],
+      "baseline_samples_ms": [
+        7.417800000000057,
+        7.884800000000041,
+        7.416600000000017,
+        7.456900000000019,
+        7.477000000000089,
+        7.684699999999907,
+        7.715599999999995
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station TIR passes",
+      "count": 8192,
+      "primary_ms": 0.23440000000005057,
+      "baseline_ms": 65.71000000000004,
+      "primary_samples_ms": [
+        0.24030000000004748,
+        0.2339000000000624,
+        0.2258000000000493,
+        0.23440000000005057,
+        0.2257999999999356,
+        0.23620000000005348,
+        0.24479999999994106
+      ],
+      "baseline_samples_ms": [
+        62.39319999999998,
+        63.63930000000005,
+        65.71000000000004,
+        68.32839999999999,
+        67.74229999999989,
+        72.03330000000005,
+        63.4994999999999
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/snell-critical-angle-tir-guard-rig/light-snell_fresnel_tir_discriminant_guard.png",
+    "docs/evidence/snell-critical-angle-tir-guard-rig/light-naive_unclamped_refract_sqrt_nan_drop.png",
+    "docs/evidence/snell-critical-angle-tir-guard-rig/dark-snell_fresnel_tir_discriminant_guard.png",
+    "docs/evidence/snell-critical-angle-tir-guard-rig/dark-naive_unclamped_refract_sqrt_nan_drop.png",
+    "docs/evidence/snell-critical-angle-tir-guard-rig/mobile.png"
+  ],
+  "primary_label": "Snell-Fresnel k <= 0 TIR Guard",
+  "baseline_label": "64-Layer Maxwell Evanescent Quadrature",
+  "load_unit": "TIR passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form Snell-Fresnel TIR discriminant guard versus 64-layer Maxwell evanescent wave decay quadrature.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "station0_tir_reflectance": 1,
+    "station0_naive_reflectance": 1,
+    "station4_tir_reflectance": 1,
+    "station4_naive_reflectance": 0.75,
+    "station8_tir_reflectance": 1,
+    "station8_naive_reflectance": 0.5,
+    "station12_tir_reflectance": 1,
+    "station12_naive_reflectance": 0.25,
+    "station16_tir_reflectance": 1,
+    "station16_naive_reflectance": 0,
+    "corrupted_stations": 16
+  },
+  "protocol": {
+    "input": {
+      "station_4_u": 0.25,
+      "station_8_u": 0.5,
+      "station_16_u": 1
+    },
+    "output": {
+      "tir_guarded_reflectance": 1,
+      "naive_energy_u025": 0.75,
+      "naive_energy_u050": 0.5,
+      "naive_energy_u100": 0,
+      "corrupted_stations": 16
+    },
+    "function": "Snell-Fresnel TIR Guard: k <= 0 -> R = (1−u) + u = 1.0000× vs Naive sqrt(−u) = NaN / Real-Only 1−u (0.5000× at 60°, 0.0000× at 90°, 16/17 Corrupted)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 supercritical incidence stations preserve exact total internal reflectance R = 1.0000x",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Underwater upward-looking camera shaders (\"Snell's Window\" beyond the critical angle)",
+    "Diamond, crystal, and glass back-face internal reflections where relative IOR eta = n_1 / n_2 > 1.0",
+    "Dielectric path tracers and screen-space refraction shaders preventing IEEE-754 sqrt(-u) NaN bloom fireflies",
+    "Schlick Fresnel using transmitted cosine cosThetaT = sqrt(max(0, k)) so R = 1.0000 automatically when k <= 0"
+  ],
+  "not_for": [
+    "Opaque metallic conductors without dielectric transmission",
+    "Pure diffuse Lambertian clay surfaces",
+    "2D flat UI typography",
+    "1D audio volume sliders"
+  ],
+  "locale_zh": {
+    "title": "Snell-Descartes 全内反射判别式保护 vs 朴素未钳制 sqrt(k) 负根 NaN 与能量黑洞",
+    "subtitle": "为什么水下相机仰望水面的“斯涅尔窗（Snell's Window）”外圈或钻石内部背面在手写 `refract()` 着色器中会出现死黑环、洋红 `NaN` 坏点甚至全屏泛光爆炸？",
+    "plain_intro": "当光线从高折射率介质（水或玻璃 n₁=√2≈1.4142）射向低折射率介质（空气 n₂=1.00，相对折射率 η = n₁/n₂ = √2 > 1.0）时，斯涅尔折射余弦判别式为 k = 1 − η² sin²θ_i。一旦入射角超越临界角 θ_c = arcsin(1/η) = 45.00°（即 sin²θ_i = (1+u)/2 > 0.50），判别式立刻变为负数 k(u) = −u < 0！此时透射波转化为沿界面指数衰减的麦克斯韦倏逝波（cos θ_t = i√u），复菲涅耳反射系数的分子与分母互为共轭复数：|r|² = |η cos θ_i − i√u|² / |η cos θ_i + i√u|² = ((1−u) + u) / ((1−u) + u) ≡ 1.0000×（100% 全内反射）！如果手写折射着色器直接调用 `sqrt(k)`，在全部 16/17 个超临界站上会直接产出 IEEE-754 `NaN`；即便只简单包裹了 `sqrt(max(0.0, k))` 却漏掉将折射分支切换回全内反射（或在 Schlick 菲涅耳中仍用入射角 cos θ_i 而非透射角 cos θ_t = √max(0,k)），倏逝波虚部能量 |k| = u 就会凭空消失进黑洞，导致残存能量按 R_naive(u) = 1 − u 在 60° 腰斩至 0.5000×（亏损 −50.00%）、在掠射 90° 彻底归零至 0.0000×（污染 16/17 个站点）！",
+    "finding": "实测跨越超临界入射参数 u ∈ [0.000, 1.000]（θ_i ∈ [45°, 90°]）的 17 个站点：Snell-Fresnel 全内反射判别式保护（k ≤ 0 → R = (1−u)+u）在全部 17 个站点恒定锁死 R = 1.0000×（0/17 站 NaN 或黑洞），而朴素未切换折射在 16/17 个超临界站点触发原始 `sqrt(−u) = NaN` 并将实部残留能量压垮至 0.5000×（第 8 站）与 0.0000×（第 16 站）。",
+    "workbench_title": "58 实体 17 站点斯涅尔-笛卡尔全内反射判别式保护检验台（Snell-Descartes TIR Guard Bench）",
+    "scenario_quote": "当光线从水底或宝石内部向外射出（η > 1）时，`sqrt(1 - eta*eta*sin2ThetaI)` 里的被开方数随时会变成负数！光写 `max(0.0, k)` 只防住了 `NaN`，还必须把 `k <= 0.0` 的全部能量 100% 重定向给 `reflect(I, N)`，才能让水下斯涅尔窗外圈与钻石火彩如镜面般璀璨！",
+    "protocol_note": "顶块展示第 4 站（u=0.25, k=−0.25）、第 8 站（u=0.50, θ_i=60°, k=−0.50）与第 16 站（u=1.00, k=−1.00）；底块对比 Snell-Fresnel 全内反射保护恒锁 1.0000× 与朴素折射跌至 0.5000× / 0.0000×。",
+    "robustness_name": "17 个超临界入射站点在 Snell-Fresnel 判别式保护下 100% 锁死精确全内反射率 R = 1.0000×",
+    "primary_label": "Snell-Fresnel k ≤ 0 全内反射保护",
+    "baseline_label": "64 层麦克斯韦倏逝波衰减积分",
+    "load_unit": "次 17 站全反射求解",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比闭式 k ≤ 0 判别式保护与 64 层麦克斯韦倏逝波深度积分基准。",
+    "good_fit": [
+      "水下仰视水面着色器（“斯涅尔窗 Snell's Window”外圈超临界全内反射镜面）",
+      "钻石、水晶、玻璃杯内壁出射光线（η = n₁/n₂ > 1.0）的实时路径追踪与屏幕空间折射",
+      "彻底根除 `sqrt(负数) = NaN` 传染 Bloom 泛光金字塔导致整屏死黑框的生产级渲染管线",
+      "在 η > 1 时使用透射余弦 `cosThetaT = sqrt(max(0.0, k))` 计算 Schlick 菲涅耳以自动无缝过渡至 R = 1.0"
+    ],
+    "not_for": [
+      "无透射分支的不透明金属导体",
+      "纯漫反射石膏表面",
+      "2D 静态界面排版",
+      "一维音频滑块"
+    ],
+    "readiness": "12/12 项实测通过；58 个 3D 全内反射检验构件、17 个超临界站点与 7-Card 报告已封存。",
+    "entries": {
+      "snell-tir-maxwell64-equiv-128": "Snell-Fresnel全反射保护与64层倏逝波积分等价 128",
+      "128 Snell-Fresnel TIR guard and 64-layer Maxwell evanescent quadrature passes agree within 1e-9": "128 次 Snell-Fresnel 判别式全反射保护与 64 层麦克斯韦倏逝波积分在 1e-9 内一致",
+      "snell-tir-maxwell64-equiv-1024": "Snell-Fresnel全反射保护与64层倏逝波积分等价 1024",
+      "1024 Snell-Fresnel TIR guard and 64-layer Maxwell evanescent quadrature passes agree within 1e-9": "1024 次 Snell-Fresnel 判别式全反射保护与 64 层麦克斯韦倏逝波积分在 1e-9 内一致",
+      "snell-tir-maxwell64-equiv-8192": "Snell-Fresnel全反射保护与64层倏逝波积分等价 8192",
+      "8192 Snell-Fresnel TIR guard and 64-layer Maxwell evanescent quadrature passes agree within 1e-9": "8192 次 Snell-Fresnel 判别式全反射保护与 64 层麦克斯韦倏逝波积分在 1e-9 内一致",
+      "snell-tir-reflectance-locked": "Snell-Fresnel全站全反射率1.0000x锁定",
+      "17 supercritical stations (theta_i in [45 deg, 90 deg], k in [0.0, -1.0]) lock total internal reflectance R = 1.0000x (0/17 corrupted)": "17 个超临界角站点恒定锁死全内反射能量守恒比 R = 1.0000×（0/17 NaN 或黑洞）",
+      "naive-sqrt-nan-blackhole-exposed": "朴素未保护sqrt负根NaN与1-u能量黑洞暴露",
+      "naive unswitched refraction triggers raw sqrt(-u) NaN on 16/17 stations and drops real-only energy to 0.7500x at S4, 0.5000x at S8, and 0.0000x at S16": "朴素未保护折射在 16/17 个超临界站触发 sqrt(-u)=NaN，且实部残留能量在第 4 站跌至 0.7500×、第 8 站腰斩至 0.5000×、第 16 站归零至 0.0000×",
+      "snell-tir-st4-u025-10000": "第4站u=0.25超临界全反射率1.0000x锁定",
+      "station-4 (u=0.25, k=-0.25) locks R_TIR=1.0000x vs naive 0.7500x (-25.00% loss / raw NaN)": "第 4 站（u=0.25, k=−0.25）锁死 R_TIR=1.0000×（消除朴素 0.7500× 能量黑洞与 NaN）",
+      "snell-tir-st8-u050-10000": "第8站θi=60°中点全反射率1.0000x锁定",
+      "station-8 (u=0.50, theta_i=60 deg, k=-0.50) locks R_TIR=1.0000x vs naive 0.5000x (-50.00% loss / raw NaN)": "第 8 站（u=0.50, θ_i=60°）锁死 R_TIR=1.0000×（消除朴素 0.5000× 腰斩黑洞与 NaN）",
+      "snell-tir-st16-u100-10000": "第16站θi=90°掠射全反射率1.0000x锁定",
+      "station-16 (u=1.00 grazing 90 deg, k=-1.00) locks R_TIR=1.0000x vs naive 0.0000x (-100.00% collapse)": "第 16 站（u=1.00 掠射）锁死 R_TIR=1.0000×（消除朴素 0.0000× 完全塌缩）",
+      "exact-mode-roundtrip": "模式往返切换一致性",
+      "mode switching round-trip preserves deterministic Snell TIR telemetry": "Snell-Fresnel 全内反射保护与朴素未切换折射截断模式往返切换保持确定性状态",
+      "geometry-58-solids": "58构件3D全内反射检验台一致性",
+      "3D Snell-Descartes TIR bench renders 58 tracked solids across 17 stations": "3D 全内反射判别式保护检验台在 17 个超临界站点完整渲染 58 个独立几何体",
+      "mobile-layout": "手机布局",
+      "390px Snell TIR controls fit without horizontal overflow": "390px 全内反射控制面板无横向溢出",
+      "runtime-errors": "运行错误",
+      "0 JavaScript errors": "0 个 JavaScript 错误"
+    }
+  }
+}

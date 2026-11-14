@@ -1,0 +1,319 @@
+{
+  "deck_title": "Welford online centered FP32 variance vs naive E[X^2]-E[X]^2 catastrophic cancellation rig",
+  "provenance": "measured",
+  "independently_reproduced": true,
+  "source_sha256": "075fb92cdbf2253701fcf35da2f9427ae687b3f81569aea0a41a3766c8a8777f",
+  "cards": [
+    {
+      "kind": "overview",
+      "eyebrow": "HANDS-ON · BROWSER ANIMATION",
+      "headline_prefix": "12/12 checks pass. ",
+      "headline_Gradient": "Control stays inspectable.",
+      "subtitle": "Deterministic B. P. Welford (Technometrics 1962) & Donald Knuth (TAOCP Vol. 2) single-pass online centered variance update in IEEE-754 float32 (delta1 = x_n - mu_{n-1}, mu_n = mu_{n-1} + delta1/n, delta2 = x_n - mu_n, M2 += delta1*delta2, locking normalized variance V = 1.0000x) versus naive textbook uncentered sum-of-squares (E[X^2] - E[X]^2 in float32, which suffers catastrophic mantissa cancellation for HDR base luminance B >= 2400 nits) and 64-sample two-pass Kahan FP64 reference across 17 HDR luminance stations (B in [0, 6400] nits, signal fluctuation +/-0.50).",
+      "workbench": {
+        "title": "Welford online centered FP32 variance vs naive E[X^2]-E[X]^2 catastrophic cancellation rig",
+        "status_pill": "measured checks · synthetic scene",
+        "scenarios": [
+          "welford-twopass64-equiv-128",
+          "welford-twopass64-equiv-1024",
+          "welford-twopass64-equiv-8192",
+          "welford-fp32-cancellation-immune",
+          "naive-m2-minus-m1sq-collapse-exposed",
+          "welford-st6-2400nits-10000",
+          "welford-st8-3200nits-10000",
+          "welford-st16-6400nits-10000",
+          "exact-mode-roundtrip",
+          "geometry-58-solids",
+          "mobile-layout",
+          "runtime-errors"
+        ],
+        "bands_note": "Auto only for passing deterministic assertions; failed checks go to a human. Neural confidence: not_measured.",
+        "metrics": [
+          "No model API",
+          "Browser 157.0.8103.51",
+          "Tokens: not_measured"
+        ],
+        "decisions": [
+          {
+            "field": "welford-twopass64-equiv-128",
+            "question_type": "score",
+            "question": "128 Welford single-pass FP32 and 64-sample two-pass FP64 passes agree within 1e-12",
+            "selected_answer": "Assertion passed",
+            "confidence": "not applicable: deterministic check, not a model probability",
+            "action": "Act automatically",
+            "distribution_pct": {
+              "Observed assertion pass": 100
+            }
+          },
+          {
+            "field": "welford-twopass64-equiv-1024",
+            "question_type": "score",
+            "question": "1024 Welford single-pass FP32 and 64-sample two-pass FP64 passes agree within 1e-12",
+            "selected_answer": "Assertion passed",
+            "confidence": "not applicable: deterministic check, not a model probability",
+            "action": "Act automatically",
+            "distribution_pct": {
+              "Observed assertion pass": 100
+            }
+          },
+          {
+            "field": "welford-twopass64-equiv-8192",
+            "question_type": "score",
+            "question": "8192 Welford single-pass FP32 and 64-sample two-pass FP64 passes agree within 1e-12",
+            "selected_answer": "Assertion passed",
+            "confidence": "not applicable: deterministic check, not a model probability",
+            "action": "Act automatically",
+            "distribution_pct": {
+              "Observed assertion pass": 100
+            }
+          }
+        ]
+      },
+      "callouts": [
+        {
+          "lead": "Local measurements, synthetic scene.",
+          "body": "Deterministic B. P. Welford (Technometrics 1962) & Donald Knuth (TAOCP Vol. 2) single-pass online centered variance update in IEEE-754 float32 (delta1 = x_n - mu_{n-1}, mu_n = mu_{n-1} + delta1/n, delta2 = x_n - mu_n, M2 += delta1*delta2, locking normalized variance V = 1.0000x) versus naive textbook uncentered sum-of-squares (E[X^2] - E[X]^2 in float32, which suffers catastrophic mantissa cancellation for HDR base luminance B >= 2400 nits) and 64-sample two-pass Kahan FP64 reference across 17 HDR luminance stations (B in [0, 6400] nits, signal fluctuation +/-0.50)."
+        }
+      ]
+    },
+    {
+      "kind": "deep_dive",
+      "eyebrow": "SCENARIO: WELFORD-FP32-VARIANCE-CANCELLATION-RIG",
+      "headline": "One shared state drives motion and exported evidence.",
+      "quote": "{\"station_6_base_nits\":2400,\"station_8_base_nits\":3200,\"signal_half_delta\":0.5}",
+      "decisions": [
+        {
+          "field": "welford-twopass64-equiv-128",
+          "question_type": "score",
+          "question": "128 Welford single-pass FP32 and 64-sample two-pass FP64 passes agree within 1e-12",
+          "selected_answer": "Assertion passed",
+          "confidence": "not applicable: deterministic check, not a model probability",
+          "action": "Act automatically",
+          "distribution_pct": {
+            "Observed assertion pass": 100
+          }
+        },
+        {
+          "field": "welford-twopass64-equiv-1024",
+          "question_type": "score",
+          "question": "1024 Welford single-pass FP32 and 64-sample two-pass FP64 passes agree within 1e-12",
+          "selected_answer": "Assertion passed",
+          "confidence": "not applicable: deterministic check, not a model probability",
+          "action": "Act automatically",
+          "distribution_pct": {
+            "Observed assertion pass": 100
+          }
+        },
+        {
+          "field": "welford-twopass64-equiv-8192",
+          "question_type": "score",
+          "question": "8192 Welford single-pass FP32 and 64-sample two-pass FP64 passes agree within 1e-12",
+          "selected_answer": "Assertion passed",
+          "confidence": "not applicable: deterministic check, not a model probability",
+          "action": "Act automatically",
+          "distribution_pct": {
+            "Observed assertion pass": 100
+          }
+        }
+      ],
+      "callouts": [
+        {
+          "lead": "Local measurements, synthetic scene.",
+          "body": "Deterministic B. P. Welford (Technometrics 1962) & Donald Knuth (TAOCP Vol. 2) single-pass online centered variance update in IEEE-754 float32 (delta1 = x_n - mu_{n-1}, mu_n = mu_{n-1} + delta1/n, delta2 = x_n - mu_n, M2 += delta1*delta2, locking normalized variance V = 1.0000x) versus naive textbook uncentered sum-of-squares (E[X^2] - E[X]^2 in float32, which suffers catastrophic mantissa cancellation for HDR base luminance B >= 2400 nits) and 64-sample two-pass Kahan FP64 reference across 17 HDR luminance stations (B in [0, 6400] nits, signal fluctuation +/-0.50)."
+        }
+      ]
+    },
+    {
+      "kind": "scorecard",
+      "eyebrow": "WHAT I TESTED",
+      "headline": "12 acceptance checks, 12 passes.",
+      "rows": [
+        {
+          "scenario": "welford-twopass64-equiv-128",
+          "question": "128 Welford single-pass FP32 and 64-sample two-pass FP64 passes agree within 1e-12",
+          "decider_answer": "PASS",
+          "reported_probability_pct": 100,
+          "pointed_right_way": true,
+          "action": "Act automatically"
+        },
+        {
+          "scenario": "welford-twopass64-equiv-1024",
+          "question": "1024 Welford single-pass FP32 and 64-sample two-pass FP64 passes agree within 1e-12",
+          "decider_answer": "PASS",
+          "reported_probability_pct": 100,
+          "pointed_right_way": true,
+          "action": "Act automatically"
+        },
+        {
+          "scenario": "welford-twopass64-equiv-8192",
+          "question": "8192 Welford single-pass FP32 and 64-sample two-pass FP64 passes agree within 1e-12",
+          "decider_answer": "PASS",
+          "reported_probability_pct": 100,
+          "pointed_right_way": true,
+          "action": "Act automatically"
+        },
+        {
+          "scenario": "welford-fp32-cancellation-immune",
+          "question": "17 HDR base stations lock exact FP32 normalized variance V = 1.0000x up to B=6400 nits (0/17 collapsed)",
+          "decider_answer": "PASS",
+          "reported_probability_pct": 100,
+          "pointed_right_way": true,
+          "action": "Act automatically"
+        },
+        {
+          "scenario": "naive-m2-minus-m1sq-collapse-exposed",
+          "question": "naive FP32 E[X^2]-E[X]^2 collapses to dead 0.0000x for all B >= 2400 nits (11/17 stations collapsed)",
+          "decider_answer": "PASS",
+          "reported_probability_pct": 100,
+          "pointed_right_way": true,
+          "action": "Act automatically"
+        },
+        {
+          "scenario": "welford-st6-2400nits-10000",
+          "question": "station-6 (B=2400 nits, B^2=5.76e6) locks V_Welford=1.0000x vs naive 0.0000x ULP cliff",
+          "decider_answer": "PASS",
+          "reported_probability_pct": 100,
+          "pointed_right_way": true,
+          "action": "Act automatically"
+        },
+        {
+          "scenario": "welford-st8-3200nits-10000",
+          "question": "station-8 (B=3200 nits, B^2=1.024e7) locks V_Welford=1.0000x vs naive 0.0000x",
+          "decider_answer": "PASS",
+          "reported_probability_pct": 100,
+          "pointed_right_way": true,
+          "action": "Act automatically"
+        },
+        {
+          "scenario": "welford-st16-6400nits-10000",
+          "question": "station-16 (B=6400 nits, B^2=4.096e7) locks V_Welford=1.0000x vs naive 0.0000x",
+          "decider_answer": "PASS",
+          "reported_probability_pct": 100,
+          "pointed_right_way": true,
+          "action": "Act automatically"
+        },
+        {
+          "scenario": "exact-mode-roundtrip",
+          "question": "preset switching round-trip preserves deterministic Welford FP32 variance telemetry",
+          "decider_answer": "PASS",
+          "reported_probability_pct": 100,
+          "pointed_right_way": true,
+          "action": "Act automatically"
+        },
+        {
+          "scenario": "geometry-58-solids",
+          "question": "3D FP32 variance cancellation bench renders 58 tracked solids across 17 stations",
+          "decider_answer": "PASS",
+          "reported_probability_pct": 100,
+          "pointed_right_way": true,
+          "action": "Act automatically"
+        },
+        {
+          "scenario": "mobile-layout",
+          "question": "390px Welford FP32 variance controls fit without horizontal overflow",
+          "decider_answer": "PASS",
+          "reported_probability_pct": 100,
+          "pointed_right_way": true,
+          "action": "Act automatically"
+        },
+        {
+          "scenario": "runtime-errors",
+          "question": "0 JavaScript errors",
+          "decider_answer": "PASS",
+          "reported_probability_pct": 100,
+          "pointed_right_way": true,
+          "action": "Act automatically"
+        }
+      ],
+      "callouts": [
+        {
+          "lead": "Local measurements, synthetic scene.",
+          "body": "Deterministic B. P. Welford (Technometrics 1962) & Donald Knuth (TAOCP Vol. 2) single-pass online centered variance update in IEEE-754 float32 (delta1 = x_n - mu_{n-1}, mu_n = mu_{n-1} + delta1/n, delta2 = x_n - mu_n, M2 += delta1*delta2, locking normalized variance V = 1.0000x) versus naive textbook uncentered sum-of-squares (E[X^2] - E[X]^2 in float32, which suffers catastrophic mantissa cancellation for HDR base luminance B >= 2400 nits) and 64-sample two-pass Kahan FP64 reference across 17 HDR luminance stations (B in [0, 6400] nits, signal fluctuation +/-0.50)."
+        }
+      ]
+    },
+    {
+      "kind": "protocol",
+      "eyebrow": "UNDER THE HOOD",
+      "headline": "The same input produces the same inspectable output.",
+      "top_code": "{\n  \"station_6_base_nits\": 2400,\n  \"station_8_base_nits\": 3200,\n  \"signal_half_delta\": 0.5\n}",
+      "transition": "↓ M₂ += (x − μ_old)(x − μ_new) -> V_Welford = 1.0000× vs Naive fround((2400±0.5)²) − fround(2400²) = 0.0000× (11/17 Collapsed)",
+      "bottom_code": "{\n  \"welford_normalized_variance\": 1,\n  \"naive_fp32_variance_2000\": 1,\n  \"naive_fp32_variance_2400\": 0,\n  \"naive_fp32_variance_3200\": 0,\n  \"collapsed_stations\": 11\n}",
+      "callouts": [
+        {
+          "lead": "Local measurements, synthetic scene.",
+          "body": "Deterministic B. P. Welford (Technometrics 1962) & Donald Knuth (TAOCP Vol. 2) single-pass online centered variance update in IEEE-754 float32 (delta1 = x_n - mu_{n-1}, mu_n = mu_{n-1} + delta1/n, delta2 = x_n - mu_n, M2 += delta1*delta2, locking normalized variance V = 1.0000x) versus naive textbook uncentered sum-of-squares (E[X^2] - E[X]^2 in float32, which suffers catastrophic mantissa cancellation for HDR base luminance B >= 2400 nits) and 64-sample two-pass Kahan FP64 reference across 17 HDR luminance stations (B in [0, 6400] nits, signal fluctuation +/-0.50)."
+        }
+      ]
+    },
+    {
+      "kind": "robustness",
+      "eyebrow": "ROBUSTNESS CHECK",
+      "headline": "17/17 checks hold under perturbation.",
+      "rows": [
+        {
+          "scenario": "Sampled 17 HDR luminance stations preserve exact unit FP32 variance V = 1.0000x up to B = 6400 nits",
+          "selected_option": "17 checked items",
+          "original_pct": 100,
+          "reversed_pct": 100,
+          "change_pts": 0
+        }
+      ],
+      "callouts": [
+        {
+          "lead": "Local measurements, synthetic scene.",
+          "body": "Deterministic B. P. Welford (Technometrics 1962) & Donald Knuth (TAOCP Vol. 2) single-pass online centered variance update in IEEE-754 float32 (delta1 = x_n - mu_{n-1}, mu_n = mu_{n-1} + delta1/n, delta2 = x_n - mu_n, M2 += delta1*delta2, locking normalized variance V = 1.0000x) versus naive textbook uncentered sum-of-squares (E[X^2] - E[X]^2 in float32, which suffers catastrophic mantissa cancellation for HDR base luminance B >= 2400 nits) and 64-sample two-pass Kahan FP64 reference across 17 HDR luminance stations (B in [0, 6400] nits, signal fluctuation +/-0.50)."
+        }
+      ]
+    },
+    {
+      "kind": "latency",
+      "eyebrow": "LATENCY",
+      "headline": "8192 variance passes: 1.35 ms vs 23.50 ms.",
+      "rows": [
+        {
+          "question_count": 128,
+          "batched_median_ms": 0.04409999999995762,
+          "one_by_one_estimated_ms": 0.37760000000002947
+        },
+        {
+          "question_count": 1024,
+          "batched_median_ms": 0.33760000000006585,
+          "one_by_one_estimated_ms": 2.9604000000000497
+        },
+        {
+          "question_count": 8192,
+          "batched_median_ms": 1.3514000000000124,
+          "one_by_one_estimated_ms": 23.497999999999934
+        }
+      ],
+      "callouts": [
+        {
+          "lead": "Local measurements, synthetic scene.",
+          "body": "Deterministic B. P. Welford (Technometrics 1962) & Donald Knuth (TAOCP Vol. 2) single-pass online centered variance update in IEEE-754 float32 (delta1 = x_n - mu_{n-1}, mu_n = mu_{n-1} + delta1/n, delta2 = x_n - mu_n, M2 += delta1*delta2, locking normalized variance V = 1.0000x) versus naive textbook uncentered sum-of-squares (E[X^2] - E[X]^2 in float32, which suffers catastrophic mantissa cancellation for HDR base luminance B >= 2400 nits) and 64-sample two-pass Kahan FP64 reference across 17 HDR luminance stations (B in [0, 6400] nits, signal fluctuation +/-0.50)."
+        }
+      ]
+    },
+    {
+      "kind": "takeaways",
+      "eyebrow": "MY TAKE",
+      "headline": "Exact controls are useful; realism remains a separate job.",
+      "good_fit": [
+        "TAA variance-clipping AABB neighborhood passes and SVGF ray-tracing denoiser variance estimation on bright HDR surfaces (Welford 1962 / Knuth)",
+        "Variance Shadow Maps (VSM) and temporal depth-moment filters at large world-space depth offsets Z_0",
+        "Single-pass streaming variance accumulation that guarantees non-negative M2 >= 0 without squaring large uncentered values",
+        "1-pass Welford update replacing 2-pass 64-sample reference accumulation"
+      ],
+      "not_for": [
+        "Hardware mipmapped 2-channel VSM textures where moments must be filtered linearly prior to shader readback (use centered depth offset z - z_anchor there)",
+        "Unlit static 2D sprites",
+        "Purely deterministic constant-color fills",
+        "1D audio volume sliders"
+      ],
+      "dark_box": {
+        "lead": "MIT original code. Synthetic educational scene; local checks reproduced. No production, physics, or neural inference certification.",
+        "repo": "turbo998/generative-visual-lab"
+      }
+    }
+  ]
+}

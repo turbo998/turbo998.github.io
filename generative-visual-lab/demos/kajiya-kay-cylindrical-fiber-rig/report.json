@@ -1,0 +1,273 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Kajiya-Kay cylindrical fiber sine radical vs naive unnormalized projection darkening rig",
+  "topic_zh": "Kajiya-Kay 圆柱微纤维周向正弦根式（√(1 − (T·L)²)）对比朴素未归一化投影（1 − (T·L)²）毛发发暗",
+  "slug": "kajiya-kay-cylindrical-fiber-rig",
+  "timestamp": "2026-11-14T19:10:15.423Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic James T. Kajiya & Timothy L. Kay (SIGGRAPH 1989) cylindrical cross-section normal integration (principal normal N0 = (L - (T.L)T) / sqrt(1 - (T.L)^2), yielding diffuse integral I_Kajiya = sqrt(1 - (T.L)^2) = sin(theta_L) and locking normalized cylindrical ratio R = 1.0000x across all 17 stations) versus naive unnormalized Gram-Schmidt projection (dotting L - (T.L)T directly with L to get 1 - (T.L)^2 = sin^2(theta_L), darkening fibers by -50.00% at theta=30 deg across 16/17 stations) and 64-slice azimuthal 3D micro-cylinder quadrature.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "kajiya-cylinder64-equiv-128",
+      "passed": true,
+      "detail": "128 Kajiya-Kay closed-form radical and 64-slice 3D micro-cylinder quadrature passes agree within 1e-12"
+    },
+    {
+      "name": "kajiya-cylinder64-equiv-1024",
+      "passed": true,
+      "detail": "1024 Kajiya-Kay closed-form radical and 64-slice 3D micro-cylinder quadrature passes agree within 1e-12"
+    },
+    {
+      "name": "kajiya-cylinder64-equiv-8192",
+      "passed": true,
+      "detail": "8192 Kajiya-Kay closed-form radical and 64-slice 3D micro-cylinder quadrature passes agree within 1e-12"
+    },
+    {
+      "name": "kajiya-cylindrical-radical-locked",
+      "passed": true,
+      "detail": "17 fiber tilt stations lock exact normalized cylindrical radiance ratio R = 1.0000x (0/17 darkened)"
+    },
+    {
+      "name": "naive-unnormalized-projection-darkening-exposed",
+      "passed": true,
+      "detail": "naive unnormalized projection (1 - (T.L)^2 = sin^2 theta) darkens hair by -25% at S4, -50% at S8, -75% at S12, and -100% at S16 across 16/17 stations"
+    },
+    {
+      "name": "kajiya-st4-u025-10000",
+      "passed": true,
+      "detail": "station-4 (u=0.25, sin theta=0.75) locks R_Kajiya=1.0000x vs naive 0.7500x (-25.00% darkening)"
+    },
+    {
+      "name": "kajiya-st8-u050-10000",
+      "passed": true,
+      "detail": "station-8 (u=0.50, theta=30 deg) locks I_Kajiya=0.5000 (R=1.0000x) vs naive I=0.2500 (R=0.5000x, -50.00% darkening)"
+    },
+    {
+      "name": "kajiya-st12-u075-10000",
+      "passed": true,
+      "detail": "station-12 (u=0.75, sin theta=0.25) locks R_Kajiya=1.0000x vs naive 0.2500x (-75.00% darkening)"
+    },
+    {
+      "name": "exact-mode-roundtrip",
+      "passed": true,
+      "detail": "preset switching round-trip preserves deterministic Kajiya-Kay fiber telemetry"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D Kajiya-Kay cylindrical fiber bench renders 58 tracked solids across 17 stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Kajiya-Kay fiber controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station fiber passes",
+      "count": 128,
+      "primary_ms": 0.01920000000006894,
+      "baseline_ms": 2.158999999999992,
+      "primary_samples_ms": [
+        0.16020000000003165,
+        0.02109999999993306,
+        0.012200000000007094,
+        0.018799999999941974,
+        0.018000000000029104,
+        0.01920000000006894,
+        0.3607999999999265
+      ],
+      "baseline_samples_ms": [
+        2.158999999999992,
+        2.04079999999999,
+        2.042599999999993,
+        1.949899999999957,
+        2.5635999999999513,
+        2.189700000000016,
+        2.231100000000083
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station fiber passes",
+      "count": 1024,
+      "primary_ms": 0.08569999999997435,
+      "baseline_ms": 15.495999999999981,
+      "primary_samples_ms": [
+        0.13619999999991705,
+        0.08609999999998763,
+        0.08409999999992124,
+        0.08529999999996107,
+        0.08569999999997435,
+        0.09109999999998308,
+        0.08410000000003492
+      ],
+      "baseline_samples_ms": [
+        15.884000000000015,
+        15.473700000000008,
+        15.807500000000005,
+        15.457099999999969,
+        15.447400000000016,
+        15.555499999999938,
+        15.495999999999981
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station fiber passes",
+      "count": 8192,
+      "primary_ms": 0.6949999999999363,
+      "baseline_ms": 139.45730000000003,
+      "primary_samples_ms": [
+        1.0976000000000568,
+        0.7091000000000349,
+        0.6906000000001313,
+        0.6966999999999643,
+        0.6947000000000116,
+        0.6949999999999363,
+        0.6898000000001048
+      ],
+      "baseline_samples_ms": [
+        131.02899999999988,
+        133.17639999999983,
+        139.45730000000003,
+        133.0690000000002,
+        145.50600000000009,
+        155.28970000000004,
+        147.00420000000008
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/kajiya-kay-cylindrical-fiber-rig/light-kajiya_kay_cylindrical_sine_radical.png",
+    "docs/evidence/kajiya-kay-cylindrical-fiber-rig/light-naive_unnormalized_projection_sin_sq_darkening.png",
+    "docs/evidence/kajiya-kay-cylindrical-fiber-rig/dark-kajiya_kay_cylindrical_sine_radical.png",
+    "docs/evidence/kajiya-kay-cylindrical-fiber-rig/dark-naive_unnormalized_projection_sin_sq_darkening.png",
+    "docs/evidence/kajiya-kay-cylindrical-fiber-rig/mobile.png"
+  ],
+  "primary_label": "Kajiya-Kay Cylindrical Sine Radical",
+  "baseline_label": "64-Slice 3D Cylinder Quadrature",
+  "load_unit": "fiber passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form Kajiya-Kay radical evaluation versus 64-slice azimuthal 3D micro-cylinder quadrature.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "station0_kajiya_ratio": 1,
+    "station0_naive_ratio": 1,
+    "station4_kajiya_ratio": 1,
+    "station4_naive_ratio": 0.75,
+    "station8_kajiya_ratio": 1,
+    "station8_naive_ratio": 0.5,
+    "station8_kajiya_diffuse": 0.5,
+    "station8_naive_diffuse": 0.25,
+    "station12_kajiya_ratio": 1,
+    "station12_naive_ratio": 0.25,
+    "station16_kajiya_ratio": 1,
+    "station16_naive_ratio": 0,
+    "darkened_stations": 16
+  },
+  "protocol": {
+    "input": {
+      "station_4_u": 0.25,
+      "station_8_u": 0.5,
+      "station_12_u": 0.75
+    },
+    "output": {
+      "kajiya_ratio": 1,
+      "naive_ratio_u025": 0.75,
+      "naive_ratio_u050": 0.5,
+      "naive_ratio_u075": 0.25,
+      "darkened_stations": 16
+    },
+    "function": "I_Kajiya = √(1 − (T·L)²) = sin θ (R = 1.0000×) vs Naive (L − (T·L)T)·L = 1 − (T·L)² = sin²θ (R = 1 − u, 16/17 Darkened)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 fiber tilt stations preserve exact cylindrical cross-section radiance ratio R = 1.0000x",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Sub-pixel hair strands, animal fur, grass blades, brushed wires, and textile yarns shaded from curve tangents T (Kajiya & Kay SIGGRAPH 1989)",
+    "Cylindrical specular cone foundation sin(theta_L)*sin(theta_V) - cos(theta_L)*cos(theta_V) requiring exact sin(theta) radicals",
+    "GPU hair cards and Alembic/USD groom curve pipelines where 64-sided cylinder tessellation per hair is prohibitive",
+    "1-sqrt closed-form cylindrical integral replacing 64-slice azimuthal circumference quadrature"
+  ],
+  "not_for": [
+    "Flat wide macroscopic ribbons whose width exceeds several pixels and has a single planar surface normal",
+    "Unlit wireframe debug lines",
+    "Isotropic point particles",
+    "1D audio gain envelopes"
+  ],
+  "locale_zh": {
+    "title": "Kajiya-Kay 圆柱微纤维周向正弦根式 vs 朴素未归一化投影毛发发暗",
+    "subtitle": "为什么在毛发（Hair）、皮毛（Fur）、草叶与丝绸纤维着色器中，用格拉姆-施密特正交投影求出主法线 `N_perp = L - dot(T, L) * T` 后若忘记除以长度 `sqrt(1 - dot(T, L)²)`，会让原本柔和饱满的发丝漫反射退化为 `1 - (T·L)² = sin²θ`（在 30° 倾角处直接腰斩 `-50.00%` 亮度，顺光发梢黑成死炭）？",
+    "plain_intro": "一根真实的头发或皮毛纤维在微观上是一个三维细圆柱体，而不是一片扁平纸带：我们只知道发丝的切线方向 T，它并没有单一的平面法线 N！James T. Kajiya 与 Timothy L. Kay（SIGGRAPH 1989《Rendering Fur with Three Dimensional Textures》）从第一性原理出发，将微圆柱横截面上受光半圆周 φ ∈ [−π/2, +π/2] 的局部法线 N(φ) = cos φ · N₀ + sin φ · B₀ 对光源 L 做周向积分。其中位于 (T, L) 平面内的单位主法线必须经过模长归一化：N₀ = (L − (T·L)T) / ‖L − (T·L)T‖ = (L − (T·L)T) / √(1 − (T·L)²)，由此导出著名的 Kajiya-Kay 圆柱漫反射定律：I_Kajiya = (1/2) ∫ cos φ · (N₀·L) dφ = √(1 − (T·L)²) = sin θ_L！许多着色器在求主法线时直接拿未归一化的正交残差向量 L_perp = L − (T·L)T 与 L 点乘，结果算出了 L_perp · L = 1 − (T·L)² = sin²θ_L（多乘了一次 sin θ_L）！在跨越纵向缩短参数 u = 1 − sin θ_L ∈ [0, 1] 的 17 个站点上，这导致第 4 站（sin θ=0.75）发暗 −25.00%，第 8 站（θ=30°, sin θ=0.50）亮度从 0.5000 直接腰斩至 0.2500（亏损 −50.00%），第 12 站（sin θ=0.25）亏损 −75.00%（污染 16/17 个站点），而 Kajiya-Kay 根式在全 17 站恒定锁死归一化圆柱辐射比 R = 1.0000×（0/17 发黑）！",
+    "finding": "实测跨越微纤维纵向缩短参数 u = 1 − sin θ_L ∈ [0.0000, 1.0000] 的 17 个站点：Kajiya-Kay 圆柱周向正弦根式（√(1 − (T·L)²)）在全部 17 个站点恒定锁死归一化圆柱辐射比 R = 1.0000×（0/17 发黑），而朴素未归一化投影（1 − (T·L)² = sin²θ_L）在第 4 站降至 0.7500×、第 8 站腰斩至 0.5000×（亮度 0.25 vs 0.50）、第 12 站跌至 0.2500×，导致 16/17 个站点发生严重能量亏损。",
+    "workbench_title": "58 实体 17 站点圆柱微纤维周向积分检验台（Kajiya-Kay Cylindrical Fiber Bench · 第 155 个独立 Demo 里程碑！）",
+    "scenario_quote": "为什么 `L - dot(T, L) * T` 不能直接拿去点乘光源 `L`？因为投影减掉切线分量后，剩下的垂直向量长度已经缩水成了 `sin θ`，不除掉这个长度直接点乘就会变成 `sin²θ`，让顺光发丝损失一半以上的光泽！",
+    "protocol_note": "顶块展示第 4 站（u=0.25）、第 8 站（u=0.50, θ=30°）与第 12 站（u=0.75）输入；底块对比 Kajiya-Kay 正弦根式恒锁辐射比 1.0000× 与朴素未归一化投影线性坍缩为 1 − u。",
+    "robustness_name": "17 个微纤维倾角站点在 Kajiya-Kay 周向积分下 100% 保持精确单位圆柱辐射比 R_Kajiya = 1.0000×",
+    "primary_label": "Kajiya-Kay 圆柱正弦根式",
+    "baseline_label": "64 片 3D 微圆柱周向数值求积",
+    "load_unit": "次 17 站微纤维求值",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比闭式 Kajiya-Kay 正弦根式与 64 片 3D 微圆柱周向数值求积基准。",
+    "good_fit": [
+      "基于切线 T 的发丝（Hair）、动物皮毛（Fur）、草地叶片与织物纱线实时圆柱漫反射与高光基底（Kajiya & Kay SIGGRAPH 1989）",
+      "无需将每根亚像素发丝细分为 64 面三维圆柱网格，仅凭单次点乘与开方即可还原完整半圆柱周向积分",
+      "Alembic / USD 曲线毛发管线以及各向异性拉丝金属丝着色器",
+      "单次 sqrt(1 − (T·L)²) 闭式求值替代 64 片微圆柱周向积分"
+    ],
+    "not_for": [
+      "宽度远大于像素且具有单一平面法线的宽阔扁平布条",
+      "无光照调试线框",
+      "各向同性球形粒子",
+      "一维音频包络"
+    ],
+    "readiness": "12/12 项实测通过；58 个 3D 圆柱微纤维检验构件、17 个倾角站点与 7-Card 报告已封存（第 155 个 Demo 里程碑）。",
+    "entries": {
+      "kajiya-cylinder64-equiv-128": "Kajiya闭式根式与64片微圆柱求积等价 128",
+      "128 Kajiya-Kay closed-form radical and 64-slice 3D micro-cylinder quadrature passes agree within 1e-12": "128 次 Kajiya-Kay 闭式正弦根式与 64 片 3D 微圆柱周向数值求积在 1e-12 内一致",
+      "kajiya-cylinder64-equiv-1024": "Kajiya闭式根式与64片微圆柱求积等价 1024",
+      "1024 Kajiya-Kay closed-form radical and 64-slice 3D micro-cylinder quadrature passes agree within 1e-12": "1024 次 Kajiya-Kay 闭式正弦根式与 64 片 3D 微圆柱周向数值求积在 1e-12 内一致",
+      "kajiya-cylinder64-equiv-8192": "Kajiya闭式根式与64片微圆柱求积等价 8192",
+      "8192 Kajiya-Kay closed-form radical and 64-slice 3D micro-cylinder quadrature passes agree within 1e-12": "8192 次 Kajiya-Kay 闭式正弦根式与 64 片 3D 微圆柱周向数值求积在 1e-12 内一致",
+      "kajiya-cylindrical-radical-locked": "Kajiya-Kay圆柱根式全站1.0000x锁定",
+      "17 fiber tilt stations lock exact normalized cylindrical radiance ratio R = 1.0000x (0/17 darkened)": "17 个微纤维倾角站点恒定锁死归一化圆柱周向辐射比 R = 1.0000×（0/17 发黑）",
+      "naive-unnormalized-projection-darkening-exposed": "朴素未归一化投影sin²θ发黑暴露",
+      "naive unnormalized projection (1 - (T.L)^2 = sin^2 theta) darkens hair by -25% at S4, -50% at S8, -75% at S12, and -100% at S16 across 16/17 stations": "朴素未归一化法线投影 1−(T·L)²=sin²θ 在第 4 站亏损 -25%、第 8 站腰斩 -50%、第 12 站亏损 -75%（污染 16/17 站）",
+      "kajiya-st4-u025-10000": "第4站u=0.25圆柱辐射比1.0000x锁定",
+      "station-4 (u=0.25, sin theta=0.75) locks R_Kajiya=1.0000x vs naive 0.7500x (-25.00% darkening)": "第 4 站（u=0.25, sinθ=0.75）锁死 R_Kajiya=1.0000×（消除朴素 0.7500× 发暗）",
+      "kajiya-st8-u050-10000": "第8站u=0.50毛发亮度1.0000x锁定",
+      "station-8 (u=0.50, theta=30 deg) locks I_Kajiya=0.5000 (R=1.0000x) vs naive I=0.2500 (R=0.5000x, -50.00% darkening)": "第 8 站（u=0.50, θ=30°）锁死 I=0.5000 (R=1.0000×)，消除朴素 I=0.2500 (-50.0% 腰斩)",
+      "kajiya-st12-u075-10000": "第12站u=0.75圆柱辐射比1.0000x锁定",
+      "station-12 (u=0.75, sin theta=0.25) locks R_Kajiya=1.0000x vs naive 0.2500x (-75.00% darkening)": "第 12 站（u=0.75, sinθ=0.25）锁死 R_Kajiya=1.0000×（消除朴素 -75.0% 发黑）",
+      "exact-mode-roundtrip": "模式往返切换一致性",
+      "preset switching round-trip preserves deterministic Kajiya-Kay fiber telemetry": "Kajiya-Kay 圆柱正弦根式与朴素未归一化投影模式往返切换保持确定性状态",
+      "geometry-58-solids": "58构件3D圆柱微纤维检验台一致性",
+      "3D Kajiya-Kay cylindrical fiber bench renders 58 tracked solids across 17 stations": "3D 圆柱微纤维检验台在 17 个倾角站点完整渲染 58 个独立几何体",
+      "mobile-layout": "手机布局",
+      "390px Kajiya-Kay fiber controls fit without horizontal overflow": "390px 圆柱微纤维控制面板无横向溢出",
+      "runtime-errors": "运行错误",
+      "0 JavaScript errors": "0 个 JavaScript 错误"
+    }
+  }
+}

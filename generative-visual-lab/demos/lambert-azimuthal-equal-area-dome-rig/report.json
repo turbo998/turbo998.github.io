@@ -1,0 +1,271 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Lambert azimuthal equal-area dome projection vs naive orthographic N.xy horizon crush rig",
+  "topic_zh": "Lambert 方位等面积半球投影（p = N.xy / √(1 + N.z)）对比朴素正交投影（p = N.xy）地平线纹素坍缩",
+  "slug": "lambert-azimuthal-equal-area-dome-rig",
+  "timestamp": "2026-11-14T18:50:30.128Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Johann Heinrich Lambert (1772) azimuthal equal-area hemisphere projection (p = N_xy / sqrt(1 + N_z), where r^2 = (1 - N_z^2)/(1 + N_z) === 1 - N_z = u, locking solid-angle area Jacobian J = d(r^2)/du = 1.0000x across all 17 stations) versus naive orthographic hemisphere projection (p = N_xy, where r^2 = 2u - u^2 yields J = 2(1 - u) = 2 N_z, bloating zenith texels to 2.0000x and crushing horizon texels to 0.0000x across 16/17 stations) and 64-ring Archimedes spherical-cap quadrature.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "lambert-quadrature64-equiv-128",
+      "passed": true,
+      "detail": "128 Lambert azimuthal equal-area and 64-ring Archimedes spherical-cap quadrature passes agree within 1e-11"
+    },
+    {
+      "name": "lambert-quadrature64-equiv-1024",
+      "passed": true,
+      "detail": "1024 Lambert azimuthal equal-area and 64-ring Archimedes spherical-cap quadrature passes agree within 1e-11"
+    },
+    {
+      "name": "lambert-quadrature64-equiv-8192",
+      "passed": true,
+      "detail": "8192 Lambert azimuthal equal-area and 64-ring Archimedes spherical-cap quadrature passes agree within 1e-11"
+    },
+    {
+      "name": "lambert-equal-area-jacobian-locked",
+      "passed": true,
+      "detail": "17 spherical-cap stations lock exact solid-angle area Jacobian J = 1.0000x from zenith to horizon (0/17 distorted)"
+    },
+    {
+      "name": "naive-orthographic-horizon-crush-exposed",
+      "passed": true,
+      "detail": "naive orthographic N.xy bloats zenith to 2.0000x, hogs 75% area for upper 50% sky, and crushes horizon to 0.0000x across 16/17 stations"
+    },
+    {
+      "name": "lambert-st0-zenith-10000",
+      "passed": true,
+      "detail": "station-0 (zenith u=0.00, Nz=1.00) locks J_Lambert=1.0000x vs naive orthographic 2.0000x (+100% bloat)"
+    },
+    {
+      "name": "lambert-st8-midsky-50pct",
+      "passed": true,
+      "detail": "station-8 (half-sky u=0.50, theta=60 deg) encloses 50.00% disk area vs naive orthographic 75.00%"
+    },
+    {
+      "name": "lambert-st16-horizon-10000",
+      "passed": true,
+      "detail": "station-16 (horizon u=1.00, Nz=0.00) locks J_Lambert=1.0000x vs naive orthographic 0.0000x crush"
+    },
+    {
+      "name": "exact-mode-roundtrip",
+      "passed": true,
+      "detail": "preset switching round-trip preserves deterministic Lambert dome telemetry"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D Lambert equal-area dome bench renders 58 tracked solids across 17 stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Lambert dome controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station dome passes",
+      "count": 128,
+      "primary_ms": 0.15300000000002,
+      "baseline_ms": 1.0681000000000722,
+      "primary_samples_ms": [
+        0.2678000000000793,
+        0.14840000000003783,
+        0.1371999999998934,
+        0.15300000000002,
+        0.15019999999992706,
+        0.15430000000003474,
+        0.209699999999998
+      ],
+      "baseline_samples_ms": [
+        1.0480999999999767,
+        1.0346000000000686,
+        1.0681000000000722,
+        1.0529000000000224,
+        1.3705999999999676,
+        1.3196000000000367,
+        1.3312000000000808
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station dome passes",
+      "count": 1024,
+      "primary_ms": 0.10859999999991032,
+      "baseline_ms": 8.363300000000095,
+      "primary_samples_ms": [
+        0.1310999999999467,
+        0.11360000000001946,
+        0.10600000000010823,
+        0.11290000000008149,
+        0.1065000000000964,
+        0.10859999999991032,
+        0.10500000000001819
+      ],
+      "baseline_samples_ms": [
+        10.954700000000003,
+        8.798900000000003,
+        8.030100000000061,
+        7.961599999999976,
+        8.64829999999995,
+        8.289100000000076,
+        8.363300000000095
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station dome passes",
+      "count": 8192,
+      "primary_ms": 0.8992000000000644,
+      "baseline_ms": 76.94769999999994,
+      "primary_samples_ms": [
+        0.8613000000000284,
+        1.5920999999999594,
+        0.7998000000000047,
+        1.7199000000000524,
+        0.8196000000000367,
+        0.8992000000000644,
+        0.9027999999998428
+      ],
+      "baseline_samples_ms": [
+        68.8401,
+        76.94769999999994,
+        82.84190000000001,
+        81.22080000000005,
+        80.48530000000005,
+        70.70220000000018,
+        65.66449999999986
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/lambert-azimuthal-equal-area-dome-rig/light-lambert_azimuthal_equal_area_dome.png",
+    "docs/evidence/lambert-azimuthal-equal-area-dome-rig/light-naive_orthographic_nxy_horizon_crush.png",
+    "docs/evidence/lambert-azimuthal-equal-area-dome-rig/dark-lambert_azimuthal_equal_area_dome.png",
+    "docs/evidence/lambert-azimuthal-equal-area-dome-rig/dark-naive_orthographic_nxy_horizon_crush.png",
+    "docs/evidence/lambert-azimuthal-equal-area-dome-rig/mobile.png"
+  ],
+  "primary_label": "Lambert Azimuthal Equal-Area Projection",
+  "baseline_label": "64-Ring Archimedes Cap Quadrature",
+  "load_unit": "dome passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form Lambert azimuthal equal-area projection versus 64-ring Archimedes spherical-cap quadrature.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "station0_lambert_jacobian": 1,
+    "station0_ortho_jacobian": 2,
+    "station4_lambert_jacobian": 1,
+    "station4_ortho_jacobian": 1.5,
+    "station8_lambert_area": 0.5,
+    "station8_ortho_area": 0.75,
+    "station12_lambert_jacobian": 1,
+    "station12_ortho_jacobian": 0.5,
+    "station16_lambert_jacobian": 1,
+    "station16_ortho_jacobian": 0,
+    "distorted_stations": 16
+  },
+  "protocol": {
+    "input": {
+      "zenith_u": 0,
+      "midsky_u": 0.5,
+      "horizon_u": 1
+    },
+    "output": {
+      "lambert_jacobian": 1,
+      "ortho_jacobian_zenith": 2,
+      "ortho_area_midsky": 0.75,
+      "ortho_jacobian_horizon": 0,
+      "distorted_stations": 16
+    },
+    "function": "p = N.xy / √(1 + N.z) -> r² = 1 − N.z = u (J_Lambert = 1.0000×) vs Naive p = N.xy -> J_ortho = 2·N.z (16/17 Distorted)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 spherical-cap stations preserve exact solid-angle area Jacobian J = 1.0000x from zenith to horizon",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Hemispherical sky-dome irradiance atlases and cloud-dome textures requiring uniform solid-angle texel density down to the horizon (Lambert 1772)",
+    "2-component G-Buffer normal encoding (p = N.xy / sqrt(1 + N.z), inverse N.z = 1 - |p|^2, N.xy = p * sqrt(2 - |p|^2)) without grazing-angle quantization crush",
+    "Equal-area hemispherical fisheye lens shaders and astronomical star-map projections",
+    "1-rsqrt algebraic evaluation replacing 64-ring spherical-cap quadrature"
+  ],
+  "not_for": [
+    "Full 360x180 dual-hemisphere reflections where octahedral or dual-paraboloid maps avoid the antipodal singularity at N.z = -1",
+    "Unlit flat 2D UI sprites",
+    "Rectilinear pinhole perspective cameras",
+    "1D audio waveform buffers"
+  ],
+  "locale_zh": {
+    "title": "Lambert 方位等面积半球投影 vs 朴素正交投影 N.xy 地平线纹素坍缩",
+    "subtitle": "为什么在半球天空穹顶贴图（Sky-Dome）与双通道 G-Buffer 法线编码中，直接丢弃 `N.z` 把 `N.xy` 当作 UV 坐标（正交投影）会导致天顶浪费 `2.0000×` 纹素、上半球霸占 `75%` 贴图面积、而地平线掠射角纹素密度坍缩为死零 `0.0000×`？",
+    "plain_intro": "根据阿基米德球冠定理（Archimedes Hat-Box Theorem），单位半球上从天顶（cos θ = 1）到任意天顶角 θ 的球冠立体角占比恒等于球冠高度 u = 1 − cos θ = 1 − N.z ∈ [0, 1]。许多渲染管线在编码半球法线或烘焙天空穹顶贴图时，图省事直接丢弃 Z 分量，令圆盘坐标 p_ortho = N.xy（正交投影）。然而此时圆盘半径平方为 r² = 1 − N.z² = 2u − u²，对立体角求导得到的面积雅可比 J_ortho(u) = d(r²)/du = 2(1 − u) = 2·N.z！这导致三个严重后果：① 在天顶第 0 站（u=0, N.z=1），纹素面积膨胀至 2.0000×（+100% 浪费）；② 在第 8 站（u=0.50, θ=60° 半穹顶），仅占 50% 立体角的上半球竟然霸占了 75.00% 的贴图面积，留给 60°~90° 低空云层和夕阳的贴图只剩 25%；③ 在地平线第 16 站（u=1.00, N.z=0），面积雅可比直接坍缩为 0.0000×（掠射角法线与地平线云层被压成零宽度圆环，污染 16/17 个站点）！Johann Heinrich Lambert（1772）提出的方位等面积投影仅需除以 √(1 + N.z)，即 p_Lambert = N.xy / √(1 + N.z)，此时 r² = (1 − N.z²)/(1 + N.z) ≡ 1 − N.z = u，立体角面积雅可比在全 17 站恒定锁死 J_Lambert(u) = 1.0000×（0/17 畸变）！",
+    "finding": "实测跨越球冠高度 u = 1 − N.z ∈ [0.0000, 1.0000] 的 17 个站点：Lambert 方位等面积投影（p = N.xy / √(1 + N.z)）在全部 17 个站点恒定锁死立体角面积雅可比 J = 1.0000×（半穹顶精确占 50.00% 面积，0/17 畸变），而朴素正交投影（p = N.xy）在天顶膨胀至 2.0000×、半穹顶霸占 75.00% 面积、地平线坍缩至 0.0000×，导致 16/17 个站点发生密度失衡。",
+    "workbench_title": "58 实体 17 站点方位等面积穹顶检验台（Lambert Azimuthal Equal-Area Dome Bench）",
+    "scenario_quote": "为什么仅仅给 `N.xy` 除一个 `sqrt(1 + N.z)`，就能让从头顶到地平线的每一片云彩分到完全相等的像素面积？因为平方差公式 `(1 - N.z²)/(1 + N.z) = 1 - N.z` 刚好等于阿基米德球冠立体角高度！",
+    "protocol_note": "顶块展示天顶（u=0.00）、半穹顶（u=0.50）与地平线（u=1.00）输入；底块对比 Lambert 投影恒锁 J=1.0000× 与朴素正交投影从 2.0000× 坍缩至 0.0000×。",
+    "robustness_name": "17 个球冠高度站点从天顶到地平线 100% 保持精确单位立体角面积雅可比 J_Lambert = 1.0000×",
+    "primary_label": "Lambert 方位等面积投影",
+    "baseline_label": "64 环阿基米德球冠数值求积",
+    "load_unit": "次 17 站穹顶投影求值",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比闭式 Lambert 方位等面积投影与 64 环阿基米德球冠数值求积基准。",
+    "good_fit": [
+      "半球天空穹顶贴图（Sky-Dome）、大气散射 LUT 与地平线云层烘焙，确保低空与天顶享有同等纹素分辨率（Lambert 1772）",
+      "双通道 G-Buffer 延迟渲染法线编码（编码 p = N.xy/√(1+N.z)，解码 N.z = 1−|p|², N.xy = p√(2−|p|²)），彻底消除掠射角法线量化崩坏",
+      "等立体角鱼眼镜头（Equal-Area Fisheye）与全景辐射度探针采样",
+      "单次 rsqrt 代数约消直接替代 64 环球冠数值积分"
+    ],
+    "not_for": [
+      "需要单张方形贴图覆盖完整 360°×180° 双半球的探针（完整球面请选八面体映射或双抛物面映射以避开 N.z = −1 奇点）",
+      "无球面映射的平面 2D 图标",
+      "标准针孔线性透视相机",
+      "一维标量查找表"
+    ],
+    "readiness": "12/12 项实测通过；58 个 3D 方位等面积穹顶检验构件、17 个球冠站点与 7-Card 报告已封存。",
+    "entries": {
+      "lambert-quadrature64-equiv-128": "Lambert等面积与64环球冠求积等价 128",
+      "128 Lambert azimuthal equal-area and 64-ring Archimedes spherical-cap quadrature passes agree within 1e-11": "128 次 Lambert 方位等面积投影与 64 环阿基米德球冠数值求积在 1e-11 内一致",
+      "lambert-quadrature64-equiv-1024": "Lambert等面积与64环球冠求积等价 1024",
+      "1024 Lambert azimuthal equal-area and 64-ring Archimedes spherical-cap quadrature passes agree within 1e-11": "1024 次 Lambert 方位等面积投影与 64 环阿基米德球冠数值求积在 1e-11 内一致",
+      "lambert-quadrature64-equiv-8192": "Lambert等面积与64环球冠求积等价 8192",
+      "8192 Lambert azimuthal equal-area and 64-ring Archimedes spherical-cap quadrature passes agree within 1e-11": "8192 次 Lambert 方位等面积投影与 64 环阿基米德球冠数值求积在 1e-11 内一致",
+      "lambert-equal-area-jacobian-locked": "Lambert等面积全站雅可比1.0000x锁定",
+      "17 spherical-cap stations lock exact solid-angle area Jacobian J = 1.0000x from zenith to horizon (0/17 distorted)": "17 个球冠站点从天顶到地平线恒定锁死立体角面积雅可比 J = 1.0000×（0/17 畸变）",
+      "naive-orthographic-horizon-crush-exposed": "朴素正交N.xy天顶膨胀与地平线坍缩暴露",
+      "naive orthographic N.xy bloats zenith to 2.0000x, hogs 75% area for upper 50% sky, and crushes horizon to 0.0000x across 16/17 stations": "朴素正交投影 N.xy 在天顶膨胀至 2.0000×、上半球霸占 75% 贴图、地平线压扁归零为 0.0000×（污染 16/17 站）",
+      "lambert-st0-zenith-10000": "第0站天顶雅可比1.0000x锁定",
+      "station-0 (zenith u=0.00, Nz=1.00) locks J_Lambert=1.0000x vs naive orthographic 2.0000x (+100% bloat)": "第 0 站（天顶 u=0.00, Nz=1.00）锁死 J_Lambert=1.0000×（消除朴素正交 2.0000× 天顶膨胀）",
+      "lambert-st8-midsky-50pct": "第8站半穹顶50%等面积锁定",
+      "station-8 (half-sky u=0.50, theta=60 deg) encloses 50.00% disk area vs naive orthographic 75.00%": "第 8 站（半穹顶 u=0.50, θ=60°）精确包围 50.00% 贴图面积（消除朴素正交霸占 75.00% 贴图）",
+      "lambert-st16-horizon-10000": "第16站地平线雅可比1.0000x锁定",
+      "station-16 (horizon u=1.00, Nz=0.00) locks J_Lambert=1.0000x vs naive orthographic 0.0000x crush": "第 16 站（地平线 u=1.00, Nz=0.00）锁死 J_Lambert=1.0000×（消除朴素正交 0.0000× 地平线坍缩）",
+      "exact-mode-roundtrip": "模式往返切换一致性",
+      "preset switching round-trip preserves deterministic Lambert dome telemetry": "Lambert 方位等面积与朴素正交投影模式往返切换保持确定性状态",
+      "geometry-58-solids": "58构件3D方位等面积穹顶检验台一致性",
+      "3D Lambert equal-area dome bench renders 58 tracked solids across 17 stations": "3D 方位等面积穹顶检验台在 17 个球冠站点完整渲染 58 个独立几何体",
+      "mobile-layout": "手机布局",
+      "390px Lambert dome controls fit without horizontal overflow": "390px 方位等面积穹顶控制面板无横向溢出",
+      "runtime-errors": "运行错误",
+      "0 JavaScript errors": "0 个 JavaScript 错误"
+    }
+  }
+}

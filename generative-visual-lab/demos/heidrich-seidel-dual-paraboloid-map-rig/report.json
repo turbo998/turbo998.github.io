@@ -1,0 +1,266 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Heidrich-Seidel dual-paraboloid conformal reflection mapping vs single-sphere map pole pinch rig",
+  "topic_zh": "Heidrich-Seidel 双抛物面保角环境反射映射对比传统单球面图背极星芒撕裂",
+  "slug": "heidrich-seidel-dual-paraboloid-map-rig",
+  "timestamp": "2026-11-14T16:42:05.215Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Wolfgang Heidrich & Hans-Peter Seidel (Eurographics / SIGGRAPH 1998) Dual-Paraboloid stereographic environment reflection mapping (u_DP = R_xy / (1 + |R_z|), locking conformal anisotropy condition number kappa_DP = s_phi / s_theta = 1.0000x across front and back hemispheres) versus classic Blinn-Newell / MatCap single-sphere reflection mapping (u_Sph = R_xy / sqrt(2(1 + R_z)), suffering azimuthal pinch distortion kappa_Sph = 2 / (1 + mu)) and 64-substep differential stereographic metric integration across 17 zenith cosine stations (mu in [+1.0000, -0.6000]).",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "paraboloid-metric64-equiv-128",
+      "passed": true,
+      "detail": "128 Dual-Paraboloid conformal and 64-substep metric passes agree within 1e-12"
+    },
+    {
+      "name": "paraboloid-metric64-equiv-1024",
+      "passed": true,
+      "detail": "1024 Dual-Paraboloid conformal and 64-substep metric passes agree within 1e-12"
+    },
+    {
+      "name": "paraboloid-metric64-equiv-8192",
+      "passed": true,
+      "detail": "8192 Dual-Paraboloid conformal and 64-substep metric passes agree within 1e-12"
+    },
+    {
+      "name": "dual-paraboloid-conformal-isotropy",
+      "passed": true,
+      "detail": "17 reflection stations lock conformal anisotropy ratio kappa = 1.0000x (0/17 pinched)"
+    },
+    {
+      "name": "single-sphere-pole-pinch-exposed",
+      "passed": true,
+      "detail": "single-sphere map stretches azimuthal UV by kappa = 2/(1+mu) up to 5.0000x across 16/17 pinched stations"
+    },
+    {
+      "name": "paraboloid-st10-equator-10000",
+      "passed": true,
+      "detail": "station-10 equator (90 deg, mu=0.00) locks r_DP=1.0000 and kappa=1.0000x vs sphere-map 2.0000x"
+    },
+    {
+      "name": "paraboloid-st15-back120-10000",
+      "passed": true,
+      "detail": "station-15 back hemisphere (120 deg, mu=-0.50) locks kappa=1.0000x vs sphere-map 4.0000x pinch"
+    },
+    {
+      "name": "paraboloid-st16-back127-10000",
+      "passed": true,
+      "detail": "station-16 deep back hemisphere (mu=-0.60) locks kappa=1.0000x vs sphere-map 5.0000x (+400% pinch)"
+    },
+    {
+      "name": "exact-mode-roundtrip",
+      "passed": true,
+      "detail": "preset switching round-trip preserves deterministic Dual-Paraboloid telemetry"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D Dual-Paraboloid reflection bench renders 58 tracked solids across 17 stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Dual-Paraboloid controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station reflection passes",
+      "count": 128,
+      "primary_ms": 0.01370000000008531,
+      "baseline_ms": 0.13390000000003965,
+      "primary_samples_ms": [
+        0.11799999999993815,
+        0.01370000000008531,
+        0.014000000000010004,
+        0.013199999999983447,
+        0.014400000000023283,
+        0.012600000000020373,
+        0.012499999999931788
+      ],
+      "baseline_samples_ms": [
+        0.45470000000000255,
+        0.32139999999992597,
+        0.12789999999995416,
+        0.13390000000003965,
+        0.12770000000000437,
+        0.13029999999992015,
+        0.24630000000001928
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station reflection passes",
+      "count": 1024,
+      "primary_ms": 0.09669999999994161,
+      "baseline_ms": 0.6721999999999753,
+      "primary_samples_ms": [
+        0.11829999999997654,
+        0.09619999999995343,
+        0.09500000000002728,
+        0.10300000000006548,
+        0.09740000000010696,
+        0.09669999999994161,
+        0.09560000000010405
+      ],
+      "baseline_samples_ms": [
+        1.22300000000007,
+        1.1675000000000182,
+        0.6644000000000005,
+        0.6865999999999985,
+        0.6648999999999887,
+        0.6674000000000433,
+        0.6721999999999753
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station reflection passes",
+      "count": 8192,
+      "primary_ms": 0.7694000000000187,
+      "baseline_ms": 5.300600000000031,
+      "primary_samples_ms": [
+        0.7694000000000187,
+        0.7501000000000886,
+        0.7504000000000133,
+        0.7613000000000056,
+        0.8474999999999682,
+        0.7942000000000462,
+        0.8549000000000433
+      ],
+      "baseline_samples_ms": [
+        5.677900000000022,
+        5.221199999999953,
+        5.287300000000073,
+        5.35450000000003,
+        5.263000000000034,
+        5.300600000000031,
+        5.57120000000009
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/heidrich-seidel-dual-paraboloid-map-rig/light-heidrich_seidel_dual_paraboloid_conformal.png",
+    "docs/evidence/heidrich-seidel-dual-paraboloid-map-rig/light-naive_single_sphere_map_pole_pinch.png",
+    "docs/evidence/heidrich-seidel-dual-paraboloid-map-rig/dark-heidrich_seidel_dual_paraboloid_conformal.png",
+    "docs/evidence/heidrich-seidel-dual-paraboloid-map-rig/dark-naive_single_sphere_map_pole_pinch.png",
+    "docs/evidence/heidrich-seidel-dual-paraboloid-map-rig/mobile.png"
+  ],
+  "primary_label": "Closed-Form Dual-Paraboloid R_xy/(1+|R_z|)",
+  "baseline_label": "64-Substep Differential Metric Tensor",
+  "load_unit": "reflection passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form Dual-Paraboloid projection versus 64-substep differential stereographic arc-length metric integration.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "station10_dp_anisotropy": 1,
+    "station10_sphere_anisotropy": 2,
+    "station15_sphere_anisotropy": 4,
+    "station16_dp_anisotropy": 1,
+    "station16_sphere_anisotropy": 5,
+    "pinched_stations": 16
+  },
+  "protocol": {
+    "input": {
+      "station_10_mu": 0,
+      "station_15_mu": -0.5,
+      "station_16_mu": -0.6
+    },
+    "output": {
+      "dual_paraboloid_anisotropy": 1,
+      "sphere_map_equator_anisotropy": 2,
+      "sphere_map_back120_anisotropy": 4,
+      "sphere_map_back127_anisotropy": 5,
+      "pinched_stations": 16
+    },
+    "function": "u_DP = R_xy/(1+|R_z|) -> κ_DP = 1.0000× vs Single-Sphere u_Sph = R_xy/√(2(1+R_z)) -> κ_Sph = 2/(1+μ) = 5.0000× at μ=−0.60"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 reflection cosine stations preserve exact conformal circle-preserving isotropy kappa_DP = 1.0000x",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Dynamic vehicle reflection probes & omni-directional point-light shadow maps requiring 2 passes instead of 6 cubemap faces (Heidrich & Seidel 1998)",
+    "View-independent 360-degree environment reflection lookups with zero square-root instructions (1 division by 1 + |R_z|)",
+    "Eliminating the rear-pole starburst pinch singularity of single-sphere MatCap / Blinn-Newell maps",
+    "Closed-form rational projection replacing 64-substep geodesic metric evaluation"
+  ],
+  "not_for": [
+    "Large low-tessellation triangles spanning the hemisphere equator when using vertex-interpolated paraboloid projection without pixel-shader evaluation",
+    "Fixed-camera orthographic MatCap sculpting brushes that never access R_z < 0",
+    "Flat 2D UI sprites",
+    "1D audio equalizers"
+  ],
+  "locale_zh": {
+    "title": "Heidrich-Seidel 双抛物面保角环境反射映射 vs 传统单球面图背极星芒撕裂",
+    "subtitle": "为什么在 360° 全向环境反射与车载点光源阴影贴图中，用单张球面反射图（Sphere Map，`u = R_xy / √(2(1 + R_z))`）会在物体背面或掠射边缘拉出刺眼的菊花状“星芒撕裂（Pole Pinch Singularity）”？",
+    "plain_intro": "在实时渲染中，如何把三维全向反射向量 R = (R_x, R_y, R_z)（其中 μ = R_z = cos θ ∈ [+1, −1]）低成本映射到 2D 纹理上？传统的 Blinn-Newell 单张球面反射图（Sphere Map / MatCap）使用 r_Sph(θ) = sin(θ/2) = √((1−μ)/2) 将整个 360° 球面硬塞进单个圆盘：当反射方向越过 90° 赤道进入背半球（μ < 0）并逼近背极点（μ → −1）时，径向导数 dr/dθ = 0.5·cos(θ/2) → 0（径向被剧烈压扁），而背面原本无限小的一个极点却被強行拉扯成整个纹理圆盘的最外圈圆周（r → 1）！其方位角与径向的各向异性拉伸比（雅可比条件数）高达 κ_Sph(μ) = s_φ / s_θ = 2 / (1 + μ)：在 90° 赤道处就已经拉伸为 2.0000×，在 120°（μ=−0.50）暴涨至 4.0000×，在 μ=−0.60 处飙升至 5.0000×（+400.00% 畸变），到背极点直接发散为无穷大星芒奇点！Wolfgang Heidrich 与 Hans-Peter Seidel (1998) 提出双抛物面映射（Dual-Paraboloid Mapping）：以 90° 赤道（μ=0）为界将球面分为前/后两个半球抛物面，用零平方根的有理球极投影 u_DP = R_xy / (1 + |R_z|)（即 r_DP = tan(θ/2)）分别映射。因为球极平面投影是严格保角（Conformal）变换，径向与方位角拉伸率恒等 s_θ = s_φ = 1/(1 + |μ|)，在全部 17 个天顶余弦站点上恒定锁死各向异性畸变比 κ_DP(μ) = 1.0000×（0/17 撕裂），且只需渲染前/后 2 张纹理（无需 6 面 Cubemap）！",
+    "finding": "实测 17 个反射天顶余弦站点（μ ∈ [+1.00, −0.60]）：Heidrich-Seidel 双抛物面映射在全部 17 个站点恒定锁死保角各向同性比 κ_DP = 1.0000×（第 10 站赤道 r=1.0000, κ=1.0000×，0/17 撕裂），而传统单球面图按 κ = 2/(1+μ) 在第 4 站（μ=0.60）拉长至 1.2500×、第 10 站（90° 赤道）拉长至 2.0000×、第 15 站（120°）拉长至 4.0000×、第 16 站（μ=−0.60）暴冲至 5.0000×（污染 16/17 个站点）。",
+    "workbench_title": "58 实体 17 站点双抛物面保角反射测角台（Dual-Paraboloid Conformal Reflection Bench）",
+    "scenario_quote": "为什么单张球面环境图（Sphere Map）一转到侧面和背面就会把环境贴图拧成放射状麻花？因为把球面刺破一个洞平铺成单圆盘时，背极点被拉成了整条外圆周！",
+    "protocol_note": "顶块展示第 10 站（90° 赤道 μ=0.00）、第 15 站（120° 背半球 μ=−0.50）与第 16 站（μ=−0.60）；底块对比双抛物面保角比恒等于 1.0000× 与单球面图飙升至 2.0000× / 4.0000× / 5.0000×。",
+    "robustness_name": "17 个反射方向站点在跨越赤道进入背半球时 100% 保持严格保角圆性 κ_DP = 1.0000×",
+    "primary_label": "双抛物面零开方有理投影",
+    "baseline_label": "64 子步微分测地度规积分",
+    "load_unit": "次 17 站反射投影求值",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比闭式双抛物面有理投影与 64 子步微分球极度规张量积分。",
+    "good_fit": [
+      "车载动态环境反射探针与全向点光源阴影贴图（Omnidirectional Shadow Maps）：仅需 2 个渲染 Pass 即可替代 6 Pass 立方体贴图",
+      "视角无关（View-Independent）的 360° 金属/车漆实时反射采样，零 sqrt 指令开销（仅需除以 1 + |R_z|）",
+      "彻底根除传统 Blinn-Newell 单球面图与 MatCap 在掠射边缘及背半球的星芒奇点撕裂",
+      "闭式有理球极投影直接替代 64 子步微分度规张量求值"
+    ],
+    "not_for": [
+      "在顶点着色器而非片元着色器中对跨赤道巨型低模三角形做抛物面投影（应在片元着色器采样）",
+      "永远不会看到法线背面的纯正交静态雕塑 MatCap 画笔",
+      "平面 2D UI 图标",
+      "一维音频均衡器"
+    ],
+    "readiness": "12/12 项实测通过；58 个 3D 双抛物面测角构件、17 个反射余弦站点与 7-Card 报告已封存。",
+    "entries": {
+      "paraboloid-metric64-equiv-128": "双抛物面保角与64步度规等价 128",
+      "128 Dual-Paraboloid conformal and 64-substep metric passes agree within 1e-12": "128 次双抛物面保角映射与 64 子步测地弧长比积分在 1e-12 内一致",
+      "paraboloid-metric64-equiv-1024": "双抛物面保角与64步度规等价 1024",
+      "1024 Dual-Paraboloid conformal and 64-substep metric passes agree within 1e-12": "1024 次双抛物面保角映射与 64 子步测地弧长比积分在 1e-12 内一致",
+      "paraboloid-metric64-equiv-8192": "双抛物面保角与64步度规等价 8192",
+      "8192 Dual-Paraboloid conformal and 64-substep metric passes agree within 1e-12": "8192 次双抛物面保角映射与 64 子步测地弧长比积分在 1e-12 内一致",
+      "dual-paraboloid-conformal-isotropy": "双抛物面全站保角各向同性锁定",
+      "17 reflection stations lock conformal anisotropy ratio kappa = 1.0000x (0/17 pinched)": "17 个反射方向站点恒定锁死保角各向异性比 κ = 1.0000×（0/17 星芒撕裂）",
+      "single-sphere-pole-pinch-exposed": "单张球面反射图背极星芒撕裂暴露",
+      "single-sphere map stretches azimuthal UV by kappa = 2/(1+mu) up to 5.0000x across 16/17 pinched stations": "单球面反射图按 κ = 2/(1+μ) 撕裂方位角 UV（赤道 2.00×、120° 达 4.00×、μ=−0.60 达 5.00×，污染 16/17 站）",
+      "paraboloid-st10-equator-10000": "第10站90度赤道缝1.0000x保角锁定",
+      "station-10 equator (90 deg, mu=0.00) locks r_DP=1.0000 and kappa=1.0000x vs sphere-map 2.0000x": "第 10 站（90° 赤道缝 μ=0.00）锁死 r_DP=1.0000 与 κ=1.0000×（消除单球面图 2.0000× 椭圆拉伸）",
+      "paraboloid-st15-back120-10000": "第15站120度背半球1.0000x保角锁定",
+      "station-15 back hemisphere (120 deg, mu=-0.50) locks kappa=1.0000x vs sphere-map 4.0000x pinch": "第 15 站（120° 背半球 μ=−0.50）锁死 κ=1.0000×（消除单球面图 4.0000× 撕裂）",
+      "paraboloid-st16-back127-10000": "第16站μ=-0.60背极1.0000x保角锁定",
+      "station-16 deep back hemisphere (mu=-0.60) locks kappa=1.0000x vs sphere-map 5.0000x (+400% pinch)": "第 16 站（μ=−0.60 背半球深处）锁死 κ=1.0000×（消除单球面图 5.0000× 星芒撕裂）",
+      "exact-mode-roundtrip": "模式往返切换一致性",
+      "preset switching round-trip preserves deterministic Dual-Paraboloid telemetry": "双抛物面保角映射与单球面反射图模式往返切换保持确定性状态",
+      "geometry-58-solids": "58构件3D双抛物面反射台一致性",
+      "3D Dual-Paraboloid reflection bench renders 58 tracked solids across 17 stations": "3D 双抛物面反射台在 17 个天顶余弦站点完整渲染 58 个独立几何体",
+      "mobile-layout": "手机布局",
+      "390px Dual-Paraboloid controls fit without horizontal overflow": "390px 双抛物面控制面板无横向溢出",
+      "runtime-errors": "运行错误",
+      "0 JavaScript errors": "0 个 JavaScript 错误"
+    }
+  }
+}

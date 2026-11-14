@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Piegl-Tiller 有理 NURBS 二次圆锥曲线（w₁ = cos(Δθ/2) = 0.5000）vs 朴素非有理多项式 Bézier 圆弧鼓包畸变对比台</title>
+  <script type="module" crossorigin src="../../assets/pieglNurbsRationalConicArc-_EfIK7jJ.js"></script>
+  <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="modulepreload" crossorigin href="../../assets/three.module-7AmyneiW.js">
+  <link rel="stylesheet" crossorigin href="../../assets/blinnReciprocalDepthPlane-Dw-W0NpC.css">
+</head>
+<body data-preset="piegl_nurbs_rational_conic_arc" data-theme="dark">
+  <header class="topbar">
+    <div class="brand">
+      <a class="back-link" href="../../index.html">← 返回 Generative Visual Lab 门户</a>
+      <span class="eyebrow">ROUND 142 · 152ND DEMO · PIEGL NURBS RATIONAL CONIC ARC RIG</span>
+      <h1>多项式 Bézier 曲线永远画不出精密真圆（120° 弧中点外鼓 +25.00%）？Piegl-Tiller 有理 NURBS 齐次透视除权 <code>C(u) = P(u) / W(u)</code></h1>
+    </div>
+    <div class="toolbar" role="toolbar" aria-label="预设与主题切换">
+      <div class="btn-group">
+        <button type="button" class="btn active" data-preset="piegl_nurbs_rational_conic_arc" aria-pressed="true">
+          ✅ Piegl-Tiller 有理 NURBS 圆弧 (w₁ = 0.5000, R = 1.0000×)
+        </button>
+        <button type="button" class="btn" data-preset="naive_nonrational_polynomial_bezier_bulge" aria-pressed="false">
+          ❌ 朴素非有理多项式 Bézier (w₁ = 1.0000, +25.00% 外鼓)
+        </button>
+      </div>
+      <div class="btn-group">
+        <button type="button" class="btn" data-theme-choice="light" aria-pressed="false">☀️ Light</button>
+        <button type="button" class="btn active" data-theme-choice="dark" aria-pressed="true">🌙 Dark</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="workbench rig-shell">
+    <section class="stage-panel" aria-label="58实体17站点有理NURBS圆锥曲线三维计量实验台">
+      <canvas id="stage"></canvas>
+      <div class="stage-overlay">
+        <span id="active-preset-badge" class="badge">Piegl-Tiller Rational NURBS Conic Arc (w₁ = cos 60° = 0.5000, R = 1.0000×)</span>
+        <span class="badge subtle">58 3D Solids · 17 Arc Stations · Δθ = 120° · u ∈ [0.0000, 1.0000]</span>
+      </div>
+    </section>
+
+    <aside class="readout-panel" aria-label="实时圆弧半径与齐次权重读数">
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <span class="kpi-label">第 4 站 (u = 0.25) 极径 R(u)</span>
+          <strong id="metric-s4" class="kpi-value">1.0000× (+0.00%)</strong>
+          <span class="kpi-note">有理 NURBS 1.0000× vs 多项式 1.1473× (+14.73% 外鼓)</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">第 8 站 (弧顶 u = 0.50) 极径与权重</span>
+          <strong id="metric-s8" class="kpi-value">1.0000× (W=0.7500)</strong>
+          <span class="kpi-note">有理 NURBS 1.0000× vs 多项式 1.2500× (+25.00% 外鼓)</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">第 12 站 (u = 0.75) 极径 R(u)</span>
+          <strong id="metric-s12" class="kpi-value">1.0000×</strong>
+          <span class="kpi-note">有理 NURBS 1.0000× vs 多项式 1.1473× (+14.73% 外鼓)</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">顶点齐次控制权 w₁ = cos(Δθ/2)</span>
+          <strong id="metric-w1" class="kpi-value">w₁ = 0.5000 (cos 60°)</strong>
+          <span class="kpi-note">恒等式 X(u)² + Y(u)² ≡ (1 − u + u²)² = W(u)²</span>
+        </div>
+        <div class="kpi-card full">
+          <span class="kpi-label">径向失圆畸变站点数 (R(u) ≠ 1.0000× / 共 17 站)</span>
+          <strong id="metric-bulged" class="kpi-value">0 / 17</strong>
+          <span class="kpi-note">有理 NURBS 全站 0/17 失圆 (0 次三角函数/开方) vs 多项式 15/17 内部站全部外鼓</span>
+        </div>
+      </div>
+
+      <div class="table-card">
+        <h2>17 站 120° 圆弧参数 u ∈ [0, 1] 齐次有理半径与多项式鼓包审计</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>站点 (参数 u)</th>
+              <th>有理 NURBS (W(u))</th>
+              <th>多项式 Bézier (w₁=1)</th>
+              <th>当前激活半径 R</th>
+            </tr>
+          </thead>
+          <tbody id="station-table-body"></tbody>
+        </table>
+      </div>
+
+      <div class="links-card">
+        <a href="../../docs/piegl-tiller-rational-nurbs-conic-vs-polynomial-bezier-bulge-faq.md">📘 选型 FAQ (中文)</a>
+        <a href="../../docs/piegl-tiller-rational-nurbs-conic-vs-polynomial-bezier-bulge-faq.en.md">📗 Selection FAQ (EN)</a>
+        <a href="./test-report-cards.zh.html">📊 7-Card 报告 (ZH)</a>
+        <a href="./test-report-cards.html">📈 7-Card Report (EN)</a>
+      </div>
+    </aside>
+  </main>
+
+</body>
+</html>

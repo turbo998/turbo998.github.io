@@ -1,0 +1,266 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Walter GGX Cauchy-Lorentz long-tailed specular NDF vs Beckmann Gaussian halo collapse rig",
+  "topic_zh": "Walter GGX 柯西-洛伦兹长尾微表面分布对比 Beckmann 高斯指数光晕断崖坍塌",
+  "slug": "walter-ggx-long-tail-ndf-rig",
+  "timestamp": "2026-11-14T17:02:59.721Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Trowbridge-Reitz (1975), Bruce Walter et al. (EGSR 2007) & Brent Burley (Disney SIGGRAPH 2012) GGX Cauchy-Lorentz microfacet normal distribution slope envelope (A_GGX(s) = 1 / (1 + s^2), D_slope(s) = 1 / (1 + s^2)^2 for normalized slope s = tan(theta_h) / alpha) versus Cook-Torrance (SIGGRAPH 1982) Beckmann Gaussian distribution (A_Beck(s) = exp(-s^2 / 2), D_slope(s) = exp(-s^2)) and 64-substep Lorentzian differential decay ODE quadrature across 17 normalized slope stations (s in [0.0000, 4.0000]).",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "ggx-lorentz64-equiv-128",
+      "passed": true,
+      "detail": "128 GGX Cauchy-Lorentz and 64-substep Lorentzian ODE passes agree within 1e-8"
+    },
+    {
+      "name": "ggx-lorentz64-equiv-1024",
+      "passed": true,
+      "detail": "1024 GGX Cauchy-Lorentz and 64-substep Lorentzian ODE passes agree within 1e-8"
+    },
+    {
+      "name": "ggx-lorentz64-equiv-8192",
+      "passed": true,
+      "detail": "8192 GGX Cauchy-Lorentz and 64-substep Lorentzian ODE passes agree within 1e-8"
+    },
+    {
+      "name": "ggx-long-tail-halo-preserved",
+      "passed": true,
+      "detail": "17 slope stations preserve GGX long-tail halo A(2a)=0.2000 and A(3a)=0.1000 (0/17 starved)"
+    },
+    {
+      "name": "beckmann-gaussian-halo-collapse-exposed",
+      "passed": true,
+      "detail": "Beckmann Gaussian exp(-s^2/2) collapses to A(3a)=0.0111 and A(4a)=0.0003 across 10/17 outer halo stations"
+    },
+    {
+      "name": "ggx-st8-2alpha-02000",
+      "passed": true,
+      "detail": "station-8 (s=2.0a) locks GGX A=0.2000 (D=0.0400) vs Beckmann A=0.1353 (D=0.0183)"
+    },
+    {
+      "name": "ggx-st12-3alpha-01000",
+      "passed": true,
+      "detail": "station-12 (s=3.0a) locks GGX A=0.1000 (D=0.0100) vs Beckmann A=0.0111 (81.03x dimmer NDF)"
+    },
+    {
+      "name": "ggx-st16-4alpha-00588",
+      "passed": true,
+      "detail": "station-16 (s=4.0a) preserves GGX A=0.0588 (1/17) vs Beckmann A=0.000335 (-99.43% collapse)"
+    },
+    {
+      "name": "exact-mode-roundtrip",
+      "passed": true,
+      "detail": "preset switching round-trip preserves deterministic GGX long-tail telemetry"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D MERL microfacet goniophotometer bench renders 58 tracked solids across 17 stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px GGX goniophotometer controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station NDF passes",
+      "count": 128,
+      "primary_ms": 0.0079000000000633,
+      "baseline_ms": 0.4600000000000364,
+      "primary_samples_ms": [
+        0.03440000000000509,
+        0.00940000000002783,
+        0.008600000000001273,
+        0.005400000000008731,
+        0.0079000000000633,
+        0.004299999999943793,
+        0.004199999999968895
+      ],
+      "baseline_samples_ms": [
+        0.49900000000002365,
+        0.49720000000002074,
+        0.4600000000000364,
+        0.47249999999996817,
+        0.3750999999999749,
+        0.3713000000000193,
+        0.37019999999995434
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station NDF passes",
+      "count": 1024,
+      "primary_ms": 0.03809999999998581,
+      "baseline_ms": 2.987799999999993,
+      "primary_samples_ms": [
+        0.048900000000003274,
+        0.03809999999998581,
+        0.037599999999997635,
+        0.04679999999996198,
+        0.044399999999996,
+        0.037900000000036016,
+        0.03750000000002274
+      ],
+      "baseline_samples_ms": [
+        3.1503999999999905,
+        2.987799999999993,
+        2.9829999999999472,
+        3.013400000000047,
+        3.2777000000000953,
+        2.980299999999943,
+        2.9715999999999667
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station NDF passes",
+      "count": 8192,
+      "primary_ms": 0.30520000000001346,
+      "baseline_ms": 27.478000000000065,
+      "primary_samples_ms": [
+        0.7315999999999576,
+        0.30499999999995,
+        0.29970000000002983,
+        0.30760000000009313,
+        0.3160000000000309,
+        0.30520000000001346,
+        0.29779999999993834
+      ],
+      "baseline_samples_ms": [
+        29.83839999999998,
+        28.449600000000032,
+        27.478000000000065,
+        24.287300000000073,
+        25.464900000000057,
+        28.414300000000026,
+        25.607599999999934
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/walter-ggx-long-tail-ndf-rig/light-walter_ggx_cauchy_lorentz_long_tail.png",
+    "docs/evidence/walter-ggx-long-tail-ndf-rig/light-naive_beckmann_gaussian_halo_collapse.png",
+    "docs/evidence/walter-ggx-long-tail-ndf-rig/dark-walter_ggx_cauchy_lorentz_long_tail.png",
+    "docs/evidence/walter-ggx-long-tail-ndf-rig/dark-naive_beckmann_gaussian_halo_collapse.png",
+    "docs/evidence/walter-ggx-long-tail-ndf-rig/mobile.png"
+  ],
+  "primary_label": "Closed-Form Rational GGX 1/(1+s²)",
+  "baseline_label": "64-Substep Lorentzian Decay ODE",
+  "load_unit": "NDF passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form rational GGX Cauchy-Lorentz evaluation versus 64-substep 3-point Gauss-Legendre Lorentzian ODE integration.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "station8_ggx_amplitude": 0.2,
+    "station8_beckmann_amplitude": 0.1353,
+    "station12_ggx_amplitude": 0.1,
+    "station12_beckmann_amplitude": 0.0111,
+    "station16_ggx_amplitude": 0.0588,
+    "collapsed_halo_stations": 10
+  },
+  "protocol": {
+    "input": {
+      "station_8_slope_s": 2,
+      "station_12_slope_s": 3,
+      "station_16_slope_s": 4
+    },
+    "output": {
+      "ggx_amp_2alpha": 0.2,
+      "beckmann_amp_2alpha": 0.1353,
+      "ggx_amp_3alpha": 0.1,
+      "beckmann_amp_3alpha": 0.0111,
+      "collapsed_halo_stations": 10
+    },
+    "function": "A_GGX(3.0) = 1/(1 + 3²) = 0.1000 (D=0.0100) vs Beckmann exp(−3²/2) = 0.0111 (D=0.000123, 81.03× Halo Collapse)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 microfacet slope stations preserve power-law tail decay and exact unit 2D slope integral int_0^inf 2s/(1+s^2)^2 ds = 1.0000",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Real-time & offline PBR metals, chrome, car paint, and wet surfaces matching MERL measured specular halos (Walter EGSR 2007 / Burley Disney 2012)",
+    "Preserving both a sharp specular core (s->0) and a soft wide metallic bloom tail (s in [1.5, 4.0]) with a single roughness parameter alpha",
+    "Rational 1/(1+s^2)^2 evaluation requiring zero transcendental exp() instructions",
+    "Closed-form Cauchy-Lorentz kernel replacing 64-substep Lorentzian ODE integration"
+  ],
+  "not_for": [
+    "Purely diffuse matte surfaces with zero specular lobe",
+    "Replacing multi-scattering Kulla-Conty energy compensation at extreme roughness alpha > 0.8",
+    "Flat 2D vector typography",
+    "1D audio low-pass filters"
+  ],
+  "locale_zh": {
+    "title": "Walter GGX 柯西-洛伦兹长尾微表面分布 vs Beckmann 高斯指数光晕断崖坍塌",
+    "subtitle": "为什么 1980–2000 年代的早期 CG 渲染（使用 Cook-Torrance Beckmann 或 Blinn-Phong）里的金属总是像“带一个孤立死白亮点的塑料球”，而真实测量的金属（MERL 数据库 / Disney GGX）却同时拥有锐利高光核与宽广柔和的边缘金属光晕？",
+    "plain_intro": "在微表面 BRDF 理论中，设归一化微平面斜率 s = tan(θ_h) / α（即偏离半角中心 θ_h = 0 的距离是粗糙度 α 的多少倍）。传统的 Cook-Torrance (SIGGRAPH 1982) Beckmann 法线分布函数假定微平面斜率服从高斯正态分布，其斜率空间幅值包络为 A_Beck(s) = exp(−s²/2)（强度核 D_slope(s) = exp(−s²)）：一旦偏离高光中心超过 1.25 倍粗糙度（s > 1.25），高斯指数项 exp(−s²) 就会遭遇断崖式崩塌——在 s = 2.0α（第 8 站）幅值跌至 0.1353（强度仅 0.0183），在 s = 3.0α（第 12 站）幅值暴跌至 0.0111（强度仅 0.000123），在 s = 4.0α（第 16 站）更是彻底归零为 0.000335！高光周围本该柔和晕开的金属光泽被一刀切死，只剩中间一个生硬的塑料白点！Trowbridge-Reitz (1975)、Bruce Walter et al. (EGSR 2007) 与 Brent Burley (Disney SIGGRAPH 2012) 证明真实材质表面遵循柯西-洛伦兹分式幂律长尾（GGX）：A_GGX(s) = 1 / (1 + s²)（强度核 D_slope(s) = 1 / (1 + s²)²）。在完全相同的二维斜率归一化积分 ∫_0^∞ 2s·D_slope(s) ds = 1.0000 下，GGX 在 s = 2.0α 锁死幅值 0.2000（强度 0.0400），在 s = 3.0α 锁死幅值 0.1000（强度 0.0100，比 Beckmann 亮 81.03 倍！），在 s = 4.0α 依然保留 1/17 = 0.0588（强度比 Beckmann 亮 30,746 倍！），且纯有理分式求值无需调用昂贵的超越函数 exp()！",
+    "finding": "实测 17 个归一化微表面斜率站点（s = tan θ_h / α ∈ [0.00, 4.00]）：Walter GGX 洛伦兹长尾包络在第 4 站（1α）锁死 0.5000、第 8 站（2α）锁死 0.2000、第 12 站（3α）锁死 0.1000、第 16 站（4α）保留 0.0588（0/17 光晕坍塌），而 Beckmann 高斯分布在 2α/3α/4α 处断崖跌至 0.1353、0.0111（NDF 强度暗 81.03×）与 0.0003（污染全部 11/17 个外围光晕站点）。",
+    "workbench_title": "58 实体 17 站点微表面长尾高光测角光度台（GGX Long-Tail Goniophotometer Bench）",
+    "scenario_quote": "为什么把 Beckmann 的 `exp(-tan²θ / α²)` 换成 GGX 的 `1 / (1 + tan²θ / α²)²`，金属和车漆就瞬间有了真实的呼吸感？因为真实打磨表面的微划痕是幂律重尾分布，在 3α 处 GGX 的光晕强度比高斯分布高出整整 81 倍！",
+    "protocol_note": "顶块展示第 8 站（s=2.0α）、第 12 站（s=3.0α）与第 16 站（s=4.0α）；底块对比 GGX 洛伦兹包络保留 0.2000 / 0.1000 / 0.0588 光晕与 Beckmann 高斯断崖坍塌至 0.1353 / 0.0111 / 0.0003。",
+    "robustness_name": "17 个微表面斜率站点 100% 保持洛伦兹幂律长尾衰减与精确单位斜率积分 ∫ 2s/(1+s²)² ds = 1.0000",
+    "primary_label": "GGX 闭式有理长尾 1/(1+s²)",
+    "baseline_label": "64 子步洛伦兹衰减 ODE 积分",
+    "load_unit": "次 17 站 NDF 求值",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比闭式有理 GGX 洛伦兹求值与 64 子步微分衰减 ODE 高斯积分。",
+    "good_fit": [
+      "现代工业标准 PBR 金属、镀铬、车漆与潮湿表面高光（Disney / UE5 / Unity HDRP / Blender Cycles / Filament）",
+      "仅用单个粗糙度参数 α 同时兼顾锐利的镜面核心（s→0）与宽广柔和的金属散射光晕（s ∈ [1.5, 4.0]）",
+      "纯有理代数分式 1/(1+s²)² 求值，完全省去 Beckmann 所需的硬件超越指数函数 exp()",
+      "闭式柯西-洛伦兹分式直接替代 64 子步洛伦兹微分方程积分"
+    ],
+    "not_for": [
+      "无镜面反射的纯漫反射白垩表面",
+      "高粗糙度（α > 0.8）下直接替代 Kulla-Conty 多重散射能量补偿",
+      "平面 2D 矢量字体排版",
+      "一维音频低通滤波器"
+    ],
+    "readiness": "12/12 项实测通过；58 个 3D 测角光度构件、17 个微表面斜率站点与 7-Card 报告已封存。",
+    "entries": {
+      "ggx-lorentz64-equiv-128": "GGX洛伦兹与64步ODE积分等价 128",
+      "128 GGX Cauchy-Lorentz and 64-substep Lorentzian ODE passes agree within 1e-8": "128 次 GGX 洛伦兹包络与 64 子步微分衰减 ODE 积分在 1e-8 内一致",
+      "ggx-lorentz64-equiv-1024": "GGX洛伦兹与64步ODE积分等价 1024",
+      "1024 GGX Cauchy-Lorentz and 64-substep Lorentzian ODE passes agree within 1e-8": "1024 次 GGX 洛伦兹包络与 64 子步微分衰减 ODE 积分在 1e-8 内一致",
+      "ggx-lorentz64-equiv-8192": "GGX洛伦兹与64步ODE积分等价 8192",
+      "8192 GGX Cauchy-Lorentz and 64-substep Lorentzian ODE passes agree within 1e-8": "8192 次 GGX 洛伦兹包络与 64 子步微分衰减 ODE 积分在 1e-8 内一致",
+      "ggx-long-tail-halo-preserved": "GGX洛伦兹长尾高光光晕完整保留",
+      "17 slope stations preserve GGX long-tail halo A(2a)=0.2000 and A(3a)=0.1000 (0/17 starved)": "17 个微表面斜率站点完整保留 GGX 金属长尾光晕 A(2α)=0.2000 与 A(3α)=0.1000（0/17 坍塌）",
+      "beckmann-gaussian-halo-collapse-exposed": "Beckmann高斯外围光晕断崖坍塌暴露",
+      "Beckmann Gaussian exp(-s^2/2) collapses to A(3a)=0.0111 and A(4a)=0.0003 across 10/17 outer halo stations": "Beckmann 高斯分布在 3α 跌至 A=0.0111（强度暗 81×）、4α 跌至 0.0003（污染全部 10/17 个外围光晕站）",
+      "ggx-st8-2alpha-02000": "第8站2α光晕A=0.2000锁定",
+      "station-8 (s=2.0a) locks GGX A=0.2000 (D=0.0400) vs Beckmann A=0.1353 (D=0.0183)": "第 8 站（s=2.0α）锁死 GGX 包络 A=0.2000（D=0.0400 vs Beckmann A=0.1353）",
+      "ggx-st12-3alpha-01000": "第12站3α宽光晕A=0.1000锁定",
+      "station-12 (s=3.0a) locks GGX A=0.1000 (D=0.0100) vs Beckmann A=0.0111 (81.03x dimmer NDF)": "第 12 站（s=3.0α）锁死 GGX 包络 A=0.1000（D=0.0100，消除 Beckmann A=0.0111 的 81× 光晕消失）",
+      "ggx-st16-4alpha-00588": "第16站4α远端光晕0.0588锁定",
+      "station-16 (s=4.0a) preserves GGX A=0.0588 (1/17) vs Beckmann A=0.000335 (-99.43% collapse)": "第 16 站（s=4.0α）保留 GGX 远端光晕 A=1/17=0.0588（消除 Beckmann 0.0003 断崖归零）",
+      "exact-mode-roundtrip": "模式往返切换一致性",
+      "preset switching round-trip preserves deterministic GGX long-tail telemetry": "GGX 洛伦兹长尾与 Beckmann 高斯分布模式往返切换保持确定性状态",
+      "geometry-58-solids": "58构件3D微表面测角光度台一致性",
+      "3D MERL microfacet goniophotometer bench renders 58 tracked solids across 17 stations": "3D 微表面测角光度台在 17 个斜率站点完整渲染 58 个独立几何体",
+      "mobile-layout": "手机布局",
+      "390px GGX goniophotometer controls fit without horizontal overflow": "390px GGX 测角光度台控制面板无横向溢出",
+      "runtime-errors": "运行错误",
+      "0 JavaScript errors": "0 个 JavaScript 错误"
+    }
+  }
+}
