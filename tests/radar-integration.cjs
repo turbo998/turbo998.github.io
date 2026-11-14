@@ -3820,6 +3820,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r291File),'utf8');
       assert.ok(txt.includes('1,750.00')&&txt.includes('3,562.50')&&txt.includes('5,312.50')&&txt.includes('80.00')&&txt.includes('332.50')&&txt.includes('412.50')&&txt.includes('4,900.00')&&txt.includes('92.24%')&&txt.includes('not_measured'),r291File+': contains exact 11-14 R108 foxprofile+vps-switch closed-form parameters');
     }
+    // 2026-11-14 Night Round 109 (R292: 1bye/rake + LumioGames/LGUI) verification
+    const r292PathA=1730.00+37.0*95.00;
+    assert.equal(r292PathA.toFixed(2),'5245.00','11-14 R109 Path A total');
+    const r292PathC=80.00+3.5*95.00;
+    assert.equal(r292PathC.toFixed(2),'412.50','11-14 R109 Path C total');
+    assert.equal((r292PathA-r292PathC).toFixed(2),'4832.50','11-14 R109 savings vs Path A');
+    assert.equal(((r292PathA-r292PathC)/r292PathA*100).toFixed(2),'92.14','11-14 R109 pct savings vs Path A');
+    for(const r292File of ['workshops/github-trending-radar/docs/rake-lgui-rust-gpui-native-wasm-agent-framework-engine-free-browser-unity-game-ui-selection-faq.md','workshops/github-trending-radar/docs/rake-lgui-rust-gpui-native-wasm-agent-framework-engine-free-browser-unity-game-ui-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r109-rake-lgui.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r292File),'utf8');
+      assert.ok(txt.includes('1,730.00')&&txt.includes('3,515.00')&&txt.includes('5,245.00')&&txt.includes('80.00')&&txt.includes('332.50')&&txt.includes('412.50')&&txt.includes('4,832.50')&&txt.includes('92.14%')&&txt.includes('not_measured'),r292File+': contains exact 11-14 R109 rake+lgui closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
