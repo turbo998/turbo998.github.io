@@ -3688,6 +3688,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r279File),'utf8');
       assert.ok(txt.includes('1,790.00')&&txt.includes('3,610.00')&&txt.includes('5,400.00')&&txt.includes('90.00')&&txt.includes('332.50')&&txt.includes('422.50')&&txt.includes('4,977.50')&&txt.includes('92.18%')&&txt.includes('not_measured'),r279File+': contains exact 11-14 R96 cook+ai-java-workflow closed-form parameters');
     }
+    // 2026-11-14 Night Round 97 (R280 Milestone: lucianodiisouza/flecha-browser + tony3liu/eido) verification
+    const r280PathA=1730.00+37.0*95.00;
+    assert.equal(r280PathA.toFixed(2),'5245.00','11-14 R97 Path A total');
+    const r280PathC=85.00+3.5*95.00;
+    assert.equal(r280PathC.toFixed(2),'417.50','11-14 R97 Path C total');
+    assert.equal((r280PathA-r280PathC).toFixed(2),'4827.50','11-14 R97 savings vs Path A');
+    assert.equal(((r280PathA-r280PathC)/r280PathA*100).toFixed(2),'92.04','11-14 R97 pct savings vs Path A');
+    for(const r280File of ['workshops/github-trending-radar/docs/flecha-browser-eido-chromium-158-dev-browser-mcp-zed-pi-ultrafast-agent-workspace-selection-faq.md','workshops/github-trending-radar/docs/flecha-browser-eido-chromium-158-dev-browser-mcp-zed-pi-ultrafast-agent-workspace-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r97-flechabrowser-eido.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r280File),'utf8');
+      assert.ok(txt.includes('1,730.00')&&txt.includes('3,515.00')&&txt.includes('5,245.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('4,827.50')&&txt.includes('92.04%')&&txt.includes('not_measured'),r280File+': contains exact 11-14 R97 flecha-browser+eido closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
