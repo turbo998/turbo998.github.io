@@ -3479,6 +3479,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r260File),'utf8');
       assert.ok(txt.includes('1,780.00')&&txt.includes('3,705.00')&&txt.includes('5,485.00')&&txt.includes('95.00')&&txt.includes('332.50')&&txt.includes('427.50')&&txt.includes('5,057.50')&&txt.includes('92.21%')&&txt.includes('not_measured'),r260File+': contains exact 11-14 R77 strands-box+borg closed-form parameters');
     }
+    // 2026-11-14 Night Round 78 (R261: Graphicle-AI/graphicle + pi-infected/tokenade) verification
+    const r261PathA=1920.00+39.0*95.00;
+    assert.equal(r261PathA.toFixed(2),'5625.00','11-14 R78 Path A total');
+    const r261PathC=95.00+3.5*95.00;
+    assert.equal(r261PathC.toFixed(2),'427.50','11-14 R78 Path C total');
+    assert.equal((r261PathA-r261PathC).toFixed(2),'5197.50','11-14 R78 savings vs Path A');
+    assert.equal(((r261PathA-r261PathC)/r261PathA*100).toFixed(2),'92.40','11-14 R78 pct savings vs Path A');
+    for(const r261File of ['workshops/github-trending-radar/docs/graphicle-tokenade-rust-incremental-code-graph-thol-top1-token-compaction-proxy-selection-faq.md','workshops/github-trending-radar/docs/graphicle-tokenade-rust-incremental-code-graph-thol-top1-token-compaction-proxy-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r78-graphicle-tokenade.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r261File),'utf8');
+      assert.ok(txt.includes('1,920.00')&&txt.includes('3,705.00')&&txt.includes('5,625.00')&&txt.includes('95.00')&&txt.includes('332.50')&&txt.includes('427.50')&&txt.includes('5,197.50')&&txt.includes('92.40%')&&txt.includes('not_measured'),r261File+': contains exact 11-14 R78 graphicle+tokenade closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
