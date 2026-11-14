@@ -3179,6 +3179,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r234File),'utf8');
       assert.ok(txt.includes('1,480.00')&&txt.includes('3,420.00')&&txt.includes('4,900.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('4,482.50')&&txt.includes('91.48%')&&txt.includes('not_measured'),r234File+': contains exact 11-14 R51 quire+su-zine closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 52 (R235: Kianuni/WQGuard + Flaim92/astra-ds) verification
+    const r235PathA=1800.00+38.0*100.00;
+    assert.equal(r235PathA.toFixed(2),'5600.00','11-14 R52 Path A total');
+    const r235PathC=130.00+3.5*100.00;
+    assert.equal(r235PathC.toFixed(2),'480.00','11-14 R52 Path C total');
+    assert.equal((r235PathA-r235PathC).toFixed(2),'5120.00','11-14 R52 savings vs Path A');
+    assert.equal(((r235PathA-r235PathC)/r235PathA*100).toFixed(2),'91.43','11-14 R52 pct savings vs Path A');
+    for(const r235File of ['workshops/github-trending-radar/docs/wqguard-astra-ds-readonly-ios-macho-sandbox-auditor-29mb-c11-zero-gpu-discord-client-selection-faq.md','workshops/github-trending-radar/docs/wqguard-astra-ds-readonly-ios-macho-sandbox-auditor-29mb-c11-zero-gpu-discord-client-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r52-wqguard-astra-ds.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r235File),'utf8');
+      assert.ok(txt.includes('1,800.00')&&txt.includes('3,800.00')&&txt.includes('5,600.00')&&txt.includes('130.00')&&txt.includes('350.00')&&txt.includes('480.00')&&txt.includes('5,120.00')&&txt.includes('91.43%')&&txt.includes('not_measured'),r235File+': contains exact 11-14 R52 WQGuard+astra-ds closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
