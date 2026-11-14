@@ -3666,6 +3666,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r277File),'utf8');
       assert.ok(txt.includes('1,760.00')&&txt.includes('3,610.00')&&txt.includes('5,370.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('4,952.50')&&txt.includes('92.23%')&&txt.includes('not_measured'),r277File+': contains exact 11-14 R94 raea+motion2code closed-form parameters');
     }
+    // 2026-11-14 Night Round 95 (R278: Moessif/code-video-showcase + Moh4696/open-3d-skills) verification
+    const r278PathA=1740.00+37.0*95.00;
+    assert.equal(r278PathA.toFixed(2),'5255.00','11-14 R95 Path A total');
+    const r278PathC=85.00+3.5*95.00;
+    assert.equal(r278PathC.toFixed(2),'417.50','11-14 R95 Path C total');
+    assert.equal((r278PathA-r278PathC).toFixed(2),'4837.50','11-14 R95 savings vs Path A');
+    assert.equal(((r278PathA-r278PathC)/r278PathA*100).toFixed(2),'92.06','11-14 R95 pct savings vs Path A');
+    for(const r278File of ['workshops/github-trending-radar/docs/code-video-showcase-open-3d-skills-zero-model-beat-synced-film-pipeline-8-skill-3d-web-suite-selection-faq.md','workshops/github-trending-radar/docs/code-video-showcase-open-3d-skills-zero-model-beat-synced-film-pipeline-8-skill-3d-web-suite-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r95-codevideoshowcase-open3dskills.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r278File),'utf8');
+      assert.ok(txt.includes('1,740.00')&&txt.includes('3,515.00')&&txt.includes('5,255.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('4,837.50')&&txt.includes('92.06%')&&txt.includes('not_measured'),r278File+': contains exact 11-14 R95 code-video-showcase+open-3d-skills closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
