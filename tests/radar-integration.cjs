@@ -3721,6 +3721,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r282File),'utf8');
       assert.ok(txt.includes('1,780.00')&&txt.includes('3,610.00')&&txt.includes('5,390.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('4,972.50')&&txt.includes('92.25%')&&txt.includes('not_measured'),r282File+': contains exact 11-14 R99 outcrawl-scout+kaze closed-form parameters');
     }
+    // 2026-11-14 Night Round 100 Milestone (R283: amurgola/LumaBrowser + moonoops/Droy) verification
+    const r283PathA=1750.00+38.0*95.00;
+    assert.equal(r283PathA.toFixed(2),'5360.00','11-14 R100 Path A total');
+    const r283PathC=80.00+3.5*95.00;
+    assert.equal(r283PathC.toFixed(2),'412.50','11-14 R100 Path C total');
+    assert.equal((r283PathA-r283PathC).toFixed(2),'4947.50','11-14 R100 savings vs Path A');
+    assert.equal(((r283PathA-r283PathC)/r283PathA*100).toFixed(2),'92.30','11-14 R100 pct savings vs Path A');
+    for(const r283File of ['workshops/github-trending-radar/docs/lumabrowser-droy-gpu-aware-local-ai-browser-mcp-phone-resident-android-deepseek-harness-selection-faq.md','workshops/github-trending-radar/docs/lumabrowser-droy-gpu-aware-local-ai-browser-mcp-phone-resident-android-deepseek-harness-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r100-lumabrowser-droy.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r283File),'utf8');
+      assert.ok(txt.includes('1,750.00')&&txt.includes('3,610.00')&&txt.includes('5,360.00')&&txt.includes('80.00')&&txt.includes('332.50')&&txt.includes('412.50')&&txt.includes('4,947.50')&&txt.includes('92.30%')&&txt.includes('not_measured'),r283File+': contains exact 11-14 R100 lumabrowser+droy closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
