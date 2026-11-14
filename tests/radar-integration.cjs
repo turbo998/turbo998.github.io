@@ -3402,6 +3402,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r253File),'utf8');
       assert.ok(txt.includes('1,680.00')&&txt.includes('3,420.00')&&txt.includes('5,100.00')&&txt.includes('95.00')&&txt.includes('332.50')&&txt.includes('427.50')&&txt.includes('4,672.50')&&txt.includes('91.62%')&&txt.includes('not_measured'),r253File+': contains exact 11-14 R70 h3-colab-skill+animated-sticker-studio closed-form parameters');
     }
+    // 2026-11-14 Night Round 71 (R254: Aeternitasoo/Aeternitas + TubeLabHQ/youtube-research-skills) verification
+    const r254PathA=1820.00+40.0*95.00;
+    assert.equal(r254PathA.toFixed(2),'5620.00','11-14 R71 Path A total');
+    const r254PathC=110.00+4.0*95.00;
+    assert.equal(r254PathC.toFixed(2),'490.00','11-14 R71 Path C total');
+    assert.equal((r254PathA-r254PathC).toFixed(2),'5130.00','11-14 R71 savings vs Path A');
+    assert.equal(((r254PathA-r254PathC)/r254PathA*100).toFixed(2),'91.28','11-14 R71 pct savings vs Path A');
+    for(const r254File of ['workshops/github-trending-radar/docs/aeternitas-youtube-research-skills-epistemic-supply-chain-harness-tubelab-mcp-video-intelligence-selection-faq.md','workshops/github-trending-radar/docs/aeternitas-youtube-research-skills-epistemic-supply-chain-harness-tubelab-mcp-video-intelligence-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r71-aeternitas-tubelabskills.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r254File),'utf8');
+      assert.ok(txt.includes('1,820.00')&&txt.includes('3,800.00')&&txt.includes('5,620.00')&&txt.includes('110.00')&&txt.includes('380.00')&&txt.includes('490.00')&&txt.includes('5,130.00')&&txt.includes('91.28%')&&txt.includes('not_measured'),r254File+': contains exact 11-14 R71 Aeternitas+youtube-research-skills closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
