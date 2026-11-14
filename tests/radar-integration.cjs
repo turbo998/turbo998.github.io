@@ -3776,6 +3776,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r287File),'utf8');
       assert.ok(txt.includes('1,720.00')&&txt.includes('3,515.00')&&txt.includes('5,235.00')&&txt.includes('80.00')&&txt.includes('332.50')&&txt.includes('412.50')&&txt.includes('4,822.50')&&txt.includes('92.12%')&&txt.includes('not_measured'),r287File+': contains exact 11-14 R104 moli-os+idx closed-form parameters');
     }
+    // 2026-11-14 Night Round 105 (R288: jangtrinh/design-os-studio + Noniv/web-ocean) verification
+    const r288PathA=1790.00+38.0*95.00;
+    assert.equal(r288PathA.toFixed(2),'5400.00','11-14 R105 Path A total');
+    const r288PathC=85.00+3.5*95.00;
+    assert.equal(r288PathC.toFixed(2),'417.50','11-14 R105 Path C total');
+    assert.equal((r288PathA-r288PathC).toFixed(2),'4982.50','11-14 R105 savings vs Path A');
+    assert.equal(((r288PathA-r288PathC)/r288PathA*100).toFixed(2),'92.27','11-14 R105 pct savings vs Path A');
+    for(const r288File of ['workshops/github-trending-radar/docs/design-os-studio-web-ocean-rust-wgpu-fig-mcp-61kb-webgpu-fft-cdlod-ocean-selection-faq.md','workshops/github-trending-radar/docs/design-os-studio-web-ocean-rust-wgpu-fig-mcp-61kb-webgpu-fft-cdlod-ocean-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r105-designos-webocean.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r288File),'utf8');
+      assert.ok(txt.includes('1,790.00')&&txt.includes('3,610.00')&&txt.includes('5,400.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('4,982.50')&&txt.includes('92.27%')&&txt.includes('not_measured'),r288File+': contains exact 11-14 R105 design-os-studio+web-ocean closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
