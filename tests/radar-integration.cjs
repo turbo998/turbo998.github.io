@@ -2673,6 +2673,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r188File),'utf8');
       assert.ok(txt.includes('2,180.00')&&txt.includes('3,780.00')&&txt.includes('5,960.00')&&txt.includes('145.00')&&txt.includes('367.50')&&txt.includes('512.50')&&txt.includes('5,447.50')&&txt.includes('91.40%')&&txt.includes('not_measured'),r188File+': contains exact 11-14 R5 smolmaxxing+blinkmimic closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 6 (R189: owoevan-dev/music-skill + klad-app/klad) verification
+    const r189PathA=1460.00+40.0*95.00;
+    assert.equal(r189PathA.toFixed(2),'5260.00','11-14 R6 Path A total');
+    const r189PathC=135.00+3.5*95.00;
+    assert.equal(r189PathC.toFixed(2),'467.50','11-14 R6 Path C total');
+    assert.equal((r189PathA-r189PathC).toFixed(2),'4792.50','11-14 R6 savings vs Path A');
+    assert.equal(((r189PathA-r189PathC)/r189PathA*100).toFixed(2),'91.11','11-14 R6 pct savings vs Path A');
+    for(const r189File of ['workshops/github-trending-radar/docs/music-skill-klad-symbolic-note-composer-skill-stroke-editable-agent-painting-studio-selection-faq.md','workshops/github-trending-radar/docs/music-skill-klad-symbolic-note-composer-skill-stroke-editable-agent-painting-studio-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r6-music-skill-klad.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r189File),'utf8');
+      assert.ok(txt.includes('1,460.00')&&txt.includes('3,800.00')&&txt.includes('5,260.00')&&txt.includes('135.00')&&txt.includes('332.50')&&txt.includes('467.50')&&txt.includes('4,792.50')&&txt.includes('91.11%')&&txt.includes('not_measured'),r189File+': contains exact 11-14 R6 music-skill+klad closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
