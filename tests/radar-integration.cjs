@@ -2871,6 +2871,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r206File),'utf8');
       assert.ok(txt.includes('1,790.00')&&txt.includes('3,800.00')&&txt.includes('5,590.00')&&txt.includes('140.00')&&txt.includes('350.00')&&txt.includes('490.00')&&txt.includes('5,100.00')&&txt.includes('91.23%')&&txt.includes('not_measured'),r206File+': contains exact 11-14 R23 grokbot-clone+ai-texture-forge closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 24 (R207: anefzaoui/misterdownloadmanager + paipiange/nvzhuang) verification
+    const r207PathA=1520.00+36.0*95.00;
+    assert.equal(r207PathA.toFixed(2),'4940.00','11-14 R24 Path A total');
+    const r207PathC=115.00+3.5*95.00;
+    assert.equal(r207PathC.toFixed(2),'447.50','11-14 R24 Path C total');
+    assert.equal((r207PathA-r207PathC).toFixed(2),'4492.50','11-14 R24 savings vs Path A');
+    assert.equal(((r207PathA-r207PathC)/r207PathA*100).toFixed(2),'90.94','11-14 R24 pct savings vs Path A');
+    for(const r207File of ['workshops/github-trending-radar/docs/misterdownloadmanager-nvzhuang-5x-faster-rust-download-manager-2727-ai-garment-tryon-corpus-selection-faq.md','workshops/github-trending-radar/docs/misterdownloadmanager-nvzhuang-5x-faster-rust-download-manager-2727-ai-garment-tryon-corpus-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r24-misterdownloadmanager-nvzhuang.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r207File),'utf8');
+      assert.ok(txt.includes('1,520.00')&&txt.includes('3,420.00')&&txt.includes('4,940.00')&&txt.includes('115.00')&&txt.includes('332.50')&&txt.includes('447.50')&&txt.includes('4,492.50')&&txt.includes('90.94%')&&txt.includes('not_measured'),r207File+': contains exact 11-14 R24 misterdownloadmanager+nvzhuang closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
