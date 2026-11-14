@@ -3270,6 +3270,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r241File),'utf8');
       assert.ok(txt.includes('1,540.00')&&txt.includes('3,420.00')&&txt.includes('4,960.00')&&txt.includes('80.00')&&txt.includes('332.50')&&txt.includes('412.50')&&txt.includes('4,547.50')&&txt.includes('91.68%')&&txt.includes('not_measured'),r241File+': contains exact 11-14 R58 waymark+recalc closed-form parameters');
     }
+    // 2026-11-14 Night Round 59 (R242: beipo-ai/NorthCUA + Kemerd/claude-hardware-in-the-loop) verification
+    const r242PathA=2240.00+38.0*105.00;
+    assert.equal(r242PathA.toFixed(2),'6230.00','11-14 R59 Path A total');
+    const r242PathC=165.00+3.5*105.00;
+    assert.equal(r242PathC.toFixed(2),'532.50','11-14 R59 Path C total');
+    assert.equal((r242PathA-r242PathC).toFixed(2),'5697.50','11-14 R59 savings vs Path A');
+    assert.equal(((r242PathA-r242PathC)/r242PathA*100).toFixed(2),'91.45','11-14 R59 pct savings vs Path A');
+    for(const r242File of ['workshops/github-trending-radar/docs/northcua-claude-hardware-in-the-loop-sota-desktop-web-cua-harness-12step-kicad-cadquery-hil-selection-faq.md','workshops/github-trending-radar/docs/northcua-claude-hardware-in-the-loop-sota-desktop-web-cua-harness-12step-kicad-cadquery-hil-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r59-northcua-claudehil.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r242File),'utf8');
+      assert.ok(txt.includes('2,240.00')&&txt.includes('3,990.00')&&txt.includes('6,230.00')&&txt.includes('165.00')&&txt.includes('367.50')&&txt.includes('532.50')&&txt.includes('5,697.50')&&txt.includes('91.45%')&&txt.includes('not_measured'),r242File+': contains exact 11-14 R59 NorthCUA+claude-hardware-in-the-loop closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
