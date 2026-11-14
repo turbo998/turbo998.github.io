@@ -3919,6 +3919,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r300File),'utf8');
       assert.ok(txt.includes('1,850.00')&&txt.includes('3,705.00')&&txt.includes('5,555.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('5,137.50')&&txt.includes('92.48%')&&txt.includes('not_measured'),r300File+': contains exact 11-14 R117 artex-global+claude-guardian closed-form parameters');
     }
+    // 2026-11-14 Night Round 118 (R301: DenisSergeevitch/ex-ussr-kinship-research + morluto/awesome-reverse-engineering) verification
+    const r301PathA=1760.00+37.5*95.00;
+    assert.equal(r301PathA.toFixed(2),'5322.50','11-14 R118 Path A total');
+    const r301PathC=80.00+3.5*95.00;
+    assert.equal(r301PathC.toFixed(2),'412.50','11-14 R118 Path C total');
+    assert.equal((r301PathA-r301PathC).toFixed(2),'4910.00','11-14 R118 savings vs Path A');
+    assert.equal(((r301PathA-r301PathC)/r301PathA*100).toFixed(2),'92.25','11-14 R118 pct savings vs Path A');
+    for(const r301File of ['workshops/github-trending-radar/docs/ex-ussr-kinship-research-awesome-reverse-engineering-evidence-csv-registers-task-routed-re-matrix-selection-faq.md','workshops/github-trending-radar/docs/ex-ussr-kinship-research-awesome-reverse-engineering-evidence-csv-registers-task-routed-re-matrix-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r118-kinshipresearch-awesomere.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r301File),'utf8');
+      assert.ok(txt.includes('1,760.00')&&txt.includes('3,562.50')&&txt.includes('5,322.50')&&txt.includes('80.00')&&txt.includes('332.50')&&txt.includes('412.50')&&txt.includes('4,910.00')&&txt.includes('92.25%')&&txt.includes('not_measured'),r301File+': contains exact 11-14 R118 kinship-research+awesome-re closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
