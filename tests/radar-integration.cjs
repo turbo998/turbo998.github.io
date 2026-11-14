@@ -2695,6 +2695,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r190File),'utf8');
       assert.ok(txt.includes('1,750.00')&&txt.includes('3,800.00')&&txt.includes('5,550.00')&&txt.includes('140.00')&&txt.includes('350.00')&&txt.includes('490.00')&&txt.includes('5,060.00')&&txt.includes('91.17%')&&txt.includes('not_measured'),r190File+': contains exact 11-14 R7 escapement+AntiWebUI closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 8 (R191: supercli-site/awesome-coding-plan + lijiaqi-AI-Product-Manager/dsh-agent-compare) verification
+    const r191PathA=2450.00+36.0*95.00;
+    assert.equal(r191PathA.toFixed(2),'5870.00','11-14 R8 Path A total');
+    const r191PathC=185.00+3.5*95.00;
+    assert.equal(r191PathC.toFixed(2),'517.50','11-14 R8 Path C total');
+    assert.equal((r191PathA-r191PathC).toFixed(2),'5352.50','11-14 R8 savings vs Path A');
+    assert.equal(((r191PathA-r191PathC)/r191PathA*100).toFixed(2),'91.18','11-14 R8 pct savings vs Path A');
+    for(const r191File of ['workshops/github-trending-radar/docs/awesome-coding-plan-dsh-agent-compare-ai-coding-subscription-finops-2to4-agent-real-run-arena-selection-faq.md','workshops/github-trending-radar/docs/awesome-coding-plan-dsh-agent-compare-ai-coding-subscription-finops-2to4-agent-real-run-arena-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r8-coding-plan-agent-compare.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r191File),'utf8');
+      assert.ok(txt.includes('2,450.00')&&txt.includes('3,420.00')&&txt.includes('5,870.00')&&txt.includes('185.00')&&txt.includes('332.50')&&txt.includes('517.50')&&txt.includes('5,352.50')&&txt.includes('91.18%')&&txt.includes('not_measured'),r191File+': contains exact 11-14 R8 awesome-coding-plan+dsh-agent-compare closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
