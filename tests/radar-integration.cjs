@@ -3567,6 +3567,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r268File),'utf8');
       assert.ok(txt.includes('1,880.00')&&txt.includes('3,705.00')&&txt.includes('5,585.00')&&txt.includes('95.00')&&txt.includes('332.50')&&txt.includes('427.50')&&txt.includes('5,157.50')&&txt.includes('92.35%')&&txt.includes('not_measured'),r268File+': contains exact 11-14 R85 ARSI-Evaluator+DRAMA-Eval closed-form parameters');
     }
+    // 2026-11-14 Night Round 86 (R269: tencentmusic/modus + knowflow-ai/KnowWork) verification
+    const r269PathA=1810.00+39.0*95.00;
+    assert.equal(r269PathA.toFixed(2),'5515.00','11-14 R86 Path A total');
+    const r269PathC=95.00+3.5*95.00;
+    assert.equal(r269PathC.toFixed(2),'427.50','11-14 R86 Path C total');
+    assert.equal((r269PathA-r269PathC).toFixed(2),'5087.50','11-14 R86 savings vs Path A');
+    assert.equal(((r269PathA-r269PathC)/r269PathA*100).toFixed(2),'92.25','11-14 R86 pct savings vs Path A');
+    for(const r269File of ['workshops/github-trending-radar/docs/modus-knowwork-polyglot-compiler-semantic-harness-enterprise-deepseek-harness-rbac-platform-selection-faq.md','workshops/github-trending-radar/docs/modus-knowwork-polyglot-compiler-semantic-harness-enterprise-deepseek-harness-rbac-platform-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r86-modus-knowwork.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r269File),'utf8');
+      assert.ok(txt.includes('1,810.00')&&txt.includes('3,705.00')&&txt.includes('5,515.00')&&txt.includes('95.00')&&txt.includes('332.50')&&txt.includes('427.50')&&txt.includes('5,087.50')&&txt.includes('92.25%')&&txt.includes('not_measured'),r269File+': contains exact 11-14 R86 modus+KnowWork closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
