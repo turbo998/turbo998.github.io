@@ -2849,6 +2849,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r204File),'utf8');
       assert.ok(txt.includes('1,820.00')&&txt.includes('3,800.00')&&txt.includes('5,620.00')&&txt.includes('135.00')&&txt.includes('350.00')&&txt.includes('485.00')&&txt.includes('5,135.00')&&txt.includes('91.37%')&&txt.includes('not_measured'),r204File+': contains exact 11-14 R21 serveros-panel+islandcn closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 22 (R205: egoist/tinytraffic + Ciao1019/ArcMD) verification
+    const r205PathA=1420.00+36.0*95.00;
+    assert.equal(r205PathA.toFixed(2),'4840.00','11-14 R22 Path A total');
+    const r205PathC=90.00+3.5*95.00;
+    assert.equal(r205PathC.toFixed(2),'422.50','11-14 R22 Path C total');
+    assert.equal((r205PathA-r205PathC).toFixed(2),'4417.50','11-14 R22 savings vs Path A');
+    assert.equal(((r205PathA-r205PathC)/r205PathA*100).toFixed(2),'91.27','11-14 R22 pct savings vs Path A');
+    for(const r205File of ['workshops/github-trending-radar/docs/tinytraffic-arcmd-single-binary-duckdb-web-analytics-pure-go-mygo-native-gpu-markdown-editor-selection-faq.md','workshops/github-trending-radar/docs/tinytraffic-arcmd-single-binary-duckdb-web-analytics-pure-go-mygo-native-gpu-markdown-editor-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r22-tinytraffic-arcmd.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r205File),'utf8');
+      assert.ok(txt.includes('1,420.00')&&txt.includes('3,420.00')&&txt.includes('4,840.00')&&txt.includes('90.00')&&txt.includes('332.50')&&txt.includes('422.50')&&txt.includes('4,417.50')&&txt.includes('91.27%')&&txt.includes('not_measured'),r205File+': contains exact 11-14 R22 tinytraffic+arcmd closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
