@@ -3080,6 +3080,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r225File),'utf8');
       assert.ok(txt.includes('1,520.00')&&txt.includes('3,420.00')&&txt.includes('4,940.00')&&txt.includes('95.00')&&txt.includes('332.50')&&txt.includes('427.50')&&txt.includes('4,512.50')&&txt.includes('91.35%')&&txt.includes('not_measured'),r225File+': contains exact 11-14 R42 studsmith+rustudio closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 43 (R226: Avalanchevonproxy69/fanatic-laptop-control + GitMag/AnyAuto) verification
+    const r226PathA=1450.00+36.0*95.00;
+    assert.equal(r226PathA.toFixed(2),'4870.00','11-14 R43 Path A total');
+    const r226PathC=75.00+3.5*95.00;
+    assert.equal(r226PathC.toFixed(2),'407.50','11-14 R43 Path C total');
+    assert.equal((r226PathA-r226PathC).toFixed(2),'4462.50','11-14 R43 savings vs Path A');
+    assert.equal(((r226PathA-r226PathC)/r226PathA*100).toFixed(2),'91.63','11-14 R43 pct savings vs Path A');
+    for(const r226File of ['workshops/github-trending-radar/docs/fanatic-laptop-control-anyauto-5mb-8oem-ec-wmi-controller-shizuku-android-auto-virtualdisplay-selection-faq.md','workshops/github-trending-radar/docs/fanatic-laptop-control-anyauto-5mb-8oem-ec-wmi-controller-shizuku-android-auto-virtualdisplay-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r43-fanatic-anyauto.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r226File),'utf8');
+      assert.ok(txt.includes('1,450.00')&&txt.includes('3,420.00')&&txt.includes('4,870.00')&&txt.includes('75.00')&&txt.includes('332.50')&&txt.includes('407.50')&&txt.includes('4,462.50')&&txt.includes('91.63%')&&txt.includes('not_measured'),r226File+': contains exact 11-14 R43 fanatic-laptop-control+AnyAuto closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
