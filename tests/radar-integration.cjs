@@ -3036,6 +3036,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r221File),'utf8');
       assert.ok(txt.includes('1,490.00')&&txt.includes('3,420.00')&&txt.includes('4,910.00')&&txt.includes('80.00')&&txt.includes('332.50')&&txt.includes('412.50')&&txt.includes('4,497.50')&&txt.includes('91.60%')&&txt.includes('not_measured'),r221File+': contains exact 11-14 R38 paradero+luci-theme-carbon closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 39 (R222: oil-oil/agy-fast-io + NorthGateChat/dsh-think-game) verification
+    const r222PathA=1740.00+38.0*100.00;
+    assert.equal(r222PathA.toFixed(2),'5540.00','11-14 R39 Path A total');
+    const r222PathC=130.00+3.5*100.00;
+    assert.equal(r222PathC.toFixed(2),'480.00','11-14 R39 Path C total');
+    assert.equal((r222PathA-r222PathC).toFixed(2),'5060.00','11-14 R39 savings vs Path A');
+    assert.equal(((r222PathA-r222PathC)/r222PathA*100).toFixed(2),'91.34','11-14 R39 pct savings vs Path A');
+    for(const r222File of ['workshops/github-trending-radar/docs/agy-fast-io-dsh-think-game-50pct-fewer-agent-turns-allowlist-io-rules-inline-reasoning-arcade-selection-faq.md','workshops/github-trending-radar/docs/agy-fast-io-dsh-think-game-50pct-fewer-agent-turns-allowlist-io-rules-inline-reasoning-arcade-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r39-agy-fast-io-dsh-think-game.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r222File),'utf8');
+      assert.ok(txt.includes('1,740.00')&&txt.includes('3,800.00')&&txt.includes('5,540.00')&&txt.includes('130.00')&&txt.includes('350.00')&&txt.includes('480.00')&&txt.includes('5,060.00')&&txt.includes('91.34%')&&txt.includes('not_measured'),r222File+': contains exact 11-14 R39 agy-fast-io+dsh-think-game closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
