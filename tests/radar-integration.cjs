@@ -2750,6 +2750,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r195File),'utf8');
       assert.ok(txt.includes('1,620.00')&&txt.includes('3,420.00')&&txt.includes('5,040.00')&&txt.includes('95.00')&&txt.includes('332.50')&&txt.includes('427.50')&&txt.includes('4,612.50')&&txt.includes('91.52%')&&txt.includes('not_measured'),r195File+': contains exact 11-14 R12 ray-sticker-shop+mousepods closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 13 (R196: dhruvthakur11/youtube-ai-video-editing-system + dotslashsimran/simcraft) verification
+    const r196PathA=1680.00+38.0*100.00;
+    assert.equal(r196PathA.toFixed(2),'5480.00','11-14 R13 Path A total');
+    const r196PathC=135.00+3.5*100.00;
+    assert.equal(r196PathC.toFixed(2),'485.00','11-14 R13 Path C total');
+    assert.equal((r196PathA-r196PathC).toFixed(2),'4995.00','11-14 R13 savings vs Path A');
+    assert.equal(((r196PathA-r196PathC)/r196PathA*100).toFixed(2),'91.15','11-14 R13 pct savings vs Path A');
+    for(const r196File of ['workshops/github-trending-radar/docs/youtube-ai-video-editing-system-simcraft-5stage-eyeline-json-video-pipeline-24-claude-skills-selection-faq.md','workshops/github-trending-radar/docs/youtube-ai-video-editing-system-simcraft-5stage-eyeline-json-video-pipeline-24-claude-skills-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r13-youtube-video-simcraft.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r196File),'utf8');
+      assert.ok(txt.includes('1,680.00')&&txt.includes('3,800.00')&&txt.includes('5,480.00')&&txt.includes('135.00')&&txt.includes('350.00')&&txt.includes('485.00')&&txt.includes('4,995.00')&&txt.includes('91.15%')&&txt.includes('not_measured'),r196File+': contains exact 11-14 R13 youtube-ai-video+simcraft closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
