@@ -2783,6 +2783,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r198File),'utf8');
       assert.ok(txt.includes('1,480.00')&&txt.includes('3,420.00')&&txt.includes('4,900.00')&&txt.includes('105.00')&&txt.includes('332.50')&&txt.includes('437.50')&&txt.includes('4,462.50')&&txt.includes('91.07%')&&txt.includes('not_measured'),r198File+': contains exact 11-14 R15 Atlas+interactive-ai-ml-tools closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 16 (R199: anomalyco/textjs + smokeeaasd/flawless-ui-ux) verification
+    const r199PathA=1560.00+36.0*95.00;
+    assert.equal(r199PathA.toFixed(2),'4980.00','11-14 R16 Path A total');
+    const r199PathC=110.00+3.5*95.00;
+    assert.equal(r199PathC.toFixed(2),'442.50','11-14 R16 Path C total');
+    assert.equal((r199PathA-r199PathC).toFixed(2),'4537.50','11-14 R16 savings vs Path A');
+    assert.equal(((r199PathA-r199PathC)/r199PathA*100).toFixed(2),'91.11','11-14 R16 pct savings vs Path A');
+    for(const r199File of ['workshops/github-trending-radar/docs/textjs-flawless-ui-ux-browser-console-react-framework-12agent-ui-ux-inspection-cli-selection-faq.md','workshops/github-trending-radar/docs/textjs-flawless-ui-ux-browser-console-react-framework-12agent-ui-ux-inspection-cli-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r16-textjs-flawless-ui-ux.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r199File),'utf8');
+      assert.ok(txt.includes('1,560.00')&&txt.includes('3,420.00')&&txt.includes('4,980.00')&&txt.includes('110.00')&&txt.includes('332.50')&&txt.includes('442.50')&&txt.includes('4,537.50')&&txt.includes('91.11%')&&txt.includes('not_measured'),r199File+': contains exact 11-14 R16 Text.js+flawless-ui-ux closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
