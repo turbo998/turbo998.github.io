@@ -73,8 +73,8 @@ const UI_TEXT = {
     resPill: "OPEN SOURCE & REPORTS · 配套仓库与深入阅读",
     resTitle: "五、配套开源仓库与可视化评测报告汇总",
     resDesc: "所有代码、架构图、7-Card 评测报告均已开源并提供中英对照文档，方便按需深入学习或二次开发：",
-    simTitle: "🧪 2026-11-14 单专题架构选型 FAQ 离线策略状态机沙盒：级联 vs S2S 合规锁 (P715/P716) · WebRTC vs WS vs SIP 8kHz 带限重采样 (P717/P718) · 只读投机语音 RAG [专题3A: P719] · 异步工具纪元写栅栏 [专题3B: P720] · 免提非线性回声与主叫声纹锁 [专题4: P721/P722] · 热转接 CTI 签名屏弹与单向耳语隔离 [专题5: P723/P724] · PCI 按键采集旁路缩减暴露 [专题6A: P725] · SIPREC 录音双流消音与 Fail-Closed 隔离 [专题6B: P726] · 智能外呼并行 AMD 与 TCPA 安全港门禁 [专题7: P727/P728] · 字母数字混排实体消歧与 SSML 分块复诵 [专题8: P729/P730] · 通话中灾备切换与会话状态无损热恢复 [专题9: P731/P732] · 多人同场流式说话人分离与角色权限锁 [专题10: P733/P734] · 句内中英粤混说与同音色跨语种合成 [专题11: P735/P736] · 端云混合量化容器断网逃生与原声零出境 [专题12: P737/P738] · 抗深伪相位活体检测与多因子零摩擦核身 [专题13: P739/P740] · 长通话4轮音频滑窗钉扎与PTU/PAYGO弹性FinOps [专题14: P741/P742] · 多模态数字人唇音同步与同屏协办防注入 [专题15: P743/P744] · 情感韵律降速安抚与EU合规及哭泣长静音门禁 [专题16: P745/P746] · 话后口头承诺对账与100分确定性全量质检 [专题17: P747/P748] · 多Agent前台唯一主播防环路与子Agent零写权限污点隔离 [专题18: P749/P750] · 85dB强噪远场MVDR波束锥与工业LOTO挑战码互锁 [专题19: P751/P752] · 金丝雀影子流量回滚与跨通话记忆防投毒 [专题20: P753/P754] · 无障碍言语自适应与E911 PIDF-LO零鉴权抢占 [专题21: P755/P756] · 实时同传极性剂量锁与多租户热词WFST隔离 [专题22: P757/P758] · 全渠道语音+App CAS乐观锁防重扣与抗超声波/算力钱包熔断 [专题23: P759/P760] · SIP 183防抢跑摘机防吞字与TTS币种多音字消歧 [专题24: P761/P762] · 蓝牙HFP切换防爆音与Opus DTX防死锁预卷 [专题25: P763/P764] · 抗量子ML-KEM-768双录封存与声纹单用户DEK加密粉碎 [专题26: P765/P766] · 实时MOS-LQO弱网声信双通道降级与跨洲SIP/RTP边缘锚定 [专题27: P767/P768] · PSTN TrFO免转码清擦音保真与RTP晶振频偏ASRC重同步 [专题28: P769/P770] · STIR/SHAKEN来电A级验签防SSRF与带内按键Goertzel陷波去重 [专题29: P771/P772] · SIP半开RTP僵尸通话回收与WebRTC ICE同意保活TURN端口清剿 [专题30: P773/P774] · 原生S2S抗情绪传染LUFS响度锁与句法未完结防抢话及C2PA双水印 [专题31: P775/P776] · WebRTC TWCC保音弃画与突发丢包防PLC脑补幻觉 [专题32: P777/P778] · WebRTC DataChannel背压卸载与mDNS/TURN防SSRF [专题33: P779/P780] · SIP SDP动态PT对称同频与Re-INVITE防转码DoS [专题34: P781/P782] · 边缘HSM FF1保格式令牌与对称RTP防劫持锁栓 [专题35: P783/P784] · WebRTC FlexFEC/LBRR防拥塞螺旋与RED防套娃炸弹 [专题36: P785/P786] · SIP REFER防国际盗打与DNS SRV <=150ms容灾切换 [专题37: P787/P788] · SIP环路/螺旋防线与ICE-Lite 487仲裁及DTLS快重传 [专题38: P789/P790] · VoLTE PRACK/QCI-1防幽灵振铃与RFC 6141拒单原子回滚 [专题39: P791/P792] · WebRTC Cryptex扩展头全加密与RTP SSRC冲突自愈 [专题40: P793/P794] · SIP SHA-256防重放与RFC 5626流令牌防SSRF [专题41: P795/P796] · WebRTC RTCP CCFB防伪造ECN与RR防RTT下溢 [专题42: P797/P798] · WebRTC DTLS-SRTP首字节分拣Cookie防DoS与SDP setup防死锁 [专题43: P799/P800 🎉] · WebRTC AVPF NACK/PLI防风暴与RTX OSN独立流隔离 [专题44: P801/P802]     · SIP RFC 6026 2xx半开回收与防伪造BYE拆线 [专题45: P803/P804]     · WebRTC JSEP SDP碰撞回滚m=保序与DTLS SHA-256指纹锁 [专题46: P805/P806]     · SIP RFC 3840 automata互聊熔断与PAI/Privacy:id边界锁 [专题47: P807/P808 🎉]     · WebRTC Simulcast a=rid防劫持与RTCP TMMBR语音保底锁 [专题48: P809/P810 🎉] · SIP RFC 4235 BLF呼叫标签脱敏防抢话与NOTIFY限流锁 [专题49: P811/P812 🎉] · WebRTC DCEP防伪造与PPID/奇偶流防碰撞锁 [专题50 🎉: P813/P814]     · SIP RFC 3326 Q.850防伪与Sec-Agree/420熔断锁 [专题51: P815/P816]     · WebRTC RFC 8285 extmap防重映射与Padding防下溢锁 [专题52: P817/P818]         · SIP/SDP RFC 4568 SDES防泄密与c=/fmtp防溢出锁 [专题53: P819/P820] · WebRTC复合RTCP首包/CNAME与防伪造BYE拆流锁 [专题54 🎉: P821/P822]     · SIP单例头防走私Via防放大与rport针孔锁 [专题55 🎉: P823/P824]     · WebRTC ICE ufrag/pwd熵下限与Candidate防SSRF锁 [专题56 · SVG 60 🎉: P825/P826]     · SIP早期UPDATE防劫持与CSeq防跃迁锁死 [专题57 🎉: P827/P828] · WebRTC SRTP AES-GCM防Nonce重用与SRTCP加密锁 [专题58 · P830 🎉: P829/P830] · SIP预加载Route防开放中继与SIPS防降级锁 [专题59 · 850探针 🎉: P831/P832] · WebRTC SCTP vtag/RE-CONFIG排空锁与Gap-Ack防死锁 [专题60 🎉: P833/P834]     · SIP同振Max-Breadth/双200OK收割与Join防窃听锁 [专题61: P835/P836] · WebRTC多方混音CSRC/Mix-Minus与音量防抢麦锁 [专题62: P837/P838]     · SIP复合包影子SDP防走私与ISUP/QSIG剥离锁 [专题63 · P840 🎉: P839/P840]     · WebRTC-Opus防帧炸弹与立体声下混防溢出锁 [专题64 · 860探针 🎉: P841/P842]     · SDP-o=版本防倒退与悬空BUNDLE/maxptime锁 [专题65 🎉 · Stage 425 🎉: P843/P844]     · WebRTC-ICE-TCP分帧对齐与提名防抖/XOR环回剥离锁 [专题66 · SVG 70 🎉: P845/P846]     · RFC4733按键StartTs去重与双轨防走私/陷波锁 [专题67 · 430维 🎉: P847/P848]     · WebRTC-TWCC防跨度炸弹越界与未发序号/REMB语音保底锁 [专题68 · P850 🎉: P849/P850]     · SIP-RFC4028定时器防降级与半开RTP僵尸收割锁 [专题69 · 870探针 🎉: P851/P852]     · WebRTC-RED防套娃与ULPFEC/CN防爆震锁 [专题70 🎉 · Stage 430 🎉: P853/P854]     · SIPREC双录防XXE/a=label锁与SRS断流Fail-Closed锁 [专题71 · SVG 75 🎉: P855/P856]     · WebRTC-TURN防内网IMDS反射与ChannelData分帧锁 [专题72 · 435维 🎉: P857/P858] · SIP-STIR-SHAKEN防x5u-SSRF/iat重放与B/C级阶梯鉴权锁 [专题73 · P860 & 75篇FAQ 🎉: P859/P860 🎉] (Stage 433 · P705–P860 🎉 · 436维)",
-                              simSub: "点击下方合成压测探针（Synthetic Policy Probes），验证离线内存策略/配置状态机（计时口径：0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established；真实生产网络/向量库/Saga/DSP/SIP/PCI 金库/WORM/外呼信令/ASR 解码/TTS 渲染/跨区容灾切换/流式 EEND 分离/多语种束搜索/边缘 NPU 量化/AASIST 反深伪/KV-Cache/WebGL 渲染/声学 F0 提取/CRM 对账查询/子 Agent RPC/阵列 MVDR/PLC 总线/影子流复制/ESInet 专线/神经机器同传/WFST 束搜索/跨端事件总线/SBC 媒体锁栓/蓝牙 SCO 重协商/HSM 密钥销毁/跨洋海缆 RTT/多相 ASRC 滤波/STI-CA 证书验签/STUN 探活/BS.1770 响度积分/RTCP NACK 重传/SCTP 重传与 TURN 分配/DSP 转码重初始化/HSM FF1 加密/FlexFEC 异或恢复/DNS SRV 切换/Via 哈希与 DTLS 握手/VoLTE QCI-1 专载/Cryptex AEAD/Redis nc 位图/CCFB 滤波/DTLS MKI 换钥/RTX 环缓拆包/SIP 对话表查找/RTCPeerConnection 状态转换/SBC Spec(T) ACL 查找/SFU RID 路由表查找/PBX BLF XML 序列化/SCTP DCEP 解析/SBC Reason 清洗/SFU RTP 扩展头解包/SDP fmtp 词法分析/SRTCP BYE 校验/SBC SIP 头解析/SFU ICE 候选解析/SBC CSeq 校验/SRTP AEAD 加解密/SBC Route HMAC 验签/DTLS-SCTP 块解析/SBC 同振分叉表查找/RTP 混音矩阵计算/SBC MIME 边界扫描/libopus SIMD 解码/SDP AST 词法分析/内核 TCP 流重组/DSP 双音陷波滤波/GoogCC 卡尔曼滤波/SBC 定时器轮询/SIMD 异或恢复/XML SAX 解析/coturn CIDR 前缀树查找/ES256 ECDSA 验签耗时未在此本地沙盒实测 not_measured）对 P715–P860 核心语音架构护栏的规则判定：",
+    simTitle: "🧪 2026-11-14 单专题架构选型 FAQ 离线策略状态机沙盒：级联 vs S2S 合规锁 (P715/P716) · WebRTC vs WS vs SIP 8kHz 带限重采样 (P717/P718) · 只读投机语音 RAG [专题3A: P719] · 异步工具纪元写栅栏 [专题3B: P720] · 免提非线性回声与主叫声纹锁 [专题4: P721/P722] · 热转接 CTI 签名屏弹与单向耳语隔离 [专题5: P723/P724] · PCI 按键采集旁路缩减暴露 [专题6A: P725] · SIPREC 录音双流消音与 Fail-Closed 隔离 [专题6B: P726] · 智能外呼并行 AMD 与 TCPA 安全港门禁 [专题7: P727/P728] · 字母数字混排实体消歧与 SSML 分块复诵 [专题8: P729/P730] · 通话中灾备切换与会话状态无损热恢复 [专题9: P731/P732] · 多人同场流式说话人分离与角色权限锁 [专题10: P733/P734] · 句内中英粤混说与同音色跨语种合成 [专题11: P735/P736] · 端云混合量化容器断网逃生与原声零出境 [专题12: P737/P738] · 抗深伪相位活体检测与多因子零摩擦核身 [专题13: P739/P740] · 长通话4轮音频滑窗钉扎与PTU/PAYGO弹性FinOps [专题14: P741/P742] · 多模态数字人唇音同步与同屏协办防注入 [专题15: P743/P744] · 情感韵律降速安抚与EU合规及哭泣长静音门禁 [专题16: P745/P746] · 话后口头承诺对账与100分确定性全量质检 [专题17: P747/P748] · 多Agent前台唯一主播防环路与子Agent零写权限污点隔离 [专题18: P749/P750] · 85dB强噪远场MVDR波束锥与工业LOTO挑战码互锁 [专题19: P751/P752] · 金丝雀影子流量回滚与跨通话记忆防投毒 [专题20: P753/P754] · 无障碍言语自适应与E911 PIDF-LO零鉴权抢占 [专题21: P755/P756] · 实时同传极性剂量锁与多租户热词WFST隔离 [专题22: P757/P758] · 全渠道语音+App CAS乐观锁防重扣与抗超声波/算力钱包熔断 [专题23: P759/P760] · SIP 183防抢跑摘机防吞字与TTS币种多音字消歧 [专题24: P761/P762] · 蓝牙HFP切换防爆音与Opus DTX防死锁预卷 [专题25: P763/P764] · 抗量子ML-KEM-768双录封存与声纹单用户DEK加密粉碎 [专题26: P765/P766] · 实时MOS-LQO弱网声信双通道降级与跨洲SIP/RTP边缘锚定 [专题27: P767/P768] · PSTN TrFO免转码清擦音保真与RTP晶振频偏ASRC重同步 [专题28: P769/P770] · STIR/SHAKEN来电A级验签防SSRF与带内按键Goertzel陷波去重 [专题29: P771/P772] · SIP半开RTP僵尸通话回收与WebRTC ICE同意保活TURN端口清剿 [专题30: P773/P774] · 原生S2S抗情绪传染LUFS响度锁与句法未完结防抢话及C2PA双水印 [专题31: P775/P776] · WebRTC TWCC保音弃画与突发丢包防PLC脑补幻觉 [专题32: P777/P778] · WebRTC DataChannel背压卸载与mDNS/TURN防SSRF [专题33: P779/P780] · SIP SDP动态PT对称同频与Re-INVITE防转码DoS [专题34: P781/P782] · 边缘HSM FF1保格式令牌与对称RTP防劫持锁栓 [专题35: P783/P784] · WebRTC FlexFEC/LBRR防拥塞螺旋与RED防套娃炸弹 [专题36: P785/P786] · SIP REFER防国际盗打与DNS SRV <=150ms容灾切换 [专题37: P787/P788] · SIP环路/螺旋防线与ICE-Lite 487仲裁及DTLS快重传 [专题38: P789/P790] · VoLTE PRACK/QCI-1防幽灵振铃与RFC 6141拒单原子回滚 [专题39: P791/P792] · WebRTC Cryptex扩展头全加密与RTP SSRC冲突自愈 [专题40: P793/P794] · SIP SHA-256防重放与RFC 5626流令牌防SSRF [专题41: P795/P796] · WebRTC RTCP CCFB防伪造ECN与RR防RTT下溢 [专题42: P797/P798] · WebRTC DTLS-SRTP首字节分拣Cookie防DoS与SDP setup防死锁 [专题43: P799/P800 🎉] · WebRTC AVPF NACK/PLI防风暴与RTX OSN独立流隔离 [专题44: P801/P802]     · SIP RFC 6026 2xx半开回收与防伪造BYE拆线 [专题45: P803/P804]     · WebRTC JSEP SDP碰撞回滚m=保序与DTLS SHA-256指纹锁 [专题46: P805/P806]     · SIP RFC 3840 automata互聊熔断与PAI/Privacy:id边界锁 [专题47: P807/P808 🎉]     · WebRTC Simulcast a=rid防劫持与RTCP TMMBR语音保底锁 [专题48: P809/P810 🎉] · SIP RFC 4235 BLF呼叫标签脱敏防抢话与NOTIFY限流锁 [专题49: P811/P812 🎉] · WebRTC DCEP防伪造与PPID/奇偶流防碰撞锁 [专题50 🎉: P813/P814]     · SIP RFC 3326 Q.850防伪与Sec-Agree/420熔断锁 [专题51: P815/P816]     · WebRTC RFC 8285 extmap防重映射与Padding防下溢锁 [专题52: P817/P818]         · SIP/SDP RFC 4568 SDES防泄密与c=/fmtp防溢出锁 [专题53: P819/P820] · WebRTC复合RTCP首包/CNAME与防伪造BYE拆流锁 [专题54 🎉: P821/P822]     · SIP单例头防走私Via防放大与rport针孔锁 [专题55 🎉: P823/P824]     · WebRTC ICE ufrag/pwd熵下限与Candidate防SSRF锁 [专题56 · SVG 60 🎉: P825/P826]     · SIP早期UPDATE防劫持与CSeq防跃迁锁死 [专题57 🎉: P827/P828] · WebRTC SRTP AES-GCM防Nonce重用与SRTCP加密锁 [专题58 · P830 🎉: P829/P830] · SIP预加载Route防开放中继与SIPS防降级锁 [专题59 · 850探针 🎉: P831/P832] · WebRTC SCTP vtag/RE-CONFIG排空锁与Gap-Ack防死锁 [专题60 🎉: P833/P834]     · SIP同振Max-Breadth/双200OK收割与Join防窃听锁 [专题61: P835/P836] · WebRTC多方混音CSRC/Mix-Minus与音量防抢麦锁 [专题62: P837/P838]     · SIP复合包影子SDP防走私与ISUP/QSIG剥离锁 [专题63 · P840 🎉: P839/P840]     · WebRTC-Opus防帧炸弹与立体声下混防溢出锁 [专题64 · 860探针 🎉: P841/P842]     · SDP-o=版本防倒退与悬空BUNDLE/maxptime锁 [专题65 🎉 · Stage 425 🎉: P843/P844]     · WebRTC-ICE-TCP分帧对齐与提名防抖/XOR环回剥离锁 [专题66 · SVG 70 🎉: P845/P846]     · RFC4733按键StartTs去重与双轨防走私/陷波锁 [专题67 · 430维 🎉: P847/P848]     · WebRTC-TWCC防跨度炸弹越界与未发序号/REMB语音保底锁 [专题68 · P850 🎉: P849/P850]     · SIP-RFC4028定时器防降级与半开RTP僵尸收割锁 [专题69 · 870探针 🎉: P851/P852]     · WebRTC-RED防套娃与ULPFEC/CN防爆震锁 [专题70 🎉 · Stage 430 🎉: P853/P854]     · SIPREC双录防XXE/a=label锁与SRS断流Fail-Closed锁 [专题71 · SVG 75 🎉: P855/P856]     · WebRTC-TURN防内网IMDS反射与ChannelData分帧锁 [专题72 · 435维 🎉: P857/P858] · SIP-STIR-SHAKEN防x5u-SSRF/iat重放与B/C级阶梯鉴权锁 [专题73 · P860 & 75篇FAQ 🎉: P859/P860 🎉] · DTLS-SRTP-CID漫游防劫持与MKI双钥轮换锁 [专题74 · 880探针 🎉: P861/P862] · SIP-DNS-NAPTR/SRV防降级与32s黑洞秒级熔断锁 [专题75 🎉: P863/P864] · WebRTC-CCFB字节闭合与DTX语音保底锁 [专题76 · SVG 80 & 875护栏 🎉: P865/P866] · SIP-PAI信任域清洗与History-Info防环锁 [专题77 · 440维 🎉: P867/P868] · WebRTC-SFrame/MLS端到端棘轮与SFU零明文锁 [专题78 · P870 & 80篇FAQ 🎉: P869/P870 🎉] · SIP-Join防窃听与Replaces防抢接锁 [专题79 · 890探针 & 700现场探针 🎉: P871/P872] · WebRTC-RFC8083断路器与10x-TFRC保音熔断锁 [专题80 🎉 · Stage 440 🎉: P873/P874] · SIP-RFC6141原子回滚与491错峰退避锁 [专题81 · SVG 85 & 885护栏 🎉: P875/P876] · WebRTC-DSCP-BUNDLE保序与EF(46)钉扎锁 [专题82 · 445维 🎉: P877/P878] · SIP/IMS-Precondition防幽灵振铃与QCI1超时锁 [专题83 · P880 & 85篇FAQ 🎉: P879/P880 🎉] · WebRTC-SRTP-ROC翻转与RTX隔离锁 [专题84 · 900探针 & 710现场探针 🎉: P881/P882] · SIP-Outbound双活流与mTLS复用锁 [专题85 🎉 · Stage 445 🎉: P883/P884] · WebRTC-Cryptex扩展头与CSRC全加密锁 [专题86 · SVG 90 & 895护栏 🎉: P885/P886] · SIP-RFC6026分叉2xx回收与4320防风暴锁 [专题87 · 450维里程碑 🎉: P887/P888] · WebRTC-ICE-TCP定界与防HoL快进锁 [专题88 · P890 & 90篇FAQ 🎉: P889/P890] · SIP-BLF标签脱敏与防NOTIFY风暴锁 [专题89 · 901护栏 & 910探针 🎉: P891/P892] · WebRTC-RED防溢出与ULPFEC边界锁 [专题90 🎉 · Stage 450 🎉: P893/P894] · SIP-Reason防伪造与Push唤醒锁 [专题91 · SVG 95 & 905护栏 🎉: P895/P896] · WebRTC-DataChannel防撞车与PR-SCTP锁 [专题92 · 455维里程碑 🎉: P897/P898] · SIP-防双Bot死循环与防路由饿死锁 [专题93 · P900 & 95篇FAQ 🎉: P899/P900] · WebRTC-SSRC防风暴与级联CSRC防啸叫锁 [专题94 · 911护栏 & 920探针 🎉: P901/P902] · SIP-RFC3329安全协商防降级锁 [专题95 🎉 · Stage 455 🎉: P903/P904] · WebRTC-RTCP-XR防RTT下溢与防MOS伪造锁 [专题96 · SVG 100 & 915护栏 🎉: P905/P906] · SIP-RFC6140批量中继与DID防劫持锁 [专题97 · 460维里程碑 🎉: P907/P908] · WebRTC-Trickle-ICE防早判与487裁决锁 [专题98 · 100篇FAQ & P910 🎉: P909/P910] · SIP-STIR-SHAKEN-div转接签名链锁 [专题99 · 921护栏 & 930探针 🎉: P911/P912] · WebRTC-PLI-FIR关键帧防挤占语音锁 [专题100 🎉 · Stage 460 🎉: P913/P914] · SIP-RFC8760摘要SHA256防降级与防重放锁 [专题101 · SVG 105 & 925护栏 🎉: P915/P916] · WebRTC-BUNDLE解复用防PT撞车与SSRC配额锁 [专题102 · 465维里程碑 🎉: P917/P918] · SIP-RFC7339过载控制oc封顶与自动归零锁 [专题103 · 105篇FAQ & P920 🎉: P919/P920] · WebRTC-RFC7667-SFU切源连续拼接与ROC锁 [专题104 · 931护栏 & 750现场探针 🎉: P921/P922] · SIP-RFC3327-Path与ServiceRoute双向锚定锁 [专题105 🎉 · Stage 465 🎉: P923/P924] · WebRTC-RFC7941-SDES隐私与首帧唇音锁 [专题106 · SVG 110 & 935护栏 🎉: P925/P926] · SIP-RFC4412-RPH防强拆与183防盗打锁 [专题107 · 470维里程碑 🎉: P927/P928] · WebRTC-RFC8852-RID令牌桶与RTX绑定锁 [专题108 · 110篇FAQ & P930 🎉: P929/P930] · SIP-RFC6086-InfoPackage门禁与双平面DTMF去重锁 [专题109 · 941护栏 & 760现场探针 🎉: P931/P932] · WebRTC-RFC6051-NTP锁相与toffset防膨胀锁 [专题110 🎉 · Stage 470 🎉: P933/P934] · SIP-RFC5373防窃听与MWI防回拨欺诈锁 [专题111 · SVG 115 & 945护栏 🎉: P935/P936] · WebRTC-RFC8834-RTCP分包与rsize锁 [专题112 · 475维里程碑 🎉: P937/P938] · SIP-RFC4488-ReferSub抑制与sipfrag脱敏锁 [专题113 · 115篇FAQ & P940 🎉: P939/P940] (Stage 473 · P705–P940 🎉 · 476维)",
+                              simSub: "点击下方合成压测探针（Synthetic Policy Probes），验证离线内存策略/配置状态机（计时口径：0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established；真实生产网络/向量库/Saga/DSP/SIP/PCI 金库/WORM/外呼信令/ASR 解码/TTS 渲染/跨区容灾切换/流式 EEND 分离/多语种束搜索/边缘 NPU 量化/AASIST 反深伪/KV-Cache/WebGL 渲染/声学 F0 提取/CRM 对账查询/子 Agent RPC/阵列 MVDR/PLC 总线/影子流复制/ESInet 专线/神经机器同传/WFST 束搜索/跨端事件总线/SBC 媒体锁栓/蓝牙 SCO 重协商/HSM 密钥销毁/跨洋海缆 RTT/多相 ASRC 滤波/STI-CA 证书验签/STUN 探活/BS.1770 响度积分/RTCP NACK 重传/SCTP 重传与 TURN 分配/DSP 转码重初始化/HSM FF1 加密/FlexFEC 异或恢复/DNS SRV 切换/Via 哈希与 DTLS 握手/VoLTE QCI-1 专载/Cryptex AEAD/Redis nc 位图/CCFB 滤波/DTLS MKI 换钥/RTX 环缓拆包/SIP 对话表查找/RTCPeerConnection 状态转换/SBC Spec(T) ACL 查找/SFU RID 路由表查找/PBX BLF XML 序列化/SCTP DCEP 解析/SBC Reason 清洗/SFU RTP 扩展头解包/SDP fmtp 词法分析/SRTCP BYE 校验/SBC SIP 头解析/SFU ICE 候选解析/SBC CSeq 校验/SRTP AEAD 加解密/SBC Route HMAC 验签/DTLS-SCTP 块解析/SBC 同振分叉表查找/RTP 混音矩阵计算/SBC MIME 边界扫描/libopus SIMD 解码/SDP AST 词法分析/内核 TCP 流重组/DSP 双音陷波滤波/GoogCC 卡尔曼滤波/SBC 定时器轮询/SIMD 异或恢复/XML SAX 解析/coturn CIDR 前缀树查找/ES256 ECDSA 验签/libsrtp AES-GCM 解密/c-ares DNSSEC 验签/SCReAM ECN 窗口更新/SBC History-Info AST 遍历/OpenMLS TreeKEM 派生/SBC Dialog 哈希表查找/TFRC 浮点方程求解/SBC 媒体端口重绑/setsockopt IP_TOS 调用/PCRF Rx 专载建立/libsrtp 48-bit ROC 索引计算/Edge HMAC-SHA256 验签/Cryptex 连续 AEAD 加密/Kamailio tm 事务表锁/NetEq W-SOLA 时域拉伸/libxml2 DOM 序列化/SIMD ULPFEC XOR/APNs-FCM 推送唤醒/dcSCTP FORWARD-TSN/RFC 3841 谓词求交/SIMD PCM 混音/Netlink XFRM SA/G.107 E-Model/NPDB 基数树/TURN Allocate/STI-CA 多跳验签/硬件 IDR 编码/SHA-NI 摘要/RFC 9143 解复用查表/SBC EWMA 过载阻尼/SFU SRTP 重加密/Registrar usrloc 落库/Playout NTP 同步/PASSporT rph 验签/RID 令牌桶计量/跨平面 DTMF 环存锁/NetEq 卡尔曼抖动更新/MWI 订阅表核验/SRTCP 分包加密/Dialog 引用计数回收耗时未在此本地沙盒实测 not_measured）对 P715–P940 🎉 核心语音架构护栏的规则判定：",
     footerLeft: "AI Voice 开发者学习与方案门户 · 聚焦「技术选型测评」与「行业场景快速搭建」",
     footerDeck: "架构师演示幻灯片 (16:9 Deck) ↗"
   },
@@ -150,8 +150,8 @@ const UI_TEXT = {
     resPill: "OPEN SOURCE & REPORTS · 配套倉庫與深入閱讀",
     resTitle: "五、配套開源倉庫與視覺化評測報告匯總",
     resDesc: "所有程式碼、架構圖、7-Card 評測報告均已開源並提供中英對照文檔，方便按需深入學習或二次開發：",
-    simTitle: "🧪 2026-11-14 單專題架構選型 FAQ 離線策略狀態機沙盒：級聯 vs S2S 合規鎖 (P715/P716) · WebRTC vs WS vs SIP 8kHz 帶限重採樣 (P717/P718) · 唯讀投機語音 RAG [專題3A: P719] · 非同步工具紀元寫柵欄 [專題3B: P720] · 免持非線性回聲與主叫聲紋鎖 [專題4: P721/P722] · 熱轉接 CTI 簽名屏彈與單向耳語隔離 [專題5: P723/P724] · PCI 按鍵採集旁路縮減暴露 [專題6A: P725] · SIPREC 錄音雙流消音與 Fail-Closed 隔離 [專題6B: P726] · 智能外呼並行 AMD 與 TCPA 安全港門禁 [專題7: P727/P728] · 字母數字混排實體消歧與 SSML 分塊複誦 [專題8: P729/P730] · 通話中災備切換與會話狀態無損熱恢復 [專題9: P731/P732] · 多人同場流式說話人分離與角色權限鎖 [專題10: P733/P734] · 句內中英粵混說與同音色跨語種合成 [專題11: P735/P736] · 端雲混合量化容器斷網逃生與原聲零出境 [專題12: P737/P738] · 抗深偽相位活體檢測與多因子零摩擦核身 [專題13: P739/P740] · 長通話4輪音訊滑窗釘扎與PTU/PAYGO彈性FinOps [專題14: P741/P742] · 多模態數字人唇音同步與同屏協辦防注入 [專題15: P743/P744] · 情感韻律降速安撫與EU合規及哭泣長靜音門禁 [專題16: P745/P746] · 話後口頭承諾對賬與100分確定性全量質檢 [專題17: P747/P748] · 多Agent前台唯一主播防環路與子Agent零寫權限污點隔離 [專題18: P749/P750] · 85dB強噪遠場MVDR波束錐與工業LOTO挑戰碼互鎖 [專題19: P751/P752] · 金絲雀影子流量回滾與跨通話記憶防投毒 [專題20: P753/P754] · 無障礙言語自適應與E911 PIDF-LO零鑑權搶佔 [專題21: P755/P756] · 即時同傳極性劑量鎖與多租戶熱詞WFST隔離 [專題22: P757/P758] · 全渠道語音+App CAS樂觀鎖防重扣與抗超聲波/算力錢包熔斷 [專題23: P759/P760] · SIP 183防搶跑摘機防吞字與TTS幣種多音字消歧 [專題24: P761/P762] · 藍牙HFP切換防爆音與Opus DTX防死鎖預卷 [專題25: P763/P764] · 抗量子ML-KEM-768雙錄封存與聲紋單用戶DEK加密粉碎 [專題26: P765/P766] · 即時MOS-LQO弱網聲信雙通道降級與跨洲SIP/RTP邊緣錨定 [專題27: P767/P768] · PSTN TrFO免轉碼清擦音保真與RTP晶振頻偏ASRC重同步 [專題28: P769/P770] · STIR/SHAKEN來電A級驗簽防SSRF與帶內按鍵Goertzel陷波去重 [專題29: P771/P772] · SIP半開RTP殭屍通話回收與WebRTC ICE同意保活TURN埠清剿 [專題30: P773/P774] · 原生S2S抗情緒傳染LUFS響度鎖與句法未完結防搶話及C2PA雙水印 [專題31: P775/P776] · WebRTC TWCC保音棄畫與突發丟包防PLC腦補幻覺 [專題32: P777/P778] · WebRTC DataChannel背壓卸載與mDNS/TURN防SSRF [專題33: P779/P780] · SIP SDP動態PT對稱同頻與Re-INVITE防轉碼DoS [專題34: P781/P782] · 邊緣HSM FF1保格式令牌與對稱RTP防劫持鎖栓 [專題35: P783/P784] · WebRTC FlexFEC/LBRR防擁塞螺旋與RED防套娃炸彈 [專題36: P785/P786] · SIP REFER防國際盜打與DNS SRV <=150ms容災切換 [專題37: P787/P788] · SIP環路/螺旋防線與ICE-Lite 487仲裁及DTLS快重傳 [專題38: P789/P790] · VoLTE PRACK/QCI-1防幽靈振鈴與RFC 6141拒單原子回滾 [專題39: P791/P792] · WebRTC Cryptex擴展頭全加密與RTP SSRC衝突自癒 [專題40: P793/P794] · SIP SHA-256防重放與RFC 5626流令牌防SSRF [專題41: P795/P796] · WebRTC RTCP CCFB防偽造ECN與RR防RTT下溢 [專題42: P797/P798] · WebRTC DTLS-SRTP首字節分揀Cookie防DoS與SDP setup防死鎖 [專題43: P799/P800 🎉] · WebRTC AVPF NACK/PLI防風暴與RTX OSN獨立流隔離 [專題44: P801/P802]     · SIP RFC 6026 2xx半開回收與防偽造BYE拆線 [專題45: P803/P804]     · WebRTC JSEP SDP碰撞回滾m=保序與DTLS SHA-256指紋鎖 [專題46: P805/P806]     · SIP RFC 3840 automata互聊熔斷與PAI/Privacy:id邊界鎖 [專題47: P807/P808 🎉]     · WebRTC Simulcast a=rid防劫持與RTCP TMMBR語音保底鎖 [專題48: P809/P810 🎉] · SIP RFC 4235 BLF呼叫標籤脫敏防搶話與NOTIFY限流鎖 [專題49: P811/P812 🎉] · WebRTC DCEP防偽造與PPID/奇偶流防碰撞鎖 [專題50 🎉: P813/P814]     · SIP RFC 3326 Q.850防偽與Sec-Agree/420熔斷鎖 [專題51: P815/P816]     · WebRTC RFC 8285 extmap防重映射與Padding防下溢鎖 [專題52: P817/P818]         · SIP/SDP RFC 4568 SDES防洩密與c=/fmtp防溢出鎖 [專題53: P819/P820] · WebRTC複合RTCP首包/CNAME與防偽造BYE拆流鎖 [專題54 🎉: P821/P822]     · SIP單例頭防走私Via防放大與rport針孔鎖 [專題55 🎉: P823/P824]     · WebRTC ICE ufrag/pwd熵下限與Candidate防SSRF鎖 [專題56 · SVG 60 🎉: P825/P826]     · SIP早期UPDATE防劫持與CSeq防躍遷鎖死 [專題57 🎉: P827/P828] · WebRTC SRTP AES-GCM防Nonce重用與SRTCP加密鎖 [專題58 · P830 🎉: P829/P830] · SIP預載入Route防開放中繼與SIPS防降級鎖 [專題59 · 850探針 🎉: P831/P832] · WebRTC SCTP vtag/RE-CONFIG排空鎖與Gap-Ack防死鎖 [專題60 🎉: P833/P834]     · SIP同振Max-Breadth/雙200OK收割與Join防竊聽鎖 [專題61: P835/P836] · WebRTC多方混音CSRC/Mix-Minus與音量防搶麥鎖 [專題62: P837/P838]     · SIP複合包影子SDP防走私與ISUP/QSIG剝離鎖 [專題63 · P840 🎉: P839/P840]     · WebRTC-Opus防幀炸彈與立體聲下混防溢出鎖 [專題64 · 860探針 🎉: P841/P842]     · SDP-o=版本防倒退與懸空BUNDLE/maxptime鎖 [專題65 🎉 · Stage 425 🎉: P843/P844]     · WebRTC-ICE-TCP分幀對齊與提名防抖/XOR環回剝離鎖 [專題66 · SVG 70 🎉: P845/P846]     · RFC4733按鍵StartTs去重與雙軌防走私/陷波鎖 [專題67 · 430維 🎉: P847/P848]     · WebRTC-TWCC防跨度炸彈越界與未發序號/REMB語音保底鎖 [專題68 · P850 🎉: P849/P850]         · SIP-RFC4028定時器防降級與半開RTP殭屍收割鎖 [專題69 · 870探針 🎉: P851/P852] · WebRTC-RED防套娃與ULPFEC/CN防爆震鎖 [專題70 🎉 · Stage 430 🎉: P853/P854]     · SIPREC雙錄防XXE/a=label鎖與SRS斷流Fail-Closed鎖 [專題71 · SVG 75 🎉: P855/P856]     · WebRTC-TURN防內網IMDS反射與ChannelData分幀鎖 [專題72 · 435維 🎉: P857/P858] · SIP-STIR-SHAKEN防x5u-SSRF/iat重放與B/C級階梯鑑權鎖 [專題73 · P860 & 75篇FAQ 🎉: P859/P860 🎉] (Stage 433 · P705–P860 🎉 · 436維)",
-                                  simSub: "點擊下方合成壓測探針（Synthetic Policy Probes），驗證離線記憶體策略/配置狀態機（計時口徑：0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established；真實生產網路/向量庫/Saga/DSP/SIP/PCI 金庫/WORM/外呼信令/ASR 解碼/TTS 渲染/跨區容災切換/流式 EEND 分離/多語種束搜索/邊緣 NPU 量化/AASIST 反深偽/KV-Cache/WebGL 渲染/聲學 F0 提取/CRM 對賬查詢/子 Agent RPC/陣列 MVDR/PLC 匯流排/影子流複製/ESInet 專線/神經機器同傳/WFST 束搜索/跨端事件匯流排/SBC 媒體鎖栓/藍牙 SCO 重協商/HSM 金鑰銷毀/跨洋海纜 RTT/多相 ASRC 濾波/STI-CA 憑證驗簽/STUN 探活/BS.1770 響度積分/RTCP NACK 重傳/SCTP 重傳與 TURN 分配/DSP 轉碼重初始化/HSM FF1 加密/FlexFEC 異或恢復/DNS SRV 切換/Via 雜湊與 DTLS 握手/VoLTE QCI-1 專載/Cryptex AEAD/Redis nc 位圖/CCFB 濾波/DTLS MKI 換鑰/RTX 環緩拆包/SIP 對話表查找/RTCPeerConnection 狀態轉換/SBC Spec(T) ACL 查找/SFU RID 路由表查找/PBX BLF XML 序列化/SCTP DCEP 解析/SBC Reason 清洗/SFU RTP 擴展頭解包/SDP fmtp 詞法分析/SRTCP BYE 校驗/SBC SIP 頭解析/SFU ICE 候選解析/SBC CSeq 校驗/SRTP AEAD 加解密/SBC Route HMAC 驗簽/DTLS-SCTP 塊解析/SBC 同振分叉表查找/RTP 混音矩陣計算/SBC MIME 邊界掃描/libopus SIMD 解碼/SDP AST 詞法分析/核心 TCP 流重組/DSP 雙音陷波濾波/GoogCC 卡爾曼濾波/SBC 定時器輪詢/SIMD 異或恢復/XML SAX 解析/coturn CIDR 前綴樹查找/ES256 ECDSA 驗簽耗時未在此本地沙盒實測 not_measured）對 P715–P860 核心語音架構護欄的規則判定：",
+    simTitle: "🧪 2026-11-14 單專題架構選型 FAQ 離線策略狀態機沙盒：級聯 vs S2S 合規鎖 (P715/P716) · WebRTC vs WS vs SIP 8kHz 帶限重採樣 (P717/P718) · 唯讀投機語音 RAG [專題3A: P719] · 非同步工具紀元寫柵欄 [專題3B: P720] · 免持非線性回聲與主叫聲紋鎖 [專題4: P721/P722] · 熱轉接 CTI 簽名屏彈與單向耳語隔離 [專題5: P723/P724] · PCI 按鍵採集旁路縮減暴露 [專題6A: P725] · SIPREC 錄音雙流消音與 Fail-Closed 隔離 [專題6B: P726] · 智能外呼並行 AMD 與 TCPA 安全港門禁 [專題7: P727/P728] · 字母數字混排實體消歧與 SSML 分塊複誦 [專題8: P729/P730] · 通話中災備切換與會話狀態無損熱恢復 [專題9: P731/P732] · 多人同場流式說話人分離與角色權限鎖 [專題10: P733/P734] · 句內中英粵混說與同音色跨語種合成 [專題11: P735/P736] · 端雲混合量化容器斷網逃生與原聲零出境 [專題12: P737/P738] · 抗深偽相位活體檢測與多因子零摩擦核身 [專題13: P739/P740] · 長通話4輪音訊滑窗釘扎與PTU/PAYGO彈性FinOps [專題14: P741/P742] · 多模態數字人唇音同步與同屏協辦防注入 [專題15: P743/P744] · 情感韻律降速安撫與EU合規及哭泣長靜音門禁 [專題16: P745/P746] · 話後口頭承諾對賬與100分確定性全量質檢 [專題17: P747/P748] · 多Agent前台唯一主播防環路與子Agent零寫權限污點隔離 [專題18: P749/P750] · 85dB強噪遠場MVDR波束錐與工業LOTO挑戰碼互鎖 [專題19: P751/P752] · 金絲雀影子流量回滾與跨通話記憶防投毒 [專題20: P753/P754] · 無障礙言語自適應與E911 PIDF-LO零鑑權搶佔 [專題21: P755/P756] · 即時同傳極性劑量鎖與多租戶熱詞WFST隔離 [專題22: P757/P758] · 全渠道語音+App CAS樂觀鎖防重扣與抗超聲波/算力錢包熔斷 [專題23: P759/P760] · SIP 183防搶跑摘機防吞字與TTS幣種多音字消歧 [專題24: P761/P762] · 藍牙HFP切換防爆音與Opus DTX防死鎖預卷 [專題25: P763/P764] · 抗量子ML-KEM-768雙錄封存與聲紋單用戶DEK加密粉碎 [專題26: P765/P766] · 即時MOS-LQO弱網聲信雙通道降級與跨洲SIP/RTP邊緣錨定 [專題27: P767/P768] · PSTN TrFO免轉碼清擦音保真與RTP晶振頻偏ASRC重同步 [專題28: P769/P770] · STIR/SHAKEN來電A級驗簽防SSRF與帶內按鍵Goertzel陷波去重 [專題29: P771/P772] · SIP半開RTP殭屍通話回收與WebRTC ICE同意保活TURN埠清剿 [專題30: P773/P774] · 原生S2S抗情緒傳染LUFS響度鎖與句法未完結防搶話及C2PA雙水印 [專題31: P775/P776] · WebRTC TWCC保音棄畫與突發丟包防PLC腦補幻覺 [專題32: P777/P778] · WebRTC DataChannel背壓卸載與mDNS/TURN防SSRF [專題33: P779/P780] · SIP SDP動態PT對稱同頻與Re-INVITE防轉碼DoS [專題34: P781/P782] · 邊緣HSM FF1保格式令牌與對稱RTP防劫持鎖栓 [專題35: P783/P784] · WebRTC FlexFEC/LBRR防擁塞螺旋與RED防套娃炸彈 [專題36: P785/P786] · SIP REFER防國際盜打與DNS SRV <=150ms容災切換 [專題37: P787/P788] · SIP環路/螺旋防線與ICE-Lite 487仲裁及DTLS快重傳 [專題38: P789/P790] · VoLTE PRACK/QCI-1防幽靈振鈴與RFC 6141拒單原子回滾 [專題39: P791/P792] · WebRTC Cryptex擴展頭全加密與RTP SSRC衝突自癒 [專題40: P793/P794] · SIP SHA-256防重放與RFC 5626流令牌防SSRF [專題41: P795/P796] · WebRTC RTCP CCFB防偽造ECN與RR防RTT下溢 [專題42: P797/P798] · WebRTC DTLS-SRTP首字節分揀Cookie防DoS與SDP setup防死鎖 [專題43: P799/P800 🎉] · WebRTC AVPF NACK/PLI防風暴與RTX OSN獨立流隔離 [專題44: P801/P802]     · SIP RFC 6026 2xx半開回收與防偽造BYE拆線 [專題45: P803/P804]     · WebRTC JSEP SDP碰撞回滾m=保序與DTLS SHA-256指紋鎖 [專題46: P805/P806]     · SIP RFC 3840 automata互聊熔斷與PAI/Privacy:id邊界鎖 [專題47: P807/P808 🎉]     · WebRTC Simulcast a=rid防劫持與RTCP TMMBR語音保底鎖 [專題48: P809/P810 🎉] · SIP RFC 4235 BLF呼叫標籤脫敏防搶話與NOTIFY限流鎖 [專題49: P811/P812 🎉] · WebRTC DCEP防偽造與PPID/奇偶流防碰撞鎖 [專題50 🎉: P813/P814]     · SIP RFC 3326 Q.850防偽與Sec-Agree/420熔斷鎖 [專題51: P815/P816]     · WebRTC RFC 8285 extmap防重映射與Padding防下溢鎖 [專題52: P817/P818]         · SIP/SDP RFC 4568 SDES防洩密與c=/fmtp防溢出鎖 [專題53: P819/P820] · WebRTC複合RTCP首包/CNAME與防偽造BYE拆流鎖 [專題54 🎉: P821/P822]     · SIP單例頭防走私Via防放大與rport針孔鎖 [專題55 🎉: P823/P824]     · WebRTC ICE ufrag/pwd熵下限與Candidate防SSRF鎖 [專題56 · SVG 60 🎉: P825/P826]     · SIP早期UPDATE防劫持與CSeq防躍遷鎖死 [專題57 🎉: P827/P828] · WebRTC SRTP AES-GCM防Nonce重用與SRTCP加密鎖 [專題58 · P830 🎉: P829/P830] · SIP預載入Route防開放中繼與SIPS防降級鎖 [專題59 · 850探針 🎉: P831/P832] · WebRTC SCTP vtag/RE-CONFIG排空鎖與Gap-Ack防死鎖 [專題60 🎉: P833/P834]     · SIP同振Max-Breadth/雙200OK收割與Join防竊聽鎖 [專題61: P835/P836] · WebRTC多方混音CSRC/Mix-Minus與音量防搶麥鎖 [專題62: P837/P838]     · SIP複合包影子SDP防走私與ISUP/QSIG剝離鎖 [專題63 · P840 🎉: P839/P840]     · WebRTC-Opus防幀炸彈與立體聲下混防溢出鎖 [專題64 · 860探針 🎉: P841/P842]     · SDP-o=版本防倒退與懸空BUNDLE/maxptime鎖 [專題65 🎉 · Stage 425 🎉: P843/P844]     · WebRTC-ICE-TCP分幀對齊與提名防抖/XOR環回剝離鎖 [專題66 · SVG 70 🎉: P845/P846]     · RFC4733按鍵StartTs去重與雙軌防走私/陷波鎖 [專題67 · 430維 🎉: P847/P848]     · WebRTC-TWCC防跨度炸彈越界與未發序號/REMB語音保底鎖 [專題68 · P850 🎉: P849/P850]         · SIP-RFC4028定時器防降級與半開RTP殭屍收割鎖 [專題69 · 870探針 🎉: P851/P852] · WebRTC-RED防套娃與ULPFEC/CN防爆震鎖 [專題70 🎉 · Stage 430 🎉: P853/P854]     · SIPREC雙錄防XXE/a=label鎖與SRS斷流Fail-Closed鎖 [專題71 · SVG 75 🎉: P855/P856]     · WebRTC-TURN防內網IMDS反射與ChannelData分幀鎖 [專題72 · 435維 🎉: P857/P858] · SIP-STIR-SHAKEN防x5u-SSRF/iat重放與B/C級階梯鑑權鎖 [專題73 · P860 & 75篇FAQ 🎉: P859/P860 🎉] · DTLS-SRTP-CID漫遊防劫持與MKI雙鑰輪換鎖 [專題74 · 880探針 🎉: P861/P862] · SIP-DNS-NAPTR/SRV防降級與32s黑洞秒級熔斷鎖 [專題75 🎉: P863/P864] · WebRTC-CCFB位元組閉合與DTX語音保底鎖 [專題76 · SVG 80 & 875護欄 🎉: P865/P866] · SIP-PAI信任域清洗與History-Info防環鎖 [專題77 · 440維 🎉: P867/P868] · WebRTC-SFrame/MLS端到端棘輪與SFU零明文鎖 [專題78 · P870 & 80篇FAQ 🎉: P869/P870 🎉] · SIP-Join防竊聽與Replaces防搶接鎖 [專題79 · 890探針 & 700現場探針 🎉: P871/P872] · WebRTC-RFC8083斷路器與10x-TFRC保音熔斷鎖 [專題80 🎉 · Stage 440 🎉: P873/P874] · SIP-RFC6141原子回滾與491錯峰退避鎖 [專題81 · SVG 85 & 885護欄 🎉: P875/P876] · WebRTC-DSCP-BUNDLE保序與EF(46)釘紮鎖 [專題82 · 445維 🎉: P877/P878] · SIP/IMS-Precondition防幽靈振鈴與QCI1超時鎖 [專題83 · P880 & 85篇FAQ 🎉: P879/P880 🎉] · WebRTC-SRTP-ROC翻轉與RTX隔離鎖 [專題84 · 900探針 & 710現場探針 🎉: P881/P882] · SIP-Outbound雙活流與mTLS複用鎖 [專題85 🎉 · Stage 445 🎉: P883/P884] · WebRTC-Cryptex擴展頭與CSRC全加密鎖 [專題86 · SVG 90 & 895護欄 🎉: P885/P886] · SIP-RFC6026分叉2xx回收與4320防風暴鎖 [專題87 · 450維里程碑 🎉: P887/P888] · WebRTC-ICE-TCP定界與防HoL快進鎖 [專題88 · P890 & 90篇FAQ 🎉: P889/P890] · SIP-BLF標籤脫敏與防NOTIFY風暴鎖 [專題89 · 901護欄 & 910探針 🎉: P891/P892] · WebRTC-RED防溢出與ULPFEC邊界鎖 [專題90 🎉 · Stage 450 🎉: P893/P894] · SIP-Reason防偽造與Push喚醒鎖 [專題91 · SVG 95 & 905護欄 🎉: P895/P896] · WebRTC-DataChannel防撞車與PR-SCTP鎖 [專題92 · 455維里程碑 🎉: P897/P898] · SIP-防雙Bot死循環與防路由餓死鎖 [專題93 · P900 & 95篇FAQ 🎉: P899/P900] · WebRTC-SSRC防風暴與級聯CSRC防嘯叫鎖 [專題94 · 911護欄 & 920探針 🎉: P901/P902] · SIP-RFC3329安全協商防降級鎖 [專題95 🎉 · Stage 455 🎉: P903/P904] · WebRTC-RTCP-XR防RTT下溢與防MOS偽造鎖 [專題96 · SVG 100 & 915護欄 🎉: P905/P906] · SIP-RFC6140批量中繼與DID防劫持鎖 [專題97 · 460維里程碑 🎉: P907/P908] · WebRTC-Trickle-ICE防早判與487裁決鎖 [專題98 · 100篇FAQ & P910 🎉: P909/P910] · SIP-STIR-SHAKEN-div轉接簽名鏈鎖 [專題99 · 921護欄 & 930探針 🎉: P911/P912] · WebRTC-PLI-FIR關鍵幀防擠佔語音鎖 [專題100 🎉 · Stage 460 🎉: P913/P914] · SIP-RFC8760摘要SHA256防降級與防重放鎖 [專題101 · SVG 105 & 925護欄 🎉: P915/P916] · WebRTC-BUNDLE解複用防PT撞車與SSRC配額鎖 [專題102 · 465維里程碑 🎉: P917/P918] · SIP-RFC7339過載控制oc封頂與自動歸零鎖 [專題103 · 105篇FAQ & P920 🎉: P919/P920] · WebRTC-RFC7667-SFU切源連續拼接與ROC鎖 [專題104 · 931護欄 & 750現場探針 🎉: P921/P922] · SIP-RFC3327-Path與ServiceRoute雙向錨定鎖 [專題105 🎉 · Stage 465 🎉: P923/P924] · WebRTC-RFC7941-SDES隱私與首幀唇音鎖 [專題106 · SVG 110 & 935護欄 🎉: P925/P926] · SIP-RFC4412-RPH防強拆與183防盜打鎖 [專題107 · 470維里程碑 🎉: P927/P928] · WebRTC-RFC8852-RID令牌桶與RTX綁定鎖 [專題108 · 110篇FAQ & P930 🎉: P929/P930] · SIP-RFC6086-InfoPackage門禁與雙平面DTMF去重鎖 [專題109 · 941護欄 & 760現場探針 🎉: P931/P932] · WebRTC-RFC6051-NTP鎖相與toffset防膨脹鎖 [專題110 🎉 · Stage 470 🎉: P933/P934] · SIP-RFC5373防竊聽與MWI防回撥欺詐鎖 [專題111 · SVG 115 & 945護欄 🎉: P935/P936] · WebRTC-RFC8834-RTCP分包與rsize鎖 [專題112 · 475維里程碑 🎉: P937/P938] · SIP-RFC4488-ReferSub抑制與sipfrag脫敏鎖 [專題113 · 115篇FAQ & P940 🎉: P939/P940] (Stage 473 · P705–P940 🎉 · 476維)",
+                                  simSub: "點擊下方合成壓測探針（Synthetic Policy Probes），驗證離線記憶體策略/配置狀態機（計時口徑：0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established；真實生產網路/向量庫/Saga/DSP/SIP/PCI 金庫/WORM/外呼信令/ASR 解碼/TTS 渲染/跨區容災切換/流式 EEND 分離/多語種束搜索/邊緣 NPU 量化/AASIST 反深偽/KV-Cache/WebGL 渲染/聲學 F0 提取/CRM 對賬查詢/子 Agent RPC/陣列 MVDR/PLC 匯流排/影子流複製/ESInet 專線/神經機器同傳/WFST 束搜索/跨端事件匯流排/SBC 媒體鎖栓/藍牙 SCO 重協商/HSM 金鑰銷毀/跨洋海纜 RTT/多相 ASRC 濾波/STI-CA 憑證驗簽/STUN 探活/BS.1770 響度積分/RTCP NACK 重傳/SCTP 重傳與 TURN 分配/DSP 轉碼重初始化/HSM FF1 加密/FlexFEC 異或恢復/DNS SRV 切換/Via 雜湊與 DTLS 握手/VoLTE QCI-1 專載/Cryptex AEAD/Redis nc 位圖/CCFB 濾波/DTLS MKI 換鑰/RTX 環緩拆包/SIP 對話表查找/RTCPeerConnection 狀態轉換/SBC Spec(T) ACL 查找/SFU RID 路由表查找/PBX BLF XML 序列化/SCTP DCEP 解析/SBC Reason 清洗/SFU RTP 擴展頭解包/SDP fmtp 詞法分析/SRTCP BYE 校驗/SBC SIP 頭解析/SFU ICE 候選解析/SBC CSeq 校驗/SRTP AEAD 加解密/SBC Route HMAC 驗簽/DTLS-SCTP 塊解析/SBC 同振分叉表查找/RTP 混音矩陣計算/SBC MIME 邊界掃描/libopus SIMD 解碼/SDP AST 詞法分析/核心 TCP 流重組/DSP 雙音陷波濾波/GoogCC 卡爾曼濾波/SBC 定時器輪詢/SIMD 異或恢復/XML SAX 解析/coturn CIDR 前綴樹查找/ES256 ECDSA 驗簽/libsrtp AES-GCM 解密/c-ares DNSSEC 驗簽/SCReAM ECN 視窗更新/SBC History-Info AST 遍歷/OpenMLS TreeKEM 派生/SBC Dialog 雜湊表查找/TFRC 浮點方程求解/SBC 媒體埠重綁/setsockopt IP_TOS 呼叫/PCRF Rx 專載建立/libsrtp 48-bit ROC 索引計算/Edge HMAC-SHA256 驗簽/Cryptex 連續 AEAD 加密/Kamailio tm 事務表鎖/NetEq W-SOLA 時域拉伸/libxml2 DOM 序列化/SIMD ULPFEC XOR/APNs-FCM 推送喚醒/dcSCTP FORWARD-TSN/RFC 3841 謂詞求交/SIMD PCM 混音/Netlink XFRM SA/G.107 E-Model/NPDB 基數樹/TURN Allocate/STI-CA 多跳驗簽/硬體 IDR 編碼/SHA-NI 摘要/RFC 9143 解複用查表/SBC EWMA 過載阻尼/SFU SRTP 重加密/Registrar usrloc 落庫/Playout NTP 同步/PASSporT rph 驗簽/RID 令牌桶計量/跨平面 DTMF 環存鎖/NetEq 卡爾曼抖動更新/MWI 訂閱表核驗/SRTCP 分包加密/Dialog 引用計數回收耗時未在此本地沙盒實測 not_measured）對 P715–P940 🎉 核心語音架構護欄的規則判定：",
     footerLeft: "AI Voice 開發者學習與方案門戶 · 聚焦「技術選型測評」與「行業場景快速搭建」",
     footerDeck: "架構師演示投影片 (16:9 Deck) ↗"
   },
@@ -227,8 +227,8 @@ const UI_TEXT = {
     resPill: "OPEN SOURCE & REPORTS · REPOSITORIES & BENCHMARK DECKS",
     resTitle: "5. Open-Source Repositories & Visual Benchmark Reports",
     resDesc: "All repositories, bilingual guides, and 7-Card benchmark decks are open-source and ready to clone:",
-    simTitle: "🧪 2026-11-14 Single-Topic Architect FAQ Policy Sandbox: Cascaded vs. S2S (P715/P716) · WebRTC vs. WS vs. SIP 8kHz Resampling (P717/P718) · Read-Only Speculative Voice RAG [Topic 3A: P719] · Async Tool Epoch Write Fence [Topic 3B: P720] · Nonlinear Echo & TSE Crosstalk Lock [Topic 4: P721/P722] · Warm-Transfer Signed Screen-Pop & One-Way Whisper Isolation [Topic 5: P723/P724] · PCI DTMF Bypass Scope-Reduction [Topic 6A: P725] · SIPREC Archival Redaction & Fail-Closed Quarantine [Topic 6B: P726] · Outbound Parallel AMD & TCPA Safe-Harbor Gate [Topic 7: P727/P728] · Alphanumeric Disambiguation & SSML Phonetic Readback [Topic 8: P729/P730] · Mid-Call Disaster Recovery & Session State Continuity [Topic 9: P731/P732] · Multi-Party Streaming Diarization & Speaker-Role Write Lock [Topic 10: P733/P734] · Intra-Sentence Code-Switching & Multilingual TTS Timbre Continuity [Topic 11: P735/P736] · Edge-Cloud Quantized Container & Sovereign Audio Residency [Topic 12: P737/P738] · Anti-Deepfake Phase Liveness & Multi-Factor Voice Auth [Topic 13: P739/P740] · Long-Call 4-Turn Audio Pruning & PTU/PAYGO Elastic FinOps [Topic 14: P741/P742] · Multimodal Avatar Lip-Sync & Co-Browsing Safety [Topic 15: P743/P744] · Affective Prosody De-Escalation, EU AI Act Compliance & Distress Silence [Topic 16: P745/P746] · Post-Call Promise-vs-Ticket Reconciliation & 100-Pt QA Rubric [Topic 17: P747/P748] · Multi-Agent Swarm Single Front-Stage Persona & Least-Privilege Isolation [Topic 18: P749/P750] · Far-Field 85dB MVDR Beamforming & Industrial OSHA LOTO Interlock [Topic 19: P751/P752] · Canary Shadow Auto-Rollback & Cross-Call Memory Poisoning Guard [Topic 20: P753/P754] · EAA/ADA Speech Accessibility & E911 PIDF-LO Preemption [Topic 21: P755/P756] · Real-Time Interpreter Polarity/Dosage & Tenant Hotword WFST Isolation [Topic 22: P757/P758] · Omnichannel Voice+App CAS Concurrency & Ultrasonic/Wallet-Drain Defense [Topic 23: P759/P760] · SIP 183 Early Media Anti-Clipping & TTS Currency/Polyphone Disambiguation [Topic 24: P761/P762] · Bluetooth HFP Handover Guard & Opus DTX Deadlock Breaker [Topic 25: P763/P764] · PQC Hybrid ML-KEM-768 SIPREC Escrow & Voiceprint Crypto-Shredding [Topic 26: P765/P766] · Real-Time MOS-LQO SMS Fallback & Multi-Region SIP/RTP Edge Anchoring [Topic 27: P767/P768] · PSTN TrFO Fricative Preservation & RTP Clock-Drift ASRC Resync [Topic 28: P769/P770] · STIR/SHAKEN A-Level Gate & In-Band DTMF Goertzel Strip [Topic 29: P771/P772] · SIP Half-Open RTP Zombie Reaper & WebRTC ICE Consent TURN Guard [Topic 30: P773/P774] · S2S Emotional Contagion Clamp & Syntactic Incomplete-Clause Hold [Topic 31: P775/P776] · WebRTC TWCC Audio-Priority Shedding & Burst-Loss PLC Gate [Topic 32: P777/P778] · WebRTC DataChannel Backpressure & mDNS/TURN SSRF Gate [Topic 33: P779/P780] · SIP SDP Dynamic PT Symmetry & Re-INVITE DoS Gate [Topic 34: P781/P782] · Edge HSM FF1 Tokenization & Symmetric RTP Latching Gate [Topic 35: P783/P784] · WebRTC FlexFEC/LBRR Anti-Spiral & RED Nesting Gate [Topic 36: P785/P786] · SIP REFER Toll-Fraud & DNS SRV <=150ms Failover Gate [Topic 37: P787/P788] · SIP Loop/Spiral Guard & ICE-Lite 487 + DTLS Fast Backoff [Topic 38: P789/P790] · VoLTE PRACK/QCI-1 Precondition & RFC 6141 Atomic Rollback [Topic 39: P791/P792] · WebRTC Cryptex Header Privacy & RTP SSRC Collision Loop Guard [Topic 40: P793/P794] · SIP SHA-256 Anti-Replay & RFC 5626 Flow-Token SSRF Guard [Topic 41: P795/P796] · WebRTC RTCP CCFB ECN Anti-Spoof & RR RTT Underflow Guard [Topic 42: P797/P798] · WebRTC DTLS-SRTP Demux Cookie Gate & SDP Setup / MKI Rekey Guard [Topic 43: P799/P800 🎉] · WebRTC AVPF NACK/PLI Storm & RTX OSN/apt Isolation Guard [Topic 44: P801/P802]     · SIP RFC 6026 2xx Timer G/H & Rogue BYE/ACK Tuple Guard [Topic 45: P803/P804]     · WebRTC JSEP SDP Glare Rollback + m=/mid Order & DTLS SHA-256 Fingerprint Guard [Topic 46: P805/P806]     · SIP RFC 3840 automata Bot-Loop & PAI/Privacy:id Guard [Topic 47: P807/P808 🎉]     · WebRTC Simulcast a=rid & RTCP TMMBR Audio Floor Guard [Topic 48: P809/P810 🎉] · SIP RFC 4235 BLF Tag Redaction & RFC 6665 NOTIFY Guard [Topic 49: P811/P812 🎉] · WebRTC DCEP Open + PPID & Stream-ID Parity Guard [Topic 50 🎉: P813/P814]     · SIP RFC 3326 Q.850 Scrub & Sec-Agree/420 Loop Guard [Topic 51: P815/P816]     · WebRTC RFC 8285 Extmap Immutability & Padding Underflow Guard [Topic 52: P817/P818]         · SIP/SDP RFC 4568 SDES Key & c=/fmtp Overflow Guard [Topic 53: P819/P820] · WebRTC Compound RTCP SR/RR & Anti-Spoofed BYE Flood Guard [Topic 54 🎉: P821/P822]     · SIP Singleton Smuggling Via Cap & rport NAT Pinhole Guard [Topic 55 🎉: P823/P824]     · WebRTC ICE ufrag/pwd Entropy & Candidate SSRF Guard [Topic 56 · SVG 60 🎉: P825/P826]     · SIP Early UPDATE Hijack & CSeq Rollover Guard [Topic 57 🎉: P827/P828] · WebRTC SRTP AES-GCM Nonce & SRTCP E=1 Guard [Topic 58 · P830 🎉: P829/P830] · SIP Preloaded Route Open-Relay & SIPS Downgrade Guard [Topic 59 · 850 Probes 🎉: P831/P832] · WebRTC SCTP vtag/RE-CONFIG & SACK Gap-Ack Guard [Topic 60 🎉: P833/P834]     · SIP Parallel Forking Max-Breadth & RFC 3911 Join Guard [Topic 61: P835/P836] · WebRTC RTP Mixer CSRC & RFC 6465 Audio-Level Guard [Topic 62: P837/P838]     · SIP Multipart Shadow-SDP & RFC 3204 ISUP/QSIG Guard [Topic 63 · P840 🎉: P839/P840]     · WebRTC Opus Code-3 Bomb & Stereo Downmix Guard [Topic 64 · 860 Probes 🎉: P841/P842]     · SIP/WebRTC SDP Origin Version Lock & BUNDLE/maxptime Guard [Topic 65 🎉 · Stage 425 🎉: P843/P844]     · WebRTC ICE-TCP Framing & Nomination/XOR-MAPPED Guard [Topic 66 · SVG 70 🎉: P845/P846]     · SIP/RTP RFC 4733 DTMF StartTs Dedup & Dual-DTMF Smuggling Guard [Topic 67 · 430 Dims 🎉: P847/P848]     · WebRTC TWCC Span Bomb & Unsent-Seq/REMB Floor Guard [Topic 68 · P850 🎉: P849/P850]     · SIP RFC 4028 Session-Timer & RTP Zombie Reaper Guard [Topic 69 · 870 Probes 🎉: P851/P852]     · WebRTC RED Nesting & ULPFEC/CN Shock Guard [Topic 70 🎉 · Stage 430 🎉: P853/P854]     · SIPREC Metadata XXE/a=label & SRS Fail-Closed Guard [Topic 71 · SVG 75 🎉: P855/P856]     · WebRTC TURN Peer-SSRF & ChannelData Framing Guard [Topic 72 · 435 Dims 🎉: P857/P858] · SIP STIR/SHAKEN x5u Anti-SSRF/iat Replay & Attestation Step-Up Guard [Topic 73 · P860 & 75th FAQ 🎉: P859/P860 🎉] (Stage 433 · P705–P860 🎉 · 436 Dims)",
-                              simSub: "Click any synthetic probe below to inspect offline in-memory policy/configuration state-machine checks (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established; live network/vector DB/Saga/DSP/SIP/PCI Vault/WORM/carrier signaling/ASR/TTS/failover/EEND/beam-search/edge-NPU/AASIST/KV-cache/WebGL/acoustic-F0/CRM-DB/sub-agent-RPC/MVDR/PLC/shadow-fork/ESInet/neural-MT/WFST-lattice/event-bus/SBC-latching/Bluetooth-SCO/HSM-shred/undersea-RTT/polyphase-ASRC/STI-CA-verify/STUN-probe/BS1770-LUFS/RTCP-NACK/SCTP-RTO/TURN-alloc/DSP-reinit/HSM-FF1/FlexFEC-XOR/DNS-SRV/Via-Hash/DTLS-RTO/VoLTE-QCI1/Cryptex-AEAD/Redis-nc/CCFB-filter/DTLS-MKI/RTX-OSN/SIP-dialog/JSEP-rollback/SBC-SpecT-ACL/SFU-RID-table/PBX-BLF-XML/SCTP-DCEP/SBC-Reason/SFU-RTP-Ext/SDP-fmtp/SRTCP-BYE/SBC-SIP-Header/SFU-ICE-Candidate/SBC-CSeq-Check/SRTP-AEAD-Cipher/SBC-Route-HMAC/DTLS-SCTP-Chunk/SBC-Forking-Table/RTP-Mixer-Sum/SBC-MIME-Boundary/libopus-SIMD/SDP-AST-Diff/Kernel-TCP-Stream/DSP-Notch-Filter/GoogCC-Trendline/SBC-Timer-Wheel/SIMD-XOR-Parity/XML-SAX-Parser/coturn-CIDR-Trie/ES256-ECDSA-Verify latency is not_measured in this local sandbox) across P715–P860:",
+    simTitle: "🧪 2026-11-14 Single-Topic Architect FAQ Policy Sandbox: Cascaded vs. S2S (P715/P716) · WebRTC vs. WS vs. SIP 8kHz Resampling (P717/P718) · Read-Only Speculative Voice RAG [Topic 3A: P719] · Async Tool Epoch Write Fence [Topic 3B: P720] · Nonlinear Echo & TSE Crosstalk Lock [Topic 4: P721/P722] · Warm-Transfer Signed Screen-Pop & One-Way Whisper Isolation [Topic 5: P723/P724] · PCI DTMF Bypass Scope-Reduction [Topic 6A: P725] · SIPREC Archival Redaction & Fail-Closed Quarantine [Topic 6B: P726] · Outbound Parallel AMD & TCPA Safe-Harbor Gate [Topic 7: P727/P728] · Alphanumeric Disambiguation & SSML Phonetic Readback [Topic 8: P729/P730] · Mid-Call Disaster Recovery & Session State Continuity [Topic 9: P731/P732] · Multi-Party Streaming Diarization & Speaker-Role Write Lock [Topic 10: P733/P734] · Intra-Sentence Code-Switching & Multilingual TTS Timbre Continuity [Topic 11: P735/P736] · Edge-Cloud Quantized Container & Sovereign Audio Residency [Topic 12: P737/P738] · Anti-Deepfake Phase Liveness & Multi-Factor Voice Auth [Topic 13: P739/P740] · Long-Call 4-Turn Audio Pruning & PTU/PAYGO Elastic FinOps [Topic 14: P741/P742] · Multimodal Avatar Lip-Sync & Co-Browsing Safety [Topic 15: P743/P744] · Affective Prosody De-Escalation, EU AI Act Compliance & Distress Silence [Topic 16: P745/P746] · Post-Call Promise-vs-Ticket Reconciliation & 100-Pt QA Rubric [Topic 17: P747/P748] · Multi-Agent Swarm Single Front-Stage Persona & Least-Privilege Isolation [Topic 18: P749/P750] · Far-Field 85dB MVDR Beamforming & Industrial OSHA LOTO Interlock [Topic 19: P751/P752] · Canary Shadow Auto-Rollback & Cross-Call Memory Poisoning Guard [Topic 20: P753/P754] · EAA/ADA Speech Accessibility & E911 PIDF-LO Preemption [Topic 21: P755/P756] · Real-Time Interpreter Polarity/Dosage & Tenant Hotword WFST Isolation [Topic 22: P757/P758] · Omnichannel Voice+App CAS Concurrency & Ultrasonic/Wallet-Drain Defense [Topic 23: P759/P760] · SIP 183 Early Media Anti-Clipping & TTS Currency/Polyphone Disambiguation [Topic 24: P761/P762] · Bluetooth HFP Handover Guard & Opus DTX Deadlock Breaker [Topic 25: P763/P764] · PQC Hybrid ML-KEM-768 SIPREC Escrow & Voiceprint Crypto-Shredding [Topic 26: P765/P766] · Real-Time MOS-LQO SMS Fallback & Multi-Region SIP/RTP Edge Anchoring [Topic 27: P767/P768] · PSTN TrFO Fricative Preservation & RTP Clock-Drift ASRC Resync [Topic 28: P769/P770] · STIR/SHAKEN A-Level Gate & In-Band DTMF Goertzel Strip [Topic 29: P771/P772] · SIP Half-Open RTP Zombie Reaper & WebRTC ICE Consent TURN Guard [Topic 30: P773/P774] · S2S Emotional Contagion Clamp & Syntactic Incomplete-Clause Hold [Topic 31: P775/P776] · WebRTC TWCC Audio-Priority Shedding & Burst-Loss PLC Gate [Topic 32: P777/P778] · WebRTC DataChannel Backpressure & mDNS/TURN SSRF Gate [Topic 33: P779/P780] · SIP SDP Dynamic PT Symmetry & Re-INVITE DoS Gate [Topic 34: P781/P782] · Edge HSM FF1 Tokenization & Symmetric RTP Latching Gate [Topic 35: P783/P784] · WebRTC FlexFEC/LBRR Anti-Spiral & RED Nesting Gate [Topic 36: P785/P786] · SIP REFER Toll-Fraud & DNS SRV <=150ms Failover Gate [Topic 37: P787/P788] · SIP Loop/Spiral Guard & ICE-Lite 487 + DTLS Fast Backoff [Topic 38: P789/P790] · VoLTE PRACK/QCI-1 Precondition & RFC 6141 Atomic Rollback [Topic 39: P791/P792] · WebRTC Cryptex Header Privacy & RTP SSRC Collision Loop Guard [Topic 40: P793/P794] · SIP SHA-256 Anti-Replay & RFC 5626 Flow-Token SSRF Guard [Topic 41: P795/P796] · WebRTC RTCP CCFB ECN Anti-Spoof & RR RTT Underflow Guard [Topic 42: P797/P798] · WebRTC DTLS-SRTP Demux Cookie Gate & SDP Setup / MKI Rekey Guard [Topic 43: P799/P800 🎉] · WebRTC AVPF NACK/PLI Storm & RTX OSN/apt Isolation Guard [Topic 44: P801/P802]     · SIP RFC 6026 2xx Timer G/H & Rogue BYE/ACK Tuple Guard [Topic 45: P803/P804]     · WebRTC JSEP SDP Glare Rollback + m=/mid Order & DTLS SHA-256 Fingerprint Guard [Topic 46: P805/P806]     · SIP RFC 3840 automata Bot-Loop & PAI/Privacy:id Guard [Topic 47: P807/P808 🎉]     · WebRTC Simulcast a=rid & RTCP TMMBR Audio Floor Guard [Topic 48: P809/P810 🎉] · SIP RFC 4235 BLF Tag Redaction & RFC 6665 NOTIFY Guard [Topic 49: P811/P812 🎉] · WebRTC DCEP Open + PPID & Stream-ID Parity Guard [Topic 50 🎉: P813/P814]     · SIP RFC 3326 Q.850 Scrub & Sec-Agree/420 Loop Guard [Topic 51: P815/P816]     · WebRTC RFC 8285 Extmap Immutability & Padding Underflow Guard [Topic 52: P817/P818]         · SIP/SDP RFC 4568 SDES Key & c=/fmtp Overflow Guard [Topic 53: P819/P820] · WebRTC Compound RTCP SR/RR & Anti-Spoofed BYE Flood Guard [Topic 54 🎉: P821/P822]     · SIP Singleton Smuggling Via Cap & rport NAT Pinhole Guard [Topic 55 🎉: P823/P824]     · WebRTC ICE ufrag/pwd Entropy & Candidate SSRF Guard [Topic 56 · SVG 60 🎉: P825/P826]     · SIP Early UPDATE Hijack & CSeq Rollover Guard [Topic 57 🎉: P827/P828] · WebRTC SRTP AES-GCM Nonce & SRTCP E=1 Guard [Topic 58 · P830 🎉: P829/P830] · SIP Preloaded Route Open-Relay & SIPS Downgrade Guard [Topic 59 · 850 Probes 🎉: P831/P832] · WebRTC SCTP vtag/RE-CONFIG & SACK Gap-Ack Guard [Topic 60 🎉: P833/P834]     · SIP Parallel Forking Max-Breadth & RFC 3911 Join Guard [Topic 61: P835/P836] · WebRTC RTP Mixer CSRC & RFC 6465 Audio-Level Guard [Topic 62: P837/P838]     · SIP Multipart Shadow-SDP & RFC 3204 ISUP/QSIG Guard [Topic 63 · P840 🎉: P839/P840]     · WebRTC Opus Code-3 Bomb & Stereo Downmix Guard [Topic 64 · 860 Probes 🎉: P841/P842]     · SIP/WebRTC SDP Origin Version Lock & BUNDLE/maxptime Guard [Topic 65 🎉 · Stage 425 🎉: P843/P844]     · WebRTC ICE-TCP Framing & Nomination/XOR-MAPPED Guard [Topic 66 · SVG 70 🎉: P845/P846]     · SIP/RTP RFC 4733 DTMF StartTs Dedup & Dual-DTMF Smuggling Guard [Topic 67 · 430 Dims 🎉: P847/P848]     · WebRTC TWCC Span Bomb & Unsent-Seq/REMB Floor Guard [Topic 68 · P850 🎉: P849/P850]     · SIP RFC 4028 Session-Timer & RTP Zombie Reaper Guard [Topic 69 · 870 Probes 🎉: P851/P852]     · WebRTC RED Nesting & ULPFEC/CN Shock Guard [Topic 70 🎉 · Stage 430 🎉: P853/P854]     · SIPREC Metadata XXE/a=label & SRS Fail-Closed Guard [Topic 71 · SVG 75 🎉: P855/P856]     · WebRTC TURN Peer-SSRF & ChannelData Framing Guard [Topic 72 · 435 Dims 🎉: P857/P858] · SIP STIR/SHAKEN x5u Anti-SSRF/iat Replay & Attestation Step-Up Guard [Topic 73 · P860 & 75th FAQ 🎉: P859/P860 🎉] · WebRTC DTLS-SRTP CID Mobility & MKI Seamless Rekey Guard [Topic 74 · 880 Probes 🎉: P861/P862] · SIP DNS NAPTR/SRV Anti-Downgrade & 32s Blackhole Failover Guard [Topic 75 🎉: P863/P864] · WebRTC RTCP CCFB Byte Closure & Post-DTX Audio Floor Guard [Topic 76 · SVG 80 & 875 Guards 🎉: P865/P866] · SIP PAI Trust-Boundary Scrub & History-Info Loop Guard [Topic 77 · 440 Dims 🎉: P867/P868] · WebRTC SFrame/MLS E2EE Ratchet & SFU Zero-Plaintext Guard [Topic 78 · P870 & 80th FAQ 🎉: P869/P870 🎉] · SIP Join Anti-Wiretap & Replaces early-only Guard [Topic 79 · 890 Probes & 700 Live POC 🎉: P871/P872] · WebRTC RFC 8083 Circuit Breakers & 10x TFRC Audio-First Shedding Guard [Topic 80 🎉 · Stage 440 🎉: P873/P874] · SIP RFC 6141 Re-INVITE Rollback & 491 Glare Backoff Guard [Topic 81 · SVG 85 & 885 Guards 🎉: P875/P876] · WebRTC DiffServ DSCP BUNDLE Queue-Ordering & EF(46) Guard [Topic 82 · 445 Dims 🎉: P877/P878] · SIP/IMS Precondition Anti-Ghost-Ringing & QCI-1 Timeout Guard [Topic 83 · P880 & 85th FAQ 🎉: P879/P880 🎉] · WebRTC SRTP ROC Auth-Before-Commit & RTX OSN Isolation Guard [Topic 84 · 900 Probes & 710 Live POC 🎉: P881/P882] · SIP Outbound Dual-Edge Flow-Token & mTLS SAN Reuse Guard [Topic 85 🎉 · Stage 445 🎉: P883/P884] · WebRTC RFC 9335 Cryptex Whole-Extension/CSRC Guard [Topic 86 · SVG 90 & 895 Guards 🎉: P885/P886] · SIP RFC 6026 Accepted & RFC 4320 Storm Guard [Topic 87 · 450 Dims 🎉: P887/P888] · WebRTC RFC 6544/4571 ICE-TCP Framing & HoL Guard [Topic 88 · P890 & 90th FAQ 🎉: P889/P890] · SIP RFC 6665/4235 BLF & NOTIFY Guard [Topic 89 · 901 Guards & 910 Probes 🎉: P891/P892] · WebRTC RFC 2198/5109 RED & ULPFEC Guard [Topic 90 🎉 · Stage 450 🎉: P893/P894] · SIP RFC 3326/8599 Reason & Push-Wake Guard [Topic 91 · SVG 95 & 905 Guards 🎉: P895/P896] · WebRTC RFC 8831/8832 DataChannel & PR-SCTP Guard [Topic 92 · 455 Dims 🎉: P897/P898] · SIP RFC 3840/3841 Bot-Loop & Caller-Prefs Guard [Topic 93 · P900 & 95th FAQ 🎉: P899/P900] · WebRTC RFC 3550/8108 SSRC & CSRC Loop Guard [Topic 94 · 911 Guards & 920 Probes 🎉: P901/P902] · SIP RFC 3329 sec-agree Anti-Downgrade & 494 Guard [Topic 95 🎉 · Stage 455 🎉: P903/P904] · WebRTC RFC 3611 RTCP XR RTT & MOS Guard [Topic 96 · SVG 100 & 915 Guards 🎉: P905/P906] · SIP RFC 6140 GIN Bulk Trunk & DID Guard [Topic 97 · 460 Dims 🎉: P907/P908] · WebRTC RFC 8445/8838 Trickle ICE Guard [Topic 98 · 100th FAQ & P910 🎉: P909/P910] · SIP RFC 8946 STIR/SHAKEN div Chain Guard [Topic 99 · 921 Guards & 930 Probes 🎉: P911/P912] · WebRTC RFC 5104/4585 PLI/FIR Audio Guard [Topic 100 🎉 · Stage 460 🎉: P913/P914] · SIP RFC 8760 SHA-256 & nc Replay Guard [Topic 101 · SVG 105 & 925 Guards 🎉: P915/P916] · WebRTC RFC 9143 BUNDLE Demux & SSRC Guard [Topic 102 · 465 Dims 🎉: P917/P918] · SIP RFC 7339 Overload Control & oc-validity Guard [Topic 103 · 105th FAQ & P920 🎉: P919/P920] · WebRTC RFC 7667 SFU SSRC-Rewrite & ROC Guard [Topic 104 · 931 Guards & 750 POC 🎉: P921/P922] · SIP RFC 3327 Path & RFC 3608 Service-Route Guard [Topic 105 🎉 · Stage 465 🎉: P923/P924] · WebRTC RFC 7941 SDES CNAME Privacy & Lip-Sync Guard [Topic 106 · SVG 110 & 935 Guards 🎉: P925/P926] · SIP RFC 4412 RPH & RFC 5009 P-Early-Media Guard [Topic 107 · 470 Dims 🎉: P927/P928] · WebRTC RFC 8852 RID & repaired-rtp-stream-id Guard [Topic 108 · 110th FAQ & P930 🎉: P929/P930] · SIP RFC 6086 Info-Package & DTMF Dedup Guard [Topic 109 · 941 Guards & 760 POC 🎉: P931/P932] · WebRTC RFC 6051 Rapid NTP & RFC 5450 toffset Guard [Topic 110 🎉 · Stage 470 🎉: P933/P934] · SIP RFC 5373 Answer-Mode & RFC 3842 MWI Guard [Topic 111 · SVG 115 & 945 Guards 🎉: P935/P936] · WebRTC RFC 8834 RTCP MTU & RFC 5506 rtcp-rsize Guard [Topic 112 · 475 Dims 🎉: P937/P938] · SIP RFC 7647 & RFC 4488 Refer-Sub & sipfrag Guard [Topic 113 · 115th FAQ & P940 🎉: P939/P940] (Stage 473 · P705–P940 🎉 · 476 Dims)",
+                              simSub: "Click any synthetic probe below to inspect offline in-memory policy/configuration state-machine checks (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established; live network/vector DB/Saga/DSP/SIP/PCI Vault/WORM/carrier signaling/ASR/TTS/failover/EEND/beam-search/edge-NPU/AASIST/KV-cache/WebGL/acoustic-F0/CRM-DB/sub-agent-RPC/MVDR/PLC/shadow-fork/ESInet/neural-MT/WFST-lattice/event-bus/SBC-latching/Bluetooth-SCO/HSM-shred/undersea-RTT/polyphase-ASRC/STI-CA-verify/STUN-probe/BS1770-LUFS/RTCP-NACK/SCTP-RTO/TURN-alloc/DSP-reinit/HSM-FF1/FlexFEC-XOR/DNS-SRV/Via-Hash/DTLS-RTO/VoLTE-QCI1/Cryptex-AEAD/Redis-nc/CCFB-filter/DTLS-MKI/RTX-OSN/SIP-dialog/JSEP-rollback/SBC-SpecT-ACL/SFU-RID-table/PBX-BLF-XML/SCTP-DCEP/SBC-Reason/SFU-RTP-Ext/SDP-fmtp/SRTCP-BYE/SBC-SIP-Header/SFU-ICE-Candidate/SBC-CSeq-Check/SRTP-AEAD-Cipher/SBC-Route-HMAC/DTLS-SCTP-Chunk/SBC-Forking-Table/RTP-Mixer-Sum/SBC-MIME-Boundary/libopus-SIMD/SDP-AST-Diff/Kernel-TCP-Stream/DSP-Notch-Filter/GoogCC-Trendline/SBC-Timer-Wheel/SIMD-XOR-Parity/XML-SAX-Parser/coturn-CIDR-Trie/ES256-ECDSA-Verify/libsrtp-AES-GCM/c-ares-DNSSEC/SCReAM-ECN/SBC-History-Info-AST/OpenMLS-TreeKEM/SBC-Dialog-Hash/TFRC-Equation/SBC-Port-Rebind/setsockopt-IP-TOS/PCRF-Rx-Bearer/libsrtp-ROC-Index/Edge-HMAC-SHA256/Cryptex-AEAD/Kamailio-tm-Lock/NetEq-WSOLA/libxml2-DOM/SIMD-ULPFEC-XOR/APNs-FCM-Push/dcSCTP-FORWARD-TSN/RFC3841-Predicate/SIMD-PCM-Mix/Netlink-XFRM-SA/G107-EModel/NPDB-Radix-Trie/TURN-Allocate/STI-CA-MultiHop/HW-IDR-Encode/SHA-NI-Digest/RFC9143-Demux/SBC-EWMA-Overload/SFU-SRTP-Reencrypt/Registrar-usrloc/Playout-NTP-Sync/PASSporT-rph/RID-TokenBucket/DTMF-RingBuffer/NetEq-Kalman-Jitter/MWI-SubTable/SRTCP-Split/Dialog-RefCount latency is not_measured in this local sandbox) across P715–P940 🎉:",
     footerLeft: "AI Voice Learner & Builder Portal · Focused on Stack Selection & Practical Scenario Blueprints",
     footerDeck: "Architect Slide Deck (16:9) ↗"
   }
@@ -2085,7 +2085,7 @@ const RESOURCES_DATA = {
     {
       badge: "7-Card Visual Reports",
       title: "双份 4:5 标准评测报告与 16:9 演示讲义",
-      desc: "包含《实时语音与路由评测 7-Card 报告（含 Stage 433 P859/P860 🎉 · 869护栏 · 878探针 · 436维 · Topic 73）》、《说话人分离与分轨 PoC 7-Card 报告》以及《16:9 架构演示幻灯片》。",
+      desc: "包含《实时语音与路由评测 7-Card 报告（含 Stage 473 P939/P940 🎉 · 949护栏 · 958探针 · 476维 · Topic 113 · 115篇FAQ 🎉）》、《说话人分离与分轨 PoC 7-Card 报告》以及《16:9 架构演示幻灯片》。",
       btnText: "打开 16:9 架构讲义 ↗",
       url: "./deck.html"
     },
@@ -2129,7 +2129,7 @@ const RESOURCES_DATA = {
     {
       badge: "7-Card Visual Reports",
       title: "雙份 4:5 標準評測報告與 16:9 演示講義",
-      desc: "包含《即時語音與路由評測 7-Card 報告（含 Stage 433 P859/P860 🎉 · 869護欄 · 878探針 · 436維 · Topic 73）》、《說話人分離與分軌 PoC 7-Card 報告》以及《16:9 架構演示投影片》。",
+      desc: "包含《即時語音與路由評測 7-Card 報告（含 Stage 473 P939/P940 🎉 · 949護欄 · 958探針 · 476維 · Topic 113 · 115篇FAQ 🎉）》、《說話人分離與分軌 PoC 7-Card 報告》以及《16:9 架構演示投影片》。",
       btnText: "打開 16:9 架構講義 ↗",
       url: "./deck.html"
     },
@@ -2173,14 +2173,14 @@ const RESOURCES_DATA = {
     {
       badge: "7-Card Visual Reports",
       title: "7-Card Benchmark Decks & 16:9 Slides",
-      desc: "Includes the Realtime Voice 7-Card Benchmark (through Stage 433 P859/P860 🎉 · 869 Guardrails · 878 Probes · 436 Dims · Topic 73), the Speech Diarization PoC 7-Card Report, and the 16:9 Architect Presentation Deck.",
+      desc: "Includes the Realtime Voice 7-Card Benchmark (through Stage 473 P939/P940 🎉 · 949 Guardrails · 958 Probes · 476 Dims · Topic 113 · 115th FAQ 🎉), the Speech Diarization PoC 7-Card Report, and the 16:9 Architect Presentation Deck.",
       btnText: "Open 16:9 Slide Deck ↗",
       url: "./deck.html"
     },
     {
       badge: "Architect FAQs · 2026-11-14",
-      title: "75 🎉 Single-Topic Architect Selection FAQs (Cascaded/S2S · WebRTC/WS/SIP · Speculative RAG · Tool Epoch Fence · Barge-in Echo & Crosstalk · Warm Transfer & Whisper · PCI DTMF Bypass [6A] · SIPREC Audio Redaction [6B] · Outbound Parallel AMD & TCPA Safe-Harbor [7] · Alphanumeric Disambiguation & SSML Readback [8] · Mid-Call Failover & Session Recovery [9] · Multi-Party Streaming Diarization & Role Lock [10] · Intra-Sentence Code-Switching & Multilingual TTS [11] · Edge Quantized Container & Sovereign Residency [12] · Anti-Deepfake Phase Liveness & FIDO2 Auth [13] · Long-Call Audio Pruning & PTU/PAYGO FinOps [14] · Multimodal Avatar Lip-Sync & Co-Browsing [15] · Affective Prosody, EU AI Act & Crisis Silence [16] · Post-Call Promise Reconciliation & 100-Pt QA [17] · Multi-Agent Swarm & Least-Privilege Isolation [18] · Far-Field 85dB MVDR & Industrial OSHA LOTO [19] · Canary Shadow Rollout & Memory Poisoning Guard [20] · EAA/ADA Speech Accessibility & E911 PIDF-LO Preemption [21] · Real-Time Interpreter Polarity/Dosage & Tenant Hotword WFST Isolation [22] · Omnichannel Voice+App CAS Concurrency & Ultrasonic/Wallet-Drain Defense [23] · SIP 183 Early Media Anti-Clipping & TTS Currency/Polyphone Disambiguation [24] · Bluetooth HFP Handover Guard & Opus DTX Deadlock Breaker [25] · PQC Hybrid ML-KEM-768 SIPREC Escrow & Voiceprint Crypto-Shredding [26] · Real-Time MOS-LQO SMS Fallback & Multi-Region SIP/RTP Edge Anchoring [27] · PSTN TrFO Fricative Preservation & RTP Clock-Drift ASRC Resync [28] · STIR/SHAKEN A-Level Gate & In-Band DTMF Goertzel Strip [29] · SIP Half-Open RTP Zombie Reaper & WebRTC ICE Consent TURN Guard [30] · S2S Emotional Contagion Clamp & Syntactic Incomplete-Clause Hold [31] · WebRTC TWCC Audio-Priority Shedding & Burst-Loss PLC Gate [32] · WebRTC DataChannel Backpressure & mDNS/TURN SSRF Gate [33] · SIP SDP Dynamic PT Symmetry & Re-INVITE DoS Gate [34] · Edge HSM FF1 Tokenization & Symmetric RTP Latching Gate [35] · WebRTC FlexFEC/LBRR Anti-Spiral & RED Nesting Gate [36] · SIP REFER Toll-Fraud & DNS SRV <=150ms Failover Gate [37] · SIP Loop/Spiral Guard & ICE-Lite 487 + DTLS Fast Backoff [38] · VoLTE PRACK/QCI-1 Precondition & RFC 6141 Atomic Rollback [39] · WebRTC Cryptex Header Privacy & RTP SSRC Collision Loop Guard [40] · SIP SHA-256 Anti-Replay & RFC 5626 Flow-Token SSRF Guard [41] · WebRTC RTCP CCFB ECN Anti-Spoof & RR RTT Underflow Guard [42] · WebRTC DTLS-SRTP Demux Cookie Gate & SDP Setup / MKI Rekey Guard [43 🎉] · WebRTC AVPF NACK/PLI Storm & RTX OSN/apt Isolation Guard [44] · SIP RFC 6026 2xx Timer G/H & Rogue BYE/ACK Tuple Guard [45] · WebRTC JSEP SDP Glare Rollback + m=/mid Order & DTLS SHA-256 Fingerprint Guard [46] · SIP RFC 3840 automata Bot-Loop & PAI/Privacy:id Guard [47 🎉] · WebRTC Simulcast a=rid & RTCP TMMBR Audio Floor Guard [48 🎉] · SIP RFC 4235 BLF Tag Redaction & RFC 6665 NOTIFY Guard [49 🎉] · WebRTC DCEP Open + PPID & Stream-ID Parity Guard [50 🎉] · SIP RFC 3326 Q.850 Scrub & Sec-Agree/420 Loop Guard [51] · WebRTC RFC 8285 Extmap Immutability & Padding Underflow Guard [52] · SIP/SDP RFC 4568 SDES Key & c=/fmtp Overflow Guard [53] · WebRTC Compound RTCP SR/RR & Anti-Spoofed BYE Flood Guard [54 🎉] · SIP Singleton Smuggling Via Cap & rport NAT Pinhole Guard [55 🎉] · WebRTC ICE ufrag/pwd Entropy & Candidate SSRF Guard [56 · SVG 60 🎉] · SIP Early UPDATE Hijack & CSeq Rollover Guard [57 · 420 Dims 🎉] · WebRTC SRTP AES-GCM Nonce & SRTCP E=1 Guard [58 · P830 🎉] · SIP Preloaded Route Open-Relay & SIPS Downgrade Guard [59 · 850 Probes 🎉] · WebRTC SCTP vtag/RE-CONFIG & SACK Gap-Ack Guard [60 🎉 · Stage 420 🎉] · SIP Parallel Forking Max-Breadth & RFC 3911 Join Guard [61 · Stage 421] · WebRTC RTP CSRC Mix-Minus & RFC 6465 Audio-Level Guard [62 · Stage 422] · SIP Multipart Shadow-SDP & RFC 3204 ISUP/QSIG Guard [63 · Stage 423 · P840 🎉] · WebRTC Opus Code-3 Bomb & Stereo Downmix Guard [64 · Stage 424 · 860 Probes 🎉] · SIP/WebRTC SDP Origin Version Lock & BUNDLE/maxptime Guard [65 🎉 · Stage 425 🎉] · WebRTC ICE-TCP Framing & Nomination/XOR-MAPPED Guard [66 · Stage 426 · SVG 70 🎉] · SIP/RTP RFC 4733 DTMF StartTs Dedup & Dual-DTMF Smuggling Guard [67 · Stage 427 · 430 Dims 🎉] · WebRTC TWCC Span Bomb & Unsent-Seq/REMB Floor Guard [68 · Stage 428 · P850 🎉] · SIP RFC 4028 Session-Timer & Half-Open RTP Zombie Reaper Guard [69 · Stage 429 · 870 Probes 🎉] · WebRTC RED Nesting & ULPFEC/CN Acoustic-Shock Guard [70 🎉 · Stage 430 🎉] · SIPREC Metadata XXE/a=label & SRS Fail-Closed Guard [71 · Stage 431 · SVG 75 🎉] · WebRTC TURN Peer-SSRF & ChannelData Framing Guard [72 · Stage 432 · 435 Dims 🎉] · SIP STIR/SHAKEN x5u Anti-SSRF/iat Replay & Attestation Step-Up Guard [73 · Stage 433 · P860 & 75th FAQ & 875 Tests 🎉])",
-      desc: "Standalone single-topic guides: (1) Cascaded vs. S2S (P715/P716); (2) WebRTC vs. WS vs. SIP 8kHz Resampling (P717/P718); (3) Read-Only Speculative Voice RAG (speculative-voice-rag-faq.en.md · P719); (4) Async Tool turnEpoch Write Fence & Saga (voice-tool-epoch-fence-faq.en.md · P720); (5) Nonlinear Echo & TSE Crosstalk Lock (barge-in-echo-crosstalk-faq.en.md · P721/P722); (6) Warm Transfer Signed Context Packet & Consultative Whisper Handoff (warm-transfer-whisper-handoff-faq.en.md · P723/P724); (7) Telephone Payment DTMF Bypass & PCI Scope Boundaries (voice-pci-dtmf-scope-faq.en.md · P725); (8) SIPREC Archival Ring-Buffer Redaction & Fail-Closed Quarantine (siprec-pii-audio-redaction-faq.en.md · P726); (9) Outbound Parallel Streaming AMD & TCPA Dual-Timezone Safe-Harbor Gate (outbound-amd-voicemail-tcpa-faq.en.md · P727/P728); (10) Alphanumeric Entity Disambiguation & SSML Chunked Phonetic Readback (voice-alphanumeric-disambiguation-faq.en.md · P729/P730); (11) Mid-Call Disaster Recovery & Session State Continuity (voice-midcall-failover-session-recovery-faq.en.md · P731/P732); (12) Multi-Party Streaming Diarization & Speaker-Role Write Isolation (voice-multiparty-diarization-role-isolation-faq.en.md · P733/P734); (13) Intra-Sentence Code-Switching Unified Sub-Word Decoding & Multilingual TTS Continuity (voice-multilingual-codeswitch-dialect-faq.en.md · P735/P736); (14) Edge-Cloud Quantized Speech Container & Sovereign Audio Residency (voice-edge-cloud-quantized-container-failover-faq.en.md · P737/P738); (15) Anti-Deepfake Vocoder Phase Liveness & Multi-Factor Voice Auth (voice-anti-deepfake-liveness-auth-faq.en.md · P739/P740); (16) Long-Call 4-Turn Audio Window Pruning & PTU/PAYGO Elastic FinOps (voice-finops-audio-context-pruning-ptu-faq.en.md · P741/P742); (17) Multimodal Avatar Lip-Sync & Visual Co-Browsing Safety (voice-multimodal-avatar-cobrowsing-sync-faq.en.md · P743/P744); (18) Affective Prosody De-Escalation, EU AI Act Workplace Compliance & Crisis Distress Silence (voice-affective-prosody-emotion-deescalation-faq.en.md · P745/P746); (19) Post-Call Verbal Promise vs. CRM Ticket Reconciliation & 100-Point Deterministic QA Rubric (voice-postcall-promise-ticket-reconciliation-qa-faq.en.md · P747/P748); (20) Multi-Agent Swarm Single Front-Stage Persona, <=2 Hops Loop Guard & Sub-Agent Least-Privilege Isolation (voice-multi-agent-swarm-handoff-loop-guard-faq.en.md · P749/P750); (21) Far-Field 85dB MVDR Spatial Beamforming Anti-Hallucination & Industrial OSHA LOTO 4-Digit Challenge Interlock (voice-farfield-industrial-drivethru-noise-beamforming-faq.en.md · P751/P752); (22) Canary Shadow Dry-Run Rollout, <=500ms Auto-Rollback & Cross-Call Memory Poisoning Isolation (voice-canary-shadow-rollout-memory-poisoning-faq.en.md · P753/P754); (23) EAA/ADA Speech Disfluency >=2200ms Adaptive EOU, RFC 4103 RTT Fallback & E911/112 PIDF-LO Zero-Auth Preemption (voice-accessibility-disfluency-e911-pidflo-bridge-faq.en.md · P755/P756); (24) Real-Time Interpreter Wait-k Polarity/Dosage AST Gate & Tenant-Isolated Domain Hotword WFST Shallow Fusion (voice-realtime-interpreter-polarity-hotword-isolation-faq.en.md · P757/P758); (25) Omnichannel Voice+App CAS Optimistic Concurrency Lock & <=8kHz Ultrasonic/Canary Denial-of-Wallet Defense (voice-omnichannel-cas-concurrency-ultrasonic-wallet-guard-faq.en.md · P759/P760); (26) SIP 183 Early Media Mute, 180-260ms RTP Latching Warm-Up & Pre-TTS ISO 4217 Currency/Polyphone SSML Gate (voice-sip-early-media-clipping-tts-currency-homograph-faq.en.md · P761/P762); (27) Bluetooth HFP/SCO Handover Pop Mute, 600-900ms VAD Freeze & WebRTC Opus DTX 120-200ms Zero-PCM Tail / 80-120ms Onset Pre-Roll (voice-bluetooth-hfp-handover-opus-dtx-vad-deadlock-faq.en.md · P763/P764); (28) Post-Quantum X25519MLKEM768 SIPREC Escrow, >21.85m SRTP ROC Rollover Self-Healing & Per-Subject DEK Voiceprint Crypto-Shredding (voice-pqc-hybrid-mlkem-siprec-voiceprint-shredding-faq.en.md · P765/P766); (29) ITU-T G.107 Real-Time MOS-LQO (<3.10) <=8-Word + SMS/RCS Card Fallback & <=75ms Regional Edge SIP/RTP Media Anchoring (voice-realtime-mos-lqo-degradation-sip-rtp-hairpin-anchor-faq.en.md · P767/P768); (30) PSTN/VoLTE 3GPP TrFO >=16kHz Fricative (F/S) Preservation + 3-6dB Pre-Emphasis & RTP Clock-Drift ASRC <=±50ppm Resynchronization (voice-pstn-trfo-fricative-preservation-rtp-clock-drift-asrc-faq.en.md · P769/P770); (31) Carrier STIR/SHAKEN A-Level Attestation + STI-CA x5u SSRF Defense & In-Band DTMF Goertzel >=45dB Notch Strip + 50-120ms Deduplication (voice-stir-shaken-ani-attestation-inband-dtmf-goertzel-strip-faq.en.md · P771/P772); (32) SIP RFC 4028 [90,180]s Session-Timer + 15-30s RTP Dead-Air Watchdog & WebRTC RFC 7675 <=30s ICE Consent + <=60s TURN Zombie Port Reaper (voice-sip-session-timer-zombie-reaper-webrtc-ice-consent-turn-faq.en.md · P773/P774); (33) Native S2S Emotional Contagion ITU-R BS.1770-4 [-20,-16] LUFS Clamp + 135-165 WPM & 1,100-1,600ms Syntactic Incomplete-Clause Hold + C2PA SNR>=38dB Watermark (voice-s2s-emotional-contagion-lufs-syntactic-incomplete-hold-faq.en.md · P775/P776); (34) WebRTC TWCC DSCP EF(46) Audio Priority + <350kbps Video Shedding & <=60ms Burst-Loss NetEQ PLC Cap + RFC 4585 NACK Anti-Hallucination (voice-webrtc-twcc-audio-priority-burst-loss-plc-hallucination-faq.en.md · P777/P778); (35) WebRTC RFC 8831 DataChannel Dual-Stream Split + <=64KB Backpressure Shedding & RFC 8828 mDNS Sanitizer + TURN IMDS SSRF Defense (voice-webrtc-datachannel-backpressure-mdns-turn-ssrf-faq.en.md · P779/P780); (36) SIP RFC 3264 Dynamic PT Symmetry + 0Hz DTMF Clock Parity + maxptime<=60ms & Re-INVITE<=2/min Transcoding DoS + RFC 3389 CN<=-38dBFS Guard (voice-sip-sdp-payload-symmetry-reinvite-codec-churn-dos-faq.en.md · P781/P782); (37) Edge SBC/HSM NIST FF1 Format-Preserving Tokenization (0 Cloud Plaintext, <=5ms) & RFC 4961 Crypto-Authenticated RTP Latching + RFC 5761 rtcp-mux (voice-edge-hsm-ff1-tokenization-symmetric-rtp-latching-faq.en.md · P783/P784); (38) WebRTC FlexFEC/Opus LBRR <=25% Overhead Anti-Congestion Spiral (<=85% BWE) & RFC 2198 RED Zero-Recursion (<=2 Blocks) + <=4,800-Tick Offset Guard (voice-webrtc-flexfec-lbrr-congestion-spiral-rfc2198-red-faq.en.md · P785/P786); (39) SIP RFC 3515 REFER Allowlist/Scrub + RFC 3891 Same-Tenant Replaces Lock & RFC 3263 SIPS Pinning + <=150ms Dead-SBC SRV Failover (voice-sip-refer-replaces-toll-fraud-dns-srv-sips-failover-faq.en.md · P787/P788); (40) SIP RFC 3261 Via R-URI Hash Loop/Spiral Guard + Max-Forwards [10,70] Clamp & WebRTC ICE-Lite 487 Arbitration + DTLS 100-250ms Fast Backoff (voice-sip-loop-max-forwards-spiral-webrtc-ice-lite-role-conflict-faq.en.md · P789/P790); (41) VoLTE SIP RFC 3262 PRACK (<=4 Retries) / RFC 3312 QCI-1 Precondition Gate & RFC 6141 Rejected Re-INVITE Atomic Rollback + 491 Glare Backoff (voice-sip-prack-100rel-qci1-precondition-reinvite-rollback-faq.en.md · P791/P792); (42) WebRTC RFC 9335 Cryptex Header Privacy (0 Plaintext ssrc-audio-level Leaks) & RTP RFC 3550 SSRC Collision Loop Guard (voice-webrtc-cryptex-header-privacy-rtp-ssrc-collision-loop-faq.en.md · P793/P794); (43) SIP RFC 8760 SHA-256 Digest Auth (0 MD5/Replay) & RFC 5626 Outbound Flow-Token HMAC + Path Open-Relay SSRF Guard (voice-sip-digest-sha256-replay-rfc5626-outbound-flow-token-faq.en.md · P795/P796); (44) WebRTC RFC 8888 RTCP CCFB ECN-CE Anti-Spoofing (<=256 Reports) & RFC 3550 RR/XR TWCC Loss Cross-Check + Signed [1,3000]ms RTT Guard (voice-webrtc-rtcp-ccfb-ecn-spoof-rr-xr-bwe-sabotage-faq.en.md · P797/P798); (45) WebRTC RFC 5764/7983 DTLS-SRTP First-Byte Demux + Stateless Cookie ([576,1200]B MTU) & RFC 8842 a=setup Deadlock + [2000,5000]ms SRTP MKI Rekey Guard (voice-webrtc-dtls-srtp-rfc5764-demux-hello-cookie-setup-deadlock-faq.en.md · P799/P800 🎉); (46) WebRTC RFC 4585/5104 AVPF NACK/PLI Storm ([1,3] Retries & trr-int [100,500]ms) & RFC 4588 RTX Separate SSRC / OSN + apt BWE Isolation Guard (voice-webrtc-rtcp-avpf-nack-pli-storm-rtx-osn-apt-faq.en.md · P801/P802); (47) SIP RFC 6026 INVITE 2xx Timer G/H ([1,7] Retries / [8,32]s) + z9hG4bK Cookie & Rogue BYE/ACK Dialog-Tuple + [1,64] CSeq Guard (voice-sip-rfc6026-invite-2xx-timer-gh-magic-cookie-rogue-bye-faq.en.md · P803/P804); (48) WebRTC RFC 8829 JSEP SDP Glare Auto-Rollback + Append-Only m=/mid Order ([1,16] Slots) & RFC 8842 DTLS SHA-256 Fingerprint + a=msid Isolation Guard (voice-webrtc-jsep-rfc8829-sdp-glare-rollback-mid-msid-order-faq.en.md · P805/P806); (49) Enterprise SIP RFC 3840 automata Bot-Loop ([1,4] Turns) + RFC 7044 History-Info ([1,5] Hops) & RFC 3325 PAI Ingress Strip + Privacy:id Egress Scrub Guard (voice-sip-rfc3840-automata-bot-loop-pai-privacy-history-info-faq.en.md · P807/P808 🎉); (50) WebRTC RFC 8851/8852 Simulcast Immutable RID Pinning ([1,3] Layers) & RFC 5104 RTCP TMMBR [24,64]kbps Audio Floor + [1,4]/s Pause/Resume Guard (voice-webrtc-simulcast-rfc8851-rid-spoof-tmmbr-mute-storm-faq.en.md · P809/P810 🎉); (51) Enterprise SIP RFC 4235 Dialog Event (BLF) Call-Tag Redaction Anti-Pickup Hijack & RFC 6665 Unsolicited NOTIFY 481 + RFC 5263 [1,5]/s Rate Guard (voice-sip-rfc4235-dialog-blf-pickup-hijack-notify-storm-faq.en.md · P811/P812 🎉); (52) WebRTC RFC 8832 DCEP In-Band Channel-Open Allowlist + RFC 8831 PPID Type-Confusion Gate & DTLS Role Even/Odd Stream-ID Parity + [16,64]KB Max-Message-Size Guard (voice-webrtc-dcep-rfc8832-channel-open-ppid-stream-glare-faq.en.md · P813/P814 · Topic 50 🎉); (53) Enterprise SIP RFC 3326 Reason Q.850 Scrubbing + Forking Completed Elsewhere & RFC 3329 Sec-Agree 494 + [1,2] SIP 420 Bad Extension Retry Guard (voice-sip-rfc3326-reason-q850-spoof-rfc3329-sec-agree-420-loop-faq.en.md · P815/P816 · Topic 51); (54) WebRTC RFC 8285 Extmap Mixed-Header Bounds + Immutable Mid-Call ID Mapping & RFC 3550 P=1 Padding Underflow / Covert-Byte Scrub Guard (voice-webrtc-rfc8285-extmap-mixed-header-remapping-padding-overflow-faq.en.md · P817/P818 · Topic 52); (55) Enterprise SIP/SDP RFC 4568 SDES Inline Key-Leak + c= Connection Sinkhole Block & RFC 8866 a=fmtp [32,256]B / [1,16] Attribute Overflow Guard (voice-sip-sdp-rfc4568-sdes-key-leak-c-line-sinkhole-fmtp-overflow-faq.en.md · P819/P820 · Topic 53); (56) WebRTC RFC 3550 Compound RTCP SR/RR Prefix + SDES CNAME [8,64]B Bounds & Anti-Spoofed RTCP BYE [1,4] SSRC Flood Guard (voice-webrtc-rtcp-rfc3550-compound-sr-rr-sdes-cname-bye-flood-faq.en.md · P821/P822 · Topic 54 🎉); (57) Enterprise SIP RFC 3261 Singleton Header Smuggling + [1,8] Via Hop Cap & RFC 3581 rport/received Socket-Source Overwrite + [15,30]s Keepalive Guard (voice-sip-rfc3581-via-rport-nat-pinhole-header-chain-amplification-faq.en.md · P823/P824 · Topic 55 🎉); (58) WebRTC RFC 8839 ICE ufrag/pwd Entropy Floor ([24,64] / [128,256] bits) & RFC 8445 Candidate Port-Scan SSRF + [1,16] Cap Guard (voice-webrtc-ice-rfc8839-ufrag-pwd-entropy-candidate-port-scan-ssrf-faq.en.md · P825/P826 · Topic 56 · SVG 60 🎉); (59) Enterprise SIP RFC 3311 Early-Dialog UPDATE Contact Pinning + [1,4] Cap & RFC 3261 CSeq Method Match + [1,64] Jump-Step Guard (voice-sip-rfc3311-update-early-media-hijack-cseq-rollover-replay-faq.en.md · P827/P828 · Topic 57 · 420 Dims 🎉); (60) WebRTC RFC 7714 SRTP AES-GCM Nonce Zero-Reuse + [64,128] Replay Window & RFC 3711 SRTCP Mandatory E=1 + [80,128]b Auth Tag Guard (voice-webrtc-srtp-rfc7714-aes-gcm-roc-nonce-reuse-unencrypted-srtcp-faq.en.md · P829/P830 🎉 · Topic 58); (61) Enterprise SIP RFC 3261 Preloaded Route Open-Relay Strip + [1,6] Hop Cap & RFC 5923 SIPS mTLS [128,256]b Anti-Downgrade Guard (voice-sip-rfc3261-record-route-loose-routing-open-relay-sips-downgrade-faq.en.md · P831/P832 · Topic 59 · 850 Probes 🎉); (62) WebRTC RFC 8831/4960 32-Bit vtag + Stateless HMAC Cookie + RFC 6525 RE-CONFIG Deferred Drain ([1,4]) & SACK Gap-Ack [1,16] Cap + a_rwnd=0 Persist Guard (voice-webrtc-sctp-rfc8831-rfc4960-vtag-init-flood-stream-reset-rwnd-deadlock-faq.en.md · P833/P834 · Topic 60 🎉 · Stage 420 🎉); (63) Enterprise SIP RFC 5393 Parallel Forking Max-Breadth ([1,8]) + Atomic Secondary 200 OK Reaping & RFC 3911 Join Anti-Wiretap + Early-Replaces Direction Guard (voice-sip-rfc5393-parallel-forking-max-breadth-multiple-200ok-rfc3911-join-faq.en.md · P835/P836 · Topic 61 · Stage 421); (64) WebRTC/RTP RFC 3550 Mixer CSRC Count Bounds ([1,4]) + Mix-Minus Self-CSRC Loopback Suppression & RFC 6465 Audio-Level PCM Cross-Check + [300,1200]ms Hold-Time Guard (voice-webrtc-rtp-rfc3550-rfc6465-csrc-mixer-audio-level-spoof-loopback-faq.en.md · P837/P838 · Topic 62 · Stage 422); (65) Enterprise SIP RFC 5621 Multipart Shadow-SDP Smuggling Reject ([1,3] Parts) & RFC 3204 Untrusted Trunk ISUP/QSIG 100% Strip + [256,8192]B Byte-Closure Guard (voice-sip-rfc5621-multipart-mime-sdp-smuggling-isup-qsig-injection-faq.en.md · P839/P840 🎉 · Topic 63 · Stage 423); (66) WebRTC RFC 6716 Opus TOC Code-3 Frame-Count Bomb Pre-Check ([10,60]ms / <=120ms) & RFC 7587 Unnegotiated Stereo (s=1) Mono Downmix + [1,3]-Frame LBRR/PLC Cap Guard (voice-webrtc-opus-rfc6716-rfc7587-toc-frame-bomb-fec-dtx-stereo-overflow-faq.en.md · P841/P842 · Topic 64 · Stage 424 · 860 Probes 🎉); (67) Enterprise SIP/WebRTC SDP RFC 8866 Origin sess-id Immutability + Monotonic sess-version ([1,16] Step) & RFC 8843 Bijective BUNDLE MID Closure + [10,60]ms maxptime Clamp Guard (voice-sip-webrtc-sdp-rfc8866-origin-version-retrograde-bundle-mid-maxptime-faq.en.md · P843/P844 · Topic 65 🎉 · Stage 425 🎉); (68) WebRTC RFC 6544/4571 ICE-TCP 16-Bit Length Framing + RFC 7983 Alignment ([256,1400]B) & Post-XOR XOR-MAPPED Loopback Scrub + [1,3]/min USE-CANDIDATE Throttle Guard (voice-webrtc-ice-tcp-rfc6544-rfc4571-framing-desync-nomination-thrash-xor-mapped-faq.en.md · P845/P846 · Topic 66 · Stage 426 · SVG 70 🎉); (69) Enterprise SIP/RTP RFC 4733 telephone-event StartRtpTimestamp Dedup ([40,2000]ms Duration) & In-Band/Out-of-Band Dual-DTMF Smuggling + [45,80]dB Notch Guard (voice-sip-rtp-rfc4733-dtmf-duration-overflow-end-bit-dedup-dual-injection-faq.en.md · P847/P848 · Topic 67 · Stage 427 · 430 Dims 🎉); (70) WebRTC RTCP TWCC Status-Chunk Span Bomb ([1,256]) + recv_delta Byte Closure & SentPacketHistory Ledger Match + [24,64]kbps Protected Audio Floor Guard (voice-webrtc-rtcp-twcc-rfc8888-chunk-span-bomb-recv-delta-wrap-remb-cliff-faq.en.md · P849/P850 🎉 · Topic 68 · Stage 428 · 70th FAQ & 870-Test Milestone 🎉); (71) Enterprise SIP RFC 4028 Session-Expires [90,1800]s + Min-SE >=90s Clamp & Explicit Refresher UPDATE + [15,30]s RTP Dead-Air Zombie Reaper Guard (voice-sip-rfc4028-session-timer-min-se-downgrade-refresher-glare-zombie-reaper-faq.en.md · P851/P852 · Topic 69 · Stage 429 · 870 Probes & 680 POC Probes 🎉); (72) WebRTC RFC 2198 RED Non-Recursive [1,2]-Block Closure & RFC 5109 ULPFEC Length Bounds + RFC 3389 CN [-65,-38] dBFS Acoustic-Shock Guard (voice-webrtc-rtp-rfc2198-red-nesting-bomb-rfc5109-ulpfec-mask-overread-cn-shock-faq.en.md · P853/P854 · Topic 70 🎉 · Stage 430 🎉); (73) Enterprise SIP RFC 7866/6341 (SIPREC) Metadata XXE/a=label [1,4] Stream Binding & [500,3000]ms SRS Fail-Closed Quarantine Guard (voice-sip-siprec-rfc7866-rfc6341-metadata-xxe-stream-binding-fail-closed-quarantine-faq.en.md · P855/P856 · Topic 71 · Stage 431 · SVG 75 & 865 Guardrails 🎉);       (74) WebRTC RFC 8656 (TURN) XOR-PEER-ADDRESS Anti-SSRF [1,8] Permission Cap & 0x4000-0x7FFF ChannelData 4B Framing + [60,600]s Lifetime Quota Guard (voice-webrtc-turn-rfc8656-channelbind-ssrf-relay-bounce-permission-quota-amplification-faq.en.md · P857/P858 · Topic 72 · Stage 432 · 435 Dims 🎉); (75 🎉) Enterprise SIP RFC 8224/8225 (STIR/SHAKEN) Vetted STI-PA x5u Allowlist Cache + [15,60]s iat Replay Deduplication & attest=B/C Write Block + [1,2]-Factor Out-of-Band FIDO2/Push Step-Up Guard (voice-sip-stir-shaken-rfc8224-rfc8225-x5u-ssrf-iat-replay-attestation-stepup-faq.en.md · P859/P860 🎉 · Topic 73 · Stage 433 · P860, 75th FAQ & 875-Test Triple Milestone 🎉).",
+      title: "115 Single-Topic Architect Selection FAQs 🎉 (Cascaded/S2S · WebRTC/WS/SIP · Speculative RAG · Tool Epoch Fence · Barge-in Echo & Crosstalk · Warm Transfer & Whisper · PCI DTMF Bypass [6A] · SIPREC Audio Redaction [6B] · Outbound Parallel AMD & TCPA Safe-Harbor [7] · Alphanumeric Disambiguation & SSML Readback [8] · Mid-Call Failover & Session Recovery [9] · Multi-Party Streaming Diarization & Role Lock [10] · Intra-Sentence Code-Switching & Multilingual TTS [11] · Edge Quantized Container & Sovereign Residency [12] · Anti-Deepfake Phase Liveness & FIDO2 Auth [13] · Long-Call Audio Pruning & PTU/PAYGO FinOps [14] · Multimodal Avatar Lip-Sync & Co-Browsing [15] · Affective Prosody, EU AI Act & Crisis Silence [16] · Post-Call Promise Reconciliation & 100-Pt QA [17] · Multi-Agent Swarm & Least-Privilege Isolation [18] · Far-Field 85dB MVDR & Industrial OSHA LOTO [19] · Canary Shadow Rollout & Memory Poisoning Guard [20] · EAA/ADA Speech Accessibility & E911 PIDF-LO Preemption [21] · Real-Time Interpreter Polarity/Dosage & Tenant Hotword WFST Isolation [22] · Omnichannel Voice+App CAS Concurrency & Ultrasonic/Wallet-Drain Defense [23] · SIP 183 Early Media Anti-Clipping & TTS Currency/Polyphone Disambiguation [24] · Bluetooth HFP Handover Guard & Opus DTX Deadlock Breaker [25] · PQC Hybrid ML-KEM-768 SIPREC Escrow & Voiceprint Crypto-Shredding [26] · Real-Time MOS-LQO SMS Fallback & Multi-Region SIP/RTP Edge Anchoring [27] · PSTN TrFO Fricative Preservation & RTP Clock-Drift ASRC Resync [28] · STIR/SHAKEN A-Level Gate & In-Band DTMF Goertzel Strip [29] · SIP Half-Open RTP Zombie Reaper & WebRTC ICE Consent TURN Guard [30] · S2S Emotional Contagion Clamp & Syntactic Incomplete-Clause Hold [31] · WebRTC TWCC Audio-Priority Shedding & Burst-Loss PLC Gate [32] · WebRTC DataChannel Backpressure & mDNS/TURN SSRF Gate [33] · SIP SDP Dynamic PT Symmetry & Re-INVITE DoS Gate [34] · Edge HSM FF1 Tokenization & Symmetric RTP Latching Gate [35] · WebRTC FlexFEC/LBRR Anti-Spiral & RED Nesting Gate [36] · SIP REFER Toll-Fraud & DNS SRV <=150ms Failover Gate [37] · SIP Loop/Spiral Guard & ICE-Lite 487 + DTLS Fast Backoff [38] · VoLTE PRACK/QCI-1 Precondition & RFC 6141 Atomic Rollback [39] · WebRTC Cryptex Header Privacy & RTP SSRC Collision Loop Guard [40] · SIP SHA-256 Anti-Replay & RFC 5626 Flow-Token SSRF Guard [41] · WebRTC RTCP CCFB ECN Anti-Spoof & RR RTT Underflow Guard [42] · WebRTC DTLS-SRTP Demux Cookie Gate & SDP Setup / MKI Rekey Guard [43 🎉] · WebRTC AVPF NACK/PLI Storm & RTX OSN/apt Isolation Guard [44] · SIP RFC 6026 2xx Timer G/H & Rogue BYE/ACK Tuple Guard [45] · WebRTC JSEP SDP Glare Rollback + m=/mid Order & DTLS SHA-256 Fingerprint Guard [46] · SIP RFC 3840 automata Bot-Loop & PAI/Privacy:id Guard [47 🎉] · WebRTC Simulcast a=rid & RTCP TMMBR Audio Floor Guard [48 🎉] · SIP RFC 4235 BLF Tag Redaction & RFC 6665 NOTIFY Guard [49 🎉] · WebRTC DCEP Open + PPID & Stream-ID Parity Guard [50 🎉] · SIP RFC 3326 Q.850 Scrub & Sec-Agree/420 Loop Guard [51] · WebRTC RFC 8285 Extmap Immutability & Padding Underflow Guard [52] · SIP/SDP RFC 4568 SDES Key & c=/fmtp Overflow Guard [53] · WebRTC Compound RTCP SR/RR & Anti-Spoofed BYE Flood Guard [54 🎉] · SIP Singleton Smuggling Via Cap & rport NAT Pinhole Guard [55 🎉] · WebRTC ICE ufrag/pwd Entropy & Candidate SSRF Guard [56 · SVG 60 🎉] · SIP Early UPDATE Hijack & CSeq Rollover Guard [57 · 420 Dims 🎉] · WebRTC SRTP AES-GCM Nonce & SRTCP E=1 Guard [58 · P830 🎉] · SIP Preloaded Route Open-Relay & SIPS Downgrade Guard [59 · 850 Probes 🎉] · WebRTC SCTP vtag/RE-CONFIG & SACK Gap-Ack Guard [60 🎉 · Stage 420 🎉] · SIP Parallel Forking Max-Breadth & RFC 3911 Join Guard [61 · Stage 421] · WebRTC RTP CSRC Mix-Minus & RFC 6465 Audio-Level Guard [62 · Stage 422] · SIP Multipart Shadow-SDP & RFC 3204 ISUP/QSIG Guard [63 · Stage 423 · P840 🎉] · WebRTC Opus Code-3 Bomb & Stereo Downmix Guard [64 · Stage 424 · 860 Probes 🎉] · SIP/WebRTC SDP Origin Version Lock & BUNDLE/maxptime Guard [65 🎉 · Stage 425 🎉] · WebRTC ICE-TCP Framing & Nomination/XOR-MAPPED Guard [66 · Stage 426 · SVG 70 🎉] · SIP/RTP RFC 4733 DTMF StartTs Dedup & Dual-DTMF Smuggling Guard [67 · Stage 427 · 430 Dims 🎉] · WebRTC TWCC Span Bomb & Unsent-Seq/REMB Floor Guard [68 · Stage 428 · P850 🎉] · SIP RFC 4028 Session-Timer & Half-Open RTP Zombie Reaper Guard [69 · Stage 429 · 870 Probes 🎉] · WebRTC RED Nesting & ULPFEC/CN Acoustic-Shock Guard [70 🎉 · Stage 430 🎉] · SIPREC Metadata XXE/a=label & SRS Fail-Closed Guard [71 · Stage 431 · SVG 75 🎉] · WebRTC TURN Peer-SSRF & ChannelData Framing Guard [72 · Stage 432 · 435 Dims 🎉] · SIP STIR/SHAKEN x5u Anti-SSRF/iat Replay & Attestation Step-Up Guard [73 · Stage 433 · P860 & 75th FAQ & 875 Tests 🎉] · WebRTC DTLS-SRTP CID Mobility & MKI Seamless Key Rotation Guard [74 · Stage 434 · 880 Probes 🎉] · SIP DNS NAPTR/SRV Anti-Downgrade & 32s Blackhole Failover Guard [75 🎉 · Stage 435] · WebRTC RTCP CCFB Byte Closure & Post-DTX Audio Floor Guard [76 · Stage 436 · SVG 80 & 875 Guards 🎉] · SIP PAI Trust-Boundary Scrub & History-Info Loop Guard [77 · Stage 437 · 440 Dims 🎉] · WebRTC SFrame/MLS E2EE Ratchet & SFU Zero-Plaintext Guard [78 · Stage 438 · P870 & 80th FAQ & 880 Tests 🎉] · SIP Join Anti-Wiretap & Replaces early-only Guard [79 · Stage 439 · 890 Probes & 700 Live POC 🎉] · WebRTC RFC 8083 Circuit Breakers & 10x TFRC Audio-First Shedding Guard [80 🎉 · Stage 440 🎉] · SIP RFC 6141 Re-INVITE Rollback & 491 Glare Backoff Guard [81 · Stage 441 · SVG 85 & 885 Guards 🎉] · WebRTC DiffServ DSCP BUNDLE Queue-Ordering & EF(46) Guard [82 · Stage 442 · 445 Dims 🎉] · SIP/IMS Precondition Anti-Ghost-Ringing & QCI-1 Timeout Guard [83 · Stage 443 · P880 & 85th FAQ & 885 Tests 🎉] · WebRTC SRTP ROC Auth-Before-Commit & RTX OSN Isolation Guard [84 · Stage 444 · 900 Probes & 710 Live POC 🎉] · SIP Outbound Dual-Edge Flow-Token & mTLS SAN Reuse Guard [85 🎉 · Stage 445 🎉] · WebRTC RFC 9335 Cryptex Whole-Extension/CSRC Guard [86 · Stage 446 · SVG 90 & 895 Guards 🎉] · SIP RFC 6026 Accepted & RFC 4320 Storm Guard [87 · Stage 447 · 450 Dims 🎉] · WebRTC RFC 6544/4571 ICE-TCP Framing & HoL Guard [88 · Stage 448 · P890 & 90th FAQ 🎉] · SIP RFC 6665/4235 BLF & NOTIFY Guard [89 · Stage 449 · 901 Guards & 910 Probes 🎉] · WebRTC RFC 2198/5109 RED & ULPFEC Guard [90 🎉 · Stage 450 🎉] · SIP RFC 3326/8599 Reason & Push-Wake Guard [91 · Stage 451 · SVG 95 & 905 Guards 🎉] · WebRTC RFC 8831/8832 DataChannel & PR-SCTP Guard [92 · Stage 452 · 455 Dims 🎉] · SIP RFC 3840/3841 Bot-Loop & Caller-Prefs Guard [93 · Stage 453 · P900 & 95th FAQ 🎉] · WebRTC RFC 3550/8108 SSRC & CSRC Loop Guard [94 · Stage 454 · 911 Guards & 920 Probes 🎉] · SIP RFC 3329 sec-agree Anti-Downgrade & 494 Guard [95 🎉 · Stage 455 🎉] · WebRTC RFC 3611 RTCP XR RTT & MOS Guard [96 · Stage 456 · SVG 100 & 915 Guards 🎉] · SIP RFC 6140 GIN Bulk Trunk & DID Guard [97 · Stage 457 · 460 Dims 🎉] · WebRTC RFC 8445/8838 Trickle ICE Guard [98 · Stage 458 · 100th FAQ & P910 🎉] · SIP RFC 8946 STIR/SHAKEN div Chain Guard [99 · Stage 459 · 921 Guards & 930 Probes 🎉] · WebRTC RFC 5104/4585 PLI/FIR Audio Guard [100 🎉 · Stage 460 🎉] · SIP RFC 8760 SHA-256 & nc Replay Guard [101 · Stage 461 · SVG 105 & 925 Guards 🎉] · WebRTC RFC 9143 BUNDLE Demux & SSRC Guard [102 · Stage 462 · 465 Dims 🎉] · SIP RFC 7339 Overload Control & oc-validity Guard [103 · Stage 463 · 105th FAQ & P920 🎉] · WebRTC RFC 7667 SFU SSRC-Rewrite & ROC Guard [104 · Stage 464 · 931 Guards & 750 POC 🎉] · SIP RFC 3327 Path & RFC 3608 Service-Route Guard [105 🎉 · Stage 465 🎉] · WebRTC RFC 7941 SDES CNAME Privacy & Lip-Sync Guard [106 · Stage 466 · SVG 110 & 935 Guards 🎉] · SIP RFC 4412 RPH & RFC 5009 P-Early-Media Guard [107 · Stage 467 · 470 Dims 🎉] · WebRTC RFC 8852 RID & repaired-rtp-stream-id Guard [108 · Stage 468 · 110th FAQ & P930 🎉] · SIP RFC 6086 Info-Package & DTMF Dedup Guard [109 · Stage 469 · 941 Guards & 760 POC 🎉] · WebRTC RFC 6051 Rapid NTP & RFC 5450 toffset Guard [110 🎉 · Stage 470 🎉] · SIP RFC 5373 Answer-Mode & RFC 3842 MWI Guard [111 · Stage 471 · SVG 115 & 945 Guards 🎉] · WebRTC RFC 8834 RTCP MTU & RFC 5506 rtcp-rsize Guard [112 · Stage 472 · 475 Dims 🎉] · SIP RFC 7647 & RFC 4488 Refer-Sub & sipfrag Guard [113 · Stage 473 · 115th FAQ & P940 🎉])",
+      desc: "Standalone single-topic guides: (1) Cascaded vs. S2S (P715/P716); (2) WebRTC vs. WS vs. SIP 8kHz Resampling (P717/P718); (3) Read-Only Speculative Voice RAG (speculative-voice-rag-faq.en.md · P719); (4) Async Tool turnEpoch Write Fence & Saga (voice-tool-epoch-fence-faq.en.md · P720); (5) Nonlinear Echo & TSE Crosstalk Lock (barge-in-echo-crosstalk-faq.en.md · P721/P722); (6) Warm Transfer Signed Context Packet & Consultative Whisper Handoff (warm-transfer-whisper-handoff-faq.en.md · P723/P724); (7) Telephone Payment DTMF Bypass & PCI Scope Boundaries (voice-pci-dtmf-scope-faq.en.md · P725); (8) SIPREC Archival Ring-Buffer Redaction & Fail-Closed Quarantine (siprec-pii-audio-redaction-faq.en.md · P726); (9) Outbound Parallel Streaming AMD & TCPA Dual-Timezone Safe-Harbor Gate (outbound-amd-voicemail-tcpa-faq.en.md · P727/P728); (10) Alphanumeric Entity Disambiguation & SSML Chunked Phonetic Readback (voice-alphanumeric-disambiguation-faq.en.md · P729/P730); (11) Mid-Call Disaster Recovery & Session State Continuity (voice-midcall-failover-session-recovery-faq.en.md · P731/P732); (12) Multi-Party Streaming Diarization & Speaker-Role Write Isolation (voice-multiparty-diarization-role-isolation-faq.en.md · P733/P734); (13) Intra-Sentence Code-Switching Unified Sub-Word Decoding & Multilingual TTS Continuity (voice-multilingual-codeswitch-dialect-faq.en.md · P735/P736); (14) Edge-Cloud Quantized Speech Container & Sovereign Audio Residency (voice-edge-cloud-quantized-container-failover-faq.en.md · P737/P738); (15) Anti-Deepfake Vocoder Phase Liveness & Multi-Factor Voice Auth (voice-anti-deepfake-liveness-auth-faq.en.md · P739/P740); (16) Long-Call 4-Turn Audio Window Pruning & PTU/PAYGO Elastic FinOps (voice-finops-audio-context-pruning-ptu-faq.en.md · P741/P742); (17) Multimodal Avatar Lip-Sync & Visual Co-Browsing Safety (voice-multimodal-avatar-cobrowsing-sync-faq.en.md · P743/P744); (18) Affective Prosody De-Escalation, EU AI Act Workplace Compliance & Crisis Distress Silence (voice-affective-prosody-emotion-deescalation-faq.en.md · P745/P746); (19) Post-Call Verbal Promise vs. CRM Ticket Reconciliation & 100-Point Deterministic QA Rubric (voice-postcall-promise-ticket-reconciliation-qa-faq.en.md · P747/P748); (20) Multi-Agent Swarm Single Front-Stage Persona, <=2 Hops Loop Guard & Sub-Agent Least-Privilege Isolation (voice-multi-agent-swarm-handoff-loop-guard-faq.en.md · P749/P750); (21) Far-Field 85dB MVDR Spatial Beamforming Anti-Hallucination & Industrial OSHA LOTO 4-Digit Challenge Interlock (voice-farfield-industrial-drivethru-noise-beamforming-faq.en.md · P751/P752); (22) Canary Shadow Dry-Run Rollout, <=500ms Auto-Rollback & Cross-Call Memory Poisoning Isolation (voice-canary-shadow-rollout-memory-poisoning-faq.en.md · P753/P754); (23) EAA/ADA Speech Disfluency >=2200ms Adaptive EOU, RFC 4103 RTT Fallback & E911/112 PIDF-LO Zero-Auth Preemption (voice-accessibility-disfluency-e911-pidflo-bridge-faq.en.md · P755/P756); (24) Real-Time Interpreter Wait-k Polarity/Dosage AST Gate & Tenant-Isolated Domain Hotword WFST Shallow Fusion (voice-realtime-interpreter-polarity-hotword-isolation-faq.en.md · P757/P758); (25) Omnichannel Voice+App CAS Optimistic Concurrency Lock & <=8kHz Ultrasonic/Canary Denial-of-Wallet Defense (voice-omnichannel-cas-concurrency-ultrasonic-wallet-guard-faq.en.md · P759/P760); (26) SIP 183 Early Media Mute, 180-260ms RTP Latching Warm-Up & Pre-TTS ISO 4217 Currency/Polyphone SSML Gate (voice-sip-early-media-clipping-tts-currency-homograph-faq.en.md · P761/P762); (27) Bluetooth HFP/SCO Handover Pop Mute, 600-900ms VAD Freeze & WebRTC Opus DTX 120-200ms Zero-PCM Tail / 80-120ms Onset Pre-Roll (voice-bluetooth-hfp-handover-opus-dtx-vad-deadlock-faq.en.md · P763/P764); (28) Post-Quantum X25519MLKEM768 SIPREC Escrow, >21.85m SRTP ROC Rollover Self-Healing & Per-Subject DEK Voiceprint Crypto-Shredding (voice-pqc-hybrid-mlkem-siprec-voiceprint-shredding-faq.en.md · P765/P766); (29) ITU-T G.107 Real-Time MOS-LQO (<3.10) <=8-Word + SMS/RCS Card Fallback & <=75ms Regional Edge SIP/RTP Media Anchoring (voice-realtime-mos-lqo-degradation-sip-rtp-hairpin-anchor-faq.en.md · P767/P768); (30) PSTN/VoLTE 3GPP TrFO >=16kHz Fricative (F/S) Preservation + 3-6dB Pre-Emphasis & RTP Clock-Drift ASRC <=±50ppm Resynchronization (voice-pstn-trfo-fricative-preservation-rtp-clock-drift-asrc-faq.en.md · P769/P770); (31) Carrier STIR/SHAKEN A-Level Attestation + STI-CA x5u SSRF Defense & In-Band DTMF Goertzel >=45dB Notch Strip + 50-120ms Deduplication (voice-stir-shaken-ani-attestation-inband-dtmf-goertzel-strip-faq.en.md · P771/P772); (32) SIP RFC 4028 [90,180]s Session-Timer + 15-30s RTP Dead-Air Watchdog & WebRTC RFC 7675 <=30s ICE Consent + <=60s TURN Zombie Port Reaper (voice-sip-session-timer-zombie-reaper-webrtc-ice-consent-turn-faq.en.md · P773/P774); (33) Native S2S Emotional Contagion ITU-R BS.1770-4 [-20,-16] LUFS Clamp + 135-165 WPM & 1,100-1,600ms Syntactic Incomplete-Clause Hold + C2PA SNR>=38dB Watermark (voice-s2s-emotional-contagion-lufs-syntactic-incomplete-hold-faq.en.md · P775/P776); (34) WebRTC TWCC DSCP EF(46) Audio Priority + <350kbps Video Shedding & <=60ms Burst-Loss NetEQ PLC Cap + RFC 4585 NACK Anti-Hallucination (voice-webrtc-twcc-audio-priority-burst-loss-plc-hallucination-faq.en.md · P777/P778); (35) WebRTC RFC 8831 DataChannel Dual-Stream Split + <=64KB Backpressure Shedding & RFC 8828 mDNS Sanitizer + TURN IMDS SSRF Defense (voice-webrtc-datachannel-backpressure-mdns-turn-ssrf-faq.en.md · P779/P780); (36) SIP RFC 3264 Dynamic PT Symmetry + 0Hz DTMF Clock Parity + maxptime<=60ms & Re-INVITE<=2/min Transcoding DoS + RFC 3389 CN<=-38dBFS Guard (voice-sip-sdp-payload-symmetry-reinvite-codec-churn-dos-faq.en.md · P781/P782); (37) Edge SBC/HSM NIST FF1 Format-Preserving Tokenization (0 Cloud Plaintext, <=5ms) & RFC 4961 Crypto-Authenticated RTP Latching + RFC 5761 rtcp-mux (voice-edge-hsm-ff1-tokenization-symmetric-rtp-latching-faq.en.md · P783/P784); (38) WebRTC FlexFEC/Opus LBRR <=25% Overhead Anti-Congestion Spiral (<=85% BWE) & RFC 2198 RED Zero-Recursion (<=2 Blocks) + <=4,800-Tick Offset Guard (voice-webrtc-flexfec-lbrr-congestion-spiral-rfc2198-red-faq.en.md · P785/P786); (39) SIP RFC 3515 REFER Allowlist/Scrub + RFC 3891 Same-Tenant Replaces Lock & RFC 3263 SIPS Pinning + <=150ms Dead-SBC SRV Failover (voice-sip-refer-replaces-toll-fraud-dns-srv-sips-failover-faq.en.md · P787/P788); (40) SIP RFC 3261 Via R-URI Hash Loop/Spiral Guard + Max-Forwards [10,70] Clamp & WebRTC ICE-Lite 487 Arbitration + DTLS 100-250ms Fast Backoff (voice-sip-loop-max-forwards-spiral-webrtc-ice-lite-role-conflict-faq.en.md · P789/P790); (41) VoLTE SIP RFC 3262 PRACK (<=4 Retries) / RFC 3312 QCI-1 Precondition Gate & RFC 6141 Rejected Re-INVITE Atomic Rollback + 491 Glare Backoff (voice-sip-prack-100rel-qci1-precondition-reinvite-rollback-faq.en.md · P791/P792); (42) WebRTC RFC 9335 Cryptex Header Privacy (0 Plaintext ssrc-audio-level Leaks) & RTP RFC 3550 SSRC Collision Loop Guard (voice-webrtc-cryptex-header-privacy-rtp-ssrc-collision-loop-faq.en.md · P793/P794); (43) SIP RFC 8760 SHA-256 Digest Auth (0 MD5/Replay) & RFC 5626 Outbound Flow-Token HMAC + Path Open-Relay SSRF Guard (voice-sip-digest-sha256-replay-rfc5626-outbound-flow-token-faq.en.md · P795/P796); (44) WebRTC RFC 8888 RTCP CCFB ECN-CE Anti-Spoofing (<=256 Reports) & RFC 3550 RR/XR TWCC Loss Cross-Check + Signed [1,3000]ms RTT Guard (voice-webrtc-rtcp-ccfb-ecn-spoof-rr-xr-bwe-sabotage-faq.en.md · P797/P798); (45) WebRTC RFC 5764/7983 DTLS-SRTP First-Byte Demux + Stateless Cookie ([576,1200]B MTU) & RFC 8842 a=setup Deadlock + [2000,5000]ms SRTP MKI Rekey Guard (voice-webrtc-dtls-srtp-rfc5764-demux-hello-cookie-setup-deadlock-faq.en.md · P799/P800 🎉); (46) WebRTC RFC 4585/5104 AVPF NACK/PLI Storm ([1,3] Retries & trr-int [100,500]ms) & RFC 4588 RTX Separate SSRC / OSN + apt BWE Isolation Guard (voice-webrtc-rtcp-avpf-nack-pli-storm-rtx-osn-apt-faq.en.md · P801/P802); (47) SIP RFC 6026 INVITE 2xx Timer G/H ([1,7] Retries / [8,32]s) + z9hG4bK Cookie & Rogue BYE/ACK Dialog-Tuple + [1,64] CSeq Guard (voice-sip-rfc6026-invite-2xx-timer-gh-magic-cookie-rogue-bye-faq.en.md · P803/P804); (48) WebRTC RFC 8829 JSEP SDP Glare Auto-Rollback + Append-Only m=/mid Order ([1,16] Slots) & RFC 8842 DTLS SHA-256 Fingerprint + a=msid Isolation Guard (voice-webrtc-jsep-rfc8829-sdp-glare-rollback-mid-msid-order-faq.en.md · P805/P806); (49) Enterprise SIP RFC 3840 automata Bot-Loop ([1,4] Turns) + RFC 7044 History-Info ([1,5] Hops) & RFC 3325 PAI Ingress Strip + Privacy:id Egress Scrub Guard (voice-sip-rfc3840-automata-bot-loop-pai-privacy-history-info-faq.en.md · P807/P808 🎉); (50) WebRTC RFC 8851/8852 Simulcast Immutable RID Pinning ([1,3] Layers) & RFC 5104 RTCP TMMBR [24,64]kbps Audio Floor + [1,4]/s Pause/Resume Guard (voice-webrtc-simulcast-rfc8851-rid-spoof-tmmbr-mute-storm-faq.en.md · P809/P810 🎉); (51) Enterprise SIP RFC 4235 Dialog Event (BLF) Call-Tag Redaction Anti-Pickup Hijack & RFC 6665 Unsolicited NOTIFY 481 + RFC 5263 [1,5]/s Rate Guard (voice-sip-rfc4235-dialog-blf-pickup-hijack-notify-storm-faq.en.md · P811/P812 🎉); (52) WebRTC RFC 8832 DCEP In-Band Channel-Open Allowlist + RFC 8831 PPID Type-Confusion Gate & DTLS Role Even/Odd Stream-ID Parity + [16,64]KB Max-Message-Size Guard (voice-webrtc-dcep-rfc8832-channel-open-ppid-stream-glare-faq.en.md · P813/P814 · Topic 50 🎉); (53) Enterprise SIP RFC 3326 Reason Q.850 Scrubbing + Forking Completed Elsewhere & RFC 3329 Sec-Agree 494 + [1,2] SIP 420 Bad Extension Retry Guard (voice-sip-rfc3326-reason-q850-spoof-rfc3329-sec-agree-420-loop-faq.en.md · P815/P816 · Topic 51); (54) WebRTC RFC 8285 Extmap Mixed-Header Bounds + Immutable Mid-Call ID Mapping & RFC 3550 P=1 Padding Underflow / Covert-Byte Scrub Guard (voice-webrtc-rfc8285-extmap-mixed-header-remapping-padding-overflow-faq.en.md · P817/P818 · Topic 52); (55) Enterprise SIP/SDP RFC 4568 SDES Inline Key-Leak + c= Connection Sinkhole Block & RFC 8866 a=fmtp [32,256]B / [1,16] Attribute Overflow Guard (voice-sip-sdp-rfc4568-sdes-key-leak-c-line-sinkhole-fmtp-overflow-faq.en.md · P819/P820 · Topic 53); (56) WebRTC RFC 3550 Compound RTCP SR/RR Prefix + SDES CNAME [8,64]B Bounds & Anti-Spoofed RTCP BYE [1,4] SSRC Flood Guard (voice-webrtc-rtcp-rfc3550-compound-sr-rr-sdes-cname-bye-flood-faq.en.md · P821/P822 · Topic 54 🎉); (57) Enterprise SIP RFC 3261 Singleton Header Smuggling + [1,8] Via Hop Cap & RFC 3581 rport/received Socket-Source Overwrite + [15,30]s Keepalive Guard (voice-sip-rfc3581-via-rport-nat-pinhole-header-chain-amplification-faq.en.md · P823/P824 · Topic 55 🎉); (58) WebRTC RFC 8839 ICE ufrag/pwd Entropy Floor ([24,64] / [128,256] bits) & RFC 8445 Candidate Port-Scan SSRF + [1,16] Cap Guard (voice-webrtc-ice-rfc8839-ufrag-pwd-entropy-candidate-port-scan-ssrf-faq.en.md · P825/P826 · Topic 56 · SVG 60 🎉); (59) Enterprise SIP RFC 3311 Early-Dialog UPDATE Contact Pinning + [1,4] Cap & RFC 3261 CSeq Method Match + [1,64] Jump-Step Guard (voice-sip-rfc3311-update-early-media-hijack-cseq-rollover-replay-faq.en.md · P827/P828 · Topic 57 · 420 Dims 🎉); (60) WebRTC RFC 7714 SRTP AES-GCM Nonce Zero-Reuse + [64,128] Replay Window & RFC 3711 SRTCP Mandatory E=1 + [80,128]b Auth Tag Guard (voice-webrtc-srtp-rfc7714-aes-gcm-roc-nonce-reuse-unencrypted-srtcp-faq.en.md · P829/P830 🎉 · Topic 58); (61) Enterprise SIP RFC 3261 Preloaded Route Open-Relay Strip + [1,6] Hop Cap & RFC 5923 SIPS mTLS [128,256]b Anti-Downgrade Guard (voice-sip-rfc3261-record-route-loose-routing-open-relay-sips-downgrade-faq.en.md · P831/P832 · Topic 59 · 850 Probes 🎉); (62) WebRTC RFC 8831/4960 32-Bit vtag + Stateless HMAC Cookie + RFC 6525 RE-CONFIG Deferred Drain ([1,4]) & SACK Gap-Ack [1,16] Cap + a_rwnd=0 Persist Guard (voice-webrtc-sctp-rfc8831-rfc4960-vtag-init-flood-stream-reset-rwnd-deadlock-faq.en.md · P833/P834 · Topic 60 🎉 · Stage 420 🎉); (63) Enterprise SIP RFC 5393 Parallel Forking Max-Breadth ([1,8]) + Atomic Secondary 200 OK Reaping & RFC 3911 Join Anti-Wiretap + Early-Replaces Direction Guard (voice-sip-rfc5393-parallel-forking-max-breadth-multiple-200ok-rfc3911-join-faq.en.md · P835/P836 · Topic 61 · Stage 421); (64) WebRTC/RTP RFC 3550 Mixer CSRC Count Bounds ([1,4]) + Mix-Minus Self-CSRC Loopback Suppression & RFC 6465 Audio-Level PCM Cross-Check + [300,1200]ms Hold-Time Guard (voice-webrtc-rtp-rfc3550-rfc6465-csrc-mixer-audio-level-spoof-loopback-faq.en.md · P837/P838 · Topic 62 · Stage 422); (65) Enterprise SIP RFC 5621 Multipart Shadow-SDP Smuggling Reject ([1,3] Parts) & RFC 3204 Untrusted Trunk ISUP/QSIG 100% Strip + [256,8192]B Byte-Closure Guard (voice-sip-rfc5621-multipart-mime-sdp-smuggling-isup-qsig-injection-faq.en.md · P839/P840 🎉 · Topic 63 · Stage 423); (66) WebRTC RFC 6716 Opus TOC Code-3 Frame-Count Bomb Pre-Check ([10,60]ms / <=120ms) & RFC 7587 Unnegotiated Stereo (s=1) Mono Downmix + [1,3]-Frame LBRR/PLC Cap Guard (voice-webrtc-opus-rfc6716-rfc7587-toc-frame-bomb-fec-dtx-stereo-overflow-faq.en.md · P841/P842 · Topic 64 · Stage 424 · 860 Probes 🎉); (67) Enterprise SIP/WebRTC SDP RFC 8866 Origin sess-id Immutability + Monotonic sess-version ([1,16] Step) & RFC 8843 Bijective BUNDLE MID Closure + [10,60]ms maxptime Clamp Guard (voice-sip-webrtc-sdp-rfc8866-origin-version-retrograde-bundle-mid-maxptime-faq.en.md · P843/P844 · Topic 65 🎉 · Stage 425 🎉); (68) WebRTC RFC 6544/4571 ICE-TCP 16-Bit Length Framing + RFC 7983 Alignment ([256,1400]B) & Post-XOR XOR-MAPPED Loopback Scrub + [1,3]/min USE-CANDIDATE Throttle Guard (voice-webrtc-ice-tcp-rfc6544-rfc4571-framing-desync-nomination-thrash-xor-mapped-faq.en.md · P845/P846 · Topic 66 · Stage 426 · SVG 70 🎉); (69) Enterprise SIP/RTP RFC 4733 telephone-event StartRtpTimestamp Dedup ([40,2000]ms Duration) & In-Band/Out-of-Band Dual-DTMF Smuggling + [45,80]dB Notch Guard (voice-sip-rtp-rfc4733-dtmf-duration-overflow-end-bit-dedup-dual-injection-faq.en.md · P847/P848 · Topic 67 · Stage 427 · 430 Dims 🎉); (70) WebRTC RTCP TWCC Status-Chunk Span Bomb ([1,256]) + recv_delta Byte Closure & SentPacketHistory Ledger Match + [24,64]kbps Protected Audio Floor Guard (voice-webrtc-rtcp-twcc-rfc8888-chunk-span-bomb-recv-delta-wrap-remb-cliff-faq.en.md · P849/P850 🎉 · Topic 68 · Stage 428 · 70th FAQ & 870-Test Milestone 🎉); (71) Enterprise SIP RFC 4028 Session-Expires [90,1800]s + Min-SE >=90s Clamp & Explicit Refresher UPDATE + [15,30]s RTP Dead-Air Zombie Reaper Guard (voice-sip-rfc4028-session-timer-min-se-downgrade-refresher-glare-zombie-reaper-faq.en.md · P851/P852 · Topic 69 · Stage 429 · 870 Probes & 680 POC Probes 🎉); (72) WebRTC RFC 2198 RED Non-Recursive [1,2]-Block Closure & RFC 5109 ULPFEC Length Bounds + RFC 3389 CN [-65,-38] dBFS Acoustic-Shock Guard (voice-webrtc-rtp-rfc2198-red-nesting-bomb-rfc5109-ulpfec-mask-overread-cn-shock-faq.en.md · P853/P854 · Topic 70 🎉 · Stage 430 🎉); (73) Enterprise SIP RFC 7866/6341 (SIPREC) Metadata XXE/a=label [1,4] Stream Binding & [500,3000]ms SRS Fail-Closed Quarantine Guard (voice-sip-siprec-rfc7866-rfc6341-metadata-xxe-stream-binding-fail-closed-quarantine-faq.en.md · P855/P856 · Topic 71 · Stage 431 · SVG 75 & 865 Guardrails 🎉);       (74) WebRTC RFC 8656 (TURN) XOR-PEER-ADDRESS Anti-SSRF [1,8] Permission Cap & 0x4000-0x7FFF ChannelData 4B Framing + [60,600]s Lifetime Quota Guard (voice-webrtc-turn-rfc8656-channelbind-ssrf-relay-bounce-permission-quota-amplification-faq.en.md · P857/P858 · Topic 72 · Stage 432 · 435 Dims 🎉); (75 🎉) Enterprise SIP RFC 8224/8225 (STIR/SHAKEN) Vetted STI-PA x5u Allowlist Cache + [15,60]s iat Replay Deduplication & attest=B/C Write Block + [1,2]-Factor Out-of-Band FIDO2/Push Step-Up Guard (voice-sip-stir-shaken-rfc8224-rfc8225-x5u-ssrf-iat-replay-attestation-stepup-faq.en.md · P859/P860 🎉 · Topic 73 · Stage 433 · P860, 75th FAQ & 875-Test Triple Milestone 🎉); (76) Enterprise WebRTC/SIP RFC 5764/9146 DTLS-SRTP [2,8] CID Mobility Anti-Hijack + Anti-SRTP_NULL Downgrade & [300,3600]s Dual-MKI Seamless Key Rotation Guard (voice-webrtc-dtls-srtp-rfc5764-rfc9146-connection-id-nat-rebind-mki-rekey-replay-faq.en.md · P861/P862 · Topic 74 · Stage 434 · 880 Probes & 690 Live POC Probes 🎉); (77) Enterprise SIP RFC 3263/7984 DNS NAPTR/SRV SIPS+D2T Anti-Downgrade + [1,4] Lookup Depth Cap & [500,2000]ms Dead-SBC Blackhole Fast Failover Guard (voice-sip-rfc3263-rfc7984-dns-naptr-srv-sips-downgrade-poisoning-blackhole-failover-faq.en.md · P863/P864 · Topic 75 🎉 · Stage 435 · Historic Topic 75 Milestone 🎉); (78) Enterprise WebRTC RFC 8888/8836 RTCP CCFB [16,128] Byte-Sum Closure + Anti-ECN-CE Spoofing & [32,64] kbps Post-DTX Audio Floor Guard (voice-webrtc-rtcp-ccfb-rfc8888-rfc8836-ecn-ce-spoofing-ato-wrap-audio-dtx-starvation-faq.en.md · P865/P866 · Topic 76 · Stage 436 · SVG 80 & 875 Guardrails 🎉); (79) Enterprise SIP RFC 3325/7044 P-Asserted-Identity Untrusted-Trunk Stripping + Outbound Privacy:id Anonymization & [1,6]-Hop History-Info Loop Guard (voice-sip-rfc3325-rfc7044-pai-privacy-trunk-bleed-history-info-loop-guard-faq.en.md · P867/P868 · Topic 77 · Stage 437 · 440 Dimensions 🎉); (80 🎉) Enterprise WebRTC RFC 9605 SFrame [2,4] Epoch Key-Ring + Anti-Nonce-Reuse & RFC 9420 MLS [500,2000]ms Member-Removal Ratchet + SFU Zero-Plaintext VAD Guard (voice-webrtc-sframe-rfc9605-mls-rfc9420-e2ee-key-ratchet-sfu-zero-plaintext-vad-faq.en.md · P869/P870 🎉 · Topic 78 · Stage 438 · P870, 80th FAQ & 880-Test Triple Milestone 🎉); (81) Enterprise SIP RFC 3911 Join Same-Tenant Supervisor RBAC + [1,2] Barge Cap & RFC 3891 Replaces early-only Call-Pickup + [128,256]-Bit Tag Entropy Guard (voice-sip-rfc3911-join-barge-wiretap-rfc3891-replaces-early-dialog-hijack-faq.en.md · P871/P872 · Topic 79 · Stage 439 · 881 Guardrails, 890 Probes & 700 Live POC Probes 🎉); (82) Enterprise WebRTC RFC 8083 RTP Circuit Breakers [2,5]-Interval Timeout Reaper & [2,6]-Interval 10x TFRC Audio-First Video Shedding Guard (voice-webrtc-rtp-rfc8083-circuit-breakers-media-timeout-tenfold-tfrc-congestion-teardown-faq.en.md · P873/P874 · Topic 80 🎉 · Stage 440 🎉 · Historic Stage 440 & Topic 80 Dual Milestone 🎉); (83) Enterprise SIP RFC 6141 Re-INVITE Atomic LKG_SDP Rollback + Contact Pinning + [1,1] Mutex & RFC 3261 [60,4000]ms Owner-Biased SIP 491 Glare Backoff Guard (voice-sip-rfc6141-reinvite-target-refresh-contact-hijack-sdp-rollback-glare-faq.en.md · P875/P876 · Topic 81 · Stage 441 · SVG 85 & 885 Guardrails 🎉); (84) Enterprise WebRTC RFC 8837/7657 DiffServ DSCP BUNDLE [1,2] PHB Queue-Ordering & Anti-CS6/CS7 + EF (46) Pinning Guard (voice-webrtc-dscp-rfc8837-rfc7657-bundle-five-tuple-ef-af41-queue-reordering-faq.en.md · P877/P878 · Topic 82 · Stage 442 · 445 Dimensions 🎉); (85 🎉) Enterprise SIP/IMS RFC 3312/4032 Preconditions [2,2]-Direction Anti-Ghost-Ringing & [1500,5000]ms QCI-1 Reservation Timeout + SIP 580 Guard (voice-sip-rfc3312-rfc4032-precondition-qci1-ghost-ringing-reservation-timeout-faq.en.md · P879/P880 🎉 · Topic 83 · Stage 443 · P880, 85th FAQ & 885-Test Triple Milestone 🎉); (86) Enterprise WebRTC RFC 3711 SRTP 32-bit ROC Authenticate-Before-Commit + Late-Joiner Sync + [128,1024] Window & RFC 4588 RTX Separate-SSRC OSN Isolation Guard (voice-webrtc-srtp-rfc3711-roc-rollover-late-joiner-index-desync-rtx-osn-faq.en.md · P881/P882 · Topic 84 · Stage 444 · 891 Guardrails, 900 Probes & 710 Live POC Probes 🎉); (87) Enterprise SIP RFC 5626 Outbound [2,4] Dual-Edge reg-id + HMAC-SHA256 Flow-Token & RFC 5923 mTLS SAN Connection Reuse + [25,120]s CRLF Keepalive Guard (voice-sip-rfc5626-outbound-dual-edge-flow-token-crlf-keepalive-rfc5923-mtls-faq.en.md · P883/P884 · Topic 85 🎉 · Stage 445 🎉 · Historic Stage 445 & Topic 85 Dual Milestone 🎉); (88) Enterprise WebRTC RFC 9335 Cryptex 0xC0DE/0xC2DE Whole-Extension + CSRC Encryption + [4,64]B Cap & RFC 6904 Bijective Mask + [1,14] ID Guard (voice-webrtc-rtp-rfc9335-cryptex-rfc6904-header-extension-csrc-encryption-faq.en.md · P885/P886 · Topic 86 · Stage 446 · SVG 90 & 895 Guardrails 🎉); (89) Enterprise SIP RFC 6026 INVITE Accepted State [16000,64000]ms Timer L/M + Forked 2xx Auto-ACK+BYE & RFC 4320 Non-INVITE 100/408 Suppression + [4000,32000]ms Timer F Guard (voice-sip-rfc6026-rfc4320-invite-non-invite-transaction-timer-b-f-d-k-late-response-storm-faq.en.md · P887/P888 · Topic 87 · Stage 447 · Historic 450-Dimension Milestone 🎉); (90 🎉) Enterprise WebRTC RFC 6544 / RFC 4571 ICE-TCP [12,1400]B 16-Bit Framing + TCP_NODELAY & [60,240]ms TCP HoL Burst Flush Guard (voice-webrtc-ice-tcp-rfc6544-rfc4571-framing-head-of-line-stall-active-passive-so-glare-faq.en.md · P889/P890 🎉 · Topic 88 · Stage 448 · Historic P890, 90th FAQ & 890-Test Triple Milestone 🎉); (91) Enterprise SIP RFC 4235 Dialog Event (BLF) XML Tag Redaction + [300,3600]s Expires & RFC 6665 Unsolicited NOTIFY 481 + [100,1000]ms Throttle Guard (voice-sip-rfc6665-rfc4235-dialog-event-blf-pickup-hijack-notify-storm-subscription-leak-faq.en.md · P891/P892 · Topic 89 · Stage 449 · Historic 901-Guardrail, 910-Probe & 720-Live-POC Milestone 🎉); (92) Enterprise WebRTC RFC 2198 RED <16384 Timestamp-Offset + [1,2]-Block & RFC 5109 ULPFEC [16,1200]B Overread Guard (voice-webrtc-rtp-rfc2198-red-ulpfec-rfc5109-timestamp-offset-overflow-pt-nesting-bomb-faq.en.md · P893/P894 · Topic 90 🎉 · Stage 450 🎉 · Historic Stage 450 & Topic 90 Dual Milestone 🎉); (93) Enterprise SIP RFC 3326 Untrusted Reason Strip + Q.850 [1,127] & RFC 8599 pn-provider Allowlist + [4000,12000]ms Push-Wake Hold Guard (voice-sip-rfc3326-rfc8599-reason-q850-spoofing-push-notification-pns-wake-race-faq.en.md · P895/P896 · Topic 91 · Stage 451 · Historic 95th SVG & 905-Guardrail Dual Milestone 🎉); (94) Enterprise WebRTC RFC 8832 DCEP Even/Odd Stream-ID Parity + [1,64] Cap & RFC 8831 PR-SCTP [100,1000]ms Caption TTL Guard (voice-webrtc-sctp-rfc8831-rfc8832-dcep-stream-id-glare-ppid-confusion-ndatachannel-dos-faq.en.md · P897/P898 · Topic 92 · Stage 452 · Historic 455-Dimension Milestone 🎉); (95 🎉) Enterprise SIP RFC 3840 ;automata [1,3]-Turn Bot-to-Bot Loop Breaker & RFC 3841 [100,1000] milli-q Anti-Starvation Guard (voice-sip-rfc3840-rfc3841-automata-bot-loop-caller-prefs-q-value-starvation-faq.en.md · P899/P900 🎉 · Topic 93 · Stage 453 · Historic P900, 95th FAQ & 895-Test Triple Milestone 🎉); (96) Enterprise WebRTC RFC 3550 SSRC Transport Pinning + [1000,10000]ms Cooldown & RFC 8108 Cascaded Mixer CSRC [0,15] Loop Guard (voice-webrtc-rtp-rfc3550-rfc8108-ssrc-collision-loop-csrc-mixer-amplification-faq.en.md · P901/P902 · Topic 94 · Stage 454 · Historic 911-Guardrail, 920-Probe & 730-Live-POC Milestone 🎉); (97) Enterprise SIP RFC 3329 sec-agree Security-Verify Mirror + [500,1000] milli-q & [1,2] 494 Retry / IPSec SA Guard (voice-sip-rfc3329-rfc4168-sec-agree-ipsec-tls-downgrade-420-bad-extension-loop-faq.en.md · P903/P904 · Topic 95 🎉 · Stage 455 🎉 · Historic Stage 455 & Topic 95 Dual Milestone 🎉); (98) Enterprise WebRTC RFC 3611 RTCP XR DLRR [1,3000]ms Signed RTT & BT=7 VoIP Metrics Gmin [16,64] Cross-Validation Guard (voice-webrtc-rtcp-xr-rfc3611-rfc7266-dlsr-rtt-wrap-burst-gap-mos-spoofing-faq.en.md · P905/P906 · Topic 96 · Stage 456 · Historic 100th SVG & 915-Guardrail Dual Milestone 🎉); (99) Enterprise SIP RFC 6140 GIN Userless ;bnc [10,10000] DID Scope & RFC 3327 Path + [600,3600]s Refresh Guard (voice-sip-rfc6140-rfc7993-gin-pbx-bnc-trunk-registration-wildcard-uri-hijack-faq.en.md · P907/P908 · Topic 97 · Stage 457 · Historic 460-Dimension Milestone 🎉); (100 🎉) Enterprise WebRTC RFC 8445 uint64 487 Tie-Breaker + Ta [5,50]ms & RFC 8838 Trickle ICE [3000,15000]ms Hold Guard (voice-webrtc-ice-rfc8445-rfc8838-trickle-ice-end-of-candidates-role-conflict-487-nomination-faq.en.md · P909/P910 🎉 · Topic 98 · Stage 458 · Historic 100th FAQ, P910 & 900-Test Triple Milestone 🎉); (101) Enterprise SIP RFC 8946 STIR/SHAKEN PASSporT div [1,5]-Hop Continuity & RFC 8224 [5,60]s Monotonic iat Guard (voice-sip-rfc4474-rfc8224-stir-shaken-diversion-passpor-t-div-tn-retargeting-spoof-faq.en.md · P911/P912 · Topic 99 · Stage 459 · Historic 921-Guardrail, 930-Probe & 740-Live-POC Milestone 🎉); (102) Enterprise WebRTC RFC 5104 PLI/FIR [1000,5000]ms Audio-Preemption & RFC 4585 AVPF trr-int [50,500]ms Guard (voice-webrtc-rtp-rfc7741-rfc9626-svc-dependency-descriptor-keyframe-pli-fir-thrash-faq.en.md · P913/P914 · Topic 100 🎉 · Stage 460 🎉 · Historic Stage 460 & Topic 100 Dual Milestone 🎉); (103) Enterprise SIP RFC 8760 SHA-256 [128,256]b cnonce & (nonce, nc) [60,300]s Replay Guard (voice-sip-rfc3261-rfc8760-digest-sha256-md5-downgrade-nonce-count-replay-stuffing-faq.en.md · P915/P916 · Topic 101 · Stage 461 · Historic 105th SVG & 925-Guardrail Dual Milestone 🎉); (104) Enterprise WebRTC RFC 9143 BUNDLE Disjoint Dynamic PT [1,32] + MID Demux & [2,16] SSRC Latching Quota Guard (voice-webrtc-rtp-rfc9143-rfc8843-bundle-mid-pt-demux-collision-lit-ssrc-latching-faq.en.md · P917/P918 · Topic 102 · Stage 462 · Historic 465-Dimension Milestone 🎉); (105 🎉) Enterprise SIP RFC 7339 / RFC 6809 Overload Control [5,80]% Loss Ceiling, SOS/BYE Exemption & [500,10000]ms oc-validity Auto-Zero EWMA Guard (voice-sip-rfc7339-rfc6809-overload-control-oc-rate-loss-feedback-oscillation-validity-dos-faq.en.md · P919/P920 🎉 · Topic 103 · Stage 463 · Historic 105th FAQ, P920 Guardrail & 905-Test Milestone 🎉); (106) Enterprise WebRTC RFC 7667 SFU SSRC-Rewrite [480,2880] Seq/TS Delta Splicing & Outbound SRTP ROC_out + [200,1000]ms Hysteresis Guard (voice-webrtc-rtp-rfc7667-rfc5117-topologies-sfu-mcu-ssrc-rewrite-seq-ts-gap-plc-glitch-faq.en.md · P921/P922 🎉 · Topic 104 · Stage 464 · Historic 931-Guardrail, 940-Probe & 750-Live-POC Milestone 🎉); (107) Enterprise SIP RFC 3327 Path Ingress Strip + mTLS/;lr [1,4]-Hop & RFC 3608 Service-Route Core Pinning Guard (voice-sip-rfc3327-rfc3608-path-service-route-header-poisoning-strict-routing-bypass-faq.en.md · P923/P924 · Topic 105 🎉 · Stage 465 🎉 · Historic Stage 465 & 105th Topic Dual Milestone 🎉); (108) Enterprise WebRTC RFC 7022 [96,128]b Ephemeral SDES CNAME Privacy & RFC 7941 0-RTT [15,80]ms Lip-Sync Guard (voice-webrtc-rtcp-rfc7941-rfc7022-sdes-cname-ephemeral-privacy-lipsync-clock-drift-faq.en.md · P925/P926 🎉 · Topic 106 · Stage 466 · Historic 110th SVG & 935-Guardrail Dual Milestone 🎉); (109) Enterprise SIP RFC 4412 Resource-Priority [5,25]% Preemption Cap & RFC 5009 [5,45]s Unidirectional sendonly Early-Media Guard (voice-sip-rfc4412-rfc5009-resource-priority-rph-preemption-spoofing-p-early-media-billing-bypass-faq.en.md · P927/P928 · Topic 107 · Stage 467 · Historic 470-Dimension Milestone 🎉); (110 🎉) Enterprise WebRTC RFC 8852 / RFC 8853 RID [1,3]-Layer max-br Policer & [1,16]B repaired-rtp-stream-id RTX Binding Guard (voice-webrtc-rtp-rfc8852-rfc8853-rid-restriction-id-pt-repurposing-simulcast-layer-spoofing-faq.en.md · P929/P930 🎉 · Topic 108 · Stage 468 · Historic 110th FAQ, P930 Guardrail & 910-Test Milestone 🎉); (111) Enterprise SIP RFC 6086 Info-Package 469 [64,4096]B Gate & Cross-Plane RFC 4733 DTMF Deduplication [80,500]ms Guard (voice-sip-rfc6086-rfc5727-info-package-dtmf-out-of-sync-legacy-info-flood-469-bad-info-faq.en.md · P931/P932 🎉 · Topic 109 · Stage 469 · Historic 941-Guardrail, 950-Probe & 760-Live-POC Milestone 🎉); (112) Enterprise WebRTC RFC 6051 Rapid NTP [1,25]ms PLL Slew & RFC 5450 24-Bit Sign-Extended [48,2400]-Tick toffset Guard (voice-webrtc-rtp-rfc6051-rfc5450-rapid-synchronization-ntp-hdrext-toffset-jitter-spoof-faq.en.md · P933/P934 · Topic 110 🎉 · Stage 470 🎉 · Historic Stage 470 & 110th Topic Dual Milestone 🎉); (113) Enterprise SIP RFC 5373 Answer-Mode [500,2000]ms Anti-Bugging & RFC 3842 Dialog-Bound MWI [0,999] Callback Guard (voice-sip-rfc5373-rfc3842-answer-mode-auto-answer-bugging-message-summary-mwi-notify-flood-faq.en.md · P935/P936 🎉 · Topic 111 · Stage 471 · Historic 115th SVG & 945-Guardrail Dual Milestone 🎉); (114) Enterprise WebRTC RFC 8834 Compound RTCP [576,1200]B MTU Auto-Split & RFC 5506 Negotiated a=rtcp-rsize [500,5000]ms Heartbeat Guard (voice-webrtc-rtcp-rfc8834-rfc5506-reduced-size-rtcp-rsize-compound-mtu-fragmentation-blackhole-faq.en.md · P937/P938 · Topic 112 · Stage 472 · Historic 475-Dimension Milestone 🎉); (115 🎉) Enterprise SIP RFC 4488 Refer-Sub: false [15,90]s Suppression & RFC 7647 200 OK [16,128]B Minimal sipfrag Guard (voice-sip-rfc7647-rfc4488-refer-sub-false-implicit-subscription-leak-202-accepted-sipfrag-faq.en.md · P939/P940 🎉 · Topic 113 · Stage 473 · Historic 40th Nightly Round, P940 Guardrail, 115th FAQ & 915-Test Milestone 🎉).",
       btnText: "Open 7-Card Benchmark ↗",
       url: "./benchmark-cards.html"
     }
@@ -2191,9 +2191,1929 @@ let currentLang = "zh-CN";
 let currentStackId = "s2s_grounded";
 let currentScenarioId = "customer_service";
 let currentCaseTabId = "goals";
-      let currentDuplexSimId = "p859_sip_stir_shaken_rfc8224_x5u_certificate_ssrf_and_iat_freshness_replay";
+      let currentDuplexSimId = "p939_sip_rfc4488_refer_sub_false_implicit_subscription_suppression";
 
 const DUPLEX_SIM_PROBES = [
+        {
+          id: "p939_sip_rfc4488_refer_sub_false_implicit_subscription_suppression",
+          label: {
+            "zh-CN": "🔥 [专题113 · Stage 473 · 115篇FAQ & P940 🎉 · voice-sip-rfc7647-rfc4488-refer-sub-false-implicit-subscription-leak-202-accepted-sipfrag-faq] P939 · RFC 4488 Refer-Sub: false 隐式订阅抑制与 [15,90]s 门禁",
+            "zh-TW": "🔥 [專題113 · Stage 473 · 115篇FAQ & P940 🎉 · voice-sip-rfc7647-rfc4488-refer-sub-false-implicit-subscription-leak-202-accepted-sipfrag-faq] P939 · RFC 4488 Refer-Sub: false 隱式訂閱抑制與 [15,90]s 門禁",
+            "en": "🔥 [Topic 113 · Stage 473 · 115th FAQ & P940 🎉 · voice-sip-rfc7647-rfc4488-refer-sub-false-implicit-subscription-leak-202-accepted-sipfrag-faq] P939 · RFC 4488 Refer-Sub: false & [15,90]s Suppression Gate"
+          },
+          input: {
+            "probeId": "sip-rfc4488-refer-sub-false-suppression-probe-01",
+            "unnecessaryImplicitReferSubscriptionOrZombieLeakDetected": true,
+            "leakedImplicitReferSubscriptions": 19,
+            "implicitReferSubscriptionTtlSeconds": 600
+          },
+          output: {
+            "violated": true,
+            "policyId": "P939-SIP-RFC4488-REFER-SUB-FALSE-IMPLICIT-SUBSCRIPTION-SUPPRESSION-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live SBC multi-usage dialog reference-count reclamation latency not_measured)",
+            "action": "enforce_refer_sub_false_and_reap_orphan_refer_subscriptions",
+            "clampedLeakedImplicitReferSubscriptions": 0,
+            "clampedImplicitReferSubscriptionTtlSeconds": 90,
+            "reason": "P939 SIP RFC 4488 orphan implicit Event: refer subscription leak after blind-transfer BYE violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): enforced Refer-Sub: false suppression (clamped leaked subscriptions to 0) and clamped fallback subscription TTL to 90s."
+          }
+        },
+        {
+          id: "p940_sip_rfc7647_refer_explicit_200_ok_and_sipfrag_minimal_status",
+          label: {
+            "zh-CN": "🔥 [专题113 · Stage 473 · 115篇FAQ & P940 🎉 · voice-sip-rfc7647-rfc4488-refer-sub-false-implicit-subscription-leak-202-accepted-sipfrag-faq] P940 🎉 · RFC 7647 同步 200 OK 与 [16,128]B sipfrag 脱敏门禁",
+            "zh-TW": "🔥 [專題113 · Stage 473 · 115篇FAQ & P940 🎉 · voice-sip-rfc7647-rfc4488-refer-sub-false-implicit-subscription-leak-202-accepted-sipfrag-faq] P940 🎉 · RFC 7647 同步 200 OK 與 [16,128]B sipfrag 脫敏門禁",
+            "en": "🔥 [Topic 113 · Stage 473 · 115th FAQ & P940 🎉 · voice-sip-rfc7647-rfc4488-refer-sub-false-implicit-subscription-leak-202-accepted-sipfrag-faq] P940 🎉 · RFC 7647 200 OK & [16,128]B Minimal sipfrag Gate"
+          },
+          input: {
+            "probeId": "sip-rfc7647-200ok-sipfrag-minimal-probe-02",
+            "deprecated202AcceptedOrVerboseSipfragTopologyLeakDetected": true,
+            "leakedSipfragTopologyOrDeprecated202Packets": 11,
+            "maxSipfragBodyBytes": 2048
+          },
+          output: {
+            "violated": true,
+            "policyId": "P940-SIP-RFC7647-REFER-EXPLICIT-200-OK-AND-SIPFRAG-MINIMAL-STATUS-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live SBC sipfrag serializer latency not_measured)",
+            "action": "enforce_rfc7647_synchronous_200ok_and_strip_sipfrag_headers",
+            "clampedLeakedSipfragTopologyOrDeprecated202Packets": 0,
+            "clampedMaxSipfragBodyBytes": 128,
+            "reason": "P940 SIP RFC 7647 deprecated 202 Accepted or verbose message/sipfrag internal header leak violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): enforced synchronous 200 OK and stripped sipfrag headers (clamped leaked packets to 0) with body size clamped to 128 bytes."
+          }
+        },
+        {
+          id: "p937_webrtc_rtcp_rfc8834_compound_packet_mtu_splitting_and_fragmentation",
+          label: {
+            "zh-CN": "🔥 [专题112 · Stage 472 · 475维里程碑 🎉 · voice-webrtc-rtcp-rfc8834-rfc5506-reduced-size-rtcp-rsize-compound-mtu-fragmentation-blackhole-faq] P937 · RFC 8834 复合 RTCP [576,1200]B 自动切分门禁",
+            "zh-TW": "🔥 [專題112 · Stage 472 · 475維里程碑 🎉 · voice-webrtc-rtcp-rfc8834-rfc5506-reduced-size-rtcp-rsize-compound-mtu-fragmentation-blackhole-faq] P937 · RFC 8834 複合 RTCP [576,1200]B 自動切分門禁",
+            "en": "🔥 [Topic 112 · Stage 472 · 475 Dims 🎉 · voice-webrtc-rtcp-rfc8834-rfc5506-reduced-size-rtcp-rsize-compound-mtu-fragmentation-blackhole-faq] P937 · RFC 8834 Compound RTCP [576,1200]B Auto-Split Gate"
+          },
+          input: {
+            "probeId": "webrtc-rfc8834-compound-rtcp-mtu-split-probe-01",
+            "oversizedCompoundRtcpMtuFragmentationDetected": true,
+            "ipFragmentedOrBlackholedRtcpDatagrams": 13,
+            "maxCompoundRtcpPacketBytes": 1680
+          },
+          output: {
+            "violated": true,
+            "policyId": "P937-WEBRTC-RTCP-RFC8834-COMPOUND-PACKET-MTU-SPLITTING-AND-FRAGMENTATION-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live SRTCP packetizer split encryption latency not_measured)",
+            "action": "split_compound_rtcp_across_sub_1200b_srtcp_datagrams",
+            "clampedIpFragmentedOrBlackholedRtcpDatagrams": 0,
+            "clampedMaxCompoundRtcpPacketBytes": 1200,
+            "reason": "P937 WebRTC RFC 8834 oversized compound RTCP (>1,200B) UDP IP-fragmentation blackhole violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): split compound report across <=1,200B SRTCP datagrams (clamped fragmented datagrams to 0) and clamped max packet size to 1200 bytes."
+          }
+        },
+        {
+          id: "p938_webrtc_rtcp_rfc5506_reduced_size_rtcp_rsize_negotiation_and_srtcp_auth",
+          label: {
+            "zh-CN": "🔥 [专题112 · Stage 472 · 475维里程碑 🎉 · voice-webrtc-rtcp-rfc8834-rfc5506-reduced-size-rtcp-rsize-compound-mtu-fragmentation-blackhole-faq] P938 · RFC 5506 a=rtcp-rsize 协商与 [500,5000]ms 复合心跳门禁",
+            "zh-TW": "🔥 [專題112 · Stage 472 · 475維里程碑 🎉 · voice-webrtc-rtcp-rfc8834-rfc5506-reduced-size-rtcp-rsize-compound-mtu-fragmentation-blackhole-faq] P938 · RFC 5506 a=rtcp-rsize 協商與 [500,5000]ms 複合心跳門禁",
+            "en": "🔥 [Topic 112 · Stage 472 · 475 Dims 🎉 · voice-webrtc-rtcp-rfc8834-rfc5506-reduced-size-rtcp-rsize-compound-mtu-fragmentation-blackhole-faq] P938 · RFC 5506 a=rtcp-rsize & [500,5000]ms Heartbeat Gate"
+          },
+          input: {
+            "probeId": "webrtc-rfc5506-rtcp-rsize-heartbeat-probe-02",
+            "unnegotiatedRtcpRsizeOrStarvedCompoundHeartbeatDetected": true,
+            "rejectedRsizeOrStarvedCompoundStreams": 8,
+            "maxFullCompoundRtcpHeartbeatIntervalMs": 15000
+          },
+          output: {
+            "violated": true,
+            "policyId": "P938-WEBRTC-RTCP-RFC5506-REDUCED-SIZE-RTCP-RSIZE-NEGOTIATION-AND-SRTCP-AUTH-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live RTCP scheduler timer wheel latency not_measured)",
+            "action": "enforce_negotiated_rtcp_rsize_srtcp_auth_and_compound_heartbeat",
+            "clampedRejectedRsizeOrStarvedCompoundStreams": 0,
+            "clampedMaxFullCompoundRtcpHeartbeatIntervalMs": 5000,
+            "reason": "P938 WebRTC RFC 5506 unnegotiated rtcp-rsize or >5,000ms full compound heartbeat starvation violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): enforced negotiated SRTCP-authenticated rtcp-rsize (clamped starved streams to 0) and clamped full compound heartbeat interval to 5000ms."
+          }
+        },
+        {
+          id: "p935_sip_rfc5373_answer_mode_auto_bugging_strip_and_403_forbidden",
+          label: {
+            "zh-CN": "🔥 [专题111 · Stage 471 · SVG 115 🎉 · voice-sip-rfc5373-rfc3842-answer-mode-auto-answer-bugging-message-summary-mwi-notify-flood-faq] P935 · RFC 5373 自动应答剥离/403 与 [500,2000]ms 防窃听门禁",
+            "zh-TW": "🔥 [專題111 · Stage 471 · SVG 115 🎉 · voice-sip-rfc5373-rfc3842-answer-mode-auto-answer-bugging-message-summary-mwi-notify-flood-faq] P935 · RFC 5373 自動應答剝離/403 與 [500,2000]ms 防竊聽門禁",
+            "en": "🔥 [Topic 111 · Stage 471 · SVG 115 🎉 · voice-sip-rfc5373-rfc3842-answer-mode-auto-answer-bugging-message-summary-mwi-notify-flood-faq] P935 · RFC 5373 Answer-Mode Strip/403 & [500,2000]ms Anti-Bugging Gate"
+          },
+          input: {
+            "probeId": "sip-rfc5373-answer-mode-auto-bugging-probe-01",
+            "unauthorizedAutoAnswerOrSilentBuggingHeaderDetected": true,
+            "silentRoomBuggingAutoAnswerActivations": 7,
+            "intercomWarningToneDurationMs": 0
+          },
+          output: {
+            "violated": true,
+            "policyId": "P935-SIP-RFC5373-ANSWER-MODE-AUTO-BUGGING-STRIP-AND-403-FORBIDDEN-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live SBC header sanitizer regex latency not_measured)",
+            "action": "strip_auto_answer_headers_reject_require_403_and_enforce_warning_tone",
+            "clampedSilentRoomBuggingAutoAnswerActivations": 0,
+            "clampedIntercomWarningToneDurationMs": 500,
+            "reason": "P935 SIP RFC 5373 external Answer-Mode/Priv-Answer-Mode/answer-after=0 silent room-bugging violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): stripped auto-answer headers / rejected with 403 (clamped silent activations to 0) and clamped intercom warning tone to 500ms."
+          }
+        },
+        {
+          id: "p936_sip_rfc3842_message_summary_mwi_unsolicited_notify_and_callback_uri",
+          label: {
+            "zh-CN": "🔥 [专题111 · Stage 471 · 945护栏 🎉 · voice-sip-rfc5373-rfc3842-answer-mode-auto-answer-bugging-message-summary-mwi-notify-flood-faq] P936 🎉 · RFC 3842 MWI 订阅核验与 [0,999] 防回拨欺诈门禁",
+            "zh-TW": "🔥 [專題111 · Stage 471 · 945護欄 🎉 · voice-sip-rfc5373-rfc3842-answer-mode-auto-answer-bugging-message-summary-mwi-notify-flood-faq] P936 🎉 · RFC 3842 MWI 訂閱核驗與 [0,999] 防回撥欺詐門禁",
+            "en": "🔥 [Topic 111 · Stage 471 · 945th Guard 🎉 · voice-sip-rfc5373-rfc3842-answer-mode-auto-answer-bugging-message-summary-mwi-notify-flood-faq] P936 🎉 · RFC 3842 MWI Dialog Gate & [0,999] Callback Fraud Gate"
+          },
+          input: {
+            "probeId": "sip-rfc3842-mwi-unsolicited-callback-fraud-probe-02",
+            "unsolicitedMwiNotifyOrExternalPremiumCallbackUriDetected": true,
+            "spoofedMwiCallbackTollFraudNotifications": 10,
+            "maxMwiVoiceMessageCount": 65535
+          },
+          output: {
+            "violated": true,
+            "policyId": "P936-SIP-RFC3842-MESSAGE-SUMMARY-MWI-UNSOLICITED-NOTIFY-AND-CALLBACK-URI-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live SBC subscription state-table lookup latency not_measured)",
+            "action": "reject_unsolicited_mwi_with_481_and_pin_internal_message_account",
+            "clampedSpoofedMwiCallbackTollFraudNotifications": 0,
+            "clampedMaxMwiVoiceMessageCount": 999,
+            "reason": "P936 SIP RFC 3842 unsolicited MWI NOTIFY or external premium-rate Message-Account callback fraud violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): rejected unsolicited MWI with 481 and pinned internal voicemail URI (clamped spoofed notifications to 0) with message count clamped to 999."
+          }
+        },
+        {
+          id: "p933_webrtc_rtp_rfc6051_rapid_sync_ntp_header_extension_step_and_monotonicity",
+          label: {
+            "zh-CN": "🔥 [专题110 🎉 · Stage 470 🎉 · voice-webrtc-rtp-rfc6051-rfc5450-rapid-synchronization-ntp-hdrext-toffset-jitter-spoof-faq] P933 · RFC 6051 64-bit NTP 单调核验与 [1,25]ms 锁相门禁",
+            "zh-TW": "🔥 [專題110 🎉 · Stage 470 🎉 · voice-webrtc-rtp-rfc6051-rfc5450-rapid-synchronization-ntp-hdrext-toffset-jitter-spoof-faq] P933 · RFC 6051 64-bit NTP 單調核驗與 [1,25]ms 鎖相門禁",
+            "en": "🔥 [Topic 110 🎉 · Stage 470 🎉 · voice-webrtc-rtp-rfc6051-rfc5450-rapid-synchronization-ntp-hdrext-toffset-jitter-spoof-faq] P933 · RFC 6051 64-bit NTP Monotonicity & [1,25]ms PLL Slew Gate"
+          },
+          input: {
+            "probeId": "webrtc-rfc6051-rapid-ntp-pll-slew-probe-01",
+            "retrogradeOrStepJumpNtpHeaderExtensionDetected": true,
+            "ntpStepJumpOrRetrogradePackets": 11,
+            "maxNtpSlewAdjustmentStepMs": 350
+          },
+          output: {
+            "violated": true,
+            "policyId": "P933-WEBRTC-RTP-RFC6051-RAPID-SYNC-NTP-HEADER-EXTENSION-STEP-AND-MONOTONICITY-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live Playout PLL slewing filter latency not_measured)",
+            "action": "strip_retrograde_ntp_extension_and_apply_pll_slew_limit",
+            "clampedNtpStepJumpOrRetrogradePackets": 0,
+            "clampedMaxNtpSlewAdjustmentStepMs": 25,
+            "reason": "P933 WebRTC RFC 6051 retrograde or >25ms step-jump 64-bit NTP header extension violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): stripped step-jump NTP extension (clamped step packets to 0) and clamped PLL slew adjustment step to 25ms."
+          }
+        },
+        {
+          id: "p934_webrtc_rtp_rfc5450_transmission_time_offset_bounds_and_jitter_inflation",
+          label: {
+            "zh-CN": "🔥 [专题110 🎉 · Stage 470 🎉 · voice-webrtc-rtp-rfc6051-rfc5450-rapid-synchronization-ntp-hdrext-toffset-jitter-spoof-faq] P934 · RFC 5450 24-bit toffset 符号扩展与 [48,2400] ticks 门禁",
+            "zh-TW": "🔥 [專題110 🎉 · Stage 470 🎉 · voice-webrtc-rtp-rfc6051-rfc5450-rapid-synchronization-ntp-hdrext-toffset-jitter-spoof-faq] P934 · RFC 5450 24-bit toffset 符號擴展與 [48,2400] ticks 門禁",
+            "en": "🔥 [Topic 110 🎉 · Stage 470 🎉 · voice-webrtc-rtp-rfc6051-rfc5450-rapid-synchronization-ntp-hdrext-toffset-jitter-spoof-faq] P934 · RFC 5450 24-Bit Sign Extension & [48,2400]-Tick toffset Gate"
+          },
+          input: {
+            "probeId": "webrtc-rfc5450-toffset-sign-jitter-probe-02",
+            "unextended24BitSignOrExtremeToffsetJitterInflationDetected": true,
+            "jitterInflatingToffsetPackets": 14,
+            "maxAllowedTransmissionTimeOffsetTicks": 480000
+          },
+          output: {
+            "violated": true,
+            "policyId": "P934-WEBRTC-RTP-RFC5450-TRANSMISSION-TIME-OFFSET-BOUNDS-AND-JITTER-INFLATION-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live NetEq Kalman jitter filter update latency not_measured)",
+            "action": "sign_extend_24bit_toffset_and_strip_jitter_inflating_outliers",
+            "clampedJitterInflatingToffsetPackets": 0,
+            "clampedMaxAllowedTransmissionTimeOffsetTicks": 2400,
+            "reason": "P934 WebRTC RFC 5450 unextended 24-bit negative toffset or >2,400-tick jitter-inflation outlier violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): enforced 24-bit sign extension and stripped outlier toffsets (clamped jitter-inflating packets to 0) with max offset clamped to 2400 ticks."
+          }
+        },
+        {
+          id: "p931_sip_rfc6086_info_package_recv_info_negotiation_and_469_rejection",
+          label: {
+            "zh-CN": "🔥 [专题109 · Stage 469 · 940护栏 🎉 · voice-sip-rfc6086-rfc5727-info-package-dtmf-out-of-sync-legacy-info-flood-469-bad-info-faq] P931 · RFC 6086 Info-Package 469 拒止与 [64,4096]B 门禁",
+            "zh-TW": "🔥 [專題109 · Stage 469 · 940護欄 🎉 · voice-sip-rfc6086-rfc5727-info-package-dtmf-out-of-sync-legacy-info-flood-469-bad-info-faq] P931 · RFC 6086 Info-Package 469 拒止與 [64,4096]B 門禁",
+            "en": "🔥 [Topic 109 · Stage 469 · 940th Guard 🎉 · voice-sip-rfc6086-rfc5727-info-package-dtmf-out-of-sync-legacy-info-flood-469-bad-info-faq] P931 · RFC 6086 Info-Package 469 & [64,4096]B Gate"
+          },
+          input: {
+            "probeId": "sip-rfc6086-info-package-469-rejection-probe-01",
+            "unnegotiatedLegacyInfoOrOversizedPayloadDetected": true,
+            "unnegotiatedOrOversizedInfoPackets": 12,
+            "maxInfoPackagePayloadBytes": 65536
+          },
+          output: {
+            "violated": true,
+            "policyId": "P931-SIP-RFC6086-INFO-PACKAGE-RECV-INFO-NEGOTIATION-AND-469-REJECTION-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live SIP Info-Package MIME parser latency not_measured)",
+            "action": "reject_unnegotiated_info_with_469_and_clamp_payload_bytes",
+            "clampedUnnegotiatedOrOversizedInfoPackets": 0,
+            "clampedMaxInfoPackagePayloadBytes": 4096,
+            "reason": "P931 SIP RFC 6086 unnegotiated Info-Package or oversized payload violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): rejected unnegotiated INFO with 469 Bad Info Package (clamped unauthorized packets to 0) and clamped payload size to 4096 bytes."
+          }
+        },
+        {
+          id: "p932_sip_rfc6086_out_of_band_info_dtmf_deduplication_and_rate_throttle",
+          label: {
+            "zh-CN": "🔥 [专题109 · Stage 469 · 941护栏 & 760现场探针 🎉 · voice-sip-rfc6086-rfc5727-info-package-dtmf-out-of-sync-legacy-info-flood-469-bad-info-faq] P932 🎉 · RFC 6086 跨平面 DTMF 去重与 [80,500]ms 节流门禁",
+            "zh-TW": "🔥 [專題109 · Stage 469 · 941護欄 & 760現場探針 🎉 · voice-sip-rfc6086-rfc5727-info-package-dtmf-out-of-sync-legacy-info-flood-469-bad-info-faq] P932 🎉 · RFC 6086 跨平面 DTMF 去重與 [80,500]ms 節流門禁",
+            "en": "🔥 [Topic 109 · Stage 469 · 941 Guards & 760 POC 🎉 · voice-sip-rfc6086-rfc5727-info-package-dtmf-out-of-sync-legacy-info-flood-469-bad-info-faq] P932 🎉 · RFC 6086 Cross-Plane DTMF Dedup & [80,500]ms Gate"
+          },
+          input: {
+            "probeId": "sip-rfc6086-oob-dtmf-dedup-throttle-probe-02",
+            "duplicateOutOfBandInfoAndRfc4733DtmfOrBurstFloodDetected": true,
+            "doubleChargedDtmfDigitsOrInfoFloodPackets": 8,
+            "minSipInfoInterArrivalMs": 10
+          },
+          output: {
+            "violated": true,
+            "policyId": "P932-SIP-RFC6086-OUT-OF-BAND-INFO-DTMF-DEDUPLICATION-AND-RATE-THROTTLE-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live cross-thread DTMF ring-buffer lock latency not_measured)",
+            "action": "deduplicate_oob_info_against_rfc4733_and_throttle_info_rate",
+            "clampedDoubleChargedDtmfDigitsOrInfoFloodPackets": 0,
+            "clampedMinSipInfoInterArrivalMs": 80,
+            "reason": "P932 SIP RFC 6086 dual-plane SIP INFO + RFC 4733 duplicate DTMF digit or sub-80ms flood violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): deduplicated out-of-band INFO against RFC 4733 (clamped duplicate digits to 0) and clamped minimum inter-arrival interval to 80ms."
+          }
+        },
+        {
+          id: "p929_webrtc_rfc8852_rid_rtp_stream_id_allowlist_and_max_bitrate_envelope",
+          label: {
+            "zh-CN": "🔥 [专题108 · Stage 468 · 110篇FAQ & P930 🎉 · voice-webrtc-rtp-rfc8852-rfc8853-rid-restriction-id-pt-repurposing-simulcast-layer-spoofing-faq] P929 · RFC 8852 RID [1,3] 层与 max-br 令牌桶门禁",
+            "zh-TW": "🔥 [專題108 · Stage 468 · 110篇FAQ & P930 🎉 · voice-webrtc-rtp-rfc8852-rfc8853-rid-restriction-id-pt-repurposing-simulcast-layer-spoofing-faq] P929 · RFC 8852 RID [1,3] 層與 max-br 令牌桶門禁",
+            "en": "🔥 [Topic 108 · Stage 468 · 110th FAQ & P930 🎉 · voice-webrtc-rtp-rfc8852-rfc8853-rid-restriction-id-pt-repurposing-simulcast-layer-spoofing-faq] P929 · RFC 8852 RID [1,3]-Layer & max-br Policer Gate"
+          },
+          input: {
+            "probeId": "webrtc-rfc8852-rid-max-br-policer-probe-01",
+            "unnegotiatedRidOrMaxBrAudioStarvationDetected": true,
+            "unnegotiatedOrOverBudgetRidPackets": 16,
+            "maxSimulcastRidLayersPerMediaSection": 16
+          },
+          output: {
+            "violated": true,
+            "policyId": "P929-WEBRTC-RFC8852-RID-RTP-STREAM-ID-ALLOWLIST-AND-MAX-BITRATE-ENVELOPE-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live SFU per-RID token-bucket policing latency not_measured)",
+            "action": "police_rid_max_br_envelope_and_drop_unnegotiated_simulcast_tier",
+            "clampedUnnegotiatedOrOverBudgetRidPackets": 0,
+            "clampedMaxSimulcastRidLayersPerMediaSection": 3,
+            "reason": "P929 WebRTC RFC 8851 / RFC 8852 unnegotiated RID or a=rid max-br overshoot starving co-bundled Opus voice violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): policed per-RID max-br token bucket (clamped over-budget packets to 0) and clamped Simulcast tiers to 3 layers."
+          }
+        },
+        {
+          id: "p930_webrtc_rfc8852_repaired_rtp_stream_id_rtx_binding_and_pt_restriction",
+          label: {
+            "zh-CN": "🔥 [专题108 · Stage 468 · 110篇FAQ & P930 🎉 · voice-webrtc-rtp-rfc8852-rfc8853-rid-restriction-id-pt-repurposing-simulcast-layer-spoofing-faq] P930 🎉 · RFC 8852 repaired-rtp-stream-id 主流绑定与 [1,16]B 门禁",
+            "zh-TW": "🔥 [專題108 · Stage 468 · 110篇FAQ & P930 🎉 · voice-webrtc-rtp-rfc8852-rfc8853-rid-restriction-id-pt-repurposing-simulcast-layer-spoofing-faq] P930 🎉 · RFC 8852 repaired-rtp-stream-id 主流綁定與 [1,16]B 門禁",
+            "en": "🔥 [Topic 108 · Stage 468 · 110th FAQ & P930 🎉 · voice-webrtc-rtp-rfc8852-rfc8853-rid-restriction-id-pt-repurposing-simulcast-layer-spoofing-faq] P930 🎉 · RFC 8852 repaired-rtp-stream-id & [1,16]B Gate"
+          },
+          input: {
+            "probeId": "webrtc-rfc8852-repaired-rid-rtx-binding-probe-02",
+            "orphanRepairedRtpStreamIdOrPtRestrictionMismatchDetected": true,
+            "orphanRtxOrPtViolatingRepairPackets": 9,
+            "maxRidIdentifierLengthBytes": 255
+          },
+          output: {
+            "violated": true,
+            "policyId": "P930-WEBRTC-RFC8852-REPAIRED-RTP-STREAM-ID-RTX-BINDING-AND-PT-RESTRICTION-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live SFU RTX OSN history-buffer lookup latency not_measured)",
+            "action": "bind_repaired_rid_to_active_primary_and_enforce_a_rid_pt_list",
+            "clampedOrphanRtxOrPtViolatingRepairPackets": 0,
+            "clampedMaxRidIdentifierLengthBytes": 16,
+            "reason": "P930 WebRTC RFC 8852 orphan repaired-rtp-stream-id or a=rid pt= restriction mismatch violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): bound repaired-rtp-stream-id to active primary RID (clamped orphan RTX packets to 0) and clamped RID length to 16 bytes."
+          }
+        },
+        {
+          id: "p927_sip_rfc4412_resource_priority_header_spoofing_and_preemption_quota",
+          label: {
+            "zh-CN": "🔥 [专题107 · Stage 467 · 470维里程碑 🎉 · voice-sip-rfc4412-rfc5009-resource-priority-rph-preemption-spoofing-p-early-media-billing-bypass-faq] P927 · RFC 4412 RPH 防伪造强拆与 [5,25]% 配额门禁",
+            "zh-TW": "🔥 [專題107 · Stage 467 · 470維里程碑 🎉 · voice-sip-rfc4412-rfc5009-resource-priority-rph-preemption-spoofing-p-early-media-billing-bypass-faq] P927 · RFC 4412 RPH 防偽造強拆與 [5,25]% 配額門禁",
+            "en": "🔥 [Topic 107 · Stage 467 · 470 Dims 🎉 · voice-sip-rfc4412-rfc5009-resource-priority-rph-preemption-spoofing-p-early-media-billing-bypass-faq] P927 · RFC 4412 RPH Anti-Spoofing & [5,25]% Preemption Gate"
+          },
+          input: {
+            "probeId": "sip-rfc4412-rph-preemption-spoofing-probe-01",
+            "unauthenticatedResourcePriorityPreemptionDetected": true,
+            "spoofedRphPreemptedActiveCalls": 15,
+            "maxPreemptableTrunkCapacityPercent": 100
+          },
+          output: {
+            "violated": true,
+            "policyId": "P927-SIP-RFC4412-RESOURCE-PRIORITY-HEADER-SPOOFING-AND-PREEMPTION-QUOTA-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live SBC PASSporT rph signature verification latency not_measured)",
+            "action": "strip_unsigned_rph_enforce_rfc8443_passport_and_cap_preemption",
+            "clampedSpoofedRphPreemptedActiveCalls": 0,
+            "clampedMaxPreemptableTrunkCapacityPercent": 25,
+            "reason": "P927 SIP RFC 4412 / RFC 8443 unsigned Resource-Priority preemption spoofing violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): stripped unsigned RPH header (clamped preempted active calls to 0) and clamped preemptable trunk capacity to 25%."
+          }
+        },
+        {
+          id: "p928_sip_rfc5009_p_early_media_direction_gating_and_pre_answer_toll_fraud",
+          label: {
+            "zh-CN": "🔥 [专题107 · Stage 467 · 470维里程碑 🎉 · voice-sip-rfc4412-rfc5009-resource-priority-rph-preemption-spoofing-p-early-media-billing-bypass-faq] P928 · RFC 5009 183 单向 sendonly 与 [5,45]s 防盗打门禁",
+            "zh-TW": "🔥 [專題107 · Stage 467 · 470維里程碑 🎉 · voice-sip-rfc4412-rfc5009-resource-priority-rph-preemption-spoofing-p-early-media-billing-bypass-faq] P928 · RFC 5009 183 單向 sendonly 與 [5,45]s 防盜打門禁",
+            "en": "🔥 [Topic 107 · Stage 467 · 470 Dims 🎉 · voice-sip-rfc4412-rfc5009-resource-priority-rph-preemption-spoofing-p-early-media-billing-bypass-faq] P928 · RFC 5009 183 sendonly & [5,45]s Toll-Fraud Gate"
+          },
+          input: {
+            "probeId": "sip-rfc5009-p-early-media-toll-fraud-probe-02",
+            "unauthorizedBidirectionalEarlyMediaSendrecvTollFraudDetected": true,
+            "unbilledBidirectional183TollFraudCalls": 9,
+            "maxEarlyMediaDurationSeconds": 600
+          },
+          output: {
+            "violated": true,
+            "policyId": "P928-SIP-RFC5009-P-EARLY-MEDIA-DIRECTION-GATING-AND-PRE-ANSWER-TOLL-FRAUD-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live SBC media-pinhole direction switch latency not_measured)",
+            "action": "force_unidirectional_sendonly_early_media_and_clamp_183_ttl",
+            "clampedUnbilledBidirectional183TollFraudCalls": 0,
+            "clampedMaxEarlyMediaDurationSeconds": 45,
+            "reason": "P928 SIP RFC 5009 pre-answer P-Early-Media: sendrecv bidirectional toll-fraud violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): forced unidirectional sendonly early media (clamped unbilled 183 calls to 0) and clamped early-media TTL to 45s."
+          }
+        },
+        {
+          id: "p925_webrtc_rtcp_rfc7941_ephemeral_sdes_cname_privacy_and_pii_strip",
+          label: {
+            "zh-CN": "🔥 [专题106 · Stage 466 · SVG 110 🎉 · voice-webrtc-rtcp-rfc7941-rfc7022-sdes-cname-ephemeral-privacy-lipsync-clock-drift-faq] P925 · RFC 7022 [96,128]b 随机 SDES CNAME 与 PII 剥离门禁",
+            "zh-TW": "🔥 [專題106 · Stage 466 · SVG 110 🎉 · voice-webrtc-rtcp-rfc7941-rfc7022-sdes-cname-ephemeral-privacy-lipsync-clock-drift-faq] P925 · RFC 7022 [96,128]b 隨機 SDES CNAME 與 PII 剝離門禁",
+            "en": "🔥 [Topic 106 · Stage 466 · SVG 110 🎉 · voice-webrtc-rtcp-rfc7941-rfc7022-sdes-cname-ephemeral-privacy-lipsync-clock-drift-faq] P925 · RFC 7022 [96,128]b Ephemeral SDES CNAME & PII Strip Gate"
+          },
+          input: {
+            "probeId": "webrtc-rfc7022-ephemeral-sdes-cname-privacy-probe-01",
+            "staticHostIpCnameOrUnauthorizedSdesPiiItemDetected": true,
+            "leakedSdesPiiOrStaticFingerprintPackets": 11,
+            "sdesCnameEntropyBits": 24
+          },
+          output: {
+            "violated": true,
+            "policyId": "P925-WEBRTC-RTCP-RFC7941-EPHEMERAL-SDES-CNAME-PRIVACY-AND-PII-STRIP-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live SFU compound RTCP parser latency not_measured)",
+            "action": "rewrite_ephemeral_csprng_cname_and_strip_non_cname_sdes_items",
+            "clampedLeakedSdesPiiOrStaticFingerprintPackets": 0,
+            "clampedSdesCnameEntropyBits": 96,
+            "reason": "P925 WebRTC RFC 7022 / RFC 8834 static user@IP SDES CNAME or non-CNAME PII metadata leak violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): stripped non-CNAME SDES items and rewrote to per-session CSPRNG CNAME (clamped leaked packets to 0) with entropy clamped to 96 bits."
+          }
+        },
+        {
+          id: "p926_webrtc_rtcp_rfc7941_rtp_header_extension_sdes_cname_sync_and_lipsync_skew",
+          label: {
+            "zh-CN": "🔥 [专题106 · Stage 466 · 935护栏 🎉 · voice-webrtc-rtcp-rfc7941-rfc7022-sdes-cname-ephemeral-privacy-lipsync-clock-drift-faq] P926 🎉 · RFC 7941 首帧 Cryptex 0-RTT 绑定与 [15,80]ms 唇音同步门禁",
+            "zh-TW": "🔥 [專題106 · Stage 466 · 935護欄 🎉 · voice-webrtc-rtcp-rfc7941-rfc7022-sdes-cname-ephemeral-privacy-lipsync-clock-drift-faq] P926 🎉 · RFC 7941 首幀 Cryptex 0-RTT 綁定與 [15,80]ms 唇音同步門禁",
+            "en": "🔥 [Topic 106 · Stage 466 · 935th Guard 🎉 · voice-webrtc-rtcp-rfc7941-rfc7022-sdes-cname-ephemeral-privacy-lipsync-clock-drift-faq] P926 🎉 · RFC 7941 0-RTT Cryptex CNAME & [15,80]ms Lip-Sync Gate"
+          },
+          input: {
+            "probeId": "webrtc-rfc7941-0rtt-cname-lipsync-skew-probe-02",
+            "missingFirstFrameRfc7941CnameOrExcessiveLipSyncSkewDetected": true,
+            "unboundOrDesyncedMultimodalAvatarStreams": 6,
+            "maxAudioVideoLipSyncSkewMs": 240
+          },
+          output: {
+            "violated": true,
+            "policyId": "P926-WEBRTC-RTCP-RFC7941-RTP-HEADER-EXTENSION-SDES-CNAME-SYNC-AND-LIPSYNC-SKEW-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live client playout NTP linear-regression latency not_measured)",
+            "action": "inject_cryptex_rfc7941_sdes_cname_and_resync_av_playout",
+            "clampedUnboundOrDesyncedMultimodalAvatarStreams": 0,
+            "clampedMaxAudioVideoLipSyncSkewMs": 80,
+            "reason": "P926 WebRTC RFC 7941 missing first-frame sdes:cname 0-RTT binding or >80ms digital-human A/V lip-sync skew violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): attached Cryptex sdes:cname on initial frames (clamped desynced streams to 0) and clamped A/V lip-sync skew tolerance to 80ms."
+          }
+        },
+        {
+          id: "p923_sip_rfc3327_path_header_edge_proxy_allowlist_and_loose_routing",
+          label: {
+            "zh-CN": "🔥 [专题105 🎉 · Stage 465 🎉 · voice-sip-rfc3327-rfc3608-path-service-route-header-poisoning-strict-routing-bypass-faq] P923 · RFC 3327 Path 入口剥离与 mTLS/;lr [1,4] 跳门禁",
+            "zh-TW": "🔥 [專題105 🎉 · Stage 465 🎉 · voice-sip-rfc3327-rfc3608-path-service-route-header-poisoning-strict-routing-bypass-faq] P923 · RFC 3327 Path 入口剝離與 mTLS/;lr [1,4] 跳門禁",
+            "en": "🔥 [Topic 105 🎉 · Stage 465 🎉 · voice-sip-rfc3327-rfc3608-path-service-route-header-poisoning-strict-routing-bypass-faq] P923 · RFC 3327 Path Strip & mTLS/;lr [1,4]-Hop Gate"
+          },
+          input: {
+            "probeId": "sip-rfc3327-path-edge-allowlist-lr-probe-01",
+            "untrustedIngressPathHeaderOrMissingLrStrictRoutingDetected": true,
+            "poisonedPathHijackOrStrictOverwriteRegistrations": 8,
+            "maxPathVectorHops": 12
+          },
+          output: {
+            "violated": true,
+            "policyId": "P923-SIP-RFC3327-PATH-HEADER-EDGE-PROXY-ALLOWLIST-AND-LOOSE-ROUTING-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live Registrar usrloc database write latency not_measured)",
+            "action": "strip_untrusted_path_and_enforce_mtls_edge_allowlist_with_lr",
+            "clampedPoisonedPathHijackOrStrictOverwriteRegistrations": 0,
+            "clampedMaxPathVectorHops": 4,
+            "reason": "P923 SIP RFC 3327 external Path header smuggling or missing ;lr Strict-Routing overwrite violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): stripped external Path and enforced mTLS Edge allowlist with ;lr (clamped poisoned registrations to 0) and clamped Path vector hops to 4."
+          }
+        },
+        {
+          id: "p924_sip_rfc3608_service_route_registrar_pinning_and_route_set_bounds",
+          label: {
+            "zh-CN": "🔥 [专题105 🎉 · Stage 465 🎉 · voice-sip-rfc3327-rfc3608-path-service-route-header-poisoning-strict-routing-bypass-faq] P924 · RFC 3608 Service-Route 核心域白名单与 [1,4] 跳门禁",
+            "zh-TW": "🔥 [專題105 🎉 · Stage 465 🎉 · voice-sip-rfc3327-rfc3608-path-service-route-header-poisoning-strict-routing-bypass-faq] P924 · RFC 3608 Service-Route 核心域白名單與 [1,4] 跳門禁",
+            "en": "🔥 [Topic 105 🎉 · Stage 465 🎉 · voice-sip-rfc3327-rfc3608-path-service-route-header-poisoning-strict-routing-bypass-faq] P924 · RFC 3608 Service-Route Core Pinning [1,4]-Hop Gate"
+          },
+          input: {
+            "probeId": "sip-rfc3608-service-route-core-pinning-probe-02",
+            "unallowlistedServiceRouteOrOutboundDlpBypassDetected": true,
+            "hijackedOutboundServiceRouteDialogs": 6,
+            "maxServiceRouteVectorHops": 15
+          },
+          output: {
+            "violated": true,
+            "policyId": "P924-SIP-RFC3608-SERVICE-ROUTE-REGISTRAR-PINNING-AND-ROUTE-SET-BOUNDS-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live UAC route-set cache lock latency not_measured)",
+            "action": "pin_service_route_to_authorized_core_allowlist_and_enforce_lr",
+            "clampedHijackedOutboundServiceRouteDialogs": 0,
+            "clampedMaxServiceRouteVectorHops": 4,
+            "reason": "P924 SIP RFC 3608 unallowlisted Service-Route outbound DLP bypass violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): pinned Service-Route to authorized tenant core allowlist with ;lr (clamped hijacked outbound dialogs to 0) and clamped Service-Route hops to 4."
+          }
+        },
+        {
+          id: "p921_webrtc_rfc7667_sfu_source_switch_seq_timestamp_delta_continuity",
+          label: {
+            "zh-CN": "🔥 [专题104 · Stage 464 · 930护栏 🎉 · voice-webrtc-rtp-rfc7667-rfc5117-topologies-sfu-mcu-ssrc-rewrite-seq-ts-gap-plc-glitch-faq] P921 · RFC 7667 SFU 切源 Seq/TS [480,2880] 连续重映射门禁",
+            "zh-TW": "🔥 [專題104 · Stage 464 · 930護欄 🎉 · voice-webrtc-rtp-rfc7667-rfc5117-topologies-sfu-mcu-ssrc-rewrite-seq-ts-gap-plc-glitch-faq] P921 · RFC 7667 SFU 切源 Seq/TS [480,2880] 連續重映射門禁",
+            "en": "🔥 [Topic 104 · Stage 464 · 930th Guard 🎉 · voice-webrtc-rtp-rfc7667-rfc5117-topologies-sfu-mcu-ssrc-rewrite-seq-ts-gap-plc-glitch-faq] P921 · RFC 7667 SFU Seq/TS [480,2880] Delta Continuity Gate"
+          },
+          input: {
+            "probeId": "webrtc-rfc7667-sfu-seq-ts-continuity-probe-01",
+            "unrewrittenSeqTimestampDiscontinuityOnSsrcSwitchDetected": true,
+            "plcDiscontinuityGlitchOrFrozenSwitchPackets": 14,
+            "maxTimestampJumpSamplesPerFrame": 96000
+          },
+          output: {
+            "violated": true,
+            "policyId": "P921-WEBRTC-RFC7667-SFU-SOURCE-SWITCH-SEQ-TIMESTAMP-DELTA-CONTINUITY-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live SFU forwarding-plane packet rewrite latency not_measured)",
+            "action": "rewrite_contiguous_seq_timestamp_deltas_and_set_marker_m1",
+            "clampedPlcDiscontinuityGlitchOrFrozenSwitchPackets": 0,
+            "clampedMaxTimestampJumpSamplesPerFrame": 2880,
+            "reason": "P921 WebRTC RFC 7667 SFU source-switch raw Seq/TS discontinuity violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): translated contiguous (Seq_out, TS_out, M=1) deltas (clamped PLC glitch packets to 0) and clamped timestamp step to 2880 samples."
+          }
+        },
+        {
+          id: "p922_webrtc_rfc7667_sfu_srtp_roc_reencryption_and_active_speaker_hold_hysteresis",
+          label: {
+            "zh-CN": "🔥 [专题104 · Stage 464 · 931护栏 & 750现场探针 🎉 · voice-webrtc-rtp-rfc7667-rfc5117-topologies-sfu-mcu-ssrc-rewrite-seq-ts-gap-plc-glitch-faq] P922 · RFC 7667 下行独立 ROC_out 与 [200,1000]ms 迟滞门禁",
+            "zh-TW": "🔥 [專題104 · Stage 464 · 931護欄 & 750現場探針 🎉 · voice-webrtc-rtp-rfc7667-rfc5117-topologies-sfu-mcu-ssrc-rewrite-seq-ts-gap-plc-glitch-faq] P922 · RFC 7667 下行獨立 ROC_out 與 [200,1000]ms 遲滯門禁",
+            "en": "🔥 [Topic 104 · Stage 464 · 931 Guards & 750 POC 🎉 · voice-webrtc-rtp-rfc7667-rfc5117-topologies-sfu-mcu-ssrc-rewrite-seq-ts-gap-plc-glitch-faq] P922 · RFC 7667 Outbound ROC_out & [200,1000]ms Hysteresis Gate"
+          },
+          input: {
+            "probeId": "webrtc-rfc7667-sfu-srtp-roc-hysteresis-probe-02",
+            "upstreamRocReuseAuthFailureOrPingPongSpeakerThrashDetected": true,
+            "srtpRocDesyncDropsOrPingPongSwitches": 9,
+            "speakerSwitchHoldHysteresisMs": 20
+          },
+          output: {
+            "violated": true,
+            "policyId": "P922-WEBRTC-RFC7667-SFU-SRTP-ROC-REENCRYPTION-AND-ACTIVE-SPEAKER-HOLD-HYSTERESIS-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live SFU AES-GCM re-encryption latency not_measured)",
+            "action": "reencrypt_with_independent_outbound_roc_and_enforce_hold_hysteresis",
+            "clampedSrtpRocDesyncDropsOrPingPongSwitches": 0,
+            "clampedSpeakerSwitchHoldHysteresisMs": 200,
+            "reason": "P922 WebRTC RFC 7667 SFU upstream ROC_in wrap-around desync or sub-200ms speaker thrash violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): re-encrypted with independent outbound ROC_out (clamped ROC drops to 0) and clamped speaker hold hysteresis to 200ms."
+          }
+        },
+        {
+          id: "p919_sip_rfc7339_overload_control_authenticated_loss_ceiling_and_rate_adaptive",
+          label: {
+            "zh-CN": "🔥 [专题103 · Stage 463 · 105篇FAQ & P920 🎉 · voice-sip-rfc7339-rfc6809-overload-control-oc-rate-loss-feedback-oscillation-validity-dos-faq] P919 · RFC 7339 过载控制 [5,80]% 封顶与 BYE/sos 豁免门禁",
+            "zh-TW": "🔥 [專題103 · Stage 463 · 105篇FAQ & P920 🎉 · voice-sip-rfc7339-rfc6809-overload-control-oc-rate-loss-feedback-oscillation-validity-dos-faq] P919 · RFC 7339 過載控制 [5,80]% 封頂與 BYE/sos 豁免門禁",
+            "en": "🔥 [Topic 103 · Stage 463 · 105th FAQ & P920 🎉 · voice-sip-rfc7339-rfc6809-overload-control-oc-rate-loss-feedback-oscillation-validity-dos-faq] P919 · RFC 7339 Overload [5,80]% Cap & BYE/sos Exemption Gate"
+          },
+          input: {
+            "probeId": "sip-rfc7339-overload-control-loss-ceiling-probe-01",
+            "unauthenticatedPeerOcInjectionOrInDialogDropDetected": true,
+            "forgedOcBlackholeOrDroppedInDialogPackets": 19,
+            "maxAllowedOverloadLossPercent": 100
+          },
+          output: {
+            "violated": true,
+            "policyId": "P919-SIP-RFC7339-OVERLOAD-CONTROL-AUTHENTICATED-LOSS-CEILING-AND-RATE-ADAPTIVE-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live SBC token-bucket rate shaper latency not_measured)",
+            "action": "strip_untrusted_oc_exempt_in_dialog_sos_and_cap_loss_ceiling",
+            "clampedForgedOcBlackholeOrDroppedInDialogPackets": 0,
+            "clampedMaxAllowedOverloadLossPercent": 80,
+            "reason": "P919 SIP RFC 7339 / RFC 6809 untrusted Via oc injection or in-dialog ACK/BYE/sos collateral drop violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): stripped untrusted oc, exempted in-dialog/sos calls (clamped dropped packets to 0), and clamped max overload loss ceiling to 80%."
+          }
+        },
+        {
+          id: "p920_sip_rfc7339_oc_validity_expiry_and_feedback_damping_window",
+          label: {
+            "zh-CN": "🔥 [专题103 · Stage 463 · 105篇FAQ & P920 🎉 · voice-sip-rfc7339-rfc6809-overload-control-oc-rate-loss-feedback-oscillation-validity-dos-faq] P920 🎉 · RFC 7339 oc-validity [500,10000]ms 到期自动归零门禁",
+            "zh-TW": "🔥 [專題103 · Stage 463 · 105篇FAQ & P920 🎉 · voice-sip-rfc7339-rfc6809-overload-control-oc-rate-loss-feedback-oscillation-validity-dos-faq] P920 🎉 · RFC 7339 oc-validity [500,10000]ms 到期自動歸零門禁",
+            "en": "🔥 [Topic 103 · Stage 463 · 105th FAQ & P920 🎉 · voice-sip-rfc7339-rfc6809-overload-control-oc-rate-loss-feedback-oscillation-validity-dos-faq] P920 🎉 · RFC 7339 oc-validity [500,10000]ms Auto-Zero Gate"
+          },
+          input: {
+            "probeId": "sip-rfc7339-oc-validity-expiry-damping-probe-02",
+            "staleOcValidityZombieThrottleOrSawtoothOscillationDetected": true,
+            "staleThrottledOrOscillatingTrunks": 11,
+            "ocValidityDurationMs": 120000
+          },
+          output: {
+            "violated": true,
+            "policyId": "P920-SIP-RFC7339-OC-VALIDITY-EXPIRY-AND-FEEDBACK-DAMPING-WINDOW-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live SBC EWMA feedback damping latency not_measured)",
+            "action": "auto_reset_expired_oc_validity_and_apply_ewma_damping",
+            "clampedStaleThrottledOrOscillatingTrunks": 0,
+            "clampedOcValidityDurationMs": 10000,
+            "reason": "P920 SIP RFC 7339 stale oc-validity zombie throttling or sawtooth oscillation violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): auto-reset expired oc to 0% with EWMA damping (clamped stale trunks to 0) and clamped oc-validity TTL to 10000ms."
+          }
+        },
+        {
+          id: "p917_webrtc_rfc9143_bundle_unique_payload_type_and_mid_extension_demux",
+          label: {
+            "zh-CN": "🔥 [专题102 · Stage 462 · 465维里程碑 🎉 · voice-webrtc-rtp-rfc9143-rfc8843-bundle-mid-pt-demux-collision-lit-ssrc-latching-faq] P917 · RFC 9143 BUNDLE 跨 m= 行 PT [1,32] 互斥与 MID 门禁",
+            "zh-TW": "🔥 [專題102 · Stage 462 · 465維里程碑 🎉 · voice-webrtc-rtp-rfc9143-rfc8843-bundle-mid-pt-demux-collision-lit-ssrc-latching-faq] P917 · RFC 9143 BUNDLE 跨 m= 行 PT [1,32] 互斥與 MID 門禁",
+            "en": "🔥 [Topic 102 · Stage 462 · 465 Dims 🎉 · voice-webrtc-rtp-rfc9143-rfc8843-bundle-mid-pt-demux-collision-lit-ssrc-latching-faq] P917 · RFC 9143 BUNDLE Disjoint PT [1,32] & MID Demux Gate"
+          },
+          input: {
+            "probeId": "webrtc-rfc9143-bundle-pt-collision-mid-demux-probe-01",
+            "crossMediaLinePayloadTypeCollisionOrMissingMidDemuxDetected": true,
+            "crossMediaLinePtCollisionOrMisroutedPackets": 7,
+            "distinctDynamicPayloadTypesInBundle": 64
+          },
+          output: {
+            "violated": true,
+            "policyId": "P917-WEBRTC-RFC9143-BUNDLE-UNIQUE-PAYLOAD-TYPE-AND-MID-EXTENSION-DEMUX-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live softirq RFC 9143 hash-table lookup latency not_measured)",
+            "action": "enforce_disjoint_bundle_dynamic_pts_and_isolate_mid_less_packets",
+            "clampedCrossMediaLinePtCollisionOrMisroutedPackets": 0,
+            "clampedDistinctDynamicPayloadTypesInBundle": 32,
+            "reason": "P917 WebRTC RFC 9143 BUNDLE cross-m=-line dynamic PT collision or unlatched SSRC missing a=mid header extension violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): enforced disjoint dynamic PTs and isolated MID-less packets (clamped misrouted packets to 0) and clamped dynamic PT count to 32."
+          }
+        },
+        {
+          id: "p918_webrtc_rfc9143_bundle_ssrc_latching_quota_and_bundle_only_fallback",
+          label: {
+            "zh-CN": "🔥 [专题102 · Stage 462 · 465维里程碑 🎉 · voice-webrtc-rtp-rfc9143-rfc8843-bundle-mid-pt-demux-collision-lit-ssrc-latching-faq] P918 · RFC 9143 BUNDLE SSRC 绑定表 [2,16] 配额与主音轨钉死门禁",
+            "zh-TW": "🔥 [專題102 · Stage 462 · 465維里程碑 🎉 · voice-webrtc-rtp-rfc9143-rfc8843-bundle-mid-pt-demux-collision-lit-ssrc-latching-faq] P918 · RFC 9143 BUNDLE SSRC 綁定表 [2,16] 配額與主音軌釘死門禁",
+            "en": "🔥 [Topic 102 · Stage 462 · 465 Dims 🎉 · voice-webrtc-rtp-rfc9143-rfc8843-bundle-mid-pt-demux-collision-lit-ssrc-latching-faq] P918 · RFC 9143 BUNDLE [2,16] SSRC Latching Quota Gate"
+          },
+          input: {
+            "probeId": "webrtc-rfc9143-bundle-ssrc-latching-quota-probe-02",
+            "unboundedSsrcLatchingFloodOrPrimaryAudioSsrcEvictionDetected": true,
+            "evictedAudioSsrcOrUnboundedLatchEntries": 12,
+            "maxLatchedSsrcsPerBundleTransport": 128
+          },
+          output: {
+            "violated": true,
+            "policyId": "P918-WEBRTC-RFC9143-BUNDLE-SSRC-LATCHING-QUOTA-AND-BUNDLE-ONLY-FALLBACK-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live BUNDLE SSRC LRU table lock latency not_measured)",
+            "action": "pin_primary_voice_ssrc_and_cap_bundle_latch_table",
+            "clampedEvictedAudioSsrcOrUnboundedLatchEntries": 0,
+            "clampedMaxLatchedSsrcsPerBundleTransport": 16,
+            "reason": "P918 WebRTC RFC 9143 BUNDLE SSRC churn flood or primary audio SSRC eviction violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): pinned primary voice SSRC (clamped evicted entries to 0) and clamped BUNDLE SSRC latching quota to 16."
+          }
+        },
+        {
+          id: "p915_sip_rfc8760_digest_sha256_upgrade_and_md5_qop_downgrade_defense",
+          label: {
+            "zh-CN": "🔥 [专题101 · Stage 461 · SVG 105 & 925护栏 🎉 · voice-sip-rfc3261-rfc8760-digest-sha256-md5-downgrade-nonce-count-replay-stuffing-faq] P915 · RFC 8760 SHA-256 防 MD5 降级与 [128,256]b cnonce 门禁",
+            "zh-TW": "🔥 [專題101 · Stage 461 · SVG 105 & 925護欄 🎉 · voice-sip-rfc3261-rfc8760-digest-sha256-md5-downgrade-nonce-count-replay-stuffing-faq] P915 · RFC 8760 SHA-256 防 MD5 降級與 [128,256]b cnonce 門禁",
+            "en": "🔥 [Topic 101 · Stage 461 · SVG 105 & 925 Guards 🎉 · voice-sip-rfc3261-rfc8760-digest-sha256-md5-downgrade-nonce-count-replay-stuffing-faq] P915 · RFC 8760 SHA-256 & [128,256]b cnonce Gate"
+          },
+          input: {
+            "probeId": "sip-rfc8760-digest-sha256-md5-downgrade-probe-01",
+            "digestMd5DowngradeOrMissingQopWeakCnonceDetected": true,
+            "md5DowngradedOrWeakCnonceAuthHandshakes": 8,
+            "clientCnonceEntropyBits": 32
+          },
+          output: {
+            "violated": true,
+            "policyId": "P915-SIP-RFC8760-DIGEST-SHA256-UPGRADE-AND-MD5-QOP-DOWNGRADE-DEFENSE-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live hardware SHA-NI hashing latency not_measured)",
+            "action": "enforce_rfc8760_sha256_qop_auth_and_reject_md5_downgrade",
+            "clampedMd5DowngradedOrWeakCnonceAuthHandshakes": 0,
+            "clampedClientCnonceEntropyBits": 128,
+            "reason": "P915 SIP RFC 8760 legacy algorithm=MD5 bidding-down downgrade or weak cnonce chosen-plaintext violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): enforced SHA-256/512-256 with qop=auth (clamped downgraded handshakes to 0) and clamped client cnonce entropy to 128 bits."
+          }
+        },
+        {
+          id: "p916_sip_rfc8760_nonce_count_replay_window_and_stale_rotation_ttl",
+          label: {
+            "zh-CN": "🔥 [专题101 · Stage 461 · SVG 105 & 925护栏 🎉 · voice-sip-rfc3261-rfc8760-digest-sha256-md5-downgrade-nonce-count-replay-stuffing-faq] P916 (第925护栏 🎉) · RFC 8760 (nonce, nc) 位图防重放与 [60,300]s 轮换门禁",
+            "zh-TW": "🔥 [專題101 · Stage 461 · SVG 105 & 925護欄 🎉 · voice-sip-rfc3261-rfc8760-digest-sha256-md5-downgrade-nonce-count-replay-stuffing-faq] P916 (第925護欄 🎉) · RFC 8760 (nonce, nc) 位圖防重放與 [60,300]s 輪換門禁",
+            "en": "🔥 [Topic 101 · Stage 461 · SVG 105 & 925 Guards 🎉 · voice-sip-rfc3261-rfc8760-digest-sha256-md5-downgrade-nonce-count-replay-stuffing-faq] P916 (925th Guard 🎉) · RFC 8760 (nonce, nc) Replay & [60,300]s TTL Gate"
+          },
+          input: {
+            "probeId": "sip-rfc8760-nc-replay-stale-ttl-probe-02",
+            "duplicateNonceCountNcReplayOrCredentialStuffingDetected": true,
+            "replayedNcOrCredentialStuffingAttempts": 15,
+            "serverNonceStaleRotationTtlSeconds": 3600
+          },
+          output: {
+            "violated": true,
+            "policyId": "P916-SIP-RFC8760-NONCE-COUNT-REPLAY-WINDOW-AND-STALE-ROTATION-TTL-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live distributed nc bitmap CAS latency not_measured)",
+            "action": "reject_duplicate_nc_replay_and_rotate_stale_nonce",
+            "clampedReplayedNcOrCredentialStuffingAttempts": 0,
+            "clampedServerNonceStaleRotationTtlSeconds": 300,
+            "reason": "P916 SIP RFC 8760 duplicate (nonce, nc) toll-fraud replay or credential-stuffing burst violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): rejected duplicate nc replays via sliding bitmap (clamped replay attempts to 0) and clamped server nonce TTL to 300 seconds."
+          }
+        },
+        {
+          id: "p913_webrtc_rtcp_rfc5104_pli_fir_keyframe_storm_and_audio_bandwidth_preemption",
+          label: {
+            "zh-CN": "🔥 [专题100 🎉 · Stage 460 🎉 · voice-webrtc-rtp-rfc7741-rfc9626-svc-dependency-descriptor-keyframe-pli-fir-thrash-faq] P913 · RFC 5104 FIR 去重与 [1000,5000]ms 关键帧防挤占语音门禁",
+            "zh-TW": "🔥 [專題100 🎉 · Stage 460 🎉 · voice-webrtc-rtp-rfc7741-rfc9626-svc-dependency-descriptor-keyframe-pli-fir-thrash-faq] P913 · RFC 5104 FIR 去重與 [1000,5000]ms 關鍵幀防擠佔語音門禁",
+            "en": "🔥 [Topic 100 🎉 · Stage 460 🎉 · voice-webrtc-rtp-rfc7741-rfc9626-svc-dependency-descriptor-keyframe-pli-fir-thrash-faq] P913 · RFC 5104 FIR Dedup & [1000,5000]ms Audio-Preemption Gate"
+          },
+          input: {
+            "probeId": "webrtc-rtcp-rfc5104-pli-fir-audio-preemption-probe-01",
+            "unthrottledPliFirKeyframeStormOrDuplicateFirSeqDetected": true,
+            "unthrottledKeyframeStormOrAudioStarvedBursts": 9,
+            "minKeyframeIntervalCooldownMs": 50
+          },
+          output: {
+            "violated": true,
+            "policyId": "P913-WEBRTC-RTCP-RFC5104-PLI-FIR-KEYFRAME-STORM-AND-AUDIO-BANDWIDTH-PREEMPTION-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live hardware IDR video encoding latency not_measured)",
+            "action": "deduplicate_fir_seq_and_preempt_video_burst_with_opus_audio",
+            "clampedUnthrottledKeyframeStormOrAudioStarvedBursts": 0,
+            "clampedMinKeyframeIntervalCooldownMs": 1000,
+            "reason": "P913 WebRTC RFC 5104 duplicate FIR SeqNr or unthrottled 60KB keyframe storm starving BUNDLE Opus voice packets violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): deduplicated FIR requests, enforced Opus audio preemption (clamped audio-starved bursts to 0), and clamped min keyframe cooldown to 1000 ms."
+          }
+        },
+        {
+          id: "p914_webrtc_rtcp_rfc4585_avpf_trr_int_feedback_interval_and_decode_target_sync",
+          label: {
+            "zh-CN": "🔥 [专题100 🎉 · Stage 460 🎉 · voice-webrtc-rtp-rfc7741-rfc9626-svc-dependency-descriptor-keyframe-pli-fir-thrash-faq] P914 · RFC 4585 AVPF trr-int [50,500]ms 与边界同步切层门禁",
+            "zh-TW": "🔥 [專題100 🎉 · Stage 460 🎉 · voice-webrtc-rtp-rfc7741-rfc9626-svc-dependency-descriptor-keyframe-pli-fir-thrash-faq] P914 · RFC 4585 AVPF trr-int [50,500]ms 與邊界同步切層門禁",
+            "en": "🔥 [Topic 100 🎉 · Stage 460 🎉 · voice-webrtc-rtp-rfc7741-rfc9626-svc-dependency-descriptor-keyframe-pli-fir-thrash-faq] P914 · RFC 4585 AVPF trr-int [50,500]ms & Decode-Target Gate"
+          },
+          input: {
+            "probeId": "webrtc-rtcp-rfc4585-avpf-trr-int-decode-target-probe-02",
+            "excessiveTrrIntAudioNackStarvationOrOrphanLayerSwitchDetected": true,
+            "starvedAudioNackOrOrphanLayerSwitches": 6,
+            "avpfTrrIntRegularFeedbackIntervalMs": 2000
+          },
+          output: {
+            "violated": true,
+            "policyId": "P914-WEBRTC-RTCP-RFC4585-AVPF-TRR-INT-FEEDBACK-INTERVAL-AND-DECODE-TARGET-SYNC-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live kernel pacing queue latency not_measured)",
+            "action": "exempt_immediate_audio_nack_and_align_decode_target_boundary",
+            "clampedStarvedAudioNackOrOrphanLayerSwitches": 0,
+            "clampedAvpfTrrIntRegularFeedbackIntervalMs": 500,
+            "reason": "P914 WebRTC RFC 4585 excessive trr-int starving urgent audio NACKs or mid-GOP orphan SFU layer switch violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): exempted immediate audio NACKs, aligned decode-target boundaries (clamped failed switches to 0), and clamped trr-int to 500 ms."
+          }
+        },
+        {
+          id: "p911_sip_rfc8946_stir_shaken_passport_div_chain_continuity_and_retarget_signing",
+          label: {
+            "zh-CN": "🔥 [专题99 · Stage 459 · 921护栏 & 930探针 🎉 · voice-sip-rfc4474-rfc8224-stir-shaken-diversion-passpor-t-div-tn-retargeting-spoof-faq] P911 (第920护栏 🎉) · RFC 8946 PASSporT div 咬合与 [1,5] 跳门禁",
+            "zh-TW": "🔥 [專題99 · Stage 459 · 921護欄 & 930探針 🎉 · voice-sip-rfc4474-rfc8224-stir-shaken-diversion-passpor-t-div-tn-retargeting-spoof-faq] P911 (第920護欄 🎉) · RFC 8946 PASSporT div 咬合與 [1,5] 跳門禁",
+            "en": "🔥 [Topic 99 · Stage 459 · 921 Guards & 930 Probes 🎉 · voice-sip-rfc4474-rfc8224-stir-shaken-diversion-passpor-t-div-tn-retargeting-spoof-faq] P911 (920th Guard 🎉) · RFC 8946 PASSporT div [1,5]-Hop Gate"
+          },
+          input: {
+            "probeId": "sip-rfc8946-stir-shaken-passport-div-chain-probe-01",
+            "retargetMissingPassportDivOrDisconnectedDivChainDetected": true,
+            "brokenDivChainOrGraftedSpoofCalls": 6,
+            "maxChainedDivIdentityHeaders": 12
+          },
+          output: {
+            "violated": true,
+            "policyId": "P911-SIP-RFC8946-STIR-SHAKEN-PASSPORT-DIV-CHAIN-CONTINUITY-AND-RETARGET-SIGNING-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live multi-hop ES256 ECDSA signature verification latency not_measured)",
+            "action": "append_rfc8946_passport_div_and_enforce_chain_continuity",
+            "clampedBrokenDivChainOrGraftedSpoofCalls": 0,
+            "clampedMaxChainedDivIdentityHeaders": 5,
+            "reason": "P911 SIP RFC 8946 STIR/SHAKEN forwarded call missing ppt="div" or disconnected Base.dest !== div.div token-grafting violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): enforced unbroken div chain continuity (clamped broken/grafted calls to 0) and clamped chained div Identity headers to 5 hops."
+          }
+        },
+        {
+          id: "p912_sip_rfc8224_multiple_identity_header_iat_drift_and_max_header_bytes",
+          label: {
+            "zh-CN": "🔥 [专题99 · Stage 459 · 921护栏 & 930探针 🎉 · voice-sip-rfc4474-rfc8224-stir-shaken-diversion-passpor-t-div-tn-retargeting-spoof-faq] P912 (第921护栏 🎉) · RFC 8224 多重 Identity 单调 iat 与 [5,60]s 门禁",
+            "zh-TW": "🔥 [專題99 · Stage 459 · 921護欄 & 930探針 🎉 · voice-sip-rfc4474-rfc8224-stir-shaken-diversion-passpor-t-div-tn-retargeting-spoof-faq] P912 (第921護欄 🎉) · RFC 8224 多重 Identity 單調 iat 與 [5,60]s 門禁",
+            "en": "🔥 [Topic 99 · Stage 459 · 921 Guards & 930 Probes 🎉 · voice-sip-rfc4474-rfc8224-stir-shaken-diversion-passpor-t-div-tn-retargeting-spoof-faq] P912 (921st Guard 🎉) · RFC 8224 Monotonic iat & [5,60]s Gate"
+          },
+          input: {
+            "probeId": "sip-rfc8224-multi-identity-monotonic-iat-probe-02",
+            "nonMonotonicDivIatOrStaleReplayGraftingDetected": true,
+            "replayGraftedOrOversizedIdentityPackets": 9,
+            "passportChainFreshnessWindowSeconds": 900
+          },
+          output: {
+            "violated": true,
+            "policyId": "P912-SIP-RFC8224-MULTIPLE-IDENTITY-HEADER-IAT-DRIFT-AND-MAX-HEADER-BYTES-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live STI-CA certificate cache lookup latency not_measured)",
+            "action": "reject_stale_or_non_monotonic_identity_chain_with_438",
+            "clampedReplayGraftedOrOversizedIdentityPackets": 0,
+            "clampedPassportChainFreshnessWindowSeconds": 60,
+            "reason": "P912 SIP RFC 8224 / RFC 8946 non-monotonic div.iat < Base.iat or stale cut-and-paste PASSporT replay grafting violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): rejected invalid Identity chains (clamped replay-grafted packets to 0) and clamped chain freshness window to 60 seconds."
+          }
+        },
+        {
+          id: "p909_webrtc_ice_rfc8445_role_conflict_487_unsigned_64bit_tie_breaker_and_nomination",
+          label: {
+            "zh-CN": "🔥 [专题98 · Stage 458 · 100篇FAQ & P910 🎉 · voice-webrtc-ice-rfc8445-rfc8838-trickle-ice-end-of-candidates-role-conflict-487-nomination-faq] P909 · RFC 8445 uint64 487 裁决与 Ta [5,50]ms 步进门禁",
+            "zh-TW": "🔥 [專題98 · Stage 458 · 100篇FAQ & P910 🎉 · voice-webrtc-ice-rfc8445-rfc8838-trickle-ice-end-of-candidates-role-conflict-487-nomination-faq] P909 · RFC 8445 uint64 487 裁決與 Ta [5,50]ms 步進門禁",
+            "en": "🔥 [Topic 98 · Stage 458 · 100th FAQ & P910 🎉 · voice-webrtc-ice-rfc8445-rfc8838-trickle-ice-end-of-candidates-role-conflict-487-nomination-faq] P909 · RFC 8445 uint64 487 Tie-Breaker & Ta [5,50]ms Gate"
+          },
+          input: {
+            "probeId": "webrtc-ice-rfc8445-uint64-tie-breaker-487-probe-01",
+            "signedInt64TieBreaker487LoopOrUnverifiedNominationDetected": true,
+            "roleConflict487LoopsOrUnverifiedNominations": 8,
+            "stunConnectivityCheckPacingTaMs": 200
+          },
+          output: {
+            "violated": true,
+            "policyId": "P909-WEBRTC-ICE-RFC8445-ROLE-CONFLICT-487-UNSIGNED-64BIT-TIE-BREAKER-AND-NOMINATION-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live STUN HMAC-SHA1 MESSAGE-INTEGRITY latency not_measured)",
+            "action": "enforce_uint64_tie_breaker_and_succeeded_first_nomination",
+            "clampedRoleConflict487LoopsOrUnverifiedNominations": 0,
+            "clampedStunConnectivityCheckPacingTaMs": 50,
+            "reason": "P909 WebRTC RFC 8445 signed int64 tie-breaker 487 Role Conflict loop or unverified USE-CANDIDATE nomination violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): enforced unsigned uint64 tie-breaker comparison (clamped 487 loops/blind switches to 0) and clamped STUN pacing Ta to 50 ms."
+          }
+        },
+        {
+          id: "p910_webrtc_trickle_ice_rfc8838_end_of_candidates_premature_fail_and_gathering_timeout",
+          label: {
+            "zh-CN": "🔥 [专题98 · Stage 458 · 100篇FAQ & P910 🎉 · voice-webrtc-ice-rfc8445-rfc8838-trickle-ice-end-of-candidates-role-conflict-487-nomination-faq] P910 🎉 · RFC 8838 end-of-candidates 保活与 [3000,15000]ms 超时门禁",
+            "zh-TW": "🔥 [專題98 · Stage 458 · 100篇FAQ & P910 🎉 · voice-webrtc-ice-rfc8445-rfc8838-trickle-ice-end-of-candidates-role-conflict-487-nomination-faq] P910 🎉 · RFC 8838 end-of-candidates 保活與 [3000,15000]ms 超時門禁",
+            "en": "🔥 [Topic 98 · Stage 458 · 100th FAQ & P910 🎉 · voice-webrtc-ice-rfc8445-rfc8838-trickle-ice-end-of-candidates-role-conflict-487-nomination-faq] P910 🎉 · RFC 8838 end-of-candidates Hold & [3,15]s Timeout Gate"
+          },
+          input: {
+            "probeId": "webrtc-trickle-ice-rfc8838-end-of-candidates-hold-probe-02",
+            "prematureIceFailedBeforeEndOfCandidatesReceivedDetected": true,
+            "prematureTrickleIceFailedCalls": 5,
+            "trickleIceGatheringTimeoutMs": 500
+          },
+          output: {
+            "violated": true,
+            "policyId": "P910-WEBRTC-TRICKLE-ICE-RFC8838-END-OF-CANDIDATES-PREMATURE-FAIL-AND-GATHERING-TIMEOUT-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live WAN TURN Allocate RTT latency not_measured)",
+            "action": "hold_ice_checking_until_end_of_candidates_or_timeout",
+            "clampedPrematureTrickleIceFailedCalls": 0,
+            "clampedTrickleIceGatheringTimeoutMs": 3000,
+            "reason": "P910 WebRTC RFC 8838 Trickle ICE premature Failed transition before a=end-of-candidates arrival violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): held ICE checking state open (clamped premature drops to 0) and clamped Trickle ICE gathering timeout to 3000 ms."
+          }
+        },
+        {
+          id: "p907_sip_rfc6140_gin_bulk_number_contact_userless_syntax_and_tenant_did_scope",
+          label: {
+            "zh-CN": "🔥 [专题97 · Stage 457 · 460维里程碑 🎉 · voice-sip-rfc6140-rfc7993-gin-pbx-bnc-trunk-registration-wildcard-uri-hijack-faq] P907 · RFC 6140 无 user@ ;bnc 语法与 [10,10000] DID 归属门禁",
+            "zh-TW": "🔥 [專題97 · Stage 457 · 460維里程碑 🎉 · voice-sip-rfc6140-rfc7993-gin-pbx-bnc-trunk-registration-wildcard-uri-hijack-faq] P907 · RFC 6140 無 user@ ;bnc 語法與 [10,10000] DID 歸屬門禁",
+            "en": "🔥 [Topic 97 · Stage 457 · 460 Dims 🎉 · voice-sip-rfc6140-rfc7993-gin-pbx-bnc-trunk-registration-wildcard-uri-hijack-faq] P907 · RFC 6140 Userless ;bnc & [10,10000] DID Scope Gate"
+          },
+          input: {
+            "probeId": "sip-rfc6140-gin-userless-bnc-did-scope-probe-01",
+            "nonEmptyBncUserPartOrCrossTenantDidRewriteHijackDetected": true,
+            "malformedBncOrCrossTenantDidHijackCalls": 6,
+            "bulkDidCountPerTrunkRegistration": 50000
+          },
+          output: {
+            "violated": true,
+            "policyId": "P907-SIP-RFC6140-GIN-BULK-NUMBER-CONTACT-USERLESS-SYNTAX-AND-TENANT-DID-SCOPE-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live ENUM/NPDB radix-tree lookup latency not_measured)",
+            "action": "enforce_userless_bnc_syntax_and_tenant_did_scope",
+            "clampedMalformedBncOrCrossTenantDidHijackCalls": 0,
+            "clampedBulkDidCountPerTrunkRegistration": 10000,
+            "reason": "P907 SIP RFC 6140 non-empty user@ part in ;bnc Contact URI or cross-tenant E.164 DID rewrite hijack violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): enforced userless ;bnc syntax and tenant DID ownership (clamped failed calls to 0) and clamped bulk DID capacity to 10000."
+          }
+        },
+        {
+          id: "p908_sip_rfc6140_bulk_trunk_registration_path_binding_and_refresh_jitter",
+          label: {
+            "zh-CN": "🔥 [专题97 · Stage 457 · 460维里程碑 🎉 · voice-sip-rfc6140-rfc7993-gin-pbx-bnc-trunk-registration-wildcard-uri-hijack-faq] P908 · RFC 6140 Path/+sip.instance 绑定与 [600,3600]s 刷新门禁",
+            "zh-TW": "🔥 [專題97 · Stage 457 · 460維里程碑 🎉 · voice-sip-rfc6140-rfc7993-gin-pbx-bnc-trunk-registration-wildcard-uri-hijack-faq] P908 · RFC 6140 Path/+sip.instance 綁定與 [600,3600]s 刷新門禁",
+            "en": "🔥 [Topic 97 · Stage 457 · 460 Dims 🎉 · voice-sip-rfc6140-rfc7993-gin-pbx-bnc-trunk-registration-wildcard-uri-hijack-faq] P908 · RFC 6140 Path Binding & [600,3600]s Refresh Gate"
+          },
+          input: {
+            "probeId": "sip-rfc6140-bulk-trunk-path-refresh-probe-02",
+            "missingPathHeaderInboundBlackholeOrUnjitteredRefreshStormDetected": true,
+            "missingPathBlackholeOrThunderingHerdRegistrations": 14,
+            "bulkTrunkRegistrationExpiresSeconds": 60
+          },
+          output: {
+            "violated": true,
+            "policyId": "P908-SIP-RFC6140-BULK-TRUNK-REGISTRATION-PATH-BINDING-AND-REFRESH-JITTER-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live distributed registrar database commit latency not_measured)",
+            "action": "enforce_rfc3327_path_binding_and_jittered_bulk_refresh",
+            "clampedMissingPathBlackholeOrThunderingHerdRegistrations": 0,
+            "clampedBulkTrunkRegistrationExpiresSeconds": 600,
+            "reason": "P908 SIP RFC 6140 missing Path/+sip.instance edge binding or unjittered bulk trunk re-registration storm violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): enforced Path/+sip.instance binding (clamped blackhole/storm registrations to 0) and clamped bulk trunk Expires to 600 seconds."
+          }
+        },
+        {
+          id: "p905_webrtc_rtcp_xr_rfc3611_dlrr_compact_ntp_rtt_underflow_and_bounds",
+          label: {
+            "zh-CN": "🔥 [专题96 · Stage 456 · SVG 100 & 915护栏 🎉 · voice-webrtc-rtcp-xr-rfc3611-rfc7266-dlsr-rtt-wrap-burst-gap-mos-spoofing-faq] P905 · RFC 3611 DLRR 有符号防 65535s 下溢与 [1,3000]ms RTT 门禁",
+            "zh-TW": "🔥 [專題96 · Stage 456 · SVG 100 & 915護欄 🎉 · voice-webrtc-rtcp-xr-rfc3611-rfc7266-dlsr-rtt-wrap-burst-gap-mos-spoofing-faq] P905 · RFC 3611 DLRR 有符號防 65535s 下溢與 [1,3000]ms RTT 門禁",
+            "en": "🔥 [Topic 96 · Stage 456 · SVG 100 & 915 Guards 🎉 · voice-webrtc-rtcp-xr-rfc3611-rfc7266-dlsr-rtt-wrap-burst-gap-mos-spoofing-faq] P905 · RFC 3611 DLRR Signed [1,3000]ms RTT Underflow Gate"
+          },
+          input: {
+            "probeId": "webrtc-rtcp-xr-rfc3611-dlrr-rtt-underflow-probe-01",
+            "compactNtpDlrrUnsignedRttUnderflowOrClockSkewDetected": true,
+            "rttUnderflowWrapOrOutlierSamples": 4,
+            "estimatedMediaRttMs": 65535999
+          },
+          output: {
+            "violated": true,
+            "policyId": "P905-WEBRTC-RTCP-XR-RFC3611-DLRR-COMPACT-NTP-RTT-UNDERFLOW-AND-BOUNDS-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live EWMA filter update latency not_measured)",
+            "action": "reject_unsigned_dlrr_rtt_underflow_and_preserve_nack",
+            "clampedRttUnderflowWrapOrOutlierSamples": 0,
+            "clampedEstimatedMediaRttMs": 3000,
+            "reason": "P905 WebRTC RFC 3611 RTCP XR DLRR 32-bit unsigned compact-NTP RTT underflow (65,535s wrap) violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): rejected underflow/outlier samples (clamped outlier samples to 0) and clamped media RTT to 3000 ms."
+          }
+        },
+        {
+          id: "p906_webrtc_rtcp_xr_rfc3611_voip_metrics_mos_cross_validation_and_gmin",
+          label: {
+            "zh-CN": "🔥 [专题96 · Stage 456 · SVG 100 & 915护栏 🎉 · voice-webrtc-rtcp-xr-rfc3611-rfc7266-dlsr-rtt-wrap-burst-gap-mos-spoofing-faq] P906 (第915护栏 🎉) · RFC 3611 BT=7 MOS 交叉验真与 Gmin [16,64] 门禁",
+            "zh-TW": "🔥 [專題96 · Stage 456 · SVG 100 & 915護欄 🎉 · voice-webrtc-rtcp-xr-rfc3611-rfc7266-dlsr-rtt-wrap-burst-gap-mos-spoofing-faq] P906 (第915護欄 🎉) · RFC 3611 BT=7 MOS 交叉驗真與 Gmin [16,64] 門禁",
+            "en": "🔥 [Topic 96 · Stage 456 · SVG 100 & 915 Guards 🎉 · voice-webrtc-rtcp-xr-rfc3611-rfc7266-dlsr-rtt-wrap-burst-gap-mos-spoofing-faq] P906 (915th Guard 🎉) · RFC 3611 BT=7 MOS Cross-Validation & Gmin [16,64] Gate"
+          },
+          input: {
+            "probeId": "webrtc-rtcp-xr-rfc3611-bt7-mos-gmin-probe-02",
+            "uncorroboratedVoipMetricsMosDropOrInvalidGminDetected": true,
+            "spoofedMosFailoversOrInvalidGminBlocks": 7,
+            "voipMetricsGminGapThresholdPackets": 0
+          },
+          output: {
+            "violated": true,
+            "policyId": "P906-WEBRTC-RTCP-XR-RFC3611-VOIP-METRICS-MOS-CROSS-VALIDATION-AND-GMIN-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live ITU-T G.107 E-Model polynomial evaluation latency not_measured)",
+            "action": "quarantine_uncorroborated_bt7_mos_and_clamp_gmin",
+            "clampedSpoofedMosFailoversOrInvalidGminBlocks": 0,
+            "clampedVoipMetricsGminGapThresholdPackets": 16,
+            "reason": "P906 WebRTC RFC 3611 BT=7 VoIP Metrics uncorroborated MOS-LQ/R-Factor drop or invalid Gmin=0 violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): quarantined spoofed BT=7 blocks (clamped false failovers to 0) and clamped Gmin to 16 packets."
+          }
+        },
+        {
+          id: "p903_sip_rfc3329_sec_agree_security_verify_mirror_and_plaintext_downgrade",
+          label: {
+            "zh-CN": "🔥 [专题95 🎉 · Stage 455 🎉 · voice-sip-rfc3329-rfc4168-sec-agree-ipsec-tls-downgrade-420-bad-extension-loop-faq] P903 · RFC 3329 Security-Verify 镜像与 [500,1000] milli-q 防降级门禁",
+            "zh-TW": "🔥 [專題95 🎉 · Stage 455 🎉 · voice-sip-rfc3329-rfc4168-sec-agree-ipsec-tls-downgrade-420-bad-extension-loop-faq] P903 · RFC 3329 Security-Verify 鏡像與 [500,1000] milli-q 防降級門禁",
+            "en": "🔥 [Topic 95 🎉 · Stage 455 🎉 · voice-sip-rfc3329-rfc4168-sec-agree-ipsec-tls-downgrade-420-bad-extension-loop-faq] P903 · RFC 3329 Security-Verify Mirror & [500,1000] milli-q Gate"
+          },
+          input: {
+            "probeId": "sip-rfc3329-sec-agree-mirror-downgrade-probe-01",
+            "secAgree420PlaintextFallbackOrSecurityVerifyMismatchDetected": true,
+            "downgradedPlaintextOrUnverifiedSecAgreeSessions": 5,
+            "minSecurityMechanismMilliQ": 100
+          },
+          output: {
+            "violated": true,
+            "policyId": "P903-SIP-RFC3329-SEC-AGREE-SECURITY-VERIFY-MIRROR-AND-PLAINTEXT-DOWNGRADE-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live IPSec ESP hardware offload latency not_measured)",
+            "action": "enforce_rfc3329_security_verify_mirror_and_block_420_downgrade",
+            "clampedDowngradedPlaintextOrUnverifiedSecAgreeSessions": 0,
+            "clampedMinSecurityMechanismMilliQ": 500,
+            "reason": "P903 SIP RFC 3329 spoofed 420 plaintext fallback, ealg=null downgrade, or Security-Verify mismatch violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): blocked plaintext fallback (clamped downgraded sessions to 0) and clamped minimum security mechanism priority to 500 milli-q."
+          }
+        },
+        {
+          id: "p904_sip_rfc3329_494_handshake_retry_loop_and_ipsec_sa_quota",
+          label: {
+            "zh-CN": "🔥 [专题95 🎉 · Stage 455 🎉 · voice-sip-rfc3329-rfc4168-sec-agree-ipsec-tls-downgrade-420-bad-extension-loop-faq] P904 · RFC 3329 494 重试 [1,2] 次上限与半开 IPSec SA 回收门禁",
+            "zh-TW": "🔥 [專題95 🎉 · Stage 455 🎉 · voice-sip-rfc3329-rfc4168-sec-agree-ipsec-tls-downgrade-420-bad-extension-loop-faq] P904 · RFC 3329 494 重試 [1,2] 次上限與半開 IPSec SA 回收門禁",
+            "en": "🔥 [Topic 95 🎉 · Stage 455 🎉 · voice-sip-rfc3329-rfc4168-sec-agree-ipsec-tls-downgrade-420-bad-extension-loop-faq] P904 · RFC 3329 [1,2] 494 Retry & Half-Open IPSec SA Reaper Gate"
+          },
+          input: {
+            "probeId": "sip-rfc3329-494-retry-ipsec-sa-reaper-probe-02",
+            "unbounded494ChallengeRetryLoopOrHalfOpenIpsecSaLeakDetected": true,
+            "infinite494RetryOrLeakedHalfOpenIpsecSas": 24,
+            "max494SecurityChallengeRetries": 7
+          },
+          output: {
+            "violated": true,
+            "policyId": "P904-SIP-RFC3329-494-HANDSHAKE-RETRY-LOOP-AND-IPSEC-SA-QUOTA-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live Linux kernel Netlink XFRM_MSG_NEWSA syscall latency not_measured)",
+            "action": "abort_494_retry_loop_and_reap_half_open_ipsec_sas",
+            "clampedInfinite494RetryOrLeakedHalfOpenIpsecSas": 0,
+            "clampedMax494SecurityChallengeRetries": 2,
+            "reason": "P904 SIP RFC 3329 unbounded 494 Security Agreement Required retry loop or leaked half-open kernel IPSec SA violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): reaped half-open SAs (clamped leaked SAs/loops to 0) and clamped max 494 challenge retries to 2."
+          }
+        },
+        {
+          id: "p901_webrtc_rtp_rfc3550_ssrc_collision_loop_and_transport_source_pinning",
+          label: {
+            "zh-CN": "🔥 [专题94 · Stage 454 · 911护栏 & 920探针 🎉 · voice-webrtc-rtp-rfc3550-rfc8108-ssrc-collision-loop-csrc-mixer-amplification-faq] P901 (第910护栏 🎉) · RFC 3550 SSRC 源绑定与 [1000,10000]ms 冷却门禁",
+            "zh-TW": "🔥 [專題94 · Stage 454 · 911護欄 & 920探針 🎉 · voice-webrtc-rtp-rfc3550-rfc8108-ssrc-collision-loop-csrc-mixer-amplification-faq] P901 (第910護欄 🎉) · RFC 3550 SSRC 源綁定與 [1000,10000]ms 冷卻門禁",
+            "en": "🔥 [Topic 94 · Stage 454 · 911 Guards & 920 Probes 🎉 · voice-webrtc-rtp-rfc3550-rfc8108-ssrc-collision-loop-csrc-mixer-amplification-faq] P901 (910th Guard 🎉) · RFC 3550 SSRC Pinning & [1,10]s Cooldown Gate"
+          },
+          input: {
+            "probeId": "webrtc-rtp-rfc3550-ssrc-collision-pinning-probe-01",
+            "unpinnedSsrcCollisionByeStormOrLoopbackHijackDetected": true,
+            "ssrcCollisionByeStormOrHijackPackets": 18,
+            "ssrcCollisionReallocationCooldownMs": 20
+          },
+          output: {
+            "violated": true,
+            "policyId": "P901-WEBRTC-RTP-RFC3550-SSRC-COLLISION-LOOP-AND-TRANSPORT-SOURCE-PINNING-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live RTP SSRC hash-table lookup latency not_measured)",
+            "action": "pin_ssrc_to_dtls_srtp_and_suppress_rtcp_bye_storm",
+            "clampedSsrcCollisionByeStormOrHijackPackets": 0,
+            "clampedSsrcCollisionReallocationCooldownMs": 1000,
+            "reason": "P901 WebRTC RFC 3550 unpinned cross-transport SSRC spoofing or 50Hz RTCP BYE re-allocation storm violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): pinned SSRC ownership to DTLS-SRTP context (clamped storm/hijack packets to 0) and clamped collision cooldown to 1000 ms."
+          }
+        },
+        {
+          id: "p902_webrtc_rtp_rfc8108_csrc_mixer_loop_suppression_and_cc_header_bounds",
+          label: {
+            "zh-CN": "🔥 [专题94 · Stage 454 · 911护栏 & 920探针 🎉 · voice-webrtc-rtp-rfc3550-rfc8108-ssrc-collision-loop-csrc-mixer-amplification-faq] P902 (第911护栏 🎉) · RFC 8108 级联 CSRC 全集去环与 CC [0,15] 门禁",
+            "zh-TW": "🔥 [專題94 · Stage 454 · 911護欄 & 920探針 🎉 · voice-webrtc-rtp-rfc3550-rfc8108-ssrc-collision-loop-csrc-mixer-amplification-faq] P902 (第911護欄 🎉) · RFC 8108 級聯 CSRC 全集去環與 CC [0,15] 門禁",
+            "en": "🔥 [Topic 94 · Stage 454 · 911 Guards & 920 Probes 🎉 · voice-webrtc-rtp-rfc3550-rfc8108-ssrc-collision-loop-csrc-mixer-amplification-faq] P902 (911th Guard 🎉) · RFC 8108 CSRC Union Loop & CC [0,15] Gate"
+          },
+          input: {
+            "probeId": "webrtc-rtp-rfc8108-csrc-mixer-loop-probe-02",
+            "cascadedMixerCsrcFeedbackLoopOrCcOverreadDetected": true,
+            "csrcFeedbackLoopOrOverreadPackets": 11,
+            "rtpCsrcContributorCount": 31
+          },
+          output: {
+            "violated": true,
+            "policyId": "P902-WEBRTC-RTP-RFC8108-CSRC-MIXER-LOOP-SUPPRESSION-AND-CC-HEADER-BOUNDS-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live SIMD PCM audio mixing latency not_measured)",
+            "action": "suppress_cascaded_csrc_loop_and_enforce_cc_header_bounds",
+            "clampedCsrcFeedbackLoopOrOverreadPackets": 0,
+            "clampedRtpCsrcContributorCount": 15,
+            "reason": "P902 WebRTC RFC 8108 cascaded mixer CSRC positive-feedback howling loop or truncated 12+4*CC overread violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): suppressed looped CSRC contributor frames (clamped corrupted packets to 0) and clamped RTP CSRC count CC to 15."
+          }
+        },
+        {
+          id: "p899_sip_rfc3840_automata_bot_to_bot_loop_and_actor_msg_taker_detection",
+          label: {
+            "zh-CN": "🔥 [专题93 · Stage 453 · P900 & 95篇FAQ 🎉 · voice-sip-rfc3840-rfc3841-automata-bot-loop-caller-prefs-q-value-starvation-faq] P899 · RFC 3840 ;automata 与 [1,3] 轮双 Bot 死循环熔断门禁",
+            "zh-TW": "🔥 [專題93 · Stage 453 · P900 & 95篇FAQ 🎉 · voice-sip-rfc3840-rfc3841-automata-bot-loop-caller-prefs-q-value-starvation-faq] P899 · RFC 3840 ;automata 與 [1,3] 輪雙 Bot 死循環熔斷門禁",
+            "en": "🔥 [Topic 93 · Stage 453 · P900 & 95th FAQ 🎉 · voice-sip-rfc3840-rfc3841-automata-bot-loop-caller-prefs-q-value-starvation-faq] P899 · RFC 3840 ;automata & [1,3]-Turn Bot Loop Breaker Gate"
+          },
+          input: {
+            "probeId": "sip-rfc3840-automata-bot-loop-breaker-probe-01",
+            "unlabeledAutomataOrBotToBotInfiniteConversationLoopDetected": true,
+            "infiniteBotToBotLoopCalls": 9,
+            "maxBotToAutomataTurnExchanges": 45
+          },
+          output: {
+            "violated": true,
+            "policyId": "P899-SIP-RFC3840-AUTOMATA-BOT-TO-BOT-LOOP-AND-ACTOR-MSG-TAKER-DETECTION-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live semantic call-screener classification latency not_measured)",
+            "action": "enforce_rfc3840_automata_tag_and_break_bot_to_bot_loop",
+            "clampedInfiniteBotToBotLoopCalls": 0,
+            "clampedMaxBotToAutomataTurnExchanges": 3,
+            "reason": "P899 SIP RFC 3840 missing ;automata capability tag or unbounded AI Bot-to-Bot call-screener loop violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): enforced ;automata tagging, broke Bot-to-Bot loop (clamped loop calls to 0), and clamped Bot-to-Automata turn exchanges to 3."
+          }
+        },
+        {
+          id: "p900_sip_rfc3841_caller_preferences_reject_automata_and_q_value_starvation",
+          label: {
+            "zh-CN": "🔥 [专题93 · Stage 453 · P900 & 95篇FAQ 🎉 · voice-sip-rfc3840-rfc3841-automata-bot-loop-caller-prefs-q-value-starvation-faq] P900 🎉 · RFC 3841 防 require;explicit 饿死与 [100,1000] milli-q 门禁",
+            "zh-TW": "🔥 [專題93 · Stage 453 · P900 & 95篇FAQ 🎉 · voice-sip-rfc3840-rfc3841-automata-bot-loop-caller-prefs-q-value-starvation-faq] P900 🎉 · RFC 3841 防 require;explicit 餓死與 [100,1000] milli-q 門禁",
+            "en": "🔥 [Topic 93 · Stage 453 · P900 & 95th FAQ 🎉 · voice-sip-rfc3840-rfc3841-automata-bot-loop-caller-prefs-q-value-starvation-faq] P900 🎉 · RFC 3841 Anti-Starvation & [100,1000] milli-q Gate"
+          },
+          input: {
+            "probeId": "sip-rfc3841-caller-prefs-milli-q-starvation-probe-02",
+            "requireExplicitHumanQueueStarvationOrAutomataMisrouteDetected": true,
+            "starvedHumanEscalationOrMisroutedBotCalls": 6,
+            "callerPreferenceContactMilliQ": 0
+          },
+          output: {
+            "violated": true,
+            "policyId": "P900-SIP-RFC3841-CALLER-PREFERENCES-REJECT-AUTOMATA-AND-Q-VALUE-STARVATION-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live SIP proxy RFC 3841 predicate-intersection latency not_measured)",
+            "action": "strip_starving_require_explicit_and_enforce_reject_automata",
+            "clampedStarvedHumanEscalationOrMisroutedBotCalls": 0,
+            "clampedCallerPreferenceContactMilliQ": 100,
+            "reason": "P900 SIP RFC 3841 Accept-Contact ;require;explicit human-queue starvation or missing Reject-Contact: *;automata violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): stripped starving ;require;explicit flag (clamped starved escalation calls to 0) and clamped Contact routing priority to 100 milli-q."
+          }
+        },
+        {
+          id: "p897_webrtc_sctp_rfc8832_dcep_even_odd_stream_id_glare_and_ppid_confusion",
+          label: {
+            "zh-CN": "🔥 [专题92 · Stage 452 · 455维里程碑 🎉 · voice-webrtc-sctp-rfc8831-rfc8832-dcep-stream-id-glare-ppid-confusion-ndatachannel-dos-faq] P897 · RFC 8832 DTLS 奇偶 Stream-ID 与 [1,64] 通道门禁",
+            "zh-TW": "🔥 [專題92 · Stage 452 · 455維里程碑 🎉 · voice-webrtc-sctp-rfc8831-rfc8832-dcep-stream-id-glare-ppid-confusion-ndatachannel-dos-faq] P897 · RFC 8832 DTLS 奇偶 Stream-ID 與 [1,64] 通道門禁",
+            "en": "🔥 [Topic 92 · Stage 452 · 455 Dims 🎉 · voice-webrtc-sctp-rfc8831-rfc8832-dcep-stream-id-glare-ppid-confusion-ndatachannel-dos-faq] P897 · RFC 8832 DTLS Even/Odd Parity & [1,64] Stream Gate"
+          },
+          input: {
+            "probeId": "webrtc-sctp-rfc8832-dcep-glare-ppid-probe-01",
+            "dcepEvenOddStreamIdRoleGlareOrPpidTypeConfusionDetected": true,
+            "streamIdGlareOrPpidConfusedChunks": 6,
+            "concurrentDataChannelStreams": 256
+          },
+          output: {
+            "violated": true,
+            "policyId": "P897-WEBRTC-SCTP-RFC8832-DCEP-EVEN-ODD-STREAM-ID-GLARE-AND-PPID-CONFUSION-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live usrsctp/dcSCTP CRC32c checksum latency not_measured)",
+            "action": "enforce_rfc8832_even_odd_stream_id_parity_and_strict_ppid",
+            "clampedStreamIdGlareOrPpidConfusedChunks": 0,
+            "clampedConcurrentDataChannelStreams": 64,
+            "reason": "P897 WebRTC RFC 8832 DCEP DTLS even/odd Stream-ID glare or SCTP PPID type-confusion violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): enforced DTLS-role Stream-ID parity and strict PPID validation (clamped glare/confused chunks to 0) and clamped concurrent DataChannel streams to 64."
+          }
+        },
+        {
+          id: "p898_webrtc_sctp_rfc8831_datachannel_bufferedamount_backpressure_and_pr_sctp_ttl",
+          label: {
+            "zh-CN": "🔥 [专题92 · Stage 452 · 455维里程碑 🎉 · voice-webrtc-sctp-rfc8831-rfc8832-dcep-stream-id-glare-ppid-confusion-ndatachannel-dos-faq] P898 · RFC 8831 PR-SCTP [100,1000]ms 字幕 TTL 与控制流隔离门禁",
+            "zh-TW": "🔥 [專題92 · Stage 452 · 455維里程碑 🎉 · voice-webrtc-sctp-rfc8831-rfc8832-dcep-stream-id-glare-ppid-confusion-ndatachannel-dos-faq] P898 · RFC 8831 PR-SCTP [100,1000]ms 字幕 TTL 與控制流隔離門禁",
+            "en": "🔥 [Topic 92 · Stage 452 · 455 Dims 🎉 · voice-webrtc-sctp-rfc8831-rfc8832-dcep-stream-id-glare-ppid-confusion-ndatachannel-dos-faq] P898 · RFC 8831 PR-SCTP [100,1000]ms Caption TTL & Control Gate"
+          },
+          input: {
+            "probeId": "webrtc-sctp-rfc8831-pr-sctp-ttl-probe-02",
+            "reliableOrderedCaptionStallOrBufferedAmountOverflowDetected": true,
+            "bufferedAmountOverflowOrStalledControlChannels": 3,
+            "prSctpInterimCaptionMaxPacketLifeTimeMs": 5000
+          },
+          output: {
+            "violated": true,
+            "policyId": "P898-WEBRTC-SCTP-RFC8831-DATACHANNEL-BUFFEREDAMOUNT-BACKPRESSURE-AND-PR-SCTP-TTL-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live dcSCTP FORWARD-TSN chunk assembly latency not_measured)",
+            "action": "isolate_control_stream_and_enforce_pr_sctp_caption_ttl",
+            "clampedBufferedAmountOverflowOrStalledControlChannels": 0,
+            "clampedPrSctpInterimCaptionMaxPacketLifeTimeMs": 1000,
+            "reason": "P898 WebRTC RFC 8831 DataChannel 50Hz reliable-ordered caption stall or bufferedAmount overflow violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): isolated barge-in control stream (clamped stalled/overflowed channels to 0) and clamped PR-SCTP interim caption maxPacketLifeTime to 1000 ms."
+          }
+        },
+        {
+          id: "p895_sip_rfc3326_reason_header_q850_cause_spoofing_and_untrusted_trunk_strip",
+          label: {
+            "zh-CN": "🔥 [专题91 · Stage 451 · SVG 95 & 905护栏 🎉 · voice-sip-rfc3326-rfc8599-reason-q850-spoofing-push-notification-pns-wake-race-faq] P895 · RFC 3326 非授信 Reason 剥离与 Q.850 [1,127] 门禁",
+            "zh-TW": "🔥 [專題91 · Stage 451 · SVG 95 & 905護欄 🎉 · voice-sip-rfc3326-rfc8599-reason-q850-spoofing-push-notification-pns-wake-race-faq] P895 · RFC 3326 非授信 Reason 剝離與 Q.850 [1,127] 門禁",
+            "en": "🔥 [Topic 91 · Stage 451 · SVG 95 & 905 Guards 🎉 · voice-sip-rfc3326-rfc8599-reason-q850-spoofing-push-notification-pns-wake-race-faq] P895 · RFC 3326 Untrusted Reason Strip & Q.850 [1,127] Gate"
+          },
+          input: {
+            "probeId": "sip-rfc3326-reason-q850-spoof-strip-probe-01",
+            "untrustedIngressReasonQ850OrCallCompletedElsewhereSpoofDetected": true,
+            "spoofedReasonOrInvalidQ850Headers": 7,
+            "q850DisconnectCauseCode": 999
+          },
+          output: {
+            "violated": true,
+            "policyId": "P895-SIP-RFC3326-REASON-HEADER-Q850-CAUSE-SPOOFING-AND-UNTRUSTED-TRUNK-STRIP-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live SBC SIP-to-ISUP cause table lookup latency not_measured)",
+            "action": "strip_untrusted_rfc3326_reason_and_remap_local_q850",
+            "clampedSpoofedReasonOrInvalidQ850Headers": 0,
+            "clampedQ850DisconnectCauseCode": 127,
+            "reason": "P895 SIP RFC 3326 untrusted trunk Reason Q.850 or SIP;cause=200 spoofing violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): stripped untrusted Reason headers (clamped spoofed headers to 0) and clamped Q.850 disconnect cause code to 127."
+          }
+        },
+        {
+          id: "p896_sip_rfc8599_push_notification_wake_race_and_provider_allowlist",
+          label: {
+            "zh-CN": "🔥 [专题91 · Stage 451 · SVG 95 & 905护栏 🎉 · voice-sip-rfc3326-rfc8599-reason-q850-spoofing-push-notification-pns-wake-race-faq] P896 (第905护栏 🎉) · RFC 8599 pn-provider 白名单与 [4000,12000]ms 唤醒驻留门禁",
+            "zh-TW": "🔥 [專題91 · Stage 451 · SVG 95 & 905護欄 🎉 · voice-sip-rfc3326-rfc8599-reason-q850-spoofing-push-notification-pns-wake-race-faq] P896 (第905護欄 🎉) · RFC 8599 pn-provider 白名單與 [4000,12000]ms 喚醒駐留門禁",
+            "en": "🔥 [Topic 91 · Stage 451 · SVG 95 & 905 Guards 🎉 · voice-sip-rfc3326-rfc8599-reason-q850-spoofing-push-notification-pns-wake-race-faq] P896 (905th Guard 🎉) · RFC 8599 Allowlist & [4000,12000]ms Push-Wake Hold Gate"
+          },
+          input: {
+            "probeId": "sip-rfc8599-push-wake-hold-allowlist-probe-02",
+            "unallowlistedPnProviderSsrfOrPremature480MobileDropDetected": true,
+            "unallowlistedPushOrPremature480Calls": 5,
+            "pushWakeInviteHoldTimeoutMs": 500
+          },
+          output: {
+            "violated": true,
+            "policyId": "P896-SIP-RFC8599-PUSH-NOTIFICATION-WAKE-RACE-AND-PROVIDER-ALLOWLIST-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live Apple APNs / Google FCM HTTP/2 push RTT latency not_measured)",
+            "action": "enforce_rfc8599_provider_allowlist_and_hold_invite_for_wake",
+            "clampedUnallowlistedPushOrPremature480Calls": 0,
+            "clampedPushWakeInviteHoldTimeoutMs": 4000,
+            "reason": "P896 SIP RFC 8599 unallowlisted pn-provider SSRF or premature 0ms 480 mobile sleep drop violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): enforced APNs/FCM allowlist with SIP 555 rejection (clamped failed calls to 0) and clamped push-wake INVITE hold timeout to 4000 ms."
+          }
+        },
+        {
+          id: "p893_webrtc_rtp_rfc2198_red_timestamp_offset_overflow_and_pt_nesting_bomb",
+          label: {
+            "zh-CN": "🔥 [专题90 🎉 · Stage 450 🎉 · voice-webrtc-rtp-rfc2198-red-ulpfec-rfc5109-timestamp-offset-overflow-pt-nesting-bomb-faq] P893 · RFC 2198 RED <16384 偏移防回绕与 [1,2] 阶冗余门禁",
+            "zh-TW": "🔥 [專題90 🎉 · Stage 450 🎉 · voice-webrtc-rtp-rfc2198-red-ulpfec-rfc5109-timestamp-offset-overflow-pt-nesting-bomb-faq] P893 · RFC 2198 RED <16384 偏移防回繞與 [1,2] 階冗餘門禁",
+            "en": "🔥 [Topic 90 🎉 · Stage 450 🎉 · voice-webrtc-rtp-rfc2198-red-ulpfec-rfc5109-timestamp-offset-overflow-pt-nesting-bomb-faq] P893 · RFC 2198 RED <16384 Offset & [1,2]-Block Redundancy Gate"
+          },
+          input: {
+            "probeId": "webrtc-rtp-rfc2198-red-offset-wrap-probe-01",
+            "rfc2198TimestampOffset14BitOverflowOrRecursiveRedPtDetected": true,
+            "overflowOrRecursiveRedBlocks": 5,
+            "redundantGenerationsPerPacket": 6
+          },
+          output: {
+            "violated": true,
+            "policyId": "P893-WEBRTC-RTP-RFC2198-RED-TIMESTAMP-OFFSET-OVERFLOW-AND-PT-NESTING-BOMB-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live Opus decoder state reset latency not_measured)",
+            "action": "strip_overflow_or_recursive_rfc2198_red_blocks",
+            "clampedOverflowOrRecursiveRedBlocks": 0,
+            "clampedRedundantGenerationsPerPacket": 2,
+            "reason": "P893 WebRTC RFC 2198 RED 14-bit timestamp-offset overflow (>=16384 samples) or recursive RED-in-RED PT nesting violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): stripped overflow/recursive RED blocks (clamped corrupted blocks to 0) and clamped redundant generations per packet to 2."
+          }
+        },
+        {
+          id: "p894_webrtc_rtp_rfc5109_ulpfec_protection_length_overread_and_mask_sync",
+          label: {
+            "zh-CN": "🔥 [专题90 🎉 · Stage 450 🎉 · voice-webrtc-rtp-rfc2198-red-ulpfec-rfc5109-timestamp-offset-overflow-pt-nesting-bomb-faq] P894 · RFC 5109 ULPFEC [16,1200]B 保护长度防越界读门禁",
+            "zh-TW": "🔥 [專題90 🎉 · Stage 450 🎉 · voice-webrtc-rtp-rfc2198-red-ulpfec-rfc5109-timestamp-offset-overflow-pt-nesting-bomb-faq] P894 · RFC 5109 ULPFEC [16,1200]B 保護長度防越界讀門禁",
+            "en": "🔥 [Topic 90 🎉 · Stage 450 🎉 · voice-webrtc-rtp-rfc2198-red-ulpfec-rfc5109-timestamp-offset-overflow-pt-nesting-bomb-faq] P894 · RFC 5109 ULPFEC [16,1200]B Overread & Mask Sync Gate"
+          },
+          input: {
+            "probeId": "webrtc-rtp-rfc5109-ulpfec-overread-probe-02",
+            "ulpfecProtectionLengthOverreadOrL0L1MaskDesyncDetected": true,
+            "overreadOrMaskDesyncedUlpfecPackets": 4,
+            "ulpfecProtectionLengthBytes": 1480
+          },
+          output: {
+            "violated": true,
+            "policyId": "P894-WEBRTC-RTP-RFC5109-ULPFEC-PROTECTION-LENGTH-OVERREAD-AND-MASK-SYNC-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live SIMD ULPFEC bitwise XOR throughput latency not_measured)",
+            "action": "drop_overread_or_mask_desynced_rfc5109_ulpfec_packet",
+            "clampedOverreadOrMaskDesyncedUlpfecPackets": 0,
+            "clampedUlpfecProtectionLengthBytes": 1200,
+            "reason": "P894 WebRTC RFC 5109 ULPFEC protection-length L_k overread or L0/L1 mask desync violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): dropped malformed FEC packets (clamped overread packets to 0) and clamped protection length L_k to 1200 bytes."
+          }
+        },
+        {
+          id: "p891_sip_rfc4235_dialog_event_xml_tag_sanitization_and_blf_pickup_auth",
+          label: {
+            "zh-CN": "🔥 [专题89 · Stage 449 · 901护栏 & 910探针 🎉 · voice-sip-rfc6665-rfc4235-dialog-event-blf-pickup-hijack-notify-storm-subscription-leak-faq] P891 (第900护栏 🎉) · RFC 4235 BLF 标签脱敏与 [300,3600]s 租期门禁",
+            "zh-TW": "🔥 [專題89 · Stage 449 · 901護欄 & 910探針 🎉 · voice-sip-rfc6665-rfc4235-dialog-event-blf-pickup-hijack-notify-storm-subscription-leak-faq] P891 (第900護欄 🎉) · RFC 4235 BLF 標籤脫敏與 [300,3600]s 租期門禁",
+            "en": "🔥 [Topic 89 · Stage 449 · 901 Guards & 910 Probes 🎉 · voice-sip-rfc6665-rfc4235-dialog-event-blf-pickup-hijack-notify-storm-subscription-leak-faq] P891 (900th Guard 🎉) · RFC 4235 BLF Tag Redaction & [300,3600]s Expires Gate"
+          },
+          input: {
+            "probeId": "sip-rfc4235-blf-dialog-tag-redaction-probe-01",
+            "unauthorizedBlfWatcherDialogTagLeakOrExpiresAbuseDetected": true,
+            "unredactedDialogTagLeakPayloads": 8,
+            "subscriptionExpiresSeconds": 86400
+          },
+          output: {
+            "violated": true,
+            "policyId": "P891-SIP-RFC4235-DIALOG-EVENT-XML-TAG-SANITIZATION-AND-BLF-PICKUP-AUTH-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live libxml2 DOM serialization latency not_measured)",
+            "action": "strip_rfc4235_dialog_tags_and_enforce_pickup_acl",
+            "clampedUnredactedDialogTagLeakPayloads": 0,
+            "clampedSubscriptionExpiresSeconds": 3600,
+            "reason": "P891 SIP RFC 4235 Dialog Event (BLF) unauthorized call-id/local-tag/remote-tag leak violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): stripped dialog tags for non-pickup-authorized watcher (clamped leaked payloads to 0) and clamped SUBSCRIBE Expires to 3600 seconds."
+          }
+        },
+        {
+          id: "p892_sip_rfc6665_unsolicited_notify_rejection_and_min_notify_rate_throttle",
+          label: {
+            "zh-CN": "🔥 [专题89 · Stage 449 · 901护栏 & 910探针 🎉 · voice-sip-rfc6665-rfc4235-dialog-event-blf-pickup-hijack-notify-storm-subscription-leak-faq] P892 (第901护栏 🎉) · RFC 6665 拒收无主 NOTIFY (481) 与 [100,1000]ms 节流门禁",
+            "zh-TW": "🔥 [專題89 · Stage 449 · 901護欄 & 910探針 🎉 · voice-sip-rfc6665-rfc4235-dialog-event-blf-pickup-hijack-notify-storm-subscription-leak-faq] P892 (第901護欄 🎉) · RFC 6665 拒收無主 NOTIFY (481) 與 [100,1000]ms 節流門禁",
+            "en": "🔥 [Topic 89 · Stage 449 · 901 Guards & 910 Probes 🎉 · voice-sip-rfc6665-rfc4235-dialog-event-blf-pickup-hijack-notify-storm-subscription-leak-faq] P892 (901st Guard 🎉) · RFC 6665 481 Reject & [100,1000]ms Throttle Gate"
+          },
+          input: {
+            "probeId": "sip-rfc6665-unsolicited-notify-throttle-probe-02",
+            "unsolicitedOutOfDialogNotifyOrXmlFanOutStormDetected": true,
+            "unsolicitedOrUnthrottledNotifyStormPackets": 45,
+            "minNotifyIntervalThrottleMs": 10
+          },
+          output: {
+            "violated": true,
+            "policyId": "P892-SIP-RFC6665-UNSOLICITED-NOTIFY-REJECTION-AND-MIN-NOTIFY-RATE-THROTTLE-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live distributed presence-table lock latency not_measured)",
+            "action": "reject_unsolicited_notify_with_481_and_throttle_fanout",
+            "clampedUnsolicitedOrUnthrottledNotifyStormPackets": 0,
+            "clampedMinNotifyIntervalThrottleMs": 100,
+            "reason": "P892 SIP RFC 6665 unsolicited out-of-dialog NOTIFY or XML fan-out storm violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): rejected unsolicited NOTIFY with SIP 481 (clamped storm packets to 0) and clamped Min-Notify-Interval throttle window to 100 ms."
+          }
+        },
+        {
+          id: "p889_webrtc_ice_tcp_rfc6544_rfc4571_framing_length_desync_and_nagle_nodelay",
+          label: {
+            "zh-CN": "🔥 [专题88 · Stage 448 · P890 & 90篇FAQ 🎉 · voice-webrtc-ice-tcp-rfc6544-rfc4571-framing-head-of-line-stall-active-passive-so-glare-faq] P889 · RFC 4571 [12,1400]B 16-bit 帧定界与强制 TCP_NODELAY 门禁",
+            "zh-TW": "🔥 [專題88 · Stage 448 · P890 & 90篇FAQ 🎉 · voice-webrtc-ice-tcp-rfc6544-rfc4571-framing-head-of-line-stall-active-passive-so-glare-faq] P889 · RFC 4571 [12,1400]B 16-bit 幀定界與強制 TCP_NODELAY 門禁",
+            "en": "🔥 [Topic 88 · Stage 448 · P890 & 90th FAQ 🎉 · voice-webrtc-ice-tcp-rfc6544-rfc4571-framing-head-of-line-stall-active-passive-so-glare-faq] P889 · RFC 4571 [12,1400]B 16-Bit Framing & TCP_NODELAY Gate"
+          },
+          input: {
+            "probeId": "webrtc-ice-tcp-rfc4571-framing-nodelay-probe-01",
+            "rfc4571FramingLengthDesyncOrNagleNoDelayMissingDetected": true,
+            "framingDesyncedOrNagleCoalescedFrames": 6,
+            "rfc4571FramePayloadBytes": 47104
+          },
+          output: {
+            "violated": true,
+            "policyId": "P889-WEBRTC-ICE-TCP-RFC6544-RFC4571-FRAMING-LENGTH-DESYNC-AND-NAGLE-NODELAY-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live kernel setsockopt TCP_NODELAY syscall latency not_measured)",
+            "action": "enforce_tcp_nodelay_and_resync_rfc4571_framing",
+            "clampedFramingDesyncedOrNagleCoalescedFrames": 0,
+            "clampedRfc4571FramePayloadBytes": 1400,
+            "reason": "P889 WebRTC RFC 4571 16-bit length framing desync or missing TCP_NODELAY Nagle coalescing violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): enforced TCP_NODELAY=true, resynchronized framing (clamped desynced frames to 0), and clamped frame payload size to 1400 bytes."
+          }
+        },
+        {
+          id: "p890_webrtc_ice_tcp_rfc6544_head_of_line_stall_jitter_flush_and_active_passive_role",
+          label: {
+            "zh-CN": "🔥 [专题88 · Stage 448 · P890 & 90篇FAQ 🎉 · voice-webrtc-ice-tcp-rfc6544-rfc4571-framing-head-of-line-stall-active-passive-so-glare-faq] P890 🎉 · RFC 6544 active-passive 配对与 [60,240]ms HoL 冲刷门禁",
+            "zh-TW": "🔥 [專題88 · Stage 448 · P890 & 90篇FAQ 🎉 · voice-webrtc-ice-tcp-rfc6544-rfc4571-framing-head-of-line-stall-active-passive-so-glare-faq] P890 🎉 · RFC 6544 active-passive 配對與 [60,240]ms HoL 沖刷門禁",
+            "en": "🔥 [Topic 88 · Stage 448 · P890 & 90th FAQ 🎉 · voice-webrtc-ice-tcp-rfc6544-rfc4571-framing-head-of-line-stall-active-passive-so-glare-faq] P890 🎉 · RFC 6544 Active-Passive & [60,240]ms HoL Flush Gate"
+          },
+          input: {
+            "probeId": "webrtc-ice-tcp-rfc6544-hol-flush-probe-02",
+            "iceTcpPassivePassiveDeadlockOrHolChipmunkBurstDetected": true,
+            "holChipmunkBurstOrDeadlockedCandidatePairs": 4,
+            "maxIceTcpHolStallQueueMs": 420
+          },
+          output: {
+            "violated": true,
+            "policyId": "P890-WEBRTC-ICE-TCP-RFC6544-HEAD-OF-LINE-STALL-JITTER-FLUSH-AND-ACTIVE-PASSIVE-ROLE-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live NetEq W-SOLA DSP time-stretching latency not_measured)",
+            "action": "enforce_active_passive_pairing_and_flush_hol_stale_burst",
+            "clampedHolChipmunkBurstOrDeadlockedCandidatePairs": 0,
+            "clampedMaxIceTcpHolStallQueueMs": 240,
+            "reason": "P890 WebRTC RFC 6544 ICE-TCP passive-passive deadlock or post-stall TCP HoL chipmunk fast-forward burst violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): enforced active->passive pairing, flushed stale burst frames (clamped bursts/deadlocks to 0), and clamped HoL stall queue ceiling to 240 ms."
+          }
+        },
+        {
+          id: "p887_sip_rfc6026_invite_accepted_state_and_stray_2xx_forking_ack",
+          label: {
+            "zh-CN": "🔥 [专题87 · Stage 447 · 450维里程碑 🎉 · voice-sip-rfc6026-rfc4320-invite-non-invite-transaction-timer-b-f-d-k-late-response-storm-faq] P887 · RFC 6026 Accepted 态 [16000,64000]ms 分叉 2xx 自动 ACK+BYE 门禁",
+            "zh-TW": "🔥 [專題87 · Stage 447 · 450維里程碑 🎉 · voice-sip-rfc6026-rfc4320-invite-non-invite-transaction-timer-b-f-d-k-late-response-storm-faq] P887 · RFC 6026 Accepted 態 [16000,64000]ms 分叉 2xx 自動 ACK+BYE 門禁",
+            "en": "🔥 [Topic 87 · Stage 447 · 450 Dims 🎉 · voice-sip-rfc6026-rfc4320-invite-non-invite-transaction-timer-b-f-d-k-late-response-storm-faq] P887 · RFC 6026 Accepted State [16000,64000]ms Forked 2xx ACK+BYE Gate"
+          },
+          input: {
+            "probeId": "sip-rfc6026-invite-accepted-forked-2xx-probe-01",
+            "legacyRfc3261Immediate2xxTerminatedOrUnackedForked200OkDetected": true,
+            "unackedForked2xxZombieDialogs": 5,
+            "timerMOrLAcceptedWaitMs": 500
+          },
+          output: {
+            "violated": true,
+            "policyId": "P887-SIP-RFC6026-INVITE-ACCEPTED-STATE-AND-STRAY-2XX-FORKING-ACK-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live Kamailio/OpenSIPS tm hash-table lock latency not_measured)",
+            "action": "enforce_rfc6026_accepted_state_and_auto_ack_bye_forked_2xx",
+            "clampedUnackedForked2xxZombieDialogs": 0,
+            "clampedTimerMOrLAcceptedWaitMs": 16000,
+            "reason": "P887 SIP RFC 6026 immediate 2xx transaction destruction or unacknowledged parallel-forked 200 OK violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): enforced Accepted state residency, auto-dispatched ACK+BYE for secondary forked To-tags (clamped zombie dialogs to 0), and clamped Timer M/L wait window to 16000 ms."
+          }
+        },
+        {
+          id: "p888_sip_rfc4320_non_invite_late_response_storm_and_408_suppression",
+          label: {
+            "zh-CN": "🔥 [专题87 · Stage 447 · 450维里程碑 🎉 · voice-sip-rfc6026-rfc4320-invite-non-invite-transaction-timer-b-f-d-k-late-response-storm-faq] P888 · RFC 4320 Non-INVITE 禁发 100/408 与 [4000,32000]ms Timer F 门禁",
+            "zh-TW": "🔥 [專題87 · Stage 447 · 450維里程碑 🎉 · voice-sip-rfc6026-rfc4320-invite-non-invite-transaction-timer-b-f-d-k-late-response-storm-faq] P888 · RFC 4320 Non-INVITE 禁發 100/408 與 [4000,32000]ms Timer F 門禁",
+            "en": "🔥 [Topic 87 · Stage 447 · 450 Dims 🎉 · voice-sip-rfc6026-rfc4320-invite-non-invite-transaction-timer-b-f-d-k-late-response-storm-faq] P888 · RFC 4320 Non-INVITE 100/408 Suppression & [4000,32000]ms Timer F Gate"
+          },
+          input: {
+            "probeId": "sip-rfc4320-non-invite-408-storm-probe-02",
+            "nonInvite100TryingOrProxySynthetic408ForwardingDetected": true,
+            "lateResponseStormOrSynthetic408Packets": 12,
+            "nonInviteTimerFTimeoutMs": 64000
+          },
+          output: {
+            "violated": true,
+            "policyId": "P888-SIP-RFC4320-NON-INVITE-LATE-RESPONSE-STORM-AND-408-SUPPRESSION-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live multi-hop WAN NIT Timer K absorption latency not_measured)",
+            "action": "suppress_non_invite_100_trying_and_proxy_synthetic_408",
+            "clampedLateResponseStormOrSynthetic408Packets": 0,
+            "clampedNonInviteTimerFTimeoutMs": 32000,
+            "reason": "P888 SIP RFC 4320 Non-INVITE 100 Trying or proxy synthetic 408 Request Timeout storm violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): suppressed 100/408 storm packets (clamped storm packets to 0) and clamped Non-INVITE Timer F timeout to 32000 ms."
+          }
+        },
+        {
+          id: "p885_webrtc_rtp_rfc9335_cryptex_whole_extension_and_csrc_list_encryption",
+          label: {
+            "zh-CN": "🔥 [专题86 · Stage 446 · SVG 90 & 895护栏 🎉 · voice-webrtc-rtp-rfc9335-cryptex-rfc6904-header-extension-csrc-encryption-faq] P885 · RFC 9335 Cryptex 0xC0DE/0xC2DE 扩展头与 CSRC 全加密门禁",
+            "zh-TW": "🔥 [專題86 · Stage 446 · SVG 90 & 895護欄 🎉 · voice-webrtc-rtp-rfc9335-cryptex-rfc6904-header-extension-csrc-encryption-faq] P885 · RFC 9335 Cryptex 0xC0DE/0xC2DE 擴展頭與 CSRC 全加密門禁",
+            "en": "🔥 [Topic 86 · Stage 446 · SVG 90 & 895 Guards 🎉 · voice-webrtc-rtp-rfc9335-cryptex-rfc6904-header-extension-csrc-encryption-faq] P885 · RFC 9335 Cryptex 0xC0DE/0xC2DE Whole-Extension & CSRC Gate"
+          },
+          input: {
+            "probeId": "webrtc-rtp-rfc9335-cryptex-c0de-csrc-probe-01",
+            "unencrypted0xBedeOrPlaintextCsrcAudioLevelLeakDetected": true,
+            "plaintextHeaderExtensionOrCsrcLeakPackets": 9,
+            "maxEncryptedHeaderExtensionBytesPerPacket": 256
+          },
+          output: {
+            "violated": true,
+            "policyId": "P885-WEBRTC-RTP-RFC9335-CRYPTEX-WHOLE-EXTENSION-AND-CSRC-LIST-ENCRYPTION-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live libsrtp Cryptex contiguous AES-GCM encryption latency not_measured)",
+            "action": "enforce_rfc9335_c0de_c2de_cryptex_and_drop_plaintext_extensions",
+            "clampedPlaintextHeaderExtensionOrCsrcLeakPackets": 0,
+            "clampedMaxEncryptedHeaderExtensionBytesPerPacket": 64,
+            "reason": "P885 WebRTC RFC 9335 Cryptex plaintext 0xBEDE/0x1000 downgrade or unencrypted CSRC leak violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): enforced 0xC0DE/0xC2DE whole-block encryption (clamped leak packets to 0) and clamped extension block size to 64 bytes."
+          }
+        },
+        {
+          id: "p886_webrtc_rtp_rfc6904_selective_header_extension_mask_desync_and_reserved_id",
+          label: {
+            "zh-CN": "🔥 [专题86 · Stage 446 · SVG 90 & 895护栏 🎉 · voice-webrtc-rtp-rfc9335-cryptex-rfc6904-header-extension-csrc-encryption-faq] P886 · RFC 6904 双射掩码对齐与禁配保留 ID=15 [1,14] 门禁",
+            "zh-TW": "🔥 [專題86 · Stage 446 · SVG 90 & 895護欄 🎉 · voice-webrtc-rtp-rfc9335-cryptex-rfc6904-header-extension-csrc-encryption-faq] P886 · RFC 6904 雙射掩碼對齊與禁配保留 ID=15 [1,14] 門禁",
+            "en": "🔥 [Topic 86 · Stage 446 · SVG 90 & 895 Guards 🎉 · voice-webrtc-rtp-rfc9335-cryptex-rfc6904-header-extension-csrc-encryption-faq] P886 · RFC 6904 Bijective Mask & [1,14] Extension-ID Gate"
+          },
+          input: {
+            "probeId": "webrtc-rtp-rfc6904-mask-desync-id15-probe-02",
+            "rfc6904EncryptionMaskDesyncOrOneByteId15CollisionDetected": true,
+            "maskDesyncedOrReservedIdExtensionBlocks": 4,
+            "negotiatedEncryptedExtensionIdCount": 24
+          },
+          output: {
+            "violated": true,
+            "policyId": "P886-WEBRTC-RTP-RFC6904-SELECTIVE-HEADER-EXTENSION-MASK-DESYNC-AND-RESERVED-ID-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live RFC 6904 keystream XOR mask generation latency not_measured)",
+            "action": "prefer_rfc9335_cryptex_or_enforce_bijective_rfc6904_mask",
+            "clampedMaskDesyncedOrReservedIdExtensionBlocks": 0,
+            "clampedNegotiatedEncryptedExtensionIdCount": 14,
+            "reason": "P886 WebRTC RFC 6904 selective extension mask desync or reserved ID=15 collision violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): blocked desynced/reserved-ID blocks (clamped corrupted blocks to 0) and clamped negotiated encrypted extension IDs to 14."
+          }
+        },
+        {
+          id: "p883_sip_rfc5626_outbound_flow_token_hmac_binding_and_dual_edge_reg_id_failover",
+          label: {
+            "zh-CN": "🔥 [专题85 🎉 · Stage 445 🎉 · voice-sip-rfc5626-outbound-dual-edge-flow-token-crlf-keepalive-rfc5923-mtls-faq] P883 · RFC 5626 Outbound HMAC Flow-Token 防劫持与 [2,4] 双活边缘流门禁",
+            "zh-TW": "🔥 [專題85 🎉 · Stage 445 🎉 · voice-sip-rfc5626-outbound-dual-edge-flow-token-crlf-keepalive-rfc5923-mtls-faq] P883 · RFC 5626 Outbound HMAC Flow-Token 防劫持與 [2,4] 雙活邊緣流門禁",
+            "en": "🔥 [Topic 85 🎉 · Stage 445 🎉 · voice-sip-rfc5626-outbound-dual-edge-flow-token-crlf-keepalive-rfc5923-mtls-faq] P883 · RFC 5626 Outbound HMAC Flow-Token & [2,4] Dual-Edge Flows Gate"
+          },
+          input: {
+            "probeId": "sip-rfc5626-outbound-hmac-flow-token-dual-edge-probe-01",
+            "unsignedFlowTokenHijackOrSingleEdgeSpofDetected": true,
+            "hijackedFlowTokensOrDroppedEdgeCalls": 4,
+            "activeOutboundEdgeFlowsPerInstance": 1
+          },
+          output: {
+            "violated": true,
+            "policyId": "P883-SIP-RFC5626-OUTBOUND-FLOW-TOKEN-HMAC-BINDING-AND-DUAL-EDGE-REG-ID-FAILOVER-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live Edge Proxy HMAC-SHA256 verification latency not_measured)",
+            "action": "verify_hmac_sha256_flow_token_and_enforce_dual_reg_id_flows",
+            "clampedHijackedFlowTokensOrDroppedEdgeCalls": 0,
+            "clampedActiveOutboundEdgeFlowsPerInstance": 2,
+            "reason": "P883 SIP RFC 5626 Outbound unsigned Flow-Token hijack or single-edge SPOF violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): rejected forged Flow-Tokens with SIP 430 (clamped hijacks/drops to 0) and enforced 2 active reg-id edge flows per +sip.instance."
+          }
+        },
+        {
+          id: "p884_sip_rfc5626_rfc5923_crlf_keepalive_pong_timeout_and_mtls_san_connection_reuse",
+          label: {
+            "zh-CN": "🔥 [专题85 🎉 · Stage 445 🎉 · voice-sip-rfc5626-outbound-dual-edge-flow-token-crlf-keepalive-rfc5923-mtls-faq] P884 · [25,120]s CRLF 保活与 RFC 5923 mTLS SAN 连接复用防串租户门禁",
+            "zh-TW": "🔥 [專題85 🎉 · Stage 445 🎉 · voice-sip-rfc5626-outbound-dual-edge-flow-token-crlf-keepalive-rfc5923-mtls-faq] P884 · [25,120]s CRLF 保活與 RFC 5923 mTLS SAN 連接複用防串租戶門禁",
+            "en": "🔥 [Topic 85 🎉 · Stage 445 🎉 · voice-sip-rfc5626-outbound-dual-edge-flow-token-crlf-keepalive-rfc5923-mtls-faq] P884 · [25,120]s CRLF Keepalive & RFC 5923 mTLS SAN Reuse Gate"
+          },
+          input: {
+            "probeId": "sip-rfc5626-rfc5923-crlf-mtls-san-reuse-probe-02",
+            "crlfPongTimeoutOrUnverifiedMtlsSanConnectionReuseDetected": true,
+            "crossTenantReusedSocketsOrZombieFlows": 6,
+            "crlfKeepaliveIntervalSeconds": 600
+          },
+          output: {
+            "violated": true,
+            "policyId": "P884-SIP-RFC5626-RFC5923-CRLF-KEEPALIVE-PONG-TIMEOUT-AND-MTLS-SAN-CONNECTION-REUSE-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live X.509 SAN parsing latency not_measured)",
+            "action": "require_mtls_san_match_for_alias_reuse_and_clamp_crlf_keepalive",
+            "clampedCrossTenantReusedSocketsOrZombieFlows": 0,
+            "clampedCrlfKeepaliveIntervalSeconds": 120,
+            "reason": "P884 SIP RFC 5626 CRLF keepalive or RFC 5923 unverified mTLS SAN alias reuse violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): blocked unverified alias connection reuse (clamped hijacked sockets/zombie flows to 0) and clamped CRLF keepalive interval to 120s."
+          }
+        },
+        {
+          id: "p881_webrtc_srtp_rfc3711_roc_rollover_authenticate_before_commit_and_late_joiner_sync",
+          label: {
+            "zh-CN": "🔥 [专题84 · Stage 444 · 900探针 & 710现场探针 🎉 · voice-webrtc-srtp-rfc3711-roc-rollover-late-joiner-index-desync-rtx-osn-faq] P881 · SRTP 32-bit ROC 先验签后翻转、迟到入会同步与 [128,1024] 重放窗门禁",
+            "zh-TW": "🔥 [專題84 · Stage 444 · 900探針 & 710現場探針 🎉 · voice-webrtc-srtp-rfc3711-roc-rollover-late-joiner-index-desync-rtx-osn-faq] P881 · SRTP 32-bit ROC 先驗簽後翻轉、遲到入會同步與 [128,1024] 重放窗門禁",
+            "en": "🔥 [Topic 84 · Stage 444 · 900 Probes & 710 Live POC 🎉 · voice-webrtc-srtp-rfc3711-roc-rollover-late-joiner-index-desync-rtx-osn-faq] P881 · SRTP 32-Bit ROC Auth-Before-Commit & [128,1024] Window Gate"
+          },
+          input: {
+            "probeId": "webrtc-srtp-rfc3711-roc-auth-before-commit-probe-01",
+            "unauthenticatedSeqRolloverRocMutationOrLateJoinerRocZeroAssumedDetected": true,
+            "rocDesyncPermanentAuthFailureStreams": 4,
+            "srtpReplayWindowPackets": 32
+          },
+          output: {
+            "violated": true,
+            "policyId": "P881-WEBRTC-SRTP-RFC3711-ROC-ROLLOVER-AUTHENTICATE-BEFORE-COMMIT-AND-LATE-JOINER-SYNC-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live libsrtp 48-bit index arithmetic latency not_measured)",
+            "action": "verify_aead_tag_before_committing_roc_and_sync_late_joiner_roc",
+            "clampedRocDesyncPermanentAuthFailureStreams": 0,
+            "clampedSrtpReplayWindowPackets": 128,
+            "reason": "P881 WebRTC RFC 3711 SRTP unauthenticated ROC rollover mutation or late-joiner ROC=0 desync violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): verified AEAD tag before committing candidate ROC v and synced late-joiner ROC (clamped desynced streams to 0 and replay window to 128 packets)."
+          }
+        },
+        {
+          id: "p882_webrtc_rtp_rfc4588_rtx_osn_separate_ssrc_replay_window_and_apt_binding",
+          label: {
+            "zh-CN": "🔥 [专题84 · Stage 444 · 900探针 & 710现场探针 🎉 · voice-webrtc-srtp-rfc3711-roc-rollover-late-joiner-index-desync-rtx-osn-faq] P882 · RFC 4588 RTX 独立 SSRC 隔离、2B OSN 解包与 [200,1000]ms 重传门禁",
+            "zh-TW": "🔥 [專題84 · Stage 444 · 900探針 & 710現場探針 🎉 · voice-webrtc-srtp-rfc3711-roc-rollover-late-joiner-index-desync-rtx-osn-faq] P882 · RFC 4588 RTX 獨立 SSRC 隔離、2B OSN 解包與 [200,1000]ms 重傳門禁",
+            "en": "🔥 [Topic 84 · Stage 444 · 900 Probes & 710 Live POC 🎉 · voice-webrtc-srtp-rfc3711-roc-rollover-late-joiner-index-desync-rtx-osn-faq] P882 · RFC 4588 RTX Separate-SSRC 2B OSN & [200,1000]ms Buffer Gate"
+          },
+          input: {
+            "probeId": "webrtc-rtp-rfc4588-rtx-osn-isolation-probe-02",
+            "rtxSharedSsrcSeqJumpOrMismatchedAptPayloadDetected": true,
+            "rtxInducedPrimaryRocCorruptions": 5,
+            "maxRtxRetransmissionHistoryMs": 5000
+          },
+          output: {
+            "violated": true,
+            "policyId": "P882-WEBRTC-RTP-RFC4588-RTX-OSN-SEPARATE-SSRC-REPLAY-WINDOW-AND-APT-BINDING-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live RTX packet unwrapping latency not_measured)",
+            "action": "isolate_rtx_ssrc_replay_state_and_unwrap_osn_before_primary_inject",
+            "clampedRtxInducedPrimaryRocCorruptions": 0,
+            "clampedMaxRtxRetransmissionHistoryMs": 1000,
+            "reason": "P882 WebRTC RFC 4588 RTX shared-SSRC rollover pollution or apt mismatch violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): isolated RTX SSRC replay state and unwrapped 2-byte OSN (clamped primary ROC corruptions to 0 and history window to 1000ms)."
+          }
+        },
+        {
+          id: "p879_sip_rfc3312_rfc4032_precondition_unmet_alerting_ghost_ringing",
+          label: {
+            "zh-CN": "🔥 [专题83 · Stage 443 · P880 & 85篇FAQ 🎉 · voice-sip-rfc3312-rfc4032-precondition-qci1-ghost-ringing-reservation-timeout-faq] P879 · RFC 3312 Preconditions [2,2] 双向就绪防幽灵振铃门禁",
+            "zh-TW": "🔥 [專題83 · Stage 443 · P880 & 85篇FAQ 🎉 · voice-sip-rfc3312-rfc4032-precondition-qci1-ghost-ringing-reservation-timeout-faq] P879 · RFC 3312 Preconditions [2,2] 雙向就緒防幽靈振鈴門禁",
+            "en": "🔥 [Topic 83 · Stage 443 · P880 & 85th FAQ 🎉 · voice-sip-rfc3312-rfc4032-precondition-qci1-ghost-ringing-reservation-timeout-faq] P879 · RFC 3312 Preconditions [2,2]-Direction Anti-Ghost-Ringing Gate"
+          },
+          input: {
+            "probeId": "sip-rfc3312-precondition-anti-ghost-ringing-probe-01",
+            "premature180RingingBeforeCurrQosSendrecvMetDetected": true,
+            "ghostRingingOrClippedAnswerCalls": 5,
+            "requiredPreconditionConfirmDirections": 1
+          },
+          output: {
+            "violated": true,
+            "policyId": "P879-SIP-RFC3312-RFC4032-PRECONDITION-UNMET-ALERTING-GHOST-RINGING-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live 4G/5G PCRF/PCF Rx bearer allocation latency not_measured)",
+            "action": "suppress_180_ringing_until_curr_qos_sendrecv_satisfied",
+            "clampedGhostRingingOrClippedAnswerCalls": 0,
+            "clampedRequiredPreconditionConfirmDirections": 2,
+            "reason": "P879 SIP/IMS RFC 3312 / RFC 4032 unmet precondition premature 180 Ringing / 200 OK violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): suppressed alerting until all [2, 2] directions reach curr:qos sendrecv (clamped ghost-ringing/clipped calls to 0)."
+          }
+        },
+        {
+          id: "p880_sip_rfc3312_volte_qci1_reservation_timeout_fallback_and_580_precondition_failure",
+          label: {
+            "zh-CN": "🔥 [专题83 · Stage 443 · P880 & 85篇FAQ 🎉 · voice-sip-rfc3312-rfc4032-precondition-qci1-ghost-ringing-reservation-timeout-faq] P880 🎉 · QCI=1/5QI=1 [1500,5000]ms 预留超时与 SIP 580 快败门禁",
+            "zh-TW": "🔥 [專題83 · Stage 443 · P880 & 85篇FAQ 🎉 · voice-sip-rfc3312-rfc4032-precondition-qci1-ghost-ringing-reservation-timeout-faq] P880 🎉 · QCI=1/5QI=1 [1500,5000]ms 預留超時與 SIP 580 快敗門禁",
+            "en": "🔥 [Topic 83 · Stage 443 · P880 & 85th FAQ 🎉 · voice-sip-rfc3312-rfc4032-precondition-qci1-ghost-ringing-reservation-timeout-faq] P880 🎉 · QCI=1/5QI=1 [1500,5000]ms Reservation Timeout & SIP 580 Gate"
+          },
+          input: {
+            "probeId": "sip-rfc3312-qci1-reservation-timeout-580-probe-02",
+            "indefinitePreconditionReservationHangOrUnhandled580Detected": true,
+            "hungPreconditionSetupCalls": 8,
+            "preconditionReservationTimeoutMs": 45000
+          },
+          output: {
+            "violated": true,
+            "policyId": "P880-SIP-RFC3312-VOLTE-QCI1-RESERVATION-TIMEOUT-FALLBACK-AND-580-PRECONDITION-FAILURE-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live RAN dedicated-bearer signaling latency not_measured)",
+            "action": "downgrade_to_best_effort_or_fail_fast_with_sip_580_within_budget",
+            "clampedHungPreconditionSetupCalls": 0,
+            "clampedPreconditionReservationTimeoutMs": 5000,
+            "reason": "P880 SIP/IMS RFC 3312 QCI=1 bearer reservation timeout violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): failed fast with SIP 580 / downgraded optional QoS (clamped hung setup calls to 0) within 5000ms reservation budget."
+          }
+        },
+        {
+          id: "p877_webrtc_diffserv_rfc8837_rfc7657_bundle_five_tuple_cross_phb_queue_reordering",
+          label: {
+            "zh-CN": "🔥 [专题82 · Stage 442 · 445维 🎉 · voice-webrtc-dscp-rfc8837-rfc7657-bundle-five-tuple-ef-af41-queue-reordering-faq] P877 · RFC 7657 BUNDLE 单五元组 [1,2] PHB 队列保序防乱序门禁",
+            "zh-TW": "🔥 [專題82 · Stage 442 · 445維 🎉 · voice-webrtc-dscp-rfc8837-rfc7657-bundle-five-tuple-ef-af41-queue-reordering-faq] P877 · RFC 7657 BUNDLE 單五元組 [1,2] PHB 佇列保序防亂序門禁",
+            "en": "🔥 [Topic 82 · Stage 442 · 445 Dims 🎉 · voice-webrtc-dscp-rfc8837-rfc7657-bundle-five-tuple-ef-af41-queue-reordering-faq] P877 · RFC 7657 BUNDLE 5-Tuple [1,2] PHB Queue-Ordering Gate"
+          },
+          input: {
+            "probeId": "webrtc-diffserv-rfc7657-bundle-phb-reorder-probe-01",
+            "incompatiblePhbQueueMixingOnSingleFiveTupleDetected": true,
+            "reorderedSrtpOrTwccPacketsAcrossPhbQueues": 18,
+            "maxAllowedPhbClassesPerFiveTuple": 5
+          },
+          output: {
+            "violated": true,
+            "policyId": "P877-WEBRTC-DIFFSERV-RFC8837-RFC7657-BUNDLE-FIVE-TUPLE-CROSS-PHB-QUEUE-REORDERING-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live switch WFQ scheduling latency not_measured)",
+            "action": "restrict_five_tuple_to_single_af_family_or_ef_voice_phb",
+            "clampedReorderedSrtpOrTwccPacketsAcrossPhbQueues": 0,
+            "clampedMaxAllowedPhbClassesPerFiveTuple": 2,
+            "reason": "P877 WebRTC RFC 8837 / RFC 7657 BUNDLE 5-tuple cross-PHB queue reordering violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): restricted BUNDLE 5-tuple PHB classes to 2 and eliminated cross-queue reordered SRTP/TWCC packets (clamped to 0)."
+          }
+        },
+        {
+          id: "p878_webrtc_diffserv_rfc8837_unauthorized_cs6_cs7_marking_and_isp_bleaching_fallback",
+          label: {
+            "zh-CN": "🔥 [专题82 · Stage 442 · 445维 🎉 · voice-webrtc-dscp-rfc8837-rfc7657-bundle-five-tuple-ef-af41-queue-reordering-faq] P878 · 严禁 CS6/CS7 控制面抢占与 EF (46) 语音码点钉扎门禁",
+            "zh-TW": "🔥 [專題82 · Stage 442 · 445維 🎉 · voice-webrtc-dscp-rfc8837-rfc7657-bundle-five-tuple-ef-af41-queue-reordering-faq] P878 · 嚴禁 CS6/CS7 控制面搶佔與 EF (46) 語音碼點釘紮門禁",
+            "en": "🔥 [Topic 82 · Stage 442 · 445 Dims 🎉 · voice-webrtc-dscp-rfc8837-rfc7657-bundle-five-tuple-ef-af41-queue-reordering-faq] P878 · Anti-CS6/CS7 Control Marking & EF (46) Voice Pinning Gate"
+          },
+          input: {
+            "probeId": "webrtc-diffserv-rfc8837-cs7-ef46-pinning-probe-02",
+            "unauthorizedCs6Cs7ControlMarkingOrIspBleachDropDetected": true,
+            "unauthorizedCs6Cs7OrDroppedDscpPackets": 7,
+            "voiceEfDscpCodepoint": 56
+          },
+          output: {
+            "violated": true,
+            "policyId": "P878-WEBRTC-DIFFSERV-RFC8837-UNAUTHORIZED-CS6-CS7-MARKING-AND-ISP-BLEACHING-FALLBACK-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live kernel setsockopt IP_TOS syscall latency not_measured)",
+            "action": "strip_unauthorized_cs6_cs7_and_pin_voice_to_ef_46_phb",
+            "clampedUnauthorizedCs6Cs7OrDroppedDscpPackets": 0,
+            "clampedVoiceEfDscpCodepoint": 46,
+            "reason": "P878 WebRTC RFC 8837 unauthorized CS6/CS7 control-plane marking violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): stripped unauthorized CS6/CS7 markings (clamped violations to 0) and pinned expedited voice DSCP codepoint to EF (46)."
+          }
+        },
+        {
+          id: "p875_sip_rfc6141_reinvite_uncommitted_sdp_atomic_rollback_and_target_refresh_contact",
+          label: {
+            "zh-CN": "🔥 [专题81 · Stage 441 · SVG 85 & 885护栏 🎉 · voice-sip-rfc6141-reinvite-target-refresh-contact-hijack-sdp-rollback-glare-faq] P875 · RFC 6141 Re-INVITE 拒单原子回滚 LKG_SDP 与 Contact 防劫持门禁",
+            "zh-TW": "🔥 [專題81 · Stage 441 · SVG 85 & 885護欄 🎉 · voice-sip-rfc6141-reinvite-target-refresh-contact-hijack-sdp-rollback-glare-faq] P875 · RFC 6141 Re-INVITE 拒單原子回滾 LKG_SDP 與 Contact 防劫持門禁",
+            "en": "🔥 [Topic 81 · Stage 441 · SVG 85 & 885 Guards 🎉 · voice-sip-rfc6141-reinvite-target-refresh-contact-hijack-sdp-rollback-glare-faq] P875 · RFC 6141 Re-INVITE Atomic LKG_SDP Rollback & Contact Gate"
+          },
+          input: {
+            "probeId": "sip-rfc6141-reinvite-sdp-rollback-contact-probe-01",
+            "failedReinvitePartialSdpOrUnauthenticatedContactRefreshDetected": true,
+            "desyncedSdpOrHijackedTargetRefreshDialogs": 4,
+            "maxInFlightReinviteTransactionsPerDialog": 5
+          },
+          output: {
+            "violated": true,
+            "policyId": "P875-SIP-RFC6141-REINVITE-UNCOMMITTED-SDP-ATOMIC-ROLLBACK-AND-TARGET-REFRESH-CONTACT-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live SBC/B2BUA media-port rebinding latency not_measured)",
+            "action": "atomic_rollback_to_pre_reinvite_sdp_and_pin_authenticated_contact",
+            "clampedDesyncedSdpOrHijackedTargetRefreshDialogs": 0,
+            "clampedMaxInFlightReinviteTransactionsPerDialog": 1,
+            "reason": "P875 SIP RFC 6141 Re-INVITE uncommitted SDP desync or unauthenticated Contact target-refresh violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): atomically rolled back uncommitted SDP to LKG_SDP and pinned authenticated Contact (clamped violations to 0) with [1, 1] in-flight mutex."
+          }
+        },
+        {
+          id: "p876_sip_rfc3261_rfc6141_sip_491_request_pending_glare_randomized_backoff",
+          label: {
+            "zh-CN": "🔥 [专题81 · Stage 441 · SVG 85 & 885护栏 🎉 · voice-sip-rfc6141-reinvite-target-refresh-contact-hijack-sdp-rollback-glare-faq] P876 · SIP 491 Request Pending [60,4000]ms 角色偏置错峰退避门禁",
+            "zh-TW": "🔥 [專題81 · Stage 441 · SVG 85 & 885護欄 🎉 · voice-sip-rfc6141-reinvite-target-refresh-contact-hijack-sdp-rollback-glare-faq] P876 · SIP 491 Request Pending [60,4000]ms 角色偏置錯峰退避門禁",
+            "en": "🔥 [Topic 81 · Stage 441 · SVG 85 & 885 Guards 🎉 · voice-sip-rfc6141-reinvite-target-refresh-contact-hijack-sdp-rollback-glare-faq] P876 · SIP 491 Request Pending [60,4000]ms Owner-Biased Glare Gate"
+          },
+          input: {
+            "probeId": "sip-rfc3261-491-glare-randomized-backoff-probe-02",
+            "deterministic491GlareRetryCollisionOrInfiniteLoopDetected": true,
+            "collided491ReinviteGlareLoops": 6,
+            "sip491GlareBackoffTimerMs": 10
+          },
+          output: {
+            "violated": true,
+            "policyId": "P876-SIP-RFC3261-RFC6141-SIP-491-REQUEST-PENDING-GLARE-RANDOMIZED-BACKOFF-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live SIP 491 backoff wait duration not_measured)",
+            "action": "enforce_rfc3261_owner_biased_jitter_backoff_and_abort_glare_loop",
+            "clampedCollided491ReinviteGlareLoops": 0,
+            "clampedSip491GlareBackoffTimerMs": 60,
+            "reason": "P876 SIP RFC 3261 Section 14.1 SIP 491 glare retry collision violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): enforced disjoint Owner [2100, 4000]ms vs. Non-Owner [60, 2000]ms jitter backoff (clamped glare loops to 0 and backoff timer to 60ms)."
+          }
+        },
+        {
+          id: "p873_webrtc_rtp_rfc8083_media_rtcp_timeout_circuit_breaker_and_zombie_stream_reaper",
+          label: {
+            "zh-CN": "🔥 [专题80 🎉 · Stage 440 🎉 · voice-webrtc-rtp-rfc8083-circuit-breakers-media-timeout-tenfold-tfrc-congestion-teardown-faq] P873 · RFC 8083 [2,5] 周期媒体/RTCP 超时断路器与黑洞流收割门禁",
+            "zh-TW": "🔥 [專題80 🎉 · Stage 440 🎉 · voice-webrtc-rtp-rfc8083-circuit-breakers-media-timeout-tenfold-tfrc-congestion-teardown-faq] P873 · RFC 8083 [2,5] 週期媒體/RTCP 超時斷路器與黑洞流收割門禁",
+            "en": "🔥 [Topic 80 🎉 · Stage 440 🎉 · voice-webrtc-rtp-rfc8083-circuit-breakers-media-timeout-tenfold-tfrc-congestion-teardown-faq] P873 · RFC 8083 [2,5]-Interval Timeout Circuit-Breaker & Zombie Reaper Gate"
+          },
+          input: {
+            "probeId": "webrtc-rtp-rfc8083-timeout-circuit-breaker-probe-01",
+            "rtpOrRtcpTimeoutCircuitBreakerTriggered": true,
+            "unstoppedBlackholeRtpFlows": 6,
+            "rtcpTimeoutMultiplierIntervals": 20
+          },
+          output: {
+            "violated": true,
+            "policyId": "P873-WEBRTC-RTP-RFC8083-MEDIA-RTCP-TIMEOUT-CIRCUIT-BREAKER-AND-ZOMBIE-STREAM-REAPER-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live SFU timer wheel & socket teardown latency not_measured)",
+            "action": "trip_rfc8083_timeout_circuit_breaker_and_reap_zombie_rtp_flow",
+            "clampedUnstoppedBlackholeRtpFlows": 0,
+            "clampedRtcpTimeoutMultiplierIntervals": 5,
+            "reason": "P873 WebRTC RFC 8083 media/RTCP timeout circuit-breaker violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): tripped timeout circuit breaker to reap blackhole zombie RTP flows (clamped unstopped flows to 0) and clamped timeout multiplier to 5 RTCP intervals."
+          }
+        },
+        {
+          id: "p874_webrtc_rtp_rfc8083_congestion_circuit_breaker_tenfold_tfrc_and_spoofed_rr_sabotage",
+          label: {
+            "zh-CN": "🔥 [专题80 🎉 · Stage 440 🎉 · voice-webrtc-rtp-rfc8083-circuit-breakers-media-timeout-tenfold-tfrc-congestion-teardown-faq] P874 · RFC 8083 [2,6] 周期 10x TFRC 砍视频保音频分级熔断与防伪造 RR 门禁",
+            "zh-TW": "🔥 [專題80 🎉 · Stage 440 🎉 · voice-webrtc-rtp-rfc8083-circuit-breakers-media-timeout-tenfold-tfrc-congestion-teardown-faq] P874 · RFC 8083 [2,6] 週期 10x TFRC 砍視訊保音訊分級熔斷與防偽造 RR 門禁",
+            "en": "🔥 [Topic 80 🎉 · Stage 440 🎉 · voice-webrtc-rtp-rfc8083-circuit-breakers-media-timeout-tenfold-tfrc-congestion-teardown-faq] P874 · RFC 8083 [2,6]-Interval 10x TFRC Audio-First Shedding & Anti-Spoofed RR Gate"
+          },
+          input: {
+            "probeId": "webrtc-rtp-rfc8083-tenfold-tfrc-audio-first-probe-02",
+            "tenfoldTfrcCongestionOrSpoofedRrCircuitBreakerSabotageDetected": true,
+            "runawayCongestionOrSabotagedCalls": 4,
+            "tfrcCircuitBreakerGraceIntervals": 15
+          },
+          output: {
+            "violated": true,
+            "policyId": "P874-WEBRTC-RTP-RFC8083-CONGESTION-CIRCUIT-BREAKER-TENFOLD-TFRC-AND-SPOOFED-RR-SABOTAGE-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live RFC 5348 TFRC equation evaluation latency not_measured)",
+            "action": "enforce_validated_tfrc_circuit_breaker_and_drop_video_preserve_audio",
+            "clampedRunawayCongestionOrSabotagedCalls": 0,
+            "clampedTfrcCircuitBreakerGraceIntervals": 6,
+            "reason": "P874 WebRTC RFC 8083 tenfold TFRC congestion or spoofed RTCP RR sabotage violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): enforced cross-validated Audio-First Video Shedding to preserve 32 kbps voice (clamped dropped/sabotaged calls to 0) across 6 grace intervals."
+          }
+        },
+        {
+          id: "p871_sip_rfc3911_join_header_unauthorized_silent_wiretap_and_supervisor_rbac",
+          label: {
+            "zh-CN": "🔥 [专题79 · Stage 439 · 890探针 & 700现场探针 🎉 · voice-sip-rfc3911-join-barge-wiretap-rfc3891-replaces-early-dialog-hijack-faq] P871 · RFC 3911 Join 同租户 Supervisor RBAC 防窃听与 [1,2] 路督导门禁",
+            "zh-TW": "🔥 [專題79 · Stage 439 · 890探針 & 700現場探針 🎉 · voice-sip-rfc3911-join-barge-wiretap-rfc3891-replaces-early-dialog-hijack-faq] P871 · RFC 3911 Join 同租戶 Supervisor RBAC 防竊聽與 [1,2] 路督導門禁",
+            "en": "🔥 [Topic 79 · Stage 439 · 890 Probes & 700 Live POC 🎉 · voice-sip-rfc3911-join-barge-wiretap-rfc3891-replaces-early-dialog-hijack-faq] P871 · RFC 3911 Join Supervisor RBAC & [1,2] Barge Gate"
+          },
+          input: {
+            "probeId": "sip-rfc3911-join-supervisor-rbac-wiretap-probe-01",
+            "unauthorizedJoinHeaderOrSilentWiretapWithoutRbacDetected": true,
+            "unauthorizedJoinWiretapAttempts": 3,
+            "maxAuthorizedSupervisorBargeStreams": 12
+          },
+          output: {
+            "violated": true,
+            "policyId": "P871-SIP-RFC3911-JOIN-HEADER-UNAUTHORIZED-SILENT-WIRETAP-AND-SUPERVISOR-RBAC-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live SBC dialog hash lookup & JWT RBAC verification latency not_measured)",
+            "action": "reject_unauthorized_join_with_403_and_enforce_supervisor_rbac",
+            "clampedUnauthorizedJoinWiretapAttempts": 0,
+            "clampedMaxAuthorizedSupervisorBargeStreams": 2,
+            "reason": "P871 SIP RFC 3911 Join header unauthorized silent wiretap violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): rejected unauthorized Join request with SIP 403 (clamped wiretap attempts to 0) and clamped concurrent supervisor barge streams to 2."
+          }
+        },
+        {
+          id: "p872_sip_rfc3891_replaces_early_dialog_call_pickup_hijack_and_tag_entropy",
+          label: {
+            "zh-CN": "🔥 [专题79 · Stage 439 · 890探针 & 700现场探针 🎉 · voice-sip-rfc3911-join-barge-wiretap-rfc3891-replaces-early-dialog-hijack-faq] P872 · RFC 3891 Replaces early-only 防抢接与 [128,256]-bit Tag 熵值门禁",
+            "zh-TW": "🔥 [專題79 · Stage 439 · 890探針 & 700現場探針 🎉 · voice-sip-rfc3911-join-barge-wiretap-rfc3891-replaces-early-dialog-hijack-faq] P872 · RFC 3891 Replaces early-only 防搶接與 [128,256]-bit Tag 熵值門禁",
+            "en": "🔥 [Topic 79 · Stage 439 · 890 Probes & 700 Live POC 🎉 · voice-sip-rfc3911-join-barge-wiretap-rfc3891-replaces-early-dialog-hijack-faq] P872 · RFC 3891 Replaces early-only & [128,256]-Bit Tag Gate"
+          },
+          input: {
+            "probeId": "sip-rfc3891-replaces-early-only-entropy-probe-02",
+            "crossTenantReplacesOrMissingEarlyOnlyPickupDetected": true,
+            "hijackedReplacesDialogAttempts": 4,
+            "dialogTagCryptographicEntropyBits": 32
+          },
+          output: {
+            "violated": true,
+            "policyId": "P872-SIP-RFC3891-REPLACES-EARLY-DIALOG-CALL-PICKUP-HIJACK-AND-TAG-ENTROPY-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live SBC dialog state-table lookup latency not_measured)",
+            "action": "reject_hijacked_replaces_with_481_and_enforce_128bit_tag_entropy",
+            "clampedHijackedReplacesDialogAttempts": 0,
+            "clampedDialogTagCryptographicEntropyBits": 128,
+            "reason": "P872 SIP RFC 3891 Replaces missing early-only or cross-tenant takeover violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): rejected unauthorized Replaces takeover with SIP 481/486 (clamped hijacked dialogs to 0) and enforced 128-bit CSPRNG dialog tag entropy."
+          }
+        },
+        {
+          id: "p869_webrtc_sframe_rfc9605_header_kid_ctr_overread_and_ctr_nonce_reuse",
+          label: {
+            "zh-CN": "🔥 [专题78 · Stage 438 · P870 & 80篇FAQ 🎉 · voice-webrtc-sframe-rfc9605-mls-rfc9420-e2ee-key-ratchet-sfu-zero-plaintext-vad-faq] P869 · SFrame 变长头字节闭合、单调 CTR 防重用与 [2,4] 密钥环门禁",
+            "zh-TW": "🔥 [專題78 · Stage 438 · P870 & 80篇FAQ 🎉 · voice-webrtc-sframe-rfc9605-mls-rfc9420-e2ee-key-ratchet-sfu-zero-plaintext-vad-faq] P869 · SFrame 變長頭位元組閉合、單調 CTR 防重用與 [2,4] 密鑰環門禁",
+            "en": "🔥 [Topic 78 · Stage 438 · P870 & 80th FAQ 🎉 · voice-webrtc-sframe-rfc9605-mls-rfc9420-e2ee-key-ratchet-sfu-zero-plaintext-vad-faq] P869 · SFrame KID/CTR Byte Closure, Anti-Nonce-Reuse & [2,4] Ring Gate"
+          },
+          input: {
+            "probeId": "webrtc-sframe-rfc9605-kid-ctr-nonce-reuse-probe-01",
+            "sframeKidCtrOverreadOrCtrNonceReuseDetected": true,
+            "malformedOrNonceReusedSframePayloads": 5,
+            "maxRetainedSframeEpochKeys": 32
+          },
+          output: {
+            "violated": true,
+            "policyId": "P869-WEBRTC-SFRAME-RFC9605-HEADER-KID-CTR-OVERREAD-AND-CTR-NONCE-REUSE-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live WebCrypto/EncodedTransform worker decryption latency not_measured)",
+            "action": "drop_malformed_or_nonce_reused_sframe_and_clamp_epoch_ring",
+            "clampedMalformedOrNonceReusedSframePayloads": 0,
+            "clampedMaxRetainedSframeEpochKeys": 4,
+            "reason": "P869 WebRTC RFC 9605 SFrame variable-length KID/CTR overread or AES-GCM CTR nonce-reuse violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): dropped malformed/nonce-reused SFrame payloads (clamped violations to 0) and clamped retained SFrame epoch key ring to 4."
+          }
+        },
+        {
+          id: "p870_webrtc_mls_rfc9420_member_removal_epoch_ratchet_and_sfu_zero_plaintext_vad",
+          label: {
+            "zh-CN": "🔥 [专题78 · Stage 438 · P870 & 80篇FAQ 🎉 · voice-webrtc-sframe-rfc9605-mls-rfc9420-e2ee-key-ratchet-sfu-zero-plaintext-vad-faq] P870 🎉 · MLS [500,2000]ms 离会棘轮换钥与 SFU 零明文防侧信道门禁",
+            "zh-TW": "🔥 [專題78 · Stage 438 · P870 & 80篇FAQ 🎉 · voice-webrtc-sframe-rfc9605-mls-rfc9420-e2ee-key-ratchet-sfu-zero-plaintext-vad-faq] P870 🎉 · MLS [500,2000]ms 離會棘輪換鑰與 SFU 零明文防側信道門禁",
+            "en": "🔥 [Topic 78 · Stage 438 · P870 & 80th FAQ 🎉 · voice-webrtc-sframe-rfc9605-mls-rfc9420-e2ee-key-ratchet-sfu-zero-plaintext-vad-faq] P870 🎉 · MLS [500,2000]ms Removal Ratchet & SFU Zero-Plaintext VAD Gate"
+          },
+          input: {
+            "probeId": "webrtc-mls-rfc9420-removal-ratchet-sfu-vad-probe-02",
+            "evictedMemberStaleEpochAccessOrUnredactedSfuVadLeakDetected": true,
+            "staleEpochOrPlaintextSfuAudioFrames": 8,
+            "mlsEpochRatchetDeadlineMs": 15000
+          },
+          output: {
+            "violated": true,
+            "policyId": "P870-WEBRTC-MLS-RFC9420-MEMBER-REMOVAL-EPOCH-RATCHET-AND-SFU-ZERO-PLAINTEXT-VAD-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live OpenMLS TreeKEM Commit derivation latency not_measured)",
+            "action": "ratchet_mls_epoch_on_member_removal_and_quantize_sfu_vad",
+            "clampedStaleEpochOrPlaintextSfuAudioFrames": 0,
+            "clampedMlsEpochRatchetDeadlineMs": 2000,
+            "reason": "P870 WebRTC RFC 9420 MLS member-removal stale epoch access or SFU VAD side-channel leak violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): revoked stale MLS epoch KIDs and quantized SFU VAD headers (clamped violations to 0) within 2000ms ratchet deadline."
+          }
+        },
+        {
+          id: "p867_sip_rfc3325_p_asserted_identity_untrusted_trunk_injection_and_outbound_privacy_bleed",
+          label: {
+            "zh-CN": "🔥 [专题77 · Stage 437 · 440维 🎉 · voice-sip-rfc3325-rfc7044-pai-privacy-trunk-bleed-history-info-loop-guard-faq] P867 · PAI 非授信入站剥离与出站 Privacy:id 匿名化门禁",
+            "zh-TW": "🔥 [專題77 · Stage 437 · 440維 🎉 · voice-sip-rfc3325-rfc7044-pai-privacy-trunk-bleed-history-info-loop-guard-faq] P867 · PAI 非授信入站剝離與出站 Privacy:id 匿名化門禁",
+            "en": "🔥 [Topic 77 · Stage 437 · 440 Dims 🎉 · voice-sip-rfc3325-rfc7044-pai-privacy-trunk-bleed-history-info-loop-guard-faq] P867 · PAI Untrusted Ingress Strip & Outbound Privacy:id Gate"
+          },
+          input: {
+            "probeId": "sip-rfc3325-pai-untrusted-strip-privacy-bleed-probe-01",
+            "untrustedInboundPaiInjectionOrOutboundPrivacyIdBleedDetected": true,
+            "spoofedPaiOrPrivacyBleedHeaders": 4,
+            "maxTrustedSpecTDomainsPerTrunk": 16
+          },
+          output: {
+            "violated": true,
+            "policyId": "P867-SIP-RFC3325-P-ASSERTED-IDENTITY-UNTRUSTED-TRUNK-INJECTION-AND-OUTBOUND-PRIVACY-BLEED-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live SBC header manipulation & mTLS verification latency not_measured)",
+            "action": "strip_untrusted_inbound_pai_and_anonymize_outbound_privacy_id",
+            "clampedSpoofedPaiOrPrivacyBleedHeaders": 0,
+            "clampedMaxTrustedSpecTDomainsPerTrunk": 4,
+            "reason": "P867 SIP RFC 3325 P-Asserted-Identity untrusted ingress injection or outbound Privacy:id bleed violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): stripped untrusted/privacy-restricted PAI headers (clamped violations to 0) and clamped trusted Spec(T) domains per trunk to 4."
+          }
+        },
+        {
+          id: "p868_sip_rfc7044_history_info_retarget_loop_and_mp_index_depth_explosion",
+          label: {
+            "zh-CN": "🔥 [专题77 · Stage 437 · 440维 🎉 · voice-sip-rfc3325-rfc7044-pai-privacy-trunk-bleed-history-info-loop-guard-faq] P868 · History-Info [1,6] 跳防环与出站拓扑脱敏门禁",
+            "zh-TW": "🔥 [專題77 · Stage 437 · 440維 🎉 · voice-sip-rfc3325-rfc7044-pai-privacy-trunk-bleed-history-info-loop-guard-faq] P868 · History-Info [1,6] 跳防環與出站拓撲脫敏門禁",
+            "en": "🔥 [Topic 77 · Stage 437 · 440 Dims 🎉 · voice-sip-rfc3325-rfc7044-pai-privacy-trunk-bleed-history-info-loop-guard-faq] P868 · History-Info [1,6]-Hop Loop & Egress Redaction Gate"
+          },
+          input: {
+            "probeId": "sip-rfc7044-history-info-loop-redaction-probe-02",
+            "historyInfoCircularRetargetOrPrivacyHeaderLeakDetected": true,
+            "circularHistoryInfoOrUnredactedEntries": 6,
+            "maxHistoryInfoRetargetHops": 30
+          },
+          output: {
+            "violated": true,
+            "policyId": "P868-SIP-RFC7044-HISTORY-INFO-RETARGET-LOOP-AND-MP-INDEX-DEPTH-EXPLOSION-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live SBC History-Info AST traversal latency not_measured)",
+            "action": "reject_circular_history_info_retarget_with_482_and_clamp_hops",
+            "clampedCircularHistoryInfoOrUnredactedEntries": 0,
+            "clampedMaxHistoryInfoRetargetHops": 6,
+            "reason": "P868 SIP RFC 7044 History-Info circular retargeting loop or unredacted egress topology violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): rejected circular History-Info loop with SIP 482 / fallback routing (clamped violations to 0) and clamped max retarget hops to 6."
+          }
+        },
+        {
+          id: "p865_webrtc_rtcp_ccfb_rfc8888_num_reports_overread_and_ato_wrap",
+          label: {
+            "zh-CN": "🔥 [专题76 · Stage 436 · SVG 80 & 875护栏 🎉 · voice-webrtc-rtcp-ccfb-rfc8888-rfc8836-ecn-ce-spoofing-ato-wrap-audio-dtx-starvation-faq] P865 · RTCP CCFB [16,128] 字节闭合与 ATO 防回绕门禁",
+            "zh-TW": "🔥 [專題76 · Stage 436 · SVG 80 & 875護欄 🎉 · voice-webrtc-rtcp-ccfb-rfc8888-rfc8836-ecn-ce-spoofing-ato-wrap-audio-dtx-starvation-faq] P865 · RTCP CCFB [16,128] 位元組閉合與 ATO 防回繞門禁",
+            "en": "🔥 [Topic 76 · Stage 436 · SVG 80 & 875 Guards 🎉 · voice-webrtc-rtcp-ccfb-rfc8888-rfc8836-ecn-ce-spoofing-ato-wrap-audio-dtx-starvation-faq] P865 · RTCP CCFB [16,128] Byte Closure & ATO Gate"
+          },
+          input: {
+            "probeId": "webrtc-rtcp-ccfb-rfc8888-byte-closure-ato-probe-01",
+            "ccfbNumReportsOverreadOrAtoWrapDetected": true,
+            "malformedCcfbReportBlocks": 5,
+            "maxReportsPerCcfbBlock": 1024
+          },
+          output: {
+            "violated": true,
+            "policyId": "P865-WEBRTC-RTCP-CCFB-RFC8888-NUM-REPORTS-OVERREAD-AND-ATO-WRAP-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live SFU packet parser & SCReAM delay-gradient update latency not_measured)",
+            "action": "drop_malformed_ccfb_block_and_clamp_num_reports_window",
+            "clampedMalformedCcfbReportBlocks": 0,
+            "clampedMaxReportsPerCcfbBlock": 128,
+            "reason": "P865 WebRTC RFC 8888 RTCP CCFB num_reports byte-sum overread or ATO wrap violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): dropped malformed CCFB block (clamped overread/wrap blocks to 0) and clamped max reports per CCFB block to 128."
+          }
+        },
+        {
+          id: "p866_webrtc_rtcp_ccfb_rfc8888_ecn_ce_spoofing_and_post_dtx_audio_starvation",
+          label: {
+            "zh-CN": "🔥 [专题76 · Stage 436 · SVG 80 & 875护栏 🎉 · voice-webrtc-rtcp-ccfb-rfc8888-rfc8836-ecn-ce-spoofing-ato-wrap-audio-dtx-starvation-faq] P866 · 反未验证 ECN-CE 伪造与 DTX 恢复期 [32,64] kbps 语音保底门禁",
+            "zh-TW": "🔥 [專題76 · Stage 436 · SVG 80 & 875護欄 🎉 · voice-webrtc-rtcp-ccfb-rfc8888-rfc8836-ecn-ce-spoofing-ato-wrap-audio-dtx-starvation-faq] P866 · 反未驗證 ECN-CE 偽造與 DTX 恢復期 [32,64] kbps 語音保底門禁",
+            "en": "🔥 [Topic 76 · Stage 436 · SVG 80 & 875 Guards 🎉 · voice-webrtc-rtcp-ccfb-rfc8888-rfc8836-ecn-ce-spoofing-ato-wrap-audio-dtx-starvation-faq] P866 · Anti-ECN-CE Spoof & [32,64] kbps Post-DTX Audio Floor Gate"
+          },
+          input: {
+            "probeId": "webrtc-rtcp-ccfb-rfc8888-ecn-spoof-dtx-floor-probe-02",
+            "unverifiedEcnCeMarkFloodOrPostDtxAudioStarvationDetected": true,
+            "spoofedEcnCeOrStarvedAudioTurns": 7,
+            "postDtxAudioReservedFloorKbps": 8
+          },
+          output: {
+            "violated": true,
+            "policyId": "P866-WEBRTC-RTCP-CCFB-RFC8888-ECN-CE-SPOOFING-AND-POST-DTX-AUDIO-STARVATION-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live kernel IP_RECVTOS/ECN socket read latency not_measured)",
+            "action": "ignore_unverified_ecn_ce_and_reserve_post_dtx_audio_floor",
+            "clampedSpoofedEcnCeOrStarvedAudioTurns": 0,
+            "clampedPostDtxAudioReservedFloorKbps": 32,
+            "reason": "P866 WebRTC RFC 8888 / RFC 8836 ECN-CE spoofing or post-DTX audio starvation violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): stripped unverified ECN-CE markings (clamped starved audio turns to 0) and reserved 32 kbps post-DTX audio bitrate floor."
+          }
+        },
+        {
+          id: "p863_sip_rfc3263_dns_naptr_srv_sips_transport_downgrade_and_target_host_allowlist",
+          label: {
+            "zh-CN": "🔥 [专题75 🎉 · Stage 435 · voice-sip-rfc3263-rfc7984-dns-naptr-srv-sips-downgrade-poisoning-blackhole-failover-faq] P863 · DNS NAPTR/SRV SIPS+D2T 防降级投毒与 [1,4] 候选深度门禁",
+            "zh-TW": "🔥 [專題75 🎉 · Stage 435 · voice-sip-rfc3263-rfc7984-dns-naptr-srv-sips-downgrade-poisoning-blackhole-failover-faq] P863 · DNS NAPTR/SRV SIPS+D2T 防降級投毒與 [1,4] 候選深度門禁",
+            "en": "🔥 [Topic 75 🎉 · Stage 435 · voice-sip-rfc3263-rfc7984-dns-naptr-srv-sips-downgrade-poisoning-blackhole-failover-faq] P863 · DNS NAPTR/SRV SIPS+D2T Anti-Downgrade & [1,4] Depth Gate"
+          },
+          input: {
+            "probeId": "sip-rfc3263-dns-naptr-srv-sips-downgrade-probe-01",
+            "sipsToPlaintextUdpOrUntrustedSrvTargetDetected": true,
+            "plaintextDowngradeOrUntrustedSrvTargets": 3,
+            "srvCandidateMaxLookupDepth": 16
+          },
+          output: {
+            "violated": true,
+            "policyId": "P863-SIP-RFC3263-DNS-NAPTR-SRV-SIPS-TRANSPORT-DOWNGRADE-AND-TARGET-HOST-ALLOWLIST-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live c-ares/unbound DNSSEC validation latency not_measured)",
+            "action": "reject_sips_naptr_downgrade_and_enforce_dnssec_srv_allowlist",
+            "clampedPlaintextDowngradeOrUntrustedSrvTargets": 0,
+            "clampedSrvCandidateMaxLookupDepth": 4,
+            "reason": "P863 SIP RFC 3263 DNS NAPTR/SRV SIPS transport downgrade or untrusted target violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): rejected SIPS+D2T to SIP+D2U plaintext downgrade and untrusted SRV targets (clamped violations to 0) and clamped SRV candidate lookup depth to 4."
+          }
+        },
+        {
+          id: "p864_sip_rfc3263_rfc7984_dead_sbc_timer_b_blackhole_circuit_breaker_and_fast_failover",
+          label: {
+            "zh-CN": "🔥 [专题75 🎉 · Stage 435 · voice-sip-rfc3263-rfc7984-dns-naptr-srv-sips-downgrade-poisoning-blackhole-failover-faq] P864 · 死节点 32s Timer B 黑洞 [500,2000]ms 秒级熔断切换门禁",
+            "zh-TW": "🔥 [專題75 🎉 · Stage 435 · voice-sip-rfc3263-rfc7984-dns-naptr-srv-sips-downgrade-poisoning-blackhole-failover-faq] P864 · 死節點 32s Timer B 黑洞 [500,2000]ms 秒級熔斷切換門禁",
+            "en": "🔥 [Topic 75 🎉 · Stage 435 · voice-sip-rfc3263-rfc7984-dns-naptr-srv-sips-downgrade-poisoning-blackhole-failover-faq] P864 · Dead-SBC 32s Blackhole [500,2000]ms Fast Failover Gate"
+          },
+          input: {
+            "probeId": "sip-rfc3263-rfc7984-dead-sbc-blackhole-failover-probe-02",
+            "deadSbcTimerB32sBlackholeOrUnquarantinedTrunkDetected": true,
+            "timerBBlackholeStalledCalls": 12,
+            "perHopFailoverTimeoutMs": 32000
+          },
+          output: {
+            "violated": true,
+            "policyId": "P864-SIP-RFC3263-RFC7984-DEAD-SBC-TIMER-B-BLACKHOLE-CIRCUIT-BREAKER-AND-FAST-FAILOVER-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live cross-region TLS 1.3 handshake round-trip latency not_measured)",
+            "action": "quarantine_dead_srv_trunk_and_failover_within_per_hop_budget",
+            "clampedTimerBBlackholeStalledCalls": 0,
+            "clampedPerHopFailoverTimeoutMs": 2000,
+            "reason": "P864 SIP RFC 3263 / RFC 7984 dead-SBC Timer-B blackhole violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): quarantined dead SRV target (clamped Timer-B blackhole stalled calls to 0) and clamped per-hop failover timeout to 2000ms."
+          }
+        },
+        {
+          id: "p861_webrtc_dtls_srtp_rfc9146_connection_id_nat_rebind_and_null_cipher_downgrade",
+          label: {
+            "zh-CN": "🔥 [专题74 · Stage 434 · 880探针 🎉 · voice-webrtc-dtls-srtp-rfc5764-rfc9146-connection-id-nat-rebind-mki-rekey-replay-faq] P861 · DTLS-SRTP [2,8] CID 漫游防劫持与反 SRTP_NULL 空加密门禁",
+            "zh-TW": "🔥 [專題74 · Stage 434 · 880探針 🎉 · voice-webrtc-dtls-srtp-rfc5764-rfc9146-connection-id-nat-rebind-mki-rekey-replay-faq] P861 · DTLS-SRTP [2,8] CID 漫遊防劫持與反 SRTP_NULL 空加密門禁",
+            "en": "🔥 [Topic 74 · Stage 434 · 880 Probes 🎉 · voice-webrtc-dtls-srtp-rfc5764-rfc9146-connection-id-nat-rebind-mki-rekey-replay-faq] P861 · DTLS-SRTP [2,8] CID Mobility & Anti-SRTP_NULL Gate"
+          },
+          input: {
+            "probeId": "webrtc-dtls-srtp-rfc9146-cid-mobility-null-cipher-probe-01",
+            "srtpNullCipherOrUnauthenticatedCidRebindDetected": true,
+            "nullCipherOrUnauthenticatedCidRebinds": 4,
+            "dtlsCidSparePoolSize": 32
+          },
+          output: {
+            "violated": true,
+            "policyId": "P861-WEBRTC-DTLS-SRTP-RFC9146-CONNECTION-ID-NAT-REBIND-AND-NULL-CIPHER-DOWNGRADE-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live libsrtp AES-GCM verification & kernel UDP socket migration latency not_measured)",
+            "action": "reject_null_srtp_cipher_and_require_aead_verified_cid_rebind",
+            "clampedNullCipherOrUnauthenticatedCidRebinds": 0,
+            "clampedDtlsCidSparePoolSize": 8,
+            "reason": "P861 WebRTC/SIP DTLS-SRTP RFC 9146 CID mobility or SRTP_NULL downgrade violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): rejected SRTP_NULL cipher downgrade and unauthenticated NAT rebind (clamped violations to 0) and clamped DTLS CID spare pool size to 8."
+          }
+        },
+        {
+          id: "p862_webrtc_dtls_srtp_rfc5764_mki_seamless_key_rotation_and_old_key_grace_overlap",
+          label: {
+            "zh-CN": "🔥 [专题74 · Stage 434 · 880探针 🎉 · voice-webrtc-dtls-srtp-rfc5764-rfc9146-connection-id-nat-rebind-mki-rekey-replay-faq] P862 · SRTP MKI [300,3600]s 双钥重叠无缝轮换门禁",
+            "zh-TW": "🔥 [專題74 · Stage 434 · 880探針 🎉 · voice-webrtc-dtls-srtp-rfc5764-rfc9146-connection-id-nat-rebind-mki-rekey-replay-faq] P862 · SRTP MKI [300,3600]s 雙鑰重疊無縫輪換門禁",
+            "en": "🔥 [Topic 74 · Stage 434 · 880 Probes 🎉 · voice-webrtc-dtls-srtp-rfc5764-rfc9146-connection-id-nat-rebind-mki-rekey-replay-faq] P862 · SRTP MKI [300,3600]s Dual-Key Seamless Rotation Gate"
+          },
+          input: {
+            "probeId": "webrtc-dtls-srtp-rfc5764-mki-rotation-overlap-probe-02",
+            "mkiRekeyStormOrMissingOldKeyOverlapDetected": true,
+            "mkiRekeyDesyncDroppedFrames": 9,
+            "srtpMkiKeyRotationIntervalSeconds": 30
+          },
+          output: {
+            "violated": true,
+            "policyId": "P862-WEBRTC-DTLS-SRTP-RFC5764-MKI-SEAMLESS-KEY-ROTATION-AND-OLD-KEY-GRACE-OVERLAP-GUARD",
+            "evaluationLatencyMs": 0,
+            "timing": "0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established (synthetic in-memory policy check; live libsrtp MKI context switch latency not_measured)",
+            "action": "enforce_dual_mki_overlap_window_and_clamp_rekey_interval",
+            "clampedMkiRekeyDesyncDroppedFrames": 0,
+            "clampedSrtpMkiKeyRotationIntervalSeconds": 300,
+            "reason": "P862 WebRTC/SIP DTLS-SRTP RFC 5764 MKI key rotation desync violation (0ms reported at nominal 1ms display resolution; actual duration unresolved/not_measured; no sub-1ms upper bound established): enforced dual (MKI_old, MKI_new) grace overlap (clamped desync dropped frames to 0) and clamped MKI rotation interval to 300s."
+          }
+        },
         {
           id: "p859_sip_stir_shaken_rfc8224_x5u_certificate_ssrf_and_iat_freshness_replay",
           label: {
