@@ -3014,6 +3014,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r219File),'utf8');
       assert.ok(txt.includes('1,460.00')&&txt.includes('3,420.00')&&txt.includes('4,880.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('4,462.50')&&txt.includes('91.44%')&&txt.includes('not_measured'),r219File+': contains exact 11-14 R36 Claude-Fable-5.2-HTML-Files+omacom/folio closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 37 (R220: sunososobro-hub/tinglongwu + lihailong00/tomorrow-ai) verification
+    const r220PathA=1680.00+36.0*95.00;
+    assert.equal(r220PathA.toFixed(2),'5100.00','11-14 R37 Path A total');
+    const r220PathC=110.00+3.5*95.00;
+    assert.equal(r220PathC.toFixed(2),'442.50','11-14 R37 Path C total');
+    assert.equal((r220PathA-r220PathC).toFixed(2),'4657.50','11-14 R37 savings vs Path A');
+    assert.equal(((r220PathA-r220PathC)/r220PathA*100).toFixed(2),'91.32','11-14 R37 pct savings vs Path A');
+    for(const r220File of ['workshops/github-trending-radar/docs/tinglongwu-tomorrow-ai-offline-5lang-meeting-speech-translator-rust-axum-pi-selfhosted-ai-companion-selection-faq.md','workshops/github-trending-radar/docs/tinglongwu-tomorrow-ai-offline-5lang-meeting-speech-translator-rust-axum-pi-selfhosted-ai-companion-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r37-tinglongwu-tomorrow-ai.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r220File),'utf8');
+      assert.ok(txt.includes('1,680.00')&&txt.includes('3,420.00')&&txt.includes('5,100.00')&&txt.includes('110.00')&&txt.includes('332.50')&&txt.includes('442.50')&&txt.includes('4,657.50')&&txt.includes('91.32%')&&txt.includes('not_measured'),r220File+': contains exact 11-14 R37 tinglongwu+tomorrow-ai closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
