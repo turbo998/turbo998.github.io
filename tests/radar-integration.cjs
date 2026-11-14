@@ -2629,6 +2629,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r184File),'utf8');
       assert.ok(txt.includes('1,850.00')&&txt.includes('3,800.00')&&txt.includes('5,650.00')&&txt.includes('150.00')&&txt.includes('350.00')&&txt.includes('500.00')&&txt.includes('5,150.00')&&txt.includes('91.15%')&&txt.includes('not_measured'),r184File+': contains exact 11-14 R1 relate+gpucanvas closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 2 (R185: Open-RUA/uni-robot-agent + apple-aiml-research/ml-halo) verification
+    const r185PathA=2350.00+42.0*110.00;
+    assert.equal(r185PathA.toFixed(2),'6970.00','11-14 R2 Path A total');
+    const r185PathC=195.00+3.5*110.00;
+    assert.equal(r185PathC.toFixed(2),'580.00','11-14 R2 Path C total');
+    assert.equal((r185PathA-r185PathC).toFixed(2),'6390.00','11-14 R2 savings vs Path A');
+    assert.equal(((r185PathA-r185PathC)/r185PathA*100).toFixed(2),'91.68','11-14 R2 pct savings vs Path A');
+    for(const r185File of ['workshops/github-trending-radar/docs/uni-robot-agent-ml-halo-unified-robot-use-harness-perceptive-humanoid-motion-selection-faq.md','workshops/github-trending-radar/docs/uni-robot-agent-ml-halo-unified-robot-use-harness-perceptive-humanoid-motion-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r2-uni-robot-halo.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r185File),'utf8');
+      assert.ok(txt.includes('2,350.00')&&txt.includes('4,620.00')&&txt.includes('6,970.00')&&txt.includes('195.00')&&txt.includes('385.00')&&txt.includes('580.00')&&txt.includes('6,390.00')&&txt.includes('91.68%')&&txt.includes('not_measured'),r185File+': contains exact 11-14 R2 uni-robot-agent+ml-halo closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
