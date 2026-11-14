@@ -3091,6 +3091,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r226File),'utf8');
       assert.ok(txt.includes('1,450.00')&&txt.includes('3,420.00')&&txt.includes('4,870.00')&&txt.includes('75.00')&&txt.includes('332.50')&&txt.includes('407.50')&&txt.includes('4,462.50')&&txt.includes('91.63%')&&txt.includes('not_measured'),r226File+': contains exact 11-14 R43 fanatic-laptop-control+AnyAuto closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 44 (R227: erenariel/konaklamaflow + bohuis686-creator/AstralCodex) verification
+    const r227PathA=1420.00+36.0*95.00;
+    assert.equal(r227PathA.toFixed(2),'4840.00','11-14 R44 Path A total');
+    const r227PathC=75.00+3.5*95.00;
+    assert.equal(r227PathC.toFixed(2),'407.50','11-14 R44 Path C total');
+    assert.equal((r227PathA-r227PathC).toFixed(2),'4432.50','11-14 R44 savings vs Path A');
+    assert.equal(((r227PathA-r227PathC)/r227PathA*100).toFixed(2),'91.58','11-14 R44 pct savings vs Path A');
+    for(const r227File of ['workshops/github-trending-radar/docs/konaklamaflow-astralcodex-canonical-projection-reviewer-wpf-msix-window-handoff-launcher-selection-faq.md','workshops/github-trending-radar/docs/konaklamaflow-astralcodex-canonical-projection-reviewer-wpf-msix-window-handoff-launcher-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r44-konaklamaflow-astralcodex.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r227File),'utf8');
+      assert.ok(txt.includes('1,420.00')&&txt.includes('3,420.00')&&txt.includes('4,840.00')&&txt.includes('75.00')&&txt.includes('332.50')&&txt.includes('407.50')&&txt.includes('4,432.50')&&txt.includes('91.58%')&&txt.includes('not_measured'),r227File+': contains exact 11-14 R44 konaklamaflow+AstralCodex closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
