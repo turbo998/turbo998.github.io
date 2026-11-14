@@ -3424,6 +3424,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r255File),'utf8');
       assert.ok(txt.includes('1,740.00')&&txt.includes('3,610.00')&&txt.includes('5,350.00')&&txt.includes('95.00')&&txt.includes('332.50')&&txt.includes('427.50')&&txt.includes('4,922.50')&&txt.includes('92.01%')&&txt.includes('not_measured'),r255File+': contains exact 11-14 R72 vercel-labs/ui+durable-harness closed-form parameters');
     }
+    // 2026-11-14 Night Round 73 (R256: aicodeking/leanrea + reacher-z/Awesome-REA) verification
+    const r256PathA=1860.00+39.0*95.00;
+    assert.equal(r256PathA.toFixed(2),'5565.00','11-14 R73 Path A total');
+    const r256PathC=95.00+3.5*95.00;
+    assert.equal(r256PathC.toFixed(2),'427.50','11-14 R73 Path C total');
+    assert.equal((r256PathA-r256PathC).toFixed(2),'5137.50','11-14 R73 savings vs Path A');
+    assert.equal(((r256PathA-r256PathC)/r256PathA*100).toFixed(2),'92.32','11-14 R73 pct savings vs Path A');
+    for(const r256File of ['workshops/github-trending-radar/docs/leanrea-awesome-rea-8kb-zero-mcp-reverse-engineering-skill-5191-resource-corpus-selection-faq.md','workshops/github-trending-radar/docs/leanrea-awesome-rea-8kb-zero-mcp-reverse-engineering-skill-5191-resource-corpus-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r73-leanrea-awesomerea.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r256File),'utf8');
+      assert.ok(txt.includes('1,860.00')&&txt.includes('3,705.00')&&txt.includes('5,565.00')&&txt.includes('95.00')&&txt.includes('332.50')&&txt.includes('427.50')&&txt.includes('5,137.50')&&txt.includes('92.32%')&&txt.includes('not_measured'),r256File+': contains exact 11-14 R73 leanrea+Awesome-REA closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
