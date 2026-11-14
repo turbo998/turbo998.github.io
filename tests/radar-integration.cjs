@@ -2640,6 +2640,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r185File),'utf8');
       assert.ok(txt.includes('2,350.00')&&txt.includes('4,620.00')&&txt.includes('6,970.00')&&txt.includes('195.00')&&txt.includes('385.00')&&txt.includes('580.00')&&txt.includes('6,390.00')&&txt.includes('91.68%')&&txt.includes('not_measured'),r185File+': contains exact 11-14 R2 uni-robot-agent+ml-halo closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 3 (R186: dreamers-laboratory/good-door + TngSHoO/agentcase-lab) verification
+    const r186PathA=1580.00+38.0*95.00;
+    assert.equal(r186PathA.toFixed(2),'5190.00','11-14 R3 Path A total');
+    const r186PathC=140.00+3.5*95.00;
+    assert.equal(r186PathC.toFixed(2),'472.50','11-14 R3 Path C total');
+    assert.equal((r186PathA-r186PathC).toFixed(2),'4717.50','11-14 R3 savings vs Path A');
+    assert.equal(((r186PathA-r186PathC)/r186PathA*100).toFixed(2),'90.90','11-14 R3 pct savings vs Path A');
+    for(const r186File of ['workshops/github-trending-radar/docs/good-door-agentcase-lab-hardware-vault-agent-secrets-failure-replay-rca-selection-faq.md','workshops/github-trending-radar/docs/good-door-agentcase-lab-hardware-vault-agent-secrets-failure-replay-rca-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r3-good-door-agentcase.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r186File),'utf8');
+      assert.ok(txt.includes('1,580.00')&&txt.includes('3,610.00')&&txt.includes('5,190.00')&&txt.includes('140.00')&&txt.includes('332.50')&&txt.includes('472.50')&&txt.includes('4,717.50')&&txt.includes('90.90%')&&txt.includes('not_measured'),r186File+': contains exact 11-14 R3 good-door+agentcase-lab closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
