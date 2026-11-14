@@ -2816,6 +2816,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r201File),'utf8');
       assert.ok(txt.includes('1,720.00')&&txt.includes('3,420.00')&&txt.includes('5,140.00')&&txt.includes('115.00')&&txt.includes('332.50')&&txt.includes('447.50')&&txt.includes('4,692.50')&&txt.includes('91.29%')&&txt.includes('not_measured'),r201File+': contains exact 11-14 R18 colab-gpu-studio+gitmanual closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 19 (R202: fltman/idea-generator-2 + joeseesun/capwise) verification
+    const r202PathA=1580.00+38.0*100.00;
+    assert.equal(r202PathA.toFixed(2),'5380.00','11-14 R19 Path A total');
+    const r202PathC=125.00+3.5*100.00;
+    assert.equal(r202PathC.toFixed(2),'475.00','11-14 R19 Path C total');
+    assert.equal((r202PathA-r202PathC).toFixed(2),'4905.00','11-14 R19 savings vs Path A');
+    assert.equal(((r202PathA-r202PathC)/r202PathA*100).toFixed(2),'91.17','11-14 R19 pct savings vs Path A');
+    for(const r202File of ['workshops/github-trending-radar/docs/idea-generator-2-capwise-calibrated-jury-evolution-board-macos-gpui-bilingual-screen-studio-selection-faq.md','workshops/github-trending-radar/docs/idea-generator-2-capwise-calibrated-jury-evolution-board-macos-gpui-bilingual-screen-studio-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r19-idea-generator-capwise.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r202File),'utf8');
+      assert.ok(txt.includes('1,580.00')&&txt.includes('3,800.00')&&txt.includes('5,380.00')&&txt.includes('125.00')&&txt.includes('350.00')&&txt.includes('475.00')&&txt.includes('4,905.00')&&txt.includes('91.17%')&&txt.includes('not_measured'),r202File+': contains exact 11-14 R19 idea-generator-2+capwise closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
