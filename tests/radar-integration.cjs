@@ -3003,6 +3003,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r218File),'utf8');
       assert.ok(txt.includes('1,540.00')&&txt.includes('3,420.00')&&txt.includes('4,960.00')&&txt.includes('75.00')&&txt.includes('332.50')&&txt.includes('407.50')&&txt.includes('4,552.50')&&txt.includes('91.78%')&&txt.includes('not_measured'),r218File+': contains exact 11-14 R35 crimson-loong+safe-sand closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 36 (R219: MiaAI-Lab/Claude-Fable-5.2-HTML-Files + omacom/folio) verification
+    const r219PathA=1460.00+36.0*95.00;
+    assert.equal(r219PathA.toFixed(2),'4880.00','11-14 R36 Path A total');
+    const r219PathC=85.00+3.5*95.00;
+    assert.equal(r219PathC.toFixed(2),'417.50','11-14 R36 Path C total');
+    assert.equal((r219PathA-r219PathC).toFixed(2),'4462.50','11-14 R36 savings vs Path A');
+    assert.equal(((r219PathA-r219PathC)/r219PathA*100).toFixed(2),'91.44','11-14 R36 pct savings vs Path A');
+    for(const r219File of ['workshops/github-trending-radar/docs/claude-fable-5-2-html-files-omacom-folio-76study-sha256-playwright-gallery-zero-crawl-qtquick-tailnet-filemanager-selection-faq.md','workshops/github-trending-radar/docs/claude-fable-5-2-html-files-omacom-folio-76study-sha256-playwright-gallery-zero-crawl-qtquick-tailnet-filemanager-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r36-fable52-html-folio.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r219File),'utf8');
+      assert.ok(txt.includes('1,460.00')&&txt.includes('3,420.00')&&txt.includes('4,880.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('4,462.50')&&txt.includes('91.44%')&&txt.includes('not_measured'),r219File+': contains exact 11-14 R36 Claude-Fable-5.2-HTML-Files+omacom/folio closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
