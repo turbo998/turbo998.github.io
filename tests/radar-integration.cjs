@@ -3369,6 +3369,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r250File),'utf8');
       assert.ok(txt.includes('1,950.00')&&txt.includes('3,800.00')&&txt.includes('5,750.00')&&txt.includes('145.00')&&txt.includes('350.00')&&txt.includes('495.00')&&txt.includes('5,255.00')&&txt.includes('91.39%')&&txt.includes('not_measured'),r250File+': contains exact 11-14 R67 sts2ai+ui-redline-walkthrough closed-form parameters');
     }
+    // 2026-11-14 Night Round 68 (R251: FuzzyKuji/OpenProgram + DAgogo04/gogo-agent) verification
+    const r251PathA=1860.00+38.0*100.00;
+    assert.equal(r251PathA.toFixed(2),'5660.00','11-14 R68 Path A total');
+    const r251PathC=135.00+3.5*100.00;
+    assert.equal(r251PathC.toFixed(2),'485.00','11-14 R68 Path C total');
+    assert.equal((r251PathA-r251PathC).toFixed(2),'5175.00','11-14 R68 savings vs Path A');
+    assert.equal(((r251PathA-r251PathC)/r251PathA*100).toFixed(2),'91.43','11-14 R68 pct savings vs Path A');
+    for(const r251File of ['workshops/github-trending-radar/docs/openprogram-gogo-agent-self-programming-dag-classes-95line-glassbox-gated-memory-harness-selection-faq.md','workshops/github-trending-radar/docs/openprogram-gogo-agent-self-programming-dag-classes-95line-glassbox-gated-memory-harness-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r68-openprogram-gogoagent.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r251File),'utf8');
+      assert.ok(txt.includes('1,860.00')&&txt.includes('3,800.00')&&txt.includes('5,660.00')&&txt.includes('135.00')&&txt.includes('350.00')&&txt.includes('485.00')&&txt.includes('5,175.00')&&txt.includes('91.43%')&&txt.includes('not_measured'),r251File+': contains exact 11-14 R68 OpenProgram+gogo-agent closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
