@@ -3600,6 +3600,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r271File),'utf8');
       assert.ok(txt.includes('1,750.00')&&txt.includes('3,610.00')&&txt.includes('5,360.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('4,942.50')&&txt.includes('92.21%')&&txt.includes('not_measured'),r271File+': contains exact 11-14 R88 phonedriver+prevue closed-form parameters');
     }
+    // 2026-11-14 Night Round 89 (R272: timwuhaotian/killi + browser-use/rl-env-use) verification
+    const r272PathA=1890.00+39.0*95.00;
+    assert.equal(r272PathA.toFixed(2),'5595.00','11-14 R89 Path A total');
+    const r272PathC=95.00+3.5*95.00;
+    assert.equal(r272PathC.toFixed(2),'427.50','11-14 R89 Path C total');
+    assert.equal((r272PathA-r272PathC).toFixed(2),'5167.50','11-14 R89 savings vs Path A');
+    assert.equal(((r272PathA-r272PathC)/r272PathA*100).toFixed(2),'92.36','11-14 R89 pct savings vs Path A');
+    for(const r272File of ['workshops/github-trending-radar/docs/killi-rl-env-use-18mb-rust-prompt-cache-coding-agent-automated-post-cutoff-rl-environment-builder-selection-faq.md','workshops/github-trending-radar/docs/killi-rl-env-use-18mb-rust-prompt-cache-coding-agent-automated-post-cutoff-rl-environment-builder-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r89-killi-rlenvuse.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r272File),'utf8');
+      assert.ok(txt.includes('1,890.00')&&txt.includes('3,705.00')&&txt.includes('5,595.00')&&txt.includes('95.00')&&txt.includes('332.50')&&txt.includes('427.50')&&txt.includes('5,167.50')&&txt.includes('92.36%')&&txt.includes('not_measured'),r272File+': contains exact 11-14 R89 killi+rl-env-use closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
