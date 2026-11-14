@@ -3069,6 +3069,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r224File),'utf8');
       assert.ok(txt.includes('1,860.00')&&txt.includes('3,800.00')&&txt.includes('5,660.00')&&txt.includes('135.00')&&txt.includes('350.00')&&txt.includes('485.00')&&txt.includes('5,175.00')&&txt.includes('91.43%')&&txt.includes('not_measured'),r224File+': contains exact 11-14 R41 CapriCore+IDEmu closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 42 (R225: RapidSailorFreeze/studsmith + rippelz/rustudio) verification
+    const r225PathA=1520.00+36.0*95.00;
+    assert.equal(r225PathA.toFixed(2),'4940.00','11-14 R42 Path A total');
+    const r225PathC=95.00+3.5*95.00;
+    assert.equal(r225PathC.toFixed(2),'427.50','11-14 R42 Path C total');
+    assert.equal((r225PathA-r225PathC).toFixed(2),'4512.50','11-14 R42 savings vs Path A');
+    assert.equal(((r225PathA-r225PathC)/r225PathA*100).toFixed(2),'91.35','11-14 R42 pct savings vs Path A');
+    for(const r225File of ['workshops/github-trending-radar/docs/studsmith-rustudio-luau-playtest-loop-agent-native-rust-wgpu-rapier3d-roblox-studio-selection-faq.md','workshops/github-trending-radar/docs/studsmith-rustudio-luau-playtest-loop-agent-native-rust-wgpu-rapier3d-roblox-studio-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r42-studsmith-rustudio.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r225File),'utf8');
+      assert.ok(txt.includes('1,520.00')&&txt.includes('3,420.00')&&txt.includes('4,940.00')&&txt.includes('95.00')&&txt.includes('332.50')&&txt.includes('427.50')&&txt.includes('4,512.50')&&txt.includes('91.35%')&&txt.includes('not_measured'),r225File+': contains exact 11-14 R42 studsmith+rustudio closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
