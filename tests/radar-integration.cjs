@@ -3237,6 +3237,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r238File),'utf8');
       assert.ok(txt.includes('1,940.00')&&txt.includes('3,800.00')&&txt.includes('5,740.00')&&txt.includes('145.00')&&txt.includes('350.00')&&txt.includes('495.00')&&txt.includes('5,245.00')&&txt.includes('91.38%')&&txt.includes('not_measured'),r238File+': contains exact 11-14 R55 CoworkOS+wb-exec closed-form parameters');
     }
+    // 2026-11-14 Night Round 56 (R239: AkaraChen/cc-remote + Bil0000/Hill-Climb) verification
+    const r239PathA=1650.00+36.0*95.00;
+    assert.equal(r239PathA.toFixed(2),'5070.00','11-14 R56 Path A total');
+    const r239PathC=90.00+3.5*95.00;
+    assert.equal(r239PathC.toFixed(2),'422.50','11-14 R56 Path C total');
+    assert.equal((r239PathA-r239PathC).toFixed(2),'4647.50','11-14 R56 savings vs Path A');
+    assert.equal(((r239PathA-r239PathC)/r239PathA*100).toFixed(2),'91.67','11-14 R56 pct savings vs Path A');
+    for(const r239File of ['workshops/github-trending-radar/docs/cc-remote-hill-climb-remote-ssh-local-tool-acp-locked-benchmark-atomic-climb-selection-faq.md','workshops/github-trending-radar/docs/cc-remote-hill-climb-remote-ssh-local-tool-acp-locked-benchmark-atomic-climb-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r56-ccremote-hillclimb.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r239File),'utf8');
+      assert.ok(txt.includes('1,650.00')&&txt.includes('3,420.00')&&txt.includes('5,070.00')&&txt.includes('90.00')&&txt.includes('332.50')&&txt.includes('422.50')&&txt.includes('4,647.50')&&txt.includes('91.67%')&&txt.includes('not_measured'),r239File+': contains exact 11-14 R56 cc-remote+Hill-Climb closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
