@@ -3446,6 +3446,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r257File),'utf8');
       assert.ok(txt.includes('1,620.00')&&txt.includes('3,515.00')&&txt.includes('5,135.00')&&txt.includes('90.00')&&txt.includes('332.50')&&txt.includes('422.50')&&txt.includes('4,712.50')&&txt.includes('91.77%')&&txt.includes('not_measured'),r257File+': contains exact 11-14 R74 learnharness+teachable-figures closed-form parameters');
     }
+    // 2026-11-14 Night Round 75 (R258: reason-machines/reason-network + Bearisbug/imbo) verification
+    const r258PathA=1680.00+38.0*95.00;
+    assert.equal(r258PathA.toFixed(2),'5290.00','11-14 R75 Path A total');
+    const r258PathC=90.00+3.5*95.00;
+    assert.equal(r258PathC.toFixed(2),'422.50','11-14 R75 Path C total');
+    assert.equal((r258PathA-r258PathC).toFixed(2),'4867.50','11-14 R75 savings vs Path A');
+    assert.equal(((r258PathA-r258PathC)/r258PathA*100).toFixed(2),'92.01','11-14 R75 pct savings vs Path A');
+    for(const r258File of ['workshops/github-trending-radar/docs/reason-network-imbo-e2ee-p2p-team-agent-mesh-mid-turn-wake-instant-messaging-selection-faq.md','workshops/github-trending-radar/docs/reason-network-imbo-e2ee-p2p-team-agent-mesh-mid-turn-wake-instant-messaging-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r75-reasonnetwork-imbo.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r258File),'utf8');
+      assert.ok(txt.includes('1,680.00')&&txt.includes('3,610.00')&&txt.includes('5,290.00')&&txt.includes('90.00')&&txt.includes('332.50')&&txt.includes('422.50')&&txt.includes('4,867.50')&&txt.includes('92.01%')&&txt.includes('not_measured'),r258File+': contains exact 11-14 R75 reason-network+imbo closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
