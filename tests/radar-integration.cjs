@@ -3190,6 +3190,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r235File),'utf8');
       assert.ok(txt.includes('1,800.00')&&txt.includes('3,800.00')&&txt.includes('5,600.00')&&txt.includes('130.00')&&txt.includes('350.00')&&txt.includes('480.00')&&txt.includes('5,120.00')&&txt.includes('91.43%')&&txt.includes('not_measured'),r235File+': contains exact 11-14 R52 WQGuard+astra-ds closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 53 (R236: localtonet/elio + dopeytree/birdsong) verification
+    const r236PathA=1510.00+36.0*95.00;
+    assert.equal(r236PathA.toFixed(2),'4930.00','11-14 R53 Path A total');
+    const r236PathC=80.00+3.5*95.00;
+    assert.equal(r236PathC.toFixed(2),'412.50','11-14 R53 Path C total');
+    assert.equal((r236PathA-r236PathC).toFixed(2),'4517.50','11-14 R53 savings vs Path A');
+    assert.equal(((r236PathA-r236PathC)/r236PathA*100).toFixed(2),'91.63','11-14 R53 pct savings vs Path A');
+    for(const r236File of ['workshops/github-trending-radar/docs/elio-birdsong-libghostty-skia-5os-e2ee-ssh-terminal-birdnet-go-1800s-plate-visualizer-selection-faq.md','workshops/github-trending-radar/docs/elio-birdsong-libghostty-skia-5os-e2ee-ssh-terminal-birdnet-go-1800s-plate-visualizer-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r53-elio-birdsong.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r236File),'utf8');
+      assert.ok(txt.includes('1,510.00')&&txt.includes('3,420.00')&&txt.includes('4,930.00')&&txt.includes('80.00')&&txt.includes('332.50')&&txt.includes('412.50')&&txt.includes('4,517.50')&&txt.includes('91.63%')&&txt.includes('not_measured'),r236File+': contains exact 11-14 R53 elio+birdsong closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
