@@ -2992,6 +2992,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r217File),'utf8');
       assert.ok(txt.includes('1,880.00')&&txt.includes('3,800.00')&&txt.includes('5,680.00')&&txt.includes('140.00')&&txt.includes('350.00')&&txt.includes('490.00')&&txt.includes('5,190.00')&&txt.includes('91.37%')&&txt.includes('not_measured'),r217File+': contains exact 11-14 R34 blackhole+mightyCode closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 35 (R218: ChetasLua/crimson-loong + av/safe-sand) verification
+    const r218PathA=1540.00+36.0*95.00;
+    assert.equal(r218PathA.toFixed(2),'4960.00','11-14 R35 Path A total');
+    const r218PathC=75.00+3.5*95.00;
+    assert.equal(r218PathC.toFixed(2),'407.50','11-14 R35 Path C total');
+    assert.equal((r218PathA-r218PathC).toFixed(2),'4552.50','11-14 R35 savings vs Path A');
+    assert.equal(((r218PathA-r218PathC)/r218PathA*100).toFixed(2),'91.78','11-14 R35 pct savings vs Path A');
+    for(const r218File of ['workshops/github-trending-radar/docs/crimson-loong-safe-sand-zero-asset-single-html-threejs-film-460k-grain-webgl2-sand-physics-selection-faq.md','workshops/github-trending-radar/docs/crimson-loong-safe-sand-zero-asset-single-html-threejs-film-460k-grain-webgl2-sand-physics-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r35-crimson-loong-safe-sand.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r218File),'utf8');
+      assert.ok(txt.includes('1,540.00')&&txt.includes('3,420.00')&&txt.includes('4,960.00')&&txt.includes('75.00')&&txt.includes('332.50')&&txt.includes('407.50')&&txt.includes('4,552.50')&&txt.includes('91.78%')&&txt.includes('not_measured'),r218File+': contains exact 11-14 R35 crimson-loong+safe-sand closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
