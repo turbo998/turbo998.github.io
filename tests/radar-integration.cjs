@@ -2772,6 +2772,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r197File),'utf8');
       assert.ok(txt.includes('1,920.00')&&txt.includes('4,180.00')&&txt.includes('6,100.00')&&txt.includes('140.00')&&txt.includes('385.00')&&txt.includes('525.00')&&txt.includes('5,575.00')&&txt.includes('91.39%')&&txt.includes('not_measured'),r197File+': contains exact 11-14 R14 flyover-scrub+iOS-NOIR closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 15 (R198: neondeex/atlas-filemanager + Future-Proof-DS/interactive-ai-ml-tools) verification
+    const r198PathA=1480.00+36.0*95.00;
+    assert.equal(r198PathA.toFixed(2),'4900.00','11-14 R15 Path A total');
+    const r198PathC=105.00+3.5*95.00;
+    assert.equal(r198PathC.toFixed(2),'437.50','11-14 R15 Path C total');
+    assert.equal((r198PathA-r198PathC).toFixed(2),'4462.50','11-14 R15 savings vs Path A');
+    assert.equal(((r198PathA-r198PathC)/r198PathA*100).toFixed(2),'91.07','11-14 R15 pct savings vs Path A');
+    for(const r198File of ['workshops/github-trending-radar/docs/atlas-filemanager-interactive-ai-ml-tools-rust-gpui-filemanager-mlops-agentic-eval-simulators-selection-faq.md','workshops/github-trending-radar/docs/atlas-filemanager-interactive-ai-ml-tools-rust-gpui-filemanager-mlops-agentic-eval-simulators-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r15-atlas-interactive-ml-tools.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r198File),'utf8');
+      assert.ok(txt.includes('1,480.00')&&txt.includes('3,420.00')&&txt.includes('4,900.00')&&txt.includes('105.00')&&txt.includes('332.50')&&txt.includes('437.50')&&txt.includes('4,462.50')&&txt.includes('91.07%')&&txt.includes('not_measured'),r198File+': contains exact 11-14 R15 Atlas+interactive-ai-ml-tools closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
