@@ -3135,6 +3135,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r230File),'utf8');
       assert.ok(txt.includes('1,890.00')&&txt.includes('3,800.00')&&txt.includes('5,690.00')&&txt.includes('140.00')&&txt.includes('350.00')&&txt.includes('490.00')&&txt.includes('5,200.00')&&txt.includes('91.39%')&&txt.includes('not_measured'),r230File+': contains exact 11-14 R47 hermes-whiteboard+isometric-cities closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 48 (R231: mileson/chaojifeng-video-content-creator + ZiChuanLan/freebie-radar) verification
+    const r231PathA=1580.00+36.0*95.00;
+    assert.equal(r231PathA.toFixed(2),'5000.00','11-14 R48 Path A total');
+    const r231PathC=95.00+3.5*95.00;
+    assert.equal(r231PathC.toFixed(2),'427.50','11-14 R48 Path C total');
+    assert.equal((r231PathA-r231PathC).toFixed(2),'4572.50','11-14 R48 savings vs Path A');
+    assert.equal(((r231PathA-r231PathC)/r231PathA*100).toFixed(2),'91.45','11-14 R48 pct savings vs Path A');
+    for(const r231File of ['workshops/github-trending-radar/docs/chaojifeng-video-creator-freebie-radar-148gsap-video-skill-57source-ai-triage-radar-selection-faq.md','workshops/github-trending-radar/docs/chaojifeng-video-creator-freebie-radar-148gsap-video-skill-57source-ai-triage-radar-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r48-chaojifeng-freebie-radar.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r231File),'utf8');
+      assert.ok(txt.includes('1,580.00')&&txt.includes('3,420.00')&&txt.includes('5,000.00')&&txt.includes('95.00')&&txt.includes('332.50')&&txt.includes('427.50')&&txt.includes('4,572.50')&&txt.includes('91.45%')&&txt.includes('not_measured'),r231File+': contains exact 11-14 R48 chaojifeng+freebie-radar closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
