@@ -2662,6 +2662,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r187File),'utf8');
       assert.ok(txt.includes('1,960.00')&&txt.includes('3,990.00')&&txt.includes('5,950.00')&&txt.includes('165.00')&&txt.includes('367.50')&&txt.includes('532.50')&&txt.includes('5,417.50')&&txt.includes('91.05%')&&txt.includes('not_measured'),r187File+': contains exact 11-14 R4 winc+solv3r closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 5 (R188: hyperionaidev/smolmaxxing + fuyichen0725/blinkmimic) verification
+    const r188PathA=2180.00+36.0*105.00;
+    assert.equal(r188PathA.toFixed(2),'5960.00','11-14 R5 Path A total');
+    const r188PathC=145.00+3.5*105.00;
+    assert.equal(r188PathC.toFixed(2),'512.50','11-14 R5 Path C total');
+    assert.equal((r188PathA-r188PathC).toFixed(2),'5447.50','11-14 R5 savings vs Path A');
+    assert.equal(((r188PathA-r188PathC)/r188PathA*100).toFixed(2),'91.40','11-14 R5 pct savings vs Path A');
+    for(const r188File of ['workshops/github-trending-radar/docs/smolmaxxing-blinkmimic-1gb-ram-16b-phone-80b-flash-llm-3min-g1-motion-tracking-selection-faq.md','workshops/github-trending-radar/docs/smolmaxxing-blinkmimic-1gb-ram-16b-phone-80b-flash-llm-3min-g1-motion-tracking-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r5-smolmaxxing-blinkmimic.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r188File),'utf8');
+      assert.ok(txt.includes('2,180.00')&&txt.includes('3,780.00')&&txt.includes('5,960.00')&&txt.includes('145.00')&&txt.includes('367.50')&&txt.includes('512.50')&&txt.includes('5,447.50')&&txt.includes('91.40%')&&txt.includes('not_measured'),r188File+': contains exact 11-14 R5 smolmaxxing+blinkmimic closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
