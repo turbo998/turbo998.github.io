@@ -3743,6 +3743,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r284File),'utf8');
       assert.ok(txt.includes('1,820.00')&&txt.includes('3,705.00')&&txt.includes('5,525.00')&&txt.includes('90.00')&&txt.includes('332.50')&&txt.includes('422.50')&&txt.includes('5,102.50')&&txt.includes('92.35%')&&txt.includes('not_measured'),r284File+': contains exact 11-14 R101 coop-anything+genex-desktop closed-form parameters');
     }
+    // 2026-11-14 Night Round 102 (R285: konlu/story-studio + mileson/chaojifeng-video-design) verification
+    const r285PathA=1760.00+38.0*95.00;
+    assert.equal(r285PathA.toFixed(2),'5370.00','11-14 R102 Path A total');
+    const r285PathC=85.00+3.5*95.00;
+    assert.equal(r285PathC.toFixed(2),'417.50','11-14 R102 Path C total');
+    assert.equal((r285PathA-r285PathC).toFixed(2),'4952.50','11-14 R102 savings vs Path A');
+    assert.equal(((r285PathA-r285PathC)/r285PathA*100).toFixed(2),'92.23','11-14 R102 pct savings vs Path A');
+    for(const r285File of ['workshops/github-trending-radar/docs/story-studio-chaojifeng-video-design-jianying-draft-sherpa-onnx-59-film-styles-selection-faq.md','workshops/github-trending-radar/docs/story-studio-chaojifeng-video-design-jianying-draft-sherpa-onnx-59-film-styles-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r102-storystudio-chaojifengvideo.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r285File),'utf8');
+      assert.ok(txt.includes('1,760.00')&&txt.includes('3,610.00')&&txt.includes('5,370.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('4,952.50')&&txt.includes('92.23%')&&txt.includes('not_measured'),r285File+': contains exact 11-14 R102 story-studio+chaojifeng-video-design closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
