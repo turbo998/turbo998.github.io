@@ -2970,6 +2970,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r215File),'utf8');
       assert.ok(txt.includes('1,590.00')&&txt.includes('3,420.00')&&txt.includes('5,010.00')&&txt.includes('105.00')&&txt.includes('332.50')&&txt.includes('437.50')&&txt.includes('4,572.50')&&txt.includes('91.27%')&&txt.includes('not_measured'),r215File+': contains exact 11-14 R32 vinyl+xuehui-shortvideo-skill closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 33 (R216: magnuslab-sudo/Orwell + gabrielbuzziv/emissor-nfse-nacional) verification
+    const r216PathA=1640.00+36.0*95.00;
+    assert.equal(r216PathA.toFixed(2),'5060.00','11-14 R33 Path A total');
+    const r216PathC=85.00+3.5*95.00;
+    assert.equal(r216PathC.toFixed(2),'417.50','11-14 R33 Path C total');
+    assert.equal((r216PathA-r216PathC).toFixed(2),'4642.50','11-14 R33 savings vs Path A');
+    assert.equal(((r216PathA-r216PathC)/r216PathA*100).toFixed(2),'91.75','11-14 R33 pct savings vs Path A');
+    for(const r216File of ['workshops/github-trending-radar/docs/orwell-emissor-nfse-nacional-zero-metadata-e2ee-community-webrtc-cloudflare-idempotent-tax-issuer-selection-faq.md','workshops/github-trending-radar/docs/orwell-emissor-nfse-nacional-zero-metadata-e2ee-community-webrtc-cloudflare-idempotent-tax-issuer-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r33-orwell-nfse.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r216File),'utf8');
+      assert.ok(txt.includes('1,640.00')&&txt.includes('3,420.00')&&txt.includes('5,060.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('4,642.50')&&txt.includes('91.75%')&&txt.includes('not_measured'),r216File+': contains exact 11-14 R33 Orwell+emissor-nfse-nacional closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
