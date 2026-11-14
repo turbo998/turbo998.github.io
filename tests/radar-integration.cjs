@@ -3765,6 +3765,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r286File),'utf8');
       assert.ok(txt.includes('1,740.00')&&txt.includes('3,562.50')&&txt.includes('5,302.50')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('4,885.00')&&txt.includes('92.13%')&&txt.includes('not_measured'),r286File+': contains exact 11-14 R103 ai-startup-skills+be-ambitious closed-form parameters');
     }
+    // 2026-11-14 Night Round 104 (R287: rudy-io/moli-os + fzn0x/idx) verification
+    const r287PathA=1720.00+37.0*95.00;
+    assert.equal(r287PathA.toFixed(2),'5235.00','11-14 R104 Path A total');
+    const r287PathC=80.00+3.5*95.00;
+    assert.equal(r287PathC.toFixed(2),'412.50','11-14 R104 Path C total');
+    assert.equal((r287PathA-r287PathC).toFixed(2),'4822.50','11-14 R104 savings vs Path A');
+    assert.equal(((r287PathA-r287PathC)/r287PathA*100).toFixed(2),'92.12','11-14 R104 pct savings vs Path A');
+    for(const r287File of ['workshops/github-trending-radar/docs/moli-os-idx-rust-6mib-agent-home-automation-mcp-keyless-stock-market-cli-mcp-selection-faq.md','workshops/github-trending-radar/docs/moli-os-idx-rust-6mib-agent-home-automation-mcp-keyless-stock-market-cli-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r104-molios-idx.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r287File),'utf8');
+      assert.ok(txt.includes('1,720.00')&&txt.includes('3,515.00')&&txt.includes('5,235.00')&&txt.includes('80.00')&&txt.includes('332.50')&&txt.includes('412.50')&&txt.includes('4,822.50')&&txt.includes('92.12%')&&txt.includes('not_measured'),r287File+': contains exact 11-14 R104 moli-os+idx closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
