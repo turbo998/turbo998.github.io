@@ -3875,6 +3875,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r296File),'utf8');
       assert.ok(txt.includes('1,830.00')&&txt.includes('3,657.50')&&txt.includes('5,487.50')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('5,070.00')&&txt.includes('92.39%')&&txt.includes('not_measured'),r296File+': contains exact 11-14 R113 openfilm+manimgx closed-form parameters');
     }
+    // 2026-11-14 Night Round 114 (R297: Jakeschincariol/replica-skill + Jakeschincariol/founder-skill) verification
+    const r297PathA=1850.00+39.0*95.00;
+    assert.equal(r297PathA.toFixed(2),'5555.00','11-14 R114 Path A total');
+    const r297PathC=85.00+3.5*95.00;
+    assert.equal(r297PathC.toFixed(2),'417.50','11-14 R114 Path C total');
+    assert.equal((r297PathA-r297PathC).toFixed(2),'5137.50','11-14 R114 savings vs Path A');
+    assert.equal(((r297PathA-r297PathC)/r297PathA*100).toFixed(2),'92.48','11-14 R114 pct savings vs Path A');
+    for(const r297File of ['workshops/github-trending-radar/docs/replica-skill-founder-skill-11-stage-clean-room-app-clone-100-buyer-agent-board-selection-faq.md','workshops/github-trending-radar/docs/replica-skill-founder-skill-11-stage-clean-room-app-clone-100-buyer-agent-board-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r114-replicaskill-founderskill.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r297File),'utf8');
+      assert.ok(txt.includes('1,850.00')&&txt.includes('3,705.00')&&txt.includes('5,555.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('5,137.50')&&txt.includes('92.48%')&&txt.includes('not_measured'),r297File+': contains exact 11-14 R114 replica-skill+founder-skill closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
