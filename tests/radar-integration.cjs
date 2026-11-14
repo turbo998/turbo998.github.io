@@ -3347,6 +3347,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r248File),'utf8');
       assert.ok(txt.includes('1,880.00')&&txt.includes('3,800.00')&&txt.includes('5,680.00')&&txt.includes('140.00')&&txt.includes('350.00')&&txt.includes('490.00')&&txt.includes('5,190.00')&&txt.includes('91.37%')&&txt.includes('not_measured'),r248File+': contains exact 11-14 R65 spared+target-reconciliation-service closed-form parameters');
     }
+    // 2026-11-14 Night Round 66 (R249: nocodehack/make-short + brewed-ops/talking-explainer) verification
+    const r249PathA=1640.00+36.0*95.00;
+    assert.equal(r249PathA.toFixed(2),'5060.00','11-14 R66 Path A total');
+    const r249PathC=90.00+3.5*95.00;
+    assert.equal(r249PathC.toFixed(2),'422.50','11-14 R66 Path C total');
+    assert.equal((r249PathA-r249PathC).toFixed(2),'4637.50','11-14 R66 savings vs Path A');
+    assert.equal(((r249PathA-r249PathC)/r249PathA*100).toFixed(2),'91.65','11-14 R66 pct savings vs Path A');
+    for(const r249File of ['workshops/github-trending-radar/docs/make-short-talking-explainer-fresh-critic-blender-shorts-6mouth-word-timed-explainer-selection-faq.md','workshops/github-trending-radar/docs/make-short-talking-explainer-fresh-critic-blender-shorts-6mouth-word-timed-explainer-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r66-makeshort-talkingexplainer.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r249File),'utf8');
+      assert.ok(txt.includes('1,640.00')&&txt.includes('3,420.00')&&txt.includes('5,060.00')&&txt.includes('90.00')&&txt.includes('332.50')&&txt.includes('422.50')&&txt.includes('4,637.50')&&txt.includes('91.65%')&&txt.includes('not_measured'),r249File+': contains exact 11-14 R66 make-short+talking-explainer closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
