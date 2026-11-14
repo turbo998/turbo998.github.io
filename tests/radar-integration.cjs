@@ -2882,6 +2882,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r207File),'utf8');
       assert.ok(txt.includes('1,520.00')&&txt.includes('3,420.00')&&txt.includes('4,940.00')&&txt.includes('115.00')&&txt.includes('332.50')&&txt.includes('447.50')&&txt.includes('4,492.50')&&txt.includes('90.94%')&&txt.includes('not_measured'),r207File+': contains exact 11-14 R24 misterdownloadmanager+nvzhuang closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 25 (R208: yetone/rewind-for-x + Xin-YuXiao/Awesome-AI-for-Astronomy) verification
+    const r208PathA=1360.00+36.0*95.00;
+    assert.equal(r208PathA.toFixed(2),'4780.00','11-14 R25 Path A total');
+    const r208PathC=85.00+3.5*95.00;
+    assert.equal(r208PathC.toFixed(2),'417.50','11-14 R25 Path C total');
+    assert.equal((r208PathA-r208PathC).toFixed(2),'4362.50','11-14 R25 savings vs Path A');
+    assert.equal(((r208PathA-r208PathC)/r208PathA*100).toFixed(2),'91.27','11-14 R25 pct savings vs Path A');
+    for(const r208File of ['workshops/github-trending-radar/docs/rewind-for-x-awesome-ai-astronomy-local-ocr-x-timeline-rewind-421paper-astroai-skill-selection-faq.md','workshops/github-trending-radar/docs/rewind-for-x-awesome-ai-astronomy-local-ocr-x-timeline-rewind-421paper-astroai-skill-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r25-rewind-for-x-astro-ai.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r208File),'utf8');
+      assert.ok(txt.includes('1,360.00')&&txt.includes('3,420.00')&&txt.includes('4,780.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('4,362.50')&&txt.includes('91.27%')&&txt.includes('not_measured'),r208File+': contains exact 11-14 R25 rewind-for-x+Awesome-AI-for-Astronomy closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
