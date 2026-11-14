@@ -3102,6 +3102,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r227File),'utf8');
       assert.ok(txt.includes('1,420.00')&&txt.includes('3,420.00')&&txt.includes('4,840.00')&&txt.includes('75.00')&&txt.includes('332.50')&&txt.includes('407.50')&&txt.includes('4,432.50')&&txt.includes('91.58%')&&txt.includes('not_measured'),r227File+': contains exact 11-14 R44 konaklamaflow+AstralCodex closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 45 (R228: mit-han-lab/pear + TokenRhythm/InfraRSI) verification
+    const r228PathA=2150.00+38.0*100.00;
+    assert.equal(r228PathA.toFixed(2),'5950.00','11-14 R45 Path A total');
+    const r228PathC=165.00+3.5*100.00;
+    assert.equal(r228PathC.toFixed(2),'515.00','11-14 R45 Path C total');
+    assert.equal((r228PathA-r228PathC).toFixed(2),'5435.00','11-14 R45 savings vs Path A');
+    assert.equal(((r228PathA-r228PathC)/r228PathA*100).toFixed(2),'91.34','11-14 R45 pct savings vs Path A');
+    for(const r228File of ['workshops/github-trending-radar/docs/mit-han-lab-pear-infrarsi-zero-demo-sim-robotic-rl-183x-mfu-recursive-training-infra-selection-faq.md','workshops/github-trending-radar/docs/mit-han-lab-pear-infrarsi-zero-demo-sim-robotic-rl-183x-mfu-recursive-training-infra-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r45-pear-infrarsi.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r228File),'utf8');
+      assert.ok(txt.includes('2,150.00')&&txt.includes('3,800.00')&&txt.includes('5,950.00')&&txt.includes('165.00')&&txt.includes('350.00')&&txt.includes('515.00')&&txt.includes('5,435.00')&&txt.includes('91.34%')&&txt.includes('not_measured'),r228File+': contains exact 11-14 R45 mit-han-lab/pear+InfraRSI closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
