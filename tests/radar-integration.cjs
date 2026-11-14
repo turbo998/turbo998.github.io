@@ -3710,6 +3710,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r281File),'utf8');
       assert.ok(txt.includes('1,850.00')&&txt.includes('3,705.00')&&txt.includes('5,555.00')&&txt.includes('90.00')&&txt.includes('332.50')&&txt.includes('422.50')&&txt.includes('5,132.50')&&txt.includes('92.39%')&&txt.includes('not_measured'),r281File+': contains exact 11-14 R98 huashu-motion+claude-video-effects closed-form parameters');
     }
+    // 2026-11-14 Night Round 99 (R282: outcrawlai/scout + jackwener/Kaze) verification
+    const r282PathA=1780.00+38.0*95.00;
+    assert.equal(r282PathA.toFixed(2),'5390.00','11-14 R99 Path A total');
+    const r282PathC=85.00+3.5*95.00;
+    assert.equal(r282PathC.toFixed(2),'417.50','11-14 R99 Path C total');
+    assert.equal((r282PathA-r282PathC).toFixed(2),'4972.50','11-14 R99 savings vs Path A');
+    assert.equal(((r282PathA-r282PathC)/r282PathA*100).toFixed(2),'92.25','11-14 R99 pct savings vs Path A');
+    for(const r282File of ['workshops/github-trending-radar/docs/outcrawl-scout-kaze-cloud-replay-browser-agent-signed-in-tab-group-mcp-browser-selection-faq.md','workshops/github-trending-radar/docs/outcrawl-scout-kaze-cloud-replay-browser-agent-signed-in-tab-group-mcp-browser-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r99-outcrawlscout-kaze.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r282File),'utf8');
+      assert.ok(txt.includes('1,780.00')&&txt.includes('3,610.00')&&txt.includes('5,390.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('4,972.50')&&txt.includes('92.25%')&&txt.includes('not_measured'),r282File+': contains exact 11-14 R99 outcrawl-scout+kaze closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
