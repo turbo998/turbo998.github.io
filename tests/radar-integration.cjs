@@ -3058,6 +3058,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r223File),'utf8');
       assert.ok(txt.includes('1,920.00')&&txt.includes('3,800.00')&&txt.includes('5,720.00')&&txt.includes('145.00')&&txt.includes('350.00')&&txt.includes('495.00')&&txt.includes('5,225.00')&&txt.includes('91.35%')&&txt.includes('not_measured'),r223File+': contains exact 11-14 R40 DeskVoice+busy closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 41 (R224: CapriChooms/CapriCore + herrbimmer/IDEmu) verification
+    const r224PathA=1860.00+38.0*100.00;
+    assert.equal(r224PathA.toFixed(2),'5660.00','11-14 R41 Path A total');
+    const r224PathC=135.00+3.5*100.00;
+    assert.equal(r224PathC.toFixed(2),'485.00','11-14 R41 Path C total');
+    assert.equal((r224PathA-r224PathC).toFixed(2),'5175.00','11-14 R41 savings vs Path A');
+    assert.equal(((r224PathA-r224PathC)/r224PathA*100).toFixed(2),'91.43','11-14 R41 pct savings vs Path A');
+    for(const r224File of ['workshops/github-trending-radar/docs/capricore-idemu-openclaw-windows-desktop-companion-qemu-idrive-qnx-linux-emulator-selection-faq.md','workshops/github-trending-radar/docs/capricore-idemu-openclaw-windows-desktop-companion-qemu-idrive-qnx-linux-emulator-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r41-capricore-idemu.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r224File),'utf8');
+      assert.ok(txt.includes('1,860.00')&&txt.includes('3,800.00')&&txt.includes('5,660.00')&&txt.includes('135.00')&&txt.includes('350.00')&&txt.includes('485.00')&&txt.includes('5,175.00')&&txt.includes('91.43%')&&txt.includes('not_measured'),r224File+': contains exact 11-14 R41 CapriCore+IDEmu closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
