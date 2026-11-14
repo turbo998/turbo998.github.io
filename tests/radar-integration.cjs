@@ -3281,6 +3281,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r242File),'utf8');
       assert.ok(txt.includes('2,240.00')&&txt.includes('3,990.00')&&txt.includes('6,230.00')&&txt.includes('165.00')&&txt.includes('367.50')&&txt.includes('532.50')&&txt.includes('5,697.50')&&txt.includes('91.45%')&&txt.includes('not_measured'),r242File+': contains exact 11-14 R59 NorthCUA+claude-hardware-in-the-loop closed-form parameters');
     }
+    // 2026-11-14 Night Round 60 (R243: sinabs/spring-agent-scope + alpcanaydin/rexmod) verification
+    const r243PathA=1780.00+38.0*100.00;
+    assert.equal(r243PathA.toFixed(2),'5580.00','11-14 R60 Path A total');
+    const r243PathC=130.00+3.5*100.00;
+    assert.equal(r243PathC.toFixed(2),'480.00','11-14 R60 Path C total');
+    assert.equal((r243PathA-r243PathC).toFixed(2),'5100.00','11-14 R60 savings vs Path A');
+    assert.equal(((r243PathA-r243PathC)/r243PathA*100).toFixed(2),'91.40','11-14 R60 pct savings vs Path A');
+    for(const r243File of ['workshops/github-trending-radar/docs/spring-agent-scope-rexmod-jdk25-ephemeral-agent-harness-5cli-neovim-review-loop-selection-faq.md','workshops/github-trending-radar/docs/spring-agent-scope-rexmod-jdk25-ephemeral-agent-harness-5cli-neovim-review-loop-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r60-springagentscope-rexmod.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r243File),'utf8');
+      assert.ok(txt.includes('1,780.00')&&txt.includes('3,800.00')&&txt.includes('5,580.00')&&txt.includes('130.00')&&txt.includes('350.00')&&txt.includes('480.00')&&txt.includes('5,100.00')&&txt.includes('91.40%')&&txt.includes('not_measured'),r243File+': contains exact 11-14 R60 spring-agent-scope+rexmod closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
