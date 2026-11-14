@@ -3897,6 +3897,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r298File),'utf8');
       assert.ok(txt.includes('1,820.00')&&txt.includes('3,657.50')&&txt.includes('5,477.50')&&txt.includes('80.00')&&txt.includes('332.50')&&txt.includes('412.50')&&txt.includes('5,065.00')&&txt.includes('92.47%')&&txt.includes('not_measured'),r298File+': contains exact 11-14 R115 huashu-art-motion+answer-me-with-html closed-form parameters');
     }
+    // 2026-11-14 Night Round 116 (R299: shinshin86/mesh-avatar-studio + UnderleveledBuilder/awesome-short-drama-skills) verification
+    const r299PathA=1810.00+38.0*95.00;
+    assert.equal(r299PathA.toFixed(2),'5420.00','11-14 R116 Path A total');
+    const r299PathC=85.00+3.5*95.00;
+    assert.equal(r299PathC.toFixed(2),'417.50','11-14 R116 Path C total');
+    assert.equal((r299PathA-r299PathC).toFixed(2),'5002.50','11-14 R116 savings vs Path A');
+    assert.equal(((r299PathA-r299PathC)/r299PathA*100).toFixed(2),'92.30','11-14 R116 pct savings vs Path A');
+    for(const r299File of ['workshops/github-trending-radar/docs/mesh-avatar-studio-awesome-short-drama-skills-2d-mesh-rigging-agent-86-benchmarked-drama-skills-selection-faq.md','workshops/github-trending-radar/docs/mesh-avatar-studio-awesome-short-drama-skills-2d-mesh-rigging-agent-86-benchmarked-drama-skills-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r116-meshavatar-shortdramaskills.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r299File),'utf8');
+      assert.ok(txt.includes('1,810.00')&&txt.includes('3,610.00')&&txt.includes('5,420.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('5,002.50')&&txt.includes('92.30%')&&txt.includes('not_measured'),r299File+': contains exact 11-14 R116 mesh-avatar-studio+awesome-short-drama-skills closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
