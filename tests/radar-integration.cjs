@@ -2893,6 +2893,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r208File),'utf8');
       assert.ok(txt.includes('1,360.00')&&txt.includes('3,420.00')&&txt.includes('4,780.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('4,362.50')&&txt.includes('91.27%')&&txt.includes('not_measured'),r208File+': contains exact 11-14 R25 rewind-for-x+Awesome-AI-for-Astronomy closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 26 (R209: GiroCrab/GiroCrab + DevedevT/FFmpeg-GUI-Editor-Windows) verification
+    const r209PathA=1440.00+36.0*95.00;
+    assert.equal(r209PathA.toFixed(2),'4860.00','11-14 R26 Path A total');
+    const r209PathC=95.00+3.5*95.00;
+    assert.equal(r209PathC.toFixed(2),'427.50','11-14 R26 Path C total');
+    assert.equal((r209PathA-r209PathC).toFixed(2),'4432.50','11-14 R26 savings vs Path A');
+    assert.equal(((r209PathA-r209PathC)/r209PathA*100).toFixed(2),'91.20','11-14 R26 pct savings vs Path A');
+    for(const r209File of ['workshops/github-trending-radar/docs/girocrab-ffmpeg-gui-editor-windows-rust-swiftui-sqlcipher-fints-vault-portable-lossless-video-trimmer-selection-faq.md','workshops/github-trending-radar/docs/girocrab-ffmpeg-gui-editor-windows-rust-swiftui-sqlcipher-fints-vault-portable-lossless-video-trimmer-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r26-girocrab-ffmpeg-gui.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r209File),'utf8');
+      assert.ok(txt.includes('1,440.00')&&txt.includes('3,420.00')&&txt.includes('4,860.00')&&txt.includes('95.00')&&txt.includes('332.50')&&txt.includes('427.50')&&txt.includes('4,432.50')&&txt.includes('91.20%')&&txt.includes('not_measured'),r209File+': contains exact 11-14 R26 GiroCrab+FFmpeg-GUI-Editor closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
