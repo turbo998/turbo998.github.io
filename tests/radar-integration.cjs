@@ -2739,6 +2739,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r194File),'utf8');
       assert.ok(txt.includes('1,840.00')&&txt.includes('3,800.00')&&txt.includes('5,640.00')&&txt.includes('145.00')&&txt.includes('350.00')&&txt.includes('495.00')&&txt.includes('5,145.00')&&txt.includes('91.22%')&&txt.includes('not_measured'),r194File+': contains exact 11-14 R11 OpenAmika+dsh-game-studio closed-form parameters');
     }
+    // 2026-11-14 Daytime Round 12 (R195: imraywang/ray-sticker-shop + starman-tech/mousepods) verification
+    const r195PathA=1620.00+36.0*95.00;
+    assert.equal(r195PathA.toFixed(2),'5040.00','11-14 R12 Path A total');
+    const r195PathC=95.00+3.5*95.00;
+    assert.equal(r195PathC.toFixed(2),'427.50','11-14 R12 Path C total');
+    assert.equal((r195PathA-r195PathC).toFixed(2),'4612.50','11-14 R12 savings vs Path A');
+    assert.equal(((r195PathA-r195PathC)/r195PathA*100).toFixed(2),'91.52','11-14 R12 pct savings vs Path A');
+    for(const r195File of ['workshops/github-trending-radar/docs/ray-sticker-shop-mousepods-70cent-wechat-sticker-pack-skill-airpods3-remotehid-linux-head-tracker-selection-faq.md','workshops/github-trending-radar/docs/ray-sticker-shop-mousepods-70cent-wechat-sticker-pack-skill-airpods3-remotehid-linux-head-tracker-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r12-sticker-shop-mousepods.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r195File),'utf8');
+      assert.ok(txt.includes('1,620.00')&&txt.includes('3,420.00')&&txt.includes('5,040.00')&&txt.includes('95.00')&&txt.includes('332.50')&&txt.includes('427.50')&&txt.includes('4,612.50')&&txt.includes('91.52%')&&txt.includes('not_measured'),r195File+': contains exact 11-14 R12 ray-sticker-shop+mousepods closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
