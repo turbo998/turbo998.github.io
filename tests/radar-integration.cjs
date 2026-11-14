@@ -3468,6 +3468,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r259File),'utf8');
       assert.ok(txt.includes('1,940.00')&&txt.includes('3,610.00')&&txt.includes('5,550.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('5,132.50')&&txt.includes('92.48%')&&txt.includes('not_measured'),r259File+': contains exact 11-14 R76 RustXNG+fatsearch closed-form parameters');
     }
+    // 2026-11-14 Night Round 77 (R260 Milestone: strands-agents/box + joydle/borg) verification
+    const r260PathA=1780.00+39.0*95.00;
+    assert.equal(r260PathA.toFixed(2),'5485.00','11-14 R77 Path A total');
+    const r260PathC=95.00+3.5*95.00;
+    assert.equal(r260PathC.toFixed(2),'427.50','11-14 R77 Path C total');
+    assert.equal((r260PathA-r260PathC).toFixed(2),'5057.50','11-14 R77 savings vs Path A');
+    assert.equal(((r260PathA-r260PathC)/r260PathA*100).toFixed(2),'92.21','11-14 R77 pct savings vs Path A');
+    for(const r260File of ['workshops/github-trending-radar/docs/strands-box-borg-dogwood-temporal-os-sandbox-supervised-rust-agent-pipeline-runtime-selection-faq.md','workshops/github-trending-radar/docs/strands-box-borg-dogwood-temporal-os-sandbox-supervised-rust-agent-pipeline-runtime-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r77-strandsbox-borg.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r260File),'utf8');
+      assert.ok(txt.includes('1,780.00')&&txt.includes('3,705.00')&&txt.includes('5,485.00')&&txt.includes('95.00')&&txt.includes('332.50')&&txt.includes('427.50')&&txt.includes('5,057.50')&&txt.includes('92.21%')&&txt.includes('not_measured'),r260File+': contains exact 11-14 R77 strands-box+borg closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
