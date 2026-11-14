@@ -3578,6 +3578,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r269File),'utf8');
       assert.ok(txt.includes('1,810.00')&&txt.includes('3,705.00')&&txt.includes('5,515.00')&&txt.includes('95.00')&&txt.includes('332.50')&&txt.includes('427.50')&&txt.includes('5,087.50')&&txt.includes('92.25%')&&txt.includes('not_measured'),r269File+': contains exact 11-14 R86 modus+KnowWork closed-form parameters');
     }
+    // 2026-11-14 Night Round 87 (R270 Milestone: LumaryLabsLLC/muxin + julianosig/easi.run) verification
+    const r270PathA=1820.00+38.0*95.00;
+    assert.equal(r270PathA.toFixed(2),'5430.00','11-14 R87 Path A total');
+    const r270PathC=90.00+3.5*95.00;
+    assert.equal(r270PathC.toFixed(2),'422.50','11-14 R87 Path C total');
+    assert.equal((r270PathA-r270PathC).toFixed(2),'5007.50','11-14 R87 savings vs Path A');
+    assert.equal(((r270PathA-r270PathC)/r270PathA*100).toFixed(2),'92.22','11-14 R87 pct savings vs Path A');
+    for(const r270File of ['workshops/github-trending-radar/docs/muxin-easi-run-multi-machine-agent-workspace-hub-self-hosted-chrome-human-takeover-mcp-selection-faq.md','workshops/github-trending-radar/docs/muxin-easi-run-multi-machine-agent-workspace-hub-self-hosted-chrome-human-takeover-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r87-muxin-easirun.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r270File),'utf8');
+      assert.ok(txt.includes('1,820.00')&&txt.includes('3,610.00')&&txt.includes('5,430.00')&&txt.includes('90.00')&&txt.includes('332.50')&&txt.includes('422.50')&&txt.includes('5,007.50')&&txt.includes('92.22%')&&txt.includes('not_measured'),r270File+': contains exact 11-14 R87 muxin+easi.run closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
