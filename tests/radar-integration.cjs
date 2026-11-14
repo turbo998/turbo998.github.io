@@ -2614,6 +2614,21 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r183File),'utf8');
       assert.ok(txt.includes('1,520.00')&&txt.includes('3,600.00')&&txt.includes('5,120.00')&&txt.includes('140.00')&&txt.includes('350.00')&&txt.includes('490.00')&&txt.includes('4,630.00')&&txt.includes('90.43%')&&txt.includes('not_measured'),r183File+': contains exact 11-13 R55 calibrain+awesome-fable-5.2 closed-form parameters');
     }
+    // 2026-11-14 Raw Evidence SHA-256 & Daytime Round 1 (R184: relatedb/relate + berkantay/gpucanvas) verification
+    const rawHtml1114=fs.readFileSync(path.join(__dirname,'..','workshops','github-trending-radar','evidence','trending-daily-2026-11-14-raw.html'),'utf8').replace(/\r\n/g,'\n');
+    assert.equal(crypto.createHash('sha256').update(rawHtml1114).digest('hex'),'46ea932ff0f84c1970372b2e829adea752d5a43f686eb7ba05aa85560c8c4a77','2026-11-14 raw HTML LF sha256');
+    const rawSearch1114=fs.readFileSync(path.join(__dirname,'..','workshops','github-trending-radar','evidence','search-new-repos-2026-11-14-raw.json'),'utf8').replace(/\r\n/g,'\n');
+    assert.equal(crypto.createHash('sha256').update(rawSearch1114).digest('hex'),'a4edf557e91854831dc80d3670e3e7a1b49c7e9ca14e2e4dd7913489bd7cc2b2','2026-11-14 raw Search JSON LF sha256');
+    const r184PathA=1850.00+38.0*100.00;
+    assert.equal(r184PathA.toFixed(2),'5650.00','11-14 R1 Path A total');
+    const r184PathC=150.00+3.5*100.00;
+    assert.equal(r184PathC.toFixed(2),'500.00','11-14 R1 Path C total');
+    assert.equal((r184PathA-r184PathC).toFixed(2),'5150.00','11-14 R1 savings vs Path A');
+    assert.equal(((r184PathA-r184PathC)/r184PathA*100).toFixed(2),'91.15','11-14 R1 pct savings vs Path A');
+    for(const r184File of ['workshops/github-trending-radar/docs/relate-gpucanvas-embedded-cypher25-graph-db-webgpu-5000-live-dom-canvas-selection-faq.md','workshops/github-trending-radar/docs/relate-gpucanvas-embedded-cypher25-graph-db-webgpu-5000-live-dom-canvas-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r1-relate-gpucanvas.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r184File),'utf8');
+      assert.ok(txt.includes('1,850.00')&&txt.includes('3,800.00')&&txt.includes('5,650.00')&&txt.includes('150.00')&&txt.includes('350.00')&&txt.includes('500.00')&&txt.includes('5,150.00')&&txt.includes('91.15%')&&txt.includes('not_measured'),r184File+': contains exact 11-14 R1 relate+gpucanvas closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
