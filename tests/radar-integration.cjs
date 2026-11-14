@@ -3611,6 +3611,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r272File),'utf8');
       assert.ok(txt.includes('1,890.00')&&txt.includes('3,705.00')&&txt.includes('5,595.00')&&txt.includes('95.00')&&txt.includes('332.50')&&txt.includes('427.50')&&txt.includes('5,167.50')&&txt.includes('92.36%')&&txt.includes('not_measured'),r272File+': contains exact 11-14 R89 killi+rl-env-use closed-form parameters');
     }
+    // 2026-11-14 Night Round 90 (R273: ComputerUseAgent/AutoCua + alibaba/qz-browser-agent) verification
+    const r273PathA=1780.00+38.0*95.00;
+    assert.equal(r273PathA.toFixed(2),'5390.00','11-14 R90 Path A total');
+    const r273PathC=90.00+3.5*95.00;
+    assert.equal(r273PathC.toFixed(2),'422.50','11-14 R90 Path C total');
+    assert.equal((r273PathA-r273PathC).toFixed(2),'4967.50','11-14 R90 savings vs Path A');
+    assert.equal(((r273PathA-r273PathC)/r273PathA*100).toFixed(2),'92.16','11-14 R90 pct savings vs Path A');
+    for(const r273File of ['workshops/github-trending-radar/docs/autocua-qz-browser-agent-6-os-hardware-event-cua-team-alibaba-local-first-signed-in-chrome-mcp-selection-faq.md','workshops/github-trending-radar/docs/autocua-qz-browser-agent-6-os-hardware-event-cua-team-alibaba-local-first-signed-in-chrome-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r90-autocua-qzbrowser.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r273File),'utf8');
+      assert.ok(txt.includes('1,780.00')&&txt.includes('3,610.00')&&txt.includes('5,390.00')&&txt.includes('90.00')&&txt.includes('332.50')&&txt.includes('422.50')&&txt.includes('4,967.50')&&txt.includes('92.16%')&&txt.includes('not_measured'),r273File+': contains exact 11-14 R90 AutoCua+qz-browser-agent closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
