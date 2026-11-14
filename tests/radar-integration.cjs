@@ -3435,6 +3435,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r256File),'utf8');
       assert.ok(txt.includes('1,860.00')&&txt.includes('3,705.00')&&txt.includes('5,565.00')&&txt.includes('95.00')&&txt.includes('332.50')&&txt.includes('427.50')&&txt.includes('5,137.50')&&txt.includes('92.32%')&&txt.includes('not_measured'),r256File+': contains exact 11-14 R73 leanrea+Awesome-REA closed-form parameters');
     }
+    // 2026-11-14 Night Round 74 (R257: amosblomqvist/learnharness + ywEdAi/teachable-figures) verification
+    const r257PathA=1620.00+37.0*95.00;
+    assert.equal(r257PathA.toFixed(2),'5135.00','11-14 R74 Path A total');
+    const r257PathC=90.00+3.5*95.00;
+    assert.equal(r257PathC.toFixed(2),'422.50','11-14 R74 Path C total');
+    assert.equal((r257PathA-r257PathC).toFixed(2),'4712.50','11-14 R74 savings vs Path A');
+    assert.equal(((r257PathA-r257PathC)/r257PathA*100).toFixed(2),'91.77','11-14 R74 pct savings vs Path A');
+    for(const r257File of ['workshops/github-trending-radar/docs/learnharness-teachable-figures-cognitive-knowledge-graph-harness-causal-predict-try-explain-skill-selection-faq.md','workshops/github-trending-radar/docs/learnharness-teachable-figures-cognitive-knowledge-graph-harness-causal-predict-try-explain-skill-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r74-learnharness-teachablefigures.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r257File),'utf8');
+      assert.ok(txt.includes('1,620.00')&&txt.includes('3,515.00')&&txt.includes('5,135.00')&&txt.includes('90.00')&&txt.includes('332.50')&&txt.includes('422.50')&&txt.includes('4,712.50')&&txt.includes('91.77%')&&txt.includes('not_measured'),r257File+': contains exact 11-14 R74 learnharness+teachable-figures closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
