@@ -3391,6 +3391,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r252File),'utf8');
       assert.ok(txt.includes('1,580.00')&&txt.includes('3,420.00')&&txt.includes('5,000.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('4,582.50')&&txt.includes('91.65%')&&txt.includes('not_measured'),r252File+': contains exact 11-14 R69 dojo-video-harness+recurse closed-form parameters');
     }
+    // 2026-11-14 Night Round 70 (R253: dseditor/h3-colab-skill + fantuan-lab/animated-sticker-studio) verification
+    const r253PathA=1680.00+36.0*95.00;
+    assert.equal(r253PathA.toFixed(2),'5100.00','11-14 R70 Path A total');
+    const r253PathC=95.00+3.5*95.00;
+    assert.equal(r253PathC.toFixed(2),'427.50','11-14 R70 Path C total');
+    assert.equal((r253PathA-r253PathC).toFixed(2),'4672.50','11-14 R70 savings vs Path A');
+    assert.equal(((r253PathA-r253PathC)/r253PathA*100).toFixed(2),'91.62','11-14 R70 pct savings vs Path A');
+    for(const r253File of ['workshops/github-trending-radar/docs/h3-colab-skill-animated-sticker-studio-quota-guarded-colab-h3-4sheet-6platform-sticker-pack-selection-faq.md','workshops/github-trending-radar/docs/h3-colab-skill-animated-sticker-studio-quota-guarded-colab-h3-4sheet-6platform-sticker-pack-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r70-h3colab-stickerstudio.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r253File),'utf8');
+      assert.ok(txt.includes('1,680.00')&&txt.includes('3,420.00')&&txt.includes('5,100.00')&&txt.includes('95.00')&&txt.includes('332.50')&&txt.includes('427.50')&&txt.includes('4,672.50')&&txt.includes('91.62%')&&txt.includes('not_measured'),r253File+': contains exact 11-14 R70 h3-colab-skill+animated-sticker-studio closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
