@@ -3523,6 +3523,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r264File),'utf8');
       assert.ok(txt.includes('1,840.00')&&txt.includes('3,610.00')&&txt.includes('5,450.00')&&txt.includes('90.00')&&txt.includes('332.50')&&txt.includes('422.50')&&txt.includes('5,027.50')&&txt.includes('92.25%')&&txt.includes('not_measured'),r264File+': contains exact 11-14 R81 axuse+CodeRail closed-form parameters');
     }
+    // 2026-11-14 Night Round 82 (R265: kanaworksai-hue/audio-studio-mcp + 0xS4N4TG/kinetograph) verification
+    const r265PathA=1720.00+37.0*95.00;
+    assert.equal(r265PathA.toFixed(2),'5235.00','11-14 R82 Path A total');
+    const r265PathC=85.00+3.5*95.00;
+    assert.equal(r265PathC.toFixed(2),'417.50','11-14 R82 Path C total');
+    assert.equal((r265PathA-r265PathC).toFixed(2),'4817.50','11-14 R82 savings vs Path A');
+    assert.equal(((r265PathA-r265PathC)/r265PathA*100).toFixed(2),'92.02','11-14 R82 pct savings vs Path A');
+    for(const r265File of ['workshops/github-trending-radar/docs/audio-studio-mcp-kinetograph-local-stable-audio-3-mcp-browserless-rust-gpu-video-engine-selection-faq.md','workshops/github-trending-radar/docs/audio-studio-mcp-kinetograph-local-stable-audio-3-mcp-browserless-rust-gpu-video-engine-selection-faq.en.md','assets/github-ai-radar-2026-11-14-r82-audiostudiomcp-kinetograph.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-14-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r265File),'utf8');
+      assert.ok(txt.includes('1,720.00')&&txt.includes('3,515.00')&&txt.includes('5,235.00')&&txt.includes('85.00')&&txt.includes('332.50')&&txt.includes('417.50')&&txt.includes('4,817.50')&&txt.includes('92.02%')&&txt.includes('not_measured'),r265File+': contains exact 11-14 R82 audio-studio-mcp+kinetograph closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
