@@ -4443,6 +4443,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r346File),'utf8');
       assert.ok(txt.includes('2,150.00')&&txt.includes('4,100.00')&&txt.includes('6,250.00')&&txt.includes('115.00')&&txt.includes('350.00')&&txt.includes('465.00')&&txt.includes('5,785.00')&&txt.includes('92.56%')&&txt.includes('not_measured'),r346File+': contains exact 11-15 R44 numpilot+alloy closed-form parameters');
     }
+    // 2026-11-15 Night Round 45 (R347: VoxDance-Lab/VoxMel + native-bond-lab/Jev-Interaction) verification
+    const r347PathA=2080.00+40.0*100.00;
+    assert.equal(r347PathA.toFixed(2),'6080.00','11-15 R45 Path A total');
+    const r347PathC=105.00+3.5*100.00;
+    assert.equal(r347PathC.toFixed(2),'455.00','11-15 R45 Path C total');
+    assert.equal((r347PathA-r347PathC).toFixed(2),'5625.00','11-15 R45 savings vs Path A');
+    assert.equal(((r347PathA-r347PathC)/r347PathA*100).toFixed(2),'92.52','11-15 R45 pct savings vs Path A');
+    for(const r347File of ['workshops/github-trending-radar/docs/voxmel-jev-interaction-wavelet-ar-tts-grpo-system1-full-duplex-turn-taking-selection-faq.md','workshops/github-trending-radar/docs/voxmel-jev-interaction-wavelet-ar-tts-grpo-system1-full-duplex-turn-taking-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r45-voxmel-jevinteraction.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r347File),'utf8');
+      assert.ok(txt.includes('2,080.00')&&txt.includes('4,000.00')&&txt.includes('6,080.00')&&txt.includes('105.00')&&txt.includes('350.00')&&txt.includes('455.00')&&txt.includes('5,625.00')&&txt.includes('92.52%')&&txt.includes('not_measured'),r347File+': contains exact 11-15 R45 voxmel+jevinteraction closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
