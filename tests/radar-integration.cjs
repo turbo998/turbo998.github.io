@@ -4245,6 +4245,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r328File),'utf8');
       assert.ok(txt.includes('2,040.00')&&txt.includes('4,000.00')&&txt.includes('6,040.00')&&txt.includes('110.00')&&txt.includes('350.00')&&txt.includes('460.00')&&txt.includes('5,580.00')&&txt.includes('92.38%')&&txt.includes('not_measured'),r328File+': contains exact 11-15 R26 abyssalgarden+roomatdawn closed-form parameters');
     }
+    // 2026-11-15 Night Round 27 (R329: joe2643/qwen3-asr-cantonese-hk + imraywang/openbean) verification
+    const r329PathA=2020.00+40.0*100.00;
+    assert.equal(r329PathA.toFixed(2),'6020.00','11-15 R27 Path A total');
+    const r329PathC=105.00+3.5*100.00;
+    assert.equal(r329PathC.toFixed(2),'455.00','11-15 R27 Path C total');
+    assert.equal((r329PathA-r329PathC).toFixed(2),'5565.00','11-15 R27 savings vs Path A');
+    assert.equal(((r329PathA-r329PathC)/r329PathA*100).toFixed(2),'92.44','11-15 R27 pct savings vs Path A');
+    for(const r329File of ['workshops/github-trending-radar/docs/qwen3-asr-cantonese-hk-openbean-nvfp4-gguf-codeswitch-asr-local-recorder-mcp-selection-faq.md','workshops/github-trending-radar/docs/qwen3-asr-cantonese-hk-openbean-nvfp4-gguf-codeswitch-asr-local-recorder-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r27-qwen3cantonese-openbean.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r329File),'utf8');
+      assert.ok(txt.includes('2,020.00')&&txt.includes('4,000.00')&&txt.includes('6,020.00')&&txt.includes('105.00')&&txt.includes('350.00')&&txt.includes('455.00')&&txt.includes('5,565.00')&&txt.includes('92.44%')&&txt.includes('not_measured'),r329File+': contains exact 11-15 R27 qwen3cantonese+openbean closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
