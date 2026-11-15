@@ -4168,6 +4168,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r321File),'utf8');
       assert.ok(txt.includes('1,840.00')&&txt.includes('4,100.00')&&txt.includes('5,940.00')&&txt.includes('110.00')&&txt.includes('350.00')&&txt.includes('460.00')&&txt.includes('5,480.00')&&txt.includes('92.26%')&&txt.includes('not_measured'),r321File+': contains exact 11-15 R19 gamepipeline+shredkit closed-form parameters');
     }
+    // 2026-11-15 Night Round 20 (R322: Kianuni/AppleFlow + lowdevco/Clip-Forge) verification
+    const r322PathA=1720.00+38.0*100.00;
+    assert.equal(r322PathA.toFixed(2),'5520.00','11-15 R20 Path A total');
+    const r322PathC=95.00+3.5*100.00;
+    assert.equal(r322PathC.toFixed(2),'445.00','11-15 R20 Path C total');
+    assert.equal((r322PathA-r322PathC).toFixed(2),'5075.00','11-15 R20 savings vs Path A');
+    assert.equal(((r322PathA-r322PathC)/r322PathA*100).toFixed(2),'91.94','11-15 R20 pct savings vs Path A');
+    for(const r322File of ['workshops/github-trending-radar/docs/appleflow-clip-forge-zero-mitm-pcc-ohttp-routing-scored-shortlist-vertical-shorts-selection-faq.md','workshops/github-trending-radar/docs/appleflow-clip-forge-zero-mitm-pcc-ohttp-routing-scored-shortlist-vertical-shorts-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r20-appleflow-clipforge.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r322File),'utf8');
+      assert.ok(txt.includes('1,720.00')&&txt.includes('3,800.00')&&txt.includes('5,520.00')&&txt.includes('95.00')&&txt.includes('350.00')&&txt.includes('445.00')&&txt.includes('5,075.00')&&txt.includes('91.94%')&&txt.includes('not_measured'),r322File+': contains exact 11-15 R20 appleflow+clipforge closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
