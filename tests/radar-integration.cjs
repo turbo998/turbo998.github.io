@@ -4520,6 +4520,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r353File),'utf8');
       assert.ok(txt.includes('1,940.00')&&txt.includes('4,000.00')&&txt.includes('5,940.00')&&txt.includes('95.00')&&txt.includes('350.00')&&txt.includes('445.00')&&txt.includes('5,495.00')&&txt.includes('92.51%')&&txt.includes('not_measured'),r353File+': contains exact 11-15 R51 kitepack+museprotocol closed-form parameters');
     }
+    // 2026-11-15 Night Round 52 (R354: adriadam10/mkw-recomp + MSNightmare/SignDrop) verification
+    const r354PathA=2020.00+41.5*100.00;
+    assert.equal(r354PathA.toFixed(2),'6170.00','11-15 R52 Path A total');
+    const r354PathC=95.00+3.6*100.00;
+    assert.equal(r354PathC.toFixed(2),'455.00','11-15 R52 Path C total');
+    assert.equal((r354PathA-r354PathC).toFixed(2),'5715.00','11-15 R52 savings vs Path A');
+    assert.equal(((r354PathA-r354PathC)/r354PathA*100).toFixed(2),'92.63','11-15 R52 pct savings vs Path A');
+    for(const r354File of ['workshops/github-trending-radar/docs/mkw-recomp-signdrop-aarch64-c-static-recompiler-sm86-spirv-windows-clfs-cnpf-audit-selection-faq.md','workshops/github-trending-radar/docs/mkw-recomp-signdrop-aarch64-c-static-recompiler-sm86-spirv-windows-clfs-cnpf-audit-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r52-mkwrecomp-signdrop.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r354File),'utf8');
+      assert.ok(txt.includes('2,020.00')&&txt.includes('4,150.00')&&txt.includes('6,170.00')&&txt.includes('95.00')&&txt.includes('360.00')&&txt.includes('455.00')&&txt.includes('5,715.00')&&txt.includes('92.63%')&&txt.includes('not_measured'),r354File+': contains exact 11-15 R52 mkwrecomp+signdrop closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
