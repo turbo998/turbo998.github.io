@@ -4487,6 +4487,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r350File),'utf8');
       assert.ok(txt.includes('1,850.00')&&txt.includes('3,900.00')&&txt.includes('5,750.00')&&txt.includes('85.00')&&txt.includes('350.00')&&txt.includes('435.00')&&txt.includes('5,315.00')&&txt.includes('92.43%')&&txt.includes('not_measured'),r350File+': contains exact 11-15 R48 tally+gawain closed-form parameters');
     }
+    // 2026-11-15 Night Round 49 (R351: martian56/tessery + Elisekaiu/Cross-entry-continuity) verification
+    const r351PathA=1920.00+39.5*100.00;
+    assert.equal(r351PathA.toFixed(2),'5870.00','11-15 R49 Path A total');
+    const r351PathC=90.00+3.5*100.00;
+    assert.equal(r351PathC.toFixed(2),'440.00','11-15 R49 Path C total');
+    assert.equal((r351PathA-r351PathC).toFixed(2),'5430.00','11-15 R49 savings vs Path A');
+    assert.equal(((r351PathA-r351PathC)/r351PathA*100).toFixed(2),'92.50','11-15 R49 pct savings vs Path A');
+    for(const r351File of ['workshops/github-trending-radar/docs/tessery-cross-entry-continuity-14lang-git-system-codegen-mcp-5layer-chat-continuity-selection-faq.md','workshops/github-trending-radar/docs/tessery-cross-entry-continuity-14lang-git-system-codegen-mcp-5layer-chat-continuity-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r49-tessery-crossentry.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r351File),'utf8');
+      assert.ok(txt.includes('1,920.00')&&txt.includes('3,950.00')&&txt.includes('5,870.00')&&txt.includes('90.00')&&txt.includes('350.00')&&txt.includes('440.00')&&txt.includes('5,430.00')&&txt.includes('92.50%')&&txt.includes('not_measured'),r351File+': contains exact 11-15 R49 tessery+crossentry closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
