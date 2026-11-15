@@ -4344,6 +4344,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r337File),'utf8');
       assert.ok(txt.includes('2,060.00')&&txt.includes('4,100.00')&&txt.includes('6,160.00')&&txt.includes('110.00')&&txt.includes('350.00')&&txt.includes('460.00')&&txt.includes('5,700.00')&&txt.includes('92.53%')&&txt.includes('not_measured'),r337File+': contains exact 11-15 R35 slamdunk+shape closed-form parameters');
     }
+    // 2026-11-15 Night Round 36 (R338: jackson-cmd/zeus-options-terminal + KaelLee335/enterprise-support-agent) verification
+    const r338PathA=1860.00+39.0*100.00;
+    assert.equal(r338PathA.toFixed(2),'5760.00','11-15 R36 Path A total');
+    const r338PathC=95.00+3.5*100.00;
+    assert.equal(r338PathC.toFixed(2),'445.00','11-15 R36 Path C total');
+    assert.equal((r338PathA-r338PathC).toFixed(2),'5315.00','11-15 R36 savings vs Path A');
+    assert.equal(((r338PathA-r338PathC)/r338PathA*100).toFixed(2),'92.27','11-15 R36 pct savings vs Path A');
+    for(const r338File of ['workshops/github-trending-radar/docs/zeus-options-terminal-enterprise-support-agent-18tool-mcp-greeks-checkup-dify-45case-eval-selection-faq.md','workshops/github-trending-radar/docs/zeus-options-terminal-enterprise-support-agent-18tool-mcp-greeks-checkup-dify-45case-eval-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r36-zeus-supportagent.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r338File),'utf8');
+      assert.ok(txt.includes('1,860.00')&&txt.includes('3,900.00')&&txt.includes('5,760.00')&&txt.includes('95.00')&&txt.includes('350.00')&&txt.includes('445.00')&&txt.includes('5,315.00')&&txt.includes('92.27%')&&txt.includes('not_measured'),r338File+': contains exact 11-15 R36 zeus+supportagent closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
