@@ -4223,6 +4223,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r326File),'utf8');
       assert.ok(txt.includes('1,820.00')&&txt.includes('3,900.00')&&txt.includes('5,720.00')&&txt.includes('100.00')&&txt.includes('350.00')&&txt.includes('450.00')&&txt.includes('5,270.00')&&txt.includes('92.13%')&&txt.includes('not_measured'),r326File+': contains exact 11-15 R24 winampuisdk+defect closed-form parameters');
     }
+    // 2026-11-15 Night Round 25 (R327: markrussinovich/venn-vdm + continuousintelligence/ci) verification
+    const r327PathA=2060.00+41.0*100.00;
+    assert.equal(r327PathA.toFixed(2),'6160.00','11-15 R25 Path A total');
+    const r327PathC=120.00+3.5*100.00;
+    assert.equal(r327PathC.toFixed(2),'470.00','11-15 R25 Path C total');
+    assert.equal((r327PathA-r327PathC).toFixed(2),'5690.00','11-15 R25 savings vs Path A');
+    assert.equal(((r327PathA-r327PathC)/r327PathA*100).toFixed(2),'92.37','11-15 R25 pct savings vs Path A');
+    for(const r327File of ['workshops/github-trending-radar/docs/venn-vdm-ci-proto-3mb-vector-decision-model-2m-context-timeseries-foundation-selection-faq.md','workshops/github-trending-radar/docs/venn-vdm-ci-proto-3mb-vector-decision-model-2m-context-timeseries-foundation-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r25-vennvdm-ciproto.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r327File),'utf8');
+      assert.ok(txt.includes('2,060.00')&&txt.includes('4,100.00')&&txt.includes('6,160.00')&&txt.includes('120.00')&&txt.includes('350.00')&&txt.includes('470.00')&&txt.includes('5,690.00')&&txt.includes('92.37%')&&txt.includes('not_measured'),r327File+': contains exact 11-15 R25 vennvdm+ciproto closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
