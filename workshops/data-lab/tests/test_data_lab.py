@@ -1527,13 +1527,355 @@ class TestDataLabBenchmarkSuite(unittest.TestCase):
         self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 50)
         self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 34100000)
 
-    def test_scenario_matrix_444_cases_and_explicit_miss(self) -> None:
+    def test_global_hbm4_hybrid_bonding_fabric_16hi_tsv_cucu_cmp_dishing_muf_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_hbm4_hybrid_bonding_fabric_16hi_tsv_cucu_cmp_dishing_muf_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["cucu_hybrid_bonders_count"], 1480)
+        self.assertEqual(sim["telemetry"]["cmp_bonder_csam_ingestion_eps"], 990000)
+        self.assertEqual(sim["telemetry"]["cmp_creep_and_warpage_vectors_indexed_count"], 272000000)
+        self.assertEqual(sim["telemetry"]["per_gb_stream_write_surcharge_usd"], 0)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_hbm4_tco_saved_usd"], 211200)
+        self.assertTrue(sim["foundry_iq_guardrail"]["cu_dishing_window_and_zero_void_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["upw_reclamation_and_semi_s23_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 48)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 34450000)
+
+    def test_global_glass_core_substrate_fabric_tgv_laser_lide_metallization_warpage_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_glass_core_substrate_fabric_tgv_laser_lide_metallization_warpage_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["femtosecond_lide_lasers_count"], 480)
+        self.assertEqual(sim["telemetry"]["lide_oct_plating_ingestion_eps"], 990000)
+        self.assertEqual(sim["telemetry"]["bessel_etch_and_superfilling_vectors_indexed_count"], 276000000)
+        self.assertEqual(sim["telemetry"]["per_gb_stream_write_surcharge_usd"], 0)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_gcs_tco_saved_usd"], 213500)
+        self.assertTrue(sim["foundry_iq_guardrail"]["microcrack_and_waist_ratio_zero_void_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["panel_warpage_and_fluoride_recovery_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 46)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 34800000)
+
+    def test_global_solid_state_battery_fabric_sulfide_argyrodite_dry_electrode_h2s_wip_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_solid_state_battery_fabric_sulfide_argyrodite_dry_electrode_h2s_wip_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["dry_electrode_calender_lines_count"], 380)
+        self.assertEqual(sim["telemetry"]["tdlas_thz_eis_ingestion_eps"], 980000)
+        self.assertEqual(sim["telemetry"]["ptfe_hydrolysis_and_wip_vectors_indexed_count"], 280000000)
+        self.assertEqual(sim["telemetry"]["per_gb_stream_write_surcharge_usd"], 0)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_assb_tco_saved_usd"], 215100)
+        self.assertTrue(sim["foundry_iq_guardrail"]["h2s_hydrolysis_and_dew_point_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["porosity_zero_dendrite_and_eu_passport_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 44)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 35150000)
+
+    def test_global_perovskite_silicon_tandem_fabric_slot_die_vasp_crystallization_ald_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_perovskite_silicon_tandem_fabric_slot_die_vasp_crystallization_ald_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["slot_die_and_vasp_flash_lines_count"], 520)
+        self.assertEqual(sim["telemetry"]["pl_vasp_meniscus_ingestion_eps"], 990000)
+        self.assertEqual(sim["telemetry"]["meniscus_lamer_and_ald_vectors_indexed_count"], 284000000)
+        self.assertEqual(sim["telemetry"]["per_gb_stream_write_surcharge_usd"], 0)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_tandem_tco_saved_usd"], 217100)
+        self.assertTrue(sim["foundry_iq_guardrail"]["lamer_burst_nucleation_and_zero_delta_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["lead_chelation_and_ecodesign_passport_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 42)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 35500000)
+
+    def test_global_high_temp_superconductor_fabric_rebco_pld_ibad_quench_magnet_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_high_temp_superconductor_fabric_rebco_pld_ibad_quench_magnet_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["kilometer_ibad_and_pld_lines_count"], 320)
+        self.assertEqual(sim["telemetry"]["plume_rheed_tapestar_ingestion_eps"], 980000)
+        self.assertEqual(sim["telemetry"]["plume_ibad_and_tdgl_vectors_indexed_count"], 288000000)
+        self.assertEqual(sim["telemetry"]["per_gb_stream_write_surcharge_usd"], 0)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_hts_tco_saved_usd"], 218900)
+        self.assertTrue(sim["foundry_iq_guardrail"]["biaxial_texture_and_zero_ic_dropout_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["helium_reliquefaction_and_fusion_passport_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 40)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 35850000)
+
+    def test_global_circrna_mrna_biopharma_fabric_enzymatic_ivt_dsrna_tff_lnp_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_circrna_mrna_biopharma_fabric_enzymatic_ivt_dsrna_tff_lnp_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["ivt_and_pie_bioreactors_count"], 420)
+        self.assertEqual(sim["telemetry"]["raman_mals_tff_ingestion_eps"], 980000)
+        self.assertEqual(sim["telemetry"]["ivt_pie_and_tff_vectors_indexed_count"], 292000000)
+        self.assertEqual(sim["telemetry"]["per_gb_stream_write_surcharge_usd"], 0)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_circrna_tco_saved_usd"], 220800)
+        self.assertTrue(sim["foundry_iq_guardrail"]["dsrna_suppression_and_covalent_circularity_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["part11_rtrt_and_ethanol_recovery_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 38)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 36200000)
+
+    def test_global_esaf_aviation_fuel_fabric_rwgs_fischer_tropsch_hydrocracking_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_esaf_aviation_fuel_fabric_rwgs_fischer_tropsch_hydrocracking_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["fischer_tropsch_and_hydrocrackers_count"], 360)
+        self.assertEqual(sim["telemetry"]["fbg_raman_nir_ingestion_eps"], 990000)
+        self.assertEqual(sim["telemetry"]["semenov_asf_and_coking_vectors_indexed_count"], 296000000)
+        self.assertEqual(sim["telemetry"]["per_gb_stream_write_surcharge_usd"], 0)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_esaf_tco_saved_usd"], 222700)
+        self.assertTrue(sim["foundry_iq_guardrail"]["fischer_tropsch_zero_runaway_and_rwgs_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["freeze_point_and_refueleu_corsia_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 36)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 36550000)
+
+    def test_global_2nm_gaa_nanosheet_fabric_atomic_layer_etch_epi_bspdn_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_2nm_gaa_nanosheet_fabric_atomic_layer_etch_epi_bspdn_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["ale_and_selective_epi_chambers_count"], 1200)
+        self.assertEqual(sim["telemetry"]["ocd_oes_backside_ir_ingestion_eps"], 990000)
+        self.assertEqual(sim["telemetry"]["rcwa_ale_and_hoga_vectors_indexed_count"], 300000000)
+        self.assertEqual(sim["telemetry"]["per_gb_stream_write_surcharge_usd"], 0)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_gaa_tco_saved_usd"], 224500)
+        self.assertTrue(sim["foundry_iq_guardrail"]["inner_spacer_recess_and_selectivity_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["bspdn_overlay_and_nf3_dre_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 34)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 36900000)
+
+    def test_global_rare_earth_magnet_ndfeb_fabric_solvent_extraction_sintering_gbd_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_rare_earth_magnet_ndfeb_fabric_solvent_extraction_sintering_gbd_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["rare_earth_magnet_complexes_count"], 22)
+        self.assertEqual(sim["telemetry"]["xrf_particle_o2_pyrometry_ingestion_eps"], 980000)
+        self.assertEqual(sim["telemetry"]["sx_vortex_and_gbd_vectors_indexed_count"], 304000000)
+        self.assertEqual(sim["telemetry"]["per_gb_stream_write_surcharge_usd"], 0)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_ndfeb_tco_saved_usd"], 226400)
+        self.assertTrue(sim["foundry_iq_guardrail"]["jet_mill_micro_passivation_oxygen_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["gbd_core_coercivity_and_crma_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 32)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 37250000)
+
+    def test_global_reusable_methalox_rocket_fabric_ffsc_preburner_turbopump_plume_oes_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_reusable_methalox_rocket_fabric_ffsc_preburner_turbopump_plume_oes_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["ffsc_methalox_engines_count"], 360)
+        self.assertEqual(sim["telemetry"]["piezo_cavitation_plume_oes_ingestion_eps"], 990000)
+        self.assertEqual(sim["telemetry"]["rayleigh_film_and_cavitation_vectors_indexed_count"], 308000000)
+        self.assertEqual(sim["telemetry"]["per_gb_stream_write_surcharge_usd"], 0)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_rocket_tco_saved_usd"], 228300)
+        self.assertTrue(sim["foundry_iq_guardrail"]["thermoacoustic_1t_damping_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["grcop42_throat_and_plume_oes_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 30)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 37600000)
+
+    def test_global_sodium_ion_battery_fabric_prussian_white_hard_carbon_plating_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_sodium_ion_battery_fabric_prussian_white_hard_carbon_plating_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["sodium_ion_gigafactories_count"], 18)
+        self.assertEqual(sim["telemetry"]["nir_saxs_formation_dqdv_ingestion_eps"], 980000)
+        self.assertEqual(sim["telemetry"]["pw_hard_carbon_and_plating_vectors_indexed_count"], 312000000)
+        self.assertEqual(sim["telemetry"]["per_gb_stream_write_surcharge_usd"], 0)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_naion_tco_saved_usd"], 230200)
+        self.assertTrue(sim["foundry_iq_guardrail"]["prussian_white_crystal_water_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["hard_carbon_pore_and_anti_plating_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 28)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 37950000)
+
+    def test_global_subsea_hvdc_cable_fabric_vcv_extrusion_methane_degassing_pd_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_subsea_hvdc_cable_fabric_vcv_extrusion_methane_degassing_pd_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["vcv_160m_triple_extrusion_towers_count"], 84)
+        self.assertEqual(sim["telemetry"]["thz_laser_ftir_pd_ingestion_eps"], 990000)
+        self.assertEqual(sim["telemetry"]["rheology_fick_and_charge_vectors_indexed_count"], 316000000)
+        self.assertEqual(sim["telemetry"]["per_gb_stream_write_surcharge_usd"], 0)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_hvdc_tco_saved_usd"], 232100)
+        self.assertTrue(sim["foundry_iq_guardrail"]["vcv_eccentricity_and_scorch_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["methane_degassing_and_space_charge_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 26)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 38300000)
+
+    def test_global_radiopharma_theranostics_fabric_lutetium177_actinium225_hotcell_coi_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_radiopharma_theranostics_fabric_lutetium177_actinium225_hotcell_coi_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["automated_lead_hot_cells_count"], 420)
+        self.assertEqual(sim["telemetry"]["radio_hplc_hpge_leadpig_ingestion_eps"], 980000)
+        self.assertEqual(sim["telemetry"]["radiolysis_hpge_and_coi_vectors_indexed_count"], 320000000)
+        self.assertEqual(sim["telemetry"]["per_gb_stream_write_surcharge_usd"], 0)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_radiopharma_tco_saved_usd"], 234000)
+        self.assertTrue(sim["foundry_iq_guardrail"]["hotcell_radiochemical_purity_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["decay_aware_bedside_coi_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 24)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 38650000)
+
+    def test_global_cpo_silicon_photonics_fabric_tfln_mrr_laser_packaging_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_cpo_silicon_photonics_fabric_tfln_mrr_laser_packaging_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["active_alignment_6dof_laser_welders_count"], 540)
+        self.assertEqual(sim["telemetry"]["piezo_mrr_spectral_pam4_ingestion_eps"], 990000)
+        self.assertEqual(sim["telemetry"]["fdtd_pws_and_jacobian_vectors_indexed_count"], 324000000)
+        self.assertEqual(sim["telemetry"]["per_gb_stream_write_surcharge_usd"], 0)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_cpo_tco_saved_usd"], 235900)
+        self.assertTrue(sim["foundry_iq_guardrail"]["fau_post_weld_shift_and_coupling_loss_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["mrr_thermal_uncoupling_and_pam4_tdecq_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 22)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 39000000)
+
+    def test_global_cryogenic_lh2_fabric_ortho_para_conversion_turboexpander_boiloff_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_cryogenic_lh2_fabric_ortho_para_conversion_turboexpander_boiloff_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["turboexpanders_120krpm_amb_count"], 280)
+        self.assertEqual(sim["telemetry"]["raman_amb_vjtl_ingestion_eps"], 990000)
+        self.assertEqual(sim["telemetry"]["ortho_para_surge_and_vjtl_vectors_indexed_count"], 328000000)
+        self.assertEqual(sim["telemetry"]["per_gb_stream_write_surcharge_usd"], 0)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_lh2_tco_saved_usd"], 237800)
+        self.assertTrue(sim["foundry_iq_guardrail"]["ortho_para_purity_and_boiloff_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["amb_turboexpander_and_vjtl_chilldown_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 20)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 39350000)
+
+    def test_global_green_emethanol_fabric_co2_hydrogenation_sintering_distillation_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_green_emethanol_fabric_co2_hydrogenation_sintering_distillation_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["co2_hydrogenation_reactors_70bar_count"], 320)
+        self.assertEqual(sim["telemetry"]["fbg_ftnir_coriolis_ingestion_eps"], 990000)
+        self.assertEqual(sim["telemetry"]["graaf_lsw_and_nrtl_vectors_indexed_count"], 332000000)
+        self.assertEqual(sim["telemetry"]["per_gb_stream_write_surcharge_usd"], 0)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_emethanol_tco_saved_usd"], 239700)
+        self.assertTrue(sim["foundry_iq_guardrail"]["catalyst_anti_sintering_and_steam_ratio_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["impca_purity_and_fueleu_ebdn_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 18)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 39700000)
+
+    def test_global_ahss_galvanneal_lme_fabric_dewpoint_xrd_spot_welding_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_ahss_galvanneal_lme_fabric_dewpoint_xrd_spot_welding_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["servo_spot_welding_guns_10khz_count"], 6400)
+        self.assertEqual(sim["telemetry"]["xrd_dewpoint_rsw_ingestion_eps"], 990000)
+        self.assertEqual(sim["telemetry"]["wagner_fezn_and_rsw_vectors_indexed_count"], 336000000)
+        self.assertEqual(sim["telemetry"]["per_gb_stream_write_surcharge_usd"], 0)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_ahss_tco_saved_usd"], 241600)
+        self.assertTrue(sim["foundry_iq_guardrail"]["wagner_internal_oxidation_and_delta_phase_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["sep1220_zero_lme_crack_and_catenax_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 16)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 40050000)
+
+    def test_global_gan_on_si_qst_fabric_mocvd_epitaxy_wafer_bow_dynamic_rdson_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_gan_on_si_qst_fabric_mocvd_epitaxy_wafer_bow_dynamic_rdson_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["planetary_mocvd_reactors_count"], 560)
+        self.assertEqual(sim["telemetry"]["curvature_interferometry_2deg_ingestion_eps"], 990000)
+        self.assertEqual(sim["telemetry"]["stoney_bow_sl_and_ctrap_vectors_indexed_count"], 340000000)
+        self.assertEqual(sim["telemetry"]["per_gb_stream_write_surcharge_usd"], 0)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_gan_tco_saved_usd"], 243500)
+        self.assertTrue(sim["foundry_iq_guardrail"]["stoney_wafer_bow_and_superlattice_stress_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["jedec_jep173_dynamic_rdson_and_2deg_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 14)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 40400000)
+
+    def test_global_single_crystal_superalloy_fabric_bridgman_casting_heat_treat_tbc_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_single_crystal_superalloy_fabric_bridgman_casting_heat_treat_tbc_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["vacuum_bridgman_lmc_furnaces_count"], 420)
+        self.assertEqual(sim["telemetry"]["pyrometry_thermocouple_ebpvd_ingestion_eps"], 990000)
+        self.assertEqual(sim["telemetry"]["rayleigh_dictra_and_ebpvd_vectors_indexed_count"], 344000000)
+        self.assertEqual(sim["telemetry"]["per_gb_stream_write_surcharge_usd"], 0)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_sx_blade_tco_saved_usd"], 245400)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_sx_blade_tco_savings_pct"], 94.5)
+        self.assertTrue(sim["foundry_iq_guardrail"]["rayleigh_freckle_and_001_orientation_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["zero_incipient_melting_and_as9100_tbc_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 12)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 40750000)
+
+    def test_global_euv_photoresist_ultrapure_chemicals_fabric_ppt_metal_pag_pou_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_euv_photoresist_ultrapure_chemicals_fabric_ppt_metal_pag_pou_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["track_1nm_pou_nanofiltration_skids_count"], 1600)
+        self.assertEqual(sim["telemetry"]["icpms_gpc_pou_ingestion_eps"], 990000)
+        self.assertEqual(sim["telemetry"]["thomas_pag_and_pou_vectors_indexed_count"], 348000000)
+        self.assertEqual(sim["telemetry"]["per_gb_stream_write_surcharge_usd"], 0)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_euv_resist_tco_saved_usd"], 247300)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_euv_resist_tco_savings_pct"], 94.5)
+        self.assertTrue(sim["foundry_iq_guardrail"]["thomas_sub_ppt_chelation_and_semi_g5_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["stochastic_ler_and_1nm_pou_zero_bridge_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 10)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 41100000)
+
+    def test_global_extreme_optics_fabric_mrf_ion_beam_figuring_sub_angstrom_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_extreme_optics_fabric_mrf_ion_beam_figuring_sub_angstrom_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["five_axis_mrf_finishing_centers_count"], 320)
+        self.assertEqual(sim["telemetry"]["mrf_ibf_psd_ingestion_eps"], 990000)
+        self.assertEqual(sim["telemetry"]["bingham_sputter_and_dwell_vectors_indexed_count"], 352000000)
+        self.assertEqual(sim["telemetry"]["per_gb_stream_write_surcharge_usd"], 0)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_optics_tco_saved_usd"], 249200)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_optics_tco_savings_pct"], 94.5)
+        self.assertTrue(sim["foundry_iq_guardrail"]["mrf_ribbon_stability_and_sub_angstrom_lsf_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["tikhonov_ibf_dwell_and_zero_flare_msf_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 8)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 41450000)
+
+    def test_global_crispr_gene_editing_lnp_fabric_herringbone_microfluidics_sgrna_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_crispr_gene_editing_lnp_fabric_herringbone_microfluidics_sgrna_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["parallel_256ch_shm_microfluidic_skids_count"], 480)
+        self.assertEqual(sim["telemetry"]["shm_madls_dmt_ingestion_eps"], 990000)
+        self.assertEqual(sim["telemetry"]["peclet_damkohler_sgrna_and_tff_vectors_indexed_count"], 356000000)
+        self.assertEqual(sim["telemetry"]["per_gb_stream_write_surcharge_usd"], 0)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_crispr_lnp_tco_saved_usd"], 251100)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_crispr_lnp_tco_savings_pct"], 94.6)
+        self.assertTrue(sim["foundry_iq_guardrail"]["shm_chaotic_mixing_and_97pct_coencapsulation_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["sgrna_100nt_coupling_and_fda_rtrt_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 6)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 41800000)
+
+    def test_global_electronic_specialty_gases_fabric_silane_nf3_wf6_cryo_rectification_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_electronic_specialty_gases_fabric_silane_nf3_wf6_cryo_rectification_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["molten_salt_nf3_electrolysis_cells_count"], 640)
+        self.assertEqual(sim["telemetry"]["crds_pdhid_electrolysis_ingestion_eps"], 990000)
+        self.assertEqual(sim["telemetry"]["vle_zeolite_and_electrolysis_vectors_indexed_count"], 360000000)
+        self.assertEqual(sim["telemetry"]["per_gb_stream_write_surcharge_usd"], 0)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_esg_gas_tco_saved_usd"], 253000)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_esg_gas_tco_savings_pct"], 94.6)
+        self.assertTrue(sim["foundry_iq_guardrail"]["cryo_vle_and_sub_ppb_siloxane_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["nf3_zeolite_cf4_and_anode_anti_explosion_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 4)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 42150000)
+
+    def test_global_cvd_diamond_wafer_fabric_mpcvd_plasma_oes_laser_liftoff_vs_4clouds_ontology_simulation(self) -> None:
+        sim = simulate_ontology_incident("global_cvd_diamond_wafer_fabric_mpcvd_plasma_oes_laser_liftoff_vs_4clouds")
+        self.assertEqual(sim["telemetry"]["cylindrical_cavity_mpcvd_reactors_count"], 1200)
+        self.assertEqual(sim["telemetry"]["oes_pyrometry_raman_ingestion_eps"], 990000)
+        self.assertEqual(sim["telemetry"]["cavity_stepflow_and_llo_vectors_indexed_count"], 364000000)
+        self.assertEqual(sim["telemetry"]["per_gb_stream_write_surcharge_usd"], 0)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_diamond_tco_saved_usd"], 254900)
+        self.assertEqual(sim["multi_agent_plan"]["monthly_diamond_tco_savings_pct"], 94.7)
+        self.assertTrue(sim["foundry_iq_guardrail"]["plasma_sheath_rim_and_c2_halpha_stepflow_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["raman_fwhm_2210wmk_and_femtosecond_llo_verified"])
+        self.assertTrue(sim["foundry_iq_guardrail"]["compliant"])
+        self.assertEqual(sim["decision_routing"]["action"], "Confirm")
+        self.assertEqual(sim["decision_routing"]["end_to_end_latency_ms"], 2)
+        self.assertEqual(sim["decision_routing"]["projected_savings_usd"], 42500000)
+
+    def test_scenario_matrix_540_cases_and_explicit_miss(self) -> None:
         matrix = evaluate_scenario_matrix()
-        self.assertEqual(matrix["total_scenarios"], 444)
-        self.assertEqual(matrix["passed_scenarios"], 443)
+        self.assertEqual(matrix["total_scenarios"], 540)
+        self.assertEqual(matrix["passed_scenarios"], 539)
         self.assertEqual(matrix["failed_scenarios"], 1)
-        self.assertAlmostEqual(matrix["accuracy_pct"], 99.77, places=2)
-        self.assertEqual(matrix["avg_latency_ms"], 173.0)
+        self.assertAlmostEqual(matrix["accuracy_pct"], 99.81, places=2)
+        self.assertEqual(matrix["avg_latency_ms"], 148.0)
         misses = [s for s in matrix["scenarios"] if not s["correct"]]
         self.assertEqual(len(misses), 1)
         self.assertEqual(misses[0]["id"], "DL-23")
@@ -2693,6 +3035,270 @@ class TestDataLabBenchmarkSuite(unittest.TestCase):
         self.assertIn("-93.6% TCO", by_id["DL-443"]["expected"])
         self.assertIn("Protect $34.10M SLA", by_id["DL-444"]["expected"])
 
+    def test_fabric_hbm4_16hi_tsv_cucu_hybrid_bonding_cmp_dishing_vs_4clouds_2026_11_16_r101_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-445", "DL-446", "DL-447", "DL-448"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("11ms 7-Zone CMP Spectral & IR Wavefront Sense", by_id["DL-445"]["expected"])
+        self.assertIn("atomistic LAMMPS MD Cu-Cu diffusion", by_id["DL-446"]["expected"])
+        self.assertIn("-93.7% TCO", by_id["DL-447"]["expected"])
+        self.assertIn("Protect $34.45M SLA", by_id["DL-448"]["expected"])
+
+    def test_fabric_glass_core_substrate_tgv_laser_lide_metallization_warpage_vs_4clouds_2026_11_16_r102_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-449", "DL-450", "DL-451", "DL-452"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("11ms 50kHz SLM Wavefront & Inline SS-OCT Sense", by_id["DL-449"]["expected"])
+        self.assertIn("3D NLSE Bessel-filamentation", by_id["DL-450"]["expected"])
+        self.assertIn("-93.8% TCO", by_id["DL-451"]["expected"])
+        self.assertIn("Protect $34.80M SLA", by_id["DL-452"]["expected"])
+
+    def test_fabric_solid_state_battery_sulfide_argyrodite_dry_electrode_h2s_dendrite_vs_4clouds_2026_11_16_r103_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-453", "DL-454", "DL-455", "DL-456"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("11ms TDLAS H2S & THz-TDS Porosity Sense", by_id["DL-453"]["expected"])
+        self.assertIn("MatterSim/MACE atomistic MLIP", by_id["DL-454"]["expected"])
+        self.assertIn("-93.8% TCO", by_id["DL-455"]["expected"])
+        self.assertIn("Protect $35.15M SLA", by_id["DL-456"]["expected"])
+
+    def test_fabric_perovskite_silicon_tandem_solar_slot_die_crystallization_ald_vs_4clouds_2026_11_16_r104_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-457", "DL-458", "DL-459", "DL-460"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("10ms Hyperspectral PL & VASP Vacuum Sense", by_id["DL-457"]["expected"])
+        self.assertIn("first-principles DFT SAM dipole", by_id["DL-458"]["expected"])
+        self.assertIn("-93.9% TCO", by_id["DL-459"]["expected"])
+        self.assertIn("Protect $35.50M SLA", by_id["DL-460"]["expected"])
+
+    def test_fabric_high_temp_superconductor_rebco_pld_tape_ibad_quench_magnet_vs_4clouds_2026_11_16_r105_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-461", "DL-462", "DL-463", "DL-464"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("10ms 300Hz Plume ICCD & Inline RHEED Sense", by_id["DL-461"]["expected"])
+        self.assertIn("3D TDGL vortex-pinning", by_id["DL-462"]["expected"])
+        self.assertIn("-93.9% TCO", by_id["DL-463"]["expected"])
+        self.assertIn("Protect $35.85M SLA", by_id["DL-464"]["expected"])
+
+    def test_fabric_circrna_mrna_enzymatic_ivt_dsrna_tff_microfluidic_lnp_vs_4clouds_2026_11_16_r106_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-465", "DL-466", "DL-467", "DL-468"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("9ms Inline Raman & SEC-MALS/TFF Shear Sense", by_id["DL-465"]["expected"])
+        self.assertIn("AI IRES sequence design", by_id["DL-466"]["expected"])
+        self.assertIn("-93.9% TCO", by_id["DL-467"]["expected"])
+        self.assertIn("Protect $36.20M SLA", by_id["DL-468"]["expected"])
+
+    def test_fabric_esaf_sustainable_aviation_fuel_rwgs_fischer_tropsch_hydrocracking_vs_4clouds_2026_11_16_r107_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-469", "DL-470", "DL-471", "DL-472"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("9ms 8,000-Tube FBG & Raman Syngas Sense", by_id["DL-469"]["expected"])
+        self.assertIn("8,000-tube multiphase CFD-DEM", by_id["DL-470"]["expected"])
+        self.assertIn("-94.0% TCO", by_id["DL-471"]["expected"])
+        self.assertIn("Protect $36.55M SLA", by_id["DL-472"]["expected"])
+
+    def test_fabric_2nm_gaa_nanosheet_atomic_layer_etch_selective_epi_bspdn_vs_4clouds_2026_11_16_r108_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-473", "DL-474", "DL-475", "DL-476"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("8ms 16-Ch Mueller-OCD & Backside IR Sense", by_id["DL-473"]["expected"])
+        self.assertIn("3D RCWA electromagnetic scattering", by_id["DL-474"]["expected"])
+        self.assertIn("-94.0% TCO", by_id["DL-475"]["expected"])
+        self.assertIn("Protect $36.90M SLA", by_id["DL-476"]["expected"])
+
+    def test_fabric_rare_earth_magnet_ndfeb_solvent_extraction_sintering_gbd_vs_4clouds_2026_11_16_r109_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-477", "DL-478", "DL-479", "DL-480"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("8ms Inline XRF, Laser Particle & Trace-O2/GBD Sense", by_id["DL-477"]["expected"])
+        self.assertIn("3D phase-field micromagnetic", by_id["DL-478"]["expected"])
+        self.assertIn("-94.1% TCO", by_id["DL-479"]["expected"])
+        self.assertIn("Protect $37.25M SLA", by_id["DL-480"]["expected"])
+
+    def test_fabric_reusable_methalox_rocket_ffsc_preburner_turbopump_plume_oes_vs_4clouds_2026_11_16_r110_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-481", "DL-482", "DL-483", "DL-484"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("7ms 100kHz Piezo & Plume OES Sense", by_id["DL-481"]["expected"])
+        self.assertIn("3D supercritical combustion LES", by_id["DL-482"]["expected"])
+        self.assertIn("-94.1% TCO", by_id["DL-483"]["expected"])
+        self.assertIn("Protect $37.60M SLA", by_id["DL-484"]["expected"])
+
+    def test_fabric_sodium_ion_battery_prussian_white_hard_carbon_plating_vs_4clouds_2026_11_16_r111_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-485", "DL-486", "DL-487", "DL-488"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("7ms Inline NIR, Online SAXS & 120K-Ch dQ/dV Sense", by_id["DL-485"]["expected"])
+        self.assertIn("DFT Na+ migration barrier", by_id["DL-486"]["expected"])
+        self.assertIn("-94.2% TCO", by_id["DL-487"]["expected"])
+        self.assertIn("Protect $37.95M SLA", by_id["DL-488"]["expected"])
+
+    def test_fabric_subsea_hvdc_cable_vcv_extrusion_methane_degassing_pd_vs_4clouds_2026_11_16_r112_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-489", "DL-490", "DL-491", "DL-492"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("6ms Inline THz, Laser Scorch & FTIR/PD Sense", by_id["DL-489"]["expected"])
+        self.assertIn("3D viscoelastic CFD", by_id["DL-490"]["expected"])
+        self.assertIn("-94.2% TCO", by_id["DL-491"]["expected"])
+        self.assertIn("Protect $38.30M SLA", by_id["DL-492"]["expected"])
+
+    def test_fabric_radiopharma_theranostics_lutetium177_actinium225_hotcell_coi_vs_4clouds_2026_11_16_r113_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-493", "DL-494", "DL-495", "DL-496"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("6ms Inline Radio-HPLC, HPGe & Flight Decay Sense", by_id["DL-493"]["expected"])
+        self.assertIn("Geant4/MCNP voxel dosimetry", by_id["DL-494"]["expected"])
+        self.assertIn("-94.3% TCO", by_id["DL-495"]["expected"])
+        self.assertIn("Protect $38.65M SLA", by_id["DL-496"]["expected"])
+
+    def test_fabric_cpo_silicon_photonics_tfln_mrr_laser_packaging_vs_4clouds_2026_11_16_r114_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-497", "DL-498", "DL-499", "DL-500"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("5ms 6-DoF Piezo, MRR Spectral & 224G PAM4 Sense", by_id["DL-497"]["expected"])
+        self.assertIn("3D FDTD Maxwell waveguide", by_id["DL-498"]["expected"])
+        self.assertIn("-94.4% TCO", by_id["DL-499"]["expected"])
+        self.assertIn("Protect $39.00M SLA", by_id["DL-500"]["expected"])
+
+    def test_fabric_cryogenic_lh2_ortho_para_conversion_turboexpander_boiloff_vs_4clouds_2026_11_16_r115_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-501", "DL-502", "DL-503", "DL-504"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("5ms In-Situ Cryo-Raman, 100kHz AMB & VJTL Sense", by_id["DL-501"]["expected"])
+        self.assertIn("3D BAHX multiphase CFD", by_id["DL-502"]["expected"])
+        self.assertIn("-94.4% TCO", by_id["DL-503"]["expected"])
+        self.assertIn("Protect $39.35M SLA", by_id["DL-504"]["expected"])
+
+    def test_fabric_green_emethanol_co2_hydrogenation_sintering_distillation_vs_4clouds_2026_11_16_r116_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-505", "DL-506", "DL-507", "DL-508"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("4ms Multi-Tube FBG, Inline FT-NIR & Coriolis Sense", by_id["DL-505"]["expected"])
+        self.assertIn("Cu/ZnO active-site quantum DFT", by_id["DL-506"]["expected"])
+        self.assertIn("-94.4% TCO", by_id["DL-507"]["expected"])
+        self.assertIn("Protect $39.70M SLA", by_id["DL-508"]["expected"])
+
+    def test_fabric_ahss_galvanneal_lme_dewpoint_xrd_spot_welding_vs_4clouds_2026_11_16_r117_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-509", "DL-510", "DL-511", "DL-512"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("4ms Inline 2D XRD, Dew-Point & 10kHz RSW Sense", by_id["DL-509"]["expected"])
+        self.assertIn("Thermo-Calc/DICTRA diffusion", by_id["DL-510"]["expected"])
+        self.assertIn("-94.4% TCO", by_id["DL-511"]["expected"])
+        self.assertIn("Protect $40.05M SLA", by_id["DL-512"]["expected"])
+
+    def test_fabric_gan_on_si_qst_mocvd_epitaxy_wafer_bow_dynamic_rdson_vs_4clouds_2026_11_16_r118_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-513", "DL-514", "DL-515", "DL-516"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("3ms In-Situ Curvature, Dual-Wavelength Interferometry & 2DEG Sense", by_id["DL-513"]["expected"])
+        self.assertIn("Sentaurus TCAD 2DEG band", by_id["DL-514"]["expected"])
+        self.assertIn("-94.4% TCO", by_id["DL-515"]["expected"])
+        self.assertIn("Protect $40.40M SLA", by_id["DL-516"]["expected"])
+
+    def test_fabric_single_crystal_superalloy_turbine_blade_bridgman_casting_tbc_vs_4clouds_2026_11_16_r119_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-517", "DL-518", "DL-519", "DL-520"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("3ms Mushy-Zone Pyrometry, Selector IR & 24-Zone TC Sense", by_id["DL-517"]["expected"])
+        self.assertIn("ProCAST radiation/dendrite", by_id["DL-518"]["expected"])
+        self.assertIn("-94.5% TCO", by_id["DL-519"]["expected"])
+        self.assertIn("Protect $40.75M SLA", by_id["DL-520"]["expected"])
+
+    def test_fabric_euv_photoresist_ultrapure_chemicals_ppt_metal_pag_pou_filtration_vs_4clouds_2026_11_16_r120_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-521", "DL-522", "DL-523", "DL-524"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("2ms Online ICP-MS/MS, Inline GPC & 1nm POU Sense", by_id["DL-521"]["expected"])
+        self.assertIn("quantum-DFT PAG photolysis", by_id["DL-522"]["expected"])
+        self.assertIn("-94.5% TCO", by_id["DL-523"]["expected"])
+        self.assertIn("Protect $41.10M SLA", by_id["DL-524"]["expected"])
+
+    def test_fabric_extreme_optics_mrf_ion_beam_figuring_sub_angstrom_mirror_vs_4clouds_2026_11_16_r121_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-525", "DL-526", "DL-527", "DL-528"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("2ms MRF Rheology, Faraday-Cup & 2D PSD Sense", by_id["DL-525"]["expected"])
+        self.assertIn("full-aperture vector-diffraction", by_id["DL-526"]["expected"])
+        self.assertIn("-94.5% TCO", by_id["DL-527"]["expected"])
+        self.assertIn("Protect $41.45M SLA", by_id["DL-528"]["expected"])
+
+    def test_fabric_crispr_gene_editing_lnp_herringbone_microfluidics_encapsulation_vs_4clouds_2026_11_16_r122_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-529", "DL-530", "DL-531", "DL-532"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("1ms 256-Ch SHM FRR, Inline MADLS & 498nm DMT Sense", by_id["DL-529"]["expected"])
+        self.assertIn("GROMACS all-atom LNP MD", by_id["DL-530"]["expected"])
+        self.assertIn("-94.6% TCO", by_id["DL-531"]["expected"])
+        self.assertIn("Protect $41.80M SLA", by_id["DL-532"]["expected"])
+
+    def test_fabric_electronic_specialty_gases_esg_silane_nf3_wf6_cryogenic_rectification_vs_4clouds_2026_11_16_r123_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-533", "DL-534", "DL-535", "DL-536"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("1ms Online CRDS, PDHID & Electrolysis Sense", by_id["DL-533"]["expected"])
+        self.assertIn("GCMC zeolite adsorption", by_id["DL-534"]["expected"])
+        self.assertIn("-94.6% TCO", by_id["DL-535"]["expected"])
+        self.assertIn("Protect $42.15M SLA", by_id["DL-536"]["expected"])
+
+    def test_fabric_cvd_diamond_semiconductor_wafer_mpcvd_plasma_thermal_substrate_vs_4clouds_2026_11_16_r124_scenarios(self) -> None:
+        matrix = evaluate_scenario_matrix()
+        by_id = {s["id"]: s for s in matrix["scenarios"]}
+        for sid in ("DL-537", "DL-538", "DL-539", "DL-540"):
+            self.assertIn(sid, by_id)
+            self.assertTrue(by_id[sid]["correct"])
+        self.assertIn("0.5ms Plasma C2/Hα OES, Rim-ΔT & Raman Sense", by_id["DL-537"]["expected"])
+        self.assertIn("3D Maxwell cavity & 38-species plasma", by_id["DL-538"]["expected"])
+        self.assertIn("-94.7% TCO", by_id["DL-539"]["expected"])
+        self.assertIn("Protect $42.50M SLA", by_id["DL-540"]["expected"])
+
     def test_perturbation_and_scaling_latency(self) -> None:
         pert = evaluate_perturbation_robustness()
         self.assertEqual(len(pert), 6)
@@ -2710,11 +3316,35 @@ class TestDataLabBenchmarkSuite(unittest.TestCase):
         self.assertTrue(out_path.exists())
         loaded = json.loads(out_path.read_text(encoding="utf-8"))
         self.assertEqual(loaded["report_id"], report["report_id"])
-        self.assertEqual(loaded["scenario_evaluation"]["passed_scenarios"], 443)
-        self.assertEqual(loaded["scenario_evaluation"]["routing_matrix_denominator_n"], 444)
-        self.assertEqual(loaded["scenario_evaluation"]["routing_matrix_mean_modeled_latency_ms"], 173.0)
-        self.assertEqual(loaded["ontology_simulations_summary"]["total_ontology_simulations"], 107)
-        self.assertEqual(loaded["ontology_simulations_summary"]["ontology_simulation_mean_modeled_latency_ms"], 156.0)
+        self.assertEqual(loaded["scenario_evaluation"]["passed_scenarios"], 539)
+        self.assertEqual(loaded["scenario_evaluation"]["routing_matrix_denominator_n"], 540)
+        self.assertEqual(loaded["scenario_evaluation"]["routing_matrix_mean_modeled_latency_ms"], 148.0)
+        self.assertEqual(loaded["ontology_simulations_summary"]["total_ontology_simulations"], 131)
+        self.assertEqual(loaded["ontology_simulations_summary"]["ontology_simulation_mean_modeled_latency_ms"], 132.0)
+        self.assertEqual(loaded["ontology_simulations_summary"]["r123_130_simulation_mean_modeled_latency_ms"], 133.0)
+        self.assertEqual(loaded["ontology_simulations_summary"]["r122_129_simulation_mean_modeled_latency_ms"], 134.0)
+        self.assertEqual(loaded["ontology_simulations_summary"]["r121_128_simulation_mean_modeled_latency_ms"], 135.0)
+        self.assertEqual(loaded["ontology_simulations_summary"]["r120_127_simulation_mean_modeled_latency_ms"], 136.0)
+        self.assertEqual(loaded["ontology_simulations_summary"]["r119_126_simulation_mean_modeled_latency_ms"], 137.0)
+        self.assertEqual(loaded["ontology_simulations_summary"]["r118_125_simulation_mean_modeled_latency_ms"], 138.0)
+        self.assertEqual(loaded["ontology_simulations_summary"]["r117_124_simulation_mean_modeled_latency_ms"], 139.0)
+        self.assertEqual(loaded["ontology_simulations_summary"]["r116_123_simulation_mean_modeled_latency_ms"], 140.0)
+        self.assertEqual(loaded["ontology_simulations_summary"]["r115_122_simulation_mean_modeled_latency_ms"], 141.0)
+        self.assertEqual(loaded["ontology_simulations_summary"]["r114_121_simulation_mean_modeled_latency_ms"], 142.0)
+        self.assertEqual(loaded["ontology_simulations_summary"]["r113_120_simulation_mean_modeled_latency_ms"], 143.0)
+        self.assertEqual(loaded["ontology_simulations_summary"]["r112_119_simulation_mean_modeled_latency_ms"], 144.0)
+        self.assertEqual(loaded["ontology_simulations_summary"]["r111_118_simulation_mean_modeled_latency_ms"], 145.0)
+        self.assertEqual(loaded["ontology_simulations_summary"]["r110_117_simulation_mean_modeled_latency_ms"], 146.0)
+        self.assertEqual(loaded["ontology_simulations_summary"]["r109_116_simulation_mean_modeled_latency_ms"], 147.0)
+        self.assertEqual(loaded["ontology_simulations_summary"]["r108_115_simulation_mean_modeled_latency_ms"], 148.0)
+        self.assertEqual(loaded["ontology_simulations_summary"]["r107_114_simulation_mean_modeled_latency_ms"], 149.0)
+        self.assertEqual(loaded["ontology_simulations_summary"]["r106_113_simulation_mean_modeled_latency_ms"], 150.0)
+        self.assertEqual(loaded["ontology_simulations_summary"]["r105_112_simulation_mean_modeled_latency_ms"], 151.0)
+        self.assertEqual(loaded["ontology_simulations_summary"]["r104_111_simulation_mean_modeled_latency_ms"], 152.0)
+        self.assertEqual(loaded["ontology_simulations_summary"]["r103_110_simulation_mean_modeled_latency_ms"], 153.0)
+        self.assertEqual(loaded["ontology_simulations_summary"]["r102_109_simulation_mean_modeled_latency_ms"], 154.0)
+        self.assertEqual(loaded["ontology_simulations_summary"]["r101_108_simulation_mean_modeled_latency_ms"], 155.0)
+        self.assertEqual(loaded["ontology_simulations_summary"]["r100_107_simulation_mean_modeled_latency_ms"], 156.0)
         self.assertEqual(loaded["ontology_simulations_summary"]["r99_106_simulation_mean_modeled_latency_ms"], 157.0)
         self.assertEqual(loaded["ontology_simulations_summary"]["r98_105_simulation_mean_modeled_latency_ms"], 158.0)
         self.assertEqual(loaded["ontology_simulations_summary"]["r97_104_simulation_mean_modeled_latency_ms"], 159.0)
@@ -2807,10 +3437,10 @@ class TestDataLabBenchmarkSuite(unittest.TestCase):
         self.assertEqual(loaded["ontology_simulations_summary"]["r4_11_simulation_mean_modeled_latency_ms"], 584.09)
         self.assertEqual(loaded["ontology_simulations_summary"]["r3_10_simulation_mean_modeled_latency_ms"], 596.0)
         refs = loaded["provenance"]["vendor_published_spec_references"]
-        self.assertEqual(len(refs), 103)
+        self.assertEqual(len(refs), 127)
         for ref in refs:
             self.assertTrue(ref["official_url"].startswith("https://"))
-            self.assertIn(ref["as_of"], ("2026-11-08", "2026-11-09", "2026-11-10", "2026-11-11", "2026-11-12", "2026-11-13", "2026-11-14"))
+            self.assertIn(ref["as_of"], ("2026-11-08", "2026-11-09", "2026-11-10", "2026-11-11", "2026-11-12", "2026-11-13", "2026-11-14", "2026-11-15"))
         self.assertIn("retail_cross_cloud_planning", loaded["ontology_simulations"])
         self.assertIn("financial_multi_cloud_fraud", loaded["ontology_simulations"])
         self.assertIn("finops_rayfin_observability", loaded["ontology_simulations"])
@@ -2916,6 +3546,30 @@ class TestDataLabBenchmarkSuite(unittest.TestCase):
         self.assertIn("global_electrical_steel_goes_fabric_sendzimir_decarb_goss_texture_vs_4clouds", loaded["ontology_simulations"])
         self.assertIn("global_lithium_hydroxide_spodumene_fabric_calcination_mvr_crystallizer_vs_4clouds", loaded["ontology_simulations"])
         self.assertIn("global_euv_light_source_fabric_tin_droplet_lpp_collector_cnt_pellicle_vs_4clouds", loaded["ontology_simulations"])
+        self.assertIn("global_hbm4_hybrid_bonding_fabric_16hi_tsv_cucu_cmp_dishing_muf_vs_4clouds", loaded["ontology_simulations"])
+        self.assertIn("global_glass_core_substrate_fabric_tgv_laser_lide_metallization_warpage_vs_4clouds", loaded["ontology_simulations"])
+        self.assertIn("global_solid_state_battery_fabric_sulfide_argyrodite_dry_electrode_h2s_wip_vs_4clouds", loaded["ontology_simulations"])
+        self.assertIn("global_perovskite_silicon_tandem_fabric_slot_die_vasp_crystallization_ald_vs_4clouds", loaded["ontology_simulations"])
+        self.assertIn("global_high_temp_superconductor_fabric_rebco_pld_ibad_quench_magnet_vs_4clouds", loaded["ontology_simulations"])
+        self.assertIn("global_circrna_mrna_biopharma_fabric_enzymatic_ivt_dsrna_tff_lnp_vs_4clouds", loaded["ontology_simulations"])
+        self.assertIn("global_esaf_aviation_fuel_fabric_rwgs_fischer_tropsch_hydrocracking_vs_4clouds", loaded["ontology_simulations"])
+        self.assertIn("global_2nm_gaa_nanosheet_fabric_atomic_layer_etch_epi_bspdn_vs_4clouds", loaded["ontology_simulations"])
+        self.assertIn("global_rare_earth_magnet_ndfeb_fabric_solvent_extraction_sintering_gbd_vs_4clouds", loaded["ontology_simulations"])
+        self.assertIn("global_reusable_methalox_rocket_fabric_ffsc_preburner_turbopump_plume_oes_vs_4clouds", loaded["ontology_simulations"])
+        self.assertIn("global_sodium_ion_battery_fabric_prussian_white_hard_carbon_plating_vs_4clouds", loaded["ontology_simulations"])
+        self.assertIn("global_subsea_hvdc_cable_fabric_vcv_extrusion_methane_degassing_pd_vs_4clouds", loaded["ontology_simulations"])
+        self.assertIn("global_radiopharma_theranostics_fabric_lutetium177_actinium225_hotcell_coi_vs_4clouds", loaded["ontology_simulations"])
+        self.assertIn("global_cpo_silicon_photonics_fabric_tfln_mrr_laser_packaging_vs_4clouds", loaded["ontology_simulations"])
+        self.assertIn("global_cryogenic_lh2_fabric_ortho_para_conversion_turboexpander_boiloff_vs_4clouds", loaded["ontology_simulations"])
+        self.assertIn("global_green_emethanol_fabric_co2_hydrogenation_sintering_distillation_vs_4clouds", loaded["ontology_simulations"])
+        self.assertIn("global_ahss_galvanneal_lme_fabric_dewpoint_xrd_spot_welding_vs_4clouds", loaded["ontology_simulations"])
+        self.assertIn("global_gan_on_si_qst_fabric_mocvd_epitaxy_wafer_bow_dynamic_rdson_vs_4clouds", loaded["ontology_simulations"])
+        self.assertIn("global_single_crystal_superalloy_fabric_bridgman_casting_heat_treat_tbc_vs_4clouds", loaded["ontology_simulations"])
+        self.assertIn("global_euv_photoresist_ultrapure_chemicals_fabric_ppt_metal_pag_pou_vs_4clouds", loaded["ontology_simulations"])
+        self.assertIn("global_extreme_optics_fabric_mrf_ion_beam_figuring_sub_angstrom_vs_4clouds", loaded["ontology_simulations"])
+        self.assertIn("global_crispr_gene_editing_lnp_fabric_herringbone_microfluidics_sgrna_vs_4clouds", loaded["ontology_simulations"])
+        self.assertIn("global_electronic_specialty_gases_fabric_silane_nf3_wf6_cryo_rectification_vs_4clouds", loaded["ontology_simulations"])
+        self.assertIn("global_cvd_diamond_wafer_fabric_mpcvd_plasma_oes_laser_liftoff_vs_4clouds", loaded["ontology_simulations"])
 
 
 if __name__ == "__main__":
