@@ -4399,6 +4399,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r342File),'utf8');
       assert.ok(txt.includes('2,120.00')&&txt.includes('4,100.00')&&txt.includes('6,220.00')&&txt.includes('115.00')&&txt.includes('350.00')&&txt.includes('465.00')&&txt.includes('5,755.00')&&txt.includes('92.52%')&&txt.includes('not_measured'),r342File+': contains exact 11-15 R40 robotskillfactory+openh3regen2k closed-form parameters');
     }
+    // 2026-11-15 Night Round 41 (R343: adamholter/aa-plus + dminghao12-dotcom/bluewhite-ppt-skills) verification
+    const r343PathA=1820.00+39.0*100.00;
+    assert.equal(r343PathA.toFixed(2),'5720.00','11-15 R41 Path A total');
+    const r343PathC=85.00+3.5*100.00;
+    assert.equal(r343PathC.toFixed(2),'435.00','11-15 R41 Path C total');
+    assert.equal((r343PathA-r343PathC).toFixed(2),'5285.00','11-15 R41 savings vs Path A');
+    assert.equal(((r343PathA-r343PathC)/r343PathA*100).toFixed(2),'92.40','11-15 R41 pct savings vs Path A');
+    for(const r343File of ['workshops/github-trending-radar/docs/aa-plus-bluewhite-ppt-skills-artificial-analysis-pareto-effort-radar-native-18pt-pptx-lint-selection-faq.md','workshops/github-trending-radar/docs/aa-plus-bluewhite-ppt-skills-artificial-analysis-pareto-effort-radar-native-18pt-pptx-lint-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r41-aaplus-bluewhiteppt.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r343File),'utf8');
+      assert.ok(txt.includes('1,820.00')&&txt.includes('3,900.00')&&txt.includes('5,720.00')&&txt.includes('85.00')&&txt.includes('350.00')&&txt.includes('435.00')&&txt.includes('5,285.00')&&txt.includes('92.40%')&&txt.includes('not_measured'),r343File+': contains exact 11-15 R41 aaplus+bluewhiteppt closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
