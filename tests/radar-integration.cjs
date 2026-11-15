@@ -4091,6 +4091,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r314File),'utf8');
       assert.ok(txt.includes('1,890.00')&&txt.includes('3,900.00')&&txt.includes('5,790.00')&&txt.includes('120.00')&&txt.includes('350.00')&&txt.includes('470.00')&&txt.includes('5,320.00')&&txt.includes('91.88%')&&txt.includes('not_measured'),r314File+': contains exact 11-15 R12 execorchestra+coordinator closed-form parameters');
     }
+    // 2026-11-15 Night Round 13 (R315: ineedfoundmyway/planrelay + allen-hsu/claude-code-sketch) verification
+    const r315PathA=1690.00+38.0*100.00;
+    assert.equal(r315PathA.toFixed(2),'5490.00','11-15 R13 Path A total');
+    const r315PathC=95.00+3.5*100.00;
+    assert.equal(r315PathC.toFixed(2),'445.00','11-15 R13 Path C total');
+    assert.equal((r315PathA-r315PathC).toFixed(2),'5045.00','11-15 R13 savings vs Path A');
+    assert.equal(((r315PathA-r315PathC)/r315PathA*100).toFixed(2),'91.89','11-15 R13 pct savings vs Path A');
+    for(const r315File of ['workshops/github-trending-radar/docs/planrelay-claude-code-sketch-sha256-plan-diff-review-companion-17tool-terminal-diagram-selection-faq.md','workshops/github-trending-radar/docs/planrelay-claude-code-sketch-sha256-plan-diff-review-companion-17tool-terminal-diagram-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r13-planrelay-claudecodesketch.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r315File),'utf8');
+      assert.ok(txt.includes('1,690.00')&&txt.includes('3,800.00')&&txt.includes('5,490.00')&&txt.includes('95.00')&&txt.includes('350.00')&&txt.includes('445.00')&&txt.includes('5,045.00')&&txt.includes('91.89%')&&txt.includes('not_measured'),r315File+': contains exact 11-15 R13 planrelay+claudecodesketch closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
