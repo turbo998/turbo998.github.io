@@ -4234,6 +4234,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r327File),'utf8');
       assert.ok(txt.includes('2,060.00')&&txt.includes('4,100.00')&&txt.includes('6,160.00')&&txt.includes('120.00')&&txt.includes('350.00')&&txt.includes('470.00')&&txt.includes('5,690.00')&&txt.includes('92.37%')&&txt.includes('not_measured'),r327File+': contains exact 11-15 R25 vennvdm+ciproto closed-form parameters');
     }
+    // 2026-11-15 Night Round 26 (R328: Noniv/abyssal-garden + Leonxlnx/room-at-dawn) verification
+    const r328PathA=2040.00+40.0*100.00;
+    assert.equal(r328PathA.toFixed(2),'6040.00','11-15 R26 Path A total');
+    const r328PathC=110.00+3.5*100.00;
+    assert.equal(r328PathC.toFixed(2),'460.00','11-15 R26 Path C total');
+    assert.equal((r328PathA-r328PathC).toFixed(2),'5580.00','11-15 R26 savings vs Path A');
+    assert.equal(((r328PathA-r328PathC)/r328PathA*100).toFixed(2),'92.38','11-15 R26 pct savings vs Path A');
+    for(const r328File of ['workshops/github-trending-radar/docs/abyssal-garden-room-at-dawn-96kb-webgpu-procedural-world-bvh-pathtraced-4k-hdr10-selection-faq.md','workshops/github-trending-radar/docs/abyssal-garden-room-at-dawn-96kb-webgpu-procedural-world-bvh-pathtraced-4k-hdr10-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r26-abyssalgarden-roomatdawn.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r328File),'utf8');
+      assert.ok(txt.includes('2,040.00')&&txt.includes('4,000.00')&&txt.includes('6,040.00')&&txt.includes('110.00')&&txt.includes('350.00')&&txt.includes('460.00')&&txt.includes('5,580.00')&&txt.includes('92.38%')&&txt.includes('not_measured'),r328File+': contains exact 11-15 R26 abyssalgarden+roomatdawn closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
