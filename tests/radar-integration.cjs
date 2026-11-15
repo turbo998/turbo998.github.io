@@ -4531,6 +4531,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r354File),'utf8');
       assert.ok(txt.includes('2,020.00')&&txt.includes('4,150.00')&&txt.includes('6,170.00')&&txt.includes('95.00')&&txt.includes('360.00')&&txt.includes('455.00')&&txt.includes('5,715.00')&&txt.includes('92.63%')&&txt.includes('not_measured'),r354File+': contains exact 11-15 R52 mkwrecomp+signdrop closed-form parameters');
     }
+    // 2026-11-15 Night Round 53 (R355 Milestone: huamidev/GestaltX + Kianuni/Erosion-CN + kolbicz/WQFiles) verification
+    const r355PathA=1860.00+39.0*100.00;
+    assert.equal(r355PathA.toFixed(2),'5760.00','11-15 R53 Path A total');
+    const r355PathC=85.00+3.5*100.00;
+    assert.equal(r355PathC.toFixed(2),'435.00','11-15 R53 Path C total');
+    assert.equal((r355PathA-r355PathC).toFixed(2),'5325.00','11-15 R53 savings vs Path A');
+    assert.equal(((r355PathA-r355PathC)/r355PathA*100).toFixed(2),'92.45','11-15 R53 pct savings vs Path A');
+    for(const r355File of ['workshops/github-trending-radar/docs/gestaltx-erosion-cn-wqfiles-ios27-worse-query-mobilegestalt-pwrite-vault-selection-faq.md','workshops/github-trending-radar/docs/gestaltx-erosion-cn-wqfiles-ios27-worse-query-mobilegestalt-pwrite-vault-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r53-gestaltx-erosioncn.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r355File),'utf8');
+      assert.ok(txt.includes('1,860.00')&&txt.includes('3,900.00')&&txt.includes('5,760.00')&&txt.includes('85.00')&&txt.includes('350.00')&&txt.includes('435.00')&&txt.includes('5,325.00')&&txt.includes('92.45%')&&txt.includes('not_measured'),r355File+': contains exact 11-15 R53 gestaltx+erosioncn closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
