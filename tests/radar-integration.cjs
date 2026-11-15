@@ -4135,6 +4135,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r318File),'utf8');
       assert.ok(txt.includes('2,080.00')&&txt.includes('4,200.00')&&txt.includes('6,280.00')&&txt.includes('140.00')&&txt.includes('350.00')&&txt.includes('490.00')&&txt.includes('5,790.00')&&txt.includes('92.20%')&&txt.includes('not_measured'),r318File+': contains exact 11-15 R16 checkpointforensics+amdkernels closed-form parameters');
     }
+    // 2026-11-15 Night Round 17 (R319: areu01or00/qwen-tts-neuron-mapping + PedroMarinhoDev/ComfyUI-ReCaVSR) verification
+    const r319PathA=1980.00+39.0*100.00;
+    assert.equal(r319PathA.toFixed(2),'5880.00','11-15 R17 Path A total');
+    const r319PathC=115.00+3.5*100.00;
+    assert.equal(r319PathC.toFixed(2),'465.00','11-15 R17 Path C total');
+    assert.equal((r319PathA-r319PathC).toFixed(2),'5415.00','11-15 R17 savings vs Path A');
+    assert.equal(((r319PathA-r319PathC)/r319PathA*100).toFixed(2),'92.09','11-15 R17 pct savings vs Path A');
+    for(const r319File of ['workshops/github-trending-radar/docs/qwen-tts-neuron-mapping-comfyui-recavsr-417-speech-neuron-steering-1step-streaming-vsr-selection-faq.md','workshops/github-trending-radar/docs/qwen-tts-neuron-mapping-comfyui-recavsr-417-speech-neuron-steering-1step-streaming-vsr-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r17-qwenttsneurons-recavsr.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r319File),'utf8');
+      assert.ok(txt.includes('1,980.00')&&txt.includes('3,900.00')&&txt.includes('5,880.00')&&txt.includes('115.00')&&txt.includes('350.00')&&txt.includes('465.00')&&txt.includes('5,415.00')&&txt.includes('92.09%')&&txt.includes('not_measured'),r319File+': contains exact 11-15 R17 qwenttsneurons+recavsr closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
