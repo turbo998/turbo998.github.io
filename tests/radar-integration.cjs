@@ -4333,6 +4333,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r336File),'utf8');
       assert.ok(txt.includes('1,980.00')&&txt.includes('4,000.00')&&txt.includes('5,980.00')&&txt.includes('100.00')&&txt.includes('350.00')&&txt.includes('450.00')&&txt.includes('5,530.00')&&txt.includes('92.47%')&&txt.includes('not_measured'),r336File+': contains exact 11-15 R34 garlicllm+c6lang closed-form parameters');
     }
+    // 2026-11-15 Night Round 35 (R337: jacobvm04/slam-dunk + BottingRocks/Shape) verification
+    const r337PathA=2060.00+41.0*100.00;
+    assert.equal(r337PathA.toFixed(2),'6160.00','11-15 R35 Path A total');
+    const r337PathC=110.00+3.5*100.00;
+    assert.equal(r337PathC.toFixed(2),'460.00','11-15 R35 Path C total');
+    assert.equal((r337PathA-r337PathC).toFixed(2),'5700.00','11-15 R35 savings vs Path A');
+    assert.equal(((r337PathA-r337PathC)/r337PathA*100).toFixed(2),'92.53','11-15 R35 pct savings vs Path A');
+    for(const r337File of ['workshops/github-trending-radar/docs/slam-dunk-shape-egocentric-slam-camera-gyro-calibration-vm-deobfuscation-signal-codec-selection-faq.md','workshops/github-trending-radar/docs/slam-dunk-shape-egocentric-slam-camera-gyro-calibration-vm-deobfuscation-signal-codec-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r35-slamdunk-shape.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r337File),'utf8');
+      assert.ok(txt.includes('2,060.00')&&txt.includes('4,100.00')&&txt.includes('6,160.00')&&txt.includes('110.00')&&txt.includes('350.00')&&txt.includes('460.00')&&txt.includes('5,700.00')&&txt.includes('92.53%')&&txt.includes('not_measured'),r337File+': contains exact 11-15 R35 slamdunk+shape closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
