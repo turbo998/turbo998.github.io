@@ -4047,6 +4047,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r310File),'utf8');
       assert.ok(txt.includes('1,820.00')&&txt.includes('3,610.00')&&txt.includes('5,430.00')&&txt.includes('90.00')&&txt.includes('332.50')&&txt.includes('422.50')&&txt.includes('5,007.50')&&txt.includes('92.22%')&&txt.includes('not_measured'),r310File+': contains exact 11-15 R8 scarlet+parallax closed-form parameters');
     }
+    // 2026-11-15 Night Round 9 (R311: vaibhav-space/my-ai-coding-workflow + OnlyTerp/turnpack) verification
+    const r311PathA=1860.00+39.0*100.00;
+    assert.equal(r311PathA.toFixed(2),'5760.00','11-15 R9 Path A total');
+    const r311PathC=125.00+3.5*100.00;
+    assert.equal(r311PathC.toFixed(2),'475.00','11-15 R9 Path C total');
+    assert.equal((r311PathA-r311PathC).toFixed(2),'5285.00','11-15 R9 savings vs Path A');
+    assert.equal(((r311PathA-r311PathC)/r311PathA*100).toFixed(2),'91.75','11-15 R9 pct savings vs Path A');
+    for(const r311File of ['workshops/github-trending-radar/docs/my-ai-coding-workflow-turnpack-3stage-critic-pipeline-test-gated-atomic-rollback-mcp-selection-faq.md','workshops/github-trending-radar/docs/my-ai-coding-workflow-turnpack-3stage-critic-pipeline-test-gated-atomic-rollback-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r9-codingworkflow-turnpack.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r311File),'utf8');
+      assert.ok(txt.includes('1,860.00')&&txt.includes('3,900.00')&&txt.includes('5,760.00')&&txt.includes('125.00')&&txt.includes('350.00')&&txt.includes('475.00')&&txt.includes('5,285.00')&&txt.includes('91.75%')&&txt.includes('not_measured'),r311File+': contains exact 11-15 R9 codingworkflow+turnpack closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
