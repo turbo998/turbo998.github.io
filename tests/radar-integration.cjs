@@ -4014,6 +4014,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r307File),'utf8');
       assert.ok(txt.includes('1,740.00')&&txt.includes('3,610.00')&&txt.includes('5,350.00')&&txt.includes('95.00')&&txt.includes('332.50')&&txt.includes('427.50')&&txt.includes('4,922.50')&&txt.includes('92.01%')&&txt.includes('not_measured'),r307File+': contains exact 11-15 R5 peakcut+rea-toon closed-form parameters');
     }
+    // 2026-11-15 Night Round 6 (R308: Vaibhaav-Tiwari/deepseek-v3-jax + yasakani-dev/yasakani) verification
+    const r308PathA=2140.00+38.0*105.00;
+    assert.equal(r308PathA.toFixed(2),'6130.00','11-15 R6 Path A total');
+    const r308PathC=115.00+3.5*105.00;
+    assert.equal(r308PathC.toFixed(2),'482.50','11-15 R6 Path C total');
+    assert.equal((r308PathA-r308PathC).toFixed(2),'5647.50','11-15 R6 savings vs Path A');
+    assert.equal(((r308PathA-r308PathC)/r308PathA*100).toFixed(2),'92.13','11-15 R6 pct savings vs Path A');
+    for(const r308File of ['workshops/github-trending-radar/docs/deepseek-v3-jax-yasakani-190line-pure-jax-mla-moe-rtx5090-qwen38-27b-engine-selection-faq.md','workshops/github-trending-radar/docs/deepseek-v3-jax-yasakani-190line-pure-jax-mla-moe-rtx5090-qwen38-27b-engine-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r6-deepseekjax-yasakani.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r308File),'utf8');
+      assert.ok(txt.includes('2,140.00')&&txt.includes('3,990.00')&&txt.includes('6,130.00')&&txt.includes('115.00')&&txt.includes('367.50')&&txt.includes('482.50')&&txt.includes('5,647.50')&&txt.includes('92.13%')&&txt.includes('not_measured'),r308File+': contains exact 11-15 R6 deepseek-v3-jax+yasakani closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
