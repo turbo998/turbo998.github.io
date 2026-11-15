@@ -3970,6 +3970,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r303File),'utf8');
       assert.ok(txt.includes('1,920.00')&&txt.includes('4,100.00')&&txt.includes('6,020.00')&&txt.includes('140.00')&&txt.includes('350.00')&&txt.includes('490.00')&&txt.includes('5,530.00')&&txt.includes('91.86%')&&txt.includes('not_measured'),r303File+': contains exact 11-15 R1 loopforge+skillevaluator closed-form parameters');
     }
+    // 2026-11-15 Night Round 2 (R304: ag-ui-protocol/ag-ui + google-labs-code/stitch-skills) verification
+    const r304PathA=1840.00+39.0*100.00;
+    assert.equal(r304PathA.toFixed(2),'5740.00','11-15 R2 Path A total');
+    const r304PathC=130.00+3.5*100.00;
+    assert.equal(r304PathC.toFixed(2),'480.00','11-15 R2 Path C total');
+    assert.equal((r304PathA-r304PathC).toFixed(2),'5260.00','11-15 R2 savings vs Path A');
+    assert.equal(((r304PathA-r304PathC)/r304PathA*100).toFixed(2),'91.64','11-15 R2 pct savings vs Path A');
+    for(const r304File of ['workshops/github-trending-radar/docs/ag-ui-stitch-skills-agent-user-interaction-protocol-bidirectional-design-build-skills-selection-faq.md','workshops/github-trending-radar/docs/ag-ui-stitch-skills-agent-user-interaction-protocol-bidirectional-design-build-skills-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r2-agui-stitchskills.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r304File),'utf8');
+      assert.ok(txt.includes('1,840.00')&&txt.includes('3,900.00')&&txt.includes('5,740.00')&&txt.includes('130.00')&&txt.includes('350.00')&&txt.includes('480.00')&&txt.includes('5,260.00')&&txt.includes('91.64%')&&txt.includes('not_measured'),r304File+': contains exact 11-15 R2 ag-ui+stitch-skills closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
