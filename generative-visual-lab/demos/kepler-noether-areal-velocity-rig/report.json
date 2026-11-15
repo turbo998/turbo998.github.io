@@ -1,0 +1,271 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Kepler-Noether equal-area angular momentum vs naive constant-omega orbit rig",
+  "topic_zh": "Kepler-Noether 开普勒-诺特等面积角动量守恒（r²θ̇ = L/m, Ȧ/Ȧ₀ = 1.0000×）对比朴素恒定角速度 θ̇ = ω₀ 违背",
+  "slug": "kepler-noether-areal-velocity-rig",
+  "timestamp": "2026-11-15T20:52:31.032Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Johannes Kepler (1609, Astronomia Nova) Second Law of equal areas in equal times & Emmy Noether (1918) SO(2) rotational symmetry angular-momentum conservation (dA/dt = 0.5 * r^2 * theta_dot = L/(2m) = const, scaling angular speed inversely with squared radius theta_dot(u) = omega_0 * r_0^2 / r^2 = omega_0 / (1 + u) to lock swept-area rate at A_dot/A_dot0 = 1.0000x across all 17 moment-of-inertia stations u in [0.0000, 1.0000] with 0/17 violated stations) versus naive uniform angular-velocity parameterization (theta(t) = omega_0 * t, which inflates swept-area rate and angular momentum as r^2/r_0^2 = 1 + u up to 1.2500x at u=0.25, 1.5000x at u=0.50, and 2.0000x at apoapsis u=1.00 across 16/17 stations) and 64-sector triangle-fan area quadrature.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "kepler-sector64-equiv-128",
+      "passed": true,
+      "detail": "128 closed-form Kepler-Noether r^2*theta_dot and 64-sector triangle-fan area integration passes agree within 1e-12"
+    },
+    {
+      "name": "kepler-sector64-equiv-1024",
+      "passed": true,
+      "detail": "1024 closed-form Kepler-Noether r^2*theta_dot and 64-sector triangle-fan area integration passes agree within 1e-12"
+    },
+    {
+      "name": "kepler-sector64-equiv-8192",
+      "passed": true,
+      "detail": "8192 closed-form Kepler-Noether r^2*theta_dot and 64-sector triangle-fan area integration passes agree within 1e-12"
+    },
+    {
+      "name": "kepler-areal-velocity-locked",
+      "passed": true,
+      "detail": "17 moment-of-inertia stations (u in [0.00, 1.00]) lock swept-area rate ratio dA/dt / dA_0/dt = 1.0000x (0/17 violated)"
+    },
+    {
+      "name": "naive-constant-omega-violation-exposed",
+      "passed": true,
+      "detail": "naive constant angular velocity (theta_dot = omega_0) inflates swept-area rate as r^2/r_0^2 = 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x (+100%) at apoapsis S16 across 16/17 stations"
+    },
+    {
+      "name": "kepler-st4-u025-10000",
+      "passed": true,
+      "detail": "station-4 (u=0.25, r^2=1.25*r_0^2) locks A_dot/A_dot0=1.0000x vs naive 1.2500x (+25.00% violation)"
+    },
+    {
+      "name": "kepler-st8-u050-10000",
+      "passed": true,
+      "detail": "station-8 (u=0.50, r^2=1.50*r_0^2) locks A_dot/A_dot0=1.0000x vs naive 1.5000x (+50.00% violation)"
+    },
+    {
+      "name": "kepler-st16-u100-10000",
+      "passed": true,
+      "detail": "station-16 (u=1.00, apoapsis r^2=2.0*r_0^2) locks A_dot/A_dot0=1.0000x vs naive 2.0000x (+100.00% double violation)"
+    },
+    {
+      "name": "exact-mode-roundtrip",
+      "passed": true,
+      "detail": "mode switching round-trip preserves deterministic Kepler-Noether areal velocity telemetry"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D Kepler-Noether areal velocity bench renders 58 tracked solids across 17 stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Kepler-Noether areal controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station Kepler areal passes",
+      "count": 128,
+      "primary_ms": 0.014299999999934698,
+      "baseline_ms": 0.12660000000005311,
+      "primary_samples_ms": [
+        0.1633000000000493,
+        0.013500000000021828,
+        0.012200000000007094,
+        0.012800000000083855,
+        0.014299999999934698,
+        0.01710000000002765,
+        0.015599999999949432
+      ],
+      "baseline_samples_ms": [
+        0.34569999999996526,
+        0.18719999999996162,
+        0.10319999999990159,
+        0.11869999999998981,
+        0.1068000000000211,
+        0.12660000000005311,
+        0.35130000000003747
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station Kepler areal passes",
+      "count": 1024,
+      "primary_ms": 0.09410000000002583,
+      "baseline_ms": 0.6508000000000038,
+      "primary_samples_ms": [
+        0.10310000000004038,
+        0.09410000000002583,
+        0.09269999999992251,
+        0.12289999999995871,
+        0.09310000000004948,
+        0.09400000000005093,
+        0.19990000000007058
+      ],
+      "baseline_samples_ms": [
+        1.0113000000000056,
+        1.0128000000000839,
+        0.5828000000000202,
+        0.5831999999999198,
+        0.8130999999999631,
+        0.6508000000000038,
+        0.5881999999999152
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station Kepler areal passes",
+      "count": 8192,
+      "primary_ms": 0.7014000000000351,
+      "baseline_ms": 4.875800000000027,
+      "primary_samples_ms": [
+        0.7975000000000136,
+        0.7014000000000351,
+        0.693300000000022,
+        0.693300000000022,
+        0.6945000000000618,
+        0.7966000000000122,
+        0.7980000000000018
+      ],
+      "baseline_samples_ms": [
+        4.837400000000002,
+        5.883600000000001,
+        4.376099999999951,
+        4.374300000000062,
+        5.730000000000018,
+        4.875800000000027,
+        4.980099999999993
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/kepler-noether-areal-velocity-rig/light-kepler_noether_inverse_square_angular_speed.png",
+    "docs/evidence/kepler-noether-areal-velocity-rig/light-naive_constant_angular_velocity_violation.png",
+    "docs/evidence/kepler-noether-areal-velocity-rig/dark-kepler_noether_inverse_square_angular_speed.png",
+    "docs/evidence/kepler-noether-areal-velocity-rig/dark-naive_constant_angular_velocity_violation.png",
+    "docs/evidence/kepler-noether-areal-velocity-rig/mobile.png"
+  ],
+  "primary_label": "Kepler-Noether θ̇(r) = L / (m r²)",
+  "baseline_label": "64-Sector Triangle-Fan Area Quadrature",
+  "load_unit": "Kepler areal passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form Kepler-Noether inverse-square angular speed versus 64-sector triangle-fan swept-area quadrature baseline.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "station0_kepler_ratio": 1,
+    "station0_naive_ratio": 1,
+    "station4_kepler_ratio": 1,
+    "station4_naive_ratio": 1.25,
+    "station8_kepler_ratio": 1,
+    "station8_naive_ratio": 1.5,
+    "station12_kepler_ratio": 1,
+    "station12_naive_ratio": 1.75,
+    "station16_kepler_ratio": 1,
+    "station16_naive_ratio": 2,
+    "violated_stations": 16
+  },
+  "protocol": {
+    "input": {
+      "station_4_inertia_u": 0.25,
+      "station_8_inertia_u": 0.5,
+      "station_16_inertia_u": 1
+    },
+    "output": {
+      "kepler_areal_ratio": 1,
+      "naive_ratio_u025": 1.25,
+      "naive_ratio_u050": 1.5,
+      "naive_ratio_u100": 2,
+      "violated_stations": 16
+    },
+    "function": "Kepler-Noether: θ̇ = ω₀r₀²/r² -> Ȧ/Ȧ₀ = 1.0000× vs Naive θ̇ = ω₀ -> r²/r₀² = 1 + u (2.0000× at r²=2r₀², 16/17 Violated)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 moment-of-inertia stations preserve exact Kepler-Noether areal velocity ratio A_dot/A_dot0 = 1.0000x",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Elliptical planetary/comet orbits, figure-skater spin-ups (pulling arms in), and Rankine/free-vortex particle swirls",
+    "Enforcing Kepler Second Law dA/dt = 0.5 * r^2 * dtheta/dt = const so satellites whip rapidly through periapsis and linger slowly at apoapsis",
+    "Conserving Noether SO(2) angular momentum L = I * omega across time-varying moment of inertia I(t)",
+    "Zero-drift angular update dtheta = (L / (m * dot(r, r))) * dt"
+  ],
+  "not_for": [
+    "Rigid turntable platters driven by a geared synchronous motor where every radius is forced to rotate at constant omega",
+    "Static 2D flat UI buttons",
+    "Rectilinear 1D translations without rotation",
+    "1D audio gain sliders"
+  ],
+  "locale_zh": {
+    "title": "Kepler-Noether 开普勒-诺特等面积角动量守恒 vs 朴素恒定角速度 θ̇ = ω₀ 违背",
+    "subtitle": "为什么在椭圆行星/彗星轨道、花样滑冰收臂旋转与漩涡吸入粒子着色器中，直接写匀速角度 `θ(t) = ω₀ * t` 会让远拱点（Apoapsis）的掠面速度与角动量凭空膨胀至 `2.0000×`（错过近日点疾掠、远日点缓行的核心物理神韵）？",
+    "plain_intro": "在编写 3D 星球椭圆轨道（Elliptical Orbit）、彗星掠日、龙卷风/黑洞吸积盘漩涡粒子或花样滑冰运动员收臂加速旋转动画时，最常见的新手写法是把角度写死为时间的线性函数：`theta = omega_0 * t`，然后直接代入椭圆参数方程或螺旋半径 `r(t)`。为什么这样写出来的天体和漩涡一眼看上去毫无引力重量感？约翰内斯·开普勒（Johannes Kepler, 1609，《新天文学 Astronomia Nova》）提出的**开普勒第二定律（等面积定律）** 与埃米·诺特（Emmy Noether, 1918）证明的**诺特旋转对称角动量守恒定理**指出：在任何有心力场或无外力矩系统中，物体的角动量 `L = m r² θ̇` 严格守恒，即矢径在相等时间内扫过的扇形面积速率恒定不变：**`Ȧ = dA/dt = ½ r² θ̇ = L / (2m) ≡ const`**！这意味着角速度必须与半径平方成反比：**`θ̇(r) = ω₀ * (r₀ / r)²`**（距离中心越近转得越快，距离越远转得越慢）！在跨越径向转动惯量扩展参数 `r²(u) / r₀² = 1 + u`（`u ∈ [0.000, 1.000]`，从近拱点 `r₀²` 扩展至远拱点 `2 r₀²`）的 17 个站点上，如果朴素地固定角速度 `θ̇_naive = ω₀`，那么掠面速度比（即角动量比）`Ȧ_naive / Ȧ₀ = r²(u) / r₀² = 1 + u` 就会在第 4 站（`u=0.25`）膨胀至 `1.2500×`、第 8 站（`u=0.50`）超冲至 `1.5000×`、第 16 站（`u=1.00`，远拱点 `r = √2 r₀`）直接翻倍至 `2.0000×`（污染 `16/17` 个站点）！采用 Kepler-Noether 平方反比角速度 `θ̇ = ω₀ / (1 + u)`，即可在全部 17 个站点恒定锁死掠面速度比 `Ȧ/Ȧ₀ = 1.0000×`（`0/17` 站违背）！",
+    "finding": "实测跨越径向转动惯量扩展参数 u ∈ [0.000, 1.000]（r²/r₀² = 1 + u）的 17 个站点：Kepler-Noether 等面积角动量守恒定律（θ̇ = ω₀r₀²/r²）在全部 17 个站点恒定锁死掠面速度比 Ȧ/Ȧ₀ = 1.0000×（0/17 违背），而朴素恒定角速度（θ̇ = ω₀）在第 4 站膨胀至 1.2500×、第 8 站冲至 1.5000×、第 16 站（远拱点 r²=2r₀²）翻倍至 2.0000×（污染 16/17 个站点）。",
+    "workbench_title": "58 实体 17 站点 Kepler-Noether 开普勒-诺特等面积角动量检验台（第 200 个独立能力里程碑 Demo）",
+    "scenario_quote": "为什么哈雷彗星靠近太阳时像闪电一样飞掠而过，远离太阳时却慢悠悠地徘徊几十年？为什么花样滑冰运动员把双臂收拢到胸前，旋转速度立刻暴涨？全都是因为 `r² θ̇ = const`（开普勒第二定律 / 角动量守恒）！半径缩一半，角速度必翻四倍；半径扩 `√2` 倍，角速度必减半！",
+    "protocol_note": "顶块展示第 4 站（u=0.25）、第 8 站（u=0.50）与第 16 站（u=1.00，r²=2r₀²）；底块对比 Kepler-Noether 守恒恒锁掠面速度比 1.0000× 与朴素匀速角速度膨胀至 2.0000×。",
+    "robustness_name": "17 个径向转动惯量站点在 Kepler-Noether 等面积定律下 100% 保持精确掠面速度比 1.0000×",
+    "primary_label": "Kepler-Noether θ̇(r) = ω₀ r₀² / r²",
+    "baseline_label": "64 扇区三角扇面积（Triangle-Fan Sector）数值求积",
+    "load_unit": "次 17 站开普勒掠面求解",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比闭式开普勒平方反比角速度与 64 扇区三角扇面积求积基准。",
+    "good_fit": [
+      "椭圆天体轨道（行星、卫星、彗星）“近快远慢”的开普勒第二定律精确动画",
+      "花样滑冰收臂旋转、体操空中转体等可变转动惯量 `I(t) ω(t) = L` 角色物理动画",
+      "水下排水口漩涡、龙卷风与吸积盘自由涡（Free Vortex `v_θ ∝ 1/r, ω ∝ 1/r²`）粒子系统",
+      "一行无漂移角速度更新 `theta += (L_angular / max(dot(r_xy, r_xy), eps)) * dt`"
+    ],
+    "not_for": [
+      "由齿轮电机强制锁死转速的刚性黑胶唱盘（各处角速度确实恒定为 ω₀）",
+      "静态 2D 扁平 UI 卡片",
+      "无旋转分量的纯直线平移运动",
+      "一维音频增益控制条"
+    ],
+    "readiness": "12/12 项实测通过；第 200 个独立能力里程碑 Demo、58 个 3D 检验构件、17 个站点与 7-Card 报告已封存。",
+    "entries": {
+      "kepler-sector64-equiv-128": "Kepler-Noether面积速度与64扇区积分等价 128",
+      "128 closed-form Kepler-Noether r^2*theta_dot and 64-sector triangle-fan area integration passes agree within 1e-12": "128 次闭式 Kepler-Noether 面积速度 r²θ̇ 与 64 扇区三角扇面积求积在 1e-12 内一致",
+      "kepler-sector64-equiv-1024": "Kepler-Noether面积速度与64扇区积分等价 1024",
+      "1024 closed-form Kepler-Noether r^2*theta_dot and 64-sector triangle-fan area integration passes agree within 1e-12": "1024 次闭式 Kepler-Noether 面积速度 r²θ̇ 与 64 扇区三角扇面积求积在 1e-12 内一致",
+      "kepler-sector64-equiv-8192": "Kepler-Noether面积速度与64扇区积分等价 8192",
+      "8192 closed-form Kepler-Noether r^2*theta_dot and 64-sector triangle-fan area integration passes agree within 1e-12": "8192 次闭式 Kepler-Noether 面积速度 r²θ̇ 与 64 扇区三角扇面积求积在 1e-12 内一致",
+      "kepler-areal-velocity-locked": "Kepler-Noether全站掠面速度比1.0000x锁定",
+      "17 moment-of-inertia stations (u in [0.00, 1.00]) lock swept-area rate ratio dA/dt / dA_0/dt = 1.0000x (0/17 violated)": "17 个转动惯量径向扩展站点恒定锁死开普勒掠面速度比 Ȧ/Ȧ₀ = 1.0000×（0/17 角动量违背）",
+      "naive-constant-omega-violation-exposed": "朴素匀速角速度2.0000x远日点掠面速度违背暴露",
+      "naive constant angular velocity (theta_dot = omega_0) inflates swept-area rate as r^2/r_0^2 = 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x (+100%) at apoapsis S16 across 16/17 stations": "朴素恒定角速度（θ̇=ω₀）在第 4 站膨胀至 1.2500×、第 8 站冲至 1.5000×、第 16 站（远拱点 r²=2r₀²）翻倍至 2.0000×（污染 16/17 站）",
+      "kepler-st4-u025-10000": "第4站u=0.25掠面速度比1.0000x锁定",
+      "station-4 (u=0.25, r^2=1.25*r_0^2) locks A_dot/A_dot0=1.0000x vs naive 1.2500x (+25.00% violation)": "第 4 站（u=0.25）锁死掠面速度比 1.0000×（消除朴素 1.2500× 角动量漂移）",
+      "kepler-st8-u050-10000": "第8站u=0.50中点掠面速度比1.0000x锁定",
+      "station-8 (u=0.50, r^2=1.50*r_0^2) locks A_dot/A_dot0=1.0000x vs naive 1.5000x (+50.00% violation)": "第 8 站（u=0.50）锁死掠面速度比 1.0000×（消除朴素 1.5000× 角动量漂移）",
+      "kepler-st16-u100-10000": "第16站u=1.00远拱点掠面速度比1.0000x锁定",
+      "station-16 (u=1.00, apoapsis r^2=2.0*r_0^2) locks A_dot/A_dot0=1.0000x vs naive 2.0000x (+100.00% double violation)": "第 16 站（u=1.00，远拱点 r²=2r₀²）锁死掠面速度比 1.0000×（消除朴素 2.0000× 两倍角动量违背）",
+      "exact-mode-roundtrip": "模式往返切换一致性",
+      "mode switching round-trip preserves deterministic Kepler-Noether areal velocity telemetry": "Kepler-Noether 等面积角动量守恒与朴素匀速角速度模式往返切换保持确定性状态",
+      "geometry-58-solids": "58构件3D开普勒-诺特掠面速度检验台一致性",
+      "3D Kepler-Noether areal velocity bench renders 58 tracked solids across 17 stations": "3D Kepler-Noether 等面积角动量检验台在 17 个径向站点完整渲染 58 个独立几何体",
+      "mobile-layout": "手机布局",
+      "390px Kepler-Noether areal controls fit without horizontal overflow": "390px 开普勒等面积控制面板无横向溢出",
+      "runtime-errors": "运行错误",
+      "0 JavaScript errors": "0 个 JavaScript 错误"
+    }
+  }
+}

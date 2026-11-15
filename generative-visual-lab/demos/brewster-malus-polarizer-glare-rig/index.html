@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Brewster-Malus 正交偏振镜眩光消光 (R_p(θ_B)=0, cos²(90°)=0, I/I_sub=1.0000×) vs 朴素非偏振水面/湿路镜面眩光雾翳 — 17 站点实验台</title>
+  <script type="module" crossorigin src="../../assets/brewsterMalusPolarizerGlare-D3xawNiK.js"></script>
+  <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="modulepreload" crossorigin href="../../assets/three.module-7AmyneiW.js">
+  <link rel="stylesheet" crossorigin href="../../assets/airyStokesMultibouncePane-BmCc83iW.css">
+</head>
+<body>
+  <div class="rig-shell">
+    <header class="rig-header">
+      <div>
+        <span class="eyebrow">ROUND 164 · 174TH DEMO · BREWSTER-MALUS POLARIZER GLARE EXTINCTION BENCH</span>
+        <h1>Brewster-Malus 正交偏振镜眩光消光（<code>R_p(θ_B) = 0, cos²(90°) = 0, I/I_sub = 1.0000×</code>）vs 朴素非偏振镜面眩光雾翳过曝（<code>1 + u</code>）</h1>
+        <p class="subtitle">
+          当自然光以布儒斯特角 <code>θ_B = arctan(n₂/n₁) ≈ 53.13°</code>（<code>θ_i + θ_t = 90°</code>）照射水面、湿滑柏油路、植物蜡质叶片或玻璃展柜时，p 偏振反射率恒等于零（<code>R_p(θ_B) ≡ 0</code>），表面镜面眩光 <code>100%</code> 退化为纯水平 s 偏振光（<code>G_s(u) = u ∈ [0.0, 1.0]</code>）。若采用朴素标量非偏振合成 <code>I_total = I_sub + u</code>，水面眩光会使总辐射比按 <code>1 + u</code> 膨胀至 <code>2.0000×</code>（水下河床与湿路车道线信噪纯度腰斩至 <code>0.5000×</code>）！Sir David Brewster（1815）与 Étienne-Louis Malus（1809）正交检偏器（<code>Δφ = 90°, cos²(90°) = 0</code>）100% 滤除 s 偏振眩光，全 17 站恒锁水下/次表面纯净信号 <code>I/I_sub = 1.0000×</code>。
+        </p>
+      </div>
+      <div class="header-actions">
+        <a class="nav-link" href="../../index.html">← 返回门户</a>
+        <a class="nav-link" href="./test-report-cards.zh.html">7-Card 报告 (ZH)</a>
+        <a class="nav-link" href="./test-report-cards.html">7-Card Report (EN)</a>
+        <button id="btn-theme-toggle" class="btn-secondary" type="button">切换亮/暗主题</button>
+      </div>
+    </header>
+
+    <main class="rig-main">
+      <section class="stage-panel">
+        <div class="canvas-wrap">
+          <canvas id="stage-canvas"></canvas>
+        </div>
+        <div class="control-bar">
+          <div class="mode-group" role="group" aria-label="水面与电介质眩光偏振滤波模式">
+            <button id="btn-mode-brewster" class="btn-mode active" type="button">
+              ✅ Brewster-Malus 正交偏振消光 (R_p(θ_B)=0 · cos²(90°)=0 · I/I_sub ≡ 1.0000×)
+            </button>
+            <button id="btn-mode-naive" class="btn-mode" type="button">
+              ❌ 朴素非偏振标量叠加 (I_sub + G_s(u) · 眩光雾翳按 1+u 暴涨至 2.0000×)
+            </button>
+          </div>
+          <label class="slider-label" for="station-slider">
+            布儒斯特 s 偏振眩光强度站 <code>S00..S16 (G_s = u ∈ [0.00, 1.00])</code>
+            <input id="station-slider" type="range" min="0" max="16" step="1" value="8" />
+          </label>
+        </div>
+      </section>
+
+      <aside class="readout-panel" aria-label="17 站点布儒斯特偏振消光读数">
+        <div class="readout-card">
+          <span class="card-label">当前电介质表面偏振渲染算子</span>
+          <strong id="hud-mode-pill" class="card-value">Brewster-Malus Cross-Polarizer Extinction</strong>
+          <span class="card-sub">3D 实体构件数：<strong id="hud-solid-count">58 solids</strong></span>
+        </div>
+
+        <div class="readout-grid">
+          <div class="metric-box">
+            <span class="metric-title">第 0 站无眩光 (u=0.00, G_s=0.00)</span>
+            <strong id="hud-s0-val" class="metric-num">1.0000×</strong>
+          </div>
+          <div class="metric-box">
+            <span class="metric-title">第 4 站 (u=0.25, G_s=0.25)</span>
+            <strong id="hud-s4-val" class="metric-num">1.0000×</strong>
+          </div>
+          <div class="metric-box">
+            <span class="metric-title">第 8 站中点 (u=0.50, G_s=0.50)</span>
+            <strong id="hud-s8-val" class="metric-num">1.0000×</strong>
+          </div>
+          <div class="metric-box">
+            <span class="metric-title">第 16 站强眩光 (u=1.00, G_s=1.00)</span>
+            <strong id="hud-s16-val" class="metric-num">1.0000×</strong>
+          </div>
+        </div>
+
+        <div class="readout-card">
+          <span class="card-label">眩光雾翳污染站点数 &amp; 64 步 Stokes-Mueller 偏振传输基准误差</span>
+          <div class="dual-row">
+            <span>眩光污染站：<strong id="hud-contaminated-count">0 / 17</strong></span>
+            <span>Mueller 基准误差：<strong id="hud-quad-err">0.00e+0</strong></span>
+          </div>
+          <p id="hud-selected-station" class="selected-readout">S08 (u=0.500)</p>
+        </div>
+
+        <div class="formula-card">
+          <h2>Brewster（1815）&amp; Malus（1809）正交偏振眩光消光定律</h2>
+          <p>
+            <code>θ_B = arctan(n₂/n₁) ⟹ R_p(θ_B) = tan²(θ_B − θ_t) / tan²(θ_B + θ_t) ≡ 0</code>
+          </p>
+          <p>
+            <code>I_CPL(u) = I_sub + G_s(u)·cos²(90°) = I_sub ⟹ I_CPL / I_sub ≡ 1.0000×</code>
+          </p>
+        </div>
+      </aside>
+    </main>
+  </div>
+</body>
+</html>

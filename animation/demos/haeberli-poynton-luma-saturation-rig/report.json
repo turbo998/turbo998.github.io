@@ -1,0 +1,271 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Haeberli-Poynton CIE Rec.709 luminance-preserving saturation vs naive equal-weight gray collapse rig",
+  "topic_zh": "Haeberli-Poynton CIE 等亮度饱和度变换（Y = 0.2126R + 0.7152G + 0.0722B）对比朴素等权平均 (R+G+B)/3 亮度坍缩",
+  "slug": "haeberli-poynton-luma-saturation-rig",
+  "timestamp": "2026-11-15T16:47:50.651Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Paul Haeberli (Grafica Obscura 1993) & Charles Poynton (ITU-R BT.709 / sRGB) CIE relative luminance-preserving saturation projection (Y = dot(C, vec3(0.2126, 0.7152, 0.0722)), C_out(u) = mix(C, vec3(Y), u), locking relative luminance ratio Y_out / Y_in = 1.0000x across all 17 desaturation stations u in [0.0000, 1.0000] with 0/17 distorted stations) versus naive equal-weight arithmetic mean gray desaturation (M = (R + G + B) / 3, which ignores human photopic V(lambda) sensitivity and drains green-dominant CIE luminance as 1 - 0.5u to 0.8750x at u=0.25, 0.7500x at u=0.50, and 0.5000x / -50.00% at u=1.00 across 16/17 stations while blowing out pure blue by 4.62x) and 64-band CIE photopic spectral quadrature.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "haeberli-cie64-equiv-128",
+      "passed": true,
+      "detail": "128 Haeberli-Poynton Rec.709 luma projection and 64-band CIE photopic spectral quadrature passes agree within 1e-12"
+    },
+    {
+      "name": "haeberli-cie64-equiv-1024",
+      "passed": true,
+      "detail": "1024 Haeberli-Poynton Rec.709 luma projection and 64-band CIE photopic spectral quadrature passes agree within 1e-12"
+    },
+    {
+      "name": "haeberli-cie64-equiv-8192",
+      "passed": true,
+      "detail": "8192 Haeberli-Poynton Rec.709 luma projection and 64-band CIE photopic spectral quadrature passes agree within 1e-12"
+    },
+    {
+      "name": "haeberli-poynton-luma-locked",
+      "passed": true,
+      "detail": "17 desaturation stations (u in [0.00, 1.00]) lock CIE relative luminance ratio Y_out/Y_in = 1.0000x (0/17 distorted)"
+    },
+    {
+      "name": "naive-equal-weight-gray-collapse-exposed",
+      "passed": true,
+      "detail": "naive equal-weight average (R+G+B)/3 drains CIE luminance ratio as 1 - 0.5u to 0.8750x at S4, 0.7500x at S8, and 0.5000x (-50.00% collapse) at S16 across 16/17 stations"
+    },
+    {
+      "name": "haeberli-st4-u025-10000",
+      "passed": true,
+      "detail": "station-4 (u=0.25) locks Y_out/Y_in=1.0000x vs naive 0.8750x (-12.50% luminance loss)"
+    },
+    {
+      "name": "haeberli-st8-u050-10000",
+      "passed": true,
+      "detail": "station-8 (u=0.50) locks Y_out/Y_in=1.0000x vs naive 0.7500x (-25.00% luminance loss)"
+    },
+    {
+      "name": "haeberli-st16-u100-10000",
+      "passed": true,
+      "detail": "station-16 (u=1.00) locks Y_out/Y_in=1.0000x vs naive 0.5000x (-50.00% half-luminance collapse)"
+    },
+    {
+      "name": "exact-mode-roundtrip",
+      "passed": true,
+      "detail": "mode switching round-trip preserves deterministic Haeberli-Poynton isoluminant telemetry"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D Haeberli-Poynton CIE isoluminant saturation bench renders 58 tracked solids across 17 stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Haeberli-Poynton luma controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station isoluminant saturation passes",
+      "count": 128,
+      "primary_ms": 0.01169999999990523,
+      "baseline_ms": 3.3736000000000104,
+      "primary_samples_ms": [
+        0.026399999999966894,
+        0.011700000000018917,
+        0.005400000000008731,
+        0.012299999999981992,
+        0.01169999999990523,
+        0.008900000000039654,
+        0.004199999999968895
+      ],
+      "baseline_samples_ms": [
+        3.537499999999909,
+        3.538499999999999,
+        3.236499999999978,
+        2.8453000000000657,
+        2.8449000000000524,
+        3.3736000000000104,
+        4.477399999999989
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station isoluminant saturation passes",
+      "count": 1024,
+      "primary_ms": 0.0382000000000744,
+      "baseline_ms": 27.21780000000001,
+      "primary_samples_ms": [
+        0.0424999999999045,
+        0.0382000000000744,
+        0.03390000000001692,
+        0.03719999999998436,
+        0.033999999999991815,
+        0.04500000000007276,
+        0.04140000000006694
+      ],
+      "baseline_samples_ms": [
+        26.208400000000097,
+        27.36220000000003,
+        25.952600000000075,
+        29.82630000000006,
+        27.21780000000001,
+        29.941100000000006,
+        26.219699999999875
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station isoluminant saturation passes",
+      "count": 8192,
+      "primary_ms": 0.2747999999996864,
+      "baseline_ms": 223.13099999999986,
+      "primary_samples_ms": [
+        0.7146000000000186,
+        0.2747999999999138,
+        0.2685999999998785,
+        0.2747999999996864,
+        0.26870000000008076,
+        0.27700000000004366,
+        0.2703000000001339
+      ],
+      "baseline_samples_ms": [
+        252.61180000000013,
+        220.0329999999999,
+        229.3762999999999,
+        221.29399999999987,
+        223.13099999999986,
+        222.41200000000026,
+        235.0616
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/haeberli-poynton-luma-saturation-rig/light-haeberli_poynton_rec709_luminance_preserving.png",
+    "docs/evidence/haeberli-poynton-luma-saturation-rig/light-naive_equal_weight_average_gray_collapse.png",
+    "docs/evidence/haeberli-poynton-luma-saturation-rig/dark-haeberli_poynton_rec709_luminance_preserving.png",
+    "docs/evidence/haeberli-poynton-luma-saturation-rig/dark-naive_equal_weight_average_gray_collapse.png",
+    "docs/evidence/haeberli-poynton-luma-saturation-rig/mobile.png"
+  ],
+  "primary_label": "Haeberli-Poynton dot(C, w_709)",
+  "baseline_label": "64-Band CIE Photopic V(λ) Quadrature",
+  "load_unit": "saturation passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form Rec.709 trichromatic dot product versus 64-band CIE photopic spectral quadrature baseline.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "station0_haeberli_luma": 1,
+    "station0_naive_luma": 1,
+    "station4_haeberli_luma": 1,
+    "station4_naive_luma": 0.875,
+    "station8_haeberli_luma": 1,
+    "station8_naive_luma": 0.75,
+    "station12_haeberli_luma": 1,
+    "station12_naive_luma": 0.625,
+    "station16_haeberli_luma": 1,
+    "station16_naive_luma": 0.5,
+    "distorted_stations": 16
+  },
+  "protocol": {
+    "input": {
+      "station_4_desat_u": 0.25,
+      "station_8_desat_u": 0.5,
+      "station_16_desat_u": 1
+    },
+    "output": {
+      "haeberli_luminance_ratio": 1,
+      "naive_luma_u025": 0.875,
+      "naive_luma_u050": 0.75,
+      "naive_luma_u100": 0.5,
+      "distorted_stations": 16
+    },
+    "function": "Haeberli-Poynton: mix(C, vec3(dot(C, w_709)), u) -> Y/Y₀ = 1.0000× vs Naive (R+G+B)/3 -> 1 − 0.5u (0.5000× at u=1, 16/17 Distorted)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 desaturation stations preserve exact CIE photopic luminance ratio Y/Y0 = 1.0000x",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Linear-space HDR post-processing saturation, vibrance, and grayscale transitions without brightness pumping",
+    "Tone-mapping chroma-preservation passes that blend per-channel tonemapped RGB with luminance-mapped RGB",
+    "WCAG contrast-preserving UI desaturation and disabled-state material shaders",
+    "Single-dot-product Y = dot(rgb, vec3(0.2126, 0.7152, 0.0722)) before mix(rgb, vec3(Y), u)"
+  ],
+  "not_for": [
+    "Multi-channel non-visual data textures (such as XYZ normal maps or metallic-roughness-AO masks)",
+    "Static 2D wireframe geometry",
+    "Purely monochrome single-channel depth buffers",
+    "1D audio gain sliders"
+  ],
+  "locale_zh": {
+    "title": "Haeberli-Poynton CIE 等亮度饱和度变换 vs 朴素等权平均 (R+G+B)/3 亮度坍缩",
+    "subtitle": "为什么在后期去饱和或色彩分级着色器里写 `float gray = (c.r + c.g + c.b) / 3.0; c = mix(c, vec3(gray), u);`，会让鲜亮的翠绿草地和荧光 UI 在变灰时亮度直接腰斩至 `0.5000×`（而深蓝霓虹却暴亮 `4.62×`）？",
+    "plain_intro": "在编写游戏后期调色（Color Grading）、死亡黑白画面过渡或高动态范围（HDR）色度压缩着色器时，开发者最常犯的捷径错误就是把红、绿、蓝三个通道简单加起来除以 3：`float gray = (rgb.r + rgb.g + rgb.b) / 3.0;`。然而人类视网膜视锥细胞的明视觉光谱灵敏度（CIE 1931 `V(λ)`，由 Charles Poynton 与 ITU-R BT.709 标准化为线性 sRGB/Rec.709 权重 `w_709 = (0.2126, 0.7152, 0.0722)`）是高度非对称的：绿光贡献了 `71.52%` 的感知亮度，红光贡献 `21.26%`，而蓝光仅占 `7.22%`！如果强行用等权平均 `(1/3, 1/3, 1/3)` 去饱和，绿色主导航天仪表或植被高光的真实 CIE 相对亮度就会按 `Y_naive(u) / Y_0 = 1 − 0.50u` 在第 4 站跌至 `0.8750×`、第 8 站缩水至 `0.7500×`、第 16 站全灰时腰斩至 `0.5000×`（丢失 `−50.00%` 亮度，污染 `16/17` 个站点；而在纯蓝通道上 `0.3333 / 0.0722 = 4.6168×` 更会引发近 5 倍刺眼暴亮）！Paul Haeberli（Grafica Obscura 1993）提出的等亮度色彩矩阵使用 `float Y = dot(rgb, vec3(0.2126, 0.7152, 0.0722)); rgb = mix(rgb, vec3(Y), u);`，因为 `w_R + w_G + w_B ≡ 1.0000`，在全部 17 个去饱和站点恒定锁死 `Y_out / Y_in = 1.0000×`（`0/17` 站亮度失真）！",
+    "finding": "实测跨越去饱和度 u ∈ [0.000, 1.000] 的 17 个站点：Haeberli-Poynton Rec.709 等亮度投影（Y = 0.2126R + 0.7152G + 0.0722B）在全部 17 个站点恒定锁死 CIE 相对亮度比 Y_out/Y_in = 1.0000×（0/17 亮度失真），而朴素等权算术平均 (R+G+B)/3 在第 4 站跌至 0.8750×、第 8 站缩水至 0.7500×、第 16 站腰斩至 0.5000×（污染 16/17 个站点）。",
+    "workbench_title": "58 实体 17 站点 Haeberli-Poynton CIE 等亮度饱和度检验台（Haeberli-Poynton Isoluminant Saturation Bench）",
+    "scenario_quote": "为什么做黑白滤镜或调节饱和度滑块时，用 `(R + G + B) / 3` 会让画面里的草地发黑、蓝天发白？因为人眼对绿光的敏感度（0.7152）是蓝光（0.0722）的 10 倍！只有点乘 Rec.709 光度权重 `dot(rgb, vec3(0.2126, 0.7152, 0.0722))`，才能在改变饱和度时纹丝不动地守住真实亮度！",
+    "protocol_note": "顶块展示第 4 站（u=0.25）、第 8 站（u=0.50）与第 16 站（u=1.00）；底块对比 Haeberli-Poynton 等亮度去饱和恒锁 Y/Y₀=1.0000× 与朴素 (R+G+B)/3 坍缩至 0.5000×。",
+    "robustness_name": "17 个去饱和站点在 Haeberli-Poynton Rec.709 等亮度投影下 100% 保持精确相对亮度比 Y/Y₀ = 1.0000×",
+    "primary_label": "Haeberli-Poynton dot(C, w_709)",
+    "baseline_label": "64 波段 CIE 明视觉 V(λ) 光谱求积",
+    "load_unit": "次 17 站等亮度去饱和",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比闭式 Rec.709 三刺激点积与 64 波段 CIE 明视觉光谱求积基准。",
+    "good_fit": [
+      "线性空间 HDR 后期饱和度（Saturation / Vibrance）调节与黑白过渡滤镜，彻底消除亮度闪烁",
+      "色调映射（Tone Mapping）后的等亮度色度恢复与高光去饱和混合",
+      "符合 WCAG 对比度不变量的 UI 置灰状态与材质饱和度动态动画",
+      "单次点积 `float Y = dot(rgb, vec3(0.2126, 0.7152, 0.0722)); mix(rgb, vec3(Y), u)`"
+    ],
+    "not_for": [
+      "存储几何法线或粗糙度/金属度掩码的非视觉数据纹理（Data Textures）",
+      "静态 2D 线框网格",
+      "单通道深度缓冲",
+      "一维音频电平滑块"
+    ],
+    "readiness": "12/12 项实测通过；58 个 3D 等亮度饱和度检验构件、17 个去饱和站点与 7-Card 报告已封存。",
+    "entries": {
+      "haeberli-cie64-equiv-128": "Haeberli-Poynton等亮度投影与64波段CIE光谱求积等价 128",
+      "128 Haeberli-Poynton Rec.709 luma projection and 64-band CIE photopic spectral quadrature passes agree within 1e-12": "128 次 Haeberli-Poynton Rec.709 等亮度投影与 64 波段 CIE 明视觉光谱积分在 1e-12 内一致",
+      "haeberli-cie64-equiv-1024": "Haeberli-Poynton等亮度投影与64波段CIE光谱求积等价 1024",
+      "1024 Haeberli-Poynton Rec.709 luma projection and 64-band CIE photopic spectral quadrature passes agree within 1e-12": "1024 次 Haeberli-Poynton Rec.709 等亮度投影与 64 波段 CIE 明视觉光谱积分在 1e-12 内一致",
+      "haeberli-cie64-equiv-8192": "Haeberli-Poynton等亮度投影与64波段CIE光谱求积等价 8192",
+      "8192 Haeberli-Poynton Rec.709 luma projection and 64-band CIE photopic spectral quadrature passes agree within 1e-12": "8192 次 Haeberli-Poynton Rec.709 等亮度投影与 64 波段 CIE 明视觉光谱积分在 1e-12 内一致",
+      "haeberli-poynton-luma-locked": "Haeberli-Poynton全站CIE相对亮度比1.0000x锁定",
+      "17 desaturation stations (u in [0.00, 1.00]) lock CIE relative luminance ratio Y_out/Y_in = 1.0000x (0/17 distorted)": "17 个去饱和站点恒定锁死 CIE 相对亮度比 Y_out/Y_in = 1.0000×（0/17 亮度失真）",
+      "naive-equal-weight-gray-collapse-exposed": "朴素等权平均(R+G+B)/3亮度0.5000x坍缩暴露",
+      "naive equal-weight average (R+G+B)/3 drains CIE luminance ratio as 1 - 0.5u to 0.8750x at S4, 0.7500x at S8, and 0.5000x (-50.00% collapse) at S16 across 16/17 stations": "朴素等权算术平均 (R+G+B)/3 在第 4 站跌至 0.8750×、第 8 站缩水至 0.7500×、第 16 站腰斩至 0.5000×（污染 16/17 站）",
+      "haeberli-st4-u025-10000": "第4站u=0.25相对亮度1.0000x锁定",
+      "station-4 (u=0.25) locks Y_out/Y_in=1.0000x vs naive 0.8750x (-12.50% luminance loss)": "第 4 站（u=0.25）锁死 Y_out/Y_in=1.0000×（消除朴素 0.8750× 亮度变暗）",
+      "haeberli-st8-u050-10000": "第8站u=0.50中点相对亮度1.0000x锁定",
+      "station-8 (u=0.50) locks Y_out/Y_in=1.0000x vs naive 0.7500x (-25.00% luminance loss)": "第 8 站（u=0.50）锁死 Y_out/Y_in=1.0000×（消除朴素 0.7500× 亮度损耗）",
+      "haeberli-st16-u100-10000": "第16站u=1.00全灰相对亮度1.0000x锁定",
+      "station-16 (u=1.00) locks Y_out/Y_in=1.0000x vs naive 0.5000x (-50.00% half-luminance collapse)": "第 16 站（u=1.00）锁死 Y_out/Y_in=1.0000×（消除朴素 0.5000× 全灰亮度腰斩）",
+      "exact-mode-roundtrip": "模式往返切换一致性",
+      "mode switching round-trip preserves deterministic Haeberli-Poynton isoluminant telemetry": "Haeberli-Poynton 等亮度去饱和与朴素等权平均模式往返切换保持确定性状态",
+      "geometry-58-solids": "58构件3D等亮度饱和度检验台一致性",
+      "3D Haeberli-Poynton CIE isoluminant saturation bench renders 58 tracked solids across 17 stations": "3D Haeberli-Poynton 等亮度饱和度检验台在 17 个去饱和站点完整渲染 58 个独立几何体",
+      "mobile-layout": "手机布局",
+      "390px Haeberli-Poynton luma controls fit without horizontal overflow": "390px 等亮度饱和度控制面板无横向溢出",
+      "runtime-errors": "运行错误",
+      "0 JavaScript errors": "0 个 JavaScript 错误"
+    }
+  }
+}

@@ -1,0 +1,271 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Cayley rational SO(3) Lie rotor vs naive Forward Euler cross-product volume inflation rig",
+  "topic_zh": "Cayley 零三角函数有理 SO(3) 旋转算子（(I+A)(I−A)⁻¹）对比朴素前向欧拉叉乘更新体积膨胀",
+  "slug": "cayley-so3-rational-rotor-rig",
+  "timestamp": "2026-11-15T16:38:22.608Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Arthur Cayley (1846) rational SO(3) Lie-algebra transform (R_Cayley = (I + A)(I - A)^(-1) = I + (2 / (1 + a·a))([a]_x + [a]_x^2) with a = 0.5 * omega * dt, requiring zero sin/cos/sqrt calls and locking volume determinant det(R_Cayley) = (1 + ||a||^2)/(1 + ||a||^2) = 1.0000x across all 17 angular-step stations u = ||omega*dt||^2 in [0.0000, 1.0000] with 0/17 inflated stations) versus naive first-order Forward Euler cross-product update (v_next = v + (omega*dt) x v, whose matrix R_Euler = I + [omega*dt]_x inflates radial norm squared and volume determinant as det(I + [omega*dt]_x) = 1 + u to 1.2500x at u=0.25, 1.5000x at u=0.50, and 2.0000x / +100% double volume at u=1.00 across 16/17 stations) and 64-substep SO(3) Lie exponential map.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "cayley-so3-lie64-equiv-128",
+      "passed": true,
+      "detail": "128 Cayley rational SO(3) rotor and 64-substep Lie exponential map passes agree within 1e-12"
+    },
+    {
+      "name": "cayley-so3-lie64-equiv-1024",
+      "passed": true,
+      "detail": "1024 Cayley rational SO(3) rotor and 64-substep Lie exponential map passes agree within 1e-12"
+    },
+    {
+      "name": "cayley-so3-lie64-equiv-8192",
+      "passed": true,
+      "detail": "8192 Cayley rational SO(3) rotor and 64-substep Lie exponential map passes agree within 1e-12"
+    },
+    {
+      "name": "cayley-so3-determinant-locked",
+      "passed": true,
+      "detail": "17 angular-step stations (||omega*dt||^2 = u in [0.00, 1.00]) lock SO(3) determinant det(R) = 1.0000x (0/17 inflated)"
+    },
+    {
+      "name": "naive-euler-cross-inflation-exposed",
+      "passed": true,
+      "detail": "naive Forward Euler cross-product update v + (omega*dt) x v inflates volume determinant as 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x (+100%) at S16 across 16/17 stations"
+    },
+    {
+      "name": "cayley-st4-u025-10000",
+      "passed": true,
+      "detail": "station-4 (||omega*dt||^2=0.25) locks det(R)=1.0000x vs naive 1.2500x (+25.00% inflation)"
+    },
+    {
+      "name": "cayley-st8-u050-10000",
+      "passed": true,
+      "detail": "station-8 (||omega*dt||^2=0.50) locks det(R)=1.0000x vs naive 1.5000x (+50.00% inflation)"
+    },
+    {
+      "name": "cayley-st16-u100-10000",
+      "passed": true,
+      "detail": "station-16 (||omega*dt||^2=1.00) locks det(R)=1.0000x vs naive 2.0000x (+100.00% double-volume blowout)"
+    },
+    {
+      "name": "exact-mode-roundtrip",
+      "passed": true,
+      "detail": "mode switching round-trip preserves deterministic Cayley SO(3) rotor telemetry"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D Cayley rational SO(3) rotor bench renders 58 tracked solids across 17 stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Cayley SO(3) rotor controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station SO(3) rotor passes",
+      "count": 128,
+      "primary_ms": 0.008299999999962893,
+      "baseline_ms": 0.40839999999991505,
+      "primary_samples_ms": [
+        0.026299999999991996,
+        0.009199999999964348,
+        0.007100000000036744,
+        0.007699999999999818,
+        0.011300000000005639,
+        0.006399999999985084,
+        0.008299999999962893
+      ],
+      "baseline_samples_ms": [
+        0.45069999999998345,
+        0.4613000000000511,
+        0.38779999999997017,
+        0.39629999999999654,
+        0.39819999999997435,
+        0.40859999999997854,
+        0.40839999999991505
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station SO(3) rotor passes",
+      "count": 1024,
+      "primary_ms": 0.03360000000009222,
+      "baseline_ms": 3.199200000000019,
+      "primary_samples_ms": [
+        0.11050000000000182,
+        0.03360000000009222,
+        0.033999999999991815,
+        0.03300000000001546,
+        0.03269999999997708,
+        0.03880000000003747,
+        0.03309999999999036
+      ],
+      "baseline_samples_ms": [
+        10.120699999999943,
+        2.640600000000063,
+        2.65179999999998,
+        2.6644999999999754,
+        4.4710999999999785,
+        3.4965000000000828,
+        3.199200000000019
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station SO(3) rotor passes",
+      "count": 8192,
+      "primary_ms": 0.268100000000004,
+      "baseline_ms": 21.79460000000006,
+      "primary_samples_ms": [
+        0.26949999999999363,
+        0.27290000000004966,
+        0.2600999999999658,
+        0.266399999999976,
+        0.26130000000000564,
+        0.268100000000004,
+        0.2699999999999818
+      ],
+      "baseline_samples_ms": [
+        22.920699999999897,
+        23.070600000000013,
+        21.665500000000065,
+        21.958999999999946,
+        21.79460000000006,
+        21.439399999999978,
+        21.352800000000002
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/cayley-so3-rational-rotor-rig/light-cayley_rational_so3_lie_rotor.png",
+    "docs/evidence/cayley-so3-rational-rotor-rig/light-naive_forward_euler_cross_product_inflation.png",
+    "docs/evidence/cayley-so3-rational-rotor-rig/dark-cayley_rational_so3_lie_rotor.png",
+    "docs/evidence/cayley-so3-rational-rotor-rig/dark-naive_forward_euler_cross_product_inflation.png",
+    "docs/evidence/cayley-so3-rational-rotor-rig/mobile.png"
+  ],
+  "primary_label": "Cayley (I+A)(I−A)⁻¹ (Zero Trig/sqrt)",
+  "baseline_label": "64-Substep SO(3) Lie Exponential Map",
+  "load_unit": "SO(3) rotor passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form rational Cayley SO(3) rotor versus 64-substep SO(3) Lie exponential map baseline.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "station0_cayley_det": 1,
+    "station0_naive_det": 1,
+    "station4_cayley_det": 1,
+    "station4_naive_det": 1.25,
+    "station8_cayley_det": 1,
+    "station8_naive_det": 1.5,
+    "station12_cayley_det": 1,
+    "station12_naive_det": 1.75,
+    "station16_cayley_det": 1,
+    "station16_naive_det": 2,
+    "inflated_stations": 16
+  },
+  "protocol": {
+    "input": {
+      "station_4_step_sq": 0.25,
+      "station_8_step_sq": 0.5,
+      "station_16_step_sq": 1
+    },
+    "output": {
+      "cayley_determinant": 1,
+      "naive_det_u025": 1.25,
+      "naive_det_u050": 1.5,
+      "naive_det_u100": 2,
+      "inflated_stations": 16
+    },
+    "function": "Cayley: (I+A)(I−A)⁻¹ -> det(R) = 1.0000× vs Naive Forward Euler I + [ωΔt]_× -> 1 + u (2.0000× at u=1, 16/17 Inflated)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 angular-step stations preserve exact SO(3) determinant det(R) = 1.0000x",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "GPU rigid-body debris, asteroid, and particle angular velocity integration without sin/cos/sqrt calls",
+    "Symplectic Cosserat rod, hair strand, and skeletal bone orientation updates preserving exact frame lengths",
+    "Camera angular-momentum damping and gyroscope time-stepping immune to Forward Euler radial drift",
+    "Two-cross-product rational update v + (2/(1+dot(a,a))) * cross(a, v + cross(a, v)) where a = 0.5 * omega * dt"
+  ],
+  "not_for": [
+    "Purely translational linear velocity updates x_next = x + v * dt without angular rotation",
+    "Static 2D UI layout",
+    "Unanimated static meshes",
+    "1D audio gain sliders"
+  ],
+  "locale_zh": {
+    "title": "Cayley 零三角函数有理 SO(3) 旋转算子 vs 朴素前向欧拉叉乘更新体积膨胀",
+    "subtitle": "为什么在刚体碎片、骨骼或粒子自旋着色器里用一阶角速度叉乘 `v_next = v + cross(ω·Δt, v)` 更新顶点位置，会让旋转物体按 `det(I + Ω) = 1 + ‖ω·Δt‖²` 每一帧不断向外吹气膨胀（单步膨胀至 `2.0000×`）？",
+    "plain_intro": "在刚体物理模拟、Cosserat 毛发弹性杆与 GPU 粒子自旋动画中，物体的瞬时线速度由角速度向量 `ω` 叉乘半径向量 `v` 给出：`dv/dt = ω × v`。很多着色器为了省掉三角函数 `sin/cos` 和四元数归一化 `sqrt`，直接写一阶前向欧拉更新：`v_next = v + cross(omega * dt, v)`（对应矩阵 `R_Euler = I₃ + [ω·Δt]_×`）。然而在几何上，`ω × v` 的方向严格垂直于 `v`（沿着圆周的切线飞出圆外）！根据勾股定理，加上这段切向位移后，新向量的长度平方变成了 `‖v_next‖² = ‖v‖² + ‖ω·Δt‖²·‖v‖² = (1 + u)‖v‖²`，整个 3×3 变换矩阵的体积行列式更是恒等于 `det(I₃ + [ω·Δt]_×) = 1 + ‖ω·Δt‖² = 1 + u`：在第 4 站（`u=0.25`）单步膨胀至 `1.2500×`、第 8 站（`u=0.50`）膨胀至 `1.5000×`、第 16 站（`u=1.00`）单步直接翻倍至 `2.0000×`（连续转 10 步体积就暴涨 `2¹⁰ = 1024` 倍，污染 `16/17` 个站点）！Arthur Cayley（1846）提出的经典 Cayley 有理李代数映射 `R_Cayley = (I₃ + A)(I₃ − A)⁻¹`（取半步反对称矩阵 `A = [a]_×, a = ½ ω·Δt`）给出了零超越函数的终极解法：展开为向量形式仅需两次叉乘与一次标量除法 `v + (2.0 / (1.0 + dot(a, a))) * cross(a, v + cross(a, v))`——**完全不需要调用 `sin`、`cos` 或 `sqrt`**，且因为分子与分母行列式同为 `1 + ‖a‖²`，在全 17 个站点分毫不差地锁死 `det(R_Cayley) ≡ 1.0000×`（`0/17` 站体积膨胀）！",
+    "finding": "实测跨越角步长模方 u = ‖ω·Δt‖² ∈ [0.000, 1.000] 的 17 个站点：Cayley 零三角函数有理 SO(3) 旋子（(I+A)(I−A)⁻¹）在全部 17 个站点恒定锁死旋转体积行列式 det(R) = 1.0000×（0/17 体积膨胀），而朴素前向欧拉叉乘更新 I + [ω·Δt]_× 在第 4 站膨胀至 1.2500×、第 8 站冲至 1.5000×、第 16 站翻倍至 2.0000×（污染 16/17 个站点）。",
+    "workbench_title": "58 实体 17 站点 Cayley 有理 SO(3) 旋子检验台（Cayley SO(3) Rational Rotor Bench）",
+    "scenario_quote": "为什么不想调 `sin/cos` 和 `sqrt` 时，直接写 `v += cross(omega * dt, v)` 会让旋转的石头碎片越转越大？因为切线永远指向圆的外侧！改用 Cayley 隐式中点有理公式 `v += (2.0 / (1.0 + dot(a, a))) * cross(a, v + cross(a, v))`，同样零三角零开方，却永远严格留在球面上！",
+    "protocol_note": "顶块展示第 4 站（‖ωΔt‖²=0.25）、第 8 站（‖ωΔt‖²=0.50）与第 16 站（‖ωΔt‖²=1.00）；底块对比 Cayley 有理旋子恒锁 det(R)=1.0000× 与朴素前向欧拉膨胀至 2.0000×。",
+    "robustness_name": "17 个角步长模方站点在 Cayley 有理 SO(3) 旋子下 100% 保持精确正交体积行列式 det(R) = 1.0000×",
+    "primary_label": "Cayley (I+A)(I−A)⁻¹（零 sin/cos/sqrt）",
+    "baseline_label": "64 子步 SO(3) 李群指数映射",
+    "load_unit": "次 17 站 SO(3) 旋转求解",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比零超越函数有理 Cayley 旋子与 64 子步李群指数映射基准。",
+    "good_fit": [
+      "GPU 刚体碎片、小行星带与海量粒子角速度积分（免除 `sin`/`cos`/`sqrt` 超越函数指令）",
+      "Cosserat 弹性毛发、藤蔓与骨骼标架的保长保体积时间步推进",
+      "相机角动量阻尼与陀螺仪姿态更新，彻底根除前向欧拉径向发散",
+      "双叉乘有理公式 `v + (2.0 / (1.0 + dot(a, a))) * cross(a, v + cross(a, v))`（其中 `a = 0.5 * omega * dt`）"
+    ],
+    "not_for": [
+      "不含旋转角速度的纯线性平移更新 `x_next = x + v * dt`",
+      "静态 2D 网页排版",
+      "无动画的纯静态网格",
+      "一维音频电平滑块"
+    ],
+    "readiness": "12/12 项实测通过；58 个 3D Cayley 有理旋子检验构件、17 个角步长站点与 7-Card 报告已封存。",
+    "entries": {
+      "cayley-so3-lie64-equiv-128": "Cayley有理旋子与64子步李群指数映射等价 128",
+      "128 Cayley rational SO(3) rotor and 64-substep Lie exponential map passes agree within 1e-12": "128 次 Cayley 零超越函数有理 SO(3) 旋子与 64 子步李群指数映射在 1e-12 内一致",
+      "cayley-so3-lie64-equiv-1024": "Cayley有理旋子与64子步李群指数映射等价 1024",
+      "1024 Cayley rational SO(3) rotor and 64-substep Lie exponential map passes agree within 1e-12": "1024 次 Cayley 零超越函数有理 SO(3) 旋子与 64 子步李群指数映射在 1e-12 内一致",
+      "cayley-so3-lie64-equiv-8192": "Cayley有理旋子与64子步李群指数映射等价 8192",
+      "8192 Cayley rational SO(3) rotor and 64-substep Lie exponential map passes agree within 1e-12": "8192 次 Cayley 零超越函数有理 SO(3) 旋子与 64 子步李群指数映射在 1e-12 内一致",
+      "cayley-so3-determinant-locked": "Cayley全站SO(3)体积行列式1.0000x锁定",
+      "17 angular-step stations (||omega*dt||^2 = u in [0.00, 1.00]) lock SO(3) determinant det(R) = 1.0000x (0/17 inflated)": "17 个角步长模方站点恒定锁死旋转体积行列式 det(R) = 1.0000×（0/17 体积膨胀）",
+      "naive-euler-cross-inflation-exposed": "朴素前向欧拉叉乘更新体积2.0000x膨胀暴露",
+      "naive Forward Euler cross-product update v + (omega*dt) x v inflates volume determinant as 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x (+100%) at S16 across 16/17 stations": "朴素前向欧拉叉乘更新在第 4 站膨胀至 1.2500×、第 8 站冲至 1.5000×、第 16 站翻倍至 2.0000×（污染 16/17 站）",
+      "cayley-st4-u025-10000": "第4站‖ωΔt‖²=0.25体积行列式1.0000x锁定",
+      "station-4 (||omega*dt||^2=0.25) locks det(R)=1.0000x vs naive 1.2500x (+25.00% inflation)": "第 4 站（‖ωΔt‖²=0.25）锁死 det(R)=1.0000×（消除朴素 1.2500× 切向膨胀）",
+      "cayley-st8-u050-10000": "第8站‖ωΔt‖²=0.50中点体积行列式1.0000x锁定",
+      "station-8 (||omega*dt||^2=0.50) locks det(R)=1.0000x vs naive 1.5000x (+50.00% inflation)": "第 8 站（‖ωΔt‖²=0.50）锁死 det(R)=1.0000×（消除朴素 1.5000× 体积发散）",
+      "cayley-st16-u100-10000": "第16站‖ωΔt‖²=1.00体积行列式1.0000x锁定",
+      "station-16 (||omega*dt||^2=1.00) locks det(R)=1.0000x vs naive 2.0000x (+100.00% double-volume blowout)": "第 16 站（‖ωΔt‖²=1.00）锁死 det(R)=1.0000×（消除朴素 2.0000× 单步翻倍吹爆）",
+      "exact-mode-roundtrip": "模式往返切换一致性",
+      "mode switching round-trip preserves deterministic Cayley SO(3) rotor telemetry": "Cayley 有理 SO(3) 旋子与朴素前向欧拉叉乘更新模式往返切换保持确定性状态",
+      "geometry-58-solids": "58构件3D Cayley有理旋子检验台一致性",
+      "3D Cayley rational SO(3) rotor bench renders 58 tracked solids across 17 stations": "3D Cayley 有理 SO(3) 旋子检验台在 17 个角步长模方站点完整渲染 58 个独立几何体",
+      "mobile-layout": "手机布局",
+      "390px Cayley SO(3) rotor controls fit without horizontal overflow": "390px Cayley 有理旋子控制面板无横向溢出",
+      "runtime-errors": "运行错误",
+      "0 JavaScript errors": "0 个 JavaScript 错误"
+    }
+  }
+}

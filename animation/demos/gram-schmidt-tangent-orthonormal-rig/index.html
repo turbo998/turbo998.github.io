@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gram-Schmidt 切线正交化投影 (T_orth = normalize(T − (N·T)N), det²=1.0000×) vs 朴素未正交化插值 TBN 斜交坍缩 — 17 站点实验台</title>
+  <script type="module" crossorigin src="../../assets/gramSchmidtTangentOrthonormal-CbQUF6R3.js"></script>
+  <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="modulepreload" crossorigin href="../../assets/three.module-7AmyneiW.js">
+  <link rel="stylesheet" crossorigin href="../../assets/airyStokesMultibouncePane-BmCc83iW.css">
+</head>
+<body>
+  <div class="rig-shell">
+    <header class="rig-header">
+      <div>
+        <span class="eyebrow">ROUND 159 · 169TH DEMO · GRAM-SCHMIDT TANGENT ORTHONORMAL BENCH</span>
+        <h1>Gram-Schmidt 逐像素切线重正交化（<code>T_orth = normalize(T − (N·T)N), det² = 1.0000×</code>）vs 朴素未正交化 TBN 斜交坍缩（<code>1 − 0.75u</code>）</h1>
+        <p class="subtitle">
+          在曲面网格与蒙皮变形上，顶点法线 <code>N</code> 与顶点切线 <code>T</code> 各自独立插值后会丧失正交性（产生法向寄生内积 <code>(N·T)² = 0.75u ∈ [0.00, 0.75]</code>）。若片元着色器仅分别调用 <code>normalize(N)</code> 与 <code>normalize(T)</code> 而不执行 Jørgen Peder Gram（1883）与 Erhard Schmidt（1907）正交投影，副切线 <code>B = N × T</code> 与 TBN 度量行列式平方就会按 <code>det² = ‖N × T‖² = 1 − 0.75u</code> 在第 8 站缩水至 <code>0.6250×</code>、第 16 站坍缩至 <code>0.2500×</code>（损耗 <code>−75.00%</code>），导致法线贴图凹凸歪斜与各向异性高光畸变！
+        </p>
+      </div>
+      <div class="header-actions">
+        <a class="nav-link" href="../../index.html">← 返回门户</a>
+        <a class="nav-link" href="./test-report-cards.zh.html">7-Card 报告 (ZH)</a>
+        <a class="nav-link" href="./test-report-cards.html">7-Card Report (EN)</a>
+        <button id="btn-theme-toggle" class="btn-secondary" type="button">切换亮/暗主题</button>
+      </div>
+    </header>
+
+    <main class="rig-main">
+      <section class="stage-panel">
+        <div class="canvas-wrap">
+          <canvas id="stage-canvas"></canvas>
+        </div>
+        <div class="control-bar">
+          <div class="mode-group" role="group" aria-label="TBN 切空间标架求解模式">
+            <button id="btn-mode-gram-schmidt" class="btn-mode active" type="button">
+              ✅ Gram-Schmidt 切线重正交化 (T_orth = normalize(T − (N·T)N) · det² ≡ 1.0000×)
+            </button>
+            <button id="btn-mode-naive" class="btn-mode" type="button">
+              ❌ 朴素未正交化插值 TBN (仅各自 normalize · 度量按 1−0.75u 坍缩至 0.2500×)
+            </button>
+          </div>
+          <label class="slider-label" for="station-slider">
+            切线斜交泄露站 <code>S00..S16 ((N·T)² = 0.75u ∈ [0.00, 0.75])</code>
+            <input id="station-slider" type="range" min="0" max="16" step="1" value="8" />
+          </label>
+        </div>
+      </section>
+
+      <aside class="readout-panel" aria-label="17 站点 TBN 正交度量读数">
+        <div class="readout-card">
+          <span class="card-label">当前片元 TBN 切空间标架算子</span>
+          <strong id="hud-mode-pill" class="card-value">Gram-Schmidt Re-Orthonormalization</strong>
+          <span class="card-sub">3D 实体构件数：<strong id="hud-solid-count">58 solids</strong></span>
+        </div>
+
+        <div class="readout-grid">
+          <div class="metric-box">
+            <span class="metric-title">第 0 站 (u=0.00, (N·T)²=0.00)</span>
+            <strong id="hud-s0-val" class="metric-num">1.0000×</strong>
+          </div>
+          <div class="metric-box">
+            <span class="metric-title">第 4 站 (u=0.25, (N·T)²=0.1875)</span>
+            <strong id="hud-s4-val" class="metric-num">1.0000×</strong>
+          </div>
+          <div class="metric-box">
+            <span class="metric-title">第 8 站 (u=0.50, (N·T)²=0.3750)</span>
+            <strong id="hud-s8-val" class="metric-num">1.0000×</strong>
+          </div>
+          <div class="metric-box">
+            <span class="metric-title">第 16 站 (u=1.00, (N·T)²=0.7500)</span>
+            <strong id="hud-s16-val" class="metric-num">1.0000×</strong>
+          </div>
+        </div>
+
+        <div class="readout-card">
+          <span class="card-label">TBN 斜交坍缩站点数 &amp; 64 步 Jacobi 迭代正交化基准误差</span>
+          <div class="dual-row">
+            <span>斜交坍缩站：<strong id="hud-skewed-count">0 / 17</strong></span>
+            <span>Jacobi 基准最大误差：<strong id="hud-quad-err">0.00e+0</strong></span>
+          </div>
+          <p id="hud-selected-station" class="selected-readout">S08 (u=0.500)</p>
+        </div>
+
+        <div class="formula-card">
+          <h2>Gram（1883）&amp; Schmidt（1907）切平面正交投影算子</h2>
+          <p>
+            <code>T_orth = normalize(T_raw − dot(N, T_raw) · N), B_orth = σ · cross(N, T_orth)</code>
+          </p>
+          <p>
+            <code>N · T_orth ≡ 0.0000 ⟹ det([T_orth, B_orth, N])² ≡ 1.0000×</code>
+          </p>
+        </div>
+      </aside>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,823 @@
+{
+  "date_bjt": "2026-11-16",
+  "shift": "2026-11-16",
+  "research_scope": "New controllable video and animation capability demos; verified primary sources, not an unverified daily popularity ranking.",
+  "rounds": [
+    {
+      "round": 159,
+      "slug": "gram-schmidt-tangent-orthonormal-rig",
+      "topic": "gram-schmidt-tangent-orthonormal-vs-interpolated-tbn-skew",
+      "title_zh": "曲面与蒙皮法线贴图不再因插值斜交坍缩 75% 度量：Gram-Schmidt 逐像素切线重正交化选型 FAQ",
+      "title_en": "Per-fragment TBN frames without 75% metric collapse: Gram-Schmidt tangent re-orthonormalization selection FAQ",
+      "faq_zh": "docs/gram-schmidt-tangent-orthonormal-vs-interpolated-tbn-skew-faq.md",
+      "faq_en": "docs/gram-schmidt-tangent-orthonormal-vs-interpolated-tbn-skew-faq.en.md",
+      "summary": "docs/evidence/gram-schmidt-tangent-orthonormal-rig-summary.svg",
+      "report": "demos/gram-schmidt-tangent-orthonormal-rig/report.json",
+      "cards": "demos/gram-schmidt-tangent-orthonormal-rig/test-report-cards.html",
+      "cards_zh": "demos/gram-schmidt-tangent-orthonormal-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在跨越切线斜交泄露 (N·T)² = 0.75u ∈ [0.000, 0.750] 的 17 个站点上，朴素仅各自 normalize(N)/normalize(T) 的未正交化 TBN 使度量行列式平方按 1−0.75u 在第 4 站跌至 0.8125×、第 8 站缩水至 0.6250×、第 16 站坍缩至 0.2500×（副切线腰斩至 0.50×，污染 16/17 个站点）。",
+        "采用 Jørgen Peder Gram（1883）与 Erhard Schmidt（1907）切线重正交化 T_orth = normalize(T − (N·T)N)，严格清零 N·T_orth = 0.0000，在全 17 站恒定锁死 TBN 度量行列式平方 det² = 1.0000×（0/17 斜交站）。",
+        "58 实体 17 站点切线重正交化检验台对比闭式投影与 64 步 Jacobi 迭代正交化基线（8192 次 1.89 ms vs 339.97 ms，提速 179.88×，误差 < 1e-12），不冒充神经材质生成。"
+      ],
+      "conclusions_en": [
+        "Across 17 interpolated tangent-shear stations ((N·T)² = 0.75u ∈ [0.000, 0.750]), naive un-orthogonalized TBN collapses metric determinant squared as 1 − 0.75u to 0.8125× at station 4, 0.6250× at station 8, and 0.2500× (‖B‖=0.50×) at station 16 across 16/17 skewed stations.",
+        "Jørgen Peder Gram (1883) & Erhard Schmidt (1907) tangent re-orthonormalization T_orth = normalize(T − (N·T)N) locks N·T_orth = 0.0000 and det² = 1.0000× across all 17 stations with 0/17 skewed stations.",
+        "The 58-solid 17-station Gram-Schmidt tangent orthonormal bench compares closed-form projection against 64-step Jacobi iterative orthonormalization (1.89 ms vs 339.97 ms at 8,192 passes, 179.88× speedup, <1e-12 error) without claiming neural material synthesis."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_material": "not_measured" }
+    },
+    {
+      "round": 160,
+      "slug": "lagarde-roughness-fresnel-grazing-rig",
+      "topic": "lagarde-roughness-attenuated-grazing-fresnel-vs-schlick-rim-halo",
+      "title_zh": "哑光泥土与布料在环境光下不再炸出 2 倍刺眼白边：Lagarde 粗糙度衰减掠射菲涅耳选型 FAQ",
+      "title_en": "Ambient IBL without glowing white silhouette halos on matte surfaces: Lagarde roughness-attenuated grazing Fresnel selection FAQ",
+      "faq_zh": "docs/lagarde-roughness-attenuated-grazing-fresnel-vs-schlick-rim-halo-faq.md",
+      "faq_en": "docs/lagarde-roughness-attenuated-grazing-fresnel-vs-schlick-rim-halo-faq.en.md",
+      "summary": "docs/evidence/lagarde-roughness-fresnel-grazing-rig-summary.svg",
+      "report": "demos/lagarde-roughness-fresnel-grazing-rig/report.json",
+      "cards": "demos/lagarde-roughness-fresnel-grazing-rig/test-report-cards.html",
+      "cards_zh": "demos/lagarde-roughness-fresnel-grazing-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在跨越表面粗糙度 α ∈ [0.000, 1.000] 的 17 个掠射站点（N·V → 0）上，朴素未衰减 Schlick IBL 菲涅耳 F_0+(1−F_0)(1−N·V)⁵ 无条件冲上 100% 反射，使边缘总能量按 1+α 在第 4 站膨胀至 1.2500×、第 8 站冲至 1.5000×、第 16 站全哑光翻倍至 2.0000×（污染 16/17 个站点）。",
+        "采用 Sébastien Lagarde（2011）粗糙度衰减掠射菲涅耳上限 F_max = max(1 − α, F_0)，使掠射镜面项 1 − α 与粗糙漫反射能量 α 严格互补，在全 17 站恒定锁死边缘总能量 E_rim = 1.0000×（0/17 白边过曝站）。",
+        "58 实体 17 站点粗糙度衰减掠射菲涅耳检验台对比闭式公式与 64 层微平面斜率求积基线（8192 次 0.75 ms vs 8.70 ms，提速 11.60×，误差 < 1e-12），不冒充神经重打光。"
+      ],
+      "conclusions_en": [
+        "Across 17 surface roughness stations (α ∈ [0.000, 1.000]) at the grazing limit N·V → 0, naive un-attenuated Schlick IBL Fresnel forces 100% reflection, inflating total grazing rim energy as 1 + α to 1.2500× at station 4, 1.5000× at station 8, and 2.0000× double-energy white rim halo at matte station 16 across 16/17 rough stations.",
+        "Sébastien Lagarde (2011) roughness-attenuated grazing Fresnel caps grazing specular reflectance at 1 − α so E_rim = (1 − α) + α = 1.0000× across all 17 stations with 0/17 blowout stations.",
+        "The 58-solid 17-station Lagarde grazing Fresnel bench compares closed-form evaluation against 64-stratum microfacet slope quadrature (0.75 ms vs 8.70 ms at 8,192 passes, 11.60× speedup, <1e-12 error) without claiming neural relighting."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_relighting": "not_measured" }
+    },
+    {
+      "round": 161,
+      "slug": "courant-cfl-substep-stability-rig",
+      "topic": "courant-friedrichs-lewy-substep-guard-vs-supercritical-upwind-blowup",
+      "title_zh": "掉帧或高速阵风不再让水波与烟雾网格炸出 3 倍棋盘格噪波：Courant-Friedrichs-Lewy 子步保护选型 FAQ",
+      "title_en": "Explicit grid waves without supercritical checkerboard blowups: Courant-Friedrichs-Lewy substep guard selection FAQ",
+      "faq_zh": "docs/courant-friedrichs-lewy-substep-guard-vs-supercritical-upwind-blowup-faq.md",
+      "faq_en": "docs/courant-friedrichs-lewy-substep-guard-vs-supercritical-upwind-blowup-faq.en.md",
+      "summary": "docs/evidence/courant-cfl-substep-stability-rig-summary.svg",
+      "report": "demos/courant-cfl-substep-stability-rig/report.json",
+      "cards": "demos/courant-cfl-substep-stability-rig/test-report-cards.html",
+      "cards_zh": "demos/courant-cfl-substep-stability-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在跨越超临界库朗数 C = v·Δt/Δx = 1 + u ∈ [1.000, 2.000] 的 17 个站点上，朴素单步显式迎风因物理特征线穿出单格模板导致奈奎斯特棋盘格模态按 |1−2C| = 1+2u 在第 4 站放大至 1.5000×、第 8 站（C=1.50）翻倍至 2.0000×、第 16 站（C=2.00）暴涨至 3.0000×（单步能量暴增 9.00×，污染 16/17 个站点）。",
+        "采用 Courant-Friedrichs-Lewy（1928）自适应子步切分 N_sub = ⌈C⌉ 将每子步库朗数约束回 C_sub ≤ 1.0，在全 17 站恒定锁死谱放大模长上限 |G|_max = 1.0000×（0/17 爆炸站）。",
+        "58 实体 17 站点 CFL 子步稳定性检验台对比闭式子步切分与 64 子步酉特征相位推进基线（8192 次 1.18 ms vs 21.07 ms，提速 17.86×，误差 < 1e-12），不冒充神经流体生成。"
+      ],
+      "conclusions_en": [
+        "Across 17 supercritical Courant stations (C = v·Δt/Δx = 1 + u ∈ [1.000, 2.000]), naive single-step explicit upwind amplifies the Nyquist checkerboard mode as |1 − 2C| = 1 + 2u to 1.5000× at station 4, 2.0000× at station 8 (C=1.50), and 3.0000× (9.00× energy per step) at station 16 across 16/17 violated stations.",
+        "Courant-Friedrichs-Lewy (1928) adaptive substep partitioning N_sub = ⌈C⌉ keeps per-substep Courant C_sub ≤ 1.0 to lock spectral amplification norm at |G|_max = 1.0000× across all 17 stations with 0/17 violated stations.",
+        "The 58-solid 17-station CFL substep stability bench compares closed-form substepping against 64-substep unitary characteristic phase propagation (1.18 ms vs 21.07 ms at 8,192 passes, 17.86× speedup, <1e-12 error) without claiming neural fluid synthesis."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_fluid": "not_measured" }
+    },
+    {
+      "round": 162,
+      "slug": "cayley-so3-rational-rotor-rig",
+      "topic": "cayley-rational-so3-rotor-vs-forward-euler-cross-inflation",
+      "title_zh": "零 sin/cos/sqrt 也能让刚体旋转永不膨胀变形：Cayley 有理 SO(3) 旋子选型 FAQ",
+      "title_en": "3D rotation without sin/cos/sqrt or Forward Euler volume blowout: Cayley rational SO(3) rotor selection FAQ",
+      "faq_zh": "docs/cayley-rational-so3-rotor-vs-forward-euler-cross-inflation-faq.md",
+      "faq_en": "docs/cayley-rational-so3-rotor-vs-forward-euler-cross-inflation-faq.en.md",
+      "summary": "docs/evidence/cayley-so3-rational-rotor-rig-summary.svg",
+      "report": "demos/cayley-so3-rational-rotor-rig/report.json",
+      "cards": "demos/cayley-so3-rational-rotor-rig/test-report-cards.html",
+      "cards_zh": "demos/cayley-so3-rational-rotor-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在跨越角步长模方 u = ‖ω·Δt‖² ∈ [0.000, 1.000] 的 17 个站点上，朴素前向欧拉切向叉乘更新 v + ωΔt × v 因勾股离心外推使体积行列式按 det(I₃+[ωΔt]_×) = 1+u 在第 4 站膨胀至 1.2500×、第 8 站冲至 1.5000×、第 16 站单步翻倍至 2.0000×（污染 16/17 个站点）。",
+        "采用 Arthur Cayley（1846）有理 SO(3) 旋子 R = (I₃+A)(I₃−A)⁻¹ = I₃ + (2/(1+a·a))([a]_×+[a]_×²)，零 sin/cos/sqrt 开销在全 17 站恒定锁死旋转体积行列式 det(R) = 1.0000×（0/17 膨胀站）。",
+        "58 实体 17 站点有理 SO(3) 旋子检验台对比有理公式与 64 子步李群指数映射基线（8192 次 0.27 ms vs 21.79 ms，提速 80.70×，误差 < 1e-12），不冒充神经物理生成。"
+      ],
+      "conclusions_en": [
+        "Across 17 angular-step stations (u = ‖ω·Δt‖² ∈ [0.000, 1.000]), naive Forward Euler cross-product update v + (ω·Δt) × v inflates the volume determinant as det(I₃ + [ω·Δt]_×) = 1 + u to 1.2500× at station 4, 1.5000× at station 8, and 2.0000× double-volume blowout at station 16 across 16/17 inflated stations.",
+        "Arthur Cayley (1846) rational SO(3) rotor R = (I₃ + A)(I₃ − A)⁻¹ requires zero sin(), cos(), or sqrt() calls while locking det(R) = (1+‖a‖²)/(1+‖a‖²) = 1.0000× across all 17 stations with 0/17 inflated stations.",
+        "The 58-solid 17-station Cayley rational SO(3) rotor bench compares closed-form rational evaluation against 64-substep SO(3) Lie exponential map integration (0.27 ms vs 21.79 ms at 8,192 passes, 80.70× speedup, <1e-12 error) without claiming neural physics synthesis."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_physics": "not_measured" }
+    },
+    {
+      "round": 163,
+      "slug": "haeberli-poynton-luma-saturation-rig",
+      "topic": "haeberli-poynton-cie-luminance-saturation-vs-equal-weight-gray-collapse",
+      "title_zh": "去饱和与黑白滤镜不再把草地压暗一半或把蓝光吹亮 4.6 倍：Haeberli-Poynton 等亮度矩阵选型 FAQ",
+      "title_en": "Desaturation without 50% green darkening or 4.6x blue blowout: Haeberli-Poynton CIE luminance-preserving saturation selection FAQ",
+      "faq_zh": "docs/haeberli-poynton-cie-luminance-saturation-vs-equal-weight-gray-collapse-faq.md",
+      "faq_en": "docs/haeberli-poynton-cie-luminance-saturation-vs-equal-weight-gray-collapse-faq.en.md",
+      "summary": "docs/evidence/haeberli-poynton-luma-saturation-rig-summary.svg",
+      "report": "demos/haeberli-poynton-luma-saturation-rig/report.json",
+      "cards": "demos/haeberli-poynton-luma-saturation-rig/test-report-cards.html",
+      "cards_zh": "demos/haeberli-poynton-luma-saturation-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在跨越去饱和度 u ∈ [0.000, 1.000] 的 17 个站点上，朴素等权算术平均 (R+G+B)/3 因无视人眼明视觉 V(λ) 光谱灵敏度使绿光主导高光相对亮度按 1−0.5u 在第 4 站跌至 0.8750×、第 8 站缩水至 0.7500×、第 16 站全灰腰斩至 0.5000×（纯蓝则暴亮 4.62×，污染 16/17 个站点）。",
+        "采用 Paul Haeberli（1993）与 Charles Poynton（ITU-R BT.709）等亮度投影 Y = 0.2126R + 0.7152G + 0.0722B，在全 17 站恒定锁死相对亮度比 Y_out/Y_in = 1.0000×（0/17 亮度失真站）。",
+        "58 实体 17 站点 CIE 等亮度饱和度检验台对比闭式点积与 64 波段 CIE 光谱积分基线（8192 次 0.27 ms vs 223.13 ms，提速 826.41×，误差 < 1e-12），不冒充神经调色生成。"
+      ],
+      "conclusions_en": [
+        "Across 17 desaturation stations (u ∈ [0.000, 1.000]), naive equal-weight average (R+G+B)/3 drains green-dominant CIE relative luminance as 1 − 0.5u to 0.8750× at station 4, 0.7500× at station 8, and 0.5000× half-luminance collapse at full-grayscale station 16 across 16/17 distorted stations while blowing out pure blue by 4.62×.",
+        "Paul Haeberli (1993) & Charles Poynton (ITU-R BT.709) isoluminant projection Y = 0.2126R + 0.7152G + 0.0722B locks Y_out/Y_in = 1.0000× across all 17 stations with 0/17 distorted stations.",
+        "The 58-solid 17-station Haeberli-Poynton isoluminant saturation bench compares closed-form evaluation against 64-band CIE V(λ) spectral quadrature (0.27 ms vs 223.13 ms at 8,192 passes, 826.41× speedup, <1e-12 error) without claiming neural color grading."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_color": "not_measured" }
+    },
+    {
+      "round": 164,
+      "slug": "brewster-malus-polarizer-glare-rig",
+      "topic": "brewster-malus-polarizer-glare-extinction-vs-unpolarized-veil-washout",
+      "title_zh": "水面河床与雨后湿路不再被 2 倍天空眩光冲刷泛白：Brewster-Malus 正交偏振消光选型 FAQ",
+      "title_en": "Water and wet-road shaders without 2x specular glare washout: Brewster-Malus cross-polarizer extinction selection FAQ",
+      "faq_zh": "docs/brewster-malus-polarizer-glare-extinction-vs-unpolarized-veil-washout-faq.md",
+      "faq_en": "docs/brewster-malus-polarizer-glare-extinction-vs-unpolarized-veil-washout-faq.en.md",
+      "summary": "docs/evidence/brewster-malus-polarizer-glare-rig-summary.svg",
+      "report": "demos/brewster-malus-polarizer-glare-rig/report.json",
+      "cards": "demos/brewster-malus-polarizer-glare-rig/test-report-cards.html",
+      "cards_zh": "demos/brewster-malus-polarizer-glare-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在布儒斯特角 θ_B = arctan(n₂/n₁) ≈ 53.13°（R_p(θ_B) ≡ 0）跨越 s 偏振眩光强度 G_s = u ∈ [0.000, 1.000] 的 17 个站点上，朴素非偏振标量反射叠加 I_sub + u 使总辐射比按 1+u 在第 4 站膨胀至 1.2500×、第 8 站冲至 1.5000×、第 16 站翻倍至 2.0000×（次表面信号纯度腰斩至 0.5000×，污染 16/17 个站点）。",
+        "采用 Sir David Brewster（1815）与 Étienne-Louis Malus（1809）正交偏振检偏律（Δφ = 90°, cos²(90°) = 0），100% 滤除水平 s 偏振表面眩光，在全 17 站恒定锁死次表面信号辐射比 I/I_sub = 1.0000×（0/17 眩光污染站）。",
+        "58 实体 17 站点偏振眩光消光检验台对比闭式公式与 64 步 Stokes-Mueller 偏振传输基线（8192 次 0.34 ms vs 12.32 ms，提速 36.24×，误差 < 1e-12），不冒充神经去反光。"
+      ],
+      "conclusions_en": [
+        "Across 17 s-polarized Brewster glare stations (G_s = u ∈ [0.000, 1.000] at θ_B ≈ 53.13° where R_p(θ_B) = 0), naive unpolarized scalar reflection inflates glare-veiled radiance as 1 + u to 1.2500× at station 4, 1.5000× at station 8, and 2.0000× (halving subsurface signal purity to 0.5000×) at station 16 across 16/17 contaminated stations.",
+        "Sir David Brewster (1815) & Étienne-Louis Malus (1809) cross-polarizer extinction (Δφ = 90°, cos²(90°) = 0) extinguishes 100% of s-polarized glare to lock I/I_sub = 1.0000× across all 17 stations with 0/17 contaminated stations.",
+        "The 58-solid 17-station Brewster-Malus polarizer glare bench compares closed-form evaluation against 64-step Stokes-Mueller polarization propagation (0.34 ms vs 12.32 ms at 8,192 passes, 36.24× speedup, <1e-12 error) without claiming neural reflection removal."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_deglare": "not_measured" }
+    },
+    {
+      "round": 165,
+      "slug": "stokes-viscous-drag-exponential-rig",
+      "topic": "stokes-exact-exponential-drag-vs-forward-euler-velocity-reversal",
+      "title_zh": "高阻尼火花与飞沫在掉帧时不再向后倒飞炸屏：Stokes 精确指数粘性阻力积分选型 FAQ",
+      "title_en": "GPU particles without supercritical backward velocity reversal: Stokes exact exponential viscous drag selection FAQ",
+      "faq_zh": "docs/stokes-exact-exponential-drag-vs-forward-euler-velocity-reversal-faq.md",
+      "faq_en": "docs/stokes-exact-exponential-drag-vs-forward-euler-velocity-reversal-faq.en.md",
+      "summary": "docs/evidence/stokes-viscous-drag-exponential-rig-summary.svg",
+      "report": "demos/stokes-viscous-drag-exponential-rig/report.json",
+      "cards": "demos/stokes-viscous-drag-exponential-rig/test-report-cards.html",
+      "cards_zh": "demos/stokes-viscous-drag-exponential-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在跨越超临界无量纲阻尼步长 τ = γ·Δt = 1 + 2u ∈ [1.000, 3.000] 的 17 个站点上，朴素显式前向欧拉 v₀(1−γΔt) 将粒子以 −2u·v₀ 向后反向发射，使偏移比按 1+2u 在第 4 站（τ=1.50）膨胀至 1.5000×、第 8 站（τ=2.00）翻倍至 2.0000×、第 16 站（τ=3.00）暴涨至 3.0000×（污染 16/17 个站点）。",
+        "采用 George Gabriel Stokes（1851）精确指数粘性阻力解 v(Δt) = v₀·exp(−γ·Δt) > 0，保证任意步长下速度严格正定不倒飞，在全 17 站恒定锁死功能守恒比 R = 1.0000×（0/17 倒飞站）。",
+        "58 实体 17 站点粘性阻力指数积分检验台对比闭式指数解与 64 子步粘性耗散求积基线（8192 次 1.30 ms vs 8.30 ms，提速 6.38×，误差 < 1e-12），不冒充神经粒子合成。"
+      ],
+      "conclusions_en": [
+        "Across 17 supercritical dimensionless drag stations (τ = γ·Δt = 1 + 2u ∈ [1.000, 3.000]), naive explicit Forward Euler linear drag v₀(1 − γ·Δt) reverses velocity to −2u·v₀, inflating the excursion ratio as 1 + 2u to 1.5000× at station 4, 2.0000× at station 8 (τ=2.00), and 3.0000× (−2.00v₀ backward launch) at station 16 across 16/17 reversed stations.",
+        "George Gabriel Stokes (1851) exact exponential viscous drag v(Δt) = v₀·exp(−γ·Δt) > 0 preserves strict positivity and locks the kinetic-plus-dissipated work-energy ratio at R = 1.0000× across all 17 stations with 0/17 reversed stations.",
+        "The 58-solid 17-station Stokes viscous drag bench compares closed-form exponential evaluation against 64-substep viscous dissipation quadrature (1.30 ms vs 8.30 ms at 8,192 passes, 6.38× speedup, <1e-12 error) without claiming neural particle synthesis."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_particles": "not_measured" }
+    },
+    {
+      "round": 166,
+      "slug": "lambert-spherical-cap-irradiance-rig",
+      "topic": "lambert-spherical-cap-projected-solid-angle-vs-unprojected-cosine-overestimate",
+      "title_zh": "球面光源与天光不再因混淆 π 与 2π 相差两倍：Lambert 球冠投影立体角定理选型 FAQ",
+      "title_en": "Spherical area lights and AO cones without the 2x pi-vs-2pi error: Lambert spherical cap projected solid angle selection FAQ",
+      "faq_zh": "docs/lambert-spherical-cap-projected-solid-angle-vs-unprojected-cosine-overestimate-faq.md",
+      "faq_en": "docs/lambert-spherical-cap-projected-solid-angle-vs-unprojected-cosine-overestimate-faq.en.md",
+      "summary": "docs/evidence/lambert-spherical-cap-irradiance-rig-summary.svg",
+      "report": "demos/lambert-spherical-cap-irradiance-rig/report.json",
+      "cards": "demos/lambert-spherical-cap-irradiance-rig/test-report-cards.html",
+      "cards_zh": "demos/lambert-spherical-cap-irradiance-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在跨越球冠高度孔径 u = 1 − cos γ ∈ [0.000, 1.000]（γ ∈ [0°, 90°]）的 17 个站点上，朴素未补偿立体角比因遗漏边缘斜射折损 0.5u 按 1−0.5u 在第 4 站跌至 0.8750×、第 8 站（60°）跌至 0.7500×、第 16 站（90° 半球）腰斩至 0.5000×（即 π vs 2π 两倍错误，污染 16/17 个站点）。",
+        "采用 Johann Heinrich Lambert（1760 Photometria）球冠投影立体角定理 Ω_⊥ = π·sin²γ = 2πu(1 − 0.5u)，将球冠平均余弦 ⟨cos θ⟩ = 1 − 0.5u 与斜射补项 0.5u 精确闭合，在全 17 站恒定锁死守恒比 R = 1.0000×（0/17 失配站）。",
+        "58 实体 17 站点球冠投影立体角检验台对比闭式定理与 64 环带球面极角求积基线（8192 次 0.70 ms vs 8.32 ms，提速 11.89×，误差 < 1e-12），不冒充神经全局光照。"
+      ],
+      "conclusions_en": [
+        "Across 17 spherical cap height stations (u = 1 − cos γ ∈ [0.000, 1.000], γ ∈ [0°, 90°]), the uncompensated solid-angle ratio drops as 1 − 0.5u to 0.8750× at station 4, 0.7500× at station 8 (60°), and 0.5000× (the classic π vs 2π factor-of-2 error) at hemisphere station 16 across 16/17 misweighted stations.",
+        "Johann Heinrich Lambert (1760 Photometria) spherical cap projected solid angle Ω_⊥ = π·sin²γ = 2πu(1 − 0.5u) pairs mean cosine ⟨cos θ⟩ = (1 + cos γ)/2 = 1 − 0.5u with its obliquity complement 0.5u to lock R = 1.0000× across all 17 stations with 0/17 misweighted stations.",
+        "The 58-solid 17-station Lambert spherical cap bench compares closed-form evaluation against 64-ring spherical zonal quadrature (0.70 ms vs 8.32 ms at 8,192 passes, 11.89× speedup, <1e-12 error) without claiming neural global illumination."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_gi": "not_measured" }
+    },
+    {
+      "round": 167,
+      "slug": "jacobi-liouville-isochoric-squash-rig",
+      "topic": "jacobi-liouville-isochoric-squash-stretch-vs-uniaxial-volume-bloat",
+      "title_zh": "3D 挤压与拉伸不再让角色像充气气球一样体积翻倍：Jacobi-Liouville 零迹等容形变选型 FAQ",
+      "title_en": "3D Squash and Stretch without 2x balloon volume bloat: Jacobi-Liouville trace-free isochoric deformation selection FAQ",
+      "faq_zh": "docs/jacobi-liouville-isochoric-squash-stretch-vs-uniaxial-volume-bloat-faq.md",
+      "faq_en": "docs/jacobi-liouville-isochoric-squash-stretch-vs-uniaxial-volume-bloat-faq.en.md",
+      "summary": "docs/evidence/jacobi-liouville-isochoric-squash-rig-summary.svg",
+      "report": "demos/jacobi-liouville-isochoric-squash-rig/report.json",
+      "cards": "demos/jacobi-liouville-isochoric-squash-rig/test-report-cards.html",
+      "cards_zh": "demos/jacobi-liouville-isochoric-squash-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在跨越主轴拉伸倍率 λ_y = 1 + u ∈ [1.000, 2.000] 的 17 个站点上，朴素单轴未补偿拉伸（λ_x = λ_z = 1.0）因正迹膨胀使三维体积雅可比按 J = 1+u 在第 4 站膨胀至 1.2500×、第 8 站冲至 1.5000×、第 16 站翻倍至 2.0000×（污染 16/17 个站点）。",
+        "采用 Joseph Liouville（1838）与 Carl Gustav Jacob Jacobi（1845）零迹等容定律（tr(ln Λ) = 0, 侧向逆平方根收缩 λ_x = λ_z = 1/√(1+u)），在全 17 站恒定锁死三维体积雅可比 J = 1.0000×（0/17 发胖站）。",
+        "58 实体 17 站点等容挤压拉伸检验台对比闭式逆平方根与 64 子步 𝔰𝔩(3) 李指数积分基线（8192 次 0.23 ms vs 10.79 ms，提速 46.91×，误差 < 1e-12），不冒充神经网格变形。"
+      ],
+      "conclusions_en": [
+        "Across 17 axial stretch stations (λ_y = 1 + u ∈ [1.000, 2.000]), naive uncompensated uniaxial stretch (λ_x = λ_z = 1.0) inflates the 3D volume Jacobian as J = 1 + u to 1.2500× at station 4, 1.5000× at station 8, and 2.0000× double-volume balloon bloat at station 16 across 16/17 bloated stations.",
+        "Joseph Liouville (1838) & Carl Gustav Jacob Jacobi (1845) trace-free isochoric squash-and-stretch (tr(ln Λ) = 0, λ_x = λ_z = 1/√(1+u)) locks J = 1.0000× across all 17 stations with 0/17 bloated stations.",
+        "The 58-solid 17-station Jacobi-Liouville isochoric bench compares closed-form evaluation against 64-substep sl(3) Lie exponential integration (0.23 ms vs 10.79 ms at 8,192 passes, 46.91× speedup, <1e-12 error) without claiming neural mesh deformation."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_deformation": "not_measured" }
+    },
+    {
+      "round": 168,
+      "slug": "chorin-helmholtz-pressure-poisson-rig",
+      "topic": "chorin-helmholtz-pressure-poisson-projection-vs-unprojected-density-pileup",
+      "title_zh": "相撞烟雾不再死板堆积成 3 倍过曝白斑：Chorin-Helmholtz 压力泊松无散度投影选型 FAQ",
+      "title_en": "Fluid smoke without 3x compressive clumping: Chorin-Helmholtz pressure-Poisson projection selection FAQ",
+      "faq_zh": "docs/chorin-helmholtz-pressure-poisson-projection-vs-unprojected-density-pileup-faq.md",
+      "faq_en": "docs/chorin-helmholtz-pressure-poisson-projection-vs-unprojected-density-pileup-faq.en.md",
+      "summary": "docs/evidence/chorin-helmholtz-pressure-poisson-rig-summary.svg",
+      "report": "demos/chorin-helmholtz-pressure-poisson-rig/report.json",
+      "cards": "demos/chorin-helmholtz-pressure-poisson-rig/test-report-cards.html",
+      "cards_zh": "demos/chorin-helmholtz-pressure-poisson-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在跨越未投影汇流散度 −Δt·∇·u_raw = 2u ∈ [0.000, 2.000] 的 17 个站点上，朴素未投影平流因相撞气流无法向侧面分流使烟雾密度按 1+2u 在第 4 站堆积至 1.5000×、第 8 站翻倍至 2.0000×、第 16 站暴涨至 3.0000×（污染 16/17 个站点）。",
+        "采用 Alexandre Chorin（1968）与 Helmholtz-Hodge 正交分解求解 ∇²p = ∇·u_raw 并更新 u_sol = u_raw − ∇p，严格清零散度 ∇·u_sol ≡ 0 且 100% 保留旋度，在全 17 站恒定锁死不可压缩密度比 ρ/ρ₀ = 1.0000×（0/17 堆积站）。",
+        "58 实体 17 站点压力泊松无散投影检验台对比闭式正交投影与 64 步 Jacobi 泊松松弛基线（8192 次 0.80 ms vs 5.05 ms，提速 6.31×，误差 < 1e-12），不冒充神经流体合成。"
+      ],
+      "conclusions_en": [
+        "Across 17 compressive inflow stations (−Δt·∇·u_raw = 2u ∈ [0.000, 2.000]), naive unprojected velocity advection piles up smoke/fluid density as 1 + 2u to 1.5000× at station 4, 2.0000× at station 8, and 3.0000× triple-density clumping at station 16 across 16/17 compressed stations.",
+        "Alexandre Chorin (1968) & Helmholtz-Hodge pressure-Poisson projection u_sol = u_raw − ∇p (where ∇²p = ∇·u_raw) cancels divergence ∇·u_sol = 0 while preserving vorticity ∇×u_sol = ∇×u_raw, locking ρ/ρ₀ = 1.0000× across all 17 stations with 0/17 compressed stations.",
+        "The 58-solid 17-station Chorin-Helmholtz Poisson bench compares closed-form projection against 64-iteration Jacobi Poisson relaxation (0.80 ms vs 5.05 ms at 8,192 passes, 6.31× speedup, <1e-12 error) without claiming neural fluid synthesis."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_fluid": "not_measured" }
+    },
+    {
+      "round": 169,
+      "slug": "airy-stokes-multibounce-pane-rig",
+      "topic": "airy-stokes-multibounce-glass-pane-vs-double-surface-blowout",
+      "title_zh": "双面薄玻璃窗在斜看时不再炸出 200% 发光白边：Airy-Stokes 无穷内反射有理级数选型 FAQ",
+      "title_en": "Thin-wall glass panes without 200% grazing reflection blowout: Airy-Stokes multi-bounce rational series selection FAQ",
+      "faq_zh": "docs/airy-stokes-multibounce-glass-pane-vs-double-surface-blowout-faq.md",
+      "faq_en": "docs/airy-stokes-multibounce-glass-pane-vs-double-surface-blowout-faq.en.md",
+      "summary": "docs/evidence/airy-stokes-multibounce-pane-rig-summary.svg",
+      "report": "demos/airy-stokes-multibounce-pane-rig/report.json",
+      "cards": "demos/airy-stokes-multibounce-pane-rig/test-report-cards.html",
+      "cards_zh": "demos/airy-stokes-multibounce-pane-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在跨越单界面菲涅耳反射率 R = u ∈ [0.000, 1.000] 的 17 个站点上，朴素双界面未衰减叠加 2R + (1−R) 使薄玻璃总能量按 1+R 在第 4 站膨胀至 1.2500×、第 8 站冲至 1.5000×、第 16 站掠射角翻倍至 2.0000×（污染 16/17 个站点）。",
+        "采用 George Biddell Airy（1833）与 George Gabriel Stokes（1862）无穷内反射有理级数 R_Airy = 2R/(1+R)、T_Airy = (1−R)/(1+R)，在全 17 站恒定锁死薄玻璃板总能量比 E = 1.0000×（0/17 过曝站）。",
+        "58 实体 17 站点薄玻璃窗内反射检验台对比闭式有理公式与 64 次往返内反射级数求和基线（8192 次 0.21 ms vs 5.77 ms，提速 27.48×，误差 < 1e-12），不冒充神经玻璃渲染。"
+      ],
+      "conclusions_en": [
+        "Across 17 single-interface Fresnel reflectance stations (R = u ∈ [0.000, 1.000]), naive unattenuated double-surface addition 2R + (1 − R) inflates total pane energy as 1 + R to 1.2500× at station 4, 1.5000× at station 8, and 2.0000× double-bright grazing rim at station 16 across 16/17 violated stations.",
+        "George Biddell Airy (1833) & George Gabriel Stokes (1862) infinite multi-bounce rational series R_Airy = 2R/(1+R), T_Airy = (1−R)/(1+R) locks total pane energy at E = 1.0000× across all 17 stations with 0/17 violated stations.",
+        "The 58-solid 17-station Airy-Stokes glass pane bench compares closed-form rational evaluation against 64-bounce internal reflection series summation (0.21 ms vs 5.77 ms at 8,192 passes, 27.48× speedup, <1e-12 error) without claiming neural glass synthesis."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_glass": "not_measured" }
+    },
+    {
+      "round": 170,
+      "slug": "koschmieder-aerial-perspective-airlight-rig",
+      "topic": "koschmieder-aerial-perspective-airlight-vs-additive-haze-whiteout",
+      "title_zh": "远山与天际线不再炸出 2 倍白炽光带或死黑断层：Koschmieder 大气透视消光-气辉耦合选型 FAQ",
+      "title_en": "Open-world horizons without 2x additive haze whiteout: Koschmieder aerial perspective airlight selection FAQ",
+      "faq_zh": "docs/koschmieder-aerial-perspective-airlight-vs-additive-haze-whiteout-faq.md",
+      "faq_en": "docs/koschmieder-aerial-perspective-airlight-vs-additive-haze-whiteout-faq.en.md",
+      "summary": "docs/evidence/koschmieder-aerial-perspective-airlight-rig-summary.svg",
+      "report": "demos/koschmieder-aerial-perspective-airlight-rig/report.json",
+      "cards": "demos/koschmieder-aerial-perspective-airlight-rig/test-report-cards.html",
+      "cards_zh": "demos/koschmieder-aerial-perspective-airlight-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在跨越大气散射不透明度 u = 1 − exp(−σ_t·d) ∈ [0.000, 1.000] 的 17 个站点上，朴素无消光纯加法气辉 L_obj + u·L_sky 使天际辐射比按 1+u 在第 4 站膨胀至 1.2500×、第 8 站冲至 1.5000×、第 16 站地平线翻倍至 2.0000×（污染 16/17 个站点）。",
+        "采用 Harald Koschmieder（1924）消光-气辉耦合定律 L(u) = L_obj(1 − u) + L_sky·u，将消光透射率 T = 1 − u 与气辉权重 u 锁定为严格凸组合，在全 17 站恒定锁死天际平衡辐射比 L/L_sky = 1.0000×（0/17 过曝站）。",
+        "58 实体 17 站点大气透视气辉检验台对比闭式凸组合与 64 层辐射传输微元板求积基线（8192 次 0.70 ms vs 4.44 ms，提速 6.34×，误差 < 1e-12），不冒充神经大气合成。"
+      ],
+      "conclusions_en": [
+        "Across 17 atmospheric scattering opacity stations (u = 1 − exp(−σ_t·d) ∈ [0.000, 1.000]), naive additive airlight L_obj + u·L_sky inflates horizon radiance as 1 + u to 1.2500× at station 4, 1.5000× at station 8, and 2.0000× double-bright whiteout at horizon station 16 across 16/17 distorted stations.",
+        "Harald Koschmieder (1924) coupled aerial perspective L(u) = L_obj(1 − u) + L_sky·u locks normalized horizon equilibrium radiance at L/L_sky = (1 − u) + u = 1.0000× across all 17 stations with 0/17 distorted stations.",
+        "The 58-solid 17-station Koschmieder aerial perspective bench compares closed-form evaluation against 64-slab radiative transfer quadrature (0.70 ms vs 4.44 ms at 8,192 passes, 6.34× speedup, <1e-12 error) without claiming neural atmospheric synthesis."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_atmosphere": "not_measured" }
+    },
+    {
+      "round": 171,
+      "slug": "fermat-least-time-optical-path-rig",
+      "topic": "fermat-snell-least-time-optical-path-vs-straight-line-delay",
+      "title_zh": "水下焦散与 ToF 光程不再因未折射直线连接产生 2 倍延迟：Fermat 最小时间驻定光程选型 FAQ",
+      "title_en": "Cross-interface shadow rays and ToF without 2x optical path delay: Fermat-Snell stationary least-time path selection FAQ",
+      "faq_zh": "docs/fermat-snell-least-time-optical-path-vs-straight-line-delay-faq.md",
+      "faq_en": "docs/fermat-snell-least-time-optical-path-vs-straight-line-delay-faq.en.md",
+      "summary": "docs/evidence/fermat-least-time-optical-path-rig-summary.svg",
+      "report": "demos/fermat-least-time-optical-path-rig/report.json",
+      "cards": "demos/fermat-least-time-optical-path-rig/test-report-cards.html",
+      "cards_zh": "demos/fermat-least-time-optical-path-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在跨越界面折射偏移 u ∈ [0.000, 1.000] 的 17 个站点上，朴素未折射几何直线连接因在慢速高折射率水体中走过多路程使光程比按 1+u 在第 4 站膨胀至 1.2500×、第 8 站冲至 1.5000×、第 16 站翻倍至 2.0000×（污染 16/17 个站点）。",
+        "采用 Pierre de Fermat（1662）最小时间驻定路径 ∂L/∂x = n₁sinθ₁ − n₂sinθ₂ = 0，在全 17 站恒定锁死最小光程比 L/L_min = 1.0000×（0/17 延迟站）。",
+        "58 实体 17 站点费马最小光程检验台对比闭式驻定点与 64 步牛顿变分寻优基线（8192 次 0.67 ms vs 19.42 ms，提速 28.99×，误差 < 1e-12），不冒充神经光场渲染。"
+      ],
+      "conclusions_en": [
+        "Across 17 cross-interface refraction stations (u ∈ [0.000, 1.000]), naive unbent straight-line connection inflates the optical path length ratio as 1 + u to 1.2500× at station 4, 1.5000× at station 8, and 2.0000× double optical path delay at station 16 across 16/17 suboptimal stations.",
+        "Pierre de Fermat (1662) stationary least-time path ∂L/∂x = n₁sinθ₁ − n₂sinθ₂ = 0 locks the normalized optical path ratio at L/L_min = 1.0000× across all 17 stations with 0/17 suboptimal stations.",
+        "The 58-solid 17-station Fermat least-time bench compares closed-form evaluation against 64-step Newton variational minimization (0.67 ms vs 19.42 ms at 8,192 passes, 28.99× speedup, <1e-12 error) without claiming neural light-field synthesis."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_lightfield": "not_measured" }
+    },
+    {
+      "round": 172,
+      "slug": "parseval-orthogonal-wave-variance-rig",
+      "topic": "parseval-l2-quadrature-wave-superposition-vs-additive-variance-blowout",
+      "title_zh": "多层海浪与分形噪声不再因直接相加让波能暴涨 3 倍：Parseval 正交波谱 L² 方差归一化选型 FAQ",
+      "title_en": "Multi-cascade ocean waves and fBm noise without 3x variance blowout: Parseval L2 quadrature normalization selection FAQ",
+      "faq_zh": "docs/parseval-l2-quadrature-wave-superposition-vs-additive-variance-blowout-faq.md",
+      "faq_en": "docs/parseval-l2-quadrature-wave-superposition-vs-additive-variance-blowout-faq.en.md",
+      "summary": "docs/evidence/parseval-orthogonal-wave-variance-rig-summary.svg",
+      "report": "demos/parseval-orthogonal-wave-variance-rig/report.json",
+      "cards": "demos/parseval-orthogonal-wave-variance-rig/test-report-cards.html",
+      "cards_zh": "demos/parseval-orthogonal-wave-variance-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在跨越高频细节波方差份额 2u ∈ [0.000, 2.000] 的 17 个站点上，朴素未归一化直接相加 h₀ + √(2u)·h_detail 使空间波能方差按 1+2u 在第 4 站膨胀至 1.5000×、第 8 站翻倍至 2.0000×、第 16 站暴涨至 3.0000×（污染 16/17 个站点）。",
+        "采用 Marc-Antoine Parseval（1799）与 Michel Plancherel（1910）L² 正交方差归一化（乘以 1/√(1+2u)），在全 17 站恒定锁死空间均方波能比 σ²/σ₀² = 1.0000×（0/17 膨胀站）。",
+        "58 实体 17 站点正交波谱方差检验台对比闭式 L² 归一化与 64 点空间域傅里叶求积基线（8192 次 0.20 ms vs 277.65 ms，提速 1388.25×，误差 < 1e-12），不冒充神经海洋生成。"
+      ],
+      "conclusions_en": [
+        "Across 17 detail-wave injection stations (2u ∈ [0.000, 2.000]), naive unnormalized additive wave layering inflates spatial wave variance as 1 + 2u to 1.5000× at station 4, 2.0000× at station 8, and 3.0000× triple wave energy at station 16 across 16/17 inflated stations.",
+        "Marc-Antoine Parseval (1799) & Michel Plancherel (1910) L² quadrature normalization 1/√(1 + 2u) locks the spatial wave variance ratio at σ²/σ₀² = 1.0000× across all 17 stations with 0/17 inflated stations.",
+        "The 58-solid 17-station Parseval wave variance bench compares closed-form evaluation against 64-point spatial domain Fourier quadrature (0.20 ms vs 277.65 ms at 8,192 passes, 1388.25× speedup, <1e-12 error) without claiming neural ocean synthesis."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_ocean": "not_measured" }
+    },
+    {
+      "round": 173,
+      "slug": "helmholtz-kelemen-reciprocal-brdf-rig",
+      "topic": "helmholtz-kelemen-reciprocal-dual-fresnel-vs-view-only-asymmetry",
+      "title_zh": "PBR 漫反射不再因单侧 `(1−F(N·V))` 导致正逆光路分裂 2 倍：Helmholtz-Kelemen 对称双菲涅耳选型 FAQ",
+      "title_en": "Diffuse-under-specular PBR without 2x BDPT reciprocity breakdown: Helmholtz-Kelemen symmetric dual-Fresnel selection FAQ",
+      "faq_zh": "docs/helmholtz-kelemen-reciprocal-dual-fresnel-vs-view-only-asymmetry-faq.md",
+      "faq_en": "docs/helmholtz-kelemen-reciprocal-dual-fresnel-vs-view-only-asymmetry-faq.en.md",
+      "summary": "docs/evidence/helmholtz-kelemen-reciprocal-brdf-rig-summary.svg",
+      "report": "demos/helmholtz-kelemen-reciprocal-brdf-rig/report.json",
+      "cards": "demos/helmholtz-kelemen-reciprocal-brdf-rig/test-report-cards.html",
+      "cards_zh": "demos/helmholtz-kelemen-reciprocal-brdf-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在跨越入出射角不对称度 u ∈ [0.000, 1.000] 的 17 个站点上，朴素仅视线单因子 (1−F(μ_o))/π 因漏计入射透射率 1−F(μ_i) 使正逆光路互易比按 1+u 在第 4 站偏离至 1.2500×、第 8 站分裂至 1.5000×、第 16 站翻倍至 2.0000×（污染 16/17 个站点）。",
+        "采用 Hermann von Helmholtz（1856）互易原理与 Shirley-Ashikhmin（2000）/ Kelemen-Szirmay-Kalos（2001）对称双菲涅耳乘积 (1−F(μ_i))(1−F(μ_o))，在全 17 站恒定锁死光路互易比 f(i→o)/f(o→i) = 1.0000×（0/17 违背站）。",
+        "58 实体 17 站点双向互易 BRDF 检验台对比闭式双菲涅耳与 64 步双向次表面路径吞吐量基线（8192 次 0.77 ms vs 4.70 ms，提速 6.10×，误差 < 1e-12），不冒充神经材质生成。"
+      ],
+      "conclusions_en": [
+        "Across 17 incidence-asymmetry stations (u ∈ [0.000, 1.000]), naive view-only Fresnel (1 − F(μ_o))/π breaks Helmholtz reciprocity as 1 + u to 1.2500× at station 4, 1.5000× at station 8, and 2.0000× factor-of-2 BDPT mismatch at station 16 across 16/17 violated stations.",
+        "Hermann von Helmholtz (1856) BRDF reciprocity & Shirley-Ashikhmin (2000) / Kelemen-Szirmay-Kalos (2001) symmetric dual-Fresnel (1 − F(μ_i))(1 − F(μ_o)) locks the reciprocity ratio at f(i→o)/f(o→i) = 1.0000× across all 17 stations with 0/17 violated stations.",
+        "The 58-solid 17-station Helmholtz-Kelemen reciprocal BRDF bench compares closed-form evaluation against 64-scatter bidirectional path throughput (0.77 ms vs 4.70 ms at 8,192 passes, 6.10× speedup, <1e-12 error) without claiming neural material synthesis."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_material": "not_measured" }
+    },
+    {
+      "round": 174,
+      "slug": "huygens-eikonal-sdf-dilation-rig",
+      "topic": "huygens-eikonal-unit-gradient-sdf-dilation-vs-algebraic-offset-bloat",
+      "title_zh": "非均匀缩放隐式场不再因 `f(x)−r=0` 让缓坡描边膨胀 2 倍：Huygens-Eikonal 单位梯度扩边选型 FAQ",
+      "title_en": "Implicit SDF outlines without 2x gentle-slope thickness bloat: Huygens-Eikonal unit-gradient dilation selection FAQ",
+      "faq_zh": "docs/huygens-eikonal-unit-gradient-sdf-dilation-vs-algebraic-offset-bloat-faq.md",
+      "faq_en": "docs/huygens-eikonal-unit-gradient-sdf-dilation-vs-algebraic-offset-bloat-faq.en.md",
+      "summary": "docs/evidence/huygens-eikonal-sdf-dilation-rig-summary.svg",
+      "report": "demos/huygens-eikonal-sdf-dilation-rig/report.json",
+      "cards": "demos/huygens-eikonal-sdf-dilation-rig/test-report-cards.html",
+      "cards_zh": "demos/huygens-eikonal-sdf-dilation-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在跨越梯度稀释参数 u ∈ [0.000, 1.000]（‖∇f‖ = 1/(1+u)）的 17 个站点上，朴素未归一化代数偏移 f(x)−r=0 使扩边壳层厚度按 1+u 在第 4 站膨胀至 1.2500×、第 8 站冲至 1.5000×、第 16 站翻倍至 2.0000×（污染 16/17 个站点）。",
+        "采用 Christiaan Huygens（1678）波前原理与 Heinrich Bruns（1895）程函归一化 d_Huygens(x) = f(x)/‖∇f(x)‖，在全 17 站恒定锁死等距壳层厚度比 W/r = 1.0000×（0/17 失真站）。",
+        "58 实体 17 站点程函等距扩边检验台对比闭式一阶归一化与 64 步程函 PDE 松弛基线（8192 次 0.71 ms vs 12.73 ms，提速 17.86×，误差 < 1e-12），不冒充神经隐式重建。"
+      ],
+      "conclusions_en": [
+        "Across 17 slope-dilution stations (u ∈ [0.000, 1.000], ‖∇f‖ = 1/(1+u)), naive unnormalized algebraic offsetting f(x) − r = 0 bloats shell thickness as 1 + u to 1.2500× at station 4, 1.5000× at station 8, and 2.0000× double-thickness outline distortion at station 16 across 16/17 stations.",
+        "Christiaan Huygens (1678) wavefront propagation & Heinrich Bruns (1895) Eikonal gradient normalization d = f(x)/‖∇f(x)‖ locks the dilated shell thickness ratio at W/r = 1.0000× across all 17 stations with 0/17 distorted stations.",
+        "The 58-solid 17-station Huygens-Eikonal SDF dilation bench compares closed-form evaluation against 64-step Sussman-Smereka-Osher Eikonal PDE relaxation (0.71 ms vs 12.73 ms at 8,192 passes, 17.86× speedup, <1e-12 error) without claiming neural implicit reconstruction."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_sdf": "not_measured" }
+    },
+    {
+      "round": 175,
+      "slug": "scheimpflug-tilted-focal-plane-rig",
+      "topic": "scheimpflug-merklinger-tilted-focal-plane-vs-frontoparallel-defocus",
+      "title_zh": "大光圈拍斜面产品或地形不再因平行镜头导致远端模糊 2 倍：Scheimpflug 沙姆移轴选型 FAQ",
+      "title_en": "Wide-aperture oblique planes without 2x Circle-of-Confusion blur: Scheimpflug-Merklinger tilted focal plane selection FAQ",
+      "faq_zh": "docs/scheimpflug-merklinger-tilted-focal-plane-vs-frontoparallel-defocus-faq.md",
+      "faq_en": "docs/scheimpflug-merklinger-tilted-focal-plane-vs-frontoparallel-defocus-faq.en.md",
+      "summary": "docs/evidence/scheimpflug-tilted-focal-plane-rig-summary.svg",
+      "report": "demos/scheimpflug-tilted-focal-plane-rig/report.json",
+      "cards": "demos/scheimpflug-tilted-focal-plane-rig/test-report-cards.html",
+      "cards_zh": "demos/scheimpflug-tilted-focal-plane-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在跨越倾斜被摄平面深度参数 u ∈ [0.000, 1.000] 的 17 个站点上，朴素平行镜头传感器（θ_lens = 0°）使离焦弥散斑半径比按 1+u 在第 4 站模糊至 1.2500×、第 8 站冲至 1.5000×、第 16 站翻倍至 2.0000×（污染 16/17 个站点）。",
+        "采用 Theodor Scheimpflug（1904）三平面共线相交定律与 Harold M. Merklinger（1992）合页规则 tan θ_lens = (f/J) tan ψ，在全 17 站恒定锁死 PSF 弥散斑半径比 R_PSF = 1.0000×（0/17 失焦站）。",
+        "58 实体 17 站点沙姆移轴焦平面检验台对比闭式合页规则与 64 条薄透镜孔径光线束追迹基线（8192 次 0.25 ms vs 39.49 ms，提速 159.75×，误差 < 1e-12），不冒充神经景深重聚焦。"
+      ],
+      "conclusions_en": [
+        "Across 17 oblique subject-plane depth stations (u ∈ [0.000, 1.000]), naive frontoparallel camera alignment (θ_lens = 0°) blurs PSF spot radius as 1 + u to 1.2500× at station 4, 1.5000× at station 8, and 2.0000× double Circle-of-Confusion blur at station 16 across 16/17 stations.",
+        "Theodor Scheimpflug (1904) collinear plane-intersection law & Harold M. Merklinger (1992) hinge rule tan(θ_lens) = (f / J) tan(ψ) locks the normalized PSF spot radius ratio at R_PSF = 1.0000× across all 17 stations with 0/17 blurred stations.",
+        "The 58-solid 17-station Scheimpflug tilted focal plane bench compares closed-form evaluation against 64-ray thin-lens aperture bundle tracing (0.25 ms vs 39.49 ms at 8,192 passes, 159.75× speedup, <1e-12 error) without claiming neural refocusing."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_dof": "not_measured" }
+    },
+    {
+      "round": 176,
+      "slug": "archimedes-cylindrical-equal-area-rig",
+      "topic": "archimedes-hatbox-cylindrical-equal-area-vs-equirectangular-pinching",
+      "title_zh": "球面粒子与全景采样不再因 `θ=πξ₁` 让极区密度暴涨 2 倍：Archimedes 帽盒圆柱等面积选型 FAQ",
+      "title_en": "Spherical sampling without 2x equirectangular polar crowding: Archimedes Hat-Box cylindrical equal-area selection FAQ",
+      "faq_zh": "docs/archimedes-hatbox-cylindrical-equal-area-vs-equirectangular-pinching-faq.md",
+      "faq_en": "docs/archimedes-hatbox-cylindrical-equal-area-vs-equirectangular-pinching-faq.en.md",
+      "summary": "docs/evidence/archimedes-cylindrical-equal-area-rig-summary.svg",
+      "report": "demos/archimedes-cylindrical-equal-area-rig/report.json",
+      "cards": "demos/archimedes-cylindrical-equal-area-rig/test-report-cards.html",
+      "cards_zh": "demos/archimedes-cylindrical-equal-area-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在跨越纬圈收缩参数 u ∈ [0.000, 1.000]（sin θ = 1/(1+u)）的 17 个站点上，朴素经纬角度均匀采样（θ = πξ₁）使单位立体角样本密度按 1/sin θ = 1+u 在第 4 站拥挤至 1.2500×、第 8 站冲至 1.5000×、第 16 站翻倍至 2.0000×（污染 16/17 个站点）。",
+        "采用 Archimedes（公元前 225 年，《论球和圆柱》）帽盒圆柱等面积定理在圆柱轴向均匀采样 z = cos θ = 1−2ξ₁，在全 17 站恒定锁死立体角采样密度比 D = 1.0000×（0/17 挤压站）。",
+        "58 实体 17 站点阿基米德帽盒等面积采样检验台对比闭式帽盒投影与 64 子带球面环带面积求积基线（8192 次 0.18 ms vs 13.96 ms，提速 79.63×，误差 < 1e-12），不冒充神经全景补全。"
+      ],
+      "conclusions_en": [
+        "Across 17 latitude-compression stations (u ∈ [0.000, 1.000], sin θ = 1/(1+u)), naive equirectangular lat-lon sampling (θ = πξ₁) crowds solid-angle sample density as 1/sin θ = 1 + u to 1.2500× at station 4, 1.5000× at station 8, and 2.0000× double polar crowding at station 16 across 16/17 stations.",
+        "Archimedes of Syracuse's (c. 225 BCE) Hat-Box cylindrical equal-area theorem (z = cos θ = 1 − 2ξ₁, r_⊥ = √(1 − z²)) locks the solid-angle sampling density ratio at D = 1.0000× across all 17 stations with 0/17 pinched stations.",
+        "The 58-solid 17-station Archimedes Hat-Box equal-area bench compares closed-form evaluation against 64-subband spherical zone surface-area quadrature (0.18 ms vs 13.96 ms at 8,192 passes, 79.63× speedup, <1e-12 error) without claiming neural panorama completion."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_panorama": "not_measured" }
+    },
+    {
+      "round": 177,
+      "slug": "kelvin-laplace-capillary-dispersion-rig",
+      "topic": "kelvin-laplace-capillary-gravity-dispersion-vs-gravity-only-lag",
+      "title_zh": "雨滴与水坑涟漪不再因纯重力 `ω²=gk` 让短波周期拖慢 2 倍：Kelvin-Laplace 毛细色散选型 FAQ",
+      "title_en": "Raindrop and puddle ripples without 2x period lag: Kelvin-Laplace capillary-gravity dispersion selection FAQ",
+      "faq_zh": "docs/kelvin-laplace-capillary-gravity-dispersion-vs-gravity-only-lag-faq.md",
+      "faq_en": "docs/kelvin-laplace-capillary-gravity-dispersion-vs-gravity-only-lag-faq.en.md",
+      "summary": "docs/evidence/kelvin-laplace-capillary-dispersion-rig-summary.svg",
+      "report": "demos/kelvin-laplace-capillary-dispersion-rig/report.json",
+      "cards": "demos/kelvin-laplace-capillary-dispersion-rig/test-report-cards.html",
+      "cards_zh": "demos/kelvin-laplace-capillary-dispersion-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在跨越逆邦德数参数 u = γk²/(ρg) ∈ [0.000, 1.000] 的 17 个站点上，朴素纯重力波色散（ω² = gk）因忽略表面张力曲率压强使波周期平方比按 1+u 在第 4 站拖慢至 1.2500×、第 8 站冲至 1.5000×、第 16 站（λ_c=1.73cm）翻倍至 2.0000×（污染 16/17 个站点）。",
+        "采用 William Thomson（Lord Kelvin, 1871）与 Young-Laplace（1805/1806）毛细-重力联合色散 ω² = gk + (γ/ρ)k³，在全 17 站恒定锁死波周期平方比 T²/T_exact² = 1.0000×（0/17 迟滞站）。",
+        "58 实体 17 站点毛细重力波色散检验台对比闭式色散方程与 64 层 Airy 速度势垂向动能求积基线（8192 次 0.88 ms vs 5.58 ms，提速 6.34×，误差 < 1e-12），不冒充神经流体生成。"
+      ],
+      "conclusions_en": [
+        "Across 17 inverse-Bond wavenumber stations (u = γk²/(ρg) ∈ [0.000, 1.000]), naive pure-gravity dispersion (ω² = gk) bloats wave period-squared as 1 + u to 1.2500× at station 4, 1.5000× at station 8, and 2.0000× double period lag at the λ_c = 1.73 cm crossover station 16 across 16/17 stations.",
+        "William Thomson (Lord Kelvin, 1871) & Young-Laplace (1805/1806) capillary-gravity dispersion ω² = gk + (γ/ρ)k³ locks the normalized wave period-squared ratio at T²/T_exact² = 1.0000× across all 17 stations with 0/17 sluggish stations.",
+        "The 58-solid 17-station Kelvin-Laplace capillary dispersion bench compares closed-form evaluation against 64-layer Airy velocity-potential vertical energy quadrature (0.88 ms vs 5.58 ms at 8,192 passes, 6.34× speedup, <1e-12 error) without claiming neural fluid synthesis."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_fluid": "not_measured" }
+    },
+    {
+      "round": 178,
+      "slug": "green-cauchy-finite-strain-invariance-rig",
+      "topic": "green-cauchy-finite-strain-invariance-vs-linear-strain-bloat",
+      "title_zh": "FEM 软体与摇摆树木不再因线性应变在旋转 60° 时膨胀 2 倍：Green-Cauchy 有限应变选型 FAQ",
+      "title_en": "Deformable FEM meshes without 2x ghost rotation bloat: Green-Cauchy finite strain invariance selection FAQ",
+      "faq_zh": "docs/green-cauchy-finite-strain-invariance-vs-linear-strain-bloat-faq.md",
+      "faq_en": "docs/green-cauchy-finite-strain-invariance-vs-linear-strain-bloat-faq.en.md",
+      "summary": "docs/evidence/green-cauchy-finite-strain-invariance-rig-summary.svg",
+      "report": "demos/green-cauchy-finite-strain-invariance-rig/report.json",
+      "cards": "demos/green-cauchy-finite-strain-invariance-rig/test-report-cards.html",
+      "cards_zh": "demos/green-cauchy-finite-strain-invariance-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在跨越刚体旋转正割参数 u ∈ [0.000, 1.000]（cos θ = 1/(1+u)，旋转角 0°→60°）的 17 个站点上，朴素线性化柯西小应变 ½(F+Fᵀ)−I 使平衡边长伸长比按 1/cos θ = 1+u 在第 4 站膨胀至 1.2500×、第 8 站冲至 1.5000×、第 16 站（θ=60°）翻倍至 2.0000×（污染 16/17 个站点）。",
+        "采用 George Green（1841）右柯西-格林变形张量与圣维南（Saint-Venant, 1845）二次有限应变 E_Green = ½(FᵀF−I)（利用 RᵀR = I 消除刚体旋转），在全 17 站恒定锁死平衡伸长比 λ = 1.0000×（0/17 膨胀站）。",
+        "58 实体 17 站点格林-柯西有限应变检验台对比闭式右变形张量与 64 子步共旋增量积分基线（8192 次 0.20 ms vs 23.37 ms，提速 116.03×，误差 < 1e-12），不冒充神经物理代理。"
+      ],
+      "conclusions_en": [
+        "Across 17 rigid-rotation stations (u ∈ [0.000, 1.000], cos θ = 1/(1+u), θ ∈ [0°, 60°]), naive infinitesimal linearized Cauchy strain ½(F + Fᵀ) − I bloats equilibrium edge length as 1/cos θ = 1 + u to 1.2500× at station 4, 1.5000× at station 8, and 2.0000× double-size ghost inflation at station 16 across 16/17 stations.",
+        "George Green (1841) & Barré de Saint-Venant (1845) quadratic finite strain E_Green = ½(FᵀF − I) cancels orthogonal rotation via RᵀR = I and locks equilibrium stretch at λ = 1.0000× across all 17 stations with 0/17 bloated stations.",
+        "The 58-solid 17-station Green-Cauchy finite strain bench compares closed-form evaluation against 64-substep incremental corotational integration (0.20 ms vs 23.37 ms at 8,192 passes, 116.03× speedup, <1e-12 error) without claiming neural physics surrogates."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_physics": "not_measured" }
+    },
+    {
+      "round": 179,
+      "slug": "strouhal-karman-vortex-flutter-rig",
+      "topic": "strouhal-karman-vortex-flutter-vs-fixed-frequency-wind-slip",
+      "title_zh": "旗帜与披风在狂风中不再因固定频率 `f=f₀` 慢动作打滑 2 倍：Strouhal-Kármán 涡街耦合选型 FAQ",
+      "title_en": "Procedural flag and foliage flutter without 2x wind-wavelength slip: Strouhal-Karman vortex frequency coupling FAQ",
+      "faq_zh": "docs/strouhal-karman-vortex-flutter-vs-fixed-frequency-wind-slip-faq.md",
+      "faq_en": "docs/strouhal-karman-vortex-flutter-vs-fixed-frequency-wind-slip-faq.en.md",
+      "summary": "docs/evidence/strouhal-karman-vortex-flutter-rig-summary.svg",
+      "report": "demos/strouhal-karman-vortex-flutter-rig/report.json",
+      "cards": "demos/strouhal-karman-vortex-flutter-rig/test-report-cards.html",
+      "cards_zh": "demos/strouhal-karman-vortex-flutter-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在跨越风速倍增参数 u ∈ [0.000, 1.000]（U/U₀ = 1+u）的 17 个站点上，朴素固定频率正弦飘动（f = f₀）使对流尾流波长比按 1+u 在第 4 站滑移至 1.2500×、第 8 站冲至 1.5000×、第 16 站（2倍风速）翻倍至 2.0000×（污染 16/17 个站点）。",
+        "采用 Vincenc Strouhal（1878）与 Theodore von Kármán（1911）涡街脱落频率定律 f(U) = St·U/D（St ≈ 0.20），在全 17 站恒定锁死空间尾流波长比 λ/λ₀ = 1.0000×（0/17 滑移站）。",
+        "58 实体 17 站点斯特劳哈尔卡门涡街检验台对比闭式涡街公式与 64 点涡 Biot-Savart 诱导速度求和基线（8192 次 0.71 ms vs 81.32 ms，提速 114.76×，误差 < 1e-12），不冒充神经布料生成。"
+      ],
+      "conclusions_en": [
+        "Across 17 wind-acceleration stations (u ∈ [0.000, 1.000], U/U₀ = 1 + u), naive fixed-frequency vertex flutter (f = f₀) stretches convective wake wavelength as 1 + u to 1.2500× at station 4, 1.5000× at station 8, and 2.0000× double-wavelength slip at station 16 across 16/17 stations.",
+        "Vincenc Strouhal (1878) & Theodore von Kármán (1911) vortex-shedding frequency scaling f(U) = St · U / D (St ≈ 0.20) locks the spatial wake wavelength ratio at λ/λ₀ = 1.0000× across all 17 stations with 0/17 desynced stations.",
+        "The 58-solid 17-station Strouhal-Kármán vortex flutter bench compares closed-form evaluation against 64-vortex Kármán street Biot-Savart induced-velocity summation (0.71 ms vs 81.32 ms at 8,192 passes, 114.76× speedup, <1e-12 error) without claiming neural cloth synthesis."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_cloth": "not_measured" }
+    },
+    {
+      "round": 180,
+      "slug": "euler-elastica-inextensible-bending-rig",
+      "topic": "euler-elastica-inextensible-bending-vs-transverse-shear-stretch",
+      "title_zh": "草地与毛发着色器不再因横向风偏在弯腰 60° 时被拉长 2 倍：Euler 不可伸长弹性杆选型 FAQ",
+      "title_en": "GPU grass and hair bending without 2x rubbery elongation: Euler Elastica inextensible arc retraction FAQ",
+      "faq_zh": "docs/euler-elastica-inextensible-bending-vs-transverse-shear-stretch-faq.md",
+      "faq_en": "docs/euler-elastica-inextensible-bending-vs-transverse-shear-stretch-faq.en.md",
+      "summary": "docs/evidence/euler-elastica-inextensible-bending-rig-summary.svg",
+      "report": "demos/euler-elastica-inextensible-bending-rig/report.json",
+      "cards": "demos/euler-elastica-inextensible-bending-rig/test-report-cards.html",
+      "cards_zh": "demos/euler-elastica-inextensible-bending-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在跨越弯曲正割参数 u ∈ [0.000, 1.000]（cos θ = 1/(1+u)，弯曲角 0°→60°）的 17 个站点上，朴素纯横向剪切偏移（pos.x += s·tan θ，保持 pos.y = s 不变）使草叶弧长比按 sec θ = 1+u 在第 4 站拉长至 1.2500×、第 8 站冲至 1.5000×、第 16 站（θ=60°）翻倍至 2.0000×（污染 16/17 个站点）。",
+        "采用 Leonhard Euler（1744）不可伸长弹性杆（Elastica）单位切向定律 (dx/ds, dy/ds) = (sin θ, cos θ) 同步回缩竖直高度，在全 17 站恒定锁死总弧长比 L/L₀ = 1.0000×（0/17 拉长站）。",
+        "58 实体 17 站点欧拉不可伸长弹性杆检验台对比闭式单位切向旋转与 64 段 Kirchhoff 离散弹性杆弧长求积基线（8192 次 1.06 ms vs 81.52 ms，提速 76.55×，误差 < 1e-12），不冒充神经毛发生成。"
+      ],
+      "conclusions_en": [
+        "Across 17 bending-deflection stations (u ∈ [0.000, 1.000], cos θ = 1/(1+u), θ ∈ [0°, 60°]), naive transverse-only vertex shear (pos.x += s·tan θ) stretches strand arc length as sec θ = 1 + u to 1.2500× at station 4, 1.5000× at station 8, and 2.0000× double-length rubber-grass elongation at station 16 across 16/17 stations.",
+        "Leonhard Euler's (1744) inextensible Elastica unit-tangent law (dx/ds, dy/ds) = (sin θ, cos θ) retracts vertical height alongside horizontal sway and locks the strand arc-length ratio at L/L₀ = 1.0000× across all 17 stations with 0/17 stretched stations.",
+        "The 58-solid 17-station Euler Elastica inextensible bending bench compares closed-form evaluation against 64-segment Kirchhoff discrete rod arc-length summation (1.06 ms vs 81.52 ms at 8,192 passes, 76.55× speedup, <1e-12 error) without claiming neural hair synthesis."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_hair": "not_measured" }
+    },
+    {
+      "round": 181,
+      "slug": "barrow-snell-apparent-depth-rig",
+      "topic": "barrow-snell-oblique-apparent-depth-vs-paraxial-ior-overestimate",
+      "title_zh": "浅滩与泳池折射不再因近轴常数 `d_true/n` 在斜视时深出一倍：Barrow-Snell 斜视视深选型 FAQ",
+      "title_en": "Underwater parallax without 2x oblique depth overestimation: Barrow-Snell apparent depth selection FAQ",
+      "faq_zh": "docs/barrow-snell-oblique-apparent-depth-vs-paraxial-ior-overestimate-faq.md",
+      "faq_en": "docs/barrow-snell-oblique-apparent-depth-vs-paraxial-ior-overestimate-faq.en.md",
+      "summary": "docs/evidence/barrow-snell-apparent-depth-rig-summary.svg",
+      "report": "demos/barrow-snell-apparent-depth-rig/report.json",
+      "cards": "demos/barrow-snell-apparent-depth-rig/test-report-cards.html",
+      "cards_zh": "demos/barrow-snell-apparent-depth-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在跨越斜视折射参数 u ∈ [0.000, 1.000]（cos θ_o / cos θ_i = 1/(1+u)）的 17 个站点上，朴素近轴常数公式（d_true/n）因忽略斜视虚像向水面抬升使表观视深比按 1+u 在第 4 站高估至 1.2500×、第 8 站冲至 1.5000×、第 16 站翻倍至 2.0000×（污染 16/17 个站点）。",
+        "采用 Isaac Barrow（1669，《光学讲义》）虚焦散视深定律与斯涅尔折射余弦比 d_Barrow = d_true·cos θ_o / √(n²−sin²θ_o)，在全 17 站恒定锁死视深比 d/d_exact = 1.0000×（0/17 失真站）。",
+        "58 实体 17 站点巴罗-斯涅尔斜视视深检验台对比闭式余弦比公式与 64 对折射光线逆向虚焦散交点求解基线（8192 次 0.77 ms vs 13.61 ms，提速 17.75×，误差 < 1e-12），不冒充神经水下重建。"
+      ],
+      "conclusions_en": [
+        "Across 17 viewing-obliquity stations (u ∈ [0.000, 1.000], cos θ_o / cos θ_i = 1/(1+u)), naive paraxial constant-IOR depth scaling (d_true / n) overestimates apparent depth as 1 + u to 1.2500× at station 4, 1.5000× at station 8, and 2.0000× double apparent-depth error at station 16 across 16/17 stations.",
+        "Isaac Barrow's (1669) virtual-caustic apparent depth law & Snell-Descartes oblique cosine ratio d_Barrow = d_true · cos θ_o / √(n² − sin²θ_o) locks the predicted-to-exact apparent depth ratio at d/d_exact = 1.0000× across all 17 stations with 0/17 distorted stations.",
+        "The 58-solid 17-station Barrow-Snell apparent depth bench compares closed-form evaluation against 64-ray virtual caustic intersection tracing (0.77 ms vs 13.61 ms at 8,192 passes, 17.75× speedup, <1e-12 error) without claiming neural underwater reconstruction."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_refraction": "not_measured" }
+    },
+    {
+      "round": 182,
+      "slug": "schuster-chandrasekhar-twostream-cloud-rig",
+      "topic": "schuster-chandrasekhar-twostream-cloud-vs-uncoupled-scatter",
+      "title_zh": "体积云多次散射不再因非耦合补偿导致能量膨胀 2 倍：Schuster-Chandrasekhar 双流传输选型 FAQ",
+      "title_en": "Volumetric cloud multiple scattering without 2x flux blowout: Schuster-Chandrasekhar two-stream selection FAQ",
+      "faq_zh": "docs/schuster-chandrasekhar-twostream-cloud-vs-uncoupled-scatter-faq.md",
+      "faq_en": "docs/schuster-chandrasekhar-twostream-cloud-vs-uncoupled-scatter-faq.en.md",
+      "summary": "docs/evidence/schuster-chandrasekhar-twostream-cloud-rig-summary.svg",
+      "report": "demos/schuster-chandrasekhar-twostream-cloud-rig/report.json",
+      "cards": "demos/schuster-chandrasekhar-twostream-cloud-rig/test-report-cards.html",
+      "cards_zh": "demos/schuster-chandrasekhar-twostream-cloud-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在跨越约化传输光学厚度 u = ½(1−g)τ ∈ [0.000, 1.000] 的 17 个站点上，朴素非耦合一阶后向散射叠加使云层总通量比按 1+u 在第 4 站膨胀至 1.2500×、第 8 站冲至 1.5000×、第 16 站翻倍至 2.0000×（污染 16/17 个站点）。",
+        "采用 Arthur Schuster（1905）与 Subrahmanyan Chandrasekhar（1950）双流有理解 R = u/(1+u), T = 1/(1+u)，在全 17 站恒定锁死云层总通量 R + T = 1.0000×（0/17 违背站）。",
+        "58 实体 17 站点舒斯特-钱德拉塞卡双流云层检验台对比闭式双流有理解与 64 层 Redheffer 星积级联基线（8192 次 0.20 ms vs 38.36 ms，提速 194.81×，误差 < 1e-12），不冒充神经体积云生成。"
+      ],
+      "conclusions_en": [
+        "Across 17 scaled transport-optical-depth stations (u = ½(1−g)τ ∈ [0.000, 1.000]), naive uncoupled backscatter addition inflates total cloud slab flux as 1 + u to 1.2500× at station 4, 1.5000× at station 8, and 2.0000× double-energy blowout at station 16 across 16/17 stations.",
+        "Arthur Schuster (1905) & Subrahmanyan Chandrasekhar (1950) conservative two-stream transfer R(u) = u/(1+u), T(u) = 1/(1+u) locks total cloud slab flux at R + T = 1.0000× across all 17 stations with 0/17 violated stations.",
+        "The 58-solid 17-station Schuster-Chandrasekhar two-stream cloud bench compares closed-form evaluation against 64-layer Redheffer star-product adding-doubling cascade (0.20 ms vs 38.36 ms at 8,192 passes, 194.81× speedup, <1e-12 error) without claiming neural cloud synthesis."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_clouds": "not_measured" }
+    },
+    {
+      "round": 183,
+      "slug": "kingslake-bellows-macro-aperture-rig",
+      "topic": "kingslake-bellows-macro-effective-aperture-vs-nominal-fnumber",
+      "title_zh": "3D 物理相机推近拍微距不再因无穷远标称光圈欠曝 2 倍：Kingslake 皮腔有效光圈选型 FAQ",
+      "title_en": "Macro camera dolly-ins without 2x 1-stop exposure drop: Kingslake bellows effective aperture FAQ",
+      "faq_zh": "docs/kingslake-bellows-macro-effective-aperture-vs-nominal-fnumber-faq.md",
+      "faq_en": "docs/kingslake-bellows-macro-effective-aperture-vs-nominal-fnumber-faq.en.md",
+      "summary": "docs/evidence/kingslake-bellows-macro-aperture-rig-summary.svg",
+      "report": "demos/kingslake-bellows-macro-aperture-rig/report.json",
+      "cards": "demos/kingslake-bellows-macro-aperture-rig/test-report-cards.html",
+      "cards_zh": "demos/kingslake-bellows-macro-aperture-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在跨越微距皮腔延伸参数 u = (1+m)²−1 ∈ [0.000, 1.000]（m ∈ [0, 0.4142×]）的 17 个站点上，朴素无穷远标称光圈（N = f/D）因忽略像距延伸使曝光亏损比按 (1+m)² = 1+u 在第 4 站亏损 1.2500×、第 8 站冲至 1.5000×、第 16 站（m=0.414×）翻倍至 2.0000×（整 1 档 EV 欠曝，污染 16/17 个站点）。",
+        "采用 Rudolf Kingslake（1951）有效光圈定律 N_eff = N(1+m) 与皮腔补偿因子 B = (1+m)²，在全 17 站恒定锁死传感器曝光比 E/E_target = 1.0000×（0/17 欠曝站）。",
+        "58 实体 17 站点金斯莱克微距皮腔检验台对比闭式皮腔定律与 64 环出瞳圆盘立体角积分基线（8192 次 0.19 ms vs 4.56 ms，提速 23.50×，误差 < 1e-12），不冒充神经图像增强。"
+      ],
+      "conclusions_en": [
+        "Across 17 macro-magnification stations (u = (1+m)² − 1 ∈ [0.000, 1.000], m ∈ [0, 0.4142×]), naive infinity-focus nominal f-number (N = f/D) incurs an exposure deficit of (1 + m)² = 1 + u up to 1.2500× at station 4, 1.5000× at station 8, and 2.0000× full 1-stop EV loss at station 16 across 16/17 stations.",
+        "Rudolf Kingslake's (1951) effective f-number law N_eff = N(1 + m) and bellows extension factor B = (1 + m)² lock compensated sensor irradiance at E/E_target = 1.0000× across all 17 stations with 0/17 underexposed stations.",
+        "The 58-solid 17-station Kingslake macro bellows aperture bench compares closed-form evaluation against 64-ring exit-pupil solid-angle integration (0.19 ms vs 4.56 ms at 8,192 passes, 23.50× speedup, <1e-12 error) without claiming neural image enhancement."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_optics": "not_measured" }
+    },
+    {
+      "round": 184,
+      "slug": "hagen-poiseuille-parabolic-flow-rig",
+      "topic": "hagen-poiseuille-parabolic-noslip-flow-vs-plug-flow-excess",
+      "title_zh": "血管与河道粒子不再因均匀柱塞流让流量虚高 2 倍：Hagen-Poiseuille 抛物面层流选型 FAQ",
+      "title_en": "Vascular and channel flows without 2x plug-flow discharge bloat: Hagen-Poiseuille parabolic profile FAQ",
+      "faq_zh": "docs/hagen-poiseuille-parabolic-noslip-flow-vs-plug-flow-excess-faq.md",
+      "faq_en": "docs/hagen-poiseuille-parabolic-noslip-flow-vs-plug-flow-excess-faq.en.md",
+      "summary": "docs/evidence/hagen-poiseuille-parabolic-flow-rig-summary.svg",
+      "report": "demos/hagen-poiseuille-parabolic-flow-rig/report.json",
+      "cards": "demos/hagen-poiseuille-parabolic-flow-rig/test-report-cards.html",
+      "cards_zh": "demos/hagen-poiseuille-parabolic-flow-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在跨越管壁剪切耦合参数 u ∈ [0.000, 1.000]（v_avg/v_max = 1/(1+u)）的 17 个站点上，朴素均匀柱塞流（v(r) = v_max）因忽略管壁无滑移使体积流量比按 1+u 在第 4 站膨胀至 1.2500×、第 8 站冲至 1.5000×、第 16 站（v(R)=0）翻倍至 2.0000×（污染 16/17 个站点）。",
+        "采用 Gotthilf Hagen（1839）与 Jean Léonard Marie Poiseuille（1840）抛物面层流定律 v(r) = v_max(1−r²/R²)（满足 v_avg = ½ v_max），在全 17 站恒定锁死体积流量比 Q/Q_exact = 1.0000×（0/17 虚高站）。",
+        "58 实体 17 站点哈根-泊肃叶抛物面层流检验台对比闭式抛物面通量积分与 64 环圆管剪切数值求积基线（8192 次 0.21 ms vs 7.48 ms，提速 36.23×，误差 < 1e-12），不冒充神经流体代理。"
+      ],
+      "conclusions_en": [
+        "Across 17 wall-shear coupling stations (u ∈ [0.000, 1.000], v_avg/v_max = 1/(1+u)), naive uniform plug-flow advection (v(r) = v_max) inflates volumetric discharge as 1 + u to 1.2500× at station 4, 1.5000× at station 8, and 2.0000× double discharge at station 16 across 16/17 stations.",
+        "Gotthilf Hagen (1839) & Jean Léonard Marie Poiseuille (1840) parabolic laminar profile v(r) = v_max(1 − r²/R²) enforces wall no-slip v(R) = 0 and v_avg = ½ v_max, locking volumetric discharge at Q/Q_exact = 1.0000× across all 17 stations with 0/17 inflated stations.",
+        "The 58-solid 17-station Hagen-Poiseuille parabolic flow bench compares closed-form evaluation against 64-annulus cylindrical shear ring quadrature (0.21 ms vs 7.48 ms at 8,192 passes, 36.23× speedup, <1e-12 error) without claiming neural fluid surrogates."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_fluid": "not_measured" }
+    },
+    {
+      "round": 185,
+      "slug": "kirchhoff-fresnel-obliquity-wavelet-rig",
+      "topic": "kirchhoff-fresnel-cardioid-obliquity-vs-isotropic-huygens-leakage",
+      "title_zh": "水波绕射与波动粒子不再因各向同性次波泄露 2 倍且产生倒退波：Kirchhoff 心脏线倾斜因子选型 FAQ",
+      "title_en": "Wavelet diffraction without 2x off-axis leakage and backward ghosts: Kirchhoff-Fresnel cardioid obliquity FAQ",
+      "faq_zh": "docs/kirchhoff-fresnel-cardioid-obliquity-vs-isotropic-huygens-leakage-faq.md",
+      "faq_en": "docs/kirchhoff-fresnel-cardioid-obliquity-vs-isotropic-huygens-leakage-faq.en.md",
+      "summary": "docs/evidence/kirchhoff-fresnel-obliquity-wavelet-rig-summary.svg",
+      "report": "demos/kirchhoff-fresnel-obliquity-wavelet-rig/report.json",
+      "cards": "demos/kirchhoff-fresnel-obliquity-wavelet-rig/test-report-cards.html",
+      "cards_zh": "demos/kirchhoff-fresnel-obliquity-wavelet-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在跨越波前倾斜参数 u ∈ [0.000, 1.000]（K(θ) = ½(1+cos θ) = 1/(1+u)，θ ∈ [0°, 90°]）的 17 个站点上，朴素各向同性惠更斯次波（K = 1.0）使次波振幅比按 1/K = 1+u 在第 4 站泄露至 1.2500×、第 8 站冲至 1.5000×、第 16 站（θ=90°）翻倍至 2.0000×（并在后方产生倒退鬼影波，污染 16/17 个站点）。",
+        "采用 Augustin-Jean Fresnel（1818）与 Gustav Kirchhoff（1882）心脏线倾斜因子 K(θ) = ½(1+cos θ)（清零 K(180°) = 0），在全 17 站恒定锁死次波振幅比 A/A_exact = 1.0000×（0/17 泄露站）。",
+        "58 实体 17 站点基尔霍夫-菲涅耳倾斜因子检验台对比闭式心脏线因子与 64 片格林边界积分基线（8192 次 0.24 ms vs 5.32 ms，提速 22.55×，误差 < 1e-12），不冒充神经波场生成。"
+      ],
+      "conclusions_en": [
+        "Across 17 wavefront-obliquity stations (u ∈ [0.000, 1.000], K(θ) = ½(1+cos θ) = 1/(1+u), θ ∈ [0°, 90°]), naive isotropic Huygens wavelets (K = 1.0) over-radiate off-axis amplitude as 1/K = 1 + u to 1.2500× at station 4, 1.5000× at station 8, and 2.0000× double leakage at station 16 across 16/17 stations.",
+        "Augustin-Jean Fresnel (1818) & Gustav Kirchhoff (1882) cardioid obliquity factor K(θ) = ½(1 + cos θ) extinguishes backward ghost waves K(180°) = 0 and locks secondary wavelet amplitude at A/A_exact = 1.0000× across all 17 stations with 0/17 leaking stations.",
+        "The 58-solid 17-station Kirchhoff-Fresnel wavefront obliquity bench compares closed-form evaluation against 64-patch Helmholtz-Kirchhoff Green boundary integration (0.24 ms vs 5.32 ms at 8,192 passes, 22.55× speedup, <1e-12 error) without claiming neural wavefield synthesis."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_wavefield": "not_measured" }
+    },
+    {
+      "round": 186,
+      "slug": "doppler-fizeau-retarded-wavefront-rig",
+      "topic": "doppler-fizeau-retarded-wavefront-vs-rigid-bullseye",
+      "title_zh": "移动水鸟与涉水涟漪不再因刚性平移同心圆使前向首波偏宽 2 倍：Doppler 推迟波前压缩选型 FAQ",
+      "title_en": "Moving ripple emitters without 2x bow-spacing error: Doppler-Fizeau retarded wavefront compression FAQ",
+      "faq_zh": "docs/doppler-fizeau-retarded-wavefront-vs-rigid-bullseye-faq.md",
+      "faq_en": "docs/doppler-fizeau-retarded-wavefront-vs-rigid-bullseye-faq.en.md",
+      "summary": "docs/evidence/doppler-fizeau-retarded-wavefront-rig-summary.svg",
+      "report": "demos/doppler-fizeau-retarded-wavefront-rig/report.json",
+      "cards": "demos/doppler-fizeau-retarded-wavefront-rig/test-report-cards.html",
+      "cards_zh": "demos/doppler-fizeau-retarded-wavefront-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在跨越移动波源压缩参数 u ∈ [0.000, 1.000]（马赫比 M = u/(1+u) ∈ [0.00, 0.50]）的 17 个站点上，朴素刚性靶心平移（λ = λ₀）因忽略推迟发射位置使前向波长比按 1/(1−M) = 1+u 在第 4 站偏宽至 1.2500×、第 8 站冲至 1.5000×、第 16 站（M=0.50）翻倍至 2.0000×（污染 16/17 个站点）。",
+        "采用 Christian Doppler（1842）与 Hippolyte Fizeau（1848）推迟时间波前压缩定律 λ_front = λ₀(1−M)，在全 17 站恒定锁死前向首波波长比 λ/λ_exact = 1.0000×（0/17 失真站）。",
+        "58 实体 17 站点多普勒-斐索推迟波前检验台对比闭式压缩定律与 64 步 Liénard-Wiechert 推迟时间迭代求解基线（8192 次 0.81 ms vs 16.48 ms，提速 20.27×，误差 < 1e-12），不冒充神经波浪合成。"
+      ],
+      "conclusions_en": [
+        "Across 17 Mach-velocity stations (u ∈ [0.000, 1.000], M = u/(1+u) ∈ [0.00, 0.50]), naive rigidly translated bullseye waves (λ = λ₀) overestimate forward bow-wave spacing as 1/(1 − M) = 1 + u to 1.2500× at station 4, 1.5000× at station 8, and 2.0000× double spacing error at station 16 across 16/17 stations.",
+        "Christian Doppler (1842) & Hippolyte Fizeau (1848) moving-source retarded wavefront compression λ_front = λ₀(1 − M) locks the forward bow-wave wavelength ratio at λ/λ_exact = 1.0000× across all 17 stations with 0/17 uncompressed stations.",
+        "The 58-solid 17-station Doppler-Fizeau retarded wavefront bench compares closed-form evaluation against 64-step Liénard-Wiechert retarded-time iteration (0.81 ms vs 16.48 ms at 8,192 passes, 20.27× speedup, <1e-12 error) without claiming neural wake synthesis."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_wake": "not_measured" }
+    },
+    {
+      "round": 187,
+      "slug": "lorentz-lorenz-clausius-mossotti-rig",
+      "topic": "lorentz-lorenz-clausius-mossotti-polarizability-vs-uncoupled-dipole",
+      "title_zh": "高压冲击波与高折玻璃不再因忽略空腔局域场使极化率亏损 2 倍：Lorentz-Lorenz 方程选型 FAQ",
+      "title_en": "Dense dielectrics and shockwaves without 2x susceptibility deficit: Lorentz-Lorenz local-field FAQ",
+      "faq_zh": "docs/lorentz-lorenz-clausius-mossotti-polarizability-vs-uncoupled-dipole-faq.md",
+      "faq_en": "docs/lorentz-lorenz-clausius-mossotti-polarizability-vs-uncoupled-dipole-faq.en.md",
+      "summary": "docs/evidence/lorentz-lorenz-clausius-mossotti-rig-summary.svg",
+      "report": "demos/lorentz-lorenz-clausius-mossotti-rig/report.json",
+      "cards": "demos/lorentz-lorenz-clausius-mossotti-rig/test-report-cards.html",
+      "cards_zh": "demos/lorentz-lorenz-clausius-mossotti-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在跨越洛伦兹空腔增益参数 u ∈ [0.000, 1.000]（极化体积分数 y = u/(1+u) ∈ [0.00, 0.50]）的 17 个站点上，朴素非耦合偶极子公式（χ = 3y）使极化率亏损比按 1/(1−y) = 1+u 在第 4 站亏损 1.2500×、第 8 站（n≈1.58）冲至 1.5000×、第 16 站（n=2.00）翻倍至 2.0000×（污染 16/17 个站点）。",
+        "采用 Lorentz-Lorenz（1880）与 Clausius-Mossotti（1850/1879）球形空腔局域场方程 χ = n²−1 = 3y/(1−y)，在全 17 站恒定锁死介电极化率比 χ/χ_exact = 1.0000×（0/17 亏损站）。",
+        "58 实体 17 站点洛伦兹-洛伦茨介电极化检验台对比闭式有理分式与 64 阶空腔诺伊曼级数求和基线（8192 次 0.19 ms vs 5.43 ms，提速 28.56×，误差 < 1e-12），不冒充神经材质预测。"
+      ],
+      "conclusions_en": [
+        "Across 17 polarizability-density stations (u ∈ [0.000, 1.000], y = u/(1+u) ∈ [0.00, 0.50]), naive uncoupled dipole susceptibility (χ = 3y) underestimates true susceptibility as 1/(1 − y) = 1 + u by 1.2500× at station 4, 1.5000× at station 8, and 2.0000× factor-of-2 deficit at station 16 across 16/17 stations.",
+        "Hendrik Lorentz (1880), Ludvig Lorenz (1880), Rudolf Clausius (1879) & Ottaviano Mossotti (1850) spherical-cavity local-field equation χ = n² − 1 = 3y/(1 − y) locks the dielectric susceptibility ratio at χ/χ_exact = 1.0000× across all 17 stations with 0/17 deficient stations.",
+        "The 58-solid 17-station Lorentz-Lorenz dielectric bench compares closed-form evaluation against 64-order dipole-cavity Neumann series summation (0.19 ms vs 5.43 ms at 8,192 passes, 28.56× speedup, <1e-12 error) without claiming neural material prediction."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_dielectric": "not_measured" }
+    },
+    {
+      "round": 188,
+      "slug": "euler-meusnier-normal-curvature-rig",
+      "topic": "euler-meusnier-directional-normal-curvature-vs-mean-curvature",
+      "title_zh": "金属圆管与车漆高光抗锯齿不再因平均曲率把主曲率腰斩一半：Euler-Meusnier 方向法曲率选型 FAQ",
+      "title_en": "Anisotropic Specular AA without 2x cylinder curvature dilution: Euler-Meusnier normal curvature FAQ",
+      "faq_zh": "docs/euler-meusnier-directional-normal-curvature-vs-mean-curvature-faq.md",
+      "faq_en": "docs/euler-meusnier-directional-normal-curvature-vs-mean-curvature-faq.en.md",
+      "summary": "docs/evidence/euler-meusnier-normal-curvature-rig-summary.svg",
+      "report": "demos/euler-meusnier-normal-curvature-rig/report.json",
+      "cards": "demos/euler-meusnier-normal-curvature-rig/test-report-cards.html",
+      "cards_zh": "demos/euler-meusnier-normal-curvature-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在跨越曲率各向异性参数 u ∈ [0.000, 1.000]（κ₂/κ₁ = (1−u)/(1+u)，H/κ₁ = 1/(1+u)）的 17 个站点上，朴素标量平均曲率 H = ½(κ₁+κ₂) 使主弯曲轴曲率亏损比按 κ₁/H = 1+u 在第 4 站亏损 1.2500×、第 8 站冲至 1.5000×、第 16 站（圆柱面 κ₂=0）翻倍至 2.0000×（污染 16/17 个站点）。",
+        "采用 Leonhard Euler（1760）与 Jean-Baptiste Meusnier（1776）方向法曲率张量 κ_n(φ) = κ₁cos²φ + κ₂sin²φ，在全 17 站恒定锁死主曲率比 κ₁/κ_model = 1.0000×（0/17 稀释站）。",
+        "58 实体 17 站点欧拉-莫尼耶方向法曲率检验台对比闭式二次型张量与 64 步测地密切圆二阶差分基线（8192 次 0.76 ms vs 5.56 ms，提速 7.35×，误差 < 1e-12），不冒充神经曲面重建。"
+      ],
+      "conclusions_en": [
+        "Across 17 curvature-anisotropy stations (u ∈ [0.000, 1.000], κ₂/κ₁ = (1−u)/(1+u), H/κ₁ = 1/(1+u)), naive scalar mean curvature H = ½(κ₁ + κ₂) dilutes principal bend curvature as κ₁/H = 1 + u by 1.2500× at station 4, 1.5000× at station 8, and 2.0000× factor-of-2 cylinder dilution at station 16 across 16/17 stations.",
+        "Leonhard Euler (1760) & Jean-Baptiste Meusnier (1776) directional normal curvature tensor κ_n(φ) = κ₁ cos²φ + κ₂ sin²φ locks the principal curvature ratio at κ₁/κ_model = 1.0000× across all 17 stations with 0/17 diluted stations.",
+        "The 58-solid 17-station Euler-Meusnier normal curvature bench compares closed-form evaluation against 64-step geodesic osculating circle evaluation (0.76 ms vs 5.56 ms at 8,192 passes, 7.35× speedup, <1e-12 error) without claiming neural surface reconstruction."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_surface": "not_measured" }
+    },
+    {
+      "round": 189,
+      "slug": "torricelli-bernoulli-orifice-jet-rig",
+      "topic": "torricelli-bernoulli-hydrostatic-orifice-jet-vs-constant-speed",
+      "title_zh": "穿孔水桶与油箱漏水不再因恒定喷速让半水头动能超冲 2 倍：Torricelli 孔口射流选型 FAQ",
+      "title_en": "Liquid orifice jets without 2x perpetual-energy excess: Torricelli-Bernoulli head-coupled efflux FAQ",
+      "faq_zh": "docs/torricelli-bernoulli-hydrostatic-orifice-jet-vs-constant-speed-faq.md",
+      "faq_en": "docs/torricelli-bernoulli-hydrostatic-orifice-jet-vs-constant-speed-faq.en.md",
+      "summary": "docs/evidence/torricelli-bernoulli-orifice-jet-rig-summary.svg",
+      "report": "demos/torricelli-bernoulli-orifice-jet-rig/report.json",
+      "cards": "demos/torricelli-bernoulli-orifice-jet-rig/test-report-cards.html",
+      "cards_zh": "demos/torricelli-bernoulli-orifice-jet-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在跨越水位衰减参数 u ∈ [0.000, 1.000]（水头比 h/h₀ = 1/(1+u)）的 17 个站点上，朴素恒定喷速发射器（v = v₀）使射流动能与静水势能之比按 h₀/h = 1+u 在第 4 站超冲至 1.2500×、第 8 站冲至 1.5000×、第 16 站（半桶水 h=0.5h₀）翻倍至 2.0000×（污染 16/17 个站点）。",
+        "采用 Evangelista Torricelli（1643）与 Daniel Bernoulli（1738）流线机械能守恒定律 v(h) = √(2gh)，在全 17 站恒定锁死射流能量比 E_k/E_p = 1.0000×（0/17 违背站）。",
+        "58 实体 17 站点托里拆利-伯努利孔口射流检验台对比闭式平方根公式与 64 层垂向静水压强积分基线（8192 次 0.21 ms vs 4.50 ms，提速 21.36×，误差 < 1e-12），不冒充神经流体粒子。"
+      ],
+      "conclusions_en": [
+        "Across 17 head-depletion stations (u ∈ [0.000, 1.000], h/h₀ = 1/(1+u)), naive constant-speed particle emitters (v = v₀) inflate the kinetic-to-potential energy ratio as h₀/h = 1 + u to 1.2500× at station 4, 1.5000× at station 8, and 2.0000× double energy excess at station 16 across 16/17 stations.",
+        "Evangelista Torricelli (1643) & Daniel Bernoulli (1738) hydrostatic efflux law v(h) = √(2gh) locks the kinetic-to-potential energy ratio at E_k/E_p = 1.0000× across all 17 stations with 0/17 violated stations.",
+        "The 58-solid 17-station Torricelli-Bernoulli orifice jet bench compares closed-form evaluation against 64-layer vertical hydrostatic pressure integration (0.21 ms vs 4.50 ms at 8,192 passes, 21.36× speedup, <1e-12 error) without claiming neural fluid particles."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_fluid": "not_measured" }
+    },
+    {
+      "round": 190,
+      "slug": "kepler-noether-areal-velocity-rig",
+      "topic": "kepler-noether-areal-velocity-vs-constant-omega-orbit",
+      "title_zh": "椭圆轨道与漩涡粒子不再因匀速角速度让远拱点掠面速度违背 2 倍：Kepler-Noether 等面积守恒选型 FAQ",
+      "title_en": "Elliptical orbits and vortices without 2x angular-momentum drift: Kepler-Noether equal-area velocity FAQ",
+      "faq_zh": "docs/kepler-noether-areal-velocity-vs-constant-omega-orbit-faq.md",
+      "faq_en": "docs/kepler-noether-areal-velocity-vs-constant-omega-orbit-faq.en.md",
+      "summary": "docs/evidence/kepler-noether-areal-velocity-rig-summary.svg",
+      "report": "demos/kepler-noether-areal-velocity-rig/report.json",
+      "cards": "demos/kepler-noether-areal-velocity-rig/test-report-cards.html",
+      "cards_zh": "demos/kepler-noether-areal-velocity-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在跨越径向转动惯量扩展参数 u ∈ [0.000, 1.000]（r²/r₀² = 1+u）的 17 个站点上，朴素匀速角速度（θ̇ = ω₀）使掠面速度与角动量按 r²/r₀² = 1+u 在第 4 站膨胀至 1.2500×、第 8 站冲至 1.5000×、第 16 站（远拱点 r²=2r₀²）翻倍至 2.0000×（污染 16/17 个站点）。",
+        "采用 Johannes Kepler（1609）第二定律与 Emmy Noether（1918）旋转对称角动量守恒定律 θ̇(r) = ω₀r₀²/r²，在全 17 站恒定锁死掠面速度比 Ȧ/Ȧ₀ = 1.0000×（0/17 违背站）。",
+        "58 实体 17 站点开普勒-诺特等面积角动量检验台（第 200 个独立能力历史里程碑 Demo！）对比闭式平方反比角速度与 64 扇区三角扇面积求积基线（8192 次 0.70 ms vs 4.88 ms，提速 6.95×，误差 < 1e-12），不冒充神经轨迹预测。"
+      ],
+      "conclusions_en": [
+        "Across 17 moment-of-inertia expansion stations (u ∈ [0.000, 1.000], r²/r₀² = 1 + u), naive constant angular velocity (θ̇ = ω₀) inflates the swept-area rate as r²/r₀² = 1 + u to 1.2500× at station 4, 1.5000× at station 8, and 2.0000× double angular-momentum drift at station 16 across 16/17 stations.",
+        "Johannes Kepler's (1609) Second Law & Emmy Noether's (1918) SO(2) angular-momentum conservation θ̇(r) = ω₀r₀²/r² lock the swept-area velocity ratio at Ȧ/Ȧ₀ = 1.0000× across all 17 stations with 0/17 violated stations.",
+        "The 58-solid 17-station Kepler-Noether areal velocity bench (200th Demo Historic Milestone) compares closed-form evaluation against 64-sector triangle-fan area quadrature (0.70 ms vs 4.88 ms at 8,192 passes, 6.95× speedup, <1e-12 error) without claiming neural trajectory prediction."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_orbit": "not_measured" }
+    },
+    {
+      "round": 191,
+      "slug": "mercator-gudermann-conformal-tissot-rig",
+      "topic": "mercator-gudermann-conformal-vs-plate-carree-uv",
+      "title_zh": "球面行星贴花与全景环境材质不再在 60° 纬度被横向拉扁 2 倍：Mercator-Gudermann 逆古德曼等角投影选型 FAQ",
+      "title_en": "Planetary decals and spherical UVs without 2x horizontal stretching at 60 deg latitude: Mercator-Gudermann conformal projection FAQ",
+      "faq_zh": "docs/mercator-gudermann-conformal-vs-plate-carree-uv-faq.md",
+      "faq_en": "docs/mercator-gudermann-conformal-vs-plate-carree-uv-faq.en.md",
+      "summary": "docs/evidence/mercator-gudermann-conformal-tissot-rig-summary.svg",
+      "report": "demos/mercator-gudermann-conformal-tissot-rig/report.json",
+      "cards": "demos/mercator-gudermann-conformal-tissot-rig/test-report-cards.html",
+      "cards_zh": "demos/mercator-gudermann-conformal-tissot-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在跨越正割拉伸参数 u = sec φ − 1 ∈ [0.000, 1.000]（φ ∈ [0°, 60°]）的 17 个站点上，朴素 Plate Carrée 等距圆柱线性 UV（y = φ, k_m = 1）使底索指示圆长宽比按 sec φ = 1+u 在第 4 站拉扁至 1.2500×、第 8 站冲至 1.5000×、第 16 站（φ=60°）翻倍至 2.0000×（污染 16/17 个站点）。",
+        "采用 Gerardus Mercator（1569）与 Christoph Gudermann（1830）逆古德曼等角投影 y = ln(sec φ + tan φ) 令经向拉伸 k_m = sec φ 精确匹配纬向正割拉伸，在全 17 站恒定锁死底索正圆长宽比 k_p/k_m = 1.0000×（0/17 畸变站）。",
+        "58 实体 17 站点墨卡托-古德曼等角底索指示圆检验台对比闭式逆古德曼对数公式与 64 步辛普森经向数值求积基线（8192 次 1.06 ms vs 51.94 ms，提速 49.13×，误差 < 1e-7），不冒充神经纹理生成。"
+      ],
+      "conclusions_en": [
+        "Across 17 secant-latitude stations (u = sec φ − 1 ∈ [0.000, 1.000], φ ∈ [0°, 60°]), naive Plate Carrée linear latitude UV (y = φ, k_m = 1) shears the Tissot indicatrix aspect ratio horizontally as sec φ = 1 + u to 1.2500× at station 4, 1.5000× at station 8, and 2.0000× double horizontal distortion at station 16 across 16/17 stations.",
+        "Gerardus Mercator's (1569) & Christoph Gudermann's (1830) inverse Gudermannian conformal projection y = ln(sec φ + tan φ) matches meridional scale dy/dφ = sec φ to parallel secant scale, locking Tissot aspect ratio at k_p/k_m = 1.0000× across all 17 stations with 0/17 violated stations.",
+        "The 58-solid 17-station Mercator-Gudermann conformal Tissot bench compares closed-form evaluation against 64-step Simpson meridional quadrature (1.06 ms vs 51.94 ms at 8,192 passes, 49.13× speedup, <1e-7 error) without claiming neural texture synthesis."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_uv": "not_measured" }
+    },
+    {
+      "round": 192,
+      "slug": "hertz-boussinesq-elastic-contact-rig",
+      "topic": "hertz-boussinesq-elastic-contact-vs-linear-footprint",
+      "title_zh": "角色重落地脚掌与弹跳球接地印记不再因线性面积假设而“摊大饼”虚胖 2 倍：Hertz-Boussinesq 赫兹弹性接触定律选型 FAQ",
+      "title_en": "Character foot-plants and bouncing balls without 2x pancake footprint bloat: Hertz-Boussinesq elastic contact law FAQ",
+      "faq_zh": "docs/hertz-boussinesq-elastic-contact-vs-linear-footprint-faq.md",
+      "faq_en": "docs/hertz-boussinesq-elastic-contact-vs-linear-footprint-faq.en.md",
+      "summary": "docs/evidence/hertz-boussinesq-elastic-contact-rig-summary.svg",
+      "report": "demos/hertz-boussinesq-elastic-contact-rig/report.json",
+      "cards": "demos/hertz-boussinesq-elastic-contact-rig/test-report-cards.html",
+      "cards_zh": "demos/hertz-boussinesq-elastic-contact-rig/test-report-cards.zh.html",
+      "conclusions_zh": [
+        "在跨越接触半径扩展参数 u = a/a₀ − 1 ∈ [0.000, 1.000]（法向冲击载荷 F/F₀ = (1+u)³ ∈ [1, 8]）的 17 个站点上，朴素恒压线性接触面积（A ∝ F）使归一化接触面积比按 1+u 在第 4 站虚胖至 1.2500×、第 8 站冲至 1.5000×、第 16 站（8 倍载荷）翻倍摊大饼至 2.0000×（污染 16/17 个站点）。",
+        "采用 Heinrich Hertz（1882）与 Joseph Boussinesq（1885）弹性接触定律 A_Hertz ∝ F^(2/3)（接触半径 a ∝ F^(1/3)，平均压强 p_mean ∝ F^(1/3)），在全 17 站恒定锁死接触面积比 A/A_Hertz = 1.0000×（0/17 虚胖站）。",
+        "58 实体 17 站点赫兹-布辛涅斯克弹性接触印记检验台对比闭式 F^(2/3) 面积与 64 环 Boussinesq 半球面压强求积基线（8192 次 0.21 ms vs 10.63 ms，提速 50.36×，误差 < 1e-12），不冒充神经软体解算。"
+      ],
+      "conclusions_en": [
+        "Across 17 load-scaling stations (u = a/a₀ − 1 ∈ [0.000, 1.000], F/F₀ = (1+u)³ ∈ [1, 8]), naive constant-pressure linear-force area (A ∝ F) bloats the normalized contact footprint ratio as 1 + u to 1.2500× at station 4, 1.5000× at station 8, and 2.0000× double pancake squash at station 16 across 16/17 stations.",
+        "Heinrich Hertz's (1882) & Joseph Boussinesq's (1885) elastic contact law A_Hertz ∝ F^(2/3) (a ∝ F^(1/3), p_mean ∝ F^(1/3)) locks the contact footprint ratio at A/A_Hertz = 1.0000× across all 17 stations with 0/17 violated stations.",
+        "The 58-solid 17-station Hertz-Boussinesq elastic contact bench compares closed-form evaluation against 64-ring hemispherical pressure quadrature (0.21 ms vs 10.63 ms at 8,192 passes, 50.36× speedup, <1e-12 error) without claiming neural soft-body simulation."
+      ],
+      "provenance": { "scene": "synthetic", "checks": "measured", "neural_inference": "not_measured", "neural_contact": "not_measured" }
+    }
+  ]
+}

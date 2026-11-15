@@ -1,0 +1,271 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Helmholtz-Kelemen symmetric dual-Fresnel reciprocal BRDF vs naive view-only asymmetry rig",
+  "topic_zh": "Helmholtz-Kelemen 对称双菲涅耳互易漫反射（(1−F(μ_i))(1−F(μ_o))）对比朴素仅视线 (1−F(μ_o)) 互易性违背",
+  "slug": "helmholtz-kelemen-reciprocal-brdf-rig",
+  "timestamp": "2026-11-15T18:21:48.295Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Hermann von Helmholtz (1856) BRDF reciprocity & Shirley-Ashikhmin (2000) / Kelemen-Szirmay-Kalos (2001) symmetric dual-Fresnel matte coupling (f_diff(mu_i, mu_o) = (rho_d / (pi*(1 - F_avg))) * (1 - F(mu_i)) * (1 - F(mu_o)), multiplying both entry transmittance 1 - F(mu_i) and exit transmittance 1 - F(mu_o) to lock bidirectional reciprocity ratio f(i->o)/f(o->i) = 1.0000x across all 17 incidence-asymmetry stations u in [0.0000, 1.0000] with 0/17 violated stations) versus naive single-factor view-only Fresnel weighting ((1 - F(mu_o))/pi, which omits entry transmittance 1 - F(mu_i) and breaks Helmholtz reciprocity by 1 + u up to 1.2500x at u=0.25, 1.5000x at u=0.50, and 2.0000x at u=1.00 across 16/17 stations) and 64-scatter bidirectional path throughput.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "helmholtz-bdpt64-equiv-128",
+      "passed": true,
+      "detail": "128 closed-form Helmholtz-Kelemen dual-Fresnel and 64-scatter bidirectional path throughput passes agree within 1e-12"
+    },
+    {
+      "name": "helmholtz-bdpt64-equiv-1024",
+      "passed": true,
+      "detail": "1024 closed-form Helmholtz-Kelemen dual-Fresnel and 64-scatter bidirectional path throughput passes agree within 1e-12"
+    },
+    {
+      "name": "helmholtz-bdpt64-equiv-8192",
+      "passed": true,
+      "detail": "8192 closed-form Helmholtz-Kelemen dual-Fresnel and 64-scatter bidirectional path throughput passes agree within 1e-12"
+    },
+    {
+      "name": "helmholtz-reciprocity-locked",
+      "passed": true,
+      "detail": "17 incidence-asymmetry stations (u in [0.00, 1.00]) lock Helmholtz reciprocity ratio f(i->o)/f(o->i) = 1.0000x (0/17 violated)"
+    },
+    {
+      "name": "naive-view-only-asymmetry-exposed",
+      "passed": true,
+      "detail": "naive single-factor view-only Fresnel (1 - F(mu_o)) breaks Helmholtz reciprocity as 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x (+100%) at S16 across 16/17 stations"
+    },
+    {
+      "name": "helmholtz-st4-u025-10000",
+      "passed": true,
+      "detail": "station-4 (u=0.25) locks f(i->o)/f(o->i)=1.0000x vs naive 1.2500x (+25.00% asymmetry)"
+    },
+    {
+      "name": "helmholtz-st8-u050-10000",
+      "passed": true,
+      "detail": "station-8 (u=0.50) locks f(i->o)/f(o->i)=1.0000x vs naive 1.5000x (+50.00% asymmetry)"
+    },
+    {
+      "name": "helmholtz-st16-u100-10000",
+      "passed": true,
+      "detail": "station-16 (u=1.00) locks f(i->o)/f(o->i)=1.0000x vs naive 2.0000x (+100.00% factor-of-2 BDPT mismatch)"
+    },
+    {
+      "name": "exact-mode-roundtrip",
+      "passed": true,
+      "detail": "mode switching round-trip preserves deterministic Helmholtz-Kelemen reciprocity telemetry"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D Helmholtz-Kelemen reciprocal BRDF bench renders 58 tracked solids across 17 stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Helmholtz-Kelemen reciprocal controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station reciprocal BRDF passes",
+      "count": 128,
+      "primary_ms": 0.013500000000021828,
+      "baseline_ms": 0.14059999999994943,
+      "primary_samples_ms": [
+        0.1716000000000122,
+        0.014200000000073487,
+        0.013499999999908141,
+        0.013500000000021828,
+        0.017200000000002547,
+        0.01310000000000855,
+        0.013299999999958345
+      ],
+      "baseline_samples_ms": [
+        0.3910000000000764,
+        0.193300000000022,
+        0.13040000000000873,
+        0.13010000000008404,
+        0.1269999999999527,
+        0.1452000000000453,
+        0.14059999999994943
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station reciprocal BRDF passes",
+      "count": 1024,
+      "primary_ms": 0.09749999999996817,
+      "baseline_ms": 0.6371000000000322,
+      "primary_samples_ms": [
+        0.11270000000001801,
+        0.09799999999995634,
+        0.09720000000004347,
+        0.09539999999992688,
+        0.09490000000005239,
+        0.0988999999999578,
+        0.09749999999996817
+      ],
+      "baseline_samples_ms": [
+        1.0669000000000324,
+        1.0867000000000644,
+        0.6371000000000322,
+        0.6242999999999483,
+        0.5944000000000642,
+        3.8251999999999953,
+        0.6324999999999363
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station reciprocal BRDF passes",
+      "count": 8192,
+      "primary_ms": 0.7708000000000084,
+      "baseline_ms": 4.696900000000028,
+      "primary_samples_ms": [
+        0.7708000000000084,
+        0.7619000000000824,
+        0.8061999999999898,
+        0.7594000000000278,
+        0.7635999999999967,
+        0.7723000000000866,
+        0.7796999999999343
+      ],
+      "baseline_samples_ms": [
+        4.726999999999975,
+        4.691100000000006,
+        4.6988999999999805,
+        4.696900000000028,
+        4.691900000000032,
+        4.7228999999999814,
+        4.676799999999957
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/helmholtz-kelemen-reciprocal-brdf-rig/light-helmholtz_kelemen_symmetric_dual_fresnel.png",
+    "docs/evidence/helmholtz-kelemen-reciprocal-brdf-rig/light-naive_nonreciprocal_view_only_fresnel.png",
+    "docs/evidence/helmholtz-kelemen-reciprocal-brdf-rig/dark-helmholtz_kelemen_symmetric_dual_fresnel.png",
+    "docs/evidence/helmholtz-kelemen-reciprocal-brdf-rig/dark-naive_nonreciprocal_view_only_fresnel.png",
+    "docs/evidence/helmholtz-kelemen-reciprocal-brdf-rig/mobile.png"
+  ],
+  "primary_label": "Helmholtz-Kelemen (1−F(μ_i))(1−F(μ_o))",
+  "baseline_label": "64-Scatter Bidirectional Path Throughput",
+  "load_unit": "reciprocal BRDF passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form symmetric dual-Fresnel product versus 64-scatter bidirectional subsurface path throughput baseline.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "station0_helmholtz_ratio": 1,
+    "station0_naive_ratio": 1,
+    "station4_helmholtz_ratio": 1,
+    "station4_naive_ratio": 1.25,
+    "station8_helmholtz_ratio": 1,
+    "station8_naive_ratio": 1.5,
+    "station12_helmholtz_ratio": 1,
+    "station12_naive_ratio": 1.75,
+    "station16_helmholtz_ratio": 1,
+    "station16_naive_ratio": 2,
+    "violated_stations": 16
+  },
+  "protocol": {
+    "input": {
+      "station_4_asymmetry_u": 0.25,
+      "station_8_asymmetry_u": 0.5,
+      "station_16_asymmetry_u": 1
+    },
+    "output": {
+      "helmholtz_reciprocity_ratio": 1,
+      "naive_ratio_u025": 1.25,
+      "naive_ratio_u050": 1.5,
+      "naive_ratio_u100": 2,
+      "violated_stations": 16
+    },
+    "function": "Helmholtz-Kelemen: (1−F(μ_i))(1−F(μ_o)) -> f(i→o)/f(o→i) = 1.0000× vs Naive (1−F(μ_o)) -> 1 + u (2.0000× at u=1, 16/17 Violated)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 incidence-asymmetry stations preserve exact Helmholtz reciprocity f(i->o)/f(o->i) = 1.0000x",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Bidirectional Path Tracing (BDPT), Photon Mapping, and Vertex Connection and Merging (VCM) requiring exact f(i->o) === f(o->i)",
+    "Clearcoat-over-diffuse and glossy plastic PBR materials attenuating both incoming light (1 - F(N·L)) and outgoing view (1 - F(N·V))",
+    "Eliminating grazing-light diffuse over-brightening when N·V is near normal but N·L is near grazing",
+    "Normalized Kelemen-Szirmay-Kalos (2001) factor (1 - F(N·L))*(1 - F(N·V)) / (pi * (1 - F_avg))"
+  ],
+  "not_for": [
+    "Magneto-optical Faraday isolator media that intentionally break electromagnetic time-reversal reciprocity",
+    "Static 2D UI layout",
+    "Unlit wireframe geometry",
+    "1D audio gain sliders"
+  ],
+  "locale_zh": {
+    "title": "Helmholtz-Kelemen 对称双菲涅耳互易漫反射 vs 朴素仅视线 (1−F(μ_o)) 互易性违背",
+    "subtitle": "为什么在 PBR 着色器里写 `(1.0 - F_Schlick(NdotV)) * albedo / PI` 只扣除了视线方向的菲涅耳反射，不仅会让侧面掠射光照射正面表面时过曝，更会在双向路径追踪（BDPT）与光子映射中引发高达 `2.0000×` 的亥姆霍兹互易性撕裂？",
+    "plain_intro": "在物理学中，任何被动表面反射都必须严格遵守 Hermann von Helmholtz（1856）提出的**亥姆霍兹光路互易原理（Helmholtz Reciprocity）**：将光源方向 `L` 与相机视线方向 `V` 对调，双向反射分布函数的值必须分毫不差地相等：`f_r(L → V) ≡ f_r(V → L)`！然而在很多简化版实时 PBR 教程中，开发者在把镜面反射与漫反射加在一起时，只给漫反射乘了一个仅与视线有关的因子 `kD = 1.0 - F_Schlick(NdotV)`。设想相机正对着桌面（`N·V = 1.0`，`1 - F(N·V) ≈ 1.0`），而一盏灯光从极低角度擦着桌面斜射过来（`N·L → 0`）：在真实世界里，这束擦掠过来的入射光绝大部分已经在空气-清漆表面被菲涅耳全反射弹飞了（入射透射率 `T_i = 1 - F(N·L) = 1 / (1 + u)` 极小），根本进不到底层颜料里发生漫反射！如果漏乘 `1 - F(N·L)`，正向相机路径算出 `f(i→o) ∝ 1 - F(μ_o) = 1.0`，而从光源出发的光子映射或双向路径追踪（BDPT）逆向路径算出 `f(o→i) ∝ 1 - F(μ_i) = 1 / (1 + u)`，导致正逆光路互易比 `f(i→o) / f(o→i)` 按 `1 + u` 在第 4 站偏离至 `1.2500×`、第 8 站冲至 `1.5000×`、第 16 站翻倍至 `2.0000×`（污染 `16/17` 个站点，直接导致双向渲染器权重崩溃）！Shirley & Ashikhmin（2000）与 Kelemen & Szirmay-Kalos（2001）提出的对称双菲涅耳漫反射项 `(1 - F(N·L)) * (1 - F(N·V)) / (π * (1 - F_avg))` 同时計入光子穿入涂层与穿出涂层的两次透射，在全部 17 个站点恒定锁死互易比 `f(i→o)/f(o→i) = 1.0000×`（`0/17` 站违背）！",
+    "finding": "实测跨越入出射角不对称参数 u ∈ [0.000, 1.000] 的 17 个站点：Helmholtz-Kelemen 对称双菲涅耳互易漫反射（(1−F(μ_i))(1−F(μ_o))）在全部 17 个站点恒定锁死光路互易比 f(i→o)/f(o→i) = 1.0000×（0/17 违背），而朴素单向仅视线 (1−F(μ_o)) 在第 4 站偏离至 1.2500×、第 8 站冲至 1.5000×、第 16 站翻倍至 2.0000×（污染 16/17 个站点）。",
+    "workbench_title": "58 实体 17 站点 Helmholtz-Kelemen 双向互易 BRDF 检验台（Helmholtz-Kelemen Reciprocal BRDF Bench）",
+    "scenario_quote": "为什么只写 `(1.0 - F(N·V)) * diffuse` 破坏了物理学最神圣的光路可逆性？因为光子要想从底层颜料漫反射进你的眼睛，它首先得穿进表面（乘一次 `1 - F(N·L)`），散射完还得再穿出表面（再乘一次 `1 - F(N·V)`）！只有把两个因子对称相乘，对调光源和相机时结果才永远相等！",
+    "protocol_note": "顶块展示第 4 站（u=0.25）、第 8 站（u=0.50）与第 16 站（u=1.00）；底块对比 Helmholtz-Kelemen 双菲涅耳恒锁互易比 1.0000× 与朴素单因子偏离至 2.0000×。",
+    "robustness_name": "17 个入出射不对称站点在 Helmholtz-Kelemen 对称双菲涅耳下 100% 保持精确光路互易比 1.0000×",
+    "primary_label": "Helmholtz-Kelemen (1−F(μ_i))(1−F(μ_o))",
+    "baseline_label": "64 步双向次表面路径吞吐量求积",
+    "load_unit": "次 17 站互易性求解",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比闭式对称双菲涅耳乘积与 64 步双向次表面路径吞吐量基准。",
+    "good_fit": [
+      "双向路径追踪（BDPT）、光子映射（Photon Mapping）与顶点连接合并（VCM）渲染器",
+      "清漆（Clearcoat）与有光塑料材质的底层漫反射双侧菲涅耳能量衰减",
+      "消除正面观察时低角度擦掠光源（`N·L → 0`）造成的漫反射边缘异常发亮",
+      "Kelemen-Szirmay-Kalos（2001）互易能量守恒漫反射 `(1 - F(N·L)) * (1 - F(N·V)) / (π * (1 - F_avg))`"
+    ],
+    "not_for": [
+      "外加磁场下故意破坏时间反演对称性的法拉第磁光隔离器（Faraday Isolator）",
+      "静态 2D 网页排版",
+      "无光照纯线框网格",
+      "一维音频电平滑块"
+    ],
+    "readiness": "12/12 项实测通过；58 个 3D 双向互易 BRDF 检验构件、17 个不对称站点与 7-Card 报告已封存。",
+    "entries": {
+      "helmholtz-bdpt64-equiv-128": "Helmholtz-Kelemen双菲涅耳与64步双向路径等价 128",
+      "128 closed-form Helmholtz-Kelemen dual-Fresnel and 64-scatter bidirectional path throughput passes agree within 1e-12": "128 次闭式 Helmholtz-Kelemen 双菲涅耳互易项与 64 步双向次表面路径吞吐量在 1e-12 内一致",
+      "helmholtz-bdpt64-equiv-1024": "Helmholtz-Kelemen双菲涅耳与64步双向路径等价 1024",
+      "1024 closed-form Helmholtz-Kelemen dual-Fresnel and 64-scatter bidirectional path throughput passes agree within 1e-12": "1024 次闭式 Helmholtz-Kelemen 双菲涅耳互易项与 64 步双向次表面路径吞吐量在 1e-12 内一致",
+      "helmholtz-bdpt64-equiv-8192": "Helmholtz-Kelemen双菲涅耳与64步双向路径等价 8192",
+      "8192 closed-form Helmholtz-Kelemen dual-Fresnel and 64-scatter bidirectional path throughput passes agree within 1e-12": "8192 次闭式 Helmholtz-Kelemen 双菲涅耳互易项与 64 步双向次表面路径吞吐量在 1e-12 内一致",
+      "helmholtz-reciprocity-locked": "Helmholtz-Kelemen全站光路互易比1.0000x锁定",
+      "17 incidence-asymmetry stations (u in [0.00, 1.00]) lock Helmholtz reciprocity ratio f(i->o)/f(o->i) = 1.0000x (0/17 violated)": "17 个入出射角不对称站点恒定锁死亥姆霍兹互易比 f(i→o)/f(o→i) = 1.0000×（0/17 违背）",
+      "naive-view-only-asymmetry-exposed": "朴素单向仅视线(1-F(μ_o))互易2.0000x破坏暴露",
+      "naive single-factor view-only Fresnel (1 - F(mu_o)) breaks Helmholtz reciprocity as 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x (+100%) at S16 across 16/17 stations": "朴素单向仅视线 (1−F(μ_o)) 在第 4 站偏离至 1.2500×、第 8 站冲至 1.5000×、第 16 站翻倍至 2.0000×（污染 16/17 站）",
+      "helmholtz-st4-u025-10000": "第4站u=0.25互易比1.0000x锁定",
+      "station-4 (u=0.25) locks f(i->o)/f(o->i)=1.0000x vs naive 1.2500x (+25.00% asymmetry)": "第 4 站（u=0.25）锁死互易比 1.0000×（消除朴素 1.2500× 单向偏差）",
+      "helmholtz-st8-u050-10000": "第8站u=0.50中点互易比1.0000x锁定",
+      "station-8 (u=0.50) locks f(i->o)/f(o->i)=1.0000x vs naive 1.5000x (+50.00% asymmetry)": "第 8 站（u=0.50）锁死互易比 1.0000×（消除朴素 1.5000× 正逆光路分裂）",
+      "helmholtz-st16-u100-10000": "第16站u=1.00强不对称互易比1.0000x锁定",
+      "station-16 (u=1.00) locks f(i->o)/f(o->i)=1.0000x vs naive 2.0000x (+100.00% factor-of-2 BDPT mismatch)": "第 16 站（u=1.00）锁死互易比 1.0000×（消除朴素 2.0000× 两倍正逆路径撕裂）",
+      "exact-mode-roundtrip": "模式往返切换一致性",
+      "mode switching round-trip preserves deterministic Helmholtz-Kelemen reciprocity telemetry": "Helmholtz-Kelemen 对称双菲涅耳与朴素仅视线单因子模式往返切换保持确定性状态",
+      "geometry-58-solids": "58构件3D双向互易BRDF检验台一致性",
+      "3D Helmholtz-Kelemen reciprocal BRDF bench renders 58 tracked solids across 17 stations": "3D Helmholtz-Kelemen 双向互易 BRDF 检验台在 17 个不对称站点完整渲染 58 个独立几何体",
+      "mobile-layout": "手机布局",
+      "390px Helmholtz-Kelemen reciprocal controls fit without horizontal overflow": "390px 双向互易控制面板无横向溢出",
+      "runtime-errors": "运行错误",
+      "0 JavaScript errors": "0 个 JavaScript 错误"
+    }
+  }
+}

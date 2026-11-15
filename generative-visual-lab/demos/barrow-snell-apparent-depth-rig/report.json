@@ -1,0 +1,271 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Barrow-Snell oblique apparent depth vs naive paraxial d_true/n overestimation rig",
+  "topic_zh": "Barrow-Snell 巴罗-斯涅尔斜视折射表观视深（d_app = d₀·cos θ_o/cos θ_i, d/d_exact = 1.0000×）对比朴素近轴 d_true/n 深度高估",
+  "slug": "barrow-snell-apparent-depth-rig",
+  "timestamp": "2026-11-15T19:33:15.876Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Isaac Barrow (1669, Lectiones Opticae) & Snell-Descartes oblique virtual-image apparent depth law (d_app = d_true * (n_air * cos(theta_o)) / (n_water * cos(theta_i)), accounting for oblique Snell refraction so the predicted-to-exact apparent depth ratio locks at d/d_exact = 1.0000x across all 17 viewing-obliquity stations u in [0.0000, 1.0000] with 0/17 distorted stations) versus naive paraxial constant-IOR depth scaling (d_naive = d_true / n, which ignores the cos(theta_o)/cos(theta_i) virtual-image elevation at oblique angles and overestimates apparent depth by 1 + u to 1.2500x at u=0.25, 1.5000x at u=0.50, and 2.0000x at u=1.00 across 16/17 stations) and 64-ray virtual caustic intersection tracing.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "barrow-caustic64-equiv-128",
+      "passed": true,
+      "detail": "128 closed-form Barrow-Snell oblique depth and 64-ray virtual caustic intersection passes agree within 1e-12"
+    },
+    {
+      "name": "barrow-caustic64-equiv-1024",
+      "passed": true,
+      "detail": "1024 closed-form Barrow-Snell oblique depth and 64-ray virtual caustic intersection passes agree within 1e-12"
+    },
+    {
+      "name": "barrow-caustic64-equiv-8192",
+      "passed": true,
+      "detail": "8192 closed-form Barrow-Snell oblique depth and 64-ray virtual caustic intersection passes agree within 1e-12"
+    },
+    {
+      "name": "barrow-apparent-depth-locked",
+      "passed": true,
+      "detail": "17 viewing-obliquity stations (u in [0.00, 1.00]) lock apparent depth ratio d/d_exact = 1.0000x (0/17 distorted)"
+    },
+    {
+      "name": "naive-paraxial-depth-overestimate-exposed",
+      "passed": true,
+      "detail": "naive paraxial constant depth (d_true / n) overestimates oblique apparent depth as 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x (+100%) at S16 across 16/17 stations"
+    },
+    {
+      "name": "barrow-st4-u025-10000",
+      "passed": true,
+      "detail": "station-4 (u=0.25) locks d/d_exact=1.0000x vs naive 1.2500x (+25.00% depth overestimate)"
+    },
+    {
+      "name": "barrow-st8-u050-10000",
+      "passed": true,
+      "detail": "station-8 (u=0.50) locks d/d_exact=1.0000x vs naive 1.5000x (+50.00% depth overestimate)"
+    },
+    {
+      "name": "barrow-st16-u100-10000",
+      "passed": true,
+      "detail": "station-16 (u=1.00) locks d/d_exact=1.0000x vs naive 2.0000x (+100.00% double depth overestimate)"
+    },
+    {
+      "name": "exact-mode-roundtrip",
+      "passed": true,
+      "detail": "mode switching round-trip preserves deterministic Barrow-Snell apparent depth telemetry"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D Barrow-Snell oblique apparent depth bench renders 58 tracked solids across 17 stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Barrow-Snell apparent depth controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station apparent depth passes",
+      "count": 128,
+      "primary_ms": 0.014000000000010004,
+      "baseline_ms": 0.12920000000008258,
+      "primary_samples_ms": [
+        0.14640000000008513,
+        0.016199999999912507,
+        0.013799999999946522,
+        0.014000000000010004,
+        0.01520000000004984,
+        0.012600000000020373,
+        0.012599999999906686
+      ],
+      "baseline_samples_ms": [
+        0.2518000000000029,
+        0.13050000000009732,
+        0.1291999999999689,
+        0.15020000000004075,
+        0.12920000000008258,
+        0.1290000000000191,
+        0.1290000000000191
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station apparent depth passes",
+      "count": 1024,
+      "primary_ms": 0.09579999999994016,
+      "baseline_ms": 1.6837000000000444,
+      "primary_samples_ms": [
+        0.10969999999997526,
+        0.10130000000003747,
+        0.09919999999999618,
+        0.09529999999995198,
+        0.09500000000002728,
+        0.09579999999994016,
+        0.09490000000005239
+      ],
+      "baseline_samples_ms": [
+        1.116800000000012,
+        1.0187000000000808,
+        1.0158999999999878,
+        1.6902999999999793,
+        1.6837999999999056,
+        1.6837999999999056,
+        1.6837000000000444
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station apparent depth passes",
+      "count": 8192,
+      "primary_ms": 0.7667000000000144,
+      "baseline_ms": 13.612799999999993,
+      "primary_samples_ms": [
+        0.7667000000000144,
+        0.7677999999999656,
+        0.7580999999998994,
+        0.9032999999999447,
+        0.7648999999998978,
+        0.8216999999999643,
+        0.7590999999999894
+      ],
+      "baseline_samples_ms": [
+        13.765900000000101,
+        13.612799999999993,
+        13.584299999999985,
+        13.481300000000033,
+        14.335800000000063,
+        14.455299999999966,
+        13.52780000000007
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/barrow-snell-apparent-depth-rig/light-barrow_snell_oblique_apparent_depth.png",
+    "docs/evidence/barrow-snell-apparent-depth-rig/light-naive_paraxial_constant_ior_depth.png",
+    "docs/evidence/barrow-snell-apparent-depth-rig/dark-barrow_snell_oblique_apparent_depth.png",
+    "docs/evidence/barrow-snell-apparent-depth-rig/dark-naive_paraxial_constant_ior_depth.png",
+    "docs/evidence/barrow-snell-apparent-depth-rig/mobile.png"
+  ],
+  "primary_label": "Barrow-Snell d_app = d₀ · cos θ_o / cos θ_i",
+  "baseline_label": "64-Ray Virtual Caustic Intersection Solver",
+  "load_unit": "apparent depth passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form Barrow-Snell oblique cosine ratio versus 64-ray backward virtual caustic intersection baseline.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "station0_barrow_ratio": 1,
+    "station0_naive_ratio": 1,
+    "station4_barrow_ratio": 1,
+    "station4_naive_ratio": 1.25,
+    "station8_barrow_ratio": 1,
+    "station8_naive_ratio": 1.5,
+    "station12_barrow_ratio": 1,
+    "station12_naive_ratio": 1.75,
+    "station16_barrow_ratio": 1,
+    "station16_naive_ratio": 2,
+    "distorted_stations": 16
+  },
+  "protocol": {
+    "input": {
+      "station_4_obliquity_u": 0.25,
+      "station_8_obliquity_u": 0.5,
+      "station_16_obliquity_u": 1
+    },
+    "output": {
+      "barrow_depth_ratio": 1,
+      "naive_ratio_u025": 1.25,
+      "naive_ratio_u050": 1.5,
+      "naive_ratio_u100": 2,
+      "distorted_stations": 16
+    },
+    "function": "Barrow-Snell: d_app = d₀·(cos θ_o/cos θ_i) -> d/d_exact = 1.0000× vs Naive d_true/n -> 1 + u (2.0000× at u=1, 16/17 Distorted)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 viewing-obliquity stations preserve exact Barrow-Snell apparent depth ratio d/d_exact = 1.0000x",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Screen-space water refraction, shallow riverbeds, swimming pools, and submerged terrain parallax shaders",
+    "Accurate underwater Beer-Lambert absorption optical path and virtual image parallax at oblique camera angles",
+    "Eliminating the 2x over-deep riverbed artifact when viewing shallow water at grazing angles",
+    "Zero-branch analytical evaluation cos(theta_o) / sqrt(n^2 - sin^2(theta_o))"
+  ],
+  "not_for": [
+    "Opaque mirror surfaces with zero transmitted light",
+    "Static 2D flat UI buttons",
+    "Vacuum-to-vacuum interfaces with unit refractive index n = 1.0",
+    "1D audio gain sliders"
+  ],
+  "locale_zh": {
+    "title": "Barrow-Snell 巴罗-斯涅尔斜视折射表观视深 vs 朴素近轴 d_true/n 深度高估",
+    "subtitle": "为什么在浅水溪流、泳池瓷砖与水下鹅卵石折射着色器中，直接用中学物理的近轴公式 `d_apparent = d_true / 1.333` 会让斜着看水面时的水底显得深了一倍（高达 `2.0000×` 表观视深高估）？",
+    "plain_intro": "在中学物理课本里，我们学过“水底看起来变浅了，视深等于实深除以折射率：`d_apparent = d_true / n`（对水 `n = 1.333`，即 `0.75 * d_true`）”。然而在编写 3D 实时水面视差折射（Water Parallax Refraction）着色器时，如果不管相机视线角度 `θ_o` 是多少都一律使用常数 `d_true / n`，站在岸边斜着望向池塘或泳池时，水底鹅卵石的位置就会严重偏深！牛顿的老师、剑桥卢卡斯数学教授伊萨克·巴罗（Isaac Barrow，1669，《光学讲义 Lectiones Opticae》）严格证明了平界面折射的虚像视深定律：中学公式 `d_true / n` **仅仅在垂直低头正视水面（近轴极限 `θ_o → 0°`）时才成立**！当人眼以斜角 `θ_o` 观察水面时，斯涅尔折射定律 `sin(θ_o) = n * sin(θ_i)` 会使水下折射角 `θ_i` 被限制在临界角（`48.6°`）以内，导致虚像随视线倾斜而进一步向水面抬升：`d_Barrow(θ_o) = d_true * cos(θ_o) / √(n² - sin²θ_o)`（弧矢视深正比于 `cos(θ_o) / cos(θ_i)`）！在跨越斜视余弦比参数 `cos(θ_o)/cos(θ_i) = 1 / (1 + u)`（`u ∈ [0.000, 1.000]`）的 17 个站点上，若固守朴素近轴常数 `d_0 = d_true / n`，计算出的表观深度与真实虚像深度之比 `d_naive / d_exact = 1 + u` 会在第 4 站（`u=0.25`）高估至 `1.2500×`、第 8 站（`u=0.50`）偏深至 `1.5000×`、第 16 站（`u=1.00`）直接翻倍至 `2.0000×`（污染 `16/17` 个站点）！采用 Barrow-Snell 斜视视深公式即可在全部 17 个站点恒定锁死视深比 `d/d_exact = 1.0000×`（`0/17` 站失真）！",
+    "finding": "实测跨越斜视折射参数 u ∈ [0.000, 1.000]（cos θ_o / cos θ_i = 1/(1+u)）的 17 个站点：Barrow-Snell 斜视视深定律（d_app = d₀·cos θ_o/cos θ_i）在全部 17 个站点恒定锁死表观视深比 d/d_exact = 1.0000×（0/17 失真），而朴素近轴常数公式（d_true/n）在第 4 站高估至 1.2500×、第 8 站冲至 1.5000×、第 16 站翻倍至 2.0000×（污染 16/17 个站点）。",
+    "workbench_title": "58 实体 17 站点 Barrow-Snell 水下斜视折射视深检验台（Barrow-Snell Apparent Depth Bench）",
+    "scenario_quote": "为什么你站在游泳池边斜着往对岸看，远处的池底看起来几乎贴着水面浮起来了？因为 `d_true / 1.333` 只在垂直往下看时才对！视线越斜，`cos(θ_o)` 越小，水底虚像越往上浮！着色器里必须乘上 `cos(θ_o) / cos(θ_i)`，斜视池底才不会假得像深渊！",
+    "protocol_note": "顶块展示第 4 站（u=0.25）、第 8 站（u=0.50）与第 16 站（u=1.00）；底块对比 Barrow-Snell 斜视视深恒锁视深比 1.0000× 与朴素近轴公式高估至 2.0000×。",
+    "robustness_name": "17 个斜视角度站点在 Barrow-Snell 斜视折射定律下 100% 保持精确虚像视深比 1.0000×",
+    "primary_label": "Barrow-Snell d_app = d₀ · cos θ_o / cos θ_i",
+    "baseline_label": "64 对微扰折射光线逆向虚焦散交点求解",
+    "load_unit": "次 17 站水下视深求解",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比闭式巴罗-斯涅尔斜视视深公式与 64 对折射光线逆向虚焦散交点求解基准。",
+    "good_fit": [
+      "实时屏幕空间水面折射（Screen-Space Water Refraction）、浅滩溪流、泳池瓷砖与水下地形视差映射",
+      "斜视角下水下物体虚像上浮位移与水体吸收深度精确校准",
+      "消除远眺浅水区域时因近轴近似造成的 `2.0000×` 水底过深失真",
+      "无分支纯代数着色器实现 `d_app = d_true * NdotV / sqrt(n*n - 1.0 + NdotV*NdotV)`"
+    ],
+    "not_for": [
+      "完全不透光的金属反射镜面",
+      "静态 2D 扁平 UI 按钮",
+      "折射率等于 1.0 的无介质折射空气边界",
+      "一维音频增益控制条"
+    ],
+    "readiness": "12/12 项实测通过；58 个 3D 水下视深检验构件、17 个斜视站点与 7-Card 报告已封存。",
+    "entries": {
+      "barrow-caustic64-equiv-128": "Barrow-Snell斜视视深与64光线虚焦散交点等价 128",
+      "128 closed-form Barrow-Snell oblique depth and 64-ray virtual caustic intersection passes agree within 1e-12": "128 次闭式 Barrow-Snell 斜视视深公式与 64 对折射光线逆向虚焦散交点求解在 1e-12 内一致",
+      "barrow-caustic64-equiv-1024": "Barrow-Snell斜视视深与64光线虚焦散交点等价 1024",
+      "1024 closed-form Barrow-Snell oblique depth and 64-ray virtual caustic intersection passes agree within 1e-12": "1024 次闭式 Barrow-Snell 斜视视深公式与 64 对折射光线逆向虚焦散交点求解在 1e-12 内一致",
+      "barrow-caustic64-equiv-8192": "Barrow-Snell斜视视深与64光线虚焦散交点等价 8192",
+      "8192 closed-form Barrow-Snell oblique depth and 64-ray virtual caustic intersection passes agree within 1e-12": "8192 次闭式 Barrow-Snell 斜视视深公式与 64 对折射光线逆向虚焦散交点求解在 1e-12 内一致",
+      "barrow-apparent-depth-locked": "Barrow-Snell全站斜视视深比1.0000x锁定",
+      "17 viewing-obliquity stations (u in [0.00, 1.00]) lock apparent depth ratio d/d_exact = 1.0000x (0/17 distorted)": "17 个斜视观察角度站点恒定锁死表观视深比 d/d_exact = 1.0000×（0/17 深度高估）",
+      "naive-paraxial-depth-overestimate-exposed": "朴素近轴d_true/n常数视深2.0000x斜视高估暴露",
+      "naive paraxial constant depth (d_true / n) overestimates oblique apparent depth as 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x (+100%) at S16 across 16/17 stations": "朴素近轴常数视深（d_true/n）在第 4 站高估至 1.2500×、第 8 站冲至 1.5000×、第 16 站翻倍至 2.0000×（污染 16/17 站）",
+      "barrow-st4-u025-10000": "第4站u=0.25视深比1.0000x锁定",
+      "station-4 (u=0.25) locks d/d_exact=1.0000x vs naive 1.2500x (+25.00% depth overestimate)": "第 4 站（u=0.25）锁死表观视深比 1.0000×（消除朴素 1.2500× 深度高估）",
+      "barrow-st8-u050-10000": "第8站u=0.50中点视深比1.0000x锁定",
+      "station-8 (u=0.50) locks d/d_exact=1.0000x vs naive 1.5000x (+50.00% depth overestimate)": "第 8 站（u=0.50）锁死表观视深比 1.0000×（消除朴素 1.5000× 深度高估）",
+      "barrow-st16-u100-10000": "第16站u=1.00掠射视深比1.0000x锁定",
+      "station-16 (u=1.00) locks d/d_exact=1.0000x vs naive 2.0000x (+100.00% double depth overestimate)": "第 16 站（u=1.00，斜向远眺水面）锁死视深比 1.0000×（消除朴素 2.0000× 两倍深度高估）",
+      "exact-mode-roundtrip": "模式往返切换一致性",
+      "mode switching round-trip preserves deterministic Barrow-Snell apparent depth telemetry": "Barrow-Snell 斜视视深与朴素近轴常数视深模式往返切换保持确定性状态",
+      "geometry-58-solids": "58构件3D巴罗-斯涅尔斜视视深检验台一致性",
+      "3D Barrow-Snell oblique apparent depth bench renders 58 tracked solids across 17 stations": "3D Barrow-Snell 水下折射视深检验台在 17 个斜视站点完整渲染 58 个独立几何体",
+      "mobile-layout": "手机布局",
+      "390px Barrow-Snell apparent depth controls fit without horizontal overflow": "390px 水下折射视深控制面板无横向溢出",
+      "runtime-errors": "运行错误",
+      "0 JavaScript errors": "0 个 JavaScript 错误"
+    }
+  }
+}

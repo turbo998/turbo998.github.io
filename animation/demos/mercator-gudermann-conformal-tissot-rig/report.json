@@ -1,0 +1,276 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "demo": "mercator-gudermann-conformal-tissot-rig",
+  "slug": "mercator-gudermann-conformal-tissot-rig",
+  "topic": "Mercator-Gudermann conformal Tissot indicatrix vs naive Plate Carree UV rig",
+  "topic_zh": "Mercator-Gudermann 墨卡托-古德曼等角投影（y = ln(sec φ + tan φ), k_p/k_m = 1.0000×）对比朴素 Plate Carrée 2.0000× 横向拉伸",
+  "title": "Mercator-Gudermann Conformal Tissot Indicatrix Rig: 1.0000× Circular Aspect Lock vs 2.0000× Plate Carrée Shear",
+  "timestamp": "2026-11-15T21:05:55.029Z",
+  "recorded_at": "2026-11-15T21:05:55.029Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "neural_inference_provenance": "not_measured",
+  "model_inference": "not_measured",
+  "independently_reproduced": true,
+  "scope": "Deterministic Gerardus Mercator (1569) & Christoph Gudermann (1830) inverse Gudermannian conformal projection y = gd^-1(phi) = ln(sec phi + tan phi) matching meridional scale factor dy/dphi = sec phi = 1 + u to parallel secant scale k_p = sec phi to lock Tissot indicatrix aspect ratio at 1.0000x across all 17 stations (u in [0.000, 1.000], phi in [0 deg, 60 deg], 0/17 violated) versus naive equirectangular Plate Carree UV mapping (y = phi, k_m = 1, which stretches circular craters and vortex decals horizontally as 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x at S16 across 16/17 stations) and 64-step Simpson meridional quadrature.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "Playwright Chromium",
+    "gpu": "not_measured",
+    "viewport": "1440x900",
+    "headless": true
+  },
+  "summary": {
+    "solids_total": 58,
+    "stations_total": 17,
+    "conformal_aspect_ratio": 1,
+    "naive_station4_aspect_ratio": 1.25,
+    "naive_station8_aspect_ratio": 1.5,
+    "naive_station16_aspect_ratio": 2,
+    "conformal_violated_stations": 0,
+    "naive_violated_stations": 16,
+    "max_quadrature_error": 3.165e-8,
+    "primary_8192_ms": 1.057,
+    "baseline_8192_ms": 51.935,
+    "speedup_8192x": 49.13,
+    "mobile_overflow": false
+  },
+  "checks": [
+    {
+      "name": "gudermann-simpson64-equiv-128",
+      "passed": true,
+      "detail": "128 closed-form Gudermannian ln(sec phi + tan phi) and 64-step Simpson meridional integration passes agree within 1e-7"
+    },
+    {
+      "name": "gudermann-simpson64-equiv-1024",
+      "passed": true,
+      "detail": "1024 closed-form Gudermannian ln(sec phi + tan phi) and 64-step Simpson meridional integration passes agree within 1e-7"
+    },
+    {
+      "name": "gudermann-simpson64-equiv-8192",
+      "passed": true,
+      "detail": "8192 closed-form Gudermannian ln(sec phi + tan phi) and 64-step Simpson meridional integration passes agree within 1e-7"
+    },
+    {
+      "name": "conformal-tissot-aspect-locked",
+      "passed": true,
+      "detail": "17 secant-latitude stations (u in [0.00, 1.00], phi in [0 deg, 60 deg]) lock Tissot indicatrix aspect ratio k_p/k_m = 1.0000x (0/17 violated)"
+    },
+    {
+      "name": "naive-plate-carree-shear-exposed",
+      "passed": true,
+      "detail": "naive Plate Carree UV (y = phi, k_m = 1) shears circular decals horizontally as sec phi = 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x (+100%) at S16 (phi = 60 deg) across 16/17 stations"
+    },
+    {
+      "name": "conformal-st4-u025-10000",
+      "passed": true,
+      "detail": "station-4 (u=0.25, phi=36.87 deg) locks Tissot aspect 1.0000x vs Plate Carree 1.2500x (+25.00% shear)"
+    },
+    {
+      "name": "conformal-st8-u050-10000",
+      "passed": true,
+      "detail": "station-8 (u=0.50, phi=48.19 deg) locks Tissot aspect 1.0000x vs Plate Carree 1.5000x (+50.00% shear)"
+    },
+    {
+      "name": "conformal-st16-u100-10000",
+      "passed": true,
+      "detail": "station-16 (u=1.00, phi=60.00 deg) locks Tissot aspect 1.0000x vs Plate Carree 2.0000x (+100.00% double shear)"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D Mercator-Gudermann conformal Tissot rig renders 58 tracked solids across 17 stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Mercator-Gudermann conformal controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station Gudermannian passes",
+      "count": 128,
+      "primary_ms": 0.017,
+      "baseline_ms": 0.997,
+      "primary_samples_ms": [
+        0.046,
+        0.017,
+        0.017,
+        0.019,
+        0.02,
+        0.016,
+        0.016
+      ],
+      "baseline_samples_ms": [
+        0.997,
+        1.015,
+        0.835,
+        1.495,
+        1.405,
+        0.855,
+        0.821
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station Gudermannian passes",
+      "count": 1024,
+      "primary_ms": 0.132,
+      "baseline_ms": 6.715,
+      "primary_samples_ms": [
+        0.133,
+        0.13,
+        0.132,
+        0.131,
+        0.13,
+        0.135,
+        0.136
+      ],
+      "baseline_samples_ms": [
+        7.07,
+        6.597,
+        6.715,
+        10.631,
+        5.749,
+        6.636,
+        7.674
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station Gudermannian passes",
+      "count": 8192,
+      "primary_ms": 1.057,
+      "baseline_ms": 51.935,
+      "primary_samples_ms": [
+        1.687,
+        1.045,
+        1.084,
+        1.048,
+        1.044,
+        1.339,
+        1.057
+      ],
+      "baseline_samples_ms": [
+        68.341,
+        53.267,
+        50.853,
+        48.405,
+        51.935,
+        50.966,
+        61.328
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/mercator-gudermann-conformal-tissot-rig/dark-mercator_gudermann_conformal_isotropy.png",
+    "docs/evidence/mercator-gudermann-conformal-tissot-rig/dark-naive_plate_carree_aspect_shear.png",
+    "docs/evidence/mercator-gudermann-conformal-tissot-rig/light-mercator_gudermann_conformal_isotropy.png",
+    "docs/evidence/mercator-gudermann-conformal-tissot-rig/light-naive_plate_carree_aspect_shear.png",
+    "docs/evidence/mercator-gudermann-conformal-tissot-rig/mobile.png"
+  ],
+  "primary_label": "Mercator-Gudermann y = ln(sec φ + tan φ)",
+  "baseline_label": "64-Step Simpson Meridional Quadrature ∫ sec θ dθ",
+  "load_unit": "Gudermannian passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form inverse Gudermannian ln(sec phi + tan phi) versus 64-step Simpson meridional integral.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "station0_conformal_ratio": 1,
+    "station0_naive_ratio": 1,
+    "station4_conformal_ratio": 1,
+    "station4_naive_ratio": 1.25,
+    "station8_conformal_ratio": 1,
+    "station8_naive_ratio": 1.5,
+    "station12_conformal_ratio": 1,
+    "station12_naive_ratio": 1.75,
+    "station16_conformal_ratio": 1,
+    "station16_naive_ratio": 2,
+    "violated_stations": 16
+  },
+  "protocol": {
+    "input": {
+      "station_4_secant_u": 0.25,
+      "station_8_secant_u": 0.5,
+      "station_16_secant_u": 1
+    },
+    "output": {
+      "conformal_tissot_aspect": 1,
+      "naive_aspect_u025": 1.25,
+      "naive_aspect_u050": 1.5,
+      "naive_aspect_u100": 2,
+      "violated_stations": 16
+    },
+    "function": "Mercator-Gudermann: k_m = dy/dφ = sec φ -> k_p/k_m = 1.0000× vs Naive Plate Carrée y = φ -> k_p/1 = 1 + u (2.0000× at φ=60°, 16/17 Violated)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 secant-latitude stations preserve exact conformal Tissot circular aspect ratio k_p/k_m = 1.0000x",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Planetary crater, hurricane vortex, and Voronoi cellular noise decals that must stay circular rather than stretching 2x horizontally at 60 deg latitude",
+    "Rhumb-line (loxodrome) navigation charts and spherical environment projections requiring exact local angle preservation (k_meridian = k_parallel = sec phi)",
+    "Real-time WebGL/Canvas vertex & fragment shaders needing closed-form Gudermannian UV mapping without 64-step meridional quadrature"
+  ],
+  "not_for": [
+    "Global area-budget or radiometric irradiance integration across the whole sphere (use Archimedes cylindrical equal-area z = sin phi instead)",
+    "Polar caps at phi -> 90 deg where Mercator coordinate y = ln(sec phi + tan phi) diverges logarithmically",
+    "Static 2D flat UI buttons without spherical coordinates"
+  ],
+  "locale_zh": {
+    "gudermann-simpson64-equiv-128": "Mercator-Gudermann闭式与64步辛普森积分等价 128",
+    "128 closed-form Gudermannian ln(sec phi + tan phi) and 64-step Simpson meridional integration passes agree within 1e-7": "128 次闭式逆古德曼函数 ln(sec φ + tan φ) 与 64 步辛普森经向积分在 1e-7 内一致",
+    "gudermann-simpson64-equiv-1024": "Mercator-Gudermann闭式与64步辛普森积分等价 1024",
+    "1024 closed-form Gudermannian ln(sec phi + tan phi) and 64-step Simpson meridional integration passes agree within 1e-7": "1024 次闭式逆古德曼函数 ln(sec φ + tan φ) 与 64 步辛普森经向积分在 1e-7 内一致",
+    "gudermann-simpson64-equiv-8192": "Mercator-Gudermann闭式与64步辛普森积分等价 8192",
+    "8192 closed-form Gudermannian ln(sec phi + tan phi) and 64-step Simpson meridional integration passes agree within 1e-7": "8192 次闭式逆古德曼函数 ln(sec φ + tan φ) 与 64 步辛普森经向积分在 1e-7 内一致",
+    "conformal-tissot-aspect-locked": "Mercator-Gudermann全站底索长宽比1.0000x锁定",
+    "17 secant-latitude stations (u in [0.00, 1.00], phi in [0 deg, 60 deg]) lock Tissot indicatrix aspect ratio k_p/k_m = 1.0000x (0/17 violated)": "17 个正割纬度站点（φ ∈ [0°, 60°]）恒定锁死底索指示圆长宽比 k_p/k_m = 1.0000×（0/17 畸变站）",
+    "naive-plate-carree-shear-exposed": "朴素Plate Carree 2.0000x横向拉伸畸变暴露",
+    "naive Plate Carree UV (y = phi, k_m = 1) shears circular decals horizontally as sec phi = 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x (+100%) at S16 (phi = 60 deg) across 16/17 stations": "朴素等距圆柱投影（y=φ）在第 4 站横向拉扁至 1.2500×、第 8 站冲至 1.5000×、第 16 站（φ=60°）翻倍至 2.0000×（污染 16/17 站）",
+    "conformal-st4-u025-10000": "第4站u=0.25底索长宽比1.0000x锁定",
+    "station-4 (u=0.25, phi=36.87 deg) locks Tissot aspect 1.0000x vs Plate Carree 1.2500x (+25.00% shear)": "第 4 站（u=0.25，φ=36.87°）锁死底索正圆长宽比 1.0000×（消除 Plate Carrée 1.2500× 横向拉伸）",
+    "conformal-st8-u050-10000": "第8站u=0.50底索长宽比1.0000x锁定",
+    "station-8 (u=0.50, phi=48.19 deg) locks Tissot aspect 1.0000x vs Plate Carree 1.5000x (+50.00% shear)": "第 8 站（u=0.50，φ=48.19°）锁死底索正圆长宽比 1.0000×（消除 Plate Carrée 1.5000× 横向拉伸）",
+    "conformal-st16-u100-10000": "第16站u=1.00纬度60度长宽比1.0000x锁定",
+    "station-16 (u=1.00, phi=60.00 deg) locks Tissot aspect 1.0000x vs Plate Carree 2.0000x (+100.00% double shear)": "第 16 站（u=1.00，φ=60.00°）锁死底索正圆长宽比 1.0000×（消除 Plate Carrée 2.0000× 两倍横向畸变）",
+    "geometry-58-solids": "58构件3D墨卡托-古德曼底索指示圆检验台一致性",
+    "3D Mercator-Gudermann conformal Tissot rig renders 58 tracked solids across 17 stations": "3D Mercator-Gudermann 等角底索指示圆检验台在 17 个纬度站点完整渲染 58 个独立几何体",
+    "mobile-layout": "手机布局",
+    "390px Mercator-Gudermann conformal controls fit without horizontal overflow": "390px 墨卡托等角控制面板无横向溢出",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "title": "Mercator-Gudermann 墨卡托-古德曼等角底索指示圆检验台 vs 朴素 Plate Carrée 2.0000× 横向拉伸",
+    "subtitle": "为什么在 3D 行星地表贴花、飓风气旋云团与球面全景 UV 展开中，直接把纬度线性映射为纵坐标 `v = φ`（Plate Carrée 等距圆柱投影）会让 60° 纬度的圆形陨石坑被横向拉扁成 `2.0000×` 的椭圆？",
+    "plain_intro": "在制作 3D 星球材质、气象台风眼贴花、程序化 Voronoi 陨石坑以及全景天空盒时，最常见的新手写法是把球面经纬度 `(λ, φ)` 直接当作平面网格的 `(u, v)` 坐标（即 **Plate Carrée 等距圆柱方格投影** `x = Rλ, y = Rφ`）。为什么一到中高纬度，原本正圆的陨石坑和台风眼全都变成了被左右拉扁的香肠椭圆？从第一性原理看：地球或球体在纬度 `φ` 处的纬圈半径缩小为 `R cos φ`，当把它强行撑开到半径为 `R` 的圆柱面上时，东西向（纬向）已经被横向放大了 **`k_parallel = sec φ = 1 / cos φ = 1 + u`** 倍！如果南北向（经向）依然保持匀速线性映射 `k_meridian = dy / (R dφ) = 1`，那么局部微元圆（**底索指示圆 Tissot Indicatrix**）的长宽比就会变成 `Aspect = k_parallel / k_meridian = sec φ = 1 + u`——在第 4 站（`u=0.25, φ=36.87°`）被拉宽至 `1.2500×`、第 8 站（`u=0.50, φ=48.19°`）拉宽至 `1.5000×`、第 16 站（`u=1.00, φ=60°`）直接翻倍至 **`2.0000×`**（污染 `16/17` 个站点）！Gerardus Mercator（1569）与 Christoph Gudermann（1830）证明：要让球面上任意微元圆在展开后依然保持正圆（**等角/保形投影 Conformal Projection**），经向比例因子必须严格等于纬向正割比例因子：**`dy/dφ = sec φ ⟹ y(φ) = gd⁻¹(φ) = ln(sec φ + tan φ)`**（逆古德曼函数），从而在全部 17 个纬度站点将底索指示圆长宽比恒定锁死在 **`k_p / k_m = 1.0000×`**（`0/17` 站畸变）！",
+    "finding": "实测跨越正割拉伸参数 u = sec φ − 1 ∈ [0.000, 1.000]（φ ∈ [0°, 60°]）的 17 个站点：Mercator-Gudermann 逆古德曼函数投影（y = ln(sec φ + tan φ)）在全部 17 个站点锁死底索指示圆长宽比 k_p/k_m = 1.0000×（0/17 畸变），而朴素 Plate Carrée 线性纬度投影（y = φ）在第 4 站拉宽至 1.2500×、第 8 站冲至 1.5000×、第 16 站（φ=60°）翻倍至 2.0000×（污染 16/17 个站点）。",
+    "workbench_title": "58 实体 17 站点 Mercator-Gudermann 墨卡托-古德曼等角底索指示圆检验台",
+    "scenario_quote": "在纬度 60° 的地方（比如北欧奥斯陆或木星高纬风暴带），纬圈周长只有赤道的一半（`cos 60° = 0.5`）。如果横向被圆柱面撑大了 2 倍，纵向却不按逆古德曼函数同步放大 2 倍，所有正圆贴花必然变成 2:1 的扁椭圆！",
+    "protocol_note": "顶块展示第 4 站（u=0.25, φ=36.87°）、第 8 站（u=0.50, φ=48.19°）与第 16 站（u=1.00, φ=60°）；底块对比 Mercator-Gudermann 恒锁底索长宽比 1.0000× 与朴素 Plate Carrée 畸变至 2.0000×。",
+    "robustness_name": "17 个正割纬度站点在 Mercator-Gudermann 逆古德曼投影下 100% 保持底索正圆长宽比 1.0000×",
+    "primary_label": "Mercator-Gudermann y = ln(sec φ + tan φ)",
+    "baseline_label": "64 步辛普森经向积分 ∫ sec θ dθ",
+    "load_unit": "次 17 站古德曼投影求解",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比闭式逆古德曼对数公式与 64 步辛普森经向积分基准。",
+    "good_fit": [
+      "需要在高纬度保持正圆而不被横向拉长 2 倍的行星陨石坑、飓风眼与 Voronoi 细胞噪波贴花",
+      "要求局部夹角严格守恒（k_meridian = k_parallel = sec φ）的恒向线（Rhumb-line）航海图与球面环境贴图",
+      "需要零积分循环、直接闭式求值逆古德曼函数 y = ln(sec φ + tan φ) 的实时着色器管线"
+    ],
+    "not_for": [
+      "需要全球面积守恒或球面辐射度积分的场景（请改用 Archimedes 圆柱等面积投影 z = sin φ）",
+      "极点 φ → 90° 区域（Mercator 纵坐标在极点呈对数发散，高纬极冠请切换球极平面投影或六面体贴图）",
+      "不含球面坐标系的静态 2D 扁平按钮"
+    ]
+  }
+}

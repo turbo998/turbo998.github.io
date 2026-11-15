@@ -1,0 +1,271 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Stokes exact exponential viscous drag integrator vs naive Forward Euler velocity reversal rig",
+  "topic_zh": "Stokes 精确指数粘性阻力积分（v(Δt) = v₀·exp(−γΔt)）对比朴素前向欧拉线性阻力反向倒飞爆炸",
+  "slug": "stokes-viscous-drag-exponential-rig",
+  "timestamp": "2026-11-15T17:07:04.668Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic George Gabriel Stokes (1851) exact exponential viscous drag integration (v(dt) = v0 * exp(-gamma * dt) > 0 across 17 supercritical dimensionless drag steps tau = gamma * dt = 1 + 2u in [1.0000, 3.0000], guaranteeing strictly positive forward velocity with zero sign reversal and locking total kinetic-plus-dissipated work-energy ratio e^(-2*tau) + (1 - e^(-2*tau)) = 1.0000x with 0/17 reversed stations) versus naive explicit Forward Euler linear drag (v_next = v0 * (1 - gamma * dt) = -2u * v0 < 0, which violates the Second Law of Thermodynamics by propelling particles backward at speed 2u*v0 and inflating the velocity excursion ratio as 1 + 2u to 1.5000x at tau=1.50, 2.0000x at tau=2.00, and 3.0000x / -2.00v0 at tau=3.00 across 16/17 stations) and 64-substep viscous dissipation quadrature.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "stokes-drag-substep64-equiv-128",
+      "passed": true,
+      "detail": "128 closed-form Stokes exponential drag and 64-substep viscous dissipation quadrature passes agree within 1e-12"
+    },
+    {
+      "name": "stokes-drag-substep64-equiv-1024",
+      "passed": true,
+      "detail": "1024 closed-form Stokes exponential drag and 64-substep viscous dissipation quadrature passes agree within 1e-12"
+    },
+    {
+      "name": "stokes-drag-substep64-equiv-8192",
+      "passed": true,
+      "detail": "8192 closed-form Stokes exponential drag and 64-substep viscous dissipation quadrature passes agree within 1e-12"
+    },
+    {
+      "name": "stokes-work-energy-locked",
+      "passed": true,
+      "detail": "17 supercritical drag stations (tau = 1 + 2u in [1.00, 3.00]) lock work-energy ratio R = 1.0000x with zero velocity reversal (0/17 reversed)"
+    },
+    {
+      "name": "naive-euler-drag-reversal-exposed",
+      "passed": true,
+      "detail": "naive Forward Euler linear drag v0*(1 - tau) reverses particle velocity backward, inflating excursion ratio as 1 + 2u to 1.5000x at S4, 2.0000x at S8, and 3.0000x (+200%) at S16 across 16/17 stations"
+    },
+    {
+      "name": "stokes-st4-tau150-10000",
+      "passed": true,
+      "detail": "station-4 (tau=1.50) locks R=1.0000x vs naive 1.5000x (-0.50v0 backward reversal)"
+    },
+    {
+      "name": "stokes-st8-tau200-10000",
+      "passed": true,
+      "detail": "station-8 (tau=2.00) locks R=1.0000x vs naive 2.0000x (-1.00v0 full-speed backward reversal)"
+    },
+    {
+      "name": "stokes-st16-tau300-10000",
+      "passed": true,
+      "detail": "station-16 (tau=3.00) locks R=1.0000x vs naive 3.0000x (-2.00v0 double-speed backward explosion)"
+    },
+    {
+      "name": "exact-mode-roundtrip",
+      "passed": true,
+      "detail": "mode switching round-trip preserves deterministic Stokes viscous drag telemetry"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D Stokes viscous drag exponential bench renders 58 tracked solids across 17 stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Stokes viscous drag controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station viscous drag passes",
+      "count": 128,
+      "primary_ms": 0.022400000000061482,
+      "baseline_ms": 0.2054000000000542,
+      "primary_samples_ms": [
+        0.259900000000016,
+        0.02359999999998763,
+        0.022399999999947795,
+        0.022400000000061482,
+        0.02689999999995507,
+        0.021500000000060027,
+        0.02149999999994634
+      ],
+      "baseline_samples_ms": [
+        0.2175000000000864,
+        0.22469999999998436,
+        0.20500000000004093,
+        0.20519999999999072,
+        0.2054000000000542,
+        0.20510000000001583,
+        0.2075999999999567
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station viscous drag passes",
+      "count": 1024,
+      "primary_ms": 0.15620000000001255,
+      "baseline_ms": 1.0670999999999822,
+      "primary_samples_ms": [
+        0.17679999999995744,
+        0.2196999999999889,
+        0.17039999999997235,
+        0.15620000000001255,
+        0.15460000000007312,
+        0.15449999999998454,
+        0.15430000000003474
+      ],
+      "baseline_samples_ms": [
+        1.6317999999999984,
+        1.775700000000029,
+        1.0670999999999822,
+        1.137399999999957,
+        1.0275000000000318,
+        1.0249999999999773,
+        1.02699999999993
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station viscous drag passes",
+      "count": 8192,
+      "primary_ms": 1.2996999999999161,
+      "baseline_ms": 8.30320000000006,
+      "primary_samples_ms": [
+        1.3157999999999674,
+        1.3063999999999396,
+        1.2986000000000786,
+        1.3060999999999012,
+        1.2996999999999161,
+        1.2420999999999367,
+        1.233600000000024
+      ],
+      "baseline_samples_ms": [
+        8.239400000000046,
+        8.21670000000006,
+        8.206300000000056,
+        8.45659999999998,
+        8.371899999999982,
+        8.30320000000006,
+        8.314899999999966
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/stokes-viscous-drag-exponential-rig/light-stokes_exact_exponential_drag_integrator.png",
+    "docs/evidence/stokes-viscous-drag-exponential-rig/light-naive_forward_euler_linear_drag_reversal.png",
+    "docs/evidence/stokes-viscous-drag-exponential-rig/dark-stokes_exact_exponential_drag_integrator.png",
+    "docs/evidence/stokes-viscous-drag-exponential-rig/dark-naive_forward_euler_linear_drag_reversal.png",
+    "docs/evidence/stokes-viscous-drag-exponential-rig/mobile.png"
+  ],
+  "primary_label": "Stokes Exact Exponential v₀·exp(−γΔt)",
+  "baseline_label": "64-Substep Viscous Dissipation Quadrature",
+  "load_unit": "viscous drag passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form Stokes exponential drag versus 64-substep viscous dissipation quadrature baseline.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "station0_stokes_ratio": 1,
+    "station0_naive_ratio": 1,
+    "station4_stokes_ratio": 1,
+    "station4_naive_ratio": 1.5,
+    "station8_stokes_ratio": 1,
+    "station8_naive_ratio": 2,
+    "station12_stokes_ratio": 1,
+    "station12_naive_ratio": 2.5,
+    "station16_stokes_ratio": 1,
+    "station16_naive_ratio": 3,
+    "reversed_stations": 16
+  },
+  "protocol": {
+    "input": {
+      "station_4_tau": 1.5,
+      "station_8_tau": 2,
+      "station_16_tau": 3
+    },
+    "output": {
+      "stokes_work_energy_ratio": 1,
+      "naive_ratio_tau150": 1.5,
+      "naive_ratio_tau200": 2,
+      "naive_ratio_tau300": 3,
+      "reversed_stations": 16
+    },
+    "function": "Stokes: v₀·exp(−γΔt) > 0 -> R = 1.0000× vs Naive Euler v₀(1−γΔt) -> 1 + 2u (3.0000× / −2v₀ at τ=3, 16/17 Reversed)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 supercritical drag stations preserve exact work-energy balance R = 1.0000x without velocity reversal",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "GPU spark, ember, mist, and water-droplet particle systems entering high-drag fluid media",
+    "Frame-rate independent camera velocity damping and character air-resistance controllers",
+    "Analytical position integration x_next = x + (v0 / gamma) * (1 - exp(-gamma * dt)) alongside v_next = v0 * exp(-gamma * dt)",
+    "Unconditionally positive velocity decay immune to frame drops (dt spikes) and high drag coefficients gamma"
+  ],
+  "not_for": [
+    "Active thruster propulsion where force is intentionally applied in the reverse direction",
+    "Static 2D UI layout",
+    "Unanimated static meshes",
+    "1D audio gain sliders"
+  ],
+  "locale_zh": {
+    "title": "Stokes 精确指数粘性阻力积分 vs 朴素前向欧拉线性阻力反向倒飞爆炸",
+    "subtitle": "为什么在 GPU 粒子系统（火星、飞沫、烟尘）里写 `v -= drag * dt * v`，一旦阻力系数 `drag` 较大或发生掉帧（`drag * dt = 1 + 2u > 1`），原本向前飞的粒子不仅没有停下，反而以高达 `2.00×` 的原速向后倒飞爆炸（偏移比暴涨至 `3.0000×`）？",
+    "plain_intro": "在几乎所有游戏特效与粒子着色器中，空气或水体粘性阻力都按照斯托克斯线性阻力定律建模：`dv/dt = -gamma * v`。初学者和许多开源粒子库直接用一阶显式前向欧拉更新速度：`v_next = v - (gamma * dt) * v = (1.0 - gamma * dt) * v`。当粒子较轻（如细小火星、水雾）或从空气冲入高阻力水面，亦或浏览器掉帧导致时间步长 `dt` 变大，使无量纲阻尼步长跨越临界值 `τ = gamma * dt = 1 + 2u ∈ [1.0, 3.0]` 时，灾难立刻发生：在热力学与牛顿力学中，被动粘性阻力只能消耗动能让物体减速趋近于 `0`，绝不可能像弹簧或火箭一样把物体往回推！然而 `(1.0 - tau)` 在 `tau > 1` 时直接变成负数 `-2u`，导致粒子瞬间掉头向后倒飞：在第 4 站（`τ=1.50`）以 `-0.50 v₀` 倒飞（总速度偏移比膨胀至 `1.5000×`），在第 8 站（`τ=2.00`）以 `-1.00 v₀` 原速反向弹回（偏移比翻倍至 `2.0000×`），在第 16 站（`τ=3.00`）更以 `-2.00 v₀` 双倍速度向后暴射（偏移比高达 `3.0000×`，下一帧再乘 `-2` 直接指数爆炸为 `NaN`，污染 `16/17` 个站点）！George Gabriel Stokes（1851）微分方程的精确闭式积分 `v(dt) = v0 * exp(-gamma * dt)`（或有理隐式欧拉 `v0 / (1 + gamma * dt)`）在任意大的 `τ ∈ [0, ∞)` 下永远严格大于零（零倒飞），且剩余动能与粘性耗散热能之和 `e^(-2τ) + (1 - e^(-2τ))` 在全部 17 个站点恒定锁死 `1.0000×`（`0/17` 站倒飞违背）！",
+    "finding": "实测跨越超临界无量纲阻尼步长 τ = γ·Δt = 1 + 2u ∈ [1.000, 3.000] 的 17 个站点：Stokes 精确指数粘性阻力积分（v(Δt) = v₀·exp(−γΔt) > 0）在全部 17 个站点恒定锁死功能守恒比 R = 1.0000× 且速度永不倒飞（0/17 倒飞），而朴素前向欧拉线性阻力 v₀(1 − τ) 在第 4 站倒飞膨胀至 1.5000×、第 8 站翻倍至 2.0000×、第 16 站暴涨至 3.0000×（污染 16/17 个站点）。",
+    "workbench_title": "58 实体 17 站点 Stokes 粘性阻力指数积分检验台（Stokes Viscous Drag Exponential Bench）",
+    "scenario_quote": "为什么高阻力的火花和水滴粒子在掉帧时会突然像子弹一样往后倒射并炸穿屏幕？因为 `v *= (1.0 - drag * dt)` 在 `drag * dt > 1` 时乘上了一个负数！被动空气阻力怎么可能把物体往后推？改成精确指数衰减 `v *= exp(-drag * dt)`，无论 `dt` 多大，粒子都只会丝滑地减速停下！",
+    "protocol_note": "顶块展示第 4 站（τ=1.50）、第 8 站（τ=2.00）与第 16 站（τ=3.00）；底块对比 Stokes 精确指数阻力恒锁 R=1.0000× 与朴素前向欧拉反向倒飞至 3.0000×。",
+    "robustness_name": "17 个超临界阻尼步长站点在 Stokes 精确指数粘性阻力下 100% 保持精确功能守恒 R = 1.0000× 且零速度倒飞",
+    "primary_label": "Stokes 精确指数 v₀·exp(−γΔt)",
+    "baseline_label": "64 子步粘性耗散能求积",
+    "load_unit": "次 17 站粘性阻力求解",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比闭式 Stokes 指数衰减与 64 子步粘性耗散求积基准。",
+    "good_fit": [
+      "GPU 火星、烟尘、水滴飞沫与入水高阻尼粒子系统的无条件稳定速度更新",
+      "帧率无关（Frame-Rate Independent）的相机惯性滑行阻尼与角色空气阻力控制器",
+      "配合解析位移积分 `x_next = x + (v0 / gamma) * (1.0 - exp(-gamma * dt))` 实现精确停止距离",
+      "彻底免疫后台切回大 `dt` 尖峰与超大阻尼系数 `gamma` 的正向单调衰减"
+    ],
+    "not_for": [
+      "主动施加反向推力的火箭逆向喷口",
+      "静态 2D 网页排版",
+      "无物理运动的纯静态网格",
+      "一维音频电平滑块"
+    ],
+    "readiness": "12/12 项实测通过；58 个 3D 粘性阻力检验构件、17 个阻尼步长站点与 7-Card 报告已封存。",
+    "entries": {
+      "stokes-drag-substep64-equiv-128": "Stokes指数阻力与64子步耗散求积等价 128",
+      "128 closed-form Stokes exponential drag and 64-substep viscous dissipation quadrature passes agree within 1e-12": "128 次闭式 Stokes 指数粘性阻力与 64 子步粘性耗散求积在 1e-12 内一致",
+      "stokes-drag-substep64-equiv-1024": "Stokes指数阻力与64子步耗散求积等价 1024",
+      "1024 closed-form Stokes exponential drag and 64-substep viscous dissipation quadrature passes agree within 1e-12": "1024 次闭式 Stokes 指数粘性阻力与 64 子步粘性耗散求积在 1e-12 内一致",
+      "stokes-drag-substep64-equiv-8192": "Stokes指数阻力与64子步耗散求积等价 8192",
+      "8192 closed-form Stokes exponential drag and 64-substep viscous dissipation quadrature passes agree within 1e-12": "8192 次闭式 Stokes 指数粘性阻力与 64 子步粘性耗散求积在 1e-12 内一致",
+      "stokes-work-energy-locked": "Stokes全站粘性功能守恒比1.0000x锁定",
+      "17 supercritical drag stations (tau = 1 + 2u in [1.00, 3.00]) lock work-energy ratio R = 1.0000x with zero velocity reversal (0/17 reversed)": "17 个超临界阻尼步长站点恒定锁死功能守恒比 R = 1.0000× 且速度永不倒飞（0/17 倒飞违背）",
+      "naive-euler-drag-reversal-exposed": "朴素前向欧拉阻力反向倒飞3.0000x暴露",
+      "naive Forward Euler linear drag v0*(1 - tau) reverses particle velocity backward, inflating excursion ratio as 1 + 2u to 1.5000x at S4, 2.0000x at S8, and 3.0000x (+200%) at S16 across 16/17 stations": "朴素前向欧拉线性阻力在第 4 站倒飞膨胀至 1.5000×、第 8 站翻倍至 2.0000×、第 16 站暴涨至 3.0000×（污染 16/17 站）",
+      "stokes-st4-tau150-10000": "第4站τ=1.50功能守恒1.0000x锁定",
+      "station-4 (tau=1.50) locks R=1.0000x vs naive 1.5000x (-0.50v0 backward reversal)": "第 4 站（τ=1.50）锁死 R=1.0000×（消除朴素 −0.50v₀ 反向倒飞与 1.5000× 偏移）",
+      "stokes-st8-tau200-10000": "第8站τ=2.00中点功能守恒1.0000x锁定",
+      "station-8 (tau=2.00) locks R=1.0000x vs naive 2.0000x (-1.00v0 full-speed backward reversal)": "第 8 站（τ=2.00）锁死 R=1.0000×（消除朴素 −1.00v₀ 原速倒飞与 2.0000× 翻倍偏移）",
+      "stokes-st16-tau300-10000": "第16站τ=3.00强阻尼功能守恒1.0000x锁定",
+      "station-16 (tau=3.00) locks R=1.0000x vs naive 3.0000x (-2.00v0 double-speed backward explosion)": "第 16 站（τ=3.00）锁死 R=1.0000×（消除朴素 −2.00v₀ 双倍速倒飞与 3.0000× 爆炸）",
+      "exact-mode-roundtrip": "模式往返切换一致性",
+      "mode switching round-trip preserves deterministic Stokes viscous drag telemetry": "Stokes 精确指数粘性阻力与朴素前向欧拉线性阻力模式往返切换保持确定性状态",
+      "geometry-58-solids": "58构件3D粘性阻力指数积分检验台一致性",
+      "3D Stokes viscous drag exponential bench renders 58 tracked solids across 17 stations": "3D Stokes 粘性阻力指数积分检验台在 17 个阻尼步长站点完整渲染 58 个独立几何体",
+      "mobile-layout": "手机布局",
+      "390px Stokes viscous drag controls fit without horizontal overflow": "390px 粘性阻力控制面板无横向溢出",
+      "runtime-errors": "运行错误",
+      "0 JavaScript errors": "0 个 JavaScript 错误"
+    }
+  }
+}

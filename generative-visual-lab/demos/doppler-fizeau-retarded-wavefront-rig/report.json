@@ -1,0 +1,271 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "topic": "Doppler-Fizeau moving-source bow compression vs naive rigid bullseye wave rig",
+  "topic_zh": "Doppler-Fizeau 多普勒-斐索移动波源推迟波前压缩（λ_front = λ₀(1−M), λ/λ_ex = 1.0000×）对比朴素刚性靶心平移失真",
+  "slug": "doppler-fizeau-retarded-wavefront-rig",
+  "timestamp": "2026-11-15T20:17:05.624Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "independently_reproduced": true,
+  "model_inference": "not_measured",
+  "scope": "Deterministic Christian Doppler (1842) & Hippolyte Fizeau (1848) moving-source retarded wavefront compression law (lambda_front = lambda_0*(1 - M) where Mach ratio M = v_s/c = u/(1+u) in [0.0000, 0.5000], compressing forward bow-wave crest spacing as the emitter chases its own wave crests so lambda_model/lambda_exact locks at 1.0000x across all 17 stations with 0/17 uncompressed stations) versus naive rigidly translated bullseye waves (sin(k_0*|x - x_s(t)| - omega_0*t), which ignores retarded emission positions x_s(t - tau) and leaves forward wavelength uncompressed at lambda_0, overestimating bow-wave spacing by 1/(1 - M) = 1 + u up to 1.2500x at u=0.25, 1.5000x at u=0.50, and 2.0000x at M=0.50 u=1.00 across 16/17 stations) and 64-step Lienard-Wiechert retarded-time iteration.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "157.0.8103.51",
+    "gpu": "not_measured",
+    "viewport": "1440x1100",
+    "headless": true
+  },
+  "checks": [
+    {
+      "name": "doppler-retarded64-equiv-128",
+      "passed": true,
+      "detail": "128 closed-form Doppler lambda_0*(1-M) and 64-step Lienard-Wiechert retarded-time passes agree within 1e-12"
+    },
+    {
+      "name": "doppler-retarded64-equiv-1024",
+      "passed": true,
+      "detail": "1024 closed-form Doppler lambda_0*(1-M) and 64-step Lienard-Wiechert retarded-time passes agree within 1e-12"
+    },
+    {
+      "name": "doppler-retarded64-equiv-8192",
+      "passed": true,
+      "detail": "8192 closed-form Doppler lambda_0*(1-M) and 64-step Lienard-Wiechert retarded-time passes agree within 1e-12"
+    },
+    {
+      "name": "doppler-bow-compression-locked",
+      "passed": true,
+      "detail": "17 Mach-velocity stations (u in [0.00, 1.00]) lock forward bow-wave wavelength ratio lambda/lambda_exact = 1.0000x (0/17 uncompressed)"
+    },
+    {
+      "name": "naive-rigid-bullseye-decompression-exposed",
+      "passed": true,
+      "detail": "naive rigidly translated bullseye wave (lambda = lambda_0) overestimates forward bow wavelength as 1/(1-M) = 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x (+100%) at S16 across 16/17 stations"
+    },
+    {
+      "name": "doppler-st4-u025-10000",
+      "passed": true,
+      "detail": "station-4 (u=0.25, M=0.20) locks lambda/lambda_exact=1.0000x vs naive 1.2500x (+25.00% decompression)"
+    },
+    {
+      "name": "doppler-st8-u050-10000",
+      "passed": true,
+      "detail": "station-8 (u=0.50, M=0.3333) locks lambda/lambda_exact=1.0000x vs naive 1.5000x (+50.00% decompression)"
+    },
+    {
+      "name": "doppler-st16-u100-10000",
+      "passed": true,
+      "detail": "station-16 (u=1.00, M=0.50) locks lambda/lambda_exact=1.0000x vs naive 2.0000x (+100.00% double wavelength error)"
+    },
+    {
+      "name": "exact-mode-roundtrip",
+      "passed": true,
+      "detail": "mode switching round-trip preserves deterministic Doppler-Fizeau retarded wavefront telemetry"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D Doppler-Fizeau retarded wavefront bench renders 58 tracked solids across 17 stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Doppler-Fizeau wavefront controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station Doppler wavefront passes",
+      "count": 128,
+      "primary_ms": 0.014400000000023283,
+      "baseline_ms": 0.2884999999999991,
+      "primary_samples_ms": [
+        0.19439999999997326,
+        0.01490000000001146,
+        0.014099999999984902,
+        0.014400000000023283,
+        0.016200000000026193,
+        0.01389999999992142,
+        0.014400000000023283
+      ],
+      "baseline_samples_ms": [
+        0.4533000000000129,
+        0.2823999999999387,
+        0.2884999999999991,
+        0.2857999999999947,
+        0.2898000000000138,
+        0.28550000000007003,
+        3.0317000000000007
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station Doppler wavefront passes",
+      "count": 1024,
+      "primary_ms": 0.10170000000005075,
+      "baseline_ms": 1.7506000000000768,
+      "primary_samples_ms": [
+        0.102800000000002,
+        0.10170000000005075,
+        0.10000000000002274,
+        0.09990000000004784,
+        0.10379999999997835,
+        0.10410000000001673,
+        0.09980000000007294
+      ],
+      "baseline_samples_ms": [
+        1.915200000000027,
+        2.885400000000004,
+        1.7372000000000298,
+        1.7413000000000238,
+        1.7323999999999842,
+        4.63919999999996,
+        1.7506000000000768
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station Doppler wavefront passes",
+      "count": 8192,
+      "primary_ms": 0.8129999999999882,
+      "baseline_ms": 16.476400000000012,
+      "primary_samples_ms": [
+        0.803600000000074,
+        1.0375999999999976,
+        0.8475000000000819,
+        0.8128000000000384,
+        0.8023000000000593,
+        0.8129999999999882,
+        1.0067000000000235
+      ],
+      "baseline_samples_ms": [
+        17.96530000000007,
+        18.03320000000008,
+        16.476400000000012,
+        15.533899999999903,
+        14.27189999999996,
+        15.975299999999947,
+        17.540100000000052
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/doppler-fizeau-retarded-wavefront-rig/light-doppler_fizeau_retarded_bow_compression.png",
+    "docs/evidence/doppler-fizeau-retarded-wavefront-rig/light-naive_rigid_bullseye_uncompressed_wave.png",
+    "docs/evidence/doppler-fizeau-retarded-wavefront-rig/dark-doppler_fizeau_retarded_bow_compression.png",
+    "docs/evidence/doppler-fizeau-retarded-wavefront-rig/dark-naive_rigid_bullseye_uncompressed_wave.png",
+    "docs/evidence/doppler-fizeau-retarded-wavefront-rig/mobile.png"
+  ],
+  "primary_label": "Doppler-Fizeau λ_front = λ₀(1 − M)",
+  "baseline_label": "64-Step Liénard-Wiechert Retarded-Time Solver",
+  "load_unit": "Doppler wavefront passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form Doppler moving-source bow compression versus 64-step Lienard-Wiechert retarded-time solver baseline.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "station0_doppler_ratio": 1,
+    "station0_naive_ratio": 1,
+    "station4_doppler_ratio": 1,
+    "station4_naive_ratio": 1.25,
+    "station8_doppler_ratio": 1,
+    "station8_naive_ratio": 1.5,
+    "station12_doppler_ratio": 1,
+    "station12_naive_ratio": 1.75,
+    "station16_doppler_ratio": 1,
+    "station16_naive_ratio": 2,
+    "uncompressed_stations": 16
+  },
+  "protocol": {
+    "input": {
+      "station_4_boost_u": 0.25,
+      "station_8_boost_u": 0.5,
+      "station_16_boost_u": 1
+    },
+    "output": {
+      "doppler_wavelength_ratio": 1,
+      "naive_ratio_u025": 1.25,
+      "naive_ratio_u050": 1.5,
+      "naive_ratio_u100": 2,
+      "uncompressed_stations": 16
+    },
+    "function": "Doppler-Fizeau: λ_front = λ₀(1−M) -> λ/λ_exact = 1.0000× vs Naive Bullseye λ₀ -> 1/(1−M) = 1 + u (2.0000× at M=0.50, 16/17 Error)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 Mach-velocity stations preserve exact Doppler forward bow-wave compression lambda/lambda_exact = 1.0000x",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Moving water-skimmer ripples, swimming waterfowl wakes, sub-sonic acoustic shock rings, and moving radar/sonar pulse visualizations",
+    "Compressing forward wave crests by (1 - M*cos(theta)) and stretching trailing stern crests by (1 + M*cos(theta))",
+    "Eliminating the rigid-plastic-bullseye artifact when a ripple emitter translates across a water surface",
+    "Closed-form directional Doppler wavenumber k(theta) = k_0 / (1 - M * dot(v_hat, r_hat))"
+  ],
+  "not_for": [
+    "Strictly stationary buoys or fountains with zero horizontal translation velocity (M = 0)",
+    "Static 2D flat UI cards",
+    "Unlit wireframe debugging grids",
+    "1D audio gain sliders"
+  ],
+  "locale_zh": {
+    "title": "Doppler-Fizeau 多普勒-斐索移动波源推迟波前压缩 vs 朴素刚性靶心平移失真",
+    "subtitle": "为什么在游动水鸟、水面滑行水黾与移动声呐波纹着色器中，直接把同心圆波函数 `sin(k₀ * length(p - pos(t)) - ω₀ * t)` 跟着物体坐标平移，会让船头前方的波浪失去紧密压缩感（在半波速 `M=0.5` 时前向波长偏宽 `2.0000×`）？",
+    "plain_intro": "在制作水鸟游动、快艇低速破水或移动能量脉冲波纹特效时，很多开发者直接把静止点源的同心圆波公式 `sin(k₀ * length(p - center) - ω₀ * t)` 里的 `center` 替换成当前时刻物体的位置 `pos(t)`。为什么这样写出来的波纹看起来像贴在船底下一起滑动的塑料蚊香盘（Rigid Bullseye）？因为水波或声波一旦在历史时刻 `t_ret`（推迟时间 Retarded Time）被发射出来，它的圆心就永远定格在当时的发射位置 `pos(t_ret)`，而绝不会跟着船一起跑！奥地利物理学家克里斯蒂安·多普勒（Christian Doppler, 1842）与法国物理学家伊波利特·斐索（Hippolyte Fizeau, 1848）揭示：当波源以马赫比/波速比 `M = v_s / c ∈ [0, 0.50]`（设 `M = u / (1 + u)`，`u ∈ [0.000, 1.000]`）向前追赶自己发出的波峰时，正前方的波峰间距（前向波长）必须按 `λ_Doppler(u) = λ₀ * (1 - M) = λ₀ / (1 + u)` 紧密压缩，而后方的波峰间距则按 `λ₀ * (1 + M)` 拉宽，形成标志性的偏心嵌套圆环！如果朴素地刚性平移靶心，正前方波长保持 `λ_naive = λ₀` 不变，相对真实多普勒压缩波长的偏宽比 `λ_naive / λ_exact = 1 / (1 - M) = 1 + u` 会在第 4 站（`u=0.25, M=0.20`）偏宽 `1.2500×`、第 8 站（`u=0.50, M=0.33`）偏宽 `1.5000×`、第 16 站（`u=1.00, M=0.50` 半波速）直接翻倍至 `2.0000×`（污染 `16/17` 个站点）！采用 Doppler-Fizeau 方向波数调制 `k(θ) = k₀ / (1 - M cos θ)`，即可在全部 17 个马赫站点恒定锁死前向波长比 `λ/λ_exact = 1.0000×`（`0/17` 站失真）！",
+    "finding": "实测跨越移动波源压缩参数 u ∈ [0.000, 1.000]（马赫比 M = u/(1+u) ∈ [0.00, 0.50]）的 17 个站点：Doppler-Fizeau 推迟波前压缩定律（λ_front = λ₀(1−M)）在全部 17 个站点恒定锁死前向波长比 λ/λ_exact = 1.0000×（0/17 失真），而朴素刚性靶心平移（λ = λ₀）在第 4 站偏宽至 1.2500×、第 8 站冲至 1.5000×、第 16 站（M=0.50）翻倍至 2.0000×（污染 16/17 个站点）。",
+    "workbench_title": "58 实体 17 站点 Doppler-Fizeau 多普勒-斐索推迟波前压缩检验台（Doppler Retarded Wavefront Bench）",
+    "scenario_quote": "为什么湖面上游动的野鸭，鸭头前面的水波纹总是挤得密密麻麻、鸭尾后面的水波纹却拉得稀稀拉拉？因为鸭子在追着前面的水波跑！如果在 Shader 里直接写 `length(p - duckPos(t))`，前后波纹一样宽，看起来就像鸭子脚下粘着一个透明塑料蚊香盘！必须除以 `1 - M * cos(θ)` 还原真实多普勒压缩！",
+    "protocol_note": "顶块展示第 4 站（u=0.25, M=0.20）、第 8 站（u=0.50, M=0.33）与第 16 站（u=1.00, M=0.50）；底块对比 Doppler 前向压缩恒锁波长比 1.0000× 与朴素刚性靶心偏宽至 2.0000×。",
+    "robustness_name": "17 个马赫数站点在 Doppler-Fizeau 推迟波前定律下 100% 保持精确前向首波波长比 1.0000×",
+    "primary_label": "Doppler-Fizeau λ_front = λ₀(1 − M)",
+    "baseline_label": "64 步 Liénard-Wiechert 推迟时间（Retarded Time）迭代求解",
+    "load_unit": "次 17 站多普勒波前求解",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比闭式多普勒前向压缩公式与 64 步推迟时间方程迭代基准。",
+    "good_fit": [
+      "游动水禽、水面水黾、缓慢航行船只的前密后疏偏心涟漪着色器",
+      "亚音速飞行器声波压缩环、移动雷达/声呐脉冲可视化与相对论多普勒频移",
+      "用方向波数 `k(θ) = k₀ / (1.0 - M * dot(moveDir, rayDir))` 消除刚性蚊香盘平移感",
+      "无需维护上百个历史环形缓冲点即可在单次像素求值中合成前紧后松的多普勒波包"
+    ],
+    "not_for": [
+      "完全静止不动、马赫数 `M = 0` 的固定浮标或落水点",
+      "静态 2D 扁平 UI 卡片",
+      "无波动传播的纯静态线框网格",
+      "一维音频增益控制条"
+    ],
+    "readiness": "12/12 项实测通过；58 个 3D 多普勒推迟波前检验构件、17 个马赫数站点与 7-Card 报告已封存。",
+    "entries": {
+      "doppler-retarded64-equiv-128": "Doppler推迟波前压缩与64步推迟时间迭代等价 128",
+      "128 closed-form Doppler lambda_0*(1-M) and 64-step Lienard-Wiechert retarded-time passes agree within 1e-12": "128 次闭式 Doppler 前向波前压缩 λ₀(1−M) 与 64 步推迟时间（Retarded Time）迭代在 1e-12 内一致",
+      "doppler-retarded64-equiv-1024": "Doppler推迟波前压缩与64步推迟时间迭代等价 1024",
+      "1024 closed-form Doppler lambda_0*(1-M) and 64-step Lienard-Wiechert retarded-time passes agree within 1e-12": "1024 次闭式 Doppler 前向波前压缩 λ₀(1−M) 与 64 步推迟时间（Retarded Time）迭代在 1e-12 内一致",
+      "doppler-retarded64-equiv-8192": "Doppler推迟波前压缩与64步推迟时间迭代等价 8192",
+      "8192 closed-form Doppler lambda_0*(1-M) and 64-step Lienard-Wiechert retarded-time passes agree within 1e-12": "8192 次闭式 Doppler 前向波前压缩 λ₀(1−M) 与 64 步推迟时间（Retarded Time）迭代在 1e-12 内一致",
+      "doppler-bow-compression-locked": "Doppler-Fizeau全站前向首波波长比1.0000x锁定",
+      "17 Mach-velocity stations (u in [0.00, 1.00]) lock forward bow-wave wavelength ratio lambda/lambda_exact = 1.0000x (0/17 uncompressed)": "17 个马赫数移动波源站点恒定锁死前向首波波长比 λ/λ_exact = 1.0000×（0/17 波长失真）",
+      "naive-rigid-bullseye-decompression-exposed": "朴素刚性平移靶心波2.0000x前向波距失真暴露",
+      "naive rigidly translated bullseye wave (lambda = lambda_0) overestimates forward bow wavelength as 1/(1-M) = 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x (+100%) at S16 across 16/17 stations": "朴素刚性平移同心圆波（忽略推迟发射中心）在第 4 站偏宽至 1.2500×、第 8 站冲至 1.5000×、第 16 站（M=0.50）翻倍至 2.0000×（污染 16/17 站）",
+      "doppler-st4-u025-10000": "第4站u=0.25前向波距比1.0000x锁定",
+      "station-4 (u=0.25, M=0.20) locks lambda/lambda_exact=1.0000x vs naive 1.2500x (+25.00% decompression)": "第 4 站（u=0.25，M=0.20）锁死前向波长比 1.0000×（消除朴素 1.2500× 未压缩失真）",
+      "doppler-st8-u050-10000": "第8站u=0.50中点前向波距比1.0000x锁定",
+      "station-8 (u=0.50, M=0.3333) locks lambda/lambda_exact=1.0000x vs naive 1.5000x (+50.00% decompression)": "第 8 站（u=0.50，M=0.33）锁死前向波长比 1.0000×（消除朴素 1.5000× 未压缩失真）",
+      "doppler-st16-u100-10000": "第16站u=1.00半波速M=0.5前向波距比1.0000x锁定",
+      "station-16 (u=1.00, M=0.50) locks lambda/lambda_exact=1.0000x vs naive 2.0000x (+100.00% double wavelength error)": "第 16 站（u=1.00，M=0.50）锁死前向波长比 1.0000×（消除朴素 2.0000× 两倍波距错误）",
+      "exact-mode-roundtrip": "模式往返切换一致性",
+      "mode switching round-trip preserves deterministic Doppler-Fizeau retarded wavefront telemetry": "Doppler-Fizeau 推迟波前压缩与朴素刚性靶心平移模式往返切换保持确定性状态",
+      "geometry-58-solids": "58构件3D多普勒-斐索推迟波前检验台一致性",
+      "3D Doppler-Fizeau retarded wavefront bench renders 58 tracked solids across 17 stations": "3D Doppler-Fizeau 推迟波前检验台在 17 个马赫数站点完整渲染 58 个独立几何体",
+      "mobile-layout": "手机布局",
+      "390px Doppler-Fizeau wavefront controls fit without horizontal overflow": "390px 多普勒推迟波前控制面板无横向溢出",
+      "runtime-errors": "运行错误",
+      "0 JavaScript errors": "0 个 JavaScript 错误"
+    }
+  }
+}
