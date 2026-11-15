@@ -4036,6 +4036,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r309File),'utf8');
       assert.ok(txt.includes('1,720.00')&&txt.includes('3,515.00')&&txt.includes('5,235.00')&&txt.includes('80.00')&&txt.includes('332.50')&&txt.includes('412.50')&&txt.includes('4,822.50')&&txt.includes('92.12%')&&txt.includes('not_measured'),r309File+': contains exact 11-15 R7 tiny-voca+kokoro-distill closed-form parameters');
     }
+    // 2026-11-15 Night Round 8 (R310 Milestone: Forward-Future/scarlet + nickvasilescu/parallax) verification
+    const r310PathA=1820.00+38.0*95.00;
+    assert.equal(r310PathA.toFixed(2),'5430.00','11-15 R8 Path A total');
+    const r310PathC=90.00+3.5*95.00;
+    assert.equal(r310PathC.toFixed(2),'422.50','11-15 R8 Path C total');
+    assert.equal((r310PathA-r310PathC).toFixed(2),'5007.50','11-15 R8 savings vs Path A');
+    assert.equal(((r310PathA-r310PathC)/r310PathA*100).toFixed(2),'92.22','11-15 R8 pct savings vs Path A');
+    for(const r310File of ['workshops/github-trending-radar/docs/scarlet-parallax-nondestructive-ai-video-editor-hermes-budget-gated-multimodal-studio-selection-faq.md','workshops/github-trending-radar/docs/scarlet-parallax-nondestructive-ai-video-editor-hermes-budget-gated-multimodal-studio-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r8-scarlet-parallax.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r310File),'utf8');
+      assert.ok(txt.includes('1,820.00')&&txt.includes('3,610.00')&&txt.includes('5,430.00')&&txt.includes('90.00')&&txt.includes('332.50')&&txt.includes('422.50')&&txt.includes('5,007.50')&&txt.includes('92.22%')&&txt.includes('not_measured'),r310File+': contains exact 11-15 R8 scarlet+parallax closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
