@@ -4476,6 +4476,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r349File),'utf8');
       assert.ok(txt.includes('1,960.00')&&txt.includes('4,000.00')&&txt.includes('5,960.00')&&txt.includes('95.00')&&txt.includes('350.00')&&txt.includes('445.00')&&txt.includes('5,515.00')&&txt.includes('92.53%')&&txt.includes('not_measured'),r349File+': contains exact 11-15 R47 visualfidelity+loadsketch closed-form parameters');
     }
+    // 2026-11-15 Night Round 48 (R350: phpstan/tally + matheuzgomes/gawain) verification
+    const r350PathA=1850.00+39.0*100.00;
+    assert.equal(r350PathA.toFixed(2),'5750.00','11-15 R48 Path A total');
+    const r350PathC=85.00+3.5*100.00;
+    assert.equal(r350PathC.toFixed(2),'435.00','11-15 R48 Path C total');
+    assert.equal((r350PathA-r350PathC).toFixed(2),'5315.00','11-15 R48 savings vs Path A');
+    assert.equal(((r350PathA-r350PathC)/r350PathA*100).toFixed(2),'92.43','11-15 R48 pct savings vs Path A');
+    for(const r350File of ['workshops/github-trending-radar/docs/tally-gawain-cpu-independent-valgrind-instruction-benchmark-rust-python-type-covenant-selection-faq.md','workshops/github-trending-radar/docs/tally-gawain-cpu-independent-valgrind-instruction-benchmark-rust-python-type-covenant-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r48-tally-gawain.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r350File),'utf8');
+      assert.ok(txt.includes('1,850.00')&&txt.includes('3,900.00')&&txt.includes('5,750.00')&&txt.includes('85.00')&&txt.includes('350.00')&&txt.includes('435.00')&&txt.includes('5,315.00')&&txt.includes('92.43%')&&txt.includes('not_measured'),r350File+': contains exact 11-15 R48 tally+gawain closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
