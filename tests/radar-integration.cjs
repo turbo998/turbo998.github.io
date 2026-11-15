@@ -1,4 +1,5 @@
 const assert = require('node:assert/strict');
+const crypto = require('node:crypto');
 const fs = require('node:fs');
 const path = require('node:path');
 const puppeteer = require('puppeteer');
@@ -2378,7 +2379,7 @@ async function main() {
     const r162PathC=175.00+3.5*115.00;
     assert.equal(r162PathC.toFixed(2),'577.50','11-13 R34 Path C total');
     assert.equal((r162PathA-r162PathC).toFixed(2),'5517.50','11-13 R34 savings vs Path A');
-    assert.equal(((r162PathA-r162PathC)/r162PathA*100).toFixed(2),'90.52','11-13 R34 pct savings vs Path A');
+    assert.equal(((r162PathA-r162PathC)/r162PathA*100).toFixed(2),'90.53','11-13 R34 pct savings vs Path A');
     for(const r162File of ['workshops/github-trending-radar/docs/poincare-kittybrowser-hol-light-perelman-formalization-terminal-pane-chrome-browser-selection-faq.md','workshops/github-trending-radar/docs/poincare-kittybrowser-hol-light-perelman-formalization-terminal-pane-chrome-browser-selection-faq.en.md','assets/github-ai-radar-2026-11-13-r34-poincare-kittybrowser.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-13-audit.json']){
       const txt=fs.readFileSync(path.join(__dirname,'..',r162File),'utf8');
       assert.ok(txt.includes('1,725.00')&&txt.includes('4,370.00')&&txt.includes('6,095.00')&&txt.includes('175.00')&&txt.includes('402.50')&&txt.includes('577.50')&&txt.includes('5,517.50')&&txt.includes('90.52%')&&txt.includes('not_measured'),r162File+': contains exact 11-13 R34 poincare+kittybrowser closed-form parameters');
