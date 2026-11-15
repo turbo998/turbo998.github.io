@@ -4157,6 +4157,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r320File),'utf8');
       assert.ok(txt.includes('1,920.00')&&txt.includes('4,000.00')&&txt.includes('5,920.00')&&txt.includes('105.00')&&txt.includes('350.00')&&txt.includes('455.00')&&txt.includes('5,465.00')&&txt.includes('92.31%')&&txt.includes('not_measured'),r320File+': contains exact 11-15 R18 zimageturbo4gb+onegraphtwoworlds closed-form parameters');
     }
+    // 2026-11-15 Night Round 19 (R321: msveshnikov/claude-game-pipeline + amirmushichge/shred-kit) verification
+    const r321PathA=1840.00+41.0*100.00;
+    assert.equal(r321PathA.toFixed(2),'5940.00','11-15 R19 Path A total');
+    const r321PathC=110.00+3.5*100.00;
+    assert.equal(r321PathC.toFixed(2),'460.00','11-15 R19 Path C total');
+    assert.equal((r321PathA-r321PathC).toFixed(2),'5480.00','11-15 R19 savings vs Path A');
+    assert.equal(((r321PathA-r321PathC)/r321PathA*100).toFixed(2),'92.26','11-15 R19 pct savings vs Path A');
+    for(const r321File of ['workshops/github-trending-radar/docs/claude-game-pipeline-shred-kit-headless-blender-godot-3d-game-agent-video-template-selection-faq.md','workshops/github-trending-radar/docs/claude-game-pipeline-shred-kit-headless-blender-godot-3d-game-agent-video-template-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r19-gamepipeline-shredkit.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r321File),'utf8');
+      assert.ok(txt.includes('1,840.00')&&txt.includes('4,100.00')&&txt.includes('5,940.00')&&txt.includes('110.00')&&txt.includes('350.00')&&txt.includes('460.00')&&txt.includes('5,480.00')&&txt.includes('92.26%')&&txt.includes('not_measured'),r321File+': contains exact 11-15 R19 gamepipeline+shredkit closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
