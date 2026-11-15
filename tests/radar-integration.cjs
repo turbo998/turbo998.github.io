@@ -4212,6 +4212,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r325File),'utf8');
       assert.ok(txt.includes('1,780.00')&&txt.includes('3,900.00')&&txt.includes('5,680.00')&&txt.includes('95.00')&&txt.includes('350.00')&&txt.includes('445.00')&&txt.includes('5,235.00')&&txt.includes('92.17%')&&txt.includes('not_measured'),r325File+': contains exact 11-15 R23 lazydsh+rexdurable closed-form parameters');
     }
+    // 2026-11-15 Night Round 24 (R326: rauchg/winamp-ui-sdk + folsomintel/defect) verification
+    const r326PathA=1820.00+39.0*100.00;
+    assert.equal(r326PathA.toFixed(2),'5720.00','11-15 R24 Path A total');
+    const r326PathC=100.00+3.5*100.00;
+    assert.equal(r326PathC.toFixed(2),'450.00','11-15 R24 Path C total');
+    assert.equal((r326PathA-r326PathC).toFixed(2),'5270.00','11-15 R24 savings vs Path A');
+    assert.equal(((r326PathA-r326PathC)/r326PathA*100).toFixed(2),'92.13','11-15 R24 pct savings vs Path A');
+    for(const r326File of ['workshops/github-trending-radar/docs/winamp-ui-sdk-defect-webmcp-light-dom-primitives-parameter-default-typed-effects-selection-faq.md','workshops/github-trending-radar/docs/winamp-ui-sdk-defect-webmcp-light-dom-primitives-parameter-default-typed-effects-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r24-winampuisdk-defect.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r326File),'utf8');
+      assert.ok(txt.includes('1,820.00')&&txt.includes('3,900.00')&&txt.includes('5,720.00')&&txt.includes('100.00')&&txt.includes('350.00')&&txt.includes('450.00')&&txt.includes('5,270.00')&&txt.includes('92.13%')&&txt.includes('not_measured'),r326File+': contains exact 11-15 R24 winampuisdk+defect closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
