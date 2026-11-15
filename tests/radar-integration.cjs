@@ -4498,6 +4498,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r351File),'utf8');
       assert.ok(txt.includes('1,920.00')&&txt.includes('3,950.00')&&txt.includes('5,870.00')&&txt.includes('90.00')&&txt.includes('350.00')&&txt.includes('440.00')&&txt.includes('5,430.00')&&txt.includes('92.50%')&&txt.includes('not_measured'),r351File+': contains exact 11-15 R49 tessery+crossentry closed-form parameters');
     }
+    // 2026-11-15 Night Round 50 (R352: shadowDragons/vsux + candygoogy/atieclxx-fix) verification
+    const r352PathA=1780.00+38.5*100.00;
+    assert.equal(r352PathA.toFixed(2),'5630.00','11-15 R50 Path A total');
+    const r352PathC=80.00+3.5*100.00;
+    assert.equal(r352PathC.toFixed(2),'430.00','11-15 R50 Path C total');
+    assert.equal((r352PathA-r352PathC).toFixed(2),'5200.00','11-15 R50 savings vs Path A');
+    assert.equal(((r352PathA-r352PathC)/r352PathA*100).toFixed(2),'92.36','11-15 R50 pct savings vs Path A');
+    for(const r352File of ['workshops/github-trending-radar/docs/vsux-atieclxx-fix-ghostty-swiftui-macos-workspace-amd-ssd-write-acl-fix-selection-faq.md','workshops/github-trending-radar/docs/vsux-atieclxx-fix-ghostty-swiftui-macos-workspace-amd-ssd-write-acl-fix-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r50-vsux-atieclxxfix.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r352File),'utf8');
+      assert.ok(txt.includes('1,780.00')&&txt.includes('3,850.00')&&txt.includes('5,630.00')&&txt.includes('80.00')&&txt.includes('350.00')&&txt.includes('430.00')&&txt.includes('5,200.00')&&txt.includes('92.36%')&&txt.includes('not_measured'),r352File+': contains exact 11-15 R50 vsux+atieclxxfix closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
