@@ -4058,6 +4058,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r311File),'utf8');
       assert.ok(txt.includes('1,860.00')&&txt.includes('3,900.00')&&txt.includes('5,760.00')&&txt.includes('125.00')&&txt.includes('350.00')&&txt.includes('475.00')&&txt.includes('5,285.00')&&txt.includes('91.75%')&&txt.includes('not_measured'),r311File+': contains exact 11-15 R9 codingworkflow+turnpack closed-form parameters');
     }
+    // 2026-11-15 Night Round 10 (R312: Tthanh2k6/turbo-browser-mcp + 214140846/browser-hands) verification
+    const r312PathA=1940.00+38.0*100.00;
+    assert.equal(r312PathA.toFixed(2),'5740.00','11-15 R10 Path A total');
+    const r312PathC=115.00+3.5*100.00;
+    assert.equal(r312PathC.toFixed(2),'465.00','11-15 R10 Path C total');
+    assert.equal((r312PathA-r312PathC).toFixed(2),'5275.00','11-15 R10 savings vs Path A');
+    assert.equal(((r312PathA-r312PathC)/r312PathA*100).toFixed(2),'91.90','11-15 R10 pct savings vs Path A');
+    for(const r312File of ['workshops/github-trending-radar/docs/turbo-browser-mcp-browser-hands-delta-dom-batching-multi-profile-tabgroup-chrome-mcp-selection-faq.md','workshops/github-trending-radar/docs/turbo-browser-mcp-browser-hands-delta-dom-batching-multi-profile-tabgroup-chrome-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r10-turbobrowser-browserhands.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r312File),'utf8');
+      assert.ok(txt.includes('1,940.00')&&txt.includes('3,800.00')&&txt.includes('5,740.00')&&txt.includes('115.00')&&txt.includes('350.00')&&txt.includes('465.00')&&txt.includes('5,275.00')&&txt.includes('91.90%')&&txt.includes('not_measured'),r312File+': contains exact 11-15 R10 turbo-browser-mcp+browser-hands closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
