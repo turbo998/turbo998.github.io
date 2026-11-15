@@ -4102,6 +4102,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r315File),'utf8');
       assert.ok(txt.includes('1,690.00')&&txt.includes('3,800.00')&&txt.includes('5,490.00')&&txt.includes('95.00')&&txt.includes('350.00')&&txt.includes('445.00')&&txt.includes('5,045.00')&&txt.includes('91.89%')&&txt.includes('not_measured'),r315File+': contains exact 11-15 R13 planrelay+claudecodesketch closed-form parameters');
     }
+    // 2026-11-15 Night Round 14 (R316: mankidev/antialgorithm + Cheiineeey/api-where-it-breaks) verification
+    const r316PathA=1940.00+40.0*100.00;
+    assert.equal(r316PathA.toFixed(2),'5940.00','11-15 R14 Path A total');
+    const r316PathC=130.00+3.5*100.00;
+    assert.equal(r316PathC.toFixed(2),'480.00','11-15 R14 Path C total');
+    assert.equal((r316PathA-r316PathC).toFixed(2),'5460.00','11-15 R14 savings vs Path A');
+    assert.equal(((r316PathA-r316PathC)/r316PathA*100).toFixed(2),'91.92','11-15 R14 pct savings vs Path A');
+    for(const r316File of ['workshops/github-trending-radar/docs/antialgorithm-api-where-it-breaks-anti-mode-collapse-skill-claude-api-relay-diagnostic-selection-faq.md','workshops/github-trending-radar/docs/antialgorithm-api-where-it-breaks-anti-mode-collapse-skill-claude-api-relay-diagnostic-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r14-antialgorithm-apiwhereitbreaks.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r316File),'utf8');
+      assert.ok(txt.includes('1,940.00')&&txt.includes('4,000.00')&&txt.includes('5,940.00')&&txt.includes('130.00')&&txt.includes('350.00')&&txt.includes('480.00')&&txt.includes('5,460.00')&&txt.includes('91.92%')&&txt.includes('not_measured'),r316File+': contains exact 11-15 R14 antialgorithm+apiwhereitbreaks closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
