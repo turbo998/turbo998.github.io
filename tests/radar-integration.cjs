@@ -4388,6 +4388,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r341File),'utf8');
       assert.ok(txt.includes('1,940.00')&&txt.includes('4,000.00')&&txt.includes('5,940.00')&&txt.includes('95.00')&&txt.includes('350.00')&&txt.includes('445.00')&&txt.includes('5,495.00')&&txt.includes('92.51%')&&txt.includes('not_measured'),r341File+': contains exact 11-15 R39 bevelos+crate closed-form parameters');
     }
+    // 2026-11-15 Night Round 40 (R342: IoET-y/robot-skill-factory + slmonker/ComfyUI-OpenH3Regenerate2KIC) verification
+    const r342PathA=2120.00+41.0*100.00;
+    assert.equal(r342PathA.toFixed(2),'6220.00','11-15 R40 Path A total');
+    const r342PathC=115.00+3.5*100.00;
+    assert.equal(r342PathC.toFixed(2),'465.00','11-15 R40 Path C total');
+    assert.equal((r342PathA-r342PathC).toFixed(2),'5755.00','11-15 R40 savings vs Path A');
+    assert.equal(((r342PathA-r342PathC)/r342PathA*100).toFixed(2),'92.52','11-15 R40 pct savings vs Path A');
+    for(const r342File of ['workshops/github-trending-radar/docs/robot-skill-factory-openh3-regenerate-2k-ic-humanoid-orchestra-comfyui-2k-refinement-selection-faq.md','workshops/github-trending-radar/docs/robot-skill-factory-openh3-regenerate-2k-ic-humanoid-orchestra-comfyui-2k-refinement-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r40-robotskillfactory-openh3regen2k.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r342File),'utf8');
+      assert.ok(txt.includes('2,120.00')&&txt.includes('4,100.00')&&txt.includes('6,220.00')&&txt.includes('115.00')&&txt.includes('350.00')&&txt.includes('465.00')&&txt.includes('5,755.00')&&txt.includes('92.52%')&&txt.includes('not_measured'),r342File+': contains exact 11-15 R40 robotskillfactory+openh3regen2k closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
