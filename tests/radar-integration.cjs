@@ -4553,6 +4553,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r356File),'utf8');
       assert.ok(txt.includes('1,960.00')&&txt.includes('4,050.00')&&txt.includes('6,010.00')&&txt.includes('90.00')&&txt.includes('350.00')&&txt.includes('440.00')&&txt.includes('5,570.00')&&txt.includes('92.68%')&&txt.includes('not_measured'),r356File+': contains exact 11-15 R54 hammermcp+yourec+vhsphys closed-form parameters');
     }
+    // 2026-11-15 Night Round 55 (R357: nwdxlgzs/HttpLocalServer + jessekhach/QuickPass) verification
+    const r357PathA=1820.00+38.0*100.00;
+    assert.equal(r357PathA.toFixed(2),'5620.00','11-15 R55 Path A total');
+    const r357PathC=80.00+3.4*100.00;
+    assert.equal(r357PathC.toFixed(2),'420.00','11-15 R55 Path C total');
+    assert.equal((r357PathA-r357PathC).toFixed(2),'5200.00','11-15 R55 savings vs Path A');
+    assert.equal(((r357PathA-r357PathC)/r357PathA*100).toFixed(2),'92.53','11-15 R55 pct savings vs Path A');
+    for(const r357File of ['workshops/github-trending-radar/docs/httplocalserver-quickpass-cpp17-wamr-quickjs-mcp-lan-server-macos-accessibility-passwords-selection-faq.md','workshops/github-trending-radar/docs/httplocalserver-quickpass-cpp17-wamr-quickjs-mcp-lan-server-macos-accessibility-passwords-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r55-httplocalserver-quickpass.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r357File),'utf8');
+      assert.ok(txt.includes('1,820.00')&&txt.includes('3,800.00')&&txt.includes('5,620.00')&&txt.includes('80.00')&&txt.includes('340.00')&&txt.includes('420.00')&&txt.includes('5,200.00')&&txt.includes('92.53%')&&txt.includes('not_measured'),r357File+': contains exact 11-15 R55 httplocalserver+quickpass closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
