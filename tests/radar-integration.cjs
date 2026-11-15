@@ -4278,6 +4278,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r331File),'utf8');
       assert.ok(txt.includes('1,760.00')&&txt.includes('3,900.00')&&txt.includes('5,660.00')&&txt.includes('95.00')&&txt.includes('350.00')&&txt.includes('445.00')&&txt.includes('5,215.00')&&txt.includes('92.14%')&&txt.includes('not_measured'),r331File+': contains exact 11-15 R29 dshensp+dshruntimelog closed-form parameters');
     }
+    // 2026-11-15 Night Round 30 (R332: beiwocaishijia/gezhi-sheets + Muanyan-mjq/zotero-interlinear) verification
+    const r332PathA=1850.00+39.0*100.00;
+    assert.equal(r332PathA.toFixed(2),'5750.00','11-15 R30 Path A total');
+    const r332PathC=95.00+3.5*100.00;
+    assert.equal(r332PathC.toFixed(2),'445.00','11-15 R30 Path C total');
+    assert.equal((r332PathA-r332PathC).toFixed(2),'5305.00','11-15 R30 savings vs Path A');
+    assert.equal(((r332PathA-r332PathC)/r332PathA*100).toFixed(2),'92.26','11-15 R30 pct savings vs Path A');
+    for(const r332File of ['workshops/github-trending-radar/docs/gezhi-sheets-zotero-interlinear-dpapi-transactional-ai-spreadsheet-5pool-bilingual-pdf-selection-faq.md','workshops/github-trending-radar/docs/gezhi-sheets-zotero-interlinear-dpapi-transactional-ai-spreadsheet-5pool-bilingual-pdf-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r30-gezhisheets-zoterointerlinear.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r332File),'utf8');
+      assert.ok(txt.includes('1,850.00')&&txt.includes('3,900.00')&&txt.includes('5,750.00')&&txt.includes('95.00')&&txt.includes('350.00')&&txt.includes('445.00')&&txt.includes('5,305.00')&&txt.includes('92.26%')&&txt.includes('not_measured'),r332File+': contains exact 11-15 R30 gezhisheets+zoterointerlinear closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
