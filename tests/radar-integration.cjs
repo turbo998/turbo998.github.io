@@ -4355,6 +4355,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r338File),'utf8');
       assert.ok(txt.includes('1,860.00')&&txt.includes('3,900.00')&&txt.includes('5,760.00')&&txt.includes('95.00')&&txt.includes('350.00')&&txt.includes('445.00')&&txt.includes('5,315.00')&&txt.includes('92.27%')&&txt.includes('not_measured'),r338File+': contains exact 11-15 R36 zeus+supportagent closed-form parameters');
     }
+    // 2026-11-15 Night Round 37 (R339: shuding/spec-01 + lishuangqiang/mixbar) verification
+    const r339PathA=1780.00+38.0*100.00;
+    assert.equal(r339PathA.toFixed(2),'5580.00','11-15 R37 Path A total');
+    const r339PathC=90.00+3.5*100.00;
+    assert.equal(r339PathC.toFixed(2),'440.00','11-15 R37 Path C total');
+    assert.equal((r339PathA-r339PathC).toFixed(2),'5140.00','11-15 R37 savings vs Path A');
+    assert.equal(((r339PathA-r339PathC)/r339PathA*100).toFixed(2),'92.11','11-15 R37 pct savings vs Path A');
+    for(const r339File of ['workshops/github-trending-radar/docs/spec-01-mixbar-vercel-ui-sdk-hardware-registry-macos-coreaudio-process-tap-mixer-selection-faq.md','workshops/github-trending-radar/docs/spec-01-mixbar-vercel-ui-sdk-hardware-registry-macos-coreaudio-process-tap-mixer-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r37-spec01-mixbar.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r339File),'utf8');
+      assert.ok(txt.includes('1,780.00')&&txt.includes('3,800.00')&&txt.includes('5,580.00')&&txt.includes('90.00')&&txt.includes('350.00')&&txt.includes('440.00')&&txt.includes('5,140.00')&&txt.includes('92.11%')&&txt.includes('not_measured'),r339File+': contains exact 11-15 R37 spec01+mixbar closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
