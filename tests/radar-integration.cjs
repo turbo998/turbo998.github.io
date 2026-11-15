@@ -3992,6 +3992,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r305File),'utf8');
       assert.ok(txt.includes('1,880.00')&&txt.includes('4,000.00')&&txt.includes('5,880.00')&&txt.includes('135.00')&&txt.includes('350.00')&&txt.includes('485.00')&&txt.includes('5,395.00')&&txt.includes('91.75%')&&txt.includes('not_measured'),r305File+': contains exact 11-15 R3 univer+claude-bughunter closed-form parameters');
     }
+    // 2026-11-15 Night Round 4 (R306: meshy-dev/ThreeRT + hikaku-io/hikaku-extension) verification
+    const r306PathA=1780.00+38.0*100.00;
+    assert.equal(r306PathA.toFixed(2),'5580.00','11-15 R4 Path A total');
+    const r306PathC=110.00+3.5*100.00;
+    assert.equal(r306PathC.toFixed(2),'460.00','11-15 R4 Path C total');
+    assert.equal((r306PathA-r306PathC).toFixed(2),'5120.00','11-15 R4 savings vs Path A');
+    assert.equal(((r306PathA-r306PathC)/r306PathA*100).toFixed(2),'91.76','11-15 R4 pct savings vs Path A');
+    for(const r306File of ['workshops/github-trending-radar/docs/threert-hikaku-extension-hardware-raytraced-threejs-ondevice-ai-media-provenance-selection-faq.md','workshops/github-trending-radar/docs/threert-hikaku-extension-hardware-raytraced-threejs-ondevice-ai-media-provenance-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r4-threert-hikaku.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r306File),'utf8');
+      assert.ok(txt.includes('1,780.00')&&txt.includes('3,800.00')&&txt.includes('5,580.00')&&txt.includes('110.00')&&txt.includes('350.00')&&txt.includes('460.00')&&txt.includes('5,120.00')&&txt.includes('91.76%')&&txt.includes('not_measured'),r306File+': contains exact 11-15 R4 threert+hikaku-extension closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
