@@ -4179,6 +4179,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r322File),'utf8');
       assert.ok(txt.includes('1,720.00')&&txt.includes('3,800.00')&&txt.includes('5,520.00')&&txt.includes('95.00')&&txt.includes('350.00')&&txt.includes('445.00')&&txt.includes('5,075.00')&&txt.includes('91.94%')&&txt.includes('not_measured'),r322File+': contains exact 11-15 R20 appleflow+clipforge closed-form parameters');
     }
+    // 2026-11-15 Night Round 21 (R323: RoboticsResearchHubVN/InstantAMP + PranaLabs/3DSceneBench) verification
+    const r323PathA=2120.00+42.0*100.00;
+    assert.equal(r323PathA.toFixed(2),'6320.00','11-15 R21 Path A total');
+    const r323PathC=135.00+3.5*100.00;
+    assert.equal(r323PathC.toFixed(2),'485.00','11-15 R21 Path C total');
+    assert.equal((r323PathA-r323PathC).toFixed(2),'5835.00','11-15 R21 savings vs Path A');
+    assert.equal(((r323PathA-r323PathC)/r323PathA*100).toFixed(2),'92.33','11-15 R21 pct savings vs Path A');
+    for(const r323File of ['workshops/github-trending-radar/docs/instantamp-3dscenebench-30min-rtx5090-world-model-amp-mujoco-functional-scene-benchmark-selection-faq.md','workshops/github-trending-radar/docs/instantamp-3dscenebench-30min-rtx5090-world-model-amp-mujoco-functional-scene-benchmark-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r21-instantamp-3dscenebench.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r323File),'utf8');
+      assert.ok(txt.includes('2,120.00')&&txt.includes('4,200.00')&&txt.includes('6,320.00')&&txt.includes('135.00')&&txt.includes('350.00')&&txt.includes('485.00')&&txt.includes('5,835.00')&&txt.includes('92.33%')&&txt.includes('not_measured'),r323File+': contains exact 11-15 R21 instantamp+3dscenebench closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
