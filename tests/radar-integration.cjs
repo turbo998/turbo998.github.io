@@ -4322,6 +4322,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r335File),'utf8');
       assert.ok(txt.includes('1,920.00')&&txt.includes('4,000.00')&&txt.includes('5,920.00')&&txt.includes('95.00')&&txt.includes('350.00')&&txt.includes('445.00')&&txt.includes('5,475.00')&&txt.includes('92.48%')&&txt.includes('not_measured'),r335File+': contains exact 11-15 R33 browserr+dukoi closed-form parameters');
     }
+    // 2026-11-15 Night Round 34 (R336: leonardo-alegria/garlic-llm + c6lang/c6) verification
+    const r336PathA=1980.00+40.0*100.00;
+    assert.equal(r336PathA.toFixed(2),'5980.00','11-15 R34 Path A total');
+    const r336PathC=100.00+3.5*100.00;
+    assert.equal(r336PathC.toFixed(2),'450.00','11-15 R34 Path C total');
+    assert.equal((r336PathA-r336PathC).toFixed(2),'5530.00','11-15 R34 savings vs Path A');
+    assert.equal(((r336PathA-r336PathC)/r336PathA*100).toFixed(2),'92.47','11-15 R34 pct savings vs Path A');
+    for(const r336File of ['workshops/github-trending-radar/docs/garlic-llm-c6lang-ps4-pm4-qwen35-9b-mtp-tinycc-defer-errdefer-systems-c-selection-faq.md','workshops/github-trending-radar/docs/garlic-llm-c6lang-ps4-pm4-qwen35-9b-mtp-tinycc-defer-errdefer-systems-c-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r34-garlicllm-c6lang.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r336File),'utf8');
+      assert.ok(txt.includes('1,980.00')&&txt.includes('4,000.00')&&txt.includes('5,980.00')&&txt.includes('100.00')&&txt.includes('350.00')&&txt.includes('450.00')&&txt.includes('5,530.00')&&txt.includes('92.47%')&&txt.includes('not_measured'),r336File+': contains exact 11-15 R34 garlicllm+c6lang closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
