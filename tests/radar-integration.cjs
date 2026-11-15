@@ -4300,6 +4300,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r333File),'utf8');
       assert.ok(txt.includes('1,880.00')&&txt.includes('4,000.00')&&txt.includes('5,880.00')&&txt.includes('100.00')&&txt.includes('350.00')&&txt.includes('450.00')&&txt.includes('5,430.00')&&txt.includes('92.35%')&&txt.includes('not_measured'),r333File+': contains exact 11-15 R31 pulseguardrt+loupeosint closed-form parameters');
     }
+    // 2026-11-15 Night Round 32 (R334: leapquant/LeapQuant + Anionex/h3-image-mlx) verification
+    const r334PathA=2140.00+41.0*100.00;
+    assert.equal(r334PathA.toFixed(2),'6240.00','11-15 R32 Path A total');
+    const r334PathC=125.00+3.5*100.00;
+    assert.equal(r334PathC.toFixed(2),'475.00','11-15 R32 Path C total');
+    assert.equal((r334PathA-r334PathC).toFixed(2),'5765.00','11-15 R32 savings vs Path A');
+    assert.equal(((r334PathA-r334PathC)/r334PathA*100).toFixed(2),'92.39','11-15 R32 pct savings vs Path A');
+    for(const r334File of ['workshops/github-trending-radar/docs/leapquant-h3-image-mlx-linear-attention-recurrent-state-quantization-apple-silicon-3gb-stream-selection-faq.md','workshops/github-trending-radar/docs/leapquant-h3-image-mlx-linear-attention-recurrent-state-quantization-apple-silicon-3gb-stream-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r32-leapquant-h3imagemlx.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r334File),'utf8');
+      assert.ok(txt.includes('2,140.00')&&txt.includes('4,100.00')&&txt.includes('6,240.00')&&txt.includes('125.00')&&txt.includes('350.00')&&txt.includes('475.00')&&txt.includes('5,765.00')&&txt.includes('92.39%')&&txt.includes('not_measured'),r334File+': contains exact 11-15 R32 leapquant+h3imagemlx closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
