@@ -4366,6 +4366,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r339File),'utf8');
       assert.ok(txt.includes('1,780.00')&&txt.includes('3,800.00')&&txt.includes('5,580.00')&&txt.includes('90.00')&&txt.includes('350.00')&&txt.includes('440.00')&&txt.includes('5,140.00')&&txt.includes('92.11%')&&txt.includes('not_measured'),r339File+': contains exact 11-15 R37 spec01+mixbar closed-form parameters');
     }
+    // 2026-11-15 Night Round 38 (R340: mizorewww/colab-qwen38-g4 + CrommaAI/crommacode) verification
+    const r340PathA=2180.00+41.0*100.00;
+    assert.equal(r340PathA.toFixed(2),'6280.00','11-15 R38 Path A total');
+    const r340PathC=120.00+3.5*100.00;
+    assert.equal(r340PathC.toFixed(2),'470.00','11-15 R38 Path C total');
+    assert.equal((r340PathA-r340PathC).toFixed(2),'5810.00','11-15 R38 savings vs Path A');
+    assert.equal(((r340PathA-r340PathC)/r340PathA*100).toFixed(2),'92.52','11-15 R38 pct savings vs Path A');
+    for(const r340File of ['workshops/github-trending-radar/docs/colab-qwen38-g4-crommacode-blackwell-96gb-262k-mtp-gpui-gamified-agent-swarm-ide-selection-faq.md','workshops/github-trending-radar/docs/colab-qwen38-g4-crommacode-blackwell-96gb-262k-mtp-gpui-gamified-agent-swarm-ide-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r38-colabqwen38g4-crommacode.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r340File),'utf8');
+      assert.ok(txt.includes('2,180.00')&&txt.includes('4,100.00')&&txt.includes('6,280.00')&&txt.includes('120.00')&&txt.includes('350.00')&&txt.includes('470.00')&&txt.includes('5,810.00')&&txt.includes('92.52%')&&txt.includes('not_measured'),r340File+': contains exact 11-15 R38 colabqwen38g4+crommacode closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
