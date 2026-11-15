@@ -4069,6 +4069,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r312File),'utf8');
       assert.ok(txt.includes('1,940.00')&&txt.includes('3,800.00')&&txt.includes('5,740.00')&&txt.includes('115.00')&&txt.includes('350.00')&&txt.includes('465.00')&&txt.includes('5,275.00')&&txt.includes('91.90%')&&txt.includes('not_measured'),r312File+': contains exact 11-15 R10 turbo-browser-mcp+browser-hands closed-form parameters');
     }
+    // 2026-11-15 Night Round 11 (R313: rainyZhou2/PatchProof + brunnojob/devrescue) verification
+    const r313PathA=1790.00+38.0*100.00;
+    assert.equal(r313PathA.toFixed(2),'5590.00','11-15 R11 Path A total');
+    const r313PathC=110.00+3.5*100.00;
+    assert.equal(r313PathC.toFixed(2),'460.00','11-15 R11 Path C total');
+    assert.equal((r313PathA-r313PathC).toFixed(2),'5130.00','11-15 R11 savings vs Path A');
+    assert.equal(((r313PathA-r313PathC)/r313PathA*100).toFixed(2),'91.77','11-15 R11 pct savings vs Path A');
+    for(const r313File of ['workshops/github-trending-radar/docs/patchproof-devrescue-counterexample-go-patch-verifier-zero-dep-ci-log-triage-selection-faq.md','workshops/github-trending-radar/docs/patchproof-devrescue-counterexample-go-patch-verifier-zero-dep-ci-log-triage-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r11-patchproof-devrescue.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r313File),'utf8');
+      assert.ok(txt.includes('1,790.00')&&txt.includes('3,800.00')&&txt.includes('5,590.00')&&txt.includes('110.00')&&txt.includes('350.00')&&txt.includes('460.00')&&txt.includes('5,130.00')&&txt.includes('91.77%')&&txt.includes('not_measured'),r313File+': contains exact 11-15 R11 patchproof+devrescue closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
