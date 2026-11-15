@@ -4003,6 +4003,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r306File),'utf8');
       assert.ok(txt.includes('1,780.00')&&txt.includes('3,800.00')&&txt.includes('5,580.00')&&txt.includes('110.00')&&txt.includes('350.00')&&txt.includes('460.00')&&txt.includes('5,120.00')&&txt.includes('91.76%')&&txt.includes('not_measured'),r306File+': contains exact 11-15 R4 threert+hikaku-extension closed-form parameters');
     }
+    // 2026-11-15 Night Round 5 (R307: haziqahmedqasmi/PeakCut + JuneYaooo/rea-toon) verification
+    const r307PathA=1740.00+38.0*95.00;
+    assert.equal(r307PathA.toFixed(2),'5350.00','11-15 R5 Path A total');
+    const r307PathC=95.00+3.5*95.00;
+    assert.equal(r307PathC.toFixed(2),'427.50','11-15 R5 Path C total');
+    assert.equal((r307PathA-r307PathC).toFixed(2),'4922.50','11-15 R5 savings vs Path A');
+    assert.equal(((r307PathA-r307PathC)/r307PathA*100).toFixed(2),'92.01','11-15 R5 pct savings vs Path A');
+    for(const r307File of ['workshops/github-trending-radar/docs/peakcut-rea-toon-selfhosted-live-stream-clipper-short-drama-videomd-forensics-selection-faq.md','workshops/github-trending-radar/docs/peakcut-rea-toon-selfhosted-live-stream-clipper-short-drama-videomd-forensics-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r5-peakcut-reatoon.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r307File),'utf8');
+      assert.ok(txt.includes('1,740.00')&&txt.includes('3,610.00')&&txt.includes('5,350.00')&&txt.includes('95.00')&&txt.includes('332.50')&&txt.includes('427.50')&&txt.includes('4,922.50')&&txt.includes('92.01%')&&txt.includes('not_measured'),r307File+': contains exact 11-15 R5 peakcut+rea-toon closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
