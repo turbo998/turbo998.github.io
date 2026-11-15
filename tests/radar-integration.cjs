@@ -4432,6 +4432,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r345File),'utf8');
       assert.ok(txt.includes('1,880.00')&&txt.includes('3,900.00')&&txt.includes('5,780.00')&&txt.includes('85.00')&&txt.includes('350.00')&&txt.includes('435.00')&&txt.includes('5,345.00')&&txt.includes('92.47%')&&txt.includes('not_measured'),r345File+': contains exact 11-15 R43 telemetrycleaner+symcacheprune closed-form parameters');
     }
+    // 2026-11-15 Night Round 44 (R346: DEGger21/numpilot + argonrobotics-ai/alloy) verification
+    const r346PathA=2150.00+41.0*100.00;
+    assert.equal(r346PathA.toFixed(2),'6250.00','11-15 R44 Path A total');
+    const r346PathC=115.00+3.5*100.00;
+    assert.equal(r346PathC.toFixed(2),'465.00','11-15 R44 Path C total');
+    assert.equal((r346PathA-r346PathC).toFixed(2),'5785.00','11-15 R44 savings vs Path A');
+    assert.equal(((r346PathA-r346PathC)/r346PathA*100).toFixed(2),'92.56','11-15 R44 pct savings vs Path A');
+    for(const r346File of ['workshops/github-trending-radar/docs/numpilot-alloy-ascend-npu-asnumpy-migration-agent-multimaterial-gpu-robot-physics-mcp-selection-faq.md','workshops/github-trending-radar/docs/numpilot-alloy-ascend-npu-asnumpy-migration-agent-multimaterial-gpu-robot-physics-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r44-numpilot-alloy.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r346File),'utf8');
+      assert.ok(txt.includes('2,150.00')&&txt.includes('4,100.00')&&txt.includes('6,250.00')&&txt.includes('115.00')&&txt.includes('350.00')&&txt.includes('465.00')&&txt.includes('5,785.00')&&txt.includes('92.56%')&&txt.includes('not_measured'),r346File+': contains exact 11-15 R44 numpilot+alloy closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
