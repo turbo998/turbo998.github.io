@@ -4421,6 +4421,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r344File),'utf8');
       assert.ok(txt.includes('1,900.00')&&txt.includes('3,950.00')&&txt.includes('5,850.00')&&txt.includes('90.00')&&txt.includes('350.00')&&txt.includes('440.00')&&txt.includes('5,410.00')&&txt.includes('92.48%')&&txt.includes('not_measured'),r344File+': contains exact 11-15 R42 prtseek+beeplocator closed-form parameters');
     }
+    // 2026-11-15 Night Round 43 (R345: Eynnzerr/TelemetryCleaner + adriancmurray/symcache-prune) verification
+    const r345PathA=1880.00+39.0*100.00;
+    assert.equal(r345PathA.toFixed(2),'5780.00','11-15 R43 Path A total');
+    const r345PathC=85.00+3.5*100.00;
+    assert.equal(r345PathC.toFixed(2),'435.00','11-15 R43 Path C total');
+    assert.equal((r345PathA-r345PathC).toFixed(2),'5345.00','11-15 R43 savings vs Path A');
+    assert.equal(((r345PathA-r345PathC)/r345PathA*100).toFixed(2),'92.47','11-15 R43 pct savings vs Path A');
+    for(const r345File of ['workshops/github-trending-radar/docs/telemetrycleaner-symcache-prune-shizuku-binder-android-debloat-macos-coresymbolicationd-launchd-selection-faq.md','workshops/github-trending-radar/docs/telemetrycleaner-symcache-prune-shizuku-binder-android-debloat-macos-coresymbolicationd-launchd-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r43-telemetrycleaner-symcacheprune.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r345File),'utf8');
+      assert.ok(txt.includes('1,880.00')&&txt.includes('3,900.00')&&txt.includes('5,780.00')&&txt.includes('85.00')&&txt.includes('350.00')&&txt.includes('435.00')&&txt.includes('5,345.00')&&txt.includes('92.47%')&&txt.includes('not_measured'),r345File+': contains exact 11-15 R43 telemetrycleaner+symcacheprune closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
