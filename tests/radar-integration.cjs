@@ -4465,6 +4465,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r348File),'utf8');
       assert.ok(txt.includes('2,040.00')&&txt.includes('4,000.00')&&txt.includes('6,040.00')&&txt.includes('105.00')&&txt.includes('350.00')&&txt.includes('455.00')&&txt.includes('5,585.00')&&txt.includes('92.47%')&&txt.includes('not_measured'),r348File+': contains exact 11-15 R46 budget3d+compass closed-form parameters');
     }
+    // 2026-11-15 Night Round 47 (R349: linggan121/visual-fidelity + minchenlee/loadsketch) verification
+    const r349PathA=1960.00+40.0*100.00;
+    assert.equal(r349PathA.toFixed(2),'5960.00','11-15 R47 Path A total');
+    const r349PathC=95.00+3.5*100.00;
+    assert.equal(r349PathC.toFixed(2),'445.00','11-15 R47 Path C total');
+    assert.equal((r349PathA-r349PathC).toFixed(2),'5515.00','11-15 R47 savings vs Path A');
+    assert.equal(((r349PathA-r349PathC)/r349PathA*100).toFixed(2),'92.53','11-15 R47 pct savings vs Path A');
+    for(const r349File of ['workshops/github-trending-radar/docs/visual-fidelity-loadsketch-numeric-ui-reconstruction-1px-audit-discrete-event-system-simulator-selection-faq.md','workshops/github-trending-radar/docs/visual-fidelity-loadsketch-numeric-ui-reconstruction-1px-audit-discrete-event-system-simulator-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r47-visualfidelity-loadsketch.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r349File),'utf8');
+      assert.ok(txt.includes('1,960.00')&&txt.includes('4,000.00')&&txt.includes('5,960.00')&&txt.includes('95.00')&&txt.includes('350.00')&&txt.includes('445.00')&&txt.includes('5,515.00')&&txt.includes('92.53%')&&txt.includes('not_measured'),r349File+': contains exact 11-15 R47 visualfidelity+loadsketch closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
