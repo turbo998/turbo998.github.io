@@ -3941,6 +3941,35 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r302File),'utf8');
       assert.ok(txt.includes('1,750.00')&&txt.includes('3,562.50')&&txt.includes('5,312.50')&&txt.includes('80.00')&&txt.includes('332.50')&&txt.includes('412.50')&&txt.includes('4,900.00')&&txt.includes('92.24%')&&txt.includes('not_measured'),r302File+': contains exact 11-14 R119 benjitaylor-skills+snapgent-connector closed-form parameters');
     }
+    // 2026-11-15 Raw Evidence SHA-256, Track A/B & Night Round 1 (R303: Tencent/LoopForge + NVIDIA/SkillEvaluator) verification
+    const rawHtml1115=fs.readFileSync(path.join(__dirname,'..','workshops','github-trending-radar','evidence','trending-daily-2026-11-15-raw.html'),'utf8').replace(/\r\n/g,'\n');
+    assert.equal(crypto.createHash('sha256').update(rawHtml1115).digest('hex'),'0307dc2ec8ad9e299810571ee903633f701ea55e9eec2a4235faf871940df463','2026-11-15 raw HTML LF sha256');
+    const rawSearch1115Str=fs.readFileSync(path.join(__dirname,'..','workshops','github-trending-radar','evidence','search-new-repos-2026-11-15-raw.json'),'utf8').replace(/\r\n/g,'\n');
+    assert.equal(crypto.createHash('sha256').update(rawSearch1115Str).digest('hex'),'93010521222c56c591bcae9a80f7f4b395724b9c14b70bec86e5bf2e0f1306cc','2026-11-15 raw Search JSON LF sha256');
+    const rawSearch1115=JSON.parse(rawSearch1115Str);
+    const rawSearch1115Map=new Map(rawSearch1115.items.map(it=>[it.full_name,it]));
+    for(const item of reportJson.fastest_rising_leaderboard_2026_11_15.track_a_24h_star_surge){
+      assert.equal(item.provenance,'measured',item.full_name+': 11-15 Track A provenance');
+      assert.ok(rawHtml1115.includes(`href="/${item.full_name}"`),item.full_name+': present in 11-15 raw HTML');
+      assert.ok(rawHtml1115.includes(`${item.stars_today.toLocaleString('en-US')} stars today`),item.full_name+': exact stars_today in 11-15 raw HTML');
+    }
+    for(const item of reportJson.fastest_rising_leaderboard_2026_11_15.track_b_new_repo_breakout_slope){
+      assert.equal(item.stars_today,'not_measured',item.full_name+': 11-15 Track B stars_today must be not_measured');
+      assert.ok(rawSearch1115Map.has(item.full_name),item.full_name+': present in 11-15 archived Search API JSON');
+      const rawEntry=rawSearch1115Map.get(item.full_name);
+      assert.equal(item.stars_total_search_api,rawEntry.stargazers_count,item.full_name+': 11-15 stars_total_search_api matches Search API JSON');
+      assert.equal(item.stars_per_day,Math.round(item.stars_total/item.age_days),item.full_name+': 11-15 stars_per_day closed-form');
+    }
+    const r303PathA=1920.00+41.0*100.00;
+    assert.equal(r303PathA.toFixed(2),'6020.00','11-15 R1 Path A total');
+    const r303PathC=140.00+3.5*100.00;
+    assert.equal(r303PathC.toFixed(2),'490.00','11-15 R1 Path C total');
+    assert.equal((r303PathA-r303PathC).toFixed(2),'5530.00','11-15 R1 savings vs Path A');
+    assert.equal(((r303PathA-r303PathC)/r303PathA*100).toFixed(2),'91.86','11-15 R1 pct savings vs Path A');
+    for(const r303File of ['workshops/github-trending-radar/docs/loopforge-skillevaluator-multi-cli-sop-delivery-3tier-harbor-skill-eval-selection-faq.md','workshops/github-trending-radar/docs/loopforge-skillevaluator-multi-cli-sop-delivery-3tier-harbor-skill-eval-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r1-loopforge-skillevaluator.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r303File),'utf8');
+      assert.ok(txt.includes('1,920.00')&&txt.includes('4,100.00')&&txt.includes('6,020.00')&&txt.includes('140.00')&&txt.includes('350.00')&&txt.includes('490.00')&&txt.includes('5,530.00')&&txt.includes('91.86%')&&txt.includes('not_measured'),r303File+': contains exact 11-15 R1 loopforge+skillevaluator closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
