@@ -4454,6 +4454,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r347File),'utf8');
       assert.ok(txt.includes('2,080.00')&&txt.includes('4,000.00')&&txt.includes('6,080.00')&&txt.includes('105.00')&&txt.includes('350.00')&&txt.includes('455.00')&&txt.includes('5,625.00')&&txt.includes('92.52%')&&txt.includes('not_measured'),r347File+': contains exact 11-15 R45 voxmel+jevinteraction closed-form parameters');
     }
+    // 2026-11-15 Night Round 46 (R348: BudgetAny/Budget3D + OpenDriveLab/Compass) verification
+    const r348PathA=2040.00+40.0*100.00;
+    assert.equal(r348PathA.toFixed(2),'6040.00','11-15 R46 Path A total');
+    const r348PathC=105.00+3.5*100.00;
+    assert.equal(r348PathC.toFixed(2),'455.00','11-15 R46 Path C total');
+    assert.equal((r348PathA-r348PathC).toFixed(2),'5585.00','11-15 R46 savings vs Path A');
+    assert.equal(((r348PathA-r348PathC)/r348PathA*100).toFixed(2),'92.47','11-15 R46 pct savings vs Path A');
+    for(const r348File of ['workshops/github-trending-radar/docs/budget3d-compass-compute-adaptive-3dgs-tokenization-monocular-2min-history-vln-selection-faq.md','workshops/github-trending-radar/docs/budget3d-compass-compute-adaptive-3dgs-tokenization-monocular-2min-history-vln-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r46-budget3d-compass.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r348File),'utf8');
+      assert.ok(txt.includes('2,040.00')&&txt.includes('4,000.00')&&txt.includes('6,040.00')&&txt.includes('105.00')&&txt.includes('350.00')&&txt.includes('455.00')&&txt.includes('5,585.00')&&txt.includes('92.47%')&&txt.includes('not_measured'),r348File+': contains exact 11-15 R46 budget3d+compass closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
