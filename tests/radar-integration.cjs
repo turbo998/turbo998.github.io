@@ -4080,6 +4080,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r313File),'utf8');
       assert.ok(txt.includes('1,790.00')&&txt.includes('3,800.00')&&txt.includes('5,590.00')&&txt.includes('110.00')&&txt.includes('350.00')&&txt.includes('460.00')&&txt.includes('5,130.00')&&txt.includes('91.77%')&&txt.includes('not_measured'),r313File+': contains exact 11-15 R11 patchproof+devrescue closed-form parameters');
     }
+    // 2026-11-15 Night Round 12 (R314: AgenticOrgLab/ExecOrchestra + petekp/coordinator) verification
+    const r314PathA=1890.00+39.0*100.00;
+    assert.equal(r314PathA.toFixed(2),'5790.00','11-15 R12 Path A total');
+    const r314PathC=120.00+3.5*100.00;
+    assert.equal(r314PathC.toFixed(2),'470.00','11-15 R12 Path C total');
+    assert.equal((r314PathA-r314PathC).toFixed(2),'5320.00','11-15 R12 savings vs Path A');
+    assert.equal(((r314PathA-r314PathC)/r314PathA*100).toFixed(2),'91.88','11-15 R12 pct savings vs Path A');
+    for(const r314File of ['workshops/github-trending-radar/docs/execorchestra-coordinator-3mode-heterogeneous-routing-herdr-worktree-fleet-manager-selection-faq.md','workshops/github-trending-radar/docs/execorchestra-coordinator-3mode-heterogeneous-routing-herdr-worktree-fleet-manager-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r12-execorchestra-coordinator.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r314File),'utf8');
+      assert.ok(txt.includes('1,890.00')&&txt.includes('3,900.00')&&txt.includes('5,790.00')&&txt.includes('120.00')&&txt.includes('350.00')&&txt.includes('470.00')&&txt.includes('5,320.00')&&txt.includes('91.88%')&&txt.includes('not_measured'),r314File+': contains exact 11-15 R12 execorchestra+coordinator closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
