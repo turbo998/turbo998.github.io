@@ -4124,6 +4124,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r317File),'utf8');
       assert.ok(txt.includes('1,860.00')&&txt.includes('4,100.00')&&txt.includes('5,960.00')&&txt.includes('110.00')&&txt.includes('350.00')&&txt.includes('460.00')&&txt.includes('5,500.00')&&txt.includes('92.28%')&&txt.includes('not_measured'),r317File+': contains exact 11-15 R15 artexforensics+copperhound closed-form parameters');
     }
+    // 2026-11-15 Night Round 16 (R318: macrogrants/checkpoint-forensics + Inferact/amd-kernels) verification
+    const r318PathA=2080.00+42.0*100.00;
+    assert.equal(r318PathA.toFixed(2),'6280.00','11-15 R16 Path A total');
+    const r318PathC=140.00+3.5*100.00;
+    assert.equal(r318PathC.toFixed(2),'490.00','11-15 R16 Path C total');
+    assert.equal((r318PathA-r318PathC).toFixed(2),'5790.00','11-15 R16 savings vs Path A');
+    assert.equal(((r318PathA-r318PathC)/r318PathA*100).toFixed(2),'92.20','11-15 R16 pct savings vs Path A');
+    for(const r318File of ['workshops/github-trending-radar/docs/checkpoint-forensics-amd-kernels-philox-sm-gpu-fingerprint-mi355x-flydsl-vllm-selection-faq.md','workshops/github-trending-radar/docs/checkpoint-forensics-amd-kernels-philox-sm-gpu-fingerprint-mi355x-flydsl-vllm-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r16-checkpointforensics-amdkernels.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r318File),'utf8');
+      assert.ok(txt.includes('2,080.00')&&txt.includes('4,200.00')&&txt.includes('6,280.00')&&txt.includes('140.00')&&txt.includes('350.00')&&txt.includes('490.00')&&txt.includes('5,790.00')&&txt.includes('92.20%')&&txt.includes('not_measured'),r318File+': contains exact 11-15 R16 checkpointforensics+amdkernels closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
