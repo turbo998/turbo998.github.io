@@ -4201,6 +4201,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r324File),'utf8');
       assert.ok(txt.includes('1,950.00')&&txt.includes('4,000.00')&&txt.includes('5,950.00')&&txt.includes('110.00')&&txt.includes('350.00')&&txt.includes('460.00')&&txt.includes('5,490.00')&&txt.includes('92.27%')&&txt.includes('not_measured'),r324File+': contains exact 11-15 R22 ncnnrust+vauss closed-form parameters');
     }
+    // 2026-11-15 Night Round 23 (R325: nuskey8/lazydsh + fazxes/rex-durable) verification
+    const r325PathA=1780.00+39.0*100.00;
+    assert.equal(r325PathA.toFixed(2),'5680.00','11-15 R23 Path A total');
+    const r325PathC=95.00+3.5*100.00;
+    assert.equal(r325PathC.toFixed(2),'445.00','11-15 R23 Path C total');
+    assert.equal((r325PathA-r325PathC).toFixed(2),'5235.00','11-15 R23 savings vs Path A');
+    assert.equal(((r325PathA-r325PathC)/r325PathA*100).toFixed(2),'92.17','11-15 R23 pct savings vs Path A');
+    for(const r325File of ['workshops/github-trending-radar/docs/lazydsh-rex-durable-43provider-deepseek-harness-tui-reboot-resilient-session-restorer-selection-faq.md','workshops/github-trending-radar/docs/lazydsh-rex-durable-43provider-deepseek-harness-tui-reboot-resilient-session-restorer-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r23-lazydsh-rexdurable.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r325File),'utf8');
+      assert.ok(txt.includes('1,780.00')&&txt.includes('3,900.00')&&txt.includes('5,680.00')&&txt.includes('95.00')&&txt.includes('350.00')&&txt.includes('445.00')&&txt.includes('5,235.00')&&txt.includes('92.17%')&&txt.includes('not_measured'),r325File+': contains exact 11-15 R23 lazydsh+rexdurable closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
