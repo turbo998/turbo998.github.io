@@ -4410,6 +4410,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r343File),'utf8');
       assert.ok(txt.includes('1,820.00')&&txt.includes('3,900.00')&&txt.includes('5,720.00')&&txt.includes('85.00')&&txt.includes('350.00')&&txt.includes('435.00')&&txt.includes('5,285.00')&&txt.includes('92.40%')&&txt.includes('not_measured'),r343File+': contains exact 11-15 R41 aaplus+bluewhiteppt closed-form parameters');
     }
+    // 2026-11-15 Night Round 42 (R344: Team-intN18-SoybeanSeclab/prtseek + simonw/beep-locator) verification
+    const r344PathA=1900.00+39.5*100.00;
+    assert.equal(r344PathA.toFixed(2),'5850.00','11-15 R42 Path A total');
+    const r344PathC=90.00+3.5*100.00;
+    assert.equal(r344PathC.toFixed(2),'440.00','11-15 R42 Path C total');
+    assert.equal((r344PathA-r344PathC).toFixed(2),'5410.00','11-15 R42 savings vs Path A');
+    assert.equal(((r344PathA-r344PathC)/r344PathA*100).toFixed(2),'92.48','11-15 R42 pct savings vs Path A');
+    for(const r344File of ['workshops/github-trending-radar/docs/prtseek-beep-locator-4role-ctf-agent-shared-budget-beepbeep-tdoa-acoustic-array-selection-faq.md','workshops/github-trending-radar/docs/prtseek-beep-locator-4role-ctf-agent-shared-budget-beepbeep-tdoa-acoustic-array-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r42-prtseek-beeplocator.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r344File),'utf8');
+      assert.ok(txt.includes('1,900.00')&&txt.includes('3,950.00')&&txt.includes('5,850.00')&&txt.includes('90.00')&&txt.includes('350.00')&&txt.includes('440.00')&&txt.includes('5,410.00')&&txt.includes('92.48%')&&txt.includes('not_measured'),r344File+': contains exact 11-15 R42 prtseek+beeplocator closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
