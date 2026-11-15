@@ -4267,6 +4267,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r330File),'utf8');
       assert.ok(txt.includes('2,050.00')&&txt.includes('4,100.00')&&txt.includes('6,150.00')&&txt.includes('115.00')&&txt.includes('350.00')&&txt.includes('465.00')&&txt.includes('5,685.00')&&txt.includes('92.44%')&&txt.includes('not_measured'),r330File+': contains exact 11-15 R28 banzhangh3+mimvox closed-form parameters');
     }
+    // 2026-11-15 Night Round 29 (R331: lizi600jin/dsh-ensp + WforEvery/dsh-runtime-log) verification
+    const r331PathA=1760.00+39.0*100.00;
+    assert.equal(r331PathA.toFixed(2),'5660.00','11-15 R29 Path A total');
+    const r331PathC=95.00+3.5*100.00;
+    assert.equal(r331PathC.toFixed(2),'445.00','11-15 R29 Path C total');
+    assert.equal((r331PathA-r331PathC).toFixed(2),'5215.00','11-15 R29 savings vs Path A');
+    assert.equal(((r331PathA-r331PathC)/r331PathA*100).toFixed(2),'92.14','11-15 R29 pct savings vs Path A');
+    for(const r331File of ['workshops/github-trending-radar/docs/dsh-ensp-dsh-runtime-log-huawei-ensp-17tool-mcp-automation-cordis-rotating-jsonl-logger-selection-faq.md','workshops/github-trending-radar/docs/dsh-ensp-dsh-runtime-log-huawei-ensp-17tool-mcp-automation-cordis-rotating-jsonl-logger-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r29-dshensp-dshruntimelog.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r331File),'utf8');
+      assert.ok(txt.includes('1,760.00')&&txt.includes('3,900.00')&&txt.includes('5,660.00')&&txt.includes('95.00')&&txt.includes('350.00')&&txt.includes('445.00')&&txt.includes('5,215.00')&&txt.includes('92.14%')&&txt.includes('not_measured'),r331File+': contains exact 11-15 R29 dshensp+dshruntimelog closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
