@@ -4542,6 +4542,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r355File),'utf8');
       assert.ok(txt.includes('1,860.00')&&txt.includes('3,900.00')&&txt.includes('5,760.00')&&txt.includes('85.00')&&txt.includes('350.00')&&txt.includes('435.00')&&txt.includes('5,325.00')&&txt.includes('92.45%')&&txt.includes('not_measured'),r355File+': contains exact 11-15 R53 gestaltx+erosioncn closed-form parameters');
     }
+    // 2026-11-15 Night Round 54 (R356: EpicMorg/Hammer-MCP + antirez/YouRecApp + allthemalware/vhs-phys) verification
+    const r356PathA=1960.00+40.5*100.00;
+    assert.equal(r356PathA.toFixed(2),'6010.00','11-15 R54 Path A total');
+    const r356PathC=90.00+3.5*100.00;
+    assert.equal(r356PathC.toFixed(2),'440.00','11-15 R54 Path C total');
+    assert.equal((r356PathA-r356PathC).toFixed(2),'5570.00','11-15 R54 savings vs Path A');
+    assert.equal(((r356PathA-r356PathC)/r356PathA*100).toFixed(2),'92.68','11-15 R54 pct savings vs Path A');
+    for(const r356File of ['workshops/github-trending-radar/docs/hammer-mcp-yourec-vhs-phys-wm-copydata-mcp-qwen3-asr-voicefixer-karlqvist-fm-selection-faq.md','workshops/github-trending-radar/docs/hammer-mcp-yourec-vhs-phys-wm-copydata-mcp-qwen3-asr-voicefixer-karlqvist-fm-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r54-hammermcp-yourec-vhsphys.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r356File),'utf8');
+      assert.ok(txt.includes('1,960.00')&&txt.includes('4,050.00')&&txt.includes('6,010.00')&&txt.includes('90.00')&&txt.includes('350.00')&&txt.includes('440.00')&&txt.includes('5,570.00')&&txt.includes('92.68%')&&txt.includes('not_measured'),r356File+': contains exact 11-15 R54 hammermcp+yourec+vhsphys closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
