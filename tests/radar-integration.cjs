@@ -4509,6 +4509,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r352File),'utf8');
       assert.ok(txt.includes('1,780.00')&&txt.includes('3,850.00')&&txt.includes('5,630.00')&&txt.includes('80.00')&&txt.includes('350.00')&&txt.includes('430.00')&&txt.includes('5,200.00')&&txt.includes('92.36%')&&txt.includes('not_measured'),r352File+': contains exact 11-15 R50 vsux+atieclxxfix closed-form parameters');
     }
+    // 2026-11-15 Night Round 51 (R353: nankhor/kite-pack + duwqijlk/muse-protocol) verification
+    const r353PathA=1940.00+40.0*100.00;
+    assert.equal(r353PathA.toFixed(2),'5940.00','11-15 R51 Path A total');
+    const r353PathC=95.00+3.5*100.00;
+    assert.equal(r353PathC.toFixed(2),'445.00','11-15 R51 Path C total');
+    assert.equal((r353PathA-r353PathC).toFixed(2),'5495.00','11-15 R51 savings vs Path A');
+    assert.equal(((r353PathA-r353PathC)/r353PathA*100).toFixed(2),'92.51','11-15 R51 pct savings vs Path A');
+    for(const r353File of ['workshops/github-trending-radar/docs/kite-pack-muse-protocol-zstd-cow-ava1-pipeline-stateful-http-protocol-audit-selection-faq.md','workshops/github-trending-radar/docs/kite-pack-muse-protocol-zstd-cow-ava1-pipeline-stateful-http-protocol-audit-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r51-kitepack-museprotocol.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r353File),'utf8');
+      assert.ok(txt.includes('1,940.00')&&txt.includes('4,000.00')&&txt.includes('5,940.00')&&txt.includes('95.00')&&txt.includes('350.00')&&txt.includes('445.00')&&txt.includes('5,495.00')&&txt.includes('92.51%')&&txt.includes('not_measured'),r353File+': contains exact 11-15 R51 kitepack+museprotocol closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
