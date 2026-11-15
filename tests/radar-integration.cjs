@@ -3981,6 +3981,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r304File),'utf8');
       assert.ok(txt.includes('1,840.00')&&txt.includes('3,900.00')&&txt.includes('5,740.00')&&txt.includes('130.00')&&txt.includes('350.00')&&txt.includes('480.00')&&txt.includes('5,260.00')&&txt.includes('91.64%')&&txt.includes('not_measured'),r304File+': contains exact 11-15 R2 ag-ui+stitch-skills closed-form parameters');
     }
+    // 2026-11-15 Night Round 3 (R305 Milestone: dream-num/univer + elementalsouls/Claude-BugHunter) verification
+    const r305PathA=1880.00+40.0*100.00;
+    assert.equal(r305PathA.toFixed(2),'5880.00','11-15 R3 Path A total');
+    const r305PathC=135.00+3.5*100.00;
+    assert.equal(r305PathC.toFixed(2),'485.00','11-15 R3 Path C total');
+    assert.equal((r305PathA-r305PathC).toFixed(2),'5395.00','11-15 R3 savings vs Path A');
+    assert.equal(((r305PathA-r305PathC)/r305PathA*100).toFixed(2),'91.75','11-15 R3 pct savings vs Path A');
+    for(const r305File of ['workshops/github-trending-radar/docs/univer-claude-bughunter-programmable-ai-office-sdk-681-pattern-redteam-skill-bundle-selection-faq.md','workshops/github-trending-radar/docs/univer-claude-bughunter-programmable-ai-office-sdk-681-pattern-redteam-skill-bundle-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r3-univer-bughunter.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r305File),'utf8');
+      assert.ok(txt.includes('1,880.00')&&txt.includes('4,000.00')&&txt.includes('5,880.00')&&txt.includes('135.00')&&txt.includes('350.00')&&txt.includes('485.00')&&txt.includes('5,395.00')&&txt.includes('91.75%')&&txt.includes('not_measured'),r305File+': contains exact 11-15 R3 univer+claude-bughunter closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
