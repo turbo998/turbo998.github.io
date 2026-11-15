@@ -4146,6 +4146,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r319File),'utf8');
       assert.ok(txt.includes('1,980.00')&&txt.includes('3,900.00')&&txt.includes('5,880.00')&&txt.includes('115.00')&&txt.includes('350.00')&&txt.includes('465.00')&&txt.includes('5,415.00')&&txt.includes('92.09%')&&txt.includes('not_measured'),r319File+': contains exact 11-15 R17 qwenttsneurons+recavsr closed-form parameters');
     }
+    // 2026-11-15 Night Round 18 (R320: alexturkey/z-image-turbo-pascal-4gb + mdhabibi/one-graph-two-worlds) verification
+    const r320PathA=1920.00+40.0*100.00;
+    assert.equal(r320PathA.toFixed(2),'5920.00','11-15 R18 Path A total');
+    const r320PathC=105.00+3.5*100.00;
+    assert.equal(r320PathC.toFixed(2),'455.00','11-15 R18 Path C total');
+    assert.equal((r320PathA-r320PathC).toFixed(2),'5465.00','11-15 R18 savings vs Path A');
+    assert.equal(((r320PathA-r320PathC)/r320PathA*100).toFixed(2),'92.31','11-15 R18 pct savings vs Path A');
+    for(const r320File of ['workshops/github-trending-radar/docs/z-image-turbo-pascal-4gb-one-graph-two-worlds-sm61-gguf-diffusion-rdf-shacl-neo4j-graphrag-selection-faq.md','workshops/github-trending-radar/docs/z-image-turbo-pascal-4gb-one-graph-two-worlds-sm61-gguf-diffusion-rdf-shacl-neo4j-graphrag-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r18-zimageturbo4gb-onegraphtwoworlds.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r320File),'utf8');
+      assert.ok(txt.includes('1,920.00')&&txt.includes('4,000.00')&&txt.includes('5,920.00')&&txt.includes('105.00')&&txt.includes('350.00')&&txt.includes('455.00')&&txt.includes('5,465.00')&&txt.includes('92.31%')&&txt.includes('not_measured'),r320File+': contains exact 11-15 R18 zimageturbo4gb+onegraphtwoworlds closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
