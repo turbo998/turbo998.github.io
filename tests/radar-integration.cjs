@@ -4289,6 +4289,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r332File),'utf8');
       assert.ok(txt.includes('1,850.00')&&txt.includes('3,900.00')&&txt.includes('5,750.00')&&txt.includes('95.00')&&txt.includes('350.00')&&txt.includes('445.00')&&txt.includes('5,305.00')&&txt.includes('92.26%')&&txt.includes('not_measured'),r332File+': contains exact 11-15 R30 gezhisheets+zoterointerlinear closed-form parameters');
     }
+    // 2026-11-15 Night Round 31 (R333: samertall/pulseguard-rt + cloudriverwedge/loupe-osint-image-verification) verification
+    const r333PathA=1880.00+40.0*100.00;
+    assert.equal(r333PathA.toFixed(2),'5880.00','11-15 R31 Path A total');
+    const r333PathC=100.00+3.5*100.00;
+    assert.equal(r333PathC.toFixed(2),'450.00','11-15 R31 Path C total');
+    assert.equal((r333PathA-r333PathC).toFixed(2),'5430.00','11-15 R31 savings vs Path A');
+    assert.equal(((r333PathA-r333PathC)/r333PathA*100).toFixed(2),'92.35','11-15 R31 pct savings vs Path A');
+    for(const r333File of ['workshops/github-trending-radar/docs/pulseguard-rt-loupe-osint-qnx8-dispatch-latency-analyzer-4test-copy-move-image-forensics-selection-faq.md','workshops/github-trending-radar/docs/pulseguard-rt-loupe-osint-qnx8-dispatch-latency-analyzer-4test-copy-move-image-forensics-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r31-pulseguardrt-loupeosint.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r333File),'utf8');
+      assert.ok(txt.includes('1,880.00')&&txt.includes('4,000.00')&&txt.includes('5,880.00')&&txt.includes('100.00')&&txt.includes('350.00')&&txt.includes('450.00')&&txt.includes('5,430.00')&&txt.includes('92.35%')&&txt.includes('not_measured'),r333File+': contains exact 11-15 R31 pulseguardrt+loupeosint closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
