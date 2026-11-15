@@ -4377,6 +4377,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r340File),'utf8');
       assert.ok(txt.includes('2,180.00')&&txt.includes('4,100.00')&&txt.includes('6,280.00')&&txt.includes('120.00')&&txt.includes('350.00')&&txt.includes('470.00')&&txt.includes('5,810.00')&&txt.includes('92.52%')&&txt.includes('not_measured'),r340File+': contains exact 11-15 R38 colabqwen38g4+crommacode closed-form parameters');
     }
+    // 2026-11-15 Night Round 39 (R341: andrisgauracs/bevel-os + oneamendez/crate) verification
+    const r341PathA=1940.00+40.0*100.00;
+    assert.equal(r341PathA.toFixed(2),'5940.00','11-15 R39 Path A total');
+    const r341PathC=95.00+3.5*100.00;
+    assert.equal(r341PathC.toFixed(2),'445.00','11-15 R39 Path C total');
+    assert.equal((r341PathA-r341PathC).toFixed(2),'5495.00','11-15 R39 savings vs Path A');
+    assert.equal(((r341PathA-r341PathC)/r341PathA*100).toFixed(2),'92.51','11-15 R39 pct savings vs Path A');
+    for(const r341File of ['workshops/github-trending-radar/docs/bevel-os-crate-esp32s3-vga-elf-desktop-os-arm64-to-arm64-jit-vm-engine-selection-faq.md','workshops/github-trending-radar/docs/bevel-os-crate-esp32s3-vga-elf-desktop-os-arm64-to-arm64-jit-vm-engine-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r39-bevelos-crate.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r341File),'utf8');
+      assert.ok(txt.includes('1,940.00')&&txt.includes('4,000.00')&&txt.includes('5,940.00')&&txt.includes('95.00')&&txt.includes('350.00')&&txt.includes('445.00')&&txt.includes('5,495.00')&&txt.includes('92.51%')&&txt.includes('not_measured'),r341File+': contains exact 11-15 R39 bevelos+crate closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
