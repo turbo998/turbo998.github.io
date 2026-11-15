@@ -4190,6 +4190,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r323File),'utf8');
       assert.ok(txt.includes('2,120.00')&&txt.includes('4,200.00')&&txt.includes('6,320.00')&&txt.includes('135.00')&&txt.includes('350.00')&&txt.includes('485.00')&&txt.includes('5,835.00')&&txt.includes('92.33%')&&txt.includes('not_measured'),r323File+': contains exact 11-15 R21 instantamp+3dscenebench closed-form parameters');
     }
+    // 2026-11-15 Night Round 22 (R324: Edwardssss/ncnn.rust + voyager-so/vauss) verification
+    const r324PathA=1950.00+40.0*100.00;
+    assert.equal(r324PathA.toFixed(2),'5950.00','11-15 R22 Path A total');
+    const r324PathC=110.00+3.5*100.00;
+    assert.equal(r324PathC.toFixed(2),'460.00','11-15 R22 Path C total');
+    assert.equal((r324PathA-r324PathC).toFixed(2),'5490.00','11-15 R22 savings vs Path A');
+    assert.equal(((r324PathA-r324PathC)/r324PathA*100).toFixed(2),'92.27','11-15 R22 pct savings vs Path A');
+    for(const r324File of ['workshops/github-trending-radar/docs/ncnn-rust-vauss-zero-copy-vulkan-inference-bindings-5x-gaussian-splat-trainer-selection-faq.md','workshops/github-trending-radar/docs/ncnn-rust-vauss-zero-copy-vulkan-inference-bindings-5x-gaussian-splat-trainer-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r22-ncnnrust-vauss.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r324File),'utf8');
+      assert.ok(txt.includes('1,950.00')&&txt.includes('4,000.00')&&txt.includes('5,950.00')&&txt.includes('110.00')&&txt.includes('350.00')&&txt.includes('460.00')&&txt.includes('5,490.00')&&txt.includes('92.27%')&&txt.includes('not_measured'),r324File+': contains exact 11-15 R22 ncnnrust+vauss closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
