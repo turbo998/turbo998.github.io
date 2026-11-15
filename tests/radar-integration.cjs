@@ -4113,6 +4113,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r316File),'utf8');
       assert.ok(txt.includes('1,940.00')&&txt.includes('4,000.00')&&txt.includes('5,940.00')&&txt.includes('130.00')&&txt.includes('350.00')&&txt.includes('480.00')&&txt.includes('5,460.00')&&txt.includes('91.92%')&&txt.includes('not_measured'),r316File+': contains exact 11-15 R14 antialgorithm+apiwhereitbreaks closed-form parameters');
     }
+    // 2026-11-15 Night Round 15 (R317: darkfibr/artex-forensics + BenTheCyberOne/Copperhound) verification
+    const r317PathA=1860.00+41.0*100.00;
+    assert.equal(r317PathA.toFixed(2),'5960.00','11-15 R15 Path A total');
+    const r317PathC=110.00+3.5*100.00;
+    assert.equal(r317PathC.toFixed(2),'460.00','11-15 R15 Path C total');
+    assert.equal((r317PathA-r317PathC).toFixed(2),'5500.00','11-15 R15 savings vs Path A');
+    assert.equal(((r317PathA-r317PathC)/r317PathA*100).toFixed(2),'92.28','11-15 R15 pct savings vs Path A');
+    for(const r317File of ['workshops/github-trending-radar/docs/artex-forensics-copperhound-ai-container-backdoor-disassembly-rust-ad-ot-attack-graph-selection-faq.md','workshops/github-trending-radar/docs/artex-forensics-copperhound-ai-container-backdoor-disassembly-rust-ad-ot-attack-graph-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r15-artexforensics-copperhound.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r317File),'utf8');
+      assert.ok(txt.includes('1,860.00')&&txt.includes('4,100.00')&&txt.includes('5,960.00')&&txt.includes('110.00')&&txt.includes('350.00')&&txt.includes('460.00')&&txt.includes('5,500.00')&&txt.includes('92.28%')&&txt.includes('not_measured'),r317File+': contains exact 11-15 R15 artexforensics+copperhound closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
