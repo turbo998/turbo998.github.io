@@ -4256,6 +4256,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r329File),'utf8');
       assert.ok(txt.includes('2,020.00')&&txt.includes('4,000.00')&&txt.includes('6,020.00')&&txt.includes('105.00')&&txt.includes('350.00')&&txt.includes('455.00')&&txt.includes('5,565.00')&&txt.includes('92.44%')&&txt.includes('not_measured'),r329File+': contains exact 11-15 R27 qwen3cantonese+openbean closed-form parameters');
     }
+    // 2026-11-15 Night Round 28 (R330: alinuo666/ComfyUI-Banzhang-All + tarpetos/mimvox) verification
+    const r330PathA=2050.00+41.0*100.00;
+    assert.equal(r330PathA.toFixed(2),'6150.00','11-15 R28 Path A total');
+    const r330PathC=115.00+3.5*100.00;
+    assert.equal(r330PathC.toFixed(2),'465.00','11-15 R28 Path C total');
+    assert.equal((r330PathA-r330PathC).toFixed(2),'5685.00','11-15 R28 savings vs Path A');
+    assert.equal(((r330PathA-r330PathC)/r330PathA*100).toFixed(2),'92.44','11-15 R28 pct savings vs Path A');
+    for(const r330File of ['workshops/github-trending-radar/docs/comfyui-banzhang-all-mimvox-6gb-minimax-h3-three-pass-director-60lang-phoneme-voice-cloning-selection-faq.md','workshops/github-trending-radar/docs/comfyui-banzhang-all-mimvox-6gb-minimax-h3-three-pass-director-60lang-phoneme-voice-cloning-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r28-banzhangh3-mimvox.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r330File),'utf8');
+      assert.ok(txt.includes('2,050.00')&&txt.includes('4,100.00')&&txt.includes('6,150.00')&&txt.includes('115.00')&&txt.includes('350.00')&&txt.includes('465.00')&&txt.includes('5,685.00')&&txt.includes('92.44%')&&txt.includes('not_measured'),r330File+': contains exact 11-15 R28 banzhangh3+mimvox closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
