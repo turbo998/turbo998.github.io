@@ -4025,6 +4025,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r308File),'utf8');
       assert.ok(txt.includes('2,140.00')&&txt.includes('3,990.00')&&txt.includes('6,130.00')&&txt.includes('115.00')&&txt.includes('367.50')&&txt.includes('482.50')&&txt.includes('5,647.50')&&txt.includes('92.13%')&&txt.includes('not_measured'),r308File+': contains exact 11-15 R6 deepseek-v3-jax+yasakani closed-form parameters');
     }
+    // 2026-11-15 Night Round 7 (R309: n4ze3m/tiny-voca + loanhviet/kokoro-vietnamese-distill) verification
+    const r309PathA=1720.00+37.0*95.00;
+    assert.equal(r309PathA.toFixed(2),'5235.00','11-15 R7 Path A total');
+    const r309PathC=80.00+3.5*95.00;
+    assert.equal(r309PathC.toFixed(2),'412.50','11-15 R7 Path C total');
+    assert.equal((r309PathA-r309PathC).toFixed(2),'4822.50','11-15 R7 savings vs Path A');
+    assert.equal(((r309PathA-r309PathC)/r309PathA*100).toFixed(2),'92.12','11-15 R7 pct savings vs Path A');
+    for(const r309File of ['workshops/github-trending-radar/docs/tiny-voca-kokoro-vietnamese-distill-4m-9dollar-tts-9mb-20x-wasm-browser-distillation-selection-faq.md','workshops/github-trending-radar/docs/tiny-voca-kokoro-vietnamese-distill-4m-9dollar-tts-9mb-20x-wasm-browser-distillation-selection-faq.en.md','assets/github-ai-radar-2026-11-15-r7-tinyvoca-kokorodistill.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-15-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r309File),'utf8');
+      assert.ok(txt.includes('1,720.00')&&txt.includes('3,515.00')&&txt.includes('5,235.00')&&txt.includes('80.00')&&txt.includes('332.50')&&txt.includes('412.50')&&txt.includes('4,822.50')&&txt.includes('92.12%')&&txt.includes('not_measured'),r309File+': contains exact 11-15 R7 tiny-voca+kokoro-distill closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
