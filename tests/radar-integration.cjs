@@ -4924,6 +4924,39 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r388File),'utf8');
       assert.ok(txt.includes('1,980.00')&&txt.includes('4,000.00')&&txt.includes('5,980.00')&&txt.includes('85.00')&&txt.includes('320.00')&&txt.includes('405.00')&&txt.includes('5,575.00')&&txt.includes('93.23%')&&txt.includes('not_measured'),r388File+': contains exact 11-16 R31 skanda-0+scirex+vps-orchestrator closed-form parameters');
     }
+    // 2026-11-16 Night Round 32 (R389: QwenLM/Qwen-Live-Delivery-Plugin + nanocodexyz/harnesslang) verification
+    const r389PathA=2020.00+40.0*100.00;
+    assert.equal(r389PathA.toFixed(2),'6020.00','11-16 R32 Path A total');
+    const r389PathC=85.00+3.2*100.00;
+    assert.equal(r389PathC.toFixed(2),'405.00','11-16 R32 Path C total');
+    assert.equal((r389PathA-r389PathC).toFixed(2),'5615.00','11-16 R32 savings vs Path A');
+    assert.equal(((r389PathA-r389PathC)/r389PathA*100).toFixed(2),'93.27','11-16 R32 pct savings vs Path A');
+    for(const r389File of ['workshops/github-trending-radar/docs/qwen-live-delivery-plugin-harnesslang-iterative-codex-version-snapshots-provably-durable-agent-compiler-selection-faq.md','workshops/github-trending-radar/docs/qwen-live-delivery-plugin-harnesslang-iterative-codex-version-snapshots-provably-durable-agent-compiler-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r32-qwenlivedelivery-harnesslang.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r389File),'utf8');
+      assert.ok(txt.includes('2,020.00')&&txt.includes('4,000.00')&&txt.includes('6,020.00')&&txt.includes('85.00')&&txt.includes('320.00')&&txt.includes('405.00')&&txt.includes('5,615.00')&&txt.includes('93.27%')&&txt.includes('not_measured'),r389File+': contains exact 11-16 R32 qwen-live-delivery+harnesslang closed-form parameters');
+    }
+    // 2026-11-16 Night Round 33 (R390 Milestone: punit2911/meridian-multimodal-rag + Vecshield/VecShield + Domush/antigravity-plugin-context-mode + STARKTANG108/antigravity-token-monitor) verification
+    const r390PathA=2060.00+40.5*100.00;
+    assert.equal(r390PathA.toFixed(2),'6110.00','11-16 R33 Path A total');
+    const r390PathC=85.00+3.2*100.00;
+    assert.equal(r390PathC.toFixed(2),'405.00','11-16 R33 Path C total');
+    assert.equal((r390PathA-r390PathC).toFixed(2),'5705.00','11-16 R33 savings vs Path A');
+    assert.equal(((r390PathA-r390PathC)/r390PathA*100).toFixed(2),'93.37','11-16 R33 pct savings vs Path A');
+    for(const r390File of ['workshops/github-trending-radar/docs/meridian-multimodal-rag-vecshield-antigravity-context-mode-8channel-chart-rag-5engine-vector-audit-90pct-context-trim-selection-faq.md','workshops/github-trending-radar/docs/meridian-multimodal-rag-vecshield-antigravity-context-mode-8channel-chart-rag-5engine-vector-audit-90pct-context-trim-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r33-meridianrag-vecshield-contextmode.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r390File),'utf8');
+      assert.ok(txt.includes('2,060.00')&&txt.includes('4,050.00')&&txt.includes('6,110.00')&&txt.includes('85.00')&&txt.includes('320.00')&&txt.includes('405.00')&&txt.includes('5,705.00')&&txt.includes('93.37%')&&txt.includes('not_measured'),r390File+': contains exact 11-16 R33 meridian+vecshield+context-mode closed-form parameters');
+    }
+    // 2026-11-16 Night Round 34 (R391: Picom-code/pico-dgx-qwen38 + jayleaton/qwen4-tensorfold-spark + VittorioPastore/m1mic-mlx + ivanfioravanti/mlx-d1-gestures) verification
+    const r391PathA=1940.00+39.0*100.00;
+    assert.equal(r391PathA.toFixed(2),'5840.00','11-16 R34 Path A total');
+    const r391PathC=80.00+3.1*100.00;
+    assert.equal(r391PathC.toFixed(2),'390.00','11-16 R34 Path C total');
+    assert.equal((r391PathA-r391PathC).toFixed(2),'5450.00','11-16 R34 savings vs Path A');
+    assert.equal(((r391PathA-r391PathC)/r391PathA*100).toFixed(2),'93.32','11-16 R34 pct savings vs Path A');
+    for(const r391File of ['workshops/github-trending-radar/docs/pico-dgx-qwen38-tensorfold-m1mic-mlx-d1-gestures-dgx-spark-296toks-79min-macbook-g1-tracker-zero-token-vlm-selection-faq.md','workshops/github-trending-radar/docs/pico-dgx-qwen38-tensorfold-m1mic-mlx-d1-gestures-dgx-spark-296toks-79min-macbook-g1-tracker-zero-token-vlm-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r34-picodgx-m1micmlx-d1gestures.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r391File),'utf8');
+      assert.ok(txt.includes('1,940.00')&&txt.includes('3,900.00')&&txt.includes('5,840.00')&&txt.includes('80.00')&&txt.includes('310.00')&&txt.includes('390.00')&&txt.includes('5,450.00')&&txt.includes('93.32%')&&txt.includes('not_measured'),r391File+': contains exact 11-16 R34 pico-dgx-qwen38+m1mic-mlx+d1-gestures closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
