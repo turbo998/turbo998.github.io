@@ -4638,6 +4638,28 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r362File),'utf8');
       assert.ok(txt.includes('2,120.00')&&txt.includes('4,100.00')&&txt.includes('6,220.00')&&txt.includes('75.00')&&txt.includes('320.00')&&txt.includes('395.00')&&txt.includes('5,825.00')&&txt.includes('93.65%')&&txt.includes('not_measured'),r362File+': contains exact 11-16 R5 codehygiene+ssd-guard+aha closed-form parameters');
     }
+    // 2026-11-16 Night Round 6 (R363: apekshik/three-nanite + siliconjungle/shapeshift-labs-ink-studio + iamvillain/SyntaxSplat) verification
+    const r363PathA=1880.00+39.0*100.00;
+    assert.equal(r363PathA.toFixed(2),'5780.00','11-16 R6 Path A total');
+    const r363PathC=85.00+3.3*100.00;
+    assert.equal(r363PathC.toFixed(2),'415.00','11-16 R6 Path C total');
+    assert.equal((r363PathA-r363PathC).toFixed(2),'5365.00','11-16 R6 savings vs Path A');
+    assert.equal(((r363PathA-r363PathC)/r363PathA*100).toFixed(2),'92.82','11-16 R6 pct savings vs Path A');
+    for(const r363File of ['workshops/github-trending-radar/docs/three-nanite-ink-studio-syntaxsplat-cluster-lod-virtual-geometry-sdf-pixelart-gaussian-splats-selection-faq.md','workshops/github-trending-radar/docs/three-nanite-ink-studio-syntaxsplat-cluster-lod-virtual-geometry-sdf-pixelart-gaussian-splats-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r6-threenanite-inkstudio.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r363File),'utf8');
+      assert.ok(txt.includes('1,880.00')&&txt.includes('3,900.00')&&txt.includes('5,780.00')&&txt.includes('85.00')&&txt.includes('330.00')&&txt.includes('415.00')&&txt.includes('5,365.00')&&txt.includes('92.82%')&&txt.includes('not_measured'),r363File+': contains exact 11-16 R6 three-nanite+ink-studio+syntaxsplat closed-form parameters');
+    }
+    // 2026-11-16 Night Round 7 (R364: agenticode/my + morajabi/poo) verification
+    const r364PathA=1950.00+40.0*100.00;
+    assert.equal(r364PathA.toFixed(2),'5950.00','11-16 R7 Path A total');
+    const r364PathC=80.00+3.1*100.00;
+    assert.equal(r364PathC.toFixed(2),'390.00','11-16 R7 Path C total');
+    assert.equal((r364PathA-r364PathC).toFixed(2),'5560.00','11-16 R7 savings vs Path A');
+    assert.equal(((r364PathA-r364PathC)/r364PathA*100).toFixed(2),'93.45','11-16 R7 pct savings vs Path A');
+    for(const r364File of ['workshops/github-trending-radar/docs/agenticode-my-morajabi-poo-dimm-serial-ras-memory-forensics-worktree-safe-disk-cleaner-mcp-selection-faq.md','workshops/github-trending-radar/docs/agenticode-my-morajabi-poo-dimm-serial-ras-memory-forensics-worktree-safe-disk-cleaner-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r7-memory-poo.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r364File),'utf8');
+      assert.ok(txt.includes('1,950.00')&&txt.includes('4,000.00')&&txt.includes('5,950.00')&&txt.includes('80.00')&&txt.includes('310.00')&&txt.includes('390.00')&&txt.includes('5,560.00')&&txt.includes('93.45%')&&txt.includes('not_measured'),r364File+': contains exact 11-16 R7 agenticode-my+morajabi-poo closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
