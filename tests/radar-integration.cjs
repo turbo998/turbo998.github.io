@@ -5089,6 +5089,39 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r403File),'utf8');
       assert.ok(txt.includes('1,850.00')&&txt.includes('3,850.00')&&txt.includes('5,700.00')&&txt.includes('70.00')&&txt.includes('300.00')&&txt.includes('370.00')&&txt.includes('5,330.00')&&txt.includes('93.51%')&&txt.includes('not_measured'),r403File+': contains exact 11-16 R46 qiaomu-deepseek+hwpx-docs+heapexplorer closed-form parameters');
     }
+    // 2026-11-16 Night Round 47 (R404: zeative/motion-educator + staryone/motlab + CocoSgt/dsh-game-tidemark) verification
+    const r404PathA=2020.00+40.0*100.00;
+    assert.equal(r404PathA.toFixed(2),'6020.00','11-16 R47 Path A total');
+    const r404PathC=80.00+3.1*100.00;
+    assert.equal(r404PathC.toFixed(2),'390.00','11-16 R47 Path C total');
+    assert.equal((r404PathA-r404PathC).toFixed(2),'5630.00','11-16 R47 savings vs Path A');
+    assert.equal(((r404PathA-r404PathC)/r404PathA*100).toFixed(2),'93.52','11-16 R47 pct savings vs Path A');
+    for(const r404File of ['workshops/github-trending-radar/docs/motion-educator-motlab-tidemark-storyboard-gated-1080p60-3d-teardown-films-webcodecs-4k-video-engine-selection-faq.md','workshops/github-trending-radar/docs/motion-educator-motlab-tidemark-storyboard-gated-1080p60-3d-teardown-films-webcodecs-4k-video-engine-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r47-motioneducator-motlab-tidemark.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r404File),'utf8');
+      assert.ok(txt.includes('2,020.00')&&txt.includes('4,000.00')&&txt.includes('6,020.00')&&txt.includes('80.00')&&txt.includes('310.00')&&txt.includes('390.00')&&txt.includes('5,630.00')&&txt.includes('93.52%')&&txt.includes('not_measured'),r404File+': contains exact 11-16 R47 motion-educator+motlab+tidemark closed-form parameters');
+    }
+    // 2026-11-16 Night Round 48 (R405 Milestone: Lumidarin/agy-capsule + szmichalczyk/focus-app + raminturne/peeky) verification
+    const r405PathA=1870.00+38.5*100.00;
+    assert.equal(r405PathA.toFixed(2),'5720.00','11-16 R48 Path A total');
+    const r405PathC=70.00+3.0*100.00;
+    assert.equal(r405PathC.toFixed(2),'370.00','11-16 R48 Path C total');
+    assert.equal((r405PathA-r405PathC).toFixed(2),'5350.00','11-16 R48 savings vs Path A');
+    assert.equal(((r405PathA-r405PathC)/r405PathA*100).toFixed(2),'93.53','11-16 R48 pct savings vs Path A');
+    for(const r405File of ['workshops/github-trending-radar/docs/agy-capsule-focus-app-peeky-3min-cache-expiry-capsule-claude-codex-session-calendar-3mb-windows-island-selection-faq.md','workshops/github-trending-radar/docs/agy-capsule-focus-app-peeky-3min-cache-expiry-capsule-claude-codex-session-calendar-3mb-windows-island-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r48-agycapsule-focusapp-peeky.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r405File),'utf8');
+      assert.ok(txt.includes('1,870.00')&&txt.includes('3,850.00')&&txt.includes('5,720.00')&&txt.includes('70.00')&&txt.includes('300.00')&&txt.includes('370.00')&&txt.includes('5,350.00')&&txt.includes('93.53%')&&txt.includes('not_measured'),r405File+': contains exact 11-16 R48 agy-capsule+focus-app+peeky closed-form parameters');
+    }
+    // 2026-11-16 Night Round 49 (R406: lynote-ai/ai-tutor + tipsai/product-seo + omidz4t/sigma) verification
+    const r406PathA=1910.00+39.0*100.00;
+    assert.equal(r406PathA.toFixed(2),'5810.00','11-16 R49 Path A total');
+    const r406PathC=75.00+3.1*100.00;
+    assert.equal(r406PathC.toFixed(2),'385.00','11-16 R49 Path C total');
+    assert.equal((r406PathA-r406PathC).toFixed(2),'5425.00','11-16 R49 savings vs Path A');
+    assert.equal(((r406PathA-r406PathC)/r406PathA*100).toFixed(2),'93.37','11-16 R49 pct savings vs Path A');
+    for(const r406File of ['workshops/github-trending-radar/docs/lynote-ai-tutor-product-seo-sigma-quote-gated-jev-verified-courses-30pct-rollback-seo-chatmail-agent-selection-faq.md','workshops/github-trending-radar/docs/lynote-ai-tutor-product-seo-sigma-quote-gated-jev-verified-courses-30pct-rollback-seo-chatmail-agent-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r49-lynote-productseo-sigma.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r406File),'utf8');
+      assert.ok(txt.includes('1,910.00')&&txt.includes('3,900.00')&&txt.includes('5,810.00')&&txt.includes('75.00')&&txt.includes('310.00')&&txt.includes('385.00')&&txt.includes('5,425.00')&&txt.includes('93.37%')&&txt.includes('not_measured'),r406File+': contains exact 11-16 R49 lynote+product-seo+sigma closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
