@@ -5188,6 +5188,39 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r412File),'utf8');
       assert.ok(txt.includes('2,120.00')&&txt.includes('4,050.00')&&txt.includes('6,170.00')&&txt.includes('80.00')&&txt.includes('310.00')&&txt.includes('390.00')&&txt.includes('5,780.00')&&txt.includes('93.68%')&&txt.includes('not_measured'),r412File+': contains exact 11-16 R55 saber-engine+microvla+blendclone closed-form parameters');
     }
+    // 2026-11-16 Night Round 56 (R413: Lentlily22/rolling-summary-tutorial + Fedeparg/talk-like-me + zhukunpenglinyutong/dsh-ccgui + liujiangnanchenjbguo/dsh-gufa-code) verification
+    const r413PathA=1930.00+39.0*100.00;
+    assert.equal(r413PathA.toFixed(2),'5830.00','11-16 R56 Path A total');
+    const r413PathC=75.00+3.1*100.00;
+    assert.equal(r413PathC.toFixed(2),'385.00','11-16 R56 Path C total');
+    assert.equal((r413PathA-r413PathC).toFixed(2),'5445.00','11-16 R56 savings vs Path A');
+    assert.equal(((r413PathA-r413PathC)/r413PathA*100).toFixed(2),'93.40','11-16 R56 pct savings vs Path A');
+    for(const r413File of ['workshops/github-trending-radar/docs/rolling-summary-tutorial-talk-like-me-dsh-ccgui-gufa-code-hysteresis-cache-alignment-05b-lora-dsh-monaco-ide-selection-faq.md','workshops/github-trending-radar/docs/rolling-summary-tutorial-talk-like-me-dsh-ccgui-gufa-code-hysteresis-cache-alignment-05b-lora-dsh-monaco-ide-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r56-rollingsummary-talklikeme-dshccgui-gufacode.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r413File),'utf8');
+      assert.ok(txt.includes('1,930.00')&&txt.includes('3,900.00')&&txt.includes('5,830.00')&&txt.includes('75.00')&&txt.includes('310.00')&&txt.includes('385.00')&&txt.includes('5,445.00')&&txt.includes('93.40%')&&txt.includes('not_measured'),r413File+': contains exact 11-16 R56 rolling-summary+talk-like-me+dsh-ccgui closed-form parameters');
+    }
+    // 2026-11-16 Night Round 57 (R414: useFluid/fluidui + gustavo-henriq/antislop-ui-ux-skill + kasperzackgames/chatgpt-pixel-effects + winchxyz/afterglyph) verification
+    const r414PathA=1860.00+38.5*100.00;
+    assert.equal(r414PathA.toFixed(2),'5710.00','11-16 R57 Path A total');
+    const r414PathC=70.00+3.0*100.00;
+    assert.equal(r414PathC.toFixed(2),'370.00','11-16 R57 Path C total');
+    assert.equal((r414PathA-r414PathC).toFixed(2),'5340.00','11-16 R57 savings vs Path A');
+    assert.equal(((r414PathA-r414PathC)/r414PathA*100).toFixed(2),'93.52','11-16 R57 pct savings vs Path A');
+    for(const r414File of ['workshops/github-trending-radar/docs/fluidui-antislop-ui-ux-chatgpt-pixel-effects-afterglyph-spring-contour-morph-gray-wireframe-godot-vfx-selection-faq.md','workshops/github-trending-radar/docs/fluidui-antislop-ui-ux-chatgpt-pixel-effects-afterglyph-spring-contour-morph-gray-wireframe-godot-vfx-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r57-fluidui-antislop-pixeleffects-afterglyph.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r414File),'utf8');
+      assert.ok(txt.includes('1,860.00')&&txt.includes('3,850.00')&&txt.includes('5,710.00')&&txt.includes('70.00')&&txt.includes('300.00')&&txt.includes('370.00')&&txt.includes('5,340.00')&&txt.includes('93.52%')&&txt.includes('not_measured'),r414File+': contains exact 11-16 R57 fluidui+antislop+afterglyph closed-form parameters');
+    }
+    // 2026-11-16 Night Round 58 (R415 Milestone: avivgerz-hue/vibe-shield + highants/PLaMo_Translate_EX + sp-yduck/overlaysubs + withcoresystem/v-EMU) verification
+    const r415PathA=1980.00+40.0*100.00;
+    assert.equal(r415PathA.toFixed(2),'5980.00','11-16 R58 Path A total');
+    const r415PathC=75.00+3.1*100.00;
+    assert.equal(r415PathC.toFixed(2),'385.00','11-16 R58 Path C total');
+    assert.equal((r415PathA-r415PathC).toFixed(2),'5595.00','11-16 R58 savings vs Path A');
+    assert.equal(((r415PathA-r415PathC)/r415PathA*100).toFixed(2),'93.56','11-16 R58 pct savings vs Path A');
+    for(const r415File of ['workshops/github-trending-radar/docs/vibe-shield-plamo-translate-ex-overlaysubs-v-emu-92rule-ai-security-gate-local-plamo3-ocr-subtitles-kvm-lab-selection-faq.md','workshops/github-trending-radar/docs/vibe-shield-plamo-translate-ex-overlaysubs-v-emu-92rule-ai-security-gate-local-plamo3-ocr-subtitles-kvm-lab-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r58-vibeshield-plamotranslate-overlaysubs-vemu.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r415File),'utf8');
+      assert.ok(txt.includes('1,980.00')&&txt.includes('4,000.00')&&txt.includes('5,980.00')&&txt.includes('75.00')&&txt.includes('310.00')&&txt.includes('385.00')&&txt.includes('5,595.00')&&txt.includes('93.56%')&&txt.includes('not_measured'),r415File+': contains exact 11-16 R58 vibe-shield+plamo-translate+v-emu closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
