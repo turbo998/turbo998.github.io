@@ -5023,6 +5023,39 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r397File),'utf8');
       assert.ok(txt.includes('1,820.00')&&txt.includes('3,800.00')&&txt.includes('5,620.00')&&txt.includes('70.00')&&txt.includes('300.00')&&txt.includes('370.00')&&txt.includes('5,250.00')&&txt.includes('93.42%')&&txt.includes('not_measured'),r397File+': contains exact 11-16 R40 likhari+hima-finetune+clipper-skill closed-form parameters');
     }
+    // 2026-11-16 Night Round 41 (R398: acking-you/liftgate + MolMind/SteerTrace + makors/agency + wycocoyu/agy-context-dashboard) verification
+    const r398PathA=1880.00+39.0*100.00;
+    assert.equal(r398PathA.toFixed(2),'5780.00','11-16 R41 Path A total');
+    const r398PathC=75.00+3.1*100.00;
+    assert.equal(r398PathC.toFixed(2),'385.00','11-16 R41 Path C total');
+    assert.equal((r398PathA-r398PathC).toFixed(2),'5395.00','11-16 R41 savings vs Path A');
+    assert.equal(((r398PathA-r398PathC)/r398PathA*100).toFixed(2),'93.34','11-16 R41 pct savings vs Path A');
+    for(const r398File of ['workshops/github-trending-radar/docs/liftgate-steertrace-agency-agy-context-dashboard-official-acp-gateway-judgment-audit-nixos-agent-appliance-selection-faq.md','workshops/github-trending-radar/docs/liftgate-steertrace-agency-agy-context-dashboard-official-acp-gateway-judgment-audit-nixos-agent-appliance-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r41-liftgate-steertrace-agency-agydashboard.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r398File),'utf8');
+      assert.ok(txt.includes('1,880.00')&&txt.includes('3,900.00')&&txt.includes('5,780.00')&&txt.includes('75.00')&&txt.includes('310.00')&&txt.includes('385.00')&&txt.includes('5,395.00')&&txt.includes('93.34%')&&txt.includes('not_measured'),r398File+': contains exact 11-16 R41 liftgate+steertrace+agency closed-form parameters');
+    }
+    // 2026-11-16 Night Round 42 (R399: DasCondor/kubefactory + influxnetwork/meshwork + lij768423-svg/meshatlas + Ctuna89/ha-connection-map-card) verification
+    const r399PathA=1810.00+38.0*100.00;
+    assert.equal(r399PathA.toFixed(2),'5610.00','11-16 R42 Path A total');
+    const r399PathC=65.00+3.0*100.00;
+    assert.equal(r399PathC.toFixed(2),'365.00','11-16 R42 Path C total');
+    assert.equal((r399PathA-r399PathC).toFixed(2),'5245.00','11-16 R42 savings vs Path A');
+    assert.equal(((r399PathA-r399PathC)/r399PathA*100).toFixed(2),'93.49','11-16 R42 pct savings vs Path A');
+    for(const r399File of ['workshops/github-trending-radar/docs/kubefactory-meshwork-meshatlas-ha-connection-map-3d-k8s-factory-onsite-network-audit-tailscale-derp-map-selection-faq.md','workshops/github-trending-radar/docs/kubefactory-meshwork-meshatlas-ha-connection-map-3d-k8s-factory-onsite-network-audit-tailscale-derp-map-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r42-kubefactory-meshwork-meshatlas-hamap.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r399File),'utf8');
+      assert.ok(txt.includes('1,810.00')&&txt.includes('3,800.00')&&txt.includes('5,610.00')&&txt.includes('65.00')&&txt.includes('300.00')&&txt.includes('365.00')&&txt.includes('5,245.00')&&txt.includes('93.49%')&&txt.includes('not_measured'),r399File+': contains exact 11-16 R42 kubefactory+meshwork+meshatlas closed-form parameters');
+    }
+    // 2026-11-16 Night Round 43 (R400 Milestone: hajimehoshi/ekuma + mireklzicar/synfactor + vishalbg02/global-fire-harmonization + vi-is-ramen/genum) verification
+    const r400PathA=2150.00+41.0*100.00;
+    assert.equal(r400PathA.toFixed(2),'6250.00','11-16 R43 Path A total');
+    const r400PathC=85.00+3.2*100.00;
+    assert.equal(r400PathC.toFixed(2),'405.00','11-16 R43 Path C total');
+    assert.equal((r400PathA-r400PathC).toFixed(2),'5845.00','11-16 R43 savings vs Path A');
+    assert.equal(((r400PathA-r400PathC)/r400PathA*100).toFixed(2),'93.52','11-16 R43 pct savings vs Path A');
+    for(const r400File of ['workshops/github-trending-radar/docs/ekuma-synfactor-global-fire-harmonization-genum-pure-go-es2026-vm-296b-synthon-cp16-nasa-modis-viirs-selection-faq.md','workshops/github-trending-radar/docs/ekuma-synfactor-global-fire-harmonization-genum-pure-go-es2026-vm-296b-synthon-cp16-nasa-modis-viirs-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r43-ekuma-synfactor-fireharmonization-genum.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r400File),'utf8');
+      assert.ok(txt.includes('2,150.00')&&txt.includes('4,100.00')&&txt.includes('6,250.00')&&txt.includes('85.00')&&txt.includes('320.00')&&txt.includes('405.00')&&txt.includes('5,845.00')&&txt.includes('93.52%')&&txt.includes('not_measured'),r400File+': contains exact 11-16 R43 ekuma+synfactor+fireharmonization closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
