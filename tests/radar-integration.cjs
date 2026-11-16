@@ -4759,6 +4759,39 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r373File),'utf8');
       assert.ok(txt.includes('1,890.00')&&txt.includes('3,950.00')&&txt.includes('5,840.00')&&txt.includes('80.00')&&txt.includes('310.00')&&txt.includes('390.00')&&txt.includes('5,450.00')&&txt.includes('93.32%')&&txt.includes('not_measured'),r373File+': contains exact 11-16 R16 rewind+cyber-monster closed-form parameters');
     }
+    // 2026-11-16 Night Round 17 (R374: Dart-veider01/TradingAgents-crypto + AlphaCoreICT/Fractal-ultra-pro-) verification
+    const r374PathA=1940.00+40.0*100.00;
+    assert.equal(r374PathA.toFixed(2),'5940.00','11-16 R17 Path A total');
+    const r374PathC=85.00+3.2*100.00;
+    assert.equal(r374PathC.toFixed(2),'405.00','11-16 R17 Path C total');
+    assert.equal((r374PathA-r374PathC).toFixed(2),'5535.00','11-16 R17 savings vs Path A');
+    assert.equal(((r374PathA-r374PathC)/r374PathA*100).toFixed(2),'93.18','11-16 R17 pct savings vs Path A');
+    for(const r374File of ['workshops/github-trending-radar/docs/tradingagents-crypto-fractal-ultra-pro-multi-agent-bytx-execution-34k-ast-ict-engine-selection-faq.md','workshops/github-trending-radar/docs/tradingagents-crypto-fractal-ultra-pro-multi-agent-bytx-execution-34k-ast-ict-engine-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r17-tradingagentscrypto-fractal.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r374File),'utf8');
+      assert.ok(txt.includes('1,940.00')&&txt.includes('4,000.00')&&txt.includes('5,940.00')&&txt.includes('85.00')&&txt.includes('320.00')&&txt.includes('405.00')&&txt.includes('5,535.00')&&txt.includes('93.18%')&&txt.includes('not_measured'),r374File+': contains exact 11-16 R17 tradingagents-crypto+fractal closed-form parameters');
+    }
+    // 2026-11-16 Night Round 18 (R375 Milestone: CzzzzzzJ/mdldm-maitian + zarockfat/zgg-find-ecommerce-skills) verification
+    const r375PathA=1780.00+38.0*100.00;
+    assert.equal(r375PathA.toFixed(2),'5580.00','11-16 R18 Path A total');
+    const r375PathC=70.00+3.0*100.00;
+    assert.equal(r375PathC.toFixed(2),'370.00','11-16 R18 Path C total');
+    assert.equal((r375PathA-r375PathC).toFixed(2),'5210.00','11-16 R18 savings vs Path A');
+    assert.equal(((r375PathA-r375PathC)/r375PathA*100).toFixed(2),'93.37','11-16 R18 pct savings vs Path A');
+    for(const r375File of ['workshops/github-trending-radar/docs/mdldm-maitian-zgg-ecommerce-skills-7platform-hitl-creator-workbench-161-ecommerce-skill-router-selection-faq.md','workshops/github-trending-radar/docs/mdldm-maitian-zgg-ecommerce-skills-7platform-hitl-creator-workbench-161-ecommerce-skill-router-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r18-maitian-ecommerceskills.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r375File),'utf8');
+      assert.ok(txt.includes('1,780.00')&&txt.includes('3,800.00')&&txt.includes('5,580.00')&&txt.includes('70.00')&&txt.includes('300.00')&&txt.includes('370.00')&&txt.includes('5,210.00')&&txt.includes('93.37%')&&txt.includes('not_measured'),r375File+': contains exact 11-16 R18 maitian+ecommerce-skills closed-form parameters');
+    }
+    // 2026-11-16 Night Round 19 (R376: homielab/noteflare + AdamJBurns/workflows + DesignerStephen1/ascii-animals) verification
+    const r376PathA=1850.00+38.5*100.00;
+    assert.equal(r376PathA.toFixed(2),'5700.00','11-16 R19 Path A total');
+    const r376PathC=75.00+3.1*100.00;
+    assert.equal(r376PathC.toFixed(2),'385.00','11-16 R19 Path C total');
+    assert.equal((r376PathA-r376PathC).toFixed(2),'5315.00','11-16 R19 savings vs Path A');
+    assert.equal(((r376PathA-r376PathC)/r376PathA*100).toFixed(2),'93.25','11-16 R19 pct savings vs Path A');
+    for(const r376File of ['workshops/github-trending-radar/docs/noteflare-workflows-ascii-animals-e2ee-cloudflare-d1-notes-safe-automation-canvas-glass-ascii-ui-selection-faq.md','workshops/github-trending-radar/docs/noteflare-workflows-ascii-animals-e2ee-cloudflare-d1-notes-safe-automation-canvas-glass-ascii-ui-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r19-noteflare-workflows-asciianimals.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r376File),'utf8');
+      assert.ok(txt.includes('1,850.00')&&txt.includes('3,850.00')&&txt.includes('5,700.00')&&txt.includes('75.00')&&txt.includes('310.00')&&txt.includes('385.00')&&txt.includes('5,315.00')&&txt.includes('93.25%')&&txt.includes('not_measured'),r376File+': contains exact 11-16 R19 noteflare+workflows+ascii-animals closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
