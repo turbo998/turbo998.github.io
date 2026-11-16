@@ -5122,6 +5122,39 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r406File),'utf8');
       assert.ok(txt.includes('1,910.00')&&txt.includes('3,900.00')&&txt.includes('5,810.00')&&txt.includes('75.00')&&txt.includes('310.00')&&txt.includes('385.00')&&txt.includes('5,425.00')&&txt.includes('93.37%')&&txt.includes('not_measured'),r406File+': contains exact 11-16 R49 lynote+product-seo+sigma closed-form parameters');
     }
+    // 2026-11-16 Night Round 50 (R407: inclusionAI/Duo + Maverick720/Focus-KV + Roboparty/PartyMimic) verification
+    const r407PathA=2240.00+42.0*100.00;
+    assert.equal(r407PathA.toFixed(2),'6440.00','11-16 R50 Path A total');
+    const r407PathC=90.00+3.2*100.00;
+    assert.equal(r407PathC.toFixed(2),'410.00','11-16 R50 Path C total');
+    assert.equal((r407PathA-r407PathC).toFixed(2),'6030.00','11-16 R50 savings vs Path A');
+    assert.equal(((r407PathA-r407PathC)/r407PathA*100).toFixed(2),'93.63','11-16 R50 pct savings vs Path A');
+    for(const r407File of ['workshops/github-trending-radar/docs/duo-focus-kv-partymimic-full-duplex-reciprocal-world-model-reasoning-head-kv-compression-26min-humanoid-tracker-selection-faq.md','workshops/github-trending-radar/docs/duo-focus-kv-partymimic-full-duplex-reciprocal-world-model-reasoning-head-kv-compression-26min-humanoid-tracker-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r50-duo-focuskv-partymimic.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r407File),'utf8');
+      assert.ok(txt.includes('2,240.00')&&txt.includes('4,200.00')&&txt.includes('6,440.00')&&txt.includes('90.00')&&txt.includes('320.00')&&txt.includes('410.00')&&txt.includes('6,030.00')&&txt.includes('93.63%')&&txt.includes('not_measured'),r407File+': contains exact 11-16 R50 duo+focus-kv+partymimic closed-form parameters');
+    }
+    // 2026-11-16 Night Round 51 (R408: chip-ai-agent/PCBRouteAgent + popvax/yash + xia1314tong/quantum-circuit-studio + utai-utai/Qutai) verification
+    const r408PathA=2080.00+40.5*100.00;
+    assert.equal(r408PathA.toFixed(2),'6130.00','11-16 R51 Path A total');
+    const r408PathC=80.00+3.1*100.00;
+    assert.equal(r408PathC.toFixed(2),'390.00','11-16 R51 Path C total');
+    assert.equal((r408PathA-r408PathC).toFixed(2),'5740.00','11-16 R51 savings vs Path A');
+    assert.equal(((r408PathA-r408PathC)/r408PathA*100).toFixed(2),'93.64','11-16 R51 pct savings vs Path A');
+    for(const r408File of ['workshops/github-trending-radar/docs/pcbrouteagent-popvax-yash-quantum-circuit-studio-qutai-kicad-pns-routing-agent-open-mrna-vaccine-quantum-sdk-selection-faq.md','workshops/github-trending-radar/docs/pcbrouteagent-popvax-yash-quantum-circuit-studio-qutai-kicad-pns-routing-agent-open-mrna-vaccine-quantum-sdk-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r51-pcbrouteagent-popvaxyash-quantumstudio-qutai.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r408File),'utf8');
+      assert.ok(txt.includes('2,080.00')&&txt.includes('4,050.00')&&txt.includes('6,130.00')&&txt.includes('80.00')&&txt.includes('310.00')&&txt.includes('390.00')&&txt.includes('5,740.00')&&txt.includes('93.64%')&&txt.includes('not_measured'),r408File+': contains exact 11-16 R51 pcbrouteagent+popvax-yash+qutai closed-form parameters');
+    }
+    // 2026-11-16 Night Round 52 (R409: wajahatkarim3/play-data-safety-skill + starriv/privacy-probe + ox0pine/mojian + 10k11/flux) verification
+    const r409PathA=1830.00+38.0*100.00;
+    assert.equal(r409PathA.toFixed(2),'5630.00','11-16 R52 Path A total');
+    const r409PathC=65.00+3.0*100.00;
+    assert.equal(r409PathC.toFixed(2),'365.00','11-16 R52 Path C total');
+    assert.equal((r409PathA-r409PathC).toFixed(2),'5265.00','11-16 R52 savings vs Path A');
+    assert.equal(((r409PathA-r409PathC)/r409PathA*100).toFixed(2),'93.52','11-16 R52 pct savings vs Path A');
+    for(const r409File of ['workshops/github-trending-radar/docs/play-data-safety-skill-privacy-probe-mojian-flux-780row-play-csv-kernel-privacy-audit-mygo-editor-selection-faq.md','workshops/github-trending-radar/docs/play-data-safety-skill-privacy-probe-mojian-flux-780row-play-csv-kernel-privacy-audit-mygo-editor-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r52-playdatasafety-privacyprobe-mojian-flux.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r409File),'utf8');
+      assert.ok(txt.includes('1,830.00')&&txt.includes('3,800.00')&&txt.includes('5,630.00')&&txt.includes('65.00')&&txt.includes('300.00')&&txt.includes('365.00')&&txt.includes('5,265.00')&&txt.includes('93.52%')&&txt.includes('not_measured'),r409File+': contains exact 11-16 R52 play-data-safety+privacy-probe+mojian closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
