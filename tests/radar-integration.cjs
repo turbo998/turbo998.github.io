@@ -5155,6 +5155,39 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r409File),'utf8');
       assert.ok(txt.includes('1,830.00')&&txt.includes('3,800.00')&&txt.includes('5,630.00')&&txt.includes('65.00')&&txt.includes('300.00')&&txt.includes('365.00')&&txt.includes('5,265.00')&&txt.includes('93.52%')&&txt.includes('not_measured'),r409File+': contains exact 11-16 R52 play-data-safety+privacy-probe+mojian closed-form parameters');
     }
+    // 2026-11-16 Night Round 53 (R410 Milestone: standardnormal-ai/nudi + GAIR-NLP/Benchleaking + jackulau/coding.sh) verification
+    const r410PathA=2180.00+41.5*100.00;
+    assert.equal(r410PathA.toFixed(2),'6330.00','11-16 R53 Path A total');
+    const r410PathC=85.00+3.2*100.00;
+    assert.equal(r410PathC.toFixed(2),'405.00','11-16 R53 Path C total');
+    assert.equal((r410PathA-r410PathC).toFixed(2),'5925.00','11-16 R53 savings vs Path A');
+    assert.equal(((r410PathA-r410PathC)/r410PathA*100).toFixed(2),'93.60','11-16 R53 pct savings vs Path A');
+    for(const r410File of ['workshops/github-trending-radar/docs/nudi-benchleaking-coding-sh-rl-reward-hack-swarms-20benchmark-antihack-audit-local-agent-evals-selection-faq.md','workshops/github-trending-radar/docs/nudi-benchleaking-coding-sh-rl-reward-hack-swarms-20benchmark-antihack-audit-local-agent-evals-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r53-nudi-benchleaking-codingsh.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r410File),'utf8');
+      assert.ok(txt.includes('2,180.00')&&txt.includes('4,150.00')&&txt.includes('6,330.00')&&txt.includes('85.00')&&txt.includes('320.00')&&txt.includes('405.00')&&txt.includes('5,925.00')&&txt.includes('93.60%')&&txt.includes('not_measured'),r410File+': contains exact 11-16 R53 nudi+benchleaking+coding-sh closed-form parameters');
+    }
+    // 2026-11-16 Night Round 54 (R411: joaquimmj/deskstack + plannotator/sem-jiff + amalucelli/dffy + vellwarren/the-conversation-is-yours + samo33ddd/winmux) verification
+    const r411PathA=1960.00+39.5*100.00;
+    assert.equal(r411PathA.toFixed(2),'5910.00','11-16 R54 Path A total');
+    const r411PathC=75.00+3.1*100.00;
+    assert.equal(r411PathC.toFixed(2),'385.00','11-16 R54 Path C total');
+    assert.equal((r411PathA-r411PathC).toFixed(2),'5525.00','11-16 R54 savings vs Path A');
+    assert.equal(((r411PathA-r411PathC)/r411PathA*100).toFixed(2),'93.49','11-16 R54 pct savings vs Path A');
+    for(const r411File of ['workshops/github-trending-radar/docs/deskstack-sem-jiff-dffy-conversation-is-yours-winmux-zero-error-xbrl-dcf-treesitter-semantic-diff-dual-runtime-selection-faq.md','workshops/github-trending-radar/docs/deskstack-sem-jiff-dffy-conversation-is-yours-winmux-zero-error-xbrl-dcf-treesitter-semantic-diff-dual-runtime-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r54-deskstack-semjiff-dffy-dualruntime-winmux.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r411File),'utf8');
+      assert.ok(txt.includes('1,960.00')&&txt.includes('3,950.00')&&txt.includes('5,910.00')&&txt.includes('75.00')&&txt.includes('310.00')&&txt.includes('385.00')&&txt.includes('5,525.00')&&txt.includes('93.49%')&&txt.includes('not_measured'),r411File+': contains exact 11-16 R54 deskstack+sem-jiff+dffy closed-form parameters');
+    }
+    // 2026-11-16 Night Round 55 (R412: GGZ14/saber-engine + KhushiJ2911/microVLA + blixvip/BlendClone + kimikr/peek + react-native-feel/react-native-deploy) verification
+    const r412PathA=2120.00+40.5*100.00;
+    assert.equal(r412PathA.toFixed(2),'6170.00','11-16 R55 Path A total');
+    const r412PathC=80.00+3.1*100.00;
+    assert.equal(r412PathC.toFixed(2),'390.00','11-16 R55 Path C total');
+    assert.equal((r412PathA-r412PathC).toFixed(2),'5780.00','11-16 R55 savings vs Path A');
+    assert.equal(((r412PathA-r412PathC)/r412PathA*100).toFixed(2),'93.68','11-16 R55 pct savings vs Path A');
+    for(const r412File of ['workshops/github-trending-radar/docs/saber-engine-microvla-blendclone-peek-react-native-deploy-rdna4-618toks-4gb-pi05-vla-video-to-blend-macfree-ios-selection-faq.md','workshops/github-trending-radar/docs/saber-engine-microvla-blendclone-peek-react-native-deploy-rdna4-618toks-4gb-pi05-vla-video-to-blend-macfree-ios-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r55-saberengine-microvla-blendclone-peek-rndeploy.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r412File),'utf8');
+      assert.ok(txt.includes('2,120.00')&&txt.includes('4,050.00')&&txt.includes('6,170.00')&&txt.includes('80.00')&&txt.includes('310.00')&&txt.includes('390.00')&&txt.includes('5,780.00')&&txt.includes('93.68%')&&txt.includes('not_measured'),r412File+': contains exact 11-16 R55 saber-engine+microvla+blendclone closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
