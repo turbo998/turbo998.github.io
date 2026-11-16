@@ -4594,6 +4594,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r358File),'utf8');
       assert.ok(txt.includes('1,940.00')&&txt.includes('4,000.00')&&txt.includes('5,940.00')&&txt.includes('120.00')&&txt.includes('340.00')&&txt.includes('460.00')&&txt.includes('5,480.00')&&txt.includes('92.26%')&&txt.includes('not_measured'),r358File+': contains exact 11-16 R1 paper-orchestra+ffmpeg-skill closed-form parameters');
     }
+    // 2026-11-16 Night Round 2 (R359: mvanhorn/last30days-skill + DeanChensj/jiangshan-map) verification
+    const r359PathA=1780.00+38.0*100.00;
+    assert.equal(r359PathA.toFixed(2),'5580.00','11-16 R2 Path A total');
+    const r359PathC=95.00+3.3*100.00;
+    assert.equal(r359PathC.toFixed(2),'425.00','11-16 R2 Path C total');
+    assert.equal((r359PathA-r359PathC).toFixed(2),'5155.00','11-16 R2 savings vs Path A');
+    assert.equal(((r359PathA-r359PathC)/r359PathA*100).toFixed(2),'92.38','11-16 R2 pct savings vs Path A');
+    for(const r359File of ['workshops/github-trending-radar/docs/last30days-skill-jiangshan-map-22source-social-prediction-research-4d-spatiotemporal-atlas-mcp-selection-faq.md','workshops/github-trending-radar/docs/last30days-skill-jiangshan-map-22source-social-prediction-research-4d-spatiotemporal-atlas-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r2-last30days-jiangshanmap.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r359File),'utf8');
+      assert.ok(txt.includes('1,780.00')&&txt.includes('3,800.00')&&txt.includes('5,580.00')&&txt.includes('95.00')&&txt.includes('330.00')&&txt.includes('425.00')&&txt.includes('5,155.00')&&txt.includes('92.38%')&&txt.includes('not_measured'),r359File+': contains exact 11-16 R2 last30days+jiangshan-map closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
