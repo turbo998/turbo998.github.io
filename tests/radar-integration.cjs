@@ -5056,6 +5056,39 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r400File),'utf8');
       assert.ok(txt.includes('2,150.00')&&txt.includes('4,100.00')&&txt.includes('6,250.00')&&txt.includes('85.00')&&txt.includes('320.00')&&txt.includes('405.00')&&txt.includes('5,845.00')&&txt.includes('93.52%')&&txt.includes('not_measured'),r400File+': contains exact 11-16 R43 ekuma+synfactor+fireharmonization closed-form parameters');
     }
+    // 2026-11-16 Night Round 44 (R401: PineComputer/pine-drama-studio + hajdu-patrik/clippy + 10291124jcjc-dotcom/guiji-cutting-video + asimawdah/material-expressive-skill) verification
+    const r401PathA=1940.00+39.5*100.00;
+    assert.equal(r401PathA.toFixed(2),'5890.00','11-16 R44 Path A total');
+    const r401PathC=80.00+3.1*100.00;
+    assert.equal(r401PathC.toFixed(2),'390.00','11-16 R44 Path C total');
+    assert.equal((r401PathA-r401PathC).toFixed(2),'5500.00','11-16 R44 savings vs Path A');
+    assert.equal(((r401PathA-r401PathC)/r401PathA*100).toFixed(2),'93.38','11-16 R44 pct savings vs Path A');
+    for(const r401File of ['workshops/github-trending-radar/docs/pine-drama-studio-clippy-guiji-cutting-material-expressive-git-drama-ide-local-qwen-clipper-m3-skill-selection-faq.md','workshops/github-trending-radar/docs/pine-drama-studio-clippy-guiji-cutting-material-expressive-git-drama-ide-local-qwen-clipper-m3-skill-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r44-pinedrama-clippy-guijicutting-materialexpressive.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r401File),'utf8');
+      assert.ok(txt.includes('1,940.00')&&txt.includes('3,950.00')&&txt.includes('5,890.00')&&txt.includes('80.00')&&txt.includes('310.00')&&txt.includes('390.00')&&txt.includes('5,500.00')&&txt.includes('93.38%')&&txt.includes('not_measured'),r401File+': contains exact 11-16 R44 pine-drama+clippy+m3-expressive closed-form parameters');
+    }
+    // 2026-11-16 Night Round 45 (R402: Timon2306/oxigram + lxyeternal/Trace + AdminZachary/WatchBridge + ursishant/airbridge) verification
+    const r402PathA=1790.00+37.5*100.00;
+    assert.equal(r402PathA.toFixed(2),'5540.00','11-16 R45 Path A total');
+    const r402PathC=65.00+3.0*100.00;
+    assert.equal(r402PathC.toFixed(2),'365.00','11-16 R45 Path C total');
+    assert.equal((r402PathA-r402PathC).toFixed(2),'5175.00','11-16 R45 savings vs Path A');
+    assert.equal(((r402PathA-r402PathC)/r402PathA*100).toFixed(2),'93.41','11-16 R45 pct savings vs Path A');
+    for(const r402File of ['workshops/github-trending-radar/docs/oxigram-trace-watchbridge-airbridge-5mb-tray-rust-telegram-macos-time-tracker-xcode-free-watch-sideloader-selection-faq.md','workshops/github-trending-radar/docs/oxigram-trace-watchbridge-airbridge-5mb-tray-rust-telegram-macos-time-tracker-xcode-free-watch-sideloader-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r45-oxigram-trace-watchbridge-airbridge.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r402File),'utf8');
+      assert.ok(txt.includes('1,790.00')&&txt.includes('3,750.00')&&txt.includes('5,540.00')&&txt.includes('65.00')&&txt.includes('300.00')&&txt.includes('365.00')&&txt.includes('5,175.00')&&txt.includes('93.41%')&&txt.includes('not_measured'),r402File+': contains exact 11-16 R45 oxigram+trace+watchbridge closed-form parameters');
+    }
+    // 2026-11-16 Night Round 46 (R403: joeseesun/qiaomu-deepseek-api + BlackBuddle/hwpx-docs + S12cybersecurity/HeapExplorer + krishkhinchi/leaked-key-playbooks) verification
+    const r403PathA=1850.00+38.5*100.00;
+    assert.equal(r403PathA.toFixed(2),'5700.00','11-16 R46 Path A total');
+    const r403PathC=70.00+3.0*100.00;
+    assert.equal(r403PathC.toFixed(2),'370.00','11-16 R46 Path C total');
+    assert.equal((r403PathA-r403PathC).toFixed(2),'5330.00','11-16 R46 savings vs Path A');
+    assert.equal(((r403PathA-r403PathC)/r403PathA*100).toFixed(2),'93.51','11-16 R46 pct savings vs Path A');
+    for(const r403File of ['workshops/github-trending-radar/docs/qiaomu-deepseek-api-hwpx-docs-heapexplorer-leaked-key-playbooks-zero-dep-multimodal-skill-ksx6101-hwpx-heap-forensics-selection-faq.md','workshops/github-trending-radar/docs/qiaomu-deepseek-api-hwpx-docs-heapexplorer-leaked-key-playbooks-zero-dep-multimodal-skill-ksx6101-hwpx-heap-forensics-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r46-qiaomudeepseek-hwpxdocs-heapexplorer-leakedkeys.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r403File),'utf8');
+      assert.ok(txt.includes('1,850.00')&&txt.includes('3,850.00')&&txt.includes('5,700.00')&&txt.includes('70.00')&&txt.includes('300.00')&&txt.includes('370.00')&&txt.includes('5,330.00')&&txt.includes('93.51%')&&txt.includes('not_measured'),r403File+': contains exact 11-16 R46 qiaomu-deepseek+hwpx-docs+heapexplorer closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
