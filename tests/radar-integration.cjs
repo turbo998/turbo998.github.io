@@ -5221,6 +5221,39 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r415File),'utf8');
       assert.ok(txt.includes('1,980.00')&&txt.includes('4,000.00')&&txt.includes('5,980.00')&&txt.includes('75.00')&&txt.includes('310.00')&&txt.includes('385.00')&&txt.includes('5,595.00')&&txt.includes('93.56%')&&txt.includes('not_measured'),r415File+': contains exact 11-16 R58 vibe-shield+plamo-translate+v-emu closed-form parameters');
     }
+    // 2026-11-16 Night Round 59 (R416: physical-superintelligence/aaronson-ambainis + hevangel/computer_architecture_a_quantitative_approach + bgbg108555/NeuralSpecOcean) verification
+    const r416PathA=2040.00+40.0*100.00;
+    assert.equal(r416PathA.toFixed(2),'6040.00','11-16 R59 Path A total');
+    const r416PathC=75.00+3.1*100.00;
+    assert.equal(r416PathC.toFixed(2),'385.00','11-16 R59 Path C total');
+    assert.equal((r416PathA-r416PathC).toFixed(2),'5655.00','11-16 R59 savings vs Path A');
+    assert.equal(((r416PathA-r416PathC)/r416PathA*100).toFixed(2),'93.63','11-16 R59 pct savings vs Path A');
+    for(const r416File of ['workshops/github-trending-radar/docs/aaronson-ambainis-hennessy-patterson-hdl-neuralspecocean-lean4-proof-dual-sv-vhdl-webgl2-ocean-selection-faq.md','workshops/github-trending-radar/docs/aaronson-ambainis-hennessy-patterson-hdl-neuralspecocean-lean4-proof-dual-sv-vhdl-webgl2-ocean-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r59-aaronsonambainis-comparch-neuralspecocean.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r416File),'utf8');
+      assert.ok(txt.includes('2,040.00')&&txt.includes('4,000.00')&&txt.includes('6,040.00')&&txt.includes('75.00')&&txt.includes('310.00')&&txt.includes('385.00')&&txt.includes('5,655.00')&&txt.includes('93.63%')&&txt.includes('not_measured'),r416File+': contains exact 11-16 R59 aaronson-ambainis+comparch+neuralspecocean closed-form parameters');
+    }
+    // 2026-11-16 Night Round 60 (R417: riel-gab/hairmesh + willeastcott/splat-walk + TomasDJo/solidcraft-woodwork + Hairline-UI/inrond) verification
+    const r417PathA=1890.00+39.0*100.00;
+    assert.equal(r417PathA.toFixed(2),'5790.00','11-16 R60 Path A total');
+    const r417PathC=75.00+3.1*100.00;
+    assert.equal(r417PathC.toFixed(2),'385.00','11-16 R60 Path C total');
+    assert.equal((r417PathA-r417PathC).toFixed(2),'5405.00','11-16 R60 savings vs Path A');
+    assert.equal(((r417PathA-r417PathC)/r417PathA*100).toFixed(2),'93.35','11-16 R60 pct savings vs Path A');
+    for(const r417File of ['workshops/github-trending-radar/docs/hairmesh-splat-walk-solidcraft-woodwork-inrond-live-baked-quad-hair-webgpu-3dgs-burn-zero-reflow-inter-selection-faq.md','workshops/github-trending-radar/docs/hairmesh-splat-walk-solidcraft-woodwork-inrond-live-baked-quad-hair-webgpu-3dgs-burn-zero-reflow-inter-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r60-hairmesh-splatwalk-woodwork-inrond.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r417File),'utf8');
+      assert.ok(txt.includes('1,890.00')&&txt.includes('3,900.00')&&txt.includes('5,790.00')&&txt.includes('75.00')&&txt.includes('310.00')&&txt.includes('385.00')&&txt.includes('5,405.00')&&txt.includes('93.35%')&&txt.includes('not_measured'),r417File+': contains exact 11-16 R60 hairmesh+splat-walk+woodwork+inrond closed-form parameters');
+    }
+    // 2026-11-16 Night Round 61 (R418: humanglitch191/ownsync + wm-1688/dsh-workbench + liangdabiao/dsh-amazon-image-studio + onkeloki/point-remote-card + PrivyXe/PocketHost) verification
+    const r418PathA=1840.00+38.0*100.00;
+    assert.equal(r418PathA.toFixed(2),'5640.00','11-16 R61 Path A total');
+    const r418PathC=70.00+3.0*100.00;
+    assert.equal(r418PathC.toFixed(2),'370.00','11-16 R61 Path C total');
+    assert.equal((r418PathA-r418PathC).toFixed(2),'5270.00','11-16 R61 savings vs Path A');
+    assert.equal(((r418PathA-r418PathC)/r418PathA*100).toFixed(2),'93.44','11-16 R61 pct savings vs Path A');
+    for(const r418File of ['workshops/github-trending-radar/docs/ownsync-dsh-workbench-amazon-image-studio-point-remote-pockethost-500k-crash-e2ee-sync-sqlite-panels-selection-faq.md','workshops/github-trending-radar/docs/ownsync-dsh-workbench-amazon-image-studio-point-remote-pockethost-500k-crash-e2ee-sync-sqlite-panels-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r61-ownsync-dshworkbench-amazonstudio-pointremote-pockethost.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r418File),'utf8');
+      assert.ok(txt.includes('1,840.00')&&txt.includes('3,800.00')&&txt.includes('5,640.00')&&txt.includes('70.00')&&txt.includes('300.00')&&txt.includes('370.00')&&txt.includes('5,270.00')&&txt.includes('93.44%')&&txt.includes('not_measured'),r418File+': contains exact 11-16 R61 ownsync+dsh-workbench+pointremote+pockethost closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
