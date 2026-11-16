@@ -4957,6 +4957,39 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r391File),'utf8');
       assert.ok(txt.includes('1,940.00')&&txt.includes('3,900.00')&&txt.includes('5,840.00')&&txt.includes('80.00')&&txt.includes('310.00')&&txt.includes('390.00')&&txt.includes('5,450.00')&&txt.includes('93.32%')&&txt.includes('not_measured'),r391File+': contains exact 11-16 R34 pico-dgx-qwen38+m1mic-mlx+d1-gestures closed-form parameters');
     }
+    // 2026-11-16 Night Round 35 (R392: owlinthebarnai/video-studio-kit + DuongVuIT/video-short-animation) verification
+    const r392PathA=1920.00+39.0*100.00;
+    assert.equal(r392PathA.toFixed(2),'5820.00','11-16 R35 Path A total');
+    const r392PathC=80.00+3.1*100.00;
+    assert.equal(r392PathC.toFixed(2),'390.00','11-16 R35 Path C total');
+    assert.equal((r392PathA-r392PathC).toFixed(2),'5430.00','11-16 R35 savings vs Path A');
+    assert.equal(((r392PathA-r392PathC)/r392PathA*100).toFixed(2),'93.30','11-16 R35 pct savings vs Path A');
+    for(const r392File of ['workshops/github-trending-radar/docs/video-studio-kit-video-short-animation-109style-claude-video-skills-remotion-threejs-2d3d-modal-qa-selection-faq.md','workshops/github-trending-radar/docs/video-studio-kit-video-short-animation-109style-claude-video-skills-remotion-threejs-2d3d-modal-qa-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r35-videostudiokit-videoshortanim.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r392File),'utf8');
+      assert.ok(txt.includes('1,920.00')&&txt.includes('3,900.00')&&txt.includes('5,820.00')&&txt.includes('80.00')&&txt.includes('310.00')&&txt.includes('390.00')&&txt.includes('5,430.00')&&txt.includes('93.30%')&&txt.includes('not_measured'),r392File+': contains exact 11-16 R35 video-studio-kit+video-short-animation closed-form parameters');
+    }
+    // 2026-11-16 Night Round 36 (R393: toyxyz/toyxyz-blender-retargeter + toyxyz/toyxyz-motion-ai-tool + KoshiroRobot/KRC-Actuator) verification
+    const r393PathA=1860.00+38.5*100.00;
+    assert.equal(r393PathA.toFixed(2),'5710.00','11-16 R36 Path A total');
+    const r393PathC=75.00+3.0*100.00;
+    assert.equal(r393PathC.toFixed(2),'375.00','11-16 R36 Path C total');
+    assert.equal((r393PathA-r393PathC).toFixed(2),'5335.00','11-16 R36 savings vs Path A');
+    assert.equal(((r393PathA-r393PathC)/r393PathA*100).toFixed(2),'93.43','11-16 R36 pct savings vs Path A');
+    for(const r393File of ['workshops/github-trending-radar/docs/toyxyz-blender-retargeter-motion-ai-tool-krc-actuator-proportion-aware-ik-soma-motion-foc-cycloidal-actuator-selection-faq.md','workshops/github-trending-radar/docs/toyxyz-blender-retargeter-motion-ai-tool-krc-actuator-proportion-aware-ik-soma-motion-foc-cycloidal-actuator-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r36-toyxyzretarget-motionai-krcactuator.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r393File),'utf8');
+      assert.ok(txt.includes('1,860.00')&&txt.includes('3,850.00')&&txt.includes('5,710.00')&&txt.includes('75.00')&&txt.includes('300.00')&&txt.includes('375.00')&&txt.includes('5,335.00')&&txt.includes('93.43%')&&txt.includes('not_measured'),r393File+': contains exact 11-16 R36 toyxyz+krc-actuator closed-form parameters');
+    }
+    // 2026-11-16 Night Round 37 (R394: ShutongLiang/Neural-State-OS + LNYmachines/pictochat-host + joshpuckett/allo + cnrad/interspace) verification
+    const r394PathA=1750.00+37.0*100.00;
+    assert.equal(r394PathA.toFixed(2),'5450.00','11-16 R37 Path A total');
+    const r394PathC=70.00+3.0*100.00;
+    assert.equal(r394PathC.toFixed(2),'370.00','11-16 R37 Path C total');
+    assert.equal((r394PathA-r394PathC).toFixed(2),'5080.00','11-16 R37 savings vs Path A');
+    assert.equal(((r394PathA-r394PathC)/r394PathA*100).toFixed(2),'93.21','11-16 R37 pct savings vs Path A');
+    for(const r394File of ['workshops/github-trending-radar/docs/neural-state-os-pictochat-host-allo-interspace-residual-stream-steering-esp32c3-80211b-variable-ui-font-selection-faq.md','workshops/github-trending-radar/docs/neural-state-os-pictochat-host-allo-interspace-residual-stream-steering-esp32c3-80211b-variable-ui-font-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r37-neuralstateos-pictochat-allo-interspace.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r394File),'utf8');
+      assert.ok(txt.includes('1,750.00')&&txt.includes('3,700.00')&&txt.includes('5,450.00')&&txt.includes('70.00')&&txt.includes('300.00')&&txt.includes('370.00')&&txt.includes('5,080.00')&&txt.includes('93.21%')&&txt.includes('not_measured'),r394File+': contains exact 11-16 R37 neural-state-os+pictochat+allo closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
