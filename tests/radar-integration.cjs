@@ -4891,6 +4891,39 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r385File),'utf8');
       assert.ok(txt.includes('1,840.00')&&txt.includes('3,900.00')&&txt.includes('5,740.00')&&txt.includes('80.00')&&txt.includes('310.00')&&txt.includes('390.00')&&txt.includes('5,350.00')&&txt.includes('93.21%')&&txt.includes('not_measured'),r385File+': contains exact 11-16 R28 lumenact+roblox+pixelsplat closed-form parameters');
     }
+    // 2026-11-16 Night Round 29 (R386: leostera/git-twig + sinhong2011/mypack) verification
+    const r386PathA=1760.00+37.5*100.00;
+    assert.equal(r386PathA.toFixed(2),'5510.00','11-16 R29 Path A total');
+    const r386PathC=70.00+3.0*100.00;
+    assert.equal(r386PathC.toFixed(2),'370.00','11-16 R29 Path C total');
+    assert.equal((r386PathA-r386PathC).toFixed(2),'5140.00','11-16 R29 savings vs Path A');
+    assert.equal(((r386PathA-r386PathC)/r386PathA*100).toFixed(2),'93.28','11-16 R29 pct savings vs Path A');
+    for(const r386File of ['workshops/github-trending-radar/docs/git-twig-mypack-34x-smaller-cow-git-worktrees-zero-toolchain-webview-desktop-builder-mcp-selection-faq.md','workshops/github-trending-radar/docs/git-twig-mypack-34x-smaller-cow-git-worktrees-zero-toolchain-webview-desktop-builder-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r29-gittwig-mypack.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r386File),'utf8');
+      assert.ok(txt.includes('1,760.00')&&txt.includes('3,750.00')&&txt.includes('5,510.00')&&txt.includes('70.00')&&txt.includes('300.00')&&txt.includes('370.00')&&txt.includes('5,140.00')&&txt.includes('93.28%')&&txt.includes('not_measured'),r386File+': contains exact 11-16 R29 git-twig+mypack closed-form parameters');
+    }
+    // 2026-11-16 Night Round 30 (R387: STARKTANG108/ai-cinema-studio-kit + AnniCodex/ComfyUI-H3-FaceRefine-Plus + nomadoor/ComfyUI-Smart-Guides) verification
+    const r387PathA=1950.00+39.5*100.00;
+    assert.equal(r387PathA.toFixed(2),'5900.00','11-16 R30 Path A total');
+    const r387PathC=85.00+3.1*100.00;
+    assert.equal(r387PathC.toFixed(2),'395.00','11-16 R30 Path C total');
+    assert.equal((r387PathA-r387PathC).toFixed(2),'5505.00','11-16 R30 savings vs Path A');
+    assert.equal(((r387PathA-r387PathC)/r387PathA*100).toFixed(2),'93.31','11-16 R30 pct savings vs Path A');
+    for(const r387File of ['workshops/github-trending-radar/docs/ai-cinema-studio-kit-h3-facerefine-plus-smart-guides-dual-g4-1x-avlock-optical-flow-face-stitch-selection-faq.md','workshops/github-trending-radar/docs/ai-cinema-studio-kit-h3-facerefine-plus-smart-guides-dual-g4-1x-avlock-optical-flow-face-stitch-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r30-cinemakit-facerefine-smartguides.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r387File),'utf8');
+      assert.ok(txt.includes('1,950.00')&&txt.includes('3,950.00')&&txt.includes('5,900.00')&&txt.includes('85.00')&&txt.includes('310.00')&&txt.includes('395.00')&&txt.includes('5,505.00')&&txt.includes('93.31%')&&txt.includes('not_measured'),r387File+': contains exact 11-16 R30 ai-cinema-studio-kit+h3-facerefine+smart-guides closed-form parameters');
+    }
+    // 2026-11-16 Night Round 31 (R388: Hitheshkaranth/Skanda-0 + zenteiq-research/scirex + abrantess/vps-cybersec-orchestrator + VisionXLab/RSLiveBench-UAV) verification
+    const r388PathA=1980.00+40.0*100.00;
+    assert.equal(r388PathA.toFixed(2),'5980.00','11-16 R31 Path A total');
+    const r388PathC=85.00+3.2*100.00;
+    assert.equal(r388PathC.toFixed(2),'405.00','11-16 R31 Path C total');
+    assert.equal((r388PathA-r388PathC).toFixed(2),'5575.00','11-16 R31 savings vs Path A');
+    assert.equal(((r388PathA-r388PathC)/r388PathA*100).toFixed(2),'93.23','11-16 R31 pct savings vs Path A');
+    for(const r388File of ['workshops/github-trending-radar/docs/skanda-0-scirex-vps-cybersec-orchestrator-rslivebench-qwen3vl-sam2-radiology-jax-neural-operators-anti-lockout-cis-selection-faq.md','workshops/github-trending-radar/docs/skanda-0-scirex-vps-cybersec-orchestrator-rslivebench-qwen3vl-sam2-radiology-jax-neural-operators-anti-lockout-cis-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r31-skanda0-scirex-vpsorchestrator.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r388File),'utf8');
+      assert.ok(txt.includes('1,980.00')&&txt.includes('4,000.00')&&txt.includes('5,980.00')&&txt.includes('85.00')&&txt.includes('320.00')&&txt.includes('405.00')&&txt.includes('5,575.00')&&txt.includes('93.23%')&&txt.includes('not_measured'),r388File+': contains exact 11-16 R31 skanda-0+scirex+vps-orchestrator closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
