@@ -4704,6 +4704,28 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r368File),'utf8');
       assert.ok(txt.includes('1,980.00')&&txt.includes('4,000.00')&&txt.includes('5,980.00')&&txt.includes('95.00')&&txt.includes('330.00')&&txt.includes('425.00')&&txt.includes('5,555.00')&&txt.includes('92.89%')&&txt.includes('not_measured'),r368File+': contains exact 11-16 R11 h3-fight+seedance+davar closed-form parameters');
     }
+    // 2026-11-16 Night Round 12 (R369: nadim-sheikh/AccountDeck + andyhuo520/beanpod) verification
+    const r369PathA=1760.00+38.0*100.00;
+    assert.equal(r369PathA.toFixed(2),'5560.00','11-16 R12 Path A total');
+    const r369PathC=75.00+3.1*100.00;
+    assert.equal(r369PathC.toFixed(2),'385.00','11-16 R12 Path C total');
+    assert.equal((r369PathA-r369PathC).toFixed(2),'5175.00','11-16 R12 savings vs Path A');
+    assert.equal(((r369PathA-r369PathC)/r369PathA*100).toFixed(2),'93.08','11-16 R12 pct savings vs Path A');
+    for(const r369File of ['workshops/github-trending-radar/docs/accountdeck-beanpod-multi-account-claude-codex-quota-switcher-d3200-local-qwen3-asr-mcp-selection-faq.md','workshops/github-trending-radar/docs/accountdeck-beanpod-multi-account-claude-codex-quota-switcher-d3200-local-qwen3-asr-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r12-accountdeck-beanpod.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r369File),'utf8');
+      assert.ok(txt.includes('1,760.00')&&txt.includes('3,800.00')&&txt.includes('5,560.00')&&txt.includes('75.00')&&txt.includes('310.00')&&txt.includes('385.00')&&txt.includes('5,175.00')&&txt.includes('93.08%')&&txt.includes('not_measured'),r369File+': contains exact 11-16 R12 accountdeck+beanpod closed-form parameters');
+    }
+    // 2026-11-16 Night Round 13 (R370 Milestone: marbas207/Pathwarden + Aabyss-Team/Threat-Broadcast-Plus + IsaacJoel06/qr-snip) verification
+    const r370PathA=2080.00+41.0*100.00;
+    assert.equal(r370PathA.toFixed(2),'6180.00','11-16 R13 Path A total');
+    const r370PathC=85.00+3.2*100.00;
+    assert.equal(r370PathC.toFixed(2),'405.00','11-16 R13 Path C total');
+    assert.equal((r370PathA-r370PathC).toFixed(2),'5775.00','11-16 R13 savings vs Path A');
+    assert.equal(((r370PathA-r370PathC)/r370PathA*100).toFixed(2),'93.45','11-16 R13 pct savings vs Path A');
+    for(const r370File of ['workshops/github-trending-radar/docs/pathwarden-threat-broadcast-plus-qr-snip-2m-object-ad-entra-mincut-7feed-cve-radar-mv3-quishing-guard-selection-faq.md','workshops/github-trending-radar/docs/pathwarden-threat-broadcast-plus-qr-snip-2m-object-ad-entra-mincut-7feed-cve-radar-mv3-quishing-guard-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r13-pathwarden-threat-qrsnip.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r370File),'utf8');
+      assert.ok(txt.includes('2,080.00')&&txt.includes('4,100.00')&&txt.includes('6,180.00')&&txt.includes('85.00')&&txt.includes('320.00')&&txt.includes('405.00')&&txt.includes('5,775.00')&&txt.includes('93.45%')&&txt.includes('not_measured'),r370File+': contains exact 11-16 R13 pathwarden+threat-plus+qr-snip closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
