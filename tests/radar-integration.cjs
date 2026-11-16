@@ -4660,6 +4660,28 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r364File),'utf8');
       assert.ok(txt.includes('1,950.00')&&txt.includes('4,000.00')&&txt.includes('5,950.00')&&txt.includes('80.00')&&txt.includes('310.00')&&txt.includes('390.00')&&txt.includes('5,560.00')&&txt.includes('93.45%')&&txt.includes('not_measured'),r364File+': contains exact 11-16 R7 agenticode-my+morajabi-poo closed-form parameters');
     }
+    // 2026-11-16 Night Round 8 (R365 Milestone: mdexa-ai/mdexa-ai-native-database + martin-steinegger/molart) verification
+    const r365PathA=1840.00+39.0*100.00;
+    assert.equal(r365PathA.toFixed(2),'5740.00','11-16 R8 Path A total');
+    const r365PathC=70.00+3.1*100.00;
+    assert.equal(r365PathC.toFixed(2),'380.00','11-16 R8 Path C total');
+    assert.equal((r365PathA-r365PathC).toFixed(2),'5360.00','11-16 R8 savings vs Path A');
+    assert.equal(((r365PathA-r365PathC)/r365PathA*100).toFixed(2),'93.38','11-16 R8 pct savings vs Path A');
+    for(const r365File of ['workshops/github-trending-radar/docs/mdexa-ai-native-database-molart-sha256-medical-dataset-license-mcp-21style-protein-renderer-selection-faq.md','workshops/github-trending-radar/docs/mdexa-ai-native-database-molart-sha256-medical-dataset-license-mcp-21style-protein-renderer-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r8-mdexa-molart.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r365File),'utf8');
+      assert.ok(txt.includes('1,840.00')&&txt.includes('3,900.00')&&txt.includes('5,740.00')&&txt.includes('70.00')&&txt.includes('310.00')&&txt.includes('380.00')&&txt.includes('5,360.00')&&txt.includes('93.38%')&&txt.includes('not_measured'),r365File+': contains exact 11-16 R8 mdexa+molart closed-form parameters');
+    }
+    // 2026-11-16 Night Round 9 (R366: diego3g/craft + finktheartist/sakuga-vfx + rauchg/xeet) verification
+    const r366PathA=2050.00+40.0*100.00;
+    assert.equal(r366PathA.toFixed(2),'6050.00','11-16 R9 Path A total');
+    const r366PathC=85.00+3.2*100.00;
+    assert.equal(r366PathC.toFixed(2),'405.00','11-16 R9 Path C total');
+    assert.equal((r366PathA-r366PathC).toFixed(2),'5645.00','11-16 R9 savings vs Path A');
+    assert.equal(((r366PathA-r366PathC)/r366PathA*100).toFixed(2),'93.31','11-16 R9 pct savings vs Path A');
+    for(const r366File of ['workshops/github-trending-radar/docs/diego3g-craft-sakuga-vfx-rauchg-xeet-7skill-ui-states-anime-webcomponents-2ms-rust-wasm-tweet-renderer-selection-faq.md','workshops/github-trending-radar/docs/diego3g-craft-sakuga-vfx-rauchg-xeet-7skill-ui-states-anime-webcomponents-2ms-rust-wasm-tweet-renderer-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r9-craft-sakuga-xeet.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r366File),'utf8');
+      assert.ok(txt.includes('2,050.00')&&txt.includes('4,000.00')&&txt.includes('6,050.00')&&txt.includes('85.00')&&txt.includes('320.00')&&txt.includes('405.00')&&txt.includes('5,645.00')&&txt.includes('93.31%')&&txt.includes('not_measured'),r366File+': contains exact 11-16 R9 craft+sakuga+xeet closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
