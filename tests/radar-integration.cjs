@@ -5309,6 +5309,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r423File),'utf8');
       assert.ok(txt.includes('1,805.00')&&txt.includes('3,650.00')&&txt.includes('5,455.00')&&txt.includes('60.00')&&txt.includes('300.00')&&txt.includes('360.00')&&txt.includes('5,095.00')&&txt.includes('93.40%')&&txt.includes('not_measured'),r423File+': contains exact 11-16 R66 hy320+maodie+deusnotebook+macos26gnome closed-form parameters');
     }
+    // 2026-11-16 Night Round 67 (R424: raphaelDkhn/miroir + Cheiineeey/keepsake + tangyx527/tyx-signature + atunfrito/tuna-fonts) verification
+    const r424PathA=1915.00+39.5*100.00;
+    assert.equal(r424PathA.toFixed(2),'5865.00','11-16 R67 Path A total');
+    const r424PathC=70.00+3.1*100.00;
+    assert.equal(r424PathC.toFixed(2),'380.00','11-16 R67 Path C total');
+    assert.equal((r424PathA-r424PathC).toFixed(2),'5485.00','11-16 R67 savings vs Path A');
+    assert.equal(((r424PathA-r424PathC)/r424PathA*100).toFixed(2),'93.52','11-16 R67 pct savings vs Path A');
+    for(const r424File of ['workshops/github-trending-radar/docs/miroir-keepsake-tyx-signature-tuna-fonts-product-rl-env-memory-bubbles-selection-faq.md','workshops/github-trending-radar/docs/miroir-keepsake-tyx-signature-tuna-fonts-product-rl-env-memory-bubbles-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r67-miroir-keepsake-tyxsignature-tunafonts.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r424File),'utf8');
+      assert.ok(txt.includes('1,915.00')&&txt.includes('3,950.00')&&txt.includes('5,865.00')&&txt.includes('70.00')&&txt.includes('310.00')&&txt.includes('380.00')&&txt.includes('5,485.00')&&txt.includes('93.52%')&&txt.includes('not_measured'),r424File+': contains exact 11-16 R67 miroir+keepsake+tyx-signature+tuna-fonts closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
