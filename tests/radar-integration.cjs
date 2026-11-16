@@ -4990,6 +4990,39 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r394File),'utf8');
       assert.ok(txt.includes('1,750.00')&&txt.includes('3,700.00')&&txt.includes('5,450.00')&&txt.includes('70.00')&&txt.includes('300.00')&&txt.includes('370.00')&&txt.includes('5,080.00')&&txt.includes('93.21%')&&txt.includes('not_measured'),r394File+': contains exact 11-16 R37 neural-state-os+pictochat+allo closed-form parameters');
     }
+    // 2026-11-16 Night Round 38 (R395: c410979729-bit/scope-recall-hermes + d6u/story-timeline + Timaga/noda-local-ai-notes) verification
+    const r395PathA=1840.00+38.5*100.00;
+    assert.equal(r395PathA.toFixed(2),'5690.00','11-16 R38 Path A total');
+    const r395PathC=75.00+3.1*100.00;
+    assert.equal(r395PathC.toFixed(2),'385.00','11-16 R38 Path C total');
+    assert.equal((r395PathA-r395PathC).toFixed(2),'5305.00','11-16 R38 savings vs Path A');
+    assert.equal(((r395PathA-r395PathC)/r395PathA*100).toFixed(2),'93.23','11-16 R38 pct savings vs Path A');
+    for(const r395File of ['workshops/github-trending-radar/docs/scope-recall-hermes-story-timeline-noda-cross-harness-sqlite-memory-epistemic-graphql-timeline-local-notes-selection-faq.md','workshops/github-trending-radar/docs/scope-recall-hermes-story-timeline-noda-cross-harness-sqlite-memory-epistemic-graphql-timeline-local-notes-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r38-scoperecall-storytimeline-noda.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r395File),'utf8');
+      assert.ok(txt.includes('1,840.00')&&txt.includes('3,850.00')&&txt.includes('5,690.00')&&txt.includes('75.00')&&txt.includes('310.00')&&txt.includes('385.00')&&txt.includes('5,305.00')&&txt.includes('93.23%')&&txt.includes('not_measured'),r395File+': contains exact 11-16 R38 scope-recall+story-timeline+noda closed-form parameters');
+    }
+    // 2026-11-16 Night Round 39 (R396: bherbruck/solidcraft-gears + bloomway-ai/bloomway-world-director + willeastcott/splat-fashion + sparklecatta-lang/XSXB-Slash) verification
+    const r396PathA=1890.00+39.0*100.00;
+    assert.equal(r396PathA.toFixed(2),'5790.00','11-16 R39 Path A total');
+    const r396PathC=80.00+3.1*100.00;
+    assert.equal(r396PathC.toFixed(2),'390.00','11-16 R39 Path C total');
+    assert.equal((r396PathA-r396PathC).toFixed(2),'5400.00','11-16 R39 savings vs Path A');
+    assert.equal(((r396PathA-r396PathC)/r396PathA*100).toFixed(2),'93.26','11-16 R39 pct savings vs Path A');
+    for(const r396File of ['workshops/github-trending-radar/docs/solidcraft-gears-bloomway-world-director-splat-fashion-xsxb-slash-wasm-cad-features-3d-previs-rigged-3dgs-vfx-selection-faq.md','workshops/github-trending-radar/docs/solidcraft-gears-bloomway-world-director-splat-fashion-xsxb-slash-wasm-cad-features-3d-previs-rigged-3dgs-vfx-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r39-solidcraftgears-bloomway-splatfashion-slash.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r396File),'utf8');
+      assert.ok(txt.includes('1,890.00')&&txt.includes('3,900.00')&&txt.includes('5,790.00')&&txt.includes('80.00')&&txt.includes('310.00')&&txt.includes('390.00')&&txt.includes('5,400.00')&&txt.includes('93.26%')&&txt.includes('not_measured'),r396File+': contains exact 11-16 R39 solidcraft-gears+bloomway+splat-fashion closed-form parameters');
+    }
+    // 2026-11-16 Night Round 40 (R397: AIwithhassan/likhari-ai + Prahaladha-Reddy/hima-finetune + RealAdii/clipper-skill + sinhs0301-prog/kimbiseo) verification
+    const r397PathA=1820.00+38.0*100.00;
+    assert.equal(r397PathA.toFixed(2),'5620.00','11-16 R40 Path A total');
+    const r397PathC=70.00+3.0*100.00;
+    assert.equal(r397PathC.toFixed(2),'370.00','11-16 R40 Path C total');
+    assert.equal((r397PathA-r397PathC).toFixed(2),'5250.00','11-16 R40 savings vs Path A');
+    assert.equal(((r397PathA-r397PathC)/r397PathA*100).toFixed(2),'93.42','11-16 R40 pct savings vs Path A');
+    for(const r397File of ['workshops/github-trending-radar/docs/likhari-ai-hima-finetune-clipper-skill-kimbiseo-nonactivating-ptt-whisper-62m-cpu-tts-word-boundary-clipper-selection-faq.md','workshops/github-trending-radar/docs/likhari-ai-hima-finetune-clipper-skill-kimbiseo-nonactivating-ptt-whisper-62m-cpu-tts-word-boundary-clipper-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r40-likhari-himafinetune-clipperskill-kimbiseo.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r397File),'utf8');
+      assert.ok(txt.includes('1,820.00')&&txt.includes('3,800.00')&&txt.includes('5,620.00')&&txt.includes('70.00')&&txt.includes('300.00')&&txt.includes('370.00')&&txt.includes('5,250.00')&&txt.includes('93.42%')&&txt.includes('not_measured'),r397File+': contains exact 11-16 R40 likhari+hima-finetune+clipper-skill closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
