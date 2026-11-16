@@ -4605,6 +4605,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r359File),'utf8');
       assert.ok(txt.includes('1,780.00')&&txt.includes('3,800.00')&&txt.includes('5,580.00')&&txt.includes('95.00')&&txt.includes('330.00')&&txt.includes('425.00')&&txt.includes('5,155.00')&&txt.includes('92.38%')&&txt.includes('not_measured'),r359File+': contains exact 11-16 R2 last30days+jiangshan-map closed-form parameters');
     }
+    // 2026-11-16 Night Round 3 (R360 Milestone: getarcaneapp/arcane + davidondrej/superbot) verification
+    const r360PathA=1860.00+39.0*100.00;
+    assert.equal(r360PathA.toFixed(2),'5760.00','11-16 R3 Path A total');
+    const r360PathC=110.00+3.4*100.00;
+    assert.equal(r360PathC.toFixed(2),'450.00','11-16 R3 Path C total');
+    assert.equal((r360PathA-r360PathC).toFixed(2),'5310.00','11-16 R3 savings vs Path A');
+    assert.equal(((r360PathA-r360PathC)/r360PathA*100).toFixed(2),'92.19','11-16 R3 pct savings vs Path A');
+    for(const r360File of ['workshops/github-trending-radar/docs/arcane-superbot-huma-v2-docker-control-plane-rust-multi-harness-grok-bot-team-selection-faq.md','workshops/github-trending-radar/docs/arcane-superbot-huma-v2-docker-control-plane-rust-multi-harness-grok-bot-team-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r3-arcane-superbot.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r360File),'utf8');
+      assert.ok(txt.includes('1,860.00')&&txt.includes('3,900.00')&&txt.includes('5,760.00')&&txt.includes('110.00')&&txt.includes('340.00')&&txt.includes('450.00')&&txt.includes('5,310.00')&&txt.includes('92.19%')&&txt.includes('not_measured'),r360File+': contains exact 11-16 R3 arcane+superbot closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
