@@ -5254,6 +5254,39 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r418File),'utf8');
       assert.ok(txt.includes('1,840.00')&&txt.includes('3,800.00')&&txt.includes('5,640.00')&&txt.includes('70.00')&&txt.includes('300.00')&&txt.includes('370.00')&&txt.includes('5,270.00')&&txt.includes('93.44%')&&txt.includes('not_measured'),r418File+': contains exact 11-16 R61 ownsync+dsh-workbench+pointremote+pockethost closed-form parameters');
     }
+    // 2026-11-16 Night Round 62 (R419: amazon-far/Unified-Inertial-Encoder + doubleZ-dev/TASK-TARS-Embodied-Robotics + DAGroup-PKU/PhysLoop) verification
+    const r419PathA=2050.00+41.0*100.00;
+    assert.equal(r419PathA.toFixed(2),'6150.00','11-16 R62 Path A total');
+    const r419PathC=75.00+3.1*100.00;
+    assert.equal(r419PathC.toFixed(2),'385.00','11-16 R62 Path C total');
+    assert.equal((r419PathA-r419PathC).toFixed(2),'5765.00','11-16 R62 savings vs Path A');
+    assert.equal(((r419PathA-r419PathC)/r419PathA*100).toFixed(2),'93.74','11-16 R62 pct savings vs Path A');
+    for(const r419File of ['workshops/github-trending-radar/docs/unified-inertial-encoder-task-tars-physloop-0099ms-zeroshot-g1-imu-152rmb-tars-robot-selection-faq.md','workshops/github-trending-radar/docs/unified-inertial-encoder-task-tars-physloop-0099ms-zeroshot-g1-imu-152rmb-tars-robot-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r62-unifiedinertial-tasktars-physloop.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r419File),'utf8');
+      assert.ok(txt.includes('2,050.00')&&txt.includes('4,100.00')&&txt.includes('6,150.00')&&txt.includes('75.00')&&txt.includes('310.00')&&txt.includes('385.00')&&txt.includes('5,765.00')&&txt.includes('93.74%')&&txt.includes('not_measured'),r419File+': contains exact 11-16 R62 unified-inertial+task-tars+physloop closed-form parameters');
+    }
+    // 2026-11-16 Night Round 63 (R420 Milestone: suayptalha/wsr + KKarsyline/wake_UP + hsuehly/xiaoyu) verification
+    const r420PathA=1980.00+40.0*100.00;
+    assert.equal(r420PathA.toFixed(2),'5980.00','11-16 R63 Path A total');
+    const r420PathC=75.00+3.1*100.00;
+    assert.equal(r420PathC.toFixed(2),'385.00','11-16 R63 Path C total');
+    assert.equal((r420PathA-r420PathC).toFixed(2),'5595.00','11-16 R63 savings vs Path A');
+    assert.equal(((r420PathA-r420PathC)/r420PathA*100).toFixed(2),'93.56','11-16 R63 pct savings vs Path A');
+    for(const r420File of ['workshops/github-trending-radar/docs/wsr-wake-up-xiaoyu-weight-space-reading-10scene-proactive-wake-vidu-agora-avatar-selection-faq.md','workshops/github-trending-radar/docs/wsr-wake-up-xiaoyu-weight-space-reading-10scene-proactive-wake-vidu-agora-avatar-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r63-wsr-wakeup-xiaoyu.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r420File),'utf8');
+      assert.ok(txt.includes('1,980.00')&&txt.includes('4,000.00')&&txt.includes('5,980.00')&&txt.includes('75.00')&&txt.includes('310.00')&&txt.includes('385.00')&&txt.includes('5,595.00')&&txt.includes('93.56%')&&txt.includes('not_measured'),r420File+': contains exact 11-16 R63 wsr+wake_up+xiaoyu closed-form parameters');
+    }
+    // 2026-11-16 Night Round 64 (R421: orbitoo/pelican-test + AlFontal/strava-home-runs + kstost/script-to-motion + Shougo/ng + jorjanion/BatteryDock + circularsquare/trainsworld) verification
+    const r421PathA=1860.00+38.5*100.00;
+    assert.equal(r421PathA.toFixed(2),'5710.00','11-16 R64 Path A total');
+    const r421PathC=70.00+3.0*100.00;
+    assert.equal(r421PathC.toFixed(2),'370.00','11-16 R64 Path C total');
+    assert.equal((r421PathA-r421PathC).toFixed(2),'5340.00','11-16 R64 savings vs Path A');
+    assert.equal(((r421PathA-r421PathC)/r421PathA*100).toFixed(2),'93.52','11-16 R64 pct savings vs Path A');
+    for(const r421File of ['workshops/github-trending-radar/docs/pelican-test-strava-home-runs-script-to-motion-shougo-ng-trainsworld-20era-procedural-film-selection-faq.md','workshops/github-trending-radar/docs/pelican-test-strava-home-runs-script-to-motion-shougo-ng-trainsworld-20era-procedural-film-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r64-pelicantest-strava-scripttomotion-ng-trainsworld.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r421File),'utf8');
+      assert.ok(txt.includes('1,860.00')&&txt.includes('3,850.00')&&txt.includes('5,710.00')&&txt.includes('70.00')&&txt.includes('300.00')&&txt.includes('370.00')&&txt.includes('5,340.00')&&txt.includes('93.52%')&&txt.includes('not_measured'),r421File+': contains exact 11-16 R64 pelican-test+strava+shougo-ng+trainsworld closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
