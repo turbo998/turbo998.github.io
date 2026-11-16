@@ -4792,6 +4792,39 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r376File),'utf8');
       assert.ok(txt.includes('1,850.00')&&txt.includes('3,850.00')&&txt.includes('5,700.00')&&txt.includes('75.00')&&txt.includes('310.00')&&txt.includes('385.00')&&txt.includes('5,315.00')&&txt.includes('93.25%')&&txt.includes('not_measured'),r376File+': contains exact 11-16 R19 noteflare+workflows+ascii-animals closed-form parameters');
     }
+    // 2026-11-16 Night Round 20 (R377: Danuzco/bayesian-modelling-notes + ethangao907/stow-p1) verification
+    const r377PathA=1720.00+37.0*100.00;
+    assert.equal(r377PathA.toFixed(2),'5420.00','11-16 R20 Path A total');
+    const r377PathC=70.00+3.0*100.00;
+    assert.equal(r377PathC.toFixed(2),'370.00','11-16 R20 Path C total');
+    assert.equal((r377PathA-r377PathC).toFixed(2),'5050.00','11-16 R20 savings vs Path A');
+    assert.equal(((r377PathA-r377PathC)/r377PathA*100).toFixed(2),'93.17','11-16 R20 pct savings vs Path A');
+    for(const r377File of ['workshops/github-trending-radar/docs/bayesian-modelling-notes-stow-p1-280page-jax-pymc6-probabilistic-ai-scissor-lift-portable-klipper-printer-selection-faq.md','workshops/github-trending-radar/docs/bayesian-modelling-notes-stow-p1-280page-jax-pymc6-probabilistic-ai-scissor-lift-portable-klipper-printer-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r20-bayesiannotes-stowp1.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r377File),'utf8');
+      assert.ok(txt.includes('1,720.00')&&txt.includes('3,700.00')&&txt.includes('5,420.00')&&txt.includes('70.00')&&txt.includes('300.00')&&txt.includes('370.00')&&txt.includes('5,050.00')&&txt.includes('93.17%')&&txt.includes('not_measured'),r377File+': contains exact 11-16 R20 bayesian-notes+stow-p1 closed-form parameters');
+    }
+    // 2026-11-16 Night Round 21 (R378: linggan121/lingling-desktop-pet + rolazd/xiaoai-doubao) verification
+    const r378PathA=1650.00+36.5*100.00;
+    assert.equal(r378PathA.toFixed(2),'5300.00','11-16 R21 Path A total');
+    const r378PathC=65.00+2.9*100.00;
+    assert.equal(r378PathC.toFixed(2),'355.00','11-16 R21 Path C total');
+    assert.equal((r378PathA-r378PathC).toFixed(2),'4945.00','11-16 R21 savings vs Path A');
+    assert.equal(((r378PathA-r378PathC)/r378PathA*100).toFixed(2),'93.30','11-16 R21 pct savings vs Path A');
+    for(const r378File of ['workshops/github-trending-radar/docs/lingling-desktop-pet-xiaoai-doubao-offline-content-aware-file-agent-dual-wakeword-speaker-mod-selection-faq.md','workshops/github-trending-radar/docs/lingling-desktop-pet-xiaoai-doubao-offline-content-aware-file-agent-dual-wakeword-speaker-mod-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r21-lingling-xiaoidoubao.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r378File),'utf8');
+      assert.ok(txt.includes('1,650.00')&&txt.includes('3,650.00')&&txt.includes('5,300.00')&&txt.includes('65.00')&&txt.includes('290.00')&&txt.includes('355.00')&&txt.includes('4,945.00')&&txt.includes('93.30%')&&txt.includes('not_measured'),r378File+': contains exact 11-16 R21 lingling+xiaoai-doubao closed-form parameters');
+    }
+    // 2026-11-16 Night Round 22 (R379: neutron42-jp/github-mobile-maxxing + crafter-station/Muelle + alztrk/opentaskbar + SpolzerMod/yamusic-rs) verification
+    const r379PathA=1860.00+39.0*100.00;
+    assert.equal(r379PathA.toFixed(2),'5760.00','11-16 R22 Path A total');
+    const r379PathC=75.00+3.1*100.00;
+    assert.equal(r379PathC.toFixed(2),'385.00','11-16 R22 Path C total');
+    assert.equal((r379PathA-r379PathC).toFixed(2),'5375.00','11-16 R22 savings vs Path A');
+    assert.equal(((r379PathA-r379PathC)/r379PathA*100).toFixed(2),'93.32','11-16 R22 pct savings vs Path A');
+    for(const r379File of ['workshops/github-trending-radar/docs/github-mobile-maxxing-muelle-opentaskbar-yamusic-rs-kmp-graphql-client-rust-native-desktop-13x-ram-selection-faq.md','workshops/github-trending-radar/docs/github-mobile-maxxing-muelle-opentaskbar-yamusic-rs-kmp-graphql-client-rust-native-desktop-13x-ram-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r22-githubmaxxing-muelle-yamusicrs.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r379File),'utf8');
+      assert.ok(txt.includes('1,860.00')&&txt.includes('3,900.00')&&txt.includes('5,760.00')&&txt.includes('75.00')&&txt.includes('310.00')&&txt.includes('385.00')&&txt.includes('5,375.00')&&txt.includes('93.32%')&&txt.includes('not_measured'),r379File+': contains exact 11-16 R22 github-mobile-maxxing+muelle+yamusic-rs closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
