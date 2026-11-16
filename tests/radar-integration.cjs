@@ -4565,6 +4565,35 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r357File),'utf8');
       assert.ok(txt.includes('1,820.00')&&txt.includes('3,800.00')&&txt.includes('5,620.00')&&txt.includes('80.00')&&txt.includes('340.00')&&txt.includes('420.00')&&txt.includes('5,200.00')&&txt.includes('92.53%')&&txt.includes('not_measured'),r357File+': contains exact 11-15 R55 httplocalserver+quickpass closed-form parameters');
     }
+    // 2026-11-16 Raw Evidence SHA-256, Track A/B & Night Round 1 (R358: google-research/paper-orchestra + kajisho5/ffmpeg-skill) verification
+    const rawHtml1116=fs.readFileSync(path.join(__dirname,'..','workshops','github-trending-radar','evidence','trending-daily-2026-11-16-raw.html'),'utf8').replace(/\r\n/g,'\n');
+    assert.equal(crypto.createHash('sha256').update(rawHtml1116).digest('hex'),'d7a6393c3bd87b405df931f6830f66ee4058f5637035556c179bed85f967280d','2026-11-16 raw HTML LF sha256');
+    const rawSearch1116Str=fs.readFileSync(path.join(__dirname,'..','workshops','github-trending-radar','evidence','search-new-repos-2026-11-16-raw.json'),'utf8').replace(/\r\n/g,'\n');
+    assert.equal(crypto.createHash('sha256').update(rawSearch1116Str).digest('hex'),'46d666fc910e846ffb0646ea5f192c7525917c95eb467dbc96f0a00db373c776','2026-11-16 raw Search JSON LF sha256');
+    const rawSearch1116=JSON.parse(rawSearch1116Str);
+    const rawSearch1116Map=new Map(rawSearch1116.items.map(it=>[it.full_name,it]));
+    for(const item of reportJson.fastest_rising_leaderboard_2026_11_16.track_a_24h_star_surge){
+      assert.equal(item.provenance,'measured',item.full_name+': 11-16 Track A provenance');
+      assert.ok(rawHtml1116.includes(`href="/${item.full_name}"`),item.full_name+': present in 11-16 raw HTML');
+      assert.ok(rawHtml1116.includes(`${item.stars_today.toLocaleString('en-US')} stars today`),item.full_name+': exact stars_today in 11-16 raw HTML');
+    }
+    for(const item of reportJson.fastest_rising_leaderboard_2026_11_16.track_b_new_repo_breakout_slope){
+      assert.equal(item.stars_today,'not_measured',item.full_name+': 11-16 Track B stars_today must be not_measured');
+      assert.ok(rawSearch1116Map.has(item.full_name),item.full_name+': present in 11-16 archived Search API JSON');
+      const rawEntry=rawSearch1116Map.get(item.full_name);
+      assert.equal(item.stars_total_search_api,rawEntry.stargazers_count,item.full_name+': 11-16 stars_total_search_api matches Search API JSON');
+      assert.equal(item.stars_per_day,Math.round(item.stars_total/item.age_days),item.full_name+': 11-16 stars_per_day closed-form');
+    }
+    const r358PathA=1940.00+40.0*100.00;
+    assert.equal(r358PathA.toFixed(2),'5940.00','11-16 R1 Path A total');
+    const r358PathC=120.00+3.4*100.00;
+    assert.equal(r358PathC.toFixed(2),'460.00','11-16 R1 Path C total');
+    assert.equal((r358PathA-r358PathC).toFixed(2),'5480.00','11-16 R1 savings vs Path A');
+    assert.equal(((r358PathA-r358PathC)/r358PathA*100).toFixed(2),'92.26','11-16 R1 pct savings vs Path A');
+    for(const r358File of ['workshops/github-trending-radar/docs/paper-orchestra-ffmpeg-skill-5agent-latex-research-writer-42tool-spec-verified-video-mcp-selection-faq.md','workshops/github-trending-radar/docs/paper-orchestra-ffmpeg-skill-5agent-latex-research-writer-42tool-spec-verified-video-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r1-paperorchestra-ffmpegskill.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r358File),'utf8');
+      assert.ok(txt.includes('1,940.00')&&txt.includes('4,000.00')&&txt.includes('5,940.00')&&txt.includes('120.00')&&txt.includes('340.00')&&txt.includes('460.00')&&txt.includes('5,480.00')&&txt.includes('92.26%')&&txt.includes('not_measured'),r358File+': contains exact 11-16 R1 paper-orchestra+ffmpeg-skill closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
