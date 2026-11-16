@@ -5287,6 +5287,28 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r421File),'utf8');
       assert.ok(txt.includes('1,860.00')&&txt.includes('3,850.00')&&txt.includes('5,710.00')&&txt.includes('70.00')&&txt.includes('300.00')&&txt.includes('370.00')&&txt.includes('5,340.00')&&txt.includes('93.52%')&&txt.includes('not_measured'),r421File+': contains exact 11-16 R64 pelican-test+strava+shougo-ng+trainsworld closed-form parameters');
     }
+    // 2026-11-16 Night Round 65 (R422: oujingzhou/agent-interview-questions + brunnojob/revscope + Adolanium/hermes-borealis + DMS-Menula/WebMuseum) verification
+    const r422PathA=1830.00+37.5*100.00;
+    assert.equal(r422PathA.toFixed(2),'5580.00','11-16 R65 Path A total');
+    const r422PathC=65.00+3.0*100.00;
+    assert.equal(r422PathC.toFixed(2),'365.00','11-16 R65 Path C total');
+    assert.equal((r422PathA-r422PathC).toFixed(2),'5215.00','11-16 R65 savings vs Path A');
+    assert.equal(((r422PathA-r422PathC)/r422PathA*100).toFixed(2),'93.46','11-16 R65 pct savings vs Path A');
+    for(const r422File of ['workshops/github-trending-radar/docs/agent-interview-questions-revscope-hermes-borealis-webmuseum-266q-agent-rubric-re-guide-selection-faq.md','workshops/github-trending-radar/docs/agent-interview-questions-revscope-hermes-borealis-webmuseum-266q-agent-rubric-re-guide-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r65-agentinterview-revscope-borealis-webmuseum.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r422File),'utf8');
+      assert.ok(txt.includes('1,830.00')&&txt.includes('3,750.00')&&txt.includes('5,580.00')&&txt.includes('65.00')&&txt.includes('300.00')&&txt.includes('365.00')&&txt.includes('5,215.00')&&txt.includes('93.46%')&&txt.includes('not_measured'),r422File+': contains exact 11-16 R65 agent-interview+revscope+borealis+webmuseum closed-form parameters');
+    }
+    // 2026-11-16 Night Round 66 (R423: cavaleiro-ai/projetor-hy320-mini-otimizador + ClaudeZaks/MaoDie-Cat-Clean + senihdal34/DeusNotebook + xnoviiq/MacOS-26-Gnome) verification
+    const r423PathA=1805.00+36.5*100.00;
+    assert.equal(r423PathA.toFixed(2),'5455.00','11-16 R66 Path A total');
+    const r423PathC=60.00+3.0*100.00;
+    assert.equal(r423PathC.toFixed(2),'360.00','11-16 R66 Path C total');
+    assert.equal((r423PathA-r423PathC).toFixed(2),'5095.00','11-16 R66 savings vs Path A');
+    assert.equal(((r423PathA-r423PathC)/r423PathA*100).toFixed(2),'93.40','11-16 R66 pct savings vs Path A');
+    for(const r423File of ['workshops/github-trending-radar/docs/hy320-mini-otimizador-maodie-cat-clean-deusnotebook-macos26-gnome-235pct-adb-eink-obsidian-selection-faq.md','workshops/github-trending-radar/docs/hy320-mini-otimizador-maodie-cat-clean-deusnotebook-macos26-gnome-235pct-adb-eink-obsidian-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r66-hy320mini-maodiecat-deusnotebook-macos26gnome.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r423File),'utf8');
+      assert.ok(txt.includes('1,805.00')&&txt.includes('3,650.00')&&txt.includes('5,455.00')&&txt.includes('60.00')&&txt.includes('300.00')&&txt.includes('360.00')&&txt.includes('5,095.00')&&txt.includes('93.40%')&&txt.includes('not_measured'),r423File+': contains exact 11-16 R66 hy320+maodie+deusnotebook+macos26gnome closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
