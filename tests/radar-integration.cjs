@@ -4858,6 +4858,39 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r382File),'utf8');
       assert.ok(txt.includes('1,960.00')&&txt.includes('3,950.00')&&txt.includes('5,910.00')&&txt.includes('85.00')&&txt.includes('310.00')&&txt.includes('395.00')&&txt.includes('5,515.00')&&txt.includes('93.32%')&&txt.includes('not_measured'),r382File+': contains exact 11-16 R25 anima-brain+koubo+bageo-call closed-form parameters');
     }
+    // 2026-11-16 Night Round 26 (R383: paul-nameless/agweb + tammo1007/alyn + next-token-tv/next-token-skill) verification
+    const r383PathA=1920.00+39.0*100.00;
+    assert.equal(r383PathA.toFixed(2),'5820.00','11-16 R26 Path A total');
+    const r383PathC=80.00+3.1*100.00;
+    assert.equal(r383PathC.toFixed(2),'390.00','11-16 R26 Path C total');
+    assert.equal((r383PathA-r383PathC).toFixed(2),'5430.00','11-16 R26 savings vs Path A');
+    assert.equal(((r383PathA-r383PathC)/r383PathA*100).toFixed(2),'93.30','11-16 R26 pct savings vs Path A');
+    for(const r383File of ['workshops/github-trending-radar/docs/agweb-alyn-next-token-skill-zero-focus-webkit-agent-browser-6165-skill-mcp-timestamped-podcast-rag-selection-faq.md','workshops/github-trending-radar/docs/agweb-alyn-next-token-skill-zero-focus-webkit-agent-browser-6165-skill-mcp-timestamped-podcast-rag-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r26-agweb-alyn-nexttoken.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r383File),'utf8');
+      assert.ok(txt.includes('1,920.00')&&txt.includes('3,900.00')&&txt.includes('5,820.00')&&txt.includes('80.00')&&txt.includes('310.00')&&txt.includes('390.00')&&txt.includes('5,430.00')&&txt.includes('93.30%')&&txt.includes('not_measured'),r383File+': contains exact 11-16 R26 agweb+alyn+next-token closed-form parameters');
+    }
+    // 2026-11-16 Night Round 27 (R384: roan-maverick/tradingview-indicator-for-ai-agents + filippkowalski/apple-ads-playbook-skill) verification
+    const r384PathA=1880.00+38.5*100.00;
+    assert.equal(r384PathA.toFixed(2),'5730.00','11-16 R27 Path A total');
+    const r384PathC=75.00+3.0*100.00;
+    assert.equal(r384PathC.toFixed(2),'375.00','11-16 R27 Path C total');
+    assert.equal((r384PathA-r384PathC).toFixed(2),'5355.00','11-16 R27 savings vs Path A');
+    assert.equal(((r384PathA-r384PathC)/r384PathA*100).toFixed(2),'93.46','11-16 R27 pct savings vs Path A');
+    for(const r384File of ['workshops/github-trending-radar/docs/ai-agent-lens-apple-ads-playbook-skill-structured-json-candle-telemetry-asa-breakeven-audit-selection-faq.md','workshops/github-trending-radar/docs/ai-agent-lens-apple-ads-playbook-skill-structured-json-candle-telemetry-asa-breakeven-audit-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r27-agentlens-appleads.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r384File),'utf8');
+      assert.ok(txt.includes('1,880.00')&&txt.includes('3,850.00')&&txt.includes('5,730.00')&&txt.includes('75.00')&&txt.includes('300.00')&&txt.includes('375.00')&&txt.includes('5,355.00')&&txt.includes('93.46%')&&txt.includes('not_measured'),r384File+': contains exact 11-16 R27 ai-agent-lens+apple-ads closed-form parameters');
+    }
+    // 2026-11-16 Night Round 28 (R385 Milestone: AaBb-coder/LumenAct + nocodehack/nocodehack-roblox-engine + cobanov/pixelart-gaussiansplat) verification
+    const r385PathA=1840.00+39.0*100.00;
+    assert.equal(r385PathA.toFixed(2),'5740.00','11-16 R28 Path A total');
+    const r385PathC=80.00+3.1*100.00;
+    assert.equal(r385PathC.toFixed(2),'390.00','11-16 R28 Path C total');
+    assert.equal((r385PathA-r385PathC).toFixed(2),'5350.00','11-16 R28 savings vs Path A');
+    assert.equal(((r385PathA-r385PathC)/r385PathA*100).toFixed(2),'93.21','11-16 R28 pct savings vs Path A');
+    for(const r385File of ['workshops/github-trending-radar/docs/lumenact-nocodehack-roblox-pixelart-gaussiansplat-118key-facial-mcp-blender-shorts-spark-3dgs-selection-faq.md','workshops/github-trending-radar/docs/lumenact-nocodehack-roblox-pixelart-gaussiansplat-118key-facial-mcp-blender-shorts-spark-3dgs-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r28-lumenact-robloxshorts-pixelsplat.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r385File),'utf8');
+      assert.ok(txt.includes('1,840.00')&&txt.includes('3,900.00')&&txt.includes('5,740.00')&&txt.includes('80.00')&&txt.includes('310.00')&&txt.includes('390.00')&&txt.includes('5,350.00')&&txt.includes('93.21%')&&txt.includes('not_measured'),r385File+': contains exact 11-16 R28 lumenact+roblox+pixelsplat closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
