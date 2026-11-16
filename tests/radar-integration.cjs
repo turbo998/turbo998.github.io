@@ -4682,6 +4682,28 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r366File),'utf8');
       assert.ok(txt.includes('2,050.00')&&txt.includes('4,000.00')&&txt.includes('6,050.00')&&txt.includes('85.00')&&txt.includes('320.00')&&txt.includes('405.00')&&txt.includes('5,645.00')&&txt.includes('93.31%')&&txt.includes('not_measured'),r366File+': contains exact 11-16 R9 craft+sakuga+xeet closed-form parameters');
     }
+    // 2026-11-16 Night Round 10 (R367: AI4XE/Parallax + WollyMonjac/Tiny-2.1) verification
+    const r367PathA=1820.00+38.0*100.00;
+    assert.equal(r367PathA.toFixed(2),'5620.00','11-16 R10 Path A total');
+    const r367PathC=85.00+3.2*100.00;
+    assert.equal(r367PathC.toFixed(2),'405.00','11-16 R10 Path C total');
+    assert.equal((r367PathA-r367PathC).toFixed(2),'5215.00','11-16 R10 savings vs Path A');
+    assert.equal(((r367PathA-r367PathC)/r367PathA*100).toFixed(2),'92.79','11-16 R10 pct savings vs Path A');
+    for(const r367File of ['workshops/github-trending-radar/docs/ai4xe-parallax-tiny21-60pct-context-handoff-team-harness-380kb-dos-floppy-transformer-selection-faq.md','workshops/github-trending-radar/docs/ai4xe-parallax-tiny21-60pct-context-handoff-team-harness-380kb-dos-floppy-transformer-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r10-parallax-tiny21.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r367File),'utf8');
+      assert.ok(txt.includes('1,820.00')&&txt.includes('3,800.00')&&txt.includes('5,620.00')&&txt.includes('85.00')&&txt.includes('320.00')&&txt.includes('405.00')&&txt.includes('5,215.00')&&txt.includes('92.79%')&&txt.includes('not_measured'),r367File+': contains exact 11-16 R10 parallax+tiny21 closed-form parameters');
+    }
+    // 2026-11-16 Night Round 11 (R368: huangserva/h3-fight + liangdabiao/seedance-storyboard-generator-realman + ramazansubasi/davar) verification
+    const r368PathA=1980.00+40.0*100.00;
+    assert.equal(r368PathA.toFixed(2),'5980.00','11-16 R11 Path A total');
+    const r368PathC=95.00+3.3*100.00;
+    assert.equal(r368PathC.toFixed(2),'425.00','11-16 R11 Path C total');
+    assert.equal((r368PathA-r368PathC).toFixed(2),'5555.00','11-16 R11 savings vs Path A');
+    assert.equal(((r368PathA-r368PathC)/r368PathA*100).toFixed(2),'92.89','11-16 R11 pct savings vs Path A');
+    for(const r368File of ['workshops/github-trending-radar/docs/h3-fight-seedance-realman-davar-188block-action-prompts-6pillar-liveaction-resolve-fcpxml-selection-faq.md','workshops/github-trending-radar/docs/h3-fight-seedance-realman-davar-188block-action-prompts-6pillar-liveaction-resolve-fcpxml-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r11-h3fight-seedance-davar.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r368File),'utf8');
+      assert.ok(txt.includes('1,980.00')&&txt.includes('4,000.00')&&txt.includes('5,980.00')&&txt.includes('95.00')&&txt.includes('330.00')&&txt.includes('425.00')&&txt.includes('5,555.00')&&txt.includes('92.89%')&&txt.includes('not_measured'),r368File+': contains exact 11-16 R11 h3-fight+seedance+davar closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
