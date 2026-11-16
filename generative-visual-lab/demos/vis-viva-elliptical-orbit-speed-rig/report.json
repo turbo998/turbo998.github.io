@@ -1,0 +1,276 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "demo": "vis-viva-elliptical-orbit-speed-rig",
+  "slug": "vis-viva-elliptical-orbit-speed-rig",
+  "topic": "Vis-Viva mu*(2/r - 1/a) elliptical orbital speed vs naive circular-orbit mu/r kinetic energy deficit rig",
+  "topic_zh": "Vis-Viva 活力方程椭圆轨道速度定律（v² = μ(2/r − 1/a), Ek_ex/Ek = 1.0000×）对比朴素圆轨道公式 2.0000× 近日点动能亏损",
+  "title": "Vis-Viva Elliptical Orbital Speed Rig: 1.0000× Energy Conservation Lock vs 2.0000× Circular-Speed Deficit",
+  "timestamp": "2026-11-16T17:25:02.909Z",
+  "recorded_at": "2026-11-16T17:25:02.910Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "neural_inference_provenance": "not_measured",
+  "model_inference": "not_measured",
+  "independently_reproduced": true,
+  "scope": "Deterministic Gottfried Wilhelm Leibniz (1686), Johann Bernoulli (1710) & Leonhard Euler Vis-Viva orbital energy conservation equation (v^2 = mu * (2/r - 1/a), boosting periapsis kinetic energy at r_p = a*(1 - e) to v_p^2 = v_circ^2 * (1 + e) and locking Ek_exact / Ek_model = 1.0000x across all 17 eccentricity stations e in [0.000, 1.000] with 0/17 violated) versus naive circular-orbit velocity (v_circ^2 = mu / r_p, which underestimates periapsis kinetic energy by 1 + e to 1.2500x at S4 e=0.25, 1.5000x at S8 e=0.50, and 2.0000x at parabolic escape S16 e=1.00 across 16/17 stations) and 64-step Newtonian radial work quadrature.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "Playwright Chromium",
+    "gpu": "not_measured",
+    "viewport": "1440x900",
+    "headless": true
+  },
+  "summary": {
+    "solids_total": 58,
+    "stations_total": 17,
+    "vis_viva_ratio": 1,
+    "naive_station4_ratio": 1.25,
+    "naive_station8_ratio": 1.5,
+    "naive_station16_ratio": 2,
+    "vis_viva_violated_stations": 0,
+    "naive_violated_stations": 16,
+    "max_quadrature_error": 0,
+    "primary_8192_ms": 0.18,
+    "baseline_8192_ms": 7.541,
+    "speedup_8192x": 41.89,
+    "mobile_overflow": false
+  },
+  "checks": [
+    {
+      "name": "vis-viva-work64-equiv-128",
+      "passed": true,
+      "detail": "128 closed-form Vis-Viva mu*(2/r - 1/a) energy and 64-step Newtonian radial work quadrature passes agree within 1e-12"
+    },
+    {
+      "name": "vis-viva-work64-equiv-1024",
+      "passed": true,
+      "detail": "1024 closed-form Vis-Viva mu*(2/r - 1/a) energy and 64-step Newtonian radial work quadrature passes agree within 1e-12"
+    },
+    {
+      "name": "vis-viva-work64-equiv-8192",
+      "passed": true,
+      "detail": "8192 closed-form Vis-Viva mu*(2/r - 1/a) energy and 64-step Newtonian radial work quadrature passes agree within 1e-12"
+    },
+    {
+      "name": "vis-viva-energy-locked",
+      "passed": true,
+      "detail": "17 eccentricity stations (e in [0.00, 1.00]) lock periapsis kinetic energy ratio Ek_exact/Ek = 1.0000x (0/17 violated)"
+    },
+    {
+      "name": "naive-circular-speed-deficit-exposed",
+      "passed": true,
+      "detail": "naive circular-orbit speed (v^2 = mu/r) underestimates periapsis kinetic energy as 2 - r_p/a = 1 + e by 1.2500x at S4, 1.5000x at S8, and 2.0000x (escape limit) at S16 across 16/17 stations"
+    },
+    {
+      "name": "visviva-st4-e025-10000",
+      "passed": true,
+      "detail": "station-4 (e=0.25, r_p/a=0.75) locks Ek_exact/Ek = 1.0000x vs naive 1.2500x deficit"
+    },
+    {
+      "name": "visviva-st8-e050-10000",
+      "passed": true,
+      "detail": "station-8 (e=0.50, r_p/a=0.50) locks Ek_exact/Ek = 1.0000x vs naive 1.5000x deficit"
+    },
+    {
+      "name": "visviva-st16-e100-10000",
+      "passed": true,
+      "detail": "station-16 (e=1.00, parabolic escape v=sqrt(2)*v_circ) locks Ek_exact/Ek = 1.0000x vs naive 2.0000x deficit"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D Vis-Viva elliptical orbital speed rig renders 58 tracked solids across 17 stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Vis-Viva orbital controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station Vis-Viva passes",
+      "count": 128,
+      "primary_ms": 0.01,
+      "baseline_ms": 0.257,
+      "primary_samples_ms": [
+        0.02,
+        0.011,
+        0.008,
+        0.01,
+        0.012,
+        0.003,
+        0.003
+      ],
+      "baseline_samples_ms": [
+        0.356,
+        0.353,
+        0.296,
+        0.225,
+        0.257,
+        0.114,
+        0.116
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station Vis-Viva passes",
+      "count": 1024,
+      "primary_ms": 0.025,
+      "baseline_ms": 1.006,
+      "primary_samples_ms": [
+        0.039,
+        0.025,
+        0.025,
+        0.025,
+        0.028,
+        0.026,
+        0.025
+      ],
+      "baseline_samples_ms": [
+        1.002,
+        1.004,
+        1.045,
+        1.24,
+        1.3,
+        1.004,
+        1.006
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station Vis-Viva passes",
+      "count": 8192,
+      "primary_ms": 0.18,
+      "baseline_ms": 7.541,
+      "primary_samples_ms": [
+        0.185,
+        0.18,
+        0.18,
+        0.181,
+        0.179,
+        0.18,
+        0.206
+      ],
+      "baseline_samples_ms": [
+        8.94,
+        7.292,
+        8.01,
+        7.353,
+        7.541,
+        7.288,
+        7.78
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/vis-viva-elliptical-orbit-speed-rig/dark-vis_viva_orbital_energy_conservation_lock.png",
+    "docs/evidence/vis-viva-elliptical-orbit-speed-rig/dark-naive_circular_speed_periapsis_deficit.png",
+    "docs/evidence/vis-viva-elliptical-orbit-speed-rig/light-vis_viva_orbital_energy_conservation_lock.png",
+    "docs/evidence/vis-viva-elliptical-orbit-speed-rig/light-naive_circular_speed_periapsis_deficit.png",
+    "docs/evidence/vis-viva-elliptical-orbit-speed-rig/mobile.png"
+  ],
+  "primary_label": "Vis-Viva v² = μ(2/r − 1/a) = v_circ²(1+e)",
+  "baseline_label": "64-Step Newtonian Radial Work Quadrature",
+  "load_unit": "Vis-Viva passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form Vis-Viva evaluation versus 64-step Newtonian radial work quadrature.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "station0_vis_viva_ratio": 1,
+    "station0_naive_ratio": 1,
+    "station4_vis_viva_ratio": 1,
+    "station4_naive_ratio": 1.25,
+    "station8_vis_viva_ratio": 1,
+    "station8_naive_ratio": 1.5,
+    "station12_vis_viva_ratio": 1,
+    "station12_naive_ratio": 1.75,
+    "station16_vis_viva_ratio": 1,
+    "station16_naive_ratio": 2,
+    "violated_stations": 16
+  },
+  "protocol": {
+    "input": {
+      "station_4_eccentricity": 0.25,
+      "station_8_eccentricity": 0.5,
+      "station_16_eccentricity": 1
+    },
+    "output": {
+      "vis_viva_energy_ratio": 1,
+      "naive_deficit_e025": 1.25,
+      "naive_deficit_e050": 1.5,
+      "naive_deficit_e100": 2,
+      "violated_stations": 16
+    },
+    "function": "Vis-Viva: v² = μ(2/r − 1/a) -> Ek_exact/Ek = 1.0000× vs Naive Circular v² = μ/r -> 2 − r_p/a = 1 + e (2.0000× at e=1, 16/17 Violated)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 orbital-eccentricity stations preserve exact Vis-Viva periapsis kinetic energy ratio Ek_exact/Ek = 1.0000x",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Space-game Hohmann transfer orbits, sungrazing comet perihelion slingshots, planetary ring debris, and gravity-assist trajectory visualizations",
+    "Evaluating instantaneous orbital speed via v = sqrt(mu * (2/r - 1/a)) so high-eccentricity bodies accelerate up to sqrt(2) * v_circ at periapsis",
+    "Computing exact Oberth-effect delta-v energy multiplication at periapsis"
+  ],
+  "not_for": [
+    "Zero-eccentricity circular geostationary rings where r === a everywhere",
+    "Atmospheric parachute descent governed by terminal drag",
+    "Static 2D charts"
+  ],
+  "locale_zh": {
+    "vis-viva-work64-equiv-128": "Vis-Viva闭式与64步牛顿引力径向功积分等价 128",
+    "128 closed-form Vis-Viva mu*(2/r - 1/a) energy and 64-step Newtonian radial work quadrature passes agree within 1e-12": "128 次闭式 Vis-Viva 活力轨道动能与 64 步牛顿引力径向功求积在 1e-12 内一致",
+    "vis-viva-work64-equiv-1024": "Vis-Viva闭式与64步牛顿引力径向功积分等价 1024",
+    "1024 closed-form Vis-Viva mu*(2/r - 1/a) energy and 64-step Newtonian radial work quadrature passes agree within 1e-12": "1024 次闭式 Vis-Viva 活力轨道动能与 64 步牛顿引力径向功求积在 1e-12 内一致",
+    "vis-viva-work64-equiv-8192": "Vis-Viva闭式与64步牛顿引力径向功积分等价 8192",
+    "8192 closed-form Vis-Viva mu*(2/r - 1/a) energy and 64-step Newtonian radial work quadrature passes agree within 1e-12": "8192 次闭式 Vis-Viva 活力轨道动能与 64 步牛顿引力径向功求积在 1e-12 内一致",
+    "vis-viva-energy-locked": "Vis-Viva全站近日点动能比1.0000x锁定",
+    "17 eccentricity stations (e in [0.00, 1.00]) lock periapsis kinetic energy ratio Ek_exact/Ek = 1.0000x (0/17 violated)": "17 个轨道偏心率站点（e ∈ [0, 1]）恒定锁死近日点动能比 Ek_exact/Ek = 1.0000×（0/17 亏损站）",
+    "naive-circular-speed-deficit-exposed": "朴素圆轨道公式2.0000x近日点动能亏损暴露",
+    "naive circular-orbit speed (v^2 = mu/r) underestimates periapsis kinetic energy as 2 - r_p/a = 1 + e by 1.2500x at S4, 1.5000x at S8, and 2.0000x (escape limit) at S16 across 16/17 stations": "朴素局部圆轨道公式（v² = μ/r）在第 4 站（e=0.25）亏损 1.2500×、第 8 站（e=0.50）亏损 1.5000×、第 16 站（抛物线彗星 e=1.00）翻倍亏损至 2.0000×（污染 16/17 站）",
+    "visviva-st4-e025-10000": "第4站e=0.25近日点动能比1.0000x锁定",
+    "station-4 (e=0.25, r_p/a=0.75) locks Ek_exact/Ek = 1.0000x vs naive 1.2500x deficit": "第 4 站（e=0.25，r_p/a=0.75）锁死近日点动能比 1.0000×（消除朴素 1.2500× 亏损）",
+    "visviva-st8-e050-10000": "第8站e=0.50近日点动能比1.0000x锁定",
+    "station-8 (e=0.50, r_p/a=0.50) locks Ek_exact/Ek = 1.0000x vs naive 1.5000x deficit": "第 8 站（e=0.50，r_p/a=0.50）锁死近日点动能比 1.0000×（消除朴素 1.5000× 亏损）",
+    "visviva-st16-e100-10000": "第16站e=1.00抛物线逃逸动能比1.0000x锁定",
+    "station-16 (e=1.00, parabolic escape v=sqrt(2)*v_circ) locks Ek_exact/Ek = 1.0000x vs naive 2.0000x deficit": "第 16 站（e=1.00，抛物线逃逸 v=√2 v_circ）锁死近日点动能比 1.0000×（消除朴素 2.0000× 动能腰斩）",
+    "geometry-58-solids": "58构件3D活力方程椭圆轨道检验台一致性",
+    "3D Vis-Viva elliptical orbital speed rig renders 58 tracked solids across 17 stations": "3D Vis-Viva 活力方程椭圆轨道检验台在 17 个偏心率站点完整渲染 58 个独立几何体",
+    "mobile-layout": "手机布局",
+    "390px Vis-Viva orbital controls fit without horizontal overflow": "390px 活力方程轨道控制面板无横向溢出",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "title": "Vis-Viva 活力方程椭圆轨道速度检验台 vs 朴素圆轨道公式 2.0000× 近日点动能亏损",
+    "subtitle": "为什么在太空星际航行、哈雷彗星掠日弹弓加速与霍曼转移轨道（Hohmann Transfer）动画中，直接按局部圆轨道公式 `v = √(μ/r)` 计算速度会导致近日点动能亏损高达 `2.0000×`、永远无法突破第二宇宙速度逃逸？",
+    "plain_intro": "在开发 3D 太空星系漫游、高椭圆掠日彗星（Sungrazing Comet）、行星引力弹弓（Gravity Assist）以及飞船变轨遥测可视化时，许多开发者只记住了高中物理里的圆轨道第一宇宙速度公式：`v_circ = √(G M / r) = √(μ / r)`，无论天体处于多么扁的椭圆轨道上都直接用当前距离 `r` 算出速度。为什么这样算出来的彗星在掠过太阳近日点（Perihelion）时显得慢吞吞、毫无引力弹弓甩出的爆发感？莱布尼茨（Gottfried Wilhelm Leibniz, 1686，提出“活力” Vis Viva 概念）、约翰·伯努利（Johann Bernoulli, 1710）与欧拉从开普勒轨道总机械能守恒定律 `E = ½ v² − μ/r = −μ/(2a)` 严格推导出天体力学第一核心公式——**活力方程（Vis-Viva Equation）：`v²(r, a) = μ (2/r − 1/a)`**！在近日点 `r_p = a (1 − e)` 处，将 `r_p / a = 1 − e` 代入活力方程立即得到：`v_p² = (μ / r_p) (2 − (1 − e)) = v_circ² · (1 + e)`！这意味着：偏心率 `e` 越大，天体从远日点坠落积累的引力势能转化就越多；当 `e → 1.000`（抛物线逃逸彗星，`a → ∞`）时，近日点速度达到 `√2 v_circ ≈ 1.4142 v_circ`（第二宇宙速度），近日点动能整整是局部圆轨道动能的 **`2.0000×`**！在跨越轨道偏心率 `e = u ∈ [0.000, 1.000]` 的 17 个站点上，朴素圆轨道速度公式因漏掉 `(2 − r/a)` 项，使近日点动能亏损比 `Ek_exact / Ek_naive = 1 + e` 在第 4 站（`e=0.25`）达 `1.2500×`、第 8 站（`e=0.50`）达 `1.5000×`、第 16 站（`e=1.00`）直接翻倍亏损至 **`2.0000×`**（污染 `16/17` 个站点）！采用 Vis-Viva 活力方程，即可在全 17 站恒定锁死近日点动能比 `1.0000×`（`0/17` 站亏损）！",
+    "finding": "实测跨越轨道偏心率 e = u ∈ [0.000, 1.000]（r_p/a = 1 − e ∈ [0.000, 1.000]）的 17 个站点：Vis-Viva 活力轨道能量方程（v² = μ(2/r − 1/a)）在全部 17 个站点恒定锁死近日点动能比 Ek_exact/Ek = 1.0000×（0/17 亏损），而朴素局部圆轨道速度公式（v² = μ/r）在第 4 站（e=0.25）亏损 1.2500×、第 8 站（e=0.50）亏损 1.5000×、第 16 站（抛物线逃逸 e=1.00）翻倍亏损至 2.0000×（污染 16/17 个站点）。",
+    "workbench_title": "58 实体 17 站点 Vis-Viva 活力方程椭圆轨道速度检验台（第 208 个独立能力 Demo）",
+    "scenario_quote": "为什么同一距离 `r_p` 下，圆轨道卫星的动能是 `½ μ / r_p`，而从深空坠落掠过近日点的抛物线彗星（`e = 1, a → ∞`）动能却翻倍达到了 `μ / r_p`（速度乘以 `√2 ≈ 1.4142`）？因为活力方程 `v² = μ(2/r − 1/a)` 中的系数 `2` 正是深空无穷远坠落释放的全部引力势能！",
+    "protocol_note": "顶块展示第 4 站（e=0.25）、第 8 站（e=0.50）与第 16 站（e=1.00 抛物线逃逸）；底块对比 Vis-Viva 恒锁近日点动能比 1.0000× 与朴素圆轨道公式亏损 2.0000×。",
+    "robustness_name": "17 个轨道偏心率站点在 Vis-Viva 活力方程下 100% 保持精确近日点动能比 1.0000×",
+    "primary_label": "Vis-Viva v² = μ(2/r − 1/a) = v_circ²(1+e)",
+    "baseline_label": "64 步牛顿引力径向功数值求积",
+    "load_unit": "次 17 站活力方程求解",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比闭式 Vis-Viva 活力方程与 64 步牛顿引力径向功数值求积基准。",
+    "good_fit": [
+      "太空星际航行霍曼转移轨道（Hohmann Transfer）、掠日彗星近日点加速与引力弹弓轨迹动画",
+      "通过 v = √(μ(2/r − 1/a)) 精确耦合当前径向距离 r 与轨道半长轴 a，无缝覆盖圆轨道、椭圆轨道、抛物线逃逸与双曲线飞掠",
+      "准确驱动近拱点奥伯特效应（Oberth Effect）火箭尾焰点火推力增益可视化"
+    ],
+    "not_for": [
+      "e = 0 的纯正圆同步卫星轨道（此时 r 恒等于 a）",
+      "受浓密大气终端阻力主导的降落伞匀速下落",
+      "静态 2D 柱状图"
+    ]
+  }
+}

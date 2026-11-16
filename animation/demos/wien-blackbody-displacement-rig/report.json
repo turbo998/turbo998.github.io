@@ -1,0 +1,276 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "demo": "wien-blackbody-displacement-rig",
+  "slug": "wien-blackbody-displacement-rig",
+  "topic": "Wien-Planck lambda_peak = b_Wien / T blackbody spectral displacement law vs naive fixed-hue emissive multiplier rig",
+  "topic_zh": "Wien-Planck 维恩-普朗克黑体位移定律（λ_peak = b_Wien/T, λ/λ_Wien = 1.0000×）对比朴素固定色相发光 2.0000× 漂移（Round 220 · 第 230 个独立 Demo 里程碑）",
+  "title": "Wien-Planck Blackbody Spectral Displacement Rig: 1.0000× Wien Lock vs 2.0000× Fixed-Hue Drift",
+  "timestamp": "2026-11-16T20:50:45.297Z",
+  "recorded_at": "2026-11-16T20:50:45.297Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "neural_inference_provenance": "not_measured",
+  "model_inference": "not_measured",
+  "independently_reproduced": true,
+  "scope": "Deterministic Wilhelm Wien (1893, Nobel Prize 1911) & Max Planck (1900) blackbody thermal radiation displacement law (solving the Planck extremum x*e^x/(e^x - 1) = 5 -> x = 4.965114 so lambda_peak(T) = b_Wien / T = lambda_0 / (1 + u), locking lambda_active / lambda_Wien = 1.0000x across all 17 temperature stations u = T/T_0 - 1 in [0.000, 1.000] with 0/17 violated) versus naive fixed-hue emissive multiplier shader (keeping lambda = lambda_0 while scaling brightness, which drifts from Wien’s peak wavelength by T/T_0 = 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x at S16 across 16/17 stations) and 64-band Planck spectral scaling quadrature.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "Playwright Chromium",
+    "gpu": "not_measured",
+    "viewport": "1440x900",
+    "headless": true
+  },
+  "summary": {
+    "solids_total": 58,
+    "stations_total": 17,
+    "wien_blackbody_ratio": 1,
+    "naive_station4_ratio": 1.25,
+    "naive_station8_ratio": 1.5,
+    "naive_station16_ratio": 2,
+    "wb_violated_stations": 0,
+    "naive_violated_stations": 16,
+    "max_quadrature_error": 3.331e-16,
+    "primary_8192_ms": 0.162,
+    "baseline_8192_ms": 6.124,
+    "speedup_8192x": 37.8,
+    "mobile_overflow": false
+  },
+  "checks": [
+    {
+      "name": "wien-planck-band64-equiv-128",
+      "passed": true,
+      "detail": "128 closed-form Wien lambda_peak = b_Wien / T displacement and 64-band Planck spectral scaling quadrature passes agree within 1e-12"
+    },
+    {
+      "name": "wien-planck-band64-equiv-1024",
+      "passed": true,
+      "detail": "1024 closed-form Wien lambda_peak = b_Wien / T displacement and 64-band Planck spectral scaling quadrature passes agree within 1e-12"
+    },
+    {
+      "name": "wien-planck-band64-equiv-8192",
+      "passed": true,
+      "detail": "8192 closed-form Wien lambda_peak = b_Wien / T displacement and 64-band Planck spectral scaling quadrature passes agree within 1e-12"
+    },
+    {
+      "name": "wien-blackbody-locked",
+      "passed": true,
+      "detail": "17 temperature stations (T/T_0 = 1 + u in [1.00, 2.00]) lock peak wavelength ratio lambda_active/lambda_Wien = 1.0000x (0/17 violated)"
+    },
+    {
+      "name": "naive-fixed-hue-drift-exposed",
+      "passed": true,
+      "detail": "naive fixed-hue emissive multiplier (lambda = lambda_0) drifts from Wien peak wavelength as T/T_0 = 1 + u by 1.2500x at S4, 1.5000x at S8, and 2.0000x at S16 across 16/17 stations"
+    },
+    {
+      "name": "wb-st4-u025-10000",
+      "passed": true,
+      "detail": "station-4 (u=0.25, T=1.25*T_0, lambda_Wien=0.8000*lambda_0) locks lambda/lambda_Wien = 1.0000x vs naive 1.2500x drift"
+    },
+    {
+      "name": "wb-st8-u050-10000",
+      "passed": true,
+      "detail": "station-8 (u=0.50, T=1.50*T_0, lambda_Wien=0.6667*lambda_0) locks lambda/lambda_Wien = 1.0000x vs naive 1.5000x drift"
+    },
+    {
+      "name": "wb-st16-u100-10000",
+      "passed": true,
+      "detail": "station-16 (u=1.00, T=2.00*T_0, lambda_Wien=0.5000*lambda_0) locks lambda/lambda_Wien = 1.0000x vs naive 2.0000x double drift"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D Wien-Planck blackbody displacement rig renders 58 tracked solids across 17 stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Wien-Planck blackbody controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station Wien-Planck passes",
+      "count": 128,
+      "primary_ms": 0.007,
+      "baseline_ms": 0.206,
+      "primary_samples_ms": [
+        0.133,
+        0.007,
+        0.008,
+        0.007,
+        0.009,
+        0.007,
+        0.007
+      ],
+      "baseline_samples_ms": [
+        0.357,
+        0.356,
+        0.206,
+        0.215,
+        0.196,
+        0.198,
+        0.199
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station Wien-Planck passes",
+      "count": 1024,
+      "primary_ms": 0.033,
+      "baseline_ms": 0.804,
+      "primary_samples_ms": [
+        0.055,
+        0.021,
+        0.02,
+        0.02,
+        0.033,
+        0.046,
+        0.042
+      ],
+      "baseline_samples_ms": [
+        1.613,
+        0.766,
+        0.766,
+        0.764,
+        1.699,
+        0.968,
+        0.804
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station Wien-Planck passes",
+      "count": 8192,
+      "primary_ms": 0.162,
+      "baseline_ms": 6.124,
+      "primary_samples_ms": [
+        0.171,
+        0.162,
+        0.161,
+        0.2,
+        0.166,
+        0.162,
+        0.161
+      ],
+      "baseline_samples_ms": [
+        6.146,
+        6.124,
+        6.116,
+        6.691,
+        6.115,
+        6.117,
+        6.29
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/wien-blackbody-displacement-rig/dark-wien_planck_blackbody_displacement_lock.png",
+    "docs/evidence/wien-blackbody-displacement-rig/dark-naive_fixed_hue_emissive_multiplier_drift.png",
+    "docs/evidence/wien-blackbody-displacement-rig/light-wien_planck_blackbody_displacement_lock.png",
+    "docs/evidence/wien-blackbody-displacement-rig/light-naive_fixed_hue_emissive_multiplier_drift.png",
+    "docs/evidence/wien-blackbody-displacement-rig/mobile.png"
+  ],
+  "primary_label": "Wien-Planck λ_peak = b_Wien / T = λ₀ / (1 + u)",
+  "baseline_label": "64-Band Planck Spectral Mode Scaling Quadrature",
+  "load_unit": "Wien-Planck passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form Wien displacement law versus 64-band Planck spectral scaling quadrature.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "station0_wb_ratio": 1,
+    "station0_naive_ratio": 1,
+    "station4_wb_ratio": 1,
+    "station4_naive_ratio": 1.25,
+    "station8_wb_ratio": 1,
+    "station8_naive_ratio": 1.5,
+    "station12_wb_ratio": 1,
+    "station12_naive_ratio": 1.75,
+    "station16_wb_ratio": 1,
+    "station16_naive_ratio": 2,
+    "violated_stations": 16
+  },
+  "protocol": {
+    "input": {
+      "station_4_temp_u": 0.25,
+      "station_8_temp_u": 0.5,
+      "station_16_temp_u": 1
+    },
+    "output": {
+      "wien_wavelength_ratio": 1,
+      "naive_drift_u025": 1.25,
+      "naive_drift_u050": 1.5,
+      "naive_drift_u100": 2,
+      "violated_stations": 16
+    },
+    "function": "Wien-Planck: λ_peak = b_Wien / T = λ₀/(1+u) -> λ/λ_Wien = 1.0000× vs Naive Fixed Hue λ = λ₀ -> T/T₀ = 1 + u (2.0000× at T=2T₀, 16/17 Violated)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 temperature stations preserve exact Wien-Planck peak wavelength ratio lambda_active/lambda_Wien = 1.0000x",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "3D blacksmith iron forging, volcanic lava cooling crusts, incandescent tungsten filaments, rocket exhaust plumes, and stellar photosphere color-temperature shaders",
+    "Shifting spectral peak wavelength as lambda_peak(T) = 2897.77 um*K / T from deep red (1000K) to orange-yellow (3000K), solar white (5778K), and blue-white (>9000K)",
+    "Combining Wien chromaticity shift with Stefan-Boltzmann sigma * T^4 total radiant exitance"
+  ],
+  "not_for": [
+    "Non-thermal narrow-band laser or neon-tube atomic line emission",
+    "Unlit cold diffuse surfaces",
+    "Static 2D UI text"
+  ],
+  "locale_zh": {
+    "wien-planck-band64-equiv-128": "Wien-Planck闭式与64波段普朗克光谱缩放求积等价 128",
+    "128 closed-form Wien lambda_peak = b_Wien / T displacement and 64-band Planck spectral scaling quadrature passes agree within 1e-12": "128 次闭式 Wien 黑体峰值波长与 64 波段普朗克绝热腔模缩放求积在 1e-12 内一致",
+    "wien-planck-band64-equiv-1024": "Wien-Planck闭式与64波段普朗克光谱缩放求积等价 1024",
+    "1024 closed-form Wien lambda_peak = b_Wien / T displacement and 64-band Planck spectral scaling quadrature passes agree within 1e-12": "1024 次闭式 Wien 黑体峰值波长与 64 波段普朗克绝热腔模缩放求积在 1e-12 内一致",
+    "wien-planck-band64-equiv-8192": "Wien-Planck闭式与64波段普朗克光谱缩放求积等价 8192",
+    "8192 closed-form Wien lambda_peak = b_Wien / T displacement and 64-band Planck spectral scaling quadrature passes agree within 1e-12": "8192 次闭式 Wien 黑体峰值波长与 64 波段普朗克绝热腔模缩放求积在 1e-12 内一致",
+    "wien-blackbody-locked": "Wien-Planck全站黑体峰值波长比1.0000x锁定",
+    "17 temperature stations (T/T_0 = 1 + u in [1.00, 2.00]) lock peak wavelength ratio lambda_active/lambda_Wien = 1.0000x (0/17 violated)": "17 个色温站点（T/T₀ ∈ [1, 2]）恒定锁死黑体辐射峰值波长比 λ_active/λ_Wien = 1.0000×（0/17 漂移站）",
+    "naive-fixed-hue-drift-exposed": "朴素固定色相自发光2.0000x波长漂移暴露",
+    "naive fixed-hue emissive multiplier (lambda = lambda_0) drifts from Wien peak wavelength as T/T_0 = 1 + u by 1.2500x at S4, 1.5000x at S8, and 2.0000x at S16 across 16/17 stations": "朴素固定色相自发光倍增模型（λ=λ₀）在第 4 站漂移 1.2500×、第 8 站漂移 1.5000×、第 16 站（T=2T₀）翻倍漂移至 2.0000×（污染 16/17 站）",
+    "wb-st4-u025-10000": "第4站T=1.25T₀峰值波长比1.0000x锁定",
+    "station-4 (u=0.25, T=1.25*T_0, lambda_Wien=0.8000*lambda_0) locks lambda/lambda_Wien = 1.0000x vs naive 1.2500x drift": "第 4 站（u=0.25，T=1.25T₀，λ_Wien=0.80λ₀）锁死峰值波长比 1.0000×（消除朴素 1.2500× 漂移）",
+    "wb-st8-u050-10000": "第8站T=1.50T₀峰值波长比1.0000x锁定",
+    "station-8 (u=0.50, T=1.50*T_0, lambda_Wien=0.6667*lambda_0) locks lambda/lambda_Wien = 1.0000x vs naive 1.5000x drift": "第 8 站（u=0.50，T=1.50T₀，λ_Wien=0.6667λ₀）锁死峰值波长比 1.0000×（消除朴素 1.5000× 漂移）",
+    "wb-st16-u100-10000": "第16站T=2.00T₀两倍色温波长比1.0000x锁定",
+    "station-16 (u=1.00, T=2.00*T_0, lambda_Wien=0.5000*lambda_0) locks lambda/lambda_Wien = 1.0000x vs naive 2.0000x double drift": "第 16 站（u=1.00，T=2.00T₀，λ_Wien=0.50λ₀）锁死峰值波长比 1.0000×（消除朴素 2.0000× 倍频漂移）",
+    "geometry-58-solids": "58构件3D维恩-普朗克黑体位移检验台一致性",
+    "3D Wien-Planck blackbody displacement rig renders 58 tracked solids across 17 stations": "3D Wien-Planck 黑体光谱位移检验台在 17 个色温站点完整渲染 58 个独立几何体",
+    "mobile-layout": "手机布局",
+    "390px Wien-Planck blackbody controls fit without horizontal overflow": "390px 维恩黑体辐射控制面板无横向溢出",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "title": "Wien-Planck 维恩-普朗克黑体位移检验台 vs 朴素固定色相发光 2.0000× 波长漂移（Round 220 历史里程碑）",
+    "subtitle": "为什么在 3D 铁匠打铁锻造、火山熔岩冷却、火箭尾焰与恒星色温着色器中，把高温发光写成“固定橙红色相乘以亮度系数”而忽略维恩位移定律 `λ_peak = b_Wien / T` 会导致在两倍色温处产生 `2.0000×` 峰值波长漂移？",
+    "plain_intro": "欢迎来到 `generative-visual-lab` 的 **Round 220 · 第 230 个独立能力历史里程碑 Demo**！在制作 3D 铁匠铺烧红的刀剑、火山熔岩流、白炽灯钨丝升温或恒星表面发光（Emissive Blackbody Shader）时，许多美术师习惯选一个固定的“火橙色” `baseColor = vec3(1.0, 0.3, 0.05)`，然后把温度参数仅仅当成标量亮度乘子 `emissive = baseColor * intensity`（即固定峰值波长 `λ_peak = λ₀`）。结果无论把温度调得多高，画面只是变成“刺眼过曝的橙色”，永远不会像真实铁块加热那样经历 **暗红（1000K）→ 樱桃红（1500K）→ 亮橙黄（3000K）→ 耀眼炽白（5800K）→ 蓝白电弧光（9000K+）** 的物理色相演变！为什么物体越热，发出的光不仅越亮（斯忒藩-玻尔兹曼 `T⁴` 定律），而且**颜色主峰一定会向短波（蓝色/紫外）方向移动**？德国物理学家威廉·维恩（Wilhelm Wien, 1893，1911 年诺贝尔物理学奖得主）与量子力学之父马克斯·普朗克（Max Planck, 1900）严格证明：对普朗克黑体光谱辐射亮度公式 `B_λ(T) = (2hc²/λ⁵) / (e^(hc/(λ k_B T)) − 1)` 求关于波长 `λ` 的极值（解超越方程 `(5 − x) e^x = 5` 得 `x = hc / (λ_peak k_B T) ≈ 4.96511423`），**黑体辐射峰值波长 `λ_peak` 与绝对温度 `T` 的乘积是一个普适物理常数：`λ_peak(T) · T = b_Wien = 2897.771955 μm·K`**！因此当绝对温度从 `T₀`（如 `2898 K` 暖黄钨丝灯，峰值波长 `1000 nm`）升高至 `T(u) = T₀(1 + u)`（如 `5796 K` 太阳表面色温，峰值波长减半至 `500 nm` 青绿可见光中心）的 17 个站点上，朴素固定色相倍增模型（写死 `λ = λ₀`）使峰值波长漂移比 `λ_naive / λ_Wien = T / T₀ = 1 + u` 在第 4 站（`T = 1.25 T₀`）漂移 `1.2500×`、第 8 站（`T = 1.50 T₀`）漂移 `1.5000×`、第 16 站（`T = 2.00 T₀`）直接发生 **`2.0000×` 八度倍频波长漂移**（污染 `16/17` 个站点）！采用 Wien-Planck 黑体位移定律，即可在全 17 站恒定锁死峰值波长比 `1.0000×`（`0/17` 站漂移）！",
+    "finding": "实测跨越绝对温度扩展参数 u = T/T₀ − 1 ∈ [0.000, 1.000]（T/T₀ ∈ [1.000, 2.000]）的 17 个站点：Wien-Planck 黑体光谱位移定律（λ_peak = b_Wien / T = λ₀/(1+u)）在全部 17 个站点恒定锁死峰值波长比 λ_active/λ_Wien = 1.0000×（0/17 漂移），而朴素固定色相自发光倍增模型在第 4 站漂移 1.2500×、第 8 站漂移 1.5000×、第 16 站翻倍漂移至 2.0000×（污染 16/17 个站点）。",
+    "workbench_title": "58 实体 17 站点 Wien-Planck 维恩-普朗克黑体光谱位移检验台（Round 220 · 第 230 个独立能力历史里程碑 Demo！）",
+    "scenario_quote": "为什么打铁炉里的铁块越烧越热时，颜色会从暗红变成橙黄、再变成炽白甚至蓝白，而不是“更亮的红色”？因为普朗克量子辐射谱的极值根 `hc / (λ_peak k_B T) = 4.965114` 决定了峰值波长 `λ_peak = 2897.8 μm·K / T` 严格与绝对温度成反比！",
+    "protocol_note": "顶块展示第 4 站（T=1.25T₀）、第 8 站（T=1.50T₀）与第 16 站（T=2.00T₀, λ_peak=0.50λ₀）；底块对比 Wien-Planck 恒锁波长比 1.0000× 与朴素固定色相漂移 2.0000×。",
+    "robustness_name": "17 个色温站点在 Wien-Planck 黑体位移定理下 100% 保持精确峰值波长比 1.0000×",
+    "primary_label": "Wien-Planck λ_peak = b_Wien / T = λ₀ / (1 + u)",
+    "baseline_label": "64 波段普朗克绝热腔模缩放数值求积",
+    "load_unit": "次 17 站黑体峰值波长求解",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比闭式 Wien 峰值波长反比公式与 64 波段普朗克光谱缩放求积基准。",
+    "good_fit": [
+      "3D 铁匠锻造金属加热冷却、火山熔岩结壳、白炽灯丝、火箭喷管尾焰与天体物理恒星光谱色温（Planckian Locus）着色器",
+      "通过 λ_peak = 2897.77 μm·K / T 驱动普朗克黑体轨迹（Planckian Locus）CIE 1931 色度坐标随温度自动演进",
+      "与斯忒藩-玻尔兹曼总辐射出射度 M = σ T⁴ 结合，实现色相与辐射能量的双重物理精确控制"
+    ],
+    "not_for": [
+      "由受激辐射或原子特定能级跃迁决定的单色激光与霓虹灯管",
+      "不发热的冷态漫反射物体",
+      "静态 2D 文本界面"
+    ]
+  }
+}

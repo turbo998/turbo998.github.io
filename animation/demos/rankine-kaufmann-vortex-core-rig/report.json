@@ -1,0 +1,276 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "demo": "rankine-kaufmann-vortex-core-rig",
+  "slug": "rankine-kaufmann-vortex-core-rig",
+  "topic": "Rankine-Kaufmann finite-core vortex regularization vs naive 1/r point-vortex slingshot rig",
+  "topic_zh": "Rankine-Kaufmann 兰金-考夫曼有限涡核正则化（v_θ = (Γ/2π)r/(r²+r_c²), v/v_exact = 1.0000×）对比朴素 1/r 点涡 2.0000× 弹弓炸飞",
+  "title": "Rankine-Kaufmann Finite-Core Vortex Regularization Rig: 1.0000× Core Velocity Lock vs 2.0000× Point-Vortex Slingshot",
+  "timestamp": "2026-11-16T16:41:17.506Z",
+  "recorded_at": "2026-11-16T16:41:17.506Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "neural_inference_provenance": "not_measured",
+  "model_inference": "not_measured",
+  "independently_reproduced": true,
+  "scope": "Deterministic William John Macquorn Rankine (1858) & Walter Kaufmann (1962) / Scully (1975) algebraic finite-core vortex regularization (enclosed Stokes circulation Gamma(r) = Gamma_inf * r^2 / (r^2 + r_c^2) and tangential velocity v_theta = (Gamma_inf / (2*pi)) * r / (r^2 + r_c^2), locking velocity ratio v/v_exact = 1.0000x across all 17 radial stations u = (r_c/r)^2 in [0.000, 1.000] with 0/17 violated) versus naive singular Biot-Savart 1/r point-vortex velocity (v_naive = Gamma_inf / (2*pi*r), which overshoots tangential speed by 1 + (r_c/r)^2 = 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x / 4x centrifugal acceleration at core boundary S16 across 16/17 stations) and 64-ring Stokes vorticity circulation quadrature.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "Playwright Chromium",
+    "gpu": "not_measured",
+    "viewport": "1440x900",
+    "headless": true
+  },
+  "summary": {
+    "solids_total": 58,
+    "stations_total": 17,
+    "kaufmann_velocity_ratio": 1,
+    "naive_station4_ratio": 1.25,
+    "naive_station8_ratio": 1.5,
+    "naive_station16_ratio": 2,
+    "kaufmann_violated_stations": 0,
+    "naive_violated_stations": 16,
+    "max_quadrature_error": 3.331e-16,
+    "primary_8192_ms": 0.187,
+    "baseline_8192_ms": 8.576,
+    "speedup_8192x": 45.86,
+    "mobile_overflow": false
+  },
+  "checks": [
+    {
+      "name": "rankine-kaufmann-ring64-equiv-128",
+      "passed": true,
+      "detail": "128 closed-form Kaufmann r/(r^2+r_c^2) velocity and 64-ring Stokes vorticity circulation passes agree within 1e-12"
+    },
+    {
+      "name": "rankine-kaufmann-ring64-equiv-1024",
+      "passed": true,
+      "detail": "1024 closed-form Kaufmann r/(r^2+r_c^2) velocity and 64-ring Stokes vorticity circulation passes agree within 1e-12"
+    },
+    {
+      "name": "rankine-kaufmann-ring64-equiv-8192",
+      "passed": true,
+      "detail": "8192 closed-form Kaufmann r/(r^2+r_c^2) velocity and 64-ring Stokes vorticity circulation passes agree within 1e-12"
+    },
+    {
+      "name": "rankine-kaufmann-velocity-locked",
+      "passed": true,
+      "detail": "17 radial stations (u = (r_c/r)^2 in [0.00, 1.00]) lock tangential velocity ratio v/v_exact = 1.0000x (0/17 violated)"
+    },
+    {
+      "name": "naive-singular-vortex-slingshot-exposed",
+      "passed": true,
+      "detail": "naive singular 1/r point vortex (v = Gamma/(2*pi*r)) overshoots tangential speed as 1 + (r_c/r)^2 = 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x (4.00x centrifugal force) at S16 across 16/17 stations"
+    },
+    {
+      "name": "vortex-st4-u025-10000",
+      "passed": true,
+      "detail": "station-4 (u=0.25, r_c/r=0.50) locks v/v_exact = 1.0000x vs naive 1.2500x (+25.00% slingshot)"
+    },
+    {
+      "name": "vortex-st8-u050-10000",
+      "passed": true,
+      "detail": "station-8 (u=0.50, r_c/r=0.7071) locks v/v_exact = 1.0000x vs naive 1.5000x (+50.00% slingshot)"
+    },
+    {
+      "name": "vortex-st16-u100-10000",
+      "passed": true,
+      "detail": "station-16 (u=1.00, r=r_c) locks v/v_exact = 1.0000x vs naive 2.0000x (+100.00% core slingshot, 4x centrifugal force)"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D Rankine-Kaufmann vortex core rig renders 58 tracked solids across 17 stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Rankine-Kaufmann vortex controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station Kaufmann vortex passes",
+      "count": 128,
+      "primary_ms": 0.011,
+      "baseline_ms": 0.29,
+      "primary_samples_ms": [
+        0.13,
+        0.011,
+        0.008,
+        0.011,
+        0.014,
+        0.009,
+        0.007
+      ],
+      "baseline_samples_ms": [
+        0.422,
+        0.375,
+        0.281,
+        0.29,
+        0.295,
+        0.28,
+        0.279
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station Kaufmann vortex passes",
+      "count": 1024,
+      "primary_ms": 0.024,
+      "baseline_ms": 0.931,
+      "primary_samples_ms": [
+        0.068,
+        0.024,
+        0.024,
+        0.025,
+        0.024,
+        0.025,
+        0.024
+      ],
+      "baseline_samples_ms": [
+        2.138,
+        0.905,
+        0.901,
+        0.955,
+        0.931,
+        1.52,
+        0.929
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station Kaufmann vortex passes",
+      "count": 8192,
+      "primary_ms": 0.187,
+      "baseline_ms": 8.576,
+      "primary_samples_ms": [
+        0.187,
+        0.19,
+        0.185,
+        0.186,
+        0.187,
+        0.2,
+        0.189
+      ],
+      "baseline_samples_ms": [
+        10.789,
+        7.777,
+        8.595,
+        7.238,
+        11.4,
+        7.534,
+        8.576
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/rankine-kaufmann-vortex-core-rig/dark-rankine_kaufmann_algebraic_core_lock.png",
+    "docs/evidence/rankine-kaufmann-vortex-core-rig/dark-naive_singular_point_vortex_slingshot.png",
+    "docs/evidence/rankine-kaufmann-vortex-core-rig/light-rankine_kaufmann_algebraic_core_lock.png",
+    "docs/evidence/rankine-kaufmann-vortex-core-rig/light-naive_singular_point_vortex_slingshot.png",
+    "docs/evidence/rankine-kaufmann-vortex-core-rig/mobile.png"
+  ],
+  "primary_label": "Kaufmann-Scully v_θ = (Γ/2π) r/(r²+r_c²)",
+  "baseline_label": "64-Ring Stokes Vorticity Circulation Quadrature",
+  "load_unit": "Kaufmann vortex passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form Kaufmann-Scully algebraic vortex core evaluation versus 64-ring Stokes vorticity circulation quadrature.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "station0_kaufmann_ratio": 1,
+    "station0_naive_ratio": 1,
+    "station4_kaufmann_ratio": 1,
+    "station4_naive_ratio": 1.25,
+    "station8_kaufmann_ratio": 1,
+    "station8_naive_ratio": 1.5,
+    "station12_kaufmann_ratio": 1,
+    "station12_naive_ratio": 1.75,
+    "station16_kaufmann_ratio": 1,
+    "station16_naive_ratio": 2,
+    "violated_stations": 16
+  },
+  "protocol": {
+    "input": {
+      "station_4_core_u": 0.25,
+      "station_8_core_u": 0.5,
+      "station_16_core_u": 1
+    },
+    "output": {
+      "kaufmann_velocity_ratio": 1,
+      "naive_ratio_u025": 1.25,
+      "naive_ratio_u050": 1.5,
+      "naive_ratio_u100": 2,
+      "violated_stations": 16
+    },
+    "function": "Rankine-Kaufmann: v_θ = (Γ/2π) r/(r²+r_c²) -> v/v_exact = 1.0000× vs Naive 1/r Point Vortex -> 1 + (r_c/r)² = 1 + u (2.0000× at r=r_c, 16/17 Violated)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 radial vortex-core stations preserve exact Kaufmann-Scully velocity ratio v/v_exact = 1.0000x",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Tornado funnels, aircraft wingtip contrails, smoke rings, and magical swirl particle systems",
+    "Regularizing singular Biot-Savart 1/r vortex filaments via r/(r^2 + r_c^2) so near-core particles orbit smoothly in solid-body rotation instead of slinging outward like shrapnel",
+    "Computing smooth tangential advection without square roots using squared distance r^2 = dx^2 + dz^2"
+  ],
+  "not_for": [
+    "Uniform rectilinear wind fields with zero vorticity curl (omega = 0)",
+    "Static architectural meshes with no particle or fluid advection",
+    "1D UI progress bars"
+  ],
+  "locale_zh": {
+    "rankine-kaufmann-ring64-equiv-128": "Rankine-Kaufmann闭式与64环斯托克斯环量积分等价 128",
+    "128 closed-form Kaufmann r/(r^2+r_c^2) velocity and 64-ring Stokes vorticity circulation passes agree within 1e-12": "128 次闭式 Kaufmann 涡核速度与 64 环斯托克斯涡度环量求积在 1e-12 内一致",
+    "rankine-kaufmann-ring64-equiv-1024": "Rankine-Kaufmann闭式与64环斯托克斯环量积分等价 1024",
+    "1024 closed-form Kaufmann r/(r^2+r_c^2) velocity and 64-ring Stokes vorticity circulation passes agree within 1e-12": "1024 次闭式 Kaufmann 涡核速度与 64 环斯托克斯涡度环量求积在 1e-12 内一致",
+    "rankine-kaufmann-ring64-equiv-8192": "Rankine-Kaufmann闭式与64环斯托克斯环量积分等价 8192",
+    "8192 closed-form Kaufmann r/(r^2+r_c^2) velocity and 64-ring Stokes vorticity circulation passes agree within 1e-12": "8192 次闭式 Kaufmann 涡核速度与 64 环斯托克斯涡度环量求积在 1e-12 内一致",
+    "rankine-kaufmann-velocity-locked": "Rankine-Kaufmann全站切向速度比1.0000x锁定",
+    "17 radial stations (u = (r_c/r)^2 in [0.00, 1.00]) lock tangential velocity ratio v/v_exact = 1.0000x (0/17 violated)": "17 个径向涡核站点（u = (r_c/r)² ∈ [0, 1]）恒定锁死切向速度比 v/v_exact = 1.0000×（0/17 弹弓站）",
+    "naive-singular-vortex-slingshot-exposed": "朴素1/r点涡2.0000x弹弓飞散暴露",
+    "naive singular 1/r point vortex (v = Gamma/(2*pi*r)) overshoots tangential speed as 1 + (r_c/r)^2 = 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x (4.00x centrifugal force) at S16 across 16/17 stations": "朴素奇异 1/r 点涡模型在第 4 站超速至 1.2500×、第 8 站冲至 1.5000×、第 16 站（涡核半径处 r=r_c）翻倍至 2.0000×（离心加速度暴涨 4 倍，污染 16/17 站）",
+    "vortex-st4-u025-10000": "第4站u=0.25切向速度比1.0000x锁定",
+    "station-4 (u=0.25, r_c/r=0.50) locks v/v_exact = 1.0000x vs naive 1.2500x (+25.00% slingshot)": "第 4 站（u=0.25，r_c/r=0.50）锁死切向速度比 1.0000×（消除朴素 1.2500× 超冲）",
+    "vortex-st8-u050-10000": "第8站u=0.50切向速度比1.0000x锁定",
+    "station-8 (u=0.50, r_c/r=0.7071) locks v/v_exact = 1.0000x vs naive 1.5000x (+50.00% slingshot)": "第 8 站（u=0.50，r_c/r=0.7071）锁死切向速度比 1.0000×（消除朴素 1.5000× 超冲）",
+    "vortex-st16-u100-10000": "第16站u=1.00涡核边界速度比1.0000x锁定",
+    "station-16 (u=1.00, r=r_c) locks v/v_exact = 1.0000x vs naive 2.0000x (+100.00% core slingshot, 4x centrifugal force)": "第 16 站（u=1.00，涡核边界 r=r_c）锁死切向速度比 1.0000×（消除朴素 2.0000× 两倍弹弓超速与 4 倍离心力炸飞）",
+    "geometry-58-solids": "58构件3D兰金-考夫曼涡核正则化检验台一致性",
+    "3D Rankine-Kaufmann vortex core rig renders 58 tracked solids across 17 stations": "3D Rankine-Kaufmann 涡核正则化检验台在 17 个径向站点完整渲染 58 个独立几何体",
+    "mobile-layout": "手机布局",
+    "390px Rankine-Kaufmann vortex controls fit without horizontal overflow": "390px 兰金-考夫曼涡核控制面板无横向溢出",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "title": "Rankine-Kaufmann 兰金-考夫曼有限涡核正则化检验台 vs 朴素 1/r 点涡 2.0000× 弹弓炸飞",
+    "subtitle": "为什么在龙卷风漏斗、翼尖涡流尾迹与烟圈粒子特效中，直接按点涡公式 `v_θ = Γ / (2πr)` 计算旋转风速会导致靠近风眼的碎片在涡核半径处速度暴冲至 `2.0000×`（离心力暴涨 4 倍）并像电磁炮一样被弹弓炸飞？",
+    "plain_intro": "在制作 3D 龙卷风卷起尘土碎片、战斗机翼尖涡流拉烟、水下暗流漩涡或魔法传送门旋转粒子特效时，许多开发者直接套用理想流体力学中的自由点涡（Irrotational Point Vortex）公式：`v_θ = Γ / (2πr)`，即切向旋转速度与到漩涡中心的距离 `r` 成反比。为什么一旦粒子被吸近漩涡中心（`r → r_c`），整个特效就会瞬间崩坏、所有粒子像被高压弹弓发射一样向四面八方炸飞出屏幕？威廉·兰金（William J. M. Rankine, 1858）与瓦尔特·考夫曼（Walter Kaufmann, 1962）/ Scully（1975）从斯托克斯环量定理（Stokes Circulation Theorem）严格证明：真实粘性或湍流漩涡绝不可能把所有涡度 `ω` 压缩在一个零体积奇点上，而是分布在半径为 `r_c` 的有限涡核（Finite Vortex Core）内，涡度分布为 `ω(r) = (Γ/π) r_c² / (r² + r_c²)²`。对半径 `r` 内的涡度做面积分可得包围环量 `Γ(r) = Γ_∞ r² / (r² + r_c²)`，因此**切向旋转速度必须写为代数涡核正则化形式：`v_θ = Γ(r) / (2πr) = (Γ_∞ / 2π) · r / (r² + r_c²)`**！在外围（`r ≫ r_c`）它自然退化为 `1/r` 衰减，而在风眼内部（`r ≪ r_c`）它平滑过渡为 `v_θ ∝ r` 的刚体旋转（像旋转木马一样越靠中心线速度越慢，中心点速度恒为 0）。在跨越涡核渗透比参数 `u = (r_c / r)² ∈ [0.000, 1.000]` 的 17 个径向站点上，朴素奇异 `1/r` 点涡模型忽略了环量衰减因子 `1 / (1 + u)`，使切向速度比 `v_naive / v_exact = 1 + (r_c/r)² = 1 + u` 在第 4 站（`u=0.25`）超冲至 `1.2500×`、第 8 站（`u=0.50`）超冲至 `1.5000×`、第 16 站（`u=1.00, r=r_c` 涡核边界处）直接翻倍至 **`2.0000×`**（离心加速度 `v_θ²/r` 暴涨 **`4.0000×`**，污染 `16/17` 个站点）！采用 Rankine-Kaufmann 代数涡核公式，零 `sqrt` 开方即可在全 17 站恒定锁死速度比 `v / v_exact = 1.0000×`（`0/17` 站弹弓飞散）！",
+    "finding": "实测跨越无量纲涡核渗透参数 u = (r_c/r)² ∈ [0.000, 1.000] 的 17 个径向站点：Rankine-Kaufmann 代数有限涡核正则化（v_θ = (Γ/2π) r/(r²+r_c²)）在全部 17 个站点恒定锁死切向速度比 v/v_exact = 1.0000×（0/17 弹弓炸飞），而朴素奇异 1/r 点涡模型在第 4 站超速至 1.2500×、第 8 站冲至 1.5000×、第 16 站（r=r_c）翻倍至 2.0000×（离心力暴涨 4 倍，污染 16/17 个站点）。",
+    "workbench_title": "58 实体 17 站点 Rankine-Kaufmann 兰金-考夫曼有限涡核正则化检验台（第 203 个独立能力 Demo）",
+    "scenario_quote": "当尘埃粒子被吸入龙卷风涡核边界（`r = r_c`）时，为什么真实切向风速只有无旋点涡公式 `Γ/(2πr_c)` 的一半？因为半径 `r_c` 以内只包围了整场总环量 `Γ_∞` 的 50%（`Γ(r_c) = 0.5 Γ_∞`），漏掉这层斯托克斯环量衰减就会让离心力凭空暴涨 4 倍！",
+    "protocol_note": "顶块展示第 4 站（u=0.25, r_c/r=0.50）、第 8 站（u=0.50, r_c/r=0.71）与第 16 站（u=1.00, r=r_c）；底块对比 Rankine-Kaufmann 恒锁速度比 1.0000× 与朴素 1/r 点涡弹弓超冲至 2.0000×。",
+    "robustness_name": "17 个径向涡核站点在 Rankine-Kaufmann 代数涡核正则化下 100% 保持精确切向速度比 1.0000×",
+    "primary_label": "Kaufmann-Scully v_θ = (Γ/2π) r/(r²+r_c²)",
+    "baseline_label": "64 环斯托克斯涡度环量数值积分",
+    "load_unit": "次 17 站涡核速度求解",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比闭式 Kaufmann 代数涡核与 64 环斯托克斯涡度环量数值积分基准。",
+    "good_fit": [
+      "3D 龙卷风尘埃漏斗、飞机翼尖涡尾迹、水下漩涡与魔法旋风粒子系统",
+      "利用 r / (r² + r_c²) 将外围 1/r 无旋流平滑过渡到风眼内刚体旋转，彻底消除粒子靠近中心时的弹弓炸飞",
+      "在着色器中用叉乘 (z, 0, -x) / (x² + z² + r_c²) 直接算出速度向量，全程零 sqrt 开方开销"
+    ],
+    "not_for": [
+      "无旋转涡度（curl v = 0）的均匀平直风场",
+      "无粒子或顶点运动的静态背景建筑",
+      "1D 音量条或 UI 滑块"
+    ]
+  }
+}

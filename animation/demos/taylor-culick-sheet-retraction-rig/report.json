@@ -1,0 +1,276 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "demo": "taylor-culick-sheet-retraction-rig",
+  "slug": "taylor-culick-sheet-retraction-rig",
+  "topic": "Taylor-Culick sqrt(2*sigma/(rho*h)) liquid sheet rim retraction vs naive constant-speed rupture rig",
+  "topic_zh": "Taylor-Culick 泰勒-库利克毛细液膜回缩定律（v_TC = √(2σ/ρh), ρhv²/2σ = 1.0000×）对比朴素恒速破洞扩张 2.0000× 动量违背",
+  "title": "Taylor-Culick Liquid Sheet Rim Retraction Rig: 1.0000× Capillary Momentum Lock vs 2.0000× Constant-Speed Excess",
+  "timestamp": "2026-11-16T16:59:47.083Z",
+  "recorded_at": "2026-11-16T16:59:47.083Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "neural_inference_provenance": "not_measured",
+  "model_inference": "not_measured",
+  "independently_reproduced": true,
+  "scope": "Deterministic Geoffrey Ingram Taylor (1959) & Fred E. C. Culick (1960) capillary liquid-sheet and soap-film rim retraction law (retraction velocity v_TC(h) = sqrt(2 * sigma / (rho * h)) = v_0 / sqrt(1 + u), balancing double-interface surface tension pull 2*sigma against swept rim momentum flux dm/dt * v_TC = rho * h * v_TC^2 to lock (rho*h*v^2)/(2*sigma) = 1.0000x across all 17 thickness stations h/h_0 = 1 + u in [1.000, 2.000] with 0/17 violated) versus naive constant-speed hole expansion (v = v_0, which inflates momentum flux as h/h_0 = 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x at S16 across 16/17 stations) and 64-step Rankine-Hugoniot rim mass-sweep quadrature.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "Playwright Chromium",
+    "gpu": "not_measured",
+    "viewport": "1440x900",
+    "headless": true
+  },
+  "summary": {
+    "solids_total": 58,
+    "stations_total": 17,
+    "taylor_culick_ratio": 1,
+    "naive_station4_ratio": 1.25,
+    "naive_station8_ratio": 1.5,
+    "naive_station16_ratio": 2,
+    "tc_violated_stations": 0,
+    "naive_violated_stations": 16,
+    "max_quadrature_error": 3.331e-16,
+    "primary_8192_ms": 0.181,
+    "baseline_8192_ms": 7.245,
+    "speedup_8192x": 40.03,
+    "mobile_overflow": false
+  },
+  "checks": [
+    {
+      "name": "taylor-culick-step64-equiv-128",
+      "passed": true,
+      "detail": "128 closed-form Taylor-Culick 2*sigma/(rho*h) speed squared and 64-step Rankine-Hugoniot rim mass-sweep passes agree within 1e-12"
+    },
+    {
+      "name": "taylor-culick-step64-equiv-1024",
+      "passed": true,
+      "detail": "1024 closed-form Taylor-Culick 2*sigma/(rho*h) speed squared and 64-step Rankine-Hugoniot rim mass-sweep passes agree within 1e-12"
+    },
+    {
+      "name": "taylor-culick-step64-equiv-8192",
+      "passed": true,
+      "detail": "8192 closed-form Taylor-Culick 2*sigma/(rho*h) speed squared and 64-step Rankine-Hugoniot rim mass-sweep passes agree within 1e-12"
+    },
+    {
+      "name": "taylor-culick-momentum-locked",
+      "passed": true,
+      "detail": "17 thickness stations (h/h_0 = 1 + u in [1.00, 2.00]) lock capillary momentum-flux ratio (rho*h*v^2)/(2*sigma) = 1.0000x (0/17 violated)"
+    },
+    {
+      "name": "naive-constant-speed-rupture-exposed",
+      "passed": true,
+      "detail": "naive constant-speed hole rupture (v = v_0) inflates rim momentum flux as h/h_0 = 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x at S16 across 16/17 stations"
+    },
+    {
+      "name": "tc-st4-u025-10000",
+      "passed": true,
+      "detail": "station-4 (u=0.25, h=1.25*h_0) locks momentum ratio = 1.0000x vs naive 1.2500x excess"
+    },
+    {
+      "name": "tc-st8-u050-10000",
+      "passed": true,
+      "detail": "station-8 (u=0.50, h=1.50*h_0) locks momentum ratio = 1.0000x vs naive 1.5000x excess"
+    },
+    {
+      "name": "tc-st16-u100-10000",
+      "passed": true,
+      "detail": "station-16 (u=1.00, h=2.00*h_0) locks momentum ratio = 1.0000x vs naive 2.0000x double momentum excess"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D Taylor-Culick liquid sheet retraction rig renders 58 tracked solids across 17 stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Taylor-Culick sheet retraction controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station Taylor-Culick passes",
+      "count": 128,
+      "primary_ms": 0.007,
+      "baseline_ms": 0.118,
+      "primary_samples_ms": [
+        0.02,
+        0.014,
+        0.008,
+        0.005,
+        0.007,
+        0.003,
+        0.003
+      ],
+      "baseline_samples_ms": [
+        0.374,
+        0.397,
+        0.389,
+        0.105,
+        0.106,
+        0.105,
+        0.118
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station Taylor-Culick passes",
+      "count": 1024,
+      "primary_ms": 0.023,
+      "baseline_ms": 0.876,
+      "primary_samples_ms": [
+        0.023,
+        0.023,
+        0.023,
+        0.055,
+        0.026,
+        0.022,
+        0.023
+      ],
+      "baseline_samples_ms": [
+        0.911,
+        0.856,
+        0.856,
+        0.913,
+        1.109,
+        0.858,
+        0.876
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station Taylor-Culick passes",
+      "count": 8192,
+      "primary_ms": 0.181,
+      "baseline_ms": 7.245,
+      "primary_samples_ms": [
+        0.184,
+        0.181,
+        0.174,
+        0.177,
+        0.183,
+        0.189,
+        0.18
+      ],
+      "baseline_samples_ms": [
+        7.245,
+        7.293,
+        6.947,
+        7.506,
+        6.941,
+        7.978,
+        6.894
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/taylor-culick-sheet-retraction-rig/dark-taylor_culick_capillary_retraction_lock.png",
+    "docs/evidence/taylor-culick-sheet-retraction-rig/dark-naive_constant_speed_hole_rupture.png",
+    "docs/evidence/taylor-culick-sheet-retraction-rig/light-taylor_culick_capillary_retraction_lock.png",
+    "docs/evidence/taylor-culick-sheet-retraction-rig/light-naive_constant_speed_hole_rupture.png",
+    "docs/evidence/taylor-culick-sheet-retraction-rig/mobile.png"
+  ],
+  "primary_label": "Taylor-Culick v_TC = √(2σ / ρh)",
+  "baseline_label": "64-Step Rankine-Hugoniot Rim Mass-Sweep Quadrature",
+  "load_unit": "Taylor-Culick passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form Taylor-Culick capillary retraction evaluation versus 64-step Rankine-Hugoniot rim mass-sweep quadrature.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "station0_tc_ratio": 1,
+    "station0_naive_ratio": 1,
+    "station4_tc_ratio": 1,
+    "station4_naive_ratio": 1.25,
+    "station8_tc_ratio": 1,
+    "station8_naive_ratio": 1.5,
+    "station12_tc_ratio": 1,
+    "station12_naive_ratio": 1.75,
+    "station16_tc_ratio": 1,
+    "station16_naive_ratio": 2,
+    "violated_stations": 16
+  },
+  "protocol": {
+    "input": {
+      "station_4_thickness_u": 0.25,
+      "station_8_thickness_u": 0.5,
+      "station_16_thickness_u": 1
+    },
+    "output": {
+      "taylor_culick_momentum_ratio": 1,
+      "naive_excess_u025": 1.25,
+      "naive_excess_u050": 1.5,
+      "naive_excess_u100": 2,
+      "violated_stations": 16
+    },
+    "function": "Taylor-Culick: v_TC = √(2σ/(ρh)) -> ρhv²/(2σ) = 1.0000× vs Naive Constant-Speed v = v₀ -> h/h₀ = 1 + u (2.0000× at h=2h₀, 16/17 Violated)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 sheet-thickness stations preserve exact Taylor-Culick capillary momentum ratio (rho*h*v^2)/(2*sigma) = 1.0000x",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Soap bubble bursting animations, crown-splash liquid sheet perforation, waterfall curtain tearing, and viscous slime rupture VFX",
+    "Scaling hole expansion velocity inversely with square root of local film thickness v_TC = sqrt(2*sigma/(rho*h)) so gravity-drained thin bubble tops zip open faster than thick bottom pools",
+    "Sizing the toroidal rim bead volume V_rim = int h(r) 2*pi*r dr from swept film mass conservation"
+  ],
+  "not_for": [
+    "Brittle glass shattering where crack propagation is governed by Rayleigh elastic wave speed rather than capillary tension",
+    "Rigid opaque stone walls",
+    "Static 2D icons"
+  ],
+  "locale_zh": {
+    "taylor-culick-step64-equiv-128": "Taylor-Culick闭式与64步边缘质量卷吸积分等价 128",
+    "128 closed-form Taylor-Culick 2*sigma/(rho*h) speed squared and 64-step Rankine-Hugoniot rim mass-sweep passes agree within 1e-12": "128 次闭式 Taylor-Culick 毛细液膜回缩速度平方与 64 步边缘质量卷吸求积在 1e-12 内一致",
+    "taylor-culick-step64-equiv-1024": "Taylor-Culick闭式与64步边缘质量卷吸积分等价 1024",
+    "1024 closed-form Taylor-Culick 2*sigma/(rho*h) speed squared and 64-step Rankine-Hugoniot rim mass-sweep passes agree within 1e-12": "1024 次闭式 Taylor-Culick 毛细液膜回缩速度平方与 64 步边缘质量卷吸求积在 1e-12 内一致",
+    "taylor-culick-step64-equiv-8192": "Taylor-Culick闭式与64步边缘质量卷吸积分等价 8192",
+    "8192 closed-form Taylor-Culick 2*sigma/(rho*h) speed squared and 64-step Rankine-Hugoniot rim mass-sweep passes agree within 1e-12": "8192 次闭式 Taylor-Culick 毛细液膜回缩速度平方与 64 步边缘质量卷吸求积在 1e-12 内一致",
+    "taylor-culick-momentum-locked": "Taylor-Culick全站毛细动量通量比1.0000x锁定",
+    "17 thickness stations (h/h_0 = 1 + u in [1.00, 2.00]) lock capillary momentum-flux ratio (rho*h*v^2)/(2*sigma) = 1.0000x (0/17 violated)": "17 个液膜厚度站点（h/h₀ ∈ [1, 2]）恒定锁死毛细动量通量比 (ρhv²)/(2σ) = 1.0000×（0/17 超冲站）",
+    "naive-constant-speed-rupture-exposed": "朴素恒速破洞扩张2.0000x动量超冲暴露",
+    "naive constant-speed hole rupture (v = v_0) inflates rim momentum flux as h/h_0 = 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x at S16 across 16/17 stations": "朴素恒速破洞扩张（v = v₀）在第 4 站超冲至 1.2500×、第 8 站冲至 1.5000×、第 16 站（两倍膜厚 h=2h₀）翻倍至 2.0000×（污染 16/17 站）",
+    "tc-st4-u025-10000": "第4站h=1.25h₀动量比1.0000x锁定",
+    "station-4 (u=0.25, h=1.25*h_0) locks momentum ratio = 1.0000x vs naive 1.2500x excess": "第 4 站（u=0.25，h=1.25h₀）锁死毛细动量通量比 1.0000×（消除朴素 1.2500× 超冲）",
+    "tc-st8-u050-10000": "第8站h=1.50h₀动量比1.0000x锁定",
+    "station-8 (u=0.50, h=1.50*h_0) locks momentum ratio = 1.0000x vs naive 1.5000x excess": "第 8 站（u=0.50，h=1.50h₀）锁死毛细动量通量比 1.0000×（消除朴素 1.5000× 超冲）",
+    "tc-st16-u100-10000": "第16站h=2.00h₀两倍膜厚动量比1.0000x锁定",
+    "station-16 (u=1.00, h=2.00*h_0) locks momentum ratio = 1.0000x vs naive 2.0000x double momentum excess": "第 16 站（u=1.00，h=2.00h₀）锁死毛细动量通量比 1.0000×（消除朴素 2.0000× 两倍动量超冲）",
+    "geometry-58-solids": "58构件3D泰勒-库利克液膜回缩检验台一致性",
+    "3D Taylor-Culick liquid sheet retraction rig renders 58 tracked solids across 17 stations": "3D Taylor-Culick 毛细液膜回缩检验台在 17 个膜厚站点完整渲染 58 个独立几何体",
+    "mobile-layout": "手机布局",
+    "390px Taylor-Culick sheet retraction controls fit without horizontal overflow": "390px 泰勒-库利克控制面板无横向溢出",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "title": "Taylor-Culick 泰勒-库利克毛细液膜回缩检验台 vs 朴素恒速破洞扩张 2.0000× 动量违背",
+    "subtitle": "为什么在肥皂泡破裂、皇冠水花穿孔（Crown Splash Sheet Rupture）与粘液膜撕裂动画中，直接用恒定速度 `v = v₀` 扩大破洞半径会导致厚膜区动量通量超冲至 `2.0000×`、丧失上快下慢的真实液体质感？",
+    "plain_intro": "在制作 3D 肥皂泡被戳破、水滴撞击水面溅起的皇冠液膜（Crown Splash Sheet）穿孔撕裂、或者奇幻生物粘液膜破洞特效时，最偷懒的做法是在着色器里画一个圆孔 Alpha 遮罩，让圆孔半径按恒定速度线性放大：`r_hole(t) = v₀ · t`。为什么这样写出来的气泡破裂看起来像PPT圆形擦除转场一样生硬？杰弗里·泰勒爵士（Sir Geoffrey Ingram Taylor, 1959，《流体薄片动力学 III》）与弗雷德·库利克（Fred E. C. Culick, 1960）从毛细表面张力与卷吸边缘（Toroidal Rim）的动量守恒定律严格证明：当厚度为 `h`、密度为 `ρ` 的液膜裂开时，上下两个气液界面同时以总表面张力 `2σ` 拉扯自由边缘，而退缩的边缘不断把路径上的液膜“卷”进边缘液环中（单位长度质量增长率 `dm/dt = ρ h v`）。由动量通量平衡 `2σ = v · (dm/dt) = ρ h v²`（其中另外一半表面自由能被非弹性卷吸耗散为热能）立得**泰勒-库利克回缩速度定律：`v_TC(h) = √(2σ / (ρ h)) ∝ h^(-1/2)`**！这意味着：肥皂泡受重力排液影响往往顶部极薄（`h = h₀`）、底部较厚（`h = 2 h₀`），顶部薄壁的撕裂速度比底部快 `√2 ≈ 1.414` 倍！在跨越液膜增厚参数 `u = h/h₀ − 1 ∈ [0.000, 1.000]` 的 17 个站点上，朴素恒速模型 `v = v₀` 使动量通量比 `(ρ h v₀²) / (2σ) = h / h₀ = 1 + u` 在第 4 站（`h = 1.25 h₀`）超冲至 `1.2500×`、第 8 站（`h = 1.50 h₀`）超冲至 `1.5000×`、第 16 站（`h = 2.00 h₀`）直接翻倍至 **`2.0000×`**（污染 `16/17` 个站点）！采用 Taylor-Culick `h^(-1/2)` 毛细回缩定律，即可在全 17 站恒定锁死动量通量比 `1.0000×`（`0/17` 站违背）！",
+    "finding": "实测跨越液膜厚度扩展参数 u = h/h₀ − 1 ∈ [0.000, 1.000]（h/h₀ ∈ [1.000, 2.000]）的 17 个站点：Taylor-Culick 毛细液膜回缩定律（v_TC = √(2σ/(ρh))）在全部 17 个站点恒定锁死动量通量比 (ρhv²)/(2σ) = 1.0000×（0/17 违背），而朴素恒速破洞扩张（v = v₀）在第 4 站超冲至 1.2500×、第 8 站冲至 1.5000×、第 16 站（2 倍膜厚）翻倍至 2.0000×（污染 16/17 个站点）。",
+    "workbench_title": "58 实体 17 站点 Taylor-Culick 泰勒-库利克毛细液膜回缩检验台（第 205 个独立能力里程碑 Demo！）",
+    "scenario_quote": "为什么肥皂泡从顶部破裂时，上半部分瞬间消失，而下半部分由于重力积液变厚（`h = 2 h₀`），液膜边缘会明显减速为 `v_TC = v₀ / √2 ≈ 0.7071 v₀` 并凝聚成一圈粗壮的水珠环（Rim Bead）？这就是 Taylor-Culick `v = √(2σ/ρh)` 定律赋予液体特效的灵魂质感！",
+    "protocol_note": "顶块展示第 4 站（h=1.25h₀）、第 8 站（h=1.50h₀）与第 16 站（h=2.00h₀）；底块对比 Taylor-Culick 恒锁动量比 1.0000× 与朴素恒速模型超冲至 2.0000×。",
+    "robustness_name": "17 个液膜厚度站点在 Taylor-Culick 毛细回缩定律下 100% 保持精确动量通量比 1.0000×",
+    "primary_label": "Taylor-Culick v_TC = √(2σ / ρh)",
+    "baseline_label": "64 步 Rankine-Hugoniot 边缘质量卷吸求积",
+    "load_unit": "次 17 站毛细回缩求解",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比闭式 Taylor-Culick 速度平方与 64 步边缘质量卷吸数值积分基准。",
+    "good_fit": [
+      "肥皂泡戳破瞬间、水滴皇冠溅射液膜（Crown Splash）穿孔、瀑布水帘撕裂与生物粘液破洞特效",
+      "令破洞边缘扩张速度按膜厚平方根反比 v_TC = √(2σ / ρh) 自适应调节，自然呈现薄处飞速撕裂、厚处迟滞成珠的真实感",
+      "根据卷吸质量守恒同步放大破洞边缘环形水珠脊（Rim Torus）截面半径并触发 Rayleigh-Plateau 飞沫碎裂"
+    ],
+    "not_for": [
+      "脆性玻璃破碎（由瑞利弹性表面波速决定，而非毛细表面张力）",
+      "不发生流动的刚体石墙",
+      "静态 2D 图标"
+    ]
+  }
+}

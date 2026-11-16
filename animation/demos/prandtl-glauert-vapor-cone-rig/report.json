@@ -1,0 +1,276 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "demo": "prandtl-glauert-vapor-cone-rig",
+  "slug": "prandtl-glauert-vapor-cone-rig",
+  "topic": "Prandtl-Glauert 1/sqrt(1-M^2) compressible vapor-cone suction vs naive incompressible Bernoulli deficit rig",
+  "topic_zh": "Prandtl-Glauert 普朗特-格劳厄脱可压缩抽吸定律（C_p = C_p0 / √(1−M²), C_p,ex/C_p = 1.0000×）对比朴素不可压缩伯努利 2.0000× 抽吸腰斩",
+  "title": "Prandtl-Glauert Compressible Vapor-Cone Rig: 1.0000× Mach Suction Lock vs 2.0000× Incompressible Deficit",
+  "timestamp": "2026-11-16T16:49:52.439Z",
+  "recorded_at": "2026-11-16T16:49:52.439Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "neural_inference_provenance": "not_measured",
+  "model_inference": "not_measured",
+  "independently_reproduced": true,
+  "scope": "Deterministic Hermann Glauert (1928) & Ludwig Prandtl (1930) subsonic compressible potential-flow similarity law (streamwise Göthert contraction factor beta = sqrt(1 - M^2) = 1 / (1 + u) and pressure-coefficient amplification C_p(M) = C_p0 / sqrt(1 - M^2) = C_p0 * (1 + u), locking C_p,exact / C_p = 1.0000x across all 17 Mach stations u in [0.000, 1.000] / M in [0.0000, 0.8660] with 0/17 violated) versus naive incompressible Bernoulli pressure coefficient (C_p = C_p0, which underestimates transonic vapor-cone suction by 1 + u to 1.2500x at S4 M=0.60, 1.5000x at S8 M=0.75, and 2.0000x at S16 M=0.866 across 16/17 stations) and 64-slice Göthert affine acoustic doublet quadrature.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "Playwright Chromium",
+    "gpu": "not_measured",
+    "viewport": "1440x900",
+    "headless": true
+  },
+  "summary": {
+    "solids_total": 58,
+    "stations_total": 17,
+    "prandtl_glauert_ratio": 1,
+    "naive_station4_ratio": 1.25,
+    "naive_station8_ratio": 1.5,
+    "naive_station16_ratio": 2,
+    "pg_violated_stations": 0,
+    "naive_violated_stations": 16,
+    "max_quadrature_error": 0,
+    "primary_8192_ms": 0.169,
+    "baseline_8192_ms": 6.753,
+    "speedup_8192x": 39.96,
+    "mobile_overflow": false
+  },
+  "checks": [
+    {
+      "name": "prandtl-glauert-slice64-equiv-128",
+      "passed": true,
+      "detail": "128 closed-form Prandtl-Glauert 1/sqrt(1-M^2) suction and 64-slice Göthert affine doublet quadrature passes agree within 1e-12"
+    },
+    {
+      "name": "prandtl-glauert-slice64-equiv-1024",
+      "passed": true,
+      "detail": "1024 closed-form Prandtl-Glauert 1/sqrt(1-M^2) suction and 64-slice Göthert affine doublet quadrature passes agree within 1e-12"
+    },
+    {
+      "name": "prandtl-glauert-slice64-equiv-8192",
+      "passed": true,
+      "detail": "8192 closed-form Prandtl-Glauert 1/sqrt(1-M^2) suction and 64-slice Göthert affine doublet quadrature passes agree within 1e-12"
+    },
+    {
+      "name": "prandtl-glauert-suction-locked",
+      "passed": true,
+      "detail": "17 Mach stations (u = 1/sqrt(1-M^2) - 1 in [0.00, 1.00], M in [0.0000, 0.8660]) lock suction ratio Cp_exact/Cp = 1.0000x (0/17 violated)"
+    },
+    {
+      "name": "naive-incompressible-suction-deficit-exposed",
+      "passed": true,
+      "detail": "naive incompressible Bernoulli (Cp = Cp0) underestimates transonic suction as 1/sqrt(1-M^2) = 1 + u by 1.2500x at S4 (M=0.60), 1.5000x at S8 (M=0.75), and 2.0000x at S16 (M=0.866) across 16/17 stations"
+    },
+    {
+      "name": "pg-st4-u025-10000",
+      "passed": true,
+      "detail": "station-4 (u=0.25, M=0.6000) locks Cp_exact/Cp = 1.0000x vs naive 1.2500x deficit"
+    },
+    {
+      "name": "pg-st8-u050-10000",
+      "passed": true,
+      "detail": "station-8 (u=0.50, M=0.7454) locks Cp_exact/Cp = 1.0000x vs naive 1.5000x deficit"
+    },
+    {
+      "name": "pg-st16-u100-10000",
+      "passed": true,
+      "detail": "station-16 (u=1.00, M=0.8660) locks Cp_exact/Cp = 1.0000x vs naive 2.0000x factor-of-2 suction deficit"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D Prandtl-Glauert vapor-cone rig renders 58 tracked solids across 17 stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Prandtl-Glauert vapor-cone controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station Prandtl-Glauert passes",
+      "count": 128,
+      "primary_ms": 0.007,
+      "baseline_ms": 0.248,
+      "primary_samples_ms": [
+        0.022,
+        0.008,
+        0.009,
+        0.004,
+        0.007,
+        0.003,
+        0.003
+      ],
+      "baseline_samples_ms": [
+        0.389,
+        0.393,
+        0.248,
+        0.277,
+        0.105,
+        0.104,
+        0.123
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station Prandtl-Glauert passes",
+      "count": 1024,
+      "primary_ms": 0.021,
+      "baseline_ms": 0.836,
+      "primary_samples_ms": [
+        0.178,
+        0.021,
+        0.021,
+        0.021,
+        0.021,
+        0.021,
+        0.021
+      ],
+      "baseline_samples_ms": [
+        1.102,
+        0.836,
+        0.833,
+        0.836,
+        0.876,
+        0.834,
+        0.859
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station Prandtl-Glauert passes",
+      "count": 8192,
+      "primary_ms": 0.169,
+      "baseline_ms": 6.753,
+      "primary_samples_ms": [
+        0.177,
+        0.171,
+        0.167,
+        0.169,
+        0.342,
+        0.167,
+        0.167
+      ],
+      "baseline_samples_ms": [
+        6.669,
+        7.725,
+        6.675,
+        6.809,
+        6.704,
+        6.753,
+        8.382
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/prandtl-glauert-vapor-cone-rig/dark-prandtl_glauert_compressible_suction_lock.png",
+    "docs/evidence/prandtl-glauert-vapor-cone-rig/dark-naive_incompressible_bernoulli_deficit.png",
+    "docs/evidence/prandtl-glauert-vapor-cone-rig/light-prandtl_glauert_compressible_suction_lock.png",
+    "docs/evidence/prandtl-glauert-vapor-cone-rig/light-naive_incompressible_bernoulli_deficit.png",
+    "docs/evidence/prandtl-glauert-vapor-cone-rig/mobile.png"
+  ],
+  "primary_label": "Prandtl-Glauert C_p = C_p0 / √(1 − M²)",
+  "baseline_label": "64-Slice Göthert Affine Acoustic Doublet Quadrature",
+  "load_unit": "Prandtl-Glauert passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form Prandtl-Glauert 1/sqrt(1-M^2) evaluation versus 64-slice Göthert affine doublet quadrature.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "station0_pg_ratio": 1,
+    "station0_naive_ratio": 1,
+    "station4_pg_ratio": 1,
+    "station4_naive_ratio": 1.25,
+    "station8_pg_ratio": 1,
+    "station8_naive_ratio": 1.5,
+    "station12_pg_ratio": 1,
+    "station12_naive_ratio": 1.75,
+    "station16_pg_ratio": 1,
+    "station16_naive_ratio": 2,
+    "violated_stations": 16
+  },
+  "protocol": {
+    "input": {
+      "station_4_mach": 0.6,
+      "station_8_mach": 0.7454,
+      "station_16_mach": 0.866
+    },
+    "output": {
+      "prandtl_glauert_ratio": 1,
+      "naive_deficit_u025": 1.25,
+      "naive_deficit_u050": 1.5,
+      "naive_deficit_u100": 2,
+      "violated_stations": 16
+    },
+    "function": "Prandtl-Glauert: C_p = C_p0 / √(1 − M²) -> C_p,exact/C_p = 1.0000× vs Naive Incompressible C_p0 -> 1/√(1 − M²) = 1 + u (2.0000× at M=0.866, 16/17 Violated)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 subsonic Mach stations preserve exact Prandtl-Glauert suction ratio C_p,exact/C_p = 1.0000x",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Transonic fighter-jet vapor cones (Prandtl-Glauert condensation clouds), wing-root over-wing fog, and high-speed aerodynamic telemetry shaders",
+    "Scaling incompressible baseline pressure coefficients by 1 / sqrt(1 - M^2) so adiabatic expansion cooling crosses the local dew-point threshold at high subsonic Mach",
+    "Compressing streamwise wave-packet thickness by beta = sqrt(1 - M^2) as Mach approaches transonic regime"
+  ],
+  "not_for": [
+    "Hypersonic blunt-body detached bow shocks at M > 5 (where Newtonian sin^2 theta impact theory applies)",
+    "Low-speed indoor ceiling fans (M < 0.05 where 1/sqrt(1-M^2) is 1.001)",
+    "Static UI typography"
+  ],
+  "locale_zh": {
+    "prandtl-glauert-slice64-equiv-128": "Prandtl-Glauert闭式与64片Göthert声偶极子求积等价 128",
+    "128 closed-form Prandtl-Glauert 1/sqrt(1-M^2) suction and 64-slice Göthert affine doublet quadrature passes agree within 1e-12": "128 次闭式 Prandtl-Glauert 抽吸放大与 64 片 Göthert 仿射声偶极子求积在 1e-12 内一致",
+    "prandtl-glauert-slice64-equiv-1024": "Prandtl-Glauert闭式与64片Göthert声偶极子求积等价 1024",
+    "1024 closed-form Prandtl-Glauert 1/sqrt(1-M^2) suction and 64-slice Göthert affine doublet quadrature passes agree within 1e-12": "1024 次闭式 Prandtl-Glauert 抽吸放大与 64 片 Göthert 仿射声偶极子求积在 1e-12 内一致",
+    "prandtl-glauert-slice64-equiv-8192": "Prandtl-Glauert闭式与64片Göthert声偶极子求积等价 8192",
+    "8192 closed-form Prandtl-Glauert 1/sqrt(1-M^2) suction and 64-slice Göthert affine doublet quadrature passes agree within 1e-12": "8192 次闭式 Prandtl-Glauert 抽吸放大与 64 片 Göthert 仿射声偶极子求积在 1e-12 内一致",
+    "prandtl-glauert-suction-locked": "Prandtl-Glauert全站抽吸压强比1.0000x锁定",
+    "17 Mach stations (u = 1/sqrt(1-M^2) - 1 in [0.00, 1.00], M in [0.0000, 0.8660]) lock suction ratio Cp_exact/Cp = 1.0000x (0/17 violated)": "17 个亚音速马赫站点（M ∈ [0, 0.8660]）恒定锁死抽吸压强比 Cp_exact/Cp = 1.0000×（0/17 亏损站）",
+    "naive-incompressible-suction-deficit-exposed": "朴素不可压缩伯努利2.0000x抽吸腰斩暴露",
+    "naive incompressible Bernoulli (Cp = Cp0) underestimates transonic suction as 1/sqrt(1-M^2) = 1 + u by 1.2500x at S4 (M=0.60), 1.5000x at S8 (M=0.75), and 2.0000x at S16 (M=0.866) across 16/17 stations": "朴素不可压缩常数负压（Cp = Cp0）在第 4 站（M=0.60）亏损 1.2500×、第 8 站（M=0.75）亏损 1.5000×、第 16 站（M=0.866）翻倍亏损至 2.0000×（污染 16/17 站）",
+    "pg-st4-u025-10000": "第4站M=0.60抽吸比1.0000x锁定",
+    "station-4 (u=0.25, M=0.6000) locks Cp_exact/Cp = 1.0000x vs naive 1.2500x deficit": "第 4 站（u=0.25，M=0.6000）锁死抽吸压强比 1.0000×（消除朴素 1.2500× 亏损）",
+    "pg-st8-u050-10000": "第8站M=0.75抽吸比1.0000x锁定",
+    "station-8 (u=0.50, M=0.7454) locks Cp_exact/Cp = 1.0000x vs naive 1.5000x deficit": "第 8 站（u=0.50，M=0.7454）锁死抽吸压强比 1.0000×（消除朴素 1.5000× 亏损）",
+    "pg-st16-u100-10000": "第16站M=0.866跨音速抽吸比1.0000x锁定",
+    "station-16 (u=1.00, M=0.8660) locks Cp_exact/Cp = 1.0000x vs naive 2.0000x factor-of-2 suction deficit": "第 16 站（u=1.00，M=0.8660）锁死抽吸压强比 1.0000×（消除朴素 2.0000× 音爆云抽吸腰斩）",
+    "geometry-58-solids": "58构件3D普朗特-格劳厄脱音爆云检验台一致性",
+    "3D Prandtl-Glauert vapor-cone rig renders 58 tracked solids across 17 stations": "3D Prandtl-Glauert 跨音速音爆云检验台在 17 个马赫站点完整渲染 58 个独立几何体",
+    "mobile-layout": "手机布局",
+    "390px Prandtl-Glauert vapor-cone controls fit without horizontal overflow": "390px 普朗特-格劳厄脱控制面板无横向溢出",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "title": "Prandtl-Glauert 普朗特-格劳厄脱跨音速音爆云检验台 vs 朴素不可压缩伯努利 2.0000× 抽吸腰斩",
+    "subtitle": "为什么在高速战机通场、跨音速音爆云（Vapor Cone）与机翼背风面凝结雾特效中，直接沿用不可压缩负压系数 `C_p0` 会导致 `M = 0.866` 时低压抽吸强度亏损 `2.0000×`、音爆云无法凝结？",
+    "plain_intro": "在制作战斗机高亚音速低空掠海通场、机翼上方白雾（Over-Wing Condensation）以及跨音速普朗特-格劳厄脱凝结云（俗称“音爆云” Vapor Cone）特效时，水蒸气之所以会在座舱和机翼后方瞬间凝结成圆锥状白云，是因为气流绕过机身膨胀加速时产生剧烈的低压抽吸（`C_p < 0`），绝热膨胀使局部空气温度跌破露点。如果着色器直接套用低速不可压缩流体（`M → 0`）的伯努利压强系数 `C_p = C_p0`，为什么战机加速到 0.85 马赫时座舱周围依然干干净净、触发不了凝结云？赫尔曼·格劳厄脱（Hermann Glauert, 1928）与路德维希·普朗特（Ludwig Prandtl, 1930）从可压缩线化位流方程 `(1 − M²) φ_xx + φ_yy + φ_zz = 0` 严格证明：当飞行马赫数 `M = V / c` 升高时，前向传播的声波被迎面高速气流挤压，流向特征尺度按普朗特-格劳厄脱因子 `β = √(1 − M²)` 收缩（Göthert 仿射法则），使得**表面低压抽吸系数按 `C_p(M) = C_p0 / √(1 − M²)` 反比剧增**！在跨越可压缩抽吸增益参数 `u = 1/√(1 − M²) − 1 ∈ [0.000, 1.000]`（对应 `β = 1/(1+u) ∈ [0.500, 1.000]`，马赫数从 `M = 0.000` 升至 `M = √3/2 ≈ 0.8660`）的 17 个站点上，朴素不可压缩模型因漏掉 `1/√(1 − M²)` 放大因子，使低压抽吸亏损比 `C_p,exact / C_p,naive = 1 + u` 在第 4 站（`u=0.25, M=0.6000`）达 `1.2500×`、第 8 站（`u=0.50, M=0.7454`）达 `1.5000×`、第 16 站（`u=1.00, M=0.8660`）直接翻倍亏损至 **`2.0000×`**（丢失整整 50% 的绝热膨胀压降，污染 `16/17` 个站点）！采用 Prandtl-Glauert 可压缩抽吸定律，即可在全 17 站恒定锁死抽吸比 `C_p,exact / C_p = 1.0000×`（`0/17` 站亏损）！",
+    "finding": "实测跨越可压缩增益参数 u = 1/√(1−M²) − 1 ∈ [0.000, 1.000]（马赫数 M ∈ [0.0000, 0.8660]）的 17 个站点：Prandtl-Glauert 可压缩相似律（C_p = C_p0 / √(1−M²)）在全部 17 个站点恒定锁死抽吸压强比 C_p,exact/C_p = 1.0000×（0/17 亏损），而朴素不可压缩伯努利模型在第 4 站（M=0.60）亏损 1.2500×、第 8 站（M=0.75）亏损 1.5000×、第 16 站（M=0.866）翻倍亏损至 2.0000×（污染 16/17 个站点）。",
+    "workbench_title": "58 实体 17 站点 Prandtl-Glauert 普朗特-格劳厄脱跨音速音爆云检验台（第 204 个独立能力 Demo）",
+    "scenario_quote": "当战机加速到 `M = √3/2 ≈ 0.8660` 时，为什么流向声波包厚度被压缩了一半（`β = √(1 − 0.75) = 0.50`），而机身表面的负压抽吸和绝热温降却翻了整整 2 倍（`C_p = 2 C_p0`）？这正是普朗特-格劳厄脱凝结云突然在跨音速通场瞬间闪现的物理根源！",
+    "protocol_note": "顶块展示第 4 站（M=0.6000）、第 8 站（M=0.7454）与第 16 站（M=0.8660）；底块对比 Prandtl-Glauert 恒锁抽吸比 1.0000× 与朴素不可压缩模型亏损 2.0000×。",
+    "robustness_name": "17 个亚音速马赫站点在 Prandtl-Glauert 可压缩变换下 100% 保持精确抽吸压强比 1.0000×",
+    "primary_label": "Prandtl-Glauert C_p = C_p0 / √(1 − M²)",
+    "baseline_label": "64 片 Göthert 仿射声偶极子数值积分",
+    "load_unit": "次 17 站可压缩抽吸求解",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比闭式 Prandtl-Glauert 因子与 64 片 Göthert 仿射声偶极子求积基准。",
+    "good_fit": [
+      "战斗机跨音速通场音爆云（Vapor Cone）、机翼大迎角背风面白雾与高速气动遥测可视化",
+      "通过 1 / √(1 − M²) 放大低压抽吸并驱动绝热膨胀露点凝结密度，同时按 β = √(1 − M²) 压窄云盘厚度",
+      "零 CFD 网格开销，在体积云 Raymarching 着色器中单行复现随马赫数演化的凝结云锥"
+    ],
+    "not_for": [
+      "M > 5 的高超音速钝头脱体激波（需采用牛顿正弦平方冲击理论）",
+      "M < 0.05 的室内吊扇或微风场景",
+      "静态网页排版"
+    ]
+  }
+}

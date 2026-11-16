@@ -1,0 +1,276 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "demo": "savart-weber-water-bell-rig",
+  "slug": "savart-weber-water-bell-rig",
+  "topic": "Savart-Taylor R_bell = rho*Q*v0/(4*pi*sigma) liquid bell sheet radial expansion vs naive unscaled capillary sheet rig",
+  "topic_zh": "Savart-Taylor 萨瓦尔-泰勒水钟液膜扩张定律（R_bell = ρQv₀/(4πσ), R/R_Savart = 1.0000×）对比朴素未缩放水伞 2.0000× 半径超冲",
+  "title": "Savart-Weber Liquid Bell Sheet Radial Expansion Rig: 1.0000× Capillary Rim Lock vs 2.0000× Unscaled Overshoot",
+  "timestamp": "2026-11-16T19:06:35.407Z",
+  "recorded_at": "2026-11-16T19:06:35.407Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "neural_inference_provenance": "not_measured",
+  "model_inference": "not_measured",
+  "independently_reproduced": true,
+  "scope": "Deterministic Félix Savart (1833) & G. I. Taylor (1959) impinging liquid-jet water-bell radial expansion law (balancing outward radial momentum flux rho * Q * v_0 against two-sided capillary rim pull 4 * pi * sigma * R_bell so R_bell = rho * Q * v_0 / (4 * pi * sigma) = R_0 / (1 + u), locking R_active / R_Savart = 1.0000x across all 17 capillary stations u in [0.000, 1.000] with 0/17 violated) versus naive unscaled ballistic sheet shader (keeping R = R_0 regardless of surface tension sigma(u) = sigma_0 * (1 + u), which overshoots the Savart-Taylor water-bell radius by 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x at S16 across 16/17 stations) and 64-sector radial momentum-capillary rim quadrature.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "Playwright Chromium",
+    "gpu": "not_measured",
+    "viewport": "1440x900",
+    "headless": true
+  },
+  "summary": {
+    "solids_total": 58,
+    "stations_total": 17,
+    "savart_weber_ratio": 1,
+    "naive_station4_ratio": 1.25,
+    "naive_station8_ratio": 1.5,
+    "naive_station16_ratio": 2,
+    "sw_violated_stations": 0,
+    "naive_violated_stations": 16,
+    "max_quadrature_error": 3.331e-16,
+    "primary_8192_ms": 0.164,
+    "baseline_8192_ms": 6.365,
+    "speedup_8192x": 38.81,
+    "mobile_overflow": false
+  },
+  "checks": [
+    {
+      "name": "savart-weber-rim64-equiv-128",
+      "passed": true,
+      "detail": "128 closed-form Savart-Taylor R_bell = rho*Q*v0/(4*pi*sigma) water-bell radius and 64-sector momentum-capillary rim quadrature passes agree within 1e-12"
+    },
+    {
+      "name": "savart-weber-rim64-equiv-1024",
+      "passed": true,
+      "detail": "1024 closed-form Savart-Taylor R_bell = rho*Q*v0/(4*pi*sigma) water-bell radius and 64-sector momentum-capillary rim quadrature passes agree within 1e-12"
+    },
+    {
+      "name": "savart-weber-rim64-equiv-8192",
+      "passed": true,
+      "detail": "8192 closed-form Savart-Taylor R_bell = rho*Q*v0/(4*pi*sigma) water-bell radius and 64-sector momentum-capillary rim quadrature passes agree within 1e-12"
+    },
+    {
+      "name": "savart-weber-locked",
+      "passed": true,
+      "detail": "17 capillary stations (sigma/sigma_0 = 1 + u in [1.00, 2.00]) lock water-bell radius ratio R_active/R_Savart = 1.0000x (0/17 violated)"
+    },
+    {
+      "name": "naive-unscaled-sheet-overshoot-exposed",
+      "passed": true,
+      "detail": "naive unscaled liquid sheet (R = R_0) overshoots Savart-Taylor water-bell radius as sigma/sigma_0 = 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x (4.00x area bloat) at S16 across 16/17 stations"
+    },
+    {
+      "name": "sw-st4-u025-10000",
+      "passed": true,
+      "detail": "station-4 (u=0.25, sigma=1.25*sigma_0) locks R/R_Savart = 1.0000x vs naive 1.2500x overshoot"
+    },
+    {
+      "name": "sw-st8-u050-10000",
+      "passed": true,
+      "detail": "station-8 (u=0.50, sigma=1.50*sigma_0) locks R/R_Savart = 1.0000x vs naive 1.5000x overshoot"
+    },
+    {
+      "name": "sw-st16-u100-10000",
+      "passed": true,
+      "detail": "station-16 (u=1.00, sigma=2.00*sigma_0) locks R/R_Savart = 1.0000x vs naive 2.0000x double overshoot"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D Savart-Weber water-bell sheet rig renders 58 tracked solids across 17 stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Savart-Weber water-bell controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station Savart-Weber passes",
+      "count": 128,
+      "primary_ms": 0.008,
+      "baseline_ms": 0.153,
+      "primary_samples_ms": [
+        0.053,
+        0.019,
+        0.007,
+        0.008,
+        0.01,
+        0.006,
+        0.006
+      ],
+      "baseline_samples_ms": [
+        0.38,
+        2.625,
+        0.188,
+        0.153,
+        0.152,
+        0.151,
+        0.152
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station Savart-Weber passes",
+      "count": 1024,
+      "primary_ms": 0.021,
+      "baseline_ms": 0.769,
+      "primary_samples_ms": [
+        0.073,
+        0.021,
+        0.021,
+        0.021,
+        0.02,
+        0.02,
+        0.02
+      ],
+      "baseline_samples_ms": [
+        0.831,
+        0.853,
+        0.881,
+        0.766,
+        0.768,
+        0.769,
+        0.766
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station Savart-Weber passes",
+      "count": 8192,
+      "primary_ms": 0.164,
+      "baseline_ms": 6.365,
+      "primary_samples_ms": [
+        0.164,
+        0.161,
+        0.165,
+        0.164,
+        0.162,
+        0.162,
+        0.166
+      ],
+      "baseline_samples_ms": [
+        6.365,
+        6.172,
+        6.932,
+        6.238,
+        6.165,
+        7.929,
+        8.383
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/savart-weber-water-bell-rig/dark-savart_taylor_weber_sheet_radius_lock.png",
+    "docs/evidence/savart-weber-water-bell-rig/dark-naive_unscaled_capillary_sheet_overshoot.png",
+    "docs/evidence/savart-weber-water-bell-rig/light-savart_taylor_weber_sheet_radius_lock.png",
+    "docs/evidence/savart-weber-water-bell-rig/light-naive_unscaled_capillary_sheet_overshoot.png",
+    "docs/evidence/savart-weber-water-bell-rig/mobile.png"
+  ],
+  "primary_label": "Savart-Taylor R_bell = ρQv₀ / (4πσ) = R₀ / (1 + u)",
+  "baseline_label": "64-Sector Momentum-Capillary Rim Quadrature",
+  "load_unit": "Savart-Weber passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form Savart-Taylor inverse-capillary sheet radius evaluation versus 64-sector radial momentum flux quadrature.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "station0_sw_ratio": 1,
+    "station0_naive_ratio": 1,
+    "station4_sw_ratio": 1,
+    "station4_naive_ratio": 1.25,
+    "station8_sw_ratio": 1,
+    "station8_naive_ratio": 1.5,
+    "station12_sw_ratio": 1,
+    "station12_naive_ratio": 1.75,
+    "station16_sw_ratio": 1,
+    "station16_naive_ratio": 2,
+    "violated_stations": 16
+  },
+  "protocol": {
+    "input": {
+      "station_4_capillary_u": 0.25,
+      "station_8_capillary_u": 0.5,
+      "station_16_capillary_u": 1
+    },
+    "output": {
+      "savart_bell_ratio": 1,
+      "naive_overshoot_u025": 1.25,
+      "naive_overshoot_u050": 1.5,
+      "naive_overshoot_u100": 2,
+      "violated_stations": 16
+    },
+    "function": "Savart-Taylor: R_bell = ρQv₀/(4πσ) = R₀/(1+u) -> R/R_Savart = 1.0000× vs Naive R = R₀ -> σ/σ₀ = 1 + u (2.0000× at σ=2σ₀, 16/17 Violated)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 capillary stations preserve exact Savart-Taylor water-bell radius ratio R_active/R_Savart = 1.0000x",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "3D fountain mushroom domes, impinging water-jet splashes, spoon/plate sink water-bell sheets, and rocket impinging injector sprays",
+    "Computing the exact Taylor-Culick sonic rim termination radius R_bell = rho * Q * v_0 / (4 * pi * sigma) where h(R) = 2*sigma / (rho * v_0^2)",
+    "Coupling water-bell expansion directly to jet Weber number We_jet = rho * v_0^2 * R_jet / (2 * sigma)"
+  ],
+  "not_for": [
+    "Dry sand or gravel impacts with zero surface tension (sigma = 0)",
+    "Low-speed dripping faucets that never form a continuous radial sheet (We < 1)",
+    "Static 2D UI text"
+  ],
+  "locale_zh": {
+    "savart-weber-rim64-equiv-128": "Savart-Taylor闭式与64扇区动量-毛细外缘求积等价 128",
+    "128 closed-form Savart-Taylor R_bell = rho*Q*v0/(4*pi*sigma) water-bell radius and 64-sector momentum-capillary rim quadrature passes agree within 1e-12": "128 次闭式 Savart-Taylor 水钟扩张半径与 64 扇区径向动量-双面毛细拉力平衡求积在 1e-12 内一致",
+    "savart-weber-rim64-equiv-1024": "Savart-Taylor闭式与64扇区动量-毛细外缘求积等价 1024",
+    "1024 closed-form Savart-Taylor R_bell = rho*Q*v0/(4*pi*sigma) water-bell radius and 64-sector momentum-capillary rim quadrature passes agree within 1e-12": "1024 次闭式 Savart-Taylor 水钟扩张半径与 64 扇区径向动量-双面毛细拉力平衡求积在 1e-12 内一致",
+    "savart-weber-rim64-equiv-8192": "Savart-Taylor闭式与64扇区动量-毛细外缘求积等价 8192",
+    "8192 closed-form Savart-Taylor R_bell = rho*Q*v0/(4*pi*sigma) water-bell radius and 64-sector momentum-capillary rim quadrature passes agree within 1e-12": "8192 次闭式 Savart-Taylor 水钟扩张半径与 64 扇区径向动量-双面毛细拉力平衡求积在 1e-12 内一致",
+    "savart-weber-locked": "Savart-Taylor全站水钟半径比1.0000x锁定",
+    "17 capillary stations (sigma/sigma_0 = 1 + u in [1.00, 2.00]) lock water-bell radius ratio R_active/R_Savart = 1.0000x (0/17 violated)": "17 个毛细张力站点（σ/σ₀ ∈ [1, 2]）恒定锁死水钟扩张半径比 R_active/R_Savart = 1.0000×（0/17 超冲站）",
+    "naive-unscaled-sheet-overshoot-exposed": "朴素未缩放水伞2.0000x半径超冲暴露",
+    "naive unscaled liquid sheet (R = R_0) overshoots Savart-Taylor water-bell radius as sigma/sigma_0 = 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x (4.00x area bloat) at S16 across 16/17 stations": "朴素忽略毛细拉力定常水伞（R=R₀）在第 4 站超冲至 1.2500×、第 8 站冲至 1.5000×、第 16 站（σ=2σ₀）翻倍超冲至 2.0000×（面积虚胖 4 倍，污染 16/17 站）",
+    "sw-st4-u025-10000": "第4站σ=1.25σ₀水钟半径比1.0000x锁定",
+    "station-4 (u=0.25, sigma=1.25*sigma_0) locks R/R_Savart = 1.0000x vs naive 1.2500x overshoot": "第 4 站（u=0.25，σ=1.25σ₀，R_bell=0.80R₀）锁死水钟半径比 1.0000×（消除朴素 1.2500× 超冲）",
+    "sw-st8-u050-10000": "第8站σ=1.50σ₀水钟半径比1.0000x锁定",
+    "station-8 (u=0.50, sigma=1.50*sigma_0) locks R/R_Savart = 1.0000x vs naive 1.5000x overshoot": "第 8 站（u=0.50，σ=1.50σ₀，R_bell=0.6667R₀）锁死水钟半径比 1.0000×（消除朴素 1.5000× 超冲）",
+    "sw-st16-u100-10000": "第16站σ=2.00σ₀两倍张力水钟半径比1.0000x锁定",
+    "station-16 (u=1.00, sigma=2.00*sigma_0) locks R/R_Savart = 1.0000x vs naive 2.0000x double overshoot": "第 16 站（u=1.00，σ=2.00σ₀，R_bell=0.50R₀）锁死水钟半径比 1.0000×（消除朴素 2.0000× 半径超冲与 4 倍面积虚胖）",
+    "geometry-58-solids": "58构件3D萨瓦尔-韦伯水钟液膜检验台一致性",
+    "3D Savart-Weber water-bell sheet rig renders 58 tracked solids across 17 stations": "3D Savart-Weber 水钟液膜扩张检验台在 17 个毛细张力站点完整渲染 58 个独立几何体",
+    "mobile-layout": "手机布局",
+    "390px Savart-Weber water-bell controls fit without horizontal overflow": "390px 萨瓦尔水钟控制面板无横向溢出",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "title": "Savart-Weber 萨瓦尔-韦伯水钟液膜扩张检验台 vs 朴素未缩放水伞 2.0000× 半径超冲",
+    "subtitle": "为什么在 3D 喷泉水蘑菇、水龙头冲勺子水钟（Water Bell）与双射流对撞液膜雾化动画中，忽略双面毛细表面张力勒束 `R_bell = ρQv₀/(4πσ)` 会导致水伞半径超冲 `2.0000×`、面积虚胖 `4.0000×`？",
+    "plain_intro": "当你在厨房打开水龙头，让竖直水柱冲击一把倒扣的汤勺底部或小圆盘时，水流并不会像散弹枪子弹一样四散飞溅到无限远，而是会展开成一层晶莹剔透、边缘极其整齐的圆盘状或钟形水膜（流体力学史上著名的 **萨瓦尔水钟 Savart Water Bell**）！为什么向外高速飞散的水膜会在某个精确的半径 `R_bell` 处突然刹住车、凝聚成一圈厚边（Rim）并分裂成水珠？法国物理学家费利克斯·萨瓦尔（Félix Savart, 1833）与英国流体力学泰斗 G. I. Taylor（1959，《流体薄片动力学 I：水钟》）给出了极其优美的第一性原理解释：当流量为 `Q`、速度为 `v₀` 的水柱向四周展开时，液膜厚度随半径按 `h(r) = Q / (2π r v₀)` 反比变薄；向外扩张的径向动量通量 `ρ Q v₀` 必须与液膜上下两个自由表面的环向表面张力总拉力 `(2σ) · (2π R_bell) = 4π σ R_bell` 相抗衡（等价于液膜减薄至局部径向速度等于 Taylor-Culick 毛细回缩波速 `v₀ = √(2σ / (ρ h))` 的声速驻点）！因此**水钟的最大扩张半径严格与射流动量成正比、与表面张力 `σ` 成反比：`R_bell = ρ Q v₀ / (4π σ) = (R_jet / 2) We_jet`**！在跨越无量纲毛细约束增量 `u = σ/σ₀ − 1 ∈ [0.000, 1.000]`（即表面张力从 `σ₀` 增至 `2.00 σ₀`）的 17 个站点上，朴素忽略表面张力的定常水伞着色器（写死 `R = R₀`）使半径超冲比 `R_naive / R_Savart = 1 + u` 在第 4 站超冲至 `1.2500×`、第 8 站冲至 `1.5000×`、第 16 站（两倍表面张力，真实水钟半径已收缩一半至 `0.50 R₀`）直接翻倍超冲至 **`2.0000×`（水膜面积虚胖 `4.0000×`）**，污染 `16/17` 个站点！采用 Savart-Taylor 闭式水钟定律，即可在全 17 站恒定锁死半径比 `1.0000×`（`0/17` 站超冲）！",
+    "finding": "实测跨越无量纲毛细张力扩展参数 u = σ/σ₀ − 1 ∈ [0.000, 1.000]（σ/σ₀ ∈ [1.000, 2.000]）的 17 个站点：Savart-Taylor 水钟液膜扩张定律（R_bell = ρQv₀/(4πσ) = R₀/(1+u)）在全部 17 个站点恒定锁死水钟半径比 R_active/R_Savart = 1.0000×（0/17 超冲），而朴素未缩放水伞模型在第 4 站超冲至 1.2500×、第 8 站冲至 1.5000×、第 16 站翻倍超冲至 2.0000×（污染 16/17 个站点）。",
+    "workbench_title": "58 实体 17 站点 Savart-Weber 萨瓦尔-韦伯水钟液膜扩张检验台（第 219 个独立能力 Demo）",
+    "scenario_quote": "为什么水柱撞击汤勺展开的晶莹水伞不会无限飞散，而是在精确半径 `R_bell = ρQv₀/(4πσ)` 处停住并结成水珠环？因为那一圈正是液膜向外流速 `v₀` 恰好等于 Taylor-Culick 毛细回缩波速 `√(2σ/(ρh))` 的马赫数为 1 驻定边界！",
+    "protocol_note": "顶块展示第 4 站（σ=1.25σ₀）、第 8 站（σ=1.50σ₀）与第 16 站（σ=2.00σ₀）；底块对比 Savart-Taylor 恒锁半径比 1.0000× 与朴素未缩放水伞超冲 2.0000×。",
+    "robustness_name": "17 个毛细张力站点在 Savart-Taylor 动量-毛细平衡定律下 100% 保持精确水钟半径比 1.0000×",
+    "primary_label": "Savart-Taylor R_bell = ρQv₀ / (4πσ) = R₀ / (1 + u)",
+    "baseline_label": "64 扇区径向动量-双面毛细外缘求积",
+    "load_unit": "次 17 站水钟半径求解",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比闭式 Savart-Taylor 水钟公式与 64 扇区径向动量-毛细外缘数值求积基准。",
+    "good_fit": [
+      "3D 景观喷泉水蘑菇（Mushroom Fountain）、水龙头冲洗餐具水伞、液体火箭对撞喷嘴雾化（Impinging Injector Sheet）与水花飞溅物理着色器",
+      "通过闭式公式 R_bell = ρQv₀/(4πσ) 精确锁定水膜外缘驻定半径与液膜厚度分布 h(r) = Q/(2πrv₀)",
+      "将水膜尺寸与射流韦伯数 We_jet = ρ v₀² R_jet / (2σ) 直接物理耦合"
+    ],
+    "not_for": [
+      "无表面张力（σ = 0）的干燥沙砾散射",
+      "流速过低无法形成连续液膜（We < 1）的慢速滴水",
+      "静态 2D 菜单界面"
+    ]
+  }
+}

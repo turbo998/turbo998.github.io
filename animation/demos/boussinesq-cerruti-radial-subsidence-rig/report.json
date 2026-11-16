@@ -1,0 +1,276 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "demo": "boussinesq-cerruti-radial-subsidence-rig",
+  "slug": "boussinesq-cerruti-radial-subsidence-rig",
+  "topic": "Boussinesq-Cerruti 1/r elastic half-space Green function subsidence vs naive unattenuated Winkler plateau sink rig",
+  "topic_zh": "Boussinesq-Cerruti 布辛涅斯克-切鲁蒂弹性半空间 1/r 格林沉降定律（w(r) = (1−ν)F/(2πGr), w/w_B = 1.0000×）对比朴素平底压陷 2.0000× 断崖超冲",
+  "title": "Boussinesq-Cerruti Elastic Half-Space Radial Subsidence Rig: 1.0000× 1/r Green Lock vs 2.0000× Plateau Excess",
+  "timestamp": "2026-11-16T17:16:34.777Z",
+  "recorded_at": "2026-11-16T17:16:34.777Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "neural_inference_provenance": "not_measured",
+  "model_inference": "not_measured",
+  "independently_reproduced": true,
+  "scope": "Deterministic Joseph Boussinesq (1885) & Valentino Cerruti (1882) 3D Navier-Cauchy elastic half-space surface Green function (vertical surface displacement w_B(r) = ((1 - nu) / (2 * pi * G)) * (F / r) = w_0 / (1 + u) decaying inversely with radial distance r(u) = r_0 * (1 + u) so r * w_B(r) = const, locking w_active / w_B = 1.0000x across all 17 radial stations u in [0.000, 1.000] with 0/17 violated) versus naive unattenuated Winkler plateau depression (w = w_0, which over-sinks the collar by r / r_0 = 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x at S16 across 16/17 stations) and 64-layer vertical strain quadrature.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "Playwright Chromium",
+    "gpu": "not_measured",
+    "viewport": "1440x900",
+    "headless": true
+  },
+  "summary": {
+    "solids_total": 58,
+    "stations_total": 17,
+    "boussinesq_subsidence_ratio": 1,
+    "naive_station4_ratio": 1.25,
+    "naive_station8_ratio": 1.5,
+    "naive_station16_ratio": 2,
+    "boussinesq_violated_stations": 0,
+    "naive_violated_stations": 16,
+    "max_quadrature_error": 3.331e-16,
+    "primary_8192_ms": 0.163,
+    "baseline_8192_ms": 6.599,
+    "speedup_8192x": 40.48,
+    "mobile_overflow": false
+  },
+  "checks": [
+    {
+      "name": "boussinesq-cerruti-layer64-equiv-128",
+      "passed": true,
+      "detail": "128 closed-form Boussinesq 1/r Green subsidence and 64-layer vertical strain quadrature passes agree within 1e-12"
+    },
+    {
+      "name": "boussinesq-cerruti-layer64-equiv-1024",
+      "passed": true,
+      "detail": "1024 closed-form Boussinesq 1/r Green subsidence and 64-layer vertical strain quadrature passes agree within 1e-12"
+    },
+    {
+      "name": "boussinesq-cerruti-layer64-equiv-8192",
+      "passed": true,
+      "detail": "8192 closed-form Boussinesq 1/r Green subsidence and 64-layer vertical strain quadrature passes agree within 1e-12"
+    },
+    {
+      "name": "boussinesq-subsidence-locked",
+      "passed": true,
+      "detail": "17 radial stations (r/r_0 = 1 + u in [1.00, 2.00]) lock subsidence ratio w/w_Boussinesq = 1.0000x (0/17 violated)"
+    },
+    {
+      "name": "naive-plateau-sink-exposed",
+      "passed": true,
+      "detail": "naive unattenuated Winkler plateau sink (w = w_0) over-sinks ground as r/r_0 = 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x at S16 across 16/17 stations"
+    },
+    {
+      "name": "boussinesq-st4-u025-10000",
+      "passed": true,
+      "detail": "station-4 (u=0.25, r=1.25*r_0) locks w/w_B = 1.0000x vs naive 1.2500x excess"
+    },
+    {
+      "name": "boussinesq-st8-u050-10000",
+      "passed": true,
+      "detail": "station-8 (u=0.50, r=1.50*r_0) locks w/w_B = 1.0000x vs naive 1.5000x excess"
+    },
+    {
+      "name": "boussinesq-st16-u100-10000",
+      "passed": true,
+      "detail": "station-16 (u=1.00, r=2.00*r_0) locks w/w_B = 1.0000x vs naive 2.0000x double sink excess"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D Boussinesq-Cerruti radial subsidence rig renders 58 tracked solids across 17 stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Boussinesq-Cerruti subsidence controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station Boussinesq Green passes",
+      "count": 128,
+      "primary_ms": 0.007,
+      "baseline_ms": 0.236,
+      "primary_samples_ms": [
+        0.141,
+        0.008,
+        0.007,
+        0.007,
+        0.008,
+        0.006,
+        0.006
+      ],
+      "baseline_samples_ms": [
+        0.362,
+        0.421,
+        0.236,
+        0.234,
+        0.233,
+        0.232,
+        0.238
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station Boussinesq Green passes",
+      "count": 1024,
+      "primary_ms": 0.02,
+      "baseline_ms": 0.79,
+      "primary_samples_ms": [
+        0.051,
+        0.021,
+        0.02,
+        0.02,
+        0.02,
+        0.021,
+        0.02
+      ],
+      "baseline_samples_ms": [
+        1.915,
+        0.786,
+        0.785,
+        0.79,
+        0.787,
+        0.822,
+        0.87
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station Boussinesq Green passes",
+      "count": 8192,
+      "primary_ms": 0.163,
+      "baseline_ms": 6.599,
+      "primary_samples_ms": [
+        0.165,
+        0.164,
+        0.162,
+        0.163,
+        0.182,
+        0.161,
+        0.161
+      ],
+      "baseline_samples_ms": [
+        6.287,
+        6.599,
+        6.326,
+        7.581,
+        6.902,
+        6.295,
+        9.53
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/boussinesq-cerruti-radial-subsidence-rig/dark-boussinesq_cerruti_inverse_r_green_lock.png",
+    "docs/evidence/boussinesq-cerruti-radial-subsidence-rig/dark-naive_unattenuated_winkler_plateau_sink.png",
+    "docs/evidence/boussinesq-cerruti-radial-subsidence-rig/light-boussinesq_cerruti_inverse_r_green_lock.png",
+    "docs/evidence/boussinesq-cerruti-radial-subsidence-rig/light-naive_unattenuated_winkler_plateau_sink.png",
+    "docs/evidence/boussinesq-cerruti-radial-subsidence-rig/mobile.png"
+  ],
+  "primary_label": "Boussinesq w(r) = (1−ν)F / (2πGr)",
+  "baseline_label": "64-Layer Vertical Strain Integration",
+  "load_unit": "Boussinesq Green passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form Boussinesq 1/r Green evaluation versus 64-layer vertical strain quadrature.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "station0_boussinesq_ratio": 1,
+    "station0_naive_ratio": 1,
+    "station4_boussinesq_ratio": 1,
+    "station4_naive_ratio": 1.25,
+    "station8_boussinesq_ratio": 1,
+    "station8_naive_ratio": 1.5,
+    "station12_boussinesq_ratio": 1,
+    "station12_naive_ratio": 1.75,
+    "station16_boussinesq_ratio": 1,
+    "station16_naive_ratio": 2,
+    "violated_stations": 16
+  },
+  "protocol": {
+    "input": {
+      "station_4_radial_u": 0.25,
+      "station_8_radial_u": 0.5,
+      "station_16_radial_u": 1
+    },
+    "output": {
+      "boussinesq_subsidence_ratio": 1,
+      "naive_excess_u025": 1.25,
+      "naive_excess_u050": 1.5,
+      "naive_excess_u100": 2,
+      "violated_stations": 16
+    },
+    "function": "Boussinesq-Cerruti: w(r) = w₀(r₀/r) -> w/w_B = 1.0000× vs Naive Winkler Plateau w = w₀ -> r/r₀ = 1 + u (2.0000× at r=2r₀, 16/17 Violated)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 radial half-space stations preserve exact Boussinesq 1/r subsidence ratio w/w_B = 1.0000x",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Giant mech/kaiju footstep ground subsidence, soft mattress/sofa cushion indentation, and heavy vehicle terrain heightmap shaders",
+    "Applying the Boussinesq 1/r half-space Green kernel w(r) = w_0 / sqrt(1 + (r/r_c)^2) so surrounding ground slopes smoothly toward the load center instead of punching cookie-cutter step cliffs",
+    "Superposing multiple contact loads F_i on a GPU heightmap in O(1) per contact via linear elasticity"
+  ],
+  "not_for": [
+    "Dry cohesionless sand avalanches governed by Coulomb angle-of-repose plastic slumping",
+    "Unloaded skybox domes",
+    "2D text editors"
+  ],
+  "locale_zh": {
+    "boussinesq-cerruti-layer64-equiv-128": "Boussinesq-Cerruti闭式与64层垂向应变积分等价 128",
+    "128 closed-form Boussinesq 1/r Green subsidence and 64-layer vertical strain quadrature passes agree within 1e-12": "128 次闭式 Boussinesq 1/r 格林地表沉降与 64 层垂向正应变求积在 1e-12 内一致",
+    "boussinesq-cerruti-layer64-equiv-1024": "Boussinesq-Cerruti闭式与64层垂向应变积分等价 1024",
+    "1024 closed-form Boussinesq 1/r Green subsidence and 64-layer vertical strain quadrature passes agree within 1e-12": "1024 次闭式 Boussinesq 1/r 格林地表沉降与 64 层垂向正应变求积在 1e-12 内一致",
+    "boussinesq-cerruti-layer64-equiv-8192": "Boussinesq-Cerruti闭式与64层垂向应变积分等价 8192",
+    "8192 closed-form Boussinesq 1/r Green subsidence and 64-layer vertical strain quadrature passes agree within 1e-12": "8192 次闭式 Boussinesq 1/r 格林地表沉降与 64 层垂向正应变求积在 1e-12 内一致",
+    "boussinesq-subsidence-locked": "Boussinesq-Cerruti全站地表沉降比1.0000x锁定",
+    "17 radial stations (r/r_0 = 1 + u in [1.00, 2.00]) lock subsidence ratio w/w_Boussinesq = 1.0000x (0/17 violated)": "17 个径向距离站点（r/r₀ ∈ [1, 2]）恒定锁死地表沉降比 w/w_B = 1.0000×（0/17 塌陷超冲站）",
+    "naive-plateau-sink-exposed": "朴素无衰减平底压陷2.0000x塌陷超冲暴露",
+    "naive unattenuated Winkler plateau sink (w = w_0) over-sinks ground as r/r_0 = 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x at S16 across 16/17 stations": "朴素无衰减温克勒平底压陷（w = w₀）在第 4 站超冲至 1.2500×、第 8 站冲至 1.5000×、第 16 站（r=2r₀）翻倍塌陷至 2.0000×（污染 16/17 站）",
+    "boussinesq-st4-u025-10000": "第4站r=1.25r₀沉降比1.0000x锁定",
+    "station-4 (u=0.25, r=1.25*r_0) locks w/w_B = 1.0000x vs naive 1.2500x excess": "第 4 站（u=0.25，r=1.25r₀）锁死地表沉降比 1.0000×（消除朴素 1.2500× 过度下沉）",
+    "boussinesq-st8-u050-10000": "第8站r=1.50r₀沉降比1.0000x锁定",
+    "station-8 (u=0.50, r=1.50*r_0) locks w/w_B = 1.0000x vs naive 1.5000x excess": "第 8 站（u=0.50，r=1.50r₀）锁死地表沉降比 1.0000×（消除朴素 1.5000× 过度下沉）",
+    "boussinesq-st16-u100-10000": "第16站r=2.00r₀外圈沉降比1.0000x锁定",
+    "station-16 (u=1.00, r=2.00*r_0) locks w/w_B = 1.0000x vs naive 2.0000x double sink excess": "第 16 站（u=1.00，r=2.00r₀）锁死地表沉降比 1.0000×（消除朴素 2.0000× 两倍断崖下沉）",
+    "geometry-58-solids": "58构件3D布辛涅斯克-切鲁蒂地表沉降检验台一致性",
+    "3D Boussinesq-Cerruti radial subsidence rig renders 58 tracked solids across 17 stations": "3D Boussinesq-Cerruti 弹性半空间沉降检验台在 17 个径向站点完整渲染 58 个独立几何体",
+    "mobile-layout": "手机布局",
+    "390px Boussinesq-Cerruti subsidence controls fit without horizontal overflow": "390px 布辛涅斯克沉降控制面板无横向溢出",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "title": "Boussinesq-Cerruti 布辛涅斯克-切鲁蒂弹性半空间沉降检验台 vs 朴素平底压陷 2.0000× 断崖超冲",
+    "subtitle": "为什么在巨型机甲踩踏地表、角色陷入沙发软垫与重型车辆压路高度图（Terrain Heightmap）变形着色器中，使用无径向衰减的温克勒（Winkler）平底压陷会导致 `r = 2r₀` 外围地表过度下沉至 `2.0000×` 并形成饼干模具般的断崖台阶？",
+    "plain_intro": "在制作 3D 开放世界地形交互（如巨型机甲重踏地面、攻城槌砸地）、角色坐进沙发床垫凹陷、或软胶玩偶被手指按压的顶点位移着色器（Vertex Displacement Shader）时，许多开发者采用最简单的温克勒弹簧床模型（Winkler Foundation）：只有正下方受压的顶点向下平移固定深度 `w = w₀`，或者在影响半径内做死板的平底压陷。为什么这样踩出来的地面或坐垫边缘像被饼干模具硬生生切出90度垂直断崖一样假？法国力学大师约瑟夫·布辛涅斯克（Joseph Boussinesq, 1885，《势理论在弹性固体平衡与运动研究中的应用》）与瓦伦蒂诺·切鲁蒂（Valentino Cerruti, 1882）通过求解三维 Navier-Cauchy 弹性半空间偏微分方程严格证明：当法向集中载荷 `F` 作用于剪切模量为 `G`、泊松比为 `ν` 的三维弹性半空间表面时，地下半球面面积按 `2π r²` 随距离平方扩大，内部正应力按 `1/r²` 衰减，沿深度积分后**地表垂向沉降位移严格与径向距离 `r` 成反比（三维弹性半空间 `1/r` 格林函数）：`w_B(r) = ((1 − ν) / (2π G)) · (F / r) = w₀ · (r₀ / r)`**！在跨越外围径向距离参数 `u = r/r₀ − 1 ∈ [0.000, 1.000]`（从载荷内缘 `r = r₀` 延伸至两倍半径外缘 `r = 2.000 r₀`）的 17 个站点上，朴素无衰减平底压陷模型（`w = w₀`）使地表沉降相对真实 Boussinesq 解的比值 `w_naive / w_B = r / r₀ = 1 + u` 在第 4 站（`r = 1.25 r₀`）超冲至 `1.2500×`、第 8 站（`r = 1.50 r₀`）超冲至 `1.5000×`、第 16 站（`r = 2.00 r₀`）直接翻倍超冲至 **`2.0000×`**（污染 `16/17` 个站点）！采用 Boussinesq-Cerruti `1/r` 格林核，即可在全 17 站恒定锁死沉降比 `w / w_B = 1.0000×`（`0/17` 站断崖超冲）！",
+    "finding": "实测跨越无量纲径向距离参数 u = r/r₀ − 1 ∈ [0.000, 1.000]（r/r₀ ∈ [1.000, 2.000]）的 17 个站点：Boussinesq-Cerruti 弹性半空间 1/r 格林核（w_B = w₀/(1+u)）在全部 17 个站点恒定锁死地表沉降比 w/w_B = 1.0000×（0/17 断崖超冲），而朴素无衰减温克勒平底压陷（w = w₀）在第 4 站超冲至 1.2500×、第 8 站冲至 1.5000×、第 16 站（r=2r₀）翻倍至 2.0000×（污染 16/17 个站点）。",
+    "workbench_title": "58 实体 17 站点 Boussinesq-Cerruti 布辛涅斯克-切鲁蒂弹性半空间沉降检验台（第 207 个独立能力 Demo）",
+    "scenario_quote": "为什么手指按压床垫或橡胶地面时，没有被手指直接碰到的外围一圈（`r = 2 r₀`）也会温柔地向下凹陷恰好一半深度（`w = 0.50 w₀`）？因为三维弹性半空间中的剪切应力把载荷散播到了半径为 `r` 的地下半球壳上，面积乘以深度正好导出 `r · w(r) = const` 的 `1/r` 格林衰减定律！",
+    "protocol_note": "顶块展示第 4 站（r=1.25r₀）、第 8 站（r=1.50r₀）与第 16 站（r=2.00r₀）；底块对比 Boussinesq 1/r 格林核恒锁沉降比 1.0000× 与朴素平底压陷超冲至 2.0000×。",
+    "robustness_name": "17 个径向半空间站点在 Boussinesq-Cerruti 1/r 格林函数下 100% 保持精确地表沉降比 1.0000×",
+    "primary_label": "Boussinesq w(r) = (1−ν)F / (2πGr)",
+    "baseline_label": "64 层垂向正应变数值积分",
+    "load_unit": "次 17 站半空间格林求解",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比闭式 Boussinesq 1/r 格林核与 64 层垂向正应变数值积分基准。",
+    "good_fit": [
+      "巨型机甲/怪兽重踏地面凹陷、角色坐卧沙发/床垫顶点变形与重型装甲车地形压痕着色器",
+      "通过 Boussinesq 1/r 弹性半空间格林核令受压点周围地表形成平滑过渡的弹性牵引漏斗，消除温克勒弹簧模型的 90 度断崖切口",
+      "支持多触点（如四足机器人或双脚）在顶点着色器中直接线性叠加格林位移场"
+    ],
+    "not_for": [
+      "超过休止角的干燥散沙雪崩塌方（由库仑塑性滑移主导）",
+      "无受力交互的远景天空盒",
+      "纯文本代码编辑器"
+    ]
+  }
+}

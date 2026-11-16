@@ -1,0 +1,276 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "demo": "torricelli-free-falling-vein-rig",
+  "slug": "torricelli-free-falling-vein-rig",
+  "topic": "Torricelli-Castelli R(z) = R0*(1 + 2gz/v0^2)^(-1/4) free-falling liquid vein gravity contraction vs naive constant-radius cylinder rig",
+  "topic_zh": "Torricelli-Castelli 托里拆利-卡斯泰利落水束缩颈定律（R = R₀(1+2gz/v₀²)^(−1/4), Q/Q₀ = 1.0000×）对比朴素等粗圆柱 2.0000× 流量虚胖",
+  "title": "Torricelli-Castelli Free-Falling Liquid Vein Rig: 1.0000× Quarter-Power Waist Lock vs 2.0000× Cylinder Bloat",
+  "timestamp": "2026-11-16T19:33:27.922Z",
+  "recorded_at": "2026-11-16T19:33:27.922Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "neural_inference_provenance": "not_measured",
+  "model_inference": "not_measured",
+  "independently_reproduced": true,
+  "scope": "Deterministic Benedetto Castelli (1628) & Evangelista Torricelli (1644) free-falling liquid vein gravity contraction law (combining Torricelli gravity acceleration v(z) = sqrt(v_0^2 + 2*g*z) = v_0*(1 + u) with steady incompressible continuity Q = pi*R(z)^2*v(z) = Q_0 so R(z) = R_0*(1 + 2*g*z/v_0^2)^(-1/4) = R_0 / sqrt(1 + u), locking Q(z)/Q_0 = 1.0000x across all 17 gravity-speed stations u in [0.000, 1.000] with 0/17 violated) versus naive constant-radius cylinder pouring shader (R(z) = R_0, which bloats volumetric flux and cross-section by v(z)/v_0 = 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x at S16 across 16/17 stations) and 64-step Bernoulli streamtube continuity quadrature.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "Playwright Chromium",
+    "gpu": "not_measured",
+    "viewport": "1440x900",
+    "headless": true
+  },
+  "summary": {
+    "solids_total": 58,
+    "stations_total": 17,
+    "torricelli_castelli_ratio": 1,
+    "naive_station4_ratio": 1.25,
+    "naive_station8_ratio": 1.5,
+    "naive_station16_ratio": 2,
+    "tc_violated_stations": 0,
+    "naive_violated_stations": 16,
+    "max_quadrature_error": 3.331e-16,
+    "primary_8192_ms": 0.183,
+    "baseline_8192_ms": 6.814,
+    "speedup_8192x": 37.23,
+    "mobile_overflow": false
+  },
+  "checks": [
+    {
+      "name": "torricelli-castelli-stream64-equiv-128",
+      "passed": true,
+      "detail": "128 closed-form Torricelli-Castelli R(z) = R0*(1+2gz/v0^2)^(-1/4) vein tapering and 64-step Bernoulli continuity streamtube quadrature passes agree within 1e-12"
+    },
+    {
+      "name": "torricelli-castelli-stream64-equiv-1024",
+      "passed": true,
+      "detail": "1024 closed-form Torricelli-Castelli R(z) = R0*(1+2gz/v0^2)^(-1/4) vein tapering and 64-step Bernoulli continuity streamtube quadrature passes agree within 1e-12"
+    },
+    {
+      "name": "torricelli-castelli-stream64-equiv-8192",
+      "passed": true,
+      "detail": "8192 closed-form Torricelli-Castelli R(z) = R0*(1+2gz/v0^2)^(-1/4) vein tapering and 64-step Bernoulli continuity streamtube quadrature passes agree within 1e-12"
+    },
+    {
+      "name": "torricelli-castelli-locked",
+      "passed": true,
+      "detail": "17 gravity-speed stations (v(z)/v_0 = 1 + u in [1.00, 2.00]) lock volumetric flow rate ratio Q(z)/Q_0 = 1.0000x (0/17 violated)"
+    },
+    {
+      "name": "naive-constant-radius-bloat-exposed",
+      "passed": true,
+      "detail": "naive constant-radius cylinder pouring (R = R_0) bloats volumetric flux as v(z)/v_0 = 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x at S16 across 16/17 stations"
+    },
+    {
+      "name": "tc-st4-u025-10000",
+      "passed": true,
+      "detail": "station-4 (u=0.25, v=1.25*v_0, R=0.8944*R_0) locks Q/Q_0 = 1.0000x vs naive 1.2500x flux bloat"
+    },
+    {
+      "name": "tc-st8-u050-10000",
+      "passed": true,
+      "detail": "station-8 (u=0.50, v=1.50*v_0, R=0.8165*R_0) locks Q/Q_0 = 1.0000x vs naive 1.5000x flux bloat"
+    },
+    {
+      "name": "tc-st16-u100-10000",
+      "passed": true,
+      "detail": "station-16 (u=1.00, v=2.00*v_0, R=0.7071*R_0) locks Q/Q_0 = 1.0000x vs naive 2.0000x double bloat"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D Torricelli-Castelli falling liquid vein rig renders 58 tracked solids across 17 stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Torricelli-Castelli falling vein controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station Torricelli-Castelli passes",
+      "count": 128,
+      "primary_ms": 0.01,
+      "baseline_ms": 0.239,
+      "primary_samples_ms": [
+        0.04,
+        0.01,
+        0.01,
+        0.01,
+        0.013,
+        0.003,
+        0.003
+      ],
+      "baseline_samples_ms": [
+        0.374,
+        0.369,
+        0.418,
+        0.207,
+        0.239,
+        0.106,
+        0.106
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station Torricelli-Castelli passes",
+      "count": 1024,
+      "primary_ms": 0.023,
+      "baseline_ms": 0.854,
+      "primary_samples_ms": [
+        0.223,
+        0.023,
+        0.023,
+        0.023,
+        0.023,
+        0.025,
+        0.023
+      ],
+      "baseline_samples_ms": [
+        0.856,
+        0.851,
+        0.85,
+        0.853,
+        0.929,
+        0.889,
+        0.854
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station Torricelli-Castelli passes",
+      "count": 8192,
+      "primary_ms": 0.183,
+      "baseline_ms": 6.814,
+      "primary_samples_ms": [
+        0.184,
+        0.184,
+        0.182,
+        0.183,
+        0.182,
+        0.184,
+        0.182
+      ],
+      "baseline_samples_ms": [
+        6.811,
+        6.814,
+        6.806,
+        7.147,
+        6.814,
+        7.256,
+        6.818
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/torricelli-free-falling-vein-rig/dark-torricelli_castelli_quarter_power_vein_lock.png",
+    "docs/evidence/torricelli-free-falling-vein-rig/dark-naive_constant_radius_cylinder_flux_bloat.png",
+    "docs/evidence/torricelli-free-falling-vein-rig/light-torricelli_castelli_quarter_power_vein_lock.png",
+    "docs/evidence/torricelli-free-falling-vein-rig/light-naive_constant_radius_cylinder_flux_bloat.png",
+    "docs/evidence/torricelli-free-falling-vein-rig/mobile.png"
+  ],
+  "primary_label": "Torricelli-Castelli R(z) = R₀ (1 + 2gz/v₀²)^(−1/4)",
+  "baseline_label": "64-Step Bernoulli Streamtube Continuity Quadrature",
+  "load_unit": "Torricelli-Castelli passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form Torricelli-Castelli quarter-power tapering versus 64-step Bernoulli streamtube continuity quadrature.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "station0_tc_ratio": 1,
+    "station0_naive_ratio": 1,
+    "station4_tc_ratio": 1,
+    "station4_naive_ratio": 1.25,
+    "station8_tc_ratio": 1,
+    "station8_naive_ratio": 1.5,
+    "station12_tc_ratio": 1,
+    "station12_naive_ratio": 1.75,
+    "station16_tc_ratio": 1,
+    "station16_naive_ratio": 2,
+    "violated_stations": 16
+  },
+  "protocol": {
+    "input": {
+      "station_4_speed_u": 0.25,
+      "station_8_speed_u": 0.5,
+      "station_16_speed_u": 1
+    },
+    "output": {
+      "torricelli_flux_ratio": 1,
+      "naive_bloat_u025": 1.25,
+      "naive_bloat_u050": 1.5,
+      "naive_bloat_u100": 2,
+      "violated_stations": 16
+    },
+    "function": "Torricelli-Castelli: R(z) = R₀/√(1+u), A(z) = A₀/(1+u) -> Q/Q₀ = 1.0000× vs Naive R = R₀ -> v(z)/v₀ = 1 + u (2.0000× at v=2v₀, 16/17 Violated)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 gravity-speed stations preserve exact Torricelli-Castelli volumetric flux ratio Q(z)/Q0 = 1.0000x",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "3D kitchen faucet water streams, teapot/espresso pouring, molten glass/honey ribbons, chocolate fountains, and waterfall veins",
+    "Tapering vertex radius by the exact quarter-power gravity law R(z) = R_0 * (1 + 2*g*z / v_0^2)^(-1/4) so volumetric flow Q(z) = A(z)*v(z) is strictly conserved",
+    "Feeding the local tapered radius R(z) into Rayleigh-Plateau pinch-off wavelength lambda^*(z) = 9.015 * R(z)"
+  ],
+  "not_for": [
+    "Zero-gravity space station liquid extrusion where g = 0",
+    "Rigid solid glass rods",
+    "Static 2D UI text"
+  ],
+  "locale_zh": {
+    "torricelli-castelli-stream64-equiv-128": "Torricelli-Castelli闭式与64步伯努利流管求积等价 128",
+    "128 closed-form Torricelli-Castelli R(z) = R0*(1+2gz/v0^2)^(-1/4) vein tapering and 64-step Bernoulli continuity streamtube quadrature passes agree within 1e-12": "128 次闭式 Torricelli-Castelli 落水束缩颈公式与 64 步伯努利-卡斯泰利流管求积在 1e-12 内一致",
+    "torricelli-castelli-stream64-equiv-1024": "Torricelli-Castelli闭式与64步伯努利流管求积等价 1024",
+    "1024 closed-form Torricelli-Castelli R(z) = R0*(1+2gz/v0^2)^(-1/4) vein tapering and 64-step Bernoulli continuity streamtube quadrature passes agree within 1e-12": "1024 次闭式 Torricelli-Castelli 落水束缩颈公式与 64 步伯努利-卡斯泰利流管求积在 1e-12 内一致",
+    "torricelli-castelli-stream64-equiv-8192": "Torricelli-Castelli闭式与64步伯努利流管求积等价 8192",
+    "8192 closed-form Torricelli-Castelli R(z) = R0*(1+2gz/v0^2)^(-1/4) vein tapering and 64-step Bernoulli continuity streamtube quadrature passes agree within 1e-12": "8192 次闭式 Torricelli-Castelli 落水束缩颈公式与 64 步伯努利-卡斯泰利流管求积在 1e-12 内一致",
+    "torricelli-castelli-locked": "Torricelli-Castelli全站落水束流量比1.0000x锁定",
+    "17 gravity-speed stations (v(z)/v_0 = 1 + u in [1.00, 2.00]) lock volumetric flow rate ratio Q(z)/Q_0 = 1.0000x (0/17 violated)": "17 个重力加速站点（v(z)/v₀ ∈ [1, 2]）恒定锁死落水束体积流量比 Q(z)/Q₀ = 1.0000×（0/17 虚胖站）",
+    "naive-constant-radius-bloat-exposed": "朴素等粗圆柱落水2.0000x流量虚胖暴露",
+    "naive constant-radius cylinder pouring (R = R_0) bloats volumetric flux as v(z)/v_0 = 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x at S16 across 16/17 stations": "朴素等粗圆柱落水模型（R=R₀）在第 4 站虚胖至 1.2500×、第 8 站冲至 1.5000×、第 16 站（v=2v₀）翻倍膨胀至 2.0000×（污染 16/17 站）",
+    "tc-st4-u025-10000": "第4站v=1.25v₀流量比1.0000x锁定",
+    "station-4 (u=0.25, v=1.25*v_0, R=0.8944*R_0) locks Q/Q_0 = 1.0000x vs naive 1.2500x flux bloat": "第 4 站（u=0.25，v=1.25v₀，R=0.8944R₀）锁死体积流量比 1.0000×（消除朴素 1.2500× 虚胖）",
+    "tc-st8-u050-10000": "第8站v=1.50v₀流量比1.0000x锁定",
+    "station-8 (u=0.50, v=1.50*v_0, R=0.8165*R_0) locks Q/Q_0 = 1.0000x vs naive 1.5000x flux bloat": "第 8 站（u=0.50，v=1.50v₀，R=0.8165R₀）锁死体积流量比 1.0000×（消除朴素 1.5000× 虚胖）",
+    "tc-st16-u100-10000": "第16站v=2.00v₀两倍流速流量比1.0000x锁定",
+    "station-16 (u=1.00, v=2.00*v_0, R=0.7071*R_0) locks Q/Q_0 = 1.0000x vs naive 2.0000x double bloat": "第 16 站（u=1.00，v=2.00v₀，R=0.7071R₀，A=0.50A₀）锁死体积流量比 1.0000×（消除朴素 2.0000× 翻倍虚胖）",
+    "geometry-58-solids": "58构件3D托里拆利-卡斯泰利落水束缩颈检验台一致性",
+    "3D Torricelli-Castelli falling liquid vein rig renders 58 tracked solids across 17 stations": "3D Torricelli-Castelli 自由落水束缩颈检验台在 17 个重力加速站点完整渲染 58 个独立几何体",
+    "mobile-layout": "手机布局",
+    "390px Torricelli-Castelli falling vein controls fit without horizontal overflow": "390px 托里拆利落水束控制面板无横向溢出",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "title": "Torricelli-Castelli 托里拆利-卡斯泰利落水束缩颈检验台 vs 朴素等粗圆柱 2.0000× 流量虚胖",
+    "subtitle": "为什么在 3D 水龙头落水、功夫茶壶注水、巧克力喷泉与熔融蜂蜜拉丝动画中，用上下等粗的圆柱网格渲染水流而不按 `R(z) = R₀(1+2gz/v₀²)^(−1/4)` 收腰变细会导致体积流量虚胖 `2.0000×` 且像僵硬的玻璃棒？",
+    "plain_intro": "你去厨房拧开水龙头（或者用茶壶往茶杯里倒水），仔细观察那一束平稳下落的透明水柱：刚离开水龙头出口时水柱最粗（半径 `R₀`），越往下落水柱越细，呈现出一条极其优雅、上粗下细的收腰漏斗曲线！然而在大量 3D 游戏和动画短片里，程序员为了省事，直接在水龙头下面放一根**上下完全等粗的圆柱体网格（`R(z) = R₀`）**，再让上面的法线贴图往下滚动加速——结果看起来根本不像水，而像一根插在水槽里的透明塑料棒！为什么真实下落的液流一定会越来越细？伽利略的两位高徒——本笃·卡斯泰利（Benedetto Castelli, 1628，《论流水之度量》，流体力学连续性方程之父）与埃万杰利斯塔·托里拆利（Evangelista Torricelli, 1644，托里拆利定理之父）给出了完美的物理证明：液体在重力 `g` 作用下自由下落距离 `z` 后，流速由初速度 `v₀` 加速至 `v(z) = √(v₀² + 2gz)`；由于水不可压缩，每一层水平截面每秒流过的水量 `Q = π R(z)² v(z) = π R₀² v₀` 必须处处相等！既然下落速度 `v(z)` 变快了，横截面积 `A(z) = A₀ v₀ / v(z)` 就必须成反比变小，**水柱半径严格服从著名的负四分之一（−1/4）次幂缩颈定律：`R(z) = R₀ (1 + 2gz / v₀²)^(−1/4)`**！在跨越无量纲重力提速参数 `u = v(z)/v₀ − 1 = √(1 + 2gz/v₀²) − 1 ∈ [0.000, 1.000]`（即落水速度从 `v₀` 加速至 `2.00 v₀`，下落高度 `2gz = 3 v₀²`）的 17 个站点上，朴素等粗圆柱模型（`R(z) = R₀`）使体积流量与横截面积虚胖比 `Q_naive / Q₀ = 1 + u` 在第 4 站虚胖至 `1.2500×`、第 8 站冲至 `1.5000×`、第 16 站（`v = 2 v₀`，真实水柱半径已收细至 `0.7071 R₀`、截面积减半至 `0.50 A₀`）直接翻倍虚胖至 **`2.0000×`**（污染 `16/17` 个站点）！采用 Torricelli-Castelli 落水缩颈定律，即可在全 17 站恒定锁死流量比 `1.0000×`（`0/17` 站虚胖）！",
+    "finding": "实测跨越重力加速扩展参数 u = v(z)/v₀ − 1 ∈ [0.000, 1.000]（v(z)/v₀ ∈ [1.000, 2.000]）的 17 个站点：Torricelli-Castelli 落水束负四分之一次幂缩颈定律（R(z) = R₀(1+2gz/v₀²)^(−1/4), A(z) = A₀/(1+u)）在全部 17 个站点恒定锁死体积流量比 Q(z)/Q₀ = 1.0000×（0/17 虚胖），而朴素等粗圆柱落水模型在第 4 站虚胖至 1.2500×、第 8 站冲至 1.5000×、第 16 站翻倍膨胀至 2.0000×（污染 16/17 个站点）。",
+    "workbench_title": "58 实体 17 站点 Torricelli-Castelli 托里拆利-卡斯泰利落水束缩颈检验台（第 222 个独立能力 Demo）",
+    "scenario_quote": "为什么水龙头流出的水柱越往下越细？因为重力让下落流速按 `v(z) = √(v₀² + 2gz)` 越来越快，根据卡斯泰利不可压缩连续性 `A(z)v(z) = Q₀`，当水流加速到 2 倍初速度时，水柱截面积必须收缩一半、半径收缩至 `1/√2 = 0.7071 R₀`！",
+    "protocol_note": "顶块展示第 4 站（v=1.25v₀）、第 8 站（v=1.50v₀）与第 16 站（v=2.00v₀, R=0.7071R₀）；底块对比 Torricelli-Castelli 恒锁流量比 1.0000× 与朴素等粗圆柱虚胖 2.0000×。",
+    "robustness_name": "17 个重力加速站点在 Torricelli-Castelli 连续性定理下 100% 保持精确体积流量比 1.0000×",
+    "primary_label": "Torricelli-Castelli R(z) = R₀ (1 + 2gz/v₀²)^(−1/4)",
+    "baseline_label": "64 步伯努利-卡斯泰利流管衰减数值求积",
+    "load_unit": "次 17 站落水束半径求解",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比闭式 Torricelli-Castelli 负四分之一次幂公式与 64 步流管连续性求积基准。",
+    "good_fit": [
+      "3D 厨房水龙头水流、功夫茶壶/手冲咖啡壶注水、巧克力喷泉、蜂蜜/玻璃液拉丝与窄束瀑布顶点变形着色器",
+      "通过闭式公式 R(z) = R₀ (1 + 2gz/v₀²)^(−1/4) 在顶点着色器中零成本生成真实重力收腰曲线",
+      "与 Round 201 的 Rayleigh-Plateau 液流掐断波长 λ*(z) = 9.015 R(z) 无缝级联，精确预测下落水柱断裂成水珠的位置"
+    ],
+    "not_for": [
+      "零重力太空舱内的无加速液柱（g = 0）",
+      "坚硬不可变形的固态玻璃棒",
+      "静态 2D 文本界面"
+    ]
+  }
+}

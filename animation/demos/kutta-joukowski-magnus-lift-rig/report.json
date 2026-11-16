@@ -1,0 +1,276 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "demo": "kutta-joukowski-magnus-lift-rig",
+  "slug": "kutta-joukowski-magnus-lift-rig",
+  "topic": "Kutta-Joukowski & Magnus F_L = rho*U*Gamma circulation lift vs naive uncoupled spin deficit rig",
+  "topic_zh": "Kutta-Joukowski 库塔-茹科夫斯基与马格努斯环量升力定律（F_L = ρUΓ, FL_ex/FL = 1.0000×）对比朴素未耦合自旋 2.0000× 弧线升力亏损",
+  "title": "Kutta-Joukowski & Magnus Circulation Lift Rig: 1.0000× ρUΓ Lift Lock vs 2.0000× Uncoupled Spin Deficit",
+  "timestamp": "2026-11-16T17:46:14.083Z",
+  "recorded_at": "2026-11-16T17:46:14.083Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "neural_inference_provenance": "not_measured",
+  "model_inference": "not_measured",
+  "independently_reproduced": true,
+  "scope": "Deterministic Heinrich Gustav Magnus (1853), Martin Wilhelm Kutta (1902) & Nikolay Yegorovich Joukowski (1906) aerodynamic circulation lift theorem (transverse lift per unit span F_L = rho * U * Gamma scaling linearly with bound spin circulation Gamma(u) = Gamma_0 * (1 + u), locking FL_exact / FL_model = 1.0000x across all 17 circulation stations u in [0.000, 1.000] with 0/17 violated) versus naive uncoupled spin trajectory (F_L = F_L0, which underestimates curveball and airfoil lift by 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x at S16 across 16/17 stations) and 64-panel Blasius surface pressure contour quadrature.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "Playwright Chromium",
+    "gpu": "not_measured",
+    "viewport": "1440x900",
+    "headless": true
+  },
+  "summary": {
+    "solids_total": 58,
+    "stations_total": 17,
+    "kutta_joukowski_ratio": 1,
+    "naive_station4_ratio": 1.25,
+    "naive_station8_ratio": 1.5,
+    "naive_station16_ratio": 2,
+    "kj_violated_stations": 0,
+    "naive_violated_stations": 16,
+    "max_quadrature_error": 0,
+    "primary_8192_ms": 0.2,
+    "baseline_8192_ms": 8.558,
+    "speedup_8192x": 42.79,
+    "mobile_overflow": false
+  },
+  "checks": [
+    {
+      "name": "kutta-joukowski-blasius64-equiv-128",
+      "passed": true,
+      "detail": "128 closed-form Kutta-Joukowski rho*U*Gamma lift and 64-panel Blasius surface pressure contour quadrature passes agree within 1e-12"
+    },
+    {
+      "name": "kutta-joukowski-blasius64-equiv-1024",
+      "passed": true,
+      "detail": "1024 closed-form Kutta-Joukowski rho*U*Gamma lift and 64-panel Blasius surface pressure contour quadrature passes agree within 1e-12"
+    },
+    {
+      "name": "kutta-joukowski-blasius64-equiv-8192",
+      "passed": true,
+      "detail": "8192 closed-form Kutta-Joukowski rho*U*Gamma lift and 64-panel Blasius surface pressure contour quadrature passes agree within 1e-12"
+    },
+    {
+      "name": "kutta-joukowski-lift-locked",
+      "passed": true,
+      "detail": "17 circulation stations (Gamma/Gamma_0 = 1 + u in [1.00, 2.00]) lock lift ratio FL_exact/FL = 1.0000x (0/17 violated)"
+    },
+    {
+      "name": "naive-uncoupled-spin-deficit-exposed",
+      "passed": true,
+      "detail": "naive uncoupled spin trajectory (FL = FL_0) underestimates Kutta-Joukowski / Magnus lift as Gamma/Gamma_0 = 1 + u by 1.2500x at S4, 1.5000x at S8, and 2.0000x at S16 across 16/17 stations"
+    },
+    {
+      "name": "kj-st4-u025-10000",
+      "passed": true,
+      "detail": "station-4 (u=0.25, Gamma=1.25*Gamma_0) locks FL_exact/FL = 1.0000x vs naive 1.2500x deficit"
+    },
+    {
+      "name": "kj-st8-u050-10000",
+      "passed": true,
+      "detail": "station-8 (u=0.50, Gamma=1.50*Gamma_0) locks FL_exact/FL = 1.0000x vs naive 1.5000x deficit"
+    },
+    {
+      "name": "kj-st16-u100-10000",
+      "passed": true,
+      "detail": "station-16 (u=1.00, Gamma=2.00*Gamma_0) locks FL_exact/FL = 1.0000x vs naive 2.0000x double deficit"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D Kutta-Joukowski Magnus lift rig renders 58 tracked solids across 17 stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Kutta-Joukowski lift controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station Kutta-Joukowski passes",
+      "count": 128,
+      "primary_ms": 0.009,
+      "baseline_ms": 0.298,
+      "primary_samples_ms": [
+        0.153,
+        0.009,
+        0.008,
+        0.008,
+        0.012,
+        0.024,
+        0.007
+      ],
+      "baseline_samples_ms": [
+        0.448,
+        0.354,
+        0.298,
+        0.296,
+        0.391,
+        0.283,
+        0.283
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station Kutta-Joukowski passes",
+      "count": 1024,
+      "primary_ms": 0.025,
+      "baseline_ms": 0.989,
+      "primary_samples_ms": [
+        0.073,
+        0.025,
+        0.026,
+        0.025,
+        0.025,
+        0.025,
+        0.025
+      ],
+      "baseline_samples_ms": [
+        2.399,
+        0.987,
+        0.99,
+        0.986,
+        0.989,
+        0.988,
+        1.96
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station Kutta-Joukowski passes",
+      "count": 8192,
+      "primary_ms": 0.2,
+      "baseline_ms": 8.558,
+      "primary_samples_ms": [
+        0.202,
+        0.2,
+        0.197,
+        0.199,
+        0.198,
+        0.276,
+        0.277
+      ],
+      "baseline_samples_ms": [
+        9.48,
+        8.025,
+        8.761,
+        7.958,
+        9.502,
+        8.013,
+        8.558
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/kutta-joukowski-magnus-lift-rig/dark-kutta_joukowski_circulation_lift_lock.png",
+    "docs/evidence/kutta-joukowski-magnus-lift-rig/dark-naive_uncoupled_ballistic_spin_deficit.png",
+    "docs/evidence/kutta-joukowski-magnus-lift-rig/light-kutta_joukowski_circulation_lift_lock.png",
+    "docs/evidence/kutta-joukowski-magnus-lift-rig/light-naive_uncoupled_ballistic_spin_deficit.png",
+    "docs/evidence/kutta-joukowski-magnus-lift-rig/mobile.png"
+  ],
+  "primary_label": "Kutta-Joukowski F_L = ρ U Γ",
+  "baseline_label": "64-Panel Blasius Surface Pressure Contour Quadrature",
+  "load_unit": "Kutta-Joukowski passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form Kutta-Joukowski rho*U*Gamma evaluation versus 64-panel Blasius surface pressure contour quadrature.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "station0_kj_ratio": 1,
+    "station0_naive_ratio": 1,
+    "station4_kj_ratio": 1,
+    "station4_naive_ratio": 1.25,
+    "station8_kj_ratio": 1,
+    "station8_naive_ratio": 1.5,
+    "station12_kj_ratio": 1,
+    "station12_naive_ratio": 1.75,
+    "station16_kj_ratio": 1,
+    "station16_naive_ratio": 2,
+    "violated_stations": 16
+  },
+  "protocol": {
+    "input": {
+      "station_4_circulation_u": 0.25,
+      "station_8_circulation_u": 0.5,
+      "station_16_circulation_u": 1
+    },
+    "output": {
+      "kutta_joukowski_lift_ratio": 1,
+      "naive_deficit_u025": 1.25,
+      "naive_deficit_u050": 1.5,
+      "naive_deficit_u100": 2,
+      "violated_stations": 16
+    },
+    "function": "Kutta-Joukowski: F_L = ρ U Γ(u) -> FL_exact/FL = 1.0000× vs Naive Uncoupled F_L0 -> Γ(u)/Γ₀ = 1 + u (2.0000× at Γ=2Γ₀, 16/17 Violated)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 spin-circulation stations preserve exact Kutta-Joukowski lift ratio FL_exact/FL = 1.0000x",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Soccer banana free-kicks, baseball curveballs/sliders, tennis topspin drops, golf backspin loft, and aircraft wing circulation trajectories",
+    "Computing transverse aerodynamic lift vector as F_Magnus = rho * cross(Gamma_vec, U_vec) so lateral swerve scales directly with spin angular velocity and airspeed",
+    "Visualizing asymmetric wake downwash and streamline crowding on the retreating/advancing sides of a spinning sphere"
+  ],
+  "not_for": [
+    "Vacuum lunar trajectories where air density rho = 0",
+    "Non-rotating knuckleballs governed by stochastic Karman vortex shedding rather than steady Magnus circulation",
+    "Static 2D tables"
+  ],
+  "locale_zh": {
+    "kutta-joukowski-blasius64-equiv-128": "Kutta-Joukowski闭式与64面元布拉修斯环路积分等价 128",
+    "128 closed-form Kutta-Joukowski rho*U*Gamma lift and 64-panel Blasius surface pressure contour quadrature passes agree within 1e-12": "128 次闭式 Kutta-Joukowski 环量升力与 64 面元布拉修斯表面压强积分在 1e-12 内一致",
+    "kutta-joukowski-blasius64-equiv-1024": "Kutta-Joukowski闭式与64面元布拉修斯环路积分等价 1024",
+    "1024 closed-form Kutta-Joukowski rho*U*Gamma lift and 64-panel Blasius surface pressure contour quadrature passes agree within 1e-12": "1024 次闭式 Kutta-Joukowski 环量升力与 64 面元布拉修斯表面压强积分在 1e-12 内一致",
+    "kutta-joukowski-blasius64-equiv-8192": "Kutta-Joukowski闭式与64面元布拉修斯环路积分等价 8192",
+    "8192 closed-form Kutta-Joukowski rho*U*Gamma lift and 64-panel Blasius surface pressure contour quadrature passes agree within 1e-12": "8192 次闭式 Kutta-Joukowski 环量升力与 64 面元布拉修斯表面压强积分在 1e-12 内一致",
+    "kutta-joukowski-lift-locked": "Kutta-Joukowski全站环量升力比1.0000x锁定",
+    "17 circulation stations (Gamma/Gamma_0 = 1 + u in [1.00, 2.00]) lock lift ratio FL_exact/FL = 1.0000x (0/17 violated)": "17 个旋转环量站点（Γ/Γ₀ ∈ [1, 2]）恒定锁死横向升力比 FL_exact/FL = 1.0000×（0/17 亏损站）",
+    "naive-uncoupled-spin-deficit-exposed": "朴素未耦合自旋2.0000x马格努斯升力亏损暴露",
+    "naive uncoupled spin trajectory (FL = FL_0) underestimates Kutta-Joukowski / Magnus lift as Gamma/Gamma_0 = 1 + u by 1.2500x at S4, 1.5000x at S8, and 2.0000x at S16 across 16/17 stations": "朴素未耦合自旋弹道（F_L = F_L0）在第 4 站亏损 1.2500×、第 8 站亏损 1.5000×、第 16 站（两倍环量 Γ=2Γ₀）翻倍亏损至 2.0000×（污染 16/17 站）",
+    "kj-st4-u025-10000": "第4站Γ=1.25Γ₀升力比1.0000x锁定",
+    "station-4 (u=0.25, Gamma=1.25*Gamma_0) locks FL_exact/FL = 1.0000x vs naive 1.2500x deficit": "第 4 站（u=0.25，Γ=1.25Γ₀）锁死环量升力比 1.0000×（消除朴素 1.2500× 亏损）",
+    "kj-st8-u050-10000": "第8站Γ=1.50Γ₀升力比1.0000x锁定",
+    "station-8 (u=0.50, Gamma=1.50*Gamma_0) locks FL_exact/FL = 1.0000x vs naive 1.5000x deficit": "第 8 站（u=0.50，Γ=1.50Γ₀）锁死环量升力比 1.0000×（消除朴素 1.5000× 亏损）",
+    "kj-st16-u100-10000": "第16站Γ=2.00Γ₀两倍环量升力比1.0000x锁定",
+    "station-16 (u=1.00, Gamma=2.00*Gamma_0) locks FL_exact/FL = 1.0000x vs naive 2.0000x double deficit": "第 16 站（u=1.00，Γ=2.00Γ₀）锁死环量升力比 1.0000×（消除朴素 2.0000× 升力腰斩）",
+    "geometry-58-solids": "58构件3D库塔-茹科夫斯基马格努斯升力检验台一致性",
+    "3D Kutta-Joukowski Magnus lift rig renders 58 tracked solids across 17 stations": "3D Kutta-Joukowski & Magnus 环量升力检验台在 17 个环量站点完整渲染 58 个独立几何体",
+    "mobile-layout": "手机布局",
+    "390px Kutta-Joukowski lift controls fit without horizontal overflow": "390px 库塔-茹科夫斯基升力控制面板无横向溢出",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "title": "Kutta-Joukowski 库塔-茹科夫斯基与马格努斯升力检验台 vs 朴素未耦合自旋 2.0000× 升力亏损",
+    "subtitle": "为什么在足球“香蕉球”任意球、棒球曲球（Curveball）、网球上旋急坠与飞机机翼环量动画中，只让球体表面贴图高速自转却不按 `F_L = ρ U × Γ` 耦合环量会导致横向偏转升力亏损 `2.0000×`？",
+    "plain_intro": "在制作 3D 体育游戏（如罗伯托·卡洛斯式外脚背香蕉任意球、乒乓球/网球高吊上旋弧圈球、高尔夫球倒旋飘升）或飞行器机翼气动仿真时，如果动画师只给球体加了自转角速度 `ω` 让贴图转得飞快，但物理轨迹仍然沿用无旋抛物线（或固定一个与转速无关的常值偏移力 `F_L0`），为什么踢出来的球飞得像铅球一样呆板？德国物理学家海因里希·马格努斯（Heinrich Gustav Magnus, 1853）、德国数学家马丁·库塔（Martin Wilhelm Kutta, 1902）与“俄罗斯航空之父”尼古拉·茹科夫斯基（Nikolay Joukowski, 1906）从复变势流布拉修斯积分定理严格证明：当旋转球体或机翼在密度为 `ρ`、速度为 `U` 的气流中携带附着涡环量 `Γ` 时，顺流一侧速度叠加为 `U + v_Γ`（伯努利压强降低），逆流一侧速度抵消为 `U − v_Γ`（伯努利压强升高），对整个表面积分后产生的**正交横向升力严格等于流体密度、来流速度与环量的乘积——库塔-茹科夫斯基定理：`F_L = ρ U Γ`（向量形式 `F_M ∝ ρ (ω × U)`）**！在跨越自旋环量增益参数 `u = Γ/Γ₀ − 1 ∈ [0.000, 1.000]`（环量从 `1.000 Γ₀` 提升至 `2.000 Γ₀`）的 17 个站点上，朴素未耦合自旋模型使真实横向升力与模型升力之比 `FL_exact / FL_naive = Γ / Γ₀ = 1 + u` 在第 4 站（`u=0.25`）亏损 `1.2500×`、第 8 站（`u=0.50`）亏损 `1.5000×`、第 16 站（`u=1.00, Γ=2Γ₀`）直接翻倍亏损至 **`2.0000×`**（污染 `16/17` 个站点）！采用 Kutta-Joukowski `ρ U Γ` 环量升力定律，即可在全 17 站恒定锁死升力比 `1.0000×`（`0/17` 站亏损）！",
+    "finding": "实测跨越自旋环量扩展参数 u = Γ/Γ₀ − 1 ∈ [0.000, 1.000]（Γ/Γ₀ ∈ [1.000, 2.000]）的 17 个站点：Kutta-Joukowski 库塔-茹科夫斯基环量升力定律（F_L = ρ U Γ）在全部 17 个站点恒定锁死横向升力比 FL_exact/FL = 1.0000×（0/17 亏损），而朴素未耦合自旋弹道在第 4 站亏损 1.2500×、第 8 站亏损 1.5000×、第 16 站（两倍环量）翻倍亏损至 2.0000×（污染 16/17 个站点）。",
+    "workbench_title": "58 实体 17 站点 Kutta-Joukowski 库塔-茹科夫斯基马格努斯升力检验台（Round 200 · 第 210 个独立能力里程碑 Demo！）",
+    "scenario_quote": "为什么罗伯托·卡洛斯的任意球能在空中划出诡异的大弧线绕过人墙入网？因为球体高速自旋产生的环量 `Γ` 与平动速度 `U` 通过叉乘 `F_L = ρ U × Γ` 擦出了正交横向马格努斯力；转速翻倍（`Γ = 2 Γ₀`），横向弧线拐弯力就翻倍！",
+    "protocol_note": "顶块展示第 4 站（Γ=1.25Γ₀）、第 8 站（Γ=1.50Γ₀）与第 16 站（Γ=2.00Γ₀）；底块对比 Kutta-Joukowski 恒锁升力比 1.0000× 与朴素未耦合模型亏损 2.0000×。",
+    "robustness_name": "17 个旋转环量站点在 Kutta-Joukowski 定理下 100% 保持精确横向升力比 1.0000×",
+    "primary_label": "Kutta-Joukowski F_L = ρ U Γ",
+    "baseline_label": "64 面元布拉修斯表面压强环路积分",
+    "load_unit": "次 17 站环量升力求解",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比闭式 Kutta-Joukowski ρUΓ 公式与 64 面元布拉修斯表面压强环路求积基准。",
+    "good_fit": [
+      "足球香蕉任意球、棒球曲球/滑球、网球/乒乓球高吊上旋弧圈球、高尔夫球倒旋飘升与机翼升力仿真",
+      "通过三维叉乘 F_Magnus = k * rho * cross(omega, velocity) 实时驱动旋转球体的横向拐弯与急坠轨迹",
+      "同步驱动球体尾流下洗（Wake Downwash）流线偏折可视化"
+    ],
+    "not_for": [
+      "月球表面等 ρ = 0 的真空弹道",
+      "几乎不自转的足球“落叶球/蝴蝶球（Knuckleball）”（由卡门涡街随机脱落主导）",
+      "静态 2D 表格"
+    ]
+  }
+}
