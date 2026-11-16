@@ -4726,6 +4726,39 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r370File),'utf8');
       assert.ok(txt.includes('2,080.00')&&txt.includes('4,100.00')&&txt.includes('6,180.00')&&txt.includes('85.00')&&txt.includes('320.00')&&txt.includes('405.00')&&txt.includes('5,775.00')&&txt.includes('93.45%')&&txt.includes('not_measured'),r370File+': contains exact 11-16 R13 pathwarden+threat-plus+qr-snip closed-form parameters');
     }
+    // 2026-11-16 Night Round 14 (R371: lizhenjie137/intelligent-organization + nagavineerpasam/systems-to-ai-reading-map) verification
+    const r371PathA=1680.00+37.0*100.00;
+    assert.equal(r371PathA.toFixed(2),'5380.00','11-16 R14 Path A total');
+    const r371PathC=65.00+3.0*100.00;
+    assert.equal(r371PathC.toFixed(2),'365.00','11-16 R14 Path C total');
+    assert.equal((r371PathA-r371PathC).toFixed(2),'5015.00','11-16 R14 savings vs Path A');
+    assert.equal(((r371PathA-r371PathC)/r371PathA*100).toFixed(2),'93.22','11-16 R14 pct savings vs Path A');
+    for(const r371File of ['workshops/github-trending-radar/docs/intelligent-organization-systems-to-ai-reading-map-6step-atomic-skill-handoff-112topic-8book-curriculum-selection-faq.md','workshops/github-trending-radar/docs/intelligent-organization-systems-to-ai-reading-map-6step-atomic-skill-handoff-112topic-8book-curriculum-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r14-intellorg-readingmap.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r371File),'utf8');
+      assert.ok(txt.includes('1,680.00')&&txt.includes('3,700.00')&&txt.includes('5,380.00')&&txt.includes('65.00')&&txt.includes('300.00')&&txt.includes('365.00')&&txt.includes('5,015.00')&&txt.includes('93.22%')&&txt.includes('not_measured'),r371File+': contains exact 11-16 R14 intelligent-organization+systems-reading-map closed-form parameters');
+    }
+    // 2026-11-16 Night Round 15 (R372 Milestone: ZhouTimeMachine/JVT + remorses/castle-valley + stvlynn/spines) verification
+    const r372PathA=1920.00+39.0*100.00;
+    assert.equal(r372PathA.toFixed(2),'5820.00','11-16 R15 Path A total');
+    const r372PathC=85.00+3.2*100.00;
+    assert.equal(r372PathC.toFixed(2),'405.00','11-16 R15 Path C total');
+    assert.equal((r372PathA-r372PathC).toFixed(2),'5415.00','11-16 R15 savings vs Path A');
+    assert.equal(((r372PathA-r372PathC)/r372PathA*100).toFixed(2),'93.04','11-16 R15 pct savings vs Path A');
+    for(const r372File of ['workshops/github-trending-radar/docs/jvt-castle-valley-spines-pixel-space-video-dit-2m-world-pinned-oil-dabs-cd-spine-art-skill-selection-faq.md','workshops/github-trending-radar/docs/jvt-castle-valley-spines-pixel-space-video-dit-2m-world-pinned-oil-dabs-cd-spine-art-skill-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r15-jvt-castlevalley-spines.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r372File),'utf8');
+      assert.ok(txt.includes('1,920.00')&&txt.includes('3,900.00')&&txt.includes('5,820.00')&&txt.includes('85.00')&&txt.includes('320.00')&&txt.includes('405.00')&&txt.includes('5,415.00')&&txt.includes('93.04%')&&txt.includes('not_measured'),r372File+': contains exact 11-16 R15 jvt+castle-valley+spines closed-form parameters');
+    }
+    // 2026-11-16 Night Round 16 (R373: ratman-bit/Rewind-IL2CPP-Decompiler + W4L33Dx/Cyber-Monster) verification
+    const r373PathA=1890.00+39.5*100.00;
+    assert.equal(r373PathA.toFixed(2),'5840.00','11-16 R16 Path A total');
+    const r373PathC=80.00+3.1*100.00;
+    assert.equal(r373PathC.toFixed(2),'390.00','11-16 R16 Path C total');
+    assert.equal((r373PathA-r373PathC).toFixed(2),'5450.00','11-16 R16 savings vs Path A');
+    assert.equal(((r373PathA-r373PathC)/r373PathA*100).toFixed(2),'93.32','11-16 R16 pct savings vs Path A');
+    for(const r373File of ['workshops/github-trending-radar/docs/rewind-il2cpp-decompiler-cyber-monster-net10-unity-method-recovery-785-red-blue-security-skills-selection-faq.md','workshops/github-trending-radar/docs/rewind-il2cpp-decompiler-cyber-monster-net10-unity-method-recovery-785-red-blue-security-skills-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r16-rewind-cybermonster.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r373File),'utf8');
+      assert.ok(txt.includes('1,890.00')&&txt.includes('3,950.00')&&txt.includes('5,840.00')&&txt.includes('80.00')&&txt.includes('310.00')&&txt.includes('390.00')&&txt.includes('5,450.00')&&txt.includes('93.32%')&&txt.includes('not_measured'),r373File+': contains exact 11-16 R16 rewind+cyber-monster closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
