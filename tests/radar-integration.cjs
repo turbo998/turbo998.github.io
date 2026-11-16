@@ -4616,6 +4616,28 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r360File),'utf8');
       assert.ok(txt.includes('1,860.00')&&txt.includes('3,900.00')&&txt.includes('5,760.00')&&txt.includes('110.00')&&txt.includes('340.00')&&txt.includes('450.00')&&txt.includes('5,310.00')&&txt.includes('92.19%')&&txt.includes('not_measured'),r360File+': contains exact 11-16 R3 arcane+superbot closed-form parameters');
     }
+    // 2026-11-16 Night Round 4 (R361: yetanotherbrowser/yab + manuelgscom/inside-llm) verification
+    const r361PathA=1720.00+37.0*100.00;
+    assert.equal(r361PathA.toFixed(2),'5420.00','11-16 R4 Path A total');
+    const r361PathC=90.00+3.2*100.00;
+    assert.equal(r361PathC.toFixed(2),'410.00','11-16 R4 Path C total');
+    assert.equal((r361PathA-r361PathC).toFixed(2),'5010.00','11-16 R4 savings vs Path A');
+    assert.equal(((r361PathA-r361PathC)/r361PathA*100).toFixed(2),'92.44','11-16 R4 pct savings vs Path A');
+    for(const r361File of ['workshops/github-trending-radar/docs/yab-inside-llm-webkit-chromium-agent-browser-gguf-quantization-divergence-sampler-xray-selection-faq.md','workshops/github-trending-radar/docs/yab-inside-llm-webkit-chromium-agent-browser-gguf-quantization-divergence-sampler-xray-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r4-yab-insidellm.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r361File),'utf8');
+      assert.ok(txt.includes('1,720.00')&&txt.includes('3,700.00')&&txt.includes('5,420.00')&&txt.includes('90.00')&&txt.includes('320.00')&&txt.includes('410.00')&&txt.includes('5,010.00')&&txt.includes('92.44%')&&txt.includes('not_measured'),r361File+': contains exact 11-16 R4 yab+inside-llm closed-form parameters');
+    }
+    // 2026-11-16 Night Round 5 (R362: brianbell-x/codehygiene + brianbell-x/ssd-ransomware-guard + Eppy-EpHard/AHA) verification
+    const r362PathA=2120.00+41.0*100.00;
+    assert.equal(r362PathA.toFixed(2),'6220.00','11-16 R5 Path A total');
+    const r362PathC=75.00+3.2*100.00;
+    assert.equal(r362PathC.toFixed(2),'395.00','11-16 R5 Path C total');
+    assert.equal((r362PathA-r362PathC).toFixed(2),'5825.00','11-16 R5 savings vs Path A');
+    assert.equal(((r362PathA-r362PathC)/r362PathA*100).toFixed(2),'93.65','11-16 R5 pct savings vs Path A');
+    for(const r362File of ['workshops/github-trending-radar/docs/codehygiene-ssd-ransomware-guard-aha-ternary-weight-space-programming-without-llms-selection-faq.md','workshops/github-trending-radar/docs/codehygiene-ssd-ransomware-guard-aha-ternary-weight-space-programming-without-llms-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r5-weightspace-trio.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r362File),'utf8');
+      assert.ok(txt.includes('2,120.00')&&txt.includes('4,100.00')&&txt.includes('6,220.00')&&txt.includes('75.00')&&txt.includes('320.00')&&txt.includes('395.00')&&txt.includes('5,825.00')&&txt.includes('93.65%')&&txt.includes('not_measured'),r362File+': contains exact 11-16 R5 codehygiene+ssd-guard+aha closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
