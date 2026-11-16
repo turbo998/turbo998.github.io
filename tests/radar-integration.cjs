@@ -4825,6 +4825,39 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r379File),'utf8');
       assert.ok(txt.includes('1,860.00')&&txt.includes('3,900.00')&&txt.includes('5,760.00')&&txt.includes('75.00')&&txt.includes('310.00')&&txt.includes('385.00')&&txt.includes('5,375.00')&&txt.includes('93.32%')&&txt.includes('not_measured'),r379File+': contains exact 11-16 R22 github-mobile-maxxing+muelle+yamusic-rs closed-form parameters');
     }
+    // 2026-11-16 Night Round 23 (R380 Milestone: petritavd/airoom + oil-oil/oil-dev-skills + globalmpc/vibe-bill) verification
+    const r380PathA=2040.00+40.5*100.00;
+    assert.equal(r380PathA.toFixed(2),'6090.00','11-16 R23 Path A total');
+    const r380PathC=85.00+3.2*100.00;
+    assert.equal(r380PathC.toFixed(2),'405.00','11-16 R23 Path C total');
+    assert.equal((r380PathA-r380PathC).toFixed(2),'5685.00','11-16 R23 savings vs Path A');
+    assert.equal(((r380PathA-r380PathC)/r380PathA*100).toFixed(2),'93.35','11-16 R23 pct savings vs Path A');
+    for(const r380File of ['workshops/github-trending-radar/docs/airoom-oil-dev-skills-vibe-bill-claude-control-room-6skill-scope-gate-finops-receipt-selection-faq.md','workshops/github-trending-radar/docs/airoom-oil-dev-skills-vibe-bill-claude-control-room-6skill-scope-gate-finops-receipt-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r23-airoom-oildev-vibebill.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r380File),'utf8');
+      assert.ok(txt.includes('2,040.00')&&txt.includes('4,050.00')&&txt.includes('6,090.00')&&txt.includes('85.00')&&txt.includes('320.00')&&txt.includes('405.00')&&txt.includes('5,685.00')&&txt.includes('93.35%')&&txt.includes('not_measured'),r380File+': contains exact 11-16 R23 airoom+oil-dev-skills+vibe-bill closed-form parameters');
+    }
+    // 2026-11-16 Night Round 24 (R381: jasonsutter87/sketchcraft + GigLaboCom/gpui-kit-grid + maximilianfeix/plinkfx) verification
+    const r381PathA=1820.00+38.0*100.00;
+    assert.equal(r381PathA.toFixed(2),'5620.00','11-16 R24 Path A total');
+    const r381PathC=75.00+3.0*100.00;
+    assert.equal(r381PathC.toFixed(2),'375.00','11-16 R24 Path C total');
+    assert.equal((r381PathA-r381PathC).toFixed(2),'5245.00','11-16 R24 savings vs Path A');
+    assert.equal(((r381PathA-r381PathC)/r381PathA*100).toFixed(2),'93.33','11-16 R24 pct savings vs Path A');
+    for(const r381File of ['workshops/github-trending-radar/docs/sketchcraft-gpui-kit-grid-plinkfx-rust-pushpull-cad-mcp-1ms-gpui-datagrid-3kb-code-sfx-selection-faq.md','workshops/github-trending-radar/docs/sketchcraft-gpui-kit-grid-plinkfx-rust-pushpull-cad-mcp-1ms-gpui-datagrid-3kb-code-sfx-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r24-sketchcraft-gpuigrid-plinkfx.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r381File),'utf8');
+      assert.ok(txt.includes('1,820.00')&&txt.includes('3,800.00')&&txt.includes('5,620.00')&&txt.includes('75.00')&&txt.includes('300.00')&&txt.includes('375.00')&&txt.includes('5,245.00')&&txt.includes('93.33%')&&txt.includes('not_measured'),r381File+': contains exact 11-16 R24 sketchcraft+gpui-kit-grid+plinkfx closed-form parameters');
+    }
+    // 2026-11-16 Night Round 25 (R382: spearsheep/anima-brain + walkskysu/digital-human-koubo-comfyui + h4lo-void/bageo-call + HuskerMinion/AmberSight) verification
+    const r382PathA=1960.00+39.5*100.00;
+    assert.equal(r382PathA.toFixed(2),'5910.00','11-16 R25 Path A total');
+    const r382PathC=85.00+3.1*100.00;
+    assert.equal(r382PathC.toFixed(2),'395.00','11-16 R25 Path C total');
+    assert.equal((r382PathA-r382PathC).toFixed(2),'5515.00','11-16 R25 savings vs Path A');
+    assert.equal(((r382PathA-r382PathC)/r382PathA*100).toFixed(2),'93.32','11-16 R25 pct savings vs Path A');
+    for(const r382File of ['workshops/github-trending-radar/docs/anima-brain-koubo-comfyui-bageo-call-ambersight-sqlite-fts5-companion-memory-local-talking-head-rust-sim-nvr-selection-faq.md','workshops/github-trending-radar/docs/anima-brain-koubo-comfyui-bageo-call-ambersight-sqlite-fts5-companion-memory-local-talking-head-rust-sim-nvr-selection-faq.en.md','assets/github-ai-radar-2026-11-16-r25-animabrain-koubo-bageocall.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-16-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r382File),'utf8');
+      assert.ok(txt.includes('1,960.00')&&txt.includes('3,950.00')&&txt.includes('5,910.00')&&txt.includes('85.00')&&txt.includes('310.00')&&txt.includes('395.00')&&txt.includes('5,515.00')&&txt.includes('93.32%')&&txt.includes('not_measured'),r382File+': contains exact 11-16 R25 anima-brain+koubo+bageo-call closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
