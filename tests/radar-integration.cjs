@@ -5701,6 +5701,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r457File),'utf8');
       assert.ok(txt.includes('2,260.00')&&txt.includes('3,610.00')&&txt.includes('5,870.00')&&txt.includes('85.00')&&txt.includes('285.00')&&txt.includes('370.00')&&txt.includes('5,500.00')&&txt.includes('93.70%')&&txt.includes('not_measured'),r457File+': contains exact 11-17 R33 silentguard+onlyread closed-form parameters');
     }
+    // 2026-11-17 Night Round 34 (R458: ineedfoundmyway/planrelay + chenhg5/myco & siwen-121/agent-shared-facts) verification
+    const r458PathA=2140.00+36.0*95.00;
+    assert.equal(r458PathA.toFixed(2),'5560.00','11-17 R34 Path A total');
+    const r458PathC=75.00+2.8*95.00;
+    assert.equal(r458PathC.toFixed(2),'341.00','11-17 R34 Path C total');
+    assert.equal((r458PathA-r458PathC).toFixed(2),'5219.00','11-17 R34 savings vs Path A');
+    assert.equal(((r458PathA-r458PathC)/r458PathA*100).toFixed(2),'93.87','11-17 R34 pct savings vs Path A');
+    for(const r458File of ['workshops/github-trending-radar/docs/planrelay-myco-agent-shared-facts-sha256-plan-checkpoint-cross-machine-agent-mesh-selection-faq.md','workshops/github-trending-radar/docs/planrelay-myco-agent-shared-facts-sha256-plan-checkpoint-cross-machine-agent-mesh-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r34-planrelay-myco-shared-facts.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r458File),'utf8');
+      assert.ok(txt.includes('2,140.00')&&txt.includes('3,420.00')&&txt.includes('5,560.00')&&txt.includes('75.00')&&txt.includes('266.00')&&txt.includes('341.00')&&txt.includes('5,219.00')&&txt.includes('93.87%')&&txt.includes('not_measured'),r458File+': contains exact 11-17 R34 planrelay+myco closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
