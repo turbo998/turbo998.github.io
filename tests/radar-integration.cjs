@@ -5668,6 +5668,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r454File),'utf8');
       assert.ok(txt.includes('2,290.00')&&txt.includes('3,515.00')&&txt.includes('5,805.00')&&txt.includes('80.00')&&txt.includes('266.00')&&txt.includes('346.00')&&txt.includes('5,459.00')&&txt.includes('94.04%')&&txt.includes('not_measured'),r454File+': contains exact 11-17 R30 hikaku+zotero-interlinear closed-form parameters');
     }
+    // 2026-11-17 Night Round 31 (R455 Milestone: nickvasilescu/parallax + mankidev/antialgorithm & next-token-tv/next-token-skill) verification
+    const r455PathA=2380.00+37.0*95.00;
+    assert.equal(r455PathA.toFixed(2),'5895.00','11-17 R31 Path A total');
+    const r455PathC=85.00+2.8*95.00;
+    assert.equal(r455PathC.toFixed(2),'351.00','11-17 R31 Path C total');
+    assert.equal((r455PathA-r455PathC).toFixed(2),'5544.00','11-17 R31 savings vs Path A');
+    assert.equal(((r455PathA-r455PathC)/r455PathA*100).toFixed(2),'94.05','11-17 R31 pct savings vs Path A');
+    for(const r455File of ['workshops/github-trending-radar/docs/parallax-antialgorithm-next-token-39model-multimodal-mcp-studio-anti-mode-collapse-svg-qa-selection-faq.md','workshops/github-trending-radar/docs/parallax-antialgorithm-next-token-39model-multimodal-mcp-studio-anti-mode-collapse-svg-qa-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r31-parallax-antialgorithm.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r455File),'utf8');
+      assert.ok(txt.includes('2,380.00')&&txt.includes('3,515.00')&&txt.includes('5,895.00')&&txt.includes('85.00')&&txt.includes('266.00')&&txt.includes('351.00')&&txt.includes('5,544.00')&&txt.includes('94.05%')&&txt.includes('not_measured'),r455File+': contains exact 11-17 R31 parallax+antialgorithm closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
