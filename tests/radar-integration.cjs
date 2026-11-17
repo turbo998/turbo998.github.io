@@ -5811,6 +5811,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r467File),'utf8');
       assert.ok(txt.includes('2,290.00')&&txt.includes('3,420.00')&&txt.includes('5,710.00')&&txt.includes('75.00')&&txt.includes('266.00')&&txt.includes('341.00')&&txt.includes('5,369.00')&&txt.includes('94.03%')&&txt.includes('not_measured'),r467File+': contains exact 11-17 R43 videostudio+livliv+diffreview closed-form parameters');
     }
+    // 2026-11-17 Night Round 44 (R468: tokensafe-dev/tokensafe + Lentlily22/rolling-summary-tutorial & assassin808/learn-from-lessons) verification
+    const r468PathA=2380.00+37.0*95.00;
+    assert.equal(r468PathA.toFixed(2),'5895.00','11-17 R44 Path A total');
+    const r468PathC=80.00+2.8*95.00;
+    assert.equal(r468PathC.toFixed(2),'346.00','11-17 R44 Path C total');
+    assert.equal((r468PathA-r468PathC).toFixed(2),'5549.00','11-17 R44 savings vs Path A');
+    assert.equal(((r468PathA-r468PathC)/r468PathA*100).toFixed(2),'94.13','11-17 R44 pct savings vs Path A');
+    for(const r468File of ['workshops/github-trending-radar/docs/tokensafe-rolling-summary-tutorial-learn-from-lessons-ast-context-firewall-hysteresis-cache-correction-memory-selection-faq.md','workshops/github-trending-radar/docs/tokensafe-rolling-summary-tutorial-learn-from-lessons-ast-context-firewall-hysteresis-cache-correction-memory-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r44-tokensafe-rolling-lessons.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r468File),'utf8');
+      assert.ok(txt.includes('2,380.00')&&txt.includes('3,515.00')&&txt.includes('5,895.00')&&txt.includes('80.00')&&txt.includes('266.00')&&txt.includes('346.00')&&txt.includes('5,549.00')&&txt.includes('94.13%')&&txt.includes('not_measured'),r468File+': contains exact 11-17 R44 tokensafe+rollingsum+lessons closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
