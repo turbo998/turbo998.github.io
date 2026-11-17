@@ -5833,6 +5833,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r469File),'utf8');
       assert.ok(txt.includes('2,350.00')&&txt.includes('3,515.00')&&txt.includes('5,865.00')&&txt.includes('80.00')&&txt.includes('266.00')&&txt.includes('346.00')&&txt.includes('5,519.00')&&txt.includes('94.10%')&&txt.includes('not_measured'),r469File+': contains exact 11-17 R45 coordinator+visualfidelity+spared closed-form parameters');
     }
+    // 2026-11-17 Night Round 46 (R470 Milestone: zarockfat/crossborder-product-radar-zgg + lowdevco/claude-seo & mrwebtv/ultimapress) verification
+    const r470PathA=2320.00+36.0*95.00;
+    assert.equal(r470PathA.toFixed(2),'5740.00','11-17 R46 Path A total');
+    const r470PathC=75.00+2.8*95.00;
+    assert.equal(r470PathC.toFixed(2),'341.00','11-17 R46 Path C total');
+    assert.equal((r470PathA-r470PathC).toFixed(2),'5399.00','11-17 R46 savings vs Path A');
+    assert.equal(((r470PathA-r470PathC)/r470PathA*100).toFixed(2),'94.06','11-17 R46 pct savings vs Path A');
+    for(const r470File of ['workshops/github-trending-radar/docs/crossborder-product-radar-zgg-claude-seo-ultimapress-openboost-mcp-geo-agentic-seo-nextjs16-cms-selection-faq.md','workshops/github-trending-radar/docs/crossborder-product-radar-zgg-claude-seo-ultimapress-openboost-mcp-geo-agentic-seo-nextjs16-cms-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r46-product-radar-claude-seo-ultimapress.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r470File),'utf8');
+      assert.ok(txt.includes('2,320.00')&&txt.includes('3,420.00')&&txt.includes('5,740.00')&&txt.includes('75.00')&&txt.includes('266.00')&&txt.includes('341.00')&&txt.includes('5,399.00')&&txt.includes('94.06%')&&txt.includes('not_measured'),r470File+': contains exact 11-17 R46 productradar+claudeseo+ultimapress closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
