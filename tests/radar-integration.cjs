@@ -5844,6 +5844,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r470File),'utf8');
       assert.ok(txt.includes('2,320.00')&&txt.includes('3,420.00')&&txt.includes('5,740.00')&&txt.includes('75.00')&&txt.includes('266.00')&&txt.includes('341.00')&&txt.includes('5,399.00')&&txt.includes('94.06%')&&txt.includes('not_measured'),r470File+': contains exact 11-17 R46 productradar+claudeseo+ultimapress closed-form parameters');
     }
+    // 2026-11-17 Night Round 47 (R471: liangdabiao/whiteboard-teacher-video-motion + hughminhphan/motion-kit & enoch3712/spine-hero-skill) verification
+    const r471PathA=2260.00+36.0*95.00;
+    assert.equal(r471PathA.toFixed(2),'5680.00','11-17 R47 Path A total');
+    const r471PathC=75.00+2.8*95.00;
+    assert.equal(r471PathC.toFixed(2),'341.00','11-17 R47 Path C total');
+    assert.equal((r471PathA-r471PathC).toFixed(2),'5339.00','11-17 R47 savings vs Path A');
+    assert.equal(((r471PathA-r471PathC)/r471PathA*100).toFixed(2),'94.00','11-17 R47 pct savings vs Path A');
+    for(const r471File of ['workshops/github-trending-radar/docs/whiteboard-teacher-video-motion-motion-kit-spine-hero-skill-svg-gif-deterministic-explainer-gsap-curves-spine-rig-selection-faq.md','workshops/github-trending-radar/docs/whiteboard-teacher-video-motion-motion-kit-spine-hero-skill-svg-gif-deterministic-explainer-gsap-curves-spine-rig-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r47-whiteboard-motionkit-spinehero.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r471File),'utf8');
+      assert.ok(txt.includes('2,260.00')&&txt.includes('3,420.00')&&txt.includes('5,680.00')&&txt.includes('75.00')&&txt.includes('266.00')&&txt.includes('341.00')&&txt.includes('5,339.00')&&txt.includes('94.00%')&&txt.includes('not_measured'),r471File+': contains exact 11-17 R47 whiteboard+motionkit+spinehero closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
