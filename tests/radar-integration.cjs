@@ -5624,6 +5624,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r450File),'utf8');
       assert.ok(txt.includes('2,340.00')&&txt.includes('3,610.00')&&txt.includes('5,950.00')&&txt.includes('85.00')&&txt.includes('285.00')&&txt.includes('370.00')&&txt.includes('5,580.00')&&txt.includes('93.78%')&&txt.includes('not_measured'),r450File+': contains exact 11-17 R26 gpucanvas+bot-hq closed-form parameters');
     }
+    // 2026-11-17 Night Round 27 (R451: JDhruv14/line-art-animation + mileson/chaojifeng-video-content-creator & lowdevco/Clip-Forge) verification
+    const r451PathA=2220.00+36.0*95.00;
+    assert.equal(r451PathA.toFixed(2),'5640.00','11-17 R27 Path A total');
+    const r451PathC=75.00+2.8*95.00;
+    assert.equal(r451PathC.toFixed(2),'341.00','11-17 R27 Path C total');
+    assert.equal((r451PathA-r451PathC).toFixed(2),'5299.00','11-17 R27 savings vs Path A');
+    assert.equal(((r451PathA-r451PathC)/r451PathA*100).toFixed(2),'93.95','11-17 R27 pct savings vs Path A');
+    for(const r451File of ['workshops/github-trending-radar/docs/line-art-animation-chaojifeng-clipforge-zero-dep-interactive-svg-148effect-video-pipeline-selection-faq.md','workshops/github-trending-radar/docs/line-art-animation-chaojifeng-clipforge-zero-dep-interactive-svg-148effect-video-pipeline-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r27-line-art-video-creator.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r451File),'utf8');
+      assert.ok(txt.includes('2,220.00')&&txt.includes('3,420.00')&&txt.includes('5,640.00')&&txt.includes('75.00')&&txt.includes('266.00')&&txt.includes('341.00')&&txt.includes('5,299.00')&&txt.includes('93.95%')&&txt.includes('not_measured'),r451File+': contains exact 11-17 R27 line-art+chaojifeng closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
