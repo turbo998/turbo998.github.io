@@ -5525,6 +5525,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r441File),'utf8');
       assert.ok(txt.includes('1,860.00')&&txt.includes('3,420.00')&&txt.includes('5,280.00')&&txt.includes('70.00')&&txt.includes('266.00')&&txt.includes('336.00')&&txt.includes('4,944.00')&&txt.includes('93.64%')&&txt.includes('not_measured'),r441File+': contains exact 11-17 R17 sitrep+git-twig closed-form parameters');
     }
+    // 2026-11-17 Night Round 18 (R442: DeskLabs-OpenSource/DeskVoice + KaelLee335/enterprise-support-agent-v2) verification
+    const r442PathA=2150.00+36.0*95.00;
+    assert.equal(r442PathA.toFixed(2),'5570.00','11-17 R18 Path A total');
+    const r442PathC=80.00+3.0*95.00;
+    assert.equal(r442PathC.toFixed(2),'365.00','11-17 R18 Path C total');
+    assert.equal((r442PathA-r442PathC).toFixed(2),'5205.00','11-17 R18 savings vs Path A');
+    assert.equal(((r442PathA-r442PathC)/r442PathA*100).toFixed(2),'93.45','11-17 R18 pct savings vs Path A');
+    for(const r442File of ['workshops/github-trending-radar/docs/deskvoice-enterprise-support-agent-v2-self-hosted-sip-voice-pbx-multi-tenant-langgraph-aftersales-rag-selection-faq.md','workshops/github-trending-radar/docs/deskvoice-enterprise-support-agent-v2-self-hosted-sip-voice-pbx-multi-tenant-langgraph-aftersales-rag-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r18-deskvoice-support-v2.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r442File),'utf8');
+      assert.ok(txt.includes('2,150.00')&&txt.includes('3,420.00')&&txt.includes('5,570.00')&&txt.includes('80.00')&&txt.includes('285.00')&&txt.includes('365.00')&&txt.includes('5,205.00')&&txt.includes('93.45%')&&txt.includes('not_measured'),r442File+': contains exact 11-17 R18 deskvoice+support-v2 closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
