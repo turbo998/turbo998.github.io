@@ -5932,6 +5932,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r478File),'utf8');
       assert.ok(txt.includes('2,250.00')&&txt.includes('3,420.00')&&txt.includes('5,670.00')&&txt.includes('75.00')&&txt.includes('266.00')&&txt.includes('341.00')&&txt.includes('5,329.00')&&txt.includes('93.99%')&&txt.includes('not_measured'),r478File+': contains exact 11-17 R54 effectcraft+smartguides+kubefactory closed-form parameters');
     }
+    // 2026-11-17 Night Round 55 (R479: DEGger21/numpilot + hexsyro/churn-boosting-showdown & outgoingyang/multicall-error-decoder) verification
+    const r479PathA=2350.00+37.0*95.00;
+    assert.equal(r479PathA.toFixed(2),'5865.00','11-17 R55 Path A total');
+    const r479PathC=80.00+2.8*95.00;
+    assert.equal(r479PathC.toFixed(2),'346.00','11-17 R55 Path C total');
+    assert.equal((r479PathA-r479PathC).toFixed(2),'5519.00','11-17 R55 savings vs Path A');
+    assert.equal(((r479PathA-r479PathC)/r479PathA*100).toFixed(2),'94.10','11-17 R55 pct savings vs Path A');
+    for(const r479File of ['workshops/github-trending-radar/docs/numpilot-churn-boosting-showdown-multicall-error-decoder-ascend-npu-migration-gbdt-benchmark-rpc-decoder-selection-faq.md','workshops/github-trending-radar/docs/numpilot-churn-boosting-showdown-multicall-error-decoder-ascend-npu-migration-gbdt-benchmark-rpc-decoder-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r55-numpilot-churn-multicall.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r479File),'utf8');
+      assert.ok(txt.includes('2,350.00')&&txt.includes('3,515.00')&&txt.includes('5,865.00')&&txt.includes('80.00')&&txt.includes('266.00')&&txt.includes('346.00')&&txt.includes('5,519.00')&&txt.includes('94.10%')&&txt.includes('not_measured'),r479File+': contains exact 11-17 R55 numpilot+churn+multicall closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
