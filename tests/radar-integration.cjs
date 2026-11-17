@@ -5536,6 +5536,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r442File),'utf8');
       assert.ok(txt.includes('2,150.00')&&txt.includes('3,420.00')&&txt.includes('5,570.00')&&txt.includes('80.00')&&txt.includes('285.00')&&txt.includes('365.00')&&txt.includes('5,205.00')&&txt.includes('93.45%')&&txt.includes('not_measured'),r442File+': contains exact 11-17 R18 deskvoice+support-v2 closed-form parameters');
     }
+    // 2026-11-17 Night Round 19 (R443: punit2911/Hirepanel + 8hjkkwikl8/ai-portfolio) verification
+    const r443PathA=2040.00+36.0*95.00;
+    assert.equal(r443PathA.toFixed(2),'5460.00','11-17 R19 Path A total');
+    const r443PathC=75.00+2.8*95.00;
+    assert.equal(r443PathC.toFixed(2),'341.00','11-17 R19 Path C total');
+    assert.equal((r443PathA-r443PathC).toFixed(2),'5119.00','11-17 R19 savings vs Path A');
+    assert.equal(((r443PathA-r443PathC)/r443PathA*100).toFixed(2),'93.75','11-17 R19 pct savings vs Path A');
+    for(const r443File of ['workshops/github-trending-radar/docs/hirepanel-ai-portfolio-quote-verified-blind-resume-screener-sentence-grounded-rag-nl2sql-selection-faq.md','workshops/github-trending-radar/docs/hirepanel-ai-portfolio-quote-verified-blind-resume-screener-sentence-grounded-rag-nl2sql-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r19-hirepanel-ai-portfolio.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r443File),'utf8');
+      assert.ok(txt.includes('2,040.00')&&txt.includes('3,420.00')&&txt.includes('5,460.00')&&txt.includes('75.00')&&txt.includes('266.00')&&txt.includes('341.00')&&txt.includes('5,119.00')&&txt.includes('93.75%')&&txt.includes('not_measured'),r443File+': contains exact 11-17 R19 hirepanel+ai-portfolio closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
