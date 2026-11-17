@@ -5899,6 +5899,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r475File),'utf8');
       assert.ok(txt.includes('2,240.00')&&txt.includes('3,420.00')&&txt.includes('5,660.00')&&txt.includes('70.00')&&txt.includes('266.00')&&txt.includes('336.00')&&txt.includes('5,324.00')&&txt.includes('94.06%')&&txt.includes('not_measured'),r475File+': contains exact 11-17 R51 resolveai+fundlark+mouseswarm closed-form parameters');
     }
+    // 2026-11-17 Night Round 52 (R476: b44x/ai-polish-skills + AnIT012/nihongo & tamirgur/rega-album-maker) verification
+    const r476PathA=2270.00+36.0*95.00;
+    assert.equal(r476PathA.toFixed(2),'5690.00','11-17 R52 Path A total');
+    const r476PathC=75.00+2.8*95.00;
+    assert.equal(r476PathC.toFixed(2),'341.00','11-17 R52 Path C total');
+    assert.equal((r476PathA-r476PathC).toFixed(2),'5349.00','11-17 R52 savings vs Path A');
+    assert.equal(((r476PathA-r476PathC)/r476PathA*100).toFixed(2),'94.01','11-17 R52 pct savings vs Path A');
+    for(const r476File of ['workshops/github-trending-radar/docs/ai-polish-skills-nihongo-rega-album-maker-pipfree-regional-json-2tier-1100token-keigo-print-qa-selection-faq.md','workshops/github-trending-radar/docs/ai-polish-skills-nihongo-rega-album-maker-pipfree-regional-json-2tier-1100token-keigo-print-qa-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r52-polishskills-nihongo-rega.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r476File),'utf8');
+      assert.ok(txt.includes('2,270.00')&&txt.includes('3,420.00')&&txt.includes('5,690.00')&&txt.includes('75.00')&&txt.includes('266.00')&&txt.includes('341.00')&&txt.includes('5,349.00')&&txt.includes('94.01%')&&txt.includes('not_measured'),r476File+': contains exact 11-17 R52 polishskills+nihongo+rega closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
