@@ -5382,6 +5382,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r428File),'utf8');
       assert.ok(txt.includes('1,920.00')&&txt.includes('3,705.00')&&txt.includes('5,625.00')&&txt.includes('85.00')&&txt.includes('304.00')&&txt.includes('389.00')&&txt.includes('5,236.00')&&txt.includes('93.08%')&&txt.includes('not_measured'),r428File+': contains exact 11-17 R4 pybot+lastbook closed-form parameters');
     }
+    // 2026-11-17 Night Round 5 (R429: Andsu-dev/runelay + yocontra/pulsar + afurmanov/harness-profiler + inevolin/claude-code-usage-analysis) verification
+    const r429PathA=2160.00+40.0*100.00;
+    assert.equal(r429PathA.toFixed(2),'6160.00','11-17 R5 Path A total');
+    const r429PathC=115.00+3.2*100.00;
+    assert.equal(r429PathC.toFixed(2),'435.00','11-17 R5 Path C total');
+    assert.equal((r429PathA-r429PathC).toFixed(2),'5725.00','11-17 R5 savings vs Path A');
+    assert.equal(((r429PathA-r429PathC)/r429PathA*100).toFixed(2),'92.94','11-17 R5 pct savings vs Path A');
+    for(const r429File of ['workshops/github-trending-radar/docs/runelay-pulsar-harness-profiler-claude-usage-selfhosted-mcp-gateway-inter-agent-bus-cache-ttl-finops-selection-faq.md','workshops/github-trending-radar/docs/runelay-pulsar-harness-profiler-claude-usage-selfhosted-mcp-gateway-inter-agent-bus-cache-ttl-finops-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r5-runelay-pulsar-cache-finops.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r429File),'utf8');
+      assert.ok(txt.includes('2,160.00')&&txt.includes('4,000.00')&&txt.includes('6,160.00')&&txt.includes('115.00')&&txt.includes('320.00')&&txt.includes('435.00')&&txt.includes('5,725.00')&&txt.includes('92.94%')&&txt.includes('not_measured'),r429File+': contains exact 11-17 R5 runelay+pulsar+cache-finops closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
