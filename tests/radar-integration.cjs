@@ -5921,6 +5921,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r477File),'utf8');
       assert.ok(txt.includes('2,300.00')&&txt.includes('3,420.00')&&txt.includes('5,720.00')&&txt.includes('75.00')&&txt.includes('266.00')&&txt.includes('341.00')&&txt.includes('5,379.00')&&txt.includes('94.04%')&&txt.includes('not_measured'),r477File+': contains exact 11-17 R53 sitreposint+dshexplorer+motionlib closed-form parameters');
     }
+    // 2026-11-17 Night Round 54 (R478: kasfulk/effectcraft-motion-skills + nomadoor/ComfyUI-Smart-Guides & DasCondor/kubefactory) verification
+    const r478PathA=2250.00+36.0*95.00;
+    assert.equal(r478PathA.toFixed(2),'5670.00','11-17 R54 Path A total');
+    const r478PathC=75.00+2.8*95.00;
+    assert.equal(r478PathC.toFixed(2),'341.00','11-17 R54 Path C total');
+    assert.equal((r478PathA-r478PathC).toFixed(2),'5329.00','11-17 R54 savings vs Path A');
+    assert.equal(((r478PathA-r478PathC)/r478PathA*100).toFixed(2),'93.99','11-17 R54 pct savings vs Path A');
+    for(const r478File of ['workshops/github-trending-radar/docs/effectcraft-motion-skills-comfyui-smart-guides-kubefactory-70theme-916-carousel-wire-snap-3d-k8s-selection-faq.md','workshops/github-trending-radar/docs/effectcraft-motion-skills-comfyui-smart-guides-kubefactory-70theme-916-carousel-wire-snap-3d-k8s-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r54-effectcraft-smartguides-kubefactory.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r478File),'utf8');
+      assert.ok(txt.includes('2,250.00')&&txt.includes('3,420.00')&&txt.includes('5,670.00')&&txt.includes('75.00')&&txt.includes('266.00')&&txt.includes('341.00')&&txt.includes('5,329.00')&&txt.includes('93.99%')&&txt.includes('not_measured'),r478File+': contains exact 11-17 R54 effectcraft+smartguides+kubefactory closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
