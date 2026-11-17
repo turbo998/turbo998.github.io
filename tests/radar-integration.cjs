@@ -5943,6 +5943,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r479File),'utf8');
       assert.ok(txt.includes('2,350.00')&&txt.includes('3,515.00')&&txt.includes('5,865.00')&&txt.includes('80.00')&&txt.includes('266.00')&&txt.includes('346.00')&&txt.includes('5,519.00')&&txt.includes('94.10%')&&txt.includes('not_measured'),r479File+': contains exact 11-17 R55 numpilot+churn+multicall closed-form parameters');
     }
+    // 2026-11-17 Night Round 56 (R480 Milestone: ultrademo-hq/ultrademo + tw4/lumela & invzhi/wechat-use) verification
+    const r480PathA=2340.00+36.0*95.00;
+    assert.equal(r480PathA.toFixed(2),'5760.00','11-17 R56 Path A total');
+    const r480PathC=75.00+2.8*95.00;
+    assert.equal(r480PathC.toFixed(2),'341.00','11-17 R56 Path C total');
+    assert.equal((r480PathA-r480PathC).toFixed(2),'5419.00','11-17 R56 savings vs Path A');
+    assert.equal(((r480PathA-r480PathC)/r480PathA*100).toFixed(2),'94.08','11-17 R56 pct savings vs Path A');
+    for(const r480File of ['workshops/github-trending-radar/docs/ultrademo-lumela-wechat-use-5mode-code-product-video-auto-pii-blur-screenshots-supervised-wechat-mcp-selection-faq.md','workshops/github-trending-radar/docs/ultrademo-lumela-wechat-use-5mode-code-product-video-auto-pii-blur-screenshots-supervised-wechat-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r56-ultrademo-lumela-wechatuse.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r480File),'utf8');
+      assert.ok(txt.includes('2,340.00')&&txt.includes('3,420.00')&&txt.includes('5,760.00')&&txt.includes('75.00')&&txt.includes('266.00')&&txt.includes('341.00')&&txt.includes('5,419.00')&&txt.includes('94.08%')&&txt.includes('not_measured'),r480File+': contains exact 11-17 R56 ultrademo+lumela+wechatuse closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
