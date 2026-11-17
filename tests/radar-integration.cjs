@@ -5866,6 +5866,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r472File),'utf8');
       assert.ok(txt.includes('2,360.00')&&txt.includes('3,515.00')&&txt.includes('5,875.00')&&txt.includes('80.00')&&txt.includes('266.00')&&txt.includes('346.00')&&txt.includes('5,529.00')&&txt.includes('94.11%')&&txt.includes('not_measured'),r472File+': contains exact 11-17 R48 figuredocs+factory+devflow closed-form parameters');
     }
+    // 2026-11-17 Night Round 49 (R473: zqkra/ademark + alissonpaganini/rotaz & hackclub/orchard) verification
+    const r473PathA=2410.00+37.0*95.00;
+    assert.equal(r473PathA.toFixed(2),'5925.00','11-17 R49 Path A total');
+    const r473PathC=80.00+2.8*95.00;
+    assert.equal(r473PathC.toFixed(2),'346.00','11-17 R49 Path C total');
+    assert.equal((r473PathA-r473PathC).toFixed(2),'5579.00','11-17 R49 savings vs Path A');
+    assert.equal(((r473PathA-r473PathC)/r473PathA*100).toFixed(2),'94.16','11-17 R49 pct savings vs Path A');
+    for(const r473File of ['workshops/github-trending-radar/docs/ademark-rotaz-orchard-15ade-benchmark-40provider-claude-gateway-self-hosted-mcp-paas-selection-faq.md','workshops/github-trending-radar/docs/ademark-rotaz-orchard-15ade-benchmark-40provider-claude-gateway-self-hosted-mcp-paas-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r49-ademark-rotaz-orchard.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r473File),'utf8');
+      assert.ok(txt.includes('2,410.00')&&txt.includes('3,515.00')&&txt.includes('5,925.00')&&txt.includes('80.00')&&txt.includes('266.00')&&txt.includes('346.00')&&txt.includes('5,579.00')&&txt.includes('94.16%')&&txt.includes('not_measured'),r473File+': contains exact 11-17 R49 ademark+rotaz+orchard closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
