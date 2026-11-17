@@ -5371,6 +5371,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r427File),'utf8');
       assert.ok(txt.includes('1,890.00')&&txt.includes('3,610.00')&&txt.includes('5,500.00')&&txt.includes('95.00')&&txt.includes('304.00')&&txt.includes('399.00')&&txt.includes('5,101.00')&&txt.includes('92.75%')&&txt.includes('not_measured'),r427File+': contains exact 11-17 R3 nexus+boring-marketing-skills closed-form parameters');
     }
+    // 2026-11-17 Night Round 4 (R428: huggingface/pybot + Immortal-Protocols/lastbook) verification
+    const r428PathA=1920.00+39.0*95.00;
+    assert.equal(r428PathA.toFixed(2),'5625.00','11-17 R4 Path A total');
+    const r428PathC=85.00+3.2*95.00;
+    assert.equal(r428PathC.toFixed(2),'389.00','11-17 R4 Path C total');
+    assert.equal((r428PathA-r428PathC).toFixed(2),'5236.00','11-17 R4 savings vs Path A');
+    assert.equal(((r428PathA-r428PathC)/r428PathA*100).toFixed(2),'93.08','11-17 R4 pct savings vs Path A');
+    for(const r428File of ['workshops/github-trending-radar/docs/pybot-lastbook-swarm-synthesized-640k-line-zero-weight-chatbot-zero-port-airgapped-citation-rag-selection-faq.md','workshops/github-trending-radar/docs/pybot-lastbook-swarm-synthesized-640k-line-zero-weight-chatbot-zero-port-airgapped-citation-rag-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r4-pybot-lastbook.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r428File),'utf8');
+      assert.ok(txt.includes('1,920.00')&&txt.includes('3,705.00')&&txt.includes('5,625.00')&&txt.includes('85.00')&&txt.includes('304.00')&&txt.includes('389.00')&&txt.includes('5,236.00')&&txt.includes('93.08%')&&txt.includes('not_measured'),r428File+': contains exact 11-17 R4 pybot+lastbook closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
