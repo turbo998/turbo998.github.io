@@ -5679,6 +5679,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r455File),'utf8');
       assert.ok(txt.includes('2,380.00')&&txt.includes('3,515.00')&&txt.includes('5,895.00')&&txt.includes('85.00')&&txt.includes('266.00')&&txt.includes('351.00')&&txt.includes('5,544.00')&&txt.includes('94.05%')&&txt.includes('not_measured'),r455File+': contains exact 11-17 R31 parallax+antialgorithm closed-form parameters');
     }
+    // 2026-11-17 Night Round 32 (R456: jackulau/coding.sh + OnlyTerp/turnpack) verification
+    const r456PathA=2350.00+37.0*95.00;
+    assert.equal(r456PathA.toFixed(2),'5865.00','11-17 R32 Path A total');
+    const r456PathC=80.00+2.8*95.00;
+    assert.equal(r456PathC.toFixed(2),'346.00','11-17 R32 Path C total');
+    assert.equal((r456PathA-r456PathC).toFixed(2),'5519.00','11-17 R32 savings vs Path A');
+    assert.equal(((r456PathA-r456PathC)/r456PathA*100).toFixed(2),'94.10','11-17 R32 pct savings vs Path A');
+    for(const r456File of ['workshops/github-trending-radar/docs/coding-sh-turnpack-local-agent-observability-eval-engine-transactional-rollback-mcp-selection-faq.md','workshops/github-trending-radar/docs/coding-sh-turnpack-local-agent-observability-eval-engine-transactional-rollback-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r32-coding-sh-turnpack.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r456File),'utf8');
+      assert.ok(txt.includes('2,350.00')&&txt.includes('3,515.00')&&txt.includes('5,865.00')&&txt.includes('80.00')&&txt.includes('266.00')&&txt.includes('346.00')&&txt.includes('5,519.00')&&txt.includes('94.10%')&&txt.includes('not_measured'),r456File+': contains exact 11-17 R32 coding-sh+turnpack closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
