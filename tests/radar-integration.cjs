@@ -5591,6 +5591,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r447File),'utf8');
       assert.ok(txt.includes('2,180.00')&&txt.includes('3,420.00')&&txt.includes('5,600.00')&&txt.includes('75.00')&&txt.includes('266.00')&&txt.includes('341.00')&&txt.includes('5,259.00')&&txt.includes('93.91%')&&txt.includes('not_measured'),r447File+': contains exact 11-17 R23 agent-traffic+graph-worlds closed-form parameters');
     }
+    // 2026-11-17 Night Round 24 (R448: fendouai/ViralForge + staryone/motlab) verification
+    const r448PathA=2480.00+38.0*95.00;
+    assert.equal(r448PathA.toFixed(2),'6090.00','11-17 R24 Path A total');
+    const r448PathC=90.00+3.0*95.00;
+    assert.equal(r448PathC.toFixed(2),'375.00','11-17 R24 Path C total');
+    assert.equal((r448PathA-r448PathC).toFixed(2),'5715.00','11-17 R24 savings vs Path A');
+    assert.equal(((r448PathA-r448PathC)/r448PathA*100).toFixed(2),'93.84','11-17 R24 pct savings vs Path A');
+    for(const r448File of ['workshops/github-trending-radar/docs/viralforge-motlab-viral-dna-vfml-10variant-video-mcp-webcodecs-video-as-code-selection-faq.md','workshops/github-trending-radar/docs/viralforge-motlab-viral-dna-vfml-10variant-video-mcp-webcodecs-video-as-code-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r24-viralforge-motlab.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r448File),'utf8');
+      assert.ok(txt.includes('2,480.00')&&txt.includes('3,610.00')&&txt.includes('6,090.00')&&txt.includes('90.00')&&txt.includes('285.00')&&txt.includes('375.00')&&txt.includes('5,715.00')&&txt.includes('93.84%')&&txt.includes('not_measured'),r448File+': contains exact 11-17 R24 viralforge+motlab closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
