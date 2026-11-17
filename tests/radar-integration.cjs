@@ -5657,6 +5657,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r453File),'utf8');
       assert.ok(txt.includes('2,450.00')&&txt.includes('3,610.00')&&txt.includes('6,060.00')&&txt.includes('85.00')&&txt.includes('285.00')&&txt.includes('370.00')&&txt.includes('5,690.00')&&txt.includes('93.89%')&&txt.includes('not_measured'),r453File+': contains exact 11-17 R29 oil-dev-skills+alyn closed-form parameters');
     }
+    // 2026-11-17 Night Round 30 (R454: hikaku-io/hikaku-extension + Muanyan-mjq/zotero-interlinear & Vets-Who-Code/ai-era-job-kit) verification
+    const r454PathA=2290.00+37.0*95.00;
+    assert.equal(r454PathA.toFixed(2),'5805.00','11-17 R30 Path A total');
+    const r454PathC=80.00+2.8*95.00;
+    assert.equal(r454PathC.toFixed(2),'346.00','11-17 R30 Path C total');
+    assert.equal((r454PathA-r454PathC).toFixed(2),'5459.00','11-17 R30 savings vs Path A');
+    assert.equal(((r454PathA-r454PathC)/r454PathA*100).toFixed(2),'94.04','11-17 R30 pct savings vs Path A');
+    for(const r454File of ['workshops/github-trending-radar/docs/hikaku-extension-zotero-interlinear-on-device-c2pa-swinv2-media-forensics-bilingual-zotero-pdf-selection-faq.md','workshops/github-trending-radar/docs/hikaku-extension-zotero-interlinear-on-device-c2pa-swinv2-media-forensics-bilingual-zotero-pdf-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r30-hikaku-zotero-interlinear.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r454File),'utf8');
+      assert.ok(txt.includes('2,290.00')&&txt.includes('3,515.00')&&txt.includes('5,805.00')&&txt.includes('80.00')&&txt.includes('266.00')&&txt.includes('346.00')&&txt.includes('5,459.00')&&txt.includes('94.04%')&&txt.includes('not_measured'),r454File+': contains exact 11-17 R30 hikaku+zotero-interlinear closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
