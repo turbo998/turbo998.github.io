@@ -5756,6 +5756,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r462File),'utf8');
       assert.ok(txt.includes('2,250.00')&&txt.includes('3,420.00')&&txt.includes('5,670.00')&&txt.includes('75.00')&&txt.includes('266.00')&&txt.includes('341.00')&&txt.includes('5,329.00')&&txt.includes('93.99%')&&txt.includes('not_measured'),r462File+': contains exact 11-17 R38 whale+zgg closed-form parameters');
     }
+    // 2026-11-17 Night Round 39 (R463: varops/actp + yusuke-114/claude-xcode-agent & ensignalp/kota) verification
+    const r463PathA=2280.00+38.0*95.00;
+    assert.equal(r463PathA.toFixed(2),'5890.00','11-17 R39 Path A total');
+    const r463PathC=75.00+2.8*95.00;
+    assert.equal(r463PathC.toFixed(2),'341.00','11-17 R39 Path C total');
+    assert.equal((r463PathA-r463PathC).toFixed(2),'5549.00','11-17 R39 savings vs Path A');
+    assert.equal(((r463PathA-r463PathC)/r463PathA*100).toFixed(2),'94.21','11-17 R39 pct savings vs Path A');
+    for(const r463File of ['workshops/github-trending-radar/docs/actp-claude-xcode-agent-kota-acp-over-http-xcode27-dual-exec-gateway-11provider-quota-monitor-selection-faq.md','workshops/github-trending-radar/docs/actp-claude-xcode-agent-kota-acp-over-http-xcode27-dual-exec-gateway-11provider-quota-monitor-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r39-actp-claude-xcode-kota.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r463File),'utf8');
+      assert.ok(txt.includes('2,280.00')&&txt.includes('3,610.00')&&txt.includes('5,890.00')&&txt.includes('75.00')&&txt.includes('266.00')&&txt.includes('341.00')&&txt.includes('5,549.00')&&txt.includes('94.21%')&&txt.includes('not_measured'),r463File+': contains exact 11-17 R39 actp+xcode+kota closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
