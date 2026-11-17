@@ -5514,6 +5514,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r440File),'utf8');
       assert.ok(txt.includes('2,280.00')&&txt.includes('3,610.00')&&txt.includes('5,890.00')&&txt.includes('95.00')&&txt.includes('285.00')&&txt.includes('380.00')&&txt.includes('5,510.00')&&txt.includes('93.55%')&&txt.includes('not_measured'),r440File+': contains exact 11-17 R16 turbo-browser-mcp+agweb closed-form parameters');
     }
+    // 2026-11-17 Night Round 17 (R441: IluvatarLabs/sitrep + leostera/git-twig) verification
+    const r441PathA=1860.00+36.0*95.00;
+    assert.equal(r441PathA.toFixed(2),'5280.00','11-17 R17 Path A total');
+    const r441PathC=70.00+2.8*95.00;
+    assert.equal(r441PathC.toFixed(2),'336.00','11-17 R17 Path C total');
+    assert.equal((r441PathA-r441PathC).toFixed(2),'4944.00','11-17 R17 savings vs Path A');
+    assert.equal(((r441PathA-r441PathC)/r441PathA*100).toFixed(2),'93.64','11-17 R17 pct savings vs Path A');
+    for(const r441File of ['workshops/github-trending-radar/docs/sitrep-git-twig-cross-machine-agent-unblocking-console-verified-cow-git-worktrees-selection-faq.md','workshops/github-trending-radar/docs/sitrep-git-twig-cross-machine-agent-unblocking-console-verified-cow-git-worktrees-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r17-sitrep-git-twig.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r441File),'utf8');
+      assert.ok(txt.includes('1,860.00')&&txt.includes('3,420.00')&&txt.includes('5,280.00')&&txt.includes('70.00')&&txt.includes('266.00')&&txt.includes('336.00')&&txt.includes('4,944.00')&&txt.includes('93.64%')&&txt.includes('not_measured'),r441File+': contains exact 11-17 R17 sitrep+git-twig closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
