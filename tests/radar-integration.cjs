@@ -5789,6 +5789,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r465File),'utf8');
       assert.ok(txt.includes('2,430.00')&&txt.includes('3,610.00')&&txt.includes('6,040.00')&&txt.includes('85.00')&&txt.includes('266.00')&&txt.includes('351.00')&&txt.includes('5,689.00')&&txt.includes('94.19%')&&txt.includes('not_measured'),r465File+': contains exact 11-17 R41 vstack+cache+latch closed-form parameters');
     }
+    // 2026-11-17 Night Round 42 (R466: db-branch/db-branch + bashovski/reflektor & icodehq/icode-workbench) verification
+    const r466PathA=2370.00+37.0*95.00;
+    assert.equal(r466PathA.toFixed(2),'5885.00','11-17 R42 Path A total');
+    const r466PathC=80.00+2.8*95.00;
+    assert.equal(r466PathC.toFixed(2),'346.00','11-17 R42 Path C total');
+    assert.equal((r466PathA-r466PathC).toFixed(2),'5539.00','11-17 R42 savings vs Path A');
+    assert.equal(((r466PathA-r466PathC)/r466PathA*100).toFixed(2),'94.12','11-17 R42 pct savings vs Path A');
+    for(const r466File of ['workshops/github-trending-radar/docs/db-branch-reflektor-icode-workbench-zfs-cow-db-branching-mcp-visual-code-review-daemon-parallel-ade-selection-faq.md','workshops/github-trending-radar/docs/db-branch-reflektor-icode-workbench-zfs-cow-db-branching-mcp-visual-code-review-daemon-parallel-ade-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r42-dbbranch-reflektor-icode.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r466File),'utf8');
+      assert.ok(txt.includes('2,370.00')&&txt.includes('3,515.00')&&txt.includes('5,885.00')&&txt.includes('80.00')&&txt.includes('266.00')&&txt.includes('346.00')&&txt.includes('5,539.00')&&txt.includes('94.12%')&&txt.includes('not_measured'),r466File+': contains exact 11-17 R42 dbbranch+reflektor+icode closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
