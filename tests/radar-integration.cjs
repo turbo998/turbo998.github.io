@@ -5426,6 +5426,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r432File),'utf8');
       assert.ok(txt.includes('2,120.00')&&txt.includes('3,610.00')&&txt.includes('5,730.00')&&txt.includes('90.00')&&txt.includes('285.00')&&txt.includes('375.00')&&txt.includes('5,355.00')&&txt.includes('93.46%')&&txt.includes('not_measured'),r432File+': contains exact 11-17 R8 opendockit+aiconnect closed-form parameters');
     }
+    // 2026-11-17 Night Round 9 (R433: D33ptar00p/emulator-ui + ihou/DiffCode) verification
+    const r433PathA=1840.00+37.0*100.00;
+    assert.equal(r433PathA.toFixed(2),'5540.00','11-17 R9 Path A total');
+    const r433PathC=80.00+3.0*100.00;
+    assert.equal(r433PathC.toFixed(2),'380.00','11-17 R9 Path C total');
+    assert.equal((r433PathA-r433PathC).toFixed(2),'5160.00','11-17 R9 savings vs Path A');
+    assert.equal(((r433PathA-r433PathC)/r433PathA*100).toFixed(2),'93.14','11-17 R9 pct savings vs Path A');
+    for(const r433File of ['workshops/github-trending-radar/docs/emulator-ui-diffcode-436service-local-aws-emulator-console-40ms-30mb-lockfree-agent-diff-desk-selection-faq.md','workshops/github-trending-radar/docs/emulator-ui-diffcode-436service-local-aws-emulator-console-40ms-30mb-lockfree-agent-diff-desk-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r9-emulator-ui-diffcode.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r433File),'utf8');
+      assert.ok(txt.includes('1,840.00')&&txt.includes('3,700.00')&&txt.includes('5,540.00')&&txt.includes('80.00')&&txt.includes('300.00')&&txt.includes('380.00')&&txt.includes('5,160.00')&&txt.includes('93.14%')&&txt.includes('not_measured'),r433File+': contains exact 11-17 R9 emulator-ui+diffcode closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
