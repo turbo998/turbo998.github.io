@@ -5767,6 +5767,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r463File),'utf8');
       assert.ok(txt.includes('2,280.00')&&txt.includes('3,610.00')&&txt.includes('5,890.00')&&txt.includes('75.00')&&txt.includes('266.00')&&txt.includes('341.00')&&txt.includes('5,549.00')&&txt.includes('94.21%')&&txt.includes('not_measured'),r463File+': contains exact 11-17 R39 actp+xcode+kota closed-form parameters');
     }
+    // 2026-11-17 Night Round 40 (R464: Omodaka9375/browserr + TechTideOhio/binnacle) verification
+    const r464PathA=2340.00+37.0*95.00;
+    assert.equal(r464PathA.toFixed(2),'5855.00','11-17 R40 Path A total');
+    const r464PathC=80.00+2.8*95.00;
+    assert.equal(r464PathC.toFixed(2),'346.00','11-17 R40 Path C total');
+    assert.equal((r464PathA-r464PathC).toFixed(2),'5509.00','11-17 R40 savings vs Path A');
+    assert.equal(((r464PathA-r464PathC)/r464PathA*100).toFixed(2),'94.09','11-17 R40 pct savings vs Path A');
+    for(const r464File of ['workshops/github-trending-radar/docs/browserr-binnacle-servo-fail-closed-agent-browser-42tool-mcp-pure-rust-15tool-eval-orchestrator-selection-faq.md','workshops/github-trending-radar/docs/browserr-binnacle-servo-fail-closed-agent-browser-42tool-mcp-pure-rust-15tool-eval-orchestrator-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r40-browserr-binnacle.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r464File),'utf8');
+      assert.ok(txt.includes('2,340.00')&&txt.includes('3,515.00')&&txt.includes('5,855.00')&&txt.includes('80.00')&&txt.includes('266.00')&&txt.includes('346.00')&&txt.includes('5,509.00')&&txt.includes('94.09%')&&txt.includes('not_measured'),r464File+': contains exact 11-17 R40 browserr+binnacle closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
