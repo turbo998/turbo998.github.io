@@ -5360,6 +5360,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r426File),'utf8');
       assert.ok(txt.includes('1,980.00')&&txt.includes('4,100.00')&&txt.includes('6,080.00')&&txt.includes('110.00')&&txt.includes('330.00')&&txt.includes('440.00')&&txt.includes('5,640.00')&&txt.includes('92.76%')&&txt.includes('not_measured'),r426File+': contains exact 11-17 R2 rust-anything+spaceship closed-form parameters');
     }
+    // 2026-11-17 Night Round 3 (R427: ysunyang4/Nexus + boringmarketer/boring-marketing-skills) verification
+    const r427PathA=1890.00+38.0*95.00;
+    assert.equal(r427PathA.toFixed(2),'5500.00','11-17 R3 Path A total');
+    const r427PathC=95.00+3.2*95.00;
+    assert.equal(r427PathC.toFixed(2),'399.00','11-17 R3 Path C total');
+    assert.equal((r427PathA-r427PathC).toFixed(2),'5101.00','11-17 R3 savings vs Path A');
+    assert.equal(((r427PathA-r427PathC)/r427PathA*100).toFixed(2),'92.75','11-17 R3 pct savings vs Path A');
+    for(const r427File of ['workshops/github-trending-radar/docs/nexus-boring-marketing-skills-332tool-wal-local-mcp-control-plane-32skill-geo-growth-engine-selection-faq.md','workshops/github-trending-radar/docs/nexus-boring-marketing-skills-332tool-wal-local-mcp-control-plane-32skill-geo-growth-engine-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r3-nexus-boring-marketing.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r427File),'utf8');
+      assert.ok(txt.includes('1,890.00')&&txt.includes('3,610.00')&&txt.includes('5,500.00')&&txt.includes('95.00')&&txt.includes('304.00')&&txt.includes('399.00')&&txt.includes('5,101.00')&&txt.includes('92.75%')&&txt.includes('not_measured'),r427File+': contains exact 11-17 R3 nexus+boring-marketing-skills closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
