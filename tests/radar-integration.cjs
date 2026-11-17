@@ -5349,6 +5349,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r425File),'utf8');
       assert.ok(txt.includes('2,040.00')&&txt.includes('4,200.00')&&txt.includes('6,240.00')&&txt.includes('120.00')&&txt.includes('340.00')&&txt.includes('460.00')&&txt.includes('5,780.00')&&txt.includes('92.63%')&&txt.includes('not_measured'),r425File+': contains exact 11-17 R1 cursor-plugins+inference-optimisation closed-form parameters');
     }
+    // 2026-11-17 Night Round 2 (R426: erkamyaman/rust-anything + chuanqisun/spaceship) verification
+    const r426PathA=1980.00+41.0*100.00;
+    assert.equal(r426PathA.toFixed(2),'6080.00','11-17 R2 Path A total');
+    const r426PathC=110.00+3.3*100.00;
+    assert.equal(r426PathC.toFixed(2),'440.00','11-17 R2 Path C total');
+    assert.equal((r426PathA-r426PathC).toFixed(2),'5640.00','11-17 R2 savings vs Path A');
+    assert.equal(((r426PathA-r426PathC)/r426PathA*100).toFixed(2),'92.76','11-17 R2 pct savings vs Path A');
+    for(const r426File of ['workshops/github-trending-radar/docs/rust-anything-spaceship-boundary-recorded-shadow-rust-migration-60fps-latent-steering-ide-selection-faq.md','workshops/github-trending-radar/docs/rust-anything-spaceship-boundary-recorded-shadow-rust-migration-60fps-latent-steering-ide-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r2-rust-anything-spaceship.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r426File),'utf8');
+      assert.ok(txt.includes('1,980.00')&&txt.includes('4,100.00')&&txt.includes('6,080.00')&&txt.includes('110.00')&&txt.includes('330.00')&&txt.includes('440.00')&&txt.includes('5,640.00')&&txt.includes('92.76%')&&txt.includes('not_measured'),r426File+': contains exact 11-17 R2 rust-anything+spaceship closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
