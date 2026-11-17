@@ -5635,6 +5635,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r451File),'utf8');
       assert.ok(txt.includes('2,220.00')&&txt.includes('3,420.00')&&txt.includes('5,640.00')&&txt.includes('75.00')&&txt.includes('266.00')&&txt.includes('341.00')&&txt.includes('5,299.00')&&txt.includes('93.95%')&&txt.includes('not_measured'),r451File+': contains exact 11-17 R27 line-art+chaojifeng closed-form parameters');
     }
+    // 2026-11-17 Night Round 28 (R452: bis-med-it/marco-BIS + lizhenjie137/intelligent-organization) verification
+    const r452PathA=2160.00+38.0*95.00;
+    assert.equal(r452PathA.toFixed(2),'5770.00','11-17 R28 Path A total');
+    const r452PathC=75.00+2.8*95.00;
+    assert.equal(r452PathC.toFixed(2),'341.00','11-17 R28 Path C total');
+    assert.equal((r452PathA-r452PathC).toFixed(2),'5429.00','11-17 R28 savings vs Path A');
+    assert.equal(((r452PathA-r452PathC)/r452PathA*100).toFixed(2),'94.09','11-17 R28 pct savings vs Path A');
+    for(const r452File of ['workshops/github-trending-radar/docs/marco-bis-intelligent-organization-7stage-macroeconometric-companion-atomic-human-agent-handoff-selection-faq.md','workshops/github-trending-radar/docs/marco-bis-intelligent-organization-7stage-macroeconometric-companion-atomic-human-agent-handoff-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r28-marco-bis-intelligent-org.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r452File),'utf8');
+      assert.ok(txt.includes('2,160.00')&&txt.includes('3,610.00')&&txt.includes('5,770.00')&&txt.includes('75.00')&&txt.includes('266.00')&&txt.includes('341.00')&&txt.includes('5,429.00')&&txt.includes('94.09%')&&txt.includes('not_measured'),r452File+': contains exact 11-17 R28 marco-bis+intelligent-org closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
