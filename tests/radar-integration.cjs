@@ -5712,6 +5712,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r458File),'utf8');
       assert.ok(txt.includes('2,140.00')&&txt.includes('3,420.00')&&txt.includes('5,560.00')&&txt.includes('75.00')&&txt.includes('266.00')&&txt.includes('341.00')&&txt.includes('5,219.00')&&txt.includes('93.87%')&&txt.includes('not_measured'),r458File+': contains exact 11-17 R34 planrelay+myco closed-form parameters');
     }
+    // 2026-11-17 Night Round 35 (R459: joaquimmj/deskstack + taoqi132/Qwork) verification
+    const r459PathA=2320.00+38.0*95.00;
+    assert.equal(r459PathA.toFixed(2),'5930.00','11-17 R35 Path A total');
+    const r459PathC=80.00+3.0*95.00;
+    assert.equal(r459PathC.toFixed(2),'365.00','11-17 R35 Path C total');
+    assert.equal((r459PathA-r459PathC).toFixed(2),'5565.00','11-17 R35 savings vs Path A');
+    assert.equal(((r459PathA-r459PathC)/r459PathA*100).toFixed(2),'93.84','11-17 R35 pct savings vs Path A');
+    for(const r459File of ['workshops/github-trending-radar/docs/deskstack-qwork-xbrl-filing-tied-dcf-deal-team-4mode-multi-agent-deliverable-workspace-selection-faq.md','workshops/github-trending-radar/docs/deskstack-qwork-xbrl-filing-tied-dcf-deal-team-4mode-multi-agent-deliverable-workspace-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r35-deskstack-qwork.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r459File),'utf8');
+      assert.ok(txt.includes('2,320.00')&&txt.includes('3,610.00')&&txt.includes('5,930.00')&&txt.includes('80.00')&&txt.includes('285.00')&&txt.includes('365.00')&&txt.includes('5,565.00')&&txt.includes('93.84%')&&txt.includes('not_measured'),r459File+': contains exact 11-17 R35 deskstack+qwork closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
