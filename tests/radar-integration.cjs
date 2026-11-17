@@ -5470,6 +5470,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r436File),'utf8');
       assert.ok(txt.includes('1,860.00')&&txt.includes('3,610.00')&&txt.includes('5,470.00')&&txt.includes('95.00')&&txt.includes('285.00')&&txt.includes('380.00')&&txt.includes('5,090.00')&&txt.includes('93.05%')&&txt.includes('not_measured'),r436File+': contains exact 11-17 R12 redfox+wechat-use closed-form parameters');
     }
+    // 2026-11-17 Night Round 13 (R437: jackson-cmd/claude-multi-desktop + zxfccmm4/magpie-remote) verification
+    const r437PathA=1790.00+36.0*100.00;
+    assert.equal(r437PathA.toFixed(2),'5390.00','11-17 R13 Path A total');
+    const r437PathC=75.00+2.9*100.00;
+    assert.equal(r437PathC.toFixed(2),'365.00','11-17 R13 Path C total');
+    assert.equal((r437PathA-r437PathC).toFixed(2),'5025.00','11-17 R13 savings vs Path A');
+    assert.equal(((r437PathA-r437PathC)/r437PathA*100).toFixed(2),'93.23','11-17 R13 pct savings vs Path A');
+    for(const r437File of ['workshops/github-trending-radar/docs/claude-multi-desktop-magpie-remote-shared-dotclaude-multi-account-launcher-zero-dep-swiftui-ai-gateway-control-center-selection-faq.md','workshops/github-trending-radar/docs/claude-multi-desktop-magpie-remote-shared-dotclaude-multi-account-launcher-zero-dep-swiftui-ai-gateway-control-center-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r13-claude-multi-desktop-magpie-remote.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r437File),'utf8');
+      assert.ok(txt.includes('1,790.00')&&txt.includes('3,600.00')&&txt.includes('5,390.00')&&txt.includes('75.00')&&txt.includes('290.00')&&txt.includes('365.00')&&txt.includes('5,025.00')&&txt.includes('93.23%')&&txt.includes('not_measured'),r437File+': contains exact 11-17 R13 claude-multi-desktop+magpie-remote closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
