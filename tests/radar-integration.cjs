@@ -5492,6 +5492,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r438File),'utf8');
       assert.ok(txt.includes('1,960.00')&&txt.includes('3,515.00')&&txt.includes('5,475.00')&&txt.includes('80.00')&&txt.includes('285.00')&&txt.includes('365.00')&&txt.includes('5,110.00')&&txt.includes('93.33%')&&txt.includes('not_measured'),r438File+': contains exact 11-17 R14 ai-engineering-hub+meeting-copilot closed-form parameters');
     }
+    // 2026-11-17 Night Round 15 (R439: spacesky-cell/TwinFix + ferhatcore/claude-codex-project-os & vaibhav-space/my-ai-coding-workflow) verification
+    const r439PathA=2100.00+38.0*95.00;
+    assert.equal(r439PathA.toFixed(2),'5710.00','11-17 R15 Path A total');
+    const r439PathC=90.00+3.2*95.00;
+    assert.equal(r439PathC.toFixed(2),'394.00','11-17 R15 Path C total');
+    assert.equal((r439PathA-r439PathC).toFixed(2),'5316.00','11-17 R15 savings vs Path A');
+    assert.equal(((r439PathA-r439PathC)/r439PathA*100).toFixed(2),'93.10','11-17 R15 pct savings vs Path A');
+    for(const r439File of ['workshops/github-trending-radar/docs/twinfix-claude-codex-project-os-disposable-twin-hidden-test-remediation-role-separated-qa-governance-selection-faq.md','workshops/github-trending-radar/docs/twinfix-claude-codex-project-os-disposable-twin-hidden-test-remediation-role-separated-qa-governance-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r15-twinfix-project-os.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r439File),'utf8');
+      assert.ok(txt.includes('2,100.00')&&txt.includes('3,610.00')&&txt.includes('5,710.00')&&txt.includes('90.00')&&txt.includes('304.00')&&txt.includes('394.00')&&txt.includes('5,316.00')&&txt.includes('93.10%')&&txt.includes('not_measured'),r439File+': contains exact 11-17 R15 twinfix+project-os closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
