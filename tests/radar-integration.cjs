@@ -5778,6 +5778,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r464File),'utf8');
       assert.ok(txt.includes('2,340.00')&&txt.includes('3,515.00')&&txt.includes('5,855.00')&&txt.includes('80.00')&&txt.includes('266.00')&&txt.includes('346.00')&&txt.includes('5,509.00')&&txt.includes('94.09%')&&txt.includes('not_measured'),r464File+': contains exact 11-17 R40 browserr+binnacle closed-form parameters');
     }
+    // 2026-11-17 Night Round 41 (R465 Milestone: hao-ai-lab/vstack + inevolin/claude-code-usage-analysis & Balanov/latch) verification
+    const r465PathA=2430.00+38.0*95.00;
+    assert.equal(r465PathA.toFixed(2),'6040.00','11-17 R41 Path A total');
+    const r465PathC=85.00+2.8*95.00;
+    assert.equal(r465PathC.toFixed(2),'351.00','11-17 R41 Path C total');
+    assert.equal((r465PathA-r465PathC).toFixed(2),'5689.00','11-17 R41 savings vs Path A');
+    assert.equal(((r465PathA-r465PathC)/r465PathA*100).toFixed(2),'94.19','11-17 R41 pct savings vs Path A');
+    for(const r465File of ['workshops/github-trending-radar/docs/vstack-claude-code-usage-analysis-latch-anti-reward-hacking-formal-verification-cache-miss-finops-quote-commit-selection-faq.md','workshops/github-trending-radar/docs/vstack-claude-code-usage-analysis-latch-anti-reward-hacking-formal-verification-cache-miss-finops-quote-commit-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r41-vstack-cache-latch.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r465File),'utf8');
+      assert.ok(txt.includes('2,430.00')&&txt.includes('3,610.00')&&txt.includes('6,040.00')&&txt.includes('85.00')&&txt.includes('266.00')&&txt.includes('351.00')&&txt.includes('5,689.00')&&txt.includes('94.19%')&&txt.includes('not_measured'),r465File+': contains exact 11-17 R41 vstack+cache+latch closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
