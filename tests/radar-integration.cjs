@@ -5690,6 +5690,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r456File),'utf8');
       assert.ok(txt.includes('2,350.00')&&txt.includes('3,515.00')&&txt.includes('5,865.00')&&txt.includes('80.00')&&txt.includes('266.00')&&txt.includes('346.00')&&txt.includes('5,519.00')&&txt.includes('94.10%')&&txt.includes('not_measured'),r456File+': contains exact 11-17 R32 coding-sh+turnpack closed-form parameters');
     }
+    // 2026-11-17 Night Round 33 (R457: SilentGuard-SG/silentguard + onlyreadai/onlyread & globalmpc/vibe-preflight) verification
+    const r457PathA=2260.00+38.0*95.00;
+    assert.equal(r457PathA.toFixed(2),'5870.00','11-17 R33 Path A total');
+    const r457PathC=85.00+3.0*95.00;
+    assert.equal(r457PathC.toFixed(2),'370.00','11-17 R33 Path C total');
+    assert.equal((r457PathA-r457PathC).toFixed(2),'5500.00','11-17 R33 savings vs Path A');
+    assert.equal(((r457PathA-r457PathC)/r457PathA*100).toFixed(2),'93.70','11-17 R33 pct savings vs Path A');
+    for(const r457File of ['workshops/github-trending-radar/docs/silentguard-onlyread-vibe-preflight-prefill-injection-filter-readonly-browser-agent-launch-audit-selection-faq.md','workshops/github-trending-radar/docs/silentguard-onlyread-vibe-preflight-prefill-injection-filter-readonly-browser-agent-launch-audit-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r33-silentguard-onlyread-preflight.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r457File),'utf8');
+      assert.ok(txt.includes('2,260.00')&&txt.includes('3,610.00')&&txt.includes('5,870.00')&&txt.includes('85.00')&&txt.includes('285.00')&&txt.includes('370.00')&&txt.includes('5,500.00')&&txt.includes('93.70%')&&txt.includes('not_measured'),r457File+': contains exact 11-17 R33 silentguard+onlyread closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
