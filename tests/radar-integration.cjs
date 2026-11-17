@@ -5481,6 +5481,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r437File),'utf8');
       assert.ok(txt.includes('1,790.00')&&txt.includes('3,600.00')&&txt.includes('5,390.00')&&txt.includes('75.00')&&txt.includes('290.00')&&txt.includes('365.00')&&txt.includes('5,025.00')&&txt.includes('93.23%')&&txt.includes('not_measured'),r437File+': contains exact 11-17 R13 claude-multi-desktop+magpie-remote closed-form parameters');
     }
+    // 2026-11-17 Night Round 14 (R438: ngophatneknha/ai-engineering-hub + tanzeeldevAi/ai-meeting-assistant-copilot) verification
+    const r438PathA=1960.00+37.0*95.00;
+    assert.equal(r438PathA.toFixed(2),'5475.00','11-17 R14 Path A total');
+    const r438PathC=80.00+3.0*95.00;
+    assert.equal(r438PathC.toFixed(2),'365.00','11-17 R14 Path C total');
+    assert.equal((r438PathA-r438PathC).toFixed(2),'5110.00','11-17 R14 savings vs Path A');
+    assert.equal(((r438PathA-r438PathC)/r438PathA*100).toFixed(2),'93.33','11-17 R14 pct savings vs Path A');
+    for(const r438File of ['workshops/github-trending-radar/docs/ai-engineering-hub-meeting-assistant-copilot-143module-enterprise-ai-coe-curriculum-local-screen-hidden-meeting-overlay-selection-faq.md','workshops/github-trending-radar/docs/ai-engineering-hub-meeting-assistant-copilot-143module-enterprise-ai-coe-curriculum-local-screen-hidden-meeting-overlay-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r14-ai-eng-hub-meeting-copilot.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r438File),'utf8');
+      assert.ok(txt.includes('1,960.00')&&txt.includes('3,515.00')&&txt.includes('5,475.00')&&txt.includes('80.00')&&txt.includes('285.00')&&txt.includes('365.00')&&txt.includes('5,110.00')&&txt.includes('93.33%')&&txt.includes('not_measured'),r438File+': contains exact 11-17 R14 ai-engineering-hub+meeting-copilot closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
