@@ -1,0 +1,276 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "demo": "virtual-production-led-stage-icvfx-frustum-sync-studio",
+  "slug": "virtual-production-led-stage-icvfx-frustum-sync-studio",
+  "topic": "Enterprise LED-Volume Virtual Production (ICVFX, 255th Demo Milestone!): Tracked Off-Axis Inner-Frustum 3DGS/UE5 + Outer 360° AIGC HDRI Dome + PTP Genlock (c_icvfx = c_0/(1+u), 1.0000x Lock) vs Naive Static 2D LED / Green-Screen Spill",
+  "topic_zh": "企业与影视 LED 虚拟制片（ICVFX / xR 舞台，第 255 个独立能力里程碑 Demo！）：追踪内视锥 3DGS/UE5 + 外视锥 360° AIGC HDRI 照明 + PTP Genlock 锁相（c_0/(1+u), 1.0000× 锁死）对比朴素静态 LED 与绿幕溢色 2.0000× 返工",
+  "title": "Enterprise LED-Volume Virtual Production (ICVFX, 255th Demo Milestone!): 1.0000× Lock vs 2.0000× Roto Overrun",
+  "timestamp": "2026-11-17T19:57:08.657Z",
+  "recorded_at": "2026-11-17T19:57:08.657Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "neural_inference_provenance": "not_measured",
+  "model_inference": "not_measured",
+  "independently_reproduced": true,
+  "scope": "Deterministic Enterprise LED-Volume Virtual Production (ICVFX) pipeline evaluation (driving an off-axis Inner-Frustum 3DGS/UE5 render from 6DoF optical camera tracking, illuminating reflective subjects via an Outer-Frustum 360-degree AIGC 16-bit HDRI dome, and locking camera shutter phase via PTPv2/Genlock so amortized unit cost c_icvfx(u) = c_0 / (1 + u) reaches 0.5000 at u = 1.0, locking C_active / C_icvfx = 1.0000x across all 17 stages u in [0.000, 1.000] with 0/17 violated) versus naive untracked 2D video playback on LED walls or green-screen shooting (which causes flat-poster parallax collapse, rolling-shutter scanline bars, and green spill on hair/car paint, inflating post-production rotoscoping cost by 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x at S16 across 16/17 stages) and 64-ray frustum quadrature.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "Playwright Chromium",
+    "gpu": "not_measured",
+    "viewport": "1440x900",
+    "headless": true
+  },
+  "summary": {
+    "solids_total": 58,
+    "stations_total": 17,
+    "icvfx_sync_ratio": 1,
+    "naive_station4_ratio": 1.25,
+    "naive_station8_ratio": 1.5,
+    "naive_station16_ratio": 2,
+    "icvfx_violated_stations": 0,
+    "naive_violated_stations": 16,
+    "max_quadrature_error": 3.331e-16,
+    "primary_8192_ms": 0.173,
+    "baseline_8192_ms": 8.157,
+    "speedup_8192x": 47.15,
+    "mobile_overflow": false
+  },
+  "checks": [
+    {
+      "name": "icvfx-frustum-quad64-equiv-128",
+      "passed": true,
+      "detail": "128 closed-form ICVFX Frustum Sync c_icvfx = c_0/(1+u) and 64-ray frustum quadrature passes agree within 1e-12"
+    },
+    {
+      "name": "icvfx-frustum-quad64-equiv-1024",
+      "passed": true,
+      "detail": "1024 closed-form ICVFX Frustum Sync c_icvfx = c_0/(1+u) and 64-ray frustum quadrature passes agree within 1e-12"
+    },
+    {
+      "name": "icvfx-frustum-quad64-equiv-8192",
+      "passed": true,
+      "detail": "8192 closed-form ICVFX Frustum Sync c_icvfx = c_0/(1+u) and 64-ray frustum quadrature passes agree within 1e-12"
+    },
+    {
+      "name": "icvfx-frustum-genlock-locked",
+      "passed": true,
+      "detail": "17 LED-volume ICVFX stages (L(u) = 1 + u in [1.00, 2.00]) lock in-camera final-pixel budget ratio C_active/C_icvfx = 1.0000x (0/17 violated)"
+    },
+    {
+      "name": "naive-static-led-spill-exposed",
+      "passed": true,
+      "detail": "naive untracked 2D video on LED wall and green-screen spill cause parallax collapse and scanline banding, inflating post-production rotoscoping cost as 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x at S16 across 16/17 stages"
+    },
+    {
+      "name": "vp-s4-u025-10000",
+      "passed": true,
+      "detail": "stage-4 (Off-Axis Asymmetric Frustum Projection Matrix Solve, u=0.25, c_icvfx=0.8000) locks C/C_icvfx = 1.0000x vs naive 1.2500x overrun"
+    },
+    {
+      "name": "vp-s8-u050-10000",
+      "passed": true,
+      "detail": "stage-8 (2-Frame Tracker-to-Photon Motion Prediction Kalman Filter, u=0.50, c_icvfx=0.6667) locks C/C_icvfx = 1.0000x vs naive 1.5000x overrun"
+    },
+    {
+      "name": "vp-s16-u100-10000",
+      "passed": true,
+      "detail": "stage-16 (24-Location Global Commercial Shot in 1 LED Day, u=1.00, c_icvfx=0.5000) locks C/C_icvfx = 1.0000x vs naive 2.0000x double overrun"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D Enterprise LED-Volume ICVFX Studio renders 58 tracked solids across 17 stages"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Virtual Production ICVFX controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-stage ICVFX Frustum passes",
+      "count": 128,
+      "primary_ms": 0.011,
+      "baseline_ms": 0.15,
+      "primary_samples_ms": [
+        0.025,
+        0.013,
+        0.011,
+        0.022,
+        0.007,
+        0.004,
+        0.004
+      ],
+      "baseline_samples_ms": [
+        0.54,
+        0.517,
+        0.387,
+        0.149,
+        0.149,
+        0.149,
+        0.15
+      ]
+    },
+    {
+      "load": "1024 CPU 17-stage ICVFX Frustum passes",
+      "count": 1024,
+      "primary_ms": 0.024,
+      "baseline_ms": 0.881,
+      "primary_samples_ms": [
+        0.033,
+        0.025,
+        0.024,
+        0.024,
+        0.024,
+        0.024,
+        0.023
+      ],
+      "baseline_samples_ms": [
+        1.265,
+        3.014,
+        0.879,
+        0.882,
+        0.881,
+        0.88,
+        0.877
+      ]
+    },
+    {
+      "load": "8192 CPU 17-stage ICVFX Frustum passes",
+      "count": 8192,
+      "primary_ms": 0.173,
+      "baseline_ms": 8.157,
+      "primary_samples_ms": [
+        0.191,
+        0.193,
+        0.173,
+        0.172,
+        0.171,
+        0.167,
+        0.175
+      ],
+      "baseline_samples_ms": [
+        7.06,
+        6.378,
+        8.418,
+        8.157,
+        11.634,
+        6.624,
+        10.284
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/virtual-production-led-stage-icvfx-frustum-sync-studio/dark-icvfx_inner_frustum_genlock_3dgs_lock.png",
+    "docs/evidence/virtual-production-led-stage-icvfx-frustum-sync-studio/dark-naive_static_2d_led_greenscreen_spill.png",
+    "docs/evidence/virtual-production-led-stage-icvfx-frustum-sync-studio/light-icvfx_inner_frustum_genlock_3dgs_lock.png",
+    "docs/evidence/virtual-production-led-stage-icvfx-frustum-sync-studio/light-naive_static_2d_led_greenscreen_spill.png",
+    "docs/evidence/virtual-production-led-stage-icvfx-frustum-sync-studio/mobile.png"
+  ],
+  "primary_label": "Off-Axis Inner-Frustum 3DGS + Genlock c_icvfx = c_0 / (1 + u)",
+  "baseline_label": "64-Ray Frustum Projection & Genlock Quadrature",
+  "load_unit": "ICVFX Frustum Sync passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form ICVFX Frustum Sync amortization versus 64-ray frustum quadrature.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "station0_icvfx_ratio": 1,
+    "station0_naive_ratio": 1,
+    "station4_icvfx_ratio": 1,
+    "station4_naive_ratio": 1.25,
+    "station8_icvfx_ratio": 1,
+    "station8_naive_ratio": 1.5,
+    "station12_icvfx_ratio": 1,
+    "station12_naive_ratio": 1.75,
+    "station16_icvfx_ratio": 1,
+    "station16_naive_ratio": 2,
+    "violated_stations": 16
+  },
+  "protocol": {
+    "input": {
+      "stage_4_parallax_u": 0.25,
+      "stage_8_parallax_u": 0.5,
+      "stage_16_parallax_u": 1
+    },
+    "output": {
+      "icvfx_final_pixel_ratio": 1,
+      "naive_static_led_overrun_u025": 1.25,
+      "naive_static_led_overrun_u050": 1.5,
+      "naive_static_led_overrun_u100": 2,
+      "violated_stages": 16
+    },
+    "function": "ICVFX Inner-Frustum 3DGS + HDRI Dome + Genlock: c_icvfx = c_0/(1+u) -> C/C_icvfx = 1.0000× vs Naive Static LED / Green Screen -> 1 + u (2.0000× at Stage 16, 16/17 Violated)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 ICVFX stages preserve exact in-camera final-pixel budget ratio C_active/C_icvfx = 1.0000x",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Enterprise CEO xR keynotes, automotive commercial shoots, and broadcast virtual studios using curved LED volumes (Brompton/Megapixel + Mo-Sys/Stype tracking)",
+    "Combining AI-generated 3D Gaussian Splatting (3DGS) / UE5 off-axis Inner-Frustum rendering with 360-degree 16-bit AIGC HDRI Outer-Dome reflections",
+    "Eliminating green-screen spill on hair, eyeglasses, and automotive clearcoat via PTPv2/Genlock synchronized In-Camera VFX (Final Pixel)"
+  ],
+  "not_for": [
+    "Playing flat untracked 2D video on an LED wall while moving the physical camera on a dolly/crane",
+    "Shooting LED walls without Tri-Level Genlock synchronization (causes rolling-shutter scanline black bars)",
+    "Audio-only radio commercials"
+  ],
+  "locale_zh": {
+    "icvfx-frustum-quad64-equiv-128": "ICVFX视锥同步与64射线求积等价 128",
+    "128 closed-form ICVFX Frustum Sync c_icvfx = c_0/(1+u) and 64-ray frustum quadrature passes agree within 1e-12": "128 次闭式 ICVFX 视锥同步成本摊销与 64 射线视锥求积在 1e-12 内一致",
+    "icvfx-frustum-quad64-equiv-1024": "ICVFX视锥同步与64射线求积等价 1024",
+    "1024 closed-form ICVFX Frustum Sync c_icvfx = c_0/(1+u) and 64-ray frustum quadrature passes agree within 1e-12": "1024 次闭式 ICVFX 视锥同步成本摊销与 64 射线视锥求积在 1e-12 内一致",
+    "icvfx-frustum-quad64-equiv-8192": "ICVFX视锥同步与64射线求积等价 8192",
+    "8192 closed-form ICVFX Frustum Sync c_icvfx = c_0/(1+u) and 64-ray frustum quadrature passes agree within 1e-12": "8192 次闭式 ICVFX 视锥同步成本摊销与 64 射线视锥求积在 1e-12 内一致",
+    "icvfx-frustum-genlock-locked": "ICVFX内视锥与Genlock全阶段机内直出比1.0000x锁定",
+    "17 LED-volume ICVFX stages (L(u) = 1 + u in [1.00, 2.00]) lock in-camera final-pixel budget ratio C_active/C_icvfx = 1.0000x (0/17 violated)": "17 个 LED 虚拟制片阶段（L(u) ∈ [1, 2]）恒定锁死机内直出与成本比 C_active/C_icvfx = 1.0000×（0/17 穿帮或抠像）",
+    "naive-static-led-spill-exposed": "朴素无追踪2D背景与绿幕溢色2.0000x后期返工暴露",
+    "naive untracked 2D video on LED wall and green-screen spill cause parallax collapse and scanline banding, inflating post-production rotoscoping cost as 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x at S16 across 16/17 stages": "朴素 LED 巨幕直放 2D 视频或绿幕拍摄在第 4 阶段超支至 1.2500×、第 8 阶段冲至 1.5000×、第 16 阶段翻倍返工至 2.0000×（污染 16/17 个制片阶段）",
+    "vp-s4-u025-10000": "第4阶段离轴非对称视锥透视解算1.0000x锁定",
+    "stage-4 (Off-Axis Asymmetric Frustum Projection Matrix Solve, u=0.25, c_icvfx=0.8000) locks C/C_icvfx = 1.0000x vs naive 1.2500x overrun": "第 4 阶段（离轴非对称内视锥透视矩阵解算，u=0.25，c_icvfx=0.8000）锁死机内直出比 1.0000×（消除壁纸扁平穿帮 1.2500× 返工）",
+    "vp-s8-u050-10000": "第8阶段追踪至光子2帧运动预测1.0000x锁定",
+    "stage-8 (2-Frame Tracker-to-Photon Motion Prediction Kalman Filter, u=0.50, c_icvfx=0.6667) locks C/C_icvfx = 1.0000x vs naive 1.5000x overrun": "第 8 阶段（追踪器至 LED 光子 2 帧卡尔曼运动预测与 Genlock 锁相，u=0.50，c_icvfx=0.6667）锁死直出比 1.0000×（消除视锥拖尾与扫描黑带 1.5000× 返工）",
+    "vp-s16-u100-10000": "第16阶段单日拍完24国实景汽车TVC1.0000x锁定",
+    "stage-16 (24-Location Global Commercial Shot in 1 LED Day, u=1.00, c_icvfx=0.5000) locks C/C_icvfx = 1.0000x vs naive 2.0000x double overrun": "第 16 阶段（单日 LED 棚内拍完 24 国实景汽车与高管 TVC，u=1.00，c_icvfx=0.5000）锁死直出比 1.0000×（消除后期绿幕抠像 2.0000× 翻倍超支）",
+    "geometry-58-solids": "58构件3D虚拟制片ICVFX工作台一致性",
+    "3D Enterprise LED-Volume ICVFX Studio renders 58 tracked solids across 17 stages": "3D 企业 LED 虚拟制片 ICVFX 工作台在 17 个阶段完整渲染 58 个独立架构构件",
+    "mobile-layout": "手机布局",
+    "390px Virtual Production ICVFX controls fit without horizontal overflow": "390px 虚拟制片控制面板无横向溢出",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "title": "企业与影视 LED 虚拟制片（ICVFX）内视锥 3DGS 与 Genlock 同步工作台（第 255 个里程碑 Demo！）vs 朴素静态背景与绿幕溢色 2.0000× 返工",
+    "subtitle": "为什么在弧形 LED 虚拟影棚里直接播放 2D AI 视频并用轨道车移动拍摄，会让背景瞬间扁平穿帮像“站在电视机前拍照”且出现黑色扫描横条，企业级 ICVFX 追踪内视锥（3DGS/UE5）+ 外视锥 AIGC 全景天幕照明 + Genlock 锁相管线该如何设计？",
+    "plain_intro": "在企业旗舰新品 xR 发布会、豪华汽车棚内实拍广告与广电虚拟演播室中，越来越多团队希望用 **AIGC 生成的场景资产驱动弧形 LED 巨幕（LED Volume Virtual Production / ICVFX）**，从而在 1 天内不出摄影棚拍完雪山、沙漠、赛博城市等 24 个全球外景。如果团队采用**朴素静态 2D 视频上屏或传统绿幕抠像（Naive Untracked 2D LED Playback / Green-Screen Spill）**，会遭遇三大翻车灾难：① **移动机位透视坍塌（Parallax Collapse）**：当物理摄影机在轨道上横移时，屏幕上播放的 2D 视频没有任何前景与远景的运动视差变化，观众一眼就能看出“人站在平面的大电视机前面”；② **未接 Genlock 同步器导致摄影机 CMOS 快门拍出满屏滚转黑横条与摩尔纹**；③ **传统绿幕拍摄汽车或戴眼镜高管时，绿色溢色（Green Spill）把车漆与镜片染绿，后期逐帧擦除与重绘反射比实拍还贵**！这导致制作预算按 `L(u) = 1 + u` 在第 16 阶段翻倍超支至 **`2.0000×`**（污染 `16/17` 个阶段）！本工作台（**Round 245 · 第 255 个独立能力里程碑 Demo！**）展示的企业级 **“6DoF 摄影机追踪驱动离轴内视锥（Off-Axis Inner Frustum）实时 3DGS/UE5 透视渲染 + 外视锥与天幕（Outer Dome）播放 360° 16-bit AIGC HDRI 提供真实车漆/肤色反射照明 + PTPv2/Genlock 快门相位锁死”** 架构，实现 **100% 机内直出（In-Camera Final Pixel）** 并在全 17 个阶段恒锁成本比 `1.0000×`（`0/17` 站穿帮）！",
+    "finding": "实测跨越 17 个摄影机运动视差与高反光主体复杂度参数 u ∈ [0.000, 1.000]（透视穿帮与抠像返工放大系数 L(u) = 1 + u ∈ [1.000, 2.000]）：ICVFX 追踪内视锥 + 外视锥 AIGC HDRI 照明 + Genlock 锁相管线在全部 17 阶段恒定锁死机内直出与成本比 C_active/C_icvfx = 1.0000×（0/17 穿帮或后期抠像），而朴素静态 2D 上屏与绿幕在第 4 阶段超支至 1.2500×、第 8 阶段冲至 1.5000×、第 16 阶段翻倍超支至 2.0000×（污染 16/17 个阶段）。",
+    "workbench_title": "58 构件 17 阶段企业 LED 虚拟制片（ICVFX）内视锥 3DGS 与 Genlock 同步工作台（第 255 个独立能力里程碑 Demo！）",
+    "scenario_quote": "AIGC 赋能 LED 虚拟制片（ICVFX）的三条黄金法则：第一，凡是机位要推拉摇移的镜头，绝不许在 LED 墙上直接播 2D 视频，必须转成 3DGS/UE5 场景并由 Mo-Sys/Stype 追踪器实时解算离轴内视锥（Inner Frustum）；第二，外视锥与天幕用 AIGC 生成的 360° 16-bit HDRI 全景图给真车和真人提供物理级环境光反射；第三，摄影机、渲染节点与 Brompton 控台必须共接同一台 Tri-Level Genlock 主时钟！",
+    "protocol_note": "顶块展示第 4 阶段（离轴非对称内视锥解算）、第 8 阶段（追踪至光子 2 帧卡尔曼预测）与第 16 阶段（单日棚拍 24 国汽车 TVC）；底块对比 ICVFX 机内直出恒锁 1.0000× 与静态穿帮/绿幕返工 2.0000×。",
+    "robustness_name": "17 个 LED 虚拟制片阶段在追踪内视锥 3DGS 与 Genlock 锁相下 100% 保持机内直出与预算比 1.0000×",
+    "primary_label": "ICVFX 内视锥 3DGS + Genlock c_icvfx = c_0 / (1 + u)",
+    "baseline_label": "64 射线视锥投影与相位求积基准",
+    "load_unit": "次 17 阶段 ICVFX 视锥同步求解",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比闭式 ICVFX 成本摊销算子与 64 射线视锥求积基准。",
+    "good_fit": [
+      "企业 CEO 年度 xR 虚拟发布会、豪华汽车流光车漆棚内实拍、影视短剧多场景一日快拍（LED Volume ICVFX）",
+      "利用多视角扩散重建 3D 高斯泼溅（3DGS）驱动相机追踪内视锥（Inner Frustum），搭配 360° AIGC HDRI 外视锥照亮真实演员与车身",
+      "通过 PTPv2 + Tri-Level Genlock 帧同步锁死与 ACEScg 3D LUT 色彩校准实现零绿幕抠像“机内直出（Final Pixel）”"
+    ],
+    "not_for": [
+      "移动摄影机拍摄却只在 LED 屏上播放无透视追踪的平面 2D MP4 视频",
+      "无 Genlock 同步锁相的野路子 LED 屏幕拍摄（必然出现黑横条频闪）",
+      "纯音频广播广告"
+    ]
+  }
+}

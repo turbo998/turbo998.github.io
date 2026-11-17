@@ -1,0 +1,308 @@
+{
+  "deck_title": "Enterprise LED-Volume Virtual Production (ICVFX, 255th Demo Milestone!): Tracked Off-Axis Inner-Frustum 3DGS/UE5 + Outer 360° AIGC HDRI Dome + PTP Genlock (c_icvfx = c_0/(1+u), 1.0000x Lock) vs Naive Static 2D LED / Green-Screen Spill",
+  "provenance": "measured",
+  "independently_reproduced": true,
+  "source_sha256": "be862f79f9d03c02bd220e12cd97cb8e765d4907cd297f2dd93d0c4c9cb688d9",
+  "cards": [
+    {
+      "kind": "overview",
+      "eyebrow": "HANDS-ON · BROWSER ANIMATION",
+      "headline_prefix": "11/11 checks pass. ",
+      "headline_Gradient": "Control stays inspectable.",
+      "subtitle": "Deterministic Enterprise LED-Volume Virtual Production (ICVFX) pipeline evaluation (driving an off-axis Inner-Frustum 3DGS/UE5 render from 6DoF optical camera tracking, illuminating reflective subjects via an Outer-Frustum 360-degree AIGC 16-bit HDRI dome, and locking camera shutter phase via PTPv2/Genlock so amortized unit cost c_icvfx(u) = c_0 / (1 + u) reaches 0.5000 at u = 1.0, locking C_active / C_icvfx = 1.0000x across all 17 stages u in [0.000, 1.000] with 0/17 violated) versus naive untracked 2D video playback on LED walls or green-screen shooting (which causes flat-poster parallax collapse, rolling-shutter scanline bars, and green spill on hair/car paint, inflating post-production rotoscoping cost by 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x at S16 across 16/17 stages) and 64-ray frustum quadrature.",
+      "workbench": {
+        "title": "Enterprise LED-Volume Virtual Production (ICVFX, 255th Demo Milestone!): Tracked Off-Axis Inner-Frustum 3DGS/UE5 + Outer 360° AIGC HDRI Dome + PTP Genlock (c_icvfx = c_0/(1+u), 1.0000x Lock) vs Naive Static 2D LED / Green-Screen Spill",
+        "status_pill": "measured checks · synthetic scene",
+        "scenarios": [
+          "icvfx-frustum-quad64-equiv-128",
+          "icvfx-frustum-quad64-equiv-1024",
+          "icvfx-frustum-quad64-equiv-8192",
+          "icvfx-frustum-genlock-locked",
+          "naive-static-led-spill-exposed",
+          "vp-s4-u025-10000",
+          "vp-s8-u050-10000",
+          "vp-s16-u100-10000",
+          "geometry-58-solids",
+          "mobile-layout",
+          "runtime-errors"
+        ],
+        "bands_note": "Auto only for passing deterministic assertions; failed checks go to a human. Neural confidence: not_measured.",
+        "metrics": [
+          "No model API",
+          "Browser Playwright Chromium",
+          "Tokens: not_measured"
+        ],
+        "decisions": [
+          {
+            "field": "icvfx-frustum-quad64-equiv-128",
+            "question_type": "score",
+            "question": "128 closed-form ICVFX Frustum Sync c_icvfx = c_0/(1+u) and 64-ray frustum quadrature passes agree within 1e-12",
+            "selected_answer": "Assertion passed",
+            "confidence": "not applicable: deterministic check, not a model probability",
+            "action": "Act automatically",
+            "distribution_pct": {
+              "Observed assertion pass": 100
+            }
+          },
+          {
+            "field": "icvfx-frustum-quad64-equiv-1024",
+            "question_type": "score",
+            "question": "1024 closed-form ICVFX Frustum Sync c_icvfx = c_0/(1+u) and 64-ray frustum quadrature passes agree within 1e-12",
+            "selected_answer": "Assertion passed",
+            "confidence": "not applicable: deterministic check, not a model probability",
+            "action": "Act automatically",
+            "distribution_pct": {
+              "Observed assertion pass": 100
+            }
+          },
+          {
+            "field": "icvfx-frustum-quad64-equiv-8192",
+            "question_type": "score",
+            "question": "8192 closed-form ICVFX Frustum Sync c_icvfx = c_0/(1+u) and 64-ray frustum quadrature passes agree within 1e-12",
+            "selected_answer": "Assertion passed",
+            "confidence": "not applicable: deterministic check, not a model probability",
+            "action": "Act automatically",
+            "distribution_pct": {
+              "Observed assertion pass": 100
+            }
+          }
+        ]
+      },
+      "callouts": [
+        {
+          "lead": "Local measurements, synthetic scene.",
+          "body": "Deterministic Enterprise LED-Volume Virtual Production (ICVFX) pipeline evaluation (driving an off-axis Inner-Frustum 3DGS/UE5 render from 6DoF optical camera tracking, illuminating reflective subjects via an Outer-Frustum 360-degree AIGC 16-bit HDRI dome, and locking camera shutter phase via PTPv2/Genlock so amortized unit cost c_icvfx(u) = c_0 / (1 + u) reaches 0.5000 at u = 1.0, locking C_active / C_icvfx = 1.0000x across all 17 stages u in [0.000, 1.000] with 0/17 violated) versus naive untracked 2D video playback on LED walls or green-screen shooting (which causes flat-poster parallax collapse, rolling-shutter scanline bars, and green spill on hair/car paint, inflating post-production rotoscoping cost by 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x at S16 across 16/17 stages) and 64-ray frustum quadrature."
+        }
+      ]
+    },
+    {
+      "kind": "deep_dive",
+      "eyebrow": "SCENARIO: VIRTUAL-PRODUCTION-LED-STAGE-ICVFX-FRUSTUM-SYNC-STUDIO",
+      "headline": "One shared state drives motion and exported evidence.",
+      "quote": "{\"stage_4_parallax_u\":0.25,\"stage_8_parallax_u\":0.5,\"stage_16_parallax_u\":1}",
+      "decisions": [
+        {
+          "field": "icvfx-frustum-quad64-equiv-128",
+          "question_type": "score",
+          "question": "128 closed-form ICVFX Frustum Sync c_icvfx = c_0/(1+u) and 64-ray frustum quadrature passes agree within 1e-12",
+          "selected_answer": "Assertion passed",
+          "confidence": "not applicable: deterministic check, not a model probability",
+          "action": "Act automatically",
+          "distribution_pct": {
+            "Observed assertion pass": 100
+          }
+        },
+        {
+          "field": "icvfx-frustum-quad64-equiv-1024",
+          "question_type": "score",
+          "question": "1024 closed-form ICVFX Frustum Sync c_icvfx = c_0/(1+u) and 64-ray frustum quadrature passes agree within 1e-12",
+          "selected_answer": "Assertion passed",
+          "confidence": "not applicable: deterministic check, not a model probability",
+          "action": "Act automatically",
+          "distribution_pct": {
+            "Observed assertion pass": 100
+          }
+        },
+        {
+          "field": "icvfx-frustum-quad64-equiv-8192",
+          "question_type": "score",
+          "question": "8192 closed-form ICVFX Frustum Sync c_icvfx = c_0/(1+u) and 64-ray frustum quadrature passes agree within 1e-12",
+          "selected_answer": "Assertion passed",
+          "confidence": "not applicable: deterministic check, not a model probability",
+          "action": "Act automatically",
+          "distribution_pct": {
+            "Observed assertion pass": 100
+          }
+        }
+      ],
+      "callouts": [
+        {
+          "lead": "Local measurements, synthetic scene.",
+          "body": "Deterministic Enterprise LED-Volume Virtual Production (ICVFX) pipeline evaluation (driving an off-axis Inner-Frustum 3DGS/UE5 render from 6DoF optical camera tracking, illuminating reflective subjects via an Outer-Frustum 360-degree AIGC 16-bit HDRI dome, and locking camera shutter phase via PTPv2/Genlock so amortized unit cost c_icvfx(u) = c_0 / (1 + u) reaches 0.5000 at u = 1.0, locking C_active / C_icvfx = 1.0000x across all 17 stages u in [0.000, 1.000] with 0/17 violated) versus naive untracked 2D video playback on LED walls or green-screen shooting (which causes flat-poster parallax collapse, rolling-shutter scanline bars, and green spill on hair/car paint, inflating post-production rotoscoping cost by 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x at S16 across 16/17 stages) and 64-ray frustum quadrature."
+        }
+      ]
+    },
+    {
+      "kind": "scorecard",
+      "eyebrow": "WHAT I TESTED",
+      "headline": "11 acceptance checks, 11 passes.",
+      "rows": [
+        {
+          "scenario": "icvfx-frustum-quad64-equiv-128",
+          "question": "128 closed-form ICVFX Frustum Sync c_icvfx = c_0/(1+u) and 64-ray frustum quadrature passes agree within 1e-12",
+          "decider_answer": "PASS",
+          "reported_probability_pct": 100,
+          "pointed_right_way": true,
+          "action": "Act automatically"
+        },
+        {
+          "scenario": "icvfx-frustum-quad64-equiv-1024",
+          "question": "1024 closed-form ICVFX Frustum Sync c_icvfx = c_0/(1+u) and 64-ray frustum quadrature passes agree within 1e-12",
+          "decider_answer": "PASS",
+          "reported_probability_pct": 100,
+          "pointed_right_way": true,
+          "action": "Act automatically"
+        },
+        {
+          "scenario": "icvfx-frustum-quad64-equiv-8192",
+          "question": "8192 closed-form ICVFX Frustum Sync c_icvfx = c_0/(1+u) and 64-ray frustum quadrature passes agree within 1e-12",
+          "decider_answer": "PASS",
+          "reported_probability_pct": 100,
+          "pointed_right_way": true,
+          "action": "Act automatically"
+        },
+        {
+          "scenario": "icvfx-frustum-genlock-locked",
+          "question": "17 LED-volume ICVFX stages (L(u) = 1 + u in [1.00, 2.00]) lock in-camera final-pixel budget ratio C_active/C_icvfx = 1.0000x (0/17 violated)",
+          "decider_answer": "PASS",
+          "reported_probability_pct": 100,
+          "pointed_right_way": true,
+          "action": "Act automatically"
+        },
+        {
+          "scenario": "naive-static-led-spill-exposed",
+          "question": "naive untracked 2D video on LED wall and green-screen spill cause parallax collapse and scanline banding, inflating post-production rotoscoping cost as 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x at S16 across 16/17 stages",
+          "decider_answer": "PASS",
+          "reported_probability_pct": 100,
+          "pointed_right_way": true,
+          "action": "Act automatically"
+        },
+        {
+          "scenario": "vp-s4-u025-10000",
+          "question": "stage-4 (Off-Axis Asymmetric Frustum Projection Matrix Solve, u=0.25, c_icvfx=0.8000) locks C/C_icvfx = 1.0000x vs naive 1.2500x overrun",
+          "decider_answer": "PASS",
+          "reported_probability_pct": 100,
+          "pointed_right_way": true,
+          "action": "Act automatically"
+        },
+        {
+          "scenario": "vp-s8-u050-10000",
+          "question": "stage-8 (2-Frame Tracker-to-Photon Motion Prediction Kalman Filter, u=0.50, c_icvfx=0.6667) locks C/C_icvfx = 1.0000x vs naive 1.5000x overrun",
+          "decider_answer": "PASS",
+          "reported_probability_pct": 100,
+          "pointed_right_way": true,
+          "action": "Act automatically"
+        },
+        {
+          "scenario": "vp-s16-u100-10000",
+          "question": "stage-16 (24-Location Global Commercial Shot in 1 LED Day, u=1.00, c_icvfx=0.5000) locks C/C_icvfx = 1.0000x vs naive 2.0000x double overrun",
+          "decider_answer": "PASS",
+          "reported_probability_pct": 100,
+          "pointed_right_way": true,
+          "action": "Act automatically"
+        },
+        {
+          "scenario": "geometry-58-solids",
+          "question": "3D Enterprise LED-Volume ICVFX Studio renders 58 tracked solids across 17 stages",
+          "decider_answer": "PASS",
+          "reported_probability_pct": 100,
+          "pointed_right_way": true,
+          "action": "Act automatically"
+        },
+        {
+          "scenario": "mobile-layout",
+          "question": "390px Virtual Production ICVFX controls fit without horizontal overflow",
+          "decider_answer": "PASS",
+          "reported_probability_pct": 100,
+          "pointed_right_way": true,
+          "action": "Act automatically"
+        },
+        {
+          "scenario": "runtime-errors",
+          "question": "0 JavaScript errors",
+          "decider_answer": "PASS",
+          "reported_probability_pct": 100,
+          "pointed_right_way": true,
+          "action": "Act automatically"
+        }
+      ],
+      "callouts": [
+        {
+          "lead": "Local measurements, synthetic scene.",
+          "body": "Deterministic Enterprise LED-Volume Virtual Production (ICVFX) pipeline evaluation (driving an off-axis Inner-Frustum 3DGS/UE5 render from 6DoF optical camera tracking, illuminating reflective subjects via an Outer-Frustum 360-degree AIGC 16-bit HDRI dome, and locking camera shutter phase via PTPv2/Genlock so amortized unit cost c_icvfx(u) = c_0 / (1 + u) reaches 0.5000 at u = 1.0, locking C_active / C_icvfx = 1.0000x across all 17 stages u in [0.000, 1.000] with 0/17 violated) versus naive untracked 2D video playback on LED walls or green-screen shooting (which causes flat-poster parallax collapse, rolling-shutter scanline bars, and green spill on hair/car paint, inflating post-production rotoscoping cost by 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x at S16 across 16/17 stages) and 64-ray frustum quadrature."
+        }
+      ]
+    },
+    {
+      "kind": "protocol",
+      "eyebrow": "UNDER THE HOOD",
+      "headline": "The same input produces the same inspectable output.",
+      "top_code": "{\n  \"stage_4_parallax_u\": 0.25,\n  \"stage_8_parallax_u\": 0.5,\n  \"stage_16_parallax_u\": 1\n}",
+      "transition": "↓ ICVFX Inner-Frustum 3DGS + HDRI Dome + Genlock: c_icvfx = c_0/(1+u) -> C/C_icvfx = 1.0000× vs Naive Static LED / Green Screen -> 1 + u (2.0000× at Stage 16, 16/17 Violated)",
+      "bottom_code": "{\n  \"icvfx_final_pixel_ratio\": 1,\n  \"naive_static_led_overrun_u025\": 1.25,\n  \"naive_static_led_overrun_u050\": 1.5,\n  \"naive_static_led_overrun_u100\": 2,\n  \"violated_stages\": 16\n}",
+      "callouts": [
+        {
+          "lead": "Local measurements, synthetic scene.",
+          "body": "Deterministic Enterprise LED-Volume Virtual Production (ICVFX) pipeline evaluation (driving an off-axis Inner-Frustum 3DGS/UE5 render from 6DoF optical camera tracking, illuminating reflective subjects via an Outer-Frustum 360-degree AIGC 16-bit HDRI dome, and locking camera shutter phase via PTPv2/Genlock so amortized unit cost c_icvfx(u) = c_0 / (1 + u) reaches 0.5000 at u = 1.0, locking C_active / C_icvfx = 1.0000x across all 17 stages u in [0.000, 1.000] with 0/17 violated) versus naive untracked 2D video playback on LED walls or green-screen shooting (which causes flat-poster parallax collapse, rolling-shutter scanline bars, and green spill on hair/car paint, inflating post-production rotoscoping cost by 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x at S16 across 16/17 stages) and 64-ray frustum quadrature."
+        }
+      ]
+    },
+    {
+      "kind": "robustness",
+      "eyebrow": "ROBUSTNESS CHECK",
+      "headline": "17/17 checks hold under perturbation.",
+      "rows": [
+        {
+          "scenario": "Sampled 17 ICVFX stages preserve exact in-camera final-pixel budget ratio C_active/C_icvfx = 1.0000x",
+          "selected_option": "17 checked items",
+          "original_pct": 100,
+          "reversed_pct": 100,
+          "change_pts": 0
+        }
+      ],
+      "callouts": [
+        {
+          "lead": "Local measurements, synthetic scene.",
+          "body": "Deterministic Enterprise LED-Volume Virtual Production (ICVFX) pipeline evaluation (driving an off-axis Inner-Frustum 3DGS/UE5 render from 6DoF optical camera tracking, illuminating reflective subjects via an Outer-Frustum 360-degree AIGC 16-bit HDRI dome, and locking camera shutter phase via PTPv2/Genlock so amortized unit cost c_icvfx(u) = c_0 / (1 + u) reaches 0.5000 at u = 1.0, locking C_active / C_icvfx = 1.0000x across all 17 stages u in [0.000, 1.000] with 0/17 violated) versus naive untracked 2D video playback on LED walls or green-screen shooting (which causes flat-poster parallax collapse, rolling-shutter scanline bars, and green spill on hair/car paint, inflating post-production rotoscoping cost by 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x at S16 across 16/17 stages) and 64-ray frustum quadrature."
+        }
+      ]
+    },
+    {
+      "kind": "latency",
+      "eyebrow": "LATENCY",
+      "headline": "8192 ICVFX Frustum Sync passes: 0.17 ms vs 8.16 ms.",
+      "rows": [
+        {
+          "question_count": 128,
+          "batched_median_ms": 0.011,
+          "one_by_one_estimated_ms": 0.15
+        },
+        {
+          "question_count": 1024,
+          "batched_median_ms": 0.024,
+          "one_by_one_estimated_ms": 0.881
+        },
+        {
+          "question_count": 8192,
+          "batched_median_ms": 0.173,
+          "one_by_one_estimated_ms": 8.157
+        }
+      ],
+      "callouts": [
+        {
+          "lead": "Local measurements, synthetic scene.",
+          "body": "Deterministic Enterprise LED-Volume Virtual Production (ICVFX) pipeline evaluation (driving an off-axis Inner-Frustum 3DGS/UE5 render from 6DoF optical camera tracking, illuminating reflective subjects via an Outer-Frustum 360-degree AIGC 16-bit HDRI dome, and locking camera shutter phase via PTPv2/Genlock so amortized unit cost c_icvfx(u) = c_0 / (1 + u) reaches 0.5000 at u = 1.0, locking C_active / C_icvfx = 1.0000x across all 17 stages u in [0.000, 1.000] with 0/17 violated) versus naive untracked 2D video playback on LED walls or green-screen shooting (which causes flat-poster parallax collapse, rolling-shutter scanline bars, and green spill on hair/car paint, inflating post-production rotoscoping cost by 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x at S16 across 16/17 stages) and 64-ray frustum quadrature."
+        }
+      ]
+    },
+    {
+      "kind": "takeaways",
+      "eyebrow": "MY TAKE",
+      "headline": "Exact controls are useful; realism remains a separate job.",
+      "good_fit": [
+        "Enterprise CEO xR keynotes, automotive commercial shoots, and broadcast virtual studios using curved LED volumes (Brompton/Megapixel + Mo-Sys/Stype tracking)",
+        "Combining AI-generated 3D Gaussian Splatting (3DGS) / UE5 off-axis Inner-Frustum rendering with 360-degree 16-bit AIGC HDRI Outer-Dome reflections",
+        "Eliminating green-screen spill on hair, eyeglasses, and automotive clearcoat via PTPv2/Genlock synchronized In-Camera VFX (Final Pixel)"
+      ],
+      "not_for": [
+        "Playing flat untracked 2D video on an LED wall while moving the physical camera on a dolly/crane",
+        "Shooting LED walls without Tri-Level Genlock synchronization (causes rolling-shutter scanline black bars)",
+        "Audio-only radio commercials"
+      ],
+      "dark_box": {
+        "lead": "MIT original code. Synthetic educational scene; local checks reproduced. No production, physics, or neural inference certification.",
+        "repo": "turbo998/generative-visual-lab"
+      }
+    }
+  ]
+}

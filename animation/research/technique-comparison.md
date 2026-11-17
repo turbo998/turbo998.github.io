@@ -33,6 +33,10 @@ https://hydrosphere.awsisfun.com/about/ 说明了高程、海平面、云和大�
 [Material](https://threejs.org/docs/pages/Material.html)、
 [透明排序说明](https://threejs.org/manual/en/transparency.html)。
 
+## 05 / Knowledge Explainer Animation Studio：程序化知识讲解动画与确定性门禁
+
+针对技术科普、架构选型与商业算力拆解类短视频，`demos/knowledge-explainer-studio/` 采用 **Canvas 2D / SVG 混合渲染 + `one-sentence-video` 11 道确定性门禁**。通过四维正交风格账本（`look × layout × motion × sound`）打破 LLM 默认深蓝紫光“AI 制服感”，以时间纯函数 `renderFrame(t)` 保证进度条任意拖拽零状态漂移（`counter-seek-safe`），并实时计算 3×3 九宫格像素边缘梯度密度（$\ge 4/9$ 活跃格）与 `cut-the-curve` 接缝速度比（$\eta \in [0.70, 1.15]$）。详见 [知识讲解动画研究专著](knowledge-explainer-animation-study.md)。
+
 ## 可检查的能力，不做空泛模型宣传
 
 实时帧、源码、测量校验和、状态测试与模型导出提供具体证据。

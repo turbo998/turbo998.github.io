@@ -2818,3 +2818,27 @@ npm --prefix demos\astra-planet run check
 - **Feitian (`demos/feitian/`)**: Added `NicheArchCrownOuterSpandrelTieMidTurnbuckleSealNutPhoenixBoss_0..3_L/R` (8 bosses) and Pipa soundboard twin-Sunda-teal-sacred-lotus inlay (`Hanbo-Shuangxundaya-baoxianglian`) tassel gilded Kalavinka & beryl-heliodor-pearl clasp; `grotto-relief-bake.png` baked via Blender 4.5 MCP (`470,439 B`, Cycles render `1,601,845 B`).
 - **Rocket (`demos/rocket-launch/`)**: Added `Pad_ExhaustPlenumFloorTroughSillSwaySleeveRing_0..3`, `Rocket_FairingSolarWindLenardBalescuTrappedParticleInstabilityWaveAnalyzerSensorCowl_0..3`, and `cell6SeptentrigintPrandtlShearGlow`; `rocket-kit.glb` baked via Blender 4.5 MCP (`4,741,920 B`, Cycles render `893,854 B`).
 - **Verification**: `npm run check && npm --prefix demos/astra-planet run check` passed 100% (all 55 unit and Playwright E2E checks green).
+
+---
+
+## Capability Showcase Verification (Run #22): Constitutive 3D Gaussian MPM & Physics World Model Studio (`demos/physgaussian-world-studio/`)
+
+- **New Interactive Showcase Demo (`demos/physgaussian-world-studio/index.html`, Demo #08)**: Implements `1,680` Lagrangian 3D Gaussian kernels carrying $2\times 2$ elastic deformation gradients $\mathbf{F}_p^E$, plastic strain, von Mises equivalent stress $\sigma_{\text{vM}}$, and `OmniPhysGS` 12-Expert constitutive simplex weights $\mathbf{w}_p \in \Delta^{11}$, coupled to a `32×18` Eulerian APIC MPM background grid with SVD polar return mapping and $\tau_{\text{split}} = 3.20\times$ dynamic kernel splitting.
+- **Bilingual Monograph, Visual Summary & 7-Card Report**: Delivered `docs/physgaussian-world-mpm-study.md` / `docs/physgaussian-world-mpm-study.en.md`, `docs/evidence/physgaussian-world-mpm-summary.svg` (`1600×1060`), and `demos/physgaussian-world-studio/test-report-cards.html` (7 portrait `4:5` cards with strict CSP).
+- **Playwright E2E Verification**: Added `physgaussian world studio renders 3 continuum MPM scenes, 4 architectures, 6 materials, and serves 7-card report` in `tests/e2e/gallery.spec.ts`; all 7 gallery E2E specs and 16 unit tests pass with zero console errors.
+
+---
+
+## Capability Showcase Verification (Run #23 · 2026-11-05): Neural Inverse/Forward G-Buffer Video Relighting & Multi-Subject Identity Director (`demos/neural-relight-director/`)
+
+- **New Interactive Showcase Demo (`demos/neural-relight-director/index.html`, Demo #09)**: Implements `1,440` dynamic intrinsic surfels demonstrating **NVIDIA `DiffusionRenderer` (`Cosmos-Transfer1-DiffusionRenderer-7B`)** 5-channel screen-space G-Buffer inverse decomposition (Albedo $\rho$, Normal $\mathbf{n}$, Roughness $r$, Metallic $m$, Depth $Z$, `98.4%` de-lighting purity) and Cook-Torrance GGX microfacet forward shading, coupled with **`Light-A-Video`** Consistent Light Attention (`0.14 dB` temporal flicker) and **`Phantom` × `Identity-GRPO` × `Wan2.1-FLF2V`** multi-subject keyframe interpolation (`98.7%` identity retention, `3.68×` 8-HDRI batch amortization speedup).
+- **Bilingual Monograph, Visual Summary & 7-Card Report**: Delivered `docs/neural-relighting-causal-video-study.md` / `docs/neural-relighting-causal-video-study.en.md`, `docs/evidence/neural-relighting-causal-video-summary.svg` (`1600×1060`), and `demos/neural-relight-director/test-report-cards.html` (7 portrait `4:5` cards with strict CSP).
+- **Playwright E2E Verification**: Added `neural relight director renders 3 scenes, 4 architectures, 6 G-Buffer lenses, and serves 7-card report` in `tests/e2e/gallery.spec.ts`; all 8 gallery E2E specs and 16 unit tests pass with zero console errors.
+
+---
+
+## Capability Showcase Verification (Run #24 · 2026-11-06): Action-Conditioned Playable World Model & Episodic Memory Director (`demos/worldmem-action-director/`)
+
+- **New Interactive Showcase Demo (`demos/worldmem-action-director/index.html`, Demo #10)**: Implements `1,560` 3D world voxels and an 8-slot stateful episodic memory bank $\mathcal{M}=\{(\mathbf{z}_i,\mathbf{P}_i,t_i)\}$ demonstrating **`WorldMem` (arXiv:2504.12369)** 3D view-frustum IoU + 6D Plücker ray retrieval (`30.8 dB` 360° loop-closure PSNR, `98.6%` 60-second revisit object persistence vs. `21.8%` memoryless sliding-window baseline) and relative timestamp $\Delta t=t-t_i$ off-screen world evolution (`97.4%` snow-melt & crystal flora growth accuracy vs. `58.4%` static pose bank), coupled with **Google DeepMind `Genie 3 & Genie 4` × `Causal Diffusion Forcing`** 6-DoF action steering, 6 mid-simulation promptable world events, and `4.15×` 600-frame rollout speedup (`86.4 ms` vs `358.6 ms`).
+- **Bilingual Monograph, Visual Summary & 7-Card Report**: Delivered `docs/worldmem-action-world-study.md` / `docs/worldmem-action-world-study.en.md`, `docs/evidence/worldmem-action-world-summary.svg` (`1600×1060`), and `demos/worldmem-action-director/test-report-cards.html` (7 portrait `4:5` cards with strict CSP).
+- **Playwright E2E Verification**: Added `worldmem action director renders 3 playable worlds, 4 memory architectures, 6 lenses, and serves 7-card report` in `tests/e2e/gallery.spec.ts`; all 9 gallery E2E specs and 16 unit tests pass with zero console errors.

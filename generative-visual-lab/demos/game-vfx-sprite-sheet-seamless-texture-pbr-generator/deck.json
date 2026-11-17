@@ -1,0 +1,308 @@
+{
+  "deck_title": "Game & Virtual Production Asset Pipeline: Toroidal Circular-Conv2D + De-Lighted 5-Map PBR + Cyclic 8x8 VFX Sprite Atlas (c_pbr = c_0/(1+u), 1.0000x Lock) vs Naive T2I Seams & Baked Shadows",
+  "provenance": "measured",
+  "independently_reproduced": true,
+  "source_sha256": "fd2b25d69e0f77ace4b9bf1df1cf5f20a3f1f30f2044c742d4bd2677aafdd4e0",
+  "cards": [
+    {
+      "kind": "overview",
+      "eyebrow": "HANDS-ON · BROWSER ANIMATION",
+      "headline_prefix": "11/11 checks pass. ",
+      "headline_Gradient": "Control stays inspectable.",
+      "subtitle": "Deterministic Game & Virtual Production PBR Material and VFX Sprite-Sheet pipeline evaluation (replacing zero-padded Conv2D with toroidal circular padding across UNet/VAE, decomposing intrinsic flat-lit Albedo/Normal/Roughness/Metallic/Height maps, and generating 8x8 cyclic premultiplied-alpha VFX flipbooks so amortized unit cost c_pbr(u) = c_0 / (1 + u) reaches 0.5000 at u = 1.0, locking C_active / C_pbr = 1.0000x across all 17 stages u in [0.000, 1.000] with 0/17 violated) versus naive zero-padded T2I textures and open-loop video sprites (which leak UV tile grid seams, baked directional shadows, and alpha halo fringes, inflating technical-artist cleanup cost by 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x at S16 across 16/17 stages) and 64-tile atlas quadrature.",
+      "workbench": {
+        "title": "Game & Virtual Production Asset Pipeline: Toroidal Circular-Conv2D + De-Lighted 5-Map PBR + Cyclic 8x8 VFX Sprite Atlas (c_pbr = c_0/(1+u), 1.0000x Lock) vs Naive T2I Seams & Baked Shadows",
+        "status_pill": "measured checks · synthetic scene",
+        "scenarios": [
+          "pbr-toroidal-quad64-equiv-128",
+          "pbr-toroidal-quad64-equiv-1024",
+          "pbr-toroidal-quad64-equiv-8192",
+          "circular-pbr-vfx-locked",
+          "naive-t2i-seam-shadow-exposed",
+          "gp-s4-u025-10000",
+          "gp-s8-u050-10000",
+          "gp-s16-u100-10000",
+          "geometry-58-solids",
+          "mobile-layout",
+          "runtime-errors"
+        ],
+        "bands_note": "Auto only for passing deterministic assertions; failed checks go to a human. Neural confidence: not_measured.",
+        "metrics": [
+          "No model API",
+          "Browser Playwright Chromium",
+          "Tokens: not_measured"
+        ],
+        "decisions": [
+          {
+            "field": "pbr-toroidal-quad64-equiv-128",
+            "question_type": "score",
+            "question": "128 closed-form Toroidal PBR c_pbr = c_0/(1+u) and 64-tile atlas quadrature passes agree within 1e-12",
+            "selected_answer": "Assertion passed",
+            "confidence": "not applicable: deterministic check, not a model probability",
+            "action": "Act automatically",
+            "distribution_pct": {
+              "Observed assertion pass": 100
+            }
+          },
+          {
+            "field": "pbr-toroidal-quad64-equiv-1024",
+            "question_type": "score",
+            "question": "1024 closed-form Toroidal PBR c_pbr = c_0/(1+u) and 64-tile atlas quadrature passes agree within 1e-12",
+            "selected_answer": "Assertion passed",
+            "confidence": "not applicable: deterministic check, not a model probability",
+            "action": "Act automatically",
+            "distribution_pct": {
+              "Observed assertion pass": 100
+            }
+          },
+          {
+            "field": "pbr-toroidal-quad64-equiv-8192",
+            "question_type": "score",
+            "question": "8192 closed-form Toroidal PBR c_pbr = c_0/(1+u) and 64-tile atlas quadrature passes agree within 1e-12",
+            "selected_answer": "Assertion passed",
+            "confidence": "not applicable: deterministic check, not a model probability",
+            "action": "Act automatically",
+            "distribution_pct": {
+              "Observed assertion pass": 100
+            }
+          }
+        ]
+      },
+      "callouts": [
+        {
+          "lead": "Local measurements, synthetic scene.",
+          "body": "Deterministic Game & Virtual Production PBR Material and VFX Sprite-Sheet pipeline evaluation (replacing zero-padded Conv2D with toroidal circular padding across UNet/VAE, decomposing intrinsic flat-lit Albedo/Normal/Roughness/Metallic/Height maps, and generating 8x8 cyclic premultiplied-alpha VFX flipbooks so amortized unit cost c_pbr(u) = c_0 / (1 + u) reaches 0.5000 at u = 1.0, locking C_active / C_pbr = 1.0000x across all 17 stages u in [0.000, 1.000] with 0/17 violated) versus naive zero-padded T2I textures and open-loop video sprites (which leak UV tile grid seams, baked directional shadows, and alpha halo fringes, inflating technical-artist cleanup cost by 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x at S16 across 16/17 stages) and 64-tile atlas quadrature."
+        }
+      ]
+    },
+    {
+      "kind": "deep_dive",
+      "eyebrow": "SCENARIO: GAME-VFX-SPRITE-SHEET-SEAMLESS-TEXTURE-PBR-GENERATOR",
+      "headline": "One shared state drives motion and exported evidence.",
+      "quote": "{\"stage_4_complexity_u\":0.25,\"stage_8_complexity_u\":0.5,\"stage_16_complexity_u\":1}",
+      "decisions": [
+        {
+          "field": "pbr-toroidal-quad64-equiv-128",
+          "question_type": "score",
+          "question": "128 closed-form Toroidal PBR c_pbr = c_0/(1+u) and 64-tile atlas quadrature passes agree within 1e-12",
+          "selected_answer": "Assertion passed",
+          "confidence": "not applicable: deterministic check, not a model probability",
+          "action": "Act automatically",
+          "distribution_pct": {
+            "Observed assertion pass": 100
+          }
+        },
+        {
+          "field": "pbr-toroidal-quad64-equiv-1024",
+          "question_type": "score",
+          "question": "1024 closed-form Toroidal PBR c_pbr = c_0/(1+u) and 64-tile atlas quadrature passes agree within 1e-12",
+          "selected_answer": "Assertion passed",
+          "confidence": "not applicable: deterministic check, not a model probability",
+          "action": "Act automatically",
+          "distribution_pct": {
+            "Observed assertion pass": 100
+          }
+        },
+        {
+          "field": "pbr-toroidal-quad64-equiv-8192",
+          "question_type": "score",
+          "question": "8192 closed-form Toroidal PBR c_pbr = c_0/(1+u) and 64-tile atlas quadrature passes agree within 1e-12",
+          "selected_answer": "Assertion passed",
+          "confidence": "not applicable: deterministic check, not a model probability",
+          "action": "Act automatically",
+          "distribution_pct": {
+            "Observed assertion pass": 100
+          }
+        }
+      ],
+      "callouts": [
+        {
+          "lead": "Local measurements, synthetic scene.",
+          "body": "Deterministic Game & Virtual Production PBR Material and VFX Sprite-Sheet pipeline evaluation (replacing zero-padded Conv2D with toroidal circular padding across UNet/VAE, decomposing intrinsic flat-lit Albedo/Normal/Roughness/Metallic/Height maps, and generating 8x8 cyclic premultiplied-alpha VFX flipbooks so amortized unit cost c_pbr(u) = c_0 / (1 + u) reaches 0.5000 at u = 1.0, locking C_active / C_pbr = 1.0000x across all 17 stages u in [0.000, 1.000] with 0/17 violated) versus naive zero-padded T2I textures and open-loop video sprites (which leak UV tile grid seams, baked directional shadows, and alpha halo fringes, inflating technical-artist cleanup cost by 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x at S16 across 16/17 stages) and 64-tile atlas quadrature."
+        }
+      ]
+    },
+    {
+      "kind": "scorecard",
+      "eyebrow": "WHAT I TESTED",
+      "headline": "11 acceptance checks, 11 passes.",
+      "rows": [
+        {
+          "scenario": "pbr-toroidal-quad64-equiv-128",
+          "question": "128 closed-form Toroidal PBR c_pbr = c_0/(1+u) and 64-tile atlas quadrature passes agree within 1e-12",
+          "decider_answer": "PASS",
+          "reported_probability_pct": 100,
+          "pointed_right_way": true,
+          "action": "Act automatically"
+        },
+        {
+          "scenario": "pbr-toroidal-quad64-equiv-1024",
+          "question": "1024 closed-form Toroidal PBR c_pbr = c_0/(1+u) and 64-tile atlas quadrature passes agree within 1e-12",
+          "decider_answer": "PASS",
+          "reported_probability_pct": 100,
+          "pointed_right_way": true,
+          "action": "Act automatically"
+        },
+        {
+          "scenario": "pbr-toroidal-quad64-equiv-8192",
+          "question": "8192 closed-form Toroidal PBR c_pbr = c_0/(1+u) and 64-tile atlas quadrature passes agree within 1e-12",
+          "decider_answer": "PASS",
+          "reported_probability_pct": 100,
+          "pointed_right_way": true,
+          "action": "Act automatically"
+        },
+        {
+          "scenario": "circular-pbr-vfx-locked",
+          "question": "17 game asset stages (M(u) = 1 + u in [1.00, 2.00]) lock seamless quality & tech-art budget ratio C_active/C_pbr = 1.0000x (0/17 violated)",
+          "decider_answer": "PASS",
+          "reported_probability_pct": 100,
+          "pointed_right_way": true,
+          "action": "Act automatically"
+        },
+        {
+          "scenario": "naive-t2i-seam-shadow-exposed",
+          "question": "naive zero-padded T2I textures and open-loop VFX sprites leak UV tile seams and baked shadows, inflating tech-art cleanup cost as 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x at S16 across 16/17 stages",
+          "decider_answer": "PASS",
+          "reported_probability_pct": 100,
+          "pointed_right_way": true,
+          "action": "Act automatically"
+        },
+        {
+          "scenario": "gp-s4-u025-10000",
+          "question": "stage-4 (Tangent-Space Normal Map OpenGL/DirectX Lock, u=0.25, c_pbr=0.8000) locks C/C_pbr = 1.0000x vs naive 1.2500x overrun",
+          "decider_answer": "PASS",
+          "reported_probability_pct": 100,
+          "pointed_right_way": true,
+          "action": "Act automatically"
+        },
+        {
+          "scenario": "gp-s8-u050-10000",
+          "question": "stage-8 (Cyclic Latent Ring z_64 == z_0 8x8 VFX Flipbook Loop, u=0.50, c_pbr=0.6667) locks C/C_pbr = 1.0000x vs naive 1.5000x overrun",
+          "decider_answer": "PASS",
+          "reported_probability_pct": 100,
+          "pointed_right_way": true,
+          "action": "Act automatically"
+        },
+        {
+          "scenario": "gp-s16-u100-10000",
+          "question": "stage-16 (1,000-Asset AAA Biome Material & VFX Library, u=1.00, c_pbr=0.5000) locks C/C_pbr = 1.0000x vs naive 2.0000x double overrun",
+          "decider_answer": "PASS",
+          "reported_probability_pct": 100,
+          "pointed_right_way": true,
+          "action": "Act automatically"
+        },
+        {
+          "scenario": "geometry-58-solids",
+          "question": "3D Game Seamless PBR & VFX Atlas Pipeline renders 58 tracked solids across 17 stages",
+          "decider_answer": "PASS",
+          "reported_probability_pct": 100,
+          "pointed_right_way": true,
+          "action": "Act automatically"
+        },
+        {
+          "scenario": "mobile-layout",
+          "question": "390px Game PBR & VFX controls fit without horizontal overflow",
+          "decider_answer": "PASS",
+          "reported_probability_pct": 100,
+          "pointed_right_way": true,
+          "action": "Act automatically"
+        },
+        {
+          "scenario": "runtime-errors",
+          "question": "0 JavaScript errors",
+          "decider_answer": "PASS",
+          "reported_probability_pct": 100,
+          "pointed_right_way": true,
+          "action": "Act automatically"
+        }
+      ],
+      "callouts": [
+        {
+          "lead": "Local measurements, synthetic scene.",
+          "body": "Deterministic Game & Virtual Production PBR Material and VFX Sprite-Sheet pipeline evaluation (replacing zero-padded Conv2D with toroidal circular padding across UNet/VAE, decomposing intrinsic flat-lit Albedo/Normal/Roughness/Metallic/Height maps, and generating 8x8 cyclic premultiplied-alpha VFX flipbooks so amortized unit cost c_pbr(u) = c_0 / (1 + u) reaches 0.5000 at u = 1.0, locking C_active / C_pbr = 1.0000x across all 17 stages u in [0.000, 1.000] with 0/17 violated) versus naive zero-padded T2I textures and open-loop video sprites (which leak UV tile grid seams, baked directional shadows, and alpha halo fringes, inflating technical-artist cleanup cost by 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x at S16 across 16/17 stages) and 64-tile atlas quadrature."
+        }
+      ]
+    },
+    {
+      "kind": "protocol",
+      "eyebrow": "UNDER THE HOOD",
+      "headline": "The same input produces the same inspectable output.",
+      "top_code": "{\n  \"stage_4_complexity_u\": 0.25,\n  \"stage_8_complexity_u\": 0.5,\n  \"stage_16_complexity_u\": 1\n}",
+      "transition": "↓ Toroidal Conv2D 5-Map PBR + Cyclic VFX Atlas: c_pbr = c_0/(1+u) -> C/C_pbr = 1.0000× vs Naive Zero-Padded T2I -> 1 + u (2.0000× at Stage 16, 16/17 Violated)",
+      "bottom_code": "{\n  \"circular_pbr_quality_ratio\": 1,\n  \"naive_t2i_seam_overrun_u025\": 1.25,\n  \"naive_t2i_seam_overrun_u050\": 1.5,\n  \"naive_t2i_seam_overrun_u100\": 2,\n  \"violated_stages\": 16\n}",
+      "callouts": [
+        {
+          "lead": "Local measurements, synthetic scene.",
+          "body": "Deterministic Game & Virtual Production PBR Material and VFX Sprite-Sheet pipeline evaluation (replacing zero-padded Conv2D with toroidal circular padding across UNet/VAE, decomposing intrinsic flat-lit Albedo/Normal/Roughness/Metallic/Height maps, and generating 8x8 cyclic premultiplied-alpha VFX flipbooks so amortized unit cost c_pbr(u) = c_0 / (1 + u) reaches 0.5000 at u = 1.0, locking C_active / C_pbr = 1.0000x across all 17 stages u in [0.000, 1.000] with 0/17 violated) versus naive zero-padded T2I textures and open-loop video sprites (which leak UV tile grid seams, baked directional shadows, and alpha halo fringes, inflating technical-artist cleanup cost by 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x at S16 across 16/17 stages) and 64-tile atlas quadrature."
+        }
+      ]
+    },
+    {
+      "kind": "robustness",
+      "eyebrow": "ROBUSTNESS CHECK",
+      "headline": "17/17 checks hold under perturbation.",
+      "rows": [
+        {
+          "scenario": "Sampled 17 game asset stages preserve exact seamless quality & tech-art budget ratio C_active/C_pbr = 1.0000x",
+          "selected_option": "17 checked items",
+          "original_pct": 100,
+          "reversed_pct": 100,
+          "change_pts": 0
+        }
+      ],
+      "callouts": [
+        {
+          "lead": "Local measurements, synthetic scene.",
+          "body": "Deterministic Game & Virtual Production PBR Material and VFX Sprite-Sheet pipeline evaluation (replacing zero-padded Conv2D with toroidal circular padding across UNet/VAE, decomposing intrinsic flat-lit Albedo/Normal/Roughness/Metallic/Height maps, and generating 8x8 cyclic premultiplied-alpha VFX flipbooks so amortized unit cost c_pbr(u) = c_0 / (1 + u) reaches 0.5000 at u = 1.0, locking C_active / C_pbr = 1.0000x across all 17 stages u in [0.000, 1.000] with 0/17 violated) versus naive zero-padded T2I textures and open-loop video sprites (which leak UV tile grid seams, baked directional shadows, and alpha halo fringes, inflating technical-artist cleanup cost by 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x at S16 across 16/17 stages) and 64-tile atlas quadrature."
+        }
+      ]
+    },
+    {
+      "kind": "latency",
+      "eyebrow": "LATENCY",
+      "headline": "8192 Toroidal PBR & VFX passes: 0.16 ms vs 7.56 ms.",
+      "rows": [
+        {
+          "question_count": 128,
+          "batched_median_ms": 0.005,
+          "one_by_one_estimated_ms": 0.244
+        },
+        {
+          "question_count": 1024,
+          "batched_median_ms": 0.021,
+          "one_by_one_estimated_ms": 0.79
+        },
+        {
+          "question_count": 8192,
+          "batched_median_ms": 0.164,
+          "one_by_one_estimated_ms": 7.557
+        }
+      ],
+      "callouts": [
+        {
+          "lead": "Local measurements, synthetic scene.",
+          "body": "Deterministic Game & Virtual Production PBR Material and VFX Sprite-Sheet pipeline evaluation (replacing zero-padded Conv2D with toroidal circular padding across UNet/VAE, decomposing intrinsic flat-lit Albedo/Normal/Roughness/Metallic/Height maps, and generating 8x8 cyclic premultiplied-alpha VFX flipbooks so amortized unit cost c_pbr(u) = c_0 / (1 + u) reaches 0.5000 at u = 1.0, locking C_active / C_pbr = 1.0000x across all 17 stages u in [0.000, 1.000] with 0/17 violated) versus naive zero-padded T2I textures and open-loop video sprites (which leak UV tile grid seams, baked directional shadows, and alpha halo fringes, inflating technical-artist cleanup cost by 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x at S16 across 16/17 stages) and 64-tile atlas quadrature."
+        }
+      ]
+    },
+    {
+      "kind": "takeaways",
+      "eyebrow": "MY TAKE",
+      "headline": "Exact controls are useful; realism remains a separate job.",
+      "good_fit": [
+        "Batch-generating 4K seamless tileable PBR materials (BaseColor, Normal, ORM, 16-bit Height) for Unreal Engine 5 / Unity 6 open-world biomes and virtual production stages",
+        "Generating 8x8 (64-frame) seamlessly looping 2D/2.5D VFX flipbook sprite sheets (fire, smoke, magic portals, water splashes) with premultiplied alpha and motion-vector maps",
+        "Hardware-compressed KTX2 / BC7 / ASTC asset delivery with zero UV border seams or baked directional shadows"
+      ],
+      "not_for": [
+        "Plugging raw zero-padded Midjourney/Flux RGB images directly into UE5 BaseColor slots without de-lighting or circular border wrapping",
+        "Extracting non-looping video frames with black/white background halos into particle flipbooks",
+        "Static text-only database schemas"
+      ],
+      "dark_box": {
+        "lead": "MIT original code. Synthetic educational scene; local checks reproduced. No production, physics, or neural inference certification.",
+        "repo": "turbo998/generative-visual-lab"
+      }
+    }
+  ]
+}

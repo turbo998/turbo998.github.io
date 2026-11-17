@@ -14,6 +14,10 @@ Signed Int16 metric elevations from **NASA MGS MOLA MEG016** directly displace s
 
 Volumetric rockets, lattice launch towers, terrain, and tracking cameras (`demos/rocket-launch/`) require true 3D projection and PBR lighting. Combining offline Blender 4.5 MCP parametric modeling (`rocket-kit.glb`) with runtime per-material geometry merging (`mergeGeometries`) delivers intricate industrial detail within 28 draw calls, paired with a single-draw depth-sorted `THREE.Points` smoke pool and analytical supersonic plume shaders.
 
+## 05 / Knowledge Explainer Animation Studio: Programmatic Explainers & Deterministic Gates
+
+For technical architecture explainers, algorithm pipelines, and quantitative unit-economics breakdowns, `demos/knowledge-explainer-studio/` pairs a 60FPS Canvas 2D / SVG state renderer with the **`one-sentence-video` 11-gate deterministic harness**. It enforces a 4D orthogonal Style Ledger (`look × layout × motion × sound`) to eliminate generic LLM dark-mode uniformity, drives all counters (`$38 vs $5.7`, `60K / 1.5M = 25x`) via pure timeline functions (`counter-seek-safe`), and continuously audits 3×3 spatial edge-gradient occupancy ($\ge 4/9$ active cells) and `cut-the-curve` seam velocity matching ($\eta \in [0.70, 1.15]$). See the [Knowledge-Explainer Animation Monograph](knowledge-explainer-animation-study.en.md).
+
 ## Inspectable Engineering Over Vague Claims
 
 Real-time frame-budget telemetry (`p95`), source code, SHA-256 dataset manifests, state-machine unit tests, and standalone GLB reload checks provide concrete verification. Zero runtime model inference APIs, secrets, or external CDNs are used; every demo runs self-contained from committed static code and assets.

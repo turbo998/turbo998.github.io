@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:;"
+    />
+    <title>
+      建筑与零售门店 CAD/BIM 白模转照片级效果图工作台 · M-LSD/法线/深度三锁 + 建材色卡绑定 vs 朴素图生图承重墙扭曲
+    </title>
+    <script type="module" crossorigin src="../../assets/cadBimSketchToPhotorealArchitecturalControlnet-BiSY-eQn.js"></script>
+    <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="stylesheet" crossorigin href="../../assets/cadBimSketchToPhotorealArchitecturalControlnet-yBOrbo2F.css">
+  </head>
+  <body>
+    <main class="rig-shell">
+      <header class="rig-header">
+        <div>
+          <p class="eyebrow">
+            ENTERPRISE ARCHITECTURAL &amp; RETAIL CAD/BIM VISUALIZATION · M-LSD STRAIGHT-EDGE + NORMAL + DEPTH LOCK + MATERIAL SWATCH BIND · C_ACTIVE/C_BIM = 1.0000×
+          </p>
+          <h1>
+            建筑与商业空间 CAD/BIM 线稿转照片级效果图管线：M-LSD 垂直消失点直线锁 + 法线/深度三通道 ControlNet + 建材色卡绑定对比朴素 Img2Img 承重墙弯曲与透视坍塌工作台
+          </h1>
+          <p class="subtitle">
+            面向商业地产、连锁零售门店全国快速拓店（500+ 门店空间陈列）与建筑设计院的 Cloud &amp; AI Solution Architect：若将 Revit / Rhino / SketchUp 导出的白模或 CAD 线稿直接喂给朴素图生图（Unconstrained Img2Img，重绘幅度 ≥ 0.65），扩散模型会把笔直的玻璃幕墙立柱画歪（直线偏角 &gt; 2.8°）、擅自吞并消防门洞并篡改客户指定的天然水磨石/阳极氧化铝材色卡，迫使建筑师返工重渲或进 PS 手工修直结构线，成本按
+            <code>B(u) = 1 + u</code> 在第 16 阶段翻倍超支至
+            <code>2.0000×</code>（污染 16/17 阶段）。本工作台通过“M-LSD 消失点直线锁（&lt;0.08° 偏角）+ 相机空间法线/16-bit 深度三通道 ControlNet Union + IP-Adapter 真实建材 PBR 色卡绑定 + 360° 太阳高度角四季光影合成”，在全 17 阶段恒定锁死承重结构 0 变形与预算比
+            <code>C_active / C_bim = 1.0000×</code>。
+          </p>
+        </div>
+        <div class="header-links">
+          <a class="chip-link" href="../../index.html">← 返回 262 演示门户</a>
+          <a
+            class="chip-link"
+            href="../../research/cad-bim-sketch-to-photoreal-architectural-controlnet-faq.html"
+            >选型 FAQ (中文)</a
+          >
+          <a
+            class="chip-link"
+            href="../../research/cad-bim-sketch-to-photoreal-architectural-controlnet-faq.en.html"
+            >FAQ (English)</a
+          >
+          <a class="chip-link" href="./test-report-cards.zh.html">7-Card 报告</a>
+        </div>
+      </header>
+
+      <section class="control-bar" aria-label="建筑CAD/BIM效果图与材质控制参数">
+        <div class="control-group">
+          <label for="preset-select">1. 建筑几何锁定与材质渲染架构预设 (Preset)</label>
+          <select id="preset-select">
+            <option value="mlsd_normal_depth_swatch_bim_lock">
+              ✅ M-LSD 直线 + 法线/深度三锁 + 建材色卡绑定 (C/C_bim = 1.0000×, 0/17 变形)
+            </option>
+            <option value="naive_unconstrained_img2img_wall_warp">
+              ❌ 朴素高重绘 Img2Img 承重墙弯曲与透视坍塌 (S16 翻倍返工 2.0000×, 16/17 违背)
+            </option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label for="station-slider">
+            2. 幕墙结构复杂度与四季光影阶段 <code>k</code> (<span id="station-label">Stage 8 · u = 0.5000</span>)
+          </label>
+          <input
+            id="station-slider"
+            type="range"
+            min="0"
+            max="16"
+            step="1"
+            value="8"
+          />
+        </div>
+
+        <div class="control-group">
+          <label for="solar-select">3. 物理太阳方位角与商业光影氛围 (Solar &amp; Sky Rig)</label>
+          <select id="solar-select">
+            <option value="golden_hour_35deg">黄昏暖阳黄金时刻 (Azimuth 245° / Elev 14° + 室内暖光开启)</option>
+            <option value="overcast_museum_soft">美术馆阴天漫反射柔光 (全向天光 HDRI · 零硬阴影建材审视)</option>
+            <option value="rainy_night_neon_flagship">雨夜都市旗舰店霓虹橱窗 (湿地镜面反射 + 室内陈列聚光灯)</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label for="theme-toggle">4. 画布主题 (Theme)</label>
+          <button id="theme-toggle" type="button" class="toggle-btn">
+            切换浅色 / 深色主题
+          </button>
+        </div>
+      </section>
+
+      <section class="kpi-strip" aria-label="核心结构精度与效果图预算指标">
+        <article class="kpi-card">
+          <span class="kpi-title">当前建筑与空间阶段</span>
+          <strong class="kpi-value" id="kpi-station-name">
+            Stage 8 · IP-Adapter 品牌建材色卡绑定
+          </strong>
+          <span class="kpi-sub" id="kpi-u-readout">
+            u = 0.5000 · B(u) = 1.5000×
+          </span>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-title">单图效果图摊销成本比 c_bim(u)</span>
+          <strong class="kpi-value" id="kpi-cbim">0.6667×</strong>
+          <span class="kpi-sub" id="kpi-quad-err">
+            64 面片透视几何求积误差 &lt; 1e-12
+          </span>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-title">承重立柱偏角与预算比 (C_active / C_bim)</span>
+          <strong class="kpi-value" id="kpi-active-ratio">1.0000×</strong>
+          <span class="kpi-sub" id="kpi-status-badge">
+            ✅ 直线偏角 &lt;0.08° + 建材色卡锁定 (0/17 变形)
+          </span>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-title">Stage 4 / 8 / 16 对比朴素 Img2Img</span>
+          <strong class="kpi-value" id="kpi-benchmark-summary">
+            1.0000× vs 1.25 / 1.50 / 2.00×
+          </strong>
+          <span class="kpi-sub" id="kpi-solar-readout">
+            M-LSD w=0.90 + Depth w=0.85 + Normal w=0.80
+          </span>
+        </article>
+      </section>
+
+      <section class="workbench-grid">
+        <div class="canvas-panel">
+          <div class="panel-header">
+            <h2>
+              三维等轴测建筑与商业空间 CAD/BIM 三锁效果图工作台（58 个独立架构构件 · 17 阶段）
+            </h2>
+            <span class="badge" id="canvas-mode-badge">
+              Layer 1 Revit/SketchUp 三通道提取 → Layer 2 M-LSD/法线/深度 + 建材色卡锁 → Layer 3 四季太阳光影合成
+            </span>
+          </div>
+          <svg
+            id="bim-stage-svg"
+            viewBox="0 0 920 500"
+            role="img"
+            aria-label="58构件建筑与零售空间CAD/BIM多通道ControlNet照片级效果图工作台"
+          ></svg>
+        </div>
+
+        <aside class="telemetry-panel">
+          <h2>当前阶段建筑结构几何与建材色卡审计</h2>
+          <dl class="metric-list">
+            <div>
+              <dt>阶段代码與建筑任务</dt>
+              <dd id="tel-stage-code">STAGE-08 · Swatch Bind</dd>
+            </div>
+            <div>
+              <dt>M-LSD 垂直与消失点直线偏角</dt>
+              <dd id="tel-line-error">0.05° (严格符合 &lt;0.08° 建筑制图规范)</dd>
+            </div>
+            <div>
+              <dt>三通道 ControlNet 权重配比</dt>
+              <dd id="tel-control-weights">M-LSD 0.90 / Depth 0.85 / Normal 0.80 (Stop@0.85)</dd>
+            </div>
+            <div>
+              <dt>指定建材 PBR 纹理与门窗开洞守恒</dt>
+              <dd id="tel-swatch-policy">100% 门窗洞口保留 + IP-Adapter 真实石材/木纹色卡</dd>
+            </div>
+            <div>
+              <dt>对比朴素 Img2Img 墙体弯曲节省</dt>
+              <dd id="tel-savings">-33.3% 返工成本 (Stage 16 节省 50.0%)</dd>
+            </div>
+          </dl>
+
+          <h3>17 阶段 CAD/BIM 结构锁与效果图成本比包络</h3>
+          <div class="table-scroll">
+            <table class="audit-table">
+              <thead>
+                <tr>
+                  <th>Stage</th>
+                  <th>u</th>
+                  <th>c_bim(u)</th>
+                  <th>三锁BIM</th>
+                  <th>朴素Img2Img</th>
+                </tr>
+              </thead>
+              <tbody id="audit-table-body"></tbody>
+            </table>
+          </div>
+        </aside>
+      </section>
+    </main>
+  </body>
+</html>

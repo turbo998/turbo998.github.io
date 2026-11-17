@@ -5388,3 +5388,30 @@ R 键恢复全景、科学参数与停转状态保留，宽屏回手机也通过
    - **敦煌飞天 (`scripts/blender/build-feitian-assets.mjs` + `demos/feitian/main.ts`)**：新增 8 枚 `NicheArchCrownOuterSpandrelTieMidTurnbuckleSealNutPhoenixBoss_0..3_L/R`（`grotto-relief-bake.png` = `470,439 B`，Cycles 渲染图 `1,601,845 B`），并在 `drawBody()` 中增绘盛唐飞天琵琶捍拨双巽他鸭宝相莲垂穗鎏金迦陵频伽嵌金色绿柱石明珠花钿扣（`#ffe57f`）及 `buildWall()` 高光（`y + 320`）。
    - **Launch 白色火箭 (`scripts/blender/build-rocket-assets.mjs` + `demos/rocket-launch/main.ts`)**：新增 `Pad_ExhaustPlenumFloorTroughSillSwaySleeveRing_0..3`、`Rocket_FairingSolarWindLenardBalescuTrappedParticleInstabilityWaveAnalyzerSensorCowl_0..3` 与 `cell6SeptentrigintPrandtlShearGlow`，导出 `rocket-kit.glb`（`4,741,920 B`）与 Cycles 渲染图（`893,854 B`）。
    - 全仓完整验证命令 `npm run check && npm --prefix demos/astra-planet run check`（55 项单元与 Playwright E2E 测试）100% 通过。
+
+## 新范式能力验证（Run #22）：本构 3D 高斯物质点法与物理世界基础模型工作台 (`demos/physgaussian-world-studio/`)
+
+1. **全新独立交互式 Demo 与架构研究专著交付**：
+   - 新增独立能力工作台 `demos/physgaussian-world-studio/index.html`（Demo #08），实现 `1,680` 个携带 $2\times 2$ 弹性形变梯度 $\mathbf{F}_p^E$、塑性应变、冯·米塞斯等效应力 $\sigma_{\text{vM}}$ 与 `OmniPhysGS` 12-Expert 本构单纯形权重 $\mathbf{w}_p \in \Delta^{11}$ 的 3D 高斯核，耦合 `32×18` 欧拉 APIC 物质点法（MPM）背景网格、SVD 极分解屈服返回映射与 $\tau_{\text{split}} = 3.20\times$ 动态核分裂防毛刺门控。
+   - 支持 3 组多材质连续介质场景、4 组架构模式（`physgaussian-ws2-mpm` / `omniphysgs-12expert-lora` / `cosmos-transfer1-world-cond` / `unconstrained-video-dit-baseline`）、6 组本构材质预设、4 组张量视图、4 组交互力场画笔、WebAudio 程序化应力/断裂声学拟音与 `PHYSGAUSSIAN_WORLD_SPEC.json` 导出。
+   - 配套交付 7-Card 4:5 视觉评测报告 `demos/physgaussian-world-studio/test-report-cards.html`、高清一图流架构总结 SVG `docs/evidence/physgaussian-world-mpm-summary.svg` 与中英双语研究报告 `docs/physgaussian-world-mpm-study.md` / `docs/physgaussian-world-mpm-study.en.md`。
+2. **自动化 E2E 验证**：
+   - `tests/e2e/gallery.spec.ts` 新增 `physgaussian world studio renders 3 continuum MPM scenes, 4 architectures, 6 materials, and serves 7-card report` 端到端测试，验证 3 组场景、4 组架构、6 组材质切换、力场脉冲注入、JSON 契约导出及 7 张 4:5 评测卡片（0 控制台错误、0 水平溢出）。
+
+## 新范式能力验证（Run #23 · 2026-11-05）：神经逆向/正向 G-Buffer 视频重打光与多主体身份锁定导演台 (`demos/neural-relight-director/`)
+
+1. **全新独立交互式 Demo 与架构研究专著交付**：
+   - 新增独立能力工作台 `demos/neural-relight-director/index.html`（Demo #09），实现 `1,440` 个动态本征面元（Surfels），解构 **NVIDIA `DiffusionRenderer` (`Cosmos-Transfer1-DiffusionRenderer-7B`)** 5 通道屏幕空间本征 G-Buffer（Base Albedo $\rho$ / World Normal $\mathbf{n}$ / Roughness $r$ / Metallic $m$ / Metric Depth $Z$，去光照纯度 `98.4%`）与 Cook-Torrance GGX 微表面正向着色，结合 **`Light-A-Video`** 跨帧一致光注意力（CLA，时序闪烁 `0.14 dB`）及 **`Phantom` × `Identity-GRPO` × `Wan2.1-FLF2V`** 多主体首尾关键帧光影插值（双主体身份保持率 `98.7%`，8 组 HDRI 光效复用 G-Buffer 缓存提速 `3.68×`）。
+   - 支持 3 组多主体场景（`cyber-jewelry-showroom` / `autonomous-night-drive` / `cinema-flf2v-relight`）、4 组架构对比、6 种本征 G-Buffer 检视透镜、6 套 360° 全景 HDRI 探针拖拽、实时 BRDF 极坐标反射瓣绘图与 `DIFFUSION_RENDERER_SPEC.json` 导出。
+   - 配套交付 7-Card 4:5 视觉评测报告 `demos/neural-relight-director/test-report-cards.html`、高清一图流架构总结 SVG `docs/evidence/neural-relighting-causal-video-summary.svg` 与中英双语研究报告 `docs/neural-relighting-causal-video-study.md` / `docs/neural-relighting-causal-video-study.en.md`。
+2. **自动化 E2E 验证**：
+   - `tests/e2e/gallery.spec.ts` 新增 `neural relight director renders 3 scenes, 4 architectures, 6 G-Buffer lenses, and serves 7-card report` 端到端测试，验证全部 3 组场景、G-Buffer 透镜、HDRI 预设、契约导出及 7 张 4:5 评测卡片。
+
+## 新范式能力验证（Run #24 · 2026-11-06）：动作条件可玩世界模型与长时序情景记忆导演台 (`demos/worldmem-action-director/`)
+
+1. **全新独立交互式 Demo 与架构研究专著交付**：
+   - 新增独立能力工作台 `demos/worldmem-action-director/index.html`（Demo #10），实现 `1,560` 个三维世界体素与 8 槽位三维视锥情景记忆库 $\mathcal{M}=\{(\mathbf{z}_i,\mathbf{P}_i,t_i)\}$，解构 **`WorldMem` (arXiv:2504.12369)** 3D 视锥几何 IoU 与 6D Plücker 射线距离混合检索（360° 环视闭环 PSNR `30.8 dB`，60 秒离屏重访持久率 `98.6%` vs. 滑窗基线 `21.8%`）以及相对时间戳 $\Delta t=t-t_i$ 跨时序动态世界演化（离屏热能信标融雪与晶体植物分形生长准确率 `97.4%` vs. 静态位姿库 `58.4%`），结合 **Google DeepMind `Genie 3 & Genie 4` × `Causal Diffusion Forcing`** 6-DoF 动作条件注入、6 组实时可提示世界事件塑形（暴风雪/极光/孢子雨/低重力）与 600 帧长程 `4.15×` 推理提速（`86.4 ms` vs `358.6 ms`）。
+   - 支持 3 组三维可玩世界场景（`arctic-cryo-outpost` / `biolum-oasis-sanctuary` / `cyber-waymo-proving-ground`）、4 组记忆架构模式、6 种三维检视透镜（含 w/ vs w/o WorldMem 同屏失忆对比）、2D 俯视视锥雷达、记忆注意力条形图与 `WORLDMEM_GENIE_SPEC.json` 导出。
+   - 配套交付 7-Card 4:5 视觉评测报告 `demos/worldmem-action-director/test-report-cards.html`、高清一图流架构总结 SVG `docs/evidence/worldmem-action-world-summary.svg` 与中英双语研究报告 `docs/worldmem-action-world-study.md` / `docs/worldmem-action-world-study.en.md`。
+2. **自动化 E2E 验证**：
+   - `tests/e2e/gallery.spec.ts` 新增 `worldmem action director renders 3 playable worlds, 4 memory architectures, 6 lenses, and serves 7-card report` 端到端测试，验证全部 3 组世界、实体持久化放置、跨时序重访闭环、契约导出及 7 张 4:5 评测卡片。

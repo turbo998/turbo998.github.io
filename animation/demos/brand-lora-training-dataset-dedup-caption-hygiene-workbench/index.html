@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:;"
+    />
+    <title>
+      企业品牌 IP 吉祥物与爆款 SKU 定制 LoRA 训练数据清洗与防过拟合工作台 · DINOv2 去重 + 触发词属性解耦 + 掩码损失 vs 朴素脏数据概念粘连
+    </title>
+    <script type="module" crossorigin src="../../assets/brandLoraTrainingDatasetDedupCaptionHygiene-BPqU12Sl.js"></script>
+    <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="stylesheet" crossorigin href="../../assets/brandLoraTrainingDatasetDedupCaptionHygiene-Dspbq0cw.css">
+  </head>
+  <body>
+    <main class="rig-shell">
+      <header class="rig-header">
+        <div>
+          <p class="eyebrow">
+            ENTERPRISE BRAND IP &amp; SKU LORA TRAINING HYGIENE · DINOV2 DEDUP + CAPTION TRIGGER DISENTANGLEMENT + MASKED LOSS · C_ACTIVE/C_LORA = 1.0000×
+          </p>
+          <h1>
+            企业吉祥物与专属画风定制 LoRA（Flux / Wan 2.2）数据清洗与防过拟合管线：DINOv2 近重复剔除 + 触发词属性解耦打标 + 前景掩码损失对比朴素脏数据背景粘连工作台
+          </h1>
+          <p class="subtitle">
+            面向企业 AIGC 平台、品牌营销中心与游戏美术中台的 Cloud &amp; AI Solution Architect：若将 100 张未经清洗的吉祥物或商品营销图直接丢进朴素 LoRA 训练脚本（Naive Uncurated Dataset Training），一方面同角度连拍近重复帧会导致姿态僵死过拟合（无法转头或换动作），另一方面因训练图里常出现白底摄影棚或手持道具，模型会把背景和道具死死焊进触发词（概念粘连污染 Concept Bleeding），迫使团队推翻重训，研发与算力成本按
+            <code>L(u) = 1 + u</code> 在第 16 阶段翻倍超支至
+            <code>2.0000×</code>（污染 16/17 阶段）。本工作台通过“DINOv2 余弦相似度去重（&gt;0.92 剔除）+ 触发词可变属性显式解耦打标 + Alpha 掩码损失（Masked Loss）+ 多 Epoch 帕累托寻优”，在全 17 阶段恒定锁死 0% 背景粘连与成本比
+            <code>C_active / C_lora = 1.0000×</code>。
+          </p>
+        </div>
+        <div class="header-links">
+          <a class="chip-link" href="../../index.html">← 返回 263 演示门户</a>
+          <a
+            class="chip-link"
+            href="../../research/brand-lora-training-dataset-dedup-caption-hygiene-faq.html"
+            >选型 FAQ (中文)</a
+          >
+          <a
+            class="chip-link"
+            href="../../research/brand-lora-training-dataset-dedup-caption-hygiene-faq.en.html"
+            >FAQ (English)</a
+          >
+          <a class="chip-link" href="./test-report-cards.zh.html">7-Card 报告</a>
+        </div>
+      </header>
+
+      <section class="control-bar" aria-label="企业LoRA训练数据清洗与超参控制">
+        <div class="control-group">
+          <label for="preset-select">1. 企业 LoRA 训练数据工程架构预设 (Preset)</label>
+          <select id="preset-select">
+            <option value="dinov2_dedup_disentangled_masked_lora_lock">
+              ✅ DINOv2 去重 + 触发词属性解耦 + 掩码损失 (C/C_lora = 1.0000×, 0/17 概念污染)
+            </option>
+            <option value="naive_uncurated_dataset_concept_bleed">
+              ❌ 朴素脏数据盲训背景粘连与姿态僵死 (S16 翻倍重训 2.0000×, 16/17 违背)
+            </option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label for="station-slider">
+            2. 品牌资产多样性与泛化挑战阶段 <code>k</code> (<span id="station-label">Stage 8 · u = 0.5000</span>)
+          </label>
+          <input
+            id="station-slider"
+            type="range"
+            min="0"
+            max="16"
+            step="1"
+            value="8"
+          />
+        </div>
+
+        <div class="control-group">
+          <label for="target-select">3. 定制 LoRA 目标资产类型与基座模型 (Target Asset)</label>
+          <select id="target-select">
+            <option value="flux_3d_brand_mascot">3D 品牌 IP 吉祥物多动作泛化 (Flux.1-dev Rank-16 + Masked Loss)</option>
+            <option value="wan22_hero_product_sku">爆款消费电子/美妆瓶身 360° 运镜 (Wan 2.2 14B Video LoRA)</option>
+            <option value="enterprise_ui_illustration_style">企业专属扁平微质感插画风格 (Style LoRA · 零特定物体粘连)</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label for="theme-toggle">4. 画布主题 (Theme)</label>
+          <button id="theme-toggle" type="button" class="toggle-btn">
+            切换浅色 / 深色主题
+          </button>
+        </div>
+      </section>
+
+      <section class="kpi-strip" aria-label="核心LoRA泛化率与训练预算指标">
+        <article class="kpi-card">
+          <span class="kpi-title">当前 LoRA 数据工程阶段</span>
+          <strong class="kpi-value" id="kpi-station-name">
+            Stage 8 · 触发词可变属性解耦打标
+          </strong>
+          <span class="kpi-sub" id="kpi-u-readout">
+            u = 0.5000 · L(u) = 1.5000×
+          </span>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-title">单款 LoRA 摊销研发成本比 c_lora(u)</span>
+          <strong class="kpi-value" id="kpi-clora">0.6667×</strong>
+          <span class="kpi-sub" id="kpi-quad-err">
+            64 簇特征流形求积误差 &lt; 1e-12
+          </span>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-title">泛化质量与训练预算比 (C_active / C_lora)</span>
+          <strong class="kpi-value" id="kpi-active-ratio">1.0000×</strong>
+          <span class="kpi-sub" id="kpi-status-badge">
+            ✅ 0% 背景粘连 + 姿态自由泛化 (0/17 过拟合)
+          </span>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-title">Stage 4 / 8 / 16 对比朴素盲训</span>
+          <strong class="kpi-value" id="kpi-benchmark-summary">
+            1.0000× vs 1.25 / 1.50 / 2.00×
+          </strong>
+          <span class="kpi-sub" id="kpi-target-readout">
+            DINOv2 Sim &lt;= 0.92 + Masked Loss + Trigger Disentangle
+          </span>
+        </article>
+      </section>
+
+      <section class="workbench-grid">
+        <div class="canvas-panel">
+          <div class="panel-header">
+            <h2>
+              三维等轴测企业品牌 LoRA 训练数据清洗与防过拟合工作台（58 个独立架构构件 · 17 阶段）
+            </h2>
+            <span class="badge" id="canvas-mode-badge">
+              Layer 1 DINOv2 去重与视角均衡 → Layer 2 触发词属性解耦与 Alpha 掩码损失 → Layer 3 帕累托 Checkpoint 择优
+            </span>
+          </div>
+          <svg
+            id="lora-stage-svg"
+            viewBox="0 0 920 500"
+            role="img"
+            aria-label="58构件企业品牌LoRA训练数据清洗与触发词解耦防过拟合工作台"
+          ></svg>
+        </div>
+
+        <aside class="telemetry-panel">
+          <h2>当前阶段 LoRA 特征解耦与泛化度审计</h2>
+          <dl class="metric-list">
+            <div>
+              <dt>阶段代码与训练治理任务</dt>
+              <dd id="tel-stage-code">STAGE-08 · Caption Disentangle</dd>
+            </div>
+            <div>
+              <dt>背景与无关道具概念泄漏率 (Concept Bleed)</dt>
+              <dd id="tel-bleed-rate">0.00% (前景 Alpha 掩码仅计算主体区域 Loss)</dd>
+            </div>
+            <div>
+              <dt>去重与打标黄金配方</dt>
+              <dd id="tel-hygiene-policy">DINOv2 Sim&gt;0.92 剔除 + 可变服饰/背景写进 Caption</dd>
+            </div>
+            <div>
+              <dt>身份还原度 (DINO) 与提示词可塑性 (CLIP)</dt>
+              <dd id="tel-pareto-score">Identity DINO 0.942 + Editability CLIP 0.348 (帕累托最优)</dd>
+            </div>
+            <div>
+              <dt>对比朴素脏数据重复炼丹节省</dt>
+              <dd id="tel-savings">-33.3% H100 训模与人工洗图成本 (Stage 16 省 50.0%)</dd>
+            </div>
+          </dl>
+
+          <h3>17 阶段企业 LoRA 数据工程与训练成本比包络</h3>
+          <div class="table-scroll">
+            <table class="audit-table">
+              <thead>
+                <tr>
+                  <th>Stage</th>
+                  <th>u</th>
+                  <th>c_lora(u)</th>
+                  <th>解耦精训</th>
+                  <th>朴素盲训</th>
+                </tr>
+              </thead>
+              <tbody id="audit-table-body"></tbody>
+            </table>
+          </div>
+        </aside>
+      </section>
+    </main>
+  </body>
+</html>

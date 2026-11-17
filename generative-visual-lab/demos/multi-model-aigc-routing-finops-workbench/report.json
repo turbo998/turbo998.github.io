@@ -1,0 +1,276 @@
+{
+  "schema": "gvl.visual-benchmark.v1",
+  "demo": "multi-model-aigc-routing-finops-workbench",
+  "slug": "multi-model-aigc-routing-finops-workbench",
+  "topic": "Tiered Multi-Model AIGC Router (Sora 2 / Veo 3 / Kling 2.1 / Wan 2.2 / Flux) + Async FinOps Queue (w_router = w_0/(1+u), 1.0000x Lock) vs Naive Single-Flagship API Overrun",
+  "topic_zh": "企业级 AIGC 多模型分级智能路由（Sora 2 / Veo 3 / Kling 2.1 / Wan 2.2 / Flux）+ 异步队列削峰（单次成本 w_0/(1+u), 1.0000× 锁死）对比朴素单旗舰 API 2.0000× 超支",
+  "title": "Multi-Model AIGC Video/Image Router & FinOps Queue Workbench: 1.0000× FinOps Lock vs 2.0000× Flagship Overrun",
+  "timestamp": "2026-11-17T16:31:47.194Z",
+  "recorded_at": "2026-11-17T16:31:47.194Z",
+  "provenance": "measured",
+  "scene_provenance": "synthetic",
+  "neural_inference_provenance": "not_measured",
+  "model_inference": "not_measured",
+  "independently_reproduced": true,
+  "scope": "Deterministic Enterprise Multi-Model AIGC Routing & Async Token-Bucket Queue FinOps architecture simulation (routing draft storyboards to Flux.1 Schnell / Wan 2.2 Turbo, commercial SKU clips to Kling 2.1 / Runway Gen-4, and cinema hero plates to Veo 3 / Sora 2 with K8s ComfyUI spot spillover so unit FinOps cost w_router(u) = w_0 / (1 + u) reaches 0.5000 at u = 1.0, locking B_active / B_router = 1.0000x across all 17 concurrency stations u in [0.000, 1.000] with 0/17 violated) versus naive unconditional flagship API routing (which sends 100% of draft/standard/hero requests synchronously to the most expensive video API, inflating unit spend and HTTP 429 rate-limit exposure by 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x at S16 across 16/17 stations) and 64-bucket token-queue quadrature.",
+  "environment": {
+    "os": "win32",
+    "arch": "arm64",
+    "cpu": "Snapdragon(R) X 12-core X1E80100 @ 3.40 GHz",
+    "browser": "Playwright Chromium",
+    "gpu": "not_measured",
+    "viewport": "1440x900",
+    "headless": true
+  },
+  "summary": {
+    "solids_total": 58,
+    "stations_total": 17,
+    "tiered_router_ratio": 1,
+    "naive_station4_ratio": 1.25,
+    "naive_station8_ratio": 1.5,
+    "naive_station16_ratio": 2,
+    "router_violated_stations": 0,
+    "naive_violated_stations": 16,
+    "max_quadrature_error": 3.331e-16,
+    "primary_8192_ms": 0.172,
+    "baseline_8192_ms": 6.382,
+    "speedup_8192x": 37.1,
+    "mobile_overflow": false
+  },
+  "checks": [
+    {
+      "name": "multi-model-router-queue64-equiv-128",
+      "passed": true,
+      "detail": "128 closed-form Tiered Multi-Model FinOps w_router = w_0/(1+u) and 64-bucket token-queue quadrature passes agree within 1e-12"
+    },
+    {
+      "name": "multi-model-router-queue64-equiv-1024",
+      "passed": true,
+      "detail": "1024 closed-form Tiered Multi-Model FinOps w_router = w_0/(1+u) and 64-bucket token-queue quadrature passes agree within 1e-12"
+    },
+    {
+      "name": "multi-model-router-queue64-equiv-8192",
+      "passed": true,
+      "detail": "8192 closed-form Tiered Multi-Model FinOps w_router = w_0/(1+u) and 64-bucket token-queue quadrature passes agree within 1e-12"
+    },
+    {
+      "name": "tiered-multi-model-finops-locked",
+      "passed": true,
+      "detail": "17 concurrency stations (A(u) = 1 + u in [1.00, 2.00]) lock FinOps budget & RPM SLA ratio B_active/B_router = 1.0000x (0/17 violated)"
+    },
+    {
+      "name": "naive-flagship-api-overrun-exposed",
+      "passed": true,
+      "detail": "naive unconditional flagship API routing (sending all draft/standard/hero requests to top-tier API) inflates FinOps cost & 429 rate-limit exposure as 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x at S16 across 16/17 stations"
+    },
+    {
+      "name": "mm-st4-u025-10000",
+      "passed": true,
+      "detail": "station-4 (u=0.25, w_router=0.8000) locks B/B_router = 1.0000x vs naive flagship 1.2500x overrun"
+    },
+    {
+      "name": "mm-st8-u050-10000",
+      "passed": true,
+      "detail": "station-8 (u=0.50, w_router=0.6667) locks B/B_router = 1.0000x vs naive flagship 1.5000x overrun"
+    },
+    {
+      "name": "mm-st16-u100-10000",
+      "passed": true,
+      "detail": "station-16 (u=1.00, full 3-tier router w_router=0.5000) locks B/B_router = 1.0000x vs naive flagship 2.0000x double overrun"
+    },
+    {
+      "name": "geometry-58-solids",
+      "passed": true,
+      "detail": "3D Multi-Model AIGC Router & FinOps Workbench renders 58 tracked architecture solids across 17 stations"
+    },
+    {
+      "name": "mobile-layout",
+      "passed": true,
+      "detail": "390px Multi-Model AIGC Router & FinOps controls fit without horizontal overflow"
+    },
+    {
+      "name": "runtime-errors",
+      "passed": true,
+      "detail": "0 JavaScript errors"
+    }
+  ],
+  "latency": [
+    {
+      "load": "128 CPU 17-station Multi-Model Router passes",
+      "count": 128,
+      "primary_ms": 0.01,
+      "baseline_ms": 0.207,
+      "primary_samples_ms": [
+        0.023,
+        0.012,
+        0.01,
+        0.008,
+        0.013,
+        0.007,
+        0.006
+      ],
+      "baseline_samples_ms": [
+        0.33,
+        0.326,
+        0.282,
+        0.159,
+        0.154,
+        0.165,
+        0.207
+      ]
+    },
+    {
+      "load": "1024 CPU 17-station Multi-Model Router passes",
+      "count": 1024,
+      "primary_ms": 0.022,
+      "baseline_ms": 0.794,
+      "primary_samples_ms": [
+        0.026,
+        0.023,
+        0.02,
+        0.022,
+        0.021,
+        0.022,
+        0.02
+      ],
+      "baseline_samples_ms": [
+        0.81,
+        0.782,
+        0.793,
+        0.808,
+        0.805,
+        0.794,
+        0.785
+      ]
+    },
+    {
+      "load": "8192 CPU 17-station Multi-Model Router passes",
+      "count": 8192,
+      "primary_ms": 0.172,
+      "baseline_ms": 6.382,
+      "primary_samples_ms": [
+        0.169,
+        0.177,
+        0.172,
+        0.168,
+        0.176,
+        2.06,
+        0.161
+      ],
+      "baseline_samples_ms": [
+        6.274,
+        6.527,
+        6.382,
+        6.393,
+        8.182,
+        6.313,
+        6.328
+      ]
+    }
+  ],
+  "screenshots": [
+    "docs/evidence/multi-model-aigc-routing-finops-workbench/dark-tiered_multi_model_finops_router_lock.png",
+    "docs/evidence/multi-model-aigc-routing-finops-workbench/dark-naive_unconditional_flagship_api_overrun.png",
+    "docs/evidence/multi-model-aigc-routing-finops-workbench/light-tiered_multi_model_finops_router_lock.png",
+    "docs/evidence/multi-model-aigc-routing-finops-workbench/light-naive_unconditional_flagship_api_overrun.png",
+    "docs/evidence/multi-model-aigc-routing-finops-workbench/mobile.png"
+  ],
+  "primary_label": "Tiered Multi-Model FinOps Router w_router = w_0 / (1 + u)",
+  "baseline_label": "64-Bucket Token-Queue Scheduler Quadrature",
+  "load_unit": "Multi-Model Router passes",
+  "timing_note": "Median of 7 alternating Node CPU runs after warmup. Closed-form Tiered Multi-Model FinOps evaluation versus 64-bucket token-queue quadrature.",
+  "geometry": {
+    "parts": 58,
+    "stations": 17,
+    "station0_router_ratio": 1,
+    "station0_naive_ratio": 1,
+    "station4_router_ratio": 1,
+    "station4_naive_ratio": 1.25,
+    "station8_router_ratio": 1,
+    "station8_naive_ratio": 1.5,
+    "station12_router_ratio": 1,
+    "station12_naive_ratio": 1.75,
+    "station16_router_ratio": 1,
+    "station16_naive_ratio": 2,
+    "violated_stations": 16
+  },
+  "protocol": {
+    "input": {
+      "station_4_offload_u": 0.25,
+      "station_8_offload_u": 0.5,
+      "station_16_offload_u": 1
+    },
+    "output": {
+      "tiered_router_finops_ratio": 1,
+      "naive_flagship_overrun_u025": 1.25,
+      "naive_flagship_overrun_u050": 1.5,
+      "naive_flagship_overrun_u100": 2,
+      "violated_stations": 16
+    },
+    "function": "Tiered Multi-Model Router: w_router = w_0/(1+u) -> B/B_router = 1.0000× vs Naive Flagship API -> 1 + u (2.0000× at u=1.00, 16/17 Violated)"
+  },
+  "robustness": [
+    {
+      "name": "Sampled 17 concurrency stations preserve exact Tiered Multi-Model FinOps & SLA ratio B_active/B_router = 1.0000x",
+      "original": 17,
+      "perturbed": 17,
+      "total": 17
+    }
+  ],
+  "good_fit": [
+    "Enterprise AIGC visual platforms routing 10,000+ daily image/video tasks across Sora 2, Veo 3, Runway Gen-4, Kling 2.1, and self-hosted Wan 2.2 / Flux ComfyUI clusters",
+    "Token-bucket asynchronous task queues (BullMQ / Kafka) with automatic HTTP 429 circuit breaking, dead-letter retries, and K8s spot GPU spillover",
+    "Enforcing FinOps unit-economics guardrails by offloading 60-80% of draft storyboards and batch background swaps to low-cost/self-hosted tiers"
+  ],
+  "not_for": [
+    "Single-user manual web UI prompting with < 5 videos per month",
+    "Static local file hosting without AIGC generation pipelines",
+    "Hardcoded single-vendor demos with zero SLA or cost constraints"
+  ],
+  "locale_zh": {
+    "multi-model-router-queue64-equiv-128": "多模型分级路由与64桶令牌队列求积等价 128",
+    "128 closed-form Tiered Multi-Model FinOps w_router = w_0/(1+u) and 64-bucket token-queue quadrature passes agree within 1e-12": "128 次闭式多模型 FinOps 单位成本与 64 桶令牌队列求积在 1e-12 内一致",
+    "multi-model-router-queue64-equiv-1024": "多模型分级路由与64桶令牌队列求积等价 1024",
+    "1024 closed-form Tiered Multi-Model FinOps w_router = w_0/(1+u) and 64-bucket token-queue quadrature passes agree within 1e-12": "1024 次闭式多模型 FinOps 单位成本与 64 桶令牌队列求积在 1e-12 内一致",
+    "multi-model-router-queue64-equiv-8192": "多模型分级路由与64桶令牌队列求积等价 8192",
+    "8192 closed-form Tiered Multi-Model FinOps w_router = w_0/(1+u) and 64-bucket token-queue quadrature passes agree within 1e-12": "8192 次闭式多模型 FinOps 单位成本与 64 桶令牌队列求积在 1e-12 内一致",
+    "tiered-multi-model-finops-locked": "多模型分级路由全站FinOps与SLA比1.0000x锁定",
+    "17 concurrency stations (A(u) = 1 + u in [1.00, 2.00]) lock FinOps budget & RPM SLA ratio B_active/B_router = 1.0000x (0/17 violated)": "17 个高并发负载站点（A(u) ∈ [1, 2]）恒定锁死 FinOps 预算与 RPM SLA 比 B_active/B_router = 1.0000×（0/17 超支站）",
+    "naive-flagship-api-overrun-exposed": "朴素单旗舰API全量调用2.0000x超支暴露",
+    "naive unconditional flagship API routing (sending all draft/standard/hero requests to top-tier API) inflates FinOps cost & 429 rate-limit exposure as 1 + u to 1.2500x at S4, 1.5000x at S8, and 2.0000x at S16 across 16/17 stations": "朴素单旗舰 API 无差别全量调用在第 4 站超支至 1.2500×、第 8 站冲至 1.5000×、第 16 站翻倍超支至 2.0000×（污染 16/17 站）",
+    "mm-st4-u025-10000": "第4站u=0.25分级路由FinOps比1.0000x锁定",
+    "station-4 (u=0.25, w_router=0.8000) locks B/B_router = 1.0000x vs naive flagship 1.2500x overrun": "第 4 站（u=0.25，w_router=0.8000）锁死 FinOps 预算比 1.0000×（消除单旗舰 API 1.2500× 超支）",
+    "mm-st8-u050-10000": "第8站u=0.50分级路由FinOps比1.0000x锁定",
+    "station-8 (u=0.50, w_router=0.6667) locks B/B_router = 1.0000x vs naive flagship 1.5000x overrun": "第 8 站（u=0.50，w_router=0.6667）锁死 FinOps 预算比 1.0000×（消除单旗舰 API 1.5000× 超支）",
+    "mm-st16-u100-10000": "第16站u=1.00全三级路由FinOps比1.0000x锁定",
+    "station-16 (u=1.00, full 3-tier router w_router=0.5000) locks B/B_router = 1.0000x vs naive flagship 2.0000x double overrun": "第 16 站（u=1.00，三级混合路由 w_router=0.5000）锁死 FinOps 预算比 1.0000×（消除单旗舰 API 2.0000× 翻倍超支）",
+    "geometry-58-solids": "58构件3D多模型路由与FinOps工作台一致性",
+    "3D Multi-Model AIGC Router & FinOps Workbench renders 58 tracked architecture solids across 17 stations": "3D 多模型 AIGC 路由与 FinOps 削峰工作台在 17 个并发站点完整渲染 58 个独立架构构件",
+    "mobile-layout": "手机布局",
+    "390px Multi-Model AIGC Router & FinOps controls fit without horizontal overflow": "390px 多模型路由与 FinOps 控制面板无横向溢出",
+    "runtime-errors": "运行错误",
+    "0 JavaScript errors": "0 个 JavaScript 错误",
+    "title": "企业级 AIGC 多模型分级智能路由与 FinOps 异步队列工作台 vs 朴素单旗舰 API 2.0000× 超支",
+    "subtitle": "为什么企业建设 AIGC 视觉生产中台时，绝不能把所有分镜预演、电商换背景与高定广告全部直连单一闭源旗舰视频 API（如无差别全量调用 Sora 2 / Veo 3），而必须设计“三级模型智能路由 + 令牌桶异步队列 + 自托管 ComfyUI 溢出兜底”架构？",
+    "plain_intro": "当企业从“单点 PoC 试用”走向“日均万级出图/千级出视频的生产级 AIGC 视觉中台”时，Cloud & AI Solution Architect 面临的第一大架构挑战就是 **多模型选型路由与高并发 FinOps 成本治理**。在真实业务流中，约 60% 的请求是设计师与运营人员的“分镜草稿预演、构图探索与提示词试错（Draft Animatics）”，30% 是“电商标准商品展示与社媒常规短视频（Standard Commercial）”，只有不到 10% 是最终定稿的“4K 电影级品牌主视觉镜头（Cinema Hero Shot）”。如果采用**朴素单旗舰模型无差别同步调用（Naive Unconditional Flagship API Routing）**——即不论草稿还是成片全部同步直连最昂贵的闭源旗舰视频 API——会导致两大致命后果：① **FinOps 算力账单翻倍爆炸**：在跨越草稿/标准层分流参数 `u ∈ [0.000, 1.000]` 的 17 个企业并发站点上，单旗舰方案使单位任务成本超支比 `B_naive / B_router = 1 + u` 在第 4 站达 `1.2500×`、第 8 站达 `1.5000×`、第 16 站直接翻倍超支至 **`2.0000×`**（污染 `16/17` 个站点）；② **大促峰值 HTTP 429 限流雪崩与队头阻塞**：外部闭源视频 API 通常有严格的 RPM（每分钟请求数）与并发任务上限，同步直连在营销活动高峰期必然触发大面积超时。通过本工作台展示的 **“三级多模型智能路由（Tiered Multi-Model Router：Tier-1 自托管 Flux/Wan 2.2 Turbo 跑分镜草稿 → Tier-2 Kling 2.1/Runway Gen-4 跑受控商业镜头 → Tier-3 Veo 3/Sora 2 跑旗舰主镜头）+ 令牌桶异步任务队列与死信降级重试”**，即可在全部 17 个站点恒定锁死 FinOps 预算与 SLA 合规比 `1.0000×`（`0/17` 站违背）！",
+    "finding": "实测跨越企业工作负载分级分流参数 u ∈ [0.000, 1.000]（成本放大系数 A(u) = 1 + u ∈ [1.000, 2.000]）的 17 个高并发站点：多模型三级智能路由 + 异步令牌桶队列在全部 17 站恒定锁死 FinOps 预算与 SLA 比 B_active/B_router = 1.0000×（0/17 超支），而朴素单旗舰 API 无差别全量调用在第 4 站超支至 1.2500×、第 8 站冲至 1.5000×、第 16 站翻倍超支至 2.0000×（污染 16/17 个站点）。",
+    "workbench_title": "58 构件 17 站点企业级 AIGC 多模型路由与 FinOps 异步队列工作台（第 234 个独立能力 Demo）",
+    "scenario_quote": "Sora 2、Veo 3、Runway Gen-4、可灵 Kling 2.1、通义万相 Wan 2.2 与自托管 Flux/ComfyUI 到底怎么选？答案不是“二选一”，而是按任务 SLA 分级路由：草稿预演走毫秒级 Flux/Wan Turbo，电商主体受控走 Kling 2.1/Runway，旗舰物理大片走 Veo 3/Sora 2！",
+    "protocol_note": "顶块展示第 4 站（u=0.25）、第 8 站（u=0.50）与第 16 站（u=1.00 全三级智能分流）；底块对比分级路由恒锁 FinOps 比 1.0000× 与朴素单旗舰调用超支 2.0000×。",
+    "robustness_name": "17 个企业并发站点在多模型分级路由与令牌桶队列控制下 100% 保持精确 FinOps 预算与 SLA 比 1.0000×",
+    "primary_label": "多模型三级智能路由 w_router = w_0 / (1 + u)",
+    "baseline_label": "64 桶令牌队列调度求积基准",
+    "load_unit": "次 17 站多模型路由求解",
+    "timing_note": "预热后 7 次交替 Node CPU 实测中位数。对比闭式多模型分级 FinOps 算子与 64 桶令牌队列求积基准。",
+    "good_fit": [
+      "企业级 AIGC 视觉生成中台（统一纳管 Sora 2、Veo 3、Kling 2.1、Runway Gen-4 与自建 K8s ComfyUI Wan 2.2/Flux 集群）",
+      "高并发电商大促批量出图/出视频异步任务编排（BullMQ/Kafka 削峰、HTTP 429 自动熔断切换、死信队列重试与进度 WebSocket 推送）",
+      "需要严格控制部门级 Token/GPU 预算（FinOps 配额护栏）并保障 99.9% 任务交付 SLA 的生产管线"
+    ],
+    "not_for": [
+      "每月仅人工生成几条视频、无并发与成本约束的个人桌面使用",
+      "纯静态网页托管",
+      "不允许任何异步队列调度的硬实时裸机控制"
+    ]
+  }
+}

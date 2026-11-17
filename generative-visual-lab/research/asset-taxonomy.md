@@ -87,6 +87,13 @@
 5. `docs/rocket-method.md`（`/research/rocket-method.html`）：**外部视角圆形舷窗白色火箭发射场建模与流体粒子方法论**。
 6. `docs/asset-taxonomy.md`（`/research/asset-taxonomy.html`）：**全仓技术资产分类目录与架构索引**（本文档）。
 7. `docs/publication-and-provenance.md` & `docs/validation.md`：**数据溯源、版权合规声明与各阶段实测验收记录**。
+8. `docs/isometric-anatomy-explainer-study.md` / [`docs/isometric-anatomy-explainer-study.en.md`](isometric-anatomy-explainer-study.en.md)：**等轴测精密解构图解（Isometric Anatomy）架构研究与 `demos/isometric-anatomy-rig/`**。
+9. `docs/programmatic-motion-canvas-study.md` / [`docs/programmatic-motion-canvas-study.en.md`](programmatic-motion-canvas-study.en.md)：**声明式编程动画（Motion Canvas / Remotion）生成器调度架构与 `demos/motion-canvas-telemetry/`**。
+10. `docs/controllable-4d-video-camera-study.md` / [`docs/controllable-4d-video-camera-study.en.md`](controllable-4d-video-camera-study.en.md)：**4D 高斯泼溅与 Plücker 相机轨迹控制导演架构与 `demos/camera-4d-director/`**。
+11. `docs/audiovisual-foley-framepack-study.md` / [`docs/audiovisual-foley-framepack-study.en.md`](audiovisual-foley-framepack-study.en.md)：**原生音画联合扩散（LTX-2 / Veo 3.1 / Hunyuan-Foley）与 FramePack $\mathcal{O}(1)$ 长时序物理拟音架构及 `demos/audiovisual-foley-studio/`**。
+12. `docs/physgaussian-world-mpm-study.md` / [`docs/physgaussian-world-mpm-study.en.md`](physgaussian-world-mpm-study.en.md)：**本构 3D 高斯物质点法（PhysGaussian WS² / OmniPhysGS 12-Expert）与世界基础模型（Cosmos-Transfer1 / Wan2.1-VACE）架构研究及 `demos/physgaussian-world-studio/`**。
+13. `docs/neural-relighting-causal-video-study.md` / [`docs/neural-relighting-causal-video-study.en.md`](neural-relighting-causal-video-study.en.md)：**神经逆向/正向 G-Buffer 视频重打光（NVIDIA DiffusionRenderer / Light-A-Video CLA）与多主体身份锁定首尾帧插值（Phantom × Identity-GRPO × Wan2.1-FLF2V）架构研究及 `demos/neural-relight-director/`**。
+14. `docs/worldmem-action-world-study.md` / [`docs/worldmem-action-world-study.en.md`](worldmem-action-world-study.en.md)：**动作条件可玩世界模型与长时序三维情景记忆库（WorldMem FOV-Pose+Δt / Google DeepMind Genie 3&4 / Causal Diffusion Forcing）架构研究及 `demos/worldmem-action-director/`**。
 
 ---
 

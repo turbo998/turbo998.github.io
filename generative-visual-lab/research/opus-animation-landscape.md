@@ -19,6 +19,7 @@
 | **5. 太空探索与多星体仿真** (`Space & Planetary Worlds`) | • **无人深空式无缝星系探索** (*Seamless No Man's Sky-style Galaxy*, ❤ 4.0k)<br>• **可探索虚构太阳系** (*Explorable Imaginary Solar System*)<br>• **《A Cosmic Journey》太空叙事短片** | 球面高度场 LOD/法线重算、大气散射边缘光（Fresnel Limb Glow）、程序化星野与晨昏线过渡 | **Astra Planet Lab**（NASA MOLA 实测地形 + Blender 微地貌法线 + 晨昏线大气散射 + 极高海拔霜晶） |
 | **6. 音乐可视化与 Demoscene** (`Music, MVs & Demoscene`) | • **CUDA 内核优化音乐视频** (❤ 2.4k)<br>• **280KB 单 HTML 自我展示 Demoscene**<br>• **《Hop Hop, Nope Nope》纯函数 Canvas 2D MV**<br>• **十三支纯代码合成音乐短片 (`Passacaglia`)** | 零外部音频文件，纯 WebAudio API（振荡器泛音列 + 双二阶滤波器 + 卷积混响）与画面节拍严格同步 | **Feitian**（五声宫调泛音古琴/洞箫合成与揭壁钟磬声）、**Rocket Launch**（点火低频轰鸣与气动噪声） |
 | **7. 全息卡片与微交互 UI** (`Web & Holographic UI`) | • **2D/3D 深度全息卡片** (*Holographic Trading Card*, ❤ 1.9k)<br>• **可交互动态重算幻灯片** (❤ 2.3k) | 视角相关的薄膜干涉/金属光泽渐变、指针视差偏移与高对比主题自适应 | **Feitian**（四尊飞天泥金背光与织金领缘动态视角辉光）、**GVL Portal**（Clawpilot 双主题自适应） |
+| **8. 知识讲解类程序化视频工作台** (`Knowledge-Explainer Animation Harness`) | • **【小哲讲Agent】MCP vs Skill vs Tools 黑曜石节点树**<br>• **【小哲讲大模型】RAG 四阶漏斗与 Packet-Hop**<br>• **【第四种黑猩猩】DeepSeek $38/卡算力单位经济学** | `one-sentence-video` 四维正交风格账本 (`look × layout × motion × sound`)、`cut-the-curve` 接缝速度匹配 ($\eta \approx 0.89$)、3×3 九宫格边缘密度算子与因果音效栈 | **05 / Knowledge Explainer Animation Studio (`demos/knowledge-explainer-studio/`)** + [中英双语研究专著](knowledge-explainer-animation-study.md) |
 
 ---
 

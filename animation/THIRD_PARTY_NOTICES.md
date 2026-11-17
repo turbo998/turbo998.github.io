@@ -25,3 +25,8 @@ That license does not relicense the third-party material below.
   none of these applications calls a model API at runtime.
 - **Microsoft-inspired colors:** visual color references only. This is an
   independent experiment, not a Microsoft product or an officially endorsed demo.
+# Anatomy SVG geometry kit
+
+`scripts/vendor/anatomy/iso-kit.mjs` is the MIT-licensed Anatomy geometry kit
+(Copyright (c) 2026 Ryan). The complete license is retained alongside the file.
+It builds the original seekable scanner cutaway; no example artwork is copied.
