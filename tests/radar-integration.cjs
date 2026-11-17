@@ -5404,6 +5404,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r430File),'utf8');
       assert.ok(txt.includes('1,950.00')&&txt.includes('3,900.00')&&txt.includes('5,850.00')&&txt.includes('105.00')&&txt.includes('310.00')&&txt.includes('415.00')&&txt.includes('5,435.00')&&txt.includes('92.91%')&&txt.includes('not_measured'),r430File+': contains exact 11-17 R6 genesis+opendashboards closed-form parameters');
     }
+    // 2026-11-17 Night Round 7 (R431: aryamandarda/tamserve + teydra/OpenAutark) verification
+    const r431PathA=2250.00+41.0*100.00;
+    assert.equal(r431PathA.toFixed(2),'6350.00','11-17 R7 Path A total');
+    const r431PathC=135.00+3.3*100.00;
+    assert.equal(r431PathC.toFixed(2),'465.00','11-17 R7 Path C total');
+    assert.equal((r431PathA-r431PathC).toFixed(2),'5885.00','11-17 R7 savings vs Path A');
+    assert.equal(((r431PathA-r431PathC)/r431PathA*100).toFixed(2),'92.68','11-17 R7 pct savings vs Path A');
+    for(const r431File of ['workshops/github-trending-radar/docs/tamserve-openautark-64camera-57gb-vram-sam2-edgetam-serving-engine-local-multi-device-agent-company-selection-faq.md','workshops/github-trending-radar/docs/tamserve-openautark-64camera-57gb-vram-sam2-edgetam-serving-engine-local-multi-device-agent-company-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r7-tamserve-openautark.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r431File),'utf8');
+      assert.ok(txt.includes('2,250.00')&&txt.includes('4,100.00')&&txt.includes('6,350.00')&&txt.includes('135.00')&&txt.includes('330.00')&&txt.includes('465.00')&&txt.includes('5,885.00')&&txt.includes('92.68%')&&txt.includes('not_measured'),r431File+': contains exact 11-17 R7 tamserve+openautark closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
