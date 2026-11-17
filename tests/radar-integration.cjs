@@ -5448,6 +5448,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r434File),'utf8');
       assert.ok(txt.includes('2,080.00')&&txt.includes('3,900.00')&&txt.includes('5,980.00')&&txt.includes('110.00')&&txt.includes('310.00')&&txt.includes('420.00')&&txt.includes('5,560.00')&&txt.includes('92.98%')&&txt.includes('not_measured'),r434File+': contains exact 11-17 R10 pine+acpant+ccc closed-form parameters');
     }
+    // 2026-11-17 Night Round 11 (R435 Milestone: AlphaGBM/alphagbm-trading-skills + HiteSit/real-scientist-skills + Chisiki1/muse-agent-operations-kit + ampdot-io/ai-detection-eval) verification
+    const r435PathA=2020.00+40.0*100.00;
+    assert.equal(r435PathA.toFixed(2),'6020.00','11-17 R11 Path A total');
+    const r435PathC=105.00+3.1*100.00;
+    assert.equal(r435PathC.toFixed(2),'415.00','11-17 R11 Path C total');
+    assert.equal((r435PathA-r435PathC).toFixed(2),'5605.00','11-17 R11 savings vs Path A');
+    assert.equal(((r435PathA-r435PathC)/r435PathA*100).toFixed(2),'93.11','11-17 R11 pct savings vs Path A');
+    for(const r435File of ['workshops/github-trending-radar/docs/alphagbm-real-scientist-muse-ops-kit-13skill-earnings-attribution-one-probe-science-8step-defect-discovery-selection-faq.md','workshops/github-trending-radar/docs/alphagbm-real-scientist-muse-ops-kit-13skill-earnings-attribution-one-probe-science-8step-defect-discovery-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r11-alphagbm-scientist-muse-ops.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r435File),'utf8');
+      assert.ok(txt.includes('2,020.00')&&txt.includes('4,000.00')&&txt.includes('6,020.00')&&txt.includes('105.00')&&txt.includes('310.00')&&txt.includes('415.00')&&txt.includes('5,605.00')&&txt.includes('93.11%')&&txt.includes('not_measured'),r435File+': contains exact 11-17 R11 alphagbm+scientist+muse closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
