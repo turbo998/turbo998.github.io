@@ -5910,6 +5910,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r476File),'utf8');
       assert.ok(txt.includes('2,270.00')&&txt.includes('3,420.00')&&txt.includes('5,690.00')&&txt.includes('75.00')&&txt.includes('266.00')&&txt.includes('341.00')&&txt.includes('5,349.00')&&txt.includes('94.01%')&&txt.includes('not_measured'),r476File+': contains exact 11-17 R52 polishskills+nihongo+rega closed-form parameters');
     }
+    // 2026-11-17 Night Round 53 (R477: alexandephilia/sitrep-osint + tm5452/dsh-workspace-explorer & ronkenx9/motion-library-skill) verification
+    const r477PathA=2300.00+36.0*95.00;
+    assert.equal(r477PathA.toFixed(2),'5720.00','11-17 R53 Path A total');
+    const r477PathC=75.00+2.8*95.00;
+    assert.equal(r477PathC.toFixed(2),'341.00','11-17 R53 Path C total');
+    assert.equal((r477PathA-r477PathC).toFixed(2),'5379.00','11-17 R53 savings vs Path A');
+    assert.equal(((r477PathA-r477PathC)/r477PathA*100).toFixed(2),'94.04','11-17 R53 pct savings vs Path A');
+    for(const r477File of ['workshops/github-trending-radar/docs/sitrep-osint-dsh-workspace-explorer-motion-library-skill-6stage-reader-osint-lazy-preview-plugin-motion-study-selection-faq.md','workshops/github-trending-radar/docs/sitrep-osint-dsh-workspace-explorer-motion-library-skill-6stage-reader-osint-lazy-preview-plugin-motion-study-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r53-sitreposint-dshexplorer-motionlib.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r477File),'utf8');
+      assert.ok(txt.includes('2,300.00')&&txt.includes('3,420.00')&&txt.includes('5,720.00')&&txt.includes('75.00')&&txt.includes('266.00')&&txt.includes('341.00')&&txt.includes('5,379.00')&&txt.includes('94.04%')&&txt.includes('not_measured'),r477File+': contains exact 11-17 R53 sitreposint+dshexplorer+motionlib closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
