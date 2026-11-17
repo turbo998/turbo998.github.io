@@ -5734,6 +5734,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r460File),'utf8');
       assert.ok(txt.includes('2,190.00')&&txt.includes('3,515.00')&&txt.includes('5,705.00')&&txt.includes('75.00')&&txt.includes('266.00')&&txt.includes('341.00')&&txt.includes('5,364.00')&&txt.includes('94.02%')&&txt.includes('not_measured'),r460File+': contains exact 11-17 R36 mas-office+claude-p closed-form parameters');
     }
+    // 2026-11-17 Night Round 37 (R461: joydle/borg + nevertoday/xxd-pstack & fazxes/rex-durable) verification
+    const r461PathA=2310.00+37.0*95.00;
+    assert.equal(r461PathA.toFixed(2),'5825.00','11-17 R37 Path A total');
+    const r461PathC=80.00+2.8*95.00;
+    assert.equal(r461PathC.toFixed(2),'346.00','11-17 R37 Path C total');
+    assert.equal((r461PathA-r461PathC).toFixed(2),'5479.00','11-17 R37 savings vs Path A');
+    assert.equal(((r461PathA-r461PathC)/r461PathA*100).toFixed(2),'94.06','11-17 R37 pct savings vs Path A');
+    for(const r461File of ['workshops/github-trending-radar/docs/borg-xxd-pstack-rex-durable-supervised-rust-agent-runtime-pstack-verification-session-resurrection-selection-faq.md','workshops/github-trending-radar/docs/borg-xxd-pstack-rex-durable-supervised-rust-agent-runtime-pstack-verification-session-resurrection-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r37-borg-pstack-rex-durable.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r461File),'utf8');
+      assert.ok(txt.includes('2,310.00')&&txt.includes('3,515.00')&&txt.includes('5,825.00')&&txt.includes('80.00')&&txt.includes('266.00')&&txt.includes('346.00')&&txt.includes('5,479.00')&&txt.includes('94.06%')&&txt.includes('not_measured'),r461File+': contains exact 11-17 R37 borg+pstack+rex closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
