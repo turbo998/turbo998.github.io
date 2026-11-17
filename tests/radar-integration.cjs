@@ -5547,6 +5547,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r443File),'utf8');
       assert.ok(txt.includes('2,040.00')&&txt.includes('3,420.00')&&txt.includes('5,460.00')&&txt.includes('75.00')&&txt.includes('266.00')&&txt.includes('341.00')&&txt.includes('5,119.00')&&txt.includes('93.75%')&&txt.includes('not_measured'),r443File+': contains exact 11-17 R19 hirepanel+ai-portfolio closed-form parameters');
     }
+    // 2026-11-17 Night Round 20 (R444: Liuzedooong/SparseReading + Cheiineeey/api-where-it-breaks) verification
+    const r444PathA=2360.00+37.0*95.00;
+    assert.equal(r444PathA.toFixed(2),'5875.00','11-17 R20 Path A total');
+    const r444PathC=90.00+3.0*95.00;
+    assert.equal(r444PathC.toFixed(2),'375.00','11-17 R20 Path C total');
+    assert.equal((r444PathA-r444PathC).toFixed(2),'5500.00','11-17 R20 savings vs Path A');
+    assert.equal(((r444PathA-r444PathC)/r444PathA*100).toFixed(2),'93.62','11-17 R20 pct savings vs Path A');
+    for(const r444File of ['workshops/github-trending-radar/docs/sparsereading-api-where-it-breaks-evidence-pack-sparse-agent-reader-llm-gateway-pitfall-probes-selection-faq.md','workshops/github-trending-radar/docs/sparsereading-api-where-it-breaks-evidence-pack-sparse-agent-reader-llm-gateway-pitfall-probes-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r20-sparseread-api-breaks.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r444File),'utf8');
+      assert.ok(txt.includes('2,360.00')&&txt.includes('3,515.00')&&txt.includes('5,875.00')&&txt.includes('90.00')&&txt.includes('285.00')&&txt.includes('375.00')&&txt.includes('5,500.00')&&txt.includes('93.62%')&&txt.includes('not_measured'),r444File+': contains exact 11-17 R20 sparseread+api-breaks closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
