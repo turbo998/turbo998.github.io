@@ -5888,6 +5888,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r474File),'utf8');
       assert.ok(txt.includes('2,330.00')&&txt.includes('3,515.00')&&txt.includes('5,845.00')&&txt.includes('75.00')&&txt.includes('266.00')&&txt.includes('341.00')&&txt.includes('5,504.00')&&txt.includes('94.17%')&&txt.includes('not_measured'),r474File+': contains exact 11-17 R50 conductor+tomari+vatra closed-form parameters');
     }
+    // 2026-11-17 Night Round 51 (R475 Milestone: willturner-maker/resolve-ai-workflow + dryang21/Fundlark & ruvnet/mouse-swarm) verification
+    const r475PathA=2240.00+36.0*95.00;
+    assert.equal(r475PathA.toFixed(2),'5660.00','11-17 R51 Path A total');
+    const r475PathC=70.00+2.8*95.00;
+    assert.equal(r475PathC.toFixed(2),'336.00','11-17 R51 Path C total');
+    assert.equal((r475PathA-r475PathC).toFixed(2),'5324.00','11-17 R51 savings vs Path A');
+    assert.equal(((r475PathA-r475PathC)/r475PathA*100).toFixed(2),'94.06','11-17 R51 pct savings vs Path A');
+    for(const r475File of ['workshops/github-trending-radar/docs/resolve-ai-workflow-fundlark-mouse-swarm-3mcp-local-postproduction-verified-grant-tracker-cursor-reveal-selection-faq.md','workshops/github-trending-radar/docs/resolve-ai-workflow-fundlark-mouse-swarm-3mcp-local-postproduction-verified-grant-tracker-cursor-reveal-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r51-resolve-fundlark-mouseswarm.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r475File),'utf8');
+      assert.ok(txt.includes('2,240.00')&&txt.includes('3,420.00')&&txt.includes('5,660.00')&&txt.includes('70.00')&&txt.includes('266.00')&&txt.includes('336.00')&&txt.includes('5,324.00')&&txt.includes('94.06%')&&txt.includes('not_measured'),r475File+': contains exact 11-17 R51 resolveai+fundlark+mouseswarm closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
