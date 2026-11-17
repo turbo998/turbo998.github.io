@@ -5558,6 +5558,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r444File),'utf8');
       assert.ok(txt.includes('2,360.00')&&txt.includes('3,515.00')&&txt.includes('5,875.00')&&txt.includes('90.00')&&txt.includes('285.00')&&txt.includes('375.00')&&txt.includes('5,500.00')&&txt.includes('93.62%')&&txt.includes('not_measured'),r444File+': contains exact 11-17 R20 sparseread+api-breaks closed-form parameters');
     }
+    // 2026-11-17 Night Round 21 (R445 Milestone: jackson-cmd/risk-aware-trading-agents + funnest-xyz/funnest-charts) verification
+    const r445PathA=2420.00+38.0*95.00;
+    assert.equal(r445PathA.toFixed(2),'6030.00','11-17 R21 Path A total');
+    const r445PathC=85.00+3.0*95.00;
+    assert.equal(r445PathC.toFixed(2),'370.00','11-17 R21 Path C total');
+    assert.equal((r445PathA-r445PathC).toFixed(2),'5660.00','11-17 R21 savings vs Path A');
+    assert.equal(((r445PathA-r445PathC)/r445PathA*100).toFixed(2),'93.86','11-17 R21 pct savings vs Path A');
+    for(const r445File of ['workshops/github-trending-radar/docs/risk-aware-trading-agents-funnest-charts-minute-exact-zero-lookahead-backtest-mcp-financial-charts-selection-faq.md','workshops/github-trending-radar/docs/risk-aware-trading-agents-funnest-charts-minute-exact-zero-lookahead-backtest-mcp-financial-charts-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r21-risk-aware-funnest-charts.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r445File),'utf8');
+      assert.ok(txt.includes('2,420.00')&&txt.includes('3,610.00')&&txt.includes('6,030.00')&&txt.includes('85.00')&&txt.includes('285.00')&&txt.includes('370.00')&&txt.includes('5,660.00')&&txt.includes('93.86%')&&txt.includes('not_measured'),r445File+': contains exact 11-17 R21 risk-aware+funnest-charts closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
