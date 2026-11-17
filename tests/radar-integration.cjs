@@ -5437,6 +5437,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r433File),'utf8');
       assert.ok(txt.includes('1,840.00')&&txt.includes('3,700.00')&&txt.includes('5,540.00')&&txt.includes('80.00')&&txt.includes('300.00')&&txt.includes('380.00')&&txt.includes('5,160.00')&&txt.includes('93.14%')&&txt.includes('not_measured'),r433File+': contains exact 11-17 R9 emulator-ui+diffcode closed-form parameters');
     }
+    // 2026-11-17 Night Round 10 (R434: pmndre/pine + czg86389-hub/ACP-Ant + theRizwan/community-claude-code) verification
+    const r434PathA=2080.00+39.0*100.00;
+    assert.equal(r434PathA.toFixed(2),'5980.00','11-17 R10 Path A total');
+    const r434PathC=110.00+3.1*100.00;
+    assert.equal(r434PathC.toFixed(2),'420.00','11-17 R10 Path C total');
+    assert.equal((r434PathA-r434PathC).toFixed(2),'5560.00','11-17 R10 savings vs Path A');
+    assert.equal(((r434PathA-r434PathC)/r434PathA*100).toFixed(2),'92.98','11-17 R10 pct savings vs Path A');
+    for(const r434File of ['workshops/github-trending-radar/docs/pine-acp-ant-community-claude-code-event-driven-reactive-agent-bus-multi-provider-acp-gateway-selection-faq.md','workshops/github-trending-radar/docs/pine-acp-ant-community-claude-code-event-driven-reactive-agent-bus-multi-provider-acp-gateway-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r10-pine-acpant-ccc.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r434File),'utf8');
+      assert.ok(txt.includes('2,080.00')&&txt.includes('3,900.00')&&txt.includes('5,980.00')&&txt.includes('110.00')&&txt.includes('310.00')&&txt.includes('420.00')&&txt.includes('5,560.00')&&txt.includes('92.98%')&&txt.includes('not_measured'),r434File+': contains exact 11-17 R10 pine+acpant+ccc closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
