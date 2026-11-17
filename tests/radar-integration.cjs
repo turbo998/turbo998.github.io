@@ -5800,6 +5800,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r466File),'utf8');
       assert.ok(txt.includes('2,370.00')&&txt.includes('3,515.00')&&txt.includes('5,885.00')&&txt.includes('80.00')&&txt.includes('266.00')&&txt.includes('346.00')&&txt.includes('5,539.00')&&txt.includes('94.12%')&&txt.includes('not_measured'),r466File+': contains exact 11-17 R42 dbbranch+reflektor+icode closed-form parameters');
     }
+    // 2026-11-17 Night Round 43 (R467: owlinthebarnai/video-studio-kit + livliv-dev/stage & xiaoxinghu/diff-review) verification
+    const r467PathA=2290.00+36.0*95.00;
+    assert.equal(r467PathA.toFixed(2),'5710.00','11-17 R43 Path A total');
+    const r467PathC=75.00+2.8*95.00;
+    assert.equal(r467PathC.toFixed(2),'341.00','11-17 R43 Path C total');
+    assert.equal((r467PathA-r467PathC).toFixed(2),'5369.00','11-17 R43 savings vs Path A');
+    assert.equal(((r467PathA-r467PathC)/r467PathA*100).toFixed(2),'94.03','11-17 R43 pct savings vs Path A');
+    for(const r467File of ['workshops/github-trending-radar/docs/video-studio-kit-livliv-stage-diff-review-109style-local-video-30avatar-stage-lsp-json-diff-selection-faq.md','workshops/github-trending-radar/docs/video-studio-kit-livliv-stage-diff-review-109style-local-video-30avatar-stage-lsp-json-diff-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r43-video-studio-livliv-diff-review.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r467File),'utf8');
+      assert.ok(txt.includes('2,290.00')&&txt.includes('3,420.00')&&txt.includes('5,710.00')&&txt.includes('75.00')&&txt.includes('266.00')&&txt.includes('341.00')&&txt.includes('5,369.00')&&txt.includes('94.03%')&&txt.includes('not_measured'),r467File+': contains exact 11-17 R43 videostudio+livliv+diffreview closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
