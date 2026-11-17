@@ -5877,6 +5877,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r473File),'utf8');
       assert.ok(txt.includes('2,410.00')&&txt.includes('3,515.00')&&txt.includes('5,925.00')&&txt.includes('80.00')&&txt.includes('266.00')&&txt.includes('346.00')&&txt.includes('5,579.00')&&txt.includes('94.16%')&&txt.includes('not_measured'),r473File+': contains exact 11-17 R49 ademark+rotaz+orchard closed-form parameters');
     }
+    // 2026-11-17 Night Round 50 (R474: capthvnsen/hermes-conductor + elrincondeldev/tomari & RazvanR1/Vatra) verification
+    const r474PathA=2330.00+37.0*95.00;
+    assert.equal(r474PathA.toFixed(2),'5845.00','11-17 R50 Path A total');
+    const r474PathC=75.00+2.8*95.00;
+    assert.equal(r474PathC.toFixed(2),'341.00','11-17 R50 Path C total');
+    assert.equal((r474PathA-r474PathC).toFixed(2),'5504.00','11-17 R50 savings vs Path A');
+    assert.equal(((r474PathA-r474PathC)/r474PathA*100).toFixed(2),'94.17','11-17 R50 pct savings vs Path A');
+    for(const r474File of ['workshops/github-trending-radar/docs/hermes-conductor-tomari-vatra-zero-token-wait-12agent-ceo-8state-session-strip-backtested-local-brain-selection-faq.md','workshops/github-trending-radar/docs/hermes-conductor-tomari-vatra-zero-token-wait-12agent-ceo-8state-session-strip-backtested-local-brain-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r50-conductor-tomari-vatra.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r474File),'utf8');
+      assert.ok(txt.includes('2,330.00')&&txt.includes('3,515.00')&&txt.includes('5,845.00')&&txt.includes('75.00')&&txt.includes('266.00')&&txt.includes('341.00')&&txt.includes('5,504.00')&&txt.includes('94.17%')&&txt.includes('not_measured'),r474File+': contains exact 11-17 R50 conductor+tomari+vatra closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
