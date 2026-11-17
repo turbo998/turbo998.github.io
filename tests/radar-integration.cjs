@@ -5822,6 +5822,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r468File),'utf8');
       assert.ok(txt.includes('2,380.00')&&txt.includes('3,515.00')&&txt.includes('5,895.00')&&txt.includes('80.00')&&txt.includes('266.00')&&txt.includes('346.00')&&txt.includes('5,549.00')&&txt.includes('94.13%')&&txt.includes('not_measured'),r468File+': contains exact 11-17 R44 tokensafe+rollingsum+lessons closed-form parameters');
     }
+    // 2026-11-17 Night Round 45 (R469: petekp/coordinator + linggan121/visual-fidelity & michaelmagan/spared) verification
+    const r469PathA=2350.00+37.0*95.00;
+    assert.equal(r469PathA.toFixed(2),'5865.00','11-17 R45 Path A total');
+    const r469PathC=80.00+2.8*95.00;
+    assert.equal(r469PathC.toFixed(2),'346.00','11-17 R45 Path C total');
+    assert.equal((r469PathA-r469PathC).toFixed(2),'5519.00','11-17 R45 savings vs Path A');
+    assert.equal(((r469PathA-r469PathC)/r469PathA*100).toFixed(2),'94.10','11-17 R45 pct savings vs Path A');
+    for(const r469File of ['workshops/github-trending-radar/docs/coordinator-visual-fidelity-spared-herdr-fleet-manager-1px-dom-ui-verdict-wasm-sqlite-host-selection-faq.md','workshops/github-trending-radar/docs/coordinator-visual-fidelity-spared-herdr-fleet-manager-1px-dom-ui-verdict-wasm-sqlite-host-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r45-coordinator-visual-fidelity-spared.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r469File),'utf8');
+      assert.ok(txt.includes('2,350.00')&&txt.includes('3,515.00')&&txt.includes('5,865.00')&&txt.includes('80.00')&&txt.includes('266.00')&&txt.includes('346.00')&&txt.includes('5,519.00')&&txt.includes('94.10%')&&txt.includes('not_measured'),r469File+': contains exact 11-17 R45 coordinator+visualfidelity+spared closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
