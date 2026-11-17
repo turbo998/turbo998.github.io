@@ -5415,6 +5415,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r431File),'utf8');
       assert.ok(txt.includes('2,250.00')&&txt.includes('4,100.00')&&txt.includes('6,350.00')&&txt.includes('135.00')&&txt.includes('330.00')&&txt.includes('465.00')&&txt.includes('5,885.00')&&txt.includes('92.68%')&&txt.includes('not_measured'),r431File+': contains exact 11-17 R7 tamserve+openautark closed-form parameters');
     }
+    // 2026-11-17 Night Round 8 (R432: hyeonsang010716/OpenDocKit + tensorpass/aiconnect) verification
+    const r432PathA=2120.00+38.0*95.00;
+    assert.equal(r432PathA.toFixed(2),'5730.00','11-17 R8 Path A total');
+    const r432PathC=90.00+3.0*95.00;
+    assert.equal(r432PathC.toFixed(2),'375.00','11-17 R8 Path C total');
+    assert.equal((r432PathA-r432PathC).toFixed(2),'5355.00','11-17 R8 savings vs Path A');
+    assert.equal(((r432PathA-r432PathC)/r432PathA*100).toFixed(2),'93.46','11-17 R8 pct savings vs Path A');
+    for(const r432File of ['workshops/github-trending-radar/docs/opendockit-aiconnect-isolated-11format-mit-rag-document-parser-visitor-byo-ai-wallet-mcp-sdk-selection-faq.md','workshops/github-trending-radar/docs/opendockit-aiconnect-isolated-11format-mit-rag-document-parser-visitor-byo-ai-wallet-mcp-sdk-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r8-opendockit-aiconnect.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r432File),'utf8');
+      assert.ok(txt.includes('2,120.00')&&txt.includes('3,610.00')&&txt.includes('5,730.00')&&txt.includes('90.00')&&txt.includes('285.00')&&txt.includes('375.00')&&txt.includes('5,355.00')&&txt.includes('93.46%')&&txt.includes('not_measured'),r432File+': contains exact 11-17 R8 opendockit+aiconnect closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
