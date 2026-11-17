@@ -5393,6 +5393,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r429File),'utf8');
       assert.ok(txt.includes('2,160.00')&&txt.includes('4,000.00')&&txt.includes('6,160.00')&&txt.includes('115.00')&&txt.includes('320.00')&&txt.includes('435.00')&&txt.includes('5,725.00')&&txt.includes('92.94%')&&txt.includes('not_measured'),r429File+': contains exact 11-17 R5 runelay+pulsar+cache-finops closed-form parameters');
     }
+    // 2026-11-17 Night Round 6 (R430 Milestone: GenesisAgentInfra/genesis + thesysdev/opendashboards) verification
+    const r430PathA=1950.00+39.0*100.00;
+    assert.equal(r430PathA.toFixed(2),'5850.00','11-17 R6 Path A total');
+    const r430PathC=105.00+3.1*100.00;
+    assert.equal(r430PathC.toFixed(2),'415.00','11-17 R6 Path C total');
+    assert.equal((r430PathA-r430PathC).toFixed(2),'5435.00','11-17 R6 savings vs Path A');
+    assert.equal(((r430PathA-r430PathC)/r430PathA*100).toFixed(2),'92.91','11-17 R6 pct savings vs Path A');
+    for(const r430File of ['workshops/github-trending-radar/docs/genesis-opendashboards-quote-verified-business-flow-pr-risk-map-selfhosted-multi-source-bi-dashboard-selection-faq.md','workshops/github-trending-radar/docs/genesis-opendashboards-quote-verified-business-flow-pr-risk-map-selfhosted-multi-source-bi-dashboard-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r6-genesis-opendashboards.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r430File),'utf8');
+      assert.ok(txt.includes('1,950.00')&&txt.includes('3,900.00')&&txt.includes('5,850.00')&&txt.includes('105.00')&&txt.includes('310.00')&&txt.includes('415.00')&&txt.includes('5,435.00')&&txt.includes('92.91%')&&txt.includes('not_measured'),r430File+': contains exact 11-17 R6 genesis+opendashboards closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
