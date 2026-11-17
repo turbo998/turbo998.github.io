@@ -5320,6 +5320,35 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r424File),'utf8');
       assert.ok(txt.includes('1,915.00')&&txt.includes('3,950.00')&&txt.includes('5,865.00')&&txt.includes('70.00')&&txt.includes('310.00')&&txt.includes('380.00')&&txt.includes('5,485.00')&&txt.includes('93.52%')&&txt.includes('not_measured'),r424File+': contains exact 11-16 R67 miroir+keepsake+tyx-signature+tuna-fonts closed-form parameters');
     }
+    // 2026-11-17 Raw Evidence SHA-256, Track A/B & Night Round 1 (R425: cursor/plugins + sybil-solutions/inference-optimisation-skill) verification
+    const rawHtml1117=fs.readFileSync(path.join(__dirname,'..','workshops','github-trending-radar','evidence','trending-daily-2026-11-17-raw.html'),'utf8').replace(/\r\n/g,'\n');
+    assert.equal(crypto.createHash('sha256').update(rawHtml1117).digest('hex'),'975ae3c4bbec531e7c1c6a722ba14e463d9798212c29d24b49df8e7a8bb2bd51','2026-11-17 raw HTML LF sha256');
+    const rawSearch1117Str=fs.readFileSync(path.join(__dirname,'..','workshops','github-trending-radar','evidence','search-new-repos-2026-11-17-raw.json'),'utf8').replace(/\r\n/g,'\n');
+    assert.equal(crypto.createHash('sha256').update(rawSearch1117Str).digest('hex'),'56ea621365827534ce665c4a2729ced5223772ed2d90bd0c68d97328f69b378e','2026-11-17 raw Search JSON LF sha256');
+    const rawSearch1117=JSON.parse(rawSearch1117Str);
+    const rawSearch1117Map=new Map(rawSearch1117.items.map(it=>[it.full_name,it]));
+    for(const item of reportJson.fastest_rising_leaderboard_2026_11_17.track_a_24h_star_surge){
+      assert.equal(item.provenance,'measured',item.full_name+': 11-17 Track A provenance');
+      assert.ok(rawHtml1117.includes(`href="/${item.full_name}"`),item.full_name+': present in 11-17 raw HTML');
+      assert.ok(rawHtml1117.includes(`${item.stars_today.toLocaleString('en-US')} stars today`),item.full_name+': exact stars_today in 11-17 raw HTML');
+    }
+    for(const item of reportJson.fastest_rising_leaderboard_2026_11_17.track_b_new_repo_breakout_slope){
+      assert.equal(item.stars_today,'not_measured',item.full_name+': 11-17 Track B stars_today must be not_measured');
+      assert.ok(rawSearch1117Map.has(item.full_name),item.full_name+': present in 11-17 archived Search API JSON');
+      const rawEntry=rawSearch1117Map.get(item.full_name);
+      assert.equal(item.stars_total_search_api,rawEntry.stargazers_count,item.full_name+': 11-17 stars_total_search_api matches Search API JSON');
+      assert.equal(item.stars_per_day,Math.round(item.stars_total/item.age_days),item.full_name+': 11-17 stars_per_day closed-form');
+    }
+    const r425PathA=2040.00+42.0*100.00;
+    assert.equal(r425PathA.toFixed(2),'6240.00','11-17 R1 Path A total');
+    const r425PathC=120.00+3.4*100.00;
+    assert.equal(r425PathC.toFixed(2),'460.00','11-17 R1 Path C total');
+    assert.equal((r425PathA-r425PathC).toFixed(2),'5780.00','11-17 R1 savings vs Path A');
+    assert.equal(((r425PathA-r425PathC)/r425PathA*100).toFixed(2),'92.63','11-17 R1 pct savings vs Path A');
+    for(const r425File of ['workshops/github-trending-radar/docs/cursor-plugins-inference-optimisation-skill-enterprise-agent-plugin-marketplace-roofline-ab-llm-serving-selection-faq.md','workshops/github-trending-radar/docs/cursor-plugins-inference-optimisation-skill-enterprise-agent-plugin-marketplace-roofline-ab-llm-serving-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r1-cursor-plugins-inference-optimisation.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r425File),'utf8');
+      assert.ok(txt.includes('2,040.00')&&txt.includes('4,200.00')&&txt.includes('6,240.00')&&txt.includes('120.00')&&txt.includes('340.00')&&txt.includes('460.00')&&txt.includes('5,780.00')&&txt.includes('92.63%')&&txt.includes('not_measured'),r425File+': contains exact 11-17 R1 cursor-plugins+inference-optimisation closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
