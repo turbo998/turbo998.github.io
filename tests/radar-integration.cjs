@@ -5602,6 +5602,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r448File),'utf8');
       assert.ok(txt.includes('2,480.00')&&txt.includes('3,610.00')&&txt.includes('6,090.00')&&txt.includes('90.00')&&txt.includes('285.00')&&txt.includes('375.00')&&txt.includes('5,715.00')&&txt.includes('93.84%')&&txt.includes('not_measured'),r448File+': contains exact 11-17 R24 viralforge+motlab closed-form parameters');
     }
+    // 2026-11-17 Night Round 25 (R449: andyhuo520/beanpod + molly554/whiteboard-ai-tutor) verification
+    const r449PathA=2120.00+36.0*95.00;
+    assert.equal(r449PathA.toFixed(2),'5540.00','11-17 R25 Path A total');
+    const r449PathC=80.00+2.8*95.00;
+    assert.equal(r449PathC.toFixed(2),'346.00','11-17 R25 Path C total');
+    assert.equal((r449PathA-r449PathC).toFixed(2),'5194.00','11-17 R25 savings vs Path A');
+    assert.equal(((r449PathA-r449PathC)/r449PathA*100).toFixed(2),'93.75','11-17 R25 pct savings vs Path A');
+    for(const r449File of ['workshops/github-trending-radar/docs/beanpod-whiteboard-ai-tutor-local-qwen3-asr-voice-hardware-mcp-stroke-streaming-whiteboard-benchmark-selection-faq.md','workshops/github-trending-radar/docs/beanpod-whiteboard-ai-tutor-local-qwen3-asr-voice-hardware-mcp-stroke-streaming-whiteboard-benchmark-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r25-beanpod-whiteboard-tutor.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r449File),'utf8');
+      assert.ok(txt.includes('2,120.00')&&txt.includes('3,420.00')&&txt.includes('5,540.00')&&txt.includes('80.00')&&txt.includes('266.00')&&txt.includes('346.00')&&txt.includes('5,194.00')&&txt.includes('93.75%')&&txt.includes('not_measured'),r449File+': contains exact 11-17 R25 beanpod+whiteboard-tutor closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
