@@ -5745,6 +5745,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r461File),'utf8');
       assert.ok(txt.includes('2,310.00')&&txt.includes('3,515.00')&&txt.includes('5,825.00')&&txt.includes('80.00')&&txt.includes('266.00')&&txt.includes('346.00')&&txt.includes('5,479.00')&&txt.includes('94.06%')&&txt.includes('not_measured'),r461File+': contains exact 11-17 R37 borg+pstack+rex closed-form parameters');
     }
+    // 2026-11-17 Night Round 38 (R462: Jakeschincariol/whale-skill + zarockfat/zgg-find-ecommerce-skills) verification
+    const r462PathA=2250.00+36.0*95.00;
+    assert.equal(r462PathA.toFixed(2),'5670.00','11-17 R38 Path A total');
+    const r462PathC=75.00+2.8*95.00;
+    assert.equal(r462PathC.toFixed(2),'341.00','11-17 R38 Path C total');
+    assert.equal((r462PathA-r462PathC).toFixed(2),'5329.00','11-17 R38 savings vs Path A');
+    assert.equal(((r462PathA-r462PathC)/r462PathA*100).toFixed(2),'93.99','11-17 R38 pct savings vs Path A');
+    for(const r462File of ['workshops/github-trending-radar/docs/whale-skill-zgg-find-ecommerce-skills-11skill-b2b-presale-validation-161skill-ecommerce-navigator-selection-faq.md','workshops/github-trending-radar/docs/whale-skill-zgg-find-ecommerce-skills-11skill-b2b-presale-validation-161skill-ecommerce-navigator-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r38-whale-skill-zgg-ecommerce.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r462File),'utf8');
+      assert.ok(txt.includes('2,250.00')&&txt.includes('3,420.00')&&txt.includes('5,670.00')&&txt.includes('75.00')&&txt.includes('266.00')&&txt.includes('341.00')&&txt.includes('5,329.00')&&txt.includes('93.99%')&&txt.includes('not_measured'),r462File+': contains exact 11-17 R38 whale+zgg closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
