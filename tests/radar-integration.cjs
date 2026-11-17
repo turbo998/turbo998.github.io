@@ -5855,6 +5855,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r471File),'utf8');
       assert.ok(txt.includes('2,260.00')&&txt.includes('3,420.00')&&txt.includes('5,680.00')&&txt.includes('75.00')&&txt.includes('266.00')&&txt.includes('341.00')&&txt.includes('5,339.00')&&txt.includes('94.00%')&&txt.includes('not_measured'),r471File+': contains exact 11-17 R47 whiteboard+motionkit+spinehero closed-form parameters');
     }
+    // 2026-11-17 Night Round 48 (R472: u-ichi/agent-plugins + AlexPEClub/software-factory & chinhkrb113/devflow-kit) verification
+    const r472PathA=2360.00+37.0*95.00;
+    assert.equal(r472PathA.toFixed(2),'5875.00','11-17 R48 Path A total');
+    const r472PathC=80.00+2.8*95.00;
+    assert.equal(r472PathC.toFixed(2),'346.00','11-17 R48 Path C total');
+    assert.equal((r472PathA-r472PathC).toFixed(2),'5529.00','11-17 R48 savings vs Path A');
+    assert.equal(((r472PathA-r472PathC)/r472PathA*100).toFixed(2),'94.11','11-17 R48 pct savings vs Path A');
+    for(const r472File of ['workshops/github-trending-radar/docs/agent-plugins-figure-docs-software-factory-devflow-kit-150diagram-docs-3container-blind-acceptance-11skill-sdlc-selection-faq.md','workshops/github-trending-radar/docs/agent-plugins-figure-docs-software-factory-devflow-kit-150diagram-docs-3container-blind-acceptance-11skill-sdlc-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r48-figuredocs-factory-devflow.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r472File),'utf8');
+      assert.ok(txt.includes('2,360.00')&&txt.includes('3,515.00')&&txt.includes('5,875.00')&&txt.includes('80.00')&&txt.includes('266.00')&&txt.includes('346.00')&&txt.includes('5,529.00')&&txt.includes('94.11%')&&txt.includes('not_measured'),r472File+': contains exact 11-17 R48 figuredocs+factory+devflow closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
