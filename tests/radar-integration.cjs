@@ -5569,6 +5569,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r445File),'utf8');
       assert.ok(txt.includes('2,420.00')&&txt.includes('3,610.00')&&txt.includes('6,030.00')&&txt.includes('85.00')&&txt.includes('285.00')&&txt.includes('370.00')&&txt.includes('5,660.00')&&txt.includes('93.86%')&&txt.includes('not_measured'),r445File+': contains exact 11-17 R21 risk-aware+funnest-charts closed-form parameters');
     }
+    // 2026-11-17 Night Round 22 (R446: Faixiang/UI-Kit-Aggregator-MCP + diego3g/craft) verification
+    const r446PathA=1920.00+36.0*95.00;
+    assert.equal(r446PathA.toFixed(2),'5340.00','11-17 R22 Path A total');
+    const r446PathC=70.00+2.8*95.00;
+    assert.equal(r446PathC.toFixed(2),'336.00','11-17 R22 Path C total');
+    assert.equal((r446PathA-r446PathC).toFixed(2),'5004.00','11-17 R22 savings vs Path A');
+    assert.equal(((r446PathA-r446PathC)/r446PathA*100).toFixed(2),'93.71','11-17 R22 pct savings vs Path A');
+    for(const r446File of ['workshops/github-trending-radar/docs/ui-kit-aggregator-mcp-craft-license-gated-9catalog-ui-mcp-7skill-design-system-state-matrix-selection-faq.md','workshops/github-trending-radar/docs/ui-kit-aggregator-mcp-craft-license-gated-9catalog-ui-mcp-7skill-design-system-state-matrix-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r22-uikit-mcp-craft.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r446File),'utf8');
+      assert.ok(txt.includes('1,920.00')&&txt.includes('3,420.00')&&txt.includes('5,340.00')&&txt.includes('70.00')&&txt.includes('266.00')&&txt.includes('336.00')&&txt.includes('5,004.00')&&txt.includes('93.71%')&&txt.includes('not_measured'),r446File+': contains exact 11-17 R22 uikit-mcp+craft closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
