@@ -5459,6 +5459,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r435File),'utf8');
       assert.ok(txt.includes('2,020.00')&&txt.includes('4,000.00')&&txt.includes('6,020.00')&&txt.includes('105.00')&&txt.includes('310.00')&&txt.includes('415.00')&&txt.includes('5,605.00')&&txt.includes('93.11%')&&txt.includes('not_measured'),r435File+': contains exact 11-17 R11 alphagbm+scientist+muse closed-form parameters');
     }
+    // 2026-11-17 Night Round 12 (R436: liangdabiao/redfox_api_skill + invzhi/wechat-use) verification
+    const r436PathA=1860.00+38.0*95.00;
+    assert.equal(r436PathA.toFixed(2),'5470.00','11-17 R12 Path A total');
+    const r436PathC=95.00+3.0*95.00;
+    assert.equal(r436PathC.toFixed(2),'380.00','11-17 R12 Path C total');
+    assert.equal((r436PathA-r436PathC).toFixed(2),'5090.00','11-17 R12 savings vs Path A');
+    assert.equal(((r436PathA-r436PathC)/r436PathA*100).toFixed(2),'93.05','11-17 R12 pct savings vs Path A');
+    for(const r436File of ['workshops/github-trending-radar/docs/redfox-api-skill-wechat-use-201endpoint-28platform-social-data-skill-hitl-container-wechat-mcp-selection-faq.md','workshops/github-trending-radar/docs/redfox-api-skill-wechat-use-201endpoint-28platform-social-data-skill-hitl-container-wechat-mcp-selection-faq.en.md','assets/github-ai-radar-2026-11-17-r12-redfox-wechat-use.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-17-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r436File),'utf8');
+      assert.ok(txt.includes('1,860.00')&&txt.includes('3,610.00')&&txt.includes('5,470.00')&&txt.includes('95.00')&&txt.includes('285.00')&&txt.includes('380.00')&&txt.includes('5,090.00')&&txt.includes('93.05%')&&txt.includes('not_measured'),r436File+': contains exact 11-17 R12 redfox+wechat-use closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
