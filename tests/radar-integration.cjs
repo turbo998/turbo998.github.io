@@ -6425,6 +6425,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r521File),'utf8');
       assert.ok(txt.includes('2,660.00')&&txt.includes('4,100.00')&&txt.includes('6,760.00')&&txt.includes('80.00')&&txt.includes('270.00')&&txt.includes('350.00')&&txt.includes('6,410.00')&&txt.includes('94.82%')&&txt.includes('not_measured'),r521File+': contains exact 11-18 R41 R521 archify+diagramdesign+ihaveadhd+ifixai closed-form parameters');
     }
+    // 2026-11-18 Night Round 42 (R522: virgiliojr94/book-to-skill + h4ckf0r0day/obscura + browser-use/video-use + xai-org/grok-build) verification
+    const r522PathA=2780.00+42.0*100.00;
+    assert.equal(r522PathA.toFixed(2),'6980.00','11-18 R42 R522 Path A total');
+    const r522PathC=85.00+2.8*100.00;
+    assert.equal(r522PathC.toFixed(2),'365.00','11-18 R42 R522 Path C total');
+    assert.equal((r522PathA-r522PathC).toFixed(2),'6615.00','11-18 R42 R522 savings vs Path A');
+    assert.equal(((r522PathA-r522PathC)/r522PathA*100).toFixed(2),'94.77','11-18 R42 R522 pct savings vs Path A');
+    for(const r522File of ['workshops/github-trending-radar/docs/book-to-skill-obscura-video-use-grok-build-24to51x-token-book-distiller-30mb-85ms-rust-browser-parallel-subagent-video-editor-xai-rust-acp-tui-selection-faq.md','workshops/github-trending-radar/docs/book-to-skill-obscura-video-use-grok-build-24to51x-token-book-distiller-30mb-85ms-rust-browser-parallel-subagent-video-editor-xai-rust-acp-tui-selection-faq.en.md','assets/github-ai-radar-2026-11-18-r42-booktoskill-obscura-videouse-grokbuild.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-18-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r522File),'utf8');
+      assert.ok(txt.includes('2,780.00')&&txt.includes('4,200.00')&&txt.includes('6,980.00')&&txt.includes('85.00')&&txt.includes('280.00')&&txt.includes('365.00')&&txt.includes('6,615.00')&&txt.includes('94.77%')&&txt.includes('not_measured'),r522File+': contains exact 11-18 R42 R522 booktoskill+obscura+videouse+grokbuild closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
