@@ -6304,6 +6304,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r510File),'utf8');
       assert.ok(txt.includes('2,580.00')&&txt.includes('4,100.00')&&txt.includes('6,680.00')&&txt.includes('80.00')&&txt.includes('280.00')&&txt.includes('360.00')&&txt.includes('6,320.00')&&txt.includes('94.61%')&&txt.includes('not_measured'),r510File+': contains exact 11-18 R30 R510 nod+sheprd+ovis+golive closed-form parameters');
     }
+    // 2026-11-18 Night Round 31 (R511: Louis-CFM/coucou + kuafuai/andee + oil-oil/oil-ui + krishhgg/Insomnia) verification
+    const r511PathA=2440.00+39.5*100.00;
+    assert.equal(r511PathA.toFixed(2),'6390.00','11-18 R31 R511 Path A total');
+    const r511PathC=75.00+2.7*100.00;
+    assert.equal(r511PathC.toFixed(2),'345.00','11-18 R31 R511 Path C total');
+    assert.equal((r511PathA-r511PathC).toFixed(2),'6045.00','11-18 R31 R511 savings vs Path A');
+    assert.equal(((r511PathA-r511PathC)/r511PathA*100).toFixed(2),'94.60','11-18 R31 R511 pct savings vs Path A');
+    for(const r511File of ['workshops/github-trending-radar/docs/coucou-andee-oil-ui-insomnia-notch-dynamic-island-parakeet-zero-root-mobile-agent-3-direction-ui-timed-awake-selection-faq.md','workshops/github-trending-radar/docs/coucou-andee-oil-ui-insomnia-notch-dynamic-island-parakeet-zero-root-mobile-agent-3-direction-ui-timed-awake-selection-faq.en.md','assets/github-ai-radar-2026-11-18-r31-coucou-andee-oilui-insomnia.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-18-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r511File),'utf8');
+      assert.ok(txt.includes('2,440.00')&&txt.includes('3,950.00')&&txt.includes('6,390.00')&&txt.includes('75.00')&&txt.includes('270.00')&&txt.includes('345.00')&&txt.includes('6,045.00')&&txt.includes('94.60%')&&txt.includes('not_measured'),r511File+': contains exact 11-18 R31 R511 coucou+andee+oilui+insomnia closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
