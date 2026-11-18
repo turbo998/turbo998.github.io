@@ -6027,6 +6027,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r485File),'utf8');
       assert.ok(txt.includes('2,550.00')&&txt.includes('4,200.00')&&txt.includes('6,750.00')&&txt.includes('105.00')&&txt.includes('310.00')&&txt.includes('415.00')&&txt.includes('6,335.00')&&txt.includes('93.85%')&&txt.includes('not_measured'),r485File+': contains exact 11-18 R5 openfabriq+aoa+mobileqa closed-form parameters');
     }
+    // 2026-11-18 Night Round 6 (R486: arpitpatel25/ReadAnyDoc + axium-lab/mcp-mock + amkkoussay/Mersad) verification
+    const r486PathA=2180.00+37.0*100.00;
+    assert.equal(r486PathA.toFixed(2),'5880.00','11-18 R6 Path A total');
+    const r486PathC=115.00+2.8*100.00;
+    assert.equal(r486PathC.toFixed(2),'395.00','11-18 R6 Path C total');
+    assert.equal((r486PathA-r486PathC).toFixed(2),'5485.00','11-18 R6 savings vs Path A');
+    assert.equal(((r486PathA-r486PathC)/r486PathA*100).toFixed(2),'93.28','11-18 R6 pct savings vs Path A');
+    for(const r486File of ['workshops/github-trending-radar/docs/readanydoc-mcp-mock-mersad-word-cited-reducto-doc-parser-multirevision-mcp-mock-bitemporal-decision-memory-selection-faq.md','workshops/github-trending-radar/docs/readanydoc-mcp-mock-mersad-word-cited-reducto-doc-parser-multirevision-mcp-mock-bitemporal-decision-memory-selection-faq.en.md','assets/github-ai-radar-2026-11-18-r6-readanydoc-mcpmock-mersad.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-18-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r486File),'utf8');
+      assert.ok(txt.includes('2,180.00')&&txt.includes('3,700.00')&&txt.includes('5,880.00')&&txt.includes('115.00')&&txt.includes('280.00')&&txt.includes('395.00')&&txt.includes('5,485.00')&&txt.includes('93.28%')&&txt.includes('not_measured'),r486File+': contains exact 11-18 R6 readanydoc+mcpmock+mersad closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
