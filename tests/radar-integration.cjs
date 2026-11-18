@@ -6216,6 +6216,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r502File),'utf8');
       assert.ok(txt.includes('2,120.00')&&txt.includes('3,750.00')&&txt.includes('5,870.00')&&txt.includes('70.00')&&txt.includes('260.00')&&txt.includes('330.00')&&txt.includes('5,540.00')&&txt.includes('94.38%')&&txt.includes('not_measured'),r502File+': contains exact 11-18 R22 R502 harp+dashboardskill+rederive+kikumap closed-form parameters');
     }
+    // 2026-11-18 Night Round 23 (R503: reacher-z/Awesome-CUA + x18n-dev/x18n + duyunzhoudyz/dyz-gongwen-skills + GortexAI/franco) verification
+    const r503PathA=2340.00+39.5*100.00;
+    assert.equal(r503PathA.toFixed(2),'6290.00','11-18 R23 R503 Path A total');
+    const r503PathC=75.00+2.7*100.00;
+    assert.equal(r503PathC.toFixed(2),'345.00','11-18 R23 R503 Path C total');
+    assert.equal((r503PathA-r503PathC).toFixed(2),'5945.00','11-18 R23 R503 savings vs Path A');
+    assert.equal(((r503PathA-r503PathC)/r503PathA*100).toFixed(2),'94.52','11-18 R23 R503 pct savings vs Path A');
+    for(const r503File of ['workshops/github-trending-radar/docs/awesome-cua-x18n-dyz-gongwen-skills-franco-5347-cua-catalog-45-preset-i18n-lint-gbt9704-docx-raad-outbound-selection-faq.md','workshops/github-trending-radar/docs/awesome-cua-x18n-dyz-gongwen-skills-franco-5347-cua-catalog-45-preset-i18n-lint-gbt9704-docx-raad-outbound-selection-faq.en.md','assets/github-ai-radar-2026-11-18-r23-awesomecua-x18n-gongwen-franco.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-18-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r503File),'utf8');
+      assert.ok(txt.includes('2,340.00')&&txt.includes('3,950.00')&&txt.includes('6,290.00')&&txt.includes('75.00')&&txt.includes('270.00')&&txt.includes('345.00')&&txt.includes('5,945.00')&&txt.includes('94.52%')&&txt.includes('not_measured'),r503File+': contains exact 11-18 R23 R503 awesomecua+x18n+gongwen+franco closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
