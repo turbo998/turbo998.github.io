@@ -12,7 +12,10 @@ const harnessCoevolutionTracked=[
   'workshops/agent-harness-coevolution/index.html',
   'workshops/agent-harness-coevolution/index.en.html',
   'workshops/agent-harness-coevolution/cards.zh.html',
-  'workshops/agent-harness-coevolution/cards.html'
+  'workshops/agent-harness-coevolution/cards.html',
+  'workshops/benchmarks/gpt-6-2-sol-cards.html',
+  'workshops/benchmarks/gpt-6-2-sol-cards.en.html',
+  'workshops/benchmarks/gpt-6-2-sol-cards.zh-CN.html'
 ];
 function localeRegistry(priorRecords=[]) {
   const pairs=new Map();
@@ -30,6 +33,8 @@ function localeRegistry(priorRecords=[]) {
   add('articles/agent-harness-coevolution.en.html','articles/agent-harness-coevolution.html');
   add('workshops/agent-harness-coevolution/index.en.html','workshops/agent-harness-coevolution/index.html');
   add('workshops/agent-harness-coevolution/cards.html','workshops/agent-harness-coevolution/cards.zh.html');
+  add('workshops/benchmarks/gpt-6-2-sol-cards.en.html','workshops/benchmarks/gpt-6-2-sol-cards.zh-CN.html');
+  pairs.set('workshops/benchmarks/gpt-6-2-sol-cards.html',{en:'workshops/benchmarks/gpt-6-2-sol-cards.en.html',zh:'workshops/benchmarks/gpt-6-2-sol-cards.zh-CN.html'});
   for(const file of htmlFiles().filter(file=>file.startsWith('studio/')&&!path.posix.basename(file).startsWith('zh-'))) {
     const zh=file.replace(/([^/]+)$/,'zh-$1');if(fs.existsSync(path.join(root,zh)))add(file,zh);
   }

@@ -27,7 +27,7 @@ const topics = {
   infra: ['AI Infra', 'AI 基础设施', 'Trace the AI stack and its boundaries.', '读懂 AI 全栈与工程边界。', 'Phase 179 six-layer decisions, Azure runtimes, Tong–Yun–Ge supernodes, DeepInfer inference economics and E2B / Nomad heartbeat resilience.', 'Phase 179 六层决策、Azure 运行时、通–云–哥超节点、DeepInfer 推理经济性，以及 E2B / Nomad 心跳韧性。'],
   commerce: ['Agentic Commerce', '智能体商务', 'Ground the purchase. Verify the handoff.', '让交易接地，让交接可信。', 'Explore grounded product discovery, payment boundaries, and the checkout workflow.', '探索实时商品发现、支付边界与可信结账流程。'],
   voice: ['Voice', '语音', 'Listen to the whole pipeline.', '理解完整的语音管线。', 'Realtime conversation, enterprise scenarios, speaker separation, and original evaluation evidence.', '实时对话、企业场景、说话人分离，以及原始评测证据。'],
-  benchmarks: ['Benchmarks & Harness', '测评与 Harness', 'Inspect the method before the score.', '先看方法，再看分数。', 'Original evaluation protocols and archived reports. Each source retains its conditions, provenance, and limitations.', '阅读原始评测协议与归档报告。每份来源保留测试条件、溯源和适用局限。'],
+  benchmarks: ['Benchmarks & Harness', '测评与 Harness', 'Inspect the method before the score.', '先看方法，再看分数。', '21-model coding & routing archive (including Supplement 9 GPT-6.2 Sol 27-run live CAPI sweep), Agent Harness evaluations, and sealed 7-Card 4:5 reports.', '涵盖 21 模型编码与校准路由评测（含增补报告 9 GPT-6.2 Sol 27 轮实时 CAPI 五档扫掠）、Agent Harness 框架横评与密封 7-Card 4:5 报告，每份来源保留测试条件、溯源和适用局限。'],
   animation: ['Animation', '动画', 'Make the mechanism visible.', '让运行机制可见。', 'Procedural scenes, explanatory animation, and independent experiments built with code.', '用代码构建程序化场景、知识讲解动画与独立实验。'],
   game: ['Gaming', '游戏', 'Play the system you are studying.', '亲手体验正在研究的系统。', 'Playable prototypes, simulation loops, and the engineering decisions behind interactive worlds.', '可玩的原型、仿真循环，以及交互世界背后的工程决策。'],
   security: ['AI Security', 'AI 安全', 'Make trust boundaries explicit.', '明确每一道信任边界。', 'Architecture, defensive exercises, and original security evaluation reports.', '架构、攻防演练，以及原始安全评测报告。']
@@ -122,7 +122,12 @@ const worldMemPages = ['animation','generative-visual-lab'].flatMap(dir=>[
 ]);
 const nightlyVisualRegistry = path.join(root, 'animation/nightly-resources.json');
 const nightlyVisualPages = fs.existsSync(nightlyVisualRegistry) ? JSON.parse(fs.readFileSync(nightlyVisualRegistry, 'utf8')) : [];
-const archivePages = [...inventory.content, ...translations, ...webiqPages, ...radarPages, ...infraPages, ...dataLabPages, ...phase179Pages, ...clioHarnessPages, ...harnessFrameworksPages, ...harnessCoevolutionPages, ...commerceTrendsPages, ...camera4dPages, ...audiovisualFoleyPages, ...physGaussianPages, ...neuralRelightPages, ...worldMemPages, ...nightlyVisualPages].map(page => ({...page, tracks:[classifyPage(page), ...(page.tracks || []).filter(track => track !== classifyPage(page) && track !== 'infra')]}));
+const gpt62SolPages = [
+  {path:'workshops/benchmarks/gpt-6-2-sol-cards.html',role:'report',title:'Supplement 9: GPT-6.2 Sol Live Effort-Sweep, Calibrated Routing & 21-Model Frontier Benchmark (7-Card Deck)',tracks:['benchmarks'],language:{declared:'en'},supplemental:true},
+  {path:'workshops/benchmarks/gpt-6-2-sol-cards.en.html',role:'report',title:'Supplement 9: GPT-6.2 Sol Live Effort-Sweep, Calibrated Routing & 21-Model Frontier Benchmark (EN)',tracks:['benchmarks'],language:{declared:'en'},supplemental:true},
+  {path:'workshops/benchmarks/gpt-6-2-sol-cards.zh-CN.html',role:'report',title:'增补报告 9：GPT-6.2 Sol 全档推理强度实测、校准路由与二十一模型前沿基准报告 (中文)',tracks:['benchmarks'],language:{declared:'zh-CN'},supplemental:true}
+];
+const archivePages = [...inventory.content, ...translations, ...webiqPages, ...radarPages, ...infraPages, ...dataLabPages, ...phase179Pages, ...clioHarnessPages, ...harnessFrameworksPages, ...harnessCoevolutionPages, ...gpt62SolPages, ...commerceTrendsPages, ...camera4dPages, ...audiovisualFoleyPages, ...physGaussianPages, ...neuralRelightPages, ...worldMemPages, ...nightlyVisualPages].map(page => ({...page, tracks:[classifyPage(page), ...(page.tracks || []).filter(track => track !== classifyPage(page) && track !== 'infra')]}));
 function archiveNote(page, zh) {
   const t = (en, cn) => zh ? cn : en;
   const record = readingByPath.get(page.path);
