@@ -6282,6 +6282,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r508File),'utf8');
       assert.ok(txt.includes('2,420.00')&&txt.includes('3,950.00')&&txt.includes('6,370.00')&&txt.includes('75.00')&&txt.includes('270.00')&&txt.includes('345.00')&&txt.includes('6,025.00')&&txt.includes('94.58%')&&txt.includes('not_measured'),r508File+': contains exact 11-18 R28 R508 agentmemory+squadra+lcu+cloudroom closed-form parameters');
     }
+    // 2026-11-18 Night Round 29 (R509: google/elephant-goldfish-model + dzhng/jevgrep + kerpopule/hermes-jev-skills + skilltraining-project/skill-training) verification
+    const r509PathA=2620.00+40.5*100.00;
+    assert.equal(r509PathA.toFixed(2),'6670.00','11-18 R29 R509 Path A total');
+    const r509PathC=80.00+2.8*100.00;
+    assert.equal(r509PathC.toFixed(2),'360.00','11-18 R29 R509 Path C total');
+    assert.equal((r509PathA-r509PathC).toFixed(2),'6310.00','11-18 R29 R509 savings vs Path A');
+    assert.equal(((r509PathA-r509PathC)/r509PathA*100).toFixed(2),'94.60','11-18 R29 R509 pct savings vs Path A');
+    for(const r509File of ['workshops/github-trending-radar/docs/elephant-goldfish-model-jevgrep-hermes-jev-skills-skill-training-context-free-review-30pct-code-search-04s-routing-backward-skill-loop-selection-faq.md','workshops/github-trending-radar/docs/elephant-goldfish-model-jevgrep-hermes-jev-skills-skill-training-context-free-review-30pct-code-search-04s-routing-backward-skill-loop-selection-faq.en.md','assets/github-ai-radar-2026-11-18-r29-egm-jevgrep-hermesjev-skilltraining.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-18-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r509File),'utf8');
+      assert.ok(txt.includes('2,620.00')&&txt.includes('4,050.00')&&txt.includes('6,670.00')&&txt.includes('80.00')&&txt.includes('280.00')&&txt.includes('360.00')&&txt.includes('6,310.00')&&txt.includes('94.60%')&&txt.includes('not_measured'),r509File+': contains exact 11-18 R29 R509 egm+jevgrep+hermesjev+skilltraining closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
