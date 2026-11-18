@@ -6194,6 +6194,17 @@ async function main() {
     }
     const r500Wb=fs.readFileSync(path.join(__dirname,'..','workshops/github-trending-radar/r500-enterprise-agent-finops-workbench.html'),'utf8');
     assert.ok(r500Wb.includes('CLAIM-20261118-R20-R500-PAPERMATE-BLUEPRINT-OPENFACTURA-FABLEPROMPT')&&r500Wb.includes("default-src 'none'"),'R500 interactive workbench exists and is CSP self-contained');
+    // 2026-11-18 Night Round 21 (R501: RustXNG/RustXNG + Zleap-AI/SAG-Wiki + aicodeking/pandacode + StashDock/StashDock) verification
+    const r501PathA=2280.00+38.5*100.00;
+    assert.equal(r501PathA.toFixed(2),'6130.00','11-18 R21 R501 Path A total');
+    const r501PathC=75.00+2.7*100.00;
+    assert.equal(r501PathC.toFixed(2),'345.00','11-18 R21 R501 Path C total');
+    assert.equal((r501PathA-r501PathC).toFixed(2),'5785.00','11-18 R21 R501 savings vs Path A');
+    assert.equal(((r501PathA-r501PathC)/r501PathA*100).toFixed(2),'94.37','11-18 R21 R501 pct savings vs Path A');
+    for(const r501File of ['workshops/github-trending-radar/docs/rustxng-sag-wiki-pandacode-stashdock-token-budgeted-metasearch-200ms-zero-llm-index-tauri2-multi-cli-context-dock-selection-faq.md','workshops/github-trending-radar/docs/rustxng-sag-wiki-pandacode-stashdock-token-budgeted-metasearch-200ms-zero-llm-index-tauri2-multi-cli-context-dock-selection-faq.en.md','assets/github-ai-radar-2026-11-18-r21-rustxng-sagwiki-pandacode-stashdock.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-18-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r501File),'utf8');
+      assert.ok(txt.includes('2,280.00')&&txt.includes('3,850.00')&&txt.includes('6,130.00')&&txt.includes('75.00')&&txt.includes('270.00')&&txt.includes('345.00')&&txt.includes('5,785.00')&&txt.includes('94.37%')&&txt.includes('not_measured'),r501File+': contains exact 11-18 R21 R501 rustxng+sagwiki+pandacode+stashdock closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
