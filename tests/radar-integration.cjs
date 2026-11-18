@@ -6071,6 +6071,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r489File),'utf8');
       assert.ok(txt.includes('2,080.00')&&txt.includes('3,700.00')&&txt.includes('5,780.00')&&txt.includes('85.00')&&txt.includes('270.00')&&txt.includes('355.00')&&txt.includes('5,425.00')&&txt.includes('93.86%')&&txt.includes('not_measured'),r489File+': contains exact 11-18 R9 adp+designloop+suzheui+piemphasis closed-form parameters');
     }
+    // 2026-11-18 Night Round 10 (R490 Milestone: yzsind/mydb + mitdbg/pgvectorfast + Golden-66/agentic-rag-kb + Replyze/ai-customer-support-agent) verification
+    const r490PathA=2680.00+43.0*100.00;
+    assert.equal(r490PathA.toFixed(2),'6980.00','11-18 R10 Path A total');
+    const r490PathC=125.00+3.2*100.00;
+    assert.equal(r490PathC.toFixed(2),'445.00','11-18 R10 Path C total');
+    assert.equal((r490PathA-r490PathC).toFixed(2),'6535.00','11-18 R10 savings vs Path A');
+    assert.equal(((r490PathA-r490PathC)/r490PathA*100).toFixed(2),'93.62','11-18 R10 pct savings vs Path A');
+    for(const r490File of ['workshops/github-trending-radar/docs/mydb-pgvectorfast-agentic-rag-kb-replyze-rust-htap-mcp-db-calico-buffer-pgvector-dual-tier-rag-selection-faq.md','workshops/github-trending-radar/docs/mydb-pgvectorfast-agentic-rag-kb-replyze-rust-htap-mcp-db-calico-buffer-pgvector-dual-tier-rag-selection-faq.en.md','assets/github-ai-radar-2026-11-18-r10-mydb-pgvectorfast-agenticrag.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-18-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r490File),'utf8');
+      assert.ok(txt.includes('2,680.00')&&txt.includes('4,300.00')&&txt.includes('6,980.00')&&txt.includes('125.00')&&txt.includes('320.00')&&txt.includes('445.00')&&txt.includes('6,535.00')&&txt.includes('93.62%')&&txt.includes('not_measured'),r490File+': contains exact 11-18 R10 mydb+pgvectorfast+agenticrag closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
