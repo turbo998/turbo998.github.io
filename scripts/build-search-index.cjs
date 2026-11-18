@@ -1,9 +1,12 @@
 'use strict';
 const fs = require('node:fs');
 const path = require('node:path');
+const {motionDemoDirectory, hasMotionDemo} = require('./motion-studies.cjs');
 const root = path.resolve(__dirname, '..');
+const motionDemoRoot = path.join(root, motionDemoDirectory);
 const ignored = new Set(['.git','node_modules','.venv','design-preview','docs','tests','scripts','.github']);
 function htmlFiles(directory=root) {
+  if (directory===motionDemoRoot && !hasMotionDemo(root)) return [];
   return fs.readdirSync(directory,{withFileTypes:true}).flatMap(entry => ignored.has(entry.name) ? [] : entry.isDirectory() ? htmlFiles(path.join(directory,entry.name)) : entry.name.endsWith('.html') && !entry.name.endsWith('-raw.html') ? [path.relative(root,path.join(directory,entry.name)).replaceAll('\\','/')] : []);
 }
 function plain(html) {

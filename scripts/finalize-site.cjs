@@ -4,6 +4,7 @@ const path = require('node:path');
 const professional = require('./professional-navigation.cjs');
 const search = require('./site-search.cjs');
 const {htmlFiles,plain} = require('./build-search-index.cjs');
+const {motionDemoRoutes} = require('./motion-studies.cjs');
 const root=path.resolve(__dirname,'..');
 const readJSON=file=>fs.existsSync(path.join(root,file))?JSON.parse(fs.readFileSync(path.join(root,file),'utf8')):null;
 function localeRegistry() {
@@ -88,6 +89,7 @@ function finalizeSite() {
   for(const file of htmlFiles()) {
     if(singleEditionSealed.has(file))continue;
     const absolute=path.join(root,file);let html=fs.readFileSync(absolute,'utf8');
+    const motionExhibit=Object.values(motionDemoRoutes).includes(file);
     if(file==='articles/harness-engineering.html'&&!html.includes('agent-harness-coevolution.html')) {
       html=html.replace(/(<p class="meta">[\s\S]*?<\/p>)/,'$1\n\n  <div class="callout">\n    🔬 <b>2026-11 最新实战续篇（含可视化图表与交互式工作台）</b>：<a href="agent-harness-coevolution.html">《随模型升级持续演进 Agent Harness：120 个 Skills 审计、上下文悬崖修复与模型协同实战报告》</a>（面向 Gemini 4 Carbon · GPT-6.2 Sol · Grok 4.7，附 <a href="../workshops/agent-harness-coevolution/index.html">5-Tab 演示工作台</a> 与 <a href="../workshops/agent-harness-coevolution/cards.zh.html">7 卡汇报集</a>）。\n  </div>');
     }
@@ -131,7 +133,12 @@ function finalizeSite() {
     if(header&&!isReportOrPhase179) {
       const styleText=html.includes('dedicated-navigation.css')?search.css():professional.css();
       html=html.replace('</head>',`<style id="site-remediation-style">${styleText}</style></head>`);
-      if(!sealed&&!/src="[^"]*editorial\/search\.js"/.test(html))html=html.replace('</head>',`${search.runtime(file)}</head>`);
+      if(!sealed&&!/src="[^"]*editorial\/search\.js"/.test(html))html=html.replace('</head>',`${search.runtime(file,{lazyIndex:motionExhibit})}</head>`);
+    }
+    if(motionExhibit) {
+      const track=professional.relative(file,`studio/${en?'':'zh-'}animation.html`);
+      html=html.replace(/(<a class="back" href=")https:\/\/turbo998\.github\.io\/studio\/(?:zh-)?animation\.html#demos"/, `$1${track}#demos"`);
+      if(!html.includes('/motion-studies-navigation.js"'))html=html.replace('</head>',`<script src="${professional.relative(file,'assets/editorial/motion-studies-navigation.js')}" defer></script></head>`);
     }
     // Localized navigation follows actual edition pairs; scripts and source data remain untouched.
     if(pair&&!isReportOrPhase179)html=html.split(/(<script\b[^>]*>[\s\S]*?<\/script>)/gi).map(part=>/^<script\b/i.test(part)?part:part.replace(/<a\b[^>]*>/gi,tag=>{
@@ -148,9 +155,12 @@ function finalizeSite() {
       const title=plain(/<title[^>]*>([\s\S]*?)<\/title>/i.exec(html)?.[1]||file);
       const figure=knowledgeFigure(file,!en,{topic:classifyPath(file)||'infra',title});
       const marker=`<!-- site-remediation-knowledge:start -->${figure}<!-- site-remediation-knowledge:end -->`;
-      const contextEnd=/<div class="professional-context-bar">[\s\S]*?<\/div>/;
-      if(contextEnd.test(html))html=html.replace(contextEnd,match=>match+marker);
-      else html=html.replace(/(<(header|nav)\b[^>]*data-professional-header[^>]*>[\s\S]*?<\/\2>)/,match=>match+marker);
+      if(motionExhibit)html=html.replace('</main>',match=>marker+match);
+      else {
+        const contextEnd=/<div class="professional-context-bar">[\s\S]*?<\/div>/;
+        if(contextEnd.test(html))html=html.replace(contextEnd,match=>match+marker);
+        else html=html.replace(/(<(header|nav)\b[^>]*data-professional-header[^>]*>[\s\S]*?<\/\2>)/,match=>match+marker);
+      }
     } else if(!isReportOrPhase179&&/<figure class="knowledge-figure" data-knowledge-atlas="[^"]*"[\s\S]*?<\/figure>/.test(html)) {
       const title=plain(/<title[^>]*>([\s\S]*?)<\/title>/i.exec(html)?.[1]||file);
       const figure=knowledgeFigure(file,!en,{topic:classifyPath(file)||'infra',title});

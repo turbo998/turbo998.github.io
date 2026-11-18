@@ -6,7 +6,7 @@ const {tracks, classifyScene, classifyResource, classifyPage} = require('./engin
 const {knowledgeFigure, systemFigure} = require('./knowledge-atlas.cjs');
 const {diamondResources, renderDataPageDiamondShowcase, renderDiamondPage} = require('./diamond-showcase.cjs');
 
-module.exports = function build({root, inventory, readingRecords, archivePages, archiveNote, topics, sceneNames, destination, readingDestination, sourceNote, write}) {
+module.exports = function build({root, inventory, readingRecords, archivePages, archiveNote, motionPages, topics, sceneNames, destination, readingDestination, sourceNote, write}) {
   const catalog = require('./hub-resource-catalog.json');
   const t = (zh,en,cn) => zh ? cn : en;
   const native = (url,zh) => readingDestination(url,zh);
@@ -130,6 +130,8 @@ module.exports = function build({root, inventory, readingRecords, archivePages, 
     write(file,ui.shell(file,zh,home?t(zh,'Qi Chen · Cloud & AI Solution Architect','Qi Chen · 云与 AI 解决方案架构师'):ui.BRAND,body));
   }
   for(const zh of [false,true]) {
+    const language = zh ? 'zh-CN' : 'en';
+    const motionPage = motionPages.find(page=>page.language.declared===language);
     renderOverview(zh?'zh.html':'index.html',zh,true);
     renderOverview(`studio/${zh?'zh-':''}index.html`,zh,false);
     const diamondFile = zh ? 'zh-diamond.html' : 'diamond.html';
@@ -142,6 +144,18 @@ module.exports = function build({root, inventory, readingRecords, archivePages, 
       let body = ui.crumb(file,zh,copy[zh?1:0])+`<section class="page-hero topic-hero"><p class="eyebrow">ENGINEERING HUB / ${track.toUpperCase()}</p><h1>${ui.esc(copy[zh?3:2])}</h1><p class="lead">${ui.esc(copy[zh?5:4])}</p><p class="source-note">${t(zh,'Architecture guides and 7-Card reports are maintained in paired Chinese and English editions; dedicated interactive sandboxes disclose their data provenance on page.','参考架构指南与 7-Card 评测报告提供中英双语成对版本；独立交互演示沙盘在页内清晰标注数据口径与适用边界。')}</p></section><nav class="section-nav" aria-label="${t(zh,'On this page','本页目录')}">${ui.sections.map(([id,en,cn],i)=>`<a href="#${id}"><span>0${i+1}</span>${zh?cn:en}</a>`).join('')}${extraNav}</nav>`;
       for(const [i,[stage,en,cn]] of ui.sections.entries()) {
         let cards = scenes.filter(scene=>category(scene)===stage).map(scene=>sceneCard(scene,file,zh));
+        if(track==='animation' && stage==='demos' && motionPage) {
+          cards.unshift(ui.card(file,zh,{
+            id:'demos-gpt-62-motion',number:'DEMO',badge:['VISUAL / MOTION STUDIES','视觉 / 动画作品'],
+            title:motionPage.title,url:motionPage.path,
+            finding:['Three real-time 3D scenes · one 2D pixel city','三个实时 3D 场景 · 一座 2D 像素城市'],
+            description:[
+              'Explore a peacock in display, a pop-up book, a cycling pelican, and a Japanese-inspired pixel city. Play each scene live or watch a short rendered from the same scene.',
+              '体验孔雀开屏、弹出式立体书、鹈鹕骑车和日式像素城市。每个作品都可实时互动，也可观看由同一场景渲染的短片。'
+            ],
+            links:[link(['Open the exhibition','进入动势图鉴'],motionPage.path)]
+          }));
+        }
         cards.push(...latest(zh).filter(item=>item.track===track && item.stages.includes(stage)).map(item=>ui.card(file,zh,{...item,id:`${stage}-${item.id}`,number:stage.toUpperCase(),url:item.links[0].url})));
         if(stage==='resources') {
           const seen = new Set();
@@ -165,7 +179,7 @@ module.exports = function build({root, inventory, readingRecords, archivePages, 
     const file = `studio/${zh?'zh-':''}archive.html`;
     let body = ui.crumb(file,zh,t(zh,'Complete archive','完整资源目录'))+`<section class="page-hero"><p class="eyebrow">ARCHITECTURE &amp; DEMO DIRECTORY</p><h1>${t(zh,'Every workbench, guide, and benchmark in one index.','全站架构指南、交互沙盘与评测目录。')}</h1><p class="lead">${t(zh,`${uniquePages.length} curated HTML resources across all eight Solution Architect domains and the Diamond Enterprise Demo Suite, organized by engineering track with paired Chinese and English editions.`,`按八大解决方案架构师赛道与 Diamond 企业级演示专区分类索引 ${uniquePages.length} 个精选 HTML 技术页面，提供中英双语成对访问。`)}</p><p class="source-note">${t(zh,'Each resource discloses whether its metrics come from sealed benchmark runs, analytical sizing models, or sanitized enterprise demo snapshots.','每个技术资产均在页内标明数据口径（实测基准、确定性定容模型或脱敏企业级演示快照）。')}</p></section>`+systemFigure(file,zh);
     for(const group of [...Object.keys(topics),'general']) {
-      const pages=uniquePages.filter(page=>classifyPage(page)===group);
+      const pages=uniquePages.filter(page=>classifyPage(page)===group && !motionPages.some(edition=>edition.path===page.path && edition.language.declared!==language));
       body+=ui.section(group,'ARCHIVE',group==='general'?t(zh,'General & reference','综合与参考'):topics[group][zh?1:0],'',ui.grid(pages.map((page,i)=>ui.card(file,zh,{title:page.title,number:`${i+1}`,badge:page.role.toUpperCase(),finding:archiveNote(page,zh),description:page.path,url:page.path,links:[link(['Open resource','打开页面'],page.path)]}))));
     }
     write(file,ui.shell(file,zh,t(zh,'Complete archive','完整资源目录'),body));

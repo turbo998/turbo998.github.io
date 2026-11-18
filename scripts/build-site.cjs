@@ -2,6 +2,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const {tracks, classifyScene, classifyPage} = require('./engineering-tracks.cjs');
 const {buildKnowledgeAtlas} = require('./knowledge-atlas.cjs');
+const {hasMotionDemo, motionDemoRoutes} = require('./motion-studies.cjs');
 function buildSite({root = path.join(__dirname, '..')} = {}) {
 const inventory = JSON.parse(fs.readFileSync(path.join(root, 'docs/redesign/route-inventory.json'), 'utf8'));
 const readingPath = path.join(root, 'docs/redesign/reading-migration.json');
@@ -137,7 +138,11 @@ const gpt62SolPages = [
   {path:'workshops/benchmarks/gpt-6-2-sol-cards.en.html',role:'report',title:'Supplement 9: GPT-6.2 Sol Live Effort-Sweep, Calibrated Routing & 21-Model Frontier Benchmark (EN)',tracks:['benchmarks'],language:{declared:'en'},supplemental:true},
   {path:'workshops/benchmarks/gpt-6-2-sol-cards.zh-CN.html',role:'report',title:'增补报告 9：GPT-6.2 Sol 全档推理强度实测、校准路由与二十一模型前沿基准报告 (中文)',tracks:['benchmarks'],language:{declared:'zh-CN'},supplemental:true}
 ];
-const archivePages = [...inventory.content, ...translations, ...diamondPages, ...webiqPages, ...radarPages, ...infraPages, ...dataLabPages, ...phase179Pages, ...clioHarnessPages, ...harnessFrameworksPages, ...harnessCoevolutionPages, ...gpt62SolPages, ...commerceTrendsPages, ...camera4dPages, ...audiovisualFoleyPages, ...physGaussianPages, ...neuralRelightPages, ...worldMemPages, ...nightlyVisualPages].map(page => ({...page, tracks:[classifyPage(page), ...(page.tracks || []).filter(track => track !== classifyPage(page) && track !== 'infra')]}));
+const motionPages = hasMotionDemo(root) ? [
+  {path:motionDemoRoutes.en,role:'demo',title:'GPT-6.2 Motion Studies',tracks:['animation'],language:{declared:'en'}},
+  {path:motionDemoRoutes['zh-CN'],role:'demo',title:'GPT-6.2 动势图鉴',tracks:['animation'],language:{declared:'zh-CN'}}
+] : [];
+const archivePages = [...inventory.content, ...translations, ...diamondPages, ...webiqPages, ...radarPages, ...infraPages, ...dataLabPages, ...phase179Pages, ...clioHarnessPages, ...harnessFrameworksPages, ...harnessCoevolutionPages, ...gpt62SolPages, ...commerceTrendsPages, ...camera4dPages, ...audiovisualFoleyPages, ...physGaussianPages, ...neuralRelightPages, ...worldMemPages, ...nightlyVisualPages, ...motionPages].map(page => ({...page, tracks:[classifyPage(page), ...(page.tracks || []).filter(track => track !== classifyPage(page) && track !== 'infra')]}));
 function archiveNote(page, zh) {
   const t = (en, cn) => zh ? cn : en;
   const record = readingByPath.get(page.path);
@@ -148,7 +153,7 @@ function archiveNote(page, zh) {
   return `${lang?.resolved || page.language.declared || 'und'} · ${t('Original source edition','原始来源版本')}`;
 }
 buildKnowledgeAtlas({root,write});
-require('./hub-pages.cjs')({root,inventory,readingRecords,archivePages,archiveNote,topics,sceneNames,destination,readingDestination,sourceNote,write});
+require('./hub-pages.cjs')({root,inventory,readingRecords,archivePages,archiveNote,motionPages,topics,sceneNames,destination,readingDestination,sourceNote,write});
 // Keep historical module hashes as aliases while adding the new source-derived track routes.
 const routeData = Object.fromEntries(tracks.map(([track])=>[track,Object.fromEntries(inventory.scenes.filter(s=>classifyScene(s)===track || s.track===track).map(s=>[s.id,{en:destination(s,false).url,zh:destination(s,true).url,track:classifyScene(s)}]))]));
 routeData['infra-lab'] = routeData['data-infra'];

@@ -4,7 +4,9 @@ const fs=require('node:fs');
 const http=require('node:http');
 const path=require('node:path');
 const puppeteer=require('puppeteer');
+const {hasMotionDemo,motionDemoDirectory,motionDemoRoutes}=require('../scripts/motion-studies.cjs');
 const root=path.resolve(__dirname,'..');
+const motionReady=hasMotionDemo(root);
 const output=process.env.SITE_ARTIFACT_DIR||path.resolve('site-test-artifacts');
 (async()=>{
  fs.mkdirSync(output,{recursive:true});
@@ -17,7 +19,7 @@ const output=process.env.SITE_ARTIFACT_DIR||path.resolve('site-test-artifacts');
  });
  await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
  const base=process.env.SITE_TEST_URL||`http://127.0.0.1:${server.address().port}/`;
- const browser=await puppeteer.launch({headless:'shell',pipe:true});const report={layouts:[],search:[],sealed:[]};
+ const browser=await puppeteer.launch({headless:'shell',pipe:true});const report={layouts:[],search:[],sealed:[],indexFallback:[]};
  try{
   const page=await browser.newPage();
   for(const route of ['index.html','zh.html','studio/data-infra.html','about.html','workshops/benchmarks/ai-infra-architect-workbench.en.html','animation/demos/camera-4d-director/index.en.html'])for(const width of [390,768,1440]){
@@ -32,10 +34,54 @@ const output=process.env.SITE_ARTIFACT_DIR||path.resolve('site-test-artifacts');
   }
   await page.goto(new URL('zh.html',base).href,{waitUntil:'load'});await page.keyboard.down('Control');await page.keyboard.press('k');await page.keyboard.up('Control');await page.keyboard.type('Fabric');await page.waitForSelector('.search-results a');assert(await page.$$eval('.search-results a',links=>links.every(a=>!/(?:\.en\.html|\/about\.html)/.test(a.href))));await page.keyboard.press('Escape');assert(await page.$eval('.search-results',e=>e.hidden));
   await page.goto(new URL('studio/archive.html?q=FlashMLA',base).href,{waitUntil:'load'});assert((await page.$$eval('#search-matches li',es=>es.length))>0);
+  for(const [language,route,query] of [['en','studio/animation.html','Motion Studies'],['zh-CN','studio/zh-animation.html','动势图鉴']]){
+   await page.goto(new URL(route,base).href,{waitUntil:'load'});
+   await page.type('.site-search input',query);
+   await page.waitForSelector('.search-results:not([hidden])');
+   const results=await page.$$eval('.search-results a',links=>links.map(a=>a.pathname));
+   assert.deepEqual(results.filter(url=>url.startsWith(`/${motionDemoDirectory}/`)),motionReady?['/'+motionDemoRoutes[language]]:[],`${route}: exhibit search uses the current locale and excludes incomplete imports`);
+  }
+  if(motionReady){
+   const route=motionDemoRoutes.en, requests=[];
+   const isIndex=req=>new URL(req.url()).pathname.endsWith('/editorial/search-index.js');
+   const trackIndex=req=>{if(isIndex(req))requests.push(req.url());};
+   await page.setCacheEnabled(false);
+   page.on('request',trackIndex);
+   await page.goto(new URL(route,base).href,{waitUntil:'load'});
+   assert.deepEqual(requests,[],'the exhibit does not fetch the global index on initial load');
+   await page.keyboard.press('/');
+   await page.keyboard.type('Motion Studies');
+   await page.waitForSelector(`.search-results a[href*="${route}"]`);
+   assert.equal(requests.length,1,'typing in the exhibit search loads the full index once');
+   page.off('request',trackIndex);
+
+   let indexAttempts=0;
+   await page.setRequestInterception(true);
+   const emptyIndex=req=>{
+    if(!isIndex(req))return req.continue();
+    return ++indexAttempts===1?req.respond({status:200,contentType:'application/javascript',body:'/* unavailable */'}):req.abort();
+   };
+   page.on('request',emptyIndex);
+   await page.goto(new URL(route,base).href,{waitUntil:'load'});
+   await page.keyboard.press('/');
+   await page.keyboard.type('Motion Studies');
+   const fallback='Suggestions unavailable. Press Enter to search the archive.';
+   await page.waitForFunction(text=>document.querySelector('.search-results:not([hidden])')?.textContent===text,{},fallback);
+   await page.keyboard.press('Space');
+   assert.equal(await page.$eval('.search-results',panel=>panel.textContent),fallback);
+   assert.equal(indexAttempts,1,'a successful response without an index must not loop or retry on input');
+   await page.setRequestInterception(false);
+   page.off('request',emptyIndex);
+   await Promise.all([page.waitForNavigation({waitUntil:'load'}),page.keyboard.press('Enter')]);
+   assert.equal(new URL(page.url()).pathname,'/studio/archive.html');
+   assert.equal(new URL(page.url()).searchParams.get('q').trim(),'Motion Studies');
+   assert(await page.$(`#search-matches a[href*="${route}"]`),'archive search remains usable');
+   report.indexFallback.push({route,indexAttempts,destination:page.url()});
+  }
   await page.setJavaScriptEnabled(false);
   for(const route of ['animation/demos/camera-4d-director/test-report-cards.en.html','workshops/benchmarks/moe-quantization-parallelism-selection-cards.zh.html']){
    await page.goto(new URL(route,base).href,{waitUntil:'load'});const csp=await page.$eval('meta[http-equiv="Content-Security-Policy"]',e=>e.content);assert(csp.includes("default-src 'none'"));assert(csp.includes("style-src 'unsafe-inline'"));await page.type('.site-search input','Fabric IQ');await Promise.all([page.waitForNavigation({waitUntil:'domcontentloaded'}),page.click('.site-search button')]);assert.equal(new URL(page.url()).searchParams.get('q'),'Fabric IQ');assert(/\/studio\/(?:zh-)?archive\.html$/.test(new URL(page.url()).pathname));report.sealed.push({route,destination:page.url(),csp});
   }
  }finally{fs.writeFileSync(path.join(output,'global-search.json'),JSON.stringify(report,null,2));await browser.close();server.closeAllConnections();await new Promise(resolve=>server.close(resolve));}
- console.log(`PASS: ${report.layouts.length} sticky/search layouts, ${report.search.length} keyboard journeys, ${report.sealed.length} sealed native forms`);
+ console.log(`PASS: ${report.layouts.length} sticky/search layouts, ${report.search.length} keyboard journeys, ${report.sealed.length} sealed native forms, ${report.indexFallback.length} invalid-index archive fallback`);
 })().catch(e=>{console.error(e);process.exitCode=1;});

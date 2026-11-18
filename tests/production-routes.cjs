@@ -3,12 +3,14 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 const puppeteer = require('puppeteer');
+const {hasMotionDemo, motionDemoDirectory, motionDemoRoutes} = require('../scripts/motion-studies.cjs');
 const root = path.join(__dirname, '..');
+const motionReady = hasMotionDemo(root);
 const manifest = require('../docs/redesign/production-routes.json');
 const base = process.env.SITE_TEST_URL || 'http://127.0.0.1:8797';
 const output = process.env.SITE_ARTIFACT_DIR || path.join(root, 'site-test-artifacts');
 const script = fs.readFileSync(path.join(root, 'assets/editorial/legacy-routes.js'), 'utf8');
-const report = { result: 'RUNNING', redirects: [], pages: [], errors: [] };
+const report = { result: 'RUNNING', redirects: [], pages: [], media: [], exhibit: [], errors: [] };
 function redirect(prefix, search, hash) {
   let result;
   vm.runInNewContext(script, { URL, URLSearchParams, document: { currentScript: { src: prefix + 'assets/editorial/legacy-routes.js' } }, location: { search, hash, replace: url => { result = url; } } });
@@ -46,10 +48,45 @@ async function main() {
         assert.equal(redirect(prefix, `?lang=${lang}`, '#unknown/stage-2'), undefined);
       }
     }
+    if (motionReady) {
+      const file = `${motionDemoDirectory}/media/peacock.mp4`;
+      const bytes = fs.readFileSync(path.join(root, file));
+      const range = await fetch(`${base}/${file}`, {headers: {Range: 'bytes=32-63'}});
+      assert.equal(range.status, 206, 'Motion Studies videos support seeking');
+      assert.match(range.headers.get('content-type'), /^video\/mp4\b/);
+      assert.equal(range.headers.get('content-range'), `bytes 32-63/${bytes.length}`);
+      assert.deepEqual(Buffer.from(await range.arrayBuffer()), bytes.subarray(32,64));
+      report.media.push({file, status:range.status, range:range.headers.get('content-range')});
+    }
     browser = await puppeteer.launch({ headless: 'shell', pipe: true, protocolTimeout: 30000 });
     const page = await browser.newPage();
     await page.setCacheEnabled(false);
     page.on('pageerror', error => report.errors.push(error.message));
+    if (motionReady) {
+      for (const [lang, file] of [['zh-CN', `${motionDemoDirectory}/`], ['en', motionDemoRoutes.en]]) {
+        for (const width of [390, 1440]) {
+          await page.setViewport({width, height: 900, isMobile:width===390, hasTouch:width===390});
+          const response = await page.goto(`${base}/${file}`, {waitUntil:'load'});
+          assert.equal(response.status(), 200);
+          const state = await page.evaluate(() => {
+            const poster = document.querySelector('#peacock .poster');
+            const box = poster.getBoundingClientRect();
+            const header = document.querySelector('[data-professional-header]').getBoundingClientRect();
+            return {
+              lang:document.documentElement.lang, posterLoaded:poster.naturalWidth>0,
+              posterVisible:Math.min(innerHeight,box.bottom)-Math.max(header.bottom,box.top),
+              buttonVisible:document.querySelector('#peacock [data-action=live]').getBoundingClientRect().bottom<=innerHeight,
+              knowledgeAfterWorks:document.querySelector('main').lastElementChild.matches('figure[data-knowledge-atlas]')
+            };
+          });
+          assert.equal(state.lang, lang);
+          assert(state.posterLoaded && state.posterVisible>=100, `${lang}/${width}: show the peacock on first paint (${state.posterVisible}px visible)`);
+          assert(width===390 || state.buttonVisible, `${lang}/${width}: the desktop live control must be visible without scrolling`);
+          assert(state.knowledgeAfterWorks, `${lang}/${width}: keep the knowledge diagram at the end of the exhibit`);
+          report.exhibit.push({file,width,...state});
+        }
+      }
+    }
     for (const file of manifest.portalPages) {
       for (const width of [390, 1440]) {
         await page.setViewport({ width, height: 900 });
@@ -108,6 +145,17 @@ async function main() {
         }
         const track = path.basename(file, '.html').replace(/^zh-/, '');
         const zh = file.includes('/zh-');
+        const motionLinks = [...new Set(state.links.filter(href=>typeof href==='string').map(href=>new URL(href).pathname).filter(route=>route.startsWith(`/${motionDemoDirectory}/`)))];
+        const motionTarget = '/' + motionDemoRoutes[state.lang];
+        if (track === 'animation' || track === 'archive') {
+          assert.deepEqual(motionLinks, motionReady ? [motionTarget] : [], `${file}: only link to the native exhibit edition when both are available`);
+        } else {
+          assert.deepEqual(motionLinks, [], `${file}: no additional homepage or unrelated track card`);
+        }
+        if (track === 'animation') {
+          const cards = await page.$$eval('#demos #demos-gpt-62-motion', els=>els.map(card=>card.querySelector('h3 a')?.pathname));
+          assert.deepEqual(cards, motionReady ? [motionTarget] : [], `${file}: one localized exhibit card in Interactive Demos`);
+        }
         if (track === 'data-infra') for (const target of [`workshops/azure-agent-infra/selector${zh?'':'.en'}.html`,`workshops/azure-agent-infra/benchmark-cards${zh?'.zh-CN':'.en'}.html`,`workshops/data-lab/index${zh?'':'.en'}.html`,`workshops/data-lab/benchmark-cards${zh?'.zh-CN':'.en'}.html`,`workshops/diamond-demos/tcl-fabric/index${zh?'':'.en'}.html`,`workshops/diamond-demos/databricks-fabric/index${zh?'':'.en'}.html`]) assert.ok(state.links.some(link=>new URL(link).pathname==='/'+target),file+': latest Infra/DataLab/Diamond discovery '+target);
         if (track === 'commerce') assert.ok(state.links.includes(`${base}/workshops/webiq-azure/compare${zh?'':'.en'}.html`),file+': comparison discovery');
         if (track === 'voice') assert.ok(state.links.includes(`${base}/voice/index${zh?'':'.en'}.html#duplexGuardSimulatorCard`),file+': Stage 356 discovery');
@@ -137,7 +185,7 @@ async function main() {
     }
     assert.deepEqual(report.errors, []);
     report.result = 'PASS';
-    console.log(`PASS: ${report.redirects.length} route cases, ${report.pages.length} portal layout states, all portal no-JS checks.`);
+    console.log(`PASS: ${report.redirects.length} route cases, ${report.pages.length} portal layout states, ${report.exhibit.length} exhibit first folds, all portal no-JS checks.`);
   } catch (error) { report.result='FAIL'; report.errors.push(error.stack); throw error; }
   finally { fs.writeFileSync(path.join(output,'routes-validation.json'), JSON.stringify(report,null,2)); if(browser) await browser.close(); }
 }

@@ -41,6 +41,7 @@ const MIME_TYPES = {
   '.woff': 'font/woff',
   '.woff2': 'font/woff2',
   '.mp3': 'audio/mpeg',
+  '.mp4': 'video/mp4',
   '.wav': 'audio/wav'
 };
 
@@ -182,11 +183,29 @@ const server = http.createServer((req, res) => {
     }
   }
 
-  res.writeHead(200, {
+  const headers = {
     'Content-Type': contentType,
     'Access-Control-Allow-Origin': '*',
     'Cache-Control': 'public, max-age=300'
-  });
+  };
+  if (ext === '.mp4') {
+    headers['Accept-Ranges'] = 'bytes';
+    headers['Content-Length'] = data.length;
+    const range = req.method === 'GET' && /^bytes=(\d*)-(\d*)$/.exec(req.headers.range || '');
+    if (range && (range[1] || range[2])) {
+      const start = range[1] ? Number(range[1]) : Math.max(0, data.length - Number(range[2]));
+      const end = range[1] && range[2] ? Math.min(Number(range[2]), data.length - 1) : data.length - 1;
+      if (start > end) {
+        res.writeHead(416, {...headers, 'Content-Range': `bytes */${data.length}`, 'Content-Length': 0});
+        res.end();
+        return;
+      }
+      res.writeHead(206, {...headers, 'Content-Range': `bytes ${start}-${end}/${data.length}`, 'Content-Length': end - start + 1});
+      res.end(data.subarray(start, end + 1));
+      return;
+    }
+  }
+  res.writeHead(200, headers);
   res.end(data);
 });
 

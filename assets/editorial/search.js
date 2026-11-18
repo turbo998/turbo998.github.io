@@ -6,15 +6,16 @@
   const root = new URL('.', new URL(form.dataset.searchRoot, location.href));
   const en = form.dataset.searchLanguage === 'en';
   const labels = en ? {'Track':'Track','Architecture & Study':'Architecture & Study','7-Card Benchmark':'7-Card Benchmark','Interactive Demo':'Interactive Demo','Repository':'Repository'} : {'Track':'主题赛道','Architecture & Study':'架构与技术研究','7-Card Benchmark':'7-Card 评测报告','Interactive Demo':'交互演示','Repository':'源码仓库'};
-  const data = window.ENGINEERING_SEARCH_INDEX || [];
-  let selected = -1, options = [];
+  const indexUrl = document.currentScript?.dataset.searchIndex;
+  let selected = -1, options = [], loadingIndex = false, indexUnavailable = false;
   input.setAttribute('role', 'combobox'); input.setAttribute('aria-autocomplete', 'list'); input.setAttribute('aria-expanded', 'false'); input.setAttribute('aria-controls', panel.id);
   panel.setAttribute('role','listbox'); panel.setAttribute('aria-label', en ? 'Search results' : '搜索结果');
   const normalized = value => String(value || '').normalize('NFKC').toLowerCase();
   function matches(query) {
     const tokens = normalized(query).trim().split(/\s+/).filter(Boolean);
     if (!tokens.length) return [];
-    return data.filter(item => item.language === (en ? 'en' : 'zh-CN') || item.language === 'both').map(item => {
+    const index = window.ENGINEERING_SEARCH_INDEX;
+    return (Array.isArray(index) ? index : []).filter(item => item.language === (en ? 'en' : 'zh-CN') || item.language === 'both').map(item => {
       const title = normalized(item.title), haystack = normalized(`${item.title} ${item.text} ${item.url}`);
       return {...item, score:tokens.every(token => haystack.includes(token)) ? tokens.reduce((sum, token) => sum + (title.includes(token) ? 8 : 1), 0) : 0};
     }).filter(item => item.score).sort((a,b) => b.score-a.score || a.title.localeCompare(b.title));
@@ -26,9 +27,37 @@
   }
   function close() { panel.hidden = true; input.setAttribute('aria-expanded','false'); input.removeAttribute('aria-activedescendant'); selected = -1; }
   function choose(index) { selected = (index + options.length) % options.length; options.forEach((node,i) => node.setAttribute('aria-selected',String(i===selected))); input.setAttribute('aria-activedescendant',options[selected].id); options[selected].scrollIntoView({block:'nearest'}); }
+  function loadIndex() {
+    if (loadingIndex) return;
+    loadingIndex = true;
+    const script = document.createElement('script');
+    script.src = indexUrl;
+    const unavailable = () => {
+      loadingIndex = false;
+      indexUnavailable = true;
+      script.remove();
+      if (!panel.hidden) render();
+    };
+    script.addEventListener('load', () => {
+      if (!Array.isArray(window.ENGINEERING_SEARCH_INDEX)) { unavailable(); return; }
+      loadingIndex = false;
+      if (!panel.hidden) render();
+    }, {once:true});
+    script.addEventListener('error', unavailable, {once:true});
+    document.head.append(script);
+  }
   function render() {
     panel.replaceChildren(); options = []; selected = -1; input.removeAttribute('aria-activedescendant');
     if (!input.value.trim()) { close(); return; }
+    if (indexUrl && !Array.isArray(window.ENGINEERING_SEARCH_INDEX)) {
+      status.textContent = indexUnavailable
+        ? (en ? 'Suggestions unavailable. Press Enter to search the archive.' : '无法加载搜索建议。按回车可在归档中搜索。')
+        : (en ? 'Loading search suggestions…' : '正在加载搜索建议…');
+      panel.textContent = status.textContent;
+      panel.hidden=false; input.setAttribute('aria-expanded','true');
+      if (!indexUnavailable) loadIndex();
+      return;
+    }
     const found = matches(input.value), shown = found.slice(0,12);
     for (const category of Object.keys(labels)) {
       const entries = shown.filter(item => item.category === category); if (!entries.length) continue;
