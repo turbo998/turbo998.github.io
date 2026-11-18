@@ -6293,6 +6293,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r509File),'utf8');
       assert.ok(txt.includes('2,620.00')&&txt.includes('4,050.00')&&txt.includes('6,670.00')&&txt.includes('80.00')&&txt.includes('280.00')&&txt.includes('360.00')&&txt.includes('6,310.00')&&txt.includes('94.60%')&&txt.includes('not_measured'),r509File+': contains exact 11-18 R29 R509 egm+jevgrep+hermesjev+skilltraining closed-form parameters');
     }
+    // 2026-11-18 Night Round 30 (R510 Milestone: n8n-io/nod + sheprd-labs/sheprd + devswha/ovis + mikehasa/golive-skill) verification
+    const r510PathA=2580.00+41.0*100.00;
+    assert.equal(r510PathA.toFixed(2),'6680.00','11-18 R30 R510 Path A total');
+    const r510PathC=80.00+2.8*100.00;
+    assert.equal(r510PathC.toFixed(2),'360.00','11-18 R30 R510 Path C total');
+    assert.equal((r510PathA-r510PathC).toFixed(2),'6320.00','11-18 R30 R510 savings vs Path A');
+    assert.equal(((r510PathA-r510PathC)/r510PathA*100).toFixed(2),'94.61','11-18 R30 R510 pct savings vs Path A');
+    for(const r510File of ['workshops/github-trending-radar/docs/nod-sheprd-ovis-golive-skill-isolated-personal-computer-agent-rust-gpui-herdr-mobile-approval-plan-id-deploy-selection-faq.md','workshops/github-trending-radar/docs/nod-sheprd-ovis-golive-skill-isolated-personal-computer-agent-rust-gpui-herdr-mobile-approval-plan-id-deploy-selection-faq.en.md','assets/github-ai-radar-2026-11-18-r30-r510-nod-sheprd-ovis-golive.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-18-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r510File),'utf8');
+      assert.ok(txt.includes('2,580.00')&&txt.includes('4,100.00')&&txt.includes('6,680.00')&&txt.includes('80.00')&&txt.includes('280.00')&&txt.includes('360.00')&&txt.includes('6,320.00')&&txt.includes('94.61%')&&txt.includes('not_measured'),r510File+': contains exact 11-18 R30 R510 nod+sheprd+ovis+golive closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
