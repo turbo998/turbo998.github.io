@@ -5994,6 +5994,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r482File),'utf8');
       assert.ok(txt.includes('2,480.00')&&txt.includes('3,900.00')&&txt.includes('6,380.00')&&txt.includes('110.00')&&txt.includes('310.00')&&txt.includes('420.00')&&txt.includes('5,960.00')&&txt.includes('93.42%')&&txt.includes('not_measured'),r482File+': contains exact 11-18 R2 appwrite+fyrr+openvino closed-form parameters');
     }
+    // 2026-11-18 Night Round 3 (R483: scarletkc/colab-playground + msertdev/deadweight + 5m0k3/cache-maxxing) verification
+    const r483PathA=2420.00+38.0*100.00;
+    assert.equal(r483PathA.toFixed(2),'6220.00','11-18 R3 Path A total');
+    const r483PathC=85.00+2.9*100.00;
+    assert.equal(r483PathC.toFixed(2),'375.00','11-18 R3 Path C total');
+    assert.equal((r483PathA-r483PathC).toFixed(2),'5845.00','11-18 R3 savings vs Path A');
+    assert.equal(((r483PathA-r483PathC)/r483PathA*100).toFixed(2),'93.97','11-18 R3 pct savings vs Path A');
+    for(const r483File of ['workshops/github-trending-radar/docs/colab-playground-deadweight-cache-maxxing-gpu-cost-guards-pre-request-token-audit-prompt-cache-ttl-handoff-selection-faq.md','workshops/github-trending-radar/docs/colab-playground-deadweight-cache-maxxing-gpu-cost-guards-pre-request-token-audit-prompt-cache-ttl-handoff-selection-faq.en.md','assets/github-ai-radar-2026-11-18-r3-colab-deadweight-cmaxx.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-18-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r483File),'utf8');
+      assert.ok(txt.includes('2,420.00')&&txt.includes('3,800.00')&&txt.includes('6,220.00')&&txt.includes('85.00')&&txt.includes('290.00')&&txt.includes('375.00')&&txt.includes('5,845.00')&&txt.includes('93.97%')&&txt.includes('not_measured'),r483File+': contains exact 11-18 R3 colab+deadweight+cmaxx closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
