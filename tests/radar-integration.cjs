@@ -6104,6 +6104,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r492File),'utf8');
       assert.ok(txt.includes('2,150.00')&&txt.includes('3,800.00')&&txt.includes('5,950.00')&&txt.includes('80.00')&&txt.includes('280.00')&&txt.includes('360.00')&&txt.includes('5,590.00')&&txt.includes('93.95%')&&txt.includes('not_measured'),r492File+': contains exact 11-18 R12 mingle+dshcdx+devkb+point closed-form parameters');
     }
+    // 2026-11-18 Night Round 13 (R493: superwyh/Game-Localization-Engineering + growvib/x402-mcp-lab + juulieen/beeper-mcp-addon + bariswha/losslesscut-mcp) verification
+    const r493PathA=2120.00+38.0*100.00;
+    assert.equal(r493PathA.toFixed(2),'5920.00','11-18 R13 Path A total');
+    const r493PathC=75.00+2.7*100.00;
+    assert.equal(r493PathC.toFixed(2),'345.00','11-18 R13 Path C total');
+    assert.equal((r493PathA-r493PathC).toFixed(2),'5575.00','11-18 R13 savings vs Path A');
+    assert.equal(((r493PathA-r493PathC)/r493PathA*100).toFixed(2),'94.17','11-18 R13 pct savings vs Path A');
+    for(const r493File of ['workshops/github-trending-radar/docs/game-localization-x402-mcp-lab-beeper-losslesscut-mcp-hash-guarded-l10n-browser-wallet-x402-500mb-beeper-lossless-video-selection-faq.md','workshops/github-trending-radar/docs/game-localization-x402-mcp-lab-beeper-losslesscut-mcp-hash-guarded-l10n-browser-wallet-x402-500mb-beeper-lossless-video-selection-faq.en.md','assets/github-ai-radar-2026-11-18-r13-gameloc-x402lab-beeper-losslesscut.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-18-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r493File),'utf8');
+      assert.ok(txt.includes('2,120.00')&&txt.includes('3,800.00')&&txt.includes('5,920.00')&&txt.includes('75.00')&&txt.includes('270.00')&&txt.includes('345.00')&&txt.includes('5,575.00')&&txt.includes('94.17%')&&txt.includes('not_measured'),r493File+': contains exact 11-18 R13 gameloc+x402lab+beeper+losslesscut closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
