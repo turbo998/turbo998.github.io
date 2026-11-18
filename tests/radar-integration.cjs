@@ -6005,6 +6005,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r483File),'utf8');
       assert.ok(txt.includes('2,420.00')&&txt.includes('3,800.00')&&txt.includes('6,220.00')&&txt.includes('85.00')&&txt.includes('290.00')&&txt.includes('375.00')&&txt.includes('5,845.00')&&txt.includes('93.97%')&&txt.includes('not_measured'),r483File+': contains exact 11-18 R3 colab+deadweight+cmaxx closed-form parameters');
     }
+    // 2026-11-18 Night Round 4 (R484: haczen/ai-dialog-manage + felitrejos/magi + aileron-tech/wingbox) verification
+    const r484PathA=2340.00+40.0*100.00;
+    assert.equal(r484PathA.toFixed(2),'6340.00','11-18 R4 Path A total');
+    const r484PathC=90.00+3.0*100.00;
+    assert.equal(r484PathC.toFixed(2),'390.00','11-18 R4 Path C total');
+    assert.equal((r484PathA-r484PathC).toFixed(2),'5950.00','11-18 R4 savings vs Path A');
+    assert.equal(((r484PathA-r484PathC)/r484PathA*100).toFixed(2),'93.85','11-18 R4 pct savings vs Path A');
+    for(const r484File of ['workshops/github-trending-radar/docs/ai-dialog-manage-magi-wingbox-9tool-session-transplant-cross-machine-live-handoff-local-code-graph-selection-faq.md','workshops/github-trending-radar/docs/ai-dialog-manage-magi-wingbox-9tool-session-transplant-cross-machine-live-handoff-local-code-graph-selection-faq.en.md','assets/github-ai-radar-2026-11-18-r4-adm-magi-wingbox.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-18-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r484File),'utf8');
+      assert.ok(txt.includes('2,340.00')&&txt.includes('4,000.00')&&txt.includes('6,340.00')&&txt.includes('90.00')&&txt.includes('300.00')&&txt.includes('390.00')&&txt.includes('5,950.00')&&txt.includes('93.85%')&&txt.includes('not_measured'),r484File+': contains exact 11-18 R4 adm+magi+wingbox closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
