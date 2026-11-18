@@ -6436,6 +6436,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r522File),'utf8');
       assert.ok(txt.includes('2,780.00')&&txt.includes('4,200.00')&&txt.includes('6,980.00')&&txt.includes('85.00')&&txt.includes('280.00')&&txt.includes('365.00')&&txt.includes('6,615.00')&&txt.includes('94.77%')&&txt.includes('not_measured'),r522File+': contains exact 11-18 R42 R522 booktoskill+obscura+videouse+grokbuild closed-form parameters');
     }
+    // 2026-11-18 Night Round 43 (R523: op7418/guizang-ppt-skill + alchaincyf/huashu-design + browser-use/jev-ultrafast + lexmount/moli) verification
+    const r523PathA=2640.00+41.0*100.00;
+    assert.equal(r523PathA.toFixed(2),'6740.00','11-18 R43 R523 Path A total');
+    const r523PathC=80.00+2.7*100.00;
+    assert.equal(r523PathC.toFixed(2),'350.00','11-18 R43 R523 Path C total');
+    assert.equal((r523PathA-r523PathC).toFixed(2),'6390.00','11-18 R43 R523 savings vs Path A');
+    assert.equal(((r523PathA-r523PathC)/r523PathA*100).toFixed(2),'94.81','11-18 R43 R523 pct savings vs Path A');
+    for(const r523File of ['workshops/github-trending-radar/docs/guizang-ppt-skill-huashu-design-jev-ultrafast-moli-monocle-swiss-html-deck-6to3-92style-ledger-71s-speculative-jev-browser-on-demand-pixel-rust-selection-faq.md','workshops/github-trending-radar/docs/guizang-ppt-skill-huashu-design-jev-ultrafast-moli-monocle-swiss-html-deck-6to3-92style-ledger-71s-speculative-jev-browser-on-demand-pixel-rust-selection-faq.en.md','assets/github-ai-radar-2026-11-18-r43-guizangppt-huashudesign-jevultrafast-moli.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-18-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r523File),'utf8');
+      assert.ok(txt.includes('2,640.00')&&txt.includes('4,100.00')&&txt.includes('6,740.00')&&txt.includes('80.00')&&txt.includes('270.00')&&txt.includes('350.00')&&txt.includes('6,390.00')&&txt.includes('94.81%')&&txt.includes('not_measured'),r523File+': contains exact 11-18 R43 R523 guizangppt+huashudesign+jevultrafast+moli closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
