@@ -6115,6 +6115,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r493File),'utf8');
       assert.ok(txt.includes('2,120.00')&&txt.includes('3,800.00')&&txt.includes('5,920.00')&&txt.includes('75.00')&&txt.includes('270.00')&&txt.includes('345.00')&&txt.includes('5,575.00')&&txt.includes('94.17%')&&txt.includes('not_measured'),r493File+': contains exact 11-18 R13 gameloc+x402lab+beeper+losslesscut closed-form parameters');
     }
+    // 2026-11-18 Night Round 14 (R494: AndrianLeah/craft-mcp-hub + wangkefan0309-ui/guanlan + olele114/teach-to-learn + ArsenOria/tau-linkedin-job-research-mcp) verification
+    const r494PathA=2040.00+37.0*100.00;
+    assert.equal(r494PathA.toFixed(2),'5740.00','11-18 R14 Path A total');
+    const r494PathC=70.00+2.6*100.00;
+    assert.equal(r494PathC.toFixed(2),'330.00','11-18 R14 Path C total');
+    assert.equal((r494PathA-r494PathC).toFixed(2),'5410.00','11-18 R14 savings vs Path A');
+    assert.equal(((r494PathA-r494PathC)/r494PathA*100).toFixed(2),'94.25','11-18 R14 pct savings vs Path A');
+    for(const r494File of ['workshops/github-trending-radar/docs/craft-mcp-hub-guanlan-teach-to-learn-tau-linkedin-mcp-shared-windowless-mcp-obsidian-claudian-handoff-spaced-transfer-selection-faq.md','workshops/github-trending-radar/docs/craft-mcp-hub-guanlan-teach-to-learn-tau-linkedin-mcp-shared-windowless-mcp-obsidian-claudian-handoff-spaced-transfer-selection-faq.en.md','assets/github-ai-radar-2026-11-18-r14-crafthub-guanlan-teach-tauscout.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-18-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r494File),'utf8');
+      assert.ok(txt.includes('2,040.00')&&txt.includes('3,700.00')&&txt.includes('5,740.00')&&txt.includes('70.00')&&txt.includes('260.00')&&txt.includes('330.00')&&txt.includes('5,410.00')&&txt.includes('94.25%')&&txt.includes('not_measured'),r494File+': contains exact 11-18 R14 crafthub+guanlan+teach+tauscout closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
