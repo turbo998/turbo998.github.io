@@ -6137,6 +6137,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r495File),'utf8');
       assert.ok(txt.includes('2,380.00')&&txt.includes('4,000.00')&&txt.includes('6,380.00')&&txt.includes('90.00')&&txt.includes('290.00')&&txt.includes('380.00')&&txt.includes('6,000.00')&&txt.includes('94.04%')&&txt.includes('not_measured'),r495File+': contains exact 11-18 R15 flecten+replicator+janestreet+docsbot closed-form parameters');
     }
+    // 2026-11-18 Night Round 16 (R496: skywakehq/skywake + theasbug/reprocase + drtikov/microbrainsforagents + wkd09/modern-java-guidance) verification
+    const r496PathA=2320.00+39.0*100.00;
+    assert.equal(r496PathA.toFixed(2),'6220.00','11-18 R16 Path A total');
+    const r496PathC=85.00+2.8*100.00;
+    assert.equal(r496PathC.toFixed(2),'365.00','11-18 R16 Path C total');
+    assert.equal((r496PathA-r496PathC).toFixed(2),'5855.00','11-18 R16 savings vs Path A');
+    assert.equal(((r496PathA-r496PathC)/r496PathA*100).toFixed(2),'94.13','11-18 R16 pct savings vs Path A');
+    for(const r496File of ['workshops/github-trending-radar/docs/skywake-reprocase-microbrains-modern-java-guidance-s3-pointer-fork-fs-idor-proof-sub2ms-preflight-java21-hook-selection-faq.md','workshops/github-trending-radar/docs/skywake-reprocase-microbrains-modern-java-guidance-s3-pointer-fork-fs-idor-proof-sub2ms-preflight-java21-hook-selection-faq.en.md','assets/github-ai-radar-2026-11-18-r16-skywake-reprocase-microbrains-modernjava.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-18-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r496File),'utf8');
+      assert.ok(txt.includes('2,320.00')&&txt.includes('3,900.00')&&txt.includes('6,220.00')&&txt.includes('85.00')&&txt.includes('280.00')&&txt.includes('365.00')&&txt.includes('5,855.00')&&txt.includes('94.13%')&&txt.includes('not_measured'),r496File+': contains exact 11-18 R16 skywake+reprocase+microbrains+modernjava closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
