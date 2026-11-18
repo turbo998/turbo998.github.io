@@ -5954,6 +5954,35 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r480File),'utf8');
       assert.ok(txt.includes('2,340.00')&&txt.includes('3,420.00')&&txt.includes('5,760.00')&&txt.includes('75.00')&&txt.includes('266.00')&&txt.includes('341.00')&&txt.includes('5,419.00')&&txt.includes('94.08%')&&txt.includes('not_measured'),r480File+': contains exact 11-17 R56 ultrademo+lumela+wechatuse closed-form parameters');
     }
+    // 2026-11-18 Raw Evidence SHA-256, Track A/B & Night Round 1 (R481: NVIDIA/SkillEvaluator + therandomsecurityguy/signet) verification
+    const rawHtml1118=fs.readFileSync(path.join(__dirname,'..','workshops','github-trending-radar','evidence','trending-daily-2026-11-18-raw.html'),'utf8').replace(/\r\n/g,'\n');
+    assert.equal(crypto.createHash('sha256').update(rawHtml1118).digest('hex'),'e860c0951803207c1750f32d39d5bb141042f0705e575200054333cb71416ccb','2026-11-18 raw HTML LF sha256');
+    const rawSearch1118Str=fs.readFileSync(path.join(__dirname,'..','workshops','github-trending-radar','evidence','search-new-repos-2026-11-18-raw.json'),'utf8').replace(/\r\n/g,'\n');
+    assert.equal(crypto.createHash('sha256').update(rawSearch1118Str).digest('hex'),'27b2cecb0ccb0a6f47c5922334d6bd3b1b4afb82542e19e44092dcefc48ab72b','2026-11-18 raw Search JSON LF sha256');
+    const rawSearch1118=JSON.parse(rawSearch1118Str);
+    const rawSearch1118Map=new Map(rawSearch1118.items.map(it=>[it.full_name,it]));
+    for(const item of reportJson.fastest_rising_leaderboard_2026_11_18.track_a_24h_star_surge){
+      assert.equal(item.provenance,'measured',item.full_name+': 11-18 Track A provenance');
+      assert.ok(rawHtml1118.includes(`href="/${item.full_name}"`),item.full_name+': present in 11-18 raw HTML');
+      assert.ok(rawHtml1118.includes(`${item.stars_today.toLocaleString('en-US')} stars today`),item.full_name+': exact stars_today in 11-18 raw HTML');
+    }
+    for(const item of reportJson.fastest_rising_leaderboard_2026_11_18.track_b_new_repo_breakout_slope){
+      assert.equal(item.stars_today,'not_measured',item.full_name+': 11-18 Track B stars_today must be not_measured');
+      assert.ok(rawSearch1118Map.has(item.full_name),item.full_name+': present in 11-18 archived Search API JSON');
+      const rawEntry=rawSearch1118Map.get(item.full_name);
+      assert.equal(item.stars_total_search_api,rawEntry.stargazers_count,item.full_name+': 11-18 stars_total_search_api matches Search API JSON');
+      assert.equal(item.stars_per_day,Math.round(item.stars_total/item.age_days),item.full_name+': 11-18 stars_per_day closed-form');
+    }
+    const r481PathA=2360.00+41.0*100.00;
+    assert.equal(r481PathA.toFixed(2),'6460.00','11-18 R1 Path A total');
+    const r481PathC=95.00+3.2*100.00;
+    assert.equal(r481PathC.toFixed(2),'415.00','11-18 R1 Path C total');
+    assert.equal((r481PathA-r481PathC).toFixed(2),'6045.00','11-18 R1 savings vs Path A');
+    assert.equal(((r481PathA-r481PathC)/r481PathA*100).toFixed(2),'93.58','11-18 R1 pct savings vs Path A');
+    for(const r481File of ['workshops/github-trending-radar/docs/nvidia-skillevaluator-signet-3tier-agent-skill-ci-eval-shacl-signed-governance-registry-selection-faq.md','workshops/github-trending-radar/docs/nvidia-skillevaluator-signet-3tier-agent-skill-ci-eval-shacl-signed-governance-registry-selection-faq.en.md','assets/github-ai-radar-2026-11-18-r1-skillevaluator-signet.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-18-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r481File),'utf8');
+      assert.ok(txt.includes('2,360.00')&&txt.includes('4,100.00')&&txt.includes('6,460.00')&&txt.includes('95.00')&&txt.includes('320.00')&&txt.includes('415.00')&&txt.includes('6,045.00')&&txt.includes('93.58%')&&txt.includes('not_measured'),r481File+': contains exact 11-18 R1 skillevaluator+signet closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
