@@ -6082,6 +6082,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r490File),'utf8');
       assert.ok(txt.includes('2,680.00')&&txt.includes('4,300.00')&&txt.includes('6,980.00')&&txt.includes('125.00')&&txt.includes('320.00')&&txt.includes('445.00')&&txt.includes('6,535.00')&&txt.includes('93.62%')&&txt.includes('not_measured'),r490File+': contains exact 11-18 R10 mydb+pgvectorfast+agenticrag closed-form parameters');
     }
+    // 2026-11-18 Night Round 11 (R491: globalmpc/agent-leakcheck + Balanov/mcp-attest + itsmeyaw/skillset + SecFathy/otpkit) verification
+    const r491PathA=2190.00+39.0*100.00;
+    assert.equal(r491PathA.toFixed(2),'6090.00','11-18 R11 Path A total');
+    const r491PathC=70.00+2.8*100.00;
+    assert.equal(r491PathC.toFixed(2),'350.00','11-18 R11 Path C total');
+    assert.equal((r491PathA-r491PathC).toFixed(2),'5740.00','11-18 R11 savings vs Path A');
+    assert.equal(((r491PathA-r491PathC)/r491PathA*100).toFixed(2),'94.25','11-18 R11 pct savings vs Path A');
+    for(const r491File of ['workshops/github-trending-radar/docs/agent-leakcheck-mcp-attest-skillset-otpkit-host-reachability-fix-live-mcp-auth-conformance-commit-pinned-skills-selection-faq.md','workshops/github-trending-radar/docs/agent-leakcheck-mcp-attest-skillset-otpkit-host-reachability-fix-live-mcp-auth-conformance-commit-pinned-skills-selection-faq.en.md','assets/github-ai-radar-2026-11-18-r11-leakcheck-mcpattest-skillset-otpkit.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-18-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r491File),'utf8');
+      assert.ok(txt.includes('2,190.00')&&txt.includes('3,900.00')&&txt.includes('6,090.00')&&txt.includes('70.00')&&txt.includes('280.00')&&txt.includes('350.00')&&txt.includes('5,740.00')&&txt.includes('94.25%')&&txt.includes('not_measured'),r491File+': contains exact 11-18 R11 leakcheck+mcpattest+skillset+otpkit closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
