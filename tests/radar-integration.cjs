@@ -6205,6 +6205,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r501File),'utf8');
       assert.ok(txt.includes('2,280.00')&&txt.includes('3,850.00')&&txt.includes('6,130.00')&&txt.includes('75.00')&&txt.includes('270.00')&&txt.includes('345.00')&&txt.includes('5,785.00')&&txt.includes('94.37%')&&txt.includes('not_measured'),r501File+': contains exact 11-18 R21 R501 rustxng+sagwiki+pandacode+stashdock closed-form parameters');
     }
+    // 2026-11-18 Night Round 22 (R502: dominikmartn/harp + abdiraimov-otabek/dashboard-design-skill + EricJujianZou/rederive + tang1693/KIKUmap) verification
+    const r502PathA=2120.00+37.5*100.00;
+    assert.equal(r502PathA.toFixed(2),'5870.00','11-18 R22 R502 Path A total');
+    const r502PathC=70.00+2.6*100.00;
+    assert.equal(r502PathC.toFixed(2),'330.00','11-18 R22 R502 Path C total');
+    assert.equal((r502PathA-r502PathC).toFixed(2),'5540.00','11-18 R22 R502 savings vs Path A');
+    assert.equal(((r502PathA-r502PathC)/r502PathA*100).toFixed(2),'94.38','11-18 R22 R502 pct savings vs Path A');
+    for(const r502File of ['workshops/github-trending-radar/docs/harp-dashboard-design-skill-rederive-kikumap-zero-cred-limit-rings-127-screen-qa-socratic-rederive-mindmap-selection-faq.md','workshops/github-trending-radar/docs/harp-dashboard-design-skill-rederive-kikumap-zero-cred-limit-rings-127-screen-qa-socratic-rederive-mindmap-selection-faq.en.md','assets/github-ai-radar-2026-11-18-r22-harp-dashboardskill-rederive-kikumap.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-18-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r502File),'utf8');
+      assert.ok(txt.includes('2,120.00')&&txt.includes('3,750.00')&&txt.includes('5,870.00')&&txt.includes('70.00')&&txt.includes('260.00')&&txt.includes('330.00')&&txt.includes('5,540.00')&&txt.includes('94.38%')&&txt.includes('not_measured'),r502File+': contains exact 11-18 R22 R502 harp+dashboardskill+rederive+kikumap closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
