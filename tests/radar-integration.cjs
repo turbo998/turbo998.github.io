@@ -6271,6 +6271,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r507File),'utf8');
       assert.ok(txt.includes('2,480.00')&&txt.includes('4,000.00')&&txt.includes('6,480.00')&&txt.includes('75.00')&&txt.includes('270.00')&&txt.includes('345.00')&&txt.includes('6,135.00')&&txt.includes('94.68%')&&txt.includes('not_measured'),r507File+': contains exact 11-18 R27 R507 winshun+snostationskills+geodoctor+soptoolkit closed-form parameters');
     }
+    // 2026-11-18 Night Round 28 (R508: tigerless-labs/agent-memory + dagoSte/squadra + amontlabs/lcu + davidondrej/cloudroom) verification
+    const r508PathA=2420.00+39.5*100.00;
+    assert.equal(r508PathA.toFixed(2),'6370.00','11-18 R28 R508 Path A total');
+    const r508PathC=75.00+2.7*100.00;
+    assert.equal(r508PathC.toFixed(2),'345.00','11-18 R28 R508 Path C total');
+    assert.equal((r508PathA-r508PathC).toFixed(2),'6025.00','11-18 R28 R508 savings vs Path A');
+    assert.equal(((r508PathA-r508PathC)/r508PathA*100).toFixed(2),'94.58','11-18 R28 R508 pct savings vs Path A');
+    for(const r508File of ['workshops/github-trending-radar/docs/agent-memory-squadra-lcu-cloudroom-markdown-sqlite-sleep-memory-stdlib-proofs-decoupled-cua-session-teleport-selection-faq.md','workshops/github-trending-radar/docs/agent-memory-squadra-lcu-cloudroom-markdown-sqlite-sleep-memory-stdlib-proofs-decoupled-cua-session-teleport-selection-faq.en.md','assets/github-ai-radar-2026-11-18-r28-agentmemory-squadra-lcu-cloudroom.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-18-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r508File),'utf8');
+      assert.ok(txt.includes('2,420.00')&&txt.includes('3,950.00')&&txt.includes('6,370.00')&&txt.includes('75.00')&&txt.includes('270.00')&&txt.includes('345.00')&&txt.includes('6,025.00')&&txt.includes('94.58%')&&txt.includes('not_measured'),r508File+': contains exact 11-18 R28 R508 agentmemory+squadra+lcu+cloudroom closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
