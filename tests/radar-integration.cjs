@@ -6148,6 +6148,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r496File),'utf8');
       assert.ok(txt.includes('2,320.00')&&txt.includes('3,900.00')&&txt.includes('6,220.00')&&txt.includes('85.00')&&txt.includes('280.00')&&txt.includes('365.00')&&txt.includes('5,855.00')&&txt.includes('94.13%')&&txt.includes('not_measured'),r496File+': contains exact 11-18 R16 skywake+reprocase+microbrains+modernjava closed-form parameters');
     }
+    // 2026-11-18 Night Round 17 (R497: xinyuefangfang/pmprd + Antoine-Thomas/UH-Universal-Harness + Bluezip231/Haven-Public + digitaltracer/herdr-plugins) verification
+    const r497PathA=2160.00+38.0*100.00;
+    assert.equal(r497PathA.toFixed(2),'5960.00','11-18 R17 Path A total');
+    const r497PathC=75.00+2.7*100.00;
+    assert.equal(r497PathC.toFixed(2),'345.00','11-18 R17 Path C total');
+    assert.equal((r497PathA-r497PathC).toFixed(2),'5615.00','11-18 R17 savings vs Path A');
+    assert.equal(((r497PathA-r497PathC)/r497PathA*100).toFixed(2),'94.21','11-18 R17 pct savings vs Path A');
+    for(const r497File of ['workshops/github-trending-radar/docs/pmprd-uh-universal-harness-haven-herdr-plugins-live-code-prd-anchor-single-dep-harness-shared-browser-failover-selection-faq.md','workshops/github-trending-radar/docs/pmprd-uh-universal-harness-haven-herdr-plugins-live-code-prd-anchor-single-dep-harness-shared-browser-failover-selection-faq.en.md','assets/github-ai-radar-2026-11-18-r17-pmprd-uhharness-haven-herdrcc.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-18-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r497File),'utf8');
+      assert.ok(txt.includes('2,160.00')&&txt.includes('3,800.00')&&txt.includes('5,960.00')&&txt.includes('75.00')&&txt.includes('270.00')&&txt.includes('345.00')&&txt.includes('5,615.00')&&txt.includes('94.21%')&&txt.includes('not_measured'),r497File+': contains exact 11-18 R17 pmprd+uhharness+haven+herdrcc closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
