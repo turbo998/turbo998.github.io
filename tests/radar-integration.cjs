@@ -6403,6 +6403,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r519File),'utf8');
       assert.ok(txt.includes('2,620.00')&&txt.includes('4,050.00')&&txt.includes('6,670.00')&&txt.includes('80.00')&&txt.includes('270.00')&&txt.includes('350.00')&&txt.includes('6,320.00')&&txt.includes('94.75%')&&txt.includes('not_measured'),r519File+': contains exact 11-18 R39 R519 genoffice+kami+magpie+dbx closed-form parameters');
     }
+    // 2026-11-18 Night Round 40 (R520 Milestone: morluto/rea + deepseek-ai/deepseek-harness + DietrichGebert/ponytail + nexu-io/open-design) verification
+    const r520PathA=2840.00+43.0*100.00;
+    assert.equal(r520PathA.toFixed(2),'7140.00','11-18 R40 R520 Path A total');
+    const r520PathC=85.00+2.8*100.00;
+    assert.equal(r520PathC.toFixed(2),'365.00','11-18 R40 R520 Path C total');
+    assert.equal((r520PathA-r520PathC).toFixed(2),'6775.00','11-18 R40 R520 savings vs Path A');
+    assert.equal(((r520PathA-r520PathC)/r520PathA*100).toFixed(2),'94.89','11-18 R40 R520 pct savings vs Path A');
+    for(const r520File of ['workshops/github-trending-radar/docs/rea-deepseek-harness-ponytail-open-design-468k-reverse-engineer-mcp-cordis-plugin-harness-53pct-less-code-98pct-test-collaborative-design-selection-faq.md','workshops/github-trending-radar/docs/rea-deepseek-harness-ponytail-open-design-468k-reverse-engineer-mcp-cordis-plugin-harness-53pct-less-code-98pct-test-collaborative-design-selection-faq.en.md','assets/github-ai-radar-2026-11-18-r40-r520-rea-deepseekharness-ponytail5-opendesign.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-18-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r520File),'utf8');
+      assert.ok(txt.includes('2,840.00')&&txt.includes('4,300.00')&&txt.includes('7,140.00')&&txt.includes('85.00')&&txt.includes('280.00')&&txt.includes('365.00')&&txt.includes('6,775.00')&&txt.includes('94.89%')&&txt.includes('not_measured'),r520File+': contains exact 11-18 R40 R520 rea+deepseekharness+ponytail5+opendesign closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
