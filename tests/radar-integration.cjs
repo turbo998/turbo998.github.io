@@ -6060,6 +6060,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r488File),'utf8');
       assert.ok(txt.includes('2,140.00')&&txt.includes('3,800.00')&&txt.includes('5,940.00')&&txt.includes('75.00')&&txt.includes('280.00')&&txt.includes('355.00')&&txt.includes('5,585.00')&&txt.includes('94.02%')&&txt.includes('not_measured'),r488File+': contains exact 11-18 R8 speclok+archinario+dataforseo+zim closed-form parameters');
     }
+    // 2026-11-18 Night Round 9 (R489: fblgit/artifacts-done-properly + mubarakmarafa/designloop + suzhe-ai/suzhe-ui + johnlindquist/pi-emphasis) verification
+    const r489PathA=2080.00+37.0*100.00;
+    assert.equal(r489PathA.toFixed(2),'5780.00','11-18 R9 Path A total');
+    const r489PathC=85.00+2.7*100.00;
+    assert.equal(r489PathC.toFixed(2),'355.00','11-18 R9 Path C total');
+    assert.equal((r489PathA-r489PathC).toFixed(2),'5425.00','11-18 R9 savings vs Path A');
+    assert.equal(((r489PathA-r489PathC)/r489PathA*100).toFixed(2),'93.86','11-18 R9 pct savings vs Path A');
+    for(const r489File of ['workshops/github-trending-radar/docs/artifacts-done-properly-designloop-suzhe-ui-pi-emphasis-reusable-part-hash-artifacts-fresh-judge-ui-loop-two-register-design-selection-faq.md','workshops/github-trending-radar/docs/artifacts-done-properly-designloop-suzhe-ui-pi-emphasis-reusable-part-hash-artifacts-fresh-judge-ui-loop-two-register-design-selection-faq.en.md','assets/github-ai-radar-2026-11-18-r9-adp-designloop-suzheui-piemphasis.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-18-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r489File),'utf8');
+      assert.ok(txt.includes('2,080.00')&&txt.includes('3,700.00')&&txt.includes('5,780.00')&&txt.includes('85.00')&&txt.includes('270.00')&&txt.includes('355.00')&&txt.includes('5,425.00')&&txt.includes('93.86%')&&txt.includes('not_measured'),r489File+': contains exact 11-18 R9 adp+designloop+suzheui+piemphasis closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
