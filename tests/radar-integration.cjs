@@ -6260,6 +6260,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r506File),'utf8');
       assert.ok(txt.includes('2,360.00')&&txt.includes('3,950.00')&&txt.includes('6,310.00')&&txt.includes('75.00')&&txt.includes('270.00')&&txt.includes('345.00')&&txt.includes('5,965.00')&&txt.includes('94.53%')&&txt.includes('not_measured'),r506File+': contains exact 11-18 R26 R506 pullboard+seecode+scrawl+bigarrow closed-form parameters');
     }
+    // 2026-11-18 Night Round 27 (R507: LingCore/WinShun + sno-ai/sno-station-skills + Fangx-AI/geo-doctor + heqiangdiao-wq/AI-Cross-Border-Ecommerce-Agent-Toolkit) verification
+    const r507PathA=2480.00+40.0*100.00;
+    assert.equal(r507PathA.toFixed(2),'6480.00','11-18 R27 R507 Path A total');
+    const r507PathC=75.00+2.7*100.00;
+    assert.equal(r507PathC.toFixed(2),'345.00','11-18 R27 R507 Path C total');
+    assert.equal((r507PathA-r507PathC).toFixed(2),'6135.00','11-18 R27 R507 savings vs Path A');
+    assert.equal(((r507PathA-r507PathC)/r507PathA*100).toFixed(2),'94.68','11-18 R27 R507 pct savings vs Path A');
+    for(const r507File of ['workshops/github-trending-radar/docs/winshun-sno-station-skills-geo-doctor-ecommerce-sop-toolkit-ntfs-mft-mcp-quota-handover-crawler-geo-compliance-sop-selection-faq.md','workshops/github-trending-radar/docs/winshun-sno-station-skills-geo-doctor-ecommerce-sop-toolkit-ntfs-mft-mcp-quota-handover-crawler-geo-compliance-sop-selection-faq.en.md','assets/github-ai-radar-2026-11-18-r27-winshun-snostationskills-geodoctor-soptoolkit.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-18-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r507File),'utf8');
+      assert.ok(txt.includes('2,480.00')&&txt.includes('4,000.00')&&txt.includes('6,480.00')&&txt.includes('75.00')&&txt.includes('270.00')&&txt.includes('345.00')&&txt.includes('6,135.00')&&txt.includes('94.68%')&&txt.includes('not_measured'),r507File+': contains exact 11-18 R27 R507 winshun+snostationskills+geodoctor+soptoolkit closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
