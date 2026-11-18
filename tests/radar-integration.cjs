@@ -6315,6 +6315,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r511File),'utf8');
       assert.ok(txt.includes('2,440.00')&&txt.includes('3,950.00')&&txt.includes('6,390.00')&&txt.includes('75.00')&&txt.includes('270.00')&&txt.includes('345.00')&&txt.includes('6,045.00')&&txt.includes('94.60%')&&txt.includes('not_measured'),r511File+': contains exact 11-18 R31 R511 coucou+andee+oilui+insomnia closed-form parameters');
     }
+    // 2026-11-18 Night Round 32 (R512: KKKKhazix/AIHOT + nano-muse/nanoMuse + leemysw/yovoice + undefined-ui/second-brain-os) verification
+    const r512PathA=2460.00+40.0*100.00;
+    assert.equal(r512PathA.toFixed(2),'6460.00','11-18 R32 R512 Path A total');
+    const r512PathC=75.00+2.7*100.00;
+    assert.equal(r512PathC.toFixed(2),'345.00','11-18 R32 R512 Path C total');
+    assert.equal((r512PathA-r512PathC).toFixed(2),'6115.00','11-18 R32 R512 savings vs Path A');
+    assert.equal(((r512PathA-r512PathC)/r512PathA*100).toFixed(2),'94.66','11-18 R32 R512 pct savings vs Path A');
+    for(const r512File of ['workshops/github-trending-radar/docs/aihot-nanomuse-yovoice-second-brain-os-dual-score-event-clustering-selfhosted-relay-local-tts-mcp-5-handbooks-selection-faq.md','workshops/github-trending-radar/docs/aihot-nanomuse-yovoice-second-brain-os-dual-score-event-clustering-selfhosted-relay-local-tts-mcp-5-handbooks-selection-faq.en.md','assets/github-ai-radar-2026-11-18-r32-aihot-nanomuse-yovoice-secondbrainos.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-18-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r512File),'utf8');
+      assert.ok(txt.includes('2,460.00')&&txt.includes('4,000.00')&&txt.includes('6,460.00')&&txt.includes('75.00')&&txt.includes('270.00')&&txt.includes('345.00')&&txt.includes('6,115.00')&&txt.includes('94.66%')&&txt.includes('not_measured'),r512File+': contains exact 11-18 R32 R512 aihot+nanomuse+yovoice+secondbrainos closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
