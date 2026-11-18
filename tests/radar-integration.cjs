@@ -6016,6 +6016,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r484File),'utf8');
       assert.ok(txt.includes('2,340.00')&&txt.includes('4,000.00')&&txt.includes('6,340.00')&&txt.includes('90.00')&&txt.includes('300.00')&&txt.includes('390.00')&&txt.includes('5,950.00')&&txt.includes('93.85%')&&txt.includes('not_measured'),r484File+': contains exact 11-18 R4 adm+magi+wingbox closed-form parameters');
     }
+    // 2026-11-18 Night Round 5 (R485 Milestone: openfabriq/openfabriq + bubbleptr/aoa + pierridotite/mobile-agent-testers) verification
+    const r485PathA=2550.00+42.0*100.00;
+    assert.equal(r485PathA.toFixed(2),'6750.00','11-18 R5 Path A total');
+    const r485PathC=105.00+3.1*100.00;
+    assert.equal(r485PathC.toFixed(2),'415.00','11-18 R5 Path C total');
+    assert.equal((r485PathA-r485PathC).toFixed(2),'6335.00','11-18 R5 savings vs Path A');
+    assert.equal(((r485PathA-r485PathC)/r485PathA*100).toFixed(2),'93.85','11-18 R5 pct savings vs Path A');
+    for(const r485File of ['workshops/github-trending-radar/docs/openfabriq-aoa-mobile-agent-testers-software-factory-as-code-24x7-sqlite-inbox-worker-20phone-parallel-qa-selection-faq.md','workshops/github-trending-radar/docs/openfabriq-aoa-mobile-agent-testers-software-factory-as-code-24x7-sqlite-inbox-worker-20phone-parallel-qa-selection-faq.en.md','assets/github-ai-radar-2026-11-18-r5-openfabriq-aoa-mobileqa.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-18-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r485File),'utf8');
+      assert.ok(txt.includes('2,550.00')&&txt.includes('4,200.00')&&txt.includes('6,750.00')&&txt.includes('105.00')&&txt.includes('310.00')&&txt.includes('415.00')&&txt.includes('6,335.00')&&txt.includes('93.85%')&&txt.includes('not_measured'),r485File+': contains exact 11-18 R5 openfabriq+aoa+mobileqa closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
