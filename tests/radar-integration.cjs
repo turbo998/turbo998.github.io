@@ -6170,6 +6170,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r498File),'utf8');
       assert.ok(txt.includes('2,140.00')&&txt.includes('3,700.00')&&txt.includes('5,840.00')&&txt.includes('70.00')&&txt.includes('260.00')&&txt.includes('330.00')&&txt.includes('5,510.00')&&txt.includes('94.35%')&&txt.includes('not_measured'),r498File+': contains exact 11-18 R18 agyhq+dshworkboard+skillsiphon+claudewiki closed-form parameters');
     }
+    // 2026-11-18 Night Round 19 (R499: codeFi/clauds + slobys/ClaudeLink + xerrors/aBridge + dqIndieGames/remote-pc-mcp-gateway) verification
+    const r499PathA=2080.00+36.5*100.00;
+    assert.equal(r499PathA.toFixed(2),'5730.00','11-18 R19 Path A total');
+    const r499PathC=65.00+2.5*100.00;
+    assert.equal(r499PathC.toFixed(2),'315.00','11-18 R19 Path C total');
+    assert.equal((r499PathA-r499PathC).toFixed(2),'5415.00','11-18 R19 savings vs Path A');
+    assert.equal(((r499PathA-r499PathC)/r499PathA*100).toFixed(2),'94.50','11-18 R19 pct savings vs Path A');
+    for(const r499File of ['workshops/github-trending-radar/docs/clauds-claudelink-abridge-remote-pc-mcp-gateway-90pct-account-autoswitch-exit-rollback-device-mcp-oauth21-tunnel-selection-faq.md','workshops/github-trending-radar/docs/clauds-claudelink-abridge-remote-pc-mcp-gateway-90pct-account-autoswitch-exit-rollback-device-mcp-oauth21-tunnel-selection-faq.en.md','assets/github-ai-radar-2026-11-18-r19-clauds-claudelink-abridge-remotemcp.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-18-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r499File),'utf8');
+      assert.ok(txt.includes('2,080.00')&&txt.includes('3,650.00')&&txt.includes('5,730.00')&&txt.includes('65.00')&&txt.includes('250.00')&&txt.includes('315.00')&&txt.includes('5,415.00')&&txt.includes('94.50%')&&txt.includes('not_measured'),r499File+': contains exact 11-18 R19 clauds+claudelink+abridge+remotemcp closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
