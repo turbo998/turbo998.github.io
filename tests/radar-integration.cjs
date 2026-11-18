@@ -6326,6 +6326,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r512File),'utf8');
       assert.ok(txt.includes('2,460.00')&&txt.includes('4,000.00')&&txt.includes('6,460.00')&&txt.includes('75.00')&&txt.includes('270.00')&&txt.includes('345.00')&&txt.includes('6,115.00')&&txt.includes('94.66%')&&txt.includes('not_measured'),r512File+': contains exact 11-18 R32 R512 aihot+nanomuse+yovoice+secondbrainos closed-form parameters');
     }
+    // 2026-11-18 Night Round 33 (R513: feimacode/open-design-agent-kit + vincentsch/explainroo + zhuyansen/awesome-claude-video-skills + deeplethe/solid-glass) verification
+    const r513PathA=2420.00+39.5*100.00;
+    assert.equal(r513PathA.toFixed(2),'6370.00','11-18 R33 R513 Path A total');
+    const r513PathC=75.00+2.7*100.00;
+    assert.equal(r513PathC.toFixed(2),'345.00','11-18 R33 R513 Path C total');
+    assert.equal((r513PathA-r513PathC).toFixed(2),'6025.00','11-18 R33 R513 savings vs Path A');
+    assert.equal(((r513PathA-r513PathC)/r513PathA*100).toFixed(2),'94.58','11-18 R33 R513 pct savings vs Path A');
+    for(const r513File of ['workshops/github-trending-radar/docs/open-design-agent-kit-explainroo-awesome-video-skills-solid-glass-198-brand-kit-2min-kokoro-video-526-security-graded-shadcn-selection-faq.md','workshops/github-trending-radar/docs/open-design-agent-kit-explainroo-awesome-video-skills-solid-glass-198-brand-kit-2min-kokoro-video-526-security-graded-shadcn-selection-faq.en.md','assets/github-ai-radar-2026-11-18-r33-opendesignkit-explainroo-videoskills-solidglass.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-18-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r513File),'utf8');
+      assert.ok(txt.includes('2,420.00')&&txt.includes('3,950.00')&&txt.includes('6,370.00')&&txt.includes('75.00')&&txt.includes('270.00')&&txt.includes('345.00')&&txt.includes('6,025.00')&&txt.includes('94.58%')&&txt.includes('not_measured'),r513File+': contains exact 11-18 R33 R513 opendesignkit+explainroo+videoskills+solidglass closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
