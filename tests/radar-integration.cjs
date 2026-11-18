@@ -6093,6 +6093,17 @@ async function main() {
       const txt=fs.readFileSync(path.join(__dirname,'..',r491File),'utf8');
       assert.ok(txt.includes('2,190.00')&&txt.includes('3,900.00')&&txt.includes('6,090.00')&&txt.includes('70.00')&&txt.includes('280.00')&&txt.includes('350.00')&&txt.includes('5,740.00')&&txt.includes('94.25%')&&txt.includes('not_measured'),r491File+': contains exact 11-18 R11 leakcheck+mcpattest+skillset+otpkit closed-form parameters');
     }
+    // 2026-11-18 Night Round 12 (R492: earayu/Mingle + Asuta/dsh-cdx-plus + namiq-ai/devkb + sksareen/point) verification
+    const r492PathA=2150.00+38.0*100.00;
+    assert.equal(r492PathA.toFixed(2),'5950.00','11-18 R12 Path A total');
+    const r492PathC=80.00+2.8*100.00;
+    assert.equal(r492PathC.toFixed(2),'360.00','11-18 R12 Path C total');
+    assert.equal((r492PathA-r492PathC).toFixed(2),'5590.00','11-18 R12 savings vs Path A');
+    assert.equal(((r492PathA-r492PathC)/r492PathA*100).toFixed(2),'93.95','11-18 R12 pct savings vs Path A');
+    for(const r492File of ['workshops/github-trending-radar/docs/mingle-dsh-cdx-plus-devkb-point-multi-im-local-agent-bridge-20plugin-dsh-suite-precomputed-context-packs-selection-faq.md','workshops/github-trending-radar/docs/mingle-dsh-cdx-plus-devkb-point-multi-im-local-agent-bridge-20plugin-dsh-suite-precomputed-context-packs-selection-faq.en.md','assets/github-ai-radar-2026-11-18-r12-mingle-dshcdx-devkb-point.svg','workshops/github-trending-radar/evidence/trending-daily-2026-11-18-audit.json']){
+      const txt=fs.readFileSync(path.join(__dirname,'..',r492File),'utf8');
+      assert.ok(txt.includes('2,150.00')&&txt.includes('3,800.00')&&txt.includes('5,950.00')&&txt.includes('80.00')&&txt.includes('280.00')&&txt.includes('360.00')&&txt.includes('5,590.00')&&txt.includes('93.95%')&&txt.includes('not_measured'),r492File+': contains exact 11-18 R12 mingle+dshcdx+devkb+point closed-form parameters');
+    }
     for(const file of files) {
       const dedicated=file.startsWith('workshops/');
       const en=dedicated?file.includes('.en.'):!file.startsWith('zh-');
